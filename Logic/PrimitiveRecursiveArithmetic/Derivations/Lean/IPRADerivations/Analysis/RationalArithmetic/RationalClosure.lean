@@ -1,6 +1,4 @@
-import IPRADerivations.Core.Powers
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rational closure: eliminating a vanishing dyadic error
@@ -21,12 +19,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalClosure
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,13 +36,9 @@ theorem pow_step {m : PTm n} (ih : Γ ⊢[PRAAx] le (succ m) (pw two m)) :
 private abbrev powF' : Fm PTm 1 := le (succ (var 0)) (pw two (var 0))
 
 private theorem pow₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] powF' := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact le_congr (.eqRefl _) (pw_zero _).eqSymm (le_refl one)
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact pow_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (.eqRefl _) (pw_zero _).eqSymm (le_refl one)
+  · exact pow_step Prf.hyp0
 
 /-- `m + 1 ≤ 2^m`. -/
 theorem succ_le_two_pow (m : PTm n) : Γ ⊢[PRAAx] le (succ m) (pw two m) := by

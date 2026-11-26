@@ -26,11 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.FiniteFTC
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -73,13 +69,9 @@ theorem ftc_upper (G Fpos Fneg : PTm 2) (x N E : PTm n)
     Γ ⊢[PRAAx] UpInv G Fpos Fneg N x E := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       UpInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI (up_base G Fpos Fneg x E)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hf := h.allOpen
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_inst2]
+    · exact .impI (up_base G Fpos Fneg x E)
+    · have hf := h.allOpen
       refine .impI ?_
       have hk : (le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶ UpInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)) ::
@@ -99,13 +91,9 @@ theorem ftc_lower (G Fpos Fneg : PTm 2) (x N E : PTm n)
     Γ ⊢[PRAAx] DnInv G Fpos Fneg N x E := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       DnInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI (dn_base G Fpos Fneg x E)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hf := h.allOpen
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_inst2]
+    · exact .impI (dn_base G Fpos Fneg x E)
+    · have hf := h.allOpen
       refine .impI ?_
       have hk : (le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶ DnInv G Fpos Fneg (var 0) (Syn.shift x) (Syn.shift E)) ::

@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStrip
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceIntegrand (meshGain)
 open GaussianCompactRiemannName (inside localBody nameData evaluatorName sampledModulus value)
 open GaussianEuclideanDistanceName (pointCN)
@@ -23,10 +23,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalMetric (distanceBounded qsub qnegative)
 open GaussianRationalHorner (qadd)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -72,20 +68,13 @@ def data (X Y D sign R T N A C E : PTm n) : PTm n :=
     (source X Y D sign R T A C E).subst σ = source (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign)
       (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [source,one]
 
-@[simp] theorem subst_tagNumerator {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
-    Syn.subst σ (tagNumerator t) = tagNumerator (Syn.subst σ t) := by simp [tagNumerator]
+ipra_subst tagNumerator
 
-@[simp] theorem subst_meshGain {m : ℕ} (σ : Fin n → PTm m) (R T : PTm n) :
-    Syn.subst σ (meshGain R T) = meshGain (Syn.subst σ R) (Syn.subst σ T) := by simp [meshGain,two]
+ipra_subst meshGain [two]
 
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (K : Kernel) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm K p t x) = evaluatorTerm K (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) :=
-  by simp [evaluatorTerm]
+ipra_subst evaluatorTerm
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R T N A C E : PTm n) :
-    Syn.subst σ (data X Y D sign R T N A C E) =
-      data (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [data]
+ipra_subst data
 
 theorem tag_inside (t A C E T : PTm n) (hE : Γ ⊢[PRAAx] le one E) (hT : Γ ⊢[PRAAx] le (A+C) (E*T))
     (h : Γ ⊢[PRAAx] inside (E+A) C E t) :

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalHausdorff
 import IPRADerivations.Foundations.FiniteHausdorffOperations
 import IPRADerivations.Foundations.BoundedSyntax
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite Lipschitz images on original rational coordinates
@@ -28,7 +27,7 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.Analysis.RationalHausdorffImage
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (metricF)
 open LeanProofs.IPRA.Analysis.RationalHausdorff
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (distance subst_distance)
@@ -36,10 +35,6 @@ open LeanProofs.IPRA.Foundations.FiniteHausdorffOperations (mapList map_length m
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -61,10 +56,7 @@ theorem image_source_length (s : Side) (f : PR 2) (S T x : PTm n) :
 def pairMetric (s t : Side) (S T d i j : PTm n) : PTm n :=
   distance metricF (entry (grid s S T d) i) (entry (grid t S T d) j) (parameter S T d)
 
-@[simp] theorem subst_pairMetric {l : ℕ} (σ : Fin n → PTm l) (s t : Side) (S T d i j : PTm n) :
-    Syn.subst σ (pairMetric s t S T d i j) = pairMetric s t (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ d) (Syn.subst σ i) (Syn.subst σ j) := by
-  simp only [pairMetric, subst_distance, subst_entry, subst_grid, subst_parameter]
+ipra_subst pairMetric
 
 theorem pairMetric_symmetric (s t : Side) (S T d i j : PTm n) :
     Γ ⊢[PRAAx] pairMetric s t S T d i j ≐ pairMetric t s S T d j i :=
@@ -85,17 +77,10 @@ def localLaw (s t : Side) (f : PR 2) (S T d e A B x : PTm n) : Fm PTm n :=
 
 def finiteLaw (f : PR 2) (S T d e A B x : PTm n) : Fm PTm n := localLaw .left .right f S T d e A B x
 
-@[simp] theorem subst_localPair {l : ℕ} (σ : Fin n → PTm l) (s t : Side) (f : PR 2) (S T d e A B x i j : PTm n) :
-    (localPair s t f S T d e A B x i j).subst σ = localPair s t f (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x)
-      (Syn.subst σ i) (Syn.subst σ j) := by
-  simp only [localPair, subst_le, PTm.subst_mul, subst_denominator, subst_pairMetric, subst_image]
-@[simp] theorem subst_localLaw {l : ℕ} (σ : Fin n → PTm l) (s t : Side) (f : PR 2) (S T d e A B x : PTm n) :
-    (localLaw s t f S T d e A B x).subst σ = localLaw s t f (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp only [localLaw, Fm.subst_all, Fm.subst_imp, subst_lt, subst_length, subst_source, subst_localPair,
-    Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst,
-    Syn.shift_var, Fin.succ_zero_eq_one]
+ipra_subst localPair
+ipra_subst localLaw [Fm.subst_all, Fm.subst_imp, subst_lt, subst_length, subst_source, subst_localPair,
+    Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, Syn.shift_var,
+    Fin.succ_zero_eq_one]
 @[simp] theorem subst_finiteLaw {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (S T d e A B x : PTm n) :
     (finiteLaw f S T d e A B x).subst σ = finiteLaw f (Syn.subst σ S) (Syn.subst σ T)
       (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := subst_localLaw _ _ _ _ _ _ _ _ _ _ _
@@ -335,10 +320,7 @@ def boundCheckerF (f : PR 2) : PR 7 := PTm.toPR
   (boundCheckerTerm f (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def checkBound (f : PR 2) (S T d e A B x : PTm n) : PTm n := apply7 (boundCheckerF f) S T d e A B x
 
-@[simp] theorem subst_boundCheckerTerm {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (S T d e A B x : PTm n) :
-    Syn.subst σ (boundCheckerTerm f S T d e A B x) = boundCheckerTerm f (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp only [boundCheckerTerm, subst_apply5, subst_image, PTm.subst_mul, subst_numerator, subst_denominator]
+ipra_subst boundCheckerTerm
 
 theorem image_at (f : PR 2) (S x : PTm n) : Γ ⊢[PRAAx] ap2 (imageF f) S x ≐ image f S x := by
   have h := toPR_eq (Γ := Γ) (image f (var 0) (var 1) : PTm 2) ![S,x]

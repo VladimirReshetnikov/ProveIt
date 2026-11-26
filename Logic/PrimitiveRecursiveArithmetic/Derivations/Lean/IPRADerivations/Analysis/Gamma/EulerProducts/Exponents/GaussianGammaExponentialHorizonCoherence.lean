@@ -17,15 +17,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaExponentialHorizonCoherence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianGammaReciprocalDegreeCells (degree)
 open GaussianGammaExponentCoefficientPolynomial (polynomial)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
 open GaussianRationalPolynomialExponentialCoefficients (coefficientSum termBody data term_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -72,8 +69,7 @@ theorem original_exponential_horizon (q N L M K T e : PTm n)
 
 def fixedCoefficient (q N e : PTm n) : PTm n :=
   exponentCoefficient (GaussianRationalPolynomialExponential.polynomial (polynomial q N e) (degree e) e) (e*degree e) e
-@[simp] theorem subst_fixedCoefficient {m : ℕ} (σ : Fin n → PTm m) (q N e : PTm n) :
-    Syn.subst σ (fixedCoefficient q N e) = fixedCoefficient (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ e) := by simp [fixedCoefficient]
+ipra_subst fixedCoefficient
 
 theorem canonical_horizon (q N L K e : PTm n)
     (hL : Γ ⊢[PRAAx] le e (degree L)) (hK : Γ ⊢[PRAAx] le e K) : Γ ⊢[PRAAx]

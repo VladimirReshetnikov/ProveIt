@@ -18,7 +18,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerTaylorCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -38,10 +38,6 @@ open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRightHalfPlaneLogarithmIncrementBound (input subst_input)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -70,16 +66,9 @@ def weightedF : PR 2 := multiplyF constantF S
 def weightedData (A B neg a b sign D : PTm n) : PTm n :=
   multiplyData constantF S (step A B neg a b sign D) (sd A B D neg)
 
-@[simp] theorem subst_incrementData {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D : PTm n) :
-    Syn.subst σ (incrementData A B neg a b sign D) =
-      incrementData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ sign) (Syn.subst σ D) := by simp [incrementData]
+ipra_subst incrementData
 
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D : PTm n) :
-    Syn.subst σ (weightedData A B neg a b sign D) =
-      weightedData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ sign) (Syn.subst σ D) := by
-  simp [weightedData,GaussianLogGammaEulerReciprocalSlopeCofinal.canonicalData]
+ipra_subst weightedData [GaussianLogGammaEulerReciprocalSlopeCofinal.canonicalData]
 
 theorem increment_regular (A B neg a b sign D : PTm n)
     (h : Γ ⊢[PRAAx] source A D neg) (k : Γ ⊢[PRAAx] source a D sign) :

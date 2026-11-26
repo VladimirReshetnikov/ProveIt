@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfEulerHead
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHead (head factor head_zero head_succ run program_at)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (ofGaussian_represents canonical_unique represents_congr positive_product qmul)
@@ -23,9 +23,6 @@ open GaussianRationalSyntheticDivision (qmul_congr qone)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Probability.NormalMoments (df edf df_zero df_succ edf_zero edf_succ edf_eq)
 open ComplexLogarithmRemainder (oneCode scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,16 +31,11 @@ def denominator (N : PTm n) : PTm n := two*edf N
 def value (N : PTm n) : PTm n := fraction (numerator N) (denominator N)
 def inverse (N : PTm n) : PTm n := fraction (denominator N) (numerator N)
 def law (N : PTm n) : Fm PTm n := head oneCode two N ≐ value N
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (numerator N) = numerator (Syn.subst σ N) := by simp [numerator,df]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (denominator N) = denominator (Syn.subst σ N) := by simp [denominator,edf]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (value N) = value (Syn.subst σ N) := by simp [value]
-@[simp] theorem subst_inverse {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (inverse N) = inverse (Syn.subst σ N) := by simp [inverse]
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    (law N).subst σ = law (Syn.subst σ N) := by simp [law]
+ipra_subst numerator [df]
+ipra_subst denominator [edf]
+ipra_subst value
+ipra_subst inverse
+ipra_subst law
 
 theorem numerator_positive (N : PTm n) : Γ ⊢[PRAAx] le one (numerator N) :=
   le_congr (.eqRefl _) (LeanProofs.IPRA.Probability.NormalMoments.df_pos (succ N)).eqSymm (zero_lt_succ _)
@@ -86,11 +78,9 @@ theorem step (N : PTm n) (ih : Γ ⊢[PRAAx] law N) : Γ ⊢[PRAAx] law (succ N)
 
 theorem original_head (N : PTm n) : Γ ⊢[PRAAx] law N := by
   have all : Γ ⊢[PRAAx] .all (law (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero]
-      exact base
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero]
-      exact step _ Prf.hyp0
+    ipra_qfind [subst_law]
+    · exact base
+    · exact step _ Prf.hyp0
   simpa only [subst_law,Syn.subst_var,Syn.inst_zero] using all.allE N
 
 theorem original_run (N : PTm n) : Γ ⊢[PRAAx] run (oneCode : PTm n) two N ≐ value N :=

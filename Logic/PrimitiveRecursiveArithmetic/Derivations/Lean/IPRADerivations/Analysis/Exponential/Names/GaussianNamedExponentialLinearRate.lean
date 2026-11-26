@@ -14,7 +14,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedExponentialLinearRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBalancedRadiusArithmetic (unit_monotone)
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -31,10 +31,6 @@ open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalReciprocal (qone)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianReconstructionRoots (distance_triangle)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -49,16 +45,11 @@ def source (f : PR 2) (x A B : PTm n) : Fm PTm n :=
 def linearF (f : PR 2) : PR 2 := addF oneF f
 def linearData (x : PTm n) : PTm n := addData zero x
 
-@[simp] theorem subst_smallSamples {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A B : PTm n) :
-    (smallSamples f x A B).subst σ = smallSamples f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [smallSamples,Syn.subst_shift,Syn.shift_subst]
+ipra_subst smallSamples [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A B : PTm n) :
-    (source f x A B).subst σ = source f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [source,one]
+ipra_subst source [one]
 
-@[simp] theorem subst_linearData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (linearData x) = linearData (Syn.subst σ x) := by simp [linearData]
+ipra_subst linearData
 
 theorem sample_input (f : PR 2) (x A B p : PTm n) (hs : Γ ⊢[PRAAx] smallSamples f x A B) :
     Γ ⊢[PRAAx] bounded (ap2 f p x) A B ⋏ canonical (ap2 f p x) := by

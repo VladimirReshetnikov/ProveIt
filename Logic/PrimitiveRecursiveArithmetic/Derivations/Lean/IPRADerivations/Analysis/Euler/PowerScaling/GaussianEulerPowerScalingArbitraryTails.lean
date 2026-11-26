@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingArbitraryTails
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerScalingGridSchedule (source)
 open GaussianEulerPowerChartUniformSchedule (panelStage)
 open GaussianEulerPowerChartCofinalSchedule (cutoffSize)
@@ -38,10 +38,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "compactF" => GaussianEulerPowerScalingCompactName.nameF

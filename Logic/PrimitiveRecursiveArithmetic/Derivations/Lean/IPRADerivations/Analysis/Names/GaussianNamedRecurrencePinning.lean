@@ -14,7 +14,7 @@ set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRecurrencePinning
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianNamedFiniteEqualityChain (allSteps sample finite_cross)
@@ -24,19 +24,13 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianReconstructionRoots (distance_zero_iff)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def regularFamily (f : PR 2) (b : PTm 2) (x : PTm n) : Fm PTm n :=
   .all (pointCN f (inst2 b (var 0) (Syn.shift x)))
 
-@[simp] theorem subst_regularFamily {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (b : PTm 2) (x : PTm n) :
-    (regularFamily f b x).subst σ = regularFamily f b (Syn.subst σ x) := by
-  simp [regularFamily,Syn.subst_shift,Syn.shift_subst]
+ipra_subst regularFamily [Syn.subst_shift, Syn.shift_subst]
 
 theorem regular_at (f : PR 2) (b : PTm 2) (x j : PTm n) (h : Γ ⊢[PRAAx] regularFamily f b x) :
     Γ ⊢[PRAAx] pointCN f (inst2 b j x) := by
@@ -52,15 +46,9 @@ def decayAt (f : PR 2) (b : PTm 2) (x B C j : PTm n) : Fm PTm n :=
 def decayEnvelope (f : PR 2) (b : PTm 2) (x B C : PTm n) : Fm PTm n :=
   .all (decayAt f b (Syn.shift x) (Syn.shift B) (Syn.shift C) (var 0))
 
-@[simp] theorem subst_decayAt {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (b : PTm 2) (x B C j : PTm n) :
-    (decayAt f b x B C j).subst σ =
-      decayAt f b (Syn.subst σ x) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ j) := by
-  simp [decayAt,one,Syn.subst_shift,Syn.shift_subst]
+ipra_subst decayAt [one, Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_decayEnvelope {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (b : PTm 2) (x B C : PTm n) :
-    (decayEnvelope f b x B C).subst σ =
-      decayEnvelope f b (Syn.subst σ x) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp [decayEnvelope,Syn.subst_shift,Syn.shift_subst]
+ipra_subst decayEnvelope [Syn.subst_shift, Syn.shift_subst]
 
 theorem decay_at (f : PR 2) (b : PTm 2) (x B C j p : PTm n) (hj : Γ ⊢[PRAAx] le one j)
     (h : Γ ⊢[PRAAx] decayEnvelope f b x B C) :

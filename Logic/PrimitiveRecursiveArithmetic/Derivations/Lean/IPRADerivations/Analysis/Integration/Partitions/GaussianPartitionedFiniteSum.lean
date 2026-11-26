@@ -14,15 +14,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPartitionedFiniteSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd)
 open GaussianRationalSyntheticDivision (qadd_congr qzero_add)
 open GaussianRationalFiniteSum (sum sum_canonical sum_index_congr)
 open GaussianRationalSumAlgebra (qadd_associative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,17 +34,11 @@ def blockBody (cut : PR 2) (f : PTm 2) : PTm 2 :=
 def prefixLaw (cut : PR 2) (f : PTm 2) (k d x : PTm n) : Fm PTm n :=
   qadd (sum f (ap2 cut zero d) x) (sum (blockBody cut f) k (pairT d x)) ≐ sum f (ap2 cut k d) x
 
-@[simp] theorem subst_increasing {m : ℕ} (σ : Fin n → PTm m) (cut : PR 2) (d : PTm n) :
-    (increasing cut d).subst σ = increasing cut (Syn.subst σ d) :=
-  by simp [increasing,Syn.subst_shift,Syn.shift_subst]
+ipra_subst increasing [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_block {m : ℕ} (σ : Fin n → PTm m) (cut : PR 2) (f : PTm 2) (i d x : PTm n) :
-    Syn.subst σ (block cut f i d x) = block cut f (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ x) :=
-  by simp [block]
+ipra_subst block
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (cut : PR 2) (f : PTm 2) (k d x : PTm n) :
-    (prefixLaw cut f k d x).subst σ = prefixLaw cut f (Syn.subst σ k) (Syn.subst σ d) (Syn.subst σ x) :=
-  by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem cut_step (cut : PR 2) (d i : PTm n) (h : Γ ⊢[PRAAx] increasing cut d) :
     Γ ⊢[PRAAx] le (ap2 cut i d) (ap2 cut (succ i) d) := by

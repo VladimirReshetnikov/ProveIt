@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleDifferenceQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaPoleReciprocalFactor (quotientF quotientData factoredF factoredData)
 open GaussianGammaLocalPoleGuards (center)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -27,9 +27,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open ComplexLogarithmRemainder (normSq)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,10 +34,8 @@ def input (h B : PTm n) : Fm PTm n := le one B ⋏ (le one (normSq h) ⋏ lt (no
 def divisionF : PR 2 := multiplyF constantF GaussianGammaC7Name.nameF
 def divisionData (h B j : PTm n) : PTm n := multiplyData constantF GaussianGammaC7Name.nameF
   (reciprocal (ofGaussian h B)) (GaussianGammaC7Name.data (center h B j) (succ j) B)
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (h B : PTm n) :
-    (input h B).subst σ = input (Syn.subst σ h) (Syn.subst σ B) := by simp [input]
-@[simp] theorem subst_divisionData {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    Syn.subst σ (divisionData h B j) = divisionData (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) := by simp [divisionData]
+ipra_subst input
+ipra_subst divisionData
 
 theorem step_disk (h B : PTm n) (hi : Γ ⊢[PRAAx] input h B) : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded h B :=
   le_trans (le_succ_self (normSq h)) hi.andE₂.andE₂
@@ -94,26 +89,19 @@ def output (p q h B j : PTm n) : PTm n := pairT (ap2 divisionF p (divisionData h
   (pairT (ap2 quotientF q (quotientData h B j)) (reciprocal (ofGaussian h B)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (p q h B j : PTm n) : PTm n := PTm.app outputF ![p,q,h,B,j]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q h B j : PTm n) :
-    Syn.subst σ (output p q h B j) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) :=
-  by simp [output,quotientData,GaussianGammaLocalPoleGuards.terminal]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q h B j : PTm n) :
-    Syn.subst σ (run p q h B j) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output [quotientData, GaussianGammaLocalPoleGuards.terminal]
+ipra_subst run
 
 theorem program_at (p q h B j : PTm n) : Γ ⊢[PRAAx] run p q h B j ≐ output p q h B j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![p,q,h,B,j]
 theorem returned_division (p q h B j : PTm n) : Γ ⊢[PRAAx]
-    fstT (run p q h B j) ≐ ap2 divisionF p (divisionData h B j) := (congrFst (program_at p q h B j)).eqTrans (fst_pair _ _)
+    fstT (run p q h B j) ≐ ap2 divisionF p (divisionData h B j) := (program_at p q h B j).fstE
 theorem returned_quotient (p q h B j : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run p q h B j)) ≐ ap2 quotientF q (quotientData h B j) :=
-  (congrFst ((congrSnd (program_at p q h B j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at p q h B j).sndE.fstE
 theorem returned_reciprocal (p q h B j : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run p q h B j)) ≐ reciprocal (ofGaussian h B) :=
-  (congrSnd ((congrSnd (program_at p q h B j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at p q h B j).sndE.sndE
 theorem returned_distance (p q h B j : PTm n) (hi : Γ ⊢[PRAAx] input h B) : Γ ⊢[PRAAx]
     GaussianRationalMetric.distanceBounded (fstT (run p q h B j)) (fstT (sndT (run p q h B j)))
       (GaussianCoefficientNameBounds.unit p+GaussianCoefficientNameBounds.unit q)

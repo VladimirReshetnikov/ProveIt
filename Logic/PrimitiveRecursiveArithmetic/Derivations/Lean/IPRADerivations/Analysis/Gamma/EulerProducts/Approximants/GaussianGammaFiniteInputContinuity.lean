@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteInputContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (qF qData q_regular logExponentF logExponentData)
 open GaussianGammaEulerContinuityReference (reference query cutoff headBound head_bound finiteBound original_sample_reference)
 open GaussianGammaLogExponentContinuity (logRadius exponentRadius exponent_bound exponent_distance distanceBudget)
@@ -26,10 +26,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,13 +36,9 @@ def loss (R N : PTm n) : PTm n :=
   num 4+num 6*headBound R N+two*headBound R N*finiteBound R N*R
 def input (z w R B A D N : PTm n) : Fm PTm n :=
   le one N ⋏ GaussianGammaEulerHeadContinuity.input z w R B A D
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    Syn.subst σ (gain R N) = gain (Syn.subst σ R) (Syn.subst σ N) := by simp [gain,finiteBound]
-@[simp] theorem subst_loss {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    Syn.subst σ (loss R N) = loss (Syn.subst σ R) (Syn.subst σ N) := by simp [loss,finiteBound]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z w R B A D N : PTm n) :
-    (input z w R B A D N).subst σ = input (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ N) := by simp [input]
+ipra_subst gain [finiteBound]
+ipra_subst loss [finiteBound]
+ipra_subst input
 @[simp] theorem subst_finite_data {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
     Syn.subst σ (qData z B N) = qData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
   simp [qData,GaussianGammaFiniteApproximantName.approximantData,

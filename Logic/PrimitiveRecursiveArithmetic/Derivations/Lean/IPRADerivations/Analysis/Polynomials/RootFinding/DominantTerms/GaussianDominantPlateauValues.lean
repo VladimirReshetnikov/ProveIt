@@ -21,16 +21,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantPlateauValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (input subst_input)
 open LeanProofs.IPRA.Analysis.GaussianDominantPlateau (center winner)
 open LeanProofs.IPRA.Analysis.GaussianDominantRadiusValues (radius dominates)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax (four)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,10 +35,8 @@ def rawNumerator (C N : PTm n) : PTm n :=
 def scaledNumerator (C N : PTm n) : PTm n :=
   GaussianDominantSyntax.numerator C N (GaussianBalancedRadiusSearch.radiusIndex C N) (winner C N)
 
-@[simp] theorem subst_rawNumerator {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (rawNumerator C N) = rawNumerator (Syn.subst σ C) (Syn.subst σ N) := by simp [rawNumerator]
-@[simp] theorem subst_scaledNumerator {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (scaledNumerator C N) = scaledNumerator (Syn.subst σ C) (Syn.subst σ N) := by simp [scaledNumerator]
+ipra_subst rawNumerator
+ipra_subst scaledNumerator
 
 theorem left_selected_eq (C N : PTm n) (hInput : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx]
     GaussianDominantSelector.index C N (pred (center C N)) ≐ winner C N :=
@@ -80,8 +74,7 @@ def three_scale (C N : PTm n) : Fm PTm n :=
   dominates C N (pred (center C N)) (winner C N) ⋏
     (dominates C N (center C N) (winner C N) ⋏ dominates C N (succ (center C N)) (winner C N))
 
-@[simp] theorem subst_three_scale {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (three_scale C N).subst σ = three_scale (Syn.subst σ C) (Syn.subst σ N) := by simp [three_scale]
+ipra_subst three_scale
 
 theorem three_scale_dominance (C N : PTm n) (hInput : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx]
     three_scale C N := .andI (left_dominates C N hInput)
@@ -113,8 +106,7 @@ def radiusFacts (C N : PTm n) : Fm PTm n :=
         ((RationalArithmetic.multiply (radius C N (center C N)) (fraction four one) ≐ radius C N (pred (center C N))) ⋏
           (RationalArithmetic.multiply (radius C N (succ (center C N))) (fraction four one) ≐ radius C N (center C N)))))
 
-@[simp] theorem subst_radiusFacts {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (radiusFacts C N).subst σ = radiusFacts (Syn.subst σ C) (Syn.subst σ N) := by simp [radiusFacts]
+ipra_subst radiusFacts
 
 theorem radius_facts (C N : PTm n) : Γ ⊢[PRAAx] radiusFacts C N :=
   .andI (GaussianDominantRadiusValues.radius_positive C N (pred (center C N)))
@@ -126,8 +118,7 @@ def certificate (C N : PTm n) : Fm PTm n :=
   GaussianDominantPlateau.certificate C N ⋏
     (le one (rawNumerator C N) ⋏ (le one (scaledNumerator C N) ⋏ (three_scale C N ⋏ radiusFacts C N)))
 
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (certificate C N).subst σ = certificate (Syn.subst σ C) (Syn.subst σ N) := by simp [certificate]
+ipra_subst certificate
 
 theorem plateau_correct (C N : PTm n) (hInput : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx] certificate C N :=
   .andI (GaussianDominantPlateau.plateau_correct C N hInput)
@@ -142,24 +133,22 @@ def output (C N : PTm n) : PTm n := pairT (center C N) (pairT (winner C N)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (C N : PTm n) : PTm n := ap2 outputF C N
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (run C N) = run (Syn.subst σ C) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] run C N ≐ output C N := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![C,N]
 
 theorem returned_center (C N : PTm n) : Γ ⊢[PRAAx] fstT (run C N) ≐ center C N :=
-  (congrFst (program_at C N)).eqTrans (fst_pair _ _)
+  (program_at C N).fstE
 theorem returned_winner (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N)) ≐ winner C N :=
-  (congrFst ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.fstE
 theorem returned_left_radius (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N))) ≐ radius C N (pred (center C N)) :=
-  (congrFst ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.fstE
 theorem returned_center_radius (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run C N)))) ≐ radius C N (center C N) :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.fstE
 theorem returned_right_radius (C N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run C N)))) ≐ radius C N (succ (center C N)) :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE
 
 theorem actual_three_scale_dominance_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (input (var 0) (var 1) ⟶ three_scale (var 0) (var 1)) :=

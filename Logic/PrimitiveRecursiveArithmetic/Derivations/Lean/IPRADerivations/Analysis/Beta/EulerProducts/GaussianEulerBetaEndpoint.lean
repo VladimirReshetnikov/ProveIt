@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerBetaEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul canonical)
 open GaussianRationalReciprocal (qone reciprocal)
 open GaussianRationalSyntheticDivision (qmul_congr)
@@ -30,15 +30,11 @@ open GaussianEulerBetaPoleGuard (source)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def law (z B N : PTm n) : Fm PTm n := value z B N ≐ GaussianEulerBetaProductValue.value z B N
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    (law z B N).subst σ = law (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [law]
+ipra_subst law
 
 theorem law_transport {z w : PTm n} (B N : PTm n) (hz : Γ ⊢[PRAAx] z ≐ w) (h : Γ ⊢[PRAAx] law w B N) : Γ ⊢[PRAAx] law z B N := by
   have result := Prf.eqSubst (Ax := PRAAx) (Γ := Γ) (law (var 0) (var 1) (var 2) : Fm PTm 3)
@@ -88,8 +84,7 @@ def prefixSyntax (z B H N : PTm n) : BFm n := .all (succ H)
   (.imp (.le (Syn.shift N+var 0) (Syn.shift H))
     (.eq (value (point (Syn.shift z) (Syn.shift B) (var 0)) (Syn.shift B) (Syn.shift N))
       (GaussianEulerBetaProductValue.value (point (Syn.shift z) (Syn.shift B) (var 0)) (Syn.shift B) (Syn.shift N))))
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (z B H N : PTm n) :
-    (prefixLaw z B H N).subst σ = prefixLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ N) := by simp [prefixLaw,Syn.subst_shift,Syn.shift_subst]
+ipra_subst prefixLaw [Syn.subst_shift, Syn.shift_subst]
 theorem prefix_formula (z B H N : PTm n) : formula (prefixSyntax z B H N) = prefixLaw z B H N := by
   simp [prefixSyntax,prefixLaw,law,formula,BFm.le,le]
 

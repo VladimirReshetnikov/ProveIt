@@ -13,17 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalHarmonicIntervalVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open RationalHarmonicInterval (common numerator horizon interval)
 open Products (fact)
 open GammaEulerMesh (factorial_positive)
 open RationalValueBounds (upper radius radius_of_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -105,8 +101,7 @@ theorem ordered_common_variation (a b c d Q M A D L : PTm n)
 
 
 def gap (a b c d : PTm n) : PTm n := monus (a*d) (b*c)+monus (b*c) (a*d)
-@[simp] theorem subst_gap {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (gap a b c d) = gap (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [gap]
+ipra_subst gap
 
 theorem common_variation (a b c d Q M A D L : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b)
@@ -162,13 +157,9 @@ def output (a b c d Q M A D : PTm n) : PTm n := pairT (interval a b Q)
   (pairT (interval c d Q) (pairT (tolerance Q M A D) (toleranceDen Q D)))
 def outputF : PR 8 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (a b c d Q M A D : PTm n) : PTm n := PTm.app outputF ![a,b,c,d,Q,M,A,D]
-@[simp] theorem subst_tolerance {m : ℕ} (σ : Fin n → PTm m) (Q M A D : PTm n) :
-    Syn.subst σ (tolerance Q M A D) = tolerance (Syn.subst σ Q) (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ D) := by simp [tolerance]
-@[simp] theorem subst_toleranceDen {m : ℕ} (σ : Fin n → PTm m) (Q D : PTm n) :
-    Syn.subst σ (toleranceDen Q D) = toleranceDen (Syn.subst σ Q) (Syn.subst σ D) := by simp [toleranceDen]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a b c d Q M A D : PTm n) :
-    Syn.subst σ (output a b c d Q M A D) = output (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ Q) (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ D) := by simp [output]
+ipra_subst tolerance
+ipra_subst toleranceDen
+ipra_subst output
 
 theorem program_at (a b c d Q M A D : PTm n) : Γ ⊢[PRAAx] run a b c d Q M A D ≐ output a b c d Q M A D := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
@@ -180,19 +171,19 @@ theorem from_input (a b c d Q M A D : PTm n) (h : Γ ⊢[PRAAx] input a b c d Q 
     h.andE₁.andE₂.andE₂.andE₂.andE₂.andE₂ h.andE₂.andE₁.andE₁ h.andE₂.andE₁.andE₂ h.andE₂.andE₂
 
 theorem returned_left (a b c d Q M A D : PTm n) : Γ ⊢[PRAAx] fstT (run a b c d Q M A D) ≐ interval a b Q :=
-  (congrFst (program_at a b c d Q M A D)).eqTrans (fst_pair _ _)
+  (program_at a b c d Q M A D).fstE
 theorem returned_coarse_tail (a b c d Q M A D : PTm n) : Γ ⊢[PRAAx] sndT (run a b c d Q M A D) ≐
     pairT (interval c d Q) (pairT (tolerance Q M A D) (toleranceDen Q D)) :=
-  (congrSnd (program_at a b c d Q M A D)).eqTrans (snd_pair _ _)
+  (program_at a b c d Q M A D).sndE
 theorem returned_right (a b c d Q M A D : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run a b c d Q M A D)) ≐ interval c d Q :=
-  (congrFst (returned_coarse_tail a b c d Q M A D)).eqTrans (fst_pair _ _)
+  (returned_coarse_tail a b c d Q M A D).fstE
 theorem returned_budget_tail (a b c d Q M A D : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run a b c d Q M A D)) ≐
     pairT (tolerance Q M A D) (toleranceDen Q D) :=
-  (congrSnd (returned_coarse_tail a b c d Q M A D)).eqTrans (snd_pair _ _)
+  (returned_coarse_tail a b c d Q M A D).sndE
 theorem returned_numerator (a b c d Q M A D : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run a b c d Q M A D))) ≐ tolerance Q M A D :=
-  (congrFst (returned_budget_tail a b c d Q M A D)).eqTrans (fst_pair _ _)
+  (returned_budget_tail a b c d Q M A D).fstE
 theorem returned_denominator (a b c d Q M A D : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run a b c d Q M A D))) ≐ toleranceDen Q D :=
-  (congrSnd (returned_budget_tail a b c d Q M A D)).eqTrans (snd_pair _ _)
+  (returned_budget_tail a b c d Q M A D).sndE
 theorem returned_radius (a b c d Q M A D : PTm n) (h : Γ ⊢[PRAAx] input a b c d Q M A D) : Γ ⊢[PRAAx]
     radius (fstT (run a b c d Q M A D)) (fstT (sndT (run a b c d Q M A D)))
       (fstT (sndT (sndT (run a b c d Q M A D)))) (sndT (sndT (sndT (run a b c d Q M A D)))) :=

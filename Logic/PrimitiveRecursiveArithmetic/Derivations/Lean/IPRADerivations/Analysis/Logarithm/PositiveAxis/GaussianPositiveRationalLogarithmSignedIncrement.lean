@@ -18,7 +18,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmSignedIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode normSq_scale normSq_one)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (cross_at)
@@ -35,10 +35,6 @@ open GaussianStirlingOddCoefficients (fraction_equal fraction_product fraction_a
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open RationalHarmonicIntervalVariation (gap)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

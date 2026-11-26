@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayEnvelope (fraction_majorized)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -27,10 +27,6 @@ open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalReciprocalPowerTail (potential)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
 open RationalSupMetric (denominatorOf)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,16 +35,12 @@ def rowBounds (f : PTm 2) (x C N r : PTm n) : Fm PTm n := .all
     bounded (inst2 f (var 0) (Syn.shift x)) (Syn.shift C)
       (succ (Syn.shift N+var 0)*succ (Syn.shift N+var 0)))
 
-@[simp] theorem subst_rowBounds {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (x C N r : PTm n) :
-    (rowBounds f x C N r).subst σ = rowBounds f (Syn.subst σ x) (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [rowBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowBounds [Syn.subst_shift, Syn.shift_subst]
 
 abbrev scalarBody : PTm 2 := scaledBody RationalReciprocalPowerTail.body
 def scalarData (C N : PTm n) : PTm n := pairT (fraction C one) (RationalReciprocalPowerTail.data two N)
 
-@[simp] theorem subst_scalarData {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (scalarData C N) = scalarData (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [scalarData,one,two]
+ipra_subst scalarData [one, two]
 
 theorem scalar_at (C N i : PTm n) : Γ ⊢[PRAAx]
     inst2 scalarBody i (scalarData C N) ≐ fraction C (succ (N+i)*succ (N+i)) := by

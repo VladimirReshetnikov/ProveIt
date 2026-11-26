@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Names.LogisticName
 import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSupMetric
 import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Gcd reduction and literal integer outputs of rational normalization
@@ -19,15 +18,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalIntegerNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open LeanProofs.IPRA.DiophantineNumberTheory
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -35,10 +30,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def positivePart (a : ZT n) : PTm n := monus a.pos a.neg
 def negativePart (a : ZT n) : PTm n := monus a.neg a.pos
 
-@[simp] theorem subst_positivePart {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) :
-    Syn.subst σ (positivePart a) = positivePart (a.subst σ) := by simp [positivePart, ZT.subst]
-@[simp] theorem subst_negativePart {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) :
-    Syn.subst σ (negativePart a) = negativePart (a.subst σ) := by simp [negativePart, ZT.subst]
+ipra_subst positivePart [ZT.subst]
+ipra_subst negativePart [ZT.subst]
 
 theorem parts_value (a : ZT n) : Γ ⊢[PRAAx] ZT.eq (⟨positivePart a,negativePart a⟩ : ZT n) a :=
   (monus_max a.pos a.neg).eqTrans (add_comm _ _)
@@ -67,17 +60,10 @@ def integerCode (a : ZT n) : PTm n := pairT (pairT (positivePart a) (negativePar
 @[simp] theorem subst_divisor {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) (D : PTm n) :
     Syn.subst σ (divisor a D) = divisor (a.subst σ) (Syn.subst σ D)  := by
   simp only [divisor, subst_ex2, Foundations.GapDecision.subst_zabs, ConciseIPRA.PTm.subst_succ]
-@[simp] theorem subst_reducedNumerator {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) (D : PTm n) :
-    (reducedNumerator a D).subst σ = reducedNumerator (a.subst σ) (Syn.subst σ D) := by
-  simp [reducedNumerator, ZT.subst]
-@[simp] theorem subst_reducedDenominator {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) (D : PTm n) :
-    Syn.subst σ (reducedDenominator a D) = reducedDenominator (a.subst σ) (Syn.subst σ D) := by
-  simp [reducedDenominator]
-@[simp] theorem subst_normalize {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) (D : PTm n) :
-    Syn.subst σ (normalize a D) = normalize (a.subst σ) (Syn.subst σ D) := by
-  simp [normalize, reducedNumerator]
-@[simp] theorem subst_integerCode {k : ℕ} (σ : Fin n → PTm k) (a : ZT n) :
-    Syn.subst σ (integerCode a) = integerCode (a.subst σ) := by simp [integerCode]
+ipra_subst reducedNumerator [ZT.subst]
+ipra_subst reducedDenominator
+ipra_subst normalize [reducedNumerator]
+ipra_subst integerCode
 
 theorem divisor_positive (a : ZT n) (D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] divisor a D ≐ succ (pred (divisor a D)) := gcd_pos_right (positive_form hD)
@@ -133,13 +119,11 @@ theorem normalize_denominator (a : ZT n) (D : PTm n) (hD : Γ ⊢[PRAAx] le one 
 theorem normalize_preserves_value (a : ZT n) (D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] ZT.eq (a*ZT.ofNat (denominatorOf (normalize a D)))
       (numeratorOf (normalize a D)*ZT.ofNat D) := by
-  have num := ZT.toZ_eq (normalize_numerator (Γ := Γ) a D)
-  have den := natEq (normalize_denominator a D hD)
   have aeq := ZT.toZ_eq (reduced_numerator_identity a D hD)
   have deq := natEq (reduced_denominator_identity a D hD)
   apply ZT.derive
   simp only [ZT.toZ_mul, ZT.toZ_ofNat] at aeq ⊢
-  rw [num, den, aeq, deq]
+  rw [ZT.toZ_eq (normalize_numerator (Γ := Γ) a D), natEq (normalize_denominator a D hD), aeq, deq]
   simp only [Q.mk_mul, map_mul]
   ring
 

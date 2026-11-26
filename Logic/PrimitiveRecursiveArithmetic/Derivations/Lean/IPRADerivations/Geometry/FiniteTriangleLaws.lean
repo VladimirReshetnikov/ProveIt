@@ -1,5 +1,4 @@
 import IPRADerivations.Core.PolynomialInequalities
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite radical Heron and finite trigonometric laws (`triangle_formulas_ipra`, `thm:finite-heron`, `thm:finite-trig`)
@@ -49,7 +48,7 @@ precision arithmetic (`4Q³ε ≤ 2^{-2k-2}`, `Q ≤ 2^Q`), and the final radius
 
 namespace LeanProofs.IPRA.Geometry.FiniteTriangleLaws
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 
 /-! ## The cosine defect: `U, V, W, p, A₂, B₂, C₂, E` -/
 
@@ -233,10 +232,6 @@ end Heron
 
 section Order
 
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

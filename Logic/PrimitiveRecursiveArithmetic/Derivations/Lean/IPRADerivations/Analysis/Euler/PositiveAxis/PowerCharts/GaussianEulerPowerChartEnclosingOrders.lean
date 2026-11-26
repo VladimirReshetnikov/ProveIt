@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartEnclosingOrders
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator)
 open GaussianEulerPowerChartUniformEndpoints (uniform_physical_panel uniform_endpoint_order)
 open GaussianEulerPositivePowerChart (nameF data)
@@ -22,9 +22,6 @@ open GaussianEulerPowerChartTimeOrder (chart_time_order order_trans)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

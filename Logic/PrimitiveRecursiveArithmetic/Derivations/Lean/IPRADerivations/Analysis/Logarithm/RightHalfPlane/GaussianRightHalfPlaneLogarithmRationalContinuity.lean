@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmRationalContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianLogGammaEulerResidualDomain (native)
@@ -30,10 +30,6 @@ open GaussianRightHalfPlaneLogarithmIncrementBound (input subst_input)
 open GaussianRightHalfPlaneLogarithmIncrementMargin (smallStep)
 open GaussianRightHalfPlaneLogarithmRelativeStep (denominator numerator mercator_source paid_radius relative radius)
 open RationalValueBounds (positive_cancel)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -113,8 +109,7 @@ theorem independent_rate (A B neg a b sign D H J M : PTm n)
 /-- The gain pays for the local admission after rounding a native displacement. -/
 def gain (K C : PTm n) : PTm n := num 6*K + num 256*(C+one)*(K*K)
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (K C : PTm n) :
-    Syn.subst σ (gain K C) = gain (Syn.subst σ K) (Syn.subst σ C) := by simp [gain]
+ipra_subst gain
 
 theorem local_guard (H E K C d D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hStep : Γ ⊢[PRAAx] le (H*D) (two*E*d)) (hClose : Γ ⊢[PRAAx] le (gain K C*E) D) :

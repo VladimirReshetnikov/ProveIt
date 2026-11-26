@@ -24,12 +24,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BernoulliBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BernoulliCoefficients (bc nrm nrm_le_two bc_zero_of_gt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

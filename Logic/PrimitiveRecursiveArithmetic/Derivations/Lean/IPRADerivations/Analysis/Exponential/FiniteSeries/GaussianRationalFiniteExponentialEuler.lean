@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiniteExponentialEuler
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalSyntheticDivision (qmul_congr canonicalCoefficients)
 open GaussianRationalPolynomialPowers (powerPrefix prefix_length)
@@ -26,10 +26,6 @@ open GaussianRationalFiniteSum (sum)
 open GaussianRationalNaturalScale (natScale natScale_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -96,9 +92,7 @@ theorem high_term_zero (C N K r e : PTm n) (hC : Γ ⊢[PRAAx] entry C N ≐ qze
     (GaussianRationalSyntheticDivision.qmul_zero_right _)
 
 def tailLaw (C N K e r : PTm n) : Fm PTm n := le (e+r) K ⟶ shiftedSum C N K e (succ (e+r)) ≐ shiftedSum C N K e e
-@[simp] theorem subst_tailLaw {l : ℕ} (σ : Fin n → PTm l) (C N K e r : PTm n) :
-    (tailLaw C N K e r).subst σ = tailLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K)
-      (Syn.subst σ e) (Syn.subst σ r) := by simp [tailLaw]
+ipra_subst tailLaw
 
 theorem sum_successor (C N K e j : PTm n) : Γ ⊢[PRAAx]
     shiftedSum C N K e (succ j) ≐ GaussianRationalHorner.qadd (shiftedSum C N K e j) (shiftedTerm C N K e j) :=
@@ -135,11 +129,9 @@ theorem tail_cutoff (C N K e : PTm n) (hC : Γ ⊢[PRAAx] entry C N ≐ qzero)
   have hn : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift e) (Syn.shift N) := by
     simpa only [Fm.shift,subst_le,Syn.shift] using he.shift
   have all : Γ ⊢[PRAAx] .all (tailLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift e) (var 0)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact tail_zero C N K e hC he
-    · simp only [subst_tailLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact tail_step _ _ _ _ _ hc.wk hn.wk Prf.hyp0
+    ipra_qfind (by trivial) [subst_tailLaw]
+    · exact tail_zero C N K e hC he
+    · exact tail_step _ _ _ _ _ hc.wk hn.wk Prf.hyp0
   have gate : Γ ⊢[PRAAx] tailLaw C N K e (monus K e) := by
     simpa only [subst_tailLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE (monus K e)
   have hEq := (eq_add_of_le hK).eqSymm
@@ -178,17 +170,15 @@ def output (C N K : PTm n) : PTm n := pairT (euler (polynomial C N K) (K*N))
   (product (euler C N) (polynomial C N K) N (K*N))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C N K : PTm n) : PTm n := ap3 outputF C N K
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N K : PTm n) :
-    Syn.subst σ (output C N K) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N K : PTm n) :
-    Syn.subst σ (run C N K) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N K : PTm n) : Γ ⊢[PRAAx] run C N K ≐ output C N K := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,N,K]
 theorem returned_euler (C N K : PTm n) : Γ ⊢[PRAAx] fstT (run C N K) ≐ euler (polynomial C N K) (K*N) :=
-  (congrFst (program_at C N K)).eqTrans (fst_pair _ _)
+  (program_at C N K).fstE
 theorem returned_product (C N K : PTm n) : Γ ⊢[PRAAx] sndT (run C N K) ≐ product (euler C N) (polynomial C N K) N (K*N) :=
-  (congrSnd (program_at C N K)).eqTrans (snd_pair _ _)
+  (program_at C N K).sndE
 theorem returned_finite_euler (C N K e : PTm n) (hL : Γ ⊢[PRAAx] length C ≐ succ N)
     (hCan : Γ ⊢[PRAAx] canonicalCoefficients C) (hC : Γ ⊢[PRAAx] entry C N ≐ qzero)
     (he : Γ ⊢[PRAAx] le e N) (hK : Γ ⊢[PRAAx] le e K) : Γ ⊢[PRAAx]

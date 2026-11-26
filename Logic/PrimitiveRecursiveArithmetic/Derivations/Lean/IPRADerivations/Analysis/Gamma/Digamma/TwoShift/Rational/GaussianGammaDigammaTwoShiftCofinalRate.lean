@@ -13,7 +13,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftCofinalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaDigammaHarmonicCells (point_fraction_represents)
@@ -33,10 +33,6 @@ open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_reg
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "hd" => GaussianHarmonicLogarithmName.data
@@ -48,14 +44,9 @@ def rawSample (p a b c d : PTm n) : PTm n :=
 def sampleCost (a b c d : PTm n) : PTm n :=
   GaussianNameArithmetic.multiplyModulus constantF H (coefficient b c d) (hd a b)+num 10
 
-@[simp] theorem subst_rawSample {m : ℕ} (σ : Fin n → PTm m) (p a b c d : PTm n) :
-    Syn.subst σ (rawSample p a b c d) = rawSample (Syn.subst σ p) (Syn.subst σ a)
-      (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [rawSample,logSample,sample]
+ipra_subst rawSample [logSample, sample]
 
-@[simp] theorem subst_sampleCost {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (sampleCost a b c d) = sampleCost (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [sampleCost]
+ipra_subst sampleCost
 
 theorem quotient_sample_error (p a b c d : PTm n) (ha : Γ ⊢[PRAAx] source a b)
     (hc : Γ ⊢[PRAAx] source c b) (hD : Γ ⊢[PRAAx] source d b) :
@@ -92,10 +83,7 @@ def finiteRate (a b c d K B : PTm n) : Fm PTm n := .all
    (upper (fstT (rawSample (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d))) (fstT qzero)
     (Syn.shift K*unit (var 0)+Syn.shift B*Syn.shift a) (Syn.shift a*unit (var 0))))
 
-@[simp] theorem subst_finiteRate {m : ℕ} (σ : Fin n → PTm m) (a b c d K B : PTm n) :
-    (finiteRate a b c d K B).subst σ = finiteRate (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ B) := by
-  simp [finiteRate,Syn.subst_shift,Syn.shift_subst]
+ipra_subst finiteRate [Syn.subst_shift, Syn.shift_subst]
 
 private theorem finite_at (p a b c d K B : PTm n) (h : Γ ⊢[PRAAx] finiteRate a b c d K B) :
     Γ ⊢[PRAAx] (upper (fstT qzero) (fstT (rawSample p a b c d)) (K*unit p+B*a) (a*unit p) ⋏

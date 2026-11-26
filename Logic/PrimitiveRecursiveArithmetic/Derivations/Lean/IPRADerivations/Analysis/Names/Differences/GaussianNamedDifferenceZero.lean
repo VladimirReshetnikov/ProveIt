@@ -8,7 +8,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDifferenceZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at)
@@ -18,9 +18,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianReconstructionRoots (distance_zero_iff)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

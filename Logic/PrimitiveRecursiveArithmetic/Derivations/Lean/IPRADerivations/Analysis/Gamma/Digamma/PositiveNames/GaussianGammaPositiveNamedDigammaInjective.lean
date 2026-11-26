@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPositiveNamedDigammaInjective
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaMinimumFreezeRational (numerator denominator frozen_rational_domain fraction_at)
 open GaussianGammaPositiveNamedRationalFreeze (clock threshold_le)
@@ -26,10 +26,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

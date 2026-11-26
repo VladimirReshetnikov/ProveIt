@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonomialDecayBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianMonomialDecayQuadrature (evaluatorF cap errorNumerator errorDenominator)
 open GaussianEulerWeightedHalfDecay (majorant)
 open GaussianEulerUpperTailScalar (budget)
@@ -20,10 +20,6 @@ open GaussianCompactRiemannName (quadrature)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

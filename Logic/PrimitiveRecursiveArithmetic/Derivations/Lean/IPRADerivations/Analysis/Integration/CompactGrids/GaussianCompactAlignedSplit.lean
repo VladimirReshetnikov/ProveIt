@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactAlignedSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactAlignedTime (alignedSamples)
 open GaussianRationalHorner (qmul qadd qzero canonical positive_product)
 open GaussianRationalMetric (distanceBounded)
@@ -25,18 +25,12 @@ open GaussianCompactRiemannName (grid value inside sampleBody sampleData sample_
 open GaussianCompactRiemannSplit (fullData prefixPart suffixPart weight_shared sum_width_positive)
 open GaussianCompactRiemannAdditivity (inside_left inside_right weighted_sum_distance)
 open GaussianRationalRiemannRefinement (weight termsDistance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def positiveInput (F : PR 3) (a C1 C2 E K x : PTm n) : Fm PTm n :=
   le one a ⋏ (le one E ⋏ (le one K ⋏ (le one C1 ⋏ (le one C2 ⋏ alignedSamples F a (C1+C2) E x))))
-@[simp] theorem subst_positiveInput {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (a C1 C2 E K x : PTm n) :
-    (positiveInput F a C1 C2 E K x).subst σ = positiveInput F (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2)
-      (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ x) := by simp [positiveInput]
+ipra_subst positiveInput
 
 theorem prefix_term_distance (F : PR 3) (i s a C1 C2 E K x : PTm n) (h : Γ ⊢[PRAAx] positiveInput F a C1 C2 E K x)
     (hi : Γ ⊢[PRAAx] lt i (C1*K)) : Γ ⊢[PRAAx]
@@ -163,9 +157,7 @@ def splitLaw (F : PR 3) (s a C1 C2 E K x : PTm n) : Fm PTm n :=
   distanceBounded (quadrature F s ((C1+C2)*K) a (C1+C2) E x)
     (qadd (quadrature F s (C1*K) a C1 E x) (quadrature F s (C2*K) (a+C1) C2 E x))
     (two*(C1+C2)) (E*unit s)
-@[simp] theorem subst_splitLaw {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s a C1 C2 E K x : PTm n) :
-    (splitLaw F s a C1 C2 E K x).subst σ = splitLaw F (Syn.subst σ s) (Syn.subst σ a)
-      (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ x) := by simp [splitLaw]
+ipra_subst splitLaw
 
 theorem split_transport (F : PR 3) (s a E K x C1 C2 D1 D2 : PTm n)
     (h1 : Γ ⊢[PRAAx] C1 ≐ D1) (h2 : Γ ⊢[PRAAx] C2 ≐ D2)
@@ -186,9 +178,7 @@ theorem distance_of_identity (x y A D : PTm n) (hD : Γ ⊢[PRAAx] le one D) (h 
 
 def input (F : PR 3) (a C1 C2 E K x : PTm n) : Fm PTm n :=
   le one a ⋏ (le one E ⋏ (le one K ⋏ alignedSamples F a (C1+C2) E x))
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (a C1 C2 E K x : PTm n) :
-    (input F a C1 C2 E K x).subst σ = input F (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2)
-      (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ x) := by simp [input]
+ipra_subst input
 
 /-- Actual aligned-time splitting, allowing either width zero. -/
 theorem shared_step_additivity (F : PR 3) (s a C1 C2 E K x : PTm n)

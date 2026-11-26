@@ -15,7 +15,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceWeightedGridReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceIntegrand (input cofinalF cofinalData cofinal_regular)
 open GaussianBinetLaplaceIntegrandShift (differenceF differenceDataWithRadius)
 open GaussianBinetLaplaceStrip (evaluatorF evaluator_at fixedData tagNumerator tag_inside)
@@ -25,10 +25,6 @@ open GaussianNameEquivalence (cross_to_diagonal diagonal_at)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qsub_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => evaluatorF GaussianBinetLaplaceStrip.Kernel.cofinal

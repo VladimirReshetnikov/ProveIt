@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedChordExtension
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyTrig (sinePoint)
 open GaussianArctangentInverseForward (imaginaryOrder)
 open GaussianArctangentInverseSampler (ordinate)
@@ -33,9 +33,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_radius)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -48,9 +45,7 @@ def productData (f : PR 2) (x z : PTm n) : PTm n := multiplyData (sineF f) quart
 def parameterPrecision (t : PTm n) : PTm n :=
   GaussianArctangentCayleyProjections.samplePrecision t
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x z : PTm n) :
-    Syn.subst σ (productData f x z) = productData f (Syn.subst σ x) (Syn.subst σ z) := by
-  simp [productData,sineData]
+ipra_subst productData [sineData]
 
 private theorem parameter_precision_later (t : PTm n) : Γ ⊢[PRAAx] le t (parameterPrecision t) := by
   let r := GaussianFastValueCut.exponent (GaussianArctangentNamedCayley.modulus : PTm n) t

@@ -30,16 +30,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ErrorBudgets
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_add_le ad_mul)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (ad_le_of le_add_ad)
 open LeanProofs.IPRA.Foundations.MixedRadix (prod_succ')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -88,18 +84,14 @@ theorem sum_budget (eps s x : PTm n)
     Γ ⊢[PRAAx] le (ad (ap2 (sumF a) s x) (ap2 (sumF b) s x)) (s * eps) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift s) ⟶
       le (ad (ap2 (sumF a) (var 0) (Syn.shift x)) (ap2 (sumF b) (var 0) (Syn.shift x))) (var 0 * Syn.shift eps)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       have s₁ := sum_zero (Γ := le zero s :: Γ) a x
       have s₂ := sum_zero (Γ := le zero s :: Γ) b x
       have m := natEq (congrAd' s₁ s₂)
       have z := natEq (monus_self (Γ := le zero s :: Γ) (zero : PTm n))
       ipra_le 0 using linear_combination -m - 2 * z
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       have hk : (le (succ (var 0)) (Syn.shift s) ::
           (le (var 0) (Syn.shift s) ⟶
             le (ad (ap2 (sumF a) (var 0) (Syn.shift x)) (ap2 (sumF b) (var 0) (Syn.shift x)))
@@ -137,13 +129,12 @@ theorem prod_budget_base {x M eps : PTm n}
   have pb := prod_one (Γ := Γ) b x
   have m := natEq (congrAd' pa pb)
   have pa' := natEq pa
-  have pb' := natEq pb
   have w₀ := natEq (pw_zero (Γ := Γ) M)
   have w₁ := natEq (pw_succ (Γ := Γ) M zero)
   refine .andI (.andI ?_ ?_) ?_
   · ipra_le sl h₀ using rw [w₀]; linear_combination -m
   · ipra_le sl ha using rw [w₁, w₀, pa']; ring
-  · ipra_le sl hb using rw [w₁, w₀, pb']; ring
+  · ipra_le sl hb using rw [w₁, w₀, natEq pb]; ring
 
 theorem prod_budget_step {K x M eps : PTm n}
     (hK : Γ ⊢[PRAAx] le (ad (inst2 a (succ K) x) (inst2 b (succ K) x)) eps)
@@ -184,15 +175,11 @@ theorem prod_budget (M eps s x : PTm n)
     Γ ⊢[PRAAx] PInv a b s x M eps := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift s) ⟶
       PInv a b (var 0) (Syn.shift x) (Syn.shift M) (Syn.shift eps)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, ⟨le_QF _ _, le_QF _ _⟩, le_QF _ _⟩ ?_ ?_
-    · simp only [PInv, Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, ⟨le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) [PInv, subst_le, subst_ap2]
+    · refine .impI ?_
       have h0 := h₀.wk (ψ := le zero s)
       exact prod_budget_base a b (Prf.andE₁ (Prf.andE₁ h0)) (Prf.andE₂ (Prf.andE₁ h0)) (Prf.andE₂ h0)
-    · simp only [PInv, Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       have hk : (le (succ (var 0)) (Syn.shift s) ::
           (le (var 0) (Syn.shift s) ⟶ PInv a b (var 0) (Syn.shift x) (Syn.shift M) (Syn.shift eps)) ::
           Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift s) := Prf.hyp0

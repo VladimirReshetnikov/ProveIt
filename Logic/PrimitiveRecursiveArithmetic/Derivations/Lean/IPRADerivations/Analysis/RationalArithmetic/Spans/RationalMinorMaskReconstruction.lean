@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorMaskDeletion
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact reconstruction of a bounded minor mask after deletion
@@ -14,16 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMinorMaskReconstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open RationalSubtupleSpan (bit)
 open RationalMinorMaskExtension (insert insert_bound new_bit old_bit)
 open RationalMinorMaskDeletion (erase erased_bit other_bit)
 open RationalFiniteSpanCover (places)
 open LeanProofs.IPRA.Foundations.MixedRadix (Cd dP Pl inst2_dP)
 open LeanProofs.IPRA.Foundations.MixedRadixExpansion (dgB inst2_dgB reencode)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,9 +27,7 @@ def decoded (N M : PTm n) : PTm n := Cd (two : PTm 2) (dgB (two : PTm 2)) N (pai
 def bitAgreement (N M K : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ bit (Syn.shift M) (var 0) ≐ bit (Syn.shift K) (var 0))
 
-@[simp] theorem subst_bitAgreement {l : ℕ} (σ : Fin n → PTm l) (N M K : PTm n) :
-    (bitAgreement N M K).subst σ = bitAgreement (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ K) := by
-  simp [bitAgreement,Syn.subst_shift,Syn.shift_subst]
+ipra_subst bitAgreement [Syn.subst_shift, Syn.shift_subst]
 
 theorem decoded_bit (M i : PTm n) : Γ ⊢[PRAAx] inst2 (dgB (two : PTm 2)) i (pairT M zero) ≐ bit M i := by
   rw [inst2_dgB]

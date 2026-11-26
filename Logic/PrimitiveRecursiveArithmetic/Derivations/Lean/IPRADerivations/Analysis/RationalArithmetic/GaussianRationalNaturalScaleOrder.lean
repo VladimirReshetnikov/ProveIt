@@ -15,7 +15,7 @@ set_option maxHeartbeats 720000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalNaturalScaleOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale re)
 open GaussianRationalHorner (represents positive_product)
 open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
@@ -24,8 +24,6 @@ open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianRootAlgebra (re_scale)
 open RationalRepresentedUpper (to_signed from_signed left right)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

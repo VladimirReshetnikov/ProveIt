@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalLogAbsoluteProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaFiniteApproximantName (exponential_input)
@@ -27,9 +27,6 @@ open GaussianGammaReciprocalInverse (gammaF)
 open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianRealNameExponentialInjectivity (independent_radii_injective)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

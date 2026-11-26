@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootSynchronizedHit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (CN unit unit_positive)
 open GaussianMonicRootSupport (roots roots_length root_support)
 open GaussianMonicRootAdequacy (member)
@@ -27,9 +27,6 @@ open GaussianRootSupport (coverDenominator)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,8 +52,7 @@ private theorem unit_offset (k : PTm n) (j : ℕ) : Γ ⊢[PRAAx] unit (k+num j)
 def fine (k : PTm n) : PTm n := k+num 4
 def resolution (k : PTm n) : PTm n := coverDenominator (k+one)
 
-@[simp] theorem subst_fine {l : ℕ} (σ : Fin n → PTm l) (k : PTm n) :
-    Syn.subst σ (fine k) = fine (Syn.subst σ k) := by simp [fine]
+ipra_subst fine
 
 theorem resolution_value (k : PTm n) : Γ ⊢[PRAAx] resolution k ≐ unit k*num 8 :=
   (congrAp2 powF (by ipra_ring : Γ ⊢[PRAAx] k+one+two ≐ k+num 3) (.eqRefl _)).eqTrans (unit_offset k 3)

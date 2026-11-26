@@ -18,14 +18,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRelativeNormAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (represents positive_product ofGaussian)
 open LeanProofs.IPRA.Analysis.GaussianRationalNormClearing (weightedNorm weighted_norm_represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq scale normSq_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,10 +30,8 @@ def relative (u W L b : PTm n) : Fm PTm n :=
   RationalArgmin.rationalLE (weightedNorm (L*L) u) (weightedNorm (W*W) b)
 def scaledPoint (A B b : PTm n) : PTm n := ofGaussian (scale A (rawGaussian b)) (B*rawDen b)
 
-@[simp] theorem subst_relative {m : ℕ} (σ : Fin n → PTm m) (u W L b : PTm n) :
-    (relative u W L b).subst σ = relative (Syn.subst σ u) (Syn.subst σ W) (Syn.subst σ L) (Syn.subst σ b) := by simp [relative]
-@[simp] theorem subst_scaledPoint {m : ℕ} (σ : Fin n → PTm m) (A B b : PTm n) :
-    Syn.subst σ (scaledPoint A B b) = scaledPoint (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ b) := by simp [scaledPoint]
+ipra_subst relative
+ipra_subst scaledPoint
 
 theorem from_representations (u b gu gb D E W L : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hE : Γ ⊢[PRAAx] le one E)
@@ -162,21 +157,15 @@ def output (u W L b : PTm n) : PTm n := pairT (weightedNorm (L*L) u) (weightedNo
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (u W L b : PTm n) : PTm n := PTm.app outputF ![u,W,L,b]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (u W L b : PTm n) :
-    Syn.subst σ (output u W L b) = output (Syn.subst σ u) (Syn.subst σ W) (Syn.subst σ L) (Syn.subst σ b) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (u W L b : PTm n) :
-    Syn.subst σ (run u W L b) = run (Syn.subst σ u) (Syn.subst σ W) (Syn.subst σ L) (Syn.subst σ b) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (u W L b : PTm n) : Γ ⊢[PRAAx] run u W L b ≐ output u W L b := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![u,W,L,b]
 theorem returned_left (u W L b : PTm n) : Γ ⊢[PRAAx] fstT (run u W L b) ≐ weightedNorm (L*L) u :=
-  (congrFst (program_at u W L b)).eqTrans (fst_pair _ _)
+  (program_at u W L b).fstE
 theorem returned_right (u W L b : PTm n) : Γ ⊢[PRAAx] sndT (run u W L b) ≐ weightedNorm (W*W) b :=
-  (congrSnd (program_at u W L b)).eqTrans (snd_pair _ _)
+  (program_at u W L b).sndE
 
 theorem relative_program_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     ((run (var 0) (var 1) (var 2) (var 3) ≐ output (var 0) (var 1) (var 2) (var 3)) ⋏

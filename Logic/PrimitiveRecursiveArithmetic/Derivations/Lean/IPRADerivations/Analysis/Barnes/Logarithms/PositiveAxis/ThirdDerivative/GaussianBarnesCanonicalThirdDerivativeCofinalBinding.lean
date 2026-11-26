@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalThirdDerivativeCofinalBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Common (pos_of_one_le)
 open ComplexLogarithmRemainder (normSq)
 open GaussianBarnesCanonicalThirdLogarithmRows (center)
@@ -33,10 +33,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_r
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qadd qmul)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub qsub_canonical)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qzero_add)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

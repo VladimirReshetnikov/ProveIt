@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRealNameExponentialNonnegative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at constant_input constant_equal_cross)
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData originalData)
 open GaussianRadiusExponentialName (input nameF data)
@@ -26,10 +26,6 @@ open GaussianRationalMetric (bounded)
 open RationalGaussianEmbedding (embed scalarZero axis canonical_axis_roundtrip)
 open RationalValueBounds (upper upper_of_radius upper_order_left upper_triangle upper_mono)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -3,7 +3,6 @@ import IPRADerivations.Foundations.GuardedTotalization
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProduct
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual polynomial products for numeric determinant words
@@ -21,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qone qone_canonical qmul_congr canonicalCoefficients)
@@ -32,19 +31,13 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnegative qnegative_canoni
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (digit parity)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def cell (M r j : PTm n) : PTm n := entry (entry M r) j
 def rowCells (M m L r : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m) ⟶
   length (cell (Syn.shift M) (Syn.shift r) (var 0)) ≐ succ (Syn.shift L))
-@[simp] theorem subst_rowCells {l : ℕ} (σ : Fin n → PTm l) (M m L r : PTm n) :
-    (rowCells M m L r).subst σ = rowCells (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ r) := by
-  simp [rowCells,cell,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowCells [cell, Syn.subst_shift, Syn.shift_subst]
 def tableShape (M m L : PTm n) : Fm PTm n := (length M ≐ m) ⋏
   (.all (lt (var 0) (Syn.shift m) ⟶ length (entry (Syn.shift M) (var 0)) ≐ Syn.shift m) ⋏
     .all (lt (var 0) (Syn.shift m) ⟶ rowCells (Syn.shift M) (Syn.shift m) (Syn.shift L) (var 0)))
@@ -66,23 +59,14 @@ def signPoint (m w : PTm n) : PTm n :=
   Foundations.GuardedTotalization.sel (parity m w) (qnegative qone) qone
 def term (M m L w : PTm n) : PTm n := scaled (stage M m L w m) (signPoint m w)
 
-@[simp] theorem subst_cell {l : ℕ} (σ : Fin n → PTm l) (M r j : PTm n) :
-    Syn.subst σ (cell M r j) = cell (Syn.subst σ M) (Syn.subst σ r) (Syn.subst σ j) := by simp [cell]
-@[simp] theorem subst_tableShape {l : ℕ} (σ : Fin n → PTm l) (M m L : PTm n) :
-    (tableShape M m L).subst σ = tableShape (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [tableShape,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_factor {l : ℕ} (σ : Fin n → PTm l) (M m w j : PTm n) :
-    Syn.subst σ (factor M m w j) = factor (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by simp [factor]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (M m L w : PTm n) :
-    Syn.subst σ (data M m L w) = data (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) := by simp [data]
-@[simp] theorem subst_stage {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    Syn.subst σ (stage M m L w j) = stage (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by simp [stage]
-@[simp] theorem subst_scalarProduct {l : ℕ} (σ : Fin n → PTm l) (M m L w z j : PTm n) :
-    Syn.subst σ (scalarProduct M m L w z j) = scalarProduct (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ z) (Syn.subst σ j) := by simp [scalarProduct]
-@[simp] theorem subst_signPoint {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (signPoint m w) = signPoint (Syn.subst σ m) (Syn.subst σ w) := by simp [signPoint]
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (M m L w : PTm n) :
-    Syn.subst σ (term M m L w) = term (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) := by simp [term]
+ipra_subst cell
+ipra_subst tableShape [Syn.subst_shift, Syn.shift_subst]
+ipra_subst factor
+ipra_subst data
+ipra_subst stage
+ipra_subst scalarProduct
+ipra_subst signPoint
+ipra_subst term
 
 theorem cell_length (M m L r j : PTm n) (h : Γ ⊢[PRAAx] tableShape M m L)
     (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
@@ -109,8 +93,8 @@ theorem factor_body_at (M m L w j : PTm n) : Γ ⊢[PRAAx]
   simp only [factorBody,inst2,subst_factor,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have tail := snd_pair (Γ := Γ) M (pairT m (pairT L w))
   have rest := (congrSnd tail).eqTrans (snd_pair m (pairT L w))
-  exact factor_congr (fst_pair _ _) ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrSnd rest).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact factor_congr (fst_pair _ _) tail.fstE
+    rest.sndE (.eqRefl _)
 theorem width_at (M m L w : PTm n) : Γ ⊢[PRAAx] Syn.subst ![data M m L w] widthBody ≐ L := by
   simpa only [widthBody,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,data] using
     (congrFst ((congrSnd (snd_pair (Γ := Γ) M (pairT m (pairT L w)))).eqTrans (snd_pair m (pairT L w)))).eqTrans (fst_pair L w)
@@ -187,9 +171,7 @@ theorem scalar_succ (M m L w z j : PTm n) : Γ ⊢[PRAAx] scalarProduct M m L w 
 
 def evaluationLaw (M m L w z j : PTm n) : Fm PTm n := le j m ⟶
   evaluate (stage M m L w j) z ≐ scalarProduct M m L w z j
-@[simp] theorem subst_evaluationLaw {l : ℕ} (σ : Fin n → PTm l) (M m L w z j : PTm n) :
-    (evaluationLaw M m L w z j).subst σ = evaluationLaw (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ w) (Syn.subst σ z) (Syn.subst σ j) := by simp [evaluationLaw]
+ipra_subst evaluationLaw
 theorem evaluation_zero (M m L w z : PTm n) : Γ ⊢[PRAAx]
     evaluate (stage M m L w zero) z ≐ scalarProduct M m L w z zero :=
   (evaluate_congr (stage_zero _ _ _ _) (.eqRefl _)).eqTrans
@@ -209,11 +191,9 @@ theorem stage_evaluation (M m L w z j : PTm n) (h : Γ ⊢[PRAAx] tableShape M m
   have hs : Γ.map Fm.shift ⊢[PRAAx] tableShape (Syn.shift M) (Syn.shift m) (Syn.shift L) := by
     simpa only [Fm.shift,subst_tableShape,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (evaluationLaw (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift w) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (evaluation_zero _ _ _ _ _)
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_evaluationLaw]
+    · exact .impI (evaluation_zero _ _ _ _ _)
+    · refine .impI ?_
       exact evaluation_step _ _ _ _ _ _ hs.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have gate : Γ ⊢[PRAAx] evaluationLaw M m L w z j := by
@@ -289,22 +269,16 @@ with their sign. The query z is used only by the evaluator certificate. -/
 def output (M m L w : PTm n) : PTm n := pairT (term M m L w) (pairT (stage M m L w m) (signPoint m w))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (M m L w : PTm n) : PTm n := app outputF ![M,m,L,w]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (M m L w : PTm n) :
-    Syn.subst σ (output M m L w) = output (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (M m L w : PTm n) :
-    Syn.subst σ (run M m L w) = run (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (M m L w : PTm n) : Γ ⊢[PRAAx] run M m L w ≐ output M m L w := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![M,m,L,w]
 theorem returned_term (M m L w : PTm n) : Γ ⊢[PRAAx] fstT (run M m L w) ≐ term M m L w :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_product (M m L w : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run M m L w)) ≐ stage M m L w m :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_sign (M m L w : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run M m L w)) ≐ signPoint m w :=
-  (congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE.sndE
 theorem returned_term_length (M m L w : PTm n) : Γ ⊢[PRAAx] length (fstT (run M m L w)) ≐ succ (m*L) :=
   (congrFst (returned_term _ _ _ _)).eqTrans (term_length _ _ _ _)
 theorem returned_term_canonical (M m L w : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (fstT (run M m L w)) :=

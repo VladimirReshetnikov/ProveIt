@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalCoefficientRecurrence
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The literal original gamma plus signed-zeta recurrence formula
@@ -17,17 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalRecurrenceZetaFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qadd qzero)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open GaussianRationalEulerCoefficients (parityPoint)
 open RationalGaussianEmbedding (embed)
 open GaussianGammaHigherCoefficientName (sample)
 open GaussianGammaCanonicalRecurrenceTerms (canonicalTerm canonicalSum data body)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,10 +33,8 @@ def zetaBody : PTm 2 := zetaTerm (fstT (var 1)) (sndT (var 1)) (var 0)
 def formula (p s : PTm n) : PTm n :=
   qadd (qmul (embed (GammaEulerConstantName.gammaSample p zero)) (sample p (succ s)))
     (GaussianRationalFiniteSum.sum (shiftBody zetaBody) s (data p (succ (succ s))))
-@[simp] theorem subst_zetaTerm {l : ℕ} (σ : Fin n → PTm l) (p e j : PTm n) :
-    Syn.subst σ (zetaTerm p e j) = zetaTerm (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ j) := by simp [zetaTerm]
-@[simp] theorem subst_formula {l : ℕ} (σ : Fin n → PTm l) (p s : PTm n) :
-    Syn.subst σ (formula p s) = formula (Syn.subst σ p) (Syn.subst σ s) := by simp [formula]
+ipra_subst zetaTerm
+ipra_subst formula
 
 theorem zeta_term_congr {p q e f j k : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q)
     (he : Γ ⊢[PRAAx] e ≐ f) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx] zetaTerm p e j ≐ zetaTerm q f k := by

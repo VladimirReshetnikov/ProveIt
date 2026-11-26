@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerHeadGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianLogGammaEulerNormalizedDifference (weightedLogF weightedLogData rangeF rangeData windowF windowData)
@@ -24,10 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_at subst_crossEquivalent)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (distanceBounded qsub)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianNamedDifference.nameF

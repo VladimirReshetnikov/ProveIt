@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedPositiveReciprocal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedPositiveLogarithm (source numerator denominator decoded_domain decoded_value)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianApproximateInverseDistance (central_distance)
@@ -25,9 +25,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (point_at)
 open GaussianFastValueCut (exponent query_budget)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -38,12 +35,9 @@ def observation (f : PR 2) (p x E : PTm n) : PTm n :=
 def data (x E : PTm n) : PTm n := pairT x E
 def nameF (f : PR 2) : PR 2 := PTm.toPR (observation f (var 0) (fstT (var 1)) (sndT (var 1)))
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E : PTm n) :
-    Syn.subst σ (observation f p x E) = observation f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [observation,clock,numerator,denominator]
+ipra_subst observation [clock, numerator, denominator]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x E : PTm n) :
-    Syn.subst σ (data x E) = data (Syn.subst σ x) (Syn.subst σ E) := by simp [data]
+ipra_subst data
 
 theorem name_at (f : PR 2) (p x E : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f) p (data x E) ≐ observation f p x E := by

@@ -16,7 +16,7 @@ set_option maxHeartbeats 450000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaInputProperness (code_data_cross)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (canonical_unique ofGaussian_canonical ofGaussian_re
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF
@@ -55,22 +52,13 @@ def coreData (A B D neg : PTm n) : PTm n :=
 def nameF : PR 2 := F coreF C
 def data (A B D neg x : PTm n) : PTm n := fd (coreData A B D neg) (cd x)
 
-@[simp] theorem subst_offset {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (offset A B D neg) = offset (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by
-  simp [offset, one, two, GaussianLogGammaEulerRepresentation.subst_argument]
+ipra_subst offset [one, two, GaussianLogGammaEulerRepresentation.subst_argument]
 
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (weightedData A B D neg) =
-      weightedData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by simp [weightedData]
+ipra_subst weightedData
 
-@[simp] theorem subst_coreData {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (coreData A B D neg) =
-      coreData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by
-  simp [coreData, canonicalData, GaussianLogGammaEulerRepresentation.subst_argument]
+ipra_subst coreData [canonicalData, GaussianLogGammaEulerRepresentation.subst_argument]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D neg x : PTm n) :
-    Syn.subst σ (data A B D neg x) =
-      data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ x) := by simp [data]
+ipra_subst data
 
 theorem weighted_regular (A B D neg : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
     Γ ⊢[PRAAx] pointCN weightedF (weightedData A B D neg) :=

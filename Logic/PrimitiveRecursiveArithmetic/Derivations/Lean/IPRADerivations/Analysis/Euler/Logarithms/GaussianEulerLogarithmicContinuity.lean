@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicCertificateGeometry (leftIndex rightIndex left_height right_height left_index_late right_index_late same_eta)
 open GaussianEulerLogarithmicImproperName (data nameF name_regular)
 open GaussianEulerLogarithmicCutoffSplit (fullData)
@@ -29,10 +29,6 @@ open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator denominator_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -50,20 +46,11 @@ def modulus (r j R A : PTm n) : PTm n :=
 def source (r j z R B A h D : PTm n) : Fm PTm n :=
   ordinarySource z R B A ⋏ (le one D ⋏ bounded (ofGaussian h D) one (modulus r j R A))
 
-@[simp] theorem subst_baseIndex {m : ℕ} (σ : Fin n → PTm m) (r j R A : PTm n) :
-    Syn.subst σ (baseIndex r j R A) = baseIndex (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) := by simp [baseIndex]
-@[simp] theorem subst_intervalDen {m : ℕ} (σ : Fin n → PTm m) (r j R A : PTm n) :
-    Syn.subst σ (intervalDen r j R A) = intervalDen (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [intervalDen,etaDen,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_intervalTop {m : ℕ} (σ : Fin n → PTm m) (r j R A : PTm n) :
-    Syn.subst σ (intervalTop r j R A) = intervalTop (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [intervalTop,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (r j R A : PTm n) :
-    Syn.subst σ (modulus r j R A) = modulus (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [modulus,compactGain]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (r j z R B A h D : PTm n) :
-    (source r j z R B A h D).subst σ = source (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) := by simp [source]
+ipra_subst baseIndex
+ipra_subst intervalDen [etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst intervalTop [top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst modulus [compactGain]
+ipra_subst source
 
 theorem modulus_positive (r j R A : PTm n) : Γ ⊢[PRAAx] le one (modulus r j R A) := by
   unfold modulus

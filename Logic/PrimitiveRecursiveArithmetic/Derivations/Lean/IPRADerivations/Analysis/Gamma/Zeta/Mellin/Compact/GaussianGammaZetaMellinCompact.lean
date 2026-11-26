@@ -17,7 +17,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinCompact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactLogarithmBounds (domain)
 open GaussianCompactRiemannName (inside localBody sampledModulus evaluatorName nameData)
 open GaussianEulerIntegrandName (powerF powerData)
@@ -33,8 +33,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open RationalValueBounds (positive_cancel)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianGammaZetaMellinIntegrand.nameF
@@ -55,18 +53,11 @@ def data (z R B a W E H T : PTm n) : PTm n :=
     Syn.subst σ (majorant R H T) = majorant (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ T) := by
   simp [majorant, GaussianEulerCompactPowerMajorant.exponentRadius, one]
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (R H T : PTm n) :
-    Syn.subst σ (gain R H T) = gain (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ T) := by simp [gain]
+ipra_subst gain
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a W E H T : PTm n) :
-    (source z R B a W E H T).subst σ =
-      source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a)
-        (Syn.subst σ W) (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ T) := by simp [source]
+ipra_subst source
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B a W E H T : PTm n) :
-    Syn.subst σ (data z R B a W E H T) =
-      data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a)
-        (Syn.subst σ W) (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ T) := by simp [data]
+ipra_subst data
 
 private theorem power_samples (z R B a b H T : PTm n)
     (hz : Γ ⊢[PRAAx] C z R B H) (ha : Γ ⊢[PRAAx] domain a b H T) :

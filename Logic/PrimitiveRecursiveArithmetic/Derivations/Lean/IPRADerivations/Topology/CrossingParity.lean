@@ -1,6 +1,5 @@
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Crossing parity of a polygonal chain
@@ -36,11 +35,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.CrossingParity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -79,13 +74,9 @@ private abbrev teleF (h : PTm 2) : Fm PTm 2 :=
   par (ap2 (sumF (stB h)) (var 0) (var 1) + inst2 h zero (var 1) + inst2 h (var 0) (var 1)) ≐ zero
 
 private theorem tele₀ (h : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] teleF h := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap1, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tele_base h _
-  · simp only [Fm.subst_eq, subst_ap1, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tele_step h Prf.hyp0
+  ipra_ind [subst_ap1, subst_ap2, subst_inst2]
+  · exact tele_base h _
+  · exact tele_step h Prf.hyp0
 
 /-- `par (∑_{i<N} (h(i) + h(i+1)) + h(0) + h(N)) = 0`. -/
 theorem straddle_parity (h : PTm 2) (N x : PTm n) :

@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorBuffer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_le sg_lt)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
@@ -29,10 +29,6 @@ open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianRationalHorner (ofGaussian qadd qmul qzero canonical qadd_canonical qmul_canonical canonical_congr)
 open GaussianRationalSyntheticDivision (qzero_canonical canonicalCoefficients)
 open RationalArithmetic (select select_zero select_one)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

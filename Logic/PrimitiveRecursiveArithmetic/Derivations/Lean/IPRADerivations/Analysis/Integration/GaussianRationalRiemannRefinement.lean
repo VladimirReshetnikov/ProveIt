@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalBl
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalRoundedPower
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
-import IPRADerivations.Core.BlockSum
 
 /-!
 # Actual Gaussian left-sum refinement
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRiemannRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul ofGaussian positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRationalFiniteSum (sum sum_zero sum_succ sum_index_congr)
@@ -27,9 +26,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalNaturalScale (natScale naturalPoint)
 open ComplexLogarithmRemainder (oneCode scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,12 +34,8 @@ def termsDistance (f g : PTm 2) (N x y A D : PTm n) : Fm PTm n := .all
     (inst2 g (var 0) (Syn.shift y)) (Syn.shift A) (Syn.shift D))
 def sumLaw (f g : PTm 2) (N x y A D k : PTm n) : Fm PTm n := le k N ⟶
   distanceBounded (sum f k x) (sum g k y) (k*A) D
-@[simp] theorem subst_termsDistance {l : ℕ} (σ : Fin n → PTm l) (f g : PTm 2) (N x y A D : PTm n) :
-    (termsDistance f g N x y A D).subst σ = termsDistance f g (Syn.subst σ N) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ D) := by simp [termsDistance,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_sumLaw {l : ℕ} (σ : Fin n → PTm l) (f g : PTm 2) (N x y A D k : PTm n) :
-    (sumLaw f g N x y A D k).subst σ = sumLaw f g (Syn.subst σ N) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ k) := by simp [sumLaw]
+ipra_subst termsDistance [Syn.subst_shift, Syn.shift_subst]
+ipra_subst sumLaw
 
 theorem term_distance_at (f g : PTm 2) (N x y A D i : PTm n)
     (h : Γ ⊢[PRAAx] termsDistance f g N x y A D) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]
@@ -67,12 +59,10 @@ theorem sum_distance (f g : PTm 2) (N x y A D : PTm n) (hD : Γ ⊢[PRAAx] le on
   have hs : Γ.map Fm.shift ⊢[PRAAx] termsDistance f g (Syn.shift N) (Syn.shift x) (Syn.shift y) (Syn.shift A) (Syn.shift D) := by
     simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (sumLaw f g (Syn.shift N) (Syn.shift x) (Syn.shift y) (Syn.shift A) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (distance_congr (GaussianRationalFiniteSum.sum_zero f x).eqSymm (GaussianRationalFiniteSum.sum_zero g y).eqSymm (zero_mul A).eqSymm (.eqRefl _)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_sumLaw]
+    · exact .impI (distance_congr (GaussianRationalFiniteSum.sum_zero f x).eqSymm (GaussianRationalFiniteSum.sum_zero g y).eqSymm (zero_mul A).eqSymm (.eqRefl _)
         (GaussianRationalPowerDifference.distance_refl_zero qzero D hD.wk))
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       exact sum_distance_step f g _ _ _ _ _ _ ds.wk.wk hs.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have done : Γ ⊢[PRAAx] sumLaw f g N x y A D N := by
@@ -82,8 +72,7 @@ theorem sum_distance (f g : PTm 2) (N x y A D : PTm n) (hD : Γ ⊢[PRAAx] le on
 def constantBody : PTm 2 := var 1
 @[simp] theorem constant_entry (i q : PTm n) : inst2 constantBody i q = q := by simp [constantBody,inst2]
 def constantLaw (q K : PTm n) : Fm PTm n := sum constantBody K q ≐ natScale K q
-@[simp] theorem subst_constantLaw {l : ℕ} (σ : Fin n → PTm l) (q K : PTm n) :
-    (constantLaw q K).subst σ = constantLaw (Syn.subst σ q) (Syn.subst σ K) := by simp [constantLaw]
+ipra_subst constantLaw
 
 theorem natural_scale_succ (K q : PTm n) : Γ ⊢[PRAAx] natScale (succ K) q ≐ qadd (natScale K q) q :=
   (GaussianRationalNaturalScale.natScale_congr (succ_eq_add_one K) (.eqRefl q)).eqTrans
@@ -93,11 +82,9 @@ theorem natural_scale_succ (K q : PTm n) : Γ ⊢[PRAAx] natScale (succ K) q ≐
 
 theorem constant_sum (q K : PTm n) : Γ ⊢[PRAAx] constantLaw q K := by
   have all : Γ ⊢[PRAAx] .all (constantLaw (Syn.shift q) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_constantLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianRationalNaturalScale.natScale_zero q).eqSymm
-    · simp only [subst_constantLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (GaussianRationalFiniteSum.sum_succ constantBody _ _).eqTrans ((qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans (natural_scale_succ _ _).eqSymm)
+    ipra_qfind [subst_constantLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianRationalNaturalScale.natScale_zero q).eqSymm
+    · exact (GaussianRationalFiniteSum.sum_succ constantBody _ _).eqTrans ((qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans (natural_scale_succ _ _).eqSymm)
   simpa only [subst_constantLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
 
 def repeatBody (c : PTm 2) : PTm 2 := inst2 c (quo (var 0) (fstT (var 1))) (sndT (var 1))
@@ -131,8 +118,7 @@ theorem repeated_block (c : PTm 2) (R k y : PTm n) (hR : Γ ⊢[PRAAx] le one R)
 
 def repeatLaw (c : PTm 2) (R N y : PTm n) : Fm PTm n :=
   sum (repeatBody c) (R*N) (pairT R y) ≐ qmul (naturalPoint R) (sum c N y)
-@[simp] theorem subst_repeatLaw {l : ℕ} (σ : Fin n → PTm l) (c : PTm 2) (R N y : PTm n) :
-    (repeatLaw c R N y).subst σ = repeatLaw c (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ y) := by simp [repeatLaw]
+ipra_subst repeatLaw
 
 theorem repeated_step (c : PTm 2) (R N y : PTm n) (hR : Γ ⊢[PRAAx] le one R)
     (ih : Γ ⊢[PRAAx] repeatLaw c R N y) : Γ ⊢[PRAAx] repeatLaw c R (succ N) y := by
@@ -146,20 +132,16 @@ theorem repeated_step (c : PTm 2) (R N y : PTm n) (hR : Γ ⊢[PRAAx] le one R)
 theorem repeated_sum (c : PTm 2) (R N y : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx] repeatLaw c R N y := by
   have rs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift R) := by simpa [Fm.shift,Syn.shift] using hR.shift
   have all : Γ ⊢[PRAAx] .all (repeatLaw c (Syn.shift R) (var 0) (Syn.shift y)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_repeatLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (sum_index_congr (repeatBody c) (mul_zero R) (.eqRefl (pairT R y))).eqTrans ((GaussianRationalFiniteSum.sum_zero (repeatBody c) (pairT R y)).eqTrans
+    ipra_qfind [subst_repeatLaw]
+    · exact (sum_index_congr (repeatBody c) (mul_zero R) (.eqRefl (pairT R y))).eqTrans ((GaussianRationalFiniteSum.sum_zero (repeatBody c) (pairT R y)).eqTrans
         ((qmul_congr (.eqRefl _) (GaussianRationalFiniteSum.sum_zero c y)).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_right (naturalPoint R))).eqSymm)
-    · simp only [subst_repeatLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact repeated_step c _ _ _ rs.wk Prf.hyp0
+    · exact repeated_step c _ _ _ rs.wk Prf.hyp0
   simpa only [subst_repeatLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 def cellDistances (f c : PTm 2) (N R x y A D : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift R*Syn.shift N) ⟶ distanceBounded (inst2 f (var 0) (Syn.shift x))
     (inst2 c (quo (var 0) (Syn.shift R)) (Syn.shift y)) (Syn.shift A) (Syn.shift D))
-@[simp] theorem subst_cellDistances {l : ℕ} (σ : Fin n → PTm l) (f c : PTm 2) (N R x y A D : PTm n) :
-    (cellDistances f c N R x y A D).subst σ = cellDistances f c (Syn.subst σ N) (Syn.subst σ R)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ D) := by simp [cellDistances,Syn.subst_shift,Syn.shift_subst]
+ipra_subst cellDistances [Syn.subst_shift, Syn.shift_subst]
 
 theorem cell_distance_at (f c : PTm 2) (N R x y A D i : PTm n)
     (h : Γ ⊢[PRAAx] cellDistances f c N R x y A D) (hi : Γ ⊢[PRAAx] lt i (R*N)) : Γ ⊢[PRAAx]
@@ -185,10 +167,8 @@ theorem fine_coarse_sum (f c : PTm 2) (N R x y A D : PTm n)
 
 def weight (C E N : PTm n) : PTm n := ofGaussian (scale C oneCode) (E*N)
 def leftSum (f : PTm 2) (N x C E : PTm n) : PTm n := qmul (weight C E N) (sum f N x)
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (C E N : PTm n) :
-    Syn.subst σ (weight C E N) = weight (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ N) := by simp [weight]
-@[simp] theorem subst_leftSum {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (N x C E : PTm n) :
-    Syn.subst σ (leftSum f N x C E) = leftSum f (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ C) (Syn.subst σ E) := by simp [leftSum]
+ipra_subst weight
+ipra_subst leftSum
 
 theorem weight_bound (C E N : PTm n) (hE : Γ ⊢[PRAAx] le one E) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     bounded (weight C E N) C (E*N) := by
@@ -239,25 +219,15 @@ theorem refinement (f c : PTm 2) (N R x y C E A D : PTm n)
 
 def input (f c : PTm 2) (N R x y E A D : PTm n) : Fm PTm n :=
   le one N ⋏ (le one R ⋏ (le one E ⋏ (le one D ⋏ cellDistances f c N R x y A D)))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (f c : PTm 2) (N R x y E A D : PTm n) :
-    (input f c N R x y E A D).subst σ = input f c (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ E) (Syn.subst σ A) (Syn.subst σ D) := by simp [input]
+ipra_subst input
 
 /-- Actual fine/coarse left sums and their derived rational distance budget. -/
 def output (f c : PTm 2) (N R x y C E A D : PTm n) : PTm n := pairT (leftSum f (R*N) x C E)
   (pairT (leftSum c N y C E) (pairT (C*A) (E*D)))
 def outputF (f c : PTm 2) : PR 8 := PTm.toPR (output f c (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (f c : PTm 2) (N R x y C E A D : PTm n) : PTm n := PTm.app (outputF f c) ![N,R,x,y,C,E,A,D]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f c : PTm 2) (N R x y C E A D : PTm n) :
-    Syn.subst σ (output f c N R x y C E A D) = output f c (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ A) (Syn.subst σ D) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f c : PTm 2) (N R x y C E A D : PTm n) :
-    Syn.subst σ (run f c N R x y C E A D) = run f c (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (f c : PTm 2) (N R x y C E A D : PTm n) : Γ ⊢[PRAAx]
     run f c N R x y C E A D ≐ output f c N R x y C E A D := by
@@ -265,7 +235,7 @@ theorem program_at (f c : PTm 2) (N R x y C E A D : PTm n) : Γ ⊢[PRAAx]
     (output f c (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) : PTm 8) ![N,R,x,y,C,E,A,D]
 theorem returned_fine (f c : PTm 2) (N R x y C E A D : PTm n) : Γ ⊢[PRAAx]
     fstT (run f c N R x y C E A D) ≐ leftSum f (R*N) x C E :=
-  (congrFst (program_at f c N R x y C E A D)).eqTrans (fst_pair _ _)
+  (program_at f c N R x y C E A D).fstE
 theorem returned_coarse (f c : PTm 2) (N R x y C E A D : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run f c N R x y C E A D)) ≐ leftSum c N y C E :=
   ((congrFst (congrSnd (program_at f c N R x y C E A D))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)

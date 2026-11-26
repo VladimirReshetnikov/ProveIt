@@ -16,7 +16,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDecayRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radiusPoint)
@@ -33,9 +33,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody)
 open GaussianRationalReciprocal (power reciprocal)
 open GaussianRationalNaturalScale (natScale_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Input" => GaussianRadiusExponentialName.input
@@ -49,16 +46,11 @@ def baseRadius (a b : PTm n) : PTm n := GaussianNameBounds.U constantF (radiusPo
 def rowCost (E i a b : PTm n) : PTm n :=
   two+negativeRadius constantF E i (baseRadius a b) (radiusPoint a b)+i*two
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p b : PTm n) :
-    Syn.subst σ (clock p b) = clock (Syn.subst σ p) (Syn.subst σ b) := by
-  simp [clock,denominatorClock,reciprocalClock,two,one]
+ipra_subst clock [denominatorClock, reciprocalClock, two, one]
 
-@[simp] theorem subst_baseRadius {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (baseRadius a b) = baseRadius (Syn.subst σ a) (Syn.subst σ b) := by simp [baseRadius]
+ipra_subst baseRadius
 
-@[simp] theorem subst_rowCost {m : ℕ} (σ : Fin n → PTm m) (E i a b : PTm n) :
-    Syn.subst σ (rowCost E i a b) =
-      rowCost (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [rowCost,two,one]
+ipra_subst rowCost [two, one]
 
 private theorem base_input (a b : PTm n) : Γ ⊢[PRAAx] Input constantF (baseRadius a b) (radiusPoint a b) :=
   GaussianGammaFiniteApproximantName.exponential_input constantF _ (constant_regular _)

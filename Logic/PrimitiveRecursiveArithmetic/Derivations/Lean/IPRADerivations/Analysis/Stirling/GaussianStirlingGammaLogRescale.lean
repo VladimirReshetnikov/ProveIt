@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGammaLogRescale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
 open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
@@ -21,8 +21,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRealNameExponentialInjectivity (independent_radii_injective)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular log_gamma_axis)
 open GaussianStirlingLogDuplication (exponential_gamma)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

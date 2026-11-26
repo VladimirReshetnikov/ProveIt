@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTACoefficientDrift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants
   (B R L QNum QDen)
 open LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames (generalCN)
@@ -27,9 +27,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded qs
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,14 +35,10 @@ def numerator (a : PR 3) (N x j : PTm n) : PTm n := B a x*pw (QNum N) j
 def denominator (N j : PTm n) : PTm n := QDen N*pw (QDen N) j
 def degreeCost (a : PR 3) (N h x : PTm n) : PTm n := succ N*pw (R a N h x) N
 
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (precision a N h x j) = precision a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [precision]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x j : PTm n) :
-    Syn.subst σ (numerator a N x j) = numerator a (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ j) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (N j : PTm n) :
-    Syn.subst σ (denominator N j) = denominator (Syn.subst σ N) (Syn.subst σ j) := by simp [denominator]
-@[simp] theorem subst_degreeCost {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (degreeCost a N h x) = degreeCost a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [degreeCost]
+ipra_subst precision
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst degreeCost
 
 theorem precision_succ (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx]
     precision a N h x (succ j) ≐ succ (precision a N h x j) := by unfold precision; ipra_ring
@@ -141,19 +134,9 @@ def outputF (a : PR 3) : PR 5 :=
   PTm.toPR (output a (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (a : PR 3) (N h x j z : PTm n) : PTm n := PTm.app (outputF a) ![N,h,x,j,z]
 
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j z : PTm n) :
-    Syn.subst σ (difference a N h x j z) = difference a (Syn.subst σ N) (Syn.subst σ h)
-      (Syn.subst σ x) (Syn.subst σ j) (Syn.subst σ z) := by simp [difference]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j z : PTm n) :
-    Syn.subst σ (output a N h x j z) = output a (Syn.subst σ N) (Syn.subst σ h)
-      (Syn.subst σ x) (Syn.subst σ j) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j z : PTm n) :
-    Syn.subst σ (run a N h x j z) = run a (Syn.subst σ N) (Syn.subst σ h)
-      (Syn.subst σ x) (Syn.subst σ j) (Syn.subst σ z) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst difference
+ipra_subst output
+ipra_subst run
 
 theorem difference_program_at (a : PR 3) (N h x j z : PTm n) : Γ ⊢[PRAAx]
     PTm.app (differenceF a) ![N,h,x,j,z] ≐ difference a N h x j z := by
@@ -167,13 +150,13 @@ theorem program_at (a : PR 3) (N h x j z : PTm n) : Γ ⊢[PRAAx]
 
 theorem returned_difference (a : PR 3) (N h x j z : PTm n) : Γ ⊢[PRAAx]
     fstT (run a N h x j z) ≐ difference a N h x j z :=
-  (congrFst (program_at a N h x j z)).eqTrans (fst_pair _ _)
+  (program_at a N h x j z).fstE
 theorem returned_numerator (a : PR 3) (N h x j z : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run a N h x j z)) ≐ numerator a N x j :=
-  (congrFst ((congrSnd (program_at a N h x j z)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a N h x j z).sndE.fstE
 theorem returned_denominator (a : PR 3) (N h x j z : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run a N h x j z)) ≐ denominator N j :=
-  (congrSnd ((congrSnd (program_at a N h x j z)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at a N h x j z).sndE.sndE
 
 theorem difference_program_bound (a : PR 3) (N h x j z : PTm n)
     (hCN : Γ ⊢[PRAAx] generalCN a N x)

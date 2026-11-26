@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductNamedT3
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded normSq)
 open GaussianArctangentDivisionAngles (modulus)
 open GaussianEuclideanDistanceName (pointCN)
@@ -29,10 +29,6 @@ open GaussianRadiusExponentialName (input)
 open GaussianSineProductScaledArgumentCancellation (apartClock scaled_apart)
 open GaussianSineProductScaledArgumentIdentity (wide_input multiple_cross)
 open GaussianSineProductScaledArguments (nameF data)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

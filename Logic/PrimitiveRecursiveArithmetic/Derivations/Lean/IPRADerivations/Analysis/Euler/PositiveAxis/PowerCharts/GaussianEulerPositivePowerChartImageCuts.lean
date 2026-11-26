@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImageCuts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartCorrectedImage (input imageNumerator imageDenominator imageFraction)
 open GaussianEulerPositivePowerChartCorrectedPanel (native_order)
 open GaussianEulerPositivePowerChartImage (reciprocalMargin)
@@ -21,10 +21,6 @@ open GaussianEulerPositivePowerChart (majorant)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianPartitionedFiniteSum (increasing)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -46,14 +42,7 @@ private def denominatorTerm : PTm 13 :=
 def numeratorBody : PTm 2 := Syn.subst (fields (var 0) (var 1)) numeratorTerm
 def denominatorBody : PTm 2 := Syn.subst (fields (var 0) (var 1)) denominatorTerm
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (k e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (data k e f d h Q S E T a C N) = data (Syn.subst σ k) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [data,Foundations.BoundedSyntax.subst_pack]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst data [Foundations.BoundedSyntax.subst_pack]
 
 private theorem read_at (s : PTm 13) (i : PTm n) (args : Fin 12 → PTm n) :
     Γ ⊢[PRAAx] inst2 (Syn.subst (fields (var 0) (var 1)) s) i (Foundations.BoundedSyntax.pack args) ≐
@@ -139,9 +128,7 @@ abbrev denominator (N x J : PTm n) : PTm n := GaussianEulerPositivePowerChartIma
 
 def point (j N x J : PTm n) : PTm n := pairT (start N x J+j) (denominator N x J)
 
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (j N x J : PTm n) :
-    Syn.subst σ (point j N x J) = point (Syn.subst σ j) (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ J) := by
-  simp [point, start, denominator]
+ipra_subst point [start, denominator]
 
 theorem original_cut_increasing (k e f d h Q S E T a C N J : PTm n) (hs : Γ ⊢[PRAAx] input k e f d h Q S E T a C N) :
     Γ ⊢[PRAAx] increasing cutF (GaussianEulerPositivePowerChartImageLattice.cutData N (data k e f d h Q S E T a C N) J) :=

@@ -19,11 +19,7 @@ a uniform law, and a singular continuous law", the finite estimates, cleared for
 
 namespace LeanProofs.IPRA.Probability.UniformCantor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

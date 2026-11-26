@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductT6
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSineProductT4Budget (halfIndex squareDenominator headError productError prefactorError rate
   absorb_errors cutoff_le_half_index)
 open GaussianInverseSquareProductTail (factorBounds factor_bound_at sharp_tail sine_factor_bound)
@@ -35,18 +35,13 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianReciprocalHorner (qmul_one_right)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def factorSize (R : PTm n) : PTm n := num 16*(R*R)
 
-@[simp] theorem subst_factorSize {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (factorSize R) = factorSize (Syn.subst σ R) := by simp [factorSize]
+ipra_subst factorSize
 
 theorem reference_factors (z R B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :

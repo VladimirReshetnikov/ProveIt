@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerScalarArrays
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width)
 open QuadraticTowerArrayCodec (arrayHeight)
@@ -24,9 +24,6 @@ open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero sel_cases)
 open LeanProofs.IPRA.Foundations.BoundedReflection
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,14 +33,10 @@ def zeroArray (h : PTm n) : PTm n := sequence zeroBody (width h) zero
 def cell (i q : PTm n) : PTm n := sel (eqb i zero) (RationalArithmetic.recode q) zeroScalar
 def scalarBody : PTm 2 := cell (var 0) (var 1)
 def scalarArray (h q : PTm n) : PTm n := sequence scalarBody (width h) q
-@[simp] theorem subst_zeroScalar {k : ℕ} (σ : Fin n → PTm k) :
-    Syn.subst σ (zeroScalar : PTm n) = (zeroScalar : PTm k) := by simp [zeroScalar]
-@[simp] theorem subst_zeroArray {k : ℕ} (σ : Fin n → PTm k) (h : PTm n) :
-    Syn.subst σ (zeroArray h) = zeroArray (Syn.subst σ h) := by simp [zeroArray]
-@[simp] theorem subst_cell {k : ℕ} (σ : Fin n → PTm k) (i q : PTm n) :
-    Syn.subst σ (cell i q) = cell (Syn.subst σ i) (Syn.subst σ q) := by simp [cell,sel]
-@[simp] theorem subst_scalarArray {k : ℕ} (σ : Fin n → PTm k) (h q : PTm n) :
-    Syn.subst σ (scalarArray h q) = scalarArray (Syn.subst σ h) (Syn.subst σ q) := by simp [scalarArray]
+ipra_subst zeroScalar
+ipra_subst zeroArray
+ipra_subst cell [sel]
+ipra_subst scalarArray
 
 theorem width_positive (h : PTm n) : Γ ⊢[PRAAx] le one (width h) :=
   Foundations.RuntimeWordAppend.power_positive two h (le_succ_self one)
@@ -186,16 +179,14 @@ theorem right_scalar (h q : PTm n) : Γ ⊢[PRAAx]
 def output (h q : PTm n) : PTm n := pairT (zeroArray h) (scalarArray h q)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (h q : PTm n) : PTm n := ap2 outputF h q
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h q : PTm n) :
-    Syn.subst σ (output h q) = output (Syn.subst σ h) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h q : PTm n) :
-    Syn.subst σ (run h q) = run (Syn.subst σ h) (Syn.subst σ q) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (h q : PTm n) : Γ ⊢[PRAAx] run h q ≐ output h q := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![h,q]
 theorem returned_zero (h q : PTm n) : Γ ⊢[PRAAx] fstT (run h q) ≐ zeroArray h :=
-  (congrFst (program_at _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _).fstE
 theorem returned_scalar (h q : PTm n) : Γ ⊢[PRAAx] sndT (run h q) ≐ scalarArray h q :=
-  (congrSnd (program_at _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _).sndE
 
 theorem actual_scalar_array_lengths_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (length (zeroArray (var 0)) ≐ width (var 0) ⋏ length (scalarArray (var 0) (var 1)) ≐ width (var 0)) :=

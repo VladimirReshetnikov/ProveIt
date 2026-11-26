@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.RadonPartition
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Making approximate coordinates simplex-valued
@@ -22,10 +21,8 @@ are Boolean masks, and the positive part is the term `pp` of `Geometry/RadonPart
 
 namespace LeanProofs.IPRA.Topology.SimplexProjection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.RadonPartition (pp np toZ_parts parts_disjoint pp_nonneg np_nonneg)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -97,12 +94,11 @@ theorem projection_mass (cs : List (ZT n)) (one : ZT n)
     have h := hall bs
     ipra_zle zsl h
   have h₂ := sub_le_pos (Γ := Γ) bs₀ cs
-  have e := ZT.toZ_eq hmax
   have u : Γ ⊢[PRAAx] zle (psum cs) one := by
     ipra_zle zsl h₁
   have l : Γ ⊢[PRAAx] zle one (psum cs) := by
     refine zle_of_comb (zsl h₂) ?_ (nn_zsl _)
-    rw [zsl_def, e]
+    rw [zsl_def, ZT.toZ_eq hmax]
   exact le_antisymm u l
 
 end LeanProofs.IPRA.Topology.SimplexProjection

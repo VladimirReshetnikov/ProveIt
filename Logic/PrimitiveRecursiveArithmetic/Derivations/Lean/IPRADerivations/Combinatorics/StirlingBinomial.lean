@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.StirlingPowers
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial recurrence of the Stirling numbers
@@ -26,17 +25,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.StirlingBinomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Stirling
   (stir stir_zero stir_above stir_succ_zero stir_succ_succ sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (congrStir)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_above gb_pascal zB zsum inst2_z)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -221,13 +216,9 @@ theorem viol_base (R : PTm n) : Γ ⊢[PRAAx] ap2 (sumF violB) R zero ≐ zero :
 private abbrev vF : Fm PTm 2 := ap2 (sumF violB) (var 1) (var 0) ≐ zero
 
 private theorem v₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] vF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact viol_base _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact viol_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact viol_base _
+  · exact viol_step Prf.hyp0
 
 /-- `S(n + 1, k + 1) = ∑_{j ≤ n} C(n, j) S(j, k)`. -/
 theorem stirling_binomial (N K : PTm n) : Γ ⊢[PRAAx] stir (succ N) (succ K) ≐ U N K := by

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRightHalfPlaneSigned
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs subst_zabs)
 open ComplexLogarithmRemainder (re im eval_re_code eval_im_code)
 open GaussianEulerLowerPowerCoefficients (realLower)
@@ -34,9 +34,6 @@ open GaussianRootAlgebra (equal equal_of_values normSq_equal)
 open PolynomialBisection (selector selector_cases selector_zero)
 open RationalArithmetic (select select_zero select_one)
 open RationalIntegerNormalization (positivePart negativePart parts_value scaled_parts)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,12 +47,9 @@ def denominator (q : PTm n) : PTm n := rawDen q
 def point (q : PTm n) : PTm n :=
   argument (realNumerator q) (imagNumerator q) (denominator q) (sign q)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M p : PTm n) :
-    Syn.subst σ (sample f x M p) = sample f (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ p) := by
-  simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_realNumerator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (realNumerator q) = realNumerator (Syn.subst σ q) := by simp [realNumerator]
+ipra_subst realNumerator
 
 @[simp] theorem subst_imagNumerator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
     Syn.subst σ (imagNumerator q) = imagNumerator (Syn.subst σ q) := by

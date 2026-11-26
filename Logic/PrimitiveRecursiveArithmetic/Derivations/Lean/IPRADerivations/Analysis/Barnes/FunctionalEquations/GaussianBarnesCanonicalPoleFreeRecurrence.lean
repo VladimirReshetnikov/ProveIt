@@ -13,7 +13,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPoleFreeRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHead (source)
 open GaussianBarnesCanonicalValue (nameF data regular)
 open GaussianBarnesCanonicalShiftChart (translated_bound)
@@ -23,8 +23,6 @@ open GaussianGammaReciprocalInverse (gammaF gammaData gamma_product gamma_regula
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameRingLaws (oneF one_fast multiply_associative multiply_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

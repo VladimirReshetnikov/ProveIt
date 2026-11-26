@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerAdditionLaws
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width)
 open QuadraticTowerArrayCodec (normalized)
@@ -24,9 +24,6 @@ open QuadraticTowerMultiplicationTable (leftHalf rightHalf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length append entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

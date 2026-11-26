@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadNewton
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalParityPower
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaHarmonicPowerPoints
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original head Newton sum in the source harmonic-power form
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadHarmonicNewton
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianGammaEulerHeadGeometricStep (term value)
@@ -28,10 +27,6 @@ open GaussianGammaHarmonicPowerPoints (point)
 open GaussianRationalEulerCoefficients (parityPoint)
 open GaussianRationalFiniteSum (sum)
 open GaussianGammaReciprocalDegreeCells (embeddedBody)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,14 +36,10 @@ def weight (N s j : PTm n) : PTm n := qmul (parityPoint j) (reader N (monus s j)
 def powerTerm (N s j : PTm n) : PTm n := qmul (qmul (parityPoint j) (point (succ j) N)) (reader N (monus s j))
 def powerBody : PTm 2 := powerTerm (fstT (var 1)) (sndT (var 1)) (var 0)
 def powerSum (N s : PTm n) : PTm n := sum powerBody (succ s) (data N s)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (N s : PTm n) :
-    Syn.subst σ (data N s) = data (Syn.subst σ N) (Syn.subst σ s) := by simp [data]
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (N s j : PTm n) :
-    Syn.subst σ (weight N s j) = weight (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ j) := by simp [weight]
-@[simp] theorem subst_powerTerm {l : ℕ} (σ : Fin n → PTm l) (N s j : PTm n) :
-    Syn.subst σ (powerTerm N s j) = powerTerm (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ j) := by simp [powerTerm]
-@[simp] theorem subst_powerSum {l : ℕ} (σ : Fin n → PTm l) (N s : PTm n) :
-    Syn.subst σ (powerSum N s) = powerSum (Syn.subst σ N) (Syn.subst σ s) := by simp [powerSum]
+ipra_subst data
+ipra_subst weight
+ipra_subst powerTerm
+ipra_subst powerSum
 
 theorem term_congr {a b N M s t j k : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hs : Γ ⊢[PRAAx] s ≐ t) (hj : Γ ⊢[PRAAx] j ≐ k) :

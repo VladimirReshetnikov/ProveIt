@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetOscillatoryMatrixCell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentResolvent (pole subst_pole)
 open GaussianBinetArctangentCosineLaplace (mean)
 open GaussianBinetExponentialIntegralGrid (row)
@@ -31,10 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded qnegative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetExponentialIntegralGrid.evaluatorF

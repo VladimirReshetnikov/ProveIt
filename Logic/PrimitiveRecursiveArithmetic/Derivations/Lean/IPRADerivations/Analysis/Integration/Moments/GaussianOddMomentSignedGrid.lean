@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOddMomentSignedGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianOddMomentIntegrand (argument clock degree)
 open GaussianOddSymmetricQuadrature (fixedData positiveF negativeF)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -27,8 +27,6 @@ open GaussianRationalFiniteSum (sum)
 open GaussianCompactRiemannName (evaluatorName nameData inside grid sampleBody sampleData quadrature)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,12 +39,8 @@ def evaluatorF (negative : Bool) : PR 3 := PTm.toPR (evaluatorTerm negative (var
 def symmetricGrid (p M a C E x : PTm n) : PTm n :=
   qadd (quadrature (evaluatorF false) p M a C E x) (quadrature (evaluatorF true) p M a C E x)
 
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (side : Bool) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm side p t x) = evaluatorTerm side (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [evaluatorTerm,rowClock]
-@[simp] theorem subst_symmetricGrid {m : ℕ} (σ : Fin n → PTm m) (p M a C E x : PTm n) :
-    Syn.subst σ (symmetricGrid p M a C E x) = symmetricGrid (Syn.subst σ p) (Syn.subst σ M)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by simp [symmetricGrid]
+ipra_subst evaluatorTerm [rowClock]
+ipra_subst symmetricGrid
 
 theorem evaluator_at (side : Bool) (p t x : PTm n) : Γ ⊢[PRAAx]
     ap3 (evaluatorF side) p t x ≐ evaluatorTerm side p t x := by

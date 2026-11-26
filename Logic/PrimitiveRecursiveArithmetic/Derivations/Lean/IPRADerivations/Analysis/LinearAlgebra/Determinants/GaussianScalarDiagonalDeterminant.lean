@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarIdentityDeterminant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual diagonal row scaling and its numerical scalar determinant
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDiagonalDeterminant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiberVandermonde (delta table table_lookup)
@@ -29,10 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_congr
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,14 +37,10 @@ def diagonalBody : PTm 3 := qmul (delta (var 0) (var 1)) (weight (fstT (var 2)) 
 def diagonal (d t m : PTm n) : PTm n := table diagonalBody m m (diagonalData d t)
 def weightBody : PTm 2 := weight (fstT (var 1)) (sndT (var 1)) (var 0)
 def weightProduct (d t k : PTm n) : PTm n := qprod weightBody k (diagonalData d t)
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (d t r : PTm n) :
-    Syn.subst σ (weight d t r) = weight (Syn.subst σ d) (Syn.subst σ t) (Syn.subst σ r) := by simp [weight,sel]
-@[simp] theorem subst_diagonalData {l : ℕ} (σ : Fin n → PTm l) (d t : PTm n) :
-    Syn.subst σ (diagonalData d t) = diagonalData (Syn.subst σ d) (Syn.subst σ t) := by simp [diagonalData]
-@[simp] theorem subst_diagonal {l : ℕ} (σ : Fin n → PTm l) (d t m : PTm n) :
-    Syn.subst σ (diagonal d t m) = diagonal (Syn.subst σ d) (Syn.subst σ t) (Syn.subst σ m) := by simp [diagonal]
-@[simp] theorem subst_weightProduct {l : ℕ} (σ : Fin n → PTm l) (d t k : PTm n) :
-    Syn.subst σ (weightProduct d t k) = weightProduct (Syn.subst σ d) (Syn.subst σ t) (Syn.subst σ k) := by simp [weightProduct]
+ipra_subst weight [sel]
+ipra_subst diagonalData
+ipra_subst diagonal
+ipra_subst weightProduct
 theorem weight_upper (d t r : PTm n) (hr : Γ ⊢[PRAAx] lt r t) : Γ ⊢[PRAAx] weight d t r ≐ d :=
   sel_one (AnalyticNumberTheory.Totatives.sg_lt hr)
 theorem weight_lower (d t r : PTm n) (hr : Γ ⊢[PRAAx] le t r) : Γ ⊢[PRAAx] weight d t r ≐ qone :=
@@ -80,13 +71,9 @@ theorem weight_body_at (d t i : PTm n) : Γ ⊢[PRAAx] inst2 weightBody i (diago
 /-- Genuine guarded QF prefix, so the first t factors really are d. -/
 theorem weight_prefix (d t k : PTm n) (hk : Γ ⊢[PRAAx] le k t) : Γ ⊢[PRAAx] weightProduct d t k ≐ power d k := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift t) ⟶ weightProduct (Syn.shift d) (Syn.shift t) (var 0) ≐ power (Syn.shift d) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,subst_weightProduct,GaussianRationalReciprocal.subst_power,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((product_zero _ _).eqTrans (power_zero _).eqSymm)
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,subst_weightProduct,GaussianRationalReciprocal.subst_power,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_le, subst_weightProduct, GaussianRationalReciprocal.subst_power]
+    · exact .impI ((product_zero _ _).eqTrans (power_zero _).eqSymm)
+    · refine .impI ?_
       exact (product_succ _ _ _).eqTrans
         ((qmul_congr (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
           ((weight_body_at _ _ _).eqTrans (weight_upper _ _ _ Prf.hyp0))).eqTrans (power_succ _ _).eqSymm)
@@ -209,18 +196,17 @@ def actionFields (p : PTm n) (i : Fin 5) : PTm n :=
   ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),fstT (sndT (sndT (sndT p))),sndT (sndT (sndT (sndT p)))] i
 def actionBody : PTm 2 := qmul (weight (actionFields (var 1) 0) (actionFields (var 1) 1) (actionFields (var 1) 3))
   (cell (actionFields (var 1) 2) (var 0) (actionFields (var 1) 4))
-@[simp] theorem subst_actionData {l : ℕ} (σ : Fin n → PTm l) (d t E r j : PTm n) :
-    Syn.subst σ (actionData d t E r j) = actionData (Syn.subst σ d) (Syn.subst σ t) (Syn.subst σ E) (Syn.subst σ r) (Syn.subst σ j) := by simp [actionData]
+ipra_subst actionData
 @[simp] theorem subst_actionFields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 5) :
     Syn.subst σ (actionFields p i) = actionFields (Syn.subst σ p) i := by fin_cases i <;> simp [actionFields]
 theorem action_fields_at (d t E r j : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     actionFields (actionData d t E r j) i ≐ ![d,t,E,r,j] i := by
   fin_cases i
   · exact fst_pair _ _
-  · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  · exact (congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
-  · exact (congrFst ((congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
-  · exact (congrSnd ((congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  · exact (snd_pair _ _).fstE
+  · exact (snd_pair _ _).sndE.fstE
+  · exact (snd_pair _ _).sndE.sndE.fstE
+  · exact (snd_pair _ _).sndE.sndE.sndE
 theorem action_body_at (d t E r j k : PTm n) : Γ ⊢[PRAAx]
     inst2 actionBody k (actionData d t E r j) ≐ qmul (weight d t r) (cell E k j) := by
   simp only [actionBody,inst2,GaussianRationalHorner.subst_qmul,subst_weight,GaussianPolynomialDeterminantTerms.subst_cell,
@@ -275,22 +261,20 @@ def output (d t m : PTm n) : PTm n := pairT (diagonal d t m)
     (pairT (GaussianScalarDeterminant.scalarDet (diagonal d t m) m) (power d t)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (d t m : PTm n) : PTm n := ap3 outputF d t m
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d t m : PTm n) :
-    Syn.subst σ (output d t m) = output (Syn.subst σ d) (Syn.subst σ t) (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d t m : PTm n) :
-    Syn.subst σ (run d t m) = run (Syn.subst σ d) (Syn.subst σ t) (Syn.subst σ m) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d t m : PTm n) : Γ ⊢[PRAAx] run d t m ≐ output d t m := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2)) ![d,t,m]
 theorem returned_table (d t m : PTm n) : Γ ⊢[PRAAx] fstT (run d t m) ≐ diagonal d t m :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_scalar_run (d t m : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run d t m)) ≐ GaussianScalarDeterminant.run (diagonal d t m) m :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_value (d t m : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run d t m))) ≐ GaussianScalarDeterminant.scalarDet (diagonal d t m) m :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.sndE.fstE
 theorem returned_power (d t m : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d t m))) ≐ power d t :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE.sndE
 theorem returned_det_power (d t m : PTm n) (ht : Γ ⊢[PRAAx] le t m) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run d t m))) ≐ sndT (sndT (sndT (run d t m))) :=
   (returned_value _ _ _).eqTrans ((diagonal_det _ _ _ ht).eqTrans (returned_power _ _ _).eqSymm)

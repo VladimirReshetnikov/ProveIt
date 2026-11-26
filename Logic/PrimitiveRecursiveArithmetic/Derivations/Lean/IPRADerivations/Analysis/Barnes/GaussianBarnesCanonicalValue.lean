@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalValue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial initial_positive)
 open GaussianBarnesCanonicalLogTail (tailDenominator tail_denominator_positive)
@@ -26,9 +26,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameBounds (U all_samples_bounded)
 open GaussianNamedInverseRate (independentRate)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianBarnesCanonicalPrefactor.nameF

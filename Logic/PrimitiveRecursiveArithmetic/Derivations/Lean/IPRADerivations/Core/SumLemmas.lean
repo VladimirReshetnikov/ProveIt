@@ -41,15 +41,11 @@ private abbrev shiftF (f : PTm 2) : Fm PTm 2 :=
   ap2 (sumF f) (succ (var 0)) (var 1) ≐ inst2 f zero (var 1) + ap2 (sumF (shiftBody f)) (var 0) (var 1)
 
 private theorem sum_shift₀ (f : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] shiftF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' f zero (var 0)).eqTrans ?_
+  ipra_ind [subst_ap2, subst_inst2]
+  · refine (sum_succ' f zero (var 0)).eqTrans ?_
     exact ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _)).eqTrans
       ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) (sum_zero _ _).eqSymm))
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' f (succ (var 0)) (var 1)).eqTrans ?_
+  · refine (sum_succ' f (succ (var 0)) (var 1)).eqTrans ?_
     refine (congrAdd Prf.hyp0 (.eqRefl _)).eqTrans ?_
     refine (add_assoc _ _ _).eqTrans (congrAdd (.eqRefl _) ?_)
     refine .eqTrans ?_ (sum_succ' (shiftBody f) (var 0) (var 1)).eqSymm
@@ -66,13 +62,9 @@ private abbrev addF (f g : PTm 2) : Fm PTm 2 :=
   ap2 (sumF (addBody f g)) (var 0) (var 1) ≐ ap2 (sumF f) (var 0) (var 1) + ap2 (sumF g) (var 0) (var 1)
 
 private theorem sum_add₀ (f g : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] addF f g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero]
-    exact (sum_zero _ _).eqTrans ((add_zero _).eqSymm.eqTrans (congrAdd (sum_zero _ _) (sum_zero _ _)).eqSymm)
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' _ (var 0) (var 1)).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · exact (sum_zero _ _).eqTrans ((add_zero _).eqSymm.eqTrans (congrAdd (sum_zero _ _) (sum_zero _ _)).eqSymm)
+  · refine (sum_succ' _ (var 0) (var 1)).eqTrans ?_
     rw [inst2_addBody]
     refine withEq Prf.hyp0 fun e₁ => withEq (sum_succ' f (var 0) (var 1)) fun e₂ =>
       withEq (sum_succ' g (var 0) (var 1)) fun e₃ => ?_
@@ -112,13 +104,9 @@ private abbrev termLeF (f : PTm 2) : Fm PTm 3 :=
   lt (var 1) (var 0) ⟶ le (inst2 f (var 1) (var 2)) (ap2 (sumF f) (var 0) (var 2))
 
 private theorem term_le_sum₀ (f : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] termLeF f := by
-  refine ind _ ⟨lt_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, subst_inst2, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero]
-    exact .impI (lt_zero_absurd _ Prf.hyp0)
-  · simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, subst_inst2, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨lt_QF _ _, le_QF _ _⟩) [subst_le, subst_lt, subst_ap2, subst_inst2]
+  · exact .impI (lt_zero_absurd _ Prf.hyp0)
+  · refine .impI ?_
     refine le_congr (.eqRefl _) (sum_succ' f (var 0) (var 2)).eqSymm ?_
     refine .orE (lt_succ_cases Prf.hyp0) ?_ ?_
     · exact le_trans (.impE hyp2 Prf.hyp0) (le_add_right _ _)

@@ -8,11 +8,7 @@ The prefix of length zero has value zero. Inputs here are already clipped
 nonnegative observations in integer units. -/
 
 namespace LeanProofs.IPRA.Analysis.Observation.PrefixObject
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open LeanProofs.ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

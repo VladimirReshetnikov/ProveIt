@@ -14,7 +14,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetOscillatorySineRectangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg)
 open GaussianBinetArctangentCosineRectangle (rectangle)
 open GaussianBinetCosinePrimitive (endpoint)
@@ -39,9 +39,6 @@ open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open RationalArithmetic (select)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "matrix" => GaussianBinetOscillatoryRectangleTranspose.matrix
@@ -65,17 +62,9 @@ def data (p X Y D sign A B R U L N : PTm n) : PTm n :=
 def value (p X Y D sign A B R U L N : PTm n) : PTm n :=
   qmul (weight (D*L) one N) (sum body N (data p X Y D sign A B R U L N))
 
-@[simp] theorem subst_entry {m : ℕ} (σ : Fin n → PTm m) (j r A B T N P C q : PTm n) :
-    Syn.subst σ (entry j r A B T N P C q) = entry (Syn.subst σ j) (Syn.subst σ r) (Syn.subst σ A)
-      (Syn.subst σ B) (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ P) (Syn.subst σ C) (Syn.subst σ q) := by simp [entry,sg,one]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p X Y D sign A B R U L N : PTm n) :
-    Syn.subst σ (data p X Y D sign A B R U L N) = data (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ Y)
-      (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ U)
-      (Syn.subst σ L) (Syn.subst σ N) := by simp [data,GaussianLogGammaEulerRepresentation.subst_argument]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p X Y D sign A B R U L N : PTm n) :
-    Syn.subst σ (value p X Y D sign A B R U L N) = value (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ Y)
-      (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ U)
-      (Syn.subst σ L) (Syn.subst σ N) := by simp [value,one]
+ipra_subst entry [sg, one]
+ipra_subst data [GaussianLogGammaEulerRepresentation.subst_argument]
+ipra_subst value [one]
 
 private theorem row_congr {p p' q q' S S' A A' B B' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hq : Γ ⊢[PRAAx] q ≐ q') (hS : Γ ⊢[PRAAx] S ≐ S')

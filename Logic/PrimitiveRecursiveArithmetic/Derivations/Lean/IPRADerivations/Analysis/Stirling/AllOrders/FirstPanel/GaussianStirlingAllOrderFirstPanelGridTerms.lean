@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelGridTerms
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderFirstPanel (first_kernel_decomposition splitRow splitNumerator base)
 open GaussianStirlingAllOrderKernel (row offset offset_positive)
 open GaussianStirlingAllOrderSquareIntegral (reciprocal_square)
@@ -26,8 +26,6 @@ open RationalArithmetic (add multiply negative)
 open RationalAlgebra (multiply_congr add_congr negative_congr)
 open RationalRepresentations (represents_add represents_negative)
 open RationalReciprocalPowerTail (reciprocalPower)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,9 +39,7 @@ def parts (U B Q r : PTm n) : PTm n :=
     (add (multiply (fraction (linearCoefficient U B Q) one) (reciprocalPower one C))
       (negative (multiply (fraction (squareCoefficient U B Q) one) (reciprocalPower two C))))
 
-@[simp] theorem subst_parts {l : ℕ} (σ : Fin n → PTm l) (U B Q r : PTm n) :
-    Syn.subst σ (parts U B Q r) = parts (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ Q) (Syn.subst σ r) :=
-  by simp [parts,gridIndex,linearCoefficient,squareCoefficient]
+ipra_subst parts [gridIndex, linearCoefficient, squareCoefficient]
 
 theorem grid_parts (A B Q k r : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hB : Γ ⊢[PRAAx] le one B) (hQ : Γ ⊢[PRAAx] le one Q) (hr : Γ ⊢[PRAAx] le r (B*Q)) :

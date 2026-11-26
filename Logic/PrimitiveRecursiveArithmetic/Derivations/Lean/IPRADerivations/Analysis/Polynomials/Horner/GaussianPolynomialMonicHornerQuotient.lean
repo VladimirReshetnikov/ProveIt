@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianPolynomialMonicHornerReduction
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianPolynomialYShift
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The quotient in polynomial-valued monic Horner division
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialMonicHornerQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate horner hornerF qzero qadd qmul)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_right qzero_add qzero_canonical)
 open GaussianPolynomialMonicCompanion (rowShape row_shape_at companion values values_length values_lookup monicValues
@@ -26,9 +25,6 @@ open GaussianPolynomialMonicHornerReduction (width zeroRows data data_fields sta
   zero_rows_stored zero_rows_evaluation)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,12 +37,8 @@ def stepBody : PTm 3 := advance (fields (var 2) 0) (fields (var 2) 1) (fields (v
 def quotientF : PR 2 := rec2 initial stepBody
 def quotient (F H m a c j : PTm n) : PTm n := ap2 quotientF j (data F H m a c)
 
-@[simp] theorem subst_advance {k : ℕ} (σ : Fin n → PTm k) (F H m a c j Q : PTm n) :
-    Syn.subst σ (advance F H m a c j Q) = advance (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ Q) := by simp [advance]
-@[simp] theorem subst_quotient {k : ℕ} (σ : Fin n → PTm k) (F H m a c j : PTm n) :
-    Syn.subst σ (quotient F H m a c j) = quotient (Syn.subst σ F) (Syn.subst σ H)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [quotient]
+ipra_subst advance
+ipra_subst quotient
 
 private theorem advance_parameters (p : PTm n) (F H m a c j Q : PTm n)
     (h : ∀ i : Fin 5, Γ ⊢[PRAAx] fields p i ≐ ![F,H,m,a,c] i) :
@@ -93,12 +85,8 @@ def qvalue (F H m a c j x y : PTm n) : PTm n := evaluate (values (quotient F H m
 def rvalue (F H m a c j x y : PTm n) : PTm n := evaluate (values (stage F H m a c j) m x) y
 def leadingValue (F H m a c j x : PTm n) : PTm n := evaluate (entry (stage F H m a c j) zero) x
 
-@[simp] theorem subst_qvalue {k : ℕ} (σ : Fin n → PTm k) (F H m a c j x y : PTm n) :
-    Syn.subst σ (qvalue F H m a c j x y) = qvalue (Syn.subst σ F) (Syn.subst σ H)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [qvalue]
-@[simp] theorem subst_rvalue {k : ℕ} (σ : Fin n → PTm k) (F H m a c j x y : PTm n) :
-    Syn.subst σ (rvalue F H m a c j x y) = rvalue (Syn.subst σ F) (Syn.subst σ H)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ y) := by simp [rvalue]
+ipra_subst qvalue
+ipra_subst rvalue
 
 theorem quotient_evaluation_succ (F H m a c j x y : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] qvalue F H m a c (succ j) x y ≐ qadd (qmul (qvalue F H m a c j x y) y) (leadingValue F H m a c j x) := by
@@ -125,9 +113,7 @@ theorem remainder_evaluation_succ (F H m a c j x y : PTm n) (hm : Γ ⊢[PRAAx] 
 def prefixLaw (F H m a c L x y j : PTm n) : Fm PTm n := le j L ⟶
   horner (values H L x) y j ≐ qadd (qmul (evaluate (monicValues F m x) y) (qvalue F H m a c j x y)) (rvalue F H m a c j x y)
 
-@[simp] theorem subst_prefixLaw {k : ℕ} (σ : Fin n → PTm k) (F H m a c L x y j : PTm n) :
-    (prefixLaw F H m a c L x y j).subst σ = prefixLaw (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ j) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem reconstruction_succ (F H m a c L x y j : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hF : Γ ⊢[PRAAx] rowShape F m c) (hH : Γ ⊢[PRAAx] rowShape H L a)
@@ -151,9 +137,8 @@ theorem prefix_reconstruction (F H m a c L x y j : PTm n) (hm : Γ ⊢[PRAAx] le
   have hHs : Γ.map Fm.shift ⊢[PRAAx] rowShape (Syn.shift H) (Syn.shift L) (Syn.shift a) := by simpa [Fm.shift,Syn.shift] using hH.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift F) (Syn.shift H) (Syn.shift m) (Syn.shift a)
       (Syn.shift c) (Syn.shift L) (Syn.shift x) (Syn.shift y) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have q0 : Γ ⊢[PRAAx] qvalue F H m a c zero x y ≐ qzero :=
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · have q0 : Γ ⊢[PRAAx] qvalue F H m a c zero x y ≐ qzero :=
         (evaluation_congr (values_congr (quotient_zero _ _ _ _ _) (.eqRefl _) (.eqRefl _)) (.eqRefl _)).eqTrans
           (zero_rows_evaluation _ _ _ _)
       have r0 : Γ ⊢[PRAAx] rvalue F H m a c zero x y ≐ qzero :=
@@ -161,8 +146,7 @@ theorem prefix_reconstruction (F H m a c L x y j : PTm n) (hm : Γ ⊢[PRAAx] le
           (zero_rows_evaluation _ _ _ _)
       exact .impI ((GaussianRationalHorner.horner_zero _ _).eqTrans
         ((qadd_congr ((qmul_congr (.eqRefl _) q0).eqTrans (qmul_zero_right _)) r0).eqTrans (qzero_add _ qzero_canonical)).eqSymm).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (reconstruction_succ (Syn.shift F) (Syn.shift H) (Syn.shift m) (Syn.shift a) (Syn.shift c)
+    · exact .impI (reconstruction_succ (Syn.shift F) (Syn.shift H) (Syn.shift m) (Syn.shift a) (Syn.shift c)
         (Syn.shift L) (Syn.shift x) (Syn.shift y) (var 0) hms.wk.wk hFs.wk.wk hHs.wk.wk Prf.hyp0 Prf.hyp1)
   have atJ : Γ ⊢[PRAAx] prefixLaw F H m a c L x y j := by
     simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j

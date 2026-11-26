@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerLinearSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode eval_re_code eval_im_code)
 open GaussianLogGammaEulerArgumentIncrement (step subst_step)
 open GaussianLogGammaEulerHead (argument)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (represents ofGaussian_represents ofGaussian_canonic
 open GaussianRationalReciprocal (reciprocal)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale re_one im_one)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "reciprocalBody" => GaussianLogGammaEulerReciprocalSlope.rowBody

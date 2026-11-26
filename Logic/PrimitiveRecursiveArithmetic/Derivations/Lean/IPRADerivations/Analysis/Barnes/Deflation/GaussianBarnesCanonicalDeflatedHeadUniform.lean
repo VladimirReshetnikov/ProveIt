@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDeflatedHeadUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDeflatedHead (neighborhood nameF data)
 open GaussianBarnesCanonicalHead (factor_at parameters body)
 open GaussianBarnesCanonicalFactorApartness (minimumClock denominator denominator_positive power_lower)
@@ -33,10 +33,6 @@ open GaussianRationalLowerBounds (lower_from_representation product_lower)
 open GaussianNamedFiniteProductFamily (rowF)
 open GaussianNamedFiniteProductApartness (rowLowerAt sample_lower apartClock clock_budget weaken_margin)
 open GaussianNameReciprocal (lower apart anchor lower_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

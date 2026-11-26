@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.RationalPolynomialPowers
 import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.RationalPhiSharpness
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The literal general-Q sharp superelliptic family
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiSharpFamily
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPolynomialGaussianEmbedding (evaluate hornerF embed_congr)
 open RationalPolynomialBuffersGaussianEmbedding (leftPad pad_length pad_lookup pad_coefficient_before pad_evaluation added added_length added_lookup added_evaluation)
 open RationalConsecutiveFactorProduct (consecutive root consecutive_length consecutive_head consecutive_root)
@@ -30,10 +29,6 @@ open GaussianRationalHorner (qzero qadd canonical)
 open GaussianRationalSyntheticDivision (qone qadd_congr qzero_add)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,12 +37,9 @@ def polynomial (Q s r m : PTm n) : PTm n := added (powered Q s r m) (consecutive
 def pointBody : PTm 2 := pairT (root (var 0)) (evaluate (var 1) (root (var 0)))
 def points (Q m : PTm n) : PTm n := sequence pointBody m Q
 
-@[simp] theorem subst_powered {k : ℕ} (σ : Fin n → PTm k) (Q s r m : PTm n) :
-    Syn.subst σ (powered Q s r m) = powered (Syn.subst σ Q) (Syn.subst σ s) (Syn.subst σ r) (Syn.subst σ m) := by simp [powered]
-@[simp] theorem subst_polynomial {k : ℕ} (σ : Fin n → PTm k) (Q s r m : PTm n) :
-    Syn.subst σ (polynomial Q s r m) = polynomial (Syn.subst σ Q) (Syn.subst σ s) (Syn.subst σ r) (Syn.subst σ m) := by simp [polynomial]
-@[simp] theorem subst_points {k : ℕ} (σ : Fin n → PTm k) (Q m : PTm n) :
-    Syn.subst σ (points Q m) = points (Syn.subst σ Q) (Syn.subst σ m) := by simp [points]
+ipra_subst powered
+ipra_subst polynomial
+ipra_subst points
 
 theorem powered_length (Q s r m : PTm n) (hm : Γ ⊢[PRAAx] le (r*s) m) : Γ ⊢[PRAAx] length (powered Q s r m) ≐ succ m :=
   (pad_length _ _).eqTrans ((congrAdd (.eqRefl _) (RationalPolynomialPowers.power_length Q s r)).eqTrans
@@ -93,9 +85,9 @@ theorem points_length (Q m : PTm n) : Γ ⊢[PRAAx] length (points Q m) ≐ m :=
 theorem point_lookup (Q m j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx] entry (points Q m) j ≐ pairT (root j) (evaluate Q (root j)) := by
   simpa [points,pointBody,inst2] using sequence_decode (Γ := Γ) pointBody (x := Q) hj
 theorem point_abscissa (Q m j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx] abscissa (points Q m) j ≐ root j :=
-  (congrFst (point_lookup Q m j hj)).eqTrans (fst_pair _ _)
+  (point_lookup Q m j hj).fstE
 theorem point_ordinate (Q m j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx] ordinate (points Q m) j ≐ evaluate Q (root j) :=
-  (congrSnd (point_lookup Q m j hj)).eqTrans (snd_pair _ _)
+  (point_lookup Q m j hj).sndE
 
 theorem points_distinct (Q m : PTm n) : Γ ⊢[PRAAx] distinct (points Q m) := by
   refine .allI (.impI (.allI (.impI (.impI (.impI ?_)))))
@@ -141,11 +133,8 @@ def lambdaCoefficient (Q s k : PTm n) : PTm n := Foundations.GuardedTotalization
   (RationalArithmetic.negative (entry Q (monus s k)))
 def lambdaBody : PTm 2 := lambdaCoefficient (fstT (var 1)) (sndT (var 1)) (var 0)
 def hyperplane (Q s : PTm n) : PTm n := sequence lambdaBody (RationalPhiFeatures.dimension s) (pairT Q s)
-@[simp] theorem subst_lambdaCoefficient {k : ℕ} (σ : Fin n → PTm k) (Q s j : PTm n) :
-    Syn.subst σ (lambdaCoefficient Q s j) = lambdaCoefficient (Syn.subst σ Q) (Syn.subst σ s) (Syn.subst σ j) := by
-  simp [lambdaCoefficient,Foundations.GuardedTotalization.sel]
-@[simp] theorem subst_hyperplane {k : ℕ} (σ : Fin n → PTm k) (Q s : PTm n) :
-    Syn.subst σ (hyperplane Q s) = hyperplane (Syn.subst σ Q) (Syn.subst σ s) := by simp [hyperplane]
+ipra_subst lambdaCoefficient [Foundations.GuardedTotalization.sel]
+ipra_subst hyperplane
 
 theorem lambda_coefficient_congr {Q P s t i j : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ P) (hs : Γ ⊢[PRAAx] s ≐ t) (hi : Γ ⊢[PRAAx] i ≐ j) :
     Γ ⊢[PRAAx] lambdaCoefficient Q s i ≐ lambdaCoefficient P t j := by
@@ -272,24 +261,23 @@ def output (Q s r m : PTm n) : PTm n := pairT (polynomial Q s r m) (pairT (point
   (pairT (hyperplane Q s) (RationalPolynomialDegreeGaussianEmbedding.degree (polynomial Q s r m) m)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (Q s r m : PTm n) : PTm n := app outputF ![Q,s,r,m]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (Q s r m : PTm n) :
-    Syn.subst σ (output Q s r m) = output (Syn.subst σ Q) (Syn.subst σ s) (Syn.subst σ r) (Syn.subst σ m) := by simp [output]
+ipra_subst output
 theorem program_at (Q s r m : PTm n) : Γ ⊢[PRAAx] run Q s r m ≐ output Q s r m := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![Q,s,r,m]
 theorem returned_polynomial (Q s r m : PTm n) : Γ ⊢[PRAAx] fstT (run Q s r m) ≐ polynomial Q s r m :=
-  (congrFst (program_at Q s r m)).eqTrans (fst_pair _ _)
+  (program_at Q s r m).fstE
 theorem returned_tail (Q s r m : PTm n) : Γ ⊢[PRAAx] sndT (run Q s r m) ≐ pairT (points Q m)
     (pairT (hyperplane Q s) (RationalPolynomialDegreeGaussianEmbedding.degree (polynomial Q s r m) m)) :=
-  (congrSnd (program_at Q s r m)).eqTrans (snd_pair _ _)
+  (program_at Q s r m).sndE
 theorem returned_points (Q s r m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run Q s r m)) ≐ points Q m :=
-  (congrFst (returned_tail Q s r m)).eqTrans (fst_pair _ _)
+  (returned_tail Q s r m).fstE
 theorem returned_witness (Q s r m : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run Q s r m)) ≐ pairT (hyperplane Q s)
     (RationalPolynomialDegreeGaussianEmbedding.degree (polynomial Q s r m) m) :=
-  (congrSnd (returned_tail Q s r m)).eqTrans (snd_pair _ _)
+  (returned_tail Q s r m).sndE
 theorem returned_hyperplane (Q s r m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run Q s r m))) ≐ hyperplane Q s :=
-  (congrFst (returned_witness Q s r m)).eqTrans (fst_pair _ _)
+  (returned_witness Q s r m).fstE
 theorem returned_degree (Q s r m : PTm n) (hm : Γ ⊢[PRAAx] lt (r*s) m) : Γ ⊢[PRAAx] sndT (sndT (sndT (run Q s r m))) ≐ m :=
-  ((congrSnd (returned_witness Q s r m)).eqTrans (snd_pair _ _)).eqTrans (polynomial_degree Q s r m hm)
+  (returned_witness Q s r m).sndE.eqTrans (polynomial_degree Q s r m hm)
 
 theorem actual_general_q_sharp_family_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (length (var 0) ≐ succ (var 1) ⟶ le one (var 2) ⟶ lt (var 2*var 1) (var 3) ⟶ certificate (var 0) (var 1) (var 2) (var 3)) :=

@@ -14,7 +14,7 @@ set_option maxHeartbeats 380000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLogCellGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianBinetReciprocalMean (gridData)
@@ -27,10 +27,6 @@ open GaussianRationalParameterTelescope (localRows local_error)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianRightHalfPlaneLogarithm (source nameF)
 open GaussianRightHalfPlaneLogarithmIncrementMargin (smallStep)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -61,21 +57,13 @@ def numerator (p A D k M : PTm n) : PTm n := num 4*D*D*unit p+num 9*(M*M)*((A+k*
 
 def denominator (p A D k M : PTm n) : PTm n := M*((A+k*D)*(A+k*D))*unit p
 
-@[simp] theorem subst_size {m : ℕ} (σ : Fin n → PTm m) (A B D k : PTm n) :
-    Syn.subst σ (size A B D k) = size (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ k) := by
-  simp [size, one, two]
+ipra_subst size [one, two]
 
-@[simp] theorem subst_requiredMesh {m : ℕ} (σ : Fin n → PTm m) (A B D k : PTm n) :
-    Syn.subst σ (requiredMesh A B D k) = requiredMesh (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ k) := by
-  simp [requiredMesh, one]
+ipra_subst requiredMesh [one]
 
-@[simp] theorem subst_sampleData {m : ℕ} (σ : Fin n → PTm m) (p A B D neg k M : PTm n) :
-    Syn.subst σ (sampleData p A B D neg k M) = sampleData (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ k) (Syn.subst σ M) := by simp [sampleData]
+ipra_subst sampleData
 
-@[simp] theorem subst_logRow {m : ℕ} (σ : Fin n → PTm m) (j p X Y E neg H : PTm n) :
-    Syn.subst σ (logRow j p X Y E neg H) = logRow (Syn.subst σ j) (Syn.subst σ p) (Syn.subst σ X)
-      (Syn.subst σ Y) (Syn.subst σ E) (Syn.subst σ neg) (Syn.subst σ H) := by simp [logRow]
+ipra_subst logRow
 
 private theorem log_data_congr (a a' b b' d d' s s' : PTm n)
     (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b')

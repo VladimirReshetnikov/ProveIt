@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumFreezeRational
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaMinimumFreeze (nameF data frozen_log_rate_at_rational)
 open GaussianNameEquivalence (crossEquivalent)
@@ -23,9 +23,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedRightHalfPlane (radius threshold)
 open GaussianRationalHorner (ofGaussian)
 open GaussianStirlingGammaLogarithm (gammaData logGammaF logGammaData gammaLogMargin)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "N" => GaussianGammaReciprocalInverse.gammaF
@@ -41,13 +38,9 @@ def numerator (f : PR 2) (r x : PTm n) : PTm n :=
 def denominator (f : PR 2) (r x : PTm n) : PTm n :=
   GaussianUnitIntervalInputDecoding.denominator (ap2 f r x)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x : PTm n) :
-    Syn.subst σ (numerator f r x) = numerator f (Syn.subst σ r) (Syn.subst σ x) := by
-  simp [numerator]
+ipra_subst numerator
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x : PTm n) :
-    Syn.subst σ (denominator f r x) = denominator f (Syn.subst σ r) (Syn.subst σ x) := by
-  simp [denominator]
+ipra_subst denominator
 
 theorem frozen_rational_domain (f : PR 2) (r x A : PTm n) (hs : Γ ⊢[PRAAx] source f x A)
     (hl : Γ ⊢[PRAAx] le (threshold A) r) :

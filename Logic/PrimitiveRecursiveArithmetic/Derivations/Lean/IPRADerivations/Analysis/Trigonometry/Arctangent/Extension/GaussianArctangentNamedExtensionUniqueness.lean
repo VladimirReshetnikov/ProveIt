@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtensionUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentInverseForward (input)
 open GaussianArctangentInverseSampler (index mesh mesh_positive index_le raw)
 open GaussianArctangentInverseUniqueness (selected selected_at retimed_parameter_distance)
@@ -33,10 +33,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_r
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open RationalValueBounds (radius radius_mono radius_symmetric radius_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

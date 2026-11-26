@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentClippedParameter
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (le_add_ad)
@@ -24,9 +24,6 @@ open RationalArithmetic (represents)
 open RationalCubeMidpoint (fraction fraction_represents)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper radius radius_of_upper cross_absolute)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,12 +31,8 @@ def denominator (s : PTm n) : PTm n := denominatorOf s
 def numerator (s : PTm n) : PTm n := clip (numeratorOf s).pos (numeratorOf s).neg (denominator s)
 def value (s : PTm n) : PTm n := fraction (numerator s) (denominator s)
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    Syn.subst σ (denominator s) = denominator (Syn.subst σ s) := by
-  simp [denominator,denominatorOf]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    Syn.subst σ (numerator s) = numerator (Syn.subst σ s) := by
-  simp [numerator,numeratorOf,ZT.subst]
+ipra_subst denominator [denominatorOf]
+ipra_subst numerator [numeratorOf, ZT.subst]
 
 theorem denominator_positive (s : PTm n) : Γ ⊢[PRAAx] le one (denominator s) :=
   RationalArgmin.denominator_positive s

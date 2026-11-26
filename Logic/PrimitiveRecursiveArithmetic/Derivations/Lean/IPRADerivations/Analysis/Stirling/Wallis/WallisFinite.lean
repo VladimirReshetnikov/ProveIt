@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Wallis.WallisRecurrence
 import IPRADerivations.Analysis.Integration.BaselRiemann
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite Wallis inequality
@@ -24,17 +23,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.WallisFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselQuadrature (uq d_pos lift4 inst2_lift4)
 open LeanProofs.IPRA.Analysis.WallisGrid
 open LeanProofs.IPRA.Analysis.WallisRecurrence (J Jb inst_Jb om_D Mj_le ds_le wallis_rec_paper)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -77,13 +72,9 @@ theorem db_le_step {m : PTm n} (ih : Γ ⊢[PRAAx] le (db m) (pw two m * da m)) 
 private abbrev dbF : Fm PTm 1 := le (db (var 0)) (pw two (var 0) * da (var 0))
 
 private theorem db₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] dbF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact db_le_base
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact db_le_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact db_le_base
+  · exact db_le_step Prf.hyp0
 
 /-- `p_m ≥ 2^{−m}`: `(2m)!! ≤ 2^m (2m − 1)!!`. -/
 theorem db_le (m : PTm n) : Γ ⊢[PRAAx] le (db m) (pw two m * da m) := by
@@ -229,8 +220,7 @@ theorem u1_step {j M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * su
   have c := cell1_up hj hL
   have e1 := natEq (sum_succ' (Γ := Γ) Jb j (pairT one (pairT (succ M₀) L)))
   have e2 := natEq (inst_Jb (Γ := Γ) j one (succ M₀) L)
-  have p1 := natEq (pw_one' (Γ := Γ) (sg j (succ M₀) L))
-  ipra_le sl ih + sl c using rw [e1, e2, p1]; ring
+  ipra_le sl ih + sl c using rw [e1, e2, natEq (pw_one' (Γ := Γ) (sg j (succ M₀) L))]; ring
 
 theorem d1_step {j M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L)
     (hj : Γ ⊢[PRAAx] le (succ j) (succ M₀)) (ih : Γ ⊢[PRAAx] D1Inv j M₀ L) : Γ ⊢[PRAAx] D1Inv (succ j) M₀ L := by
@@ -248,27 +238,15 @@ private abbrev d1F : Fm PTm 3 :=
   le (two * (succ (var 1) * succ (var 1))) (var 2) ⟶ le (var 0) (succ (var 1)) ⟶ D1Inv (var 0) (var 1) (var 2)
 
 private theorem u1₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] u1F := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      subst_sg, subst_gm, subst_om, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (u1_base _ _))
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      subst_sg, subst_gm, subst_om, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (u1_step Prf.hyp1 Prf.hyp0
+  ipra_ind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT, subst_sg, subst_gm, subst_om]
+  · exact .impI (.impI (u1_base _ _))
+  · exact .impI (.impI (u1_step Prf.hyp1 Prf.hyp0
       (Prf.impE (Prf.impE Prf.hyp1.wk Prf.hyp1) (le_trans (le_succ_self _) Prf.hyp0))))
 
 private theorem d1₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] d1F := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      subst_sg, subst_gm, subst_om, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (d1_base _ _))
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      subst_sg, subst_gm, subst_om, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (d1_step Prf.hyp1 Prf.hyp0
+  ipra_ind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT, subst_sg, subst_gm, subst_om]
+  · exact .impI (.impI (d1_base _ _))
+  · exact .impI (.impI (d1_step Prf.hyp1 Prf.hyp0
       (Prf.impE (Prf.impE Prf.hyp1.wk Prf.hyp1) (le_trans (le_succ_self _) Prf.hyp0))))
 
 /-- `eq:Jrec` for `k = 1`: `|J_1(M) − 1| ≤ 2/M`, cleared: `|𝒥_1 − M F²| ≤ 2F²`. -/
@@ -334,15 +312,9 @@ private abbrev evF : Fm PTm 3 :=
   le (two * (succ (var 1) * succ (var 1))) (var 2) ⟶ EvInv (var 0) (var 1) (var 2)
 
 private theorem ev₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] evF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_num, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (ev_base _ _)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_num, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (ev_step Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (ev_base _ _)
+  · exact .impI (ev_step Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
 
 theorem ev_all {M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) (m : PTm n) :
     Γ ⊢[PRAAx] EvInv m M₀ L := by
@@ -405,15 +377,9 @@ private abbrev odF : Fm PTm 3 :=
   le (two * (succ (var 1) * succ (var 1))) (var 2) ⟶ OdInv (var 0) (var 1) (var 2)
 
 private theorem od₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] odF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_num, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (od_base Prf.hyp0)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_num, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (od_step Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (od_base Prf.hyp0)
+  · exact .impI (od_step Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
 
 theorem od_all {M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ M₀ * succ M₀)) L) (m : PTm n) :
     Γ ⊢[PRAAx] OdInv m M₀ L := by
@@ -435,7 +401,6 @@ theorem finite_wallis_lower {M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ
   have odD := Prf.andE₂ (od_all hL m)
   have mo := J_mono (k := two * m) hL
   have bl := db_le (Γ := Γ) m
-  have pF := natEq (congrAp2 powF (two_succ (Γ := Γ) m) (.eqRefl (fact L)))
   have f1 := natEq (pw_succ (Γ := Γ) (fact L) (two * m))
   have f2 := natEq (pw_succ (Γ := Γ) (fact L) (succ (two * m)))
   have hP := LeanProofs.IPRA.AnalyticNumberTheory.Valuation.pw_pos'
@@ -445,7 +410,7 @@ theorem finite_wallis_lower {M₀ L : PTm n} (hL : Γ ⊢[PRAAx] le (two * (succ
   ipra_le 𝔞 (db m) * sl odD + 𝔞 (da (succ m)) * 𝔞 (db m) * sl mo + 𝔞 (da (succ m)) * 𝔞 (fact L) * sl evU +
       𝔞 (da (succ m)) * 𝔞 (pw (fact L) (succ (two * m))) * 𝔞 (fact L) *
         (16 * ((𝔞 m + 1) * (𝔞 m + 1)) * sl bl + (8 * 𝔞 m + 4) * 𝔞 (db m)) using
-    rw [pF, f2, f1]; ring
+    rw [natEq (congrAp2 powF (two_succ (Γ := Γ) m) (.eqRefl (fact L))), f2, f1]; ring
 
 /-- The upper bound `J_0(M) ≤ ((2m+1)/(2m)) W_m + D_m/M` for `m = r + 1`, cleared by
 `2m · M F · da m · da (m+1)`: `2m · da m · da (m+1) · 𝒥_0 ≤ (2m+1) (db m)² M F + 2m · da m · da (m+1) · D_m F`.

@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaInverseConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalConjugation (point point_congr)
 open GaussianRationalReciprocal (conjugate)
 open GaussianGammaEulerHeadLower (translated poleAt poleGuard)
@@ -25,9 +25,6 @@ open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameRingLaws (oneF one_at one_fast)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -128,16 +125,8 @@ def output (p q z R B d : PTm n) : PTm n :=
     (ap2 gammaF q (gammaData (conjugate z) R B d))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (p q z R B d : PTm n) : PTm n := PTm.app outputF ![p,q,z,R,B,d]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q z R B d : PTm n) :
-    Syn.subst σ (output p q z R B d) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q z R B d : PTm n) :
-    Syn.subst σ (run p q z R B d) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p q z R B d : PTm n) : Γ ⊢[PRAAx] run p q z R B d ≐ output p q z R B d := by
   simpa [run,outputF,subst_output] using
@@ -145,10 +134,10 @@ theorem program_at (p q z R B d : PTm n) : Γ ⊢[PRAAx] run p q z R B d ≐ out
 
 theorem returned_conjugate (p q z R B d : PTm n) : Γ ⊢[PRAAx]
     fstT (run p q z R B d) ≐ ap2 (GaussianNameConjugation.nameF gammaF) p (gammaData z R B d) :=
-  (congrFst (program_at p q z R B d)).eqTrans (fst_pair _ _)
+  (program_at p q z R B d).fstE
 theorem returned_original (p q z R B d : PTm n) : Γ ⊢[PRAAx]
     sndT (run p q z R B d) ≐ ap2 gammaF q (gammaData (conjugate z) R B d) :=
-  (congrSnd (program_at p q z R B d)).eqTrans (snd_pair _ _)
+  (program_at p q z R B d).sndE
 theorem returned_distance (p q z R B a d : PTm n) (h : Γ ⊢[PRAAx] source z R B a d) : Γ ⊢[PRAAx]
     GaussianRationalMetric.distanceBounded (fstT (run p q z R B d)) (sndT (run p q z R B d)) (unit p+unit q) (unit p*unit q) :=
   GaussianRationalDistanceOrder.distance_congr (returned_conjugate p q z R B d).eqSymm (returned_original p q z R B d).eqSymm

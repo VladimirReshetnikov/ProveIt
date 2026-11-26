@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents subst_fraction)
 open GaussianStirlingAllOrderKernel (row row_envelope multiply_zero_right subst_row)
 open GaussianStirlingAllOrderBernoulliEnvelope (cap)
@@ -28,9 +28,6 @@ open RationalFiniteSum (sum term termwiseLE sum_monotone)
 open RationalNonnegativePowers (fraction_multiply fraction_congr)
 open RationalReciprocalPowerTail (reciprocalPower potential)
 open RationalSumConstants (constantBody term_constant multiply_one_right sum_constant)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,14 +38,8 @@ def panelBody (m : ℕ) : PTm 2 :=
 def panel (m : ℕ) (q A B M k : PTm n) : PTm n :=
   multiply (fraction one M) (sum (panelBody m) M (panelData q A B M k))
 
-@[simp] theorem subst_panelData {l : ℕ} (σ : Fin n → PTm l) (q A B M k : PTm n) :
-    Syn.subst σ (panelData q A B M k) =
-      panelData (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ k) := by
-  simp [panelData]
-@[simp] theorem subst_panel {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (q A B M k : PTm n) :
-    Syn.subst σ (panel m q A B M k) =
-      panel m (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ k) := by
-  simp [panel]
+ipra_subst panelData
+ipra_subst panel
 
 private theorem row_congr (m : ℕ) {q A B M k r q' A' B' M' k' r' : PTm n}
     (h : Γ ⊢[PRAAx] q ≐ q') (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') (hM : Γ ⊢[PRAAx] M ≐ M')
@@ -134,10 +125,7 @@ def tailBody (m : ℕ) : PTm 2 :=
 
 def tail (m : ℕ) (q A B M N L : PTm n) : PTm n := sum (tailBody m) L (panelData q A B M N)
 
-@[simp] theorem subst_tail {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (q A B M N L : PTm n) :
-    Syn.subst σ (tail m q A B M N L) =
-      tail m (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [tail]
+ipra_subst tail
 
 private theorem panel_congr (m : ℕ) {q A B M k q' A' B' M' k' : PTm n}
     (h : Γ ⊢[PRAAx] q ≐ q') (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') (hM : Γ ⊢[PRAAx] M ≐ M')

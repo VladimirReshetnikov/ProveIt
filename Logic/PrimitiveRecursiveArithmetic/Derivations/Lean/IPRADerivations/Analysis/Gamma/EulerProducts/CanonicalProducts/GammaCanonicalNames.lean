@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalFactors
 import IPRADerivations.Analysis.Logarithm.DyadicComplexLogarithm
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A joint finite-query name for the canonical Gamma logarithmic tail
@@ -29,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GammaCanonicalNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GammaCanonicalFactors
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im add neg scale zeroCode normSq bounded bounded_add bounded_scale bounded_mono
@@ -38,10 +37,6 @@ open LeanProofs.IPRA.Analysis.DyadicComplexLogarithm
   (crossDifference rounded roundedDifference cancel_bounded_scale)
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -91,14 +86,8 @@ def degreeTerm (z B N i L K D E : PTm n) : PTm n :=
 def degreeDifference (z B N r L K D E : PTm n) : PTm n :=
   crossDifference (finiteSum z B N r L D) (finiteSum z B N r (L+K) E) D E
 
-@[simp] theorem subst_degreeTerm {m : ℕ} (σ : Fin n → PTm m) (z B N i L K D E : PTm n) :
-    Syn.subst σ (degreeTerm z B N i L K D E) = degreeTerm (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ i) (Syn.subst σ L) (Syn.subst σ K) (Syn.subst σ D) (Syn.subst σ E) := by
-  simp [degreeTerm, crossDifference]
-@[simp] theorem subst_degreeDifference {m : ℕ} (σ : Fin n → PTm m) (z B N r L K D E : PTm n) :
-    Syn.subst σ (degreeDifference z B N r L K D E) = degreeDifference (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) (Syn.subst σ K) (Syn.subst σ D) (Syn.subst σ E) := by
-  simp [degreeDifference, crossDifference]
+ipra_subst degreeTerm [crossDifference]
+ipra_subst degreeDifference [crossDifference]
 
 /-- Exact common-denominator meaning of a degree-comparison summand. -/
 theorem degree_term_norm (z B N i L K D E C : PTm n)
@@ -189,15 +178,10 @@ theorem degree_prefix_bound (z R B N oldCount newCount L K : PTm n)
         (tailDenominator (Syn.shift B) (Syn.shift N) (Syn.shift newCount) (Syn.shift L+Syn.shift K))))
         (var 0 * tailDenominator (Syn.shift B) (Syn.shift N) (Syn.shift oldCount) (Syn.shift L) *
           tailDenominator (Syn.shift B) (Syn.shift N) (Syn.shift newCount) (Syn.shift L+Syn.shift K))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_bounded, ComplexLogarithmRemainder.subst_scale,
-        subst_ap2, subst_two, subst_degreeDifference, subst_tailDenominator, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .impI (le_congr (degree_zero_norm _ _ _ _ _ _ _ _).eqSymm (.eqRefl _) (zero_le _))
-    · simp only [Fm.subst_imp, subst_le, subst_bounded, ComplexLogarithmRemainder.subst_scale,
-        subst_ap2, subst_two, subst_degreeDifference, subst_tailDenominator, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_bounded, ComplexLogarithmRemainder.subst_scale, subst_ap2,
+        subst_two, subst_degreeDifference, subst_tailDenominator]
+    · exact .impI (le_congr (degree_zero_norm _ _ _ _ _ _ _ _).eqSymm (.eqRefl _) (zero_le _))
+    · refine .impI ?_
       let D := tailDenominator (Syn.shift B) (Syn.shift N) (Syn.shift oldCount) (Syn.shift L)
       let E := tailDenominator (Syn.shift B) (Syn.shift N) (Syn.shift newCount) (Syn.shift L+Syn.shift K)
       let Δ : List (Fm PTm (n+1)) := le (succ (var 0)) (Syn.shift oldCount) ::
@@ -235,11 +219,7 @@ def splitFormula (z B N r s L D : PTm n) : Fm PTm n :=
   ZT.eq (im (finiteSum z B N (r+s) L D))
     (im (add (finiteSum z B N r L D) (finiteSum z B (N+r) s L D)))
 
-@[simp] theorem subst_splitFormula {m : ℕ} (σ : Fin n → PTm m) (z B N r s L D : PTm n) :
-    (splitFormula z B N r s L D).subst σ = splitFormula (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ L) (Syn.subst σ D) := by
-  simp only [splitFormula, Fm.subst_and, ZT.subst_eq, ComplexLogarithmRemainder.subst_re,
-    ComplexLogarithmRemainder.subst_im, ComplexLogarithmRemainder.subst_add, subst_finiteSum, PTm.subst_add]
+ipra_subst splitFormula
 
 theorem split_zero (z B N r L D : PTm n) : Γ ⊢[PRAAx] splitFormula z B N r zero L D := by
   have count := sum_count_congr (Γ := Γ) z B N L D (add_zero r)
@@ -287,11 +267,9 @@ theorem split_step (z B N r s L D : PTm n) (h : Γ ⊢[PRAAx] splitFormula z B N
 theorem sum_split (z B N r s L D : PTm n) : Γ ⊢[PRAAx] splitFormula z B N r s L D := by
   have all : Γ ⊢[PRAAx] .all (splitFormula (Syn.shift z) (Syn.shift B) (Syn.shift N) (Syn.shift r)
       (var 0) (Syn.shift L) (Syn.shift D)) := by
-    refine PRA.qfInd _ ⟨trivial, trivial⟩ ?_ ?_
-    · simp only [subst_splitFormula, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact split_zero _ _ _ _ _ _
-    · simp only [subst_splitFormula, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact split_step _ _ _ _ _ _ _ Prf.hyp0
+    ipra_qfind (⟨trivial, trivial⟩) [subst_splitFormula]
+    · exact split_zero _ _ _ _ _ _
+    · exact split_step _ _ _ _ _ _ _ Prf.hyp0
   simpa only [subst_splitFormula, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE s all
 
 theorem sum_split_re (z B N r s L D : PTm n) :
@@ -331,10 +309,7 @@ def jointDifference (z B N r s L K : PTm n) : PTm n :=
   crossDifference (finiteTail z B N r L) (finiteTail z B N (r+s) (L+K))
     (tailDenominator B N r L) (tailDenominator B N (r+s) (L+K))
 
-@[simp] theorem subst_jointDifference {m : ℕ} (σ : Fin n → PTm m) (z B N r s L K : PTm n) :
-    Syn.subst σ (jointDifference z B N r s L K) = jointDifference (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ s) (Syn.subst σ L) (Syn.subst σ K) := by
-  simp [jointDifference, crossDifference]
+ipra_subst jointDifference [crossDifference]
 
 /-- Both Taylor and index differences refer to the actual finiteTail samples. -/
 theorem joint_difference_norm (z B N r s L K C : PTm n) :
@@ -382,16 +357,11 @@ def degree (p R : PTm n) : PTm n := precision p + count p R
 def gap (p k R : PTm n) : PTm n := monus (count (p+k) R) (count p R)
 def degreeGap (p k R : PTm n) : PTm n := k + gap p k R
 
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (precision p) = precision (Syn.subst σ p) := by simp [precision]
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (count p R) = count (Syn.subst σ p) (Syn.subst σ R) := by simp [count]
-@[simp] theorem subst_degree {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (degree p R) = degree (Syn.subst σ p) (Syn.subst σ R) := by simp [degree]
-@[simp] theorem subst_gap {m : ℕ} (σ : Fin n → PTm m) (p k R : PTm n) :
-    Syn.subst σ (gap p k R) = gap (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ R) := by simp [gap]
-@[simp] theorem subst_degreeGap {m : ℕ} (σ : Fin n → PTm m) (p k R : PTm n) :
-    Syn.subst σ (degreeGap p k R) = degreeGap (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ R) := by simp [degreeGap]
+ipra_subst precision
+ipra_subst count
+ipra_subst degree
+ipra_subst gap
+ipra_subst degreeGap
 
 theorem precision_add (p k : PTm n) : Γ ⊢[PRAAx] precision (p+k) ≐ precision p+k := by unfold precision; ipra_ring
 
@@ -429,15 +399,9 @@ def sampleDenominator (p R B N : PTm n) : PTm n := tailDenominator B N (count p 
 def sampleDifference (p k z R B N : PTm n) : PTm n :=
   crossDifference (sample p z R B N) (sample (p+k) z R B N) (sampleDenominator p R B N) (sampleDenominator (p+k) R B N)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B N : PTm n) :
-    Syn.subst σ (sample p z R B N) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp only [sample, subst_finiteTail, subst_count, subst_degree]
-@[simp] theorem subst_sampleDenominator {m : ℕ} (σ : Fin n → PTm m) (p R B N : PTm n) :
-    Syn.subst σ (sampleDenominator p R B N) = sampleDenominator (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp only [sampleDenominator, subst_tailDenominator, subst_count, subst_degree]
-@[simp] theorem subst_sampleDifference {m : ℕ} (σ : Fin n → PTm m) (p k z R B N : PTm n) :
-    Syn.subst σ (sampleDifference p k z R B N) = sampleDifference (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [sampleDifference, crossDifference]
+ipra_subst sample
+ipra_subst sampleDenominator
+ipra_subst sampleDifference [crossDifference]
 
 theorem finiteTail_args (z B N : PTm n) {r r' L L' : PTm n}
     (hr : Γ ⊢[PRAAx] r ≐ r') (hL : Γ ⊢[PRAAx] L ≐ L') :
@@ -512,9 +476,7 @@ def observationTerm (p z R B N : PTm n) : PTm n :=
 def observationF : PR 5 := PTm.toPR (observationTerm (var 0) (var 1) (var 2) (var 3) (var 4))
 def observation (p z R B N : PTm n) : PTm n := app observationF ![p,z,R,B,N]
 
-@[simp] theorem subst_observationTerm {m : ℕ} (σ : Fin n → PTm m) (p z R B N : PTm n) :
-    Syn.subst σ (observationTerm p z R B N) = observationTerm (Syn.subst σ p) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [observationTerm]
+ipra_subst observationTerm
 @[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R B N : PTm n) :
     Syn.subst σ (observation p z R B N) = observation (Syn.subst σ p) (Syn.subst σ z)
       (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
@@ -534,9 +496,7 @@ theorem observation_later (p k z R B N : PTm n) :
 def discrepancy (p k z R B N : PTm n) : PTm n :=
   add (observation (p+k) z R B N) (ComplexLogarithmRemainder.neg (scale (pw two k) (observation p z R B N)))
 
-@[simp] theorem subst_discrepancy {m : ℕ} (σ : Fin n → PTm m) (p k z R B N : PTm n) :
-    Syn.subst σ (discrepancy p k z R B N) = discrepancy (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [discrepancy]
+ipra_subst discrepancy
 
 theorem discrepancy_compute (p k z R B N : PTm n) :
     Γ ⊢[PRAAx] discrepancy p k z R B N ≐

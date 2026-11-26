@@ -13,13 +13,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingOddSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qzero qadd canonical)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,17 +30,12 @@ def tailDenominator (A B K : PTm n) : PTm n :=
   succ (degree K)*pw (baseDenominator A B) (degree K)*(num 4*A*(A+B))
 def tail (A B K : PTm n) : PTm n := fraction (tailNumerator A B K) (tailDenominator A B K)
 
-@[simp] theorem subst_baseDenominator {l : ℕ} (σ : Fin n → PTm l) (A B : PTm n) :
-    Syn.subst σ (baseDenominator A B) = baseDenominator (Syn.subst σ A) (Syn.subst σ B) := by simp [baseDenominator]
-@[simp] theorem subst_degree {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    Syn.subst σ (degree j) = degree (Syn.subst σ j) := by simp [degree]
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (A B j : PTm n) :
-    Syn.subst σ (term A B j) = term (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ j) := by simp [term]
+ipra_subst baseDenominator
+ipra_subst degree
+ipra_subst term
 @[simp] theorem subst_partial {l : ℕ} (σ : Fin n → PTm l) (A B K : PTm n) :
     Syn.subst σ (partialSum A B K) = partialSum (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ K) := by simp [partialSum]
-@[simp] theorem subst_tail {l : ℕ} (σ : Fin n → PTm l) (A B K : PTm n) :
-    Syn.subst σ (tail A B K) = tail (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ K) := by
-  simp [tail,tailNumerator,tailDenominator]
+ipra_subst tail [tailNumerator, tailDenominator]
 
 theorem body_at (A B j : PTm n) : Γ ⊢[PRAAx] inst2 body j (pairT A B) ≐ term A B j := by
   have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (term (var 0) (var 1) (var 2) : PTm 3)

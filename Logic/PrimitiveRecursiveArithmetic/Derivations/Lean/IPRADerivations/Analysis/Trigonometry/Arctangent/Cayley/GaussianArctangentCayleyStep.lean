@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentCayleyStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyValues (numerator denominator denominator_positive)
 open ComplexLogarithmRemainder (code scale oneCode add mul normSq normSq_eval eval_re_code eval_im_code)
 open GaussianRationalHorner (qadd qmul ofGaussian ofGaussian_canonical ofGaussian_represents canonical_unique
@@ -22,9 +22,6 @@ open GaussianRationalReciprocal (qone qone_represents_scaled conjugate re_conjug
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub qsub_represents)
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_add im_add re_mul im_mul re_sub im_sub re_scale im_scale re_one im_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

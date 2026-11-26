@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsProductStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrationByPartsLinear (decay originalProduct productLinear decayLinear)
 open GaussianEulerPowerIncrement (point slopeTerm)
 open GaussianEulerCompactPowerMajorant (majorant original_power_observation)
@@ -24,10 +24,6 @@ open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qsub_congr)
 open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum bounded_negative)
 open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

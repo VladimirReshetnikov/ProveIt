@@ -1,9 +1,6 @@
-import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.Powers
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite toolkit of the constructive fundamental theorem of algebra
@@ -36,13 +33,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.PowerDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -87,13 +80,9 @@ private abbrev pdF : Fm PTm 3 :=
     pw (var 2) (var 0) + var 1 * gd (var 1) (var 2) (var 0)
 
 private theorem pd₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pdF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact pd_base _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact pd_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact pd_base _ _
+  · exact pd_step Prf.hyp0
 
 /-- `eq:power-diff`: `x^i + y · gd x y i = y^i + x · gd x y i`. -/
 theorem power_diff (x y i : PTm n) :
@@ -127,15 +116,9 @@ private abbrev glF : Fm PTm 4 :=
     le (gd (var 1) (var 2) (succ (var 0))) (succ (var 0) * pw (var 3) (var 0)))
 
 private theorem gl₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] glF := by
-  refine ind _ ⟨le_QF _ _, ⟨le_QF _ _, le_QF _ _⟩⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (gd_le_base _ _ _))
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI (.impI ?_)
+  ipra_ind (⟨le_QF _ _, ⟨le_QF _ _, le_QF _ _⟩⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (.impI (gd_le_base _ _ _))
+  · refine .impI (.impI ?_)
     exact gd_le_step Prf.hyp1 Prf.hyp0 (.impE (.impE Prf.hyp1.wk Prf.hyp1) Prf.hyp0)
 
 /-- For `x, y ≤ R`: `∑_{r<i+1} x^(i−r) y^r ≤ (i + 1) R^i`. -/
@@ -157,14 +140,10 @@ theorem bern_lin_step {x m : PTm n} (ih : Γ ⊢[PRAAx] le (one + m * x) (pw (su
 private abbrev blF : Fm PTm 2 := le (one + var 0 * var 1) (pw (succ (var 1)) (var 0))
 
 private theorem bl₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] blF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_of_eq_add (d := zero) ?_
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · refine le_of_eq_add (d := zero) ?_
     ipra_lc natEq (pw_zero (Γ := []) (succ (var 0 : PTm 1)))
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bern_lin_step Prf.hyp0
+  · exact bern_lin_step Prf.hyp0
 
 /-- `1 + m x ≤ (1 + x)^m`. -/
 theorem bernoulli_lin (x m : PTm n) : Γ ⊢[PRAAx] le (one + m * x) (pw (succ x) m) := by

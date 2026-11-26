@@ -15,7 +15,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDerivativeDiskIndependence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add scale oneCode normSq bounded_mono)
 open GaussianBarnesCanonicalDerivativeStep (refinement at_refinement)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -29,9 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "V" => GaussianBarnesCanonicalValue.nameF

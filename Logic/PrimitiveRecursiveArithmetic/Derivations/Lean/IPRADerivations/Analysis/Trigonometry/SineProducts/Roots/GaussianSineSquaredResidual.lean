@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineSquaredResidual
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianNameReciprocal (lower lower_norm_positive inverse_bound)
@@ -31,9 +31,6 @@ open GaussianReciprocalHorner (qmul_associative)
 open GaussianSineSquaredPolynomial (coefficients)
 open GaussianSineSquaredTrace (sineValue fromSine evaluation_at_sine)
 open GaussianSineMultipleAngleRecurrence (evenValue power_difference)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

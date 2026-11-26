@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaRescaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaDigammaNative (nameF data derivativeData reciprocalData derivative_regular reciprocal_regular)
@@ -24,8 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRootAlgebra (equal equal_of_values equal_symm re_scale im_scale)
 open GaussianStirlingGammaLogarithm (source arg gamma_source euler_real_source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "PF" => GaussianGammaC7Name.nameF

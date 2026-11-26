@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneLift
-import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Foundations.FiniteQueryDemand
 
 /-!
@@ -16,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRightHalfPlaneDemandLift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -29,9 +28,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rat
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,19 +55,11 @@ def sample (map : RationalMap) (f : PR 2) (p x M R : PTm n) : PTm n :=
 def nameF (map : RationalMap) (f : PR 2) : PR 2 := PTm.toPR
   (sample map f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (map : RationalMap) (p M R : PTm n) :
-    Syn.subst σ (clock map p M R) = clock map (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [clock,two]
+ipra_subst clock [two]
 
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (map : RationalMap) (f : PR 2)
-    (k x M R : PTm n) : Syn.subst σ (frozenData map f k x M R) =
-      frozenData map f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [frozenData,two]
+ipra_subst frozenData [two]
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (map : RationalMap) (f : PR 2)
-    (p x M R : PTm n) : Syn.subst σ (sample map f p x M R) =
-      sample map f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [sample]
+ipra_subst sample
 
 theorem sample_at (map : RationalMap) (f : PR 2) (p x M R : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF map f) p (data x M R) ≐ sample map f p x M R := by

@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineSquaredTrace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale mul add eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianNamedSineFromExponential (multiplier)
@@ -34,10 +34,6 @@ open GaussianRootAlgebra (equal equal_refl equal_of_values re_scale im_scale re_
   re_mul im_mul re_neg im_neg)
 open GaussianSineSquaredPolynomial (coefficients evaluation_square)
 open GaussianSineMultipleAngleRecurrence (evenValue power_difference)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

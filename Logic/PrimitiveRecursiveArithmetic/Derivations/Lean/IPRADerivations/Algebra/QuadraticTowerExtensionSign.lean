@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerExtensionSign
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticTowerArrayCodec (arrayHeight normalized)
 open QuadraticTowerCoefficients (width)
 open QuadraticTowerScalarArrays (zeroArray)
@@ -26,15 +26,11 @@ open QuadraticTowerScalarBudget (growth)
 open QuadraticTowerOppositeMultiplier (signedNorm)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (append)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def inserted (h L : PTm n) : PTm n := append (normalized h L) (zeroArray h)
-@[simp] theorem subst_inserted {k : ℕ} (σ : Fin n → PTm k) (h L : PTm n) :
-    Syn.subst σ (inserted h L) = inserted (Syn.subst σ h) (Syn.subst σ L) := by simp [inserted]
+ipra_subst inserted
 
 theorem inserted_height (h L B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (ha : Γ ⊢[PRAAx] arrayHeight h L B) : Γ ⊢[PRAAx] arrayHeight (succ h) (inserted h L) B :=
@@ -72,8 +68,7 @@ theorem query_inserted (h B D L : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     ((QuadraticTowerSignEmbedding.dispatch_b_zero_total _ _ _ (second_tag h B D L hB)).eqTrans (first_tag h B D L))
 
 def sourceCap (h b : PTm n) : PTm n := growth (QuadraticTowerGrowth.path (succ h)) b
-@[simp] theorem subst_sourceCap {k : ℕ} (σ : Fin n → PTm k) (h b : PTm n) :
-    Syn.subst σ (sourceCap h b) = sourceCap (Syn.subst σ h) (Syn.subst σ b) := by simp [sourceCap]
+ipra_subst sourceCap
 
 /-- Every selected signed norm is an actual constructed normalized array,
 even away from the opposite-sign input predicate. -/
@@ -138,14 +133,10 @@ def returnedNorm (h B D A : PTm n) : PTm n := fstT (sndT (sndT (sndT (sndT (Quad
 def returnedProduct (h B D A : PTm n) : PTm n := fstT (sndT (sndT (sndT (QuadraticTowerOppositeMultiplier.run h B D A))))
 def productSign (h B D A b : PTm n) : PTm n := QuadraticTowerSignTable.query (succ h) (sourceCap h b) D (returnedProduct h B D A)
 def normSign (h B D A : PTm n) : PTm n := QuadraticTowerSignTable.query h (budget h B D) D (returnedNorm h B D A)
-@[simp] theorem subst_returnedNorm {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (returnedNorm h B D A) = returnedNorm (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by simp [returnedNorm]
-@[simp] theorem subst_returnedProduct {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (returnedProduct h B D A) = returnedProduct (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by simp [returnedProduct]
-@[simp] theorem subst_productSign {k : ℕ} (σ : Fin n → PTm k) (h B D A b : PTm n) :
-    Syn.subst σ (productSign h B D A b) = productSign (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ b) := by simp [productSign]
-@[simp] theorem subst_normSign {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (normSign h B D A) = normSign (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by simp [normSign]
+ipra_subst returnedNorm
+ipra_subst returnedProduct
+ipra_subst productSign
+ipra_subst normSign
 
 theorem returned_norm_height (h B D A b : PTm n)
     (p : Γ ⊢[PRAAx] QuadraticTowerConeTest.source h B D A b) : Γ ⊢[PRAAx]
@@ -171,31 +162,25 @@ def output (h B D A b : PTm n) : PTm n := pairT (inserted h (returnedNorm h B D 
   (pairT (productSign h B D A b) (pairT (normSign h B D A) (sourceCap h b)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (h B D A b : PTm n) : PTm n := PTm.app outputF ![h,B,D,A,b]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h B D A b : PTm n) :
-    Syn.subst σ (output h B D A b) = output (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ b) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h B D A b : PTm n) :
-    Syn.subst σ (run h B D A b) = run (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ b) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h B D A b : PTm n) : Γ ⊢[PRAAx] run h B D A b ≐ output h B D A b := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![h,B,D,A,b]
 theorem returned_inserted (h B D A b : PTm n) : Γ ⊢[PRAAx]
     fstT (run h B D A b) ≐ inserted h (returnedNorm h B D A) :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_sign_pair (h B D A b : PTm n) : Γ ⊢[PRAAx] sndT (run h B D A b) ≐
     pairT (productSign h B D A b) (pairT (normSign h B D A) (sourceCap h b)) :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_product_tag (h B D A b : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h B D A b)) ≐ productSign h B D A b :=
-  (congrFst (returned_sign_pair _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_sign_pair _ _ _ _ _).fstE
 theorem returned_norm_pair (h B D A b : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h B D A b)) ≐ pairT (normSign h B D A) (sourceCap h b) :=
-  (congrSnd (returned_sign_pair _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_sign_pair _ _ _ _ _).sndE
 theorem returned_norm_tag (h B D A b : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run h B D A b))) ≐ normSign h B D A :=
-  (congrFst (returned_norm_pair _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_norm_pair _ _ _ _ _).fstE
 theorem returned_cap (h B D A b : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run h B D A b))) ≐ sourceCap h b :=
-  (congrSnd (returned_norm_pair _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_norm_pair _ _ _ _ _).sndE
 theorem returned_equal (h B D A b : PTm n) (p : Γ ⊢[PRAAx] QuadraticTowerOppositeMultiplier.input h B D A b) : Γ ⊢[PRAAx]
     fstT (sndT (run h B D A b)) ≐ fstT (sndT (sndT (run h B D A b))) :=
   (returned_product_tag h B D A b).eqTrans ((returned_product_sign h B D A b p).eqTrans (returned_norm_tag h B D A b).eqSymm)

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedApartnessTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open GaussianNameEquivalence (crossEquivalent cross_at)
@@ -23,9 +23,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open GaussianRationalLowerBounds (lower lower_from_representation lower_to_cleared)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -17,16 +17,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonicPositiveDecrease
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalTranslation (translated)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qadd evaluate canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedBalancedRadius (inputContract residual)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (descentD rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,14 +31,10 @@ def positiveNext (N C z : PTm n) : PTm n := qadd z (positiveDelta N C z)
 def radiusNumerator (N C z : PTm n) : PTm n := GaussianOffDominantTerms.radiusNumerator (translated C N z) N
 def radiusDenominator (N C z : PTm n) : PTm n := GaussianOffDominantTerms.radiusDenominator (translated C N z) N
 
-@[simp] theorem subst_positiveDelta {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (positiveDelta N C z) = positiveDelta (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [positiveDelta]
-@[simp] theorem subst_positiveNext {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (positiveNext N C z) = positiveNext (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [positiveNext]
-@[simp] theorem subst_radiusNumerator {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (radiusNumerator N C z) = radiusNumerator (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [radiusNumerator]
-@[simp] theorem subst_radiusDenominator {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (radiusDenominator N C z) = radiusDenominator (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [radiusDenominator]
+ipra_subst positiveDelta
+ipra_subst positiveNext
+ipra_subst radiusNumerator
+ipra_subst radiusDenominator
 
 theorem rate_den_clock (N : PTm n) : Γ ⊢[PRAAx]
     GaussianResidualDecreaseWeights.rateDen (descentD N) ≐ rateDenominator N := .eqRefl _
@@ -112,24 +104,22 @@ def output (N C z : PTm n) : PTm n := pairT (positiveDelta N C z)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (N C z : PTm n) : PTm n := ap3 outputF N C z
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (output N C z) = output (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (N C z : PTm n) :
-    Syn.subst σ (run N C z) = run (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ z) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (N C z : PTm n) : Γ ⊢[PRAAx] run N C z ≐ output N C z := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![N,C,z]
 
 theorem returned_delta (N C z : PTm n) : Γ ⊢[PRAAx] fstT (run N C z) ≐ positiveDelta N C z :=
-  (congrFst (program_at N C z)).eqTrans (fst_pair _ _)
+  (program_at N C z).fstE
 theorem returned_point (N C z : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run N C z)) ≐ positiveNext N C z :=
-  (congrFst ((congrSnd (program_at N C z)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at N C z).sndE.fstE
 theorem returned_value (N C z : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run N C z))) ≐ evaluate C (positiveNext N C z) :=
-  (congrFst ((congrSnd ((congrSnd (program_at N C z)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at N C z).sndE.sndE.fstE
 theorem returned_radius_num (N C z : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run N C z)))) ≐ radiusNumerator N C z :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at N C z)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at N C z).sndE.sndE.sndE.fstE
 theorem returned_radius_den (N C z : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run N C z)))) ≐ radiusDenominator N C z :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at N C z)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at N C z).sndE.sndE.sndE.sndE
 
 theorem returned_decrease (C N z : PTm n) (hInput : Γ ⊢[PRAAx] inputContract C N)
     (hPositive : Γ ⊢[PRAAx] le one (residual C z)) : Γ ⊢[PRAAx]

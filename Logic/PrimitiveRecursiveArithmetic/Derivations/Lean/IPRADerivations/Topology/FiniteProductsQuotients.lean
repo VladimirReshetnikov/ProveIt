@@ -24,12 +24,10 @@ closed by derived implications):
 
 namespace LeanProofs.IPRA.Topology.FiniteProductsQuotients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IntersectionEnumeration (disjFin disjFin_intro disjFin_imp)
 open LeanProofs.IPRA.Topology.FiniteInteriorClosure
 open LeanProofs.IPRA.Foundations.RichardsonLogic (iffF)
-open Syn
-open scoped Fm
 
 variable {n k l m : ℕ} {Γ : List (Fm PTm n)}
 variable {relX : Fin k → Fin k → Prop} [DecidableRel relX] {relY : Fin l → Fin l → Prop} [DecidableRel relY]

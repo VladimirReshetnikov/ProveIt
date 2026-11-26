@@ -13,26 +13,21 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerCompactModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedEulerCompactTimeRate (gain)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCompactRiemannName (inside value nameData evaluatorName)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (f : PR 2) (x E T C : PTm n) : Fm PTm n := pointCN f x ⋏ (le one E ⋏ le (one+C) (E*T))
 def data (f : PR 2) (x E T C : PTm n) : PTm n := GaussianCompactRiemannName.data one C E (gain f x E T) T x
 def nameF (f : PR 2) : PR 2 := GaussianCompactRiemannName.nameF (GaussianNamedEulerIntegrand.evaluatorF f)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E T C : PTm n) :
-    (source f x E T C).subst σ = source f (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E T C : PTm n) :
-    Syn.subst σ (data f x E T C) = data f (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) := by simp [data]
+ipra_subst source
+ipra_subst data
 
 theorem wrapped_at (f : PR 2) (p t x : PTm n) : Γ ⊢[PRAAx]
     ap2 (evaluatorName (GaussianNamedEulerIntegrand.evaluatorF f)) p (nameData t x) ≐

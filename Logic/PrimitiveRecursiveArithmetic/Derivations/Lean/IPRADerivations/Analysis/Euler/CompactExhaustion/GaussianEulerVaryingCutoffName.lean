@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCutoffCauchyComparison
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual varying-cutoff Euler name, conditional only on the lower tail
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVaryingCutoffName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCutoffCauchyComparison (input observation clock)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width)
@@ -27,10 +26,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,26 +36,19 @@ def nameF : PR 2 := PTm.toPR (reader (var 0) (var 1))
 def cells (p A R : PTm n) : PTm n := mesh (clock p) (GaussianGammaEulerCompactQuadrature.localFactor p A R) (top p A R)
 def evaluationPrecision (p A R : PTm n) : PTm n := p+top p A R+num 10
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (data z R B A) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [data]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B A : PTm n) :
-    Syn.subst σ (sample p z R B A) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [sample]
-@[simp] theorem subst_reader {m : ℕ} (σ : Fin n → PTm m) (p d : PTm n) :
-    Syn.subst σ (reader p d) = reader (Syn.subst σ p) (Syn.subst σ d) := by simp [reader]
-@[simp] theorem subst_cells {m : ℕ} (σ : Fin n → PTm m) (p A R : PTm n) :
-    Syn.subst σ (cells p A R) = cells (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [cells,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_evaluationPrecision {m : ℕ} (σ : Fin n → PTm m) (p A R : PTm n) :
-    Syn.subst σ (evaluationPrecision p A R) = evaluationPrecision (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [evaluationPrecision,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst data
+ipra_subst sample
+ipra_subst reader
+ipra_subst cells [top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst evaluationPrecision [top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem data_z (z R B A : PTm n) : Γ ⊢[PRAAx] fstT (data z R B A) ≐ z := fst_pair _ _
 theorem data_R (z R B A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (data z R B A)) ≐ R :=
-  (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  (snd_pair _ _).fstE
 theorem data_B (z R B A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (data z R B A))) ≐ B :=
-  (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE
 theorem data_A (z R B A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (data z R B A))) ≐ A :=
-  (congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  (congrSnd (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).sndE
 
 theorem name_at (p z R B A : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B A) ≐ sample p z R B A := by
   have prog : Γ ⊢[PRAAx] ap2 nameF p (data z R B A) ≐ reader p (data z R B A) := by
@@ -115,22 +103,21 @@ def output (p z R B A : PTm n) : PTm n := pairT (ap2 nameF p (data z R B A))
   (pairT (clock p) (pairT (cells p A R) (evaluationPrecision p A R)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (p z R B A : PTm n) : PTm n := PTm.app outputF ![p,z,R,B,A]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p z R B A : PTm n) :
-    Syn.subst σ (output p z R B A) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [output]
+ipra_subst output
 theorem program_at (p z R B A : PTm n) : Γ ⊢[PRAAx] run p z R B A ≐ output p z R B A := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![p,z,R,B,A]
 theorem returned_point (p z R B A : PTm n) : Γ ⊢[PRAAx] fstT (run p z R B A) ≐ ap2 nameF p (data z R B A) :=
-  (congrFst (program_at p z R B A)).eqTrans (fst_pair _ _)
+  (program_at p z R B A).fstE
 theorem returned_tail (p z R B A : PTm n) : Γ ⊢[PRAAx] sndT (run p z R B A) ≐ pairT (clock p) (pairT (cells p A R) (evaluationPrecision p A R)) :=
-  (congrSnd (program_at p z R B A)).eqTrans (snd_pair _ _)
+  (program_at p z R B A).sndE
 theorem returned_clock (p z R B A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p z R B A)) ≐ p+num 4 :=
-  (congrFst (returned_tail p z R B A)).eqTrans (fst_pair _ _)
+  (returned_tail p z R B A).fstE
 theorem returned_last (p z R B A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p z R B A)) ≐ pairT (cells p A R) (evaluationPrecision p A R) :=
-  (congrSnd (returned_tail p z R B A)).eqTrans (snd_pair _ _)
+  (returned_tail p z R B A).sndE
 theorem returned_cells (p z R B A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p z R B A))) ≐ cells p A R :=
-  (congrFst (returned_last p z R B A)).eqTrans (fst_pair _ _)
+  (returned_last p z R B A).fstE
 theorem returned_evaluation_precision (p z R B A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p z R B A))) ≐ p+top p A R+num 10 :=
-  (congrSnd (returned_last p z R B A)).eqTrans (snd_pair _ _)
+  (returned_last p z R B A).sndE
 
 theorem returned_original_observation (p z R B A : PTm n) : Γ ⊢[PRAAx]
     fstT (run p z R B A) ≐ ap2 GaussianGammaEulerCompactQuadrature.nameF (p+num 4)

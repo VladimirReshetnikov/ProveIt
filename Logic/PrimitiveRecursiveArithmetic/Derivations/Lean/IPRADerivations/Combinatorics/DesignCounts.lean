@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.GramBound
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Incidence counts of a block design and Fisher's quadratic form
@@ -25,11 +24,8 @@ residual designs, and the residues of `v` modulo `6`.
 
 namespace LeanProofs.IPRA.Combinatorics.DesignCounts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.GramBound (sq_sum_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n v b : ℕ} {Γ : List (Fm PTm n)}
 
@@ -126,11 +122,9 @@ theorem gram_toZ (M : Fin v → Fin b → ZT n) (r lam : ZT n) (i : Fin v)
   by_cases h : i = j
   · subst h
     rw [if_pos rfl]
-    have e := ZT.toZ_eq hdiag
-    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using e
+    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using ZT.toZ_eq hdiag
   · rw [if_neg h]
-    have e := ZT.toZ_eq (hoff j h)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using e
+    simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using ZT.toZ_eq (hoff j h)
 
 /-- `v r = b k`: the incident pairs counted by points and by blocks. -/
 theorem flag_count (M : Fin v → Fin b → ZT n) (r k : ZT n)
@@ -138,11 +132,9 @@ theorem flag_count (M : Fin v → Fin b → ZT n) (r k : ZT n)
     (hk : ∀ B, Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun i => M i B) k) :
     Γ ⊢[PRAAx] ZT.eq (ZT.natLit v * r) (ZT.natLit b * k) := by
   have hr1 : ∀ i, ∑ B, ZT.toZ Γ (M i B) = ZT.toZ Γ r := fun i => by
-    have h := ZT.toZ_eq (hr i)
-    simpa only [ZT.toZ_sumFin] using h
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq (hr i)
   have hk1 : ∀ B, ∑ i, ZT.toZ Γ (M i B) = ZT.toZ Γ k := fun B => by
-    have h := ZT.toZ_eq (hk B)
-    simpa only [ZT.toZ_sumFin] using h
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq (hk B)
   apply ZT.derive
   zsimp
   exact flags (fun i B => ZT.toZ Γ (M i B)) _ _ hr1 hk1
@@ -155,11 +147,9 @@ theorem replication_count (M : Fin (v + 1) → Fin b → ZT n) (r k lam : ZT n) 
     (hoff : ∀ j, i ≠ j → (Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun B => M i B * M j B) lam)) :
     Γ ⊢[PRAAx] ZT.eq (r * k) (r + ZT.natLit v * lam) := by
   have hk1 : ∀ B, ∑ j, ZT.toZ Γ (M j B) = ZT.toZ Γ k := fun B => by
-    have h := ZT.toZ_eq (hk B)
-    simpa only [ZT.toZ_sumFin] using h
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq (hk B)
   have hr1 : ∑ B, ZT.toZ Γ (M i B) = ZT.toZ Γ r := by
-    have h := ZT.toZ_eq hr
-    simpa only [ZT.toZ_sumFin] using h
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq hr
   apply ZT.derive
   zsimp
   exact replication (fun j B => ZT.toZ Γ (M j B)) _ _ _ i hk1 hr1 (gram_toZ M r lam i hdiag hoff)
@@ -198,8 +188,7 @@ theorem fisher_kernel (M : Fin v → Fin b → ZT n) (z : Fin v → ZT n) (r lam
     (hz : ∀ B, Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun i => M i B * z i) (ZT.natLit 0)) (i : Fin v) :
     Γ ⊢[PRAAx] ZT.eq (z i) (ZT.natLit 0) := by
   have hz1 : ∀ B, ∑ j, ZT.toZ Γ (M j B) * ZT.toZ Γ (z j) = 0 := fun B => by
-    have h := ZT.toZ_eq (hz B)
-    simpa only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using h
+    simpa only [ZT.toZ_sumFin, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (hz B)
   have e := fisher_identity (fun i B => ZT.toZ Γ (M i B)) (fun i => ZT.toZ Γ (z i)) _ _
     (fun i j => gram_toZ M r lam i (hdiag i) (hoff i) j)
   beta_reduce at e

@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFoldedC9Bound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFoldedMajorantExponent (input majorant majorantF majorantData correctedF correctedData)
 open GaussianGammaFiniteApproximantName (pF pData p_regular)
 open GaussianGammaCanonicalExponent (constantF constant_regular exponentF exponentialF exponentData exponentialData)
@@ -30,9 +30,6 @@ open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameRingLaws (negativeF negativeData oneF one_fast one_at)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,14 +65,10 @@ def negativeExpData (z R B N : PTm n) : PTm n := GaussianRadiusExponentialName.d
 def withdrawalF : PR 2 := multiplyF GaussianGammaC7Name.nameF negativeExpF
 def withdrawalData (z R B N : PTm n) : PTm n := multiplyData GaussianGammaC7Name.nameF negativeExpF
   (GaussianGammaC7Name.data z R B) (negativeExpData z R B N)
-@[simp] theorem subst_tailData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (tailData z R B N) = tailData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [tailData]
-@[simp] theorem subst_tailRadius {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (tailRadius z R B N) = tailRadius (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [tailRadius]
-@[simp] theorem subst_negativeExpData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (negativeExpData z R B N) = negativeExpData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [negativeExpData]
-@[simp] theorem subst_withdrawalData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (withdrawalData z R B N) = withdrawalData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [withdrawalData]
+ipra_subst tailData
+ipra_subst tailRadius
+ipra_subst negativeExpData
+ipra_subst withdrawalData
 
 theorem tail_input (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : Γ ⊢[PRAAx]
     GaussianRadiusExponentialName.input GaussianGammaCanonicalTailName.pointF (tailRadius z R B N) (tailData z R B N) :=

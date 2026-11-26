@@ -14,7 +14,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderLogTruncation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingNames (source)
 open GaussianStirlingGlobalBounds (remainderF remainderData remainder_regular)
 open GaussianStirlingAllOrderTruncationAlgebra (signedScale correction truncation signed_initial_cancel signed_recurrence_exact)
@@ -30,10 +30,6 @@ open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianValueNormalizerExtensionality (rawDiagonal)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "J" => GaussianStirlingAllOrderPanelPartsNames.nameF
@@ -60,11 +56,8 @@ def projectionCost : ℕ → PTm n
 def cost (m : ℕ) : PTm n :=
   (constantCap (signedScale m)+one)+constantCap (signedScale m)*two+projectionCost m+num 6
 
-@[simp] theorem subst_errorData {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B x : PTm n) :
-    Syn.subst σ (errorData m A B x) = errorData m (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) :=
-  by simp [errorData]
-@[simp] theorem subst_signedData {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (signedData m A B) = signedData m (Syn.subst σ A) (Syn.subst σ B) := by simp [signedData]
+ipra_subst errorData
+ipra_subst signedData
 @[simp] theorem subst_stepCost {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) :
     Syn.subst σ (stepCost m : PTm n) = (stepCost m : PTm l) := by simp [stepCost]
 @[simp] theorem subst_projectionCost {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) :

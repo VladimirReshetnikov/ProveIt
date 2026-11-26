@@ -17,9 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderSignedLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -44,8 +42,6 @@ open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transpo
 open GaussianStirlingOddCoefficients (fraction_embed)
 open GaussianArctangentExponentialPeriod (constant_product)
 open RationalGaussianEmbedding (embed_zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,9 +53,7 @@ def orientedF : PR 2 := multiplyF C errorF
 def orientedData (m : ℕ) (A B x : PTm n) : PTm n :=
   multiplyData C errorF (orientationPoint m) (errorData m A B x)
 
-@[simp] theorem subst_orientedData {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B x : PTm n) :
-    Syn.subst σ (orientedData m A B x) = orientedData m (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) :=
-  by simp [orientedData]
+ipra_subst orientedData
 
 theorem oriented_regular (m : ℕ) (A B x : PTm n) (hs : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] pointCN orientedF (orientedData m A B x) :=

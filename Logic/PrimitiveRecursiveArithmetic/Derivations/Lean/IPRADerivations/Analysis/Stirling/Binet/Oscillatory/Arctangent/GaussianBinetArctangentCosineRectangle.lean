@@ -15,7 +15,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentCosineRectangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentCosineLaplace (value error finite_error)
 open GaussianBinetArctangentResolvent (pole subst_pole)
 open GaussianInverseBinomialRows (negative_congr)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound leftSum)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetArctangentQuadrature.evaluatorF
@@ -49,9 +46,7 @@ def body : PTm 2 :=
 def rectangle (p M X Y D sign A B R U L N : PTm n) : PTm n :=
   leftSum body M (sampleData p M (B+zero) A B (fixedData X Y D sign R U L N)) A B
 
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R U L N : PTm n) :
-    Syn.subst σ (fixedData X Y D sign R U L N) = fixedData (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
-      (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ U) (Syn.subst σ L) (Syn.subst σ N) := by simp [fixedData]
+ipra_subst fixedData
 
 @[simp] theorem subst_rowTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
     Syn.subst σ (rowTerm p t x) = rowTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by

@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -36,9 +36,6 @@ open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qone qone_canonical qadd_congr qmul_congr)
 open GaussianSignedNameExponentialOrder (realSamples)
 open RationalGaussianEmbedding (axis)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,15 +52,10 @@ def halfF : PR 2 := GaussianExponentialRealPart.squareF ratioPowerF
 def halfData (m : PTm n) : PTm n := GaussianExponentialRealPart.squareData ratioPowerF (ratioPowerData quarterCoefficient m)
 def regroupedData (z B m : PTm n) : PTm n := ratioPowerData (regroupedCoefficient z B m) m
 
-@[simp] theorem subst_exponentData {l : ℕ} (σ : Fin n → PTm l) (c m : PTm n) :
-    Syn.subst σ (exponentData c m) = exponentData (Syn.subst σ c) (Syn.subst σ m) := by simp [exponentData]
-@[simp] theorem subst_ratioPowerData {l : ℕ} (σ : Fin n → PTm l) (c m : PTm n) :
-    Syn.subst σ (ratioPowerData c m) = ratioPowerData (Syn.subst σ c) (Syn.subst σ m) := by simp [ratioPowerData,exponentialInputData]
-@[simp] theorem subst_halfData {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (halfData m) = halfData (Syn.subst σ m) := by simp [halfData,quarterCoefficient]
-@[simp] theorem subst_regroupedData {l : ℕ} (σ : Fin n → PTm l) (z B m : PTm n) :
-    Syn.subst σ (regroupedData z B m) = regroupedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ m) := by
-  simp [regroupedData,regroupedCoefficient,halfCoefficient]
+ipra_subst exponentData
+ipra_subst ratioPowerData [exponentialInputData]
+ipra_subst halfData [quarterCoefficient]
+ipra_subst regroupedData [regroupedCoefficient, halfCoefficient]
 
 theorem exponent_regular (c m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] pointCN exponentF (exponentData c m) :=

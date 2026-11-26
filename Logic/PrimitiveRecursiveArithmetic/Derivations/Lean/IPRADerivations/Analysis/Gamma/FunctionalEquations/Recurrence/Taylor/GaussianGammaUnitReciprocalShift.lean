@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaUnitReciprocalShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaC7Name (sample nameF data)
 open GaussianGammaRepeatedShift (stage C7_data_congr stage_zero stepCost)
 open GaussianGammaShiftTrajectory (point point_source point_zero point_linear point_native)
@@ -28,10 +28,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

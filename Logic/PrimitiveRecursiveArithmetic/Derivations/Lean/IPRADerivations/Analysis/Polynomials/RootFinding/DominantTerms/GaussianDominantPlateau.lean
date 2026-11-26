@@ -17,17 +17,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantPlateau
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra
 open LeanProofs.IPRA.Algebra.DescentPigeonhole (eB)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (input subst_input)
 open LeanProofs.IPRA.Analysis.GaussianDominantSelector (index indexData subst_index subst_indexData)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -100,18 +96,12 @@ def winner (C N : PTm n) : PTm n := index C N (center C N)
 def leftIndex (C N : PTm n) : PTm n := index C N (two*centerSlot C N)
 def rightIndex (C N : PTm n) : PTm n := index C N (succ (center C N))
 
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (count C N) = count (Syn.subst σ C) (Syn.subst σ N) := by simp [count]
-@[simp] theorem subst_centerSlot {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (centerSlot C N) = centerSlot (Syn.subst σ C) (Syn.subst σ N) := by simp [centerSlot]
-@[simp] theorem subst_center {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (center C N) = center (Syn.subst σ C) (Syn.subst σ N) := by simp [center]
-@[simp] theorem subst_winner {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (winner C N) = winner (Syn.subst σ C) (Syn.subst σ N) := by simp [winner]
-@[simp] theorem subst_leftIndex {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (leftIndex C N) = leftIndex (Syn.subst σ C) (Syn.subst σ N) := by simp [leftIndex]
-@[simp] theorem subst_rightIndex {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (rightIndex C N) = rightIndex (Syn.subst σ C) (Syn.subst σ N) := by simp [rightIndex]
+ipra_subst count
+ipra_subst centerSlot
+ipra_subst center
+ipra_subst winner
+ipra_subst leftIndex
+ipra_subst rightIndex
 
 theorem index_body_at (C N h : PTm n) : Γ ⊢[PRAAx]
     inst2 indexBody h (indexData C N) ≐ index C N h := by
@@ -186,8 +176,7 @@ def certificate (C N : PTm n) : Fm PTm n := lt (centerSlot C N) N ⋏
     ((le one (winner C N) ⋏ le (winner C N) N) ⋏
       (leftIndex C N ≐ winner C N ⋏ winner C N ≐ rightIndex C N))))
 
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (certificate C N).subst σ = certificate (Syn.subst σ C) (Syn.subst σ N) := by simp [certificate]
+ipra_subst certificate
 
 theorem plateau_correct (C N : PTm n) (h : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx] certificate C N :=
   .andI (slot_bounded C N h) (.andI (center_positive C N) (.andI (center_bounded C N h)
@@ -200,24 +189,22 @@ def output (C N : PTm n) : PTm n := pairT (center C N)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (C N : PTm n) : PTm n := ap2 outputF C N
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (run C N) = run (Syn.subst σ C) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] run C N ≐ output C N := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![C,N]
 
 theorem returned_center (C N : PTm n) : Γ ⊢[PRAAx] fstT (run C N) ≐ center C N :=
-  (congrFst (program_at C N)).eqTrans (fst_pair _ _)
+  (program_at C N).fstE
 theorem returned_winner (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N)) ≐ winner C N :=
-  (congrFst ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.fstE
 theorem returned_left (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N))) ≐ leftIndex C N :=
-  (congrFst ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.fstE
 theorem returned_right (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run C N)))) ≐ rightIndex C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.fstE
 theorem returned_slot (C N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run C N)))) ≐ centerSlot C N :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE
 
 theorem returned_triple (C N : PTm n) (h : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run C N))) ≐ fstT (sndT (run C N)) ⋏

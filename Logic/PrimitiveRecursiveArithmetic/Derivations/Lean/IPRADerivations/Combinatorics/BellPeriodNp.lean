@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.LinearFactorTable
 import IPRADerivations.Combinatorics.BellPrimePeriod
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The period `N_p` of the Bell numbers modulo a prime (`bell_numbers_ipra`, `thm:prime-period`)
@@ -33,7 +32,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellPeriodNp
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (bell)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (congrBell)
 open LeanProofs.IPRA.Combinatorics.BellSpivey (gB G g_at G_succ G_zero)
@@ -47,10 +46,6 @@ open LeanProofs.IPRA.Combinatorics.LinearFactorTable (cyc actB par Act act_at ac
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (dvd_sum prime_shift)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

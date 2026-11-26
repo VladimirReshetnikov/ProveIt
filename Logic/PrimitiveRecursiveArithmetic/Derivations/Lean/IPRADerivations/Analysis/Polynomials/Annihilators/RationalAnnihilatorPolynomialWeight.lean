@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Annihilators.RationalAnnihilatorPolynomial
 import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialWeightedDegreeGaussianEmbedding
 import IPRADerivations.Foundations.SequenceEquality
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational annihilator nonvanishing and weight
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalAnnihilatorPolynomialWeight
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalAnnihilatorPolynomial (polynomial)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup embed_congr)
 open RationalGaussianEmbedding (embed scalarZero)
@@ -29,9 +28,6 @@ open GaussianPolynomialMonicCompanion (rowShape)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -88,11 +84,8 @@ def nonzeroLambda (a m e L : PTm n) : Fm PTm n := .ex
   (lt (var 0) (count (Syn.shift m) (Syn.shift e) (Syn.shift L)) ⋏
     neg (RationalArgmin.rationalEq (entry (Syn.shift a) (var 0)) scalarZero))
 def input (a m e L : PTm n) : Fm PTm n := le one m ⋏ ((length a ≐ count m e L) ⋏ nonzeroLambda a m e L)
-@[simp] theorem subst_nonzeroLambda {l : ℕ} (σ : Fin n → PTm l) (a m e L : PTm n) :
-    (nonzeroLambda a m e L).subst σ = nonzeroLambda (Syn.subst σ a) (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L) := by
-  simp [nonzeroLambda,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (a m e L : PTm n) :
-    (input a m e L).subst σ = input (Syn.subst σ a) (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L) := by simp [input]
+ipra_subst nonzeroLambda [Syn.subst_shift, Syn.shift_subst]
+ipra_subst input
 
 theorem gaussian_nonzero_lambda (a m e L : PTm n) (h : Γ ⊢[PRAAx] nonzeroLambda a m e L) : Γ ⊢[PRAAx]
     GaussianAnnihilatorPolynomial.nonzeroLambda (coefficients a (count m e L)) m e L := by
@@ -158,8 +151,7 @@ def certificate (a m e L : PTm n) : Fm PTm n := length (polynomial a m e L) ≐ 
   (rowShape (polynomial a m e L) m L ⋏
     (RationalPolynomialWeightedDegreeGaussianEmbedding.nonzeroRows (polynomial a m e L) m L ⋏
       le (RationalPolynomialWeightedDegreeGaussianEmbedding.weightedDegree (polynomial a m e L) m L e) L))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (a m e L : PTm n) :
-    (certificate a m e L).subst σ = certificate (Syn.subst σ a) (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L) := by simp [certificate]
+ipra_subst certificate
 
 theorem polynomial_correct (a m e L : PTm n) (h : Γ ⊢[PRAAx] input a m e L) : Γ ⊢[PRAAx] certificate a m e L :=
   .andI (RationalAnnihilatorPolynomial.polynomial_length a m e L)
@@ -172,28 +164,22 @@ def output (a m e L : PTm n) : PTm n := pairT (polynomial a m e L)
       (RationalPolynomialWeightedDegreeGaussianEmbedding.weightedDegree (polynomial a m e L) m L e)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (a m e L : PTm n) : PTm n := app outputF ![a,m,e,L]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (a m e L : PTm n) :
-    Syn.subst σ (output a m e L) = output (Syn.subst σ a) (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (a m e L : PTm n) :
-    Syn.subst σ (run a m e L) = run (Syn.subst σ a) (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (a m e L : PTm n) : Γ ⊢[PRAAx] run a m e L ≐ output a m e L := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![a,m,e,L]
 theorem returned_polynomial (a m e L : PTm n) : Γ ⊢[PRAAx] fstT (run a m e L) ≐ polynomial a m e L :=
-  (congrFst (program_at a m e L)).eqTrans (fst_pair _ _)
+  (program_at a m e L).fstE
 theorem returned_flag (a m e L : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run a m e L)) ≐
     RationalPolynomialWeightedDegreeGaussianEmbedding.flag (polynomial a m e L) m L e :=
-  (congrFst ((congrSnd (program_at a m e L)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a m e L).sndE.fstE
 theorem returned_index (a m e L : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run a m e L))) ≐
     RationalPolynomialWeightedDegreeGaussianEmbedding.index (polynomial a m e L) m L e :=
-  (congrFst ((congrSnd ((congrSnd (program_at a m e L)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a m e L).sndE.sndE.fstE
 theorem returned_weight (a m e L : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run a m e L))) ≐
     RationalPolynomialWeightedDegreeGaussianEmbedding.weightedDegree (polynomial a m e L) m L e :=
-  (congrSnd ((congrSnd ((congrSnd (program_at a m e L)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at a m e L).sndE.sndE.sndE
 
 theorem returned_flag_one (a m e L : PTm n) (h : Γ ⊢[PRAAx] nonzeroLambda a m e L) : Γ ⊢[PRAAx]
     fstT (sndT (run a m e L)) ≐ one := (returned_flag a m e L).eqTrans (flag_one a m e L h)

@@ -16,7 +16,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalChordRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFactorBudget (power_positive)
@@ -41,10 +41,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianStirlingGammaLogarithm (gammaData gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

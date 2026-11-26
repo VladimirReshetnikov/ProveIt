@@ -16,16 +16,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCubeStrongConvexity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalCubeMinimum (sample coherence continuity presentedCube)
 open RationalCubeGrid (scale)
 open RationalCubeCoherentMinimizer (near nearAt)
 open RationalPointDistanceVariation (pointNumerator pointDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -47,29 +43,15 @@ def midpointDrop (A : PR 3) (L M d x : PTm n) : Fm PTm n := .all (.all (.all
     dropAt A (Syn.shift (Syn.shift (Syn.shift L))) (Syn.shift (Syn.shift (Syn.shift M)))
       (Syn.shift (Syn.shift (Syn.shift d))) (Syn.shift (Syn.shift (Syn.shift x))) (var 2) (var 1) (var 0))))
 
-@[simp] theorem subst_common {k : ℕ} (σ : Fin n → PTm k) (a b c : PTm n) :
-    Syn.subst σ (common a b c) = common (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [common]
-@[simp] theorem subst_midNum {k : ℕ} (σ : Fin n → PTm k) (a b c : PTm n) :
-    (midNum a b c).subst σ = midNum (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [midNum]
-@[simp] theorem subst_leftNum {k : ℕ} (σ : Fin n → PTm k) (a b c : PTm n) :
-    (leftNum a b c).subst σ = leftNum (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [leftNum]
-@[simp] theorem subst_rightNum {k : ℕ} (σ : Fin n → PTm k) (a b c : PTm n) :
-    (rightNum a b c).subst σ = rightNum (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [rightNum]
-@[simp] theorem subst_dropLeft {k : ℕ} (σ : Fin n → PTm k) (a b c N B L M t : PTm n) :
-    (dropLeft a b c N B L M t).subst σ = dropLeft (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c)
-      (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ L) (Syn.subst σ M) (Syn.subst σ t) := by simp [dropLeft]
-@[simp] theorem subst_dropRight {k : ℕ} (σ : Fin n → PTm k) (a b c N B L M t : PTm n) :
-    (dropRight a b c N B L M t).subst σ = dropRight (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c)
-      (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ L) (Syn.subst σ M) (Syn.subst σ t) := by simp [dropRight]
-@[simp] theorem subst_dropRelation {k : ℕ} (σ : Fin n → PTm k) (a b c N B L M t : PTm n) :
-    (dropRelation a b c N B L M t).subst σ = dropRelation (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c)
-      (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ L) (Syn.subst σ M) (Syn.subst σ t) := by simp [dropRelation]
-@[simp] theorem subst_dropAt {k : ℕ} (σ : Fin n → PTm k) (A : PR 3) (L M d x y z t : PTm n) :
-    (dropAt A L M d x y z t).subst σ = dropAt A (Syn.subst σ L) (Syn.subst σ M) (Syn.subst σ d)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ t) := by simp [dropAt]
-@[simp] theorem subst_midpointDrop {k : ℕ} (σ : Fin n → PTm k) (A : PR 3) (L M d x : PTm n) :
-    (midpointDrop A L M d x).subst σ = midpointDrop A (Syn.subst σ L) (Syn.subst σ M) (Syn.subst σ d) (Syn.subst σ x) := by
-  simp [midpointDrop,Syn.subst_shift,Syn.shift_subst]
+ipra_subst common
+ipra_subst midNum
+ipra_subst leftNum
+ipra_subst rightNum
+ipra_subst dropLeft
+ipra_subst dropRight
+ipra_subst dropRelation
+ipra_subst dropAt
+ipra_subst midpointDrop [Syn.subst_shift, Syn.shift_subst]
 
 theorem midpoint_drop_at (A : PR 3) (L M d x y z t : PTm n) (h : Γ ⊢[PRAAx] midpointDrop A L M d x)
     (hy : Γ ⊢[PRAAx] presentedCube y d) (hz : Γ ⊢[PRAAx] presentedCube z d) : Γ ⊢[PRAAx] dropAt A L M d x y z t := by
@@ -185,8 +167,7 @@ theorem source_squared (A : PR 3) (mu : PR 2) (L M d x y z e : PTm n)
   exact GapRemoval.gap finite
 
 def linearIndex (k c : PTm n) : PTm n := two*k+c
-@[simp] theorem subst_linearIndex {j : ℕ} (σ : Fin n → PTm j) (k c : PTm n) :
-    Syn.subst σ (linearIndex k c) = linearIndex (Syn.subst σ k) (Syn.subst σ c) := by simp [linearIndex,two,one]
+ipra_subst linearIndex [two, one]
 
 theorem scale_linear (k c : PTm n) : Γ ⊢[PRAAx] scale (linearIndex k c) ≐ (scale k*scale k)*scale c :=
   (congrAp2 powF (show Γ ⊢[PRAAx] linearIndex k c ≐ (k+k)+c by unfold linearIndex; ipra_ring) (.eqRefl two)).eqTrans
@@ -228,9 +209,7 @@ def linearUniqueness (A : PR 3) (mu : PR 2) (d x c : PTm n) : Fm PTm n := .all (
     near A mu (Syn.shift (Syn.shift (Syn.shift d))) (Syn.shift (Syn.shift (Syn.shift x))) (var 0)
       (linearIndex (var 2) (Syn.shift (Syn.shift (Syn.shift c)))) ⟶
     RationalHausdorff.pointRadius (var 1) (var 0) (Syn.shift (Syn.shift (Syn.shift d))) one (scale (var 2)))))
-@[simp] theorem subst_linearUniqueness {k : ℕ} (σ : Fin n → PTm k) (A : PR 3) (mu : PR 2) (d x c : PTm n) :
-    (linearUniqueness A mu d x c).subst σ = linearUniqueness A mu (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ c) := by
-  simp [linearUniqueness,Syn.subst_shift,Syn.shift_subst]
+ipra_subst linearUniqueness [Syn.subst_shift, Syn.shift_subst]
 
 theorem source_linear_uniqueness (A : PR 3) (mu : PR 2) (L M d x c : PTm n)
     (hc : Γ ⊢[PRAAx] coherence A d x) (ht : Γ ⊢[PRAAx] continuity A mu d x)
@@ -258,7 +237,7 @@ theorem source_linear_uniqueness (A : PR 3) (mu : PR 2) (L M d x c : PTm n)
     (.hyp (by simp [Δ])) (.hyp (by simp [Δ])) (.hyp (by simp [Δ])) (.hyp (by simp [Δ]))
 
 def cutoff (M : PTm n) : PTm n := num 8*M
-@[simp] theorem subst_cutoff {k : ℕ} (σ : Fin n → PTm k) (M : PTm n) : Syn.subst σ (cutoff M) = cutoff (Syn.subst σ M) := by simp [cutoff]
+ipra_subst cutoff
 theorem cutoff_budget (L M : PTm n) (hL : Γ ⊢[PRAAx] le one L) : Γ ⊢[PRAAx] le (num 8*M) (L*scale (cutoff M)) := by
   have p : Γ ⊢[PRAAx] le (cutoff M) (scale (cutoff M)) := le_of_lt (AnalyticNumberTheory.Valuation.lt_pw (le_refl two) (cutoff M))
   have m : Γ ⊢[PRAAx] le (scale (cutoff M)) (L*scale (cutoff M)) :=

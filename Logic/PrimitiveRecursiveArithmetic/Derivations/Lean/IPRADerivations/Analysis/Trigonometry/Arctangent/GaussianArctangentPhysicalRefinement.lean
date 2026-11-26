@@ -15,16 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentPhysicalRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentClampedTarget (nativeValue)
 open GaussianArctangentNamedChord (imaginary_coordinate_radius)
 open GaussianArctangentPartialQuadrature (clearing observation physical_refinement nameF data sample_at mesh mesh_positive)
 open GaussianArctangentExponentialPrefix (prefixValue)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

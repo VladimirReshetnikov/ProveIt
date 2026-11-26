@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalThirdLogarithmCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Common (mul_le_mul)
 open GaussianBarnesCanonicalThirdLogarithmCauchy (gain ordered_prefix_error)
 open GaussianBarnesCanonicalThirdLogarithmRows (row)
@@ -24,9 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalReciprocal (bound_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

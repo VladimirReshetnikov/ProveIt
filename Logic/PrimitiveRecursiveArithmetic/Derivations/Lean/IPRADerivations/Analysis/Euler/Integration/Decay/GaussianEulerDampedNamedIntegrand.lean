@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDampedNamedIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData power_regular)
 open GaussianEulerExponentialSubstitutionNamedKernel (linearF linearData)
 open GaussianPositiveRationalLogarithm (logF fraction)
@@ -23,8 +23,6 @@ open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multip
 open GaussianNameRingLaws (negativeF negativeData negative_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,21 +40,11 @@ abbrev logarithmicF (f : PR 2) : PR 2 := GaussianRadiusExponentialName.nameF (ex
 def logarithmicData (f : PR 2) (z B a b x : PTm n) : PTm n :=
   exponentialInputData (exponentF f) (exponentData f z B a b x)
 
-@[simp] theorem subst_decayData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (decayData f x) = decayData f (Syn.subst σ x) := by simp [decayData,exponentialInputData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z B a b x : PTm n) :
-    Syn.subst σ (data f z B a b x) =
-      data f (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z B a b x : PTm n) :
-    Syn.subst σ (weightedData f z B a b x) =
-      weightedData f (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by simp [weightedData]
-@[simp] theorem subst_exponentData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z B a b x : PTm n) :
-    Syn.subst σ (exponentData f z B a b x) =
-      exponentData f (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by simp [exponentData]
-@[simp] theorem subst_logarithmicData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z B a b x : PTm n) :
-    Syn.subst σ (logarithmicData f z B a b x) =
-      logarithmicData f (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by
-  simp [logarithmicData,exponentialInputData]
+ipra_subst decayData [exponentialInputData]
+ipra_subst data
+ipra_subst weightedData
+ipra_subst exponentData
+ipra_subst logarithmicData [exponentialInputData]
 
 theorem decay_regular (f : PR 2) (x : PTm n) (hx : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] pointCN (decayF f) (decayData f x) :=

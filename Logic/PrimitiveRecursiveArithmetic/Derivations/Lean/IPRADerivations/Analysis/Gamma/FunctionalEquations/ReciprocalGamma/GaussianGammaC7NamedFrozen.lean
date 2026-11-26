@@ -13,7 +13,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaC7NamedFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaC7Named (nameF clock sample_at source data frozenData clock_demand late_rate)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaC7Name (sample)
@@ -24,10 +24,6 @@ open GaussianRationalHorner (positive_product ofGaussian)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSlackRemoval (precision slack_removal_at)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

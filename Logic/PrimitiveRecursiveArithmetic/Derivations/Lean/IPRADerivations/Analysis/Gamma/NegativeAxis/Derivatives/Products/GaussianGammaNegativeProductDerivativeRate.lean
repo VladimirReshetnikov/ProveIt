@@ -16,7 +16,7 @@ set_option maxHeartbeats 2800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeProductDerivativeRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaSeriesTerms (subtract_add_exchange)
 open GaussianGammaDigammaTwoShiftFiniteRate (fraction_bound)
 open GaussianGammaNegativeCriticalCorrection (bottomDen guard)
@@ -32,9 +32,6 @@ open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product qo
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qone)
 open GaussianReciprocalHorner (qadd_zero_right)
 open GaussianStirlingGammaLogarithm (arg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -44,18 +41,10 @@ def coefficientCap (j i : PTm n) : PTm n := i*productCap j i
 def prefixCost (j i : PTm n) : PTm n := i*i*productCap j i
 def derivativeCost (j : PTm n) : PTm n := prefixCost j j+coefficientCap j j
 
-@[simp] theorem subst_productCap {m : ℕ} (σ : Fin n → PTm m) (j i : PTm n) :
-    Syn.subst σ (productCap j i) = productCap (Syn.subst σ j) (Syn.subst σ i) := by
-  simp [productCap]
-@[simp] theorem subst_coefficientCap {m : ℕ} (σ : Fin n → PTm m) (j i : PTm n) :
-    Syn.subst σ (coefficientCap j i) = coefficientCap (Syn.subst σ j) (Syn.subst σ i) := by
-  simp [coefficientCap]
-@[simp] theorem subst_prefixCost {m : ℕ} (σ : Fin n → PTm m) (j i : PTm n) :
-    Syn.subst σ (prefixCost j i) = prefixCost (Syn.subst σ j) (Syn.subst σ i) := by
-  simp [prefixCost]
-@[simp] theorem subst_derivativeCost {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (derivativeCost j) = derivativeCost (Syn.subst σ j) := by
-  simp [derivativeCost]
+ipra_subst productCap
+ipra_subst coefficientCap
+ipra_subst prefixCost
+ipra_subst derivativeCost
 
 private theorem factor_bound (a b j i : PTm n) (ha : Γ ⊢[PRAAx] guard a b)
     (hi : Γ ⊢[PRAAx] le (succ i) j) :
@@ -89,11 +78,7 @@ def prefixBounds (a c b j A D i : PTm n) : Fm PTm n :=
       distanceBounded (prefixDifference (arg a) (arg c) b i) (prefixDifference (arg a) (arg a) b i)
         (prefixCost j i*A) D)
 
-@[simp] theorem subst_prefixBounds {m : ℕ} (σ : Fin n → PTm m) (a c b j A D i : PTm n) :
-    (prefixBounds a c b j A D i).subst σ =
-      prefixBounds (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ j)
-        (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ i) := by
-  simp [prefixBounds,one]
+ipra_subst prefixBounds [one]
 
 private theorem bounds_zero (a c b j A D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] prefixBounds a c b j A D zero := by

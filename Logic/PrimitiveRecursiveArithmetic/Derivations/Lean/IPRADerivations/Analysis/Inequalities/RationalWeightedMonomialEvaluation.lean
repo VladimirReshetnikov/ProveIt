@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalWeightedMonomialEvaluation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianWeightedMonomialBasis (basis count)
 open RationalGaussianEmbedding (embed)
 open RationalScalarPowerGaussianEmbedding (power powerF power_embedding)
@@ -23,9 +23,6 @@ open RationalPolynomialGaussianEmbedding (coefficients coefficientBody coefficie
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (agree sequence_equal)
-open ConciseIPRA.PTm (app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,13 +33,9 @@ def body : PTm 2 := monomial (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 
 def vector (m d L x y : PTm n) : PTm n := sequence body (count m d L) (pairT (basis m d L) (pairT x y))
 
-@[simp] theorem subst_monomial {q : ℕ} (σ : Fin n → PTm q) (x y p : PTm n) :
-    Syn.subst σ (monomial x y p) = monomial (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ p) := by
-  simp [monomial]
+ipra_subst monomial
 
-@[simp] theorem subst_vector {q : ℕ} (σ : Fin n → PTm q) (m d L x y : PTm n) :
-    Syn.subst σ (vector m d L x y) = vector (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L)
-      (Syn.subst σ x) (Syn.subst σ y) := by simp [vector]
+ipra_subst vector
 
 theorem monomial_congr {x x' y y' p p' : PTm n} (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y')
     (hp : Γ ⊢[PRAAx] p ≐ p') : Γ ⊢[PRAAx] monomial x y p ≐ monomial x' y' p' :=
@@ -58,7 +51,7 @@ theorem body_at (B x y r : PTm n) : Γ ⊢[PRAAx]
   have data := snd_pair (Γ := Γ) B (pairT x y)
   simp only [body,inst2,subst_monomial,Foundations.MasterCertificate.subst_entry,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact monomial_congr ((congrFst data).eqTrans (fst_pair _ _)) ((congrSnd data).eqTrans (snd_pair _ _))
+  exact monomial_congr data.fstE data.sndE
     (entry_congr (fst_pair _ _) (.eqRefl r))
 
 theorem vector_length (m d L x y : PTm n) : Γ ⊢[PRAAx] length (vector m d L x y) ≐ count m d L :=

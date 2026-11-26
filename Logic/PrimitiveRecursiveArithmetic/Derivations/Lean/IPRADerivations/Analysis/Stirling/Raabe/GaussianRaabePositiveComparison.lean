@@ -11,7 +11,7 @@ set_option maxHeartbeats 930000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabePositiveComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (quadrature)
 open GaussianNameArithmetic (sum_distance)
@@ -26,10 +26,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (qadd qmul_canonical positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalPowerDifference (distance_refl_zero)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,13 +34,9 @@ def valueFor (h N A D : PTm n) : PTm n :=
 
 def value (h A D : PTm n) : PTm n := valueFor h (count h A D) A D
 
-@[simp] theorem subst_valueFor {m : ℕ} (σ : Fin n → PTm m) (h N A D : PTm n) :
-    Syn.subst σ (valueFor h N A D) =
-      valueFor (Syn.subst σ h) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ D) := by simp [valueFor]
+ipra_subst valueFor
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (h A D : PTm n) :
-    Syn.subst σ (value h A D) = value (Syn.subst σ h) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [value]
+ipra_subst value
 
 private theorem fit (x y V B C h : PTm n) (hb : Γ ⊢[PRAAx] le one B)
     (budget : Γ ⊢[PRAAx] le (V*unit h) (C*B)) (e : Γ ⊢[PRAAx] distanceBounded x y V B) :

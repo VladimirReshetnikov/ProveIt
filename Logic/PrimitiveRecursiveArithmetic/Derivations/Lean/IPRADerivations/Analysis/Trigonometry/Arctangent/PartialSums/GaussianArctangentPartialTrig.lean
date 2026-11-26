@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentPartialTrig
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyStep (conjugateValue)
 open GaussianArctangentCayleyValues (value)
 open GaussianArctangentCayleyTrig (cosineMultiplier sinePoint cosinePoint conjugate_inverse sine_readback cosine_readback
@@ -31,8 +31,6 @@ open GaussianNameArithmetic (addF addData add_equivalent add_fast multiplyF mult
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_to_diagonal cross_trans)
 open GaussianNameRingLaws (negativeF negativeData)
 open GaussianRationalHorner (qadd qmul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,11 +41,9 @@ def cosineSumData (R x : PTm n) : PTm n :=
 def cosineF (f : PR 2) : PR 2 := multiplyF constantF (cosineSumF f)
 def cosineData (f : PR 2) (R x : PTm n) : PTm n := multiplyData constantF (cosineSumF f) cosineMultiplier (cosineSumData R x)
 
-@[simp] theorem subst_cosineSumData {m : ℕ} (σ : Fin n → PTm m) (R x : PTm n) :
-    Syn.subst σ (cosineSumData R x) = cosineSumData (Syn.subst σ R) (Syn.subst σ x) := by simp [cosineSumData]
+ipra_subst cosineSumData
 
-@[simp] theorem subst_cosineData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (cosineData f R x) = cosineData f (Syn.subst σ R) (Syn.subst σ x) := by simp [cosineData]
+ipra_subst cosineData
 
 theorem cosine_regular (f : PR 2) (R x : PTm n) (h : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input f R x) :
     Γ ⊢[PRAAx] pointCN (cosineF f) (cosineData f R x) :=

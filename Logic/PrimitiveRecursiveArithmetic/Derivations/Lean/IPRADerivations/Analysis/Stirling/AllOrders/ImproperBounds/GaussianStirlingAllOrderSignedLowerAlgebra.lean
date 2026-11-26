@@ -14,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderSignedLowerAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open LeanProofs.IPRA.Foundations.NumeralPrimes (num_le)
 open BernoulliBounds (zint toZ_zint)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -36,8 +35,6 @@ open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNonnegativePowers (fraction_multiply)
 open RationalNormalForm (normalize_well_formed)
 open RationalRepresentations (represents_multiply)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

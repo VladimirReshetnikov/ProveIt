@@ -14,7 +14,7 @@ set_option maxHeartbeats 780000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftArguments
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -26,10 +26,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianStirlingNames (source logXF logXData logGammaF logGammaData log_x_regular log_gamma_regular)
 open GaussianStirlingGlobalBounds (steps)
 open GaussianStirlingTelescope (shifted)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,18 +40,12 @@ def deltaData (i r b : PTm n) : PTm n :=
 def slopeF : PR 2 := multiplyF constantF logXF
 def slopeData (i r b : PTm n) : PTm n := multiplyData constantF logXF (positiveFraction r b) (logXData i one)
 
-@[simp] theorem subst_fractionNumerator {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (fractionNumerator a b) = fractionNumerator (Syn.subst σ a) (Syn.subst σ b) := by simp [fractionNumerator]
-@[simp] theorem subst_integerAnchor {l : ℕ} (σ : Fin n → PTm l) (a b p : PTm n) :
-    Syn.subst σ (integerAnchor a b p) = integerAnchor (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) := by simp [integerAnchor]
-@[simp] theorem subst_shiftedNumerator {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    Syn.subst σ (shiftedNumerator i r b) = shiftedNumerator (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by simp [shiftedNumerator]
-@[simp] theorem subst_ratioData {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    Syn.subst σ (ratioData i r b) = ratioData (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by simp [ratioData]
-@[simp] theorem subst_deltaData {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    Syn.subst σ (deltaData i r b) = deltaData (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by simp [deltaData]
-@[simp] theorem subst_slopeData {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    Syn.subst σ (slopeData i r b) = slopeData (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by simp [slopeData,positiveFraction]
+ipra_subst fractionNumerator
+ipra_subst integerAnchor
+ipra_subst shiftedNumerator
+ipra_subst ratioData
+ipra_subst deltaData
+ipra_subst slopeData [positiveFraction]
 
 theorem fractional_guard (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] le one (fractionNumerator a b) ⋏ le (fractionNumerator a b) b :=

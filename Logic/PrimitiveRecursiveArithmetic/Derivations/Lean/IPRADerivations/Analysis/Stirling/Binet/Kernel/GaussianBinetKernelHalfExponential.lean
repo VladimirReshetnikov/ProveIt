@@ -14,7 +14,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelHalfExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelFrozenHyperbolic (halfTime fixedExpF fixedExpData expRadius fixed_exp_input)
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
 open GaussianEulerDecayMesh (observation)
@@ -27,9 +27,6 @@ open GaussianPiRationalScale (point point_add point_negate subst_point)
 open GaussianRationalHorner (positive_product qadd qzero)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalSyntheticDivision (qadd_congr qone)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "FE" => GaussianGammaFoldedApproximantBalance.exponential_product_equivalent

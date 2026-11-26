@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianLagrangeInterp
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianInitialCoefficientBound
 import IPRADerivations.Analysis.FiniteOperations.GaussianFiniteSumL1Variation
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A computed finite-grid gain for original polynomial coefficients
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLagrangeCoefficientSensitivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianLagrangeInterpolation (data observation cell cellBody coefficient original_coefficient cell_body_at)
 open GaussianRationalLagrangeCardinals (inverseCoefficient)
 open GaussianRationalFiniteGridIdentity (grid)
@@ -31,10 +30,6 @@ open RationalArithmetic (multiply)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,15 +41,10 @@ def observationsClose (C D N E : PTm n) : Fm PTm n := .all
   (le (var 0) (Syn.shift N) ⟶ rationalLE
     (qL1 (qsub (observation (Syn.shift C) (var 0)) (observation (Syn.shift D) (var 0)))) (Syn.shift E))
 
-@[simp] theorem subst_row {l : ℕ} (σ : Fin n → PTm l) (N e : PTm n) :
-    Syn.subst σ (row N e) = row (Syn.subst σ N) (Syn.subst σ e) := by simp [row]
-@[simp] theorem subst_rowBound {l : ℕ} (σ : Fin n → PTm l) (N e : PTm n) :
-    Syn.subst σ (rowBound N e) = rowBound (Syn.subst σ N) (Syn.subst σ e) := by simp [rowBound]
-@[simp] theorem subst_gain {l : ℕ} (σ : Fin n → PTm l) (N e : PTm n) :
-    Syn.subst σ (gain N e) = gain (Syn.subst σ N) (Syn.subst σ e) := by simp [gain]
-@[simp] theorem subst_observationsClose {l : ℕ} (σ : Fin n → PTm l) (C D N E : PTm n) :
-    (observationsClose C D N E).subst σ = observationsClose (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ E) := by
-  simp [observationsClose,Syn.subst_shift,Syn.shift_subst]
+ipra_subst row
+ipra_subst rowBound
+ipra_subst gain
+ipra_subst observationsClose [Syn.subst_shift, Syn.shift_subst]
 
 theorem row_body_at (N e s : PTm n) : Γ ⊢[PRAAx] inst2 rowBody s (pairT N e) ≐ inverseCoefficient (grid N) e s := by
   simp only [rowBody,inst2,GaussianRationalLagrangeCardinals.subst_inverseCoefficient,

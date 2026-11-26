@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianRationalHorner (qadd positive_product represents represents_congr)
 open GaussianRationalSyntheticDivision (qone)
@@ -25,17 +25,12 @@ open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper)
 open RationalSupMetric (numeratorOf denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 def upperPoint (E : PTm n) : PTm n := fraction (monus (two*(two*E)) one) (two*(two*E))
-@[simp] theorem subst_upperPoint {m : ℕ} (σ : Fin n → PTm m) (E : PTm n) :
-    Syn.subst σ (upperPoint E) = upperPoint (Syn.subst σ E) := by simp [upperPoint]
+ipra_subst upperPoint
 
 private theorem linear_point_represents (B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (fstT (qadd qone (decayPoint one B))) (ZT.ofNat B-ZT.ofNat one) B := by

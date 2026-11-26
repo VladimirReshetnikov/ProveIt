@@ -14,7 +14,7 @@ set_option maxHeartbeats 1850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupSqueeze
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupChords (base translated base_source translated_source scaled_regular scale_cross)
 open GaussianBohrMollerupPresentation (Presentation argument scaledF scaledData
   observe_value observe_recurrence values recurrence rescaling convexity)
@@ -35,9 +35,6 @@ open GaussianNaturalScaleProductName (productF productData)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF

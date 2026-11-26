@@ -14,7 +14,7 @@ set_option maxHeartbeats 220000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -40,10 +40,6 @@ open GaussianStirlingGlobalBoundsShiftCorrection
   (correctionF correctionData correction_regular product_regular point_at_double_scale offset_represents)
 open GaussianStirlingNames (nameData name_regular source point offset logXF logXData log_x_regular
   logGammaF logGammaData log_gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "A" => GaussianStirlingNames.nameF
@@ -113,12 +109,8 @@ def slopeResidualData (i r b : PTm n) : PTm n := GaussianNamedDifference.data (d
 def splitF : PR 2 := addF slopeResidualF correctionF
 def splitData (i r b : PTm n) : PTm n := addData (slopeResidualData i r b) (correctionData i r b)
 
-@[simp] theorem subst_differenceData {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    Syn.subst σ (differenceData i r b) = differenceData (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by
-  simp [differenceData]
-@[simp] theorem subst_splitData {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    Syn.subst σ (splitData i r b) = splitData (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by
-  simp [splitData,slopeResidualData]
+ipra_subst differenceData
+ipra_subst splitData [slopeResidualData]
 
 theorem slope_residual_regular (i r b : PTm n) (hi : Γ ⊢[PRAAx] le one i) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] pointCN slopeResidualF (slopeResidualData i r b) :=

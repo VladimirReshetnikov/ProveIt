@@ -1,5 +1,4 @@
 import IPRADerivations.Core.IntCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # One-line order certificates

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetExponentialRectangleColumn
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetExponentialRectangle (data matrix entry_at)
 open GaussianBinetExponentialRectangleShift (realNumerator shifted_source original_product)
 open GaussianBinetWeightedExponentialAlgebra (tagWeight)
@@ -33,10 +33,6 @@ open GaussianRationalReciprocal (bounded_product bound_congr bounded_negative)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

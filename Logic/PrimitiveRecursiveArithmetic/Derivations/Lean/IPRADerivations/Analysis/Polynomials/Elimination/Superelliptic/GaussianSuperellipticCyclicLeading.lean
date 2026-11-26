@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticCyclicLeading
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianSuperellipticWordTerms (input)
 open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialDegree (degree nonzeroCoefficients nonzero_of_flag_one)
 open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialProductDegree (leading leading_nonzero)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power powerF)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (stage term factor signPoint)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMultiplicationMatrix (width slot)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,22 +40,14 @@ def wrapBody : PTm 2 := GaussianSuperellipticWordWeights.reader GaussianSuperell
 def wrapData (m w : PTm n) : PTm n := GaussianSuperellipticWordWeights.data zero m zero zero w
 
 
-@[simp] theorem subst_d {l : ℕ} (σ : Fin n → PTm l) (f c : PTm n) :
-    Syn.subst σ (d f c) = d (Syn.subst σ f) (Syn.subst σ c) := by simp [d]
-@[simp] theorem subst_k {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (k f G m a c) = k (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [k]
-@[simp] theorem subst_rotation {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (rotation f G m a c) = rotation (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [rotation]
-@[simp] theorem subst_matrix {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (matrix f G m a c) = matrix (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [matrix]
-@[simp] theorem subst_rowLeading {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (rowLeading f G m a c) = rowLeading (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [rowLeading]
-@[simp] theorem subst_fLeading {l : ℕ} (σ : Fin n → PTm l) (f c : PTm n) :
-    Syn.subst σ (fLeading f c) = fLeading (Syn.subst σ f) (Syn.subst σ c) := by simp [fLeading]
-@[simp] theorem subst_expected {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (expected f G m a c) = expected (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [expected]
-@[simp] theorem subst_wrapData {l : ℕ} (σ : Fin n → PTm l) (m w : PTm n) :
-    Syn.subst σ (wrapData m w) = wrapData (Syn.subst σ m) (Syn.subst σ w) := by simp [wrapData]
+ipra_subst d
+ipra_subst k
+ipra_subst rotation
+ipra_subst matrix
+ipra_subst rowLeading
+ipra_subst fLeading
+ipra_subst expected
+ipra_subst wrapData
 
 theorem weighted_input (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) :
     Γ ⊢[PRAAx] GaussianPolynomialWeightedDegree.input G m a := .andE₂ (.andE₂ h)
@@ -194,16 +183,8 @@ def run (f G m a c : PTm n) : PTm n := app outputF ![f,G,m,a,c]
 def fields (p : PTm n) (i : Fin 7) : PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),
   fstT (sndT (sndT (sndT p))),fstT (sndT (sndT (sndT (sndT p)))),
   fstT (sndT (sndT (sndT (sndT (sndT p))))),sndT (sndT (sndT (sndT (sndT (sndT p)))))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (output f G m a c) = output (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (run f G m a c) = run (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 7) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (f G m a c : PTm n) : Γ ⊢[PRAAx] run f G m a c ≐ output f G m a c := by
@@ -215,19 +196,19 @@ theorem returned_fields (f G m a c : PTm n) (i : Fin 7) : Γ ⊢[PRAAx]
         leading (stage (matrix f G m a c) m (width m a c) (rotation f G m a c) m) (m*width m a c),
         leading (term (matrix f G m a c) m (width m a c) (rotation f G m a c)) (m*width m a c),rotation f G m a c,k f G m a c] i := by
   have e0 := program_at (Γ := Γ) f G m a c
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  have e4 := (congrSnd e3).eqTrans (snd_pair _ _)
-  have e5 := (congrSnd e4).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
+  have e4 := e3.sndE
+  have e5 := e4.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrFst e4).eqTrans (fst_pair _ _)
-  · exact (congrFst e5).eqTrans (fst_pair _ _)
-  · exact (congrSnd e5).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e4.fstE
+  · exact e5.fstE
+  · exact e5.sndE
 theorem returned_stage_leading (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) : Γ ⊢[PRAAx]
     fields (run f G m a c) 3 ≐ fields (run f G m a c) 2 :=
   (returned_fields _ _ _ _ _ 3).eqTrans ((cyclic_stage_leading f G m a c h).eqTrans (returned_fields _ _ _ _ _ 2).eqSymm)

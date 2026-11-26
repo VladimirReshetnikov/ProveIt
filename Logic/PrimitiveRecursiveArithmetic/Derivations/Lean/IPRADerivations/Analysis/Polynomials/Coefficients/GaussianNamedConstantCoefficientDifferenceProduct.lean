@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedConstantCoefficientDifferenceProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianBoundedConstantProductName (constantF constant_regular constant_at)
@@ -28,8 +28,6 @@ open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,17 +47,9 @@ def rhsF (f g : PR 2) : PR 2 := addF (MF (QF f g)) (MF g)
 def rhsData (f g : PR 2) (c1 cDelta x y h D : PTm n) : PTm n :=
   addData (md (QF f g) c1 (qd f g x y h D)) (md g cDelta y)
 
-@[simp] theorem subst_lhsData {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2)
-    (c1 c0 x y h D : PTm n) :
-    Syn.subst σ (lhsData f g c1 c0 x y h D) =
-      lhsData f g (Syn.subst σ c1) (Syn.subst σ c0) (Syn.subst σ x) (Syn.subst σ y)
-        (Syn.subst σ h) (Syn.subst σ D) := by simp [lhsData]
+ipra_subst lhsData
 
-@[simp] theorem subst_rhsData {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2)
-    (c1 cDelta x y h D : PTm n) :
-    Syn.subst σ (rhsData f g c1 cDelta x y h D) =
-      rhsData f g (Syn.subst σ c1) (Syn.subst σ cDelta) (Syn.subst σ x) (Syn.subst σ y)
-        (Syn.subst σ h) (Syn.subst σ D) := by simp [rhsData]
+ipra_subst rhsData
 
 theorem lhs_regular (f g : PR 2) (c1 c0 x y h D : PTm n)
     (hx : Γ ⊢[PRAAx] pointCN f x) (hy : Γ ⊢[PRAAx] pointCN g y)

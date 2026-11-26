@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicGeometricPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (zeroCode oneCode scale)
 open GaussianRationalHorner (horner hornerF horner_zero horner_succ horner_canonical evaluate qzero qadd qmul
   canonical_unique ofGaussian_canonical qadd_canonical represents_congr qadd_represents)
@@ -31,16 +31,12 @@ open GaussianReciprocalHorner (qmul_one_right qadd_commutative qadd_zero_right q
 open GaussianRootAlgebra (equal_of_values re_scale im_scale re_one im_one re_zero im_zero re_add im_add)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficients (m : PTm n) : PTm n := sequence (qone : PTm 2) m zero
 
-@[simp] theorem subst_coefficients {L : ℕ} (σ : Fin n → PTm L) (m : PTm n) :
-    Syn.subst σ (coefficients m) = coefficients (Syn.subst σ m) := by simp [coefficients]
+ipra_subst coefficients
 
 theorem coefficients_length (m : PTm n) : Γ ⊢[PRAAx] length (coefficients m) ≐ m :=
   sequence_length _ _ _

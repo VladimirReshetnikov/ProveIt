@@ -15,7 +15,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedTaylorRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDerivativeAlgebra (linearTerm)
 open GaussianBarnesCanonicalDerivativeBinding
   (remainderF remainderData boundNumerator boundDenominator finiteRemainder logClock denominator_positive natScale_at_radius)
@@ -34,9 +34,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr qadd_sub_cancel qsub_congr qmul_congr)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Cubic" => GaussianBarnesCanonicalCubicName.nameF

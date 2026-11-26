@@ -61,16 +61,11 @@ private abbrev hpF : Fm PTm 1 :=
   (var 0 ≐ two * half (var 0) + par (var 0)) ⋏ ((par (var 0) ≐ zero) ⋎ (par (var 0) ≐ one))
 
 private theorem half_par₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] hpF := by
-  refine ind _ ⟨trivial, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_or, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap1,
-      Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .andI ?_ (.orI₁ par_zero)
+  ipra_ind (⟨trivial, trivial, trivial⟩) [subst_ap1]
+  · refine .andI ?_ (.orI₁ par_zero)
     refine withEq par_zero fun e₁ => withEq half_zero fun e₂ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-  · simp only [Fm.subst_and, Fm.subst_or, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap1,
-      Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ,
-      PTm.subst_monus]
-    have hx : [hpF] ⊢[PRAAx] var 0 ≐ two * half (var 0) + par (var 0) := .andE₁ Prf.hyp0
+  · have hx : [hpF] ⊢[PRAAx] var 0 ≐ two * half (var 0) + par (var 0) := .andE₁ Prf.hyp0
     refine .orE (.andE₂ Prf.hyp0) ?_ ?_
     · -- par x = 0: par (x+1) = 1, half (x+1) = half x.
       have hp : ((par (var 0) ≐ zero) :: [hpF]) ⊢[PRAAx] par (succ (var 0)) ≐ one :=
@@ -108,13 +103,9 @@ theorem even_or_odd (x : PTm n) :
 private abbrev pdF : Fm PTm 1 := par (two * var 0) ≐ zero
 
 private theorem par_double₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pdF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap1, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (congrAp1 parF (mul_zero _)).eqTrans par_zero
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap1, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    -- 2 (k + 1) = S (S (2k)).
+  ipra_ind [subst_ap1]
+  · exact (congrAp1 parF (mul_zero _)).eqTrans par_zero
+  · -- 2 (k + 1) = S (S (2k)).
     have e : [pdF] ⊢[PRAAx] two * succ (var 0) ≐ succ (succ (two * var 0)) := by
       ipra_ring
     refine (congrAp1 parF e).eqTrans ((par_succ _).eqTrans ?_)

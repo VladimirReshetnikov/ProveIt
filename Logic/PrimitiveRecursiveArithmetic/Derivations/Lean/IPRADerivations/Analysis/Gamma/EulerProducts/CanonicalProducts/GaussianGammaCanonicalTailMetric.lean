@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailFiniteSplit
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaLocalFactorName
 import IPRADerivations.Analysis.Names.GaussianNameArithmetic
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Metric transport for the original canonical Gamma tail observations
@@ -17,16 +16,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailMetric
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian ofGaussian_represents represents positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianGammaCanonicalTailFiniteSplit (value)
 open DyadicComplexLogarithm (unit crossDifference rounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -110,9 +105,7 @@ theorem tail_one_more_distance (p z R B N : PTm n)
       (le_refl (unit p*two))) actual
 
 def localValue (p z R D : PTm n) : PTm n := ofGaussian (GammaLocalFactorName.observation p z R D) (unit p)
-@[simp] theorem subst_localValue {l : ℕ} (σ : Fin n → PTm l) (p z R D : PTm n) :
-    Syn.subst σ (localValue p z R D) = localValue (Syn.subst σ p) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ D) := by simp [localValue]
+ipra_subst localValue
 
 theorem local_rounding_distance (p z R D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] distanceBounded (localValue p z R D)

@@ -20,16 +20,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonicRootAdequacy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianMonicRD (step)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (CN R)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (pointCN)
 open LeanProofs.IPRA.Analysis.GaussianRepresentedPointBounds (normLE)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanPointDistance (unit)
 open LeanProofs.IPRA.Analysis.GaussianRootSupport (coverDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,28 +47,17 @@ def polynomialZero (a : PR 3) (point : PR 2) (N Z x : PTm n) : Fm PTm n := Gauss
 def sourceConclusion (a : PR 3) (point : PR 2) (N Z x : PTm n) : Fm PTm n := GaussianRootAdequacyTheorem.conclusion step a point N Z x
 def conclusion (a : PR 3) (point : PR 2) (N Z x : PTm n) : Fm PTm n := GaussianRootCompletedAdequacy.conclusion step a point N Z x
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N Z x : PTm n) :
-    (input a point N Z x).subst σ = input a point (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by simp [input]
-@[simp] theorem subst_completionInput {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N x : PTm n) :
-    (completionInput a point N x).subst σ = completionInput a point (Syn.subst σ N) (Syn.subst σ x) := by simp [completionInput]
-@[simp] theorem subst_roots {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N t x : PTm n) :
-    Syn.subst σ (roots a N t x) = roots a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp [roots]
-@[simp] theorem subst_distanceData {m : ℕ} (σ : Fin n → PTm m) (N x : PTm n) :
-    Syn.subst σ (distanceData N x) = distanceData (Syn.subst σ N) (Syn.subst σ x) := by simp [distanceData]
-@[simp] theorem subst_distanceSample {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N x k : PTm n) :
-    Syn.subst σ (distanceSample a point N x k) = distanceSample a point (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ k) := by simp [distanceSample]
-@[simp] theorem subst_polynomialData {m : ℕ} (σ : Fin n → PTm m) (N Z x : PTm n) :
-    Syn.subst σ (polynomialData N Z x) = polynomialData (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by simp [polynomialData]
-@[simp] theorem subst_member {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N x : PTm n) :
-    (member a point N x).subst σ = member a point (Syn.subst σ N) (Syn.subst σ x) := by simp [member]
-@[simp] theorem subst_completedZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N x : PTm n) :
-    (completedZero a point N x).subst σ = completedZero a point (Syn.subst σ N) (Syn.subst σ x) := by simp [completedZero]
-@[simp] theorem subst_polynomialZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N Z x : PTm n) :
-    (polynomialZero a point N Z x).subst σ = polynomialZero a point (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by simp [polynomialZero]
-@[simp] theorem subst_sourceConclusion {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N Z x : PTm n) :
-    (sourceConclusion a point N Z x).subst σ = sourceConclusion a point (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by simp [sourceConclusion]
-@[simp] theorem subst_conclusion {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N Z x : PTm n) :
-    (conclusion a point N Z x).subst σ = conclusion a point (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by simp [conclusion]
+ipra_subst input
+ipra_subst completionInput
+ipra_subst roots
+ipra_subst distanceData
+ipra_subst distanceSample
+ipra_subst polynomialData
+ipra_subst member
+ipra_subst completedZero
+ipra_subst polynomialZero
+ipra_subst sourceConclusion
+ipra_subst conclusion
 
 theorem legacy_input (a : PR 3) (point : PR 2) (N Z x : PTm n) (h : Γ ⊢[PRAAx] input a point N Z x) : Γ ⊢[PRAAx]
     GaussianRootAdequacy.inputContract step a point N Z x := .andI GaussianMonicRD.monic_rd h
@@ -165,9 +151,7 @@ def distanceConclusion (a : PR 3) (point : PR 2) (N x : PTm n) : Fm PTm n :=
       (ap2 (distanceNameF a point) (var 0) (distanceData (Syn.shift N) (Syn.shift x))) ⋏
       RationalNormalForm.wellFormed (ap2 (distanceNameF a point) (var 0) (distanceData (Syn.shift N) (Syn.shift x)))) ⋏
       Fm.iff (member a point N x) (completedZero a point N x))
-@[simp] theorem subst_distanceConclusion {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N x : PTm n) :
-    (distanceConclusion a point N x).subst σ = distanceConclusion a point (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [distanceConclusion,Fm.iff,Syn.subst_shift,Syn.shift_subst]
+ipra_subst distanceConclusion [Fm.iff, Syn.subst_shift, Syn.shift_subst]
 
 /-- Completion and its zero-membership interpretation require no disk
 or polynomial-value bound beyond the genuine coefficient/point names. -/

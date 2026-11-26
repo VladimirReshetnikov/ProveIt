@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalBaseProductShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDeflatedFactor (translatedValue inversePower power_factor)
 open GaussianBarnesCanonicalFactor (powerValue)
 open GaussianBarnesCanonicalPolynomialShift (polynomial plain polynomial_shift)
@@ -27,9 +27,6 @@ open GaussianRationalProductAlgebra (multiplyBody multiply_body_at product_multi
 open GaussianRationalReciprocal (power powerF)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

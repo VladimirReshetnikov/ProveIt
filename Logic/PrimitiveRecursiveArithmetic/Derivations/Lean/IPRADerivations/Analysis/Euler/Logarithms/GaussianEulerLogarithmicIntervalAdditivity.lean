@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicIntervalAdditivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicIntervalName (nameF data sampled_modulus)
 open GaussianEulerLogarithmicCompactName (evaluatorF fixedData)
 open GaussianEulerLogarithmicMultiplier (lipschitz)
@@ -22,8 +22,6 @@ open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,16 +32,9 @@ def addedData (j z R B a C1 C2 E T : PTm n) : PTm n :=
 def rescaledData (k j z R B a C E T : PTm n) : PTm n :=
   GaussianCompactRiemannName.data (k*a) (k*C) (k*E) (lipschitz j R E T) T (fixedData j R E T z B)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C1 C2 E T : PTm n) :
-    (source z R B a C1 C2 E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_addedData {m : ℕ} (σ : Fin n → PTm m) (j z R B a C1 C2 E T : PTm n) :
-    Syn.subst σ (addedData j z R B a C1 C2 E T) = addedData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ T) := by simp [addedData]
-@[simp] theorem subst_rescaledData {m : ℕ} (σ : Fin n → PTm m) (k j z R B a C E T : PTm n) :
-    Syn.subst σ (rescaledData k j z R B a C E T) = rescaledData (Syn.subst σ k) (Syn.subst σ j)
-      (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [rescaledData]
+ipra_subst source
+ipra_subst addedData
+ipra_subst rescaledData
 
 theorem additivity_input (j z R B a C1 C2 E T : PTm n)
     (h : Γ ⊢[PRAAx] source z R B a C1 C2 E T) : Γ ⊢[PRAAx]

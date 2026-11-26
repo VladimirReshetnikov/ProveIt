@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialYShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialMonicCompanion (values values_length values_lookup rowShape row_shape_at normalizedRow
   normalized_length normalized_evaluation normalized_canonical pad_canonical)
 open GaussianPolynomialMultiplicationMatrix (stored)
@@ -25,9 +25,6 @@ open GaussianRationalSyntheticDivision (canonicalCoefficients)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,15 +36,9 @@ def rowBody : PTm 2 := row (fstT (var 1)) (fstT (sndT (var 1)))
   (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1)))) (var 0)
 def shiftY (G m a d : PTm n) : PTm n := sequence rowBody (succ m) (data G m a d)
 
-@[simp] theorem subst_row {k : ℕ} (σ : Fin n → PTm k) (G m a d r : PTm n) :
-    Syn.subst σ (row G m a d r) = row (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ r) := by simp [row,sel]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (G m a d : PTm n) :
-    Syn.subst σ (data G m a d) = data (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp [data]
-@[simp] theorem subst_shiftY {k : ℕ} (σ : Fin n → PTm k) (G m a d : PTm n) :
-    Syn.subst σ (shiftY G m a d) = shiftY (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp [shiftY]
+ipra_subst row [sel]
+ipra_subst data
+ipra_subst shiftY
 
 theorem row_body_at (G m a d r : PTm n) : Γ ⊢[PRAAx] inst2 rowBody r (data G m a d) ≐ row G m a d r := by
   have tail := snd_pair (Γ := Γ) G (pairT m (pairT a d))
@@ -59,9 +50,9 @@ theorem row_body_at (G m a d r : PTm n) : Γ ⊢[PRAAx] inst2 rowBody r (data G 
     (σ' := ![G,m,a,d,r]) (fun j => by
       fin_cases j
       · exact fst_pair _ _
-      · exact (congrFst tail).eqTrans (fst_pair _ _)
-      · exact (congrFst rest).eqTrans (fst_pair _ _)
-      · exact (congrSnd rest).eqTrans (snd_pair _ _)
+      · exact tail.fstE
+      · exact rest.fstE
+      · exact rest.sndE
       · exact .eqRefl _)
 theorem shift_length (G m a d : PTm n) : Γ ⊢[PRAAx] length (shiftY G m a d) ≐ succ m := sequence_length _ _ _
 theorem shift_lookup (G m a d r : PTm n) (hr : Γ ⊢[PRAAx] lt r (succ m)) : Γ ⊢[PRAAx]

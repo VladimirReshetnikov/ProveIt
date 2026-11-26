@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCoefficientRadiusIndependence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaRadiusCoefficientName (nameF data sample)
 open GaussianGammaShrinkingGridCoefficientComparison (precision budget)
 open GaussianRationalMetric (distanceBounded qsub)
@@ -22,9 +22,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

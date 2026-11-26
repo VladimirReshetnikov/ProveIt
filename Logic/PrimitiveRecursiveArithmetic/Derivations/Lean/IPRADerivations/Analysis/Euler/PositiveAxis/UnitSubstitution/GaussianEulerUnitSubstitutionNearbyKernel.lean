@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionNearbyKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData decayF decayData decayPoint)
 open GaussianEulerUnitDecayInput (compactDenominator clock)
 open GaussianNamedEulerUnitKernelAtDecay (frozenKernelData original_frozen_image_observations)
@@ -26,9 +26,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -44,21 +41,10 @@ def leadingNumerator (k R E T J X Y : PTm n) : PTm n :=
   lipschitz R (compactDenominator E T)*Y+lipschitz R J*X*unit k
 def leadingDenominator (k Y : PTm n) : PTm n := Y*unit k
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (k a b E T : PTm n) :
-    Syn.subst σ (observation k a b E T) =
-      observation (Syn.subst σ k) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [observation]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (k z R B a b E T c d J X Y : PTm n) :
-    (source k z R B a b E T c d J X Y).subst σ = source (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ J) (Syn.subst σ X) (Syn.subst σ Y) := by simp [source]
-@[simp] theorem subst_leadingNumerator {m : ℕ} (σ : Fin n → PTm m) (k R E T J X Y : PTm n) :
-    Syn.subst σ (leadingNumerator k R E T J X Y) =
-      leadingNumerator (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T)
-        (Syn.subst σ J) (Syn.subst σ X) (Syn.subst σ Y) := by simp [leadingNumerator]
-@[simp] theorem subst_leadingDenominator {m : ℕ} (σ : Fin n → PTm m) (k Y : PTm n) :
-    Syn.subst σ (leadingDenominator k Y) = leadingDenominator (Syn.subst σ k) (Syn.subst σ Y) := by
-  simp [leadingDenominator]
+ipra_subst observation
+ipra_subst source
+ipra_subst leadingNumerator
+ipra_subst leadingDenominator
 
 private theorem decoding_source_congr (u v G : PTm n) (e : Γ ⊢[PRAAx] u ≐ v)
     (h : Γ ⊢[PRAAx] GaussianUnitIntervalInputDecoding.source u G) :
@@ -83,8 +69,7 @@ theorem widen_time_compact (u v G J : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerUni
     (.andI (le_trans h.andE₂.andE₂.andE₁ (mul_le_mul_right u hw)) ?_))
   have base := h.andE₂.andE₂.andE₂
   have order := le_of_lt h.andE₁.andE₂
-  have gap := natEq (eq_add_of_le hw)
-  ipra_le sl base + 𝔞(LeanProofs.IPRA.PTm.monus J G)*sl order with (𝔞 v-𝔞 u)*gap
+  ipra_le sl base + 𝔞(LeanProofs.IPRA.PTm.monus J G)*sl order with (𝔞 v-𝔞 u)*natEq (eq_add_of_le hw)
 
 private theorem canonical_observation (k a b E T : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (observation k a b E T) :=

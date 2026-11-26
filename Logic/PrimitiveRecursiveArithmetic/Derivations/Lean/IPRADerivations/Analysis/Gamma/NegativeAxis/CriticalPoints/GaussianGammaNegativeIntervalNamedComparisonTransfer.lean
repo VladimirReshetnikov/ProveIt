@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedComparisonTransfer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -29,10 +29,6 @@ open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open RationalValueBounds (upper upper_of_radius upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -12,15 +12,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalRadicandOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (denominatorOf)
 open QuadraticRationalRadicand
   (isPositive integerRadicand changeBasis sign equivalent less multiply integer_radicand_positive equivalent_iff less_iff)
 open QuadraticRationalClearing (sameCoefficients)
 open QuadraticRationalPairArithmetic (add negative)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

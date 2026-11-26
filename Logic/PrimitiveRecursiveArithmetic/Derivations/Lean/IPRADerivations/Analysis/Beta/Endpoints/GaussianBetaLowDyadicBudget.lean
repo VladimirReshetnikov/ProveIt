@@ -15,14 +15,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaLowDyadicBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (quadrature)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

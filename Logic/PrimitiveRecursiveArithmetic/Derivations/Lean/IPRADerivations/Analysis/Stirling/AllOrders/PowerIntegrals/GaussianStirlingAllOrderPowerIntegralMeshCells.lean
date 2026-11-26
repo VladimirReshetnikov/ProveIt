@@ -13,9 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPowerIntegralMeshCells
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.Foundations.NumeralPrimes (num_le)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -31,8 +29,6 @@ open RationalArgmin (rationalLE rationalLE_congr reflexive)
 open RationalFiniteSum (canonical_equal)
 open RationalNonnegativePowers (fraction_multiply fraction_congr)
 open RationalNormalForm (normalize_well_formed)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,21 +43,13 @@ def cellSample (e : ℕ) (B M K : PTm n) : PTm n := multiply (fraction one M) (w
 def endpointSample (e : ℕ) (U B M : PTm n) : PTm n :=
   multiply (fraction one M) (fraction (power e B) (power e U))
 
-@[simp] theorem subst_primitive {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (U B : PTm n) :
-    Syn.subst σ (primitive e U B) = primitive e (Syn.subst σ U) (Syn.subst σ B) :=
-  by simp [primitive,power,pw]
+ipra_subst primitive [power, pw]
 
-@[simp] theorem subst_endpointSample {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (U B M : PTm n) :
-    Syn.subst σ (endpointSample e U B M) = endpointSample e (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ M) :=
-  by simp [endpointSample,power,pw]
+ipra_subst endpointSample [power, pw]
 
-@[simp] theorem subst_endpoint {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (B M K : PTm n) :
-    Syn.subst σ (endpoint e B M K) = endpoint e (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ K) :=
-  by simp [endpoint,power,pw]
+ipra_subst endpoint [power, pw]
 
-@[simp] theorem subst_cellSample {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (B M K : PTm n) :
-    Syn.subst σ (cellSample e B M K) = cellSample e (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ K) :=
-  by simp [cellSample,weight,power,pw]
+ipra_subst cellSample [weight, power, pw]
 
 private theorem same_fraction (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hd : Γ ⊢[PRAAx] le one d)
     (h : Γ ⊢[PRAAx] a*d ≐ c*b) : Γ ⊢[PRAAx] fraction a b ≐ fraction c d := by

@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (bounded scale normSq normSq_scale normSq_one oneCode)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator)
@@ -27,9 +27,6 @@ open GaussianRationalNaturalScale (natScale natScale_represents natScale_canonic
 open GaussianRationalReciprocal (qone qone_represents_scaled)
 open GaussianRootAlgebra (sub equal_of_values equal_refl normSq_equal re_add im_add re_scale im_scale
   re_sub im_sub re_neg im_neg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

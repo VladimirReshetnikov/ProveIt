@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCompositionName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The finite polynomial head in the Euler and Gamma products
@@ -16,15 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHead
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteProduct (qprod product_zero product_succ product_split)
 open GaussianRationalHorner (qadd qmul ofGaussian ofGaussian_represents positive_product canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product qone_bounded)
 open GaussianRationalMetric (bounded bounded_iff)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,20 +34,13 @@ def product (z B N : PTm n) : PTm n := qprod factorBody N (data z B)
 
 def head (z B N : PTm n) : PTm n := qmul (ofGaussian z B) (product z B N)
 
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (i z B : PTm n) :
-    Syn.subst σ (factor i z B) = factor (Syn.subst σ i) (Syn.subst σ z) (Syn.subst σ B) := by
-  simp [factor]
+ipra_subst factor
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (data z B) = data (Syn.subst σ z) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_product {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (product z B N) = product (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [product]
+ipra_subst product
 
-@[simp] theorem subst_head {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (head z B N) = head (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [head]
+ipra_subst head
 
 theorem factor_at (i z B : PTm n) :
     Γ ⊢[PRAAx] inst2 factorBody i (data z B) ≐ factor i z B := by
@@ -96,9 +85,7 @@ theorem factor_bound (i z R B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 
 def prefixBound (z R B N : PTm n) : Fm PTm n := bounded (head z B N) (R*pw (one+R) N) one
 
-@[simp] theorem subst_prefixBound {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    (prefixBound z R B N).subst σ = prefixBound (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [prefixBound]
+ipra_subst prefixBound
 
 theorem prefix_bound_zero (z R B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :

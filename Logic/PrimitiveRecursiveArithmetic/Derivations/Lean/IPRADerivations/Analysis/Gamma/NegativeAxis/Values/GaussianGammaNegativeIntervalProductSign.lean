@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalProductSign
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianEulerDampedTimeRate (fraction_product)
@@ -40,10 +40,6 @@ open GaussianReciprocalHorner (qmul_one_right qmul_associative)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_neg im_neg re_scale im_scale re_one im_one)
 open GaussianStirlingGammaLogarithm (arg)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -58,19 +54,13 @@ def signedProduct (a b N : PTm n) : PTm n :=
 
 def lowerPoint (a b : PTm n) : PTm n := fraction (a*monus b a) (b*b)
 
-@[simp] theorem subst_magnitude {m : ℕ} (σ : Fin n → PTm m) (a b j : PTm n) :
-    Syn.subst σ (magnitude a b j) = magnitude (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) := by
-  simp [magnitude]
+ipra_subst magnitude
 
-@[simp] theorem subst_signUnit {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (signUnit j) = signUnit (Syn.subst σ j) := by simp [signUnit, minusOne]
+ipra_subst signUnit [minusOne]
 
-@[simp] theorem subst_signedProduct {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (signedProduct a b N) = signedProduct (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [signedProduct]
+ipra_subst signedProduct
 
-@[simp] theorem subst_lowerPoint {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (lowerPoint a b) = lowerPoint (Syn.subst σ a) (Syn.subst σ b) := by simp [lowerPoint]
+ipra_subst lowerPoint
 
 private theorem magnitude_zero (a b : PTm n) : Γ ⊢[PRAAx] magnitude a b zero ≐ one :=
   prod_zero magnitudeBody (pairT a b)

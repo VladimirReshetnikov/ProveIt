@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerRealIntegrandNonnegative
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannLower
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Nonnegativity of the actual real Euler compact observations
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteRealCompactNonnegative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (evaluatorF fixedData sample timeData)
 open GaussianCompactRiemannName (quadrature sampleBody sampleData sample_body_at precision mesh)
 open GaussianEulerCompactAdditivity (intervalSource nameF data)
@@ -29,10 +28,6 @@ open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalGaussianRealPart (realBody)
 open RationalGaussianEmbedding (scalarZero)
 open RationalValueBounds (upper upper_congr upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,13 +35,8 @@ def realSource (z B : PTm n) : Fm PTm n := le one B ⋏ ZT.eq (ComplexLogarithmR
 def source (z R B a C E T : PTm n) : Fm PTm n :=
   intervalSource z R B a C E T ⋏ ZT.eq (ComplexLogarithmRemainder.im z) (ZT.ofNat zero)
 
-@[simp] theorem subst_realSource {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    (realSource z B).subst σ = realSource (Syn.subst σ z) (Syn.subst σ B) := by
-  simp [realSource,ZT.eq,ZT.ofNat,ComplexLogarithmRemainder.im]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    (source z R B a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [source,ZT.eq,ZT.ofNat,ComplexLogarithmRemainder.im]
+ipra_subst realSource [ZT.eq, ZT.ofNat, ComplexLogarithmRemainder.im]
+ipra_subst source [ZT.eq, ZT.ofNat, ComplexLogarithmRemainder.im]
 
 private theorem zero_fraction (C D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     fraction (C*zero) D ≐ scalarZero := by

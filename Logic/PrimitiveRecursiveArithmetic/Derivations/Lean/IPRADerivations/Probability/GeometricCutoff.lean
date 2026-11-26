@@ -22,16 +22,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.GeometricCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (cancel_pos one_le_pw_of)
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.Probability.GeometricTail (power_half)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

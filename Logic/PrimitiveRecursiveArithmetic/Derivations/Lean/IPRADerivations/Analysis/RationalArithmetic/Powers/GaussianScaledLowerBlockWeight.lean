@@ -14,14 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScaledLowerBlockWeight
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerBlockWeight (source rowNumerator rowDenominator numerator denominator row_denominator_positive width_numerator)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalFiniteSum (sum)
 open GaussianUniformFiniteSumBound (summandsBounded uniform_sum_bound)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

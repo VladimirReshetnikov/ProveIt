@@ -5,10 +5,7 @@ import IPRADerivations.Core.BoundedSums
 /-! Object syntax for Hilbert names. Every sampler is a fixed `PR`, hence all
 of the resulting `Fm PTm 0` are ordinary first-order iPRA sentences. -/
 namespace LeanProofs.IPRA.Analysis.Quantum.Names
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open LeanProofs.IPRA.PTm (monus)
-open scoped Fm
+open_ipra
 
 /-- A stage consists of a length, a common positive denominator, and four
 natural numerators per entry. The coordinate readers take (index, stage). -/

@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (source argument nameF data clock power_source)
 open GaussianEulerIntegrandName (powerF powerData powerExponentF powerExponentData powerRadius)
 open GaussianNamedPositiveExponentialOrder (real_order_at)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper upper_order_left upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,13 +35,9 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def exponentRadius (Q E T : PTm n) : PTm n := GaussianEulerCompactPowerMajorant.exponentRadius (Q+one) E T
 def powerDenominator (Q E T : PTm n) : PTm n := pw (num 3) (exponentRadius Q E T)
 def denominator (h Q E T : PTm n) : PTm n := h*powerDenominator Q E T
-@[simp] theorem subst_exponentRadius {m : ℕ} (σ : Fin n → PTm m) (Q E T : PTm n) :
-    Syn.subst σ (exponentRadius Q E T) = exponentRadius (Syn.subst σ Q) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [exponentRadius,GaussianEulerCompactPowerMajorant.exponentRadius,GaussianCompactLogarithmBounds.radius]
-@[simp] theorem subst_powerDenominator {m : ℕ} (σ : Fin n → PTm m) (Q E T : PTm n) :
-    Syn.subst σ (powerDenominator Q E T) = powerDenominator (Syn.subst σ Q) (Syn.subst σ E) (Syn.subst σ T) := by simp [powerDenominator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (h Q E T : PTm n) :
-    Syn.subst σ (denominator h Q E T) = denominator (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ E) (Syn.subst σ T) := by simp [denominator]
+ipra_subst exponentRadius [GaussianEulerCompactPowerMajorant.exponentRadius, GaussianCompactLogarithmBounds.radius]
+ipra_subst powerDenominator
+ipra_subst denominator
 
 theorem power_denominator_positive (Q E T : PTm n) : Γ ⊢[PRAAx] le one (powerDenominator Q E T) :=
   GaussianFactorBudget.power_positive _ _ (le_of_eq_add (d := two) (by ipra_ring))

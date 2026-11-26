@@ -13,7 +13,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorMixedGridRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded bounded_mono scale)
 open GaussianBarnesCanonicalCofinalTaylorMixedGridRows (polynomialGrid productCap rowNumerator)
 open GaussianBarnesCanonicalFiniteTaylorGridObservations (literalGrid literal_at)
@@ -40,10 +40,6 @@ open GaussianRationalHorner (evaluate ofGaussian positive_product qmul qzero)
 open GaussianRationalMetric (distanceBounded qnegative)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

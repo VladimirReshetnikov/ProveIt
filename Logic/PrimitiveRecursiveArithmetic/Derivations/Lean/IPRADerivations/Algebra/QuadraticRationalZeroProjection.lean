@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticRationalEmbedding
 import IPRADerivations.Algebra.QuadraticZeroProjection
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Actual rational zero-radicand projection
@@ -17,7 +16,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalZeroProjection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalEq left)
 open QuadraticSignCertificates (first second equal negative_first negative_second)
@@ -25,9 +24,6 @@ open QuadraticConeOrder (equal_of_values equal_first equal_symm add_first add_se
 open QuadraticRationalClearing (clear denominator represents clear_represents denominator_positive)
 open QuadraticPositiveScaling (scale scale_first scale_second)
 open QuadraticRationalPairArithmetic (add negative multiply)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,20 +34,13 @@ def isZero (x : PTm n) : Fm PTm n := sign x ≐ zero
 def difference (x y : PTm n) : PTm n := QuadraticRationalEqualityOrder.difference x y
 def equivalent (x y : PTm n) : Fm PTm n := isZero (difference x y)
 def less (x y : PTm n) : Fm PTm n := positive (difference y x)
-@[simp] theorem subst_project {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (project x) = project (Syn.subst σ x) := by simp [project]
-@[simp] theorem subst_sign {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (sign x) = sign (Syn.subst σ x) := by simp [sign]
-@[simp] theorem subst_positive {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    (positive x).subst σ = positive (Syn.subst σ x) := by simp [positive]
-@[simp] theorem subst_isZero {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    (isZero x).subst σ = isZero (Syn.subst σ x) := by simp [isZero]
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    Syn.subst σ (difference x y) = difference (Syn.subst σ x) (Syn.subst σ y) := by simp [difference]
-@[simp] theorem subst_equivalent {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    (equivalent x y).subst σ = equivalent (Syn.subst σ x) (Syn.subst σ y) := by simp [equivalent]
-@[simp] theorem subst_less {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    (less x y).subst σ = less (Syn.subst σ x) (Syn.subst σ y) := by simp [less]
+ipra_subst project
+ipra_subst sign
+ipra_subst positive
+ipra_subst isZero
+ipra_subst difference
+ipra_subst equivalent
+ipra_subst less
 
 theorem sign_project (x : PTm n) : Γ ⊢[PRAAx]
     sign x ≐ QuadraticRationalClearing.sign one (project x) :=
@@ -257,18 +246,16 @@ theorem sign_congr (x y : PTm n) (h : Γ ⊢[PRAAx] equivalent x y) : Γ ⊢[PRA
 def output (x : PTm n) : PTm n := pairT (project x) (pairT (sign x) QuadraticRationalEmbedding.root)
 def outputF : PR 1 := PTm.toPR (output (var 0))
 def run (x : PTm n) : PTm n := ap1 outputF x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (output x) = output (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (run x) = run (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (x : PTm n) : Γ ⊢[PRAAx] run x ≐ output x := by
   simpa [run,outputF,ap1] using toPR_eq (Γ := Γ) (output (var 0) : PTm 1) ![x]
 theorem returned_projection (x : PTm n) : Γ ⊢[PRAAx] fstT (run x) ≐ project x :=
-  (congrFst (program_at _)).eqTrans (fst_pair _ _)
+  (program_at _).fstE
 theorem returned_sign (x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run x)) ≐ sign x :=
-  (congrFst ((congrSnd (program_at _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _).sndE.fstE
 theorem returned_root (x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run x)) ≐ QuadraticRationalEmbedding.root :=
-  (congrSnd ((congrSnd (program_at _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _).sndE.sndE
 
 theorem zero_rational_representation_sign_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (le one (var 2) ⟶ represents (var 0) (var 1) (var 2) ⟶ sign (var 0) ≐ QuadraticZeroProjection.sign (var 1)) :=

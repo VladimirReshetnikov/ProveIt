@@ -20,14 +20,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.RampMarkov
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (le_add_ad)
 open LeanProofs.IPRA.Probability.EventAlgebraMetric (wsum wsum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,8 +43,7 @@ def rampCase (c y r : PTm n) : Fm PTm n := (r ≐ zero) ⋎ le c y
 theorem ramp_pt {c y r D : PTm n} (hr : Γ ⊢[PRAAx] le r D) (h : Γ ⊢[PRAAx] rampCase c y r) :
     Γ ⊢[PRAAx] le (c * r) (D * y) := by
   refine .orE h ?_ ?_
-  · have e := natEq (Prf.hyp0 : ((r ≐ zero) :: Γ) ⊢[PRAAx] r ≐ zero)
-    ipra_le 𝔟 D * 𝔟 y with 𝔟 c * e
+  · ipra_le 𝔟 D * 𝔟 y with 𝔟 c * natEq (Prf.hyp0 : ((r ≐ zero) :: Γ) ⊢[PRAAx] r ≐ zero)
   · have hcy : (le c y :: Γ) ⊢[PRAAx] le c y := Prf.hyp0
     have hr' : (le c y :: Γ) ⊢[PRAAx] le r D := hr.wk
     ipra_le 𝔟 c * sl hr' + 𝔟 D * sl hcy

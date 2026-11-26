@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSpectralRootWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCharacteristicAggregate (stageF sample_nonempty stage_regular sample_entry sample_length)
 open GaussianCharacteristicRootSupport (roots roots_length)
 open GaussianModulusAggregateMap (point vector evaluatorF)
@@ -28,10 +28,6 @@ open GaussianEuclideanDistanceName (pointCN distanceLE)
 open GaussianCharacteristicAggregateDecoding (distance_point_vector)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,10 +41,8 @@ def vectorF (a : PR 4) : PR 2 := PTm.toPR (vectorBody a)
 def rootF (a : PR 4) : PR 2 := GaussianCharacteristicAggregateDecoding.decodedF (vectorF a)
 def observation (a : PR 4) (N k t x : PTm n) : PTm n := ap2 (rootF a) t (data N k x)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (N k x : PTm n) :
-    Syn.subst σ (data N k x) = data (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_observation {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N k t x : PTm n) :
-    Syn.subst σ (observation a N k t x) = observation a (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ t) (Syn.subst σ x) := by simp [observation]
+ipra_subst data
+ipra_subst observation
 
 theorem source_at (a : PR 4) (N k t x : PTm n) : Γ ⊢[PRAAx]
     sample (sourceF a) t (data N k x) ≐ sample (stageF a) t (GaussianCharacteristicRootSupport.data N x) := by
@@ -175,15 +169,9 @@ def precisionAt (a : PR 4) (p : PR 2) (N x y r : PTm n) : Fm PTm n :=
 def memberAt (a : PR 4) (p : PR 2) (N x y : PTm n) : Fm PTm n :=
   .all (precisionAt a p (Syn.shift N) (Syn.shift x) (Syn.shift y) (var 0))
 
-@[simp] theorem subst_stageAt {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (p : PR 2) (N x y r t : PTm n) :
-    (stageAt a p N x y r t).subst σ = stageAt a p (Syn.subst σ N) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ r) (Syn.subst σ t) := by simp [stageAt]
-@[simp] theorem subst_precisionAt {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (p : PR 2) (N x y r : PTm n) :
-    (precisionAt a p N x y r).subst σ = precisionAt a p (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ r) := by
-  simp [precisionAt,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_memberAt {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (p : PR 2) (N x y : PTm n) :
-    (memberAt a p N x y).subst σ = memberAt a p (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [memberAt,Syn.subst_shift,Syn.shift_subst]
+ipra_subst stageAt
+ipra_subst precisionAt [Syn.subst_shift, Syn.shift_subst]
+ipra_subst memberAt [Syn.subst_shift, Syn.shift_subst]
 
 /-- This is exactly the existing membership formula with independent point data. -/
 theorem member_same_data (a : PR 4) (p : PR 2) (N x : PTm n) :
@@ -236,8 +224,7 @@ theorem root_hit (a : PR 4) (N k x t : PTm n)
   simpa [Δ,E,Fm.shift,Syn.shift,one,two] using hit
 
 def memberPrecision (r : PTm n) : PTm n := GaussianCharacteristicAggregateDecoding.memberStage r
-@[simp] theorem subst_memberPrecision {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (memberPrecision r) = memberPrecision (Syn.subst σ r) := by simp [memberPrecision]
+ipra_subst memberPrecision
 
 theorem root_cut_budget (r : PTm n) : Γ ⊢[PRAAx] le
     ((num 10*unit (memberPrecision r)+num 8*unit (memberPrecision r))*unit r)
@@ -279,8 +266,7 @@ theorem root_member (a : PR 4) (N k x : PTm n)
 
 def value (a : PR 4) (N k t x : PTm n) : PTm n :=
   GaussianRationalModulus.lower (observation a N k (t+one) x) (t+two)
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N k t x : PTm n) :
-    Syn.subst σ (value a N k t x) = value a (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ t) (Syn.subst σ x) := by simp [value]
+ipra_subst value
 
 theorem value_at (a : PR 4) (N k t x : PTm n) : Γ ⊢[PRAAx]
     value a N k t x ≐ AggregateOptimization.supremumWitnessValue (stageF a) evaluatorF k t witnessShift two two
@@ -334,14 +320,8 @@ theorem root_disk (a : PR 4) (N k t x : PTm n)
 def output (a : PR 4) (N k t x : PTm n) : PTm n := pairT (observation a N k (t+one) x) (value a N k t x)
 def outputF (a : PR 4) : PR 4 := PTm.toPR (output a (var 0) (var 1) (var 2) (var 3))
 def run (a : PR 4) (N k t x : PTm n) : PTm n := PTm.app (outputF a) ![N,k,t,x]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N k t x : PTm n) :
-    Syn.subst σ (output a N k t x) = output a (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ t) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (a : PR 4) (N k t x : PTm n) :
-    Syn.subst σ (run a N k t x) = run a (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (a : PR 4) (N k t x : PTm n) : Γ ⊢[PRAAx] run a N k t x ≐ output a N k t x := by
   simpa only [run,outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
@@ -349,10 +329,10 @@ theorem program_at (a : PR 4) (N k t x : PTm n) : Γ ⊢[PRAAx] run a N k t x �
     toPR_eq (Γ := Γ) (output a (var 0) (var 1) (var 2) (var 3) : PTm 4) ![N,k,t,x]
 theorem returned_root (a : PR 4) (N k t x : PTm n) : Γ ⊢[PRAAx]
     fstT (run a N k t x) ≐ observation a N k (t+one) x :=
-  (congrFst (program_at a N k t x)).eqTrans (fst_pair _ _)
+  (program_at a N k t x).fstE
 theorem returned_value (a : PR 4) (N k t x : PTm n) : Γ ⊢[PRAAx]
     sndT (run a N k t x) ≐ value a N k t x :=
-  (congrSnd (program_at a N k t x)).eqTrans (snd_pair _ _)
+  (program_at a N k t x).sndE
 
 theorem returned_modulus (a : PR 4) (N k t x : PTm n) : Γ ⊢[PRAAx]
     sndT (run a N k t x) ≐ GaussianRationalModulus.lower (fstT (run a N k t x)) (t+two) :=

@@ -1,5 +1,4 @@
 import IPRADerivations.Algebra.QuadraticIntegerEmbedding
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The actual zero-radicand projection branch
@@ -17,16 +16,13 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticZeroProjection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates (first second code tag add negative multiply zeroCode oneCode
   negative_first multiply_first zero_first_value)
 open QuadraticConeOrder (equal_of_values equal_symm equal_first add_first)
 open QuadraticIntegerEmbedding (integer integer_first integer_second integer_sign integer_positive
   integer_positive_reflect integer_isZero integer_zero_reflect integer_equivalent integer_equivalent_reflect)
 open QuadraticIntegerOrder (difference root natural)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,18 +32,12 @@ def positive (x : PTm n) : Fm PTm n := sign x ≐ one
 def isZero (x : PTm n) : Fm PTm n := sign x ≐ zero
 def equivalent (x y : PTm n) : Fm PTm n := isZero (difference x y)
 def less (x y : PTm n) : Fm PTm n := positive (difference y x)
-@[simp] theorem subst_project {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (project x) = project (Syn.subst σ x) := by simp [project]
-@[simp] theorem subst_sign {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (sign x) = sign (Syn.subst σ x) := by simp [sign]
-@[simp] theorem subst_positive {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    (positive x).subst σ = positive (Syn.subst σ x) := by simp [positive]
-@[simp] theorem subst_isZero {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    (isZero x).subst σ = isZero (Syn.subst σ x) := by simp [isZero]
-@[simp] theorem subst_equivalent {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    (equivalent x y).subst σ = equivalent (Syn.subst σ x) (Syn.subst σ y) := by simp [equivalent]
-@[simp] theorem subst_less {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    (less x y).subst σ = less (Syn.subst σ x) (Syn.subst σ y) := by simp [less]
+ipra_subst project
+ipra_subst sign
+ipra_subst positive
+ipra_subst isZero
+ipra_subst equivalent
+ipra_subst less
 
 theorem sign_project (x : PTm n) : Γ ⊢[PRAAx]
     sign x ≐ QuadraticSignCertificates.sign one (project x) :=
@@ -177,8 +167,7 @@ theorem less_congr (x x' y y' : PTm n) (hx : Γ ⊢[PRAAx] equivalent x x') (hy 
 
 theorem scalar_injective (a b : ZT n) (h : Γ ⊢[PRAAx] equivalent (integer a) (integer b)) : Γ ⊢[PRAAx] ZT.eq a b := by
   apply ZT.derive
-  have hv := ZT.toZ_eq (equivalent_reflect _ _ h)
-  simpa only [integer_first] using hv
+  simpa only [integer_first] using ZT.toZ_eq (equivalent_reflect _ _ h)
 theorem scalar_equivalent (a b : ZT n) (h : Γ ⊢[PRAAx] ZT.eq a b) : Γ ⊢[PRAAx] equivalent (integer a) (integer b) := by
   apply equivalent_of_projection
   apply ZT.derive
@@ -207,18 +196,16 @@ the source pair is never used as a validity premise. -/
 def output (x : PTm n) : PTm n := pairT (code (first x)) (pairT (project x) (sign x))
 def outputF : PR 1 := PTm.toPR (output (var 0))
 def run (x : PTm n) : PTm n := ap1 outputF x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (output x) = output (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (run x) = run (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (x : PTm n) : Γ ⊢[PRAAx] run x ≐ output x := by
   simpa [run,outputF,ap1] using toPR_eq (Γ := Γ) (output (var 0) : PTm 1) ![x]
 theorem returned_coefficient (x : PTm n) : Γ ⊢[PRAAx] fstT (run x) ≐ code (first x) :=
-  (congrFst (program_at x)).eqTrans (fst_pair _ _)
+  (program_at x).fstE
 theorem returned_projection (x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run x)) ≐ project x :=
-  (congrFst ((congrSnd (program_at x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at x).sndE.fstE
 theorem returned_sign (x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run x)) ≐ sign x :=
-  (congrSnd ((congrSnd (program_at x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at x).sndE.sndE
 theorem returned_zero_iff (x : PTm n) : Γ ⊢[PRAAx]
     Fm.iff (sndT (sndT (run x)) ≐ zero) (ZT.eq (first x) (ZT.ofNat zero)) :=
   .andI (.impI (zero_reflect _ ((returned_sign _).wk.eqSymm.eqTrans Prf.hyp0)))

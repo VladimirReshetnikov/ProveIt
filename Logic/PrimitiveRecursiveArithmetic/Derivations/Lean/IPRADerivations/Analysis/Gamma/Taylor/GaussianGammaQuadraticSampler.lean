@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaQuadraticSampler
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteQuadraticExpansion (quadratic)
 open GaussianGammaUnitCoefficientMass (budget)
 open GaussianGammaCofinalCoefficientName (coefficientPrecision degreeCutoff exponentialCutoff)
@@ -22,10 +22,6 @@ open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -36,12 +32,9 @@ def numerator (p r R a b : PTm n) : PTm n :=
   budget R*pw a (num 3)*unit p*unit r+pw a two*b*unit p+pw b (num 3)*unit r
 def denominator (p r b : PTm n) : PTm n := pw b (num 3)*unit p*unit r
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    (source z R B a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p r R a b : PTm n) :
-    Syn.subst σ (numerator p r R a b) = numerator (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p r b : PTm n) :
-    Syn.subst σ (denominator p r b) = denominator (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ b) := by simp [denominator]
+ipra_subst source
+ipra_subst numerator
+ipra_subst denominator
 
 theorem denominator_positive (p r b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx] le one (denominator p r b) :=
   positive_product _ _ (positive_product _ _ (GaussianFactorBudget.power_positive b (num 3) hb) (unit_positive p)) (unit_positive r)

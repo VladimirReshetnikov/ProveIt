@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShiftTrajectory
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Repeated shift of the original entire reciprocal Gamma name
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRepeatedShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaShiftTrajectory (point point_zero point_succ point_source point_linear)
 open GaussianGammaEulerHeadShift (linear shifted)
 open GaussianGammaCanonicalExponent (source constantF constant_regular)
@@ -28,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalFiniteProduct (qprod product_zero product_canonical)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -49,18 +45,12 @@ def resultData (z R B E : PTm n) : PTm n := GaussianNameArithmetic.multiplyData 
 
 @[simp] theorem subst_prefix {l : ℕ} (σ : Fin n → PTm l) (z B i : PTm n) :
     Syn.subst σ (risingProduct z B i) = risingProduct (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ i) := by simp [risingProduct]
-@[simp] theorem subst_stageData {l : ℕ} (σ : Fin n → PTm l) (z R B i : PTm n) :
-    Syn.subst σ (stageData z R B i) = stageData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ i) := by simp [stageData]
-@[simp] theorem subst_stage {l : ℕ} (σ : Fin n → PTm l) (p z R B i : PTm n) :
-    Syn.subst σ (stage p z R B i) = stage (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ i) := by simp [stage]
-@[simp] theorem subst_factorBound {l : ℕ} (σ : Fin n → PTm l) (R E : PTm n) :
-    Syn.subst σ (factorBound R E) = factorBound (Syn.subst σ R) (Syn.subst σ E) := by simp [factorBound]
-@[simp] theorem subst_stepCost {l : ℕ} (σ : Fin n → PTm l) (R E : PTm n) :
-    Syn.subst σ (stepCost R E) = stepCost (Syn.subst σ R) (Syn.subst σ E) := by simp [stepCost]
-@[simp] theorem subst_error {l : ℕ} (σ : Fin n → PTm l) (R E i : PTm n) :
-    Syn.subst σ (error R E i) = error (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ i) := by simp [error]
-@[simp] theorem subst_resultData {l : ℕ} (σ : Fin n → PTm l) (z R B E : PTm n) :
-    Syn.subst σ (resultData z R B E) = resultData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by simp [resultData]
+ipra_subst stageData
+ipra_subst stage
+ipra_subst factorBound
+ipra_subst stepCost
+ipra_subst error
+ipra_subst resultData
 
 theorem linear_at (z B i : PTm n) : Γ ⊢[PRAAx]
     inst2 linearBody i (GaussianGammaShiftTrajectory.data z B) ≐ linear z B i := by
@@ -95,14 +85,11 @@ theorem prefix_bound (z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B) (hi : 
   have hs : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift z) (Syn.shift R) (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using h.shift
   have hall : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift E) ⟶
       bounded (risingProduct (Syn.shift z) (Syn.shift B) (var 0)) (pw (factorBound (Syn.shift R) (Syn.shift E)) (var 0)) one) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,GaussianRationalMetric.subst_bounded,subst_prefix,subst_factorBound,subst_ap2,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (GaussianRationalReciprocal.bound_congr (prefix_zero z B).eqSymm (pw_zero _).eqSymm (.eqRefl _)
+    ipra_qfind (⟨trivial,trivial⟩) [subst_le, GaussianRationalMetric.subst_bounded, subst_prefix, subst_factorBound,
+        subst_ap2]
+    · exact .impI (GaussianRationalReciprocal.bound_congr (prefix_zero z B).eqSymm (pw_zero _).eqSymm (.eqRefl _)
         GaussianRationalReciprocal.qone_bounded)
-    · simp only [Fm.subst_imp,subst_le,GaussianRationalMetric.subst_bounded,subst_prefix,subst_factorBound,subst_ap2,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       exact prefix_bound_step _ _ _ _ _ hs.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have gate : Γ ⊢[PRAAx] le i E ⟶ bounded (risingProduct z B i) (pw (factorBound R E) i) one := by
@@ -164,9 +151,7 @@ theorem stage_step_error (p z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B) 
 
 def prefixLaw (p z R B E i : PTm n) : Fm PTm n := le i E ⟶
   distanceBounded (GaussianGammaC7Name.sample p z R B) (qmul (risingProduct z B i) (stage p z R B i)) (error R E i) (unit p)
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (p z R B E i : PTm n) :
-    (prefixLaw p z R B E i).subst σ = prefixLaw (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ i) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_error_zero (p z R B E : PTm n) : Γ ⊢[PRAAx]
     distanceBounded (GaussianGammaC7Name.sample p z R B) (qmul (risingProduct z B zero) (stage p z R B zero))
@@ -201,11 +186,9 @@ theorem prefix_error (p z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B) (hi 
     distanceBounded (GaussianGammaC7Name.sample p z R B) (qmul (risingProduct z B i) (stage p z R B i)) (error R E i) (unit p) := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift z) (Syn.shift R) (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using h.shift
   have hall : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift p) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift E) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_error_zero p z R B E)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨trivial,trivial⟩) [subst_prefixLaw]
+    · exact .impI (prefix_error_zero p z R B E)
+    · refine .impI ?_
       exact prefix_error_step _ _ _ _ _ _ hs.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have gate : Γ ⊢[PRAAx] prefixLaw p z R B E i := by
@@ -213,8 +196,7 @@ theorem prefix_error (p z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B) (hi 
   exact .impE gate hi
 
 def finalError (R E : PTm n) : PTm n := (E*stepCost R E+two)*pw (factorBound R E) E
-@[simp] theorem subst_finalError {l : ℕ} (σ : Fin n → PTm l) (R E : PTm n) :
-    Syn.subst σ (finalError R E) = finalError (Syn.subst σ R) (Syn.subst σ E) := by simp [finalError]
+ipra_subst finalError
 
 theorem result_regular (z R B E : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     GaussianEuclideanDistanceName.pointCN resultF (resultData z R B E) :=
@@ -263,16 +245,8 @@ def output (p q z R B E : PTm n) : PTm n := pairT (GaussianGammaC7Name.sample p 
   (pairT (risingProduct z B E) (ap2 resultF q (resultData z R B E)))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (p q z R B E : PTm n) : PTm n := PTm.app outputF ![p,q,z,R,B,E]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q z R B E : PTm n) :
-    Syn.subst σ (output p q z R B E) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q z R B E : PTm n) :
-    Syn.subst σ (run p q z R B E) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p q z R B E : PTm n) : Γ ⊢[PRAAx] run p q z R B E ≐ output p q z R B E := by
   simpa [run,outputF] using
@@ -280,13 +254,13 @@ theorem program_at (p q z R B E : PTm n) : Γ ⊢[PRAAx] run p q z R B E ≐ out
 
 theorem returned_original (p q z R B E : PTm n) : Γ ⊢[PRAAx]
     fstT (run p q z R B E) ≐ GaussianGammaC7Name.sample p z R B :=
-  (congrFst (program_at p q z R B E)).eqTrans (fst_pair _ _)
+  (program_at p q z R B E).fstE
 theorem returned_product (p q z R B E : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run p q z R B E)) ≐ risingProduct z B E :=
-  (congrFst ((congrSnd (program_at p q z R B E)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at p q z R B E).sndE.fstE
 theorem returned_shifted (p q z R B E : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run p q z R B E)) ≐ ap2 resultF q (resultData z R B E) :=
-  (congrSnd ((congrSnd (program_at p q z R B E)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at p q z R B E).sndE.sndE
 theorem returned_distance (p q z R B E : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run p q z R B E)) (sndT (sndT (run p q z R B E))) (unit p+unit q) (unit p*unit q) :=
   distance_congr (returned_original p q z R B E).eqSymm (returned_shifted p q z R B E).eqSymm (.eqRefl _) (.eqRefl _)

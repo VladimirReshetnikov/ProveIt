@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalSubtupleSpan
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalOriginalSpanMembership
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite covers normalized to spans of subtuples
@@ -18,16 +17,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalFiniteSpanCover
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalRowSpanGaussianEmbedding (hasCoefficients)
 open RationalSuperellipticSubspace (properSpan)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.MixedRadix (Cd Pl dP)
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,18 +35,12 @@ def subtuple (A N T : PTm n) : PTm n := RationalSubtupleSpan.selected T (mask A 
 def count (A N T : PTm n) : PTm n := RationalSubtupleSpan.size T (mask A N T)
 def position (A N T r : PTm n) : PTm n := RationalSubtupleSpan.selectedIndex T (mask A N T) r
 
-@[simp] theorem subst_memberBit {q : ℕ} (σ : Fin n → PTm q) (A N T i : PTm n) :
-    Syn.subst σ (memberBit A N T i) = memberBit (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ T) (Syn.subst σ i) := by simp [memberBit]
-@[simp] theorem subst_data {q : ℕ} (σ : Fin n → PTm q) (A N T : PTm n) :
-    Syn.subst σ (data A N T) = data (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ T) := by simp [data]
-@[simp] theorem subst_mask {q : ℕ} (σ : Fin n → PTm q) (A N T : PTm n) :
-    Syn.subst σ (mask A N T) = mask (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ T) := by simp [mask]
-@[simp] theorem subst_subtuple {q : ℕ} (σ : Fin n → PTm q) (A N T : PTm n) :
-    Syn.subst σ (subtuple A N T) = subtuple (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ T) := by simp [subtuple]
-@[simp] theorem subst_count {q : ℕ} (σ : Fin n → PTm q) (A N T : PTm n) :
-    Syn.subst σ (count A N T) = count (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ T) := by simp [count]
-@[simp] theorem subst_position {q : ℕ} (σ : Fin n → PTm q) (A N T r : PTm n) :
-    Syn.subst σ (position A N T r) = position (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ T) (Syn.subst σ r) := by simp [position]
+ipra_subst memberBit
+ipra_subst data
+ipra_subst mask
+ipra_subst subtuple
+ipra_subst count
+ipra_subst position
 
 theorem member_bit_bound (A N T i : PTm n) : Γ ⊢[PRAAx] lt (memberBit A N T i) two := by
   refine .orE (eq_or_ne (RationalOriginalSpanMembership.test A (length A) N (entry T i)) one) ?_ ?_
@@ -71,8 +60,8 @@ private theorem member_bit_congr {A B N M T S i j : PTm n} (hA : Γ ⊢[PRAAx] A
 
 theorem digit_body_at (A N T i : PTm n) : Γ ⊢[PRAAx] inst2 digitBody i (data A N T) ≐ memberBit A N T i := by
   simp only [digitBody,inst2,subst_memberBit,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact member_bit_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact member_bit_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem places (k p : PTm n) : Γ ⊢[PRAAx] Pl (two : PTm 2) k p ≐ pw two k := by
   apply prod_const_of
   refine .allI (.impI ?_)
@@ -161,21 +150,17 @@ def familyBody : PTm 2 := subtuple (entry (fstT (var 1)) (var 0))
   (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 def normalized (D N T : PTm n) : PTm n := sequence familyBody (length D) (data D N T)
 
-@[simp] theorem subst_family {q : ℕ} (σ : Fin n → PTm q) (D N : PTm n) :
-    (family D N).subst σ = family (Syn.subst σ D) (Syn.subst σ N) := by simp [family,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_coveredAt {q : ℕ} (σ : Fin n → PTm q) (D N v : PTm n) :
-    (coveredAt D N v).subst σ = coveredAt (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ v) := by simp [coveredAt,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_covered {q : ℕ} (σ : Fin n → PTm q) (T D N : PTm n) :
-    (covered T D N).subst σ = covered (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ N) := by simp [covered,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_normalized {q : ℕ} (σ : Fin n → PTm q) (D N T : PTm n) :
-    Syn.subst σ (normalized D N T) = normalized (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ T) := by simp [normalized]
+ipra_subst family [Syn.subst_shift, Syn.shift_subst]
+ipra_subst coveredAt [Syn.subst_shift, Syn.shift_subst]
+ipra_subst covered [Syn.subst_shift, Syn.shift_subst]
+ipra_subst normalized
 
 theorem family_body_at (D N T g : PTm n) : Γ ⊢[PRAAx]
     inst2 familyBody g (data D N T) ≐ subtuple (entry D g) N T := by
   simp only [familyBody,inst2,subst_subtuple,Foundations.MasterCertificate.subst_entry,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact subtuple_congr (entry_congr (fst_pair _ _) (.eqRefl _))
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+    (snd_pair _ _).fstE (snd_pair _ _).sndE
 theorem normalized_length (D N T : PTm n) : Γ ⊢[PRAAx] length (normalized D N T) ≐ length D := sequence_length _ _ _
 theorem normalized_lookup (D N T g : PTm n) (hg : Γ ⊢[PRAAx] lt g (length D)) : Γ ⊢[PRAAx]
     entry (normalized D N T) g ≐ subtuple (entry D g) N T :=
@@ -248,13 +233,12 @@ private theorem mask_congr {A B N M T S : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
 
 def maskBody : PTm 2 := mask (entry (fstT (var 1)) (var 0)) (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 def masks (D N T : PTm n) : PTm n := sequence maskBody (length D) (data D N T)
-@[simp] theorem subst_masks {q : ℕ} (σ : Fin n → PTm q) (D N T : PTm n) :
-    Syn.subst σ (masks D N T) = masks (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ T) := by simp [masks]
+ipra_subst masks
 theorem mask_body_at (D N T g : PTm n) : Γ ⊢[PRAAx] inst2 maskBody g (data D N T) ≐ mask (entry D g) N T := by
   simp only [maskBody,inst2,subst_mask,Foundations.MasterCertificate.subst_entry,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact mask_congr (entry_congr (fst_pair _ _) (.eqRefl _))
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+    (snd_pair _ _).fstE (snd_pair _ _).sndE
 theorem masks_length (D N T : PTm n) : Γ ⊢[PRAAx] length (masks D N T) ≐ length D := sequence_length _ _ _
 theorem masks_lookup (D N T g : PTm n) (hg : Γ ⊢[PRAAx] lt g (length D)) : Γ ⊢[PRAAx]
     entry (masks D N T) g ≐ mask (entry D g) N T :=
@@ -265,8 +249,7 @@ theorem masks_bound (D N T g : PTm n) (hg : Γ ⊢[PRAAx] lt g (length D)) : Γ 
 
 /-- Exact finite normalization; cover existence remains an original hypothesis. -/
 def certificate (T D N E : PTm n) : Fm PTm n := length E ≐ length D ⋏ (family E N ⋏ covered T E N)
-@[simp] theorem subst_certificate {q : ℕ} (σ : Fin n → PTm q) (T D N E : PTm n) :
-    (certificate T D N E).subst σ = certificate (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ E) := by simp [certificate]
+ipra_subst certificate
 theorem produced_certificate (T D N : PTm n) (hf : Γ ⊢[PRAAx] family D N) (hc : Γ ⊢[PRAAx] covered T D N) : Γ ⊢[PRAAx]
     certificate T D N (normalized D N T) :=
   .andI (normalized_length D N T) (.andI (normalized_family D N T hf) (normalized_coverage T D N hc))
@@ -274,24 +257,18 @@ theorem produced_certificate (T D N : PTm n) (hf : Γ ⊢[PRAAx] family D N) (hc
 def output (T D N : PTm n) : PTm n := pairT (normalized D N T) (pairT (masks D N T) T)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (T D N : PTm n) : PTm n := app outputF ![T,D,N]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (T D N : PTm n) :
-    Syn.subst σ (output T D N) = output (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (T D N : PTm n) :
-    Syn.subst σ (run T D N) = run (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (T D N : PTm n) : Γ ⊢[PRAAx] run T D N ≐ output T D N := by
   simpa [run,outputF,output,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![T,D,N]
 theorem returned_family (T D N : PTm n) : Γ ⊢[PRAAx] fstT (run T D N) ≐ normalized D N T :=
-  (congrFst (program_at T D N)).eqTrans (fst_pair _ _)
+  (program_at T D N).fstE
 theorem returned_masks (T D N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run T D N)) ≐ masks D N T :=
-  (congrFst ((congrSnd (program_at T D N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at T D N).sndE.fstE
 theorem returned_tuple (T D N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run T D N)) ≐ T :=
-  (congrSnd ((congrSnd (program_at T D N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at T D N).sndE.sndE
 theorem returned_certificate (T D N : PTm n) (hf : Γ ⊢[PRAAx] family D N) (hc : Γ ⊢[PRAAx] covered T D N) : Γ ⊢[PRAAx]
     certificate T D N (fstT (run T D N)) := by
   let φ := certificate (Syn.shift T) (Syn.shift D) (Syn.shift N) (var 0)

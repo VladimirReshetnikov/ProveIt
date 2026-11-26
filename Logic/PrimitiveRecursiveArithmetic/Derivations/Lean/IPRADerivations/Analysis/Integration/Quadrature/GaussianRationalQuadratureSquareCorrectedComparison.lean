@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureSquareCorrectedComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalQuadratureSquarePartition (source lowerNumerator widthNumerator intervalDenominator fineCount cellCap cutData cutF cutGap)
 open GaussianRationalQuadratureSquareComparison (fineData coarseData coarseSum squareSum rowNumerator rowDenominator)
 open GaussianRationalQuadratureSquareJacobian (pullF correctedF correctedData)
@@ -31,9 +31,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -100,9 +97,7 @@ theorem original_finite_corrected_comparison (F : PR 3) (p N c d a C E L T x : P
 
 def eulerSource (z R B N c d a C E T : PTm n) : Fm PTm n := source c d a C E N ⋏
   GaussianEulerCompactAdditivity.intervalSource z R B (lowerNumerator c a) (widthNumerator c a C) (intervalDenominator d E) T
-@[simp] theorem subst_eulerSource {m : ℕ} (σ : Fin n → PTm m) (z R B N c d a C E T : PTm n) :
-    (eulerSource z R B N c d a C E T).subst σ = eulerSource (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [eulerSource]
+ipra_subst eulerSource
 
 /-- The actual Euler client supplies every analytic modulus internally.
 The endpoint assumes only its original input disk and numerical geometry. -/

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSmallAddendRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianNameArithmetic (addF addData)
@@ -24,10 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator)
 open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator diagonalEnvelope)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,11 +34,8 @@ def source (C L U : PR 2) (x y z A B : PTm n) : Fm PTm n := le one B ⋏
   ((pointCN C x ⋏ pointCN L y) ⋏ (pointCN U z ⋏
     (crossEquivalent L (addF C U) y (addData x z) ⋏ tailSamples U z A B)))
 
-@[simp] theorem subst_tailSamples {m : ℕ} (σ : Fin n → PTm m) (U : PR 2) (z A B : PTm n) :
-    (tailSamples U z A B).subst σ = tailSamples U (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [tailSamples,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (C L U : PR 2) (x y z A B : PTm n) :
-    (source C L U x y z A B).subst σ = source C L U (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) := by simp [source]
+ipra_subst tailSamples [Syn.subst_shift, Syn.shift_subst]
+ipra_subst source
 
 theorem tail_at (U : PR 2) (z A B t : PTm n) (h : Γ ⊢[PRAAx] tailSamples U z A B) : Γ ⊢[PRAAx]
     canonical (ap2 U t z) ⋏ bounded (ap2 U t z) (A*unit t+B) (B*unit t) := by

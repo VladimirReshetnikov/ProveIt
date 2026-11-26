@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiSharpness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalConsecutiveFactorProduct (consecutive root consecutive_root consecutive_head consecutive_length)
 open RationalGaussianEmbedding (embed embed_canonical embed_equal embed_multiply embed_zero scalarZero)
 open RationalPolynomialGaussianEmbedding (embed_congr evaluate hornerF)
@@ -29,18 +29,13 @@ open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
 open GaussianRationalSyntheticBounds (natCode_represents)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def pointBody : PTm 2 := pairT (root (var 0)) scalarZero
 def points (m : PTm n) : PTm n := sequence pointBody m zero
 
-@[simp] theorem subst_points {k : ℕ} (σ : Fin n → PTm k) (m : PTm n) :
-    Syn.subst σ (points m) = points (Syn.subst σ m) := by simp [points]
+ipra_subst points
 
 theorem points_length (m : PTm n) : Γ ⊢[PRAAx] length (points m) ≐ m := sequence_length _ _ _
 
@@ -49,10 +44,10 @@ theorem point_lookup (m j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
   simpa [points,pointBody,inst2] using sequence_decode (Γ := Γ) pointBody (x := zero) hj
 
 theorem point_abscissa (m j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx] abscissa (points m) j ≐ root j :=
-  (congrFst (point_lookup m j hj)).eqTrans (fst_pair _ _)
+  (point_lookup m j hj).fstE
 
 theorem point_ordinate (m j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx] ordinate (points m) j ≐ scalarZero :=
-  (congrSnd (point_lookup m j hj)).eqTrans (snd_pair _ _)
+  (point_lookup m j hj).sndE
 
 theorem root_injective (i j : PTm n) (h : Γ ⊢[PRAAx] rationalEq (root i) (root j)) : Γ ⊢[PRAAx] i ≐ j := by
   have raw := RationalPolynomialBuffersGaussianEmbedding.canonical_equal_of_embedding (root i) (root j)

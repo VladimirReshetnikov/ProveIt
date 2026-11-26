@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianScalarExponentialProductLowDegrees
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTail
 import IPRADerivations.Foundations.DyadicGain
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The tail of the actual rectangular exponential product
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarExponentialProductTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qmul_congr)
@@ -29,10 +28,6 @@ open GaussianScalarExponentialProductLowDegrees (buffer descending_at product hi
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside)
 open GaussianScalarExponentialDiagonal (coefficient)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
@@ -45,14 +40,9 @@ def termsBounded (f : PTm 2) (N x A B : PTm n) : Fm PTm n :=
 def prefixBound (f : PTm 2) (N x A B k : PTm n) : Fm PTm n :=
   le k N ⟶ bounded (GaussianRationalFiniteSum.sum f k x) (k*A) B
 
-@[simp] theorem subst_prefixBound {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (N x A B k : PTm n) :
-    (prefixBound f N x A B k).subst σ = prefixBound f (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ A)
-      (Syn.subst σ B) (Syn.subst σ k) := by simp [prefixBound]
+ipra_subst prefixBound
 
-@[simp] theorem subst_termsBounded {m : ℕ} (σ : Fin n → PTm m) (f : PTm 2) (N x A B : PTm n) :
-    (termsBounded f N x A B).subst σ = termsBounded f (Syn.subst σ N) (Syn.subst σ x)
-      (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [termsBounded,Syn.shift_subst,Syn.subst_shift]
+ipra_subst termsBounded [Syn.shift_subst, Syn.subst_shift]
 
 theorem term_bound_at (f : PTm 2) (N x A B i : PTm n)
     (h : Γ ⊢[PRAAx] termsBounded f N x A B) (hi : Γ ⊢[PRAAx] lt i N) :
@@ -75,12 +65,10 @@ theorem sum_bound (f : PTm 2) (N x A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     simpa only [Fm.shift,subst_termsBounded,Syn.shift] using h.shift
   have hb : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (prefixBound f (Syn.shift N) (Syn.shift x) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (bound_congr (GaussianRationalFiniteSum.sum_zero _ _).eqSymm (zero_mul A).eqSymm (.eqRefl _)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixBound]
+    · exact .impI (bound_congr (GaussianRationalFiniteSum.sum_zero _ _).eqSymm (zero_mul A).eqSymm (.eqRefl _)
         (GaussianMonicResidualRadius.zero_bounded zero _ hB.wk))
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_step f _ _ _ _ _ hb.wk.wk hs.wk.wk Prf.hyp0 Prf.hyp1)
+    · exact .impI (prefix_step f _ _ _ _ _ hb.wk.wk hs.wk.wk Prf.hyp0 Prf.hyp1)
   have p : Γ ⊢[PRAAx] prefixBound f N x A B N := by
     simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
   exact .impE p (le_refl _)
@@ -112,13 +100,9 @@ theorem small_at (q H B j : PTm n) (h : Γ ⊢[PRAAx] smallCoefficients q H B)
 def coarseCoefficients (q A : PTm n) : Fm PTm n :=
   .all (bounded (coefficient (Syn.shift q) (var 0)) (Syn.shift A) one)
 
-@[simp] theorem subst_smallCoefficients {m : ℕ} (σ : Fin n → PTm m) (q H B : PTm n) :
-    (smallCoefficients q H B).subst σ = smallCoefficients (Syn.subst σ q) (Syn.subst σ H) (Syn.subst σ B) := by
-  simp [smallCoefficients,Syn.shift_subst,Syn.subst_shift]
+ipra_subst smallCoefficients [Syn.shift_subst, Syn.subst_shift]
 
-@[simp] theorem subst_coarseCoefficients {m : ℕ} (σ : Fin n → PTm m) (q A : PTm n) :
-    (coarseCoefficients q A).subst σ = coarseCoefficients (Syn.subst σ q) (Syn.subst σ A) := by
-  simp [coarseCoefficients,Syn.shift_subst,Syn.subst_shift]
+ipra_subst coarseCoefficients [Syn.shift_subst, Syn.subst_shift]
 
 theorem coarse_at (q A j : PTm n) (h : Γ ⊢[PRAAx] coarseCoefficients q A) :
     Γ ⊢[PRAAx] bounded (coefficient q j) A one := by
@@ -271,12 +255,9 @@ theorem term_dyadic_bound (R p i : PTm n) (hi : Γ ⊢[PRAAx] le (ExponentialTai
     ipra_le 𝔟 D*sl term+𝔟 (fact i)*sl base
   exact RationalValueBounds.positive_cancel (GaussianRationalPolynomialExponential.factorial_positive N) all
 
-@[simp] theorem subst_growthExponent {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (growthExponent R) = growthExponent (Syn.subst σ R) := by simp [growthExponent]
-@[simp] theorem subst_coarse {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (coarse R) = coarse (Syn.subst σ R) := by simp [coarse]
-@[simp] theorem subst_smallDen {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (smallDen p) = smallDen (Syn.subst σ p) := by simp [smallDen]
+ipra_subst growthExponent
+ipra_subst coarse
+ipra_subst smallDen
 
 theorem coarse_coefficients (q R : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hq : Γ ⊢[PRAAx] bounded q R one) :
     Γ ⊢[PRAAx] coarseCoefficients q (coarse R) := by

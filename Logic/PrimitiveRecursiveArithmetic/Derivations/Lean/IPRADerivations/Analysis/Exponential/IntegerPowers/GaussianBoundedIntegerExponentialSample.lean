@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBoundedIntegerExponentialSample
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedIntegerExponential (error error_zero error_growth)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius expF expData point majorant
   powerBudget productF productData power_bound)
@@ -25,10 +25,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (power power_succ bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -98,10 +94,7 @@ theorem successor_sample (f : PR 2) (p E i R x : PTm n)
 
 def sampleBudget (E i R A H : PTm n) : PTm n := (H+one)*error E i R A
 
-@[simp] theorem subst_sampleBudget {l : ℕ} (σ : Fin n → PTm l) (E i R A H : PTm n) :
-    Syn.subst σ (sampleBudget E i R A H) =
-      sampleBudget (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ H) := by
-  simp [sampleBudget,one]
+ipra_subst sampleBudget [one]
 
 private theorem sample_budget_growth (E i R A H : PTm n) :
     Γ ⊢[PRAAx] le (two+num 4*majorant E R+majorant E R*sampleBudget E i R A H+H*powerBudget E A)
@@ -146,15 +139,13 @@ theorem prefix_error (f : PR 2) (p E i R x c A H : PTm n)
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift E) ⟶
       distanceBounded (point f (Syn.shift p) (Syn.shift E) (var 0) (Syn.shift R) (Syn.shift x)) (power (Syn.shift c) (var 0))
         (sampleBudget (Syn.shift E) (var 0) (Syn.shift R) (Syn.shift A) (Syn.shift H)) (unit (Syn.shift p))) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,GaussianBoundedIntegerExponentialStages.subst_point,
-        GaussianRationalReciprocal.subst_power,subst_sampleBudget,GaussianCoefficientNameBounds.subst_unit,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have grow : Γ ⊢[PRAAx] le (error E zero R A*unit p) (sampleBudget E zero R A H*unit p) :=
+    ipra_qfind (⟨trivial,trivial⟩) [subst_le, GaussianRationalMetric.subst_distanceBounded,
+        GaussianBoundedIntegerExponentialStages.subst_point, GaussianRationalReciprocal.subst_power,
+        subst_sampleBudget, GaussianCoefficientNameBounds.subst_unit]
+    · have grow : Γ ⊢[PRAAx] le (error E zero R A*unit p) (sampleBudget E zero R A H*unit p) :=
         le_of_eq_add (d := H*error E zero R A*unit p) (by unfold sampleBudget; ipra_ring)
       exact .impI (distance_radius_mono _ _ _ _ _ _ (unit_positive p) (unit_positive p) grow (error_zero f p E R x c A)).wk
-    · simp only [Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,GaussianBoundedIntegerExponentialStages.subst_point,
-        GaussianRationalReciprocal.subst_power,subst_sampleBudget,GaussianCoefficientNameBounds.subst_unit,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let I := law (Syn.shift E) (Syn.shift p) (Syn.shift R) (Syn.shift x) (Syn.shift c) (Syn.shift A) (Syn.shift H) (var 0)
       let Δ := le (succ (var 0)) (Syn.shift E) :: I :: Γ.map Fm.shift
       have prev : Δ ⊢[PRAAx] I := Prf.hyp1

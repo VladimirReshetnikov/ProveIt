@@ -15,8 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalNamedLocalModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ zero)
+open_ipra
 open RationalConvexSecantWeights (leftPoint rightPoint leftRemainder rightRemainder displacement)
 open RationalConvexFiniteModulus (samplePrecision withinModulus)
 open RationalNestedIntervals (centerF read)
@@ -25,8 +24,6 @@ open RationalNestedConvexModulus (pointInputs geometry afterWitnesses witnessInd
 open RationalNestedConvexDistance (comparisonPrecision precise_named_comparison errorCapacity)
 open RationalIntervalPowerComparison (centerOrder multiplicative_of_center_order positive_witness_refine)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactPositiveRadiusDominance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (quadrature sampleBody sampleData mesh precision input nameF data)
 open GaussianPositiveRadiusFiniteSum (boundBy bound_congr rowBounds)
 open GaussianPositiveRadiusQuadrature (correctedBody)
@@ -24,9 +24,6 @@ open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,18 +37,10 @@ def allRows (F G : PR 3) (a C E L T x y : PTm n) : Fm PTm n := .all
 def source (F G : PR 3) (a C E L T x y : PTm n) : Fm PTm n :=
   input F a C E L T x ⋏ (input G a C E L T y ⋏ allRows F G a C E L T x y)
 
-@[simp] theorem subst_correction {m : ℕ} (σ : Fin n → PTm m) (p C E T : PTm n) :
-    Syn.subst σ (correction p C E T) = correction (Syn.subst σ p) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [correction]
-@[simp] theorem subst_rows {m : ℕ} (σ : Fin n → PTm m) (F G : PR 3) (p a C E L T x y : PTm n) :
-    (rows F G p a C E L T x y).subst σ = rows F G (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ y) := by simp [rows]
-@[simp] theorem subst_allRows {m : ℕ} (σ : Fin n → PTm m) (F G : PR 3) (a C E L T x y : PTm n) :
-    (allRows F G a C E L T x y).subst σ = allRows F G (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [allRows,Syn.subst_shift,Syn.shift_subst,Syn.up]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F G : PR 3) (a C E L T x y : PTm n) :
-    (source F G a C E L T x y).subst σ = source F G (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ y) := by simp [source]
+ipra_subst correction
+ipra_subst rows
+ipra_subst allRows [Syn.subst_shift, Syn.shift_subst, Syn.up]
+ipra_subst source
 
 theorem original_finite_bound (F G : PR 3) (p N a C E x y : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hE : Γ ⊢[PRAAx] le one E)

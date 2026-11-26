@@ -14,16 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCubeCoherentMinimizer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalCubeMinimum (coherence continuity presentedCube minimizer sample precision)
 open RationalCubeGrid (scale)
 open RationalCubeInfimumName (value data)
 open RationalHausdorff (pointRadius)
 open LeanProofs.IPRA.Probability.Ninther (mn)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -45,16 +41,11 @@ def uniqueness (A : PR 3) (mu u : PR 2) (d x : PTm n) : Fm PTm n := .all (.all (
       (ap2 u (var 2) (Syn.shift (Syn.shift (Syn.shift x)))) ⟶
     pointRadius (var 1) (var 0) (Syn.shift (Syn.shift (Syn.shift d))) one (scale (var 2)))))
 
-@[simp] theorem subst_schedule {l : ℕ} (σ : Fin n → PTm l) (u : PR 2) (k x : PTm n) :
-    Syn.subst σ (schedule u k x) = schedule u (Syn.subst σ k) (Syn.subst σ x) := by simp [schedule,Foundations.ModulusNormalization.mhat]
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (mu u : PR 2) (d k x : PTm n) :
-    Syn.subst σ (point A mu u d k x) = point A mu u (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [point]
-@[simp] theorem subst_nearAt {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (mu : PR 2) (d x y e p q : PTm n) :
-    (nearAt A mu d x y e p q).subst σ = nearAt A mu (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ e) (Syn.subst σ p) (Syn.subst σ q) := by simp [nearAt]
-@[simp] theorem subst_near {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (mu : PR 2) (d x y e : PTm n) :
-    (near A mu d x y e).subst σ = near A mu (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ e) := by simp [near,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_uniqueness {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (mu u : PR 2) (d x : PTm n) :
-    (uniqueness A mu u d x).subst σ = uniqueness A mu u (Syn.subst σ d) (Syn.subst σ x) := by simp [uniqueness,Syn.subst_shift,Syn.shift_subst]
+ipra_subst schedule [Foundations.ModulusNormalization.mhat]
+ipra_subst point
+ipra_subst nearAt
+ipra_subst near [Syn.subst_shift, Syn.shift_subst]
+ipra_subst uniqueness [Syn.subst_shift, Syn.shift_subst]
 
 theorem schedule_index (u : PR 2) (k x : PTm n) : Γ ⊢[PRAAx] le k (schedule u k x) := Foundations.ModulusNormalization.index_le _ _ _
 theorem schedule_modulus (u : PR 2) (k l x : PTm n) (h : Γ ⊢[PRAAx] le k l) : Γ ⊢[PRAAx] le (ap2 u k x) (schedule u l x) := by
@@ -129,10 +120,8 @@ theorem point_regular (A : PR 3) (mu u : PR 2) (d k l x : PTm n) (hc : Γ ⊢[PR
 
 def evaluationIndex (mu : PR 2) (p x : PTm n) : PTm n := schedule mu (precision p) x
 def evaluation (A : PR 3) (mu u : PR 2) (d p x : PTm n) : PTm n := sample A (point A mu u d (evaluationIndex mu p x) x) (precision p) x
-@[simp] theorem subst_evaluationIndex {l : ℕ} (σ : Fin n → PTm l) (mu : PR 2) (p x : PTm n) :
-    Syn.subst σ (evaluationIndex mu p x) = evaluationIndex mu (Syn.subst σ p) (Syn.subst σ x) := by simp [evaluationIndex]
-@[simp] theorem subst_evaluation {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (mu u : PR 2) (d p x : PTm n) :
-    Syn.subst σ (evaluation A mu u d p x) = evaluation A mu u (Syn.subst σ d) (Syn.subst σ p) (Syn.subst σ x) := by simp [evaluation]
+ipra_subst evaluationIndex
+ipra_subst evaluation
 
 theorem precision_mono (p q : PTm n) (h : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx] le (precision p) (precision q) :=
   le_of_eq_add (d := monus q p) ((congrSucc (congrSucc (eq_add_of_le h))).eqTrans (by unfold precision; ipra_ring))
@@ -235,8 +224,7 @@ theorem evaluation_at (A : PR 3) (mu u : PR 2) (d p x : PTm n) : Γ ⊢[PRAAx]
 def pointName (f : PR 2) (d z : PTm n) : Fm PTm n := .all (.all
   (pointRadius (ap2 f (var 1) (Syn.shift (Syn.shift z))) (ap2 f (var 0) (Syn.shift (Syn.shift z)))
     (Syn.shift (Syn.shift d)) (scale (var 1)+scale (var 0)) (scale (var 1)*scale (var 0))))
-@[simp] theorem subst_pointName {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (d z : PTm n) :
-    (pointName f d z).subst σ = pointName f (Syn.subst σ d) (Syn.subst σ z) := by simp [pointName,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointName [Syn.subst_shift, Syn.shift_subst]
 
 theorem point_name_radius (A : PR 3) (mu u : PR 2) (d k l x : PTm n) (hc : Γ ⊢[PRAAx] coherence A d x)
     (ht : Γ ⊢[PRAAx] continuity A mu d x) (hu : Γ ⊢[PRAAx] uniqueness A mu u d x) : Γ ⊢[PRAAx]
@@ -285,31 +273,25 @@ def output (A : PR 3) (mu u : PR 2) (d k x : PTm n) : PTm n := pairT (point A mu
   (pairT (evaluation A mu u d k x) (pairT (schedule u k x) (evaluationIndex mu k x)))
 def outputF (A : PR 3) (mu u : PR 2) : PR 3 := PTm.toPR (output A mu u (var 0) (var 1) (var 2))
 def run (A : PR 3) (mu u : PR 2) (d k x : PTm n) : PTm n := app (outputF A mu u) ![d,k,x]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (mu u : PR 2) (d k x : PTm n) :
-    Syn.subst σ (output A mu u d k x) = output A mu u (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (mu u : PR 2) (d k x : PTm n) :
-    Syn.subst σ (run A mu u d k x) = run A mu u (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (A : PR 3) (mu u : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] run A mu u d k x ≐ output A mu u d k x := by
   simpa [run,outputF,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output A mu u (var 0) (var 1) (var 2) : PTm 3) ![d,k,x]
 theorem returned_point (A : PR 3) (mu u : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (run A mu u d k x) ≐ point A mu u d k x :=
-  (congrFst (program_at A mu u d k x)).eqTrans (fst_pair _ _)
+  (program_at A mu u d k x).fstE
 private theorem returned_tail (A : PR 3) (mu u : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] sndT (run A mu u d k x) ≐
     pairT (evaluation A mu u d k x) (pairT (schedule u k x) (evaluationIndex mu k x)) :=
-  (congrSnd (program_at A mu u d k x)).eqTrans (snd_pair _ _)
+  (program_at A mu u d k x).sndE
 theorem returned_evaluation (A : PR 3) (mu u : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A mu u d k x)) ≐ evaluation A mu u d k x :=
-  (congrFst (returned_tail A mu u d k x)).eqTrans (fst_pair _ _)
+  (returned_tail A mu u d k x).fstE
 private theorem returned_tail2 (A : PR 3) (mu u : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run A mu u d k x)) ≐ pairT (schedule u k x) (evaluationIndex mu k x) :=
-  (congrSnd (returned_tail A mu u d k x)).eqTrans (snd_pair _ _)
+  (returned_tail A mu u d k x).sndE
 theorem returned_schedule (A : PR 3) (mu u : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run A mu u d k x))) ≐ schedule u k x :=
-  (congrFst (returned_tail2 A mu u d k x)).eqTrans (fst_pair _ _)
+  (returned_tail2 A mu u d k x).fstE
 theorem returned_evaluation_index (A : PR 3) (mu u : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run A mu u d k x))) ≐ evaluationIndex mu k x :=
-  (congrSnd (returned_tail2 A mu u d k x)).eqTrans (snd_pair _ _)
+  (returned_tail2 A mu u d k x).sndE
 
 theorem actual_original_majorant_schedule_closed (u : PR 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (le (var 0) (var 1) ⟶ le (ap2 u (var 0) (var 2)) (schedule u (var 1) (var 2))) :=

@@ -17,7 +17,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalLogCenterVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaMinimumSignedStep (centerNumerator centerDenominator)
 open GaussianGammaNegativeCriticalCorrection (guard)
@@ -31,8 +31,6 @@ open GaussianNameRingLaws (zeroF)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianRationalHorner (qadd positive_product)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianGammaNegativeIntervalLogAbsolute.nameF

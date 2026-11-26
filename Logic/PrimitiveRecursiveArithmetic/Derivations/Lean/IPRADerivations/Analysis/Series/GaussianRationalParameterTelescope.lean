@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalParameterTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian qadd qmul positive_product canonical_unique)
 open GaussianRationalMetric (bounded distanceBounded qsub bounded_to_cleared bounded_of_cleared)
 open GaussianRationalFiniteSum (sum multiplyBody)
@@ -24,9 +24,6 @@ open GaussianRationalRiemannRefinement (termsDistance constantBody)
 open GaussianRationalNaturalScale (natScale)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,18 +47,10 @@ def encodedInput (f g : PTm 2) (N x y h F v A D X Y B E : PTm n) : Fm PTm n :=
   change Syn.subst ![i,x] (forward f) = _
   simp only [forward,GaussianRationalMetric.subst_qsub,subst_inst2,ConciseIPRA.PTm.subst_succ,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-@[simp] theorem subst_localRows {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (N x y c A D : PTm n) :
-    (localRows f g N x y c A D).subst σ = localRows f g (Syn.subst σ N) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ c) (Syn.subst σ A) (Syn.subst σ D) := by simp [localRows]
-@[simp] theorem subst_slopeRows {m : ℕ} (σ : Fin n → PTm m) (g : PTm 2) (N y v B E : PTm n) :
-    (slopeRows g N y v B E).subst σ = slopeRows g (Syn.subst σ N) (Syn.subst σ y)
-      (Syn.subst σ v) (Syn.subst σ B) (Syn.subst σ E) := by simp [slopeRows]
-@[simp] theorem subst_step {m : ℕ} (σ : Fin n → PTm m) (h D N : PTm n) :
-    Syn.subst σ (step h D N) = step (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ N) := by simp [step]
-@[simp] theorem subst_encodedInput {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (N x y h F v A D X Y B E : PTm n) :
-    (encodedInput f g N x y h F v A D X Y B E).subst σ = encodedInput f g (Syn.subst σ N) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ h) (Syn.subst σ F) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ D)
-      (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ B) (Syn.subst σ E) := by simp [encodedInput]
+ipra_subst localRows
+ipra_subst slopeRows
+ipra_subst step
+ipra_subst encodedInput
 
 private def forwardLaw (f : PTm 2) (x k : PTm n) : Fm PTm n :=
   sum (forward f) k x ≐ qsub (inst2 f k x) (inst2 f zero x)
@@ -71,11 +60,9 @@ private def forwardLaw (f : PTm 2) (x k : PTm n) : Fm PTm n :=
 theorem forward_sum (f : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     sum (forward f) N x ≐ qsub (inst2 f N x) (inst2 f zero x) := by
   have all : Γ ⊢[PRAAx] .all (forwardLaw f (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_forwardLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
-    · simp only [subst_forwardLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine (GaussianRationalFiniteSum.sum_succ (forward f) _ _).eqTrans ?_
+    ipra_qfind [subst_forwardLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
+    · refine (GaussianRationalFiniteSum.sum_succ (forward f) _ _).eqTrans ?_
       rw [forward_at]
       exact (qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans
         ((GaussianReciprocalHorner.qadd_commutative _ _).eqTrans (GaussianReconstructionRoots.difference_chain _ _ _))

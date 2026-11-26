@@ -14,16 +14,13 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLocalLogarithmQuarterBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianLocalLogarithmName (source point pointF data)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (qzero ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_triangle_same)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

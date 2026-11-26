@@ -28,16 +28,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.KolmogorovIid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add')
 open LeanProofs.IPRA.Probability.Independence (sum_scale shift_sum)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.ProductPower (Pr Sr TB SB TB_at SB_at AB At Tt sample_moments wdB xdB)
 open LeanProofs.IPRA.Probability.FirstCrossing (Ib inst2_Ib crossing_bound)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -70,7 +66,7 @@ theorem rpk_at (f : PTm 2) (j k m M x : PTm n) :
   have e : inst2 ρk j (Yp k m M x) =
       pairT (fstT (Yp k m M x)) (sndT (sndT (Yp k m M x))) := by simp [inst2]
   rw [e]
-  exact congrInst2 f (.eqRefl _) (congrPairT (fst_pair _ _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  exact congrInst2 f (.eqRefl _) (congrPairT (fst_pair _ _) (snd_pair _ _).sndE)
 
 theorem rpm_at (f : PTm 2) (j k m M x : PTm n) :
     Γ ⊢[PRAAx] inst2 (rp f ρm) j (Yp k m M x) ≐ inst2 f j (pairT m (pairT M x)) := by
@@ -78,8 +74,8 @@ theorem rpm_at (f : PTm 2) (j k m M x : PTm n) :
   have e : inst2 ρm j (Yp k m M x) =
       pairT (fstT (sndT (Yp k m M x))) (sndT (sndT (Yp k m M x))) := by simp [inst2]
   rw [e]
-  exact congrInst2 f (.eqRefl _) (congrPairT ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  exact congrInst2 f (.eqRefl _) (congrPairT (snd_pair _ _).fstE
+    (snd_pair _ _).sndE)
 
 /-- The constant `∑_{a<M} g(a, x)`, over `(j, ⟨r, ⟨M, x⟩⟩)`. -/
 abbrev Cs (g : PTm 2) : PTm 2 := ap2 (sumF g) (fstT (sndT (var 1))) (sndT (sndT (var 1)))
@@ -89,8 +85,8 @@ theorem Cs_at (g : PTm 2) (j r M x : PTm n) :
   have e : inst2 (Cs g) j (pairT r (pairT M x)) =
       ap2 (sumF g) (fstT (sndT (pairT r (pairT M x)))) (sndT (sndT (pairT r (pairT M x)))) := by simp [inst2]
   rw [e]
-  exact congrAp2 (sumF g) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  exact congrAp2 (sumF g) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE
 
 /-- The block length `r`, over `(j, ⟨r, ⟨M, x⟩⟩)`. -/
 abbrev rv : PTm 2 := fstT (var 1)

@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalLogRoundedTail (value rounding_error)
 open GaussianBarnesCanonicalLogSchedule (initial endpoint length gain clock initial_length)
@@ -27,10 +27,6 @@ open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianReconstructionRoots (norm_from_distance distance_zero_iff)
 open DyadicComplexLogarithm (unit)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "tailSource" => GaussianBarnesCanonicalLogTail.source

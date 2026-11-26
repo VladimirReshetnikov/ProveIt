@@ -15,7 +15,7 @@ set_option maxHeartbeats 450000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveSecondDerivativeBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq)
 open GaussianBarnesCanonicalPositiveFirstDerivativeRow (gain)
 open GaussianBarnesCanonicalPositiveSecondDerivativeSeriesBinding (numerator)
@@ -27,10 +27,6 @@ open GaussianNameEquivalence (cross_refl)
 open GaussianNameRingLaws (distributive)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian positive_product)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

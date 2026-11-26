@@ -37,7 +37,7 @@ Not derived: the passage from a general rotation matrix to its axis form under t
 
 namespace LeanProofs.IPRA.Geometry.RodriguesFixedLine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.RodriguesMap (rowA rowB rowC)
 
 /-! ## The certificates: `c, s, u, x` -/
@@ -134,8 +134,6 @@ end Poly
 
 section Cancel
 
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

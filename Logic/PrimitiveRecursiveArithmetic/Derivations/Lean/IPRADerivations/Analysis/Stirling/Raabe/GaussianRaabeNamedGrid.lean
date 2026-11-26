@@ -15,7 +15,7 @@ set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeNamedGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive rate_at)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
@@ -26,10 +26,6 @@ open GaussianRaabePositiveComparison (value)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -73,8 +69,7 @@ private theorem match_observations (x y z p s q K C : PTm n)
 
 def data (x M : PTm n) : PTm n := pairT x M
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x M : PTm n) :
-    Syn.subst σ (data x M) = data (Syn.subst σ x) (Syn.subst σ M) := by simp [data]
+ipra_subst data
 
 def freezeClock (f : PR 2) (p x M : PTm n) : PTm n :=
   GaussianFastValueCut.exponent (cost f x M) (p+num 4)
@@ -83,10 +78,7 @@ def gridValue (f : PR 2) (p x M : PTm n) : PTm n :=
   let k := freezeClock f p x M
   value (p+num 4) (numerator f k x M) (denominator f k x M)
 
-@[simp] theorem subst_gridValue {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x M : PTm n) :
-    Syn.subst σ (gridValue f p x M) =
-      gridValue f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ M) := by
-  simp [gridValue, freezeClock]
+ipra_subst gridValue [freezeClock]
 
 def nameF (f : PR 2) : PR 2 :=
   PTm.toPR (gridValue f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2)

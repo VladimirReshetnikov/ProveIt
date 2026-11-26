@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalPhaseCertificate
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponential
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual normalized Gaussian-rational conjugation
@@ -17,21 +16,17 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul represents canonical canonical_unique represents_congr positive_product)
 open GaussianRationalReciprocal (conjugate re_conjugate im_conjugate)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_mul im_mul re_zero im_zero re_one im_one re_scale im_scale)
 open ComplexLogarithmRemainder (zeroCode oneCode add mul scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def point (q : PTm n) : PTm n := qadd qzero (GaussianRationalPhaseCertificate.conjugatePoint q)
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (point q) = point (Syn.subst σ q) := by simp [point]
+ipra_subst point
 theorem point_canonical (q : PTm n) : Γ ⊢[PRAAx] canonical (point q) := GaussianRationalHorner.qadd_canonical _ _
 theorem point_congr {q r : PTm n} (e : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] point q ≐ point r := by
   ipra_congr (point (var 0) : PTm 1) with [e]
@@ -226,12 +221,7 @@ theorem point_scalar_sum (q k : PTm n) : Γ ⊢[PRAAx]
 
 def pointF : PR 1 := PTm.toPR (point (var 0))
 def run (q : PTm n) : PTm n := PTm.app pointF ![q]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (run q) = run (Syn.subst σ q) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (q : PTm n) : Γ ⊢[PRAAx] run q ≐ point q := by
   simpa [run,pointF] using toPR_eq (Γ := Γ) (point (var 0) : PTm 1) ![q]
 

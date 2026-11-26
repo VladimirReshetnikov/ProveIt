@@ -16,7 +16,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCentralBernoulliError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderCenteredBernoulli
   (factor sample numerator denominator sample_value denominator_positive)
 open GaussianStirlingAllOrderPanelDerivative (secondSample secondNumerator)
@@ -31,9 +31,6 @@ open RationalRepresentations (represents_negative represents_multiply)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
 open RationalValueBounds (upper radius radius_of_upper)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

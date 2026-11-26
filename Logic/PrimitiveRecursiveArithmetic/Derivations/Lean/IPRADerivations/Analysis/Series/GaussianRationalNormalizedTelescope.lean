@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalNormalizedTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalParameterTelescope (localRows slopeRows step local_error constant_slope_product)
 open GaussianNamedDifferenceQuotient (separated inverse inverse_bound actual_inverse scale_distance)
 open GaussianRationalHorner (ofGaussian qmul positive_product canonical_unique represents_congr)
@@ -29,9 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open ComplexLogarithmRemainder (oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,17 +39,10 @@ def input (f g : PTm 2) (N x y h D v A L B E : PTm n) : Fm PTm n :=
   separated h D ⋏ (le one N ⋏ (le one L ⋏ (le one E ⋏
     (localRows f g N x y (step h D N) A L ⋏ slopeRows g N y v B E))))
 
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (weight N) = weight (Syn.subst σ N) := by simp [weight]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (D N A L B E : PTm n) :
-    Syn.subst σ (numerator D N A L B E) = numerator (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ A)
-      (Syn.subst σ L) (Syn.subst σ B) (Syn.subst σ E) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (L E : PTm n) :
-    Syn.subst σ (denominator L E) = denominator (Syn.subst σ L) (Syn.subst σ E) := by simp [denominator]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (N x y h D v A L B E : PTm n) :
-    (input f g N x y h D v A L B E).subst σ = input f g (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ L) (Syn.subst σ B) (Syn.subst σ E) := by
-  simp [input]
+ipra_subst weight
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst input
 
 theorem step_factorization (h D N : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     step h D N ≐ qmul (ofGaussian h D) (weight N) := by

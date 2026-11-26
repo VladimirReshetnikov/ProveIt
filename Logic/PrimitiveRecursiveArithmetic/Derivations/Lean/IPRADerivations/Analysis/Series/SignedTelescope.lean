@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.ErrorBudgets
 import IPRADerivations.DiophantineNumberTheory.RungeProduct
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Signed telescoping with an error budget
@@ -27,14 +26,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.SignedTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_add_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.RungeProduct (ad_of_eq_add ad_of_eq_add')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -88,10 +83,8 @@ theorem signed_telescope (N δ x : PTm n)
     Γ ⊢[PRAAx] le (ad (TX Gp Gn Mn N x) (TY Gp Gn Mp N x)) (N * δ) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (ad (TX Gp Gn Mn (var 0) (Syn.shift x)) (TY Gp Gn Mp (var 0) (Syn.shift x))) (var 0 * Syn.shift δ)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [TX, TY, Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [TX, TY, subst_le, subst_ap2, subst_inst2]
+    · refine .impI ?_
       have s₁ := natEq (sum_zero (Γ := le zero N :: Γ) Mn x)
       have s₂ := natEq (sum_zero (Γ := le zero N :: Γ) Mp x)
       have c : (le zero N :: Γ) ⊢[PRAAx]
@@ -102,10 +95,7 @@ theorem signed_telescope (N δ x : PTm n)
       have e := natEq c
       have z := natEq (monus_self (Γ := le zero N :: Γ) (zero : PTm n))
       ipra_le 0 using linear_combination -e - 2 * z
-    · simp only [TX, TY, Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       have hk : (le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶
             le (ad (TX Gp Gn Mn (var 0) (Syn.shift x)) (TY Gp Gn Mp (var 0) (Syn.shift x))) (var 0 * Syn.shift δ)) ::

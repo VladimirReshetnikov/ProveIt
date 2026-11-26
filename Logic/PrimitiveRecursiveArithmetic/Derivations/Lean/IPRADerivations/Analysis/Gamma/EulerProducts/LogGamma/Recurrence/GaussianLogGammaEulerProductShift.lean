@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerProductShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code scale oneCode eval_re_code eval_im_code)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -32,9 +32,6 @@ open GaussianRationalHorner (qadd canonical_unique ofGaussian_canonical ofGaussi
 open GaussianRationalReciprocal (qone_represents_scaled)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianPositiveRationalLogarithm.data

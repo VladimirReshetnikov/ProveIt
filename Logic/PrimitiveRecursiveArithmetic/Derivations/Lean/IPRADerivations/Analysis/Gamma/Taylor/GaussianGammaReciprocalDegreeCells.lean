@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalReciprocalPowe
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
 import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original Gamma degree cells and reciprocal-power partial sums
@@ -22,7 +21,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaReciprocalDegreeCells
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul ofGaussian canonical canonical_unique represents_congr positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalReciprocal (power)
@@ -31,9 +30,6 @@ open GaussianGammaFiniteDegreeRearrangement (matrix matrixData degreeMajor origi
 open RationalGaussianEmbedding (embed)
 open RationalReciprocalPowerTail (reciprocalPower tail)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,13 +37,9 @@ def degree (j : PTm n) : PTm n := succ (succ j)
 def monomial (z B j : PTm n) : PTm n :=
   qmul (GaussianFiniteLogarithmPolynomial.coefficient (succ j)) (power (ofGaussian z B) (degree j))
 def sourcePart (z B N r j : PTm n) : PTm n := qmul (monomial z B j) (embed (tail (degree j) N r))
-@[simp] theorem subst_degree {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    Syn.subst σ (degree j) = degree (Syn.subst σ j) := by simp [degree]
-@[simp] theorem subst_monomial {l : ℕ} (σ : Fin n → PTm l) (z B j : PTm n) :
-    Syn.subst σ (monomial z B j) = monomial (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ j) := by simp [monomial]
-@[simp] theorem subst_sourcePart {l : ℕ} (σ : Fin n → PTm l) (z B N r j : PTm n) :
-    Syn.subst σ (sourcePart z B N r j) = sourcePart (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ r) (Syn.subst σ j) := by simp [sourcePart]
+ipra_subst degree
+ipra_subst monomial
+ipra_subst sourcePart
 
 theorem embedded_reciprocal (m k : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx]
     embed (reciprocalPower m k) ≐ ofGaussian ComplexLogarithmRemainder.oneCode (pw k m) := by
@@ -130,12 +122,8 @@ def separatedData (z B N r : PTm n) : PTm n := pairT z (pairT B (pairT N r))
 def separatedBody : PTm 2 := sourcePart (fstT (var 1)) (fstT (sndT (var 1)))
   (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1)))) (var 0)
 def separatedSum (z B N r L : PTm n) : PTm n := sum separatedBody (succ L) (separatedData z B N r)
-@[simp] theorem subst_separatedData {l : ℕ} (σ : Fin n → PTm l) (z B N r : PTm n) :
-    Syn.subst σ (separatedData z B N r) = separatedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [separatedData]
-@[simp] theorem subst_separatedSum {l : ℕ} (σ : Fin n → PTm l) (z B N r L : PTm n) :
-    Syn.subst σ (separatedSum z B N r L) = separatedSum (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ r) (Syn.subst σ L) := by simp [separatedSum]
+ipra_subst separatedData
+ipra_subst separatedSum
 
 theorem source_part_congr {z B N r j a C M s k : PTm n} (hz : Γ ⊢[PRAAx] z ≐ a) (hB : Γ ⊢[PRAAx] B ≐ C)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hr : Γ ⊢[PRAAx] r ≐ s) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx]
@@ -147,8 +135,8 @@ theorem separated_term_at (z B N r j : PTm n) : Γ ⊢[PRAAx]
   simp only [separatedBody,inst2,subst_sourcePart,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have t₁ := snd_pair (Γ := Γ) z (pairT B (pairT N r))
   have t₂ := (congrSnd t₁).eqTrans (snd_pair B (pairT N r))
-  exact source_part_congr (fst_pair _ _) ((congrFst t₁).eqTrans (fst_pair _ _))
-    ((congrFst t₂).eqTrans (fst_pair _ _)) ((congrSnd t₂).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact source_part_congr (fst_pair _ _) t₁.fstE
+    t₂.fstE t₂.sndE (.eqRefl _)
 
 /-- Every column of the SAME finite rectangle is replaced by its proved
 original rational reciprocal-power sum, with degrees exactly 2,...,L+2. -/
@@ -179,26 +167,18 @@ def output (z B N r L : PTm n) : PTm n :=
   pairT (GaussianGammaCanonicalTailFiniteSplit.value z B N r L) (separatedSum z B N r L)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (z B N r L : PTm n) : PTm n := PTm.app outputF ![z,B,N,r,L]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (z B N r L : PTm n) :
-    Syn.subst σ (output z B N r L) = output (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ r) (Syn.subst σ L) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (z B N r L : PTm n) :
-    Syn.subst σ (run z B N r L) = run (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ r) (Syn.subst σ L) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (z B N r L : PTm n) : Γ ⊢[PRAAx] run z B N r L ≐ output z B N r L := by
   simpa only [run,outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
     Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![z,B,N,r,L]
 theorem returned_original (z B N r L : PTm n) : Γ ⊢[PRAAx]
     fstT (run z B N r L) ≐ GaussianGammaCanonicalTailFiniteSplit.value z B N r L :=
-  (congrFst (program_at z B N r L)).eqTrans (fst_pair _ _)
+  (program_at z B N r L).fstE
 theorem returned_separated (z B N r L : PTm n) : Γ ⊢[PRAAx]
     sndT (run z B N r L) ≐ separatedSum z B N r L :=
-  (congrSnd (program_at z B N r L)).eqTrans (snd_pair _ _)
+  (program_at z B N r L).sndE
 theorem returned_equal (z B N r L : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     fstT (run z B N r L) ≐ sndT (run z B N r L) :=
   (returned_original z B N r L).eqTrans ((original_finite_tail_separation z B N r L hB).eqTrans (returned_separated z B N r L).eqSymm)

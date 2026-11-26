@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumFreeze
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerVerticalProjection (projected_source projected_real_samples)
 open GaussianGammaCanonicalExponent (constant_at)
@@ -33,9 +33,6 @@ open GaussianStirlingGammaLogarithm (gammaMargin gammaLogMargin gammaRealF gamma
   gammaData gamma_regular logGammaF logGammaData log_input)
 open GaussianStirlingMultiplicativeBoundsOrder (fraction_real_part)
 open RationalValueBounds (upper_congr upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -50,12 +47,9 @@ def retimeData (x A : PTm n) : PTm n := retimedData (gd x A) gammaMargin
 def nameF (f : PR 2) : PR 2 := GaussianNamedPositiveLogarithm.nameF (retimeF f)
 def data (x A : PTm n) : PTm n := GaussianNamedPositiveLogarithm.data (retimeData x A) gammaLogMargin
 
-@[simp] theorem subst_retimeData {m : ℕ} (σ : Fin n → PTm m) (x A : PTm n) :
-    Syn.subst σ (retimeData x A) = retimeData (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [retimeData]
+ipra_subst retimeData
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x A : PTm n) :
-    Syn.subst σ (data x A) = data (Syn.subst σ x) (Syn.subst σ A) := by simp [data]
+ipra_subst data
 
 private theorem margin_positive : Γ ⊢[PRAAx] le one (gammaMargin : PTm n) := by unfold gammaMargin; ipra_le 17
 

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionImageGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDecayMesh (observation consecutiveDifference consecutive_difference_at consecutive_difference_sum stepError errorDen)
 open GaussianEulerIntegrandName (decayF decayData fixedData)
 open GaussianEulerUnitSubstitutionCompactName (count rowQuery stage)
@@ -31,10 +31,6 @@ open GaussianRationalReciprocal (bounded_product bounded_sum bound_congr)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianRationalDistanceOrder (distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -45,15 +41,10 @@ def source (a C E N : PTm n) : Fm PTm n := le one a ⋏ (le one E ⋏ (le one N 
 def meshNumerator (p N C E : PTm n) : PTm n := num 6*C*unit p+num 20*(E*N)
 def meshDenominator (p N E : PTm n) : PTm n := E*N*unit p
 
-@[simp] theorem subst_node {m : ℕ} (σ : Fin n → PTm m) (i p N a C E : PTm n) :
-    Syn.subst σ (node i p N a C E) = node (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ N)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [node]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a C E N : PTm n) :
-    (source a C E N).subst σ = source (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_meshNumerator {m : ℕ} (σ : Fin n → PTm m) (p N C E : PTm n) :
-    Syn.subst σ (meshNumerator p N C E) = meshNumerator (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ E) := by simp [meshNumerator]
-@[simp] theorem subst_meshDenominator {m : ℕ} (σ : Fin n → PTm m) (p N E : PTm n) :
-    Syn.subst σ (meshDenominator p N E) = meshDenominator (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ E) := by simp [meshDenominator]
+ipra_subst node
+ipra_subst source
+ipra_subst meshNumerator
+ipra_subst meshDenominator
 
 theorem cell_at (i p N a C E x : PTm n) : Γ ⊢[PRAAx]
     inst2 cellBody i (sampleData p N a C E x) ≐ qsub (node i p N a C E) (node (succ i) p N a C E) := by

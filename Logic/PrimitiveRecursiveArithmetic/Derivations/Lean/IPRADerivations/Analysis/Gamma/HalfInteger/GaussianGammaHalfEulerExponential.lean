@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfEulerExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (logF log_regular logExponentF logExponentData
   log_exponent_regular exponentialInputData exponential_input)
 open GaussianGammaEulerShift (negativeLogData negative_log_regular constant_sum_cross)
@@ -24,8 +24,6 @@ open ComplexLogarithmRemainder (oneCode)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

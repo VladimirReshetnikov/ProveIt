@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerPowerRatio
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaFiniteApproximantName (logF log_regular exponential_input exponentialInputData)
 open GaussianGammaGaussEulerHeads (cutoff)
@@ -27,8 +27,6 @@ open GaussianNameRingLaws (negativeF negativeData negative_fast add_negative add
   zeroF zero_fast add_zero distributive)
 open GaussianNamedGammaHalfShift (add_cross)
 open GaussianPositiveRationalLogarithm (differenceF differenceData original_logarithm_difference)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

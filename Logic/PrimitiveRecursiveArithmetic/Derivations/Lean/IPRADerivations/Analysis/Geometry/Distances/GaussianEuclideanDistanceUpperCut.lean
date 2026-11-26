@@ -14,16 +14,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceUpperCut
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanPointDistance (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName
   (shifted pointCN distanceSample distanceLE fraction finite_hit_to_cut two_units_le_shift)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,14 +31,10 @@ def denominator (point : PR 2) (T x m : PTm n) : PTm n :=
 def upperNumerator (point : PR 2) (T x m : PTm n) : PTm n := numerator point T x m*unit m+denominator point T x m
 def upperDenominator (point : PR 2) (T x m : PTm n) : PTm n := denominator point T x m*unit m
 
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x m : PTm n) :
-    Syn.subst σ (numerator point T x m) = numerator point (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ m) := by simp [numerator]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x m : PTm n) :
-    Syn.subst σ (denominator point T x m) = denominator point (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ m) := by simp [denominator]
-@[simp] theorem subst_upperNumerator {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x m : PTm n) :
-    Syn.subst σ (upperNumerator point T x m) = upperNumerator point (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ m) := by simp [upperNumerator]
-@[simp] theorem subst_upperDenominator {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x m : PTm n) :
-    Syn.subst σ (upperDenominator point T x m) = upperDenominator point (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ m) := by simp [upperDenominator]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst upperNumerator
+ipra_subst upperDenominator
 
 theorem denominator_positive (point : PR 2) (T x m : PTm n) : Γ ⊢[PRAAx] le one (denominator point T x m) :=
   positive_product _ _ (GaussianEuclideanPointDistance.denominator_positive _ _) (unit_positive _)

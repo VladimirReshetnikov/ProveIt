@@ -1,5 +1,4 @@
 import IPRADerivations.Topology.KnotColourings
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The Alexander polynomials of the two-strand knots and of the figure-eight knot
@@ -28,10 +27,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.AlexanderSmall
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.KnotColourings (aff)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

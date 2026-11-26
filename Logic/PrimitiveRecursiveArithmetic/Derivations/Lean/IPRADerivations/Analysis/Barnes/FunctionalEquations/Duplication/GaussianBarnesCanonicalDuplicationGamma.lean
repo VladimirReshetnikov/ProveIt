@@ -9,7 +9,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDuplicationGamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHyperfactorial (specialLogData logarithm_source)
 open GaussianBarnesCanonicalHyperfactorialPowerStep (gammaPowerF gammaPowerData gamma_power_regular logarithm_regular exponential_input)
 open GaussianBarnesCanonicalDuplicationShift (gammaPairF gammaPairData)
@@ -18,9 +18,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingGammaLogarithm (gammaData gamma_regular arg)
 open GaussianStirlingNativeDuplication (halfNumerator halfDenominator half_source)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

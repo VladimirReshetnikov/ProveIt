@@ -16,7 +16,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondFrequencySchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentSineUniform
   (clock clock_budget count count_dominates cutoff cutoff_positive roundingCost)
 open GaussianBinetExponentialIntegral (uniformCost)
@@ -30,9 +30,6 @@ open GaussianFastValueCut (exponent query_budget)
 open GaussianLogGammaEulerResidualDomain (source)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerExponentialShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerShiftRate (source radius shiftedF shiftedData numerator)
 open GaussianEulerPowerExponentIncrement (linear linear_bound)
 open GaussianEulerIntegrandName (powerExponentF powerExponentData powerRadius powerF powerData)
@@ -32,10 +32,6 @@ open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at cros
 open GaussianRadiusExponentialName (boundedSamples)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,15 +41,9 @@ def productF : PR 2 := multiplyF powerF relativeF
 def productData (z B a b c : PTm n) : PTm n := multiplyData powerF relativeF (powerData z B a b) (relativeData z B a c)
 def coefficient (R E T c : PTm n) : PTm n := GaussianRadiusExponentialLipschitzRate.factor (radius R E T)*numerator R c
 
-@[simp] theorem subst_relativeData {m : ℕ} (σ : Fin n → PTm m) (z B a c : PTm n) :
-    Syn.subst σ (relativeData z B a c) = relativeData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [relativeData]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z B a b c : PTm n) :
-    Syn.subst σ (productData z B a b c) = productData (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [productData]
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (R E T c : PTm n) :
-    Syn.subst σ (coefficient R E T c) = coefficient (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) := by
-  simp [coefficient]
+ipra_subst relativeData
+ipra_subst productData
+ipra_subst coefficient
 
 theorem relative_input (z R B E T a b c : PTm n) (h : Γ ⊢[PRAAx] source z R B E T a b c) :
     Γ ⊢[PRAAx] GaussianRadiusExponentialName.input constantF one (linear z B a c) := by

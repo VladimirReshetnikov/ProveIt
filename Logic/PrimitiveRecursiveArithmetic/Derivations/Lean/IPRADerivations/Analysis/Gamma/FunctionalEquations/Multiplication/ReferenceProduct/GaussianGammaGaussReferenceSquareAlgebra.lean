@@ -18,7 +18,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReferenceSquareAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicSineProductSquare (data)
 open GaussianCyclicSineProductRatio (ratio)
 open GaussianGammaGaussReflectionRow (rowF)
@@ -34,9 +34,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameRingLaws (multiply_commutative)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaHalfPiName.nameF

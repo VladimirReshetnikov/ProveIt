@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentDivisionSinePositive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re scale eval_im_code eval_re_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianArctangentDivisionAngles (nameF data clock source coefficient coefficient_bound sample_at
@@ -41,10 +41,6 @@ open GaussianApproximateInverseDistance (multiply_distance)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_radius upper_order_left)
 open PolynomialBisection (zle_scale_cancel slack)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmHalfDiskBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq normSq_eval oneCode scale)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
@@ -29,10 +29,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRightHalfPlaneLogarithmMercatorHalfDisk (source lateLogBound)
 open GaussianRightHalfPlaneLogarithmOffset (offset)
 open GaussianRightHalfPlaneRadialLogarithm (normNum normDen)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "absGap" => Probability.Variance.ad

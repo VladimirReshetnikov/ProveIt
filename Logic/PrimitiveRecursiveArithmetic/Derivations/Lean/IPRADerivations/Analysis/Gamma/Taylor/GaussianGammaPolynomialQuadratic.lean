@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPolynomialQuadratic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul qadd canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr)
 open GaussianGammaPolynomialConstantLinear (input_constant input_linear exponential_constant head_low)
@@ -34,10 +34,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open RationalGaussianEmbedding (embed)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -79,11 +75,7 @@ theorem whole_quadratic (q R L K : PTm n) (hR : Γ ⊢[PRAAx] le one R)
 def secondObservation (p R : PTm n) : PTm n := entry
   (polynomial (coefficientPrecision (succ p) R) R (degreeCutoff (succ p) R) (exponentialCutoff (succ p) R))
   (monus (totalDegree R (degreeCutoff (succ p) R) (exponentialCutoff (succ p) R)) two)
-@[simp] theorem subst_secondObservation {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (secondObservation p R) = secondObservation (Syn.subst σ p) (Syn.subst σ R) := by
-  simp [secondObservation,coefficientPrecision,degreeCutoff,exponentialCutoff,
-    GaussianGammaCofinalCoefficientName.exponentClock,GaussianGammaCofinalCoefficientName.inputClock,
-    GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst secondObservation [coefficientPrecision, degreeCutoff, exponentialCutoff, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
 def nameF : PR 2 := PTm.toPR (secondObservation (var 0) (var 1))
 
 theorem observation_at (p R : PTm n) : Γ ⊢[PRAAx] ap2 nameF p R ≐ secondObservation p R := by

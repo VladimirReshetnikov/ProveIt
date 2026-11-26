@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaLocationProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerIntegralUpperTransfer (paperConstant)
@@ -34,9 +34,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianReconstructionRoots (distance_zero_iff norm_from_distance)
 open GaussianStirlingGammaLogarithm (arg gamma_source gammaData)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

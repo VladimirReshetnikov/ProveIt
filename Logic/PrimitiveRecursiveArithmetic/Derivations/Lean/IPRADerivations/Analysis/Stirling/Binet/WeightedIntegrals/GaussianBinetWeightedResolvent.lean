@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedResolvent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLogCellGrid (requiredMesh)
 open GaussianBinetStirlingUnitDifference (logDifferenceF logDifferenceData productF productData log_difference_regular)
 open GaussianBinetStirlingUnitDifferenceAlgebra (coefficient)
@@ -36,10 +36,6 @@ open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qone qmul_congr qsub_congr)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -55,12 +51,9 @@ def budget (A B D sign : PTm n) : PTm n :=
   num 7+multiplyModulus constantF logDifferenceF (coefficient A B D sign) (logDifferenceData A B D sign)+
     U constantF (coefficient A B D sign)*logBudget D
 
-@[simp] theorem subst_mesh {k : ℕ} (σ : Fin n → PTm k) (p A B D : PTm n) :
-    Syn.subst σ (mesh p A B D) = mesh (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) := by simp [mesh]
+ipra_subst mesh
 
-@[simp] theorem subst_budget {k : ℕ} (σ : Fin n → PTm k) (A B D sign : PTm n) :
-    Syn.subst σ (budget A B D sign) =
-      budget (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by simp [budget, logBudget]
+ipra_subst budget [logBudget]
 
 private theorem scaled_log (p A B D sign M : PTm n) (h : Γ ⊢[PRAAx] source A D sign) (hM : Γ ⊢[PRAAx] le one M) :
     Γ ⊢[PRAAx] distanceBounded (ap2 Lf p (ld A B D sign)) (ap2 Lf p (ld (M*A) (M*B) (M*D) sign)) two (unit p) := by
@@ -175,9 +168,7 @@ def rawSample (p A B D sign : PTm n) : PTm n := GaussianBinetWeightedResolventGr
 def rawF : PR 2 := PTm.toPR
   (rawSample (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1)))) : PTm 2)
 
-@[simp] theorem subst_rawSample {k : ℕ} (σ : Fin n → PTm k) (p A B D sign : PTm n) :
-    Syn.subst σ (rawSample p A B D sign) =
-      rawSample (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by simp [rawSample]
+ipra_subst rawSample
 
 theorem raw_at (p A B D sign : PTm n) :
     Γ ⊢[PRAAx] ap2 rawF p (rowData A B D sign) ≐ rawSample p A B D sign := by
@@ -241,9 +232,7 @@ abbrev nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (A B D sign : PTm n) : PTm n := GaussianFastValueCut.nameData (budget A B D sign+one) (rowData A B D sign)
 def clock (p A B D sign : PTm n) : PTm n := GaussianFastValueCut.exponent (budget A B D sign+one) p
 
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (A B D sign : PTm n) :
-    Syn.subst σ (data A B D sign) =
-      data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by simp [data,one]
+ipra_subst data [one]
 
 theorem sample_at (p A B D sign : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data A B D sign) ≐ rawSample (clock p A B D sign) A B D sign :=

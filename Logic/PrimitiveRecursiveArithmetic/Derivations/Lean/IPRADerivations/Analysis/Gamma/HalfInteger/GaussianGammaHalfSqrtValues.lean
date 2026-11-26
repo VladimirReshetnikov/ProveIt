@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfSqrtValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfSqrtPi (original_half_is_sqrt_pi)
 open GaussianGammaHalfIntegerValues (baseData base_regular gammaInput)
 open GaussianGammaHalfRisingFactorial (factorialValue)
@@ -25,8 +25,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianEulerSquareFactorInverse (inverseFactorF inverseFactorData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

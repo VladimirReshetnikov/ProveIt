@@ -15,7 +15,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaLocationGammaDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq normSq_one)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialSmallPerturbation (smallSamples)
@@ -30,9 +30,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents)
 open GaussianRationalMetric (bounded bounded_of_cleared)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

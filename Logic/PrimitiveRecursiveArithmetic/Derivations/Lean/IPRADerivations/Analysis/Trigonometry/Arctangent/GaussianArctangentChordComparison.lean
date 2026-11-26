@@ -12,17 +12,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentChordComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BaselQuadrature (Qb uq inst_Qb u_eq)
 open GaussianArctangentCayleyValues (denominator denominator_positive)
 open GaussianArctangentExponentialPrefix (total subst_total)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (sum_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -108,13 +104,9 @@ theorem matched_prefix_bound (j J M L : PTm n)
     Γ ⊢[PRAAx] le ((M*M+J*J)*total j M L) ((two*M*J)*total j J L) := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift J) ⟶
       prefixComparison (var 0) (Syn.shift J) (Syn.shift M) (Syn.shift L)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_prefixComparison,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero J M L).wk
-    · simp only [Fm.subst_imp,subst_le,subst_prefixComparison,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_le, subst_prefixComparison]
+    · exact .impI (prefix_zero J M L).wk
+    · refine .impI ?_
       let i : PTm (n+1) := var 0
       let K := Syn.shift J
       let T := Syn.shift M

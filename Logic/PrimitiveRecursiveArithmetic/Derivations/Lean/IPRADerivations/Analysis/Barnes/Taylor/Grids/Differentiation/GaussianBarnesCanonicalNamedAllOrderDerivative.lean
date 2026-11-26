@@ -16,7 +16,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedAllOrderDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded_mono)
 open GaussianBarnesCanonicalNamedDemand (source)
 open GaussianBarnesCanonicalNamedFrozen (source_widen)
@@ -34,10 +34,6 @@ open GaussianNamedIncrementChart (baseNumerator stepNumerator denominator step_s
 open GaussianNamedIncrementQuotientFrozenRate (commonNumerator common_precision_rate differenceCap late_separated)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedRateComposition (same_denominator symmetric)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

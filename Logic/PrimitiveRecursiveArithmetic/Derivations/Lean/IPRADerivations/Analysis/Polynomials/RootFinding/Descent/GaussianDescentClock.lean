@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual finite rational-descent iterate and its residual clock
@@ -23,16 +22,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDescentClock
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im code normSq eval_re_code eval_im_code)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate canonical qzero)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (rateDenominator clock positive_product)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,12 +35,9 @@ def valueDenominator (q : PTm n) : PTm n := GaussianRationalL1.rawDen q
 def valueNumerator (q : PTm n) : PTm n := GaussianRationalL1.rawGaussian q
 def canonicalize (q : PTm n) : PTm n := GaussianRationalHorner.ofGaussian (valueNumerator q) (valueDenominator q)
 
-@[simp] theorem subst_valueDenominator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (valueDenominator q) = valueDenominator (Syn.subst σ q) := by simp [valueDenominator]
-@[simp] theorem subst_valueNumerator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (valueNumerator q) = valueNumerator (Syn.subst σ q) := by simp [valueNumerator]
-@[simp] theorem subst_canonicalize {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (canonicalize q) = canonicalize (Syn.subst σ q) := by simp [canonicalize]
+ipra_subst valueDenominator
+ipra_subst valueNumerator
+ipra_subst canonicalize
 
 theorem value_denominator_positive (q : PTm n) : Γ ⊢[PRAAx] le one (valueDenominator q) :=
   GaussianRationalL1.raw_den_positive q
@@ -64,10 +56,8 @@ theorem canonicalize_exact (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q) : Γ ⊢
 def residualNumerator (C z : PTm n) : PTm n := normSq (valueNumerator (evaluate C z))
 def residualDenominator (C z : PTm n) : PTm n := valueDenominator (evaluate C z)
 
-@[simp] theorem subst_residualNumerator {m : ℕ} (σ : Fin n → PTm m) (C z : PTm n) :
-    Syn.subst σ (residualNumerator C z) = residualNumerator (Syn.subst σ C) (Syn.subst σ z) := by simp [residualNumerator]
-@[simp] theorem subst_residualDenominator {m : ℕ} (σ : Fin n → PTm m) (C z : PTm n) :
-    Syn.subst σ (residualDenominator C z) = residualDenominator (Syn.subst σ C) (Syn.subst σ z) := by simp [residualDenominator]
+ipra_subst residualNumerator
+ipra_subst residualDenominator
 
 theorem residual_denominator_positive (C z : PTm n) : Γ ⊢[PRAAx] le one (residualDenominator C z) :=
   value_denominator_positive _
@@ -82,10 +72,8 @@ def iterationStep (step : PR 3) : PTm 4 := advance step (var 2) (var 3) (var 1)
 def iterationF (step : PR 3) : PR 3 := recDef (qzero : PTm 2) (iterationStep step)
 def iterate (step : PR 3) (d C k : PTm n) : PTm n := ap3 (iterationF step) k d C
 
-@[simp] theorem subst_advance {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (d C z : PTm n) :
-    Syn.subst σ (advance step d C z) = advance step (Syn.subst σ d) (Syn.subst σ C) (Syn.subst σ z) := by simp [advance]
-@[simp] theorem subst_iterate {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (d C k : PTm n) :
-    Syn.subst σ (iterate step d C k) = iterate step (Syn.subst σ d) (Syn.subst σ C) (Syn.subst σ k) := by simp [iterate]
+ipra_subst advance
+ipra_subst iterate
 
 theorem iterate_zero (step : PR 3) (d C : PTm n) : Γ ⊢[PRAAx] iterate step d C zero ≐ qzero := by
   have h := rec_zero (Γ := Γ) (qzero : PTm 2) (iterationStep step) ![d,C]
@@ -119,12 +107,9 @@ def rdAt (step : PR 3) (d C z : PTm n) : Fm PTm n := RationalArgmin.rationalLE
 def localRD (step : PR 3) (d C : PTm n) : Fm PTm n :=
   .all (canonical (var 0) ⟶ rdAt step (Syn.shift d) (Syn.shift C) (var 0))
 
-@[simp] theorem subst_contractionSquare {m : ℕ} (σ : Fin n → PTm m) (d : PTm n) :
-    Syn.subst σ (contractionSquare d) = contractionSquare (Syn.subst σ d) := by simp [contractionSquare]
-@[simp] theorem subst_rdAt {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (d C z : PTm n) :
-    (rdAt step d C z).subst σ = rdAt step (Syn.subst σ d) (Syn.subst σ C) (Syn.subst σ z) := by simp [rdAt]
-@[simp] theorem subst_localRD {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (d C : PTm n) :
-    (localRD step d C).subst σ = localRD step (Syn.subst σ d) (Syn.subst σ C) := by simp [localRD,Syn.subst_shift,Syn.shift_subst]
+ipra_subst contractionSquare
+ipra_subst rdAt
+ipra_subst localRD [Syn.subst_shift, Syn.shift_subst]
 
 theorem local_rd_at (step : PR 3) (d C z : PTm n)
     (h : Γ ⊢[PRAAx] localRD step d C) (hz : Γ ⊢[PRAAx] canonical z) : Γ ⊢[PRAAx] rdAt step d C z := by
@@ -191,9 +176,7 @@ def decay (step : PR 3) (d C a b k : PTm n) : Fm PTm n :=
     ((pw (pred (rateDenominator d)) k*pw (pred (rateDenominator d)) k)*(a*a)*
       (residualDenominator C (iterate step d C k)*residualDenominator C (iterate step d C k)))
 
-@[simp] theorem subst_decay {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (d C a b k : PTm n) :
-    (decay step d C a b k).subst σ = decay step (Syn.subst σ d) (Syn.subst σ C)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) := by simp [decay]
+ipra_subst decay
 
 theorem decay_zero (step : PR 3) (d C a b : PTm n)
     (h : Γ ⊢[PRAAx] le ((b*b)*residualNumerator C qzero)
@@ -223,11 +206,9 @@ theorem decay_succ (step : PR 3) (d C a b k : PTm n)
     positive ih hLocal
   have p := natEq (pw_succ (Γ := Γ) (rateDenominator d) k)
   have q := natEq (pw_succ (Γ := Γ) (pred (rateDenominator d)) k)
-  have num := natEq (residual_numerator_congr C (iterate_succ (Γ := Γ) step d C k))
-  have den := natEq (residual_denominator_congr C (iterate_succ (Γ := Γ) step d C k))
   apply le_congr (h := combined)
-  · apply deriveNat; ipra_simps; rw [p,num]; ring
-  · apply deriveNat; ipra_simps; rw [q,den]; ring
+  · apply deriveNat; ipra_simps; rw [p,natEq (residual_numerator_congr C (iterate_succ (Γ := Γ) step d C k))]; ring
+  · apply deriveNat; ipra_simps; rw [q,natEq (residual_denominator_congr C (iterate_succ (Γ := Γ) step d C k))]; ring
 
 /-- QF induction derives global decay solely from the local RD estimate and
 the legitimate initial residual bound. No global decay law is supplied. -/
@@ -237,11 +218,9 @@ theorem iterate_decay (step : PR 3) (d C a b k : PTm n) (hb : Γ ⊢[PRAAx] le o
   have rdShift : Γ.map Fm.shift ⊢[PRAAx] localRD step (Syn.shift d) (Syn.shift C) := by
     simpa only [Fm.shift,subst_localRD,Syn.shift] using hRD.shift
   have all : Γ ⊢[PRAAx] .all (decay step (Syn.shift d) (Syn.shift C) (Syn.shift a) (Syn.shift b) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_decay,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact decay_zero step d C a b ((residual_bound_iff _ _ _ _ hb).iffMp hInitial)
-    · simp only [subst_decay,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact decay_succ _ _ _ _ _ _ rdShift.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_decay]
+    · exact decay_zero step d C a b ((residual_bound_iff _ _ _ _ hb).iffMp hInitial)
+    · exact decay_succ _ _ _ _ _ _ rdShift.wk Prf.hyp0
   simpa only [subst_decay,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
 
 theorem clock_residual (step : PR 3) (d C a b e f : PTm n)
@@ -283,19 +262,13 @@ theorem initial_base_spec (C : PTm n) : Γ ⊢[PRAAx]
         RationalArgmin.rationalLE (GaussianRationalL1.qL1 (evaluate C qzero)) (initialBase C)) :=
   .andI (GaussianRationalL1.base_natural_representation _) (GaussianRationalL1.base_bounds _)
 
-@[simp] theorem subst_initialBase {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (initialBase C) = initialBase (Syn.subst σ C) := by simp [initialBase]
-@[simp] theorem subst_initialNumerator {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (initialNumerator C) = initialNumerator (Syn.subst σ C) := by simp [initialNumerator]
-@[simp] theorem subst_initialDenominator {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (initialDenominator C) = initialDenominator (Syn.subst σ C) := by simp [initialDenominator]
-@[simp] theorem subst_approximateRoot {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (d C e f : PTm n) :
-    Syn.subst σ (approximateRoot step d C e f) = approximateRoot step (Syn.subst σ d) (Syn.subst σ C)
-      (Syn.subst σ e) (Syn.subst σ f) := by simp [approximateRoot]
+ipra_subst initialBase
+ipra_subst initialNumerator
+ipra_subst initialDenominator
+ipra_subst approximateRoot
 
 def result (C z e f : PTm n) : Fm PTm n := canonical z ⋏ GaussianRationalMetric.bounded (evaluate C z) e f
-@[simp] theorem subst_result {m : ℕ} (σ : Fin n → PTm m) (C z e f : PTm n) :
-    (result C z e f).subst σ = result (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ e) (Syn.subst σ f) := by simp [result]
+ipra_subst result
 
 /-- Only the local RD contraction remains a substantive contract. The
 initial base, all clocks and the final residual bound are computed/proved. -/
@@ -347,9 +320,7 @@ theorem computed_global_decay_closed (step : PR 3) : ([] : List (Fm PTm 0)) ⊢[
 the actual iterate update literally z+Δ, without an update-law premise. -/
 
 def incrementTerm (descent : PR 3) (d C z : PTm n) : PTm n := GaussianRationalHorner.qadd z (ap3 descent d C z)
-@[simp] theorem subst_incrementTerm {m : ℕ} (σ : Fin n → PTm m) (descent : PR 3) (d C z : PTm n) :
-    Syn.subst σ (incrementTerm descent d C z) = incrementTerm descent (Syn.subst σ d) (Syn.subst σ C) (Syn.subst σ z) := by
-  simp [incrementTerm]
+ipra_subst incrementTerm
 def incrementStep (descent : PR 3) : PR 3 := PTm.toPR (incrementTerm descent (var 0) (var 1) (var 2))
 
 theorem increment_step_at (descent : PR 3) (d C z : PTm n) : Γ ⊢[PRAAx]

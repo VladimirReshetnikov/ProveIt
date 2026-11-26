@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerExponentialFactors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianGammaFiniteApproximantName (exponentialInputData)
 open GaussianLogGammaEulerFactorSum (residualBody residual_at)
@@ -24,9 +24,6 @@ open GaussianLogGammaEulerResidualDomain (native centered_native linear_point)
 open GaussianNameEquivalence (crossEquivalent cross_trans subst_crossEquivalent)
 open GaussianNamedFiniteProductFamilyCongruence (equalRows)
 open GaussianRightHalfPlaneLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF

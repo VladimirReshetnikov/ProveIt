@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorHorner
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalExponentTaylor (nameF data headPolynomial)
 open GaussianBarnesCanonicalExponentTaylorBuffer
   (buffer linearCoefficient quadraticCoefficient prefactorLinear prefactorQuadratic)
@@ -39,9 +39,6 @@ open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalPowerAlgebra (qmul_commutative power_two)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianEulerIncompleteFactorialCombination (right_distribute)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

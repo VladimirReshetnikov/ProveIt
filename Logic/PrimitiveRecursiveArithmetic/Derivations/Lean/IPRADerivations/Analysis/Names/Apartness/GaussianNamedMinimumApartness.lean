@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Names.Apartness.GaussianNamedApartnessTightness
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
-import IPRADerivations.Core.Search
 
 /-!
 # Earliest apartness witness and a comparable difference radius
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedMinimumApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF)
@@ -31,10 +30,6 @@ open GaussianRationalMetric (comparison_of_cleared qnormSq qnormSq_represents sq
   squared_tolerance_represents distanceBounded qsub)
 open GaussianRationalReciprocal (normNumerator)
 open GaussianReconstructionRoots (norm_from_distance)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,13 +41,9 @@ private def body (f : PR 2) : PTm 2 := test f (var 0) (var 1)
 
 def first (f : PR 2) (h x : PTm n) : PTm n := Search.mu (body f) (succ h) x
 
-@[simp] theorem subst_test {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h x : PTm n) :
-    Syn.subst σ (test f h x) = test f (Syn.subst σ h) (Syn.subst σ x) := by
-  simp [test, normNumerator]
+ipra_subst test [normNumerator]
 
-@[simp] theorem subst_first {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h x : PTm n) :
-    Syn.subst σ (first f h x) = first f (Syn.subst σ h) (Syn.subst σ x) := by
-  simp [first]
+ipra_subst first
 
 private theorem body_at (f : PR 2) (h x : PTm n) :
     inst2 (body f) h x = test f h x := by

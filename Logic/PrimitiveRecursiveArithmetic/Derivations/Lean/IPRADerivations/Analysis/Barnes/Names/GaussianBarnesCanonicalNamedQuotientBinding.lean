@@ -19,15 +19,13 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedQuotientBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add normSq)
 open GaussianBarnesCanonicalNamedDemand (source data)
 open GaussianBoundedConstantProductName (constantF constant_regular)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "V" => GaussianBarnesCanonicalValue.nameF

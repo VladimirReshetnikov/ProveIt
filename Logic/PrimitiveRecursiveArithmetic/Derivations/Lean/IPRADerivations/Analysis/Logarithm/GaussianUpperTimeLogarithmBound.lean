@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianUpperTimeLogarithmBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalHarmonicInterval (interval horizon numerator)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open GaussianRationalMetric (bounded)
@@ -25,10 +25,6 @@ open RationalGaussianEmbedding (embed native)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianPositiveRationalLogarithm (source sample)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationRelativeLog
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGaussMultiplicationLogarithm (top top_positive log_distance_at)
 open GaussianGammaFiniteApproximantName (log_sample_at)
 open GaussianNameArithmetic (addF addData)
@@ -23,17 +23,13 @@ open GaussianPositiveRationalLogarithm (logF data source)
 open GaussianRationalMetric (bounded qsub)
 open RationalGaussianEmbedding (embed)
 open RationalHarmonicInterval (interval)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 abbrev relativeLogF : PR 2 := GaussianHarmonicLogarithmName.nameF
 def relativeLogData (m N : PTm n) : PTm n := GaussianHarmonicLogarithmName.data (m*N) (top m N)
 
-@[simp] theorem subst_relativeLogData {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (relativeLogData m N) = relativeLogData (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [relativeLogData]
+ipra_subst relativeLogData
 
 theorem relative_log_bound_at (m N p : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]

@@ -18,7 +18,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalValueDerivativeJoin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add normSq)
 open GaussianBarnesCanonicalDerivativeTailBinding (base_source shifted_source)
 open GaussianBarnesCanonicalDiskBound (prefixBound prefix_sample_bound)
@@ -32,8 +32,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product)
 open GaussianRationalMetric (distanceBounded bounded_of_cleared)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianBarnesCanonicalValue.prefixF

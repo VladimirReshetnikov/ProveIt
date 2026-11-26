@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCharacteristicFactorBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalCharacteristicPolynomial (characteristicTable cellPolynomial table_shape table_lookup_at)
 open GaussianPolynomialDeterminantTerms (cell factor tableShape)
 open GaussianCoefficientL1 (coefficientNorm subCoefficients)
@@ -23,9 +23,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalSyntheticBounds (natCode)
 open RationalArgmin (rationalLE rationalLE_congr)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (digit digit_bound)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,22 +38,11 @@ def entryDistances (A C N P Q : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift
 def input (A C N B P Q : PTm n) : Fm PTm n := GaussianRationalRowElimination.shape A N N ⋏
   (GaussianRationalRowElimination.shape C N N ⋏ (entryBounds A N B ⋏
     (entryBounds C N B ⋏ (le one Q ⋏ entryDistances A C N P Q))))
-@[simp] theorem subst_rowBounds {l : ℕ} (σ : Fin n → PTm l) (A N B r : PTm n) :
-    (rowBounds A N B r).subst σ = rowBounds (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ r) := by
-  simp [rowBounds,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_entryBounds {l : ℕ} (σ : Fin n → PTm l) (A N B : PTm n) :
-    (entryBounds A N B).subst σ = entryBounds (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ B) := by
-  simp [entryBounds,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_rowDistances {l : ℕ} (σ : Fin n → PTm l) (A C N P Q r : PTm n) :
-    (rowDistances A C N P Q r).subst σ = rowDistances (Syn.subst σ A) (Syn.subst σ C)
-      (Syn.subst σ N) (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ r) := by
-  simp [rowDistances,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_entryDistances {l : ℕ} (σ : Fin n → PTm l) (A C N P Q : PTm n) :
-    (entryDistances A C N P Q).subst σ = entryDistances (Syn.subst σ A) (Syn.subst σ C)
-      (Syn.subst σ N) (Syn.subst σ P) (Syn.subst σ Q) := by simp [entryDistances,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (A C N B P Q : PTm n) :
-    (input A C N B P Q).subst σ = input (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ B) (Syn.subst σ P) (Syn.subst σ Q) := by simp [input]
+ipra_subst rowBounds [Syn.subst_shift, Syn.shift_subst]
+ipra_subst entryBounds [Syn.subst_shift, Syn.shift_subst]
+ipra_subst rowDistances [Syn.subst_shift, Syn.shift_subst]
+ipra_subst entryDistances [Syn.subst_shift, Syn.shift_subst]
+ipra_subst input
 
 theorem entry_bound_at (A N B r j : PTm n) (h : Γ ⊢[PRAAx] entryBounds A N B)
     (hr : Γ ⊢[PRAAx] lt r N) (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] bounded (cell A r j) B one := by

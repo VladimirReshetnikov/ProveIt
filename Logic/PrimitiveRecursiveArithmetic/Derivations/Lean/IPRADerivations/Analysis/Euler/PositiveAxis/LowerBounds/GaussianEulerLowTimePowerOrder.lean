@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowTimePowerOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerOrder (source inputF expF leftData radius leftExpData)
 open GaussianEulerLowerPowerCoefficients (amplification)
 open GaussianEulerUpperPowerCoefficients (realMultiplier)
@@ -26,9 +26,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded)
 open GaussianNamedPositiveExponentialOrder (sampleOrder realOrder)
 open ComplexLogarithmRemainder (zeroCode oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,11 +33,9 @@ def multiplier : PTm n := realMultiplier zeroCode one
 def referenceData (R a b : PTm n) : PTm n := GaussianBoundedConstantProductName.data
   (amplification R) multiplier (GaussianHarmonicLogarithmName.data a b)
 def referenceExpData (R a b : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius R b) (referenceData R a b)
-@[simp] theorem subst_multiplier {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (multiplier : PTm n) = multiplier := by simp [multiplier,one]
-@[simp] theorem subst_referenceData {m : ℕ} (σ : Fin n → PTm m) (R a b : PTm n) :
-    Syn.subst σ (referenceData R a b) = referenceData (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [referenceData]
-@[simp] theorem subst_referenceExpData {m : ℕ} (σ : Fin n → PTm m) (R a b : PTm n) :
-    Syn.subst σ (referenceExpData R a b) = referenceExpData (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [referenceExpData]
+ipra_subst multiplier [one]
+ipra_subst referenceData
+ipra_subst referenceExpData
 
 theorem coefficient_zero_below (A : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx]
     RationalArgmin.rationalLE (fstT (coefficient zeroCode one)) (fstT (coefficient oneCode A)) := by

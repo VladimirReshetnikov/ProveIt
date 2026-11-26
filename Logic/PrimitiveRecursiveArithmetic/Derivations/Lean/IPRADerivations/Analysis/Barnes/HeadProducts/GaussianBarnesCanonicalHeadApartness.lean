@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorApartness
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadSplit
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductApartness
-import IPRADerivations.Core.SearchParameters
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Taylor.GaussianGammaShiftedDeflatedZero
 
 /-!
@@ -18,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHead (source parameters body factor_at nameF data)
 open GaussianBarnesCanonicalFactorApartness (minimumClock denominator_positive)
 open GaussianBarnesCanonicalBase (base_zero)
@@ -31,10 +30,6 @@ open GaussianCoefficientNameBounds (unit)
 open ComplexLogarithmRemainder (normSq normSq_neg normSq_scale normSq_one zeroCode)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRootAlgebra (equal)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

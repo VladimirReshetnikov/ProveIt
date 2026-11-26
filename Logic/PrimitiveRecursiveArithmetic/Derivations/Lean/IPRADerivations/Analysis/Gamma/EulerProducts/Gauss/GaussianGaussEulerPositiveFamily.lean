@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerPositiveFamily
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -43,9 +43,6 @@ open GaussianNamedFiniteProductFamilyAlgebra (multiplyBody body_at multiply_regu
 open GaussianNamedFiniteProductFamilyCongruence (equalRows family_product_cross)
 open GaussianRationalHorner (ofGaussian qadd positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -60,7 +57,7 @@ private theorem reference_on_shifted_at (r z B m N : PTm n) : Γ ⊢[PRAAx]
     (σ := ![r,fstT (sndT x),fstT x]) (σ' := ![r,m,N]) (fun i => by
       fin_cases i
       · exact .eqRefl _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+      · exact (snd_pair _ _).fstE
       · exact fst_pair _ _)
   simpa only [referenceOnShifted,inst2,GaussianGammaEulerFullHeadInverse.subst_negExpData,
     GaussianGammaGaussReferenceProduct.subst_argument,subst_fstT,subst_sndT,Syn.subst_var,
@@ -70,13 +67,13 @@ private theorem offset_at (r z B m N : PTm n) : Γ ⊢[PRAAx]
     inst2 offsetBody r (shiftedData z B m N) ≐ offsetStageData z B m N := by
   let x := shiftedData z B m N
   have pair := snd_pair (Γ := Γ) N (pairT m (pairT z B))
-  have tail := (congrSnd pair).eqTrans (snd_pair _ _)
+  have tail := pair.sndE
   have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (offsetStageData (var 0) (var 1) (var 2) (var 3) : PTm 4)
     (σ := ![fstT (sndT (sndT x)),sndT (sndT (sndT x)),fstT (sndT x),fstT x]) (σ' := ![z,B,m,N]) (fun i => by
       fin_cases i
-      · exact (congrFst tail).eqTrans (fst_pair _ _)
-      · exact (congrSnd tail).eqTrans (snd_pair _ _)
-      · exact (congrFst pair).eqTrans (fst_pair _ _)
+      · exact tail.fstE
+      · exact tail.sndE
+      · exact pair.fstE
       · exact fst_pair _ _)
   simpa only [offsetBody,inst2,GaussianGaussEulerPositiveOffset.subst_offsetStageData,
     subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,

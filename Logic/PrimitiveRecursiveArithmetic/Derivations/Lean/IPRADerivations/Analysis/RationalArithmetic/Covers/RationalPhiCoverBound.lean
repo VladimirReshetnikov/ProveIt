@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiCoverBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPhiFeatures (dimension)
 open RationalPhiSectionNonzero (curveInput)
 open RationalPhiCoverAssignment (cover group bounds sourceCoverBit selectedFamily featureList)
@@ -24,15 +24,10 @@ open RationalSuperellipticNormDegree (pointPowers)
 open RationalFiniteSpanCover (family)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-@[simp] theorem subst_curveInput {k : ℕ} (σ : Fin n → PTm k) (f s r m : PTm n) :
-    (curveInput f s r m).subst σ = curveInput (Syn.subst σ f) (Syn.subst σ s) (Syn.subst σ r) (Syn.subst σ m) := by
-  simp [curveInput,one]
+ipra_subst curveInput [one]
 
 theorem group_bound (f s r m P D g : PTm n) (h : Γ ⊢[PRAAx] curveInput f s r m)
     (hd : Γ ⊢[PRAAx] distinct P) (hp : Γ ⊢[PRAAx] pointPowers f r P)

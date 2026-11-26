@@ -17,14 +17,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSlackRemoval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded bounded_to_cleared bounded_of_cleared)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,27 +34,14 @@ def slack (z A B C m : PTm n) : Fm PTm n := bounded z (A*pw two m+C*B) (B*pw two
 def allSlack (z A B C : PTm n) : Fm PTm n :=
   .all (slack (Syn.shift z) (Syn.shift A) (Syn.shift B) (Syn.shift C) (var 0))
 
-@[simp] theorem subst_squaredNorm {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (squaredNorm z B) = squaredNorm (Syn.subst σ z) (Syn.subst σ B) := by
-  simp only [squaredNorm,PTm.subst_mul,ComplexLogarithmRemainder.subst_normSq,GaussianRationalL1.subst_rawGaussian]
-@[simp] theorem subst_squaredRadius {m : ℕ} (σ : Fin n → PTm m) (z A : PTm n) :
-    Syn.subst σ (squaredRadius z A) = squaredRadius (Syn.subst σ z) (Syn.subst σ A) := by
-  simp only [squaredRadius,PTm.subst_mul,GaussianRationalL1.subst_rawDen]
-@[simp] theorem subst_linearCost {m : ℕ} (σ : Fin n → PTm m) (z A B C : PTm n) :
-    Syn.subst σ (linearCost z A B C) = linearCost (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp only [linearCost,PTm.subst_mul,GaussianRationalL1.subst_rawDen,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_quadraticCost {m : ℕ} (σ : Fin n → PTm m) (z B C : PTm n) :
-    Syn.subst σ (quadraticCost z B C) = quadraticCost (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp only [quadraticCost,PTm.subst_mul,GaussianRationalL1.subst_rawDen]
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (z A B C : PTm n) :
-    Syn.subst σ (precision z A B C) = precision (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp only [precision,PTm.subst_add,subst_linearCost,subst_quadraticCost]
-@[simp] theorem subst_slack {m : ℕ} (σ : Fin n → PTm m) (z A B C k : PTm n) :
-    (slack z A B C k).subst σ = slack (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ k) := by
-  simp only [slack,GaussianRationalMetric.subst_bounded,PTm.subst_add,PTm.subst_mul,subst_ap2,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_allSlack {m : ℕ} (σ : Fin n → PTm m) (z A B C : PTm n) :
-    (allSlack z A B C).subst σ = allSlack (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp only [allSlack,Fm.subst_all,subst_slack,Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst squaredNorm
+ipra_subst squaredRadius
+ipra_subst linearCost
+ipra_subst quadraticCost
+ipra_subst precision
+ipra_subst slack
+ipra_subst allSlack [Fm.subst_all, subst_slack, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst]
 
 theorem power_positive (m : PTm n) : Γ ⊢[PRAAx] le one (pw two m) :=
   le_trans (zero_lt_succ m) (RationalClosure.succ_le_two_pow m)
@@ -106,10 +90,9 @@ theorem slack_removal (z A B C : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   simpa only [allSlack,subst_slack,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE (precision z A B C)
 
 def dyadicVanishing (z C : PTm n) : Fm PTm n := .all (bounded (Syn.shift z) (Syn.shift C) (pw two (var 0)))
-@[simp] theorem subst_dyadicVanishing {m : ℕ} (σ : Fin n → PTm m) (z C : PTm n) :
-    (dyadicVanishing z C).subst σ = dyadicVanishing (Syn.subst σ z) (Syn.subst σ C) := by
-  simp only [dyadicVanishing,Fm.subst_all,GaussianRationalMetric.subst_bounded,subst_ap2,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst dyadicVanishing [Fm.subst_all, GaussianRationalMetric.subst_bounded, subst_ap2,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst]
 
 /-- A fixed original rational Gaussian point bounded by C*2^(-m) at every
 precision has exact zero Euclidean norm, without a canonical-code premise. -/

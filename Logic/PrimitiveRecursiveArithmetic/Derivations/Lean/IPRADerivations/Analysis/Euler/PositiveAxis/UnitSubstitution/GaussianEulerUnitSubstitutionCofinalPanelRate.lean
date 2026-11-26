@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionCofinalPanelRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionOrdinaryImproper (source resolution)
 open GaussianEulerUnitSubstitutionOrdinaryEndpoints (leftNumerator widthNumerator denominator)
 open GaussianEulerUnitKernelCompactName (nameF)
@@ -31,8 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,15 +40,9 @@ def panelData (t z R B A : PTm n) : PTm n := GaussianEulerUnitKernelCompactName.
 def leadingNumerator (t : PTm n) : PTm n := unit t+unit (resolution t)
 def leadingDenominator (t : PTm n) : PTm n := unit t*unit (resolution t)
 
-@[simp] theorem subst_panelData {m : ℕ} (σ : Fin n → PTm m) (t z R B A : PTm n) :
-    Syn.subst σ (panelData t z R B A) = panelData (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [panelData,leftNumerator,widthNumerator,denominator,width,etaDen,top,
-    GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_leadingNumerator {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
-    Syn.subst σ (leadingNumerator t) = leadingNumerator (Syn.subst σ t) := by simp [leadingNumerator]
-@[simp] theorem subst_leadingDenominator {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
-    Syn.subst σ (leadingDenominator t) = leadingDenominator (Syn.subst σ t) := by simp [leadingDenominator]
+ipra_subst panelData [leftNumerator, widthNumerator, denominator, width, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst leadingNumerator
+ipra_subst leadingDenominator
 
 @[simp] theorem subst_original_gammaData {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
     Syn.subst σ (gammaData z R B A) = gammaData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by

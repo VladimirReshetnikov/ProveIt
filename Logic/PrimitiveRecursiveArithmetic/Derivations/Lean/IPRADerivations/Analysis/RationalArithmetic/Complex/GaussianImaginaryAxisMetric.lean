@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianImaginaryAxisMetric
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code scale normSq normSq_eval eval_re_code eval_im_code)
 open GaussianRationalHorner (represents positive_product scalar_congr represents_rescale)
 open GaussianRationalMetric (bounded_difference_iff distanceBounded)
@@ -22,9 +22,6 @@ open GaussianRootAlgebra (re_sub im_sub re_scale im_scale)
 open RationalGaussianEmbedding (scalarZero embed native)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

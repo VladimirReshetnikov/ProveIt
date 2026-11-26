@@ -14,21 +14,17 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNaturalPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (coefficient powerF powerData powerExponentF logarithmF)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficientData (k a b : PTm n) : PTm n := GaussianGammaFiniteApproximantName.exponentialInputData powerExponentF
   (GaussianNameArithmetic.multiplyData constantF logarithmF k (GaussianPositiveRationalLogarithm.data a b))
-@[simp] theorem subst_coefficientData {m : ℕ} (σ : Fin n → PTm m) (k a b : PTm n) :
-    Syn.subst σ (coefficientData k a b) = coefficientData (Syn.subst σ k) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [coefficientData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst coefficientData [GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem original_data (z B N a b : PTm n) (hc : Γ ⊢[PRAAx] coefficient z B ≐ naturalPoint N) : Γ ⊢[PRAAx]
     powerData z B a b ≐ GaussianHarmonicIntegerExponential.originalData N a b := by

@@ -14,15 +14,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelPanelAdditivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (source nameF data evaluatorF fixedData lipschitz compact_input name_regular)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_refl cross_to_diagonal)
 open GaussianNameArithmetic (addF addData add_fast)
 open GaussianNameRingLaws (zeroF zero_fast)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -69,9 +65,7 @@ private theorem cross_data_congr (F H : PR 2) (x y x' y' : PTm n)
 
 def addedData (z R B a C1 C2 E G : PTm n) : PTm n :=
   addData (data z R B a C1 E G) (data z R B (a+C1) C2 E G)
-@[simp] theorem subst_addedData {m : ℕ} (σ : Fin n → PTm m) (z R B a C1 C2 E G : PTm n) :
-    Syn.subst σ (addedData z R B a C1 C2 E G) = addedData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ G) := by simp [addedData]
+ipra_subst addedData
 
 theorem addedData_congr (z R B a C1 C2 D1 D2 E G : PTm n)
     (h1 : Γ ⊢[PRAAx] C1 ≐ D1) (h2 : Γ ⊢[PRAAx] C2 ≐ D2) : Γ ⊢[PRAAx]
@@ -144,9 +138,7 @@ theorem original_additivity (z R B a C1 C2 E G : PTm n) (h : Γ ⊢[PRAAx] sourc
 
 def threeData (z R B a C1 C2 C3 E G : PTm n) : PTm n := addData (data z R B a C1 E G)
   (addData (data z R B (a+C1) C2 E G) (data z R B ((a+C1)+C2) C3 E G))
-@[simp] theorem subst_threeData {m : ℕ} (σ : Fin n → PTm m) (z R B a C1 C2 C3 E G : PTm n) :
-    Syn.subst σ (threeData z R B a C1 C2 C3 E G) = threeData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2) (Syn.subst σ C3) (Syn.subst σ E) (Syn.subst σ G) := by simp [threeData]
+ipra_subst threeData
 
 /-- The actual normalized sum is right-associated. Every panel retains
 the same native denominator, margin, evaluator and parameter datum. -/

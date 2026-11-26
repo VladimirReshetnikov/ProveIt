@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalReciprocal
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDivision
 import IPRADerivations.Analysis.Logarithm.ComplexLogarithmCauchy
 import IPRADerivations.Analysis.Exponential.Polynomials.LogarithmExponentialCoefficients
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual fractions of the original Gaussian integer powers
@@ -22,15 +21,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianIntegerFractionPowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian represents canonical canonical_unique represents_congr positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values equal_re equal_im equal_of_code equal_refl)
 open ComplexLogarithmRemainder (oneCode mul re im)
 open LogarithmExponentialCoefficients (evenBit oddBit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -52,9 +48,7 @@ theorem fraction_multiply (a b A B : PTm n) (hA : Γ ⊢[PRAAx] le one A)
 def powerLaw (z N k : PTm n) : Fm PTm n :=
   GaussianRationalReciprocal.power (ofGaussian z N) k ≐
     ofGaussian (ComplexLogarithmRemainder.power z k) (pw N k)
-@[simp] theorem subst_powerLaw {m : ℕ} (σ : Fin n → PTm m) (z N k : PTm n) :
-    (powerLaw z N k).subst σ = powerLaw (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ k) := by
-  simp [powerLaw]
+ipra_subst powerLaw
 
 theorem fraction_power (z N k : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     GaussianRationalReciprocal.power (ofGaussian z N) k ≐
@@ -62,12 +56,10 @@ theorem fraction_power (z N k : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PR
   have hs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by
     simpa only [Fm.shift,Syn.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using hN.shift
   have all : Γ ⊢[PRAAx] .all (powerLaw (Syn.shift z) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalReciprocal.power_zero _).eqTrans
+    ipra_qfind [subst_powerLaw]
+    · exact (GaussianRationalReciprocal.power_zero _).eqTrans
         (fraction_congr (ComplexLogarithmRemainder.power_zero z) (pw_zero N)).eqSymm
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (GaussianRationalReciprocal.power_succ _ _).eqTrans
+    · exact (GaussianRationalReciprocal.power_succ _ _).eqTrans
         ((qmul_congr Prf.hyp0 (.eqRefl _)).eqTrans
           ((fraction_multiply _ _ _ _ (ComplexLogarithmCauchy.power_positive _ _ hs.wk) hs.wk).eqTrans
             (fraction_congr (ComplexLogarithmRemainder.power_succ _ _).eqSymm (pw_succ _ _).eqSymm)))
@@ -82,9 +74,7 @@ theorem power_represents (z N k : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[
 
 def parityScalar (k : PTm n) : PTm n :=
   ComplexLogarithmRemainder.code (⟨evenBit k,oddBit k⟩ : ZT n) (ZT.ofNat zero)
-@[simp] theorem subst_parityScalar {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (parityScalar k) = parityScalar (Syn.subst σ k) := by
-  simp [parityScalar,ZT.subst,ZT.ofNat]
+ipra_subst parityScalar [ZT.subst, ZT.ofNat]
 
 theorem parity_scalar_re (k : PTm n) : ZT.toZ Γ (re (parityScalar k)) = 𝔞(evenBit k)-𝔞(oddBit k) := by
   rw [parityScalar,ComplexLogarithmRemainder.eval_re_code]
@@ -103,18 +93,14 @@ theorem parity_scalar_succ (k : PTm n) : Γ ⊢[PRAAx]
     equal (parityScalar (succ k)) (ComplexLogarithmRemainder.neg (parityScalar k)) := by
   have ep : Γ ⊢[PRAAx] evenBit (succ k) ≐ oddBit k := Prf.andE₁ (AnalyticNumberTheory.Mobius.par_succ k)
   have op : Γ ⊢[PRAAx] oddBit (succ k) ≐ evenBit k := Prf.andE₂ (AnalyticNumberTheory.Mobius.par_succ k)
-  have he := natEq ep
-  have ho := natEq op
   apply equal_of_values
-  · rw [parity_scalar_re,GaussianRootAlgebra.re_neg,parity_scalar_re,he,ho]; ring
+  · rw [parity_scalar_re,GaussianRootAlgebra.re_neg,parity_scalar_re,natEq ep,natEq op]; ring
   · rw [parity_scalar_im,GaussianRootAlgebra.im_neg,parity_scalar_im]; ring
 
 def negativePowerLaw (z k : PTm n) : Fm PTm n :=
   equal (ComplexLogarithmRemainder.power (ComplexLogarithmRemainder.neg z) k)
     (mul (parityScalar k) (ComplexLogarithmRemainder.power z k))
-@[simp] theorem subst_negativePowerLaw {m : ℕ} (σ : Fin n → PTm m) (z k : PTm n) :
-    (negativePowerLaw z k).subst σ = negativePowerLaw (Syn.subst σ z) (Syn.subst σ k) := by
-  simp [negativePowerLaw]
+ipra_subst negativePowerLaw
 
 theorem negative_power_step (z k : PTm n) (ih : Γ ⊢[PRAAx] negativePowerLaw z k) :
     Γ ⊢[PRAAx] negativePowerLaw z (succ k) := by
@@ -139,9 +125,8 @@ theorem negative_power_step (z k : PTm n) (ih : Γ ⊢[PRAAx] negativePowerLaw z
 
 theorem negative_power (z k : PTm n) : Γ ⊢[PRAAx] negativePowerLaw z k := by
   have all : Γ ⊢[PRAAx] .all (negativePowerLaw (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_negativePowerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      change Γ ⊢[PRAAx] equal _ _
+    ipra_qfind (⟨trivial,trivial⟩) [subst_negativePowerLaw]
+    · change Γ ⊢[PRAAx] equal _ _
       have hp := GaussianRootAlgebra.values_of_code (ComplexLogarithmRemainder.power_zero (Γ := Γ) (ComplexLogarithmRemainder.neg z))
       have hq := GaussianRootAlgebra.values_of_code (ComplexLogarithmRemainder.power_zero (Γ := Γ) z)
       apply equal_of_values
@@ -149,8 +134,7 @@ theorem negative_power (z k : PTm n) : Γ ⊢[PRAAx] negativePowerLaw z k := by
           GaussianRootAlgebra.re_one,GaussianRootAlgebra.im_one]; ring
       · rw [hp.2,GaussianRootAlgebra.im_mul,equal_re parity_scalar_zero,equal_im parity_scalar_zero,hq.1,hq.2,
           GaussianRootAlgebra.re_one,GaussianRootAlgebra.im_one]; ring
-    · simp only [subst_negativePowerLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact negative_power_step _ _ Prf.hyp0
+    · exact negative_power_step _ _ Prf.hyp0
   simpa only [subst_negativePowerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 /-- The precise signed numerator occurring in the original old cubic-tail
@@ -181,20 +165,18 @@ def output (z N k : PTm n) : PTm n :=
     (pairT (ComplexLogarithmRemainder.power z k) (pw N k))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (z N k : PTm n) : PTm n := ap3 outputF z N k
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (z N k : PTm n) :
-    Syn.subst σ (output z N k) = output (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ k) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (z N k : PTm n) :
-    Syn.subst σ (run z N k) = run (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ k) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (z N k : PTm n) : Γ ⊢[PRAAx] run z N k ≐ output z N k := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![z,N,k]
 theorem returned_power (z N k : PTm n) : Γ ⊢[PRAAx]
     fstT (run z N k) ≐ GaussianRationalReciprocal.power (ofGaussian z N) k :=
-  (congrFst (program_at z N k)).eqTrans (fst_pair _ _)
+  (program_at z N k).fstE
 theorem returned_numerator (z N k : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run z N k)) ≐ ComplexLogarithmRemainder.power z k :=
-  (congrFst ((congrSnd (program_at z N k)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at z N k).sndE.fstE
 theorem returned_denominator (z N k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run z N k)) ≐ pw N k :=
-  (congrSnd ((congrSnd (program_at z N k)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at z N k).sndE.sndE
 theorem returned_representation (z N k : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     represents (fstT (run z N k)) (fstT (sndT (run z N k))) (sndT (sndT (run z N k))) :=
   represents_congr (returned_power z N k).eqSymm (equal_of_code (returned_numerator z N k).eqSymm)

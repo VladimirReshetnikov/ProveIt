@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReferenceProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
@@ -27,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -49,27 +46,19 @@ def data (m : PTm n) : PTm n := GaussianNamedFiniteProductName.data m (rowRadius
 def clock (p m : PTm n) : PTm n := GaussianNamedFiniteProductName.clock m (rowRadius m) one p
 def apartClock (m : PTm n) : PTm n := GaussianNamedFiniteProductApartness.apartClock m rowDenominator
 
-@[simp] theorem subst_argument {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (argument r) = argument (Syn.subst σ r) := by simp [argument]
+ipra_subst argument
 
-@[simp] theorem subst_rowValue {l : ℕ} (σ : Fin n → PTm l) (p r m : PTm n) :
-    Syn.subst σ (rowValue p r m) = rowValue (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ m) := by
-  simp [rowValue,gammaData,GaussianGammaReciprocalInverse.gammaHeight,one]
+ipra_subst rowValue [gammaData, GaussianGammaReciprocalInverse.gammaHeight, one]
 
-@[simp] theorem subst_rowRadius {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (rowRadius m) = rowRadius (Syn.subst σ m) := by simp [rowRadius,one,two]
+ipra_subst rowRadius [one, two]
 
-@[simp] theorem subst_rowDenominator {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (rowDenominator : PTm n) = rowDenominator := by simp [rowDenominator,one]
+ipra_subst rowDenominator [one]
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (data m) = data (Syn.subst σ m) := by simp [data,one]
+ipra_subst data [one]
 
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p m : PTm n) :
-    Syn.subst σ (clock p m) = clock (Syn.subst σ p) (Syn.subst σ m) := by simp [clock,one]
+ipra_subst clock [one]
 
-@[simp] theorem subst_apartClock {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (apartClock m) = apartClock (Syn.subst σ m) := by simp [apartClock]
+ipra_subst apartClock
 
 theorem row_at (p r m : PTm n) : Γ ⊢[PRAAx] ap3 rowF p r m ≐ rowValue p r m := by
   change Γ ⊢[PRAAx] ConciseIPRA.PTm.app (PTm.toPR rowBody) ![p,r,m] ≐ _

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicRootChord
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (rootF rootData sample)
 open GaussianCyclicRootHalfAngle (positiveData exponential_square)
 open GaussianCyclicHalfSineMargin (sineSample sine_lower_at)
@@ -42,9 +42,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRootAlgebra (equal_of_values re_mul im_mul re_scale im_scale re_neg im_neg re_one im_one)
 open ComplexLogarithmRemainder (scale oneCode normSq normSq_eval eval_re_code eval_im_code)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D" => GaussianArctangentDivisionAngles.nameF
@@ -56,8 +53,7 @@ def denominator (m : PTm n) : PTm n := two*phaseDenominator m
 def reserve (m : PTm n) : PTm n :=
   two*m+two*inverseBudget two+denominator m*budget
 
-@[simp] theorem subst_reserve {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (reserve m) = reserve (Syn.subst σ m) := by simp [reserve,denominator,phaseDenominator,budget]
+ipra_subst reserve [denominator, phaseDenominator, budget]
 
 private theorem multiplier_bound : Γ ⊢[PRAAx] bounded (multiplier : PTm n) one one := by
   let a := ComplexLogarithmRemainder.neg (imaginaryCode : PTm n)

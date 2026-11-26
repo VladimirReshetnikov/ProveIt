@@ -16,13 +16,9 @@ and cancels the positive factor `k^d`.
 
 namespace LeanProofs.IPRA.Analysis.OdeGrowth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.DiscreteGronwall (growth)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

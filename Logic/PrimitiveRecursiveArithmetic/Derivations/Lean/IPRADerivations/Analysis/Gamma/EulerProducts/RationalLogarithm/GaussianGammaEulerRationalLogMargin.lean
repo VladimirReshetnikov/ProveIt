@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode re)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerVerticalProjection (projected_source)
@@ -31,10 +31,6 @@ open GaussianGammaReciprocalInverse (gammaF)
 open GaussianStirlingGammaLogarithm (arg gammaData gammaMargin gamma_lower_at)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper upper_of_radius upper_congr upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -45,14 +41,9 @@ def cutoff (a b : PTm n) : PTm n :=
 def source (N a b : PTm n) : Fm PTm n := GaussianStirlingGammaLogarithm.source a b ⋏ le (cutoff a b) N
 def inverseData (N a b : PTm n) : PTm n := eulerData (arg a) a b b N
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (cutoff a b) = cutoff (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [cutoff,margin,two]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    (source N a b).subst σ = source (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_inverseData {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (inverseData N a b) = inverseData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [inverseData,arg,eulerData,GaussianGammaEulerReciprocalInverse.eulerHeight]
+ipra_subst cutoff [margin, two]
+ipra_subst source
+ipra_subst inverseData [arg, eulerData, GaussianGammaEulerReciprocalInverse.eulerHeight]
 
 theorem margin_positive : Γ ⊢[PRAAx] le one (margin : PTm n) := by
   unfold margin

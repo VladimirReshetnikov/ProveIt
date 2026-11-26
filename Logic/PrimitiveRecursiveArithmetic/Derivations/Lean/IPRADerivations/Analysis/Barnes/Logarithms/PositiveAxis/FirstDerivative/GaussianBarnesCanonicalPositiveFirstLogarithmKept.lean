@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveFirstLogarithmKept
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDerivativeRow (offset)
 open GaussianBarnesCanonicalFactor (base)
 open GaussianBarnesCanonicalHeadCorrectionDerivative (slope)
@@ -33,9 +33,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalReciprocal (reciprocal qone)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qmul_zero_right qzero_add)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

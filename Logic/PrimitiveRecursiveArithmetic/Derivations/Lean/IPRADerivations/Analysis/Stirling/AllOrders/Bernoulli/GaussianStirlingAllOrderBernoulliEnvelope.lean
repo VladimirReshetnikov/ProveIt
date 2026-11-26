@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliEnvelope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderCenteredBernoulli
   (sample numerator denominator reflected_sample)
 open GaussianStirlingAllOrderBernoulliMeshOrder (sample_monotone sample_nonnegative_first_half)
@@ -20,10 +20,6 @@ open GaussianStirlingAllOrderBernoulliMeshRefinement (sample_refinement)
 open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalHorner (positive_product)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,9 +29,7 @@ private theorem subst_signed_sum {l d : ℕ} (σ : Fin n → PTm l) (f : Fin d �
   | zero => simp only [ZT.sumFin,ZT.subst_natLit]
   | succ d ih => simp only [ZT.sumFin,ZT.subst_add,ih]
 
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (p M : PTm n) :
-    Syn.subst σ (sample m p M) = sample m (Syn.subst σ p) (Syn.subst σ M) := by
-  simp [sample,numerator,denominator,BernoulliBounds.pv,BernoulliBounds.zint,subst_signed_sum,pw]
+ipra_subst sample [numerator, denominator, BernoulliBounds.pv, BernoulliBounds.zint, subst_signed_sum, pw]
 
 theorem sample_congr (m : ℕ) {p q M N : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q)
     (hM : Γ ⊢[PRAAx] M ≐ N) : Γ ⊢[PRAAx] sample m p M ≐ sample m q N := by
@@ -46,8 +40,7 @@ theorem sample_congr (m : ℕ) {p q M N : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q)
 /-- The exact upper endpoint attained by the centered profile. -/
 def cap (m : ℕ) : PTm n := sample (m+1) one two
 
-@[simp] theorem subst_cap {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) :
-    Syn.subst σ (cap m) = cap m := by simp [cap]
+ipra_subst cap
 
 theorem cap_nonnegative (m : ℕ) :
     Γ ⊢[PRAAx] rationalLE (fraction zero one) (cap m) :=

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaOriginalPrefixRegularity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaOriginalC19Prefix (buffer totalDegree prefixValue)
 open GaussianGammaOriginalPrefixCoefficientVariation (cap original_reader_distance)
 open GaussianGammaInputPrecisionNorm (radiusNumerator radiusDenominator denominator_positive)
@@ -29,9 +29,6 @@ open GaussianRationalSyntheticBounds (natCode)
 open GaussianGammaCanonicalExponent (source)
 open RationalArithmetic (multiply)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,21 +38,10 @@ def sourceTerm (q z R B d e : PTm n) : PTm n := GaussianOffDominantTerms.term
   (buffer q R d) (totalDegree q R d) (ofGaussian z B) e
 def termModulus (R d : PTm n) : PTm n := (two*two)*cap R d*pw R d
 def modulus (R d : PTm n) : PTm n := succ d*termModulus R d
-@[simp] theorem subst_termData {l : ℕ} (σ : Fin n → PTm l) (q z R B d : PTm n) :
-    Syn.subst σ (termData q z R B d) = termData (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by
-  simp [termData,buffer,totalDegree,GaussianGammaOriginalC19Prefix.stage,GaussianGammaCofinalCoefficientName.coefficientPrecision,
-    GaussianGammaCofinalCoefficientName.degreeCutoff,GaussianGammaCofinalCoefficientName.exponentialCutoff,
-    GaussianGammaCofinalCoefficientName.exponentClock,GaussianGammaCofinalCoefficientName.inputClock,GaussianGammaCofinalCoefficientName.outerClock]
-@[simp] theorem subst_sourceTerm {l : ℕ} (σ : Fin n → PTm l) (q z R B d e : PTm n) :
-    Syn.subst σ (sourceTerm q z R B d e) = sourceTerm (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ e) := by
-  simp [sourceTerm,buffer,totalDegree,GaussianGammaOriginalC19Prefix.stage,GaussianGammaCofinalCoefficientName.coefficientPrecision,
-    GaussianGammaCofinalCoefficientName.degreeCutoff,GaussianGammaCofinalCoefficientName.exponentialCutoff,
-    GaussianGammaCofinalCoefficientName.exponentClock,GaussianGammaCofinalCoefficientName.inputClock,GaussianGammaCofinalCoefficientName.outerClock]
-@[simp] theorem subst_termModulus {l : ℕ} (σ : Fin n → PTm l) (R d : PTm n) :
-    Syn.subst σ (termModulus R d) = termModulus (Syn.subst σ R) (Syn.subst σ d) := by simp [termModulus]
-@[simp] theorem subst_modulus {l : ℕ} (σ : Fin n → PTm l) (R d : PTm n) :
-    Syn.subst σ (modulus R d) = modulus (Syn.subst σ R) (Syn.subst σ d) := by simp [modulus]
+ipra_subst termData [buffer, totalDegree, GaussianGammaOriginalC19Prefix.stage, GaussianGammaCofinalCoefficientName.coefficientPrecision, GaussianGammaCofinalCoefficientName.degreeCutoff, GaussianGammaCofinalCoefficientName.exponentialCutoff, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst sourceTerm [buffer, totalDegree, GaussianGammaOriginalC19Prefix.stage, GaussianGammaCofinalCoefficientName.coefficientPrecision, GaussianGammaCofinalCoefficientName.degreeCutoff, GaussianGammaCofinalCoefficientName.exponentialCutoff, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst termModulus
+ipra_subst modulus
 
 theorem term_as_reader (q z R B d e : PTm n) (he : Γ ⊢[PRAAx] le e d) : Γ ⊢[PRAAx]
     sourceTerm q z R B d e ≐ qmul (exponentCoefficient (buffer q R d) (totalDegree q R d) e) (power (ofGaussian z B) e) :=

@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.StirlingPowers
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The falling factorial
@@ -22,16 +21,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FallingFactorial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (ffB ff ff_zero ff_succ congrFF)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom bden)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,13 +38,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 private abbrev mmF : Fm PTm 3 := monus (monus (var 1) (var 2)) (var 0) ≐ monus (var 1) (var 2 + var 0)
 
 private theorem mm₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] mmF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_monus, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (monus_zero _).eqTrans (congrMonus (.eqRefl _) (add_zero _)).eqSymm
-  · simp only [Fm.subst_eq, PTm.subst_monus, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (monus_succ _ _).eqTrans ((congrPred Prf.hyp0).eqTrans ?_)
+  ipra_ind
+  · exact (monus_zero _).eqTrans (congrMonus (.eqRefl _) (add_zero _)).eqSymm
+  · refine (monus_succ _ _).eqTrans ((congrPred Prf.hyp0).eqTrans ?_)
     exact (monus_succ _ _).eqSymm.eqTrans (congrMonus (.eqRefl _) (add_succ _ _).eqSymm)
 
 /-- `(X ∸ k) ∸ j = X ∸ (k + j)`. -/
@@ -72,13 +63,9 @@ theorem ff_add_step {X k j : PTm n} (ih : Γ ⊢[PRAAx] ff X (k + j) ≐ ff X k 
 private abbrev faF : Fm PTm 3 := ff (var 1) (var 2 + var 0) ≐ ff (var 1) (var 2) * ff (monus (var 1) (var 2)) (var 0)
 
 private theorem fa₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] faF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_monus, PTm.subst_add, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ff_add_base _ _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_monus, PTm.subst_add, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ff_add_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact ff_add_base _ _
+  · exact ff_add_step Prf.hyp0
 
 /-- `(X)_{k+j} = (X)_k (X ∸ k)_j`. -/
 theorem ff_add (X k j : PTm n) : Γ ⊢[PRAAx] ff X (k + j) ≐ ff X k * ff (monus X k) j := by
@@ -102,13 +89,9 @@ theorem ff_self_step {X : PTm n} (ih : Γ ⊢[PRAAx] ff X X ≐ fact X) :
 private abbrev fsF : Fm PTm 1 := ff (var 0) (var 0) ≐ fact (var 0)
 
 private theorem fs₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] fsF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact (ff_zero _).eqTrans (fact_zero _).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact ff_self_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact (ff_zero _).eqTrans (fact_zero _).eqSymm
+  · exact ff_self_step Prf.hyp0
 
 /-- `(X)_X = X!`. -/
 theorem ff_self (X : PTm n) : Γ ⊢[PRAAx] ff X X ≐ fact X := by

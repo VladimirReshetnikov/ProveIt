@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFactorBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters
   (initialA toleranceDenominator polynomial rootAt roots monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticBounds (coefficientBounds natCode)
@@ -28,15 +28,11 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (left)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Foundations.BoundedSyntax
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def stageBound (C N j : PTm n) : PTm n := GaussianFactorBudget.bound N (initialA C) j
-@[simp] theorem subst_stageBound {m : ℕ} (σ : Fin n → PTm m) (C N j : PTm n) :
-    Syn.subst σ (stageBound C N j) = stageBound (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ j) := by simp [stageBound]
+ipra_subst stageBound
 
 theorem bounds_congr {C D A B : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hA : Γ ⊢[PRAAx] A ≐ B)
     (h : Γ ⊢[PRAAx] coefficientBounds C A) : Γ ⊢[PRAAx] coefficientBounds D B := by
@@ -83,9 +79,7 @@ theorem coefficient_step (step : PR 3) (C N p q j : PTm n)
 def invariant (step : PR 3) (C N p q j : PTm n) : Fm PTm n :=
   le j N ⟶ coefficientBounds (polynomial step C N p q j) (stageBound C N j)
 
-@[simp] theorem subst_invariant {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q j : PTm n) :
-    (invariant step C N p q j).subst σ = invariant step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by simp [invariant]
+ipra_subst invariant
 
 def coefficientSyntax (C A : PTm n) : BFm n := .all (length C) (.le
   (left (qL1 (entry (Syn.shift C) (var 0))) (natCode (Syn.shift A)))

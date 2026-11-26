@@ -1,7 +1,6 @@
 import IPRADerivations.Topology.DimensionRational
 import IPRADerivations.Foundations.DigitCodes
 import IPRADerivations.Foundations.LeastBoundedWitness
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite witness alternative (`dimension_invariance_ipra`, `thm:alternative`)
@@ -139,8 +138,7 @@ def searchII (κ : Perm (Fin (d' + 1)) × Fin (d' + 2) × Fin (d' + 2) × Fin m)
       fBodyII d' m P Q R hn hd π s t j (Syn.subst σ a) (Syn.subst σ b) := by
   simp [fBodyII]
 
-@[simp] theorem subst_P1 {k : ℕ} (σ : Fin n → PTm k) (b : PTm n) : Syn.subst σ (P1 b) = P1 (Syn.subst σ b) := by
-  simp [P1]
+ipra_subst P1
 
 @[simp] theorem subst_BI {k : ℕ} (σ : Fin n → PTm k) (b : PTm n) :
     Syn.subst σ (BI d' b) = BI d' (Syn.subst σ b) := by simp [BI]

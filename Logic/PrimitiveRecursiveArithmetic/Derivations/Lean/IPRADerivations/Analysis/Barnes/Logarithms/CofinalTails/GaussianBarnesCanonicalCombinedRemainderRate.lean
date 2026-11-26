@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCombinedRemainderRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCombinedRemainder (nameF data regular sample_error)
 open GaussianBarnesCanonicalTerminalRemainder (source)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -25,10 +25,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded)
 open GaussianRationalSyntheticDivision (qone)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalEliminationZeroColumn
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialDeterminantTerms (cell)
 open GaussianRationalHorner (qzero)
 open GaussianRationalPivotSearch (flag selected next next_success next_failure flag_cases)
@@ -22,8 +22,6 @@ open GaussianRationalSyntheticCoefficientValues (qadd_recode_left qmul_recode_ri
 open GaussianTranslatedNonconstant (recode recode_congr recode_eq recode_canonical)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel_one)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

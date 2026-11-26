@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Integration.RiemannRefinement
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.BlockSum
-import IPRADerivations.Core.OrderCertificates
 
 /-!
 # The finite-grid integral under a uniform continuity modulus
@@ -30,14 +29,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GridIntegral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RiemannRefinement (fine_succ fine_zero shift_le')
 open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.BlockSum (qr_block)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -135,16 +130,11 @@ theorem cell_dn {F C : PTm 2} {x N R e c : PTm n} (h : Γ ⊢[PRAAx] CellDn F C 
     Γ ⊢[PRAAx] DnInv F C c R x e R := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift R) ⟶
       DnInv F C (Syn.shift c) (Syn.shift R) (Syn.shift x) (Syn.shift e) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT, subst_inst2]
+    · refine .impI ?_
       have z := natEq (sum_zero (Γ := le zero R :: Γ) (offB F) (pairT (c * R) x))
       ipra_le 0 using rw [z]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift R) ::
           (le (var 0) (Syn.shift R) ⟶
             DnInv F C (Syn.shift c) (Syn.shift R) (Syn.shift x) (Syn.shift e) (var 0)) :: Γ.map Fm.shift
@@ -189,16 +179,12 @@ theorem grid_upper {F C : PTm 2} {x N R e : PTm n} (h : Γ ⊢[PRAAx] CellUp F C
     (hR : Γ ⊢[PRAAx] R ≐ succ (pred R)) : Γ ⊢[PRAAx] UpInv F C x R e N := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       UpInv F C (Syn.shift x) (Syn.shift R) (Syn.shift e) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       have z1 := natEq (fine_zero (Γ := le zero N :: Γ) F R x)
       have z2 := natEq (sum_zero (Γ := le zero N :: Γ) C x)
       ipra_le 0 using rw [z1, z2]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶ UpInv F C (Syn.shift x) (Syn.shift R) (Syn.shift e) (var 0)) ::
           Γ.map Fm.shift
@@ -227,16 +213,12 @@ theorem grid_lower {F C : PTm 2} {x N R e : PTm n} (h : Γ ⊢[PRAAx] CellDn F C
     (hR : Γ ⊢[PRAAx] R ≐ succ (pred R)) : Γ ⊢[PRAAx] LoInv F C x R e N := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       LoInv F C (Syn.shift x) (Syn.shift R) (Syn.shift e) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       have z1 := natEq (fine_zero (Γ := le zero N :: Γ) F R x)
       have z2 := natEq (sum_zero (Γ := le zero N :: Γ) C x)
       ipra_le 0 using rw [z1, z2]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶ LoInv F C (Syn.shift x) (Syn.shift R) (Syn.shift e) (var 0)) ::
           Γ.map Fm.shift

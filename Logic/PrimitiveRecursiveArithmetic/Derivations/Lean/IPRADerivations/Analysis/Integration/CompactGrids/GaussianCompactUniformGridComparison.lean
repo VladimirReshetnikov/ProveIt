@@ -16,16 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactUniformGridComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (quadrature sampledModulus)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,17 +36,10 @@ def denominator (p q N H E : PTm n) : PTm n := E*E*N*H*unit p*unit q
 def leftNumerator (p q N H C E L : PTm n) : PTm n := L*C*C*H*unit p*unit q+two*C*E*N*H*unit q
 def rightNumerator (p q N H C E L : PTm n) : PTm n := L*C*C*N*unit p*unit q+two*C*E*N*H*unit p
 
-@[simp] theorem subst_sharedPrecision {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (sharedPrecision p q) = sharedPrecision (Syn.subst σ p) (Syn.subst σ q) := by simp [sharedPrecision]
-@[simp] theorem subst_common {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p q N H a C E x : PTm n) :
-    Syn.subst σ (common F p q N H a C E x) = common F (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ N)
-      (Syn.subst σ H) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by simp [common]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q N H C E L : PTm n) :
-    Syn.subst σ (numerator p q N H C E L) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ N)
-      (Syn.subst σ H) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ L) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q N H E : PTm n) :
-    Syn.subst σ (denominator p q N H E) = denominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ N)
-      (Syn.subst σ H) (Syn.subst σ E) := by simp [denominator]
+ipra_subst sharedPrecision
+ipra_subst common
+ipra_subst numerator
+ipra_subst denominator
 
 theorem denominator_positive (p q N H E : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (hN : Γ ⊢[PRAAx] le one N) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx] le one (denominator p q N H E) :=

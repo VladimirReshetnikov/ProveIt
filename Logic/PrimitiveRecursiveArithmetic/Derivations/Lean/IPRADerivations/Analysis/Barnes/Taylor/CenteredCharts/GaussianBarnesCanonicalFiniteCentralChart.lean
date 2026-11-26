@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteCentralChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFiniteCentralExponential (prefixExpData prefix_exp_regular finiteNameF finiteData)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogCofinalRate (initial_source)
@@ -24,8 +24,6 @@ open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaInputProperness (code_data_cross)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalHorner (ofGaussian)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalCover (hit cover close hit_intro)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -94,10 +91,8 @@ theorem lower_upper (z w S T k l A B C D : PTm n)
 def sampleNumerator (C D m l : PTm n) : PTm n := C*unit m*unit l+D*(unit m+unit l)
 def sampleDenominator (D m l : PTm n) : PTm n := D*(unit m*unit l)
 
-@[simp] theorem subst_sampleNumerator {v : ℕ} (σ : Fin n → PTm v) (C D m l : PTm n) :
-    Syn.subst σ (sampleNumerator C D m l) = sampleNumerator (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ m) (Syn.subst σ l) := by simp [sampleNumerator]
-@[simp] theorem subst_sampleDenominator {v : ℕ} (σ : Fin n → PTm v) (D m l : PTm n) :
-    Syn.subst σ (sampleDenominator D m l) = sampleDenominator (Syn.subst σ D) (Syn.subst σ m) (Syn.subst σ l) := by simp [sampleDenominator]
+ipra_subst sampleNumerator
+ipra_subst sampleDenominator
 
 theorem sample_denominator_positive (D m l : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     le one (sampleDenominator D m l) := positive_product _ _ hD (positive_product _ _ (unit_positive _) (unit_positive _))
@@ -153,16 +148,8 @@ def output (point : PR 2) (S T x m l C D : PTm n) : PTm n :=
 def outputF (point : PR 2) : PR 7 := PTm.toPR (output point (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (point : PR 2) (S T x m l C D : PTm n) : PTm n := PTm.app (outputF point) ![S,T,x,m,l,C,D]
 
-@[simp] theorem subst_output {v : ℕ} (σ : Fin n → PTm v) (point : PR 2) (S T x m l C D : PTm n) :
-    Syn.subst σ (output point S T x m l C D) = output point (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ x)
-      (Syn.subst σ m) (Syn.subst σ l) (Syn.subst σ C) (Syn.subst σ D) := by simp [output]
-@[simp] theorem subst_run {v : ℕ} (σ : Fin n → PTm v) (point : PR 2) (S T x m l C D : PTm n) :
-    Syn.subst σ (run point S T x m l C D) = run point (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ x)
-      (Syn.subst σ m) (Syn.subst σ l) (Syn.subst σ C) (Syn.subst σ D) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (point : PR 2) (S T x m l C D : PTm n) : Γ ⊢[PRAAx]
     run point S T x m l C D ≐ output point S T x m l C D := by
@@ -171,16 +158,16 @@ theorem program_at (point : PR 2) (S T x m l C D : PTm n) : Γ ⊢[PRAAx]
 
 theorem output_left (point : PR 2) (S T x m l C D : PTm n) : Γ ⊢[PRAAx]
     fstT (run point S T x m l C D) ≐ distanceSample point T x m :=
-  (congrFst (program_at point S T x m l C D)).eqTrans (fst_pair _ _)
+  (program_at point S T x m l C D).fstE
 theorem output_right (point : PR 2) (S T x m l C D : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run point S T x m l C D)) ≐ distanceSample point S x l :=
-  (congrFst ((congrSnd (program_at point S T x m l C D)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at point S T x m l C D).sndE.fstE
 theorem output_numerator (point : PR 2) (S T x m l C D : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run point S T x m l C D))) ≐ sampleNumerator C D m l :=
-  (congrFst ((congrSnd ((congrSnd (program_at point S T x m l C D)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at point S T x m l C D).sndE.sndE.fstE
 theorem output_denominator (point : PR 2) (S T x m l C D : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run point S T x m l C D))) ≐ sampleDenominator D m l :=
-  (congrSnd ((congrSnd ((congrSnd (program_at point S T x m l C D)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at point S T x m l C D).sndE.sndE.sndE
 
 theorem program_certificate (point : PR 2) (S T x m l C D : PTm n)
     (hCN : Γ ⊢[PRAAx] pointCN point x) (hS : Γ ⊢[PRAAx] le one (length S))

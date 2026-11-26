@@ -13,8 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexCoarseIntervalBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters (midpoint)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
 open RationalValueBounds (upper upper_mono upper_order_right)
@@ -22,8 +21,6 @@ open RationalConvexEndpointBudget (coarseCeiling coarseBudget original_observati
 open RationalConvexSecantWeights (leftPoint rightPoint)
 open RationalNestedIntervals (regular read center centerF center_at step_at nesting)
 open GaussianRationalSyntheticBounds (natCode natCode_add)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

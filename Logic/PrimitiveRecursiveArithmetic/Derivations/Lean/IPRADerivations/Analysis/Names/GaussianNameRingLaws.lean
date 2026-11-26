@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNameRingLaws
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qadd qmul qzero canonical positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (qone)
@@ -29,9 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianNameArithmetic
   (addF multiplyF addData multiplyData multiplyModulus addRawF multiplyRawF)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder
   (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -237,11 +234,7 @@ def multiplyAssociativeBudget (f g h : PR 2) (x y z : PTm n) : PTm n :=
   (multiplyModulus f (multiplyF g h) x (multiplyData g h y z)+one+
     GaussianNameBounds.U f x*(multiplyModulus g h y z+one))
 
-@[simp] theorem subst_multiplyAssociativeBudget {m : ℕ} (σ : Fin n → PTm m)
-    (f g h : PR 2) (x y z : PTm n) :
-    Syn.subst σ (multiplyAssociativeBudget f g h x y z) =
-      multiplyAssociativeBudget f g h (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp [multiplyAssociativeBudget]
+ipra_subst multiplyAssociativeBudget
 
 theorem multiply_associative_at (f g h : PR 2) (x y z k : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)
@@ -293,11 +286,7 @@ def distributiveBudget (f g h : PR 2) (x y z : PTm n) : PTm n :=
   (multiplyModulus f (addF g h) x (addData y z)+one+GaussianNameBounds.U f x*three)+
     (three+((multiplyModulus f g x y+one)+(multiplyModulus f h x z+one)))
 
-@[simp] theorem subst_distributiveBudget {m : ℕ} (σ : Fin n → PTm m)
-    (f g h : PR 2) (x y z : PTm n) :
-    Syn.subst σ (distributiveBudget f g h x y z) =
-      distributiveBudget f g h (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp [distributiveBudget,three]
+ipra_subst distributiveBudget [three]
 
 theorem distributive_at (f g h : PR 2) (x y z k : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)
@@ -447,8 +436,7 @@ theorem multiply_one (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) : �
 def negativeRawF (f : PR 2) : PR 2 := GaussianFastValueCut.differenceF zeroF f
 def negativeF (f : PR 2) : PR 2 := GaussianFastValueCut.nameF (negativeRawF f)
 def negativeData (x : PTm n) : PTm n := GaussianFastValueCut.nameData (one+one) x
-@[simp] theorem subst_negativeData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (negativeData x) = negativeData (Syn.subst σ x) := by simp [negativeData]
+ipra_subst negativeData
 
 theorem negative_raw_at (f : PR 2) (x k : PTm n) : Γ ⊢[PRAAx]
     ap2 (negativeRawF f) k x ≐ qsub qzero (ap2 f k x) :=
@@ -554,9 +542,7 @@ theorem negative_equivalent (f g : PR 2) (x y : PTm n)
 
 def tripleInput (f g h : PR 2) (x y z : PTm n) : Fm PTm n :=
   pointCN f x ⋏ (pointCN g y ⋏ pointCN h z)
-@[simp] theorem subst_tripleInput {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (x y z : PTm n) :
-    (tripleInput f g h x y z).subst σ = tripleInput f g h (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp [tripleInput]
+ipra_subst tripleInput
 
 theorem normalized_observation_error_closed (f : PR 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (GaussianFastValueCut.regular f (var 0) (var 1) ⟶

@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Combinatorics.CoefficientLogConcave
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rational volume cut
@@ -33,14 +32,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.RationalCut
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.CoefficientLogConcave (inst2_mul inst2_monus inst2_ap2)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_intro ex_elim ex_least)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

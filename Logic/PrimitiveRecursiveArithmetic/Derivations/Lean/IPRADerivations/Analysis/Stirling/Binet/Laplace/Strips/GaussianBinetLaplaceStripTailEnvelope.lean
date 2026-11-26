@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripTailEnvelope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceStrip (source nameF data)
 open GaussianBinetLaplaceStripTail (envelope tailNumerator tailDenominator named_tail_bound)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -25,10 +25,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianReconstructionRoots (norm_from_distance)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

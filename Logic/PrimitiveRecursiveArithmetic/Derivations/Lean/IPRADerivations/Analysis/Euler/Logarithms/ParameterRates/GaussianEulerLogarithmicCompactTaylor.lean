@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCompactTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicTaylorGrid (source perturbedClient baseClient linearClient rowNumerator rowDenominator)
 open GaussianEulerParameterExponentialIncrement (shifted)
 open GaussianEulerLogarithmicParameterIncrement (curvature)
@@ -28,10 +28,6 @@ open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalHorner (ofGaussian qadd qmul positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -47,13 +43,8 @@ def diagonalNumerator (p j R C E T X Y : PTm n) : PTm n :=
   quadraticNumerator j R C E T X*unit (p+num 6)+num 12*quadraticDenominator E Y
 def diagonalDenominator (p E Y : PTm n) : PTm n := quadraticDenominator E Y*unit (p+num 6)
 
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (p j z R B a C E T : PTm n) :
-    Syn.subst σ (point p j z R B a C E T) = point (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [point]
-@[simp] theorem subst_actualLinear {m : ℕ} (σ : Fin n → PTm m) (q r j z R B a C E T h D : PTm n) :
-    Syn.subst σ (actualLinear q r j z R B a C E T h D) = actualLinear (Syn.subst σ q) (Syn.subst σ r)
-      (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ h) (Syn.subst σ D) := by simp [actualLinear]
+ipra_subst point
+ipra_subst actualLinear
 
 theorem parameter_source (z R B a C E T h D X Y : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B a C E T h D X Y) : Γ ⊢[PRAAx]

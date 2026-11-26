@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalRecurrenceObservations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_triangle_same)
 open GaussianRationalNaturalScale (natScale)
@@ -26,18 +26,13 @@ open GaussianGammaHigherCoefficientName (sample)
 open GaussianGammaRecurrenceSourceObservations (cap denominator_positive sourceSum)
 open GaussianGammaCanonicalRecurrenceTerms (canonicalSum queryFactor sourceFactor termNumerator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def numerator (p q s : PTm n) : PTm n := s*unit q+succ s*queryFactor (succ s)*unit p
 def slackCost (s : PTm n) : PTm n := s*cap (succ s)+succ s*sourceFactor (succ s)
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (p q s : PTm n) :
-    Syn.subst σ (numerator p q s) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ s) := by simp [numerator]
-@[simp] theorem subst_slackCost {l : ℕ} (σ : Fin n → PTm l) (s : PTm n) :
-    Syn.subst σ (slackCost s) = slackCost (Syn.subst σ s) := by simp [slackCost]
+ipra_subst numerator
+ipra_subst slackCost
 
 theorem original_source_slack (p q t s : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (natScale s (sample p (succ s))) (canonicalSum q (succ s)))

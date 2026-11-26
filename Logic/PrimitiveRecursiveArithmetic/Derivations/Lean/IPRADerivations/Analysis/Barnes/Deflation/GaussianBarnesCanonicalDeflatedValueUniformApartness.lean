@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDeflatedValueUniformApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFactor (source)
 open GaussianBarnesCanonicalDeflatedHead (neighborhood)
 open GaussianBarnesCanonicalDeflatedValue (nameF data factorizedF factorizedData regular original_factorization
@@ -25,8 +25,6 @@ open GaussianNameArithmetic (multiply_fast)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNameReciprocal (apart anchor lower)
 open GaussianNamedProductApartness (late_lower)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

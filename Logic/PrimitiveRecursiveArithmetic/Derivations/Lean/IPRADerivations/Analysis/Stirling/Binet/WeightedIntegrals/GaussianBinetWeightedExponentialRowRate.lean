@@ -15,7 +15,7 @@ set_option maxHeartbeats 620000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedExponentialRowRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetWeightedExponentialAlgebra (tagWeight)
 open GaussianBinetWeightedExponentialGrid (rowValue zero_observation)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -30,10 +30,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_negative qone_bounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -41,12 +37,8 @@ local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 def gain (T : PTm n) : PTm n := two*(factor T*T)+num 3
 def numerator (p q T H D : PTm n) : PTm n := gain T*H*unit p*unit q+two*D*(unit p+unit q)
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (T : PTm n) :
-    Syn.subst σ (gain T) = gain (Syn.subst σ T) := by simp [gain,two]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q T H D : PTm n) :
-    Syn.subst σ (numerator p q T H D) =
-      numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ D) := by
-  simp [numerator,two]
+ipra_subst gain [two]
+ipra_subst numerator [two]
 
 private theorem weight_bound (i I : PTm n) (hI : Γ ⊢[PRAAx] le one I) (hi : Γ ⊢[PRAAx] le i I) :
     Γ ⊢[PRAAx] bounded (tagWeight i I) two one := by

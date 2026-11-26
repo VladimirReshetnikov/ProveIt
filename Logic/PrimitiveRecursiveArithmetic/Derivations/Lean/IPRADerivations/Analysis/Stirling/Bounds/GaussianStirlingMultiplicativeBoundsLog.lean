@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsLog
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -24,10 +24,6 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalGaussianEmbedding (embed)
 open RationalHarmonicInterval (horizon common numerator interval left_horizon)
 open RationalValueBounds (upper upper_congr upper_of_order upper_of_radius upper_order_left upper_order_right radius_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

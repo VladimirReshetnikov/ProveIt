@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialLowPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalReciprocal (power powerF)
@@ -22,27 +22,21 @@ open GaussianRationalPolynomialDilation (dilated)
 open GaussianRationalPowerExpansion (partialSum)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def data (C N d : PTm n) : PTm n := pairT C (pairT N d)
 def body : PTm 2 := entry (fstT (var 1)) (monus (fstT (sndT (var 1))) (monus (sndT (sndT (var 1))) (var 0)))
 def polynomial (C N d : PTm n) : PTm n := sequence body (succ d) (data C N d)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (C N d : PTm n) :
-    Syn.subst σ (data C N d) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ d) := by simp [data]
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (C N d : PTm n) :
-    Syn.subst σ (polynomial C N d) = polynomial (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ d) := by simp [polynomial]
+ipra_subst data
+ipra_subst polynomial
 
 theorem body_at (C N d i : PTm n) : Γ ⊢[PRAAx]
     inst2 body i (data C N d) ≐ entry C (monus N (monus d i)) := by
   simp only [body,inst2,Foundations.MasterCertificate.subst_entry,PTm.subst_monus,
     subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact entry_congr (fst_pair _ _) (congrMonus ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    (congrMonus ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)))
+  exact entry_congr (fst_pair _ _) (congrMonus (snd_pair _ _).fstE
+    (congrMonus (snd_pair _ _).sndE (.eqRefl _)))
 theorem polynomial_length (C N d : PTm n) : Γ ⊢[PRAAx] length (polynomial C N d) ≐ succ d := sequence_length _ _ _
 theorem polynomial_lookup (C N d i : PTm n) (hi : Γ ⊢[PRAAx] le i d) : Γ ⊢[PRAAx]
     entry (polynomial C N d) i ≐ entry C (monus N (monus d i)) :=

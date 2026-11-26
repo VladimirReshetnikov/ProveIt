@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesGlaisherSuccessor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesGlaisherFinite (nameF data sumData squareQuarter)
 open GaussianBarnesGlaisherQuartic (negativeWeight correction)
 open GaussianBarnesGlaisherIncrement (cube cube_positive)
@@ -32,9 +32,6 @@ open GaussianNamedGammaHalfShift (add_cross constant_sum)
 open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianPositiveRationalLogarithm (baseF logF)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

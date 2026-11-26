@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorRetainedCoefficient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open GaussianBarnesCanonicalExponentTaylorBuffer (buffer)
 open GaussianBarnesCanonicalExponentTaylorCoefficientCauchy
@@ -29,10 +29,6 @@ open GaussianFastValueCut (exponent query_budget)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D₁" => GaussianBarnesCanonicalDerivativeRow.boundNumerator

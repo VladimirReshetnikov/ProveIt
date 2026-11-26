@@ -17,7 +17,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReflectionSine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale mul normSq oneCode)
 open GaussianArctangentCayleyValues (imaginaryCode imaginaryPoint)
 open GaussianArctangentExponentialPeriod (fullTurnRadius full_turn_at twiceImaginary)
@@ -47,8 +47,6 @@ open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRootAlgebra (equal equal_of_values equal_refl equal_trans equal_symm re_scale im_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaHalfPiName.nameF
@@ -114,8 +112,7 @@ theorem reflection_input (r m x : PTm n) : Γ ⊢[PRAAx]
 def budget (r m x : PTm n) : PTm n :=
   two+(multiplyModulus P constantF x (ofGaussian (argument r) m)+one)
 
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (r m x : PTm n) :
-    Syn.subst σ (budget r m x) = budget (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by simp [budget,two,one]
+ipra_subst budget [two, one]
 
 private theorem reflection_approximation (p r m x : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (imaginaryF argumentF) p (argumentData (argument r) m x))

@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCofinalDegreeTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalTailName (source point)
 open GaussianGammaFixedDegreeHorizon (observation)
 open GaussianRationalHorner (positive_product)
@@ -26,15 +26,11 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate denominator_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def rateDen (N L : PTm n) : PTm n := N*unit (succ L)
-@[simp] theorem subst_rateDen {m : ℕ} (σ : Fin n → PTm m) (N L : PTm n) :
-    Syn.subst σ (rateDen N L) = rateDen (Syn.subst σ N) (Syn.subst σ L) := by simp [rateDen]
+ipra_subst rateDen
 theorem rate_den_positive (N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] le one (rateDen N L) :=
   positive_product _ _ hN (unit_positive _)
 

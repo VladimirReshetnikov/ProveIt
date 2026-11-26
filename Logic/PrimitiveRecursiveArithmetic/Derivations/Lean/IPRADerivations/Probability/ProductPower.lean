@@ -3,7 +3,6 @@ import IPRADerivations.Probability.Expectation
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The iterated product law and the sample variance
@@ -29,14 +28,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.ProductPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.BlockSum (qr_block)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -111,9 +106,9 @@ theorem dB_at (f : PTm 2) (j t M x : PTm n) :
       inst2 f (dg (fstT (sndT (pairT t (pairT M x)))) j (fstT (pairT t (pairT M x)))) (sndT (sndT (pairT t (pairT M x)))) := by
     simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
   rw [e]
-  have hM : Γ ⊢[PRAAx] fstT (sndT (pairT t (pairT M x))) ≐ M := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  have hM : Γ ⊢[PRAAx] fstT (sndT (pairT t (pairT M x))) ≐ M := (snd_pair _ _).fstE
   have ht : Γ ⊢[PRAAx] fstT (pairT t (pairT M x)) ≐ t := fst_pair _ _
-  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT t (pairT M x))) ≐ x := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT t (pairT M x))) ≐ x := (snd_pair _ _).sndE
   exact congrInst2 f (congrAp2 remF (congrAp2 quoF ht (Combinatorics.BinomialTheorem.congrPw hM (.eqRefl _))) hM) hx
 
 /-- The low digits do not see the top coordinate: `∏_{j<r} w(dg_j(a M^r + u)) = P_r(u)`, and the same for the
@@ -238,7 +233,7 @@ theorem A1_at (v K₁ K₂ K₃ p : PTm n) :
       fstT (fstT (pairT (pairT K₁ (pairT K₂ K₃)) p)) * inst2 f₁ v (sndT (pairT (pairT K₁ (pairT K₂ K₃)) p)) := by
     simp only [inst2, A1, PTm.subst_mul, inst2_sbp, subst_fstT]; simp
   rw [e]
-  exact congrMul ((congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)) (congrInst2 f₁ (.eqRefl _) (snd_pair _ _))
+  exact congrMul (fst_pair _ _).fstE (congrInst2 f₁ (.eqRefl _) (snd_pair _ _))
 
 theorem A2_at (v K₁ K₂ K₃ p : PTm n) :
     Γ ⊢[PRAAx] inst2 (A2 f₂) v (pairT (pairT K₁ (pairT K₂ K₃)) p) ≐ K₂ * inst2 f₂ v p := by
@@ -246,7 +241,7 @@ theorem A2_at (v K₁ K₂ K₃ p : PTm n) :
       fstT (sndT (fstT (pairT (pairT K₁ (pairT K₂ K₃)) p))) * inst2 f₂ v (sndT (pairT (pairT K₁ (pairT K₂ K₃)) p)) := by
     simp only [inst2, A2, PTm.subst_mul, inst2_sbp, subst_fstT, subst_sndT]; simp
   rw [e]
-  exact congrMul ((congrFst ((congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _))
+  exact congrMul (fst_pair _ _).sndE.fstE
     (congrInst2 f₂ (.eqRefl _) (snd_pair _ _))
 
 theorem A3_at (v K₁ K₂ K₃ p : PTm n) :
@@ -255,7 +250,7 @@ theorem A3_at (v K₁ K₂ K₃ p : PTm n) :
       sndT (sndT (fstT (pairT (pairT K₁ (pairT K₂ K₃)) p))) * inst2 f₃ v (sndT (pairT (pairT K₁ (pairT K₂ K₃)) p)) := by
     simp only [inst2, A3, PTm.subst_mul, inst2_sbp, subst_fstT, subst_sndT]; simp
   rw [e]
-  exact congrMul ((congrSnd ((congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))
+  exact congrMul (fst_pair _ _).sndE.sndE
     (congrInst2 f₃ (.eqRefl _) (snd_pair _ _))
 
 /-- `∑_{v<N} G(v) = K₁ ∑ f₁ + K₂ ∑ f₂ + K₃ ∑ f₃` when `G = K₁ f₁ + K₂ f₂ + K₃ f₃` pointwise. -/
@@ -445,17 +440,13 @@ theorem sample_moments {M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (r
           r * ap2 (sumF w) M x * ap2 (sumF (w * (X * X))) M x * (Tt w r M x * Tt w r M x)) := by
   have hM' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by simpa [Fm.shift, Syn.shift] using hM.shift
   have hall : Γ ⊢[PRAAx] Fm.all (invF w X M x) := by
-    refine PRA.qfInd _ ⟨trivial, trivial⟩ ?_ ?_
-    · simp only [invF, Tt, At, Bt, Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      have a := natEq (at_zero (Γ := Γ) w X M x); have b := natEq (bt_zero (Γ := Γ) w X M x)
+    ipra_qfind (⟨trivial, trivial⟩) [invF, Tt, At, Bt, subst_ap2, subst_pairT]
+    · have a := natEq (at_zero (Γ := Γ) w X M x); have b := natEq (bt_zero (Γ := Γ) w X M x)
       refine .andI ?_ ?_ <;> (apply deriveNat; ipra_simps)
       · linear_combination 𝔞 (ap2 (sumF w) M x) * a
       · linear_combination (𝔞 (ap2 (sumF w) M x) * 𝔞 (ap2 (sumF w) M x) * 𝔞 (Tt w zero M x)) * b -
           (𝔞 (ap2 (sumF w) M x) * 𝔞 (ap2 (sumF w) M x)) * (𝔞 (At w X zero M x) + 0) * a
-    · simp only [invF, Tt, At, Bt, Fm.subst_and, Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let D : List (Fm PTm (n + 1)) := invF w X M x :: Γ.map Fm.shift
+    · let D : List (Fm PTm (n + 1)) := invF w X M x :: Γ.map Fm.shift
       have tS := total_succ (Γ := D) w (r := var 0) (x := Syn.shift x) hM'.wk
       have aS := A_succ (Γ := D) w X (r := var 0) (x := Syn.shift x) hM'.wk
       have bS := B_succ (Γ := D) w X (r := var 0) (x := Syn.shift x) hM'.wk
@@ -476,13 +467,9 @@ theorem total_pow {M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (r : PT
   have hM' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by simpa [Fm.shift, Syn.shift] using hM.shift
   have hall : Γ ⊢[PRAAx] Fm.all (Tt w (var 0) (Syn.shift M) (Syn.shift x) ≐
       pw (ap2 (sumF w) (Syn.shift M) (Syn.shift x)) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Tt, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      exact (tt_zero w M x).eqTrans (pw_zero _).eqSymm
-    · simp only [Tt, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact (total_succ w (r := var 0) (x := Syn.shift x) hM'.wk).eqTrans
+    ipra_qfind [Tt, subst_ap2, subst_pairT]
+    · exact (tt_zero w M x).eqTrans (pw_zero _).eqSymm
+    · exact (total_succ w (r := var 0) (x := Syn.shift x) hM'.wk).eqTrans
         ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (pw_succ _ _).eqSymm)
   have h := Prf.allE r hall
   simp only [Tt, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,

@@ -15,7 +15,7 @@ set_option maxHeartbeats 2100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeProductDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHeadShift (linear)
 open GaussianGammaLocalPoleGuards (center translation_at_center)
 open GaussianGammaPoleFiniteFactors (difference differenceBody differenceProduct difference_succ reverse_rising)
@@ -28,9 +28,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalPowerDifference (product_difference)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qsub_congr qmul_zero_right)
 open GaussianReciprocalHorner (qmul_associative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,17 +45,9 @@ def dividedDifference (h w b j : PTm n) : PTm n :=
 
 def firstCoefficient (h b j : PTm n) : PTm n := dividedDifference h h b j
 
-@[simp] theorem subst_prefixDifference {m : ℕ} (σ : Fin n → PTm m) (h w b j : PTm n) :
-    Syn.subst σ (prefixDifference h w b j) =
-      prefixDifference (Syn.subst σ h) (Syn.subst σ w) (Syn.subst σ b) (Syn.subst σ j) := by
-  simp [prefixDifference]
-@[simp] theorem subst_dividedDifference {m : ℕ} (σ : Fin n → PTm m) (h w b j : PTm n) :
-    Syn.subst σ (dividedDifference h w b j) =
-      dividedDifference (Syn.subst σ h) (Syn.subst σ w) (Syn.subst σ b) (Syn.subst σ j) := by
-  simp [dividedDifference]
-@[simp] theorem subst_firstCoefficient {m : ℕ} (σ : Fin n → PTm m) (h b j : PTm n) :
-    Syn.subst σ (firstCoefficient h b j) = firstCoefficient (Syn.subst σ h) (Syn.subst σ b) (Syn.subst σ j) := by
-  simp [firstCoefficient]
+ipra_subst prefixDifference
+ipra_subst dividedDifference
+ipra_subst firstCoefficient
 
 private theorem factor_congr {h w b c j : PTm n} (hh : Γ ⊢[PRAAx] h ≐ w) (hb : Γ ⊢[PRAAx] b ≐ c) :
     Γ ⊢[PRAAx] difference h b j ≐ difference w c j := by
@@ -125,9 +114,7 @@ def prefixLaw (h w b j : PTm n) : Fm PTm n :=
   qsub (differenceProduct w b j) (differenceProduct h b j) ≐
     qmul (qsub (ofGaussian w b) (ofGaussian h b)) (prefixDifference h w b j)
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (h w b j : PTm n) :
-    (prefixLaw h w b j).subst σ = prefixLaw (Syn.subst σ h) (Syn.subst σ w) (Syn.subst σ b) (Syn.subst σ j) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 private theorem gap_zero (h w b : PTm n) : Γ ⊢[PRAAx] prefixLaw h w b zero :=
   ((qsub_congr (difference_product_zero w b) (difference_product_zero h b)).eqTrans

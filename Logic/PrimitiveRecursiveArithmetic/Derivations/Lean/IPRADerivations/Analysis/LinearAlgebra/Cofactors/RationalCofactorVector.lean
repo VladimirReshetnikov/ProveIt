@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorMinorBounds
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual bounded signed cofactor vector
@@ -15,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofactorVector
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_neg)
@@ -30,8 +28,6 @@ open RationalCofactorMinorBounds (bound minorValue cofactor_minor_bound free_min
 open RationalMaximalMinors (rank bestColumn bestRow)
 open RationalArithmetic (select select_zero select_one)
 open RationalMatrixClearingBounds (inputMatrix)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,12 +47,9 @@ def vector (P d : PTm n) : PTm n := sequence coefficientBody d (pairT P d)
 def vectorF : PR 2 := PTm.toPR (vector (var 0) (var 1))
 def run (P d : PTm n) : PTm n := ap2 vectorF P d
 
-@[simp] theorem subst_coefficientCode {k : ℕ} (σ : Fin n → PTm k) (P d j : PTm n) :
-    Syn.subst σ (coefficientCode P d j) = coefficientCode (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ j) := by
-  simp [coefficientCode,signedCode,integerPair,unsignedEntry,positionParity,minorValue,RationalSupMetric.numeratorOf,rem,two,one]
+ipra_subst coefficientCode [signedCode, integerPair, unsignedEntry, positionParity, minorValue, RationalSupMetric.numeratorOf, rem, two, one]
 
-@[simp] theorem subst_vector {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (vector P d) = vector (Syn.subst σ P) (Syn.subst σ d) := by simp [vector]
+ipra_subst vector
 
 theorem unpack_congr {a b : PTm n} (e : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] ZT.eq (unpack a) (unpack b) := by
   apply ZT.derive

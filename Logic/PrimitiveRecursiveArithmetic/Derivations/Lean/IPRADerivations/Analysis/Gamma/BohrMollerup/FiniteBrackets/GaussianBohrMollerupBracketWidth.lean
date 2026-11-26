@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupBracketWidth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupBlockChord (source)
 open GaussianBohrMollerupBracketEndpoints (widthF widthData ratioData width_identity ratio_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -28,9 +28,6 @@ open GaussianNamedRealOrderTransport (transport)
 open GaussianNaturalScaleProductName (productF)
 open GaussianPositiveRationalLogarithm (fraction logF)
 open GaussianRationalHorner (positive_product qzero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF
@@ -120,8 +117,7 @@ theorem width_bounds (a b B j : PTm n) (hs : Γ ⊢[PRAAx] source a b B) (hj : �
 
 def cutoff (B p : PTm n) : PTm n := (B*B)*unit (p+two)
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (B p : PTm n) :
-    Syn.subst σ (cutoff B p) = cutoff (Syn.subst σ B) (Syn.subst σ p) := by simp [cutoff,two,one]
+ipra_subst cutoff [two, one]
 
 theorem cutoff_positive (B p : PTm n) (h : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] le one (cutoff B p) :=
   positive_product _ _ (positive_product _ _ h h) (unit_positive (p+two))

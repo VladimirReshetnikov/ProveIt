@@ -75,13 +75,9 @@ private abbrev layersF (a : PTm 3) : Fm PTm 2 :=
   ap2 (sumF (oB a)) (var 0) (pairT (var 0) (var 1)) ≐ ap2 (sumF (LB a)) (var 0) (var 1)
 
 private theorem layers₀ (a : PTm 3) : ([] : List (Fm PTm 2)) ⊢[PRAAx] layersF a := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero]
-    exact (sum_zero _ _).eqTrans (sum_zero _ _).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (square_step a (var 0) (var 1)).eqTrans
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact (sum_zero _ _).eqTrans (sum_zero _ _).eqSymm
+  · exact (square_step a (var 0) (var 1)).eqTrans
       ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (sum_succ' _ _ _).eqSymm)
 
 /-- `∑_{i<M} ∑_{j<M} a(i, j, x) = ∑_{b<M} L(b, x)`. -/

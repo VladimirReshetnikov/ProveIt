@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.PowerDifference
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact finite envelopes for rationally enlarged Gaussian disks
@@ -16,22 +15,17 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPowerEnvelope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Algebra.PowerDifference (gd gd_zero gd_le power_diff)
 open LeanProofs.IPRA.Analysis.GaussianProductStability (power_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalHornerPerturbation (weighted_power)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def error (Z r : PTm n) : PTm n := r*pw (Z+one) (pred r)
 
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (Z r : PTm n) :
-    Syn.subst σ (error Z r) = error (Syn.subst σ Z) (Syn.subst σ r) := by simp [error]
+ipra_subst error
 
 theorem error_zero (Z : PTm n) : Γ ⊢[PRAAx] error Z zero ≐ zero := by unfold error; ipra_ring
 
@@ -95,9 +89,7 @@ def weightedStep : PTm 3 := sndT (var 2)*var 1+succ (var 0)*pw (fstT (var 2)) (v
 def weightedF : PR 2 := rec2 zero weightedStep
 def weighted (U H N : PTm n) : PTm n := ap2 weightedF N (pairT U H)
 
-@[simp] theorem subst_weighted {m : ℕ} (σ : Fin n → PTm m) (U H N : PTm n) :
-    Syn.subst σ (weighted U H N) = weighted (Syn.subst σ U) (Syn.subst σ H) (Syn.subst σ N) := by
-  simp only [weighted,subst_ap2,subst_pairT]
+ipra_subst weighted
 
 theorem weighted_zero (U H : PTm n) : Γ ⊢[PRAAx] weighted U H zero ≐ zero := by
   simpa only [weighted,weightedF,ConciseIPRA.PTm.subst_zero] using rec2_zero (Γ := Γ) zero weightedStep (pairT U H)
@@ -115,9 +107,7 @@ theorem weighted_succ (U H N : PTm n) : Γ ⊢[PRAAx]
 def weightedErrorBody : PTm 2 := succ (var 0)*error (var 1) (var 0)
 def weightedError (Z N : PTm n) : PTm n := ap2 (sumF weightedErrorBody) N Z
 
-@[simp] theorem subst_weightedError {m : ℕ} (σ : Fin n → PTm m) (Z N : PTm n) :
-    Syn.subst σ (weightedError Z N) = weightedError (Syn.subst σ Z) (Syn.subst σ N) := by
-  simp only [weightedError,subst_ap2]
+ipra_subst weightedError
 
 theorem weighted_error_body_at (Z i : PTm n) : inst2 weightedErrorBody i Z = succ i*error Z i := by
   simp [weightedErrorBody,inst2]
@@ -129,9 +119,7 @@ theorem weighted_error_succ (Z N : PTm n) : Γ ⊢[PRAAx]
 def weightedLaw (Z H N : PTm n) : Fm PTm n :=
   le (H*weighted (Z*H+one) H N)
     ((GaussianRationalHornerLipschitz.weighted Z N*H+weightedError Z N)*pw H N)
-@[simp] theorem subst_weightedLaw {m : ℕ} (σ : Fin n → PTm m) (Z H N : PTm n) :
-    (weightedLaw Z H N).subst σ = weightedLaw (Syn.subst σ Z) (Syn.subst σ H) (Syn.subst σ N) := by
-  simp [weightedLaw]
+ipra_subst weightedLaw
 
 theorem weighted_envelope_zero (Z H : PTm n) : Γ ⊢[PRAAx] weightedLaw Z H zero := by
   refine le_of_eq_add (d := zero) ?_
@@ -177,11 +165,9 @@ theorem weighted_envelope (Z H N : PTm n) (hH : Γ ⊢[PRAAx] le one H) :
   have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift H) := by
     simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hH.shift
   have all : Γ ⊢[PRAAx] .all (weightedLaw (Syn.shift Z) (Syn.shift H) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_weightedLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact weighted_envelope_zero Z H
-    · simp only [subst_weightedLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact weighted_envelope_step _ _ _ positive.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_weightedLaw]
+    · exact weighted_envelope_zero Z H
+    · exact weighted_envelope_step _ _ _ positive.wk Prf.hyp0
   simpa only [subst_weightedLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 theorem constant_envelope (Z H N A : PTm n) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
@@ -195,9 +181,7 @@ def sourceBody : PTm 2 := succ (var 0)*pw (fstT (var 1)) (var 0)*
   pw (fstT (sndT (var 1))) (monus (sndT (sndT (var 1))) (var 0))
 def sourcePrefix (U H N k : PTm n) : PTm n := ap2 (sumF sourceBody) k (pairT U (pairT H N))
 
-@[simp] theorem subst_sourcePrefix {m : ℕ} (σ : Fin n → PTm m) (U H N k : PTm n) :
-    Syn.subst σ (sourcePrefix U H N k) = sourcePrefix (Syn.subst σ U) (Syn.subst σ H)
-      (Syn.subst σ N) (Syn.subst σ k) := by simp [sourcePrefix]
+ipra_subst sourcePrefix
 
 theorem source_body_at (U H N i : PTm n) : Γ ⊢[PRAAx]
     inst2 sourceBody i (pairT U (pairT H N)) ≐ succ i*pw U i*pw H (monus N i) := by
@@ -216,9 +200,7 @@ theorem source_prefix_succ (U H N k : PTm n) : Γ ⊢[PRAAx]
 
 def sourceLaw (U H N k : PTm n) : Fm PTm n := le k N ⟶
   sourcePrefix U H N k ≐ weighted U H k*pw H (monus N k)
-@[simp] theorem subst_sourceLaw {m : ℕ} (σ : Fin n → PTm m) (U H N k : PTm n) :
-    (sourceLaw U H N k).subst σ = sourceLaw (Syn.subst σ U) (Syn.subst σ H)
-      (Syn.subst σ N) (Syn.subst σ k) := by simp [sourceLaw]
+ipra_subst sourceLaw
 
 theorem source_prefix_step (U H N k : PTm n) (hk : Γ ⊢[PRAAx] le (succ k) N)
     (ih : Γ ⊢[PRAAx] sourcePrefix U H N k ≐ weighted U H k*pw H (monus N k)) : Γ ⊢[PRAAx]
@@ -241,13 +223,11 @@ It is valid even for H=0; the rational interpretation uses H>=1 separately. -/
 theorem source_prefix (U H N k : PTm n) (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     sourcePrefix U H N k ≐ weighted U H k*pw H (monus N k) := by
   have all : Γ ⊢[PRAAx] .all (sourceLaw (Syn.shift U) (Syn.shift H) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_sourceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_sourceLaw]
+    · refine .impI ?_
       exact (source_prefix_zero U H N).wk.eqTrans
         ((congrMul (weighted_zero U H) (.eqRefl _)).eqTrans (zero_mul _)).eqSymm.wk
-    · simp only [subst_sourceLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       exact source_prefix_step _ _ _ _ Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] sourceLaw U H N k := by
@@ -277,16 +257,8 @@ def output (Z H r N : PTm n) : PTm n :=
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (Z H r N : PTm n) : PTm n := PTm.app outputF ![Z,H,r,N]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (Z H r N : PTm n) :
-    Syn.subst σ (output Z H r N) = output (Syn.subst σ Z) (Syn.subst σ H)
-      (Syn.subst σ r) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (Z H r N : PTm n) :
-    Syn.subst σ (run Z H r N) = run (Syn.subst σ Z) (Syn.subst σ H)
-      (Syn.subst σ r) (Syn.subst σ N) := by
-  simp only [run,PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem envelope_program (Z H r N : PTm n) : Γ ⊢[PRAAx] run Z H r N ≐ output Z H r N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![Z,H,r,N]

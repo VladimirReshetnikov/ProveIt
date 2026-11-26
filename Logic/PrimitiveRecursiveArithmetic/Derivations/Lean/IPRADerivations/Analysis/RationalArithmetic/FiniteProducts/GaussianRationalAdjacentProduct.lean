@@ -21,16 +21,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalAdjacentProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteProduct
   (qprod product_zero product_succ product_index_congr product_canonical product_congr_bounded
     product_split product_singleton offset_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -103,9 +99,7 @@ theorem adjacent_product (t : PTm 2) (N k x : PTm n) (hk : Γ ⊢[PRAAx] lt (suc
 def evaluatedFactorBody : PTm 2 := evaluate
   (inst2 GaussianPolynomialDeterminantTerms.factorBody (var 0) (fstT (var 1))) (sndT (var 1))
 def factorData (M m L w z : PTm n) : PTm n := pairT (GaussianPolynomialDeterminantTerms.data M m L w) z
-@[simp] theorem subst_factorData {l : ℕ} (σ : Fin n → PTm l) (M m L w z : PTm n) :
-    Syn.subst σ (factorData M m L w z) = factorData (Syn.subst σ M) (Syn.subst σ m)
-      (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ z) := by simp [factorData]
+ipra_subst factorData
 
 theorem evaluated_factor_at (M m L w z j : PTm n) : Γ ⊢[PRAAx]
     inst2 evaluatedFactorBody j (factorData M m L w z) ≐ evaluate (GaussianPolynomialDeterminantTerms.factor M m w j) z := by
@@ -126,11 +120,7 @@ theorem evaluated_factor_at (M m L w z j : PTm n) : Γ ⊢[PRAAx]
 
 def scalarLaw (M m L w z j : PTm n) : Fm PTm n :=
   qprod evaluatedFactorBody j (factorData M m L w z) ≐ GaussianPolynomialDeterminantTerms.scalarProduct M m L w z j
-@[simp] theorem subst_scalarLaw {l : ℕ} (σ : Fin n → PTm l) (M m L w z j : PTm n) :
-    (scalarLaw M m L w z j).subst σ = scalarLaw (Syn.subst σ M) (Syn.subst σ m)
-      (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ z) (Syn.subst σ j) := by
-  simp only [scalarLaw,Fm.subst_eq,GaussianRationalFiniteProduct.subst_qprod,subst_factorData,
-    GaussianPolynomialDeterminantTerms.subst_scalarProduct]
+ipra_subst scalarLaw
 
 theorem scalar_zero (M m L w z : PTm n) : Γ ⊢[PRAAx] scalarLaw M m L w z zero :=
   (product_zero _ _).eqTrans (GaussianPolynomialDeterminantTerms.scalar_zero M m L w z).eqSymm
@@ -144,11 +134,9 @@ theorem scalar_fold (M m L w z j : PTm n) : Γ ⊢[PRAAx]
     qprod evaluatedFactorBody j (factorData M m L w z) ≐ GaussianPolynomialDeterminantTerms.scalarProduct M m L w z j := by
   have all : Γ ⊢[PRAAx] .all (scalarLaw (Syn.shift M) (Syn.shift m) (Syn.shift L)
       (Syn.shift w) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_scalarLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact scalar_zero _ _ _ _ _
-    · simp only [subst_scalarLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact scalar_step _ _ _ _ _ _ Prf.hyp0
+    ipra_qfind [subst_scalarLaw]
+    · exact scalar_zero _ _ _ _ _
+    · exact scalar_step _ _ _ _ _ _ Prf.hyp0
   have actual : Γ ⊢[PRAAx] scalarLaw M m L w z j := by
     simpa only [subst_scalarLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
   exact actual
@@ -160,16 +148,14 @@ theorem scalar_product_as_qprod (M m L w z j : PTm n) : Γ ⊢[PRAAx]
 def output (t : PTm 2) (N k x : PTm n) : PTm n := pairT (qprod (swapBody t) N (pairT k x)) (qprod t N x)
 def outputF (t : PTm 2) : PR 3 := PTm.toPR (output t (var 0) (var 1) (var 2))
 def run (t : PTm 2) (N k x : PTm n) : PTm n := ap3 (outputF t) N k x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N k x : PTm n) :
-    Syn.subst σ (output t N k x) = output t (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N k x : PTm n) :
-    Syn.subst σ (run t N k x) = run t (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ x) := by simp only [run,subst_ap3]
+ipra_subst output
+ipra_subst run
 theorem program_at (t : PTm 2) (N k x : PTm n) : Γ ⊢[PRAAx] run t N k x ≐ output t N k x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output t (var 0) (var 1) (var 2) : PTm 3) ![N,k,x]
 theorem returned_swapped (t : PTm 2) (N k x : PTm n) : Γ ⊢[PRAAx] fstT (run t N k x) ≐ qprod (swapBody t) N (pairT k x) :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_original (t : PTm 2) (N k x : PTm n) : Γ ⊢[PRAAx] sndT (run t N k x) ≐ qprod t N x :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_equal (t : PTm 2) (N k x : PTm n) (hk : Γ ⊢[PRAAx] lt (succ k) N) : Γ ⊢[PRAAx]
     fstT (run t N k x) ≐ sndT (run t N k x) :=
   (returned_swapped _ _ _ _).eqTrans ((adjacent_product _ _ _ _ hk).eqTrans (returned_original _ _ _ _).eqSymm)

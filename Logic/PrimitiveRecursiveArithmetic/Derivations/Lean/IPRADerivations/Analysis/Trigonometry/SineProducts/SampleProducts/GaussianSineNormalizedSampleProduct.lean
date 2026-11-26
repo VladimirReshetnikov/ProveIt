@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineNormalizedSampleProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentDivisionAngleResidual (sineSample rootSample)
 open GaussianNameReciprocal (lower inverse_bound)
 open GaussianRationalFiniteProduct (qprod product_zero product_succ product_canonical)
@@ -31,10 +31,6 @@ open GaussianReciprocalHorner (qmul_one_right)
 open GaussianSineRootNormalization (normalizedFactor root_factor_normalization)
 open GaussianSineSampleRootList (roots roots_at sineMargins sine_margin_at)
 open GaussianSineSquaredTrace (fromSine)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,18 +43,11 @@ def normalizedProduct (p J z s : PTm n) : PTm n := normalizedPrefix p J z s J
 def factorBudget (B D : PTm n) : PTm n := one+(B*B)*(D*D)
 def productBudget (B D J : PTm n) : PTm n := pw (factorBudget B D) J
 
-@[simp] theorem subst_normalizedPrefix {l : ℕ} (σ : Fin n → PTm l) (p J z s k : PTm n) :
-    Syn.subst σ (normalizedPrefix p J z s k) =
-      normalizedPrefix (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ z) (Syn.subst σ s) (Syn.subst σ k) := by
-  simp [normalizedPrefix,data]
+ipra_subst normalizedPrefix [data]
 
-@[simp] theorem subst_normalizedProduct {l : ℕ} (σ : Fin n → PTm l) (p J z s : PTm n) :
-    Syn.subst σ (normalizedProduct p J z s) = normalizedProduct (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ z) (Syn.subst σ s) :=
-  by simp [normalizedProduct]
+ipra_subst normalizedProduct
 
-@[simp] theorem subst_productBudget {l : ℕ} (σ : Fin n → PTm l) (B D J : PTm n) :
-    Syn.subst σ (productBudget B D J) = productBudget (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ J) :=
-  by simp [productBudget,factorBudget,one]
+ipra_subst productBudget [factorBudget, one]
 
 theorem canonical_product (p J z s : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (normalizedProduct p J z s) :=
@@ -67,7 +56,7 @@ theorem canonical_product (p J z s : PTm n) : Γ ⊢[PRAAx]
 private theorem body_at (p J z s k : PTm n) : Γ ⊢[PRAAx]
     LeanProofs.IPRA.inst2 body k (data p J z s) ≐ normalizedFactor s (sineSample p (succ (monus J (succ k))) J z) := by
   have tail1 := snd_pair (Γ := Γ) p (pairT J (pairT z s))
-  have tail2 := (congrSnd tail1).eqTrans (snd_pair _ _)
+  have tail2 := tail1.sndE
   simpa [body,LeanProofs.IPRA.inst2] using
     Prf.eqCongr (Γ := Γ) (normalizedFactor (var 3) (sineSample (var 0) (succ (monus (var 1) (succ (var 4))))
       (var 1) (var 2)) : PTm 5)
@@ -76,9 +65,9 @@ private theorem body_at (p J z s k : PTm n) : Γ ⊢[PRAAx]
       (σ' := ![p,J,z,s,k]) (fun i => by
         fin_cases i
         · exact fst_pair _ _
-        · exact (congrFst tail1).eqTrans (fst_pair _ _)
-        · exact (congrFst tail2).eqTrans (fst_pair _ _)
-        · exact (congrSnd tail2).eqTrans (snd_pair _ _)
+        · exact tail1.fstE
+        · exact tail2.fstE
+        · exact tail2.sndE
         · exact .eqRefl _)
 
 theorem normalized_prefix_zero (p J z s : PTm n) : Γ ⊢[PRAAx] normalizedPrefix p J z s zero ≐ qone :=
@@ -113,11 +102,7 @@ def prefixLaw (p J z s B D k : PTm n) : Fm PTm n := le k J ⟶
   (qmul (factors (roots p J z) J (naturalPoint (num 4)) k) (normalizedPrefix p J z s k) ≐
     factors (roots p J z) J (fromSine s) k) ⋏ bounded (normalizedPrefix p J z s k) (productBudget B D k) one
 
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (p J z s B D k : PTm n) :
-    (prefixLaw p J z s B D k).subst σ =
-      prefixLaw (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ z) (Syn.subst σ s)
-        (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ k) := by
-  simp [prefixLaw,fromSine,one]
+ipra_subst prefixLaw [fromSine, one]
 
 private theorem prefix_zero (p J z s B D : PTm n) : Γ ⊢[PRAAx] prefixLaw p J z s B D zero := by
   refine .impI (.andI ?_ ?_)

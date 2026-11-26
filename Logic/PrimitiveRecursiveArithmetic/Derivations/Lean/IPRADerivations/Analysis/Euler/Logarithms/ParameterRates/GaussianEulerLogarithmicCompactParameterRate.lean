@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCompactParameterRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicTaylorGrid (source)
 open GaussianEulerLogarithmicCompactTaylor (point actualLinear parameter_bound shifted_source)
 open GaussianEulerParameterExponentialIncrement (shifted)
@@ -24,10 +24,6 @@ open GaussianRationalHorner (qadd qmul ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -38,11 +34,8 @@ def numerator (p q j R C E T X Y : PTm n) : PTm n :=
   GaussianNamedInverseRate.rateNumerator (gain j R C E T X) (scaleDenominator E Y) p q
 def denominator (p q E Y : PTm n) : PTm n := GaussianNamedInverseRate.rateDenominator (scaleDenominator E Y) p q
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (j R C E T X : PTm n) :
-    Syn.subst σ (gain j R C E T X) = gain (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ X) := by simp [gain]
-@[simp] theorem subst_scaleDenominator {m : ℕ} (σ : Fin n → PTm m) (E Y : PTm n) :
-    Syn.subst σ (scaleDenominator E Y) = scaleDenominator (Syn.subst σ E) (Syn.subst σ Y) := by simp [scaleDenominator]
+ipra_subst gain
+ipra_subst scaleDenominator
 
 theorem increment_radius_small (z R B a C E T h D X Y : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B a C E T h D X Y) : Γ ⊢[PRAAx] le X Y := by

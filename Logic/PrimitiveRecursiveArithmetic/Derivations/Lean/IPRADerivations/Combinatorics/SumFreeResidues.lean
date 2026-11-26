@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.Turan
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The middle third of the residues modulo `3q + 2` is sum-free
@@ -24,10 +23,8 @@ residues by a multiplier, and the averaging over the multipliers (its counting s
 
 namespace LeanProofs.IPRA.Combinatorics.SumFreeResidues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Turan (zlt_or_zle)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

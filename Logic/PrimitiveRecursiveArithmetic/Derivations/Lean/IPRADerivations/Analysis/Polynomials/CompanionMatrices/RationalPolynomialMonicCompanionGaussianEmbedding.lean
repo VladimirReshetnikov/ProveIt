@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialMonicCompanionGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero scalarOne)
 open RationalPolynomialGaussianEmbedding (coefficients embed_congr)
 open RationalPolynomialBuffersGaussianEmbedding (embeddedEntries)
@@ -23,10 +23,6 @@ open GaussianPolynomialMonicCompanion (rowShape row_shape_at data)
 open RationalPolynomialDeterminantTermsGaussianEmbedding (entriesEqual entry_equal_at embedded_entries_to_codes coefficient_left_entries)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -80,23 +76,14 @@ def rowBody : PTm 2 := PTm.app rowF ![fstT (var 1),fstT (sndT (var 1)),fstT (snd
   fstT (sndT (sndT (sndT (var 1)))),sndT (sndT (sndT (sndT (var 1)))),var 0]
 def companion (F G m a c : PTm n) : PTm n := sequence rowBody m (data F G m a c)
 
-@[simp] theorem subst_normalizedRow {l : ℕ} (σ : Fin n → PTm l) (C : PTm n) :
-    Syn.subst σ (normalizedRow C) = normalizedRow (Syn.subst σ C) := by simp [normalizedRow]
-@[simp] theorem subst_nextRow {l : ℕ} (σ : Fin n → PTm l) (G m a r : PTm n) :
-    Syn.subst σ (nextRow G m a r) = nextRow (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ r) := by simp [nextRow,Signum.sg]
-@[simp] theorem subst_topRow {l : ℕ} (σ : Fin n → PTm l) (G : PTm n) :
-    Syn.subst σ (topRow G) = topRow (Syn.subst σ G) := by simp [topRow]
-@[simp] theorem subst_productRow {l : ℕ} (σ : Fin n → PTm l) (F G a c r : PTm n) :
-    Syn.subst σ (productRow F G a c r) = productRow (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) := by simp [productRow]
-@[simp] theorem subst_shiftedRow {l : ℕ} (σ : Fin n → PTm l) (G m a c r : PTm n) :
-    Syn.subst σ (shiftedRow G m a c r) = shiftedRow (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) := by simp [shiftedRow]
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (P Q H : PTm n) :
-    Syn.subst σ (difference P Q H) = difference (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ H) := by simp [difference]
-@[simp] theorem subst_outputRow {l : ℕ} (σ : Fin n → PTm l) (F G m a c r : PTm n) :
-    Syn.subst σ (outputRow F G m a c r) = outputRow (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) := by simp [outputRow]
-@[simp] theorem subst_companion {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (companion F G m a c) = companion (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [companion]
+ipra_subst normalizedRow
+ipra_subst nextRow [Signum.sg]
+ipra_subst topRow
+ipra_subst productRow
+ipra_subst shiftedRow
+ipra_subst difference
+ipra_subst outputRow
+ipra_subst companion
 
 theorem normalized_length (C : PTm n) : Γ ⊢[PRAAx] length (normalizedRow C) ≐ length C := RationalPolynomialBuffersGaussianEmbedding.scaled_length _ _
 theorem next_inside (G m a r : PTm n) (hr : Γ ⊢[PRAAx] lt (succ r) m) : Γ ⊢[PRAAx]
@@ -138,9 +125,9 @@ theorem row_body_at (F G m a c r : PTm n) : Γ ⊢[PRAAx] inst2 rowBody r (data 
   exact (congrApp rowF (fun i => by
     fin_cases i
     · exact fst_pair _ _
-    · exact (congrFst e).eqTrans (fst_pair _ _)
-    · exact (congrFst f).eqTrans (fst_pair _ _)
-    · exact (congrFst g).eqTrans (fst_pair _ _)
+    · exact e.fstE
+    · exact f.fstE
+    · exact g.fstE
     · exact z
     · exact .eqRefl _)).eqTrans (row_program F G m a c r)
 theorem companion_length (F G m a c : PTm n) : Γ ⊢[PRAAx] length (companion F G m a c) ≐ m := sequence_length _ _ _
@@ -191,9 +178,7 @@ theorem pad_transport (C D H t i : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ H) (h
 
 def rowsEmbedded (F F' m c : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m) ⟶
   embeddedEntries (entry (Syn.shift F) (var 0)) (entry (Syn.shift F') (var 0)) (succ (Syn.shift c)))
-@[simp] theorem subst_rowsEmbedded {l : ℕ} (σ : Fin n → PTm l) (F F' m c : PTm n) :
-    (rowsEmbedded F F' m c).subst σ = rowsEmbedded (Syn.subst σ F) (Syn.subst σ F') (Syn.subst σ m) (Syn.subst σ c) := by
-  simp [rowsEmbedded,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowsEmbedded [Syn.subst_shift, Syn.shift_subst]
 theorem row_embedded_at (F F' m c r : PTm n) (h : Γ ⊢[PRAAx] rowsEmbedded F F' m c) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
     embeddedEntries (entry F r) (entry F' r) (succ c) := by
   have gate : Γ ⊢[PRAAx] lt r m ⟶ embeddedEntries (entry F r) (entry F' r) (succ c) := by
@@ -260,9 +245,7 @@ theorem original_entry_embedding (F G m a c r s : PTm n) (hm : Γ ⊢[PRAAx] le 
 def transportInput (F F' G G' m a c : PTm n) : Fm PTm n := le one m ⋏
   (rowShape F m c ⋏ (rowShape F' m c ⋏ (rowShape G m a ⋏ (rowShape G' m a ⋏
     (rowsEmbedded F F' m c ⋏ rowsEmbedded G G' m a)))))
-@[simp] theorem subst_transportInput {l : ℕ} (σ : Fin n → PTm l) (F F' G G' m a c : PTm n) :
-    (transportInput F F' G G' m a c).subst σ = transportInput (Syn.subst σ F) (Syn.subst σ F') (Syn.subst σ G)
-      (Syn.subst σ G') (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [transportInput]
+ipra_subst transportInput
 theorem companion_entry_from_input (F F' G G' m a c r s : PTm n)
     (h : Γ ⊢[PRAAx] transportInput F F' G G' m a c) (hr : Γ ⊢[PRAAx] lt r m) (hs : Γ ⊢[PRAAx] le s (a+c)) : Γ ⊢[PRAAx]
     embed (entry (entry (companion F G m a c) r) s) ≐ entry (entry (GaussianPolynomialMonicCompanion.companion F' G' m a c) r) s :=
@@ -299,12 +282,7 @@ theorem output_coefficient_well_formed (F G m a c r s : PTm n) (hs : Γ ⊢[PRAA
   RationalArithmetic.guard_congr (difference_lookup _ _ _ _ ((succ_monus_succ _ _).eqTrans hs)) (RationalArithmetic.add_guard _ _)
 def companionF : PR 5 := PTm.toPR (companion (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (F G m a c : PTm n) : PTm n := PTm.app companionF ![F,G,m,a,c]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (run F G m a c) = run (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (F G m a c : PTm n) : Γ ⊢[PRAAx] run F G m a c ≐ companion F G m a c := by
   simpa only [run,companionF,subst_companion,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
     Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using

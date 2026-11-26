@@ -13,24 +13,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianWeightedPolynomialPowerBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalPolynomialPowers (powerPrefix prefix_length prefix_zero prefix_succ)
 open GaussianRationalPolynomialDilation (weightedNorm)
 open GaussianFiniteExponentialWeightedNorm (weighted_congr weighted_nonnegative multiply_bounds singleton_weighted_norm)
 open RationalArgmin (rationalLE)
 open GaussianEuclideanDistanceName (fraction)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def powerLaw (C N K t A D j : PTm n) : Fm PTm n := le j K ⟶
   rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (RationalNonnegativePowers.power A D j)
-@[simp] theorem subst_powerLaw {m : ℕ} (σ : Fin n → PTm m) (C N K t A D j : PTm n) :
-    (powerLaw C N K t A D j).subst σ = powerLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K)
-      (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ j) := by simp [powerLaw]
+ipra_subst powerLaw
 
 theorem power_zero (C N K t A D : PTm n) : Γ ⊢[PRAAx] powerLaw C N K t A D zero := by
   refine .impI ?_
@@ -60,11 +55,9 @@ theorem power_bound (C N K t A D j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ suc
   have ns : Γ.map Fm.shift ⊢[PRAAx] rationalLE (weightedNorm (Syn.shift C) (Syn.shift N) (Syn.shift t))
       (fraction (Syn.shift A) (Syn.shift D)) := by simpa [Fm.shift,Syn.shift] using hNorm.shift
   have all : Γ ⊢[PRAAx] .all (powerLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift t) (Syn.shift A) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact power_zero _ _ _ _ _ _
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (power_step _ _ _ _ _ _ _ cs.wk.wk ds.wk.wk ns.wk.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_powerLaw]
+    · exact power_zero _ _ _ _ _ _
+    · exact .impI (power_step _ _ _ _ _ _ _ cs.wk.wk ds.wk.wk ns.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have rule : Γ ⊢[PRAAx] powerLaw C N K t A D j := by
     simpa only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j

@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerExponentialFold
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -34,10 +34,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (qmul qzero positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF
@@ -52,17 +48,13 @@ def budgetStep : PTm 3 := var 1*(one+fstT (var 2))+localCost (var 0) (sndT (var 
 def budgetF : PR 2 := rec2 (zero : PTm 1) budgetStep
 def budget (R i x : PTm n) : PTm n := ap2 budgetF i (pairT R x)
 
-@[simp] theorem subst_prefixData {m : ℕ} (σ : Fin n → PTm m) (i x : PTm n) :
-    Syn.subst σ (prefixData i x) = prefixData (Syn.subst σ i) (Syn.subst σ x) := by
-  simp [prefixData,exponentialInputData]
+ipra_subst prefixData [exponentialInputData]
 
 @[simp] private theorem subst_localCost {m : ℕ} (σ : Fin n → PTm m) (i x : PTm n) :
     Syn.subst σ (localCost i x) = localCost (Syn.subst σ i) (Syn.subst σ x) := by
   simp [localCost,two,one]
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (R i x : PTm n) :
-    Syn.subst σ (budget R i x) = budget (Syn.subst σ R) (Syn.subst σ i) (Syn.subst σ x) := by
-  simp [budget]
+ipra_subst budget
 
 private theorem local_cost_congr {i x y : PTm n} (e : Γ ⊢[PRAAx] x ≐ y) :
     Γ ⊢[PRAAx] localCost i x ≐ localCost i y := by
@@ -87,11 +79,7 @@ def foldError (p A B D neg R i : PTm n) : Fm PTm n :=
   distanceBounded (ap2 prefixF p (prefixData i (rowData A B D neg)))
     (GaussianGammaEulerHead.product (native A B neg) D i) (budget R i (rowData A B D neg)) (unit p)
 
-@[simp] theorem subst_foldError {m : ℕ} (σ : Fin n → PTm m) (p A B D neg R i : PTm n) :
-    (foldError p A B D neg R i).subst σ =
-      foldError (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg)
-        (Syn.subst σ R) (Syn.subst σ i) := by
-  simp [foldError]
+ipra_subst foldError
 
 private theorem prefix_zero_at (p x : PTm n) : Γ ⊢[PRAAx] ap2 prefixF p (prefixData zero x) ≐ qone := by
   let t := sd zero x

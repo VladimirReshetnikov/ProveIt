@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDerivativeAtOne
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaUnitEulerDifference
   (quotientF quotientData integralF integralData subst_integralData minimumDenominator denominator_positive)
 open GaussianGammaUnitInverseSamples (baseData neighborData shiftedSample residualBudget actual_step_separated)
@@ -32,10 +32,6 @@ open GaussianRationalSyntheticDivision (qone)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open ComplexLogarithmRemainder (oneCode)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -47,8 +43,7 @@ def stepDenominator (s : PTm n) : PTm n := minimumDenominator s+slopeBudget*unit
 def clockCoefficient (D : PTm n) : PTm n := cubic D+residualBudget D*(D*D)+D+one
 def sampleIndex (s : PTm n) : PTm n := GaussianFastValueCut.exponent (clockCoefficient (stepDenominator s)) s
 
-@[simp] theorem subst_negativeGammaData {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (negativeGammaData : PTm n) = (negativeGammaData : PTm m) := by simp [negativeGammaData]
+ipra_subst negativeGammaData
 
 theorem negativeGamma_regular : Γ ⊢[PRAAx] pointCN negativeGammaF (negativeGammaData : PTm n) :=
   negative_fast eulerF zero GaussianGammaCanonicalExponent.gamma_regular

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeFiniteBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaAllDegreeEulerInverse (source nameF data)
 open GaussianBetaFiniteEulerComparison (supportWidth support_width_endpoint gridPrecision slack)
 open GaussianBetaFiniteEulerAtCutoff (minimumCutoff minimumCells minimumPrecision observation)
@@ -26,9 +26,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

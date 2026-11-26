@@ -15,17 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianExactDiskExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFastValueCut (rawEnvelope)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

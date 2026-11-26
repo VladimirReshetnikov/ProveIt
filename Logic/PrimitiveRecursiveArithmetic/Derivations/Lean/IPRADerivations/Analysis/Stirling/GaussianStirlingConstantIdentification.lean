@@ -15,14 +15,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingConstantIdentification
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingConstantIdentificationCore (HalfStepBound ResidualBound sample_budget_value)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

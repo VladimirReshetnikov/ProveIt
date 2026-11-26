@@ -21,16 +21,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOffDominantSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (input)
 open LeanProofs.IPRA.Analysis.GaussianDominantPlateau (center winner)
 open LeanProofs.IPRA.Analysis.GaussianOffDominantTerms (withinRadius selectedReference)
 open LeanProofs.IPRA.Analysis.GaussianRationalNormClearing (weightedNorm nine)
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax (four)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,18 +40,12 @@ def denominator (C N delta : PTm n) : PTm n := GaussianRationalNormalization.com
 def bound (C N delta : PTm n) : Fm PTm n := RationalArgmin.rationalLE
   (weightedNorm nine (otherSum C N delta)) (RationalArithmetic.multiply (fraction four one) (selectedScore C N))
 
-@[simp] theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    Syn.subst σ (lower C N delta) = lower (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [lower]
-@[simp] theorem subst_upper {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    Syn.subst σ (upper C N delta) = upper (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [upper]
-@[simp] theorem subst_otherSum {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    Syn.subst σ (otherSum C N delta) = otherSum (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [otherSum]
-@[simp] theorem subst_selectedScore {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (selectedScore C N) = selectedScore (Syn.subst σ C) (Syn.subst σ N) := by simp [selectedScore]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    Syn.subst σ (denominator C N delta) = denominator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [denominator]
-@[simp] theorem subst_bound {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    (bound C N delta).subst σ = bound (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [bound]
+ipra_subst lower
+ipra_subst upper
+ipra_subst otherSum
+ipra_subst selectedScore
+ipra_subst denominator
+ipra_subst bound
 
 theorem lower_bounds_formula (N k S T ref : PTm n) :
     GaussianGeometricSumBound.entryBounds .source N k S T ref = .all
@@ -123,26 +114,24 @@ def output (C N delta : PTm n) : PTm n := pairT (otherSum C N delta)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C N delta : PTm n) : PTm n := ap3 outputF C N delta
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    Syn.subst σ (output C N delta) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N delta : PTm n) :
-    Syn.subst σ (run C N delta) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N delta : PTm n) : Γ ⊢[PRAAx] run C N delta ≐ output C N delta := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,N,delta]
 
 theorem returned_sum (C N delta : PTm n) : Γ ⊢[PRAAx] fstT (run C N delta) ≐ otherSum C N delta :=
-  (congrFst (program_at C N delta)).eqTrans (fst_pair _ _)
+  (program_at C N delta).fstE
 theorem returned_score (C N delta : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N delta)) ≐ selectedScore C N :=
-  (congrFst ((congrSnd (program_at C N delta)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N delta).sndE.fstE
 theorem returned_reference (C N delta : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N delta))) ≐ selectedReference C N :=
-  (congrFst ((congrSnd ((congrSnd (program_at C N delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N delta).sndE.sndE.fstE
 theorem returned_lower (C N delta : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run C N delta)))) ≐ lower C N delta :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at C N delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N delta).sndE.sndE.sndE.fstE
 theorem returned_upper (C N delta : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (run C N delta))))) ≐ upper C N delta :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N delta).sndE.sndE.sndE.sndE.fstE
 theorem returned_denominator (C N delta : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (run C N delta))))) ≐ denominator C N delta :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N delta)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N delta).sndE.sndE.sndE.sndE.sndE
 
 theorem returned_denominator_positive (C N delta : PTm n) : Γ ⊢[PRAAx]
     le one (sndT (sndT (sndT (sndT (sndT (run C N delta)))))) :=

@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceCompactRealFloor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceRealFloor (floor floorDenominator floor_denominator_positive sample_floor)
 open GaussianBinetLaplaceStrip (Kernel evaluatorF nameF data source fixedData evaluator_at tagNumerator tag_inside)
@@ -29,10 +29,6 @@ open RationalArgmin (rationalLE)
 open RationalGaussianRealPart (realBody)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper upper_congr upper_mono)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -98,10 +94,7 @@ theorem compact_floor (p X D R T A C E : PTm n)
 def unitPanelData (X D R : PTm n) : PTm n :=
   data X zero D zero R two zero one one one
 
-@[simp] theorem subst_unitPanelData {m : ℕ} (σ : Fin n → PTm m) (X D R : PTm n) :
-    Syn.subst σ (unitPanelData X D R) =
-      unitPanelData (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) := by
-  simp [unitPanelData,one,two]
+ipra_subst unitPanelData [one, two]
 
 theorem unit_panel_floor (p X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R) :
     Γ ⊢[PRAAx] upper (floor X two) (fstT (ap2 (nameF Kernel.cofinal) p (unitPanelData X D R))) eight (unit p) := by

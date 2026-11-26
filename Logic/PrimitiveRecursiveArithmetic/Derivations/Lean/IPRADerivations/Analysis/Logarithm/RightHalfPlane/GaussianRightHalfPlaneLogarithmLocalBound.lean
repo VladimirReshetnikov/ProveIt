@@ -18,7 +18,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmLocalBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale normSq normSq_one normSq_scale)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -30,10 +30,6 @@ open GaussianRightHalfPlaneRadialLogarithm (normNum normDen)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open RationalHarmonicIntervalVariation (gap)
 open RationalValueBounds (positive_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

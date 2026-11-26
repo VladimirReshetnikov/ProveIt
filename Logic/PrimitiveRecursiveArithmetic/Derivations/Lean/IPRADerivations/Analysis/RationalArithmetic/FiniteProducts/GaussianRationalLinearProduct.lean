@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientL1
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational multiplication by a linear polynomial
@@ -23,7 +21,7 @@ set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalLinearProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical represents horner evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (qL1 rawDen rawGaussian raw_den_positive raw_represents)
@@ -36,9 +34,6 @@ open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -47,18 +42,9 @@ def padded (C N i : PTm n) : PTm n := RationalArithmetic.select (sg (PTm.monus N
 def delayed (C N i : PTm n) : PTm n := RationalArithmetic.select (sg i) qzero (padded C N (PTm.pred i))
 def coefficient (C z N i : PTm n) : PTm n := qsub (padded C N i) (qmul (delayed C N i) z)
 
-@[simp] theorem subst_padded {m : ℕ} (σ : Fin n → PTm m) (C N i : PTm n) :
-    Syn.subst σ (padded C N i) = padded (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) := by
-  simp only [padded,RationalArithmetic.subst_select,sg,PTm.subst_monus,
-    GaussianRationalHorner.subst_qzero,subst_entry,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_delayed {m : ℕ} (σ : Fin n → PTm m) (C N i : PTm n) :
-    Syn.subst σ (delayed C N i) = delayed (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) := by
-  simp only [delayed,RationalArithmetic.subst_select,sg,
-    GaussianRationalHorner.subst_qzero,subst_padded,PTm.subst_pred,PTm.subst_monus,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (C z N i : PTm n) :
-    Syn.subst σ (coefficient C z N i) = coefficient (Syn.subst σ C) (Syn.subst σ z)
-      (Syn.subst σ N) (Syn.subst σ i) := by
-  simp only [coefficient,GaussianRationalMetric.subst_qsub,GaussianRationalHorner.subst_qmul,subst_padded,subst_delayed]
+ipra_subst padded
+ipra_subst delayed
+ipra_subst coefficient
 
 theorem padded_inside (C N i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] padded C N i ≐ entry C i :=
   RationalArithmetic.select_one _ _ _ (AnalyticNumberTheory.Totatives.sg_lt hi)
@@ -93,18 +79,15 @@ def coefficientBody : PTm 2 := qsub
   (qmul (ap3 delayedF (fstT (var 1)) (sndT (sndT (var 1))) (var 0)) (fstT (sndT (var 1))))
 def linear (C z N : PTm n) : PTm n := sequence coefficientBody (succ N) (data C z N)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (data C z N) = data (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by simp only [data,subst_pairT]
-@[simp] theorem subst_linear {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (linear C z N) = linear (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by
-  simp only [linear,subst_sequence,subst_data,ConciseIPRA.PTm.subst_succ]
+ipra_subst data
+ipra_subst linear
 
 theorem coefficientBody_at (C z N i : PTm n) : Γ ⊢[PRAAx] inst2 coefficientBody i (data C z N) ≐ coefficient C z N i := by
   simp only [coefficientBody,inst2,GaussianRationalMetric.subst_qsub,GaussianRationalHorner.subst_qmul,
     subst_ap3,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have Cfield : Γ ⊢[PRAAx] fstT (data C z N) ≐ C := fst_pair _ _
-  have Nfield : Γ ⊢[PRAAx] sndT (sndT (data C z N)) ≐ N := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-  have zfield : Γ ⊢[PRAAx] fstT (sndT (data C z N)) ≐ z := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  have Nfield : Γ ⊢[PRAAx] sndT (sndT (data C z N)) ≐ N := (snd_pair _ _).sndE
+  have zfield : Γ ⊢[PRAAx] fstT (sndT (data C z N)) ≐ z := (snd_pair _ _).fstE
   exact qsub_congr ((congrAp3 paddedF Cfield Nfield (.eqRefl _)).eqTrans (padded_at C N i))
     (qmul_congr ((congrAp3 delayedF Cfield Nfield (.eqRefl _)).eqTrans (delayed_at C N i)) zfield)
 
@@ -184,13 +167,9 @@ theorem root_prefix (C z N k : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ N)
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       (horner (linear (Syn.shift C) (Syn.shift z) (Syn.shift N)) (Syn.shift z) (succ (var 0)) ≐
         padded (Syn.shift C) (Syn.shift N) (var 0))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalHorner.subst_horner,
-        subst_linear,subst_padded,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (root_prefix_zero C z N hC hcanon).wk
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalHorner.subst_horner,
-        subst_linear,subst_padded,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_le, GaussianRationalHorner.subst_horner, subst_linear, subst_padded]
+    · exact .impI (root_prefix_zero C z N hC hcanon).wk
+    · refine .impI ?_
       let IH := le (var 0) (Syn.shift N) ⟶
         (horner (linear (Syn.shift C) (Syn.shift z) (Syn.shift N)) (Syn.shift z) (succ (var 0)) ≐
           padded (Syn.shift C) (Syn.shift N) (var 0))
@@ -214,13 +193,9 @@ theorem horner_ext (C D y N k : PTm n)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] horner C y k ≐ horner D y k := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       (horner (Syn.shift C) (Syn.shift y) (var 0) ≐ horner (Syn.shift D) (Syn.shift y) (var 0))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalHorner.subst_horner,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((GaussianRationalHorner.horner_zero C y).eqTrans (GaussianRationalHorner.horner_zero D y).eqSymm)
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalHorner.subst_horner,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_le, GaussianRationalHorner.subst_horner]
+    · exact .impI ((GaussianRationalHorner.horner_zero C y).eqTrans (GaussianRationalHorner.horner_zero D y).eqSymm)
+    · refine .impI ?_
       let IH := le (var 0) (Syn.shift N) ⟶
         (horner (Syn.shift C) (Syn.shift y) (var 0) ≐ horner (Syn.shift D) (Syn.shift y) (var 0))
       let Δ := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
@@ -323,12 +298,8 @@ def delayNormBody : PTm 2 := qL1 (ap3 delayedF (fstT (var 1)) (sndT (var 1)) (va
 def padSum (C N k : PTm n) : PTm n := RationalFiniteSum.sum padNormBody k (pairT C N)
 def delaySum (C N k : PTm n) : PTm n := RationalFiniteSum.sum delayNormBody k (pairT C N)
 
-@[simp] theorem subst_padSum {m : ℕ} (σ : Fin n → PTm m) (C N k : PTm n) :
-    Syn.subst σ (padSum C N k) = padSum (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k) := by
-  simp only [padSum,RationalFiniteSum.subst_sum,subst_pairT]
-@[simp] theorem subst_delaySum {m : ℕ} (σ : Fin n → PTm m) (C N k : PTm n) :
-    Syn.subst σ (delaySum C N k) = delaySum (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k) := by
-  simp only [delaySum,RationalFiniteSum.subst_sum,subst_pairT]
+ipra_subst padSum
+ipra_subst delaySum
 
 theorem pad_norm_at (C N i : PTm n) : Γ ⊢[PRAAx]
     RationalFiniteSum.term padNormBody i (pairT C N) ≐ qL1 (padded C N i) := by
@@ -384,16 +355,12 @@ prefix afterward. QF induction derives the equality at every runtime index. -/
 theorem delayed_sum_shift (C N k : PTm n) : Γ ⊢[PRAAx] delaySum C N (succ k) ≐ padSum C N k := by
   have all : Γ ⊢[PRAAx] .all (delaySum (Syn.shift C) (Syn.shift N) (succ (var 0)) ≐
       padSum (Syn.shift C) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_delaySum,subst_padSum,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (delay_sum_succ C N zero).eqTrans
+    ipra_qfind [subst_delaySum, subst_padSum]
+    · exact (delay_sum_succ C N zero).eqTrans
         ((RationalAlgebra.add_congr (delay_sum_zero C N)
           ((qL1_congr (delayed_zero C N)).eqTrans qzero_norm)).eqTrans
             ((scalar_add_zero _ (RationalNormalForm.normalize_well_formed _ _ (le_refl one))).eqTrans (pad_sum_zero C N).eqSymm))
-    · simp only [Fm.subst_eq,subst_delaySum,subst_padSum,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (delay_sum_succ _ _ _).eqTrans
+    · exact (delay_sum_succ _ _ _).eqTrans
         ((RationalAlgebra.add_congr Prf.hyp0 (qL1_congr (delayed_succ _ _ _))).eqTrans
           (pad_sum_succ _ _ _).eqSymm)
   simpa only [Fm.subst_eq,subst_delaySum,subst_padSum,ConciseIPRA.PTm.subst_succ,
@@ -415,9 +382,7 @@ theorem coefficient_norm_bound (C z N i : PTm n) : Γ ⊢[PRAAx]
 def rightBody : PTm 2 := RationalSumAdditivity.addedBody padNormBody (RationalSumLinearity.scaledBody delayNormBody)
 def rightData (C z N : PTm n) : PTm n := pairT (pairT C N) (pairT (qL1 z) (pairT C N))
 
-@[simp] theorem subst_rightData {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (rightData C z N) = rightData (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by
-  simp only [rightData,subst_pairT,GaussianRationalL1.subst_qL1]
+ipra_subst rightData
 
 theorem right_term_at (C z N i : PTm n) : Γ ⊢[PRAAx] RationalFiniteSum.term rightBody i (rightData C z N) ≐
     add (qL1 (padded C N i)) (multiply (qL1 z) (qL1 (delayed C N i))) :=
@@ -474,11 +439,7 @@ def program (C z N : PTm n) : PTm n := pairT (linear C z N)
   (pairT (coefficientNorm (linear C z N)) (multiply (add (natCode one) (qL1 z)) (coefficientNorm C)))
 def programF : PR 3 := PTm.toPR (program (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_program {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (program C z N) = program (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by
-  simp only [program,subst_pairT,subst_linear,GaussianCoefficientL1.subst_coefficientNorm,
-    RationalArithmetic.subst_multiply,RationalArithmetic.subst_add,GaussianRationalSyntheticBounds.subst_natCode,
-    GaussianRationalL1.subst_qL1,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst program
 
 theorem program_at (C z N : PTm n) : Γ ⊢[PRAAx] ap3 programF C z N ≐ program C z N := by
   simpa only [programF,ap3,subst_program,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,

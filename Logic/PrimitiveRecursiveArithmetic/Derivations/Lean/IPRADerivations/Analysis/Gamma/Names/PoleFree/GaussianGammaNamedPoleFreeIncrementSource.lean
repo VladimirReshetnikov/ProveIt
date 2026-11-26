@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFreeIncrementSource
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialSmallPerturbation (smallSamples small_samples_at)
@@ -38,9 +38,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalSyntheticCoefficientValues (qadd_recode_left qadd_sub_recode)
 open GaussianSineReflectionLower (lower_after_half_error)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "native" => GaussianGammaReciprocalInverse.source

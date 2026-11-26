@@ -12,9 +12,7 @@ as an iPRA implication over integer `s, c, ρ`.
 
 namespace LeanProofs.IPRA.Geometry.Morley
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 abbrev s : ZT 6 := .var2 0 1
 abbrev c : ZT 6 := .var2 2 3

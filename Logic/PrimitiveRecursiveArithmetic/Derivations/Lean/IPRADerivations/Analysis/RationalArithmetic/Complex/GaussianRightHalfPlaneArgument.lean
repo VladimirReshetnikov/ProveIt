@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgument
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.MedianCounts (congrSg)
 open ComplexLogarithmRemainder (oneCode normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentQuarterExponential (quarterF)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents)
 open GaussianRationalMetric (bounded bounded_of_cleared)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRadiusExponentialName (boundedSamples bounded_samples_at input)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,25 +54,15 @@ def nameF : PR 2 := GaussianNameBranch.nameF unsignedF (GaussianNameConjugation.
 def data (A B neg : PTm n) : PTm n := GaussianNameBranch.data neg (unsignedData A B) (unsignedData A B)
 def radius : PTm n := two+two
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (A neg : PTm n) :
-    (source A neg).subst σ = source (Syn.subst σ A) (Syn.subst σ neg) := by
-  simp [source]
+ipra_subst source
 
-@[simp] theorem subst_smallData {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (smallData A B) = smallData (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [smallData,half,GaussianArctangentPartialQuadrature.data]
+ipra_subst smallData [half, GaussianArctangentPartialQuadrature.data]
 
-@[simp] theorem subst_largeData {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (largeData A B) = largeData (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [largeData]
+ipra_subst largeData
 
-@[simp] theorem subst_unsignedData {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (unsignedData A B) = unsignedData (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [unsignedData,wide]
+ipra_subst unsignedData [wide]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B neg : PTm n) :
-    Syn.subst σ (data A B neg) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) := by
-  simp [data]
+ipra_subst data
 
 theorem half_bounded : Γ ⊢[PRAAx] bounded (half : PTm n) one one := by
   have hd : Γ ⊢[PRAAx] le one two := le_succ_self one

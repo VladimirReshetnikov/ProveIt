@@ -15,16 +15,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPermutationSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qadd_congr)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_canonical recode_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMonicReconstruction
   (spike spike_congr spike_hit spike_miss spikeBody spikeData spikeSum
     spike_body_at spike_sum active active_on active_off)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,18 +31,15 @@ def recodeBody (t : PTm 2) : PTm 2 := recode t
 
 def recodingLaw (t : PTm 2) (N x : PTm n) : Fm PTm n :=
   GaussianRationalFiniteSum.sum (recodeBody t) N x ≐ GaussianRationalFiniteSum.sum t N x
-@[simp] theorem subst_recodingLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N x : PTm n) :
-    (recodingLaw t N x).subst σ = recodingLaw t (Syn.subst σ N) (Syn.subst σ x) := by simp [recodingLaw]
+ipra_subst recodingLaw
 
 /-- Recoding every original entry leaves the actual canonical sum unchanged. -/
 theorem sum_recode (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalFiniteSum.sum (recodeBody t) N x ≐ GaussianRationalFiniteSum.sum t N x := by
   have all : Γ ⊢[PRAAx] .all (recodingLaw t (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_recodingLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianRationalFiniteSum.sum_zero _ _).eqSymm
-    · simp only [subst_recodingLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have step := GaussianRationalFiniteSum.sum_succ (Γ := recodingLaw t (var 0) (Syn.shift x) :: Γ.map Fm.shift)
+    ipra_qfind [subst_recodingLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianRationalFiniteSum.sum_zero _ _).eqSymm
+    · have step := GaussianRationalFiniteSum.sum_succ (Γ := recodingLaw t (var 0) (Syn.shift x) :: Γ.map Fm.shift)
         (recodeBody t) (var 0) (Syn.shift x)
       rw [inst2_recodeBody] at step
       exact step.eqTrans ((qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans
@@ -58,8 +52,7 @@ theorem sum_recode (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
 def deltaBody (t : PTm 2) : PTm 2 :=
   spike (fstT (var 1)) (recode (inst2 t (var 0) (sndT (var 1)))) (var 0)
 def deltaSum (t : PTm 2) (N k x : PTm n) : PTm n := GaussianRationalFiniteSum.sum (deltaBody t) N (pairT k x)
-@[simp] theorem subst_deltaSum {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N k x : PTm n) :
-    Syn.subst σ (deltaSum t N k x) = deltaSum t (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ x) := by simp [deltaSum]
+ipra_subst deltaSum
 
 theorem delta_body_at (t : PTm 2) (k i x : PTm n) : Γ ⊢[PRAAx]
     inst2 (deltaBody t) i (pairT k x) ≐ spike k (recode (inst2 t i x)) i := by
@@ -104,12 +97,8 @@ def boundedRange (p : PTm 2) (N x : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ lt (inst2 p (var 0) (Syn.shift x)) (Syn.shift N))
 def inverseLaw (p q : PTm 2) (N x : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ inst2 q (inst2 p (var 0) (Syn.shift x)) (Syn.shift x) ≐ var 0)
-@[simp] theorem subst_boundedRange {l : ℕ} (σ : Fin n → PTm l) (p : PTm 2) (N x : PTm n) :
-    (boundedRange p N x).subst σ = boundedRange p (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [boundedRange,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_inverseLaw {l : ℕ} (σ : Fin n → PTm l) (p q : PTm 2) (N x : PTm n) :
-    (inverseLaw p q N x).subst σ = inverseLaw p q (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [inverseLaw,Syn.subst_shift,Syn.shift_subst]
+ipra_subst boundedRange [Syn.subst_shift, Syn.shift_subst]
+ipra_subst inverseLaw [Syn.subst_shift, Syn.shift_subst]
 theorem range_at (p : PTm 2) (N x i : PTm n) (h : Γ ⊢[PRAAx] boundedRange p N x)
     (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] lt (inst2 p i x) N := by
   have gate : Γ ⊢[PRAAx] lt i N ⟶ lt (inst2 p i x) N := by simpa [boundedRange] using h.allE i
@@ -247,26 +236,23 @@ theorem involution_sum (t p : PTm 2) (N x : PTm n)
 
 def contract (p q : PTm 2) (N x : PTm n) : Fm PTm n := boundedRange p N x ⋏
   (boundedRange q N x ⋏ (inverseLaw p q N x ⋏ inverseLaw q p N x))
-@[simp] theorem subst_contract {l : ℕ} (σ : Fin n → PTm l) (p q : PTm 2) (N x : PTm n) :
-    (contract p q N x).subst σ = contract p q (Syn.subst σ N) (Syn.subst σ x) := by simp [contract]
+ipra_subst contract
 
 /-- The payload really constructs the reindexed and original sums separately. -/
 def output (t p : PTm 2) (N x : PTm n) : PTm n :=
   pairT (GaussianRationalFiniteSum.sum (mappedBody t p) N x) (GaussianRationalFiniteSum.sum t N x)
 def outputF (t p : PTm 2) : PR 2 := PTm.toPR (output t p (var 0) (var 1))
 def run (t p : PTm 2) (N x : PTm n) : PTm n := ap2 (outputF t p) N x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (t p : PTm 2) (N x : PTm n) :
-    Syn.subst σ (output t p N x) = output t p (Syn.subst σ N) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (t p : PTm 2) (N x : PTm n) :
-    Syn.subst σ (run t p N x) = run t p (Syn.subst σ N) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (t p : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] run t p N x ≐ output t p N x := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output t p (var 0) (var 1) : PTm 2) ![N,x]
 theorem returned_reindexed (t p : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     fstT (run t p N x) ≐ GaussianRationalFiniteSum.sum (mappedBody t p) N x :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_original (t p : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     sndT (run t p N x) ≐ GaussianRationalFiniteSum.sum t N x :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_reindexed_canonical (t p : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] canonical (fstT (run t p N x)) :=
   GaussianRationalHorner.canonical_congr (returned_reindexed _ _ _ _) (GaussianRationalFiniteSum.sum_canonical _ _ _)
 theorem returned_original_canonical (t p : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] canonical (sndT (run t p N x)) :=

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorProductFixedCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalExponentTaylorBuffer (buffer buffer_length)
 open GaussianBarnesCanonicalExponentTaylorCoefficientCauchy (linearGain)
 open GaussianBarnesCanonicalExponentTaylorCoefficientMassGap (massError)
@@ -36,10 +36,6 @@ open GaussianRationalSyntheticDivision (qsub_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open RationalArgmin (rationalLE rationalLE_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

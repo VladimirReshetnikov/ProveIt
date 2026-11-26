@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.RationalSquareRootBounds
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The dyadic square-root bracket used in polygonal isoperimetry
@@ -16,15 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Geometry.IsoperimetricDyadicSquareRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open RationalArgmin (rationalLE rationalLE_congr)
 open GaussianEuclideanDistanceName (fraction fraction_order fraction_represents)
 open GaussianRationalHorner (positive_product)
 open RationalSquareRootBounds (square fraction_square)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,16 +30,11 @@ def index (A B t : PTm n) : PTm n := isqrt (quo (scaled A t) B)
 def sd (A B t : PTm n) : PTm n := fraction (index A B t) (scale t)
 def upper (A B t : PTm n) : PTm n := fraction (succ (index A B t)) (scale t)
 
-@[simp] theorem subst_scale {q : ℕ} (σ : Fin n → PTm q) (t : PTm n) :
-    Syn.subst σ (scale t) = scale (Syn.subst σ t) := by simp [scale,two,one]
-@[simp] theorem subst_scaled {q : ℕ} (σ : Fin n → PTm q) (A t : PTm n) :
-    Syn.subst σ (scaled A t) = scaled (Syn.subst σ A) (Syn.subst σ t) := by simp [scaled]
-@[simp] theorem subst_index {q : ℕ} (σ : Fin n → PTm q) (A B t : PTm n) :
-    Syn.subst σ (index A B t) = index (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ t) := by simp [index]
-@[simp] theorem subst_sd {q : ℕ} (σ : Fin n → PTm q) (A B t : PTm n) :
-    Syn.subst σ (sd A B t) = sd (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ t) := by simp [sd]
-@[simp] theorem subst_upper {q : ℕ} (σ : Fin n → PTm q) (A B t : PTm n) :
-    Syn.subst σ (upper A B t) = upper (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ t) := by simp [upper]
+ipra_subst scale [two, one]
+ipra_subst scaled
+ipra_subst index
+ipra_subst sd
+ipra_subst upper
 
 theorem scale_positive (t : PTm n) : Γ ⊢[PRAAx] le one (scale t) :=
   RationalNonnegativePowers.denominator_positive two t (by ipra_le 1)

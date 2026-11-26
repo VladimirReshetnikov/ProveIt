@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.CubeRootTwo
 import IPRADerivations.Core.Descent
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # `X³ − 3X − 1` has no rational root (`three_impossibilities_ipra`)
@@ -25,12 +24,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.TrisectionCubic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ double_cancel lt_succ_of_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

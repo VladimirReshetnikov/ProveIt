@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumLogProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianNamedPositiveLogarithm (admissible admissible_at)
@@ -20,8 +20,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianStirlingGammaLogarithm
   (source arg euler_real_source logGammaF logGammaData gammaLogMargin gammaRetimedF gammaRetimedData
     gamma_retimed_cross gammaData gammaRealF log_input)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

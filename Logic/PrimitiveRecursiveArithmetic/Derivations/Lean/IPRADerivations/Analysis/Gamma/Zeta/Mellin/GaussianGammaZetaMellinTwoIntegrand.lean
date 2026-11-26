@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinTwoIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianEulerIntegrandName (powerF powerData coefficient)
@@ -26,8 +26,6 @@ open GaussianGammaZetaMellinIntegrand (nameF data reciprocalF reciprocalData den
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_refl)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

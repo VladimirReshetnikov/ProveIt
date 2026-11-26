@@ -18,15 +18,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNameBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (pointCN point_cn_at)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (qL1)
 open LeanProofs.IPRA.Analysis.GaussianRootApproximationWitness (pointBounds)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,16 +35,11 @@ def output (f : PR 2) (s x : PTm n) : PTm n := pairT (ap2 f s x) (U f x)
 def outputF (f : PR 2) : PR 2 := PTm.toPR (output f (var 0) (var 1))
 def run (f : PR 2) (s x : PTm n) : PTm n := ap2 (outputF f) s x
 
-@[simp] theorem subst_initial {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (initial f x) = initial f (Syn.subst σ x) := by simp [initial]
-@[simp] theorem subst_ceiling {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (ceiling f x) = ceiling f (Syn.subst σ x) := by simp [ceiling]
-@[simp] theorem subst_U {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (U f x) = U f (Syn.subst σ x) := by simp [U]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (s x : PTm n) :
-    Syn.subst σ (output f s x) = output f (Syn.subst σ s) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (s x : PTm n) :
-    Syn.subst σ (run f s x) = run f (Syn.subst σ s) (Syn.subst σ x) := by simp [run]
+ipra_subst initial
+ipra_subst ceiling
+ipra_subst U
+ipra_subst output
+ipra_subst run
 
 theorem initial_l1_bound (f : PR 2) (x : PTm n) : Γ ⊢[PRAAx]
     RationalArgmin.rationalLE (qL1 (initial f x)) (GaussianEuclideanDistanceName.fraction (ceiling f x) one) :=
@@ -98,9 +90,9 @@ theorem radius_at (f : PR 2) (x : PTm n) : Γ ⊢[PRAAx] ap1 (radiusF f) x ≐ U
 theorem output_at (f : PR 2) (s x : PTm n) : Γ ⊢[PRAAx] run f s x ≐ output f s x := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output f (var 0) (var 1)) ![s,x]
 theorem returned_sample (f : PR 2) (s x : PTm n) : Γ ⊢[PRAAx] fstT (run f s x) ≐ ap2 f s x :=
-  (congrFst (output_at f s x)).eqTrans (fst_pair _ _)
+  (output_at f s x).fstE
 theorem returned_radius (f : PR 2) (s x : PTm n) : Γ ⊢[PRAAx] sndT (run f s x) ≐ U f x :=
-  (congrSnd (output_at f s x)).eqTrans (snd_pair _ _)
+  (output_at f s x).sndE
 theorem returned_bound (f : PR 2) (s x : PTm n) (hPoint : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx]
     bounded (fstT (run f s x)) (sndT (run f s x)) one :=
   GaussianRationalReciprocal.bound_congr (returned_sample f s x).eqSymm (returned_radius f s x).eqSymm

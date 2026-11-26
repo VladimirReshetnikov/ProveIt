@@ -17,7 +17,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReflectionFamily
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaGaussReflectionDomain (source referenceData complement pairData pair_regular reference_regular)
 open GaussianGammaGaussReflectionRow (rowF rowData row_regular reflection_row cyclic_source)
 open GaussianGammaReciprocalInverse (gammaF)
@@ -31,9 +31,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNameArithmetic (multiplyData)
 open GaussianRootAlgebra (equal_of_values)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaHalfPiName.nameF
@@ -49,8 +46,7 @@ def rightBody : PTm 2 := referenceData (complement (numerator (fstT (var 1)) (va
 def pairBody : PTm 2 := multiplyData gammaF gammaF leftBody rightBody
 def piBody : PTm 2 := sndT (var 1)
 
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (N i : PTm n) :
-    Syn.subst σ (numerator N i) = numerator (Syn.subst σ N) (Syn.subst σ i) := by simp [numerator]
+ipra_subst numerator
 
 theorem reflection_body_eq : reflectionBody = multiplyData S gammaPairF sineBody pairBody := rfl
 

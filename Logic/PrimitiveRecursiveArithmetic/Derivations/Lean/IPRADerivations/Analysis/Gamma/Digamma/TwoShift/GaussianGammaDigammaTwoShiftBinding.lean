@@ -14,7 +14,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaFiniteApproximantName (exponentialInputData)
@@ -24,8 +24,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalMetric (qsub)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular gammaData gamma_regular)
 open GaussianStirlingLogDuplication (exponential_regular exponential_gamma exponential_sum)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF
@@ -55,31 +53,19 @@ def denominatorData (a b c d : PTm n) : PTm n :=
 def quotientF : PR 2 := E quotientLogF
 def quotientData (a b c d : PTm n) : PTm n := ed quotientLogF (quotientLogData a b c d)
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (b c d : PTm n) :
-    Syn.subst σ (coefficient b c d) = coefficient (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [coefficient]
+ipra_subst coefficient
 
-@[simp] theorem subst_powerLogData {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (powerLogData a b c d) = powerLogData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [powerLogData]
+ipra_subst powerLogData
 
-@[simp] theorem subst_denominatorLogData {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (denominatorLogData a b c d) =
-      denominatorLogData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [denominatorLogData]
+ipra_subst denominatorLogData
 
-@[simp] theorem subst_quotientLogData {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (quotientLogData a b c d) =
-      quotientLogData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [quotientLogData]
+ipra_subst quotientLogData
 
-@[simp] theorem subst_powerData {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (powerData a b c d) = powerData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [powerData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst powerData [GaussianGammaFiniteApproximantName.exponentialInputData]
 
-@[simp] theorem subst_denominatorData {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (denominatorData a b c d) =
-      denominatorData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [denominatorData]
+ipra_subst denominatorData
 
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (quotientData a b c d) =
-      quotientData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [quotientData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst quotientData [GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem power_log_regular (a b c d : PTm n) (ha : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN powerLogF (powerLogData a b c d) :=

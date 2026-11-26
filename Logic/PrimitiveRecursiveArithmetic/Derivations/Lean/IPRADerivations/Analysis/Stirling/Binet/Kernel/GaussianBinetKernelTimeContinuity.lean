@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelTimeContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows
   (inputData rowData rowF rowBody row_at row_sample regular_rows
     denominator denominatorLower denominator_lower weight value subst_inputData)
@@ -27,10 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (qzero qadd qmul positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalReciprocal (reciprocal norm_positive inverse_bound bound_congr bounded_product)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -41,10 +37,7 @@ def source (A B a b T E D : PTm n) : Fm PTm n :=
   le one B ⋏ (le one b ⋏ (le one D ⋏
     (le A (T*B) ⋏ (le a (T*b) ⋏ distanceBounded (fraction A B) (fraction a b) E D))))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (A B a b T E D : PTm n) :
-    (source A B a b T E D).subst σ = source (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ T) (Syn.subst σ E) (Syn.subst σ D) := by
-  simp [source, one]
+ipra_subst source [one]
 
 theorem row_time_distance (p i A B a b T E D : PTm n)
     (h : Γ ⊢[PRAAx] source A B a b T E D) :

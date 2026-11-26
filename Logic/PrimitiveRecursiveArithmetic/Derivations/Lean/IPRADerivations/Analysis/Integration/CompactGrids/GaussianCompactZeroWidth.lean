@@ -12,15 +12,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactZeroWidth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (sample quadrature)
 open GaussianRationalHorner (qzero)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

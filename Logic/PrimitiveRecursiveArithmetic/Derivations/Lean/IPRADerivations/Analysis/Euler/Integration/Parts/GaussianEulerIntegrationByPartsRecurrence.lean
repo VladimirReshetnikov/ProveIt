@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source subst_source improper_source original_Euler_integral_is_Gamma)
 open GaussianEulerIntegrationByPartsDomain (productF productData gammaProductF gammaProductData)
 open GaussianGammaEulerHeadShift (shifted)
@@ -32,10 +32,6 @@ open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_trans)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

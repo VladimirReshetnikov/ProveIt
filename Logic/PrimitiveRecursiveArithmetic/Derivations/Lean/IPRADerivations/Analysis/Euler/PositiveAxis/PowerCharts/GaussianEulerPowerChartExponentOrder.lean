@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartExponentOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (argument)
 open GaussianEulerPositivePowerChartOrder (inputF inputData input_cross coefficient_bound input_real_samples)
 open GaussianEulerIntegrandName (powerF powerData powerExponentF powerExponentData powerRadius)
@@ -23,8 +23,6 @@ open GaussianNamedPositiveExponentialOrder (sampleOrder realOrder)
 open GaussianNameEquivalence (cross_symm)
 open GaussianPositiveRationalLogarithm (fraction)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,10 +30,7 @@ def source (e f u v Q a b : PTm n) : Fm PTm n :=
   (le one f ⋏ le e (Q*f)) ⋏ ((le one v ⋏ le u (Q*v)) ⋏
     (le (e*v) (u*f) ⋏ GaussianPositiveRationalLogarithm.source a b))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (e f u v Q a b : PTm n) :
-    (source e f u v Q a b).subst σ = source (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ Q) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [source]
+ipra_subst source
 
 private theorem scalar_represents (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (fraction a b)) (ZT.ofNat a) b := by

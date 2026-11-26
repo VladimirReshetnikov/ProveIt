@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailScalar
 import IPRADerivations.Analysis.Euler.PositiveAxis.HalfDecay.GaussianEulerHalfDecayTailBound
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original compact Euler quadrature at the upper cutoff
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactUpperTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerCoefficients (source)
 open GaussianEulerWeightedHalfDecay (majorant)
 open GaussianEulerUpperTailScalar (budget scalarMajorant)
@@ -33,9 +32,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open RationalGaussianEmbedding (embed)
 open RationalGaussianRealPart (embedBody)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,9 +42,7 @@ abbrev halfEvaluator : PR 3 := GaussianEulerHalfDecayQuadrature.halfF
 def scaledEval (p t M : PTm n) : PTm n := qmul (radiusPoint M one) (ap3 halfEvaluator p t zero)
 def scaledF : PR 3 := PTm.toPR (scaledEval (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_scaledEval {m : ℕ} (σ : Fin n → PTm m) (p t M : PTm n) :
-    Syn.subst σ (scaledEval p t M) = scaledEval (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ M) :=
-  by simp [scaledEval]
+ipra_subst scaledEval
 
 theorem scalar_body_at (i p N a C E R : PTm n) : Γ ⊢[PRAAx]
     inst2 scalarBody i (sampleData p N a C E R) ≐ scalarMajorant p R (a*N+C*i) (E*N) := by

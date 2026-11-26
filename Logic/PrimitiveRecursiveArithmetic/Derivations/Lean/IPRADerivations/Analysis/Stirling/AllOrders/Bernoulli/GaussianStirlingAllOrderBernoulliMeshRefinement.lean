@@ -12,15 +12,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderBernoulliMesh (homogeneous toZ_value)
 open GaussianStirlingAllOrderCenteredBernoulli
   (numerator denominator sample sample_value sample_canonical denominator_positive)
 open GaussianRationalHorner (positive_product)
 open BernoulliBounds (toZ_zint)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

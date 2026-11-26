@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.LocalizationWitness
-import IPRADerivations.Core.Pairing
 
 /-!
 # The power-cover constructor for three generators and every exponent
@@ -19,12 +18,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.PowerCover3
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.LocalizationWitness (bucket cover_step₃)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -136,28 +131,26 @@ variable {s a b c e g h : PTm n}
 
 theorem toZ_D0_of (hs : Γ ⊢[PRAAx] s ≐ pairT (pairT a b) (pairT (pairT c e) (pairT g h))) :
     ZT.toZ Γ (D0 s) = Groth.ι (Q.mk Γ a) - Groth.ι (Q.mk Γ b) := by
-  have ha := natEq ((congrFst (congrFst hs)).eqTrans ((congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)))
-  have hb := natEq ((congrSnd (congrFst hs)).eqTrans ((congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _)))
+  have ha := natEq ((congrFst (congrFst hs)).eqTrans (fst_pair _ _).fstE)
+  have hb := natEq ((congrSnd (congrFst hs)).eqTrans (fst_pair _ _).sndE)
   show Groth.ι (Q.mk Γ (fstT (fstT s))) - Groth.ι (Q.mk Γ (sndT (fstT s))) = _
   rw [ha, hb]
 
 theorem toZ_D1_of (hs : Γ ⊢[PRAAx] s ≐ pairT (pairT a b) (pairT (pairT c e) (pairT g h))) :
     ZT.toZ Γ (D1 s) = Groth.ι (Q.mk Γ c) - Groth.ι (Q.mk Γ e) := by
   have m : Γ ⊢[PRAAx] fstT (sndT s) ≐ pairT c e :=
-    (congrFst (congrSnd hs)).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-  have hc := natEq ((congrFst m).eqTrans (fst_pair _ _))
-  have he := natEq ((congrSnd m).eqTrans (snd_pair _ _))
+    (congrFst (congrSnd hs)).eqTrans (snd_pair _ _).fstE
+  have hc := natEq m.fstE
+  have he := natEq m.sndE
   show Groth.ι (Q.mk Γ (fstT (fstT (sndT s)))) - Groth.ι (Q.mk Γ (sndT (fstT (sndT s)))) = _
   rw [hc, he]
 
 theorem toZ_D2_of (hs : Γ ⊢[PRAAx] s ≐ pairT (pairT a b) (pairT (pairT c e) (pairT g h))) :
     ZT.toZ Γ (D2 s) = Groth.ι (Q.mk Γ g) - Groth.ι (Q.mk Γ h) := by
   have m : Γ ⊢[PRAAx] sndT (sndT s) ≐ pairT g h :=
-    (congrSnd (congrSnd hs)).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
-  have hg := natEq ((congrFst m).eqTrans (fst_pair _ _))
-  have hh := natEq ((congrSnd m).eqTrans (snd_pair _ _))
+    (congrSnd (congrSnd hs)).eqTrans (snd_pair _ _).sndE
   show Groth.ι (Q.mk Γ (fstT (sndT (sndT s)))) - Groth.ι (Q.mk Γ (sndT (sndT (sndT s)))) = _
-  rw [hg, hh]
+  rw [natEq m.fstE, natEq m.sndE]
 
 end Eval
 
@@ -201,12 +194,11 @@ def Cover {n : ℕ} (x : PTm n) : Fm PTm n := ZT.eq (U x) (ZT.natLit 1)
 theorem inv_base {x : PTm n} (hu : Γ ⊢[PRAAx] Cover x) : Γ ⊢[PRAAx] Inv (st zero x) x zero := by
   have eu := ZT.toZ_eq hu
   have p₀ := natEq (pw_zero (Γ := Γ) (g0 x)); have p₁ := natEq (pw_zero (Γ := Γ) (g1 x))
-  have p₂ := natEq (pw_zero (Γ := Γ) (g2 x))
   unfold Inv
   apply ZT.derive
   simp only [U, X0, X1, X2] at eu ⊢
   ipra_simps
-  rw [toZ_D0_zero, toZ_D1_zero, toZ_D2_zero, p₀, p₁, p₂]
+  rw [toZ_D0_zero, toZ_D1_zero, toZ_D2_zero, p₀, p₁, natEq (pw_zero (Γ := Γ) (g2 x))]
   linear_combination eu
 
 theorem inv_step {x k : PTm n} (hu : Γ ⊢[PRAAx] Cover x) (ih : Γ ⊢[PRAAx] Inv (st k x) x k) :
@@ -214,13 +206,12 @@ theorem inv_step {x k : PTm n} (hu : Γ ⊢[PRAAx] Cover x) (ih : Γ ⊢[PRAAx] 
   have e := ZT.toZ_eq (cover_step₃ (P₀ := ZT.ofNat (pw (g0 x) k)) (P₁ := ZT.ofNat (pw (g1 x) k))
     (P₂ := ZT.ofNat (pw (g2 x) k)) (d₀ := D0 (st k x)) (d₁ := D1 (st k x)) (d₂ := D2 (st k x)) hu ih)
   have p₀ := natEq (pw_succ (Γ := Γ) (g0 x) k); have p₁ := natEq (pw_succ (Γ := Γ) (g1 x) k)
-  have p₂ := natEq (pw_succ (Γ := Γ) (g2 x) k)
   unfold Inv
   apply ZT.derive
   simp only [X0, X1, X2, ZT.toZ_add, ZT.toZ_mul, toZ_D0_succ, toZ_D1_succ, toZ_D2_succ]
   simp only [NX0, NX1, NX2, X0, X1, X2, U, bucket] at e ⊢
   ipra_simps
-  rw [p₀, p₁, p₂]
+  rw [p₀, p₁, natEq (pw_succ (Γ := Γ) (g2 x) k)]
   linear_combination e
 
 /-- Variables: `0 = k` (induction), `1 = x`. -/
@@ -233,13 +224,9 @@ theorem Inv_subst {m : ℕ} (σ : Fin n → PTm m) (s x k : PTm n) :
     (Inv s x k).subst σ = Inv (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ k) := by simp [Inv]
 
 private theorem cov₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] covF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Cover_subst, Inv_subst, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (inv_base Prf.hyp0)
-  · simp only [Fm.subst_imp, Cover_subst, Inv_subst, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (inv_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [Cover_subst, Inv_subst, subst_ap2]
+  · exact .impI (inv_base Prf.hyp0)
+  · exact .impI (inv_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- `thm:power-cover` for three generators and every exponent. -/
 theorem power_cover₃ {x : PTm n} (hu : Γ ⊢[PRAAx] Cover x) (k : PTm n) :

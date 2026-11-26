@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTail
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # An actual finite-series exponential name at an original rational input
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalExponentialName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (canonical)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody)
@@ -27,10 +26,6 @@ open GaussianRationalExponentialTail (cutoff lastIndex precisionDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,14 +34,10 @@ def input (x : PTm n) : Fm PTm n := bounded (sndT x) (fstT x) one
 def value (p x : PTm n) : PTm n := scalarSum (sndT x) (lastIndex (fstT x) p)
 def nameF : PR 2 := PTm.toPR (value (var 0) (var 1))
 def sample (p x : PTm n) : PTm n := ap2 nameF p x
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (q B : PTm n) :
-    Syn.subst σ (data q B) = data (Syn.subst σ q) (Syn.subst σ B) := by simp [data]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    (input x).subst σ = input (Syn.subst σ x) := by simp [input]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (p x : PTm n) :
-    Syn.subst σ (value p x) = value (Syn.subst σ p) (Syn.subst σ x) := by simp [value]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (p x : PTm n) :
-    Syn.subst σ (sample p x) = sample (Syn.subst σ p) (Syn.subst σ x) := by simp [sample]
+ipra_subst data
+ipra_subst input
+ipra_subst value
+ipra_subst sample
 
 theorem sample_at (p x : PTm n) : Γ ⊢[PRAAx] sample p x ≐ value p x := by
   simpa [sample,nameF,ap2] using toPR_eq (Γ := Γ) (value (var 0) (var 1) : PTm 2) ![p,x]
@@ -129,25 +120,23 @@ def output (p q B : PTm n) : PTm n := pairT (sample p (data q B))
   (pairT (scalarSum q (lastIndex B p)) (pairT (lastIndex B p) q))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (p q B : PTm n) : PTm n := ap3 outputF p q B
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q B : PTm n) :
-    Syn.subst σ (output p q B) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ B) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q B : PTm n) :
-    Syn.subst σ (run p q B) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ B) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p q B : PTm n) : Γ ⊢[PRAAx] run p q B ≐ output p q B := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![p,q,B]
 theorem returned_sample (p q B : PTm n) : Γ ⊢[PRAAx] fstT (run p q B) ≐ sample p (data q B) :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_tail (p q B : PTm n) : Γ ⊢[PRAAx] sndT (run p q B) ≐ pairT (scalarSum q (lastIndex B p)) (pairT (lastIndex B p) q) :=
-  (congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE
 theorem returned_original (p q B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p q B)) ≐ scalarSum q (lastIndex B p) :=
-  (congrFst (returned_tail _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _).fstE
 theorem returned_pair (p q B : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p q B)) ≐ pairT (lastIndex B p) q :=
-  (congrSnd (returned_tail _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _).sndE
 theorem returned_index (p q B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p q B))) ≐ lastIndex B p :=
-  (congrFst (returned_pair _ _ _)).eqTrans (fst_pair _ _)
+  (returned_pair _ _ _).fstE
 theorem returned_query (p q B : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p q B))) ≐ q :=
-  (congrSnd (returned_pair _ _ _)).eqTrans (snd_pair _ _)
+  (returned_pair _ _ _).sndE
 theorem returned_equal (p q B : PTm n) : Γ ⊢[PRAAx] fstT (run p q B) ≐ fstT (sndT (run p q B)) :=
   (returned_sample _ _ _).eqTrans ((source_sample p q B).eqTrans (returned_original _ _ _).eqSymm)
 

@@ -19,17 +19,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerScalarBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open RationalSupMetric (numeratorOf denominatorOf rationalCode)
 open RationalIntegerNormalization (normalize divisor reducedDenominator)
 open RationalNormalForm (wellFormed)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,13 +34,9 @@ def height (q B : PTm n) : Fm PTm n :=
 def codeCap (B : PTm n) : PTm n := succ (pairT (pairT B B) B)
 def amp (B : PTm n) : PTm n := two*B*B
 
-@[simp] theorem subst_height {k : ℕ} (σ : Fin n → PTm k) (q B : PTm n) :
-    (height q B).subst σ = height (Syn.subst σ q) (Syn.subst σ B) := by
-  simp [height,RationalSupMetric.numeratorOf]
-@[simp] theorem subst_codeCap {k : ℕ} (σ : Fin n → PTm k) (B : PTm n) :
-    Syn.subst σ (codeCap B) = codeCap (Syn.subst σ B) := by simp [codeCap]
-@[simp] theorem subst_amp {k : ℕ} (σ : Fin n → PTm k) (B : PTm n) :
-    Syn.subst σ (amp B) = amp (Syn.subst σ B) := by simp [amp,two,one]
+ipra_subst height [RationalSupMetric.numeratorOf]
+ipra_subst codeCap
+ipra_subst amp [two, one]
 
 theorem height_congr {q q' B B' : PTm n} (hq : Γ ⊢[PRAAx] q ≐ q')
     (hB : Γ ⊢[PRAAx] B ≐ B') (h : Γ ⊢[PRAAx] height q B) :
@@ -159,14 +151,9 @@ def growth (t B : PTm n) : PTm n := ap2 growthF t B
 def majorant (t B : PTm n) : PTm n := pw (two*B+two) (pw two t)
 def growthLaw (t B : PTm n) : Fm PTm n := le (two*growth t B) (majorant t B)
 
-@[simp] theorem subst_growth {k : ℕ} (σ : Fin n → PTm k) (t B : PTm n) :
-    Syn.subst σ (growth t B) = growth (Syn.subst σ t) (Syn.subst σ B) := by simp [growth]
-@[simp] theorem subst_majorant {k : ℕ} (σ : Fin n → PTm k) (t B : PTm n) :
-    Syn.subst σ (majorant t B) = majorant (Syn.subst σ t) (Syn.subst σ B) := by
-  simp [majorant,two,one]
-@[simp] theorem subst_growthLaw {k : ℕ} (σ : Fin n → PTm k) (t B : PTm n) :
-    (growthLaw t B).subst σ = growthLaw (Syn.subst σ t) (Syn.subst σ B) := by
-  simp [growthLaw,two,one]
+ipra_subst growth
+ipra_subst majorant [two, one]
+ipra_subst growthLaw [two, one]
 
 theorem growth_zero (B : PTm n) : Γ ⊢[PRAAx] growth zero B ≐ B := by
   simpa [growth,growthF,growthBase] using rec2_zero (Γ := Γ) growthBase growthStep B
@@ -193,11 +180,9 @@ theorem growth_law_step (t B : PTm n) (h : Γ ⊢[PRAAx] growthLaw t B) :
 majorant with the necessary factor two retained in the invariant. -/
 theorem growth_bound (t B : PTm n) : Γ ⊢[PRAAx] growthLaw t B := by
   have all : Γ ⊢[PRAAx] .all (growthLaw (var 0) (Syn.shift B)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_growthLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact growth_law_zero B
-    · simp only [subst_growthLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact growth_law_step _ _ Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_growthLaw]
+    · exact growth_law_zero B
+    · exact growth_law_step _ _ Prf.hyp0
   simpa only [subst_growthLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 theorem growth_le_majorant (t B : PTm n) : Γ ⊢[PRAAx] le (growth t B) (majorant t B) :=
   le_trans (le_congr (.eqRefl _) (by ipra_ring) (le_add_right (growth t B) (growth t B)))
@@ -207,19 +192,16 @@ def budgetOutput (t B : PTm n) : PTm n := pairT (growth t B)
   (pairT (majorant t B) (codeCap (growth t B)))
 def budgetOutputF : PR 2 := PTm.toPR (budgetOutput (var 0) (var 1))
 def run (t B : PTm n) : PTm n := ap2 budgetOutputF t B
-@[simp] theorem subst_budgetOutput {k : ℕ} (σ : Fin n → PTm k) (t B : PTm n) :
-    Syn.subst σ (budgetOutput t B) = budgetOutput (Syn.subst σ t) (Syn.subst σ B) := by
-  simp [budgetOutput]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (t B : PTm n) :
-    Syn.subst σ (run t B) = run (Syn.subst σ t) (Syn.subst σ B) := by simp [run]
+ipra_subst budgetOutput
+ipra_subst run
 theorem program_at (t B : PTm n) : Γ ⊢[PRAAx] run t B ≐ budgetOutput t B := by
   simpa [run,budgetOutputF,ap2] using toPR_eq (Γ := Γ) (budgetOutput (var 0) (var 1) : PTm 2) ![t,B]
 theorem returned_growth (t B : PTm n) : Γ ⊢[PRAAx] fstT (run t B) ≐ growth t B :=
-  (congrFst (program_at _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _).fstE
 theorem returned_majorant (t B : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run t B)) ≐ majorant t B :=
-  (congrFst ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _).sndE.fstE
 theorem returned_code_cap (t B : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run t B)) ≐ codeCap (growth t B) :=
-  (congrSnd ((congrSnd (program_at _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _).sndE.sndE
 theorem returned_bound (t B : PTm n) : Γ ⊢[PRAAx] le (two*fstT (run t B)) (fstT (sndT (run t B))) :=
   le_congr (congrMul (.eqRefl _) (returned_growth t B)).eqSymm
     (returned_majorant t B).eqSymm (growth_bound t B)

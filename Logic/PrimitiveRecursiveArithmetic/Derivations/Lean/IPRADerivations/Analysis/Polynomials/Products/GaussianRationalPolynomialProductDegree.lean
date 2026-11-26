@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDegree
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReconstruction
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual convolution, leading coefficient and computed product degree
@@ -15,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialProductDegree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qadd_congr qmul_congr qzero_canonical qmul_zero_left qmul_zero_right canonicalCoefficients)
@@ -34,16 +33,11 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMonicReconstruction
 open LeanProofs.IPRA.Analysis.GaussianRationalLinearProduct (padded padded_inside padded_outside)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def leading (C N : PTm n) : PTm n := recode (entry C (first C N))
-@[simp] theorem subst_leading {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (leading C N) = leading (Syn.subst σ C) (Syn.subst σ N) := by simp [leading]
+ipra_subst leading
 
 theorem raw_zero_left (a b : PTm n) (h : Γ ⊢[PRAAx] recode a ≐ qzero) : Γ ⊢[PRAAx] qmul a b ≐ qzero :=
   (qmul_recode_left _ _).eqSymm.eqTrans ((qmul_congr h (.eqRefl _)).eqTrans (qmul_zero_left _))
@@ -80,9 +74,7 @@ theorem prefix_contribution_zero (P Q M e f k i : PTm n)
 sum kernel; no global convolution-zero law is assumed by its consumers. -/
 def zeroTerms (P Q M t k : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift t) ⟶
   contribution (Syn.shift P) (Syn.shift Q) (Syn.shift M) (Syn.shift k) (var 0) ≐ qzero)
-@[simp] theorem subst_zeroTerms {l : ℕ} (σ : Fin n → PTm l) (P Q M t k : PTm n) :
-    (zeroTerms P Q M t k).subst σ = zeroTerms (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ M)
-      (Syn.subst σ t) (Syn.subst σ k) := by simp [zeroTerms,Syn.subst_shift,Syn.shift_subst]
+ipra_subst zeroTerms [Syn.subst_shift, Syn.shift_subst]
 theorem zero_terms_at (P Q M t k i : PTm n) (h : Γ ⊢[PRAAx] zeroTerms P Q M t k)
     (hi : Γ ⊢[PRAAx] lt i t) : Γ ⊢[PRAAx] contribution P Q M k i ≐ qzero := by
   have e : Γ ⊢[PRAAx] lt i t ⟶ contribution P Q M k i ≐ qzero := by
@@ -336,10 +328,8 @@ def certificate (P Q N M : PTm n) : Fm PTm n :=
       ((leading (product P Q N M) (N+M) ≐ qmul (leading P N) (leading Q M)) ⋏
         (neg (leading (product P Q N M) (N+M) ≐ qzero) ⋏
           (degree (product P Q N M) (N+M) ≐ degree P N+degree Q M))))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (P Q N M : PTm n) :
-    (input P Q N M).subst σ = input (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) := by simp [input]
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (P Q N M : PTm n) :
-    (certificate P Q N M).subst σ = certificate (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) := by simp [certificate]
+ipra_subst input
+ipra_subst certificate
 
 theorem product_correct (P Q N M : PTm n) (h : Γ ⊢[PRAAx] input P Q N M) : Γ ⊢[PRAAx] certificate P Q N M := by
   have hp := Prf.andE₁ (Prf.andE₂ h)
@@ -354,32 +344,26 @@ def output (P Q N M : PTm n) : PTm n := pairT (product P Q N M)
     (pairT (degree (product P Q N M) (N+M)) (leading (product P Q N M) (N+M)))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (P Q N M : PTm n) : PTm n := PTm.app outputF ![P,Q,N,M]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (P Q N M : PTm n) :
-    Syn.subst σ (output P Q N M) = output (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (P Q N M : PTm n) :
-    Syn.subst σ (run P Q N M) = run (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (P Q N M : PTm n) : Γ ⊢[PRAAx] run P Q N M ≐ output P Q N M := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![P,Q,N,M]
 theorem returned_product (P Q N M : PTm n) : Γ ⊢[PRAAx] fstT (run P Q N M) ≐ product P Q N M :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_flag (P Q N M : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run P Q N M)) ≐ flag (product P Q N M) (N+M) :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_first (P Q N M : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run P Q N M))) ≐ first (product P Q N M) (N+M) :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.sndE.fstE
 theorem returned_degree (P Q N M : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run P Q N M)))) ≐ degree (product P Q N M) (N+M) :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans
+  (congrFst ((congrSnd (program_at _ _ _ _).sndE.sndE).eqTrans
     (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_leading (P Q N M : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run P Q N M)))) ≐ leading (product P Q N M) (N+M) :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans
+  (congrSnd ((congrSnd (program_at _ _ _ _).sndE.sndE).eqTrans
     (snd_pair _ _))).eqTrans (snd_pair _ _)
 theorem returned_product_length (P Q N M : PTm n) : Γ ⊢[PRAAx]
     length (fstT (run P Q N M)) ≐ succ (N+M) :=

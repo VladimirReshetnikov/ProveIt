@@ -16,7 +16,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingTelescopeName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingNames (source)
 open GaussianStirlingTelescope (shifted shifted_source rawSum endpoint sampleData dBody d_at
   localRows rows_from_recurrence independent_error diagonal_error errorNumerator errorDenominator)
@@ -29,9 +29,6 @@ open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianFastValueCut (regular)
 open GaussianValueNormalizerExtensionality (rawDiagonal)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "A" => GaussianStirlingNames.nameF
@@ -46,13 +43,9 @@ def data (N a b : PTm n) : PTm n := GaussianFastValueCut.nameData N (rawData N a
 def endpointData (N a b : PTm n) : PTm n :=
   GaussianNamedDifference.data (GaussianStirlingNames.nameData a b) (GaussianStirlingNames.nameData (shifted a b N) b)
 
-@[simp] theorem subst_rawData {l : ℕ} (σ : Fin n → PTm l) (N a b : PTm n) :
-    Syn.subst σ (rawData N a b) = rawData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [rawData]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (N a b : PTm n) :
-    Syn.subst σ (data N a b) = data (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_endpointData {l : ℕ} (σ : Fin n → PTm l) (N a b : PTm n) :
-    Syn.subst σ (endpointData N a b) = endpointData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [endpointData]
+ipra_subst rawData
+ipra_subst data
+ipra_subst endpointData
 
 theorem raw_at (p N a b : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData N a b) ≐ rawSum p N a b := by
   let x := rawData N a b
@@ -65,8 +58,8 @@ theorem raw_at (p N a b : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData N a b) ≐ 
         fin_cases j
         · exact .eqRefl _
         · exact fst_pair _ _
-        · exact (congrFst p₂).eqTrans (fst_pair _ _)
-        · exact (congrSnd p₂).eqTrans (snd_pair _ _))
+        · exact p₂.fstE
+        · exact p₂.sndE)
   exact read.eqTrans bind
 
 private theorem raw_rows (p q N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :

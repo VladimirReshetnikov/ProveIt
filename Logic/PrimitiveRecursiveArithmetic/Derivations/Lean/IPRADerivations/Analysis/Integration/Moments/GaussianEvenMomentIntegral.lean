@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEvenMomentIntegral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfIntegerDomain (argument radius)
 open GaussianGammaIntegralCutoffs (etaDen)
 open GaussianEulerQuadraticCutoffGeometry (width)
@@ -24,9 +24,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,14 +33,9 @@ def data (N c d : PTm n) : PTm n := GaussianEulerQuadraticImproperKernel.data (a
 def valueData (N c d : PTm n) : PTm n := GaussianEulerQuadraticGamma.productData (argument N) (radius N) two two c d
 def cutoff (p N c d : PTm n) : PTm n := GaussianEulerQuadraticImproperSchedule.index p two
   (GaussianEulerQuadraticImproperKernel.invBound (argument N) two c d) c d
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N c d : PTm n) :
-    Syn.subst σ (data N c d) = data (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [data]
-@[simp] theorem subst_valueData {m : ℕ} (σ : Fin n → PTm m) (N c d : PTm n) :
-    Syn.subst σ (valueData N c d) = valueData (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by simp [valueData]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (p N c d : PTm n) :
-    Syn.subst σ (cutoff p N c d) = cutoff (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [cutoff,GaussianEulerQuadraticImproperKernel.invBound]
+ipra_subst data
+ipra_subst valueData
+ipra_subst cutoff [GaussianEulerQuadraticImproperKernel.invBound]
 
 theorem name_regular (N c d : PTm n) (hc : Γ ⊢[PRAAx] le one c) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     pointCN nameF (data N c d) := GaussianEulerQuadraticImproperKernel.name_regular _ _ _ _ _ _

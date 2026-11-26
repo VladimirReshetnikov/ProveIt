@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentRescale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentImproper (nameF data subst_data regular sample_canonical)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radiusPoint radius_congr)
@@ -26,10 +26,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (qmul qzero positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qmul_zero_left)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "realSource" => GaussianLogGammaEulerResidualDomain.source

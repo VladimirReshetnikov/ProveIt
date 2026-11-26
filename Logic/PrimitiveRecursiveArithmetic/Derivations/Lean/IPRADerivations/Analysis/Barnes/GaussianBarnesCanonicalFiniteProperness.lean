@@ -18,7 +18,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianBarnesCanonicalFiniteRadius (prefixData)
 open GaussianBarnesCanonicalHead (source)
@@ -31,9 +31,6 @@ open GaussianNamedFiniteProductFamilyCongruence (equalRows family_product_cross)
 open GaussianRationalHorner (ofGaussian represents ofGaussian_represents ofGaussian_canonical represents_congr
   represents_rescale canonical_unique positive_product qmul)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBarnesCanonicalFactor.nameF

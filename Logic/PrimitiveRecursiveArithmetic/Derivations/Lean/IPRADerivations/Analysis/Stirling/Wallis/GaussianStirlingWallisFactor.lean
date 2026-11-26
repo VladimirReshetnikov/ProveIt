@@ -16,7 +16,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingWallisFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfRisingFactorial (factorialValue factorial_formula factorial_positive)
 open GaussianGammaHalfWallisConvergence (twiceWallis)
 open GaussianGammaHalfWallisRate (odd pairOdd evenSquare df_positive fraction_distance)
@@ -32,10 +32,6 @@ open WallisFinite (da db da_zero da_succ db_zero db_succ)
 open LeanProofs.IPRA.Probability.NormalMoments (edf_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,16 +42,11 @@ def inverseIntegerDivisor (r : PTm n) : PTm n := fraction one (integerDivisor r)
 def ratioFactor (N : PTm n) : PTm n := fraction (N*(da N*da N)) (evenSquare N)
 def correction (N : PTm n) : PTm n := fraction (two*N) (odd N)
 
-@[simp] theorem subst_halfSquareFactor {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (halfSquareFactor N) = halfSquareFactor (Syn.subst σ N) := by simp [halfSquareFactor,da]
-@[simp] theorem subst_integerDivisor {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (integerDivisor r) = integerDivisor (Syn.subst σ r) := by simp [integerDivisor,fact]
-@[simp] theorem subst_inverseIntegerDivisor {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (inverseIntegerDivisor r) = inverseIntegerDivisor (Syn.subst σ r) := by simp [inverseIntegerDivisor,one]
-@[simp] theorem subst_ratioFactor {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (ratioFactor N) = ratioFactor (Syn.subst σ N) := by simp [ratioFactor,evenSquare,da,db]
-@[simp] theorem subst_correction {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (correction N) = correction (Syn.subst σ N) := by simp [correction,odd,two]
+ipra_subst halfSquareFactor [da]
+ipra_subst integerDivisor [fact]
+ipra_subst inverseIntegerDivisor [one]
+ipra_subst ratioFactor [evenSquare, da, db]
+ipra_subst correction [odd, two]
 
 theorem integer_divisor_positive (r : PTm n) : Γ ⊢[PRAAx] le one (integerDivisor r) :=
   positive_product _ _ (zero_lt_succ r) (positive_product _ _ (factorial_positive r) (factorial_positive r))
@@ -130,14 +121,10 @@ private theorem even_dominates_succ (N : PTm n) (h : Γ ⊢[PRAAx] evenDominates
 
 theorem even_dominates (N : PTm n) : Γ ⊢[PRAAx] le (succ N*(da N*da N)) (evenSquare N) := by
   have all : Γ ⊢[PRAAx] .all (evenDominates (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_evenDominates,Syn.subst_var,Syn.inst_zero]
-      unfold evenDominates evenSquare
-      have ea := natEq (da_zero (Γ := Γ))
-      have eb := natEq (db_zero (Γ := Γ))
-      ipra_le 0 using rw [ea,eb]; ring
-    · simp only [subst_evenDominates,Syn.subst_var,Syn.repl_zero]
-      exact even_dominates_succ _ Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_evenDominates]
+    · unfold evenDominates evenSquare
+      ipra_le 0 using rw [natEq (da_zero (Γ := Γ)),natEq (db_zero (Γ := Γ))]; ring
+    · exact even_dominates_succ _ Prf.hyp0
   have e : Γ ⊢[PRAAx] evenDominates N := by
     simpa only [subst_evenDominates,Syn.subst_var,Syn.inst_zero] using all.allE N
   exact e

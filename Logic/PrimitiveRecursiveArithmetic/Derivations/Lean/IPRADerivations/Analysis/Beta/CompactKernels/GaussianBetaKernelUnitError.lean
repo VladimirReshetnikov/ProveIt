@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelUnitError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelDampedRefinement (numerator denominator later_source)
 open GaussianBetaKernelRefinement (cutoff value)
 open GaussianBetaKernelExponential (kernel)
@@ -22,9 +22,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

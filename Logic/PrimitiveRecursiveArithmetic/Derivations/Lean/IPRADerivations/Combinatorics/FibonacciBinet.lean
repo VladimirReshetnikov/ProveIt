@@ -15,11 +15,8 @@ multiplied by `2t − 1` to stay in the integral ring.
 
 namespace LeanProofs.IPRA.Combinatorics.FibonacciBinet
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Fibonacci
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -112,15 +109,11 @@ def coefficientFormula (m : PTm n) : Fm PTm n :=
 
 private theorem coefficients_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] coefficientFormula (var 0) := by
   unfold coefficientFormula
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, subst_constantCoeff, subst_linearCoeff,
-      subst_fibS, subst_fib, Syn.subst_var, Syn.inst_zero]
-    exact .andI
+  ipra_ind (⟨trivial, trivial⟩) [subst_constantCoeff, subst_linearCoeff, subst_fibS, subst_fib]
+  · exact .andI
       ((congrAdd constant_zero linear_zero).eqTrans ((add_zero _).eqTrans fibS_zero.eqSymm))
       (linear_zero.eqTrans fib_zero.eqSymm)
-  · simp only [Fm.subst_and, Fm.subst_eq, PTm.subst_add, subst_constantCoeff, subst_linearCoeff,
-      subst_fibS, subst_fib, Syn.subst_var, Syn.repl_zero]
-    have prior : [coefficientFormula (var 0 : PTm 1)] ⊢[PRAAx] coefficientFormula (var 0) := Prf.hyp0
+  · have prior : [coefficientFormula (var 0 : PTm 1)] ⊢[PRAAx] coefficientFormula (var 0) := Prf.hyp0
     have next := (linear_succ (Γ := [coefficientFormula (var 0)]) (var 0)).eqTrans (Prf.andE₁ prior)
     exact .andI
       ((congrAdd ((constant_succ _).eqTrans (Prf.andE₂ prior)) next).eqTrans
@@ -151,12 +144,10 @@ def binetFormula (m : PTm n) : Fm PTm n :=
 
 theorem binet (m : PTm n) : Γ ⊢[PRAAx] binetFormula m := by
   have coeffs := coefficients (Γ := Γ) m
-  have total := natEq (Prf.andE₁ coeffs)
   have linear := natEq (Prf.andE₂ coeffs)
-  have lucas := natEq (luc_eq (Γ := Γ) m)
   unfold binetFormula coordEq add sub power conjugatePower scalar root conjugateRoot mul
   refine .andI (.andI ?_ ?_) (.andI ?_ ?_)
-  · ipra_lc 2 * total - linear - lucas
+  · ipra_lc 2 * natEq (Prf.andE₁ coeffs) - linear - natEq (luc_eq (Γ := Γ) m)
   · ipra_lc
   · ipra_lc -linear
   · ipra_lc 2 * linear

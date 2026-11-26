@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerUnitTime
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -26,9 +26,6 @@ open GaussianNamedInverseRate (rateNumerator rateDenominator)
 open GaussianEulerUnitLogarithmicMargin (timeF timeData)
 open GaussianUnitIntervalInputDecoding (numerator denominator fraction_recode)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -44,17 +41,11 @@ def data (x E : PTm n) : PTm n := pairT x E
 def nameF (f : PR 2) : PR 2 := PTm.toPR
   (observation f (var 0) (fstT (var 1)) (sndT (var 1)))
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p E : PTm n) :
-    Syn.subst σ (clock p E) = clock (Syn.subst σ p) (Syn.subst σ E) := by simp [clock]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E : PTm n) :
-    (source f x E).subst σ = source f (Syn.subst σ x) (Syn.subst σ E) := by simp [source]
-@[simp] theorem subst_encodedTime {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (encodedTime f k x) = encodedTime f (Syn.subst σ k) (Syn.subst σ x) := by simp [encodedTime]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E : PTm n) :
-    Syn.subst σ (observation f p x E) = observation f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [observation]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x E : PTm n) :
-    Syn.subst σ (data x E) = data (Syn.subst σ x) (Syn.subst σ E) := by simp [data]
+ipra_subst clock
+ipra_subst source
+ipra_subst encodedTime
+ipra_subst observation
+ipra_subst data
 
 theorem sample_at (f : PR 2) (p x E : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data x E) ≐ observation f p x E := by

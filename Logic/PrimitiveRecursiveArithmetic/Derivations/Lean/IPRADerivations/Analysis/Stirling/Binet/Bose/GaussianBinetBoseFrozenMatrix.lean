@@ -16,7 +16,7 @@ set_option maxHeartbeats 920000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseFrozenMatrix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (fixedData)
 open GaussianBinetBoseCompact (source)
 open GaussianBinetBosePrefixTranspose (data tag prefixLength decodedAngle decoded_angle_at)
@@ -32,10 +32,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound)
 open GaussianStirlingConstant (piDenominator)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -54,29 +50,19 @@ def matrix : PTm 3 := term (var 0) (var 1) (var 2)
 def value (q k N M X Y D sign A C E : PTm n) : PTm n :=
   qmul (weight C E M) (columnFirst matrix M N (data q M k X Y D sign A C E))
 
-@[simp] theorem subst_errorCost {m : ℕ} (σ : Fin n → PTm m) (K T : PTm n) :
-    Syn.subst σ (errorCost K T) = errorCost (Syn.subst σ K) (Syn.subst σ T) := by simp [errorCost]
+ipra_subst errorCost
 
-@[simp] theorem subst_piDenominator {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (piDenominator k) = piDenominator (Syn.subst σ k) := by
-  simp [piDenominator,Products.fact,GaussianGammaHalfPiName.clearing,GaussianGammaHalfPiName.meshAt,
-    GaussianGammaHalfPiName.meshIndex,GaussianGammaHalfPiName.orderAt,GaussianGammaHalfPiName.orderIndex,
-    WallisFinite.Dm,one,two]
+ipra_subst piDenominator [Products.fact, GaussianGammaHalfPiName.clearing, GaussianGammaHalfPiName.meshAt, GaussianGammaHalfPiName.meshIndex, GaussianGammaHalfPiName.orderAt, GaussianGammaHalfPiName.orderIndex, WallisFinite.Dm, one, two]
 @[simp] private theorem subst_piNumerator {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
     Syn.subst σ (GaussianStirlingConstant.piNumerator k) = GaussianStirlingConstant.piNumerator (Syn.subst σ k) := by
   simp [GaussianStirlingConstant.piNumerator,BaselQuadrature.Q,GaussianGammaHalfPiName.clearing,
     GaussianGammaHalfPiName.meshAt,GaussianGammaHalfPiName.meshIndex,GaussianGammaHalfPiName.orderAt,
     GaussianGammaHalfPiName.orderIndex,WallisFinite.Dm,one,two]
 
-@[simp] theorem subst_frozenPiNumerator {m : ℕ} (σ : Fin n → PTm m) (j k : PTm n) :
-    Syn.subst σ (frozenPiNumerator j k) = frozenPiNumerator (Syn.subst σ j) (Syn.subst σ k) := by
-  simp [frozenPiNumerator]
+ipra_subst frozenPiNumerator
 
-@[simp] theorem subst_termAt {m : ℕ} (σ : Fin n → PTm m) (j p k x t : PTm n) :
-    Syn.subst σ (termAt j p k x t) = termAt (Syn.subst σ j) (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ t) :=
-  by simp [termAt,fullDecay,GaussianEulerDecayMesh.observation,two]
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (i j d : PTm n) :
-    Syn.subst σ (term i j d) = term (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ d) := by simp [term]
+ipra_subst termAt [fullDecay, GaussianEulerDecayMesh.observation, two]
+ipra_subst term
 
 theorem matrix_at (i j d : PTm n) : inst3 matrix i j d = term i j d := by
   simp only [matrix,inst3,subst_term,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,

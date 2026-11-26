@@ -14,14 +14,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiniteSumReversal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteSum (sum termsEqual)
 open GaussianRationalHorner (qadd canonical)
 open GaussianRationalSyntheticDivision (qadd_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -29,10 +25,8 @@ def data (N x : PTm n) : PTm n := pairT N x
 def reverseBody (t : PTm 2) : PTm 2 := inst2 t (monus (fstT (var 1)) (succ (var 0))) (sndT (var 1))
 def law (t : PTm 2) (N x : PTm n) : Fm PTm n := sum (reverseBody t) N (data N x) ≐ sum t N x
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N x : PTm n) :
-    Syn.subst σ (data N x) = data (Syn.subst σ N) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (t : PTm 2) (N x : PTm n) :
-    (law t N x).subst σ = law t (Syn.subst σ N) (Syn.subst σ x) := by simp [law]
+ipra_subst data
+ipra_subst law
 
 theorem reverse_body_at (t : PTm 2) (i N x : PTm n) : Γ ⊢[PRAAx]
     inst2 (reverseBody t) i (data N x) ≐ inst2 t (monus N (succ i)) x := by
@@ -78,11 +72,9 @@ count including N=0 and every raw original numerical datum. -/
 theorem sum_reverse (t : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx]
     sum (reverseBody t) N (data N x) ≐ sum t N x := by
   have all : Γ ⊢[PRAAx] .all (law t (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact reverse_zero t x
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact reverse_step t _ _ Prf.hyp0
+    ipra_qfind [subst_law]
+    · exact reverse_zero t x
+    · exact reverse_step t _ _ Prf.hyp0
   change Γ ⊢[PRAAx] law t N x
   simpa only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 

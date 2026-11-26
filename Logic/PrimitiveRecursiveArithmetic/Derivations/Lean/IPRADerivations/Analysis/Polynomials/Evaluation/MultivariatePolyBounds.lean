@@ -21,12 +21,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.MultivariatePolyBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialRemainder
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k d : ℕ} {Γ : List (Fm PTm k)} {x y : Fin d → ZT k} {B N : PTm k}
 

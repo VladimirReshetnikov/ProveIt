@@ -12,16 +12,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCofinalTaylorGridWindows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add code im re scale)
 open GaussianBarnesCanonicalCofinalTaylorGridObservations (cofinal_at cofinalData cofinalGrid)
 open GaussianPolynomialForwardDifferenceGridIncrement (slice slice_at)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (agree sequence_equal)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

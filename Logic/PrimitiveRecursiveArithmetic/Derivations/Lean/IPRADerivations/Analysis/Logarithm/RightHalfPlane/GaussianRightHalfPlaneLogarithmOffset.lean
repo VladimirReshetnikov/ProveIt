@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmOffset
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code re im add scale oneCode eval_re_code eval_im_code)
 open GaussianFiniteLogarithmCompositionTail (linearValue)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_neg)
@@ -27,10 +27,6 @@ open GaussianRationalReciprocal (qone qone_represents_scaled)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale re_one im_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open RationalArithmetic (select select_zero select_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,18 +38,11 @@ def source (A B D neg R : PTm n) : Fm PTm n :=
   GaussianRightHalfPlaneLogarithm.source A D neg ⋏
     (ComplexLogarithmRemainder.bounded (offset A B D neg) R ⋏ le (num 8*R) D)
 
-@[simp] theorem subst_signedImag {m : ℕ} (σ : Fin n → PTm m) (B neg : PTm n) :
-    (signedImag B neg).subst σ = signedImag (Syn.subst σ B) (Syn.subst σ neg) := by
-  simp [signedImag,ZT.subst]
+ipra_subst signedImag [ZT.subst]
 
-@[simp] theorem subst_offset {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (offset A B D neg) = offset (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by
-  simp [offset]
+ipra_subst offset
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (A B D neg R : PTm n) :
-    (source A B D neg R).subst σ =
-      source (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ R) := by
-  simp [source,GaussianRightHalfPlaneLogarithm.source,ComplexLogarithmRemainder.bounded]
+ipra_subst source [GaussianRightHalfPlaneLogarithm.source, ComplexLogarithmRemainder.bounded]
 
 private theorem absolute_real (A B D neg : PTm n) :
     Γ ⊢[PRAAx] zabs (re (offset A B D neg)) ≐ ad A D := by

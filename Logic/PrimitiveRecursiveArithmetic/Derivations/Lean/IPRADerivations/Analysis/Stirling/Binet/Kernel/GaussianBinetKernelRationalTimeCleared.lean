@@ -17,7 +17,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelRationalTimeCleared
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetKernelFrozenHyperbolic
   (fixedSinhF fixedSinhData fixedCoshF fixedCoshData fixed_sinh_regular fixed_cosh_regular scaleBudget hyperbolicBudget)
@@ -35,9 +35,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedUniformRateClosure (productBudget same_denominator_product)
 open GaussianSineProductImaginaryCoshIdentity (coshF coshData cosh_regular)
 open GaussianSineProductImaginaryHyperbolic (sinhF sinhData expF expData)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Scale" => GaussianPiRationalScale.nameF

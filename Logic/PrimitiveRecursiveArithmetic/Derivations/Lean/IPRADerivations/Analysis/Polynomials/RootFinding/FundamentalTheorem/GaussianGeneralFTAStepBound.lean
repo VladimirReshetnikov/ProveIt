@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTAStepBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants
   (B C QNum QDen rhoNum K)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples (sample sourceInput)
@@ -26,8 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames (lambdaDenominator
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,15 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveScalarProductBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul canonical positive_product represents represents_congr)
 open GaussianRationalMetric (bounded)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open GaussianPositiveRealArithmetic (positive sign numerator natural_representation)
 open RationalSupMetric (denominatorOf)
 open RationalGaussianEmbedding (embed native canonical_axis_roundtrip embed_from_representation)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

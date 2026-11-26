@@ -1,5 +1,4 @@
 import IPRADerivations.Core.IntCancel
-import IPRADerivations.Core.LinearAlgebra
 import IPRADerivations.Geometry.SphericalCore
 
 /-!
@@ -46,12 +45,8 @@ square roots that turn the doubled forms into (10.10)–(10.12), and the `atan2`
 
 namespace LeanProofs.IPRA.Geometry.SphericalSolidAngle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.SphericalCore
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 /-! ## Girard and polygons -/
 
@@ -97,8 +92,7 @@ theorem polygon_excess {m k : ℕ} {T A B C : Fin m → ZT n} {α : Fin k → ZT
     Γ ⊢[PRAAx] ZT.eq P (ZT.sumFin α - ZT.natLit m * π') := by
   have e1 : ∀ t, ZT.toZ Γ (T t) =
       ZT.toZ Γ (A t) + ZT.toZ Γ (B t) + ZT.toZ Γ (C t) - ZT.toZ Γ π' := fun t => by
-    have e := ZT.toZ_eq (hg t)
-    simpa only [ZT.toZ_add, ZT.toZ_sub] using e
+    simpa only [ZT.toZ_add, ZT.toZ_sub] using ZT.toZ_eq (hg t)
   have e2 := ZT.toZ_eq hpart
   have e3 := ZT.toZ_eq harea
   simp only [ZT.toZ_sumFin, ZT.toZ_add] at e2 e3

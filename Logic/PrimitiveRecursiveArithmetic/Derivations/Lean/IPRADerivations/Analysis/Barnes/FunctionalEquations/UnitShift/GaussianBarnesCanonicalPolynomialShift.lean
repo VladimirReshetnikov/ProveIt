@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesWeightedProductShift
 import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalDeflatedFactor
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The shifted polynomial factors of the original Barnes product
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPolynomialShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesWeightedProductShift (weighted shifted unweighted shift_product)
 open GaussianBarnesCanonicalDeflatedFactor (translatedValue)
 open GaussianGammaEulerHeadLower (translated)
@@ -25,9 +24,6 @@ open GaussianRationalHorner (qmul ofGaussian_canonical ofGaussian_represents can
 open GaussianRationalReciprocal (power powerF)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

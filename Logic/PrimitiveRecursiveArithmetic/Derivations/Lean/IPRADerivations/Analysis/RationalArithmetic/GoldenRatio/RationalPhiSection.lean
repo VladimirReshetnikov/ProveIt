@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiSection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPhiFeatures (dimension equation dot annihilator free)
 open RationalPhiSectionNonzero (curveInput lineEquations members)
 open RationalPhiSectionZero (nonzero)
@@ -27,9 +27,6 @@ open RationalSuperellipticSubspace (properSpan)
 open GaussianRationalFiberGrouping (abscissa ordinate)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,9 +34,7 @@ def dotEquations (a s L : PTm n) : Fm PTm n :=
   .all (lt (var 0) (length (Syn.shift L)) ⟶ rationalEq
     (dot (Syn.shift a) (Syn.shift s) (abscissa (Syn.shift L) (var 0)) (ordinate (Syn.shift L) (var 0))) scalarZero)
 
-@[simp] theorem subst_dotEquations {k : ℕ} (σ : Fin n → PTm k) (a s L : PTm n) :
-    (dotEquations a s L).subst σ = dotEquations (Syn.subst σ a) (Syn.subst σ s) (Syn.subst σ L) := by
-  simp [dotEquations,Syn.subst_shift,Syn.shift_subst]
+ipra_subst dotEquations [Syn.subst_shift, Syn.shift_subst]
 
 theorem lines_of_dot_equations (a s L : PTm n) (h : Γ ⊢[PRAAx] dotEquations a s L) :
     Γ ⊢[PRAAx] lineEquations a s L := by

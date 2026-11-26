@@ -13,7 +13,7 @@ set_option maxHeartbeats 200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineTraceName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (point_at)
@@ -22,8 +22,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianSineMultipleAngleContinuity (growth value_distance)
 open GaussianSineMultipleAngleRecurrence (value)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,12 +32,9 @@ def modulus (f : PR 2) (k x : PTm n) : PTm n := growth (GaussianNameBounds.U f x
 def nameF (f : PR 2) : PR 2 := GaussianFastValueCut.nameF (rawF f)
 def data (f : PR 2) (k x : PTm n) : PTm n := GaussianFastValueCut.nameData (modulus f k x) (rawData k x)
 
-@[simp] theorem subst_rawData {m : ℕ} (σ : Fin n → PTm m) (k x : PTm n) :
-    Syn.subst σ (rawData k x) = rawData (Syn.subst σ k) (Syn.subst σ x) := by simp [rawData]
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (modulus f k x) = modulus f (Syn.subst σ k) (Syn.subst σ x) := by simp [modulus]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (data f k x) = data f (Syn.subst σ k) (Syn.subst σ x) := by simp [data]
+ipra_subst rawData
+ipra_subst modulus
+ipra_subst data
 
 theorem raw_at (f : PR 2) (k p x : PTm n) : Γ ⊢[PRAAx] ap2 (rawF f) p (rawData k x) ≐ raw f p k x := by
   refine (show Γ ⊢[PRAAx] ap2 (rawF f) p (rawData k x) ≐ raw f p (fstT (rawData k x)) (sndT (rawData k x)) by

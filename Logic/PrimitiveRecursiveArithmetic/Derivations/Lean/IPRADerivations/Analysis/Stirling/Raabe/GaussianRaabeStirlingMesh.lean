@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeStirlingMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (quadrature sampleBody sampleData sample_body_at)
 open GaussianPositiveRationalLogarithm (fraction sample)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (canonical qadd qmul positive_product qzero)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
 open GaussianRationalRiemannRefinement (leftSum termsDistance)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

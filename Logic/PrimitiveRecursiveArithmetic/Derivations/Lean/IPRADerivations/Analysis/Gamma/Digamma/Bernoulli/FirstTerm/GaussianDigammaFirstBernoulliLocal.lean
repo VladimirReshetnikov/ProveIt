@@ -15,7 +15,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliLocal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDigammaFirstBernoulliEndpoints (trapezoid exact_correction)
@@ -39,10 +39,6 @@ open RationalArithmetic (multiply negative)
 open RationalGaussianEmbedding (embed embed_add embed_negative embed_multiply)
 open RationalGaussianRealPart (embed_congr)
 open RationalHarmonicInterval (interval)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

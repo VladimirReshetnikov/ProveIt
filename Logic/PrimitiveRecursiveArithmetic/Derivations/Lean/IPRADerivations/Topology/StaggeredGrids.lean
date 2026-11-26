@@ -2,7 +2,6 @@ import IPRADerivations.Core.Division
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Foundations.TermSums
 import IPRADerivations.Foundations.BoundedDecision
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Staggered grids and the injection count in every dimension (`dimension_invariance_ipra`)

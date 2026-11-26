@@ -24,9 +24,7 @@ Not derived: `tr(A³) = 6t` in terms of unordered triangles, and the walk-count 
 
 namespace LeanProofs.IPRA.Combinatorics.GraphWalks
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 
@@ -116,8 +114,7 @@ theorem closed_walks_two (A : Fin k → Fin k → ZT n) (hs : ∀ v w, Γ ⊢[PR
       (ZT.sumFin fun v => ZT.sumFin fun w => A v w) := by
   have hs1 : ∀ v w, ZT.toZ Γ (A v w) = ZT.toZ Γ (A w v) := fun v w => ZT.toZ_eq (hs v w)
   have hb1 : ∀ v w, ZT.toZ Γ (A v w) * ZT.toZ Γ (A v w) = ZT.toZ Γ (A v w) := fun v w => by
-    have h := ZT.toZ_eq (hb v w)
-    simpa only [ZT.toZ_mul] using h
+    simpa only [ZT.toZ_mul] using ZT.toZ_eq (hb v w)
   have e := trace_sq (fun v w => ZT.toZ Γ (A v w)) hs1 hb1
   beta_reduce at e
   apply ZT.derive
@@ -142,8 +139,7 @@ theorem cut_energy (A : Fin k → Fin k → ZT n) (x : Fin k → ZT n)
       (ZT.natLit 2 * ZT.sumFin fun v => ZT.sumFin fun w => A v w * (x v * (ZT.natLit 1 - x w))) := by
   have hs1 : ∀ v w, ZT.toZ Γ (A v w) = ZT.toZ Γ (A w v) := fun v w => ZT.toZ_eq (hs v w)
   have hx1 : ∀ v, ZT.toZ Γ (x v) * ZT.toZ Γ (x v) = ZT.toZ Γ (x v) := fun v => by
-    have h := ZT.toZ_eq (hx v)
-    simpa only [ZT.toZ_mul] using h
+    simpa only [ZT.toZ_mul] using ZT.toZ_eq (hx v)
   have e := cut_energy_identity (fun v w => ZT.toZ Γ (A v w)) (fun v => ZT.toZ Γ (x v)) hs1 hx1
   beta_reduce at e
   apply ZT.derive
@@ -162,8 +158,7 @@ theorem closed_walks_four (A : Fin k → Fin k → ZT n) (hs : ∀ v w, Γ ⊢[P
           else (ZT.sumFin fun v => A u v * A v w) * ((ZT.sumFin fun v => A u v * A v w) - ZT.natLit 1)) := by
   have hs1 : ∀ v w, ZT.toZ Γ (A v w) = ZT.toZ Γ (A w v) := fun v w => ZT.toZ_eq (hs v w)
   have hb1 : ∀ v w, ZT.toZ Γ (A v w) * ZT.toZ Γ (A v w) = ZT.toZ Γ (A v w) := fun v w => by
-    have h := ZT.toZ_eq (hb v w)
-    simpa only [ZT.toZ_mul] using h
+    simpa only [ZT.toZ_mul] using ZT.toZ_eq (hb v w)
   have e := trace_fourth (fun v w => ZT.toZ Γ (A v w)) hs1 hb1
   beta_reduce at e
   apply ZT.derive

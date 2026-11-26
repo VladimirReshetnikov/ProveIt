@@ -23,11 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.CubeRootTwo
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -177,11 +173,9 @@ theorem bad_zero : Λ ⊢[PRAAx] inst2 badBody (var 0) (var 1) ≐ zero := by
 
 /-- `T(N) = 0` for every `N`, by induction on `N`. -/
 theorem descent_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] T (var 0) ≐ zero := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero]
-    refine (sum_succ' outerBody (var 0) zero).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' outerBody (var 0) zero).eqTrans ?_
     rw [inst2_outer]
     refine (congrAdd Prf.hyp0 ?_).eqTrans (add_zero _)
     refine sum_zero_of_all badBody (var 0) (.allI ?_) _

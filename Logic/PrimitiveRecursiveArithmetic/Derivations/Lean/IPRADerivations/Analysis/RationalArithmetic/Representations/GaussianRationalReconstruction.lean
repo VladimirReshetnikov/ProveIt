@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianReciprocalHorner
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual product polynomial reconstructed from a runtime root list
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalReconstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical evaluate horner)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -28,10 +27,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalDeflation
 open LeanProofs.IPRA.Analysis.GaussianRationalLinearProduct (linear subst_linear linear_length linear_canonical)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,13 +38,9 @@ def reconstructF : PR 2 := rec2 initialBody stepBody
 def reconstruct (S N k : PTm n) : PTm n := ap2 reconstructF k (data S N)
 def suffix (S N j : PTm n) : PTm n := reconstruct S N (remaining N j)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (S N : PTm n) :
-    Syn.subst σ (data S N) = data (Syn.subst σ S) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_reconstruct {m : ℕ} (σ : Fin n → PTm m) (S N k : PTm n) :
-    Syn.subst σ (reconstruct S N k) = reconstruct (Syn.subst σ S) (Syn.subst σ N) (Syn.subst σ k) := by
-  simp only [reconstruct,subst_ap2,subst_data]
-@[simp] theorem subst_suffix {m : ℕ} (σ : Fin n → PTm m) (S N j : PTm n) :
-    Syn.subst σ (suffix S N j) = suffix (Syn.subst σ S) (Syn.subst σ N) (Syn.subst σ j) := by simp [suffix]
+ipra_subst data
+ipra_subst reconstruct
+ipra_subst suffix
 
 theorem linear_congr {C C' z z' N N' : PTm n}
     (hC : Γ ⊢[PRAAx] C ≐ C') (hz : Γ ⊢[PRAAx] z ≐ z') (hN : Γ ⊢[PRAAx] N ≐ N') :
@@ -74,13 +65,9 @@ theorem reconstruct_succ (S N k : PTm n) : Γ ⊢[PRAAx]
 
 theorem reconstruct_length (S N k : PTm n) : Γ ⊢[PRAAx] length (reconstruct S N k) ≐ succ k := by
   have all : Γ ⊢[PRAAx] .all (length (reconstruct (Syn.shift S) (Syn.shift N) (var 0)) ≐ succ (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_reconstruct,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (reconstruct_zero S N)).eqTrans (singleton_length _)
-    · simp only [Fm.subst_eq,subst_length,subst_reconstruct,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (reconstruct_succ _ _ _)).eqTrans ((linear_length _ _ _).eqTrans (congrSucc Prf.hyp0))
+    ipra_qfind [subst_length, subst_reconstruct]
+    · exact (congrFst (reconstruct_zero S N)).eqTrans (singleton_length _)
+    · exact (congrFst (reconstruct_succ _ _ _)).eqTrans ((linear_length _ _ _).eqTrans (congrSucc Prf.hyp0))
   simpa only [Fm.subst_eq,subst_length,subst_reconstruct,ConciseIPRA.PTm.subst_succ,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
 
@@ -123,13 +110,9 @@ theorem linear_monic (C z M : PTm n) (hM : Γ ⊢[PRAAx] le one M)
 
 theorem reconstruct_monic (S N k : PTm n) : Γ ⊢[PRAAx] entry (reconstruct S N k) zero ≐ qone := by
   have all : Γ ⊢[PRAAx] .all (entry (reconstruct (Syn.shift S) (Syn.shift N) (var 0)) zero ≐ qone) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_entry,subst_reconstruct,ConciseIPRA.PTm.subst_zero,
-        GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (entry_congr (reconstruct_zero S N) (.eqRefl _)).eqTrans (singleton_entry _)
-    · simp only [Fm.subst_eq,subst_entry,subst_reconstruct,ConciseIPRA.PTm.subst_zero,
-        GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have pos : Γ.map Fm.shift ⊢[PRAAx] le one (length (reconstruct (Syn.shift S) (Syn.shift N) (var 0))) := le_congr (.eqRefl one) (reconstruct_length (Syn.shift S) (Syn.shift N) (var 0)).eqSymm
+    ipra_qfind [subst_entry, subst_reconstruct, GaussianRationalSyntheticDivision.subst_qone]
+    · exact (entry_congr (reconstruct_zero S N) (.eqRefl _)).eqTrans (singleton_entry _)
+    · have pos : Γ.map Fm.shift ⊢[PRAAx] le one (length (reconstruct (Syn.shift S) (Syn.shift N) (var 0))) := le_congr (.eqRefl one) (reconstruct_length (Syn.shift S) (Syn.shift N) (var 0)).eqSymm
         (le_of_eq_add (d := (var 0 : PTm (n+1))) (by ipra_ring))
       exact (entry_congr (reconstruct_succ _ _ _) (.eqRefl _)).eqTrans (linear_monic _ _ _ pos.wk Prf.hyp0)
   simpa only [Fm.subst_eq,subst_entry,subst_reconstruct,ConciseIPRA.PTm.subst_zero,
@@ -166,14 +149,9 @@ def factorsF : PR 2 := rec2 qone factorStep
 def factors (S N y k : PTm n) : PTm n := ap2 factorsF k (factorData S N y)
 def product (S N y : PTm n) : PTm n := factors S N y N
 
-@[simp] theorem subst_factorData {m : ℕ} (σ : Fin n → PTm m) (S N y : PTm n) :
-    Syn.subst σ (factorData S N y) = factorData (Syn.subst σ S) (Syn.subst σ N) (Syn.subst σ y) := by
-  simp only [factorData,subst_pairT]
-@[simp] theorem subst_factors {m : ℕ} (σ : Fin n → PTm m) (S N y k : PTm n) :
-    Syn.subst σ (factors S N y k) = factors (Syn.subst σ S) (Syn.subst σ N) (Syn.subst σ y) (Syn.subst σ k) := by
-  simp only [factors,subst_ap2,subst_factorData]
-@[simp] theorem subst_product {m : ℕ} (σ : Fin n → PTm m) (S N y : PTm n) :
-    Syn.subst σ (product S N y) = product (Syn.subst σ S) (Syn.subst σ N) (Syn.subst σ y) := by simp only [product,subst_factors]
+ipra_subst factorData
+ipra_subst factors
+ipra_subst product
 
 theorem factors_zero (S N y : PTm n) : Γ ⊢[PRAAx] factors S N y zero ≐ qone := by
   simpa only [factors,factorsF,GaussianRationalSyntheticDivision.subst_qone] using
@@ -186,8 +164,8 @@ theorem factors_succ (S N y k : PTm n) : Γ ⊢[PRAAx]
     subst_entry,subst_fstT,subst_sndT,PTm.subst_monus,ConciseIPRA.PTm.subst_succ,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] at h
   have Sfield : Γ ⊢[PRAAx] fstT (factorData S N y) ≐ S := fst_pair _ _
-  have Nfield : Γ ⊢[PRAAx] fstT (sndT (factorData S N y)) ≐ N := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have yfield : Γ ⊢[PRAAx] sndT (sndT (factorData S N y)) ≐ y := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  have Nfield : Γ ⊢[PRAAx] fstT (sndT (factorData S N y)) ≐ N := (snd_pair _ _).fstE
+  have yfield : Γ ⊢[PRAAx] sndT (sndT (factorData S N y)) ≐ y := (snd_pair _ _).sndE
   exact h.eqTrans (qmul_congr (qsub_congr yfield (entry_congr Sfield (congrMonus Nfield (.eqRefl _)))) (.eqRefl _))
 
 theorem evaluate_congr {C D y z : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hy : Γ ⊢[PRAAx] y ≐ z) :
@@ -208,13 +186,9 @@ theorem reconstruction_evaluation (S N y k : PTm n) : Γ ⊢[PRAAx]
     evaluate (reconstruct S N k) y ≐ factors S N y k := by
   have all : Γ ⊢[PRAAx] .all (evaluate (reconstruct (Syn.shift S) (Syn.shift N) (var 0)) (Syn.shift y) ≐
       factors (Syn.shift S) (Syn.shift N) (Syn.shift y) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,GaussianRationalHorner.subst_evaluate,subst_reconstruct,subst_factors,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact ((evaluate_congr (reconstruct_zero S N) (.eqRefl _)).eqTrans (singleton_evaluation y)).eqTrans (factors_zero S N y).eqSymm
-    · simp only [Fm.subst_eq,GaussianRationalHorner.subst_evaluate,subst_reconstruct,subst_factors,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (evaluate_congr (reconstruct_succ _ _ _) (.eqRefl _)).eqTrans
+    ipra_qfind [GaussianRationalHorner.subst_evaluate, subst_reconstruct, subst_factors]
+    · exact ((evaluate_congr (reconstruct_zero S N) (.eqRefl _)).eqTrans (singleton_evaluation y)).eqTrans (factors_zero S N y).eqSymm
+    · exact (evaluate_congr (reconstruct_succ _ _ _) (.eqRefl _)).eqTrans
         ((GaussianRationalLinearProduct.linear_evaluation _ _ _ _ (.eqRefl _) (reconstruct_canonical _ _ _)).eqTrans
           ((qmul_congr (.eqRefl _) Prf.hyp0).eqTrans (factors_succ _ _ _ _).eqSymm))
   simpa only [Fm.subst_eq,GaussianRationalHorner.subst_evaluate,subst_reconstruct,subst_factors,
@@ -263,9 +237,9 @@ theorem product_program_metadata (S N y : PTm n) : Γ ⊢[PRAAx]
     (length (fstT (ap3 productProgramF S N y)) ≐ succ N) ⋏
       (evaluate (fstT (ap3 productProgramF S N y)) y ≐ sndT (ap3 productProgramF S N y)) := by
   have coeffs : Γ ⊢[PRAAx] fstT (ap3 productProgramF S N y) ≐ reconstruct S N N :=
-    (congrFst (product_program_at S N y)).eqTrans (fst_pair _ _)
+    (product_program_at S N y).fstE
   have value : Γ ⊢[PRAAx] sndT (ap3 productProgramF S N y) ≐ product S N y :=
-    (congrSnd (product_program_at S N y)).eqTrans (snd_pair _ _)
+    (product_program_at S N y).sndE
   exact .andI ((congrFst coeffs).eqTrans (reconstruct_length S N N))
     (((evaluate_congr coeffs (.eqRefl _)).eqTrans (product_evaluation S N y)).eqTrans value.eqSymm)
 

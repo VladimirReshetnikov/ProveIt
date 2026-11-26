@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicExponentialSeparation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots
   (rootF rootData sample source root_regular sample_bound sampleRadius angleF angleData angle_input)
 open GaussianCyclicExponentialGroup (productF productData product_index_cross product_equal_cross endpoint_root_cross)
@@ -33,10 +33,6 @@ open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,14 +44,9 @@ def reserve (m : PTm n) : PTm n :=
 def clock (m p : PTm n) : PTm n := p+reserve m
 def fine (m p : PTm n) : Fm PTm n := le (reserve m) (unit p)
 
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (denominator m) = denominator (Syn.subst σ m) := by
-  simp [denominator,chordDenominator,GaussianCyclicRootChord.denominator,GaussianCyclicRootChord.phaseDenominator]
-@[simp] theorem subst_reserve {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (reserve m) = reserve (Syn.subst σ m) := by
-  simp [reserve,budget,fullTurnRadius,GaussianArctangentExponentialPeriod.twiceRadius,GaussianArctangentQuarterExponential.radius]
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (m p : PTm n) :
-    Syn.subst σ (clock m p) = clock (Syn.subst σ m) (Syn.subst σ p) := by simp [clock]
+ipra_subst denominator [chordDenominator, GaussianCyclicRootChord.denominator, GaussianCyclicRootChord.phaseDenominator]
+ipra_subst reserve [budget, fullTurnRadius, GaussianArctangentExponentialPeriod.twiceRadius, GaussianArctangentQuarterExponential.radius]
+ipra_subst clock
 
 theorem clock_later (m p : PTm n) : Γ ⊢[PRAAx] le p (clock m p) := le_add_right _ _
 theorem clock_fine (m p : PTm n) : Γ ⊢[PRAAx] fine m (clock m p) :=
@@ -165,10 +156,7 @@ private theorem reverse_lower (q r D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
       (.eqRefl _) (qnegative_represents _ _ _ (raw_represents a)))
     (le_congr (.eqRefl _) (congrMul (.eqRefl _) (ComplexLogarithmRemainder.normSq_neg z).eqSymm) hh)
 
-private theorem positive_gap (r s : PTm n) (h : Γ ⊢[PRAAx] lt r s) :
-    Γ ⊢[PRAAx] le one (monus s r) :=
-  le_of_add_le_add_right (le_congr ((succ_eq_add_one r).eqTrans (add_comm _ _))
-    ((eq_add_of_le (le_of_lt h)).eqTrans (add_comm _ _)) h)
+private alias positive_gap := Common.one_le_monus_of_lt
 
 theorem pair_margin_at (p r s m x : PTm n) (hrs : Γ ⊢[PRAAx] lt r s)
     (hs : Γ ⊢[PRAAx] lt s m) (hp : Γ ⊢[PRAAx] fine m p) :

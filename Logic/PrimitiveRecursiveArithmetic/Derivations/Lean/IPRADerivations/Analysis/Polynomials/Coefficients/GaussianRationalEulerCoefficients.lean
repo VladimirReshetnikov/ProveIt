@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalEulerCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical ofGaussian represents canonical_unique)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr canonicalCoefficients)
 open GaussianRationalNaturalScale (natScale natScale_congr)
@@ -27,17 +27,12 @@ open GaussianRationalPolynomialProduct (product product_length)
 open GaussianRationalPolynomialBuffers (added added_lookup)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def rowBody : PTm 2 := natScale (monus (sndT (var 1)) (var 0)) (entry (fstT (var 1)) (var 0))
 def euler (C N : PTm n) : PTm n := sequence rowBody (succ N) (pairT C N)
-@[simp] theorem subst_euler {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (euler C N) = euler (Syn.subst σ C) (Syn.subst σ N) := by simp [euler]
+ipra_subst euler
 theorem euler_length (C N : PTm n) : Γ ⊢[PRAAx] length (euler C N) ≐ succ N := sequence_length _ _ _
 theorem row_at (C N i : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (pairT C N) ≐ natScale (monus N i) (entry C i) := by
   simp only [rowBody,inst2,GaussianRationalNaturalScale.subst_natScale,PTm.subst_monus,
@@ -99,9 +94,7 @@ theorem right_cauchy (P Q N M e : PTm n) (hM : Γ ⊢[PRAAx] le e M) : Γ ⊢[PR
 
 def leibniz (P Q N M : PTm n) : PTm n := added
   (product (euler P N) Q N M) (product P (euler Q M) N M) (succ (N+M))
-@[simp] theorem subst_leibniz {l : ℕ} (σ : Fin n → PTm l) (P Q N M : PTm n) :
-    Syn.subst σ (leibniz P Q N M) = leibniz (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) := by
-  simp [leibniz]
+ipra_subst leibniz
 
 theorem product_leibniz (P Q N M e : PTm n) (hN : Γ ⊢[PRAAx] le e N)
     (hM : Γ ⊢[PRAAx] le e M) : Γ ⊢[PRAAx]
@@ -120,8 +113,7 @@ theorem product_leibniz (P Q N M e : PTm n) (hN : Γ ⊢[PRAAx] le e N)
           (added_lookup _ _ _ _ ((succ_monus_succ _ _).eqTrans (GaussianRationalMonicReconstruction.monus_le_left _ _))).eqSymm)))
 
 def parityPoint (k : PTm n) : PTm n := ofGaussian (GaussianFiniteLogarithmPolynomial.signNumerator k) one
-@[simp] theorem subst_parityPoint {l : ℕ} (σ : Fin n → PTm l) (k : PTm n) :
-    Syn.subst σ (parityPoint k) = parityPoint (Syn.subst σ k) := by simp [parityPoint]
+ipra_subst parityPoint
 theorem logarithm_weight_cancel (k : PTm n) : Γ ⊢[PRAAx]
     natScale (succ k) (GaussianFiniteLogarithmPolynomial.coefficient k) ≐ parityPoint k := by
   have hs := zero_lt_succ (Γ := Γ) k
@@ -145,23 +137,17 @@ def eulerF : PR 2 := PTm.toPR (euler (var 0) (var 1))
 def output (P Q N M : PTm n) : PTm n := pairT (euler (product P Q N M) (N+M)) (leibniz P Q N M)
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (P Q N M : PTm n) : PTm n := PTm.app outputF ![P,Q,N,M]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (P Q N M : PTm n) :
-    Syn.subst σ (output P Q N M) = output (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (P Q N M : PTm n) :
-    Syn.subst σ (run P Q N M) = run (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ N) (Syn.subst σ M) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem euler_program_at (C N : PTm n) : Γ ⊢[PRAAx] ap2 eulerF C N ≐ euler C N := by
   simpa [eulerF,ap2] using toPR_eq (Γ := Γ) (euler (var 0) (var 1) : PTm 2) ![C,N]
 theorem program_at (P Q N M : PTm n) : Γ ⊢[PRAAx] run P Q N M ≐ output P Q N M := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![P,Q,N,M]
 theorem returned_euler (P Q N M : PTm n) : Γ ⊢[PRAAx] fstT (run P Q N M) ≐ euler (product P Q N M) (N+M) :=
-  (congrFst (program_at P Q N M)).eqTrans (fst_pair _ _)
+  (program_at P Q N M).fstE
 theorem returned_leibniz (P Q N M : PTm n) : Γ ⊢[PRAAx] sndT (run P Q N M) ≐ leibniz P Q N M :=
-  (congrSnd (program_at P Q N M)).eqTrans (snd_pair _ _)
+  (program_at P Q N M).sndE
 theorem returned_product_rule (P Q N M e : PTm n) (hN : Γ ⊢[PRAAx] le e N)
     (hM : Γ ⊢[PRAAx] le e M) : Γ ⊢[PRAAx]
     entry (fstT (run P Q N M)) (monus (N+M) e) ≐ entry (sndT (run P Q N M)) (monus (N+M) e) :=

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedDerivativeMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialRadiusIndependence (independent_radii_proper)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -31,9 +31,6 @@ open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positiv
 open GaussianNamedRateComposition (same_denominator_at symmetric)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

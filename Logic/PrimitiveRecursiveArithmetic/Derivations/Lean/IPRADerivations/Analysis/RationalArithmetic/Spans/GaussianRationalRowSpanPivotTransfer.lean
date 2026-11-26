@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRowSpanPivotTransfer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical)
 open GaussianRationalMetric (qsub qnegative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qzero_canonical)
@@ -28,9 +28,6 @@ open GaussianRationalMonicReconstruction (spike spike_hit spike_miss)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,25 +45,14 @@ def body : PTm 2 := value (fields (var 1) 0) (fields (var 1) 1) (fields (var 1) 
   (fields (var 1) 3) (fields (var 1) 4) (var 0)
 def transfer (A R u i p : PTm n) : PTm n := sequence body R (data A R u i p)
 
-@[simp] theorem subst_maskSum {k : ℕ} (σ : Fin n → PTm k) (f : PTm 2) (R i x : PTm n) :
-    Syn.subst σ (maskSum f R i x) = maskSum f (Syn.subst σ R) (Syn.subst σ i) (Syn.subst σ x) := by simp [maskSum]
-@[simp] theorem subst_offColumn {k : ℕ} (σ : Fin n → PTm k) (A R u i j : PTm n) :
-    Syn.subst σ (offColumn A R u i j) = offColumn (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ j) := by simp [offColumn]
-@[simp] theorem subst_correction {k : ℕ} (σ : Fin n → PTm k) (A R u i p : PTm n) :
-    Syn.subst σ (correction A R u i p) = correction (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ p) := by simp [correction]
-@[simp] theorem subst_value {k : ℕ} (σ : Fin n → PTm k) (A R u i p r : PTm n) :
-    Syn.subst σ (value A R u i p r) = value (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ r) := by simp [value,sel]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (A R u i p : PTm n) :
-    Syn.subst σ (data A R u i p) = data (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ p) := by simp [data]
+ipra_subst maskSum
+ipra_subst offColumn
+ipra_subst correction
+ipra_subst value [sel]
+ipra_subst data
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (q : PTm n) (j : Fin 5) :
     Syn.subst σ (fields q j) = fields (Syn.subst σ q) j := by fin_cases j <;> simp [fields]
-@[simp] theorem subst_transfer {k : ℕ} (σ : Fin n → PTm k) (A R u i p : PTm n) :
-    Syn.subst σ (transfer A R u i p) = transfer (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ p) := by simp [transfer]
+ipra_subst transfer
 
 theorem mask_body_at (f : PTm 2) (i r x : PTm n) : Γ ⊢[PRAAx]
     inst2 (maskBody f) r (pairT i x) ≐ sel (eqb r i) qzero (inst2 f r x) := by
@@ -118,10 +104,10 @@ theorem fields_at (A R u i p : PTm n) (j : Fin 5) : Γ ⊢[PRAAx]
   have c := (congrSnd b).eqTrans (snd_pair u (pairT i p))
   fin_cases j
   · exact fst_pair _ _
-  · exact (congrFst a).eqTrans (fst_pair _ _)
-  · exact (congrFst b).eqTrans (fst_pair _ _)
-  · exact (congrFst c).eqTrans (fst_pair _ _)
-  · exact (congrSnd c).eqTrans (snd_pair _ _)
+  · exact a.fstE
+  · exact b.fstE
+  · exact c.fstE
+  · exact c.sndE
 theorem body_at (A R u i p r : PTm n) : Γ ⊢[PRAAx]
     inst2 body r (data A R u i p) ≐ value A R u i p r := by
   have last1 : ![fields (data A R u i p) 0,fields (data A R u i p) 1,fields (data A R u i p) 2,
@@ -308,13 +294,7 @@ theorem membership_backward (A R N u i p v : PTm n)
 
 def outputF : PR 5 := PTm.toPR (transfer (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A R u i p : PTm n) : PTm n := app outputF ![A,R,u,i,p]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R u i p : PTm n) :
-    Syn.subst σ (run A R u i p) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ u)
-      (Syn.subst σ i) (Syn.subst σ p) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst run
 theorem program_at (A R u i p : PTm n) : Γ ⊢[PRAAx] run A R u i p ≐ transfer A R u i p := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (transfer (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,R,u,i,p]
 theorem returned_length (A R u i p : PTm n) : Γ ⊢[PRAAx] length (run A R u i p) ≐ R :=

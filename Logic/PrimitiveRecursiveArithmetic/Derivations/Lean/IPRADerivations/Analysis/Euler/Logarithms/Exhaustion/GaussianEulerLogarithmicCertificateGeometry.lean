@@ -13,13 +13,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCertificateGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen top)
 open GaussianEulerLogarithmicCommonCutoff (cutoff)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,21 +29,11 @@ def rightIndex (p q j R A S V : PTm n) : PTm n :=
 def commonTop (p q j R A S V : PTm n) : PTm n :=
   two*(A+V)*commonHeight p q j R A S V
 
-@[simp] theorem subst_heightBase {m : ℕ} (σ : Fin n → PTm m) (A R j : PTm n) :
-    Syn.subst σ (heightBase A R j) = heightBase (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ j) := by
-  simp [heightBase,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_commonHeight {m : ℕ} (σ : Fin n → PTm m) (p q j R A S V : PTm n) :
-    Syn.subst σ (commonHeight p q j R A S V) = commonHeight (Syn.subst σ p) (Syn.subst σ q)
-      (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ S) (Syn.subst σ V) := by simp [commonHeight]
-@[simp] theorem subst_leftIndex {m : ℕ} (σ : Fin n → PTm m) (p q j R A S V : PTm n) :
-    Syn.subst σ (leftIndex p q j R A S V) = leftIndex (Syn.subst σ p) (Syn.subst σ q)
-      (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ S) (Syn.subst σ V) := by simp [leftIndex]
-@[simp] theorem subst_rightIndex {m : ℕ} (σ : Fin n → PTm m) (p q j R A S V : PTm n) :
-    Syn.subst σ (rightIndex p q j R A S V) = rightIndex (Syn.subst σ p) (Syn.subst σ q)
-      (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ S) (Syn.subst σ V) := by simp [rightIndex]
-@[simp] theorem subst_commonTop {m : ℕ} (σ : Fin n → PTm m) (p q j R A S V : PTm n) :
-    Syn.subst σ (commonTop p q j R A S V) = commonTop (Syn.subst σ p) (Syn.subst σ q)
-      (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ S) (Syn.subst σ V) := by simp [commonTop]
+ipra_subst heightBase [height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst commonHeight
+ipra_subst leftIndex
+ipra_subst rightIndex
+ipra_subst commonTop
 
 theorem left_height_budget (p q j R A S V : PTm n) (hV : Γ ⊢[PRAAx] le one V) : Γ ⊢[PRAAx]
     le (heightBase A R j+cutoff p j A) (V*commonHeight p q j R A S V) := by

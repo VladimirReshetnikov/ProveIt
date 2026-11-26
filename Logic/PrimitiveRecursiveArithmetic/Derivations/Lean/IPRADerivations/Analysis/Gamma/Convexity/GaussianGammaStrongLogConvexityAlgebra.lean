@@ -14,7 +14,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaStrongLogConvexityAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerRationalLogOrder (add_order order_refl)
@@ -29,8 +29,6 @@ open GaussianNaturalScaleProductName (productF productData)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular source_shift)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => productF nameF

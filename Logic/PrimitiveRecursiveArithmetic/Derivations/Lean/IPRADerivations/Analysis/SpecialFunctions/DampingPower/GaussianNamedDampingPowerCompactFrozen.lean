@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerCompactFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerCompact (source evaluatorF fixedData kernel_source_at)
 open GaussianNamedDampingPowerFrozen (budget original_frozen_rate)
 open GaussianNamedPositiveLogarithm (numerator denominator)
@@ -25,8 +25,6 @@ open GaussianRationalRiemannRefinement (termsDistance)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,15 +32,9 @@ def rationalFixedData (F G : PR 2) (k z B x y C : PTm n) : PTm n :=
   GaussianEulerPowerScalingCompactName.fixedData z B (numerator G k y) (denominator G k y)
     (numerator F k x) (denominator F k x) C
 
-@[simp] theorem subst_rationalFixedData {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (k z B x y C : PTm n) :
-    Syn.subst σ (rationalFixedData F G k z B x y C) =
-      rationalFixedData F G (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ C) := by
-  simp [rationalFixedData,GaussianNamedPositiveLogarithm.numerator,GaussianNamedPositiveLogarithm.denominator]
+ipra_subst rationalFixedData [GaussianNamedPositiveLogarithm.numerator, GaussianNamedPositiveLogarithm.denominator]
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (Rz C R E T : PTm n) :
-    Syn.subst σ (budget Rz C R E T) = budget (Syn.subst σ Rz) (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [budget,GaussianNamedDampingPowerIntegrand.gain,GaussianNamedDampingPowerIntegrand.decayBound,
-    GaussianNamedDampingPowerChart.gain,GaussianNamedDampingPowerChart.majorant,GaussianCompactLogarithmBounds.radius,one]
+ipra_subst budget [GaussianNamedDampingPowerIntegrand.gain, GaussianNamedDampingPowerIntegrand.decayBound, GaussianNamedDampingPowerChart.gain, GaussianNamedDampingPowerChart.majorant, GaussianCompactLogarithmBounds.radius, one]
 
 private theorem row (F G : PR 2) (i p q k N z Rz B x y C₀ C R₀ R a W E T : PTm n)
     (hs : Γ ⊢[PRAAx] source F G z Rz B x y C₀ C R₀ R a W E T)

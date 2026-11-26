@@ -10,7 +10,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImageWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartCorrectedImage (input imageNumerator imageDenominator imageFraction)
 open GaussianEulerPositivePowerChartImageCuts (data numeratorBody denominatorBody cutF start count denominator)
 open GaussianEulerPositivePowerChartImageLattice (cutData multiplier absolute_below absolute_as_relative)
@@ -22,10 +22,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open ComplexLogarithmRemainder (scale oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -16,16 +16,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNonmonicDisplacementRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalTranslation (translated)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianDescentClock (residualNumerator)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,15 +33,9 @@ def startingDenominator (C N z : PTm n) : PTm n :=
 def startingRadius (C N z : PTm n) : PTm n :=
   GaussianBalancedRadius.radius (translated C N z) N
 
-@[simp] theorem subst_startingNumerator {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (startingNumerator C N z) =
-      startingNumerator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [startingNumerator]
-@[simp] theorem subst_startingDenominator {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (startingDenominator C N z) =
-      startingDenominator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [startingDenominator]
-@[simp] theorem subst_startingRadius {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (startingRadius C N z) =
-      startingRadius (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [startingRadius]
+ipra_subst startingNumerator
+ipra_subst startingDenominator
+ipra_subst startingRadius
 
 theorem starting_denominator_positive (C N z : PTm n) : Γ ⊢[PRAAx]
     le one (startingDenominator C N z) := GaussianBalancedRadius.denominator_positive _ _

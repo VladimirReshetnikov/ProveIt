@@ -17,7 +17,7 @@ set_option maxHeartbeats 1900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalCorrectionSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaNegativeCriticalCorrection
   (row body bottomDen positiveSum correction den_expand row_den_positive row_at prefix_succ)
@@ -29,10 +29,6 @@ open GaussianStirlingTailComparison (point_order_refl point_add_order)
 open RationalArgmin (rationalLE rationalLE_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -43,15 +39,10 @@ def domain (a c b K : PTm n) : Fm PTm n :=
 def rowBudget (a c K : PTm n) : PTm n := (K*K)*monus c a
 def budget (a c N K : PTm n) : PTm n := succ (succ N)*rowBudget a c K
 
-@[simp] theorem subst_ordered {k : ℕ} (σ : Fin n → PTm k) (a c b : PTm n) :
-    (ordered a c b).subst σ = ordered (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) := by simp [ordered]
-@[simp] theorem subst_domain {k : ℕ} (σ : Fin n → PTm k) (a c b K : PTm n) :
-    (domain a c b K).subst σ = domain (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ K) := by simp [domain]
-@[simp] theorem subst_rowBudget {k : ℕ} (σ : Fin n → PTm k) (a c K : PTm n) :
-    Syn.subst σ (rowBudget a c K) = rowBudget (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ K) := by simp [rowBudget]
-@[simp] theorem subst_budget {k : ℕ} (σ : Fin n → PTm k) (a c N K : PTm n) :
-    Syn.subst σ (budget a c N K) = budget (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) (Syn.subst σ K) :=
-  by simp [budget]
+ipra_subst ordered
+ipra_subst domain
+ipra_subst rowBudget
+ipra_subst budget
 
 theorem denominator_positive (a c b : PTm n) (h : Γ ⊢[PRAAx] ordered a c b) :
     Γ ⊢[PRAAx] le one b :=
@@ -81,9 +72,7 @@ theorem row_monotone (a c b j : PTm n) (h : Γ ⊢[PRAAx] ordered a c b) :
 def prefixOrder (a c b j : PTm n) : Fm PTm n :=
   rationalLE (fstT (positiveSum a b j)) (fstT (positiveSum c b j))
 
-@[simp] theorem subst_prefixOrder {k : ℕ} (σ : Fin n → PTm k) (a c b j : PTm n) :
-    (prefixOrder a c b j).subst σ = prefixOrder (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ j) :=
-  by simp [prefixOrder]
+ipra_subst prefixOrder
 
 private theorem prefix_zero (a c b : PTm n) : Γ ⊢[PRAAx] prefixOrder a c b zero :=
   rationalLE_congr (congrFst (GaussianRationalFiniteSum.sum_zero body (pairT a b))).eqSymm

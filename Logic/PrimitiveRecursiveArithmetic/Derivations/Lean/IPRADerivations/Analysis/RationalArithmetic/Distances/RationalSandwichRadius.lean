@@ -14,11 +14,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSandwichRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalArgmin (rationalLE)
 open RationalValueBounds (radius upper_of_radius radius_symmetric radius_of_upper upper_order_left upper_order_right radius_triangle radius_congr radius_diagonal)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

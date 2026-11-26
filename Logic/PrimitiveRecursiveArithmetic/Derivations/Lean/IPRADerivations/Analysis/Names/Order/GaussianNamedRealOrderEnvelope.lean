@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRealOrderEnvelope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedPositiveExponentialOrder (realOrder scalar_coordinate_distance)
@@ -20,9 +20,6 @@ open GaussianNamedRealOrderTransport (upperSlack precision remove_upper_slack)
 open GaussianNameEquivalence (point_at)
 open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper upper_of_radius upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,9 +27,7 @@ def envelope (f g : PR 2) (x y K : PTm n) : Fm PTm n := .all
   (upper (fstT (ap2 f (var 0) (Syn.shift x))) (fstT (ap2 g (var 0) (Syn.shift y)))
     (Syn.shift K) (unit (var 0)))
 
-@[simp] theorem subst_envelope {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (x y K : PTm n) :
-    (envelope f g x y K).subst σ = envelope f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ K) := by
-  simp [envelope,Syn.subst_shift,Syn.shift_subst]
+ipra_subst envelope [Syn.subst_shift, Syn.shift_subst]
 
 theorem envelope_at (f g : PR 2) (x y K p : PTm n) (h : Γ ⊢[PRAAx] envelope f g x y K) :
     Γ ⊢[PRAAx] upper (fstT (ap2 f p x)) (fstT (ap2 g p y)) K (unit p) := by

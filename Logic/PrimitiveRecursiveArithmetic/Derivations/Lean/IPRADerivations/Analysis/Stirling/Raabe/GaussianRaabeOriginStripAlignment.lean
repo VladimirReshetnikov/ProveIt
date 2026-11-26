@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeOriginStripAlignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (quadrature sampleBody sampleData sample_body_at)
 open GaussianCompactAlignedSplit (quadrature_congr)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (qadd qmul qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalRiemannRefinement (termsDistance constantBody weight)
 open GaussianRationalSyntheticDivision (qadd_congr)
-open LeanProofs.IPRA.PTm (num monus)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

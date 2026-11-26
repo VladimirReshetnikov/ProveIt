@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedInverseIncrementInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open GaussianExponentialSmallPerturbation (smallSamples small_samples_at)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianUnitIntervalInputDecoding (fraction_recode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -44,13 +40,9 @@ def frozenFraction (f : PR 2) (r x : PTm n) : PTm n :=
 def increment (f g : PR 2) (r x y : PTm n) : PTm n :=
   qsub (frozenFraction g r y) (frozenFraction f r x)
 
-@[simp] theorem subst_frozenFraction {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x : PTm n) :
-    Syn.subst σ (frozenFraction f r x) = frozenFraction f (Syn.subst σ r) (Syn.subst σ x) := by
-  simp [frozenFraction]
+ipra_subst frozenFraction
 
-@[simp] theorem subst_increment {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (r x y : PTm n) :
-    Syn.subst σ (increment f g r x y) = increment f g (Syn.subst σ r) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [increment]
+ipra_subst increment
 
 private theorem fraction_distance (f : PR 2) (r x E : PTm n) (hf : Γ ⊢[PRAAx] source f x E) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f r x) (frozenFraction f r x) zero (unit r) := by

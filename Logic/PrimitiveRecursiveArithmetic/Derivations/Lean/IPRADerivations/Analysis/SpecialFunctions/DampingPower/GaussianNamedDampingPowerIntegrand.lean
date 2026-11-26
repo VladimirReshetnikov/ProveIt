@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerChart (product_same_denominator product_observation_bound)
 open GaussianEulerDampedNamedIntegrand (decayF decayData)
 open GaussianEulerExponentialNamedKernelRate (innerBound)
@@ -26,8 +26,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianGammaCanonicalExponent (constantF)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,15 +43,9 @@ def gain (Rz C R E T A₀ A₁ A₂ : PTm n) : PTm n :=
     GaussianEulerCompactPowerMajorant.majorant Rz E T*
       (decayBound C R E T*GaussianNamedDampingPowerChart.gain C R E T A₀ A₁ A₂)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (z Rz B x y C₀ C R₀ R E T a b : PTm n) :
-    (source F G z Rz B x y C₀ C R₀ R E T a b).subst σ =
-      source F G (Syn.subst σ z) (Syn.subst σ Rz) (Syn.subst σ B)
-        (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ C₀) (Syn.subst σ C) (Syn.subst σ R₀)
-        (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
+ipra_subst source
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (z B x y a b : PTm n) :
-    Syn.subst σ (data F G z B x y a b) = data F G (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst data
 
 private theorem chart_disk (F G : PR 2) (x y C₀ C R₀ R E T a b : PTm n)
     (h : Γ ⊢[PRAAx] GaussianNamedDampingPowerChart.source F G x y C₀ C R₀ R E T a b) :

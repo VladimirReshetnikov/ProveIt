@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantDegreeDominance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminant (determinant wordCode coefficientTerm)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (stage stage_congr signPoint sign_canonical)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTermDegree (first_congr sign_nonzero)
@@ -28,17 +28,12 @@ open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (zero_prefix_at)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr add_lt_left)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (count)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def retainedStage (M m B r : PTm n) : PTm n := stage M m B (wordCode m r) m
 
-@[simp] theorem subst_retainedStage {l : ℕ} (σ : Fin n → PTm l) (M m B r : PTm n) :
-    Syn.subst σ (retainedStage M m B r) = retainedStage (Syn.subst σ M) (Syn.subst σ m)
-      (Syn.subst σ B) (Syn.subst σ r) := by simp [retainedStage]
+ipra_subst retainedStage
 
 theorem retained_stage_congr (M m B : PTm n) {r s : PTm n} (h : Γ ⊢[PRAAx] r ≐ s) :
     Γ ⊢[PRAAx] retainedStage M m B r ≐ retainedStage M m B s :=
@@ -50,9 +45,7 @@ def strictDominance (M m B r : PTm n) : Fm PTm n := .all
     lt (degree (retainedStage (Syn.shift M) (Syn.shift m) (Syn.shift B) (var 0)) (Syn.shift m*Syn.shift B))
       (degree (retainedStage (Syn.shift M) (Syn.shift m) (Syn.shift B) (Syn.shift r)) (Syn.shift m*Syn.shift B)))
 
-@[simp] theorem subst_strictDominance {l : ℕ} (σ : Fin n → PTm l) (M m B r : PTm n) :
-    (strictDominance M m B r).subst σ = strictDominance (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ r) := by
-  simp [strictDominance,Syn.subst_shift,Syn.shift_subst]
+ipra_subst strictDominance [Syn.subst_shift, Syn.shift_subst]
 
 theorem strict_at (M m B r s : PTm n) (h : Γ ⊢[PRAAx] strictDominance M m B r)
     (hs : Γ ⊢[PRAAx] lt s (count m)) (hne : Γ ⊢[PRAAx] neg (s ≐ r))

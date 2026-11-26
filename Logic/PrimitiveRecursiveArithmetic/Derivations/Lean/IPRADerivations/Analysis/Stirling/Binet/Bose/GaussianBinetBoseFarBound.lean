@@ -14,7 +14,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseFarBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseCubicGap (cube cube_positive denominator_lower)
 open GaussianBinetBoseDenominator (reciprocalF reciprocalData)
 open GaussianBinetBoseIntegrandBound (nameF data)
@@ -25,8 +25,6 @@ open GaussianRationalHorner (positive_product qmul qmul_canonical)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bounded_product bound_congr reciprocal_canonical)
 open GaussianRightHalfPlaneLogarithm (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Atan" => GaussianBinetArctangentQuadrature.nameF

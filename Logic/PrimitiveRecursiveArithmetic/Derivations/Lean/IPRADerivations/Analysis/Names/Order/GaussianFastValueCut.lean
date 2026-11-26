@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSch
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSlackRemoval
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual fast Gaussian names and finite envelope transfer
@@ -21,16 +20,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFastValueCut
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (ofGaussian represents positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,23 +44,13 @@ def valueCut (f : PR 2) (L x A B : PTm n) : Fm PTm n := .all
   (bounded (value f (Syn.shift L) (Syn.shift x) (var 0)) (Syn.shift A*unit (var 0)+Syn.shift B)
     (Syn.shift B*unit (var 0)))
 
-@[simp] theorem subst_recode {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (recode z) = recode (Syn.subst σ z) := by simp [recode]
-@[simp] theorem subst_normalizer {m : ℕ} (σ : Fin n → PTm m) (L : PTm n) :
-    Syn.subst σ (normalizer L) = normalizer (Syn.subst σ L) := by simp [normalizer]
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (L k : PTm n) :
-    Syn.subst σ (exponent L k) = exponent (Syn.subst σ L) (Syn.subst σ k) := by simp [exponent]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L x k : PTm n) :
-    Syn.subst σ (value f L x k) = value f (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ k) := by simp [value]
-@[simp] theorem subst_regular {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L x : PTm n) :
-    (regular f L x).subst σ = regular f (Syn.subst σ L) (Syn.subst σ x) := by
-  simp [regular,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_rawEnvelope {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A B K : PTm n) :
-    (rawEnvelope f x A B K).subst σ = rawEnvelope f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ K) := by
-  simp [rawEnvelope,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_valueCut {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L x A B : PTm n) :
-    (valueCut f L x A B).subst σ = valueCut f (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [valueCut,Syn.subst_shift,Syn.shift_subst]
+ipra_subst recode
+ipra_subst normalizer
+ipra_subst exponent
+ipra_subst value
+ipra_subst regular [Syn.subst_shift, Syn.shift_subst]
+ipra_subst rawEnvelope [Syn.subst_shift, Syn.shift_subst]
+ipra_subst valueCut [Syn.subst_shift, Syn.shift_subst]
 
 theorem recode_represents (z : PTm n) : Γ ⊢[PRAAx] represents (recode z) (rawGaussian z) (rawDen z) :=
   GaussianRationalHorner.ofGaussian_represents _ _ (raw_den_positive z)
@@ -297,11 +283,8 @@ def radiusCut (f : PR 2) (L x A B : PTm n) : Fm PTm n := .all
   (bounded (ap2 (nameF f) (var 0) (nameData (Syn.shift L) (Syn.shift x)))
     (Syn.shift A*unit (var 0)+Syn.shift B) (Syn.shift B*unit (var 0)))
 
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (L x : PTm n) :
-    Syn.subst σ (nameData L x) = nameData (Syn.subst σ L) (Syn.subst σ x) := by simp [nameData]
-@[simp] theorem subst_radiusCut {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L x A B : PTm n) :
-    (radiusCut f L x A B).subst σ = radiusCut f (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [radiusCut,Syn.subst_shift,Syn.shift_subst]
+ipra_subst nameData
+ipra_subst radiusCut [Syn.subst_shift, Syn.shift_subst]
 
 theorem value_congr (f : PR 2) {L L' x x' k k' : PTm n}
     (hL : Γ ⊢[PRAAx] L ≐ L') (hx : Γ ⊢[PRAAx] x ≐ x') (hk : Γ ⊢[PRAAx] k ≐ k') : Γ ⊢[PRAAx]

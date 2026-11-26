@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction)
 open GaussianStirlingAllOrderBoxProductGap (boxMargin)
 open GaussianStirlingAllOrderCrossedCells (bernoulliBody reflectedBody segmentData)
@@ -28,10 +28,6 @@ open RationalNonnegativePowers (fraction_congr)
 open RationalReciprocalPowerTail (add_zero_right)
 open RationalSumConstants (count_add)
 open RationalSumSegments (sum_congr)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

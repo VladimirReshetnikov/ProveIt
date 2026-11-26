@@ -14,26 +14,20 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentCayleyBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfPiName (meshAt meshIndex orderAt unit_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open WallisFinite (Dm)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (sum_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def stage (p M : PTm n) : PTm n := p+two*M
 
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (p M : PTm n) :
-    Syn.subst σ (stage p M) = stage (Syn.subst σ p) (Syn.subst σ M) := by
-  simp [stage]
+ipra_subst stage
 
 private theorem dm_positive (m : PTm n) : Γ ⊢[PRAAx] le one (Dm m) := by
   have hs : Γ ⊢[PRAAx] le one (succ m) := zero_lt_succ m

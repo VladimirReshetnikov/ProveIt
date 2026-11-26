@@ -6,7 +6,6 @@ mass and is uniform over both evaluation points.
 -/
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalUniformFirstOrderPolynomial
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalInverseQuadraticAlgebra
-import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Foundations.DisjointSums
 
 set_option autoImplicit false
@@ -14,7 +13,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalUniformSecondOrderPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFirstOrderPolynomial (paddedQuotient padded_length slope increment_distance)
 open GaussianRationalHorner (evaluate horner qmul qadd positive_product)
 open GaussianRationalHornerLipschitz (geometric size_prefix evaluation_bound)
@@ -25,10 +24,6 @@ open GaussianRationalSyntheticDivision (qmul_congr qsub_congr quotient quotient_
 open GaussianRationalUniformFirstOrderPolynomial (mass quotient_coefficients)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

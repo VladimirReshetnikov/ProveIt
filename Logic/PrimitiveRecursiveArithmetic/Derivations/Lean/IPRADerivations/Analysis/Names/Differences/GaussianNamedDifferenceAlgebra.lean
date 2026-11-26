@@ -13,7 +13,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDifferenceAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fast)
@@ -27,9 +27,6 @@ open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianRationalMetric (distanceBounded qsub qsub_represents qsub_canonical)
 open GaussianRootAlgebra (equal_of_values re_sub im_sub)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

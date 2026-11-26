@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogarithmFactorialPowerBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (source fraction)
 open GaussianHarmonicLogarithmName (sample)
 open GaussianRationalReciprocal (power bound_congr)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianUpperTimeLogarithmPower (gain rawPower)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -42,18 +39,12 @@ def numerator (p j a b : PTm n) : PTm n := fact j*a*unit p+gain j a*b
 def denominator (p b : PTm n) : PTm n := b*unit p
 def auxiliaryCost (j a : PTm n) : PTm n := two*fact j+gain j a
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (radius a b) = radius (Syn.subst σ a) (Syn.subst σ b) := by simp [radius]
-@[simp] theorem subst_exponentClock {m : ℕ} (σ : Fin n → PTm m) (t j : PTm n) :
-    Syn.subst σ (exponentClock t j) = exponentClock (Syn.subst σ t) (Syn.subst σ j) := by simp [exponentClock]
-@[simp] theorem subst_logClock {m : ℕ} (σ : Fin n → PTm m) (t j a b : PTm n) :
-    Syn.subst σ (logClock t j a b) = logClock (Syn.subst σ t) (Syn.subst σ j) (Syn.subst σ a) (Syn.subst σ b) := by simp [logClock]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p j a b : PTm n) :
-    Syn.subst σ (numerator p j a b) = numerator (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator,fact]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p b : PTm n) :
-    Syn.subst σ (denominator p b) = denominator (Syn.subst σ p) (Syn.subst σ b) := by simp [denominator]
-@[simp] theorem subst_auxiliaryCost {m : ℕ} (σ : Fin n → PTm m) (j a : PTm n) :
-    Syn.subst σ (auxiliaryCost j a) = auxiliaryCost (Syn.subst σ j) (Syn.subst σ a) := by simp [auxiliaryCost,fact]
+ipra_subst radius
+ipra_subst exponentClock
+ipra_subst logClock
+ipra_subst numerator [fact]
+ipra_subst denominator
+ipra_subst auxiliaryCost [fact]
 
 theorem clock_later (t j a b : PTm n) : Γ ⊢[PRAAx] le t (logClock t j a b) :=
   le_trans (le_add_right t j) (le_of_eq_add (d := LeanProofs.IPRA.PTm.num 4+

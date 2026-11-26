@@ -17,7 +17,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteLogRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalHead (parameters subst_parameters)
 open GaussianBarnesCanonicalLogTail (source row_source)
@@ -30,10 +30,6 @@ open GaussianNamedFiniteProductFamily (regularRows)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rowF" => GaussianBarnesCanonicalLogFactor.nameF

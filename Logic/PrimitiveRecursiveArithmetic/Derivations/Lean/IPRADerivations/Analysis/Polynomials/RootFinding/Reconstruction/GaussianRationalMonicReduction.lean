@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicCompanion
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual runtime division by a monic rational polynomial
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalMonicReduction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical horner hornerF evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qone qadd_congr qmul_congr qzero_canonical qmul_zero_left qmul_zero_right qzero_add canonicalCoefficients)
@@ -33,10 +32,6 @@ open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_canon
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticCoefficientValues (qadd_recode_right)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,24 +53,15 @@ def stage (P S D r : PTm n) : PTm n := ap2 stageF r (data P S D)
 def quotient (P S D r : PTm n) : PTm n := fstT (stage P S D r)
 def remainder (P S D r : PTm n) : PTm n := sndT (stage P S D r)
 
-@[simp] theorem subst_singleton {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (singleton a) = singleton (Syn.subst σ a) := by simp [singleton]
-@[simp] theorem subst_constant {m : ℕ} (σ : Fin n → PTm m) (a L : PTm n) :
-    Syn.subst σ (constant a L) = constant (Syn.subst σ a) (Syn.subst σ L) := by simp [constant]
-@[simp] theorem subst_quotientNext {m : ℕ} (σ : Fin n → PTm m) (Q R r : PTm n) :
-    Syn.subst σ (quotientNext Q R r) = quotientNext (Syn.subst σ Q) (Syn.subst σ R) (Syn.subst σ r) := by simp [quotientNext]
-@[simp] theorem subst_remainderNext {m : ℕ} (σ : Fin n → PTm m) (P R D a : PTm n) :
-    Syn.subst σ (remainderNext P R D a) = remainderNext (Syn.subst σ P) (Syn.subst σ R) (Syn.subst σ D) (Syn.subst σ a) := by simp [remainderNext]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (P S D : PTm n) :
-    Syn.subst σ (data P S D) = data (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) := by simp [data]
-@[simp] theorem subst_update {m : ℕ} (σ : Fin n → PTm m) (P S D r c : PTm n) :
-    Syn.subst σ (update P S D r c) = update (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ r) (Syn.subst σ c) := by simp [update]
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (P S D r : PTm n) :
-    Syn.subst σ (stage P S D r) = stage (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ r) := by simp [stage]
-@[simp] theorem subst_quotient {m : ℕ} (σ : Fin n → PTm m) (P S D r : PTm n) :
-    Syn.subst σ (quotient P S D r) = quotient (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ r) := by simp [quotient]
-@[simp] theorem subst_remainder {m : ℕ} (σ : Fin n → PTm m) (P S D r : PTm n) :
-    Syn.subst σ (remainder P S D r) = remainder (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ r) := by simp [remainder]
+ipra_subst singleton
+ipra_subst constant
+ipra_subst quotientNext
+ipra_subst remainderNext
+ipra_subst data
+ipra_subst update
+ipra_subst stage
+ipra_subst quotient
+ipra_subst remainder
 
 theorem singleton_length (a : PTm n) : Γ ⊢[PRAAx] length (singleton a) ≐ one := Foundations.MasterCertificate.sequence_length _ _ _
 theorem singleton_lookup (a : PTm n) : Γ ⊢[PRAAx] entry (singleton a) zero ≐ a := by
@@ -132,32 +118,28 @@ theorem stage_succ (P S D r : PTm n) : Γ ⊢[PRAAx] stage P S D (succ r) ≐ up
   exact e.eqTrans (u.eqTrans (update_at _ _ _ _ _))
 
 theorem quotient_zero (P S D : PTm n) : Γ ⊢[PRAAx] quotient P S D zero ≐ zeros one :=
-  (congrFst (stage_zero P S D)).eqTrans (fst_pair _ _)
+  (stage_zero P S D).fstE
 theorem remainder_zero (P S D : PTm n) : Γ ⊢[PRAAx] remainder P S D zero ≐ zeros D :=
-  (congrSnd (stage_zero P S D)).eqTrans (snd_pair _ _)
+  (stage_zero P S D).sndE
 theorem quotient_succ (P S D r : PTm n) : Γ ⊢[PRAAx]
     quotient P S D (succ r) ≐ quotientNext (quotient P S D r) (remainder P S D r) r :=
-  (congrFst (stage_succ P S D r)).eqTrans (fst_pair _ _)
+  (stage_succ P S D r).fstE
 theorem remainder_succ (P S D r : PTm n) : Γ ⊢[PRAAx]
     remainder P S D (succ r) ≐ remainderNext P (remainder P S D r) D (entry S r) :=
-  (congrSnd (stage_succ P S D r)).eqTrans (snd_pair _ _)
+  (stage_succ P S D r).sndE
 
 theorem quotient_length (P S D r : PTm n) : Γ ⊢[PRAAx] length (quotient P S D r) ≐ succ r := by
   have all : Γ ⊢[PRAAx] .all (length (quotient (Syn.shift P) (Syn.shift S) (Syn.shift D) (var 0)) ≐ succ (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_quotient,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (quotient_zero P S D)).eqTrans (zeros_length one)
-    · simp only [Fm.subst_eq,subst_length,subst_quotient,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (quotient_succ (Syn.shift P) (Syn.shift S) (Syn.shift D) (var 0))).eqTrans (added_length _ _ _)
+    ipra_qfind [subst_length, subst_quotient]
+    · exact (congrFst (quotient_zero P S D)).eqTrans (zeros_length one)
+    · exact (congrFst (quotient_succ (Syn.shift P) (Syn.shift S) (Syn.shift D) (var 0))).eqTrans (added_length _ _ _)
   simpa only [Fm.subst_eq,subst_length,subst_quotient,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
 
 theorem remainder_length (P S D r : PTm n) : Γ ⊢[PRAAx] length (remainder P S D r) ≐ D := by
   have all : Γ ⊢[PRAAx] .all (length (remainder (Syn.shift P) (Syn.shift S) (Syn.shift D) (var 0)) ≐ Syn.shift D) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_remainder,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (remainder_zero P S D)).eqTrans (zeros_length D)
-    · simp only [Fm.subst_eq,subst_length,subst_remainder,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (remainder_succ (Syn.shift P) (Syn.shift S) (Syn.shift D) (var 0))).eqTrans (added_length _ _ _)
+    ipra_qfind [subst_length, subst_remainder]
+    · exact (congrFst (remainder_zero P S D)).eqTrans (zeros_length D)
+    · exact (congrFst (remainder_succ (Syn.shift P) (Syn.shift S) (Syn.shift D) (var 0))).eqTrans (added_length _ _ _)
   simpa only [Fm.subst_eq,subst_length,subst_remainder,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
 
 theorem evaluate_congr {C E z w : PTm n} (hC : Γ ⊢[PRAAx] C ≐ E) (hz : Γ ⊢[PRAAx] z ≐ w) : Γ ⊢[PRAAx]
@@ -204,9 +186,7 @@ theorem remainder_evaluation_succ (P S D r z : PTm n) (hD : Γ ⊢[PRAAx] le one
 
 def reconstructionLaw (P S D z r : PTm n) : Fm PTm n :=
   horner S z r ≐ qadd (qmul (evaluate P z) (evaluate (quotient P S D r) z)) (evaluate (remainder P S D r) z)
-@[simp] theorem subst_reconstructionLaw {m : ℕ} (σ : Fin n → PTm m) (P S D z r : PTm n) :
-    (reconstructionLaw P S D z r).subst σ = reconstructionLaw (Syn.subst σ P) (Syn.subst σ S)
-      (Syn.subst σ D) (Syn.subst σ z) (Syn.subst σ r) := by simp [reconstructionLaw]
+ipra_subst reconstructionLaw
 
 /-- The actual quotient and remainder reconstruct every numeric Horner
 prefix. This is one genuine QF induction; neither a prefix invariant nor
@@ -222,9 +202,8 @@ theorem prefix_reconstruction (P S D z r : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     simpa only [Fm.shift,Fm.subst_eq,subst_entry,Syn.shift,ConciseIPRA.PTm.subst_zero,
       GaussianRationalSyntheticDivision.subst_qone] using hMonic.shift
   have all : Γ ⊢[PRAAx] .all (reconstructionLaw (Syn.shift P) (Syn.shift S) (Syn.shift D) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_reconstructionLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have q : Γ ⊢[PRAAx] evaluate (quotient P S D zero) z ≐ qzero :=
+    ipra_qfind [subst_reconstructionLaw]
+    · have q : Γ ⊢[PRAAx] evaluate (quotient P S D zero) z ≐ qzero :=
         (evaluate_congr (quotient_zero P S D) (.eqRefl _)).eqTrans (zeros_evaluation _ _)
       have r : Γ ⊢[PRAAx] evaluate (remainder P S D zero) z ≐ qzero :=
         (evaluate_congr (remainder_zero P S D) (.eqRefl _)).eqTrans (zeros_evaluation _ _)
@@ -233,8 +212,7 @@ theorem prefix_reconstruction (P S D z r : PTm n) (hD : Γ ⊢[PRAAx] le one D)
         (qadd_congr ((qmul_congr (.eqRefl _) q).eqTrans (qmul_zero_right _)) r).eqTrans
           (qzero_add qzero qzero_canonical)
       exact (GaussianRationalHorner.horner_zero S z).eqTrans rhs.eqSymm
-    · simp only [subst_reconstructionLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := reconstructionLaw (Syn.shift P) (Syn.shift S) (Syn.shift D) (Syn.shift z) (var 0) :: Γ.map Fm.shift
+    · let Δ := reconstructionLaw (Syn.shift P) (Syn.shift S) (Syn.shift D) (Syn.shift z) (var 0) :: Γ.map Fm.shift
       have actual := companion_evaluation (Γ := Δ) (Syn.shift P)
         (remainder (Syn.shift P) (Syn.shift S) (Syn.shift D) (var 0)) (Syn.shift D) (Syn.shift z)
         ds.wk ps.wk ms.wk (remainder_length _ _ _ _)
@@ -288,18 +266,10 @@ def reducedRemainder (P S D M : PTm n) : PTm n := remainder P S D (succ M)
 def output (P S D M : PTm n) : PTm n := pairT (reducedQuotient P S D M) (reducedRemainder P S D M)
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (P S D M : PTm n) : PTm n := PTm.app outputF ![P,S,D,M]
-@[simp] theorem subst_reducedQuotient {m : ℕ} (σ : Fin n → PTm m) (P S D M : PTm n) :
-    Syn.subst σ (reducedQuotient P S D M) = reducedQuotient (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by simp [reducedQuotient]
-@[simp] theorem subst_reducedRemainder {m : ℕ} (σ : Fin n → PTm m) (P S D M : PTm n) :
-    Syn.subst σ (reducedRemainder P S D M) = reducedRemainder (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by simp [reducedRemainder]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (P S D M : PTm n) :
-    Syn.subst σ (output P S D M) = output (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (P S D M : PTm n) :
-    Syn.subst σ (run P S D M) = run (Syn.subst σ P) (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ M) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst reducedQuotient
+ipra_subst reducedRemainder
+ipra_subst output
+ipra_subst run
 
 theorem reduction_evaluation (P S D M z : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hP : Γ ⊢[PRAAx] length P ≐ succ D) (hMonic : Γ ⊢[PRAAx] entry P zero ≐ qone)
@@ -313,9 +283,9 @@ theorem program_at (P S D M : PTm n) : Γ ⊢[PRAAx] run P S D M ≐ output P S 
     Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
       toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![P,S,D,M]
 theorem returned_quotient (P S D M : PTm n) : Γ ⊢[PRAAx] fstT (run P S D M) ≐ reducedQuotient P S D M :=
-  (congrFst (program_at P S D M)).eqTrans (fst_pair _ _)
+  (program_at P S D M).fstE
 theorem returned_remainder (P S D M : PTm n) : Γ ⊢[PRAAx] sndT (run P S D M) ≐ reducedRemainder P S D M :=
-  (congrSnd (program_at P S D M)).eqTrans (snd_pair _ _)
+  (program_at P S D M).sndE
 theorem returned_quotient_length (P S D M : PTm n) : Γ ⊢[PRAAx] length (fstT (run P S D M)) ≐ succ (succ M) :=
   (congrFst (returned_quotient P S D M)).eqTrans (quotient_length _ _ _ _)
 theorem returned_remainder_length (P S D M : PTm n) : Γ ⊢[PRAAx] length (sndT (run P S D M)) ≐ D :=

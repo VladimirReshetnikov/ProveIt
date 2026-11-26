@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (addF addData add_fast sum_distance)
 open GaussianNameRingLaws (negativeF negativeData negative_fast negative_sample_error add_sample_error)
@@ -22,17 +22,12 @@ open GaussianRationalMetric (qsub qnegative distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_negative)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def nameF (f g : PR 2) : PR 2 := addF f (negativeF g)
 def data (x y : PTm n) : PTm n := addData x (negativeData y)
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x y : PTm n) :
-    Syn.subst σ (data x y) = data (Syn.subst σ x) (Syn.subst σ y) := by simp [data]
+ipra_subst data
 
 theorem name_regular (f g : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) : Γ ⊢[PRAAx] pointCN (nameF f g) (data x y) :=

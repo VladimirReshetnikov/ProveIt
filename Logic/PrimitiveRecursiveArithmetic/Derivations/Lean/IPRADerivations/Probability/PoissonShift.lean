@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.BellDobinski
 import IPRADerivations.Foundations.ContractProducts
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite shift identity of the Poisson mean
@@ -27,17 +26,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.PoissonShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (ff)
 open LeanProofs.IPRA.Combinatorics.BellDobinski (ff_fact_k)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Foundations.ContractProducts (shift_fstT shift_sndT)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -129,10 +124,7 @@ theorem ff_ratio {k M : PTm n} (h : Γ ⊢[PRAAx] lt k M) :
   ipra_lc natEq (ff_fact_k h') - natEq (ff_fact_k (le_of_lt h)) -
     𝔟(ff M (monus M (succ k))) * natEq (fact_succ (Γ := Γ) k zero)
 
-theorem monus_pred {k M : PTm n} (h : Γ ⊢[PRAAx] lt k M) :
-    Γ ⊢[PRAAx] monus M k ≐ succ (monus M (succ k)) := by
-  have h' : Γ ⊢[PRAAx] le (succ k) M := h
-  ipra_lc natEq (eq_add_of_le h') - natEq (eq_add_of_le (le_of_lt h))
+alias monus_pred := Common.monus_succ_of_lt
 
 /-- The ratio recurrence of `t(k) = a^k b^{M−k} M!/k!`: `(k + 1) b t(k + 1) = a t(k)` for `k < M`. -/
 theorem po_ratio {k M a b : PTm n} (h : Γ ⊢[PRAAx] lt k M) :

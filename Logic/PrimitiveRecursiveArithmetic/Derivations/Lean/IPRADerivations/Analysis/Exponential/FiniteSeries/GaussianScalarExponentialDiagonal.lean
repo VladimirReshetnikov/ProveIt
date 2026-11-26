@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianRationalExponentialProductCoefficients
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientRecursion
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The diagonal Cauchy sums of the original scalar exponential
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarExponentialDiagonal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical)
 open GaussianRationalSyntheticDivision (qone qone_canonical qadd_congr qmul_congr qzero_add)
 open GaussianRationalPolynomialExponential (inverseFactorial inverse_factorial_zero scalarBody scalarSum scalar_body_at)
@@ -29,18 +28,12 @@ open GaussianRationalFactorialEulerSums (inverse_factorial_scale)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalCoefficientRecursion (scale_cancel)
 open GaussianReciprocalHorner (qmul_one_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficient (q e : PTm n) : PTm n := qmul (inverseFactorial e) (power q e)
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (q e : PTm n) :
-    Syn.subst σ (coefficient q e) = coefficient (Syn.subst σ q) (Syn.subst σ e) := by
-  simp [coefficient]
+ipra_subst coefficient
 
 theorem original_term (q e : PTm n) : inst2 scalarBody e q = coefficient q e := scalar_body_at q e
 
@@ -74,29 +67,19 @@ def diagonal (u v e : PTm n) : PTm n := GaussianRationalFiniteSum.sum termBody (
 def leftSum (u v e : PTm n) : PTm n := GaussianRationalFiniteSum.sum leftBody (succ e) (data u v e)
 def rightSum (u v e : PTm n) : PTm n := GaussianRationalFiniteSum.sum rightBody (succ e) (data u v e)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (u v e : PTm n) :
-    Syn.subst σ (data u v e) = data (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ e) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (u v e i : PTm n) :
-    Syn.subst σ (term u v e i) = term (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ e) (Syn.subst σ i) := by
-  simp [term]
+ipra_subst term
 
-@[simp] theorem subst_leftTerm {m : ℕ} (σ : Fin n → PTm m) (u v e i : PTm n) :
-    Syn.subst σ (leftTerm u v e i) = leftTerm (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ e) (Syn.subst σ i) := by
-  simp [leftTerm]
+ipra_subst leftTerm
 
-@[simp] theorem subst_rightTerm {m : ℕ} (σ : Fin n → PTm m) (u v e i : PTm n) :
-    Syn.subst σ (rightTerm u v e i) = rightTerm (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ e) (Syn.subst σ i) := by
-  simp [rightTerm]
+ipra_subst rightTerm
 
-@[simp] theorem subst_diagonal {m : ℕ} (σ : Fin n → PTm m) (u v e : PTm n) :
-    Syn.subst σ (diagonal u v e) = diagonal (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ e) := by simp [diagonal]
+ipra_subst diagonal
 
-@[simp] theorem subst_leftSum {m : ℕ} (σ : Fin n → PTm m) (u v e : PTm n) :
-    Syn.subst σ (leftSum u v e) = leftSum (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ e) := by simp [leftSum]
+ipra_subst leftSum
 
-@[simp] theorem subst_rightSum {m : ℕ} (σ : Fin n → PTm m) (u v e : PTm n) :
-    Syn.subst σ (rightSum u v e) = rightSum (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ e) := by simp [rightSum]
+ipra_subst rightSum
 
 theorem body_at (f : PTm 4) (u v e i : PTm n) :
     Γ ⊢[PRAAx] Syn.subst ![fstT (data u v e),fstT (sndT (data u v e)),sndT (sndT (data u v e)),i] f ≐
@@ -104,8 +87,8 @@ theorem body_at (f : PTm 4) (u v e i : PTm n) :
   Prf.eqCongr f (fun j => by
     fin_cases j
     · exact fst_pair _ _
-    · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-    · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    · exact (snd_pair _ _).fstE
+    · exact (snd_pair _ _).sndE
     · exact .eqRefl _)
 
 theorem term_at (u v e i : PTm n) : Γ ⊢[PRAAx] inst2 termBody i (data u v e) ≐ term u v e i := by
@@ -229,9 +212,7 @@ theorem diagonal_zero (u v : PTm n) : Γ ⊢[PRAAx] diagonal u v zero ≐ qone :
 
 def diagonalLaw (u v e : PTm n) : Fm PTm n := diagonal u v e ≐ coefficient (qadd u v) e
 
-@[simp] theorem subst_diagonalLaw {m : ℕ} (σ : Fin n → PTm m) (u v e : PTm n) :
-    (diagonalLaw u v e).subst σ = diagonalLaw (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ e) := by
-  simp [diagonalLaw]
+ipra_subst diagonalLaw
 
 theorem diagonal_law_step (u v e : PTm n) (h : Γ ⊢[PRAAx] diagonalLaw u v e) :
     Γ ⊢[PRAAx] diagonalLaw u v (succ e) :=
@@ -241,11 +222,9 @@ theorem diagonal_law_step (u v e : PTm n) (h : Γ ⊢[PRAAx] diagonalLaw u v e) 
 
 theorem diagonal_at_sum (u v e : PTm n) : Γ ⊢[PRAAx] diagonal u v e ≐ coefficient (qadd u v) e := by
   have all : Γ ⊢[PRAAx] .all (diagonalLaw (Syn.shift u) (Syn.shift v) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_diagonalLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (diagonal_zero u v).eqTrans (coefficient_zero (qadd u v)).eqSymm
-    · simp only [subst_diagonalLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact diagonal_law_step _ _ _ Prf.hyp0
+    ipra_qfind [subst_diagonalLaw]
+    · exact (diagonal_zero u v).eqTrans (coefficient_zero (qadd u v)).eqSymm
+    · exact diagonal_law_step _ _ _ Prf.hyp0
   change Γ ⊢[PRAAx] diagonalLaw u v e
   simpa only [subst_diagonalLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE e
 
@@ -254,9 +233,7 @@ def triangularBody : PTm 2 := diagonal (fstT (var 1)) (sndT (var 1)) (var 0)
 def triangularSum (u v K : PTm n) : PTm n :=
   GaussianRationalFiniteSum.sum triangularBody (succ K) (pairT u v)
 
-@[simp] theorem subst_triangularSum {m : ℕ} (σ : Fin n → PTm m) (u v K : PTm n) :
-    Syn.subst σ (triangularSum u v K) = triangularSum (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ K) := by
-  simp [triangularSum]
+ipra_subst triangularSum
 
 theorem triangular_body_at (u v e : PTm n) : Γ ⊢[PRAAx] inst2 triangularBody e (pairT u v) ≐ diagonal u v e := by
   ipra_congr (diagonal (var 0) (var 1) (var 2) : PTm 3) with

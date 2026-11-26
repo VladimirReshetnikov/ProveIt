@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaDifferenceProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -32,8 +32,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianStirlingGammaLogarithm (source arg gammaData gamma_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "QF" => GaussianNamedDifferenceQuotient.nameF gammaF gammaF
@@ -51,41 +49,23 @@ def data (a b D : PTm n) : PTm n := addData (productData a b D) (gammaData a b)
 def upperInputData (a b D : PTm n) : PTm n := md (coefficient a b D) (neighborData a b D)
 def lowerInputData (a b : PTm n) : PTm n := md (fraction a b) (gammaData a b)
 
-@[simp] theorem subst_neighborNumerator {m : ℕ} (σ : Fin n → PTm m) (a b D : PTm n) :
-    Syn.subst σ (neighborNumerator a b D) = neighborNumerator (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [neighborNumerator]
+ipra_subst neighborNumerator
 
-@[simp] theorem subst_neighborDenominator {m : ℕ} (σ : Fin n → PTm m) (b D : PTm n) :
-    Syn.subst σ (neighborDenominator b D) = neighborDenominator (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [neighborDenominator]
+ipra_subst neighborDenominator
 
-@[simp] theorem subst_neighborData {m : ℕ} (σ : Fin n → PTm m) (a b D : PTm n) :
-    Syn.subst σ (neighborData a b D) = neighborData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [neighborData]
+ipra_subst neighborData
 
-@[simp] theorem subst_stepQuotientData {m : ℕ} (σ : Fin n → PTm m) (a b D : PTm n) :
-    Syn.subst σ (stepQuotientData a b D) = stepQuotientData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [stepQuotientData]
+ipra_subst stepQuotientData
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (a b D : PTm n) :
-    Syn.subst σ (coefficient a b D) = coefficient (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [coefficient]
+ipra_subst coefficient
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (a b D : PTm n) :
-    Syn.subst σ (productData a b D) = productData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [productData]
+ipra_subst productData
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b D : PTm n) :
-    Syn.subst σ (data a b D) = data (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [data]
+ipra_subst data
 
-@[simp] theorem subst_upperInputData {m : ℕ} (σ : Fin n → PTm m) (a b D : PTm n) :
-    Syn.subst σ (upperInputData a b D) = upperInputData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [upperInputData]
+ipra_subst upperInputData
 
-@[simp] theorem subst_lowerInputData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (lowerInputData a b) = lowerInputData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [lowerInputData]
+ipra_subst lowerInputData
 
 theorem nativeInput (a b D : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] GaussianNamedDifferenceQuotient.input gammaF gammaF
@@ -134,9 +114,7 @@ def finiteBudget (a b D : PTm n) : PTm n :=
     (three+(multiplyModulus constantF QF (coefficient a b D) (stepQuotientData a b D)+one)+
       (a+one)*cost gammaF gammaF (neighborData a b D) (gammaData a b) oneCode D)
 
-@[simp] theorem subst_finiteBudget {m : ℕ} (σ : Fin n → PTm m) (a b D : PTm n) :
-    Syn.subst σ (finiteBudget a b D) = finiteBudget (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [finiteBudget,three]
+ipra_subst finiteBudget [three]
 
 set_option maxHeartbeats 1000000 in
 theorem finite_at (p a b D : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hD : Γ ⊢[PRAAx] le one D) :

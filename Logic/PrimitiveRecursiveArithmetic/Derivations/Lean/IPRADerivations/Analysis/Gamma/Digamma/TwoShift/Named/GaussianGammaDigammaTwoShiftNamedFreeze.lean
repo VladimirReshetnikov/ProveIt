@@ -18,7 +18,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftNamedFreeze
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaMinimumFreezeRational (numerator denominator frozen_rational_domain fraction_at)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
@@ -28,9 +28,6 @@ open GaussianNamedPositiveLateLogSource (retimedF retimedData)
 open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData gammaLogMargin)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -65,39 +62,19 @@ def leftNumerator (f g h : PR 2) (k x y z : PTm n) : PTm n :=
 def rightNumerator (f g h : PR 2) (k x y z : PTm n) : PTm n :=
   numerator h k z*(denominator f k x*denominator g k y)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (x y z M : PTm n) :
-    (source f g h x y z M).subst σ =
-      source f g h (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ M) := by
-  simp [source]
+ipra_subst source
 
-@[simp] theorem subst_baseLogData {m : ℕ} (σ : Fin n → PTm m) (x M : PTm n) :
-    Syn.subst σ (baseLogData x M) = baseLogData (Syn.subst σ x) (Syn.subst σ M) := by
-  simp [baseLogData,two]
+ipra_subst baseLogData [two]
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (g h : PR 2) (s y z M : PTm n) :
-    Syn.subst σ (clock g h s y z M) =
-      clock g h (Syn.subst σ s) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ M) := by
-  simp [clock,delay,gammaClock,two]
+ipra_subst clock [delay, gammaClock, two]
 
-@[simp] theorem subst_chartDenominator {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (k x y z : PTm n) :
-    Syn.subst σ (chartDenominator f g h k x y z) =
-      chartDenominator f g h (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp [chartDenominator]
+ipra_subst chartDenominator
 
-@[simp] theorem subst_baseNumerator {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (k x y z : PTm n) :
-    Syn.subst σ (baseNumerator f g h k x y z) =
-      baseNumerator f g h (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp [baseNumerator]
+ipra_subst baseNumerator
 
-@[simp] theorem subst_leftNumerator {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (k x y z : PTm n) :
-    Syn.subst σ (leftNumerator f g h k x y z) =
-      leftNumerator f g h (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp [leftNumerator]
+ipra_subst leftNumerator
 
-@[simp] theorem subst_rightNumerator {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (k x y z : PTm n) :
-    Syn.subst σ (rightNumerator f g h k x y z) =
-      rightNumerator f g h (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp [rightNumerator]
+ipra_subst rightNumerator
 
 theorem baseLog_input (f : PR 2) (x M : PTm n) (hs : Γ ⊢[PRAAx] S f x M) :
     Γ ⊢[PRAAx] GaussianNamedPositiveLogarithm.source (retimedF f) (retimedData x M) (two*M) (radius f x) :=

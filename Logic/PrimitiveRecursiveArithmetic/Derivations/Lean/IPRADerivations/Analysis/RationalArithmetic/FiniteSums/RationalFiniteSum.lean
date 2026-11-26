@@ -23,16 +23,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalFiniteSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf subst_numeratorOf subst_denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization
   (normalize normalize_preserves_value integerCode normalize_integer)
 open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed normalize_well_formed well_formed_unique)
 open LeanProofs.IPRA.Analysis.RationalArgmin (left rationalLE rationalEq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -60,12 +57,8 @@ def sum (A : PTm 2) (N x : PTm n) : PTm n := normalize (numerator A N x) (denomi
     Syn.subst σ (negative A N x) = negative A (Syn.subst σ N) (Syn.subst σ x) := subst_ap2 _ _ _ _
 @[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (A : PTm 2) (N x : PTm n) :
     Syn.subst σ (denominator A N x) = denominator A (Syn.subst σ N) (Syn.subst σ x) := subst_ap2 _ _ _ _
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (A : PTm 2) (N x : PTm n) :
-    (numerator A N x).subst σ = numerator A (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [numerator, ZT.subst, subst_positive, subst_negative]
-@[simp] theorem subst_sum {l : ℕ} (σ : Fin n → PTm l) (A : PTm 2) (N x : PTm n) :
-    Syn.subst σ (sum A N x) = sum A (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [sum, RationalIntegerNormalization.subst_normalize, subst_numerator, subst_denominator]
+ipra_subst numerator [ZT.subst, subst_positive, subst_negative]
+ipra_subst sum
 
 @[simp] theorem positiveBody_at (A : PTm 2) (i x : PTm n) :
     inst2 (positiveBody A) i x = (numeratorOf (term A i x)).pos := by
@@ -141,10 +134,8 @@ theorem sum_succ_value (A : PTm 2) (N x : PTm n) :
       (numeratorOf (sum A (succ N) x)*ZT.ofNat (denominator A N x*denominatorOf (term A N x))) := by
   apply ZT.derive
   have value := ZT.toZ_eq (sum_value (Γ := Γ) A (succ N) x)
-  have step := ZT.toZ_eq (numerator_succ (Γ := Γ) A N x)
-  have den := natEq (denominator_succ (Γ := Γ) A N x)
   simp only [ZT.toZ_mul, ZT.toZ_ofNat] at value ⊢
-  rw [step,den] at value
+  rw [ZT.toZ_eq (numerator_succ (Γ := Γ) A N x),natEq (denominator_succ (Γ := Γ) A N x)] at value
   simpa only [Q.mk_mul,map_mul] using value
 
 /-- Empty sums return the literal canonical zero code. -/
@@ -169,16 +160,10 @@ def termwiseLE (A B : PTm 2) (N x y : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ rationalLE
     (term A (var 0) (Syn.shift x)) (term B (var 0) (Syn.shift y)))
 
-@[simp] theorem subst_rawLeft {l : ℕ} (σ : Fin n → PTm l) (A B : PTm 2) (N x y : PTm n) :
-    Syn.subst σ (rawLeft A B N x y) = rawLeft A B (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [rawLeft,PTm.subst_add,PTm.subst_mul,subst_positive,subst_negative,subst_denominator]
-@[simp] theorem subst_rawOrder {l : ℕ} (σ : Fin n → PTm l) (A B : PTm 2) (N x y : PTm n) :
-    (rawOrder A B N x y).subst σ = rawOrder A B (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [rawOrder,subst_le,subst_rawLeft]
-@[simp] theorem subst_termwiseLE {l : ℕ} (σ : Fin n → PTm l) (A B : PTm 2) (N x y : PTm n) :
-    (termwiseLE A B N x y).subst σ = termwiseLE A B (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [termwiseLE,Fm.subst_all,Fm.subst_imp,subst_lt,RationalArgmin.subst_rationalLE,
-    subst_term,Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rawLeft
+ipra_subst rawOrder
+ipra_subst termwiseLE [Fm.subst_all, Fm.subst_imp, subst_lt, RationalArgmin.subst_rationalLE, subst_term,
+    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem termwise_at (A B : PTm 2) (N x y i : PTm n)
     (h : Γ ⊢[PRAAx] termwiseLE A B N x y) (hi : Γ ⊢[PRAAx] lt i N) :
@@ -231,9 +216,8 @@ theorem raw_monotone (A B : PTm 2) (N x y : PTm n)
     (h : Γ ⊢[PRAAx] termwiseLE A B N x y) : Γ ⊢[PRAAx] rawOrder A B N x y := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       rawOrder A B (var 0) (Syn.shift x) (Syn.shift y)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_rawOrder,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_le, subst_rawOrder]
+    · refine .impI ?_
       have p := positive_zero (Γ := Γ) A x
       have m := negative_zero (Γ := Γ) B y
       have p' := positive_zero (Γ := Γ) B y
@@ -243,8 +227,7 @@ theorem raw_monotone (A B : PTm 2) (N x y : PTm n)
       have b : Γ ⊢[PRAAx] rawLeft B A zero y x ≐ zero :=
         (congrAdd (congrMul p' (.eqRefl _)) (congrMul m' (.eqRefl _))).eqTrans (by ipra_ring)
       exact (le_congr a.eqSymm b.eqSymm (le_refl zero)).wk
-    · simp only [Fm.subst_imp,subst_le,subst_rawOrder,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let IH : Fm PTm (n+1) := le (var 0) (Syn.shift N) ⟶ rawOrder A B (var 0) (Syn.shift x) (Syn.shift y)
       let Δ : List (Fm PTm (n+1)) := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] rawOrder A B (var 0) (Syn.shift x) (Syn.shift y) :=
@@ -288,8 +271,7 @@ theorem canonical_equal (c d : PTm n) (a b : ZT n) (A B : PTm n)
     (heq : Γ ⊢[PRAAx] ZT.eq (a*ZT.ofNat B) (b*ZT.ofNat A)) : Γ ⊢[PRAAx] c ≐ d := by
   have forward : Γ ⊢[PRAAx] zle (a*ZT.ofNat B) (b*ZT.ofNat A) := by
     apply zle_of_toZ zero
-    have h := ZT.toZ_eq heq
-    simpa only [Q.mk_zero,map_zero,_root_.add_zero] using h
+    simpa only [Q.mk_zero,map_zero,_root_.add_zero] using ZT.toZ_eq heq
   have reverse : Γ ⊢[PRAAx] zle (b*ZT.ofNat A) (a*ZT.ofNat B) := by
     apply zle_of_toZ zero
     have h := (ZT.toZ_eq heq).symm
@@ -330,10 +312,8 @@ def termwiseEq (A B : PTm 2) (N x y : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ rationalEq
     (term A (var 0) (Syn.shift x)) (term B (var 0) (Syn.shift y)))
 
-@[simp] theorem subst_termwiseEq {l : ℕ} (σ : Fin n → PTm l) (A B : PTm 2) (N x y : PTm n) :
-    (termwiseEq A B N x y).subst σ = termwiseEq A B (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [termwiseEq,Fm.subst_all,Fm.subst_imp,subst_lt,RationalArgmin.subst_rationalEq,
-    subst_term,Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst termwiseEq [Fm.subst_all, Fm.subst_imp, subst_lt, RationalArgmin.subst_rationalEq, subst_term,
+    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem termwiseEq_forward (A B : PTm 2) (N x y : PTm n)
     (h : Γ ⊢[PRAAx] termwiseEq A B N x y) : Γ ⊢[PRAAx] termwiseLE A B N x y := by

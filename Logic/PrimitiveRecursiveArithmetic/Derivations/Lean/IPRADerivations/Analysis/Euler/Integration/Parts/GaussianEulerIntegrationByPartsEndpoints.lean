@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaPrimitiveLowerEndpoint (rootDen eta_factorization)
 open GaussianEulerIntegrationByPartsLinear (primitive originalProduct decay)
 open GaussianEulerPowerIncrement (point)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

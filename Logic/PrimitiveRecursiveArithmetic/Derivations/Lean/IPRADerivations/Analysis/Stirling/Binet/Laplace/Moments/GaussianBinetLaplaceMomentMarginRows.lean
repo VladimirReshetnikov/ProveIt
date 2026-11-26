@@ -20,7 +20,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentMarginRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceDomination (realDecay)
 open GaussianBinetLaplaceIntegrand (input)
@@ -39,10 +39,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData sample_canonical sample_nonnegative)
 open GaussianReconstructionRoots (norm_from_distance distance_zero_iff)
 open RationalValueBounds (upper upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
@@ -50,9 +46,7 @@ local notation "realSource" => GaussianLogGammaEulerResidualDomain.source
 
 def allowance (j T : PTm n) : PTm n := num 4+num 26*pw T j
 
-@[simp] theorem subst_allowance {m : ℕ} (σ : Fin n → PTm m) (j T : PTm n) :
-    Syn.subst σ (allowance j T) = allowance (Syn.subst σ j) (Syn.subst σ T) := by
-  simp [allowance]
+ipra_subst allowance
 
 theorem fixed_source (K : PTm n) (hK : Γ ⊢[PRAAx] le one K) :
     Γ ⊢[PRAAx] realSource one zero K zero (GaussianLogGammaEulerResidualRadius.radius one zero) :=

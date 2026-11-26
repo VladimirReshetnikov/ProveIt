@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalNamed (nameF modulus clock sample_at)
 open GaussianBarnesCanonicalNamedDemand (source data frozenData clock_demand late_rate native_source)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -26,10 +26,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

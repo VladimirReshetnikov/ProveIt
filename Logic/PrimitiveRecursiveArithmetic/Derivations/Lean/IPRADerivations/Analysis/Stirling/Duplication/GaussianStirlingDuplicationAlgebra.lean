@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingDuplicationAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode neg)
 open GaussianGaussMultiplicationPowerRate (multiplier)
 open GaussianRationalHorner (qadd qmul represents represents_rescale ofGaussian_represents represents_congr
@@ -28,8 +28,6 @@ open GaussianStirlingDifferenceAlgebra (rawA)
 open GaussianStirlingGammaLogarithm (arg)
 open GaussianStirlingNames (point offset)
 open GaussianStirlingNativeDuplication (halfNumerator halfDenominator)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "halfPoint" => point one two

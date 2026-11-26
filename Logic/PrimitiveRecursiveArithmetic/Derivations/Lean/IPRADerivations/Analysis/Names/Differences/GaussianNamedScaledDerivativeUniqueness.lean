@@ -18,7 +18,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedScaledDerivativeUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (mul scale oneCode eval_re_code eval_im_code)
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
@@ -36,9 +36,6 @@ open GaussianRationalSyntheticDivision (qone)
 open GaussianRootAlgebra (equal equal_of_values re_mul im_mul re_scale im_scale re_one im_one)
 open GaussianSineProductImaginaryLogDerivative (rationalReal realNumerator)
 open GaussianSineProductImaginaryLogDerivativeTail (rational_real_bound)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -48,12 +45,9 @@ def inverseStep (D s : PTm n) : PTm n := rationalReal (D*unit s) one
 def weightedF (F : PR 2) : PR 2 := multiplyF constantF F
 def weightedData (F : PR 2) (x D s : PTm n) : PTm n := multiplyData constantF F (step D s) x
 
-@[simp] theorem subst_step {m : ℕ} (σ : Fin n → PTm m) (D s : PTm n) :
-    Syn.subst σ (step D s) = step (Syn.subst σ D) (Syn.subst σ s) := by simp [step, one]
+ipra_subst step [one]
 
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (F : PR 2) (x D s : PTm n) :
-    Syn.subst σ (weightedData F x D s) = weightedData F (Syn.subst σ x) (Syn.subst σ D) (Syn.subst σ s) := by
-  simp [weightedData]
+ipra_subst weightedData
 
 theorem inverse_product (D s : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] qmul (inverseStep D s) (step D s) ≐ qone := by

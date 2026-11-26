@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.Logarithm.ComplexLogarithmRemainder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Cauchy bounds for finite complex Taylor-logarithm tails
@@ -27,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ComplexLogarithmCauchy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.LogarithmRemainder
@@ -36,10 +34,6 @@ open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im code add mul scale zeroCode normSq bounded series series_zero series_succ
     power bounded_power bounded_neg bounded_scale bounded_add bounded_mono
     normSq_eval normSq_code normSq_zero congr_normSq eval_re_code eval_im_code)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,10 +58,7 @@ def positiveStep : PTm 5 :=
 def positiveF : PR 4 := recDef zero positiveStep
 def positive (L R N K : PTm n) : PTm n := ap4 positiveF K L R N
 
-@[simp] theorem subst_positive {m : ℕ} (σ : Fin n → PTm m) (L R N K : PTm n) :
-    Syn.subst σ (positive L R N K) =
-      positive (Syn.subst σ L) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ K) := by
-  simp [positive]
+ipra_subst positive
 
 theorem positive_zero (L R N : PTm n) : Γ ⊢[PRAAx] positive L R N zero ≐ zero := by
   have h := rec_zero (Γ := Γ) (zero : PTm 3) positiveStep ![L, R, N]
@@ -100,21 +91,17 @@ def strong (L R N K : PTm n) : Fm PTm n :=
       two * denominator N L * fact (L + K + two) * pw N (L + two) * pw R (L + K + three))
     (two * pw R (L + three) * denominator N L * denominator N (L + K))
 
-@[simp] theorem subst_strong {m : ℕ} (σ : Fin n → PTm m) (L R N K : PTm n) :
-    (strong L R N K).subst σ =
-      strong (Syn.subst σ L) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ K) := by
-  simp [strong, fact]
+ipra_subst strong [fact]
 
 theorem strong_zero (L R N : PTm n) : Γ ⊢[PRAAx] strong L R N zero := by
   have a := natEq (positive_zero (Γ := Γ) L R N)
-  have f := natEq (congrAp2 (Γ := Γ) factF (congrAdd (add_zero L) (.eqRefl two)) (.eqRefl zero))
   have p := natEq (congrAp2 (Γ := Γ) powF (congrAdd (add_zero L) (.eqRefl three)) (.eqRefl R))
   have d := natEq (congr_denominator (N := N) (Γ := Γ) (add_zero L))
   unfold strong
   refine le_of_eq_add (d := zero) ?_
   apply deriveNat
   ipra_simps
-  rw [a, f, p, d]
+  rw [a, natEq (congrAp2 (Γ := Γ) factF (congrAdd (add_zero L) (.eqRefl two)) (.eqRefl zero)), p, d]
   simp only [denominator, Q.mk_mul, map_mul]
   ring
 
@@ -168,24 +155,17 @@ def difference (z N L K : PTm n) : PTm n :=
   add (scale (denominator N L) (series z N (L + K)))
     (ComplexLogarithmRemainder.neg (scale (denominator N (L + K)) (series z N L)))
 
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (z N L K : PTm n) :
-    Syn.subst σ (difference z N L K) =
-      difference (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ K) := by
-  simp [difference]
+ipra_subst difference
 
 theorem eval_re_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     ZT.toZ Γ (re a) = ZT.toZ Γ (re b) := by
-  have p := natEq (congrFst (congrFst h))
-  have q := natEq (congrSnd (congrFst h))
   simp only [re, ZT.toZ]
-  linear_combination p - q
+  linear_combination natEq (congrFst (congrFst h)) - natEq (congrSnd (congrFst h))
 
 theorem eval_im_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     ZT.toZ Γ (im a) = ZT.toZ Γ (im b) := by
-  have p := natEq (congrFst (congrSnd h))
-  have q := natEq (congrSnd (congrSnd h))
   simp only [im, ZT.toZ]
-  linear_combination p - q
+  linear_combination natEq (congrFst (congrSnd h)) - natEq (congrSnd (congrSnd h))
 
 theorem eval_difference_re (z N L K : PTm n) :
     ZT.toZ Γ (re (difference z N L K)) =
@@ -209,10 +189,9 @@ theorem difference_zero (z N L : PTm n) :
     congrAp3 ComplexLogarithmRemainder.seriesF (add_zero L) (.eqRefl z) (.eqRefl N)
   have sr := eval_re_congr s
   have si := eval_im_congr s
-  have d := natEq (congr_denominator (N := N) (Γ := Γ) (add_zero L))
   apply deriveNat
   rw [normSq_eval, eval_difference_re, eval_difference_im]
-  rw [sr, si, d]
+  rw [sr, si, natEq (congr_denominator (N := N) (Γ := Γ) (add_zero L))]
   simp
 
 /-- The exact next difference numerator, before taking its squared norm. -/
@@ -250,14 +229,10 @@ theorem difference_domination (z N L R K : PTm n) (hz : Γ ⊢[PRAAx] bounded z 
   have all : Γ ⊢[PRAAx] .all
       (bounded (difference (Syn.shift z) (Syn.shift N) (Syn.shift L) (var 0))
         (positive (Syn.shift L) (Syn.shift R) (Syn.shift N) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [ComplexLogarithmRemainder.subst_bounded, subst_difference, subst_positive,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have r := (congrMul (positive_zero (Γ := Γ) L R N) (positive_zero L R N)).eqTrans (mul_zero zero)
+    ipra_qfind (le_QF _ _) [ComplexLogarithmRemainder.subst_bounded, subst_difference, subst_positive]
+    · have r := (congrMul (positive_zero (Γ := Γ) L R N) (positive_zero L R N)).eqTrans (mul_zero zero)
       exact le_congr (difference_zero _ _ _).eqSymm r.eqSymm (le_refl zero)
-    · simp only [ComplexLogarithmRemainder.subst_bounded, subst_difference, subst_positive,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have shifted : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift R) := by
+    · have shifted : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift R) := by
         simpa [Fm.shift, Syn.shift] using hz.shift
       have ih : (bounded (difference (Syn.shift z) (Syn.shift N) (Syn.shift L) (var 0))
           (positive (Syn.shift L) (Syn.shift R) (Syn.shift N) (var 0))) :: Γ.map Fm.shift ⊢[PRAAx]
@@ -290,10 +265,7 @@ theorem finite_cauchy_bound (z N L R K : PTm n) (hz : Γ ⊢[PRAAx] bounded z R)
 def coefficientFormula (R N L : PTm n) : Fm PTm n :=
   le (two * pw two L * pw R (L + three)) (three * pw N (L + three))
 
-@[simp] theorem subst_coefficientFormula {m : ℕ} (σ : Fin n → PTm m) (R N L : PTm n) :
-    (coefficientFormula R N L).subst σ =
-      coefficientFormula (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [coefficientFormula]
+ipra_subst coefficientFormula
 
 theorem coefficient_zero (R N : PTm n) (hN : Γ ⊢[PRAAx] le (two * R) N) :
     Γ ⊢[PRAAx] coefficientFormula R N zero := by
@@ -334,13 +306,9 @@ theorem dyadic_coefficient (R N L : PTm n) (hN : Γ ⊢[PRAAx] le (two * R) N) :
 theorem power_positive (N k : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] le one (pw N k) := by
   have all : Γ ⊢[PRAAx] .all (le one (pw (Syn.shift N) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      exact le_congr (.eqRefl _) (pw_zero N).eqSymm (le_refl one)
-    · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have shifted : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · exact le_congr (.eqRefl _) (pw_zero N).eqSymm (le_refl one)
+    · have shifted : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by
         simpa [Fm.shift, Syn.shift] using hN.shift
       have b : (le one (pw (Syn.shift N) (var 0))) :: Γ.map Fm.shift ⊢[PRAAx]
           le (one * one) (pw (Syn.shift N) (var 0) * Syn.shift N) :=

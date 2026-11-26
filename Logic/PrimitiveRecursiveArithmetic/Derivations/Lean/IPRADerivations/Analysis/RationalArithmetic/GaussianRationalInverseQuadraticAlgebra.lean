@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalInverseQuadraticAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul qzero canonical qmul_canonical qadd_represents canonical_unique represents_congr positive_product)
 open GaussianRationalMetric (qsub qsub_represents)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr rescale_to)
@@ -25,9 +25,6 @@ open GaussianRationalReciprocal (power power_zero power_succ)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalCoefficientScaling (qmul_add)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Topology.KnotLocalMoves
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Fox colourings of torus links, the figure-eight knot and rational tangles; affine colourings
@@ -41,10 +40,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.KnotColourings
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.KnotLocalMoves (refl)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

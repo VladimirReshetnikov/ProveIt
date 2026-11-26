@@ -20,7 +20,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamedPositive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentNamed (clock data nameF sample_at frozenData name_regular)
 open GaussianBinetLaplaceMomentPositive (marginPoint)
@@ -34,10 +34,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qzero positive_product)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open RationalValueBounds (upper upper_congr upper_mono)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk Γ t)

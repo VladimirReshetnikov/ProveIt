@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual nonnegative rational powers
@@ -17,12 +15,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalNonnegativePowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents subst_fraction)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,8 +38,7 @@ theorem fraction_multiply (A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hD : 
 
 def power (A B k : PTm n) : PTm n := fraction (pw A k) (pw B k)
 
-@[simp] theorem subst_power {m : ℕ} (σ : Fin n → PTm m) (A B k : PTm n) :
-    Syn.subst σ (power A B k) = power (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [power]
+ipra_subst power
 
 theorem denominator_positive (B k : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] le one (pw B k) :=
   GaussianPolynomialPerturbation.power_positive _ _ hB

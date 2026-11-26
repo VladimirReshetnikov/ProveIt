@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentWidth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceIntegrand (cofinalF cofinalData input cofinal_bound)
 open GaussianBinetLaplaceMomentCompact (data weight_bound)
 open GaussianBinetLaplaceMomentFloor (weight clock observation gain fixedData evaluatorF evaluator_at nameF)
@@ -28,9 +28,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalRiemannRefinement (constantBody leftSum termsDistance)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReconstructionRoots (distance_zero_iff)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

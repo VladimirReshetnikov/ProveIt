@@ -1,7 +1,5 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Foundations.DyadicNames
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The St Petersburg game
@@ -27,13 +25,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.StPetersburg
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.Foundations.DyadicNames (eps eps_half)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

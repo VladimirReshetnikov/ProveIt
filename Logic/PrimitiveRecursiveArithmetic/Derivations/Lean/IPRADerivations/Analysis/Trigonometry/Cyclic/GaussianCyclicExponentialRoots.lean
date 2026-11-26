@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicExponentialRoots
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentExponentialPeriod (fullTurnF fullTurnData fullTurnRadius original_full_turn_input)
 open GaussianBoundedConstantProductName (clock)
 open GaussianEuclideanDistanceName (pointCN)
@@ -40,10 +40,6 @@ open GaussianNamedDiagonalRate (cross_of_diagonal_rate diagonalRate)
 open GaussianRootAlgebra (equal_refl equal_of_values re_scale im_scale re_one im_one re_zero im_zero)
 open ComplexLogarithmRemainder (scale oneCode zeroCode normSq normSq_scale normSq_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,24 +52,14 @@ def rootData (r m x : PTm n) : PTm n := GaussianRadiusExponentialName.data fullT
 def sample (p r m x : PTm n) : PTm n := ap2 rootF p (rootData r m x)
 def sampleRadius : PTm n := pw (num 3) fullTurnRadius
 
-@[simp] theorem subst_sampleRadius {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (sampleRadius : PTm n) = (sampleRadius : PTm l) := by
-  simp [sampleRadius,fullTurnRadius,GaussianArctangentExponentialPeriod.twiceRadius,GaussianArctangentQuarterExponential.radius]
+ipra_subst sampleRadius [fullTurnRadius, GaussianArctangentExponentialPeriod.twiceRadius,
+    GaussianArctangentQuarterExponential.radius]
 
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (r m : PTm n) :
-    (source r m).subst σ = source (Syn.subst σ r) (Syn.subst σ m) := by simp [source]
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (r m : PTm n) :
-    Syn.subst σ (coefficient r m) = coefficient (Syn.subst σ r) (Syn.subst σ m) := by
-  simp [coefficient,oneCode]
-@[simp] theorem subst_angleData {l : ℕ} (σ : Fin n → PTm l) (r m x : PTm n) :
-    Syn.subst σ (angleData r m x) = angleData (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [angleData,fullTurnData,GaussianArctangentExponentialPeriod.twiceData]
-@[simp] theorem subst_rootData {l : ℕ} (σ : Fin n → PTm l) (r m x : PTm n) :
-    Syn.subst σ (rootData r m x) = rootData (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [rootData,fullTurnRadius,GaussianArctangentExponentialPeriod.twiceRadius,GaussianArctangentQuarterExponential.radius]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (p r m x : PTm n) :
-    Syn.subst σ (sample p r m x) = sample (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [sample]
+ipra_subst source
+ipra_subst coefficient [oneCode]
+ipra_subst angleData [fullTurnData, GaussianArctangentExponentialPeriod.twiceData]
+ipra_subst rootData [fullTurnRadius, GaussianArctangentExponentialPeriod.twiceRadius, GaussianArctangentQuarterExponential.radius]
+ipra_subst sample
 
 theorem coefficient_bound (r m : PTm n) (h : Γ ⊢[PRAAx] source r m) :
     Γ ⊢[PRAAx] bounded (coefficient r m) one one := by
@@ -150,12 +136,8 @@ def multipleRadius (m : PTm n) : PTm n := GaussianNamedNaturalScale.radius m ful
 def cycleF : PR 2 := GaussianNamedNaturalScale.nameF fullTurnF
 def cycleData (r x : PTm n) : PTm n := GaussianNamedNaturalScale.data r r (fullTurnData x)
 
-@[simp] theorem subst_multipleData {l : ℕ} (σ : Fin n → PTm l) (r m x : PTm n) :
-    Syn.subst σ (multipleData r m x) = multipleData (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [multipleData]
-@[simp] theorem subst_cycleData {l : ℕ} (σ : Fin n → PTm l) (r x : PTm n) :
-    Syn.subst σ (cycleData r x) = cycleData (Syn.subst σ r) (Syn.subst σ x) := by
-  simp [cycleData,fullTurnData,GaussianArctangentExponentialPeriod.twiceData]
+ipra_subst multipleData
+ipra_subst cycleData [fullTurnData, GaussianArctangentExponentialPeriod.twiceData]
 
 theorem multiple_at (p r m x : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] ap2 multipleF p (multipleData r m x) ≐
@@ -213,9 +195,7 @@ theorem root_power_cross (r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
 def powerBudget (m : PTm n) : PTm n :=
   GaussianBoundedIntegerExponentialSample.sampleBudget m m fullTurnRadius sampleRadius two+two
 
-@[simp] theorem subst_powerBudget {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (powerBudget m) = powerBudget (Syn.subst σ m) := by
-  simp [powerBudget,fullTurnRadius,GaussianArctangentExponentialPeriod.twiceRadius,GaussianArctangentQuarterExponential.radius]
+ipra_subst powerBudget [fullTurnRadius, GaussianArctangentExponentialPeriod.twiceRadius, GaussianArctangentQuarterExponential.radius]
 
 theorem power_residual (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
     Γ ⊢[PRAAx] distanceBounded (power (sample p r m x) m) qone (powerBudget m) (unit p) := by

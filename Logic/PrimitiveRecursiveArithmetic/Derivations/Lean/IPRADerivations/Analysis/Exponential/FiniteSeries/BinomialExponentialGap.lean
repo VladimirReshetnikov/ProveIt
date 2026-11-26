@@ -2,7 +2,6 @@ import IPRADerivations.Combinatorics.FallingFactorial
 import IPRADerivations.Probability.Minkowski
 import IPRADerivations.Analysis.Series.Basel.BaselAverages
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Powers
 
 /-!
 # The binomial sums against the exponential sums, term by term
@@ -31,17 +30,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BinomialExponentialGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (ff ff_zero ff_succ)
 open LeanProofs.IPRA.Combinatorics.FallingFactorial (ff_binom)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Probability.Minkowski (le_add_monus)
 open LeanProofs.IPRA.Analysis.BaselAverages (monus_le_self)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -61,13 +56,9 @@ theorem ff_le_step {m j : PTm n} (ih : Γ ⊢[PRAAx] le (ff m j) (pw m j)) :
 
 theorem ff_le_all (m : PTm n) :
     Γ ⊢[PRAAx] Fm.all (le (ff (Syn.shift m) (var 0)) (pw (Syn.shift m) (var 0))) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ff_le_base m
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ff_le_step Prf.hyp0
+  ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+  · exact ff_le_base m
+  · exact ff_le_step Prf.hyp0
 
 /-- `(m)_j ≤ m^j`: the `j`-th term of `(1 + 1/m)^m` is at most `1/j!`. -/
 theorem ff_le_pw (m j : PTm n) : Γ ⊢[PRAAx] le (ff m j) (pw m j) := by
@@ -93,13 +84,9 @@ theorem gap_step {m j : PTm n} (ih : Γ ⊢[PRAAx] GapInv m j) : Γ ⊢[PRAAx] G
   ipra_le 𝔟 m * sl ih + 2 * 𝔟 m * 𝔟 (ff m j) * sl h₁ + 2 * 𝔟 m * 𝔟 j * sl h₂ using rw [f, p]; ring
 
 theorem gap_all (m : PTm n) : Γ ⊢[PRAAx] Fm.all (GapInv (Syn.shift m) (var 0)) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact gap_base m
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact gap_step Prf.hyp0
+  ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+  · exact gap_base m
+  · exact gap_step Prf.hyp0
 
 /-- `eq:EB`, term by term: `2m · m^j + j m^j ≤ 2m · (m)_j + j² m^j`. -/
 theorem binomial_exponential_gap (m j : PTm n) : Γ ⊢[PRAAx] GapInv m j := by

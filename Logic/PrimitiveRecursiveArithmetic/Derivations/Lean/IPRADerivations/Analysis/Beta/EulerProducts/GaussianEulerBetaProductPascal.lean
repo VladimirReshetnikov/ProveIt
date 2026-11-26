@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerBetaProductPascal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul ofGaussian canonical)
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
@@ -29,9 +29,6 @@ open GaussianGammaEulerHeadShift (shifted)
 open GaussianGammaHarmonicIncrement (reciprocalPoint)
 open GaussianEulerBetaProductValue (value value_canonical value_inverse)
 open GaussianEulerBetaPoleGuard (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

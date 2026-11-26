@@ -14,7 +14,7 @@ set_option maxHeartbeats 4000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftFiniteRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaHarmonicCells (point_fraction_represents)
@@ -29,10 +29,6 @@ open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingTailComparison (point_add_upper_same)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

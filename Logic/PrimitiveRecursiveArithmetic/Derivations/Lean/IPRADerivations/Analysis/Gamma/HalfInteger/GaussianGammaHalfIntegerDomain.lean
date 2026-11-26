@@ -14,21 +14,17 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfIntegerDomain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianRationalHorner (ofGaussian canonical_unique represents_congr ofGaussian_represents)
 open ComplexLogarithmRemainder (oneCode scale re im)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def argument (N : PTm n) : PTm n := GaussianGammaShiftTrajectory.point oneCode two N
 def radius (N : PTm n) : PTm n := one+N
-@[simp] theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (argument N) = argument (Syn.subst σ N) := by simp [argument]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (radius N) = radius (Syn.subst σ N) := by simp [radius]
+ipra_subst argument
+ipra_subst radius
 
 theorem half_source : Γ ⊢[PRAAx] source (oneCode : PTm n) one two two := by
   have hp : Γ ⊢[PRAAx] le one (two : PTm n) := zero_lt_succ one

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteIntegerStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteIntegerDomain (source data data_succ original_source)
 open GaussianEulerIncompleteName (upperF original_regular_names)
 open GaussianGammaFactorialValues (argument radius scalarArgument)
@@ -29,10 +29,6 @@ open GaussianRationalHorner (positive_product qadd qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,13 +37,9 @@ def decay (p a b : PTm n) : PTm n := ap2 decayF p (decayData a b)
 def stepCost (i a b : PTm n) : PTm n :=
   productCost upperF (argument i) (radius i) one one a b+num 6+GaussianEulerIntegerBoundary.error (succ i) a b
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p i a b : PTm n) :
-    Syn.subst σ (value p i a b) = value (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [value]
-@[simp] theorem subst_decay {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (decay p a b) = decay (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [decay]
-@[simp] theorem subst_stepCost {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (stepCost i a b) = stepCost (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [stepCost,productCost]
+ipra_subst value
+ipra_subst decay
+ipra_subst stepCost [productCost]
 
 theorem original_upper_step (p i a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx]
     distanceBounded (value p (succ i) a b)

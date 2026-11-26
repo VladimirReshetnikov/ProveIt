@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetReciprocalMean
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetReciprocalRows (tagPoint tag_distance)
 open GaussianLogGammaEulerHead (argument)
 open GaussianLogGammaEulerReciprocalSlope (shiftedPoint)
@@ -25,8 +25,6 @@ open GaussianRationalNormalizedTelescope (mean_error weight)
 open GaussianRationalParameterTelescope (slopeRows)
 open GaussianRationalReciprocal (reciprocal)
 open GaussianRightHalfPlaneLogarithm (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,15 +38,9 @@ def rowBody : PTm 2 := reciprocal (argument
 
 def value (A B D neg k M : PTm n) : PTm n := qmul (weight M) (sum rowBody M (data A B D neg k M))
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D neg k M : PTm n) :
-    Syn.subst σ (data A B D neg k M) =
-      data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ k) (Syn.subst σ M) := by
-  simp [data, gridData]
+ipra_subst data [gridData]
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (A B D neg k M : PTm n) :
-    Syn.subst σ (value A B D neg k M) =
-      value (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ k) (Syn.subst σ M) := by
-  simp [value]
+ipra_subst value
 
 theorem row_at (X Y E neg D j : PTm n) : Γ ⊢[PRAAx]
     inst2 rowBody j (gridData X Y E neg D) ≐ reciprocal (argument (X+j*D) Y E neg) := by

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFixedTaylorUniformConvergence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalTaylorProductCoefficientCauchy (productCoefficient)
@@ -27,9 +27,6 @@ open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator diagonalE
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

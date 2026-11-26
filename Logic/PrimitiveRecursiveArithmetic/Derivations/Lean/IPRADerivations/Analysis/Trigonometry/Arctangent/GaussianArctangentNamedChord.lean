@@ -17,7 +17,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedChord
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code scale im normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (denominator denominator_positive imaginaryCode)
 open GaussianArctangentCayleyTrig (sineCode sinePoint)
@@ -35,10 +35,6 @@ open GaussianRootAlgebra (im_scale im_mul re_scale)
 open RationalValueBounds (upper upper_congr upper_triangle upper_mono upper_of_order upper_of_radius)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicIncrementBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (threshold radius numerator denominator actual_late_source)
 open GaussianNamedGammaIncrementInput (incrementF incrementData)
 open GaussianEulerLogarithmicContinuity (modulus modulus_positive)
@@ -28,10 +28,6 @@ open GaussianExponentialReference (unit_monotone)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianEulerLogarithmicImproperName.nameF

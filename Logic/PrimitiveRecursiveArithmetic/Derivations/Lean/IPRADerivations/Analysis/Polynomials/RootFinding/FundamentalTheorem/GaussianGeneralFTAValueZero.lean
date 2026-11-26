@@ -19,14 +19,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTAValueZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples (sourceInput)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants (R)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,26 +49,11 @@ def nameZero (a : PR 3) (N h x : PTm n) : Fm PTm n :=
   GaussianGeneralPolynomialValueName.nameZero a (GaussianGeneralFTATrajectory.nameF a)
     N (R a N h x) x (GaussianGeneralFTATrajectory.nameData N h x)
 
-@[simp] theorem subst_envelopeConstant {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (envelopeConstant a N h x) =
-      envelopeConstant a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by
-  simp [envelopeConstant]
-@[simp] theorem subst_valueNameData {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    Syn.subst σ (valueNameData a N h x) =
-      valueNameData a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by
-  simp [valueNameData]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (value a N h x t) =
-      value a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by
-  simp [value]
-@[simp] theorem subst_valueZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    (valueZero a N h x).subst σ =
-      valueZero a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by
-  simp [valueZero]
-@[simp] theorem subst_nameZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x : PTm n) :
-    (nameZero a N h x).subst σ =
-      nameZero a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by
-  simp [nameZero]
+ipra_subst envelopeConstant
+ipra_subst valueNameData
+ipra_subst value
+ipra_subst valueZero
+ipra_subst nameZero
 
 /-- Actual Horner evaluation at the returned point program, without a
 canonical-input or value-law premise. -/

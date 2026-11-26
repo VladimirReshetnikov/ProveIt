@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianEulerIntegrandName (powerF powerData power_regular decayF decayData nameF data)
 open GaussianEulerSquarePower (doubledMinusOne)
@@ -29,8 +29,6 @@ open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

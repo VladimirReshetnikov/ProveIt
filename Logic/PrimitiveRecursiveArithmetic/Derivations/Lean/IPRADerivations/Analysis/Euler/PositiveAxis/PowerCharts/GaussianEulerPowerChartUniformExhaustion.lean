@@ -11,14 +11,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartUniformExhaustion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerChartUniformSchedule (cutoffIndex panelStage)
 open GaussianEulerPowerChartCofinalSchedule (cutoffSize cutoff_guards)
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator)
 open GaussianGammaIntegralCutoffs (top height tailCoefficient)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -17,14 +17,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBalancedRadiusValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax
   (unit unit_positive subst_unit coefficient numerator denominator denominator_positive coefficient_norm_represents score cap fitAt)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents subst_fraction)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,18 +34,11 @@ def scaledDenominator (C N E i : PTm n) : PTm n := denominator C N i*unit (two*E
 def weightedNorm (C N E j i : PTm n) : PTm n :=
   RationalArithmetic.multiply (fraction (pw (two*two) N) one) (scaledNorm C N E j i)
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (E j : PTm n) :
-    Syn.subst σ (radius E j) = radius (Syn.subst σ E) (Syn.subst σ j) := by simp [radius]
-@[simp] theorem subst_scaledNorm {m : ℕ} (σ : Fin n → PTm m) (C N E j i : PTm n) :
-    Syn.subst σ (scaledNorm C N E j i) = scaledNorm (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E)
-      (Syn.subst σ j) (Syn.subst σ i) := by simp [scaledNorm]
-@[simp] theorem subst_scaledNumerator {m : ℕ} (σ : Fin n → PTm m) (C N j i : PTm n) :
-    Syn.subst σ (scaledNumerator C N j i) = scaledNumerator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ j) (Syn.subst σ i) := by simp [scaledNumerator]
-@[simp] theorem subst_scaledDenominator {m : ℕ} (σ : Fin n → PTm m) (C N E i : PTm n) :
-    Syn.subst σ (scaledDenominator C N E i) = scaledDenominator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ i) := by simp [scaledDenominator]
-@[simp] theorem subst_weightedNorm {m : ℕ} (σ : Fin n → PTm m) (C N E j i : PTm n) :
-    Syn.subst σ (weightedNorm C N E j i) = weightedNorm (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E)
-      (Syn.subst σ j) (Syn.subst σ i) := by simp [weightedNorm]
+ipra_subst radius
+ipra_subst scaledNorm
+ipra_subst scaledNumerator
+ipra_subst scaledDenominator
+ipra_subst weightedNorm
 
 theorem radius_represents (E j : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (radius E j) (ZT.ofNat (unit j)) (unit E) := fraction_represents _ _ (unit_positive E)
@@ -180,9 +170,7 @@ def output (C N E j i : PTm n) : PTm n := pairT (radius E j)
     (pairT (scaledNumerator C N j i) (scaledDenominator C N E i))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N E j i : PTm n) :
-    Syn.subst σ (output C N E j i) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E)
-      (Syn.subst σ j) (Syn.subst σ i) := by simp [output]
+ipra_subst output
 
 theorem program_at (C N E j i : PTm n) : Γ ⊢[PRAAx] PTm.app outputF ![C,N,E,j,i] ≐ output C N E j i := by
   simpa [outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,N,E,j,i]

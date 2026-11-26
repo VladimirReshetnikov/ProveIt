@@ -15,7 +15,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactPointwiseDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (evaluatorName nameData inside evaluator_at grid grid_inside
   sampleBody sampleData sample_body_at quadrature)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at weighted_difference)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound leftSum)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,16 +39,9 @@ def pointwise (F G H : PR 3) (a C E x y z : PTm n) : Fm PTm n :=
   .all (inside (Syn.shift a) (Syn.shift C) (Syn.shift E) (var 0) ⟶
     differenceAt F G H (Syn.shift x) (Syn.shift y) (Syn.shift z) (var 0))
 
-@[simp] theorem subst_differenceAt {m : ℕ} (σ : Fin n → PTm m) (F G H : PR 3) (x y z t : PTm n) :
-    (differenceAt F G H x y z t).subst σ =
-      differenceAt F G H (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ t) := by
-  simp [differenceAt]
+ipra_subst differenceAt
 
-@[simp] theorem subst_pointwise {m : ℕ} (σ : Fin n → PTm m) (F G H : PR 3) (a C E x y z : PTm n) :
-    (pointwise F G H a C E x y z).subst σ =
-      pointwise F G H (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E)
-        (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by
-  simp [pointwise, Syn.subst_shift, Syn.shift_subst, Syn.up]
+ipra_subst pointwise [Syn.subst_shift, Syn.shift_subst, Syn.up]
 
 theorem raw_at (F G H : PR 3) (p x y z t : PTm n)
     (h : Γ ⊢[PRAAx] differenceAt F G H x y z t) : Γ ⊢[PRAAx]

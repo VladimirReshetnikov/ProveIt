@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalValueConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalProduct (literalData)
 open GaussianBarnesCanonicalUniformCutoff (cutoff uniform_rate)
@@ -29,8 +29,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalReciprocal (conjugate subst_conjugate)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

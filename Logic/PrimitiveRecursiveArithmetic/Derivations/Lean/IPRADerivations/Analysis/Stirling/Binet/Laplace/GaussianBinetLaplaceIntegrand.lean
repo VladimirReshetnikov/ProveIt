@@ -17,7 +17,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows (inputData rowF rowBody regular_rows)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
@@ -30,10 +30,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -66,21 +62,11 @@ theorem product_at (K : PR 2) (p x y : PTm n) :
   (GaussianNameArithmetic.multiply_at ExpF K x y p).eqTrans
     (GaussianExponentialReference.recode_fixed _ (GaussianRationalHorner.qmul_canonical _ _))
 
-@[simp] theorem subst_finiteData {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R T N A B : PTm n) :
-    Syn.subst σ (finiteData X Y D sign R T N A B) =
-      finiteData (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign)
-        (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [finiteData]
+ipra_subst finiteData
 
-@[simp] theorem subst_cofinalData {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R T A B : PTm n) :
-    Syn.subst σ (cofinalData X Y D sign R T A B) =
-      cofinalData (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign)
-        (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by simp [cofinalData]
+ipra_subst cofinalData
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R T A B : PTm n) :
-    (input X Y D sign R T A B).subst σ =
-      input (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign)
-        (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by simp [input, one]
+ipra_subst input [one]
 
 private theorem finite_kernel_regular (N A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] pointCN FiniteK (finiteKData N A B) :=

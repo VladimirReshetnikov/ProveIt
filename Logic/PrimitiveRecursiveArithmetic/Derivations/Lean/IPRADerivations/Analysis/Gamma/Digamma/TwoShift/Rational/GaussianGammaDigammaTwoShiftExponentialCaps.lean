@@ -16,7 +16,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftExponentialCaps
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaDigammaHarmonicCells (point_fraction_represents)
 open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
@@ -32,9 +32,6 @@ open GaussianRationalSyntheticDivision (qone)
 open RationalArgmin (rationalLE)
 open RationalRepresentedUpper (left right to_signed)
 open RationalValueBounds (upper upper_of_radius upper_of_order upper_congr radius_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF
@@ -43,10 +40,8 @@ local notation "ed" => exponentialInputData
 def lower (k a : PTm n) : PTm n := qsub qone (fraction (two*k) a)
 def upperPoint (k a : PTm n) : PTm n := qadd qone (fraction (two*k) a)
 
-@[simp] theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) (k a : PTm n) :
-    Syn.subst σ (lower k a) = lower (Syn.subst σ k) (Syn.subst σ a) := by simp [lower,two]
-@[simp] theorem subst_upperPoint {m : ℕ} (σ : Fin n → PTm m) (k a : PTm n) :
-    Syn.subst σ (upperPoint k a) = upperPoint (Syn.subst σ k) (Syn.subst σ a) := by simp [upperPoint,two]
+ipra_subst lower [two]
+ipra_subst upperPoint [two]
 
 private theorem unit_fraction (k a : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
     Γ ⊢[PRAAx] bounded (fraction k a) k a :=

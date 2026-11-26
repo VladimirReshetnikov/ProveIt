@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
 open GaussianNameArithmetic (addF addData add_fast add_equivalent multiplyF multiplyData
@@ -26,8 +26,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,10 +41,7 @@ def nameF (f : PR 2) : PR 2 := GaussianRadiusExponentialName.nameF (exponentF f)
 def data (f : PR 2) (x a b : PTm n) : PTm n :=
   exponentialInputData (exponentF f) (exponentData f x a b)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x a b : PTm n) :
-    Syn.subst σ (data f x a b) = data f (Syn.subst σ x) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [data,exponentialInputData,exponentData,powerExponentData,coefficientData,qone,
-    ComplexLogarithmRemainder.oneCode,ComplexLogarithmRemainder.code,ZT.ofNat]
+ipra_subst data [exponentialInputData, exponentData, powerExponentData, coefficientData, qone, ComplexLogarithmRemainder.oneCode, ComplexLogarithmRemainder.code, ZT.ofNat]
 
 theorem coefficient_regular (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] pointCN (coefficientF f) (coefficientData x) :=

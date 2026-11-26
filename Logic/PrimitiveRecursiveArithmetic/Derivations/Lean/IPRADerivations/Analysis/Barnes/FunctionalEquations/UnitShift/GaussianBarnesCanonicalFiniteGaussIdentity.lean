@@ -16,7 +16,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteGaussIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianBarnesCanonicalHead (source)
 open GaussianBarnesCanonicalPolynomialShift (plain)
@@ -41,9 +41,6 @@ open GaussianRationalReciprocal (qone qone_represents_scaled)
 open GaussianRationalSyntheticDivision (qmul_congr qone_canonical)
 open GaussianReciprocalHorner (qmul_associative)
 open Products (fact)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

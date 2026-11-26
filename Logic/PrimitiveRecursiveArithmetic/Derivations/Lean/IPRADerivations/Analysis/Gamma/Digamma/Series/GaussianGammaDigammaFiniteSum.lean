@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaFiniteSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaDigammaRecurrence (digamma_shift)
@@ -29,10 +29,6 @@ open GaussianRationalParameterTelescope (forward forward_at forward_sum)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRationalSyntheticDivision (qadd_congr qadd_sub_cancel)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF
@@ -49,16 +45,10 @@ def reciprocalSum (a b N : PTm n) : PTm n := sum reciprocalBody N (pairT a b)
 def differenceData (a b N : PTm n) : PTm n := GaussianNamedDifference.data (dd (index a b N) b) (dd a b)
 def budget (N : PTm n) : PTm n := num 6+N*num 5
 
-@[simp] theorem subst_index {m : ℕ} (σ : Fin n → PTm m) (a b j : PTm n) :
-    Syn.subst σ (index a b j) = index (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) := by simp [index]
-@[simp] theorem subst_reciprocalSum {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (reciprocalSum a b N) = reciprocalSum (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [reciprocalSum]
-@[simp] theorem subst_differenceData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (differenceData a b N) = differenceData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [differenceData]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (budget N) = budget (Syn.subst σ N) := by simp [budget]
+ipra_subst index
+ipra_subst reciprocalSum
+ipra_subst differenceData
+ipra_subst budget
 
 theorem row_source (a b j : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] source (index a b j) b :=

@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootStability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalReconstruction (reconstruct product)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
@@ -30,9 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalStability (pointsBounded point_bou
 open LeanProofs.IPRA.Analysis.GaussianRationalCover (cover close hit)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,18 +43,10 @@ def basicInput (S T N R A B p q : PTm n) : Fm PTm n :=
 def stabilityInput (S T N R A B p q : PTm n) : Fm PTm n := basicInput S T N R A B p q ⋏
   (pointsBounded S R one ⋏ (pointsBounded T R one ⋏ coefficientErrors S T N A B))
 
-@[simp] theorem subst_coefficientErrors {m : ℕ} (σ : Fin n → PTm m) (S T N A B : PTm n) :
-    (coefficientErrors S T N A B).subst σ = coefficientErrors (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) := by simp [coefficientErrors]
-@[simp] theorem subst_sourceBudget {m : ℕ} (σ : Fin n → PTm m) (N R A B p q : PTm n) :
-    (sourceBudget N R A B p q).subst σ = sourceBudget (Syn.subst σ N) (Syn.subst σ R)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) := by simp [sourceBudget]
-@[simp] theorem subst_basicInput {m : ℕ} (σ : Fin n → PTm m) (S T N R A B p q : PTm n) :
-    (basicInput S T N R A B p q).subst σ = basicInput (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) := by simp [basicInput]
-@[simp] theorem subst_stabilityInput {m : ℕ} (σ : Fin n → PTm m) (S T N R A B p q : PTm n) :
-    (stabilityInput S T N R A B p q).subst σ = stabilityInput (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) := by simp [stabilityInput]
+ipra_subst coefficientErrors
+ipra_subst sourceBudget
+ipra_subst basicInput
+ipra_subst stabilityInput
 
 /-- Actual metric symmetry supplies the reverse coefficient condition,
 without a common-denominator or canonical-input premise. -/
@@ -153,9 +142,7 @@ theorem checker_accepted (S T N R A B p q : PTm n)
 def witness (S T N p q i : PTm n) : PTm n := GaussianRationalProductWitness.run T N (entry S i) p q
 def witnessF : PR 6 := PTm.toPR (witness (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 
-@[simp] theorem subst_witness {m : ℕ} (σ : Fin n → PTm m) (S T N p q i : PTm n) :
-    Syn.subst σ (witness S T N p q i) = witness (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ i) := by simp [witness]
+ipra_subst witness
 
 theorem witness_program (S T N p q i : PTm n) : Γ ⊢[PRAAx]
     PTm.app witnessF ![S,T,N,p,q,i] ≐ witness S T N p q i := by

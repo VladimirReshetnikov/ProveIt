@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorEvenGridUniformComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded bounded_neg)
 open GaussianBarnesCanonicalFiniteTaylorEvenGridComparison (observed target errorDenominator compare_from_rows)
 open GaussianBarnesCanonicalHigherRows (previous)
@@ -22,9 +22,6 @@ open GaussianBarnesCanonicalWeightedTaylorBallSource (stepDivisor)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalLowerBounds (lower)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.BinomialSigned
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Alternating face counts of the simplex, the cube and the cross-polytope
@@ -25,11 +24,8 @@ Not derived: the face enumerations themselves, and the permutohedron.
 
 namespace LeanProofs.IPRA.Combinatorics.FaceCounts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialSigned (E O E_succ O_succ E_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

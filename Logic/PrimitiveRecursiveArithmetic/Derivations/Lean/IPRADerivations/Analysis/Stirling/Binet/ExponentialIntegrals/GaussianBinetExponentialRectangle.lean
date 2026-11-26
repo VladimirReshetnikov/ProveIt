@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetExponentialRectangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName
   (sampleData sampleBody field0 field1 field2 field3 field4 field5
     field0_at field1_at field2_at field3_at field4_at field5_at)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,13 +49,9 @@ def entry (i j p q S T N M : PTm n) : PTm n := qmul (L p q S (T*i) N) (W p (T*i)
 def matrix : PTm 3 := entry (var 0) (var 1) (field0 (var 2)) (field1 (var 2)) (field2 (var 2))
   (field3 (var 2)) (field4 (var 2)) (field5 (var 2))
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p q S T N M : PTm n) :
-    Syn.subst σ (data p q S T N M) = data (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ S)
-      (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ M) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_entry {m : ℕ} (σ : Fin n → PTm m) (i j p q S T N M : PTm n) :
-    Syn.subst σ (entry i j p q S T N M) = entry (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ p)
-      (Syn.subst σ q) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ M) := by simp [entry]
+ipra_subst entry
 
 theorem entry_at (i j p q S T N M : PTm n) :
     Γ ⊢[PRAAx] inst3 matrix i j (data p q S T N M) ≐ entry i j p q S T N M := by
@@ -116,9 +109,7 @@ def outerEntry (i p q S T N M : PTm n) : PTm n := qmul (L p q S (T*i) N) (Q p M 
 def outerBody : PTm 2 := outerEntry (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1))
   (field3 (var 1)) (field4 (var 1)) (field5 (var 1))
 
-@[simp] theorem subst_outerEntry {m : ℕ} (σ : Fin n → PTm m) (i p q S T N M : PTm n) :
-    Syn.subst σ (outerEntry i p q S T N M) = outerEntry (Syn.subst σ i) (Syn.subst σ p)
-      (Syn.subst σ q) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ M) := by simp [outerEntry]
+ipra_subst outerEntry
 
 theorem outer_at (i p q S T N M : PTm n) :
     Γ ⊢[PRAAx] inst2 outerBody i (data p q S T N M) ≐ outerEntry i p q S T N M := by

@@ -36,9 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.TriangleCentres
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

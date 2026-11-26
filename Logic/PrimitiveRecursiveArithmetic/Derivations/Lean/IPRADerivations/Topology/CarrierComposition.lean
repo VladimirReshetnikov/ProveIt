@@ -22,12 +22,9 @@ Everything is first-order logic in iPRA; nothing is assumed bounded or decidable
 
 namespace LeanProofs.IPRA.Topology.CarrierComposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.FinitePreorder (App subst_App subst_up_shift)
 open LeanProofs.IPRA.Topology.Carriers (App_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {m : ℕ} {Γ : List (Fm PTm m)} {C D E : Fm PTm 2}
 

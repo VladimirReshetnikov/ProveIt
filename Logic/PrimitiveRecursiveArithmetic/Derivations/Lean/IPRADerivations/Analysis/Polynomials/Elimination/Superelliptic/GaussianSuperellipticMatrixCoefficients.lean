@@ -21,8 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticMatrixCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus pred)
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qmul)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (canonicalCoefficients qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMonicCompanion
@@ -36,9 +35,6 @@ open LeanProofs.IPRA.Foundations.RuntimeCyclicPermutation (inverseIndex wrap)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,19 +46,11 @@ def localPolynomial (f G m a c r j : PTm n) : PTm n :=
 def witness (f G m a c r j : PTm n) : PTm n :=
   leftPad (localPolynomial f G m a c r j) (monus (width m a c) (localBound a c r j))
 
-@[simp] theorem subst_APolynomial {l : ℕ} (σ : Fin n → PTm l) (G m r j : PTm n) :
-    Syn.subst σ (APolynomial G m r j) = APolynomial (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ r) (Syn.subst σ j) := by simp [APolynomial]
-@[simp] theorem subst_wrapped {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    Syn.subst σ (wrapped f G m a c r j) = wrapped (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [wrapped]
-@[simp] theorem subst_localBound {l : ℕ} (σ : Fin n → PTm l) (a c r j : PTm n) :
-    Syn.subst σ (localBound a c r j) = localBound (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [localBound,sel]
-@[simp] theorem subst_localPolynomial {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    Syn.subst σ (localPolynomial f G m a c r j) = localPolynomial (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [localPolynomial,sel]
-@[simp] theorem subst_witness {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    Syn.subst σ (witness f G m a c r j) = witness (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [witness]
+ipra_subst APolynomial
+ipra_subst wrapped
+ipra_subst localBound [sel]
+ipra_subst localPolynomial [sel]
+ipra_subst witness
 
 theorem unwrapped_bound_value (a c r j : PTm n) (h : Γ ⊢[PRAAx] le j r) : Γ ⊢[PRAAx]
     localBound a c r j ≐ a := sel_zero (Foundations.BoundedFormulas.sg_of_zero h)
@@ -226,9 +214,7 @@ def certificate (f G m a c r j : PTm n) : Fm PTm n :=
         ((length (witness f G m a c r j) ≐ succ (width m a c)) ⋏
           GaussianRationalGridCoefficientEquality.coefficientsEqual
             (entryPolynomial f G m a c r j) (witness f G m a c r j) (width m a c))))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j : PTm n) :
-    (certificate f G m a c r j).subst σ = certificate (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [certificate]
+ipra_subst certificate
 theorem matrix_coefficients (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] input f G m a c r j) : Γ ⊢[PRAAx]
     certificate f G m a c r j :=
   .andI (local_length _ _ _ _ _ _ _ (.andE₂ (.andE₂ (.andE₁ h))) (.andE₁ (.andE₂ h)) (.andE₂ (.andE₂ h)))
@@ -245,16 +231,8 @@ def run (f G m a c r j s : PTm n) : PTm n := app outputF ![f,G,m,a,c,r,j,s]
 def fields (p : PTm n) (i : Fin 6) : PTm n :=
   ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),fstT (sndT (sndT (sndT p))),
     fstT (sndT (sndT (sndT (sndT p)))),sndT (sndT (sndT (sndT (sndT p))))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j s : PTm n) :
-    Syn.subst σ (output f G m a c r j s) = output (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ s) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f G m a c r j s : PTm n) :
-    Syn.subst σ (run f G m a c r j s) = run (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ s) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 6) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (f G m a c r j s : PTm n) : Γ ⊢[PRAAx] run f G m a c r j s ≐ output f G m a c r j s := by
@@ -265,17 +243,17 @@ theorem returned_fields (f G m a c r j s : PTm n) (i : Fin 6) : Γ ⊢[PRAAx]
       ![entryPolynomial f G m a c r j,witness f G m a c r j,inverseIndex m j r,width m a c,
         entry (entryPolynomial f G m a c r j) s,entry (witness f G m a c r j) s] i := by
   have e0 := program_at (Γ := Γ) f G m a c r j s
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  have e4 := (congrSnd e3).eqTrans (snd_pair _ _)
-  have e5 := (congrSnd e4).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
+  have e4 := e3.sndE
+  have e5 := e4.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrFst e4).eqTrans (fst_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e4.fstE
   · exact e5
 theorem returned_equality (f G m a c r j s : PTm n) (h : Γ ⊢[PRAAx] input f G m a c r j)
     (hs : Γ ⊢[PRAAx] le s (width m a c)) : Γ ⊢[PRAAx]

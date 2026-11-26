@@ -16,16 +16,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegralUpperTransfer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalMetric (bounded)
 open GaussianRationalHorner (positive_product)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
 open GaussianEulerIntegralGammaIdentification (source original_Euler_integral_is_Gamma)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,15 +32,9 @@ def compactUpper (z R B A C : PTm n) : Fm PTm n := .all (.all
     (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift A)))
     (Syn.shift (Syn.shift C)*unit (var 0)+one) (unit (var 0))))
 def paperConstant (A R : PTm n) : PTm n := A+GaussianGammaIntegralCutoffs.tailCoefficient R
-@[simp] theorem subst_compactObservation {m : ℕ} (σ : Fin n → PTm m) (t k z R B A : PTm n) :
-    Syn.subst σ (compactObservation t k z R B A) = compactObservation (Syn.subst σ t) (Syn.subst σ k)
-      (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [compactObservation]
-@[simp] theorem subst_compactUpper {m : ℕ} (σ : Fin n → PTm m) (z R B A C : PTm n) :
-    (compactUpper z R B A C).subst σ = compactUpper (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ C) := by simp [compactUpper,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_paperConstant {m : ℕ} (σ : Fin n → PTm m) (A R : PTm n) :
-    Syn.subst σ (paperConstant A R) = paperConstant (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [paperConstant,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst compactObservation
+ipra_subst compactUpper [Syn.subst_shift, Syn.shift_subst]
+ipra_subst paperConstant [GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem compact_at (t k z R B A C : PTm n) (h : Γ ⊢[PRAAx] compactUpper z R B A C) : Γ ⊢[PRAAx]
     bounded (compactObservation t k z R B A) (C*unit t+one) (unit t) := by

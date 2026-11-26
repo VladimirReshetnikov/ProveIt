@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianGammaShift
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaShiftTrajectory
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScale
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Gamma factorial values by a numerical error induction
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFactorialValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaReciprocalInverse (gammaF gammaData gammaHeight gamma_regular)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaEulerHeadShift (shifted)
@@ -28,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent)
 open ComplexLogarithmRemainder (oneCode scale normSq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,24 +40,15 @@ def modulus (i : PTm n) : PTm n := GaussianNameArithmetic.multiplyModulus consta
 def errorF : PR 2 := rec2 (two : PTm 1) (succ (var 0)*var 1+two+(modulus (var 0)+one))
 def error (i : PTm n) : PTm n := ap2 errorF i zero
 def errorLaw (p i : PTm n) : Fm PTm n := distanceBounded (value p i) (factorialValue i) (error i) (unit p)
-@[simp] theorem subst_argument {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (argument i) = argument (Syn.subst σ i) := by simp [argument]
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (radius i) = radius (Syn.subst σ i) := by simp [radius]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (data i) = data (Syn.subst σ i) := by simp [data,gammaData,gammaHeight]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (p i : PTm n) :
-    Syn.subst σ (value p i) = value (Syn.subst σ p) (Syn.subst σ i) := by simp [value]
-@[simp] theorem subst_scalarArgument {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (scalarArgument i) = scalarArgument (Syn.subst σ i) := by simp [scalarArgument]
-@[simp] theorem subst_factorialValue {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (factorialValue i) = factorialValue (Syn.subst σ i) := by simp [factorialValue,Products.fact]
-@[simp] theorem subst_modulus {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (modulus i) = modulus (Syn.subst σ i) := by simp [modulus]
-@[simp] theorem subst_error {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (error i) = error (Syn.subst σ i) := by simp [error]
-@[simp] theorem subst_errorLaw {l : ℕ} (σ : Fin n → PTm l) (p i : PTm n) :
-    (errorLaw p i).subst σ = errorLaw (Syn.subst σ p) (Syn.subst σ i) := by simp [errorLaw]
+ipra_subst argument
+ipra_subst radius
+ipra_subst data [gammaData, gammaHeight]
+ipra_subst value
+ipra_subst scalarArgument
+ipra_subst factorialValue [Products.fact]
+ipra_subst modulus
+ipra_subst error
+ipra_subst errorLaw
 
 theorem scalar_argument (i : PTm n) : Γ ⊢[PRAAx] scalarArgument i ≐ naturalPoint (succ i) := by
   have native : Γ ⊢[PRAAx] GaussianRootAlgebra.equal (argument i) (GaussianGammaEulerHeadLower.translated oneCode one i) :=
@@ -257,15 +244,13 @@ def output (p i : PTm n) : PTm n := pairT (argument i)
   (pairT (value p i) (pairT (factorialValue i) (error i)))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (p i : PTm n) : PTm n := ap2 outputF p i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p i : PTm n) :
-    Syn.subst σ (output p i) = output (Syn.subst σ p) (Syn.subst σ i) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p i : PTm n) :
-    Syn.subst σ (run p i) = run (Syn.subst σ p) (Syn.subst σ i) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p i : PTm n) : Γ ⊢[PRAAx] run p i ≐ output p i := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![p,i]
 theorem returned_argument (p i : PTm n) : Γ ⊢[PRAAx] fstT (run p i) ≐ argument i :=
-  (congrFst (program_at p i)).eqTrans (fst_pair _ _)
+  (program_at p i).fstE
 theorem returned_Gamma (p i : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p i)) ≐ value p i :=
   ((congrFst (congrSnd (program_at p i))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_factorial (p i : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p i))) ≐ factorialValue i :=

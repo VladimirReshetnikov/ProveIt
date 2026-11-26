@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicRootProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (sample sample_zero sample_bound sampleRadius source power_residual powerBudget)
 open GaussianCyclicExponentialSeparation (clock fine clock_fine denominator denominator_positive pair_margin_at)
 open GaussianCyclicGeometricPolynomial (coefficients coefficients_length coefficients_monic evaluation_at_one
@@ -40,9 +40,6 @@ open GaussianRationalSeparatedDeflation (separation separationFrom laterResidual
 open GaussianRationalSeparatedReconstruction (differencesBounded errorNumerator reconstruction_distance)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,11 +47,9 @@ def data (p N x : PTm n) : PTm n := pairT p (pairT N x)
 def body : PTm 2 := sample (fstT (var 1)) (succ (var 0)) (succ (fstT (sndT (var 1)))) (sndT (sndT (var 1)))
 def roots (p N x : PTm n) : PTm n := sequence body N (data p N x)
 
-@[simp] theorem subst_data {L : ℕ} (σ : Fin n → PTm L) (p N x : PTm n) :
-    Syn.subst σ (data p N x) = data (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_roots {L : ℕ} (σ : Fin n → PTm L) (p N x : PTm n) :
-    Syn.subst σ (roots p N x) = roots (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by simp [roots]
+ipra_subst roots
 
 theorem roots_length (p N x : PTm n) : Γ ⊢[PRAAx] length (roots p N x) ≐ N := sequence_length _ _ _
 
@@ -67,8 +62,8 @@ theorem body_at (p N x j : PTm n) :
       fin_cases k
       · exact fst_pair _ _
       · exact .eqRefl _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE)
 
 theorem roots_at (p N x j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] entry (roots p N x) j ≐ sample p (succ j) (succ N) x :=
@@ -152,8 +147,7 @@ theorem separated_roots (p N x : PTm n) (hf : Γ ⊢[PRAAx] fine (succ N) p) :
 
 def residualBudget (N : PTm n) : PTm n := denominator (succ N)*powerBudget (succ N)
 
-@[simp] theorem subst_residualBudget {L : ℕ} (σ : Fin n → PTm L) (N : PTm n) :
-    Syn.subst σ (residualBudget N) = residualBudget (Syn.subst σ N) := by simp [residualBudget]
+ipra_subst residualBudget
 
 theorem root_residuals (p N x : PTm n) (hf : Γ ⊢[PRAAx] fine (succ N) p) :
     Γ ⊢[PRAAx] laterResiduals (coefficients (succ N)) (roots p N x) zero (residualBudget N) (unit p) := by
@@ -187,8 +181,7 @@ theorem root_differences (p N x : PTm n) :
 
 def budget (N : PTm n) : PTm n := errorNumerator (residualBudget N) (denominator (succ N)) N (one+sampleRadius) N
 
-@[simp] theorem subst_budget {L : ℕ} (σ : Fin n → PTm L) (N : PTm n) :
-    Syn.subst σ (budget N) = budget (Syn.subst σ N) := by simp [budget]
+ipra_subst budget
 
 theorem reconstruction_at (p N x : PTm n) (hf : Γ ⊢[PRAAx] fine (succ N) p) :
     Γ ⊢[PRAAx] distanceBounded (naturalPoint (succ N)) (product (roots p N x) N qone)

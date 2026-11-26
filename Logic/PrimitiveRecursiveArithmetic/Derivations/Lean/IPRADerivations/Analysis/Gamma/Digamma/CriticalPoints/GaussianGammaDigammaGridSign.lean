@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaGridSign
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic (sign)
 open GaussianRationalHorner (positive_product)
 open RationalGaussianEmbedding (scalarZero)
@@ -24,10 +24,6 @@ open RationalValueBounds (upper radius upper_of_order upper_order_left upper_ord
 open RationalUpperRepresentation (upper_from_representations)
 open RationalArithmetic (represents)
 open RationalIntegerNormalization (integerCode positivePart negativePart)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -40,13 +36,13 @@ private theorem zero_code : Γ ⊢[PRAAx] (scalarZero : PTm n) ≐ pairT (pairT 
 private theorem zero_left (x : PTm n) : Γ ⊢[PRAAx] left scalarZero x ≐ (numeratorOf x).neg := by
   have e := zero_code (Γ := Γ) (n := n)
   have p := ((congrFst (congrFst e)).eqTrans (congrFst (fst_pair _ _))).eqTrans (fst_pair _ _)
-  have d := congrSucc ((congrSnd e).eqTrans (snd_pair _ _))
+  have d := congrSucc e.sndE
   exact (congrAdd (congrMul p (.eqRefl _)) (congrMul (.eqRefl _) d)).eqTrans (by ipra_ring)
 
 private theorem zero_right (x : PTm n) : Γ ⊢[PRAAx] left x scalarZero ≐ (numeratorOf x).pos := by
   have e := zero_code (Γ := Γ) (n := n)
   have k := ((congrSnd (congrFst e)).eqTrans (congrSnd (fst_pair _ _))).eqTrans (snd_pair _ _)
-  have d := congrSucc ((congrSnd e).eqTrans (snd_pair _ _))
+  have d := congrSucc e.sndE
   exact (congrAdd (congrMul (.eqRefl _) d) (congrMul k (.eqRefl _))).eqTrans (by ipra_ring)
 
 theorem zero_le_of_sign (x : PTm n) (h : Γ ⊢[PRAAx] sign x) :

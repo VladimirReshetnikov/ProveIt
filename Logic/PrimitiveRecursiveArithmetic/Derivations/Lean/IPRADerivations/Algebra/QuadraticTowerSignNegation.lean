@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerSignNegation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerSignRecipe (read tagProduct dispatch)
 open QuadraticTowerArrayCodec (arrayHeight code horizon normalized)
@@ -26,15 +26,11 @@ open QuadraticTowerMultiplicationTable (budget leftHalf rightHalf)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def opposite (s : PTm n) : PTm n := tagProduct two s
-@[simp] theorem subst_opposite {k : ℕ} (σ : Fin n → PTm k) (s : PTm n) :
-    Syn.subst σ (opposite s) = opposite (Syn.subst σ s) := by simp [opposite]
+ipra_subst opposite
 theorem opposite_congr {s t : PTm n} (e : Γ ⊢[PRAAx] s ≐ t) : Γ ⊢[PRAAx] opposite s ≐ opposite t :=
   QuadraticTowerSignRecipe.tag_product_congr (.eqRefl two) e
 theorem opposite_zero : Γ ⊢[PRAAx] opposite (zero : PTm n) ≐ zero :=
@@ -155,16 +151,12 @@ def atHeight (h B D S b : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift (horizon h b)) ⟶ rowLaw (Syn.shift h) (Syn.shift B) (Syn.shift D) (Syn.shift S) (Syn.shift b) (var 0))
 def localLaw (h B D S : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (Syn.shift B)) ⟶ atHeight (Syn.shift h) (Syn.shift B) (Syn.shift D) (Syn.shift S) (var 0))
-@[simp] theorem subst_rowLaw {k : ℕ} (σ : Fin n → PTm k) (h B D S b u : PTm n) :
-    (rowLaw h B D S b u).subst σ = rowLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ S) (Syn.subst σ b) (Syn.subst σ u) := by simp [rowLaw]
+ipra_subst rowLaw
 @[simp] theorem subst_atHeight {k : ℕ} (σ : Fin n → PTm k) (h B D S b : PTm n) :
     (atHeight h B D S b).subst σ = atHeight (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ S) (Syn.subst σ b) := by
   simp [atHeight,Syn.subst_shift,Syn.shift_subst]
   simp only [Syn.shift,QuadraticTowerArrayCodec.subst_horizon,Syn.subst_subst]
-@[simp] theorem subst_localLaw {k : ℕ} (σ : Fin n → PTm k) (h B D S : PTm n) :
-    (localLaw h B D S).subst σ = localLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ S) := by
-  simp [localLaw,Syn.subst_shift,Syn.shift_subst]
+ipra_subst localLaw [Syn.subst_shift, Syn.shift_subst]
 
 def rowSyntax (h B D S b u : PTm n) : BFm n := .imp (QuadraticTowerMultiplicationHeight.radicandsSyntax D h b)
   (.imp (QuadraticTowerMultiplicationHeight.heightSyntax h (word h b u) b)
@@ -316,8 +308,7 @@ open QuadraticTowerSignCoherence (state state_zero state_succ)
 
 def forwardLaw (H B D t : PTm n) : Fm PTm n := le t H ⟶ localLaw t (cap H B t D) D (state H B t D)
 def forwardSyntax (H B D t : PTm n) : BFm n := .imp (.le t H) (localSyntax t (cap H B t D) D (state H B t D))
-@[simp] theorem subst_forwardLaw {k : ℕ} (σ : Fin n → PTm k) (H B D t : PTm n) :
-    (forwardLaw H B D t).subst σ = forwardLaw (Syn.subst σ H) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ t) := by simp [forwardLaw]
+ipra_subst forwardLaw
 theorem forward_formula (H B D t : PTm n) : formula (forwardSyntax H B D t) = forwardLaw H B D t := by
   simp [forwardSyntax,forwardLaw,formula,local_formula,BFm.le,le]
 
@@ -372,40 +363,33 @@ theorem query_positive_iff (h B D A b : PTm n) (hb : Γ ⊢[PRAAx] le b B)
 
 
 def source (h B D A b : PTm n) : Fm PTm n := le b B ⋏ (radicandsHeight D h b ⋏ arrayHeight h A b)
-@[simp] theorem subst_source {k : ℕ} (σ : Fin n → PTm k) (h B D A b : PTm n) :
-    (source h B D A b).subst σ = source (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ b) := by simp [source]
+ipra_subst source
 
 def output (h B D A : PTm n) : PTm n := pairT (negated h A)
   (pairT (QuadraticTowerSignTable.query h B D (negated h A))
     (pairT (QuadraticTowerSignTable.query h B D A) (opposite (QuadraticTowerSignTable.query h B D A))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (h B D A : PTm n) : PTm n := PTm.app outputF ![h,B,D,A]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (output h B D A) = output (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (run h B D A) = run (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h B D A : PTm n) : Γ ⊢[PRAAx] run h B D A ≐ output h B D A := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![h,B,D,A]
 theorem returned_array (h B D A : PTm n) : Γ ⊢[PRAAx] fstT (run h B D A) ≐ negated h A :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (h B D A : PTm n) : Γ ⊢[PRAAx] sndT (run h B D A) ≐
     pairT (QuadraticTowerSignTable.query h B D (negated h A))
       (pairT (QuadraticTowerSignTable.query h B D A) (opposite (QuadraticTowerSignTable.query h B D A))) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_negative (h B D A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h B D A)) ≐ QuadraticTowerSignTable.query h B D (negated h A) :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_comparison (h B D A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h B D A)) ≐
     pairT (QuadraticTowerSignTable.query h B D A) (opposite (QuadraticTowerSignTable.query h B D A)) :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_original (h B D A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run h B D A))) ≐ QuadraticTowerSignTable.query h B D A :=
-  (congrFst (returned_comparison _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_comparison _ _ _ _).fstE
 theorem returned_opposite (h B D A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run h B D A))) ≐ opposite (QuadraticTowerSignTable.query h B D A) :=
-  (congrSnd (returned_comparison _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_comparison _ _ _ _).sndE
 
 theorem returned_equal (h B D A b : PTm n) (p : Γ ⊢[PRAAx] source h B D A b) : Γ ⊢[PRAAx]
     fstT (sndT (run h B D A)) ≐ sndT (sndT (sndT (run h B D A))) :=

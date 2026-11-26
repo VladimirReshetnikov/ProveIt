@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorOrderTransport
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantLastRowTransport
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual bordered rows at the selected maximum minor
@@ -15,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofactorBorderedRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ)
+open_ipra
 open RationalMaximalMinors (bestRow bestColumn rank rowSize columnSize clearedValue)
 open RationalSelectedMinors (count index normalized fromInteger from_integer_congr normalized_lookup selected_listed)
 open RationalMinorAugmentation (extendedRow extendedColumn extended_row_size extended_column_size extended_row_position extended_minor_zero)
@@ -39,8 +37,6 @@ open GaussianRationalValueEquality (valueEqual value_equal_of_code)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,20 +50,13 @@ def bordered (P d i : PTm n) : PTm n := table body (succ (rank P d)) (succ (rank
 def augmented (P d i : PTm n) : PTm n := matrix (normalized P d (extendedRow P d i) (extendedColumn P d)) (succ (rank P d)) (succ (rank P d))
 def insertionPosition (P d i : PTm n) : PTm n := count i (bestRow P d)
 
-@[simp] theorem subst_clearedCell {k : ℕ} (σ : Fin n → PTm k) (P d r j : PTm n) :
-    Syn.subst σ (clearedCell P d r j) = clearedCell (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ r) (Syn.subst σ j) := by simp [clearedCell]
-@[simp] theorem subst_rowLabel {k : ℕ} (σ : Fin n → PTm k) (P d i r : PTm n) :
-    Syn.subst σ (rowLabel P d i r) = rowLabel (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) (Syn.subst σ r) := by simp [rowLabel,sel]
-@[simp] theorem subst_value {k : ℕ} (σ : Fin n → PTm k) (P d i r j : PTm n) :
-    Syn.subst σ (value P d i r j) = value (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ j) := by simp [value]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (P d i : PTm n) :
-    Syn.subst σ (data P d i) = data (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) := by simp [data]
-@[simp] theorem subst_bordered {k : ℕ} (σ : Fin n → PTm k) (P d i : PTm n) :
-    Syn.subst σ (bordered P d i) = bordered (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) := by simp [bordered]
-@[simp] theorem subst_augmented {k : ℕ} (σ : Fin n → PTm k) (P d i : PTm n) :
-    Syn.subst σ (augmented P d i) = augmented (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) := by simp [augmented]
-@[simp] theorem subst_insertionPosition {k : ℕ} (σ : Fin n → PTm k) (P d i : PTm n) :
-    Syn.subst σ (insertionPosition P d i) = insertionPosition (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) := by simp [insertionPosition]
+ipra_subst clearedCell
+ipra_subst rowLabel [sel]
+ipra_subst value
+ipra_subst data
+ipra_subst bordered
+ipra_subst augmented
+ipra_subst insertionPosition
 
 theorem cleared_cell_congr (P d : PTm n) {r s j k : PTm n} (hr : Γ ⊢[PRAAx] r ≐ s) (hj : Γ ⊢[PRAAx] j ≐ k) :
     Γ ⊢[PRAAx] clearedCell P d r j ≐ clearedCell P d s k := embed_congr (from_integer_congr (cell_congr (.eqRefl _) hr hj))
@@ -77,8 +66,8 @@ theorem value_congr {P Q d e i k r s j l : PTm n} (hP : Γ ⊢[PRAAx] P ≐ Q) (
   ipra_congr (value (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with [hP, hd, hi, hr, hj]
 theorem body_at (P d i r j : PTm n) : Γ ⊢[PRAAx] Syn.subst ![r,j,data P d i] body ≐ value P d i r j := by
   simp only [body,subst_value,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two]
-  exact value_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _) (.eqRefl _)
+  exact value_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _) (.eqRefl _)
 theorem bordered_lookup (P d i r j : PTm n) (hr : Γ ⊢[PRAAx] lt r (succ (rank P d))) (hj : Γ ⊢[PRAAx] lt j (succ (rank P d))) :
     Γ ⊢[PRAAx] cell (bordered P d i) r j ≐ value P d i r j :=
   (table_lookup body _ _ _ r j hr hj).eqTrans (body_at P d i r j)
@@ -109,8 +98,7 @@ theorem augmented_zero (P d i : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d) (hi :
     ((embed_congr dimension).eqTrans (extended_minor_zero P d i h hi hb))
 
 def moved (P d i : PTm n) : PTm n := moveToLast (augmented P d i) (rank P d) (insertionPosition P d i)
-@[simp] theorem subst_moved {k : ℕ} (σ : Fin n → PTm k) (P d i : PTm n) :
-    Syn.subst σ (moved P d i) = moved (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) := by simp [moved]
+ipra_subst moved
 
 theorem insertion_position_bound (P d i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length P))
     (hb : Γ ⊢[PRAAx] bit (bestRow P d) i ≐ ConciseIPRA.PTm.zero) : Γ ⊢[PRAAx] lt (insertionPosition P d i) (succ (rank P d)) :=
@@ -220,23 +208,22 @@ def output (P d i : PTm n) : PTm n := pairT (bordered P d i)
   (pairT (scalarDet (bordered P d i) (succ (rank P d))) (pairT (rank P d) (insertionPosition P d i)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (P d i : PTm n) : PTm n := ap3 outputF P d i
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (P d i : PTm n) :
-    Syn.subst σ (output P d i) = output (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) := by simp [output]
+ipra_subst output
 theorem program_at (P d i : PTm n) : Γ ⊢[PRAAx] run P d i ≐ output P d i := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![P,d,i]
 theorem returned_table (P d i : PTm n) : Γ ⊢[PRAAx] fstT (run P d i) ≐ bordered P d i :=
-  (congrFst (program_at P d i)).eqTrans (fst_pair _ _)
+  (program_at P d i).fstE
 theorem returned_tail (P d i : PTm n) : Γ ⊢[PRAAx] sndT (run P d i) ≐
     pairT (scalarDet (bordered P d i) (succ (rank P d))) (pairT (rank P d) (insertionPosition P d i)) :=
-  (congrSnd (program_at P d i)).eqTrans (snd_pair _ _)
+  (program_at P d i).sndE
 theorem returned_determinant (P d i : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run P d i)) ≐ scalarDet (bordered P d i) (succ (rank P d)) :=
-  (congrFst (returned_tail P d i)).eqTrans (fst_pair _ _)
+  (returned_tail P d i).fstE
 theorem returned_indices (P d i : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run P d i)) ≐ pairT (rank P d) (insertionPosition P d i) :=
-  (congrSnd (returned_tail P d i)).eqTrans (snd_pair _ _)
+  (returned_tail P d i).sndE
 theorem returned_rank (P d i : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run P d i))) ≐ rank P d :=
-  (congrFst (returned_indices P d i)).eqTrans (fst_pair _ _)
+  (returned_indices P d i).fstE
 theorem returned_position (P d i : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run P d i))) ≐ insertionPosition P d i :=
-  (congrSnd (returned_indices P d i)).eqTrans (snd_pair _ _)
+  (returned_indices P d i).sndE
 theorem returned_zero (P d i : PTm n) (h : Γ ⊢[PRAAx] lt (rank P d) d) (hi : Γ ⊢[PRAAx] lt i (length P)) :
     Γ ⊢[PRAAx] fstT (sndT (run P d i)) ≐ qzero :=
   (returned_determinant P d i).eqTrans (bordered_determinant_zero P d i h hi)

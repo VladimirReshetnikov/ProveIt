@@ -12,17 +12,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicLogarithmMonotoneMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianHarmonicLogarithmName (clock sample observation)
 open Products (fact)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalHarmonicInterval (common interval horizon numerator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

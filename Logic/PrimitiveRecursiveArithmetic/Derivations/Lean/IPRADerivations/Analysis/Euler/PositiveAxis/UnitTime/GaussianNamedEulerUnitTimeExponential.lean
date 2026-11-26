@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerUnitTimeExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedEulerUnitTime (source original_bound encoded_source encodedTime original_frozen_rate)
 open GaussianEulerUnitLogarithmicMargin (timeF timeData)
 open GaussianUnitIntervalInputDecoding (numerator denominator)
@@ -28,9 +28,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRadiusExponentialName (input inputPrecision query value sample)
 open GaussianRadiusExponentialLipschitzRate (factor)
 open GaussianGammaCanonicalExponent (constantF constant_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,12 +38,9 @@ abbrev nameF (f : PR 2) : PR 2 := GaussianRadiusExponentialName.nameF (inputF f)
 def data (x E : PTm n) : PTm n := GaussianRadiusExponentialName.data E (inputData x E)
 def budget (E : PTm n) : PTm n := factor E*(E+two)+two
 
-@[simp] theorem subst_inputData {m : ℕ} (σ : Fin n → PTm m) (x E : PTm n) :
-    Syn.subst σ (inputData x E) = inputData (Syn.subst σ x) (Syn.subst σ E) := by simp [inputData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x E : PTm n) :
-    Syn.subst σ (data x E) = data (Syn.subst σ x) (Syn.subst σ E) := by simp [data]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (E : PTm n) :
-    Syn.subst σ (budget E) = budget (Syn.subst σ E) := by simp [budget]
+ipra_subst inputData
+ipra_subst data
+ipra_subst budget
 
 theorem time_input (f : PR 2) (x E : PTm n) (h : Γ ⊢[PRAAx] source f x E) : Γ ⊢[PRAAx]
     input (GaussianNamedEulerUnitTime.nameF f) E (GaussianNamedEulerUnitTime.data x E) := by

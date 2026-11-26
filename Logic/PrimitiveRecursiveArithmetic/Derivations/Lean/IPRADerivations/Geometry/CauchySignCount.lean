@@ -2,8 +2,6 @@ import IPRADerivations.Foundations.ProductSumDomination
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Combinatorics.CoefficientLogConcave
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The sign count of Cauchy's rigidity argument
@@ -40,17 +38,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.CauchySignCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Stirling (sg)
 open LeanProofs.IPRA.Combinatorics.CoefficientLogConcave (inst2_mul inst2_monus)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 open LeanProofs.IPRA.Foundations.BoundedReflection (sgB inst2_sgB sg_cases)
 open LeanProofs.IPRA.Foundations.ProductSumDomination (sum_lin_le)
 open LeanProofs.IPRA.Probability.Variance (sum_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,9 +58,8 @@ abbrev four : PTm n := succ three
 /-- A term with `a² = a` is `0` or `1`. -/
 theorem bit_cases {a : PTm n} (h : Γ ⊢[PRAAx] a * a ≐ a) : Γ ⊢[PRAAx] (a ≐ zero) ⋎ (a ≐ one) := by
   refine .orE (zero_or_succ a) (.orI₁ Prf.hyp0) (.orI₂ ?_)
-  have h' := natEq (h.wk (ψ := a ≐ succ (pred a)))
   have z : ((a ≐ succ (pred a)) :: Γ) ⊢[PRAAx] pred a * a ≐ zero := by
-    ipra_lc h' - 𝔞 a * natEq (Prf.hyp0 (Γ := Γ) (φ := a ≐ succ (pred a)))
+    ipra_lc natEq (h.wk (ψ := a ≐ succ (pred a))) - 𝔞 a * natEq (Prf.hyp0 (Γ := Γ) (φ := a ≐ succ (pred a)))
   refine .orE (zero_or_zero_of_mul z) ?_ ?_
   · exact Prf.hyp1.eqTrans (congrSucc Prf.hyp0)
   · exact .botE _ (succ_ne_zero (Prf.hyp1.eqSymm.eqTrans Prf.hyp0))

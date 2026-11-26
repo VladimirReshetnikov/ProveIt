@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerIntegrand (source nameF data gain)
 open GaussianNamedPositiveLogarithm (numerator denominator)
 open GaussianGammaCanonicalExponent (constantF constant_regular constant_at)
@@ -24,10 +24,6 @@ open GaussianRationalHorner (canonical)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNameEquivalence (cross_refl cross_symm)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

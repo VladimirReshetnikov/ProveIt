@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaUnitRawSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaUnitEulerDifference (minimumDenominator denominator_positive)
 open GaussianGammaUnitReciprocalShift (step large neighbor)
 open GaussianGammaUnitShiftedTaylorBound (cubic cubic_positive original_times_neighbor_cubic)
@@ -33,10 +33,6 @@ open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianNamedDifferenceQuotient (inverse actual_inverse inverse_bound scale_distance)
 open ComplexLogarithmRemainder (oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

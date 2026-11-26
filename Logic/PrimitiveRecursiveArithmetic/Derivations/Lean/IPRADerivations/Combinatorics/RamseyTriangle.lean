@@ -22,11 +22,7 @@ the pivot argument, because the count is a single polynomial certificate:
 
 namespace LeanProofs.IPRA.Combinatorics.RamseyTriangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -168,18 +164,16 @@ theorem ramsey33 (x y : Fin 6 → Fin 6 → PTm n) (hx : ∀ i j, Γ ⊢[PRAAx] 
 theorem pos_left {a b : PTm n} (h : Γ ⊢[PRAAx] lt zero (a * b)) : Γ ⊢[PRAAx] lt zero a := by
   refine .orE (lt_or_le zero a) Prf.hyp0 ?_
   have h0 : (le a zero :: Γ) ⊢[PRAAx] le a zero := Prf.hyp0
-  have e := natEq (le_antisymm h0 (zero_le a))
   have h' : (le a zero :: Γ) ⊢[PRAAx] le (succ zero) (a * b) := h.wk
   refine not_succ_le_self zero _ ?_
-  ipra_le sl h' with 𝔟 b * e
+  ipra_le sl h' with 𝔟 b * natEq (le_antisymm h0 (zero_le a))
 
 theorem pos_right {a b : PTm n} (h : Γ ⊢[PRAAx] lt zero (a * b)) : Γ ⊢[PRAAx] lt zero b := by
   refine .orE (lt_or_le zero b) Prf.hyp0 ?_
   have h0 : (le b zero :: Γ) ⊢[PRAAx] le b zero := Prf.hyp0
-  have e := natEq (le_antisymm h0 (zero_le b))
   have h' : (le b zero :: Γ) ⊢[PRAAx] le (succ zero) (a * b) := h.wk
   refine not_succ_le_self zero _ ?_
-  ipra_le sl h' with 𝔟 a * e
+  ipra_le sl h' with 𝔟 a * natEq (le_antisymm h0 (zero_le b))
 
 /-- A positive indicator: all three red indicators or all three blue indicators are positive. -/
 theorem tri_cases {a b c a' b' c' : PTm n} (h : Γ ⊢[PRAAx] lt zero (a * b * c + a' * b' * c')) :

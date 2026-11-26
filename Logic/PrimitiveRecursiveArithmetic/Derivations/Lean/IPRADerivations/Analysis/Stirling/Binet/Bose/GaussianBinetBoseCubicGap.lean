@@ -13,7 +13,7 @@ set_option maxHeartbeats 720000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseCubicGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseExponential (expRadius scaleF scaleData piClock scale_readback)
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianPositiveExponentialProduct (scalar_le_add)
@@ -34,10 +34,6 @@ open GaussianStirlingConstant (piNumerator piDenominator)
 open GaussianBinetKernelPi (denominator_positive sample_margins)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -46,8 +42,7 @@ local notation "denomData" => GaussianBinetBoseDenominator.data
 
 def cube (a : PTm n) : PTm n := a*a*a
 
-@[simp] theorem subst_cube {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (cube a) = cube (Syn.subst σ a) := by simp [cube]
+ipra_subst cube
 
 theorem cube_positive (a : PTm n) (h : Γ ⊢[PRAAx] le one a) : Γ ⊢[PRAAx] le one (cube a) :=
   positive_product _ _ (positive_product _ _ h h) h

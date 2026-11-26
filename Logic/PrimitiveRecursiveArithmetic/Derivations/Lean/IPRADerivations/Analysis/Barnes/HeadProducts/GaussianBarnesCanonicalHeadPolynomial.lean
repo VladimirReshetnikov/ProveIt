@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalBaseProductShift (powerProduct powerBody power_at)
 open GaussianBarnesCanonicalPolynomialShift (data)
 open GaussianRationalFiniteProduct (product_zero product_succ)
@@ -24,9 +24,6 @@ open GaussianRationalMonicReduction (singleton singleton_evaluation singleton_le
 open GaussianRationalPolynomialProduct (product product_length product_evaluation)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

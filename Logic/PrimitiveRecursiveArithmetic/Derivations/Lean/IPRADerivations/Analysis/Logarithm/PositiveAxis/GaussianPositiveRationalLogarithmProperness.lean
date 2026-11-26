@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithmProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.MeshChange (S_denom)
 open Products (fact)
@@ -23,9 +23,6 @@ open GammaEulerMesh (factorial_positive)
 open GaussianRationalHorner (canonical_unique represents_congr)
 open GaussianRationalMetric (qsub distanceBounded)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -98,7 +95,6 @@ open GaussianPositiveRationalLogarithm (logF baseF data source sample difference
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianNameEquivalence (crossEquivalent)
-open LeanProofs.IPRA.PTm (num)
 
 /-- The true normalized logarithm observation is close to its actual
 common-mesh harmonic interval; all three original name clocks are kept. -/

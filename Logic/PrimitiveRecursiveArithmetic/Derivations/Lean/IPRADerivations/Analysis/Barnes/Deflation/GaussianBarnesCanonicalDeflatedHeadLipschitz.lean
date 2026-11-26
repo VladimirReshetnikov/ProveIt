@@ -15,7 +15,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDeflatedHeadLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFactor (source exponentRadius correction exponentialF exponentialData)
 open GaussianBarnesCanonicalDeflatedFactor (inversePower inverseInteger)
 open GaussianBarnesCanonicalDeflatedValue (headCoefficientF headCoefficientData head_coefficient_regular)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (distanceBounded bounded bounded_of_cleared)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRadiusExponentialLipschitzRate (factor)
 open ComplexLogarithmRemainder (oneCode normSq_one)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option maxHeartbeats 450000
 
 namespace LeanProofs.IPRA.Analysis.GaussianExponentialAffineLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDominantPairAlgebra (radiusPoint radiusNumerator radius_represents radius_numerator_norm)
 open GaussianPositiveExponentialProduct (scalar_le_add)
 open GaussianPositiveExponentialTermBound (positive_suffix)
@@ -32,9 +32,6 @@ open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr qadd_cong
 open GaussianReciprocalHorner (qadd_commutative)
 open RationalArgmin (rationalLE rationalLE_congr transitive denominator_positive)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

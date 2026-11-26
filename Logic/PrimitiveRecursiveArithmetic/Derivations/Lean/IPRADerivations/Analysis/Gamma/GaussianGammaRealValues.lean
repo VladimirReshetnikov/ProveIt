@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.GaussianGammaInverseConjugation
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
-import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CertificateTactics
 
 /-!
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRealValues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalConjugation (point)
 open GaussianRationalReciprocal (conjugate)
 open RationalGaussianEmbedding (embed native)
@@ -30,15 +29,11 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open ComplexLogarithmRemainder (re im normSq scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def projection (q : PTm n) : PTm n := embed (fstT q)
-@[simp] theorem subst_projection {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    Syn.subst σ (projection q) = projection (Syn.subst σ q) := by simp [projection]
+ipra_subst projection
 
 theorem projection_represents (q a E : PTm n) (h : Γ ⊢[PRAAx] represents q a E) : Γ ⊢[PRAAx]
     represents (projection q) (native (re a)) E :=
@@ -170,8 +165,8 @@ theorem native_real_fixed (a : ZT n) : Γ ⊢[PRAAx] conjugate (native a) ≐ na
   change Γ ⊢[PRAAx] pairT (pairT (fstT (fstT z)) (sndT (fstT z)))
     (pairT (sndT (sndT z)) (fstT (sndT z))) ≐ pairT u v
   exact congrPairT
-    (congrPairT ((congrFst hp).eqTrans (fst_pair _ _)) ((congrSnd hp).eqTrans (snd_pair _ _)))
-    (congrPairT ((congrSnd hq).eqTrans (snd_pair _ _)) ((congrFst hq).eqTrans (fst_pair _ _)))
+    (congrPairT hp.fstE hp.sndE)
+    (congrPairT hq.sndE hq.fstE)
 
 theorem cross_right_data {f g : PR 2} {x y y' : PTm n} (e : Γ ⊢[PRAAx] y ≐ y')
     (h : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] crossEquivalent f g x y' := by
@@ -221,15 +216,13 @@ def output (f : PR 2) (p x : PTm n) : PTm n :=
   pairT (ap2 f p x) (pairT (ap2 (realF f) p x) (ap2 (axisF f) p x))
 def outputF (f : PR 2) : PR 2 := PTm.toPR (output f (var 0) (var 1))
 def run (f : PR 2) (p x : PTm n) : PTm n := ap2 (outputF f) p x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (output f p x) = output f (Syn.subst σ p) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (run f p x) = run f (Syn.subst σ p) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx] run f p x ≐ output f p x := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output f (var 0) (var 1) : PTm 2) ![p,x]
 theorem returned_original (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx] fstT (run f p x) ≐ ap2 f p x :=
-  (congrFst (program_at f p x)).eqTrans (fst_pair _ _)
+  (program_at f p x).fstE
 theorem returned_scalar (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run f p x)) ≐ ap2 (realF f) p x :=
   ((congrFst (congrSnd (program_at f p x))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_axis (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run f p x)) ≐ ap2 (axisF f) p x :=

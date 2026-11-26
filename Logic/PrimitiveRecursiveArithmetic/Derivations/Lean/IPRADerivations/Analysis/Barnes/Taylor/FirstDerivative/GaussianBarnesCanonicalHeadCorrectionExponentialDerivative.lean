@@ -19,7 +19,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadCorrectionExponentialDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalCorrectionShift (total)
 open GaussianBarnesCanonicalHeadCorrectionDerivative (slope linear total_formula quadratic_bound)
@@ -37,9 +37,6 @@ open GaussianRationalMetric (bounded qsub qsub_canonical)
 open GaussianRationalReciprocal (bounded_product bounded_difference bound_congr)
 open GaussianRationalNaturalScale (naturalPoint)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

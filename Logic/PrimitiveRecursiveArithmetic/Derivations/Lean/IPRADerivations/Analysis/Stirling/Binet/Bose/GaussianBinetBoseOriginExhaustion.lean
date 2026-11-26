@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseOriginExhaustion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseCompact (nameF data source)
 open GaussianBinetBoseCompactAlignment (data_congr rescale left_gap_rate)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -25,11 +25,7 @@ open GaussianGammaCompactCutoffAlignment (cross_data_congr)
 open GaussianNameEquivalence (crossEquivalent cross_refl)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -39,14 +35,9 @@ def width (T L : PTm n) : PTm n := monus (cutoff L*T) one
 def cutData (X Y D sign T L : PTm n) : PTm n :=
   data X Y D sign T one (width T L) (cutoff L)
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (L : PTm n) :
-    Syn.subst σ (cutoff L) = cutoff (Syn.subst σ L) := by simp [cutoff]
-@[simp] theorem subst_width {m : ℕ} (σ : Fin n → PTm m) (T L : PTm n) :
-    Syn.subst σ (width T L) = width (Syn.subst σ T) (Syn.subst σ L) := by simp [width,one]
-@[simp] theorem subst_cutData {m : ℕ} (σ : Fin n → PTm m) (X Y D sign T L : PTm n) :
-    Syn.subst σ (cutData X Y D sign T L) =
-      cutData (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ T) (Syn.subst σ L) := by
-  simp [cutData,one]
+ipra_subst cutoff
+ipra_subst width [one]
+ipra_subst cutData [one]
 
 theorem cutoff_twice (L : PTm n) : Γ ⊢[PRAAx] cutoff L ≐ two*unit L :=
   (pw_succ two L).eqTrans (mul_comm _ _)

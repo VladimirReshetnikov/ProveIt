@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSyntheticDivision
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im add mul scale zeroCode oneCode)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
@@ -31,10 +31,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,10 +38,8 @@ def quotientBody : PTm 2 := horner (fstT (var 1)) (sndT (var 1)) (succ (var 0))
 def quotient (C z N : PTm n) : PTm n := sequence quotientBody N (pairT C z)
 def remainder (C z : PTm n) : PTm n := evaluate C z
 
-@[simp] theorem subst_quotient {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (quotient C z N) = quotient (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by simp [quotient]
-@[simp] theorem subst_remainder {m : ℕ} (σ : Fin n → PTm m) (C z : PTm n) :
-    Syn.subst σ (remainder C z) = remainder (Syn.subst σ C) (Syn.subst σ z) := by simp [remainder]
+ipra_subst quotient
+ipra_subst remainder
 
 theorem quotient_body_at (C z i : PTm n) : Γ ⊢[PRAAx]
     inst2 quotientBody i (pairT C z) ≐ horner C z (succ i) := by
@@ -131,9 +125,7 @@ def prefixLaw (C z y N k : PTm n) : Fm PTm n := le k N ⟶
   equal (horner C y (succ k))
     (add (mul (sub y z) (horner (quotient C z N) y k)) (horner C z (succ k)))
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C z y N k : PTm n) :
-    (prefixLaw C z y N k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ z)
-      (Syn.subst σ y) (Syn.subst σ N) (Syn.subst σ k) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (C z y N : PTm n) : Γ ⊢[PRAAx]
     equal (horner C y (succ zero))
@@ -175,11 +167,9 @@ theorem synthetic_prefix (C z y N k : PTm n) (hk : Γ ⊢[PRAAx] le k N) : Γ �
     equal (horner C y (succ k))
       (add (mul (sub y z) (horner (quotient C z N) y k)) (horner C z (succ k))) := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift z) (Syn.shift y) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero C z y N)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨trivial,trivial⟩⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero C z y N)
+    · refine .impI ?_
       let I := prefixLaw (Syn.shift C) (Syn.shift z) (Syn.shift y) (Syn.shift N) (var 0)
       let Δ := le (succ (var 0)) (Syn.shift N) :: I :: Γ.map Fm.shift
       exact prefix_step _ _ _ _ _ (Prf.hyp0 (Ax := PRAAx) (Γ := I :: Γ.map Fm.shift))
@@ -232,17 +222,15 @@ def output (C z N : PTm n) : PTm n := pairT (quotient C z N) (remainder C z)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C z N : PTm n) : PTm n := ap3 outputF C z N
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (output C z N) = output (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C z N : PTm n) :
-    Syn.subst σ (run C z N) = run (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C z N : PTm n) : Γ ⊢[PRAAx] run C z N ≐ output C z N := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,z,N]
 theorem output_quotient (C z N : PTm n) : Γ ⊢[PRAAx] fstT (run C z N) ≐ quotient C z N :=
-  (congrFst (program_at C z N)).eqTrans (fst_pair _ _)
+  (program_at C z N).fstE
 theorem output_remainder (C z N : PTm n) : Γ ⊢[PRAAx] sndT (run C z N) ≐ evaluate C z :=
-  (congrSnd (program_at C z N)).eqTrans (snd_pair _ _)
+  (program_at C z N).sndE
 
 theorem synthetic_coefficients_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (length (var 0) ≐ succ (var 2) ⟶

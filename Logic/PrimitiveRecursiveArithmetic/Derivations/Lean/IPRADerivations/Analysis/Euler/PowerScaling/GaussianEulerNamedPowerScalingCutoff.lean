@@ -18,7 +18,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingFormula (source powerF powerData)
 open GaussianEulerNamedPowerScalingFormulaFrozen (freezeClock frozenData)
 open GaussianEulerNamedPowerScalingPowerFrozen (powerClock frozenPowerData frozen_sample_bound)
@@ -37,10 +37,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -91,29 +87,15 @@ def data (z R B A x E T y H J M : PTm n) : PTm n :=
   funext i
   fin_cases i <;> rfl
 
-@[simp] theorem subst_panelSize {m : ℕ} (σ : Fin n → PTm m) (s R A H J M : PTm n) :
-    Syn.subst σ (panelSize s R A H J M) =
-      panelSize (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ M) := by
-  simp [panelSize,GaussianEulerPowerChartCofinalSchedule.cutoffSize,GaussianGammaIntegralCutoffs.etaDen,
-    GaussianGammaIntegralCutoffs.top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst panelSize [GaussianEulerPowerChartCofinalSchedule.cutoffSize, GaussianGammaIntegralCutoffs.etaDen,
+    GaussianGammaIntegralCutoffs.top, GaussianGammaIntegralCutoffs.height,
+    GaussianGammaIntegralCutoffs.tailCoefficient]
 
-@[simp] theorem subst_compactData {m : ℕ} (σ : Fin n → PTm m) (s z R B A x E T y H J M : PTm n) :
-    Syn.subst σ (compactData s z R B A x E T y H J M) = compactData (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ y)
-      (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ M) := by
-  simp [compactData,width,lowerDenominator,upperNumerator]
+ipra_subst compactData [width, lowerDenominator, upperNumerator]
 
-@[simp] theorem subst_rationalCompactData {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (s k z R B A x E T y H J M : PTm n) :
-    Syn.subst σ (rationalCompactData F G s k z R B A x E T y H J M) = rationalCompactData F G (Syn.subst σ s)
-      (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ y) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ M) := by
-  simp [rationalCompactData,
-    GaussianNamedPositiveLogarithm.numerator,GaussianNamedPositiveLogarithm.denominator]
+ipra_subst rationalCompactData [GaussianNamedPositiveLogarithm.numerator, GaussianNamedPositiveLogarithm.denominator]
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (p z R B A x E T y H J M : PTm n) :
-    Syn.subst σ (sample F G p z R B A x E T y H J M) = sample F G (Syn.subst σ p) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ y) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ M) := by simp [sample,outputPrecision]
+ipra_subst sample [outputPrecision]
 
 private def fields (p x : PTm n) : Fin 12 → PTm n :=
   Fin.cases p (fun j => Foundations.BoundedFormulas.at1 (Foundations.BoundedSyntax.projections 11 j) x)
@@ -177,14 +159,7 @@ def frozenIndex (F G : PR 2) (s z R B A x E T y H J M : PTm n) : PTm n :=
   parameterClock s R T J (lowerDenominator T V H) (upperNumerator E V H)+
     freezeClock F G s z R B A x E y H J+powerClock F G zero z R B x E y H
 
-@[simp] theorem subst_frozenIndex {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (s z R B A x E T y H J M : PTm n) :
-    Syn.subst σ (frozenIndex F G s z R B A x E T y H J M) = frozenIndex F G (Syn.subst σ s) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ y) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ M) := by
-  simp [frozenIndex,parameterClock,GaussianNamedDampingPowerFrozen.budget,lowerDenominator,upperNumerator,
-    GaussianNamedDampingPowerIntegrand.gain,GaussianNamedDampingPowerIntegrand.decayBound,
-    GaussianNamedDampingPowerChart.gain,GaussianNamedDampingPowerChart.majorant,
-    GaussianCompactLogarithmBounds.radius,one]
+ipra_subst frozenIndex [parameterClock, GaussianNamedDampingPowerFrozen.budget, lowerDenominator, upperNumerator, GaussianNamedDampingPowerIntegrand.gain, GaussianNamedDampingPowerIntegrand.decayBound, GaussianNamedDampingPowerChart.gain, GaussianNamedDampingPowerChart.majorant, GaussianCompactLogarithmBounds.radius, one]
 
 theorem freeze_power_clock (F G : PR 2) (s z R B A x E T y H J M : PTm n) : Γ ⊢[PRAAx]
     le (powerClock F G zero z R B x E y H) (frozenIndex F G s z R B A x E T y H J M) := le_add_left _ _
@@ -198,16 +173,9 @@ def rationalInput (F G : PR 2) (z R B A x E T y H J M : PTm n) : Fm PTm n := .al
   (rationalInputAt F G (var 0) (shift z) (shift R) (shift B) (shift A) (shift x) (shift E) (shift T)
     (shift y) (shift H) (shift J) (shift M))
 
-@[simp] theorem subst_rationalInputAt {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (s z R B A x E T y H J M : PTm n) :
-    (rationalInputAt F G s z R B A x E T y H J M).subst σ = rationalInputAt F G (Syn.subst σ s) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ y) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ M) := by simp [rationalInputAt]
+ipra_subst rationalInputAt
 
-@[simp] theorem subst_rationalInput {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (z R B A x E T y H J M : PTm n) :
-    (rationalInput F G z R B A x E T y H J M).subst σ = rationalInput F G (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ y) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ M) := by
-  simp [rationalInput,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rationalInput [Syn.subst_shift, Syn.shift_subst]
 
 private theorem rational_input_at (F G : PR 2) (s z R B A x E T y H J M : PTm n)
     (hr : Γ ⊢[PRAAx] rationalInput F G z R B A x E T y H J M) : Γ ⊢[PRAAx]

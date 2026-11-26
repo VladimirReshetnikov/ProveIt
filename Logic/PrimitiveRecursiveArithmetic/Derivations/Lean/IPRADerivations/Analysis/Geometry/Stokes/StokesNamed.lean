@@ -31,11 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.StokesNamed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 open LeanProofs.IPRA.Foundations.GridSums
 open LeanProofs.IPRA.Foundations.GridSumsContext
 open LeanProofs.IPRA.Foundations.GridSumsOrder

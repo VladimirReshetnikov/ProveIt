@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReferencePrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaGaussReferenceProduct (rowF rowRadius row_at row_bound_at row_distance_at row_bounds row_regular nameF)
 open GaussianGammaGaussReflectionDomain (referenceData)
 open GaussianGammaGaussReference (reference_source)
@@ -36,9 +36,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianReciprocalHorner (qmul_one_right)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,10 +43,8 @@ def data (N : PTm n) : PTm n :=
   GaussianNamedFiniteProductName.data N (rowRadius (succ N)) one (succ N)
 def rate (N : PTm n) : PTm n := GaussianNamedFiniteProduct.radius (rowRadius (succ N)) N*two
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (data N) = data (Syn.subst σ N) := by simp [data,one]
-@[simp] theorem subst_rate {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (rate N) = rate (Syn.subst σ N) := by simp [rate,two,one]
+ipra_subst data [one]
+ipra_subst rate [two, one]
 
 theorem terminal_one (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] crossEquivalent gammaF constantF (referenceData m m) qone := by

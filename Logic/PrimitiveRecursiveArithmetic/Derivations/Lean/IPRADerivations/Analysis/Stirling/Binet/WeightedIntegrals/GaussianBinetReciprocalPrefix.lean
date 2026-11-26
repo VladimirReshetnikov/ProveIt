@@ -13,7 +13,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetReciprocalPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLogCellComparison (budget budget_positive leftValue)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF
@@ -47,15 +43,9 @@ def numerator (p A D N : PTm n) : PTm n := D*D*N*unit p+num 8*N*(A*(A+N*D))
 def law (p A B D neg N : PTm n) : Fm PTm n :=
   distanceBounded (increment p A B D neg N) (reciprocalSum A B D neg N) (numerator p A D N) (denominator p A D N)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p A B D neg N : PTm n) :
-    Syn.subst σ (sample p A B D neg N) =
-      sample (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ N) := by
-  simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (p A B D neg N : PTm n) :
-    (law p A B D neg N).subst σ = law (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ N) := by
-  simp [law,increment,numerator,denominator,reciprocalSum]
+ipra_subst law [increment, numerator, denominator, reciprocalSum]
 
 theorem denominator_positive (p A D neg N : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
     Γ ⊢[PRAAx] le one (denominator p A D N) :=

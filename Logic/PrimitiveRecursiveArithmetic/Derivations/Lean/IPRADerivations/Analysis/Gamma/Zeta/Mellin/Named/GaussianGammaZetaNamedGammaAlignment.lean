@@ -17,7 +17,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaNamedGammaAlignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerNamedShiftInput (shiftF shiftData)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -33,10 +33,6 @@ open GaussianRationalHorner (ofGaussian canonical_unique ofGaussian_canonical of
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRootAlgebra (equal_refl)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

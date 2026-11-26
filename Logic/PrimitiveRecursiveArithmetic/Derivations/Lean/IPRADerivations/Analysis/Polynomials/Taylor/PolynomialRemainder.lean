@@ -1,7 +1,5 @@
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A first-order Taylor remainder for multivariate polynomial expressions
@@ -38,11 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.PolynomialRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

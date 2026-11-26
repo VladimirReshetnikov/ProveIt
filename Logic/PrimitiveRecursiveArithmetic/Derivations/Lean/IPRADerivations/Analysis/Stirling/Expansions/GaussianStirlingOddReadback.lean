@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingOddReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv Lv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Un Ud Lz L_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
@@ -30,17 +30,12 @@ open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalLinearProduct (qadd_commutative)
 open GaussianPositiveRationalLogarithm (fraction)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def affine (A B q : PTm n) : PTm n := qadd (qmul (coefficient A B) q) minusOne
 
-@[simp] theorem subst_affine {l : ℕ} (σ : Fin n → PTm l) (A B q : PTm n) :
-    Syn.subst σ (affine A B q) = affine (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q) := by
-  simp [affine,minusOne,GaussianRationalMatrixFiniteSums.minusOne]
+ipra_subst affine [minusOne, GaussianRationalMatrixFiniteSums.minusOne]
 
 theorem affine_congr (A B : PTm n) {q r : PTm n} (e : Γ ⊢[PRAAx] q ≐ r) :
     Γ ⊢[PRAAx] affine A B q ≐ affine A B r :=

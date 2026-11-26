@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCrossedSegments
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderBoxProductGap (sampleAt weightAt)
 open GaussianStirlingAllOrderCrossedCells (segmentData bernoulliBody reflectedBody bernoulli_at reflected_at
   subst_sampleAt subst_weightAt)
@@ -23,8 +23,6 @@ open RationalArgmin (rationalEq_congr)
 open RationalArithmetic (add)
 open RationalCrossedProductSums (productBody product_at)
 open RationalFiniteSum (term sum termwiseEq sum_ext)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

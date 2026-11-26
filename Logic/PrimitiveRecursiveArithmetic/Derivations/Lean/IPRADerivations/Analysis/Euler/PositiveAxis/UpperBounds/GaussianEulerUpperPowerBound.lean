@@ -15,16 +15,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperPowerBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerOrder (source)
 open GaussianEulerIntegrandName (powerF powerData powerExponentF powerExponentData powerRadius)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,14 +29,10 @@ def query (t z B a b : PTm n) : PTm n := GaussianExponentialRealPart.squarePreci
 def observation (p z B a b : PTm n) : PTm n := ap2 powerF p (powerData z B a b)
 def numerator (p R a b : PTm n) : PTm n := pw a R*unit p+pw b R
 def denominator (p R b : PTm n) : PTm n := pw b R*unit p
-@[simp] theorem subst_query {m : ℕ} (σ : Fin n → PTm m) (t z B a b : PTm n) :
-    Syn.subst σ (query t z B a b) = query (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [query]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (observation p z B a b) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [observation]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p R a b : PTm n) :
-    Syn.subst σ (numerator p R a b) = numerator (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p R b : PTm n) :
-    Syn.subst σ (denominator p R b) = denominator (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ b) := by simp [denominator]
+ipra_subst query
+ipra_subst observation
+ipra_subst numerator
+ipra_subst denominator
 
 theorem denominator_positive (p R b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     le one (denominator p R b) := GaussianRationalHorner.positive_product _ _

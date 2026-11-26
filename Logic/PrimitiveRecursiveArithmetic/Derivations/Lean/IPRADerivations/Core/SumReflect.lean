@@ -1,5 +1,4 @@
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Pairing
 
 /-!
 # Reflecting a finite sum
@@ -39,13 +38,9 @@ private abbrev reflF (g : PTm 2) : Fm PTm 2 :=
   ap2 (sumF g) (var 0) (var 1) ≐ ap2 (sumF (rflBody g)) (var 0) (pairT (var 0) (var 1))
 
 private theorem sum_reflect₀ (g : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] reflF g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (sum_zero _ _).eqTrans (sum_zero _ _).eqSymm
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' g (var 0) (var 1)).eqTrans ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans ?_)
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact (sum_zero _ _).eqTrans (sum_zero _ _).eqSymm
+  · refine (sum_succ' g (var 0) (var 1)).eqTrans ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans ?_)
     refine (add_comm _ _).eqTrans (.eqTrans ?_ (sum_shift (rflBody g) (var 0) _).eqSymm)
     refine congrAdd ?_ ?_
     · rw [inst2_rflBody]

@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerReflectionName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerReflectionHead (denominator returned_pairing)
 open GaussianGammaFiniteApproximantName
   (logF logExponentF logExponentData log_exponent_regular exponential_input
@@ -41,8 +41,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianInverseBinomialRows (negative_congr)
 open GaussianNamedDifference (negative_distance)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

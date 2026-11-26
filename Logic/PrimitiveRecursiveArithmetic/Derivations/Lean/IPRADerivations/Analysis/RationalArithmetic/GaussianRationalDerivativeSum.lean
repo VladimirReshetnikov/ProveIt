@@ -3,8 +3,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1A
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
 import IPRADerivations.Analysis.Barnes.BarnesCutoff
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The original rational derivative sum and its exact ceiling mesh
@@ -20,7 +18,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDerivativeSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalVariableHornerBudget (denominator coefficient denominator_positive coefficient_represents)
 open GaussianRationalDerivativeWeights (weight prefixSum total)
 open GaussianRationalHorner (scalar_congr scalar_add_same)
@@ -29,10 +27,6 @@ open GaussianRationalL1 (qL1 qL1_represents)
 open RationalArithmetic (represents)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,31 +41,23 @@ def L (C N U : PTm n) : PTm n := fraction (numerator C N U) (denominator C)
 def four : PTm n := two*two
 def mesh (C N U p q : PTm n) : PTm n := GaussianDescentClockArithmetic.ceiling (four*numerator C N U*q) (denominator C*p)
 
-@[simp] theorem subst_multiplier {l : ℕ} (σ : Fin n → PTm l) (N U i : PTm n) :
-    Syn.subst σ (multiplier N U i) = multiplier (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ i) := by simp [multiplier]
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (C N U i : PTm n) :
-    Syn.subst σ (term C N U i) = term (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ i) := by simp [term]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (C N U : PTm n) :
-    Syn.subst σ (data C N U) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [data]
-@[simp] theorem subst_partialSum {l : ℕ} (σ : Fin n → PTm l) (C N U k : PTm n) :
-    Syn.subst σ (partialSum C N U k) = partialSum (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ k) := by simp [partialSum]
-@[simp] theorem subst_derivativeSum {l : ℕ} (σ : Fin n → PTm l) (C N U : PTm n) :
-    Syn.subst σ (derivativeSum C N U) = derivativeSum (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [derivativeSum]
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (C N U : PTm n) :
-    Syn.subst σ (numerator C N U) = numerator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [numerator,BarnesCutoff.maximum]
-@[simp] theorem subst_L {l : ℕ} (σ : Fin n → PTm l) (C N U : PTm n) :
-    Syn.subst σ (L C N U) = L (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) := by simp [L]
-@[simp] theorem subst_four {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (four : PTm n) = (four : PTm l) := by simp [four]
-@[simp] theorem subst_mesh {l : ℕ} (σ : Fin n → PTm l) (C N U p q : PTm n) :
-    Syn.subst σ (mesh C N U p q) = mesh (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ p) (Syn.subst σ q) := by simp [mesh]
+ipra_subst multiplier
+ipra_subst term
+ipra_subst data
+ipra_subst partialSum
+ipra_subst derivativeSum
+ipra_subst numerator [BarnesCutoff.maximum]
+ipra_subst L
+ipra_subst four
+ipra_subst mesh
 
 theorem term_congr {C D N K U V i j : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ K)
     (hU : Γ ⊢[PRAAx] U ≐ V) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] term C N U i ≐ term D K V j := by
   ipra_congr (term (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hC, hN, hU, hi]
 theorem body_at (C N U i : PTm n) : Γ ⊢[PRAAx] inst2 body i (data C N U) ≐ term C N U i := by
   simp only [body,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact term_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact term_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem term_represents (C N U i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length C)) : Γ ⊢[PRAAx]
     represents (term C N U i) (ZT.ofNat (weight C N U i)) (denominator C) := by
   have prod : Γ ⊢[PRAAx] represents (term C N U i)
@@ -94,8 +80,7 @@ theorem partial_succ (C N U k : PTm n) : Γ ⊢[PRAAx]
 
 def prefixLaw (C N U k : PTm n) : Fm PTm n := le k (length C) ⟶
   represents (partialSum C N U k) (ZT.ofNat (prefixSum C N U k)) (denominator C)
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (C N U k : PTm n) :
-    (prefixLaw C N U k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ k) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero_represents (C N U : PTm n) : Γ ⊢[PRAAx]
     represents (partialSum C N U zero) (ZT.ofNat (prefixSum C N U zero)) (denominator C) := by
@@ -121,11 +106,9 @@ theorem prefix_step (C N U k : PTm n) (hk : Γ ⊢[PRAAx] lt k (length C))
 theorem prefix_represents (C N U k : PTm n) (hk : Γ ⊢[PRAAx] le k (length C)) : Γ ⊢[PRAAx]
     represents (partialSum C N U k) (ZT.ofNat (prefixSum C N U k)) (denominator C) := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift N) (Syn.shift U) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero_represents C N U).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero_represents C N U).wk
+    · refine .impI ?_
       exact prefix_step _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] prefixLaw C N U k := by simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
   exact .impE rule hk
@@ -224,23 +207,17 @@ def output (C N U p q : PTm n) : PTm n := pairT (L C N U)
   (pairT (derivativeSum C N U) (pairT (mesh C N U p q) (pairT (numerator C N U) (denominator C))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (C N U p q : PTm n) : PTm n := PTm.app outputF ![C,N,U,p,q]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N U p q : PTm n) :
-    Syn.subst σ (output C N U p q) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ p) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N U p q : PTm n) :
-    Syn.subst σ (run C N U p q) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (C N U p q : PTm n) : Γ ⊢[PRAAx] run C N U p q ≐ output C N U p q := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,N,U,p,q]
 theorem returned_L (C N U p q : PTm n) : Γ ⊢[PRAAx] fstT (run C N U p q) ≐ L C N U :=
-  (congrFst (program_at C N U p q)).eqTrans (fst_pair _ _)
+  (program_at C N U p q).fstE
 theorem returned_sum (C N U p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N U p q)) ≐ derivativeSum C N U :=
-  (congrFst (congrSnd (program_at C N U p q))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at C N U p q))).eqTrans (snd_pair _ _).fstE
 theorem returned_mesh (C N U p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N U p q))) ≐ mesh C N U p q :=
   (congrFst (congrSnd (congrSnd (program_at C N U p q)))).eqTrans
-    ((congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
+    ((congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE)
 
 theorem actual_original_derivative_term_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (inst2 body (var 3) (data (var 0) (var 1) (var 2)) ≐ RationalArithmetic.multiply

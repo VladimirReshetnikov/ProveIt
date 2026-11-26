@@ -24,7 +24,7 @@ this is the stated rate `‖C_n X − X‖₁ ≤ 2ε_k`.
 
 namespace LeanProofs.IPRA.Probability.MartingaleRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.ErrorBudget (nsum toG_nsum)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_mul)
@@ -32,9 +32,6 @@ open LeanProofs.IPRA.Probability.ClipLaws (ad_triangle)
 open LeanProofs.IPRA.Probability.ConditionalAveraging
   (blk cond_measurable blk_contract nsum_mono toG_ite regroup_defining)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n k m : ℕ} {Γ : List (Fm PTm n)}
 

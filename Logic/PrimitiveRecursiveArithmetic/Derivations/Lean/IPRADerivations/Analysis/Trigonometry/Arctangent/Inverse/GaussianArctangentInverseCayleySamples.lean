@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentInverseCayleySamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale eval_re_code eval_im_code)
 open GaussianRootAlgebra (equal equal_of_values re_scale im_scale)
 open GaussianRationalHorner (canonical_unique positive_product ofGaussian_canonical ofGaussian_represents
@@ -24,8 +24,6 @@ open GaussianArctangentCayleyTrig (sinePoint)
 open GaussianArctangentCayleyProjections (samplePrecision sineProjectionF sine_projection)
 open GaussianArctangentInverseSampler (index mesh mesh_positive index_le)
 open GaussianArctangentNamedCayley (data raw queryPrecision)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

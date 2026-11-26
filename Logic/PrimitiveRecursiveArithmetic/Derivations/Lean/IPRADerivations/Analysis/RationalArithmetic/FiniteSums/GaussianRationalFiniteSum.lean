@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumSegments
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite Gaussian-rational sums
@@ -19,22 +18,18 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qadd_congr qmul_congr qzero_canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSumSegments
   (partialSum prefix_zero prefix_succ prefix_canonical prefix_entries_congr entriesEqual)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence sequence_decode subst_sequence)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def sum (t : PTm 2) (m x : PTm n) : PTm n := partialSum (sequence t m x) m
 
-@[simp] theorem subst_sum {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (m x : PTm n) :
-    Syn.subst σ (sum t m x) = sum t (Syn.subst σ m) (Syn.subst σ x) := by simp [sum]
+ipra_subst sum
 
 theorem sum_canonical (t : PTm 2) (m x : PTm n) : Γ ⊢[PRAAx] canonical (sum t m x) :=
   prefix_canonical _ _
@@ -73,9 +68,7 @@ theorem sum_succ (t : PTm 2) (m x : PTm n) : Γ ⊢[PRAAx]
 def termsEqual (t u : PTm 2) (m x y : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ inst2 t (var 0) (Syn.shift x) ≐ inst2 u (var 0) (Syn.shift y))
 
-@[simp] theorem subst_termsEqual {l : ℕ} (σ : Fin n → PTm l) (t u : PTm 2) (m x y : PTm n) :
-    (termsEqual t u m x y).subst σ = termsEqual t u (Syn.subst σ m) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [termsEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst termsEqual [Syn.subst_shift, Syn.shift_subst]
 
 theorem term_equal_at (t u : PTm 2) (m x y i : PTm n)
     (h : Γ ⊢[PRAAx] termsEqual t u m x y) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx]
@@ -103,8 +96,7 @@ theorem sum_index_congr (t : PTm 2) {m l x y : PTm n}
 def shiftLaw (t : PTm 2) (m x : PTm n) : Fm PTm n :=
   sum t (succ m) x ≐ qadd (inst2 t zero x) (sum (shiftBody t) m x)
 
-@[simp] theorem subst_shiftLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (m x : PTm n) :
-    (shiftLaw t m x).subst σ = shiftLaw t (Syn.subst σ m) (Syn.subst σ x) := by simp [shiftLaw]
+ipra_subst shiftLaw
 
 theorem shift_zero (t : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] shiftLaw t zero x :=
   (sum_succ t zero x).eqTrans ((qadd_congr (sum_zero t x) (.eqRefl _)).eqTrans
@@ -124,11 +116,9 @@ code is not canonical. -/
 theorem sum_shift_first (t : PTm 2) (m x : PTm n) : Γ ⊢[PRAAx]
     sum t (succ m) x ≐ qadd (inst2 t zero x) (sum (shiftBody t) m x) := by
   have all : Γ ⊢[PRAAx] .all (shiftLaw t (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_shiftLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact shift_zero t x
-    · simp only [subst_shiftLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact shift_step t _ _ Prf.hyp0
+    ipra_qfind [subst_shiftLaw]
+    · exact shift_zero t x
+    · exact shift_step t _ _ Prf.hyp0
   change Γ ⊢[PRAAx] shiftLaw t m x
   simpa only [subst_shiftLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE m
 
@@ -143,8 +133,7 @@ theorem add_shuffle (a b c d : PTm n) : Γ ⊢[PRAAx]
 
 def addLaw (t u : PTm 2) (m x : PTm n) : Fm PTm n :=
   sum (addBody t u) m x ≐ qadd (sum t m x) (sum u m x)
-@[simp] theorem subst_addLaw {l : ℕ} (σ : Fin n → PTm l) (t u : PTm 2) (m x : PTm n) :
-    (addLaw t u m x).subst σ = addLaw t u (Syn.subst σ m) (Syn.subst σ x) := by simp [addLaw]
+ipra_subst addLaw
 
 theorem add_zero (t u : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] addLaw t u zero x :=
   (sum_zero _ _).eqTrans ((qadd_congr (sum_zero t x) (sum_zero u x)).eqTrans
@@ -160,11 +149,9 @@ theorem add_step (t u : PTm 2) (m x : PTm n) (h : Γ ⊢[PRAAx] addLaw t u m x) 
 theorem sum_add (t u : PTm 2) (m x : PTm n) : Γ ⊢[PRAAx]
     sum (addBody t u) m x ≐ qadd (sum t m x) (sum u m x) := by
   have all : Γ ⊢[PRAAx] .all (addLaw t u (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_addLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact add_zero t u x
-    · simp only [subst_addLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact add_step t u _ _ Prf.hyp0
+    ipra_qfind [subst_addLaw]
+    · exact add_zero t u x
+    · exact add_step t u _ _ Prf.hyp0
   change Γ ⊢[PRAAx] addLaw t u m x
   simpa only [subst_addLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE m
 
@@ -184,9 +171,7 @@ theorem multiply_body_at (t : PTm 2) (a i x : PTm n) : Γ ⊢[PRAAx]
 
 def multiplyLaw (t : PTm 2) (a m x : PTm n) : Fm PTm n :=
   sum (multiplyBody t) m (pairT a x) ≐ qmul a (sum t m x)
-@[simp] theorem subst_multiplyLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (a m x : PTm n) :
-    (multiplyLaw t a m x).subst σ = multiplyLaw t (Syn.subst σ a) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [multiplyLaw]
+ipra_subst multiplyLaw
 
 theorem multiply_zero (t : PTm 2) (a x : PTm n) : Γ ⊢[PRAAx] multiplyLaw t a zero x :=
   (sum_zero _ _).eqTrans ((qmul_congr (.eqRefl _) (sum_zero t x)).eqTrans
@@ -202,11 +187,9 @@ theorem multiply_step (t : PTm 2) (a m x : PTm n) (h : Γ ⊢[PRAAx] multiplyLaw
 theorem sum_multiply (t : PTm 2) (a m x : PTm n) : Γ ⊢[PRAAx]
     sum (multiplyBody t) m (pairT a x) ≐ qmul a (sum t m x) := by
   have all : Γ ⊢[PRAAx] .all (multiplyLaw t (Syn.shift a) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_multiplyLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact multiply_zero t a x
-    · simp only [subst_multiplyLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact multiply_step t _ _ _ Prf.hyp0
+    ipra_qfind [subst_multiplyLaw]
+    · exact multiply_zero t a x
+    · exact multiply_step t _ _ _ Prf.hyp0
   change Γ ⊢[PRAAx] multiplyLaw t a m x
   simpa only [subst_multiplyLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE m
 

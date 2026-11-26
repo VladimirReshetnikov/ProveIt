@@ -17,7 +17,7 @@ set_option maxHeartbeats 780000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelFrozenPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows (inputData rowF rowBody row_at row_sample regular_rows)
 open GaussianBinetKernelTail (finiteF finiteData)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRootApproximationWitness (pointBounds)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "K" => GaussianBinetKernelCofinal.nameF
@@ -44,11 +40,9 @@ abbrev body : PTm 2 := GaussianNamedFiniteSumFamily.body rowF rowBody
 def data (k A B : PTm n) : PTm n := pairT k (inputData A B)
 def value (k N A B : PTm n) : PTm n := sum body N (data k A B)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (k A B : PTm n) :
-    Syn.subst σ (data k A B) = data (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (k N A B : PTm n) :
-    Syn.subst σ (value k N A B) = value (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) := by simp [value]
+ipra_subst value
 
 theorem term_at (i k A B : PTm n) : Γ ⊢[PRAAx] inst2 body i (data k A B) ≐ GaussianBinetKernelRows.value k (succ i) A B :=
   (GaussianNamedFiniteSumFamily.term_at rowF rowBody i k (inputData A B)).eqTrans
@@ -74,9 +68,7 @@ abbrev dampedBody : PTm 2 := multiplyBody body
 def dampedData (c k A B : PTm n) : PTm n := pairT c (data k A B)
 def dampedValue (c k N A B : PTm n) : PTm n := qmul c (value k N A B)
 
-@[simp] theorem subst_dampedData {m : ℕ} (σ : Fin n → PTm m) (c k A B : PTm n) :
-    Syn.subst σ (dampedData c k A B) = dampedData (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [dampedData]
+ipra_subst dampedData
 
 theorem damped_term (i c k A B : PTm n) : Γ ⊢[PRAAx]
     inst2 dampedBody i (dampedData c k A B) ≐ qmul c (GaussianBinetKernelRows.value k (succ i) A B) :=

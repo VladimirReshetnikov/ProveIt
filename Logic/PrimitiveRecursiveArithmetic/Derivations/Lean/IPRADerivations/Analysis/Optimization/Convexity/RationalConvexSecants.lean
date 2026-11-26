@@ -13,9 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexSecants
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open RationalArgmin (rationalLE denominator_positive)
 open RationalArithmetic (represents add multiply)
 open RationalSupMetric (denominatorOf numeratorOf)
@@ -23,8 +21,6 @@ open GaussianRationalSyntheticBounds (natCode natCode_represents natCode_nonnega
 open GaussianRationalHorner (scalar_congr scalar_rescale scalar_add_same)
 open GaussianRationalMetric (comparison_to_cleared comparison_of_cleared)
 open RationalConvexSecantWeights (secant_with_error)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartCorrectedPanel
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionFloorCuts
 import IPRADerivations.DiophantineNumberTheory.KhinchinConvergence
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Exact common lattice for finite rational image nodes
@@ -17,15 +16,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImageLattice
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianEulerUnitSubstitutionFloorCuts (capped capped_below capped_above)
 open GaussianPartitionedFiniteSum (increasing)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -43,24 +38,15 @@ def nodeIndex (P D : PTm 2) (i N x J : PTm n) : PTm n := inst2 P i x*multiplier 
 
 def absolute (P D : PTm 2) (i N x J : PTm n) : PTm n := nodeIndex P D (capped i N) N x J
 
-@[simp] theorem subst_total {m : ℕ} (σ : Fin n → PTm m) (D : PTm 2) (N x : PTm n) :
-    Syn.subst σ (total D N x) = total D (Syn.subst σ N) (Syn.subst σ x) := by simp [total]
+ipra_subst total
 
-@[simp] theorem subst_meshDenominator {m : ℕ} (σ : Fin n → PTm m) (D : PTm 2) (N x J : PTm n) :
-    Syn.subst σ (meshDenominator D N x J) = meshDenominator D (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ J) := by
-  simp [meshDenominator]
+ipra_subst meshDenominator
 
-@[simp] theorem subst_multiplier {m : ℕ} (σ : Fin n → PTm m) (D : PTm 2) (i N x J : PTm n) :
-    Syn.subst σ (multiplier D i N x J) = multiplier D (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ J) := by
-  simp [multiplier]
+ipra_subst multiplier
 
-@[simp] theorem subst_nodeIndex {m : ℕ} (σ : Fin n → PTm m) (P D : PTm 2) (i N x J : PTm n) :
-    Syn.subst σ (nodeIndex P D i N x J) = nodeIndex P D (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ J) := by
-  simp [nodeIndex]
+ipra_subst nodeIndex
 
-@[simp] theorem subst_absolute {m : ℕ} (σ : Fin n → PTm m) (P D : PTm 2) (i N x J : PTm n) :
-    Syn.subst σ (absolute P D i N x J) = absolute P D (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ J) := by
-  simp [absolute]
+ipra_subst absolute
 
 theorem mesh_positive (D : PTm 2) (N x J : PTm n) (hJ : Γ ⊢[PRAAx] le one J) :
     Γ ⊢[PRAAx] le one (meshDenominator D N x J) :=
@@ -151,17 +137,11 @@ def start (P D : PTm 2) (N x J : PTm n) : PTm n := absolute P D zero N x J
 
 def relative (P D : PTm 2) (i N x J : PTm n) : PTm n := monus (absolute P D i N x J) (start P D N x J)
 
-@[simp] theorem subst_cutData {m : ℕ} (σ : Fin n → PTm m) (N x J : PTm n) :
-    Syn.subst σ (cutData N x J) = cutData (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ J) := by
-  simp [cutData]
+ipra_subst cutData
 
-@[simp] theorem subst_start {m : ℕ} (σ : Fin n → PTm m) (P D : PTm 2) (N x J : PTm n) :
-    Syn.subst σ (start P D N x J) = start P D (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ J) := by
-  simp [start]
+ipra_subst start
 
-@[simp] theorem subst_relative {m : ℕ} (σ : Fin n → PTm m) (P D : PTm 2) (i N x J : PTm n) :
-    Syn.subst σ (relative P D i N x J) = relative P D (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ J) := by
-  simp [relative]
+ipra_subst relative
 
 theorem absolute_at (P D : PTm 2) (i N x J : PTm n) : Γ ⊢[PRAAx]
     ap2 (absoluteF P D) i (cutData N x J) ≐ absolute P D i N x J := by
@@ -170,9 +150,9 @@ theorem absolute_at (P D : PTm 2) (i N x J : PTm n) : Γ ⊢[PRAAx]
       toPR_eq (Γ := Γ) (absoluteReader P D (var 0) (var 1) : PTm 2) ![i,cutData N x J]
   have hN : Γ ⊢[PRAAx] fstT (cutData N x J) ≐ N := fst_pair _ _
   have hx : Γ ⊢[PRAAx] fstT (sndT (cutData N x J)) ≐ x :=
-    (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+    (snd_pair _ _).fstE
   have hJ : Γ ⊢[PRAAx] sndT (sndT (cutData N x J)) ≐ J :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   apply compiled.eqTrans
   simpa [absoluteReader] using Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
     (absolute P D (var 0) (var 1) (var 2) (var 3) : PTm 4)
@@ -200,9 +180,7 @@ def ordered (P D : PTm 2) (N x : PTm n) : Fm PTm n :=
     le (inst2 P (var 1) (Syn.shift (Syn.shift x))*inst2 D (var 0) (Syn.shift (Syn.shift x)))
       (inst2 P (var 0) (Syn.shift (Syn.shift x))*inst2 D (var 1) (Syn.shift (Syn.shift x)))))
 
-@[simp] theorem subst_ordered {m : ℕ} (σ : Fin n → PTm m) (P D : PTm 2) (N x : PTm n) :
-    (ordered P D N x).subst σ = ordered P D (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [ordered,Syn.subst_shift,Syn.shift_subst]
+ipra_subst ordered [Syn.subst_shift, Syn.shift_subst]
 
 theorem ordered_at (P D : PTm 2) (i j N x : PTm n) (hs : Γ ⊢[PRAAx] ordered P D N x)
     (hi : Γ ⊢[PRAAx] le i j) (hj : Γ ⊢[PRAAx] le j N) :

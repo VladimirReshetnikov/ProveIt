@@ -17,19 +17,15 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBalancedRadiusArithmetic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit three unit_positive subst_unit subst_three)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def exponent (b : PTm n) : PTm n := two*b+three
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (b : PTm n) :
-    Syn.subst σ (exponent b) = exponent (Syn.subst σ b) := by simp [exponent]
+ipra_subst exponent
 
 theorem unit_monotone (j k : PTm n) (hjk : Γ ⊢[PRAAx] le j k) : Γ ⊢[PRAAx] le (unit j) (unit k) :=
   GaussianFactorBudget.power_monotone_length _ _ _ (le_succ_self one) hjk
@@ -177,8 +173,7 @@ def output (b i N j : PTm n) : PTm n := pairT (exponent b)
     (pairT (pw (two*two) N) (unit (two*j*i)))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (b i N j : PTm n) :
-    Syn.subst σ (output b i N j) = output (Syn.subst σ b) (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ j) := by simp [output]
+ipra_subst output
 
 theorem program_at (b i N j : PTm n) : Γ ⊢[PRAAx] PTm.app outputF ![b,i,N,j] ≐ output b i N j := by
   simpa [outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![b,i,N,j]

@@ -16,7 +16,7 @@ set_option maxHeartbeats 1700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalLocationResidual
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaDigammaDyadicMesh (clock grid_scale)
@@ -37,10 +37,6 @@ open GaussianStirlingNames (fraction_axis add_real constant_real)
 open RationalGaussianEmbedding (axis axis_congr axis_zero axis_add axis_negative scalarZero canonical_axis_roundtrip embed_zero)
 open RationalGaussianNameEmbedding (distance_from_radius)
 open RationalValueBounds (radius_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -53,13 +49,10 @@ def realF : PR 2 := addF RF constantF
 def realData (a b N : PTm n) : PTm n := addData (rd (b+a) b) (correction a b N)
 def residualCost (N : PTm n) : PTm n := coefficient N (mesh N)+two*mesh N
 
-@[simp] theorem subst_residualCost {k : ℕ} (σ : Fin n → PTm k) (N : PTm n) :
-    Syn.subst σ (residualCost N) = residualCost (Syn.subst σ N) := by simp [residualCost]
+ipra_subst residualCost
 
 def prefixAxis (a b N : PTm n) : Fm PTm n := axis (positiveSum a b N)
-@[simp] theorem subst_prefixAxis {k : ℕ} (σ : Fin n → PTm k) (a b N : PTm n) :
-    (prefixAxis a b N).subst σ = prefixAxis (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [prefixAxis]
+ipra_subst prefixAxis
 
 theorem prefix_axis (a b N : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
     Γ ⊢[PRAAx] prefixAxis a b N := by

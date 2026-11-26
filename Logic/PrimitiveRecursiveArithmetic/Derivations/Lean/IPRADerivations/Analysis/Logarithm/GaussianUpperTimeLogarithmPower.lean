@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Logarithm.GaussianUpperTimeLogarithmBound
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual integer logarithmic powers above time one
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianUpperTimeLogarithmPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (source sample logF name_regular)
 open GaussianRationalReciprocal (power bound_congr bounded_power)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -24,9 +23,6 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -40,18 +36,12 @@ def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (j a b : PTm n) : PTm n := GaussianFastValueCut.nameData (gain j a) (inputData j a b)
 def clock (p j a : PTm n) : PTm n := exponent (gain j a) p
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (j a : PTm n) :
-    Syn.subst σ (gain j a) = gain (Syn.subst σ j) (Syn.subst σ a) := by simp [gain]
-@[simp] theorem subst_rawPower {m : ℕ} (σ : Fin n → PTm m) (p j a b : PTm n) :
-    Syn.subst σ (rawPower p j a b) = rawPower (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ a) (Syn.subst σ b) := by simp [rawPower]
-@[simp] theorem subst_rawTerm {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
-    Syn.subst σ (rawTerm p x) = rawTerm (Syn.subst σ p) (Syn.subst σ x) := by simp [rawTerm]
-@[simp] theorem subst_inputData {m : ℕ} (σ : Fin n → PTm m) (j a b : PTm n) :
-    Syn.subst σ (inputData j a b) = inputData (Syn.subst σ j) (Syn.subst σ a) (Syn.subst σ b) := by simp [inputData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (j a b : PTm n) :
-    Syn.subst σ (data j a b) = data (Syn.subst σ j) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p j a : PTm n) :
-    Syn.subst σ (clock p j a) = clock (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ a) := by simp [clock]
+ipra_subst gain
+ipra_subst rawPower
+ipra_subst rawTerm
+ipra_subst inputData
+ipra_subst data
+ipra_subst clock
 
 theorem raw_at (p j a b : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (inputData j a b) ≐ rawPower p j a b := by
   have first : Γ ⊢[PRAAx] ap2 rawF p (inputData j a b) ≐ rawTerm p (inputData j a b) :=
@@ -59,8 +49,8 @@ theorem raw_at (p j a b : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (inputData j a b) �
   apply first.eqTrans
   ipra_congr (rawPower (var 0) (var 1) (var 2) (var 3) : PTm 4) with
     [.eqRefl p, (show _ ⊢[PRAAx] fstT (inputData j a b) ≐ j from fst_pair _ _),
-      (show _ ⊢[PRAAx] fstT (sndT (inputData j a b)) ≐ a from (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
-      (show _ ⊢[PRAAx] sndT (sndT (inputData j a b)) ≐ b from (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))] using [rawTerm]
+      (show _ ⊢[PRAAx] fstT (sndT (inputData j a b)) ≐ a from (snd_pair _ _).fstE),
+      (show _ ⊢[PRAAx] sndT (sndT (inputData j a b)) ≐ b from (snd_pair _ _).sndE)] using [rawTerm]
 
 theorem original_uniform_bound (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hba : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]
     bounded (sample p a b) (a+one) one :=

@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerCompactExhaustion (denominator)
 open GaussianFastValueCut (exponent query_budget)
@@ -30,10 +30,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -52,20 +48,9 @@ def source (N p z R B A a C E T G M : PTm n) : Fm PTm n :=
     rowSource (Syn.shift N) (Syn.shift p) (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift A)
       (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift T) (Syn.shift G) (Syn.shift M) (var 0))
 
-@[simp] theorem subst_rowSource {m : ℕ} (σ : Fin n → PTm m) (N p z R B A a C E T G M i : PTm n) :
-    (rowSource N p z R B A a C E T G M i).subst σ =
-      rowSource (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-        (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T)
-        (Syn.subst σ G) (Syn.subst σ M) (Syn.subst σ i) := by
-  simp [rowSource,cutoff,rowClock,gain,gridCount,GaussianEulerCompactExhaustion.budget,
-    GaussianEulerPositiveScalingConstant.inverseBound,one]
+ipra_subst rowSource [cutoff, rowClock, gain, gridCount, GaussianEulerCompactExhaustion.budget, GaussianEulerPositiveScalingConstant.inverseBound, one]
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (N p z R B A a C E T G M : PTm n) :
-    (source N p z R B A a C E T G M).subst σ =
-      source (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-        (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T)
-        (Syn.subst σ G) (Syn.subst σ M) := by
-  simp [source,Syn.subst_shift,Syn.shift_subst]
+ipra_subst source [Syn.subst_shift, Syn.shift_subst]
 
 def rowNumerator (s k G : PTm n) : PTm n := G*unit s+num 8*denominator k
 def rowDenominator (s k : PTm n) : PTm n := denominator k*unit s

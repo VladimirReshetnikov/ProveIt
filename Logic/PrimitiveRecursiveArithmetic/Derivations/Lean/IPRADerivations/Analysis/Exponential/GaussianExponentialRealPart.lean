@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianExponentialRealPart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul represents canonical_unique represents_congr positive_product)
 open GaussianRationalConjugation (point)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
@@ -34,15 +34,11 @@ open GaussianRationalReciprocal (conjugate re_conjugate im_conjugate)
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiplyModulus)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def projection (q : PTm n) : PTm n := embed (fstT q)
-@[simp] theorem subst_projection {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (projection q) = projection (Syn.subst σ q) := by simp [projection]
+ipra_subst projection
 
 theorem projection_represents (q a E : PTm n) (h : Γ ⊢[PRAAx] represents q a E) : Γ ⊢[PRAAx]
     represents (projection q) (native (re a)) E :=
@@ -109,12 +105,9 @@ def squareData (f : PR 2) (x : PTm n) : PTm n :=
 def squarePrecision (f : PR 2) (p x : PTm n) : PTm n :=
   GaussianFastValueCut.exponent (multiplyModulus f (GaussianNameConjugation.nameF f) x x) p
 
-@[simp] theorem subst_doubleRealData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (doubleRealData x) = doubleRealData (Syn.subst σ x) := by simp [doubleRealData]
-@[simp] theorem subst_squareData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (squareData f x) = squareData f (Syn.subst σ x) := by simp [squareData]
-@[simp] theorem subst_squarePrecision {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (squarePrecision f p x) = squarePrecision f (Syn.subst σ p) (Syn.subst σ x) := by simp [squarePrecision]
+ipra_subst doubleRealData
+ipra_subst squareData
+ipra_subst squarePrecision
 
 theorem double_real_sample (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx]
     ap2 (doubleRealF f) p (doubleRealData x) ≐

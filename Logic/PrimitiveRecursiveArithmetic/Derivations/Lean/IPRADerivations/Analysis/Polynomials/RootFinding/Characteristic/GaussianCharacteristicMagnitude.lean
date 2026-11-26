@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCharacteristicMagnitude
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalCharacteristicPolynomial (characteristicTable polynomial coefficient polynomial_length)
 open GaussianCharacteristicFactorBounds (entryBounds)
 open GaussianCoefficientL1 (coefficientNorm)
@@ -25,18 +25,13 @@ open GaussianRationalSyntheticBounds (natCode natCode_multiply natCode_congr)
 open LeanProofs.IPRA.Foundations.RuntimePermutationFactorialBound (factorial)
 open RationalArgmin (rationalLE rationalLE_congr)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def magnitude (N B : PTm n) : PTm n := pw two N*factorial N*pw (B+one) N
 def input (A N B : PTm n) : Fm PTm n := GaussianRationalRowElimination.shape A N N ⋏ entryBounds A N B
-@[simp] theorem subst_magnitude {l : ℕ} (σ : Fin n → PTm l) (N B : PTm n) :
-    Syn.subst σ (magnitude N B) = magnitude (Syn.subst σ N) (Syn.subst σ B) := by simp [magnitude]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (A N B : PTm n) :
-    (input A N B).subst σ = input (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ B) := by simp [input]
+ipra_subst magnitude
+ipra_subst input
 
 theorem word_factor_bounds (A N B w : PTm n) (h : Γ ⊢[PRAAx] entryBounds A N B) : Γ ⊢[PRAAx]
     GaussianPolynomialDeterminantStageNorm.factorBounds (characteristicTable A N) N w (two*(B+one)) := by

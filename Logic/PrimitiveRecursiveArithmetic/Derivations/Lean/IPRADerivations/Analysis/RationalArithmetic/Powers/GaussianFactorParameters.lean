@@ -19,16 +19,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFactorParameters
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticBounds (coefficientBounds natCode)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,20 +40,11 @@ def roots (step : PR 3) (C N p q j : PTm n) : PTm n :=
 def run (step : PR 3) (C N p q : PTm n) : PTm n :=
   GaussianRationalDeflation.run step C N p (toleranceDenominator C N q)
 
-@[simp] theorem subst_initialA {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (initialA C) = initialA (Syn.subst σ C) := by simp [initialA]
-@[simp] theorem subst_toleranceDenominator {m : ℕ} (σ : Fin n → PTm m) (C N q : PTm n) :
-    Syn.subst σ (toleranceDenominator C N q) = toleranceDenominator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ q) := by
-  simp [toleranceDenominator]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q j : PTm n) :
-    Syn.subst σ (polynomial step C N p q j) = polynomial step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by simp [polynomial]
-@[simp] theorem subst_rootAt {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q j : PTm n) :
-    Syn.subst σ (rootAt step C N p q j) = rootAt step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by simp [rootAt]
-@[simp] theorem subst_roots {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q j : PTm n) :
-    Syn.subst σ (roots step C N p q j) = roots step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by simp [roots]
+ipra_subst initialA
+ipra_subst toleranceDenominator
+ipra_subst polynomial
+ipra_subst rootAt
+ipra_subst roots
 @[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q : PTm n) :
     Syn.subst σ (run step C N p q) = run step (Syn.subst σ C) (Syn.subst σ N)
       (Syn.subst σ p) (Syn.subst σ q) := by

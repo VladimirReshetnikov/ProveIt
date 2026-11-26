@@ -2,8 +2,6 @@ import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDetermi
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialColumnAlternation
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianDeterminantSignTransport
 import IPRADerivations.Foundations.RuntimeWordSorting
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual scalar column selection by numerical words
@@ -21,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarColumnSelection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul canonical canonical_unique represents_congr evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -35,9 +33,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalFiberVandermonde (table table_look
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,16 +46,11 @@ def signedSelection (A m w : PTm n) : PTm n := qmul (signPoint m w) (selectedDet
 def expected (A m w : PTm n) : PTm n := Foundations.GuardedTotalization.sel
   (Foundations.RuntimePermutationWords.permutationBit m w)
   (qmul (signPoint m w) (GaussianScalarDeterminant.scalarDet A m)) qzero
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (data A m w) = data (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [data]
-@[simp] theorem subst_columns {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (columns A m w) = columns (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [columns]
-@[simp] theorem subst_selectedDet {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (selectedDet A m w) = selectedDet (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [selectedDet]
-@[simp] theorem subst_signedSelection {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (signedSelection A m w) = signedSelection (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [signedSelection]
-@[simp] theorem subst_expected {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (expected A m w) = expected (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [expected,Foundations.GuardedTotalization.sel]
+ipra_subst data
+ipra_subst columns
+ipra_subst selectedDet
+ipra_subst signedSelection
+ipra_subst expected [Foundations.GuardedTotalization.sel]
 
 theorem cell_congr {A B r s i j : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
     (hr : Γ ⊢[PRAAx] r ≐ s) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx] cell A r i ≐ cell B s j :=
@@ -84,8 +74,8 @@ theorem columns_lookup (A m w r i : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hi : Γ 
       (Foundations.RuntimePermutationWords.digit (fstT (sndT (data A m w))) (sndT (sndT (data A m w))) i) := by
     simpa [columns,columnBody] using table_lookup columnBody m m (data A m w) r i hr hi
   exact e.eqTrans (cell_congr (fst_pair _ _) (.eqRefl _)
-    (Foundations.RuntimeAdjacentPermutationSwap.digit_congr ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-      ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)))
+    (Foundations.RuntimeAdjacentPermutationSwap.digit_congr (snd_pair _ _).fstE
+      (snd_pair _ _).sndE (.eqRefl _)))
 theorem selected_canonical (A m w : PTm n) : Γ ⊢[PRAAx] canonical (selectedDet A m w) :=
   GaussianScalarDeterminant.scalar_det_canonical _ _
 
@@ -188,9 +178,7 @@ theorem selection_swap (A m w j : PTm n) (hj : Γ ⊢[PRAAx] lt (succ j) m) : Γ
 def adjacentColumnsEqual (A m j : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ GaussianRationalValueEquality.valueEqual
     (cell (Syn.shift A) (var 0) (Syn.shift j)) (cell (Syn.shift A) (var 0) (succ (Syn.shift j))))
-@[simp] theorem subst_adjacentColumnsEqual {l : ℕ} (σ : Fin n → PTm l) (A m j : PTm n) :
-    (adjacentColumnsEqual A m j).subst σ = adjacentColumnsEqual (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ j) := by
-  simp [adjacentColumnsEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst adjacentColumnsEqual [Syn.subst_shift, Syn.shift_subst]
 theorem adjacent_columns_at (A m j r : PTm n) (h : Γ ⊢[PRAAx] adjacentColumnsEqual A m j)
     (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx] GaussianRationalValueEquality.valueEqual (cell A r j) (cell A r (succ j)) := by
   have rule := h.allE r
@@ -285,13 +273,10 @@ theorem identity_row_zero (m i t : PTm n) (ht : Γ ⊢[PRAAx] le t m) : Γ ⊢[P
     Foundations.RuntimePermutationWords.rowPrefix m (Foundations.RuntimeWordSorting.identityCode m) i t ≐ zero := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift m) ⟶
       Foundations.RuntimePermutationWords.rowPrefix (Syn.shift m) (Foundations.RuntimeWordSorting.identityCode (Syn.shift m)) (Syn.shift i) (var 0) ≐ zero) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,Foundations.RuntimePermutationWords.subst_rowPrefix,
-        Foundations.RuntimeWordSorting.subst_identityCode,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (Foundations.RuntimePermutationWords.row_zero _ _ _)
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,Foundations.RuntimePermutationWords.subst_rowPrefix,
-        Foundations.RuntimeWordSorting.subst_identityCode,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_le, Foundations.RuntimePermutationWords.subst_rowPrefix,
+        Foundations.RuntimeWordSorting.subst_identityCode]
+    · exact .impI (Foundations.RuntimePermutationWords.row_zero _ _ _)
+    · refine .impI ?_
       exact (Foundations.RuntimePermutationWords.row_succ _ _ _ _).eqTrans
         ((congrAdd (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)) (identity_inversion_bit _ _ _ Prf.hyp0)).eqTrans (add_zero _))
   have rule : Γ ⊢[PRAAx] le t m ⟶ Foundations.RuntimePermutationWords.rowPrefix m (Foundations.RuntimeWordSorting.identityCode m) i t ≐ zero := by
@@ -303,13 +288,10 @@ theorem identity_prefix_zero (m t : PTm n) : Γ ⊢[PRAAx]
     Foundations.RuntimePermutationWords.inversionPrefix m (Foundations.RuntimeWordSorting.identityCode m) t ≐ zero := by
   have all : Γ ⊢[PRAAx] .all (Foundations.RuntimePermutationWords.inversionPrefix (Syn.shift m)
       (Foundations.RuntimeWordSorting.identityCode (Syn.shift m)) (var 0) ≐ zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,Foundations.RuntimePermutationWords.subst_inversionPrefix,Foundations.RuntimeWordSorting.subst_identityCode,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact Foundations.RuntimePermutationWords.inversion_prefix_zero _ _
-    · simp only [Fm.subst_eq,Foundations.RuntimePermutationWords.subst_inversionPrefix,Foundations.RuntimeWordSorting.subst_identityCode,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (Foundations.RuntimePermutationWords.inversion_prefix_succ _ _ _).eqTrans
+    ipra_qfind [Foundations.RuntimePermutationWords.subst_inversionPrefix,
+        Foundations.RuntimeWordSorting.subst_identityCode]
+    · exact Foundations.RuntimePermutationWords.inversion_prefix_zero _ _
+    · exact (Foundations.RuntimePermutationWords.inversion_prefix_succ _ _ _).eqTrans
         ((congrAdd Prf.hyp0 (identity_row_zero _ _ _ (le_refl _))).eqTrans (add_zero _))
   simpa only [Fm.subst_eq,Foundations.RuntimePermutationWords.subst_inversionPrefix,Foundations.RuntimeWordSorting.subst_identityCode,
     ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
@@ -360,11 +342,9 @@ theorem trajectory_invariant (A m w t : PTm n) : Γ ⊢[PRAAx]
   have all : Γ ⊢[PRAAx] .all
       (signedSelection (Syn.shift A) (Syn.shift m) (Foundations.RuntimeWordSorting.state (Syn.shift m) (Syn.shift w) (var 0)) ≐
         signedSelection (Syn.shift A) (Syn.shift m) (Syn.shift w)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_signedSelection,Foundations.RuntimeWordSorting.subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact signed_selection_congr (.eqRefl _) (.eqRefl _) (Foundations.RuntimeWordSorting.state_zero _ _)
-    · simp only [Fm.subst_eq,subst_signedSelection,Foundations.RuntimeWordSorting.subst_state,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (signed_selection_congr (.eqRefl _) (.eqRefl _) (Foundations.RuntimeWordSorting.state_succ _ _ _)).eqTrans
+    ipra_qfind [subst_signedSelection, Foundations.RuntimeWordSorting.subst_state]
+    · exact signed_selection_congr (.eqRefl _) (.eqRefl _) (Foundations.RuntimeWordSorting.state_zero _ _)
+    · exact (signed_selection_congr (.eqRefl _) (.eqRefl _) (Foundations.RuntimeWordSorting.state_succ _ _ _)).eqTrans
         ((step_signed_selection _ _ _).eqTrans Prf.hyp0)
   simpa only [Fm.subst_eq,subst_signedSelection,Foundations.RuntimeWordSorting.subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 
@@ -405,29 +385,27 @@ def output (A m w : PTm n) : PTm n := pairT (columns A m w)
       (pairT (Foundations.RuntimeWordSorting.run m w) (expected A m w))))))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (A m w : PTm n) : PTm n := ap3 outputF A m w
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (output A m w) = output (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A m w : PTm n) :
-    Syn.subst σ (run A m w) = run (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ w) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (A m w : PTm n) : Γ ⊢[PRAAx] run A m w ≐ output A m w := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2)) ![A,m,w]
 theorem returned_columns (A m w : PTm n) : Γ ⊢[PRAAx] fstT (run A m w) ≐ columns A m w :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_selection (A m w : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A m w)) ≐ selectedDet A m w :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_original (A m w : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run A m w))) ≐ GaussianScalarDeterminant.scalarDet A m :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.sndE.fstE
 theorem returned_sign (A m w : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run A m w)))) ≐ signPoint m w :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.sndE.sndE.fstE
 theorem returned_checker (A m w : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (sndT (run A m w))))) ≐ Foundations.RuntimePermutationWords.permutationBit m w :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.sndE.sndE.sndE.fstE
 theorem returned_sorting (A m w : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (sndT (sndT (run A m w)))))) ≐ Foundations.RuntimeWordSorting.run m w :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.sndE.sndE.sndE.sndE.fstE
 theorem returned_expected (A m w : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (sndT (sndT (run A m w)))))) ≐ expected A m w :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE.sndE.sndE.sndE.sndE
 theorem returned_normal_form (A m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (Foundations.RuntimePermutationWords.horizon m)) : Γ ⊢[PRAAx]
     fstT (sndT (run A m w)) ≐ sndT (sndT (sndT (sndT (sndT (sndT (run A m w)))))) :=
   (returned_selection _ _ _).eqTrans ((selection_normal_form _ _ _ hw).eqTrans (returned_expected _ _ _).eqSymm)

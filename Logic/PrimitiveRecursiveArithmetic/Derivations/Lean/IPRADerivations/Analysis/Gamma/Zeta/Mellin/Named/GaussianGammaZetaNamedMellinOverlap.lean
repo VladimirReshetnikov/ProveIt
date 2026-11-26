@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaNamedMellinOverlap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedShiftInput (shiftF shiftData)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaZetaNamedChart (dirichletMap)
@@ -21,8 +21,6 @@ open GaussianGammaZetaNamedInput (source minusOneF minusOneData radius)
 open GaussianGammaZetaNamedMellin (mellinF zetaF inputData original_named_Mellin_formula)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNamedRightHalfPlane (marginPoint)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

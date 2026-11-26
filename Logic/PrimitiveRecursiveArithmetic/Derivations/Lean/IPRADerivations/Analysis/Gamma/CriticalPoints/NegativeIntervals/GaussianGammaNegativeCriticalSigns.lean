@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalSigns
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaDigammaCriticalSigns (quarter negativeQuarter)
 open GaussianGammaDigammaDyadicMesh (clock grid grid_threshold)
@@ -39,10 +39,6 @@ open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
 open RationalArithmetic (represents)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -54,10 +50,8 @@ local notation "corr" => GaussianGammaNegativeCriticalCorrection.correction
 def leftData (N : PTm n) : PTm n := nameData one (mesh N) N
 def rightData (N : PTm n) : PTm n := nameData (rightNumerator N) (mesh N) N
 
-@[simp] theorem subst_leftData {k : ℕ} (σ : Fin n → PTm k) (N : PTm n) :
-    Syn.subst σ (leftData N) = leftData (Syn.subst σ N) := by simp [leftData]
-@[simp] theorem subst_rightData {k : ℕ} (σ : Fin n → PTm k) (N : PTm n) :
-    Syn.subst σ (rightData N) = rightData (Syn.subst σ N) := by simp [rightData]
+ipra_subst leftData
+ipra_subst rightData
 
 private theorem negative_order (a b : PTm n)
     (h : Γ ⊢[PRAAx] rationalLE (fstT a) (fstT b)) :

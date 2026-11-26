@@ -15,7 +15,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceNamed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetFirstFormulaDecay (laplaceData subst_laplaceData)
 open GaussianBinetStirlingRemainderRate (subst_gain)
 open GaussianCoefficientNameBounds (unit)
@@ -24,9 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm)
 open GaussianNamedInverseRate (independentRate subst_independentRate)
 open GaussianNamedRightHalfPlaneSigned (certificate denominator imagNumerator point realNumerator sign)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "J" => GaussianBinetLaplaceImproperName.nameF
@@ -38,8 +35,7 @@ def pointData (z : PTm n) : PTm n :=
 def rationalData : PR 1 := PTm.toPR (pointData (var 0) : PTm 1)
 def gain : PR 2 := PTm.toPR (G (var 0) (var 1) : PTm 2)
 
-@[simp] theorem subst_pointData {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (pointData z) = pointData (Syn.subst σ z) := by simp [pointData]
+ipra_subst pointData
 
 theorem rational_data_at (z : PTm n) : Γ ⊢[PRAAx] ap1 rationalData z ≐ pointData z := by
   simpa only [rationalData,ap1,subst_pointData,Syn.subst_var,Matrix.cons_val_zero] using

@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalCriticalQuotientZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent query_budget)
@@ -31,10 +31,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -51,28 +47,13 @@ def value (p N : PTm n) : PTm n :=
   ap2 quotientF (succ (stage p)) (quotientData (argumentNumerator p N) (argumentDenominator p N) N (step p N))
 def nameF : PR 2 := PTm.toPR (value (var 0) (var 1))
 
-@[simp] theorem subst_stage {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) :
-    Syn.subst σ (stage p) = stage (Syn.subst σ p) := by simp [stage]
-@[simp] theorem subst_locationClock {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (locationClock p N) = locationClock (Syn.subst σ p) (Syn.subst σ N) := by simp [locationClock]
-@[simp] theorem subst_argumentNumerator {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (argumentNumerator p N) = argumentNumerator (Syn.subst σ p) (Syn.subst σ N) := by simp [argumentNumerator]
-@[simp] theorem subst_argumentDenominator {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (argumentDenominator p N) = argumentDenominator (Syn.subst σ p) (Syn.subst σ N) := by simp [argumentDenominator]
-@[simp] theorem subst_demand {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (demand p N) = demand (Syn.subst σ p) (Syn.subst σ N) := by
-  simp [demand,cost,GaussianGammaNegativeIntervalDerivativeRate.cost,
-    GaussianGammaNegativeIntervalDerivativeRate.firstCost,GaussianGammaNegativeIntervalDerivativeRate.secondCost,
-    GaussianGammaNegativeIntervalDerivativeRate.eulerCap,GaussianGammaNegativeIntervalInverseStepCoefficient.inverseCap,
-    GaussianGammaNegativeIntervalDerivativeTarget.reciprocalData,GaussianGammaNegativeIntervalNative.argument,
-    GaussianNameRingLaws.three]
-@[simp] theorem subst_step {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (step p N) = step (Syn.subst σ p) (Syn.subst σ N) := by simp [step,minimumDenominator]
-@[simp] theorem subst_value {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (value p N) = value (Syn.subst σ p) (Syn.subst σ N) := by
-  simp [value,quotientData,GaussianGammaNegativeIntervalStep.data,GaussianGammaNegativeIntervalStep.denominator,
-    GaussianGammaDigammaStep.neighborNumerator,GaussianGammaNegativeIntervalDerivativeTarget.reciprocalData,
-    GaussianGammaNegativeIntervalNative.data,GaussianGammaNegativeIntervalNative.argument]
+ipra_subst stage
+ipra_subst locationClock
+ipra_subst argumentNumerator
+ipra_subst argumentDenominator
+ipra_subst demand [cost, GaussianGammaNegativeIntervalDerivativeRate.cost, GaussianGammaNegativeIntervalDerivativeRate.firstCost, GaussianGammaNegativeIntervalDerivativeRate.secondCost, GaussianGammaNegativeIntervalDerivativeRate.eulerCap, GaussianGammaNegativeIntervalInverseStepCoefficient.inverseCap, GaussianGammaNegativeIntervalDerivativeTarget.reciprocalData, GaussianGammaNegativeIntervalNative.argument, GaussianNameRingLaws.three]
+ipra_subst step [minimumDenominator]
+ipra_subst value [quotientData, GaussianGammaNegativeIntervalStep.data, GaussianGammaNegativeIntervalStep.denominator, GaussianGammaDigammaStep.neighborNumerator, GaussianGammaNegativeIntervalDerivativeTarget.reciprocalData, GaussianGammaNegativeIntervalNative.data, GaussianGammaNegativeIntervalNative.argument]
 
 theorem selected_argument (p N : PTm n) : Γ ⊢[PRAAx] ap2 locationF (locationClock p N) N ≐
     qsub (fraction (argumentNumerator p N) (argumentDenominator p N)) (fraction (succ N) one) :=

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalGaussDenominator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDeflatedFactor (translatedValue)
 open GaussianBarnesCanonicalPolynomialShift (plain rowF row_at)
 open GaussianBarnesWeightedProductShift (unweighted)
@@ -25,9 +25,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale)
 open Products (fact)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

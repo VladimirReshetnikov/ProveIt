@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Dirichlet
 import IPRADerivations.Topology.DimensionTwo
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The dimension obstruction for tables in an arbitrary unit (`thm:finite`, `d = 2`, `h = 2M`)
@@ -32,16 +30,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.DimensionUnits
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet (quo_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.Topology.Sperner2D
 open LeanProofs.IPRA.Topology.StaggeredCells
 open LeanProofs.IPRA.Topology.DimensionTwo
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

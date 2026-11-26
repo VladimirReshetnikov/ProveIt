@@ -1,5 +1,4 @@
 import IPRADerivations.Core.ParityArith
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Two staggered grids of cells (`dimension_invariance_ipra`, `lem:cells` for two grids)
@@ -28,11 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.StaggeredCells
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

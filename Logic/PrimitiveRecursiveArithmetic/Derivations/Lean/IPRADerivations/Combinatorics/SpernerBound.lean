@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.FisherInequality
 import IPRADerivations.Combinatorics.DoubleCounting
 import Mathlib.Data.Nat.Choose.Basic
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # From the LYM inequality to Sperner's bound, and the Erdős–Ko–Rado cancellation
@@ -30,11 +29,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.SpernerBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.FisherInequality (znn_of_pos_mul)
 open LeanProofs.IPRA.Combinatorics.DoubleCounting (weighted_count_le)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

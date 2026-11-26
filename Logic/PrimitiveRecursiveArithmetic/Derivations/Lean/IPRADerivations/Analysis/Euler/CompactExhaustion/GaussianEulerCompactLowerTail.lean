@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactLowerTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerTailRootGrid (rootDenominator rootNumerator timeNumerator timeDenominator)
 open GaussianEulerLowerTailPartition (cutF cutData offset offset_at panelWidth totalWidth root_right_guard
   uniform_panel_width grouped_original_quadrature)
@@ -29,9 +29,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -69,22 +66,10 @@ private theorem subst_rootNumerator {m : ℕ} (σ : Fin n → PTm m) (i N p q : 
 
 attribute [local simp] subst_timeNumerator subst_timeDenominator subst_rootDenominator subst_rootNumerator
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B N p q k L : PTm n) :
-    (source z R B N p q k L).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ L) :=
-  by simp [source,totalWidth]
-@[simp] theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (s z R B N p q k : PTm n) :
-    Syn.subst σ (gridData s z R B N p q k) = gridData (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) :=
-  by simp [gridData,totalWidth]
-@[simp] theorem subst_weightedPoint {m : ℕ} (σ : Fin n → PTm m) (N p q k R : PTm n) :
-    Syn.subst σ (weightedPoint N p q k R) =
-      weightedPoint (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) :=
-  by simp [weightedPoint,totalWidth]
-@[simp] theorem subst_panelData {m : ℕ} (σ : Fin n → PTm m) (s z R B N p q k : PTm n) :
-    Syn.subst σ (panelData s z R B N p q k) = panelData (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) :=
-  by simp [panelData]
+ipra_subst source [totalWidth]
+ipra_subst gridData [totalWidth]
+ipra_subst weightedPoint [totalWidth]
+ipra_subst panelData
 
 theorem literal_weight (N p q k R : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hW : Γ ⊢[PRAAx] le one (totalWidth N p q (succ k))) : Γ ⊢[PRAAx]

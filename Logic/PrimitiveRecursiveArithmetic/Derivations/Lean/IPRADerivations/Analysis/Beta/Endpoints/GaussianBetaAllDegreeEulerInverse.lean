@@ -17,16 +17,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeEulerInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (qF qData q_regular)
 open GaussianBetaUpperEndpointName (name_regular)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (bounded)
 open GaussianExponentialSmallPerturbation (smallSamples)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,10 +37,8 @@ def data (z B N : PTm n) : PTm n := GaussianNameReciprocal.nameData (height z B 
 def source (z R B A N : PTm n) : Fm PTm n := GaussianEulerLowerPowerCoefficients.source z R B A ⋏ le one N
 def query (p z B N : PTm n) : PTm n := GaussianFastValueCut.exponent (GaussianNameReciprocal.modulus (height z B N)) p+
   GaussianNameReciprocal.anchor (height z B N)
-@[simp] theorem subst_endpointData {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (endpointData z B N) = endpointData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [endpointData,one]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (radius z B N) = radius (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [radius]
+ipra_subst endpointData [one]
+ipra_subst radius
 @[simp] theorem subst_original_head {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
     Syn.subst σ (GaussianGammaEulerHead.run z B N) =
       GaussianGammaEulerHead.run (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
@@ -52,19 +47,11 @@ def query (p z B N : PTm n) : PTm n := GaussianFastValueCut.exponent (GaussianNa
   congr 1
   funext i
   fin_cases i <;> rfl
-@[simp] theorem subst_height {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (height z B N) = height (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [height,GaussianGammaFiniteApproximantName.qData,GaussianGammaFiniteApproximantName.approximantData,
-    GaussianGammaFiniteApproximantName.exponentialInputData,GaussianGammaFiniteApproximantName.logExponentData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (data z B N) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [data,GaussianGammaFiniteApproximantName.qData,GaussianGammaFiniteApproximantName.approximantData,
-    GaussianGammaFiniteApproximantName.exponentialInputData,GaussianGammaFiniteApproximantName.logExponentData]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A N : PTm n) :
-    (source z R B A N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_query {m : ℕ} (σ : Fin n → PTm m) (p z B N : PTm n) :
-    Syn.subst σ (query p z B N) = query (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [query,GaussianNameReciprocal.modulus,GaussianNameReciprocal.anchor]
+ipra_subst height [GaussianGammaFiniteApproximantName.qData, GaussianGammaFiniteApproximantName.approximantData,
+    GaussianGammaFiniteApproximantName.exponentialInputData, GaussianGammaFiniteApproximantName.logExponentData]
+ipra_subst data [GaussianGammaFiniteApproximantName.qData, GaussianGammaFiniteApproximantName.approximantData, GaussianGammaFiniteApproximantName.exponentialInputData, GaussianGammaFiniteApproximantName.logExponentData]
+ipra_subst source
+ipra_subst query [GaussianNameReciprocal.modulus, GaussianNameReciprocal.anchor]
 
 theorem endpoint_regular (z R B A N : PTm n) (h : Γ ⊢[PRAAx] source z R B A N) : Γ ⊢[PRAAx]
     pointCN endpointF (endpointData z B N) := name_regular z B one N h.andE₁.andE₂.andE₁.andE₁ (le_refl one) h.andE₂

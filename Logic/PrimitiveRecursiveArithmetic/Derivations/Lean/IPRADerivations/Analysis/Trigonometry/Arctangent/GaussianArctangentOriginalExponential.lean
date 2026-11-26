@@ -15,7 +15,7 @@ set_option maxRecDepth 2048
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentOriginalExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyBudget (mesh_two mesh_budget)
 open GaussianArctangentCayleyExponentialStep (sample)
 open GaussianArctangentCayleyTelescope (error denominator endpoint_distance denominator_positive)
@@ -33,9 +33,6 @@ open GaussianRadiusExponentialName (input nameF data)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (qone)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,7 +1,4 @@
 import IPRADerivations.Analysis.Names.Aggregation.AggregateChain
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Independent-denominator scalar rational error budgets
@@ -18,16 +15,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalValueBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric
 open LeanProofs.IPRA.Foundations.GapDecision
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of ad_mul le_add_ad)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,19 +36,11 @@ def upper (a b A B : PTm n) : Fm PTm n :=
 def radius (a b A B : PTm n) : Fm PTm n :=
   le (B * zabs (cross a b)) (A * denominatorOf a * denominatorOf b)
 
-@[simp] theorem subst_crossLeft {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (crossLeft a b) = crossLeft (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [crossLeft, numeratorOf, ZT.subst]
+ipra_subst crossLeft [numeratorOf, ZT.subst]
 
-@[simp] theorem subst_cross {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (cross a b).subst σ = cross (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [cross, ZT.subst_sub, ZT.subst_mul, subst_numeratorOf, ZT.subst_ofNat,
-    subst_denominatorOf]
+ipra_subst cross
 
-@[simp] theorem subst_upper {m : ℕ} (σ : Fin n → PTm m) (a b A B : PTm n) :
-    (upper a b A B).subst σ = upper (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [upper, subst_le, PTm.subst_mul, PTm.subst_add, subst_crossLeft, subst_denominatorOf]
+ipra_subst upper
 
 @[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (a b A B : PTm n) :
     (radius a b A B).subst σ = radius (Syn.subst σ a) (Syn.subst σ b)
@@ -196,14 +181,12 @@ theorem radius_cancel (a b A B c : PTm n) (hc : Γ ⊢[PRAAx] le one c)
 def negate (a : PTm n) : PTm n :=
   pairT (pairT (numeratorOf a).neg (numeratorOf a).pos) (sndT a)
 
-@[simp] theorem subst_negate {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (negate a) = negate (Syn.subst σ a) := by
-  simp [negate, numeratorOf, ZT.subst]
+ipra_subst negate [numeratorOf, ZT.subst]
 
 theorem negate_pos (a : PTm n) : Γ ⊢[PRAAx] (numeratorOf (negate a)).pos ≐ (numeratorOf a).neg :=
-  (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
+  (fst_pair _ _).fstE
 theorem negate_neg (a : PTm n) : Γ ⊢[PRAAx] (numeratorOf (negate a)).neg ≐ (numeratorOf a).pos :=
-  (congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _)
+  (fst_pair _ _).sndE
 theorem negate_denominator (a : PTm n) : Γ ⊢[PRAAx] denominatorOf (negate a) ≐ denominatorOf a :=
   congrSucc (snd_pair _ _)
 

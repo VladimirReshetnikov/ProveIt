@@ -13,15 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedRealDerivativeDemand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianExponentialSmallPerturbation (smallSamples small_samples_at)
 open GaussianGammaNamedPoleFreeRealAdmission (offsetF offsetData negativeChart)
 open GaussianRationalHorner (positive_product)
 open GaussianRealNameExponentialInjectivity (axisSamples)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,17 +36,11 @@ def negativeModulus (f : PR 2) (p x E : PTm n) : PTm n :=
 def modulus (f : PR 2) (p x E : PTm n) : PTm n :=
   (two*E+positiveModulus f p x E)+negativeModulus f p x E
 
-@[simp] theorem subst_positiveModulus {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E : PTm n) :
-    Syn.subst σ (positiveModulus f p x E) = positiveModulus f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [positiveModulus,two]
+ipra_subst positiveModulus [two]
 
-@[simp] theorem subst_negativeModulus {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E : PTm n) :
-    Syn.subst σ (negativeModulus f p x E) = negativeModulus f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [negativeModulus,two]
+ipra_subst negativeModulus [two]
 
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E : PTm n) :
-    Syn.subst σ (modulus f p x E) = modulus f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [modulus,two]
+ipra_subst modulus [two]
 
 theorem positive_modulus_positive (f : PR 2) (p x E : PTm n) :
     Γ ⊢[PRAAx] le one (positiveModulus f p x E) :=

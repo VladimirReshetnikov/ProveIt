@@ -11,7 +11,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeStirlingGridRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (quadrature sampleBody sampleData sample_body_at)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -26,10 +26,6 @@ open GaussianRationalRiemannRefinement (leftSum constantBody constant_entry cons
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qone)
 open GaussianStirlingOddCoefficients (fraction_equal fraction_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -39,16 +35,11 @@ def cost (N A D : PTm n) : PTm n := num 18+two*((A+D)*N)
 def numerator (p N A D : PTm n) : PTm n := two*D*unit p+cost N A D*A
 def denominator (p A : PTm n) : PTm n := A*unit p
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (N A D : PTm n) :
-    Syn.subst σ (cost N A D) = cost (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ D) := by simp [cost,two,one]
+ipra_subst cost [two, one]
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p N A D : PTm n) :
-    Syn.subst σ (numerator p N A D) =
-      numerator (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [numerator,two,one]
+ipra_subst numerator [two, one]
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p A : PTm n) :
-    Syn.subst σ (denominator p A) = denominator (Syn.subst σ p) (Syn.subst σ A) := by simp [denominator]
+ipra_subst denominator
 
 private theorem unit_constant (p N D w : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] leftSum constantBody N (constantSample p w) D D ≐ constantSample p w := by

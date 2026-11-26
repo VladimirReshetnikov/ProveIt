@@ -14,7 +14,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedExponentialUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetWeightedExponentialGrid (evaluatorF value cell_at)
 open GaussianBinetWeightedExponentialRowRate (gain numerator row_error subst_gain subst_numerator)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -25,19 +25,13 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (cellDistances refinement)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 
 def readBudget (p M T : PTm n) : PTm n := gain T*unit p+(gain T+num 8)*M
 
-@[simp] theorem subst_readBudget {m : ℕ} (σ : Fin n → PTm m) (p M T : PTm n) :
-    Syn.subst σ (readBudget p M T) = readBudget (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ T) := by
-  simp [readBudget]
+ipra_subst readBudget
 
 theorem tag_distance (i R N : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] distanceBounded (fraction i (R*N)) (fraction (quo i R) N) one N := by

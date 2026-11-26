@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalSupMetric
 import IPRADerivations.Foundations.FiniteHausdorffImage
 import IPRADerivations.Foundations.RealizerComposition
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Hausdorff distance of arbitrary finite rational vector lists
@@ -25,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalHausdorff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric
 open LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
@@ -38,21 +36,14 @@ open LeanProofs.IPRA.Foundations.FiniteHausdorffImage
 open LeanProofs.IPRA.Foundations.DemandClosure (maximum_left maximum_right maximum_le)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr subst_zabs)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def pool (S T : PTm n) : PTm n := append S T
 def normalizedBlock (P d offset count : PTm n) : PTm n := slice (normalizedList P d) offset count
 
-@[simp] theorem subst_pool {m : ℕ} (σ : Fin n → PTm m) (S T : PTm n) :
-    Syn.subst σ (pool S T) = pool (Syn.subst σ S) (Syn.subst σ T) := by simp [pool]
-@[simp] theorem subst_normalizedBlock {m : ℕ} (σ : Fin n → PTm m) (P d offset count : PTm n) :
-    Syn.subst σ (normalizedBlock P d offset count) = normalizedBlock
-      (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ offset) (Syn.subst σ count) := by simp [normalizedBlock]
+ipra_subst pool
+ipra_subst normalizedBlock
 
 theorem normalizedBlock_length (P d offset count : PTm n) :
     Γ ⊢[PRAAx] length (normalizedBlock P d offset count) ≐ count := slice_length _ _ _
@@ -80,12 +71,9 @@ def parameter (S T d : PTm n) : PTm n := metricData (pool S T) d
     Syn.subst σ (source s S T) = source s (Syn.subst σ S) (Syn.subst σ T) := by cases s <;> rfl
 @[simp] theorem subst_offset {m : ℕ} (σ : Fin n → PTm m) (s : Side) (S T : PTm n) :
     Syn.subst σ (offset s S T) = offset s (Syn.subst σ S) (Syn.subst σ T) := by cases s <;> simp [offset]
-@[simp] theorem subst_grid {m : ℕ} (σ : Fin n → PTm m) (s : Side) (S T d : PTm n) :
-    Syn.subst σ (grid s S T d) = grid s (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by simp [grid]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (S T d : PTm n) :
-    Syn.subst σ (denominator S T d) = denominator (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by simp [denominator]
-@[simp] theorem subst_parameter {m : ℕ} (σ : Fin n → PTm m) (S T d : PTm n) :
-    Syn.subst σ (parameter S T d) = parameter (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by simp [parameter]
+ipra_subst grid
+ipra_subst denominator
+ipra_subst parameter
 
 theorem grid_length (s : Side) (S T d : PTm n) : Γ ⊢[PRAAx] length (grid s S T d) ≐ length (source s S T) :=
   normalizedBlock_length _ _ _ _
@@ -150,12 +138,8 @@ def crossNumerator (x y k : PTm n) : ZT n :=
     rationalNumerator y k * ZT.ofNat (rationalDenominator x k)
 def denominatorProduct (x y k : PTm n) : PTm n := rationalDenominator x k * rationalDenominator y k
 
-@[simp] theorem subst_crossNumerator {m : ℕ} (σ : Fin n → PTm m) (x y k : PTm n) :
-    (crossNumerator x y k).subst σ = crossNumerator (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ k) := by
-  simp [crossNumerator]
-@[simp] theorem subst_denominatorProduct {m : ℕ} (σ : Fin n → PTm m) (x y k : PTm n) :
-    Syn.subst σ (denominatorProduct x y k) = denominatorProduct (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ k) := by
-  simp [denominatorProduct]
+ipra_subst crossNumerator
+ipra_subst denominatorProduct
 
 theorem grid_difference (s t : Side) (S T d i j k : PTm n)
     (hi : Γ ⊢[PRAAx] lt i (length (source s S T))) (hj : Γ ⊢[PRAAx] lt j (length (source t S T)))
@@ -207,11 +191,8 @@ def pointRadius (x y d A B : PTm n) : Fm PTm n :=
     (coordinateRadius x y k A B).subst σ = coordinateRadius (Syn.subst σ x) (Syn.subst σ y)
       (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ B) := by
   simp only [coordinateRadius, subst_le, PTm.subst_mul, subst_zabs, subst_crossNumerator, subst_denominatorProduct]
-@[simp] theorem subst_pointRadius {m : ℕ} (σ : Fin n → PTm m) (x y d A B : PTm n) :
-    (pointRadius x y d A B).subst σ = pointRadius (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [pointRadius, Fm.subst_all, Fm.subst_imp, subst_lt, subst_coordinateRadius, Syn.subst_var,
-    Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
+ipra_subst pointRadius [Fm.subst_all, Fm.subst_imp, subst_lt, subst_coordinateRadius, Syn.subst_var, Syn.up_zero,
+    Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem pointRadius_at (x y d A B k : PTm n) (h : Γ ⊢[PRAAx] pointRadius x y d A B) (hk : Γ ⊢[PRAAx] lt k d) :
     Γ ⊢[PRAAx] coordinateRadius x y k A B := by
@@ -336,22 +317,14 @@ def originalCover (s t : Side) (S T d A B : PTm n) : Fm PTm n :=
 def originalClose (S T d A B : PTm n) : Fm PTm n :=
   originalCover .left .right S T d A B ⋏ originalCover .right .left S T d A B
 
-@[simp] theorem subst_originalHit {m : ℕ} (σ : Fin n → PTm m) (s t : Side) (S T d A B i : PTm n) :
-    (originalHit s t S T d A B i).subst σ = originalHit s t (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ i) := by
-  simp only [originalHit, Fm.subst_ex, Fm.subst_and, subst_lt, SequenceComposition.subst_length,
-    subst_source, MasterCertificate.subst_entry, subst_pointRadius, Syn.subst_var, Syn.up_zero, Syn.up_succ,
-    Syn.subst_shift, Syn.shift_subst]
+ipra_subst originalHit [Fm.subst_ex, Fm.subst_and, subst_lt, SequenceComposition.subst_length, subst_source,
+    MasterCertificate.subst_entry, subst_pointRadius, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst]
 
-@[simp] theorem subst_originalCover {m : ℕ} (σ : Fin n → PTm m) (s t : Side) (S T d A B : PTm n) :
-    (originalCover s t S T d A B).subst σ = originalCover s t (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [originalCover, Fm.subst_all, Fm.subst_imp, subst_lt, SequenceComposition.subst_length,
-    subst_source, subst_originalHit, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
+ipra_subst originalCover [Fm.subst_all, Fm.subst_imp, subst_lt, SequenceComposition.subst_length, subst_source,
+    subst_originalHit, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_originalClose {m : ℕ} (σ : Fin n → PTm m) (S T d A B : PTm n) :
-    (originalClose S T d A B).subst σ = originalClose (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ B) := by simp only [originalClose, Fm.subst_and, subst_originalCover]
+ipra_subst originalClose
 
 theorem originalCover_at (s t : Side) (S T d A B i : PTm n)
     (h : Γ ⊢[PRAAx] originalCover s t S T d A B) (hi : Γ ⊢[PRAAx] lt i (length (source s S T))) :
@@ -440,11 +413,8 @@ theorem original_of_directed_bound (s t : Side) (S T d A B : PTm n)
 def numerator (S T d : PTm n) : PTm n := hausdorff metricF (grid .left S T d) (grid .right S T d) (parameter S T d)
 def rationalHausdorff (S T d : PTm n) : PTm n := pairT (numerator S T d) (denominator S T d)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (S T d : PTm n) :
-    Syn.subst σ (numerator S T d) = numerator (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by simp [numerator]
-@[simp] theorem subst_rationalHausdorff {m : ℕ} (σ : Fin n → PTm m) (S T d : PTm n) :
-    Syn.subst σ (rationalHausdorff S T d) = rationalHausdorff (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by
-  simp [rationalHausdorff]
+ipra_subst numerator
+ipra_subst rationalHausdorff
 
 theorem bound_of_original_close (S T d A B : PTm n) (h : Γ ⊢[PRAAx] originalClose S T d A B) :
     Γ ⊢[PRAAx] le (B * numerator S T d) (A * denominator S T d) :=
@@ -503,9 +473,9 @@ theorem code_at (S T d : PTm n) : Γ ⊢[PRAAx] ap3 codeF S T d ≐ pairT (numer
   simpa [codeF, ap3, rationalHausdorff] using h
 
 theorem code_numerator (S T d : PTm n) : Γ ⊢[PRAAx] fstT (ap3 codeF S T d) ≐ numerator S T d :=
-  (congrFst (code_at S T d)).eqTrans (fst_pair _ _)
+  (code_at S T d).fstE
 theorem code_denominator (S T d : PTm n) : Γ ⊢[PRAAx] sndT (ap3 codeF S T d) ≐ denominator S T d :=
-  (congrSnd (code_at S T d)).eqTrans (snd_pair _ _)
+  (code_at S T d).sndE
 theorem code_positive (S T d : PTm n) : Γ ⊢[PRAAx] le one (sndT (ap3 codeF S T d)) :=
   le_congr (.eqRefl _) (code_denominator S T d).eqSymm (commonDenominator_one_le _ _)
 
@@ -589,9 +559,7 @@ def checkerTerm (S T d A B : PTm n) : PTm n :=
   eqb (monus (B * fstT (ap3 codeF S T d)) (A * sndT (ap3 codeF S T d))) zero
 def checkerF : PR 5 := PTm.toPR (checkerTerm (var 0) (var 1) (var 2) (var 3) (var 4))
 
-@[simp] theorem subst_checkerTerm {m : ℕ} (σ : Fin n → PTm m) (S T d A B : PTm n) :
-    Syn.subst σ (checkerTerm S T d A B) = checkerTerm (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ B) := by simp [checkerTerm]
+ipra_subst checkerTerm
 
 theorem checker_at (S T d A B : PTm n) :
     Γ ⊢[PRAAx] apply5 checkerF S T d A B ≐ checkerTerm S T d A B := by

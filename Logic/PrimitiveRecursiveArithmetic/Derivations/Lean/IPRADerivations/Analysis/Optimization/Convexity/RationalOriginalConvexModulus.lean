@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexArguments
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The named modulus at the original rational arguments
@@ -14,8 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalOriginalConvexModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ)
+open_ipra
 open RationalConvexArguments (arguments clock endpointDen firstNumerator secondNumerator enlargedDen interiorNumerator
   original_geometry original_proximity original_interior_queries original_endpoint_queries endpoint_den_positive)
 open RationalConvexSecantWeights (leftPoint rightPoint leftRemainder rightRemainder displacement)
@@ -29,8 +27,6 @@ open RationalArithmetic (recode add multiply)
 open GaussianRationalSyntheticBounds (natCode)
 open RationalValueBounds (radius)
 open RationalArgmin (transitive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -66,10 +62,7 @@ theorem source_queries (a b u v : PTm n) (h : Γ ⊢[PRAAx] arguments a b u v) :
   exact .andI ((left_point_rescale _ _ _ d r).eqTrans he.andE₁)
     (.andI ((right_point_rescale _ _ _ d r).eqTrans he.andE₂) (original_interior_queries a b u v h))
 
-@[simp] theorem subst_witnessed {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (W : PR 2) (q o x : PTm n) :
-    (witnessed L U W q o x).subst σ =
-      witnessed L U W (Syn.subst σ q) (Syn.subst σ o) (Syn.subst σ x) := by
-  simp [witnessed,presented,witnessIndex,witnessExponent,RationalNestedIntervals.positiveWitness,RationalConvexFiniteModulus.eps]
+ipra_subst witnessed [presented, witnessIndex, witnessExponent, RationalNestedIntervals.positiveWitness, RationalConvexFiniteModulus.eps]
 
 theorem witnessed_congr (L U : PR 3) (W : PR 2) (q r o x : PTm n) (e : Γ ⊢[PRAAx] q ≐ r)
     (h : Γ ⊢[PRAAx] witnessed L U W q o x) : Γ ⊢[PRAAx] witnessed L U W r o x := by

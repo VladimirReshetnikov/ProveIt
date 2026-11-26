@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentCosine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq normSq_eval eval_re_code eval_im_code)
 open GaussianRationalHorner (qadd qmul_canonical ofGaussian_represents positive_product)
 open GaussianRationalMetric (bounded bounded_of_cleared)
@@ -29,10 +29,6 @@ open RationalGaussianEmbedding (scalarZero scalarOne scalar_zero_represents)
 open RationalValueBounds (upper upper_of_radius)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalSupMetric (numeratorOf denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

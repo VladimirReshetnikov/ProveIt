@@ -15,7 +15,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSquareBranch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (add_sample unit_monotone)
@@ -31,8 +31,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product reciprocal reciproc
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianNameReciprocal (apart anchor R)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,9 +56,7 @@ private theorem rational_cancel (a b E K B : PTm n)
 def squareBudget (f g : PR 2) (x y : PTm n) : PTm n :=
   (((multiplyModulus f f x x+one)+two)+(multiplyModulus g g y y+one))
 
-@[simp] theorem subst_squareBudget {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    Syn.subst σ (squareBudget f g x y) = squareBudget f g (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [squareBudget]
+ipra_subst squareBudget
 
 private theorem raw_squares (f g : PR 2) (x y p : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)

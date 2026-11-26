@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Corollaries of the finite expectation kernel
@@ -25,17 +24,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.ExpectationCorollaries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add' geB inst2_geB geI geI_true geI_false
   le_zero_of chebyshev)
 open LeanProofs.IPRA.Probability.Variance (ad Vr dvB dv_pt variance_identity sum_one)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le mulParam inst2_mulParam sum_mul_param)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -113,9 +108,8 @@ weight, i.e. `X = E[X]` almost surely. -/
 theorem var_zero (w X : PTm 2) {N x i : PTm n}
     (hv : Γ ⊢[PRAAx] Wt w N x * Ew w (X * X) N x ≐ Ew w X N x * Ew w X N x) (hi : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] inst2 w i x * (Wt w N x * inst2 X i x) ≐ inst2 w i x * Ew w X N x := by
-  have hv' := natEq hv
   have v0 : Γ ⊢[PRAAx] Vr w X N x ≐ zero := by
-    ipra_lc natEq (variance_identity (Γ := Γ) w X N x) + Groth.ι (IPRA.Q.mk Γ (Wt w N x)) * hv'
+    ipra_lc natEq (variance_identity (Γ := Γ) w X N x) + Groth.ι (IPRA.Q.mk Γ (Wt w N x)) * natEq hv
   have z := (dv_pt w X i _ _ x).eqSymm.eqTrans (sum_zero_elim (dvB w X) v0 hi)
   refine .orE (zero_or_zero_of_mul z) ?_ ?_
   · exact (zml Prf.hyp0 _).eqTrans (zml Prf.hyp0 _).eqSymm
@@ -129,12 +123,9 @@ theorem pw_mono {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) (r : PTm n) : Γ ⊢[PR
     simp only [Fm.shift, subst_le] at e
     simpa [Syn.shift] using e
   have hall : Γ ⊢[PRAAx] Fm.all (le (pw (Syn.shift a) (var 0)) (pw (Syn.shift b) (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact le_congr (pw_zero _).eqSymm (pw_zero _).eqSymm (le_refl _)
-    · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      exact le_congr (pw_succ _ _).eqSymm (pw_succ _ _).eqSymm (le_mul_mono Prf.hyp0 h'.wk)
+    ipra_qfind [subst_le, subst_ap2]
+    · exact le_congr (pw_zero _).eqSymm (pw_zero _).eqSymm (le_refl _)
+    · exact le_congr (pw_succ _ _).eqSymm (pw_succ _ _).eqSymm (le_mul_mono Prf.hyp0 h'.wk)
   have i := Prf.allE r hall
   simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at i
   exact i

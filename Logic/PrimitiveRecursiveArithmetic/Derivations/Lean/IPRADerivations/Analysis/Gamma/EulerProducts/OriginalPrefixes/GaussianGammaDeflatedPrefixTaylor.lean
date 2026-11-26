@@ -15,15 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDeflatedPrefixTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHigherCoefficientName (sample)
 open GaussianGammaCanonicalPrefixTaylor (canonicalTerm canonicalPrefix taylor)
 open GaussianRationalHorner (qmul qadd qzero qmul_canonical)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qzero_add qmul_zero_left qmul_zero_right)
 open GaussianRationalReciprocal (power power_zero power_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,16 +31,11 @@ def prefixValue (r w k : PTm n) : PTm n := GaussianRationalFiniteSum.sum body k 
 def deflatedTaylor (r d w : PTm n) : PTm n := prefixValue r w (succ d)
 def factorLaw (r w k : PTm n) : Fm PTm n := canonicalPrefix r w (succ k) ≐ qmul w (prefixValue r w k)
 
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (r w e : PTm n) :
-    Syn.subst σ (term r w e) = term (Syn.subst σ r) (Syn.subst σ w) (Syn.subst σ e) := by simp [term]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (r w : PTm n) :
-    Syn.subst σ (data r w) = data (Syn.subst σ r) (Syn.subst σ w) := by simp [data]
-@[simp] theorem subst_prefixValue {m : ℕ} (σ : Fin n → PTm m) (r w k : PTm n) :
-    Syn.subst σ (prefixValue r w k) = prefixValue (Syn.subst σ r) (Syn.subst σ w) (Syn.subst σ k) := by simp [prefixValue]
-@[simp] theorem subst_deflatedTaylor {m : ℕ} (σ : Fin n → PTm m) (r d w : PTm n) :
-    Syn.subst σ (deflatedTaylor r d w) = deflatedTaylor (Syn.subst σ r) (Syn.subst σ d) (Syn.subst σ w) := by simp [deflatedTaylor]
-@[simp] theorem subst_factorLaw {m : ℕ} (σ : Fin n → PTm m) (r w k : PTm n) :
-    (factorLaw r w k).subst σ = factorLaw (Syn.subst σ r) (Syn.subst σ w) (Syn.subst σ k) := by simp [factorLaw]
+ipra_subst term
+ipra_subst data
+ipra_subst prefixValue
+ipra_subst deflatedTaylor
+ipra_subst factorLaw
 
 theorem body_at (r w e : PTm n) : Γ ⊢[PRAAx] inst2 body e (data r w) ≐ term r w e := by
   simp only [body,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -83,11 +75,9 @@ theorem factor_step (r w k : PTm n) (ih : Γ ⊢[PRAAx] factorLaw r w k) : Γ �
 theorem original_factor (r d w : PTm n) : Γ ⊢[PRAAx]
     taylor r (succ d) w ≐ qmul w (deflatedTaylor r d w) := by
   have all : Γ ⊢[PRAAx] .all (factorLaw (Syn.shift r) (Syn.shift w) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_factorLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact factor_zero r w
-    · simp only [subst_factorLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact factor_step _ _ _ Prf.hyp0
+    ipra_qfind [subst_factorLaw]
+    · exact factor_zero r w
+    · exact factor_step _ _ _ Prf.hyp0
   change Γ ⊢[PRAAx] factorLaw r w (succ d)
   simpa only [subst_factorLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE (succ d)
 
@@ -106,17 +96,14 @@ theorem positive_zero_term (r k : PTm n) : Γ ⊢[PRAAx] term r qzero (succ k) �
   (qmul_congr (.eqRefl _) (GaussianRationalPowerNonzero.zero_positive_power k)).eqTrans (qmul_zero_right _)
 
 def zeroLaw (r k : PTm n) : Fm PTm n := prefixValue r qzero (succ k) ≐ qone
-@[simp] theorem subst_zeroLaw {m : ℕ} (σ : Fin n → PTm m) (r k : PTm n) :
-    (zeroLaw r k).subst σ = zeroLaw (Syn.subst σ r) (Syn.subst σ k) := by simp [zeroLaw]
+ipra_subst zeroLaw
 
 theorem at_zero (r d : PTm n) : Γ ⊢[PRAAx] deflatedTaylor r d qzero ≐ qone := by
   have all : Γ ⊢[PRAAx] .all (zeroLaw (Syn.shift r) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_zeroLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (prefix_succ r qzero zero).eqTrans
+    ipra_qfind [subst_zeroLaw]
+    · exact (prefix_succ r qzero zero).eqTrans
         ((qadd_congr (prefix_zero r qzero) (zero_term r)).eqTrans (qzero_add qone GaussianRationalSyntheticDivision.qone_canonical))
-    · simp only [subst_zeroLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (prefix_succ _ qzero _).eqTrans
+    · exact (prefix_succ _ qzero _).eqTrans
         ((qadd_congr Prf.hyp0 (positive_zero_term _ _)).eqTrans
           (GaussianReciprocalHorner.qadd_zero_right qone GaussianRationalSyntheticDivision.qone_canonical))
   change Γ ⊢[PRAAx] zeroLaw r d

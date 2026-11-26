@@ -17,7 +17,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadCorrectionDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add mul scale oneCode)
 open GaussianBarnesCanonicalCorrectionShift (total body parameters subst_parameters body_at correction_represents)
 open GaussianBarnesCanonicalFactor (correction)
@@ -40,9 +40,6 @@ open GaussianRationalPowerDifference (product_difference)
 open GaussianNameArithmetic (sum_difference)
 open GaussianRootAlgebra (sub equal equal_of_values equal_refl re_add im_add re_mul im_mul re_sub im_sub re_scale im_scale re_one im_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => GaussianRationalFiniteSum.sum

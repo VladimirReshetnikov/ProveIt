@@ -17,17 +17,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadCoefficientStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr canonicalCoefficients)
 open GaussianGammaEulerHeadPolynomial (polynomial)
 open GaussianGammaHarmonicIncrement (reciprocalPoint)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaExponentCoefficientPolynomial
 import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaTailSeries
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedSmallPerturbationTransport
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A regular exponent name with the original shared coefficient precision
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaSynchronousExponentName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul ofGaussian evaluate)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalMetric (bounded distanceBounded qnegative)
@@ -30,10 +29,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,18 +41,12 @@ def clock (p R : PTm n) : PTm n := GaussianFastValueCut.exponent (R+one) p
 def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (z R B : PTm n) : PTm n := GaussianFastValueCut.nameData (R+one) (rawData z R B)
 def sample (p z R B : PTm n) : PTm n := ap2 nameF p (data z R B)
-@[simp] theorem subst_gammaClock {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (gammaClock p R) = gammaClock (Syn.subst σ p) (Syn.subst σ R) := by simp [gammaClock]
-@[simp] theorem subst_linearValue {m : ℕ} (σ : Fin n → PTm m) (p z R B : PTm n) :
-    Syn.subst σ (linearValue p z R B) = linearValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [linearValue]
-@[simp] theorem subst_rawValue {m : ℕ} (σ : Fin n → PTm m) (p z R B : PTm n) :
-    Syn.subst σ (rawValue p z R B) = rawValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [rawValue,GaussianGammaZetaTailSeries.sample]
-@[simp] theorem subst_rawData {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    Syn.subst σ (rawData z R B) = rawData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [rawData]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (clock p R) = clock (Syn.subst σ p) (Syn.subst σ R) := by simp [clock]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    Syn.subst σ (data z R B) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [data]
+ipra_subst gammaClock
+ipra_subst linearValue
+ipra_subst rawValue [GaussianGammaZetaTailSeries.sample]
+ipra_subst rawData
+ipra_subst clock
+ipra_subst data
 
 theorem gamma_clock_later (p R : PTm n) : Γ ⊢[PRAAx] le p (gammaClock p R) :=
   le_of_eq_add (d := R*R+num 7) (by unfold gammaClock GaussianGammaZetaDegreeName.clock; ipra_ring)
@@ -138,7 +127,7 @@ theorem raw_at (p z R B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData z R B) ≐ 
       Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons] using raw
   have t := snd_pair (Γ := Γ) z (pairT R B)
   exact e.eqTrans (raw_value_congr (.eqRefl _) (fst_pair _ _)
-    ((congrFst t).eqTrans (fst_pair _ _)) ((congrSnd t).eqTrans (snd_pair _ _)))
+    t.fstE t.sndE)
 
 theorem raw_name_regular (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     GaussianFastValueCut.regular rawF (R+one) (rawData z R B) := by

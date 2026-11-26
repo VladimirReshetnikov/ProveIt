@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
@@ -29,10 +29,6 @@ open GaussianGammaCanonicalExponent (constantF)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian evaluate qzero positive_product)
 open GaussianRationalSyntheticDivision (canonicalCoefficients)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

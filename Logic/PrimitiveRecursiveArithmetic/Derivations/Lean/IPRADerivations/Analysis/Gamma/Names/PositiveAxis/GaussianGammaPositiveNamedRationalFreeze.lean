@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPositiveNamedRationalFreeze
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaMinimumFreezeRational (numerator denominator fraction_at frozen_rational_domain frozen_gamma_cross)
@@ -26,10 +26,6 @@ open GaussianNamedRightHalfPlane (threshold radius actual_late_source)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical)
 open GaussianStirlingGammaLogarithm (arg gammaData euler_real_source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianNamedGamma.nameF
@@ -46,13 +42,9 @@ def clock (f : PR 2) (s j x A : PTm n) : PTm n :=
 def eulerData (f : PR 2) (j k x : PTm n) : PTm n :=
   ir j (arg (numerator f k x)) (numerator f k x) (denominator f k x) (denominator f k x)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (s j x A : PTm n) :
-    Syn.subst σ (clock f s j x A) = clock f (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [clock,two,one]
+ipra_subst clock [two, one]
 
-@[simp] theorem subst_eulerData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (j k x : PTm n) :
-    Syn.subst σ (eulerData f j k x) = eulerData f (Syn.subst σ j) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [eulerData]
+ipra_subst eulerData
 
 theorem threshold_le (f : PR 2) (s j x A : PTm n) : Γ ⊢[PRAAx] le (threshold A) (clock f s j x A) :=
   le_trans (le_add_right _ _) (le_add_right _ _)

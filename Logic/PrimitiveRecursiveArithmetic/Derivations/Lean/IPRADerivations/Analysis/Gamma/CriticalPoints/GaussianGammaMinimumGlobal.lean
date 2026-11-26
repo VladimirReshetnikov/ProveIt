@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumGlobal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaDyadicLocation (locationF lower)
 open GaussianGammaDigammaDyadicMesh (grid grid_positive)
@@ -35,10 +35,6 @@ open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalHarmonicIntervalVariation (gap)
 open RationalValueBounds (upper upper_congr upper_order_left)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianNamedGamma.nameF

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperTailScalar
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerOrder (source)
 open GaussianEulerUpperTailPointwise (majorantTop majorantBottom majorant_bottom_positive)
 open GaussianEulerWeightedHalfDecay (majorant halfSample)
@@ -28,10 +28,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open RationalGaussianEmbedding (embed embed_add embed_multiply embed_canonical)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,12 +35,8 @@ def budget (R : PTm n) : PTm n := num 3*majorant R+one
 def scalarMajorant (p R a b : PTm n) : PTm n :=
   fraction (majorantTop p p R a b) (majorantBottom p p a b)
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (budget R) = budget (Syn.subst σ R) := by simp [budget]
-@[simp] theorem subst_scalarMajorant {m : ℕ} (σ : Fin n → PTm m) (p R a b : PTm n) :
-    Syn.subst σ (scalarMajorant p R a b) =
-      scalarMajorant (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [scalarMajorant]
+ipra_subst budget
+ipra_subst scalarMajorant
 
 theorem original_cell_majorized (p z R B a b : PTm n) (h : Γ ⊢[PRAAx] source z R B a b) :
     Γ ⊢[PRAAx] majorized (GaussianEulerIntegrandName.sample p z B a b) (scalarMajorant p R a b) := by

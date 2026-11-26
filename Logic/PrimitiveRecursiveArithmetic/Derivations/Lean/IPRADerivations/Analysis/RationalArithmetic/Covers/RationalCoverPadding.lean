@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalSubspaceCoverSearch
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Padding a supplied rational span cover
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCoverPadding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalFiniteSpanCover (family covered coveredAt)
 open RationalSuperellipticSubspace (properSpan)
 open RationalRowSpanGaussianEmbedding (hasCoefficients matrix)
@@ -23,10 +22,6 @@ open RationalSubspaceCoverSearch (coverBit chosen selected)
 open GaussianRationalRankNullityCriterion (finalHistory)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,12 +31,9 @@ def rowAt (D g : PTm n) : PTm n :=
 def rowBody : PTm 2 := rowAt (var 1) (var 0)
 def padded (D M : PTm n) : PTm n := sequence rowBody M D
 
-@[simp] theorem subst_empty {k : ℕ} (σ : Fin n → PTm k) : Syn.subst σ (empty : PTm n) = empty := by simp [empty]
-@[simp] theorem subst_rowAt {k : ℕ} (σ : Fin n → PTm k) (D g : PTm n) :
-    Syn.subst σ (rowAt D g) = rowAt (Syn.subst σ D) (Syn.subst σ g) := by
-  simp [rowAt,Signum.sg]
-@[simp] theorem subst_padded {k : ℕ} (σ : Fin n → PTm k) (D M : PTm n) :
-    Syn.subst σ (padded D M) = padded (Syn.subst σ D) (Syn.subst σ M) := by simp [padded]
+ipra_subst empty
+ipra_subst rowAt [Signum.sg]
+ipra_subst padded
 
 theorem padded_length (D M : PTm n) : Γ ⊢[PRAAx] length (padded D M) ≐ M := sequence_length _ _ _
 theorem padded_lookup (D M g : PTm n) (hg : Γ ⊢[PRAAx] lt g M) :

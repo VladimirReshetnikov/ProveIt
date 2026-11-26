@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorBorderedMinors
 import IPRADerivations.Analysis.Polynomials.Determinants.RationalCofactorCoefficientValues
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual cofactor vector annihilates the cleared rows
@@ -14,8 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofactorDotProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open RationalMaximalMinors (rank)
 open RationalMinorFreeColumn (free bit_cases)
 open RationalMinorAugmentation (extendedColumn extended_column_size)
@@ -36,8 +34,6 @@ open GaussianRationalBlockSums (selectedBody maskBody filteredData filtered_sum 
 open GaussianScalarDeterminantLaplace (unitSign sign_bit_even sign_bit_odd summand rowWeight expansion expansionBody
   expansion_body_at last_row_expansion)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,14 +49,9 @@ def supportDot (P d i : PTm n) : PTm n :=
   sum (selectedBody bitBody clearedBody) (count d (extendedColumn P d))
     (filteredData d (extendedColumn P d) (data P d i))
 
-@[simp] theorem subst_clearedTerm {k : ℕ} (σ : Fin n → PTm k) (P d i j : PTm n) :
-    Syn.subst σ (clearedTerm P d i j) =
-      clearedTerm (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) (Syn.subst σ j) := by
-  simp [clearedTerm]
+ipra_subst clearedTerm
 
-@[simp] theorem subst_clearedDot {k : ℕ} (σ : Fin n → PTm k) (P d i : PTm n) :
-    Syn.subst σ (clearedDot P d i) = clearedDot (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) := by
-  simp [clearedDot]
+ipra_subst clearedDot
 
 theorem cleared_term_congr {P Q d e i k j l : PTm n} (hP : Γ ⊢[PRAAx] P ≐ Q)
     (hd : Γ ⊢[PRAAx] d ≐ e) (hi : Γ ⊢[PRAAx] i ≐ k) (hj : Γ ⊢[PRAAx] j ≐ l) :
@@ -71,8 +62,8 @@ theorem cleared_body_at (P d i j : PTm n) :
     Γ ⊢[PRAAx] inst2 clearedBody j (data P d i) ≐ clearedTerm P d i j := by
   simp only [clearedBody,inst2,subst_clearedTerm,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact cleared_term_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact cleared_term_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 
 theorem supported_body_at (P d i r : PTm n) (hr : Γ ⊢[PRAAx] lt r (count d (extendedColumn P d))) :
     Γ ⊢[PRAAx] inst2 (selectedBody bitBody clearedBody) r (filteredData d (extendedColumn P d) (data P d i)) ≐

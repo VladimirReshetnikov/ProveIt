@@ -18,7 +18,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPositiveNamedDigammaRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerNamedShiftInput (shiftF shiftData clock_later)
 open GaussianEuclideanDistanceName (pointCN)
@@ -37,9 +37,6 @@ open GaussianNamedRightHalfPlane (threshold)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "N" => GaussianGammaDigammaNative.nameF
@@ -57,13 +54,9 @@ def shiftedClock (f : PR 2) (p x A : PTm n) : PTm n :=
 def cost (f : PR 2) (x A : PTm n) : PTm n :=
   gain (shiftF f) (shiftData x) A + (gain f x A+modulus (threshold A))
 
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A : PTm n) :
-    Syn.subst σ (sumData f x A) = sumData f (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [sumData]
+ipra_subst sumData
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A : PTm n) :
-    Syn.subst σ (cost f x A) = cost f (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [cost]
+ipra_subst cost
 
 theorem sum_regular (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) :
     Γ ⊢[PRAAx] pointCN (sumF f) (sumData f x A) := by

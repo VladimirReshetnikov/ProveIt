@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionImageGrid
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exactly ordered rational approximations to the original unit chart
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionTiltedNodes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalArithmetic (add represents)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalArgmin (rationalLE denominator_positive)
@@ -25,10 +24,6 @@ open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianEulerUnitSubstitutionImageGrid (node)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -39,14 +34,9 @@ def tiltNumerator (a i A B : PTm n) : ZT n :=
 def reverseNode (i p N a C E : PTm n) : PTm n := fstT (node (monus N i) p N a C E)
 def correctedNode (i p N a C E : PTm n) : PTm n := tilt (reverseNode i p N a C E) i two (unit p)
 
-@[simp] theorem subst_tilt {m : ℕ} (σ : Fin n → PTm m) (a i A B : PTm n) :
-    Syn.subst σ (tilt a i A B) = tilt (Syn.subst σ a) (Syn.subst σ i) (Syn.subst σ A) (Syn.subst σ B) := by simp [tilt]
-@[simp] theorem subst_reverseNode {m : ℕ} (σ : Fin n → PTm m) (i p N a C E : PTm n) :
-    Syn.subst σ (reverseNode i p N a C E) = reverseNode (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ N)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [reverseNode]
-@[simp] theorem subst_correctedNode {m : ℕ} (σ : Fin n → PTm m) (i p N a C E : PTm n) :
-    Syn.subst σ (correctedNode i p N a C E) = correctedNode (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ N)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [correctedNode]
+ipra_subst tilt
+ipra_subst reverseNode
+ipra_subst correctedNode
 
 theorem tilt_represents (a i A B : PTm n) (hb : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     represents (tilt a i A B) (tiltNumerator a i A B) (denominatorOf a*B) :=

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerPositiveOffset
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -34,8 +34,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianRationalHorner (ofGaussian qadd qmul)
 open GaussianRationalNaturalScale (naturalPoint natScale_as_product)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,10 +44,7 @@ def offsetStageData (z B m N : PTm n) : PTm n := GaussianBoundedIntegerExponenti
 abbrev repeatedOffsetF : PR 2 := GaussianNamedFiniteProductName.nameF (GaussianNamedRepeatedProduct.repeatF offsetStageF)
 def repeatedOffsetData (z B m N : PTm n) : PTm n := GaussianNamedRepeatedExponential.repeatedData m m (radius z B m N) (offsetExponent z B m N)
 
-@[simp] theorem subst_offsetStageData {l : ℕ} (σ : Fin n → PTm l) (z B m N : PTm n) :
-    Syn.subst σ (offsetStageData z B m N) =
-      offsetStageData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [offsetStageData,radius,offsetExponent,fixedExponentData,offset,one]
+ipra_subst offsetStageData [radius, offsetExponent, fixedExponentData, offset, one]
 
 theorem offset_input (z B m N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] GaussianRadiusExponentialName.input fixedExponentF (radius z B m N) (offsetExponent z B m N) :=

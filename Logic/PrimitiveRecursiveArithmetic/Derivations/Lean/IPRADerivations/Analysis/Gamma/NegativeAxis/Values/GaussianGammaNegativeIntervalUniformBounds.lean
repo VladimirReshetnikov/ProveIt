@@ -17,7 +17,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalUniformBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerIntegralUpperTransfer (paperConstant)
@@ -37,9 +37,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianReconstructionRoots (norm_from_distance)
 open GaussianStirlingGammaLogarithm (arg gammaData gamma_source)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -47,9 +44,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def marginCap (K : PTm n) : PTm n := (K*K)*gammaCap+two
 def cap (N : PTm n) : PTm n := marginCap (mesh N)
 
-@[simp] theorem subst_cap {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (cap N) = cap (Syn.subst σ N) := by
-  simp [cap,marginCap,gammaCap,two,one]
+ipra_subst cap [marginCap, gammaCap, two, one]
 
 private theorem positive_compact_source (a b : PTm n) (h : Γ ⊢[PRAAx] guard a b) :
     Γ ⊢[PRAAx] GaussianEulerIntegralGammaIdentification.source (arg (b+a)) two b one := by

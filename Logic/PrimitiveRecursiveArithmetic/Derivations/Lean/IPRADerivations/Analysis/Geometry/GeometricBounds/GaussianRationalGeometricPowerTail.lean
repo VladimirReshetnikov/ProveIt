@@ -14,21 +14,17 @@ set_option maxHeartbeats 450000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalGeometricPowerTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianRationalReciprocal (power bounded_power)
 open GaussianRationalMetric (bounded)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def law (B C N : PTm n) : Fm PTm n :=
   le (pw B N*(B+N*C)) (B*pw (B+C) N)
 
-@[simp] theorem subst_law {m : ℕ} (σ : Fin n → PTm m) (B C N : PTm n) :
-    (law B C N).subst σ = law (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ N) := by simp [law,pw]
+ipra_subst law [pw]
 
 private theorem base (B C : PTm n) : Γ ⊢[PRAAx] law B C zero := by
   change Γ ⊢[PRAAx] le (pw B zero*(B+zero*C)) (B*pw (B+C) zero)

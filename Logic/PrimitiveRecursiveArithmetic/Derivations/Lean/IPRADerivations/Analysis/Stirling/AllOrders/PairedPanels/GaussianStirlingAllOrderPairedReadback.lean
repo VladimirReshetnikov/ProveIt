@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingAllOrderBoxProductGap (sampleAt weightAt)
 open GaussianStirlingAllOrderCrossedCells (segmentData bernoulliBody reflectedBody bernoulli_at reflected_at)
@@ -24,9 +24,6 @@ open RationalAlgebra (multiply_congr)
 open RationalArithmetic (add multiply)
 open RationalCrossedProductSums (productBody product_at)
 open RationalFiniteSum (term)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderImproperAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderImproperName (nameF data raw rawF rawData rate raw_at)
 open GaussianStirlingAllOrderPanelPartsBinding (prefixAt)
 open GaussianStirlingAllOrderLogTruncation (signedF signedData)
@@ -26,8 +26,6 @@ open GaussianNameArithmetic (recode_congr)
 open GaussianRationalHorner (canonical_congr qmul_canonical)
 open GaussianSignedNameExponentialOrder (realSamples)
 open RationalGaussianEmbedding (embed embed_canonical embed_axis axis_congr axis_multiply)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

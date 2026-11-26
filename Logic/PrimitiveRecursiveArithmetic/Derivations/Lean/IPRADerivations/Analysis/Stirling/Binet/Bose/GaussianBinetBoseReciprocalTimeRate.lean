@@ -15,7 +15,7 @@ set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseReciprocalTimeRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseExponential (scaleF scaleData expF expData expRadius exp_input exp_regular piClock)
 open GaussianBinetBoseLinearApproximation (coefficient coefficient_bound coefficient_distance scale_factor)
 open GaussianBinetBoseDenominator (nameF data reciprocalF reciprocalData)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bound_congr bounded_product)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -40,10 +36,8 @@ def radius (T : PTm n) : PTm n := num 10*T
 def denominatorGain (T : PTm n) : PTm n := GaussianRadiusExponentialLipschitzRate.factor (radius T)*num 10
 def gain (E T : PTm n) : PTm n := E*E*denominatorGain T
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (T : PTm n) :
-    Syn.subst σ (radius T) = radius (Syn.subst σ T) := by simp [radius]
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (E T : PTm n) :
-    Syn.subst σ (gain E T) = gain (Syn.subst σ E) (Syn.subst σ T) := by simp [gain,denominatorGain]
+ipra_subst radius
+ipra_subst gain [denominatorGain]
 
 private theorem scale_bound (p a b T : PTm n)
     (hb : Γ ⊢[PRAAx] le one b) (ht : Γ ⊢[PRAAx] le a (T*b)) :

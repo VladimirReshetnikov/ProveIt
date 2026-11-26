@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Bernoulli.GaussianStirlingAllOrderBernoulliShapeClearing
-import IPRADerivations.Core.IntCertificates
 import IPRADerivations.Analysis.Polynomials.PolynomialBisection
 
 /-!
@@ -15,17 +14,13 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderBernoulliMeshOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderBernoulliShapeClearing (degree scale scale_positive coefficient value left right cleared_identity)
 open GaussianStirlingAllOrderCenteredBernoulli (denominator denominator_positive numerator sample sample_value endpoint_samples_zero)
 open GaussianStirlingAllOrderBernoulliMesh (toZ_value)
 open BernoulliBounds (toZ_zint)
 open GaussianRationalHorner (positive_product)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

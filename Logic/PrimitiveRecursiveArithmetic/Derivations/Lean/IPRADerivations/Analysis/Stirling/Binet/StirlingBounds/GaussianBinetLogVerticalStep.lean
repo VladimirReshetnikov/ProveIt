@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLogVerticalStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq eval_re_code eval_im_code)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLogGammaEulerHead (argument)
@@ -31,17 +31,12 @@ open GaussianRightHalfPlaneLogarithmOffset (signedImag)
 open GaussianRightHalfPlaneLogarithmRelativeStep (relative relative_binding)
 open GaussianRootAlgebra (equal equal_of_values re_sub im_sub normSq_equal sub)
 open RationalArithmetic (select_zero select_one)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def step (H D neg : PTm n) : PTm n := ofGaussian (native zero H neg) D
 
-@[simp] theorem subst_step {m : ℕ} (σ : Fin n → PTm m) (H D neg : PTm n) :
-    Syn.subst σ (step H D neg) = step (Syn.subst σ H) (Syn.subst σ D) (Syn.subst σ neg) := by simp [step]
+ipra_subst step
 
 private theorem signed_add (B H neg : PTm n) (hs : Γ ⊢[PRAAx] (neg ≐ zero) ⋎ (neg ≐ one)) :
     Γ ⊢[PRAAx] ZT.eq (signedImag (B+H) neg - signedImag B neg) (signedImag H neg) := by

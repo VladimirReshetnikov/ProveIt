@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingFormulaFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingFormula (source nameF data powerF powerData gammaF gammaData)
 open GaussianEulerNamedPowerScalingPowerFrozen (powerClock frozenPowerData frozen_sample_bound
   multiply_same_denominator constant_bound unit_rate_after)
@@ -35,10 +35,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianExponentialReference (unit_monotone)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -61,15 +57,9 @@ def freezeClock (F G : PR 2) (s z R B A x E y H J : PTm n) : PTm n :=
 
 def observationClock (s : PTm n) : PTm n := exponent (num 3) s
 
-@[simp] theorem subst_freezeClock {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (s z R B A x E y H J : PTm n) :
-    Syn.subst σ (freezeClock F G s z R B A x E y H J) = freezeClock F G (Syn.subst σ s) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ y)
-      (Syn.subst σ H) (Syn.subst σ J) := by
-  simp [freezeClock,formulaGain,innerGain,powerData,gammaData,GaussianEulerNamedPowerScalingFormula.exponentData,
-    GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst freezeClock [formulaGain, innerGain, powerData, gammaData, GaussianEulerNamedPowerScalingFormula.exponentData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
-@[simp] theorem subst_observationClock {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    Syn.subst σ (observationClock s) = observationClock (Syn.subst σ s) := by simp [observationClock]
+ipra_subst observationClock
 
 @[simp] theorem subst_named_source {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (z R B A x E T y H J : PTm n) :
     (source F G z R B A x E T y H J).subst σ = source F G (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
@@ -82,13 +72,7 @@ def observationClock (s : PTm n) : PTm n := exponent (num 3) s
   simp [data,powerData,gammaData,GaussianEulerNamedPowerScalingFormula.exponentData,
     GaussianGammaFiniteApproximantName.exponentialInputData]
 
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (k z R B A x y H J : PTm n) :
-    Syn.subst σ (frozenData F G k z R B A x y H J) = frozenData F G (Syn.subst σ k) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ H)
-      (Syn.subst σ J) := by
-  simp [frozenData,formulaData,GaussianEulerCompactExhaustionScaled.referenceData,numerator,denominator,
-    GaussianGammaReciprocalInverse.gammaData,GaussianGammaReciprocalInverse.gammaHeight,
-    GaussianEulerPowerScalingParameter.scaled]
+ipra_subst frozenData [formulaData, GaussianEulerCompactExhaustionScaled.referenceData, numerator, denominator, GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight, GaussianEulerPowerScalingParameter.scaled]
 
 /-- The certificate uses the actual rational chart parameters on the original cofinal sampler. -/
 theorem original_frozen_source (F G : PR 2) (k z R B A x E T y H J : PTm n)

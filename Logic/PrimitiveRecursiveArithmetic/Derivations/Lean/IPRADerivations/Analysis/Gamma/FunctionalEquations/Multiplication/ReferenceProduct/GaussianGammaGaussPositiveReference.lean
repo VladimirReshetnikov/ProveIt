@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussPositiveReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaGaussPositiveReferenceRows (lowerDen denominator_positive)
 open GaussianGammaGaussReflectionDomain (referenceData)
 open GaussianGammaGaussReflectionFamily (rightBody right_ascending_at right_rows)
@@ -34,10 +34,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameReciprocal (lower lower_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianGammaGaussPositiveReferenceRows.nameF
@@ -49,10 +45,8 @@ def nameF : PR 2 := FProd (rowF G body)
 def nameData (N x : PTm n) : PTm n := productData G body N (data N x)
 def lowerDenominator (N : PTm n) : PTm n := denominator lowerDen N
 
-@[simp] theorem subst_nameData {l : ℕ} (σ : Fin n → PTm l) (N x : PTm n) :
-    Syn.subst σ (nameData N x) = nameData (Syn.subst σ N) (Syn.subst σ x) := by simp [nameData,productData]
-@[simp] theorem subst_lowerDenominator {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (lowerDenominator N) = lowerDenominator (Syn.subst σ N) := by simp [lowerDenominator]
+ipra_subst nameData [productData]
+ipra_subst lowerDenominator
 
 theorem body_at (N x i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] inst2 body i (data N x) ≐ GaussianGammaGaussPositiveReferenceRows.nameData (succ i) (succ N) := by

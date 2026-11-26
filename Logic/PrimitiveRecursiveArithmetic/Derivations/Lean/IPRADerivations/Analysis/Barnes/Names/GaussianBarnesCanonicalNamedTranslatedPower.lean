@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedTranslatedPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDeflatedNamed (neighborhood neighborhood_at)
 open GaussianBarnesCanonicalDeflatedFactor (translatedValue translatedPower)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -33,9 +33,6 @@ open GaussianRationalPowerDifference (distance_refl_zero unit_disk_power_differe
 open GaussianRationalReciprocal (bound_congr power_canonical)
 open GaussianExponentialReference (unit_monotone recode_fixed)
 open ComplexLogarithmRemainder (normSq normSq_scale)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

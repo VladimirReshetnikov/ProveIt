@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentInverseUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentInverseForward (input)
 open GaussianArctangentInverseSampler (index mesh mesh_positive index_le raw rawF raw_at)
 open GaussianArctangentNamedChord (imaginary_coordinate_radius)
@@ -31,10 +31,6 @@ open GaussianValueNormalizerExtensionality (rawDiagonal normalized_names_equival
 open RationalCubeMidpoint (fraction)
 open RationalGaussianEmbedding (embed)
 open RationalValueBounds (radius radius_mono radius_symmetric radius_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -86,22 +82,13 @@ def forwardDiagonal (a b c d : PR 2) (x y H : PTm n) : Fm PTm n :=
   .all (radius (forwardAt a b (var 0) (Syn.shift x))
     (forwardAt c d (var 0) (Syn.shift y)) (Syn.shift H) (unit (var 0)))
 
-@[simp] theorem subst_selectedAt {m : ℕ} (σ : Fin n → PTm m) (f a b : PR 2) (p x : PTm n) :
-    (selectedAt f a b p x).subst σ = selectedAt f a b (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [selectedAt]
+ipra_subst selectedAt
 
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (f a b : PR 2) (x : PTm n) :
-    (selected f a b x).subst σ = selected f a b (Syn.subst σ x) := by
-  simp [selected,Syn.subst_shift,Syn.shift_subst]
+ipra_subst selected [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_forwardAt {m : ℕ} (σ : Fin n → PTm m) (a b : PR 2) (p x : PTm n) :
-    Syn.subst σ (forwardAt a b p x) = forwardAt a b (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [forwardAt,ordinate]
+ipra_subst forwardAt [ordinate]
 
-@[simp] theorem subst_forwardDiagonal {m : ℕ} (σ : Fin n → PTm m) (a b c d : PR 2) (x y H : PTm n) :
-    (forwardDiagonal a b c d x y H).subst σ =
-      forwardDiagonal a b c d (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ H) := by
-  simp [forwardDiagonal,Syn.subst_shift,Syn.shift_subst]
+ipra_subst forwardDiagonal [Syn.subst_shift, Syn.shift_subst]
 
 theorem selected_at (f a b : PR 2) (p x : PTm n) (h : Γ ⊢[PRAAx] selected f a b x) :
     Γ ⊢[PRAAx] selectedAt f a b p x := by

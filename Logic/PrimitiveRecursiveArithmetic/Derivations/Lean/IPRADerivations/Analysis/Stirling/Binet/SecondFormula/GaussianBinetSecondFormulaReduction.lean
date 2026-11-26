@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondFormulaReduction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseOriginExhaustion (cutData cutoff cutoff_positive)
 open GaussianBinetFirstFormulaDecay (laplaceData laplace_regular)
 open GaussianBinetBoseImproperName (source)
@@ -29,9 +29,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalNaturalScale (naturalPoint natScale natScale_as_product)
 open GaussianValueNormalizerExtensionality (rawDiagonal)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Bose" => GaussianBinetBoseImproperName.nameF
@@ -47,9 +44,7 @@ def data (X Y D sign K : PTm n) : PTm n :=
 def clock (p X Y D sign K : PTm n) : PTm n :=
   GaussianNaturalScaleProductName.clock Bose p two (boseData X Y D sign K)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (X Y D sign K : PTm n) :
-    Syn.subst σ (data X Y D sign K) = data (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
-      (Syn.subst σ sign) (Syn.subst σ K) := by simp [data,two]
+ipra_subst data [two]
 
 theorem regular (X Y D sign K : PTm n) (h : Γ ⊢[PRAAx] source X Y D sign K) :
     Γ ⊢[PRAAx] pointCN nameF (data X Y D sign K) :=

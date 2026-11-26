@@ -4,7 +4,6 @@ import IPRADerivations.Combinatorics.LucasIdentities
 import IPRADerivations.Combinatorics.BellPascalInversion
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The prime-index Lucas congruence
@@ -29,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.LucasPrime
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom congrPw)
@@ -44,10 +43,6 @@ open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq')
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (two_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -146,20 +141,16 @@ theorem binet_step {m : PTm n} (ih : Γ ⊢[PRAAx] pairT (pw two m * luc m) (pw 
   refine LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic.congrPair ?_ ?_
   · ipra_lc (𝔞 (fibS (succ m)) + 𝔞 (monus (fibS (succ m)) (fib (succ m)))) * natEq (pw_succ (Γ := Γ) two m) +
       2 * 𝔞 (pw two m) * l₁ - 2 * 𝔞 (pw two m) * f₀ + 4 * 𝔞 (pw two m) * f₁ - 𝔞 (pw two m) * l₀ +
-      natEq ((fst_pair _ _).eqSymm.eqTrans ((congrFst ih).eqTrans (fst_pair _ _))) +
-      5 * natEq ((snd_pair _ _).eqSymm.eqTrans ((congrSnd ih).eqTrans (snd_pair _ _))) - 2 * w
+      natEq ((fst_pair _ _).eqSymm.eqTrans ih.fstE) +
+      5 * natEq ((snd_pair _ _).eqSymm.eqTrans ih.sndE) - 2 * w
   · ipra_lc 𝔞 (fib (succ m)) * natEq (pw_succ (Γ := Γ) two m) + 2 * 𝔞 (pw two m) * f₀ - 𝔞 (pw two m) * l₀ +
-      natEq ((fst_pair _ _).eqSymm.eqTrans ((congrFst ih).eqTrans (fst_pair _ _))) +
-      natEq ((snd_pair _ _).eqSymm.eqTrans ((congrSnd ih).eqTrans (snd_pair _ _))) - 2 * v
+      natEq ((fst_pair _ _).eqSymm.eqTrans ih.fstE) +
+      natEq ((snd_pair _ _).eqSymm.eqTrans ih.sndE) - 2 * v
 
 private theorem binet₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] binetF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_add, PTm.subst_num, PTm.subst_monus, subst_fib,
-      subst_fibS, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact binet_base
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_add, PTm.subst_num, PTm.subst_monus, subst_fib,
-      subst_fibS, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact binet_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT, subst_fib, subst_fibS]
+  · exact binet_base
+  · exact binet_step Prf.hyp0
 
 /-- `2^n L_n = 2 W(n)` and `2^n F_n = 2 V(n)` (the pair form). -/
 theorem binet (m : PTm n) : Γ ⊢[PRAAx] pairT (pw two m * luc m) (pw two m * fib m) ≐
@@ -168,7 +159,7 @@ theorem binet (m : PTm n) : Γ ⊢[PRAAx] pairT (pw two m * luc m) (pw two m * f
   simpa using h
 
 theorem binet_luc (m : PTm n) : Γ ⊢[PRAAx] pw two m * luc m ≐ two * W m five :=
-  (fst_pair _ _).eqSymm.eqTrans ((congrFst (binet m)).eqTrans (fst_pair _ _))
+  (fst_pair _ _).eqSymm.eqTrans (binet m).fstE
 
 /-! ## `W(p)` modulo `p` -/
 

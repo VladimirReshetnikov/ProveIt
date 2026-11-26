@@ -16,7 +16,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilyRange
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianFastValueCut (exponent query_budget)
@@ -32,9 +32,6 @@ open GaussianRationalHorner (qadd)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
 open GaussianRationalSyntheticDivision (qadd_congr)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,9 +41,7 @@ abbrev rangeBody (t : PTm 2) : PTm 2 := offB t
 /-- A range consists of `r` rows, starting at `N` in the original family. -/
 def rangeData (N r x : PTm n) : PTm n := data r (pairT N x)
 
-@[simp] theorem subst_rangeData {m : ℕ} (σ : Fin n → PTm m) (N r x : PTm n) :
-    Syn.subst σ (rangeData N r x) = rangeData (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ x) := by
-  simp [rangeData]
+ipra_subst rangeData
 
 theorem range_row_at (t : PTm 2) (N i x : PTm n) :
     Γ ⊢[PRAAx] inst2 (rangeBody t) i (pairT N x) ≐ inst2 t (N + i) x :=

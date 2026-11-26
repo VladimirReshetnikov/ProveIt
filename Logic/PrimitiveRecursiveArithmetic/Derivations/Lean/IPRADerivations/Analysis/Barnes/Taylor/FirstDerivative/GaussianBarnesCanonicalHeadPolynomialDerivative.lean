@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadPolynomialDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add normSq)
 open GaussianBarnesCanonicalBaseProductShift (powerProduct)
 open GaussianBarnesCanonicalHeadPolynomial (degree polynomial polynomial_length original_evaluation)
@@ -26,9 +26,6 @@ open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRationalUniformFirstOrderPolynomial (mass constant slopeConstant)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDeterminantRowSelection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ)
+open_ipra
 open GaussianRationalFiberVandermonde (table table_lookup delta)
 open GaussianPolynomialDeterminantTerms (cell signPoint)
 open GaussianScalarDeterminant (scalarDet signedBody signedTerm factorBody factorData rawProduct)
@@ -27,8 +26,6 @@ open GaussianRationalFiniteSum (termsEqual)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (count words digit retained_bound retained_valid checker_reflection)
 open LeanProofs.IPRA.Foundations.RuntimePermutationDeletion (maximumPosition maximum_correct)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,13 +36,9 @@ def originalColumn : PTm 2 := cell (fstT (var 1)) (var 0) (sndT (var 1))
 def zeroLastRow (A m : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (Syn.shift m)) ⟶ cell (Syn.shift A) (Syn.shift m) (var 0) ≐ qzero)
 
-@[simp] theorem subst_selectorTable {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (m x : PTm n) :
-    Syn.subst σ (selectorTable f m x) = selectorTable f (Syn.subst σ m) (Syn.subst σ x) := by simp [selectorTable]
-@[simp] theorem subst_selected {l : ℕ} (σ : Fin n → PTm l) (f : PTm 2) (A m x : PTm n) :
-    Syn.subst σ (selected f A m x) = selected f (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ x) := by simp [selected]
-@[simp] theorem subst_zeroLastRow {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    (zeroLastRow A m).subst σ = zeroLastRow (Syn.subst σ A) (Syn.subst σ m) := by
-  simp [zeroLastRow,Syn.subst_shift,Syn.shift_subst]
+ipra_subst selectorTable
+ipra_subst selected
+ipra_subst zeroLastRow [Syn.subst_shift, Syn.shift_subst]
 
 theorem selector_lookup (f : PTm 2) (m x r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) :
     Γ ⊢[PRAAx] cell (selectorTable f m x) r j ≐ delta (inst2 f r x) j := by

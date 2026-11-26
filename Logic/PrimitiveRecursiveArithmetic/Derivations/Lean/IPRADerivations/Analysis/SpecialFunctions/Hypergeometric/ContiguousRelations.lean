@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.Pochhammer
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The contiguous relations of the Gauss series, coefficientwise
@@ -45,12 +44,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ContiguousRelations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Pochhammer (poch poch_succ poch_shift poch_shift')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

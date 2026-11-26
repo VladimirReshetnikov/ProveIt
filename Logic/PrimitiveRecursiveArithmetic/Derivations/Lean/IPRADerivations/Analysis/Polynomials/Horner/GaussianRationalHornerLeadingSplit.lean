@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalHornerLeadingSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr length)
 open GaussianRationalHorner (evaluate horner hornerF horner_zero horner_succ qadd qmul)
@@ -23,9 +23,6 @@ open GaussianRationalSyntheticCoefficientValues (qadd_recode_right qmul_recode_l
 open GaussianRationalSyntheticDivision (first_prefix qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qadd_zero_right qmul_associative qmul_one_right)
 open GaussianTranslatedNonconstant (recode recode_canonical)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

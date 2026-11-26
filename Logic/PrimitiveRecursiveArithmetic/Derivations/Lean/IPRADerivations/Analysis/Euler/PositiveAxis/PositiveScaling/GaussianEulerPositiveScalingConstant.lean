@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingConstant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerExponentF logarithmF coefficient powerExponentData powerData)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
@@ -27,9 +27,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianRationalHorner (ofGaussian qmul qadd)
 open GaussianRationalMetric (qsub qnegative bounded)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,24 +52,15 @@ def inverseBound (z B c d : PTm n) : PTm n := GaussianNameBounds.U inverseF (inv
 def anchor (z B c d : PTm n) : PTm n :=
   GaussianBoundedInverseApartness.height nameF inverseF (data z B c d) (inverseData z B c d) (inverseBound z B c d)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (B c d : PTm n) :
-    (source B c d).subst σ = source (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_exponentData {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (exponentData z B c d) = exponentData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [exponentData]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (radius z B c d) = radius (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [radius]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (data z B c d) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [data]
-@[simp] theorem subst_inverseData {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (inverseData z B c d) = inverseData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [inverseData]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (productData z B c d) = productData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [productData]
-@[simp] theorem subst_rightProductData {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (rightProductData z B c d) = rightProductData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [rightProductData]
-@[simp] theorem subst_inverseBound {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (inverseBound z B c d) = inverseBound (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [inverseBound]
-@[simp] theorem subst_anchor {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (anchor z B c d) = anchor (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [anchor]
+ipra_subst source
+ipra_subst exponentData
+ipra_subst radius
+ipra_subst data
+ipra_subst inverseData
+ipra_subst productData
+ipra_subst rightProductData
+ipra_subst inverseBound
+ipra_subst anchor
 
 theorem exponent_regular (z B c d : PTm n) (h : Γ ⊢[PRAAx] source B c d) : Γ ⊢[PRAAx]
     pointCN exponentF (exponentData z B c d) :=

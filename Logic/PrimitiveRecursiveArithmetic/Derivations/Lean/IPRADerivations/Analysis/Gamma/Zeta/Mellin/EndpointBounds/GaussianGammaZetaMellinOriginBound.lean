@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinOriginBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerIntegrationByPartsParameterShift (powerProductF powerProductData original_power_parameter_shift)
 open GaussianEulerIntegrandName (powerF powerData)
@@ -31,9 +31,6 @@ open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded qsub)
 open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open LeanProofs.IPRA.PTm (pred num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

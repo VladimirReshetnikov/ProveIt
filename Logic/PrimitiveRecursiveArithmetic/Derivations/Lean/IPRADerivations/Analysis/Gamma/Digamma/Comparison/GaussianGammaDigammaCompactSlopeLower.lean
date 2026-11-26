@@ -20,7 +20,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaCompactSlopeLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -47,10 +47,6 @@ open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder)
 open GaussianStirlingRationalTelescopers (fraction_same)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_congr upper_of_radius upper_triangle upper_mono positive_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -60,13 +56,9 @@ def margin (a b c d M : PTm n) : PTm n := fraction (monus (b*c) (d*a)) (M*M*b*d)
 
 def lowerData (a b c d M : PTm n) : PTm n := addData (data a b) (margin a b c d M)
 
-@[simp] theorem subst_margin {m : ℕ} (σ : Fin n → PTm m) (a b c d M : PTm n) :
-    Syn.subst σ (margin a b c d M) = margin (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ M) := by
-  simp [margin]
+ipra_subst margin
 
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a b c d M : PTm n) :
-    Syn.subst σ (lowerData a b c d M) = lowerData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ M) := by
-  simp [lowerData]
+ipra_subst lowerData
 
 theorem monotone_rational (a b c d : PTm n) (ha : Γ ⊢[PRAAx] source a b) (hc : Γ ⊢[PRAAx] source c d)
     (hac : Γ ⊢[PRAAx] le (d*a) (b*c)) : Γ ⊢[PRAAx] realOrder nameF nameF (data a b) (data c d) := by

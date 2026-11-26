@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineQuotientMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq)
 open GaussianBinetExponentialIntegralGrid (exponent row)
@@ -36,10 +36,6 @@ open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub qne
 open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product bounded_sum reciprocal)
 open GaussianRationalSyntheticDivision (qone qadd_sub_cancel qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qadd_commutative qmul_one_right qmul_associative)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

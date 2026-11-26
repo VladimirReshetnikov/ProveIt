@@ -15,7 +15,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceWeightedGridProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceIntegrand (cofinalF cofinalData input)
 open GaussianBinetWeightedExponentialBound (radius observation_bound)
 open GaussianBinetWeightedExponentialUniform (readBudget finite_readback)
@@ -25,10 +25,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative)
 open GaussianRootApproximationWitness (pointBounds)
 open GaussianLogGammaEulerHead (argument)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianBinetLaplaceExponential.nameF

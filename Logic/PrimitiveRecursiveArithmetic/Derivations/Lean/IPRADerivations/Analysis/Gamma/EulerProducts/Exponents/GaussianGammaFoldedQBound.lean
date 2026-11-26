@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFoldedQBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFoldedMajorantExponent (input majorant)
 open GaussianGammaFixedEulerExponent (correctedF correctedData)
 open GaussianGammaFiniteApproximantName (pF pData p_regular qF qData q_regular)
@@ -31,10 +31,6 @@ open GaussianGammaCanonicalExponentBound (numericalRadius)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,8 +39,7 @@ def exponentialData (z R B N : PTm n) : PTm n := GaussianRadiusExponentialName.d
 def factoredF : PR 2 := multiplyF constantF exponentialF
 def factoredData (z R B N : PTm n) : PTm n := multiplyData constantF exponentialF
   (GaussianGammaEulerHead.run z B (two*R)) (exponentialData z R B N)
-@[simp] theorem subst_exponentialData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (exponentialData z R B N) = exponentialData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [exponentialData]
+ipra_subst exponentialData
 @[simp] theorem subst_factoredData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
     Syn.subst σ (factoredData z R B N) = factoredData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
   simp only [factoredData,GaussianNameArithmetic.subst_multiplyData,subst_exponentialData,

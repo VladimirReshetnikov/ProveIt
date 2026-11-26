@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPanelTailDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qadd_canonical qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qadd_sub_cancel)
@@ -26,15 +26,11 @@ open GaussianReciprocalHorner (qadd_commutative)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianPositiveRadiusFiniteSum (boundBy add_bound enlarge_radius)
 open RationalGaussianRealPart (real_zero_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def threeSum (left middle right : PTm n) : PTm n := qadd left (qadd middle right)
-@[simp] theorem subst_threeSum {m : ℕ} (σ : Fin n → PTm m) (left middle right : PTm n) :
-    Syn.subst σ (threeSum left middle right) = threeSum (Syn.subst σ left) (Syn.subst σ middle) (Syn.subst σ right) := by simp [threeSum]
+ipra_subst threeSum
 
 theorem three_rearrangement (left middle right : PTm n) : Γ ⊢[PRAAx]
     threeSum left middle right ≐ qadd middle (qadd left right) :=

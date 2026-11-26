@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaLocationResidual
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaDyadicLocation (lower residual_at)
 open GaussianGammaDigammaDyadicMesh (clock grid grid_positive)
@@ -28,10 +28,6 @@ open GaussianStirlingGammaLogarithm (source)
 open RationalGaussianEmbedding (scalarZero canonical_axis_roundtrip embed_zero)
 open RationalGaussianNameEmbedding (distance_from_radius)
 open RationalValueBounds (radius_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

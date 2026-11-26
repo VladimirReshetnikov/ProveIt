@@ -1,6 +1,5 @@
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Parity
-import IPRADerivations.Core.Tactic
 
 /-!
 # Basic lemmas used throughout
@@ -19,7 +18,10 @@ proved once here, in the namespace `LeanProofs.IPRA.Common`, and the module-loca
 * congruences: `congrPairT`, `congrEqb`, `congrSg`;
 * the equality test and the signum: `eqb_zero_or_one`, `eqb_le_one`, `eq_of_eqb`, `sg_le_one`,
   `sg_zero_or_one`, `sg_of_one_le`;
-* powers: `pw_one`, `pw_two`, `pw_double`.
+* powers: `pw_one`, `pw_two`, `pw_double`;
+* numerals: `one_pos`, `two_pos`, `one_le_two`; positivity with the term explicit: `pos_of_one_le'`,
+  `one_le_mul`, `one_le_two_mul`;
+* strict differences: `monus_succ_of_lt`, `one_le_monus_of_lt`, `monus_succ_lt`, and `le_add_monus`.
 -/
 
 namespace LeanProofs.IPRA.Common
@@ -181,5 +183,39 @@ theorem pw_two (a : PTm n) : Γ ⊢[PRAAx] pw a two ≐ a * a :=
 
 theorem pw_double (a k : PTm n) : Γ ⊢[PRAAx] pw a (two * k) ≐ pw a k * pw a k :=
   (congrAp2 powF (by ipra_ring) (.eqRefl a)).eqTrans (pw_add a k k)
+
+/-! ## Numerals -/
+
+theorem one_pos : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := succ_pos zero
+
+theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := succ_pos one
+
+theorem one_le_two : Γ ⊢[PRAAx] le one (two : PTm n) := one_le_succ one
+
+/-! ## Positivity, with the term explicit -/
+
+theorem pos_of_one_le' (a : PTm n) (h : Γ ⊢[PRAAx] le one a) : Γ ⊢[PRAAx] a ≐ succ (pred a) := pos_of_one_le h
+
+theorem one_le_mul (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
+    Γ ⊢[PRAAx] le one (a * b) :=
+  le_congr (one_mul one) (.eqRefl _) (mul_le_mul ha hb)
+
+theorem one_le_two_mul (a : PTm n) (h : Γ ⊢[PRAAx] le one a) : Γ ⊢[PRAAx] le one (two * a) :=
+  one_le_mul two a one_le_two h
+
+/-! ## Strict differences -/
+
+theorem monus_succ_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) :
+    Γ ⊢[PRAAx] monus b a ≐ succ (monus b (succ a)) :=
+  monus_of_eq ((eq_add_of_le h).eqTrans (by ipra_ring))
+
+theorem one_le_monus_of_lt (a b : PTm n) (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] le one (monus b a) :=
+  le_congr (.eqRefl _) (monus_succ_of_lt h).eqSymm (one_le_succ _)
+
+theorem monus_succ_lt (a b : PTm n) (h : Γ ⊢[PRAAx] lt b a) : Γ ⊢[PRAAx] lt (monus a (succ b)) a :=
+  le_congr (monus_succ_of_lt h) (.eqRefl _) (monus_le_self a b)
+
+theorem le_add_monus (a b : PTm n) : Γ ⊢[PRAAx] le a (b + monus a b) :=
+  le_of_eq_add (d := monus b a) (by ipra_lc natEq (monus_max (Γ := Γ) a b))
 
 end LeanProofs.IPRA.Common

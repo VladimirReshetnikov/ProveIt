@@ -12,17 +12,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactAlignedThreeSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactAlignedTime (alignedSamples)
 open GaussianCompactRiemannName (quadrature)
 open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

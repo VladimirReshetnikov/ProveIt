@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsRawResidual
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianEulerIntegrationByPartsCompactNames (leftF leftData boundaryF boundaryData productModulus)
 open GaussianEulerIntegrationByPartsCompactNameObservations (rawLeft left_readback boundary_readback)
@@ -23,9 +23,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

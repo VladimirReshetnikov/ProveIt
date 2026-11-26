@@ -1,5 +1,4 @@
 import IPRADerivations.Core.Powers
-import IPRADerivations.Core.Tactic
 
 /-! Imported from the packet `analysis/quantum_ipra_2026-11-20`, `lean/ResolventTail.lean`: the namespace is placed under `LeanProofs.IPRA` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
 
@@ -8,10 +7,7 @@ After clearing denominators the statement is a natural-number inequality,
 proved by quantifier-free induction in the object calculus. -/
 
 namespace LeanProofs.IPRA.Analysis.Quantum.ResolventTail
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open LeanProofs.ConciseIPRA.PTm (zero succ)
+open_ipra
 
 variable {n : Nat} {Γ : List (Fm PTm n)}
 
@@ -22,11 +18,9 @@ def bound (k a b : PTm n) : Fm PTm n :=
 private theorem start (a b : PTm n) : Γ ⊢[PRAAx] bound zero a b := by
   unfold bound
   apply le_of_eq_add (d := zero)
-  have ha := natEq (pw_zero a (Γ := Γ))
-  have hs := natEq (pw_zero (a+b) (Γ := Γ))
   apply deriveNat
   ipra_simps
-  rw [ha, hs]
+  rw [natEq (pw_zero a (Γ := Γ)), natEq (pw_zero (a+b) (Γ := Γ))]
   ring
 
 private theorem advance (k a b : PTm n) (h : Γ ⊢[PRAAx] bound k a b) :

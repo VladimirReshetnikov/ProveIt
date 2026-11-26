@@ -15,7 +15,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalLogThinChordReadback
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaNegativeCriticalCorrection (guard)
@@ -37,10 +37,6 @@ open GaussianReciprocalHorner (qadd_commutative qsub_add_cancel)
 open GaussianStirlingGlobalBounds (small_join)
 open GaussianStirlingTailComparison (point_add_upper_same point_order_refl)
 open RationalValueBounds (upper upper_congr upper_of_order upper_of_radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -49,10 +45,7 @@ local notation "G" => nameF
 def budget (a c b N W : PTm n) : PTm n :=
   cost G W (centerData a c b N W)+cost G (pred W) (nameData a b N)+num 8
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (a c b N W : PTm n) :
-    Syn.subst σ (budget a c b N W) =
-      budget (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ W) := by
-  simp [budget]
+ipra_subst budget
 
 private theorem scale_subtract (W x y : PTm n) :
     Γ ⊢[PRAAx] qsub (natScale W x) (natScale W y) ≐ natScale W (qsub x y) :=

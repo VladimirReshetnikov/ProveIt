@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDominantMagnitude
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (input unit unit_positive coefficient)
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax
   (four exponent score numerator denominator score_represents denominator_positive)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianDominantPlateau (center winner)
 open LeanProofs.IPRA.Analysis.GaussianOffDominantSum (selectedScore)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,18 +37,12 @@ def lowerBound (C N : PTm n) : Fm PTm n := neg
   (RationalArgmin.rationalLE (multiple (squaredBudget N) (selectedScore C N)) (constantScore C N))
 def upperBound (C N : PTm n) : Fm PTm n := RationalArgmin.rationalLE (selectedScore C N) (constantScore C N)
 
-@[simp] theorem subst_restoreFactor {m : ℕ} (σ : Fin n → PTm m) (h i : PTm n) :
-    Syn.subst σ (restoreFactor h i) = restoreFactor (Syn.subst σ h) (Syn.subst σ i) := by simp [restoreFactor]
-@[simp] theorem subst_squaredBudget {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (squaredBudget N) = squaredBudget (Syn.subst σ N) := by simp [squaredBudget]
-@[simp] theorem subst_multiple {m : ℕ} (σ : Fin n → PTm m) (W q : PTm n) :
-    Syn.subst σ (multiple W q) = multiple (Syn.subst σ W) (Syn.subst σ q) := by simp [multiple]
-@[simp] theorem subst_constantScore {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (constantScore C N) = constantScore (Syn.subst σ C) (Syn.subst σ N) := by simp [constantScore]
-@[simp] theorem subst_lowerBound {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (lowerBound C N).subst σ = lowerBound (Syn.subst σ C) (Syn.subst σ N) := by simp [lowerBound]
-@[simp] theorem subst_upperBound {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (upperBound C N).subst σ = upperBound (Syn.subst σ C) (Syn.subst σ N) := by simp [upperBound]
+ipra_subst restoreFactor
+ipra_subst squaredBudget
+ipra_subst multiple
+ipra_subst constantScore
+ipra_subst lowerBound
+ipra_subst upperBound
 
 theorem denominator_factor (C N E h i : PTm n) : Γ ⊢[PRAAx]
     denominator C N E h i ≐ GaussianBalancedRadiusValues.scaledDenominator C N E i*restoreFactor h i := by
@@ -164,10 +155,8 @@ theorem dominant_upper (C N : PTm n) (hInput : Γ ⊢[PRAAx] input C N) : Γ ⊢
 def selectedNumerator (C N : PTm n) : PTm n := numerator C N (GaussianBalancedRadiusSearch.radiusIndex C N) (winner C N)
 def selectedDenominator (C N : PTm n) : PTm n := denominator C N (GaussianBalancedRadiusHeight.E C N) (center C N) (winner C N)
 
-@[simp] theorem subst_selectedNumerator {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (selectedNumerator C N) = selectedNumerator (Syn.subst σ C) (Syn.subst σ N) := by simp [selectedNumerator]
-@[simp] theorem subst_selectedDenominator {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (selectedDenominator C N) = selectedDenominator (Syn.subst σ C) (Syn.subst σ N) := by simp [selectedDenominator]
+ipra_subst selectedNumerator
+ipra_subst selectedDenominator
 
 theorem selected_represents (C N : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (selectedScore C N) (ZT.ofNat (selectedNumerator C N)) (selectedDenominator C N) :=
@@ -183,8 +172,7 @@ theorem selected_positive (C N : PTm n) (hInput : Γ ⊢[PRAAx] input C N) : Γ 
 
 def certificate (C N : PTm n) : Fm PTm n :=
   neg (RationalArgmin.rationalLE (selectedScore C N) (fraction zero one)) ⋏ (upperBound C N ⋏ lowerBound C N)
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (certificate C N).subst σ = certificate (Syn.subst σ C) (Syn.subst σ N) := by simp [certificate]
+ipra_subst certificate
 
 theorem dominant_magnitude (C N : PTm n) (hInput : Γ ⊢[PRAAx] input C N) : Γ ⊢[PRAAx] certificate C N :=
   .andI (selected_positive C N hInput) (.andI (dominant_upper C N hInput) (dominant_lower C N hInput))
@@ -200,23 +188,21 @@ def output (C N : PTm n) : PTm n := pairT (selectedScore C N) (pairT (constantSc
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (C N : PTm n) : PTm n := ap2 outputF C N
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (run C N) = run (Syn.subst σ C) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] run C N ≐ output C N := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![C,N]
 theorem returned_score (C N : PTm n) : Γ ⊢[PRAAx] fstT (run C N) ≐ selectedScore C N :=
-  (congrFst (program_at C N)).eqTrans (fst_pair _ _)
+  (program_at C N).fstE
 theorem returned_constant (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N)) ≐ constantScore C N :=
-  (congrFst ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.fstE
 theorem returned_budget (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N))) ≐ descentD N :=
-  (congrFst ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.fstE
 theorem returned_numerator (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run C N)))) ≐ selectedNumerator C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.fstE
 theorem returned_denominator (C N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run C N)))) ≐ selectedDenominator C N :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE
 
 theorem exact_descent_budget_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1
     ((descentD (var 0) ≐ unit (var 0+four*var 0*var 0)) ⋏

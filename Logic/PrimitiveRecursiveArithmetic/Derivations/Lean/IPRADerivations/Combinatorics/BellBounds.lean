@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.Bell
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Positivity and the bounds `2^{n−1} ≤ B_n ≤ n^n`
@@ -22,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (bell recB inst2_rec bell_succ bell_zero)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom bden_pos bden_zero quo_of_eq)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (tBody inst2_t binomial_at congrBinom congrPw)
@@ -30,10 +29,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_eq')
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -130,15 +125,11 @@ theorem upper_step {M : PTm n} (hS : Γ ⊢[PRAAx] ap2 (sumF uB) (succ M) zero �
 private abbrev upperF : Fm PTm 1 := ap2 (sumF uB) (succ (var 0)) zero ≐ zero
 
 private theorem upper₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] upperF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
-    refine (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) ?_).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · refine (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) ?_).eqTrans (add_zero _))
     rw [inst2_u]
     exact (congrMonus bell_zero (pw_zero _)).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _))
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
-    refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
+  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
     rw [inst2_u]
     exact upper_step Prf.hyp0
 

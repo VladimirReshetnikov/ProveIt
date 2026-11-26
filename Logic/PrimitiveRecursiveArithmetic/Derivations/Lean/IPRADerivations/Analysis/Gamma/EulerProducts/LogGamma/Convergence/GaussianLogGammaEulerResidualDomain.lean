@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerResidualDomain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code scale mul oneCode eval_re_code eval_im_code)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represents
@@ -24,9 +24,6 @@ open GaussianRationalMetric (bounded bounded_of_cleared)
 open GaussianRightHalfPlaneLogarithmOffset (signedImag offset)
 open GaussianRootAlgebra (equal equal_of_values normSq_equal re_mul im_mul re_scale im_scale re_one im_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,24 +33,13 @@ def source (A B D neg R : PTm n) : Fm PTm n :=
 def rowOffset (A B D neg k : PTm n) : PTm n := offset (A+k*D) B (D*k) neg
 def linearTerm (A B D neg k : PTm n) : PTm n := ofGaussian (native A B neg) (D*k)
 
-@[simp] theorem subst_native {m : ℕ} (σ : Fin n → PTm m) (A B neg : PTm n) :
-    Syn.subst σ (native A B neg) = native (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) := by
-  simp [native]
+ipra_subst native
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (A B D neg R : PTm n) :
-    (source A B D neg R).subst σ =
-      source (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ R) := by
-  simp [source,GaussianRightHalfPlaneLogarithm.source,ComplexLogarithmRemainder.bounded]
+ipra_subst source [GaussianRightHalfPlaneLogarithm.source, ComplexLogarithmRemainder.bounded]
 
-@[simp] theorem subst_rowOffset {m : ℕ} (σ : Fin n → PTm m) (A B D neg k : PTm n) :
-    Syn.subst σ (rowOffset A B D neg k) = rowOffset (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ neg) (Syn.subst σ k) := by
-  simp [rowOffset]
+ipra_subst rowOffset
 
-@[simp] theorem subst_linearTerm {m : ℕ} (σ : Fin n → PTm m) (A B D neg k : PTm n) :
-    Syn.subst σ (linearTerm A B D neg k) =
-      linearTerm (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ k) := by
-  simp [linearTerm]
+ipra_subst linearTerm
 
 theorem centered_native (A B D neg k : PTm n) : Γ ⊢[PRAAx] equal (rowOffset A B D neg k) (native A B neg) := by
   apply equal_of_values

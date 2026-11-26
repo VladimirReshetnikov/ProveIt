@@ -15,12 +15,10 @@ set_option maxHeartbeats 1450000
 
 namespace LeanProofs.IPRA.Analysis.SignedDiscreteDerivativeOperators
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open SignedDiscreteDerivativeBlock (sliceBody slice block slice_at)
 open SignedGridStepBounds (neg_value read_index)
 open LeanProofs.IPRA.Foundations.SignedSumScale (sum_scale)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

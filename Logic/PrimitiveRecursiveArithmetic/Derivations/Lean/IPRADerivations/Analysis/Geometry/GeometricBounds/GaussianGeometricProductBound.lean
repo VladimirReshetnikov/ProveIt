@@ -16,16 +16,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeometricProductBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeometricProduct
 open LeanProofs.IPRA.Analysis.GaussianGeometricProductTail
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_order)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,12 +30,8 @@ def comparison (C K T j : PTm n) : Fm PTm n :=
     (denominator C K j*numerator C K T*pw K T*gap C K j)
 def radius (C T : PTm n) : PTm n := two*pw (one+C) T
 
-@[simp] theorem subst_comparison {m : ℕ} (σ : Fin n → PTm m) (C K T j : PTm n) :
-    (comparison C K T j).subst σ = comparison (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ T) (Syn.subst σ j) := by
-  simp [comparison]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (C T : PTm n) :
-    Syn.subst σ (radius C T) = radius (Syn.subst σ C) (Syn.subst σ T) := by
-  simp [radius]
+ipra_subst comparison
+ipra_subst radius
 
 theorem comparison_stage_congr (C K T j j' : PTm n) (e : Γ ⊢[PRAAx] j ≐ j')
     (h : Γ ⊢[PRAAx] comparison C K T j) : Γ ⊢[PRAAx] comparison C K T j' := by
@@ -82,11 +74,9 @@ theorem comparison_offset (C K T m : PTm n) (hK : Γ ⊢[PRAAx] le one K)
   have hSmall' : Γ.map Fm.shift ⊢[PRAAx] small (Syn.shift C) (Syn.shift K) (Syn.shift T) := by
     simpa [Fm.shift,Syn.shift] using hSmall.shift
   have all : Γ ⊢[PRAAx] .all (comparison (Syn.shift C) (Syn.shift K) (Syn.shift T) (Syn.shift T+var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_comparison,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact comparison_stage_congr C K T T (T+zero) (add_zero T).eqSymm (comparison_reflexive C K T)
-    · simp only [subst_comparison,PTm.subst_add,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact comparison_stage_congr _ _ _ _ _ (add_succ _ _).eqSymm
+    ipra_qfind (le_QF _ _) [subst_comparison]
+    · exact comparison_stage_congr C K T T (T+zero) (add_zero T).eqSymm (comparison_reflexive C K T)
+    · exact comparison_stage_congr _ _ _ _ _ (add_succ _ _).eqSymm
         (comparison_step _ _ _ _ hK'.wk hSmall'.wk (le_add_right _ _) Prf.hyp0)
   simpa only [subst_comparison,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE m
 

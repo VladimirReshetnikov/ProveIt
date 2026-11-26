@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerCutoffBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (radius)
 open GaussianGammaIntegralCutoffs (etaDen top eta_den_positive)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
@@ -22,8 +22,6 @@ open GaussianNamedEulerQuadrature (original retimed)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

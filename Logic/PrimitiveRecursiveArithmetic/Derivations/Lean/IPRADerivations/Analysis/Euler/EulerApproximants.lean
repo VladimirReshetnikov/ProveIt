@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.BohrMollerupUniqueness
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The global Euler approximants and their convergence from below
@@ -30,13 +29,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.EulerApproximants
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BohrMollerupUniqueness (rB rB_at Pq)
 open LeanProofs.IPRA.Foundations.MixedRadix (prod_split prod_succ')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -95,10 +90,8 @@ theorem product_defect (N m x : PTm n)
       (le (pw (Syn.shift N) (var 0)) (Qp g (var 0) (Syn.shift x)) ⋏
         le (Syn.shift N * Qp g (var 0) (Syn.shift x))
           (pw (Syn.shift N) (succ (var 0)) + Sc c (var 0) (Syn.shift x) * Qp g (var 0) (Syn.shift x)))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       have q := natEq (prod_zero (Γ := le zero m :: Γ) g x)
       have s := natEq (sum_zero (Γ := le zero m :: Γ) c x)
       have p₀ := natEq (pw_zero (Γ := le zero m :: Γ) N)
@@ -106,9 +99,7 @@ theorem product_defect (N m x : PTm n)
       refine .andI ?_ ?_
       · ipra_le 0 using rw [q, p₀]; ring
       · ipra_le 0 using rw [q, s, p₁, p₀]; ring
-    · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       have hk : (le (succ (var 0)) (Syn.shift m) ::
           (le (var 0) (Syn.shift m) ⟶
             (le (pw (Syn.shift N) (var 0)) (Qp g (var 0) (Syn.shift x)) ⋏

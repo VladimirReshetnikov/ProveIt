@@ -19,7 +19,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelWeightedBridge
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelFrozenHyperbolic (fixedExpF fixedExpData fixed_exp_regular)
 open GaussianBinetKernelHalfExponential (half_square half_mixed)
 open GaussianBinetKernelImaginaryRatioPrefix (timeSquare)
@@ -42,10 +42,6 @@ open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalMetric (qsub qnegative qsub_represents qnegative_represents qsub_canonical qnegative_canonical)
 open GaussianRationalSyntheticDivision (qone qadd_congr qsub_congr qmul_congr rescale_to)
 open GaussianRootAlgebra (equal_of_values re_neg im_neg re_sub im_sub)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Diff" => GaussianNamedDifference.nameF
@@ -58,11 +54,8 @@ abbrev nameF : PR 2 := multiplyF dampingF GaussianBinetKernelCofinal.nameF
 def data (A B : PTm n) : PTm n := multiplyData dampingF GaussianBinetKernelCofinal.nameF
   (dampingData A B) (GaussianBinetKernelRows.inputData A B)
 
-@[simp] theorem subst_dampingData {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (dampingData A B) = dampingData (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [dampingData,decayData,GaussianGammaFiniteApproximantName.exponentialInputData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (data A B) = data (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst dampingData [decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst data
 
 theorem damping_regular (A B : PTm n) : Γ ⊢[PRAAx] pointCN dampingF (dampingData A B) :=
   GaussianNamedDifference.name_regular _ _ _ _ (constant_regular _) (observation_regular A B)

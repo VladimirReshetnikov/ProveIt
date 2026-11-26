@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialPowerSupport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_left qmul_zero_right)
 open GaussianRationalPolynomialPowers (powerPrefix prefix_succ)
@@ -25,10 +25,6 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_ins
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,12 +37,8 @@ def supportSyntax (C N K j : PTm n) : BFm n := .imp (.le j K) (.all (succ N)
   (.imp (.lt (var 0) (Syn.shift j)) (.eq
     (exponentCoefficient (powerPrefix (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift j))
       (Syn.shift j*Syn.shift N) (var 0)) qzero)))
-@[simp] theorem subst_lowSupport {l : ℕ} (σ : Fin n → PTm l) (C N K j : PTm n) :
-    (lowSupport C N K j).subst σ = lowSupport (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp [lowSupport,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_supportLaw {l : ℕ} (σ : Fin n → PTm l) (C N K j : PTm n) :
-    (supportLaw C N K j).subst σ = supportLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp [supportLaw]
+ipra_subst lowSupport [Syn.subst_shift, Syn.shift_subst]
+ipra_subst supportLaw
 theorem support_formula (C N K j : PTm n) : formula (supportSyntax C N K j) = supportLaw C N K j := by
   simp [supportSyntax,supportLaw,lowSupport,formula,BFm.le,BFm.lt,le,lt]
 
@@ -173,23 +165,16 @@ def output (C N K j e : PTm n) : PTm n :=
   pairT (powerPrefix C N K j) (exponentCoefficient (powerPrefix C N K j) (j*N) e)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (C N K j e : PTm n) : PTm n := PTm.app outputF ![C,N,K,j,e]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N K j e : PTm n) :
-    Syn.subst σ (output C N K j e) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) (Syn.subst σ e) := by
-  simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N K j e : PTm n) :
-    Syn.subst σ (run C N K j e) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) (Syn.subst σ e) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N K j e : PTm n) : Γ ⊢[PRAAx] run C N K j e ≐ output C N K j e := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,N,K,j,e]
 theorem returned_power (C N K j e : PTm n) : Γ ⊢[PRAAx] fstT (run C N K j e) ≐ powerPrefix C N K j :=
-  (congrFst (program_at C N K j e)).eqTrans (fst_pair _ _)
+  (program_at C N K j e).fstE
 theorem returned_coefficient (C N K j e : PTm n) : Γ ⊢[PRAAx]
     sndT (run C N K j e) ≐ exponentCoefficient (powerPrefix C N K j) (j*N) e :=
-  (congrSnd (program_at C N K j e)).eqTrans (snd_pair _ _)
+  (program_at C N K j e).sndE
 theorem returned_zero (C N K j e : PTm n) (hC : Γ ⊢[PRAAx] entry C N ≐ qzero)
     (hj : Γ ⊢[PRAAx] le j K) (he : Γ ⊢[PRAAx] le e N) (hej : Γ ⊢[PRAAx] lt e j) : Γ ⊢[PRAAx]
     sndT (run C N K j e) ≐ qzero :=

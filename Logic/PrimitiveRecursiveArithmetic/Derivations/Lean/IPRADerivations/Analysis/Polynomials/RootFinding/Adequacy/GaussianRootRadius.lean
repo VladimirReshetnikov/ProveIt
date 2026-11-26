@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (CN A R)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
@@ -26,21 +26,14 @@ open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero evaluate)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def roots (step a : PR 3) (N t x : PTm n) : PTm n := GaussianRootSamples.rootList step a N (R a N x) t x
 def product (step a : PR 3) (N t x : PTm n) : PTm n := GaussianRootSamples.productPolynomial step a N (R a N x) t x
 
-@[simp] theorem subst_roots {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N t x : PTm n) :
-    Syn.subst σ (roots step a N t x) = roots step a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp only [roots,GaussianRootSamples.subst_rootList,GaussianCoefficientNameBounds.subst_R]
-@[simp] theorem subst_product {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N t x : PTm n) :
-    Syn.subst σ (product step a N t x) = product step a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp only [product,GaussianRootSamples.subst_productPolynomial,GaussianCoefficientNameBounds.subst_R]
+ipra_subst roots
+ipra_subst product
 
 theorem roots_length (step a : PR 3) (N t x : PTm n) : Γ ⊢[PRAAx] length (roots step a N t x) ≐ N :=
   GaussianRootSamples.root_list_length _ _ _ _ _ _
@@ -145,11 +138,8 @@ def output (step a : PR 3) (N t x : PTm n) : PTm n :=
 def outputF (step a : PR 3) : PR 3 := PTm.toPR (output step a (var 0) (var 1) (var 2))
 def run (step a : PR 3) (N t x : PTm n) : PTm n := ap3 (outputF step a) N t x
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N t x : PTm n) :
-    Syn.subst σ (output step a N t x) = output step a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp only [output,subst_pairT,subst_roots,subst_product,GaussianCoefficientNameBounds.subst_A,GaussianCoefficientNameBounds.subst_R]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N t x : PTm n) :
-    Syn.subst σ (run step a N t x) = run step a (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) := by simp only [run,subst_ap3]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (step a : PR 3) (N t x : PTm n) : Γ ⊢[PRAAx] run step a N t x ≐ output step a N t x := by
   simpa only [run,outputF,ap3,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
@@ -157,9 +147,9 @@ theorem program_at (step a : PR 3) (N t x : PTm n) : Γ ⊢[PRAAx] run step a N 
       toPR_eq (Γ := Γ) (output step a (var 0) (var 1) (var 2) : PTm 3) ![N,t,x]
 
 theorem returned_roots (step a : PR 3) (N t x : PTm n) : Γ ⊢[PRAAx] fstT (run step a N t x) ≐ roots step a N t x :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_product (step a : PR 3) (N t x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run step a N t x)) ≐ product step a N t x :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.fstE
 
 theorem returned_root_radius (step a : PR 3) (N t x i : PTm n)
     (hRD : Γ ⊢[PRAAx] monicRD step) (hCN : Γ ⊢[PRAAx] CN a N x)

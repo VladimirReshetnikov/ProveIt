@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSquareCancellation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qadd qadd_represents represents_congr represents_rescale)
 open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
@@ -27,8 +27,6 @@ open GaussianRelativeNormTriangle (signed_le_absolute)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 open GaussianRationalMetric (qsub qsub_canonical distanceBounded bounded)
 open GaussianRationalLowerBounds (lower name_lower inverse_bound)
 open GaussianNameReciprocal (lower_norm_positive)
@@ -38,8 +36,6 @@ open GaussianRationalPowerDifference (product_difference)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

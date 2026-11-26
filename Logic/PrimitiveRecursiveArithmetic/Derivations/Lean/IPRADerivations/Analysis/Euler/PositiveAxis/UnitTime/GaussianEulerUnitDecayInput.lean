@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitDecayInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianEuclideanDistanceName (pointCN)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -47,14 +43,10 @@ def source (a b E T : PTm n) : Fm PTm n := le one b ⋏
     Syn.subst σ (decayData a b) = decayData (Syn.subst σ a) (Syn.subst σ b) := by
   simp [decayData,GaussianGammaFiniteApproximantName.exponentialInputData]
 
-@[simp] theorem subst_compactDenominator {m : ℕ} (σ : Fin n → PTm m) (E T : PTm n) :
-    Syn.subst σ (compactDenominator E T) = compactDenominator (Syn.subst σ E) (Syn.subst σ T) := by simp [compactDenominator]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p E T : PTm n) :
-    Syn.subst σ (clock p E T) = clock (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ T) := by simp [clock]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b E T : PTm n) :
-    Syn.subst σ (data a b E T) = data (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b E T : PTm n) :
-    (source a b E T).subst σ = source (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
+ipra_subst compactDenominator
+ipra_subst clock
+ipra_subst data
+ipra_subst source
 
 theorem lower_margin_budget (E T : PTm n) : Γ ⊢[PRAAx] le (two*pw (num 3) T) (compactDenominator E T) :=
   le_congr (by ipra_ring) (by unfold compactDenominator; ipra_ring)

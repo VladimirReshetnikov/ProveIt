@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedInputRetiming
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -32,10 +32,6 @@ open GaussianUnitIntervalInputDecoding (lowerPoint upperPoint)
 open RationalCompactObservationTightening (lower_guard upper_guard)
 open RationalGaussianEmbedding (axis_congr)
 open RationalValueBounds (upper upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,9 +39,7 @@ def orderedWindow (f : PR 2) (x E : PTm n) : Fm PTm n :=
   pointCN f x ⋏ (realSamples f x ⋏ (le one E ⋏
     (realOrder constantF f (fraction one E) x ⋏ realOrder f constantF x (fraction (monus E one) E))))
 
-@[simp] theorem subst_orderedWindow {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E : PTm n) :
-    (orderedWindow f x E).subst σ = orderedWindow f (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [orderedWindow,one]
+ipra_subst orderedWindow [one]
 
 private theorem left_observation (f : PR 2) (p x E : PTm n) (hs : Γ ⊢[PRAAx] orderedWindow f x E) :
     Γ ⊢[PRAAx] upper (lowerPoint E) (fstT (ap2 f p x)) one (unit p) := by

@@ -14,7 +14,7 @@ set_option maxHeartbeats 200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedImaginaryNaturalScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyValues (imaginaryPoint)
 open GaussianNameConjugation (pointwiseEqual equal_samples_cross)
 open GaussianNameEquivalence (crossEquivalent cross_symm)
@@ -27,8 +27,6 @@ open GaussianRationalNaturalScale (naturalPoint natScale natScale_as_product nat
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

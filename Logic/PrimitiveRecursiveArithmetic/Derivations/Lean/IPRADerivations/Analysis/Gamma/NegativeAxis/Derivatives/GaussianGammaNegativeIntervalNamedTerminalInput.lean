@@ -19,7 +19,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedTerminalDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianEulerNamedShiftInput (shiftF shiftData)
 open GaussianEuclideanDistanceName (pointCN)
@@ -46,9 +46,6 @@ open RationalArgmin (rationalLE_congr)
 open RationalCompactObservationTightening (lower_guard upper_guard)
 open RationalGaussianEmbedding (axis axis_add axis_one axis_congr)
 open RationalValueBounds (upper upper_congr upper_of_order upper_of_radius upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

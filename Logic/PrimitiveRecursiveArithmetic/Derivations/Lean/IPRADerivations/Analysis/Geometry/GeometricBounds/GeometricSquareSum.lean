@@ -1,7 +1,5 @@
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Powers
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite identity for `∑ (n + 1) zⁿ`
@@ -24,11 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GeometricSquareSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

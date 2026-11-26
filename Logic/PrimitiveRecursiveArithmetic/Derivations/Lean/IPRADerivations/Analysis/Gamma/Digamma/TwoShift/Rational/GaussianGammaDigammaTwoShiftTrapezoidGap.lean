@@ -13,7 +13,7 @@ set_option maxHeartbeats 2600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftTrapezoidGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit_positive)
 open GaussianGammaDigammaHarmonicCells (cell halfReciprocal point_fraction_represents trapezoid_exact)
@@ -27,10 +27,6 @@ open RationalGaussianEmbedding (embed scalarZero scalar_zero_represents)
 open RationalHarmonicInterval (interval common common_canonical horizon left_horizon)
 open RationalRepresentedUpper (left right from_signed)
 open RationalValueBounds (upper upper_of_order upper_order_left radius_of_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -22,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDominantDecomposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qadd qmul)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalSumSegments (segment partialSum sum entriesEqual)
@@ -31,10 +31,6 @@ open LeanProofs.IPRA.Analysis.GaussianOffDominantTerms (term lowerList upperList
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (coefficient)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -145,27 +141,21 @@ def output (C N delta k : PTm n) : PTm n := pairT (evaluate C delta) (pairT (coe
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (C N delta k : PTm n) : PTm n := app outputF ![C,N,delta,k]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N delta k : PTm n) :
-    Syn.subst σ (output C N delta k) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) (Syn.subst σ k) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N delta k : PTm n) :
-    Syn.subst σ (run C N delta k) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ delta) (Syn.subst σ k) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N delta k : PTm n) : Γ ⊢[PRAAx] run C N delta k ≐ output C N delta k := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![C,N,delta,k]
 
 theorem returned_evaluation (C N delta k : PTm n) : Γ ⊢[PRAAx] fstT (run C N delta k) ≐ evaluate C delta :=
-  (congrFst (program_at C N delta k)).eqTrans (fst_pair _ _)
+  (program_at C N delta k).fstE
 theorem returned_constant (C N delta k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N delta k)) ≐ coefficient C N zero :=
-  (congrFst ((congrSnd (program_at C N delta k)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N delta k).sndE.fstE
 theorem returned_dominant (C N delta k : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N delta k))) ≐ term C N delta k :=
-  (congrFst ((congrSnd ((congrSnd (program_at C N delta k)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N delta k).sndE.sndE.fstE
 theorem returned_other (C N delta k : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run C N delta k))) ≐
     GaussianGeometricSumBound.otherSum (lowerList C N delta k) (upperList C N delta k) :=
-  (congrSnd ((congrSnd ((congrSnd (program_at C N delta k)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N delta k).sndE.sndE.sndE
 
 theorem returned_decomposition (C N delta k : PTm n)
     (hLen : Γ ⊢[PRAAx] length C ≐ succ N) (hk : Γ ⊢[PRAAx] le one k) (hkN : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]

@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianNamedPositiveLogarithmExponential
 import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact factorial and power normalizers in the Barnes recurrence
@@ -19,7 +18,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalGaussNormalizers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerHeadLower (translated)
@@ -31,9 +30,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalReciprocal (power)
 open GaussianRootAlgebra (equal equal_of_values equal_trans re_add im_add re_scale im_scale re_one im_one)
 open Products (fact)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

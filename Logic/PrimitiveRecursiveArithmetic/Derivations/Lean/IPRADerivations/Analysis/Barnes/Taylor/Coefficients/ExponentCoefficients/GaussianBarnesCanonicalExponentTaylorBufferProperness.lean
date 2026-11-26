@@ -17,7 +17,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorBufferProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceEquality (agree sequence_equal)
 open ComplexLogarithmRemainder (scale)
@@ -29,10 +29,6 @@ open GaussianBarnesCanonicalTaylorTailFraction (second_tail_equal higher_tail_eq
 open GaussianRationalHorner (ofGaussian qzero positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
 open RationalArithmetic (select)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "sg" => LeanProofs.IPRA.Signum.sg

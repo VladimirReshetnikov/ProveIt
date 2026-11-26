@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingFormula (source powerF powerData)
 open GaussianEulerNamedPowerScalingCutoff (frozenIndex rationalInputAt rationalInput)
 open GaussianNamedPositiveLogarithm (numerator denominator)
@@ -24,10 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,16 +34,9 @@ abbrev nameF (F G : PR 2) : PR 2 := GaussianEulerNamedPowerScalingCutoff.nameF F
 def data (F G : PR 2) (z R B A x E T y H J : PTm n) : PTm n :=
   GaussianEulerNamedPowerScalingCutoff.data z R B A x E T y H J (scaleBound F G z R B x E y H)
 
-@[simp] theorem subst_scaleBound {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (z R B x E y H : PTm n) :
-    Syn.subst σ (scaleBound F G z R B x E y H) = scaleBound F G (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ y) (Syn.subst σ H) := by
-  simp [scaleBound,powerData,GaussianEulerNamedPowerScalingFormula.exponentData,
-    GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst scaleBound [powerData, GaussianEulerNamedPowerScalingFormula.exponentData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (z R B A x E T y H J : PTm n) :
-    Syn.subst σ (data F G z R B A x E T y H J) = data F G (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ y) (Syn.subst σ H) (Syn.subst σ J) := by
-  simp [data]
+ipra_subst data
 
 theorem original_rational_panel_rate (F G : PR 2) (s z R B A x E T y H J : PTm n)
     (hs : Γ ⊢[PRAAx] source F G z R B A x E T y H J) : Γ ⊢[PRAAx]

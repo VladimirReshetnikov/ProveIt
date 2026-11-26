@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactPowerParameterRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactLogarithmBounds (domain)
 open GaussianEulerExponentCompactBounds (source)
 open GaussianEulerIntegrandName (coefficient powerF powerData powerExponentF powerExponentData powerRadius)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianNamedDifferenceRate (rate_parameters_congr)
 open GaussianNameEquivalence (cross_refl)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,15 +42,9 @@ def input (z w R B D E T a b H N : PTm n) : Fm PTm n :=
   source z R B E ⋏ (source w R D E ⋏
     (domain a b E T ⋏ (le one N ⋏ distanceBounded (ofGaussian z B) (ofGaussian w D) H N)))
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (gain R E T) = gain (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [gain]
+ipra_subst gain
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z w R B D E T a b H N : PTm n) :
-    (input z w R B D E T a b H N).subst σ =
-      input (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ D)
-        (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ H) (Syn.subst σ N) := by
-  simp [input]
+ipra_subst input
 
 private theorem logarithm_samples (a b E T : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (ht : Γ ⊢[PRAAx] domain a b E T) : Γ ⊢[PRAAx] sampleBound L (logData a b) (logRadius E T) := by

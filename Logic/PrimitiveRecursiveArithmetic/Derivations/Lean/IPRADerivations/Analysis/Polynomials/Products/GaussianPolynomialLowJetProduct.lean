@@ -16,16 +16,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialLowJetProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalPolynomialProduct (product)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside cauchySum termBody data term_at)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,9 +29,7 @@ def jetEqual (P N Q M H : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (Syn.shift H)) ⟶
     exponentCoefficient (Syn.shift P) (Syn.shift N) (var 0) ≐
       exponentCoefficient (Syn.shift Q) (Syn.shift M) (var 0))
-@[simp] theorem subst_jetEqual {m : ℕ} (σ : Fin n → PTm m) (P N Q M H : PTm n) :
-    (jetEqual P N Q M H).subst σ = jetEqual (Syn.subst σ P) (Syn.subst σ N)
-      (Syn.subst σ Q) (Syn.subst σ M) (Syn.subst σ H) := by simp [jetEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst jetEqual [Syn.subst_shift, Syn.shift_subst]
 def jetSyntax (P N Q M H : PTm n) : BFm n := .all (succ H) (.eq
   (exponentCoefficient (Syn.shift P) (Syn.shift N) (var 0))
     (exponentCoefficient (Syn.shift Q) (Syn.shift M) (var 0)))

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFi
 import IPRADerivations.Analysis.Names.GaussianNameConjugation
 import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassLimit
 import IPRADerivations.Analysis.Gamma.GaussianGammaReciprocalInverse
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original Gamma names respect native input values at the same denominator
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaInputProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRootAlgebra (equal)
 open GaussianGammaFiniteValueProperness (fraction_equal source_equal literal_prefix_equal)
 open GaussianGammaCanonicalExponent (source constantF gammaF)
@@ -29,9 +28,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -69,9 +65,7 @@ theorem finite_name_proper (z w R B N : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
 
 def positiveData (q : PTm n) : PTm n := GaussianGammaFiniteApproximantName.exponentialInputData positiveExponentF
   (GaussianNameArithmetic.multiplyData gammaF constantF zero q)
-@[simp] theorem subst_positiveData {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    Syn.subst σ (positiveData q) = positiveData (Syn.subst σ q) := by
-  simp [positiveData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst positiveData [GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem positive_exp_data_equal (z w B : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h : Γ ⊢[PRAAx] equal z w) : Γ ⊢[PRAAx]
     positiveExpData z B ≐ positiveExpData w B := by
@@ -195,23 +189,14 @@ def output (p q z w R B d : PTm n) : PTm n := pairT (GaussianGammaC7Name.sample 
       (ap2 GaussianGammaReciprocalInverse.gammaF q (GaussianGammaReciprocalInverse.gammaData w R B d))))
 def outputF : PR 7 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (p q z w R B d : PTm n) : PTm n := PTm.app outputF ![p,q,z,w,R,B,d]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q z w R B d : PTm n) :
-    Syn.subst σ (output p q z w R B d) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ w) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by
-  simp [output,GaussianGammaReciprocalInverse.gammaData,GaussianGammaReciprocalInverse.gammaHeight]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q z w R B d : PTm n) :
-    Syn.subst σ (run p q z w R B d) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ w) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output [GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst run
 
 theorem program_at (p q z w R B d : PTm n) : Γ ⊢[PRAAx] run p q z w R B d ≐ output p q z w R B d := by
   simpa [run,outputF] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![p,q,z,w,R,B,d]
 theorem returned_P_left (p q z w R B d : PTm n) : Γ ⊢[PRAAx] fstT (run p q z w R B d) ≐ GaussianGammaC7Name.sample p z R B :=
-  (congrFst (program_at p q z w R B d)).eqTrans (fst_pair _ _)
+  (program_at p q z w R B d).fstE
 theorem returned_P_right (p q z w R B d : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p q z w R B d)) ≐ GaussianGammaC7Name.sample q w R B :=
   ((congrFst (congrSnd (program_at p q z w R B d))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_Gamma_left (p q z w R B d : PTm n) : Γ ⊢[PRAAx]

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -27,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,9 +34,7 @@ def source (f : PR 2) (x R E : PTm n) : Fm PTm n := pointCN f x ⋏ .all
   (GaussianGammaReciprocalInverse.source (rawGaussian (ap2 f (var 0) (Syn.shift x)))
     (Syn.shift R) (rawDen (ap2 f (var 0) (Syn.shift x))) one (Syn.shift E))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x R E : PTm n) :
-    (source f x R E).subst σ = source f (Syn.subst σ x) (Syn.subst σ R) (Syn.subst σ E) := by
-  simp [source,Syn.subst_shift,Syn.shift_subst,one]
+ipra_subst source [Syn.subst_shift, Syn.shift_subst, one]
 
 theorem source_at (f : PR 2) (k x R E : PTm n) (h : Γ ⊢[PRAAx] source f x R E) : Γ ⊢[PRAAx]
     GaussianGammaReciprocalInverse.source (rawGaussian (ap2 f k x)) R (rawDen (ap2 f k x)) one E := by
@@ -54,16 +49,10 @@ def data (x R E : PTm n) : PTm n := pairT x (pairT R E)
 def nameF (f : PR 2) : PR 2 := PTm.toPR
   (sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))))
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p R E : PTm n) :
-    Syn.subst σ (clock p R E) = clock (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ E) := by simp [clock]
-@[simp] theorem subst_encodedData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x R E : PTm n) :
-    Syn.subst σ (encodedData f k x R E) = encodedData f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ R) (Syn.subst σ E) := by
-  simp [encodedData,gammaData,GaussianGammaReciprocalInverse.gammaHeight]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x R E : PTm n) :
-    Syn.subst σ (sample f p x R E) = sample f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ R) (Syn.subst σ E) := by
-  simp [sample]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x R E : PTm n) :
-    Syn.subst σ (data x R E) = data (Syn.subst σ x) (Syn.subst σ R) (Syn.subst σ E) := by simp [data]
+ipra_subst clock
+ipra_subst encodedData [gammaData, GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst sample
+ipra_subst data
 
 private theorem demand_at (s R E : PTm n) : Γ ⊢[PRAAx] inst2 demandBody s (pairT R E) ≐ modulus s R E := by
   have h := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (modulus (var 0) (var 1) (var 2) : PTm 3)

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianExponentialDiskMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qadd represents represents_congr represents_rescale qadd_represents qmul_represents)
 open GaussianRationalMetric (bounded comparison_to_cleared)
 open GaussianRationalReciprocal (power bound_congr)
@@ -25,25 +25,19 @@ open GaussianRootAlgebra (equal_of_values re_scale im_scale re_one im_one re_add
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianRationalSyntheticBounds (natCode natCode_represents)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def numerator (R K : PTm n) : PTm n := ExponentialTail.tsum zero R (succ K)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (R K : PTm n) :
-    Syn.subst σ (numerator R K) = numerator (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [numerator, ExponentialTail.tsum]
+ipra_subst numerator [ExponentialTail.tsum]
 
 theorem numerator_zero (R : PTm n) : Γ ⊢[PRAAx] numerator R zero ≐ one := by
   have e₀ := natEq (ExponentialTail.tsum_zero (Γ := Γ) zero R)
   have ep := natEq ((congrAp2 powF (zero_add (Γ := Γ) zero) (.eqRefl R)).eqTrans (pw_zero R))
-  have e := natEq (ExponentialTail.tsum_succ (Γ := Γ) zero R zero)
   apply deriveNat
   unfold numerator
-  rw [e]
+  rw [natEq (ExponentialTail.tsum_succ (Γ := Γ) zero R zero)]
   ipra_simps
   rw [ep, e₀]
   ring
@@ -57,21 +51,15 @@ theorem natural_power_represents (R k : PTm n) : Γ ⊢[PRAAx]
     represents (power (naturalPoint R) k) (scale (pw R k) oneCode) one := by
   have all : Γ ⊢[PRAAx] .all (represents (power (naturalPoint (Syn.shift R)) (var 0))
       (scale (pw (Syn.shift R) (var 0)) oneCode) one) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [GaussianRationalHorner.subst_represents,GaussianRationalReciprocal.subst_power,
-        GaussianRationalNaturalScale.subst_naturalPoint,ComplexLogarithmRemainder.subst_scale,
-        ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,
-        PTm.subst_succ,PTm.subst_zero,subst_ap2]
-      have rp := GaussianRationalHorner.ofGaussian_represents (Γ := Γ) oneCode one (le_refl _)
+    ipra_qfind (⟨trivial,trivial⟩) [GaussianRationalHorner.subst_represents, GaussianRationalReciprocal.subst_power,
+        GaussianRationalNaturalScale.subst_naturalPoint, ComplexLogarithmRemainder.subst_scale,
+        ComplexLogarithmRemainder.subst_oneCode, PTm.subst_succ, PTm.subst_zero, subst_ap2]
+    · have rp := GaussianRationalHorner.ofGaussian_represents (Γ := Γ) oneCode one (le_refl _)
       exact represents_congr (GaussianRationalReciprocal.power_zero _).eqSymm (by
         apply equal_of_values
         · rw [re_one, re_scale, re_one, natEq (pw_zero (Γ := Γ) R)]; ipra_simps; ring
         · rw [im_one, im_scale, im_one]; ring) (.eqRefl _) rp
-    · simp only [GaussianRationalHorner.subst_represents,GaussianRationalReciprocal.subst_power,
-        GaussianRationalNaturalScale.subst_naturalPoint,ComplexLogarithmRemainder.subst_scale,
-        ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Syn.repl_zero,subst_repl_shift,
-        PTm.subst_succ,PTm.subst_zero,subst_ap2]
-      let r := Syn.shift R
+    · let r := Syn.shift R
       let j : PTm (n+1) := var 0
       let ih := represents (power (naturalPoint r) j) (scale (pw r j) oneCode) one
       have old : (ih :: Γ.map Fm.shift) ⊢[PRAAx] ih := Prf.hyp0
@@ -100,17 +88,14 @@ theorem natural_term_represents (R k : PTm n) : Γ ⊢[PRAAx]
 def majorantLaw (R K : PTm n) : Fm PTm n :=
   represents (scalarSum (naturalPoint R) K) (scale (numerator R K) oneCode) (fact (succ K))
 
-@[simp] theorem subst_majorantLaw {m : ℕ} (σ : Fin n → PTm m) (R K : PTm n) :
-    (majorantLaw R K).subst σ = majorantLaw (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [majorantLaw, fact]
+ipra_subst majorantLaw [fact]
 
 theorem majorant_zero (R : PTm n) : Γ ⊢[PRAAx] majorantLaw R zero := by
   change Γ ⊢[PRAAx] represents _ _ _
-  have e := natEq (numerator_zero (Γ := Γ) R)
   refine represents_congr (scalar_sum_zero _).eqSymm ?_ ?_
     (GaussianRationalHorner.ofGaussian_represents oneCode one (le_refl _))
   · apply equal_of_values
-    · rw [re_one,re_scale,re_one,e]; ipra_simps; ring
+    · rw [re_one,re_scale,re_one,natEq (numerator_zero (Γ := Γ) R)]; ipra_simps; ring
     · rw [im_one,im_scale,im_one]; ring
   · exact (fact_succ zero zero).eqTrans
       ((congrMul (fact_zero zero) (.eqRefl _)).eqTrans (one_mul _)) |>.eqSymm
@@ -125,10 +110,9 @@ theorem majorant_step (R K : PTm n) (ih : Γ ⊢[PRAAx] majorantLaw R K) :
   have p := represents_rescale _ _ F (succ (succ K)) main
   change Γ ⊢[PRAAx] represents _ _ _
   refine represents_congr (scalar_sum_succ _ _).eqSymm ?_ (fact_succ (succ K) zero).eqSymm p
-  have e := natEq (numerator_succ (Γ := Γ) R K)
   dsimp only [C,D]
   apply equal_of_values
-  · rw [re_scale,re_add,re_scale,re_scale,re_one,re_scale, re_one, e]
+  · rw [re_scale,re_add,re_scale,re_scale,re_one,re_scale, re_one, natEq (numerator_succ (Γ := Γ) R K)]
     ipra_simps
     ring
   · simp only [im_scale,im_add,im_one]; ring

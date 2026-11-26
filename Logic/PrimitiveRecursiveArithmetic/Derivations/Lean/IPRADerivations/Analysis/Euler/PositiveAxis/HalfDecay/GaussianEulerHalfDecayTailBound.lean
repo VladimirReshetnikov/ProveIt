@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.HalfDecay.GaussianEulerHalfDecayQuadrature
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayEndpointBound
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaIntegralCutoffs
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A finite upper-tail bound for the actual half-decay quadrature
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerHalfDecayTailBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDecayMesh (observation observation_rescale)
 open GaussianEulerDecayQuadraturePrecision (endpointDifference numerator denominator)
 open GaussianEulerDecayEndpointBound (endpoint_norm)
@@ -31,10 +30,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianNameRingLaws (three)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

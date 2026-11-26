@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.AggregateDistanceName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open LeanProofs.IPRA.Analysis.AggregateEquality
 open LeanProofs.IPRA.Analysis.AggregateOptimization (pointRegular pointRegular_at subst_pointRegular)
@@ -29,9 +29,6 @@ open LeanProofs.IPRA.Analysis.RationalPointDistanceVariation (scalarCode variati
 open LeanProofs.IPRA.Analysis.RationalHausdorff (pointRadius originalClose)
 open LeanProofs.IPRA.Analysis.RationalValueBounds (radius radius_congr radius_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -40,14 +37,8 @@ def fixedDistance (S : PR 2) (z k d x : PTm n) : PTm n := scalarCode z (sample S
 def movingDistance (U S : PR 2) (k d x : PTm n) : PTm n :=
   scalarCode (sample U (succ k) x) (sample S (succ k) x) d
 
-@[simp] theorem subst_fixedDistance {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (z k d x : PTm n) :
-    Syn.subst σ (fixedDistance S z k d x) =
-      fixedDistance S (Syn.subst σ z) (Syn.subst σ k) (Syn.subst σ d) (Syn.subst σ x) := by
-  simp [fixedDistance]
-@[simp] theorem subst_movingDistance {m : ℕ} (σ : Fin n → PTm m) (U S : PR 2) (k d x : PTm n) :
-    Syn.subst σ (movingDistance U S k d x) =
-      movingDistance U S (Syn.subst σ k) (Syn.subst σ d) (Syn.subst σ x) := by
-  simp [movingDistance]
+ipra_subst fixedDistance
+ipra_subst movingDistance
 
 theorem unit_product_positive (s t : PTm n) : Γ ⊢[PRAAx] le one (unit s*unit t) :=
   le_congr (one_mul one) (.eqRefl _) (le_mul_mono (unit_positive s) (unit_positive t))
@@ -161,11 +152,9 @@ observational equality of point names in the source's `2e_k` convention. -/
 def pointEquivalent (U V : PR 2) (d x : PTm n) : Fm PTm n :=
   .all (pointRadius (sample U (var 0) (Syn.shift x)) (sample V (var 0) (Syn.shift x)) (Syn.shift d) two (unit (var 0)))
 
-@[simp] theorem subst_pointEquivalent {m : ℕ} (σ : Fin n → PTm m) (U V : PR 2) (d x : PTm n) :
-    (pointEquivalent U V d x).subst σ = pointEquivalent U V (Syn.subst σ d) (Syn.subst σ x) := by
-  simp only [pointEquivalent,Fm.subst_all,RationalHausdorff.subst_pointRadius,subst_sample,subst_unit,
-    Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst,
-    ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ]
+ipra_subst pointEquivalent [Fm.subst_all, RationalHausdorff.subst_pointRadius, subst_sample, subst_unit,
+    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, ConciseIPRA.PTm.subst_zero,
+    ConciseIPRA.PTm.subst_succ]
 
 def representsFixed (U : PR 2) (z d x : PTm n) : Fm PTm n :=
   .all (pointRadius (sample U (var 0) (Syn.shift x)) (Syn.shift z) (Syn.shift d) one (unit (var 0)))

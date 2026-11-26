@@ -13,7 +13,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedIncrementSetup
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialSmallPerturbation (smallSamples small_samples_at)
@@ -24,10 +24,6 @@ open GaussianNameRingLaws (negativeF negativeData negative_fast zeroF zero_at ze
   add_associative add_commutative add_negative)
 open GaussianNamedGammaHalfShift (add_cross)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteIntegerLowerFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteIntegerDomain (source data original_source original_regular_names)
 open GaussianEulerIncompleteName (lowerF upperF)
 open GaussianGammaFactorialValues (argument radius factorialValue)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (qadd canonical positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,10 +34,7 @@ abbrev formulaF : PR 2 := GaussianNamedDifference.nameF constantF GaussianEulerI
 def formulaData (i a b : PTm n) : PTm n := GaussianNamedDifference.data
   (factorialValue i) (GaussianEulerIncompleteIntegerFormula.formulaData i a b)
 
-@[simp] theorem subst_formulaData {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (formulaData i a b) = formulaData (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [formulaData,GaussianNamedDifference.subst_data,GaussianGammaFactorialValues.subst_factorialValue,
-    GaussianEulerIncompleteIntegerFormula.subst_formulaData]
+ipra_subst formulaData
 
 theorem formula_regular (i a b : PTm n) : Γ ⊢[PRAAx]
     GaussianEuclideanDistanceName.pointCN formulaF (formulaData i a b) :=

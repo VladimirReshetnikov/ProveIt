@@ -13,7 +13,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRectangleJoin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetFirstFormulaPinning (laplaceStepData)
 open GaussianBinetLaplaceDifferenceGrid (gridCount gridValue at_common_grid)
 open GaussianBinetLaplaceDifferencePrefix (shifted_source)
@@ -34,10 +34,6 @@ open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded qnegative)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,10 +54,7 @@ local notation "ud" => GaussianBinetStirlingUnitDifference.data
 def comparisonCost (X Y D sign : PTm n) : PTm n :=
   num 16+two+(two+GaussianBinetWeightedResolvent.budget X Y D sign)
 
-@[simp] theorem subst_comparisonCost {m : ℕ} (σ : Fin n → PTm m) (X Y D sign : PTm n) :
-    Syn.subst σ (comparisonCost X Y D sign) =
-      comparisonCost (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) := by
-  simp [comparisonCost,two]
+ipra_subst comparisonCost [two]
 
 theorem original_observation (p X Y D sign : PTm n) (h : Γ ⊢[PRAAx] source X D sign) :
     Γ ⊢[PRAAx] distanceBounded

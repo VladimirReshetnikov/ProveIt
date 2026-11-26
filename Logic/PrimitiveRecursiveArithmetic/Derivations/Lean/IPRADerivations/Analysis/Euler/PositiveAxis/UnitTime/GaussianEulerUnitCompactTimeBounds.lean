@@ -13,13 +13,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitCompactTimeBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitLogarithmicMargin (numerator denominator actual_time_fraction)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -28,15 +26,12 @@ def source (a b E : PTm n) : Fm PTm n := GaussianEulerUnitLogarithmicMargin.sour
   (le one E ⋏ (le b (E*a) ⋏ le (E*a+b) (E*b)))
 def radius (E : PTm n) : PTm n := GaussianCompactLogarithmBounds.radius E E
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b E : PTm n) :
-    (source a b E).subst σ = source (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) := by simp [source]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (E : PTm n) :
-    Syn.subst σ (radius E) = radius (Syn.subst σ E) := by simp [radius]
+ipra_subst source
+ipra_subst radius
 
 theorem gap_margin (a b E : PTm n) (h : Γ ⊢[PRAAx] source a b E) : Γ ⊢[PRAAx]
     le b (E*LeanProofs.IPRA.PTm.monus b a) := by
-  have e := natEq (eq_add_of_le (le_of_lt h.andE₁.andE₂))
-  ipra_le sl h.andE₂.andE₂.andE₂ with 𝔞(E)*e
+  ipra_le sl h.andE₂.andE₂.andE₂ with 𝔞(E)*natEq (eq_add_of_le (le_of_lt h.andE₁.andE₂))
 
 theorem actual_time_lower (p a b E : PTm n) (h : Γ ⊢[PRAAx] source a b E) : Γ ⊢[PRAAx]
     le (denominator p a b) (E*numerator p a b) := by

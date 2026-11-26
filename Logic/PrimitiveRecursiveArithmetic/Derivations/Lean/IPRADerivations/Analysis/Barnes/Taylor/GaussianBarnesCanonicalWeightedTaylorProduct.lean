@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalWeightedTaylorProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalCenteredExponentialShift (baseData head incrementF incrementData)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -35,10 +35,6 @@ open GaussianRationalHorner (evaluate ofGaussian ofGaussian_canonical qmul posit
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalPolynomialDilation (weightedNorm)
 open RationalArgmin (rationalLE)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

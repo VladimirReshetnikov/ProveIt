@@ -17,16 +17,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalBivariateGridCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed)
 open RationalArgmin (rationalEq)
 open RationalBivariateGaussianEmbedding (bivariate embedded_row_shape bivariate_conjugacy)
 open RationalRowSpanGaussianEmbedding (matrix matrix_lookup)
 open GaussianPolynomialMonicCompanion (rowShape values)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,24 +45,17 @@ def literalCoefficientsEqual (A B a b : PTm n) : Fm PTm n := .all
     entry (entry (Syn.shift (Syn.shift A)) (var 1)) (var 0) ≐
       entry (entry (Syn.shift (Syn.shift B)) (var 1)) (var 0)))
 
-@[simp] theorem subst_gridPoint {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (gridPoint i) = gridPoint (Syn.subst σ i) := by simp [gridPoint]
-@[simp] theorem subst_observation {l : ℕ} (σ : Fin n → PTm l) (A b i j : PTm n) :
-    Syn.subst σ (observation A b i j) = observation (Syn.subst σ A) (Syn.subst σ b) (Syn.subst σ i) (Syn.subst σ j) := by simp [observation]
-@[simp] theorem subst_rectangleEqual {l : ℕ} (σ : Fin n → PTm l) (A B a b : PTm n) :
-    (rectangleEqual A B a b).subst σ = rectangleEqual (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [rectangleEqual,Fm.subst_all,Fm.subst_imp,subst_le,RationalArgmin.subst_rationalEq,subst_observation,
-    Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,Syn.subst_shift,Syn.shift_subst,Syn.shift_var,Fin.succ_zero_eq_one]
-@[simp] theorem subst_coefficientsEqual {l : ℕ} (σ : Fin n → PTm l) (A B a b : PTm n) :
-    (coefficientsEqual A B a b).subst σ = coefficientsEqual (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [coefficientsEqual,Fm.subst_all,Fm.subst_imp,subst_le,RationalArgmin.subst_rationalEq,
-    Foundations.MasterCertificate.subst_entry,Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,
-    Syn.subst_shift,Syn.shift_subst,Syn.shift_var,Fin.succ_zero_eq_one]
-@[simp] theorem subst_literalCoefficientsEqual {l : ℕ} (σ : Fin n → PTm l) (A B a b : PTm n) :
-    (literalCoefficientsEqual A B a b).subst σ = literalCoefficientsEqual (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [literalCoefficientsEqual,Fm.subst_all,Fm.subst_imp,subst_le,Fm.subst_eq,
-    Foundations.MasterCertificate.subst_entry,Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,
-    Syn.subst_shift,Syn.shift_subst,Syn.shift_var,Fin.succ_zero_eq_one]
+ipra_subst gridPoint
+ipra_subst observation
+ipra_subst rectangleEqual [Fm.subst_all, Fm.subst_imp, subst_le, RationalArgmin.subst_rationalEq, subst_observation,
+    Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, Syn.shift_var,
+    Fin.succ_zero_eq_one]
+ipra_subst coefficientsEqual [Fm.subst_all, Fm.subst_imp, subst_le, RationalArgmin.subst_rationalEq,
+    Foundations.MasterCertificate.subst_entry, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst, Syn.shift_var, Fin.succ_zero_eq_one]
+ipra_subst literalCoefficientsEqual [Fm.subst_all, Fm.subst_imp, subst_le, Fm.subst_eq,
+    Foundations.MasterCertificate.subst_entry, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst, Syn.shift_var, Fin.succ_zero_eq_one]
 
 theorem grid_point_canonical (i : PTm n) : Γ ⊢[PRAAx] RationalNormalForm.wellFormed (gridPoint i) :=
   RationalNormalForm.normalize_well_formed _ _ (le_refl one)
@@ -169,14 +159,8 @@ def observationF : PR 4 := PTm.toPR (observation (var 0) (var 1) (var 2) (var 3)
 def output (A B r s : PTm n) : PTm n := pairT (entry (entry A r) s) (entry (entry B r) s)
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (A B r s : PTm n) : PTm n := app outputF ![A,B,r,s]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A B r s : PTm n) :
-    Syn.subst σ (output A B r s) = output (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ r) (Syn.subst σ s) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A B r s : PTm n) :
-    Syn.subst σ (run A B r s) = run (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem grid_point_at (i : PTm n) : Γ ⊢[PRAAx] ap1 gridPointF i ≐ gridPoint i := by
   simpa [gridPointF,ap1] using toPR_eq (Γ := Γ) (gridPoint (var 0) : PTm 1) ![i]
@@ -185,9 +169,9 @@ theorem observation_at (A b i j : PTm n) : Γ ⊢[PRAAx] app observationF ![A,b,
 theorem program_at (A B r s : PTm n) : Γ ⊢[PRAAx] run A B r s ≐ output A B r s := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![A,B,r,s]
 theorem returned_left (A B r s : PTm n) : Γ ⊢[PRAAx] fstT (run A B r s) ≐ entry (entry A r) s :=
-  (congrFst (program_at A B r s)).eqTrans (fst_pair _ _)
+  (program_at A B r s).fstE
 theorem returned_right (A B r s : PTm n) : Γ ⊢[PRAAx] sndT (run A B r s) ≐ entry (entry B r) s :=
-  (congrSnd (program_at A B r s)).eqTrans (snd_pair _ _)
+  (program_at A B r s).sndE
 
 theorem returned_field_equal (A B a b r s : PTm n) (hA : Γ ⊢[PRAAx] rowShape A (succ b) a)
     (hB : Γ ⊢[PRAAx] rowShape B (succ b) a) (h : Γ ⊢[PRAAx] rectangleEqual A B a b)

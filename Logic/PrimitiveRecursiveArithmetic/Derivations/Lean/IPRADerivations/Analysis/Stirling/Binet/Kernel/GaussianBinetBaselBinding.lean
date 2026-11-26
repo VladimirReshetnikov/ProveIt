@@ -16,7 +16,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBaselBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BaselSquares (S qq sB S_succ fact_eq)
 open BaselUniform (cut)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -32,10 +32,6 @@ open Products (fact)
 open RationalGaussianEmbedding (embed embed_at embedF embed_add)
 open RationalReciprocalPowerTail (reciprocalPower tail tail_succ tail_zero)
 open RationalValueBounds (upper radius radius_of_upper)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -43,8 +39,7 @@ local notation "scalarFraction" => GaussianEuclideanDistanceName.fraction
 
 def literalSum (m : PTm n) : PTm n := embed (tail two zero m)
 
-@[simp] theorem subst_literalSum {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (literalSum m) = literalSum (Syn.subst σ m) := by simp [literalSum, two, one]
+ipra_subst literalSum [two, one]
 
 private theorem embed_congr {x y : PTm n} (e : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx] embed x ≐ embed y :=
   (embed_at x).eqSymm.eqTrans ((congrAp1 embedF e).eqTrans (embed_at y))
@@ -104,11 +99,9 @@ private theorem cleared_succ (m L : PTm n) (ih : Γ ⊢[PRAAx] clearingLaw m L)
 theorem literal_sum_cleared (m L : PTm n) (h : Γ ⊢[PRAAx] le m L) : Γ ⊢[PRAAx]
     literalSum m ≐ fraction (S m L) (fact L*fact L) := by
   have hall : Γ ⊢[PRAAx] .all (clearingLaw (var 0) (Syn.shift L)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [subst_clearingLaw,Syn.subst_var,Syn.subst_inst_shift,Syn.inst_zero]
-      exact .impI (cleared_zero L)
-    · simp only [subst_clearingLaw,subst_repl_shift]
-      exact .impI (cleared_succ (var 0) (Syn.shift L) Prf.hyp1 Prf.hyp0)
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_clearingLaw]
+    · exact .impI (cleared_zero L)
+    · exact .impI (cleared_succ (var 0) (Syn.shift L) Prf.hyp1 Prf.hyp0)
   have hm : Γ ⊢[PRAAx] clearingLaw m L := by
     simpa only [subst_clearingLaw,Syn.subst_var,Syn.subst_inst_shift,Syn.inst_zero] using hall.allE m
   exact hm.impE h

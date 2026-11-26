@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRatio
 import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.RationalProductWitness
 import IPRADerivations.Analysis.RationalArithmetic.Covers.GaussianRationalCover
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original-point witnesses from the rational product program
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalProductWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qmul qmul_represents ofGaussian positive_product scalar_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub qnormSq bounded distanceBounded qnormSq_represents)
@@ -32,10 +31,6 @@ open LeanProofs.IPRA.Analysis.RationalArithmetic (multiply)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -72,20 +67,12 @@ def denominatorBody : PTm 2 := normDenominator factorBody
 def numeratorProduct (T N z k : PTm n) : PTm n := ap2 (prodF numeratorBody) k (data T N z)
 def denominatorProduct (T N z k : PTm n) : PTm n := ap2 (prodF denominatorBody) k (data T N z)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (T N z : PTm n) :
-    Syn.subst σ (data T N z) = data (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ z) := by simp only [data,subst_pairT]
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (T N z i : PTm n) :
-    Syn.subst σ (factor T N z i) = factor (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ i) := by simp [factor]
-@[simp] theorem subst_normNumerator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (normNumerator q) = normNumerator (Syn.subst σ q) := by simp [normNumerator]
-@[simp] theorem subst_normDenominator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (normDenominator q) = normDenominator (Syn.subst σ q) := by simp [normDenominator]
-@[simp] theorem subst_numeratorProduct {m : ℕ} (σ : Fin n → PTm m) (T N z k : PTm n) :
-    Syn.subst σ (numeratorProduct T N z k) = numeratorProduct (Syn.subst σ T) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ k) := by simp only [numeratorProduct,subst_ap2,subst_data]
-@[simp] theorem subst_denominatorProduct {m : ℕ} (σ : Fin n → PTm m) (T N z k : PTm n) :
-    Syn.subst σ (denominatorProduct T N z k) = denominatorProduct (Syn.subst σ T) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ k) := by simp only [denominatorProduct,subst_ap2,subst_data]
+ipra_subst data
+ipra_subst factor
+ipra_subst normNumerator
+ipra_subst normDenominator
+ipra_subst numeratorProduct
+ipra_subst denominatorProduct
 
 theorem normNumerator_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] normNumerator q ≐ normNumerator r := by
   ipra_congr (normNumerator (var 0) : PTm 1) with [h]
@@ -97,8 +84,8 @@ theorem qnormSq_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] 
 theorem factor_at (T N z i : PTm n) : Γ ⊢[PRAAx] inst2 factorBody i (data T N z) ≐ factor T N z i := by
   simp only [factorBody,inst2,GaussianRationalMetric.subst_qsub,subst_sndT,subst_fstT,
     subst_entry,PTm.subst_monus,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  have zfield : Γ ⊢[PRAAx] sndT (sndT (data T N z)) ≐ z := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-  have Nfield : Γ ⊢[PRAAx] fstT (sndT (data T N z)) ≐ N := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  have zfield : Γ ⊢[PRAAx] sndT (sndT (data T N z)) ≐ z := (snd_pair _ _).sndE
+  have Nfield : Γ ⊢[PRAAx] fstT (sndT (data T N z)) ≐ N := (snd_pair _ _).fstE
   exact GaussianRationalSyntheticDivision.qsub_congr zfield (entry_congr (fst_pair _ _) (congrMonus Nfield (.eqRefl _)))
 
 theorem numerator_at (T N z i : PTm n) : Γ ⊢[PRAAx] inst2 numeratorBody i (data T N z) ≐ normNumerator (factor T N z i) := by
@@ -122,20 +109,15 @@ theorem denominator_succ (T N z k : PTm n) : Γ ⊢[PRAAx]
 
 def normLaw (T N z k : PTm n) : Fm PTm n := RationalArithmetic.represents
   (qnormSq (factors T N z k)) (ZT.ofNat (numeratorProduct T N z k)) (denominatorProduct T N z k)
-@[simp] theorem subst_normLaw {m : ℕ} (σ : Fin n → PTm m) (T N z k : PTm n) :
-    (normLaw T N z k).subst σ = normLaw (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ k) := by
-  simp only [normLaw,RationalArithmetic.subst_represents,GaussianRationalMetric.subst_qnormSq,
-    GaussianRationalReconstruction.subst_factors,ZT.subst_ofNat,subst_numeratorProduct,subst_denominatorProduct]
+ipra_subst normLaw
 
 theorem norm_law_zero (T N z : PTm n) : Γ ⊢[PRAAx] normLaw T N z zero := by
   have rep := qnormSq_represents (Γ := Γ) qone ComplexLogarithmRemainder.oneCode one (le_refl _)
     (GaussianRationalHorner.ofGaussian_represents _ _ (le_refl _))
   apply scalar_congr (qnormSq_congr (factors_zero T N z)).eqSymm (h := rep)
   · apply ZT.derive
-    have e := natEq (ComplexLogarithmRemainder.normSq_one (Γ := Γ) (n := n))
-    have p := natEq (numerator_zero (Γ := Γ) T N z)
     simp only [ZT.toZ_ofNat]
-    rw [e,p]
+    rw [natEq (ComplexLogarithmRemainder.normSq_one (Γ := Γ) (n := n)),natEq (numerator_zero (Γ := Γ) T N z)]
   · exact (one_mul one).eqTrans (denominator_zero T N z).eqSymm
 
 theorem norm_law_step (T N z k : PTm n) (ih : Γ ⊢[PRAAx] normLaw T N z k) :
@@ -147,9 +129,8 @@ theorem norm_law_step (T N z k : PTm n) (ih : Γ ⊢[PRAAx] normLaw T N z k) :
     (qnormSq_congr (factors_succ T N z k)).eqTrans (norm_multiply _ _)
   apply scalar_congr actual.eqSymm (h := rep)
   · apply ZT.derive
-    have e := natEq (numerator_succ (Γ := Γ) T N z k)
     simp only [ZT.toZ_mul,ZT.toZ_ofNat]
-    rw [e]
+    rw [natEq (numerator_succ (Γ := Γ) T N z k)]
     ipra_simps
     ring
   · exact (mul_comm _ _).eqTrans (denominator_succ T N z k).eqSymm
@@ -158,22 +139,16 @@ theorem norm_law_step (T N z k : PTm n) (ih : Γ ⊢[PRAAx] normLaw T N z k) :
 denominator products searched below. Induction follows its literal order. -/
 theorem norm_product_represents (T N z k : PTm n) : Γ ⊢[PRAAx] normLaw T N z k := by
   have all : Γ ⊢[PRAAx] .all (normLaw (Syn.shift T) (Syn.shift N) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_normLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact norm_law_zero T N z
-    · simp only [subst_normLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact norm_law_step _ _ _ _ Prf.hyp0
+    ipra_qfind [subst_normLaw]
+    · exact norm_law_zero T N z
+    · exact norm_law_step _ _ _ _ Prf.hyp0
   simpa only [subst_normLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 theorem denominator_positive (T N z k : PTm n) : Γ ⊢[PRAAx] le one (denominatorProduct T N z k) := by
   have all : Γ ⊢[PRAAx] .all (le one (denominatorProduct (Syn.shift T) (Syn.shift N) (Syn.shift z) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,subst_denominatorProduct,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (.eqRefl one) (denominator_zero T N z).eqSymm (le_refl _)
-    · simp only [subst_le,subst_denominatorProduct,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact le_congr (.eqRefl one) (denominator_succ _ _ _ _).eqSymm
+    ipra_qfind (le_QF _ _) [subst_le, subst_denominatorProduct]
+    · exact le_congr (.eqRefl one) (denominator_zero T N z).eqSymm (le_refl _)
+    · exact le_congr (.eqRefl one) (denominator_succ _ _ _ _).eqSymm
         (positive_product _ _ Prf.hyp0 (positive_product _ _ (raw_den_positive _) (raw_den_positive _)))
   simpa only [subst_le,subst_denominatorProduct,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
@@ -195,12 +170,8 @@ def selectedReverse (T N z p q : PTm n) : PTm n := RationalProductWitness.select
   numeratorBody denominatorBody N (p*p) (q*q) (data T N z)
 def selected (T N z p q : PTm n) : PTm n := monus N (succ (selectedReverse T N z p q))
 
-@[simp] theorem subst_selectedReverse {m : ℕ} (σ : Fin n → PTm m) (T N z p q : PTm n) :
-    Syn.subst σ (selectedReverse T N z p q) = selectedReverse (Syn.subst σ T) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ p) (Syn.subst σ q) := by simp [selectedReverse]
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (T N z p q : PTm n) :
-    Syn.subst σ (selected T N z p q) = selected (Syn.subst σ T) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ p) (Syn.subst σ q) := by simp [selected]
+ipra_subst selectedReverse
+ipra_subst selected
 
 theorem selected_reverse_range (T N z p q : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hq : Γ ⊢[PRAAx] le one q) (h : Γ ⊢[PRAAx] bounded (product T N z) (pw p N) (pw q N)) : Γ ⊢[PRAAx]
@@ -244,17 +215,8 @@ def output (T N z p q : PTm n) : PTm n := pairT (selected T N z p q)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (T N z p q : PTm n) : PTm n := PTm.app outputF ![T,N,z,p,q]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (T N z p q : PTm n) :
-    Syn.subst σ (output T N z p q) = output (Syn.subst σ T) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [output,subst_pairT,subst_selected,subst_entry,GaussianRationalMetric.subst_qnormSq,GaussianRationalMetric.subst_qsub]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (T N z p q : PTm n) :
-    Syn.subst σ (run T N z p q) = run (Syn.subst σ T) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem output_program_at (T N z p q : PTm n) : Γ ⊢[PRAAx] run T N z p q ≐ output T N z p q := by
   simpa only [run,outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
@@ -262,16 +224,16 @@ theorem output_program_at (T N z p q : PTm n) : Γ ⊢[PRAAx] run T N z p q ≐ 
       toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![T,N,z,p,q]
 
 theorem output_index (T N z p q : PTm n) : Γ ⊢[PRAAx] fstT (run T N z p q) ≐ selected T N z p q :=
-  (congrFst (output_program_at T N z p q)).eqTrans (fst_pair _ _)
+  (output_program_at T N z p q).fstE
 theorem output_point (T N z p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run T N z p q)) ≐ entry T (selected T N z p q) :=
-  (congrFst ((congrSnd (output_program_at T N z p q)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (output_program_at T N z p q).sndE.fstE
 theorem output_point_index (T N z p q : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run T N z p q)) ≐ entry T (fstT (run T N z p q)) :=
   (output_point T N z p q).eqTrans (entry_congr (.eqRefl _) (output_index T N z p q).eqSymm)
 
 theorem output_norm (T N z p q : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run T N z p q)) ≐ qnormSq (qsub z (fstT (sndT (run T N z p q)))) :=
-  ((congrSnd ((congrSnd (output_program_at T N z p q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)).eqTrans
+  (output_program_at T N z p q).sndE.sndE.eqTrans
     (qnormSq_congr (GaussianRationalSyntheticDivision.qsub_congr (.eqRefl _) (output_point T N z p q).eqSymm))
 
 /-- The actual PR5 code returns an original index and its actual original

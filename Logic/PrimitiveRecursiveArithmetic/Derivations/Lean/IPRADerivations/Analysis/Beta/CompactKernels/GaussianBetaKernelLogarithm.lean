@@ -17,16 +17,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (neg scale oneCode normSq)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonical canonical_unique positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalNaturalScale (natScale natScale_canonical natScale_represents)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,19 +35,13 @@ def data (a b N : PTm n) : PTm n := GaussianNamedNaturalScale.data N N (localDat
 def nameF : PR 2 := GaussianNamedNaturalScale.nameF GaussianLocalLogarithmName.pointF
 def observation (p a b N : PTm n) : PTm n := ap2 nameF p (data a b N)
 def radius (T : PTm n) : PTm n := two*T+one
-@[simp] theorem subst_negativeNumerator {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (negativeNumerator a) = negativeNumerator (Syn.subst σ a) := by simp [negativeNumerator]
-@[simp] theorem subst_target {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (target a b) = target (Syn.subst σ a) (Syn.subst σ b) := by simp [target]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    (source a b N).subst σ = source (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_localData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (localData a b N) = localData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [localData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (data a b N) = data (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p a b N : PTm n) :
-    Syn.subst σ (observation p a b N) = observation (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [observation]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (T : PTm n) : Syn.subst σ (radius T) = radius (Syn.subst σ T) := by simp [radius]
+ipra_subst negativeNumerator
+ipra_subst target
+ipra_subst source
+ipra_subst localData
+ipra_subst data
+ipra_subst observation
+ipra_subst radius
 
 theorem negative_norm (a : PTm n) : Γ ⊢[PRAAx] normSq (negativeNumerator a) ≐ a*a :=
   (ComplexLogarithmRemainder.normSq_neg _).eqTrans ((ComplexLogarithmRemainder.normSq_scale _ _).eqTrans

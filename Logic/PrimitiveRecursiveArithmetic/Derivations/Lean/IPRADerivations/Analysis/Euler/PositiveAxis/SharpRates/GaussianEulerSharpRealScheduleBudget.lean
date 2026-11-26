@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSharpRealScheduleBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSharpDegreeSchedule (degree size coefficient tailCoefficient)
 open GaussianEulerSharpScheduleBudget (decayClock mainNumerator mainDenominator decay_clock_budget)
 open GaussianWeightedHalfDecayEndpoint (coefficient_positive)
@@ -27,10 +27,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

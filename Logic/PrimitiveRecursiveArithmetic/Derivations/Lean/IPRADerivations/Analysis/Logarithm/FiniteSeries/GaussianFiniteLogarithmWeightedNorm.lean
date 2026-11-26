@@ -3,8 +3,6 @@ import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmPo
 import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantPairAlgebra
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormEntries
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The auxiliary-radius coefficient majorant of the original finite logarithm
@@ -20,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmWeightedNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul represents)
 open GaussianFiniteLogarithmPolynomial (coefficient signNumerator polynomial)
 open GaussianRationalReciprocal (power)
@@ -31,10 +29,6 @@ open RationalArgmin (rationalLE)
 open GaussianCoefficientL1 (prefixNorm coefficientNorm)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,13 +43,9 @@ theorem radius_norm1 (A : PTm n) : Γ ⊢[PRAAx] GaussianL1.norm1 (radiusNumerat
 
 theorem sign_norm1 (k : PTm n) : Γ ⊢[PRAAx] GaussianL1.norm1 (signNumerator k) ≐ one := by
   have all : Γ ⊢[PRAAx] .all (GaussianL1.norm1 (signNumerator (var 0)) ≐ one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,GaussianL1.subst_norm1,GaussianFiniteLogarithmPolynomial.subst_signNumerator,
-        ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero]
-      exact (GaussianL1.norm1_equal GaussianIntegerFractionPowers.parity_scalar_zero).eqTrans GaussianL1.norm1_one
-    · simp only [Fm.subst_eq,GaussianL1.subst_norm1,GaussianFiniteLogarithmPolynomial.subst_signNumerator,
-        ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.repl_zero]
-      exact (GaussianL1.norm1_equal (GaussianIntegerFractionPowers.parity_scalar_succ (var 0))).eqTrans
+    ipra_qfind [GaussianL1.subst_norm1, GaussianFiniteLogarithmPolynomial.subst_signNumerator]
+    · exact (GaussianL1.norm1_equal GaussianIntegerFractionPowers.parity_scalar_zero).eqTrans GaussianL1.norm1_one
+    · exact (GaussianL1.norm1_equal (GaussianIntegerFractionPowers.parity_scalar_succ (var 0))).eqTrans
         ((GaussianL1.norm1_negative _).eqTrans Prf.hyp0)
   simpa only [Fm.subst_eq,GaussianL1.subst_norm1,GaussianFiniteLogarithmPolynomial.subst_signNumerator,
     ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero] using all.allE k
@@ -90,11 +80,9 @@ theorem coefficient_power_bound (A B k e : PTm n) (hB : Γ ⊢[PRAAx] le one B) 
 def point : PTm n := radiusPoint (num 5) (num 9)
 def buffer (d : PTm n) : PTm n := GaussianRationalPolynomialDilation.dilated (polynomial d) d point
 def majorant (e : PTm n) : PTm n := fraction (pw (num 5) (succ e)) (num 8*pw (num 9) e)
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (point : PTm n) = (point : PTm l) := by simp [point]
-@[simp] theorem subst_buffer {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) :
-    Syn.subst σ (buffer d) = buffer (Syn.subst σ d) := by simp [buffer]
-@[simp] theorem subst_majorant {l : ℕ} (σ : Fin n → PTm l) (e : PTm n) :
-    Syn.subst σ (majorant e) = majorant (Syn.subst σ e) := by simp [majorant]
+ipra_subst point
+ipra_subst buffer
+ipra_subst majorant
 
 theorem nine_positive : Γ ⊢[PRAAx] le one (num 9 : PTm n) := le_of_eq_add (d := num 8) (by ipra_ring)
 theorem eight_positive : Γ ⊢[PRAAx] le one (num 8 : PTm n) := le_of_eq_add (d := num 7) (by ipra_ring)
@@ -145,8 +133,7 @@ theorem majorant_step (e : PTm n) : Γ ⊢[PRAAx]
   ring
 
 def prefixLaw (d i : PTm n) : Fm PTm n := le (succ i) d ⟶ rationalLE (prefixNorm (buffer d) i) (majorant (monus d i))
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (d i : PTm n) :
-    (prefixLaw d i).subst σ = prefixLaw (Syn.subst σ d) (Syn.subst σ i) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (d : PTm n) : Γ ⊢[PRAAx] prefixLaw d zero := by
   refine .impI ?_
@@ -183,11 +170,9 @@ theorem prefix_step (d i : PTm n) (hi : Γ ⊢[PRAAx] le (succ (succ i)) d)
 theorem prefix_bound (d i : PTm n) (hi : Γ ⊢[PRAAx] le (succ i) d) : Γ ⊢[PRAAx]
     rationalLE (prefixNorm (buffer d) i) (majorant (monus d i)) := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift d) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact prefix_zero d
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_step _ _ Prf.hyp0 Prf.hyp1)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
+    · exact prefix_zero d
+    · exact .impI (prefix_step _ _ Prf.hyp0 Prf.hyp1)
   have rule : Γ ⊢[PRAAx] prefixLaw d i := by
     simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE i
   exact .impE rule hi
@@ -281,27 +266,25 @@ def output (d : PTm n) : PTm n := pairT (polynomial d)
   (pairT (buffer d) (pairT (GaussianRationalPolynomialDilation.weightedNorm (polynomial d) d point) point))
 def outputF : PR 1 := PTm.toPR (output (var 0))
 def run (d : PTm n) : PTm n := ap1 outputF d
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) :
-    Syn.subst σ (output d) = output (Syn.subst σ d) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) :
-    Syn.subst σ (run d) = run (Syn.subst σ d) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d : PTm n) : Γ ⊢[PRAAx] run d ≐ output d := by
   simpa [run,outputF,ap1] using toPR_eq (Γ := Γ) (output (var 0) : PTm 1) ![d]
 theorem returned_polynomial (d : PTm n) : Γ ⊢[PRAAx] fstT (run d) ≐ polynomial d :=
-  (congrFst (program_at d)).eqTrans (fst_pair _ _)
+  (program_at d).fstE
 theorem returned_tail (d : PTm n) : Γ ⊢[PRAAx] sndT (run d) ≐
     pairT (buffer d) (pairT (GaussianRationalPolynomialDilation.weightedNorm (polynomial d) d point) point) :=
-  (congrSnd (program_at d)).eqTrans (snd_pair _ _)
+  (program_at d).sndE
 theorem returned_buffer (d : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d)) ≐ buffer d :=
-  (congrFst (returned_tail d)).eqTrans (fst_pair _ _)
+  (returned_tail d).fstE
 theorem returned_pair (d : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d)) ≐
     pairT (GaussianRationalPolynomialDilation.weightedNorm (polynomial d) d point) point :=
-  (congrSnd (returned_tail d)).eqTrans (snd_pair _ _)
+  (returned_tail d).sndE
 theorem returned_norm (d : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d))) ≐
     GaussianRationalPolynomialDilation.weightedNorm (polynomial d) d point :=
-  (congrFst (returned_pair d)).eqTrans (fst_pair _ _)
+  (returned_pair d).fstE
 theorem returned_point (d : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d))) ≐ (point : PTm n) :=
-  (congrSnd (returned_pair d)).eqTrans (snd_pair _ _)
+  (returned_pair d).sndE
 theorem returned_bound (d : PTm n) : Γ ⊢[PRAAx]
     rationalLE (fstT (sndT (sndT (run d)))) (fraction (num 65) (num 72)) :=
   RationalArgmin.rationalLE_congr (returned_norm d).eqSymm (.eqRefl _) (logarithm_bound d)

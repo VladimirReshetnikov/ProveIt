@@ -12,14 +12,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalUpperAddition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper)
 open RationalArithmetic (add add_value addNumerator productDenominator product_denominator_positive)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open PolynomialBisection (slack)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearCombination
 
 /-!
@@ -28,11 +27,7 @@ formalized.
 
 namespace LeanProofs.IPRA.Algebra.Quintic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 abbrev p3 {n : ℕ} (u : ZT n) : ZT n := u * u * u
 abbrev p4 {n : ℕ} (u : ZT n) : ZT n := u * u * u * u

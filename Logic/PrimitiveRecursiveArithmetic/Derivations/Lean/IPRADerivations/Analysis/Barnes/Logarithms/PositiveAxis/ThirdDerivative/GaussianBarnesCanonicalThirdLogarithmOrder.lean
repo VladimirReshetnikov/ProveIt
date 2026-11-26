@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalThirdLogarithmOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalThirdLogarithmCofinal (data nameF regular source)
 open GaussianBarnesCanonicalThirdLogarithmRows (denominator denominator_positive numerator row)
 open GaussianBarnesCanonicalThirdLogarithmCauchy (gain)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open RationalValueBounds (upper upper_of_order)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

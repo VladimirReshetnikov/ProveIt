@@ -18,13 +18,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarPolynomialMatrixProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell tableShape)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,9 +30,7 @@ def scalarProduct (S M m z : PTm n) : PTm n :=
   GaussianRationalMatrixFiniteSums.matrixProduct S
     (GaussianScalarDeterminant.evaluatedTable M m z) m
 
-@[simp] theorem subst_scalarProduct {l : ℕ} (σ : Fin n → PTm l) (S M m z : PTm n) :
-    Syn.subst σ (scalarProduct S M m z) = scalarProduct (Syn.subst σ S)
-      (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ z) := by simp [scalarProduct]
+ipra_subst scalarProduct
 
 /-- Both original finite folds use the same numerical middle index. -/
 theorem value_sum_as_dot (S M m r j z : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
@@ -119,38 +114,31 @@ def output (S M m L z : PTm n) : PTm n :=
           (GaussianScalarDeterminant.scalarDet (scalarProduct S M m z) m))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (S M m L z : PTm n) : PTm n := app outputF ![S,M,m,L,z]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (S M m L z : PTm n) :
-    Syn.subst σ (output S M m L z) = output (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (S M m L z : PTm n) :
-    Syn.subst σ (run S M m L z) = run (Syn.subst σ S) (Syn.subst σ M)
-      (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ z) := by
-  simp [run]
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (S M m L z : PTm n) : Γ ⊢[PRAAx] run S M m L z ≐ output S M m L z := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![S,M,m,L,z]
 theorem returned_product (S M m L z : PTm n) : Γ ⊢[PRAAx]
     fstT (run S M m L z) ≐ GaussianRationalFiberVandermonde.product S M m L :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_evaluated_right (S M m L z : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run S M m L z)) ≐ GaussianScalarDeterminant.evaluatedTable M m z :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.fstE
 theorem returned_scalar_product (S M m L z : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run S M m L z))) ≐ scalarProduct S M m z :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans
+  (congrFst ((congrSnd (program_at _ _ _ _ _).sndE).eqTrans
     (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_polynomial (S M m L z : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run S M m L z)))) ≐
       GaussianPolynomialDeterminant.determinant (GaussianRationalFiberVandermonde.product S M m L) m L :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans
+  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _ _).sndE).eqTrans
     (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_value (S M m L z : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (run S M m L z)))) ≐
       GaussianScalarDeterminant.scalarDet (scalarProduct S M m z) m :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans
+  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _ _).sndE).eqTrans
     (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
 theorem returned_value_canonical (S M m L z : PTm n) : Γ ⊢[PRAAx]
     canonical (sndT (sndT (sndT (sndT (run S M m L z))))) :=

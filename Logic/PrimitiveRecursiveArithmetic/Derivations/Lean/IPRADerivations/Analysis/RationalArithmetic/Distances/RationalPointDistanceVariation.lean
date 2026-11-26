@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalPointDistanceVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalHausdorff
   (pointRadius coordinateRadius crossNumerator denominatorProduct originalClose)
 open LeanProofs.IPRA.Analysis.RationalHausdorffTriangle (pointRadius_triangle)
@@ -32,10 +32,6 @@ open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_neg)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of ad_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -70,12 +66,9 @@ def pointDenominator (z w d : PTm n) : PTm n :=
   RationalPointDistance.denominator z (RationalPointDistance.singleton w) d
 def pointCode (z w d : PTm n) : PTm n := pairT (pointNumerator z w d) (pointDenominator z w d)
 
-@[simp] theorem subst_pointNumerator {m : ℕ} (σ : Fin n → PTm m) (z w d : PTm n) :
-    Syn.subst σ (pointNumerator z w d) = pointNumerator (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ d) := by simp [pointNumerator]
-@[simp] theorem subst_pointDenominator {m : ℕ} (σ : Fin n → PTm m) (z w d : PTm n) :
-    Syn.subst σ (pointDenominator z w d) = pointDenominator (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ d) := by simp [pointDenominator]
-@[simp] theorem subst_pointCode {m : ℕ} (σ : Fin n → PTm m) (z w d : PTm n) :
-    Syn.subst σ (pointCode z w d) = pointCode (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ d) := by simp [pointCode]
+ipra_subst pointNumerator
+ipra_subst pointDenominator
+ipra_subst pointCode
 
 theorem point_denominator_positive (z w d : PTm n) : Γ ⊢[PRAAx] le one (pointDenominator z w d) :=
   RationalPointDistance.denominator_positive _ _ _
@@ -105,8 +98,7 @@ theorem point_own_radius (z w d : PTm n) :
 def transferIndex (w S T d : PTm n) : PTm n :=
   RationalNearest.selected T S d (RationalPointDistance.selected w T d)
 
-@[simp] theorem subst_transferIndex {m : ℕ} (σ : Fin n → PTm m) (w S T d : PTm n) :
-    Syn.subst σ (transferIndex w S T d) = transferIndex (Syn.subst σ w) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by simp [transferIndex]
+ipra_subst transferIndex
 
 theorem transfer_index_range (w S T d : PTm n) (hS : Γ ⊢[PRAAx] le one (length S)) :
     Γ ⊢[PRAAx] lt (transferIndex w S T d) (length S) := RationalNearest.selected_spec _ _ _ _ hS
@@ -171,9 +163,7 @@ theorem variation_cross (z w S T d A B C D : PTm n)
 def scalarCode (z S d : PTm n) : PTm n :=
   rationalCode (ZT.ofNat (RationalPointDistance.numerator z S d)) (RationalPointDistance.denominator z S d)
 
-@[simp] theorem subst_scalarCode {m : ℕ} (σ : Fin n → PTm m) (z S d : PTm n) :
-    Syn.subst σ (scalarCode z S d) = scalarCode (Syn.subst σ z) (Syn.subst σ S) (Syn.subst σ d) := by
-  simp [scalarCode,rationalCode,ZT.ofNat]
+ipra_subst scalarCode [rationalCode, ZT.ofNat]
 
 theorem scalar_numerator (z S d : PTm n) :
     Γ ⊢[PRAAx] ZT.eq (numeratorOf (scalarCode z S d)) (ZT.ofNat (RationalPointDistance.numerator z S d)) :=
@@ -191,10 +181,8 @@ theorem scalar_cross_absolute (z w S T d : PTm n) :
     RationalPointDistance.numerator w T d*RationalPointDistance.denominator z S d⟩)
   have a := ZT.toZ_eq (scalar_numerator (Γ := Γ) z S d)
   have b := ZT.toZ_eq (scalar_numerator (Γ := Γ) w T d)
-  have c := natEq (scalar_denominator (Γ := Γ) z S d)
-  have e := natEq (scalar_denominator (Γ := Γ) w T d)
   simp only [RationalValueBounds.cross,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_ofNat] at a b ⊢
-  rw [a,b,c,e]
+  rw [a,b,natEq (scalar_denominator (Γ := Γ) z S d),natEq (scalar_denominator (Γ := Γ) w T d)]
   simp only [ZT.toZ,Q.mk_mul,map_mul]
 
 /-- Literal source clause 5 with genuine point-radius and Hausdorff-radius
@@ -240,17 +228,11 @@ def variationCode (z w S T d : PTm n) : PTm n :=
   pairT (pairT (differenceNumerator z w S T d) (differenceDenominator z w S T d))
     (pairT (budgetNumerator z w S T d) (budgetDenominator z w S T d))
 
-@[simp] theorem subst_differenceNumerator {m : ℕ} (σ : Fin n → PTm m) (z w S T d : PTm n) :
-    Syn.subst σ (differenceNumerator z w S T d) = differenceNumerator (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by
-  simp [differenceNumerator,ad]
-@[simp] theorem subst_differenceDenominator {m : ℕ} (σ : Fin n → PTm m) (z w S T d : PTm n) :
-    Syn.subst σ (differenceDenominator z w S T d) = differenceDenominator (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by simp [differenceDenominator]
-@[simp] theorem subst_budgetNumerator {m : ℕ} (σ : Fin n → PTm m) (z w S T d : PTm n) :
-    Syn.subst σ (budgetNumerator z w S T d) = budgetNumerator (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by simp [budgetNumerator]
-@[simp] theorem subst_budgetDenominator {m : ℕ} (σ : Fin n → PTm m) (z w S T d : PTm n) :
-    Syn.subst σ (budgetDenominator z w S T d) = budgetDenominator (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by simp [budgetDenominator]
-@[simp] theorem subst_variationCode {m : ℕ} (σ : Fin n → PTm m) (z w S T d : PTm n) :
-    Syn.subst σ (variationCode z w S T d) = variationCode (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) := by simp [variationCode]
+ipra_subst differenceNumerator [ad]
+ipra_subst differenceDenominator
+ipra_subst budgetNumerator
+ipra_subst budgetDenominator
+ipra_subst variationCode
 
 theorem output_denominators_positive (z w S T d : PTm n) :
     Γ ⊢[PRAAx] le one (differenceDenominator z w S T d) ⋏ le one (budgetDenominator z w S T d) :=
@@ -287,16 +269,16 @@ theorem program_at (z w S T d : PTm n) :
 
 theorem program_difference_numerator (z w S T d : PTm n) : Γ ⊢[PRAAx]
     fstT (fstT (RationalHausdorff.apply5 programF z w S T d)) ≐ differenceNumerator z w S T d :=
-  (congrFst ((congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE.fstE
 theorem program_difference_denominator (z w S T d : PTm n) : Γ ⊢[PRAAx]
     sndT (fstT (RationalHausdorff.apply5 programF z w S T d)) ≐ differenceDenominator z w S T d :=
-  (congrSnd ((congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).fstE.sndE
 theorem program_budget_numerator (z w S T d : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (RationalHausdorff.apply5 programF z w S T d)) ≐ budgetNumerator z w S T d :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.fstE
 theorem program_budget_denominator (z w S T d : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (RationalHausdorff.apply5 programF z w S T d)) ≐ budgetDenominator z w S T d :=
-  (congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE.sndE
 
 theorem code_variation (z w S T d : PTm n)
     (hS : Γ ⊢[PRAAx] le one (length S)) (hT : Γ ⊢[PRAAx] le one (length T)) : Γ ⊢[PRAAx]

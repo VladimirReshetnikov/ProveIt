@@ -28,11 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.StirlingElimination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -97,13 +93,9 @@ theorem lin_step {k : PTm n} (ih : Γ ⊢[PRAAx] le (num 3 * succ k + one) (pw (
 private abbrev linF : Fm PTm 1 := le (num 3 * succ (var 0) + one) (pw (num 4) (succ (var 0)))
 
 private theorem lin₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] linF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lin_base
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lin_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact lin_base
+  · exact lin_step Prf.hyp0
 
 /-- `3n + 1 ≤ 4^n` for `n = k + 1`. -/
 theorem lin_le_four_pow (k : PTm n) : Γ ⊢[PRAAx] le (num 3 * succ k + one) (pw (num 4) (succ k)) := by

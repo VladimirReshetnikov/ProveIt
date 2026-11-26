@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRadiusQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRadiusFiniteSum (boundBy bound_congr rowBounds)
 open GaussianRationalFiniteSum (sum termsEqual)
 open GaussianRationalHorner (qadd qmul positive_product)
@@ -23,8 +23,6 @@ open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRationalRiemannRefinement (leftSum weight)
 open GaussianRationalNaturalScale (natScale naturalPoint)
 open GaussianDominantPairAlgebra (radiusPoint radiusNumerator radius_congr radius_represents radius_multiply)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

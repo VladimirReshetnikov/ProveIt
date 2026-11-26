@@ -9,7 +9,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderSignedParityAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BernoulliBounds (zint toZ_zint)
 open GaussianRationalMatrixFiniteSums (minusOne negative_as_minusOne)
 open GaussianRationalMetric (qnegative)
@@ -28,8 +28,6 @@ open RationalGaussianRealPart (embed_congr)
 open RationalIntegerNormalization (normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
 open RationalRepresentations (represents_negative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

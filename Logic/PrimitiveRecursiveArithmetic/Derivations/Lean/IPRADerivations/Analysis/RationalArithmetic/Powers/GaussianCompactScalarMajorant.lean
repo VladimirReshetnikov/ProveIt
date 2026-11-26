@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactScalarMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalSumMajorant (majorized termsMajorized from_representation majorized_multiply sum_majorized majorant_bound)
 open GaussianRationalRiemannRefinement (leftSum weight weight_bound termsDistance sum_distance)
 open GaussianCompactRiemannName (quadrature sampleBody sampleData)
@@ -30,9 +30,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReconstructionRoots (norm_from_distance)
 open RationalGaussianRealPart (embedBody embed_sum)
 open RationalGaussianEmbedding (embed embed_multiply)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,24 +15,20 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.AggregateApproximatePointMap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open AggregateEquality (sample unit unit_positive nonempty nonempty_at regular)
 open AggregateOptimization (evaluate pointRegular pointRegular_at supportZero errorNumerator errorDenominator)
 open AggregateApproximateImage (mapContract map_at data clock)
 open RationalHausdorff (pointRadius)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def mapped (U : PR 2) (f : PR 3) (k c x : PTm n) : PTm n := evaluate f (sample U (k+c) x) (k+c) x
 def body (U : PR 2) (f : PR 3) : PTm 2 := mapped U f (var 0) (fstT (var 1)) (sndT (var 1))
 def pointF (U : PR 2) (f : PR 3) : PR 2 := PTm.toPR (body U f)
-@[simp] theorem subst_mapped {l : ℕ} (σ : Fin n → PTm l) (U : PR 2) (f : PR 3) (k c x : PTm n) :
-    Syn.subst σ (mapped U f k c x) = mapped U f (Syn.subst σ k) (Syn.subst σ c) (Syn.subst σ x) := by simp [mapped]
+ipra_subst mapped
 
 theorem point_at (U : PR 2) (f : PR 3) (k c x : PTm n) : Γ ⊢[PRAAx]
     sample (pointF U f) k (data c x) ≐ mapped U f k c x := by
@@ -209,8 +205,7 @@ theorem computed_certificate (U S : PR 2) (f : PR 3) (d e A B x : PTm n)
 
 def computed (U : PR 2) (f : PR 3) (k A B x : PTm n) : PTm n := mapped U f k (clock A B) x
 def computedF (U : PR 2) (f : PR 3) : PR 4 := PTm.toPR (computed U f (var 0) (var 1) (var 2) (var 3))
-@[simp] theorem subst_computed {l : ℕ} (σ : Fin n → PTm l) (U : PR 2) (f : PR 3) (k A B x : PTm n) :
-    Syn.subst σ (computed U f k A B x) = computed U f (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by simp [computed]
+ipra_subst computed
 
 theorem computed_at (U : PR 2) (f : PR 3) (k A B x : PTm n) : Γ ⊢[PRAAx]
     PTm.app (computedF U f) ![k,A,B,x] ≐ computed U f k A B x := by

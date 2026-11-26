@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerSignRecipe
 import IPRADerivations.Algebra.QuadraticTowerOperandProperness
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual numerical-depth recursive sign tables
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerSignTable
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width)
 open QuadraticTowerArrayCodec (arrayHeight horizon code decoded)
@@ -26,9 +25,6 @@ open QuadraticTowerMultiplicationTable (budget demandF)
 open LeanProofs.IPRA.Foundations
 open MasterCertificate (sequence entry sequence_length sequence_decode)
 open SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,22 +44,13 @@ def stepSchema : PTm 4 := step (var 0) (var 1) (var 2) (var 3)
 def table (h B D : PTm n) : PTm n := DemandRecursion.X demandF baseSchema stepSchema h B D
 def query (h B D A : PTm n) : PTm n := QuadraticTowerSignRecipe.read h B (table h B D) A
 
-@[simp] theorem subst_groundTag {k : ℕ} (σ : Fin n → PTm k) (q : PTm n) :
-    Syn.subst σ (groundTag q) = groundTag (Syn.subst σ q) := by simp [groundTag]
-@[simp] theorem subst_baseRow {k : ℕ} (σ : Fin n → PTm k) (B i : PTm n) :
-    Syn.subst σ (baseRow B i) = baseRow (Syn.subst σ B) (Syn.subst σ i) := by simp [baseRow]
-@[simp] theorem subst_base {k : ℕ} (σ : Fin n → PTm k) (B : PTm n) :
-    Syn.subst σ (base B) = base (Syn.subst σ B) := by simp [base]
-@[simp] theorem subst_rowValue {k : ℕ} (σ : Fin n → PTm k) (h B S D i : PTm n) :
-    Syn.subst σ (rowValue h B S D i) = rowValue (Syn.subst σ h) (Syn.subst σ B)
-      (Syn.subst σ S) (Syn.subst σ D) (Syn.subst σ i) := by simp [rowValue]
-@[simp] theorem subst_step {k : ℕ} (σ : Fin n → PTm k) (h B S D : PTm n) :
-    Syn.subst σ (step h B S D) = step (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ S) (Syn.subst σ D) := by simp [step]
-@[simp] theorem subst_table {k : ℕ} (σ : Fin n → PTm k) (h B D : PTm n) :
-    Syn.subst σ (table h B D) = table (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) := by
-  simp only [table,DemandRecursion.X,DemandRecursion.subst_V]
-@[simp] theorem subst_query {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (query h B D A) = query (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by simp [query]
+ipra_subst groundTag
+ipra_subst baseRow
+ipra_subst base
+ipra_subst rowValue
+ipra_subst step
+ipra_subst table [DemandRecursion.X, DemandRecursion.subst_V]
+ipra_subst query
 
 theorem ground_tag_bound (q : PTm n) : Γ ⊢[PRAAx] lt (groundTag q) (succ two) :=
   .andE₂ (RuntimeWordAppend.divide_spec _ _ (zero_lt_succ two))
@@ -110,8 +97,8 @@ theorem row_body_at (h B S D i : PTm n) : Γ ⊢[PRAAx]
     Matrix.cons_val_zero,Matrix.cons_val_one]
   have hp := snd_pair (Γ := Γ) h (pairT B (pairT S D))
   have hq := (congrSnd hp).eqTrans (snd_pair B (pairT S D))
-  exact row_value_congr (fst_pair _ _) ((congrFst hp).eqTrans (fst_pair _ _))
-    ((congrFst hq).eqTrans (fst_pair _ _)) ((congrSnd hq).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact row_value_congr (fst_pair _ _) hp.fstE
+    hq.fstE hq.sndE (.eqRefl _)
 
 theorem base_lookup (B i : PTm n) (hi : Γ ⊢[PRAAx] lt i (horizon zero B)) : Γ ⊢[PRAAx]
     entry (base B) i ≐ baseRow B i := by
@@ -219,15 +206,8 @@ def queryF : PR 4 := PTm.toPR (query (var 0) (var 1) (var 2) (var 3))
 def output (h B D A : PTm n) : PTm n := pairT (query h B D A) (pairT (table h B D) (horizon h B))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (h B D A : PTm n) : PTm n := PTm.app outputF ![h,B,D,A]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (output h B D A) = output (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by
-  simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (run h B D A) = run (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem table_program_at (h B D : PTm n) : Γ ⊢[PRAAx] ap3 tableF h B D ≐ table h B D := by
   simpa [tableF,ap3] using toPR_eq (Γ := Γ) (table (var 0) (var 1) (var 2) : PTm 3) ![h,B,D]
@@ -236,13 +216,13 @@ theorem query_program_at (h B D A : PTm n) : Γ ⊢[PRAAx] PTm.app queryF ![h,B,
 theorem program_at (h B D A : PTm n) : Γ ⊢[PRAAx] run h B D A ≐ output h B D A := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![h,B,D,A]
 theorem returned_tag (h B D A : PTm n) : Γ ⊢[PRAAx] fstT (run h B D A) ≐ query h B D A :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (h B D A : PTm n) : Γ ⊢[PRAAx] sndT (run h B D A) ≐ pairT (table h B D) (horizon h B) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_table (h B D A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h B D A)) ≐ table h B D :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_horizon (h B D A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h B D A)) ≐ horizon h B :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_bound (h B D A : PTm n) : Γ ⊢[PRAAx] lt (fstT (run h B D A)) (succ two) :=
   lt_congr (returned_tag _ _ _ _).eqSymm (.eqRefl _) (query_bound _ _ _ _)
 theorem returned_length (h B D A : PTm n) : Γ ⊢[PRAAx]

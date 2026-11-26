@@ -14,9 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPositivePrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
+open_ipra
 open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalFiniteProduct (offset_at)
 open GaussianRationalHorner (positive_product)
@@ -35,8 +33,6 @@ open RationalReciprocalPowerTail (add_zero_right)
 open RationalSumConstants (constantBody term_constant sum_constant)
 open RationalSumReversal (sum_first)
 open RationalSumSegments (sum_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

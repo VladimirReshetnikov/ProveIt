@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaAllDegreeCoefficientStability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaReciprocalDegreeCells (degree)
 open GaussianGammaFiniteCoefficientPolynomial (polynomial totalDegree)
 open GaussianGammaFiniteCoefficientStability (fixedCoefficient cofinalObservation)
@@ -23,9 +23,6 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
 open GaussianRationalPolynomialProduct (product)
 open GaussianRationalPolynomialBuffers (leftPad)
 open GaussianPolynomialLowJetProduct (jetEqual)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,14 +30,10 @@ def paddedHead (R e : PTm n) : PTm n := leftPad (GaussianGammaEulerHeadPolynomia
 def headDegree (R e : PTm n) : PTm n := e+succ (two*R)
 def exponential (q R L K : PTm n) : PTm n := GaussianGammaExponentCoefficientPolynomial.exponential q R L K
 def paddedPolynomial (q R L K e : PTm n) : PTm n := product (paddedHead R e) (exponential q R L K) (headDegree R e) (K*degree L)
-@[simp] theorem subst_paddedHead {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    Syn.subst σ (paddedHead R e) = paddedHead (Syn.subst σ R) (Syn.subst σ e) := by simp [paddedHead]
-@[simp] theorem subst_headDegree {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    Syn.subst σ (headDegree R e) = headDegree (Syn.subst σ R) (Syn.subst σ e) := by simp [headDegree]
-@[simp] theorem subst_exponential {m : ℕ} (σ : Fin n → PTm m) (q R L K : PTm n) :
-    Syn.subst σ (exponential q R L K) = exponential (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ K) := by simp [exponential]
-@[simp] theorem subst_paddedPolynomial {m : ℕ} (σ : Fin n → PTm m) (q R L K e : PTm n) :
-    Syn.subst σ (paddedPolynomial q R L K e) = paddedPolynomial (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ K) (Syn.subst σ e) := by simp [paddedPolynomial]
+ipra_subst paddedHead
+ipra_subst headDegree
+ipra_subst exponential
+ipra_subst paddedPolynomial
 
 theorem padding_reader (q R L K e : PTm n) (hK : Γ ⊢[PRAAx] le e K) : Γ ⊢[PRAAx]
     exponentCoefficient (paddedPolynomial q R L K e) (headDegree R e+K*degree L) e ≐

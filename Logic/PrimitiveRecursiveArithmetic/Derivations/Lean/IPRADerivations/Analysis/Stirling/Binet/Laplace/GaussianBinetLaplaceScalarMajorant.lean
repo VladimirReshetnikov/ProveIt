@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceScalarMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceDomination (realDecay realNumerator realDenominator)
 open GaussianBinetLaplaceIntegrand (input cofinalF cofinalData)
@@ -34,10 +34,6 @@ open GaussianRationalSyntheticBounds (natCode natCode_represents)
 open GaussianRealExponentialPositiveRepresentative
   (positiveF positiveData sample_nonnegative sample_canonical)
 open RationalGaussianEmbedding (embed canonical_axis_roundtrip)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "twelve" => num 12
@@ -105,9 +101,7 @@ def scalar (p a b : PTm n) : PTm n :=
   RationalArithmetic.add (RationalArithmetic.multiply (fraction one twelve) (fstT (realDecay p a b)))
     (fraction (num 9) (unit p))
 
-@[simp] theorem subst_scalar {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (scalar p a b) = scalar (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [scalar,realDecay,signedTime,one]
+ipra_subst scalar [realDecay, signedTime, one]
 
 private theorem scalar_represents (p a b : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (scalar p a b)

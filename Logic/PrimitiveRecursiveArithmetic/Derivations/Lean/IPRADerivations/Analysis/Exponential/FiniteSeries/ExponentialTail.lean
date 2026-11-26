@@ -2,8 +2,6 @@ import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.Gcd
 
 /-!
 # The explicit tail of the exponential series
@@ -31,15 +29,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ExponentialTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -77,8 +71,7 @@ abbrev TI (N B k : PTm n) : Fm PTm n :=
 theorem t_base (N B : PTm n) : Γ ⊢[PRAAx] TI N B zero := by
   have z := natEq (tsum_zero (Γ := Γ) N B)
   have c₁ := natEq (congrAp2 powF (add_zero (Γ := Γ) N) (.eqRefl B))
-  have c₂ := natEq (congrAp2 factF (add_zero (Γ := Γ) N) (.eqRefl zero))
-  ipra_le 0 using rw [z, c₁, c₂]; ring
+  ipra_le 0 using rw [z, c₁, natEq (congrAp2 factF (add_zero (Γ := Γ) N) (.eqRefl zero))]; ring
 
 theorem t_step {N B k : PTm n} (h2 : Γ ⊢[PRAAx] le (B + B) N) (ih : Γ ⊢[PRAAx] TI N B k) :
     Γ ⊢[PRAAx] TI N B (succ k) := by
@@ -91,13 +84,9 @@ theorem t_step {N B k : PTm n} (h2 : Γ ⊢[PRAAx] le (B + B) N) (ih : Γ ⊢[PR
 /-- Variables: `0 = k` (induction), `1 = N`, `2 = B`. -/
 private theorem tail₀ :
     ([] : List (Fm PTm 3)) ⊢[PRAAx] (le (var 2 + var 2) (var 1) ⟶ TI (var 1) (var 2) (var 0)) := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (t_base _ _)
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (t_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (t_base _ _)
+  · exact .impI (t_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- The tail is at most twice its first term: `S_k + 2 t_k ≤ 2 t_0` for `2B ≤ N`. -/
 theorem ratio_inv {N B : PTm n} (h2 : Γ ⊢[PRAAx] le (B + B) N) (k : PTm n) : Γ ⊢[PRAAx] TI N B k := by
@@ -110,8 +99,7 @@ theorem ratio_inv {N B : PTm n} (h2 : Γ ⊢[PRAAx] le (B + B) N) (k : PTm n) : 
 theorem tpf_base (B : PTm n) :
     Γ ⊢[PRAAx] le (pw two zero * pw B zero * fact (B + B)) (fact (B + B + zero)) := by
   have a := natEq (pw_zero (Γ := Γ) two); have b := natEq (pw_zero (Γ := Γ) B)
-  have c := natEq (congrAp2 factF (add_zero (Γ := Γ) (B + B)) (.eqRefl zero))
-  ipra_le 0 using rw [a, b, c]; ring
+  ipra_le 0 using rw [a, b, natEq (congrAp2 factF (add_zero (Γ := Γ) (B + B)) (.eqRefl zero))]; ring
 
 theorem tpf_step {B m : PTm n} (ih : Γ ⊢[PRAAx] le (pw two m * pw B m * fact (B + B)) (fact (B + B + m))) :
     Γ ⊢[PRAAx] le (pw two (succ m) * pw B (succ m) * fact (B + B)) (fact (B + B + succ m)) := by
@@ -123,13 +111,9 @@ theorem tpf_step {B m : PTm n} (ih : Γ ⊢[PRAAx] le (pw two m * pw B m * fact 
 /-- Variables: `0 = m` (induction), `1 = B`. -/
 private theorem tpf₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx]
     le (pw two (var 0) * pw (var 1) (var 0) * fact (var 1 + var 1)) (fact (var 1 + var 1 + var 0)) := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tpf_base _
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tpf_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact tpf_base _
+  · exact tpf_step Prf.hyp0
 
 /-- `2^m B^m (2B)! ≤ (2B + m)!`. -/
 theorem two_pow_fact (B m : PTm n) :

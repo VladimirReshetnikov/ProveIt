@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaGammaComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaDigammaConvexComparison (innerData outerData log_comparison inner_regular outer_regular)
 open GaussianGammaDigammaStep (neighborNumerator neighborDenominator neighborData neighbor_source)
@@ -26,8 +26,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianRadiusExponentialName (nameF data)
 open GaussianStirlingGammaLogarithm (source gammaData gamma_regular logGammaF logGammaData log_gamma_regular)
 open GaussianStirlingLogDuplication (exponential_sum exponential_gamma exponential_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "LF" => GaussianGammaDigammaConvexComparison.sumF
@@ -36,15 +34,9 @@ def productF : PR 2 := multiplyF gammaF gammaF
 def innerProductData (a c b D : PTm n) : PTm n := multiplyData gammaF gammaF (neighborData a b D) (gammaData c b)
 def outerProductData (a c b D : PTm n) : PTm n := multiplyData gammaF gammaF (gammaData a b) (neighborData c b D)
 
-@[simp] theorem subst_innerProductData {m : ℕ} (σ : Fin n → PTm m) (a c b D : PTm n) :
-    Syn.subst σ (innerProductData a c b D) =
-      innerProductData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [innerProductData,neighborData,neighborNumerator,neighborDenominator]
+ipra_subst innerProductData [neighborData, neighborNumerator, neighborDenominator]
 
-@[simp] theorem subst_outerProductData {m : ℕ} (σ : Fin n → PTm m) (a c b D : PTm n) :
-    Syn.subst σ (outerProductData a c b D) =
-      outerProductData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [outerProductData,neighborData,neighborNumerator,neighborDenominator]
+ipra_subst outerProductData [neighborData, neighborNumerator, neighborDenominator]
 
 set_option maxHeartbeats 800000 in
 theorem product_from_exp (a b c d R : PTm n) (ha : Γ ⊢[PRAAx] source a b) (hc : Γ ⊢[PRAAx] source c d)

@@ -3,7 +3,6 @@ import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Foundations.MixedRadix
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Lucas's binomial congruence
@@ -30,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.LucasDigits
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero)
 open LeanProofs.IPRA.Combinatorics.LucasStep (lucas_step)
@@ -41,10 +40,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (quo_quo)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eq_of_eqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,9 +51,9 @@ abbrev Y (p N K : PTm n) : PTm n := pairT p (pairT N K)
 
 theorem Y_p (p N K : PTm n) : Γ ⊢[PRAAx] fstT (Y p N K) ≐ p := fst_pair _ _
 theorem Y_N (p N K : PTm n) : Γ ⊢[PRAAx] fstT (sndT (Y p N K)) ≐ N :=
-  (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  (snd_pair _ _).fstE
 theorem Y_K (p N K : PTm n) : Γ ⊢[PRAAx] sndT (sndT (Y p N K)) ≐ K :=
-  (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  (snd_pair _ _).sndE
 
 /-- `C(⌊N/p^i⌋ mod p, ⌊K/p^i⌋ mod p)`, over `0 = i`, `1 = ⟨p, ⟨N, K⟩⟩`. -/
 abbrev dgB : PTm 2 :=
@@ -150,13 +145,9 @@ theorem lucas_digits {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (L N K : PTm n) :
     Γ ⊢[PRAAx] rem (gb N K) p ≐ rem (DP p L N K * gb (quo N (pw p L)) (quo K (pw p L))) p := by
   have sY : Syn.shift (Y p N K) = Y (Syn.shift p) (Syn.shift N) (Syn.shift K) := by simp [Syn.shift]
   have hall : Γ ⊢[PRAAx] Fm.all (inst2 stB (var 0) (Syn.shift (Y p N K)) ≐ one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact st_zero p N K
-    · simp only [Fm.subst_eq, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      rw [sY]
+    ipra_qfind [subst_inst2]
+    · exact st_zero p N K
+    · rw [sY]
       exact st_succ (prime_shift hp).wk Prf.hyp0
   have h2 := Prf.allE L hall
   simp only [Fm.subst_eq, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,

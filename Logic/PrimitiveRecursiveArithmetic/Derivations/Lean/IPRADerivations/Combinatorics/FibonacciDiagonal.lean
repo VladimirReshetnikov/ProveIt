@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.Fibonacci
 import IPRADerivations.Combinatorics.HockeyStick
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Fibonacci numbers as diagonal sums of Pascal's triangle
@@ -23,13 +22,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FibonacciDiagonal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_pascal gb_above)
 open LeanProofs.IPRA.Combinatorics.Fibonacci (fib fibS fibS_zero fib_zero fibS_succ fib_succ subst_fibS)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -136,13 +131,9 @@ private abbrev fdF : Fm PTm 1 :=
   (diag (var 0) ≐ fibS (var 0)) ⋏ (diag (succ (var 0)) ≐ fibS (succ (var 0)))
 
 private theorem fd₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] fdF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_ap2, subst_fibS, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .andI (diag_zero.eqTrans fibS_zero.eqSymm) (diag_one.eqTrans fibS_one.eqSymm)
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_ap2, subst_fibS, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .andI (Prf.andE₂ Prf.hyp0) (diag_step (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0))
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_fibS]
+  · exact .andI (diag_zero.eqTrans fibS_zero.eqSymm) (diag_one.eqTrans fibS_one.eqSymm)
+  · exact .andI (Prf.andE₂ Prf.hyp0) (diag_step (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0))
 
 /-- `∑_{j ≤ k} C(k − j, j) = F_{k+1}`. -/
 theorem fib_diagonal (k : PTm n) : Γ ⊢[PRAAx] diag k ≐ fibS k := by

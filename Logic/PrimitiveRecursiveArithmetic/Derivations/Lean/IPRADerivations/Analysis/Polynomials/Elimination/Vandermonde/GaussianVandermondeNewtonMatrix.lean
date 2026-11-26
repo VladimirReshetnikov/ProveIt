@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Vandermonde.GaussianVandermondeNewtonPolynomials
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarTriangularDeterminant
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantMultiplication
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual Newton matrix and square Vandermonde product
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianVandermondeNewtonMatrix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul canonical canonical_congr evaluate)
 open GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical qmul_congr)
 open GaussianTranslatedNonconstant (recode recode_congr recode_eq)
@@ -31,19 +30,14 @@ open GaussianScalarTriangularDeterminant (belowZeros aboveZeros diagonalOnes dia
 open GaussianVandermondeNewtonPolynomials (polynomial coefficient differenceProduct pairProduct)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficientBody : PTm 3 := coefficient (var 2) (var 1) (var 0)
 def change (R m : PTm n) : PTm n := table coefficientBody m m R
 def transformed (R m : PTm n) : PTm n := matrixProduct (U R m) (change R m) m
-@[simp] theorem subst_change {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (change R m) = change (Syn.subst σ R) (Syn.subst σ m) := by simp [change]
-@[simp] theorem subst_transformed {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (transformed R m) = transformed (Syn.subst σ R) (Syn.subst σ m) := by simp [transformed]
+ipra_subst change
+ipra_subst transformed
 
 theorem change_length (R m : PTm n) : Γ ⊢[PRAAx] length (change R m) ≐ m := table_length _ _ _ _
 theorem change_row_length (R m r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
@@ -153,15 +147,8 @@ def outputF : PR 1 := PTm.toPR (output (var 0))
 def run (R : PTm n) : PTm n := app outputF ![R]
 def fields (p : PTm n) : Fin 5 → PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),
   fstT (sndT (sndT (sndT p))),sndT (sndT (sndT (sndT p)))]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (output R) = output (Syn.subst σ R) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (run R) = run (Syn.subst σ R) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i
-  rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 5) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem change_program_at (R m : PTm n) : Γ ⊢[PRAAx] app changeF ![R,m] ≐ change R m := by
@@ -172,15 +159,15 @@ theorem returned_fields (R : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (run R) i
     ![U R (length R),change R (length R),transformed R (length R),
       scalarDet (U R (length R)) (length R),pairProduct R (length R)] i := by
   have e0 := program_at (Γ := Γ) R
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrSnd e3).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e3.sndE
 theorem returned_equality (R : PTm n) : Γ ⊢[PRAAx] fields (run R) 3 ≐ fields (run R) 4 :=
   (returned_fields R 3).eqTrans ((square_det R).eqTrans (returned_fields R 4).eqSymm)
 theorem returned_change_det (R : PTm n) : Γ ⊢[PRAAx] scalarDet (fields (run R) 1) (length R) ≐ qone := by

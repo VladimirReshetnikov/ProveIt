@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetFrozenKernelLaplace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetFrozenKernelRectangle (matrix column_at)
 open GaussianBinetKernelFrequencyGrid (cofinalBody originalData physical_weight)
 open GaussianBinetKernelFrozenIndependent (errorDenominator error_denominator_positive)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rectData" => GaussianBinetFrozenKernelRectangle.data
@@ -43,10 +39,7 @@ local notation "cellError" => GaussianBinetKernelFrequencyRadius.errorNumerator
 
 def errorNumerator (p q I D L : PTm n) : PTm n := (D*L)*cellError p q I
 
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (p q I D L : PTm n) :
-    Syn.subst σ (errorNumerator p q I D L) =
-      errorNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ I) (Syn.subst σ D) (Syn.subst σ L) := by
-  simp [errorNumerator]
+ipra_subst errorNumerator
 
 private theorem column_error (j s p q k I N X Y D sign Ra R L J : PTm n)
     (hAngle : Γ ⊢[PRAAx] source X Y D sign Ra) (hR : Γ ⊢[PRAAx] source X Y D sign R)

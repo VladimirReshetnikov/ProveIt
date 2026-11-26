@@ -24,11 +24,7 @@ two-colour step is `RamseyTriangle.ramsey33`.
 
 namespace LeanProofs.IPRA.Combinatorics.RamseySixteen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

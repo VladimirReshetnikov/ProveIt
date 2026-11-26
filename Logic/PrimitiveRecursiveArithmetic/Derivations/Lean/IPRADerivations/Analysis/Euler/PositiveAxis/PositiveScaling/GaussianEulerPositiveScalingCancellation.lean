@@ -13,14 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingCancellation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositiveScalingConstant (source scaleF scaleData nameF data inverseF inverseData exponentData)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans cross_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameRingLaws (oneF one_fast)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open BaselQuadrature (Qb)
 open ComplexLogarithmRemainder (eval_im_code)
@@ -38,10 +38,6 @@ open RationalArgmin (rationalLE)
 open RationalCubeMidpoint (fraction fraction_represents)
 open RationalValueBounds (positive_cancel radius_symmetric upper upper_congr upper_of_order upper_of_radius
   upper_order_right upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

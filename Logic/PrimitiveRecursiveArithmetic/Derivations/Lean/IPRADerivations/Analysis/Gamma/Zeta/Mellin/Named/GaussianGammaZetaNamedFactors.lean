@@ -16,7 +16,7 @@ set_option maxHeartbeats 1400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaNamedFactors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaZetaNamedChart (radius degree dirichletMap gammaMap productMap
   dirichletData gammaData productData dirichlet_data_at gamma_data_at product_data_at
@@ -31,9 +31,6 @@ open GaussianNamedInverseRate (independentRate subst_independentRate)
 open GaussianNamedRateComposition (compose symmetric)
 open GaussianNamedUniformRateClosure (family productBudget same_denominator_product)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Z" => GaussianGammaZetaDirichletCofinal.nameF
@@ -50,13 +47,9 @@ def factorData (f : PR 2) (x M R : PTm n) : PTm n :=
 def budget (M R : PTm n) : PTm n :=
   one+productBudget one one (gammaCap (radius R) (degree (two*M))) (zetaCap (degree (two*M)))
 
-@[simp] theorem subst_factorData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M R : PTm n) :
-    Syn.subst σ (factorData f x M R) = factorData f (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [factorData]
+ipra_subst factorData
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (M R : PTm n) :
-    Syn.subst σ (budget M R) = budget (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [budget,productBudget,radius,degree,one,two]
+ipra_subst budget [productBudget, radius, degree, one, two]
 
 private theorem rate_right_data (F H : PR 2) (x y z D N : PTm n)
     (e : Γ ⊢[PRAAx] y ≐ z) (h : Γ ⊢[PRAAx] independentRate F H x y D N) :

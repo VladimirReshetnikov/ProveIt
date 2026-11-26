@@ -15,15 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinParameterRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaZetaDirichletProductParameterRate (demand)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianEulerIntegralGammaIdentification.source

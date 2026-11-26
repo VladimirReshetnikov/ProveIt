@@ -17,11 +17,9 @@ here are families of iPRA formulas with derivable decisions `A y ∨ ¬A y`.
 
 namespace LeanProofs.IPRA.Topology.FiniteBoundary
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IntersectionEnumeration (disjFin disjFin_intro disjFin_imp)
 open LeanProofs.IPRA.Topology.FiniteInteriorClosure
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

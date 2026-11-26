@@ -15,12 +15,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaSecondCrossing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGammaSecondCrossingProduct (source crossing crossing_implies_product product_implies_crossing)
 open GaussianNamedGoldenRatioProduct (product_implies_quadratic quadratic_implies_product)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

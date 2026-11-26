@@ -12,7 +12,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadRelativeLog
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalBaseProductShift (powerProduct)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -25,8 +25,6 @@ open GaussianRationalL1 (rawGaussian rawDen raw_den_positive)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open ComplexLogarithmRemainder (add)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

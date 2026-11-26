@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEvenMomentIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfIntegerDomain (argument radius)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData)
 open GaussianEulerSquareKernel (doubled kernelF)
@@ -27,8 +27,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,18 +39,10 @@ def data (N a b c d : PTm n) : PTm n := multiplyData constantF decayF
   (monomial (two*N) a b) (decayData (c*(a*a)) (d*(b*b)))
 def clock (p N a b c d : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus constantF decayF (monomial (two*N) a b) (decayData (c*(a*a)) (d*(b*b)))) p
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b E T c d : PTm n) :
-    (source a b E T c d).subst σ = source (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E)
-      (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_originalData {m : ℕ} (σ : Fin n → PTm m) (N a b c d : PTm n) :
-    Syn.subst σ (originalData N a b c d) = originalData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ c) (Syn.subst σ d) := by simp [originalData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N a b c d : PTm n) :
-    Syn.subst σ (data N a b c d) = data (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ c) (Syn.subst σ d) := by simp [data]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p N a b c d : PTm n) :
-    Syn.subst σ (clock p N a b c d) = clock (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ c) (Syn.subst σ d) := by simp [clock]
+ipra_subst source
+ipra_subst originalData
+ipra_subst data
+ipra_subst clock
 
 theorem old_source (a b E T c d : PTm n) (h : Γ ⊢[PRAAx] source a b E T c d) : Γ ⊢[PRAAx]
     GaussianEulerPositiveScalingIntegrand.source two a b c d :=

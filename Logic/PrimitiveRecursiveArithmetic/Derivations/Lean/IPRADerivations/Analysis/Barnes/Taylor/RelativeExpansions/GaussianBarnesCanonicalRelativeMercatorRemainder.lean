@@ -18,7 +18,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalRelativeMercatorRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalRelativeStep (source local_admission relative_bound logarithm_increment)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -28,10 +28,6 @@ open GaussianNameEquivalence (cross_refl)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

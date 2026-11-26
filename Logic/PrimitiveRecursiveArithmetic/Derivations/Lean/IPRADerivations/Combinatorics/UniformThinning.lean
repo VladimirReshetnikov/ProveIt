@@ -24,13 +24,9 @@ For a fixed number of classes and an object-level disjunction instead of a witne
 
 namespace LeanProofs.IPRA.Combinatorics.UniformThinning
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none ex_least)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

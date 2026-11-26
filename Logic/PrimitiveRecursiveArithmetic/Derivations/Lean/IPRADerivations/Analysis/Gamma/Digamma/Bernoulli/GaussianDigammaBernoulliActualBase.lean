@@ -13,9 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliActualBase
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open GaussianDigammaBernoulliBaseAgreement (agreement)
 open GaussianDigammaBernoulliName (nameF nameData)
 open GaussianDigammaBernoulliPositive (floorPoint named_lower named_positive)
@@ -24,8 +22,6 @@ open GaussianGammaCanonicalExponent (constantF)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder)
 open GaussianStirlingNames (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

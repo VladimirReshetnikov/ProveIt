@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiCofactorSection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalMaximalMinors (rank bestColumn)
 open RationalMinorFreeColumn (free free_column_spec)
 open RationalMinorAugmentation (extendedColumn)
@@ -32,8 +32,6 @@ open RationalSuperellipticNormDegree (pointPowers)
 open GaussianRationalFiberGrouping (abscissa ordinate)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

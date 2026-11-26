@@ -172,19 +172,14 @@ private abbrev X' : PTm 4 := ex (succ (var 0)) ![var 1, var 2]
 private abbrev Y' : PTm 4 := ey (succ (var 0)) ![var 1, var 2]
 
 theorem common_invariant : ([] : List (Fm PTm 4)) ⊢[PRAAx] commonInv := by
-  refine ind _ ⟨⟨⟨trivial, trivial⟩, trivial, trivial⟩, ⟨trivial, trivial⟩, trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ex2, subst_ey2,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
-    refine .andI (.impI (.andI ?_ ?_)) (.impI (.andI ?_ ?_))
+  ipra_ind (⟨⟨⟨trivial, trivial⟩, trivial, trivial⟩, ⟨trivial, trivial⟩, trivial, trivial⟩) [subst_ap2, subst_ex2,
+      subst_ey2]
+  · refine .andI (.impI (.andI ?_ ?_)) (.impI (.andI ?_ ?_))
     · exact dvd_congr (ex_zero _ _).eqSymm (Prf.andE₁ Prf.hyp0)
     · exact dvd_congr (ey_zero _ _).eqSymm (Prf.andE₂ Prf.hyp0)
     · exact dvd_congr (ex_zero _ _) (Prf.andE₁ Prf.hyp0)
     · exact dvd_congr (ey_zero _ _) (Prf.andE₂ Prf.hyp0)
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_ex2, subst_ey2,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero]
-    have hF : [commonInv] ⊢[PRAAx] (dvd D (var 1) ⋏ dvd D (var 2)) ⟶ (dvd D X ⋏ dvd D Y) :=
+  · have hF : [commonInv] ⊢[PRAAx] (dvd D (var 1) ⋏ dvd D (var 2)) ⟶ (dvd D X ⋏ dvd D Y) :=
       .andE₁ Prf.hyp0
     have hB : [commonInv] ⊢[PRAAx] (dvd D X ⋏ dvd D Y) ⟶ (dvd D (var 1) ⋏ dvd D (var 2)) :=
       .andE₂ Prf.hyp0
@@ -231,13 +226,9 @@ abbrev Y₃ : PTm 3 := ey (var 0) ![var 1, var 2]
 abbrev terminationInv : Fm PTm 3 := (Y₃ ≐ zero) ⋎ le (Y₃ + var 0) (var 2)
 
 theorem termination_invariant : ([] : List (Fm PTm 3)) ⊢[PRAAx] terminationInv := by
-  refine ind _ ⟨trivial, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, subst_ey2, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero]
-    exact .orI₂ (le_congr ((ey_zero _ _).eqSymm.eqTrans (add_zero _).eqSymm) (.eqRefl _) (le_refl _))
-  · simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, subst_ey2, Syn.subst_var,
-      Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .orE (zero_or_succ Y₃) ?_ ?_
+  ipra_ind (⟨trivial, le_QF _ _⟩) [subst_le, subst_ey2]
+  · exact .orI₂ (le_congr ((ey_zero _ _).eqSymm.eqTrans (add_zero _).eqSymm) (.eqRefl _) (le_refl _))
+  · refine .orE (zero_or_succ Y₃) ?_ ?_
     · exact .orI₁ (Prf.andE₂ (e_step_zero Prf.hyp0))
     · have hs := e_step_succ (Γ := (Y₃ ≐ succ (pred Y₃)) :: [terminationInv]) Prf.hyp0
       have hd := div_mod_at (x := ex (var 0) ![var 1, var 2])

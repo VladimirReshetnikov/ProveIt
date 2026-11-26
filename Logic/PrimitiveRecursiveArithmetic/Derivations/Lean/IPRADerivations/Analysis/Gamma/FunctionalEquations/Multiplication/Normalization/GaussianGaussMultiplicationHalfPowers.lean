@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaGaussShiftedProduct (source)
 open GaussianGammaReciprocalInverse (gammaF named_product_exchange)
@@ -30,9 +30,6 @@ open GaussianGaussMultiplicationPowerPerturbation (limitData)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans cross_symm)
 open GaussianNameRingLaws (multiply_associative multiply_commutative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "PiHalf" => GaussianGaussPiPowerSquareRoot.nameF

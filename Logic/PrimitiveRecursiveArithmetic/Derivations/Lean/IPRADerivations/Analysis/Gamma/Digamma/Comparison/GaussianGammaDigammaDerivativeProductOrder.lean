@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaDerivativeProductOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaNative (derivativeData derivative_regular minimumDenominator)
@@ -37,10 +37,6 @@ open GaussianReciprocalHorner (qmul_associative)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingGammaLogarithm (source gammaData gamma_regular)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -53,10 +49,8 @@ def rightF : PR 2 := multiplyF gammaF IF
 def leftData (a c b : PTm n) : PTm n := multiplyData IF gammaF (derivativeData a b) (gammaData c b)
 def rightData (a c b : PTm n) : PTm n := multiplyData gammaF IF (gammaData a b) (derivativeData c b)
 
-@[simp] theorem subst_leftData {m : ℕ} (σ : Fin n → PTm m) (a c b : PTm n) :
-    Syn.subst σ (leftData a c b) = leftData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) := by simp [leftData]
-@[simp] theorem subst_rightData {m : ℕ} (σ : Fin n → PTm m) (a c b : PTm n) :
-    Syn.subst σ (rightData a c b) = rightData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) := by simp [rightData]
+ipra_subst leftData
+ipra_subst rightData
 
 theorem natural_inverse (D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] inverse oneCode D ≐ naturalPoint D := by

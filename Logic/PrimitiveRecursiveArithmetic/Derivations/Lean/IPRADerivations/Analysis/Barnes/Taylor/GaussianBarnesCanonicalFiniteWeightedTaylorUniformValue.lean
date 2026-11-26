@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteWeightedTaylorUniformValue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded)
 open GaussianBarnesCanonicalFiniteWeightedTaylorValue (nameF data denominator numerator_with_caps rate_with_caps)
 open GaussianBarnesCanonicalHeadUniformMass (headCap weighted_head_mass)
@@ -24,10 +24,6 @@ open GaussianBarnesCanonicalWeightedTaylorBallSource (input stepDivisor admissio
 open GaussianGammaCanonicalExponent (gammaF)
 open GaussianNameBounds (U)
 open GaussianNamedInverseRate (independentRate)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

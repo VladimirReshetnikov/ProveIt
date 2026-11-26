@@ -17,7 +17,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentZeroOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceIntegrand (cofinalF cofinalData input meshGain)
 open GaussianBinetLaplaceMomentFloor (weight clock observation fixedData evaluatorF gain)
@@ -31,10 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr qone)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "MF" => GaussianBinetLaplaceMomentFloor.nameF

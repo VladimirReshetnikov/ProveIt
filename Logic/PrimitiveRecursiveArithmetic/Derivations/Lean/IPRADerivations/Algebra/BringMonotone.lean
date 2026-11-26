@@ -1,6 +1,5 @@
 import IPRADerivations.Core.IntOrder
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Strong monotonicity of the Bring quintic, as an order statement
@@ -21,11 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.BringMonotone
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

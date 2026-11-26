@@ -14,17 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfSqrtBrackets
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (positive_product scalar_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Foundations.SquareRootRelationalCandidates (candidate)
 open RationalUpperRepresentation (upper_from_representations)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -72,9 +68,8 @@ theorem square_budget (x y K : PTm n)
   · exact le_trans Prf.hyp0 (le_add_right _ _)
   · let E := monus x y
     let Δ := le y x :: Γ
-    have de := natEq (eq_add_of_le (Γ := Δ) (Prf.hyp0 : Δ ⊢[PRAAx] le y x))
     have lhs : Δ ⊢[PRAAx] le (y*y+E*E) (x*x) := by
-      ipra_le 2 * 𝔞 y * 𝔞 E with (𝔞 x + 𝔞 y + 𝔞 E) * de
+      ipra_le 2 * 𝔞 y * 𝔞 E with (𝔞 x + 𝔞 y + 𝔞 E) * natEq (eq_add_of_le (Γ := Δ) (Prf.hyp0 : Δ ⊢[PRAAx] le y x))
     have small : Δ ⊢[PRAAx] le (E*E) (K*K) :=
       le_of_add_le_add_right (c := y*y)
         (le_congr (add_comm (y*y) (E*E)) (add_comm (y*y) (K*K)) (le_trans lhs h.wk))

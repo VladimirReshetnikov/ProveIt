@@ -16,7 +16,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonicExactGridApproximateRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianMonicGridApproximateRoot
   (radius disk witness input sourceInput input_of_source input_degree input_height input_length input_monic
    input_coefficients input_numerator input_denominator input_tolerance witness_residual witness_disk
@@ -28,9 +28,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,16 +37,11 @@ def rounded (C N A p q : PTm n) : PTm n := nearest (radius A) (mesh C N A p q) (
 def witnessIndex (C N A p q : PTm n) : PTm n := nearestIndex (radius A) (mesh C N A p q) (witness C N p q)
 def root (C N A p q : PTm n) : PTm n :=
   entry (grid (radius A) (mesh C N A p q)) (selected C (radius A) (mesh C N A p q) p q)
-@[simp] theorem subst_L {l : ℕ} (σ : Fin n → PTm l) (C N A : PTm n) :
-    Syn.subst σ (L C N A) = L (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) := by simp [L]
-@[simp] theorem subst_mesh {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    Syn.subst σ (mesh C N A p q) = mesh (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [mesh]
-@[simp] theorem subst_rounded {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    Syn.subst σ (rounded C N A p q) = rounded (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [rounded]
-@[simp] theorem subst_witnessIndex {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    Syn.subst σ (witnessIndex C N A p q) = witnessIndex (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [witnessIndex]
-@[simp] theorem subst_root {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    Syn.subst σ (root C N A p q) = root (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [root]
+ipra_subst L
+ipra_subst mesh
+ipra_subst rounded
+ipra_subst witnessIndex
+ipra_subst root
 
 theorem mesh_positive (C N A p q : PTm n) (h : Γ ⊢[PRAAx] input C N A p q) : Γ ⊢[PRAAx] le one (mesh C N A p q) :=
   GaussianRationalDerivativeSum.mesh_positive _ _ _ _ _ (input_numerator _ _ _ _ _ h) (input_denominator _ _ _ _ _ h)
@@ -146,41 +138,35 @@ def output (C N A p q : PTm n) : PTm n := pairT (root C N A p q)
     (pairT (grid (radius A) (mesh C N A p q)) (pairT (mesh C N A p q) (pairT (L C N A) (radius A)))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (C N A p q : PTm n) : PTm n := PTm.app outputF ![C,N,A,p,q]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    Syn.subst σ (output C N A p q) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    Syn.subst σ (run C N A p q) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (C N A p q : PTm n) : Γ ⊢[PRAAx] run C N A p q ≐ output C N A p q := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,N,A,p,q]
 theorem returned_root (C N A p q : PTm n) : Γ ⊢[PRAAx] fstT (run C N A p q) ≐ root C N A p q :=
-  (congrFst (program_at C N A p q)).eqTrans (fst_pair _ _)
+  (program_at C N A p q).fstE
 theorem returned_index (C N A p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N A p q)) ≐ selected C (radius A) (mesh C N A p q) p q :=
-  (congrFst (congrSnd (program_at C N A p q))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at C N A p q))).eqTrans (snd_pair _ _).fstE
 theorem returned_grid (C N A p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N A p q))) ≐ grid (radius A) (mesh C N A p q) := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N A p q)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  exact (congrFst t2).eqTrans (fst_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N A p q).sndE
+  have t2 := t1.sndE
+  exact t2.fstE
 theorem returned_mesh (C N A p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run C N A p q)))) ≐ mesh C N A p q := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N A p q)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
-  exact (congrFst t3).eqTrans (fst_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N A p q).sndE
+  have t2 := t1.sndE
+  have t3 := t2.sndE
+  exact t3.fstE
 theorem returned_L (C N A p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (sndT (run C N A p q))))) ≐ L C N A := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N A p q)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
-  have t4 := (congrSnd t3).eqTrans (snd_pair _ _)
-  exact (congrFst t4).eqTrans (fst_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N A p q).sndE
+  have t2 := t1.sndE
+  have t3 := t2.sndE
+  have t4 := t3.sndE
+  exact t4.fstE
 theorem returned_radius (C N A p q : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (sndT (run C N A p q))))) ≐ radius A := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N A p q)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
-  have t4 := (congrSnd t3).eqTrans (snd_pair _ _)
-  exact (congrSnd t4).eqTrans (snd_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N A p q).sndE
+  have t2 := t1.sndE
+  have t3 := t2.sndE
+  have t4 := t3.sndE
+  exact t4.sndE
 theorem returned_lookup (C N A p q : PTm n) : Γ ⊢[PRAAx]
     entry (fstT (sndT (sndT (run C N A p q)))) (fstT (sndT (run C N A p q))) ≐ fstT (run C N A p q) :=
   (LeanProofs.IPRA.Foundations.SequenceComposition.entry_congr (returned_grid C N A p q) (returned_index C N A p q)).eqTrans

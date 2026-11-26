@@ -15,14 +15,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalConjugation (point point_congr point_add point_mul point_one point_negative of_gaussian point_scalar_sum)
 open GaussianRationalReciprocal (conjugate)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianGammaWeierstrassFactors (localArgument literalPrefix)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,8 +38,7 @@ theorem head_factor (i z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx
 
 def headLaw (z B N : PTm n) : Fm PTm n :=
   point (GaussianGammaEulerHead.head z B N) ≐ GaussianGammaEulerHead.head (conjugate z) B N
-@[simp] theorem subst_headLaw {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    (headLaw z B N).subst σ = headLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [headLaw]
+ipra_subst headLaw
 theorem head_zero (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] headLaw z B zero :=
   (point_congr (GaussianGammaEulerHead.head_zero z B hB)).eqTrans
     ((of_gaussian z B hB).eqTrans (GaussianGammaEulerHead.head_zero (conjugate z) B hB).eqSymm)
@@ -75,8 +71,7 @@ theorem literal_factor (i z B K : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[
     ((point_scalar_sum _ K).eqTrans (GaussianRationalFiniteSum.sum_index_congr _ (.eqRefl _) (local_argument i z B hB))))
 
 def prefixLaw (z B K N : PTm n) : Fm PTm n := point (literalPrefix z B K N) ≐ literalPrefix (conjugate z) B K N
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (z B K N : PTm n) :
-    (prefixLaw z B K N).subst σ = prefixLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ N) := by simp [prefixLaw]
+ipra_subst prefixLaw
 theorem prefix_zero (z B K : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] prefixLaw z B K zero :=
   (point_congr (GaussianGammaWeierstrassFactors.literal_zero z B K hB)).eqTrans
     ((of_gaussian z B hB).eqTrans (GaussianGammaWeierstrassFactors.literal_zero (conjugate z) B K hB).eqSymm)
@@ -98,30 +93,24 @@ def output (z B K N : PTm n) : PTm n := pairT (point (GaussianGammaEulerHead.hea
   (pairT (GaussianGammaEulerHead.head (conjugate z) B N) (pairT (point (literalPrefix z B K N)) (literalPrefix (conjugate z) B K N)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (z B K N : PTm n) : PTm n := PTm.app outputF ![z,B,K,N]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (z B K N : PTm n) :
-    Syn.subst σ (output z B K N) = output (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (z B K N : PTm n) :
-    Syn.subst σ (run z B K N) = run (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (z B K N : PTm n) : Γ ⊢[PRAAx] run z B K N ≐ output z B K N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![z,B,K,N]
 theorem returned_head (z B K N : PTm n) : Γ ⊢[PRAAx] fstT (run z B K N) ≐ point (GaussianGammaEulerHead.head z B N) :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (z B K N : PTm n) : Γ ⊢[PRAAx] sndT (run z B K N) ≐
     pairT (GaussianGammaEulerHead.head (conjugate z) B N) (pairT (point (literalPrefix z B K N)) (literalPrefix (conjugate z) B K N)) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_conjugate_head (z B K N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run z B K N)) ≐ GaussianGammaEulerHead.head (conjugate z) B N :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_prefix_pair (z B K N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run z B K N)) ≐
     pairT (point (literalPrefix z B K N)) (literalPrefix (conjugate z) B K N) :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_prefix (z B K N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run z B K N))) ≐ point (literalPrefix z B K N) :=
-  (congrFst (returned_prefix_pair _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_prefix_pair _ _ _ _).fstE
 theorem returned_prefix_conjugate (z B K N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run z B K N))) ≐ literalPrefix (conjugate z) B K N :=
-  (congrSnd (returned_prefix_pair _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_prefix_pair _ _ _ _).sndE
 theorem returned_equalities (z B K N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     (fstT (run z B K N) ≐ fstT (sndT (run z B K N))) ⋏
       (fstT (sndT (sndT (run z B K N))) ≐ sndT (sndT (sndT (run z B K N)))) :=

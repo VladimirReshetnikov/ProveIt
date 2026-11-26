@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalPositiveWindow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular gamma_regular gamma_sample_at)
 open GaussianGammaEulerRationalLogOrder (add_order order_refl)
@@ -35,10 +35,6 @@ open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingMultiplicativeBoundsOrder (fraction_real_part)
 open RationalArgmin (rationalLE rationalLE_congr transitive eq_le)
 open RationalValueBounds (upper_of_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF

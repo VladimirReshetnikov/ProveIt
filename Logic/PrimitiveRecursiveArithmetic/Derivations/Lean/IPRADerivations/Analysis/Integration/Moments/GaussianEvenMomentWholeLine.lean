@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEvenMomentWholeLine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfIntegerDomain (argument radius)
 open GaussianEvenMomentSymmetricGrid (symmetricGrid)
 open GaussianGammaIntegralCutoffs (etaDen height top)
@@ -30,10 +30,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_to_diagonal point_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -60,15 +56,9 @@ abbrev valueF : PR 2 := addF GaussianGammaHalfSqrtValues.momentF GaussianGammaHa
 def valueData (N c d x : PTm n) : PTm n :=
   addData (GaussianGammaHalfSqrtValues.momentData N c d x) (GaussianGammaHalfSqrtValues.momentData N c d x)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N c d : PTm n) :
-    Syn.subst σ (data N c d) = data (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by simp [data]
-@[simp] theorem subst_doubledData {m : ℕ} (σ : Fin n → PTm m) (N c d : PTm n) :
-    Syn.subst σ (doubledData N c d) = doubledData (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by simp [doubledData]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p N c d : PTm n) :
-    Syn.subst σ (sample p N c d) = sample (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [sample,finiteSample,clock,query,count,span,lowerDenominator,upperEndpoint,
-    GaussianEulerQuadraticCutoffGeometry.width,GaussianEulerQuadraticUpperEndpoint.preimage,
-    etaDen,height,top,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst data
+ipra_subst doubledData
+ipra_subst sample [finiteSample, clock, query, count, span, lowerDenominator, upperEndpoint, GaussianEulerQuadraticCutoffGeometry.width, GaussianEulerQuadraticUpperEndpoint.preimage, etaDen, height, top, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem sample_at (p N c d : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data N c d) ≐ sample p N c d := by
   let x := data N c d
@@ -188,10 +178,9 @@ theorem whole_at (p q N c d : PTm n) (hc : Γ ⊢[PRAAx] le one c) (hd : Γ ⊢[
   have distance : Γ ⊢[PRAAx] distanceBounded C D (U+Q) (U*Q) :=
     point_at doubledF (doubledData N c d) s q full
   have total := distance_triangle_same A C D (num 5*Q) (U+Q) (U*Q) hUQ corrected distance
-  have scale := natEq (unit_clock (Γ := Γ) p)
   have final : Γ ⊢[PRAAx] distanceBounded A D (P+Q) (P*Q) :=
     distance_radius_mono _ _ _ _ _ _ hUQ (positive_product _ _ hP hQ)
-      (by ipra_le 2*(𝔞 P)*(𝔞 Q)^2 with (𝔞 Q)^2*scale) total
+      (by ipra_le 2*(𝔞 P)*(𝔞 Q)^2 with (𝔞 Q)^2*natEq (unit_clock (Γ := Γ) p)) total
   exact distance_congr (sample_at p N c d).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) final
 
 theorem original_literal_whole (N c d : PTm n) (hc : Γ ⊢[PRAAx] le one c) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]

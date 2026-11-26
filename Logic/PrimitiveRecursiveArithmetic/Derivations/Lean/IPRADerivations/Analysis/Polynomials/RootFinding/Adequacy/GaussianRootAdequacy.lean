@@ -20,24 +20,19 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootAdequacy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (R CN)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (pointCN)
 open LeanProofs.IPRA.Analysis.GaussianRepresentedPointBounds (normLE)
 open LeanProofs.IPRA.Analysis.GaussianRootMembership (member stageCondition)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialValueName (valueZero nameZero nameF nameData)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def inputContract (step a : PR 3) (point : PR 2) (N Z x : PTm n) : Fm PTm n :=
   monicRD step ⋏ (CN a N x ⋏ (le one N ⋏ (le (R a N x) Z ⋏ (pointCN point x ⋏ normLE point Z x))))
-@[simp] theorem subst_inputContract {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N Z x : PTm n) :
-    (inputContract step a point N Z x).subst σ = inputContract step a point (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ x) := by
-  simp [inputContract]
+ipra_subst inputContract
 
 theorem source_sample_contract (step a : PR 3) (point : PR 2) (N Z x : PTm n)
     (h : Γ ⊢[PRAAx] inputContract step a point N Z x) : Γ ⊢[PRAAx]

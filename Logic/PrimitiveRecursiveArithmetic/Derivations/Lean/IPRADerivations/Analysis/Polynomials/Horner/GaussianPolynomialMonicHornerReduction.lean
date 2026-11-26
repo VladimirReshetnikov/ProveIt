@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialConstantInjection
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual arbitrary-high-Y remainder fold for a monic plane equation
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialMonicHornerReduction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate horner hornerF qzero qadd qmul)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr canonicalCoefficients)
 open GaussianPolynomialMonicCompanion (rowShape row_shape_at companion values values_length values_lookup monicValues)
@@ -26,9 +25,6 @@ open GaussianPolynomialConstantInjection (inject inject_stored inject_evaluation
 open GaussianRationalPolynomialBuffers (zeros zeros_length zeros_lookup zeros_evaluation)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,17 +39,11 @@ def stepBody : PTm 3 := app advanceF ![fields (var 2) 0,fields (var 2) 1,fields 
 def stageF : PR 2 := rec2 initial stepBody
 def stage (F H m a c j : PTm n) : PTm n := ap2 stageF j (data F H m a c)
 
-@[simp] theorem subst_width {k : ℕ} (σ : Fin n → PTm k) (a c j : PTm n) :
-    Syn.subst σ (width a c j) = width (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [width]
-@[simp] theorem subst_zeroRows {k : ℕ} (σ : Fin n → PTm k) (m a : PTm n) :
-    Syn.subst σ (zeroRows m a) = zeroRows (Syn.subst σ m) (Syn.subst σ a) := by simp [zeroRows]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (F H m a c : PTm n) :
-    Syn.subst σ (data F H m a c) = data (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [data]
-@[simp] theorem subst_advance {k : ℕ} (σ : Fin n → PTm k) (F H m a c j R : PTm n) :
-    Syn.subst σ (advance F H m a c j R) = advance (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a)
-      (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ R) := by simp [advance]
-@[simp] theorem subst_stage {k : ℕ} (σ : Fin n → PTm k) (F H m a c j : PTm n) :
-    Syn.subst σ (stage F H m a c j) = stage (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [stage]
+ipra_subst width
+ipra_subst zeroRows
+ipra_subst data
+ipra_subst advance
+ipra_subst stage
 
 theorem tuple_seven_fifth {α : Type} (a b c d e f g : α) : ![a,b,c,d,e,f,g] (5 : Fin 7) = f := rfl
 theorem tuple_seven_last {α : Type} (a b c d e f g : α) : ![a,b,c,d,e,f,g] (6 : Fin 7) = g := rfl
@@ -150,9 +140,7 @@ theorem advance_evaluation (F H m a c j R x y : PTm n) (hm : Γ ⊢[PRAAx] le on
 
 def prefixLaw (F H m a c L x y j : PTm n) : Fm PTm n := le j L ⟶
   evaluate (values (stage F H m a c j) m x) y ≐ horner (values H L x) y j
-@[simp] theorem subst_prefixLaw {k : ℕ} (σ : Fin n → PTm k) (F H m a c L x y j : PTm n) :
-    (prefixLaw F H m a c L x y j).subst σ = prefixLaw (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ j) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_evaluation (F H m a c L x y j : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hF : Γ ⊢[PRAAx] rowShape F m c) (hH : Γ ⊢[PRAAx] rowShape H L a)
@@ -165,13 +153,11 @@ theorem prefix_evaluation (F H m a c L x y j : PTm n) (hm : Γ ⊢[PRAAx] le one
     simpa [Fm.shift,Syn.shift] using hCurve.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift F) (Syn.shift H) (Syn.shift m) (Syn.shift a) (Syn.shift c)
       (Syn.shift L) (Syn.shift x) (Syn.shift y) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((GaussianPolynomialMonicCompanion.evaluation_congr
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI ((GaussianPolynomialMonicCompanion.evaluation_congr
         (GaussianPolynomialMonicCompanion.values_congr (stage_zero _ _ _ _ _) (.eqRefl _) (.eqRefl _)) (.eqRefl _)).eqTrans
           ((zero_rows_evaluation _ _ _ _).eqTrans (GaussianRationalHorner.horner_zero _ _).eqSymm)).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift L) :: prefixLaw (Syn.shift F) (Syn.shift H) (Syn.shift m) (Syn.shift a) (Syn.shift c)
         (Syn.shift L) (Syn.shift x) (Syn.shift y) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] evaluate (values (stage (Syn.shift F) (Syn.shift H) (Syn.shift m) (Syn.shift a) (Syn.shift c) (var 0))
@@ -191,12 +177,9 @@ def input (F H m a c N : PTm n) : Fm PTm n := le one m ⋏ ((length F ≐ m) ⋏
   (rowShape F m c ⋏ ((length H ≐ succ N) ⋏ rowShape H (succ N) a)))
 def remainder (F H m a c N : PTm n) : PTm n := stage F H m a c (succ N)
 def originalValue (H x y : PTm n) : PTm n := evaluate (values H (length H) x) y
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (F H m a c N : PTm n) :
-    (input F H m a c N).subst σ = input (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [input]
-@[simp] theorem subst_remainder {k : ℕ} (σ : Fin n → PTm k) (F H m a c N : PTm n) :
-    Syn.subst σ (remainder F H m a c N) = remainder (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [remainder]
-@[simp] theorem subst_originalValue {k : ℕ} (σ : Fin n → PTm k) (H x y : PTm n) :
-    Syn.subst σ (originalValue H x y) = originalValue (Syn.subst σ H) (Syn.subst σ x) (Syn.subst σ y) := by simp [originalValue]
+ipra_subst input
+ipra_subst remainder
+ipra_subst originalValue
 theorem remainder_stored (F H m a c N : PTm n) : Γ ⊢[PRAAx] stored (remainder F H m a c N) m (width a c (succ N)) := stage_stored _ _ _ _ _ _
 theorem reduction_evaluation (F H m a c N x y : PTm n) (h : Γ ⊢[PRAAx] input F H m a c N)
     (hCurve : Γ ⊢[PRAAx] evaluate (monicValues F m x) y ≐ qzero) : Γ ⊢[PRAAx]
@@ -217,12 +200,7 @@ theorem original_zero_iff (F H m a c N x y : PTm n) (h : Γ ⊢[PRAAx] input F H
 
 def remainderF : PR 6 := PTm.toPR (remainder (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (F H m a c N : PTm n) : PTm n := app remainderF ![F,H,m,a,c,N]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (F H m a c N : PTm n) :
-    Syn.subst σ (run F H m a c N) = run (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (F H m a c N : PTm n) : Γ ⊢[PRAAx] run F H m a c N ≐ remainder F H m a c N := by
   simpa [run,remainderF] using toPR_eq (Γ := Γ) (remainder (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![F,H,m,a,c,N]
 theorem returned_stored (F H m a c N : PTm n) : Γ ⊢[PRAAx] stored (run F H m a c N) m (width a c (succ N)) :=

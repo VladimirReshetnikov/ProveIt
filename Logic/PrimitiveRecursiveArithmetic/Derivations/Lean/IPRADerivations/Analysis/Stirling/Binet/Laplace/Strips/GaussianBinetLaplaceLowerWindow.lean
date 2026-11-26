@@ -17,7 +17,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceLowerWindow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceIntegrand (meshGain cofinal_bound)
 open GaussianBinetLaplaceStrip (source evaluator_at tag_inside tagNumerator fixedData subst_source)
 open GaussianCompactRiemannName (grid grid_inside sampleBody sampleData sample_body_at quadrature mesh mesh_positive precision)
@@ -32,8 +32,6 @@ open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance constantBody constant_entry)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "LaplaceEvaluator" => GaussianBinetLaplaceStrip.evaluatorF GaussianBinetLaplaceStrip.Kernel.cofinal

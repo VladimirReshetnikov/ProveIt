@@ -3,7 +3,6 @@ import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Combinatorics.BellTriangle
 import IPRADerivations.Combinatorics.CatalanBallot
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Normalized log-concavity of the Bell numbers
@@ -42,7 +41,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellLogConcave
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom bden)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel binom_eq binom_zero' binom_self'
   pascal_at)
@@ -57,10 +56,6 @@ open LeanProofs.IPRA.Combinatorics.CoefficientLogConcave (Hyp bd rec_at coeffici
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos eq_succ_pred)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -194,9 +189,8 @@ theorem bell_xlc {j k y : PTm n} (hjk : Γ ⊢[PRAAx] lt j k) (hk : Γ ⊢[PRAAx
       rw [inst2_XB, inst2_XB]
       exact congrFq ((congrPred Prf.hyp0).eqTrans
         (pred_zero.eqTrans ((pred_succ j).eqTrans Prf.hyp0).eqSymm)) (.eqRefl _)
-    have dk := natEq ((X_dec kpos hk).wk (ψ := j ≐ zero))
     refine le_of_eq_add (d := inst2 XB (succ j) y * (pred k * inst2 XB (succ k) y)) ?_
-    ipra_lc 𝔞 (inst2 XB (succ j) y) * dk +
+    ipra_lc 𝔞 (inst2 XB (succ j) y) * natEq ((X_dec kpos hk).wk (ψ := j ≐ zero)) +
       (𝔞 (inst2 XB (succ j) y) * 𝔞 (inst2 XB (succ k) y)) * natEq (kpos.wk (ψ := j ≐ zero)) -
       𝔞 (inst2 XB (succ k) y) * natEq xj
   · have hj : ((j ≐ succ (pred j)) :: Γ) ⊢[PRAAx] lt j y :=

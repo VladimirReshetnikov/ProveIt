@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialSubstitutionNamedKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular constant_at)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast addF addData add_fast)
 open GaussianNameRingLaws (negativeF negativeData negative_fast)
@@ -25,8 +25,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (ofGaussian qadd qmul qzero)
 open GaussianRationalMetric (qsub qnegative distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,16 +38,11 @@ def radius (f : PR 2) (z B x : PTm n) : PTm n := GaussianNameBounds.U (exponentF
 abbrev nameF (f : PR 2) : PR 2 := GaussianRadiusExponentialName.nameF (exponentF f)
 def data (f : PR 2) (z B x : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius f z B x) (exponentData f z B x)
 
-@[simp] theorem subst_innerData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (innerData f x) = innerData f (Syn.subst σ x) := by simp [innerData,exponentialInputData]
-@[simp] theorem subst_linearData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z B x : PTm n) :
-    Syn.subst σ (linearData f z B x) = linearData f (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ x) := by simp [linearData]
-@[simp] theorem subst_exponentData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z B x : PTm n) :
-    Syn.subst σ (exponentData f z B x) = exponentData f (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ x) := by simp [exponentData]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z B x : PTm n) :
-    Syn.subst σ (radius f z B x) = radius f (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ x) := by simp [radius]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z B x : PTm n) :
-    Syn.subst σ (data f z B x) = data f (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ x) := by simp [data]
+ipra_subst innerData [exponentialInputData]
+ipra_subst linearData
+ipra_subst exponentData
+ipra_subst radius
+ipra_subst data
 
 theorem inner_regular (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx] pointCN (innerF f) (innerData f x) :=
   GaussianRadiusExponentialName.name_regular f _ x (exponential_input f x hf)

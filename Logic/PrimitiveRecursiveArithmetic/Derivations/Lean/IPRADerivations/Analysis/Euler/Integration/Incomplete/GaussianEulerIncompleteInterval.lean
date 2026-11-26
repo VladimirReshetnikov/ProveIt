@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen top)
 open GaussianEulerIncompleteName (upperF)
 open GaussianEulerCompactAdditivity (nameF intervalSource)
@@ -27,10 +27,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianNamedInverseRate (rate_at rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {ℓ : ℕ} {Γ : List (Fm PTm ℓ)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -47,17 +43,11 @@ def cutoff (t a C E T : PTm ℓ) : PTm ℓ := T+GaussianEulerIncompleteCutoff.cl
 def middleData (m z R B A a C E : PTm ℓ) : PTm ℓ :=
   GaussianEulerCompactAdditivity.data z R B (a*etaDen m A R) (C*etaDen m A R) (E*etaDen m A R) (top m A R)
 
-@[simp] theorem subst_source {u : ℕ} (σ : Fin ℓ → PTm u) (z R B A a C E T : PTm ℓ) :
-    (source z R B A a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_leftData {u : ℕ} (σ : Fin ℓ → PTm u) (z R B A a E : PTm ℓ) :
-    Syn.subst σ (leftData z R B A a E) = leftData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ E) := by simp [leftData]
-@[simp] theorem subst_rightData {u : ℕ} (σ : Fin ℓ → PTm u) (z R B A a C E : PTm ℓ) :
-    Syn.subst σ (rightData z R B A a C E) = rightData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [rightData]
-@[simp] theorem subst_intervalData {u : ℕ} (σ : Fin ℓ → PTm u) (z R B a C E T : PTm ℓ) :
-    Syn.subst σ (intervalData z R B a C E T) = intervalData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [intervalData]
-@[simp] theorem subst_sumData {u : ℕ} (σ : Fin ℓ → PTm u) (z R B A a C E T : PTm ℓ) :
-    Syn.subst σ (sumData z R B A a C E T) = sumData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [sumData]
+ipra_subst source
+ipra_subst leftData
+ipra_subst rightData
+ipra_subst intervalData
+ipra_subst sumData
 
 theorem original_interval_source (z R B A a C E T : PTm ℓ) (h : Γ ⊢[PRAAx] source z R B A a C E T) : Γ ⊢[PRAAx]
     intervalSource z R B a C E T :=

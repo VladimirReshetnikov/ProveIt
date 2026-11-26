@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCoefficientNormEntries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientL1
   (prefixNorm coefficientNorm prefix_succ subCoefficients sub_lookup qL1_congr)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNormOrder
@@ -32,9 +32,6 @@ open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded qsub)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,10 +47,7 @@ theorem last_entry_bound (C N : PTm n) : Γ ⊢[PRAAx] rationalLE (qL1 (entry C 
   exact RationalArgmin.rationalLE_congr (scalar_zero_add _ (GaussianRationalL1.qL1_guard _)) (prefix_succ C N).eqSymm h
 
 def prefixEntryLaw (C i N : PTm n) : Fm PTm n := lt i N ⟶ rationalLE (qL1 (entry C i)) (prefixNorm C N)
-@[simp] theorem subst_prefixEntryLaw {m : ℕ} (σ : Fin n → PTm m) (C i N : PTm n) :
-    (prefixEntryLaw C i N).subst σ = prefixEntryLaw (Syn.subst σ C) (Syn.subst σ i) (Syn.subst σ N) := by
-  simp only [prefixEntryLaw,Fm.subst_imp,subst_lt,RationalArgmin.subst_rationalLE,
-    GaussianRationalL1.subst_qL1,subst_entry,GaussianCoefficientL1.subst_prefixNorm]
+ipra_subst prefixEntryLaw
 
 theorem prefix_entry_step (C i N : PTm n) (hi : Γ ⊢[PRAAx] lt i (succ N))
     (ih : Γ ⊢[PRAAx] prefixEntryLaw C i N) : Γ ⊢[PRAAx] rationalLE (qL1 (entry C i)) (prefixNorm C (succ N)) := by
@@ -69,12 +63,10 @@ input to the result. -/
 theorem prefix_entry_bound (C N i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]
     rationalLE (qL1 (entry C i)) (prefixNorm C N) := by
   have all : Γ ⊢[PRAAx] .all (prefixEntryLaw (Syn.shift C) (Syn.shift i) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixEntryLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixEntryLaw]
+    · refine .impI ?_
       exact lt_irrefl zero _ (lt_of_le_of_lt (zero_le i) Prf.hyp0)
-    · simp only [subst_prefixEntryLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_entry_step (Syn.shift C) (Syn.shift i) (var 0) Prf.hyp0 Prf.hyp1)
+    · exact .impI (prefix_entry_step (Syn.shift C) (Syn.shift i) (var 0) Prf.hyp0 Prf.hyp1)
   have h : Γ ⊢[PRAAx] prefixEntryLaw C i N := by
     simpa only [subst_prefixEntryLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
   exact .impE h hi
@@ -148,9 +140,7 @@ theorem returned_factorization_entries (step : PR 3) (C N p q i : PTm n)
 /-! Actual coefficient-query program and closed statements. -/
 def output (C N i : PTm n) : PTm n := pairT (entry C i) (pairT (qL1 (entry C i)) (prefixNorm C N))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N i : PTm n) :
-    Syn.subst σ (output C N i) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) := by
-  simp only [output,subst_pairT,subst_entry,GaussianRationalL1.subst_qL1,GaussianCoefficientL1.subst_prefixNorm]
+ipra_subst output
 theorem output_at (C N i : PTm n) : Γ ⊢[PRAAx] ap3 outputF C N i ≐ output C N i := by
   simpa only [outputF,ap3,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
     Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using

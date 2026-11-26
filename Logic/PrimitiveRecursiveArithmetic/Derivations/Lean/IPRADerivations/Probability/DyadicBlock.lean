@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.KolmogorovBlock
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Kolmogorov's inequality for one dyadic block, in the law of the whole sample
@@ -23,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.DyadicBlock
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Probability.ProductPower (TB Tt Pr TB_at wdB total_pow)
@@ -32,10 +31,6 @@ open LeanProofs.IPRA.Probability.KolmogorovIidGlue (Cv Cv_at)
 open LeanProofs.IPRA.Probability.ProductMarginal (ρn hr rpn_at hr_at)
 open LeanProofs.IPRA.Probability.KolmogorovBlock (hB block_kolmogorov hB_low)
 open LeanProofs.IPRA.Probability.FirstCrossing (Ib nbB ge inst2_nbB ge_of_le cover)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -73,9 +68,9 @@ theorem inst2_pcB (t N H M x : PTm n) :
           (pairT t (sndT (sndT (pairT N (pairT H (pairT M x)))))) := by
     simp [pcB, inst2]
   rw [e]
-  have h1 : Γ ⊢[PRAAx] fstT (sndT (pairT N (pairT H (pairT M x)))) ≐ H := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  have h1 : Γ ⊢[PRAAx] fstT (sndT (pairT N (pairT H (pairT M x)))) ≐ H := (snd_pair _ _).fstE
   have h2 : Γ ⊢[PRAAx] sndT (sndT (pairT N (pairT H (pairT M x)))) ≐ pairT M x :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   exact congrMul (congrAp2 _ h1 (congrPairT (.eqRefl _) h2))
     (congrAp2 _ (congrSucc (fst_pair _ _)) (congrPairT (.eqRefl _) h2))
 

@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentForwardLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (scale normSq normSq_eval eval_re_code eval_im_code)
 open GaussianRootAlgebra (re_sub im_sub re_scale im_scale)
@@ -34,9 +34,6 @@ open RationalCubeMidpoint (fraction fraction_represents)
 open RationalSupMetric (denominatorOf numeratorOf)
 open RationalValueBounds (upper upper_of_order upper_of_radius upper_mono upper_triangle
   radius radius_of_upper radius_congr radius_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)

@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationNegative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerArrayCodec (arrayHeight normalized)
 open QuadraticTowerCoefficientArithmetic (added negated added_congr negated_congr)
@@ -29,9 +29,6 @@ open QuadraticTowerScalarBudget (amp)
 open QuadraticTowerAdditionLaws (normalized_congr added_associative)
 open QuadraticTowerMultiplicationCommutativity (added_commutative)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -161,11 +158,8 @@ theorem norm_negative (h B D A b : PTm n) (hb : Γ ⊢[PRAAx] le b B)
 
 def source (h D A C b : PTm n) : Fm PTm n := radicandsHeight D h b ⋏ (arrayHeight h A b ⋏ arrayHeight h C b)
 def input (h B D A C b : PTm n) : Fm PTm n := le (amp b) B ⋏ source h D A C b
-@[simp] theorem subst_source {k : ℕ} (σ : Fin n → PTm k) (h D A C b : PTm n) :
-    (source h D A C b).subst σ = source (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (h B D A C b : PTm n) :
-    (input h B D A C b).subst σ = input (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ b) := by simp [input]
+ipra_subst source
+ipra_subst input
 
 theorem query_negatives (h B D A C b : PTm n) (p : Γ ⊢[PRAAx] input h B D A C b) : Γ ⊢[PRAAx]
     (query h B D A (negated h C) ≐ negated h (query h B D A C)) ⋏
@@ -181,36 +175,30 @@ def output (h b D A C : PTm n) : PTm n := pairT (query h (amp b) D A (negated h 
     (pairT (query h (amp b) D (negated h A) (negated h C)) (pairT (query h (amp b) D A C) (amp b))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (h b D A C : PTm n) : PTm n := PTm.app outputF ![h,b,D,A,C]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h b D A C : PTm n) :
-    Syn.subst σ (output h b D A C) = output (Syn.subst σ h) (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h b D A C : PTm n) :
-    Syn.subst σ (run h b D A C) = run (Syn.subst σ h) (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h b D A C : PTm n) : Γ ⊢[PRAAx] run h b D A C ≐ output h b D A C := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![h,b,D,A,C]
 theorem returned_right (h b D A C : PTm n) : Γ ⊢[PRAAx] fstT (run h b D A C) ≐ query h (amp b) D A (negated h C) :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_tail (h b D A C : PTm n) : Γ ⊢[PRAAx] sndT (run h b D A C) ≐
     pairT (negated h (query h (amp b) D A C))
       (pairT (query h (amp b) D (negated h A) (negated h C)) (pairT (query h (amp b) D A C) (amp b))) :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_negative (h b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h b D A C)) ≐ negated h (query h (amp b) D A C) :=
-  (congrFst (returned_tail _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _ _).fstE
 theorem returned_products (h b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h b D A C)) ≐
     pairT (query h (amp b) D (negated h A) (negated h C)) (pairT (query h (amp b) D A C) (amp b)) :=
-  (congrSnd (returned_tail _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _ _).sndE
 theorem returned_double (h b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run h b D A C))) ≐ query h (amp b) D (negated h A) (negated h C) :=
-  (congrFst (returned_products _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_products _ _ _ _ _).fstE
 theorem returned_original_pair (h b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run h b D A C))) ≐ pairT (query h (amp b) D A C) (amp b) :=
-  (congrSnd (returned_products _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_products _ _ _ _ _).sndE
 theorem returned_original (h b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run h b D A C)))) ≐ query h (amp b) D A C :=
-  (congrFst (returned_original_pair _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_original_pair _ _ _ _ _).fstE
 theorem returned_cap (h b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run h b D A C)))) ≐ amp b :=
-  (congrSnd (returned_original_pair _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_original_pair _ _ _ _ _).sndE
 
 theorem returned_equalities (h b D A C : PTm n) (p : Γ ⊢[PRAAx] source h D A C b) : Γ ⊢[PRAAx]
     (fstT (run h b D A C) ≐ fstT (sndT (run h b D A C))) ⋏

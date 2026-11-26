@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianR
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRootFiniteEvaluation
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootAdequacySchedule
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite root-to-support witnesses
@@ -23,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootApproximationWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (A R CN)
@@ -32,9 +31,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootRadius (roots)
 open LeanProofs.IPRA.Analysis.GaussianRootAdequacySchedule (stage sample)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,24 +46,15 @@ def selected (step a : PR 3) (point : PR 2) (N U x k : PTm n) : PTm n :=
 def selectedPoint (step a : PR 3) (point : PR 2) (N U x k : PTm n) : PTm n :=
   entry (rootList step a N U x k) (selected step a point N U x k)
 
-@[simp] theorem subst_C {m : ℕ} (σ : Fin n → PTm m) (N U : PTm n) :
-    Syn.subst σ (C N U) = C (Syn.subst σ N) (Syn.subst σ U) := by simp [C]
-@[simp] theorem subst_T {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x : PTm n) :
-    Syn.subst σ (T a N U x) = T a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by simp [T]
-@[simp] theorem subst_stageIndex {m : ℕ} (σ : Fin n → PTm m) (N U k : PTm n) :
-    Syn.subst σ (stageIndex N U k) = stageIndex (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ k) := by simp [stageIndex]
-@[simp] theorem subst_sampleIndex {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x k : PTm n) :
-    Syn.subst σ (sampleIndex a N U x k) = sampleIndex a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) (Syn.subst σ k) := by simp [sampleIndex]
-@[simp] theorem subst_query {m : ℕ} (σ : Fin n → PTm m) (point : PR 2) (a : PR 3) (N U x k : PTm n) :
-    Syn.subst σ (query point a N U x k) = query point a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) (Syn.subst σ k) := by simp [query]
-@[simp] theorem subst_targetDenominator {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (targetDenominator k) = targetDenominator (Syn.subst σ k) := by simp [targetDenominator]
-@[simp] theorem subst_rootList {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N U x k : PTm n) :
-    Syn.subst σ (rootList step a N U x k) = rootList step a (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) (Syn.subst σ k) := by simp [rootList]
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N U x k : PTm n) :
-    Syn.subst σ (selected step a point N U x k) = selected step a point (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) (Syn.subst σ k) := by simp [selected]
-@[simp] theorem subst_selectedPoint {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N U x k : PTm n) :
-    Syn.subst σ (selectedPoint step a point N U x k) = selectedPoint step a point (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) (Syn.subst σ k) := by simp [selectedPoint]
+ipra_subst C
+ipra_subst T
+ipra_subst stageIndex
+ipra_subst sampleIndex
+ipra_subst query
+ipra_subst targetDenominator
+ipra_subst rootList
+ipra_subst selected
+ipra_subst selectedPoint
 
 def pointBounds (point : PR 2) (U x : PTm n) : Fm PTm n :=
   .all (bounded (ap2 point (var 0) (Syn.shift x)) (Syn.shift U) one)
@@ -75,12 +62,8 @@ def normalizedZero (a : PR 3) (point : PR 2) (N U x : PTm n) : Fm PTm n :=
   .all (bounded (evaluate (GaussianRootSamples.sample a (Syn.shift N) (var 0) (Syn.shift x))
     (ap2 point (var 0) (Syn.shift x))) (T a (Syn.shift N) (Syn.shift U) (Syn.shift x)) (pw two (var 0)))
 
-@[simp] theorem subst_pointBounds {m : ℕ} (σ : Fin n → PTm m) (point : PR 2) (U x : PTm n) :
-    (pointBounds point U x).subst σ = pointBounds point (Syn.subst σ U) (Syn.subst σ x) := by
-  simp [pointBounds,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_normalizedZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U x : PTm n) :
-    (normalizedZero a point N U x).subst σ = normalizedZero a point (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) := by
-  simp [normalizedZero,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointBounds [Syn.subst_shift, Syn.shift_subst]
+ipra_subst normalizedZero [Syn.subst_shift, Syn.shift_subst]
 
 theorem point_at (point : PR 2) (U x s : PTm n) (h : Γ ⊢[PRAAx] pointBounds point U x) :
     Γ ⊢[PRAAx] bounded (ap2 point s x) U one := by
@@ -126,8 +109,7 @@ def output (step a : PR 3) (point : PR 2) (N U x k : PTm n) : PTm n :=
   pairT (stageIndex N U k) (pairT (sampleIndex a N U x k)
     (pairT (selected step a point N U x k) (selectedPoint step a point N U x k)))
 def outputF (step a : PR 3) (point : PR 2) : PR 4 := PTm.toPR (output step a point (var 0) (var 1) (var 2) (var 3))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N U x k : PTm n) :
-    Syn.subst σ (output step a point N U x k) = output step a point (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ x) (Syn.subst σ k) := by simp [output]
+ipra_subst output
 theorem output_program (step a : PR 3) (point : PR 2) (N U x k : PTm n) : Γ ⊢[PRAAx]
     PTm.app (outputF step a point) ![N,U,x,k] ≐ output step a point N U x k := by
   simpa [outputF] using toPR_eq (Γ := Γ) (output step a point (var 0) (var 1) (var 2) (var 3) : PTm 4) ![N,U,x,k]
@@ -135,10 +117,7 @@ theorem output_program (step a : PR 3) (point : PR 2) (N U x k : PTm n) : Γ ⊢
 def certificate (step a : PR 3) (point : PR 2) (N x k t s i w : PTm n) : Fm PTm n :=
   le k t ⋏ (le (k+one) s ⋏ (lt i (length (roots step a N t x)) ⋏
     (w ≐ entry (roots step a N t x) i ⋏ distanceBounded (ap2 point s x) w one (targetDenominator k))))
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N x k t s i w : PTm n) :
-    (certificate step a point N x k t s i w).subst σ = certificate step a point
-      (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ k) (Syn.subst σ t)
-      (Syn.subst σ s) (Syn.subst σ i) (Syn.subst σ w) := by simp [certificate]
+ipra_subst certificate
 
 theorem output_certificate (step a : PR 3) (point : PR 2) (N U x k : PTm n)
     (hRD : Γ ⊢[PRAAx] monicRD step) (hCN : Γ ⊢[PRAAx] CN a N x)
@@ -152,15 +131,15 @@ theorem output_certificate (step a : PR 3) (point : PR 2) (N U x k : PTm n)
   let run := PTm.app (outputF step a point) ![N,U,x,k]
   have program := output_program (Γ := Γ) step a point N U x k
   have tEq : Γ ⊢[PRAAx] fstT run ≐ stageIndex N U k :=
-    (congrFst program).eqTrans (fst_pair _ _)
-  have tailEq := (congrSnd program).eqTrans (snd_pair _ _)
+    program.fstE
+  have tailEq := program.sndE
   have sEq : Γ ⊢[PRAAx] fstT (sndT run) ≐ sampleIndex a N U x k :=
-    (congrFst tailEq).eqTrans (fst_pair _ _)
-  have pairEq := (congrSnd tailEq).eqTrans (snd_pair _ _)
+    tailEq.fstE
+  have pairEq := tailEq.sndE
   have iEq : Γ ⊢[PRAAx] fstT (sndT (sndT run)) ≐ selected step a point N U x k :=
-    (congrFst pairEq).eqTrans (fst_pair _ _)
+    pairEq.fstE
   have wEq : Γ ⊢[PRAAx] sndT (sndT (sndT run)) ≐ selectedPoint step a point N U x k :=
-    (congrSnd pairEq).eqTrans (snd_pair _ _)
+    pairEq.sndE
   have found := selected_certificate step a point N U x k hRD hCN hN hU hPoints hZero
   have listEq : Γ ⊢[PRAAx] roots step a N (fstT run) x ≐ rootList step a N U x k := by
     ipra_congr (roots step a (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl N, tEq, .eqRefl x] using [rootList]

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaSmallIncrementInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (addF addData add_at add_fast recode_congr)
 open GaussianNamedGammaIncrementInput (clock)
 open GaussianNamedRightHalfPlane (numerator denominator radius marginPoint certificate)
@@ -31,9 +31,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper upper_congr)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -45,10 +42,8 @@ def source (f k : PR 2) (x y A : PTm n) : Fm PTm n :=
 def observationNumerator (p r s : PTm n) : PTm n := unit r*unit s+unit p*(unit r+unit s)
 def observationDenominator (p r s : PTm n) : PTm n := unit p*unit r*unit s
 
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (x y : PTm n) :
-    Syn.subst σ (sumData x y) = sumData (Syn.subst σ x) (Syn.subst σ y) := by simp [sumData]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f k : PR 2) (x y A : PTm n) :
-    (source f k x y A).subst σ = source f k (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) := by simp [source]
+ipra_subst sumData
+ipra_subst source
 
 theorem sample_at (f k : PR 2) (p x y : PTm n) : Γ ⊢[PRAAx]
     ap2 (sumF f k) p (sumData x y) ≐ qadd (ap2 f (clock p) x) (ap2 k (clock p) y) :=

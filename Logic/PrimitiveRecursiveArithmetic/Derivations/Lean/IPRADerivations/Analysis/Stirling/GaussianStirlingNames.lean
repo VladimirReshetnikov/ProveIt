@@ -17,7 +17,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiplyModulus multiply_at multiply_fast)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (canonical canonical_congr qmul qmul_canonical)
 open GaussianRationalMetric (qsub qsub_canonical)
 open RationalGaussianEmbedding (axis axis_congr embed_axis axis_add axis_negative axis_multiply)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 export GaussianStirlingGammaLogarithm (source arg gammaData gammaMargin gammaLogMargin gammaRealF
   gammaRetimedF gammaRetimedData logGammaF logGammaData gamma_source gamma_source_at_radius source_shift
@@ -50,21 +47,13 @@ def differenceData (a b : PTm n) : PTm n := addData (logGammaData a b) (negative
 def nameF : PR 2 := addF differenceF constantF
 def nameData (a b : PTm n) : PTm n := addData (differenceData a b) (point a b)
 
-@[simp] theorem subst_logXData {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (logXData a b) = logXData (Syn.subst σ a) (Syn.subst σ b) := by simp [logXData]
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (point a b) = point (Syn.subst σ a) (Syn.subst σ b) := by simp [point]
-@[simp] theorem subst_offset {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (offset a b) = offset (Syn.subst σ a) (Syn.subst σ b) := by simp [offset,one,two]
-@[simp] theorem subst_productData {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (productData a b) = productData (Syn.subst σ a) (Syn.subst σ b) := by simp [productData]
-@[simp] theorem subst_negativeProductData {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (negativeProductData a b) = negativeProductData (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [negativeProductData]
-@[simp] theorem subst_differenceData {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (differenceData a b) = differenceData (Syn.subst σ a) (Syn.subst σ b) := by simp [differenceData]
-@[simp] theorem subst_nameData {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (nameData a b) = nameData (Syn.subst σ a) (Syn.subst σ b) := by simp [nameData]
+ipra_subst logXData
+ipra_subst point
+ipra_subst offset [one, two]
+ipra_subst productData
+ipra_subst negativeProductData
+ipra_subst differenceData
+ipra_subst nameData
 
 theorem log_x_regular (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN logXF (logXData a b) :=

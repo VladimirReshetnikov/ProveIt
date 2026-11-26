@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTailExponentialDerivativeContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalDerivativeRow (boundNumerator)
 open GaussianBarnesCanonicalTailExponentialDerivative (derivativeF derivativeData)
@@ -32,8 +32,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

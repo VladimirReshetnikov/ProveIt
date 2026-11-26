@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerLowerCutoffSource
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerCompact (evaluatorF fixedData lipschitz sampled_modulus)
 open GaussianNamedDampingPowerLowerPointwise (original_pointwise_bound)
 open GaussianGammaIntegralCutoffs (etaDen top eta_den_positive top_positive)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,10 +34,7 @@ def source (F G : PR 2) (z Rz B A x y C₀ C R₀ R : PTm n) : Fm PTm n :=
   GaussianEulerNamedLowerTail.source z Rz B A ⋏
     (GaussianNamedPositiveLogarithm.source F x C₀ C ⋏ GaussianNamedPositiveLogarithm.source G y R₀ R)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (z Rz B A x y C₀ C R₀ R : PTm n) :
-    (source F G z Rz B A x y C₀ C R₀ R).subst σ =
-      source F G (Syn.subst σ z) (Syn.subst σ Rz) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x)
-        (Syn.subst σ y) (Syn.subst σ C₀) (Syn.subst σ C) (Syn.subst σ R₀) (Syn.subst σ R) := by simp [source]
+ipra_subst source
 
 theorem compact_source (F G : PR 2) (z Rz B A x y C₀ C R₀ R p q : PTm n)
     (hs : Γ ⊢[PRAAx] source F G z Rz B A x y C₀ C R₀ R) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]

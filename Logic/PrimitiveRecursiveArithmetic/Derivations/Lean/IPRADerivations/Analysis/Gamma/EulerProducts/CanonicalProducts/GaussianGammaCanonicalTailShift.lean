@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalTailShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
@@ -24,10 +24,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalTailMetric (localValue ofGaussian_congr)
 open GaussianGammaCanonicalTailName (source)
 open GaussianNameEquivalence (diagonalEquivalent crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,13 +31,9 @@ def localData (z R D : PTm n) : PTm n := pairT z (pairT R D)
 def localTerm (p x : PTm n) : PTm n := localValue p (fstT x) (fstT (sndT x)) (sndT (sndT x))
 def localF : PR 2 := PTm.toPR (localTerm (var 0) (var 1))
 def localPoint (p z R D : PTm n) : PTm n := ap2 localF p (localData z R D)
-@[simp] theorem subst_localData {l : ℕ} (σ : Fin n → PTm l) (z R D : PTm n) :
-    Syn.subst σ (localData z R D) = localData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ D) := by simp [localData]
-@[simp] theorem subst_localTerm {l : ℕ} (σ : Fin n → PTm l) (p x : PTm n) :
-    Syn.subst σ (localTerm p x) = localTerm (Syn.subst σ p) (Syn.subst σ x) := by simp [localTerm]
-@[simp] theorem subst_localPoint {l : ℕ} (σ : Fin n → PTm l) (p z R D : PTm n) :
-    Syn.subst σ (localPoint p z R D) = localPoint (Syn.subst σ p) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ D) := by simp [localPoint]
+ipra_subst localData
+ipra_subst localTerm
+ipra_subst localPoint
 
 theorem local_at (p z R D : PTm n) : Γ ⊢[PRAAx] localPoint p z R D ≐ localValue p z R D := by
   have prog : Γ ⊢[PRAAx] localPoint p z R D ≐ localTerm p (localData z R D) := by
@@ -56,8 +48,8 @@ theorem local_at (p z R D : PTm n) : Γ ⊢[PRAAx] localPoint p z R D ≐ localV
         fin_cases i
         · exact .eqRefl _
         · exact fst_pair _ _
-        · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-        · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+        · exact (snd_pair _ _).fstE
+        · exact (snd_pair _ _).sndE)
 
 /-- The original independently rounded local-factor observations already
 have the correct two-precision Gaussian regularity. -/
@@ -94,12 +86,8 @@ def shiftF : PR 2 := GaussianNameArithmetic.addF localF GaussianGammaCanonicalTa
 def shiftData (z R B N : PTm n) : PTm n := GaussianNameArithmetic.addData
   (localData z (R*B) (B*succ N)) (GaussianGammaCanonicalTailName.data z R B (succ N))
 def shifted (p z R B N : PTm n) : PTm n := ap2 shiftF p (shiftData z R B N)
-@[simp] theorem subst_shiftData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (shiftData z R B N) = shiftData (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) := by simp [shiftData]
-@[simp] theorem subst_shifted {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (shifted p z R B N) = shifted (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) := by simp [shifted]
+ipra_subst shiftData
+ipra_subst shifted
 
 /-- Literal observation of the actual add-name program, including its
 normalization; the summed Gaussian code is canonical by construction. -/
@@ -175,23 +163,15 @@ def output (z R B N : PTm n) : PTm n := pairT
   (GaussianGammaCanonicalTailName.data z R B N) (shiftData z R B N)
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (z R B N : PTm n) : PTm n := PTm.app outputF ![z,R,B,N]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (output z R B N) = output (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (run z R B N) = run (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (z R B N : PTm n) : Γ ⊢[PRAAx] run z R B N ≐ output z R B N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![z,R,B,N]
 theorem returned_tail_data (z R B N : PTm n) : Γ ⊢[PRAAx]
     fstT (run z R B N) ≐ GaussianGammaCanonicalTailName.data z R B N :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_sum_data (z R B N : PTm n) : Γ ⊢[PRAAx] sndT (run z R B N) ≐ shiftData z R B N :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 
 theorem returned_equivalence (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] crossEquivalent GaussianGammaCanonicalTailName.pointF shiftF

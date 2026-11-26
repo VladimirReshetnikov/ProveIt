@@ -16,17 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRadiusExponentialLipschitzRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRadiusExponentialName (query inputPrecision sample sample_at nameF data)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -34,10 +30,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def factor (R : PTm n) : PTm n := pw (num 3) R
 def input (F G : PR 2) (R x y A N : PTm n) : Fm PTm n := le one N ⋏
   (GaussianRadiusExponentialName.input F R x ⋏ (GaussianRadiusExponentialName.input G R y ⋏ independentRate F G x y A N))
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (factor R) = factor (Syn.subst σ R) := by simp [factor]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (R x y A N : PTm n) :
-    (input F G R x y A N).subst σ = input F G (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ N) := by simp [input]
+ipra_subst factor
+ipra_subst input
 
 theorem original_clock_later (R p : PTm n) : Γ ⊢[PRAAx] le p (inputPrecision R p) :=
   le_of_eq_add (d := num 4+(R+two)*GaussianRadiusExponentialName.index R p) (by unfold inputPrecision; ipra_ring)
@@ -84,27 +78,25 @@ def output (F G : PR 2) (R x y A N p q : PTm n) : PTm n := pairT (sample F R p x
   (pairT (sample G R q y) (pairT (rateNumerator (factor R*A) N p q) (rateDenominator N p q)))
 def outputF (F G : PR 2) : PR 7 := PTm.toPR (output F G (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (F G : PR 2) (R x y A N p q : PTm n) : PTm n := PTm.app (outputF F G) ![R,x,y,A,N,p,q]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (R x y A N p q : PTm n) :
-    Syn.subst σ (output F G R x y A N p q) = output F G (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) := by simp [output]
+ipra_subst output
 theorem program_at (F G : PR 2) (R x y A N p q : PTm n) : Γ ⊢[PRAAx] run F G R x y A N p q ≐ output F G R x y A N p q := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output F G (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![R,x,y,A,N,p,q]
 theorem returned_first (F G : PR 2) (R x y A N p q : PTm n) : Γ ⊢[PRAAx]
-    fstT (run F G R x y A N p q) ≐ sample F R p x := (congrFst (program_at F G R x y A N p q)).eqTrans (fst_pair _ _)
+    fstT (run F G R x y A N p q) ≐ sample F R p x := (program_at F G R x y A N p q).fstE
 theorem returned_tail (F G : PR 2) (R x y A N p q : PTm n) : Γ ⊢[PRAAx]
     sndT (run F G R x y A N p q) ≐ pairT (sample G R q y) (pairT (rateNumerator (factor R*A) N p q) (rateDenominator N p q)) :=
-  (congrSnd (program_at F G R x y A N p q)).eqTrans (snd_pair _ _)
+  (program_at F G R x y A N p q).sndE
 theorem returned_second (F G : PR 2) (R x y A N p q : PTm n) : Γ ⊢[PRAAx]
-    fstT (sndT (run F G R x y A N p q)) ≐ sample G R q y := (congrFst (returned_tail F G R x y A N p q)).eqTrans (fst_pair _ _)
+    fstT (sndT (run F G R x y A N p q)) ≐ sample G R q y := (returned_tail F G R x y A N p q).fstE
 theorem returned_budget (F G : PR 2) (R x y A N p q : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run F G R x y A N p q)) ≐ pairT (rateNumerator (factor R*A) N p q) (rateDenominator N p q) :=
-  (congrSnd (returned_tail F G R x y A N p q)).eqTrans (snd_pair _ _)
+  (returned_tail F G R x y A N p q).sndE
 theorem returned_numerator (F G : PR 2) (R x y A N p q : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run F G R x y A N p q))) ≐ rateNumerator (factor R*A) N p q :=
-  (congrFst (returned_budget F G R x y A N p q)).eqTrans (fst_pair _ _)
+  (returned_budget F G R x y A N p q).fstE
 theorem returned_denominator (F G : PR 2) (R x y A N p q : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run F G R x y A N p q))) ≐ rateDenominator N p q :=
-  (congrSnd (returned_budget F G R x y A N p q)).eqTrans (snd_pair _ _)
+  (returned_budget F G R x y A N p q).sndE
 theorem returned_distance (F G : PR 2) (R x y A N p q : PTm n) (h : Γ ⊢[PRAAx] input F G R x y A N) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run F G R x y A N p q)) (fstT (sndT (run F G R x y A N p q)))
       (fstT (sndT (sndT (run F G R x y A N p q)))) (sndT (sndT (sndT (run F G R x y A N p q)))) :=

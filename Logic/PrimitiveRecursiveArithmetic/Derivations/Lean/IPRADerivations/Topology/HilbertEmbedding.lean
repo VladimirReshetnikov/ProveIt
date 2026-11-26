@@ -23,16 +23,12 @@ natural `U`):
 
 namespace LeanProofs.IPRA.Topology.HilbertEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of le_add_ad)
 open LeanProofs.IPRA.Analysis.PolynomialCertificates (ad_congr ad_self)
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right)
 open LeanProofs.IPRA.Topology.MetricProducts (horner tail_bound)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

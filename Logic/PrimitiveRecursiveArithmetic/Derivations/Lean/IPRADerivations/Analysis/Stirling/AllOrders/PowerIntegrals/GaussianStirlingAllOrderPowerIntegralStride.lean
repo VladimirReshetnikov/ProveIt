@@ -15,10 +15,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPowerIntegralStride
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.PowerDifference (gd gd_succ gd_zero gd_le power_diff)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (zero succ)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianFactorBudget (power_positive)
 open GaussianRationalHorner (scalar_congr)
@@ -26,8 +25,6 @@ open GaussianRationalMetric (comparison_of_cleared)
 open RationalAlgebra (positive_product)
 open RationalArithmetic (add represents)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -101,13 +98,9 @@ def potential (q k : PTm n) : PTm n := fraction one (succ q*pw k (succ q))
 
 def strideSample (q d k : PTm n) : PTm n := fraction d (pw k (succ (succ q)))
 
-@[simp] theorem subst_potential {j : ℕ} (σ : Fin n → PTm j) (q k : PTm n) :
-    Syn.subst σ (potential q k) = potential (Syn.subst σ q) (Syn.subst σ k) := by
-  simp [potential,pw]
+ipra_subst potential [pw]
 
-@[simp] theorem subst_strideSample {j : ℕ} (σ : Fin n → PTm j) (q d k : PTm n) :
-    Syn.subst σ (strideSample q d k) = strideSample (Syn.subst σ q) (Syn.subst σ d) (Syn.subst σ k) := by
-  simp [strideSample,pw]
+ipra_subst strideSample [pw]
 
 private theorem add_fraction_rep (a b c : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hc : Γ ⊢[PRAAx] le one c) :
     Γ ⊢[PRAAx] represents (add (fraction a b) (fraction one c)) (ZT.ofNat (a*c+b)) (b*c) := by

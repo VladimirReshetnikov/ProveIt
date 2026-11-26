@@ -14,17 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImageUniformGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (fraction_congr grid inside quadrature sampleBody sampleData value value_grid)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalFiniteSum (sum sum_index_congr)
 open GaussianRationalHorner (qmul)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

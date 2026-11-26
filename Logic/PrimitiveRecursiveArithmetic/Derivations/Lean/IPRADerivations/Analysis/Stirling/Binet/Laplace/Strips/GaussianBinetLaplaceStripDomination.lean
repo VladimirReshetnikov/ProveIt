@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceStripDomination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceScalarMajorant (scalar subst_scalar twelfth)
 open GaussianBinetLaplaceStrip (Kernel evaluatorF fixedData evaluator_at source subst_source tagNumerator tag_inside)
 open GaussianBinetLaplaceStripCutoff (grid_tag)
@@ -34,10 +34,6 @@ open GaussianRationalSumMajorant (majorized majorized_congr termsMajorized major
 open GaussianRationalSyntheticDivision (qmul_congr)
 open RationalGaussianRealPart (embedBody embed_congr)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "twelve" => num 12
@@ -48,8 +44,7 @@ def scalarCell (i x : PTm n) : PTm n :=
   scalar (field0 x) (field2 x*field1 x+field3 x*i) (field4 x*field1 x)
 def scalarBody : PTm 2 := scalarCell (var 0) (var 1)
 
-@[simp] theorem subst_scalarCell {m : ℕ} (σ : Fin n → PTm m) (i x : PTm n) :
-    Syn.subst σ (scalarCell i x) = scalarCell (Syn.subst σ i) (Syn.subst σ x) := by simp [scalarCell]
+ipra_subst scalarCell
 
 theorem scalar_congr {p q a b c d : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q)
     (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) : Γ ⊢[PRAAx] scalar p a b ≐ scalar q c d := by

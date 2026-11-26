@@ -17,7 +17,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetDigammaLogBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetReciprocalPrefix (sample)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -36,10 +36,6 @@ open GaussianRationalMetric (distanceBounded qnegative qsub)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_congr)
 open GaussianReciprocalHorner (qadd_commutative qadd_zero_right)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF

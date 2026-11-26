@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteInputContinuity
 import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original finite Q_N continuity at independently encoded inputs
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteMixedInputContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (qF qData q_regular)
 open GaussianGammaFiniteInputContinuity (gain)
 open GaussianGammaEncodingRescaling (fraction_rescale fraction_denominator_congr q_data_rescale)
@@ -25,8 +24,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open ComplexLogarithmRemainder (scale)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

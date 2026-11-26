@@ -19,9 +19,7 @@ is the coarse step itself, stated as equality with the zero multiple `0 · x`).
 
 namespace LeanProofs.IPRA.Analysis.EulerResidual
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 

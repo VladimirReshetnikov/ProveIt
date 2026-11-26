@@ -5,8 +5,6 @@ import IPRADerivations.AnalyticNumberTheory.EulerProduct
 import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Lucas's congruence, one digit at a time
@@ -37,7 +35,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.LucasStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle_of_le)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_self gb_above gb_pascal zB inst2_z zsum)
@@ -50,10 +48,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_mul' pos_of_eq_mul eq_of_dvd' one_le_of_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_congr)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

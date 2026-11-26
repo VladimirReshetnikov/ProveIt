@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Combinatorics.LegendreFact
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The middle-interval theorem for sorted data, and the odd and even median formulas
@@ -30,7 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianSorted
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
@@ -39,10 +38,6 @@ open LeanProofs.IPRA.Probability.Expectation (le_zero_of)
 open LeanProofs.IPRA.Probability.Variance (sum_one)
 open LeanProofs.IPRA.Probability.MedianCounts (belowB aboveB Bc Ac below_pt above_pt isMed)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (ltB inst2_ltB inst2_one2 count_lt)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -109,13 +104,9 @@ theorem mono_add {N p : PTm n} (hS : Γ ⊢[PRAAx] Sorted X N p) (i d : PTm n) (
   have hS' := sorted_shift X hS
   have hall : Γ ⊢[PRAAx] Fm.all (lt (Syn.shift i + var 0) (Syn.shift N) ⟶
       le (inst2 X (Syn.shift i) (Syn.shift p)) (inst2 X (Syn.shift i + var 0) (Syn.shift p))) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_lt, PTm.subst_add, subst_inst2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (le_congr (.eqRefl _) (congrInst2 X (add_zero _).eqSymm (.eqRefl _)) (le_refl _))
-    · simp only [Fm.subst_imp, subst_le, subst_lt, PTm.subst_add, subst_inst2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    ipra_qfind (⟨lt_QF _ _, le_QF _ _⟩) [subst_le, subst_lt, subst_inst2]
+    · exact .impI (le_congr (.eqRefl _) (congrInst2 X (add_zero _).eqSymm (.eqRefl _)) (le_refl _))
+    · refine .impI ?_
       let C := lt (Syn.shift i + succ (var 0)) (Syn.shift N) ::
         (lt (Syn.shift i + var 0) (Syn.shift N) ⟶
           le (inst2 X (Syn.shift i) (Syn.shift p)) (inst2 X (Syn.shift i + var 0) (Syn.shift p))) :: Γ.map Fm.shift

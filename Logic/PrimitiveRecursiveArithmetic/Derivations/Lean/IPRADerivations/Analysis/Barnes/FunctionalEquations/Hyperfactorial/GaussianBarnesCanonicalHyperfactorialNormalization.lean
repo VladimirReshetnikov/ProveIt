@@ -8,7 +8,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHyperfactorialNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHyperfactorial
   (center radius barnesData exponentF exponentData specialLogData powerF powerData powerRadius
     nameF data productF productData barnes_regular power_regular regular cleared_relation)
@@ -19,9 +19,6 @@ open GaussianNameRingLaws (oneF one_at one_fast multiply_one)
 open GaussianRationalHorner (ofGaussian qzero zero_represents)
 open GaussianRationalSyntheticDivision (qone qzero_canonical qmul_congr qmul_zero_left)
 open ComplexLogarithmRemainder (normSq zeroCode oneCode scale)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

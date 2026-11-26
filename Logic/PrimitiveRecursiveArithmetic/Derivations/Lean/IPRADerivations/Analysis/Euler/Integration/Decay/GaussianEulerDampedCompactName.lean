@@ -14,15 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDampedCompactName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositiveScalingIntegrand (evaluatorF fixedData dampedF dampedData)
 open GaussianEulerDampedTimeRate (lipschitz)
 open GaussianCompactRiemannName (inside sampledModulus localBody)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,12 +30,8 @@ def data (z R B c d a C E T : PTm n) : PTm n :=
   GaussianCompactRiemannName.data a C E (lipschitz R E T c d) T (fixedData z B c d)
 abbrev nameF : PR 2 := GaussianCompactRiemannName.nameF evaluatorF
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B c d a C E T : PTm n) :
-    (source z R B c d a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B c d a C E T : PTm n) :
-    Syn.subst σ (data z R B c d a C E T) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
+ipra_subst source
+ipra_subst data
 
 private theorem fixed_data_congr (z B a b c d z' B' c' d' : PTm n)
     (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (hc : Γ ⊢[PRAAx] c ≐ c') (hd : Γ ⊢[PRAAx] d ≐ d') : Γ ⊢[PRAAx]
@@ -62,8 +56,8 @@ theorem evaluator_raw_at (p t z B c d : PTm n) : Γ ⊢[PRAAx]
   have right := snd_pair (Γ := Γ) (pairT z B) (pairT c d)
   exact (GaussianEulerPositiveScalingIntegrand.evaluator_at p t (fixedData z B c d)).eqTrans
     (congrAp2 dampedF (.eqRefl _) (fixed_data_congr _ _ _ _ _ _ _ _ _ _
-      ((congrFst left).eqTrans (fst_pair _ _)) ((congrSnd left).eqTrans (snd_pair _ _))
-      ((congrFst right).eqTrans (fst_pair _ _)) ((congrSnd right).eqTrans (snd_pair _ _))))
+      left.fstE left.sndE
+      right.fstE right.sndE))
 
 theorem wrapped_at (p t z B c d : PTm n) : Γ ⊢[PRAAx]
     ap2 (GaussianCompactRiemannName.evaluatorName evaluatorF) p (GaussianCompactRiemannName.nameData t (fixedData z B c d)) ≐

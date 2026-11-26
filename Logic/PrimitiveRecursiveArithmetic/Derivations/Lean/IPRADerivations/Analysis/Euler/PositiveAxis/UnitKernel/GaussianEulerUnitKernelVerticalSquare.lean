@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelVerticalSquare
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianEulerIntegrandName (coefficient)
 open GaussianGammaRealValues (projection axisF axis_sample_at axis_regular)
@@ -24,8 +24,6 @@ open GaussianRationalHorner (qmul)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianExponentialRealPart (squareF squareData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,12 +34,8 @@ def referenceData (z R B a b : PTm n) : PTm n := GaussianBoundedConstantProductN
 def source (z R B a b : PTm n) : Fm PTm n :=
   GaussianEulerUpperPowerCoefficients.source z R B ⋏ GaussianEulerUnitLogarithmicMargin.source a b
 
-@[simp] theorem subst_referenceData {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    Syn.subst σ (referenceData z R B a b) = referenceData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) := by simp [referenceData]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    (source z R B a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
+ipra_subst referenceData
+ipra_subst source
 
 theorem kernel_source (z R B a b : PTm n) (h : Γ ⊢[PRAAx] source z R B a b) : Γ ⊢[PRAAx]
     GaussianEulerUnitSubstitutionKernel.source z B a b := .andI h.andE₁.andE₁ h.andE₂

@@ -20,11 +20,7 @@ cores, cleared for natural terms (distances `d(·,·)` as hypotheses `le` with t
 
 namespace LeanProofs.IPRA.Topology.MetricNeighborhoods
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

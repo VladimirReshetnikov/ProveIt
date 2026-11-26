@@ -16,7 +16,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelWeightedBridgeZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerDecayMesh (observation)
@@ -28,10 +28,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qone)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "W" => GaussianBinetWeightedExponential.nameF

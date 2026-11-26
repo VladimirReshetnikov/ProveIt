@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A closed two-chain has constant coefficients (`conway_criterion_ipra_2026-11-16`, `lem:constantmultiplicity`)
@@ -31,14 +30,10 @@ of the certificate) and the incidence computation of `∂Z`.
 
 namespace LeanProofs.IPRA.Geometry.ConstantMultiplicity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB allB_zero allB_succ all_elim)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.Signum (sg sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
-import IPRADerivations.Core.OrderCertificates
 
 /-!
 # The actual rescaled exponent for positive rational power charts
@@ -14,15 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingParameter
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale normSq oneCode normSq_scale)
 open GaussianRootAlgebra (equal_of_values re_mul im_mul re_scale im_scale re_one im_one)
 open GaussianRationalHorner
   (ofGaussian ofGaussian_represents ofGaussian_canonical qmul qmul_canonical qmul_represents positive_product
     canonical_unique represents_congr represents_rescale)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialForwardDifferenceGridLinearity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.Foundations.SequenceEquality (agree sequence_equal)
@@ -24,9 +24,6 @@ open GaussianRationalHorner (qadd qmul)
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
 open GaussianRationalTranslationStages (remaining remaining_step)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

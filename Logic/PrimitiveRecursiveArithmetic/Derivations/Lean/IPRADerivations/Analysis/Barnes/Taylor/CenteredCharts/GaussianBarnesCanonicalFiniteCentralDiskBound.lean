@@ -13,14 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteCentralDiskBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCentralUniformBound (prefixCap prefix_samples)
 open GaussianBarnesCanonicalFiniteCentralExponential (finiteNameF finiteData prefixExpData)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial)
 open GaussianNamedMultiplyRate (sampleBound)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

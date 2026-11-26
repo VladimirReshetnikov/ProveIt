@@ -13,16 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNaturalScaleProductRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
 open GaussianNaturalScaleProductName (productF productData clock clock_later product_at)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalMetric (distanceBounded)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

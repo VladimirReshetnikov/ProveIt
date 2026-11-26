@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.CatalanHalving
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial theorem in two variables
@@ -21,15 +20,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BinomialTwo
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_above gb_pascal)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.CatalanHalving (monus_succ_le)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,9 +50,9 @@ abbrev S {n : ℕ} (M X Y : PTm n) : PTm n := ap2 (sumF bt) (succ M) (pairT M (p
 
 theorem fM (M X Y : PTm n) : Γ ⊢[PRAAx] fstT (pairT M (pairT X Y)) ≐ M := fst_pair _ _
 theorem fX (M X Y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (pairT M (pairT X Y))) ≐ X :=
-  (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  (snd_pair _ _).fstE
 theorem fY (M X Y : PTm n) : Γ ⊢[PRAAx] sndT (sndT (pairT M (pairT X Y))) ≐ Y :=
-  (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  (snd_pair _ _).sndE
 
 theorem bt_at (k M X Y : PTm n) :
     Γ ⊢[PRAAx] inst2 bt k (pairT M (pairT X Y)) ≐ gb M k * pw X k * pw Y (monus M k) := by
@@ -175,13 +170,9 @@ theorem binom2_base (X Y : PTm n) : Γ ⊢[PRAAx] S zero X Y ≐ pw (X + Y) zero
     natEq (pw_zero (Γ := Γ) (X + Y))
 
 private theorem b2₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] b2F := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact binom2_base _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact binom2_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact binom2_base _ _
+  · exact binom2_step Prf.hyp0
 
 /-- `∑_{k ≤ m} C(m, k) x^k y^(m−k) = (x + y)^m`. -/
 theorem binomial_two (M X Y : PTm n) : Γ ⊢[PRAAx] S M X Y ≐ pw (X + Y) M := by

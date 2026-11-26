@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianRation
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianFactorBounds
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual local errors in finite rational approximate factorization
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFactorErrorStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters
   (initialA toleranceDenominator polynomial rootAt roots monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone)
@@ -38,9 +37,6 @@ open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,22 +47,10 @@ def error (step : PR 3) (C N p q j : PTm n) : PTm n :=
   coefficientNorm (errorCoefficients step C N p q j)
 def fraction (a F : PTm n) : PTm n := normalize (ZT.ofNat a) F
 
-@[simp] theorem subst_target {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q j : PTm n) :
-    Syn.subst σ (target step C N p q j) = target step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by
-  simp only [target,GaussianRationalReconstruction.subst_suffix,GaussianFactorParameters.subst_roots]
-@[simp] theorem subst_errorCoefficients {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q j : PTm n) :
-    Syn.subst σ (errorCoefficients step C N p q j) = errorCoefficients step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by
-  simp only [errorCoefficients,GaussianCoefficientL1.subst_subCoefficients,GaussianFactorParameters.subst_polynomial,
-    subst_target,ConciseIPRA.PTm.subst_succ,subst_remaining]
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N p q j : PTm n) :
-    Syn.subst σ (error step C N p q j) = error step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) := by
-  simp only [error,GaussianCoefficientL1.subst_coefficientNorm,subst_errorCoefficients]
-@[simp] theorem subst_fraction {m : ℕ} (σ : Fin n → PTm m) (a F : PTm n) :
-    Syn.subst σ (fraction a F) = fraction (Syn.subst σ a) (Syn.subst σ F) := by
-  simp only [fraction,RationalIntegerNormalization.subst_normalize,ZT.subst_ofNat]
+ipra_subst target
+ipra_subst errorCoefficients
+ipra_subst error
+ipra_subst fraction
 
 /-- Canonical scalar storage is a consequence of the actual norm producer. -/
 theorem error_guard (step : PR 3) (C N p q j : PTm n) : Γ ⊢[PRAAx]

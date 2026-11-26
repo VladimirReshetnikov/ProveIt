@@ -13,14 +13,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingTailGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator)
 open GaussianEulerPowerChartCofinalSchedule (cutoffSize cutoff_guards)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianRealPart
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite Euclidean domination by nonnegative rational rows
@@ -16,15 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRadiusFiniteSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic (positive numerator natural_representation)
 open GaussianRationalHorner (qzero qadd qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalFiniteSum (sum)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -32,9 +28,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def boundBy (z r : PTm n) : Fm PTm n :=
   positive r ⋏ bounded z (numerator (fstT r)) (denominatorOf (fstT r))
 
-@[simp] theorem subst_boundBy {m : ℕ} (σ : Fin n → PTm m) (z r : PTm n) :
-    (boundBy z r).subst σ = boundBy (Syn.subst σ z) (Syn.subst σ r) := by
-  simp [boundBy,numerator,RationalSupMetric.numeratorOf,denominatorOf]
+ipra_subst boundBy [numerator, RationalSupMetric.numeratorOf, denominatorOf]
 
 theorem bound_congr {z z' r r' : PTm n}
     (hz : Γ ⊢[PRAAx] z ≐ z') (hr : Γ ⊢[PRAAx] r ≐ r') (h : Γ ⊢[PRAAx] boundBy z r) :
@@ -109,7 +103,7 @@ theorem multiply_bound (z w r s : PTm n) (h : Γ ⊢[PRAAx] boundBy z r) (k : Γ
   have axis := RationalGaussianEmbedding.axis_multiply_representation r s h.andE₁.andE₁ k.andE₁.andE₁
   let m := RationalArithmetic.multiply (fstT r) (fstT s)
   have real : Γ ⊢[PRAAx] fstT (qmul r s) ≐ RationalArithmetic.recode m :=
-    (congrFst axis).eqTrans (fst_pair _ _)
+    axis.fstE
   have prodRep : Γ ⊢[PRAAx] RationalArithmetic.represents m (ZT.ofNat (A*C)) (D*E) := by
     have hProd := RationalRepresentations.represents_multiply _ _ _ _ _ _ first second
     have eq : Γ ⊢[PRAAx] ZT.eq (ZT.ofNat A*ZT.ofNat C) (ZT.ofNat (A*C)) := by
@@ -136,9 +130,7 @@ theorem zero_bound : Γ ⊢[PRAAx] boundBy (qzero : PTm n) qzero := by
 def rowBounds (f g : PTm 2) (N x y : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ boundBy (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift y)))
 
-@[simp] theorem subst_rowBounds {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (N x y : PTm n) :
-    (rowBounds f g N x y).subst σ = rowBounds f g (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [rowBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowBounds [Syn.subst_shift, Syn.shift_subst]
 
 theorem row_at (f g : PTm 2) (N x y k : PTm n) (h : Γ ⊢[PRAAx] rowBounds f g N x y)
     (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx] boundBy (inst2 f k x) (inst2 g k y) := by

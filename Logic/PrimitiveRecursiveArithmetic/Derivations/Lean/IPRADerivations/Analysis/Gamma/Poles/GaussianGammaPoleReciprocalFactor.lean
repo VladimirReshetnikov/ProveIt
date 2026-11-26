@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleReciprocalFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaLocalPoleGuards (center terminal center_source_disk terminal_source_disk)
 open GaussianGammaPoleFiniteFactors (signedFactorial factorProduct centered_rising_factorization)
 open GaussianGammaRepeatedShift (risingProduct original_C22)
@@ -27,9 +27,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded)
 open ComplexLogarithmRemainder (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

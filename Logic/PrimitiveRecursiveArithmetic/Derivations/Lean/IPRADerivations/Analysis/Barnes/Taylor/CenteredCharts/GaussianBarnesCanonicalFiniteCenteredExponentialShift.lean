@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteCenteredExponentialShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalCenteredExponentialShift (head)
 open GaussianBarnesCanonicalFiniteCentralExponential
@@ -30,8 +30,6 @@ open GaussianGammaFoldedApproximantBalance (exponential_product_equivalent)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

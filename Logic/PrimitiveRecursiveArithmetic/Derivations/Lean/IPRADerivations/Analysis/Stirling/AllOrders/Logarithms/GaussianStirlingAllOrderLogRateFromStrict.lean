@@ -16,7 +16,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderLogRateFromStrict
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderLogRateTransport (upperPoint lowerPoint errorOrders original_rate)
 open GaussianStirlingAllOrderTruncationHorner (hornerErrorData)
 open GaussianStirlingAllOrderLogTruncation (errorF)
@@ -33,10 +33,6 @@ open GaussianEuclideanDistanceName (fraction fraction_order fraction_represents)
 open RationalArithmetic (recode negative)
 open RationalArgmin (rationalLE rationalLE_congr denominator_positive)
 open RationalValueBounds (upper_of_order upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

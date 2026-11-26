@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliMassError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_order)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticBounds (add_monotone)
@@ -38,9 +38,6 @@ open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalHarmonicInterval (interval common_canonical horizon)
 open RationalReciprocalPowerTail (add_zero_right zero_fraction)
 open RationalValueBounds (upper_of_order radius_of_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

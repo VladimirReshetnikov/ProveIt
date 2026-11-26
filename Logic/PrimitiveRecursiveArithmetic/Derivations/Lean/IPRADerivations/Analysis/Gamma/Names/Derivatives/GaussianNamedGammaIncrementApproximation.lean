@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaIncrementApproximation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGammaSmallIncrementInput (sumData)
 open GaussianNamedGammaIncrementInput (incrementF incrementData clock)
 open GaussianNamedRightHalfPlane (numerator denominator)
@@ -26,8 +26,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalL1 (raw_den_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -35,10 +33,8 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def frozenData (K : PR 2) (k x y : PTm n) : PTm n := incrementData x (numerator K k y) (denominator K k y)
 def source (f K : PR 2) (x y : PTm n) : Fm PTm n := pointCN f x ⋏ pointCN K y
 
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (K : PR 2) (k x y : PTm n) :
-    Syn.subst σ (frozenData K k x y) = frozenData K (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ y) := by simp [frozenData]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f K : PR 2) (x y : PTm n) :
-    (source f K x y).subst σ = source f K (Syn.subst σ x) (Syn.subst σ y) := by simp [source]
+ipra_subst frozenData
+ipra_subst source
 
 theorem frozen_sample_at (f K : PR 2) (q k x y : PTm n) : Γ ⊢[PRAAx]
     qadd (ap2 f (clock q) x) (ap2 K k y) ≐ ap2 (incrementF f) q (frozenData K k x y) :=

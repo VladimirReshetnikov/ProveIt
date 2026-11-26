@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPerturbationExponent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (addF addData)
 open GaussianNameRingLaws (negativeF negativeData negative_fast negative_sample_error add_sample_error
   three sum_right_error equivalent_of_envelope)
@@ -29,10 +29,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFastValueCut (rawEnvelope)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,20 +41,11 @@ def sumData (z R B N : PTm n) : PTm n := addData (tailData z R B N) (deltaData z
 def numerator (R : PTm n) : PTm n := R*R+R
 def slack (z R B N : PTm n) : PTm n := GaussianGammaEulerCorrectionDisk.slack z R B N+num 7
 
-@[simp] theorem subst_tailData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (tailData z R B N) = tailData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [tailData]
-@[simp] theorem subst_deltaData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (deltaData z R B N) = deltaData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [deltaData]
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (sumData z R B N) = sumData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [sumData]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (numerator R) = numerator (Syn.subst σ R) := by simp [numerator]
-@[simp] theorem subst_slack {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (slack z R B N) = slack (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [slack]
+ipra_subst tailData
+ipra_subst deltaData
+ipra_subst sumData
+ipra_subst numerator
+ipra_subst slack
 
 theorem correction_source (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] GaussianGammaEulerCorrectionDisk.source z R B N :=

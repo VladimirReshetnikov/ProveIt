@@ -13,14 +13,11 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderCentralDerivativeBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderCentralTaylor (curvature homogeneous quadratic)
 open GaussianStirlingAllOrderCentralTaylorBound (curvatureNumerator curvature_evaluation evaluation)
 open BernoulliBounds (bden bint bint_eq pv)
 open BernoulliCoefficients (bc bc_deriv)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

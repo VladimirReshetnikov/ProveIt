@@ -13,7 +13,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinFiniteDampedModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (inside value sampledModulus evaluatorName nameData)
@@ -25,10 +25,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -37,9 +33,7 @@ local notation "Damped" => GaussianEulerPositiveScalingIntegrand.evaluatorF
 
 def lipschitz (N R E T : PTm n) : PTm n := N*dampL R E T N one
 
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (N R E T : PTm n) :
-    Syn.subst σ (lipschitz N R E T) =
-      lipschitz (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [lipschitz,one]
+ipra_subst lipschitz [one]
 
 private theorem row_lipschitz (c N R E T : PTm n) (h : Γ ⊢[PRAAx] le c N) :
     Γ ⊢[PRAAx] le (dampL R E T c one) (dampL R E T N one) := by

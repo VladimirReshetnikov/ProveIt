@@ -2,7 +2,6 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Sharp finite reciprocal-power tails
@@ -19,16 +18,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalReciprocalPowerTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents fraction_order subst_fraction)
 open RationalArithmetic (add represents)
 open RationalArgmin (rationalLE)
 open RationalNonnegativePowers (fraction_congr)
 open RationalSupMetric (numeratorOf denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -39,17 +34,10 @@ def data (m N : PTm n) : PTm n := pairT m N
 def body : PTm 2 := reciprocalPower (fstT (var 1)) (succ (sndT (var 1)+var 0))
 def tail (m N r : PTm n) : PTm n := RationalFiniteSum.sum body r (data m N)
 
-@[simp] theorem subst_reciprocalPower {l : ℕ} (σ : Fin n → PTm l) (m k : PTm n) :
-    Syn.subst σ (reciprocalPower m k) = reciprocalPower (Syn.subst σ m) (Syn.subst σ k) := by
-  simp [reciprocalPower]
-@[simp] theorem subst_potential {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (potential m N) = potential (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [potential]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (data m N) = data (Syn.subst σ m) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_tail {l : ℕ} (σ : Fin n → PTm l) (m N r : PTm n) :
-    Syn.subst σ (tail m N r) = tail (Syn.subst σ m) (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [tail]
+ipra_subst reciprocalPower
+ipra_subst potential
+ipra_subst data
+ipra_subst tail
 
 theorem reciprocal_congr {m k a b : PTm n} (hm : Γ ⊢[PRAAx] m ≐ a) (hk : Γ ⊢[PRAAx] k ≐ b) :
     Γ ⊢[PRAAx] reciprocalPower m k ≐ reciprocalPower a b :=
@@ -167,9 +155,7 @@ theorem potential_nonnegative (m N : PTm n) (hm : Γ ⊢[PRAAx] le two m) (hN : 
 def finiteBound (m N r : PTm n) : Fm PTm n :=
   rationalLE (fraction zero one) (tail m N r) ⋏
     rationalLE (add (tail m N r) (potential m (N+r))) (potential m N)
-@[simp] theorem subst_finiteBound {l : ℕ} (σ : Fin n → PTm l) (m N r : PTm n) :
-    (finiteBound m N r).subst σ = finiteBound (Syn.subst σ m) (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [finiteBound]
+ipra_subst finiteBound
 
 theorem finite_bound_zero (m N : PTm n) (hm : Γ ⊢[PRAAx] le two m) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] finiteBound m N zero := by
@@ -236,8 +222,7 @@ theorem sharp_tail (m N r : PTm n) (hm : Γ ⊢[PRAAx] le two m) (hN : Γ ⊢[PR
 runtime numerical inputs. -/
 def tailF : PR 3 := PTm.toPR (tail (var 0) (var 1) (var 2))
 def run (m N r : PTm n) : PTm n := ap3 tailF m N r
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (m N r : PTm n) :
-    Syn.subst σ (run m N r) = run (Syn.subst σ m) (Syn.subst σ N) (Syn.subst σ r) := by simp [run]
+ipra_subst run
 theorem program_at (m N r : PTm n) : Γ ⊢[PRAAx] run m N r ≐ tail m N r := by
   simpa only [run,tailF,ap3,subst_tail,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
     Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using

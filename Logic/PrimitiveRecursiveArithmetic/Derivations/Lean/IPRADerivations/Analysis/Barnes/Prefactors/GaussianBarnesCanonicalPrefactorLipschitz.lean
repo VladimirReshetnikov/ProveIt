@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDiskBound (prefactorRadius radius_le)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalPrefactor
@@ -32,9 +32,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (ofGaussian qmul positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRadiusExponentialLipschitzRate (factor)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -13,7 +13,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetOscillatorySineRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open GaussianBinetExponentialIntegral (numerator)
 open GaussianBinetOscillatoryColumns (columnTarget column_error)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (weight)
 open RationalArithmetic (select select_zero select_one)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,22 +44,10 @@ def numeratorBound (p M D A B U L N : PTm n) : PTm n :=
     Syn.subst σ (GaussianBinetCosinePrimitive.endpoint p A B R T) =
       GaussianBinetCosinePrimitive.endpoint (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ T) := by
   simp [GaussianBinetCosinePrimitive.endpoint,one,two]
-@[simp] theorem subst_columnTarget {m : ℕ} (σ : Fin n → PTm m) (j p M X Y D sign A B R U L N : PTm n) :
-    Syn.subst σ (columnTarget j p M X Y D sign A B R U L N) = columnTarget (Syn.subst σ j) (Syn.subst σ p) (Syn.subst σ M)
-      (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ R) (Syn.subst σ U) (Syn.subst σ L) (Syn.subst σ N) := by simp [columnTarget,one]
-@[simp] theorem subst_target {m : ℕ} (σ : Fin n → PTm m) (j p X Y D sign A B R U L N : PTm n) :
-    Syn.subst σ (target j p X Y D sign A B R U L N) = target (Syn.subst σ j) (Syn.subst σ p)
-      (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ R) (Syn.subst σ U) (Syn.subst σ L) (Syn.subst σ N) := by
-  simp [target,GaussianBinetOscillatorySineQuotient.quotient,one]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (j p X Y D sign A B R U L N : PTm n) :
-    Syn.subst σ (value j p X Y D sign A B R U L N) = value (Syn.subst σ j) (Syn.subst σ p)
-      (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ R) (Syn.subst σ U) (Syn.subst σ L) (Syn.subst σ N) := by simp [value,sg]
-@[simp] theorem subst_numeratorBound {m : ℕ} (σ : Fin n → PTm m) (p M D A B U L N : PTm n) :
-    Syn.subst σ (numeratorBound p M D A B U L N) = numeratorBound (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ U) (Syn.subst σ L) (Syn.subst σ N) := by simp [numeratorBound,one,two]
+ipra_subst columnTarget [one]
+ipra_subst target [GaussianBinetOscillatorySineQuotient.quotient, one]
+ipra_subst value [sg]
+ipra_subst numeratorBound [one, two]
 
 theorem value_at_zero (j p X Y D sign A B R U L N : PTm n) (h : Γ ⊢[PRAAx] j ≐ zero) : Γ ⊢[PRAAx]
     value j p X Y D sign A B R U L N ≐ fraction A B :=

@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductScaledArgumentIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSineProductScaledArguments (coefficient nameF data name_regular observation_bound_at natural_code_bound)
 open GaussianArctangentQuarterExponential (quarterF quarter_regular)
 open GaussianBoundedConstantProductName (clock)
@@ -40,9 +40,6 @@ open GaussianRadiusExponentialName (input)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -82,10 +79,7 @@ private theorem bounded_clock_later (p A : PTm n) : Γ ⊢[PRAAx] le p (clock p 
 def scaleF : PR 2 := GaussianNamedNaturalScale.nameF nameF
 def scaleData (z R B m E x : PTm n) : PTm n := GaussianNamedNaturalScale.data E m (data z R B m x)
 
-@[simp] theorem subst_scaleData {l : ℕ} (σ : Fin n → PTm l) (z R B m E x : PTm n) :
-    Syn.subst σ (scaleData z R B m E x) =
-      scaleData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ E) (Syn.subst σ x) := by
-  simp [scaleData]
+ipra_subst scaleData
 
 theorem multiple_sample_at (z R B m E x p : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] ap2 scaleF p (scaleData z R B m E x) ≐ qmul (coefficient z B one)
@@ -143,9 +137,7 @@ theorem multiple_cross (z R B m E x : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hm :
 
 def realRootData (k m x : PTm n) : PTm n := data (scale k oneCode) k one m x
 
-@[simp] theorem subst_realRootData {l : ℕ} (σ : Fin n → PTm l) (k m x : PTm n) :
-    Syn.subst σ (realRootData k m x) = realRootData (Syn.subst σ k) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [realRootData,oneCode]
+ipra_subst realRootData [oneCode]
 
 theorem root_coefficient_rotation (k m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] qmul imaginaryPoint (coefficient (scale k oneCode) one m) ≐

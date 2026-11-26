@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvergence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerInverseConvergence (coefficientNumerator coefficientDenominator)
 open GaussianGammaEulerRationalLogConvergenceSource (finiteInputF nativeInputF finiteInputData nativeInputData
   finiteLogData nativeLogData logMargin finiteRadius nativeRadius finite_log_input native_log_input
@@ -21,8 +21,6 @@ open GaussianGammaEulerRationalLogConvergenceSource (finiteInputF nativeInputF f
 open GaussianGammaEulerRationalLogMargin (source denominator_positive)
 open GaussianNamedInverseRate (independentRate)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianGammaEulerRationalLog.nameF
@@ -31,9 +29,7 @@ local notation "L" => GaussianNamedPositiveLogarithm.nameF
 
 def rateCoefficient (a b : PTm n) : PTm n := logMargin*coefficientNumerator a b
 
-@[simp] theorem subst_rateCoefficient {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (rateCoefficient a b) = rateCoefficient (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [rateCoefficient,logMargin,GaussianGammaEulerRationalLogMargin.margin,two]
+ipra_subst rateCoefficient [logMargin, GaussianGammaEulerRationalLogMargin.margin, two]
 
 set_option maxHeartbeats 700000 in
 theorem actual_rate (N a b : PTm n) (h : Γ ⊢[PRAAx] source N a b) :

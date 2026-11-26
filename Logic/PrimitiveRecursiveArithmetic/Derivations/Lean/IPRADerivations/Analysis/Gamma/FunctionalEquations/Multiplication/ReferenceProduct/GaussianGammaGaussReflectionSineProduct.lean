@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReflectionSineProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicSineProductSquare (data)
 open GaussianCyclicSineProductNormalization (clock_later)
 open GaussianCyclicSineProductRatio (ratio original_product_error)
@@ -36,9 +36,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianNamedSineFromExponential.sineF GaussianCyclicExponentialRoots.angleF
@@ -49,12 +46,9 @@ def nameF : PR 2 := GaussianNamedFiniteProductName.nameF familyRowF
 def nameData (N x : PTm n) : PTm n := productData S sineBody N (data N x)
 def rate (N x : PTm n) : PTm n := two*GaussianNamedFiniteProductName.modulus N (radius N x) one+budget N
 
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (N x : PTm n) :
-    Syn.subst σ (radius N x) = radius (Syn.subst σ N) (Syn.subst σ x) := by simp [radius]
-@[simp] theorem subst_nameData {l : ℕ} (σ : Fin n → PTm l) (N x : PTm n) :
-    Syn.subst σ (nameData N x) = nameData (Syn.subst σ N) (Syn.subst σ x) := by simp [nameData,productData,one]
-@[simp] theorem subst_rate {l : ℕ} (σ : Fin n → PTm l) (N x : PTm n) :
-    Syn.subst σ (rate N x) = rate (Syn.subst σ N) (Syn.subst σ x) := by simp [rate,one,two]
+ipra_subst radius
+ipra_subst nameData [productData, one]
+ipra_subst rate [one, two]
 
 theorem native_row_at (p N x i : PTm n) :
     Γ ⊢[PRAAx] ap3 familyRowF p i (data N x) ≐ ap3 originalF p i (data N x) :=
@@ -71,11 +65,9 @@ private def sampleLaw (p N x i : PTm n) : Fm PTm n :=
 theorem native_product_at (p N x i : PTm n) :
     Γ ⊢[PRAAx] sample familyRowF p i (data N x) ≐ sample originalF p i (data N x) := by
   have all : Γ ⊢[PRAAx] .all (sampleLaw (Syn.shift p) (Syn.shift N) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (sample_zero _ _ _).eqTrans (sample_zero _ _ _).eqSymm
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let P' := Syn.shift p
+    ipra_qfind [subst_sampleLaw]
+    · exact (sample_zero _ _ _).eqTrans (sample_zero _ _ _).eqSymm
+    · let P' := Syn.shift p
       let N' := Syn.shift N
       let X := Syn.shift x
       let j : PTm (n+1) := var 0

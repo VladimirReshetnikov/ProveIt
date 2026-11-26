@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiAssignedCovers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPhiCoverAssignment (sourceCoverBit)
 open RationalPhiSectionNonzero (curveInput)
 open RationalCurvePointsGaussianEmbedding (distinct distinctFrom distinct_at)
@@ -28,9 +28,6 @@ open LeanProofs.IPRA.Foundations.FiniteCoverAssignment
 open LeanProofs.IPRA.Foundations.FiniteCoverGroupBudgets (budgetSum groupBudgets)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -96,9 +93,7 @@ def satisfies (t : PTm 3) (Q g p : PTm n) : Fm PTm n :=
   .all (lt (var 0) (length (Syn.shift Q)) ⟶
     neg (inst3 t (Syn.shift g) (entry (Syn.shift Q) (var 0)) (Syn.shift p) ≐ zero))
 
-@[simp] theorem subst_satisfies {k : ℕ} (σ : Fin n → PTm k) (t : PTm 3) (Q g p : PTm n) :
-    (satisfies t Q g p).subst σ = satisfies t (Syn.subst σ Q) (Syn.subst σ g) (Syn.subst σ p) := by
-  simp [satisfies,Syn.subst_shift,Syn.shift_subst]
+ipra_subst satisfies [Syn.subst_shift, Syn.shift_subst]
 
 theorem group_satisfies (t : PTm 3) (P K p g : PTm n) (h : Γ ⊢[PRAAx] cover t P K p) :
     Γ ⊢[PRAAx] satisfies t (group t P K p g) g p := by
@@ -116,10 +111,7 @@ def budgetCovers (t : PTm 3) (s P K p B : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift K) ⟶ sourceCoverBit (Syn.shift s)
     (group t (Syn.shift P) (Syn.shift K) (Syn.shift p) (var 0)) (entry (Syn.shift B) (var 0)) ≐ one)
 
-@[simp] theorem subst_budgetCovers {k : ℕ} (σ : Fin n → PTm k) (t : PTm 3) (s P K p B : PTm n) :
-    (budgetCovers t s P K p B).subst σ = budgetCovers t (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ K)
-      (Syn.subst σ p) (Syn.subst σ B) := by
-  simp [budgetCovers,Syn.subst_shift,Syn.shift_subst,one]
+ipra_subst budgetCovers [Syn.subst_shift, Syn.shift_subst, one]
 
 theorem budget_cover_at (t : PTm 3) (s P K p B g : PTm n) (h : Γ ⊢[PRAAx] budgetCovers t s P K p B)
     (hg : Γ ⊢[PRAAx] lt g K) :
@@ -180,20 +172,14 @@ def groupCoverRule (φ : Fm PTm 2) (t : PTm 3) (f s r M g p x : PTm n) : Fm PTm 
     satisfies t (var 0) (Syn.shift g) (Syn.shift p) ⟶ allPoints φ (var 0) (Syn.shift x) ⟶
     sourceCoverBit (Syn.shift s) (var 0) (Syn.shift M) ≐ one)
 
-@[simp] theorem subst_groupCoverRule {k : ℕ} (σ : Fin n → PTm k) (φ : Fm PTm 2) (t : PTm 3) (f s r M g p x : PTm n) :
-    (groupCoverRule φ t f s r M g p x).subst σ = groupCoverRule φ t (Syn.subst σ f) (Syn.subst σ s) (Syn.subst σ r)
-      (Syn.subst σ M) (Syn.subst σ g) (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [groupCoverRule,Syn.subst_shift,Syn.shift_subst,one]
+ipra_subst groupCoverRule [Syn.subst_shift, Syn.shift_subst, one]
 
 /-- Each condition uses the budget stored at its own index. -/
 def conditionCovers (φ : Fm PTm 2) (t : PTm 3) (f s r K p B x : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift K) ⟶ groupCoverRule φ t (Syn.shift f) (Syn.shift s) (Syn.shift r)
     (entry (Syn.shift B) (var 0)) (var 0) (Syn.shift p) (Syn.shift x))
 
-@[simp] theorem subst_conditionCovers {k : ℕ} (σ : Fin n → PTm k) (φ : Fm PTm 2) (t : PTm 3) (f s r K p B x : PTm n) :
-    (conditionCovers φ t f s r K p B x).subst σ = conditionCovers φ t (Syn.subst σ f) (Syn.subst σ s) (Syn.subst σ r)
-      (Syn.subst σ K) (Syn.subst σ p) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp [conditionCovers,Syn.subst_shift,Syn.shift_subst]
+ipra_subst conditionCovers [Syn.subst_shift, Syn.shift_subst]
 
 theorem condition_cover_at (φ : Fm PTm 2) (t : PTm 3) (f s r K p B g Q x : PTm n)
     (h : Γ ⊢[PRAAx] conditionCovers φ t f s r K p B x)

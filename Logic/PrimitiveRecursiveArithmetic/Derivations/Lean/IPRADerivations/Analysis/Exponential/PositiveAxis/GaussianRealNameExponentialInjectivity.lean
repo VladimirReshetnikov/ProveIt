@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRealNameExponentialInjectivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRadiusExponentialName (input nameF data)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianSignedNameExponentialOrder (realSamples)
@@ -27,10 +27,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,10 +35,8 @@ def axisSamples (f : PR 2) (x : PTm n) : Fm PTm n := .all
 def source (f g : PR 2) (R x y : PTm n) : Fm PTm n :=
   (input f R x ⋏ input g R y) ⋏ (axisSamples f x ⋏ axisSamples g y)
 
-@[simp] theorem subst_axisSamples {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    (axisSamples f x).subst σ = axisSamples f (Syn.subst σ x) := by simp [axisSamples,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (R x y : PTm n) :
-    (source f g R x y).subst σ = source f g (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ y) := by simp [source]
+ipra_subst axisSamples [Syn.subst_shift, Syn.shift_subst]
+ipra_subst source
 
 theorem axis_sample_at (f : PR 2) (x p : PTm n) (h : Γ ⊢[PRAAx] axisSamples f x) : Γ ⊢[PRAAx]
     RationalGaussianEmbedding.axis (ap2 f p x) := by simpa [axisSamples] using h.allE p

@@ -13,7 +13,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesGlaisherLimitName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesGlaisherInterval (sample square square_positive sample_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -23,10 +23,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSlackRemoval (slack_removal_at precision)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

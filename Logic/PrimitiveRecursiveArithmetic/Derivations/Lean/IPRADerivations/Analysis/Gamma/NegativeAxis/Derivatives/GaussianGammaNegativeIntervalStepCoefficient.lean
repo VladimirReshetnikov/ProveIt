@@ -17,7 +17,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalStepCoefficient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianGammaNegativeCriticalCorrection (correction guard)
 open GaussianGammaNegativeIntervalNative (product)
@@ -33,9 +33,6 @@ open GaussianRationalMetric (distanceBounded qsub qnegative)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianStirlingGammaLogarithm (arg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

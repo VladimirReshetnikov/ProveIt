@@ -18,7 +18,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerNormalizedHead
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianLogGammaEulerHead (argument productF productData rowData sumData)
@@ -30,8 +30,6 @@ open GaussianNamedGammaHalfShift (add_cross)
 open GaussianPositiveRationalLogarithm (logF)
 open GaussianRightHalfPlaneLogarithm (source)
 open Products (fact)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF
@@ -51,15 +49,9 @@ def nameF : PR 2 := diffF productF denominatorF
 def data (A B D neg N : PTm n) : PTm n :=
   diffData (productData A B D neg N) (denominatorData A B D neg N)
 
-@[simp] theorem subst_denominatorData {m : ℕ} (σ : Fin n → PTm m) (A B D neg N : PTm n) :
-    Syn.subst σ (denominatorData A B D neg N) =
-      denominatorData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ N) := by
-  simp [denominatorData]
+ipra_subst denominatorData
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D neg N : PTm n) :
-    Syn.subst σ (data A B D neg N) =
-      data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ N) := by
-  simp [data,productData,argument,ZT.subst,ZT.ofNat,one]
+ipra_subst data [productData, argument, ZT.subst, ZT.ofNat, one]
 
 theorem product_regular (A B D neg N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] pointCN productF (productData A B D neg N) :=

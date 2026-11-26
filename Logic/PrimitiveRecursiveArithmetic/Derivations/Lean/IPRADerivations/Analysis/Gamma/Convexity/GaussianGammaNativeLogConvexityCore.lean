@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNativeLogConvexityCore
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaEulerRationalHeadConvexity (weight barycenter)
@@ -32,10 +32,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
 open RationalValueBounds (upper upper_of_radius upper_mono upper_triangle)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianGammaEulerRationalLog.nameF
@@ -137,9 +133,7 @@ theorem observation (a d b r s K C p : PTm n)
   exact RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _)
     (by unfold GaussianNameRingLaws.three; ipra_ring) (.eqRefl _) aligned
 
-@[simp] theorem subst_familyRate {m : ℕ} (σ : Fin n → PTm m) (a b K C : PTm n) :
-    (familyRate a b K C).subst σ = familyRate (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ K) (Syn.subst σ C) := by
-  simp [familyRate,Syn.subst_shift,Syn.shift_subst]
+ipra_subst familyRate [Syn.subst_shift, Syn.shift_subst]
 
 theorem weighted_convexity_of_family_rates (a d b r s K C : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hd : Γ ⊢[PRAAx] le one d) (hb : Γ ⊢[PRAAx] le one b)

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticKernelTimeRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSquareKernel (kernelF kernelData doubled)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData)
 open GaussianEulerSquareTimeGeometry (source)
@@ -26,9 +26,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,17 +37,10 @@ def majorant (R E T c : PTm n) : PTm n := GaussianEulerCompactPowerMajorant.majo
 def clock (p z B a b c d : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus powerF decayF (powerData z B a b) (decayData (c*(a*a)) (d*(b*b)))) p
 
-@[simp] theorem subst_decayBound {m : ℕ} (σ : Fin n → PTm m) (T c : PTm n) :
-    Syn.subst σ (decayBound T c) = decayBound (Syn.subst σ T) (Syn.subst σ c) := by simp [decayBound]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R E T c d : PTm n) :
-    Syn.subst σ (lipschitz R E T c d) = lipschitz (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [lipschitz,GaussianEulerCompactPowerMajorant.majorant,GaussianEulerCompactPowerMajorant.exponentRadius]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (R E T c : PTm n) :
-    Syn.subst σ (majorant R E T c) = majorant (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) := by
-  simp [majorant,GaussianEulerCompactPowerMajorant.majorant,GaussianEulerCompactPowerMajorant.exponentRadius]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p z B a b c d : PTm n) :
-    Syn.subst σ (clock p z B a b c d) = clock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [clock]
+ipra_subst decayBound
+ipra_subst lipschitz [GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst majorant [GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst clock
 
 theorem doubled_source (z R B E c d : PTm n) (h : Γ ⊢[PRAAx] source z R B E c d) : Γ ⊢[PRAAx]
     source (doubled z B) (two*R) B E c d := by

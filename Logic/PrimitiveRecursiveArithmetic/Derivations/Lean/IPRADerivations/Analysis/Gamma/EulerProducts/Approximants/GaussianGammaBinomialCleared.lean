@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaBinomialCleared
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFallingFactorial (start baseRadius endpointRadius fallingProduct factorialInverse binomial)
 open GaussianGammaCanonicalExponent (source constantF constant_regular)
 open GaussianGammaEulerHeadShift (shifted)
@@ -22,8 +22,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans 
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaC7Name.nameF
@@ -35,16 +33,11 @@ def fallingData (z R B N : PTm n) : PTm n := multiplyData constantF P (fallingPr
 def binomialData (z R B N : PTm n) : PTm n := multiplyData constantF P (binomial z B N) (topData z R B N)
 def inverseData (z R B N : PTm n) : PTm n := multiplyData constantF P (factorialInverse N) (baseData z R B N)
 
-@[simp] theorem subst_baseData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (baseData z R B N) = baseData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [baseData]
-@[simp] theorem subst_topData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (topData z R B N) = topData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [topData]
-@[simp] theorem subst_fallingData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (fallingData z R B N) = fallingData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [fallingData]
-@[simp] theorem subst_binomialData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (binomialData z R B N) = binomialData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [binomialData]
-@[simp] theorem subst_inverseData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (inverseData z R B N) = inverseData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [inverseData]
+ipra_subst baseData
+ipra_subst topData
+ipra_subst fallingData
+ipra_subst binomialData
+ipra_subst inverseData
 
 theorem base_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx] pointCN P (baseData z R B N) :=
   GaussianGammaC7Name.name_regular _ _ _ (GaussianGammaFallingFactorial.start_source z R B N h)

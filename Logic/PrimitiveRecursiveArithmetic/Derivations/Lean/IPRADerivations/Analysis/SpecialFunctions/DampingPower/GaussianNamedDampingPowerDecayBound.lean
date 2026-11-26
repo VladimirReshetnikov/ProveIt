@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerDecayBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerChart (source nameF data)
 open GaussianNamedDampingPowerPositive (original_positive_at)
 open GaussianNamedDampingPowerRealSamples (powerDenominator chart_real negative_real decay_real)
@@ -34,10 +34,6 @@ open RationalSupMetric (denominatorOf)
 open RationalGaussianEmbedding (axis scalarZero embed canonical_axis_roundtrip embed_zero)
 open RationalArgmin (rationalLE rationalLE_congr)
 open GaussianNamedRealOrderTransport (upperSlack remove_upper_slack)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,7 +54,7 @@ private theorem negative_order (F : PR 2) (x j : PTm n)
   have neg := GaussianRationalSyntheticDivision.qzero_add (Γ := Γ) (qnegative v) (qnegative_canonical v)
   have name := (GaussianNameRingLaws.negative_at (Γ := Γ) F x j).eqTrans
     ((GaussianNameArithmetic.recode_congr neg).eqTrans (GaussianExponentialReference.recode_fixed _ (qnegative_canonical v)))
-  have read := (congrFst name).eqTrans (fst_pair _ _)
+  have read := name.fstE
   have pos := GaussianPositiveRealArithmetic.natural_representation a h.andE₂
   have repr := RationalRepresentations.represents_negative a (ZT.ofNat N) D pos
   have zeroRepr := RationalGaussianEmbedding.scalar_zero_represents (Γ := Γ) one

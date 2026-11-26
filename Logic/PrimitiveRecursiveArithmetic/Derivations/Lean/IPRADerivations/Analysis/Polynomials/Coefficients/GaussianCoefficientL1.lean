@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalL1Algebra
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumAdditivity
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite Gaussian-rational coefficient norms
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCoefficientL1
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (qL1)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qadd)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
@@ -26,9 +25,6 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,10 +32,8 @@ def normBody : PTm 2 := qL1 (entry (var 1) (var 0))
 def prefixNorm (C N : PTm n) : PTm n := RationalFiniteSum.sum normBody N C
 def coefficientNorm (C : PTm n) : PTm n := prefixNorm C (length C)
 
-@[simp] theorem subst_prefixNorm {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (prefixNorm C N) = prefixNorm (Syn.subst σ C) (Syn.subst σ N) := by simp [prefixNorm]
-@[simp] theorem subst_coefficientNorm {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (coefficientNorm C) = coefficientNorm (Syn.subst σ C) := by simp [coefficientNorm]
+ipra_subst prefixNorm
+ipra_subst coefficientNorm
 
 theorem norm_body_at (C i : PTm n) : RationalFiniteSum.term normBody i C = qL1 (entry C i) := by
   simp only [normBody,RationalFiniteSum.term,inst2,GaussianRationalL1.subst_qL1,subst_entry,
@@ -65,12 +59,9 @@ def zip (op : PR 2) (C D N : PTm n) : PTm n := sequence (zipBody op) N (pairT C 
 def addCoefficients (C D N : PTm n) : PTm n := zip addF C D N
 def subCoefficients (C D N : PTm n) : PTm n := zip subF C D N
 
-@[simp] theorem subst_zip {m : ℕ} (σ : Fin n → PTm m) (op : PR 2) (C D N : PTm n) :
-    Syn.subst σ (zip op C D N) = zip op (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) := by simp [zip]
-@[simp] theorem subst_addCoefficients {m : ℕ} (σ : Fin n → PTm m) (C D N : PTm n) :
-    Syn.subst σ (addCoefficients C D N) = addCoefficients (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) := by simp [addCoefficients]
-@[simp] theorem subst_subCoefficients {m : ℕ} (σ : Fin n → PTm m) (C D N : PTm n) :
-    Syn.subst σ (subCoefficients C D N) = subCoefficients (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) := by simp [subCoefficients]
+ipra_subst zip
+ipra_subst addCoefficients
+ipra_subst subCoefficients
 
 theorem add_at (q r : PTm n) : Γ ⊢[PRAAx] ap2 addF q r ≐ qadd q r := by
   simpa [addF,ap2] using toPR_eq (Γ := Γ) (qadd (var 0) (var 1) : PTm 2) ![q,r]
@@ -151,8 +142,7 @@ theorem coefficient_sub (C D N : PTm n) : Γ ⊢[PRAAx]
 def output (C D N : PTm n) : PTm n := pairT (addCoefficients C D N)
   (pairT (subCoefficients C D N) (pairT (coefficientNorm C) (coefficientNorm D)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C D N : PTm n) :
-    Syn.subst σ (output C D N) = output (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) := by simp [output]
+ipra_subst output
 theorem output_program (C D N : PTm n) : Γ ⊢[PRAAx] ap3 outputF C D N ≐ output C D N := by
   simpa [outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,D,N]
 

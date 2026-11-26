@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderDiscretePartsTransfer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderDiscreteParts (sub defect crossValue body defect_at finite_parts)
 open RationalArithmetic (add multiply negative)
 open RationalAlgebra (add_congr multiply_congr)
@@ -27,9 +27,6 @@ open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open RationalFiniteSum (term)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,8 +35,7 @@ def rawData (v x y : PTm n) : PTm n := pairT v (pairT x y)
 def boundary (f g : PTm 2) (N v x y : PTm n) : PTm n :=
   multiply v (sub (crossValue f g x y N) (crossValue f g x y zero))
 
-@[simp] theorem subst_rawData {l : ℕ} (σ : Fin n → PTm l) (v x y : PTm n) :
-    Syn.subst σ (rawData v x y) = rawData (Syn.subst σ v) (Syn.subst σ x) (Syn.subst σ y) := by simp [rawData]
+ipra_subst rawData
 
 theorem raw_row (f g : PTm 2) (i v x y : PTm n) :
     Γ ⊢[PRAAx] term (rawBody f g) i (rawData v x y) ≐

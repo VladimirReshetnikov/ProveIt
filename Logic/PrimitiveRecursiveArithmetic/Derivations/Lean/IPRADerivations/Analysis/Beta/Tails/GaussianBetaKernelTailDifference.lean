@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelTailDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelExponential (kernel)
 open GaussianBetaKernelRefinement (source kernel_positive)
 open GaussianBetaKernelDecayDampedError (reference referenceScalar referenceNumerator
@@ -26,10 +26,6 @@ open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper crossLeft upper_mono upper_triangle upper_of_radius radius_of_upper)
 open RationalSupMetric (numeratorOf denominatorOf)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

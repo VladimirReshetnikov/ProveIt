@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDensityMomentName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source)
 open GaussianGammaDensityMomentGrid (stage outer observation)
 open GaussianCompactRiemannName (sampleData field0 field1 field2 field3 field4)
@@ -24,9 +24,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_at)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,8 +34,7 @@ private def body : PTm 6 := observation (var 0) (var 1) (var 2) (var 3) (var 4) 
 def sampleF : PR 6 := PTm.toPR body
 private def reader (p d : PTm n) : PTm n := PTm.app sampleF ![p,field0 d,field1 d,field2 d,field3 d,field4 d]
 def nameF : PR 2 := PTm.toPR (reader (var 0) (var 1))
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B A N : PTm n) :
-    Syn.subst σ (data z R B A N) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by simp [data]
+ipra_subst data
 private theorem subst_reader {m : ℕ} (σ : Fin n → PTm m) (p d : PTm n) :
     Syn.subst σ (reader p d) = reader (Syn.subst σ p) (Syn.subst σ d) := by
   unfold reader

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalFiniteSum
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual numerical budgets for rational approximate factorization
@@ -18,16 +17,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFactorBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (sum_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize positive_form)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -44,23 +40,13 @@ def L (N A : PTm n) : PTm n := prefixProduct N A N
 def prefixBody : PTm 2 := ap2 (prodF factorBody) (var 0) (var 1)
 def prefixSum (N A j : PTm n) : PTm n := ap2 (sumF prefixBody) j (pairT N A)
 
-@[simp] theorem subst_five {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (five : PTm n) = (five : PTm m) := by
-  simp only [five,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_bound {m : ℕ} (σ : Fin n → PTm m) (N A j : PTm n) :
-    Syn.subst σ (bound N A j) = bound (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ j) := by
-  simp only [bound,subst_ap2,subst_pairT]
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (N A j : PTm n) :
-    Syn.subst σ (factor N A j) = factor (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ j) := by
-  simp only [factor,PTm.subst_mul,PTm.subst_add,subst_bound,subst_five,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_prefixProduct {m : ℕ} (σ : Fin n → PTm m) (N A j : PTm n) :
-    Syn.subst σ (prefixProduct N A j) = prefixProduct (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ j) := by
-  simp only [prefixProduct,subst_ap2,subst_pairT]
+ipra_subst five
+ipra_subst bound
+ipra_subst factor
+ipra_subst prefixProduct
 @[simp] theorem subst_L {m : ℕ} (σ : Fin n → PTm m) (N A : PTm n) :
     Syn.subst σ (L N A) = L (Syn.subst σ N) (Syn.subst σ A) := subst_prefixProduct _ _ _ _
-@[simp] theorem subst_prefixSum {m : ℕ} (σ : Fin n → PTm m) (N A j : PTm n) :
-    Syn.subst σ (prefixSum N A j) = prefixSum (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ j) := by
-  simp only [prefixSum,subst_ap2,subst_pairT]
+ipra_subst prefixSum
 
 theorem bound_zero (N A : PTm n) : Γ ⊢[PRAAx] bound N A zero ≐ A := by
   have h : Γ ⊢[PRAAx] bound N A zero ≐ sndT (pairT N A) := by
@@ -98,11 +84,9 @@ theorem bound_step_monotone (N A j : PTm n) : Γ ⊢[PRAAx] le (bound N A j) (bo
 theorem bound_offset (N A j r : PTm n) : Γ ⊢[PRAAx] le (bound N A j) (bound N A (j+r)) := by
   have all : Γ ⊢[PRAAx] .all (le (bound (Syn.shift N) (Syn.shift A) (Syn.shift j))
       (bound (Syn.shift N) (Syn.shift A) (Syn.shift j+var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,subst_bound,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (congrAp2 boundF (add_zero _) (.eqRefl _)).eqSymm (le_refl _)
-    · simp only [subst_le,subst_bound,PTm.subst_add,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have step := bound_step_monotone (Γ := Γ.map Fm.shift) (Syn.shift N) (Syn.shift A) (Syn.shift j+var 0)
+    ipra_qfind (le_QF _ _) [subst_le, subst_bound]
+    · exact le_congr (.eqRefl _) (congrAp2 boundF (add_zero _) (.eqRefl _)).eqSymm (le_refl _)
+    · have step := bound_step_monotone (Γ := Γ.map Fm.shift) (Syn.shift N) (Syn.shift A) (Syn.shift j+var 0)
       exact le_trans Prf.hyp0 (le_congr (.eqRefl _) (congrAp2 boundF (add_succ _ _) (.eqRefl _)).eqSymm step.wk)
   simpa only [subst_le,subst_bound,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
 
@@ -142,11 +126,9 @@ theorem prefix_step_monotone (N A j : PTm n) : Γ ⊢[PRAAx]
 theorem prefix_offset (N A j r : PTm n) : Γ ⊢[PRAAx] le (prefixProduct N A j) (prefixProduct N A (j+r)) := by
   have all : Γ ⊢[PRAAx] .all (le (prefixProduct (Syn.shift N) (Syn.shift A) (Syn.shift j))
       (prefixProduct (Syn.shift N) (Syn.shift A) (Syn.shift j+var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,subst_prefixProduct,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (congrAp2 (prodF factorBody) (add_zero _) (.eqRefl _)).eqSymm (le_refl _)
-    · simp only [subst_le,subst_prefixProduct,PTm.subst_add,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have step := prefix_step_monotone (Γ := Γ.map Fm.shift) (Syn.shift N) (Syn.shift A) (Syn.shift j+var 0)
+    ipra_qfind (le_QF _ _) [subst_le, subst_prefixProduct]
+    · exact le_congr (.eqRefl _) (congrAp2 (prodF factorBody) (add_zero _) (.eqRefl _)).eqSymm (le_refl _)
+    · have step := prefix_step_monotone (Γ := Γ.map Fm.shift) (Syn.shift N) (Syn.shift A) (Syn.shift j+var 0)
       exact le_trans Prf.hyp0 (le_congr (.eqRefl _) (congrAp2 (prodF factorBody) (add_succ _ _) (.eqRefl _)).eqSymm step.wk)
   simpa only [subst_le,subst_prefixProduct,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
 
@@ -170,13 +152,9 @@ theorem prefixSum_succ (N A j : PTm n) : Γ ⊢[PRAAx]
 theorem prefixSum_bound (N A j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx] le (prefixSum N A j) (j*L N A) := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       le (prefixSum (Syn.shift N) (Syn.shift A) (var 0)) (var 0*L (Syn.shift N) (Syn.shift A))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_prefixSum,PTm.subst_mul,subst_L,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (le_congr (prefixSum_zero N A).eqSymm (zero_mul _).eqSymm (le_refl _))
-    · simp only [Fm.subst_imp,subst_le,subst_prefixSum,PTm.subst_mul,subst_L,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_le, subst_prefixSum, subst_L]
+    · exact .impI (le_congr (prefixSum_zero N A).eqSymm (zero_mul _).eqSymm (le_refl _))
+    · refine .impI ?_
       let IH := le (var 0) (Syn.shift N) ⟶
         le (prefixSum (Syn.shift N) (Syn.shift A) (var 0)) (var 0*L (Syn.shift N) (Syn.shift A))
       let Δ := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
@@ -196,11 +174,8 @@ def recurrence (b : PR 2) (N A Z x : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ le (ap2 b (succ (var 0)) (Syn.shift x))
     (Syn.shift A+Syn.shift Z*ap2 b (var 0) (Syn.shift x)))
 
-@[simp] theorem subst_recurrence {m : ℕ} (σ : Fin n → PTm m) (b : PR 2) (N A Z x : PTm n) :
-    (recurrence b N A Z x).subst σ = recurrence b (Syn.subst σ N) (Syn.subst σ A)
-      (Syn.subst σ Z) (Syn.subst σ x) := by
-  simp only [recurrence,Fm.subst_all,Fm.subst_imp,subst_lt,subst_le,PTm.subst_add,PTm.subst_mul,
-    subst_ap2,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst recurrence [Fm.subst_all, Fm.subst_imp, subst_lt, subst_le, PTm.subst_add, PTm.subst_mul, subst_ap2,
+    ConciseIPRA.PTm.subst_succ, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem recurrence_at (b : PR 2) (N A Z x k : PTm n) (h : Γ ⊢[PRAAx] recurrence b N A Z x)
     (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx] le (ap2 b (succ k) x) (A+Z*ap2 b k x) := by
@@ -234,16 +209,12 @@ theorem recurrence_prefix (b : PR 2) (N A Z x k : PTm n)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] le (ap2 b k x) ((A+one)*pw (one+Z) k) := by
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       le (ap2 b (var 0) (Syn.shift x)) ((Syn.shift A+one)*pw (one+Syn.shift Z) (var 0))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,subst_ap2,PTm.subst_add,PTm.subst_mul,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have low : Γ ⊢[PRAAx] le one ((A+one)*pw (one+Z) zero) := by
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_le, subst_ap2]
+    · have low : Γ ⊢[PRAAx] le one ((A+one)*pw (one+Z) zero) := by
         refine le_of_eq_add (d := A) ?_
         exact (congrMul (.eqRefl _) (pw_zero _)).eqTrans (by ipra_ring)
       exact .impI (le_trans hzero low).wk
-    · simp only [Fm.subst_imp,subst_le,subst_ap2,PTm.subst_add,PTm.subst_mul,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let IH := le (var 0) (Syn.shift N) ⟶ le (ap2 b (var 0) (Syn.shift x))
         ((Syn.shift A+one)*pw (one+Syn.shift Z) (var 0))
       let Δ := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
@@ -278,15 +249,9 @@ def epsilon (N A p q : PTm n) : PTm n := normalize (ZT.ofNat p) (cost N A*q)
 def costCode (N A : PTm n) : PTm n := normalize (ZT.ofNat (cost N A)) one
 def unitCode : PTm n := normalize (ZT.ofNat one) one
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (N A : PTm n) :
-    Syn.subst σ (cost N A) = cost (Syn.subst σ N) (Syn.subst σ A) := by
-  simp only [cost,PTm.subst_mul,subst_L,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_eta {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (eta p q) = eta (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [eta,RationalIntegerNormalization.subst_normalize,ZT.subst_ofNat]
-@[simp] theorem subst_epsilon {m : ℕ} (σ : Fin n → PTm m) (N A p q : PTm n) :
-    Syn.subst σ (epsilon N A p q) = epsilon (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [epsilon,RationalIntegerNormalization.subst_normalize,ZT.subst_ofNat,PTm.subst_mul,subst_cost]
+ipra_subst cost
+ipra_subst eta
+ipra_subst epsilon
 
 theorem cost_positive (N A : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] le one (cost N A) := by
   have twoPos : Γ ⊢[PRAAx] le one (two : PTm n) := le_of_eq_add (d := one) (by ipra_ring)
@@ -368,11 +333,7 @@ prefix products, the accumulated (TE) numerical error majorant. -/
 def errorBudget (N A p q : PTm n) : PTm n :=
   normalize (ZT.ofNat (two*p*prefixSum N A N)) (cost N A*q)
 
-@[simp] theorem subst_errorBudget {m : ℕ} (σ : Fin n → PTm m) (N A p q : PTm n) :
-    Syn.subst σ (errorBudget N A p q) = errorBudget (Syn.subst σ N) (Syn.subst σ A)
-      (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [errorBudget,RationalIntegerNormalization.subst_normalize,ZT.subst_ofNat,PTm.subst_mul,
-    subst_cost,subst_prefixSum,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst errorBudget
 
 theorem error_budget_cleared (N A p q : PTm n) : Γ ⊢[PRAAx]
     le ((two*p*prefixSum N A N)*q) (p*(cost N A*q)) := by
@@ -408,12 +369,8 @@ def boundBody : PTm 2 := ap2 boundF (var 0) (var 1)
 def boundList (N A : PTm n) : PTm n := sequence boundBody (succ N) (pairT N A)
 def factorList (N A : PTm n) : PTm n := sequence factorBody N (pairT N A)
 
-@[simp] theorem subst_boundList {m : ℕ} (σ : Fin n → PTm m) (N A : PTm n) :
-    Syn.subst σ (boundList N A) = boundList (Syn.subst σ N) (Syn.subst σ A) := by
-  simp only [boundList,subst_sequence,subst_pairT,ConciseIPRA.PTm.subst_succ]
-@[simp] theorem subst_factorList {m : ℕ} (σ : Fin n → PTm m) (N A : PTm n) :
-    Syn.subst σ (factorList N A) = factorList (Syn.subst σ N) (Syn.subst σ A) := by
-  simp only [factorList,subst_sequence,subst_pairT]
+ipra_subst boundList
+ipra_subst factorList
 
 theorem boundList_length (N A : PTm n) : Γ ⊢[PRAAx] length (boundList N A) ≐ succ N := sequence_length _ _ _
 theorem factorList_length (N A : PTm n) : Γ ⊢[PRAAx] length (factorList N A) ≐ N := sequence_length _ _ _
@@ -432,10 +389,7 @@ def budgetOutput (N A p q : PTm n) : PTm n := pairT (boundList N A) (pairT (fact
   (pairT (L N A) (pairT (prefixSum N A N) (pairT (cost N A) (epsilon N A p q)))))
 def budgetF : PR 4 := PTm.toPR (budgetOutput (var 0) (var 1) (var 2) (var 3))
 
-@[simp] theorem subst_budgetOutput {m : ℕ} (σ : Fin n → PTm m) (N A p q : PTm n) :
-    Syn.subst σ (budgetOutput N A p q) = budgetOutput (Syn.subst σ N) (Syn.subst σ A)
-      (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [budgetOutput,subst_pairT,subst_boundList,subst_factorList,subst_L,subst_prefixSum,subst_cost,subst_epsilon]
+ipra_subst budgetOutput
 
 theorem budget_program (N A p q : PTm n) : Γ ⊢[PRAAx]
     ConciseIPRA.PTm.app budgetF ![N,A,p,q] ≐ budgetOutput N A p q := by

@@ -12,15 +12,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMatrixInputHeight
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open RationalSupMetric (rationalNumerator rationalDenominator)
 open RationalMatrixClearingBounds (inputMatrix inputRow subst_inputRow)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,10 +33,8 @@ def height (P d : PTm n) : PTm n := succ (matrixTotal P d)
   unfold entrySize
   rw [PTm.subst_add, Foundations.GapDecision.subst_zabs, RationalSupMetric.subst_rationalNumerator,
     RationalSupMetric.subst_rationalDenominator]
-@[simp] theorem subst_rowTotal {k : ℕ} (σ : Fin n → PTm k) (v d : PTm n) :
-    Syn.subst σ (rowTotal v d) = rowTotal (Syn.subst σ v) (Syn.subst σ d) := by simp [rowTotal]
-@[simp] theorem subst_height {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (height P d) = height (Syn.subst σ P) (Syn.subst σ d) := by simp [height,matrixTotal]
+ipra_subst rowTotal
+ipra_subst height [matrixTotal]
 
 theorem matrix_body_at (P d j : PTm n) : Γ ⊢[PRAAx] inst2 matrixBody j (pairT P d) ≐ rowTotal (entry P j) d := by
   simpa [matrixBody,inst2,rowTotal] using

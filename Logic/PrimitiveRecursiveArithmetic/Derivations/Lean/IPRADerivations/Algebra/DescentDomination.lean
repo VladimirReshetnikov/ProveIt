@@ -4,7 +4,6 @@ import IPRADerivations.Core.SumPalindrome
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.IntOrder
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Geometric domination of the other terms
@@ -28,13 +27,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.DescentDomination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -112,10 +107,7 @@ theorem geo_dom (T : PTm 2) (K V x : PTm n)
 
 /-! ## Domination above -/
 
-theorem monus_pred {v K : PTm n} (hv : Γ ⊢[PRAAx] lt v K) : Γ ⊢[PRAAx] monus K v ≐ succ (monus K (succ v)) := by
-  have e := natEq (eq_add_of_le hv)
-  have a : Γ ⊢[PRAAx] K ≐ succ (monus K (succ v)) + v := by apply deriveNat; ipra_simps; linear_combination e
-  exact (congrMonus a (.eqRefl _)).eqTrans (add_monus _ _)
+alias monus_pred := Common.monus_succ_of_lt
 
 theorem lt_rfl {v K : PTm n} (hv : Γ ⊢[PRAAx] lt v K) : Γ ⊢[PRAAx] lt (monus K (succ v)) K := by
   refine le_of_eq_add (d := v) ?_

@@ -16,16 +16,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRelativeTriangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (represents positive_product qadd qadd_represents represents_rescale represents_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq qnormSq_represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq scale add normSq_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

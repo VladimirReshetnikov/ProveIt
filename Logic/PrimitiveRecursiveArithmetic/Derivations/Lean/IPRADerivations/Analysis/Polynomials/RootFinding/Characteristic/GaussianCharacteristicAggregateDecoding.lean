@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCharacteristicAggregateDecoding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCharacteristicRootSupport (data roots roots_length)
 open GaussianCharacteristicAggregate (stageF sample_length sample_entry sample_nonempty stage_regular)
 open GaussianModulusAggregateMap (point vector)
@@ -27,18 +27,13 @@ open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalSyntheticDivision (rescale_to)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def decoded (U : PR 2) (s d : PTm n) : PTm n := point (sample U (s+one) d)
 def decodedF (U : PR 2) : PR 2 := PTm.toPR (decoded U (var 0) (var 1))
 
-@[simp] theorem subst_decoded {l : ℕ} (σ : Fin n → PTm l) (U : PR 2) (s d : PTm n) :
-    Syn.subst σ (decoded U s d) = decoded U (Syn.subst σ s) (Syn.subst σ d) := by
-  simp [decoded]
+ipra_subst decoded
 
 theorem decoded_at (U : PR 2) (s d : PTm n) : Γ ⊢[PRAAx]
     ap2 (decodedF U) s d ≐ decoded U s d := by
@@ -46,10 +41,10 @@ theorem decoded_at (U : PR 2) (s d : PTm n) : Γ ⊢[PRAAx]
 
 theorem decoded_real (U : PR 2) (s d : PTm n) : Γ ⊢[PRAAx]
     fstT (ap2 (decodedF U) s d) ≐ entry (sample U (s+one) d) zero :=
-  (congrFst (decoded_at U s d)).eqTrans (fst_pair _ _)
+  (decoded_at U s d).fstE
 theorem decoded_imag (U : PR 2) (s d : PTm n) : Γ ⊢[PRAAx]
     sndT (ap2 (decodedF U) s d) ≐ entry (sample U (s+one) d) one :=
-  (congrSnd (decoded_at U s d)).eqTrans (snd_pair _ _)
+  (decoded_at U s d).sndE
 
 /-- The normalized differences agree as actual codes; no raw outer eta is used. -/
 theorem difference_point_vector (q z : PTm n) : Γ ⊢[PRAAx]
@@ -117,12 +112,9 @@ def hitNumerator (t : PTm n) : PTm n := two*(unit (t+one)+unit t)
 def hitDenominator (t : PTm n) : PTm n := unit (t+one)*unit t
 def memberStage (k : PTm n) : PTm n := k+two
 
-@[simp] theorem subst_hitNumerator {l : ℕ} (σ : Fin n → PTm l) (t : PTm n) :
-    Syn.subst σ (hitNumerator t) = hitNumerator (Syn.subst σ t) := by simp [hitNumerator]
-@[simp] theorem subst_hitDenominator {l : ℕ} (σ : Fin n → PTm l) (t : PTm n) :
-    Syn.subst σ (hitDenominator t) = hitDenominator (Syn.subst σ t) := by simp [hitDenominator]
-@[simp] theorem subst_memberStage {l : ℕ} (σ : Fin n → PTm l) (k : PTm n) :
-    Syn.subst σ (memberStage k) = memberStage (Syn.subst σ k) := by simp [memberStage]
+ipra_subst hitNumerator
+ipra_subst hitDenominator
+ipra_subst memberStage
 
 theorem hit_denominator_positive (t : PTm n) : Γ ⊢[PRAAx] le one (hitDenominator t) :=
   positive_product _ _ (unit_positive (t+one)) (unit_positive t)

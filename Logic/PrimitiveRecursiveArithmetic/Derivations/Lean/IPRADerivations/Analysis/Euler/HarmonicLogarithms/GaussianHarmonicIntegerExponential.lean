@@ -20,15 +20,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicIntegerExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (fraction logF)
 open GaussianHarmonicLogarithmName (radius)
 open GaussianRationalReciprocal (power)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_to_diagonal)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,17 +47,11 @@ def originalQuery (p m a b : PTm n) : PTm n := GaussianNaturalScaleProductName.c
   (GaussianRadiusExponentialName.inputPrecision (originalRadius m a b) p) m (GaussianPositiveRationalLogarithm.data a b)
 def rationalPower (a b m : PTm n) : PTm n := RationalGaussianEmbedding.embed (RationalNonnegativePowers.power a b m)
 
-@[simp] theorem subst_source {k : ℕ} (σ : Fin n → PTm k) (a b E T : PTm n) :
-    (source a b E T).subst σ = source (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_scaledData {k : ℕ} (σ : Fin n → PTm k) (m a b E T : PTm n) :
-    Syn.subst σ (scaledData m a b E T) = scaledData (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T) := by simp [scaledData]
-@[simp] theorem subst_originalExponentData {k : ℕ} (σ : Fin n → PTm k) (m a b : PTm n) :
-    Syn.subst σ (originalExponentData m a b) = originalExponentData (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ b) := by simp [originalExponentData]
-@[simp] theorem subst_originalData {k : ℕ} (σ : Fin n → PTm k) (m a b : PTm n) :
-    Syn.subst σ (originalData m a b) = originalData (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [originalData,GaussianGammaFiniteApproximantName.exponentialInputData]
-@[simp] theorem subst_rationalPower {k : ℕ} (σ : Fin n → PTm k) (a b m : PTm n) :
-    Syn.subst σ (rationalPower a b m) = rationalPower (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ m) := by simp [rationalPower]
+ipra_subst source
+ipra_subst scaledData
+ipra_subst originalExponentData
+ipra_subst originalData [GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst rationalPower
 
 theorem bounded_input (a b E T : PTm n) (h : Γ ⊢[PRAAx] source a b E T) : Γ ⊢[PRAAx]
     GaussianBoundedIntegerExponentialStages.input GaussianHarmonicLogarithmName.nameF (radius E T)

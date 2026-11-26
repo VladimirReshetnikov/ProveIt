@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedThreeSumObservations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (addF addData add_fast)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at point_at)
@@ -23,10 +23,6 @@ open GaussianRationalHorner (positive_product qadd)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -38,16 +34,11 @@ def denominator (p q : PTm n) : PTm n := unit p*unit q
 def source (K F G H : PR 2) (w x y z : PTm n) : Fm PTm n :=
   pointCN F x ⋏ (pointCN G y ⋏ (pointCN H z ⋏ crossEquivalent K (addF F (addF G H)) w (sumData x y z)))
 
-@[simp] theorem subst_raw {m : ℕ} (σ : Fin n → PTm m) (F G H : PR 2) (q x y z : PTm n) :
-    Syn.subst σ (raw F G H q x y z) = raw F G H (Syn.subst σ q) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by simp [raw]
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (x y z : PTm n) :
-    Syn.subst σ (sumData x y z) = sumData (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by simp [sumData]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (numerator p q) = numerator (Syn.subst σ p) (Syn.subst σ q) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (denominator p q) = denominator (Syn.subst σ p) (Syn.subst σ q) := by simp [denominator]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (K F G H : PR 2) (w x y z : PTm n) :
-    (source K F G H w x y z).subst σ = source K F G H (Syn.subst σ w) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) := by simp [source]
+ipra_subst raw
+ipra_subst sumData
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst source
 
 theorem original_sum_regular (F G H : PR 2) (x y z : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y) (hh : Γ ⊢[PRAAx] pointCN H z) : Γ ⊢[PRAAx]

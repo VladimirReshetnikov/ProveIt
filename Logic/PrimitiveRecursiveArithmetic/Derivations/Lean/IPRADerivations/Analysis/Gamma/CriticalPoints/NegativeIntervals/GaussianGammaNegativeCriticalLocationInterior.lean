@@ -14,7 +14,7 @@ set_option maxHeartbeats 1700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalLocationInterior
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaNegativeCriticalEndpoints (mesh mesh_minimum rightNumerator right_add)
@@ -36,10 +36,6 @@ open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper_of_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -49,10 +45,8 @@ local notation "OF" => fractionLocationF
 def leftPole (N : PTm n) : PTm n := qsub qzero (fraction (succ N) one)
 def rightPole (N : PTm n) : PTm n := qsub qzero (fraction N one)
 
-@[simp] theorem subst_leftPole {k : ℕ} (σ : Fin n → PTm k) (N : PTm n) :
-    Syn.subst σ (leftPole N) = leftPole (Syn.subst σ N) := by simp [leftPole]
-@[simp] theorem subst_rightPole {k : ℕ} (σ : Fin n → PTm k) (N : PTm n) :
-    Syn.subst σ (rightPole N) = rightPole (Syn.subst σ N) := by simp [rightPole]
+ipra_subst leftPole
+ipra_subst rightPole
 
 private theorem mesh_positive (N : PTm n) : Γ ⊢[PRAAx] le one (mesh N) :=
   le_trans (by ipra_le 7) (mesh_minimum N)

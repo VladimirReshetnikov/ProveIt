@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalExponentialFreeze
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
@@ -29,9 +29,6 @@ open GaussianRadiusExponentialName (input boundedSamples)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCoefficientObservationPolynomials
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
@@ -23,10 +23,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,18 +33,12 @@ def exponentialHorizon (p R e : PTm n) : PTm n := GaussianGammaCofinalCoefficien
 def degree (p R e : PTm n) : PTm n := GaussianGammaFiniteCoefficientPolynomial.totalDegree R (degreeHorizon p R e) (exponentialHorizon p R e)
 def polynomial (p R e : PTm n) : PTm n := GaussianGammaFiniteCoefficientPolynomial.polynomial (precision p R e) R
   (degreeHorizon p R e) (exponentialHorizon p R e)
-@[simp] theorem subst_stage {l : ℕ} (σ : Fin n → PTm l) (p R e : PTm n) :
-    Syn.subst σ (stage p R e) = stage (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by simp [stage]
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (p R e : PTm n) :
-    Syn.subst σ (precision p R e) = precision (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by simp [precision,GaussianGammaCofinalCoefficientName.coefficientPrecision,GaussianGammaCofinalCoefficientName.exponentClock,GaussianGammaCofinalCoefficientName.inputClock,GaussianGammaCofinalCoefficientName.outerClock]
-@[simp] theorem subst_degreeHorizon {l : ℕ} (σ : Fin n → PTm l) (p R e : PTm n) :
-    Syn.subst σ (degreeHorizon p R e) = degreeHorizon (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by simp [degreeHorizon,GaussianGammaCofinalCoefficientName.degreeCutoff,GaussianGammaCofinalCoefficientName.exponentClock,GaussianGammaCofinalCoefficientName.inputClock,GaussianGammaCofinalCoefficientName.outerClock]
-@[simp] theorem subst_exponentialHorizon {l : ℕ} (σ : Fin n → PTm l) (p R e : PTm n) :
-    Syn.subst σ (exponentialHorizon p R e) = exponentialHorizon (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by simp [exponentialHorizon,GaussianGammaCofinalCoefficientName.exponentialCutoff,GaussianGammaCofinalCoefficientName.outerClock]
-@[simp] theorem subst_degree {l : ℕ} (σ : Fin n → PTm l) (p R e : PTm n) :
-    Syn.subst σ (degree p R e) = degree (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by simp [degree]
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (p R e : PTm n) :
-    Syn.subst σ (polynomial p R e) = polynomial (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by simp [polynomial]
+ipra_subst stage
+ipra_subst precision [GaussianGammaCofinalCoefficientName.coefficientPrecision, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst degreeHorizon [GaussianGammaCofinalCoefficientName.degreeCutoff, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst exponentialHorizon [GaussianGammaCofinalCoefficientName.exponentialCutoff, GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst degree
+ipra_subst polynomial
 
 theorem polynomial_length (p R e : PTm n) : Γ ⊢[PRAAx] length (polynomial p R e) ≐ succ (degree p R e) :=
   GaussianGammaFiniteCoefficientPolynomial.polynomial_length _ _ _ _

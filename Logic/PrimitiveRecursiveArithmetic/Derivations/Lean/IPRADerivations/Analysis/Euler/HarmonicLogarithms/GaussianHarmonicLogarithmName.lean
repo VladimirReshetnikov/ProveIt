@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicLogarithmName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (source logF name_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
@@ -26,10 +26,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product qzero)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,15 +38,10 @@ def data (a b : PTm n) : PTm n := pairT a b
 def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (sndT (var 1)))
 def sample (p a b : PTm n) : PTm n := ap2 nameF p (data a b)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (observation p a b) = observation (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [observation,GammaEulerConstantName.mesh,GammaEulerConstantName.unit]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (sample p a b) = sample (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [sample]
+ipra_subst clock
+ipra_subst observation [GammaEulerConstantName.mesh, GammaEulerConstantName.unit]
+ipra_subst data
+ipra_subst sample
 
 theorem sample_at (p a b : PTm n) : Γ ⊢[PRAAx] sample p a b ≐ observation p a b := by
   have first : Γ ⊢[PRAAx] sample p a b ≐ observation p (fstT (data a b)) (sndT (data a b)) := by
@@ -165,8 +156,7 @@ theorem above_one_samples (a b : PTm n) (h : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAA
       (GaussianPositiveRationalLogarithmSign.embedded_interval_nonnegative _ _ _ hs)
 
 def radius (E T : PTm n) : PTm n := GaussianCompactLogarithmBounds.radius E T+one
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (E T : PTm n) :
-    Syn.subst σ (radius E T) = radius (Syn.subst σ E) (Syn.subst σ T) := by simp [radius]
+ipra_subst radius
 
 theorem compact_sample_bound (p a b E T : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (ht : Γ ⊢[PRAAx] GaussianCompactLogarithmBounds.domain a b E T) : Γ ⊢[PRAAx]

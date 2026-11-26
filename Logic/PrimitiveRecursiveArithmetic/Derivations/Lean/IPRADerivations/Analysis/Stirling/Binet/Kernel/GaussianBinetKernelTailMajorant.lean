@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelTailMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
 open RationalAlgebra (multiply_congr)
@@ -22,10 +22,6 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalReciprocalPowerTail (potential)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "eight" => num 8
@@ -34,9 +30,7 @@ def body : PTm 2 := scaledBody RationalReciprocalPowerTail.body
 def data (N : PTm n) : PTm n := pairT (fraction one eight) (RationalReciprocalPowerTail.data two N)
 def sum (N r : PTm n) : PTm n := RationalFiniteSum.sum body r (data N)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (data N) = data (Syn.subst σ N) := by
-  simp [data, one, two]
+ipra_subst data [one, two]
 
 theorem eight_positive : Γ ⊢[PRAAx] le one (eight : PTm n) := by ipra_le 7
 

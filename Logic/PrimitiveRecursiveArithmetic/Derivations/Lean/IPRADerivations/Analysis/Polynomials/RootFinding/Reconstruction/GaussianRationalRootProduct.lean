@@ -22,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRootProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im scale)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra (equal_re equal_im re_scale im_scale re_one im_one)
 open LeanProofs.IPRA.Analysis.GaussianRootProduct (coefficients coefficients_monic)
@@ -32,10 +32,6 @@ open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed normalize_well_form
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,18 +43,12 @@ def realCoefficient (R N D i : PTm n) : PTm n := normalize (re (scaledCoefficien
 def imagCoefficient (R N D i : PTm n) : PTm n := normalize (im (scaledCoefficient R N D i)) (commonDenominator D N)
 def rationalCoefficient (R N D i : PTm n) : PTm n := pairT (realCoefficient R N D i) (imagCoefficient R N D i)
 
-@[simp] theorem subst_commonDenominator {m : ℕ} (σ : Fin n → PTm m) (D N : PTm n) :
-    Syn.subst σ (commonDenominator D N) = commonDenominator (Syn.subst σ D) (Syn.subst σ N) := by simp [commonDenominator]
-@[simp] theorem subst_numeratorScale {m : ℕ} (σ : Fin n → PTm m) (D N i : PTm n) :
-    Syn.subst σ (numeratorScale D N i) = numeratorScale (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ i) := by simp [numeratorScale]
-@[simp] theorem subst_scaledCoefficient {m : ℕ} (σ : Fin n → PTm m) (R N D i : PTm n) :
-    Syn.subst σ (scaledCoefficient R N D i) = scaledCoefficient (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ i) := by simp [scaledCoefficient]
-@[simp] theorem subst_realCoefficient {m : ℕ} (σ : Fin n → PTm m) (R N D i : PTm n) :
-    Syn.subst σ (realCoefficient R N D i) = realCoefficient (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ i) := by simp [realCoefficient]
-@[simp] theorem subst_imagCoefficient {m : ℕ} (σ : Fin n → PTm m) (R N D i : PTm n) :
-    Syn.subst σ (imagCoefficient R N D i) = imagCoefficient (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ i) := by simp [imagCoefficient]
-@[simp] theorem subst_rationalCoefficient {m : ℕ} (σ : Fin n → PTm m) (R N D i : PTm n) :
-    Syn.subst σ (rationalCoefficient R N D i) = rationalCoefficient (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ i) := by simp [rationalCoefficient]
+ipra_subst commonDenominator
+ipra_subst numeratorScale
+ipra_subst scaledCoefficient
+ipra_subst realCoefficient
+ipra_subst imagCoefficient
+ipra_subst rationalCoefficient
 
 theorem common_denominator_positive (D N : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] le one (commonDenominator D N) := by
@@ -71,9 +61,7 @@ def coefficientClearing (R N D i : PTm n) : Fm PTm n :=
   ZT.eq (numeratorOf (imagCoefficient R N D i)*ZT.ofNat (commonDenominator D N))
     ((im (entry (coefficients R N) i)*ZT.ofNat (numeratorScale D N i))*ZT.ofNat (denominatorOf (imagCoefficient R N D i)))
 
-@[simp] theorem subst_coefficientClearing {m : ℕ} (σ : Fin n → PTm m) (R N D i : PTm n) :
-    (coefficientClearing R N D i).subst σ = coefficientClearing (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ i) := by
-  simp [coefficientClearing]
+ipra_subst coefficientClearing
 
 /-- Exact coefficient normalization, including arbitrary signed numerator
 pairs. No coefficient value or desired clearing law is supplied. -/
@@ -103,10 +91,8 @@ def rationalBody : PTm 2 := rationalCoefficient (fstT (var 1)) (fstT (sndT (var 
 def rationalCoefficients (R N D : PTm n) : PTm n := sequence rationalBody (succ N) (coefficientData R N D)
 def rationalCoefficientsF : PR 3 := PTm.toPR (rationalCoefficients (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_coefficientData {m : ℕ} (σ : Fin n → PTm m) (R N D : PTm n) :
-    Syn.subst σ (coefficientData R N D) = coefficientData (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ D) := by simp [coefficientData]
-@[simp] theorem subst_rationalCoefficients {m : ℕ} (σ : Fin n → PTm m) (R N D : PTm n) :
-    Syn.subst σ (rationalCoefficients R N D) = rationalCoefficients (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ D) := by simp [rationalCoefficients]
+ipra_subst coefficientData
+ipra_subst rationalCoefficients
 
 theorem rational_body_at (R N D i : PTm n) :
     Γ ⊢[PRAAx] inst2 rationalBody i (coefficientData R N D) ≐ rationalCoefficient R N D i := by
@@ -116,8 +102,8 @@ theorem rational_body_at (R N D i : PTm n) :
     (σ' := ![R,N,D,i]) (fun j => by
       fin_cases j
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _)
   simpa only [rationalBody,inst2,subst_rationalCoefficient,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
@@ -134,7 +120,7 @@ theorem rational_coefficients_lookup (R N D i : PTm n) (hi : Γ ⊢[PRAAx] le i 
 canonical integer scalar codes. -/
 def rationalOne : PTm n := pairT (integerCode (ZT.natLit 1)) (integerCode (ZT.natLit 0))
 
-@[simp] theorem subst_rationalOne {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (rationalOne : PTm n) = (rationalOne : PTm m) := by simp [rationalOne]
+ipra_subst rationalOne
 
 /-- The normalized leading coefficient is literally one, rather than merely
 having that decoded value. The actual generated integer polynomial is monic. -/

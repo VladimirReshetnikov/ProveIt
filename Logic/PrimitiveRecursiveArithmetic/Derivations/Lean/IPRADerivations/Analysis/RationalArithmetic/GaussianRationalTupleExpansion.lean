@@ -18,14 +18,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalTupleExpansion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qadd_congr qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum (sum sum_index_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteProduct (qprod product_index_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,16 +37,11 @@ def tupleBody (f : PTm 3) : PTm 2 := choiceProduct f
   (fstT (var 1)) (fstT (sndT (var 1))) (var 0) (sndT (sndT (var 1)))
 def tupleSum (f : PTm 3) (m d x : PTm n) : PTm n := sum (tupleBody f) (pw m d) (tupleData m d x)
 
-@[simp] theorem subst_rowProduct {l : ℕ} (σ : Fin n → PTm l) (f : PTm 3) (m d x : PTm n) :
-    Syn.subst σ (rowProduct f m d x) = rowProduct f (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ x) := by simp [rowProduct]
-@[simp] theorem subst_choiceData {l : ℕ} (σ : Fin n → PTm l) (m w x : PTm n) :
-    Syn.subst σ (choiceData m w x) = choiceData (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ x) := by simp [choiceData]
-@[simp] theorem subst_choiceProduct {l : ℕ} (σ : Fin n → PTm l) (f : PTm 3) (m d w x : PTm n) :
-    Syn.subst σ (choiceProduct f m d w x) = choiceProduct f (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ x) := by simp [choiceProduct]
-@[simp] theorem subst_tupleData {l : ℕ} (σ : Fin n → PTm l) (m d x : PTm n) :
-    Syn.subst σ (tupleData m d x) = tupleData (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ x) := by simp [tupleData]
-@[simp] theorem subst_tupleSum {l : ℕ} (σ : Fin n → PTm l) (f : PTm 3) (m d x : PTm n) :
-    Syn.subst σ (tupleSum f m d x) = tupleSum f (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ x) := by simp [tupleSum]
+ipra_subst rowProduct
+ipra_subst choiceData
+ipra_subst choiceProduct
+ipra_subst tupleData
+ipra_subst tupleSum
 
 theorem digit_congr {m m' w w' i i' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hw : Γ ⊢[PRAAx] w ≐ w') (hi : Γ ⊢[PRAAx] i ≐ i') : Γ ⊢[PRAAx]
@@ -69,8 +61,8 @@ theorem choice_body_at (f : PTm 3) (m w x i : PTm n) : Γ ⊢[PRAAx]
     inst2 (choiceBody f) i (choiceData m w x) ≐ inst3 f i (Foundations.RuntimePermutationWords.digit m w i) x := by
   rw [choice_entry]
   exact congrInst3 f (.eqRefl _)
-    (digit_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+    (digit_congr (fst_pair _ _) (snd_pair _ _).fstE (.eqRefl _))
+    (snd_pair _ _).sndE
 
 theorem choice_product_congr (f : PTm 3) {m m' d d' w w' x x' : PTm n}
     (hm : Γ ⊢[PRAAx] m ≐ m') (hd : Γ ⊢[PRAAx] d ≐ d') (hw : Γ ⊢[PRAAx] w ≐ w') (hx : Γ ⊢[PRAAx] x ≐ x') : Γ ⊢[PRAAx]
@@ -80,8 +72,8 @@ theorem choice_product_congr (f : PTm 3) {m m' d d' w w' x x' : PTm n}
 theorem tuple_body_at (f : PTm 3) (m d x w : PTm n) : Γ ⊢[PRAAx]
     inst2 (tupleBody f) w (tupleData m d x) ≐ choiceProduct f m d w x := by
   simp only [tupleBody,inst2,subst_choiceProduct,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact choice_product_congr f (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  exact choice_product_congr f (fst_pair _ _) (snd_pair _ _).fstE
+    (.eqRefl _) (snd_pair _ _).sndE
 
 theorem row_product_zero (f : PTm 3) (m x : PTm n) : Γ ⊢[PRAAx] rowProduct f m zero x ≐ qone := GaussianRationalFiniteProduct.product_zero _ _
 theorem row_product_succ (f : PTm 3) (m d x : PTm n) : Γ ⊢[PRAAx]
@@ -120,8 +112,7 @@ theorem tuple_sum_zero (f : PTm 3) (m x : PTm n) : Γ ⊢[PRAAx] tupleSum f m ze
 
 def appendedBlock (f : PTm 3) (m d v x : PTm n) : PTm n := sum (offB (tupleBody f)) (pw m d)
   (pairT (pw m d*v) (tupleData m (succ d) x))
-@[simp] theorem subst_appendedBlock {l : ℕ} (σ : Fin n → PTm l) (f : PTm 3) (m d v x : PTm n) :
-    Syn.subst σ (appendedBlock f m d v x) = appendedBlock f (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ v) (Syn.subst σ x) := by simp [appendedBlock]
+ipra_subst appendedBlock
 
 theorem appended_block (f : PTm 3) (m d v x : PTm n) (hm : Γ ⊢[PRAAx] le one m) (hv : Γ ⊢[PRAAx] lt v m) : Γ ⊢[PRAAx]
     appendedBlock f m d v x ≐ qmul (tupleSum f m d x) (inst3 f d v x) := by
@@ -176,18 +167,15 @@ theorem tuple_sum_succ (f : PTm 3) (m d x : PTm n) (hm : Γ ⊢[PRAAx] le one m)
       ((GaussianRationalFiniteSum.sum_congr_bounded _ _ _ _ _ entries).eqTrans (GaussianRationalFiniteSum.sum_multiply _ _ _ _)))
 
 def expansionLaw (f : PTm 3) (m d x : PTm n) : Fm PTm n := le d m ⟶ rowProduct f m d x ≐ tupleSum f m d x
-@[simp] theorem subst_expansionLaw {l : ℕ} (σ : Fin n → PTm l) (f : PTm 3) (m d x : PTm n) :
-    (expansionLaw f m d x).subst σ = expansionLaw f (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ x) := by simp [expansionLaw]
+ipra_subst expansionLaw
 
 /-- Every length/radix/data value is internal; no positive-radix hypothesis is needed at zero length. -/
 theorem expansion (f : PTm 3) (m d x : PTm n) (hd : Γ ⊢[PRAAx] le d m) : Γ ⊢[PRAAx]
     rowProduct f m d x ≐ tupleSum f m d x := by
   have all : Γ ⊢[PRAAx] .all (expansionLaw f (Syn.shift m) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_expansionLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((row_product_zero _ _ _).eqTrans (tuple_sum_zero _ _ _).eqSymm)
-    · simp only [subst_expansionLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_expansionLaw]
+    · exact .impI ((row_product_zero _ _ _).eqTrans (tuple_sum_zero _ _ _).eqSymm)
+    · refine .impI ?_
       have hm : le (succ (var 0)) (Syn.shift m) :: expansionLaw f (Syn.shift m) (var 0) (Syn.shift x) :: Γ.map Fm.shift ⊢[PRAAx]
           le one (Syn.shift m) := le_trans (zero_lt_succ (var 0)) Prf.hyp0
       exact (row_product_succ _ _ _ _).eqTrans
@@ -214,20 +202,18 @@ def output (f : PTm 3) (m d x : PTm n) : PTm n :=
   pairT (rowProduct f m d x) (pairT (tupleSum f m d x) (pw m d))
 def outputF (f : PTm 3) : PR 3 := PTm.toPR (output f (var 0) (var 1) (var 2))
 def run (f : PTm 3) (m d x : PTm n) : PTm n := ap3 (outputF f) m d x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f : PTm 3) (m d x : PTm n) :
-    Syn.subst σ (output f m d x) = output f (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f : PTm 3) (m d x : PTm n) :
-    Syn.subst σ (run f m d x) = run f (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (f : PTm 3) (m d x : PTm n) : Γ ⊢[PRAAx] run f m d x ≐ output f m d x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output f (var 0) (var 1) (var 2) : PTm 3) ![m,d,x]
 theorem returned_row_product (f : PTm 3) (m d x : PTm n) : Γ ⊢[PRAAx]
-    fstT (run f m d x) ≐ rowProduct f m d x := (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+    fstT (run f m d x) ≐ rowProduct f m d x := (program_at _ _ _ _).fstE
 theorem returned_tuple_sum (f : PTm 3) (m d x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run f m d x)) ≐ tupleSum f m d x :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_word_count (f : PTm 3) (m d x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run f m d x)) ≐ pw m d :=
-  (congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE.sndE
 theorem returned_equal (f : PTm 3) (m d x : PTm n) (hd : Γ ⊢[PRAAx] le d m) : Γ ⊢[PRAAx]
     fstT (run f m d x) ≐ fstT (sndT (run f m d x)) :=
   (returned_row_product _ _ _ _).eqTrans ((expansion _ _ _ _ hd).eqTrans (returned_tuple_sum _ _ _ _).eqSymm)

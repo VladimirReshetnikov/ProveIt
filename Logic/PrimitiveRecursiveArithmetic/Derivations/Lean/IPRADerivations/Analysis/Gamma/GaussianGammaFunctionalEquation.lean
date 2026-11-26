@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFunctionalEquation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (source constantF constant_at constant_regular)
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianGammaEulerShiftLimit (correction correctedF correctedData logInverse shifted_source)
@@ -29,10 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedSmallPerturbationTransport (budgetNumerator budgetDenominator)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -48,15 +44,10 @@ def leftLimitData (z R B : PTm n) : PTm n := multiplyData constantF nameF
   (ofGaussian z B) (data (shifted z B) (R+one) B)
 def allLogInverse : Fm PTm n := .all (le one (var 0) ⟶ logInverse (var 0))
 
-@[simp] theorem subst_eulerRate {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (eulerRate R) = eulerRate (Syn.subst σ R) := by simp [eulerRate]
-@[simp] theorem subst_cost {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (cost R) = cost (Syn.subst σ R) := by simp [cost]
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (t R : PTm n) :
-    Syn.subst σ (cutoff t R) = cutoff (Syn.subst σ t) (Syn.subst σ R) := by simp [cutoff,unit]
-@[simp] theorem subst_leftLimitData {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (leftLimitData z R B) = leftLimitData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp [leftLimitData]
+ipra_subst eulerRate
+ipra_subst cost
+ipra_subst cutoff [unit]
+ipra_subst leftLimitData
 
 theorem input_point_bound (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx] bounded (ofGaussian z B) R one := by
   apply GaussianRationalMetric.bounded_of_cleared _ _ _ _ _ h.andE₂.andE₁ (le_refl one)
@@ -110,8 +101,7 @@ theorem earlier_euler_error (t u z R B N : PTm n)
     (positive_product _ _ hn (unit_positive t)) compare (GaussianGammaEulerConvergence.observation_error u t z R B N h)
 
 def clock (f : PR 2) (c y t : PTm n) : PTm n := GaussianNamedSmallPerturbationTransport.productClock constantF f c y t
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (c y t : PTm n) :
-    Syn.subst σ (clock f c y t) = clock f (Syn.subst σ c) (Syn.subst σ y) (Syn.subst σ t) := by simp [clock]
+ipra_subst clock
 theorem clock_later (f : PR 2) (c y t : PTm n) : Γ ⊢[PRAAx] le t (clock f c y t) := le_add_right _ _
 theorem constant_product_at (f : PR 2) (c y t : PTm n) : Γ ⊢[PRAAx]
     ap2 (multiplyF constantF f) t (multiplyData constantF f c y) ≐ qmul c (ap2 f (clock f c y t) y) :=
@@ -178,8 +168,7 @@ theorem finite_right_error (t z R B N : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaE
 
 
 def slackConstant (R : PTm n) : PTm n := num 6*R+num 9
-@[simp] theorem subst_slackConstant {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (slackConstant R) = slackConstant (Syn.subst σ R) := by simp [slackConstant]
+ipra_subst slackConstant
 
 /-- All approximants in this proof use ONE actual computed finite N.
 Only its genuine C10 rate and the auxiliary observation errors vanish. -/

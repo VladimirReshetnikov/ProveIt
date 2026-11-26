@@ -16,8 +16,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliTruncation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDigammaBernoulliCoefficients (correction sign_step oriented_correction)
 open GaussianDigammaBernoulliImproperName (recurrenceF recurrenceData recurrence_regular original_improper_cross)
@@ -40,9 +39,6 @@ open GaussianStirlingAllOrderSignedLowerAlgebra (orientationPoint)
 open GaussianStirlingAllOrderSignedParityAlgebra (orientation_even)
 open GaussianStirlingNames (source)
 open GaussianValueNormalizerExtensionality (rawDiagonal)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "subF" => GaussianNamedDifference.nameF

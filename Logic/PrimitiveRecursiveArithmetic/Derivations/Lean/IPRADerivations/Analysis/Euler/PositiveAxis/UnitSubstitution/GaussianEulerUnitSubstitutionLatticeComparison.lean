@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionLatticeComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionLatticeGeometry (source start count cuts_source denominator_positive)
 open GaussianEulerUnitSubstitutionLatticeRows (latticeData powerData anchorNumerator anchorDenominator anchor_denominator_positive)
 open GaussianEulerUnitSubstitutionFloorCuts (cutF cut data)
@@ -33,10 +33,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalMetric (bounded distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,12 +44,8 @@ def numerator (k q N R C E T M : PTm n) : PTm n :=
 def denominator (k q N E T M : PTm n) : PTm n :=
   anchorDenominator k q N E T M*widthDenominator k E T M
 
-@[simp] theorem subst_widthNumerator {m : ℕ} (σ : Fin n → PTm m) (k E T M : PTm n) :
-    Syn.subst σ (widthNumerator k E T M) = widthNumerator (Syn.subst σ k) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) :=
-  by simp [widthNumerator]
-@[simp] theorem subst_widthDenominator {m : ℕ} (σ : Fin n → PTm m) (k E T M : PTm n) :
-    Syn.subst σ (widthDenominator k E T M) = widthDenominator (Syn.subst σ k) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) :=
-  by simp [widthDenominator]
+ipra_subst widthNumerator
+ipra_subst widthDenominator
 
 theorem width_denominator_positive (k N z R B a C E T M : PTm n) (h : Γ ⊢[PRAAx] source k N z R B a C E T M) :
     Γ ⊢[PRAAx] le one (widthDenominator k E T M) :=

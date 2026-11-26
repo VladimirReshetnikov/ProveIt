@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicHalfDecay
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData)
 open GaussianEulerUpperPowerOrder (source)
 open GaussianEulerWeightedHalfDecay (majorant slack halfSample)
@@ -25,8 +25,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -44,29 +42,12 @@ def observationClock (p j R a : PTm n) : PTm n :=
 def sampledHalfRow (p j z R B a b : PTm n) : PTm n :=
   weightedSample (observationClock p j R a) j z B a b
 
-@[simp] theorem subst_powerAndLog {m : ℕ} (σ : Fin n → PTm m) (p j z B a b : PTm n) :
-    Syn.subst σ (powerAndLog p j z B a b) =
-      powerAndLog (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [powerAndLog]
-@[simp] theorem subst_powerAllowance {m : ℕ} (σ : Fin n → PTm m) (j R a : PTm n) :
-    Syn.subst σ (powerAllowance j R a) = powerAllowance (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ a) := by
-  simp [powerAllowance]
-@[simp] theorem subst_halfAllowance {m : ℕ} (σ : Fin n → PTm m) (a d K : PTm n) :
-    Syn.subst σ (halfAllowance a d K) = halfAllowance (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ K) := by
-  simp [halfAllowance,slack]
-@[simp] theorem subst_weightedSample {m : ℕ} (σ : Fin n → PTm m) (p j z B a b : PTm n) :
-    Syn.subst σ (weightedSample p j z B a b) =
-      weightedSample (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [weightedSample]
-@[simp] theorem subst_observationClock {m : ℕ} (σ : Fin n → PTm m) (p j R a : PTm n) :
-    Syn.subst σ (observationClock p j R a) =
-      observationClock (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ a) := by
-  simp [observationClock]
-@[simp] theorem subst_sampledHalfRow {m : ℕ} (σ : Fin n → PTm m) (p j z R B a b : PTm n) :
-    Syn.subst σ (sampledHalfRow p j z R B a b) =
-      sampledHalfRow (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-        (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [sampledHalfRow]
+ipra_subst powerAndLog
+ipra_subst powerAllowance
+ipra_subst halfAllowance [slack]
+ipra_subst weightedSample
+ipra_subst observationClock
+ipra_subst sampledHalfRow
 
 /-- Product arithmetic retains the leading exact rational monomial. -/
 theorem amplified_product (u v A B C D G U : PTm n)

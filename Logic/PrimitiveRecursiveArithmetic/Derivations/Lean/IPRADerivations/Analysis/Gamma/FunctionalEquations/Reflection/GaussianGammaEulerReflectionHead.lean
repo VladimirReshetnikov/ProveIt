@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerReflectionHead
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHead (factor head run head_zero head_succ program_at)
 open GaussianGammaEulerHeadLower (translated factor_represents)
 open GaussianRationalFiniteProduct (qprod product_succ product_zero)
@@ -27,9 +27,6 @@ open GaussianRationalReciprocal (qone qone_represents_scaled normNumerator recip
 open GaussianRationalSyntheticDivision (qmul_congr qone_canonical)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_mul im_mul re_scale im_scale re_one im_one re_neg im_neg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,13 +41,9 @@ def negativeSquare (z B : PTm n) : PTm n := qnegative (qmul (ofGaussian z B) (of
 
 def denominator (z B N : PTm n) : PTm n := qmul (negativeSquare z B) (sineProduct z B N)
 
-@[simp] theorem subst_squareFactor {l : ℕ} (σ : Fin n → PTm l) (i z B : PTm n) :
-    Syn.subst σ (squareFactor i z B) = squareFactor (Syn.subst σ i) (Syn.subst σ z) (Syn.subst σ B) := by
-  simp [squareFactor]
+ipra_subst squareFactor
 
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    Syn.subst σ (denominator z B N) = denominator (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [denominator,negativeSquare,sineProduct]
+ipra_subst denominator [negativeSquare, sineProduct]
 
 theorem square_factor_at (i z B : PTm n) :
     Γ ⊢[PRAAx] inst2 body i (pairT z B) ≐ squareFactor i z B := by
@@ -97,9 +90,7 @@ theorem denominator_succ (z B N : PTm n) :
 
 def pairingLaw (z B N : PTm n) : Fm PTm n := qmul (head z B N) (head (ComplexLogarithmRemainder.neg z) B N) ≐ denominator z B N
 
-@[simp] theorem subst_pairingLaw {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    (pairingLaw z B N).subst σ = pairingLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [pairingLaw]
+ipra_subst pairingLaw
 
 theorem pairing_zero (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] pairingLaw z B zero :=
   (qmul_congr (head_zero z B hB) (head_zero (ComplexLogarithmRemainder.neg z) B hB)).eqTrans

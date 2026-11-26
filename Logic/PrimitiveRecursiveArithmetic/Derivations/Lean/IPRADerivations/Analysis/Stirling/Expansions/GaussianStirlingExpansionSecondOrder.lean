@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingExpansionSecondOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianRationalHorner (horner hornerF horner_succ horner_zero horner_canonical qadd qmul qzero)
@@ -30,11 +30,7 @@ open GaussianStirlingMultiplicative (quotientF quotientData)
 open GaussianStirlingMultiplicativeAlgebra (remainderF remainderData)
 open GaussianStirlingNames (source)
 open GaussianStirlingRationalTelescopers (upperValue)
-open ConciseIPRA.PTm (zero succ)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

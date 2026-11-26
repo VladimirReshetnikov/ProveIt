@@ -16,9 +16,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderNamedUpperGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -51,8 +49,6 @@ open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalNormalForm (normalize_well_formed)
 open RationalSumConstants (multiply_one_right)
 open RationalValueBounds (upper upper_congr upper_of_radius upper_order_left)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -215,18 +211,11 @@ theorem approximate_lower (m : ℕ) (p A B x : PTm n) (hs : Γ ⊢[PRAAx] source
   exact upper_congr (congrFst (constant_at _ _)).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (upper_order_left _ _ _ _ _ (raw_floor m p A B hs) h)
 
-@[simp] theorem subst_floorPoint {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (floorPoint m A B) = floorPoint m (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [floorPoint,floorDenominator,marginDenominator,GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen,
-    GaussianStirlingAllOrderCenteredBernoulli.denominator,GaussianStirlingAllOrderBoxProductGap.weightDenominator,pw,one,two]
+ipra_subst floorPoint [floorDenominator, marginDenominator, GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen, GaussianStirlingAllOrderCenteredBernoulli.denominator, GaussianStirlingAllOrderBoxProductGap.weightDenominator, pw, one, two]
 
-@[simp] theorem subst_gapData {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B x : PTm n) :
-    Syn.subst σ (gapData m A B x) = gapData m (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp [gapData]
+ipra_subst gapData
 
-@[simp] theorem subst_gapRadius {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (B : PTm n) :
-    Syn.subst σ (gapRadius m B) = gapRadius m (Syn.subst σ B) := by
-  simp [gapRadius,power,pw,one]
+ipra_subst gapRadius [power, pw, one]
 
 theorem named_gap_lower (m : ℕ) (A B x : PTm n) (hs : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] realOrder constantF (gapF m) (floorPoint m A B) (gapData m A B x) := by

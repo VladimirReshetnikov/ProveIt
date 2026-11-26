@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitLogarithmicTime
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitLogarithmicMargin (source timeF timeData time_regular)
 open GaussianNameRingLaws (negativeF negativeData negative_fast)
 open GaussianHarmonicLogarithmName (sample)
@@ -24,9 +24,6 @@ open GaussianRationalMetric (distanceBounded qnegative qnegative_canonical qsub)
 open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,12 +33,9 @@ def radius (a b : PTm n) : PTm n := GaussianNameBounds.U negativeTimeF (negative
 abbrev exponentialF : PR 2 := GaussianRadiusExponentialName.nameF negativeTimeF
 def exponentialData (a b : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius a b) (negativeTimeData a b)
 
-@[simp] theorem subst_negativeTimeData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (negativeTimeData a b) = negativeTimeData (Syn.subst σ a) (Syn.subst σ b) := by simp [negativeTimeData]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (radius a b) = radius (Syn.subst σ a) (Syn.subst σ b) := by simp [radius]
-@[simp] theorem subst_exponentialData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (exponentialData a b) = exponentialData (Syn.subst σ a) (Syn.subst σ b) := by simp [exponentialData]
+ipra_subst negativeTimeData
+ipra_subst radius
+ipra_subst exponentialData
 
 theorem original_positive_source (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx]
     GaussianPositiveRationalLogarithm.source a b := .andI h.andE₁ (le_trans h.andE₁ (le_of_lt h.andE₂))

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingFiniteBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartCorrectedImage (fraction_sum)
 open GaussianGammaHalfSqrtBrackets (fraction_first_represents)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -28,10 +28,6 @@ open GaussianStirlingRationalTelescopers
 open StirlingRationalSeries (fold upper_at_base upperWithBase)
 open Products (fact)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -70,9 +66,7 @@ theorem first_term_bound (a b L k : PTm n) (hb : Γ ⊢[PRAAx] le one b)
 def geometricTail (a b K : PTm n) : PTm n :=
   fraction (pw (numeratorSquare b) (succ K)) (num 3*gap a b*pw (denominatorSquare a b) K)
 
-@[simp] theorem subst_geometricTail {l : ℕ} (σ : Fin n → PTm l) (a b K : PTm n) :
-    Syn.subst σ (geometricTail a b K) = geometricTail (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ K) := by
-  simp [geometricTail,num]
+ipra_subst geometricTail [num]
 
 theorem sharp_upper (a b L k : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b)
     (hL : Γ ⊢[PRAAx] le (succ (two*succ (succ k))) L) : Γ ⊢[PRAAx]

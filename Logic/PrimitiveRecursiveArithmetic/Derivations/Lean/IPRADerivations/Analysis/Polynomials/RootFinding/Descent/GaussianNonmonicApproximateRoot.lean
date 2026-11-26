@@ -16,11 +16,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNonmonicApproximateRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadius (inputContract)
 open LeanProofs.IPRA.Analysis.GaussianNonmonicRD (step)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -28,15 +26,8 @@ def approximateRoot (C N p q : PTm n) : PTm n := GaussianDescentClock.approximat
 def rootF : PR 4 := GaussianDescentClock.approximateRootF step
 def run (C N p q : PTm n) : PTm n := GaussianDescentClock.run step N C p q
 
-@[simp] theorem subst_approximateRoot {m : ℕ} (σ : Fin n → PTm m) (C N p q : PTm n) :
-    Syn.subst σ (approximateRoot C N p q) = approximateRoot (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) := by simp [approximateRoot]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N p q : PTm n) :
-    Syn.subst σ (run C N p q) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [run,GaussianDescentClock.run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst approximateRoot
+ipra_subst run [GaussianDescentClock.run]
 
 theorem approximate_root (C N p q : PTm n) (hInput : Γ ⊢[PRAAx] inputContract C N)
     (hp : Γ ⊢[PRAAx] le one p) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx]

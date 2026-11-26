@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationLimitMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedConstantProductName (constantF constant_regular)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -31,9 +31,6 @@ open GaussianRationalMetric (bounded qnegative qsub)
 open GaussianRationalNaturalScale (naturalPoint natScale)
 open GaussianRationalPolynomialExponential (scalarSum)
 open GaussianRationalReciprocal (bound_congr bounded_product power)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -55,24 +52,13 @@ def commonRadius (R m : PTm n) : PTm n := alternativeRadius R m+referenceRadius 
 def limitF : PR 2 := GaussianRadiusExponentialName.nameF alternativeF
 def limitData (z R B m : PTm n) : PTm n := data (commonRadius R m) (alternativeData z R B m)
 
-@[simp] theorem subst_positiveLog {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (positiveLog m) = positiveLog (Syn.subst σ m) := by simp [positiveLog]
-@[simp] theorem subst_negativeLog {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (negativeLog m) = negativeLog (Syn.subst σ m) := by simp [negativeLog]
-@[simp] theorem subst_height {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (height R m) = height (Syn.subst σ R) (Syn.subst σ m) := by simp [height]
-@[simp] theorem subst_alternativeData {l : ℕ} (σ : Fin n → PTm l) (z R B m : PTm n) :
-    Syn.subst σ (alternativeData z R B m) = alternativeData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) := by
-  simp [alternativeData]
-@[simp] theorem subst_referenceRadius {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (referenceRadius R m) = referenceRadius (Syn.subst σ R) (Syn.subst σ m) := by
-  simp [referenceRadius,baseRadius]
-@[simp] theorem subst_commonRadius {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (commonRadius R m) = commonRadius (Syn.subst σ R) (Syn.subst σ m) := by
-  simp [commonRadius,alternativeRadius]
-@[simp] theorem subst_limitData {l : ℕ} (σ : Fin n → PTm l) (z R B m : PTm n) :
-    Syn.subst σ (limitData z R B m) = limitData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) := by
-  simp [limitData]
+ipra_subst positiveLog
+ipra_subst negativeLog
+ipra_subst height
+ipra_subst alternativeData
+ipra_subst referenceRadius [baseRadius]
+ipra_subst commonRadius [alternativeRadius]
+ipra_subst limitData
 
 private theorem harmonic_reversal (m p : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] ap2 logName p (negativeLog m) ≐ qnegative (ap2 logName p (positiveLog m)) := by

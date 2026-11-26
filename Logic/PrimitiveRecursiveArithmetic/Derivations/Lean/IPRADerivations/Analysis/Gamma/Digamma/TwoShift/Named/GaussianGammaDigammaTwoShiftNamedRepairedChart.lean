@@ -20,7 +20,7 @@ set_option maxHeartbeats 2300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftNamedRepairedChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianGammaDigammaTwoShiftNamedWindow (source orders)
@@ -31,9 +31,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNamedRightHalfPlane (radius threshold)
 open GaussianRationalHorner (positive_product)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

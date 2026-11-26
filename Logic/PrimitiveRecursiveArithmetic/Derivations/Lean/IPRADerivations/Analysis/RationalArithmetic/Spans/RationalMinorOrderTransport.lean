@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorAugmentation
 import IPRADerivations.Foundations.RuntimePermutationDeletion
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original selected labels in the augmented minor
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMinorOrderTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank_mono rank_lt_of_kept)
@@ -28,9 +27,6 @@ open RationalMinorAugmentation (extendedRow extendedColumn free_prefix_count)
 open RationalSupMetric (coordinate normalizedList)
 open RationalIntegerNormalization (normalize)
 open GaussianPolynomialDeterminantTerms (cell)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGammaFractionalIncrementConvexity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -31,10 +31,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
 open GaussianStirlingGlobalBoundsShiftArguments (shiftedNumerator shifted_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus pred)
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

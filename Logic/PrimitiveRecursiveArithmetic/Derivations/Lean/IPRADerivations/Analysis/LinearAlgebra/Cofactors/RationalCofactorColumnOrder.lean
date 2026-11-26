@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorMinorBou
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorOrderTransport
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorMaskReconstruction
 import IPRADerivations.Foundations.RuntimePermutationInsertion
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Ordered columns of the actual cofactor minors
@@ -17,8 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofactorColumnOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.RuntimePermutationDeletion (slot)
@@ -36,8 +34,6 @@ open RationalCofactorMinorBounds (columnMask free_mask other_mask column_count_c
 open RationalSupMetric (coordinate normalizedList)
 open RationalIntegerNormalization (normalize)
 open GaussianPolynomialDeterminantTerms (cell)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

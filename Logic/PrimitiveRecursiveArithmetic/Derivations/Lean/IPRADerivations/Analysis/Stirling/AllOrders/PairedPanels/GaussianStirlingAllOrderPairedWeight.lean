@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPairedWeight
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open GaussianRationalHorner (positive_product scalar_cancel scalar_congr)
@@ -22,10 +22,6 @@ open GaussianRationalMetric (comparison_of_cleared)
 open GaussianStirlingAllOrderPowerGap (low base gap cleared_weight_gap)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (add represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,24 +34,11 @@ def gapFraction (q M a d h : PTm n) : PTm n :=
 def pairWeight (q M A u : PTm n) : PTm n := add (weight q M (A+u)) (weight q M (A+monus M u))
 def pairGap (q M A u v : PTm n) : PTm n := gapFraction q M (A+u) (monus v u) (monus M (u+v))
 
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (q M a : PTm n) :
-    Syn.subst σ (weight q M a) = weight (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ a) :=
-  by simp [weight,fraction,pw]
-@[simp] theorem subst_gapNumerator {m : ℕ} (σ : Fin n → PTm m) (q M a d h : PTm n) :
-    Syn.subst σ (gapNumerator q M a d h) =
-      gapNumerator (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ h) :=
-  by simp [gapNumerator,pw]
-@[simp] theorem subst_gapDenominator {m : ℕ} (σ : Fin n → PTm m) (q a d h : PTm n) :
-    Syn.subst σ (gapDenominator q a d h) =
-      gapDenominator (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ h) :=
-  by simp [gapDenominator,pw]
-@[simp] theorem subst_pairWeight {m : ℕ} (σ : Fin n → PTm m) (q M A u : PTm n) :
-    Syn.subst σ (pairWeight q M A u) = pairWeight (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ u) :=
-  by simp [pairWeight]
-@[simp] theorem subst_pairGap {m : ℕ} (σ : Fin n → PTm m) (q M A u v : PTm n) :
-    Syn.subst σ (pairGap q M A u v) =
-      pairGap (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ u) (Syn.subst σ v) :=
-  by simp [pairGap,gapFraction,fraction]
+ipra_subst weight [fraction, pw]
+ipra_subst gapNumerator [pw]
+ipra_subst gapDenominator [pw]
+ipra_subst pairWeight
+ipra_subst pairGap [gapFraction, fraction]
 
 private theorem weight_congr (q M : PTm n) {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     Γ ⊢[PRAAx] weight q M a ≐ weight q M b :=
@@ -159,11 +142,7 @@ theorem gap_numerator_positive (q M a d h : PTm n) (hM : Γ ⊢[PRAAx] le one M)
     (positive_product _ _ (positive_product _ _ (positive_product _ _ hd hh) he)
       (GaussianFactorBudget.power_positive _ _ hB))
 
-private theorem one_le_difference (a b : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
-    Γ ⊢[PRAAx] le one (monus b a) := by
-  let c := monus b (succ a)
-  have e : Γ ⊢[PRAAx] b ≐ succ c+a := (eq_add_of_le h).eqTrans (by ipra_ring)
-  exact le_congr (.eqRefl _) ((congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)).eqSymm (zero_lt_succ c)
+private alias one_le_difference := Common.one_le_monus_of_lt
 
 theorem strict_pair_gap (q M A u v : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hM₀ : Γ ⊢[PRAAx] le one M) (huv : Γ ⊢[PRAAx] lt u v) (hM : Γ ⊢[PRAAx] le (two*v) M) :

@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNameConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalConjugation (point point_congr point_canonical point_distance point_add point_mul)
 open GaussianRationalHorner (canonical_unique represents_congr positive_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
@@ -25,9 +25,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -89,9 +86,7 @@ theorem normalized_at (f : PR 2) (L x p : PTm n) : Γ ⊢[PRAAx]
 
 def pointwiseEqual (f g : PR 2) (x y : PTm n) : Fm PTm n := .all
   (ap2 f (var 0) (Syn.shift x) ≐ ap2 g (var 0) (Syn.shift y))
-@[simp] theorem subst_pointwiseEqual {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    (pointwiseEqual f g x y).subst σ = pointwiseEqual f g (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [pointwiseEqual,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointwiseEqual [Syn.subst_shift, Syn.shift_subst]
 
 theorem equal_distance (q r D : PTm n) (hD : Γ ⊢[PRAAx] le one D) (e : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx]
     distanceBounded q r zero D :=
@@ -121,8 +116,7 @@ theorem normalized_cross (f : PR 2) (L x : PTm n) (h : Γ ⊢[PRAAx] GaussianFas
 
 def covariance (f g : PR 2) (x y : PTm n) : Fm PTm n := .all
   (point (ap2 f (var 0) (Syn.shift x)) ≐ ap2 g (var 0) (Syn.shift y))
-@[simp] theorem subst_covariance {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    (covariance f g x y).subst σ = covariance f g (Syn.subst σ x) (Syn.subst σ y) := by simp [covariance,Syn.subst_shift,Syn.shift_subst]
+ipra_subst covariance [Syn.subst_shift, Syn.shift_subst]
 
 /-- Both actual normalization moduli are retained. The only covariance
 premise concerns the underlying raw programs and is discharged by each

@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.CatalanTouchard
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The alternating binomial transform of `C(k, ⌊k/2⌋)`
@@ -29,7 +28,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanAlternating
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_self gb_above)
@@ -37,10 +36,6 @@ open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_zero cb_rec cat cat_rec cat_ze
 open LeanProofs.IPRA.Combinatorics.CatalanConvolution (cat_one)
 open LeanProofs.IPRA.Combinatorics.CatalanTouchard (t1aux t1aux0)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence (gr gl uv)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -247,22 +242,14 @@ private abbrev phieF : Fm PTm 2 := phiLe (var 1) (var 0) ≐ phiRe (var 1) (var 
 private abbrev phioF : Fm PTm 2 := phiLo (var 1) (var 0) ≐ phiRo (var 1) (var 0)
 
 private theorem phie₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] phieF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact phie_base _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact phie_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact phie_base _
+  · exact phie_step Prf.hyp0
 
 private theorem phio₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] phioF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact phio_base _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact phio_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact phio_base _
+  · exact phio_step Prf.hyp0
 
 theorem phie (N K : PTm n) : Γ ⊢[PRAAx] phiLe N K ≐ phiRe N K := by
   have h := inst (Γ := Γ) phie₀ (![K, N] : Fin 2 → PTm n)
@@ -309,13 +296,9 @@ theorem Es_step {N : PTm n} (ih : Γ ⊢[PRAAx] Es N ≐ cb N) : Γ ⊢[PRAAx] E
 private abbrev evenF : Fm PTm 1 := Es (var 0) ≐ cb (var 0)
 
 private theorem even₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] evenF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact Es_zero
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact Es_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact Es_zero
+  · exact Es_step Prf.hyp0
 
 /-- `∑_j C(n, 2j) 2^{n − 2j} C(2j, j) = C(2n, n)`. -/
 theorem even_sum (N : PTm n) : Γ ⊢[PRAAx] Es N ≐ cb N := by
@@ -372,13 +355,9 @@ theorem Os_step {N : PTm n} (ih : Γ ⊢[PRAAx] Os (succ N) ≐ succ N * cat (su
 private abbrev oddF : Fm PTm 1 := Os (succ (var 0)) ≐ succ (var 0) * cat (succ (var 0))
 
 private theorem odd₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] oddF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact Os_one
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact Os_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact Os_one
+  · exact Os_step Prf.hyp0
 
 theorem odd_succ (N : PTm n) : Γ ⊢[PRAAx] Os (succ N) ≐ succ N * cat (succ N) := by
   have h := inst (Γ := Γ) odd₀ (![N] : Fin 1 → PTm n)

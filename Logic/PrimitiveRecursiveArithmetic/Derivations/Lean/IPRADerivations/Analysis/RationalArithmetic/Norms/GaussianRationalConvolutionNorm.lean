@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalConvolutionNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientL1 (normBody prefixNorm coefficientNorm prefix_succ)
 open GaussianPolynomialNormBuffers (norm_entries zero_prefix norm_append norm_padding norm_scaled norm_added)
 open GaussianRationalLinearProduct (norm_length scalar_zero_code)
@@ -31,9 +31,6 @@ open RationalArithmetic (add multiply)
 open RationalArgmin (rationalLE rationalLE_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -89,9 +86,7 @@ theorem stage_norm_zero (P Q M : PTm n) :
 def normLaw (P Q M t : PTm n) : Fm PTm n :=
   rationalLE (coefficientNorm (stage P Q M t)) (multiply (coefficientNorm Q) (prefixNorm P t))
 
-@[simp] theorem subst_normLaw {k : ℕ} (σ : Fin n → PTm k) (P Q M t : PTm n) :
-    (normLaw P Q M t).subst σ = normLaw (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ M) (Syn.subst σ t) := by
-  simp [normLaw]
+ipra_subst normLaw
 
 theorem norm_base (P Q M : PTm n) : Γ ⊢[PRAAx] normLaw P Q M zero := by
   have rhs : Γ ⊢[PRAAx] multiply (coefficientNorm Q) (prefixNorm P zero) ≐ natCode zero :=
@@ -114,11 +109,9 @@ theorem stage_norm (P Q M t : PTm n) (hQ : Γ ⊢[PRAAx] length Q ≐ succ M) :
   have hs : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift Q) ≐ succ (Syn.shift M) := by
     simpa [Fm.shift, Syn.shift] using hQ.shift
   have all : Γ ⊢[PRAAx] .all (normLaw (Syn.shift P) (Syn.shift Q) (Syn.shift M) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_normLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact norm_base _ _ _
-    · simp only [subst_normLaw, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact norm_step _ _ _ _ hs.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_normLaw]
+    · exact norm_base _ _ _
+    · exact norm_step _ _ _ _ hs.wk Prf.hyp0
   simpa only [subst_normLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using all.allE t
 
 theorem product_norm (P Q N M : PTm n) (hP : Γ ⊢[PRAAx] length P ≐ succ N) (hQ : Γ ⊢[PRAAx] length Q ≐ succ M) :

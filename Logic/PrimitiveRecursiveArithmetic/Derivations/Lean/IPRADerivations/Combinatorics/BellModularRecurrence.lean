@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.BellPeriodNp
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The order-`m` recurrence of the Bell numbers modulo `m` (`bell_numbers_ipra`, `thm:all-moduli-period`)
@@ -31,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellModularRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (bell)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (congrBell)
 open LeanProofs.IPRA.Combinatorics.BellTouchardPower (cong_of_eq)
@@ -39,10 +38,6 @@ open LeanProofs.IPRA.Combinatorics.BellPrimePeriod (cong_drop)
 open LeanProofs.IPRA.Combinatorics.BellPeriodNp (bellB inst2_bellB G_prime tele2_pos)
 open LeanProofs.IPRA.Combinatorics.LinearFactorTable (cyc congrCyc cyc_zero cyc_above
   cyc_succ_zero cyc_succ_succ actB Act act_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

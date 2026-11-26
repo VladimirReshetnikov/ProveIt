@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.FiniteFiberGrouping
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalValueEquality
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Grouping original point positions by their exact Gaussian-rational x value
@@ -18,14 +17,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiberGrouping
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode subst_recode recode_canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalValueEquality (valueEqual recode_equal_iff)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,12 +39,9 @@ abbrev partitionTotal (L p : PTm n) : PTm n := Foundations.FiniteFiberGrouping.p
 def outputF : PR 2 := Foundations.FiniteFiberGrouping.outputF xKeyF
 def run (L p : PTm n) : PTm n := ap2 outputF L p
 
-@[simp] theorem subst_abscissa {m : ℕ} (σ : Fin n → PTm m) (L i : PTm n) :
-    Syn.subst σ (abscissa L i) = abscissa (Syn.subst σ L) (Syn.subst σ i) := by simp [abscissa]
-@[simp] theorem subst_ordinate {m : ℕ} (σ : Fin n → PTm m) (L i : PTm n) :
-    Syn.subst σ (ordinate L i) = ordinate (Syn.subst σ L) (Syn.subst σ i) := by simp [ordinate]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (L p : PTm n) :
-    Syn.subst σ (run L p) = run (Syn.subst σ L) (Syn.subst σ p) := by simp [run]
+ipra_subst abscissa
+ipra_subst ordinate
+ipra_subst run
 theorem recode_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAAx] recode q ≐ recode r := by
   ipra_congr (recode (var 0) : PTm 1) with [h]
 theorem reader_at (point p : PTm n) : Γ ⊢[PRAAx] ap2 xKeyF point p ≐ recode (fstT point) := by

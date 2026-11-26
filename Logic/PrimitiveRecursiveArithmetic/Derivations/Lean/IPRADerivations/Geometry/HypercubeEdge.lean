@@ -2,8 +2,6 @@ import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Combinatorics.IndependentSets
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Combinatorics.BinomialTwo
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The hypercube edge inequality
@@ -32,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.HypercubeEdge
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (ev)
 open LeanProofs.IPRA.Combinatorics.IndependentSets (inst2_sub pairB inst2_pair sum_pairs pw_two_succ)
@@ -43,10 +41,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -445,13 +439,9 @@ private abbrev psiF : Fm PTm 3 :=
   le (var 0) (var 1) ⟶ (ap2 (sumF (vB χ)) (pw two (monus (var 1) (var 0))) (pairT (var 0) (pairT (var 1) (var 2))) ≐ zero)
 
 private theorem psi₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] psiF χ := by
-  refine ind _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_monus, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (psi_base χ _ _ _)
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_monus, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact psi_step χ Prf.hyp0
+  ipra_ind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (psi_base χ _ _ _)
+  · exact psi_step χ Prf.hyp0
 
 /-- `thm:cube-edge`: for `S = {v < 2^D : χ(v, x) ≠ 0}` (as `S_{1,0}`), `2^{2e(S)} ≤ |S|^{|S|}`. -/
 theorem cube_edge (D x : PTm n) : Γ ⊢[PRAAx] Pd χ D one zero x := by

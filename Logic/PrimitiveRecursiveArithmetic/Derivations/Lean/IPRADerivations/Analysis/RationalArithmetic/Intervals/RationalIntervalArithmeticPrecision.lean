@@ -15,9 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalIntervalArithmeticPrecision
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
+open_ipra
 open RationalArithmetic (represents multiply)
 open RationalArgmin (rationalLE denominator_positive)
 open RationalConvexSecants (nonnegative naturalNumerator nonnegative_representation rescaled_representation)
@@ -26,8 +24,6 @@ open RationalValueBounds (upper)
 open GaussianRationalSyntheticBounds (natCode natCode_represents)
 open GaussianRationalPowerDifference (budget budget_zero budget_step)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -35,9 +31,7 @@ local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 def perturbation (u v R A B j : PTm n) : Fm PTm n :=
   le (B*pw u j) (B*pw v j+budget R A j)
 
-@[simp] theorem subst_perturbation {m : ℕ} (σ : Fin n → PTm m) (u v R A B j : PTm n) :
-    (perturbation u v R A B j).subst σ = perturbation (Syn.subst σ u) (Syn.subst σ v)
-      (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ j) := by simp [perturbation]
+ipra_subst perturbation
 
 theorem perturbation_zero (u v R A B : PTm n) : Γ ⊢[PRAAx] perturbation u v R A B zero :=
   le_congr ((congrMul (.eqRefl _) (pw_zero u)).eqTrans (by ipra_ring)).eqSymm
@@ -74,11 +68,9 @@ theorem natural_power_perturbation (u v R A B j : PTm n) (hu : Γ ⊢[PRAAx] le 
     simpa [Fm.shift,Syn.shift] using hd.shift
   have all : Γ ⊢[PRAAx] .all (perturbation (Syn.shift u) (Syn.shift v) (Syn.shift R)
       (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_perturbation,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact perturbation_zero u v R A B
-    · simp only [subst_perturbation,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact perturbation_step _ _ _ _ _ _ us.wk vs.wk ds.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_perturbation]
+    · exact perturbation_zero u v R A B
+    · exact perturbation_step _ _ _ _ _ _ us.wk vs.wk ds.wk Prf.hyp0
   simpa only [subst_perturbation,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 theorem upper_to_natural_same (c d u v E P Q : PTm n) (hE : Γ ⊢[PRAAx] le one E)
@@ -107,8 +99,7 @@ theorem upper_from_natural_same (c d u v E P Q : PTm n) (hE : Γ ⊢[PRAAx] le o
   linear_combination -(𝔟 E)*e
 
 def slope (M e : PTm n) : PTm n := e*pw M e
-@[simp] theorem subst_slope {m : ℕ} (σ : Fin n → PTm m) (M e : PTm n) :
-    Syn.subst σ (slope M e) = slope (Syn.subst σ M) (Syn.subst σ e) := by simp [slope]
+ipra_subst slope
 
 theorem budget_common_denominator (M E e : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]
     le (budget (M*E) E e) (slope M e*pw E e) := by
@@ -258,13 +249,8 @@ def M (U : PR 3) (X Y x : PTm n) : PTm n :=
     (RationalNestedIntervals.read U Y zero x))
 def offset (U : PR 3) (X Y e p x : PTm n) : PTm n := p+slope (M U X Y x) e
 
-@[simp] theorem subst_M {m : ℕ} (σ : Fin n → PTm m) (U : PR 3) (X Y x : PTm n) :
-    Syn.subst σ (M U X Y x) = M U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ x) := by
-  simp [M,RationalConvexEndpointBudget.coarseCeiling,RationalConvexEndpointBudget.observedBound,
-    RationalConvexEndpointBudget.absolute,naturalNumerator,RationalSupMetric.numeratorOf]
-@[simp] theorem subst_offset {m : ℕ} (σ : Fin n → PTm m) (U : PR 3) (X Y e p x : PTm n) :
-    Syn.subst σ (offset U X Y e p x) = offset U (Syn.subst σ X) (Syn.subst σ Y)
-      (Syn.subst σ e) (Syn.subst σ p) (Syn.subst σ x) := by simp [offset]
+ipra_subst M [RationalConvexEndpointBudget.coarseCeiling, RationalConvexEndpointBudget.observedBound, RationalConvexEndpointBudget.absolute, naturalNumerator, RationalSupMetric.numeratorOf]
+ipra_subst offset
 
 theorem M_positive (U : PR 3) (X Y x : PTm n) : Γ ⊢[PRAAx] le one (M U X Y x) := zero_lt_succ _
 theorem offset_after_cutoff (U : PR 3) (X Y e p x : PTm n) : Γ ⊢[PRAAx] le p (offset U X Y e p x) := by
@@ -405,23 +391,14 @@ def output (U : PR 3) (X Y e p x : PTm n) : PTm n :=
   pairT (M U X Y x) (offset U X Y e p x)
 def outputF (U : PR 3) : PR 5 := PTm.toPR (output U (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (U : PR 3) (X Y e p x : PTm n) : PTm n := PTm.app (outputF U) ![X,Y,e,p,x]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (U : PR 3) (X Y e p x : PTm n) :
-    Syn.subst σ (output U X Y e p x) =
-      output U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ e) (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (U : PR 3) (X Y e p x : PTm n) :
-    Syn.subst σ (run U X Y e p x) =
-      run U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ e) (Syn.subst σ p) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (U : PR 3) (X Y e p x : PTm n) : Γ ⊢[PRAAx] run U X Y e p x ≐ output U X Y e p x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output U (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![X,Y,e,p,x]
 theorem returned_bound (U : PR 3) (X Y e p x : PTm n) : Γ ⊢[PRAAx] fstT (run U X Y e p x) ≐ M U X Y x :=
-  (congrFst (program_at U X Y e p x)).eqTrans (fst_pair _ _)
+  (program_at U X Y e p x).fstE
 theorem returned_offset (U : PR 3) (X Y e p x : PTm n) : Γ ⊢[PRAAx] sndT (run U X Y e p x) ≐ offset U X Y e p x :=
-  (congrSnd (program_at U X Y e p x)).eqTrans (snd_pair _ _)
+  (program_at U X Y e p x).sndE
 theorem returned_precision_bound (U : PR 3) (X Y e p x : PTm n) : Γ ⊢[PRAAx]
     le one (fstT (run U X Y e p x)) ⋏
       (le p (sndT (run U X Y e p x)) ⋏ le (slope (fstT (run U X Y e p x)) e) (sndT (run U X Y e p x))) := by

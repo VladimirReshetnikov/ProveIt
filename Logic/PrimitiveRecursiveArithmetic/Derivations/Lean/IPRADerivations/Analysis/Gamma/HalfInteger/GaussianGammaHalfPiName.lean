@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisRate
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # A regular name from the original arctangent quadrature
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfPiName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfWallisRate (wallisValue piGrid arctanError arctanDen gridSource finite_rate)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
@@ -23,10 +22,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open WallisFinite (Dm)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

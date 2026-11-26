@@ -18,7 +18,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesVignerasCyclicDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesVignerasCubicForce (coefficient farNumerator forceBudget force_lower)
 open GaussianCyclicCubicTaylor (error)
 open GaussianGammaCanonicalExponent (constantF)
@@ -33,10 +33,6 @@ open SignedCubicTaylorGrid (third_lower_at value)
 open PeriodicThirdDifferenceConstancy (cubicBudget)
 open PeriodicThirdDifferenceModulo (third)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

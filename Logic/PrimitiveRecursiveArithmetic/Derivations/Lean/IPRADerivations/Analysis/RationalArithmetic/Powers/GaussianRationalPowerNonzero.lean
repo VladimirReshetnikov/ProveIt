@@ -13,13 +13,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPowerNonzero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (canonical qzero subst_canonical subst_qzero)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_zero_right)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power power_zero power_succ power_canonical subst_power)
-open ConciseIPRA.PTm (zero succ)
-open scoped Fm
-open Syn
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -27,14 +24,10 @@ theorem power_nonzero (q k : PTm n) (hc : Γ ⊢[PRAAx] canonical q)
     (hz : Γ ⊢[PRAAx] neg (q ≐ qzero)) :
     Γ ⊢[PRAAx] neg (power q k ≐ qzero) := by
   have all : Γ ⊢[PRAAx] .all (neg (power (Syn.shift q) (var 0) ≐ qzero)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [neg,Fm.subst_imp,Fm.subst_eq,Fm.subst_bot,subst_power,subst_qzero,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (.impE GaussianRationalCurveFibers.gaussian_one_nonzero
+    ipra_qfind (by trivial) [neg, Fm.subst_bot, subst_power, subst_qzero]
+    · exact .impI (.impE GaussianRationalCurveFibers.gaussian_one_nonzero
         ((power_zero q).eqSymm.eqTrans Prf.hyp0))
-    · simp only [neg,Fm.subst_imp,Fm.subst_eq,Fm.subst_bot,subst_power,subst_qzero,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let q' := Syn.shift q
+    · let q' := Syn.shift q
       let j : PTm (n + 1) := var 0
       let Δ := neg (power q' j ≐ qzero) :: Γ.map Fm.shift
       have hcs : Γ.map Fm.shift ⊢[PRAAx] canonical q' := by

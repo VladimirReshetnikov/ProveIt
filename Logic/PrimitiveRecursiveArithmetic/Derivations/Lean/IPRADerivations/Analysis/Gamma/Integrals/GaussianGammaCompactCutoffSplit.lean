@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original compact Euler quadratures split at earlier cutoffs
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCompactCutoffSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
 open GaussianGammaCompactCutoffGeometry (lowerWidth middleWidth upperWidth ratio)
@@ -25,10 +24,6 @@ open GaussianEulerCompactAdditivity (nameF intervalSource)
 open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_to_diagonal)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,30 +41,13 @@ def geometricData (z R B p q A : PTm n) : PTm n := addData (lowerData z R B p q 
 def splitData (z R B p q A : PTm n) : PTm n := addData (lowerData z R B p q A)
   (addData (GaussianGammaEulerCompactQuadrature.data z R B p A) (upperData z R B p q A))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B p q A : PTm n) :
-    (source z R B p q A).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [source]
+ipra_subst source
 
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (z R B p q A : PTm n) :
-    Syn.subst σ (lowerData z R B p q A) = lowerData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by
-  simp [lowerData,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_upperData {m : ℕ} (σ : Fin n → PTm m) (z R B p q A : PTm n) :
-    Syn.subst σ (upperData z R B p q A) = upperData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by
-  simp [upperData,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_rightData {m : ℕ} (σ : Fin n → PTm m) (z R B p q A : PTm n) :
-    Syn.subst σ (rightData z R B p q A) = rightData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by
-  simp [rightData,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_geometricData {m : ℕ} (σ : Fin n → PTm m) (z R B p q A : PTm n) :
-    Syn.subst σ (geometricData z R B p q A) = geometricData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by
-  simp [geometricData]
-@[simp] theorem subst_splitData {m : ℕ} (σ : Fin n → PTm m) (z R B p q A : PTm n) :
-    Syn.subst σ (splitData z R B p q A) = splitData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by
-  simp [splitData]
+ipra_subst lowerData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst upperData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst rightData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst geometricData
+ipra_subst splitData
 
 theorem euler_data_congr (z R B a C E T a' C' E' T' : PTm n) (ha : Γ ⊢[PRAAx] a ≐ a')
     (hC : Γ ⊢[PRAAx] C ≐ C') (hE : Γ ⊢[PRAAx] E ≐ E') (hT : Γ ⊢[PRAAx] T ≐ T') : Γ ⊢[PRAAx]
@@ -262,9 +240,7 @@ theorem original_three_piece_split (z R B p q A : PTm n) (h : Γ ⊢[PRAAx] sour
 
 def rawSum (t z R B p q A : PTm n) : PTm n := GaussianRationalHorner.qadd (ap2 nameF t (lowerData z R B p q A))
   (GaussianRationalHorner.qadd (ap2 nameF t (GaussianGammaEulerCompactQuadrature.data z R B p A)) (ap2 nameF t (upperData z R B p q A)))
-@[simp] theorem subst_rawSum {m : ℕ} (σ : Fin n → PTm m) (t z R B p q A : PTm n) :
-    Syn.subst σ (rawSum t z R B p q A) = rawSum (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [rawSum]
+ipra_subst rawSum
 
 theorem normalized_to_raw (t z R B p q A : PTm n) (h : Γ ⊢[PRAAx] source z R B p q A) : Γ ⊢[PRAAx]
     GaussianRationalMetric.distanceBounded (ap2 tripleF t (splitData z R B p q A)) (rawSum t z R B p q A) (num 6) (GaussianCoefficientNameBounds.unit t) := by
@@ -301,26 +277,24 @@ def output (s t z R B p q A : PTm n) : PTm n := pairT (ap2 nameF s (GaussianGamm
     (GaussianCoefficientNameBounds.unit s*GaussianCoefficientNameBounds.unit t)))
 def outputF : PR 8 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (s t z R B p q A : PTm n) : PTm n := PTm.app outputF ![s,t,z,R,B,p,q,A]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (s t z R B p q A : PTm n) :
-    Syn.subst σ (output s t z R B p q A) = output (Syn.subst σ s) (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [output]
+ipra_subst output
 theorem program_at (s t z R B p q A : PTm n) : Γ ⊢[PRAAx] run s t z R B p q A ≐ output s t z R B p q A := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) : PTm 8) ![s,t,z,R,B,p,q,A]
 theorem returned_full (s t z R B p q A : PTm n) : Γ ⊢[PRAAx]
     fstT (run s t z R B p q A) ≐ ap2 nameF s (GaussianGammaEulerCompactQuadrature.data z R B q A) :=
-  (congrFst (program_at s t z R B p q A)).eqTrans (fst_pair _ _)
+  (program_at s t z R B p q A).fstE
 theorem returned_tail (s t z R B p q A : PTm n) : Γ ⊢[PRAAx] sndT (run s t z R B p q A) ≐ pairT (rawSum t z R B p q A)
     (pairT (GaussianCoefficientNameBounds.unit t+num 7*GaussianCoefficientNameBounds.unit s) (GaussianCoefficientNameBounds.unit s*GaussianCoefficientNameBounds.unit t)) :=
-  (congrSnd (program_at s t z R B p q A)).eqTrans (snd_pair _ _)
+  (program_at s t z R B p q A).sndE
 theorem returned_sum (s t z R B p q A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run s t z R B p q A)) ≐ rawSum t z R B p q A :=
-  (congrFst (returned_tail s t z R B p q A)).eqTrans (fst_pair _ _)
+  (returned_tail s t z R B p q A).fstE
 theorem returned_budget (s t z R B p q A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run s t z R B p q A)) ≐
     pairT (GaussianCoefficientNameBounds.unit t+num 7*GaussianCoefficientNameBounds.unit s) (GaussianCoefficientNameBounds.unit s*GaussianCoefficientNameBounds.unit t) :=
-  (congrSnd (returned_tail s t z R B p q A)).eqTrans (snd_pair _ _)
+  (returned_tail s t z R B p q A).sndE
 theorem returned_numerator (s t z R B p q A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run s t z R B p q A))) ≐
-    GaussianCoefficientNameBounds.unit t+num 7*GaussianCoefficientNameBounds.unit s := (congrFst (returned_budget s t z R B p q A)).eqTrans (fst_pair _ _)
+    GaussianCoefficientNameBounds.unit t+num 7*GaussianCoefficientNameBounds.unit s := (returned_budget s t z R B p q A).fstE
 theorem returned_denominator (s t z R B p q A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run s t z R B p q A))) ≐
-    GaussianCoefficientNameBounds.unit s*GaussianCoefficientNameBounds.unit t := (congrSnd (returned_budget s t z R B p q A)).eqTrans (snd_pair _ _)
+    GaussianCoefficientNameBounds.unit s*GaussianCoefficientNameBounds.unit t := (returned_budget s t z R B p q A).sndE
 theorem returned_distance (s t z R B p q A : PTm n) (h : Γ ⊢[PRAAx] source z R B p q A) : Γ ⊢[PRAAx]
     GaussianRationalMetric.distanceBounded (fstT (run s t z R B p q A)) (fstT (sndT (run s t z R B p q A)))
       (fstT (sndT (sndT (run s t z R B p q A)))) (sndT (sndT (sndT (run s t z R B p q A)))) :=

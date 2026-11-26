@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerInverseConvergence
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A cofinal sampler of the original Euler Gamma reciprocals
@@ -18,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerInverseApproximationName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaReciprocalInverse (source lambdaNumerator gammaF gammaData)
 open GaussianGammaEulerReciprocalInverse (eulerF eulerData)
 open GaussianGammaEulerInverseConvergence (coefficientNumerator coefficientDenominator)
@@ -30,10 +28,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_congr)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -44,20 +38,11 @@ def cutoff (p R a d : PTm n) : PTm n := two*R+numerator R+p+
 def observation (p z R B a d : PTm n) : PTm n :=
   ap2 eulerF (succ p) (eulerData z R B d (cutoff p R a d))
 
-@[simp] theorem subst_rateScale {m : ℕ} (σ : Fin n → PTm m) (R a : PTm n) :
-    Syn.subst σ (rateScale R a) = rateScale (Syn.subst σ R) (Syn.subst σ a) := by simp [rateScale]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (p R a d : PTm n) :
-    Syn.subst σ (cutoff p R a d) = cutoff (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp [cutoff,unit]
-@[simp] theorem subst_eulerData {m : ℕ} (σ : Fin n → PTm m) (z R B d N : PTm n) :
-    Syn.subst σ (eulerData z R B d N) = eulerData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) (Syn.subst σ N) := by
-  simp [eulerData,GaussianGammaEulerReciprocalInverse.eulerHeight]
-@[simp] theorem subst_gammaData {m : ℕ} (σ : Fin n → PTm m) (z R B d : PTm n) :
-    Syn.subst σ (gammaData z R B d) = gammaData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by
-  simp [gammaData,GaussianGammaReciprocalInverse.gammaHeight]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R B a d : PTm n) :
-    Syn.subst σ (observation p z R B a d) = observation (Syn.subst σ p) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ d) := by simp [observation]
+ipra_subst rateScale
+ipra_subst cutoff [unit]
+ipra_subst eulerData [GaussianGammaEulerReciprocalInverse.eulerHeight]
+ipra_subst gammaData [GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst observation
 
 theorem quotient_successor_cap (X S : PTm n) (hS : Γ ⊢[PRAAx] le one S) :
     Γ ⊢[PRAAx] le X (S*succ (quo X S)) := by
@@ -114,9 +99,7 @@ def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (fstT (sndT (va
   (fstT (sndT (sndT (var 1)))) (fstT (sndT (sndT (sndT (var 1))))) (sndT (sndT (sndT (sndT (var 1))))) : PTm 2)
 def sample (p z R B a d : PTm n) : PTm n := ap2 nameF p (data z R B a d)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B a d : PTm n) :
-    Syn.subst σ (data z R B a d) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp [data]
+ipra_subst data
 
 theorem observation_congr {p p' z z' R R' B B' a a' d d' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R')
@@ -139,8 +122,8 @@ theorem sample_at (p z R B a d : PTm n) : Γ ⊢[PRAAx] sample p z R B a d ≐ o
   have t₁ := snd_pair (Γ := Γ) z (pairT R (pairT B (pairT a d)))
   have t₂ := (congrSnd t₁).eqTrans (snd_pair R (pairT B (pairT a d)))
   have t₃ := (congrSnd t₂).eqTrans (snd_pair B (pairT a d))
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) ((congrFst t₁).eqTrans (fst_pair _ _))
-    ((congrFst t₂).eqTrans (fst_pair _ _)) ((congrFst t₃).eqTrans (fst_pair _ _)) ((congrSnd t₃).eqTrans (snd_pair _ _)))
+  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) t₁.fstE
+    t₂.fstE t₃.fstE t₃.sndE)
 
 theorem sample_canonical (p z R B a d : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (sample p z R B a d) :=

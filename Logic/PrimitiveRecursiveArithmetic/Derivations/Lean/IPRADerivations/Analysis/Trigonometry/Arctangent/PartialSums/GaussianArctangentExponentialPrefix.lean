@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentExponentialPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BaselQuadrature (Qb uq inst_Qb)
 open Products (fact)
 open GaussianArctangentCayleyStep (increment incrementCode)
@@ -29,10 +29,6 @@ open GaussianRootAlgebra (equal equal_of_values equal_refl re_add im_add re_mul 
 open GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (sum_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,17 +40,11 @@ def prefixValue (j M L : PTm n) : PTm n := ofGaussian (scale (two*total j M L) i
 
 def halfI : PTm n := ofGaussian imaginaryCode two
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (M L : PTm n) :
-    (source M L).subst σ = source (Syn.subst σ M) (Syn.subst σ L) := by
-  simp [source]
+ipra_subst source
 
-@[simp] theorem subst_total {m : ℕ} (σ : Fin n → PTm m) (j M L : PTm n) :
-    Syn.subst σ (total j M L) = total (Syn.subst σ j) (Syn.subst σ M) (Syn.subst σ L) := by
-  simp [total]
+ipra_subst total
 
-@[simp] theorem subst_prefixValue {m : ℕ} (σ : Fin n → PTm m) (j M L : PTm n) :
-    Syn.subst σ (prefixValue j M L) = prefixValue (Syn.subst σ j) (Syn.subst σ M) (Syn.subst σ L) := by
-  simp [prefixValue,imaginaryCode,Products.fact]
+ipra_subst prefixValue [imaginaryCode, Products.fact]
 
 private theorem fact_positive (L : PTm n) : Γ ⊢[PRAAx] le one (fact L) :=
   le_congr (.eqRefl _) (AnalyticNumberTheory.Primes.fact_pos L).eqSymm (zero_lt_succ _)

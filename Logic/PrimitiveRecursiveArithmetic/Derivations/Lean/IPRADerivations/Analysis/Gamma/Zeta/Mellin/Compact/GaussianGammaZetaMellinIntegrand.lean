@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianDominantPairAlgebra (radiusPoint subst_radiusPoint)
 open GaussianEuclideanDistanceName (pointCN)
@@ -31,9 +31,6 @@ open GaussianRationalMetric (bounded qnegative qnegative_canonical qsub qsub_can
 open GaussianRationalPolynomialExponential (scalarBody)
 open GaussianRationalReciprocal (bound_congr reciprocal reciprocal_canonical)
 open GaussianRationalSyntheticDivision (qone qadd_congr qsub_congr qzero_add)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Power" => GaussianEulerIntegrandName.powerF
@@ -54,21 +51,13 @@ def data (z D a b : PTm n) : PTm n := multiplyData Power reciprocalF (powerData 
 def factorClock (p z D a b : PTm n) : PTm n :=
   exponent (multiplyModulus Power reciprocalF (powerData z D a b) (reciprocalData a b)) p
 
-@[simp] theorem subst_exponentialData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (exponentialData a b) = exponentialData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [exponentialData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst exponentialData [GaussianGammaFiniteApproximantName.exponentialInputData]
 
-@[simp] theorem subst_denominatorData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (denominatorData a b) = denominatorData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [denominatorData]
+ipra_subst denominatorData
 
-@[simp] theorem subst_reciprocalData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (reciprocalData a b) = reciprocalData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [reciprocalData]
+ipra_subst reciprocalData
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z D a b : PTm n) :
-    Syn.subst σ (data z D a b) = data (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [data]
+ipra_subst data
 
 theorem denominator_regular (a b : PTm n) : Γ ⊢[PRAAx] pointCN denominatorF (denominatorData a b) := by
   let t := radiusPoint a b

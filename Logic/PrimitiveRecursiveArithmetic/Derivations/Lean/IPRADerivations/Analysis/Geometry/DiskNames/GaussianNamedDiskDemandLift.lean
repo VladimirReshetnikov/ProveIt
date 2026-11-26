@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedDemand
-import IPRADerivations.Core.MultiSums
 
 /-!
 # Demand lift of an executable rational map on a Gaussian disk
@@ -14,7 +13,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDiskDemandLift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -26,9 +25,6 @@ open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded)
 open GaussianBarnesCanonicalNamedDemand (source data subst_data native_source)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "disk" => GaussianBarnesCanonicalLogCofinal.source

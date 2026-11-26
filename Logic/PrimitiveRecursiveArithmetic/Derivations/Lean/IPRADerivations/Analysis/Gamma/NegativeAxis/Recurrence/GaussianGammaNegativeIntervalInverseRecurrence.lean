@@ -14,7 +14,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalInverseRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -30,9 +30,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameRingLaws (distributive multiply_commutative multiply_associative)
 open GaussianRationalHorner (qmul)
 open GaussianStirlingGammaLogarithm (arg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianEulerLogarithmicImproperName.nameF
@@ -64,21 +61,13 @@ def targetData (a b N : PTm n) : PTm n := addData (derivativeData a b N) (correc
     Syn.subst σ (liftedData a b N) = liftedData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
   simp [liftedData]
 
-@[simp] theorem subst_derivativeData {k : ℕ} (σ : Fin n → PTm k) (a b N : PTm n) :
-    Syn.subst σ (derivativeData a b N) = derivativeData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [derivativeData]
+ipra_subst derivativeData
 
-@[simp] theorem subst_correctionFactor {k : ℕ} (σ : Fin n → PTm k) (a b N : PTm n) :
-    Syn.subst σ (correctionFactor a b N) = correctionFactor (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [correctionFactor]
+ipra_subst correctionFactor
 
-@[simp] theorem subst_correctionData {k : ℕ} (σ : Fin n → PTm k) (a b N : PTm n) :
-    Syn.subst σ (correctionData a b N) = correctionData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [correctionData]
+ipra_subst correctionData
 
-@[simp] theorem subst_targetData {k : ℕ} (σ : Fin n → PTm k) (a b N : PTm n) :
-    Syn.subst σ (targetData a b N) = targetData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [targetData]
+ipra_subst targetData
 
 theorem lifted_regular (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) :
     Γ ⊢[PRAAx] pointCN liftedF (liftedData a b N) :=

@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.AnalyticNumberTheory.Totient
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The floor inequality of the super-Catalan numbers (`catalan_numbers_ipra_2026-11-16`, (7.15))
@@ -28,13 +26,9 @@ hence the integrality of `S(m, n)`.
 
 namespace LeanProofs.IPRA.Combinatorics.SuperCatalanFloor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

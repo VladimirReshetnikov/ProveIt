@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinTwoDirichlet
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode)
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianGammaFactorialValues (argument factorialValue integer_source natural_congr natural_one)
@@ -27,9 +27,6 @@ open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_symm cross
 open GaussianNameRingLaws (oneF one_at one_fast multiply_one)
 open GaussianNameArithmetic (multiply_equivalent)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianGammaZetaMellinImproper.nameF

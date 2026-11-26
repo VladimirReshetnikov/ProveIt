@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalHighYNormBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPolynomialMonicHornerReductionGaussianEmbedding (input width originalValue returned_evaluation)
 open RationalCurvePointsGaussianEmbedding (distinct curveZeros functionZeros curve_at function_at)
 open RationalPolynomialMonicNorm (norm finite_zero_bound_of_nonzero)
@@ -22,9 +22,6 @@ open GaussianPolynomialMonicNorm (degreeBound)
 open GaussianRationalFiberGrouping (abscissa ordinate)
 open RationalGaussianEmbedding (scalarZero)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,14 +33,8 @@ def degree (F H m a c N : PTm n) : PTm n :=
   RationalPolynomialDegreeGaussianEmbedding.degree (normPolynomial F H m a c N) (degreeBound m (width a c (succ N)) c)
 def points (F H m L : PTm n) : Fm PTm n := distinct L ⋏ (curveZeros F m L ⋏ functionZeros H (length H) L)
 
-@[simp] theorem subst_reduced {l : ℕ} (σ : Fin n → PTm l) (F H m a c N : PTm n) :
-    Syn.subst σ (reduced F H m a c N) =
-      reduced (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by
-  simp [reduced]
-@[simp] theorem subst_normPolynomial {l : ℕ} (σ : Fin n → PTm l) (F H m a c N : PTm n) :
-    Syn.subst σ (normPolynomial F H m a c N) =
-      normPolynomial (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by
-  simp [normPolynomial]
+ipra_subst reduced
+ipra_subst normPolynomial
 
 theorem monic_input (F H m a c N : PTm n) (h : Γ ⊢[PRAAx] input F H m a c N) :
     Γ ⊢[PRAAx] GaussianPolynomialMonicNorm.input F (reduced F H m a c N) m (width a c (succ N)) c :=

@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalProductStability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im scale normSq bounded)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (sub equal equal_of_values equal_re equal_im equal_of_code equal_trans equal_symm
@@ -33,10 +33,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootProduct (coefficients evaluate)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -44,9 +40,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def sourceCondition (N D R A B P Q : PTm n) : Fm PTm n :=
   le (pw Q N*(N*pw R (pred N)*A)) (pw P N*B*pw D (pred N))
 
-@[simp] theorem subst_sourceCondition {m : ℕ} (σ : Fin n → PTm m) (N D R A B P Q : PTm n) :
-    (sourceCondition N D R A B P Q).subst σ = sourceCondition (Syn.subst σ N) (Syn.subst σ D)
-      (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ P) (Syn.subst σ Q) := by simp [sourceCondition]
+ipra_subst sourceCondition
 
 theorem coefficient_leading (S T N D : PTm n) : Γ ⊢[PRAAx]
     equal (entry (scaledCoefficients T N D) zero) (entry (scaledCoefficients S N D) zero) := by
@@ -174,9 +168,7 @@ def coefficientBounds (S T N D A B : PTm n) : Fm PTm n :=
     (entry (GaussianRationalRootProduct.rationalCoefficients (Syn.shift S) (Syn.shift N) (Syn.shift D)) (succ (var 0)))
     (Syn.shift A) (Syn.shift B))
 
-@[simp] theorem subst_coefficientBounds {m : ℕ} (σ : Fin n → PTm m) (S T N D A B : PTm n) :
-    (coefficientBounds S T N D A B).subst σ = coefficientBounds (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ B) := by simp [coefficientBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coefficientBounds [Syn.subst_shift, Syn.shift_subst]
 
 theorem coefficient_bound_at (S T N D A B j : PTm n)
     (h : Γ ⊢[PRAAx] coefficientBounds S T N D A B) (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx]
@@ -234,10 +226,7 @@ def basicInput (S T N D R A B P Q : PTm n) : Fm PTm n :=
   le one N ⋏ (le one D ⋏ (le one B ⋏ (le one Q ⋏ (le D R ⋏
     (length S ≐ N ⋏ (length T ≐ N ⋏ sourceCondition N D R A B P Q))))))
 
-@[simp] theorem subst_basicInput {m : ℕ} (σ : Fin n → PTm m) (S T N D R A B P Q : PTm n) :
-    (basicInput S T N D R A B P Q).subst σ = basicInput (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ P) (Syn.subst σ Q) := by
-  simp [basicInput]
+ipra_subst basicInput
 
 theorem reverse_basic (S T N D R A B P Q : PTm n) (h : Γ ⊢[PRAAx] basicInput S T N D R A B P Q) :
     Γ ⊢[PRAAx] basicInput T S N D R A B P Q := by
@@ -302,10 +291,7 @@ def stabilityInput (S T N D R A B P Q : PTm n) : Fm PTm n :=
     (GaussianProductStability.pointsBounded S N R ⋏
       (GaussianProductStability.pointsBounded T N R ⋏ coefficientBounds S T N D A B))
 
-@[simp] theorem subst_stabilityInput {m : ℕ} (σ : Fin n → PTm m) (S T N D R A B P Q : PTm n) :
-    (stabilityInput S T N D R A B P Q).subst σ = stabilityInput (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ P) (Syn.subst σ Q) := by
-  simp [stabilityInput]
+ipra_subst stabilityInput
 
 /-- The full common-D source lemma: actual normalized coefficient bounds
 give both covers with the exact source constant, including P=0 and repeats. -/

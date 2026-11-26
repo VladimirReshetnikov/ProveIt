@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedPhase
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode add mul scale)
 open GaussianArctangentQuarterExponential (quarterF quarter_regular)
 open GaussianArctangentExponentialPeriod (twiceF twiceData fullTurnF fullTurnData fullTurnRadius original_full_turn_input)
@@ -31,9 +31,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_mul im_mul re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,12 +39,9 @@ def angleF (f : PR 2) : PR 2 := multiplyF fullTurnF f
 def angleData (f : PR 2) (z x : PTm n) : PTm n := multiplyData fullTurnF f (fullTurnData z) x
 def quarterPoint : PTm n := GaussianNamedRightHalfPlane.marginPoint (num 4)
 
-@[simp] theorem subst_angleData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z x : PTm n) :
-    Syn.subst σ (angleData f z x) = angleData f (Syn.subst σ z) (Syn.subst σ x) := by
-  simp [angleData, fullTurnData, twiceData]
+ipra_subst angleData [fullTurnData, twiceData]
 
-@[simp] theorem subst_quarterPoint {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (quarterPoint : PTm n) = quarterPoint := by simp [quarterPoint]
+ipra_subst quarterPoint
 
 theorem angle_regular (f : PR 2) (z x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] pointCN (angleF f) (angleData f z x) :=

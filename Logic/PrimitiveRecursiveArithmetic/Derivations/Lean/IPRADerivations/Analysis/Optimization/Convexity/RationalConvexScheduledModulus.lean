@@ -16,8 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexScheduledModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalScaling (rationalLT)
 open RationalNestedConvexModulus (presented witnessIndex witnessExponent)
 open RationalNestedIntervals (positiveWitness center centerF)
@@ -33,8 +32,6 @@ open RationalConvexSecants (nonnegative)
 open GaussianRationalSyntheticBounds (natCode)
 open RationalArithmetic (recode)
 open RationalValueBounds (radius)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -53,17 +50,9 @@ def positivePresentation (L U : PR 3) (W : PR 2) (x : PTm n) : Fm PTm n :=
 def threePoints (L U : PR 3) (W : PR 2) (A B C x : PTm n) : Fm PTm n :=
   presented L U W A x ⋏ (presented L U W B x ⋏ presented L U W C x)
 
-@[simp] theorem subst_presented {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (W : PR 2) (q x : PTm n) :
-    (presented L U W q x).subst σ =
-      presented L U W (Syn.subst σ q) (Syn.subst σ x) := by
-  simp [presented,witnessIndex,witnessExponent,RationalNestedIntervals.positiveWitness,RationalConvexFiniteModulus.eps]
-@[simp] theorem subst_threePoints {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (W : PR 2) (A B C x : PTm n) :
-    (threePoints L U W A B C x).subst σ =
-      threePoints L U W (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ x) := by simp [threePoints]
-@[simp] theorem subst_suggestedOffset {m : ℕ} (σ : Fin n → PTm m) (U : PR 3) (W : PR 2) (A B C j l x : PTm n) :
-    Syn.subst σ (suggestedOffset U W A B C j l x) =
-      suggestedOffset U W (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ j) (Syn.subst σ l) (Syn.subst σ x) := by
-  simp [suggestedOffset,cutoff,witnessIndex]
+ipra_subst presented [witnessIndex, witnessExponent, RationalNestedIntervals.positiveWitness, RationalConvexFiniteModulus.eps]
+ipra_subst threePoints
+ipra_subst suggestedOffset [cutoff, witnessIndex]
 
 theorem schedule_at (U : PR 3) (W : PR 2) (A B C j l x : PTm n) :
     Γ ⊢[PRAAx] schedule (sourceSchedule U W) A B C j l x ≐ suggestedOffset U W A B C j l x := by

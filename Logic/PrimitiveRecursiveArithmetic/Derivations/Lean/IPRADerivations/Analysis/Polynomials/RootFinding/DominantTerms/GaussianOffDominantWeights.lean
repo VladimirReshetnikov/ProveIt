@@ -1,7 +1,6 @@
 import IPRADerivations.Algebra.DescentDomination
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScoreWeights
 import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Computed finite geometric weights for the off-dominant terms
@@ -23,15 +22,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOffDominantWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.DescentDomination (four)
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit)
 open LeanProofs.IPRA.Analysis.GaussianRelativeNormTriangle (weightBody weightSum)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq scale normSq_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,26 +45,16 @@ def gUpper : PR 2 := PTm.toPR upperBody
 def sumLower (N k payload : PTm n) : PTm n := weightSum gLower (lowerCount k) (data N k payload)
 def sumUpper (N k payload : PTm n) : PTm n := weightSum gUpper (upperCount N k) (data N k payload)
 
-@[simp] theorem subst_C {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (C N) = C (Syn.subst σ N) := by simp [C]
-@[simp] theorem subst_lowerCount {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (lowerCount k) = lowerCount (Syn.subst σ k) := by simp [lowerCount]
-@[simp] theorem subst_upperCount {m : ℕ} (σ : Fin n → PTm m) (N k : PTm n) :
-    Syn.subst σ (upperCount N k) = upperCount (Syn.subst σ N) (Syn.subst σ k) := by simp [upperCount]
-@[simp] theorem subst_lowerDistance {m : ℕ} (σ : Fin n → PTm m) (k s : PTm n) :
-    Syn.subst σ (lowerDistance k s) = lowerDistance (Syn.subst σ k) (Syn.subst σ s) := by simp [lowerDistance]
-@[simp] theorem subst_upperDistance {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    Syn.subst σ (upperDistance s) = upperDistance (Syn.subst σ s) := by simp [upperDistance]
-@[simp] theorem subst_lowerWeight {m : ℕ} (σ : Fin n → PTm m) (N k s : PTm n) :
-    Syn.subst σ (lowerWeight N k s) = lowerWeight (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ s) := by simp [lowerWeight]
-@[simp] theorem subst_upperWeight {m : ℕ} (σ : Fin n → PTm m) (N s : PTm n) :
-    Syn.subst σ (upperWeight N s) = upperWeight (Syn.subst σ N) (Syn.subst σ s) := by simp [upperWeight]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N k payload : PTm n) :
-    Syn.subst σ (data N k payload) = data (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ payload) := by simp [data]
-@[simp] theorem subst_sumLower {m : ℕ} (σ : Fin n → PTm m) (N k payload : PTm n) :
-    Syn.subst σ (sumLower N k payload) = sumLower (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ payload) := by simp [sumLower]
-@[simp] theorem subst_sumUpper {m : ℕ} (σ : Fin n → PTm m) (N k payload : PTm n) :
-    Syn.subst σ (sumUpper N k payload) = sumUpper (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ payload) := by simp [sumUpper]
+ipra_subst C
+ipra_subst lowerCount
+ipra_subst upperCount
+ipra_subst lowerDistance
+ipra_subst upperDistance
+ipra_subst lowerWeight
+ipra_subst upperWeight
+ipra_subst data
+ipra_subst sumLower
+ipra_subst sumUpper
 
 theorem lower_program (N k payload s : PTm n) : Γ ⊢[PRAAx]
     ap2 gLower s (data N k payload) ≐ lowerWeight N k s := by
@@ -96,8 +81,7 @@ theorem upper_sum_program (N k payload : PTm n) : Γ ⊢[PRAAx]
 
 alias difference_le := Common.monus_le_self
 
-theorem positive_succ_pred (k : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx] k ≐ succ (pred k) :=
-  pos_of_eq_succ ((eq_add_of_le hk).eqTrans (by ipra_ring))
+alias positive_succ_pred := Common.pos_of_one_le'
 
 theorem lower_distance_identity (k s : PTm n) (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx]
     lowerDistance k s ≐ monus (lowerCount k) s :=

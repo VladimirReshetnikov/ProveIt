@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicIntervalLinearRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open Products (fact)
@@ -25,9 +25,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product represents_congr)
 open GaussianRationalMetric (distanceBounded qsub)
 open ComplexLogarithmRemainder (oneCode scale normSq)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

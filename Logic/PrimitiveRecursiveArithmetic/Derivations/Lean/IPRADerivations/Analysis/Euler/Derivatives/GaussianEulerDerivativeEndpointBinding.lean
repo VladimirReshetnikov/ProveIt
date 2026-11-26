@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDerivativeEndpointBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDerivativeCommonInterval (compactData improperData)
 open GaussianEulerDerivativeParameterPath (point numerator denominator)
 open GaussianEulerParameterExponentialIncrement (shifted)
@@ -25,10 +25,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator denominator_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianEulerLogarithmicImproperName.nameF

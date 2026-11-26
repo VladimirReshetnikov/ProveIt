@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveLowerEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerCoefficients (source)
 open GaussianGammaIntegralCutoffs (height etaDen eta_den_positive exact_eta_root_power)
 open GaussianEulerBetaPolynomialPrimitive (primitive)
@@ -29,10 +29,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,23 +40,12 @@ def scaledEndpoint (p z B k A R N : PTm n) : PTm n := qmul (naturalPoint N) (end
 def numerator (p z B k A R N : PTm n) : PTm n := budget z B N*(pw (rootDen k A R) (pred A)*unit p+one)
 def denominator (p k A R N : PTm n) : PTm n := N*etaDen k A R*unit p
 
-@[simp] theorem subst_rootDen {m : ℕ} (σ : Fin n → PTm m) (k A R : PTm n) :
-    Syn.subst σ (rootDen k A R) = rootDen (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by simp [rootDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (budget z B N) = budget (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [budget]
-@[simp] theorem subst_endpoint {m : ℕ} (σ : Fin n → PTm m) (p z B k A R N : PTm n) :
-    Syn.subst σ (endpoint p z B k A R N) = endpoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [endpoint,GaussianBetaPrimitiveLinearStep.sample,argument,point,value,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_scaledEndpoint {m : ℕ} (σ : Fin n → PTm m) (p z B k A R N : PTm n) :
-    Syn.subst σ (scaledEndpoint p z B k A R N) = scaledEndpoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [scaledEndpoint]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p z B k A R N : PTm n) :
-    Syn.subst σ (numerator p z B k A R N) = numerator (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p k A R N : PTm n) :
-    Syn.subst σ (denominator p k A R N) = denominator (Syn.subst σ p) (Syn.subst σ k)
-      (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [denominator,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst rootDen [height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst budget
+ipra_subst endpoint [GaussianBetaPrimitiveLinearStep.sample, argument, point, value, etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst scaledEndpoint
+ipra_subst numerator
+ipra_subst denominator [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem root_den_positive (k A R : PTm n) : Γ ⊢[PRAAx] le one (rootDen k A R) := unit_positive _
 theorem eta_factorization (k A R : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx]
@@ -159,8 +144,7 @@ theorem scaled_dyadic_bound (p z R B A k N : PTm n) (h : Γ ⊢[PRAAx] source z 
     (scaled_lower_endpoint_bound p z R B A k N h hN)
 
 def precision (t z B N : PTm n) : PTm n := GaussianFastValueCut.exponent (budget z B N) (ConciseIPRA.PTm.succ t)
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (t z B N : PTm n) :
-    Syn.subst σ (precision t z B N) = precision (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [precision]
+ipra_subst precision
 
 /-- A computed original observation and original cutoff, both at the
 same numerical precision, make the exact N-scaled endpoint <=2^-t. -/

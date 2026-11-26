@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerRootRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicLowerPointwise (degree exponent coefficient)
 open GaussianEulerLogarithmicCompactName (evaluatorF)
 open GaussianEulerLowerTailRootGrid (rootNumerator rootDenominator timeNumerator timeDenominator)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,19 +38,12 @@ def lipschitz (j q A R : PTm n) : PTm n := GaussianEulerLogarithmicMultiplier.li
 def fixedData (j z R B q A : PTm n) : PTm n := GaussianEulerLogarithmicCompactName.fixedData j R (intervalDen q A R) one z B
 def source (z R B H p q A : PTm n) : Fm PTm n := GaussianEulerLowerPowerCoefficients.source z R B A ⋏ (le one H ⋏ lt p q)
 
-@[simp] theorem subst_panelExponent {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (panelExponent A) = panelExponent (Syn.subst σ A) := by simp [panelExponent]
-@[simp] theorem subst_panelDegree {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (panelDegree A) = panelDegree (Syn.subst σ A) := by simp [panelDegree]
-@[simp] theorem subst_intervalDen {m : ℕ} (σ : Fin n → PTm m) (q A R : PTm n) :
-    Syn.subst σ (intervalDen q A R) = intervalDen (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [intervalDen,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (j q A R : PTm n) :
-    Syn.subst σ (lipschitz j q A R) = lipschitz (Syn.subst σ j) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by simp [lipschitz]
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (j z R B q A : PTm n) :
-    Syn.subst σ (fixedData j z R B q A) = fixedData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ q) (Syn.subst σ A) := by simp [fixedData]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B H p q A : PTm n) :
-    (source z R B H p q A).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [source]
+ipra_subst panelExponent
+ipra_subst panelDegree
+ipra_subst intervalDen [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst lipschitz
+ipra_subst fixedData
+ipra_subst source
 
 theorem degree_identity (A : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx] degree A ≐ panelDegree A :=
   RationalIntegerNormalization.positive_form (positive_product two A (le_succ_self one) hA)

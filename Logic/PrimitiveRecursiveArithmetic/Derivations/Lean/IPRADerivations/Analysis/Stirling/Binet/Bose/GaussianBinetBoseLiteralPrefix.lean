@@ -13,7 +13,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseExponential (expF expData)
 open GaussianBinetBoseSeries (ratio prefixValue)
 open GaussianBinetBoseSeriesRows (rowCost rowClock row_error)
@@ -22,26 +22,16 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRationalReciprocal (power)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def parameters (p A B : PTm n) : PTm n := pairT p (pairT A B)
 
-@[simp] theorem subst_parameters {m : ℕ} (σ : Fin n → PTm m) (p A B : PTm n) :
-    Syn.subst σ (parameters p A B) = parameters (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [parameters]
+ipra_subst parameters
 
-@[simp] theorem subst_rowCost {m : ℕ} (σ : Fin n → PTm m) (E i A B : PTm n) :
-    Syn.subst σ (rowCost E i A B) = rowCost (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [rowCost,two]
+ipra_subst rowCost [two]
 
-@[simp] theorem subst_rowClock {m : ℕ} (σ : Fin n → PTm m) (p B : PTm n) :
-    Syn.subst σ (rowClock p B) = rowClock (Syn.subst σ p) (Syn.subst σ B) := by
-  simp [rowClock, GaussianBinetBoseSeries.denominatorClock, GaussianBinetBoseDenominator.sampleClock,
-    GaussianNameReciprocal.anchor, GaussianNameReciprocal.modulus, two]
+ipra_subst rowClock [GaussianBinetBoseSeries.denominatorClock, GaussianBinetBoseDenominator.sampleClock, GaussianNameReciprocal.anchor, GaussianNameReciprocal.modulus, two]
 
 @[simp] theorem subst_ratio {m : ℕ} (σ : Fin n → PTm m) (p A B : PTm n) :
     Syn.subst σ (ratio p A B) = ratio (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by
@@ -61,13 +51,9 @@ def costBody : PTm 2 := rowCost (fstT (var 1)) (succ (var 0)) (fstT (sndT (var 1
 def value (p N A B : PTm n) : PTm n := GaussianRationalFiniteSum.sum body N (parameters p A B)
 def budget (N A B : PTm n) : PTm n := ap2 (LeanProofs.IPRA.sumF costBody) N (parameters N A B)
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p N A B : PTm n) :
-    Syn.subst σ (value p N A B) = value (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [value]
+ipra_subst value
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (N A B : PTm n) :
-    Syn.subst σ (budget N A B) = budget (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [budget]
+ipra_subst budget
 
 theorem value_canonical (p N A B : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (value p N A B) :=
   GaussianRationalFiniteSum.sum_canonical body N (parameters p A B)

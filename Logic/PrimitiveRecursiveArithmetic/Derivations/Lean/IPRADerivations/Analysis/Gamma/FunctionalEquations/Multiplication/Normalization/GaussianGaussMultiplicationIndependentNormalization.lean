@@ -14,7 +14,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationIndependentNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGaussMultiplicationPowerRate (powerF)
 open GaussianGaussMultiplicationPowerPerturbation (limitData)
 open GaussianGaussMultiplicationCofinalRows (scaledData scaled_regular limit_power_regular)
@@ -25,9 +25,6 @@ open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianGammaGaussIndependentSquareRoot.nameF

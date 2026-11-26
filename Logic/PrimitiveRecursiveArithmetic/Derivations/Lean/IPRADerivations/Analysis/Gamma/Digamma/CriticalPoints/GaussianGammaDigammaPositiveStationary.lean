@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaPositiveStationary
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaDyadicLocation (locationF)
 open GaussianGammaDigammaLocationIntegral (nativeResidual integral_zero)
@@ -25,8 +25,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm)
 open GaussianNameRingLaws (zeroF)
 open GaussianNamedGammaEulerFirstDerivative (source quotientF quotientData quotient_regular original_first_derivative_rate)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "LF" => GaussianNamedEulerLogarithmicImproper.nameF locationF

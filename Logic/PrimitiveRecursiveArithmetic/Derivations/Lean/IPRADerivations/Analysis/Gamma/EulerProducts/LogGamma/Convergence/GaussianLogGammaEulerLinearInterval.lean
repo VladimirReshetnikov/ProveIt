@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerLinearInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaFiniteSum (index reciprocalBody reciprocalSum reciprocal_entry)
 open GaussianGammaDigammaHarmonicPrefix (reciprocal_succ)
 open GaussianLogGammaEulerHead (argument)
@@ -26,9 +26,6 @@ open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open RationalGaussianEmbedding (embed embed_add embed_zero)
 open RationalHarmonicInterval (interval)
 open RationalReciprocalPowerTail (tail tail_zero tail_succ reciprocalPower)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,9 +35,7 @@ def linearBody : PTm 2 := multiplyBody reciprocalBody
 def linearRows (A B D neg N : PTm n) : PTm n := pairT (argument A B D neg) (pairT (succ N) one)
 def linearSum (A B D neg N r : PTm n) : PTm n := sum linearBody r (linearRows A B D neg N)
 
-@[simp] theorem subst_harmonicInterval {m : ℕ} (σ : Fin n → PTm m) (N r : PTm n) :
-    Syn.subst σ (harmonicInterval N r) = harmonicInterval (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [harmonicInterval]
+ipra_subst harmonicInterval
 
 @[simp] theorem subst_linearRows {m : ℕ} (σ : Fin n → PTm m) (A B D neg N : PTm n) :
     Syn.subst σ (linearRows A B D neg N) =

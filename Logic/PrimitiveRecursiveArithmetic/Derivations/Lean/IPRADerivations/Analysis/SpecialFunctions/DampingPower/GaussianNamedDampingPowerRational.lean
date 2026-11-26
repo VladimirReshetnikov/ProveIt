@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerRational
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerChart (exponentData powerF powerData nameF data)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -22,8 +22,6 @@ open GaussianEulerPositivePowerChart (argument)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

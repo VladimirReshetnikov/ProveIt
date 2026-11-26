@@ -20,7 +20,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerArgumentIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -40,9 +40,6 @@ open GaussianRationalHorner (canonical_unique ofGaussian ofGaussian_canonical of
 open GaussianRationalMetric (qsub qsub_canonical qsub_represents)
 open GaussianRightHalfPlaneLogarithm (source)
 open Products (fact)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianRightHalfPlaneLogarithm.nameF
@@ -62,10 +59,7 @@ local notation "sd" => GaussianNamedFiniteSumFamily.data
 def step (A B neg a b sign D : PTm n) : PTm n :=
   qsub (argument a b D sign) (argument A B D neg)
 
-@[simp] theorem subst_step {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D : PTm n) :
-    Syn.subst σ (step A B neg a b sign D) =
-      step (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ sign) (Syn.subst σ D) := by simp [step,argument,ZT.subst,ZT.ofNat]
+ipra_subst step [argument, ZT.subst, ZT.ofNat]
 
 theorem step_represents (A B neg a b sign D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] represents (step A B neg a b sign D) (GaussianRootAlgebra.sub (native a b sign) (native A B neg)) D :=
@@ -80,10 +74,7 @@ theorem step_ofGaussian (A B neg a b sign D : PTm n) (hD : Γ ⊢[PRAAx] le one 
 def rowData (A B neg a b sign D : PTm n) : PTm n :=
   pairT (baseData a b D sign) (baseData A B D neg)
 
-@[simp] theorem subst_rowData {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D : PTm n) :
-    Syn.subst σ (rowData A B neg a b sign D) =
-      rowData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ sign) (Syn.subst σ D) := by simp [rowData]
+ipra_subst rowData
 
 private def projectedBody (p : PTm 1) : PTm 2 := inst2 baseRow (var 0) (inst1 p (var 1))
 private abbrev laterBody := projectedBody (fstT (var 0))
@@ -99,20 +90,11 @@ def windowF : PR 2 := diffF productF sumF
 def windowData (A B neg a b sign D N : PTm n) : PTm n :=
   diffData (weightedData A B neg a b sign D N) (sumData A B neg a b sign D N)
 
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D N : PTm n) :
-    Syn.subst σ (sumData A B neg a b sign D N) =
-      sumData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ sign) (Syn.subst σ D) (Syn.subst σ N) := by simp [sumData]
+ipra_subst sumData
 
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D N : PTm n) :
-    Syn.subst σ (weightedData A B neg a b sign D N) =
-      weightedData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ sign) (Syn.subst σ D) (Syn.subst σ N) := by simp [weightedData,one]
+ipra_subst weightedData [one]
 
-@[simp] theorem subst_windowData {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D N : PTm n) :
-    Syn.subst σ (windowData A B neg a b sign D N) =
-      windowData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ sign) (Syn.subst σ D) (Syn.subst σ N) := by simp [windowData]
+ipra_subst windowData
 
 private theorem first_projection (x y : PTm n) : Γ ⊢[PRAAx] inst1 (fstT (var 0)) (pairT x y) ≐ x := by
   simpa [inst1] using fst_pair (Γ := Γ) x y

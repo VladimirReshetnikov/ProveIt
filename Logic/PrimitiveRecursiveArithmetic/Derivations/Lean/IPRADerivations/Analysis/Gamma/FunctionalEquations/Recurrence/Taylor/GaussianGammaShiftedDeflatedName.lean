@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaShiftedDeflatedName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaShiftedDeflatedPolynomial (input rawValue shiftedSample)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
@@ -21,9 +21,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -35,14 +32,10 @@ def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def nameData (z R B d : PTm n) : PTm n := GaussianFastValueCut.nameData B (data z R B d)
 def clock (p B : PTm n) : PTm n := GaussianFastValueCut.exponent B p
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B d : PTm n) :
-    Syn.subst σ (data z R B d) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by simp [data]
-@[simp] theorem subst_rawTerm {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
-    Syn.subst σ (rawTerm p x) = rawTerm (Syn.subst σ p) (Syn.subst σ x) := by simp [rawTerm]
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (z R B d : PTm n) :
-    Syn.subst σ (nameData z R B d) = nameData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by simp [nameData]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p B : PTm n) :
-    Syn.subst σ (clock p B) = clock (Syn.subst σ p) (Syn.subst σ B) := by simp [clock]
+ipra_subst data
+ipra_subst rawTerm
+ipra_subst nameData
+ipra_subst clock
 
 private theorem value_congr (p z R B d z' R' B' d' : PTm n)
     (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R')
@@ -69,9 +62,9 @@ theorem raw_at (p z R B d : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (data z R B d) ≐
   have first := snd_pair (Γ := Γ) z (pairT R (pairT B d))
   have second := (congrSnd first).eqTrans (snd_pair R (pairT B d))
   exact actual.eqTrans (value_congr _ _ _ _ _ _ _ _ _ (fst_pair _ _)
-    ((congrFst first).eqTrans (fst_pair _ _))
-    ((congrFst second).eqTrans (fst_pair _ _))
-    ((congrSnd second).eqTrans (snd_pair _ _)))
+    first.fstE
+    second.fstE
+    second.sndE)
 
 theorem name_at (p z R B d : PTm n) : Γ ⊢[PRAAx]
     ap2 nameF p (nameData z R B d) ≐ rawValue (clock p B) z R B d :=

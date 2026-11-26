@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Probability.MedianCounts
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The comparison-sorting lower bound and the interpolated median
@@ -28,14 +26,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.SortingBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (pw_two_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,13 +44,9 @@ alias le_one_succ := Common.one_le_succ
 private abbrev fpF : Fm PTm 1 := le one (ap2 factF (var 0) zero)
 
 private theorem fp₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] fpF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact le_congr (.eqRefl _) (fact_zero _).eqSymm (le_refl _)
-  · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact le_congr (by ipra_ring) (fact_succ _ _).eqSymm (le_mul_mono Prf.hyp0 (le_one_succ _))
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (.eqRefl _) (fact_zero _).eqSymm (le_refl _)
+  · exact le_congr (by ipra_ring) (fact_succ _ _).eqSymm (le_mul_mono Prf.hyp0 (le_one_succ _))
 
 /-- `1 ≤ N!`. -/
 theorem fact_pos (x : PTm n) : Γ ⊢[PRAAx] le one (fct x) := by
@@ -67,13 +57,9 @@ theorem fact_pos (x : PTm n) : Γ ⊢[PRAAx] le one (fct x) := by
 private abbrev pfF : Fm PTm 2 := le (pw (var 1) (var 0)) (ap2 factF (var 1 + var 0) zero)
 
 private theorem pf₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] pfF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (pw_zero _).eqSymm (congrAp2 factF (add_zero _).eqSymm (.eqRefl _)) (fact_pos _)
-  · simp only [subst_le, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine le_congr (pw_succ _ _).eqSymm
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (pw_zero _).eqSymm (congrAp2 factF (add_zero _).eqSymm (.eqRefl _)) (fact_pos _)
+  · refine le_congr (pw_succ _ _).eqSymm
       ((congrAp2 factF (add_succ _ _) (.eqRefl _)).eqTrans (fact_succ _ _)).eqSymm ?_
     exact le_mul_mono Prf.hyp0 (le_of_eq_add (d := succ (var 0)) (by ipra_ring))
 

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1150000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesVignerasProportionality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHyperfactorial (barnesData barnes_regular)
 open GaussianBarnesCanonicalPositiveLogarithm (default_source)
 open GaussianBarnesCanonicalPositiveLogarithmRecurrence (exponential_barnes)
@@ -26,9 +26,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNamedExponentialDifferenceIdentity (ones_equivalent)
 open GaussianNameRingLaws (negativeF negativeData oneF one_fast zeroF multiply_associative multiply_commutative
   multiply_one multiply_one_left)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -17,7 +17,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReferenceSquare
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicSineProductSquare (data)
 open GaussianGammaGaussReflectionFamily (reflection_body_eq sineBody pairBody leftBody rightBody piBody
   sine_rows left_rows right_rows pi_rows)
@@ -40,8 +40,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_refl)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaHalfPiName.nameF

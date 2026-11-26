@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalIntegrandSquare
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalExponentReference (source original_projected_exponent)
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianGammaRealValues (axisF)
@@ -22,9 +22,6 @@ open GaussianExponentialRealPart (squareF squareData squarePrecision)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_to_diagonal)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianEulerIntegrandName (exponentF exponentData radius nameF data)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

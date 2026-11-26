@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weighted Catalan convolution
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanSums
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Catalan (cat cat_odd_binom)
@@ -28,10 +27,6 @@ open LeanProofs.IPRA.Combinatorics.CatalanConvolution
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialNamedKernelRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerExponentialSubstitutionNamedKernel
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianRationalHorner (ofGaussian qadd qmul qzero positive_product)
@@ -29,10 +29,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,15 +40,10 @@ def source (f g : PR 2) (z R B S x y A D : PTm n) : Fm PTm n :=
   ((GaussianRadiusExponentialName.input f S x ⋏ GaussianRadiusExponentialName.input g S y) ⋏
     (le one D ⋏ independentRate f g x y A D))
 
-@[simp] theorem subst_innerBound {m : ℕ} (σ : Fin n → PTm m) (S : PTm n) :
-    Syn.subst σ (innerBound S) = innerBound (Syn.subst σ S) := by simp [innerBound]
-@[simp] theorem subst_exponentRadius {m : ℕ} (σ : Fin n → PTm m) (R S : PTm n) :
-    Syn.subst σ (exponentRadius R S) = exponentRadius (Syn.subst σ R) (Syn.subst σ S) := by simp [exponentRadius]
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (R S : PTm n) :
-    Syn.subst σ (gain R S) = gain (Syn.subst σ R) (Syn.subst σ S) := by simp [gain]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (z R B S x y A D : PTm n) :
-    (source f g z R B S x y A D).subst σ = source f g (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ S) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ D) := by simp [source]
+ipra_subst innerBound
+ipra_subst exponentRadius
+ipra_subst gain
+ipra_subst source
 
 /-- The actual own-radius exponential, bounded at its actual input query. -/
 theorem inner_observation_bound (f : PR 2) (p S x : PTm n)

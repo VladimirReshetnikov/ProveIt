@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNaturalExponentialDyadicBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (bBody inst2_b binom_zero')
 open GaussianExponentialDiskMajorant (numerator numerator_zero numerator_succ real_majorant_represents)
@@ -30,9 +30,6 @@ open GaussianCoefficientNameBounds (unit)
 open GaussianRationalSyntheticBounds (natCode natCode_represents)
 open Products (fact)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,10 +37,8 @@ def binomialPrefix (R K : PTm n) : PTm n := ap2 (sumF bBody) (succ K) R
 def prefixLower (R K : PTm n) : Fm PTm n :=
   le K R ⟶ le (fact (succ K)*binomialPrefix R K) (numerator R K)
 
-@[simp] theorem subst_binomialPrefix {m : ℕ} (σ : Fin n → PTm m) (R K : PTm n) :
-    Syn.subst σ (binomialPrefix R K) = binomialPrefix (Syn.subst σ R) (Syn.subst σ K) := by simp [binomialPrefix]
-@[simp] theorem subst_prefixLower {m : ℕ} (σ : Fin n → PTm m) (R K : PTm n) :
-    (prefixLower R K).subst σ = prefixLower (Syn.subst σ R) (Syn.subst σ K) := by simp [prefixLower, fact]
+ipra_subst binomialPrefix
+ipra_subst prefixLower [fact]
 
 theorem prefix_zero (R : PTm n) : Γ ⊢[PRAAx] binomialPrefix R zero ≐ one := by
   unfold binomialPrefix
@@ -74,14 +69,12 @@ private theorem lower_step (R K : PTm n) (hj : Γ ⊢[PRAAx] le (succ K) R)
 theorem original_prefix_bound (R K : PTm n) (hK : Γ ⊢[PRAAx] le K R) :
     Γ ⊢[PRAAx] le (fact (succ K)*binomialPrefix R K) (numerator R K) := by
   have law : Γ ⊢[PRAAx] .all (prefixLower (Syn.shift R) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLower, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_prefixLower]
+    · refine .impI ?_
       have e : (le zero R :: Γ) ⊢[PRAAx] fact (succ (zero : PTm n)) ≐ one :=
         (fact_succ zero zero).eqTrans ((congrMul (fact_zero zero) (.eqRefl _)).eqTrans (one_mul _))
       exact le_congr ((congrMul e (prefix_zero R)).eqTrans (one_mul _)).eqSymm (numerator_zero R).eqSymm (le_refl one)
-    · simp only [subst_prefixLower, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI (lower_step _ _ Prf.hyp0 ?_)
+    · refine .impI (lower_step _ _ Prf.hyp0 ?_)
       exact .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
   have atK : Γ ⊢[PRAAx] prefixLower R K := by
     simpa only [subst_prefixLower, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using law.allE K

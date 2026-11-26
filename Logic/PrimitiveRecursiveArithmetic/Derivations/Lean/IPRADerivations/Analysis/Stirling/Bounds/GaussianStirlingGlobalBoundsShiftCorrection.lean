@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGlobalBoundsShiftCorrection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
@@ -34,10 +34,6 @@ open GaussianRootAlgebra (equal equal_of_values sub re_sub im_sub re_mul im_mul 
 open GaussianStirlingGlobalBoundsShiftArguments (shiftedNumerator positiveFraction ratioData shifted_positive log_ratio_regular)
 open GaussianStirlingNames (offset point)
 open GaussianPositiveRationalLogarithm (fraction logF)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -50,14 +46,9 @@ def correctionData (i r b : PTm n) : PTm n := GaussianNamedDifference.data (posi
 def budget (i r b : PTm n) : PTm n :=
   (multiplyModulus constantF logF (offset (shiftedNumerator i r b) b) (ratioData i r b)+num 7)+num 8*(i+two)
 
-@[simp] theorem subst_productData {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    Syn.subst σ (productData i r b) = productData (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by simp [productData]
-@[simp] theorem subst_correctionData {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    Syn.subst σ (correctionData i r b) = correctionData (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by
-  simp [correctionData,positiveFraction]
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (i r b : PTm n) :
-    Syn.subst σ (budget i r b) = budget (Syn.subst σ i) (Syn.subst σ r) (Syn.subst σ b) := by
-  simp [budget,GaussianNameArithmetic.multiplyModulus]
+ipra_subst productData
+ipra_subst correctionData [positiveFraction]
+ipra_subst budget [GaussianNameArithmetic.multiplyModulus]
 
 theorem product_regular (i r b : PTm n) (hi : Γ ⊢[PRAAx] le one i) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] pointCN productF (productData i r b) :=

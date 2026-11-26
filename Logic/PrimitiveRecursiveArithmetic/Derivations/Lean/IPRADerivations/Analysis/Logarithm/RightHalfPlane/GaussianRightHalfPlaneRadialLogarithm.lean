@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneRadialLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code normSq normSq_code)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product)
 open RationalGaussianEmbedding (embed embed_canonical embed_from_representation)
 open GaussianRationalMetric (qnormSq qnormSq_represents)
 open GaussianNamedBoundedSquareRoot (sqrtF)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianPositiveRationalHalfLogarithm.nameF
@@ -45,9 +42,7 @@ def data (A B D : PTm n) : PTm n := R (normNum A B) (normDen D)
 def exponentialData (A B D : PTm n) : PTm n :=
   GaussianPositiveRationalHalfLogarithm.exponentialData (normNum A B) (normDen D)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D : PTm n) :
-    Syn.subst σ (data A B D) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) := by
-  simp [data,normNum,normDen]
+ipra_subst data [normNum, normDen]
 
 theorem log_source (A B D : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.source (normNum A B) (normDen D) :=

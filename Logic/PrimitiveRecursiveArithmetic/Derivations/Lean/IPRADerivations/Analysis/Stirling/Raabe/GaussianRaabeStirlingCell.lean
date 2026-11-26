@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeStirlingCell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianPositiveRationalLogarithm (fraction sample)
 open GaussianPositiveRationalLogarithmIncrement (increment original_increment)
@@ -26,10 +26,6 @@ open GaussianRationalReciprocal (bounded_difference bounded_product bound_congr)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,12 +42,8 @@ def denominator (p A D : PTm n) : PTm n := A*D*unit p
 
 @[simp] theorem subst_half {m : ℕ} (σ : Fin n → PTm m) :
     Syn.subst σ (half : PTm n) = (half : PTm m) := by simp [half,one,two]
-@[simp] theorem subst_elementary {m : ℕ} (σ : Fin n → PTm m) (p A D : PTm n) :
-    Syn.subst σ (elementary p A D) = elementary (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [elementary]
-@[simp] theorem subst_affine {m : ℕ} (σ : Fin n → PTm m) (p A D H : PTm n) :
-    Syn.subst σ (affine p A D H) = affine (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ H) := by
-  simp [affine]
+ipra_subst elementary
+ipra_subst affine
 
 private theorem subtract_product (a b l : PTm n) :
     Γ ⊢[PRAAx] qmul (qsub a b) l ≐ qsub (qmul a l) (qmul b l) :=

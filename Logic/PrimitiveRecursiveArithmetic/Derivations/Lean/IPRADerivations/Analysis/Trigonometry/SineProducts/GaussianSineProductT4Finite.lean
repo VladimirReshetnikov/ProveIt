@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductT4Finite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSineProductT4Budget (halfIndex squareDenominator rate cutoff precision_bound)
 open GaussianSineProductT6 (factorSize t4_finite)
 open GaussianGammaEulerReflectionHead (body sineProduct)
@@ -23,10 +23,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (qone)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

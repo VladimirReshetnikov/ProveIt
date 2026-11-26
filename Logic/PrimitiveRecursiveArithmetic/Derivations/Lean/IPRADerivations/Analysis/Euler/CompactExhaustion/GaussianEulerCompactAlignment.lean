@@ -16,24 +16,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactAlignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (data nameF intervalSource)
 open GaussianEulerCompactModulus (lipschitz)
 open GaussianRationalHorner (positive_product)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z R B a C E T S k : PTm n) : Fm PTm n := GaussianEulerExponentCompactBounds.source z R B E ⋏
   (le one a ⋏ (le one k ⋏ (le (a+C) (E*T) ⋏ le (a+C) (E*S))))
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T S k : PTm n) :
-    (source z R B a C E T S k).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ S) (Syn.subst σ k) := by simp [source]
+ipra_subst source
 
 theorem original_source (z R B a C E T S k : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E T S k) : Γ ⊢[PRAAx]
     intervalSource z R B a C E T := .andI h.andE₁ (.andI h.andE₂.andE₁ h.andE₂.andE₂.andE₂.andE₁)
@@ -70,27 +65,25 @@ def output (z R B a C E T S k : PTm n) : PTm n := pairT (data z R B a C E T)
   (pairT (data z R B (k*a) (k*C) (k*E) S) (pairT (lipschitz R E T) (lipschitz R (k*E) S)))
 def outputF : PR 9 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8))
 def run (z R B a C E T S k : PTm n) : PTm n := PTm.app outputF ![z,R,B,a,C,E,T,S,k]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T S k : PTm n) :
-    Syn.subst σ (output z R B a C E T S k) = output (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ S) (Syn.subst σ k) := by simp [output]
+ipra_subst output
 theorem program_at (z R B a C E T S k : PTm n) : Γ ⊢[PRAAx] run z R B a C E T S k ≐ output z R B a C E T S k := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9) ![z,R,B,a,C,E,T,S,k]
 theorem returned_original (z R B a C E T S k : PTm n) : Γ ⊢[PRAAx]
-    fstT (run z R B a C E T S k) ≐ data z R B a C E T := (congrFst (program_at z R B a C E T S k)).eqTrans (fst_pair _ _)
+    fstT (run z R B a C E T S k) ≐ data z R B a C E T := (program_at z R B a C E T S k).fstE
 theorem returned_tail (z R B a C E T S k : PTm n) : Γ ⊢[PRAAx]
     sndT (run z R B a C E T S k) ≐ pairT (data z R B (k*a) (k*C) (k*E) S)
-      (pairT (lipschitz R E T) (lipschitz R (k*E) S)) := (congrSnd (program_at z R B a C E T S k)).eqTrans (snd_pair _ _)
+      (pairT (lipschitz R E T) (lipschitz R (k*E) S)) := (program_at z R B a C E T S k).sndE
 theorem returned_aligned (z R B a C E T S k : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run z R B a C E T S k)) ≐ data z R B (k*a) (k*C) (k*E) S :=
-  (congrFst (returned_tail z R B a C E T S k)).eqTrans (fst_pair _ _)
+  (returned_tail z R B a C E T S k).fstE
 theorem returned_budgets (z R B a C E T S k : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run z R B a C E T S k)) ≐ pairT (lipschitz R E T) (lipschitz R (k*E) S) :=
-  (congrSnd (returned_tail z R B a C E T S k)).eqTrans (snd_pair _ _)
+  (returned_tail z R B a C E T S k).sndE
 theorem returned_original_budget (z R B a C E T S k : PTm n) : Γ ⊢[PRAAx]
-    fstT (sndT (sndT (run z R B a C E T S k))) ≐ lipschitz R E T := (congrFst (returned_budgets z R B a C E T S k)).eqTrans (fst_pair _ _)
+    fstT (sndT (sndT (run z R B a C E T S k))) ≐ lipschitz R E T := (returned_budgets z R B a C E T S k).fstE
 theorem returned_aligned_budget (z R B a C E T S k : PTm n) : Γ ⊢[PRAAx]
-    sndT (sndT (sndT (run z R B a C E T S k))) ≐ lipschitz R (k*E) S := (congrSnd (returned_budgets z R B a C E T S k)).eqTrans (snd_pair _ _)
+    sndT (sndT (sndT (run z R B a C E T S k))) ≐ lipschitz R (k*E) S := (returned_budgets z R B a C E T S k).sndE
 
 theorem returned_alignment (z R B a C E T S k : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E T S k) : Γ ⊢[PRAAx]
     crossEquivalent nameF nameF (fstT (run z R B a C E T S k)) (fstT (sndT (run z R B a C E T S k))) := by

@@ -14,17 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerCutoffBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicNamedLowerBound (source leading point)
 open GaussianEulerLogarithmicLowerRootRows (panelDegree)
 open GaussianGammaIntegralCutoffs (height)
 open GaussianRationalMetric (bounded)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -33,11 +29,8 @@ def clock (k j A : PTm n) : PTm n := GaussianFastValueCut.exponent (leading j A)
 def scheduledData (j z R B k q A : PTm n) : PTm n :=
   GaussianEulerLogarithmicNamedLowerBound.data j z R B (clock k j A) q A
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (k j A : PTm n) :
-    Syn.subst σ (clock k j A) = clock (Syn.subst σ k) (Syn.subst σ j) (Syn.subst σ A) := by simp [clock]
-@[simp] theorem subst_scheduledData {m : ℕ} (σ : Fin n → PTm m) (j z R B k q A : PTm n) :
-    Syn.subst σ (scheduledData j z R B k q A) = scheduledData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ q) (Syn.subst σ A) := by simp [scheduledData]
+ipra_subst clock
+ipra_subst scheduledData
 
 theorem clock_later (k j A : PTm n) : Γ ⊢[PRAAx] le k (clock k j A) :=
   le_trans (le_add_right k (num 6)) (le_add_right _ _)

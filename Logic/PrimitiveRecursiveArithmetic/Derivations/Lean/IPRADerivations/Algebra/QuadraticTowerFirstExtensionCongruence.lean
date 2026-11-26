@@ -1,5 +1,4 @@
 import IPRADerivations.Algebra.QuadraticTowerFirstExtensionOrder
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual first-extension quotient operations
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerFirstExtensionCongruence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerArrayCodec (arrayHeight)
 open QuadraticTowerScalarBudget (amp growth)
@@ -30,9 +29,6 @@ open QuadraticTowerFirstExtensionIdeal (productBound query_sign_original product
 open QuadraticTowerFirstExtensionOrder (first_index second_index coefficients_entries native_difference_congr sign_difference)
 open QuadraticTowerDifferenceIdentities (difference signDifference equivalent less)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -138,11 +134,8 @@ theorem positive_multiplication_order (M S D A C E b : PTm n) (hM : Γ ⊢[PRAAx
 def signCap (b : PTm n) : PTm n := amp (productBound b)
 def source (D A C E F b : PTm n) : Fm PTm n := QuadraticTowerFirstExtensionIdeal.source D A C b ⋏
   (arrayHeight one E b ⋏ arrayHeight one F b)
-@[simp] theorem subst_signCap {k : ℕ} (σ : Fin n → PTm k) (b : PTm n) :
-    Syn.subst σ (signCap b) = signCap (Syn.subst σ b) := by simp [signCap]
-@[simp] theorem subst_source {k : ℕ} (σ : Fin n → PTm k) (D A C E F b : PTm n) :
-    (source D A C E F b).subst σ = source (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ F) (Syn.subst σ b) := by simp [source]
+ipra_subst signCap
+ipra_subst source
 
 theorem growth_one (b : PTm n) : Γ ⊢[PRAAx] growth one b ≐ amp b :=
   (QuadraticTowerScalarBudget.growth_succ zero b).eqTrans (QuadraticTowerGrowth.amp_congr (QuadraticTowerScalarBudget.growth_zero b))
@@ -160,38 +153,30 @@ def output (b D A C E F : PTm n) : PTm n :=
       (pairT (signDifference one (signCap b) D (query one b D A E) (query one b D C F)) (signCap b)))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (b D A C E F : PTm n) : PTm n := PTm.app outputF ![b,D,A,C,E,F]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (b D A C E F : PTm n) :
-    Syn.subst σ (output b D A C E F) = output (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ F) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (b D A C E F : PTm n) :
-    Syn.subst σ (run b D A C E F) = run (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ F) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (b D A C E F : PTm n) : Γ ⊢[PRAAx] run b D A C E F ≐ output b D A C E F := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![b,D,A,C,E,F]
 theorem returned_addition (b D A C E F : PTm n) : Γ ⊢[PRAAx] fstT (run b D A C E F) ≐
     signDifference one (signCap b) D (added one A E) (added one C F) :=
-  (congrFst (program_at _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).fstE
 theorem returned_tail (b D A C E F : PTm n) : Γ ⊢[PRAAx] sndT (run b D A C E F) ≐
     pairT (signDifference one (signCap b) D (negated one A) (negated one C))
       (pairT (signDifference one (signCap b) D (query one b D A E) (query one b D C F)) (signCap b)) :=
-  (congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _ _).sndE
 theorem returned_negative (b D A C E F : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run b D A C E F)) ≐
     signDifference one (signCap b) D (negated one A) (negated one C) :=
-  (congrFst (returned_tail _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _ _ _).fstE
 theorem returned_product_pair (b D A C E F : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run b D A C E F)) ≐
     pairT (signDifference one (signCap b) D (query one b D A E) (query one b D C F)) (signCap b) :=
-  (congrSnd (returned_tail _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _ _ _).sndE
 theorem returned_multiplication (b D A C E F : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run b D A C E F))) ≐
     signDifference one (signCap b) D (query one b D A E) (query one b D C F) :=
-  (congrFst (returned_product_pair _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_product_pair _ _ _ _ _ _).fstE
 theorem returned_cap (b D A C E F : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run b D A C E F))) ≐ signCap b :=
-  (congrSnd (returned_product_pair _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_product_pair _ _ _ _ _ _).sndE
 
 /-- All three literal returned tags vanish from original quotient inputs. -/
 theorem returned_congruences (b D A C E F : PTm n) (h : Γ ⊢[PRAAx] source D A C E F b)

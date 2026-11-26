@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingTailComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qadd positive_product qadd_canonical)
 open GaussianRationalMetric (qsub qnegative)
@@ -25,18 +25,13 @@ open GaussianStirlingRationalTelescopers
    small_numeral_positive)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_congr upper_order_right upper_of_order)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def sharpUpperValue (a b : PTm n) : PTm n := qsub (geometricMain a b) (upperMargin a b)
 
-@[simp] theorem subst_sharpUpperValue {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (sharpUpperValue a b) = sharpUpperValue (Syn.subst σ a) (Syn.subst σ b) := by simp [sharpUpperValue]
+ipra_subst sharpUpperValue
 
 private theorem square_power (x K : PTm n) : Γ ⊢[PRAAx] pw x (two*K) ≐ pw (x*x) K :=
   (congrAp2 powF (by ipra_ring) (.eqRefl _)).eqTrans (AnalyticNumberTheory.EnergyWitness.pw_sq x K).eqSymm

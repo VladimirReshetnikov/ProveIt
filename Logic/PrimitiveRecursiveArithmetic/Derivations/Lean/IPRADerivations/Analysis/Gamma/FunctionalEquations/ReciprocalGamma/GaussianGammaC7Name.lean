@@ -14,15 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaC7Name
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (source constantF constant_at constant_regular
   exponentialF exponentialData exponentialPoint exponential_regular)
 open GaussianRationalHorner (qmul canonical)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,15 +42,11 @@ def diskBound (z R B : PTm n) : PTm n := GaussianNameBounds.U nameF (data z R B)
   funext i
   fin_cases i <;> simp
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    Syn.subst σ (data z R B) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B : PTm n) :
-    Syn.subst σ (sample p z R B) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_diskBound {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    Syn.subst σ (diskBound z R B) = diskBound (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [diskBound]
+ipra_subst diskBound
 
 theorem sample_at (p z R B : PTm n) : Γ ⊢[PRAAx] sample p z R B ≐ value p z R B :=
   (GaussianNameArithmetic.multiply_at constantF exponentialF (head z R B) (exponentialData z R B) p).eqTrans
@@ -77,9 +71,7 @@ def output (p z R B : PTm n) : PTm n := pairT (sample p z R B) (pairT (head z R 
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (p z R B : PTm n) : PTm n := ConciseIPRA.PTm.app outputF ![p,z,R,B]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p z R B : PTm n) :
-    Syn.subst σ (output p z R B) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp [output]
+ipra_subst output
 
 theorem program_at (p z R B : PTm n) : Γ ⊢[PRAAx] run p z R B ≐ output p z R B := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![p,z,R,B]
@@ -89,7 +81,7 @@ theorem returned_sample (p z R B : PTm n) : Γ ⊢[PRAAx] fstT (run p z R B) ≐
 
 theorem returned_head_and_radius (p z R B : PTm n) :
     Γ ⊢[PRAAx] sndT (run p z R B) ≐ pairT (head z R B) (diskBound z R B) :=
-  (congrSnd (program_at p z R B)).eqTrans (snd_pair _ _)
+  (program_at p z R B).sndE
 
 theorem original_C7_regular_name_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (source (var 0) (var 1) (var 2) ⟶ pointCN nameF (data (var 0) (var 1) (var 2))) :=
@@ -102,8 +94,8 @@ theorem actual_C7_returned_sample_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] uni
 theorem returned_bounded (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] bounded (fstT (run p z R B)) (sndT (sndT (run p z R B))) one :=
   GaussianRationalReciprocal.bound_congr
-    ((congrFst (program_at p z R B)).eqTrans (fst_pair _ _)).eqSymm
-    ((congrSnd (returned_head_and_radius p z R B)).eqTrans (snd_pair _ _)).eqSymm (.eqRefl _)
+    (program_at p z R B).fstE.eqSymm
+    (returned_head_and_radius p z R B).sndE.eqSymm (.eqRefl _)
     (sample_bounded p z R B h)
 
 theorem actual_C7_returned_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4

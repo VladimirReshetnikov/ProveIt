@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedExtremumUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerRationalLogOrder (order_refl)
 open GaussianGammaNegativeCriticalEndpoints (mesh)
 open GaussianGammaNegativeCriticalLocation (fractionLocationF fraction_location_regular)
@@ -26,8 +26,6 @@ open GaussianNamedApartnessTightness (noApart names_equivalent_of_no_difference_
 open GaussianNamedEulerUnitTime (source)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNamedPositiveLateLogSource (retimedF retimedData original_cross)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "R" => fractionLocationF
@@ -37,9 +35,7 @@ local notation "dd" => GaussianNamedDifference.data
 def attains (f : PR 2) (x E N : PTm n) : Fm PTm n :=
   crossEquivalent (actualF R) (actualF f) (actualData R N (mesh N) N) (actualData f x E N)
 
-@[simp] theorem subst_attains {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E N : PTm n) :
-    (attains f x E N).subst σ = attains f (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [attains, actualData, signedData, GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst attains [actualData, signedData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem attaining_excludes_apart (f : PR 2) (x E N h : PTm n) (hs : Γ ⊢[PRAAx] source f x E)
     (eq : Γ ⊢[PRAAx] attains f x E N) : Γ ⊢[PRAAx] neg (apart f h N x) := by

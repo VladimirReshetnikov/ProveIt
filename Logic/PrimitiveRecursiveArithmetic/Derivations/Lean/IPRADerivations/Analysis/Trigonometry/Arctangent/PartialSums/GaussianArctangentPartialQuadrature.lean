@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentPartialQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (scale oneCode normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode denominator denominator_positive)
@@ -33,16 +33,10 @@ open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
 open GaussianRationalRiemannRefinement (cellDistances fine_coarse_sum)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_sub im_sub re_scale im_scale re_mul im_mul re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-@[simp] theorem subst_increment {m : ℕ} (σ : Fin n → PTm m) (M j : PTm n) :
-    Syn.subst σ (increment M j) = increment (Syn.subst σ M) (Syn.subst σ j) := by
-  simp [increment,incrementCode,denominator]
+ipra_subst increment [incrementCode, denominator]
 
 def rowBody : PTm 2 := increment (var 1) (var 0)
 def alignedBody : PTm 2 := increment (fstT (var 1)*sndT (var 1)) (fstT (var 1)*var 0)
@@ -102,11 +96,9 @@ private def prefixLaw (j M L : PTm n) : Fm PTm n :=
 theorem prefix_as_sum (j M L : PTm n) (h : Γ ⊢[PRAAx] source M L) (hj : Γ ⊢[PRAAx] le j M) :
     Γ ⊢[PRAAx] prefixValue j M L ≐ sum rowBody j M := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (var 0) (Syn.shift M) (Syn.shift L)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((GaussianArctangentExponentialPrefix.prefix_zero M L).eqTrans (GaussianRationalFiniteSum.sum_zero rowBody M).eqSymm)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI ((GaussianArctangentExponentialPrefix.prefix_zero M L).eqTrans (GaussianRationalFiniteSum.sum_zero rowBody M).eqSymm)
+    · refine .impI ?_
       let m := Syn.shift M
       let l := Syn.shift L
       let i : PTm (n+1) := var 0
@@ -183,11 +175,8 @@ theorem cell_error (R M i : PTm n) (hR : Γ ⊢[PRAAx] le one R)
 def clearing (M : PTm n) : PTm n := two*(M*M)
 def observation (A B N : PTm n) : PTm n := prefixValue (A*N) (B*N) (clearing (B*N))
 
-@[simp] theorem subst_clearing {m : ℕ} (σ : Fin n → PTm m) (M : PTm n) :
-    Syn.subst σ (clearing M) = clearing (Syn.subst σ M) := by simp [clearing]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (A B N : PTm n) :
-    Syn.subst σ (observation A B N) = observation (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [observation]
+ipra_subst clearing
+ipra_subst observation
 
 theorem observation_source (B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] source (B*N) (clearing (B*N)) :=
@@ -273,14 +262,10 @@ def data (A B : PTm n) : PTm n := pairT A B
 def nameTerm (p x : PTm n) : PTm n := sample p (fstT x) (sndT x)
 def nameF : PR 2 := PTm.toPR (nameTerm (var 0) (var 1) : PTm 2)
 
-@[simp] theorem subst_mesh {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (mesh p) = mesh (Syn.subst σ p) := by simp [mesh]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p A B : PTm n) :
-    Syn.subst σ (sample p A B) = sample (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by simp [sample]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (data A B) = data (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
-@[simp] theorem subst_nameTerm {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
-    Syn.subst σ (nameTerm p x) = nameTerm (Syn.subst σ p) (Syn.subst σ x) := by simp [nameTerm]
+ipra_subst mesh
+ipra_subst sample
+ipra_subst data
+ipra_subst nameTerm
 
 theorem four_positive : Γ ⊢[PRAAx] le one (num 4) :=
   le_of_eq_add (d := num 3) (by ipra_ring)

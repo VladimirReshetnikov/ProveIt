@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.DesignCounts
 import IPRADerivations.Combinatorics.Turan
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Fisher's inequality
@@ -33,11 +32,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FisherInequality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.DesignCounts (flags replication fisher_identity)
 open LeanProofs.IPRA.Combinatorics.Turan (zlt_or_zle)
-open Syn
-open scoped Fm
 
 variable {n p b v : ℕ} {Γ : List (Fm PTm n)}
 
@@ -123,18 +120,14 @@ theorem fisher (M : Fin (p + 1) → Fin (b + 1) → ZT n) (r k lam : ZT n)
     (hkv : Γ ⊢[PRAAx] zle (k + ZT.natLit 1) (ZT.natLit (p + 1))) :
     Γ ⊢[PRAAx] zle (ZT.natLit (p + 1)) (ZT.natLit (b + 1)) := by
   have hbit1 : ∀ i B, ZT.toZ Γ (M i B) * ZT.toZ Γ (M i B) = ZT.toZ Γ (M i B) := fun i B => by
-    have e := ZT.toZ_eq (hbit i B)
-    simpa only [ZT.toZ_mul] using e
+    simpa only [ZT.toZ_mul] using ZT.toZ_eq (hbit i B)
   have hrow1 : ∀ i, ∑ B, ZT.toZ Γ (M i B) = ZT.toZ Γ r := fun i => by
-    have e := ZT.toZ_eq (hrow i)
-    simpa only [ZT.toZ_sumFin] using e
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq (hrow i)
   have hcol1 : ∀ B, ∑ i, ZT.toZ Γ (M i B) = ZT.toZ Γ k := fun B => by
-    have e := ZT.toZ_eq (hcol B)
-    simpa only [ZT.toZ_sumFin] using e
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq (hcol B)
   have hpair1 : ∀ i j, i ≠ j → ∑ B, ZT.toZ Γ (M i B) * ZT.toZ Γ (M j B) = ZT.toZ Γ lam :=
     fun i j h => by
-      have e := ZT.toZ_eq (hpair i j h)
-      simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using e
+      simpa only [ZT.toZ_sumFin, ZT.toZ_mul] using ZT.toZ_eq (hpair i j h)
   have hG := gram_of_bits (fun i B => ZT.toZ Γ (M i B)) (ZT.toZ Γ r) (ZT.toZ Γ lam) hbit1 hrow1 hpair1
   have h1 : ((p + 1 : ℕ) : Groth (Q Γ)) * ZT.toZ Γ r = ((b + 1 : ℕ) : Groth (Q Γ)) * ZT.toZ Γ k :=
     flags (fun i B => ZT.toZ Γ (M i B)) _ _ hrow1 hcol1

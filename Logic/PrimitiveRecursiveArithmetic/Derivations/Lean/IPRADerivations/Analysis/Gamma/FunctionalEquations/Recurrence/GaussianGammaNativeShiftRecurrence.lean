@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNativeShiftRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedInverseApartness (ones_equivalent reciprocal_matches_inverse)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -29,9 +29,6 @@ open GaussianNameRingLaws (oneF)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents)
 open GaussianRationalReciprocal (reciprocal reciprocal_identity normNumerator)
 open GaussianRootAlgebra (equal normSq_equal)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

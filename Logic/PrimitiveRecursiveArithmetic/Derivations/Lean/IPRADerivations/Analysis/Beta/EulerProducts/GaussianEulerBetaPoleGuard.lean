@@ -16,22 +16,17 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerBetaPoleGuard
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale normSq re)
 open GaussianGammaEulerHeadLower (translated poleAt poleGuard)
 open GaussianEulerLowerPowerCoefficients (realLower)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def source (z B A : PTm n) : Fm PTm n := le one B ⋏ (le one A ⋏ realLower z A B)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z B A : PTm n) :
-    (source z B A).subst σ = source (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ A) := by simp [source]
+ipra_subst source
 
 theorem translated_real_margin (z B A j : PTm n) (h : Γ ⊢[PRAAx] realLower z A B) : Γ ⊢[PRAAx]
     zle (ZT.ofNat B) (re (scale A (translated z B j))) := by

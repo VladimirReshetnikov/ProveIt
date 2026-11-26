@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussExplicitShiftedProducts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator)
@@ -26,9 +26,6 @@ open GaussianNameRingLaws (oneF one_fast multiply_one_left)
 open GaussianNamedFiniteProduct (rowBoundsAt rowDistance)
 open GaussianNamedFiniteProductAppend (append_cross empty_cross lastRow)
 open GaussianNamedFiniteProductName (rowBounds rowRegular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,11 +42,7 @@ abbrev threeRowsF : PR 2 := multiplyF twoRowsF gammaF
 def threeRowsData (z R B m d : PTm n) : PTm n :=
   multiplyData twoRowsF gammaF (twoRowsData z R B m d) (gammaRowData two z R B m d)
 
-@[simp] theorem subst_gammaRowData {l : ℕ} (σ : Fin n → PTm l) (r z R B m d : PTm n) :
-    Syn.subst σ (gammaRowData r z R B m d) = gammaRowData (Syn.subst σ r) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) := by
-  simp [gammaRowData,shiftedNumerator,one,GaussianGammaReciprocalInverse.gammaData,
-    GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst gammaRowData [shiftedNumerator, one, GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight]
 
 theorem gamma_row_regular (r z R B m a d : PTm n) (hs : Γ ⊢[PRAAx] source z R B m a d)
     (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx] pointCN gammaF (gammaRowData r z R B m d) :=

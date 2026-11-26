@@ -13,7 +13,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingVerticalGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq)
 open GaussianBinetStirlingRemainder (nameF data subst_data offset)
@@ -30,10 +30,6 @@ open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalReciprocal (bounded_difference)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianRightHalfPlaneLogarithmIncrementMargin (smallStep)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -50,12 +46,8 @@ def rowNumerator (p A B D M : PTm n) : PTm n :=
     two*leadingDenominator (M*A) (M*D)
 def rowDenominator (p A D M : PTm n) : PTm n := leadingDenominator (M*A) (M*D)*unit p
 
-@[simp] theorem subst_requiredMesh {m : ℕ} (σ : Fin n → PTm m) (A B D : PTm n) :
-    Syn.subst σ (requiredMesh A B D) = requiredMesh (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) := by
-  simp [requiredMesh,size,one,two]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p A B D sign x M j : PTm n) :
-    Syn.subst σ (sample p A B D sign x M j) = sample (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ j) := by simp [sample]
+ipra_subst requiredMesh [size, one, two]
+ipra_subst sample
 
 theorem mesh_positive (A B D M : PTm n) (h : Γ ⊢[PRAAx] le (requiredMesh A B D) M) :
     Γ ⊢[PRAAx] le one M :=

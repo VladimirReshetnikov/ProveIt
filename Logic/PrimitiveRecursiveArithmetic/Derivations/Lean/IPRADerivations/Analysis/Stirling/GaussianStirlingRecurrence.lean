@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -32,9 +32,6 @@ open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr)
 open GaussianStirlingDifferenceAlgebra (rawA rawDifference difference_value)
 open GaussianStirlingNames (source source_shift logGammaF logGammaData log_gamma_regular logXF logXData log_x_regular
   offset point productF productData product_regular nameF nameData name_regular)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "three" => GaussianNameRingLaws.three
@@ -123,9 +120,7 @@ private theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
     Syn.subst σ (recurrenceBudget a b) = recurrenceBudget (Syn.subst σ a) (Syn.subst σ b) := by
   simp [recurrenceBudget,aBudget,dBudget,scaleBudget,incrementBudget,GaussianNameRingLaws.three,one,two]
 
-@[simp] theorem subst_differenceInput {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (differenceInput a b) = differenceInput (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [differenceInput]
+ipra_subst differenceInput
 
 set_option maxHeartbeats 1800000 in
 theorem recurrence_error (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :

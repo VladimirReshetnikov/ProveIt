@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingCompactName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerScalingCompactRate (lipschitz)
 open GaussianCompactRiemannName (inside sampledModulus localBody value evaluatorName nameData)
 open GaussianCompactLogarithmBounds (domain)
@@ -22,8 +22,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianEulerPowerScalingCompactRate.nameF
@@ -42,17 +40,9 @@ def data (z R B e f d h Q S a C E T : PTm n) : PTm n :=
   GaussianCompactRiemannName.data a C E (lipschitz R Q S E T) T (fixedData z B e f d h S)
 abbrev nameF : PR 2 := GaussianCompactRiemannName.nameF evaluatorF
 
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (z B e f d h S : PTm n) :
-    Syn.subst σ (fixedData z B e f d h S) = fixedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ S) := by simp [fixedData]
-@[simp] theorem subst_body {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (body p t x) = body (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [body,GaussianCompactRiemannName.field0,GaussianCompactRiemannName.field1,GaussianCompactRiemannName.field2,
-    GaussianCompactRiemannName.field3,GaussianCompactRiemannName.field4,GaussianCompactRiemannName.field5]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B e f d h Q S a C E T : PTm n) :
-    (source z R B e f d h Q S a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
+ipra_subst fixedData
+ipra_subst body [GaussianCompactRiemannName.field0, GaussianCompactRiemannName.field1, GaussianCompactRiemannName.field2, GaussianCompactRiemannName.field3, GaussianCompactRiemannName.field4, GaussianCompactRiemannName.field5]
+ipra_subst source
 
 private theorem sample_data_congr {z z' B B' e e' f f' d d' h h' S S' a b : PTm n}
     (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (he : Γ ⊢[PRAAx] e ≐ e')

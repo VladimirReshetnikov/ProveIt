@@ -12,7 +12,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalNonnegativeFractions
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalNonnegativeProducts (nonnegative nonnegative_mul)
 open GaussianRationalHorner (canonical ofGaussian_canonical ofGaussian_represents scalar_congr)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -21,20 +21,14 @@ open RationalGaussianEmbedding (embed native scalarZero scalar_zero_represents)
 open RationalSupMetric (denominatorOf numeratorOf)
 open RationalValueBounds (upper_of_order)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def numerator (q : PTm n) : PTm n := GaussianPositiveRealArithmetic.numerator (fstT q)
 def denominator (q : PTm n) : PTm n := denominatorOf (fstT q)
 
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    Syn.subst σ (numerator q) = numerator (Syn.subst σ q) := by
-  simp [numerator,GaussianPositiveRealArithmetic.numerator,numeratorOf]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    Syn.subst σ (denominator q) = denominator (Syn.subst σ q) := by simp [denominator]
+ipra_subst numerator [GaussianPositiveRealArithmetic.numerator, numeratorOf]
+ipra_subst denominator
 
 theorem denominator_positive (q : PTm n) : Γ ⊢[PRAAx] le one (denominator q) :=
   RationalArgmin.denominator_positive (fstT q)

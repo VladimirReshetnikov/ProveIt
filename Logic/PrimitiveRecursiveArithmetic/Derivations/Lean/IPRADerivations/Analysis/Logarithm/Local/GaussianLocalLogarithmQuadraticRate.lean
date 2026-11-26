@@ -5,14 +5,13 @@ possibly sharper radius than its native input certificate.
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmTaylorRemainder
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
-import IPRADerivations.Core.CongruenceTactic
 
 set_option autoImplicit false
 set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLocalLogarithmQuadraticRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code)
 open GaussianFiniteLogarithmPolynomial (coefficient sourceTerm value source_term_at)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -23,9 +22,6 @@ open GaussianRationalHorner (qadd qmul ofGaussian canonical qmul_canonical)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (power qone)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qzero_add)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

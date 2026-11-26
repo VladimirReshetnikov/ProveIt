@@ -14,17 +14,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductT4Budget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianBalancedRadiusArithmetic (unit_monotone)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -40,22 +36,14 @@ def productError (R K T : PTm n) : PTm n :=
 def rate (R : PTm n) : PTm n := unit (num 74*(R*R))*(succ R*succ R)
 def cutoff (R p : PTm n) : PTm n := rate R*unit p
 
-@[simp] theorem subst_halfIndex {l : ℕ} (σ : Fin n → PTm l) (R K : PTm n) :
-    Syn.subst σ (halfIndex R K) = halfIndex (Syn.subst σ R) (Syn.subst σ K) := by simp [halfIndex]
-@[simp] theorem subst_multiple {l : ℕ} (σ : Fin n → PTm l) (R K : PTm n) :
-    Syn.subst σ (multiple R K) = multiple (Syn.subst σ R) (Syn.subst σ K) := by simp [multiple]
-@[simp] theorem subst_squareDenominator {l : ℕ} (σ : Fin n → PTm l) (R K : PTm n) :
-    Syn.subst σ (squareDenominator R K) = squareDenominator (Syn.subst σ R) (Syn.subst σ K) := by simp [squareDenominator]
-@[simp] theorem subst_headError {l : ℕ} (σ : Fin n → PTm l) (R K : PTm n) :
-    Syn.subst σ (headError R K) = headError (Syn.subst σ R) (Syn.subst σ K) := by simp [headError]
-@[simp] theorem subst_prefactorError {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (prefactorError R) = prefactorError (Syn.subst σ R) := by simp [prefactorError]
-@[simp] theorem subst_productError {l : ℕ} (σ : Fin n → PTm l) (R K T : PTm n) :
-    Syn.subst σ (productError R K T) = productError (Syn.subst σ R) (Syn.subst σ K) (Syn.subst σ T) := by simp [productError]
-@[simp] theorem subst_rate {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (rate R) = rate (Syn.subst σ R) := by simp [rate]
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (R p : PTm n) :
-    Syn.subst σ (cutoff R p) = cutoff (Syn.subst σ R) (Syn.subst σ p) := by simp [cutoff]
+ipra_subst halfIndex
+ipra_subst multiple
+ipra_subst squareDenominator
+ipra_subst headError
+ipra_subst prefactorError
+ipra_subst productError
+ipra_subst rate
+ipra_subst cutoff
 
 theorem odd_multiple (R K : PTm n) :
     Γ ⊢[PRAAx] multiple R K ≐ two*halfIndex R K+one := by unfold multiple halfIndex; ipra_ring

@@ -1,10 +1,8 @@
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.Probability.Expectation
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The split inequality of the hypercube edge theorem
@@ -41,17 +39,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.HypercubeSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (four_mul_le two_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {N : ℕ} {Γ : List (Fm PTm N)}
 
@@ -126,13 +120,9 @@ private abbrev bernF : Fm PTm 2 :=
   le (pw (succ (var 1)) (succ (var 0))) (pw (var 1) (var 0) * succ (var 1) + var 0 * pw (succ (var 1)) (var 0))
 
 private theorem bern₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] bernF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bern_base _
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact bern_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact bern_base _
+  · exact bern_step Prf.hyp0
 
 /-- `(y + 1)^(k+1) ≤ y^k (y + 1) + k (y + 1)^k`. -/
 theorem bernoulli (y k : PTm N) :
@@ -187,13 +177,9 @@ private abbrev lcF : Fm PTm 1 :=
     (pw (succ (succ (var 0))) (succ (succ (var 0))) * pw (var 0) (var 0))
 
 private theorem lc₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] lcF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lc_zero
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lc_pos (pos_of_eq_succ (.eqRefl _))
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact lc_zero
+  · exact lc_pos (pos_of_eq_succ (.eqRefl _))
 
 /-- `((x + 1)^(x+1))² ≤ (x + 2)^(x+2) · x^x`. -/
 theorem log_convex (x : PTm N) :
@@ -237,13 +223,9 @@ private abbrev chF : Fm PTm 2 :=
     (pw (succ (var 1 + var 0)) (succ (var 1 + var 0)) * pw (var 1) (var 1))
 
 private theorem ch₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] chF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact chain_base _
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact chain_succ Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact chain_base _
+  · exact chain_succ Prf.hyp0
 
 /-- `(a + 1)^(a+1) (a + b)^(a+b) ≤ (a + b + 1)^(a+b+1) a^a`. -/
 theorem chain (a b : PTm N) :
@@ -293,13 +275,9 @@ private abbrev spF : Fm PTm 2 :=
     (pw (var 1 + var 0 + var 1) (var 1 + var 0 + var 1))
 
 private theorem sp₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] spF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact split_base _
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact split_succ Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact split_base _
+  · exact split_succ Prf.hyp0
 
 /-- `4^b (b + d)^(b+d) b^b ≤ (2b + d)^(2b+d)`. -/
 theorem cube_split_add (b d : PTm N) :
@@ -360,7 +338,7 @@ theorem edge_integer_form {d k e b : PTm N} (hdeg : Γ ⊢[PRAAx] d * k ≐ two 
   le_congr ((pw_congr (.eqRefl two) hdeg).eqTrans (pw_add two (two * e) b)).eqSymm (mul_comm _ _)
     (mul_le_mul_right (pw two b) h)
 
-theorem two_pos : Γ ⊢[PRAAx] (two : PTm N) ≐ succ (pred two) := pos_of_eq_succ (.eqRefl _)
+alias two_pos := Common.two_pos
 
 /-- `2^u ≤ 2^v` gives `u ≤ v`. -/
 theorem exp_le_of_pw_le {u v : PTm N} (h : Γ ⊢[PRAAx] le (pw two u) (pw two v)) : Γ ⊢[PRAAx] le u v := by

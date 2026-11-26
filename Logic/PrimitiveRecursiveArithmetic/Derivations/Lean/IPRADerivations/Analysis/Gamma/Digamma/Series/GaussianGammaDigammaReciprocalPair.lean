@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaReciprocalPair
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaFiniteSum (index)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
@@ -22,9 +22,6 @@ open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianStirlingRationalTelescopers (fraction_same)
 open GaussianCompactRiemannName (fraction_congr)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -166,10 +166,9 @@ theorem up_at (g : Fin D) (hg : Γ ⊢[PRAAx] x g ≐ one) :
       · rw [if_neg (lam_ne_of_one hρ h)]; simp)
   simp only [PTm.subst_mul, subst_eqb, PTm.subst_num, Syn.subst_var, ConciseIPRA.PTm.subst_zero] at e
   have e₁ := natEq e
-  have e₂ := natEq hg
   apply deriveNat
   ipra_simps
-  rw [e₂] at e₁
+  rw [natEq hg] at e₁
   simpa using e₁
 
 /-- `[λ = g] · x_g = 0`: the vertex of colour `g < D` has `x_g = 0`. -/

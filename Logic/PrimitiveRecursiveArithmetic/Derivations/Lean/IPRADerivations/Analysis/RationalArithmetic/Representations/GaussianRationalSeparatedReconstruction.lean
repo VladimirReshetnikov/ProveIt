@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSeparatedReconstruction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianRationalFiniteRoots (stage remaining stage_succ stage_zero stage_length stage_head stage_index_congr
   remaining_step head evaluate_congr)
@@ -35,9 +35,6 @@ open GaussianReciprocalHorner (qadd_commutative)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,10 +42,7 @@ def differencesBounded (R y B : PTm n) : Fm PTm n := .all
   (lt (var 0) (length (Syn.shift R)) ⟶
     bounded (qsub (Syn.shift y) (entry (Syn.shift R) (var 0))) (Syn.shift B) one)
 
-@[simp] theorem subst_differencesBounded {l : ℕ} (σ : Fin n → PTm l) (R y B : PTm n) :
-    (differencesBounded R y B).subst σ =
-      differencesBounded (Syn.subst σ R) (Syn.subst σ y) (Syn.subst σ B) := by
-  simp [differencesBounded,one,Syn.subst_shift,Syn.shift_subst]
+ipra_subst differencesBounded [one, Syn.subst_shift, Syn.shift_subst]
 
 theorem difference_at (R y B i : PTm n) (h : Γ ⊢[PRAAx] differencesBounded R y B)
     (hi : Γ ⊢[PRAAx] lt i (length R)) :
@@ -81,10 +75,7 @@ private theorem suffix_evaluation_step (R N y j : PTm n) (hj : Γ ⊢[PRAAx] lt 
 def discrepancy (C N R y j : PTm n) : PTm n :=
   qsub (evaluate (stage C N R j) y) (evaluate (suffix R N j) y)
 
-@[simp] theorem subst_discrepancy {l : ℕ} (σ : Fin n → PTm l) (C N R y j : PTm n) :
-    Syn.subst σ (discrepancy C N R y j) =
-      discrepancy (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ y) (Syn.subst σ j) := by
-  simp [discrepancy, suffix]
+ipra_subst discrepancy [suffix]
 
 private theorem discrepancy_index_congr (C N R y : PTm n) {i j : PTm n} (h : Γ ⊢[PRAAx] i ≐ j) :
     Γ ⊢[PRAAx] discrepancy C N R y i ≐ discrepancy C N R y j :=
@@ -118,10 +109,7 @@ private theorem budget_mono (E D i N : PTm n) (hd : Γ ⊢[PRAAx] le one D)
 
 def errorNumerator (E D N B k : PTm n) : PTm n := budget E D N*pw (B+one) k
 
-@[simp] theorem subst_errorNumerator {l : ℕ} (σ : Fin n → PTm l) (E D N B k : PTm n) :
-    Syn.subst σ (errorNumerator E D N B k) =
-      errorNumerator (Syn.subst σ E) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ k) := by
-  simp [errorNumerator,one]
+ipra_subst errorNumerator [one]
 
 private theorem error_growth (E D N B k : PTm n) :
     Γ ⊢[PRAAx] le (B*errorNumerator E D N B k+budget E D N) (errorNumerator E D N B (succ k)) := by
@@ -140,10 +128,7 @@ private theorem error_growth (E D N B k : PTm n) :
 def errorLaw (C N R E K D B y k : PTm n) : Fm PTm n := le k N ⟶
   bounded (discrepancy C N R y (remaining N k)) (errorNumerator E D N B k) K
 
-@[simp] theorem subst_errorLaw {l : ℕ} (σ : Fin n → PTm l) (C N R E K D B y k : PTm n) :
-    (errorLaw C N R E K D B y k).subst σ = errorLaw (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ D) (Syn.subst σ B) (Syn.subst σ y) (Syn.subst σ k) := by
-  simp [errorLaw]
+ipra_subst errorLaw
 
 private theorem error_succ (C N R E K D B y k : PTm n)
     (hc : Γ ⊢[PRAAx] length C ≐ succ N) (hl : Γ ⊢[PRAAx] length R ≐ N)

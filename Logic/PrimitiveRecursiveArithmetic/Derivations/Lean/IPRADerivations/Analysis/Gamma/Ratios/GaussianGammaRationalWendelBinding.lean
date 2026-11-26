@@ -13,7 +13,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
 open GaussianGammaRationalFractionalChord (harmonicF)
 open GaussianGammaRationalUnscaledChord (fractionalData fractional_regular)
@@ -28,8 +28,6 @@ open GaussianNameRingLaws (negativeF negativeData negative_fast add_commutative 
 open GaussianNamedGammaHalfShift (add_cross)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular gammaData gamma_regular)
 open GaussianStirlingLogDuplication (exponential_regular exponential_gamma exponential_sum)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF

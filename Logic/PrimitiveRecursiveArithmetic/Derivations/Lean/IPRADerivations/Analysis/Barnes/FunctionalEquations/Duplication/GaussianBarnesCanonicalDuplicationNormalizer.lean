@@ -15,7 +15,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDuplicationNormalizer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDuplicationNormalizerCoefficients
   (quadraticWeight linearWeight quadratic_weight_step linear_weight_step)
 open GaussianBarnesCanonicalHyperfactorialRecurrence (regroup)
@@ -34,8 +34,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianStirlingGammaLogarithm (source arg gammaData gamma_regular native_disk)
 open GaussianStirlingNames (logGammaF logGammaData log_gamma_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

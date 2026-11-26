@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerFullHeadInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -27,9 +27,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianNameRingLaws (negativeF negativeData oneF)
 open GaussianRationalReciprocal (reciprocal)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,16 +50,11 @@ def data (z B N : PTm n) : PTm n :=
     fin_cases i <;> rfl
   simp only [headInverse,GaussianRationalReciprocal.subst_reciprocal,e]
 
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    Syn.subst σ (radius z B N) = radius (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [radius,logExponentData]
+ipra_subst radius [logExponentData]
 
-@[simp] theorem subst_negExpData {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    Syn.subst σ (negExpData z B N) = negExpData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [negExpData,logExponentData]
+ipra_subst negExpData [logExponentData]
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    Syn.subst σ (data z B N) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [data]
+ipra_subst data
 
 theorem extended_guard (z R B a d N : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaReciprocalInverse.source z R B a d) :
     Γ ⊢[PRAAx] poleGuard z B one d N := by

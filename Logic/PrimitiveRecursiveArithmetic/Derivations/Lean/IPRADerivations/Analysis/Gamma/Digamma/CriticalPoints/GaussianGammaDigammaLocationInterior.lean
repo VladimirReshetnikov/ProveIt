@@ -16,7 +16,7 @@ set_option maxHeartbeats 1700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaLocationInterior
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaDigammaCriticalSigns (quarter negativeQuarter one_upper two_lower)
@@ -40,10 +40,6 @@ open RationalArgmin (rationalLE_congr)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
 open RationalUpperRepresentation (upper_from_representations)
 open RationalValueBounds (upper upper_congr upper_mono upper_of_order upper_order_left upper_order_right upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

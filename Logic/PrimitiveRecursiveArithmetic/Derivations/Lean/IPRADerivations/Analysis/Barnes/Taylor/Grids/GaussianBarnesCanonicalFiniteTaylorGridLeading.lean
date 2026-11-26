@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorGridLeading
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalExponentTaylorRetainedCoefficient (prefactorGain)
 open GaussianBarnesCanonicalFiniteCentralExponential (finiteNameF finiteData)
 open GaussianBarnesCanonicalFiniteTaylorGrid (polynomial)
@@ -38,10 +38,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

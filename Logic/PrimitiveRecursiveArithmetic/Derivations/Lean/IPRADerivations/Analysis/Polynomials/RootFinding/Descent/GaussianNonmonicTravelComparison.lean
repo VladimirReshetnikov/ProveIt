@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNonmonicTravelComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianNonmonicTravelCoefficientBound
   (selectedIndex weight radius radiusNumerator radiusDenominator lowerBound combined)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product evaluate)
@@ -25,9 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianDescentClock (residualNumerator residualDe
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (multiply)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -40,18 +37,10 @@ def right (C N z A B : PTm n) : PTm n := multiply (fraction (weight N*weight N) 
   (multiply (qnormSq (evaluate C z)) (RationalNonnegativePowers.power A B (two*selectedIndex C N z A B)))
 def comparison (C N z A B L M : PTm n) : Fm PTm n := rationalLE (left C N z A B L M) (right C N z A B)
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (C N z A B k L M : PTm n) :
-    (input C N z A B k L M).subst σ = input (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ L) (Syn.subst σ M) := by simp [input]
-@[simp] theorem subst_left {m : ℕ} (σ : Fin n → PTm m) (C N z A B L M : PTm n) :
-    Syn.subst σ (left C N z A B L M) = left (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ L) (Syn.subst σ M) := by simp [left]
-@[simp] theorem subst_right {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (right C N z A B) = right (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) := by simp [right]
-@[simp] theorem subst_comparison {m : ℕ} (σ : Fin n → PTm m) (C N z A B L M : PTm n) :
-    (comparison C N z A B L M).subst σ = comparison (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ L) (Syn.subst σ M) := by simp [comparison]
+ipra_subst input
+ipra_subst left
+ipra_subst right
+ipra_subst comparison
 
 theorem native_bound (C N z A B k L M : PTm n) (h : Γ ⊢[PRAAx] input C N z A B k L M) :
     Γ ⊢[PRAAx] combined C N z A B L M :=
@@ -129,22 +118,14 @@ def output (C N z A B L M : PTm n) : PTm n := pairT (selectedIndex C N z A B)
   (pairT (radius C N z) (pairT (left C N z A B L M) (right C N z A B)))
 def outputF : PR 7 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (C N z A B L M : PTm n) : PTm n := PTm.app outputF ![C,N,z,A,B,L,M]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N z A B L M : PTm n) :
-    Syn.subst σ (output C N z A B L M) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ L) (Syn.subst σ M) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N z A B L M : PTm n) :
-    Syn.subst σ (run C N z A B L M) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ L) (Syn.subst σ M) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N z A B L M : PTm n) : Γ ⊢[PRAAx] run C N z A B L M ≐ output C N z A B L M := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![C,N,z,A,B,L,M]
 theorem returned_index (C N z A B L M : PTm n) : Γ ⊢[PRAAx] fstT (run C N z A B L M) ≐ selectedIndex C N z A B :=
-  (congrFst (program_at C N z A B L M)).eqTrans (fst_pair _ _)
+  (program_at C N z A B L M).fstE
 theorem returned_radius (C N z A B L M : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N z A B L M)) ≐ radius C N z :=
   ((congrFst (congrSnd (program_at C N z A B L M))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_left (C N z A B L M : PTm n) : Γ ⊢[PRAAx]

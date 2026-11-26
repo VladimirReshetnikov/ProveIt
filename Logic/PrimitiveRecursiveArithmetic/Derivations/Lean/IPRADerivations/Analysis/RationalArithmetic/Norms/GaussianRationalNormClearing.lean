@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantScoreWeights
 import IPRADerivations.Analysis.Geometry.Distances.GaussianRelativeNormTriangle
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact transport of relative norm bounds through a common denominator
@@ -17,14 +16,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalNormClearing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (represents positive_product)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq scale add)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax (four)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,10 +28,9 @@ def three : PTm n := two+one
 def nine : PTm n := three*three
 def weightedNorm (K q : PTm n) : PTm n := RationalArithmetic.multiply (fraction K one) (GaussianRationalMetric.qnormSq q)
 
-@[simp] theorem subst_three {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (three : PTm n) = (three : PTm m) := by simp [three]
-@[simp] theorem subst_nine {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (nine : PTm n) = (nine : PTm m) := by simp [nine]
-@[simp] theorem subst_weightedNorm {m : ℕ} (σ : Fin n → PTm m) (K q : PTm n) :
-    Syn.subst σ (weightedNorm K q) = weightedNorm (Syn.subst σ K) (Syn.subst σ q) := by simp [weightedNorm]
+ipra_subst three
+ipra_subst nine
+ipra_subst weightedNorm
 
 theorem weighted_norm_represents (K q a D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hq : Γ ⊢[PRAAx] represents q a D) : Γ ⊢[PRAAx]

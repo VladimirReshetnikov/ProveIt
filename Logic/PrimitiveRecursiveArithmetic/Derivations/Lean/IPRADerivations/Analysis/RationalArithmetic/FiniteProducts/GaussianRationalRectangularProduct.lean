@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductAlgebra
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.MultiSums
 
 /-!
 # Rectangular Gaussian-rational products
@@ -16,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRectangularProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteProduct (qprod product_zero product_succ product_index_congr
   product_congr_bounded product_split offset_at)
 open GaussianRationalFiniteSum (termsEqual)
@@ -24,9 +22,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalProductAlgebra (multiplyBody multiply_body_at product_multiply
   oneTerms product_one_of_terms)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,13 +38,9 @@ def swap (t : PTm 3) : PTm 3 := inst3 t (var 1) (var 0) (var 2)
   funext k
   fin_cases k <;> rfl
 
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (t : PTm 3) (i B x : PTm n) :
-    Syn.subst σ (row t i B x) = row t (Syn.subst σ i) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp [row]
+ipra_subst row
 
-@[simp] theorem subst_rectangle {m : ℕ} (σ : Fin n → PTm m) (t : PTm 3) (A B x : PTm n) :
-    Syn.subst σ (rectangle t A B x) = rectangle t (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp [rectangle]
+ipra_subst rectangle
 
 theorem row_at (t : PTm 3) (i j x : PTm n) : Γ ⊢[PRAAx]
     inst2 (rowBody t) j (pairT i x) ≐ inst3 t i j x := by
@@ -97,17 +88,13 @@ theorem add_column (t : PTm 3) (A B x : PTm n) : Γ ⊢[PRAAx]
 def transposeLaw (t : PTm 3) (A B x : PTm n) : Fm PTm n :=
   rectangle t A B x ≐ rectangle (swap t) B A x
 
-@[simp] theorem subst_transposeLaw {m : ℕ} (σ : Fin n → PTm m) (t : PTm 3) (A B x : PTm n) :
-    (transposeLaw t A B x).subst σ = transposeLaw t (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp [transposeLaw]
+ipra_subst transposeLaw
 
 theorem transpose (t : PTm 3) (A B x : PTm n) : Γ ⊢[PRAAx] transposeLaw t A B x := by
   have all : Γ ⊢[PRAAx] .all (transposeLaw t (Syn.shift A) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_transposeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (empty_columns t A x).eqTrans (product_zero (rectangleBody (swap t)) (pairT A x)).eqSymm
-    · simp only [subst_transposeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (add_column t _ _ _).eqTrans
+    ipra_qfind [subst_transposeLaw]
+    · exact (empty_columns t A x).eqTrans (product_zero (rectangleBody (swap t)) (pairT A x)).eqSymm
+    · exact (add_column t _ _ _).eqTrans
         ((qmul_congr Prf.hyp0 (.eqRefl _)).eqTrans (rectangle_succ (swap t) _ _ _).eqSymm)
   simpa only [subst_transposeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE B
 
@@ -140,9 +127,7 @@ theorem block_row (t : PTm 2) (A i x : PTm n) : Γ ⊢[PRAAx]
 def blocksLaw (t : PTm 2) (A B x : PTm n) : Fm PTm n :=
   rectangle (blockEntry t) B A (pairT A x) ≐ qprod t (A*B) x
 
-@[simp] theorem subst_blocksLaw {m : ℕ} (σ : Fin n → PTm m) (t : PTm 2) (A B x : PTm n) :
-    (blocksLaw t A B x).subst σ = blocksLaw t (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp [blocksLaw]
+ipra_subst blocksLaw
 
 theorem blocks_step (t : PTm 2) (A B x : PTm n) (ih : Γ ⊢[PRAAx] blocksLaw t A B x) :
     Γ ⊢[PRAAx] blocksLaw t A (succ B) x :=
@@ -153,12 +138,10 @@ theorem blocks_step (t : PTm 2) (A B x : PTm n) (ih : Γ ⊢[PRAAx] blocksLaw t 
 
 theorem blocks (t : PTm 2) (A B x : PTm n) : Γ ⊢[PRAAx] blocksLaw t A B x := by
   have all : Γ ⊢[PRAAx] .all (blocksLaw t (Syn.shift A) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_blocksLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (product_zero (rectangleBody (blockEntry t)) (pairT A (pairT A x))).eqTrans
+    ipra_qfind [subst_blocksLaw]
+    · exact (product_zero (rectangleBody (blockEntry t)) (pairT A (pairT A x))).eqTrans
         ((product_index_congr t (mul_zero A) (.eqRefl _)).eqTrans (product_zero t x)).eqSymm
-    · simp only [subst_blocksLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact blocks_step t _ _ _ Prf.hyp0
+    · exact blocks_step t _ _ _ Prf.hyp0
   simpa only [subst_blocksLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE B
 
 theorem actual_rectangular_product_transpose_closed (t : PTm 3) : ([] : List (Fm PTm 0)) ⊢[PRAAx]

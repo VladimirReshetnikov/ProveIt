@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionReversedWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionReversedDensity (coarsePowerBody coarseDensityBody leftIndex rightIndex data)
 open GaussianEulerUnitSubstitutionTiltedNodes (reverseNode)
 open GaussianEulerUnitSubstitutionImageGrid (cellBody node meshNumerator meshDenominator)
@@ -24,9 +24,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianCoefficientNameBounds (unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

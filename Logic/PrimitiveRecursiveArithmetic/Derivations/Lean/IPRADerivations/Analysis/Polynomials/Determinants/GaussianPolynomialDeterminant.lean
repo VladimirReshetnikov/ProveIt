@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantTerms
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # A runtime polynomial determinant by actual numeric permutation words
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical qadd_congr canonicalCoefficients)
 open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialBuffers
@@ -29,10 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms
   (tableShape signPoint scalarProduct term)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -60,26 +55,16 @@ def coefficientSum (M m L t s : PTm n) : PTm n := GaussianRationalFiniteSum.sum 
 def valueSum (M m L t z : PTm n) : PTm n := GaussianRationalFiniteSum.sum valueBody t
   (GaussianPolynomialDeterminantTerms.data M m L z)
 
-@[simp] theorem subst_wordCode {l : ℕ} (σ : Fin n → PTm l) (m t : PTm n) :
-    Syn.subst σ (wordCode m t) = wordCode (Syn.subst σ m) (Syn.subst σ t) := by simp [wordCode]
-@[simp] theorem subst_summand {l : ℕ} (σ : Fin n → PTm l) (M m L t : PTm n) :
-    Syn.subst σ (summand M m L t) = summand (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) := by simp [summand]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (M m L : PTm n) :
-    Syn.subst σ (data M m L) = data (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [data]
-@[simp] theorem subst_width {l : ℕ} (σ : Fin n → PTm l) (m L : PTm n) :
-    Syn.subst σ (width m L) = width (Syn.subst σ m) (Syn.subst σ L) := by simp [width]
-@[simp] theorem subst_partialDeterminant {l : ℕ} (σ : Fin n → PTm l) (M m L t : PTm n) :
-    Syn.subst σ (partialDeterminant M m L t) = partialDeterminant (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) := by simp [partialDeterminant]
-@[simp] theorem subst_determinant {l : ℕ} (σ : Fin n → PTm l) (M m L : PTm n) :
-    Syn.subst σ (determinant M m L) = determinant (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [determinant]
-@[simp] theorem subst_coefficientTerm {l : ℕ} (σ : Fin n → PTm l) (M m L t s : PTm n) :
-    Syn.subst σ (coefficientTerm M m L t s) = coefficientTerm (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) (Syn.subst σ s) := by simp [coefficientTerm]
-@[simp] theorem subst_valueTerm {l : ℕ} (σ : Fin n → PTm l) (M m L t z : PTm n) :
-    Syn.subst σ (valueTerm M m L t z) = valueTerm (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) (Syn.subst σ z) := by simp [valueTerm]
-@[simp] theorem subst_coefficientSum {l : ℕ} (σ : Fin n → PTm l) (M m L t s : PTm n) :
-    Syn.subst σ (coefficientSum M m L t s) = coefficientSum (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) (Syn.subst σ s) := by simp [coefficientSum]
-@[simp] theorem subst_valueSum {l : ℕ} (σ : Fin n → PTm l) (M m L t z : PTm n) :
-    Syn.subst σ (valueSum M m L t z) = valueSum (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ t) (Syn.subst σ z) := by simp [valueSum]
+ipra_subst wordCode
+ipra_subst summand
+ipra_subst data
+ipra_subst width
+ipra_subst partialDeterminant
+ipra_subst determinant
+ipra_subst coefficientTerm
+ipra_subst valueTerm
+ipra_subst coefficientSum
+ipra_subst valueSum
 
 theorem summand_congr {M M' m m' L L' t t' : PTm n}
     (hM : Γ ⊢[PRAAx] M ≐ M') (hm : Γ ⊢[PRAAx] m ≐ m')
@@ -100,8 +85,8 @@ theorem prefix_zero (M m L : PTm n) : Γ ⊢[PRAAx] partialDeterminant M m L zer
   simp only [initial,GaussianRationalPolynomialBuffers.subst_zeros,subst_width,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero] at e
   have tail := snd_pair (Γ := Γ) M (pairT m L)
-  exact e.eqTrans (zeros_congr (congrSucc (congrMul ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrSnd tail).eqTrans (snd_pair _ _)))))
+  exact e.eqTrans (zeros_congr (congrSucc (congrMul tail.fstE
+    tail.sndE)))
 theorem prefix_succ (M m L t : PTm n) : Γ ⊢[PRAAx] partialDeterminant M m L (succ t) ≐
     added (partialDeterminant M m L t) (summand M m L t) (width m L) := by
   have e := rec2_succ (Γ := Γ) initial stepBody t (data M m L)
@@ -109,8 +94,8 @@ theorem prefix_succ (M m L t : PTm n) : Γ ⊢[PRAAx] partialDeterminant M m L (
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two] at e
   have tail := snd_pair (Γ := Γ) M (pairT m L)
   exact e.eqTrans (added_congr (.eqRefl _) (summand_congr (fst_pair _ _)
-    ((congrFst tail).eqTrans (fst_pair _ _)) ((congrSnd tail).eqTrans (snd_pair _ _)) (.eqRefl _))
-      (congrSucc (congrMul ((congrFst tail).eqTrans (fst_pair _ _)) ((congrSnd tail).eqTrans (snd_pair _ _)))))
+    tail.fstE tail.sndE (.eqRefl _))
+      (congrSucc (congrMul tail.fstE tail.sndE)))
 
 theorem prefix_length (M m L t : PTm n) : Γ ⊢[PRAAx] length (partialDeterminant M m L t) ≐ width m L := by
   refine .orE (zero_or_succ t) ?_ ?_
@@ -132,10 +117,10 @@ theorem coefficient_body_at (M m L t s : PTm n) : Γ ⊢[PRAAx]
     (σ' := ![M,m,L,t,s]) (fun i => by
       fin_cases i
       · exact fst_pair _ _
-      · exact (congrFst tail).eqTrans (fst_pair _ _)
-      · exact (congrFst rest).eqTrans (fst_pair _ _)
+      · exact tail.fstE
+      · exact rest.fstE
       · exact .eqRefl _
-      · exact (congrSnd rest).eqTrans (snd_pair _ _))
+      · exact rest.sndE)
 theorem value_body_at (M m L t z : PTm n) : Γ ⊢[PRAAx]
     inst2 valueBody t (GaussianPolynomialDeterminantTerms.data M m L z) ≐ valueTerm M m L t z := by
   simp only [valueBody,inst2,subst_valueTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -147,10 +132,10 @@ theorem value_body_at (M m L t z : PTm n) : Γ ⊢[PRAAx]
     (σ' := ![M,m,L,t,z]) (fun i => by
       fin_cases i
       · exact fst_pair _ _
-      · exact (congrFst tail).eqTrans (fst_pair _ _)
-      · exact (congrFst rest).eqTrans (fst_pair _ _)
+      · exact tail.fstE
+      · exact rest.fstE
       · exact .eqRefl _
-      · exact (congrSnd rest).eqTrans (snd_pair _ _))
+      · exact rest.sndE)
 
 theorem coefficient_sum_zero (M m L s : PTm n) : Γ ⊢[PRAAx] coefficientSum M m L zero s ≐ qzero :=
   GaussianRationalFiniteSum.sum_zero _ _
@@ -169,12 +154,10 @@ theorem prefix_coefficient (M m L t s : PTm n) (hs : Γ ⊢[PRAAx] le s (m*L)) :
     simpa only [Fm.shift,subst_le,PTm.subst_mul,Syn.shift] using hs.shift
   have all : Γ ⊢[PRAAx] .all (entry (partialDeterminant (Syn.shift M) (Syn.shift m) (Syn.shift L) (var 0)) (Syn.shift s) ≐
       coefficientSum (Syn.shift M) (Syn.shift m) (Syn.shift L) (var 0) (Syn.shift s)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_entry,subst_partialDeterminant,subst_coefficientSum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (entry_congr (prefix_zero _ _ _) (.eqRefl _)).eqTrans
+    ipra_qfind [subst_entry, subst_partialDeterminant, subst_coefficientSum]
+    · exact (entry_congr (prefix_zero _ _ _) (.eqRefl _)).eqTrans
         ((zeros_lookup _ _ ((succ_monus_succ _ _).eqTrans hs)).eqTrans (coefficient_sum_zero _ _ _ _).eqSymm)
-    · simp only [Fm.subst_eq,subst_entry,subst_partialDeterminant,subst_coefficientSum,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (entry_congr (prefix_succ _ _ _ _) (.eqRefl _)).eqTrans
+    · exact (entry_congr (prefix_succ _ _ _ _) (.eqRefl _)).eqTrans
         ((added_lookup _ _ _ _ ((succ_monus_succ _ _).eqTrans ss.wk)).eqTrans
           ((qadd_congr Prf.hyp0 (GaussianPolynomialDeterminantTerms.term_coefficient _ _ _ _ _ ss.wk)).eqTrans
             (coefficient_sum_succ _ _ _ _ _).eqSymm))
@@ -186,12 +169,10 @@ theorem prefix_evaluation (M m L t z : PTm n) (h : Γ ⊢[PRAAx] tableShape M m 
     simpa only [Fm.shift,GaussianPolynomialDeterminantTerms.subst_tableShape,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (evaluate (partialDeterminant (Syn.shift M) (Syn.shift m) (Syn.shift L) (var 0)) (Syn.shift z) ≐
       valueSum (Syn.shift M) (Syn.shift m) (Syn.shift L) (var 0) (Syn.shift z)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,GaussianRationalHorner.subst_evaluate,subst_partialDeterminant,subst_valueSum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (evaluate_congr (prefix_zero _ _ _) (.eqRefl _)).eqTrans
+    ipra_qfind [GaussianRationalHorner.subst_evaluate, subst_partialDeterminant, subst_valueSum]
+    · exact (evaluate_congr (prefix_zero _ _ _) (.eqRefl _)).eqTrans
         ((zeros_evaluation _ _).eqTrans (value_sum_zero _ _ _ _).eqSymm)
-    · simp only [Fm.subst_eq,GaussianRationalHorner.subst_evaluate,subst_partialDeterminant,subst_valueSum,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (evaluate_congr (prefix_succ _ _ _ _) (.eqRefl _)).eqTrans
+    · exact (evaluate_congr (prefix_succ _ _ _ _) (.eqRefl _)).eqTrans
         ((added_evaluation _ _ _ _ (prefix_length _ _ _ _) (GaussianPolynomialDeterminantTerms.term_length _ _ _ _)).eqTrans
           ((qadd_congr Prf.hyp0 (GaussianPolynomialDeterminantTerms.term_evaluation _ _ _ _ _ hs.wk)).eqTrans
             (value_sum_succ _ _ _ _ _).eqSymm))
@@ -234,8 +215,7 @@ theorem tuple_coverage (P m : PTm n) (h : Γ ⊢[PRAAx] Foundations.RuntimePermu
 def certificate (M m L z : PTm n) : Fm PTm n := (length (determinant M m L) ≐ width m L) ⋏
   (canonicalCoefficients (determinant M m L) ⋏
     (evaluate (determinant M m L) z ≐ valueSum M m L (Foundations.RuntimePermutationWords.count m) z))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (M m L z : PTm n) :
-    (certificate M m L z).subst σ = certificate (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ z) := by simp [certificate]
+ipra_subst certificate
 theorem determinant_correct (M m L z : PTm n) (h : Γ ⊢[PRAAx] tableShape M m L) : Γ ⊢[PRAAx] certificate M m L z :=
   .andI (determinant_length _ _ _) (.andI (determinant_canonical _ _ _) (evaluation_leibniz _ _ _ _ h))
 
@@ -245,18 +225,16 @@ def output (M m L : PTm n) : PTm n := pairT (determinant M m L)
   (pairT (Foundations.RuntimePermutationWords.words m) (Foundations.RuntimePermutationWords.count m))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (M m L : PTm n) : PTm n := ap3 outputF M m L
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (M m L : PTm n) :
-    Syn.subst σ (output M m L) = output (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (M m L : PTm n) :
-    Syn.subst σ (run M m L) = run (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (M m L : PTm n) : Γ ⊢[PRAAx] run M m L ≐ output M m L := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![M,m,L]
 theorem returned_polynomial (M m L : PTm n) : Γ ⊢[PRAAx] fstT (run M m L) ≐ determinant M m L :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_words (M m L : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run M m L)) ≐ Foundations.RuntimePermutationWords.words m :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_count (M m L : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run M m L)) ≐ Foundations.RuntimePermutationWords.count m :=
-  (congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE
 theorem returned_length (M m L : PTm n) : Γ ⊢[PRAAx] length (fstT (run M m L)) ≐ succ (m*L) :=
   (congrFst (returned_polynomial _ _ _)).eqTrans (determinant_length _ _ _)
 theorem returned_canonical (M m L : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (fstT (run M m L)) :=

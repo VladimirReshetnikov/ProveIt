@@ -1,7 +1,6 @@
 import IPRADerivations.Foundations.FilteredEnumerationCode
 import IPRADerivations.Foundations.RuntimeWordAppend
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual weighted monomial lists and evaluation vectors
@@ -19,17 +18,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianWeightedMonomialBasis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.RuntimeWordAppend (divide_spec divide_unique)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power powerF power_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,30 +42,18 @@ def count (m d L : PTm n) : PTm n := Foundations.FilteredEnumerationCode.count k
 def labels (m d L : PTm n) : PTm n := Foundations.FilteredEnumerationCode.list keepBody (horizon m L) (data m d L)
 def position (m d L i j : PTm n) : PTm n := Foundations.FilteredEnumeration.rank keepBody (label L i j) (data m d L)
 
-@[simp] theorem subst_stride {l : ℕ} (σ : Fin n → PTm l) (L : PTm n) : Syn.subst σ (stride L) = stride (Syn.subst σ L) := by simp [stride]
-@[simp] theorem subst_label {l : ℕ} (σ : Fin n → PTm l) (L i j : PTm n) :
-    Syn.subst σ (label L i j) = label (Syn.subst σ L) (Syn.subst σ i) (Syn.subst σ j) := by simp [label]
-@[simp] theorem subst_horizon {l : ℕ} (σ : Fin n → PTm l) (m L : PTm n) :
-    Syn.subst σ (horizon m L) = horizon (Syn.subst σ m) (Syn.subst σ L) := by simp [horizon]
-@[simp] theorem subst_decodeY {l : ℕ} (σ : Fin n → PTm l) (L r : PTm n) :
-    Syn.subst σ (decodeY L r) = decodeY (Syn.subst σ L) (Syn.subst σ r) := by simp [decodeY]
-@[simp] theorem subst_decodeX {l : ℕ} (σ : Fin n → PTm l) (L r : PTm n) :
-    Syn.subst σ (decodeX L r) = decodeX (Syn.subst σ L) (Syn.subst σ r) := by simp [decodeX]
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (m d i j : PTm n) :
-    Syn.subst σ (weight m d i j) = weight (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ i) (Syn.subst σ j) := by simp [weight]
-@[simp] theorem subst_admissible {l : ℕ} (σ : Fin n → PTm l) (m d L i j : PTm n) :
-    (admissible m d L i j).subst σ = admissible (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) (Syn.subst σ i) (Syn.subst σ j) := by simp [admissible]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (m d L : PTm n) :
-    Syn.subst σ (data m d L) = data (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) := by simp [data]
-@[simp] theorem subst_keep {l : ℕ} (σ : Fin n → PTm l) (m d L r : PTm n) :
-    Syn.subst σ (keep m d L r) = keep (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) (Syn.subst σ r) := by simp [keep]
-@[simp] theorem subst_count {l : ℕ} (σ : Fin n → PTm l) (m d L : PTm n) :
-    Syn.subst σ (count m d L) = count (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) := by simp [count]
-@[simp] theorem subst_labels {l : ℕ} (σ : Fin n → PTm l) (m d L : PTm n) :
-    Syn.subst σ (labels m d L) = labels (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) := by simp [labels]
-@[simp] theorem subst_position {l : ℕ} (σ : Fin n → PTm l) (m d L i j : PTm n) :
-    Syn.subst σ (position m d L i j) = position (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) (Syn.subst σ i) (Syn.subst σ j) := by
-  simp [position,Foundations.FilteredEnumeration.rank]
+ipra_subst stride
+ipra_subst label
+ipra_subst horizon
+ipra_subst decodeY
+ipra_subst decodeX
+ipra_subst weight
+ipra_subst admissible
+ipra_subst data
+ipra_subst keep
+ipra_subst count
+ipra_subst labels
+ipra_subst position [Foundations.FilteredEnumeration.rank]
 
 theorem keep_congr {m m' d d' L L' r r' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hd : Γ ⊢[PRAAx] d ≐ d') (hL : Γ ⊢[PRAAx] L ≐ L') (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx]
@@ -78,8 +61,8 @@ theorem keep_congr {m m' d d' L L' r r' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
   ipra_congr (keep (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hm, hd, hL, hr]
 theorem keep_body_at (m d L r : PTm n) : Γ ⊢[PRAAx] inst2 keepBody r (data m d L) ≐ keep m d L r := by
   simp only [keepBody,inst2,subst_keep,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact keep_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact keep_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem keep_one (m d L r : PTm n) (h : Γ ⊢[PRAAx] le (weight m d (decodeY L r) (decodeX L r)) L) : Γ ⊢[PRAAx]
     keep m d L r ≐ one := eqb_of_eq h
 theorem keep_bound (m d L r : PTm n) (h : Γ ⊢[PRAAx] neg (keep m d L r ≐ zero)) : Γ ⊢[PRAAx]
@@ -150,28 +133,26 @@ theorem count_positive (m d L : PTm n) (hm : Γ ⊢[PRAAx] le one m) : Γ ⊢[PR
 def basisPair (m d L r : PTm n) : PTm n := pairT (decodeY L (entry (labels m d L) r)) (decodeX L (entry (labels m d L) r))
 def basisBody : PTm 2 := basisPair (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def basis (m d L : PTm n) : PTm n := sequence basisBody (count m d L) (data m d L)
-@[simp] theorem subst_basisPair {l : ℕ} (σ : Fin n → PTm l) (m d L r : PTm n) :
-    Syn.subst σ (basisPair m d L r) = basisPair (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) (Syn.subst σ r) := by simp [basisPair]
-@[simp] theorem subst_basis {l : ℕ} (σ : Fin n → PTm l) (m d L : PTm n) :
-    Syn.subst σ (basis m d L) = basis (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) := by simp [basis]
+ipra_subst basisPair
+ipra_subst basis
 theorem basis_pair_congr {m m' d d' L L' r r' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hd : Γ ⊢[PRAAx] d ≐ d') (hL : Γ ⊢[PRAAx] L ≐ L') (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx]
     basisPair m d L r ≐ basisPair m' d' L' r' := by
   ipra_congr (basisPair (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hm, hd, hL, hr]
 theorem basis_body_at (m d L r : PTm n) : Γ ⊢[PRAAx] inst2 basisBody r (data m d L) ≐ basisPair m d L r := by
   simp only [basisBody,inst2,subst_basisPair,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact basis_pair_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact basis_pair_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem basis_length (m d L : PTm n) : Γ ⊢[PRAAx] length (basis m d L) ≐ count m d L := sequence_length _ _ _
 theorem basis_lookup (m d L r : PTm n) (hr : Γ ⊢[PRAAx] lt r (count m d L)) : Γ ⊢[PRAAx]
     entry (basis m d L) r ≐ basisPair m d L r :=
   (sequence_decode basisBody hr).eqTrans (basis_body_at _ _ _ _)
 theorem basis_Y (m d L r : PTm n) (hr : Γ ⊢[PRAAx] lt r (count m d L)) : Γ ⊢[PRAAx]
     fstT (entry (basis m d L) r) ≐ decodeY L (entry (labels m d L) r) :=
-  (congrFst (basis_lookup _ _ _ _ hr)).eqTrans (fst_pair _ _)
+  (basis_lookup _ _ _ _ hr).fstE
 theorem basis_X (m d L r : PTm n) (hr : Γ ⊢[PRAAx] lt r (count m d L)) : Γ ⊢[PRAAx]
     sndT (entry (basis m d L) r) ≐ decodeX L (entry (labels m d L) r) :=
-  (congrSnd (basis_lookup _ _ _ _ hr)).eqTrans (snd_pair _ _)
+  (basis_lookup _ _ _ _ hr).sndE
 theorem basis_admissible (m d L r : PTm n) (hr : Γ ⊢[PRAAx] lt r (count m d L)) : Γ ⊢[PRAAx]
     admissible m d L (fstT (entry (basis m d L) r)) (sndT (entry (basis m d L) r)) := by
   have h := labels_admissible _ _ _ _ hr
@@ -220,8 +201,7 @@ theorem labels_lex (L u v : PTm n) (h : Γ ⊢[PRAAx] lt u v) : Γ ⊢[PRAAx]
       lt_congr (congrAdd (congrMul Prf.hyp0.eqSymm (.eqRefl _)) (.eqRefl _)) (.eqRefl _) order
     exact .orI₂ (.andI Prf.hyp0.eqSymm (cancel_common_lt _ _ _ same))
 def lexBefore (p q : PTm n) : Fm PTm n := lt (fstT p) (fstT q) ⋎ ((fstT p ≐ fstT q) ⋏ lt (sndT p) (sndT q))
-@[simp] theorem subst_lexBefore {l : ℕ} (σ : Fin n → PTm l) (p q : PTm n) :
-    (lexBefore p q).subst σ = lexBefore (Syn.subst σ p) (Syn.subst σ q) := by simp [lexBefore]
+ipra_subst lexBefore
 theorem basis_increasing (m d L r s : PTm n) (hrs : Γ ⊢[PRAAx] lt r s) (hs : Γ ⊢[PRAAx] lt s (count m d L)) : Γ ⊢[PRAAx]
     lexBefore (entry (basis m d L) r) (entry (basis m d L) s) := by
   have hr := lt_of_lt_of_le hrs (le_of_lt hs)
@@ -238,15 +218,13 @@ theorem basis_distinct (m d L r s : PTm n) (hrs : Γ ⊢[PRAAx] lt r s) (hs : Γ
 theorem admissible_of_basis_pair (m d L r i j : PTm n) (hr : Γ ⊢[PRAAx] lt r (count m d L))
     (hp : Γ ⊢[PRAAx] entry (basis m d L) r ≐ pairT i j) : Γ ⊢[PRAAx] admissible m d L i j := by
   have valid := basis_admissible m d L r hr
-  have ey := (congrFst hp).eqTrans (fst_pair _ _)
-  have ex := (congrSnd hp).eqTrans (snd_pair _ _)
+  have ey := hp.fstE
+  have ex := hp.sndE
   exact .andI (lt_congr ey (.eqRefl _) (.andE₁ valid))
     (le_congr (congrAdd (congrMul (.eqRefl _) ex) (congrMul (.eqRefl _) ey)) (.eqRefl _) (.andE₂ valid))
 def occurs (m d L i j : PTm n) : Fm PTm n := .ex (lt (var 0) (count (Syn.shift m) (Syn.shift d) (Syn.shift L)) ⋏
   entry (basis (Syn.shift m) (Syn.shift d) (Syn.shift L)) (var 0) ≐ pairT (Syn.shift i) (Syn.shift j))
-@[simp] theorem subst_occurs {l : ℕ} (σ : Fin n → PTm l) (m d L i j : PTm n) :
-    (occurs m d L i j).subst σ = occurs (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) (Syn.subst σ i) (Syn.subst σ j) := by
-  simp [occurs,Syn.subst_shift,Syn.shift_subst]
+ipra_subst occurs [Syn.subst_shift, Syn.shift_subst]
 theorem complete (m d L i j : PTm n) (h : Γ ⊢[PRAAx] admissible m d L i j) : Γ ⊢[PRAAx] occurs m d L i j := by
   refine .exI (position m d L i j) ?_
   simpa [occurs] using listed_basis m d L i j h
@@ -269,17 +247,10 @@ def evaluationData (m d L x y : PTm n) : PTm n := pairT (data m d L) (pairT x y)
 def evaluationBody : PTm 2 := valueAt (fstT (fstT (var 1))) (fstT (sndT (fstT (var 1))))
   (sndT (sndT (fstT (var 1)))) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def evaluationVector (m d L x y : PTm n) : PTm n := sequence evaluationBody (count m d L) (evaluationData m d L x y)
-@[simp] theorem subst_monomial {l : ℕ} (σ : Fin n → PTm l) (x y p : PTm n) :
-    Syn.subst σ (monomial x y p) = monomial (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ p) := by simp [monomial]
-@[simp] theorem subst_valueAt {l : ℕ} (σ : Fin n → PTm l) (m d L x y r : PTm n) :
-    Syn.subst σ (valueAt m d L x y r) = valueAt (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ r) := by simp [valueAt]
-@[simp] theorem subst_evaluationData {l : ℕ} (σ : Fin n → PTm l) (m d L x y : PTm n) :
-    Syn.subst σ (evaluationData m d L x y) = evaluationData (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L)
-      (Syn.subst σ x) (Syn.subst σ y) := by simp [evaluationData]
-@[simp] theorem subst_evaluationVector {l : ℕ} (σ : Fin n → PTm l) (m d L x y : PTm n) :
-    Syn.subst σ (evaluationVector m d L x y) = evaluationVector (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L)
-      (Syn.subst σ x) (Syn.subst σ y) := by simp [evaluationVector]
+ipra_subst monomial
+ipra_subst valueAt
+ipra_subst evaluationData
+ipra_subst evaluationVector
 theorem value_congr {m m' d d' L L' x x' y y' r r' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hd : Γ ⊢[PRAAx] d ≐ d') (hL : Γ ⊢[PRAAx] L ≐ L') (hx : Γ ⊢[PRAAx] x ≐ x')
     (hy : Γ ⊢[PRAAx] y ≐ y') (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx]
@@ -291,9 +262,9 @@ theorem evaluation_body_at (m d L x y r : PTm n) : Γ ⊢[PRAAx]
   have rest := (congrSnd head).eqTrans (snd_pair m (pairT d L))
   have tail := snd_pair (Γ := Γ) (data m d L) (pairT x y)
   simp only [evaluationBody,inst2,subst_valueAt,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact value_congr ((congrFst head).eqTrans (fst_pair _ _)) ((congrFst rest).eqTrans (fst_pair _ _))
-    ((congrSnd rest).eqTrans (snd_pair _ _)) ((congrFst tail).eqTrans (fst_pair _ _))
-      ((congrSnd tail).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact value_congr head.fstE rest.fstE
+    rest.sndE tail.fstE
+      tail.sndE (.eqRefl _)
 theorem evaluation_length (m d L x y : PTm n) : Γ ⊢[PRAAx] length (evaluationVector m d L x y) ≐ count m d L := sequence_length _ _ _
 theorem evaluation_lookup (m d L x y r : PTm n) (hr : Γ ⊢[PRAAx] lt r (count m d L)) : Γ ⊢[PRAAx]
     entry (evaluationVector m d L x y) r ≐ monomial x y (entry (basis m d L) r) :=
@@ -320,14 +291,8 @@ def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (m d L x y : PTm n) : PTm n := app outputF ![m,d,L,x,y]
 def fields (p : PTm n) (i : Fin 4) : PTm n :=
   ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),sndT (sndT (sndT p))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (m d L x y : PTm n) :
-    Syn.subst σ (output m d L x y) = output (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ y) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (m d L x y : PTm n) :
-    Syn.subst σ (run m d L x y) = run (Syn.subst σ m) (Syn.subst σ d) (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (m d L x y : PTm n) : Γ ⊢[PRAAx] run m d L x y ≐ output m d L x y := by
@@ -335,13 +300,13 @@ theorem program_at (m d L x y : PTm n) : Γ ⊢[PRAAx] run m d L x y ≐ output 
 theorem returned_fields (m d L x y : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
     fields (run m d L x y) i ≐ ![basis m d L,evaluationVector m d L x y,count m d L,labels m d L] i := by
   have e0 := program_at (Γ := Γ) m d L x y
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
   · exact e3
 theorem returned_lengths (m d L x y : PTm n) : Γ ⊢[PRAAx]
     (length (fields (run m d L x y) 0) ≐ fields (run m d L x y) 2) ⋏

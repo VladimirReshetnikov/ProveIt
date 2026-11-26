@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceUpperCut
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual nonnegative affine Euclidean distance names
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLinearDistanceName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanPointDistance (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (pointCN distanceSample upper_of_representations)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceUpperCut (numerator denominator denominator_positive sample_represents)
@@ -25,9 +24,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -41,22 +37,12 @@ def normalizer (M : PTm n) : PTm n := GaussianRootSchedule.binaryLength M+two
 def exponent (M k : PTm n) : PTm n := k+normalizer M
 def sample (point : PR 2) (T x M A B k : PTm n) : PTm n := rawSample point T x M A B (exponent M k)
 
-@[simp] theorem subst_rawNumerator {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x M A B s : PTm n) :
-    Syn.subst σ (rawNumerator point T x M A B s) = rawNumerator point (Syn.subst σ T) (Syn.subst σ x)
-      (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ s) := by simp [rawNumerator]
-@[simp] theorem subst_rawDenominator {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x B s : PTm n) :
-    Syn.subst σ (rawDenominator point T x B s) = rawDenominator point (Syn.subst σ T) (Syn.subst σ x)
-      (Syn.subst σ B) (Syn.subst σ s) := by simp [rawDenominator]
-@[simp] theorem subst_rawSample {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x M A B s : PTm n) :
-    Syn.subst σ (rawSample point T x M A B s) = rawSample point (Syn.subst σ T) (Syn.subst σ x)
-      (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ s) := by simp [rawSample]
-@[simp] theorem subst_normalizer {l : ℕ} (σ : Fin n → PTm l) (M : PTm n) :
-    Syn.subst σ (normalizer M) = normalizer (Syn.subst σ M) := by simp [normalizer]
-@[simp] theorem subst_exponent {l : ℕ} (σ : Fin n → PTm l) (M k : PTm n) :
-    Syn.subst σ (exponent M k) = exponent (Syn.subst σ M) (Syn.subst σ k) := by simp [exponent]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x M A B k : PTm n) :
-    Syn.subst σ (sample point T x M A B k) = sample point (Syn.subst σ T) (Syn.subst σ x)
-      (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [sample]
+ipra_subst rawNumerator
+ipra_subst rawDenominator
+ipra_subst rawSample
+ipra_subst normalizer
+ipra_subst exponent
+ipra_subst sample
 
 theorem raw_denominator_positive (point : PR 2) (T x B s : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] le one (rawDenominator point T x B s) := positive_product _ _ hB (denominator_positive point T x s)
@@ -170,9 +156,7 @@ def fastScalar (point : PR 2) (T x M A B : PTm n) : Fm PTm n := .all (.all
     (sample point (Syn.shift (Syn.shift T)) (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift M)) (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift B)) (var 0))
     (unit (var 1)+unit (var 0)) (unit (var 1)*unit (var 0))))
 
-@[simp] theorem subst_fastScalar {l : ℕ} (σ : Fin n → PTm l) (point : PR 2) (T x M A B : PTm n) :
-    (fastScalar point T x M A B).subst σ = fastScalar point (Syn.subst σ T) (Syn.subst σ x)
-      (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ B) := by simp [fastScalar,Syn.subst_shift,Syn.shift_subst]
+ipra_subst fastScalar [Syn.subst_shift, Syn.shift_subst]
 
 theorem fast_scalar (point : PR 2) (T x M A B : PTm n)
     (hCN : Γ ⊢[PRAAx] pointCN point x) (hT : Γ ⊢[PRAAx] le one (length T)) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
@@ -191,9 +175,7 @@ def nameBody (point : PR 2) : PTm 2 := sample point (fstT (var 1)) (fstT (sndT (
   (fstT (sndT (sndT (var 1)))) (fstT (sndT (sndT (sndT (var 1))))) (sndT (sndT (sndT (sndT (var 1))))) (var 0)
 def nameF (point : PR 2) : PR 2 := PTm.toPR (nameBody point)
 
-@[simp] theorem subst_nameData {l : ℕ} (σ : Fin n → PTm l) (T x M A B : PTm n) :
-    Syn.subst σ (nameData T x M A B) = nameData (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [nameData]
+ipra_subst nameData
 
 theorem sample_congr (point : PR 2) {T T' x x' M M' A A' B B' k k' : PTm n}
     (hT : Γ ⊢[PRAAx] T ≐ T') (hx : Γ ⊢[PRAAx] x ≐ x') (hM : Γ ⊢[PRAAx] M ≐ M')
@@ -213,19 +195,18 @@ theorem name_at (point : PR 2) (T x M A B k : PTm n) : Γ ⊢[PRAAx]
     simpa [nameF,nameBody,ap2] using toPR_eq (Γ := Γ) (nameBody point) ![k,nameData T x M A B]
   have t1 : Γ ⊢[PRAAx] sndT (nameData T x M A B) ≐ pairT x (pairT M (pairT A B)) := snd_pair _ _
   have t2 : Γ ⊢[PRAAx] sndT (sndT (nameData T x M A B)) ≐ pairT M (pairT A B) :=
-    (congrSnd t1).eqTrans (snd_pair _ _)
+    t1.sndE
   have t3 : Γ ⊢[PRAAx] sndT (sndT (sndT (nameData T x M A B))) ≐ pairT A B :=
-    (congrSnd t2).eqTrans (snd_pair _ _)
-  exact base.eqTrans (sample_congr point (fst_pair _ _) ((congrFst t1).eqTrans (fst_pair _ _))
-    ((congrFst t2).eqTrans (fst_pair _ _)) ((congrFst t3).eqTrans (fst_pair _ _))
-    ((congrSnd t3).eqTrans (snd_pair _ _)) (.eqRefl _))
+    t2.sndE
+  exact base.eqTrans (sample_congr point (fst_pair _ _) t1.fstE
+    t2.fstE t3.fstE
+    t3.sndE (.eqRefl _))
 
 def scalarCN (f : PR 2) (x : PTm n) : Fm PTm n := .all (.all
   (RationalValueBounds.radius (ap2 f (var 1) (Syn.shift (Syn.shift x))) (ap2 f (var 0) (Syn.shift (Syn.shift x)))
     (unit (var 1)+unit (var 0)) (unit (var 1)*unit (var 0))))
 
-@[simp] theorem subst_scalarCN {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (x : PTm n) :
-    (scalarCN f x).subst σ = scalarCN f (Syn.subst σ x) := by simp [scalarCN,Syn.subst_shift,Syn.shift_subst]
+ipra_subst scalarCN [Syn.subst_shift, Syn.shift_subst]
 
 theorem name_fast (point : PR 2) (T x M A B : PTm n)
     (hCN : Γ ⊢[PRAAx] pointCN point x) (hT : Γ ⊢[PRAAx] le one (length T)) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]

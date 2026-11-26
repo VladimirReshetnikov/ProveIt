@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSinc
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedSincSamples
 open GaussianNamedSineTaylor (rawData subst_rawData)
 open GaussianRadiusExponentialName (input)
@@ -29,10 +29,6 @@ open GaussianRationalLowerBounds (lower inverse_bound)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianExponentialReference (dyadic_weaken)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -40,8 +36,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def modulus (f : PR 2) (R x : PTm n) : PTm n :=
   two*sineBudget f R x+two*sampleSize f R x+num 6
 
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (modulus f R x) = modulus f (Syn.subst σ R) (Syn.subst σ x) := by simp [modulus]
+ipra_subst modulus
 
 theorem sample_near (f : PR 2) (R x p A B : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hAB : Γ ⊢[PRAAx] le A B)
@@ -173,8 +168,7 @@ def nameF (f : PR 2) : PR 2 := GaussianFastValueCut.nameF (rawF f)
 def data (f : PR 2) (R x : PTm n) : PTm n :=
   GaussianFastValueCut.nameData (modulus f R x) (rawData R x)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (data f R x) = data f (Syn.subst σ R) (Syn.subst σ x) := by simp [data]
+ipra_subst data
 
 theorem name_regular (f : PR 2) (R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] pointCN (nameF f) (data f R x) :=

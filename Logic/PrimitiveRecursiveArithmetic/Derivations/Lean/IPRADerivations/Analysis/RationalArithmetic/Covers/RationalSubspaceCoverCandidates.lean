@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalFiniteSpanCover
 import IPRADerivations.Foundations.SequenceEquality
 import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite mask-tuple candidates for rational span covers
@@ -17,14 +16,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSubspaceCoverCandidates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.MixedRadix (Cd Pl dP)
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,18 +35,12 @@ def candidateBody : PTm 2 := RationalSubtupleSpan.selected (fstT (var 1))
   (digit (fstT (var 1)) (sndT (var 1)) (var 0))
 def candidate (T M w : PTm n) : PTm n := sequence candidateBody M (pairT T w)
 
-@[simp] theorem subst_radix {q : ℕ} (σ : Fin n → PTm q) (T : PTm n) :
-    Syn.subst σ (radix T) = radix (Syn.subst σ T) := by simp [radix]
-@[simp] theorem subst_bound {q : ℕ} (σ : Fin n → PTm q) (T M : PTm n) :
-    Syn.subst σ (bound T M) = bound (Syn.subst σ T) (Syn.subst σ M) := by simp [bound]
-@[simp] theorem subst_digit {q : ℕ} (σ : Fin n → PTm q) (T w g : PTm n) :
-    Syn.subst σ (digit T w g) = digit (Syn.subst σ T) (Syn.subst σ w) (Syn.subst σ g) := by simp [digit]
-@[simp] theorem subst_codecData {q : ℕ} (σ : Fin n → PTm q) (H C : PTm n) :
-    Syn.subst σ (codecData H C) = codecData (Syn.subst σ H) (Syn.subst σ C) := by simp [codecData]
-@[simp] theorem subst_encode {q : ℕ} (σ : Fin n → PTm q) (T D N : PTm n) :
-    Syn.subst σ (encode T D N) = encode (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ N) := by simp [encode]
-@[simp] theorem subst_candidate {q : ℕ} (σ : Fin n → PTm q) (T M w : PTm n) :
-    Syn.subst σ (candidate T M w) = candidate (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ w) := by simp [candidate]
+ipra_subst radix
+ipra_subst bound
+ipra_subst digit
+ipra_subst codecData
+ipra_subst encode
+ipra_subst candidate
 
 theorem radix_body_at (H C i : PTm n) : Γ ⊢[PRAAx] inst2 radixBody i (codecData H C) ≐ H := by
   simpa [radixBody,codecData,inst2] using fst_pair (Γ := Γ) H C
@@ -144,14 +133,8 @@ def output (T D N : PTm n) : PTm n := pairT (encode T D N)
   (pairT (candidate T (length D) (encode T D N)) (bound T (length D)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (T D N : PTm n) : PTm n := app outputF ![T,D,N]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (T D N : PTm n) :
-    Syn.subst σ (output T D N) = output (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (T D N : PTm n) :
-    Syn.subst σ (run T D N) = run (Syn.subst σ T) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem candidate_program_at (T M w : PTm n) : Γ ⊢[PRAAx] app candidateF ![T,M,w] ≐ candidate T M w := by
   simpa [candidateF] using toPR_eq (Γ := Γ) (candidate (var 0) (var 1) (var 2) : PTm 3) ![T,M,w]
@@ -161,11 +144,11 @@ theorem program_at (T D N : PTm n) : Γ ⊢[PRAAx] run T D N ≐ output T D N :=
   simpa [run,outputF,output,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![T,D,N]
 theorem returned_code (T D N : PTm n) : Γ ⊢[PRAAx] fstT (run T D N) ≐ encode T D N :=
-  (congrFst (program_at T D N)).eqTrans (fst_pair _ _)
+  (program_at T D N).fstE
 theorem returned_family (T D N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run T D N)) ≐ candidate T (length D) (encode T D N) :=
-  (congrFst ((congrSnd (program_at T D N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at T D N).sndE.fstE
 theorem returned_bound (T D N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run T D N)) ≐ bound T (length D) :=
-  (congrSnd ((congrSnd (program_at T D N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at T D N).sndE.sndE
 theorem returned_code_bound (T D N : PTm n) : Γ ⊢[PRAAx] lt (fstT (run T D N)) (sndT (sndT (run T D N))) :=
   lt_congr (returned_code T D N).eqSymm (returned_bound T D N).eqSymm (encode_bound T D N)
 

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerCorrectionDisk
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr)
@@ -27,9 +27,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFastValueCut (rawEnvelope)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,12 +60,8 @@ def source (z R B N : PTm n) : Fm PTm n :=
 
 def slack (z R B N : PTm n) : PTm n := two*R+correctionBudget z B N
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    (source z R B N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [source]
-@[simp] theorem subst_slack {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (slack z R B N) = slack (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [slack]
+ipra_subst source
+ipra_subst slack
 
 theorem core_bound (p z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] bounded (correctionCore p z B N) (R*unit p+(two*R)*N) (N*unit p) := by

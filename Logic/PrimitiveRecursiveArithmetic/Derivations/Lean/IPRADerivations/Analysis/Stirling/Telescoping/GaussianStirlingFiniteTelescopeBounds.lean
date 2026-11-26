@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qzero_canonical)
@@ -26,10 +26,6 @@ open GaussianStirlingTailComparison (point_add_upper_same)
 open GaussianEulerPositivePowerChartCorrectedImage (fraction_sum)
 open GaussianPositiveRationalLogarithm (fraction)
 open RationalValueBounds (upper upper_congr upper_of_order)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D" => GaussianStirlingDifference.nameF
@@ -66,15 +62,9 @@ def sumBounds (p N a b : PTm n) : Fm PTm n :=
   upper (fstT qzero) (fstT (rawSum p N a b)) N (unit p) ⋏
     upper (fstT (rawSum p N a b)) (fstT (upperDifference a b N)) N (unit p)
 
-@[simp] theorem subst_localBounds {l : ℕ} (σ : Fin n → PTm l) (p a b : PTm n) :
-    (localBounds p a b).subst σ = localBounds (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [localBounds,one]
-@[simp] theorem subst_rows {l : ℕ} (σ : Fin n → PTm l) (p a b : PTm n) :
-    (rows p a b).subst σ = rows (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [rows,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_sumBounds {l : ℕ} (σ : Fin n → PTm l) (p N a b : PTm n) :
-    (sumBounds p N a b).subst σ = sumBounds (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [sumBounds]
+ipra_subst localBounds [one]
+ipra_subst rows [Syn.subst_shift, Syn.shift_subst]
+ipra_subst sumBounds
 
 theorem row_at (p a b i : PTm n) (h : Γ ⊢[PRAAx] rows p a b) :
     Γ ⊢[PRAAx] localBounds p (shifted a b i) b := by
@@ -100,14 +90,12 @@ private theorem sum_upper_step (p i a b : PTm n) (ha : Γ ⊢[PRAAx] le one a)
 theorem sum_bounds (p N a b : PTm n) (ha : Γ ⊢[PRAAx] le one a)
     (h : Γ ⊢[PRAAx] rows p a b) : Γ ⊢[PRAAx] sumBounds p N a b := by
   have all : Γ ⊢[PRAAx] .all (sumBounds (Syn.shift p) (var 0) (Syn.shift a) (Syn.shift b)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_sumBounds,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have e := GaussianRationalFiniteSum.sum_zero (Γ := Γ) dBody (sampleData p a b)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_sumBounds]
+    · have e := GaussianRationalFiniteSum.sum_zero (Γ := Γ) dBody (sampleData p a b)
       have o : Γ ⊢[PRAAx] upper (fstT qzero) (fstT qzero) zero (unit p) := upper_of_order _ _ _ _ (le_refl _)
       exact .andI (upper_congr (.eqRefl _) (congrFst e.eqSymm) (.eqRefl _) (.eqRefl _) o)
         (upper_congr (congrFst e.eqSymm) (congrFst (upper_zero a b ha).eqSymm) (.eqRefl _) (.eqRefl _) o)
-    · simp only [subst_sumBounds,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let j : PTm (n+1) := var 0
+    · let j : PTm (n+1) := var 0
       let a' := Syn.shift a
       let b' := Syn.shift b
       let p' := Syn.shift p

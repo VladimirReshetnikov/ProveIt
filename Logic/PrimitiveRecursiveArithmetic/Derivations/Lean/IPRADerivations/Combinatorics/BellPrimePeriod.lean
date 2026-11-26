@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.BellTouchardPower
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # An explicit period of the Bell numbers modulo a prime (`bell_numbers_ipra`, `thm:prime-period`)
@@ -26,17 +25,13 @@ The sharp period `N_p` of the theorem is derived in `Combinatorics/BellPeriodNp`
 
 namespace LeanProofs.IPRA.Combinatorics.BellPrimePeriod
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (bell)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (congrBell)
 open LeanProofs.IPRA.Combinatorics.BellTouchard (touchard divmod_p)
 open LeanProofs.IPRA.Combinatorics.BellTouchardPower (touchard_power cong_add cong_of_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

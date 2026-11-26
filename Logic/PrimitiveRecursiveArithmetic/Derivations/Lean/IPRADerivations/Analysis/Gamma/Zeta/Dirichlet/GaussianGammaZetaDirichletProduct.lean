@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianGammaReciprocalInverse (gammaF gammaData gammaHeight)
@@ -25,9 +25,6 @@ open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianEulerIntegralGammaIdentification.source
@@ -41,22 +38,11 @@ def finiteData (N z R B A : PTm n) : PTm n := gammaProductData N (shifted z B) (
 def nameF : PR 2 := multiplyF Zeta gammaF
 def data (z R B A : PTm n) : PTm n := multiplyData Zeta gammaF (zetaData z R B A) (actualGammaData z R B A)
 
-@[simp] theorem subst_actualGammaData {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (actualGammaData z R B A) =
-      actualGammaData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [actualGammaData,gammaData,gammaHeight,one]
-@[simp] theorem subst_gammaBound {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (gammaBound z R B A) =
-      gammaBound (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [gammaBound]
-@[simp] theorem subst_rateBudget {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (rateBudget z R B A) =
-      rateBudget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [rateBudget]
-@[simp] theorem subst_finiteData {m : ℕ} (σ : Fin n → PTm m) (N z R B A : PTm n) :
-    Syn.subst σ (finiteData N z R B A) =
-      finiteData (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [finiteData,one]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (data z R B A) =
-      data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [data]
+ipra_subst actualGammaData [gammaData, gammaHeight, one]
+ipra_subst gammaBound
+ipra_subst rateBudget
+ipra_subst finiteData [one]
+ipra_subst data
 
 theorem regular (z R B A : PTm n) (hz : Γ ⊢[PRAAx] S z R B A) :
     Γ ⊢[PRAAx] pointCN nameF (data z R B A) :=

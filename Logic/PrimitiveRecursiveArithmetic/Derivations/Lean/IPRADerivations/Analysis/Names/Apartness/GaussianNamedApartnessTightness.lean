@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedApartnessTightness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (unit_monotone)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded qnormSq squaredTolerance)
 open GaussianRationalSlackRemoval (slack precision slack_removal_at)
 open GaussianReconstructionRoots (norm_from_distance distance_zero_iff)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -41,9 +38,7 @@ local notation "dd" => GaussianNamedDifference.data
 
 def noApart (f : PR 2) (x : PTm n) : Fm PTm n := .all (neg (apart f (var 0) (Syn.shift x)))
 
-@[simp] theorem subst_noApart {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    (noApart f x).subst σ = noApart f (Syn.subst σ x) := by
-  simp [noApart, neg, Syn.subst_shift, Syn.shift_subst]
+ipra_subst noApart [neg, Syn.subst_shift, Syn.shift_subst]
 
 theorem anchor_bound (f : PR 2) (h x : PTm n) (ha : Γ ⊢[PRAAx] neg (apart f h x)) :
     Γ ⊢[PRAAx] bounded (ap2 f (anchor h) x) one (unit h) := by

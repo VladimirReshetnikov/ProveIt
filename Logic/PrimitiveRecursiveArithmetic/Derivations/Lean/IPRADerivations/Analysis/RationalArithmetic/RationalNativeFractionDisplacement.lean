@@ -13,16 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalNativeFractionDisplacement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalSupMetric (denominatorOf numeratorOf)
 open RationalValueBounds (upper radius crossLeft positive_cancel upper_of_radius radius_symmetric)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_mul ad_le_of)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

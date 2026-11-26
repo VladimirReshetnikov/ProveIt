@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneExponentialSmall
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyValues (numerator denominator value)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -32,8 +32,6 @@ open GaussianRightHalfPlaneRadialLogarithm (normNum normDen log_source)
 open GaussianRationalHorner (qmul qmul_canonical ofGaussian_represents qmul_represents positive_product)
 open ComplexLogarithmRemainder (code scale mul oneCode eval_re_code eval_im_code)
 open GaussianRootAlgebra (equal equal_of_values re_mul im_mul re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "V" => GaussianRadiusExponentialName.nameF smallF

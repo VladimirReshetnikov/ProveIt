@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineSquaredRootSeparation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode normSq normSq_eval re im eval_re_code eval_im_code)
 open GaussianArctangentCayleySquareGap (sqNumerator sqDenominator squareValue square_represents)
 open GaussianArctangentCayleyTrig (sineCode sinePoint)
@@ -36,9 +36,6 @@ open RationalArithmetic (add)
 open RationalArgmin (rationalLE)
 open RationalCubeMidpoint (fraction fraction_represents)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

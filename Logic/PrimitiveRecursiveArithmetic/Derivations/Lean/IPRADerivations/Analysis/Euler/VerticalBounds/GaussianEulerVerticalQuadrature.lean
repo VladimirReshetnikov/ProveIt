@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianEulerIntegrandName (evaluatorF fixedData sample)
 open GaussianCompactRiemannName (quadrature precision sampleBody sampleData sample_body_at)
@@ -27,17 +27,12 @@ open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def rowData (p N a C E z B : PTm n) : PTm n := sampleData p N a C E (fixedData z B)
 
-@[simp] theorem subst_rowData {m : ℕ} (σ : Fin n → PTm m) (p N a C E z B : PTm n) :
-    Syn.subst σ (rowData p N a C E z B) = rowData (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ z) (Syn.subst σ B) := by simp [rowData]
+ipra_subst rowData
 
 theorem row_readback (i p N a C E z B : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody evaluatorF) i (rowData p N a C E z B) ≐ sample p z B (a*N+C*i) (E*N) :=

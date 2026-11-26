@@ -16,14 +16,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImage
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (source nameF data majorant)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -35,22 +33,12 @@ def numerator (p e f d h Q S E T a b : PTm n) : PTm n := GaussianUnitIntervalInp
 def denominator (p e f d h Q S E T a b : PTm n) : PTm n := GaussianUnitIntervalInputDecoding.denominator (sample p e f d h Q S E T a b)
 def imageData (p e f d h Q S E T a b : PTm n) : PTm n :=
   pairT (numerator p e f d h Q S E T a b) (denominator p e f d h Q S E T a b)
-@[simp] theorem subst_reciprocalMargin {m : ℕ} (σ : Fin n → PTm m) (h Q E T : PTm n) :
-    Syn.subst σ (reciprocalMargin h Q E T) = reciprocalMargin (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ E) (Syn.subst σ T) := by simp [reciprocalMargin]
-@[simp] theorem subst_query {m : ℕ} (σ : Fin n → PTm m) (p h Q E T : PTm n) :
-    Syn.subst σ (query p h Q E T) = query (Syn.subst σ p) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ E) (Syn.subst σ T) := by simp [query]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p e f d h Q S E T a b : PTm n) :
-    Syn.subst σ (sample p e f d h Q S E T a b) = sample (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [sample]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p e f d h Q S E T a b : PTm n) :
-    Syn.subst σ (numerator p e f d h Q S E T a b) = numerator (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p e f d h Q S E T a b : PTm n) :
-    Syn.subst σ (denominator p e f d h Q S E T a b) = denominator (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [denominator]
-@[simp] theorem subst_imageData {m : ℕ} (σ : Fin n → PTm m) (p e f d h Q S E T a b : PTm n) :
-    Syn.subst σ (imageData p e f d h Q S E T a b) = imageData (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by simp [imageData]
+ipra_subst reciprocalMargin
+ipra_subst query
+ipra_subst sample
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst imageData
 
 theorem margin_positive (h Q E T : PTm n) (hh : Γ ⊢[PRAAx] le one h) : Γ ⊢[PRAAx] le one (reciprocalMargin h Q E T) :=
   positive_product _ _ (le_succ_self one) (positive_product _ _ hh (GaussianEulerPositivePowerChartLower.power_denominator_positive Q E T))
@@ -101,13 +89,7 @@ theorem original_observations (p q e f d h Q S E T a b : PTm n)
 def imageF : PR 11 := PTm.toPR (imageData (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) (var 9) (var 10))
 def run (p e f d h Q S E T a b : PTm n) : PTm n := PTm.app imageF ![p,e,f,d,h,Q,S,E,T,a,b]
 
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (p e f d h Q S E T a b : PTm n) :
-    Syn.subst σ (run p e f d h Q S E T a b) = run (Syn.subst σ p) (Syn.subst σ e) (Syn.subst σ f)
-      (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 
 theorem program_at (p e f d h Q S E T a b : PTm n) : Γ ⊢[PRAAx]
     run p e f d h Q S E T a b ≐ imageData p e f d h Q S E T a b := by
@@ -120,10 +102,10 @@ theorem program_at (p e f d h Q S E T a b : PTm n) : Γ ⊢[PRAAx]
 
 theorem returned_numerator (p e f d h Q S E T a b : PTm n) : Γ ⊢[PRAAx]
     fstT (run p e f d h Q S E T a b) ≐ numerator p e f d h Q S E T a b :=
-  (congrFst (program_at p e f d h Q S E T a b)).eqTrans (fst_pair _ _)
+  (program_at p e f d h Q S E T a b).fstE
 theorem returned_denominator (p e f d h Q S E T a b : PTm n) : Γ ⊢[PRAAx]
     sndT (run p e f d h Q S E T a b) ≐ denominator p e f d h Q S E T a b :=
-  (congrSnd (program_at p e f d h Q S E T a b)).eqTrans (snd_pair _ _)
+  (program_at p e f d h Q S E T a b).sndE
 
 theorem actual_literal_positive_power_chart_image_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 11
     (source (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) (var 9) (var 10) ⟶

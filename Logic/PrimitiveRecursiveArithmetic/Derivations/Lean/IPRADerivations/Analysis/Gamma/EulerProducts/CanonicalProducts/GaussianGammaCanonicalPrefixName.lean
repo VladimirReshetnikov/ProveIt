@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.OriginalPrefixes.GaussianGammaOriginalPrefixRegularity
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite evaluation of the canonical Gamma coefficient names
@@ -13,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalPrefixName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (power)
@@ -26,9 +25,6 @@ open GaussianGammaInputPrecisionNorm (radiusNumerator radiusDenominator denomina
 open GaussianEuclideanDistanceName (fraction pointCN)
 open RationalArgmin (rationalLE)
 open RationalArithmetic (multiply)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,22 +39,14 @@ def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (d R w : PTm n) : PTm n := GaussianFastValueCut.nameData (modulus R d) (pairT d w)
 def clock (p R d : PTm n) : PTm n := GaussianFastValueCut.exponent (modulus R d) p
 def sample (p d R w : PTm n) : PTm n := ap2 nameF p (data d R w)
-@[simp] theorem subst_termData {l : ℕ} (σ : Fin n → PTm l) (p w : PTm n) :
-    Syn.subst σ (termData p w) = termData (Syn.subst σ p) (Syn.subst σ w) := by simp [termData]
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (p w e : PTm n) :
-    Syn.subst σ (term p w e) = term (Syn.subst σ p) (Syn.subst σ w) (Syn.subst σ e) := by simp [term]
-@[simp] theorem subst_rawValue {l : ℕ} (σ : Fin n → PTm l) (p d w : PTm n) :
-    Syn.subst σ (rawValue p d w) = rawValue (Syn.subst σ p) (Syn.subst σ d) (Syn.subst σ w) := by simp [rawValue]
-@[simp] theorem subst_termModulus {l : ℕ} (σ : Fin n → PTm l) (R d : PTm n) :
-    Syn.subst σ (termModulus R d) = termModulus (Syn.subst σ R) (Syn.subst σ d) := by simp [termModulus]
-@[simp] theorem subst_modulus {l : ℕ} (σ : Fin n → PTm l) (R d : PTm n) :
-    Syn.subst σ (modulus R d) = modulus (Syn.subst σ R) (Syn.subst σ d) := by simp [modulus]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (d R w : PTm n) :
-    Syn.subst σ (data d R w) = data (Syn.subst σ d) (Syn.subst σ R) (Syn.subst σ w) := by simp [data]
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p R d : PTm n) :
-    Syn.subst σ (clock p R d) = clock (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ d) := by simp [clock]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (p d R w : PTm n) :
-    Syn.subst σ (sample p d R w) = sample (Syn.subst σ p) (Syn.subst σ d) (Syn.subst σ R) (Syn.subst σ w) := by simp [sample]
+ipra_subst termData
+ipra_subst term
+ipra_subst rawValue
+ipra_subst termModulus
+ipra_subst modulus
+ipra_subst data
+ipra_subst clock
+ipra_subst sample
 
 theorem term_congr {p q w v e f : PTm n} (hp : Γ ⊢[PRAAx] p ≐ q) (hw : Γ ⊢[PRAAx] w ≐ v)
     (he : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx] term p w e ≐ term q v f := by

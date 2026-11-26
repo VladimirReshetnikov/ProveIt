@@ -15,16 +15,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperPowerOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerCoefficients (realMultiplier upperMultiplier amplification)
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedPositiveExponentialOrder (sampleOrder realOrder)
 open GaussianSignedNameExponentialOrder (realSamples)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,18 +40,12 @@ def radius (R a : PTm n) : PTm n := amplification R*GaussianHarmonicLogarithmNam
 def leftExpData (z R B a b : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius R a) (leftData z R B a b)
 def rightExpData (R a b : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius R a) (rightData R a b)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    (source z R B a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_leftData {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    Syn.subst σ (leftData z R B a b) = leftData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [leftData]
-@[simp] theorem subst_rightData {m : ℕ} (σ : Fin n → PTm m) (R a b : PTm n) :
-    Syn.subst σ (rightData R a b) = rightData (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [rightData]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (R a : PTm n) :
-    Syn.subst σ (radius R a) = radius (Syn.subst σ R) (Syn.subst σ a) := by simp [radius]
-@[simp] theorem subst_leftExpData {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    Syn.subst σ (leftExpData z R B a b) = leftExpData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [leftExpData]
-@[simp] theorem subst_rightExpData {m : ℕ} (σ : Fin n → PTm m) (R a b : PTm n) :
-    Syn.subst σ (rightExpData R a b) = rightExpData (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [rightExpData]
+ipra_subst source
+ipra_subst leftData
+ipra_subst rightData
+ipra_subst radius
+ipra_subst leftExpData
+ipra_subst rightExpData
 
 theorem actual_time_domain (a b : PTm n) (h : Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.source a b ⋏ le b a) : Γ ⊢[PRAAx]
     GaussianCompactLogarithmBounds.domain a b one a :=

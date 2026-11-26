@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTerminalRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -26,10 +26,6 @@ open GaussianRationalHorner (qzero ofGaussian ofGaussian_canonical ofGaussian_re
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalNaturalScale (natScale natScale_canonical natScale_represents)
 open GaussianRationalSyntheticDivision (qsub_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

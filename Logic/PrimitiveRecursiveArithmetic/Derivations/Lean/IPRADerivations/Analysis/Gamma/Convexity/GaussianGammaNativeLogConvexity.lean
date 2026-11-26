@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNativeLogConvexity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerRationalHeadConvexity (weight barycenter)
 open GaussianGammaEulerRationalLogConvergence (actual_rate rateCoefficient)
 open GaussianGammaEulerRationalLogMargin (cutoff cutoff_positive denominator_positive)
@@ -25,8 +25,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNaturalScaleProductName (productF)
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => productF logGammaF

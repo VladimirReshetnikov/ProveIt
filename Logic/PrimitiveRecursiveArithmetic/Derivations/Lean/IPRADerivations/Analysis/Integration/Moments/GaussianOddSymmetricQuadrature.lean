@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOddSymmetricQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianMomentReflection (row)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qadd qmul qzero)
@@ -23,9 +23,6 @@ open GaussianRationalMetric (qnegative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRationalFiniteSum (sum)
 open GaussianCompactRiemannName (grid sampleBody sampleData quadrature)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,12 +33,9 @@ def negativeTerm (p t x : PTm n) : PTm n := row p (succ (two*fstT x)) (qnegative
   (fstT t) (sndT t) (fstT (sndT x)) (sndT (sndT x))
 def positiveF : PR 3 := PTm.toPR (positiveTerm (var 0) (var 1) (var 2))
 def negativeF : PR 3 := PTm.toPR (negativeTerm (var 0) (var 1) (var 2))
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (N c d : PTm n) :
-    Syn.subst σ (fixedData N c d) = fixedData (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by simp [fixedData]
-@[simp] theorem subst_positiveTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (positiveTerm p t x) = positiveTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [positiveTerm]
-@[simp] theorem subst_negativeTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (negativeTerm p t x) = negativeTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [negativeTerm]
+ipra_subst fixedData
+ipra_subst positiveTerm
+ipra_subst negativeTerm
 
 theorem positive_at (p t x : PTm n) : Γ ⊢[PRAAx] ap3 positiveF p t x ≐ positiveTerm p t x := by
   simpa [positiveF,ap3] using toPR_eq (Γ := Γ) (positiveTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]

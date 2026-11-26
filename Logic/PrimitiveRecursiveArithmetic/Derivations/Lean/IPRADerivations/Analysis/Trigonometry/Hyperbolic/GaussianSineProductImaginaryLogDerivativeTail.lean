@@ -13,7 +13,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryLogDerivativeTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq normSq_code)
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
@@ -27,10 +27,6 @@ open GaussianReciprocalHorner (qadd_zero_right qadd_commutative)
 open GaussianSineProductImaginaryLogDerivative
   (axisNumerator realNumerator rationalReal squareDenominator logarithmRow logarithmSum logarithm_sum_succ)
 open GaussianReconstructionRoots (distance_triangle norm_from_distance)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -84,10 +80,7 @@ private theorem sum_index_congr (A B : PTm n) {k l : PTm n} (h : Γ ⊢[PRAAx] k
 def tail (A B R N r : PTm n) : Fm PTm n :=
   distanceBounded (logarithmSum A B (N+r)) (logarithmSum A B N) (two*R*r) (N*(N+r))
 
-@[simp] theorem subst_tail {m : ℕ} (σ : Fin n → PTm m) (A B R N r : PTm n) :
-    (tail A B R N r).subst σ =
-      tail (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ r) := by
-  simp [tail, two]
+ipra_subst tail [two]
 
 private theorem tail_den_positive (N r : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] le one (N*(N+r)) :=
@@ -171,12 +164,9 @@ def sampled (A B R p : PTm n) : PTm n := logarithmSum A B (cutoff R p)
 def nameF : PR 2 := PTm.toPR
   (sampled (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0) : PTm 2)
 
-@[simp] theorem subst_sampled {m : ℕ} (σ : Fin n → PTm m) (A B R p : PTm n) :
-    Syn.subst σ (sampled A B R p) = sampled (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ p) := by
-  simp [sampled, cutoff, two, one]
+ipra_subst sampled [cutoff, two, one]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B R : PTm n) :
-    Syn.subst σ (data A B R) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) := by simp [data]
+ipra_subst data
 
 theorem sample_at (A B R p : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data A B R) ≐ sampled A B R p := by
   let d := data A B R

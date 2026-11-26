@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactQuadratureBoundary
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact original Euler cutoffs on a common later denominator
@@ -15,15 +14,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCompactCutoffGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top height)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,17 +27,11 @@ def ratio (p q A : PTm n) : PTm n := unit (A*delta p q)
 def lowerWidth (p q A : PTm n) : PTm n := monus (ratio p q A) one
 def middleWidth (p q A R : PTm n) : PTm n := ratio p q A*width p A R
 def upperWidth (p q A R : PTm n) : PTm n := etaDen q A R*(two*delta p q)
-@[simp] theorem subst_delta {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (delta p q) = delta (Syn.subst σ p) (Syn.subst σ q) := by simp [delta]
-@[simp] theorem subst_ratio {m : ℕ} (σ : Fin n → PTm m) (p q A : PTm n) :
-    Syn.subst σ (ratio p q A) = ratio (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [ratio]
-@[simp] theorem subst_lowerWidth {m : ℕ} (σ : Fin n → PTm m) (p q A : PTm n) :
-    Syn.subst σ (lowerWidth p q A) = lowerWidth (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [lowerWidth]
-@[simp] theorem subst_middleWidth {m : ℕ} (σ : Fin n → PTm m) (p q A R : PTm n) :
-    Syn.subst σ (middleWidth p q A R) = middleWidth (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by simp [middleWidth]
-@[simp] theorem subst_upperWidth {m : ℕ} (σ : Fin n → PTm m) (p q A R : PTm n) :
-    Syn.subst σ (upperWidth p q A R) = upperWidth (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [upperWidth,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst delta
+ipra_subst ratio
+ipra_subst lowerWidth
+ipra_subst middleWidth
+ipra_subst upperWidth [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem ratio_positive (p q A : PTm n) : Γ ⊢[PRAAx] le one (ratio p q A) := unit_positive _
 theorem height_refinement (p q A R : PTm n) (h : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
@@ -126,23 +115,22 @@ theorem same_upper (p A R : PTm n) : Γ ⊢[PRAAx] upperWidth p p A R ≐ zero :
 def output (p q A R : PTm n) : PTm n := pairT (ratio p q A) (pairT (lowerWidth p q A) (pairT (middleWidth p q A R) (upperWidth p q A R)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (p q A R : PTm n) : PTm n := PTm.app outputF ![p,q,A,R]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p q A R : PTm n) :
-    Syn.subst σ (output p q A R) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) := by simp [output]
+ipra_subst output
 theorem program_at (p q A R : PTm n) : Γ ⊢[PRAAx] run p q A R ≐ output p q A R := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![p,q,A,R]
 theorem returned_ratio (p q A R : PTm n) : Γ ⊢[PRAAx] fstT (run p q A R) ≐ ratio p q A :=
-  (congrFst (program_at p q A R)).eqTrans (fst_pair _ _)
+  (program_at p q A R).fstE
 theorem returned_tail (p q A R : PTm n) : Γ ⊢[PRAAx]
     sndT (run p q A R) ≐ pairT (lowerWidth p q A) (pairT (middleWidth p q A R) (upperWidth p q A R)) :=
-  (congrSnd (program_at p q A R)).eqTrans (snd_pair _ _)
+  (program_at p q A R).sndE
 theorem returned_lower (p q A R : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p q A R)) ≐ lowerWidth p q A :=
-  (congrFst (returned_tail p q A R)).eqTrans (fst_pair _ _)
+  (returned_tail p q A R).fstE
 theorem returned_last (p q A R : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p q A R)) ≐ pairT (middleWidth p q A R) (upperWidth p q A R) :=
-  (congrSnd (returned_tail p q A R)).eqTrans (snd_pair _ _)
+  (returned_tail p q A R).sndE
 theorem returned_middle (p q A R : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p q A R))) ≐ middleWidth p q A R :=
-  (congrFst (returned_last p q A R)).eqTrans (fst_pair _ _)
+  (returned_last p q A R).fstE
 theorem returned_upper (p q A R : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p q A R))) ≐ upperWidth p q A R :=
-  (congrSnd (returned_last p q A R)).eqTrans (snd_pair _ _)
+  (returned_last p q A R).sndE
 theorem returned_total (p q A R : PTm n) (h : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
     fstT (sndT (run p q A R))+fstT (sndT (sndT (run p q A R)))+sndT (sndT (sndT (run p q A R))) ≐ width q A R :=
   (congrAdd (congrAdd (returned_lower p q A R) (returned_middle p q A R)) (returned_upper p q A R)).eqTrans (widths_total p q A R h)

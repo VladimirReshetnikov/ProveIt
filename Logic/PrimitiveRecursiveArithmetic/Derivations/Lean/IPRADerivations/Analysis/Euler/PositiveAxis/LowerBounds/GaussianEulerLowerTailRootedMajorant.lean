@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerTailRootedMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianCompactRiemannName (quadrature sampledModulus sampleBody sampleData sample_body_at)
 open GaussianEulerCompactLowerTail (literal_weight weightedPoint)
@@ -29,10 +29,6 @@ open GaussianPartitionedFiniteSum (block blockBody block_at)
 open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_index_congr sum_multiply)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianUniformFiniteSumBound (summandsBounded uniform_sum_bound)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "BlockNum" => GaussianEulerLowerBlockWeight.numerator
@@ -79,11 +75,7 @@ private theorem subst_rightTime {m : ℕ} (σ : Fin n → PTm m) (i N p q A R : 
   simp [rightTime,subst_timeNum,subst_timeDen]
 attribute [local simp] subst_rootNum subst_rootDen subst_timeNum subst_timeDen subst_rightTime
 
-@[simp] theorem subst_rightBounds {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (x s N p q k R J : PTm n) :
-    (rightBounds F x s N p q k R J).subst σ =
-      rightBounds F (Syn.subst σ x) (Syn.subst σ s) (Syn.subst σ N)
-        (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ J) := by
-  simp [rightBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rightBounds [Syn.subst_shift, Syn.shift_subst]
 
 private theorem right_bound_at (F : PR 3) (x s N p q k R J i : PTm n)
     (h : Γ ⊢[PRAAx] rightBounds F x s N p q k R J) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]

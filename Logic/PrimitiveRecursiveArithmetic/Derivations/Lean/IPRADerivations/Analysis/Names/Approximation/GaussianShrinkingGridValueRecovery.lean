@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianShrinkingGridValueRecovery
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr)
@@ -29,10 +29,6 @@ open GaussianRationalL1 (qL1)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,16 +40,10 @@ def valuesClose (C D d H A B : PTm n) : Fm PTm n := .all
 def errorNumerator (d H U V A B : PTm n) : PTm n := two*(A*H+(U+V)*pw d (succ d)*B)
 def errorDenominator (d H B : PTm n) : PTm n := B*pw H (succ d)
 
-@[simp] theorem subst_query {l : ℕ} (σ : Fin n → PTm l) (H s : PTm n) :
-    Syn.subst σ (query H s) = query (Syn.subst σ H) (Syn.subst σ s) := by simp [query]
-@[simp] theorem subst_valuesClose {l : ℕ} (σ : Fin n → PTm l) (C D d H A B : PTm n) :
-    (valuesClose C D d H A B).subst σ = valuesClose (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ d)
-      (Syn.subst σ H) (Syn.subst σ A) (Syn.subst σ B) := by simp [valuesClose,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_errorNumerator {l : ℕ} (σ : Fin n → PTm l) (d H U V A B : PTm n) :
-    Syn.subst σ (errorNumerator d H U V A B) = errorNumerator (Syn.subst σ d) (Syn.subst σ H) (Syn.subst σ U)
-      (Syn.subst σ V) (Syn.subst σ A) (Syn.subst σ B) := by simp [errorNumerator]
-@[simp] theorem subst_errorDenominator {l : ℕ} (σ : Fin n → PTm l) (d H B : PTm n) :
-    Syn.subst σ (errorDenominator d H B) = errorDenominator (Syn.subst σ d) (Syn.subst σ H) (Syn.subst σ B) := by simp [errorDenominator]
+ipra_subst query
+ipra_subst valuesClose [Syn.subst_shift, Syn.shift_subst]
+ipra_subst errorNumerator
+ipra_subst errorDenominator
 
 theorem denominator_positive (d H B : PTm n) (hH : Γ ⊢[PRAAx] le one H) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     le one (errorDenominator d H B) :=
@@ -163,9 +153,7 @@ def input (C D N M d H U V A B : PTm n) : Fm PTm n :=
   (length C ≐ succ N) ⋏ ((length D ≐ succ M) ⋏ (le d N ⋏ (le d M ⋏ (le one H ⋏ (le d H ⋏ (le one B ⋏
     (rationalLE (coefficientNorm C) (fraction U one) ⋏ (rationalLE (coefficientNorm D) (fraction V one) ⋏
       valuesClose C D d H A B))))))))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (C D N M d H U V A B : PTm n) :
-    (input C D N M d H U V A B).subst σ = input (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ M)
-      (Syn.subst σ d) (Syn.subst σ H) (Syn.subst σ U) (Syn.subst σ V) (Syn.subst σ A) (Syn.subst σ B) := by simp [input]
+ipra_subst input
 
 theorem from_input (C D N M d H U V A B : PTm n) (h : Γ ⊢[PRAAx] input C D N M d H U V A B) : Γ ⊢[PRAAx]
     distanceBounded (entry C (monus N d)) (entry D (monus M d))

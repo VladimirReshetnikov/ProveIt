@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDensityMomentReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source original_Euler_integral_is_Gamma improper_source)
 open GaussianGammaShiftTrajectory (point)
 open GaussianGammaRepeatedShift (risingProduct)
@@ -27,8 +27,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaC7Name.nameF
@@ -40,15 +38,10 @@ def nameF : PR 2 := multiplyF P I
 def data (z R B A N : PTm n) : PTm n := multiplyData P I (baseData z R B) (shiftedData z R B A N)
 def clock (p z R B A N : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus P I (baseData z R B) (shiftedData z R B A N)) p
-@[simp] theorem subst_baseData {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    Syn.subst σ (baseData z R B) = baseData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [baseData]
-@[simp] theorem subst_shiftedData {m : ℕ} (σ : Fin n → PTm m) (z R B A N : PTm n) :
-    Syn.subst σ (shiftedData z R B A N) = shiftedData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by simp [shiftedData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B A N : PTm n) :
-    Syn.subst σ (data z R B A N) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p z R B A N : PTm n) :
-    Syn.subst σ (clock p z R B A N) = clock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ N) := by simp [clock]
+ipra_subst baseData
+ipra_subst shiftedData
+ipra_subst data
+ipra_subst clock
 
 theorem base_regular (z R B A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) : Γ ⊢[PRAAx] pointCN P (baseData z R B) :=
   GaussianGammaC7Name.name_regular _ _ _ (GaussianGammaDensityDomain.base_gamma_source z R B A h).andE₁

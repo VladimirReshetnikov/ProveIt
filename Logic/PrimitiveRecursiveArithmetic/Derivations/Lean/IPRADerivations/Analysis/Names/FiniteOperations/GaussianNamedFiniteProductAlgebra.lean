@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyRawF multiplyModulus multiply_raw_at
   multiply_regular product_distance)
@@ -29,9 +29,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerAlgebra (qmul_shuffle)
 open GaussianRationalReciprocal (bounded_product bound_congr qone)
 open GaussianRationalSyntheticDivision (qmul_congr qone_canonical)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,19 +53,15 @@ theorem row_at (f g : PR 3) (p i x y : PTm n) : Γ ⊢[PRAAx]
 def sampleLaw (f g : PR 3) (p N x y : PTm n) : Fm PTm n :=
   sample (rowProduct f g) p N (pairT x y) ≐ qmul (sample f p N x) (sample g p N y)
 
-@[simp] theorem subst_sampleLaw {m : ℕ} (σ : Fin n → PTm m) (f g : PR 3) (p N x y : PTm n) :
-    (sampleLaw f g p N x y).subst σ = sampleLaw f g (Syn.subst σ p) (Syn.subst σ N)
-      (Syn.subst σ x) (Syn.subst σ y) := by simp [sampleLaw]
+ipra_subst sampleLaw
 
 theorem sample_product (f g : PR 3) (p N x y : PTm n) : Γ ⊢[PRAAx] sampleLaw f g p N x y := by
   have all : Γ ⊢[PRAAx] .all (sampleLaw f g (Syn.shift p) (var 0) (Syn.shift x) (Syn.shift y)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (sample_zero (rowProduct f g) p (pairT x y)).eqTrans
+    ipra_qfind [subst_sampleLaw]
+    · exact (sample_zero (rowProduct f g) p (pairT x y)).eqTrans
         ((qmul_congr (sample_zero f p x) (sample_zero g p y)).eqTrans
           (GaussianReciprocalHorner.qmul_one_right qone qone_canonical)).eqSymm
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (sample_succ (rowProduct f g) _ _ _).eqTrans
+    · exact (sample_succ (rowProduct f g) _ _ _).eqTrans
         ((qmul_congr Prf.hyp0 (row_at f g _ _ _ _)).eqTrans
           ((qmul_shuffle _ _ _ _).eqTrans
             (qmul_congr (sample_succ f _ _ _).eqSymm (sample_succ g _ _ _).eqSymm)))
@@ -158,10 +151,7 @@ theorem product_row_regular (f g : PR 3) (N R S L M x y : PTm n) (hf : Γ ⊢[PR
 def productBudget (N R S L M : PTm n) : PTm n :=
   (modulus N R L+one)*radius S N+radius R N*(modulus N S M+one)
 
-@[simp] theorem subst_productBudget {m : ℕ} (σ : Fin n → PTm m) (N R S L M : PTm n) :
-    Syn.subst σ (productBudget N R S L M) =
-      productBudget (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ L) (Syn.subst σ M) := by
-  simp [productBudget,one]
+ipra_subst productBudget [one]
 
 theorem diagonal_product_error (f g : PR 3) (p N R S L M x y : PTm n)
     (hf : Γ ⊢[PRAAx] rowBounds f N R x) (hg : Γ ⊢[PRAAx] rowBounds g N S y)

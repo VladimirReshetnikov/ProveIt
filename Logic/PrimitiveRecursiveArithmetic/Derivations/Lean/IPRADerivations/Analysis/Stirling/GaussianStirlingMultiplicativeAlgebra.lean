@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -30,10 +30,6 @@ open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_sub im_sub)
 open GaussianStirlingNames (nameF nameData name_regular source point productF productData product_regular
   logGammaF logGammaData log_gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "CF" => GaussianStirlingConstant.nameF
@@ -48,21 +44,13 @@ def normalizationData (a b x : PTm n) : PTm n := GaussianNamedDifference.data (n
 abbrev sumF : PR 2 := addF remainderF normalizationF
 def sumData (a b x : PTm n) : PTm n := addData (remainderData a b x) (normalizationData a b x)
 
-@[simp] theorem subst_remainderData {m : ℕ} (σ : Fin n → PTm m) (a b x : PTm n) :
-    Syn.subst σ (remainderData a b x) = remainderData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by
-  simp [remainderData]
+ipra_subst remainderData
 
-@[simp] theorem subst_normalizationSumData {m : ℕ} (σ : Fin n → PTm m) (a b x : PTm n) :
-    Syn.subst σ (normalizationSumData a b x) = normalizationSumData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by
-  simp [normalizationSumData]
+ipra_subst normalizationSumData
 
-@[simp] theorem subst_normalizationData {m : ℕ} (σ : Fin n → PTm m) (a b x : PTm n) :
-    Syn.subst σ (normalizationData a b x) = normalizationData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by
-  simp [normalizationData]
+ipra_subst normalizationData
 
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (a b x : PTm n) :
-    Syn.subst σ (sumData a b x) = sumData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ x) := by
-  simp [sumData]
+ipra_subst sumData
 
 theorem remainder_regular (a b x : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN remainderF (remainderData a b x) :=

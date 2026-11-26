@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ExponentCoefficients.GaussianBarnesCanonicalExponentTaylorCoefficientMassGap
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Retiming the stored Barnes exponent at a fixed finite tail cutoff
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorFixedCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalExponentTaylorBuffer
   (buffer coefficient entry_at linearCoefficient quadraticCoefficient highCoefficient prefactorLinear prefactorQuadratic)
 open GaussianBarnesCanonicalExponentTaylorCoefficientCauchy (stored clockNumerator clockDenominator linearGain)
@@ -47,10 +46,6 @@ open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Signum (sg)
 open RationalArithmetic (select select_zero select_one)
 open RationalArgmin (rationalLE rationalLE_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinFiniteNested
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
 open GaussianGammaCompactCutoffGeometry
@@ -26,8 +26,6 @@ open GaussianGammaZetaMellinFiniteDampedEvaluator (evaluatorF)
 open GaussianGammaZetaMellinFiniteDampedModulus (lipschitz original_sampled_modulus)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "nameF" => GaussianCompactRiemannName.nameF evaluatorF

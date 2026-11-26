@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianInverseSquareProductGrowth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianRationalFiniteProduct (qprod product_zero product_succ)
 open GaussianRationalReciprocal (qone qone_bounded bounded_product bound_congr)
@@ -27,10 +27,6 @@ open GaussianCoefficientNameBounds (unit bounded_radius_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -40,14 +36,10 @@ def prefixDenominator (j : PTm n) : PTm n := succ j
 def rowDenominator (j : PTm n) : PTm n := j*succ (succ j)+monus one j
 def rowNumerator (j : PTm n) : PTm n := succ (rowDenominator j)
 
-@[simp] theorem subst_prefixNumerator {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (prefixNumerator j) = prefixNumerator (Syn.subst σ j) := by simp [prefixNumerator]
-@[simp] theorem subst_prefixDenominator {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (prefixDenominator j) = prefixDenominator (Syn.subst σ j) := by simp [prefixDenominator]
-@[simp] theorem subst_rowDenominator {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (rowDenominator j) = rowDenominator (Syn.subst σ j) := by simp [rowDenominator]
-@[simp] theorem subst_rowNumerator {m : ℕ} (σ : Fin n → PTm m) (j : PTm n) :
-    Syn.subst σ (rowNumerator j) = rowNumerator (Syn.subst σ j) := by simp [rowNumerator]
+ipra_subst prefixNumerator
+ipra_subst prefixDenominator
+ipra_subst rowDenominator
+ipra_subst rowNumerator
 
 theorem row_positive (j : PTm n) : Γ ⊢[PRAAx] le one (rowDenominator j) := by
   refine .orE (zero_or_succ j) ?_ ?_

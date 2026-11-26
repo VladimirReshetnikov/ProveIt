@@ -16,7 +16,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalLogStrongConvexity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerRationalHeadConvexity (weight barycenter)
@@ -36,9 +36,6 @@ open GaussianNaturalScaleProductName (productF productData)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianStirlingGammaFractionalIncrementConvexity (gamma_data_congr scale_cross)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -58,25 +55,13 @@ def margin (a b c r s : PTm n) : PTm n := gapCode (b+a) (b+c) (two*b) r s
 
 def lowerData (a b c N r s : PTm n) : PTm n := addData (margin a b c r s) (centerData a b c N r s)
 
-@[simp] theorem subst_centerData {m : ℕ} (σ : Fin n → PTm m) (a b c N r s : PTm n) :
-    Syn.subst σ (centerData a b c N r s) =
-      centerData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ N) (Syn.subst σ r)
-        (Syn.subst σ s) := by simp [centerData,weight,barycenter]
+ipra_subst centerData [weight, barycenter]
 
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (a b c N r s : PTm n) :
-    Syn.subst σ (weightedData a b c N r s) =
-      weightedData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ N) (Syn.subst σ r)
-        (Syn.subst σ s) := by simp [weightedData]
+ipra_subst weightedData
 
-@[simp] theorem subst_margin {m : ℕ} (σ : Fin n → PTm m) (a b c r s : PTm n) :
-    Syn.subst σ (margin a b c r s) =
-      margin (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ s) := by
-  simp [margin,two]
+ipra_subst margin [two]
 
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a b c N r s : PTm n) :
-    Syn.subst σ (lowerData a b c N r s) =
-      lowerData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ N) (Syn.subst σ r)
-        (Syn.subst σ s) := by simp [lowerData]
+ipra_subst lowerData
 
 private theorem scale_regular (f : PR 2) (w x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx]
     pointCN (productF f) (productData f w x) :=

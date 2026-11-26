@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicLowerRootRows (source panelExponent panelDegree intervalDen lipschitz fixedData)
 open GaussianEulerLogarithmicLowerPointwise (coefficient)
 open GaussianEulerLogarithmicCompactName (evaluatorF)
@@ -27,9 +27,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

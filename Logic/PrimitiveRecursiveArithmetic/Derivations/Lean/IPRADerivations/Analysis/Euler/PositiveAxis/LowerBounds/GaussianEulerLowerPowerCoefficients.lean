@@ -15,17 +15,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerPowerCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re oneCode)
 open GaussianEulerIntegrandName (coefficient)
 open GaussianEulerUpperPowerCoefficients (realMultiplier)
 open GaussianRationalMetric (bounded)
 open GaussianRationalSyntheticBounds (natCode)
 open RationalSupMetric (numeratorOf denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,15 +33,10 @@ def lowerMultiplier (A : PTm n) : PTm n := realMultiplier oneCode A
 def amplification (R : PTm n) : PTm n := two*(R+two)
 @[simp] theorem subst_native_order {m : ℕ} (σ : Fin n → PTm m) (u v : ZT n) :
     (zle u v).subst σ = zle (u.subst σ) (v.subst σ) := by simp [zle,ZT.subst]
-@[simp] theorem subst_realLower {m : ℕ} (σ : Fin n → PTm m) (z A B : PTm n) :
-    (realLower z A B).subst σ = realLower (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [realLower,subst_native_order,ZT.subst_mul,ZT.subst_ofNat,ComplexLogarithmRemainder.subst_re]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    (source z R B A).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [source]
-@[simp] theorem subst_lowerMultiplier {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (lowerMultiplier A) = lowerMultiplier (Syn.subst σ A) := by simp [lowerMultiplier]
-@[simp] theorem subst_amplification {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (amplification R) = amplification (Syn.subst σ R) := by simp [amplification]
+ipra_subst realLower
+ipra_subst source
+ipra_subst lowerMultiplier
+ipra_subst amplification
 
 theorem coefficient_real_lower (z A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] realLower z A B) : Γ ⊢[PRAAx]

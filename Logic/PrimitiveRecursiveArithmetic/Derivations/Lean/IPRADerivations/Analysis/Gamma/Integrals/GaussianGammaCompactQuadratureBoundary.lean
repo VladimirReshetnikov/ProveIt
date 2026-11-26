@@ -16,13 +16,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCompactQuadratureBoundary
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top lipschitz cells)
 open GaussianCompactRiemannName (sampledModulus quadrature)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,15 +27,9 @@ def data (p A R x : PTm n) : PTm n :=
   GaussianCompactRiemannName.data one (width p A R) (etaDen p A R) (lipschitz p A R) (top p A R) x
 def source (F : PR 3) (p A R x : PTm n) : Fm PTm n :=
   sampledModulus F one (width p A R) (etaDen p A R) (lipschitz p A R) x
-@[simp] theorem subst_width {m : ℕ} (σ : Fin n → PTm m) (p A R : PTm n) :
-    Syn.subst σ (width p A R) = width (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [width,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p A R x : PTm n) :
-    Syn.subst σ (data p A R x) = data (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [data,lipschitz,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p A R x : PTm n) :
-    (source F p A R x).subst σ = source F (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [source,lipschitz,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst width [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst data [lipschitz, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source [lipschitz, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem exact_right_endpoint (p A R : PTm n) : Γ ⊢[PRAAx]
     one+width p A R ≐ etaDen p A R*top p A R :=
@@ -69,10 +59,7 @@ def output (F : PR 3) (p A R x : PTm n) : PTm n := pairT
   (ap2 (GaussianCompactRiemannName.nameF F) p (data p A R x)) (pairT (cells p A R) (etaDen p A R))
 def outputF (F : PR 3) : PR 4 := PTm.toPR (output F (var 0) (var 1) (var 2) (var 3))
 def run (F : PR 3) (p A R x : PTm n) : PTm n := PTm.app (outputF F) ![p,A,R,x]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p A R x : PTm n) :
-    Syn.subst σ (output F p A R x) = output F (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [output,cells,GaussianGammaIntegralCutoffs.meshCost,lipschitz,etaDen,top,
-    GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst output [cells, GaussianGammaIntegralCutoffs.meshCost, lipschitz, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 theorem program_at (F : PR 3) (p A R x : PTm n) : Γ ⊢[PRAAx] run F p A R x ≐ output F p A R x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output F (var 0) (var 1) (var 2) (var 3) : PTm 4) ![p,A,R,x]
 theorem returned_sample (F : PR 3) (p A R x : PTm n) : Γ ⊢[PRAAx]

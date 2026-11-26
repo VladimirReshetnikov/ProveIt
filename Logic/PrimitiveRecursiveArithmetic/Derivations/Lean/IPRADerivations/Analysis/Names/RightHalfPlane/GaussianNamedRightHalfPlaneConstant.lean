@@ -14,7 +14,7 @@ set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRightHalfPlaneConstant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode re eval_re_code)
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -24,11 +24,8 @@ open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNamedRightHalfPlane (marginPoint radius threshold)
 open GaussianNamedRightHalfPlaneLift (source)
 open GaussianRationalHorner (ofGaussian_represents)
-open LeanProofs.IPRA.PTm (monus)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper_of_order)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

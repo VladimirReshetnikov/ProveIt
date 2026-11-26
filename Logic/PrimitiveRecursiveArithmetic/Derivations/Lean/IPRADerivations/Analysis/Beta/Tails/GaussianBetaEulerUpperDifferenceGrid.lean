@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaEulerTailDifferencePointwise
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactUpperTail
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual upper beta--Euler grid difference has one half-decay majorant
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaEulerUpperDifferenceGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUpperPowerCoefficients (source)
 open GaussianBetaEulerTailDifferencePointwise (scalarMajorant referenceError difference)
 open GaussianEulerWeightedHalfDecay (majorant)
@@ -33,9 +32,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open RationalGaussianEmbedding (embed)
 open RationalGaussianRealPart (embedBody)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

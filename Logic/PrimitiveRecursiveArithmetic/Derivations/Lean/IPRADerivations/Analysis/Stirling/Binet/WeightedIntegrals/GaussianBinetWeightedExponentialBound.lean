@@ -13,7 +13,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedExponentialBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetWeightedExponentialAlgebra (tagWeight)
 open GaussianBinetWeightedExponentialGrid (cell_at evaluatorF rowValue value zero_observation)
 open GaussianBinetWeightedExponentialRowRate (gain)
@@ -28,18 +28,13 @@ open GaussianRationalHorner (ofGaussian_canonical qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qone qsub_congr qzero_add)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 
 def radius (T : PTm n) : PTm n := two*gain T+num 9
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (T : PTm n) :
-    Syn.subst σ (radius T) = radius (Syn.subst σ T) := by simp [radius,two]
+ipra_subst radius [two]
 
 theorem one_panel (p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] value p one a b ≐ fraction one two := by

@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineDampedQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentResolvent (pole)
 open GaussianBinetCosinePrimitive (endpoint)
 open GaussianBinetImaginaryExponentialIntegral (coefficient)
@@ -40,10 +40,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance leftSum weight weight_bound)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetExponentialIntegralGrid.evaluatorF
@@ -65,22 +61,11 @@ def body : PTm 2 :=
 def data (p X D A B U T N : PTm n) : PTm n := sampleData p X D T N (pairT U (pairT A B))
 def value (p X D A B U T N : PTm n) : PTm n := leftSum body N (data p X D A B U T N) T one
 
-@[simp] theorem subst_panelData {m : ℕ} (σ : Fin n → PTm m) (s : Bool) (p X D A B R U T N : PTm n) :
-    Syn.subst σ (panelData s p X D A B R U T N) = panelData s (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ U) (Syn.subst σ T) (Syn.subst σ N) := by simp [panelData,one]
-@[simp] theorem subst_shiftedData {m : ℕ} (σ : Fin n → PTm m) (p X D A B R U T N : PTm n) :
-    Syn.subst σ (shiftedData p X D A B R U T N) = shiftedData (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ U) (Syn.subst σ T) (Syn.subst σ N) := by simp [shiftedData]
-@[simp] theorem subst_evaluated {m : ℕ} (σ : Fin n → PTm m) (j p X D A B U T N : PTm n) :
-    Syn.subst σ (evaluated j p X D A B U T N) = evaluated (Syn.subst σ j) (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ U) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [evaluated,GaussianBinetSineRealDampedPanels.value,quotient,one]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p X D A B U T N : PTm n) :
-    Syn.subst σ (data p X D A B U T N) = data (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ U) (Syn.subst σ T) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p X D A B U T N : PTm n) :
-    Syn.subst σ (value p X D A B U T N) = value (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ U) (Syn.subst σ T) (Syn.subst σ N) := by simp [value,one]
+ipra_subst panelData [one]
+ipra_subst shiftedData
+ipra_subst evaluated [GaussianBinetSineRealDampedPanels.value, quotient, one]
+ipra_subst data
+ipra_subst value [one]
 
 private theorem shifted_at (j p X D A B R U T N : PTm n) : Γ ⊢[PRAAx]
     inst2 shiftedBody j (shiftedData p X D A B R U T N) ≐ shiftedPanel p X zero D zero A B (T*j) N R U T := by

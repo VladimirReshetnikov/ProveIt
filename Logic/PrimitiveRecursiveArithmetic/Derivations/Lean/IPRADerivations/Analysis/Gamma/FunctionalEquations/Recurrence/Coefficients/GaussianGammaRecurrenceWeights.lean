@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaCombinedEulerKernelPolynomial
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Literal original Gamma recurrence weights independent of the horizon
@@ -17,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRecurrenceWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRationalEulerCoefficients (parityPoint)
@@ -25,18 +23,13 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_ins
 open GaussianGammaReciprocalDegreeCells (degree)
 open GaussianGammaCombinedEulerKernelPolynomial (polynomial)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def weight (q N m : PTm n) : PTm n := RationalArithmetic.select (Signum.sg m) qone
   (RationalArithmetic.select (Signum.sg (pred m)) (embed (GammaEulerConstantName.gammaSample q zero))
     (qmul (parityPoint (pred m)) (embed (RationalReciprocalPowerName.reconstructedSample q m N))))
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (q N m : PTm n) :
-    Syn.subst σ (weight q N m) = weight (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ m) := by simp [weight,Signum.sg]
+ipra_subst weight [Signum.sg]
 
 theorem weight_congr {q p N M m k : PTm n} (hq : Γ ⊢[PRAAx] q ≐ p)
     (hN : Γ ⊢[PRAAx] N ≐ M) (hm : Γ ⊢[PRAAx] m ≐ k) : Γ ⊢[PRAAx] weight q N m ≐ weight p M k := by

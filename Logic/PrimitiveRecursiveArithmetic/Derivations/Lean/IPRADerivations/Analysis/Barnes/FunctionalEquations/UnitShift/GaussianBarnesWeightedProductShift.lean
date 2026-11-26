@@ -13,16 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesWeightedProductShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFiniteProduct (qprod product_zero product_succ)
 open GaussianRationalHorner (qmul)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (power power_succ power_zero)
 open GaussianRationalSyntheticDivision (qmul_congr qone)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

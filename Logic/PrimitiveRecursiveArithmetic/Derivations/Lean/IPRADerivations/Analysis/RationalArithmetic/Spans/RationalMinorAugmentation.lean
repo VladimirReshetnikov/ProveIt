@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMinorMaskExtension
 import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual larger minors at the first free column
@@ -15,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMinorAugmentation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.BoundedReflection (sgB inst2_sgB)
@@ -29,21 +27,15 @@ open RationalSupMetric (coordinate normalizedList)
 open RationalIntegerNormalization (normalize)
 open GaussianPolynomialDeterminantTerms (cell)
 open GaussianRationalHorner (qzero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def extendedRow (P d i : PTm n) : PTm n := insert (length P) (bestRow P d) i
 def extendedColumn (P d : PTm n) : PTm n := insert d (bestColumn P d) (free P d)
 
-@[simp] theorem subst_extendedRow {k : ℕ} (σ : Fin n → PTm k) (P d i : PTm n) :
-    Syn.subst σ (extendedRow P d i) = extendedRow (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ i) := by
-  simp [extendedRow]
+ipra_subst extendedRow
 
-@[simp] theorem subst_extendedColumn {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (extendedColumn P d) = extendedColumn (Syn.subst σ P) (Syn.subst σ d) := by
-  simp [extendedColumn]
+ipra_subst extendedColumn
 
 theorem extended_row_size (P d i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length P))
     (hb : Γ ⊢[PRAAx] bit (bestRow P d) i ≐ zero) :

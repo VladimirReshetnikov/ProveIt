@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.Powers
 
 /-!
 # Coherence of dyadic names from adjacent motion
@@ -18,13 +17,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.DyadicCauchy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_tri subst_zabs)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,25 +35,16 @@ def difference (p q : PR 2) (N r x : PTm n) : ZT n :=
 def adjacent (p q : PR 2) (k x : PTm n) : ZT n :=
   ZT.ofNat two * value p q k x - value p q (succ k) x
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p q : PR 2) (k x : PTm n) :
-    (value p q k x).subst σ = value p q (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [value, ZT.subst]
+ipra_subst value [ZT.subst]
 
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m)
-    (p q : PR 2) (N r x : PTm n) :
-    (difference p q N r x).subst σ =
-      difference p q (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ x) := by
-  simp [difference]
+ipra_subst difference
 
-@[simp] theorem subst_adjacent {m : ℕ} (σ : Fin n → PTm m) (p q : PR 2) (k x : PTm n) :
-    (adjacent p q k x).subst σ = adjacent p q (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [adjacent]
+ipra_subst adjacent
 
 private theorem value_congr (p q : PR 2) (x : PTm n) {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     ZT.toZ Γ (value p q a x) = ZT.toZ Γ (value p q b x) := by
-  have hp := natEq (congrAp2 p h (.eqRefl x))
   have hq := natEq (congrAp2 q h (.eqRefl x))
-  simpa only [value, ZT.toZ] using congrArg₂ HSub.hSub hp hq
+  simpa only [value, ZT.toZ] using congrArg₂ HSub.hSub (natEq (congrAp2 p h (.eqRefl x))) hq
 
 private theorem abs_scale (c : PTm n) (u : ZT n) :
     Γ ⊢[PRAAx] zabs (ZT.ofNat c * u) ≐ c * zabs u := by
@@ -71,10 +58,9 @@ private theorem abs_scale (c : PTm n) (u : ZT n) :
 
 private theorem difference_zero (p q : PR 2) (N x : PTm n) :
     Γ ⊢[PRAAx] zabs (difference p q N zero x) ≐ zero := by
-  have hP := natEq (pw_zero (Γ := Γ) two)
   have hN := value_congr p q x (add_zero (Γ := Γ) N)
   have hd : ZT.toZ Γ (difference p q N zero x) = ZT.toZ Γ (ZT.natLit 0) := by
-    simp only [difference, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_ofNat, hP, hN,
+    simp only [difference, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_ofNat, natEq (pw_zero (Γ := Γ) two), hN,
       ZT.toZ_natLit]
     simp [Q.mk_one, map_one]
   refine (zabs_congr hd).eqTrans ?_

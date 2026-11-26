@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
@@ -24,9 +24,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (ofGaussian qmul represents positive_product canonical_unique represents_congr)
 open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
 open ComplexLogarithmRemainder (oneCode scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,19 +38,12 @@ def expF : PR 2 := GaussianRadiusExponentialName.nameF logF
 def expData (a b : PTm n) : PTm n := GaussianRadiusExponentialName.data (radius a b) (data a b)
 def sample (p a b : PTm n) : PTm n := ap2 logF p (data a b)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [data,GaussianGammaEulerShift.negativeLogData]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (source a b).subst σ = source (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_fraction {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (fraction a b) = fraction (Syn.subst σ a) (Syn.subst σ b) := by simp [fraction]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (radius a b) = radius (Syn.subst σ a) (Syn.subst σ b) := by simp [radius]
-@[simp] theorem subst_expData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (expData a b) = expData (Syn.subst σ a) (Syn.subst σ b) := by simp [expData]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (sample p a b) = sample (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [sample]
+ipra_subst data [GaussianGammaEulerShift.negativeLogData]
+ipra_subst source
+ipra_subst fraction
+ipra_subst radius
+ipra_subst expData
+ipra_subst sample
 
 theorem name_regular (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN logF (data a b) :=

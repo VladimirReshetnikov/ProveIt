@@ -13,7 +13,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanelError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderFirstPanelGridTerms (linearCoefficient squareCoefficient)
 open GaussianStirlingAllOrderFirstPanelSum (panelValue actual_panel)
 open GaussianStirlingAllOrderPanelTail (panel)
@@ -28,8 +28,6 @@ open RationalArgmin (rationalLE rationalLE_congr reflexive)
 open GaussianRationalSyntheticBounds (add_monotone)
 open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalReciprocalPowerTail (tail)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

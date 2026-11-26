@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalRealRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open ComplexLogarithmRemainder (re im normSq)
 open RationalGaussianEmbedding (scalarZero embed)
@@ -21,10 +21,6 @@ open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalMetric (bounded)
 open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

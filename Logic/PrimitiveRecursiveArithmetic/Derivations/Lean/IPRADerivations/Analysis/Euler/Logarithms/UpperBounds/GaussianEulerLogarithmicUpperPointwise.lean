@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicUpperPointwise
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData decayF decayData)
 open GaussianEulerWeightedHalfDecay (majorant halfSample)
 open GaussianEulerLogarithmicHalfDecay (powerAndLog powerAllowance halfAllowance weightedSample)
@@ -36,10 +36,6 @@ open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianReconstructionRoots (norm_from_distance)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

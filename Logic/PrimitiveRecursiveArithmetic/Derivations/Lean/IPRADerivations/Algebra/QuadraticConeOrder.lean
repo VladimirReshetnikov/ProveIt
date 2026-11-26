@@ -15,14 +15,11 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticConeOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates (first second equal cone add negative multiply zeroCode oneCode
   product multiplier sign classification tag certificate actual_certificate)
 open QuadraticSignCertificates (first_value second_value multiply_first multiply_second negative_first negative_second
   zero_first_value zero_second_value)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerDenominatorGrouping
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianGammaEulerDenominator (denominator linearBody linear_at)
 open GaussianGammaEulerHeadLower (translated)
@@ -31,9 +31,6 @@ open GaussianRationalRectangularProduct (blockEntry block_entry_at swap swap_at 
   rectangleBody rectangle_at transpose blocks)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_scale im_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,19 +47,15 @@ theorem scaled_at (t : PTm 2) (i c x : PTm n) : Γ ⊢[PRAAx]
 def scaleLaw (t : PTm 2) (N c x : PTm n) : Fm PTm n :=
   qprod (scaledBody t) N (pairT c x) ≐ qmul (power c N) (qprod t N x)
 
-@[simp] theorem subst_scaleLaw {l : ℕ} (σ : Fin n → PTm l) (t : PTm 2) (N c x : PTm n) :
-    (scaleLaw t N c x).subst σ = scaleLaw t (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ x) := by
-  simp [scaleLaw,power]
+ipra_subst scaleLaw [power]
 
 theorem scaled_product (t : PTm 2) (N c x : PTm n) : Γ ⊢[PRAAx] scaleLaw t N c x := by
   have all : Γ ⊢[PRAAx] .all (scaleLaw t (var 0) (Syn.shift c) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_scaleLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (product_zero (scaledBody t) (pairT c x)).eqTrans
+    ipra_qfind [subst_scaleLaw]
+    · exact (product_zero (scaledBody t) (pairT c x)).eqTrans
         ((qmul_congr (power_zero c) (product_zero t x)).eqTrans
           (GaussianReciprocalHorner.qmul_one_right qone qone_canonical)).eqSymm
-    · simp only [subst_scaleLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (product_succ (scaledBody t) (var 0) (pairT (Syn.shift c) (Syn.shift x))).eqTrans
+    · exact (product_succ (scaledBody t) (var 0) (pairT (Syn.shift c) (Syn.shift x))).eqTrans
         ((qmul_congr Prf.hyp0 (scaled_at t (var 0) (Syn.shift c) (Syn.shift x))).eqTrans
           ((qmul_shuffle _ _ _ _).eqTrans
             (qmul_congr (power_succ _ _).eqSymm (product_succ t _ _).eqSymm)))
@@ -76,23 +69,21 @@ def shiftedBody : PTm 2 := denominator
   (sndT (sndT (sndT (var 1)))*fstT (sndT (var 1))) (fstT (var 1))
 def grouped (z B m K : PTm n) : PTm n := qprod shiftedBody m (shiftedData z B m K)
 
-@[simp] theorem subst_shiftedData {l : ℕ} (σ : Fin n → PTm l) (z B m K : PTm n) :
-    Syn.subst σ (shiftedData z B m K) = shiftedData (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ m) (Syn.subst σ K) := by simp [shiftedData]
+ipra_subst shiftedData
 
 theorem shifted_at (r z B m K : PTm n) : Γ ⊢[PRAAx]
     inst2 shiftedBody r (shiftedData z B m K) ≐ denominator (shiftedNumerator z B m r) (B*m) K := by
   let X := shiftedData z B m K
   have p := snd_pair (Γ := Γ) K (pairT m (pairT z B))
-  have v := (congrSnd p).eqTrans (snd_pair _ _)
+  have v := p.sndE
   have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
     (denominator (shiftedNumerator (var 0) (var 1) (var 2) (var 3)) (var 1*var 2) (var 4) : PTm 5)
     (σ := ![fstT (sndT (sndT X)),sndT (sndT (sndT X)),fstT (sndT X),r,fstT X])
     (σ' := ![z,B,m,r,K]) (fun i => by
       fin_cases i
-      · exact (congrFst v).eqTrans (fst_pair _ _)
-      · exact (congrSnd v).eqTrans (snd_pair _ _)
-      · exact (congrFst p).eqTrans (fst_pair _ _)
+      · exact v.fstE
+      · exact v.sndE
+      · exact p.fstE
       · exact .eqRefl _
       · exact fst_pair _ _)
   simpa [shiftedBody,shiftedNumerator,inst2,X] using e

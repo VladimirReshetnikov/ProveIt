@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedClearedScalarQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -31,8 +31,6 @@ open GaussianNamedDifferenceQuotientProperness (difference_proper)
 open GaussianNamedGammaHalfShift (add_cross)
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Diff" => GaussianNamedDifference.nameF

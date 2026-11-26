@@ -5,9 +5,7 @@ import IPRADerivations.Core.BoundedSums
 /-! Object-language slope refinement for arbitrary signed dyadic observations.
 All values have been scaled to a common positive integer denominator. -/
 namespace LeanProofs.IPRA.Analysis.Observation.DyadicObject
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

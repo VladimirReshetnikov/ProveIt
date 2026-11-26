@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRepeatedExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedIntegerExponentialStages (expF expData point majorant)
 open GaussianBoundedIntegerExponentialSample (stage_input point_bound prefix_error sampleBudget)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -28,25 +28,17 @@ open GaussianRadiusExponentialName (input)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalPowerDifference (distance_refl_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def repeatedData (N E R x : PTm n) : PTm n := data N (majorant E R) one (expData E one R x)
 
-@[simp] theorem subst_repeatedData {m : ℕ} (σ : Fin n → PTm m) (N E R x : PTm n) :
-    Syn.subst σ (repeatedData N E R x) =
-      repeatedData (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [repeatedData,one]
+ipra_subst repeatedData [one]
 
 def budget (N E R : PTm n) : PTm n :=
   sampleBudget E N R (majorant E R) zero+(modulus N (majorant E R) one+one)
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (N E R : PTm n) :
-    Syn.subst σ (budget N E R) = budget (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ R) := by
-  simp [budget,one]
+ipra_subst budget [one]
 
 theorem exponential_bounds (f : PR 2) (E R x : PTm n) (hf : Γ ⊢[PRAAx] input f R x)
     (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx] bounds (expF f) (majorant E R) (expData E one R x) := by

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPartitionedFiniteSumWeightReplacement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPartitionedFiniteSumDistance (blockLength coarseBody coarse_at)
 open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply)
 open GaussianRationalHorner (qmul subst_qmul)
@@ -25,8 +25,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,10 +34,7 @@ def rowSource (cut : PR 2) (g w : PTm 2) (K d y M H A D : PTm n) : Fm PTm n := .
      distanceBounded (fraction (blockLength cut (var 0) (Syn.shift d)) (Syn.shift M))
        (inst2 w (var 0) (Syn.shift y)) (Syn.shift A) (Syn.shift D)))
 
-@[simp] theorem subst_rowSource {m : ℕ} (σ : Fin n → PTm m) (cut : PR 2) (g w : PTm 2) (K d y M H A D : PTm n) :
-    (rowSource cut g w K d y M H A D).subst σ = rowSource cut g w (Syn.subst σ K)
-      (Syn.subst σ d) (Syn.subst σ y) (Syn.subst σ M) (Syn.subst σ H) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [rowSource,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowSource [Syn.subst_shift, Syn.shift_subst]
 
 theorem original_rescale (M t q : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]
     qmul (fraction one M) (natScale t q) ≐ qmul q (fraction t M) := by

@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRation
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalNaturalScale
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaRepeatedShift
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact finite factors at a negative integer
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleFiniteFactors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaLocalPoleGuards (center)
 open GaussianGammaPoleZeros (poleNumerator)
 open GaussianGammaRepeatedShift (linearBody risingProduct linear_at prefix_zero prefix_succ)
@@ -37,9 +36,6 @@ open GaussianReciprocalHorner (qmul_one_right)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_neg im_neg re_mul im_mul re_scale im_scale re_one im_one)
 open ComplexLogarithmRemainder (scale oneCode)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,18 +48,11 @@ def differenceProduct (h B j : PTm n) : PTm n := qprod differenceBody j (pairT h
 def factorProduct (h B j : PTm n) : PTm n := qprod factorBody j (pairT h B)
 def signedFactorial (j : PTm n) : PTm n := qmul (power minusOne j) (naturalPoint (fact j))
 
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    Syn.subst σ (difference h B j) = difference (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) := by simp [difference]
-@[simp] theorem subst_factor {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    Syn.subst σ (factor h B j) = factor (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) := by simp [factor]
-@[simp] theorem subst_differenceProduct {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    Syn.subst σ (differenceProduct h B j) = differenceProduct (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) :=
-  by simp [differenceProduct]
-@[simp] theorem subst_factorProduct {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    Syn.subst σ (factorProduct h B j) = factorProduct (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) :=
-  by simp [factorProduct]
-@[simp] theorem subst_signedFactorial {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    Syn.subst σ (signedFactorial j) = signedFactorial (Syn.subst σ j) := by simp [signedFactorial,fact]
+ipra_subst difference
+ipra_subst factor
+ipra_subst differenceProduct
+ipra_subst factorProduct
+ipra_subst signedFactorial [fact]
 
 theorem factor_identity (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hj : Γ ⊢[PRAAx] le one j) :
     Γ ⊢[PRAAx] difference h B j ≐ qmul (negativeIndex j) (factor h B j) := by
@@ -148,9 +137,7 @@ theorem factor_succ (h B j : PTm n) : Γ ⊢[PRAAx]
 def productLaw (h B j : PTm n) : Fm PTm n :=
   differenceProduct h B j ≐ qmul (signedFactorial j) (factorProduct h B j)
 
-@[simp] theorem subst_productLaw {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    (productLaw h B j).subst σ = productLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) :=
-  by simp [productLaw]
+ipra_subst productLaw
 
 theorem productLaw_zero (h B : PTm n) : Γ ⊢[PRAAx] productLaw h B zero :=
   (product_zero differenceBody (pairT h B)).eqTrans
@@ -167,11 +154,9 @@ theorem finite_pole_factors (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] productLaw h B j := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (productLaw (Syn.shift h) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_productLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact productLaw_zero h B
-    · simp only [subst_productLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact productLaw_succ _ _ _ bs.wk Prf.hyp0
+    ipra_qfind [subst_productLaw]
+    · exact productLaw_zero h B
+    · exact productLaw_succ _ _ _ bs.wk Prf.hyp0
   simpa only [subst_productLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 theorem original_finite_pole_factors_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
@@ -231,19 +216,15 @@ theorem rising_reverse_step (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
 def reversal (h B j : PTm n) : Fm PTm n :=
   risingProduct (center h B j) B j ≐ differenceProduct h B j
 
-@[simp] theorem subst_reversal {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    (reversal h B j).subst σ = reversal (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) :=
-  by simp [reversal]
+ipra_subst reversal
 
 theorem reverse_rising (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] reversal h B j := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (reversal (Syn.shift h) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_reversal,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (prefix_zero (center h B zero) B).eqTrans (product_zero differenceBody (pairT h B)).eqSymm
-    · simp only [subst_reversal,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (rising_reverse_step _ _ _ bs.wk).eqTrans ((qmul_congr (.eqRefl _) Prf.hyp0).eqTrans
+    ipra_qfind [subst_reversal]
+    · exact (prefix_zero (center h B zero) B).eqTrans (product_zero differenceBody (pairT h B)).eqSymm
+    · exact (rising_reverse_step _ _ _ bs.wk).eqTrans ((qmul_congr (.eqRefl _) Prf.hyp0).eqTrans
         ((qmul_commutative _ _).eqTrans (difference_succ _ _ _).eqSymm))
   simpa only [subst_reversal,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 

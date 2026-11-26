@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareJacobianRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSquareTimeGeometry (source lowerDenominator upperEndpoint majorant)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianRationalQuadratureSquareCells (jacobian timeMap)
@@ -25,9 +25,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive rate_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -42,17 +39,11 @@ def rawNumerator (p q R E T c d A D : PTm n) : PTm n :=
   (lipschitz R E T c d*A)*(unit p*unit q)+amplification T c*D*(unit p+unit q)
 def query (p T c : PTm n) : PTm n := GaussianFastValueCut.exponent (amplification T c) p
 
-@[simp] theorem subst_rawData {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (rawData z B c d) = rawData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [rawData]
-@[simp] theorem subst_rawSample {m : ℕ} (σ : Fin n → PTm m) (p z B c d a b : PTm n) :
-    Syn.subst σ (rawSample p z B c d a b) = rawSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ b) := by simp [rawSample]
-@[simp] theorem subst_amplification {m : ℕ} (σ : Fin n → PTm m) (T c : PTm n) :
-    Syn.subst σ (amplification T c) = amplification (Syn.subst σ T) (Syn.subst σ c) := by simp [amplification]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R E T c d : PTm n) :
-    Syn.subst σ (lipschitz R E T c d) = lipschitz (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by simp [lipschitz]
-@[simp] theorem subst_query {m : ℕ} (σ : Fin n → PTm m) (p T c : PTm n) :
-    Syn.subst σ (query p T c) = query (Syn.subst σ p) (Syn.subst σ T) (Syn.subst σ c) := by simp [query]
+ipra_subst rawData
+ipra_subst rawSample
+ipra_subst amplification
+ipra_subst lipschitz
+ipra_subst query
 
 theorem raw_sample_at (p z B c d a b : PTm n) : Γ ⊢[PRAAx]
     rawSample p z B c d a b ≐ qmul (jacobian c d (pairT a b))

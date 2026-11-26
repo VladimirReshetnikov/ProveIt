@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianPolynomialPerturbation
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianProductNorm
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Finite root-product stability for Gaussian integer presentations
@@ -24,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianProductStability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im normSq bounded normSq_eval)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra (sub equal re_sub im_sub)
 open LeanProofs.IPRA.Analysis.GaussianRootProduct (coefficients evaluate)
@@ -32,10 +31,6 @@ open LeanProofs.IPRA.Analysis.GaussianPolynomialPerturbation (coefficientErrors)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,21 +38,15 @@ def coefficientBudget (N R δ : PTm n) : PTm n := N*pw R (pred N)*δ
 def sourceCondition (N R δ A B : PTm n) : Fm PTm n :=
   le (pw B N*coefficientBudget N R δ) (pw A N)
 
-@[simp] theorem subst_coefficientBudget {m : ℕ} (σ : Fin n → PTm m) (N R δ : PTm n) :
-    Syn.subst σ (coefficientBudget N R δ) = coefficientBudget (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ δ) := by
-  simp [coefficientBudget]
-@[simp] theorem subst_sourceCondition {m : ℕ} (σ : Fin n → PTm m) (N R δ A B : PTm n) :
-    (sourceCondition N R δ A B).subst σ = sourceCondition (Syn.subst σ N) (Syn.subst σ R)
-      (Syn.subst σ δ) (Syn.subst σ A) (Syn.subst σ B) := by simp [sourceCondition]
+ipra_subst coefficientBudget
+ipra_subst sourceCondition
 
 theorem power_product (a b N : PTm n) : Γ ⊢[PRAAx] pw (a*b) N ≐ pw a N*pw b N := by
   have all : Γ ⊢[PRAAx] .all (pw (Syn.shift a*Syn.shift b) (var 0) ≐
       pw (Syn.shift a) (var 0)*pw (Syn.shift b) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,PTm.subst_mul,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (pw_zero _).eqTrans ((congrMul (pw_zero a) (pw_zero b)).eqTrans (one_mul one)).eqSymm
-    · simp only [Fm.subst_eq,PTm.subst_mul,subst_ap2,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have h := natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ.map Fm.shift)
+    ipra_qfind [subst_ap2]
+    · exact (pw_zero _).eqTrans ((congrMul (pw_zero a) (pw_zero b)).eqTrans (one_mul one)).eqSymm
+    · have h := natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ.map Fm.shift)
         (φ := pw (Syn.shift a*Syn.shift b) (var 0) ≐ pw (Syn.shift a) (var 0)*pw (Syn.shift b) (var 0)))
       have p := natEq (pw_succ (Γ := (pw (Syn.shift a*Syn.shift b) (var 0) ≐
           pw (Syn.shift a) (var 0)*pw (Syn.shift b) (var 0)) :: Γ.map Fm.shift)
@@ -110,9 +99,7 @@ theorem evaluation_bound_from_coefficients (S T N j R δ A B : PTm n)
 
 def witness (S T N j A B : PTm n) : PTm n := GaussianProductNorm.selected T (entry S j) N A B one
 
-@[simp] theorem subst_witness {m : ℕ} (σ : Fin n → PTm m) (S T N j A B : PTm n) :
-    Syn.subst σ (witness S T N j A B) = witness (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ j) (Syn.subst σ A) (Syn.subst σ B) := by simp [witness]
+ipra_subst witness
 
 theorem witness_range (S T N j R δ A B : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hj : Γ ⊢[PRAAx] lt j N)
@@ -135,9 +122,7 @@ theorem witness_distance (S T N j R δ A B : PTm n)
 def pointsBounded (S N R : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ bounded (entry (Syn.shift S) (var 0)) (Syn.shift R))
 
-@[simp] theorem subst_pointsBounded {m : ℕ} (σ : Fin n → PTm m) (S N R : PTm n) :
-    (pointsBounded S N R).subst σ = pointsBounded (Syn.subst σ S) (Syn.subst σ N) (Syn.subst σ R) := by
-  simp [pointsBounded,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointsBounded [Syn.subst_shift, Syn.shift_subst]
 
 theorem point_bound (S N R j : PTm n) (h : Γ ⊢[PRAAx] pointsBounded S N R) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] bounded (entry S j) R := by
@@ -149,8 +134,7 @@ theorem point_bound (S N R j : PTm n) (h : Γ ⊢[PRAAx] pointsBounded S N R) (h
 /-- The actual finite metric score is the denominator-cleared squared
 Gaussian norm; no abstract distance code is a parameter to this theorem. -/
 def score (x y B : PTm n) : PTm n := (B*B)*normSq (sub x y)
-@[simp] theorem subst_score {m : ℕ} (σ : Fin n → PTm m) (x y B : PTm n) :
-    Syn.subst σ (score x y B) = score (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ B) := by simp [score]
+ipra_subst score
 def squaredDistanceF : PR 3 := PTm.toPR (score (var 0) (var 1) (var 2))
 
 theorem squared_distance_at (x y B : PTm n) : Γ ⊢[PRAAx]
@@ -162,20 +146,15 @@ theorem squared_distance_at (x y B : PTm n) : Γ ⊢[PRAAx]
 def cover (S T A B : PTm n) : Fm PTm n := Foundations.FiniteHausdorff.cover squaredDistanceF S T (A*A) B
 def close (S T A B : PTm n) : Fm PTm n := Foundations.FiniteHausdorff.close squaredDistanceF S T (A*A) B
 
-@[simp] theorem subst_cover {m : ℕ} (σ : Fin n → PTm m) (S T A B : PTm n) :
-    (cover S T A B).subst σ = cover (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by simp [cover]
-@[simp] theorem subst_close {m : ℕ} (σ : Fin n → PTm m) (S T A B : PTm n) :
-    (close S T A B).subst σ = close (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [close,Foundations.FiniteHausdorff.close]
+ipra_subst cover
+ipra_subst close [Foundations.FiniteHausdorff.close]
 
 def directionInput (S T N R δ A B : PTm n) : Fm PTm n :=
   le one N ⋏ (le one R ⋏ (length S ≐ N ⋏ (length T ≐ N ⋏
     (pointsBounded S N R ⋏ (coefficientErrors (coefficients S N) (coefficients T N) N δ ⋏
       sourceCondition N R δ A B)))))
 
-@[simp] theorem subst_directionInput {m : ℕ} (σ : Fin n → PTm m) (S T N R δ A B : PTm n) :
-    (directionInput S T N R δ A B).subst σ = directionInput (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ δ) (Syn.subst σ A) (Syn.subst σ B) := by simp [directionInput]
+ipra_subst directionInput
 
 theorem direction_hit (S T N R δ A B i : PTm n)
     (h : Γ ⊢[PRAAx] directionInput S T N R δ A B) (hi : Γ ⊢[PRAAx] lt i (length S)) :
@@ -214,9 +193,7 @@ theorem directed_cover (S T N R δ A B : PTm n)
 def stabilityInput (S T N R δ A B : PTm n) : Fm PTm n :=
   le one B ⋏ (directionInput S T N R δ A B ⋏ pointsBounded T N R)
 
-@[simp] theorem subst_stabilityInput {m : ℕ} (σ : Fin n → PTm m) (S T N R δ A B : PTm n) :
-    (stabilityInput S T N R δ A B).subst σ = stabilityInput (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ δ) (Syn.subst σ A) (Syn.subst σ B) := by simp [stabilityInput]
+ipra_subst stabilityInput
 
 theorem reverse_input (S T N R δ A B : PTm n)
     (h : Γ ⊢[PRAAx] stabilityInput S T N R δ A B) : Γ ⊢[PRAAx] directionInput T S N R δ A B := by
@@ -245,9 +222,7 @@ theorem product_stability (S T N R δ A B : PTm n)
 def nearest (S T i B : PTm n) : PTm n :=
   Foundations.FiniteHausdorff.nearest squaredDistanceF (entry S i) T B
 
-@[simp] theorem subst_nearest {m : ℕ} (σ : Fin n → PTm m) (S T i B : PTm n) :
-    Syn.subst σ (nearest S T i B) = nearest (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ i) (Syn.subst σ B) := by
-  simp [nearest]
+ipra_subst nearest
 
 /-- The existing actual argmin, with deterministic ties, satisfies the
 same rational radius; the output is a true nearest point. -/
@@ -304,15 +279,14 @@ def output (S T i B : PTm n) : PTm n := pairT (nearest S T i B) (entry T (neares
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (S T i B : PTm n) : PTm n := ConciseIPRA.PTm.app outputF ![S,T,i,B]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (S T i B : PTm n) :
-    Syn.subst σ (output S T i B) = output (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ i) (Syn.subst σ B) := by simp [output]
+ipra_subst output
 
 theorem output_at (S T i B : PTm n) : Γ ⊢[PRAAx] run S T i B ≐ output S T i B := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![S,T,i,B]
 theorem output_index (S T i B : PTm n) : Γ ⊢[PRAAx] fstT (run S T i B) ≐ nearest S T i B :=
-  (congrFst (output_at S T i B)).eqTrans (fst_pair _ _)
+  (output_at S T i B).fstE
 theorem output_point (S T i B : PTm n) : Γ ⊢[PRAAx] sndT (run S T i B) ≐ entry T (nearest S T i B) :=
-  (congrSnd (output_at S T i B)).eqTrans (snd_pair _ _)
+  (output_at S T i B).sndE
 theorem output_lookup (S T i B : PTm n) : Γ ⊢[PRAAx] sndT (run S T i B) ≐ entry T (fstT (run S T i B)) :=
   (output_point S T i B).eqTrans (entry_congr (.eqRefl _) (output_index S T i B).eqSymm)
 

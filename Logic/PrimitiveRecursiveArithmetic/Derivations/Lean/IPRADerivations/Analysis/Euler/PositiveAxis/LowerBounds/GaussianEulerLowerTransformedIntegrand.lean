@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerTransformedIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerOrder (source)
 open GaussianEulerIntegrandName (powerF powerData decayF decayData nameF data productF productData)
 open GaussianRationalHorner (qmul)
@@ -25,10 +25,6 @@ open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,14 +35,11 @@ def cost (A a b : PTm n) : PTm n := productCost A a b+T A a
 def query (p z B A a b : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus powerF decayF (powerData z B (pw a A) (pw b A)) (decayData (pw a A) (pw b A))) p
 def observation (p z B A a b : PTm n) : PTm n := ap2 nameF p (data z B (pw a A) (pw b A))
-@[simp] theorem subst_S {m : ℕ} (σ : Fin n → PTm m) (A b : PTm n) : Syn.subst σ (S A b) = S (Syn.subst σ A) (Syn.subst σ b) := by simp [S]
-@[simp] theorem subst_T {m : ℕ} (σ : Fin n → PTm m) (A a : PTm n) : Syn.subst σ (T A a) = T (Syn.subst σ A) (Syn.subst σ a) := by simp [T]
-@[simp] theorem subst_productCost {m : ℕ} (σ : Fin n → PTm m) (A a b : PTm n) :
-    Syn.subst σ (productCost A a b) = productCost (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [productCost]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (A a b : PTm n) :
-    Syn.subst σ (cost A a b) = cost (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [cost]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z B A a b : PTm n) :
-    Syn.subst σ (observation p z B A a b) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [observation]
+ipra_subst S
+ipra_subst T
+ipra_subst productCost
+ipra_subst cost
+ipra_subst observation
 
 theorem decay_bound (a b p : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     bounded (ap2 decayF p (decayData a b)) (unit p+two) (unit p) := by

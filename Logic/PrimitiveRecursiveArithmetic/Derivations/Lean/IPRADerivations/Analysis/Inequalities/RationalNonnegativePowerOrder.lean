@@ -17,15 +17,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalNonnegativePowerOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalNonnegativePowers (power power_represents denominator_positive)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -138,32 +134,23 @@ def output (A B C D k : PTm n) : PTm n :=
   pairT (power A B k) (pairT (power C D k) (pairT (fraction A B) (fraction C D)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A B C D k : PTm n) : PTm n := PTm.app outputF ![A,B,C,D,k]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (A B C D k : PTm n) :
-    Syn.subst σ (output A B C D k) =
-      output (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ k) := by
-  simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (A B C D k : PTm n) :
-    Syn.subst σ (run A B C D k) =
-      run (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ k) := by
-  simp only [run, ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (A B C D k : PTm n) : Γ ⊢[PRAAx] run A B C D k ≐ output A B C D k := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,B,C,D,k]
 theorem returned_left_power (A B C D k : PTm n) : Γ ⊢[PRAAx]
     fstT (run A B C D k) ≐ power A B k :=
-  (congrFst (program_at A B C D k)).eqTrans (fst_pair _ _)
+  (program_at A B C D k).fstE
 theorem returned_right_power (A B C D k : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run A B C D k)) ≐ power C D k :=
-  (congrFst ((congrSnd (program_at A B C D k)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A B C D k).sndE.fstE
 theorem returned_left_base (A B C D k : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run A B C D k))) ≐ fraction A B :=
-  (congrFst ((congrSnd ((congrSnd (program_at A B C D k)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A B C D k).sndE.sndE.fstE
 theorem returned_right_base (A B C D k : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run A B C D k))) ≐ fraction C D :=
-  (congrSnd ((congrSnd ((congrSnd (program_at A B C D k)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at A B C D k).sndE.sndE.sndE
 theorem returned_order_reflection (A B C D k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hD : Γ ⊢[PRAAx] le one D) (hk : Γ ⊢[PRAAx] le one k)
     (hPower : Γ ⊢[PRAAx] rationalLE (fstT (run A B C D k)) (fstT (sndT (run A B C D k)))) : Γ ⊢[PRAAx]

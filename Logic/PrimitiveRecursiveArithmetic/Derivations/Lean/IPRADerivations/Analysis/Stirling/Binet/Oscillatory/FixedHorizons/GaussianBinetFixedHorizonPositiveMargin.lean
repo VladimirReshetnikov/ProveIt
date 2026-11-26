@@ -13,7 +13,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetFixedHorizonPositiveMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentResolvent (polynomial)
 open GaussianBinetFixedHorizonFrozenRows (frozen_margin uniform_source)
 open GaussianBinetFixedHorizonSine (error reciprocal_value)
@@ -38,10 +38,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product reciprocal subst_re
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetExponentialIntegralGrid.evaluatorF

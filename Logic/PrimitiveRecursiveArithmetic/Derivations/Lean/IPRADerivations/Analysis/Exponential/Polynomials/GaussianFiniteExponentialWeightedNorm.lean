@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmWeightedNorm
 import IPRADerivations.Analysis.Exponential.FiniteSeries.ExponentialMajorant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual finite exponential's auxiliary-radius coefficient norm
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteExponentialWeightedNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalPolynomialDilation (weightedNorm dilated)
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qone qone_canonical)
@@ -35,18 +34,13 @@ open RationalArithmetic (multiply add)
 open RationalSupMetric (numeratorOf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def ratio : PTm n := fraction (num 65) (num 72)
 def powerBudget (j : PTm n) : PTm n := RationalNonnegativePowers.power (num 65) (num 72) j
-@[simp] theorem subst_ratio {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (ratio : PTm n) = (ratio : PTm l) := by simp [ratio]
-@[simp] theorem subst_powerBudget {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    Syn.subst σ (powerBudget j) = powerBudget (Syn.subst σ j) := by simp [powerBudget]
+ipra_subst ratio
+ipra_subst powerBudget
 theorem denominator_positive : Γ ⊢[PRAAx] le one (num 72 : PTm n) := le_of_eq_add (d := num 71) (by ipra_ring)
 theorem power_denominator_positive (j : PTm n) : Γ ⊢[PRAAx] le one (pw (num 72) j) :=
   GaussianFactorBudget.power_positive _ _ denominator_positive
@@ -94,9 +88,7 @@ theorem singleton_weighted_norm (t : PTm n) : Γ ⊢[PRAAx]
 
 def powerLaw (C N K t j : PTm n) : Fm PTm n := le j K ⟶
   rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget j)
-@[simp] theorem subst_powerLaw {l : ℕ} (σ : Fin n → PTm l) (C N K t j : PTm n) :
-    (powerLaw C N K t j).subst σ = powerLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K)
-      (Syn.subst σ t) (Syn.subst σ j) := by simp [powerLaw]
+ipra_subst powerLaw
 
 theorem power_zero (C N K t : PTm n) : Γ ⊢[PRAAx] powerLaw C N K t zero := by
   refine .impI ?_
@@ -128,11 +120,9 @@ theorem power_bound (C N K t j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
   have ns : Γ.map Fm.shift ⊢[PRAAx] rationalLE (weightedNorm (Syn.shift C) (Syn.shift N) (Syn.shift t)) ratio := by
     simpa only [Fm.shift,RationalArgmin.subst_rationalLE,GaussianRationalPolynomialDilation.subst_weightedNorm,subst_ratio,Syn.shift] using hNorm.shift
   have all : Γ ⊢[PRAAx] .all (powerLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift t) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact power_zero _ _ _ _
-    · simp only [subst_powerLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (power_step _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_powerLaw]
+    · exact power_zero _ _ _ _
+    · exact .impI (power_step _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have rule : Γ ⊢[PRAAx] powerLaw C N K t j := by
     simpa only [subst_powerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
@@ -164,10 +154,8 @@ theorem weighted_term_bound (C N K t r : PTm n) (hC : Γ ⊢[PRAAx] length C ≐
 
 def geometricData : PTm n := pairT (num 65) (num 7)
 def geometricPrefix (j : PTm n) : PTm n := fraction (ExponentialMajorant.Gg (succ j) geometricData) (pw (num 72) j)
-@[simp] theorem subst_geometricData {l : ℕ} (σ : Fin n → PTm l) :
-    Syn.subst σ (geometricData : PTm n) = (geometricData : PTm l) := by simp [geometricData]
-@[simp] theorem subst_geometricPrefix {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    Syn.subst σ (geometricPrefix j) = geometricPrefix (Syn.subst σ j) := by simp [geometricPrefix,ExponentialMajorant.Gg]
+ipra_subst geometricData
+ipra_subst geometricPrefix [ExponentialMajorant.Gg]
 
 theorem geometric_step (j : PTm n) : Γ ⊢[PRAAx] ExponentialMajorant.Gg (succ j) geometricData ≐
     num 72*ExponentialMajorant.Gg j geometricData+pw (num 65) j :=
@@ -221,9 +209,7 @@ theorem geometric_bound (j : PTm n) : Γ ⊢[PRAAx]
 
 def exponentialLaw (C N K t j : PTm n) : Fm PTm n := le j K ⟶
   rationalLE (weightedNorm (stage C N K j) (j*N) t) (geometricPrefix j)
-@[simp] theorem subst_exponentialLaw {l : ℕ} (σ : Fin n → PTm l) (C N K t j : PTm n) :
-    (exponentialLaw C N K t j).subst σ = exponentialLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K)
-      (Syn.subst σ t) (Syn.subst σ j) := by simp [exponentialLaw]
+ipra_subst exponentialLaw
 
 theorem exponential_zero (C N K t : PTm n) : Γ ⊢[PRAAx] exponentialLaw C N K t zero := by
   refine .impI ?_
@@ -260,11 +246,9 @@ theorem exponential_bound (C N K t j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ s
   have ns : Γ.map Fm.shift ⊢[PRAAx] rationalLE (weightedNorm (Syn.shift C) (Syn.shift N) (Syn.shift t)) ratio := by
     simpa only [Fm.shift,RationalArgmin.subst_rationalLE,GaussianRationalPolynomialDilation.subst_weightedNorm,subst_ratio,Syn.shift] using hNorm.shift
   have all : Γ ⊢[PRAAx] .all (exponentialLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift t) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_exponentialLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact exponential_zero _ _ _ _
-    · simp only [subst_exponentialLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (exponential_step _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_exponentialLaw]
+    · exact exponential_zero _ _ _ _
+    · exact .impI (exponential_step _ _ _ _ _ cs.wk.wk ns.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have rule : Γ ⊢[PRAAx] exponentialLaw C N K t j := by
     simpa only [subst_exponentialLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
@@ -306,36 +290,34 @@ def output (d K : PTm n) : PTm n := pairT (GaussianFiniteLogarithmPolynomial.com
       (pairT (geometricPrefix K) GaussianFiniteLogarithmWeightedNorm.point)))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (d K : PTm n) : PTm n := ap2 outputF d K
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d K : PTm n) :
-    Syn.subst σ (output d K) = output (Syn.subst σ d) (Syn.subst σ K) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d K : PTm n) :
-    Syn.subst σ (run d K) = run (Syn.subst σ d) (Syn.subst σ K) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d K : PTm n) : Γ ⊢[PRAAx] run d K ≐ output d K := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![d,K]
 theorem returned_composition (d K : PTm n) : Γ ⊢[PRAAx] fstT (run d K) ≐ GaussianFiniteLogarithmPolynomial.composition d K :=
-  (congrFst (program_at d K)).eqTrans (fst_pair _ _)
+  (program_at d K).fstE
 theorem returned_tail (d K : PTm n) : Γ ⊢[PRAAx] sndT (run d K) ≐
     pairT (dilated (GaussianFiniteLogarithmPolynomial.composition d K) (K*d) GaussianFiniteLogarithmWeightedNorm.point)
       (pairT (weightedNorm (GaussianFiniteLogarithmPolynomial.composition d K) (K*d) GaussianFiniteLogarithmWeightedNorm.point)
         (pairT (geometricPrefix K) GaussianFiniteLogarithmWeightedNorm.point)) :=
-  (congrSnd (program_at d K)).eqTrans (snd_pair _ _)
+  (program_at d K).sndE
 theorem returned_dilation (d K : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d K)) ≐
     dilated (GaussianFiniteLogarithmPolynomial.composition d K) (K*d) GaussianFiniteLogarithmWeightedNorm.point :=
-  (congrFst (returned_tail d K)).eqTrans (fst_pair _ _)
+  (returned_tail d K).fstE
 theorem returned_rest (d K : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d K)) ≐
     pairT (weightedNorm (GaussianFiniteLogarithmPolynomial.composition d K) (K*d) GaussianFiniteLogarithmWeightedNorm.point)
       (pairT (geometricPrefix K) GaussianFiniteLogarithmWeightedNorm.point) :=
-  (congrSnd (returned_tail d K)).eqTrans (snd_pair _ _)
+  (returned_tail d K).sndE
 theorem returned_norm (d K : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d K))) ≐
     weightedNorm (GaussianFiniteLogarithmPolynomial.composition d K) (K*d) GaussianFiniteLogarithmWeightedNorm.point :=
-  (congrFst (returned_rest d K)).eqTrans (fst_pair _ _)
+  (returned_rest d K).fstE
 theorem returned_pair (d K : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d K))) ≐
     pairT (geometricPrefix K) (GaussianFiniteLogarithmWeightedNorm.point : PTm n) :=
-  (congrSnd (returned_rest d K)).eqTrans (snd_pair _ _)
+  (returned_rest d K).sndE
 theorem returned_geometric (d K : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run d K)))) ≐ geometricPrefix K :=
-  (congrFst (returned_pair d K)).eqTrans (fst_pair _ _)
+  (returned_pair d K).fstE
 theorem returned_point (d K : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run d K)))) ≐ (GaussianFiniteLogarithmWeightedNorm.point : PTm n) :=
-  (congrSnd (returned_pair d K)).eqTrans (snd_pair _ _)
+  (returned_pair d K).sndE
 theorem returned_geometric_bound (d K : PTm n) : Γ ⊢[PRAAx]
     rationalLE (fstT (sndT (sndT (run d K)))) (fstT (sndT (sndT (sndT (run d K))))) :=
   RationalArgmin.rationalLE_congr (returned_norm d K).eqSymm (returned_geometric d K).eqSymm (composition_geometric_bound d K)

@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.MedianSymmetry
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rank perturbation and the median envelope, by counting
@@ -22,17 +21,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianRobust
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.MedianCounts
 open LeanProofs.IPRA.Probability.MedianWeighted (wL)
 open LeanProofs.IPRA.Probability.MedianSymmetry (shift_pairT')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

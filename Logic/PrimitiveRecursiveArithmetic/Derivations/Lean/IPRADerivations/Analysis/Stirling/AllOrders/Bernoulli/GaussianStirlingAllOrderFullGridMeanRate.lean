@@ -14,7 +14,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFullGridMeanRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticBounds (add_monotone)
@@ -37,10 +37,6 @@ open RationalRepresentedUpper (left right to_signed)
 open RationalRepresentations (represents_add represents_self)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

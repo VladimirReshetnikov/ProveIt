@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianMonicApp
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHornerLipschitz
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
 import IPRADerivations.Foundations.LeastBoundedWitness
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual bounded square-grid search for a monic approximate root
@@ -21,7 +20,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonicGridApproximateRoot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalMetric (bounded qnormSq squaredTolerance)
@@ -33,10 +32,6 @@ open GaussianDominantSyntax (four)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,15 +48,15 @@ def witnessIndex (C N A p q : PTm n) : PTm n := nearestIndex (radius A) (mesh N 
 def input (C N A p q : PTm n) : Fm PTm n := le one N ⋏
   (le one A ⋏ (length C ≐ succ N ⋏ (entry C zero ≐ qone ⋏
     (coefficientBounds C A ⋏ (le one p ⋏ le p q)))))
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (A : PTm n) : Syn.subst σ (radius A) = radius (Syn.subst σ A) := by simp [radius]
-@[simp] theorem subst_disk {l : ℕ} (σ : Fin n → PTm l) (A : PTm n) : Syn.subst σ (disk A) = disk (Syn.subst σ A) := by simp [disk]
-@[simp] theorem subst_slope {l : ℕ} (σ : Fin n → PTm l) (N A : PTm n) : Syn.subst σ (slope N A) = slope (Syn.subst σ N) (Syn.subst σ A) := by simp [slope]
-@[simp] theorem subst_gain {l : ℕ} (σ : Fin n → PTm l) (N A : PTm n) : Syn.subst σ (gain N A) = gain (Syn.subst σ N) (Syn.subst σ A) := by simp [gain]
-@[simp] theorem subst_mesh {l : ℕ} (σ : Fin n → PTm l) (N A q : PTm n) : Syn.subst σ (mesh N A q) = mesh (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ q) := by simp [mesh]
-@[simp] theorem subst_witness {l : ℕ} (σ : Fin n → PTm l) (C N p q : PTm n) : Syn.subst σ (witness C N p q) = witness (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) := by simp [witness]
-@[simp] theorem subst_rounded {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) : Syn.subst σ (rounded C N A p q) = rounded (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [rounded]
-@[simp] theorem subst_witnessIndex {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) : Syn.subst σ (witnessIndex C N A p q) = witnessIndex (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [witnessIndex]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) : (input C N A p q).subst σ = input (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [input]
+ipra_subst radius
+ipra_subst disk
+ipra_subst slope
+ipra_subst gain
+ipra_subst mesh
+ipra_subst witness
+ipra_subst rounded
+ipra_subst witnessIndex
+ipra_subst input
 
 theorem input_degree (C N A p q : PTm n) (h : Γ ⊢[PRAAx] input C N A p q) : Γ ⊢[PRAAx] le one N := .andE₁ h
 theorem input_height (C N A p q : PTm n) (h : Γ ⊢[PRAAx] input C N A p q) : Γ ⊢[PRAAx] le one A := .andE₁ (.andE₂ h)
@@ -141,14 +136,10 @@ def scanBody : PTm 2 := check (fstT (fstT (var 1)))
 def selected (C R M p q : PTm n) : PTm n := Search.mu scanBody (length (grid R M)) (data C R M p q)
 def root (C N A p q : PTm n) : PTm n :=
   entry (grid (radius A) (mesh N A q)) (selected C (radius A) (mesh N A q) p q)
-@[simp] theorem subst_check {l : ℕ} (σ : Fin n → PTm l) (C z p q : PTm n) :
-    Syn.subst σ (check C z p q) = check (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ p) (Syn.subst σ q) := by simp [check]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (C R M p q : PTm n) :
-    Syn.subst σ (data C R M p q) = data (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ q) := by simp [data]
-@[simp] theorem subst_selected {l : ℕ} (σ : Fin n → PTm l) (C R M p q : PTm n) :
-    Syn.subst σ (selected C R M p q) = selected (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ M) (Syn.subst σ p) (Syn.subst σ q) := by simp [selected]
-@[simp] theorem subst_root {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    Syn.subst σ (root C N A p q) = root (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [root]
+ipra_subst check
+ipra_subst data
+ipra_subst selected
+ipra_subst root
 
 theorem check_congr {C D z w p a q b : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hz : Γ ⊢[PRAAx] z ≐ w)
     (hp : Γ ⊢[PRAAx] p ≐ a) (hq : Γ ⊢[PRAAx] q ≐ b) : Γ ⊢[PRAAx] check C z p q ≐ check D w a b := by
@@ -160,13 +151,13 @@ theorem scan_body_at (C R M p q i : PTm n) : Γ ⊢[PRAAx]
     inst2 scanBody i (data C R M p q) ≐ check C (entry (grid R M) i) p q := by
   have left := fst_pair (Γ := Γ) (pairT C R) (pairT M (pairT p q))
   have right := snd_pair (Γ := Γ) (pairT C R) (pairT M (pairT p q))
-  have tail := (congrSnd right).eqTrans (snd_pair _ _)
+  have tail := right.sndE
   simp only [scanBody,inst2,subst_check,Foundations.MasterCertificate.subst_entry,
     GaussianRationalSquareGrid.subst_grid,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact check_congr ((congrFst left).eqTrans (fst_pair _ _))
+  exact check_congr left.fstE
     (Foundations.SequenceComposition.entry_congr
-      (grid_congr ((congrSnd left).eqTrans (snd_pair _ _)) ((congrFst right).eqTrans (fst_pair _ _))) (.eqRefl _))
-    ((congrFst tail).eqTrans (fst_pair _ _)) ((congrSnd tail).eqTrans (snd_pair _ _))
+      (grid_congr left.sndE right.fstE) (.eqRefl _))
+    tail.fstE tail.sndE
 
 theorem scan_accept (C R M p q i : PTm n) (h : Γ ⊢[PRAAx] inst2 scanBody i (data C R M p q) ≐ zero) : Γ ⊢[PRAAx]
     bounded (evaluate C (entry (grid R M) i)) p q := (scan_body_at C R M p q i).eqSymm.eqTrans h
@@ -221,10 +212,8 @@ def lowerBounds (C N A : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift N) ⟶
 def sourceInput (C N A p q : PTm n) : Fm PTm n := le one N ⋏
   (le one A ⋏ (length C ≐ succ N ⋏ (entry C zero ≐ qone ⋏
     (lowerBounds C N A ⋏ (le one p ⋏ le p q)))))
-@[simp] theorem subst_lowerBounds {l : ℕ} (σ : Fin n → PTm l) (C N A : PTm n) :
-    (lowerBounds C N A).subst σ = lowerBounds (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) := by simp [lowerBounds,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_sourceInput {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    (sourceInput C N A p q).subst σ = sourceInput (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [sourceInput]
+ipra_subst lowerBounds [Syn.subst_shift, Syn.shift_subst]
+ipra_subst sourceInput
 
 theorem lower_at (C N A i : PTm n) (h : Γ ⊢[PRAAx] lowerBounds C N A) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]
     bounded (entry C (succ i)) A one := by
@@ -272,34 +261,28 @@ def output (C N A p q : PTm n) : PTm n := pairT (root C N A p q)
     (pairT (grid (radius A) (mesh N A q)) (pairT (mesh N A q) (radius A))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (C N A p q : PTm n) : PTm n := PTm.app outputF ![C,N,A,p,q]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    Syn.subst σ (output C N A p q) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N A p q : PTm n) :
-    Syn.subst σ (run C N A p q) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (C N A p q : PTm n) : Γ ⊢[PRAAx] run C N A p q ≐ output C N A p q := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,N,A,p,q]
 theorem returned_root (C N A p q : PTm n) : Γ ⊢[PRAAx] fstT (run C N A p q) ≐ root C N A p q :=
-  (congrFst (program_at C N A p q)).eqTrans (fst_pair _ _)
+  (program_at C N A p q).fstE
 theorem returned_index (C N A p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N A p q)) ≐ selected C (radius A) (mesh N A q) p q :=
-  (congrFst (congrSnd (program_at C N A p q))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at C N A p q))).eqTrans (snd_pair _ _).fstE
 theorem returned_grid (C N A p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C N A p q))) ≐ grid (radius A) (mesh N A q) := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N A p q)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  exact (congrFst t2).eqTrans (fst_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N A p q).sndE
+  have t2 := t1.sndE
+  exact t2.fstE
 theorem returned_mesh (C N A p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run C N A p q)))) ≐ mesh N A q := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N A p q)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
-  exact (congrFst t3).eqTrans (fst_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N A p q).sndE
+  have t2 := t1.sndE
+  have t3 := t2.sndE
+  exact t3.fstE
 theorem returned_radius (C N A p q : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run C N A p q)))) ≐ radius A := by
-  have t1 := (congrSnd (program_at (Γ := Γ) C N A p q)).eqTrans (snd_pair _ _)
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
-  exact (congrSnd t3).eqTrans (snd_pair _ _)
+  have t1 := (program_at (Γ := Γ) C N A p q).sndE
+  have t2 := t1.sndE
+  have t3 := t2.sndE
+  exact t3.sndE
 
 theorem source_result (C N A p q : PTm n) (h : Γ ⊢[PRAAx] sourceInput C N A p q) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (root C N A p q) ⋏

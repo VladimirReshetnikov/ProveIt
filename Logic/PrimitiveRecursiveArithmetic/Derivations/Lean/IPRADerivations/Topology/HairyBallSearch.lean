@@ -20,12 +20,8 @@ natural terms cleared of denominators, rounding errors as integer terms):
 
 namespace LeanProofs.IPRA.Topology.HairyBallSearch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.BarycentricMesh (mul_cancel_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

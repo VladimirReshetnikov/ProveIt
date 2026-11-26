@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentBackwardWindow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentImproper (nameF data)
 open GaussianBinetLaplaceMomentImproperTaylor (linearSample observation_taylor_with_cap)
@@ -26,10 +26,6 @@ open GaussianLogGammaEulerResidualRadius (radius source_of_right_half_plane)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open LeanProofs.IPRA.PTm (num monus)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
@@ -45,22 +41,13 @@ def source (X D R H Q : PTm n) : Fm PTm n :=
 
 def secondCap (j D : PTm n) : PTm n := marginBound (succ (succ j)) (two*D)
 
-@[simp] theorem subst_lowerNumerator {m : ℕ} (σ : Fin n → PTm m) (X D H Q : PTm n) :
-    Syn.subst σ (lowerNumerator X D H Q) = lowerNumerator (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ H) (Syn.subst σ Q) := by
-  simp [lowerNumerator]
+ipra_subst lowerNumerator
 
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (j X D H Q : PTm n) :
-    Syn.subst σ (lowerData j X D H Q) =
-      lowerData (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ H) (Syn.subst σ Q) := by
-  simp [lowerData]
+ipra_subst lowerData
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (X D R H Q : PTm n) :
-    (source X D R H Q).subst σ = source (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ Q) := by
-  simp [source,two,one]
+ipra_subst source [two, one]
 
-@[simp] theorem subst_secondCap {m : ℕ} (σ : Fin n → PTm m) (j D : PTm n) :
-    Syn.subst σ (secondCap j D) = secondCap (Syn.subst σ j) (Syn.subst σ D) := by
-  simp [secondCap,two,one]
+ipra_subst secondCap [two, one]
 
 theorem window_geometry (X D R H Q : PTm n) (h : Γ ⊢[PRAAx] source X D R H Q) :
     let Y := lowerNumerator X D H Q

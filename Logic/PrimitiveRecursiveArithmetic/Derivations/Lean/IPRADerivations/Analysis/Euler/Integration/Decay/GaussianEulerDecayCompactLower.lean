@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody scalar_sum_zero)
 open GaussianRationalSyntheticDivision (qone)
@@ -30,10 +30,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper)
 open RationalSupMetric (denominatorOf)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

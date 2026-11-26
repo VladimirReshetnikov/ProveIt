@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeCenteredMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code oneCode scale)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalFiniteSum (sum)
@@ -26,17 +26,13 @@ open GaussianRationalRiemannRefinement (leftSum weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values re_sub re_scale re_one im_sub im_scale im_one)
 open GaussianStirlingOddCoefficients (fraction_equal fraction_product)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def centered (i N : PTm n) : PTm n := qsub (fraction i N) (fraction one two)
 def body : PTm 2 := centered (var 0) (var 1)
 
-@[simp] theorem subst_centered {m : ℕ} (σ : Fin n → PTm m) (i N : PTm n) :
-    Syn.subst σ (centered i N) = centered (Syn.subst σ i) (Syn.subst σ N) := by simp [centered,one,two]
+ipra_subst centered [one, two]
 
 private def polyNative (i N : PTm n) : PTm n :=
   code (ZT.ofNat (i*i) - ZT.ofNat (i*succ N)) (ZT.ofNat zero)

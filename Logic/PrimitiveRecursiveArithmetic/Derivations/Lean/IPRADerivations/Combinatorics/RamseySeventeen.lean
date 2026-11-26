@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.Turan
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # `R(3, 3, 3) ≤ 17`
@@ -34,11 +33,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.RamseySeventeen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.EuclideanSpace (sum_mul_sum_eq)
 open LeanProofs.IPRA.Combinatorics.Turan (zlt_or_zle)
-open Syn
-open scoped Fm
 
 /-! ## Goodman's identity on a support -/
 
@@ -328,31 +325,23 @@ theorem big_neighbourhood_absurd (a p q : Fin k → Fin k → ZT n) (v₀ : Fin 
     Γ ⊢[PRAAx] φ := by
   -- the hypotheses as ring equations
   have hx : ∀ u, nbX Γ a v₀ u * nbX Γ a v₀ u = nbX Γ a v₀ u := fun u => by
-    have e := ZT.toZ_eq (ha_bit u)
-    simpa only [nbX, ZT.toZ_mul] using e
+    simpa only [nbX, ZT.toZ_mul] using ZT.toZ_eq (ha_bit u)
   have ps : ∀ u w, ZT.toZ Γ (p u w) = ZT.toZ Γ (p w u) := fun u w => ZT.toZ_eq (hp_sym u w)
   have pb : ∀ u w, ZT.toZ Γ (p u w) * ZT.toZ Γ (p u w) = ZT.toZ Γ (p u w) := fun u w => by
-    have e := ZT.toZ_eq (hp_bit u w)
-    simpa only [ZT.toZ_mul] using e
+    simpa only [ZT.toZ_mul] using ZT.toZ_eq (hp_bit u w)
   have pd : ∀ u, ZT.toZ Γ (p u u) = 0 := fun u => by
-    have e := ZT.toZ_eq (hp_diag u)
-    simpa only [ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (hp_diag u)
   have qd : ∀ u, ZT.toZ Γ (q u u) = 0 := fun u => by
-    have e := ZT.toZ_eq (hq_diag u)
-    simpa only [ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (hq_diag u)
   have part : ∀ u w, u ≠ w → ZT.toZ Γ (a u w) + ZT.toZ Γ (p u w) + ZT.toZ Γ (q u w) = 1 :=
     fun u w h => by
-      have e := ZT.toZ_eq (hpart u w h)
-      simpa only [ZT.toZ_add, ZT.toZ_natLit, Nat.cast_one] using e
+      simpa only [ZT.toZ_add, ZT.toZ_natLit, Nat.cast_one] using ZT.toZ_eq (hpart u w h)
   have atri : ∀ u w, nbX Γ a v₀ u * ZT.toZ Γ (a u w) * nbX Γ a v₀ w = 0 := fun u w => by
-    have e := ZT.toZ_eq (ha_tri u w)
-    simpa only [nbX, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [nbX, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (ha_tri u w)
   have ptri : ∀ u v w, ZT.toZ Γ (p u v) * ZT.toZ Γ (p v w) * ZT.toZ Γ (p u w) = 0 := fun u v w => by
-    have e := ZT.toZ_eq (hp_tri u v w)
-    simpa only [ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (hp_tri u v w)
   have qtri : ∀ u v w, ZT.toZ Γ (q u v) * ZT.toZ Γ (q v w) * ZT.toZ Γ (q u w) = 0 := fun u v w => by
-    have e := ZT.toZ_eq (hq_tri u v w)
-    simpa only [ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (hq_tri u v w)
   -- the graph `p` on the neighbourhood
   have hs : ∀ u w, nbR Γ a p v₀ u w = nbR Γ a p v₀ w u := fun u w => by
     unfold nbR
@@ -460,8 +449,7 @@ theorem ramsey333 (C : Fin 3 → Fin 17 → Fin 17 → ZT n)
     (hdiag 1) part2 (fun u w => htri 2 0 u w) (htri 0) (htri 1)
   -- the three colour degrees of the vertex `0` sum to sixteen
   have d : ∀ c : Fin 3, ZT.toZ Γ (C c 0 0) = 0 := fun c => by
-    have e := ZT.toZ_eq (hdiag c 0)
-    simpa only [ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (hdiag c 0)
   have pt : ∀ u : Fin 17, ZT.toZ Γ (C 0 0 u) + ZT.toZ Γ (C 1 0 u) + ZT.toZ Γ (C 2 0 u) =
       1 - (if (0 : Fin 17) = u then 1 else 0) := fun u => by
     rcases _root_.eq_or_ne (0 : Fin 17) u with rfl | h

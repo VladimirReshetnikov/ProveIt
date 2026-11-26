@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorTailFraction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFactor (base)
 open GaussianBarnesCanonicalFiniteProperness (scaled_fraction_equal)
 open GaussianBarnesCanonicalHigherRows (coefficient degree)
@@ -24,9 +24,6 @@ open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalReciprocal (power reciprocal)
 open GaussianRationalSyntheticDivision (qone qadd_congr qsub_congr qmul_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

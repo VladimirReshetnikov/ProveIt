@@ -16,7 +16,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalWeightedTaylorBallCover
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add scale)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalWeightedTaylorBall (nameF approxData)
@@ -33,8 +33,6 @@ open GaussianRationalSquareGrid (grid nearest nativePoint nearestX nearestY near
 open GaussianRootAlgebra (equal equal_of_values equal_refl re_add im_add re_sub im_sub)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

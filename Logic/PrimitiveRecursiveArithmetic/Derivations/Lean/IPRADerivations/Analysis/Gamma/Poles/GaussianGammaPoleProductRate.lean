@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleProductRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_at multiplyRaw recode_congr)
@@ -27,9 +27,6 @@ open GaussianRationalHorner (qmul canonical positive_product)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.PlatonicSurface.Intrinsic
-import IPRADerivations.Core.Tactic
 
 /-!
 # The dodecahedral weighted gap

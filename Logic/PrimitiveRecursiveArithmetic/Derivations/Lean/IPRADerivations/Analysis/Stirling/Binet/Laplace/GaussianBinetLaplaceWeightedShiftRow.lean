@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceWeightedShiftRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceIntegrand (input)
 open GaussianBinetLaplaceIntegrandShift
   (differenceF differenceData differenceDataWithRadius factoredF factoredData row_factor row_factor_with_radius)
@@ -22,8 +22,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianBinetLaplaceExponential.nameF
@@ -35,10 +33,7 @@ def nameF : PR 2 := multiplyF E Weighted
 def data (X Y D sign R T A B : PTm n) : PTm n :=
   multiplyData E Weighted (eData X Y D sign R T A B) (weightedData A B)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R T A B : PTm n) :
-    Syn.subst σ (data X Y D sign R T A B) =
-      data (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
 theorem regular (X Y D sign R T A B : PTm n) (h : Γ ⊢[PRAAx] input X Y D sign R T A B) :
     Γ ⊢[PRAAx] pointCN nameF (data X Y D sign R T A B) :=

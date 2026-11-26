@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelImaginaryRatioCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelImaginaryRatioRows (ratioNumerator ratioDenominator ratioRadius ratio_source)
 open GaussianBinetKernelImaginaryRatioPrefix (rawPrefix ratio timeSquare rational_time_prefix)
 open GaussianBinetKernelRows (inputData rowF rowBody)
@@ -34,9 +34,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Kernel" => GaussianBinetKernelCofinal.nameF
@@ -57,9 +54,7 @@ def fixedFactorF : PR 2 := addF oneF timeSquareF
 def fixedFactorData (A B : PTm n) : PTm n := addData (inputData A B) (timeSquareData A B)
 def budget (A : PTm n) : PTm n := (two*(A*A)+two*(A*A)+two*ratioRadius A)+two
 
-@[simp] theorem subst_referenceClock {m : ℕ} (σ : Fin n → PTm m) (p A : PTm n) :
-    Syn.subst σ (referenceClock p A) = referenceClock (Syn.subst σ p) (Syn.subst σ A) := by
-  simp [referenceClock,referenceLength,ratioRadius,GaussianSineProductImaginaryLogDerivativeTail.cutoff,two,one]
+ipra_subst referenceClock [referenceLength, ratioRadius, GaussianSineProductImaginaryLogDerivativeTail.cutoff, two, one]
 
 theorem frozen_source (p A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     le one (ratioRadius A) ⋏ (le one (frozenDenominator p A B) ⋏

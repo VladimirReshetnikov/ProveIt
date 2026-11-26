@@ -16,7 +16,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussShiftedApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq_one)
 open GaussianGammaC9Bound (exponentialMajorant majorant)
 open GaussianGammaGaussShiftedProduct (source rowF rowData rowRadius nameF data)
@@ -29,9 +29,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalLowerBounds (lower_from_representation)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (qone reciprocal reciprocal_canonical reciprocal_identity)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,13 +36,9 @@ def rowDenominator (R : PTm n) : PTm n := majorant (R+one)
 
 def apartClock (R m : PTm n) : PTm n := GaussianNamedFiniteProductApartness.apartClock m (rowDenominator R)
 
-@[simp] theorem subst_rowDenominator {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (rowDenominator R) = rowDenominator (Syn.subst σ R) := by
-  simp [rowDenominator,one]
+ipra_subst rowDenominator [one]
 
-@[simp] theorem subst_apartClock {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (apartClock R m) = apartClock (Syn.subst σ R) (Syn.subst σ m) := by
-  simp [apartClock]
+ipra_subst apartClock
 
 theorem majorant_positive (R : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx] le one (majorant R) := by
   have front := positive_product R (pw (one+R) (two*R)) hR

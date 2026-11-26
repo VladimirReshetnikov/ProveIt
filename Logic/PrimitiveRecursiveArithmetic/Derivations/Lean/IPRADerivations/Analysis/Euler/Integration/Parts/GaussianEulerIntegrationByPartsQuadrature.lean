@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrationByPartsLinear (primitive originalProduct)
 open GaussianEulerIntegrationByPartsGrid (operator operatorF endpointF operator_at endpoint_grid_at)
 open GaussianEulerIntegrationByPartsGridObservation (rawF raw_grid_at)
@@ -28,8 +28,6 @@ open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

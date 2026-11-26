@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaZetaDirichletRowDecay (block block_positive)
@@ -25,10 +25,6 @@ open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator diagonalE
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianEulerIntegralGammaIdentification.source
@@ -42,13 +38,9 @@ def nameF : PR 2 :=
   PTm.toPR (sample (var 0) (fstT (fstT (var 1))) (sndT (fstT (var 1)))
     (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_level {m : ℕ} (σ : Fin n → PTm m) (A p : PTm n) :
-    Syn.subst σ (level A p) = level (Syn.subst σ A) (Syn.subst σ p) := by simp [level]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (A p : PTm n) :
-    Syn.subst σ (cutoff A p) = cutoff (Syn.subst σ A) (Syn.subst σ p) := by simp [cutoff]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B A : PTm n) :
-    Syn.subst σ (sample p z R B A) =
-      sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [sample]
+ipra_subst level
+ipra_subst cutoff
+ipra_subst sample
 
 theorem sample_at (p z R B A : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B A) ≐ sample p z R B A := by
   let x := data z R B A

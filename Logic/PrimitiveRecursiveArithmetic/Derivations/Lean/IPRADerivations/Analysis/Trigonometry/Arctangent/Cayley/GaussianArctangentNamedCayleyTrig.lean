@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayleyTrig
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_eval oneCode eval_re_code eval_im_code)
 open GaussianArctangentCayleyTrig (cosineMultiplier sine_readback cosine_readback)
 open GaussianArctangentCayleyValues (imaginaryCode)
@@ -38,9 +38,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qadd_congr)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianRootAlgebra (re_neg im_neg)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -92,11 +89,9 @@ def sineBudget (f : PR 2) (x : PTm n) : PTm n :=
 def cosineBudget (f : PR 2) (x : PTm n) : PTm n :=
   multiplyModulus constantF (cosineSumF (GaussianArctangentNamedExtension.nameF f)) cosineMultiplier (cosineSumData two x)+num 8
 
-@[simp] theorem subst_sineBudget {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (sineBudget f x) = sineBudget f (Syn.subst σ x) := by simp [sineBudget]
+ipra_subst sineBudget
 
-@[simp] theorem subst_cosineBudget {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (cosineBudget f x) = cosineBudget f (Syn.subst σ x) := by simp [cosineBudget]
+ipra_subst cosineBudget
 
 theorem sine_observation_error (f : PR 2) (p x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (sineF (GaussianArctangentNamedExtension.nameF f)) p

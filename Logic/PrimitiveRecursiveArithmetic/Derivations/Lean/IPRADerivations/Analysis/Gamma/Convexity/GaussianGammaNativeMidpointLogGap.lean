@@ -15,7 +15,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNativeMidpointLogGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -36,10 +36,6 @@ open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
 open GaussianStirlingGlobalBounds (small_join)
 open RationalValueBounds (upper upper_mono upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianGammaEulerRationalLog.nameF
@@ -53,12 +49,8 @@ def centerData (a d b : PTm n) : PTm n :=
   addData (margin a d) (productData logGammaF two (logGammaData (a+d) (two*b)))
 def weightedData (a d b : PTm n) : PTm n := addData (logGammaData a b) (logGammaData d b)
 
-@[simp] theorem subst_centerData {m : ℕ} (σ : Fin n → PTm m) (a d b : PTm n) :
-    Syn.subst σ (centerData a d b) = centerData (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ b) := by
-  simp [centerData]
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (a d b : PTm n) :
-    Syn.subst σ (weightedData a d b) = weightedData (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ b) := by
-  simp [weightedData]
+ipra_subst centerData
+ipra_subst weightedData
 
 theorem cutoff_rate (a b K A p : PTm n) (h : Γ ⊢[PRAAx] familyRate a b K A) :
     Γ ⊢[PRAAx] independentRate E logGammaF (ed (cutoff K A p) a b)

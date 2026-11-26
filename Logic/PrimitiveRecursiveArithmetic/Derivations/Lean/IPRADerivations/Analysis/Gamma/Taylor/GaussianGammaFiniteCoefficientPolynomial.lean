@@ -20,7 +20,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteCoefficientPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul evaluate ofGaussian)
 open GaussianRationalPolynomialDilation (weightedNorm)
 open GaussianGammaReciprocalDegreeCells (degree)
@@ -31,9 +31,6 @@ open GaussianRationalPowerExpansion (partialSum)
 open GaussianGammaC9Bound (majorant)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,10 +38,8 @@ def totalDegree (R L K : PTm n) : PTm n := succ (two*R)+K*degree L
 def polynomial (q R L K : PTm n) : PTm n := GaussianRationalPolynomialProduct.product
   (GaussianGammaEulerHeadPolynomial.polynomial (two*R))
   (GaussianGammaExponentCoefficientPolynomial.exponential q R L K) (succ (two*R)) (K*degree L)
-@[simp] theorem subst_totalDegree {m : ℕ} (σ : Fin n → PTm m) (R L K : PTm n) :
-    Syn.subst σ (totalDegree R L K) = totalDegree (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ K) := by simp [totalDegree]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (q R L K : PTm n) :
-    Syn.subst σ (polynomial q R L K) = polynomial (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ K) := by simp [polynomial]
+ipra_subst totalDegree
+ipra_subst polynomial
 
 theorem exponential_length (q R L K : PTm n) : Γ ⊢[PRAAx]
     length (GaussianGammaExponentCoefficientPolynomial.exponential q R L K) ≐ succ (K*degree L) :=

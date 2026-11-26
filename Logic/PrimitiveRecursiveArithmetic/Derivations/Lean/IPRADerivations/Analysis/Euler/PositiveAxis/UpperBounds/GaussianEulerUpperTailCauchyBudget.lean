@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperTailCauchyBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCompactCutoffSplit (source)
 open GaussianEulerNamedUpperTail (point)
 open GaussianGammaIntegralCutoffs (tailCoefficient height)
@@ -22,19 +22,13 @@ open GaussianEulerWeightedHalfDecay (majorant)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalHorner (positive_product qzero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def numerator (p k : PTm n) : PTm n := unit p+unit (k+num 6)
 def denominator (p k : PTm n) : PTm n := unit (k+num 6)*unit p
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p k : PTm n) :
-    Syn.subst σ (numerator p k) = numerator (Syn.subst σ p) (Syn.subst σ k) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p k : PTm n) :
-    Syn.subst σ (denominator p k) = denominator (Syn.subst σ p) (Syn.subst σ k) := by simp [denominator]
+ipra_subst numerator
+ipra_subst denominator
 
 theorem exact_tail_coefficient (R : PTm n) : Γ ⊢[PRAAx] tailCoefficient R ≐ two*majorant R :=
   (congrMul (pw_succ two R) (.eqRefl (Products.fact R))).eqTrans (by unfold majorant unit; ipra_ring)
@@ -69,23 +63,21 @@ def output (p z R B k j A : PTm n) : PTm n := pairT (point p z R B k j A)
   (pairT (numerator p k) (pairT (denominator p k) (tailCoefficient R)))
 def outputF : PR 7 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (p z R B k j A : PTm n) : PTm n := PTm.app outputF ![p,z,R,B,k,j,A]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p z R B k j A : PTm n) :
-    Syn.subst σ (output p z R B k j A) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ j) (Syn.subst σ A) := by simp [output,tailCoefficient]
+ipra_subst output [tailCoefficient]
 theorem program_at (p z R B k j A : PTm n) : Γ ⊢[PRAAx] run p z R B k j A ≐ output p z R B k j A := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![p,z,R,B,k,j,A]
 theorem returned_point (p z R B k j A : PTm n) : Γ ⊢[PRAAx] fstT (run p z R B k j A) ≐ point p z R B k j A :=
-  (congrFst (program_at p z R B k j A)).eqTrans (fst_pair _ _)
+  (program_at p z R B k j A).fstE
 theorem returned_tail (p z R B k j A : PTm n) : Γ ⊢[PRAAx] sndT (run p z R B k j A) ≐ pairT (numerator p k) (pairT (denominator p k) (tailCoefficient R)) :=
-  (congrSnd (program_at p z R B k j A)).eqTrans (snd_pair _ _)
+  (program_at p z R B k j A).sndE
 theorem returned_numerator (p z R B k j A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p z R B k j A)) ≐ numerator p k :=
-  (congrFst (returned_tail p z R B k j A)).eqTrans (fst_pair _ _)
+  (returned_tail p z R B k j A).fstE
 theorem returned_last (p z R B k j A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p z R B k j A)) ≐ pairT (denominator p k) (tailCoefficient R) :=
-  (congrSnd (returned_tail p z R B k j A)).eqTrans (snd_pair _ _)
+  (returned_tail p z R B k j A).sndE
 theorem returned_denominator (p z R B k j A : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p z R B k j A))) ≐ denominator p k :=
-  (congrFst (returned_last p z R B k j A)).eqTrans (fst_pair _ _)
+  (returned_last p z R B k j A).fstE
 theorem returned_coefficient (p z R B k j A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p z R B k j A))) ≐ tailCoefficient R :=
-  (congrSnd (returned_last p z R B k j A)).eqTrans (snd_pair _ _)
+  (returned_last p z R B k j A).sndE
 theorem returned_bound (p z R B k j A : PTm n) (h : Γ ⊢[PRAAx] source z R B k j A) : Γ ⊢[PRAAx]
     bounded (fstT (run p z R B k j A)) (fstT (sndT (run p z R B k j A))) (fstT (sndT (sndT (run p z R B k j A)))) :=
   GaussianRationalReciprocal.bound_congr (returned_point p z R B k j A).eqSymm (returned_numerator p z R B k j A).eqSymm

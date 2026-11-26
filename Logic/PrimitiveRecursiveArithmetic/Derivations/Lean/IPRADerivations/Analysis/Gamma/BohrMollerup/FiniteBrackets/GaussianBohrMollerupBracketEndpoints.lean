@@ -18,7 +18,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupBracketEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaRationalWendelBoundary (difference_cross)
@@ -32,9 +32,6 @@ open GaussianNaturalScaleProductName (productF)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianStirlingGammaLogarithm (source)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF
@@ -49,8 +46,7 @@ def rowBody : PTm 2 :=
 abbrev sumF : PR 2 := GaussianNamedFiniteSumFamily.nameF H rowBody
 def sumData (a b N : PTm n) : PTm n := GaussianNamedFiniteSumFamily.data N (pairT a b)
 
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (sumData a b N) = sumData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [sumData]
+ipra_subst sumData
 
 theorem row_at (i a b : PTm n) :
     Γ ⊢[PRAAx] inst2 rowBody i (pairT a b) ≐ logData (a+b*i) b := by
@@ -85,20 +81,12 @@ def ratioData (a b B j : PTm n) : PTm n := fractionData H a b (logData (j+B) j)
 abbrev widthF : PR 2 := D bracketF bracketF
 def widthData (a b B j : PTm n) : PTm n := dd (upperData a b B j) (lowerData a b j)
 
-@[simp] theorem subst_baseData {m : ℕ} (σ : Fin n → PTm m) (a b j : PTm n) :
-    Syn.subst σ (baseData a b j) = baseData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) := by simp [baseData,one]
-@[simp] theorem subst_ratioData {m : ℕ} (σ : Fin n → PTm m) (a b B j : PTm n) :
-    Syn.subst σ (ratioData a b B j) = ratioData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp [ratioData,fractionData]
-@[simp] theorem subst_endpointData {m : ℕ} (σ : Fin n → PTm m) (a b j r : PTm n) :
-    Syn.subst σ (endpointData a b j r) = endpointData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) (Syn.subst σ r) := by
-  simp [endpointData,fractionData,one]
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a b j : PTm n) :
-    Syn.subst σ (lowerData a b j) = lowerData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) := by simp [lowerData]
-@[simp] theorem subst_upperData {m : ℕ} (σ : Fin n → PTm m) (a b B j : PTm n) :
-    Syn.subst σ (upperData a b B j) = upperData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ B) (Syn.subst σ j) := by simp [upperData]
-@[simp] theorem subst_widthData {m : ℕ} (σ : Fin n → PTm m) (a b B j : PTm n) :
-    Syn.subst σ (widthData a b B j) = widthData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ B) (Syn.subst σ j) := by simp [widthData]
+ipra_subst baseData [one]
+ipra_subst ratioData [fractionData]
+ipra_subst endpointData [fractionData, one]
+ipra_subst lowerData
+ipra_subst upperData
+ipra_subst widthData
 
 theorem base_regular (a b j : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN baseF (baseData a b j) :=

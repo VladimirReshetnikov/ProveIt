@@ -16,16 +16,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.AggregateApproximateLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open AggregateEquality (sample unit unit_positive)
 open AggregateOptimization (pointRegular pointRegular_at)
 open AggregateApproximateImage (mapContract map_at data clock)
 open AggregateApproximatePointMap (pointF mapped point_at)
 open RationalHausdorff (pointRadius)
 open RationalPointDistanceVariation (pointNumerator pointDenominator point_bound_of_radius point_radius_of_bound)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,20 +39,14 @@ def diagonalBounded (U V : PR 2) (d C D x : PTm n) : Fm PTm n :=
   .all (pointRadius (sample U (var 0) (Syn.shift x)) (sample V (var 0) (Syn.shift x))
     (Syn.shift d) (Syn.shift C*unit (var 0)+two*Syn.shift D) (Syn.shift D*unit (var 0)))
 
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (C D s t : PTm n) :
-    Syn.subst σ (numerator C D s t) = numerator (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ s) (Syn.subst σ t) := by simp [numerator]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (D s t : PTm n) :
-    Syn.subst σ (denominator D s t) = denominator (Syn.subst σ D) (Syn.subst σ s) (Syn.subst σ t) := by simp [denominator]
-@[simp] theorem subst_distanceBounded {l : ℕ} (σ : Fin n → PTm l) (U V : PR 2) (d C D x : PTm n) :
-    (distanceBounded U V d C D x).subst σ = distanceBounded U V (Syn.subst σ d) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) := by
-  simp only [distanceBounded,Fm.subst_all,RationalHausdorff.subst_pointRadius,AggregateEquality.subst_sample,
-    subst_numerator,subst_denominator,Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,Syn.subst_shift,Syn.shift_subst,
-    Syn.shift_var,Fin.succ_zero_eq_one]
-@[simp] theorem subst_diagonalBounded {l : ℕ} (σ : Fin n → PTm l) (U V : PR 2) (d C D x : PTm n) :
-    (diagonalBounded U V d C D x).subst σ = diagonalBounded U V (Syn.subst σ d) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) := by
-  simp only [diagonalBounded,Fm.subst_all,RationalHausdorff.subst_pointRadius,AggregateEquality.subst_sample,
-    AggregateEquality.subst_unit,PTm.subst_add,PTm.subst_mul,Syn.subst_var,Syn.up_zero,Syn.up_one,Syn.up_succ,
-    Syn.subst_shift,Syn.shift_subst,one,two,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst distanceBounded [Fm.subst_all, RationalHausdorff.subst_pointRadius, AggregateEquality.subst_sample,
+    subst_numerator, subst_denominator, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst, Syn.shift_var, Fin.succ_zero_eq_one]
+ipra_subst diagonalBounded [Fm.subst_all, RationalHausdorff.subst_pointRadius, AggregateEquality.subst_sample,
+    AggregateEquality.subst_unit, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ,
+    Syn.subst_shift, Syn.shift_subst, one, two, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
 theorem distance_at (U V : PR 2) (d C D x s t : PTm n)
     (h : Γ ⊢[PRAAx] distanceBounded U V d C D x) : Γ ⊢[PRAAx]
@@ -273,16 +264,8 @@ def outputF (U V : PR 2) (f : PR 3) : PR 7 :=
 def run (U V : PR 2) (f : PR 3) (s t A B C D x : PTm n) : PTm n :=
   PTm.app (outputF U V f) ![s,t,A,B,C,D,x]
 
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (U V : PR 2) (f : PR 3) (s t A B C D x : PTm n) :
-    Syn.subst σ (output U V f s t A B C D x) = output U V f (Syn.subst σ s) (Syn.subst σ t)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (U V : PR 2) (f : PR 3) (s t A B C D x : PTm n) :
-    Syn.subst σ (run U V f s t A B C D x) = run U V f (Syn.subst σ s) (Syn.subst σ t)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem run_at (U V : PR 2) (f : PR 3) (s t A B C D x : PTm n) : Γ ⊢[PRAAx]
     run U V f s t A B C D x ≐ output U V f s t A B C D x := by
@@ -291,16 +274,16 @@ theorem run_at (U V : PR 2) (f : PR 3) (s t A B C D x : PTm n) : Γ ⊢[PRAAx]
 
 theorem returned_left (U V : PR 2) (f : PR 3) (s t A B C D x : PTm n) : Γ ⊢[PRAAx]
     fstT (run U V f s t A B C D x) ≐ AggregateApproximatePointMap.computed U f s A B x :=
-  (congrFst (run_at U V f s t A B C D x)).eqTrans (fst_pair _ _)
+  (run_at U V f s t A B C D x).fstE
 theorem returned_right (U V : PR 2) (f : PR 3) (s t A B C D x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run U V f s t A B C D x)) ≐ AggregateApproximatePointMap.computed V f t A B x :=
-  (congrFst ((congrSnd (run_at U V f s t A B C D x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (run_at U V f s t A B C D x).sndE.fstE
 theorem returned_numerator (U V : PR 2) (f : PR 3) (s t A B C D x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run U V f s t A B C D x))) ≐ A*C :=
-  (congrFst ((congrSnd ((congrSnd (run_at U V f s t A B C D x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (run_at U V f s t A B C D x).sndE.sndE.fstE
 theorem returned_denominator (U V : PR 2) (f : PR 3) (s t A B C D x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run U V f s t A B C D x))) ≐ B*D :=
-  (congrSnd ((congrSnd ((congrSnd (run_at U V f s t A B C D x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (run_at U V f s t A B C D x).sndE.sndE.sndE
 
 theorem returned_distance (U V : PR 2) (f : PR 3) (d e A B C D x s t : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D)

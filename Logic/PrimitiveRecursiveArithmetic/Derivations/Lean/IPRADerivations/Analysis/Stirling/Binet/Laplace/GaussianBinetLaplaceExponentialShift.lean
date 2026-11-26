@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceExponentialShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code neg mul scale oneCode eval_re_code eval_im_code normSq)
 open GaussianBinetLaplaceExponential (exponent nameF data exponent_bound)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
@@ -36,9 +36,6 @@ open GaussianRationalMetric (qnegative qnegative_represents bounded)
 open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_neg im_neg re_mul im_mul re_scale im_scale re_one im_one)
 open GaussianSignedNameExponentialOrder (constant_input)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

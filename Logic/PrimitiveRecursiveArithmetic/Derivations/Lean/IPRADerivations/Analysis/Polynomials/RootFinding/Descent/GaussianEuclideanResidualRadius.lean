@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEuclideanResidualRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal
   (qone reciprocal power normLower bound_congr bounded_product bounded_sum)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul evaluate)
@@ -26,10 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRadiusBudget (radius geometric)
 open LeanProofs.IPRA.Analysis.GaussianReciprocalHorner (tail tail_zero tail_succ subst_tail)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,11 +34,9 @@ most A. The two scalar component denominators remain independently decoded. -/
 def coefficientBounds (C A : PTm n) : Fm PTm n := .all
   (lt (var 0) (length (Syn.shift C)) ⟶ bounded (entry (Syn.shift C) (var 0)) (Syn.shift A) one)
 
-@[simp] theorem subst_coefficientBounds {m : ℕ} (σ : Fin n → PTm m) (C A : PTm n) :
-    (coefficientBounds C A).subst σ = coefficientBounds (Syn.subst σ C) (Syn.subst σ A) := by
-  simp only [coefficientBounds,Fm.subst_all,Fm.subst_imp,subst_lt,subst_length,
-    GaussianRationalMetric.subst_bounded,subst_entry,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,
-    Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coefficientBounds [Fm.subst_all, Fm.subst_imp, subst_lt, subst_length,
+    GaussianRationalMetric.subst_bounded, subst_entry, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ,
+    Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 
 theorem coefficient_at (C A i : PTm n) (h : Γ ⊢[PRAAx] coefficientBounds C A)
     (hi : Γ ⊢[PRAAx] lt i (length C)) : Γ ⊢[PRAAx] bounded (entry C i) A one := by
@@ -93,16 +87,11 @@ theorem tail_bound (C w N A k : PTm n)
       ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hw.shift
   have all : Γ ⊢[PRAAx] .all (bounded (tail (Syn.shift C) (Syn.shift w) (Syn.shift N) (var 0))
       (Syn.shift A*geometric (Syn.shift A) (var 0)) (pw (radius (Syn.shift A)) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [GaussianRationalMetric.subst_bounded,subst_tail,PTm.subst_mul,
-        GaussianRadiusBudget.subst_geometric,GaussianRadiusBudget.subst_radius,subst_ap2,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact bound_congr (tail_zero C w N).eqSymm (.eqRefl _) (.eqRefl _)
+    ipra_qfind (le_QF _ _) [GaussianRationalMetric.subst_bounded, subst_tail, GaussianRadiusBudget.subst_geometric,
+        GaussianRadiusBudget.subst_radius, subst_ap2]
+    · exact bound_congr (tail_zero C w N).eqSymm (.eqRefl _) (.eqRefl _)
         (zero_bounded _ _ (GaussianPolynomialPerturbation.power_positive _ _ (GaussianRadiusBudget.radius_positive A)))
-    · simp only [GaussianRationalMetric.subst_bounded,subst_tail,PTm.subst_mul,
-        GaussianRadiusBudget.subst_geometric,GaussianRadiusBudget.subst_radius,subst_ap2,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact tail_bound_step _ _ _ _ _ lenShift.wk cShift.wk wShift.wk Prf.hyp0
+    · exact tail_bound_step _ _ _ _ _ lenShift.wk cShift.wk wShift.wk Prf.hyp0
   simpa only [GaussianRationalMetric.subst_bounded,subst_tail,PTm.subst_mul,
     GaussianRadiusBudget.subst_geometric,GaussianRadiusBudget.subst_radius,subst_ap2,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all

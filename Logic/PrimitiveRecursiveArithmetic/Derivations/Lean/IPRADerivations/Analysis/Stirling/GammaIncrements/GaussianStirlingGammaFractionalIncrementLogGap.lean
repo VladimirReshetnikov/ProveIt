@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGammaFractionalIncrementLogGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
@@ -27,10 +27,6 @@ open GaussianStirlingNames (logXF logXData)
 open RationalGaussianEmbedding (embed embed_at embedF)
 open RationalHarmonicInterval (common horizon interval left_horizon)
 open GaussianPositiveRationalLogarithmProperness (commonLog log_at_common)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (pred monus)
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

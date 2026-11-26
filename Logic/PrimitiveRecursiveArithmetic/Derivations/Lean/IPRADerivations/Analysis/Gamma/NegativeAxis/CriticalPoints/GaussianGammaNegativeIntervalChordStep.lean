@@ -14,7 +14,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalChordStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaMinimumSignedStep (centerNumerator centerDenominator increment increment_bounded separated_norm)
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeIntervalNative (negative_regular data)
@@ -26,10 +26,6 @@ open GaussianRationalMetric (distanceBounded qsub qsub_canonical qsub_represents
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRootAlgebra (equal equal_of_values re_sub im_sub re_scale im_scale re_one im_one)
 open GaussianStirlingGammaLogarithm (arg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

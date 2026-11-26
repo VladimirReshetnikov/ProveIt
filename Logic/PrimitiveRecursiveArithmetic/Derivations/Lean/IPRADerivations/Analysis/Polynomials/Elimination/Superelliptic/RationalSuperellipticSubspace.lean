@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.RationalSuperellipticNormDegree
 import IPRADerivations.Analysis.Inequalities.RationalWeightedMonomialEvaluation
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalOriginalSpanRank
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational proper spans on the superelliptic curve
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSuperellipticSubspace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalRowSpanGaussianEmbedding (matrix matrix_shape hasCoefficients span_real_part)
 open RationalPolynomialGaussianEmbedding (coefficients coefficients_length coefficientBody embed_congr)
 open RationalSuperellipticNormDegree (d f_degree_embedding)
@@ -30,18 +29,13 @@ open GaussianRationalRankNullityCriterion (rank)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def properSpan (A R N : PTm n) : Fm PTm n := .ex
   ((length (var 0) ≐ Syn.shift N) ⋏ neg (hasCoefficients (Syn.shift A) (Syn.shift R) (Syn.shift N) (var 0)))
 
-@[simp] theorem subst_properSpan {q : ℕ} (σ : Fin n → PTm q) (A R N : PTm n) :
-    (properSpan A R N).subst σ = properSpan (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [properSpan,Syn.subst_shift,Syn.shift_subst]
+ipra_subst properSpan [Syn.subst_shift, Syn.shift_subst]
 
 private theorem gaussian_proper_intro (A R N v : PTm n) (hv : Γ ⊢[PRAAx] length v ≐ N)
     (h : Γ ⊢[PRAAx] neg (GaussianSuperellipticSubspaceFromSpan.hasCoefficients A R N v)) :
@@ -176,10 +170,7 @@ def pointMembership (m e L P A R : PTm n) : Fm PTm n := .all
     hasCoefficients (Syn.shift A) (Syn.shift R) (count (Syn.shift m) (Syn.shift e) (Syn.shift L))
       (vector (Syn.shift m) (Syn.shift e) (Syn.shift L) (abscissa (Syn.shift P) (var 0)) (ordinate (Syn.shift P) (var 0))))
 
-@[simp] theorem subst_pointMembership {q : ℕ} (σ : Fin n → PTm q) (m e L P A R : PTm n) :
-    (pointMembership m e L P A R).subst σ = pointMembership (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L)
-      (Syn.subst σ P) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [pointMembership,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointMembership [Syn.subst_shift, Syn.shift_subst]
 
 theorem membership_at (m e L P A R i : PTm n) (h : Γ ⊢[PRAAx] pointMembership m e L P A R)
     (hi : Γ ⊢[PRAAx] lt i (length P)) : Γ ⊢[PRAAx] hasCoefficients A R (count m e L)

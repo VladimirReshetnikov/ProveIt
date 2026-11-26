@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerInputProperness
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original normalized Euler integrands at equal positive rational times
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrandTimeProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (nameF data sample evaluatorF fixedData timeData powerExponentF powerExponentData
   exponentF exponentData radius decayPoint decayF decayData)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -27,8 +26,6 @@ open ComplexLogarithmRemainder (scale oneCode)
 open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_at)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalDistanceOrder (distance_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

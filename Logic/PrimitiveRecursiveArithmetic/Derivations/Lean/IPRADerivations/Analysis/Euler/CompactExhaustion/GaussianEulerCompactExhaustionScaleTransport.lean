@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactExhaustionScaleTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerScalingKernel (scaleExpF scaleExpData)
 open GaussianEulerPowerScalingCell (scaleSample scaleBound)
 open GaussianEulerPowerScalingParameter (scaled)
@@ -21,8 +21,6 @@ open GaussianEulerCompactExhaustionScaled (source referenceF referenceData cutof
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

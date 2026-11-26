@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentInverseSampler
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code scale oneCode zeroCode im eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianArctangentClampedTarget (clamped clamped_le clampedSpec native_clamped zero_index)
@@ -26,9 +26,6 @@ open GaussianRationalHorner (canonical canonical_unique ofGaussian ofGaussian_re
 open GaussianRootAlgebra (equal equal_of_values re_one im_one re_scale im_scale)
 open RationalIntegerNormalization (positivePart)
 open RationalSupMetric (numeratorOf denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,18 +43,11 @@ def rawF (f : PR 2) : PR 2 := PTm.toPR (raw f (var 0) (var 1) : PTm 2)
 def signedTarget (f : PR 2) (p x : PTm n) : PTm n :=
   ofGaussian (code (ZT.ofNat zero) (numeratorOf (ordinate f p x))) (targetDenominator f p x)
 
-@[simp] theorem subst_ordinate {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (ordinate f p x) = ordinate f (Syn.subst σ p) (Syn.subst σ x) := by simp [ordinate]
-@[simp] theorem subst_targetNumerator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (targetNumerator f p x) = targetNumerator f (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [targetNumerator,numeratorOf,ZT.subst]
-@[simp] theorem subst_targetDenominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (targetDenominator f p x) = targetDenominator f (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [targetDenominator,denominatorOf]
-@[simp] theorem subst_mesh {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (mesh p) = mesh (Syn.subst σ p) := by simp [mesh]
-@[simp] theorem subst_clearing {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (clearing f p x) = clearing f (Syn.subst σ p) (Syn.subst σ x) := by simp [clearing]
+ipra_subst ordinate
+ipra_subst targetNumerator [numeratorOf, ZT.subst]
+ipra_subst targetDenominator [denominatorOf]
+ipra_subst mesh
+ipra_subst clearing
 
 private theorem subst_crossing {m : ℕ} (σ : Fin n → PTm m) (T M L : PTm n) :
     Syn.subst σ (GaussianArctangentGridSearch.crossing T M L) =
@@ -73,12 +63,8 @@ private theorem subst_clamped {m : ℕ} (σ : Fin n → PTm m) (Q D M L : PTm n)
   simp [clamped,GaussianArctangentRationalTarget.chosen,GaussianArctangentRationalTarget.target,
     subst_crossing,Products.fact]
 
-@[simp] theorem subst_index {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (index f p x) = index f (Syn.subst σ p) (Syn.subst σ x) := by
-  simp only [index,subst_clamped,subst_targetNumerator,subst_targetDenominator,subst_mesh,subst_clearing]
-@[simp] theorem subst_raw {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (raw f p x) = raw f (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [raw,RationalCubeMidpoint.fraction]
+ipra_subst index [subst_clamped, subst_targetNumerator, subst_targetDenominator, subst_mesh, subst_clearing]
+ipra_subst raw [RationalCubeMidpoint.fraction]
 @[simp] theorem subst_signedTarget {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
     Syn.subst σ (signedTarget f p x) = signedTarget f (Syn.subst σ p) (Syn.subst σ x) := by
   simp only [signedTarget,GaussianRationalHorner.subst_ofGaussian,ComplexLogarithmRemainder.subst_code,

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -26,10 +26,6 @@ open Products (fact)
 open RationalGaussianEmbedding (embed scalarZero)
 open RationalHarmonicInterval (interval horizon numerator)
 open RationalValueBounds (radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -116,8 +112,7 @@ theorem integer_log_distance_at (a b p A D : PTm n)
 /-- The upper endpoint (m(N+1)-1) in the grouped Euler product. -/
 def top (m N : PTm n) : PTm n := monus (m*(N+one)) one
 
-@[simp] theorem subst_top {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (top m N) = top (Syn.subst σ m) (Syn.subst σ N) := by simp [top]
+ipra_subst top
 
 theorem top_split (m N : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] top m N ≐ m*N+monus m one := by
@@ -137,7 +132,8 @@ theorem top_positive (m N : PTm n) (hm : Γ ⊢[PRAAx] le one m)
   le_trans (RationalAlgebra.positive_product hm hN) (top_lower m N hm)
 
 /-- The literal Gamma logarithm samples obey
-(lvertlog(m(N+1)-1)-log(mN)vertle 1/N) at every shared clock. -/
+(lvertlog(m(N+1)-1)-log(mN)
+vertle 1/N) at every shared clock. -/
 theorem log_distance_at (m N p : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     distanceBounded (ap2 logF p (top m N)) (ap2 logF p (m*N)) one N := by

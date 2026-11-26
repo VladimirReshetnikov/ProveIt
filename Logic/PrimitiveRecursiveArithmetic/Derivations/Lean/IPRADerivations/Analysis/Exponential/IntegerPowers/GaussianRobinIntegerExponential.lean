@@ -21,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRobinIntegerExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (canonical positive_product qmul)
 open GaussianRationalReciprocal (power)
 open GaussianRationalSyntheticDivision (qone)
@@ -30,10 +30,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRobinOddExponential (oddF constantF)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -52,22 +48,17 @@ def stepCost (E : PTm n) : PTm n := two+num 4*majorant E+two*unit E
 def multiplier (E : PTm n) : PTm n := majorant E+stepCost E+one
 def error (E i : PTm n) : PTm n := pw (multiplier E) (succ i)
 
-@[simp] theorem subst_baseData {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (baseData : PTm n) = baseData := by simp [baseData,GaussianRobinOddLogarithmName.inputs]
-@[simp] theorem subst_stageData {l : ℕ} (σ : Fin n → PTm l) (E i : PTm n) :
-    Syn.subst σ (stageData E i) = stageData (Syn.subst σ E) (Syn.subst σ i) := by simp [stageData]
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (E : PTm n) : Syn.subst σ (radius E) = radius (Syn.subst σ E) := by simp [radius]
-@[simp] theorem subst_expData {l : ℕ} (σ : Fin n → PTm l) (E i : PTm n) :
-    Syn.subst σ (expData E i) = expData (Syn.subst σ E) (Syn.subst σ i) := by simp [expData]
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (p E i : PTm n) :
-    Syn.subst σ (point p E i) = point (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ i) := by simp [point]
-@[simp] theorem subst_baseValue {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (baseValue : PTm n) = baseValue := by
-  simp [baseValue,GaussianRobinLogRangeReduction.quotient,GaussianRobinLogarithmParity.native]
-@[simp] theorem subst_powerValue {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (powerValue i) = powerValue (Syn.subst σ i) := by simp [powerValue]
-@[simp] theorem subst_majorant {l : ℕ} (σ : Fin n → PTm l) (E : PTm n) : Syn.subst σ (majorant E) = majorant (Syn.subst σ E) := by simp [majorant]
-@[simp] theorem subst_stepCost {l : ℕ} (σ : Fin n → PTm l) (E : PTm n) : Syn.subst σ (stepCost E) = stepCost (Syn.subst σ E) := by simp [stepCost]
-@[simp] theorem subst_multiplier {l : ℕ} (σ : Fin n → PTm l) (E : PTm n) : Syn.subst σ (multiplier E) = multiplier (Syn.subst σ E) := by simp [multiplier]
-@[simp] theorem subst_error {l : ℕ} (σ : Fin n → PTm l) (E i : PTm n) : Syn.subst σ (error E i) = error (Syn.subst σ E) (Syn.subst σ i) := by simp [error]
+ipra_subst baseData [GaussianRobinOddLogarithmName.inputs]
+ipra_subst stageData
+ipra_subst radius
+ipra_subst expData
+ipra_subst point
+ipra_subst baseValue [GaussianRobinLogRangeReduction.quotient, GaussianRobinLogarithmParity.native]
+ipra_subst powerValue
+ipra_subst majorant
+ipra_subst stepCost
+ipra_subst multiplier
+ipra_subst error
 
 theorem original_input : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input oddF (num 3) (baseData : PTm n) :=
   GaussianRobinOddExponential.odd_input _ _ (.andI (le_of_eq_add (d := two) (by ipra_ring))
@@ -111,8 +102,7 @@ theorem power_bound (E i : PTm n) (hi : Γ ⊢[PRAAx] le i E) : Γ ⊢[PRAAx] bo
 
 def productF : PR 2 := GaussianNameArithmetic.multiplyF expF expF
 def productData (E i : PTm n) : PTm n := GaussianNameArithmetic.multiplyData expF expF (expData E i) (expData E one)
-@[simp] theorem subst_productData {l : ℕ} (σ : Fin n → PTm l) (E i : PTm n) :
-    Syn.subst σ (productData E i) = productData (Syn.subst σ E) (Syn.subst σ i) := by simp [productData]
+ipra_subst productData
 
 theorem successor_exponential (E i : PTm n) (hi : Γ ⊢[PRAAx] le (succ i) E) : Γ ⊢[PRAAx]
     crossEquivalent productF expF (productData E i) (expData E (succ i)) := by
@@ -171,10 +161,9 @@ theorem error_positive (E i : PTm n) : Γ ⊢[PRAAx] le one (error E i) :=
 theorem error_growth (E i : PTm n) : Γ ⊢[PRAAx]
     le (majorant E*error E i+stepCost E) (error E (succ i)) := by
   have positive := error_positive (Γ := Γ) E i
-  have step := natEq (pw_succ (Γ := Γ) (multiplier E) (succ i))
   ipra_le 𝔞(stepCost E)*sl positive+𝔞(error E i) using
     unfold error
-    rw [step]
+    rw [natEq (pw_succ (Γ := Γ) (multiplier E) (succ i))]
     unfold multiplier
     ipra_simps
     ring
@@ -209,13 +198,10 @@ theorem prefix_error (p E i : PTm n) (hi : Γ ⊢[PRAAx] le i E) : Γ ⊢[PRAAx]
   have hall : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift E) ⟶
       distanceBounded (point (Syn.shift p) (Syn.shift E) (var 0)) (powerValue (var 0))
         (error (Syn.shift E) (var 0)) (unit (Syn.shift p))) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,subst_point,subst_powerValue,subst_error,
-        GaussianCoefficientNameBounds.subst_unit,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (error_zero p E)
-    · simp only [Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,subst_point,subst_powerValue,subst_error,
-        GaussianCoefficientNameBounds.subst_unit,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨trivial,trivial⟩) [subst_le, GaussianRationalMetric.subst_distanceBounded, subst_point,
+        subst_powerValue, subst_error, GaussianCoefficientNameBounds.subst_unit]
+    · exact .impI (error_zero p E)
+    · refine .impI ?_
       let IH : Fm PTm (n+1) := le (var 0) (Syn.shift E) ⟶
         distanceBounded (point (Syn.shift p) (Syn.shift E) (var 0)) (powerValue (var 0))
           (error (Syn.shift E) (var 0)) (unit (Syn.shift p))

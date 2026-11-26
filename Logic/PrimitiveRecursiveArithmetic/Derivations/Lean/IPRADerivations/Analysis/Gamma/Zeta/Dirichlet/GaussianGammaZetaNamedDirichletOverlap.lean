@@ -19,7 +19,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaNamedDirichletOverlap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode re)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -35,10 +35,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (ofGaussian_represents positive_product qzero)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qone)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Z" => GaussianGammaZetaDirichletCofinal.nameF

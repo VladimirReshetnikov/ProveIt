@@ -25,9 +25,7 @@ Not derived: the cancellation of those nonzero factors, and the normalization of
 
 namespace LeanProofs.IPRA.Geometry.Butterfly
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

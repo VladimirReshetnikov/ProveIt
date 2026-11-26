@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerUnitOuterLogRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedEulerUnitTime (encodedTime)
 open GaussianUnitIntervalInputDecoding (numerator denominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -25,9 +25,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianPositiveRationalLogarithm (fraction logF)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_refl)
 open GaussianGammaCanonicalExponent (constantF constant_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -40,12 +37,9 @@ def frozenData (f : PR 2) (k x : PTm n) : PTm n :=
 def cost (E : PTm n) : PTm n := two*E+two
 abbrev logarithmF : PR 2 := GaussianEulerUnitLogarithmicComposition.nameF
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x a b E : PTm n) :
-    (source f x a b E).subst σ = source f (Syn.subst σ x) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) := by simp [source]
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (frozenData f k x) = frozenData f (Syn.subst σ k) (Syn.subst σ x) := by simp [frozenData]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (E : PTm n) :
-    Syn.subst σ (cost E) = cost (Syn.subst σ E) := by simp [cost]
+ipra_subst source
+ipra_subst frozenData
+ipra_subst cost
 
 private theorem frozen_time_observations (f : PR 2) (r k x a b E : PTm n) (h : Γ ⊢[PRAAx] source f x a b E) :
     Γ ⊢[PRAAx] distanceBounded (ap2 GaussianEulerUnitLogarithmicMargin.timeF r (encodedTime f k x))

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingImageQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerScalingCell (source scaleSample physicalCell imageCell numerator denominator)
 open GaussianEulerPowerScalingCompactName (evaluatorF fixedData)
 open GaussianCompactRiemannName (sampleBody sampleData quadrature)
@@ -28,8 +28,6 @@ open GaussianRationalHorner (qmul)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,15 +42,7 @@ def imageBody : PTm 2 := Syn.subst (fields (var 0) (var 1)) body
 def imageSum (p k z B e f d h Q S E T a C N : PTm n) : PTm n :=
   sum imageBody N (payload p k z B e f d h Q S E T a C N)
 
-@[simp] theorem subst_payload {m : ℕ} (σ : Fin n → PTm m) (p k z B e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (payload p k z B e f d h Q S E T a C N) =
-      payload (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e) (Syn.subst σ f)
-        (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-        (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp only [payload,Foundations.BoundedSyntax.subst_pack]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst payload [Foundations.BoundedSyntax.subst_pack]
 
 theorem image_body_at (p k i z B e f d h Q S E T a C N : PTm n) :
     Γ ⊢[PRAAx] inst2 imageBody i (payload p k z B e f d h Q S E T a C N) ≐ imageCell p k i z B e f d h Q S E T a C N := by

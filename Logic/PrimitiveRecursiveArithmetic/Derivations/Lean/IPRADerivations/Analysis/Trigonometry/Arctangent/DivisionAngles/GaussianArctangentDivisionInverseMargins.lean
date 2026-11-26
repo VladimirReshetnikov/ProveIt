@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentDivisionInverseMargins
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BaselQuadrature (Qb)
 open ComplexLogarithmRemainder (eval_im_code eval_re_code scale zeroCode)
 open GaussianArctangentCayleyValues (imaginaryCode)
@@ -44,10 +44,6 @@ open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper radius radius_symmetric radius_congr radius_triangle radius_mono radius_diagonal upper_of_radius upper_of_order
   upper_triangle upper_mono upper_congr upper_order_right positive_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

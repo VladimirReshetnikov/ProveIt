@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianGammaEulerShiftLimit
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual native successor trajectory in the Gamma shift
@@ -15,14 +14,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaShiftTrajectory
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianGammaEulerHeadLower (translated)
 open GaussianGammaCanonicalExponent (source)
 open GaussianRootAlgebra (equal equal_of_code equal_trans equal_symm equal_refl equal_of_values)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,10 +26,8 @@ def data (z B : PTm n) : PTm n := pairT z B
 def trajectoryF : PR 2 := rec2 (fstT (var 0) : PTm 1) (shifted (var 1) (sndT (var 2)))
 def point (z B i : PTm n) : PTm n := ap2 trajectoryF i (data z B)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z B : PTm n) :
-    Syn.subst σ (data z B) = data (Syn.subst σ z) (Syn.subst σ B) := by simp [data]
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (z B i : PTm n) :
-    Syn.subst σ (point z B i) = point (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ i) := by simp [point]
+ipra_subst data
+ipra_subst point
 
 theorem point_zero (z B : PTm n) : Γ ⊢[PRAAx] point z B zero ≐ z := by
   have h : Γ ⊢[PRAAx] point z B zero ≐ fstT (data z B) := by
@@ -64,13 +58,10 @@ theorem point_native_step (z B i : PTm n) (ih : Γ ⊢[PRAAx] equal (point z B i
 theorem point_native (z B i : PTm n) : Γ ⊢[PRAAx] equal (point z B i) (translated z B i) := by
   have hall : Γ ⊢[PRAAx] .all (equal (point (Syn.shift z) (Syn.shift B) (var 0))
       (translated (Syn.shift z) (Syn.shift B) (var 0))) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [GaussianRootAlgebra.subst_equal,subst_point,GaussianGammaEulerHeadLower.subst_translated,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact equal_trans (equal_of_code (point_zero z B)) (equal_symm (GaussianGammaEulerHeadLower.translated_zero z B))
-    · simp only [GaussianRootAlgebra.subst_equal,subst_point,GaussianGammaEulerHeadLower.subst_translated,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact point_native_step _ _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [GaussianRootAlgebra.subst_equal, subst_point,
+        GaussianGammaEulerHeadLower.subst_translated]
+    · exact equal_trans (equal_of_code (point_zero z B)) (equal_symm (GaussianGammaEulerHeadLower.translated_zero z B))
+    · exact point_native_step _ _ _ Prf.hyp0
   simpa only [GaussianRootAlgebra.subst_equal,subst_point,GaussianGammaEulerHeadLower.subst_translated,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE i
 
@@ -95,13 +86,9 @@ theorem point_source (z R B i : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢
   have hs : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift z) (Syn.shift R) (Syn.shift B) := by
     simpa [Fm.shift,Syn.shift] using h.shift
   have hall : Γ ⊢[PRAAx] .all (source (point (Syn.shift z) (Syn.shift B) (var 0)) (Syn.shift R+var 0) (Syn.shift B)) := by
-    refine PRA.qfInd _ ⟨trivial,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [GaussianGammaCanonicalExponent.subst_source,subst_point,PTm.subst_add,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact point_source_zero z R B h
-    · simp only [GaussianGammaCanonicalExponent.subst_source,subst_point,PTm.subst_add,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact point_source_step _ _ _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,⟨trivial,trivial⟩⟩) [GaussianGammaCanonicalExponent.subst_source, subst_point]
+    · exact point_source_zero z R B h
+    · exact point_source_step _ _ _ _ Prf.hyp0
   simpa only [GaussianGammaCanonicalExponent.subst_source,subst_point,PTm.subst_add,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE i
 

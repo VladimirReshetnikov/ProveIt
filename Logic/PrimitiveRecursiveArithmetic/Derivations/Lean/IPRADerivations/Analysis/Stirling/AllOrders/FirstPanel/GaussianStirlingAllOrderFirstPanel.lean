@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderFirstPanel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderBernoulliMesh (homogeneous toZ_value)
 open GaussianStirlingAllOrderCenteredBernoulli
   (sample numerator denominator factor sample_canonical sample_value denominator_positive)
@@ -23,10 +23,6 @@ open GaussianRationalHorner (positive_product)
 open BernoulliBounds (bden bint toZ_zint)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

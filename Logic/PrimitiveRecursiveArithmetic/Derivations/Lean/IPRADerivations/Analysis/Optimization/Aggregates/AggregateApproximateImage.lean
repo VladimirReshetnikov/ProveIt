@@ -16,36 +16,27 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.AggregateApproximateImage
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open AggregateEquality (sample unit unit_positive nonempty nonempty_at regular regular_at equivalent equivalent_at)
 open AggregateOptimization (evaluate errorNumerator errorDenominator argument)
 open RationalHausdorff (pointRadius originalHit originalCover originalClose source originalCover_at originalHit_intro)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def mapInstance (f : PR 3) (d e A B x q r p t C D : PTm n) : Fm PTm n :=
   pointRadius q r d C D ⟶ pointRadius (evaluate f q p x) (evaluate f r t x) e
     (errorNumerator A B C D p t) (errorDenominator B D p t)
-@[simp] theorem subst_mapInstance {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (d e A B x q r p t C D : PTm n) :
-    (mapInstance f d e A B x q r p t C D).subst σ = mapInstance f (Syn.subst σ d) (Syn.subst σ e)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) (Syn.subst σ q) (Syn.subst σ r)
-      (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ C) (Syn.subst σ D) := by simp [mapInstance]
+ipra_subst mapInstance
 
 def mapContract (f : PR 3) (d e A B x : PTm n) : Fm PTm n :=
   .all (mapInstance f (Syn.shift d) (Syn.shift e) (Syn.shift A) (Syn.shift B) (Syn.shift x)
     (argument 0 (var 0)) (argument 1 (var 0)) (argument 2 (var 0))
     (argument 3 (var 0)) (argument 4 (var 0)) (argument 5 (var 0)))
-@[simp] theorem subst_mapContract {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (d e A B x : PTm n) :
-    (mapContract f d e A B x).subst σ = mapContract f (Syn.subst σ d) (Syn.subst σ e)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp only [mapContract,Fm.subst_all,subst_mapInstance,Syn.subst_shift,Syn.shift_subst,
-    AggregateOptimization.subst_argument,Syn.subst_var,Syn.up_zero,Syn.up_succ]
+ipra_subst mapContract [Fm.subst_all, subst_mapInstance, Syn.subst_shift, Syn.shift_subst,
+    AggregateOptimization.subst_argument, Syn.subst_var, Syn.up_zero, Syn.up_succ]
 
 theorem map_at (f : PR 3) (d e A B x q r p t C D : PTm n)
     (h : Γ ⊢[PRAAx] mapContract f d e A B x) (hqr : Γ ⊢[PRAAx] pointRadius q r d C D) :
@@ -76,8 +67,7 @@ theorem map_at (f : PR 3) (d e A B x q r p t C D : PTm n)
 def imageBody (f : PR 3) : PTm 2 := evaluate f (entry (fstT (var 1)) (var 0))
   (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 def image (f : PR 3) (T p x : PTm n) : PTm n := sequence (imageBody f) (length T) (pairT T (pairT p x))
-@[simp] theorem subst_image {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (T p x : PTm n) :
-    Syn.subst σ (image f T p x) = image f (Syn.subst σ T) (Syn.subst σ p) (Syn.subst σ x) := by simp [image]
+ipra_subst image
 
 theorem image_length (f : PR 3) (T p x : PTm n) : Γ ⊢[PRAAx] length (image f T p x) ≐ length T := sequence_length _ _ _
 theorem image_body_at (f : PR 3) (T p x i : PTm n) : Γ ⊢[PRAAx]
@@ -85,7 +75,7 @@ theorem image_body_at (f : PR 3) (T p x i : PTm n) : Γ ⊢[PRAAx]
   simp only [imageBody,inst2,AggregateOptimization.subst_evaluate,Foundations.MasterCertificate.subst_entry,
     subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   exact congrAp3 f (entry_congr (fst_pair _ _) (.eqRefl _))
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+    (snd_pair _ _).fstE (snd_pair _ _).sndE
 theorem image_lookup (f : PR 3) (T p x i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length T)) : Γ ⊢[PRAAx]
     entry (image f T p x) i ≐ evaluate f (entry T i) p x :=
   (sequence_decode (imageBody f) hi).eqTrans (image_body_at f T p x i)
@@ -168,10 +158,8 @@ def data (c x : PTm n) : PTm n := pairT c x
 def name (S : PR 2) (f : PR 3) (k c x : PTm n) : PTm n := image f (sample S (k+c) x) (k+c) x
 def nameBody (S : PR 2) (f : PR 3) : PTm 2 := name S f (var 0) (fstT (var 1)) (sndT (var 1))
 def nameF (S : PR 2) (f : PR 3) : PR 2 := PTm.toPR (nameBody S f)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (c x : PTm n) :
-    Syn.subst σ (data c x) = data (Syn.subst σ c) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_name {l : ℕ} (σ : Fin n → PTm l) (S : PR 2) (f : PR 3) (k c x : PTm n) :
-    Syn.subst σ (name S f k c x) = name S f (Syn.subst σ k) (Syn.subst σ c) (Syn.subst σ x) := by simp [name]
+ipra_subst data
+ipra_subst name
 
 theorem name_at (S : PR 2) (f : PR 3) (k c x : PTm n) : Γ ⊢[PRAAx]
     sample (nameF S f) k (data c x) ≐ name S f k c x := by
@@ -188,8 +176,7 @@ theorem name_length (S : PR 2) (f : PR 3) (k c x : PTm n) : Γ ⊢[PRAAx]
 theorem name_lookup (S : PR 2) (f : PR 3) (k c x i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length (sample S (k+c) x))) :
     Γ ⊢[PRAAx] entry (name S f k c x) i ≐ evaluate f (entry (sample S (k+c) x) i) (k+c) x := image_lookup _ _ _ _ _ hi
 
-theorem positive_product (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B) :
-    Γ ⊢[PRAAx] le one (A*B) := le_congr (one_mul one) (.eqRefl _) (le_mul_mono hA hB)
+alias positive_product := Common.one_le_mul
 theorem denominator_positive (B D p t : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] le one (errorDenominator B D p t) :=
   positive_product _ _ (positive_product _ _ (positive_product _ _ hB hD) (unit_positive p)) (unit_positive t)
@@ -315,8 +302,7 @@ theorem name_equivalent (S T : PR 2) (f : PR 3) (d e A B c x : PTm n)
     (name_at T f (var 0) c' y).eqSymm (name_equivalent_pair S T f D E a b c' y (var 0) b' clock neS neT eqv law)
 
 def clock (A B : PTm n) : PTm n := GaussianRootSchedule.binaryLength (A+B)
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (A B : PTm n) :
-    Syn.subst σ (clock A B) = clock (Syn.subst σ A) (Syn.subst σ B) := by simp [clock]
+ipra_subst clock
 
 theorem clock_budget (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] le (A+B) (B*unit (clock A B)) := by
   have power : Γ ⊢[PRAAx] le (A+B) (unit (clock A B)) := by
@@ -331,8 +317,7 @@ theorem computed_name (S : PR 2) (f : PR 3) (d e A B x : PTm n)
 
 def input (S : PR 2) (f : PR 3) (d e A B x : PTm n) : Fm PTm n :=
   le one B ⋏ (nonempty S x ⋏ (regular S d x ⋏ mapContract f d e A B x))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (S : PR 2) (f : PR 3) (d e A B x : PTm n) :
-    (input S f d e A B x).subst σ = input S f (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by simp [input]
+ipra_subst input
 
 theorem input_certificate (S : PR 2) (f : PR 3) (d e A B x : PTm n) (h : Γ ⊢[PRAAx] input S f d e A B x) : Γ ⊢[PRAAx]
     nonempty (nameF S f) (data (clock A B) x) ⋏ regular (nameF S f) e (data (clock A B) x) :=
@@ -347,8 +332,7 @@ theorem computed_equivalent (S T : PR 2) (f : PR 3) (d e A B x : PTm n)
 
 def computed (S : PR 2) (f : PR 3) (k A B x : PTm n) : PTm n := name S f k (clock A B) x
 def computedF (S : PR 2) (f : PR 3) : PR 4 := PTm.toPR (computed S f (var 0) (var 1) (var 2) (var 3))
-@[simp] theorem subst_computed {l : ℕ} (σ : Fin n → PTm l) (S : PR 2) (f : PR 3) (k A B x : PTm n) :
-    Syn.subst σ (computed S f k A B x) = computed S f (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by simp [computed]
+ipra_subst computed
 
 theorem computed_at (S : PR 2) (f : PR 3) (k A B x : PTm n) : Γ ⊢[PRAAx]
     PTm.app (computedF S f) ![k,A,B,x] ≐ computed S f k A B x := by

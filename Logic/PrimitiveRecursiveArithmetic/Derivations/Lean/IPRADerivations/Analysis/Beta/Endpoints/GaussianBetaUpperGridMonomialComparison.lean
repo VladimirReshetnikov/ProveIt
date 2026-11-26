@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaRowMonomialReference
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original beta/Euler upper grids transferred to the literal monomial grid
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaUpperGridMonomialComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaRowMonomialReference (scalarMajorant scaledMonomial comparisonNumerator comparisonDenominator)
 open GaussianCompactRiemannName (sampleBody sampleData sample_body_at quadrature field0 field1 field2 field3 field4 field5
   field0_at field1_at field2_at field3_at field4_at field5_at)
@@ -29,9 +28,6 @@ open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,8 +36,7 @@ def source (z R B a C E T N M : PTm n) : Fm PTm n :=
     (le (a+C) (E*T) ⋏ (le one N ⋏ le (two*(a+C)) (E*N))))))
 
 def majorantData (v q R N : PTm n) : PTm n := pairT v (pairT q (pairT R N))
-@[simp] theorem subst_majorantData {m : ℕ} (σ : Fin n → PTm m) (v q R N : PTm n) :
-    Syn.subst σ (majorantData v q R N) = majorantData (Syn.subst σ v) (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ N) := by simp [majorantData]
+ipra_subst majorantData
 
 def scalarBody : PTm 2 := scalarMajorant (field0 (var 1)) (fstT (field5 (var 1))) (fstT (sndT (field5 (var 1))))
   (fstT (sndT (sndT (field5 (var 1))))) (field2 (var 1)*field1 (var 1)+field3 (var 1)*var 0)
@@ -72,8 +67,7 @@ theorem scalar_body_at (i p v q M a C E R N : PTm n) : Γ ⊢[PRAAx]
 
 def scaledEval (r t x : PTm n) : PTm n := scaledMonomial r (fstT x) (fstT t) (sndT t) (sndT x)
 def scaledF : PR 3 := PTm.toPR (scaledEval (var 0) (var 1) (var 2))
-@[simp] theorem subst_scaledEval {m : ℕ} (σ : Fin n → PTm m) (r t x : PTm n) :
-    Syn.subst σ (scaledEval r t x) = scaledEval (Syn.subst σ r) (Syn.subst σ t) (Syn.subst σ x) := by simp [scaledEval]
+ipra_subst scaledEval
 
 theorem scaled_at (r t d N : PTm n) : Γ ⊢[PRAAx]
     ap3 scaledF r t (pairT d N) ≐ qmul (radiusPoint one N) (ap3 GaussianMonomialDecayQuadrature.evaluatorF r t d) := by
@@ -114,10 +108,7 @@ theorem scaled_quadrature (r M a C E d N : PTm n) : Γ ⊢[PRAAx]
       ((qmul_congr (GaussianRationalPowerAlgebra.qmul_commutative w c) (.eqRefl S)).eqTrans
         (GaussianReciprocalHorner.qmul_associative c w S)))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T N M : PTm n) :
-    (source z R B a C E T N M).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) (Syn.subst σ M) := by
-  simp [source,GaussianEulerUpperPowerCoefficients.source,ComplexLogarithmRemainder.bounded]
+ipra_subst source [GaussianEulerUpperPowerCoefficients.source, ComplexLogarithmRemainder.bounded]
 
 theorem grid_guards (i z R B a C E T N M : PTm n) (hi : Γ ⊢[PRAAx] lt i M)
     (h : Γ ⊢[PRAAx] source z R B a C E T N M) : Γ ⊢[PRAAx]

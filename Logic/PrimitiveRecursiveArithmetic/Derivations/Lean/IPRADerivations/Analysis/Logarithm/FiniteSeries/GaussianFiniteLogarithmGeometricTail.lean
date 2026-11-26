@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmGeometricTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul evaluate horner)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qsub_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub)
@@ -31,10 +31,6 @@ open GaussianFiniteLogarithmPolynomial (composition)
 open GaussianFiniteLogarithmCompositionTail (linearValue)
 open GaussianRationalPowerExpansion (partialSum)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -83,14 +79,10 @@ def highPart (d K h w : PTm n) : PTm n := qmul (horner (sourceBuffer d K) (query
   (power (query w) (succ h))
 def numerator (h : PTm n) : PTm n := num 11*pw (num 9) (succ h)
 def denominator (h : PTm n) : PTm n := pw (num 10) (succ h)
-@[simp] theorem subst_residual {l : ℕ} (σ : Fin n → PTm l) (d K w : PTm n) :
-    Syn.subst σ (residual d K w) = residual (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ w) := by simp [residual]
-@[simp] theorem subst_highPart {l : ℕ} (σ : Fin n → PTm l) (d K h w : PTm n) :
-    Syn.subst σ (highPart d K h w) = highPart (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ h) (Syn.subst σ w) := by simp [highPart]
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (h : PTm n) :
-    Syn.subst σ (numerator h) = numerator (Syn.subst σ h) := by simp [numerator]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (h : PTm n) :
-    Syn.subst σ (denominator h) = denominator (Syn.subst σ h) := by simp [denominator]
+ipra_subst residual
+ipra_subst highPart
+ipra_subst numerator
+ipra_subst denominator
 
 /-- Exact high-part identity of the original finite composition, derived
 from the SAME stored dilation and the actual finite conservation theorem. -/
@@ -129,36 +121,30 @@ def output (d K h w : PTm n) : PTm n := pairT (composition d K)
   (pairT (residual d K w) (pairT (highPart d K h w) (pairT (numerator h) (denominator h))))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (d K h w : PTm n) : PTm n := PTm.app outputF ![d,K,h,w]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d K h w : PTm n) :
-    Syn.subst σ (output d K h w) = output (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ h) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d K h w : PTm n) :
-    Syn.subst σ (run d K h w) = run (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ h) (Syn.subst σ w) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (d K h w : PTm n) : Γ ⊢[PRAAx] run d K h w ≐ output d K h w := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![d,K,h,w]
 theorem returned_composition (d K h w : PTm n) : Γ ⊢[PRAAx] fstT (run d K h w) ≐ composition d K :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_tail (d K h w : PTm n) : Γ ⊢[PRAAx] sndT (run d K h w) ≐
     pairT (residual d K w) (pairT (highPart d K h w) (pairT (numerator h) (denominator h))) :=
-  (congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE
 theorem returned_residual (d K h w : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d K h w)) ≐ residual d K w :=
-  (congrFst (returned_tail _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _).fstE
 theorem returned_rest (d K h w : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d K h w)) ≐
     pairT (highPart d K h w) (pairT (numerator h) (denominator h)) :=
-  (congrSnd (returned_tail _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _).sndE
 theorem returned_high (d K h w : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d K h w))) ≐ highPart d K h w :=
-  (congrFst (returned_rest _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_rest _ _ _ _).fstE
 theorem returned_pair (d K h w : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d K h w))) ≐
     pairT (numerator h) (denominator h) :=
-  (congrSnd (returned_rest _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_rest _ _ _ _).sndE
 theorem returned_numerator (d K h w : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run d K h w)))) ≐ numerator h :=
-  (congrFst (returned_pair _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_pair _ _ _ _).fstE
 theorem returned_denominator (d K h w : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run d K h w)))) ≐ denominator h :=
-  (congrSnd (returned_pair _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_pair _ _ _ _).sndE
 theorem returned_identity (d K h w : PTm n) (h1 : Γ ⊢[PRAAx] le one h)
     (hd : Γ ⊢[PRAAx] le h d) (hK : Γ ⊢[PRAAx] le h K) : Γ ⊢[PRAAx]
     fstT (sndT (run d K h w)) ≐ fstT (sndT (sndT (run d K h w))) :=

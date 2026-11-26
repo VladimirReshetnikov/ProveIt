@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionPanelSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionCompactName (source rowQuery)
 open GaussianEulerUnitSubstitutionLatticeGeometry (disk)
 open GaussianEulerUnitSubstitutionLatticeRate (meshCoefficient latticeCoefficient queryCoefficient)
@@ -23,9 +23,6 @@ open GaussianEulerUnitSubstitutionLatticeSchedule (minimumCount minimumChart min
 open GaussianEulerUnitDecayInput (clock)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,27 +43,13 @@ def lattice (s z R B a C E T : PTm n) : PTm n :=
 def density (s z R B a C E T : PTm n) : PTm n :=
   GaussianEulerUnitSubstitutionDensity.density (clock (chartIndex s R C E T) E T) (densityCount s R C E T) z B a C E
 
-@[simp] theorem subst_densityIndex {m : ℕ} (σ : Fin n → PTm m) (s R C E T : PTm n) :
-    Syn.subst σ (densityIndex s R C E T) = densityIndex (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ T) := by simp [densityIndex]
-@[simp] theorem subst_densityCount {m : ℕ} (σ : Fin n → PTm m) (s R C E T : PTm n) :
-    Syn.subst σ (densityCount s R C E T) = densityCount (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ T) := by simp [densityCount]
-@[simp] theorem subst_chartIndex {m : ℕ} (σ : Fin n → PTm m) (s R C E T : PTm n) :
-    Syn.subst σ (chartIndex s R C E T) = chartIndex (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ T) := by simp [chartIndex,minimumChart]
-@[simp] theorem subst_latticeDenominator {m : ℕ} (σ : Fin n → PTm m) (s R C E T : PTm n) :
-    Syn.subst σ (latticeDenominator s R C E T) = latticeDenominator (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ T) := by simp [latticeDenominator,minimumLattice]
-@[simp] theorem subst_left {m : ℕ} (σ : Fin n → PTm m) (s R a C E T : PTm n) :
-    Syn.subst σ (left s R a C E T) = left (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ T) := by simp [left]
-@[simp] theorem subst_width {m : ℕ} (σ : Fin n → PTm m) (s R a C E T : PTm n) :
-    Syn.subst σ (width s R a C E T) = width (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ T) := by simp [width]
-@[simp] theorem subst_panelData {m : ℕ} (σ : Fin n → PTm m) (s z R B a C E T : PTm n) :
-    Syn.subst σ (panelData s z R B a C E T) = panelData (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [panelData]
+ipra_subst densityIndex
+ipra_subst densityCount
+ipra_subst chartIndex [minimumChart]
+ipra_subst latticeDenominator [minimumLattice]
+ipra_subst left
+ipra_subst width
+ipra_subst panelData
 
 theorem density_index_later (s R C E T : PTm n) : Γ ⊢[PRAAx] le s (densityIndex s R C E T) :=
   le_add_right _ _

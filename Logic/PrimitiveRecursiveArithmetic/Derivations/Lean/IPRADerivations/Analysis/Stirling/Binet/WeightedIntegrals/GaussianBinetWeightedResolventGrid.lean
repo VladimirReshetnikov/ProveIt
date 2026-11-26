@@ -18,7 +18,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedResolventGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianBinetReciprocalRows (tagPoint)
 open GaussianBinetStirlingUnitDifferenceAlgebra (coefficient)
@@ -36,9 +36,6 @@ open GaussianRationalReciprocal (reciprocal reciprocal_identity)
 open GaussianRationalSyntheticDivision (qone qsub_congr qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rows" => GaussianBinetReciprocalMean.rowBody
@@ -51,14 +48,9 @@ def rowBody : PTm 2 := qmul (qsub (fraction one two) (fraction (var 0) (fstT (va
 
 def value (A B D sign M : PTm n) : PTm n := qmul (weight M) (sum rowBody M (gridData A B D sign M))
 
-@[simp] theorem subst_gridData {k : ℕ} (σ : Fin n → PTm k) (A B D sign M : PTm n) :
-    Syn.subst σ (gridData A B D sign M) =
-      gridData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ M) := by
-  simp [gridData]
+ipra_subst gridData
 
-@[simp] theorem subst_value {k : ℕ} (σ : Fin n → PTm k) (A B D sign M : PTm n) :
-    Syn.subst σ (value A B D sign M) =
-      value (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ M) := by simp [value]
+ipra_subst value
 
 private theorem base_congr {A A' B D sign : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A') :
     Γ ⊢[PRAAx] argument A B D sign ≐ argument A' B D sign := by

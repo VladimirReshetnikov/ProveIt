@@ -17,16 +17,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaIntegralCutoffs
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open GaussianRationalHorner (positive_product)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -90,9 +86,7 @@ def output (p A R : PTm n) : PTm n := pairT (etaDen p A R)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (p A R : PTm n) : PTm n := PTm.app outputF ![p,A,R]
 
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p A R : PTm n) :
-    Syn.subst σ (output p A R) = output (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [output, etaDen, top, lipschitz, cells, meshCost, height, tailCoefficient]
+ipra_subst output [etaDen, top, lipschitz, cells, meshCost, height, tailCoefficient]
 
 theorem program_at (p A R : PTm n) : Γ ⊢[PRAAx] run p A R ≐ output p A R := by
   simpa [run, outputF] using

@@ -18,7 +18,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGammaBackwardShift (source minusOneF minusOneData negativeOne reciprocalF reciprocalData
   minus_one_at reciprocal_input nameF data)
 open GaussianNamedRightHalfPlane (numerator denominator radius threshold)
@@ -40,9 +40,6 @@ open GaussianNamedMultiplyRate (sampleBound)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -65,14 +62,9 @@ def freezeClock (f : PR 2) (s x A a : PTm n) : PTm n :=
   (exponent (GaussianNameReciprocal.modulus a) t+anchor a)+
     (threshold A+succ (GaussianGammaHalfPlaneInputContinuity.modulus t (radius f x) (two*A)))
 
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x A : PTm n) :
-    Syn.subst σ (frozenData f k x A) = frozenData f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [frozenData,frozenReciprocal,nativeW,nativeZ,nativeDen,sub]
+ipra_subst frozenData [frozenReciprocal, nativeW, nativeZ, nativeDen, sub]
 
-@[simp] theorem subst_freezeClock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (s x A a : PTm n) :
-    Syn.subst σ (freezeClock f s x A a) =
-      freezeClock f (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ a) := by
-  simp [freezeClock,accuracy,threshold,GaussianNamedRightHalfPlane.precision]
+ipra_subst freezeClock [accuracy, threshold, GaussianNamedRightHalfPlane.precision]
 
 theorem minus_one_fraction (f : PR 2) (k x : PTm n) : Γ ⊢[PRAAx]
     ap2 (minusOneF f) k (minusOneData x) ≐ ofGaussian (nativeW f k x) (nativeDen f k x) := by

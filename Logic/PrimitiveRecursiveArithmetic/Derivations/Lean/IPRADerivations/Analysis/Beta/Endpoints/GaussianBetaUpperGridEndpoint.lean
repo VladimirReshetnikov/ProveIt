@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaUpperGridEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded)
@@ -28,9 +28,6 @@ open GaussianBetaUpperEndpointName (nameF data endpointConstant)
 open GaussianBetaUpperEndpointInverse (source)
 open GaussianGammaEulerReciprocalInverse (eulerF eulerData)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,17 +37,11 @@ def factor (z B b N : PTm n) : PTm n :=
   GaussianNameArithmetic.multiplyModulus powerF constantF (powerData z B (b*N) b) (endpointConstant z B b N)+two
 def precision (t z B b N : PTm n) : PTm n := GaussianFastValueCut.exponent (factor z B b N) t
 def numerator (p q z B b N : PTm n) : PTm n := factor z B b N*unit q+unit p
-@[simp] theorem subst_gridClock {l : ℕ} (σ : Fin n → PTm l) (p z B b N : PTm n) :
-    Syn.subst σ (gridClock p z B b N) = gridClock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ b) (Syn.subst σ N) := by simp [gridClock]
-@[simp] theorem subst_scaledEndpoint {l : ℕ} (σ : Fin n → PTm l) (p z B b N : PTm n) :
-    Syn.subst σ (scaledEndpoint p z B b N) = scaledEndpoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [scaledEndpoint,sample,GaussianEulerPowerIncrement.point,GaussianTimeWeightedPolynomialIncrement.value,GaussianBetaPrimitiveLinearStep.argument]
-@[simp] theorem subst_factor {l : ℕ} (σ : Fin n → PTm l) (z B b N : PTm n) :
-    Syn.subst σ (factor z B b N) = factor (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ b) (Syn.subst σ N) := by simp [factor]
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (t z B b N : PTm n) :
-    Syn.subst σ (precision t z B b N) = precision (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ b) (Syn.subst σ N) := by simp [precision]
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (p q z B b N : PTm n) :
-    Syn.subst σ (numerator p q z B b N) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ b) (Syn.subst σ N) := by simp [numerator]
+ipra_subst gridClock
+ipra_subst scaledEndpoint [sample, GaussianEulerPowerIncrement.point, GaussianTimeWeightedPolynomialIncrement.value, GaussianBetaPrimitiveLinearStep.argument]
+ipra_subst factor
+ipra_subst precision
+ipra_subst numerator
 
 theorem original_grid_endpoint_raw_product (p z B b N : PTm n) : Γ ⊢[PRAAx]
     scaledEndpoint p z B b N ≐ qmul (ap2 powerF (gridClock p z B b N) (powerData z B (b*N) b)) (endpointConstant z B b N) :=

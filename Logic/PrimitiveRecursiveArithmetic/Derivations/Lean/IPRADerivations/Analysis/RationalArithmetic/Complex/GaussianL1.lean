@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.GaussianRootAlgebra
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.SumOrder
 
 /-!
 # The actual Gaussian coefficient L1 norm
@@ -16,17 +15,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianL1
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im add mul scale zeroCode oneCode normSq bounded)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (equal equal_re equal_im re_add im_add re_mul im_mul re_neg im_neg re_scale im_scale re_zero im_zero re_one im_one)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs subst_zabs zabs_sq zabs_congr zabs_tri zabs_neg)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

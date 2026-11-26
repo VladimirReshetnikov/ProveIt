@@ -22,10 +22,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.TriangleDensity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Turan (common_sum)
-open Syn
-open scoped Fm
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,8 +37,7 @@ theorem triangle_count_bound (A : Fin k → Fin k → ZT n)
       (ZT.natLit k * ZT.sumFin fun u => ZT.sumFin fun v => ZT.sumFin fun w => A v w * (A u v * A u w)) := by
   have hs1 : ∀ v w, ZT.toZ Γ (A v w) = ZT.toZ Γ (A w v) := fun v w => ZT.toZ_eq (hs v w)
   have hb1 : ∀ v w, ZT.toZ Γ (A v w) * ZT.toZ Γ (A v w) = ZT.toZ Γ (A v w) := fun v w => by
-    have e := ZT.toZ_eq (hb v w)
-    simpa only [ZT.toZ_mul] using e
+    simpa only [ZT.toZ_mul] using ZT.toZ_eq (hb v w)
   have L := common_sum (fun u v => ZT.toZ Γ (A u v)) (fun _ : Fin k => (1 : Groth (Q Γ))) hs1 hb1
     (fun _ => _root_.mul_one _) (fun _ _ => _root_.mul_one _)
   beta_reduce at L

@@ -19,7 +19,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryHyperbolicProductRule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -41,10 +41,6 @@ open GaussianSineProductImaginaryFirstOrderBound (axis_disk product_bound produc
 open GaussianSineProductImaginaryHyperbolicProductRuleAlgebra (residualBound)
 open GaussianSineProductImaginaryLogDerivative (axisNumerator rationalReal product derivative)
 open GaussianSineProductImaginaryCofinalDerivative (sineData cutoff)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -101,26 +97,17 @@ private def cost (A B C R x : PTm n) : PTm n :=
     Syn.subst σ (hd A B R x) = hd (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ x) := by
   simp [GaussianSineProductImaginaryHyperbolic.productData]
 
-@[simp] theorem subst_linearData {m : ℕ} (σ : Fin n → PTm m) (A B R : PTm n) :
-    Syn.subst σ (linearData A B R) = linearData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) := by simp [linearData]
+ipra_subst linearData
 
-@[simp] theorem subst_sumData {m : ℕ} (σ : Fin n → PTm m) (A B R : PTm n) :
-    Syn.subst σ (sumData A B R) = sumData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) := by simp [sumData]
+ipra_subst sumData
 
-@[simp] theorem subst_derivativeData {m : ℕ} (σ : Fin n → PTm m) (A B R x : PTm n) :
-    Syn.subst σ (derivativeData A B R x) = derivativeData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [derivativeData]
+ipra_subst derivativeData
 
-@[simp] theorem subst_incrementData {m : ℕ} (σ : Fin n → PTm m) (A B C R x : PTm n) :
-    Syn.subst σ (incrementData A B C R x) =
-      incrementData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ x) := by simp [incrementData]
+ipra_subst incrementData
 
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (A B C R x : PTm n) :
-    Syn.subst σ (weightedData A B C R x) =
-      weightedData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ x) := by simp [weightedData]
+ipra_subst weightedData
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (R x : PTm n) :
-    Syn.subst σ (coefficient R x) = coefficient (Syn.subst σ R) (Syn.subst σ x) := by simp [coefficient]
+ipra_subst coefficient
 
 @[simp] private theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (A B C R x : PTm n) :
     Syn.subst σ (cost A B C R x) = cost (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ x) := by

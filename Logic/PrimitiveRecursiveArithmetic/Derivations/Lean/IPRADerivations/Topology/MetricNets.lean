@@ -24,13 +24,9 @@ for natural terms (distances and precisions as terms, denominators cleared):
 
 namespace LeanProofs.IPRA.Topology.MetricNets
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right meet_le_left
   meet_le_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -137,15 +133,13 @@ theorem meet_shift {a b a' b' D : PTm n} (ha : Γ ⊢[PRAAx] le a (D + a')) (hb 
     Γ ⊢[PRAAx] le (meet a b) (D + meet a' b') := by
   refine .orE (le_total a' b') ?_ ?_
   · have h : (le a' b' :: Γ) ⊢[PRAAx] le a' b' := Prf.hyp0
-    have e := natEq (meet_left h)
     have hm : (le a' b' :: Γ) ⊢[PRAAx] le (meet a b) a := meet_le_left a b
     have ha' := ha.wk (ψ := le a' b')
-    ipra_le sl hm + sl ha' with e
+    ipra_le sl hm + sl ha' with natEq (meet_left h)
   · have h : (le b' a' :: Γ) ⊢[PRAAx] le b' a' := Prf.hyp0
-    have e := natEq (meet_right h)
     have hm : (le b' a' :: Γ) ⊢[PRAAx] le (meet a b) b := meet_le_right a b
     have hb' := hb.wk (ψ := le b' a')
-    ipra_le sl hm + sl hb' with e
+    ipra_le sl hm + sl hb' with natEq (meet_right h)
 
 /-- The minimum of the first components (`a(x) = min_p d(x, p)`). -/
 def minX : List (PTm n × PTm n) → PTm n

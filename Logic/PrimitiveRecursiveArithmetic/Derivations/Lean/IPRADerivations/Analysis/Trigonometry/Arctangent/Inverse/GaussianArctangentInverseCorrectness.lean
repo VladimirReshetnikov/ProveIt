@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentInverseCorrectness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentInverseForward (input)
 open GaussianArctangentInverseSampler (ordinate index mesh index_le mesh_positive)
 open GaussianArctangentNamedInverse (data precision precision_later forward_sample_later forwardSample modulus name_represents)
@@ -29,9 +29,6 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open RationalValueBounds (radius radius_triangle radius_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,9 +37,7 @@ def roundTripF (f : PR 2) : PR 2 := GaussianArctangentNamedExtension.nameF (Gaus
 def imaginarySamples (f : PR 2) (x : PTm n) : Fm PTm n :=
   .all (fstT (ap2 f (var 0) (Syn.shift x)) ≐ RationalGaussianEmbedding.scalarZero)
 
-@[simp] theorem subst_imaginarySamples {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    (imaginarySamples f x).subst σ = imaginarySamples f (Syn.subst σ x) := by
-  simp [imaginarySamples,Syn.subst_shift,Syn.shift_subst]
+ipra_subst imaginarySamples [Syn.subst_shift, Syn.shift_subst]
 
 theorem imaginary_sample_at (f : PR 2) (p x : PTm n) (h : Γ ⊢[PRAAx] imaginarySamples f x) :
     Γ ⊢[PRAAx] fstT (ap2 f p x) ≐ RationalGaussianEmbedding.scalarZero := by

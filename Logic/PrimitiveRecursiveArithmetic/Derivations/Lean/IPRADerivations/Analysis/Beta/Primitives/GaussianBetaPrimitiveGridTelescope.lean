@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveGridTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul positive_product ofGaussian ofGaussian_represents ofGaussian_canonical canonical_unique represents_congr)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
@@ -29,18 +29,12 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (sampleBody sampleData sample_body_at quadrature)
 open GaussianBetaKernelGridComparison (sampleDataBeta row)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def endpoint (p z B a b N : PTm n) : PTm n :=
   GaussianBetaPrimitiveLinearStep.sample (GaussianEulerCompactProductComparison.clock p z B a b) z B a b N
-@[simp] theorem subst_endpoint {m : ℕ} (σ : Fin n → PTm m) (p z B a b N : PTm n) :
-    Syn.subst σ (endpoint p z B a b N) = endpoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [endpoint,GaussianBetaPrimitiveLinearStep.sample,GaussianBetaPrimitiveLinearStep.argument,
-    GaussianEulerPowerIncrement.point,GaussianTimeWeightedPolynomialIncrement.value]
+ipra_subst endpoint [GaussianBetaPrimitiveLinearStep.sample, GaussianBetaPrimitiveLinearStep.argument, GaussianEulerPowerIncrement.point, GaussianTimeWeightedPolynomialIncrement.value]
 def endpointTerm (p t x : PTm n) : PTm n := endpoint p (fstT (fstT x)) (sndT (fstT x)) (fstT t) (sndT t) (sndT x)
 def endpointF : PR 3 := PTm.toPR (endpointTerm (var 0) (var 1) (var 2))
 
@@ -79,16 +73,11 @@ def cellNumerator (p C E M K Z : PTm n) : PTm n := K*C*C*unit p+LeanProofs.IPRA.
 def cellDenominator (p E M : PTm n) : PTm n := (E*M)*(E*M)*unit p
 def globalDenominator (p E M : PTm n) : PTm n := E*E*M*unit p
 
-@[simp] theorem subst_gridEndpoint {m : ℕ} (σ : Fin n → PTm m) (i p z B a C E M N : PTm n) :
-    Syn.subst σ (gridEndpoint i p z B a C E M N) = gridEndpoint (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ M) (Syn.subst σ N) := by simp [gridEndpoint]
-@[simp] theorem subst_gridRow {m : ℕ} (σ : Fin n → PTm m) (i p z B a C E M N : PTm n) :
-    Syn.subst σ (gridRow i p z B a C E M N) = gridRow (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ M) (Syn.subst σ N) := by simp [gridRow]
-@[simp] theorem subst_step {m : ℕ} (σ : Fin n → PTm m) (C E M N : PTm n) :
-    Syn.subst σ (step C E M N) = step (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ M) (Syn.subst σ N) := by simp [step]
-@[simp] theorem subst_cellNumerator {m : ℕ} (σ : Fin n → PTm m) (p C E M K Z : PTm n) :
-    Syn.subst σ (cellNumerator p C E M K Z) = cellNumerator (Syn.subst σ p) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ M) (Syn.subst σ K) (Syn.subst σ Z) := by simp [cellNumerator]
-@[simp] theorem subst_cellDenominator {m : ℕ} (σ : Fin n → PTm m) (p E M : PTm n) :
-    Syn.subst σ (cellDenominator p E M) = cellDenominator (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ M) := by simp [cellDenominator]
+ipra_subst gridEndpoint
+ipra_subst gridRow
+ipra_subst step
+ipra_subst cellNumerator
+ipra_subst cellDenominator
 
 theorem endpoint_grid_at (i p z B a C E M N : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody endpointF) i (sampleData p M a C E (sampleDataBeta z B N)) ≐ gridEndpoint i p z B a C E M N :=
@@ -118,11 +107,9 @@ private def forwardLaw (f : PTm 2) (x k : PTm n) : Fm PTm n :=
 private theorem forward_telescope (f : PTm 2) (x k : PTm n) : Γ ⊢[PRAAx]
     sum (forwardDifference f) k x ≐ qsub (inst2 f k x) (inst2 f zero x) := by
   have all : Γ ⊢[PRAAx] .all (forwardLaw f (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_forwardLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
-    · simp only [subst_forwardLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine (GaussianRationalFiniteSum.sum_succ (forwardDifference f) _ _).eqTrans ?_
+    ipra_qfind [subst_forwardLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
+    · refine (GaussianRationalFiniteSum.sum_succ (forwardDifference f) _ _).eqTrans ?_
       rw [forward_at]
       exact (qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans
         ((GaussianReciprocalHorner.qadd_commutative _ _).eqTrans
@@ -170,9 +157,7 @@ def cellBound (p z B a C E M N K Z : PTm n) : Fm PTm n := .all
       (gridEndpoint (var 0) (Syn.shift p) (Syn.shift z) (Syn.shift B) (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift M) (Syn.shift N)))
     (qmul (gridRow (var 0) (Syn.shift p) (Syn.shift z) (Syn.shift B) (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift M) (Syn.shift N)) (step (Syn.shift C) (Syn.shift E) (Syn.shift M) (Syn.shift N)))
     (cellNumerator (Syn.shift p) (Syn.shift C) (Syn.shift E) (Syn.shift M) (Syn.shift K) (Syn.shift Z)) (cellDenominator (Syn.shift p) (Syn.shift E) (Syn.shift M)))
-@[simp] theorem subst_cellBound {m : ℕ} (σ : Fin n → PTm m) (p z B a C E M N K Z : PTm n) :
-    (cellBound p z B a C E M N K Z).subst σ = cellBound (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ M) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ Z) := by
-  simp [cellBound,Syn.subst_shift,Syn.shift_subst]
+ipra_subst cellBound [Syn.subst_shift, Syn.shift_subst]
 
 theorem cell_at (i p z B a C E M N K Z : PTm n) (h : Γ ⊢[PRAAx] cellBound p z B a C E M N K Z)
     (hi : Γ ⊢[PRAAx] lt i M) : Γ ⊢[PRAAx]
@@ -214,9 +199,7 @@ theorem aggregate (p z B a C E M N K Z : PTm n) (hE : Γ ⊢[PRAAx] le one E) (h
   exact distance_radius_mono _ _ _ _ _ _ hd finalDen
     (le_of_eq_add (d := zero) (by dsimp only [cellDenominator,globalDenominator]; ipra_ring)) actual
 
-@[simp] theorem subst_quadratureScaled {m : ℕ} (σ : Fin n → PTm m) (p z B a C E M N : PTm n) :
-    Syn.subst σ (quadratureScaled p z B a C E M N) = quadratureScaled (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ M) (Syn.subst σ N) := by
-  simp [quadratureScaled]
+ipra_subst quadratureScaled
 
 /-- Actual original endpoint difference, scaled original quadrature,
 and unchanged original quadrature, returned by one actual program. -/

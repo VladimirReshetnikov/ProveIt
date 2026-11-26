@@ -1,6 +1,4 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial theorem
@@ -17,13 +15,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BinomialTheorem
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self' pascal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -62,13 +56,9 @@ private abbrev mulF (f : PTm 2) : Fm PTm 2 :=
   ap2 (sumF (sndT (var 1) * f)) (var 0) (var 1) ≐ sndT (var 1) * ap2 (sumF f) (var 0) (var 1)
 
 private theorem sum_mul_snd₀ (f : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] mulF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, subst_sndT, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact (sum_zero _ _).eqTrans ((mul_zero _).eqSymm.eqTrans (congrMul (.eqRefl _) (sum_zero _ _).eqSymm))
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap2, subst_sndT, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e : inst2 (sndT (var 1) * f) (var 0 : PTm 2) (var 1) = sndT (var 1) * inst2 f (var 0) (var 1) := by
+  ipra_ind [subst_ap2, subst_sndT]
+  · exact (sum_zero _ _).eqTrans ((mul_zero _).eqSymm.eqTrans (congrMul (.eqRefl _) (sum_zero _ _).eqSymm))
+  · have e : inst2 (sndT (var 1) * f) (var 0 : PTm 2) (var 1) = sndT (var 1) * inst2 f (var 0) (var 1) := by
       simp [inst2]
     refine (sum_succ' _ (var 0) (var 1)).eqTrans ?_
     rw [e]
@@ -88,19 +78,15 @@ abbrev binomThmFormula : Fm PTm 2 :=
   ap2 (sumF tBody) (succ (var 0)) (pairT (var 0) (var 1)) ≐ pw (succ (var 1)) (var 0)
 
 theorem binomial_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] binomThmFormula := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' tBody zero _).eqTrans ?_
+  ipra_ind [subst_ap2, subst_pairT]
+  · refine (sum_succ' tBody zero _).eqTrans ?_
     rw [inst2_t]
     refine withEq (sum_zero (Γ := []) tBody (pairT zero (var 0))) fun e₁ =>
       withEq (binom_zero' (Γ := []) (fstT (pairT (zero : PTm 1) (var 0)))) fun e₂ =>
       withEq (pw_zero (Γ := []) (sndT (pairT (zero : PTm 1) (var 0)))) fun e₃ =>
       withEq (pw_zero (Γ := []) (succ (var 0) : PTm 1)) fun e₄ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂, e₃, e₄]; ring
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    -- `X = ⟨m, a⟩`, `X' = ⟨m + 1, a⟩`.
+  · -- `X = ⟨m, a⟩`, `X' = ⟨m + 1, a⟩`.
     generalize hΓ : ([binomThmFormula] : List (Fm PTm 2)) = Γ₀
     have ih : Γ₀ ⊢[PRAAx] binomThmFormula := hΓ ▸ Prf.hyp0
     have fX := fst_pair (Γ := Γ₀) (var 0 : PTm 2) (var 1)

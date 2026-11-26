@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineFrozenPiTerm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianBinetArctangentResolvent (polynomial)
 open GaussianBinetKernelImaginaryRatioRows (timeNumerator timeDenominator time_denominator_positive time_value)
@@ -35,9 +35,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (reciprocal subst_reciprocal)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qadd_commutative qmul_associative)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

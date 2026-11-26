@@ -15,7 +15,7 @@ set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerReciprocalSlopeCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -32,10 +32,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qsub_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "slopeF" => GaussianLogGammaEulerReciprocalSlope.nameF
@@ -54,16 +50,13 @@ def canonicalData (A B D neg : PTm n) : PTm n := data A B D neg (radius A B)
 private def body : PTm 2 := readAt (var 0) (fstT (var 1)) (sndT (var 1))
 def nameF : PR 2 := PTm.toPR body
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (R p : PTm n) :
-    Syn.subst σ (cutoff R p) = cutoff (Syn.subst σ R) (Syn.subst σ p) := by simp [cutoff, one]
+ipra_subst cutoff [one]
 
 @[simp] private theorem subst_readAt {m : ℕ} (σ : Fin n → PTm m) (p z R : PTm n) :
     Syn.subst σ (readAt p z R) = readAt (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) := by
   simp [readAt, sample, one]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D neg R : PTm n) :
-    Syn.subst σ (data A B D neg R) = data (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ R) := by simp [data]
+ipra_subst data
 
 theorem sample_at (p A B D neg R : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data A B D neg R) ≐ finiteRead (succ p) A B D neg (cutoff R p) := by

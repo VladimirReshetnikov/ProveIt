@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingGammaFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingParameter (nameF data source named_half_plane)
 open GaussianEulerNamedPowerScalingParameterFrozen (frozenPoint original_frozen_source original_frozen_rate)
 open GaussianEulerPowerScalingParameter (scaled)
@@ -32,9 +32,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,15 +50,9 @@ def frozenClock (f : PR 2) (s z R B A x E T : PTm n) : PTm n :=
       gammaData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
   simp [gammaData,GaussianGammaReciprocalInverse.gammaHeight]
 
-@[simp] theorem subst_frozenClock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (s z R B A x E T : PTm n) :
-    Syn.subst σ (frozenClock f s z R B A x E T) = frozenClock f (Syn.subst σ s) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [frozenClock,commonRadius]
+ipra_subst frozenClock [commonRadius]
 
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k z R B A x E T : PTm n) :
-    Syn.subst σ (frozenData f k z R B A x E T) = frozenData f (Syn.subst σ k) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [frozenData,scaled,numerator,denominator]
+ipra_subst frozenData [scaled, numerator, denominator]
 
 private theorem enlarge (z R S B A C : PTm n)
     (h : Γ ⊢[PRAAx] GaussianGammaHalfPlaneInputContinuity.source z R B A)

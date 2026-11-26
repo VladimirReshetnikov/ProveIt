@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitEndpointDecay
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayPoint)
 open GaussianRationalHorner (qzero qadd positive_product)
 open GaussianRationalSyntheticDivision (qone qzero_add qadd_sub_cancel)
@@ -29,9 +29,6 @@ open GaussianEulerDecayMesh (observation observation_rescale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaIntegralCutoffs (height top etaDen eta_den_positive)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

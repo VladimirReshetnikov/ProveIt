@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerUnitKernelFrozenRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedEulerUnitKernel (source nameF data clock lipschitz encodedData source_at encoded_source)
 open GaussianUnitIntervalInputDecoding (numerator denominator fraction_recode)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -21,9 +21,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

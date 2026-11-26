@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialMonicNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero)
 open RationalPolynomialMultiplicationMatrixGaussianEmbedding (matrix matrix_entry_embedding)
 open RationalPolynomialDeterminantTransport (matrixEmbedded)
@@ -31,9 +31,6 @@ open GaussianRationalFiberGrouping (abscissa)
 open RationalCurvePointsGaussianEmbedding (points points_length abscissa_at)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 local notation "embedRows" => RationalRowSpanGaussianEmbedding.matrix
 
@@ -48,15 +45,9 @@ def degree (F G m a c : PTm n) : PTm n :=
 def input (F G m a c L : PTm n) : Fm PTm n := GaussianPolynomialMonicNorm.input F G m a c ⋏
   (RationalCurvePointsGaussianEmbedding.sourceInput F G m L ⋏ flag F G m a c ≐ one)
 
-@[simp] theorem subst_norm {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (norm F G m a c) = norm (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [norm]
-@[simp] theorem subst_flag {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (flag F G m a c) = flag (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [flag]
-@[simp] theorem subst_degree {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (degree F G m a c) = degree (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [degree]
+ipra_subst norm
+ipra_subst flag
+ipra_subst degree
 
 theorem matrix_embedded (F G m a c : PTm n) (h : Γ ⊢[PRAAx] GaussianPolynomialMonicNorm.input F G m a c) :
     Γ ⊢[PRAAx] matrixEmbedded (matrix F G m a c)
@@ -152,18 +143,16 @@ def output (F G m a c : PTm n) : PTm n := pairT (norm F G m a c) (pairT (flag F 
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (F G m a c : PTm n) : PTm n := PTm.app outputF ![F,G,m,a,c]
 
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (output F G m a c) = output (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [output]
+ipra_subst output
 
 theorem program_at (F G m a c : PTm n) : Γ ⊢[PRAAx] run F G m a c ≐ output F G m a c := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![F,G,m,a,c]
 theorem returned_norm (F G m a c : PTm n) : Γ ⊢[PRAAx] fstT (run F G m a c) ≐ norm F G m a c :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_flag (F G m a c : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run F G m a c)) ≐ flag F G m a c :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.fstE
 theorem returned_degree (F G m a c : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run F G m a c)) ≐ degree F G m a c :=
-  (congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE.sndE
 theorem returned_zero_bound (F G m a c L : PTm n)
     (hn : Γ ⊢[PRAAx] GaussianPolynomialMonicNorm.input F G m a c)
     (hp : Γ ⊢[PRAAx] RationalCurvePointsGaussianEmbedding.sourceInput F G m L)

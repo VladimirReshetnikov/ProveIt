@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupBlockChord
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianBohrMollerupChords (base translated base_source translated_source centered_chord scale_cross scaled_regular)
 open GaussianBohrMollerupPresentation (Presentation argument scaledF scaledData observe_value laws)
@@ -28,10 +28,6 @@ open GaussianNamedRealOrderLinear (fractionData fractional_regular scaled_fracti
 open GaussianNaturalScaleProductName (productF productData)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalNaturalScale (naturalPoint)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,13 +36,9 @@ def complement (a b B : PTm n) : PTm n := monus (B*b) a
 def source (a b B : PTm n) : Fm PTm n :=
   GaussianStirlingGammaLogarithm.source a b ⋏ (le one B ⋏ le a (B*b))
 
-@[simp] theorem subst_top {m : ℕ} (σ : Fin n → PTm m) (b B j : PTm n) :
-    Syn.subst σ (top b B j) = top (Syn.subst σ b) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp [top,base]
-@[simp] theorem subst_complement {m : ℕ} (σ : Fin n → PTm m) (a b B : PTm n) :
-    Syn.subst σ (complement a b B) = complement (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ B) := by simp [complement]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b B : PTm n) :
-    (source a b B).subst σ = source (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ B) := by simp [source]
+ipra_subst top [base]
+ipra_subst complement
+ipra_subst source
 
 theorem top_source (b B j : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] GaussianStirlingGammaLogarithm.source (top b B j) b :=

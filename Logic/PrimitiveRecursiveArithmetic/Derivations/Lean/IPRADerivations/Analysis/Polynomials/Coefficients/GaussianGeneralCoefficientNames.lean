@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusArithmetic
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # General Gaussian coefficient names and their actual apart tail
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
@@ -26,9 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq squaredTolerance d
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra (sub re_sub im_sub re_scale im_scale)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq normSq_eval scale)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,16 +37,11 @@ def apart (a : PR 3) (k h x : PTm n) : Fm PTm n := rationalLE (squaredTolerance 
 def tailApart (a : PR 3) (k h s x : PTm n) : Fm PTm n := rationalLE
   (squaredTolerance one (lambdaDenominator h)) (qnormSq (ap3 a k s x))
 
-@[simp] theorem subst_generalCN {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x : PTm n) :
-    (generalCN a N x).subst σ = generalCN a (Syn.subst σ N) (Syn.subst σ x) := by simp [generalCN]
-@[simp] theorem subst_referencePrecision {m : ℕ} (σ : Fin n → PTm m) (h : PTm n) :
-    Syn.subst σ (referencePrecision h) = referencePrecision (Syn.subst σ h) := by simp [referencePrecision]
-@[simp] theorem subst_lambdaDenominator {m : ℕ} (σ : Fin n → PTm m) (h : PTm n) :
-    Syn.subst σ (lambdaDenominator h) = lambdaDenominator (Syn.subst σ h) := by simp [lambdaDenominator]
-@[simp] theorem subst_apart {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (k h x : PTm n) :
-    (apart a k h x).subst σ = apart a (Syn.subst σ k) (Syn.subst σ h) (Syn.subst σ x) := by simp [apart]
-@[simp] theorem subst_tailApart {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (k h s x : PTm n) :
-    (tailApart a k h s x).subst σ = tailApart a (Syn.subst σ k) (Syn.subst σ h) (Syn.subst σ s) (Syn.subst σ x) := by simp [tailApart]
+ipra_subst generalCN
+ipra_subst referencePrecision
+ipra_subst lambdaDenominator
+ipra_subst apart
+ipra_subst tailApart
 
 theorem lambda_denominator_positive (h : PTm n) : Γ ⊢[PRAAx] le one (lambdaDenominator h) := unit_positive _
 theorem lambda_unit (h : PTm n) : Γ ⊢[PRAAx] lambdaDenominator h ≐ two*unit h :=
@@ -150,19 +141,13 @@ def output (a : PR 3) (k h s x : PTm n) : PTm n := pairT (ap3 a k (referencePrec
   (pairT (ap3 a k s x) (lambdaDenominator h))
 def outputF (a : PR 3) : PR 4 := PTm.toPR (output a (var 0) (var 1) (var 2) (var 3))
 def run (a : PR 3) (k h s x : PTm n) : PTm n := PTm.app (outputF a) ![k,h,s,x]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (k h s x : PTm n) :
-    Syn.subst σ (output a k h s x) = output a (Syn.subst σ k) (Syn.subst σ h) (Syn.subst σ s) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (k h s x : PTm n) :
-    Syn.subst σ (run a k h s x) = run a (Syn.subst σ k) (Syn.subst σ h) (Syn.subst σ s) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (a : PR 3) (k h s x : PTm n) : Γ ⊢[PRAAx] run a k h s x ≐ output a k h s x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output a (var 0) (var 1) (var 2) (var 3) : PTm 4) ![k,h,s,x]
 theorem returned_reference (a : PR 3) (k h s x : PTm n) : Γ ⊢[PRAAx]
     fstT (run a k h s x) ≐ ap3 a k (referencePrecision h) x :=
-  (congrFst (program_at a k h s x)).eqTrans (fst_pair _ _)
+  (program_at a k h s x).fstE
 theorem returned_tail (a : PR 3) (k h s x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run a k h s x)) ≐ ap3 a k s x :=
   ((congrFst (congrSnd (program_at a k h s x))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)

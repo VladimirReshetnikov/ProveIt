@@ -13,7 +13,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialForwardDifferenceGridEvenError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -29,9 +29,6 @@ open GaussianRationalLowerBounds (lower)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalNaturalScale (natScale)
 open GaussianRationalSyntheticDivision (qone)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

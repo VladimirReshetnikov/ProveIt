@@ -17,15 +17,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalOriginalSpanRank
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalRowElimination (shape)
 open GaussianRationalRankNullityCriterion (rank rank_bound finalMatrix)
 open GaussianRationalRowSpan (membership witness)
 open GaussianSuperellipticSubspaceFromSpan (hasCoefficients pointMembership)
 open GaussianSuperellipticSubspaceWitness (curveInput basisCount points)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,15 +36,9 @@ def fullSpan (A R N : PTm n) : Fm PTm n := .all
 def properSpan (A R N : PTm n) : Fm PTm n := .ex
   ((length (var 0) ≐ Syn.shift N) ⋏ neg (hasCoefficients (Syn.shift A) (Syn.shift R) (Syn.shift N) (var 0)))
 
-@[simp] theorem subst_weights {k : ℕ} (σ : Fin n → PTm k) (A R N v : PTm n) :
-    Syn.subst σ (weights A R N v) = weights (Syn.subst σ A) (Syn.subst σ R)
-      (Syn.subst σ N) (Syn.subst σ v) := by simp [weights]
-@[simp] theorem subst_fullSpan {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    (fullSpan A R N).subst σ = fullSpan (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [fullSpan,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_properSpan {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    (properSpan A R N).subst σ = properSpan (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [properSpan,Syn.subst_shift,Syn.shift_subst]
+ipra_subst weights
+ipra_subst fullSpan [Syn.subst_shift, Syn.shift_subst]
+ipra_subst properSpan [Syn.subst_shift, Syn.shift_subst]
 
 theorem weights_length (A R N v : PTm n) : Γ ⊢[PRAAx] length (weights A R N v) ≐ R :=
   GaussianRationalRowSpanRewind.rewind_length A R N N (GaussianRationalFullReducedSpan.weights A R N v) N

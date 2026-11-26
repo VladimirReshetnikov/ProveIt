@@ -1,8 +1,6 @@
 import IPRADerivations.Geometry.PathShoelace
 import IPRADerivations.Combinatorics.CatalanPowers
-import IPRADerivations.Core.SumSplit
 import IPRADerivations.Geometry.ConwayAlgebra
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The half-turn law, concatenation and centrally symmetric paths (`lem:Jlaws`, `lem:Jcentral`)
@@ -39,11 +37,7 @@ cancellation of the numeral `2` is `Geometry/ConwayAlgebra.cancel_two_nat`.
 
 namespace LeanProofs.IPRA.Geometry.PathHalfTurn
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 open LeanProofs.IPRA.Geometry.PathShoelace (mB inst2_mB jp jm rvB rvB_at
   J_reverse_plus J_reverse_minus)
 open LeanProofs.IPRA.Combinatorics.CatalanPowers (eqB allEq_elim shift_pair shift_succ shift_zero
@@ -82,8 +76,8 @@ theorem hL_at (i s q p : PTm k) :
     show Syn.subst ![i, pairT s (pairT q p)] (hL z z') = _
     simp [hL]
   rw [e]
-  exact congrAdd (congrInst2 z' (.eqRefl _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
-    (congrInst2 z (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  exact congrAdd (congrInst2 z' (.eqRefl _) (snd_pair _ _).fstE)
+    (congrInst2 z (.eqRefl _) (snd_pair _ _).sndE)
 
 /-- The bit of `∀ i < B, z′(i, q) + z(i, p) = s`. -/
 abbrev halfBit (B s q p : PTm k) : PTm k := allB (eqB (hL z z') hR) B (pairT s (pairT q p))

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveExponentialSeparation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic (positive)
 open GaussianRationalHorner (qadd canonical)
 open GaussianRationalSyntheticDivision (qone qadd_congr qsub_congr)
@@ -23,10 +23,6 @@ open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody inverseFactorial scalar_sum_zero scalar_sum_succ)
 open GaussianRationalExponentialTail (scalarPrefix tail prefix_split)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

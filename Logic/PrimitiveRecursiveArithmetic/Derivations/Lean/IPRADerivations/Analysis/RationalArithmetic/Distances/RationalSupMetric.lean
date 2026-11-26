@@ -1,7 +1,6 @@
 import IPRADerivations.Foundations.FiniteHausdorff
 import IPRADerivations.Foundations.GapDecision
 import IPRADerivations.Probability.TowerCommonDen
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Coded rational vectors: the actual sup metric and common scale
@@ -24,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalSupMetric
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
@@ -32,10 +31,6 @@ open LeanProofs.IPRA.Foundations.FiniteQueryDemand
   (finiteMaximum finiteMaximum_at subst_finiteMaximum)
 open LeanProofs.IPRA.Foundations.FiniteHausdorff (maximum_bound sum_mono)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_tri zabs_neg subst_zabs)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,12 +39,8 @@ def coordinate (x i : PTm n) : ZT n := ⟨fstT (entry x i), sndT (entry x i)⟩
 def coordinateDifference (x y i : PTm n) : ZT n := coordinate x i - coordinate y i
 def coordinateDistance (x y i : PTm n) : PTm n := zabs (coordinateDifference x y i)
 
-@[simp] theorem subst_coordinate {k : ℕ} (σ : Fin n → PTm k) (x i : PTm n) :
-    (coordinate x i).subst σ = coordinate (Syn.subst σ x) (Syn.subst σ i) := by
-  simp [coordinate, ZT.subst]
-@[simp] theorem subst_coordinateDifference {k : ℕ} (σ : Fin n → PTm k) (x y i : PTm n) :
-    (coordinateDifference x y i).subst σ = coordinateDifference (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ i) := by
-  simp only [coordinateDifference, ZT.subst_sub, subst_coordinate]
+ipra_subst coordinate [ZT.subst]
+ipra_subst coordinateDifference
 @[simp] theorem subst_coordinateDistance {k : ℕ} (σ : Fin n → PTm k) (x y i : PTm n) :
     Syn.subst σ (coordinateDistance x y i) = coordinateDistance (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ i) := by
   simp only [coordinateDistance, subst_zabs, subst_coordinateDifference]
@@ -57,9 +48,7 @@ def coordinateDistance (x y i : PTm n) : PTm n := zabs (coordinateDifference x y
 def distanceBody : PTm 2 := coordinateDistance (fstT (var 1)) (sndT (var 1)) (var 0)
 def supDistance (x y d : PTm n) : PTm n := finiteMaximum distanceBody d (pairT x y)
 
-@[simp] theorem subst_supDistance {k : ℕ} (σ : Fin n → PTm k) (x y d : PTm n) :
-    Syn.subst σ (supDistance x y d) = supDistance (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ d) := by
-  simp only [supDistance, subst_finiteMaximum, subst_pairT]
+ipra_subst supDistance
 
 theorem distanceBody_at (x y i : PTm n) :
     Γ ⊢[PRAAx] inst2 distanceBody i (pairT x y) ≐ coordinateDistance x y i := by
@@ -143,9 +132,8 @@ private theorem value_zero_of_abs (u : ZT n) (h : Γ ⊢[PRAAx] zabs u ≐ zero)
     (le_congr (.eqRefl _) h (le_add_right _ _)) (zero_le _)
   have right : Γ ⊢[PRAAx] monus u.neg u.pos ≐ zero := le_antisymm
     (le_congr (.eqRefl _) h (le_add_left _ _)) (zero_le _)
-  have same := natEq (le_antisymm left right)
   simp only [ZT.toZ]
-  rw [same]
+  rw [natEq (le_antisymm left right)]
   ring
 
 /-- Zero distance identifies geometric coordinates, rather than their
@@ -239,16 +227,10 @@ def denominatorOf (c : PTm n) : PTm n := succ (sndT c)
 def rationalNumerator (v i : PTm n) : ZT n := numeratorOf (entry v i)
 def rationalDenominator (v i : PTm n) : PTm n := denominatorOf (entry v i)
 
-@[simp] theorem subst_numeratorOf {k : ℕ} (σ : Fin n → PTm k) (c : PTm n) :
-    (numeratorOf c).subst σ = numeratorOf (Syn.subst σ c) := by simp [numeratorOf, ZT.subst]
-@[simp] theorem subst_denominatorOf {k : ℕ} (σ : Fin n → PTm k) (c : PTm n) :
-    Syn.subst σ (denominatorOf c) = denominatorOf (Syn.subst σ c) := by simp [denominatorOf]
-@[simp] theorem subst_rationalNumerator {k : ℕ} (σ : Fin n → PTm k) (v i : PTm n) :
-    (rationalNumerator v i).subst σ = rationalNumerator (Syn.subst σ v) (Syn.subst σ i) := by
-  simp only [rationalNumerator, subst_numeratorOf, MasterCertificate.subst_entry]
-@[simp] theorem subst_rationalDenominator {k : ℕ} (σ : Fin n → PTm k) (v i : PTm n) :
-    Syn.subst σ (rationalDenominator v i) = rationalDenominator (Syn.subst σ v) (Syn.subst σ i) := by
-  simp only [rationalDenominator, subst_denominatorOf, MasterCertificate.subst_entry]
+ipra_subst numeratorOf [ZT.subst]
+ipra_subst denominatorOf
+ipra_subst rationalNumerator
+ipra_subst rationalDenominator
 
 /-- Every signed numerator and every positive denominator can be encoded. -/
 def rationalCode (a : ZT n) (b : PTm n) : PTm n := pairT (pairT a.pos a.neg) (pred b)
@@ -256,10 +238,9 @@ def rationalCode (a : ZT n) (b : PTm n) : PTm n := pairT (pairT a.pos a.neg) (pr
 theorem rationalCode_numerator (a : ZT n) (b : PTm n) :
     Γ ⊢[PRAAx] ZT.eq (numeratorOf (rationalCode a b)) a := by
   apply ZT.derive
-  have hp := natEq ((congrFst (fst_pair (Γ := Γ) (pairT a.pos a.neg) (pred b))).eqTrans (fst_pair a.pos a.neg))
   have hn := natEq ((congrSnd (fst_pair (Γ := Γ) (pairT a.pos a.neg) (pred b))).eqTrans (snd_pair a.pos a.neg))
   simp only [numeratorOf, rationalCode, ZT.toZ]
-  rw [hp, hn]
+  rw [natEq ((congrFst (fst_pair (Γ := Γ) (pairT a.pos a.neg) (pred b))).eqTrans (fst_pair a.pos a.neg)), hn]
 
 theorem rationalCode_denominator (a : ZT n) (b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] denominatorOf (rationalCode a b) ≐ b :=
@@ -270,11 +251,8 @@ def rowDenominator (v d : PTm n) : PTm n := ap2 (prodF denominatorBody) d v
 def denominatorRows : PTm 2 := rowDenominator (entry (sndT (var 1)) (var 0)) (fstT (var 1))
 def commonDenominator (P d : PTm n) : PTm n := ap2 (prodF denominatorRows) (length P) (pairT d P)
 
-@[simp] theorem subst_rowDenominator {k : ℕ} (σ : Fin n → PTm k) (v d : PTm n) :
-    Syn.subst σ (rowDenominator v d) = rowDenominator (Syn.subst σ v) (Syn.subst σ d) := by simp [rowDenominator]
-@[simp] theorem subst_commonDenominator {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (commonDenominator P d) = commonDenominator (Syn.subst σ P) (Syn.subst σ d) := by
-  simp only [commonDenominator, subst_ap2, SequenceComposition.subst_length, subst_pairT]
+ipra_subst rowDenominator
+ipra_subst commonDenominator
 
 theorem denominatorBody_at (v i : PTm n) : inst2 denominatorBody i v = rationalDenominator v i := by
   simp [denominatorBody, inst2]
@@ -329,9 +307,7 @@ def cofactor (P d j i : PTm n) : PTm n :=
   quo (commonDenominator P d) (rowDenominator (entry P j) d) *
     quo (rowDenominator (entry P j) d) (rationalDenominator (entry P j) i)
 
-@[simp] theorem subst_cofactor {k : ℕ} (σ : Fin n → PTm k) (P d j i : PTm n) :
-    Syn.subst σ (cofactor P d j i) = cofactor (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ j) (Syn.subst σ i) := by
-  simp [cofactor]
+ipra_subst cofactor
 
 theorem cofactor_clears (P d j i : PTm n)
     (hj : Γ ⊢[PRAAx] lt j (length P)) (hi : Γ ⊢[PRAAx] lt i d) :
@@ -350,26 +326,19 @@ def normalizedCoordinateCode (P d j i : PTm n) : PTm n :=
   pairT ((rationalNumerator (entry P j) i).pos * cofactor P d j i)
     ((rationalNumerator (entry P j) i).neg * cofactor P d j i)
 
-@[simp] theorem subst_normalizedCoordinateCode {k : ℕ} (σ : Fin n → PTm k) (P d j i : PTm n) :
-    Syn.subst σ (normalizedCoordinateCode P d j i) = normalizedCoordinateCode
-      (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ j) (Syn.subst σ i) := by
-  simp [normalizedCoordinateCode, rationalNumerator, numeratorOf]
+ipra_subst normalizedCoordinateCode [rationalNumerator, numeratorOf]
 
 def normalizedCoordinateBody : PTm 2 := normalizedCoordinateCode (fstT (var 1))
   (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def normalizedVector (P d j : PTm n) : PTm n :=
   sequence normalizedCoordinateBody d (pairT P (pairT d j))
 
-@[simp] theorem subst_normalizedVector {k : ℕ} (σ : Fin n → PTm k) (P d j : PTm n) :
-    Syn.subst σ (normalizedVector P d j) = normalizedVector (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ j) := by
-  simp [normalizedVector]
+ipra_subst normalizedVector
 
 def normalizedVectorBody : PTm 2 := normalizedVector (fstT (var 1)) (sndT (var 1)) (var 0)
 def normalizedList (P d : PTm n) : PTm n := sequence normalizedVectorBody (length P) (pairT P d)
 
-@[simp] theorem subst_normalizedList {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (normalizedList P d) = normalizedList (Syn.subst σ P) (Syn.subst σ d) := by
-  simp [normalizedList]
+ipra_subst normalizedList
 
 theorem normalizedCoordinateBody_at (P d j i : PTm n) :
     Γ ⊢[PRAAx] inst2 normalizedCoordinateBody i (pairT P (pairT d j)) ≐ normalizedCoordinateCode P d j i := by
@@ -379,8 +348,8 @@ theorem normalizedCoordinateBody_at (P d j i : PTm n) :
     (fun k => by
       fin_cases k
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _)
   simpa [inst2, normalizedCoordinateBody] using h
 
@@ -421,10 +390,10 @@ theorem normalized_coordinate_value (P d j i : PTm n)
   have code := normalized_lookup P d j i hj hi
   have hp : Γ ⊢[PRAAx] fstT (entry (entry (normalizedList P d) j) i) ≐
       (rationalNumerator (entry P j) i).pos * cofactor P d j i :=
-    (congrFst code).eqTrans (fst_pair _ _)
+    code.fstE
   have hn : Γ ⊢[PRAAx] sndT (entry (entry (normalizedList P d) j) i) ≐
       (rationalNumerator (entry P j) i).neg * cofactor P d j i :=
-    (congrSnd code).eqTrans (snd_pair _ _)
+    code.sndE
   rw [ZT.toZ_mul, ZT.toZ_ofNat]
   simp only [coordinate, ZT.toZ]
   rw [natEq hp, natEq hn]
@@ -479,8 +448,7 @@ def commonDenominatorF : PR 2 := PTm.toPR (commonDenominator (var 0) (var 1))
 def normalizeF : PR 2 := PTm.toPR (normalizedList (var 0) (var 1))
 def metricDataF : PR 2 := PTm.toPR (metricData (var 0) (var 1))
 
-@[simp] theorem subst_metricData {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (metricData P d) = metricData (Syn.subst σ P) (Syn.subst σ d) := by simp [metricData]
+ipra_subst metricData
 
 theorem commonDenominator_at (P d : PTm n) :
     Γ ⊢[PRAAx] ap2 commonDenominatorF P d ≐ commonDenominator P d := by

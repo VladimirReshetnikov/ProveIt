@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedImaginaryProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyValues (imaginaryPoint imaginaryCode)
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
@@ -23,8 +23,6 @@ open GaussianNamedSineTaylor (imaginaryF imaginary_at imaginary_regular imaginar
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianCoefficientNameBounds (unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

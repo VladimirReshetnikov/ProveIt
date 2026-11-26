@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialForwardDifferenceGridError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open GaussianNamedDifference (difference_distance)
@@ -23,9 +23,6 @@ open GaussianPolynomialForwardDifferenceGrid (adjacent adjacent_lookup grid grid
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalMetric (distanceBounded boundedSyntax bounded_formula qsub)
 open GaussianRationalTranslationStages (remaining remaining_step)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

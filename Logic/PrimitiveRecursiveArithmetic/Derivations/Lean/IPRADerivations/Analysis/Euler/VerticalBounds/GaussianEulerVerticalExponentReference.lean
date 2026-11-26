@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalExponentReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalNativeProjection (argument original_coefficient_projection)
 open GaussianGammaRealValues (projection axisF axis_sample_at axis_regular projection_distance)
 open GaussianEulerIntegrandName (coefficient decayPoint)
@@ -24,9 +24,6 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianRationalHorner (qadd qmul)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_to_diagonal)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,12 +35,9 @@ def productData (z R B a b : PTm n) : PTm n := GaussianBoundedConstantProductNam
 def data (z R B a b : PTm n) : PTm n := GaussianNameArithmetic.addData (productData z R B a b) (decayPoint a b)
 def clock (p R : PTm n) : PTm n := GaussianBoundedConstantProductName.clock (GaussianFastValueCut.exponent two p) (R+one)
 def source (z R B a b : PTm n) : Fm PTm n := GaussianEulerUpperPowerCoefficients.source z R B ⋏ GaussianPositiveRationalLogarithm.source a b
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    Syn.subst σ (productData z R B a b) = productData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [productData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    Syn.subst σ (data z R B a b) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a b : PTm n) :
-    (source z R B a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
+ipra_subst productData
+ipra_subst data
+ipra_subst source
 
 theorem product_input (z R B a b : PTm n) (h : Γ ⊢[PRAAx] source z R B a b) : Γ ⊢[PRAAx]
     GaussianBoundedConstantProductName.input logarithmF (R+one) (coefficient z B) (GaussianPositiveRationalLogarithm.data a b) :=

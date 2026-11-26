@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadCorrectionContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCorrectionShift (total)
 open GaussianBarnesCanonicalHead (source)
 open GaussianBarnesCanonicalHeadCorrectionDerivative (halfSquare slope total_formula)
@@ -30,9 +30,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRadiusExponentialLipschitzRate (factor)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

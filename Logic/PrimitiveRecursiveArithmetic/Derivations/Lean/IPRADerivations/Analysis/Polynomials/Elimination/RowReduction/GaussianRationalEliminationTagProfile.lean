@@ -16,13 +16,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalEliminationTagProfile
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalEliminationLoop (matrix history history_length history_previous history_tag history_skip history_pivot)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,19 +30,16 @@ theorem last_tag_bound (A R N c : PTm n) : Γ ⊢[PRAAx] le (entry (history A R 
       (.andE₁ (GaussianRationalPivotSearch.selected_correct _ _ _ _ _ Prf.hyp0))
 
 def boundLaw (A R N j c : PTm n) : Fm PTm n := lt j c ⟶ le (entry (history A R N c) j) R
-@[simp] theorem subst_boundLaw {k : ℕ} (σ : Fin n → PTm k) (A R N j c : PTm n) :
-    (boundLaw A R N j c).subst σ = boundLaw (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ j) (Syn.subst σ c) := by simp [boundLaw]
+ipra_subst boundLaw
 theorem bound_step (A R N j c : PTm n) (hOld : Γ ⊢[PRAAx] boundLaw A R N j c) : Γ ⊢[PRAAx] boundLaw A R N j (succ c) := by
   refine .impI (.orE (lt_succ_cases Prf.hyp0) ?_ ?_)
   · exact le_congr (history_previous _ _ _ _ _ Prf.hyp0).eqSymm (.eqRefl _) (.impE hOld.wk.wk Prf.hyp0)
   · exact le_congr (entry_congr (.eqRefl _) Prf.hyp0).eqSymm (.eqRefl _) (last_tag_bound _ _ _ _)
 theorem tag_bound (A R N c j : PTm n) (hj : Γ ⊢[PRAAx] lt j c) : Γ ⊢[PRAAx] le (entry (history A R N c) j) R := by
   have all : Γ ⊢[PRAAx] .all (boundLaw (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift j) (var 0)) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [subst_boundLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact bound_step _ _ _ _ _ Prf.hyp0
+    ipra_qfind (⟨lt_QF _ _,le_QF _ _⟩) [subst_boundLaw]
+    · exact .impI (lt_zero_absurd _ Prf.hyp0)
+    · exact bound_step _ _ _ _ _ Prf.hyp0
   have queried : Γ ⊢[PRAAx] boundLaw A R N j c := by
     simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE c
   exact .impE queried hj
@@ -62,8 +56,7 @@ theorem fresh_tag (A R N c j : PTm n) (hj : Γ ⊢[PRAAx] lt j c)
 
 def distinctLaw (A R N j k c : PTm n) : Fm PTm n := lt j k ⟶ lt k c ⟶
   neg (entry (history A R N c) k ≐ zero) ⟶ neg (entry (history A R N c) j ≐ entry (history A R N c) k)
-@[simp] theorem subst_distinctLaw {l : ℕ} (σ : Fin n → PTm l) (A R N j k c : PTm n) :
-    (distinctLaw A R N j k c).subst σ = distinctLaw (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ j) (Syn.subst σ k) (Syn.subst σ c) := by simp [distinctLaw]
+ipra_subst distinctLaw
 
 theorem distinct_step (A R N j k c : PTm n) (hOld : Γ ⊢[PRAAx] distinctLaw A R N j k c) : Γ ⊢[PRAAx] distinctLaw A R N j k (succ c) := by
   refine .impI (.impI (.impI ?_))
@@ -91,11 +84,9 @@ theorem earlier_distinct (A R N c j k : PTm n) (hjk : Γ ⊢[PRAAx] lt j k) (hkc
     (hNZ : Γ ⊢[PRAAx] neg (entry (history A R N c) k ≐ zero)) : Γ ⊢[PRAAx]
     neg (entry (history A R N c) j ≐ entry (history A R N c) k) := by
   have all : Γ ⊢[PRAAx] .all (distinctLaw (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift j) (Syn.shift k) (var 0)) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _,lt_QF _ _,⟨trivial,trivial⟩,trivial,trivial⟩ ?_ ?_
-    · simp only [subst_distinctLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (.impI (lt_zero_absurd _ Prf.hyp0))
-    · simp only [subst_distinctLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact distinct_step _ _ _ _ _ _ Prf.hyp0
+    ipra_qfind (⟨lt_QF _ _,lt_QF _ _,⟨trivial,trivial⟩,trivial,trivial⟩) [subst_distinctLaw]
+    · exact .impI (.impI (lt_zero_absurd _ Prf.hyp0))
+    · exact distinct_step _ _ _ _ _ _ Prf.hyp0
   have queried : Γ ⊢[PRAAx] distinctLaw A R N j k c := by
     simpa only [subst_distinctLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE c
   exact .impE (.impE (.impE queried hjk) hkc) hNZ
@@ -114,12 +105,8 @@ def validTags (H R c : PTm n) : Fm PTm n := .all
 def injectiveTags (H c : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift c) ⟶ .all
   (lt (var 0) (var 1) ⟶ neg (entry (Syn.shift (Syn.shift H)) (var 1) ≐ zero) ⟶
     neg (entry (Syn.shift (Syn.shift H)) (var 0) ≐ entry (Syn.shift (Syn.shift H)) (var 1))))
-@[simp] theorem subst_validTags {k : ℕ} (σ : Fin n → PTm k) (H R c : PTm n) :
-    (validTags H R c).subst σ = validTags (Syn.subst σ H) (Syn.subst σ R) (Syn.subst σ c) := by
-  simp [validTags,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_injectiveTags {k : ℕ} (σ : Fin n → PTm k) (H c : PTm n) :
-    (injectiveTags H c).subst σ = injectiveTags (Syn.subst σ H) (Syn.subst σ c) := by
-  simp [injectiveTags,Syn.subst_shift,Syn.shift_subst]
+ipra_subst validTags [Syn.subst_shift, Syn.shift_subst]
+ipra_subst injectiveTags [Syn.subst_shift, Syn.shift_subst]
 theorem valid_history (A R N c : PTm n) : Γ ⊢[PRAAx] validTags (history A R N c) R c := by
   refine .allI (.impI ?_)
   simpa only [Syn.shift,GaussianRationalEliminationLoop.subst_history] using
@@ -143,10 +130,8 @@ theorem injective_history (A R N c : PTm n) : Γ ⊢[PRAAx] injectiveTags (histo
 not a second selector or an externally supplied inverse map. -/
 def column (H c r : PTm n) : PTm n := Search.mu GaussianRationalPivotSearch.differentBody c (GaussianRationalPivotSearch.markData H r)
 def rowColumn (A R N c r : PTm n) : PTm n := column (history A R N c) c r
-@[simp] theorem subst_column {k : ℕ} (σ : Fin n → PTm k) (H c r : PTm n) :
-    Syn.subst σ (column H c r) = column (Syn.subst σ H) (Syn.subst σ c) (Syn.subst σ r) := by simp [column,Search.mu]
-@[simp] theorem subst_rowColumn {k : ℕ} (σ : Fin n → PTm k) (A R N c r : PTm n) :
-    Syn.subst σ (rowColumn A R N c r) = rowColumn (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ r) := by simp [rowColumn]
+ipra_subst column [Search.mu]
+ipra_subst rowColumn
 theorem column_bound (H c r : PTm n) : Γ ⊢[PRAAx] le (column H c r) c :=
   .andE₁ (Search.search_spec (f := GaussianRationalPivotSearch.differentBody) c zero (GaussianRationalPivotSearch.markData H r))
 theorem column_found (H c r : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalPivotSearch.available H c r ≐ zero) : Γ ⊢[PRAAx]
@@ -186,14 +171,8 @@ def output (A R N c r : PTm n) : PTm n := pairT (rowColumn A R N c r)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A R N c r : PTm n) : PTm n := app outputF ![A,R,N,c,r]
 def fields (p : PTm n) : Fin 4 → PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),sndT (sndT (sndT p))]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (A R N c r : PTm n) :
-    Syn.subst σ (output A R N c r) = output (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ r) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R N c r : PTm n) :
-    Syn.subst σ (run A R N c r) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ r) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) (i : Fin 4) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (A R N c r : PTm n) : Γ ⊢[PRAAx] run A R N c r ≐ output A R N c r := by
@@ -201,13 +180,13 @@ theorem program_at (A R N c r : PTm n) : Γ ⊢[PRAAx] run A R N c r ≐ output 
 theorem returned_fields (A R N c r : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
     fields (run A R N c r) i ≐ ![rowColumn A R N c r,history A R N c,entry (history A R N c) (rowColumn A R N c r),c] i := by
   have e0 := program_at (Γ := Γ) A R N c r
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrSnd e2).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e2.sndE
 theorem returned_bound (A R N c r : PTm n) : Γ ⊢[PRAAx]
     le (fields (run A R N c r) 0) (fields (run A R N c r) 3) :=
   le_congr (returned_fields _ _ _ _ _ 0).eqSymm (returned_fields _ _ _ _ _ 3).eqSymm (row_column_bound _ _ _ _ _)

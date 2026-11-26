@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderBernoulliCoefficients (normalized normalized_derivative coefficient)
 open GaussianStirlingAllOrderBernoulliMesh (toZ_value lower_endpoint_value odd_endpoints_zero)
 open GaussianStirlingAllOrderCenteredBernoulli
@@ -27,10 +27,6 @@ open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalArithmetic (add multiply)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

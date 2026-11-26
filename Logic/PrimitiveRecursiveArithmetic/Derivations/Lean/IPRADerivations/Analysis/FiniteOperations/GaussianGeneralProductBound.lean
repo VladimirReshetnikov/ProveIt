@@ -17,12 +17,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralProductBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants (C K T R)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,15 +28,9 @@ def numerator (a : PR 3) (N h x j : PTm n) : PTm n := GaussianGeometricProduct.n
 def denominator (a : PR 3) (N h x j : PTm n) : PTm n := GaussianGeometricProduct.denominator (C a N h x) (K N) j
 def value (a : PR 3) (N h x j : PTm n) : PTm n := GaussianGeometricProduct.value (C a N h x) (K N) j
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (numerator a N h x j) = numerator a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (denominator a N h x j) = denominator a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp [denominator]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (value a N h x j) = value a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp [value]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst value
 
 theorem computed_tail_small (a : PR 3) (N h x : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     GaussianGeometricProductTail.small (C a N h x) (K N) (T a N h x) :=
@@ -81,26 +73,19 @@ def output (a : PR 3) (N h x j : PTm n) : PTm n := pairT (value a N h x j)
 def outputF (a : PR 3) : PR 4 := PTm.toPR (output a (var 0) (var 1) (var 2) (var 3))
 def run (a : PR 3) (N h x j : PTm n) : PTm n := PTm.app (outputF a) ![N,h,x,j]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (output a N h x j) = output a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (run a N h x j) = run a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx] run a N h x j ≐ output a N h x j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output a (var 0) (var 1) (var 2) (var 3) : PTm 4) ![N,h,x,j]
 theorem returned_value (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx] fstT (run a N h x j) ≐ value a N h x j :=
-  (congrFst (program_at a N h x j)).eqTrans (fst_pair _ _)
+  (program_at a N h x j).fstE
 theorem returned_radius (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run a N h x j)) ≐ R a N h x :=
-  (congrFst ((congrSnd (program_at a N h x j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a N h x j).sndE.fstE
 theorem returned_numerator (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run a N h x j))) ≐ numerator a N h x j :=
-  (congrFst ((congrSnd ((congrSnd (program_at a N h x j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a N h x j).sndE.sndE.fstE
 theorem returned_denominator (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run a N h x j))) ≐ denominator a N h x j :=
-  (congrSnd ((congrSnd ((congrSnd (program_at a N h x j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at a N h x j).sndE.sndE.sndE
 
 theorem returned_value_bounds (a : PR 3) (N h x j : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     rationalLE (fraction one one) (fstT (run a N h x j)) ⋏

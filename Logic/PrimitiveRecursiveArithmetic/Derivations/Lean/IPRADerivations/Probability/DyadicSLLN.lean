@@ -2,8 +2,6 @@ import IPRADerivations.Probability.DyadicBlock
 import IPRADerivations.Probability.DyadicUnion
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The dyadic eventual-uniform bound (dyadic strong law), the block parameters
@@ -23,16 +21,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.DyadicSLLN
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower (TB Tt Pr Sr TB_at dB_at dg wdB xdB)
 open LeanProofs.IPRA.Probability.KolmogorovIid (DB DB_at)
 open LeanProofs.IPRA.Probability.DyadicBlock (pcB Pc Cc block_cross crossing_witness)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -75,8 +69,8 @@ theorem aB_at (w0 : PTm 2) (M r e x : PTm n) :
     simp [aB, inst2]
   rw [h]
   have f1 : Γ ⊢[PRAAx] fstT (pairT (pairT r e) x) ≐ pairT r e := fst_pair _ _
-  exact congrMul (congrMul (congrMul (.eqRefl _) ((congrSnd f1).eqTrans (snd_pair _ _)))
-    (congrAp2 powF ((congrFst f1).eqTrans (fst_pair _ _)) (.eqRefl _))) (.eqRefl _)
+  exact congrMul (congrMul (congrMul (.eqRefl _) f1.sndE)
+    (congrAp2 powF f1.fstE (.eqRefl _))) (.eqRefl _)
 
 /-! ## The lifted sums -/
 

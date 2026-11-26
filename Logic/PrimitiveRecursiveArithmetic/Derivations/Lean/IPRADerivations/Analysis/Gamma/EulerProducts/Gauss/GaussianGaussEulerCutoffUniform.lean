@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerCutoffUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaEulerInverseApproximationName (cutoff cutoff_guards cutoff_threshold rateScale)
@@ -23,10 +23,6 @@ open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positiv
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

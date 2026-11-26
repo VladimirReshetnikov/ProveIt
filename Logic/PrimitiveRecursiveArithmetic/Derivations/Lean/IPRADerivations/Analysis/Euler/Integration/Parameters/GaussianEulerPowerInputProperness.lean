@@ -16,15 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerInputProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData powerExponentF powerExponentData powerRadius coefficient logarithmF)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianPositiveRationalLogarithm (source name_regular)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_at)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaUnitInverseSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaUnitEulerDifference (minimumDenominator original_source denominator_positive)
 open GaussianGammaUnitReciprocalShift (neighbor large)
 open GaussianGammaReciprocalInverse
@@ -30,9 +30,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (raw_inverse_residual residualCost)
 open GaussianEuclideanDistanceName (pointCN)
 open ComplexLogarithmRemainder (oneCode normSq_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

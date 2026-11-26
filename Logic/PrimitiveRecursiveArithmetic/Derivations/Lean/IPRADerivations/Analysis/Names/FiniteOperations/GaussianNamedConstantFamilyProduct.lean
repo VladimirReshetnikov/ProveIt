@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedConstantFamilyProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl)
 open GaussianNamedFiniteProduct (sample sample_zero sample_succ)
@@ -22,9 +22,6 @@ open GaussianNamedFiniteProductName (nameF name_at clock)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalFiniteProduct (qprod product_zero product_succ)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,11 +38,9 @@ private def sampleLaw (t : PTm 2) (p N x : PTm n) : Fm PTm n :=
 theorem sample_equals_fold (t : PTm 2) (p N x : PTm n) :
     Γ ⊢[PRAAx] sample (rowF constantF t) p N x ≐ qprod t N x := by
   have all : Γ ⊢[PRAAx] .all (sampleLaw t (Syn.shift p) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_sampleLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (sample_zero _ _ _).eqTrans (product_zero _ _).eqSymm
-    · simp only [subst_sampleLaw, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact (sample_succ _ _ _ _).eqTrans
+    ipra_qfind [subst_sampleLaw]
+    · exact (sample_zero _ _ _).eqTrans (product_zero _ _).eqSymm
+    · exact (sample_succ _ _ _ _).eqTrans
         ((qmul_congr Prf.hyp0 ((row_at constantF t _ _ _).eqTrans (constant_at _ _))).eqTrans
           (product_succ _ _ _).eqSymm)
   have result : Γ ⊢[PRAAx] sampleLaw t p N x := by

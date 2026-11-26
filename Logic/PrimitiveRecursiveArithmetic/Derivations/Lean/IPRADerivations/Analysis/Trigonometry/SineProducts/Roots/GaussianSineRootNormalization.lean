@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineRootNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qmul_canonical qzero positive_product ofGaussian_canonical)
 open GaussianRationalMetric (qsub qnegative_canonical)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr qsub_congr qzero_add
@@ -26,18 +26,13 @@ open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianSineSquaredTrace (fromSine)
 open GaussianFastValueCut (difference_identity)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def normalizedFactor (s r : PTm n) : PTm n :=
   qsub qone (qmul (qmul s s) (reciprocal (qmul r r)))
 
-@[simp] theorem subst_normalizedFactor {l : ℕ} (σ : Fin n → PTm l) (s r : PTm n) :
-    Syn.subst σ (normalizedFactor s r) = normalizedFactor (Syn.subst σ s) (Syn.subst σ r) := by
-  simp [normalizedFactor]
+ipra_subst normalizedFactor
 
 theorem trace_difference (s r : PTm n) : Γ ⊢[PRAAx]
     qsub (fromSine s) (fromSine r) ≐ qmul (naturalPoint (num 4)) (qsub (qmul r r) (qmul s s)) := by

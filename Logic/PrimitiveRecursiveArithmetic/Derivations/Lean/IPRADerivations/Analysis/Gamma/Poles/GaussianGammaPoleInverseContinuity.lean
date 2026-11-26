@@ -38,11 +38,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 def halfDisk (h B : PTm n) : Fm PTm n :=
   ComplexLogarithmRemainder.bounded (scale two h) B
 
-@[simp] theorem subst_halfDisk {l : ℕ} (σ : Fin n → PTm l) (h B : PTm n) :
-    (halfDisk h B).subst σ = halfDisk (Syn.subst σ h) (Syn.subst σ B) := by
-  simp [halfDisk, ComplexLogarithmRemainder.bounded]
+ipra_subst halfDisk [ComplexLogarithmRemainder.bounded]
 
-private theorem two_positive : Γ ⊢[PRAAx] le one (two : PTm n) := zero_lt_succ one
+private alias two_positive := Common.one_le_two
 
 private theorem half_disk (h B A D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hAD : Γ ⊢[PRAAx] le (two*A) D)
@@ -78,16 +76,11 @@ theorem inverse_product_bound (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     simpa [Fm.shift, Syn.shift] using hh.shift
   have all : Γ ⊢[PRAAx] .all (bounded (inverseFactorProduct (Syn.shift h) (Syn.shift B) (var 0))
       (unit (var 0)) one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [GaussianRationalMetric.subst_bounded, GaussianGammaPoleMultiplier.subst_inverseFactorProduct,
-        GaussianCoefficientNameBounds.subst_unit, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        one, subst_succ, subst_zero]
-      exact bound_congr (GaussianRationalFiniteProduct.product_zero inverseFactorBody _).eqSymm
+    ipra_qfind [GaussianRationalMetric.subst_bounded, GaussianGammaPoleMultiplier.subst_inverseFactorProduct,
+        GaussianCoefficientNameBounds.subst_unit, one, subst_succ, subst_zero]
+    · exact bound_congr (GaussianRationalFiniteProduct.product_zero inverseFactorBody _).eqSymm
         (pw_zero two).eqSymm (.eqRefl _) qone_bounded
-    · simp only [GaussianRationalMetric.subst_bounded, GaussianGammaPoleMultiplier.subst_inverseFactorProduct,
-        GaussianCoefficientNameBounds.subst_unit, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        one, subst_succ, subst_zero]
-      exact bound_congr (inverseFactorProduct_succ _ _ _).eqSymm (pw_succ two _).eqSymm (one_mul one)
+    · exact bound_congr (inverseFactorProduct_succ _ _ _).eqSymm (pw_succ two _).eqSymm (one_mul one)
         (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) Prf.hyp0
           (inverse_factor_bound _ _ _ b.wk r.wk))
   simpa only [GaussianRationalMetric.subst_bounded, GaussianGammaPoleMultiplier.subst_inverseFactorProduct,

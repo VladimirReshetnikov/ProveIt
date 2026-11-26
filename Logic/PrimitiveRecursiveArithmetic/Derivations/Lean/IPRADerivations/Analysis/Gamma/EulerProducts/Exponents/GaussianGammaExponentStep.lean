@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaExponentStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian qadd qmul represents positive_product qadd_represents qmul_represents
   canonical_unique represents_congr)
 open GaussianRationalMetric (qsub qsub_represents distanceBounded)
@@ -33,10 +33,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_sub im_sub re_mul im_mul re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -103,14 +99,10 @@ def core (p z R B N : PTm n) : PTm n := qadd (qmul (differenceCore p N) (ofGauss
   (GaussianGammaCanonicalTailName.point p z R B N)
 def operationBudget (z R B N : PTm n) : PTm n := num 3+
   (GaussianNameArithmetic.multiplyModulus differenceF constantF (differenceData N) (ofGaussian z B)+one)+num 3*R
-@[simp] theorem subst_gammaSample {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (gammaSample p) = gammaSample (Syn.subst σ p) := by simp [gammaSample]
-@[simp] theorem subst_differenceCore {l : ℕ} (σ : Fin n → PTm l) (p N : PTm n) :
-    Syn.subst σ (differenceCore p N) = differenceCore (Syn.subst σ p) (Syn.subst σ N) := by simp [differenceCore]
-@[simp] theorem subst_core {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (core p z R B N) = core (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [core]
-@[simp] theorem subst_operationBudget {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (operationBudget z R B N) = operationBudget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [operationBudget]
+ipra_subst gammaSample
+ipra_subst differenceCore
+ipra_subst core
+ipra_subst operationBudget
 
 theorem exponent_core_distance (p z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) : Γ ⊢[PRAAx]
     distanceBounded (exponentPoint p z R B N) (core p z R B N) (operationBudget z R B N) (unit p) := by
@@ -173,12 +165,9 @@ def stepData (z R B N : PTm n) : PTm n := GaussianNameArithmetic.addData
 def stepPoint (p z R B N : PTm n) : PTm n := ap2 stepF p (stepData z R B N)
 def stepBudget (z R B N : PTm n) : PTm n := operationBudget z R B N+two+
   operationBudget z R B (succ N)+GaussianNameRingLaws.three
-@[simp] theorem subst_stepData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (stepData z R B N) = stepData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [stepData]
-@[simp] theorem subst_stepPoint {l : ℕ} (σ : Fin n → PTm l) (p z R B N : PTm n) :
-    Syn.subst σ (stepPoint p z R B N) = stepPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [stepPoint]
-@[simp] theorem subst_stepBudget {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (stepBudget z R B N) = stepBudget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [stepBudget,GaussianNameRingLaws.three]
+ipra_subst stepData
+ipra_subst stepPoint
+ipra_subst stepBudget [GaussianNameRingLaws.three]
 
 theorem local_source (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] GaussianLocalLogarithmName.source z (R*B) (B*succ N) :=

@@ -17,7 +17,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedNativeProductDerivativeRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiply_fast)
 open GaussianNameBounds (U)
@@ -25,9 +25,6 @@ open GaussianNameEquivalence (cross_refl cross_symm)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "QF" => GaussianNamedDifferenceQuotient.nameF

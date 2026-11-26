@@ -16,22 +16,18 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRadiusExponentialLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalExponentialLipschitz (termDifference difference difference_zero difference_succ)
 open GaussianRationalPolynomialExponential (scalarSum inverseFactorial factorial_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def derivativeLaw (R j : PTm n) : Fm PTm n := le (succ j*pw R j) (pw (succ R) (succ j))
-@[simp] theorem subst_derivativeLaw {l : ℕ} (σ : Fin n → PTm l) (R j : PTm n) :
-    (derivativeLaw R j).subst σ = derivativeLaw (Syn.subst σ R) (Syn.subst σ j) := by simp [derivativeLaw]
+ipra_subst derivativeLaw
 theorem derivative_zero (R : PTm n) : Γ ⊢[PRAAx] derivativeLaw R zero := by
   have p := natEq (pw_zero (Γ := Γ) R)
   have q := natEq (pw_one (Γ := Γ) (succ R))
@@ -54,8 +50,7 @@ theorem derivative_power_bound (R j : PTm n) : Γ ⊢[PRAAx] derivativeLaw R j :
   simpa only [subst_derivativeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 def factor (R K : PTm n) : PTm n := pw (R+two) K
-@[simp] theorem subst_factor {l : ℕ} (σ : Fin n → PTm l) (R K : PTm n) :
-    Syn.subst σ (factor R K) = factor (Syn.subst σ R) (Syn.subst σ K) := by simp [factor]
+ipra_subst factor
 theorem factor_zero (R : PTm n) : Γ ⊢[PRAAx] factor R zero ≐ one := pw_zero _
 theorem factor_succ (R K : PTm n) : Γ ⊢[PRAAx] factor R (succ K) ≐ factor R K*(R+two) := pw_succ _ _
 theorem factor_positive (R K : PTm n) : Γ ⊢[PRAAx] le one (factor R K) :=
@@ -86,9 +81,7 @@ theorem term_bound (u v R A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (le_mul_mono budget (le_refl B)) old
 
 def boundLaw (u v R A B K : PTm n) : Fm PTm n := bounded (difference u v K) (factor R K*A) B
-@[simp] theorem subst_boundLaw {l : ℕ} (σ : Fin n → PTm l) (u v R A B K : PTm n) :
-    (boundLaw u v R A B K).subst σ = boundLaw (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ R)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ K) := by simp [boundLaw]
+ipra_subst boundLaw
 theorem bound_zero (u v R A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] boundLaw u v R A B zero :=
   bound_congr (difference_zero u v).eqSymm (.eqRefl _) (.eqRefl _) (GaussianMonicResidualRadius.zero_bounded _ _ hB)
 theorem bound_step (u v R A B K : PTm n) (hB : Γ ⊢[PRAAx] le one B)
@@ -118,8 +111,7 @@ theorem scalar_sum_lipschitz (u v R A B K : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
 
 def clockLaw (R K : PTm n) : Fm PTm n := le (factor R K) (pw two ((R+two)*K))
-@[simp] theorem subst_clockLaw {l : ℕ} (σ : Fin n → PTm l) (R K : PTm n) :
-    (clockLaw R K).subst σ = clockLaw (Syn.subst σ R) (Syn.subst σ K) := by simp [clockLaw]
+ipra_subst clockLaw
 theorem clock_zero (R : PTm n) : Γ ⊢[PRAAx] clockLaw R zero :=
   le_congr (factor_zero R).eqSymm ((congrAp2 powF (mul_zero _) (.eqRefl two)).eqTrans (pw_zero two)).eqSymm (le_refl _)
 theorem clock_step (R K : PTm n) (ih : Γ ⊢[PRAAx] clockLaw R K) : Γ ⊢[PRAAx] clockLaw R (succ K) := by
@@ -137,8 +129,7 @@ theorem factor_binary_bound (R K : PTm n) : Γ ⊢[PRAAx] clockLaw R K := by
 
 def factorF : PR 2 := PTm.toPR (factor (var 0) (var 1))
 def run (R K : PTm n) : PTm n := ap2 factorF R K
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (R K : PTm n) :
-    Syn.subst σ (run R K) = run (Syn.subst σ R) (Syn.subst σ K) := by simp [run]
+ipra_subst run
 theorem factor_program_at (R K : PTm n) : Γ ⊢[PRAAx] run R K ≐ factor R K := by
   simpa [run,factorF,ap2] using toPR_eq (Γ := Γ) (factor (var 0) (var 1) : PTm 2) ![R,K]
 theorem returned_factor_bounds (R K : PTm n) : Γ ⊢[PRAAx] le one (run R K) ⋏ le (run R K) (pw two ((R+two)*K)) :=

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Names.Rates.RationalNamedLocalModulus
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexClockRescale
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalScaling
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Original rational arguments for the two-endpoint modulus
@@ -16,9 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexArguments
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero app)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalScaling (rationalLT)
 open RationalArgmin (rationalLE denominator_positive transitive)
 open RationalArithmetic (represents recode recode_value)
@@ -34,8 +31,6 @@ open RationalConvexFiniteModulus (withinModulus power_positive)
 open RationalConvexClockRescale (original_clock_rescale)
 open RationalNestedConvexModulus (geometry)
 open RationalValueBounds (upper radius)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -202,11 +197,7 @@ theorem original_proximity (F : PR 3) (a b u v k x : PTm n)
 def clockF (F : PR 3) : PR 4 := PTm.toPR (clock F (var 0) (var 1) (var 2) (var 3))
 def run (F : PR 3) (a b k x : PTm n) : PTm n := app (clockF F) ![a,b,k,x]
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (a b k x : PTm n) :
-    Syn.subst σ (clock F a b k x) = clock F (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [clock,localModulus,RationalConvexSecantWeights.modulus,RationalConvexSecantWeights.budget,
-    RationalConvexSecantWeights.margin,LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel.meet,
-    endpointDen,firstNumerator,secondNumerator,naturalNumerator,RationalSupMetric.numeratorOf]
+ipra_subst clock [localModulus, RationalConvexSecantWeights.modulus, RationalConvexSecantWeights.budget, RationalConvexSecantWeights.margin, LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel.meet, endpointDen, firstNumerator, secondNumerator, naturalNumerator, RationalSupMetric.numeratorOf]
 
 theorem program_at (F : PR 3) (a b k x : PTm n) : Γ ⊢[PRAAx] run F a b k x ≐ clock F a b k x := by
   simpa only [run,clockF,subst_clock,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,

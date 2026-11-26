@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherFinite
 import IPRADerivations.Analysis.Barnes.BarnesInteger
-import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperPowerCancellation
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmPower
 
@@ -17,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesGlaisherHyperfactorial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BarnesInteger (hyp hyp_zero hyp_succ hyp_pos)
 open GaussianBarnesGlaisherFinite (sumData regular_rows sum_regular weightedF weighted_regular weightedData)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -32,10 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_r
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalNaturalScale (natScale naturalPoint natScale_as_product)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

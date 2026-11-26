@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowers
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational square-root brackets from integer square root
@@ -15,14 +14,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalSquareRootBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,23 +32,15 @@ def square (q : PTm n) : PTm n := RationalArithmetic.multiply q q
 def squareGap (A B H : PTm n) : PTm n :=
   RationalArithmetic.add (fraction A B) (RationalArithmetic.negative (square (lower A B H)))
 
-@[simp] theorem subst_three {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (three : PTm n) = (three : PTm m) := by simp [three]
-@[simp] theorem subst_radicand {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (radicand A B H) = radicand (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [radicand]
-@[simp] theorem subst_root {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (root A B H) = root (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [root]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (B H : PTm n) :
-    Syn.subst σ (denominator B H) = denominator (Syn.subst σ B) (Syn.subst σ H) := by simp [denominator]
-@[simp] theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (lower A B H) = lower (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [lower]
-@[simp] theorem subst_upper {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (upper A B H) = upper (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [upper]
-@[simp] theorem subst_deficit {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (deficit A B H) = deficit (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [deficit]
-@[simp] theorem subst_square {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (square q) = square (Syn.subst σ q) := by simp [square]
-@[simp] theorem subst_squareGap {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (squareGap A B H) = squareGap (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [squareGap]
+ipra_subst three
+ipra_subst radicand
+ipra_subst root
+ipra_subst denominator
+ipra_subst lower
+ipra_subst upper
+ipra_subst deficit
+ipra_subst square
+ipra_subst squareGap
 
 theorem denominator_positive (B H : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
     le one (denominator B H) := positive_product B H hB hH
@@ -221,8 +208,7 @@ theorem relative_integer_bound (A B H : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 def relativeBound (A B H : PTm n) : PTm n :=
   RationalArithmetic.multiply (square (fraction (succ H) H)) (fraction A B)
 
-@[simp] theorem subst_relativeBound {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (relativeBound A B H) = relativeBound (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [relativeBound]
+ipra_subst relativeBound
 
 theorem relative_fraction (A B H : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
     relativeBound A B H ≐ fraction (succ H*succ H*A) (H*H*B) :=
@@ -247,23 +233,21 @@ def output (A B H : PTm n) : PTm n := pairT (root A B H) (pairT (denominator B H
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (A B H : PTm n) : PTm n := ap3 outputF A B H
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (output A B H) = output (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (A B H : PTm n) :
-    Syn.subst σ (run A B H) = run (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ H) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (A B H : PTm n) : Γ ⊢[PRAAx] run A B H ≐ output A B H := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![A,B,H]
 theorem returned_root (A B H : PTm n) : Γ ⊢[PRAAx] fstT (run A B H) ≐ root A B H :=
-  (congrFst (program_at A B H)).eqTrans (fst_pair _ _)
+  (program_at A B H).fstE
 theorem returned_denominator (A B H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A B H)) ≐ denominator B H :=
-  (congrFst ((congrSnd (program_at A B H)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A B H).sndE.fstE
 theorem returned_lower (A B H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run A B H))) ≐ lower A B H :=
-  (congrFst ((congrSnd ((congrSnd (program_at A B H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A B H).sndE.sndE.fstE
 theorem returned_upper (A B H : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run A B H)))) ≐ upper A B H :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at A B H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A B H).sndE.sndE.sndE.fstE
 theorem returned_deficit (A B H : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run A B H)))) ≐ deficit A B H :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at A B H)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at A B H).sndE.sndE.sndE.sndE
 
 theorem actual_square_root_bracket_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (le one (var 1) ⟶ le one (var 2) ⟶

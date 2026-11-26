@@ -15,14 +15,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalInvertibleNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul canonical positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (multiply)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

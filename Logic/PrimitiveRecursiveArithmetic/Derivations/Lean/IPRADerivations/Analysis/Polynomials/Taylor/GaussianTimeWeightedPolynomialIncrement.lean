@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTimeWeightedPolynomialIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate qadd qmul qzero qmul_canonical canonical positive_product)
 open GaussianRationalMetric (qsub bounded)
 open GaussianRationalFirstOrderPolynomial (slope remainder)
@@ -25,9 +25,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

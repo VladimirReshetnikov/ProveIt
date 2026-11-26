@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingCompact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositiveScalingCutoffGeometry (source pullback_interval original_scaled_grid_comparison)
 open GaussianEulerPositiveScalingConstant (scaleF scaleData)
 open GaussianEulerPositiveScalingCancellation (scale_regular)
@@ -35,10 +35,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -61,18 +57,9 @@ def diagonalCost (z R B a C E T c d : PTm n) : PTm n :=
   num 6+num 3*factorBound z B c d+factorCost z B c d*bound DampF (dampedDatum z R B a C E T c d)+
     (multiplyModulus scaleF DampF (scaleData z B c d) (dampedDatum z R B a C E T c d)+one)
 
-@[simp] theorem subst_dampedDatum {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T c d : PTm n) :
-    Syn.subst σ (dampedDatum z R B a C E T c d) = dampedDatum (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [dampedDatum]
-@[simp] theorem subst_productDatum {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T c d : PTm n) :
-    Syn.subst σ (productDatum z R B a C E T c d) = productDatum (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [productDatum,scaleData]
-@[simp] theorem subst_diagonalCost {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T c d : PTm n) :
-    Syn.subst σ (diagonalCost z R B a C E T c d) = diagonalCost (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [diagonalCost,factorBound,factorCost,scaleData]
+ipra_subst dampedDatum
+ipra_subst productDatum [scaleData]
+ipra_subst diagonalCost [factorBound, factorCost, scaleData]
 
 private theorem scale_value_bound (c d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx] bounded (fraction c d) c one :=
   GaussianEulerExponentCompactBounds.fraction_bound c d c hd

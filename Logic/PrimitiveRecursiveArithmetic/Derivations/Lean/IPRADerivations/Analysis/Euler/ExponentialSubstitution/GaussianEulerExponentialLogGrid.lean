@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialLogGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerExponentialLogCell (imageCell)
 open GaussianCompactRiemannName (grid quadrature sampleBody sampleData field0 field1 field2 field3 field4 field5)
 open GaussianRationalFiniteSum (sum multiplyBody sum_multiply multiply_body_at)
@@ -26,8 +26,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalReciprocal (bound_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,22 +44,12 @@ def observationCost (C T M : PTm n) : PTm n := two*M+C*(one+T)
 def rowNumerator (p N C T M : PTm n) : PTm n := M*C*C*unit p+observationCost C T M*(N*N)
 def rowDenominator (p N : PTm n) : PTm n := (N*N)*unit p
 
-@[simp] theorem subst_imageRow {m : ℕ} (σ : Fin n → PTm m) (i y : PTm n) :
-    Syn.subst σ (imageRow i y) = imageRow (Syn.subst σ i) (Syn.subst σ y) := by simp [imageRow]
-@[simp] theorem subst_imageSum {m : ℕ} (σ : Fin n → PTm m) (p z B N a C E : PTm n) :
-    Syn.subst σ (imageSum p z B N a C E) = imageSum (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [imageSum]
-@[simp] theorem subst_valueBounds {m : ℕ} (σ : Fin n → PTm m) (p z B N a C E M : PTm n) :
-    (valueBounds p z B N a C E M).subst σ = valueBounds (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ M) := by simp [valueBounds]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (p z B N a C E T M : PTm n) :
-    (source p z B N a C E T M).subst σ = source (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [source]
-@[simp] theorem subst_rowNumerator {m : ℕ} (σ : Fin n → PTm m) (p N C T M : PTm n) :
-    Syn.subst σ (rowNumerator p N C T M) = rowNumerator (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ C)
-      (Syn.subst σ T) (Syn.subst σ M) := by simp [rowNumerator,observationCost]
-@[simp] theorem subst_rowDenominator {m : ℕ} (σ : Fin n → PTm m) (p N : PTm n) :
-    Syn.subst σ (rowDenominator p N) = rowDenominator (Syn.subst σ p) (Syn.subst σ N) := by simp [rowDenominator]
+ipra_subst imageRow
+ipra_subst imageSum
+ipra_subst valueBounds
+ipra_subst source
+ipra_subst rowNumerator [observationCost]
+ipra_subst rowDenominator
 
 theorem image_row_at (i p z B N a C E : PTm n) : Γ ⊢[PRAAx]
     inst2 imageBody i (imageData p z B N a C E) ≐ imageCell p z B (a*N+C*i) (E*N) C := by
@@ -79,8 +67,8 @@ theorem image_row_at (i p z B N a C E : PTm n) : Γ ⊢[PRAAx]
     intro j
     fin_cases j
     · exact GaussianCompactRiemannName.field0_at p N a C E x
-    · exact (congrFst fixed).eqTrans (fst_pair _ _)
-    · exact (congrSnd fixed).eqTrans (snd_pair _ _)
+    · exact fixed.fstE
+    · exact fixed.sndE
     · exact congrAdd (congrMul left time) (congrMul width (.eqRefl _))
     · exact congrMul den time
     · exact width

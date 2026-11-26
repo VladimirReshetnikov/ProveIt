@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.Gaussia
 import IPRADerivations.Analysis.Barnes.Growth.BarnesIntegerGrowth
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
 import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Integer lower growth in observations of the original Barnes sampler
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalIntegerSampleLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalValue (nameF data)
 open GaussianBarnesCanonicalIntegerValues (integerValue original_integer_value)
 open GaussianGammaCanonicalExponent (constant_at)
@@ -29,9 +28,6 @@ open GaussianRationalLowerBounds (lower lower_from_representation)
 open ComplexLogarithmRemainder (normSq normSq_scale normSq_one scale oneCode)
 open GaussianRootAlgebra (sub)
 open BarnesInteger (barnes)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

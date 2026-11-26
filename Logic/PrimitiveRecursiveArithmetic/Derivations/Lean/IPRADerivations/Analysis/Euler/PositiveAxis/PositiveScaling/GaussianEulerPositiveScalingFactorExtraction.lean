@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingFactorExtraction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianEulerIntegrandName (powerF powerData)
 open GaussianEulerPositiveScalingIntegrand (dampedF dampedData productF productData fixedData)
@@ -30,9 +30,6 @@ open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,19 +42,11 @@ def costF : PR 3 := PTm.toPR (costTerm (var 0) (var 1) (var 2))
 def costData (N z B a C E c d : PTm n) : PTm n := sampleData zero N a C E (fixedData z B c d)
 def maximumCost (N z B a C E c d : PTm n) : PTm n := finiteMaximum (sampleBody costF) N (costData N z B a C E c d)
 
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (p z B c d : PTm n) :
-    Syn.subst σ (factor p z B c d) = factor (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [factor]
-@[simp] theorem subst_rowCost {m : ℕ} (σ : Fin n → PTm m) (z B a b c d : PTm n) :
-    Syn.subst σ (rowCost z B a b c d) = rowCost (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [rowCost]
-@[simp] theorem subst_costTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (costTerm p t x) = costTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [costTerm]
-@[simp] theorem subst_costData {m : ℕ} (σ : Fin n → PTm m) (N z B a C E c d : PTm n) :
-    Syn.subst σ (costData N z B a C E c d) = costData (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ c) (Syn.subst σ d) := by simp [costData]
-@[simp] theorem subst_maximumCost {m : ℕ} (σ : Fin n → PTm m) (N z B a C E c d : PTm n) :
-    Syn.subst σ (maximumCost N z B a C E c d) = maximumCost (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ c) (Syn.subst σ d) := by simp [maximumCost]
+ipra_subst factor
+ipra_subst rowCost
+ipra_subst costTerm
+ipra_subst costData
+ipra_subst maximumCost
 
 private theorem cost_congr (z B a b c d z' B' a' b' c' d' : PTm n)
     (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (ha : Γ ⊢[PRAAx] a ≐ a')
@@ -90,9 +79,9 @@ theorem cost_at (p z B a b c d : PTm n) : Γ ⊢[PRAAx]
   have left := fst_pair (Γ := Γ) (pairT z B) (pairT c d)
   have right := snd_pair (Γ := Γ) (pairT z B) (pairT c d)
   exact program.eqTrans (cost_congr _ _ _ _ _ _ _ _ _ _ _ _
-    ((congrFst left).eqTrans (fst_pair _ _)) ((congrSnd left).eqTrans (snd_pair _ _))
+    left.fstE left.sndE
     (fst_pair _ _) (snd_pair _ _)
-    ((congrFst right).eqTrans (fst_pair _ _)) ((congrSnd right).eqTrans (snd_pair _ _)))
+    right.fstE right.sndE)
 
 theorem row_cost_at (i N z B a C E c d : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody costF) i (costData N z B a C E c d) ≐ rowCost z B (a*N+C*i) (E*N) c d :=

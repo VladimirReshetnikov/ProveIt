@@ -1,5 +1,4 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact families of hyperbox surface distances
@@ -23,11 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.Hyperbox.ClosedFamilies
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -62,8 +57,7 @@ theorem hypercube_twofacet {di dj a : PTm n} (ds : List (PTm n)) (hi : Γ ⊢[PR
 /-- `(u+t)² + (u+(h−t))² ≤ 2u² + 2uh + h²` for `t ≤ h`. -/
 theorem plate_pair {u t h : PTm n} (ht : Γ ⊢[PRAAx] le t h) :
     Γ ⊢[PRAAx] le ((u + t) * (u + t) + (u + monus h t) * (u + monus h t)) (num 2 * (u * u) + num 2 * (u * h) + h * h) := by
-  have e := natEq (eq_add_of_le ht)
-  ipra_le 2 * 𝔟 t * 𝔟 (monus h t) with (2 * 𝔟 u + 𝔟 h + 𝔟 t + 𝔟 (monus h t)) * e
+  ipra_le 2 * 𝔟 t * 𝔟 (monus h t) with (2 * 𝔟 u + 𝔟 h + 𝔟 t + 𝔟 (monus h t)) * natEq (eq_add_of_le ht)
 
 /-- Averaging over the num 2 end plates. -/
 theorem short_side_average {u v t s h : PTm n} (ht : Γ ⊢[PRAAx] le t h) (hs : Γ ⊢[PRAAx] le s h) :

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetWeightedExponentialAlgebra (inverseScale rightCoefficient leftCoefficient)
 open GaussianBinetWeightedExponentialGrid (value endpoint meshCost observationCost rowError)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (positive_product qmul qmul_canonical)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -46,9 +42,7 @@ def differenceData (a b : PTm n) : PTm n := GaussianNamedDifference.data (produc
 def endpointF : PR 2 := multiplyF constantF differenceF
 def endpointData (a b : PTm n) : PTm n := multiplyData constantF differenceF (inverseScale a b) (differenceData a b)
 
-@[simp] theorem subst_endpointData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (endpointData a b) = endpointData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [endpointData,differenceData,productData]
+ipra_subst endpointData [differenceData, productData]
 
 private theorem product_regular (a b : PTm n) : Γ ⊢[PRAAx] pointCN productF (productData a b) :=
   multiply_fast _ _ _ _ (constant_regular _) (GaussianEulerDecayQuadraturePrecision.observation_regular a b)
@@ -114,10 +108,7 @@ theorem endpoint_later (p q a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hpq : Γ
 def budget (a b : PTm n) : PTm n :=
   (b*(meshCost a b+observationCost a b)+b*((a+two*b)*two+zero))+endpointCost a b
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (budget a b) = budget (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [budget,endpointCost,productCost,differenceData,productData,meshCost,observationCost,
-    GaussianNameRingLaws.three,one,two]
+ipra_subst budget [endpointCost, productCost, differenceData, productData, meshCost, observationCost, GaussianNameRingLaws.three, one, two]
 
 theorem finite_error (p N a b : PTm n) (h : Γ ⊢[PRAAx] source a b)
     (haN : Γ ⊢[PRAAx] le a N) (hpN : Γ ⊢[PRAAx] le (unit p) N) :
@@ -145,9 +136,7 @@ def mesh (p a : PTm n) : PTm n := a+unit p
 def rawSample (p a b : PTm n) : PTm n := value (p+mesh p a) (mesh p a) a b
 def rawF : PR 2 := PTm.toPR (rawSample (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2)
 
-@[simp] theorem subst_rawSample {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (rawSample p a b) = rawSample (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [rawSample,mesh]
+ipra_subst rawSample [mesh]
 
 theorem raw_at (p a b : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (pairT a b) ≐ rawSample p a b := by
   let x := pairT a b
@@ -198,8 +187,7 @@ abbrev nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (a b : PTm n) : PTm n := GaussianFastValueCut.nameData (budget a b+one) (pairT a b)
 def clock (p a b : PTm n) : PTm n := GaussianFastValueCut.exponent (budget a b+one) p
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by simp [data,one]
+ipra_subst data [one]
 
 theorem sample_at (p a b : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data a b) ≐ rawSample (clock p a b) a b :=
   (GaussianFastValueCut.name_at rawF (budget a b+one) (pairT a b) p).eqTrans

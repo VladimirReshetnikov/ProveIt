@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRation
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalFixedWidthStrip
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalPaddedProductDegree
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Accumulating multiplicities of the actual monic norm
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNormFiniteZeroBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianNormFiberDivisibility
   (sourceOriginal sourceQuotient source_quotient_length source_evaluation_factor)
 open LeanProofs.IPRA.Analysis.GaussianNormGroupFactorProduct
@@ -43,9 +42,6 @@ open LeanProofs.IPRA.Analysis.GaussianReciprocalHorner (qmul_associative)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,17 +59,11 @@ def quotientF : PR 2 := rec2 quotientInitial quotientStep
 
 def groupQuotient (P D L p g : PTm n) : PTm n := ap2 quotientF g (quotientData P D L p)
 
-@[simp] theorem subst_quotientData {l : ℕ} (σ : Fin n → PTm l) (P D L p : PTm n) :
-    Syn.subst σ (quotientData P D L p) = quotientData (Syn.subst σ P) (Syn.subst σ D)
-      (Syn.subst σ L) (Syn.subst σ p) := by simp [quotientData]
+ipra_subst quotientData
 
-@[simp] theorem subst_quotientUpdate {l : ℕ} (σ : Fin n → PTm l) (Q D L p g : PTm n) :
-    Syn.subst σ (quotientUpdate Q D L p g) = quotientUpdate (Syn.subst σ Q) (Syn.subst σ D)
-      (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [quotientUpdate]
+ipra_subst quotientUpdate
 
-@[simp] theorem subst_groupQuotient {l : ℕ} (σ : Fin n → PTm l) (P D L p g : PTm n) :
-    Syn.subst σ (groupQuotient P D L p g) = groupQuotient (Syn.subst σ P) (Syn.subst σ D)
-      (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [groupQuotient]
+ipra_subst groupQuotient
 
 private theorem update_congr {Q Q' D D' L L' p p' g g' : PTm n}
     (hQ : Γ ⊢[PRAAx] Q ≐ Q') (hD : Γ ⊢[PRAAx] D ≐ D') (hL : Γ ⊢[PRAAx] L ≐ L')
@@ -100,13 +90,9 @@ theorem quotient_length (P D L p g : PTm n) (hP : Γ ⊢[PRAAx] length P ≐ suc
     Γ ⊢[PRAAx] length (groupQuotient P D L p g) ≐ succ D := by
   have all : Γ ⊢[PRAAx] .all
       (length (groupQuotient (Syn.shift P) (Syn.shift D) (Syn.shift L) (Syn.shift p) (var 0)) ≐ succ (Syn.shift D)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_groupQuotient,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (quotient_zero P D L p)).eqTrans hP
-    · simp only [Fm.subst_eq,subst_length,subst_groupQuotient,ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (quotient_succ _ _ _ _ _)).eqTrans (block_length _ _ _ _ Prf.hyp0)
+    ipra_qfind [subst_length, subst_groupQuotient]
+    · exact (congrFst (quotient_zero P D L p)).eqTrans hP
+    · exact (congrFst (quotient_succ _ _ _ _ _)).eqTrans (block_length _ _ _ _ Prf.hyp0)
   simpa only [Fm.subst_eq,subst_length,subst_groupQuotient,ConciseIPRA.PTm.subst_succ,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE g
 
@@ -118,17 +104,11 @@ def accumulatedProduct (P D L p g : PTm n) : PTm n :=
 def reconstruction (P D L p g : PTm n) : Fm PTm n :=
   coefficientsEqual (paddedNorm P L p g) (accumulatedProduct P D L p g) (T L p g+D)
 
-@[simp] theorem subst_paddedNorm {l : ℕ} (σ : Fin n → PTm l) (P L p g : PTm n) :
-    Syn.subst σ (paddedNorm P L p g) = paddedNorm (Syn.subst σ P) (Syn.subst σ L)
-      (Syn.subst σ p) (Syn.subst σ g) := by simp [paddedNorm]
+ipra_subst paddedNorm
 
-@[simp] theorem subst_accumulatedProduct {l : ℕ} (σ : Fin n → PTm l) (P D L p g : PTm n) :
-    Syn.subst σ (accumulatedProduct P D L p g) = accumulatedProduct (Syn.subst σ P) (Syn.subst σ D)
-      (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [accumulatedProduct]
+ipra_subst accumulatedProduct
 
-@[simp] theorem subst_reconstruction {l : ℕ} (σ : Fin n → PTm l) (P D L p g : PTm n) :
-    (reconstruction P D L p g).subst σ = reconstruction (Syn.subst σ P) (Syn.subst σ D)
-      (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [reconstruction]
+ipra_subst reconstruction
 
 private theorem padded_length (P D L p g : PTm n) (hP : Γ ⊢[PRAAx] length P ≐ succ D) :
     Γ ⊢[PRAAx] length (paddedNorm P L p g) ≐ succ (T L p g+D) :=

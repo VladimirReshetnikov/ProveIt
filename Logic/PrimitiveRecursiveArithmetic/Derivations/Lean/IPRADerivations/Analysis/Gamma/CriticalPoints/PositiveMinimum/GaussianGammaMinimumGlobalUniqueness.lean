@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumGlobalUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaDyadicLocation (locationF location_regular)
 open GaussianGammaDigammaLocationInput (named_source)
 open GaussianGammaEulerRationalLogOrder (order_refl)
@@ -24,8 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm)
 open GaussianNamedApartnessTightness (noApart names_equivalent_of_no_difference_apart)
 open GaussianNamedGammaPositiveLower (source)
 open GaussianNamedPositiveExponentialOrder (realOrder)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,9 +33,7 @@ local notation "gd" => GaussianNamedGamma.data
 def attains (f : PR 2) (x y A : PTm n) : Fm PTm n :=
   crossEquivalent (G locationF) (G f) (gd x one) (gd y A)
 
-@[simp] theorem subst_attains {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x y A : PTm n) :
-    (attains f x y A).subst σ = attains f (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) := by
-  simp [attains,one]
+ipra_subst attains [one]
 
 theorem attaining_excludes_apart (f : PR 2) (h x y A : PTm n)
     (hs : Γ ⊢[PRAAx] source f y A) (he : Γ ⊢[PRAAx] attains f x y A) :

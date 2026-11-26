@@ -24,14 +24,10 @@ object-level term), with the witness found by bounded search (`Combinatorics/Uni
 
 namespace LeanProofs.IPRA.Combinatorics.Averaging
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (wit)
 open LeanProofs.IPRA.Combinatorics.UniformThinning (exc thinning)
 open LeanProofs.IPRA.Probability.Variance (sum_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,12 +37,10 @@ theorem average (c b : PTm 2) (N x : PTm n)
     Γ ⊢[PRAAx] lt (wit (exc (addBody c (one : PTm 2)) b) N x) N ⋏
       le (inst2 b (wit (exc (addBody c (one : PTm 2)) b) N x) x)
         (inst2 c (wit (exc (addBody c (one : PTm 2)) b) N x) x) := by
-  have e := natEq (sum_add (Γ := Γ) c (one : PTm 2) N x)
-  have e1 := natEq (sum_one (Γ := Γ) N x)
   have hN' : Γ ⊢[PRAAx] le (succ zero) N := hN
   have h' : Γ ⊢[PRAAx] lt (ap2 (sumF b) N x) (ap2 (sumF (addBody c (one : PTm 2))) N x) := by
     show Γ ⊢[PRAAx] le (succ (ap2 (sumF b) N x)) (ap2 (sumF (addBody c (one : PTm 2))) N x)
-    ipra_le sl h + sl hN' with e + e1
+    ipra_le sl h + sl hN' with natEq (sum_add (Γ := Γ) c (one : PTm 2) N x) + natEq (sum_one (Γ := Γ) N x)
   have t := thinning (addBody c (one : PTm 2)) b N x h'
   have e2 : inst2 (addBody c (one : PTm 2)) (wit (exc (addBody c (one : PTm 2)) b) N x) x =
       inst2 c (wit (exc (addBody c (one : PTm 2)) b) N x) x + one := by

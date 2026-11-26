@@ -1,7 +1,6 @@
 import IPRADerivations.Probability.Histogram
 import IPRADerivations.Probability.SignedParts
 import IPRADerivations.Core.BlockSum
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Joint LOTUS and componentwise expectation
@@ -25,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.JointLotus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew inst2_mul' inst2_add')
 open LeanProofs.IPRA.Probability.Lotus (rB vB gσ inst2_gσ inst2_rB inst2_vB)
 open LeanProofs.IPRA.Probability.Histogram (lotus_bounded)
@@ -34,10 +33,6 @@ open LeanProofs.IPRA.Probability.Independence (shift_inst2)
 open LeanProofs.IPRA.BlockSum (flatB flat_at flatten qr_block)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -128,8 +123,8 @@ theorem JB_at (i a b x : PTm n) :
   rw [e1, e2]
   have s : Γ ⊢[PRAAx] sndT (pairT (pairT a b) x) ≐ x := snd_pair _ _
   exact congrMul (congrInst2 w (.eqRefl _) s) (congrMul
-    (congrEqb (congrInst2 X₁ (.eqRefl _) s) ((congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)))
-    (congrEqb (congrInst2 X₂ (.eqRefl _) s) ((congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _))))
+    (congrEqb (congrInst2 X₁ (.eqRefl _) s) (fst_pair _ _).fstE)
+    (congrEqb (congrInst2 X₂ (.eqRefl _) s) (fst_pair _ _).sndE))
 
 /-- `T(a, b, ⟨M, x⟩) = g(a, b, x) ∑_{i<M} w_i [X₁(i) = a] [X₂(i) = b]`. -/
 def TB : PTm 3 :=
@@ -157,7 +152,7 @@ theorem inner_eq {j M K x : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K))
   rw [shift_pairT, shift_pairT, shift_pairT, shift_pairT, hq, hr, inst2_vB, inst2_sbq]
   refine .eqTrans ?_ (JB_at w X₁ X₂ _ _ _ _).eqSymm
   have s : (lt (var 0) (Syn.shift M) :: Γ.map Fm.shift) ⊢[PRAAx] sndT (sndT (pairT (Syn.shift j) (pairT (Syn.shift K) (Syn.shift x)))) ≐ Syn.shift x :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   refine congrMul (congrInst2 w (.eqRefl _) s) ?_
   refine (congrEqb ((congrInst2 _ (.eqRefl _) (snd_pair _ _)).eqTrans (cB_at X₁ X₂ _ _ _)) (fst_pair _ _)).eqTrans ?_
   exact code_eqb hK'.wk (Prf.impE h₂.allOpen.wk Prf.hyp0)

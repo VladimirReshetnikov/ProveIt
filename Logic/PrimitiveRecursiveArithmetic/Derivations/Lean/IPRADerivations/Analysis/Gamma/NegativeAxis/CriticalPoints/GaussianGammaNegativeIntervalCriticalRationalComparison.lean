@@ -17,7 +17,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalCriticalRationalComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCompactCutoffSplit (add_data_congr)
 open GaussianGammaInputProperness (code_data_cross)
@@ -41,10 +41,6 @@ open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qzero_add)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open RationalValueBounds (upper upper_mono upper_congr upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -57,9 +53,7 @@ local notation "g" => GaussianGammaNegativeIntervalLogThinChord.margin
 def rationalMargin (a b c d : PTm n) : PTm n :=
   fraction (absDelta (d*a) (b*c)*absDelta (d*a) (b*c)) (num 16*(b*d)*(b*d))
 
-@[simp] theorem subst_rationalMargin {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (rationalMargin a b c d) = rationalMargin (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ c) (Syn.subst σ d) := by simp [rationalMargin]
+ipra_subst rationalMargin
 
 theorem margin_readback (a b c d : PTm n) : Γ ⊢[PRAAx] g (d*a) (b*c) (d*b) ≐ rationalMargin a b c d :=
   GaussianCompactRiemannName.fraction_congr _ _ _ _ (.eqRefl _) (by ipra_ring)

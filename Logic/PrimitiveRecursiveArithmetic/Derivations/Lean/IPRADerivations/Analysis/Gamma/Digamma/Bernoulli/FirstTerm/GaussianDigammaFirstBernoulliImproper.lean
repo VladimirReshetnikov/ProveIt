@@ -15,7 +15,7 @@ set_option maxHeartbeats 2400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianDigammaFirstBernoulliPrefix (budget prefix_error)
 open GaussianDigammaFirstBernoulliReference (harmonicPrefix)
@@ -42,10 +42,6 @@ open GaussianStirlingAllOrderPanelPartsOuterFold (panelPrefix)
 open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingGlobalBounds (steps)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -63,12 +59,9 @@ def baseData (a b : PTm n) : PTm n := GaussianNamedDifference.data (ud a b) (dd 
 
 def meshDemand (p a b : PTm n) : PTm n := (one+budget a b (steps p))*unit p
 
-@[simp] theorem subst_baseData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (baseData a b) = baseData (Syn.subst σ a) (Syn.subst σ b) := by simp [baseData]
+ipra_subst baseData
 
-@[simp] theorem subst_meshDemand {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (meshDemand p a b) = meshDemand (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [meshDemand,steps,GaussianStirlingIntegerLimit.index]
+ipra_subst meshDemand [steps, GaussianStirlingIntegerLimit.index]
 
 theorem base_regular (a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN baseF (baseData a b) :=

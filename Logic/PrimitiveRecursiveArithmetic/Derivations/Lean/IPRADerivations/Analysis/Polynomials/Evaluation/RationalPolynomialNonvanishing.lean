@@ -11,23 +11,18 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialNonvanishing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (scalarZero scalar_recode_zero scalar_recode_equal)
 open RationalPolynomialDegreeGaussianEmbedding (first flag first_bound first_nonzero first_from_witness)
 open RationalArgmin (rationalEq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def nonzeroCoefficients (C N : PTm n) : Fm PTm n := .ex
   (lt (var 0) (succ (Syn.shift N)) ⋏ neg (rationalEq (entry (Syn.shift C) (var 0)) scalarZero))
 
-@[simp] theorem subst_nonzeroCoefficients {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    (nonzeroCoefficients C N).subst σ = nonzeroCoefficients (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [nonzeroCoefficients,Syn.subst_shift,Syn.shift_subst,neg]
+ipra_subst nonzeroCoefficients [Syn.subst_shift, Syn.shift_subst, neg]
 
 private theorem flag_of_found (C N : PTm n) (h : Γ ⊢[PRAAx] lt (first C N) (succ N)) :
     Γ ⊢[PRAAx] flag C N ≐ one := AnalyticNumberTheory.Totatives.sg_lt h

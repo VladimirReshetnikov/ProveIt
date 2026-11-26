@@ -15,7 +15,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelPi (denominator_positive sample_margins)
 open GaussianBinetKernelRows (inputData rowF rowBody rowData row_at row_sample nativeNum nativeDen weight value_fraction subst_inputData)
 open GaussianBinetKernelZero (endpoint endpoint_equivalent)
@@ -32,9 +32,6 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalFiniteSum (termwiseLE sum_monotone)
 open RationalGaussianRealPart (realBody real_sum)
 open RationalValueBounds (upper upper_of_radius upper_order_left upper_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetKernelCofinal.nameF

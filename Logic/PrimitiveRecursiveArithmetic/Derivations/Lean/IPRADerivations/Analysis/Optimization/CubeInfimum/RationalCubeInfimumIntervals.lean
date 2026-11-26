@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMinimum
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The original intervals around actual cube minima
@@ -14,16 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCubeInfimumIntervals
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalCubeMinimum (minimum minimizer coherence continuity)
 open RationalCubeGrid (scale fraction)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalArithmetic (represents)
 open RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -39,18 +34,12 @@ def upperNumerator (A : PR 3) (mu : PR 2) (d k x : PTm n) : ZT n :=
 def lowerDenominator (A : PR 3) (mu : PR 2) (d k x : PTm n) : PTm n := denominatorOf (minimum A mu d k x)*scale (succ k)
 def upperDenominator (A : PR 3) (mu : PR 2) (d k x : PTm n) : PTm n := denominatorOf (minimum A mu d k x)*scale (RationalCubeMinimum.precision k)
 
-@[simp] theorem subst_lower {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (lower A mu d k x) = lower A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [lower,one]
-@[simp] theorem subst_upper {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (upper A mu d k x) = upper A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [upper,one]
-@[simp] theorem subst_lowerNumerator {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    (lowerNumerator A mu d k x).subst σ = lowerNumerator A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [lowerNumerator]
-@[simp] theorem subst_upperNumerator {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    (upperNumerator A mu d k x).subst σ = upperNumerator A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [upperNumerator]
-@[simp] theorem subst_lowerDenominator {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (lowerDenominator A mu d k x) = lowerDenominator A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [lowerDenominator]
-@[simp] theorem subst_upperDenominator {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (upperDenominator A mu d k x) = upperDenominator A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [upperDenominator]
+ipra_subst lower [one]
+ipra_subst upper [one]
+ipra_subst lowerNumerator
+ipra_subst upperNumerator
+ipra_subst lowerDenominator
+ipra_subst upperDenominator
 
 theorem lower_positive (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] le one (lowerDenominator A mu d k x) :=
   RationalAlgebra.positive_product (RationalArgmin.denominator_positive _) (RationalCubeGrid.scale_positive _)
@@ -226,29 +215,23 @@ def output (A : PR 3) (mu : PR 2) (d k x : PTm n) : PTm n := pairT (lower A mu d
   (pairT (upper A mu d k x) (pairT (minimizer A mu d k x) (minimum A mu d k x)))
 def outputF (A : PR 3) (mu : PR 2) : PR 3 := PTm.toPR (output A mu (var 0) (var 1) (var 2))
 def run (A : PR 3) (mu : PR 2) (d k x : PTm n) : PTm n := app (outputF A mu) ![d,k,x]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (output A mu d k x) = output A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (A : PR 3) (mu : PR 2) (d k x : PTm n) :
-    Syn.subst σ (run A mu d k x) = run A mu (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] run A mu d k x ≐ output A mu d k x := by
   simpa [run,outputF,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output A mu (var 0) (var 1) (var 2) : PTm 3) ![d,k,x]
 theorem returned_lower (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (run A mu d k x) ≐ lower A mu d k x :=
-  (congrFst (program_at A mu d k x)).eqTrans (fst_pair _ _)
+  (program_at A mu d k x).fstE
 theorem returned_upper (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A mu d k x)) ≐ upper A mu d k x :=
-  (congrFst ((congrSnd (program_at A mu d k x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A mu d k x).sndE.fstE
 private theorem returned_tail (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run A mu d k x)) ≐
     pairT (minimizer A mu d k x) (minimum A mu d k x) :=
-  (congrSnd ((congrSnd (program_at A mu d k x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at A mu d k x).sndE.sndE
 theorem returned_minimizer (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run A mu d k x))) ≐ minimizer A mu d k x :=
-  (congrFst (returned_tail A mu d k x)).eqTrans (fst_pair _ _)
+  (returned_tail A mu d k x).fstE
 theorem returned_minimum (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run A mu d k x))) ≐ minimum A mu d k x :=
-  (congrSnd (returned_tail A mu d k x)).eqTrans (snd_pair _ _)
+  (returned_tail A mu d k x).sndE
 theorem returned_width (A : PR 3) (mu : PR 2) (d k x : PTm n) : Γ ⊢[PRAAx]
     RationalValueBounds.radius (fstT (sndT (run A mu d k x))) (fstT (run A mu d k x)) (succ two) ((two*two)*scale k) :=
   RationalValueBounds.radius_congr (returned_upper A mu d k x).eqSymm (returned_lower A mu d k x).eqSymm (.eqRefl _) (.eqRefl _)

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerTailRowBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerTailRootGrid (rootDenominator rootNumerator timeNumerator timeDenominator)
 open GaussianEulerLowerTailPartition (rootStep panelWidth totalWidth root_right_guard root_step_exact exact_panel_width)
 open GaussianEulerLowerTailLocalComparison (rowTime rightTime widthCap original_row_distance)
@@ -29,10 +29,6 @@ open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

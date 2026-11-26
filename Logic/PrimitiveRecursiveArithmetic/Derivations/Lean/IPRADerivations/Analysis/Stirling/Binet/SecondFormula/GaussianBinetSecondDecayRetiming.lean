@@ -13,7 +13,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayRetiming
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayPointwise (angle fullDecay row frozenPiNumerator)
 open GaussianBinetSecondDecayGrid (rowBody rowData row_at subst_rowData)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -25,10 +25,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianStirlingConstant (piDenominator)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -41,8 +37,7 @@ local notation "Sine" => GaussianBinetSecondWeightedSinePrefix.value
 
 def cost (K T : PTm n) : PTm n := num 4+two*(K*T)
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (K T : PTm n) :
-    Syn.subst σ (cost K T) = cost (Syn.subst σ K) (Syn.subst σ T) := by simp [cost,two]
+ipra_subst cost [two]
 
 theorem row_distance (p q X Y D sign R a b T H J K : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R) (hb : Γ ⊢[PRAAx] le one b)

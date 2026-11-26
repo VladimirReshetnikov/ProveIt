@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalExponentBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open RationalArgmin (denominator_positive rationalLE to_zle)
@@ -25,10 +25,6 @@ open GaussianRationalMetric (bounded qsub qnegative)
 open GaussianRationalReciprocal (bounded_sum bounded_product bounded_negative bound_congr)
 open RationalGaussianEmbedding (native embed embed_from_representation)
 open GaussianGammaCanonicalExponent
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -117,8 +113,7 @@ theorem tail_point_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
 
 def numericalRadius (R : PTm n) : PTm n := two*R*R+two*R
 
-@[simp] theorem subst_numericalRadius {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (numericalRadius R) = numericalRadius (Syn.subst σ R) := by simp [numericalRadius]
+ipra_subst numericalRadius
 
 theorem difference_value_bound (p K : PTm n) :
     Γ ⊢[PRAAx] bounded (differenceValue p K) (one+K) one := by

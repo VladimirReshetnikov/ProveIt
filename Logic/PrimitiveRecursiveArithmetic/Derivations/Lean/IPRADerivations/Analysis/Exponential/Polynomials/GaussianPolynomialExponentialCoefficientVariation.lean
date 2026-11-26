@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialExponentialCoefficientVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero)
 open GaussianRationalMetric (qsub)
 open GaussianRationalL1 (qL1)
@@ -34,9 +34,6 @@ open GaussianRationalPolynomialPowers (prefix_length)
 open RationalArithmetic (add multiply)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,10 +56,8 @@ theorem exponent_error_norm (C D N e : PTm n) : Γ ⊢[PRAAx]
 def weight (A j : PTm n) : PTm n := multiply (qL1 (inverseFactorial (succ j))) (natCode (budget A one (succ j)))
 def weightBody : PTm 2 := weight (var 1) (var 0)
 def variationBudget (A j : PTm n) : PTm n := RationalFiniteSum.sum weightBody j A
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (A j : PTm n) :
-    Syn.subst σ (weight A j) = weight (Syn.subst σ A) (Syn.subst σ j) := by simp [weight]
-@[simp] theorem subst_variationBudget {m : ℕ} (σ : Fin n → PTm m) (A j : PTm n) :
-    Syn.subst σ (variationBudget A j) = variationBudget (Syn.subst σ A) (Syn.subst σ j) := by simp [variationBudget]
+ipra_subst weight
+ipra_subst variationBudget
 
 theorem weight_at (A j : PTm n) : RationalFiniteSum.term weightBody j A = weight A j := by
   simp [weightBody,RationalFiniteSum.term,inst2]
@@ -101,9 +96,7 @@ theorem term_error (C D N K A E j e : PTm n)
 
 def errorLaw (C D N K A E e j : PTm n) : Fm PTm n := le j K ⟶
   rationalLE (qL1 (qsub (coefficient C N K j e) (coefficient D N K j e))) (multiply (variationBudget A j) E)
-@[simp] theorem subst_errorLaw {m : ℕ} (σ : Fin n → PTm m) (C D N K A E e j : PTm n) :
-    (errorLaw C D N K A E e j).subst σ = errorLaw (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ A) (Syn.subst σ E) (Syn.subst σ e) (Syn.subst σ j) := by simp [errorLaw]
+ipra_subst errorLaw
 
 theorem error_zero (C D N K A E e : PTm n) : Γ ⊢[PRAAx] errorLaw C D N K A E e zero := by
   refine .impI ?_
@@ -145,11 +138,9 @@ theorem original_coefficient_variation (C D N K A E e : PTm n)
       (multiply (variationBudget A K) E) := by
   have all : Γ ⊢[PRAAx] .all (errorLaw (Syn.shift C) (Syn.shift D) (Syn.shift N) (Syn.shift K)
       (Syn.shift A) (Syn.shift E) (Syn.shift e) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_errorLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact error_zero _ _ _ _ _ _ _
-    · simp only [subst_errorLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      apply error_step _ _ _ _ _ _ _ _ _ _ _ _ _ _ Prf.hyp0
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_errorLaw]
+    · exact error_zero _ _ _ _ _ _ _
+    · apply error_step _ _ _ _ _ _ _ _ _ _ _ _ _ _ Prf.hyp0
       · simpa [Fm.shift,Syn.shift] using hC.shift.wk
       · simpa [Fm.shift,Syn.shift] using hD.shift.wk
       · simpa [Fm.shift,Syn.shift] using hA.shift.wk

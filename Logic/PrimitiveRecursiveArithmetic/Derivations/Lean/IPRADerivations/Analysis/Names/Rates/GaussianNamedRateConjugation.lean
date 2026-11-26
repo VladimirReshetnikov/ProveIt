@@ -12,13 +12,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRateConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
 open GaussianRationalConjugation (point_distance)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Conj" => GaussianNameConjugation.nameF

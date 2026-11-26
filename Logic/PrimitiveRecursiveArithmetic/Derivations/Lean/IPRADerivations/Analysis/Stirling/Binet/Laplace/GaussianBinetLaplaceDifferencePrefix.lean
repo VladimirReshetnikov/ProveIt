@@ -13,7 +13,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceDifferencePrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetFirstFormulaDecay (laplaceData laplace_regular)
 open GaussianBinetFirstFormulaPinning (laplaceStepData)
 open GaussianBinetLaplaceOrderedPrefixes (prefixData prefix_regular)
@@ -24,9 +24,6 @@ open GaussianNamedDifference (nameF name_regular data)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
 open GaussianRightHalfPlaneLogarithm (source)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "J" => GaussianBinetLaplaceImproperName.nameF
@@ -36,10 +33,7 @@ def prefixStepData (A B D sign L : PTm n) : PTm n :=
   data (prefixData A B D sign (radius A B) L)
     (prefixData (A+D) B D sign (radius (A+D) B) L)
 
-@[simp] theorem subst_prefixStepData {m : ℕ} (σ : Fin n → PTm m) (A B D sign L : PTm n) :
-    Syn.subst σ (prefixStepData A B D sign L) =
-      prefixStepData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ L) := by
-  simp [prefixStepData]
+ipra_subst prefixStepData
 
 theorem shifted_source (A D sign : PTm n) (h : Γ ⊢[PRAAx] source A D sign) :
     Γ ⊢[PRAAx] source (A+D) D sign :=

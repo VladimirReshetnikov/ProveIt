@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleFiniteFactors
 import IPRADerivations.Analysis.Inequalities.GaussianMeshLogSign
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact inverse of the original pole factor product
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleMultiplier
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaLocalPoleGuards (center localMargin translated_pole_left)
 open GaussianGammaPoleFiniteFactors
@@ -34,9 +33,6 @@ open GaussianGammaEulerHeadLower (poleAt translated_zero)
 open ComplexLogarithmRemainder (oneCode normSq_neg normSq scale bounded)
 open GaussianRootAlgebra (equal equal_of_values normSq_equal re_mul im_mul re_neg im_neg re_one im_one)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,9 +42,7 @@ def signedInverseFactorial (j : PTm n) : PTm n := qmul (power minusOne j) (ofGau
 def multiplier (h B j : PTm n) : PTm n :=
   qmul (reciprocal (ofGaussian h B)) (qmul (signedInverseFactorial j) (inverseFactorProduct h B j))
 
-@[simp] theorem subst_inverseFactorProduct {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    Syn.subst σ (inverseFactorProduct h B j) = inverseFactorProduct (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) :=
-  by simp [inverseFactorProduct]
+ipra_subst inverseFactorProduct
 
 theorem factor_lower (h B A S D j : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) (hj : Γ ⊢[PRAAx] le one j)
@@ -102,8 +96,7 @@ theorem inverseFactorProduct_succ (h B j : PTm n) : Γ ⊢[PRAAx] inverseFactorP
 
 def inverseLaw (h B j : PTm n) : Fm PTm n := qmul (factorProduct h B j) (inverseFactorProduct h B j) ≐ qone
 
-@[simp] theorem subst_inverseLaw {l : ℕ} (σ : Fin n → PTm l) (h B j : PTm n) :
-    (inverseLaw h B j).subst σ = inverseLaw (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ j) := by simp [inverseLaw]
+ipra_subst inverseLaw
 
 private theorem inverseLaw_zero (h B : PTm n) : Γ ⊢[PRAAx] inverseLaw h B zero :=
   (qmul_congr (product_zero factorBody (pairT h B)) (product_zero inverseFactorBody (pairT h B))).eqTrans
@@ -131,11 +124,9 @@ theorem product_inverse (h B A S D j : PTm n)
   have u : Γ.map Fm.shift ⊢[PRAAx] bounded (scale (Syn.shift D) (Syn.shift h)) (Syn.shift S*Syn.shift B) :=
     by simpa [Fm.shift,Syn.shift,bounded] using hh.shift
   have all : Γ ⊢[PRAAx] .all (inverseLaw (Syn.shift h) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_inverseLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact inverseLaw_zero h B
-    · simp only [subst_inverseLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact inverseLaw_succ _ _ _ _ _ _ b.wk a.wk d.wk m.wk u.wk Prf.hyp0
+    ipra_qfind [subst_inverseLaw]
+    · exact inverseLaw_zero h B
+    · exact inverseLaw_succ _ _ _ _ _ _ b.wk a.wk d.wk m.wk u.wk Prf.hyp0
   simpa only [subst_inverseLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 private theorem minusOne_square : Γ ⊢[PRAAx] qmul (minusOne : PTm n) minusOne ≐ qone := by
@@ -150,16 +141,13 @@ private theorem minusOne_square : Γ ⊢[PRAAx] qmul (minusOne : PTm n) minusOne
 
 def signSquare (j : PTm n) : Fm PTm n := qmul (power minusOne j) (power minusOne j) ≐ qone
 
-@[simp] theorem subst_signSquare {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    (signSquare j).subst σ = signSquare (Syn.subst σ j) := by simp [signSquare]
+ipra_subst signSquare
 
 theorem sign_square (j : PTm n) : Γ ⊢[PRAAx] signSquare j := by
   have all : Γ ⊢[PRAAx] .all (signSquare (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_signSquare,Syn.subst_var,Syn.inst_zero]
-      exact (qmul_congr (power_zero minusOne) (power_zero minusOne)).eqTrans (qmul_one_right _ qone_canonical)
-    · simp only [subst_signSquare,Syn.subst_var,Syn.repl_zero]
-      exact (qmul_congr (power_succ minusOne _) (power_succ minusOne _)).eqTrans
+    ipra_qfind [subst_signSquare]
+    · exact (qmul_congr (power_zero minusOne) (power_zero minusOne)).eqTrans (qmul_one_right _ qone_canonical)
+    · exact (qmul_congr (power_succ minusOne _) (power_succ minusOne _)).eqTrans
         ((qmul_shuffle _ _ _ _).eqTrans ((qmul_congr Prf.hyp0 minusOne_square).eqTrans
           (qmul_one_right _ qone_canonical)))
   simpa only [subst_signSquare,Syn.subst_var,Syn.inst_zero] using all.allE j

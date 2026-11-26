@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSyntheticSlopeLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalFirstOrderPolynomial (paddedQuotient padded_length slope)
 open GaussianRationalHorner (evaluate horner positive_product)
 open GaussianRationalHornerPerturbation (coefficientErrors)
@@ -26,10 +26,6 @@ open GaussianRationalUniformFirstOrderPolynomial (mass quotient_coefficients)
 open GaussianRationalVariableHornerBudget (denominator denominator_positive variation variation_index_congr variation_succ)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

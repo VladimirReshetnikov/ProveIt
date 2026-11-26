@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaLocationIntegral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerLogarithmicContinuity (modulus)
 open GaussianExponentialReference (unit_monotone)
@@ -27,10 +27,6 @@ open GaussianNamedRightHalfPlane (threshold radius)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (qzero)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -43,9 +39,7 @@ def nativeResidual (C : PTm n) : Fm PTm n := .all
   (distanceBounded (ap2 I (var 0) (derivativeData (lower (var 0)) (grid (var 0))))
     qzero (Syn.shift C) (unit (var 0)))
 
-@[simp] theorem subst_nativeResidual {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    (nativeResidual C).subst σ = nativeResidual (Syn.subst σ C) := by
-  simp [nativeResidual, Syn.subst_shift, Syn.shift_subst]
+ipra_subst nativeResidual [Syn.subst_shift, Syn.shift_subst]
 
 theorem residual_at (k C : PTm n) (h : Γ ⊢[PRAAx] nativeResidual C) : Γ ⊢[PRAAx]
     distanceBounded (ap2 I k (derivativeData (lower k) (grid k))) qzero C (unit k) := by

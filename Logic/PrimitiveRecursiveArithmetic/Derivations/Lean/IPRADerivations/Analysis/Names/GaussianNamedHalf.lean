@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedHalf
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -26,8 +26,6 @@ open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianRationalHorner (qmul_canonical canonical_congr)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open RationalGaussianEmbedding (axis_multiply axis_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianEulerSquareFactorInverse.half
@@ -35,9 +33,7 @@ local notation "H" => GaussianEulerSquareFactorInverse.half
 def nameF (f : PR 2) : PR 2 := multiplyF constantF f
 def data (f : PR 2) (x : PTm n) : PTm n := multiplyData constantF f H x
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (data f x) = data f (Syn.subst σ x) := by
-  simp [data,GaussianEulerSquareFactorInverse.half,GaussianPositiveRationalLogarithm.fraction]
+ipra_subst data [GaussianEulerSquareFactorInverse.half, GaussianPositiveRationalLogarithm.fraction]
 
 theorem regular (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] pointCN (nameF f) (data f x) :=

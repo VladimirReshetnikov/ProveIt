@@ -2,7 +2,6 @@ import IPRADerivations.AnalyticNumberTheory.RobinLogName
 import IPRADerivations.Analysis.RationalArithmetic.RationalGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMidpoint
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Literal odd terms of the Robin logarithm
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRobinOddLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Lz Nz_zero Nz_succ Dz_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv P_succ L_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
@@ -26,9 +25,6 @@ open GaussianRationalHorner
 open GaussianRationalSyntheticDivision (qzero_canonical qadd_congr rescale_to)
 open ComplexLogarithmRemainder (scale oneCode zeroCode)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale re_one im_one re_zero im_zero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,16 +35,10 @@ def term (a b K : PTm n) : PTm n := fraction (two*Pv K a) (oddIndex K*Pv K b)
 def body : PTm 2 := term (fstT (var 1)) (sndT (var 1)) (var 0)
 def oddSum (a b K : PTm n) : PTm n := GaussianRationalFiniteSum.sum body K (pairT a b)
 
-@[simp] theorem subst_fraction {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (fraction a b) = fraction (Syn.subst σ a) (Syn.subst σ b) := by simp [fraction]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (a b K : PTm n) :
-    Syn.subst σ (value a b K) = value (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ K) := by simp [value]
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (a b K : PTm n) :
-    Syn.subst σ (term a b K) = term (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ K) := by
-  simp [term,oddIndex]
-@[simp] theorem subst_oddSum {m : ℕ} (σ : Fin n → PTm m) (a b K : PTm n) :
-    Syn.subst σ (oddSum a b K) = oddSum (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ K) := by
-  simp [oddSum]
+ipra_subst fraction
+ipra_subst value
+ipra_subst term [oddIndex]
+ipra_subst oddSum
 
 theorem denominator_positive (a b K : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] le one (Dz K a b) :=
@@ -79,9 +69,8 @@ theorem value_zero (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     qzero_canonical hp ?_ (GaussianRationalHorner.zero_represents D)
   apply represents_congr (.eqRefl _) ?_ (.eqRefl _)
     (ofGaussian_represents (scale (Nz zero a b) oneCode) D hp)
-  have e := natEq (Nz_zero (Γ := Γ) a b)
   apply equal_of_values <;> simp only [re_scale,im_scale,re_one,im_one,re_zero,im_zero] <;>
-    (try rw [e]) <;> ipra_simps <;> ring
+    (try rw [natEq (Nz_zero (Γ := Γ) a b)]) <;> ipra_simps <;> ring
 
 theorem value_step (a b K : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] value a b (succ K) ≐ qadd (value a b K) (term a b K) := by
@@ -109,24 +98,20 @@ theorem value_step (a b K : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
   apply canonical_unique _ _ _ D (GaussianRationalHorner.ofGaussian_canonical _ _ hD)
     (GaussianRationalHorner.qadd_canonical _ _) hD ?_ sumVal
   apply represents_congr (.eqRefl _) ?_ (.eqRefl _) (ofGaussian_represents (scale (Nz (succ K) a b) oneCode) D hD)
-  have e := natEq (Nz_succ (Γ := Γ) K a b)
   apply equal_of_values <;> simp only [re_scale,im_scale,re_add,im_add,re_one,im_one,A,S,l,P,oddIndex] <;>
-    (try rw [e]) <;> (try ipra_simps) <;> ring
+    (try rw [natEq (Nz_succ (Γ := Γ) K a b)]) <;> (try ipra_simps) <;> ring
 
 def sumLaw (a b K : PTm n) : Fm PTm n := value a b K ≐ oddSum a b K
-@[simp] theorem subst_sumLaw {m : ℕ} (σ : Fin n → PTm m) (a b K : PTm n) :
-    (sumLaw a b K).subst σ = sumLaw (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ K) := by simp [sumLaw]
+ipra_subst sumLaw
 
 theorem literal_value (a b K : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] value a b K ≐ oddSum a b K := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift b) := by
     simpa [Fm.shift,Syn.shift] using hb.shift
   have aLL : Γ ⊢[PRAAx] .all (sumLaw (Syn.shift a) (Syn.shift b) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (value_zero a b hb).eqTrans (GaussianRationalFiniteSum.sum_zero body (pairT a b)).eqSymm
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (value_step _ _ _ hs.wk).eqTrans
+    ipra_qfind [subst_sumLaw]
+    · exact (value_zero a b hb).eqTrans (GaussianRationalFiniteSum.sum_zero body (pairT a b)).eqSymm
+    · exact (value_step _ _ _ hs.wk).eqTrans
         ((qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans (returned_sum_step _ _ _).eqSymm)
   change Γ ⊢[PRAAx] sumLaw a b K
   simpa only [subst_sumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using aLL.allE K

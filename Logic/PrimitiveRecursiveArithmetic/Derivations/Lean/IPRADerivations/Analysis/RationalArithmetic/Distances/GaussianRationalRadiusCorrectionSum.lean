@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRadiusCorrectionSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactPositiveRadius (positiveRadius)
 open GaussianGammaRealValues (projection projection_represents)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
@@ -24,16 +24,11 @@ open GaussianRationalHorner (qadd positive_product scalar_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper)
 open ComplexLogarithmRemainder (re)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def radius (p q v : PTm n) : PTm n := positiveRadius v (unit p) (unit q)
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (p q v : PTm n) :
-    Syn.subst σ (radius p q v) = radius (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ v) := by simp [radius]
+ipra_subst radius
 
 theorem projection_scalar_representation (v : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (fstT (projection v)) (re (rawGaussian v)) (rawDen v) :=

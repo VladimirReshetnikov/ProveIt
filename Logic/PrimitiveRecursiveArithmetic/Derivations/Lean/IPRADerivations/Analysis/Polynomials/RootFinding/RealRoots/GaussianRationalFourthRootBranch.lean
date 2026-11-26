@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFourthRootBranch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_eval oneCode eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryPoint imaginaryCode)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
@@ -29,10 +29,6 @@ open GaussianRationalSyntheticDivision (qone_canonical qmul_congr qsub_congr qad
 open GaussianRationalSquareCancellation (difference_factorization)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRootAlgebra (sub re_sub im_sub re_neg im_neg re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

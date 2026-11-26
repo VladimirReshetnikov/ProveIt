@@ -2,7 +2,6 @@ import IPRADerivations.Algebra.QuadraticTowerArrayCodec
 import IPRADerivations.Algebra.QuadraticTowerCoefficientArithmetic
 import IPRADerivations.Foundations.DemandRecursion
 import IPRADerivations.Foundations.RuntimeWordAppend
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual changed-budget five-call multiplication table
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerMultiplicationTable
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width singleton)
 open QuadraticTowerScalarBudget (codeCap majorant)
@@ -27,9 +26,6 @@ open LeanProofs.IPRA.Foundations
 open MasterCertificate (sequence entry sequence_length sequence_decode)
 open SequenceComposition (length append entry_congr)
 open RealizerComposition (slice)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -73,39 +69,21 @@ def stepSchema : PTm 4 := step (var 0) (var 1) (var 2) (var 3)
 def table (h B D : PTm n) : PTm n := DemandRecursion.X demandF baseSchema stepSchema h B D
 def query (h B D A C : PTm n) : PTm n := lookup h B (table h B D) A C
 
-@[simp] theorem subst_sourceCost {k : ℕ} (σ : Fin n → PTm k) (h : PTm n) :
-    Syn.subst σ (sourceCost h) = sourceCost (Syn.subst σ h) := by simp [sourceCost]
-@[simp] theorem subst_budget {k : ℕ} (σ : Fin n → PTm k) (h B D : PTm n) :
-    Syn.subst σ (budget h B D) = budget (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) := by simp [budget]
-@[simp] theorem subst_rows {k : ℕ} (σ : Fin n → PTm k) (h B : PTm n) :
-    Syn.subst σ (rows h B) = rows (Syn.subst σ h) (Syn.subst σ B) := by simp [rows]
-@[simp] theorem subst_address {k : ℕ} (σ : Fin n → PTm k) (h B A C : PTm n) :
-    Syn.subst σ (address h B A C) = address (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ C) := by simp [address]
-@[simp] theorem subst_lookup {k : ℕ} (σ : Fin n → PTm k) (h B T A C : PTm n) :
-    Syn.subst σ (lookup h B T A C) = lookup (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ C) := by simp [lookup]
-@[simp] theorem subst_leftHalf {k : ℕ} (σ : Fin n → PTm k) (h A : PTm n) :
-    Syn.subst σ (leftHalf h A) = leftHalf (Syn.subst σ h) (Syn.subst σ A) := by simp [leftHalf]
-@[simp] theorem subst_rightHalf {k : ℕ} (σ : Fin n → PTm k) (h A : PTm n) :
-    Syn.subst σ (rightHalf h A) = rightHalf (Syn.subst σ h) (Syn.subst σ A) := by simp [rightHalf]
-@[simp] theorem subst_recipe {k : ℕ} (σ : Fin n → PTm k) (h B T D A C : PTm n) :
-    Syn.subst σ (recipe h B T D A C) = recipe (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ T)
-      (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [recipe]
-@[simp] theorem subst_rowValue {k : ℕ} (σ : Fin n → PTm k) (h B T D i : PTm n) :
-    Syn.subst σ (rowValue h B T D i) = rowValue (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ T)
-      (Syn.subst σ D) (Syn.subst σ i) := by simp [rowValue]
-@[simp] theorem subst_rowData {k : ℕ} (σ : Fin n → PTm k) (h B T D : PTm n) :
-    Syn.subst σ (rowData h B T D) = rowData (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ T) (Syn.subst σ D) := by simp [rowData]
-@[simp] theorem subst_step {k : ℕ} (σ : Fin n → PTm k) (h B T D : PTm n) :
-    Syn.subst σ (step h B T D) = step (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ T) (Syn.subst σ D) := by simp [step]
-@[simp] theorem subst_baseRow {k : ℕ} (σ : Fin n → PTm k) (B i : PTm n) :
-    Syn.subst σ (baseRow B i) = baseRow (Syn.subst σ B) (Syn.subst σ i) := by simp [baseRow]
-@[simp] theorem subst_base {k : ℕ} (σ : Fin n → PTm k) (B : PTm n) :
-    Syn.subst σ (base B) = base (Syn.subst σ B) := by simp [base]
-@[simp] theorem subst_table {k : ℕ} (σ : Fin n → PTm k) (h B D : PTm n) :
-    Syn.subst σ (table h B D) = table (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) := by
-  simp only [table,DemandRecursion.X,DemandRecursion.subst_V]
-@[simp] theorem subst_query {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    Syn.subst σ (query h B D A C) = query (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [query]
+ipra_subst sourceCost
+ipra_subst budget
+ipra_subst rows
+ipra_subst address
+ipra_subst lookup
+ipra_subst leftHalf
+ipra_subst rightHalf
+ipra_subst recipe
+ipra_subst rowValue
+ipra_subst rowData
+ipra_subst step
+ipra_subst baseRow
+ipra_subst base
+ipra_subst table [DemandRecursion.X, DemandRecursion.subst_V]
+ipra_subst query
 
 theorem budget_at (h B D : PTm n) : Γ ⊢[PRAAx] budget h B D ≐ majorant (sourceCost (succ h)) B := by
   simpa [budget,demandF,demandBody,ap3] using toPR_eq (Γ := Γ) demandBody ![h,B,D]
@@ -147,9 +125,9 @@ theorem decoded_congr {W W' S S' w w' : PTm n} (hW : Γ ⊢[PRAAx] W ≐ W')
 
 theorem row_body_at (h B T D i : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (rowData h B T D) ≐ rowValue h B T D i := by
   simp only [rowBody,inst2,subst_rowValue,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact row_value_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrFst ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _))
-    ((congrSnd ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact row_value_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE.fstE
+    (snd_pair _ _).sndE.sndE (.eqRefl _)
 theorem step_lookup (h B T D i : PTm n) (hi : Γ ⊢[PRAAx] lt i (rows (succ h) B)) :
     Γ ⊢[PRAAx] entry (step h B T D) i ≐ rowValue h B T D i :=
   (sequence_decode rowBody (x := rowData h B T D) hi).eqTrans (row_body_at _ _ _ _ _)
@@ -256,15 +234,9 @@ def tableF : PR 3 := PTm.toPR (table (var 0) (var 1) (var 2))
 def queryF : PR 5 := PTm.toPR (query (var 0) (var 1) (var 2) (var 3) (var 4))
 def operandsF : PR 5 := PTm.toPR (operands (var 0) (var 1) (var 2) (var 3) (var 4))
 
-@[simp] theorem subst_computedBe {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    Syn.subst σ (computedBe h B D A C) = computedBe (Syn.subst σ h) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [computedBe]
-@[simp] theorem subst_computedBed {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    Syn.subst σ (computedBed h B D A C) = computedBed (Syn.subst σ h) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [computedBed]
-@[simp] theorem subst_operands {k : ℕ} (σ : Fin n → PTm k) (h B D A C : PTm n) :
-    Syn.subst σ (operands h B D A C) = operands (Syn.subst σ h) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [operands]
+ipra_subst computedBe
+ipra_subst computedBed
+ipra_subst operands
 theorem table_program_at (h B D : PTm n) : Γ ⊢[PRAAx] ap3 tableF h B D ≐ table h B D := by
   simpa [tableF,ap3] using toPR_eq (Γ := Γ) (table (var 0) (var 1) (var 2) : PTm 3) ![h,B,D]
 theorem query_program_at (h B D A C : PTm n) : Γ ⊢[PRAAx] PTm.app queryF ![h,B,D,A,C] ≐ query h B D A C := by
@@ -272,10 +244,10 @@ theorem query_program_at (h B D A C : PTm n) : Γ ⊢[PRAAx] PTm.app queryF ![h,
 theorem operands_program_at (h B D A C : PTm n) : Γ ⊢[PRAAx] PTm.app operandsF ![h,B,D,A,C] ≐ operands h B D A C := by
   simpa [operandsF] using toPR_eq (Γ := Γ) (operands (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![h,B,D,A,C]
 theorem returned_be (h B D A C : PTm n) : Γ ⊢[PRAAx] fstT (PTm.app operandsF ![h,B,D,A,C]) ≐ computedBe h B D A C :=
-  (congrFst (operands_program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (operands_program_at _ _ _ _ _).fstE
 theorem returned_bed (h B D A C : PTm n) : Γ ⊢[PRAAx] sndT (PTm.app operandsF ![h,B,D,A,C]) ≐
     lookup h (budget h B D) (table h (budget h B D) D) (computedBe h B D A C) (entry D h) :=
-  (congrSnd (operands_program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (operands_program_at _ _ _ _ _).sndE
 
 theorem actual_table_budget_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (budget (var 0) (var 1) (var 2) ≐ majorant (sourceCost (succ (var 0))) (var 1)) := closeUniv 3 (budget_at _ _ _)

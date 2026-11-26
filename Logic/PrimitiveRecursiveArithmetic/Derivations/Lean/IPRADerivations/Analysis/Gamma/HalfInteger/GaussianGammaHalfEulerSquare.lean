@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfEulerSquare
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfEulerHead (numerator denominator value original_run numerator_positive denominator_positive)
 open GaussianGammaHalfWallisRate (squareNum squareDen wallisValue square_denominator square_denominator_positive)
 open GaussianGammaFiniteApproximantName (qF qData q_regular)
@@ -35,10 +35,6 @@ open GaussianRationalSyntheticDivision (qone)
 open GaussianEulerDampedTimeRate (fraction_product)
 open GaussianCompactRiemannName (fraction_congr)
 open ComplexLogarithmRemainder (oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,8 +44,7 @@ def qHalf (N : PTm n) : PTm n := qData oneCode two N
 def eulerHalf (N : PTm n) : PTm n := eulerData oneCode one two two N
 def reciprocalSquare (N : PTm n) : PTm n := fraction (squareDen N) (squareNum N)
 
-@[simp] theorem subst_squareData {k : ℕ} (σ : Fin n → PTm k) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (squareData f x) = squareData f (Syn.subst σ x) := by simp [squareData]
+ipra_subst squareData
 
 theorem euler_source (N : PTm n) (hN : Γ ⊢[PRAAx] le two N) :
     Γ ⊢[PRAAx] GaussianGammaEulerReciprocalInverse.source oneCode one two one two N :=

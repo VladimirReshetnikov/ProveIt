@@ -14,15 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticUpperEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen top tailCoefficient)
 open GaussianEulerIncompleteName (upperF)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {ℓ : ℕ} {Γ : List (Fm PTm ℓ)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,26 +38,16 @@ def gridNumerator (n A R c d M : PTm ℓ) : PTm ℓ :=
 def gridData (n M z R B A c d : PTm ℓ) : PTm ℓ :=
   GaussianEulerIncompleteName.data z R B A (gridNumerator n A R c d M) (gridDenominator n A R d M)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin ℓ → PTm m) (z R B A c d : PTm ℓ) :
-    (source z R B A c d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_baseline {m : ℕ} (σ : Fin ℓ → PTm m) (A R : PTm ℓ) :
-    Syn.subst σ (baseline A R) = baseline (Syn.subst σ A) (Syn.subst σ R) := by simp [baseline,tailCoefficient]
-@[simp] theorem subst_halfImage {m : ℕ} (σ : Fin ℓ → PTm m) (n A R c d : PTm ℓ) :
-    Syn.subst σ (halfImage n A R c d) = halfImage (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ c) (Syn.subst σ d) := by simp [halfImage,height,tailCoefficient]
-@[simp] theorem subst_imageIndex {m : ℕ} (σ : Fin ℓ → PTm m) (n A R c d : PTm ℓ) :
-    Syn.subst σ (imageIndex n A R c d) = imageIndex (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ c) (Syn.subst σ d) := by simp [imageIndex]
-@[simp] theorem subst_preimage {m : ℕ} (σ : Fin ℓ → PTm m) (n A R d : PTm ℓ) :
-    Syn.subst σ (preimage n A R d) = preimage (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ d) := by simp [preimage,top,height,tailCoefficient]
-@[simp] theorem subst_image {m : ℕ} (σ : Fin ℓ → PTm m) (n A R c d : PTm ℓ) :
-    Syn.subst σ (image n A R c d) = image (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ c) (Syn.subst σ d) := by simp [image,top,height,tailCoefficient]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin ℓ → PTm m) (n z R B A c d b : PTm ℓ) :
-    Syn.subst σ (data n z R B A c d b) = data (Syn.subst σ n) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_gridDenominator {m : ℕ} (σ : Fin ℓ → PTm m) (n A R d M : PTm ℓ) :
-    Syn.subst σ (gridDenominator n A R d M) = gridDenominator (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ d) (Syn.subst σ M) := by simp [gridDenominator,etaDen,height,tailCoefficient]
-@[simp] theorem subst_gridNumerator {m : ℕ} (σ : Fin ℓ → PTm m) (n A R c d M : PTm ℓ) :
-    Syn.subst σ (gridNumerator n A R c d M) = gridNumerator (Syn.subst σ n) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ M) := by simp [gridNumerator,etaDen,height,tailCoefficient]
-@[simp] theorem subst_gridData {m : ℕ} (σ : Fin ℓ → PTm m) (n M z R B A c d : PTm ℓ) :
-    Syn.subst σ (gridData n M z R B A c d) = gridData (Syn.subst σ n) (Syn.subst σ M) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [gridData]
+ipra_subst source
+ipra_subst baseline [tailCoefficient]
+ipra_subst halfImage [height, tailCoefficient]
+ipra_subst imageIndex
+ipra_subst preimage [top, height, tailCoefficient]
+ipra_subst image [top, height, tailCoefficient]
+ipra_subst data
+ipra_subst gridDenominator [etaDen, height, tailCoefficient]
+ipra_subst gridNumerator [etaDen, height, tailCoefficient]
+ipra_subst gridData
 
 theorem height_le_half_image (n A R c d : PTm ℓ) (hc : Γ ⊢[PRAAx] le one c) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     le (height n A R) (halfImage n A R c d) := by

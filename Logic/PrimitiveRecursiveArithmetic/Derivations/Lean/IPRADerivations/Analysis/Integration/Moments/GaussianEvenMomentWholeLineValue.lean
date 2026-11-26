@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEvenMomentWholeLineValue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfIntegerDomain (argument)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianEulerPositiveScalingConstant (inverseF inverseData inverse_regular)
@@ -25,8 +25,6 @@ open GaussianNameRingLaws (oneF one_at one_fast)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast addF addData add_fast)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_refl cross_to_diagonal)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

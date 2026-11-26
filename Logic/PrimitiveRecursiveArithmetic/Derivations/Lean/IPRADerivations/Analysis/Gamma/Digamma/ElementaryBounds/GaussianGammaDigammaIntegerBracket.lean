@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaIntegerBracket
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaFiniteSum (index reciprocalBody reciprocalSum reciprocal_entry finite_sample_error)
 open GaussianGammaDigammaMonotone (monotone)
@@ -32,10 +32,6 @@ open GaussianRationalSyntheticDivision (qone)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingGammaLogarithm (source)
 open RationalValueBounds (upper upper_mono upper_triangle radius_of_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

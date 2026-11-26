@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRobinLowerDecomposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (eb Bt dt st c3 loN loD)
 open GaussianRobinLogarithmParity (native)
@@ -25,8 +25,6 @@ open GaussianRationalSyntheticDivision (rescale_to qadd_congr qmul_congr)
 open ComplexLogarithmRemainder (scale)
 open GaussianRootAlgebra
   (equal_of_values re_scale im_scale re_one im_one re_add im_add re_mul im_mul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

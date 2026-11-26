@@ -18,7 +18,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTailContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial initial_positive endpoint length initial_length suffix_budget)
@@ -36,9 +36,6 @@ open GaussianRadiusExponentialLipschitzRate (factor)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianFastValueCut (exponent)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

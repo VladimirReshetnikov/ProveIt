@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaDegreeName
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual stored coefficients for the original Gamma zeta-tail polynomial
@@ -19,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaCoefficientPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul evaluate ofGaussian)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr qzero_add)
 open GaussianRationalReciprocal (power)
@@ -28,10 +26,6 @@ open GaussianGammaZetaDegreeName (coefficientData coefficientPart coefficientBod
 open RationalGaussianEmbedding (embed)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,13 +36,9 @@ def polynomialData (q N L : PTm n) : PTm n := pairT q (pairT N L)
 def rowBody : PTm 2 := coefficient (fstT (var 1)) (fstT (sndT (var 1)))
   (monus (degree (sndT (sndT (var 1)))) (var 0))
 def polynomial (q N L : PTm n) : PTm n := sequence rowBody (succ (degree L)) (polynomialData q N L)
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (q N e : PTm n) :
-    Syn.subst σ (coefficient q N e) = coefficient (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ e) := by
-  simp [coefficient,Signum.sg]
-@[simp] theorem subst_polynomialData {m : ℕ} (σ : Fin n → PTm m) (q N L : PTm n) :
-    Syn.subst σ (polynomialData q N L) = polynomialData (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) := by simp [polynomialData]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (q N L : PTm n) :
-    Syn.subst σ (polynomial q N L) = polynomial (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) := by simp [polynomial]
+ipra_subst coefficient [Signum.sg]
+ipra_subst polynomialData
+ipra_subst polynomial
 
 theorem coefficient_congr {q N e q' N' e' : PTm n}
     (hq : Γ ⊢[PRAAx] q ≐ q') (hN : Γ ⊢[PRAAx] N ≐ N') (he : Γ ⊢[PRAAx] e ≐ e') : Γ ⊢[PRAAx]
@@ -71,8 +61,8 @@ theorem row_at (q N L i : PTm n) : Γ ⊢[PRAAx]
   simp only [rowBody,inst2,subst_coefficient,GaussianGammaReciprocalDegreeCells.subst_degree,
     subst_fstT,subst_sndT,PTm.subst_monus,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have t := snd_pair (Γ := Γ) q (pairT N L)
-  exact coefficient_congr (fst_pair _ _) ((congrFst t).eqTrans (fst_pair _ _))
-    (congrMonus (congrSucc (congrSucc ((congrSnd t).eqTrans (snd_pair _ _)))) (.eqRefl _))
+  exact coefficient_congr (fst_pair _ _) t.fstE
+    (congrMonus (congrSucc (congrSucc t.sndE)) (.eqRefl _))
 theorem polynomial_length (q N L : PTm n) : Γ ⊢[PRAAx] length (polynomial q N L) ≐ succ (degree L) :=
   sequence_length _ _ _
 theorem polynomial_lookup (q N L i : PTm n) (hi : Γ ⊢[PRAAx] le i (degree L)) : Γ ⊢[PRAAx]
@@ -101,9 +91,7 @@ theorem polynomial_high (q N L j : PTm n) (hj : Γ ⊢[PRAAx] le j L) : Γ ⊢[P
 def summand (q z B N e : PTm n) : PTm n := qmul (coefficient q N e) (power (ofGaussian z B) e)
 def allTerm : PTm 2 := summand (fstT (var 1)) (fstT (sndT (var 1)))
   (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1)))) (var 0)
-@[simp] theorem subst_summand {m : ℕ} (σ : Fin n → PTm m) (q z B N e : PTm n) :
-    Syn.subst σ (summand q z B N e) = summand (Syn.subst σ q) (Syn.subst σ z)
-      (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ e) := by simp [summand]
+ipra_subst summand
 theorem summand_congr {q z B N e q' z' B' N' e' : PTm n}
     (hq : Γ ⊢[PRAAx] q ≐ q') (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B')
     (hN : Γ ⊢[PRAAx] N ≐ N') (he : Γ ⊢[PRAAx] e ≐ e') : Γ ⊢[PRAAx]
@@ -115,8 +103,8 @@ theorem all_term_at (q z B N e : PTm n) : Γ ⊢[PRAAx]
     Matrix.cons_val_zero,Matrix.cons_val_one]
   have t₁ := snd_pair (Γ := Γ) q (pairT z (pairT B N))
   have t₂ := (congrSnd t₁).eqTrans (snd_pair z (pairT B N))
-  exact summand_congr (fst_pair _ _) ((congrFst t₁).eqTrans (fst_pair _ _))
-    ((congrFst t₂).eqTrans (fst_pair _ _)) ((congrSnd t₂).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact summand_congr (fst_pair _ _) t₁.fstE
+    t₂.fstE t₂.sndE (.eqRefl _)
 
 theorem evaluation_with_zeros (q z B N L : PTm n) : Γ ⊢[PRAAx]
     evaluate (polynomial q N L) (ofGaussian z B) ≐

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalQuadrature
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalShiftedRadius
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegralPositiveLower
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Vertical norm domination for the original Gamma observations
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalGammaBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianEulerVerticalQuadrature (cutoffRadius cutoff_radius_budget)
 open GaussianEulerVerticalRealRadius (gap denominator denominator_positive)
@@ -31,10 +30,6 @@ open GaussianRationalSlackRemoval (slack slack_removal_at)
 open RationalGaussianEmbedding (scalarZero)
 open RationalValueBounds (upper upper_congr upper_of_radius upper_mono upper_triangle)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

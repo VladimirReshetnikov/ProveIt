@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Vandermonde's identity
@@ -27,16 +26,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.Vandermonde
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self' pascal_at)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le gle_above)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -98,9 +93,9 @@ theorem inst2_s (k y : PTm n) :
     inst2 sB k y = gb (fstT (fstT y)) (succ k) * gb (sndT (fstT y)) (monus (sndT y) k) := by simp [inst2]
 
 theorem ff_p (m nn r : PTm n) : Γ ⊢[PRAAx] fstT (fstT (pairT (pairT m nn) r)) ≐ m :=
-  (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
+  (fst_pair _ _).fstE
 theorem sf_p (m nn r : PTm n) : Γ ⊢[PRAAx] sndT (fstT (pairT (pairT m nn) r)) ≐ nn :=
-  (congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _)
+  (fst_pair _ _).sndE
 
 theorem vs_at (k m nn r : PTm n) :
     Γ ⊢[PRAAx] inst2 vsB k (pairT (pairT m nn) r) ≐ gb m k * gb nn (monus r k) := by
@@ -245,13 +240,9 @@ theorem viol_base (nn R : PTm n) : Γ ⊢[PRAAx] ap2 (sumF violB) R (pairT zero 
 private abbrev vF : Fm PTm 3 := ap2 (sumF violB) (var 2) (pairT (var 0) (var 1)) ≐ zero
 
 private theorem v₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] vF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact viol_base _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact viol_step Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact viol_base _ _
+  · exact viol_step Prf.hyp0
 
 /-- Vandermonde: `∑_{k ≤ r} C(m, k) C(n, r − k) = C(m + n, r)`. -/
 theorem vandermonde (m nn r : PTm n) : Γ ⊢[PRAAx] VS m nn r ≐ gb (m + nn) r := by

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpanPivotForward
 import IPRADerivations.Analysis.RationalArithmetic.Spans.GaussianRationalRowSpanRewind
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticSubspaceFromSpan
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual forward coefficients through rectangular elimination
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRowSpanForward
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalEliminationLoop (matrix history matrix_zero matrix_succ matrix_shape)
 open GaussianRationalPivotSearch (flag selected flag_cases next_failure next_success selected_input)
 open GaussianRationalRowElimination (shape)
@@ -26,9 +25,6 @@ open GaussianRationalRowSpanRewind (combination_congr)
 open GaussianSuperellipticSubspaceFromSpan (hasCoefficients)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_zero sel_one)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,14 +39,9 @@ def stepBody : PTm 3 := advance (fstT (sndT (var 2))) (fstT (sndT (sndT (var 2))
 def weightsF : PR 2 := rec2 baseBody stepBody
 def weights (A R N u c : PTm n) : PTm n := ap2 weightsF c (data A R N u)
 
-@[simp] theorem subst_advance {k : ℕ} (σ : Fin n → PTm k) (A R N c u : PTm n) :
-    Syn.subst σ (advance A R N c u) = advance (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ c) (Syn.subst σ u) := by simp [advance,sel]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (A R N u : PTm n) :
-    Syn.subst σ (data A R N u) = data (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ u) := by simp [data]
-@[simp] theorem subst_weights {k : ℕ} (σ : Fin n → PTm k) (A R N u c : PTm n) :
-    Syn.subst σ (weights A R N u c) = weights (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ u) (Syn.subst σ c) := by simp [weights]
+ipra_subst advance [sel]
+ipra_subst data
+ipra_subst weights
 
 theorem advance_congr {A A' R R' N N' c c' u u' : PTm n} (hA : Γ ⊢[PRAAx] A ≐ A')
     (hR : Γ ⊢[PRAAx] R ≐ R') (hN : Γ ⊢[PRAAx] N ≐ N') (hc : Γ ⊢[PRAAx] c ≐ c')
@@ -68,8 +59,8 @@ theorem weights_succ (A R N u c : PTm n) : Γ ⊢[PRAAx]
     Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] at e
   have tail := snd_pair (Γ := Γ) u (pairT A (pairT R N))
   have dims := (congrSnd tail).eqTrans (snd_pair A (pairT R N))
-  exact e.eqTrans (advance_congr ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrFst dims).eqTrans (fst_pair _ _)) ((congrSnd dims).eqTrans (snd_pair _ _)) (.eqRefl _) (.eqRefl _))
+  exact e.eqTrans (advance_congr tail.fstE
+    dims.fstE dims.sndE (.eqRefl _) (.eqRefl _))
 
 theorem advance_length (A R N c u : PTm n) (hu : Γ ⊢[PRAAx] length u ≐ R) : Γ ⊢[PRAAx]
     length (advance A R N c u) ≐ R := by
@@ -81,11 +72,9 @@ theorem advance_length (A R N c u : PTm n) (hu : Γ ⊢[PRAAx] length u ≐ R) :
 theorem weights_length (A R N u c : PTm n) (hu : Γ ⊢[PRAAx] length u ≐ R) : Γ ⊢[PRAAx]
     length (weights A R N u c) ≐ R := by
   have all : Γ ⊢[PRAAx] .all (length (weights (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift u) (var 0)) ≐ Syn.shift R) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_weights,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (weights_zero _ _ _ _)).eqTrans hu
-    · simp only [Fm.subst_eq,subst_length,subst_weights,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (weights_succ _ _ _ _ _)).eqTrans (advance_length _ _ _ _ _ Prf.hyp0)
+    ipra_qfind [subst_length, subst_weights]
+    · exact (congrFst (weights_zero _ _ _ _)).eqTrans hu
+    · exact (congrFst (weights_succ _ _ _ _ _)).eqTrans (advance_length _ _ _ _ _ Prf.hyp0)
   simpa only [Fm.subst_eq,subst_length,subst_weights,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE c
 
 theorem advance_column (A R N c u j : PTm n) (hA : Γ ⊢[PRAAx] shape A R N)
@@ -104,9 +93,7 @@ theorem advance_column (A R N c u j : PTm n) (hA : Γ ⊢[PRAAx] shape A R N)
 
 def columnLaw (A R N u j c : PTm n) : Fm PTm n := le c N ⟶
   combinationAt (matrix A R N c) R (weights A R N u c) j ≐ combinationAt A R u j
-@[simp] theorem subst_columnLaw {k : ℕ} (σ : Fin n → PTm k) (A R N u j c : PTm n) :
-    (columnLaw A R N u j c).subst σ = columnLaw (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ u) (Syn.subst σ j) (Syn.subst σ c) := by simp [columnLaw]
+ipra_subst columnLaw
 theorem column_step (A R N u j c : PTm n) (hA : Γ ⊢[PRAAx] shape A R N)
     (hj : Γ ⊢[PRAAx] lt j N) (hc : Γ ⊢[PRAAx] le (succ c) N)
     (ih : Γ ⊢[PRAAx] columnLaw A R N u j c) : Γ ⊢[PRAAx]
@@ -123,11 +110,9 @@ theorem column_forward (A R N u c j : PTm n) (hA : Γ ⊢[PRAAx] shape A R N)
   have js : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift j) (Syn.shift N) := by
     simpa only [Fm.shift,subst_lt,Syn.shift] using hj.shift
   have all : Γ ⊢[PRAAx] .all (columnLaw (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift u) (Syn.shift j) (var 0)) := by
-    refine PRA.qfInd _ (by simp [columnLaw,Fm.QF,le]) ?_ ?_
-    · simp only [subst_columnLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (combination_congr (matrix_zero _ _ _) (weights_zero _ _ _ _))
-    · simp only [subst_columnLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (column_step (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift u) (Syn.shift j)
+    ipra_qfind (by simp [columnLaw,Fm.QF,le]) [subst_columnLaw]
+    · exact .impI (combination_congr (matrix_zero _ _ _) (weights_zero _ _ _ _))
+    · exact .impI (column_step (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift u) (Syn.shift j)
         (var 0) As.wk.wk js.wk.wk Prf.hyp0 Prf.hyp1)
   have atC : Γ ⊢[PRAAx] columnLaw A R N u j c := by
     simpa only [subst_columnLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE c
@@ -173,13 +158,7 @@ theorem hasCoefficients_forward (A R N v c : PTm n) (hA : Γ ⊢[PRAAx] shape A 
 
 def outputF : PR 5 := PTm.toPR (weights (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A R N u c : PTm n) : PTm n := app outputF ![A,R,N,u,c]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R N u c : PTm n) :
-    Syn.subst σ (run A R N u c) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ u) (Syn.subst σ c) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst run
 theorem program_at (A R N u c : PTm n) : Γ ⊢[PRAAx] run A R N u c ≐ weights A R N u c := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (weights (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,R,N,u,c]
 theorem returned_length (A R N u c : PTm n) (hu : Γ ⊢[PRAAx] length u ≐ R) : Γ ⊢[PRAAx]

@@ -1,7 +1,5 @@
 import IPRADerivations.Geometry.Distinct.AnalyticConicRationalAffine
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual rational inverse of an affine conic substitution
@@ -18,16 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Geometry.Distinct.AnalyticConicRationalInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open AnalyticConicAffine (read pack6 read_congr read_pack6_0 read_pack6_1 read_pack6_2 read_pack6_3 read_pack6_4 read_pack6_5)
 open AnalyticConicRationalAffine (numerators denominator record valid coefficient image imageX imageY
   record_numerators record_denominator image_denominator image_x_value image_y_value image_valid)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
 open LeanProofs.IPRA.Analysis.RationalNormalForm (normalize_well_formed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -50,18 +45,14 @@ def multiplier (m : PTm n) : PTm n := denominator m*pivot m
 
 def canonicalPoint (p : PTm n) : PTm n := pairT (coefficient 0 p) (coefficient 1 p)
 
-@[simp] theorem subst_nativeDeterminant {j : ℕ} (σ : Fin n → PTm j) (m : PTm n) :
-    (nativeDeterminant m).subst σ = nativeDeterminant (Syn.subst σ m) := by simp [nativeDeterminant]
+ipra_subst nativeDeterminant
 @[simp] theorem subst_pivot {j : ℕ} (σ : Fin n → PTm j) (m : PTm n) : Syn.subst σ (pivot m) = pivot (Syn.subst σ m) := by simp only [pivot,PTm.subst_mul,Foundations.GapDecision.subst_zabs,subst_nativeDeterminant]
-@[simp] theorem subst_source {j : ℕ} (σ : Fin n → PTm j) (m : PTm n) : (source m).subst σ = source (Syn.subst σ m) := by simp [source]
-@[simp] theorem subst_inverseNumerators {j : ℕ} (σ : Fin n → PTm j) (m : PTm n) :
-    Syn.subst σ (inverseNumerators m) = inverseNumerators (Syn.subst σ m) := by simp [inverseNumerators]
-@[simp] theorem subst_inverse {j : ℕ} (σ : Fin n → PTm j) (m : PTm n) : Syn.subst σ (inverse m) = inverse (Syn.subst σ m) := by simp [inverse]
-@[simp] theorem subst_multiplier {j : ℕ} (σ : Fin n → PTm j) (m : PTm n) : Syn.subst σ (multiplier m) = multiplier (Syn.subst σ m) := by simp [multiplier]
-@[simp] theorem subst_coefficient {j : ℕ} (σ : Fin n → PTm j) (k : ℕ) (p : PTm n) :
-    Syn.subst σ (coefficient k p) = coefficient k (Syn.subst σ p) := by simp [coefficient]
-@[simp] theorem subst_canonicalPoint {j : ℕ} (σ : Fin n → PTm j) (p : PTm n) :
-    Syn.subst σ (canonicalPoint p) = canonicalPoint (Syn.subst σ p) := by simp [canonicalPoint]
+ipra_subst source
+ipra_subst inverseNumerators
+ipra_subst inverse
+ipra_subst multiplier
+ipra_subst coefficient
+ipra_subst canonicalPoint
 
 /-- Derive a positive integer pivot from the explicit nonzero signed
 value, rather than requiring an additional apartness certificate. -/
@@ -71,10 +62,9 @@ theorem absolute_positive (d : ZT n) (hd : Γ ⊢[PRAAx] neg (ZT.eq d (ZT.natLit
       le_antisymm (add_eq_zero_left Prf.hyp0) (add_eq_zero_left ((add_comm _ _).eqTrans Prf.hyp0))
     have bad : ((zabs d ≐ zero) :: Γ) ⊢[PRAAx] ZT.eq d (ZT.natLit 0) := by
       apply ZT.derive
-      have e := natEq equal
       simp only [ZT.toZ,ZT.natLit,ZT.ofNat]
       ipra_simps
-      linear_combination e
+      linear_combination natEq equal
     exact .botE _ (.impE hd.wk bad)
   · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
 
@@ -125,9 +115,8 @@ private theorem coordinate_rescaling (k : ℕ) (p q L : PTm n) (hp : Γ ⊢[PRAA
     (AnalyticConicRationalAffine.coefficient_value k q hq) (AnalyticConicRationalAffine.coefficient_value k p hp) hq hp
   apply ZT.derive
   have num := ZT.toZ_eq hn
-  have den := natEq hd
   simp only [ZT.toZ_mul,ZT.toZ_ofNat] at num ⊢
-  rw [num,den]
+  rw [num,natEq hd]
   ipra_simps
   ring
 

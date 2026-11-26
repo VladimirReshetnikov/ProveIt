@@ -1,6 +1,5 @@
 import IPRADerivations.Core.Bezout
 import IPRADerivations.AnalyticNumberTheory.Primes
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Euclid's lemma

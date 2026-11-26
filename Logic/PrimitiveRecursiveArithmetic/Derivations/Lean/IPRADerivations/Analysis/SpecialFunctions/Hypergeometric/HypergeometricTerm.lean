@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.Pochhammer
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The rising-factorial form of a hypergeometric term, and the Lambert polynomials
@@ -38,13 +37,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.HypergeometricTerm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.Pochhammer (poch poch_zero poch_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -97,15 +92,11 @@ private abbrev numF : Fm PTm 3 :=
   hn (var 1) (var 2) (var 0) ≐ poch (var 1) (var 0) * pw (var 2) (var 0)
 
 private theorem num₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] numF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (hn_zero _ _).eqTrans ?_
+  ipra_ind [subst_ap2, subst_pairT]
+  · refine (hn_zero _ _).eqTrans ?_
     ipra_lc -natEq (poch_zero (Γ := []) (var 0 : PTm 2)) -
       𝔞(poch (var 0 : PTm 2) zero) * natEq (pw_zero (Γ := []) (var 1 : PTm 2))
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact num_step Prf.hyp0
+  · exact num_step Prf.hyp0
 
 /-- `hn A w k = (A)_k w^k`. -/
 theorem rising_num (A w k : PTm n) : Γ ⊢[PRAAx] hn A w k ≐ poch A k * pw w k := by
@@ -122,15 +113,11 @@ theorem den_step {B k : PTm n} (ih : Γ ⊢[PRAAx] hd B k ≐ poch B k * fact k)
 private abbrev denF : Fm PTm 2 := hd (var 1) (var 0) ≐ poch (var 1) (var 0) * fact (var 0)
 
 private theorem den₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] denF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (hd_zero _).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · refine (hd_zero _).eqTrans ?_
     ipra_lc -natEq (poch_zero (Γ := []) (var 0 : PTm 1)) -
       𝔞(poch (var 0 : PTm 1) zero) * natEq (fact_zero (Γ := []) (zero : PTm 1))
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact den_step Prf.hyp0
+  · exact den_step Prf.hyp0
 
 /-- `hd B k = (B)_k k!`. -/
 theorem rising_den (B k : PTm n) : Γ ⊢[PRAAx] hd B k ≐ poch B k * fact k := by

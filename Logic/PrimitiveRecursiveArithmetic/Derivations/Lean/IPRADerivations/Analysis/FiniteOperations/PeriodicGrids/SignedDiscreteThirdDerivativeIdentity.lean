@@ -16,13 +16,11 @@ set_option maxHeartbeats 1350000
 
 namespace LeanProofs.IPRA.Analysis.SignedDiscreteThirdDerivativeIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open SignedDiscreteDerivativeOperators
   (width divisor subtract delta accumulate subtract_at delta_at accumulate_delta
     delta_subtract accumulate_subtract delta_congr accumulate_congr)
 open SignedCubicTaylorGrid (combination)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaParameterRates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactLogarithmBounds (domain)
 open GaussianEulerCompactPowerParameterRate (gain original_power_rate)
 open GaussianEulerExponentCompactBounds (source)
@@ -29,9 +29,6 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalHorner (ofGaussian qadd)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qone qadd_congr)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -80,9 +77,7 @@ theorem dirichlet_rate (z w R B D E j H N : PTm n)
 
 def mellinGain (R E T : PTm n) : PTm n := E*gain R E T
 
-@[simp] theorem subst_mellinGain {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (mellinGain R E T) = mellinGain (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [mellinGain]
+ipra_subst mellinGain
 
 theorem mellin_rate (z w R B D E T a b H N : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerCompactPowerParameterRate.input z w R B D E T a b H N) :

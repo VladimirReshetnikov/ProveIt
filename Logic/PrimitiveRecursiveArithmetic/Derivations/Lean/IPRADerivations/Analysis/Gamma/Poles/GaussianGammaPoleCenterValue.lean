@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleFormula
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianRobinMeshExponential
 import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact center value of the original local Gamma regular part
@@ -18,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleCenterValue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaPoleMultiplier (inverseFactorProduct inverseFactorBody signedInverseFactorial)
 open GaussianGammaLocalPoleFormula (regularMultiplier regularData resultF)
 open GaussianGammaLocalPoleGuards (terminal)
@@ -27,9 +26,6 @@ open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianRationalReciprocal (reciprocal)
 open GaussianRootAlgebra (equal equal_of_values equal_trans)
 open ComplexLogarithmRemainder (zeroCode oneCode scale normSq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -65,17 +61,14 @@ theorem reciprocal_congr {q r : PTm n} (e : Γ ⊢[PRAAx] q ≐ r) : Γ ⊢[PRAA
   ipra_congr (reciprocal (var 0) : PTm 1) with [e]
 
 def inverseZeroLaw (B j : PTm n) : Fm PTm n := inverseFactorProduct zeroCode B j ≐ qone
-@[simp] theorem subst_inverseZeroLaw {l : ℕ} (σ : Fin n → PTm l) (B j : PTm n) :
-    (inverseZeroLaw B j).subst σ = inverseZeroLaw (Syn.subst σ B) (Syn.subst σ j) := by simp [inverseZeroLaw]
+ipra_subst inverseZeroLaw
 
 theorem inverse_product_at_zero (B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] inverseZeroLaw B j := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have hall : Γ ⊢[PRAAx] .all (inverseZeroLaw (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_inverseZeroLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact GaussianRationalFiniteProduct.product_zero inverseFactorBody (pairT zeroCode B)
-    · simp only [subst_inverseZeroLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (GaussianGammaPoleMultiplier.inverseFactorProduct_succ zeroCode _ _).eqTrans
+    ipra_qfind [subst_inverseZeroLaw]
+    · exact GaussianRationalFiniteProduct.product_zero inverseFactorBody (pairT zeroCode B)
+    · exact (GaussianGammaPoleMultiplier.inverseFactorProduct_succ zeroCode _ _).eqTrans
         ((qmul_congr Prf.hyp0 ((reciprocal_congr (factor_at_zero _ _ bs.wk (zero_lt_succ _))).eqTrans reciprocal_one)).eqTrans
           (GaussianReciprocalHorner.qmul_one_right qone qone_canonical))
   simpa only [subst_inverseZeroLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE j
@@ -93,12 +86,8 @@ theorem terminal_at_zero (j : PTm n) : Γ ⊢[PRAAx] equal (terminal zeroCode on
       GaussianRootAlgebra.re_one,GaussianRootAlgebra.im_one] <;> ipra_simps <;> ring
 def centerData (j D : PTm n) : PTm n := regularData zeroCode one j D
 def centerValue (j : PTm n) : PTm n := signedInverseFactorial j
-@[simp] theorem subst_centerData {l : ℕ} (σ : Fin n → PTm l) (j D : PTm n) :
-    Syn.subst σ (centerData j D) = centerData (Syn.subst σ j) (Syn.subst σ D) := by
-  simp [centerData,regularData,regularMultiplier,signedInverseFactorial,
-    GaussianGammaReciprocalInverse.gammaData,GaussianGammaReciprocalInverse.gammaHeight,terminal]
-@[simp] theorem subst_centerValue {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    Syn.subst σ (centerValue j) = centerValue (Syn.subst σ j) := by simp [centerValue,signedInverseFactorial]
+ipra_subst centerData [regularData, regularMultiplier, signedInverseFactorial, GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight, terminal]
+ipra_subst centerValue [signedInverseFactorial]
 
 theorem zero_scaled_bound (D : PTm n) : Γ ⊢[PRAAx]
     ComplexLogarithmRemainder.bounded (scale D zeroCode) (zero*one) := by
@@ -154,26 +143,20 @@ def output (p q j D : PTm n) : PTm n := pairT (ap2 resultF p (centerData j D))
   (pairT (centerValue j) (ap2 GaussianGammaCanonicalExponent.constantF q (centerValue j)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (p q j D : PTm n) : PTm n := PTm.app outputF ![p,q,j,D]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p q j D : PTm n) :
-    Syn.subst σ (output p q j D) = output (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) (Syn.subst σ D) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p q j D : PTm n) :
-    Syn.subst σ (run p q j D) = run (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ j) (Syn.subst σ D) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p q j D : PTm n) : Γ ⊢[PRAAx] run p q j D ≐ output p q j D := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![p,q,j,D]
 theorem returned_regular_part (p q j D : PTm n) : Γ ⊢[PRAAx]
     fstT (run p q j D) ≐ ap2 resultF p (centerData j D) :=
-  (congrFst (program_at p q j D)).eqTrans (fst_pair _ _)
+  (program_at p q j D).fstE
 theorem returned_center_coefficient (p q j D : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run p q j D)) ≐ centerValue j :=
-  (congrFst ((congrSnd (program_at p q j D)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at p q j D).sndE.fstE
 theorem returned_constant (p q j D : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run p q j D)) ≐ ap2 GaussianGammaCanonicalExponent.constantF q (centerValue j) :=
-  (congrSnd ((congrSnd (program_at p q j D)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at p q j D).sndE.sndE
 theorem returned_center_distance (p q j D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     GaussianRationalMetric.distanceBounded (fstT (run p q j D)) (sndT (sndT (run p q j D)))
       (GaussianCoefficientNameBounds.unit p+GaussianCoefficientNameBounds.unit q)

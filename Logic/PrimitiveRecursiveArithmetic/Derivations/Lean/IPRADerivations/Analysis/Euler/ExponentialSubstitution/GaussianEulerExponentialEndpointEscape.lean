@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialEndpointEscape
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
 open RationalHarmonicInterval (horizon interval numerator common_value)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalSyntheticBounds (natCode natCode_represents)
 open RationalValueBounds (upper upper_of_radius upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,10 +37,10 @@ def minimumCutoff (t : PTm n) : PTm n := unit (exponent t)
 def largePoint (t : PTm n) : PTm n := two*unit (exponent t)
 def negativeInteger (t : PTm n) : PTm n := RationalArithmetic.negative (natCode t)
 
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) : Syn.subst σ (exponent t) = exponent (Syn.subst σ t) := by simp [exponent]
-@[simp] theorem subst_minimumCutoff {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) : Syn.subst σ (minimumCutoff t) = minimumCutoff (Syn.subst σ t) := by simp [minimumCutoff]
-@[simp] theorem subst_largePoint {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) : Syn.subst σ (largePoint t) = largePoint (Syn.subst σ t) := by simp [largePoint]
-@[simp] theorem subst_negativeInteger {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) : Syn.subst σ (negativeInteger t) = negativeInteger (Syn.subst σ t) := by simp [negativeInteger]
+ipra_subst exponent
+ipra_subst minimumCutoff
+ipra_subst largePoint
+ipra_subst negativeInteger
 
 theorem point_positive (t x : PTm n) (hx : Γ ⊢[PRAAx] le (largePoint t) x) : Γ ⊢[PRAAx] le one x :=
   le_trans (positive_product _ _ (zero_lt_succ one) (unit_positive (exponent t))) hx
@@ -66,11 +62,10 @@ theorem finite_numerator_lower (t x Q : PTm n) (hx : Γ ⊢[PRAAx] le (largePoin
     S_mono F (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right Q (point_positive t x hx)))
   have step := AnalyticNumberTheory.Doubling.S_pow2_lower F (exponent t) hQ
   have mono := S_mono F up
-  have gap := natEq (eq_add_of_le order)
   have qone := natEq (congrAp2 (sumF hB) (by ipra_ring : Γ ⊢[PRAAx] Q*one ≐ Q) (.eqRefl F))
   have twice : Γ ⊢[PRAAx] le (two*(t*F)) (two*δ) := by
     dsimp only [δ,V,F,exponent,unit] at *
-    ipra_le sl step+2*sl mono+sl budget+𝔞(Products.fact (horizon x one Q)) with 2*gap+2*qone
+    ipra_le sl step+2*sl mono+sl budget+𝔞(Products.fact (horizon x one Q)) with 2*natEq (eq_add_of_le order)+2*qone
   exact RationalValueBounds.positive_cancel (zero_lt_succ (Γ := Γ) one) twice
 
 theorem interval_lower (t x Q : PTm n) (hx : Γ ⊢[PRAAx] le (largePoint t) x) (hQ : Γ ⊢[PRAAx] le one Q) : Γ ⊢[PRAAx]

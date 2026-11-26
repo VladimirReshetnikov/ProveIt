@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalQuadraticBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmName (baseNumerator baseDenominator base_positive)
 open GaussianBarnesCanonicalDeflatedFactor (inverseInteger)
 open GaussianBarnesCanonicalDerivativeAlgebra (linearTerm localQuadratic correctionDifference cancellation)
@@ -33,8 +33,6 @@ open GaussianRationalReciprocal (qone reciprocal power)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

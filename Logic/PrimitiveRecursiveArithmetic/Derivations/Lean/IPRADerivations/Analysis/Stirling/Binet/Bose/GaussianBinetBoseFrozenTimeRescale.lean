@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseFrozenTimeRescale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayPointwise (angle row fullDecay subst_row)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianCompactRiemannName (fraction_congr)
@@ -28,10 +28,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Atan" => GaussianBinetArctangentQuadrature.nameF

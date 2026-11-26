@@ -12,9 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSumMirror
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open GaussianRationalFiniteProduct (offset_at)
 open GaussianRationalFiniteSumReversal (data reverseBody reverse_body_at)
 open RationalArithmetic (add)
@@ -22,8 +20,6 @@ open RationalAlgebra (add_congr add_associative)
 open RationalFiniteSum (sum term)
 open RationalSumAdditivity (addedBody sum_additive added_term)
 open RationalSumSegments (sum_congr split)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,9 +29,7 @@ private def suffixData (N x : PTm n) : PTm n := data (succ N) (pairT N x)
 
 def mirrorData (N x : PTm n) : PTm n := pairT x (suffixData N x)
 
-@[simp] theorem subst_mirrorData {l : ℕ} (σ : Fin n → PTm l) (N x : PTm n) :
-    Syn.subst σ (mirrorData N x) = mirrorData (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [mirrorData,suffixData]
+ipra_subst mirrorData [suffixData]
 
 private theorem reverse_index (i N : PTm n) (hi : Γ ⊢[PRAAx] le i N) :
     Γ ⊢[PRAAx] N+monus N i ≐ monus (N+N) i := by

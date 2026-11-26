@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTranslationCoefficientMaximum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power)
 open LeanProofs.IPRA.Analysis.GaussianDominantPairAlgebra (radiusPoint)
@@ -27,10 +27,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalTranslationStages (stage)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE selected)
 open LeanProofs.IPRA.Analysis.RationalValueBounds (negate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,21 +41,11 @@ def negativeScoreF : PR 2 := PTm.toPR negativeBody
 def winner (C N z A B : PTm n) : PTm n := succ (selected negativeScoreF (pred N) (data C N z A B))
 def base (C N z A B : PTm n) : PTm n := term C N z A B (winner C N z A B)
 
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (C N z A B i : PTm n) :
-    Syn.subst σ (term C N z A B i) = term (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ i) := by simp [term]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (data C N z A B) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
-@[simp] theorem subst_negativeScore {m : ℕ} (σ : Fin n → PTm m) (C N z A B r : PTm n) :
-    Syn.subst σ (negativeScore C N z A B r) = negativeScore (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ r) := by simp [negativeScore]
-@[simp] theorem subst_winner {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (winner C N z A B) = winner (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) := by simp [winner]
-@[simp] theorem subst_base {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (base C N z A B) = base (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) := by simp [base]
+ipra_subst term
+ipra_subst data
+ipra_subst negativeScore
+ipra_subst winner
+ipra_subst base
 
 theorem term_congr {C C' N N' z z' A A' B B' i i' : PTm n}
     (hC : Γ ⊢[PRAAx] C ≐ C') (hN : Γ ⊢[PRAAx] N ≐ N') (hz : Γ ⊢[PRAAx] z ≐ z')
@@ -79,12 +65,12 @@ theorem term_canonical (C N z A B i : PTm n) : Γ ⊢[PRAAx]
 theorem negative_score_at (C N z A B r : PTm n) : Γ ⊢[PRAAx]
     ap2 negativeScoreF r (data C N z A B) ≐ negate (qnormSq (term C N z A B (succ r))) := by
   have t1 : Γ ⊢[PRAAx] sndT (data C N z A B) ≐ pairT N (pairT z (pairT A B)) := snd_pair _ _
-  have t2 := (congrSnd t1).eqTrans (snd_pair _ _)
-  have t3 := (congrSnd t2).eqTrans (snd_pair _ _)
+  have t2 := t1.sndE
+  have t3 := t2.sndE
   have fields := RationalValueBounds.negate_congr (GaussianRationalProductWitness.qnormSq_congr
     (term_congr (fst_pair C (pairT N (pairT z (pairT A B))))
-      ((congrFst t1).eqTrans (fst_pair _ _)) ((congrFst t2).eqTrans (fst_pair _ _))
-      ((congrFst t3).eqTrans (fst_pair _ _)) ((congrSnd t3).eqTrans (snd_pair _ _)) (.eqRefl (succ r))))
+      t1.fstE t2.fstE
+      t3.fstE t3.sndE (.eqRefl (succ r))))
   have program := toPR_eq (Γ := Γ) negativeBody ![r,data C N z A B]
   have shape : Syn.subst ![r,data C N z A B] negativeBody =
       negativeScore (fstT (data C N z A B)) (fstT (sndT (data C N z A B)))
@@ -120,24 +106,16 @@ def output (C N z A B : PTm n) : PTm n := pairT (winner C N z A B) (base C N z A
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (C N z A B : PTm n) : PTm n := PTm.app outputF ![C,N,z,A,B]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (output C N z A B) = output (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (run C N z A B) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N z A B : PTm n) : Γ ⊢[PRAAx] run C N z A B ≐ output C N z A B := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,N,z,A,B]
 theorem returned_index (C N z A B : PTm n) : Γ ⊢[PRAAx] fstT (run C N z A B) ≐ winner C N z A B :=
-  (congrFst (program_at C N z A B)).eqTrans (fst_pair _ _)
+  (program_at C N z A B).fstE
 theorem returned_value (C N z A B : PTm n) : Γ ⊢[PRAAx] sndT (run C N z A B) ≐ base C N z A B :=
-  (congrSnd (program_at C N z A B)).eqTrans (snd_pair _ _)
+  (program_at C N z A B).sndE
 
 theorem translated_coefficient_maximum_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     (le one (var 1) ⟶ le one (var 5) ⟶ le (var 5) (var 1) ⟶

@@ -16,7 +16,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentQuarterExponential (quarterF quarter_regular)
 open GaussianBoundedConstantProductName (constantF constant_regular ordinary_product_identity)
 open GaussianNameArithmetic (multiply_equivalent add_equivalent)
@@ -24,9 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_refl 
 open GaussianNameRingLaws (negativeF negativeData negative_fast negative_equivalent)
 open GaussianRightHalfPlaneArgument
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

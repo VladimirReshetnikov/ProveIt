@@ -19,7 +19,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentTwoSidedMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentBackwardQuotient (forwardData)
 open GaussianBinetLaplaceMomentBackwardWindow (lowerData lowerNumerator)
@@ -32,9 +32,6 @@ open GaussianLogGammaEulerResidualRadius (radius source_of_right_half_plane)
 open GaussianNameEquivalence (cross_refl cross_symm)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk Γ t)
@@ -49,14 +46,9 @@ def source (X D R K H Q : PTm n) : Fm PTm n :=
 
 def backwardBudget (j K H : PTm n) : PTm n := Fbudget j (two*K) H + gain (succ j) (two*K)*H
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (X D R K H Q : PTm n) :
-    (source X D R K H Q).subst σ =
-      source (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ K) (Syn.subst σ H) (Syn.subst σ Q) := by
-  simp [source,one,two]
+ipra_subst source [one, two]
 
-@[simp] theorem subst_backwardBudget {m : ℕ} (σ : Fin n → PTm m) (j K H : PTm n) :
-    Syn.subst σ (backwardBudget j K H) = backwardBudget (Syn.subst σ j) (Syn.subst σ K) (Syn.subst σ H) := by
-  simp [backwardBudget,two]
+ipra_subst backwardBudget [two]
 
 theorem window_geometry (X D R K H Q : PTm n) (h : Γ ⊢[PRAAx] source X D R K H Q) :
     let Y := lowerNumerator X D H Q

@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsOuter
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderPanelPartsRecurrence (residual endpointCap errorCoefficient finite_panel_recurrence)
 open GaussianStirlingAllOrderPanelPartsRows (rowRadius)
 open GaussianStirlingAllOrderReciprocalGridError (gridCoefficient)
@@ -25,8 +25,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open RationalGaussianEmbedding (embed)
 open RationalGaussianRealPart (embedBody embed_congr embed_sum)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -39,9 +37,7 @@ def body (m e : ℕ) : PTm 2 :=
 def errorSum (m e : ℕ) (A B M L : PTm n) : PTm n :=
   RationalFiniteSum.sum (body m e) L (data A B M)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (A B M : PTm n) :
-    Syn.subst σ (data A B M) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ M) :=
-  by simp [data]
+ipra_subst data
 
 @[simp] theorem subst_residual {l : ℕ} (σ : Fin n → PTm l) (m e : ℕ) (U B M : PTm n) :
     Syn.subst σ (residual m e U B M) = residual m e (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ M) := by
@@ -79,13 +75,7 @@ theorem error_coefficient_monotone (m e : ℕ) (U V B : PTm n)
   unfold errorCoefficient rowRadius
   ipra_le 𝔞 (GaussianStirlingAllOrderPanelPartsRows.profileCap m)*sl hg
 
-@[simp] theorem subst_errorCoefficient {l : ℕ} (σ : Fin n → PTm l) (m e : ℕ) (U B : PTm n) :
-    Syn.subst σ (errorCoefficient m e U B) = errorCoefficient m e (Syn.subst σ U) (Syn.subst σ B) := by
-  simp [errorCoefficient,rowRadius,gridCoefficient,power,
-    GaussianStirlingAllOrderPanelPartsBoundary.boundaryCap,endpointCap,
-    GaussianStirlingAllOrderPanelPartsRows.profileCap,GaussianStirlingAllOrderCentralBernoulliError.radiusNumerator,
-    GaussianStirlingAllOrderPanelDerivative.signedMean,GaussianStirlingAllOrderPanelDerivative.meanNumerator,
-    GaussianStirlingAllOrderPanelPartsDensities.lowScalar,BernoulliBounds.zint,RationalSupMetric.numeratorOf]
+ipra_subst errorCoefficient [rowRadius, gridCoefficient, power, GaussianStirlingAllOrderPanelPartsBoundary.boundaryCap, endpointCap, GaussianStirlingAllOrderPanelPartsRows.profileCap, GaussianStirlingAllOrderCentralBernoulliError.radiusNumerator, GaussianStirlingAllOrderPanelDerivative.signedMean, GaussianStirlingAllOrderPanelDerivative.meanNumerator, GaussianStirlingAllOrderPanelPartsDensities.lowScalar, BernoulliBounds.zint, RationalSupMetric.numeratorOf]
 
 theorem finite_outer_recurrence (m e : ℕ) (hm : 0<m) (he : 2≤e) (A B M L : PTm n)
     (hA : Γ ⊢[PRAAx] le one A) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]

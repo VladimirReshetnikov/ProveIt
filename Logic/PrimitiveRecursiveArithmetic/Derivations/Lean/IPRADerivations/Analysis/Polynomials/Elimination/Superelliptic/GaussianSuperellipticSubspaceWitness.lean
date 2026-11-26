@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticSubspaceWitness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianPolynomialWeightedDegree (weightedDegree)
 open LeanProofs.IPRA.Analysis.GaussianRationalCurveFibers (pointDistinct functionZeros)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiberGrouping (abscissa ordinate)
@@ -27,9 +27,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qzero)
 open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialDegree (degree nonzeroCoefficients)
 open LeanProofs.IPRA.Analysis.GaussianSuperellipticNormDegree (pointPowers)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,28 +52,17 @@ def certificate (f a m c L P : PTm n) : Fm PTm n :=
   GaussianSuperellipticNormDegree.certificate f (polynomial f a m c L) m L c ⋏
     (le (length P) (weight f a m c L) ⋏ le (weight f a m c L) L)
 
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (f a m c L : PTm n) :
-    Syn.subst σ (polynomial f a m c L) = polynomial (Syn.subst σ f) (Syn.subst σ a)
-      (Syn.subst σ m) (Syn.subst σ c) (Syn.subst σ L) := by simp [polynomial]
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (f a m c L : PTm n) :
-    Syn.subst σ (weight f a m c L) = weight (Syn.subst σ f) (Syn.subst σ a)
-      (Syn.subst σ m) (Syn.subst σ c) (Syn.subst σ L) := by simp [weight]
-@[simp] theorem subst_basisCount {l : ℕ} (σ : Fin n → PTm l) (f m c L : PTm n) :
-    Syn.subst σ (basisCount f m c L) = basisCount (Syn.subst σ f) (Syn.subst σ m)
-      (Syn.subst σ c) (Syn.subst σ L) := by simp [basisCount]
+ipra_subst polynomial
+ipra_subst weight
+ipra_subst basisCount
 @[simp] theorem subst_curveInput {l : ℕ} (σ : Fin n → PTm l) (f m c : PTm n) :
     (curveInput f m c).subst σ = curveInput (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c) := by
   have hg (u v : PTm n) : Syn.subst σ (gcd u v) = gcd (Syn.subst σ u) (Syn.subst σ v) := by
     simp only [gcd,subst_ex2,ConciseIPRA.PTm.subst_succ]
   simp [curveInput,hg]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (f a m c L : PTm n) :
-    (input f a m c L).subst σ = input (Syn.subst σ f) (Syn.subst σ a)
-      (Syn.subst σ m) (Syn.subst σ c) (Syn.subst σ L) := by simp [input]
-@[simp] theorem subst_points {l : ℕ} (σ : Fin n → PTm l) (f m P : PTm n) :
-    (points f m P).subst σ = points (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ P) := by simp [points]
-@[simp] theorem subst_zeroWitness {l : ℕ} (σ : Fin n → PTm l) (f a m c L P : PTm n) :
-    (zeroWitness f a m c L P).subst σ = zeroWitness (Syn.subst σ f) (Syn.subst σ a)
-      (Syn.subst σ m) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ P) := by simp [zeroWitness]
+ipra_subst input
+ipra_subst points
+ipra_subst zeroWitness
 
 theorem annihilator_input (f a m c L : PTm n) (h : Γ ⊢[PRAAx] input f a m c L) :
     Γ ⊢[PRAAx] GaussianAnnihilatorPolynomial.input a m (degree f c) L :=
@@ -137,13 +123,7 @@ def run (f a m c L P : PTm n) : PTm n := app outputF ![f,a,m,c,L,P]
 def outputField (p : PTm n) (i : Fin 5) : PTm n :=
   ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),fstT (sndT (sndT (sndT p))),sndT (sndT (sndT (sndT p)))] i
 
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f a m c L P : PTm n) :
-    Syn.subst σ (run f a m c L P) = run (Syn.subst σ f) (Syn.subst σ a) (Syn.subst σ m)
-      (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ P) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 @[simp] theorem subst_outputField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 5) :
     Syn.subst σ (outputField p i) = outputField (Syn.subst σ p) i := by fin_cases i <;> simp [outputField]
 
@@ -156,15 +136,15 @@ theorem returned_fields (f a m c L P : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
       GaussianSuperellipticNormDegree.originalNorm f (polynomial f a m c L) m L c,
       weight f a m c L,basisCount f m c L,length P] i := by
   have e0 := program_at (Γ := Γ) f a m c L P
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrSnd e3).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e3.sndE
 
 theorem returned_weight_bound (f a m c L P : PTm n) (h : Γ ⊢[PRAAx] input f a m c L) :
     Γ ⊢[PRAAx] le (outputField (run f a m c L P) 2) L :=

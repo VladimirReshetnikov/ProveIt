@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalExponentialProductCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul evaluate)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr canonicalCoefficients)
 open GaussianRationalPolynomialProduct (product product_length product_canonical product_evaluation)
@@ -29,10 +29,6 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_ins
 open GaussianRationalPolynomialExponentialStability (exponent_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,15 +38,9 @@ def productStep (C N K j : PTm n) : PTm n := added
   (leftPad (productPrefix C N K j) N)
   (scaled (product (euler C N) (powerPrefix C N K (succ j)) N (succ j*N)) (inverseFactorial (succ j)))
   (succ (N+succ j*N))
-@[simp] theorem subst_productPrefix {l : ℕ} (σ : Fin n → PTm l) (C N K j : PTm n) :
-    Syn.subst σ (productPrefix C N K j) = productPrefix (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp [productPrefix]
-@[simp] theorem subst_productCoefficient {l : ℕ} (σ : Fin n → PTm l) (C N K j e : PTm n) :
-    Syn.subst σ (productCoefficient C N K j e) = productCoefficient (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ j) (Syn.subst σ e) := by simp [productCoefficient]
-@[simp] theorem subst_productStep {l : ℕ} (σ : Fin n → PTm l) (C N K j : PTm n) :
-    Syn.subst σ (productStep C N K j) = productStep (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) := by
-  simp [productStep]
+ipra_subst productPrefix
+ipra_subst productCoefficient
+ipra_subst productStep
 
 theorem product_prefix_length (C N K j : PTm n) : Γ ⊢[PRAAx]
     length (productPrefix C N K j) ≐ succ (N+j*N) := product_length _ _ _ _
@@ -161,9 +151,7 @@ theorem product_zero_coefficient (C N K e : PTm n) : Γ ⊢[PRAAx]
   exact (exponent_congr hP (.eqRefl _) (.eqRefl _)).eqTrans hTerm.eqSymm
 
 def sumLaw (C N K e j : PTm n) : Fm PTm n := productCoefficient C N K j e ≐ shiftedSum C N K e (succ j)
-@[simp] theorem subst_sumLaw {l : ℕ} (σ : Fin n → PTm l) (C N K e j : PTm n) :
-    (sumLaw C N K e j).subst σ = sumLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K)
-      (Syn.subst σ e) (Syn.subst σ j) := by simp [sumLaw]
+ipra_subst sumLaw
 theorem sum_zero (C N K e : PTm n) : Γ ⊢[PRAAx] sumLaw C N K e zero := by
   have hs : Γ ⊢[PRAAx] shiftedSum C N K e (succ zero) ≐ shiftedTerm C N K e zero :=
     (GaussianRationalFiniteSum.sum_succ shiftedBody zero (GaussianRationalPolynomialExponentialCoefficients.data C N K e)).eqTrans
@@ -183,11 +171,9 @@ theorem product_coefficient_sum (C N K e j : PTm n) (he : Γ ⊢[PRAAx] le e N) 
   have hn : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift e) (Syn.shift N) := by
     simpa only [Fm.shift,subst_le,Syn.shift] using he.shift
   have all : Γ ⊢[PRAAx] .all (sumLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift e) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact sum_zero C N K e
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact sum_step _ _ _ _ _ hn.wk Prf.hyp0
+    ipra_qfind [subst_sumLaw]
+    · exact sum_zero C N K e
+    · exact sum_step _ _ _ _ _ hn.wk Prf.hyp0
   change Γ ⊢[PRAAx] sumLaw C N K e j
   simpa only [subst_sumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
@@ -200,23 +186,15 @@ theorem logarithm_product_sum (d K e : PTm n) (he : Γ ⊢[PRAAx] le e d) : Γ �
 def output (C N K e j : PTm n) : PTm n := pairT (productPrefix C N K j) (shiftedSum C N K e (succ j))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (C N K e j : PTm n) : PTm n := PTm.app outputF ![C,N,K,e,j]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N K e j : PTm n) :
-    Syn.subst σ (output C N K e j) = output (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ e) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N K e j : PTm n) :
-    Syn.subst σ (run C N K e j) = run (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ e) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N K e j : PTm n) : Γ ⊢[PRAAx] run C N K e j ≐ output C N K e j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,N,K,e,j]
 theorem returned_product (C N K e j : PTm n) : Γ ⊢[PRAAx] fstT (run C N K e j) ≐ productPrefix C N K j :=
-  (congrFst (program_at C N K e j)).eqTrans (fst_pair _ _)
+  (program_at C N K e j).fstE
 theorem returned_sum (C N K e j : PTm n) : Γ ⊢[PRAAx] sndT (run C N K e j) ≐ shiftedSum C N K e (succ j) :=
-  (congrSnd (program_at C N K e j)).eqTrans (snd_pair _ _)
+  (program_at C N K e j).sndE
 theorem returned_coefficient_sum (C N K e j : PTm n) (he : Γ ⊢[PRAAx] le e N) : Γ ⊢[PRAAx]
     exponentCoefficient (fstT (run C N K e j)) (N+j*N) e ≐ sndT (run C N K e j) :=
   (exponent_congr (returned_product C N K e j) (.eqRefl _) (.eqRefl _)).eqTrans

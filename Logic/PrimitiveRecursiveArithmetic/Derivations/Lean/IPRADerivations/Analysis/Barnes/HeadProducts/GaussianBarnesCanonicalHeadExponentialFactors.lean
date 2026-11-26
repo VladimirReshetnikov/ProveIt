@@ -18,7 +18,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadExponentialFactors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalBaseProductShift (powerBody powerProduct)
 open GaussianBarnesCanonicalCorrectionShift (total)
 open GaussianBarnesCanonicalHead (source parameters)
@@ -31,9 +31,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianNamedFiniteProductFamily (rowF regularRows productData family_product_regular)
 open GaussianNamedFiniteProductFamilyAlgebra (multiplyBody)
 open GaussianNamedFiniteProductFamilyCongruence (equalRows family_product_cross)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

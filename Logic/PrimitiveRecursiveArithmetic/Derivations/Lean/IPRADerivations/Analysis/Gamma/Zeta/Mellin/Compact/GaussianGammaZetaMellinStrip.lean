@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinStrip
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName
   (sampleData field0 field1 field2 field3 field4 field5 field0_at field1_at field2_at field3_at field4_at field5_at)
@@ -27,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Actual" => GaussianGammaZetaMellinIntegrand.nameF
@@ -58,27 +55,12 @@ def gridBudget (M N A C E : PTm n) : PTm n :=
   ap2 (LeanProofs.IPRA.sumF budgetBody) M (data zero zero zero M N A C E)
 def clock (h M N A C E : PTm n) : PTm n := exponent (gridBudget M N A C E) h
 
-@[simp] theorem subst_window {m : ℕ} (σ : Fin n → PTm m) (A C E H T : PTm n) :
-    (window A C E H T).subst σ = window (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ T) := by
-  simp [window,one]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p z D M N A C E : PTm n) :
-    Syn.subst σ (data p z D M N A C E) =
-      data (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ M) (Syn.subst σ N)
-        (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [data]
-@[simp] theorem subst_mellinValue {m : ℕ} (σ : Fin n → PTm m) (p z D M N A C E : PTm n) :
-    Syn.subst σ (mellinValue p z D M N A C E) =
-      mellinValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ M) (Syn.subst σ N)
-        (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [mellinValue]
-@[simp] theorem subst_decayValue {m : ℕ} (σ : Fin n → PTm m) (p z D M N A C E : PTm n) :
-    Syn.subst σ (decayValue p z D M N A C E) =
-      decayValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ M) (Syn.subst σ N)
-        (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [decayValue]
-@[simp] theorem subst_gridBudget {m : ℕ} (σ : Fin n → PTm m) (M N A C E : PTm n) :
-    Syn.subst σ (gridBudget M N A C E) = gridBudget (Syn.subst σ M) (Syn.subst σ N)
-      (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [gridBudget]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (h M N A C E : PTm n) :
-    Syn.subst σ (clock h M N A C E) = clock (Syn.subst σ h) (Syn.subst σ M) (Syn.subst σ N)
-      (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [clock]
+ipra_subst window [one]
+ipra_subst data
+ipra_subst mellinValue
+ipra_subst decayValue
+ipra_subst gridBudget
+ipra_subst clock
 
 private theorem packed_at (f : PTm 6) (i p z D M N A C E : PTm n) :
     Γ ⊢[PRAAx] inst2 (packed f) i (data p z D M N A C E) ≐ Syn.subst ![p,N,z,D,A*M+C*i,E*M] f := by

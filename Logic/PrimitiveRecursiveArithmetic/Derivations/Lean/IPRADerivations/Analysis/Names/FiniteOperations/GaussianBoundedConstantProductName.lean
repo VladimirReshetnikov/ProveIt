@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBoundedConstantProductName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -22,9 +22,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,18 +35,12 @@ def sample (f : PR 2) (p A a x : PTm n) : PTm n := ap2 (nameF f) p (data A a x)
 def clock (p A : PTm n) : PTm n := GaussianFastValueCut.exponent A p
 def input (f : PR 2) (A a x : PTm n) : Fm PTm n := pointCN f x ⋏ bounded a A one
 def cost (f : PR 2) (A a x : PTm n) : PTm n := A+GaussianNameArithmetic.multiplyModulus constantF f a x+two
-@[simp] theorem subst_rawValue {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p a x : PTm n) :
-    Syn.subst σ (rawValue f p a x) = rawValue f (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ x) := by simp [rawValue]
-@[simp] theorem subst_rawData {m : ℕ} (σ : Fin n → PTm m) (a x : PTm n) :
-    Syn.subst σ (rawData a x) = rawData (Syn.subst σ a) (Syn.subst σ x) := by simp [rawData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A a x : PTm n) :
-    Syn.subst σ (data A a x) = data (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p A : PTm n) :
-    Syn.subst σ (clock p A) = clock (Syn.subst σ p) (Syn.subst σ A) := by simp [clock]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (A a x : PTm n) :
-    (input f A a x).subst σ = input f (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ x) := by simp [input]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (A a x : PTm n) :
-    Syn.subst σ (cost f A a x) = cost f (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ x) := by simp [cost]
+ipra_subst rawValue
+ipra_subst rawData
+ipra_subst data
+ipra_subst clock
+ipra_subst input
+ipra_subst cost
 
 theorem constant_at (p a : PTm n) : Γ ⊢[PRAAx] ap2 constantF p a ≐ a := by
   simpa [constantF,ap2] using toPR_eq (Γ := Γ) (var 1 : PTm 2) ![p,a]

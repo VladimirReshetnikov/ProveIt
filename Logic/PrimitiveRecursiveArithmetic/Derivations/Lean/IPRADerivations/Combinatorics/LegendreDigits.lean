@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Legendre's formula in digit form
@@ -26,12 +24,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.LegendreDigits
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw pw_pos')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -126,18 +120,12 @@ private abbrev teleF : Fm PTm 3 :=
       quo (var 2) (pw (var 1) (var 0)) ≐ var 2)
 
 private theorem tele₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] teleF := by
-  refine ind _ ⟨trivial, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_pairT]
+  · refine .impI ?_
     ipra_lc natEq (sum_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) dB (pairT (var 0) (var 1))) +
       𝔞 (monus (var 0 : PTm 2) one) * natEq (sum_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) qB' (pairT (var 0) (var 1))) +
       natEq ((congrAp2 quoF (.eqRefl (var 1 : PTm 2)) (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0))).eqTrans (Prf.andE₁ (dmu (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (K := one) (q := var 1) (r := zero) (pos_of_eq_succ (c := zero) (.eqRefl _)) (by ipra_ring) (le_refl one))))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, PTm.subst_monus,
-      PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .impI (tele_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
+  · exact .impI (tele_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- `∑_{j<K} d_j + (p − 1) ∑_{j<K} Q_{j+1} + Q_K = m`. -/
 theorem telescope {p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (K m : PTm n) :

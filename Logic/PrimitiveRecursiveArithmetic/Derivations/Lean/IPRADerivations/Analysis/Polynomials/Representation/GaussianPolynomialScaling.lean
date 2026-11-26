@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialScaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im scale normSq bounded)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (equal equal_of_values equal_re equal_im equal_of_code equal_trans equal_symm values_of_code
@@ -22,9 +22,6 @@ open LeanProofs.IPRA.Analysis.GaussianPolynomialPerturbation (H coefficientError
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -32,8 +29,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def scaleBody : PTm 2 := scale (fstT (var 1)) (entry (sndT (var 1)) (var 0))
 def scaled (C B : PTm n) : PTm n := sequence scaleBody (length C) (pairT B C)
 
-@[simp] theorem subst_scaled {m : ℕ} (σ : Fin n → PTm m) (C B : PTm n) :
-    Syn.subst σ (scaled C B) = scaled (Syn.subst σ C) (Syn.subst σ B) := by simp [scaled]
+ipra_subst scaled
 
 theorem scale_body_at (C B i : PTm n) : Γ ⊢[PRAAx]
     inst2 scaleBody i (pairT B C) ≐ scale B (entry C i) := by
@@ -65,9 +61,7 @@ theorem scaled_leading (F G B : PTm n)
 
 def prefixLaw (C B z D k : PTm n) : Fm PTm n := le k (length C) ⟶ equal (H (scaled C B) z D k) (scale B (H C z D k))
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C B z D k : PTm n) :
-    (prefixLaw C B z D k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ B)
-      (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ k) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem homogeneous_zero (C B z D : PTm n) : Γ ⊢[PRAAx]
     equal (H (scaled C B) z D zero) (scale B (H C z D zero)) := by
@@ -99,11 +93,9 @@ theorem homogeneous_step (C B z D k : PTm n) (hk : Γ ⊢[PRAAx] lt k (length C)
 theorem homogeneous_linearity (C B z D k : PTm n) (hk : Γ ⊢[PRAAx] le k (length C)) :
     Γ ⊢[PRAAx] equal (H (scaled C B) z D k) (scale B (H C z D k)) := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift B) (Syn.shift z) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (homogeneous_zero C B z D)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨trivial,trivial⟩⟩) [subst_prefixLaw]
+    · exact .impI (homogeneous_zero C B z D)
+    · refine .impI ?_
       let I := prefixLaw (Syn.shift C) (Syn.shift B) (Syn.shift z) (Syn.shift D) (var 0)
       let Δ := le (succ (var 0)) (length (Syn.shift C)) :: I :: Γ.map Fm.shift
       exact homogeneous_step _ _ _ _ _ (Prf.hyp0 (Ax := PRAAx) (Γ := I :: Γ.map Fm.shift))
@@ -118,9 +110,7 @@ def crossErrors (F G N A B E : PTm n) : Fm PTm n :=
       (entry (Syn.shift G) (succ (var 0))) (entry (Syn.shift F) (succ (var 0)))))
       ((Syn.shift A*Syn.shift A)*(Syn.shift E*Syn.shift E)))
 
-@[simp] theorem subst_crossErrors {m : ℕ} (σ : Fin n → PTm m) (F G N A B E : PTm n) :
-    (crossErrors F G N A B E).subst σ = crossErrors (Syn.subst σ F) (Syn.subst σ G)
-      (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ E) := by simp [crossErrors,Syn.subst_shift,Syn.shift_subst]
+ipra_subst crossErrors [Syn.subst_shift, Syn.shift_subst]
 
 theorem cross_error_at (F G N A B E j : PTm n) (h : Γ ⊢[PRAAx] crossErrors F G N A B E)
     (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx]

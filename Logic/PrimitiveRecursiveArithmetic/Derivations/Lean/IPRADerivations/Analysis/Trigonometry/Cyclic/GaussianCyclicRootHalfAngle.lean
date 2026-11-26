@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicRootHalfAngle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCyclicExponentialRoots (angleF angleData angle_at angle_input rootF rootData)
 open GaussianArctangentExponentialPeriod (fullTurnF fullTurnRadius twiceImaginary full_turn_at half_imaginary_doubled)
 open GaussianArctangentQuarterExponential (quarterF halfImaginary)
@@ -37,8 +37,6 @@ open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianRootAlgebra (equal_of_values re_mul im_mul re_scale im_scale re_one im_one)
 open ComplexLogarithmRemainder (scale mul oneCode normSq normSq_eval eval_re_code eval_im_code)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "D" => GaussianArctangentDivisionAngles.nameF
@@ -51,12 +49,8 @@ def doubledData (d m x : PTm n) : PTm n :=
 def positiveData (d m x : PTm n) : PTm n := GaussianRadiusExponentialName.data two (GaussianArctangentDivisionAngles.data d m x)
 def phase (d m : PTm n) : PTm n := ofGaussian (scale (two*d) imaginaryCode) m
 
-@[simp] theorem subst_doubledData {l : ℕ} (σ : Fin n → PTm l) (d m x : PTm n) :
-    Syn.subst σ (doubledData d m x) = doubledData (Syn.subst σ d) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [doubledData]
-@[simp] theorem subst_positiveData {l : ℕ} (σ : Fin n → PTm l) (d m x : PTm n) :
-    Syn.subst σ (positiveData d m x) = positiveData (Syn.subst σ d) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [positiveData,two,one]
+ipra_subst doubledData
+ipra_subst positiveData [two, one]
 
 theorem cyclic_source (d m : PTm n) (h : Γ ⊢[PRAAx] source d m) :
     Γ ⊢[PRAAx] GaussianCyclicExponentialRoots.source d m :=

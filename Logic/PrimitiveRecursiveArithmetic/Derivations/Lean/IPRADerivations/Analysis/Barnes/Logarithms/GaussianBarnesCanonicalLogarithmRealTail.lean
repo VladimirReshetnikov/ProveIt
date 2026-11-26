@@ -13,7 +13,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogarithmRealTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (im mul power series)
 open LogarithmRemainder (three)
 open ComplexLogarithmCauchy (eval_im_congr)
@@ -22,9 +22,6 @@ open GaussianRationalFiniteSumAxis (rowAxes sum_axis)
 open GaussianRootAlgebra (im_add im_neg im_scale im_mul im_zero im_one)
 open GaussianSignedNameExponentialOrder (realSamples)
 open RationalGaussianEmbedding (axis axis_congr axis_multiply)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

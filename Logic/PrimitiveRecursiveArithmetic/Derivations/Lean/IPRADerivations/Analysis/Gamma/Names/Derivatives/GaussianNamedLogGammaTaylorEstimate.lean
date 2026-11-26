@@ -15,7 +15,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedLogGammaTaylorEstimate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -38,10 +38,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalValueEquality (commonDen common_den_positive)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -301,10 +297,7 @@ def input (f g : PR 2) (x y M R P Qd : PTm n) : Fm PTm n :=
   source f x M R ⋏ (source g y M R ⋏ (le one Qd ⋏
     (le (admission P (two*M) (sizeBound R R)) Qd ⋏ independentRate g f y x P Qd)))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y M R P Qd : PTm n) :
-    (input f g x y M R P Qd).subst σ =
-      input f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ M) (Syn.subst σ R) (Syn.subst σ P) (Syn.subst σ Qd) := by
-  simp [input, admission, admissionBudget]
+ipra_subst input [admission, admissionBudget]
 
 theorem independent_rate (f g : PR 2) (x y M R P Qd : PTm n)
     (h : Γ ⊢[PRAAx] input f g x y M R P Qd) : Γ ⊢[PRAAx]

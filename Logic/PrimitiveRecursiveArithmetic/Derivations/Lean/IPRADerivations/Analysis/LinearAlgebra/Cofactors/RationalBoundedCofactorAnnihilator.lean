@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorDotProduct
 import IPRADerivations.Analysis.LinearAlgebra.Cofactors.RationalCofactorOriginalClearing
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalOriginalAnnihilator
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The bounded integer annihilator of the original rational rows
@@ -16,8 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalBoundedCofactorAnnihilator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open RationalMaximalMinors (rank)
 open RationalMinorFreeColumn (free free_column_spec)
 open RationalCofactorVector (vector vector_length vector_nonzero vector_bound)
@@ -44,17 +42,13 @@ open GaussianRationalFiniteSum (termsEqual multiplyBody multiply_body_at sum_mul
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def rationalBody : PTm 2 := coefficientValue (fstT (var 1)) (sndT (var 1)) (var 0)
 def rationalVector (P d : PTm n) : PTm n := sequence rationalBody d (pairT P d)
 
-@[simp] theorem subst_rationalVector {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (rationalVector P d) = rationalVector (Syn.subst σ P) (Syn.subst σ d) := by
-  simp [rationalVector]
+ipra_subst rationalVector
 
 theorem rational_vector_length (P d : PTm n) : Γ ⊢[PRAAx] length (rationalVector P d) ≐ d :=
   sequence_length rationalBody d (pairT P d)

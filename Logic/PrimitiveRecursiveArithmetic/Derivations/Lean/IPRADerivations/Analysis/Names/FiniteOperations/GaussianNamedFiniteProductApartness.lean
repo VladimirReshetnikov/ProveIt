@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq normSq_one)
 open GaussianCoefficientNameBounds (unit)
 open GaussianNamedFiniteProduct (sample sample_zero sample_succ)
@@ -26,9 +26,6 @@ open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalLowerBounds (lower_from_representation lower_to_cleared product_lower)
 open GaussianRationalReciprocal (qone)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,19 +37,13 @@ def rowLowerAt (f : PR 3) (p N D x : PTm n) : Fm PTm n :=
 def rowLower (f : PR 3) (N D x : PTm n) : Fm PTm n :=
   .all (rowLowerAt f (var 0) (Syn.shift N) (Syn.shift D) (Syn.shift x))
 
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (D N : PTm n) :
-    Syn.subst σ (denominator D N) = denominator (Syn.subst σ D) (Syn.subst σ N) := by simp [denominator]
+ipra_subst denominator
 
-@[simp] theorem subst_apartClock {l : ℕ} (σ : Fin n → PTm l) (N D : PTm n) :
-    Syn.subst σ (apartClock N D) = apartClock (Syn.subst σ N) (Syn.subst σ D) := by simp [apartClock]
+ipra_subst apartClock
 
-@[simp] theorem subst_rowLowerAt {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (p N D x : PTm n) :
-    (rowLowerAt f p N D x).subst σ = rowLowerAt f (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ x) := by
-  simp [rowLowerAt,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowLowerAt [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_rowLower {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (N D x : PTm n) :
-    (rowLower f N D x).subst σ = rowLower f (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ x) := by
-  simp [rowLower,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowLower [Syn.subst_shift, Syn.shift_subst]
 
 theorem rows_at (f : PR 3) (p N D x : PTm n) (h : Γ ⊢[PRAAx] rowLower f N D x) :
     Γ ⊢[PRAAx] rowLowerAt f p N D x := by simpa [rowLower] using h.allE p
@@ -83,10 +74,7 @@ private theorem unit_margin : Γ ⊢[PRAAx] lower (qone : PTm n) one :=
 def prefixLaw (f : PR 3) (p N D x i : PTm n) : Fm PTm n :=
   le i N ⟶ lower (sample f p i x) (denominator D i)
 
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (f : PR 3) (p N D x i : PTm n) :
-    (prefixLaw f p N D x i).subst σ =
-      prefixLaw f (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ D) (Syn.subst σ x) (Syn.subst σ i) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 private theorem prefix_zero (f : PR 3) (p N D x : PTm n) :
     Γ ⊢[PRAAx] prefixLaw f p N D x zero :=

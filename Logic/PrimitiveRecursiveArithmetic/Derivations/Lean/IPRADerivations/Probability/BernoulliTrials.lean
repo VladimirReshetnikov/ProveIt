@@ -20,14 +20,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.BernoulliTrials
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower (Tt At Bt total_pow)
 open LeanProofs.IPRA.Probability.WeakLaw (monte_carlo)
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -72,7 +68,7 @@ theorem bX_idem (x : PTm n) :
   · exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans ((zero_mul _).eqTrans Prf.hyp0.eqSymm)
   · exact (congrMul Prf.hyp0 Prf.hyp0).eqTrans ((one_mul _).eqTrans Prf.hyp0.eqSymm)
 
-theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
+alias two_pos := Common.two_pos
 
 /-- `prop:binomial`: `E[S_r] = r p` for `S_r ∼ Bin(r, a/(a + c))`: `(c + a) A = r a T`, `T = (c + a)^r`. -/
 theorem binomial_mean (a c r : PTm n) :

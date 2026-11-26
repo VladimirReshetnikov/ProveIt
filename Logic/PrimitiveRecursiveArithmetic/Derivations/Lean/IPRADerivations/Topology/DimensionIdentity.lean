@@ -1,5 +1,4 @@
 import IPRADerivations.Topology.DimensionSchema
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The identity presentation (`dimension_invariance_ipra`, `cor:dimension`, the converse)
@@ -99,12 +98,10 @@ theorem gap_id (j : Fin (d' + 1)) {x x' : PTm n} (p : PTm n) (hx : Γ ⊢[PRAAx]
     (hx' : Γ ⊢[PRAAx] valid d' x') :
     Γ ⊢[PRAAx] oGap (d' + 1) (idP d') (idQ d') (idR d') j x x' p ≐
       dist (proj j.val x * den d' x') (proj j.val x' * den d' x) := by
-  have ex := natEq (pos_den d' hx)
-  have ex' := natEq (pos_den d' hx')
   simp only [oGap, oP_id, oQ_id, oR_id]
   refine congrDist ?_ ?_
-  · ipra_lc [crossX] -(𝔞 (proj j.val x)) * ex'
-  · ipra_lc [crossY] -(𝔞 (proj j.val x')) * ex
+  · ipra_lc [crossX] -(𝔞 (proj j.val x)) * natEq (pos_den d' hx')
+  · ipra_lc [crossY] -(𝔞 (proj j.val x')) * natEq (pos_den d' hx)
 
 theorem den_id (j : Fin (d' + 1)) {x x' : PTm n} (p : PTm n) (hx : Γ ⊢[PRAAx] valid d' x)
     (hx' : Γ ⊢[PRAAx] valid d' x') :

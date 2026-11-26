@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteSmallRationalEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianEulerIncompleteLowerPrefixGeometry (firstData restData wholeData originalData start firstWidth)
 open GaussianEulerIncompleteLowerPrefixSigned (extend_bound prefix_bound)
@@ -36,10 +36,6 @@ open GaussianRationalSlackRemoval (precision slack slack_removal_at)
 open GaussianNamedPositiveExponentialOrder (scalar_coordinate_distance)
 open RationalGaussianEmbedding (scalarZero)
 open RationalValueBounds (upper upper_congr upper_mono upper_of_radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -48,10 +44,7 @@ local notation "Prefix" => GaussianEulerIncompleteLowerPrefixGeometry.source
 def source (z R B A k a b : PTm n) : Fm PTm n :=
   GaussianEulerIncompleteCofinalRate.source z R B A a b ⋏ le (a*etaDen k A R) b
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A k a b : PTm n) :
-    (source z R B A k a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [source,GaussianEulerIncompleteCofinalRate.source,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source [GaussianEulerIncompleteCofinalRate.source, etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 private theorem fst_zero : Γ ⊢[PRAAx] fstT (qzero : PTm n) ≐ scalarZero :=
   (congrFst RationalGaussianEmbedding.embed_zero.eqSymm).eqTrans

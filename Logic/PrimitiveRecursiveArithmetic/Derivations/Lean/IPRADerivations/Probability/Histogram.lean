@@ -25,17 +25,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.Histogram
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew inst2_mul')
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.ExpectationCorollaries (ad_zero)
 open LeanProofs.IPRA.Probability.Lotus (aB rB vB gσ inst2_gσ inst2_rB inst2_vB row_eval col_eval)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

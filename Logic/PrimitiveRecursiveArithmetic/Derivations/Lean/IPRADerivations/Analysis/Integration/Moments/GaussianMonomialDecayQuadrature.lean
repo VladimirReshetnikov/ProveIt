@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Integration.Moments.GaussianMonomialDecayMajorant
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailLeftNorm
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTransformedIntegrand
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual monomial-decay quadrature with the exact factorial leading constant
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonomialDecayQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianMonomialDecayMajorant (sample)
 open GaussianEulerCompactUpperTail (scalarBody reference_row scaledF scaled_quadrature halfEvaluator)
 open RationalGaussianRealPart (embedBody)
@@ -31,17 +30,12 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianDominantPairAlgebra (radius_bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def evaluator (p t d : PTm n) : PTm n := sample p d (fstT t) (sndT t)
 def evaluatorF : PR 3 := PTm.toPR (evaluator (var 0) (var 1) (var 2))
-@[simp] theorem subst_evaluator {m : ℕ} (σ : Fin n → PTm m) (p t d : PTm n) :
-    Syn.subst σ (evaluator p t d) = evaluator (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ d) := by simp [evaluator]
+ipra_subst evaluator
 
 theorem evaluator_at (p a b d : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p (pairT a b) d ≐ sample p d a b := by

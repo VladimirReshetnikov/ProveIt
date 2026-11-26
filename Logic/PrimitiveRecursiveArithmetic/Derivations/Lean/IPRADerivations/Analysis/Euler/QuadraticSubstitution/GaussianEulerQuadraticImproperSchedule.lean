@@ -12,26 +12,19 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticImproperSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height)
 open GaussianEulerQuadraticLowerEndpoint (minimumIndex)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedRateComposition (leadingNumerator leadingDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def threshold (p A M : PTm n) : PTm n := GaussianFastValueCut.exponent ((A+one)*M) (succ p)
 def index (p A M c d : PTm n) : PTm n := minimumIndex (threshold p A M) c d
 
-@[simp] theorem subst_threshold {m : ℕ} (σ : Fin n → PTm m) (p A M : PTm n) :
-    Syn.subst σ (threshold p A M) = threshold (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ M) := by simp [threshold]
-@[simp] theorem subst_index {m : ℕ} (σ : Fin n → PTm m) (p A M c d : PTm n) :
-    Syn.subst σ (index p A M c d) = index (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ M) (Syn.subst σ c) (Syn.subst σ d) :=
-  by simp [index,minimumIndex]
+ipra_subst threshold
+ipra_subst index [minimumIndex]
 
 theorem shared_budget (A M U D L H : PTm n) (hd : Γ ⊢[PRAAx] le one D)
     (hl : Γ ⊢[PRAAx] le D L) (hh : Γ ⊢[PRAAx] le D H)

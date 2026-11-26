@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerWeightedHalfDecay
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData powerF powerData)
 open GaussianEulerHalfDecayProduct (halfWeightedF halfWeightedData)
 open GaussianEulerUpperPowerOrder (source)
@@ -30,9 +30,6 @@ open GaussianRationalMetric (bounded)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open RationalGaussianEmbedding (embed)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,16 +38,11 @@ def slack (a R : PTm n) : PTm n := two*pw (two*a) R
 def productSlack (a R : PTm n) : PTm n := majorant R+two*slack a R
 def halfSample (p a b : PTm n) : PTm n := ap2 decayF p (decayData a (two*b))
 
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (majorant R) = majorant (Syn.subst σ R) := by simp [majorant,fact]
+ipra_subst majorant [fact]
 
-@[simp] theorem subst_productSlack {m : ℕ} (σ : Fin n → PTm m) (a R : PTm n) :
-    Syn.subst σ (productSlack a R) = productSlack (Syn.subst σ a) (Syn.subst σ R) := by
-  simp [productSlack,slack]
+ipra_subst productSlack [slack]
 
-@[simp] theorem subst_halfSample {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (halfSample p a b) = halfSample (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [halfSample,decayData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst halfSample [decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
 private theorem radius_embedding (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] embed (fraction a b) ≐ radiusPoint a b :=

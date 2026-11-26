@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalNormSquareTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq mul)
 open GaussianRationalConjugation (point point_mul point_represents point_bound point_distance point_embed)
 open GaussianRationalHorner (qmul qmul_represents qmul_canonical canonical_unique represents_congr)
@@ -28,15 +28,12 @@ open GaussianNameArithmetic (product_distance)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRootAlgebra (equal equal_of_values re_mul im_mul)
 open RationalGaussianEmbedding (embed embed_canonical embed_from_representation native)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def value (q : PTm n) : PTm n := qmul q (point q)
 
-@[simp] theorem subst_value {L : ℕ} (σ : Fin n → PTm L) (q : PTm n) :
-    Syn.subst σ (value q) = value (Syn.subst σ q) := by simp [value]
+ipra_subst value
 
 theorem value_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r) :
     Γ ⊢[PRAAx] value q ≐ value r :=

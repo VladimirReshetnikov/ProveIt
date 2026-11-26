@@ -17,7 +17,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTailExponentialDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalDerivativeTailBinding (leadingDenominator base_source shifted_source)
 open GaussianBarnesCanonicalTailExponentialMargin
@@ -30,9 +30,6 @@ open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multip
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian positive_product)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianBarnesCanonicalLogCofinal.nameF

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexEndpointBudget
 import IPRADerivations.Analysis.RationalArithmetic.GaussianPositiveRealArithmetic
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite half-times-ninth lower bound with observation errors
@@ -15,16 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalHalfNinthProductLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction)
 open RationalArithmetic (add negative multiply)
 open RationalSupMetric (numeratorOf denominatorOf)
 open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

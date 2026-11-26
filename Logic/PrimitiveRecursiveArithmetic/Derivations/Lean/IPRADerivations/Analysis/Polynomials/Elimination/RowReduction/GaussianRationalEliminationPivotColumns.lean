@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalEliminationPivotColumns
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero)
 open GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical)
 open GaussianRationalRowElimination (pivot shape)
@@ -22,9 +22,6 @@ open GaussianRationalPivotSearch (flag flag_cases selected selected_correct next
 open GaussianTranslatedNonconstant (recode_congr recode_eq)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,8 +42,7 @@ theorem previous_column_value (A R N c j r : PTm n) (hA : Γ ⊢[PRAAx] shape A 
 def delta (t v r : PTm n) : Fm PTm n :=
   (t ≐ succ r ⟶ v ≐ qone) ⋏ (neg (t ≐ zero) ⟶ neg (t ≐ succ r) ⟶ v ≐ qzero)
 
-@[simp] theorem subst_delta {k : ℕ} (σ : Fin n → PTm k) (t v r : PTm n) :
-    (delta t v r).subst σ = delta (Syn.subst σ t) (Syn.subst σ v) (Syn.subst σ r) := by simp [delta]
+ipra_subst delta
 
 theorem delta_transport {t t' v v' r : PTm n} (ht : Γ ⊢[PRAAx] t' ≐ t) (hv : Γ ⊢[PRAAx] v' ≐ v)
     (h : Γ ⊢[PRAAx] delta t v r) : Γ ⊢[PRAAx] delta t' v' r := by
@@ -89,9 +85,7 @@ theorem new_column_delta (A R N c r : PTm n) (hA : Γ ⊢[PRAAx] shape A R N)
 def columnLaw (A R N c j r : PTm n) : Fm PTm n := le c N ⟶ lt j c ⟶
   delta (entry (history A R N c) j) (pivot (matrix A R N c) r j) r
 
-@[simp] theorem subst_columnLaw {k : ℕ} (σ : Fin n → PTm k) (A R N c j r : PTm n) :
-    (columnLaw A R N c j r).subst σ = columnLaw (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ r) := by simp [columnLaw]
+ipra_subst columnLaw
 
 theorem next_column_delta (A R N c j r : PTm n) (hA : Γ ⊢[PRAAx] shape A R N)
     (hc : Γ ⊢[PRAAx] lt c N) (hj : Γ ⊢[PRAAx] lt j (succ c)) (hr : Γ ⊢[PRAAx] lt r R)
@@ -112,11 +106,9 @@ theorem prefix_column_delta (A R N c j r : PTm n) (hA : Γ ⊢[PRAAx] shape A R 
   have hrs : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift r) (Syn.shift R) := by
     simpa [Fm.shift,Syn.shift] using hr.shift
   have all : Γ ⊢[PRAAx] .all (columnLaw (Syn.shift A) (Syn.shift R) (Syn.shift N) (var 0) (Syn.shift j) (Syn.shift r)) := by
-    refine PRA.qfInd _ (by simp [columnLaw,delta,Fm.QF,neg,le,lt]) ?_ ?_
-    · simp only [subst_columnLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (.impI (.botE _ (lt_zero_absurd _ Prf.hyp0)))
-    · simp only [subst_columnLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (.impI (next_column_delta (Syn.shift A) (Syn.shift R) (Syn.shift N) (var 0) (Syn.shift j)
+    ipra_qfind (by simp [columnLaw,delta,Fm.QF,neg,le,lt]) [subst_columnLaw]
+    · exact .impI (.impI (.botE _ (lt_zero_absurd _ Prf.hyp0)))
+    · exact .impI (.impI (next_column_delta (Syn.shift A) (Syn.shift R) (Syn.shift N) (var 0) (Syn.shift j)
         (Syn.shift r) hAs.wk.wk.wk Prf.hyp1 Prf.hyp0 hrs.wk.wk.wk Prf.hyp1.wk))
   have atC : Γ ⊢[PRAAx] columnLaw A R N c j r := by simpa using all.allE c
   exact .impE (.impE atC hc) hj

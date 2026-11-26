@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GammaCanonicalRemainder
 import IPRADerivations.Analysis.Logarithm.DyadicComplexLogarithm
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A regular local canonical factor name with its sharp cutoff certificate
@@ -18,7 +17,7 @@ exponential identity and full Euler/Gamma construction remain separate.
 
 namespace LeanProofs.IPRA.Analysis.GammaLocalFactorName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder
   (re im add mul scale normSq bounded bounded_scale bounded_add bounded_neg bounded_mono
@@ -29,10 +28,6 @@ open DyadicComplexLogarithm
 open GammaCanonicalFactors
   (factorNumerator factorDenominator factorDifference factorDenominator_positive finite_factor_cauchy finite_factor_bound)
 open GammaCanonicalRemainder (tailScale finite_factor_remainder)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,16 +50,8 @@ def observationTerm (p z _R N : PTm n) : PTm n :=
 def observationF : PR 4 := PTm.toPR (observationTerm (var 0) (var 1) (var 2) (var 3))
 def observation (p z R N : PTm n) : PTm n := PTm.app observationF ![p,z,R,N]
 
-@[simp] theorem subst_observationTerm {m : ℕ} (σ : Fin n → PTm m) (p z R N : PTm n) :
-    Syn.subst σ (observationTerm p z R N) = observationTerm
-      (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by simp [observationTerm]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R N : PTm n) :
-    Syn.subst σ (observation p z R N) = observation
-      (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp only [observation, ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst observationTerm
+ipra_subst observation
 
 theorem observation_compute (p z R N : PTm n) :
     Γ ⊢[PRAAx] observation p z R N ≐ observationTerm p z R N := by
@@ -79,9 +66,7 @@ theorem observation_later (p k z R N : PTm n) : Γ ⊢[PRAAx] observation (p+k) 
 
 def discrepancy (p k z R N : PTm n) : PTm n :=
   add (observation (p+k) z R N) (ComplexLogarithmRemainder.neg (scale (pw two k) (observation p z R N)))
-@[simp] theorem subst_discrepancy {m : ℕ} (σ : Fin n → PTm m) (p k z R N : PTm n) :
-    Syn.subst σ (discrepancy p k z R N) = discrepancy (Syn.subst σ p) (Syn.subst σ k)
-      (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by simp [discrepancy]
+ipra_subst discrepancy
 
 theorem discrepancy_compute (p k z R N : PTm n) : Γ ⊢[PRAAx] discrepancy p k z R N ≐
     roundedDifference (factorNumerator z N (precision p)) (factorNumerator z N (precision p+k))
@@ -123,9 +108,7 @@ theorem observation_congr {p q : PTm n} (z R N : PTm n) (h : Γ ⊢[PRAAx] p ≐
 def endpointDifference (p q z R N : PTm n) : PTm n :=
   add (observation q z R N)
     (ComplexLogarithmRemainder.neg (scale (pw two (monus q p)) (observation p z R N)))
-@[simp] theorem subst_endpointDifference {m : ℕ} (σ : Fin n → PTm m) (p q z R N : PTm n) :
-    Syn.subst σ (endpointDifference p q z R N) = endpointDifference (Syn.subst σ p) (Syn.subst σ q)
-      (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by simp [endpointDifference]
+ipra_subst endpointDifference
 
 theorem regular_endpoints (p q z R N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hz : Γ ⊢[PRAAx] bounded z R) (hR : Γ ⊢[PRAAx] le (two*R) N)
@@ -139,9 +122,7 @@ theorem regular_endpoints (p q z R N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
 def observationError (p z R N : PTm n) : PTm n :=
   add (scale (factorDenominator N (precision p)) (observation p z R N))
     (ComplexLogarithmRemainder.neg (scale (unit p) (factorNumerator z N (precision p))))
-@[simp] theorem subst_observationError {m : ℕ} (σ : Fin n → PTm m) (p z R N : PTm n) :
-    Syn.subst σ (observationError p z R N) = observationError
-      (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by simp [observationError]
+ipra_subst observationError
 
 theorem observation_rounding (p z R N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     bounded (observationError p z R N) (two*factorDenominator N (precision p)) := by
@@ -187,9 +168,7 @@ theorem observation_at_cutoff (p z R N L : PTm n) : Γ ⊢[PRAAx] observation (p
 def cutoffError (p z R N L : PTm n) : PTm n :=
   add (scale (factorDenominator N (L+precision p)) (observation (p+L) z R N))
     (ComplexLogarithmRemainder.neg (scale (unit (p+L)) (factorNumerator z N (L+precision p))))
-@[simp] theorem subst_cutoffError {m : ℕ} (σ : Fin n → PTm m) (p z R N L : PTm n) :
-    Syn.subst σ (cutoffError p z R N L) = cutoffError
-      (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ L) := by simp [cutoffError]
+ipra_subst cutoffError
 
 theorem cutoff_rounding (p z R N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     bounded (cutoffError p z R N L) (two*factorDenominator N (L+precision p)) := by
@@ -204,9 +183,7 @@ ORIGINAL finite polynomial of degree `L+2`. -/
 def cutoffDifference (p z R N L : PTm n) : PTm n :=
   add (scale (factorDenominator N L) (observation (p+L) z R N))
     (ComplexLogarithmRemainder.neg (scale (unit (p+L)) (factorNumerator z N L)))
-@[simp] theorem subst_cutoffDifference {m : ℕ} (σ : Fin n → PTm m) (p z R N L : PTm n) :
-    Syn.subst σ (cutoffDifference p z R N L) = cutoffDifference
-      (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ L) := by simp [cutoffDifference]
+ipra_subst cutoffDifference
 
 theorem cutoff_decomposition (p z R N L : PTm n) : Γ ⊢[PRAAx]
     normSq (scale (factorDenominator N (L+precision p))
@@ -263,9 +240,7 @@ theorem unit_congr {p q : PTm n} (h : Γ ⊢[PRAAx] p ≐ q) : Γ ⊢[PRAAx] uni
 def pairDifference (p q z R N : PTm n) : PTm n :=
   add (scale (unit p) (observation q z R N))
     (ComplexLogarithmRemainder.neg (scale (unit q) (observation p z R N)))
-@[simp] theorem subst_pairDifference {m : ℕ} (σ : Fin n → PTm m) (p q z R N : PTm n) :
-    Syn.subst σ (pairDifference p q z R N) = pairDifference
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ N) := by simp [pairDifference]
+ipra_subst pairDifference
 
 theorem ordered_pair_identity (p q z R N : PTm n) (h : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
     normSq (pairDifference p q z R N) ≐ normSq (scale (unit p) (endpointDifference p q z R N)) := by

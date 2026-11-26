@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaSharpPieceAlignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaSharpPartition (lowWidth middleWidth halfPoint)
 open GaussianBetaSharpAlignedThreeSplit (tailWidth threePieces)
 open GaussianGammaIntegralCutoffs (etaDen top eta_den_positive)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

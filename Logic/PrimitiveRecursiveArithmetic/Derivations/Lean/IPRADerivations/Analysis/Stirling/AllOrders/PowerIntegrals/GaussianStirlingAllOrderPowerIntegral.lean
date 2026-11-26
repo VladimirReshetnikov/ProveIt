@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPowerIntegral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open RationalReciprocalPowerTail (reciprocalPower potential tail tail_zero tail_succ
   potential_congr reciprocal_congr exponent_form potential_denominator_positive add_zero_right)
@@ -21,10 +21,6 @@ open RationalArithmetic (add)
 open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
 open RationalAlgebra (positive_product add_congr add_associative add_commutative)
 open GaussianRationalSyntheticBounds (add_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -87,9 +83,7 @@ theorem one_step (m k : PTm n) (hm : Γ ⊢[PRAAx] le two m) (hk : Γ ⊢[PRAAx]
 def lowerLaw (m N L : PTm n) : Fm PTm n :=
   rationalLE (potential m (succ N)) (add (tail m N L) (potential m (succ (N+L))))
 
-@[simp] theorem subst_lowerLaw {l : ℕ} (σ : Fin n → PTm l) (m N L : PTm n) :
-    (lowerLaw m N L).subst σ = lowerLaw (Syn.subst σ m) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [lowerLaw]
+ipra_subst lowerLaw
 
 private theorem lower_zero (m N : PTm n) (hm : Γ ⊢[PRAAx] le two m) : Γ ⊢[PRAAx] lowerLaw m N zero := by
   have e : Γ ⊢[PRAAx] add (tail m N zero) (potential m (succ (N+zero))) ≐ potential m (succ N) :=

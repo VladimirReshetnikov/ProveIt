@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationCofinalRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaGaussDomain (scaledRadius)
@@ -31,10 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -56,30 +52,14 @@ def powerSample (p z R B m a d : PTm n) : PTm n :=
   ap2 powerF p (rowData z R B m (cutoff p R m a d))
 def scaledData (z R B m d : PTm n) : PTm n := gammaData (scale m z) (scaledRadius R m) B d
 
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (p R m a d : PTm n) :
-    Syn.subst σ (cutoff p R m a d) = cutoff (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) :=
-  by simp [cutoff,one]
-@[simp] theorem subst_scaledCutoff {l : ℕ} (σ : Fin n → PTm l) (p R m a d : PTm n) :
-    Syn.subst σ (scaledCutoff p R m a d) =
-      scaledCutoff (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [scaledCutoff]
-@[simp] theorem subst_shiftedSample {l : ℕ} (σ : Fin n → PTm l) (p z R B m a d : PTm n) :
-    Syn.subst σ (shiftedSample p z R B m a d) = shiftedSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [shiftedSample]
-@[simp] theorem subst_referenceSample {l : ℕ} (σ : Fin n → PTm l) (p R m a d : PTm n) :
-    Syn.subst σ (referenceSample p R m a d) =
-      referenceSample (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [referenceSample]
-@[simp] theorem subst_scaledSample {l : ℕ} (σ : Fin n → PTm l) (p z R B m a d : PTm n) :
-    Syn.subst σ (scaledSample p z R B m a d) = scaledSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [scaledSample]
-@[simp] theorem subst_unitSample {l : ℕ} (σ : Fin n → PTm l) (p R m a d : PTm n) :
-    Syn.subst σ (unitSample p R m a d) =
-      unitSample (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [unitSample,one]
-@[simp] theorem subst_powerSample {l : ℕ} (σ : Fin n → PTm l) (p z R B m a d : PTm n) :
-    Syn.subst σ (powerSample p z R B m a d) = powerSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [powerSample]
-@[simp] theorem subst_scaledData {l : ℕ} (σ : Fin n → PTm l) (z R B m d : PTm n) :
-    Syn.subst σ (scaledData z R B m d) = scaledData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) :=
-  by simp [scaledData]
+ipra_subst cutoff [one]
+ipra_subst scaledCutoff
+ipra_subst shiftedSample
+ipra_subst referenceSample
+ipra_subst scaledSample
+ipra_subst unitSample [one]
+ipra_subst powerSample
+ipra_subst scaledData
 
 private theorem base_later (p R m a d : PTm n) : Γ ⊢[PRAAx] le (commonCutoff p R m a d) (cutoff p R m a d) :=
   le_add_right _ _

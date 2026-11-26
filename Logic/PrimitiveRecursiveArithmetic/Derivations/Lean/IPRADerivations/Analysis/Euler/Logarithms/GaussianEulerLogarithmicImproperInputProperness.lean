@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicImproperInputProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicCertificateGeometry
 open GaussianGammaIntegralCutoffs (height etaDen top tailCoefficient)
 open GaussianEulerLogarithmicCommonCutoff (cutoff cutoff_later)
@@ -27,10 +27,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianNamedInverseRate (rateNumerator rateDenominator rate_at denominator_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -42,9 +38,7 @@ def source (z w R S B D A V : PTm n) : Fm PTm n :=
   GaussianEulerLowerPowerCoefficients.source z R B A ⋏
     (GaussianEulerLowerPowerCoefficients.source w S D V ⋏ ofGaussian z B ≐ ofGaussian w D)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z w R S B D A V : PTm n) :
-    (source z w R S B D A V).subst σ = source (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ S) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ V) := by simp [source]
+ipra_subst source
 
 private theorem fixed_diagonal (t r j z R B A k : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerLowerPowerCoefficients.source z R B A)

@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPolynomialConstantLinear
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul qadd)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qzero_canonical qone_canonical)
 open GaussianRationalPolynomialBuffers (leftPad)
@@ -31,10 +31,6 @@ open GaussianRationalPolynomialExponentialStability (exponent_congr)
 open GaussianRationalPolynomialExponential (polynomial)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -88,8 +84,7 @@ theorem factor_constant (N : PTm n) : Γ ⊢[PRAAx]
 def headLowLaw (N : PTm n) : Fm PTm n :=
   entry (GaussianGammaEulerHeadPolynomial.polynomial N) (succ N) ≐ qzero ⋏
     entry (GaussianGammaEulerHeadPolynomial.polynomial N) (monus (succ N) one) ≐ qone
-@[simp] theorem subst_headLowLaw {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    (headLowLaw N).subst σ = headLowLaw (Syn.subst σ N) := by simp [headLowLaw]
+ipra_subst headLowLaw
 
 theorem head_low_zero : Γ ⊢[PRAAx] headLowLaw (zero : PTm n) :=
   .andI ((entry_congr GaussianGammaEulerHeadPolynomial.polynomial_zero (.eqRefl one)).eqTrans
@@ -111,11 +106,9 @@ theorem head_low_step (N : PTm n) (ih : Γ ⊢[PRAAx] headLowLaw N) : Γ ⊢[PRA
 
 theorem head_low (N : PTm n) : Γ ⊢[PRAAx] headLowLaw N := by
   have all : Γ ⊢[PRAAx] .all (headLowLaw (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_headLowLaw,Syn.subst_var,Syn.inst_zero]
-      exact head_low_zero
-    · simp only [subst_headLowLaw,Syn.subst_var,Syn.repl_zero]
-      exact head_low_step _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [subst_headLowLaw]
+    · exact head_low_zero
+    · exact head_low_step _ Prf.hyp0
   simpa only [subst_headLowLaw,Syn.subst_var,Syn.inst_zero] using all.allE N
 
 theorem constant_reader (C N : PTm n) : Γ ⊢[PRAAx] exponentCoefficient C N zero ≐ entry C N :=

@@ -18,7 +18,7 @@ set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerReciprocalSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re im normSq normSq_scale normSq_one oneCode scale)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -39,9 +39,6 @@ open GaussianRationalReciprocal
 open GaussianRationalSyntheticDivision (qmul_congr qone_canonical)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale re_one im_one)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,9 +53,7 @@ def data (A B D neg N : PTm n) : PTm n :=
   GaussianNamedDifference.data (GaussianPositiveRationalLogarithm.data N one)
     (reciprocalSum A B D neg (succ N))
 
-@[simp] theorem subst_shiftedPoint {m : ℕ} (σ : Fin n → PTm m) (z k : PTm n) :
-    Syn.subst σ (shiftedPoint z k) = shiftedPoint (Syn.subst σ z) (Syn.subst σ k) := by
-  simp [shiftedPoint, fraction, one]
+ipra_subst shiftedPoint [fraction, one]
 
 theorem row_at (z k : PTm n) : Γ ⊢[PRAAx] inst2 rowBody k z ≐ reciprocal (shiftedPoint z k) := by
   simpa only [rowBody, inst2, GaussianRationalReciprocal.subst_reciprocal, subst_shiftedPoint,

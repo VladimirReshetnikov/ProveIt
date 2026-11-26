@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalImaginaryChord
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (mul scale normSq im re)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianNamedSineFromExponential (multiplier)
@@ -33,20 +33,15 @@ open GaussianRootAlgebra (sub equal equal_of_values equal_refl re_mul im_mul re_
   re_neg im_neg)
 open RationalGaussianEmbedding (embed embed_canonical embed_from_representation native)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def sine (u : PTm n) : PTm n := embed (sndT u)
 def twiceSine (u : PTm n) : PTm n := qadd (sine u) (sine u)
 
-@[simp] theorem subst_sine {L : ℕ} (σ : Fin n → PTm L) (u : PTm n) :
-    Syn.subst σ (sine u) = sine (Syn.subst σ u) := by simp [sine]
+ipra_subst sine
 
-@[simp] theorem subst_twiceSine {L : ℕ} (σ : Fin n → PTm L) (u : PTm n) :
-    Syn.subst σ (twiceSine u) = twiceSine (Syn.subst σ u) := by simp [twiceSine]
+ipra_subst twiceSine
 
 theorem sine_recode (u : PTm n) :
     Γ ⊢[PRAAx] qmul multiplier (qsub u (point u)) ≐ sine u := by

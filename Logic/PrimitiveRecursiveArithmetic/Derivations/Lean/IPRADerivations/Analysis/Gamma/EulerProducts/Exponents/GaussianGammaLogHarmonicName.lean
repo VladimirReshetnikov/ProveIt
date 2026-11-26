@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteApproximantName
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The exact named harmonic identity for the two finite approximants
@@ -15,23 +14,20 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaLogHarmonicName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (logF)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular harmonicPoint)
 open GaussianNameEquivalence (crossEquivalent diagonalEquivalent)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def fixedF : PR 2 := RationalGaussianNameEmbedding.nameF GammaEulerConstantName.fixedF
 def sumF : PR 2 := GaussianNameArithmetic.addF fixedF logF
 def sumData (N : PTm n) : PTm n := GaussianNameArithmetic.addData N N
-@[simp] theorem subst_sumData {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (sumData N) = sumData (Syn.subst σ N) := by simp [sumData]
+ipra_subst sumData
 
 theorem fixed_regular (N : PTm n) (h : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] pointCN fixedF N :=
   RationalGaussianNameEmbedding.name_regular _ _ (GammaEulerConstantName.fixed_name_regular N h)

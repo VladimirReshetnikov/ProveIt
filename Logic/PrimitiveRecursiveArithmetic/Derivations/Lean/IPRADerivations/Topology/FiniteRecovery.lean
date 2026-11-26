@@ -23,11 +23,9 @@ Packet: `topology/general_topology_ipra_2026-11-19`, `paper/sections/03_finite.t
 
 namespace LeanProofs.IPRA.Topology.FiniteRecovery
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IntersectionEnumeration (disjFin disjFin_intro disjFin_imp)
 open LeanProofs.IPRA.Topology.FiniteInteriorClosure
-open Syn
-open scoped Fm
 
 variable {k : ℕ}
 

@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianTranslationCoefficientBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalRelativeNormAlgebra (relative relative_congr relative_weight_mono)
 open LeanProofs.IPRA.Analysis.GaussianRationalRelativeTwoTerm (norm_order_relative sub_bound unit_product_left)
 open LeanProofs.IPRA.Analysis.GaussianTranslationScaledCoefficients (scaledCoefficient)
@@ -29,10 +29,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub bounded)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,18 +41,10 @@ def row (C N z A B j : PTm n) : Fm PTm n := .all
   (lt (var 0) (succ (remaining (Syn.shift N) (Syn.shift j))) ⟶ le one (Syn.shift j+var 0) ⟶
     cell (Syn.shift C) (Syn.shift N) (Syn.shift z) (Syn.shift A) (Syn.shift B) (Syn.shift j) (var 0))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    (input C N z A B).subst σ = input (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) := by simp [input]
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (N j : PTm n) :
-    Syn.subst σ (weight N j) = weight (Syn.subst σ N) (Syn.subst σ j) := by simp [weight]
-@[simp] theorem subst_cell {m : ℕ} (σ : Fin n → PTm m) (C N z A B j k : PTm n) :
-    (cell C N z A B j k).subst σ = cell (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ j) (Syn.subst σ k) := by simp [cell]
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (C N z A B j : PTm n) :
-    (row C N z A B j).subst σ = row (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp [row,Syn.subst_shift,Syn.shift_subst]
+ipra_subst input
+ipra_subst weight
+ipra_subst cell
+ipra_subst row [Syn.subst_shift, Syn.shift_subst]
 
 def relativeSyntax (u W L b : PTm n) : BFm n := .le
   (RationalArgmin.left (GaussianRationalNormClearing.weightedNorm (L*L) u) (GaussianRationalNormClearing.weightedNorm (W*W) b))

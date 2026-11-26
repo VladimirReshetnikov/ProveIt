@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactor
 import IPRADerivations.Analysis.Gamma.GaussianGammaNameConjugation
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Conjugation of each original Barnes factor
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFactorConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFactor
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaNameConjugation (constant_name_conjugate)
@@ -24,8 +23,6 @@ open GaussianRationalConjugation (point point_add point_mul point_one point_powe
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalReciprocal (conjugate power)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Conj" => GaussianNameConjugation.nameF

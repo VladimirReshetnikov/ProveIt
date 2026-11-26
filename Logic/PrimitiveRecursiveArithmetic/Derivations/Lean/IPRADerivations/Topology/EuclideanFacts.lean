@@ -23,11 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.EuclideanFacts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -127,8 +123,7 @@ theorem cube_opposite (D a : PTm n) : Γ ⊢[PRAAx] le (a * D) (a * (D + a)) := 
 
 /-- `h⁻¹(h(t)) = t`, cleared: for `s = a/(D + a)`, `s · D = (1 − s) · a` reads `a · D = D · a` over `D + a`. -/
 theorem cube_inverse (D a : PTm n) : Γ ⊢[PRAAx] a * (monus (D + a) a) ≐ D * a := by
-  have e := natEq (add_monus (Γ := Γ) D a)
   apply deriveNat; ipra_simps
-  rw [e]; ring
+  rw [natEq (add_monus (Γ := Γ) D a)]; ring
 
 end LeanProofs.IPRA.Topology.EuclideanFacts

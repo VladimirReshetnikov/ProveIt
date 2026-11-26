@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaUnitShiftedTaylorBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaUnitReciprocalShift (small large step small_source original_reciprocal_shift_observations)
 open GaussianGammaFiniteQuadraticExpansion (quadratic)
 open GaussianGammaUnitCoefficientMass (budget)
@@ -22,10 +22,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

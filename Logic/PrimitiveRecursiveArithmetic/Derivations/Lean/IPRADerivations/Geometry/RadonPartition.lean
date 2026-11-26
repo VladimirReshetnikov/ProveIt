@@ -26,11 +26,7 @@ When the dependence is nonzero the common mass `M` is positive (`Geometry/HellyC
 
 namespace LeanProofs.IPRA.Geometry.RadonPartition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n s : ℕ} {Γ : List (Fm PTm n)}
 

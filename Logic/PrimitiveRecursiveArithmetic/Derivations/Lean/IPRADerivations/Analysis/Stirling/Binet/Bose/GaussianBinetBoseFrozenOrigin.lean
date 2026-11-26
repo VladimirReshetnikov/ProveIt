@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseFrozenOrigin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseFrozenMatrix (matrix matrix_at subst_frozenPiNumerator subst_piDenominator)
 open GaussianBinetBosePrefixTranspose (data)
 open GaussianBinetLaplaceStrip (tagNumerator)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianStirlingConstant (piDenominator)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "frozenBody" => GaussianBinetSecondDecayFrozenTail.body

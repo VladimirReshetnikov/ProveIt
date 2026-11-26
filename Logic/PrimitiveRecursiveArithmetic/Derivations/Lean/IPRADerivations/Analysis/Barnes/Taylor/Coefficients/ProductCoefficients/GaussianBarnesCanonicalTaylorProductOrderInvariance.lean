@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorProductOrderInvariance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalExponentTaylorBuffer (buffer buffer_zero entry_at subst_buffer)
 open GaussianBarnesCanonicalHigherRows (previous subst_previous)
 open GaussianBarnesCanonicalLogSchedule (initial)
@@ -28,10 +28,6 @@ open GaussianRationalPolynomialBuffers (leftPad)
 open GaussianRationalPolynomialExponentialProductTruncation (exponentialPrefix exponential_prefix_length subst_exponentialPrefix)
 open GaussianRationalPolynomialProduct (product)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

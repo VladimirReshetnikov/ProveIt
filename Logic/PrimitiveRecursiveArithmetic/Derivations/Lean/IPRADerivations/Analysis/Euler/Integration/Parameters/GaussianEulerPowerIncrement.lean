@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerShiftRate (source displaced_difference)
 open GaussianEulerPowerExponentIncrement (linear)
 open GaussianEulerPowerExponentialShift (relativeF relativeData productF productData relative_linear_remainder original_power_product_rate)
@@ -29,10 +29,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum qone_bo
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

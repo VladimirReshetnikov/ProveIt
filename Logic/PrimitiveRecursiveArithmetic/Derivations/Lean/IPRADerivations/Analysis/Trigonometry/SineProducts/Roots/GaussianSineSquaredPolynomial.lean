@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineSquaredPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientL1 (subCoefficients sub_lookup subst_subCoefficients)
 open GaussianRationalHorner (qmul canonical evaluate)
 open GaussianRationalLinearProduct (linear linear_length linear_evaluation linear_lookup linear_canonical padded_inside delayed_zero)
@@ -31,10 +31,6 @@ open GaussianReciprocalHorner (qmul_one_right)
 open GaussianSineMultipleAngleRecurrence (twoPoint evenValue even_zero even_one even_recurrence)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,11 +38,8 @@ def seed : PTm n := linear (singleton qone) qone one
 def next (P Q J : PTm n) : PTm n :=
   subCoefficients (linear Q twoPoint (succ (succ J))) (leftPad P two) (succ (succ (succ J)))
 
-@[simp] theorem subst_seed {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (seed : PTm n) = (seed : PTm m) := by simp [seed]
-@[simp] theorem subst_next {m : ℕ} (σ : Fin n → PTm m) (P Q J : PTm n) :
-    Syn.subst σ (next P Q J) = next (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ J) := by
-  simp [next,twoPoint]
+ipra_subst seed
+ipra_subst next [twoPoint]
 
 def baseBody : PTm 1 := pairT (singleton qone) seed
 def stepBody : PTm 3 := pairT (sndT (var 1)) (next (fstT (var 1)) (sndT (var 1)) (var 0))
@@ -55,12 +48,9 @@ def state (J : PTm n) : PTm n := ap2 stateF J zero
 def coefficients (J : PTm n) : PTm n := fstT (state J)
 def following (J : PTm n) : PTm n := sndT (state J)
 
-@[simp] theorem subst_state {m : ℕ} (σ : Fin n → PTm m) (J : PTm n) :
-    Syn.subst σ (state J) = state (Syn.subst σ J) := by simp [state]
-@[simp] theorem subst_coefficients {m : ℕ} (σ : Fin n → PTm m) (J : PTm n) :
-    Syn.subst σ (coefficients J) = coefficients (Syn.subst σ J) := by simp [coefficients]
-@[simp] theorem subst_following {m : ℕ} (σ : Fin n → PTm m) (J : PTm n) :
-    Syn.subst σ (following J) = following (Syn.subst σ J) := by simp [following]
+ipra_subst state
+ipra_subst coefficients
+ipra_subst following
 
 theorem state_zero : Γ ⊢[PRAAx] state (zero : PTm n) ≐ pairT (singleton qone) seed := by
   simpa [state,stateF,baseBody] using rec2_zero (Γ := Γ) baseBody stepBody (zero : PTm n)
@@ -70,14 +60,14 @@ theorem state_succ (J : PTm n) :
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_succ,
     Matrix.head_cons,Matrix.tail_cons] using rec2_succ (Γ := Γ) baseBody stepBody J zero
 theorem coefficients_zero : Γ ⊢[PRAAx] coefficients (zero : PTm n) ≐ singleton qone :=
-  (congrFst state_zero).eqTrans (fst_pair _ _)
+  state_zero.fstE
 theorem following_zero : Γ ⊢[PRAAx] following (zero : PTm n) ≐ seed :=
-  (congrSnd state_zero).eqTrans (snd_pair _ _)
+  state_zero.sndE
 theorem coefficients_succ (J : PTm n) : Γ ⊢[PRAAx] coefficients (succ J) ≐ following J :=
-  (congrFst (state_succ J)).eqTrans (fst_pair _ _)
+  (state_succ J).fstE
 theorem following_succ (J : PTm n) :
     Γ ⊢[PRAAx] following (succ J) ≐ next (coefficients J) (following J) J :=
-  (congrSnd (state_succ J)).eqTrans (snd_pair _ _)
+  (state_succ J).sndE
 
 private theorem linear_leading_one (C z N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (h : Γ ⊢[PRAAx] entry C zero ≐ qone) :
@@ -98,8 +88,7 @@ def shape (J : PTm n) : Fm PTm n :=
   (length (coefficients J) ≐ succ J ⋏ entry (coefficients J) zero ≐ qone) ⋏
     (length (following J) ≐ succ (succ J) ⋏ entry (following J) zero ≐ qone)
 
-@[simp] theorem subst_shape {m : ℕ} (σ : Fin n → PTm m) (J : PTm n) :
-    (shape J).subst σ = shape (Syn.subst σ J) := by simp [shape]
+ipra_subst shape
 
 private theorem shape_zero : Γ ⊢[PRAAx] shape (zero : PTm n) :=
   .andI
@@ -167,9 +156,7 @@ def evaluationLaw (S J : PTm n) : Fm PTm n :=
   (evaluate (coefficients J) (qmul S S) ≐ evenValue S J) ⋏
     (evaluate (following J) (qmul S S) ≐ evenValue S (succ J))
 
-@[simp] theorem subst_evaluationLaw {m : ℕ} (σ : Fin n → PTm m) (S J : PTm n) :
-    (evaluationLaw S J).subst σ = evaluationLaw (Syn.subst σ S) (Syn.subst σ J) := by
-  simp [evaluationLaw,evenValue]
+ipra_subst evaluationLaw [evenValue]
 
 private theorem evaluation_zero (S : PTm n) (hS : Γ ⊢[PRAAx] canonical S) :
     Γ ⊢[PRAAx] evaluationLaw S zero :=

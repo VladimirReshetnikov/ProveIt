@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSuperellipticSpanCertificate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianWeightedMonomialBasis (count)
 open RationalSuperellipticNormDegree (d norm input pointInput)
 open RationalSuperellipticSubspace (curveInput curvePoints properSpan pointMembership)
@@ -24,9 +24,6 @@ open RationalPolynomialWeightedDegreeGaussianEmbedding (weightedDegree)
 open RationalCurvePointsGaussianEmbedding (functionZeros)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

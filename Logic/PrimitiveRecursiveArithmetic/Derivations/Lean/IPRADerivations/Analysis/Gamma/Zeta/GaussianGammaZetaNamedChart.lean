@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaNamedChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded eval_re_code)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerIntegralGammaIdentification (source)
@@ -26,10 +26,6 @@ open GaussianNamedInverseRate (independentRate subst_independentRate)
 open GaussianNamedRightHalfPlaneSigned (certificate point realNumerator imagNumerator sign)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -81,25 +77,15 @@ def productDataF : PR 3 := PTm.toPR (productData (var 0) (var 1) (var 2) : PTm 3
 def gammaDataF : PR 3 := PTm.toPR (gammaData (var 0) (var 1) (var 2) : PTm 3)
 def demand : PR 3 := PTm.toPR (demandValue (var 0) (var 1) (var 2) : PTm 3)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (numerator q) = numerator (Syn.subst σ q) := by
-  simp [numerator]
+ipra_subst numerator
 
-@[simp] theorem subst_dirichletData {m : ℕ} (σ : Fin n → PTm m) (q R K : PTm n) :
-    Syn.subst σ (dirichletData q R K) = dirichletData (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [dirichletData,GaussianGammaZetaDirichletCofinal.data,radius,degree]
+ipra_subst dirichletData [GaussianGammaZetaDirichletCofinal.data, radius, degree]
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (q R K : PTm n) :
-    Syn.subst σ (productData q R K) = productData (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [productData,radius,degree]
+ipra_subst productData [radius, degree]
 
-@[simp] theorem subst_gammaData {m : ℕ} (σ : Fin n → PTm m) (q R K : PTm n) :
-    Syn.subst σ (gammaData q R K) = gammaData (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [gammaData,radius,degree]
+ipra_subst gammaData [radius, degree]
 
-@[simp] theorem subst_demandValue {m : ℕ} (σ : Fin n → PTm m) (s R K : PTm n) :
-    Syn.subst σ (demandValue s R K) = demandValue (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [demandValue,gammaDemand,radius,degree,one]
+ipra_subst demandValue [gammaDemand, radius, degree, one]
 
 theorem dirichlet_data_at (q R K : PTm n) : Γ ⊢[PRAAx] ap3 dirichletDataF q R K ≐ dirichletData q R K := by
   simpa only [dirichletDataF,ap3,subst_dirichletData,Syn.subst_var,Matrix.cons_val] using

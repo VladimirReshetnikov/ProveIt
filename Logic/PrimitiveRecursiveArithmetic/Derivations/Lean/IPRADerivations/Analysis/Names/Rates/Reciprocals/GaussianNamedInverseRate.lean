@@ -22,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedInverseRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qone)
@@ -31,9 +31,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianExponentialSmallPerturbation (smallSamples small_samples_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,23 +49,13 @@ def input (P Q I J : PR 2) (x y u v A B D N : PTm n) : Fm PTm n :=
   le one B ⋏ (le one N ⋏ ((pointCN P x ⋏ pointCN Q y) ⋏ ((pointCN I u ⋏ pointCN J v) ⋏
     ((smallSamples I u A B ⋏ smallSamples J v A B) ⋏ ((inverseLaw P I x u ⋏ inverseLaw Q J y v) ⋏ independentRate P Q x y D N)))))
 
-@[simp] theorem subst_rateNumerator {m : ℕ} (σ : Fin n → PTm m) (D N p q : PTm n) :
-    Syn.subst σ (rateNumerator D N p q) = rateNumerator (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) := by simp [rateNumerator]
-@[simp] theorem subst_rateDenominator {m : ℕ} (σ : Fin n → PTm m) (N p q : PTm n) :
-    Syn.subst σ (rateDenominator N p q) = rateDenominator (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) := by simp [rateDenominator]
-@[simp] theorem subst_independentRate {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (x y D N : PTm n) :
-    (independentRate F G x y D N).subst σ = independentRate F G (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp [independentRate,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_inverseLaw {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (x y : PTm n) :
-    (inverseLaw F G x y).subst σ = inverseLaw F G (Syn.subst σ x) (Syn.subst σ y) := by simp [inverseLaw]
-@[simp] theorem subst_residualCost {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (x y : PTm n) :
-    Syn.subst σ (residualCost F G x y) = residualCost F G (Syn.subst σ x) (Syn.subst σ y) := by simp [residualCost]
-@[simp] theorem subst_auxiliaryCost {m : ℕ} (σ : Fin n → PTm m) (P Q I J : PR 2) (x y u v A : PTm n) :
-    Syn.subst σ (auxiliaryCost P Q I J x y u v A) = auxiliaryCost P Q I J
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) := by simp [auxiliaryCost]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (P Q I J : PR 2) (x y u v A B D N : PTm n) :
-    (input P Q I J x y u v A B D N).subst σ = input P Q I J (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ u)
-      (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ N) := by simp [input]
+ipra_subst rateNumerator
+ipra_subst rateDenominator
+ipra_subst independentRate [Syn.subst_shift, Syn.shift_subst]
+ipra_subst inverseLaw
+ipra_subst residualCost
+ipra_subst auxiliaryCost
+ipra_subst input
 
 theorem denominator_positive (N p q : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] le one (rateDenominator N p q) :=

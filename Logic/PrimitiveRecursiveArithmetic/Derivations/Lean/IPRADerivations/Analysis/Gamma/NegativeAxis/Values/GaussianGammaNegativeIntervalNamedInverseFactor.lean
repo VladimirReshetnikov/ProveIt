@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedInverseFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF)
@@ -25,9 +25,6 @@ open GaussianNamedEulerUnitTime (source)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedUnitIntervalRationalLift (RationalMap)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

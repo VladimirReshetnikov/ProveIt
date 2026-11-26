@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeStirlingRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData multiplyModulus multiply_at sum_distance)
@@ -32,10 +32,7 @@ open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qmul_congr qzero_a
 open GaussianStirlingMultiplicativeAlgebra (normalizationF normalizationData normalizationSumF normalizationSumData
   normalization_sum_regular normalization_regular logarithmic_cancellation remainderF remainderData remainder_regular)
 open GaussianStirlingNames (logGammaF logGammaData log_gamma_regular logXF logXData productF productData product_regular)
-open LeanProofs.IPRA.PTm (num)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -49,19 +46,13 @@ def model (p A D w : PTm n) : PTm n := qadd (elementary p A D) (constantSample p
 def numerator (p A D : PTm n) : PTm n := two*D*unit p+(num 18+two*A)*A
 def denominator (p A : PTm n) : PTm n := A*unit p
 
-@[simp] theorem subst_constantSample {m : ℕ} (σ : Fin n → PTm m) (p w : PTm n) :
-    Syn.subst σ (constantSample p w) = constantSample (Syn.subst σ p) (Syn.subst σ w) := by simp [constantSample]
+ipra_subst constantSample
 
-@[simp] theorem subst_model {m : ℕ} (σ : Fin n → PTm m) (p A D w : PTm n) :
-    Syn.subst σ (model p A D w) = model (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ w) := by
-  simp [model]
+ipra_subst model
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p A D : PTm n) :
-    Syn.subst σ (numerator p A D) = numerator (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [numerator,two,one]
+ipra_subst numerator [two, one]
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p A : PTm n) :
-    Syn.subst σ (denominator p A) = denominator (Syn.subst σ p) (Syn.subst σ A) := by simp [denominator]
+ipra_subst denominator
 
 private theorem divide_at_le_one (A D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] bounded (fraction A D) A one :=

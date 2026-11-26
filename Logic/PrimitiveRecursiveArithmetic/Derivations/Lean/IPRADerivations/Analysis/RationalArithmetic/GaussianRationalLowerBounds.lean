@@ -14,21 +14,17 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalLowerBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (represents positive_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open GaussianRationalMetric (qnormSq squaredTolerance bounded)
 open ComplexLogarithmRemainder (normSq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def lower (q A B : PTm n) : Fm PTm n := RationalArgmin.rationalLE (squaredTolerance A B) (qnormSq q)
-@[simp] theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) (q A B : PTm n) :
-    (lower q A B).subst σ = lower (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) := by simp [lower]
+ipra_subst lower
 
 theorem lower_congr {q q' A A' B B' : PTm n} (hq : Γ ⊢[PRAAx] q ≐ q')
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') (h : Γ ⊢[PRAAx] lower q A B) :

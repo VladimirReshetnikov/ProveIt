@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.DoubleCounting
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Euler bounds for spherical maps
@@ -26,10 +25,8 @@ five-colour theorem.
 
 namespace LeanProofs.IPRA.Combinatorics.PlanarBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.DoubleCounting (count_le)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

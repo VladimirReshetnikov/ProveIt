@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedSine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentQuarterExponential (quarterF radius finiteEstimate quarter_input original_bounded_arguments
   original_quarter_cross)
 open GaussianArctangentExponentialPeriod (fullTurnF fullTurnRadius fullTurnData original_full_turn_input
@@ -27,8 +27,6 @@ open GaussianNameRingLaws (negativeF negativeData)
 open GaussianRadiusExponentialName (input)
 open GaussianRationalHorner (qzero)
 open GaussianRationalReciprocal (qone)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

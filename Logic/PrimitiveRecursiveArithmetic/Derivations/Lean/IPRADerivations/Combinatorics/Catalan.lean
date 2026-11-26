@@ -1,8 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Catalan numbers
@@ -29,16 +26,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.Catalan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_eq mul_cancel catalan_ratio_open)
 open LeanProofs.IPRA.Analysis.Products (fact fact_two_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Analysis.PowerSums (mulParam inst2_mulParam sum_mul_param)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -97,13 +90,9 @@ theorem cat_spec_succ (m : PTm n) : Γ ⊢[PRAAx] succ (succ m) * cat (succ m) �
 private abbrev specF : Fm PTm 1 := succ (var 0) * cat (var 0) ≐ cb (var 0)
 
 private theorem spec₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] specF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cat_spec_zero
-  · simp only [Fm.subst_eq, PTm.subst_mul, PTm.subst_monus, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cat_spec_succ _
+  ipra_ind [subst_ap2]
+  · exact cat_spec_zero
+  · exact cat_spec_succ _
 
 /-- `(n + 1) Cat_n = C(2n, n)`. -/
 theorem cat_spec (k : PTm n) : Γ ⊢[PRAAx] succ k * cat k ≐ cb k := by

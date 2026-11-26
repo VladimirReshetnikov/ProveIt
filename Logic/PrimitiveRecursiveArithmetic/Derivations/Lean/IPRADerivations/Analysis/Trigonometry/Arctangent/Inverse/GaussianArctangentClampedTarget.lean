@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentClampedTarget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentExponentialPrefix (source total prefixValue subst_prefixValue)
 open GaussianArctangentGridSearch (crossing_spec)
 open GaussianArctangentRationalTarget (chosen target target_admitted targetPoint rational_target_distance)
@@ -23,10 +23,6 @@ open RationalArithmetic (select select_zero select_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_le sg_lt)
 open LeanProofs.IPRA.Signum (sg)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianHighYNormBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPolynomialMonicCompanion (rowShape values values_length)
 open GaussianPolynomialMonicHornerReduction (stage stage_shape width prefix_evaluation)
 open GaussianNormFiberDivisibility (sourceOriginal)
@@ -23,9 +23,6 @@ open GaussianRationalFiberGrouping (abscissa ordinate)
 open GaussianRationalPolynomialDegree (flag degree)
 open GaussianRationalHorner (evaluate hornerF qzero)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,15 +35,9 @@ def input (F H m a c : PTm n) : Fm PTm n :=
 def points (F H m P : PTm n) : Fm PTm n :=
   pointDistinct P ⋏ (curveZeros F m P ⋏ functionZeros H (length H) P)
 
-@[simp] theorem subst_remainder {k : ℕ} (σ : Fin n → PTm k) (F H m a c : PTm n) :
-    Syn.subst σ (remainder F H m a c) = remainder (Syn.subst σ F) (Syn.subst σ H)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [remainder]
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (F H m a c : PTm n) :
-    (input F H m a c).subst σ = input (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) := by simp [input]
-@[simp] theorem subst_points {k : ℕ} (σ : Fin n → PTm k) (F H m P : PTm n) :
-    (points F H m P).subst σ = points (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ P) := by
-  simp [points]
+ipra_subst remainder
+ipra_subst input
+ipra_subst points
 
 theorem remainder_zero_at (F H m a c P i : PTm n) (h : Γ ⊢[PRAAx] input F H m a c)
     (hP : Γ ⊢[PRAAx] points F H m P) (hi : Γ ⊢[PRAAx] lt i (length P)) : Γ ⊢[PRAAx]

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialFixedRadius
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialProductTruncation
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Weighted truncation of the original exponential recomposition product
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialExponentialWeightedProductTruncation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientL1 (coefficientNorm)
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianRationalDistanceOrder (distance_congr)
@@ -34,10 +33,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalTravelScaling (ratio)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr subst_length)
 open RationalArgmin (rationalLE rationalLE_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCharacteristicEntryNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalCharacteristicPolynomial (cellPolynomial cell_length cell_head cell_tail)
 open GaussianPolynomialDeterminantTerms (cell)
 open GaussianCoefficientL1 (coefficientNorm prefixNorm prefix_succ qL1_congr subCoefficients sub_lookup)
@@ -29,9 +29,6 @@ open RationalArithmetic (add)
 open RationalArgmin (rationalLE rationalLE_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -91,8 +88,7 @@ theorem negative_difference (a b : PTm n) : Γ ⊢[PRAAx]
     GaussianRootAlgebra.re_neg,GaussianRootAlgebra.im_neg]; ring
 
 def difference (A B r j : PTm n) : PTm n := subCoefficients (cellPolynomial A r j) (cellPolynomial B r j) two
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (A B r j : PTm n) :
-    Syn.subst σ (difference A B r j) = difference (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ r) (Syn.subst σ j) := by simp [difference]
+ipra_subst difference
 theorem difference_length (A B r j : PTm n) : Γ ⊢[PRAAx] length (difference A B r j) ≐ two :=
   GaussianCoefficientL1.zip_length _ _ _ _
 theorem difference_head (A B r j : PTm n) : Γ ⊢[PRAAx] entry (difference A B r j) zero ≐ qzero :=

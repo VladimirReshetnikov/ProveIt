@@ -21,12 +21,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ExponentialSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,13 +47,9 @@ theorem tp_step {j : PTm n} (ih : Γ ⊢[PRAAx] le (pw two (succ j)) (two * fact
 private abbrev tpF : Fm PTm 1 := le (pw two (succ (var 0))) (two * fact (succ (var 0)))
 
 private theorem tp₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] tpF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tp_base
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tp_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact tp_base
+  · exact tp_step Prf.hyp0
 
 /-- `eq:etail`, first part: `2^{j+1} ≤ 2 (j + 1)!`. -/
 theorem two_pow_le_fact (j : PTm n) : Γ ⊢[PRAAx] le (pw two (succ j)) (two * fact (succ j)) := by
@@ -97,13 +89,9 @@ theorem ge_step {m : PTm n} (ih : Γ ⊢[PRAAx] le (two * fact (succ m)) (en (su
 private abbrev geF : Fm PTm 1 := le (two * fact (succ (var 0))) (en (succ (var 0)))
 
 private theorem ge₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] geF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ge_base
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact ge_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact ge_base
+  · exact ge_step Prf.hyp0
 
 /-- `E_m ≥ 2` for `m ≥ 1`: `2 (m + 1)! ≤ en (m + 1)`. -/
 theorem en_ge (m : PTm n) : Γ ⊢[PRAAx] le (two * fact (succ m)) (en (succ m)) := by
@@ -138,13 +126,9 @@ theorem up_step {m₀ : PTm n} (ih : Γ ⊢[PRAAx] UpInv m₀) : Γ ⊢[PRAAx] U
 private abbrev upF : Fm PTm 1 := UpInv (var 0)
 
 private theorem up₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] upF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact up_base
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_num, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact up_step Prf.hyp0
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact up_base
+  · exact up_step Prf.hyp0
 
 /-- `eq:etail`: `E_m + 1/(m · m!) ≤ 3` for `m = m₀ + 1 ≥ 1`, cleared: `m · en m + 1 ≤ 3 m · m!`. -/
 theorem en_upper (m₀ : PTm n) : Γ ⊢[PRAAx] UpInv m₀ := by

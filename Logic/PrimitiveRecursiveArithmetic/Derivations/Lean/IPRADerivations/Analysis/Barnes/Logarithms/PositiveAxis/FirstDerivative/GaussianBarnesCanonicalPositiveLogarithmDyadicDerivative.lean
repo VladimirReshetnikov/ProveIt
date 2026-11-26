@@ -9,7 +9,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveLogarithmDyadicDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open Common
 open ComplexLogarithmRemainder (normSq)
 open GaussianBarnesCanonicalPositiveRelativeLogarithmChart (threshold)
@@ -19,8 +19,6 @@ open GaussianBarnesCanonicalThirdDerivativePositiveMargin (step)
 open GaussianBarnesCanonicalThirdLogarithmRows (center)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialLogPartition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (sample)
 open GaussianPositiveRationalLogarithmIncrement (increment)
 open RationalHarmonicInterval (interval horizon numerator common_value)
@@ -36,10 +36,6 @@ open GaussianRationalSyntheticBounds (natCode)
 open ComplexLogarithmRemainder (normSq)
 open GaussianCompactRiemannName (sampleData field0 field1 field2 field3 field4)
 open GaussianRationalParameterTelescope (forward forward_at forward_sum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -123,8 +119,7 @@ def node (i y : PTm n) : PTm n :=
 def nodeBody : PTm 2 := node (var 0) (var 1)
 def widthSum (p N a C E : PTm n) : PTm n := GaussianRationalFiniteSum.sum (forward nodeBody) N (chartData p N a C E)
 
-@[simp] theorem subst_node {m : ℕ} (σ : Fin n → PTm m) (i y : PTm n) :
-    Syn.subst σ (node i y) = node (Syn.subst σ i) (Syn.subst σ y) := by simp [node]
+ipra_subst node
 
 private theorem sample_congr (p p' a a' b b' : PTm n) (hp : Γ ⊢[PRAAx] p ≐ p') (ha : Γ ⊢[PRAAx] a ≐ a')
     (hb : Γ ⊢[PRAAx] b ≐ b') : Γ ⊢[PRAAx] sample p a b ≐ sample p' a' b' := by

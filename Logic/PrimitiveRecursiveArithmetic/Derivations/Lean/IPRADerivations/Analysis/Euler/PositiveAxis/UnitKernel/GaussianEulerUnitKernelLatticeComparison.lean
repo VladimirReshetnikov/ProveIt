@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelLatticeComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (source evaluatorF fixedData lipschitz)
 open GaussianCompactRiemannName (inside grid value sampleBody sampleData quadrature)
 open GaussianEulerUnitKernelLatticeSum (lattice)
@@ -28,19 +28,13 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def numerator (p q C : PTm n) : PTm n := C*(unit p+unit q)
 def denominator (p q M : PTm n) : PTm n := M*unit p*unit q
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q C : PTm n) :
-    Syn.subst σ (numerator p q C) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ C) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q M : PTm n) :
-    Syn.subst σ (denominator p q M) = denominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ M) := by simp [denominator]
+ipra_subst numerator
+ipra_subst denominator
 
 theorem lattice_inside (i a C M : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hM : Γ ⊢[PRAAx] le one M)
     (hi : Γ ⊢[PRAAx] le i C) : Γ ⊢[PRAAx] inside a C M (pairT (a+i) M) := by

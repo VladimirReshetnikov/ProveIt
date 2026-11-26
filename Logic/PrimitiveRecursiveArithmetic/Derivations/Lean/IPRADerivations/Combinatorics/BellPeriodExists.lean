@@ -4,7 +4,6 @@ import IPRADerivations.Foundations.TermCompiler
 import IPRADerivations.Topology.InjectionBound
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.Primes
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Bell numbers are periodic modulo every `m` (`bell_numbers_ipra`, `thm:all-moduli-period`)
@@ -36,7 +35,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellPeriodExists
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.Bell (bell)
 open LeanProofs.IPRA.Combinatorics.BellPascalInversion (congrBell)
@@ -53,10 +52,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiPigeonhole (first second)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -17,7 +17,7 @@ set_option maxHeartbeats 260000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetReciprocalRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code normSq normSq_one normSq_scale oneCode scale)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianLogGammaEulerHead (argument)
@@ -30,8 +30,6 @@ open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub qsu
 open GaussianRationalReciprocal (reciprocal bound_congr bounded_product)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianRootAlgebra (equal equal_of_values im_one im_scale im_sub normSq_equal re_one re_scale re_sub sub)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -86,10 +84,7 @@ theorem horizontal_reciprocal_distance (A B D neg U : PTm n) (h : Γ ⊢[PRAAx] 
 def tagPoint (A B D neg k M j : PTm n) : PTm n :=
   argument (M*(A+k*D)+j*D) (M*B) (M*D) neg
 
-@[simp] theorem subst_tagPoint {m : ℕ} (σ : Fin n → PTm m) (A B D neg k M j : PTm n) :
-    Syn.subst σ (tagPoint A B D neg k M j) =
-      tagPoint (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg)
-        (Syn.subst σ k) (Syn.subst σ M) (Syn.subst σ j) := by simp [tagPoint]
+ipra_subst tagPoint
 
 theorem tag_distance (A B D neg k M j : PTm n) (h : Γ ⊢[PRAAx] source A D neg)
     (hM : Γ ⊢[PRAAx] le one M) (hj : Γ ⊢[PRAAx] le j M) : Γ ⊢[PRAAx]

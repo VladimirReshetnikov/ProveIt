@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactProductComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData decayF decayData productF productData nameF data)
 open GaussianEulerCompactPowerMajorant (majorant)
 open GaussianEulerExponentCompactBounds (source)
@@ -25,18 +25,13 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameArithmetic (multiplyModulus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def clock (p z B a b : PTm n) : PTm n :=
   GaussianFastValueCut.exponent (multiplyModulus powerF decayF (powerData z B a b) (decayData a b)) p
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (clock p z B a b) =
-      clock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [clock, decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst clock [decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem clock_later (p z B a b : PTm n) : Γ ⊢[PRAAx] le p (clock p z B a b) :=
   le_add_right _ _
@@ -44,10 +39,7 @@ theorem clock_later (p z B a b : PTm n) : Γ ⊢[PRAAx] le p (clock p z B a b) :
 def replacement (p z B a b w : PTm n) : PTm n :=
   qmul (ap2 powerF (clock p z B a b) (powerData z B a b)) w
 
-@[simp] theorem subst_replacement {m : ℕ} (σ : Fin n → PTm m) (p z B a b w : PTm n) :
-    Syn.subst σ (replacement p z B a b w) =
-      replacement (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ w) := by
-  simp [replacement]
+ipra_subst replacement
 
 theorem original_product (p z B a b : PTm n) :
     Γ ⊢[PRAAx] ap2 productF p (productData z B a b) ≐

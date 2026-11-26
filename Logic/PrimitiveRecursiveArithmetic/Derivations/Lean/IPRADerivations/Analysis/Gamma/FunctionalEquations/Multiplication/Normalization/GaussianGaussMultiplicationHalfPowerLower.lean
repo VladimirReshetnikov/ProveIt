@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationHalfPowerLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (fraction pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -25,10 +25,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder real_order_at)
 open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
 open GaussianNameArithmetic (multiplyF multiplyData)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "HalfF" => GaussianGaussMultiplicationHalfPower.halfF
@@ -37,11 +33,8 @@ private def radius (m : PTm n) : PTm n := GaussianNameBounds.U exponentF (expone
 def lowerDenominator (m : PTm n) : PTm n := pw (num 3) (radius m)
 def positiveMargin (m : PTm n) : PTm n := RationalGaussianEmbedding.embed (fraction one (lowerDenominator m))
 
-@[simp] theorem subst_lowerDenominator {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (lowerDenominator m) = lowerDenominator (Syn.subst σ m) := by
-  simp [lowerDenominator,radius,GaussianGaussMultiplicationHalfPower.halfCoefficient]
-@[simp] theorem subst_positiveMargin {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (positiveMargin m) = positiveMargin (Syn.subst σ m) := by simp [positiveMargin,fraction]
+ipra_subst lowerDenominator [radius, GaussianGaussMultiplicationHalfPower.halfCoefficient]
+ipra_subst positiveMargin [fraction]
 
 theorem lower_denominator_positive (m : PTm n) : Γ ⊢[PRAAx] le one (lowerDenominator m) :=
   GaussianFactorBudget.power_positive _ _ (by ipra_le 2)
@@ -85,7 +78,7 @@ theorem half_lower (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
   let y := fstT (ap2 HalfF q (halfData M))
   have hM : Δ ⊢[PRAAx] le one M := by simpa [Δ,M,Fm.shift,Syn.shift] using hm.shift.shift
   have read : Δ ⊢[PRAAx] fstT (ap2 constantF p (positiveMargin M)) ≐ a := by
-    have e := (congrFst (constant_at (Γ := Δ) p (positiveMargin M))).eqTrans (fst_pair _ _)
+    have e := (constant_at (Γ := Δ) p (positiveMargin M)).fstE
     exact e.eqTrans (RationalNormalForm.normalize_idempotent _ _ (lower_denominator_positive M))
   have first := upper_mono a y one (unit q) (unit p+unit q) (unit p*unit q)
     (unit_positive q) (half_lower_at M q hM) (by ipra_le (Groth.ι (Q.mk Δ (unit q)))^2)

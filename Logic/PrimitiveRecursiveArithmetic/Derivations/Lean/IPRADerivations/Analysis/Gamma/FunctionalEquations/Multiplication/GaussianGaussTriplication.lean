@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussTriplication
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaGaussShiftedProduct (source)
 open GaussianGammaReciprocalInverse (gammaF)
@@ -25,9 +25,6 @@ open GaussianGaussMultiplicationHalfPowers (normalizedF normalizedData coefficie
 open GaussianGaussTriplicationPi (doubledPiF doubledPiData doubled_pi_regular pi_half_cross)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans cross_symm)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "PiHalf" => GaussianGaussPiPowerSquareRoot.nameF

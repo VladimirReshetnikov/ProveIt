@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorProductUniformGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalExponentTaylorCoefficientCauchy (linearGain)
 open GaussianBarnesCanonicalExponentTaylorCoefficientMassGap (massError)
@@ -43,10 +43,6 @@ open GaussianRationalSyntheticDivision (qsub_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (multiply)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

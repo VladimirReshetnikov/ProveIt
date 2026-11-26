@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalUniformCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalDiskBound (prefixBound prefix_U_le)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -23,8 +23,6 @@ open GaussianBarnesCanonicalValue (prefixF nameF data)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRootSchedule (binaryLength binary_length_correct binary_length_minimal)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

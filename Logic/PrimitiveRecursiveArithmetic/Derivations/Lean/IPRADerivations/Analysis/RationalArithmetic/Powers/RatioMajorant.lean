@@ -26,12 +26,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RatioMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.HypergeometricTerm (hn hd hn_succ hd_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -71,13 +67,9 @@ theorem tail_all
     Γ ⊢[PRAAx] Fm.all (le (Syn.shift d * ap2 (sumF t) (var 0) (Syn.shift x) +
         (Syn.shift p + Syn.shift d) * inst2 t (var 0) (Syn.shift x))
       ((Syn.shift p + Syn.shift d) * inst2 t zero (Syn.shift x))) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tail_base
-  · simp only [subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tail_step hr.allOpen.wk Prf.hyp0
+  ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_inst2]
+  · exact tail_base
+  · exact tail_step hr.allOpen.wk Prf.hyp0
 
 /-- `eq:geometric-tail`: with ratio at most `p/(p + d)`,
 `d ∑_{i<N} t(i) + (p + d) t(N) ≤ (p + d) t(0)` for every `N`. -/

@@ -15,14 +15,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianIntegerCircleProjection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (code re im normSq normSq_eval scale)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra (sub re_sub im_sub re_scale im_scale)
 open LeanProofs.IPRA.Analysis.GaussianRationalCircleParametrization (bit)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -33,16 +30,11 @@ def circleDen (x V S : PTm n) : PTm n := GaussianRationalCircleParametrization.d
 def circleNum (x V b S : PTm n) : PTm n := GaussianRationalCircleParametrization.numerator (S+x) V b
 def cross (x V b S : PTm n) : PTm n := sub (scale S (circleNum x V b S)) (scale (circleDen x V S) (plane x V b))
 
-@[simp] theorem subst_sign {m : ℕ} (σ : Fin n → PTm m) (b : PTm n) :
-    (sign b).subst σ = sign (Syn.subst σ b) := by simp [sign]
-@[simp] theorem subst_plane {m : ℕ} (σ : Fin n → PTm m) (x V b : PTm n) :
-    Syn.subst σ (plane x V b) = plane (Syn.subst σ x) (Syn.subst σ V) (Syn.subst σ b) := by simp [plane]
-@[simp] theorem subst_circleDen {m : ℕ} (σ : Fin n → PTm m) (x V S : PTm n) :
-    Syn.subst σ (circleDen x V S) = circleDen (Syn.subst σ x) (Syn.subst σ V) (Syn.subst σ S) := by simp [circleDen]
-@[simp] theorem subst_circleNum {m : ℕ} (σ : Fin n → PTm m) (x V b S : PTm n) :
-    Syn.subst σ (circleNum x V b S) = circleNum (Syn.subst σ x) (Syn.subst σ V) (Syn.subst σ b) (Syn.subst σ S) := by simp [circleNum]
-@[simp] theorem subst_cross {m : ℕ} (σ : Fin n → PTm m) (x V b S : PTm n) :
-    Syn.subst σ (cross x V b S) = cross (Syn.subst σ x) (Syn.subst σ V) (Syn.subst σ b) (Syn.subst σ S) := by simp [cross]
+ipra_subst sign
+ipra_subst plane
+ipra_subst circleDen
+ipra_subst circleNum
+ipra_subst cross
 
 theorem re_plane (x V b : PTm n) : ZT.toZ Γ (re (plane x V b)) = 𝔞(x) := by
   rw [plane,ComplexLogarithmRemainder.eval_re_code,ZT.toZ_ofNat]
@@ -113,8 +105,7 @@ theorem cross_norm (x V b S e : PTm n) (hb : Γ ⊢[PRAAx] bit b)
 
 def turn (r a : PTm n) : PTm n := code (sign r*re a) (sign r*im a)
 
-@[simp] theorem subst_turn {m : ℕ} (σ : Fin n → PTm m) (r a : PTm n) :
-    Syn.subst σ (turn r a) = turn (Syn.subst σ r) (Syn.subst σ a) := by simp [turn]
+ipra_subst turn
 
 theorem re_turn (r a : PTm n) : ZT.toZ Γ (re (turn r a)) = ZT.toZ Γ (sign r)*ZT.toZ Γ (re a) := by
   rw [turn,ComplexLogarithmRemainder.eval_re_code,ZT.toZ_mul]
@@ -162,12 +153,9 @@ def rotatedTarget (x V b S r : PTm n) : PTm n := GaussianRationalHorner.ofGaussi
 def rotatedCross (x V b S r : PTm n) : PTm n := sub (scale S (turn r (circleNum x V b S)))
   (scale (circleDen x V S) (turn r (plane x V b)))
 
-@[simp] theorem subst_rotatedPoint {m : ℕ} (σ : Fin n → PTm m) (x V b S r : PTm n) :
-    Syn.subst σ (rotatedPoint x V b S r) = rotatedPoint (Syn.subst σ x) (Syn.subst σ V) (Syn.subst σ b) (Syn.subst σ S) (Syn.subst σ r) := by simp [rotatedPoint]
-@[simp] theorem subst_rotatedTarget {m : ℕ} (σ : Fin n → PTm m) (x V b S r : PTm n) :
-    Syn.subst σ (rotatedTarget x V b S r) = rotatedTarget (Syn.subst σ x) (Syn.subst σ V) (Syn.subst σ b) (Syn.subst σ S) (Syn.subst σ r) := by simp [rotatedTarget]
-@[simp] theorem subst_rotatedCross {m : ℕ} (σ : Fin n → PTm m) (x V b S r : PTm n) :
-    Syn.subst σ (rotatedCross x V b S r) = rotatedCross (Syn.subst σ x) (Syn.subst σ V) (Syn.subst σ b) (Syn.subst σ S) (Syn.subst σ r) := by simp [rotatedCross]
+ipra_subst rotatedPoint
+ipra_subst rotatedTarget
+ipra_subst rotatedCross
 
 theorem rotated_cross_norm (x V b S e r : PTm n) (hb : Γ ⊢[PRAAx] bit b) (hr : Γ ⊢[PRAAx] bit r)
     (hGap : Γ ⊢[PRAAx] S*S ≐ x*x+V*V+e) : Γ ⊢[PRAAx]

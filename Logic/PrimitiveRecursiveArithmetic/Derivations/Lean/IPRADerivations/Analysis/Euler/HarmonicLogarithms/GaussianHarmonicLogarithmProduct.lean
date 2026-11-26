@@ -15,16 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianHarmonicLogarithmProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianHarmonicLogarithmName (nameF data sample observation sample_at name_regular clock)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,12 +28,9 @@ def source (a b c d : PTm n) : Fm PTm n := GaussianPositiveRationalLogarithm.sou
 def addedF : PR 2 := GaussianNameArithmetic.addF nameF nameF
 def addedData (a b c d : PTm n) : PTm n := GaussianNameArithmetic.addData (data a b) (data c d)
 def mesh (p : PTm n) : PTm n := GammaEulerConstantName.mesh (clock p)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    (source a b c d).subst σ = source (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_addedData {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (addedData a b c d) = addedData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [addedData]
-@[simp] theorem subst_mesh {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) : Syn.subst σ (mesh p) = mesh (Syn.subst σ p) := by
-  simp [mesh,GammaEulerConstantName.mesh,GammaEulerConstantName.unit]
+ipra_subst source
+ipra_subst addedData
+ipra_subst mesh [GammaEulerConstantName.mesh, GammaEulerConstantName.unit]
 
 theorem product_source (a b c d : PTm n) (h : Γ ⊢[PRAAx] source a b c d) : Γ ⊢[PRAAx]
     GaussianPositiveRationalLogarithm.source (a*c) (b*d) :=

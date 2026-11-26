@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingRationalTelescopers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianEulerPositivePowerChartCorrectedImage (fraction_sum)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -21,10 +21,6 @@ open GaussianRationalHorner (qadd positive_product canonical_unique represents_r
   ofGaussian_canonical ofGaussian_represents)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRootAlgebra (equal equal_of_values re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -33,13 +29,9 @@ def numeratorSquare (b : PTm n) : PTm n := b*b
 def gap (a b : PTm n) : PTm n := num 4*a*(a+b)
 def denominatorSquare (a b : PTm n) : PTm n := (two*a+b)*(two*a+b)
 
-@[simp] theorem subst_numeratorSquare {l : ℕ} (σ : Fin n → PTm l) (b : PTm n) :
-    Syn.subst σ (numeratorSquare b) = numeratorSquare (Syn.subst σ b) := by simp [numeratorSquare]
-@[simp] theorem subst_gap {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (gap a b) = gap (Syn.subst σ a) (Syn.subst σ b) := by simp [gap,num]
-@[simp] theorem subst_denominatorSquare {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (denominatorSquare a b) = denominatorSquare (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [denominatorSquare,two,one]
+ipra_subst numeratorSquare
+ipra_subst gap [num]
+ipra_subst denominatorSquare [two, one]
 
 theorem square_split (a b : PTm n) :
     Γ ⊢[PRAAx] denominatorSquare a b ≐ gap a b+numeratorSquare b := by
@@ -87,24 +79,14 @@ def lowerMargin (a b : PTm n) : PTm n :=
   fraction (b*b*b*monus (num 24*a) (num 23*b))
     (num 3*denominatorSquare a b*(num 12*a+b)*(num 12*a+num 13*b))
 
-@[simp] theorem subst_upperValue {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (upperValue a b) = upperValue (Syn.subst σ a) (Syn.subst σ b) := by simp [upperValue,num]
-@[simp] theorem subst_lowerValue {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (lowerValue a b) = lowerValue (Syn.subst σ a) (Syn.subst σ b) := by simp [lowerValue,num]
-@[simp] theorem subst_upperDifference {l : ℕ} (σ : Fin n → PTm l) (a b t : PTm n) :
-    Syn.subst σ (upperDifference a b t) = upperDifference (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ t) := by
-  simp [upperDifference,num]
-@[simp] theorem subst_lowerDifference {l : ℕ} (σ : Fin n → PTm l) (a b t : PTm n) :
-    Syn.subst σ (lowerDifference a b t) = lowerDifference (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ t) := by
-  simp [lowerDifference,num]
-@[simp] theorem subst_firstTerm {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (firstTerm a b) = firstTerm (Syn.subst σ a) (Syn.subst σ b) := by simp [firstTerm,num]
-@[simp] theorem subst_geometricMain {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (geometricMain a b) = geometricMain (Syn.subst σ a) (Syn.subst σ b) := by simp [geometricMain,num]
-@[simp] theorem subst_upperMargin {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (upperMargin a b) = upperMargin (Syn.subst σ a) (Syn.subst σ b) := by simp [upperMargin,num,two,one]
-@[simp] theorem subst_lowerMargin {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (lowerMargin a b) = lowerMargin (Syn.subst σ a) (Syn.subst σ b) := by simp [lowerMargin,num]
+ipra_subst upperValue [num]
+ipra_subst lowerValue [num]
+ipra_subst upperDifference [num]
+ipra_subst lowerDifference [num]
+ipra_subst firstTerm [num]
+ipra_subst geometricMain [num]
+ipra_subst upperMargin [num, two, one]
+ipra_subst lowerMargin [num]
 
 theorem upper_den_positive (a : PTm n) (ha : Γ ⊢[PRAAx] le one a) : Γ ⊢[PRAAx] le one (num 12*a) :=
   positive_product _ _ (small_numeral_positive 11) ha

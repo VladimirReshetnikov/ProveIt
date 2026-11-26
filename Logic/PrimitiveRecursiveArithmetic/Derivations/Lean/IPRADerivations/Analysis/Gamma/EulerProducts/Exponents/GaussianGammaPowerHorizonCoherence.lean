@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPowerHorizonCoherence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRationalPolynomialPowers (powerPrefix)
@@ -27,9 +27,6 @@ open GaussianRationalPolynomialExponentialStability (exponent_congr)
 open GaussianPolynomialLowJetProduct (jetEqual jetSyntax jet_formula jet_at)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -79,9 +76,7 @@ def powerLaw (C N D M K T H r : PTm n) : Fm PTm n := lt r K ⟶ lt r T ⟶
   jetEqual (powerPrefix C N K (succ r)) (succ r*N) (powerPrefix D M T (succ r)) (succ r*M) H
 def powerSyntax (C N D M K T H r : PTm n) : BFm n := .imp (.lt r K) (.imp (.lt r T)
   (jetSyntax (powerPrefix C N K (succ r)) (succ r*N) (powerPrefix D M T (succ r)) (succ r*M) H))
-@[simp] theorem subst_powerLaw {m : ℕ} (σ : Fin n → PTm m) (C N D M K T H r : PTm n) :
-    (powerLaw C N D M K T H r).subst σ = powerLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ D)
-      (Syn.subst σ M) (Syn.subst σ K) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ r) := by simp [powerLaw]
+ipra_subst powerLaw
 theorem power_formula (C N D M K T H r : PTm n) : formula (powerSyntax C N D M K T H r) = powerLaw C N D M K T H r := by
   simp [powerSyntax,powerLaw,formula,jet_formula,BFm.lt,BFm.le,lt,le]
 

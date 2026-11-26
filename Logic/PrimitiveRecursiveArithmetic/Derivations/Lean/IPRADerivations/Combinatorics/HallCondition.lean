@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.FisherInequality
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Hall's condition: necessity, and regular bipartite graphs
@@ -23,11 +22,9 @@ decomposition into perfect matchings.
 
 namespace LeanProofs.IPRA.Combinatorics.HallCondition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.DesignCounts (flag_count)
 open LeanProofs.IPRA.Combinatorics.FisherInequality (znn_of_pos_mul)
-open Syn
-open scoped Fm
 
 variable {n a b : ℕ} {Γ : List (Fm PTm n)}
 
@@ -82,8 +79,7 @@ theorem regular_hall (A : Fin a → Fin b → ZT n) (x : Fin a → ZT n) (y : Fi
     (hN : ∀ j, Γ ⊢[PRAAx] zle (ZT.sumFin fun i => A i j * x i) (d * y j)) :
     Γ ⊢[PRAAx] zle (ZT.sumFin x) (ZT.sumFin y) := by
   have hrow1 : ∀ i, ∑ j, ZT.toZ Γ (A i j) = ZT.toZ Γ d := fun i => by
-    have h := ZT.toZ_eq (hrow i)
-    simpa only [ZT.toZ_sumFin] using h
+    simpa only [ZT.toZ_sumFin] using ZT.toZ_eq (hrow i)
   have S := regular_sum (fun i j => ZT.toZ Γ (A i j)) (fun i => ZT.toZ Γ (x i)) (ZT.toZ Γ d) hrow1
   beta_reduce at S
   have hpos : Γ ⊢[PRAAx] zle (ZT.natLit 0) (d * (ZT.sumFin y - ZT.sumFin x)) := by

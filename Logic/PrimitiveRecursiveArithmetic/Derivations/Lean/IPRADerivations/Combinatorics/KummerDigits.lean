@@ -3,7 +3,6 @@ import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Kummer's formula in digit-sum form
@@ -28,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.KummerDigits
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val)
@@ -40,10 +39,6 @@ open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' legendre_digits)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (pos_of_eq_mul)
 open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

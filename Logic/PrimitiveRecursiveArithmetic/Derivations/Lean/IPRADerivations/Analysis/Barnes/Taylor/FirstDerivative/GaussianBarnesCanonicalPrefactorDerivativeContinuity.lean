@@ -13,7 +13,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorDerivativeContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalPrefactor
   (linearF quadraticCoefficientF quadraticCoefficientData quadraticF polynomialF negativeHalf correctionF quadratic_coefficient_regular)
@@ -31,9 +31,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (qone)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

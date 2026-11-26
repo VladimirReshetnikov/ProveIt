@@ -18,7 +18,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentImproper (nameF data regular sample_canonical)
 open GaussianBinetLaplaceMomentImproperTaylor (higherBound leading linearSample)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -34,10 +34,6 @@ open GaussianRationalMetric (qsub qnegative qnegative_canonical bounded distance
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative qadd_commutative qadd_zero_right qmul_one_right)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
@@ -58,23 +54,13 @@ def samplerBudget (j X D R S H Q : PTm n) : PTm n :=
   GaussianNamedDifferenceQuotient.cost nameF nameF
     (data j (X*Q+H*D) (D*Q) S) (data j X D R) (radiusNumerator H) Q + num 10*Q + num 3
 
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (j X D R S H Q : PTm n) :
-    Syn.subst σ (quotientData j X D R S H Q) =
-      quotientData (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R)
-        (Syn.subst σ S) (Syn.subst σ H) (Syn.subst σ Q) := by simp [quotientData]
+ipra_subst quotientData
 
-@[simp] theorem subst_targetData {m : ℕ} (σ : Fin n → PTm m) (j X D R : PTm n) :
-    Syn.subst σ (targetData j X D R) = targetData (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) := by
-  simp [targetData]
+ipra_subst targetData
 
-@[simp] theorem subst_linearBudget {m : ℕ} (σ : Fin n → PTm m) (j D H : PTm n) :
-    Syn.subst σ (linearBudget j D H) = linearBudget (Syn.subst σ j) (Syn.subst σ D) (Syn.subst σ H) := by
-  simp [linearBudget]
+ipra_subst linearBudget
 
-@[simp] theorem subst_samplerBudget {m : ℕ} (σ : Fin n → PTm m) (j X D R S H Q : PTm n) :
-    Syn.subst σ (samplerBudget j X D R S H Q) =
-      samplerBudget (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R)
-        (Syn.subst σ S) (Syn.subst σ H) (Syn.subst σ Q) := by simp [samplerBudget]
+ipra_subst samplerBudget
 
 theorem positive_parameter (H Q : PTm n) (hH : Γ ⊢[PRAAx] le one H)
     (hQ : Γ ⊢[PRAAx] le one Q) : Γ ⊢[PRAAx] separated (radiusNumerator H) Q :=

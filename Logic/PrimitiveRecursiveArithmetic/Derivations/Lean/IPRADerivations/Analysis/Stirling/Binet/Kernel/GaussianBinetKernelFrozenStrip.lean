@@ -14,7 +14,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelFrozenStrip
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelFrozenPrefix (dampedValue damped_error)
 open GaussianBinetLaplaceStrip (source subst_source tagNumerator tag_inside)
 open GaussianCompactRiemannName (grid grid_inside quadrature sampleBody sampleData sample_body_at
@@ -24,10 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Exp" => GaussianBinetLaplaceExponential.nameF
@@ -47,24 +43,13 @@ def evaluatorF : PR 3 := PTm.toPR (evaluatorTerm (var 0) (var 1) (var 2))
 def value (p k N M X Y D sign R T A C E : PTm n) : PTm n :=
   quadrature evaluatorF p M (E+A) C E (fixedData k N X Y D sign R T)
 
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (k N X Y D sign R T : PTm n) :
-    Syn.subst σ (fixedData k N X Y D sign R T) = fixedData (Syn.subst σ k) (Syn.subst σ N)
-      (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ T) :=
-  by simp [fixedData]
+ipra_subst fixedData
 
-@[simp] theorem subst_rowValue {m : ℕ} (σ : Fin n → PTm m) (p k N X Y D sign R T A B : PTm n) :
-    Syn.subst σ (rowValue p k N X Y D sign R T A B) = rowValue (Syn.subst σ p) (Syn.subst σ k)
-      (Syn.subst σ N) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ T)
-      (Syn.subst σ A) (Syn.subst σ B) := by simp [rowValue,dampedValue]
+ipra_subst rowValue [dampedValue]
 
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) :=
-  by simp [evaluatorTerm]
+ipra_subst evaluatorTerm
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p k N M X Y D sign R T A C E : PTm n) :
-    Syn.subst σ (value p k N M X Y D sign R T A C E) = value (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ N)
-      (Syn.subst σ M) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-      (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [value]
+ipra_subst value
 
 private theorem val_4 {α : Type} (a b c d e f g h : α) : ![a,b,c,d,e,f,g,h] (4 : Fin 8) = e := rfl
 private theorem val_5 {α : Type} (a b c d e f g h : α) : ![a,b,c,d,e,f,g,h] (5 : Fin 8) = f := rfl

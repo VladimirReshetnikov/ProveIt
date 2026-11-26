@@ -14,7 +14,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussShiftedProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
@@ -28,8 +28,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -59,39 +57,23 @@ def data (z R B m d : PTm n) : PTm n :=
 def clock (p R m d : PTm n) : PTm n :=
   GaussianNamedFiniteProductName.clock m (rowRadius R m d) one p
 
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (z R B m a d : PTm n) :
-    (source z R B m a d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp [source,one]
+ipra_subst source [one]
 
-@[simp] theorem subst_rowValue {l : ℕ} (σ : Fin n → PTm l) (p r z R B m d : PTm n) :
-    Syn.subst σ (rowValue p r z R B m d) = rowValue (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) := by
-  simp [rowValue,shiftedNumerator,gammaData,GaussianGammaReciprocalInverse.gammaHeight,one]
+ipra_subst rowValue [shiftedNumerator, gammaData, GaussianGammaReciprocalInverse.gammaHeight, one]
 
-@[simp] theorem subst_rowData {l : ℕ} (σ : Fin n → PTm l) (z R B m d : PTm n) :
-    Syn.subst σ (rowData z R B m d) = rowData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ m) (Syn.subst σ d) := by
-  simp [rowData]
+ipra_subst rowData
 
-@[simp] theorem subst_rowRadius {l : ℕ} (σ : Fin n → PTm l) (R m d : PTm n) :
-    Syn.subst σ (rowRadius R m d) = rowRadius (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ d) := by
-  simp [rowRadius,one,two]
+ipra_subst rowRadius [one, two]
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z R B m d : PTm n) :
-    Syn.subst σ (data z R B m d) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ m) (Syn.subst σ d) := by
-  simp [data,one]
+ipra_subst data [one]
 
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p R m d : PTm n) :
-    Syn.subst σ (clock p R m d) = clock (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ d) := by
-  simp [clock,one]
+ipra_subst clock [one]
 
 theorem row_at (p r z R B m d : PTm n) : Γ ⊢[PRAAx] ap3 rowF p r (rowData z R B m d) ≐ rowValue p r z R B m d := by
   let x := rowData z R B m d
   have s₁ : Γ ⊢[PRAAx] sndT x ≐ pairT R (pairT B (pairT m d)) := snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] sndT (sndT x) ≐ pairT B (pairT m d) := (congrSnd s₁).eqTrans (snd_pair _ _)
-  have s₃ : Γ ⊢[PRAAx] sndT (sndT (sndT x)) ≐ pairT m d := (congrSnd s₂).eqTrans (snd_pair _ _)
+  have s₂ : Γ ⊢[PRAAx] sndT (sndT x) ≐ pairT B (pairT m d) := s₁.sndE
+  have s₃ : Γ ⊢[PRAAx] sndT (sndT (sndT x)) ≐ pairT m d := s₂.sndE
   have first : Γ ⊢[PRAAx] ap3 rowF p r x ≐ rowValue p r (fstT x) (fstT (sndT x))
       (fstT (sndT (sndT x))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
     simpa [rowF,rowBody,ap3] using toPR_eq (Γ := Γ) rowBody ![p,r,x]
@@ -103,10 +85,10 @@ theorem row_at (p r z R B m d : PTm n) : Γ ⊢[PRAAx] ap3 rowF p r (rowData z R
       · exact .eqRefl _
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst s₁).eqTrans (fst_pair _ _)
-      · exact (congrFst s₂).eqTrans (fst_pair _ _)
-      · exact (congrFst s₃).eqTrans (fst_pair _ _)
-      · exact (congrSnd s₃).eqTrans (snd_pair _ _))
+      · exact s₁.fstE
+      · exact s₂.fstE
+      · exact s₃.fstE
+      · exact s₃.sndE)
   exact first.eqTrans (by simpa using last)
 
 theorem row_source (z R B m r a d : PTm n) (h : Γ ⊢[PRAAx] source z R B m a d)

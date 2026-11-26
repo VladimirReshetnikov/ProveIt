@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalBivariateMonicDivisionIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPolynomialMonicHornerReductionGaussianEmbedding
   (width input remainder remainder_length remainder_computed_shape row_shape_congr)
 open RationalPolynomialMonicHornerQuotientGaussianEmbedding (finalQuotient quotient_length quotient_computed_shape reconstruction)
@@ -27,9 +27,6 @@ open RationalPolynomialGaussianEmbedding (embed_congr)
 open GaussianPolynomialMonicCompanion (rowShape)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,21 +38,12 @@ def paddedRemainder (F H m a c N : PTm n) : PTm n := pad (remainder F H m a c N)
 def reconstructed (F H m a c N : PTm n) : PTm n := RationalBivariatePolynomialBuffersGaussianEmbedding.add
   (factorProduct F H m a c N) (paddedRemainder F H m a c N) (succ (yBound m N)) (xBound a c N)
 
-@[simp] theorem subst_xBound {l : ℕ} (σ : Fin n → PTm l) (a c N : PTm n) :
-    Syn.subst σ (xBound a c N) = xBound (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [xBound]
-@[simp] theorem subst_yBound {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (yBound m N) = yBound (Syn.subst σ m) (Syn.subst σ N) := by simp [yBound]
-@[simp] theorem subst_original {l : ℕ} (σ : Fin n → PTm l) (H m a c N : PTm n) :
-    Syn.subst σ (original H m a c N) = original (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [original]
-@[simp] theorem subst_factorProduct {l : ℕ} (σ : Fin n → PTm l) (F H m a c N : PTm n) :
-    Syn.subst σ (factorProduct F H m a c N) = factorProduct (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [factorProduct]
-@[simp] theorem subst_paddedRemainder {l : ℕ} (σ : Fin n → PTm l) (F H m a c N : PTm n) :
-    Syn.subst σ (paddedRemainder F H m a c N) = paddedRemainder (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [paddedRemainder]
-@[simp] theorem subst_reconstructed {l : ℕ} (σ : Fin n → PTm l) (F H m a c N : PTm n) :
-    Syn.subst σ (reconstructed F H m a c N) = reconstructed (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [reconstructed]
+ipra_subst xBound
+ipra_subst yBound
+ipra_subst original
+ipra_subst factorProduct
+ipra_subst paddedRemainder
+ipra_subst reconstructed
 
 theorem original_shape (H m a c N : PTm n) (hH : Γ ⊢[PRAAx] rowShape H (succ N) a) : Γ ⊢[PRAAx]
     rowShape (original H m a c N) (succ (yBound m N)) (xBound a c N) :=
@@ -169,25 +157,18 @@ def output (F H m a c N : PTm n) : PTm n := pairT (original H m a c N)
   (pairT (reconstructed F H m a c N) (pairT (finalQuotient F H m a c N) (remainder F H m a c N)))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (F H m a c N : PTm n) : PTm n := PTm.app outputF ![F,H,m,a,c,N]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (F H m a c N : PTm n) :
-    Syn.subst σ (output F H m a c N) = output (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (F H m a c N : PTm n) :
-    Syn.subst σ (run F H m a c N) = run (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (F H m a c N : PTm n) : Γ ⊢[PRAAx] run F H m a c N ≐ output F H m a c N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![F,H,m,a,c,N]
 theorem returned_original (F H m a c N : PTm n) : Γ ⊢[PRAAx] fstT (run F H m a c N) ≐ original H m a c N :=
-  (congrFst (program_at _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).fstE
 theorem returned_reconstructed (F H m a c N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run F H m a c N)) ≐ reconstructed F H m a c N :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).sndE.fstE
 theorem returned_quotient (F H m a c N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run F H m a c N))) ≐ finalQuotient F H m a c N :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).sndE.sndE.fstE
 theorem returned_remainder (F H m a c N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run F H m a c N))) ≐ remainder F H m a c N :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _ _).sndE.sndE.sndE
 
 theorem returned_coefficient_identity (F H m a c N r s : PTm n) (h : Γ ⊢[PRAAx] input F H m a c N)
     (hr : Γ ⊢[PRAAx] le r (yBound m N)) (hs : Γ ⊢[PRAAx] le s (xBound a c N)) : Γ ⊢[PRAAx]

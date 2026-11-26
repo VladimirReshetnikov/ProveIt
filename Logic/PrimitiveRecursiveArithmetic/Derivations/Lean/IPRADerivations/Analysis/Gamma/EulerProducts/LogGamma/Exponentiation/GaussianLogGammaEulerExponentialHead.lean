@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerExponentialHead
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -35,9 +35,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distan
 open GaussianRationalMetric (qnegative qnegative_canonical qsub distanceBounded)
 open GaussianRationalHorner (qzero)
 open GaussianRationalSyntheticDivision (qzero_add)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

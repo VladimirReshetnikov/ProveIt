@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelPi
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaHalfSqrtBrackets (fraction_first_represents)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -22,10 +22,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianStirlingConstant (piNumerator piDenominator)
 open RationalValueBounds (upper upper_congr positive_cancel)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -33,8 +29,7 @@ local notation "P" => GaussianGammaHalfPiName.nameF
 
 def sample (p : PTm n) : PTm n := ap2 P p zero
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (sample p) = sample (Syn.subst σ p) := by simp [sample]
+ipra_subst sample
 
 theorem sample_fraction (p : PTm n) : Γ ⊢[PRAAx] sample p ≐ fraction (piNumerator p) (piDenominator p) :=
   GaussianGammaHalfPiName.sample_at p zero

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPositiveNamedDigammaFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaMinimumFreezeRational (numerator denominator frozen_rational_domain)
 open GaussianGammaPositiveNamedRationalFreeze (clock threshold_le)
@@ -23,10 +23,6 @@ open GaussianNameBounds (U all_samples_bounded)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedPositiveDigamma (source nameF data inverseF inverseData inverse_regular derivativeF derivativeData derivative_regular)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaC7Name.nameF
@@ -37,15 +33,11 @@ local notation "dd" => GaussianGammaDigammaNative.data
 def gain (f : PR 2) (x A : PTm n) : PTm n :=
   U (derivativeF f) (derivativeData x A)*coefficient+bound*num 5
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A : PTm n) :
-    Syn.subst σ (gain f x A) = gain f (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [gain,derivativeData,one]
+ipra_subst gain [derivativeData, one]
 
 def frozenData (f : PR 2) (k x : PTm n) : PTm n := dd (numerator f k x) (denominator f k x)
 
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (frozenData f k x) = frozenData f (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [frozenData]
+ipra_subst frozenData
 
 theorem original_rate (f : PR 2) (s k x A : PTm n) (h : Γ ⊢[PRAAx] source f x A)
     (hk : Γ ⊢[PRAAx] le (clock f s one x A) k) : Γ ⊢[PRAAx]

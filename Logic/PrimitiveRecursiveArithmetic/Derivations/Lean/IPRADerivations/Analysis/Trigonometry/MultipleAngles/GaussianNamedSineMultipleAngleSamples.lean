@@ -14,7 +14,7 @@ set_option maxHeartbeats 240000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSineMultipleAngleSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianBoundedIntegerExponentialSample (stage_input)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius)
@@ -35,20 +35,13 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianSineMultipleAngleRecurrence (value power_difference)
 open GaussianSineSquaredTrace (sineValue)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def readbackRadius (f : PR 2) (R x H K : PTm n) : PTm n :=
   (multiplyModulus constantF (differenceF f) multiplier (differenceData R x)+one)+(num 6+(H+K))
 
-@[simp] theorem subst_readbackRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x H K : PTm n) :
-    Syn.subst σ (readbackRadius f R x H K) =
-      readbackRadius f (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ H) (Syn.subst σ K) := by
-  simp [readbackRadius,one]
+ipra_subst readbackRadius [one]
 
 theorem multiplier_unit_bound : Γ ⊢[PRAAx] bounded (multiplier : PTm n) one one :=
   GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_succ_self one) (le_refl one)
@@ -90,11 +83,8 @@ def scaledRadius (f : PR 2) (E k R x : PTm n) : PTm n :=
   readbackRadius (scaledF f) (radius E R) (stageData E (succ k) x)
     (positiveRadius E (succ k) R) (negativeRadius f E (succ k) R x)
 
-@[simp] theorem subst_baseRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (baseRadius f R x) = baseRadius f (Syn.subst σ R) (Syn.subst σ x) := by simp [baseRadius,two,one]
-@[simp] theorem subst_scaledRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (E k R x : PTm n) :
-    Syn.subst σ (scaledRadius f E k R x) = scaledRadius f (Syn.subst σ E) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [scaledRadius]
+ipra_subst baseRadius [two, one]
+ipra_subst scaledRadius
 
 theorem base_sample (f : PR 2) (p R x : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (sineF f) p (sineData f R x))

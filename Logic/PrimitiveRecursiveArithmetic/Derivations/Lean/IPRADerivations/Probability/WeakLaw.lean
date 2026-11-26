@@ -2,7 +2,6 @@ import IPRADerivations.Probability.ProductPower
 import IPRADerivations.Probability.ExpectationCorollaries
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.DiophantineNumberTheory.SquareArea
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The weak law and Monte Carlo frequencies
@@ -24,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.WeakLaw
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.ProductPower
 open LeanProofs.IPRA.Probability.Expectation (Ew inst2_mul' geB inst2_geB chebyshev)
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
@@ -33,10 +32,6 @@ open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (le_add_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -80,11 +75,11 @@ abbrev dz : PTm 2 := ad (Kz * sbp (SB X)) Rz
 abbrev GB : PTm 2 := wz w * (dz X * dz X) + two * (Kz * Rz) * (wz w * sbp (SB X))
 
 theorem sel_K {K R C p : PTm n} : Γ ⊢[PRAAx] fstT (fstT (pairT (pairT K (pairT R C)) p)) ≐ K :=
-  (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
+  (fst_pair _ _).fstE
 theorem sel_R {K R C p : PTm n} : Γ ⊢[PRAAx] fstT (sndT (fstT (pairT (pairT K (pairT R C)) p))) ≐ R :=
-  (congrFst ((congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (fst_pair _ _).sndE.fstE
 theorem sel_C {K R C p : PTm n} : Γ ⊢[PRAAx] sndT (sndT (fstT (pairT (pairT K (pairT R C)) p))) ≐ C :=
-  (congrSnd ((congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (fst_pair _ _).sndE.sndE
 
 theorem wz_at (t K R C p : PTm n) : Γ ⊢[PRAAx] inst2 (wz w) t (pairT (pairT K (pairT R C)) p) ≐ inst2 (TB w) t p := by
   have e : inst2 (wz w) t (pairT (pairT K (pairT R C)) p) = inst2 (TB w) t (sndT (pairT (pairT K (pairT R C)) p)) := by

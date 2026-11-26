@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaWeightedNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaReciprocalDegreeCells (degree)
 open GaussianGammaZetaCoefficientPolynomial (coefficient polynomial)
 open GaussianRationalHorner (qmul)
@@ -26,19 +26,13 @@ open GaussianCoefficientL1 (prefixNorm)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def buffer (q N L R : PTm n) : PTm n := dilated (polynomial q N L) (degree L) (radiusPoint R one)
 def budget (R N j : PTm n) : PTm n := fraction (R*R) (N*pw two j)
-@[simp] theorem subst_buffer {m : ℕ} (σ : Fin n → PTm m) (q N L R : PTm n) :
-    Syn.subst σ (buffer q N L R) = buffer (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ R) := by simp [buffer]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (R N j : PTm n) :
-    Syn.subst σ (budget R N j) = budget (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ j) := by simp [budget]
+ipra_subst buffer
+ipra_subst budget
 
 theorem budget_denominator (_R N j : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] le one (N*pw two j) :=
@@ -123,9 +117,7 @@ theorem entry_geometric (q N L R i : PTm n) (hi : Γ ⊢[PRAAx] le i L)
 
 def prefixLaw (q N L R i : PTm n) : Fm PTm n := le i (succ L) ⟶
   rationalLE (prefixNorm (buffer q N L R) i) (budget R N (monus (succ L) i))
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (q N L R i : PTm n) :
-    (prefixLaw q N L R i).subst σ = prefixLaw (Syn.subst σ q) (Syn.subst σ N)
-      (Syn.subst σ L) (Syn.subst σ R) (Syn.subst σ i) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (q N L R : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] prefixLaw q N L R zero := by
   refine .impI ?_
@@ -158,11 +150,9 @@ theorem prefix_bound (q N L R i : PTm n) (hN : Γ ⊢[PRAAx] le one N)
   have ns : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
   have hs : Γ.map Fm.shift ⊢[PRAAx] le (two*Syn.shift R) (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hh.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift q) (Syn.shift N) (Syn.shift L) (Syn.shift R) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact prefix_zero q N L R hN
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_step _ _ _ _ _ ns.wk.wk hs.wk.wk Prf.hyp0 Prf.hyp1)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
+    · exact prefix_zero q N L R hN
+    · exact .impI (prefix_step _ _ _ _ _ ns.wk.wk hs.wk.wk Prf.hyp0 Prf.hyp1)
   have rule : Γ ⊢[PRAAx] prefixLaw q N L R i := by
     simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE i
   exact .impE rule hi

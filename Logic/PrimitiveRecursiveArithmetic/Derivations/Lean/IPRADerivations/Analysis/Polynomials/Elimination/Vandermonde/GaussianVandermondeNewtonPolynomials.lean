@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianReconstructionRoots
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePowerExpansion
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Newton coefficient lists and forward products
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianVandermondeNewtonPolynomials
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul canonical canonical_congr evaluate)
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical qmul_congr canonicalCoefficients)
@@ -28,10 +27,6 @@ open GaussianRationalReciprocal (power)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,14 +37,10 @@ def differenceData (R z : PTm n) : PTm n := pairT R z
 def differenceBody : PTm 2 := qsub (sndT (var 1)) (entry (fstT (var 1)) (var 0))
 def differenceProduct (R z k : PTm n) : PTm n := qprod differenceBody k (differenceData R z)
 
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (R j : PTm n) :
-    Syn.subst σ (polynomial R j) = polynomial (Syn.subst σ R) (Syn.subst σ j) := by simp [polynomial]
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (R j k : PTm n) :
-    Syn.subst σ (coefficient R j k) = coefficient (Syn.subst σ R) (Syn.subst σ j) (Syn.subst σ k) := by simp [coefficient,sel]
-@[simp] theorem subst_differenceData {l : ℕ} (σ : Fin n → PTm l) (R z : PTm n) :
-    Syn.subst σ (differenceData R z) = differenceData (Syn.subst σ R) (Syn.subst σ z) := by simp [differenceData]
-@[simp] theorem subst_differenceProduct {l : ℕ} (σ : Fin n → PTm l) (R z k : PTm n) :
-    Syn.subst σ (differenceProduct R z k) = differenceProduct (Syn.subst σ R) (Syn.subst σ z) (Syn.subst σ k) := by simp [differenceProduct]
+ipra_subst polynomial
+ipra_subst coefficient [sel]
+ipra_subst differenceData
+ipra_subst differenceProduct
 
 theorem polynomial_length (R j : PTm n) : Γ ⊢[PRAAx] length (polynomial R j) ≐ succ j := GaussianRationalReconstruction.reconstruct_length _ _ _
 theorem polynomial_monic (R j : PTm n) : Γ ⊢[PRAAx] entry (polynomial R j) zero ≐ qone := GaussianRationalReconstruction.reconstruct_monic _ _ _
@@ -89,8 +80,7 @@ theorem factors_canonical (R N z k : PTm n) : Γ ⊢[PRAAx] canonical (factors R
 
 def prefixLaw (R N z i : PTm n) : Fm PTm n := le i N ⟶
   qmul (differenceProduct R z i) (factors R N z (monus N i)) ≐ factors R N z N
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (R N z i : PTm n) :
-    (prefixLaw R N z i).subst σ = prefixLaw (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ i) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_step (R N z i : PTm n) (hOld : Γ ⊢[PRAAx] prefixLaw R N z i) :
     Γ ⊢[PRAAx] prefixLaw R N z (succ i) := by
@@ -105,13 +95,11 @@ theorem prefix_step (R N z i : PTm n) (hOld : Γ ⊢[PRAAx] prefixLaw R N z i) :
 
 theorem factors_forward_product (R N z : PTm n) : Γ ⊢[PRAAx] factors R N z N ≐ differenceProduct R z N := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift R) (Syn.shift N) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((qmul_congr (difference_zero R z) (congrAp2 factorsF (monus_zero N) (.eqRefl (factorData R N z)))).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI ((qmul_congr (difference_zero R z) (congrAp2 factorsF (monus_zero N) (.eqRefl (factorData R N z)))).eqTrans
         ((GaussianRationalPowerAlgebra.qmul_commutative _ _).eqTrans
           (GaussianReciprocalHorner.qmul_one_right _ (factors_canonical _ _ _ _))))
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact prefix_step _ _ _ _ Prf.hyp0
+    · exact prefix_step _ _ _ _ Prf.hyp0
   have queried : Γ ⊢[PRAAx] prefixLaw R N z N := by
     simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
   have final := Prf.impE queried (le_refl N)
@@ -134,19 +122,16 @@ def term (R j z k : PTm n) : PTm n := qmul (power z k) (coefficient R j k)
 def powerData (R j z : PTm n) : PTm n := pairT R (pairT j z)
 def powerBody : PTm 2 := term (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def powerSum (R j z K : PTm n) : PTm n := GaussianRationalFiniteSum.sum powerBody K (powerData R j z)
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (R j z k : PTm n) :
-    Syn.subst σ (term R j z k) = term (Syn.subst σ R) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ k) := by simp [term]
-@[simp] theorem subst_powerData {l : ℕ} (σ : Fin n → PTm l) (R j z : PTm n) :
-    Syn.subst σ (powerData R j z) = powerData (Syn.subst σ R) (Syn.subst σ j) (Syn.subst σ z) := by simp [powerData]
-@[simp] theorem subst_powerSum {l : ℕ} (σ : Fin n → PTm l) (R j z K : PTm n) :
-    Syn.subst σ (powerSum R j z K) = powerSum (Syn.subst σ R) (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ K) := by simp [powerSum]
+ipra_subst term
+ipra_subst powerData
+ipra_subst powerSum
 theorem term_congr {R S j d z y k i : PTm n} (hR : Γ ⊢[PRAAx] R ≐ S) (hj : Γ ⊢[PRAAx] j ≐ d)
     (hz : Γ ⊢[PRAAx] z ≐ y) (hk : Γ ⊢[PRAAx] k ≐ i) : Γ ⊢[PRAAx] term R j z k ≐ term S d y i := by
   ipra_congr (term (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hR, hj, hz, hk]
 theorem power_body_at (R j z k : PTm n) : Γ ⊢[PRAAx] inst2 powerBody k (powerData R j z) ≐ term R j z k := by
   simp only [powerBody,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact term_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact term_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem power_term_inside (R j z k : PTm n) (hk : Γ ⊢[PRAAx] le k j) : Γ ⊢[PRAAx]
     inst2 GaussianRationalPowerExpansion.termBody k (GaussianRationalPowerExpansion.data (polynomial R j) j z) ≐ term R j z k :=
   (GaussianRationalPowerExpansion.term_body_at _ _ _ _).eqTrans
@@ -190,8 +175,7 @@ theorem power_sum_evaluation (R j z K : PTm n) (hK : Γ ⊢[PRAAx] lt j K) : Γ 
 /-- A literal nested forward product over all pairs i<j<t. -/
 def pairBody : PTm 2 := differenceProduct (var 1) (entry (var 1) (var 0)) (var 0)
 def pairProduct (R t : PTm n) : PTm n := qprod pairBody t R
-@[simp] theorem subst_pairProduct {l : ℕ} (σ : Fin n → PTm l) (R t : PTm n) :
-    Syn.subst σ (pairProduct R t) = pairProduct (Syn.subst σ R) (Syn.subst σ t) := by simp [pairProduct]
+ipra_subst pairProduct
 @[simp] theorem pair_body_at (R j : PTm n) : inst2 pairBody j R = differenceProduct R (entry R j) j := by simp [pairBody,inst2]
 theorem pair_zero (R : PTm n) : Γ ⊢[PRAAx] pairProduct R zero ≐ qone := product_zero _ _
 theorem pair_succ (R t : PTm n) : Γ ⊢[PRAAx]
@@ -205,14 +189,8 @@ def output (R j z : PTm n) : PTm n := pairT (polynomial R j)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (R j z : PTm n) : PTm n := app outputF ![R,j,z]
 def fields (p : PTm n) : Fin 4 → PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),sndT (sndT (sndT p))]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (R j z : PTm n) :
-    Syn.subst σ (output R j z) = output (Syn.subst σ R) (Syn.subst σ j) (Syn.subst σ z) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (R j z : PTm n) :
-    Syn.subst σ (run R j z) = run (Syn.subst σ R) (Syn.subst σ j) (Syn.subst σ z) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem polynomial_program_at (R j : PTm n) : Γ ⊢[PRAAx] app polynomialF ![R,j] ≐ polynomial R j := by
@@ -222,13 +200,13 @@ theorem program_at (R j z : PTm n) : Γ ⊢[PRAAx] run R j z ≐ output R j z :=
 theorem returned_fields (R j z : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
     fields (run R j z) i ≐ ![polynomial R j,evaluate (polynomial R j) z,differenceProduct R z j,pairProduct R j] i := by
   have e0 := program_at (Γ := Γ) R j z
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrSnd e2).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e2.sndE
 theorem returned_evaluation (R j z : PTm n) : Γ ⊢[PRAAx] fields (run R j z) 1 ≐ fields (run R j z) 2 :=
   (returned_fields R j z 1).eqTrans ((evaluation_product R j z).eqTrans (returned_fields R j z 2).eqSymm)
 theorem returned_head (R j z : PTm n) : Γ ⊢[PRAAx] entry (fields (run R j z) 0) zero ≐ qone :=

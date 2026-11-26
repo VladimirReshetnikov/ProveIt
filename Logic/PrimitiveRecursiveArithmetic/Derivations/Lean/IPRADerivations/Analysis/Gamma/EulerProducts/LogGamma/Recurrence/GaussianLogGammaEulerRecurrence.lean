@@ -13,7 +13,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLogGammaEulerCofinal (canonicalData canonical_regular cost)
 open GaussianLogGammaEulerRecurrenceFinite (correctedF correctedData shift_source)
@@ -29,10 +29,6 @@ open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianReciprocalHorner (qadd_commutative qadd_zero_right)
 open GaussianRightHalfPlaneLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianNamedDifference.nameF

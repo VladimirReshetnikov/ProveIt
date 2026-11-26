@@ -34,9 +34,7 @@ the prime and the sum-free residues of result 34, and the extremal families of r
 
 namespace LeanProofs.IPRA.Combinatorics.DoubleCounting
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n a b : ℕ} {Γ : List (Fm PTm n)}
 

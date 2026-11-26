@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerD
 import IPRADerivations.Analysis.RationalArithmetic.GaussianIntegerFractionPowers
 import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Quadratic error of the original finite exponential
@@ -41,11 +40,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def count (k : PTm n) : PTm n := ExponentialTail.tsum two one k
 def weight (k : PTm n) : PTm n := fact (two+k)
 
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (count k) = count (Syn.subst σ k) := by
-  simp [count, ExponentialTail.tsum, one, two]
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (weight k) = weight (Syn.subst σ k) := by simp [weight, fact, two]
+ipra_subst count [ExponentialTail.tsum, one, two]
+ipra_subst weight [fact, two]
 
 theorem count_succ (k : PTm n) : Γ ⊢[PRAAx] count (succ k) ≐ (count k+one)*succ (two+k) :=
   (ExponentialTail.tsum_succ two one k).eqTrans
@@ -58,15 +54,13 @@ private theorem factorial_one : Γ ⊢[PRAAx] fact (one : PTm n) ≐ one :=
 
 theorem factorial_reserve (k : PTm n) : Γ ⊢[PRAAx] le (count k+two) (weight k) := by
   have all : Γ ⊢[PRAAx] .all (le (count (var 0)+two) (weight (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, PTm.subst_add, subst_count, subst_weight, Syn.subst_var, Syn.inst_zero, two, subst_zero, subst_succ]
-      have c : Γ ⊢[PRAAx] count (zero : PTm n) ≐ zero := ExponentialTail.tsum_zero two one
+    ipra_qfind (le_QF _ _) [subst_le, subst_count, subst_weight, two, subst_zero, subst_succ]
+    · have c : Γ ⊢[PRAAx] count (zero : PTm n) ≐ zero := ExponentialTail.tsum_zero two one
       have w : Γ ⊢[PRAAx] weight (zero : PTm n) ≐ two :=
         (congrAp2 factF (add_zero two) (.eqRefl zero)).eqTrans
           ((fact_succ one zero).eqTrans ((congrMul factorial_one (.eqRefl _)).eqTrans (one_mul _)))
       exact le_congr ((congrAdd c (.eqRefl _)).eqTrans (zero_add _)).eqSymm w.eqSymm (le_refl two)
-    · simp only [subst_le, PTm.subst_add, subst_count, subst_weight, Syn.subst_var, Syn.repl_zero, two, subst_zero, subst_succ]
-      let j : PTm (n+1) := var 0
+    · let j : PTm (n+1) := var 0
       let Δ := le (count j+two) (weight j) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le (count j+two) (weight j) := Prf.hyp0
       have larger : Δ ⊢[PRAAx] le two (succ (two+j)) :=
@@ -101,9 +95,7 @@ theorem fractional_term_bound (q A B k : PTm n) (hb : Γ ⊢[PRAAx] le one B)
 
 def scaledLaw (q A B k : PTm n) : Fm PTm n :=
   bounded (tail q two k) (A*A*count k) (B*B*weight k)
-@[simp] theorem subst_scaledLaw {m : ℕ} (σ : Fin n → PTm m) (q A B k : PTm n) :
-    (scaledLaw q A B k).subst σ = scaledLaw (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by
-  simp [scaledLaw, two]
+ipra_subst scaledLaw [two]
 
 private theorem scaled_step (q A B k : PTm n) (hb : Γ ⊢[PRAAx] le one B)
     (ha : Γ ⊢[PRAAx] le A B) (hq : Γ ⊢[PRAAx] bounded q A B) (old : Γ ⊢[PRAAx] scaledLaw q A B k) :
@@ -134,16 +126,14 @@ theorem actual_quadratic_tail (q A B k : PTm n) (hb : Γ ⊢[PRAAx] le one B)
   have qs : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift q) (Syn.shift A) (Syn.shift B) :=
     by simpa [Fm.shift, Syn.shift] using hq.shift
   have all : Γ ⊢[PRAAx] .all (scaledLaw (Syn.shift q) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_scaledLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have d : Γ ⊢[PRAAx] le one (B*B*weight zero) :=
+    ipra_qfind (le_QF _ _) [subst_scaledLaw]
+    · have d : Γ ⊢[PRAAx] le one (B*B*weight zero) :=
         positive_product _ _ (positive_product _ _ hb hb) (factorial_positive _)
       have c : Γ ⊢[PRAAx] A*A*count zero ≐ zero :=
         (congrMul (.eqRefl _) (ExponentialTail.tsum_zero two one)).eqTrans (by ipra_ring)
       exact bound_congr (tail_zero q two).eqSymm c.eqSymm (.eqRefl _)
         (GaussianMonicResidualRadius.zero_bounded zero _ d)
-    · simp only [subst_scaledLaw, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact scaled_step _ _ _ _ bs.wk hs.wk qs.wk Prf.hyp0
+    · exact scaled_step _ _ _ _ bs.wk hs.wk qs.wk Prf.hyp0
   have raw : Γ ⊢[PRAAx] scaledLaw q A B k := by
     simpa only [subst_scaledLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using all.allE k
   have b := positive_product _ _ hb hb

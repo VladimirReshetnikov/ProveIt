@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
-import IPRADerivations.Core.MultiSums
 
 /-!
 # Interchanging actual finite Gaussian-rational sums
@@ -22,15 +21,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFubini
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qadd_congr qzero_canonical qzero_add)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum
   (sum sum_canonical sum_index_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -67,10 +63,8 @@ theorem column_entry (a : PTm 3) (i j x : PTm n) : Γ ⊢[PRAAx]
 def row (a : PTm 3) (i M x : PTm n) : PTm n := sum (rowBody a) M (pairT i x)
 def column (a : PTm 3) (j N x : PTm n) : PTm n := sum (columnBody a) N (pairT j x)
 
-@[simp] theorem subst_row {l : ℕ} (σ : Fin n → PTm l) (a : PTm 3) (i M x : PTm n) :
-    Syn.subst σ (row a i M x) = row a (Syn.subst σ i) (Syn.subst σ M) (Syn.subst σ x) := by simp [row]
-@[simp] theorem subst_column {l : ℕ} (σ : Fin n → PTm l) (a : PTm 3) (j N x : PTm n) :
-    Syn.subst σ (column a j N x) = column a (Syn.subst σ j) (Syn.subst σ N) (Syn.subst σ x) := by simp [column]
+ipra_subst row
+ipra_subst column
 
 theorem row_zero (a : PTm 3) (i x : PTm n) : Γ ⊢[PRAAx] row a i zero x ≐ qzero := GaussianRationalFiniteSum.sum_zero _ _
 theorem column_zero (a : PTm 3) (j x : PTm n) : Γ ⊢[PRAAx] column a j zero x ≐ qzero := GaussianRationalFiniteSum.sum_zero _ _
@@ -104,10 +98,8 @@ theorem column_sum_at (a : PTm 3) (j N x : PTm n) : Γ ⊢[PRAAx]
 def rowFirst (a : PTm 3) (N M x : PTm n) : PTm n := sum (rowSumBody a) N (pairT M x)
 def columnFirst (a : PTm 3) (N M x : PTm n) : PTm n := sum (columnSumBody a) M (pairT N x)
 
-@[simp] theorem subst_rowFirst {l : ℕ} (σ : Fin n → PTm l) (a : PTm 3) (N M x : PTm n) :
-    Syn.subst σ (rowFirst a N M x) = rowFirst a (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by simp [rowFirst]
-@[simp] theorem subst_columnFirst {l : ℕ} (σ : Fin n → PTm l) (a : PTm 3) (N M x : PTm n) :
-    Syn.subst σ (columnFirst a N M x) = columnFirst a (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by simp [columnFirst]
+ipra_subst rowFirst
+ipra_subst columnFirst
 
 theorem row_first_canonical (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] canonical (rowFirst a N M x) := sum_canonical _ _ _
 theorem column_first_canonical (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] canonical (columnFirst a N M x) := sum_canonical _ _ _
@@ -115,13 +107,9 @@ theorem column_first_canonical (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] canon
 /-- This auxiliary zero sum concerns actual canonical zero entries. -/
 theorem zero_body_sum (M x : PTm n) : Γ ⊢[PRAAx] sum (qzero : PTm 2) M x ≐ qzero := by
   have all : Γ ⊢[PRAAx] .all (sum (qzero : PTm 2) (var 0) (Syn.shift x) ≐ qzero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,GaussianRationalFiniteSum.subst_sum,Syn.subst_var,Syn.inst_zero,
-        Syn.subst_inst_shift,GaussianRationalHorner.subst_qzero]
-      exact GaussianRationalFiniteSum.sum_zero _ _
-    · simp only [Fm.subst_eq,GaussianRationalFiniteSum.subst_sum,Syn.subst_var,Syn.repl_zero,
-        subst_repl_shift,GaussianRationalHorner.subst_qzero]
-      have next := GaussianRationalFiniteSum.sum_succ (Γ := (sum (qzero : PTm 2) (var 0) (Syn.shift x) ≐ qzero) :: Γ.map Fm.shift)
+    ipra_qfind [GaussianRationalFiniteSum.subst_sum, GaussianRationalHorner.subst_qzero]
+    · exact GaussianRationalFiniteSum.sum_zero _ _
+    · have next := GaussianRationalFiniteSum.sum_succ (Γ := (sum (qzero : PTm 2) (var 0) (Syn.shift x) ≐ qzero) :: Γ.map Fm.shift)
         (qzero : PTm 2) (var 0) (Syn.shift x)
       have z : inst2 (qzero : PTm 2) (var 0 : PTm (n+1)) (Syn.shift x) = qzero := by simp [inst2]
       rw [z] at next
@@ -172,9 +160,7 @@ theorem column_first_append_row (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx]
   simpa only [Syn.shift,ConciseIPRA.PTm.subst_succ] using column_append_at a (Syn.shift N) (var 0) (Syn.shift x)
 
 def interchangeLaw (a : PTm 3) (N M x : PTm n) : Fm PTm n := rowFirst a N M x ≐ columnFirst a N M x
-@[simp] theorem subst_interchangeLaw {l : ℕ} (σ : Fin n → PTm l) (a : PTm 3) (N M x : PTm n) :
-    (interchangeLaw a N M x).subst σ = interchangeLaw a (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by
-  simp only [interchangeLaw,Fm.subst_eq,subst_rowFirst,subst_columnFirst]
+ipra_subst interchangeLaw
 
 theorem interchange_zero (a : PTm 3) (M x : PTm n) : Γ ⊢[PRAAx] interchangeLaw a zero M x :=
   (row_first_zero_rows a M x).eqTrans (column_first_zero_rows a M x).eqSymm
@@ -186,11 +172,9 @@ theorem interchange_step (a : PTm 3) (N M x : PTm n) (ih : Γ ⊢[PRAAx] interch
 /-- Both dimensions and data are numerical; only the entry syntax is fixed. -/
 theorem fubini (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] rowFirst a N M x ≐ columnFirst a N M x := by
   have all : Γ ⊢[PRAAx] .all (interchangeLaw a (var 0) (Syn.shift M) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_interchangeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact interchange_zero a M x
-    · simp only [subst_interchangeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact interchange_step a _ _ _ Prf.hyp0
+    ipra_qfind [subst_interchangeLaw]
+    · exact interchange_zero a M x
+    · exact interchange_step a _ _ _ Prf.hyp0
   have actual : Γ ⊢[PRAAx] interchangeLaw a N M x := by
     simpa only [subst_interchangeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
   exact actual
@@ -199,17 +183,15 @@ theorem fubini (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] rowFirst a N M x ≐ 
 def output (a : PTm 3) (N M x : PTm n) : PTm n := pairT (rowFirst a N M x) (columnFirst a N M x)
 def outputF (a : PTm 3) : PR 3 := PTm.toPR (output a (var 0) (var 1) (var 2))
 def run (a : PTm 3) (N M x : PTm n) : PTm n := ap3 (outputF a) N M x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (a : PTm 3) (N M x : PTm n) :
-    Syn.subst σ (output a N M x) = output a (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (a : PTm 3) (N M x : PTm n) :
-    Syn.subst σ (run a N M x) = run a (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) := by simp only [run,subst_ap3]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] run a N M x ≐ output a N M x := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output a (var 0) (var 1) (var 2) : PTm 3) ![N,M,x]
 theorem returned_rows (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] fstT (run a N M x) ≐ rowFirst a N M x :=
-  (congrFst (program_at a N M x)).eqTrans (fst_pair _ _)
+  (program_at a N M x).fstE
 theorem returned_columns (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] sndT (run a N M x) ≐ columnFirst a N M x :=
-  (congrSnd (program_at a N M x)).eqTrans (snd_pair _ _)
+  (program_at a N M x).sndE
 theorem returned_interchange (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] fstT (run a N M x) ≐ sndT (run a N M x) :=
   (returned_rows a N M x).eqTrans ((fubini a N M x).eqTrans (returned_columns a N M x).eqSymm)
 theorem returned_rows_canonical (a : PTm 3) (N M x : PTm n) : Γ ⊢[PRAAx] canonical (fstT (run a N M x)) :=

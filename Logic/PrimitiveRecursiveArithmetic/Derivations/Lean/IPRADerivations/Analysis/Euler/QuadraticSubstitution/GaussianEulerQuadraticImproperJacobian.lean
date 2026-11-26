@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticImproperJacobian
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerQuadraticCutoffGeometry (source)
 open GaussianEulerQuadraticImproperSchedule (threshold index)
 open GaussianEulerQuadraticCutoffComparison (jacobianData gain denominator)
@@ -23,9 +23,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -34,9 +31,7 @@ abbrev data (z R B A c d : PTm n) : PTm n := GaussianEulerIncompleteName.data z 
 def sample (p z R B A c d : PTm n) : PTm n :=
   ap2 GaussianEulerSquareJacobianCompactName.nameF (succ p) (jacobianData (index p A one c d) z R B A c d)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B A c d : PTm n) :
-    Syn.subst σ (sample p z R B A c d) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [sample]
+ipra_subst sample
 
 private def fields (p x : PTm n) : Fin 7 → PTm n :=
   ![p, fstT (fstT x), sndT (fstT x), fstT (fstT (sndT x)), sndT (fstT (sndT x)),
@@ -50,16 +45,16 @@ private theorem decoded_values (p z R B A c d : PTm n) (i : Fin 7) :
   let x := data z R B A c d
   have head : Γ ⊢[PRAAx] fstT x ≐ pairT z R := fst_pair _ _
   have tail : Γ ⊢[PRAAx] sndT x ≐ pairT (pairT B A) (pairT c d) := snd_pair _ _
-  have middle : Γ ⊢[PRAAx] fstT (sndT x) ≐ pairT B A := (congrFst tail).eqTrans (fst_pair _ _)
-  have last : Γ ⊢[PRAAx] sndT (sndT x) ≐ pairT c d := (congrSnd tail).eqTrans (snd_pair _ _)
+  have middle : Γ ⊢[PRAAx] fstT (sndT x) ≐ pairT B A := tail.fstE
+  have last : Γ ⊢[PRAAx] sndT (sndT x) ≐ pairT c d := tail.sndE
   fin_cases i
   · exact .eqRefl _
-  · exact (congrFst head).eqTrans (fst_pair _ _)
-  · exact (congrSnd head).eqTrans (snd_pair _ _)
-  · exact (congrFst middle).eqTrans (fst_pair _ _)
-  · exact (congrSnd middle).eqTrans (snd_pair _ _)
-  · exact (congrFst last).eqTrans (fst_pair _ _)
-  · exact (congrSnd last).eqTrans (snd_pair _ _)
+  · exact head.fstE
+  · exact head.sndE
+  · exact middle.fstE
+  · exact middle.sndE
+  · exact last.fstE
+  · exact last.sndE
 
 theorem reader_at (f : PTm 7) (p z R B A c d : PTm n) : Γ ⊢[PRAAx]
     ap2 (PTm.toPR (reader f (var 0) (var 1))) p (data z R B A c d) ≐

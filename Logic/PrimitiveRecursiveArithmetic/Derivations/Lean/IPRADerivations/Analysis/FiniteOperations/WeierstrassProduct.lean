@@ -1,5 +1,4 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Powers
 import IPRADerivations.Core.BoundedSums
 
 /-!
@@ -25,11 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.WeierstrassProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -79,13 +74,9 @@ theorem w_all
     (hb : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       (inst2 a (var 0) (Syn.shift x) + inst2 c (var 0) (Syn.shift x) ≐ Syn.shift D))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶ WInv a c (Syn.shift D) (var 0) (Syn.shift x)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (w_base a c D x)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (w_guard Prf.hyp0 (Prf.impE hb.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  ipra_qfind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · exact .impI (w_base a c D x)
+  · exact .impI (w_guard Prf.hyp0 (Prf.impE hb.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 theorem w_at
     (hb : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶

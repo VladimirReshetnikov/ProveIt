@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootCoefficientCoherence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder
   (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
@@ -29,16 +29,10 @@ open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRationalHornerPerturbation (coefficientErrors)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem reversed_coefficient_index (N j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) :
-    Γ ⊢[PRAAx] lt (monus N (succ j)) N :=
-  le_of_eq_add (AnalyticNumberTheory.Totatives.split_lt hj)
+alias reversed_coefficient_index := Common.monus_succ_lt
 
 theorem sampled_coefficient_distance (a : PR 3) (N R t u x j : PTm n)
     (hCN : Γ ⊢[PRAAx] CN a N x) (hj : Γ ⊢[PRAAx] lt j N)

@@ -1,7 +1,5 @@
-import IPRADerivations.Core.Pairing
 import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The exact mesh bracket for rational square roots
@@ -25,13 +23,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.MeshBracket
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -78,10 +72,9 @@ theorem mesh_unique (hr : Γ ⊢[PRAAx] r ≐ succ (pred r)) {t : PTm n}
     ipra_lc -e₁ + e₂ - 𝔞 r * w - natEq (eq_add_of_le (rl.wk (ψ := lt (quo (XT p k) r) (t * t))))
   · refine .orE (lt_or_le (quo (XT p k) r) ((t + one) * (t + one))) Prf.hyp0 ?_
     have w := natEq (eq_add_of_le (Prf.hyp0 : (le ((t + one) * (t + one)) (quo (XT p k) r) :: Γ) ⊢[PRAAx] _))
-    have e₁ := natEq (eq_add_of_le (h₂.wk (ψ := le ((t + one) * (t + one)) (quo (XT p k) r))))
     have e₂ := natEq (dv.wk (ψ := le ((t + one) * (t + one)) (quo (XT p k) r)))
     refine succ_ne_zero' _ (a := r * monus (quo (XT p k) r) ((t + one) * (t + one)) + rem (XT p k) r +
       monus (r * ((t + one) * (t + one))) (succ (XT p k))) ?_
-    ipra_lc -e₁ - e₂ - 𝔞 r * w
+    ipra_lc -natEq (eq_add_of_le (h₂.wk (ψ := le ((t + one) * (t + one)) (quo (XT p k) r)))) - e₂ - 𝔞 r * w
 
 end LeanProofs.IPRA.Geometry.MeshBracket

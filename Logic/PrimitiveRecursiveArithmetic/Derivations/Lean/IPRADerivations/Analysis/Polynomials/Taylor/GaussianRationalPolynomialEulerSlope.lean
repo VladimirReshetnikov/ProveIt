@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalFirstOrderPolynomial
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalSumAlgebra
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPoleGuard
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The actual synthetic slope is the original Euler polynomial value
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialEulerSlope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul horner evaluate canonical)
 open GaussianRationalSyntheticDivision (quotient qadd_congr qmul_congr)
 open GaussianRationalFirstOrderPolynomial (slope)
@@ -27,10 +26,6 @@ open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianReciprocalHorner (qadd_commutative)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -89,8 +84,7 @@ private theorem scale_recode (m a : PTm n) : Γ ⊢[PRAAx]
 
 def prefixLaw (C N t k : PTm n) : Fm PTm n := le k N ⟶
   horner (euler C N) t (succ k) ≐ qadd (natScale (monus N k) (horner C t (succ k))) (qmul (horner (quotient C t N) t k) t)
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C N t k : PTm n) :
-    (prefixLaw C N t k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ k) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (C N t : PTm n) : Γ ⊢[PRAAx]
     horner (euler C N) t one ≐ qadd (natScale (monus N zero) (horner C t one)) (qmul (horner (quotient C t N) t zero) t) := by
@@ -131,11 +125,9 @@ theorem prefix_step (C N t k : PTm n) (hk : Γ ⊢[PRAAx] le (succ k) N)
 theorem horner_prefix (C N t k : PTm n) (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     horner (euler C N) t (succ k) ≐ qadd (natScale (monus N k) (horner C t (succ k))) (qmul (horner (quotient C t N) t k) t) := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift N) (Syn.shift t) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero C N t).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_step _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero C N t).wk
+    · exact .impI (prefix_step _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have rule : Γ ⊢[PRAAx] prefixLaw C N t k := by
     simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
   exact .impE rule hk

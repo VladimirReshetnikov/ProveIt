@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.BinomialTheorem
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The binomial law
@@ -28,15 +27,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.BinomialLaw
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (tBody inst2_t congrBinom congrPw binomial_at)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

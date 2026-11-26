@@ -14,7 +14,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaFirstBernoulliReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDigammaFirstBernoulliEndpoints (trapezoid)
 open GaussianDigammaFirstBernoulliLocal (reference embed_sub)
 open GaussianGammaDigammaFiniteSum (index row_source)
@@ -30,9 +30,6 @@ open GaussianStirlingGammaLogarithm (source)
 open RationalGaussianEmbedding (embed embed_add embed_canonical)
 open RationalGaussianRealPart (embed_congr)
 open RationalHarmonicInterval (interval at_common common horizon)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,17 +38,11 @@ def harmonicPrefix (A B Q k : PTm n) : PTm n := embed (interval (index A B k) A 
 def anchor (A B Q k : PTm n) : PTm n :=
   qsub (halfReciprocal (index A B k) B) (harmonicPrefix A B Q k)
 
-@[simp] theorem subst_harmonicPrefix {l : ℕ} (σ : Fin n → PTm l) (A B Q k : PTm n) :
-    Syn.subst σ (harmonicPrefix A B Q k) = harmonicPrefix (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ Q) (Syn.subst σ k) :=
-  by simp [harmonicPrefix]
+ipra_subst harmonicPrefix
 
-@[simp] theorem subst_anchor {l : ℕ} (σ : Fin n → PTm l) (A B Q k : PTm n) :
-    Syn.subst σ (anchor A B Q k) = anchor (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ Q) (Syn.subst σ k) :=
-  by simp [anchor]
+ipra_subst anchor
 
-@[simp] theorem subst_reference {l : ℕ} (σ : Fin n → PTm l) (U B Q : PTm n) :
-    Syn.subst σ (reference U B Q) = reference (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ Q) :=
-  by simp [reference,trapezoid,two]
+ipra_subst reference [trapezoid, two]
 
 theorem interval_congr {a b a' b' Q : PTm n} (hA : Γ ⊢[PRAAx] a ≐ a') (hB : Γ ⊢[PRAAx] b ≐ b') :
     Γ ⊢[PRAAx] interval a b Q ≐ interval a' b' Q := by

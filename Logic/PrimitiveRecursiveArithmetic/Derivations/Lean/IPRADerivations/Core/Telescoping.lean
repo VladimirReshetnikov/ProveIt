@@ -1,5 +1,4 @@
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearCombination
 
 /-!
@@ -57,13 +56,9 @@ private abbrev teleF (p q : PTm 2) : Fm PTm 2 :=
     ap2 (sumF (dnB p q)) (var 0) (var 1) + inst2 p (var 0) (var 1) + inst2 q zero (var 1)
 
 private theorem tele₀ (p q : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] teleF p q := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tele_signed_base p q _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact tele_signed_step p q Prf.hyp0
+  ipra_ind [subst_ap2, subst_inst2]
+  · exact tele_signed_base p q _
+  · exact tele_signed_step p q Prf.hyp0
 
 /-- Signed telescoping:
 `∑_{i<N} (p(i+1) + q(i)) + p(0) + q(N) = ∑_{i<N} (p(i) + q(i+1)) + p(N) + q(0)`. -/

@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSincRatioProductRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedSincRatio (ratio ratio_error)
 open GaussianNamedSincQuadraticBounds (observationBound quadratic_bound)
 open GaussianNamedSinc (nameF data)
@@ -29,10 +29,6 @@ open GaussianRationalReciprocal (qone bound_congr bounded_product)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianNamedDifference (difference_distance)
 open GaussianReciprocalHorner (qmul_one_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,14 +38,8 @@ def baseSquare (i z B : PTm n) : PTm n :=
 def value (f g : PR 2) (N x S y p q z B i : PTm n) : PTm n :=
   qsub qone (qmul (baseSquare i z B) (ratio f g N x S y p q))
 
-@[simp] theorem subst_baseSquare {l : ℕ} (σ : Fin n → PTm l) (i z B : PTm n) :
-    Syn.subst σ (baseSquare i z B) = baseSquare (Syn.subst σ i) (Syn.subst σ z) (Syn.subst σ B) := by
-  simp [baseSquare]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (N x S y p q z B i : PTm n) :
-    Syn.subst σ (value f g N x S y p q z B i) =
-      value f g (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ S) (Syn.subst σ y)
-        (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ i) := by
-  simp [value]
+ipra_subst baseSquare
+ipra_subst value
 
 theorem base_square_bound (i z R B : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :

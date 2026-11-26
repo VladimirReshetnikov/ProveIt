@@ -24,15 +24,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.SegnerUnique
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Catalan (cat cat_zero)
 open LeanProofs.IPRA.Combinatorics.CatalanConvolution (convB inst2_conv segner)
 open LeanProofs.IPRA.Foundations.HurwitzProduct (cv cv_at)
 open LeanProofs.IPRA.Foundations.TriangularUniqueness
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

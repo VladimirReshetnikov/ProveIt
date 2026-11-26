@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerReflectionLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerReflectionHead (negativeSquare denominator sineProduct)
 open GaussianGammaEulerReflectionName (qPairF qPairData reciprocal_Euler_pair)
 open GaussianGammaEulerApproximationName (cutoff_guards)
@@ -31,10 +31,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_at 
 open GaussianNameRingLaws (multiply_sample_error equivalent_of_envelope)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianBalancedRadiusArithmetic (unit_monotone)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -180,17 +176,11 @@ def envelope (z R B : PTm n) : PTm n :=
     ((num 3*(mu R+num 3)+mu R*num 3)+two)) +
     ((multiplyModulus constantF S (negativeSquare z B) (V z R B)+one)+R*R)
 
-@[simp] theorem subst_pairData {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (pairData z R B) = pairData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp [pairData]
+ipra_subst pairData
 
-@[simp] theorem subst_scaledData {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (scaledData z R B) = scaledData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp [scaledData,GaussianGammaEulerReflectionHead.negativeSquare,GaussianSineProductName.data]
+ipra_subst scaledData [GaussianGammaEulerReflectionHead.negativeSquare, GaussianSineProductName.data]
 
-@[simp] theorem subst_envelope {l : ℕ} (σ : Fin n → PTm l) (z R B : PTm n) :
-    Syn.subst σ (envelope z R B) = envelope (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by
-  simp [envelope,GaussianGammaEulerReflectionHead.negativeSquare,GaussianSineProductName.data]
+ipra_subst envelope [GaussianGammaEulerReflectionHead.negativeSquare, GaussianSineProductName.data]
 
 theorem original_reciprocal_reflection_product (z R B : PTm n)
     (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) :

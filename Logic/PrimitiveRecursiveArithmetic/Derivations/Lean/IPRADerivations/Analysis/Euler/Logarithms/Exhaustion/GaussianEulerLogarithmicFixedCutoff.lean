@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicFixedCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicCutoffCauchy (source subst_source observation pairNumerator pairDenominator)
 open GaussianEulerLogarithmicCommonCutoff (cutoff cutoff_later)
 open GaussianEulerCutoffCauchyComparison (clock)
@@ -23,10 +23,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator diagonalEnvelope independent_rate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

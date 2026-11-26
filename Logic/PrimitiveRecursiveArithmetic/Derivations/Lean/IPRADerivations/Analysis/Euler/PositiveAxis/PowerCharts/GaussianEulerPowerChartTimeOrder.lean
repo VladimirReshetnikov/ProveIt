@@ -14,16 +14,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartTimeOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at)
 open GaussianNamedRealOrderTransport (precision upperSlack remove_upper_slack)
 open GaussianEulerPositivePowerChart (parameters nameF data)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (upper upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

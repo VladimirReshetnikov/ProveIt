@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaSeries
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular harmonicPoint)
@@ -31,10 +31,6 @@ open GaussianRationalHorner (qadd canonical positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF
@@ -48,13 +44,9 @@ def nameF : PR 2 := addF negativeGammaF constantF
 def data (a b N : PTm n) : PTm n := addData negativeGammaData (partialValue a b N)
 def budget (a N : PTm n) : PTm n := num 10*N+num 5*a+num 17
 
-@[simp] theorem subst_partialValue {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (partialValue a b N) = partialValue (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [partialValue]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (data a b N) = data (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (a N : PTm n) :
-    Syn.subst σ (budget a N) = budget (Syn.subst σ a) (Syn.subst σ N) := by simp [budget]
+ipra_subst partialValue
+ipra_subst data
+ipra_subst budget
 
 theorem name_regular (a b N : PTm n) : Γ ⊢[PRAAx] pointCN nameF (data a b N) :=
   add_fast _ _ _ _ negativeGamma_regular (constant_regular _)

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Exact rational power budget for a shrinking step
@@ -17,16 +16,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalShrinkingStepPowerBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalNonnegativePowerOrder
 open LeanProofs.IPRA.Analysis.RationalNonnegativePowers (power denominator_positive)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.GaussianDescentClockArithmetic (positive_product power_composition)
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,11 +33,7 @@ def combinedBudget (a b u v C D q s j i : PTm n) : Fm PTm n :=
   le (D*D*pw (a*v) (two*i)*pw s (two*j))
     (C*C*pw q (two*j)*pw (b*u) (two*i))
 
-@[simp] theorem subst_combinedBudget {m : ℕ} (σ : Fin n → PTm m) (a b u v C D q s j i : PTm n) :
-    (combinedBudget a b u v C D q s j i).subst σ =
-      combinedBudget (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ u) (Syn.subst σ v)
-        (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ q) (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ i) := by
-  simp [combinedBudget]
+ipra_subst combinedBudget
 
 theorem eliminate_q (X Y C D q s R S m ell N : PTm n)
     (hs : Γ ⊢[PRAAx] le one s) (hQ : Γ ⊢[PRAAx] le (q*pw S N) (pw R N*s))
@@ -91,11 +83,7 @@ theorem absorb_constant (X Y C D m : PTm n) (hD : Γ ⊢[PRAAx] le one D)
 def bound (u v C D R S j : PTm n) : PTm n :=
   fraction (u*C*pw R j) (v*D*pw S j)
 
-@[simp] theorem subst_bound {m : ℕ} (σ : Fin n → PTm m) (u v C D R S j : PTm n) :
-    Syn.subst σ (bound u v C D R S j) =
-      bound (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ C) (Syn.subst σ D)
-        (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ j) := by
-  simp [bound]
+ipra_subst bound
 
 theorem shrinking_step_bound (a b u v C D q s R S j N i : PTm n)
     (hb : Γ ⊢[PRAAx] le one b) (hv : Γ ⊢[PRAAx] le one v) (hD : Γ ⊢[PRAAx] le one D)
@@ -118,17 +106,15 @@ theorem shrinking_step_bound (a b u v C D q s R S j N i : PTm n)
     have sl := natEq (pw_mul_base (Γ := Γ) (a*v) (pw S j) (two*i))
     have rl := natEq (pw_mul_base (Γ := Γ) (b*u) (pw R j) (two*i))
     have exp : Γ ⊢[PRAAx] i*(two*j) ≐ j*(two*i) := by ipra_ring
-    have replaceS := natEq (congrAp2 powF exp (.eqRefl S))
-    have replaceR := natEq (congrAp2 powF exp (.eqRefl R))
     apply le_congr (a' := D*D*pw ((a*v)*pw S j) (two*i))
       (b' := C*C*pw ((b*u)*pw R j) (two*i)) ?_ ?_ reduced
     · apply deriveNat
       ipra_simps
-      rw [sl,ds,replaceS]
+      rw [sl,ds,natEq (congrAp2 powF exp (.eqRefl S))]
       ring
     · apply deriveNat
       ipra_simps
-      rw [rl,rs,replaceR]
+      rw [rl,rs,natEq (congrAp2 powF exp (.eqRefl R))]
       ring
   have hi2 : Γ ⊢[PRAAx] le two (two*i) := le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right two hi)
   have small := absorb_constant _ _ C D (two*i) hD hDC hi2 radiusPowers
@@ -153,12 +139,7 @@ def conditions (a b u v C D q s R S j N i : PTm n) : Fm PTm n :=
     ((le D C ⋏ (le R S ⋏ (le one i ⋏ le i N))) ⋏
       (rationalLE (fraction q s) (power R S N) ⋏ combinedBudget a b u v C D q s j i))
 
-@[simp] theorem subst_conditions {m : ℕ} (σ : Fin n → PTm m) (a b u v C D q s R S j N i : PTm n) :
-    (conditions a b u v C D q s R S j N i).subst σ =
-      conditions (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ u) (Syn.subst σ v)
-        (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ q) (Syn.subst σ s)
-        (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ j) (Syn.subst σ N) (Syn.subst σ i) := by
-  simp [conditions]
+ipra_subst conditions
 
 theorem shrinking_step_of_conditions (a b u v C D q s R S j N i : PTm n)
     (h : Γ ⊢[PRAAx] conditions a b u v C D q s R S j N i) : Γ ⊢[PRAAx]
@@ -192,14 +173,7 @@ theorem bound_canonical (u v C D R S j : PTm n) (hv : Γ ⊢[PRAAx] le one v)
 
 def boundF : PR 7 := PTm.toPR (bound (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (u v C D R S j : PTm n) : PTm n := PTm.app boundF ![u,v,C,D,R,S,j]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (u v C D R S j : PTm n) :
-    Syn.subst σ (run u v C D R S j) =
-      run (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ C) (Syn.subst σ D)
-        (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 
 theorem program_at (u v C D R S j : PTm n) : Γ ⊢[PRAAx] run u v C D R S j ≐ bound u v C D R S j := by
   simpa [run,boundF] using toPR_eq (Γ := Γ)

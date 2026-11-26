@@ -16,15 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsCompactNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianRationalHorner (ofGaussian)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fast)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,21 +40,11 @@ def boundaryData (z B a C E : PTm n) : PTm n := GaussianNamedDifference.data
 def productModulus (z R B a C E T : PTm n) : PTm n :=
   multiplyModulus constantF compactF (ofGaussian z B) (compactData z R B a C E T)
 
-@[simp] theorem subst_compactData {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    Syn.subst σ (compactData z R B a C E T) = compactData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [compactData]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    Syn.subst σ (productData z R B a C E T) = productData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [productData]
-@[simp] theorem subst_leftData {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    Syn.subst σ (leftData z R B a C E T) = leftData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [leftData]
-@[simp] theorem subst_boundaryData {m : ℕ} (σ : Fin n → PTm m) (z B a C E : PTm n) :
-    Syn.subst σ (boundaryData z B a C E) = boundaryData (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [boundaryData]
-@[simp] theorem subst_productModulus {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    Syn.subst σ (productModulus z R B a C E T) = productModulus (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [productModulus]
+ipra_subst compactData
+ipra_subst productData
+ipra_subst leftData
+ipra_subst boundaryData
+ipra_subst productModulus
 
 theorem common_sources (z R B a C E T : PTm n) (h : Γ ⊢[PRAAx] intervalSource z R B a C E T) : Γ ⊢[PRAAx]
     intervalSource z (R+one) B a C E T ⋏ intervalSource (shifted z B) (R+one) B a C E T := by

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsLinear
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (coefficient decayF decayData)
 open GaussianEulerPowerIncrement (point slopeTerm)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -27,8 +27,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalCoefficientScaling (qmul_add)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,20 +42,13 @@ def linear (p z B a b c : PTm n) : PTm n := qadd
 def cell (p z B a b c : PTm n) : PTm n :=
   qmul (fraction c b) (qmul (originalProduct p z B a b) (qsub (ofGaussian z B) (fraction a b)))
 
-@[simp] theorem subst_decay {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (decay p a b) = decay (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [decay]
-@[simp] theorem subst_originalProduct {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (originalProduct p z B a b) = originalProduct (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [originalProduct,point]
-@[simp] theorem subst_primitive {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (primitive p z B a b) = primitive (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [primitive]
-@[simp] theorem subst_decayLinear {m : ℕ} (σ : Fin n → PTm m) (p a b c : PTm n) :
-    Syn.subst σ (decayLinear p a b c) = decayLinear (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [decayLinear]
-@[simp] theorem subst_productLinear {m : ℕ} (σ : Fin n → PTm m) (p z B a b c : PTm n) :
-    Syn.subst σ (productLinear p z B a b c) = productLinear (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [productLinear,slopeTerm,point]
-@[simp] theorem subst_linear {m : ℕ} (σ : Fin n → PTm m) (p z B a b c : PTm n) :
-    Syn.subst σ (linear p z B a b c) = linear (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [linear]
-@[simp] theorem subst_cell {m : ℕ} (σ : Fin n → PTm m) (p z B a b c : PTm n) :
-    Syn.subst σ (cell p z B a b c) = cell (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [cell]
+ipra_subst decay
+ipra_subst originalProduct [point]
+ipra_subst primitive
+ipra_subst decayLinear
+ipra_subst productLinear [slopeTerm, point]
+ipra_subst linear
+ipra_subst cell
 
 private theorem exchange (x y a : PTm n) : Γ ⊢[PRAAx] qmul (qmul x a) y ≐ qmul (qmul x y) a :=
   (qmul_associative x a y).eqTrans ((qmul_congr (.eqRefl x) (qmul_commutative a y)).eqTrans (qmul_associative x y a).eqSymm)

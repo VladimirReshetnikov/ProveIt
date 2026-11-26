@@ -18,16 +18,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,13 +34,9 @@ def sampleBody (a : PR 3) : PTm 2 := sampleValue a (var 0)
   (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 def sample (a : PR 3) (N s x : PTm n) : PTm n := sequence (sampleBody a) (succ N) (data N s x)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N s x : PTm n) :
-    Syn.subst σ (data N s x) = data (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_sampleValue {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (i N s x : PTm n) :
-    Syn.subst σ (sampleValue a i N s x) = sampleValue a (Syn.subst σ i) (Syn.subst σ N)
-      (Syn.subst σ s) (Syn.subst σ x) := by simp [sampleValue,sg]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N s x : PTm n) :
-    Syn.subst σ (sample a N s x) = sample a (Syn.subst σ N) (Syn.subst σ s) (Syn.subst σ x) := by simp [sample]
+ipra_subst data
+ipra_subst sampleValue [sg]
+ipra_subst sample
 
 theorem sample_body_at (a : PR 3) (N s x i : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody a) i (data N s x) ≐ sampleValue a i N s x := by
@@ -54,8 +46,8 @@ theorem sample_body_at (a : PR 3) (N s x i : PTm n) : Γ ⊢[PRAAx]
       fin_cases j
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE)
   simpa only [sampleBody,inst2,subst_sampleValue,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.head_cons,Matrix.tail_cons] using h
@@ -77,12 +69,9 @@ def rootList (step a : PR 3) (N R t x : PTm n) : PTm n :=
 def productPolynomial (step a : PR 3) (N R t x : PTm n) : PTm n :=
   GaussianApproximateFactorization.productPolynomial step (polynomial a N R t x) N one (GaussianRootSchedule.toleranceDenominator N R t)
 
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N R t x : PTm n) :
-    Syn.subst σ (polynomial a N R t x) = polynomial a (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ t) (Syn.subst σ x) := by simp [polynomial]
-@[simp] theorem subst_rootList {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N R t x : PTm n) :
-    Syn.subst σ (rootList step a N R t x) = rootList step a (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ t) (Syn.subst σ x) := by simp [rootList]
-@[simp] theorem subst_productPolynomial {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N R t x : PTm n) :
-    Syn.subst σ (productPolynomial step a N R t x) = productPolynomial step a (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ t) (Syn.subst σ x) := by simp [productPolynomial]
+ipra_subst polynomial
+ipra_subst rootList
+ipra_subst productPolynomial
 
 theorem polynomial_length (a : PR 3) (N R t x : PTm n) : Γ ⊢[PRAAx] length (polynomial a N R t x) ≐ succ N := sample_length _ _ _ _
 theorem polynomial_leading (a : PR 3) (N R t x : PTm n) : Γ ⊢[PRAAx] entry (polynomial a N R t x) zero ≐ qone := sample_leading _ _ _ _
@@ -120,8 +109,7 @@ theorem product_evaluation (step a : PR 3) (N R t x z : PTm n) : Γ ⊢[PRAAx]
 def output (step a : PR 3) (N R t x : PTm n) : PTm n :=
   pairT (polynomial a N R t x) (pairT (rootList step a N R t x) (productPolynomial step a N R t x))
 def outputF (step a : PR 3) : PR 4 := PTm.toPR (output step a (var 0) (var 1) (var 2) (var 3))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N R t x : PTm n) :
-    Syn.subst σ (output step a N R t x) = output step a (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ t) (Syn.subst σ x) := by simp [output]
+ipra_subst output
 theorem sample_program (step a : PR 3) (N R t x : PTm n) : Γ ⊢[PRAAx]
     PTm.app (outputF step a) ![N,R,t,x] ≐ output step a N R t x := by
   simpa [outputF] using toPR_eq (Γ := Γ) (output step a (var 0) (var 1) (var 2) (var 3) : PTm 4) ![N,R,t,x]

@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerInverseHeadGrouping
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator shiftedData)
 open GaussianGammaEulerFullHeadInverse (headInverse extended_guard)
@@ -35,8 +35,6 @@ open GaussianRationalProductAlgebra (multiplyBody oneTerms product_multiply prod
 open GaussianRationalReciprocal (reciprocal subst_reciprocal)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,13 +43,9 @@ def referenceInverseBody : PTm 2 := reciprocal referenceHeadBody
 def shiftedInverses (z B m N : PTm n) : PTm n := qprod shiftedInverseBody m (shiftedData z B m N)
 def referenceInverses (m N : PTm n) : PTm n := qprod referenceInverseBody m (pairT m N)
 
-@[simp] theorem subst_shiftedInverses {l : ℕ} (σ : Fin n → PTm l) (z B m N : PTm n) :
-    Syn.subst σ (shiftedInverses z B m N) = shiftedInverses (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ m) (Syn.subst σ N) := by simp [shiftedInverses]
+ipra_subst shiftedInverses
 
-@[simp] theorem subst_referenceInverses {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (referenceInverses m N) = referenceInverses (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [referenceInverses]
+ipra_subst referenceInverses
 
 private theorem reciprocal_congr {u v : PTm n} (h : Γ ⊢[PRAAx] u ≐ v) :
     Γ ⊢[PRAAx] reciprocal u ≐ reciprocal v := by

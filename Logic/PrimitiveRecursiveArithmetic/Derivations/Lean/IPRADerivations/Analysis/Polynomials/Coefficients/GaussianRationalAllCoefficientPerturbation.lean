@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalAllCoefficientPerturbation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero horner evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qsub_congr)
@@ -25,9 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHornerPerturbation
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (bound_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,11 +33,9 @@ def coefficientErrors (C D N p q : PTm n) : Fm PTm n := .all
   (le (var 0) (Syn.shift N) ⟶ distanceBounded (entry (Syn.shift C) (var 0))
     (entry (Syn.shift D) (var 0)) (Syn.shift p) (Syn.shift q))
 
-@[simp] theorem subst_coefficientErrors {m : ℕ} (σ : Fin n → PTm m) (C D N p q : PTm n) :
-    (coefficientErrors C D N p q).subst σ = coefficientErrors (Syn.subst σ C) (Syn.subst σ D)
-      (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [coefficientErrors,Fm.subst_all,Fm.subst_imp,subst_le,subst_entry,
-    GaussianRationalMetric.subst_distanceBounded,Syn.subst_var,Syn.up_zero,Syn.up_succ,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coefficientErrors [Fm.subst_all, Fm.subst_imp, subst_le, subst_entry,
+    GaussianRationalMetric.subst_distanceBounded, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst]
 
 theorem coefficient_error_at (C D N p q i : PTm n) (h : Γ ⊢[PRAAx] coefficientErrors C D N p q)
     (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] distanceBounded (entry C i) (entry D i) p q := by
@@ -52,11 +47,7 @@ theorem coefficient_error_at (C D N p q i : PTm n) (h : Γ ⊢[PRAAx] coefficien
 def prefixLaw (C D z N R p q k : PTm n) : Fm PTm n := le k (succ N) ⟶
   distanceBounded (horner C z k) (horner D z k) (budget R p k) q
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C D z N R p q k : PTm n) :
-    (prefixLaw C D z N R p q k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ D)
-      (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) := by
-  simp only [prefixLaw,Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,
-    GaussianRationalHorner.subst_horner,ConciseIPRA.PTm.subst_succ,subst_budget]
+ipra_subst prefixLaw
 
 theorem prefix_zero (C D z R p q : PTm n) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx]
     distanceBounded (horner C z zero) (horner D z zero) (budget R p zero) q := by
@@ -96,11 +87,9 @@ theorem prefix_bound (C D z N R p q k : PTm n)
       ConciseIPRA.PTm.subst_succ,Syn.shift] using hz.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
       (Syn.shift R) (Syn.shift p) (Syn.shift q) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero C D z R p q hq).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero C D z R p q hq).wk
+    · refine .impI ?_
       have range : le (succ (var 0)) (succ (Syn.shift N)) ::
           prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
             (Syn.shift R) (Syn.shift p) (Syn.shift q) (var 0) :: Γ.map Fm.shift ⊢[PRAAx]
@@ -127,8 +116,7 @@ def difference (C D z : PTm n) : PTm n := GaussianRationalMetric.qsub (evaluate 
 def differenceF : PR 3 := GaussianRationalHornerPerturbation.differenceF
 def budgetF : PR 3 := GaussianRationalHornerPerturbation.budgetF
 
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (C D z : PTm n) :
-    Syn.subst σ (difference C D z) = difference (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ z) := by simp [difference]
+ipra_subst difference
 theorem difference_program_at (C D z : PTm n) : Γ ⊢[PRAAx] ap3 differenceF C D z ≐ difference C D z :=
   GaussianRationalHornerPerturbation.difference_program_at C D z
 theorem budget_program_at (R p k : PTm n) : Γ ⊢[PRAAx] ap3 budgetF R p k ≐ budget R p k :=

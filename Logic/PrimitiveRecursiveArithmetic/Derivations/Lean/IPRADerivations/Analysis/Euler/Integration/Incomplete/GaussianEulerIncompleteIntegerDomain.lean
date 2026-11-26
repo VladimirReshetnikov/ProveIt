@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.GaussianEulerIncompleteName
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original incomplete Euler inputs along the positive integer trajectory
@@ -17,13 +16,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteIntegerDomain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFactorialValues (argument radius)
 open GaussianGammaEulerHeadShift (shifted)
 open ComplexLogarithmRemainder (oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,10 +27,8 @@ def source (a b : PTm n) : Fm PTm n := le one a ⋏ le one b
 def data (i a b : PTm n) : PTm n :=
   GaussianEulerIncompleteName.data (argument i) (radius i) one one a b
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (source a b).subst σ = source (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (i a b : PTm n) :
-    Syn.subst σ (data i a b) = data (Syn.subst σ i) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst source
+ipra_subst data
 
 theorem trajectory_source (i : PTm n) : Γ ⊢[PRAAx]
     GaussianGammaCanonicalExponent.source (argument i) (radius i) one :=

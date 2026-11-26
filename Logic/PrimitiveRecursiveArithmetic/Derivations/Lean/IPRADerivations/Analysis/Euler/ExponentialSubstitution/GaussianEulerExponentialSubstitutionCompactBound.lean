@@ -16,16 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialSubstitutionCompactBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerExponentialSubstitutionIntegrand (exponentF exponentData exponentialF data radius logarithmClock evaluatorF fixedData)
 open GaussianEulerExponentCompactBounds (source)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianGammaEulerHeadShift (shifted)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,12 +30,9 @@ def exponentRadius (R E T : PTm n) : PTm n := R*GaussianCompactLogarithmBounds.r
 def majorant (R E T : PTm n) : PTm n := pw (num 3) (exponentRadius R E T)
 def eulerMajorant (R E T : PTm n) : PTm n := pw (num 3) (GaussianEulerExponentCompactBounds.radius R E T)
 
-@[simp] theorem subst_exponentRadius {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (exponentRadius R E T) = exponentRadius (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [exponentRadius]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (majorant R E T) = majorant (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [majorant]
-@[simp] theorem subst_eulerMajorant {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (eulerMajorant R E T) = eulerMajorant (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [eulerMajorant]
+ipra_subst exponentRadius
+ipra_subst majorant
+ipra_subst eulerMajorant
 
 theorem original_exponent_bound (p z R B E T a b : PTm n) (h : Γ ⊢[PRAAx] source z R B E)
     (ht : Γ ⊢[PRAAx] domain a b E T) : Γ ⊢[PRAAx]

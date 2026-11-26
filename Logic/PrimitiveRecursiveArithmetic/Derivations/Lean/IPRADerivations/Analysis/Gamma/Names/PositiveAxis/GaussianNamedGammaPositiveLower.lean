@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaPositiveLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGamma (nameF data)
 open GaussianNamedRightHalfPlane (threshold radius numerator denominator actual_late_source)
 open GaussianGammaHalfPlaneInputContinuity (modulus)
@@ -30,22 +30,15 @@ open GaussianRationalHorner (positive_product)
 open GaussianNamedRealOrderTransport (upperSlack remove_upper_slack precision)
 open RationalValueBounds (upper upper_congr upper_triangle upper_mono upper_of_radius radius_symmetric)
 open GaussianNamedPositiveExponentialOrder (scalar_coordinate_distance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def lower : PTm n := GaussianEuclideanDistanceName.fraction one (num 18)
 def source (f : PR 2) (x A : PTm n) : Fm PTm n := GaussianNamedRightHalfPlane.source f x A ⋏ realSamples f x
 def clock (f : PR 2) (s x A : PTm n) : PTm n := threshold A+succ (modulus s (radius f x) (two*A))
-@[simp] theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (lower : PTm n) = (lower : PTm m) := by
-  simp [lower]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A : PTm n) :
-    (source f x A).subst σ = source f (Syn.subst σ x) (Syn.subst σ A) := by simp [source]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (s x A : PTm n) :
-    Syn.subst σ (clock f s x A) = clock f (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ A) := by simp [clock]
+ipra_subst lower
+ipra_subst source
+ipra_subst clock
 
 /-- Canonical real input samples give actual native imaginary zero,
 without identifying an arbitrary raw code with a canonical encoding. -/

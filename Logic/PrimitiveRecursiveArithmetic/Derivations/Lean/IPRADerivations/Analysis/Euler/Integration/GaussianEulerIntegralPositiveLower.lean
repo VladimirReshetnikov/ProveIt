@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitPan
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannLower
 import IPRADerivations.Analysis.RationalArithmetic.RationalUpperAddition
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerIntegralGammaIdentification
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The one-eighteenth lower bound on the original Euler integral
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegralPositiveLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (original_Euler_integral_is_Gamma)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
 open GaussianEulerLowerPowerCoefficients
@@ -37,20 +36,13 @@ open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
 open RationalUpperAddition (add_upper)
 open GaussianRationalSyntheticBounds (natCode)
 open ComplexLogarithmRemainder (im)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def realSource (z R B A : PTm n) : Fm PTm n :=
   GaussianEulerLowerPowerCoefficients.source z R B A ⋏ ZT.eq (im z) (ZT.ofNat zero)
 
-@[simp] theorem subst_realSource {l : ℕ} (σ : Fin n → PTm l) (z R B A : PTm n) :
-    (realSource z R B A).subst σ = realSource (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [realSource,ZT.eq,ZT.ofNat,im]
+ipra_subst realSource [ZT.eq, ZT.ofNat, im]
 
 private theorem zero_fraction (C D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] fraction (C*zero) D ≐ natCode zero := by

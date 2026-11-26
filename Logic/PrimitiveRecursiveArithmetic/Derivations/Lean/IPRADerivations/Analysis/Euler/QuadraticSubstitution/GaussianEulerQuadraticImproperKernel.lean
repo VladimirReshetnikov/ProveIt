@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticImproperKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerQuadraticCutoffGeometry (width)
 open GaussianEulerQuadraticImproperSchedule (threshold index)
 open GaussianEulerQuadraticCutoffComparison (jacobianData gain denominator)
@@ -30,9 +30,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Kernel" => GaussianEulerQuadraticKernelCompactName.nameF
@@ -50,17 +47,9 @@ abbrev referenceF : PR 2 := multiplyF inverseFactorF Euler
 def referenceData (z R B A c d : PTm n) : PTm n :=
   multiplyData inverseFactorF Euler (inverseFactorData z B c d) (GaussianEulerImproperName.data z R B A)
 
-@[simp] theorem subst_kernelData {m : ℕ} (σ : Fin n → PTm m) (j z R B A c d : PTm n) :
-    Syn.subst σ (kernelData j z R B A c d) = kernelData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [kernelData,etaDen,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B A c d : PTm n) :
-    Syn.subst σ (sample p z R B A c d) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [sample,invBound]
-@[simp] theorem subst_referenceData {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    Syn.subst σ (referenceData z R B A c d) = referenceData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [referenceData]
+ipra_subst kernelData [etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst sample [invBound]
+ipra_subst referenceData
 
 private def body : PTm 7 := sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6)
 def nameF : PR 2 := PTm.toPR (reader body (var 0) (var 1))

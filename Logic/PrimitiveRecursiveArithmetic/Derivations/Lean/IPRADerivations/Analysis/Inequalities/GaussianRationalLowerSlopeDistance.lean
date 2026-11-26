@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalLowerSlopeDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedPositiveExponentialOrder (scalar_coordinate_distance)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono)
@@ -24,10 +24,6 @@ open GaussianRationalHorner (positive_product qadd)
 open GaussianRationalMetric (distanceBounded)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
 open RationalValueBounds (upper upper_congr upper_mono upper_of_radius upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

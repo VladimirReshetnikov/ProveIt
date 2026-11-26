@@ -16,7 +16,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBaselName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open BaselUniform (cut)
 open GaussianBinetBaselBinding (literalSum)
@@ -37,10 +37,6 @@ open Products (fact)
 open RationalGaussianEmbedding (embed embed_at embedF)
 open RationalReciprocalPowerTail (tail)
 open RationalValueBounds (radius radius_of_upper upper_of_order)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaHalfPiName.nameF

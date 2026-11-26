@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductScaledArgumentCancellation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq normSq_scale scale zeroCode)
 open GaussianArctangentDivisionAngles (quarterNumerator quarterDenominator)
 open GaussianArctangentExponentialPrefix (original_mesh_source total)
@@ -38,17 +38,12 @@ open GaussianRootAlgebra (equal_of_values re_zero im_zero)
 open GaussianSineProductScaledArguments (nameF data name_regular sample_at sample_represents)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def apartClock (B m : PTm n) : PTm n := GaussianRootSchedule.binaryLength (B*m)
 
-@[simp] theorem subst_apartClock {l : ℕ} (σ : Fin n → PTm l) (B m : PTm n) :
-    Syn.subst σ (apartClock B m) = apartClock (Syn.subst σ B) (Syn.subst σ m) := by
-  simp [apartClock]
+ipra_subst apartClock
 
 theorem quarter_lower (p : PTm n) : Γ ⊢[PRAAx] le (quarterDenominator p) (quarterNumerator p) := by
   let M := meshAt p

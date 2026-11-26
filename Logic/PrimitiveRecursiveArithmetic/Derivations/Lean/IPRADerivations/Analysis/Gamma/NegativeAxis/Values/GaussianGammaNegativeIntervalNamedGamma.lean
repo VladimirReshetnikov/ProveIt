@@ -19,7 +19,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedGamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -41,9 +41,6 @@ open GaussianRationalPowerAlgebra (unit_bounded unit_power norm_one)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianStirlingLogDuplication (exponential_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianGammaNegativeIntervalLogAbsolute.nameF

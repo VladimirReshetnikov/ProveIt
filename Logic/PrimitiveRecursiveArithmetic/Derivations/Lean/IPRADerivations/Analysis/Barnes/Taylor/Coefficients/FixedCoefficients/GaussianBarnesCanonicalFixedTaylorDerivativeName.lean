@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFixedTaylorDerivativeName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCenteredExponentialShift (baseData base_regular)
 open GaussianBarnesCanonicalFiniteCentralExponentialBound (centralCap central_samples)
 open GaussianBarnesCanonicalHigherRows (previous)
@@ -35,9 +35,6 @@ open GaussianNamedMultiplyRate (sampleBound)
 open GaussianNamedUniformRateClosure (productBudget same_denominator_product)
 open GaussianRationalNaturalScale (naturalPoint natScale_as_product)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

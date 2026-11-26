@@ -1,5 +1,4 @@
 import IPRADerivations.Geometry.TriangleCentres
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Quadrilaterals: Varignon, the diagonal area bound and Bretschneider's identity
@@ -31,10 +30,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.QuadrilateralIdentities
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.TriangleCentres (dot det nsq)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

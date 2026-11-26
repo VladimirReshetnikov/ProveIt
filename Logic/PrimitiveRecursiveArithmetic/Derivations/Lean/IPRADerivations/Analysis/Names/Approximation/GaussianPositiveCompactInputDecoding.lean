@@ -15,25 +15,20 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveCompactInputDecoding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianUnitIntervalInputDecoding (numerator denominator scalarNumerator denominator_positive)
 open GaussianRationalHorner (positive_product canonical_unique)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianPositiveRationalLogarithm (fraction)
 open RationalGaussianEmbedding (axis embed native)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 def source (q E T : PTm n) : Fm PTm n := axis q ⋏ (le one E ⋏
   (upper (GaussianEuclideanDistanceName.fraction one E) (fstT q) zero one ⋏ bounded q T one))
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (q E T : PTm n) :
-    (source q E T).subst σ = source (Syn.subst σ q) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
+ipra_subst source
 
 theorem lower_native (q E T : PTm n) (hs : Γ ⊢[PRAAx] source q E T) : Γ ⊢[PRAAx]
     le (denominator q+E*(scalarNumerator q).neg) (E*(scalarNumerator q).pos) := by
@@ -56,9 +51,8 @@ theorem numerator_order (q E T : PTm n) (hs : Γ ⊢[PRAAx] source q E T) : Γ �
 
 theorem decoded_lower (q E T : PTm n) (hs : Γ ⊢[PRAAx] source q E T) : Γ ⊢[PRAAx]
     le (denominator q) (E*numerator q) := by
-  have e := natEq (eq_add_of_le (numerator_order q E T hs))
   unfold numerator
-  ipra_le sl (lower_native q E T hs) with 𝔞 E*e
+  ipra_le sl (lower_native q E T hs) with 𝔞 E*natEq (eq_add_of_le (numerator_order q E T hs))
 
 theorem decoded_positive (q E T : PTm n) (hs : Γ ⊢[PRAAx] source q E T) : Γ ⊢[PRAAx]
     le one (numerator q) := by

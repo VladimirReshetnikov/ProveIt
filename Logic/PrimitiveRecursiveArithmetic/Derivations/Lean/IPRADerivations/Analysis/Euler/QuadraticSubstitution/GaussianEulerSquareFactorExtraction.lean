@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareFactorExtraction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSquareIntegrand (factorF factorData)
 open GaussianEulerSquareKernel (doubled kernelF kernelData)
 open GaussianEulerSquareFactorObservation (factorBound kernelBound leadingNumerator leadingDenominator)
@@ -26,9 +26,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "J" => GaussianEulerSquareJacobianCompactName.evaluatorF
@@ -39,12 +36,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def source (z R B c d a C E T N : PTm n) : Fm PTm n :=
   GaussianEulerQuadraticKernelCompactName.source z R B c d a C E T ⋏ le one N
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B c d a C E T N : PTm n) :
-    (source z R B c d a C E T N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_factorData {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (factorData z B c d) = factorData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [factorData,GaussianEulerPositiveScalingConstant.scaleData]
+ipra_subst source
+ipra_subst factorData [GaussianEulerPositiveScalingConstant.scaleData]
 
 theorem kernel_sample_at (p z B a b c d : PTm n) : Γ ⊢[PRAAx]
     ap3 K p (pairT a b) (KD z B c d) ≐ ap2 kernelF p (kernelData (doubled z B) B a b c d) := by

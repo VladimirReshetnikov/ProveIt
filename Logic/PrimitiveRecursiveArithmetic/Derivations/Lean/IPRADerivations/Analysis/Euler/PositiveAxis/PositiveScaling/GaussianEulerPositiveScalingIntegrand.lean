@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData power_regular decayF decayData nameF data)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans cross_at)
@@ -23,8 +23,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,17 +37,10 @@ def productData (z B a b c d : PTm n) : PTm n :=
 def productClock (p z B a b c d : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus powerF dampedF (powerData z B c d) (dampedData z B a b c d)) p
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (B a b c d : PTm n) :
-    (source B a b c d).subst σ = source (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_dampedData {m : ℕ} (σ : Fin n → PTm m) (z B a b c d : PTm n) :
-    Syn.subst σ (dampedData z B a b c d) = dampedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [dampedData]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z B a b c d : PTm n) :
-    Syn.subst σ (productData z B a b c d) = productData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [productData]
-@[simp] theorem subst_productClock {m : ℕ} (σ : Fin n → PTm m) (p z B a b c d : PTm n) :
-    Syn.subst σ (productClock p z B a b c d) = productClock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [productClock]
+ipra_subst source
+ipra_subst dampedData
+ipra_subst productData
+ipra_subst productClock
 
 theorem scaled_source (z B a b c d : PTm n) (hs : Γ ⊢[PRAAx] source B a b c d) : Γ ⊢[PRAAx]
     GaussianEulerIntegrandName.source z B (c*a) (d*b) :=
@@ -107,13 +98,9 @@ def evaluatorTerm (p t x : PTm n) : PTm n := ap2 dampedF p
 def evaluatorF : PR 3 := PTm.toPR (evaluatorTerm (var 0) (var 1) (var 2))
 def sample (p z B a b c d : PTm n) : PTm n := ap3 evaluatorF p (pairT a b) (fixedData z B c d)
 
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (z B c d : PTm n) :
-    Syn.subst σ (fixedData z B c d) = fixedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d) := by simp [fixedData]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z B a b c d : PTm n) :
-    Syn.subst σ (sample p z B a b c d) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [sample]
+ipra_subst fixedData
+ipra_subst evaluatorTerm
+ipra_subst sample
 
 private theorem damped_data_congr (z B a b c d z' B' a' b' c' d' : PTm n)
     (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (ha : Γ ⊢[PRAAx] a ≐ a')
@@ -148,9 +135,9 @@ theorem sample_at (p z B a b c d : PTm n) : Γ ⊢[PRAAx]
   have right := snd_pair (Γ := Γ) (pairT z B) (pairT c d)
   exact (evaluator_at p (pairT a b) (fixedData z B c d)).eqTrans
     (congrAp2 dampedF (.eqRefl _) (damped_data_congr _ _ _ _ _ _ _ _ _ _ _ _
-      ((congrFst left).eqTrans (fst_pair _ _)) ((congrSnd left).eqTrans (snd_pair _ _))
+      left.fstE left.sndE
       (fst_pair _ _) (snd_pair _ _)
-      ((congrFst right).eqTrans (fst_pair _ _)) ((congrSnd right).eqTrans (snd_pair _ _))))
+      right.fstE right.sndE))
 
 theorem product_evaluator_readback (p z B a b c d : PTm n) : Γ ⊢[PRAAx]
     ap2 productF p (productData z B a b c d) ≐

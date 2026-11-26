@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaExponentialOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at constant_input constant_real_order exponential_own_sample_rate)
 open RationalGaussianEmbedding (axis)
 open RationalValueBounds (upper upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -44,8 +40,7 @@ def radius (f g : PR 2) (x y : PTm n) : PTm n := U f x+(U g y+two)
 def bias (r j : PTm n) : PTm n := qadd r (fraction two (unit j))
 def cost (R : PTm n) : PTm n := num 4*factor R+num 4
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    Syn.subst σ (radius f g x y) = radius f g (Syn.subst σ x) (Syn.subst σ y) := by simp [radius]
+ipra_subst radius
 
 theorem bias_positive_fraction_bound (j : PTm n) : Γ ⊢[PRAAx] bounded (fraction two (unit j)) two (unit j) :=
   GaussianRationalReciprocal.bound_congr (GaussianEulerDecayFactorBounds.fraction_is_radius_point _ _ (unit_positive j)).eqSymm
@@ -97,8 +92,7 @@ theorem bias_rate_at (g : PR 2) (y j p q : PTm n) (hg : Γ ⊢[PRAAx] pointCN g 
   unfold rateNumerator rateDenominator
   ipra_ring
 
-@[simp] theorem subst_bias {m : ℕ} (σ : Fin n → PTm m) (r j : PTm n) :
-    Syn.subst σ (bias r j) = bias (Syn.subst σ r) (Syn.subst σ j) := by simp [bias]
+ipra_subst bias
 
 theorem bias_rate (g : PR 2) (y j : PTm n) (hg : Γ ⊢[PRAAx] pointCN g y) :
     Γ ⊢[PRAAx] independentRate g constantF y (bias (ap2 g j y) j) (num 3) (unit j) := by

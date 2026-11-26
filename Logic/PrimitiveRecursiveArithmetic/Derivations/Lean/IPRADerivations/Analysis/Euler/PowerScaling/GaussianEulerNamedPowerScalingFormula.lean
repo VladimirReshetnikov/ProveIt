@@ -12,13 +12,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingFormula
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingParameter (named_half_plane)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameRingLaws (negativeF negativeData negative_fast)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

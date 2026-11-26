@@ -12,21 +12,16 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineStripCut
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCompactRiemannName (positive_as_successor)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def cutoff (N T E : PTm n) : PTm n := quo N (T*E)
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (N T E : PTm n) :
-    Syn.subst σ (cutoff N T E) = cutoff (Syn.subst σ N) (Syn.subst σ T) (Syn.subst σ E) := by simp [cutoff]
+ipra_subst cutoff
 
 theorem prefix_admission (N T E : PTm n) (hT : Γ ⊢[PRAAx] le one T) (hE : Γ ⊢[PRAAx] le one E) :
     Γ ⊢[PRAAx] le (cutoff N T E) N ⋏ le ((T*cutoff N T E)*E) N := by

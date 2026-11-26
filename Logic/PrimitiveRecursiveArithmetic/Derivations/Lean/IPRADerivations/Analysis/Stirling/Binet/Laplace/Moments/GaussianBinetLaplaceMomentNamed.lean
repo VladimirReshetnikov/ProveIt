@@ -16,7 +16,7 @@ set_option maxHeartbeats 1150000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentSignedVariation (pointData signed_rate)
 open GaussianBinetLaplaceMomentVariation (gain gain_positive)
@@ -31,9 +31,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rat
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk Γ t)
@@ -50,19 +47,13 @@ def data (x M j : PTm n) : PTm n := pairT x (pairT M j)
 def nameF (f : PR 2) : PR 2 := PTm.toPR
   (sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p M j : PTm n) :
-    Syn.subst σ (clock p M j) = clock (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ j) := by simp [clock,two]
+ipra_subst clock [two]
 
-@[simp] theorem subst_frozenData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (k x j : PTm n) :
-    Syn.subst σ (frozenData f k x j) = frozenData f (Syn.subst σ k) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp [frozenData]
+ipra_subst frozenData
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x M j : PTm n) :
-    Syn.subst σ (sample f p x M j) = sample f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ j) := by
-  simp [sample]
+ipra_subst sample
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x M j : PTm n) :
-    Syn.subst σ (data x M j) = data (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ j) := by simp [data]
+ipra_subst data
 
 theorem sample_at (f : PR 2) (p x M j : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f) p (data x M j) ≐ sample f p x M j := by

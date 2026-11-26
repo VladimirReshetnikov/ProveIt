@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerFirstDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaReciprocalInverse (gammaF gammaData gamma_regular)
 open GaussianEulerParameterExponentialIncrement (shifted)
 open GaussianEulerLogarithmicImproperName (data name_regular)
@@ -27,10 +27,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm cross_refl)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianEulerLogarithmicImproperName.nameF
@@ -43,12 +39,8 @@ def quotientData (z R B A h D : PTm n) : PTm n :=
   GaussianNamedDifferenceQuotient.data gammaF gammaF
     (gammaData (shifted z B h D) (R+one) (B*D) (two*A)) (gammaData z R B A) h D
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (p z R B A h D : PTm n) :
-    (source p z R B A h D).subst σ = source (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) := by simp [source]
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (z R B A h D : PTm n) :
-    Syn.subst σ (quotientData z R B A h D) = quotientData (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) := by simp [quotientData]
+ipra_subst source
+ipra_subst quotientData
 
 theorem base_source (p z R B A h D : PTm n) (hs : Γ ⊢[PRAAx] source p z R B A h D) : Γ ⊢[PRAAx]
     GaussianEulerIntegralGammaIdentification.source z R B A := .andI hs.andE₁.andE₁.andE₁ hs.andE₂

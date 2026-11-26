@@ -24,15 +24,11 @@ downward closed, by derived implications), with connectedness by walks of the co
 
 namespace LeanProofs.IPRA.Topology.FiniteNormality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IntersectionEnumeration (disjFin disjFin_intro disjFin_imp)
 open LeanProofs.IPRA.Topology.FiniteInteriorClosure
 open LeanProofs.IPRA.Topology.FiniteClosureMaps (comp)
 open LeanProofs.IPRA.Foundations.ObservationCut.Finality (Walk)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)} {rel : Fin k → Fin k → Prop} [DecidableRel rel]
 

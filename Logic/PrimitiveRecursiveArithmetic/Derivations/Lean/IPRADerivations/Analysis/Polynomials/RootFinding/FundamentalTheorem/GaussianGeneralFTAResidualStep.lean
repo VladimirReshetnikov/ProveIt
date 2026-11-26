@@ -17,16 +17,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTAResidualStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants (B R qNum qDen QNum QDen)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTATrajectory (polynomial trajectory)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples (sourceInput)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Analysis.GaussianDescentClock (residualNumerator residualDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,16 +36,11 @@ def contractedDenominator (N j : PTm n) : PTm n := qDen N*scale N j
 def currentBound (a : PR 3) (N h x j : PTm n) : Fm PTm n :=
   bounded (evaluate (polynomial a N h x j) (trajectory a N h x j)) (amplitude a N x j) (scale N j)
 
-@[simp] theorem subst_amplitude {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x j : PTm n) :
-    Syn.subst σ (amplitude a N x j) = amplitude a (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ j) := by simp [amplitude]
-@[simp] theorem subst_scale {m : ℕ} (σ : Fin n → PTm m) (N j : PTm n) :
-    Syn.subst σ (scale N j) = scale (Syn.subst σ N) (Syn.subst σ j) := by simp [scale]
-@[simp] theorem subst_contractedNumerator {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N x j : PTm n) :
-    Syn.subst σ (contractedNumerator a N x j) = contractedNumerator a (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ j) := by simp [contractedNumerator]
-@[simp] theorem subst_contractedDenominator {m : ℕ} (σ : Fin n → PTm m) (N j : PTm n) :
-    Syn.subst σ (contractedDenominator N j) = contractedDenominator (Syn.subst σ N) (Syn.subst σ j) := by simp [contractedDenominator]
-@[simp] theorem subst_currentBound {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    (currentBound a N h x j).subst σ = currentBound a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [currentBound]
+ipra_subst amplitude
+ipra_subst scale
+ipra_subst contractedNumerator
+ipra_subst contractedDenominator
+ipra_subst currentBound
 
 theorem scale_positive (N j : PTm n) : Γ ⊢[PRAAx] le one (scale N j) :=
   GaussianPolynomialPerturbation.power_positive _ _ (GaussianGeneralFTAConstants.QDen_positive N)
@@ -163,33 +155,25 @@ def output (a : PR 3) (N h x j : PTm n) : PTm n :=
 def outputF (a : PR 3) : PR 4 := PTm.toPR (output a (var 0) (var 1) (var 2) (var 3))
 def run (a : PR 3) (N h x j : PTm n) : PTm n := PTm.app (outputF a) ![N,h,x,j]
 
-@[simp] theorem subst_postValue {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (postValue a N h x j) = postValue a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [postValue]
-@[simp] theorem subst_nextValue {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (nextValue a N h x j) = nextValue a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [nextValue]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (output a N h x j) = output a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (run a N h x j) = run a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst postValue
+ipra_subst nextValue
+ipra_subst output
+ipra_subst run
 
 theorem program_at (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx] run a N h x j ≐ output a N h x j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output a (var 0) (var 1) (var 2) (var 3) : PTm 4) ![N,h,x,j]
 theorem returned_post_value (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx]
     fstT (run a N h x j) ≐ postValue a N h x j :=
-  (congrFst (program_at a N h x j)).eqTrans (fst_pair _ _)
+  (program_at a N h x j).fstE
 theorem returned_next_value (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run a N h x j)) ≐ nextValue a N h x j :=
-  (congrFst ((congrSnd (program_at a N h x j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a N h x j).sndE.fstE
 theorem returned_numerator (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run a N h x j))) ≐ contractedNumerator a N x j :=
-  (congrFst ((congrSnd ((congrSnd (program_at a N h x j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a N h x j).sndE.sndE.fstE
 theorem returned_denominator (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run a N h x j))) ≐ contractedDenominator N j :=
-  ((congrSnd ((congrSnd ((congrSnd (program_at a N h x j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))
+  (program_at a N h x j).sndE.sndE.sndE
 
 theorem returned_post_bound (a : PR 3) (N k h x j : PTm n)
     (hInput : Γ ⊢[PRAAx] sourceInput a N k h x)

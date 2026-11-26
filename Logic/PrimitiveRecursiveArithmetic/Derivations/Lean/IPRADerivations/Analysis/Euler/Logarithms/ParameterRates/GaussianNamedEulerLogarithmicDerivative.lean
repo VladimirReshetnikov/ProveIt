@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (radius)
 open GaussianNamedGammaIncrementInput (incrementF incrementData)
 open GaussianNamedEulerLogarithmicIncrementBinding (baseClock baseNumerator baseDenominator shiftedNumerator shiftedDatum
@@ -28,10 +28,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -53,15 +49,9 @@ def quotientData (f : PR 2) (j x A h D : PTm n) : PTm n :=
   GaussianNamedDifferenceQuotient.data (Named (incrementF f)) (Named f)
     (ndata j (incrementData x h D) (two*A)) (ndata j x A) h D
 
-@[simp] theorem subst_incrementModulus {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p j x A : PTm n) :
-    Syn.subst σ (incrementModulus f p j x A) = incrementModulus f (Syn.subst σ p) (Syn.subst σ j)
-      (Syn.subst σ x) (Syn.subst σ A) := by simp [incrementModulus]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p j x A h D : PTm n) :
-    (source f p j x A h D).subst σ = source f (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ x)
-      (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) := by simp [source]
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (j x A h D : PTm n) :
-    Syn.subst σ (quotientData f j x A h D) = quotientData f (Syn.subst σ j) (Syn.subst σ x)
-      (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ D) := by simp [quotientData]
+ipra_subst incrementModulus
+ipra_subst source
+ipra_subst quotientData
 
 theorem native_source (f : PR 2) (s p j x A h D : PTm n) (hs : Γ ⊢[PRAAx] source f p j x A h D) :
     Γ ⊢[PRAAx] GaussianEulerLogarithmicDerivative.source (succ p) j (baseNumerator f s j x A)

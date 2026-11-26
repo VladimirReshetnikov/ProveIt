@@ -17,7 +17,7 @@ set_option maxHeartbeats 450000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerSlopeContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianEuclideanDistanceName (fraction_represents)
@@ -42,9 +42,6 @@ open RationalArithmetic (multiply_monotone)
 open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
 open RationalSupMetric (denominatorOf)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rf" => GaussianEuclideanDistanceName.fraction
@@ -54,10 +51,7 @@ local notation "sum" => GaussianRationalFiniteSum.sum
 def input (A D neg a d sign M : PTm n) : Fm PTm n :=
   source A D neg ⋏ (source a d sign ⋏ (le one M ⋏ (le D (M * A) ⋏ le d (M * a))))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (A D neg a d sign M : PTm n) :
-    (input A D neg a d sign M).subst σ = input (Syn.subst σ A) (Syn.subst σ D)
-      (Syn.subst σ neg) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ sign) (Syn.subst σ M) := by
-  simp [input, source, GaussianRightHalfPlaneArgument.source]
+ipra_subst input [source, GaussianRightHalfPlaneArgument.source]
 
 private theorem translated_distance (z w k H E : PTm n) (h : Γ ⊢[PRAAx] distanceBounded z w H E) :
     Γ ⊢[PRAAx] distanceBounded (shiftedPoint z k) (shiftedPoint w k) H E := by

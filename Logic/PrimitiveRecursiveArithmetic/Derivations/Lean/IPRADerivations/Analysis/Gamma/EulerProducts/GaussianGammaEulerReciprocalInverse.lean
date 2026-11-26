@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerReciprocalInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaFixedEulerExponent (correctedF correctedData corrected_exponential_input)
@@ -33,16 +33,11 @@ open GaussianExponentialSmallPerturbation (smallSamples)
 open GaussianRationalMetric (bounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalReciprocal (bound_congr bounded_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z R B a d N : PTm n) : Fm PTm n := GaussianGammaReciprocalInverse.source z R B a d ⋏ le (two*R) N
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (z R B a d N : PTm n) :
-    (source z R B a d N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ N) := by simp [source]
+ipra_subst source
 
 theorem folded_source (z R B a d N : PTm n) (h : Γ ⊢[PRAAx] source z R B a d N) :
     Γ ⊢[PRAAx] GaussianGammaFoldedMajorantExponent.input z R B N := .andI h.andE₁.andE₁ h.andE₂
@@ -51,11 +46,8 @@ def negExpF : PR 2 := GaussianRadiusExponentialName.nameF (negativeF correctedF)
 def negExpData (z R B N : PTm n) : PTm n := GaussianRadiusExponentialName.data (numericalRadius R) (negativeData (correctedData z R B N))
 def inverseF : PR 2 := multiplyF constantF negExpF
 def inverseData (z R B N : PTm n) : PTm n := multiplyData constantF negExpF (headInverse z R B) (negExpData z R B N)
-@[simp] theorem subst_negExpData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (negExpData z R B N) = negExpData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [negExpData]
-@[simp] theorem subst_inverseData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (inverseData z R B N) = inverseData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [inverseData,headInverse]
+ipra_subst negExpData
+ipra_subst inverseData [headInverse]
 
 theorem negative_exponential_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaFoldedMajorantExponent.input z R B N) :
     Γ ⊢[PRAAx] pointCN negExpF (negExpData z R B N) :=

@@ -1,5 +1,4 @@
 import IPRADerivations.Combinatorics.IsingChain
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Chromatic polynomials of trees, cycles and small complete graphs
@@ -27,10 +26,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.ChromaticSmall
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.IsingChain (pwr toZ_pwr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

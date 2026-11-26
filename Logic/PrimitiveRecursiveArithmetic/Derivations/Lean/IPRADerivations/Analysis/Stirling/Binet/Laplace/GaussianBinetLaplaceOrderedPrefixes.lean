@@ -15,7 +15,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceOrderedPrefixes
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceStrip (nameF data)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -24,11 +24,7 @@ open GaussianLogGammaEulerResidualDomain (source)
 open GaussianNameEquivalence (crossEquivalent cross_refl)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => nameF GaussianBinetLaplaceStrip.Kernel.cofinal
@@ -37,10 +33,7 @@ abbrev width (D L : PTm n) : PTm n := D*L*one
 def prefixData (X Y D sign R L : PTm n) : PTm n :=
   data X Y D sign R (width D L) zero zero (width D L) one
 
-@[simp] theorem subst_prefixData {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R L : PTm n) :
-    Syn.subst σ (prefixData X Y D sign R L) =
-      prefixData (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ L) := by
-  simp [prefixData,width,one,ConciseIPRA.PTm.subst_zero]
+ipra_subst prefixData [width, one, ConciseIPRA.PTm.subst_zero]
 
 private theorem panel_source (X Y D sign R T W : PTm n) (h : Γ ⊢[PRAAx] source X Y D sign R)
     (hw : Γ ⊢[PRAAx] le W T) : Γ ⊢[PRAAx] GaussianBinetLaplaceStrip.source X Y D sign R T zero W one :=

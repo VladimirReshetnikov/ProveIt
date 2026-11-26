@@ -17,13 +17,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootAdequacySchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRootSchedule (binaryLength toleranceDenominator)
 open LeanProofs.IPRA.Foundations.DemandClosure (maximum maximum_left maximum_right)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,26 +32,13 @@ def evaluationDenominator (N R C k : PTm n) : PTm n := toleranceDenominator N R 
 def sampleDenominator (N C T k : PTm n) : PTm n := pw two (sample N C T k)
 def targetPower (N k : PTm n) : PTm n := pw (pw two (k+one)) N
 
-@[simp] theorem subst_three {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (three : PTm n) = (three : PTm m) := by
-  simp only [three,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (C k : PTm n) :
-    Syn.subst σ (stage C k) = stage (Syn.subst σ C) (Syn.subst σ k) := by
-  simp only [stage,PTm.subst_add,PTm.subst_mul,GaussianRootSchedule.subst_binaryLength,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (N k : PTm n) :
-    Syn.subst σ (exponent N k) = exponent (Syn.subst σ N) (Syn.subst σ k) := by simp only [exponent,PTm.subst_mul,PTm.subst_add,subst_three]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (N C T k : PTm n) :
-    Syn.subst σ (sample N C T k) = sample (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ T) (Syn.subst σ k) := by
-  simp only [sample,Foundations.DemandClosure.subst_maximum,PTm.subst_add,subst_exponent,GaussianRootSchedule.subst_binaryLength,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_evaluationDenominator {m : ℕ} (σ : Fin n → PTm m) (N R C k : PTm n) :
-    Syn.subst σ (evaluationDenominator N R C k) = evaluationDenominator (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ k) := by
-  simp only [evaluationDenominator,GaussianRootSchedule.subst_toleranceDenominator,subst_stage]
-@[simp] theorem subst_sampleDenominator {m : ℕ} (σ : Fin n → PTm m) (N C T k : PTm n) :
-    Syn.subst σ (sampleDenominator N C T k) = sampleDenominator (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ T) (Syn.subst σ k) := by
-  simp only [sampleDenominator,subst_ap2,subst_sample,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_targetPower {m : ℕ} (σ : Fin n → PTm m) (N k : PTm n) :
-    Syn.subst σ (targetPower N k) = targetPower (Syn.subst σ N) (Syn.subst σ k) := by
-  simp only [targetPower,subst_ap2,PTm.subst_add,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
+ipra_subst three
+ipra_subst stage
+ipra_subst exponent
+ipra_subst sample
+ipra_subst evaluationDenominator
+ipra_subst sampleDenominator
+ipra_subst targetPower
 
 theorem stage_ge_succ (C k : PTm n) : Γ ⊢[PRAAx] le (k+one) (stage C k) := le_add_right _ _
 theorem stage_ge_index (C k : PTm n) : Γ ⊢[PRAAx] le k (stage C k) := le_trans (le_add_right k one) (stage_ge_succ C k)
@@ -128,9 +112,7 @@ theorem finite_evaluation_budget (N R C T k : PTm n) (hN : Γ ⊢[PRAAx] le one 
 def output (N R C T k : PTm n) : PTm n := pairT (stage C k) (pairT (sample N C T k)
   (pairT (evaluationDenominator N R C k) (sampleDenominator N C T k)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (N R C T k : PTm n) :
-    Syn.subst σ (output N R C T k) = output (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ T) (Syn.subst σ k) := by
-  simp only [output,subst_pairT,subst_stage,subst_sample,subst_evaluationDenominator,subst_sampleDenominator]
+ipra_subst output
 theorem output_at (N R C T k : PTm n) : Γ ⊢[PRAAx] PTm.app outputF ![N,R,C,T,k] ≐ output N R C T k := by
   simpa only [outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
     Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using

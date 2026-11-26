@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianAnnihilatorPolynomialEvaluation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianAnnihilatorPolynomial
   (polynomial polynomial_shape polynomial_coefficient coefficient_kept coefficient_rejected)
 open GaussianBivariateFlatSum (flatBody flat_body_at flat_expansion)
@@ -34,9 +34,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection (sgB)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,14 +51,9 @@ def valueBody : PTm 2 :=
     (GaussianAnnihilatorPolynomial.fields (fstT (var 1)) 3)
     (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 
-@[simp] theorem subst_valueData {k : ℕ} (σ : Fin n → PTm k) (a m d L x y : PTm n) :
-    Syn.subst σ (valueData a m d L x y) = valueData (Syn.subst σ a) (Syn.subst σ m)
-      (Syn.subst σ d) (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ y) := by simp [valueData]
+ipra_subst valueData
 
-@[simp] theorem subst_valueTerm {k : ℕ} (σ : Fin n → PTm k) (a m d L x y h : PTm n) :
-    Syn.subst σ (valueTerm a m d L x y h) = valueTerm (Syn.subst σ a) (Syn.subst σ m)
-      (Syn.subst σ d) (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ h) := by
-  simp [valueTerm,rank]
+ipra_subst valueTerm [rank]
 
 private theorem value_parameters {a a' m m' d d' L L' x x' y y' : PTm n}
     (ha : Γ ⊢[PRAAx] a ≐ a') (hm : Γ ⊢[PRAAx] m ≐ m') (hd : Γ ⊢[PRAAx] d ≐ d')

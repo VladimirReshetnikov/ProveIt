@@ -18,16 +18,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalParityPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul canonical_unique represents_congr ofGaussian_represents)
 open GaussianRationalSyntheticDivision (qone qmul_congr qone_canonical)
 open GaussianRationalMetric (qnegative qnegative_canonical qnegative_represents)
 open GaussianRationalReciprocal (power)
 open GaussianRationalEulerCoefficients (parityPoint)
 open GaussianRationalMatrixFiniteSums (minusOne negative_as_minusOne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,8 +42,7 @@ theorem parity_succ (j : PTm n) : Γ ⊢[PRAAx] parityPoint (succ j) ≐ qnegati
     (qnegative_represents _ _ _ (ofGaussian_represents _ _ (le_refl one)))
 
 def parityLaw (j : PTm n) : Fm PTm n := power minusOne j ≐ parityPoint j
-@[simp] theorem subst_parityLaw {l : ℕ} (σ : Fin n → PTm l) (j : PTm n) :
-    (parityLaw j).subst σ = parityLaw (Syn.subst σ j) := by simp [parityLaw]
+ipra_subst parityLaw
 
 theorem parity_power_zero : Γ ⊢[PRAAx] parityLaw (zero : PTm n) :=
   (GaussianRationalReciprocal.power_zero _).eqTrans parity_zero.eqSymm
@@ -59,11 +55,9 @@ theorem parity_power_step (j : PTm n) (ih : Γ ⊢[PRAAx] parityLaw j) : Γ ⊢[
 
 theorem minus_one_power (j : PTm n) : Γ ⊢[PRAAx] parityLaw j := by
   have all : Γ ⊢[PRAAx] .all (parityLaw (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_parityLaw,Syn.subst_var,Syn.inst_zero]
-      exact parity_power_zero
-    · simp only [subst_parityLaw,Syn.subst_var,Syn.repl_zero]
-      exact parity_power_step _ Prf.hyp0
+    ipra_qfind [subst_parityLaw]
+    · exact parity_power_zero
+    · exact parity_power_step _ Prf.hyp0
   simpa only [subst_parityLaw,Syn.subst_var,Syn.inst_zero] using all.allE j
 
 theorem negative_power (q j : PTm n) : Γ ⊢[PRAAx]

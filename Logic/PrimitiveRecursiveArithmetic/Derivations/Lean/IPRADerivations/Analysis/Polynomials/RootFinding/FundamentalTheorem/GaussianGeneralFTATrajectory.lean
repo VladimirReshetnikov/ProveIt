@@ -16,16 +16,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralFTATrajectory
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames (generalCN referencePrecision)
 open LeanProofs.IPRA.Analysis.GaussianGeneralFTAConstants (L K H B)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialSamples (sample sourceInput)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,18 +34,10 @@ def trajectory (a : PR 3) (N h x j : PTm n) : PTm n := PTm.app (trajectoryF a) !
 def delta (a : PR 3) (N h x j : PTm n) : PTm n := GaussianNonmonicRD.delta N
   (polynomial a N h x j) (trajectory a N h x j)
 
-@[simp] theorem subst_precision {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (precision a N h x j) = precision a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [precision]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (polynomial a N h x j) = polynomial a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [polynomial]
-@[simp] theorem subst_trajectory {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (trajectory a N h x j) = trajectory a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by
-  simp only [trajectory,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_delta {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x j : PTm n) :
-    Syn.subst σ (delta a N h x j) = delta a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ j) := by simp [delta]
+ipra_subst precision
+ipra_subst polynomial
+ipra_subst trajectory
+ipra_subst delta
 
 theorem trajectory_zero (a : PR 3) (N h x : PTm n) : Γ ⊢[PRAAx] trajectory a N h x zero ≐ qzero := by
   have h0 := rec_zero (Γ := Γ) (qzero : PTm 3) (stepBody a) ![N,h,x]
@@ -127,12 +115,9 @@ theorem initial_bound (a : PR 3) (N h x : PTm n) (hCN : Γ ⊢[PRAAx] generalCN 
 def J (a : PR 3) (N h x t : PTm n) : PTm n := K N*(t+H a N h x+two)
 def alpha (a : PR 3) (N h x t : PTm n) : PTm n := trajectory a N h x (J a N h x t)
 def M (a : PR 3) (N h x t : PTm n) : PTm n := J a N h x t+L a N h x
-@[simp] theorem subst_J {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (J a N h x t) = J a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by simp [J]
-@[simp] theorem subst_alpha {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (alpha a N h x t) = alpha a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by simp [alpha]
-@[simp] theorem subst_M {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N h x t : PTm n) :
-    Syn.subst σ (M a N h x t) = M a (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ t) := by simp [M]
+ipra_subst J
+ipra_subst alpha
+ipra_subst M
 
 theorem J_lower (a : PR 3) (N h x t : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     le (t+two) (J a N h x t) :=
@@ -149,8 +134,7 @@ def nameData (N h x : PTm n) : PTm n := pairT N (pairT h x)
 def nameBody (a : PR 3) : PTm 2 := alpha a (fstT (var 1)) (fstT (sndT (var 1)))
   (sndT (sndT (var 1))) (var 0)
 def nameF (a : PR 3) : PR 2 := PTm.toPR (nameBody a)
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (N h x : PTm n) :
-    Syn.subst σ (nameData N h x) = nameData (Syn.subst σ N) (Syn.subst σ h) (Syn.subst σ x) := by simp [nameData]
+ipra_subst nameData
 
 theorem name_body_at (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx]
     inst2 (nameBody a) t (nameData N h x) ≐ alpha a N h x t := by
@@ -159,8 +143,8 @@ theorem name_body_at (a : PR 3) (N h x t : PTm n) : Γ ⊢[PRAAx]
     (σ' := ![N,h,x,t]) (fun i => by
       fin_cases i
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _)
   simpa only [nameBody,inst2,subst_alpha,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
     Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using fields

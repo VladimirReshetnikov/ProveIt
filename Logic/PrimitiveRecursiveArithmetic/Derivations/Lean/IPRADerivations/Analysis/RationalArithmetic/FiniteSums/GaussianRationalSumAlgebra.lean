@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSumAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qadd qmul represents positive_product qadd_represents qmul_represents represents_rescale
     represents_congr canonical_unique qadd_canonical)
@@ -26,8 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawDen rawGaussian raw_den_pos
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (oneCode scale)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (equal_refl equal_of_values re_add im_add re_mul im_mul re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,9 +55,7 @@ theorem exchange_from_representations (a delta b p s A Z B P S E : PTm n)
 
 def commonDenominator (a delta b p s : PTm n) : PTm n := rawDen a*remainingDen delta b p s
 
-@[simp] theorem subst_commonDenominator {m : ℕ} (σ : Fin n → PTm m) (a delta b p s : PTm n) :
-    Syn.subst σ (commonDenominator a delta b p s) = commonDenominator (Syn.subst σ a)
-      (Syn.subst σ delta) (Syn.subst σ b) (Syn.subst σ p) (Syn.subst σ s) := by simp [commonDenominator,remainingDen]
+ipra_subst commonDenominator [remainingDen]
 
 theorem common_denominator_positive (a delta b p s : PTm n) : Γ ⊢[PRAAx]
     le one (commonDenominator a delta b p s) :=
@@ -142,35 +138,23 @@ def output (a delta b p s : PTm n) : PTm n :=
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (a delta b p s : PTm n) : PTm n := PTm.app outputF ![a,delta,b,p,s]
 
-@[simp] theorem subst_exchangeLeft {m : ℕ} (σ : Fin n → PTm m) (a delta b p s : PTm n) :
-    Syn.subst σ (exchangeLeft a delta b p s) = exchangeLeft (Syn.subst σ a)
-      (Syn.subst σ delta) (Syn.subst σ b) (Syn.subst σ p) (Syn.subst σ s) := by simp [exchangeLeft]
-@[simp] theorem subst_exchangeRight {m : ℕ} (σ : Fin n → PTm m) (a delta b p s : PTm n) :
-    Syn.subst σ (exchangeRight a delta b p s) = exchangeRight (Syn.subst σ a)
-      (Syn.subst σ delta) (Syn.subst σ b) (Syn.subst σ p) (Syn.subst σ s) := by simp [exchangeRight]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (a delta b p s : PTm n) :
-    Syn.subst σ (output a delta b p s) = output (Syn.subst σ a)
-      (Syn.subst σ delta) (Syn.subst σ b) (Syn.subst σ p) (Syn.subst σ s) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (a delta b p s : PTm n) :
-    Syn.subst σ (run a delta b p s) = run (Syn.subst σ a)
-      (Syn.subst σ delta) (Syn.subst σ b) (Syn.subst σ p) (Syn.subst σ s) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst exchangeLeft
+ipra_subst exchangeRight
+ipra_subst output
+ipra_subst run
 
 theorem program_at (a delta b p s : PTm n) : Γ ⊢[PRAAx] run a delta b p s ≐ output a delta b p s := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![a,delta,b,p,s]
 
 theorem returned_left (a delta b p s : PTm n) : Γ ⊢[PRAAx]
     fstT (run a delta b p s) ≐ exchangeLeft a delta b p s :=
-  (congrFst (program_at a delta b p s)).eqTrans (fst_pair _ _)
+  (program_at a delta b p s).fstE
 theorem returned_right (a delta b p s : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run a delta b p s)) ≐ exchangeRight a delta b p s :=
-  (congrFst ((congrSnd (program_at a delta b p s)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at a delta b p s).sndE.fstE
 theorem returned_denominator (a delta b p s : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run a delta b p s)) ≐ commonDenominator a delta b p s :=
-  (congrSnd ((congrSnd (program_at a delta b p s)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at a delta b p s).sndE.sndE
 theorem returned_denominator_positive (a delta b p s : PTm n) : Γ ⊢[PRAAx]
     le one (sndT (sndT (run a delta b p s))) :=
   le_congr (.eqRefl _) (returned_denominator a delta b p s).eqSymm (common_denominator_positive a delta b p s)

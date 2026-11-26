@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinFiniteWindowTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianGammaCompactCutoffGeometry
@@ -29,10 +29,6 @@ open GaussianGammaZetaMellinUpperPoint (coefficientBound degree)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalMetric (bounded distanceBounded)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

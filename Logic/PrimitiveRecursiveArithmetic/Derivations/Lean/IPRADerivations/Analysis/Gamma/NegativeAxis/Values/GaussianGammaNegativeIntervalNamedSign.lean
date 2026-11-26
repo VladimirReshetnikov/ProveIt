@@ -3,7 +3,6 @@ import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleMultiplier
 import IPRADerivations.Analysis.Integration.Moments.GaussianMomentReflection
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderLinear
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
-import IPRADerivations.Core.ParityArith
 
 /-!
 # Sign adjustment of a named magnitude on a negative Gamma interval
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedSign
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -40,17 +39,13 @@ open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalReciprocal (powerF)
 open GaussianRationalSyntheticDivision (qone qmul_congr qzero_add)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def valueF (f : PR 2) : PR 2 := multiplyF constantF f
 def valueData (f : PR 2) (N x : PTm n) : PTm n := multiplyData constantF f (signUnit (succ N)) x
 
-@[simp] theorem subst_valueData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (N x : PTm n) :
-    Syn.subst σ (valueData f N x) = valueData f (Syn.subst σ N) (Syn.subst σ x) := by simp [valueData]
+ipra_subst valueData
 
 theorem value_regular (f : PR 2) (N x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] pointCN (valueF f) (valueData f N x) :=

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadius
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDivision
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual nonconstancy of a positive-degree monic Gaussian polynomial
@@ -17,15 +16,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonicNonconstant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq oneCode normSq_one)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

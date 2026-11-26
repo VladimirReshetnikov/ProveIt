@@ -23,7 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.AggregateOptimization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric
 open LeanProofs.IPRA.Analysis.RationalHausdorff
 open LeanProofs.IPRA.Analysis.AggregateEquality
@@ -33,46 +33,27 @@ open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def evaluate (f : PR 3) (q p x : PTm n) : PTm n := ap3 f q p x
 
-@[simp] theorem subst_evaluate {m : ℕ} (σ : Fin n → PTm m) (f : PR 3) (q p x : PTm n) :
-    Syn.subst σ (evaluate f q p x) = evaluate f (Syn.subst σ q) (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [evaluate]
+ipra_subst evaluate
 
 def errorNumerator (A B C D p t : PTm n) : PTm n :=
   A*C*unit p*unit t+B*D*(unit p+unit t)
 def errorDenominator (B D p t : PTm n) : PTm n := B*D*unit p*unit t
 
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (A B C D p t : PTm n) :
-    Syn.subst σ (errorNumerator A B C D p t) = errorNumerator
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ D)
-      (Syn.subst σ p) (Syn.subst σ t) := by simp only [errorNumerator, PTm.subst_add, PTm.subst_mul, subst_unit]
+ipra_subst errorNumerator
 
-@[simp] theorem subst_errorDenominator {m : ℕ} (σ : Fin n → PTm m) (B D p t : PTm n) :
-    Syn.subst σ (errorDenominator B D p t) = errorDenominator
-      (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ p) (Syn.subst σ t) := by
-  simp only [errorDenominator, PTm.subst_mul, subst_unit]
+ipra_subst errorDenominator
 
 /-- The actual approximation law at six finite numerical inputs. -/
 def mapInstance (f : PR 3) (d A B x q r p t C D : PTm n) : Fm PTm n :=
   pointRadius q r d C D ⟶ radius (evaluate f q p x) (evaluate f r t x)
     (errorNumerator A B C D p t) (errorDenominator B D p t)
 
-@[simp] theorem subst_mapInstance {m : ℕ} (σ : Fin n → PTm m) (f : PR 3)
-    (d A B x q r p t C D : PTm n) :
-    (mapInstance f d A B x q r p t C D).subst σ = mapInstance f
-      (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x)
-      (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ p) (Syn.subst σ t)
-      (Syn.subst σ C) (Syn.subst σ D) := by
-  simp only [mapInstance, Fm.subst_imp, subst_pointRadius, subst_radius,
-    subst_evaluate, subst_errorNumerator, subst_errorDenominator]
+ipra_subst mapInstance
 
 def argument (i : Fin 6) (z : PTm n) : PTm n :=
   BoundedFormulas.at1 (BoundedSyntax.projections 6 i) z
@@ -92,12 +73,8 @@ def mapContract (f : PR 3) (d A B x : PTm n) : Fm PTm n :=
     (argument 0 (var 0)) (argument 1 (var 0)) (argument 2 (var 0))
     (argument 3 (var 0)) (argument 4 (var 0)) (argument 5 (var 0)))
 
-@[simp] theorem subst_mapContract {m : ℕ} (σ : Fin n → PTm m) (f : PR 3) (d A B x : PTm n) :
-    (mapContract f d A B x).subst σ = mapContract f
-      (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp only [mapContract, Fm.subst_all, subst_mapInstance, Syn.subst_shift,
-    Syn.shift_subst, subst_argument, Syn.subst_var, Syn.up_zero, Syn.up_succ,
-    BoundedFormulas.subst_up_shift']
+ipra_subst mapContract [Fm.subst_all, subst_mapInstance, Syn.subst_shift, Syn.shift_subst, subst_argument,
+    Syn.subst_var, Syn.up_zero, Syn.up_succ, BoundedFormulas.subst_up_shift']
 
 theorem mapContract_at (f : PR 3) (d A B x q r p t C D : PTm n)
     (h : Γ ⊢[PRAAx] mapContract f d A B x)
@@ -140,16 +117,9 @@ def minimumPoint (S : PR 2) (f : PR 3) (s x : PTm n) : PTm n :=
 def minimumValue (S : PR 2) (f : PR 3) (s x : PTm n) : PTm n :=
   evaluate f (minimumPoint S f s x) s x
 
-@[simp] theorem subst_minimumIndex {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (f : PR 3) (s x : PTm n) :
-    Syn.subst σ (minimumIndex S f s x) = minimumIndex S f (Syn.subst σ s) (Syn.subst σ x) := by
-  simp only [minimumIndex, RationalArgmin.subst_selected, PTm.subst_pred,
-    SequenceComposition.subst_length, subst_sample, subst_pairT]
-@[simp] theorem subst_minimumPoint {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (f : PR 3) (s x : PTm n) :
-    Syn.subst σ (minimumPoint S f s x) = minimumPoint S f (Syn.subst σ s) (Syn.subst σ x) := by
-  simp only [minimumPoint, subst_entry, subst_sample, subst_minimumIndex]
-@[simp] theorem subst_minimumValue {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (f : PR 3) (s x : PTm n) :
-    Syn.subst σ (minimumValue S f s x) = minimumValue S f (Syn.subst σ s) (Syn.subst σ x) := by
-  simp only [minimumValue, subst_evaluate, subst_minimumPoint]
+ipra_subst minimumIndex
+ipra_subst minimumPoint
+ipra_subst minimumValue
 
 theorem stageValues_at (S : PR 2) (f : PR 3) (s i x : PTm n) :
     Γ ⊢[PRAAx] RationalArgmin.value (stageValues S f) i (pairT s x) ≐
@@ -238,9 +208,7 @@ theorem minima_cauchy (S : PR 2) (f : PR 3) (s t d A B x : PTm n)
 
 def valueName (S : PR 2) (f : PR 3) (k c x : PTm n) : PTm n := minimumValue S f (k+c) x
 
-@[simp] theorem subst_valueName {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (f : PR 3) (k c x : PTm n) :
-    Syn.subst σ (valueName S f k c x) = valueName S f (Syn.subst σ k) (Syn.subst σ c) (Syn.subst σ x) := by
-  simp only [valueName, subst_minimumValue, PTm.subst_add]
+ipra_subst valueName
 
 /-- Precision shifting regularizes the actual minimum-value program. -/
 theorem value_name_regular (S : PR 2) (f : PR 3) (k l c d A B x : PTm n)
@@ -273,15 +241,8 @@ def witnessNumerator (A B s p r : PTm n) : PTm n :=
   (num 4*A+two*B)*unit p*unit r+B*unit s*unit r+(A+B)*unit p*unit s
 def witnessDenominator (B s p r : PTm n) : PTm n := B*unit s*unit p*unit r
 
-@[simp] theorem subst_witnessNumerator {m : ℕ} (σ : Fin n → PTm m) (A B s p r : PTm n) :
-    Syn.subst σ (witnessNumerator A B s p r) = witnessNumerator
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ s) (Syn.subst σ p) (Syn.subst σ r) := by
-  simp only [witnessNumerator, PTm.subst_add, PTm.subst_mul, subst_unit, PTm.subst_num,
-    two, one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_witnessDenominator {m : ℕ} (σ : Fin n → PTm m) (B s p r : PTm n) :
-    Syn.subst σ (witnessDenominator B s p r) = witnessDenominator
-      (Syn.subst σ B) (Syn.subst σ s) (Syn.subst σ p) (Syn.subst σ r) := by
-  simp only [witnessDenominator, PTm.subst_mul, subst_unit]
+ipra_subst witnessNumerator
+ipra_subst witnessDenominator
 
 theorem combine_witness_budget (a b c A B s p r : PTm n)
     (hB : Γ ⊢[PRAAx] le one B)
@@ -375,15 +336,8 @@ def witnessName (S : PR 2) (f : PR 3) (k t b d x : PTm n) : PTm n :=
 def witnessValue (S : PR 2) (f : PR 3) (k t b c d x : PTm n) : PTm n :=
   evaluate f (witnessName S f k (t+c) b d x) (t+c) x
 
-@[simp] theorem subst_witnessName {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (f : PR 3) (k t b d x : PTm n) :
-    Syn.subst σ (witnessName S f k t b d x) = witnessName S f
-      (Syn.subst σ k) (Syn.subst σ t) (Syn.subst σ b) (Syn.subst σ d) (Syn.subst σ x) := by
-  simp only [witnessName, AggregateChain.subst_name, PTm.subst_add, subst_minimumIndex]
-@[simp] theorem subst_witnessValue {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (f : PR 3) (k t b c d x : PTm n) :
-    Syn.subst σ (witnessValue S f k t b c d x) = witnessValue S f
-      (Syn.subst σ k) (Syn.subst σ t) (Syn.subst σ b) (Syn.subst σ c)
-      (Syn.subst σ d) (Syn.subst σ x) := by
-  simp only [witnessValue, subst_evaluate, subst_witnessName, PTm.subst_add]
+ipra_subst witnessName
+ipra_subst witnessValue
 
 theorem witness_name_regular (S : PR 2) (f : PR 3) (k t u b d x : PTm n)
     (hS : Γ ⊢[PRAAx] nonempty S x) (hR : Γ ⊢[PRAAx] regular S d x) :
@@ -605,17 +559,12 @@ def supportZero (U S : PR 2) (d x : PTm n) : Fm PTm n :=
     (RationalPointDistance.denominator (sample U (succ (var 0)) (Syn.shift x))
       (sample S (succ (var 0)) (Syn.shift x)) (Syn.shift d)))
 
-@[simp] theorem subst_pointRegular {m : ℕ} (σ : Fin n → PTm m) (U : PR 2) (d x : PTm n) :
-    (pointRegular U d x).subst σ = pointRegular U (Syn.subst σ d) (Syn.subst σ x) := by
-  simp only [pointRegular, Fm.subst_all, subst_pointRadius, subst_sample, subst_unit,
-    PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ,
-    Syn.subst_shift, Syn.shift_subst, Syn.shift_var, Fin.succ_zero_eq_one]
-@[simp] theorem subst_supportZero {m : ℕ} (σ : Fin n → PTm m) (U S : PR 2) (d x : PTm n) :
-    (supportZero U S d x).subst σ = supportZero U S (Syn.subst σ d) (Syn.subst σ x) := by
-  simp only [supportZero, Fm.subst_all, subst_le, PTm.subst_mul, subst_unit,
-    RationalPointDistance.subst_numerator, RationalPointDistance.subst_denominator,
-    subst_sample, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift, Syn.shift_subst,
-    ConciseIPRA.PTm.subst_succ]
+ipra_subst pointRegular [Fm.subst_all, subst_pointRadius, subst_sample, subst_unit, PTm.subst_add, PTm.subst_mul,
+    Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, Syn.shift_var,
+    Fin.succ_zero_eq_one]
+ipra_subst supportZero [Fm.subst_all, subst_le, PTm.subst_mul, subst_unit, RationalPointDistance.subst_numerator,
+    RationalPointDistance.subst_denominator, subst_sample, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst, ConciseIPRA.PTm.subst_succ]
 
 theorem pointRegular_at (U : PR 2) (p q d x : PTm n) (h : Γ ⊢[PRAAx] pointRegular U d x) :
     Γ ⊢[PRAAx] pointRadius (sample U p x) (sample U q x) d (unit p+unit q) (unit p*unit q) := by
@@ -762,10 +711,7 @@ theorem shift_lower_budget (a b A B k t l bshift c : PTm n)
 def pointValue (U : PR 2) (f : PR 3) (t c x : PTm n) : PTm n :=
   evaluate f (sample U (t+c) x) (t+c) x
 
-@[simp] theorem subst_pointValue {m : ℕ} (σ : Fin n → PTm m) (U : PR 2) (f : PR 3) (t c x : PTm n) :
-    Syn.subst σ (pointValue U f t c x) = pointValue U f
-      (Syn.subst σ t) (Syn.subst σ c) (Syn.subst σ x) := by
-  simp only [pointValue, subst_evaluate, subst_sample, PTm.subst_add]
+ipra_subst pointValue
 
 theorem point_value_regular (U : PR 2) (f : PR 3) (t l c d A B x : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hc : Γ ⊢[PRAAx] le (A+B) (B*unit c))
@@ -917,16 +863,8 @@ def supremumName (S : PR 2) (f : PR 3) (k c x : PTm n) : PTm n :=
 def supremumWitnessValue (S : PR 2) (f : PR 3) (k t b c d x : PTm n) : PTm n :=
   evaluate f (witnessName S (negateEvaluator f) k (t+c) b d x) (t+c) x
 
-@[simp] theorem subst_supremumName {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (f : PR 3) (k c x : PTm n) :
-    Syn.subst σ (supremumName S f k c x) = supremumName S f
-      (Syn.subst σ k) (Syn.subst σ c) (Syn.subst σ x) := by
-  simp only [supremumName, subst_negate, subst_valueName]
-@[simp] theorem subst_supremumWitnessValue {m : ℕ} (σ : Fin n → PTm m)
-    (S : PR 2) (f : PR 3) (k t b c d x : PTm n) :
-    Syn.subst σ (supremumWitnessValue S f k t b c d x) = supremumWitnessValue S f
-      (Syn.subst σ k) (Syn.subst σ t) (Syn.subst σ b) (Syn.subst σ c)
-      (Syn.subst σ d) (Syn.subst σ x) := by
-  simp only [supremumWitnessValue, subst_evaluate, subst_witnessName, PTm.subst_add]
+ipra_subst supremumName
+ipra_subst supremumWitnessValue
 
 theorem supremum_name_regular (S : PR 2) (f : PR 3) (t l c d A B x : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hc : Γ ⊢[PRAAx] le (A+B) (B*unit c))

@@ -20,7 +20,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicSineProductNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentDivisionAngles (coefficient)
 open GaussianCyclicChordSquare (realSine doubledSine)
 open GaussianCyclicSinePositiveRows (first_half_upper first_half_nonnegative scalar_nonnegative_of_upper)
@@ -39,10 +39,6 @@ open GaussianRationalHorner (positive_product)
 open RationalGaussianEmbedding (scalarZero)
 open RationalValueBounds (upper upper_of_radius upper_triangle upper_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,11 +46,7 @@ def reserve (m : PTm n) : PTm n := (num 14+supplementError)*m
 def fine (p m : PTm n) : Fm PTm n := le (reserve m) (unit p)
 def clock (p m : PTm n) : PTm n := GaussianCyclicExponentialSeparation.clock m (p+reserve m)
 
-@[simp] theorem subst_reserve {L : ℕ} (σ : Fin n → PTm L) (m : PTm n) :
-    Syn.subst σ (reserve m) = reserve (Syn.subst σ m) := by
-  simp [reserve,supplementError,GaussianCyclicSineSupplement.unitError,GaussianCyclicSineSupplement.productError,
-    GaussianArctangentExponentialPeriod.fullTurnRadius,GaussianArctangentExponentialPeriod.twiceRadius,
-    GaussianArctangentQuarterExponential.radius]
+ipra_subst reserve [supplementError, GaussianCyclicSineSupplement.unitError, GaussianCyclicSineSupplement.productError, GaussianArctangentExponentialPeriod.fullTurnRadius, GaussianArctangentExponentialPeriod.twiceRadius, GaussianArctangentQuarterExponential.radius]
 
 theorem clock_later (p m : PTm n) : Γ ⊢[PRAAx] le p (clock p m) :=
   le_trans (le_add_right _ _) (GaussianCyclicExponentialSeparation.clock_later m _)
@@ -75,10 +67,7 @@ private theorem complementary_half (r m : PTm n) (hr : Γ ⊢[PRAAx] lt r m)
   exact le_congr (by ipra_ring) e.eqSymm
     (le_congr (.eqRefl _) (add_comm _ _) (add_le_add₂ (le_refl d) (le_of_add_le_add_right c)))
 
-private theorem complementary_positive (r m : PTm n) (h : Γ ⊢[PRAAx] lt r m) :
-    Γ ⊢[PRAAx] le one (monus m r) :=
-  le_of_add_le_add_right (le_congr ((succ_eq_add_one r).eqTrans (add_comm _ _))
-    ((eq_add_of_le (le_of_lt h)).eqTrans (add_comm _ _)) h)
+private alias complementary_positive := Common.one_le_monus_of_lt
 
 theorem positive_at (p r m x : PTm n) (hr : Γ ⊢[PRAAx] le one r) (hm : Γ ⊢[PRAAx] lt r m)
     (hp : Γ ⊢[PRAAx] fine p m) :

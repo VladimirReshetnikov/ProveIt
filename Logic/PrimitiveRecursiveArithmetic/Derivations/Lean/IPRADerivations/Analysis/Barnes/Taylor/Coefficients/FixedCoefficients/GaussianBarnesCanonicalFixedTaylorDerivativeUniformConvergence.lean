@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFixedTaylorDerivativeUniformConvergence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCenteredExponentialShift (baseData base_regular)
 open GaussianBarnesCanonicalCentralUniformBound (centralCap central_samples prefixUGain prefix_U_le)
 open GaussianBarnesCanonicalFixedTaylorDerivativeName (scaleGain)
@@ -32,9 +32,6 @@ open GaussianNamedMultiplyRate (sampleBound)
 open GaussianNamedUniformRateClosure (productBudget same_denominator_product)
 open GaussianRationalNaturalScale (naturalPoint)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

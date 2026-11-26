@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGoldenRatioRightHalfPlane
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGoldenRatioUniqueness (quadratic)
 open GaussianNamedGoldenRatio (onePoint)
 open GaussianNamedPositiveLateLogSource (retimedF retimedData)
@@ -27,8 +27,6 @@ open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianNamedGammaHalfShift (add_cross)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

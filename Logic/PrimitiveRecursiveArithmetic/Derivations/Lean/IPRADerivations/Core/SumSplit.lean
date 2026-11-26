@@ -1,6 +1,4 @@
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearCombination
 
 /-!
@@ -59,13 +57,9 @@ private abbrev splitF (g : PTm 2) : Fm PTm 3 :=
     ap2 (sumF g) (var 1) (var 2) + ap2 (sumF (offB g)) (var 0) (pairT (var 1) (var 2))
 
 private theorem split₀ (g : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] splitF g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact split_base g _ _
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact split_step g Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact split_base g _ _
+  · exact split_step g Prf.hyp0
 
 /-- `∑_{i<M+K} g(i, x) = ∑_{i<M} g(i, x) + ∑_{i<K} g(M + i, x)`. -/
 theorem sum_split (g : PTm 2) (M K x : PTm n) :

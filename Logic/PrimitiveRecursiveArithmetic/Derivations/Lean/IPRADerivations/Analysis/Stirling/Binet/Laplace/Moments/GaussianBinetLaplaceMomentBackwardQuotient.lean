@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentBackwardQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentImproper (nameF data regular sample_canonical)
 open GaussianBinetLaplaceMomentBackwardWindow (source lowerData secondCap lower_source window_geometry
   backward_window_taylor lower_observation_bound)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (qmul qzero positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianReconstructionRoots (distance_zero_iff)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
@@ -49,22 +45,13 @@ def samplerBudget (j X D R H Q : PTm n) : PTm n :=
   GaussianNamedDifferenceQuotient.cost nameF nameF (data j X D R) (lowerData j X D H Q) (radiusNumerator H) Q
     + num 24*Q+num 3
 
-@[simp] theorem subst_backwardCap {m : ℕ} (σ : Fin n → PTm m) (j D : PTm n) :
-    Syn.subst σ (backwardCap j D) = backwardCap (Syn.subst σ j) (Syn.subst σ D) := by simp [backwardCap]
+ipra_subst backwardCap
 
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (j X D R H Q : PTm n) :
-    Syn.subst σ (quotientData j X D R H Q) =
-      quotientData (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ Q) := by
-  simp [quotientData]
+ipra_subst quotientData
 
-@[simp] theorem subst_linearBudget {m : ℕ} (σ : Fin n → PTm m) (j D H : PTm n) :
-    Syn.subst σ (linearBudget j D H) = linearBudget (Syn.subst σ j) (Syn.subst σ D) (Syn.subst σ H) := by
-  simp [linearBudget]
+ipra_subst linearBudget
 
-@[simp] theorem subst_samplerBudget {m : ℕ} (σ : Fin n → PTm m) (j X D R H Q : PTm n) :
-    Syn.subst σ (samplerBudget j X D R H Q) =
-      samplerBudget (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ Q) := by
-  simp [samplerBudget]
+ipra_subst samplerBudget
 
 theorem successor_distance (p j X D R H Q : PTm n) (h : Γ ⊢[PRAAx] source X D R H Q) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data (succ j) X D R))

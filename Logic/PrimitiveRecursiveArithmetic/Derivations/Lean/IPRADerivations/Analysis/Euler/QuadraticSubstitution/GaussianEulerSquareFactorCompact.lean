@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareFactorCompact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSquareIntegrand (factorF factorData)
 open GaussianEulerSquareFactorObservation (factorBound kernelBound leadingNumerator leadingDenominator)
 open GaussianCompactRiemannName (quadrature mesh precision mesh_positive quadrature_index_congr)
@@ -26,10 +26,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -48,12 +44,8 @@ def factoredData (z R B c d a C E T : PTm n) : PTm n := multiplyData factorF KN 
 def diagonalCost (z R B c d a C E T : PTm n) : PTm n := num 4+T*kernelBound R E T c+num 3*factorBound z B c d+
   (multiplyModulus factorF KN (factorData z B c d) (KData z R B c d a C E T)+one)
 
-@[simp] theorem subst_factoredData {m : ℕ} (σ : Fin n → PTm m) (z R B c d a C E T : PTm n) :
-    Syn.subst σ (factoredData z R B c d a C E T) = factoredData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [factoredData]
-@[simp] theorem subst_diagonalCost {m : ℕ} (σ : Fin n → PTm m) (z R B c d a C E T : PTm n) :
-    Syn.subst σ (diagonalCost z R B c d a C E T) = diagonalCost (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [diagonalCost]
+ipra_subst factoredData
+ipra_subst diagonalCost
 
 theorem factor_regular (z R B c d a C E T : PTm n) (hs : Γ ⊢[PRAAx] source z R B c d a C E T) : Γ ⊢[PRAAx]
     GaussianEuclideanDistanceName.pointCN factorF (factorData z B c d) :=

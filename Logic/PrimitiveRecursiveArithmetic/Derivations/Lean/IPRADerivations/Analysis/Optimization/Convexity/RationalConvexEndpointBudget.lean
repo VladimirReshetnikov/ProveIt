@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexSecants
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The source local modulus from two precision-zero samples
@@ -14,9 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexEndpointBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open RationalCubeMidpoint (fraction fraction_represents)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalArgmin (rationalLE denominator_positive)
@@ -27,8 +24,6 @@ open RationalConvexSecantWeights (leftPoint rightPoint modulus)
 open GaussianRationalSyntheticBounds (natCode natCode_represents natCode_nonnegative natCode_add add_monotone)
 open GaussianDescentClockArithmetic (ceiling ceiling_lower)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -143,20 +138,11 @@ def run (A : PR 3) (D P Q k x : PTm n) : PTm n := app (outputF A) ![D,P,Q,k,x]
   rw [RationalCubeMidpoint.subst_fraction,LeanProofs.IPRA.Foundations.GapDecision.subst_zabs,
     RationalSupMetric.subst_numeratorOf,RationalSupMetric.subst_denominatorOf]
 
-@[simp] theorem subst_coarseBudget {j : ℕ} (σ : Fin n → PTm j) (a b : PTm n) :
-    Syn.subst σ (coarseBudget a b) = coarseBudget (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [coarseBudget,coarseCeiling,observedBound,naturalNumerator,numeratorOf]
+ipra_subst coarseBudget [coarseCeiling, observedBound, naturalNumerator, numeratorOf]
 
-@[simp] theorem subst_M {j : ℕ} (σ : Fin n → PTm j) (A : PR 3) (D P Q x : PTm n) :
-    Syn.subst σ (M A D P Q x) = M A (Syn.subst σ D) (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ x) := by
-  simp [M,sample,RationalConvexSecantWeights.leftPoint,RationalConvexSecantWeights.rightPoint]
+ipra_subst M [sample, RationalConvexSecantWeights.leftPoint, RationalConvexSecantWeights.rightPoint]
 
-@[simp] theorem subst_output {j : ℕ} (σ : Fin n → PTm j) (A : PR 3) (D P Q k x : PTm n) :
-    Syn.subst σ (output A D P Q k x) =
-      output A (Syn.subst σ D) (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [output,localModulus,RationalConvexSecantWeights.leftPoint,RationalConvexSecantWeights.rightPoint,
-    RationalConvexSecantWeights.modulus,RationalConvexSecantWeights.budget,RationalConvexSecantWeights.margin,
-    LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel.meet]
+ipra_subst output [localModulus, RationalConvexSecantWeights.leftPoint, RationalConvexSecantWeights.rightPoint, RationalConvexSecantWeights.modulus, RationalConvexSecantWeights.budget, RationalConvexSecantWeights.margin, LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel.meet]
 
 theorem program_at (A : PR 3) (D P Q k x : PTm n) : Γ ⊢[PRAAx] run A D P Q k x ≐ output A D P Q k x := by
   simpa only [run,outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,

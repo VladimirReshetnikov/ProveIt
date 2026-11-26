@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentMarginBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentFloor (gain nameF)
 open GaussianBinetLaplaceMomentCompact (data regular)
 open GaussianBinetLaplaceMomentImproper (cutoff cutoff_positive)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (positive_product qadd)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianReconstructionRoots (norm_from_distance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
@@ -44,9 +40,7 @@ local notation "improperData" => GaussianBinetLaplaceMomentImproper.data
 
 def marginBound (j K : PTm n) : PTm n := two*coefficient j K+num 11
 
-@[simp] theorem subst_marginBound {m : ℕ} (σ : Fin n → PTm m) (j K : PTm n) :
-    Syn.subst σ (marginBound j K) = marginBound (Syn.subst σ j) (Syn.subst σ K) := by
-  simp [marginBound,two,one]
+ipra_subst marginBound [two, one]
 
 private theorem diagonal_error (a b p : PTm n)
     (h : Γ ⊢[PRAAx] distanceBounded a b (unit p+unit p) (unit p*unit p)) :

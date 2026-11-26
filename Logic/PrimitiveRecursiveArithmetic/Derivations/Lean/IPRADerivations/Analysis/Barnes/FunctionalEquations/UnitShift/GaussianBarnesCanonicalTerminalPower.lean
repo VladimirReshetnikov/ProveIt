@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTerminalPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalTerminalRemainder (source local_source scaledF scaledData scaled_regular)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerHeadLower (translated)
@@ -29,9 +29,6 @@ open GaussianRationalNaturalScale (natScale_represents natScale_as_product natSc
 open GaussianRationalPowerAlgebra (power_product)
 open GaussianRationalReciprocal (power powerF qone qone_bounded bound_congr bounded_sum)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_scale im_scale)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

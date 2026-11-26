@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGlobalMultiplicativeBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerChartTimeOrder (order_trans)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameEquivalence (cross_refl cross_symm)
@@ -30,9 +30,6 @@ open GaussianStirlingMultiplicativeBoundsCaps (rational_interval cap_denominator
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_exponential_order strict_transport)
 open GaussianStirlingNames (source)
 open GaussianStirlingRationalTelescopers (upperValue lowerValue upper_den_positive lower_den_positive small_numeral_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

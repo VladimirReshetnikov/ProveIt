@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositiveScalingIntegrand (productF productData productClock fixedData)
 open GaussianEulerIntegrandName (powerF powerData)
 open GaussianCompactRiemannName (quadrature sampleBody sampleData sample_body_at)
@@ -27,9 +27,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,14 +37,9 @@ def evaluatorTerm (p t x : PTm n) : PTm n := ap2 productF p
 def evaluatorF : PR 3 := PTm.toPR (evaluatorTerm (var 0) (var 1) (var 2))
 def sample (p z B a b c d : PTm n) : PTm n := ap3 evaluatorF p (pairT a b) (fixedData z B c d)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (B a E N c d : PTm n) :
-    (source B a E N c d).subst σ = source (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ E)
-      (Syn.subst σ N) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z B a b c d : PTm n) :
-    Syn.subst σ (sample p z B a b c d) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [sample]
+ipra_subst source
+ipra_subst evaluatorTerm
+ipra_subst sample
 
 private theorem product_data_congr (z B a b c d z' B' a' b' c' d' : PTm n)
     (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (ha : Γ ⊢[PRAAx] a ≐ a')
@@ -82,9 +74,9 @@ theorem sample_at (p z B a b c d : PTm n) : Γ ⊢[PRAAx]
   have right := snd_pair (Γ := Γ) (pairT z B) (pairT c d)
   exact (evaluator_at p (pairT a b) (fixedData z B c d)).eqTrans
     (congrAp2 productF (.eqRefl _) (product_data_congr _ _ _ _ _ _ _ _ _ _ _ _
-      ((congrFst left).eqTrans (fst_pair _ _)) ((congrSnd left).eqTrans (snd_pair _ _))
+      left.fstE left.sndE
       (fst_pair _ _) (snd_pair _ _)
-      ((congrFst right).eqTrans (fst_pair _ _)) ((congrSnd right).eqTrans (snd_pair _ _))))
+      right.fstE right.sndE))
 
 theorem sample_readback (p z B a b c d : PTm n) : Γ ⊢[PRAAx]
     sample p z B a b c d ≐

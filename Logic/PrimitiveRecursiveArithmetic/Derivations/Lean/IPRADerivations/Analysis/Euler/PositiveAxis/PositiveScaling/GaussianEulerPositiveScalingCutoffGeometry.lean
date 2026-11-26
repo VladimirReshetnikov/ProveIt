@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingCutoffGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (quadrature)
 open GaussianEulerCompactAdditivity (intervalSource compact_input)
 open GaussianEulerCompactModulus (lipschitz)
@@ -27,17 +27,13 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z R B a C E T c d : PTm n) : Fm PTm n :=
   intervalSource z R B a C E T ⋏ (le one c ⋏ le one d)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T c d : PTm n) :
-    (source z R B a C E T c d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
+ipra_subst source
 
 theorem pullback_interval (z R B a C E T c d : PTm n) (hs : Γ ⊢[PRAAx] source z R B a C E T c d) :
     Γ ⊢[PRAAx] intervalSource z R B (d*a) (d*C) (c*E) (d*T) := by

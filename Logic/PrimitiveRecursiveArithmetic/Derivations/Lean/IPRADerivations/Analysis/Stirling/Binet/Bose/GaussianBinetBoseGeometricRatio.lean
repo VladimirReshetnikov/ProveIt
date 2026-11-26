@@ -14,7 +14,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseGeometricRatio
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseExponential (scaleF scaleData scale_positive scale_lower_order expF expData expRadius)
 open GaussianDominantPairAlgebra (radiusPoint radius_one)
 open GaussianEulerDecayFactorBounds (fraction_is_radius_point)
@@ -29,10 +29,6 @@ open GaussianRationalPolynomialExponential (scalarSum scalarBody)
 open GaussianRationalReciprocal (reciprocal)
 open GaussianRationalSyntheticDivision (qone qadd_congr)
 open RationalArgmin (rationalLE_congr)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

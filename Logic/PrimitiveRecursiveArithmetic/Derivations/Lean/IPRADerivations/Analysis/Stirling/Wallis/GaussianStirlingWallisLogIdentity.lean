@@ -15,7 +15,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingWallisLogIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingWallisGammaRatio (halfNumerator halfData integerData halfSquareF halfSquareData half_source
   half_regular ratioF ratioData wallisF wallisData wallis_cross integerScaledF integerScaledData integer_divisor_cross)
 open GaussianStirlingWallisFactor (integerDivisor inverseIntegerDivisor integer_divisor_positive)
@@ -39,10 +39,6 @@ open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalReciprocal (qone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF
@@ -61,11 +57,8 @@ def denominatorLogData (r : PTm n) : PTm n := addData (logXData (succ r) one) (d
 def rightF : PR 2 := addF H denominatorLogF
 def rightData (r x : PTm n) : PTm n := addData (GaussianStirlingWallisLogRate.data r x) (denominatorLogData r)
 
-@[simp] theorem subst_leftData {l : ℕ} (σ : Fin n → PTm l) (r : PTm n) :
-    Syn.subst σ (leftData r) = leftData (Syn.subst σ r) := by simp [leftData,two,one]
-@[simp] theorem subst_rightData {l : ℕ} (σ : Fin n → PTm l) (r x : PTm n) :
-    Syn.subst σ (rightData r x) = rightData (Syn.subst σ r) (Syn.subst σ x) :=
-  by simp [rightData,denominatorLogData,doubleIntegerLogData,one]
+ipra_subst leftData [two, one]
+ipra_subst rightData [denominatorLogData, doubleIntegerLogData, one]
 
 private theorem reciprocal_code (r : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.qmul (inverseIntegerDivisor r) (naturalPoint (integerDivisor r)) ≐ qone := by

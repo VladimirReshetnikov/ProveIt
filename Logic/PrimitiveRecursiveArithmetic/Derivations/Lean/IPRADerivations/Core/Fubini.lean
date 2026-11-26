@@ -39,12 +39,9 @@ theorem congrPairT {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : �
 private abbrev zeroF : Fm PTm 2 := ap2 (sumF (zero : PTm 2)) (var 0) (var 1) ≐ zero
 
 private theorem sum_zeroB₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] zeroF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (add_zero _))
     have e : inst2 (zero : PTm 2) (var 0 : PTm 2) (var 1) = zero := by simp [inst2]
     rw [e]
     exact .eqRefl _
@@ -118,10 +115,8 @@ private abbrev fubF (a : PTm 3) : Fm PTm 3 :=
   ap2 (sumF (oB a)) (var 0) (pairT (var 1) (var 2)) ≐ ap2 (sumF (pB a)) (var 1) (pairT (var 0) (var 2))
 
 private theorem fub₀ (a : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] fubF a := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (sum_zero _ _).eqTrans (.eqSymm ?_)
+  ipra_ind [subst_ap2, subst_pairT]
+  · refine (sum_zero _ _).eqTrans (.eqSymm ?_)
     -- every column sum over `i < 0` vanishes
     refine (sum_congr_bounded (pB a) (zero : PTm 2) (pairT zero (var 1)) (pairT zero (var 1)) (var 0)
       (.allI (.impI ?_))).eqTrans (sum_zeroB _ _)
@@ -130,9 +125,7 @@ private theorem fub₀ (a : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] fubF a :=
     have e0 : Syn.shift (zero : PTm 2) = zero := by simp [Syn.shift]
     rw [e, inst2_pB, shift_pairT, e0]
     exact (congrAp2 (sumF (colB a)) (fst_pair _ _) (.eqRefl _)).eqTrans (sum_zero _ _)
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact fub_step a Prf.hyp0
+  · exact fub_step a Prf.hyp0
 
 /-- `∑_{i<M} ∑_{j<N} a(i, j, x) = ∑_{j<N} ∑_{i<M} a(i, j, x)`. -/
 theorem fubini (a : PTm 3) (M N x : PTm n) :
@@ -197,13 +190,9 @@ private abbrev dltF (G : PTm 2) : Fm PTm 3 :=
     (le (var 0) (var 1) ⟶ (dS G (var 0) (var 1) (var 2) ≐ zero))
 
 private theorem dlt₀ (G : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] dltF G := by
-  refine ind _ ⟨⟨lt_QF _ _, trivial⟩, ⟨le_QF _ _, trivial⟩⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_le, subst_ap2, subst_pairT, subst_inst2,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .andI (.impI (lt_zero_absurd _ Prf.hyp0)) (.impI (sum_zero _ _))
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_le, subst_ap2, subst_pairT, subst_inst2,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dstep G (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0)
+  ipra_ind (⟨⟨lt_QF _ _, trivial⟩, ⟨le_QF _ _, trivial⟩⟩) [subst_lt, subst_le, subst_ap2, subst_pairT, subst_inst2]
+  · exact .andI (.impI (lt_zero_absurd _ Prf.hyp0)) (.impI (sum_zero _ _))
+  · exact dstep G (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0)
 
 /-- `∑_{j<N} [c = j] · G(j, x) = G(c, x)` for `c < N`. -/
 theorem sum_delta (G : PTm 2) {N c x : PTm n} (h : Γ ⊢[PRAAx] lt c N) :

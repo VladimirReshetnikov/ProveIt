@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsFold
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderPanelPartsFinite
   (interior interior_le_mesh parameters weightAt weightBody weight_at densityBody density_at interiorDensity)
 open GaussianStirlingAllOrderPanelPartsDensities
@@ -35,10 +35,6 @@ open RationalAlgebra (add_congr multiply_congr negative_congr multiply_commutati
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
 open RationalReciprocalPowerTail (add_zero_right)
 open RationalFiniteSum (term termwiseEq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum

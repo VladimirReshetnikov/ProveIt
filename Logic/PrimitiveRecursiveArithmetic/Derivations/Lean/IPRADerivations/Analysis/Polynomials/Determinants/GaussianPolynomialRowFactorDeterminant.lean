@@ -24,7 +24,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialRowFactorDeterminant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul canonical evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr canonicalCoefficients canonical_coefficient_at)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
@@ -39,10 +39,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMatrixFiniteSums (matrixProduct)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,18 +49,11 @@ def paddedOriginal (A m B t : PTm n) : PTm n := leftPad (original A m B) t
 def factorProduct (A m B t x : PTm n) : PTm n :=
   GaussianRationalPolynomialProduct.product (H x t) (quotientDeterminant A m B t x) t (m*B)
 
-@[simp] theorem subst_original {l : ℕ} (σ : Fin n → PTm l) (A m B : PTm n) :
-    Syn.subst σ (original A m B) = original (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ B) := by simp [original]
-@[simp] theorem subst_quotientDeterminant {l : ℕ} (σ : Fin n → PTm l) (A m B t x : PTm n) :
-    Syn.subst σ (quotientDeterminant A m B t x) = quotientDeterminant (Syn.subst σ A) (Syn.subst σ m)
-      (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [quotientDeterminant]
-@[simp] theorem subst_width {l : ℕ} (σ : Fin n → PTm l) (m B t : PTm n) :
-    Syn.subst σ (width m B t) = width (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ t) := by simp [width]
-@[simp] theorem subst_paddedOriginal {l : ℕ} (σ : Fin n → PTm l) (A m B t : PTm n) :
-    Syn.subst σ (paddedOriginal A m B t) = paddedOriginal (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ t) := by simp [paddedOriginal]
-@[simp] theorem subst_factorProduct {l : ℕ} (σ : Fin n → PTm l) (A m B t x : PTm n) :
-    Syn.subst σ (factorProduct A m B t x) = factorProduct (Syn.subst σ A) (Syn.subst σ m)
-      (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [factorProduct]
+ipra_subst original
+ipra_subst quotientDeterminant
+ipra_subst width
+ipra_subst paddedOriginal
+ipra_subst factorProduct
 
 theorem weighted_cell_evaluation (A m B t x z r j : PTm n)
     (hA : Γ ⊢[PRAAx] tableShape A m B) (hRoot : Γ ⊢[PRAAx] firstRowsZero A m t x)
@@ -172,10 +161,8 @@ def certificate (A m B t x : PTm n) : Fm PTm n :=
   (length (paddedOriginal A m B t) ≐ succ (width m B t)) ⋏
     ((length (factorProduct A m B t x) ≐ succ (width m B t)) ⋏
       GaussianRationalGridCoefficientEquality.coefficientsEqual (paddedOriginal A m B t) (factorProduct A m B t x) (width m B t))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (A m B t x : PTm n) :
-    (input A m B t x).subst σ = input (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [input]
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (A m B t x : PTm n) :
-    (certificate A m B t x).subst σ = certificate (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [certificate]
+ipra_subst input
+ipra_subst certificate
 theorem factorization (A m B t x : PTm n) (h : Γ ⊢[PRAAx] input A m B t x) : Γ ⊢[PRAAx] certificate A m B t x :=
   .andI (padded_length _ _ _ _) (.andI (product_length _ _ _ _ _)
     (coefficients_factor _ _ _ _ _ (.andE₁ h) (.andE₁ (.andE₂ h)) (.andE₂ (.andE₂ h))))
@@ -193,46 +180,32 @@ def originalField (p : PTm n) : PTm n := fstT (sndT (sndT p))
 def quotientField (p : PTm n) : PTm n := fstT (sndT (sndT (sndT p)))
 def paddedField (p : PTm n) : PTm n := fstT (sndT (sndT (sndT (sndT p))))
 def productField (p : PTm n) : PTm n := sndT (sndT (sndT (sndT (sndT p))))
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (A m B t x : PTm n) :
-    Syn.subst σ (output A m B t x) = output (Syn.subst σ A) (Syn.subst σ m)
-      (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A m B t x : PTm n) :
-    Syn.subst σ (run A m B t x) = run (Syn.subst σ A) (Syn.subst σ m)
-      (Syn.subst σ B) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
-@[simp] theorem subst_tableField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (tableField p) = tableField (Syn.subst σ p) := by simp [tableField]
-@[simp] theorem subst_rootPolynomialField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (rootPolynomialField p) = rootPolynomialField (Syn.subst σ p) := by simp [rootPolynomialField]
-@[simp] theorem subst_originalField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (originalField p) = originalField (Syn.subst σ p) := by simp [originalField]
-@[simp] theorem subst_quotientField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (quotientField p) = quotientField (Syn.subst σ p) := by simp [quotientField]
-@[simp] theorem subst_paddedField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (paddedField p) = paddedField (Syn.subst σ p) := by simp [paddedField]
-@[simp] theorem subst_productField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (productField p) = productField (Syn.subst σ p) := by simp [productField]
+ipra_subst output
+ipra_subst run
+ipra_subst tableField
+ipra_subst rootPolynomialField
+ipra_subst originalField
+ipra_subst quotientField
+ipra_subst paddedField
+ipra_subst productField
 theorem program_at (A m B t x : PTm n) : Γ ⊢[PRAAx] run A m B t x ≐ output A m B t x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,m,B,t,x]
 theorem returned_table (A m B t x : PTm n) : Γ ⊢[PRAAx] tableField (run A m B t x) ≐ Qhat A m B t x :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_root_polynomial (A m B t x : PTm n) : Γ ⊢[PRAAx] rootPolynomialField (run A m B t x) ≐ H x t :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.fstE
 theorem returned_original (A m B t x : PTm n) : Γ ⊢[PRAAx] originalField (run A m B t x) ≐ original A m B :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).sndE.sndE.fstE
 theorem returned_quotient (A m B t x : PTm n) : Γ ⊢[PRAAx] quotientField (run A m B t x) ≐ quotientDeterminant A m B t x := by
-  have tail := (congrSnd ((congrSnd ((congrSnd (program_at (Γ := Γ) A m B t x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
-  exact (congrFst tail).eqTrans (fst_pair _ _)
+  have tail := (program_at (Γ := Γ) A m B t x).sndE.sndE.sndE
+  exact tail.fstE
 theorem returned_padded (A m B t x : PTm n) : Γ ⊢[PRAAx] paddedField (run A m B t x) ≐ paddedOriginal A m B t := by
-  have tail := (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at (Γ := Γ) A m B t x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
-  exact (congrFst tail).eqTrans (fst_pair _ _)
+  have tail := (program_at (Γ := Γ) A m B t x).sndE.sndE.sndE.sndE
+  exact tail.fstE
 theorem returned_product (A m B t x : PTm n) : Γ ⊢[PRAAx] productField (run A m B t x) ≐ factorProduct A m B t x := by
-  have tail := (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at (Γ := Γ) A m B t x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
-  exact (congrSnd tail).eqTrans (snd_pair _ _)
+  have tail := (program_at (Γ := Γ) A m B t x).sndE.sndE.sndE.sndE
+  exact tail.sndE
 theorem returned_padded_length (A m B t x : PTm n) : Γ ⊢[PRAAx] length (paddedField (run A m B t x)) ≐ succ (width m B t) :=
   (congrFst (returned_padded _ _ _ _ _)).eqTrans (padded_length _ _ _ _)
 theorem returned_product_length (A m B t x : PTm n) : Γ ⊢[PRAAx] length (productField (run A m B t x)) ≐ succ (width m B t) :=

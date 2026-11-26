@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveGridUnscale
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveLowerEndpointRefinement
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperGridEndpoint
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaFiniteEndpointTelescope
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original full finite beta quadrature and the finite Euler reciprocal
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaFiniteEulerComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
@@ -28,10 +27,6 @@ open GaussianBetaPrimitiveGridTelescope (gridEndpoint endpoint)
 open GaussianBetaPrimitiveGridUnscale (quadrature scaledEndpoint demand)
 open GaussianGammaIntegralCutoffs (etaDen eta_den_positive)
 open GaussianGammaEulerReciprocalInverse (eulerF eulerData)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

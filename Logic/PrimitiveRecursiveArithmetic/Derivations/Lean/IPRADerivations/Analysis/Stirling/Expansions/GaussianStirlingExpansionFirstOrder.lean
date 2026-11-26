@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingExpansionFirstOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BernoulliBounds (zint toZ_zint)
 open BernoulliCoefficients (bc)
 open ComplexLogarithmRemainder (scale oneCode)
@@ -42,10 +42,6 @@ open GaussianStirlingRationalTelescopers (upperValue lowerValue upper_den_positi
 open LeanProofs.IPRA.Analysis.Products (fact)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_radius radius_of_upper)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

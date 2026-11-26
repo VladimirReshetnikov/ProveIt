@@ -25,16 +25,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf subst_numeratorOf subst_denominatorOf)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im code eval_re_code eval_im_code)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr append append_length append_left append_right)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_trans')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -60,12 +57,8 @@ def pointDenominator (z : PTm n) : PTm n := denominatorOf (fstT z)*denominatorOf
 def denominatorBody : PTm 2 := pointDenominator (entry (var 1) (var 0))
 def denominator (P : PTm n) : PTm n := ap2 (prodF denominatorBody) (length P) P
 
-@[simp] theorem subst_pointDenominator {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (pointDenominator z) = pointDenominator (Syn.subst σ z) := by
-  simp only [pointDenominator,PTm.subst_mul,subst_denominatorOf,subst_fstT,subst_sndT]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (P : PTm n) :
-    Syn.subst σ (denominator P) = denominator (Syn.subst σ P) := by
-  simp only [denominator,subst_ap2,subst_length]
+ipra_subst pointDenominator
+ipra_subst denominator
 
 @[simp] theorem denominatorBody_at (i P : PTm n) : inst2 denominatorBody i P = pointDenominator (entry P i) := by
   simp only [denominatorBody,inst2,subst_pointDenominator,subst_entry,Syn.subst_var,
@@ -95,15 +88,9 @@ def clearNumerator (s : Component) (P j : PTm n) : ZT n :=
   numeratorOf (scalar s (entry P j))*ZT.ofNat (cofactor s P j)
 def clearPoint (P j : PTm n) : PTm n := code (clearNumerator .real P j) (clearNumerator .imag P j)
 
-@[simp] theorem subst_cofactor {m : ℕ} (σ : Fin n → PTm m) (s : Component) (P j : PTm n) :
-    Syn.subst σ (cofactor s P j) = cofactor s (Syn.subst σ P) (Syn.subst σ j) := by
-  simp only [cofactor,subst_ap2,subst_denominator,subst_denominatorOf,subst_scalar,subst_entry]
-@[simp] theorem subst_clearNumerator {m : ℕ} (σ : Fin n → PTm m) (s : Component) (P j : PTm n) :
-    (clearNumerator s P j).subst σ = clearNumerator s (Syn.subst σ P) (Syn.subst σ j) := by
-  simp only [clearNumerator,ZT.subst_mul,subst_numeratorOf,subst_scalar,subst_entry,ZT.subst_ofNat,subst_cofactor]
-@[simp] theorem subst_clearPoint {m : ℕ} (σ : Fin n → PTm m) (P j : PTm n) :
-    Syn.subst σ (clearPoint P j) = clearPoint (Syn.subst σ P) (Syn.subst σ j) := by
-  simp only [clearPoint,ComplexLogarithmRemainder.subst_code,subst_clearNumerator]
+ipra_subst cofactor
+ipra_subst clearNumerator
+ipra_subst clearPoint
 
 /-- Divisibility follows from the actual product, for either independently
 decoded component denominator. -/
@@ -146,21 +133,17 @@ theorem component_clearing_at (s : Component) (P j z : PTm n)
   have value := ZT.toZ_eq (component_clearing (Γ := Γ) s P j hj)
   have component := scalar_congr s hz
   have d := natEq (congrSucc (congrSnd component))
-  have p := natEq (congrFst (congrFst component))
-  have q := natEq (congrSnd (congrFst component))
   simp only [ZT.toZ_mul,ZT.toZ_ofNat] at value ⊢
   simp only [numeratorOf,ZT.toZ] at value ⊢
   change 𝔞(denominatorOf (scalar s (entry P j))) = 𝔞(denominatorOf (scalar s z)) at d
-  rw [d,p,q] at value
+  rw [d,natEq (congrFst (congrFst component)),natEq (congrSnd (congrFst component))] at value
   exact value
 
 /-- Arbitrary runtime slice of the actual normalized point pool. -/
 def numeratorBody : PTm 2 := clearPoint (fstT (var 1)) (sndT (var 1)+var 0)
 def numeratorList (P start N : PTm n) : PTm n := sequence numeratorBody N (pairT P start)
 
-@[simp] theorem subst_numeratorList {m : ℕ} (σ : Fin n → PTm m) (P start N : PTm n) :
-    Syn.subst σ (numeratorList P start N) = numeratorList (Syn.subst σ P) (Syn.subst σ start) (Syn.subst σ N) := by
-  simp only [numeratorList,subst_sequence,subst_pairT]
+ipra_subst numeratorList
 
 theorem numeratorBody_at (P start i : PTm n) : Γ ⊢[PRAAx]
     inst2 numeratorBody i (pairT P start) ≐ clearPoint P (start+i) := by
@@ -181,11 +164,7 @@ def clearing (D g z : PTm n) : Fm PTm n :=
   ZT.eq (re g*ZT.ofNat (denominatorOf (fstT z))) (numeratorOf (fstT z)*ZT.ofNat D) ⋏
   ZT.eq (im g*ZT.ofNat (denominatorOf (sndT z))) (numeratorOf (sndT z)*ZT.ofNat D)
 
-@[simp] theorem subst_clearing {m : ℕ} (σ : Fin n → PTm m) (D g z : PTm n) :
-    (clearing D g z).subst σ = clearing (Syn.subst σ D) (Syn.subst σ g) (Syn.subst σ z) := by
-  simp only [clearing,Fm.subst_and,ZT.subst_eq,ZT.subst_mul,ZT.subst_ofNat,
-    ComplexLogarithmRemainder.subst_re,ComplexLogarithmRemainder.subst_im,
-    subst_denominatorOf,subst_numeratorOf,subst_fstT,subst_sndT]
+ipra_subst clearing
 
 theorem clearPoint_clearing (P j z : PTm n) (hj : Γ ⊢[PRAAx] lt j (length P))
     (hz : Γ ⊢[PRAAx] entry P j ≐ z) : Γ ⊢[PRAAx] clearing (denominator P) (clearPoint P j) z :=
@@ -218,24 +197,12 @@ def sourceNumerators (S T z : PTm n) : PTm n := numeratorList (pool S T z) zero 
 def targetNumerators (S T z : PTm n) : PTm n := numeratorList (pool S T z) (length S) (length T)
 def queryNumerator (S T z : PTm n) : PTm n := clearPoint (pool S T z) (length S+length T)
 
-@[simp] theorem subst_singleton {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (singleton z) = singleton (Syn.subst σ z) := by
-  simp only [singleton,subst_sequence,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ]
-@[simp] theorem subst_pool {m : ℕ} (σ : Fin n → PTm m) (S T z : PTm n) :
-    Syn.subst σ (pool S T z) = pool (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) := by
-  simp only [pool,Foundations.SequenceComposition.subst_append,subst_singleton]
-@[simp] theorem subst_commonD {m : ℕ} (σ : Fin n → PTm m) (S T z : PTm n) :
-    Syn.subst σ (commonD S T z) = commonD (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) := by
-  simp only [commonD,subst_denominator,subst_pool]
-@[simp] theorem subst_sourceNumerators {m : ℕ} (σ : Fin n → PTm m) (S T z : PTm n) :
-    Syn.subst σ (sourceNumerators S T z) = sourceNumerators (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) := by
-  simp only [sourceNumerators,subst_numeratorList,subst_pool,subst_length,ConciseIPRA.PTm.subst_zero]
-@[simp] theorem subst_targetNumerators {m : ℕ} (σ : Fin n → PTm m) (S T z : PTm n) :
-    Syn.subst σ (targetNumerators S T z) = targetNumerators (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) := by
-  simp only [targetNumerators,subst_numeratorList,subst_pool,subst_length]
-@[simp] theorem subst_queryNumerator {m : ℕ} (σ : Fin n → PTm m) (S T z : PTm n) :
-    Syn.subst σ (queryNumerator S T z) = queryNumerator (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) := by
-  simp only [queryNumerator,subst_clearPoint,subst_pool,PTm.subst_add,subst_length]
+ipra_subst singleton
+ipra_subst pool
+ipra_subst commonD
+ipra_subst sourceNumerators
+ipra_subst targetNumerators
+ipra_subst queryNumerator
 
 theorem singleton_length (z : PTm n) : Γ ⊢[PRAAx] length (singleton z) ≐ one := sequence_length _ _ _
 theorem singleton_lookup (z : PTm n) : Γ ⊢[PRAAx] entry (singleton z) zero ≐ z := by
@@ -308,9 +275,7 @@ def program (S T z : PTm n) : PTm n :=
   pairT (commonD S T z) (pairT (sourceNumerators S T z) (pairT (targetNumerators S T z) (queryNumerator S T z)))
 def programF : PR 3 := PTm.toPR (program (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_program {m : ℕ} (σ : Fin n → PTm m) (S T z : PTm n) :
-    Syn.subst σ (program S T z) = program (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) := by
-  simp only [program,subst_pairT,subst_commonD,subst_sourceNumerators,subst_targetNumerators,subst_queryNumerator]
+ipra_subst program
 
 theorem denominator_at (P : PTm n) : Γ ⊢[PRAAx] ap1 denominatorF P ≐ denominator P := by
   simpa only [denominatorF,ap1,subst_denominator,Syn.subst_var,Matrix.cons_val_zero] using

@@ -15,7 +15,7 @@ set_option maxHeartbeats 400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerChartAgreement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale normSq_zero zeroCode)
 open GaussianLogGammaEulerCofinal (canonicalData)
 open GaussianLogGammaEulerCommonDenominator (native_scaled)
@@ -28,9 +28,6 @@ open GaussianRationalHorner
   (canonical_unique ofGaussian_canonical ofGaussian_represents positive_product represents_congr represents_rescale)
 open GaussianRootAlgebra (equal equal_of_values equal_symm equal_trans normSq_equal sub re_sub im_sub re_zero im_zero)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianLogGammaEulerCofinal.nameF

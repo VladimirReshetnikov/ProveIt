@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalInverseLogConvexity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDominantPairAlgebra (radius_power)
 open GaussianEulerDampedTimeRate (fraction_product)
 open GaussianEulerDecayFactorBounds (fraction_is_radius_point)
@@ -37,9 +37,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalReciprocal (power powerF)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open RationalArgmin (rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => productF logF

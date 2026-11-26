@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarIdentityDeterminant
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual characteristic polynomial at numerical matrix size
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalCharacteristicPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul evaluate canonical canonical_congr qmul_canonical)
 open GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical qmul_congr qadd_congr canonicalCoefficients)
 open GaussianRationalMetric (qnegative qnegative_canonical)
@@ -27,9 +26,6 @@ open GaussianRationalFiniteProduct (qprod product_zero product_succ product_cano
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,10 +33,8 @@ def headBody : PTm 3 := recode (entry (cell (var 2) (var 0) (var 1)) zero)
 def headTable (M m : PTm n) : PTm n := table headBody m m M
 def headProduct (M m w j : PTm n) : PTm n := qprod GaussianScalarDeterminant.factorBody j
   (GaussianScalarDeterminant.factorData (headTable M m) m w)
-@[simp] theorem subst_headTable {l : ℕ} (σ : Fin n → PTm l) (M m : PTm n) :
-    Syn.subst σ (headTable M m) = headTable (Syn.subst σ M) (Syn.subst σ m) := by simp [headTable]
-@[simp] theorem subst_headProduct {l : ℕ} (σ : Fin n → PTm l) (M m w j : PTm n) :
-    Syn.subst σ (headProduct M m w j) = headProduct (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by simp [headProduct]
+ipra_subst headTable
+ipra_subst headProduct
 
 theorem head_table_lookup (M m r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     cell (headTable M m) r j ≐ recode (entry (cell M r j) zero) := by
@@ -67,18 +61,14 @@ theorem head_product_succ (M m w j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢
       (head_table_lookup _ _ _ _ (Foundations.RuntimePermutationWords.digit_bound _ _ _ hj) hj)))
 
 def headLaw (M m L w j : PTm n) : Fm PTm n := le j m ⟶ entry (stage M m L w j) zero ≐ headProduct M m w j
-@[simp] theorem subst_headLaw {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    (headLaw M m L w j).subst σ = headLaw (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by
-  simp [headLaw]
+ipra_subst headLaw
 theorem stage_head (M m L w j : PTm n) (hj : Γ ⊢[PRAAx] le j m) : Γ ⊢[PRAAx]
     entry (stage M m L w j) zero ≐ headProduct M m w j := by
   have all : Γ ⊢[PRAAx] .all (headLaw (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift w) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_headLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((entry_congr (stage_zero M m L w) (.eqRefl _)).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_headLaw]
+    · exact .impI ((entry_congr (stage_zero M m L w) (.eqRefl _)).eqTrans
         ((GaussianRationalMonicReduction.singleton_lookup qone).eqTrans (head_product_zero M m w).eqSymm))
-    · simp only [subst_headLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift m) :: headLaw (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift w) (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] entry (stage (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift w) (var 0)) zero ≐
           headProduct (Syn.shift M) (Syn.shift m) (Syn.shift w) (var 0) := .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
@@ -114,24 +104,19 @@ def cellPolynomial (A r j : PTm n) : PTm n := sequence cellBody two (cellData A 
 def characteristicBody : PTm 3 := cellPolynomial (var 2) (var 0) (var 1)
 def characteristicTable (A m : PTm n) : PTm n := table characteristicBody m m A
 def polynomial (A m : PTm n) : PTm n := GaussianPolynomialDeterminant.determinant (characteristicTable A m) m one
-@[simp] theorem subst_cellData {l : ℕ} (σ : Fin n → PTm l) (A r j : PTm n) :
-    Syn.subst σ (cellData A r j) = cellData (Syn.subst σ A) (Syn.subst σ r) (Syn.subst σ j) := by simp [cellData]
-@[simp] theorem subst_cellCoefficient {l : ℕ} (σ : Fin n → PTm l) (A r j k : PTm n) :
-    Syn.subst σ (cellCoefficient A r j k) = cellCoefficient (Syn.subst σ A) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ k) := by simp [cellCoefficient,sel]
-@[simp] theorem subst_cellPolynomial {l : ℕ} (σ : Fin n → PTm l) (A r j : PTm n) :
-    Syn.subst σ (cellPolynomial A r j) = cellPolynomial (Syn.subst σ A) (Syn.subst σ r) (Syn.subst σ j) := by simp [cellPolynomial]
-@[simp] theorem subst_characteristicTable {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (characteristicTable A m) = characteristicTable (Syn.subst σ A) (Syn.subst σ m) := by simp [characteristicTable]
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (polynomial A m) = polynomial (Syn.subst σ A) (Syn.subst σ m) := by simp [polynomial]
+ipra_subst cellData
+ipra_subst cellCoefficient [sel]
+ipra_subst cellPolynomial
+ipra_subst characteristicTable
+ipra_subst polynomial
 
 theorem cell_coefficient_congr {A B r s j k i t : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B) (hr : Γ ⊢[PRAAx] r ≐ s)
     (hj : Γ ⊢[PRAAx] j ≐ k) (hi : Γ ⊢[PRAAx] i ≐ t) : Γ ⊢[PRAAx] cellCoefficient A r j i ≐ cellCoefficient B s k t := by
   ipra_congr (cellCoefficient (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hA, hr, hj, hi]
 theorem cell_body_at (A r j k : PTm n) : Γ ⊢[PRAAx] inst2 cellBody k (cellData A r j) ≐ cellCoefficient A r j k := by
   simp only [cellBody,inst2,subst_cellCoefficient,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact cell_coefficient_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact cell_coefficient_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem cell_length (A r j : PTm n) : Γ ⊢[PRAAx] length (cellPolynomial A r j) ≐ two := sequence_length _ _ _
 theorem cell_lookup (A r j k : PTm n) (hk : Γ ⊢[PRAAx] lt k two) : Γ ⊢[PRAAx]
     entry (cellPolynomial A r j) k ≐ cellCoefficient A r j k := (sequence_decode cellBody hk).eqTrans (cell_body_at _ _ _ _)
@@ -182,10 +167,8 @@ theorem polynomial_monic (A m : PTm n) : Γ ⊢[PRAAx] entry (polynomial A m) ze
 def shiftedWeight (A z r j : PTm n) : PTm n := GaussianRationalMetric.qsub (qmul z (delta r j)) (cell A r j)
 def shiftedBody : PTm 3 := shiftedWeight (fstT (var 2)) (sndT (var 2)) (var 0) (var 1)
 def shiftedTable (A m z : PTm n) : PTm n := table shiftedBody m m (pairT A z)
-@[simp] theorem subst_shiftedWeight {l : ℕ} (σ : Fin n → PTm l) (A z r j : PTm n) :
-    Syn.subst σ (shiftedWeight A z r j) = shiftedWeight (Syn.subst σ A) (Syn.subst σ z) (Syn.subst σ r) (Syn.subst σ j) := by simp [shiftedWeight]
-@[simp] theorem subst_shiftedTable {l : ℕ} (σ : Fin n → PTm l) (A m z : PTm n) :
-    Syn.subst σ (shiftedTable A m z) = shiftedTable (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ z) := by simp [shiftedTable]
+ipra_subst shiftedWeight
+ipra_subst shiftedTable
 theorem shifted_weight_congr {A B z y r s j k : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B) (hz : Γ ⊢[PRAAx] z ≐ y)
     (hr : Γ ⊢[PRAAx] r ≐ s) (hj : Γ ⊢[PRAAx] j ≐ k) : Γ ⊢[PRAAx] shiftedWeight A z r j ≐ shiftedWeight B y s k := by
   ipra_congr (shiftedWeight (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hA, hz, hr, hj]
@@ -227,10 +210,8 @@ def coefficient (A m i : PTm n) : PTm n := entry (polynomial A m) i
 def polynomialF : PR 2 := PTm.toPR (polynomial (var 0) (var 1))
 def coefficientF : PR 3 := PTm.toPR (coefficient (var 0) (var 1) (var 2))
 def run (A m : PTm n) : PTm n := ap2 polynomialF A m
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (A m i : PTm n) :
-    Syn.subst σ (coefficient A m i) = coefficient (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ i) := by simp [coefficient]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A m : PTm n) :
-    Syn.subst σ (run A m) = run (Syn.subst σ A) (Syn.subst σ m) := by simp [run]
+ipra_subst coefficient
+ipra_subst run
 theorem program_at (A m : PTm n) : Γ ⊢[PRAAx] run A m ≐ polynomial A m := by
   simpa [run,polynomialF,ap2] using toPR_eq (Γ := Γ) (polynomial (var 0) (var 1) : PTm 2) ![A,m]
 theorem coefficient_at (A m i : PTm n) : Γ ⊢[PRAAx] ap3 coefficientF A m i ≐ coefficient A m i := by

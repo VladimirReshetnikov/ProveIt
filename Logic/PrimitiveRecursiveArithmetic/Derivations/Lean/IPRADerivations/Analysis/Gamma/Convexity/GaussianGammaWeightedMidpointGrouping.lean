@@ -15,7 +15,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaWeightedMidpointGrouping
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerRationalHeadConvexity (barycenter weight)
 open GaussianGammaNativeLogConvexity (weighted_convexity)
 open GaussianGammaNativeLogConvexityCore (nativeCenterData)
@@ -27,9 +27,6 @@ open GaussianNaturalScaleProductName (productF productData)
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingGammaFractionalIncrementConvexity (gamma_rescale_from scale_cross scaled_regular)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData log_gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => productF logGammaF

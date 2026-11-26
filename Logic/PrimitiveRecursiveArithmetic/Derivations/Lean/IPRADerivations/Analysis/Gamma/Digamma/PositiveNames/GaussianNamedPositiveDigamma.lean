@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedPositiveDigamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedInverseApartness (ones_equivalent)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -28,9 +28,6 @@ open GaussianNameRingLaws (multiply_associative multiply_commutative multiply_on
 open GaussianNamedGammaFirstCrossing (inverseClock positive_gamma_apart)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (qzero)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,9 +48,7 @@ def nameF (f : PR 2) : PR 2 := multiplyF (inverseF f) (derivativeF f)
 def data (f : PR 2) (x A : PTm n) : PTm n :=
   multiplyData (inverseF f) (derivativeF f) (inverseData x A) (derivativeData x A)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A : PTm n) :
-    Syn.subst σ (data f x A) = data f (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [data,derivativeData,inverseData,inverseClock,one,two]
+ipra_subst data [derivativeData, inverseData, inverseClock, one, two]
 
 theorem inverse_input (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]
     GaussianNameReciprocal.input (GaussianNamedGamma.nameF f) inverseClock (GaussianNamedGamma.data x A) :=

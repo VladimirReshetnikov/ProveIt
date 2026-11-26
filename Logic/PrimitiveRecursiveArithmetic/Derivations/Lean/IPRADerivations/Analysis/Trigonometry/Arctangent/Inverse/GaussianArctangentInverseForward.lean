@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentInverseForward
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (zeroCode eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianArctangentClampedTarget (nativeValue cutoff_independent)
@@ -39,10 +39,6 @@ open RationalSupMetric (numeratorOf)
 open RationalValueBounds (upper radius upper_congr radius_congr radius_symmetric radius_mono upper_mono
   upper_of_order upper_of_radius radius_of_upper upper_order_left upper_order_right upper_triangle)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -54,16 +50,11 @@ def imaginaryOrder (f g : PR 2) (x y : PTm n) : Fm PTm n := .all (.all
 def input (f : PR 2) (x z : PTm n) : Fm PTm n :=
   pointCN f x ⋏ (imaginaryOrder zeroF f z x ⋏ imaginaryOrder f quarterF x z)
 
-@[simp] theorem subst_imaginaryOrder {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    (imaginaryOrder f g x y).subst σ = imaginaryOrder f g (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [imaginaryOrder, ordinate, Syn.subst_shift, Syn.shift_subst]
+ipra_subst imaginaryOrder [ordinate, Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x z : PTm n) :
-    (input f x z).subst σ = input f (Syn.subst σ x) (Syn.subst σ z) := by simp [input]
+ipra_subst input
 
-@[simp] theorem subst_nativeValue {m : ℕ} (σ : Fin n → PTm m) (j M : PTm n) :
-    Syn.subst σ (nativeValue j M) = nativeValue (Syn.subst σ j) (Syn.subst σ M) := by
-  simp [nativeValue]
+ipra_subst nativeValue
 
 theorem imaginary_order_at (f g : PR 2) (x y p q : PTm n) (h : Γ ⊢[PRAAx] imaginaryOrder f g x y) :
     Γ ⊢[PRAAx] upper (ordinate f p x) (ordinate g q y) (unit p+unit q) (unit p*unit q) := by

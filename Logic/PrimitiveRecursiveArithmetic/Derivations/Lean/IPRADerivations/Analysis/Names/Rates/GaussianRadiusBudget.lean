@@ -16,13 +16,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRadiusBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric (gB inst2_gB geom_sum)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,14 +28,10 @@ def geometric (A N : PTm n) : PTm n := ap2 (sumF gB) N (radius A)
 def numerator (A N : PTm n) : PTm n := A*geometric A N+one
 def bound (A N : PTm n) : PTm n := normalize (ZT.ofNat (numerator A N)) (pw (radius A) N)
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (radius A) = radius (Syn.subst σ A) := by simp [radius]
-@[simp] theorem subst_geometric {m : ℕ} (σ : Fin n → PTm m) (A N : PTm n) :
-    Syn.subst σ (geometric A N) = geometric (Syn.subst σ A) (Syn.subst σ N) := by simp [geometric]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (A N : PTm n) :
-    Syn.subst σ (numerator A N) = numerator (Syn.subst σ A) (Syn.subst σ N) := by simp [numerator]
-@[simp] theorem subst_bound {m : ℕ} (σ : Fin n → PTm m) (A N : PTm n) :
-    Syn.subst σ (bound A N) = bound (Syn.subst σ A) (Syn.subst σ N) := by simp [bound]
+ipra_subst radius
+ipra_subst geometric
+ipra_subst numerator
+ipra_subst bound
 
 theorem radius_positive (A : PTm n) : Γ ⊢[PRAAx] le one (radius A) :=
   le_of_eq_add (d := A+one) (by unfold radius; ipra_ring)

@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentCayleySquareGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code)
 open GaussianArctangentCayleyValues (denominator denominator_positive)
 open GaussianArctangentCayleyTrig (sineCode sinePoint)
@@ -25,10 +25,6 @@ open RationalArithmetic (add)
 open RationalArgmin (rationalLE)
 open RationalCubeMidpoint (fraction fraction_represents)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

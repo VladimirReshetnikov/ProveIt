@@ -17,7 +17,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentSineUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (evaluatorF fixedData nameF data)
 open GaussianBinetArctangentSineGridComparison
   (cosineDenominator sineDenominator combinedDenominator combinedNumerator)
@@ -31,11 +31,7 @@ open GaussianLogGammaEulerResidualDomain (source)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -54,29 +50,13 @@ def count (k D R U K : PTm n) : PTm n :=
   num 4*((R+U)*(D*cutoff k U K)+unit (clock k D R U K))
 def angleMesh (k D U T N : PTm n) : PTm n := (N*cellFactor k T U)*mesh k (D*D) U
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (k U K : PTm n) :
-    Syn.subst σ (cutoff k U K) = cutoff (Syn.subst σ k) (Syn.subst σ U) (Syn.subst σ K) := by
-  simp [cutoff]
-@[simp] theorem subst_cellFactor {m : ℕ} (σ : Fin n → PTm m) (k T U : PTm n) :
-    Syn.subst σ (cellFactor k T U) = cellFactor (Syn.subst σ k) (Syn.subst σ T) (Syn.subst σ U) := by
-  simp [cellFactor,one]
-@[simp] theorem subst_angularScale {m : ℕ} (σ : Fin n → PTm m) (k D U T : PTm n) :
-    Syn.subst σ (angularScale k D U T) = angularScale (Syn.subst σ k) (Syn.subst σ D) (Syn.subst σ U) (Syn.subst σ T) := by
-  simp [angularScale]
-@[simp] theorem subst_roundingCost {m : ℕ} (σ : Fin n → PTm m) (k D R U K T : PTm n) :
-    Syn.subst σ (roundingCost k D R U K T) =
-      roundingCost (Syn.subst σ k) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ U) (Syn.subst σ K) (Syn.subst σ T) := by
-  simp [roundingCost,uniformCost,two]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (k D R U K : PTm n) :
-    Syn.subst σ (clock k D R U K) = clock (Syn.subst σ k) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ U) (Syn.subst σ K) := by
-  simp [clock]
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (k D R U K : PTm n) :
-    Syn.subst σ (count k D R U K) = count (Syn.subst σ k) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ U) (Syn.subst σ K) := by
-  simp [count]
-@[simp] theorem subst_angleMesh {m : ℕ} (σ : Fin n → PTm m) (k D U T N : PTm n) :
-    Syn.subst σ (angleMesh k D U T N) =
-      angleMesh (Syn.subst σ k) (Syn.subst σ D) (Syn.subst σ U) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [angleMesh]
+ipra_subst cutoff
+ipra_subst cellFactor [one]
+ipra_subst angularScale
+ipra_subst roundingCost [uniformCost, two]
+ipra_subst clock
+ipra_subst count
+ipra_subst angleMesh
 
 theorem cutoff_positive (k U K : PTm n) : Γ ⊢[PRAAx] le one (cutoff k U K) := zero_lt_succ _
 theorem cutoff_le_clock (k D R U K : PTm n) : Γ ⊢[PRAAx] le (cutoff k U K) (clock k D R U K) :=

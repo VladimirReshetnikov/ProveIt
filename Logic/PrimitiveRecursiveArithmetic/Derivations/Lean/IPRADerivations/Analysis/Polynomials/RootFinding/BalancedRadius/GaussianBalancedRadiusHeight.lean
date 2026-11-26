@@ -18,13 +18,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBalancedRadiusHeight
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (coefficient numerator denominator three)
 open LeanProofs.IPRA.Analysis.GaussianRootSchedule (binaryLength)
 open LeanProofs.IPRA.Foundations.DemandClosure (maximum maximum_left maximum_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,14 +33,11 @@ def heightPrefix (C N j : PTm n) : PTm n := ap3 heightF j C N
 def b (C N : PTm n) : PTm n := succ (heightPrefix C N (succ N))
 def E (C N : PTm n) : PTm n := two*b C N+three
 
-@[simp] theorem subst_bitHeight {m : ℕ} (σ : Fin n → PTm m) (C N i : PTm n) :
-    Syn.subst σ (bitHeight C N i) = bitHeight (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) := by simp [bitHeight]
+ipra_subst bitHeight
 @[simp] theorem subst_prefix {m : ℕ} (σ : Fin n → PTm m) (C N j : PTm n) :
     Syn.subst σ (heightPrefix C N j) = heightPrefix (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ j) := by simp [heightPrefix]
-@[simp] theorem subst_b {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (b C N) = b (Syn.subst σ C) (Syn.subst σ N) := by simp [b]
-@[simp] theorem subst_E {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (E C N) = E (Syn.subst σ C) (Syn.subst σ N) := by simp [E]
+ipra_subst b
+ipra_subst E
 
 theorem prefix_zero (C N : PTm n) : Γ ⊢[PRAAx] heightPrefix C N zero ≐ zero := by
   have h := rec_zero (Γ := Γ) (zero : PTm 2) heightStep ![C,N]
@@ -68,9 +62,7 @@ theorem prefix_last_bound (C N j : PTm n) : Γ ⊢[PRAAx] le (bitHeight C N j) (
   le_congr (.eqRefl _) (prefix_succ C N j).eqSymm (maximum_right _ _)
 
 def entryLaw (C N i j : PTm n) : Fm PTm n := lt i j ⟶ le (bitHeight C N i) (heightPrefix C N j)
-@[simp] theorem subst_entryLaw {m : ℕ} (σ : Fin n → PTm m) (C N i j : PTm n) :
-    (entryLaw C N i j).subst σ = entryLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) (Syn.subst σ j) := by
-  simp [entryLaw]
+ipra_subst entryLaw
 
 theorem prefix_entry_step (C N i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (succ j))
     (ih : Γ ⊢[PRAAx] entryLaw C N i j) : Γ ⊢[PRAAx] le (bitHeight C N i) (heightPrefix C N (succ j)) := by
@@ -89,11 +81,9 @@ maximum fold; the numerical heightPrefix length is not fixed externally. -/
 theorem prefix_entry_bound (C N i j : PTm n) (hi : Γ ⊢[PRAAx] lt i j) : Γ ⊢[PRAAx]
     le (bitHeight C N i) (heightPrefix C N j) := by
   have all : Γ ⊢[PRAAx] .all (entryLaw (Syn.shift C) (Syn.shift N) (Syn.shift i) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_entryLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [subst_entryLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_entry_step _ _ _ _ Prf.hyp0 Prf.hyp1)
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_entryLaw]
+    · exact .impI (lt_zero_absurd _ Prf.hyp0)
+    · exact .impI (prefix_entry_step _ _ _ _ Prf.hyp0 Prf.hyp1)
   have rule : Γ ⊢[PRAAx] entryLaw C N i j := by
     simpa only [subst_entryLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
   exact .impE rule hi
@@ -129,9 +119,7 @@ def allBounds (C N : PTm n) : Fm PTm n := .all (le (var 0) (Syn.shift N) ⟶
   (le (numerator (Syn.shift C) (Syn.shift N) (var 0)) (pw two (b (Syn.shift C) (Syn.shift N))) ⋏
    (le one (denominator (Syn.shift C) (Syn.shift N) (var 0)) ⋏
     le (denominator (Syn.shift C) (Syn.shift N) (var 0)) (pw two (b (Syn.shift C) (Syn.shift N))))))
-@[simp] theorem subst_allBounds {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (allBounds C N).subst σ = allBounds (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [allBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst allBounds [Syn.subst_shift, Syn.shift_subst]
 
 theorem all_bounds (C N : PTm n) : Γ ⊢[PRAAx] allBounds C N := by
   refine .allI (.impI ?_)
@@ -141,18 +129,17 @@ theorem all_bounds (C N : PTm n) : Γ ⊢[PRAAx] allBounds C N := by
 /-! Actual PR2 output and returned numerical fields. -/
 def output (C N : PTm n) : PTm n := pairT (b C N) (pairT (E C N) (pw two (b C N)))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
+ipra_subst output
 
 theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] ap2 outputF C N ≐ output C N := by
   simpa [outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![C,N]
 
 theorem returned_height (C N : PTm n) : Γ ⊢[PRAAx] fstT (ap2 outputF C N) ≐ b C N :=
-  (congrFst (program_at C N)).eqTrans (fst_pair _ _)
+  (program_at C N).fstE
 theorem returned_exponent (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (ap2 outputF C N)) ≐ E C N :=
-  (congrFst ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.fstE
 theorem returned_bound (C N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (ap2 outputF C N)) ≐ pw two (b C N) :=
-  (congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N).sndE.sndE
 
 theorem height_facts_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (le one (b (var 0) (var 1)) ⋏

@@ -14,9 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (pred monus)
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition
@@ -29,8 +27,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalGridCoefficientEquality
   (negativePolynomial negative_length negative_evaluation)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qzero)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMonicCompanion (rowShape values values_lookup)
-open scoped Fm
-open Syn
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,14 +39,9 @@ def tailRows (f m c : PTm n) : PTm n :=
 def superellipticNorm (f G m a c : PTm n) : PTm n :=
   GaussianPolynomialMonicNorm.norm (tailRows f m c) G m a c
 
-@[simp] theorem subst_zeroRows {l : ℕ} (σ : Fin n → PTm l) (m c : PTm n) :
-    Syn.subst σ (zeroRows m c) = zeroRows (Syn.subst σ m) (Syn.subst σ c) := by
-  simp [zeroRows]
+ipra_subst zeroRows
 
-@[simp] theorem subst_tailRows {l : ℕ} (σ : Fin n → PTm l) (f m c : PTm n) :
-    Syn.subst σ (tailRows f m c) =
-      tailRows (Syn.subst σ f) (Syn.subst σ m) (Syn.subst σ c) := by
-  simp [tailRows]
+ipra_subst tailRows
 
 theorem zero_rows_length (m c : PTm n) : Γ ⊢[PRAAx] length (zeroRows m c) ≐ pred m :=
   sequence_length _ _ _
@@ -168,13 +159,9 @@ theorem horner_before_last (f m c x y j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) :
   have all : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift m) ⟶
     horner (monicValues (tailRows (Syn.shift f) (Syn.shift m) (Syn.shift c)) (Syn.shift m) (Syn.shift x))
       (Syn.shift y) (succ (var 0)) ≐ power (Syn.shift y) (var 0)) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_lt,subst_horner,subst_monicValues,subst_tailRows,
-        subst_power,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (horner_head _ _ _ _ _)
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_lt,subst_horner,subst_monicValues,subst_tailRows,
-        subst_power,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨lt_QF _ _,trivial⟩) [subst_lt, subst_horner, subst_monicValues, subst_tailRows, subst_power]
+    · exact .impI (horner_head _ _ _ _ _)
+    · refine .impI ?_
       exact horner_zero_row _ _ _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (lt_of_le_of_lt (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] lt j m ⟶ horner (monicValues (tailRows f m c) m x) y (succ j) ≐ power y j := by
     simpa only [Fm.subst_imp,Fm.subst_eq,subst_lt,subst_horner,subst_monicValues,subst_tailRows,

@@ -12,7 +12,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeAffineMean
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRaabeCenteredMesh (centered centered_at centered_mean)
@@ -23,8 +23,6 @@ open GaussianRationalRiemannRefinement (constantBody leftSum weight)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qone qone_canonical)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,8 +33,7 @@ private def slopeColumn : PTm 2 :=
   qmul (fstT (sndT (var 1))) (centered (var 0) (sndT (sndT (var 1))))
 def body : PTm 2 := qadd constantColumn slopeColumn
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N K C : PTm n) :
-    Syn.subst σ (data N K C) = data (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ C) := by simp [data]
+ipra_subst data
 
 private theorem constant_at (i N K C : PTm n) :
     Γ ⊢[PRAAx] inst2 constantColumn i (data N K C) ≐ K := by

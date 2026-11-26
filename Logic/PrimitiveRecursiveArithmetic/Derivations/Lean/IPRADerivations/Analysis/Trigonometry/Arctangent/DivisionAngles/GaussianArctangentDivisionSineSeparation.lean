@@ -16,7 +16,7 @@ set_option maxHeartbeats 250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentDivisionSineSeparation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentDivisionAngles (nameF data modulus odd_source interval_input imaginary_samples exponential_input)
 open GaussianArctangentDivisionSinePositive (exactSineData)
 open GaussianArctangentDivisionAngleResidual (inverseF inverseData sineSample)
@@ -36,10 +36,6 @@ open RationalArithmetic (add)
 open RationalValueBounds (upper radius radius_mono radius_triangle radius_symmetric upper_of_radius
   upper_of_order upper_order_right upper_triangle upper_mono upper_congr crossLeft)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarTriangularDeterminant
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual left elimination of the completed Vandermonde table
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianVandermondeCompletionElimination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical canonical_congr qmul_canonical)
 open GaussianRationalSyntheticDivision (qone qone_canonical qzero_canonical qmul_congr qadd_congr)
 open GaussianRationalMetric (qnegative qnegative_canonical)
@@ -29,10 +28,6 @@ open GaussianScalarTriangularDeterminant (belowZeros diagonalOnes)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,13 +36,9 @@ def eliminatorWeight (R r j : PTm n) : PTm n := sel (Signum.sg (monus (length R)
 def eliminatorBody : PTm 3 := eliminatorWeight (var 2) (var 0) (var 1)
 def eliminator (R m : PTm n) : PTm n := table eliminatorBody m m R
 def eliminated (R m : PTm n) : PTm n := matrixProduct (eliminator R m) (W R m) m
-@[simp] theorem subst_eliminatorWeight {l : ℕ} (σ : Fin n → PTm l) (R r j : PTm n) :
-    Syn.subst σ (eliminatorWeight R r j) = eliminatorWeight (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) := by
-  simp [eliminatorWeight,sel,Signum.sg]
-@[simp] theorem subst_eliminator {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (eliminator R m) = eliminator (Syn.subst σ R) (Syn.subst σ m) := by simp [eliminator]
-@[simp] theorem subst_eliminated {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (eliminated R m) = eliminated (Syn.subst σ R) (Syn.subst σ m) := by simp [eliminated]
+ipra_subst eliminatorWeight [sel, Signum.sg]
+ipra_subst eliminator
+ipra_subst eliminated
 
 theorem delta_congr {a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b) (hc : Γ ⊢[PRAAx] c ≐ d) : Γ ⊢[PRAAx]
     delta a c ≐ delta b d := by
@@ -147,10 +138,8 @@ theorem cut_unequal (a b t : PTm n) (ha : Γ ⊢[PRAAx] lt a t) (hb : Γ ⊢[PRA
 
 def headTerm (R r j k : PTm n) : PTm n := qmul (delta r k) (weight R k j)
 def tailTerm (R r j k : PTm n) : PTm n := qmul (delta j k) (qnegative (power (entry R r) k))
-@[simp] theorem subst_headTerm {l : ℕ} (σ : Fin n → PTm l) (R r j k : PTm n) :
-    Syn.subst σ (headTerm R r j k) = headTerm (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ k) := by simp [headTerm]
-@[simp] theorem subst_tailTerm {l : ℕ} (σ : Fin n → PTm l) (R r j k : PTm n) :
-    Syn.subst σ (tailTerm R r j k) = tailTerm (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ k) := by simp [tailTerm]
+ipra_subst headTerm
+ipra_subst tailTerm
 
 theorem head_delta_at (R r j k : PTm n) : Γ ⊢[PRAAx]
     inst2 (GaussianRationalMatrixFiniteSums.deltaBody columnWeightBody) k (pairT r (pairT R j)) ≐ headTerm R r j k :=
@@ -310,14 +299,8 @@ def output (R m : PTm n) : PTm n := pairT (eliminator R m) (pairT (eliminated R 
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (R m : PTm n) : PTm n := app outputF ![R,m]
 def fields (p : PTm n) : Fin 4 → PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),sndT (sndT (sndT p))]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (output R m) = output (Syn.subst σ R) (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (run R m) = run (Syn.subst σ R) (Syn.subst σ m) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (R m : PTm n) : Γ ⊢[PRAAx] run R m ≐ output R m := by
@@ -325,13 +308,13 @@ theorem program_at (R m : PTm n) : Γ ⊢[PRAAx] run R m ≐ output R m := by
 theorem returned_fields (R m : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (run R m) i ≐
     ![eliminator R m,eliminated R m,scalarDet (eliminator R m) m,W R m] i := by
   have e0 := program_at (Γ := Γ) R m
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrSnd e2).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e2.sndE
 theorem returned_unit_det (R m : PTm n) : Γ ⊢[PRAAx] fields (run R m) 2 ≐ qone :=
   (returned_fields R m 2).eqTrans (eliminator_det R m)
 

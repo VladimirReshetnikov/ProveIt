@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentCosineLaplace
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentResolvent (pole reciprocal_average)
 open GaussianBinetArctangentPoleLaplace (pole_integral_error)
 open GaussianBinetExponentialIntegral (uniformCost)
@@ -24,9 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product qadd qmul ofGaussian_represents)
 open GaussianRationalMetric (bounded bounded_iff distanceBounded)
 open GaussianRationalReciprocal (bounded_product bound_congr)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "LV" => GaussianBinetExponentialIntegralGrid.value
@@ -41,18 +38,11 @@ def value (p X Y D sign A B R U L N : PTm n) : PTm n :=
   mean (LV (p+N) (GaussianRationalMetric.qnegative (pole false X Y D sign A B)) ((R+U)*T) T N)
     (LV (p+N) (GaussianRationalMetric.qnegative (pole true X Y D sign A B)) ((R+U)*T) T N)
 
-@[simp] theorem subst_mean {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (mean a b) = mean (Syn.subst σ a) (Syn.subst σ b) := by simp [mean,one,two]
+ipra_subst mean [one, two]
 
-@[simp] theorem subst_error {m : ℕ} (σ : Fin n → PTm m) (p R U K T L : PTm n) :
-    Syn.subst σ (error p R U K T L) = error (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ U)
-      (Syn.subst σ K) (Syn.subst σ T) (Syn.subst σ L) := by
-  simp [error,uniformCost,LeanProofs.IPRA.PTm.subst_num,two]
+ipra_subst error [uniformCost, LeanProofs.IPRA.PTm.subst_num, two]
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p X Y D sign A B R U L N : PTm n) :
-    Syn.subst σ (value p X Y D sign A B R U L N) = value (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ Y)
-      (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ U)
-      (Syn.subst σ L) (Syn.subst σ N) := by simp [value]
+ipra_subst value
 
 private theorem half_bound : Γ ⊢[PRAAx] bounded (fraction one two : PTm n) one two := by
   let a := (ComplexLogarithmRemainder.scale one ComplexLogarithmRemainder.oneCode : PTm n)

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionCompactName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionDensity (density numerator denominator)
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianEulerCompactPowerMajorant (majorant)
@@ -29,10 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -49,24 +45,14 @@ def observation (p z R B a C E T : PTm n) : PTm n :=
   density (rowQuery p R C E T) (count p R C E T) z B a C E
 def data (z R B a C E T : PTm n) : PTm n := sampleData z R B a C (pairT E T)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    (source z R B a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) : Syn.subst σ (stage p) = stage (Syn.subst σ p) := by simp [stage]
-@[simp] theorem subst_refinement {m : ℕ} (σ : Fin n → PTm m) (p R C E T : PTm n) :
-    Syn.subst σ (refinement p R C E T) = refinement (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [refinement]
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (p R C E T : PTm n) :
-    Syn.subst σ (count p R C E T) = count (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [count]
-@[simp] theorem subst_rowBudget {m : ℕ} (σ : Fin n → PTm m) (p R C E T : PTm n) :
-    Syn.subst σ (rowBudget p R C E T) = rowBudget (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [rowBudget]
-@[simp] theorem subst_rowQuery {m : ℕ} (σ : Fin n → PTm m) (p R C E T : PTm n) :
-    Syn.subst σ (rowQuery p R C E T) = rowQuery (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [rowQuery]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R B a C E T : PTm n) :
-    Syn.subst σ (observation p z R B a C E T) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [observation]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    Syn.subst σ (data z R B a C E T) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
+ipra_subst source
+ipra_subst stage
+ipra_subst refinement
+ipra_subst count
+ipra_subst rowBudget
+ipra_subst rowQuery
+ipra_subst observation
+ipra_subst data
 
 private def body : PTm 8 := observation (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7)
 def sampleF : PR 8 := PTm.toPR body

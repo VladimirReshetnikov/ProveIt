@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteRadiusOverlap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteName (lowerF upperF data original_regular_names)
 open GaussianEulerIncompleteRadiusAlignment (cutoff)
 open GaussianNameEquivalence (crossEquivalent)
@@ -22,19 +22,13 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z R S B A a b : PTm n) : Fm PTm n :=
   GaussianEulerIncompleteCofinalRate.source z R B A a b ⋏ GaussianEulerIncompleteCofinalRate.source z S B A a b
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R S B A a b : PTm n) :
-    (source z R S B A a b).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ S)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
+ipra_subst source
 
 private theorem compare (t x u v y : PTm n) (hl : Γ ⊢[PRAAx] distanceBounded x u (num 3) (unit t))
     (hm : Γ ⊢[PRAAx] distanceBounded u v (unit t+unit t) (unit t*unit t))

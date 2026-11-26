@@ -13,7 +13,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceImproperName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceOrderedPrefixes (prefixData subst_prefixData prefix_regular ordered_rate)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (sampleData field0 field1 field2 field3 field4
@@ -26,10 +26,6 @@ open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDeno
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "StripF" => GaussianBinetLaplaceStrip.nameF GaussianBinetLaplaceStrip.Kernel.cofinal
@@ -46,17 +42,11 @@ def sample (p X Y D sign R : PTm n) : PTm n :=
 def nameF : PR 2 := PTm.toPR
   (sample (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) (field4 (var 1)) : PTm 2)
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (p D : PTm n) :
-    Syn.subst σ (cutoff p D) = cutoff (Syn.subst σ p) (Syn.subst σ D) := by simp [cutoff]
+ipra_subst cutoff
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R : PTm n) :
-    Syn.subst σ (data X Y D sign R) =
-      data (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p X Y D sign R : PTm n) :
-    Syn.subst σ (sample p X Y D sign R) =
-      sample (Syn.subst σ p) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) := by
-  simp [sample]
+ipra_subst sample
 
 theorem sample_at (p X Y D sign R : PTm n) : Γ ⊢[PRAAx]
     ap2 nameF p (data X Y D sign R) ≐ sample p X Y D sign R := by

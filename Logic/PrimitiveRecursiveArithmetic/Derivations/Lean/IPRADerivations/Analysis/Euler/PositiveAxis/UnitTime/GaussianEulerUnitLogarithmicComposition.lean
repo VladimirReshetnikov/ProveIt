@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitLogarithmicComposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitLogarithmicMargin (source numerator denominator timeF timeData evaluated_time_domain)
 open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -23,9 +23,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -38,16 +35,11 @@ def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (sndT (var 1)))
 def sample (p a b : PTm n) : PTm n := ap2 nameF p (data a b)
 def radius (b : PTm n) : PTm n := GaussianCompactLogarithmBounds.radius b b
 
-@[simp] theorem subst_query {m : ℕ} (σ : Fin n → PTm m) (p b : PTm n) :
-    Syn.subst σ (query p b) = query (Syn.subst σ p) (Syn.subst σ b) := by simp [query]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (observation p a b) = observation (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [observation]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (sample p a b) = sample (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by simp [sample]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (b : PTm n) :
-    Syn.subst σ (radius b) = radius (Syn.subst σ b) := by simp [radius]
+ipra_subst query
+ipra_subst observation
+ipra_subst data
+ipra_subst sample
+ipra_subst radius
 
 theorem sample_at (p a b : PTm n) : Γ ⊢[PRAAx] sample p a b ≐ observation p a b := by
   have first : Γ ⊢[PRAAx] sample p a b ≐ observation p (fstT (data a b)) (sndT (data a b)) := by

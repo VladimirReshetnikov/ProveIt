@@ -2,7 +2,6 @@ import IPRADerivations.Probability.Independence
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Moments of the symmetrization `Y − Y′`
@@ -34,16 +33,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.SymmetrizedMoments
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
 open LeanProofs.IPRA.Probability.Independence
   (dsum dsum_congr dsum_add pmB inst3_pmB sum_mul_sum inst3_mul' inst3_add')
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

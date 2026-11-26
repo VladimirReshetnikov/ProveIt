@@ -3,8 +3,6 @@ import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeter
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantError
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormEntries
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact sensitivity of the original characteristic coefficients
@@ -19,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCharacteristicSensitivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCharacteristicFactorBounds (entryBounds entryDistances input)
 open GaussianRationalCharacteristicPolynomial (characteristicTable table_shape polynomial coefficient run)
 open GaussianCoefficientL1 (coefficientNorm subCoefficients)
@@ -35,18 +33,12 @@ open RationalArithmetic (multiply)
 open RationalArgmin (rationalLE rationalLE_congr)
 open LeanProofs.IPRA.Foundations.RuntimePermutationFactorialBound (factorial)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def sensitivity (N B : PTm n) : PTm n := pw two N*factorial N*N*pw (B+one) (pred N)
 
-@[simp] theorem subst_sensitivity {k : ℕ} (σ : Fin n → PTm k) (N B : PTm n) :
-    Syn.subst σ (sensitivity N B) = sensitivity (Syn.subst σ N) (Syn.subst σ B) := by
-  simp [sensitivity,pw]
+ipra_subst sensitivity [pw]
 
 theorem integer_times_radius (K P Q : PTm n) (hQ : Γ ⊢[PRAAx] le one Q) : Γ ⊢[PRAAx]
     multiply (natCode K) (normalize (ZT.ofNat P) Q) ≐ normalize (ZT.ofNat (K*P)) Q := by
@@ -80,10 +72,7 @@ theorem sensitivity_identity (N B P : PTm n) : Γ ⊢[PRAAx]
 def wordRadius (N B P Q : PTm n) : PTm n :=
   multiply (natCode (budget (two*(B+one)) one N)) (normalize (ZT.ofNat (two*P)) Q)
 
-@[simp] theorem subst_wordRadius {k : ℕ} (σ : Fin n → PTm k) (N B P Q : PTm n) :
-    Syn.subst σ (wordRadius N B P Q) =
-      wordRadius (Syn.subst σ N) (Syn.subst σ B) (Syn.subst σ P) (Syn.subst σ Q) := by
-  simp [wordRadius]
+ipra_subst wordRadius
 
 theorem word_error (A C N B P Q w : PTm n) (ha : Γ ⊢[PRAAx] entryBounds A N B)
     (hc : Γ ⊢[PRAAx] entryBounds C N B) (hq : Γ ⊢[PRAAx] le one Q)

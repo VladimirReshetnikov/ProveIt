@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletPresentation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerIntegralGammaIdentification (source)
@@ -27,10 +27,6 @@ open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positiv
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerUnitKernelAtDecay
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitDecayInput (source compactDenominator)
 open GaussianNamedEulerUnitTimeExponential (inputF inputData)
 open GaussianEulerIntegrandName (powerF powerData decayPoint decayF decayData)
@@ -31,10 +31,6 @@ open GaussianUnitIntervalInputDecoding (numerator denominator)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRealNameExponentialInjectivity (axisSamples)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -50,8 +46,7 @@ def frozenKernelData (k z B a b E T : PTm n) : PTm n :=
   let q := ap2 decayF (GaussianEulerUnitDecayInput.clock k E T) (decayData a b)
   GaussianEulerUnitSubstitutionKernel.data z B (numerator q) (denominator q)
 
-@[simp] theorem subst_timeData {m : ℕ} (σ : Fin n → PTm m) (a b E T : PTm n) :
-    Syn.subst σ (timeData a b E T) = timeData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T) := by simp [timeData]
+ipra_subst timeData
 
 theorem compact_time_domain (a b E T : PTm n) (h : Γ ⊢[PRAAx] source a b E T) : Γ ⊢[PRAAx]
     GaussianCompactLogarithmBounds.domain a b (compactDenominator E T) (compactDenominator E T) := by

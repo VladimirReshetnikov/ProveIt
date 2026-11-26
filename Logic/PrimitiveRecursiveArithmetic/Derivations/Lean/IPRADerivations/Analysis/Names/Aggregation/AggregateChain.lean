@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Names.Aggregation.AggregateEquality
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalNearest
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The actual least-neighbor chain of a regular rational aggregate
@@ -29,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.AggregateChain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.AggregateEquality
   (unit subst_unit unit_positive sample subst_sample nonempty subst_nonempty nonempty_at
     regular subst_regular regular_at pointRadius_diagonal)
@@ -40,10 +38,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_neg)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -143,17 +137,10 @@ def index (S : PR 2) (r s i d x : PTm n) : PTm n := ap2 (indexF S) r (data s i d
 def point (S : PR 2) (r s i d x : PTm n) : PTm n := entry (sample S (s+r) x) (index S r s i d x)
 def name (S : PR 2) (t s i d x : PTm n) : PTm n := point S (succ (succ t)) s i d x
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (s i d x : PTm n) :
-    Syn.subst σ (data s i d x) = data (Syn.subst σ s) (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_index {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (r s i d x : PTm n) :
-    Syn.subst σ (index S r s i d x) = index S (Syn.subst σ r) (Syn.subst σ s)
-      (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ x) := by simp [index]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (r s i d x : PTm n) :
-    Syn.subst σ (point S r s i d x) = point S (Syn.subst σ r) (Syn.subst σ s)
-      (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ x) := by simp [point]
-@[simp] theorem subst_name {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (t s i d x : PTm n) :
-    Syn.subst σ (name S t s i d x) = name S (Syn.subst σ t) (Syn.subst σ s)
-      (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ x) := by simp [name]
+ipra_subst data
+ipra_subst index
+ipra_subst point
+ipra_subst name
 
 theorem selected_congr {S S' T T' d d' i i' : PTm n}
     (hS : Γ ⊢[PRAAx] S ≐ S') (hT : Γ ⊢[PRAAx] T ≐ T')
@@ -166,7 +153,7 @@ theorem selected_congr {S S' T T' d d' i i' : PTm n}
 theorem index_zero (S : PR 2) (s i d x : PTm n) : Γ ⊢[PRAAx] index S zero s i d x ≐ i := by
   have h := rec2_zero (Γ := Γ) indexBase (indexStep S) (data s i d x)
   simp only [indexBase, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero] at h
-  exact h.eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  exact h.eqTrans (snd_pair _ _).fstE
 
 theorem index_succ (S : PR 2) (r s i d x : PTm n) :
     Γ ⊢[PRAAx] index S (succ r) s i d x ≐
@@ -177,9 +164,9 @@ theorem index_succ (S : PR 2) (r s i d x : PTm n) :
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at h
   have ss : Γ ⊢[PRAAx] fstT (data s i d x) ≐ s := fst_pair _ _
   have dd : Γ ⊢[PRAAx] fstT (sndT (sndT (data s i d x))) ≐ d :=
-    (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+    (congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE
   have xx : Γ ⊢[PRAAx] sndT (sndT (sndT (data s i d x))) ≐ x :=
-    (congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+    (congrSnd (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).sndE
   exact h.eqTrans (selected_congr (congrAp2 S (congrAdd ss (.eqRefl _)) xx)
     (congrAp2 S (congrAdd ss (.eqRefl _)) xx) dd (.eqRefl _))
 
@@ -200,13 +187,9 @@ theorem index_in_range (S : PR 2) (r s i d x : PTm n)
   have all : Γ ⊢[PRAAx] .all (lt
       (index S (var 0) (Syn.shift s) (Syn.shift i) (Syn.shift d) (Syn.shift x))
       (length (sample S (Syn.shift s+var 0) (Syn.shift x)))) := by
-    refine PRA.qfInd _ (lt_QF _ _) ?_ ?_
-    · simp only [subst_lt, subst_index, Foundations.SequenceComposition.subst_length, subst_sample,
-        PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact lt_congr (index_zero S _ _ _ _).eqSymm (congrFst (congrAp2 S (add_zero _) (.eqRefl _))).eqSymm hi
-    · simp only [subst_lt, subst_index, Foundations.SequenceComposition.subst_length, subst_sample,
-        PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have ne : Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
+    ipra_qfind (lt_QF _ _) [subst_lt, subst_index, Foundations.SequenceComposition.subst_length, subst_sample]
+    · exact lt_congr (index_zero S _ _ _ _).eqSymm (congrFst (congrAp2 S (add_zero _) (.eqRefl _))).eqSymm hi
+    · have ne : Γ.map Fm.shift ⊢[PRAAx] nonempty S (Syn.shift x) := by
         simpa only [Fm.shift, subst_nonempty, Syn.shift] using hS.shift
       exact lt_congr (index_succ S _ _ _ _ _).eqSymm (.eqRefl _)
         (selected_spec _ _ _ _ (nonempty_at S _ _ ne).wk)
@@ -244,11 +227,8 @@ theorem adjacent (S : PR 2) (r s i d x : PTm n)
 def tailNumerator (r : PTm n) : PTm n := num 3*monus (unit r) one
 def tailDenominator (s j r : PTm n) : PTm n := unit (s+j)*unit r
 
-@[simp] theorem subst_tailNumerator {m : ℕ} (σ : Fin n → PTm m) (r : PTm n) :
-    Syn.subst σ (tailNumerator r) = tailNumerator (Syn.subst σ r) := by simp [tailNumerator]
-@[simp] theorem subst_tailDenominator {m : ℕ} (σ : Fin n → PTm m) (s j r : PTm n) :
-    Syn.subst σ (tailDenominator s j r) = tailDenominator (Syn.subst σ s) (Syn.subst σ j) (Syn.subst σ r) := by
-  simp [tailDenominator]
+ipra_subst tailNumerator
+ipra_subst tailDenominator
 
 theorem tailNumerator_zero : Γ ⊢[PRAAx] tailNumerator (zero : PTm n) ≐ zero :=
   (congrMul (.eqRefl _) ((congrMonus unit_zero (.eqRefl _)).eqTrans (monus_self _))).eqTrans (mul_zero _)
@@ -289,16 +269,12 @@ theorem coordinate_tail (S : PR 2) (r j s i d x k : PTm n)
       (point S (Syn.shift j) (Syn.shift s) (Syn.shift i) (Syn.shift d) (Syn.shift x))
       (point S (Syn.shift j+var 0) (Syn.shift s) (Syn.shift i) (Syn.shift d) (Syn.shift x))
       (Syn.shift k) (tailNumerator (var 0)) (tailDenominator (Syn.shift s) (Syn.shift j) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_coordinateRadius, subst_point, subst_tailNumerator, subst_tailDenominator,
-        PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      have diagonal := pointRadius_at _ _ _ _ _ _
+    ipra_qfind (le_QF _ _) [subst_coordinateRadius, subst_point, subst_tailNumerator, subst_tailDenominator]
+    · have diagonal := pointRadius_at _ _ _ _ _ _
         (pointRadius_diagonal (Γ := Γ) (point S j s i d x) d zero (tailDenominator s j zero)) hk
       exact coordinate_congr (.eqRefl _) (point_index_congr S s i d x (add_zero j).eqSymm)
         (.eqRefl _) tailNumerator_zero.eqSymm (.eqRefl _) diagonal
-    · simp only [subst_coordinateRadius, subst_point, subst_tailNumerator, subst_tailDenominator,
-        PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let IH : Fm PTm (n+1) := coordinateRadius
+    · let IH : Fm PTm (n+1) := coordinateRadius
         (point S (Syn.shift j) (Syn.shift s) (Syn.shift i) (Syn.shift d) (Syn.shift x))
         (point S (Syn.shift j+var 0) (Syn.shift s) (Syn.shift i) (Syn.shift d) (Syn.shift x))
         (Syn.shift k) (tailNumerator (var 0)) (tailDenominator (Syn.shift s) (Syn.shift j) (var 0))
@@ -448,26 +424,13 @@ def distanceDenominator (S : PR 2) (k s d x : PTm n) : PTm n :=
 def distanceSample (S : PR 2) (k s i d x : PTm n) : PTm n :=
   pairT (distanceNumerator S k s i d x) (distanceDenominator S k s d x)
 
-@[simp] theorem subst_distanceSource {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (k s x : PTm n) :
-    Syn.subst σ (distanceSource S k s x) = distanceSource S (Syn.subst σ k) (Syn.subst σ s) (Syn.subst σ x) := by
-  simp [distanceSource]
-@[simp] theorem subst_distanceTarget {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (k x : PTm n) :
-    Syn.subst σ (distanceTarget S k x) = distanceTarget S (Syn.subst σ k) (Syn.subst σ x) := by simp [distanceTarget]
-@[simp] theorem subst_distanceIndex {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (k s i d x : PTm n) :
-    Syn.subst σ (distanceIndex S k s i d x) = distanceIndex S (Syn.subst σ k) (Syn.subst σ s)
-      (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ x) := by simp [distanceIndex]
-@[simp] theorem subst_distanceNeighbor {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (k s i d x : PTm n) :
-    Syn.subst σ (distanceNeighbor S k s i d x) = distanceNeighbor S (Syn.subst σ k) (Syn.subst σ s)
-      (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ x) := by simp [distanceNeighbor]
-@[simp] theorem subst_distanceNumerator {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (k s i d x : PTm n) :
-    Syn.subst σ (distanceNumerator S k s i d x) = distanceNumerator S (Syn.subst σ k) (Syn.subst σ s)
-      (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ x) := by simp [distanceNumerator]
-@[simp] theorem subst_distanceDenominator {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (k s d x : PTm n) :
-    Syn.subst σ (distanceDenominator S k s d x) = distanceDenominator S (Syn.subst σ k) (Syn.subst σ s)
-      (Syn.subst σ d) (Syn.subst σ x) := by simp [distanceDenominator]
-@[simp] theorem subst_distanceSample {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (k s i d x : PTm n) :
-    Syn.subst σ (distanceSample S k s i d x) = distanceSample S (Syn.subst σ k) (Syn.subst σ s)
-      (Syn.subst σ i) (Syn.subst σ d) (Syn.subst σ x) := by simp [distanceSample]
+ipra_subst distanceSource
+ipra_subst distanceTarget
+ipra_subst distanceIndex
+ipra_subst distanceNeighbor
+ipra_subst distanceNumerator
+ipra_subst distanceDenominator
+ipra_subst distanceSample
 
 theorem distance_neighbor_range (S : PR 2) (k s i d x : PTm n) (hS : Γ ⊢[PRAAx] nonempty S x) :
     Γ ⊢[PRAAx] lt (distanceNeighbor S k s i d x) (length (distanceTarget S k x)) :=
@@ -697,11 +660,8 @@ def shaped (S : PR 2) (d x : PTm n) : Fm PTm n :=
   .all (.all (lt (var 0) (length (sample S (var 1) (Syn.shift (Syn.shift x)))) ⟶
     (length (entry (sample S (var 1) (Syn.shift (Syn.shift x))) (var 0)) ≐ Syn.shift (Syn.shift d))))
 
-@[simp] theorem subst_shaped {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (d x : PTm n) :
-    (shaped S d x).subst σ = shaped S (Syn.subst σ d) (Syn.subst σ x) := by
-  simp only [shaped, Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_lt,
-    Foundations.SequenceComposition.subst_length, Foundations.MasterCertificate.subst_entry,
-    subst_sample, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ,
+ipra_subst shaped [Fm.subst_all, Fm.subst_imp, Fm.subst_eq, subst_lt, Foundations.SequenceComposition.subst_length,
+    Foundations.MasterCertificate.subst_entry, subst_sample, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ,
     Syn.subst_shift, Syn.shift_subst, Syn.shift_var, Fin.succ_zero_eq_one]
 
 theorem shaped_at (S : PR 2) (t j d x : PTm n) (h : Γ ⊢[PRAAx] shaped S d x)

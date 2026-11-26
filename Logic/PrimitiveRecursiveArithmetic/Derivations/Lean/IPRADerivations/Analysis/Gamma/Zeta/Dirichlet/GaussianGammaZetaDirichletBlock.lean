@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletBlock
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerPositiveScalingConstant (inverseF inverseData)
 open GaussianGammaEulerHeadShift (shifted)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalRiemannRefinement (constantBody constant_entry constant_sum termsDistance sum_distance)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianEulerIntegralGammaIdentification.source

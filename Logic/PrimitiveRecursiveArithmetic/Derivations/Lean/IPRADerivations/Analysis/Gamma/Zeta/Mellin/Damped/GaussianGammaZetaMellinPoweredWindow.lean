@@ -13,17 +13,13 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinPoweredWindow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaIntegralCutoffs (etaDen eta_den_positive height top)
 open GaussianGammaZetaMellinDampedWindow (cutoff source rowSource clock)
 open GaussianGammaZetaMellinDampedWindowSchedule (gainBudget mesh mesh_positive
   gain_le_budget grid_le_mesh)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,16 +42,9 @@ private theorem subst_top {m : ℕ} (σ : Fin n → PTm m) (k A R : PTm n) :
     Syn.subst σ (top k A R) = top (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ R) := by
   simp [top,height,GaussianGammaIntegralCutoffs.tailCoefficient]
 
-@[simp] theorem subst_outerCutoff {m : ℕ} (σ : Fin n → PTm m) (i N k A R J S : PTm n) :
-    Syn.subst σ (outerCutoff i N k A R J S) = outerCutoff (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ J) (Syn.subst σ S) := by
-  simp [outerCutoff,subst_baseDen,subst_etaDen,subst_top]
+ipra_subst outerCutoff [subst_baseDen, subst_etaDen, subst_top]
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (i N k A R J S : PTm n) :
-    Syn.subst σ (denominator i N k A R J S) =
-      denominator (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ k) (Syn.subst σ A)
-        (Syn.subst σ R) (Syn.subst σ J) (Syn.subst σ S) := by
-  simp [denominator,subst_etaDen]
+ipra_subst denominator [subst_etaDen]
 
 theorem later_cutoff (i N k A R J S : PTm n) :
     Γ ⊢[PRAAx] lt i (outerCutoff i N k A R J S) := le_trans (le_add_right _ _) (le_add_right _ _)

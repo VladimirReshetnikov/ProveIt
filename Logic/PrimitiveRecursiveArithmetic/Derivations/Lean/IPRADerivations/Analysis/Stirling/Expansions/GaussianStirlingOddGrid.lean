@@ -15,7 +15,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingOddGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Lz)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv Pv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv lip_up lip_low)
@@ -23,10 +23,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le cancel_pos
 open GammaMeshRobinLogBridge (leftSum rightSum left_zero right_zero left_succ right_succ)
 open Products (fact)
 open RationalAlgebra (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -36,12 +32,9 @@ def gap (X i : PTm n) : PTm n := num 4*X*(X+i)
 def numerator (X K i : PTm n) : PTm n := Nz K i (parameter X i)
 def denominator (X K i : PTm n) : PTm n := Dz K i (parameter X i)
 
-@[simp] theorem subst_parameter {l : ℕ} (σ : Fin n → PTm l) (X i : PTm n) :
-    Syn.subst σ (parameter X i) = parameter (Syn.subst σ X) (Syn.subst σ i) := by simp [parameter]
-@[simp] theorem subst_numerator {l : ℕ} (σ : Fin n → PTm l) (X K i : PTm n) :
-    Syn.subst σ (numerator X K i) = numerator (Syn.subst σ X) (Syn.subst σ K) (Syn.subst σ i) := by simp [numerator]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (X K i : PTm n) :
-    Syn.subst σ (denominator X K i) = denominator (Syn.subst σ X) (Syn.subst σ K) (Syn.subst σ i) := by simp [denominator,Dz]
+ipra_subst parameter
+ipra_subst numerator
+ipra_subst denominator [Dz]
 
 theorem parameter_positive (X i : PTm n) (hX : Γ ⊢[PRAAx] le one X) :
     Γ ⊢[PRAAx] le one (parameter X i) := by

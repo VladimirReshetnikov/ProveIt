@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Horner.RationalPolynomialMonicHornerReductionGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Translation.RationalPolynomialYShiftGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianPolynomialMonicHornerQuotient
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational polynomial-valued monic quotient
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialMonicHornerQuotientGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed)
 open RationalPolynomialGaussianEmbedding (embed_congr)
 open GaussianPolynomialMonicCompanion (rowShape row_shape_at)
@@ -29,9 +28,6 @@ open RationalPolynomialMonicCompanionGaussianEmbedding (rowsEmbedded row_embedde
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,12 +40,8 @@ def stepBody : PTm 3 := advance (fields (var 2) 0) (fields (var 2) 1) (fields (v
 def quotientF : PR 2 := rec2 initial stepBody
 def quotient (F H m a c j : PTm n) : PTm n := ap2 quotientF j (data F H m a c)
 
-@[simp] theorem subst_advance {k : ℕ} (σ : Fin n → PTm k) (F H m a c j Q : PTm n) :
-    Syn.subst σ (advance F H m a c j Q) = advance (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ Q) := by simp [advance]
-@[simp] theorem subst_quotient {k : ℕ} (σ : Fin n → PTm k) (F H m a c j : PTm n) :
-    Syn.subst σ (quotient F H m a c j) = quotient (Syn.subst σ F) (Syn.subst σ H)
-      (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [quotient]
+ipra_subst advance
+ipra_subst quotient
 
 theorem advance_parameters (p : PTm n) (F H m a c j Q : PTm n)
     (h : ∀ i : Fin 5, Γ ⊢[PRAAx] fields p i ≐ ![F,H,m,a,c] i) :
@@ -76,15 +68,11 @@ theorem quotient_succ (F H m a c j : PTm n) : Γ ⊢[PRAAx]
 
 def targetQuotient (F H m a c L j : PTm n) : PTm n := GaussianPolynomialMonicHornerQuotient.quotient
   (RationalRowSpanGaussianEmbedding.matrix F m (succ c)) (RationalRowSpanGaussianEmbedding.matrix H L (succ a)) m a c j
-@[simp] theorem subst_targetQuotient {k : ℕ} (σ : Fin n → PTm k) (F H m a c L j : PTm n) :
-    Syn.subst σ (targetQuotient F H m a c L j) = targetQuotient (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ j) := by simp [targetQuotient]
+ipra_subst targetQuotient
 
 def profile (F H m a c L j : PTm n) : Fm PTm n := le j L ⟶
   pairedRows (quotient F H m a c j) (targetQuotient F H m a c L j) (succ j) (width a c j)
-@[simp] theorem subst_profile {k : ℕ} (σ : Fin n → PTm k) (F H m a c L j : PTm n) :
-    (profile F H m a c L j).subst σ = profile (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ j) := by simp [profile]
+ipra_subst profile
 
 theorem profile_base (F H m a c L : PTm n) : Γ ⊢[PRAAx] profile F H m a c L zero := by
   refine .impI ?_
@@ -158,9 +146,7 @@ theorem remainder_evaluation_conjugacy (F H m a c L j x y : PTm n) (hm : Γ ⊢[
     (.andE₁ rp) (GaussianPolynomialMonicHornerReduction.stage_shape _ _ _ _ _ _) (.andE₂ rp)
 
 def finalQuotient (F H m a c N : PTm n) : PTm n := quotient F H m a c (succ N)
-@[simp] theorem subst_finalQuotient {k : ℕ} (σ : Fin n → PTm k) (F H m a c N : PTm n) :
-    Syn.subst σ (finalQuotient F H m a c N) = finalQuotient (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [finalQuotient]
+ipra_subst finalQuotient
 
 theorem reconstruction (F H m a c N x y : PTm n)
     (h : Γ ⊢[PRAAx] RationalPolynomialMonicHornerReductionGaussianEmbedding.input F H m a c N) : Γ ⊢[PRAAx]
@@ -199,11 +185,9 @@ theorem original_reconstruction (F H m a c N x y : PTm n)
 
 theorem quotient_length (F H m a c j : PTm n) : Γ ⊢[PRAAx] length (quotient F H m a c j) ≐ succ j := by
   have all : Γ ⊢[PRAAx] .all (length (quotient (Syn.shift F) (Syn.shift H) (Syn.shift m) (Syn.shift a) (Syn.shift c) (var 0)) ≐ succ (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,Foundations.SequenceComposition.subst_length,subst_quotient,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (quotient_zero _ _ _ _ _)).eqTrans (RationalPolynomialMonicHornerReductionGaussianEmbedding.zero_rows_length _ _)
-    · simp only [Fm.subst_eq,Foundations.SequenceComposition.subst_length,subst_quotient,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (quotient_succ _ _ _ _ _ _)).eqTrans (RationalPolynomialConstantInjectionGaussianEmbedding.inject_length _ _ _ _ _)
+    ipra_qfind [Foundations.SequenceComposition.subst_length, subst_quotient]
+    · exact (congrFst (quotient_zero _ _ _ _ _)).eqTrans (RationalPolynomialMonicHornerReductionGaussianEmbedding.zero_rows_length _ _)
+    · exact (congrFst (quotient_succ _ _ _ _ _ _)).eqTrans (RationalPolynomialConstantInjectionGaussianEmbedding.inject_length _ _ _ _ _)
   simpa only [Fm.subst_eq,Foundations.SequenceComposition.subst_length,subst_quotient,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 def computedShapeSyntax (F H m a c j : PTm n) : BFm n := rowShapeSyntax (quotient F H m a c j) (succ j) (width a c j)
@@ -243,21 +227,15 @@ def output (F H m a c N : PTm n) : PTm n := pairT (finalQuotient F H m a c N)
   (RationalPolynomialMonicHornerReductionGaussianEmbedding.remainder F H m a c N)
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (F H m a c N : PTm n) : PTm n := PTm.app outputF ![F,H,m,a,c,N]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (F H m a c N : PTm n) :
-    Syn.subst σ (output F H m a c N) = output (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (F H m a c N : PTm n) :
-    Syn.subst σ (run F H m a c N) = run (Syn.subst σ F) (Syn.subst σ H) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (F H m a c N : PTm n) : Γ ⊢[PRAAx] run F H m a c N ≐ output F H m a c N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![F,H,m,a,c,N]
 theorem returned_quotient (F H m a c N : PTm n) : Γ ⊢[PRAAx] fstT (run F H m a c N) ≐ finalQuotient F H m a c N :=
-  (congrFst (program_at _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).fstE
 theorem returned_remainder (F H m a c N : PTm n) : Γ ⊢[PRAAx] sndT (run F H m a c N) ≐
     RationalPolynomialMonicHornerReductionGaussianEmbedding.remainder F H m a c N :=
-  (congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _ _).sndE
 theorem returned_reconstruction (F H m a c N x y : PTm n)
     (h : Γ ⊢[PRAAx] RationalPolynomialMonicHornerReductionGaussianEmbedding.input F H m a c N) : Γ ⊢[PRAAx]
     RationalPolynomialMonicHornerReductionGaussianEmbedding.originalValue H x y ≐ RationalArithmetic.add

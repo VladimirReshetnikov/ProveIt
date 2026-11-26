@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeUnitGridShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (quadrature)
 open GaussianRaabeLogPrimitiveCell (primitive)
@@ -26,10 +26,6 @@ open GaussianRationalParameterTelescope (forward forward_sum)
 open GaussianRationalRiemannRefinement (termsDistance)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -42,16 +38,9 @@ def numerator (p N A D J : PTm n) : PTm n :=
   num 8*(D*(A*A)*N)+two*R*(D*D)*unit p+two*R*(A*A)*(N*N)
 def denominator (p N A D : PTm n) : PTm n := D*(A*A)*N*unit p
 
-@[simp] theorem subst_deviation {m : ℕ} (σ : Fin n → PTm m) (p N A D : PTm n) :
-    Syn.subst σ (deviation p N A D) = deviation (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [deviation]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p N A D J : PTm n) :
-    Syn.subst σ (numerator p N A D J) =
-      numerator (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ J) := by
-  simp [numerator,two]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p N A D : PTm n) :
-    Syn.subst σ (denominator p N A D) = denominator (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ D) := by
-  simp [denominator]
+ipra_subst deviation
+ipra_subst numerator [two]
+ipra_subst denominator
 
 theorem deviation_congr (p p' N N' A A' D D' : PTm n)
     (hp : Γ ⊢[PRAAx] p ≐ p') (hN : Γ ⊢[PRAAx] N ≐ N') (hA : Γ ⊢[PRAAx] A ≐ A')

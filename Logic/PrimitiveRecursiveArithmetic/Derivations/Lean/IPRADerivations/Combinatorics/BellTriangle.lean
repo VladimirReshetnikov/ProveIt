@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.BellBounds
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Bell triangle
@@ -21,15 +20,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellTriangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (bell recB inst2_rec bell_succ monus_monus)
 open LeanProofs.IPRA.Combinatorics.BellBounds (congrBell binom_zero')
 open LeanProofs.IPRA.Combinatorics.Binomial (binom bden bden_pos bden_self quo_of_eq pascal_step binom_rem_zero)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -124,9 +119,9 @@ theorem tri_diag (N : PTm n) : Γ ⊢[PRAAx] tri N N ≐ bell (succ N) := by
       monus (fstT (pairT (succ N') (pairT N' N'))) (succ (var 0)) ≐ monus N' (var 0) :=
     (congrMonus (fst_pair _ _) (.eqRefl _)).eqTrans (succ_monus_succ _ _)
   have eB : (lt (var 0) (succ N') :: Γ.map Fm.shift) ⊢[PRAAx] fstT (sndT (pairT (succ N') (pairT N' N'))) ≐ N' :=
-    (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+    (snd_pair _ _).fstE
   have eC : (lt (var 0) (succ N') :: Γ.map Fm.shift) ⊢[PRAAx] sndT (sndT (pairT (succ N') (pairT N' N'))) ≐ N' :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   exact congrMul ((congrBinom eB eI).eqTrans (binom_symm hv))
     (congrBell ((congrMonus eC eI).eqTrans (monus_monus hv)))
 

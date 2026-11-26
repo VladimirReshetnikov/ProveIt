@@ -18,9 +18,7 @@ derivations:
 
 namespace LeanProofs.IPRA.Combinatorics.GraphIncidence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 
@@ -86,8 +84,7 @@ theorem handshake (A : Fin k → Fin k → ZT n) (hs : ∀ v w, Γ ⊢[PRAAx] ZT
       (ZT.natLit 2 * ZT.sumFin fun v => ZT.sumFin fun w => if v < w then A v w else ZT.natLit 0) := by
   have hs' : ∀ v w, ZT.toZ Γ (A v w) = ZT.toZ Γ (A w v) := fun v w => ZT.toZ_eq (hs v w)
   have h0' : ∀ v, ZT.toZ Γ (A v v) = 0 := fun v => by
-    have h := ZT.toZ_eq (h0 v)
-    simpa only [ZT.toZ_natLit, Nat.cast_zero] using h
+    simpa only [ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq (h0 v)
   have e := sum_sym (fun v w => ZT.toZ Γ (A v w)) hs' h0'
   beta_reduce at e
   apply ZT.derive

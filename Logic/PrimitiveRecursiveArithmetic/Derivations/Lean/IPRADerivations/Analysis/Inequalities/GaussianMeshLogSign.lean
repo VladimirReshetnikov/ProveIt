@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMeshLogSign
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaFiniteApproximantName (logF logExponentF log_regular exponentialInputData exponential_input)
 open GaussianGammaEulerShift (expF negativeLogData negativeLogExpData negative_log_regular negative_log_exp_regular)
@@ -32,9 +32,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open ComplexLogarithmRemainder (oneCode scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

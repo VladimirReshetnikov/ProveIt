@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquarePower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add scale oneCode)
 open GaussianRootAlgebra (sub)
 open GaussianEulerIntegrandName (source logarithmF coefficient powerExponentF powerExponentData
@@ -23,8 +23,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_refl 
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (qadd canonical_unique qadd_canonical qadd_represents represents_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,9 +30,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 power therefore has exponent 2(z/B - 1). -/
 def doubledMinusOne (z B : PTm n) : PTm n := sub (add z z) (scale B oneCode)
 
-@[simp] theorem subst_doubledMinusOne {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (doubledMinusOne z B) = doubledMinusOne (Syn.subst σ z) (Syn.subst σ B) := by
-  simp [doubledMinusOne]
+ipra_subst doubledMinusOne
 
 theorem doubled_coefficient (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     coefficient (doubledMinusOne z B) B ≐ qadd (coefficient z B) (coefficient z B) := by

@@ -21,11 +21,7 @@ of a common denominator). The coupling identity itself is `Probability/MonotoneC
 
 namespace LeanProofs.IPRA.Probability.HistogramSampler
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -77,7 +73,6 @@ theorem realization_budget {D K ηk ηl T ε : PTm n}
     (hD : Γ ⊢[PRAAx] le D (num 2 * (K + succ zero) * (ηk + ηl) + T))
     (hη : Γ ⊢[PRAAx] le ηl ηk) (hε : Γ ⊢[PRAAx] num 64 * (K + succ zero) * ηk ≐ ε)
     (hT : Γ ⊢[PRAAx] le (num 8 * T) ε) : Γ ⊢[PRAAx] le (num 16 * D) (num 3 * ε) := by
-  have e := natEq hε
-  ipra_le 16 * sl hD + 32 * (𝔟 K + 1) * sl hη + 2 * sl hT with e
+  ipra_le 16 * sl hD + 32 * (𝔟 K + 1) * sl hη + 2 * sl hT with natEq hε
 
 end LeanProofs.IPRA.Probability.HistogramSampler

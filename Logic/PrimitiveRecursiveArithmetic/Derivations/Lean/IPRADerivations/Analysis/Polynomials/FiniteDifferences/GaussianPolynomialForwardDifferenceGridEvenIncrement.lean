@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialForwardDifferenceGridEvenIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (sum_difference)
 open GaussianNamedDifference (difference_distance)
 open GaussianPolynomialForwardDifferenceGridEvenError (observedDouble)
@@ -35,9 +35,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product reciprocal)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qone qsub_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

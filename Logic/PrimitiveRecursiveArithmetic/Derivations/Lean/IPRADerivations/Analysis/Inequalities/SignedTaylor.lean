@@ -24,12 +24,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.SignedTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialLipschitz (polyB lipB)
 open LeanProofs.IPRA.Analysis.PolynomialTaylor (d2B LowInv UpInv taylor_lower taylor_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

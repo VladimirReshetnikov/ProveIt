@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedFactorialTaylorZero
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalNamedDemand (source native_source)
 open GaussianBarnesCanonicalNamedFactorialTaylor (nameF data clock frozenData regular subst_data)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -26,10 +26,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (rawDen rawGaussian)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

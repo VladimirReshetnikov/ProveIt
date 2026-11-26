@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaHarmonicPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaFiniteSum (index reciprocalBody reciprocalSum reciprocal_entry row_source)
 open GaussianGammaDigammaHarmonicCells (cell halfReciprocal half_pair right_rectangle trapezoid cell_zero chain)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -24,9 +24,6 @@ open GaussianReciprocalHorner (qadd_commutative)
 open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingTailComparison (point_order_refl point_add_order)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -38,14 +35,9 @@ def prefixBounds (a b Q L j : PTm n) : Fm PTm n := le (Q*index a b j) L ⟶
   (rationalLE (fstT (qadd (prefixCell a b Q L j) (endpointPair a b j))) (fstT (reciprocalSum a b (succ j))) ⋏
    rationalLE (fstT (reciprocalSum a b (succ j))) (fstT (qadd (prefixCell a b Q L j) (fraction b a))))
 
-@[simp] theorem subst_prefixCell {m : ℕ} (σ : Fin n → PTm m) (a b Q L j : PTm n) :
-    Syn.subst σ (prefixCell a b Q L j) = prefixCell (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) (Syn.subst σ L) (Syn.subst σ j) := by
-  simp [prefixCell]
-@[simp] theorem subst_endpointPair {m : ℕ} (σ : Fin n → PTm m) (a b j : PTm n) :
-    Syn.subst σ (endpointPair a b j) = endpointPair (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ j) := by simp [endpointPair]
-@[simp] theorem subst_prefixBounds {m : ℕ} (σ : Fin n → PTm m) (a b Q L j : PTm n) :
-    (prefixBounds a b Q L j).subst σ = prefixBounds (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ Q) (Syn.subst σ L) (Syn.subst σ j) := by
-  simp [prefixBounds]
+ipra_subst prefixCell
+ipra_subst endpointPair
+ipra_subst prefixBounds
 
 private theorem cell_first_congr {a a' c Q L : PTm n} (e : Γ ⊢[PRAAx] a ≐ a') :
     Γ ⊢[PRAAx] cell a c Q L ≐ cell a' c Q L := by

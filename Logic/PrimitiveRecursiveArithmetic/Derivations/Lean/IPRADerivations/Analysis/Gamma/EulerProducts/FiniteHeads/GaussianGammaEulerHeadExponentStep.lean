@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadExponentStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside exponent_outside)
@@ -22,16 +22,11 @@ open GaussianGammaEulerHeadPolynomial (polynomial)
 open GaussianGammaHarmonicIncrement (reciprocalPoint)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def reader (N e : PTm n) : PTm n := exponentCoefficient (polynomial N) (succ N) e
-@[simp] theorem subst_reader {l : ℕ} (σ : Fin n → PTm l) (N e : PTm n) :
-    Syn.subst σ (reader N e) = reader (Syn.subst σ N) (Syn.subst σ e) := by simp [reader]
+ipra_subst reader
 
 theorem reader_congr {N M e f : PTm n} (hN : Γ ⊢[PRAAx] N ≐ M) (he : Γ ⊢[PRAAx] e ≐ f) :
     Γ ⊢[PRAAx] reader N e ≐ reader M f :=

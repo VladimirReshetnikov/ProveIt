@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalRadiusExponentialLipschitz
 import IPRADerivations.Analysis.Exponential.GaussianUnitDiskExponentialName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual exponentiation of regular names on every fixed integer disk
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRadiusExponentialName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -29,10 +28,6 @@ open GaussianRationalRadiusExponentialLipschitz (factor factor_binary_bound)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,21 +39,13 @@ def boundedSamples (f : PR 2) (R x : PTm n) : Fm PTm n := .all
   (bounded (ap2 f (var 0) (Syn.shift x)) (Syn.shift R) one)
 def input (f : PR 2) (R x : PTm n) : Fm PTm n := pointCN f x ⋏ boundedSamples f R x
 def commonDenominator (p : PTm n) : PTm n := unit (succ p)
-@[simp] theorem subst_index {l : ℕ} (σ : Fin n → PTm l) (R p : PTm n) :
-    Syn.subst σ (index R p) = index (Syn.subst σ R) (Syn.subst σ p) := by simp [index]
-@[simp] theorem subst_inputPrecision {l : ℕ} (σ : Fin n → PTm l) (R p : PTm n) :
-    Syn.subst σ (inputPrecision R p) = inputPrecision (Syn.subst σ R) (Syn.subst σ p) := by simp [inputPrecision]
-@[simp] theorem subst_query {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (R p x : PTm n) :
-    Syn.subst σ (query f R p x) = query f (Syn.subst σ R) (Syn.subst σ p) (Syn.subst σ x) := by simp [query]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (R p x : PTm n) :
-    Syn.subst σ (value f R p x) = value f (Syn.subst σ R) (Syn.subst σ p) (Syn.subst σ x) := by simp [value]
-@[simp] theorem subst_boundedSamples {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (R x : PTm n) :
-    (boundedSamples f R x).subst σ = boundedSamples f (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [boundedSamples,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (R x : PTm n) :
-    (input f R x).subst σ = input f (Syn.subst σ R) (Syn.subst σ x) := by simp [input]
-@[simp] theorem subst_commonDenominator {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (commonDenominator p) = commonDenominator (Syn.subst σ p) := by simp [commonDenominator]
+ipra_subst index
+ipra_subst inputPrecision
+ipra_subst query
+ipra_subst value
+ipra_subst boundedSamples [Syn.subst_shift, Syn.shift_subst]
+ipra_subst input
+ipra_subst commonDenominator
 
 theorem bounded_samples_at (f : PR 2) (R x p : PTm n) (h : Γ ⊢[PRAAx] boundedSamples f R x) : Γ ⊢[PRAAx]
     bounded (ap2 f p x) R one := by simpa [boundedSamples] using h.allE p
@@ -159,12 +146,9 @@ def data (R x : PTm n) : PTm n := pairT R x
 def nameTerm (f : PR 2) (p y : PTm n) : PTm n := value f (fstT y) p (sndT y)
 def nameF (f : PR 2) : PR 2 := PTm.toPR (nameTerm f (var 0) (var 1))
 def sample (f : PR 2) (R p x : PTm n) : PTm n := ap2 (nameF f) p (data R x)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (R x : PTm n) :
-    Syn.subst σ (data R x) = data (Syn.subst σ R) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_nameTerm {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p y : PTm n) :
-    Syn.subst σ (nameTerm f p y) = nameTerm f (Syn.subst σ p) (Syn.subst σ y) := by simp [nameTerm]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (R p x : PTm n) :
-    Syn.subst σ (sample f R p x) = sample f (Syn.subst σ R) (Syn.subst σ p) (Syn.subst σ x) := by simp [sample]
+ipra_subst data
+ipra_subst nameTerm
+ipra_subst sample
 
 theorem sample_at (f : PR 2) (R p x : PTm n) : Γ ⊢[PRAAx] sample f R p x ≐ value f R p x := by
   have prog : Γ ⊢[PRAAx] sample f R p x ≐ nameTerm f p (data R x) := by

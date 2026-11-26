@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFreeNegativeChartDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialSmallPerturbation (smallSamples)
@@ -30,8 +30,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans cross_symm)
 open GaussianNamedGammaHalfShift (add_cross)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRealNameExponentialInjectivity (axisSamples)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerTaylorFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianLogGammaEulerLinearSlope (sum_value)
 open GaussianLogGammaEulerLinearSlopeProduct (original_increment_at)
@@ -22,10 +22,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRightHalfPlaneLogarithmIncrementBound (input)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,10 +33,7 @@ local notation "slopeData" => GaussianLogGammaEulerLinearSlopeProduct.data
 def errorNumerator (p D H K : PTm n) : PTm n :=
   coefficient H K * unit p + num 25 * (D * D)
 
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (p D H K : PTm n) :
-    Syn.subst σ (errorNumerator p D H K) =
-      errorNumerator (Syn.subst σ p) (Syn.subst σ D) (Syn.subst σ H) (Syn.subst σ K) := by
-  simp [errorNumerator, coefficient]
+ipra_subst errorNumerator [coefficient]
 
 theorem sample_error (p A B neg a b sign D H J M K N : PTm n)
     (h : Γ ⊢[PRAAx] input A B neg a b sign D H J M) (hK : Γ ⊢[PRAAx] le D (K * A))

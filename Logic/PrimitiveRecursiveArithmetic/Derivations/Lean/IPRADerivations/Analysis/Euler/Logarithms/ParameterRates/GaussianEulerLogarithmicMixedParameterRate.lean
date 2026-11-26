@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicMixedParameterRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicImproperName (data nameF name_regular)
 open GaussianEulerLogarithmicContinuity (modulus)
 open GaussianEulerParameterExponentialIncrement (shifted)
@@ -25,9 +25,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "certificate" => GaussianEulerLowerPowerCoefficients.source
@@ -36,13 +33,8 @@ local notation "continuitySource" => GaussianEulerLogarithmicContinuity.source
 def difference (z w B D : PTm n) : PTm n := qsub (ofGaussian w D) (ofGaussian z B)
 def source (r j z w R S B D A V : PTm n) : Fm PTm n :=
   certificate z R B A ⋏ (certificate w S D V ⋏ bounded (difference z w B D) one (modulus r j R A))
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (z w B D : PTm n) :
-    Syn.subst σ (difference z w B D) = difference (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ B) (Syn.subst σ D) := by
-  simp [difference]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (r j z w R S B D A V : PTm n) :
-    (source r j z w R S B D A V).subst σ = source (Syn.subst σ r) (Syn.subst σ j)
-      (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ V) := by simp [source]
+ipra_subst difference
+ipra_subst source
 
 theorem native_difference (z w B D : PTm n) : Γ ⊢[PRAAx]
     ofGaussian (rawGaussian (difference z w B D)) (rawDen (difference z w B D)) ≐ difference z w B D :=

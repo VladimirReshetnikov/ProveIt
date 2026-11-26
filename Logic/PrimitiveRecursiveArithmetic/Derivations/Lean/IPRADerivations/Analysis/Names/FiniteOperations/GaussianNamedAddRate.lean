@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedAddRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit)
 open GaussianExponentialReference (add_sample)
 open GaussianFastValueCut (exponent query_budget)
@@ -25,9 +25,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rat
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 export GaussianNamedDifferenceRate (self_rate)
 export GaussianNamedRateComposition (leadingNumerator leadingDenominator)
@@ -38,10 +35,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def input (F G H K : PR 2) (x y u v A B C E : PTm n) : Fm PTm n :=
   (le one B ⋏ le one E) ⋏ (independentRate F H x u A B ⋏ independentRate G K y v C E)
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F G H K : PR 2) (x y u v A B C E : PTm n) :
-    (input F G H K x y u v A B C E).subst σ = input F G H K (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp [input]
+ipra_subst input
 
 theorem independent_at (F G H K : PR 2) (x y u v A B C E p q : PTm n)
     (h : Γ ⊢[PRAAx] input F G H K x y u v A B C E) :

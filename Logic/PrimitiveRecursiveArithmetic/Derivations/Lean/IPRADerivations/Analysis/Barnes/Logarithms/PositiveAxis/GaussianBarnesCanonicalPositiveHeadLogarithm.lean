@@ -16,7 +16,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveHeadLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalBaseProductShift (powerBody powerProduct power_at)
 open GaussianBarnesCanonicalThirdLogarithmRows (base_at center shiftedNumerator shifted_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -29,9 +29,6 @@ open GaussianNamedFiniteProductFamily (regularRows)
 open GaussianNamedFiniteProductFamilyCongruence (equalRows family_product_cross)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalReciprocal (powerF)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingOddLogBrackets
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Un Ud low_mono log_name Ud_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos pos_of_one_le)
@@ -29,10 +29,6 @@ open GaussianPositiveRationalLogarithm (logF)
 open Products (fact)
 open RationalHarmonicInterval (horizon interval)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,12 +37,8 @@ def logLower (A B K : PTm n) : PTm n := fraction (numerator A K B) (denominator 
 def logUpper (A B K : PTm n) : PTm n :=
   fraction (Un K B (parameter A B) (gap A B)) (Ud K B (parameter A B) (gap A B))
 
-@[simp] theorem subst_logLower {l : ℕ} (σ : Fin n → PTm l) (A B K : PTm n) :
-    Syn.subst σ (logLower A B K) = logLower (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ K) := by
-  simp [logLower,fraction]
-@[simp] theorem subst_logUpper {l : ℕ} (σ : Fin n → PTm l) (A B K : PTm n) :
-    Syn.subst σ (logUpper A B K) = logUpper (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ K) := by
-  simp [logUpper,Un,Ud,Dz,parameter,gap,fraction]
+ipra_subst logLower [fraction]
+ipra_subst logUpper [Un, Ud, Dz, parameter, gap, fraction]
 
 theorem gap_positive (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx] le one (gap A B) :=
   RationalAlgebra.positive_product (RationalAlgebra.positive_product (by ipra_le 3) hA)
@@ -177,7 +169,7 @@ private theorem harmonic_brackets (A B K t : PTm n) (hA : Γ ⊢[PRAAx] le one A
   have l := RationalValueBounds.upper_order_left _ _ _ _ _ br.andE₁ f.andE₁
   have r := RationalValueBounds.upper_order_right _ _ _ _ _ f.andE₂ br.andE₂
   have read : Γ ⊢[PRAAx] fstT (GaussianHarmonicLogarithmName.sample t (A+B) A) ≐ H := by
-    have e := (congrFst (GaussianHarmonicLogarithmName.sample_at (Γ := Γ) t (A+B) A)).eqTrans (fst_pair _ _)
+    have e := (GaussianHarmonicLogarithmName.sample_at (Γ := Γ) t (A+B) A).fstE
     exact e.eqTrans (RationalNormalForm.normalize_idempotent _ _ (GammaEulerMesh.factorial_positive _))
   exact .andI (upper_congr (.eqRefl _) read.eqSymm (.eqRefl _) (.eqRefl _)
     (upper_mono _ _ _ _ _ _ hQ l hmesh)) (upper_congr read.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) r)

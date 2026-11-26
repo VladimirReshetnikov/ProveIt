@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingRobbins
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at scalar_coordinate_distance)
@@ -34,10 +34,6 @@ open GaussianStirlingRobbinsFinite (lowerCap lower_endpoint)
 open GaussianStirlingTailComparison (point_add_upper_same point_order_refl)
 open GaussianStirlingTelescope (shifted shifted_source)
 open RationalValueBounds (upper upper_congr upper_mono upper_of_radius upper_of_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -50,8 +46,7 @@ def finalLower (a b : PTm n) : PTm n := qadd (lowerValue a b) (lowerMargin a b)
 def bounds (f : PR 2) (a b x : PTm n) : Fm PTm n :=
   realOrder constantF f (finalLower a b) x ⋏ realOrder f constantF x (finalUpper a b)
 
-@[simp] theorem subst_finalLower {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) :
-    Syn.subst σ (finalLower a b) = finalLower (Syn.subst σ a) (Syn.subst σ b) := by simp [finalLower]
+ipra_subst finalLower
 
 theorem add_last_lower_value (N a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
     Γ ⊢[PRAAx] qadd (lowerCap N a b) (lowerValue (shifted a b (succ N)) b) ≐ finalLower a b := by

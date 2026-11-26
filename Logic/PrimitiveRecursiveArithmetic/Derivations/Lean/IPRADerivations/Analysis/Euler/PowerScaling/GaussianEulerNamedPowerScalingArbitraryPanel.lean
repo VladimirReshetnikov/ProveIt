@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedPowerScalingArbitraryPanel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerNamedPowerScalingFormula (source)
 open GaussianEulerNamedPowerScalingFormulaFrozen (freezeClock original_frozen_source original_independent_rate)
 open GaussianEulerNamedPowerScalingPowerFrozen (powerClock)
@@ -32,10 +32,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric dist
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFastValueCut (exponent query_budget)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

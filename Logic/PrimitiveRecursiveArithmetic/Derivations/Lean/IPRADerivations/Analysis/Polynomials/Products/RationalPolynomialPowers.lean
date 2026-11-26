@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialPowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPolynomialGaussianEmbedding (evaluate horner hornerF horner_zero horner_succ embed_congr)
 open RationalPolynomialDeterminantTermsGaussianEmbedding (stage stage_zero stage_succ stage_length product_congr)
 open RationalPolynomialProductGaussianEmbedding (product product_evaluation)
@@ -26,18 +26,13 @@ open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr qmul_zero_lef
 open GaussianRationalMonicReduction (singleton singleton_length singleton_lookup)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def powerPrefix (C N K j : PTm n) : PTm n := stage (table C K) K N zero j
 def power (C N K : PTm n) : PTm n := powerPrefix C N K K
-@[simp] theorem subst_powerPrefix {l : ℕ} (σ : Fin n → PTm l) (C N K j : PTm n) :
-    Syn.subst σ (powerPrefix C N K j) = powerPrefix (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ j) := by simp [powerPrefix]
-@[simp] theorem subst_power {l : ℕ} (σ : Fin n → PTm l) (C N K : PTm n) :
-    Syn.subst σ (power C N K) = power (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) := by simp [power]
+ipra_subst powerPrefix
+ipra_subst power
 
 theorem prefix_zero (C N K : PTm n) : Γ ⊢[PRAAx] powerPrefix C N K zero ≐ singleton scalarOne := stage_zero _ _ _ _
 theorem prefix_succ (C N K j : PTm n) (hj : Γ ⊢[PRAAx] lt j K) : Γ ⊢[PRAAx]
@@ -59,19 +54,16 @@ theorem singleton_evaluation (z : PTm n) : Γ ⊢[PRAAx] embed (evaluate (single
 
 def evaluationLaw (C N K z j : PTm n) : Fm PTm n := le j K ⟶
   embed (evaluate (powerPrefix C N K j) z) ≐ GaussianRationalReciprocal.power (embed (evaluate C z)) j
-@[simp] theorem subst_evaluationLaw {l : ℕ} (σ : Fin n → PTm l) (C N K z j : PTm n) :
-    (evaluationLaw C N K z j).subst σ = evaluationLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ z) (Syn.subst σ j) := by simp [evaluationLaw]
+ipra_subst evaluationLaw
 
 theorem prefix_evaluation_embedding (C N K z j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N) (hj : Γ ⊢[PRAAx] le j K) :
     Γ ⊢[PRAAx] embed (evaluate (powerPrefix C N K j) z) ≐ GaussianRationalReciprocal.power (embed (evaluate C z)) j := by
   have cs : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hC.shift
   have all : Γ ⊢[PRAAx] .all (evaluationLaw (Syn.shift C) (Syn.shift N) (Syn.shift K) (Syn.shift z) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((embed_congr (evaluation_congr (prefix_zero _ _ _) (.eqRefl _))).eqTrans
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_evaluationLaw]
+    · exact .impI ((embed_congr (evaluation_congr (prefix_zero _ _ _) (.eqRefl _))).eqTrans
         ((singleton_evaluation _).eqTrans (GaussianRationalReciprocal.power_zero _).eqSymm))
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let a := Syn.shift C
       let b := Syn.shift N
       let c := Syn.shift K

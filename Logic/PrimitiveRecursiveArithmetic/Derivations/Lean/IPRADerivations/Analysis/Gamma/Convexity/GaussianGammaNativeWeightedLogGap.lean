@@ -16,7 +16,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNativeWeightedLogGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaEulerMidpointLogHeadGap (margin)
@@ -35,9 +35,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianStirlingGammaFractionalIncrementConvexity (scaled_regular)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData log_gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => productF logGammaF

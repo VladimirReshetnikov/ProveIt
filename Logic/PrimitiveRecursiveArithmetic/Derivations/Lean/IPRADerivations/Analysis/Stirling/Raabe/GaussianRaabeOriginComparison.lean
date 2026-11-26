@@ -17,7 +17,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeOriginComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRaabeOriginSchedule (cutoff mesh fullMesh clock)
 open GaussianRaabeOriginStripAlignment (full shifted truncated logStrip width)
@@ -27,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (canonical qadd qzero positive_product)
 open GaussianRationalMetric (distanceBounded qnegative qnegative_canonical qsub)
 open GaussianRationalSyntheticDivision (qone qone_canonical qsub_congr qadd_congr qzero_add)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

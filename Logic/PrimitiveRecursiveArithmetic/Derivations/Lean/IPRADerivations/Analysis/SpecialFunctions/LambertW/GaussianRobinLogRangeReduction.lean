@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRobinLogRangeReduction
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (Bt dt st c3 a_eq one_le_Bt z_third)
 open GaussianRobinOddLogarithmName (source inputs)
 open GaussianRobinLogarithmParity (native)
@@ -23,9 +23,6 @@ open GaussianRationalHorner
   (ofGaussian ofGaussian_represents ofGaussian_canonical canonical_unique represents_congr positive_product)
 open GaussianRationalSyntheticDivision (rescale_to)
 open ComplexLogarithmRemainder (scale)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,10 +45,9 @@ private theorem double_fraction (p q a b : PTm n) (hb : Γ ⊢[PRAAx] le one b)
   have scaled := rescale_to (quotient a b) (native a) b two (b*two)
     (ofGaussian_represents _ _ hb) (.eqRefl _)
   have e : Γ ⊢[PRAAx] GaussianRootAlgebra.equal (native p) (scale two (native a)) := by
-    have ep := natEq hp
     apply GaussianRootAlgebra.equal_of_values <;>
       simp only [native,GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale,
-        GaussianRootAlgebra.re_one,GaussianRootAlgebra.im_one,ep] <;>
+        GaussianRootAlgebra.re_one,GaussianRootAlgebra.im_one,natEq hp] <;>
       ipra_simps <;> ring
   exact canonical_unique _ _ _ _ (ofGaussian_canonical _ _ hq1) (ofGaussian_canonical _ _ hb) hbd
     (represents_congr (.eqRefl _) e hq old) scaled

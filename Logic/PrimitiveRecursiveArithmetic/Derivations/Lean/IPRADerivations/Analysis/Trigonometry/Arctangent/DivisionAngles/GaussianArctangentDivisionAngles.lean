@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentDivisionAngles
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode zeroCode normSq normSq_eval eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianArctangentExponentialPrefix (prefixValue total at_pi_observation)
@@ -39,9 +39,6 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_order_left upper_mono upper_of_radius upper_of_order)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -55,14 +52,10 @@ def clock (p : PTm n) : PTm n := GaussianBoundedConstantProductName.clock p one
 def quarterNumerator (p : PTm n) : PTm n := two*total (meshAt p) (meshAt p) (clearing p)
 def quarterDenominator (p : PTm n) : PTm n := fact (clearing p)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (k d : PTm n) :
-    (source k d).subst σ = source (Syn.subst σ k) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (J : PTm n) :
-    Syn.subst σ (modulus J) = modulus (Syn.subst σ J) := by simp [modulus]
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (k d : PTm n) :
-    Syn.subst σ (coefficient k d) = coefficient (Syn.subst σ k) (Syn.subst σ d) := by simp [coefficient]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (k d z : PTm n) :
-    Syn.subst σ (data k d z) = data (Syn.subst σ k) (Syn.subst σ d) (Syn.subst σ z) := by simp [data]
+ipra_subst source
+ipra_subst modulus
+ipra_subst coefficient
+ipra_subst data
 
 theorem odd_reserve (k J : PTm n) (hk : Γ ⊢[PRAAx] le k J) :
     Γ ⊢[PRAAx] le (succ (two*k)) (modulus J) :=

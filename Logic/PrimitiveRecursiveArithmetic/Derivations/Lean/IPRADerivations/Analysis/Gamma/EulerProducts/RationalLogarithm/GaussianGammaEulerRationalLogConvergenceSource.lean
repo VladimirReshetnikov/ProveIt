@@ -15,7 +15,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogConvergenceSource
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaEulerInverseConvergence (coefficientNumerator coefficientDenominator)
 open GaussianGammaEulerRationalLogMargin (margin margin_positive source cutoff_source cutoff_positive denominator_positive inverseData)
@@ -32,9 +32,6 @@ open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianStirlingGammaLogarithm (gammaData gammaRealF gammaMargin gamma_real_cross gamma_real_positive
   logGammaF logGammaData log_gamma_regular log_gamma_axis)
 open GaussianStirlingLogDuplication (exponential_gamma)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF
@@ -55,12 +52,8 @@ def nativeRadius (a b : PTm n) : PTm n := nameRadius gammaRealF (gammaData a b)
 def finiteLogData (N a b : PTm n) : PTm n := ld (finiteInputData N a b) logMargin
 def nativeLogData (a b : PTm n) : PTm n := ld (nativeInputData a b) logMargin
 
-@[simp] theorem subst_finiteInputData {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (finiteInputData N a b) = finiteInputData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [finiteInputData,margin]
-@[simp] theorem subst_nativeInputData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (nativeInputData a b) = nativeInputData (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [nativeInputData,margin]
+ipra_subst finiteInputData [margin]
+ipra_subst nativeInputData [margin]
 
 private theorem real_axis (f : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] realSamples f x) :
     Γ ⊢[PRAAx] axisSamples f x := by

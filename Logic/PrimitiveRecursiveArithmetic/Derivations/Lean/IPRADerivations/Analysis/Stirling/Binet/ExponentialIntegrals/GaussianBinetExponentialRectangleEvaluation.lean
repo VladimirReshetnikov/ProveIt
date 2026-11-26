@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetExponentialRectangleEvaluation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetExponentialRectangle (data matrix outerBody swap_weighted_grid)
 open GaussianBinetExponentialRectangleResolvent (numerator column_resolvent)
 open GaussianBinetExponentialRectangleShift (realNumerator)
@@ -37,10 +37,6 @@ open ComplexLogarithmRemainder (scale oneCode)
 open GaussianRootAlgebra (equal_of_values re_scale im_scale re_one im_one)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -48,10 +44,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 def rectangle (p X Y D sign R T N M : PTm n) : PTm n :=
   qmul (fraction T N) (sum outerBody N (data p (qnegative (argument X Y D sign)) (R*T) T N M))
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p R K T L : PTm n) :
-    Syn.subst σ (numerator p R K T L) = numerator (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ K)
-      (Syn.subst σ T) (Syn.subst σ L) := by
-  simp [numerator,GaussianBinetExponentialIntegral.uniformCost,one,two]
+ipra_subst numerator [GaussianBinetExponentialIntegral.uniformCost, one, two]
 
 theorem finite_error (p X Y D sign R K L N M : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R) (hm : Γ ⊢[PRAAx] le D (K*X))

@@ -29,13 +29,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.Independence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add')
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

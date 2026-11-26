@@ -16,7 +16,7 @@ set_option maxHeartbeats 350000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalBase
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFactor (base)
 open GaussianGammaEulerHeadLower (translated)
 open GaussianGammaPoleZeros (poleNumerator translated_pole_numerator)
@@ -30,9 +30,6 @@ open GaussianRationalLowerBounds (lower lower_from_representation)
 open GaussianRationalMetric (bounded_zero_norm)
 open GaussianRationalReciprocal (qone_represents_scaled)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

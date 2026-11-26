@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaFactorialLogSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
@@ -32,10 +32,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open Products (fact)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF
@@ -74,9 +70,7 @@ private theorem sample_one (p : PTm n) : Γ ⊢[PRAAx] S p one one ≐ qzero := 
 def finiteEnvelope (p N x : PTm n) : Fm PTm n :=
   distanceBounded (S p (fact N) one) (finite H harmonicBody p N x) (N*two) (unit p)
 
-@[simp] theorem subst_finiteEnvelope {m : ℕ} (σ : Fin n → PTm m) (p N x : PTm n) :
-    (finiteEnvelope p N x).subst σ = finiteEnvelope (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ x) := by
-  simp [finiteEnvelope,finite,fact,one,two]
+ipra_subst finiteEnvelope [finite, fact, one, two]
 
 private theorem finite_zero (p x : PTm n) : Γ ⊢[PRAAx] finiteEnvelope p zero x := by
   have old : Γ ⊢[PRAAx] S p (fact zero) one ≐ S p one one :=

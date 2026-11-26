@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRaabeLogPrimitiveGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (grid quadrature sampleBody sampleData sample_body_at)
 open GaussianPositiveRationalLogarithm (fraction sample)
@@ -28,9 +28,6 @@ open GaussianRationalParameterTelescope (localRows local_error)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

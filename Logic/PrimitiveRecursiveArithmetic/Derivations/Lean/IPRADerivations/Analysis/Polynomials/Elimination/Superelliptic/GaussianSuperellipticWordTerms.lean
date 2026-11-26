@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticWordTerms
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialDegree
   (flag degree nonzeroCoefficients nonzero_of_flag_one degree_le)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialWeightedDegree
@@ -28,17 +28,12 @@ open LeanProofs.IPRA.Foundations.RuntimePermutationWords (digit horizon permutat
 open LeanProofs.IPRA.Foundations.RuntimeCyclicPermutation (rotationCode)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def input (f G m a c : PTm n) : Fm PTm n := (length f ≐ succ c) ⋏
   (nonzeroCoefficients f c ⋏ GaussianPolynomialWeightedDegree.input G m a)
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    (input f G m a c).subst σ = input (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [input]
+ipra_subst input
 theorem rows_input (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) : Γ ⊢[PRAAx] rowsInput f G m a c :=
   .andI (.andE₁ (.andE₂ (.andE₂ h))) (.andI (.andE₁ h) (.andE₁ (.andE₂ (.andE₂ (.andE₂ h)))))
 theorem matrix_shape (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) : Γ ⊢[PRAAx]
@@ -191,8 +186,7 @@ theorem signed_term_degree_strict (f G m a c w : PTm n) (h : Γ ⊢[PRAAx] input
     (GaussianSuperellipticWordWeights.word_degree_strict _ _ _ _ _ (.andE₂ (.andE₂ h)) hg hw hp rows hne)
 
 def cyclicWord (f G m a c : PTm n) : PTm n := rotationCode m (GaussianPolynomialWeightedDegree.index G m a (degree f c))
-@[simp] theorem subst_cyclicWord {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    Syn.subst σ (cyclicWord f G m a c) = cyclicWord (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [cyclicWord]
+ipra_subst cyclicWord
 theorem rotation_rows (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) : Γ ⊢[PRAAx]
     GaussianSuperellipticWordWeights.rowFlags G m a (cyclicWord f G m a c) :=
   GaussianSuperellipticWordWeights.rotation_row_flags _ _ _ _ (.andE₂ (.andE₂ h))
@@ -226,9 +220,7 @@ def cyclicCertificate (f G m a c : PTm n) : Fm PTm n :=
         ((flag (GaussianPolynomialDeterminantTerms.term (matrix f G m a c) m (width m a c) (cyclicWord f G m a c)) (m*width m a c) ≐ one) ⋏
           ((degree (GaussianPolynomialDeterminantTerms.term (matrix f G m a c) m (width m a c) (cyclicWord f G m a c)) (m*width m a c) ≐
             weightedDegree G m a (degree f c)) ⋏ le (weightedDegree G m a (degree f c)) (m*width m a c))))
-@[simp] theorem subst_cyclicCertificate {l : ℕ} (σ : Fin n → PTm l) (f G m a c : PTm n) :
-    (cyclicCertificate f G m a c).subst σ = cyclicCertificate (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp [cyclicCertificate]
+ipra_subst cyclicCertificate
 theorem cyclic_correct (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) : Γ ⊢[PRAAx]
     cyclicCertificate f G m a c :=
   .andI (rotation_stage_success _ _ _ _ _ h) (.andI (rotation_stage_degree _ _ _ _ _ h)
@@ -246,16 +238,8 @@ def run (f G m a c w : PTm n) : PTm n := app outputF ![f,G,m,a,c,w]
 def fields (p : PTm n) (i : Fin 6) : PTm n :=
   ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),fstT (sndT (sndT (sndT p))),
     fstT (sndT (sndT (sndT (sndT p)))),sndT (sndT (sndT (sndT (sndT p))))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (f G m a c w : PTm n) :
-    Syn.subst σ (output f G m a c w) = output (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (f G m a c w : PTm n) :
-    Syn.subst σ (run f G m a c w) = run (Syn.subst σ f) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ w) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 6) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (f G m a c w : PTm n) : Γ ⊢[PRAAx] run f G m a c w ≐ output f G m a c w := by
@@ -268,17 +252,17 @@ theorem returned_fields (f G m a c w : PTm n) (i : Fin 6) : Γ ⊢[PRAAx]
           GaussianSuperellipticWordWeights.candidatePrefix G m a (degree f c) w m,
             weightedDegree G m a (degree f c),cyclicWord f G m a c] i := by
   have e0 := program_at (Γ := Γ) f G m a c w
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  have e4 := (congrSnd e3).eqTrans (snd_pair _ _)
-  have e5 := (congrSnd e4).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
+  have e4 := e3.sndE
+  have e5 := e4.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrFst e4).eqTrans (fst_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e4.fstE
   · exact e5
 theorem returned_rotation_degree (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) : Γ ⊢[PRAAx]
     degree (fields (run f G m a c (cyclicWord f G m a c)) 1) (m*width m a c) ≐

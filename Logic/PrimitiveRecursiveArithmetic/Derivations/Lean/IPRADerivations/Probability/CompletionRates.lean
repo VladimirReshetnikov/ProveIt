@@ -22,11 +22,7 @@ is `Probability/ClipLaws.clipping`.
 
 namespace LeanProofs.IPRA.Probability.CompletionRates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -65,12 +61,9 @@ theorem vitali_modulus (h k : ℕ) {d₁ d₀ M t₁ t₂ J : PTm n} (hclip : Γ
 theorem majorant_tail {G g K : PTm n} (hg : Γ ⊢[PRAAx] le g K) : Γ ⊢[PRAAx] le (monus G K) (monus G g) := by
   refine .orE (le_total G K) ?_ ?_
   · have h0 : (le G K :: Γ) ⊢[PRAAx] monus G K ≐ zero := Prf.hyp0
-    have e := natEq h0
-    ipra_le 𝔟 (monus G g) with e
+    ipra_le 𝔟 (monus G g) with natEq h0
   · have h : (le K G :: Γ) ⊢[PRAAx] le K G := Prf.hyp0
     have hg' := hg.wk (ψ := le K G)
-    have e₁ := natEq (eq_add_of_le h)
-    have e₂ := natEq (eq_add_of_le (le_trans hg' h))
-    ipra_le sl hg' with e₂ - e₁
+    ipra_le sl hg' with natEq (eq_add_of_le (le_trans hg' h)) - natEq (eq_add_of_le h)
 
 end LeanProofs.IPRA.Probability.CompletionRates

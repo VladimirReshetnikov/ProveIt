@@ -16,7 +16,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentMarginTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentCompact (data compact_input)
 open GaussianBinetLaplaceMomentDecay (tailScale)
@@ -32,18 +32,13 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSumMajorant (majorized majorized_congr termsMajorized)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 
 def coefficient (j K : PTm n) : PTm n := tailScale j K+num 30
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (j K : PTm n) :
-    Syn.subst σ (coefficient j K) = coefficient (Syn.subst σ j) (Syn.subst σ K) := by simp [coefficient]
+ipra_subst coefficient
 
 @[simp] private theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (K A E N : PTm n) :
     Syn.subst σ (gridData K A E N) = gridData (Syn.subst σ K) (Syn.subst σ A) (Syn.subst σ E) (Syn.subst σ N) := by

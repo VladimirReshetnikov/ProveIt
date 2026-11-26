@@ -43,9 +43,7 @@ def boundDenominator (m : ℕ) (q A B : PTm n) : PTm n :=
 
 def rowFloor (m : ℕ) (q A B : PTm n) : PTm n := fraction one (boundDenominator m q A B)
 
-@[simp] theorem subst_rowFloor {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (q A B : PTm n) :
-    Syn.subst σ (rowFloor m q A B) = rowFloor m (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [rowFloor,boundDenominator,coarseDen,GaussianStirlingAllOrderCenteredBernoulli.denominator,pw,one]
+ipra_subst rowFloor [boundDenominator, coarseDen, GaussianStirlingAllOrderCenteredBernoulli.denominator, pw, one]
 
 theorem coarse_positive (m : ℕ) : Γ ⊢[PRAAx] le one (coarseDen m : PTm n) :=
   denominator_positive (m+1) (num 8) (by ipra_le 7)

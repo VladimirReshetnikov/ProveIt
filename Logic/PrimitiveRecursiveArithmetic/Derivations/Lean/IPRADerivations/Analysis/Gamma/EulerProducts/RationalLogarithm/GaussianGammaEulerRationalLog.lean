@@ -17,7 +17,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLog
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerFullHeadInverse (headInverse)
@@ -36,9 +36,6 @@ open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingGammaLogarithm (arg)
 open GaussianStirlingLogDuplication (exponential_sum exponential_regular)
 open GaussianStirlingNames (add_real constant_real fraction_axis multiply_real)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF
@@ -55,17 +52,10 @@ def nameF : PR 2 := addF powerF L
 def data (N a b : PTm n) : PTm n := addData (powerData N a b) (headLogData N a b)
 def expData (N a b : PTm n) : PTm n := ed nameF (data N a b)
 
-@[simp] theorem subst_powerData {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (powerData N a b) = powerData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [powerData,logExponentData,arg]
-@[simp] theorem subst_headLogData {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (headLogData N a b) = headLogData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [headLogData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (data N a b) = data (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
-@[simp] theorem subst_expData {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (expData N a b) = expData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) :=
-  by simp [expData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst powerData [logExponentData, arg]
+ipra_subst headLogData
+ipra_subst data
+ipra_subst expData [GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem head_log_source (N a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.source (denominator N b) (numerator (succ N) a b) :=

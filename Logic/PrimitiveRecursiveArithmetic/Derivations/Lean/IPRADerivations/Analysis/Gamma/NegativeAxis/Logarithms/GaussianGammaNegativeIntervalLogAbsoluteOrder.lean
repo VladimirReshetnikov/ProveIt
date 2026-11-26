@@ -11,7 +11,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalLogAbsoluteOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeIntervalGammaSign (signedF signedData)
 open GaussianGammaNegativeIntervalLogAbsolute (nameF nameData expF expData name_regular name_real original_exponential)
@@ -19,8 +19,6 @@ open GaussianNameEquivalence (cross_symm)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianStirlingMultiplicativeBoundsOrder (exponential_order)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_exponential_order strict_transport)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

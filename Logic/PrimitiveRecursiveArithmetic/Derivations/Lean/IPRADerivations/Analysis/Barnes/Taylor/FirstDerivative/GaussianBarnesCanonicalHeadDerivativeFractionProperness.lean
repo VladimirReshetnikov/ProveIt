@@ -16,7 +16,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadDerivativeFractionProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalBaseProductShift (powerProduct)
 open GaussianBarnesCanonicalCorrectionShift (total)
 open GaussianBarnesCanonicalFiniteProperness (scaled_fraction_equal)
@@ -28,8 +28,6 @@ open GaussianGammaEncodingRescaling (fraction_denominator_congr)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMonicReduction (evaluate_congr)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

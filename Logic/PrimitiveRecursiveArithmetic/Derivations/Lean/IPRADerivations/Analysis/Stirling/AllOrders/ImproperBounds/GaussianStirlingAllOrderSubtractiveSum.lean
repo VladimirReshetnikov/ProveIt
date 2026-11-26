@@ -14,14 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderSubtractiveSum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderDiscreteParts (sub)
 open RationalAlgebra (minusOne negative_minus_multiply add_congr)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
 open RationalSumAdditivity (addedBody added_term sum_additive)
 open RationalFiniteSum (term)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum
@@ -29,9 +27,7 @@ local notation "rsum" => RationalFiniteSum.sum
 def body (f g : PTm 2) : PTm 2 := addedBody f (scaledBody g)
 def data (x y : PTm n) : PTm n := pairT x (pairT minusOne y)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    Syn.subst σ (data x y) = data (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [data,minusOne]
+ipra_subst data [minusOne]
 
 theorem term_at (f g : PTm 2) (i x y : PTm n) :
     Γ ⊢[PRAAx] term (body f g) i (data x y) ≐ sub (term f i x) (term g i y) :=

@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceBrackets
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -33,9 +33,6 @@ open GaussianStirlingOddSeries (partialSum tail)
 open RationalGaussianEmbedding (embed)
 open RationalSupMetric (denominatorOf numeratorOf)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_radius radius_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

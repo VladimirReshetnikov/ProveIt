@@ -15,16 +15,13 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianReciprocalSquareSumDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianReciprocalSquareInterval (denominator denominator_positive)
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalReciprocal (bound_congr bounded_sum)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

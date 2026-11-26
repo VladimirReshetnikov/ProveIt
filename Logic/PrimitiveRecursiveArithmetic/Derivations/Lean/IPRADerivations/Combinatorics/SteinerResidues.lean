@@ -20,10 +20,8 @@ Hence `v ≡ 1` or `3 (mod 6)`. Not derived: the statements on parallel classes.
 
 namespace LeanProofs.IPRA.Combinatorics.SteinerResidues
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Turan (zlt_or_zle)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

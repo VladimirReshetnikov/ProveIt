@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialCutoffPartition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRationalLogarithm (logF data sample)
 open GaussianEulerExponentialEndpointEscape (minimumCutoff negativeInteger)
 open GaussianGammaIntegralCutoffs (etaDen top)
@@ -24,10 +24,6 @@ open RationalValueBounds (upper upper_of_radius upper_triangle upper_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

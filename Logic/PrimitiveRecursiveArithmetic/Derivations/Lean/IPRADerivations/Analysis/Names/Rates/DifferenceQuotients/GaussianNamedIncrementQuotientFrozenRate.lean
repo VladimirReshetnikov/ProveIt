@@ -17,7 +17,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedIncrementQuotientFrozenRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianEulerNamedPowerScalingPowerFrozen (constant_bound)
@@ -29,9 +29,6 @@ open GaussianNamedMultiplyRate (sampleBound)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalL1 (rawDen rawGaussian raw_den_positive)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Q" => GaussianNamedIncrementDifferenceQuotient.nameF

@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaFactorialInterpolation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentExponentialPeriod (fullTurnF fullTurnData fullTurnRadius original_full_turn_input translationRadius)
 open GaussianArctangentNamedPhase (angleF angleData angle_regular quarterPoint)
 open GaussianArctangentNamedSine (original_quarter_sine original_cycle_sine original_sine_full_turn_translation)
@@ -33,10 +33,6 @@ open GaussianNamedGammaSineModulation (valueF valueData product_constant_one val
 open GaussianNamedSineFromExponential (sineF sineData sine_regular sine_proper)
 open GaussianRationalHorner (qzero)
 open GaussianRationalReciprocal (qone)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

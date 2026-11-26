@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaBinomialQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFallingFactorial (start baseRadius endpointRadius fallingProduct factorialInverse binomial)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerHeadShift (shifted)
@@ -25,9 +25,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaC7Name.nameF

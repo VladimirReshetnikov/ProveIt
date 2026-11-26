@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpFiniteBinding
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedThreeSplit
 import IPRADerivations.Analysis.Names.Rates.GaussianCompactModulusAlignedTime
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The unit panel in the original Euler cutoff interval
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitPanelGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top height eta_den_positive height_positive)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
 open GaussianEulerIntegrandName (evaluatorF fixedData)
@@ -24,9 +23,6 @@ open GaussianCompactRiemannName (quadrature)
 open GaussianRationalHorner (positive_product qadd)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

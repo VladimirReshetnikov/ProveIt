@@ -15,7 +15,7 @@ set_option maxHeartbeats 2300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalLocation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaDigammaDyadicMesh (clock grid_scale)
@@ -34,10 +34,6 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
 open RationalGaussianRealPart (real_zero real_add)
 open RationalValueBounds (upper upper_order_left upper_order_right positive_cancel)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -47,12 +43,9 @@ def higher (p N : PTm n) : PTm n := numerator p (succ (leftIndex p N))
 def fractionLocation (p N : PTm n) : PTm n := fraction (lower p N) (denominator p N)
 def fractionLocationF : PR 2 := PTm.toPR (fractionLocation (var 0) (var 1))
 
-@[simp] theorem subst_lower {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (lower p N) = lower (Syn.subst σ p) (Syn.subst σ N) := by simp [lower]
-@[simp] theorem subst_higher {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (higher p N) = higher (Syn.subst σ p) (Syn.subst σ N) := by simp [higher]
-@[simp] theorem subst_fractionLocation {k : ℕ} (σ : Fin n → PTm k) (p N : PTm n) :
-    Syn.subst σ (fractionLocation p N) = fractionLocation (Syn.subst σ p) (Syn.subst σ N) := by simp [fractionLocation]
+ipra_subst lower
+ipra_subst higher
+ipra_subst fractionLocation
 
 theorem fraction_location_at (p N : PTm n) : Γ ⊢[PRAAx] ap2 fractionLocationF p N ≐ fractionLocation p N := by
   simpa only [fractionLocationF,ap2,subst_fractionLocation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using

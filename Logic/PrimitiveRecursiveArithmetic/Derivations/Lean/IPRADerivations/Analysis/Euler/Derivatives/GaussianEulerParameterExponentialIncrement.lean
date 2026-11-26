@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerParameterExponentialIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (coefficient logarithmF powerExponentF powerExponentData powerRadius powerF powerData
   nameF data source power_regular name_regular power_input)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -24,8 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianRationalHorner (qadd qmul ofGaussian canonical_unique represents_congr positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,18 +38,11 @@ abbrev exponentialF : PR 2 := GaussianRadiusExponentialName.nameF incrementF
 def productF : PR 2 := multiplyF nameF exponentialF
 def productData (z B h D a b : PTm n) : PTm n := multiplyData nameF exponentialF (data z B a b) (exponentialData h D a b)
 
-@[simp] theorem subst_shifted {m : ℕ} (σ : Fin n → PTm m) (z B h D : PTm n) :
-    Syn.subst σ (shifted z B h D) = shifted (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ h) (Syn.subst σ D) := by
-  simp [shifted,ComplexLogarithmRemainder.add,ComplexLogarithmRemainder.scale]
-@[simp] theorem subst_incrementData {m : ℕ} (σ : Fin n → PTm m) (h D a b : PTm n) :
-    Syn.subst σ (incrementData h D a b) = incrementData (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [incrementData]
-@[simp] theorem subst_incrementRadius {m : ℕ} (σ : Fin n → PTm m) (h D a b : PTm n) :
-    Syn.subst σ (incrementRadius h D a b) = incrementRadius (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [incrementRadius]
-@[simp] theorem subst_exponentialData {m : ℕ} (σ : Fin n → PTm m) (h D a b : PTm n) :
-    Syn.subst σ (exponentialData h D a b) = exponentialData (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [exponentialData]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z B h D a b : PTm n) :
-    Syn.subst σ (productData z B h D a b) = productData (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ h) (Syn.subst σ D) (Syn.subst σ a) (Syn.subst σ b) := by simp [productData]
+ipra_subst shifted [ComplexLogarithmRemainder.add, ComplexLogarithmRemainder.scale]
+ipra_subst incrementData
+ipra_subst incrementRadius
+ipra_subst exponentialData
+ipra_subst productData
 
 /-- The original coefficient is transported at its true mixed denominator. -/
 theorem shifted_coefficient (z B h D : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]

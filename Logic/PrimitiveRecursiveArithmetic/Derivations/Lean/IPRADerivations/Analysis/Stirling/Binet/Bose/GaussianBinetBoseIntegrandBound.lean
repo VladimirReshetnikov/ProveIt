@@ -15,7 +15,7 @@ set_option maxHeartbeats 480000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseIntegrandBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseDenominator (reciprocalF reciprocalData reciprocal_regular observation_lower)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
@@ -25,9 +25,6 @@ open GaussianRationalHorner (positive_product qmul_canonical)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bounded_product bound_congr reciprocal_canonical)
 open GaussianRightHalfPlaneLogarithm (source)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Atan" => GaussianBinetArctangentQuadrature.nameF
@@ -52,10 +49,7 @@ def nameF : PR 2 := multiplyF Atan reciprocalF
 def data (X Y D sign A B : PTm n) : PTm n :=
   multiplyData Atan reciprocalF (atanData X Y D sign A B) (reciprocalData A B)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (X Y D sign A B : PTm n) :
-    Syn.subst σ (data X Y D sign A B) =
-      data (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign)
-        (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
 theorem regular (X Y D sign A B : PTm n) (h : Γ ⊢[PRAAx] source X D sign)
     (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B) :

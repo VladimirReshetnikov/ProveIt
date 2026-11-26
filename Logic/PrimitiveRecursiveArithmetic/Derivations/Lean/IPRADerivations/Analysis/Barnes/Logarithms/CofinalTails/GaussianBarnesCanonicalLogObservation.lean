@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalLogRow
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Independent observations of the original Barnes logarithm row
@@ -14,17 +13,13 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogObservation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogRow (source roundedCubic roundedValue local_source)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open GaussianRationalHorner (ofGaussian_represents)
 open GaussianRationalMetric (bounded_of_cleared qsub distanceBounded)
 open GaussianRationalSyntheticDivision (rescale_to)
 open DyadicComplexLogarithm (observation endpointDifference unit)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -17,7 +17,7 @@ set_option maxHeartbeats 1750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftRationalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaDigammaTwoShiftBinding (quotientLogF quotientLogData quotientF quotientData quotient_log_regular)
@@ -41,16 +41,12 @@ open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingNames (constant_real fraction_axis)
 open RationalGaussianEmbedding (axis_negative)
 open RationalValueBounds (upper upper_congr upper_of_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def budget (b c d : PTm n) : PTm n := cost b c d+cost b d c
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (b c d : PTm n) :
-    Syn.subst σ (budget b c d) = budget (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by simp [budget]
+ipra_subst budget
 
 private theorem raw_data_congr (p a b c d c' d' : PTm n) (ec : Γ ⊢[PRAAx] c ≐ c') (ed : Γ ⊢[PRAAx] d ≐ d') :
     Γ ⊢[PRAAx] rawSample p a b c d ≐ rawSample p a b c' d' := by

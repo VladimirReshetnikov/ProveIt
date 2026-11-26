@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineSquaredNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode zeroCode)
 open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalHorner (canonical qzero qadd qmul evaluate canonical_unique ofGaussian_canonical
@@ -28,10 +28,6 @@ open GaussianReciprocalHorner (qsub_add_cancel qmul_one_right)
 open GaussianRootAlgebra (equal_of_values equal_refl re_scale im_scale re_add im_add re_one im_one re_zero im_zero)
 open GaussianSineMultipleAngleRecurrence (twoPoint evenValue value previous previous_zero value_zero previous_succ value_succ)
 open GaussianSineSquaredPolynomial (coefficients evaluation_square)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -80,9 +76,7 @@ private theorem four_at_trace_two : Γ ⊢[PRAAx]
 def countingLaw (k : PTm n) : Fm PTm n :=
   (previous twoPoint k ≐ naturalPoint k) ⋏ (value twoPoint k ≐ naturalPoint (succ k))
 
-@[simp] theorem subst_countingLaw {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    (countingLaw k).subst σ = countingLaw (Syn.subst σ k) := by
-  simp [countingLaw, twoPoint]
+ipra_subst countingLaw [twoPoint]
 
 private theorem counting_zero : Γ ⊢[PRAAx] countingLaw (zero : PTm n) :=
   .andI ((previous_zero twoPoint).eqTrans point_zero.eqSymm)

@@ -13,15 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedFiniteProduct (sample sample_zero sample_succ)
 open GaussianNamedFiniteProductFamily (rowF row_at regularRows regular_at radius productData family_bounds family_regular)
 open GaussianRationalConjugation (point point_congr point_one point_mul)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

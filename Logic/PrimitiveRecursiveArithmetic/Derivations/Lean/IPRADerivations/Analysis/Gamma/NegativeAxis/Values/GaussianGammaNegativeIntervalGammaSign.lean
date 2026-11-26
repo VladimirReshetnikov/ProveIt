@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalGammaSign
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDampedTimeRate (fraction_product)
 open GaussianFactorBudget (power_positive)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -40,9 +40,6 @@ open GaussianStirlingMultiplicativeBoundsLog (constant_order fractions_order)
 open GaussianStirlingMultiplicativeBoundsOrder (fraction_real_part)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open RationalArgmin (rationalLE rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -57,14 +54,9 @@ def signedData (a b N : PTm n) : PTm n := multiplyData C G (signUnit (succ N)) (
 def inversePoint (a b N : PTm n) : PTm n := fraction (productDenominator b N) (productNumerator a b N)
 def terminalData (a b : PTm n) : PTm n := gammaData (b+a) b
 
-@[simp] theorem subst_lowerDenominator {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (lowerDenominator a b N) = lowerDenominator (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [lowerDenominator, productNumerator]
+ipra_subst lowerDenominator [productNumerator]
 
-@[simp] theorem subst_signedData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (signedData a b N) = signedData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [signedData, GaussianGammaNegativeIntervalNative.data, GaussianGammaNegativeIntervalNative.argument,
-    GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight]
+ipra_subst signedData [GaussianGammaNegativeIntervalNative.data, GaussianGammaNegativeIntervalNative.argument, GaussianGammaReciprocalInverse.gammaData, GaussianGammaReciprocalInverse.gammaHeight]
 
 private theorem denominator_positive (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) :
     Γ ⊢[PRAAx] le one (productDenominator b N) := by

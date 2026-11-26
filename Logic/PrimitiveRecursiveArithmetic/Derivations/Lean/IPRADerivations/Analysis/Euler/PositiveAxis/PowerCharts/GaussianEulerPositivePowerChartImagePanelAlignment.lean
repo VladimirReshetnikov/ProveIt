@@ -12,16 +12,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartImagePanelAlignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartCorrectedImage (input imageNumerator imageDenominator)
 open GaussianEulerPositivePowerChartImageCuts (data numeratorBody denominatorBody start count denominator)
 open GaussianEulerPositivePowerChartImageLattice (absolute node_cleared absolute_below absolute_as_relative)
 local notation "panelStart" => GaussianEulerPositivePowerChartCorrectedPanel.start
 local notation "panelSpan" => GaussianEulerPositivePowerChartCorrectedPanel.span
 local notation "panelDen" => GaussianEulerPositivePowerChartCorrectedPanel.denominator
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

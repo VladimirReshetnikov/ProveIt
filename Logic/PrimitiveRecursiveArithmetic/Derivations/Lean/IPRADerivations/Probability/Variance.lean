@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.TailSum
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Variance, squared error and the sample mean
@@ -29,13 +28,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.Variance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add' mul_one' exp_add)
 open LeanProofs.IPRA.Probability.Independence (sum_scale dsum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -83,8 +78,8 @@ theorem dv_pt (i A B x : PTm n) :
       inst2 w i x * (ad (A * inst2 X i x) B * ad (A * inst2 X i x) B) := by
   rw [inst2_dvB]
   have hA : Γ ⊢[PRAAx] fstT (pairT A (pairT B x)) ≐ A := fst_pair _ _
-  have hB : Γ ⊢[PRAAx] fstT (sndT (pairT A (pairT B x))) ≐ B := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT A (pairT B x))) ≐ x := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  have hB : Γ ⊢[PRAAx] fstT (sndT (pairT A (pairT B x))) ≐ B := (snd_pair _ _).fstE
+  have hx : Γ ⊢[PRAAx] sndT (sndT (pairT A (pairT B x))) ≐ x := (snd_pair _ _).sndE
   have ht := congrMul hA (congrInst2 X (.eqRefl i) hx)
   have hD := congrAdd (congrMonus ht hB) (congrMonus hB ht)
   exact congrMul (congrInst2 w (.eqRefl i) hx) (congrMul hD hD)
@@ -122,13 +117,9 @@ private abbrev dvF : Fm PTm 4 :=
     var 1 * var 1 * ap2 (sumF (w * (X * X))) (var 0) (var 3) + var 2 * var 2 * ap2 (sumF w) (var 0) (var 3)
 
 private theorem dv₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] dvF w X := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, inst_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dv_base w X _ _ _
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, repl_three, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact dv_step w X Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact dv_base w X _ _ _
+  · exact dv_step w X Prf.hyp0
 
 /-- `∑_{i<N} w_i |A X_i − B|² + 2AB · Ew(X) = A² · Ew(X²) + B² · W`. -/
 theorem dev_sum (N A B x : PTm n) :
@@ -181,12 +172,9 @@ theorem second_moment_add (w X Y : PTm 2) (N x : PTm n) :
 private abbrev oneF : Fm PTm 2 := ap2 (sumF (one : PTm 2)) (var 0) (var 1) ≐ var 0
 
 private theorem sum_one₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] oneF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (succ_eq_add_one _).eqSymm)
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (succ_eq_add_one _).eqSymm)
     have e : inst2 (one : PTm 2) (var 0 : PTm 2) (var 1) = one := by simp [inst2]
     rw [e]
     exact .eqRefl _

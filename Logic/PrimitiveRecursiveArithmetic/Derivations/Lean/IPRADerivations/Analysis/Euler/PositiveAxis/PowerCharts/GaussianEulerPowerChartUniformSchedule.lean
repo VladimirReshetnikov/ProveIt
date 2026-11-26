@@ -14,7 +14,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartUniformSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerChartUniformEndpoints (uniform_physical_panel)
 open GaussianEulerPowerChartUniformRounded (uniform_mesh_source original_uniform_rounded_panel)
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator width)
@@ -34,10 +34,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalL1 (qL1)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalIntegerNormalization (positivePart)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -47,14 +43,9 @@ def panelStage (s L : PTm n) : PTm n := referenceClock (s+num 3) L
 def cutoffIndex (s A R L M : PTm n) : PTm n :=
   exponent (M*GaussianEulerCompactExhaustion.budget A R) (succ (panelStage s L+two))
 
-@[simp] theorem subst_panelStage {m : ℕ} (σ : Fin n → PTm m) (s L : PTm n) :
-    Syn.subst σ (panelStage s L) = panelStage (Syn.subst σ s) (Syn.subst σ L) := by
-  simp [panelStage,referenceClock]
+ipra_subst panelStage [referenceClock]
 
-@[simp] theorem subst_cutoffIndex {m : ℕ} (σ : Fin n → PTm m) (s A R L M : PTm n) :
-    Syn.subst σ (cutoffIndex s A R L M) =
-      cutoffIndex (Syn.subst σ s) (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ M) := by
-  simp [cutoffIndex,GaussianEulerCompactExhaustion.budget,GaussianEulerWeightedHalfDecay.majorant]
+ipra_subst cutoffIndex [GaussianEulerCompactExhaustion.budget, GaussianEulerWeightedHalfDecay.majorant]
 
 /-- A bound on the original zero observation bounds the actual clock input. -/
 theorem scale_bound_from_zero (z B e f d h U : PTm n)

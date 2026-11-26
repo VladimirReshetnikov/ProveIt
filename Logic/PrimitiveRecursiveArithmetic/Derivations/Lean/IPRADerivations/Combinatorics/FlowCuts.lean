@@ -31,9 +31,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.FlowCuts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 
@@ -88,11 +86,9 @@ theorem cut_balance (F : Fin k → Fin k → ZT n) (x e : Fin k → ZT n) (κ : 
       (ZT.sumFin fun u => ZT.sumFin fun v => F u v * (x u * (ZT.natLit 1 - x v))) := by
   have hbal1 : ∀ v, ∑ w, ZT.toZ Γ (F v w) - ∑ u, ZT.toZ Γ (F u v) = ZT.toZ Γ κ * ZT.toZ Γ (e v) :=
     fun v => by
-      have h := ZT.toZ_eq (hbal v)
-      simpa only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_sumFin] using h
+      simpa only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_sumFin] using ZT.toZ_eq (hbal v)
   have hx1 : ∑ v, ZT.toZ Γ (x v) * ZT.toZ Γ (e v) = 1 := by
-    have h := ZT.toZ_eq hx
-    simpa only [ZT.toZ_mul, ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using h
+    simpa only [ZT.toZ_mul, ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] using ZT.toZ_eq hx
   have t : ∀ v, ZT.toZ Γ (x v) * (∑ w, ZT.toZ Γ (F v w) - ∑ u, ZT.toZ Γ (F u v)) =
       ZT.toZ Γ κ * (ZT.toZ Γ (x v) * ZT.toZ Γ (e v)) := fun v => by
     rw [hbal1 v]
@@ -138,11 +134,9 @@ theorem saturated_cut (F c : Fin k → Fin k → ZT n) (x e : Fin k → ZT n) (�
   simp only [ZT.toZ_add, ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_one] at E
   have hsat1 : ∀ u v, ZT.toZ Γ (F u v) * (ZT.toZ Γ (x u) * (1 - ZT.toZ Γ (x v))) =
       ZT.toZ Γ (c u v) * (ZT.toZ Γ (x u) * (1 - ZT.toZ Γ (x v))) := fun u v => by
-    have h := ZT.toZ_eq (hsat u v)
-    simpa only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] using h
+    simpa only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one] using ZT.toZ_eq (hsat u v)
   have hempty1 : ∀ u v, ZT.toZ Γ (F u v) * (ZT.toZ Γ (x v) * (1 - ZT.toZ Γ (x u))) = 0 := fun u v => by
-    have h := ZT.toZ_eq (hempty u v)
-    simpa only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one, Nat.cast_zero] using h
+    simpa only [ZT.toZ_sub, ZT.toZ_mul, ZT.toZ_natLit, Nat.cast_one, Nat.cast_zero] using ZT.toZ_eq (hempty u v)
   have hin : ∑ u, ∑ v, ZT.toZ Γ (F u v) * (ZT.toZ Γ (x v) * (1 - ZT.toZ Γ (x u))) = 0 :=
     Finset.sum_eq_zero fun u _ => Finset.sum_eq_zero fun v _ => hempty1 u v
   have hout : ∑ u, ∑ v, ZT.toZ Γ (F u v) * (ZT.toZ Γ (x u) * (1 - ZT.toZ Γ (x v))) =

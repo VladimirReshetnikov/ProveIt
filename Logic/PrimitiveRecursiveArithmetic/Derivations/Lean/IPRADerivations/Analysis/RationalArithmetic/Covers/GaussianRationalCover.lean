@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalCover
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (distanceBounded bounded_difference_iff boundedSyntax)
 open LeanProofs.IPRA.Analysis.GaussianRationalNormalization
   (sourceNumerators targetNumerators commonD commonD_positive source_clearing target_clearing
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianProductStability (squaredDistanceF squared
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.Foundations.BoundedSyntax
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,13 +65,10 @@ def cover (S T A B : PTm n) : Fm PTm n :=
         (entry (Syn.shift (Syn.shift T)) (var 0)) (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift B))))
 def close (S T A B : PTm n) : Fm PTm n := cover S T A B ⋏ cover T S A B
 
-@[simp] theorem subst_cover {m : ℕ} (σ : Fin n → PTm m) (S T A B : PTm n) :
-    (cover S T A B).subst σ = cover (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [cover,Fm.subst_all,Fm.subst_imp,Fm.subst_ex,Fm.subst_and,subst_lt,subst_length,
-    GaussianRationalMetric.subst_distanceBounded,subst_entry,Syn.subst_var,Syn.up_zero,Syn.up_succ,
-    Syn.subst_shift,Syn.shift_subst,Syn.up_one,Syn.shift_var,Fin.succ_zero_eq_one]
-@[simp] theorem subst_close {m : ℕ} (σ : Fin n → PTm m) (S T A B : PTm n) :
-    (close S T A B).subst σ = close (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ A) (Syn.subst σ B) := by simp [close]
+ipra_subst cover [Fm.subst_all, Fm.subst_imp, Fm.subst_ex, Fm.subst_and, subst_lt, subst_length,
+    GaussianRationalMetric.subst_distanceBounded, subst_entry, Syn.subst_var, Syn.up_zero, Syn.up_succ,
+    Syn.subst_shift, Syn.shift_subst, Syn.up_one, Syn.shift_var, Fin.succ_zero_eq_one]
+ipra_subst close
 
 def rawBudget (S T z A : PTm n) : PTm n := (A*commonD S T z)*(A*commonD S T z)
 def rawCover (s : Side) (S T z A B : PTm n) : Fm PTm n :=
@@ -85,14 +79,10 @@ def rawClose (S T z A B : PTm n) : Fm PTm n :=
 def selected (s : Side) (S T z i B : PTm n) : PTm n := Foundations.FiniteHausdorff.nearest
   squaredDistanceF (entry (numerators s S T z) i) (numerators (other s) S T z) B
 
-@[simp] theorem subst_rawBudget {m : ℕ} (σ : Fin n → PTm m) (S T z A : PTm n) :
-    Syn.subst σ (rawBudget S T z A) = rawBudget (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) (Syn.subst σ A) := by simp [rawBudget]
-@[simp] theorem subst_rawCover {m : ℕ} (σ : Fin n → PTm m) (s : Side) (S T z A B : PTm n) :
-    (rawCover s S T z A B).subst σ = rawCover s (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) := by simp [rawCover]
-@[simp] theorem subst_rawClose {m : ℕ} (σ : Fin n → PTm m) (S T z A B : PTm n) :
-    (rawClose S T z A B).subst σ = rawClose (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) := by simp [rawClose,Foundations.FiniteHausdorff.close]
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (s : Side) (S T z i B : PTm n) :
-    Syn.subst σ (selected s S T z i B) = selected s (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ z) (Syn.subst σ i) (Syn.subst σ B) := by simp [selected]
+ipra_subst rawBudget
+ipra_subst rawCover
+ipra_subst rawClose [Foundations.FiniteHausdorff.close]
+ipra_subst selected
 
 /-- The raw nearest index is valid in the original target list, and its actual
 original point satisfies the original Euclidean rational comparison. -/
@@ -208,15 +198,8 @@ def output (s : Side) (S T z i B : PTm n) : PTm n := pairT (selected s S T z i B
 def outputF (s : Side) : PR 5 := PTm.toPR (output s (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (s : Side) (S T z i B : PTm n) : PTm n := PTm.app (outputF s) ![S,T,z,i,B]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (s : Side) (S T z i B : PTm n) :
-    Syn.subst σ (output s S T z i B) = output s (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ z) (Syn.subst σ i) (Syn.subst σ B) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (s : Side) (S T z i B : PTm n) :
-    Syn.subst σ (run s S T z i B) = run s (Syn.subst σ S) (Syn.subst σ T)
-      (Syn.subst σ z) (Syn.subst σ i) (Syn.subst σ B) := by
-  simp [run]
-  funext j
-  fin_cases j <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem output_program_at (s : Side) (S T z i B : PTm n) : Γ ⊢[PRAAx]
     run s S T z i B ≐ output s S T z i B := by
@@ -225,10 +208,10 @@ theorem output_program_at (s : Side) (S T z i B : PTm n) : Γ ⊢[PRAAx]
 
 theorem output_index (s : Side) (S T z i B : PTm n) : Γ ⊢[PRAAx]
     fstT (run s S T z i B) ≐ selected s S T z i B :=
-  (congrFst (output_program_at s S T z i B)).eqTrans (fst_pair _ _)
+  (output_program_at s S T z i B).fstE
 theorem output_point (s : Side) (S T z i B : PTm n) : Γ ⊢[PRAAx]
     sndT (run s S T z i B) ≐ entry (original (other s) S T) (selected s S T z i B) :=
-  (congrSnd (output_program_at s S T z i B)).eqTrans (snd_pair _ _)
+  (output_program_at s S T z i B).sndE
 theorem output_point_index (s : Side) (S T z i B : PTm n) : Γ ⊢[PRAAx]
     sndT (run s S T z i B) ≐ entry (original (other s) S T) (fstT (run s S T z i B)) :=
   (output_point s S T z i B).eqTrans

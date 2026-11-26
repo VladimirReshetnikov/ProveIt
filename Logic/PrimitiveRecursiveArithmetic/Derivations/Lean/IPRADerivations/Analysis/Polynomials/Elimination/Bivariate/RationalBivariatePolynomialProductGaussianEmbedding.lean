@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.RationalBivariatePolynomialBuffersGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariatePolynomialProduct
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual original rational bivariate convolution
@@ -16,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalBivariatePolynomialProductGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed)
 open RationalPolynomialGaussianEmbedding (embed_congr)
 open RationalPolynomialBuffersGaussianEmbedding (zeros zeros_length added added_length added_lookup embeddedEntries)
@@ -25,10 +23,6 @@ open GaussianPolynomialMonicCompanion (rowShape row_shape_at)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (monus pred)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -61,21 +55,13 @@ def stage (A B q a b t : PTm n) : PTm n := sequence rowBody (q+t) (stageData A B
 def product (A B p q a b : PTm n) : PTm n := stage A B q a b (succ p)
 
 
-@[simp] theorem subst_paddedRow {l : ℕ} (σ : Fin n → PTm l) (B q b i : PTm n) :
-    Syn.subst σ (paddedRow B q b i) = paddedRow (Syn.subst σ B) (Syn.subst σ q) (Syn.subst σ b) (Syn.subst σ i) := by simp [paddedRow,sel,Signum.sg]
-@[simp] theorem subst_contribution {l : ℕ} (σ : Fin n → PTm l) (A B q a b k i : PTm n) :
-    Syn.subst σ (contribution A B q a b k i) = contribution (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) (Syn.subst σ i) := by simp [contribution,sel,Signum.sg]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (A B q a b k : PTm n) :
-    Syn.subst σ (data A B q a b k) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) := by simp [data]
+ipra_subst paddedRow [sel, Signum.sg]
+ipra_subst contribution [sel, Signum.sg]
+ipra_subst data
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 6) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
-@[simp] theorem subst_sumStep {l : ℕ} (σ : Fin n → PTm l) (A B q a b k i S : PTm n) :
-    Syn.subst σ (sumStep A B q a b k i S) = sumStep (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) (Syn.subst σ i) (Syn.subst σ S) := by simp [sumStep]
-@[simp] theorem subst_rowSum {l : ℕ} (σ : Fin n → PTm l) (A B q a b k t : PTm n) :
-    Syn.subst σ (rowSum A B q a b k t) = rowSum (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) (Syn.subst σ t) := by simp [rowSum]
+ipra_subst sumStep
+ipra_subst rowSum
 
 theorem data_fields (A B q a b k : PTm n) (i : Fin 6) : Γ ⊢[PRAAx] fields (data A B q a b k) i ≐ ![A,B,q,a,b,k] i := by
   have base := fst_pair (Γ := Γ) (GaussianPolynomialMonicCompanion.data A B q a b) k
@@ -174,15 +160,9 @@ theorem contribution_length (A B q a b k i : PTm n) : Γ ⊢[PRAAx] length (cont
   · exact (congrFst (contribution_inside _ _ _ _ _ _ _ Prf.hyp0)).eqTrans (RationalPolynomialProductGaussianEmbedding.product_length _ _ _ _)
   · exact (congrFst (contribution_outside _ _ _ _ _ _ _ Prf.hyp0)).eqTrans (zeros_length _)
 
-@[simp] theorem subst_stageData {l : ℕ} (σ : Fin n → PTm l) (A B q a b t : PTm n) :
-    Syn.subst σ (stageData A B q a b t) = stageData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ t) := by simp [stageData]
-@[simp] theorem subst_stage {l : ℕ} (σ : Fin n → PTm l) (A B q a b t : PTm n) :
-    Syn.subst σ (stage A B q a b t) = stage (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ t) := by simp [stage]
-@[simp] theorem subst_product {l : ℕ} (σ : Fin n → PTm l) (A B p q a b : PTm n) :
-    Syn.subst σ (product A B p q a b) = product (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p)
-      (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by simp [product]
+ipra_subst stageData
+ipra_subst stage
+ipra_subst product
 theorem stage_data_field (A B q a b t : PTm n) (j : Fin 6) : Γ ⊢[PRAAx]
     fields (fstT (stageData A B q a b t)) j ≐ ![A,B,q,a,b,zero] j := by
   have e : Γ ⊢[PRAAx] fields (fstT (stageData A B q a b t)) j ≐ fields (data A B q a b zero) j := by
@@ -248,9 +228,7 @@ theorem contribution_entry_transport (A A' B B' P q a b k i s : PTm n)
 
 def coefficientLaw (A A' B B' P q a b k s t : PTm n) : Fm PTm n := le t P ⟶
   embed (entry (rowSum A B q a b k t) s) ≐ entry (GaussianBivariatePolynomialProduct.rowSum A' B' q a b k t) s
-@[simp] theorem subst_coefficientLaw {l : ℕ} (σ : Fin n → PTm l) (A A' B B' P q a b k s t : PTm n) :
-    (coefficientLaw A A' B B' P q a b k s t).subst σ = coefficientLaw (Syn.subst σ A) (Syn.subst σ A') (Syn.subst σ B)
-      (Syn.subst σ B') (Syn.subst σ P) (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) (Syn.subst σ s) (Syn.subst σ t) := by simp [coefficientLaw]
+ipra_subst coefficientLaw
 
 theorem coefficient_step (A A' B B' P q a b k s t : PTm n)
     (hA : Γ ⊢[PRAAx] rowsEmbedded A A' P a) (hB : Γ ⊢[PRAAx] rowsEmbedded B B' (succ q) b)
@@ -273,13 +251,11 @@ theorem row_sum_transport (A A' B B' P q a b k s t : PTm n)
   have ss : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift s) (Syn.shift a+Syn.shift b) := by simpa [Fm.shift,Syn.shift] using hs.shift
   have all : Γ ⊢[PRAAx] .all (coefficientLaw (Syn.shift A) (Syn.shift A') (Syn.shift B) (Syn.shift B')
       (Syn.shift P) (Syn.shift q) (Syn.shift a) (Syn.shift b) (Syn.shift k) (Syn.shift s) (var 0)) := by
-    refine PRA.qfInd _ (by trivial) ?_ ?_
-    · simp only [subst_coefficientLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((embed_congr (entry_congr (row_sum_zero _ _ _ _ _ _) (.eqRefl _))).eqTrans
+    ipra_qfind (by trivial) [subst_coefficientLaw]
+    · exact .impI ((embed_congr (entry_congr (row_sum_zero _ _ _ _ _ _) (.eqRefl _))).eqTrans
         ((RationalPolynomialBuffersGaussianEmbedding.zeros_embedding _ _ ((succ_monus_succ _ _).eqTrans hs)).eqTrans
           (entry_congr (GaussianBivariatePolynomialProduct.row_sum_zero _ _ _ _ _ _) (.eqRefl _)).eqSymm)).wk
-    · simp only [subst_coefficientLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (coefficient_step _ _ _ _ _ _ _ _ _ _ _ as.wk.wk bs.wk.wk ss.wk.wk Prf.hyp0
+    · exact .impI (coefficient_step _ _ _ _ _ _ _ _ _ _ _ as.wk.wk bs.wk.wk ss.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have actual : Γ ⊢[PRAAx] coefficientLaw A A' B B' P q a b k s t := by
     simpa only [subst_coefficientLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
@@ -290,12 +266,8 @@ def coefficientBody : PTm 2 := entry (contribution (fields (fstT (var 1)) 0) (fi
   (fields (fstT (var 1)) 2) (fields (fstT (var 1)) 3) (fields (fstT (var 1)) 4) (fields (fstT (var 1)) 5) (var 0)) (sndT (var 1))
 def coefficient (A B q a b k s t : PTm n) : PTm n :=
   RationalFiniteSum.sum coefficientBody t (coefficientData A B q a b k s)
-@[simp] theorem subst_coefficientData {l : ℕ} (σ : Fin n → PTm l) (A B q a b k s : PTm n) :
-    Syn.subst σ (coefficientData A B q a b k s) = coefficientData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) (Syn.subst σ s) := by simp [coefficientData]
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (A B q a b k s t : PTm n) :
-    Syn.subst σ (coefficient A B q a b k s t) = coefficient (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ q)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ k) (Syn.subst σ s) (Syn.subst σ t) := by simp [coefficient]
+ipra_subst coefficientData
+ipra_subst coefficient
 theorem pair_fields (p s : PTm n) (j : Fin 6) : Γ ⊢[PRAAx] fields (fstT (pairT p s)) j ≐ fields p j := by
   ipra_congr (fields (var 0) j : PTm 1) with [fst_pair _ _]
 theorem coefficient_body_at (A B q a b k s i : PTm n) : Γ ⊢[PRAAx]
@@ -310,13 +282,11 @@ theorem row_sum_coefficient (A B q a b k s t : PTm n) (hs : Γ ⊢[PRAAx] le s (
   have hss : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift s) (Syn.shift a+Syn.shift b) := by simpa [Fm.shift,Syn.shift] using hs.shift
   have all : Γ ⊢[PRAAx] .all (entry (rowSum (Syn.shift A) (Syn.shift B) (Syn.shift q) (Syn.shift a) (Syn.shift b) (Syn.shift k) (var 0))
       (Syn.shift s) ≐ coefficient (Syn.shift A) (Syn.shift B) (Syn.shift q) (Syn.shift a) (Syn.shift b) (Syn.shift k) (Syn.shift s) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,Foundations.MasterCertificate.subst_entry,subst_rowSum,subst_coefficient,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (entry_congr (row_sum_zero A B q a b k) (.eqRefl _)).eqTrans
+    ipra_qfind [Foundations.MasterCertificate.subst_entry, subst_rowSum, subst_coefficient]
+    · exact (entry_congr (row_sum_zero A B q a b k) (.eqRefl _)).eqTrans
         ((RationalPolynomialBuffersGaussianEmbedding.zeros_lookup _ _ ((succ_monus_succ _ _).eqTrans hs)).eqTrans
           (RationalGaussianRealPart.rational_sum_zero coefficientBody (coefficientData A B q a b k s)).eqSymm)
-    · simp only [Fm.subst_eq,Foundations.MasterCertificate.subst_entry,subst_rowSum,subst_coefficient,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := (entry (rowSum (Syn.shift A) (Syn.shift B) (Syn.shift q) (Syn.shift a) (Syn.shift b) (Syn.shift k) (var 0))
+    · let Δ := (entry (rowSum (Syn.shift A) (Syn.shift B) (Syn.shift q) (Syn.shift a) (Syn.shift b) (Syn.shift k) (var 0))
         (Syn.shift s) ≐ coefficient (Syn.shift A) (Syn.shift B) (Syn.shift q) (Syn.shift a) (Syn.shift b) (Syn.shift k) (Syn.shift s) (var 0)) :: Γ.map Fm.shift
       have bound : Δ ⊢[PRAAx] le (Syn.shift s) (Syn.shift a+Syn.shift b) := hss.wk
       have step := (entry_congr (row_sum_succ (Γ := Δ) (Syn.shift A) (Syn.shift B) (Syn.shift q)
@@ -398,8 +368,7 @@ theorem product_coefficient_well_formed (A B p q a b r s : PTm n)
 
 def input (A B p q a b : PTm n) : Fm PTm n := length A ≐ succ p ⋏
   (rowShape A (succ p) a ⋏ (length B ≐ succ q ⋏ rowShape B (succ q) b))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (A B p q a b : PTm n) :
-    (input A B p q a b).subst σ = input (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by simp [input]
+ipra_subst input
 
 theorem bivariate_congr {P P' R R' x x' y y' : PTm n} (hP : Γ ⊢[PRAAx] P ≐ P')
     (hR : Γ ⊢[PRAAx] R ≐ R') (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') : Γ ⊢[PRAAx]
@@ -428,12 +397,7 @@ theorem original_coefficient_embedding (A B p q a b r s : PTm n)
 
 def productF : PR 6 := PTm.toPR (product (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (A B p q a b : PTm n) : PTm n := app productF ![A,B,p,q,a,b]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (A B p q a b : PTm n) :
-    Syn.subst σ (run A B p q a b) = run (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (A B p q a b : PTm n) : Γ ⊢[PRAAx] run A B p q a b ≐ product A B p q a b := by
   simpa [run,productF] using toPR_eq (Γ := Γ) (product (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![A,B,p,q,a,b]
 theorem returned_evaluation (A B p q a b x y : PTm n) (h : Γ ⊢[PRAAx] input A B p q a b) : Γ ⊢[PRAAx]

@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelPositive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows (inputData rowBody rowF rowData row_lower row_positive lowerDenominator)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianPositiveRealArithmetic (positive positive_add positive_congr positiveTerms positive_sum)
@@ -20,10 +20,6 @@ open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalSupMetric (numeratorOf denominatorOf)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "observedBody" => GaussianNamedFiniteSumFamily.body rowF rowBody

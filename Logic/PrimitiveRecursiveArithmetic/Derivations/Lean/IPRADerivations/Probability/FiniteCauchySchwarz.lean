@@ -21,12 +21,8 @@ With the weights `w_i [v_i > 0]` this is the packet's `(∫F)² ≤ |{F > 0}| �
 
 namespace LeanProofs.IPRA.Probability.FiniteCauchySchwarz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBadBound (sum_lin_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 set_option autoImplicit false
 

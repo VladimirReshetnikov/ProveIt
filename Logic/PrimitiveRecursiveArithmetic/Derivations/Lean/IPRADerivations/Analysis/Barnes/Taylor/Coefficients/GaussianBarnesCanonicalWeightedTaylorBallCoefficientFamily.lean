@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalWeightedTaylorBallCoefficientFamily
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded)
 open GaussianBarnesCanonicalCentralUniformBound (centralUGain)
 open GaussianBarnesCanonicalExponentTaylorRetainedCoefficient (prefactorGain tailGain)
@@ -26,9 +26,6 @@ open GaussianFastValueCut (exponent)
 open GaussianNamedInverseRate (independentRate)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

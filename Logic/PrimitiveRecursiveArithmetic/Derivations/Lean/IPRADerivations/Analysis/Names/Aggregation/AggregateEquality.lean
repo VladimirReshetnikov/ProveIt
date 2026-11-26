@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Geometry.Distances.RationalHausdorffTriangle
 import IPRADerivations.Analysis.Inequalities.GapRemoval
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Equality of regular rational aggregate names
@@ -18,23 +17,18 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.AggregateEquality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalHausdorff
 open LeanProofs.IPRA.Analysis.RationalHausdorffTriangle
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def unit (k : PTm n) : PTm n := pw two k
 
-@[simp] theorem subst_unit {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (unit k) = unit (Syn.subst σ k) := by simp [unit]
+ipra_subst unit
 
 theorem unit_positive (k : PTm n) : Γ ⊢[PRAAx] le one (unit k) :=
   le_congr (.eqRefl _) (DiophantineNumberTheory.FLTMultiples.pw_pos one k).eqSymm
@@ -71,8 +65,7 @@ theorem close_add (S T U d A C B : PTm n)
 
 def sample (S : PR 2) (k x : PTm n) : PTm n := ap2 S k x
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (k x : PTm n) :
-    Syn.subst σ (sample S k x) = sample S (Syn.subst σ k) (Syn.subst σ x) := by simp [sample]
+ipra_subst sample
 
 def nonempty (S : PR 2) (x : PTm n) : Fm PTm n :=
   .all (le one (length (sample S (var 0) (Syn.shift x))))
@@ -87,17 +80,17 @@ def equivalent (S T : PR 2) (d x : PTm n) : Fm PTm n :=
   .all (originalClose (sample S (var 0) (Syn.shift x)) (sample T (var 0) (Syn.shift x))
     (Syn.shift d) two (unit (var 0)))
 
-@[simp] theorem subst_nonempty {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (x : PTm n) :
-    (nonempty S x).subst σ = nonempty S (Syn.subst σ x) := by
-  simp only [nonempty, Fm.subst_all, subst_le, Foundations.SequenceComposition.subst_length, subst_sample, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+ipra_subst nonempty [Fm.subst_all, subst_le, Foundations.SequenceComposition.subst_length, subst_sample,
+    Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, one,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
-@[simp] theorem subst_regular {m : ℕ} (σ : Fin n → PTm m) (S : PR 2) (d x : PTm n) :
-    (regular S d x).subst σ = regular S (Syn.subst σ d) (Syn.subst σ x) := by
-  simp only [regular, Fm.subst_all, subst_originalClose, subst_sample, subst_unit, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, Syn.shift_var, Fin.succ_zero_eq_one]
+ipra_subst regular [Fm.subst_all, subst_originalClose, subst_sample, subst_unit, PTm.subst_add, PTm.subst_mul,
+    Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, Syn.shift_var,
+    Fin.succ_zero_eq_one]
 
-@[simp] theorem subst_equivalent {m : ℕ} (σ : Fin n → PTm m) (S T : PR 2) (d x : PTm n) :
-    (equivalent S T d x).subst σ = equivalent S T (Syn.subst σ d) (Syn.subst σ x) := by
-  simp only [equivalent, Fm.subst_all, subst_originalClose, subst_sample, subst_unit, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, two, one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+ipra_subst equivalent [Fm.subst_all, subst_originalClose, subst_sample, subst_unit, Syn.subst_var, Syn.up_zero,
+    Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst, two, one, ConciseIPRA.PTm.subst_succ,
+    ConciseIPRA.PTm.subst_zero]
 
 theorem nonempty_at (S : PR 2) (k x : PTm n) (h : Γ ⊢[PRAAx] nonempty S x) :
     Γ ⊢[PRAAx] le one (length (sample S k x)) := by

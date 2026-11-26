@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCoefficientRecursion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalSyntheticDivision (qmul_congr canonicalCoefficients)
 open GaussianRationalPolynomialProduct (product)
@@ -25,10 +25,6 @@ open GaussianRationalEulerCoefficients (euler)
 open GaussianRationalNaturalScale (natScale)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -130,18 +126,16 @@ def output (d K e : PTm n) : PTm n := pairT (GaussianFiniteLogarithmPolynomial.c
   (priorSum (euler (GaussianFiniteLogarithmPolynomial.polynomial d) d) d (GaussianFiniteLogarithmPolynomial.composition d K) (K*d) e)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (d K e : PTm n) : PTm n := ap3 outputF d K e
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d K e : PTm n) :
-    Syn.subst σ (output d K e) = output (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ e) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d K e : PTm n) :
-    Syn.subst σ (run d K e) = run (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ e) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (d K e : PTm n) : Γ ⊢[PRAAx] run d K e ≐ output d K e := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![d,K,e]
 theorem returned_polynomial (d K e : PTm n) : Γ ⊢[PRAAx] fstT (run d K e) ≐ GaussianFiniteLogarithmPolynomial.composition d K :=
-  (congrFst (program_at d K e)).eqTrans (fst_pair _ _)
+  (program_at d K e).fstE
 theorem returned_prior (d K e : PTm n) : Γ ⊢[PRAAx] sndT (run d K e) ≐
     priorSum (euler (GaussianFiniteLogarithmPolynomial.polynomial d) d) d (GaussianFiniteLogarithmPolynomial.composition d K) (K*d) e :=
-  (congrSnd (program_at d K e)).eqTrans (snd_pair _ _)
+  (program_at d K e).sndE
 theorem returned_recursion (d K e : PTm n) (he : Γ ⊢[PRAAx] le e d) (hK : Γ ⊢[PRAAx] le e K) : Γ ⊢[PRAAx]
     natScale e (exponentCoefficient (fstT (run d K e)) (K*d) e) ≐ sndT (run d K e) :=
   (GaussianRationalNaturalScale.natScale_congr (.eqRefl _)

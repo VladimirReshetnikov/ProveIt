@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDigammaBernoulliName (nameF nameData name_regular)
 open GaussianDigammaBernoulliRecurrence (weightedPrimitive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -26,8 +26,6 @@ open GaussianNameRingLaws (zeroF zero_fast add_zero_left)
 open GaussianNamedStrictOrderDifference (add_right)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open GaussianRationalHorner (qzero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "differenceF" => GaussianNamedDifference.nameF

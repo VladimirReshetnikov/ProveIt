@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCenteredHeadChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianBarnesCanonicalCenteredHead (advance linear factor polynomial polynomial_zero polynomial_succ)
 open GaussianBarnesCanonicalFactor (base)
@@ -27,9 +27,6 @@ open GaussianRationalMonicReduction (singleton)
 open GaussianRationalPolynomialBuffers (added leftPad)
 open GaussianRationalPolynomialProduct (product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

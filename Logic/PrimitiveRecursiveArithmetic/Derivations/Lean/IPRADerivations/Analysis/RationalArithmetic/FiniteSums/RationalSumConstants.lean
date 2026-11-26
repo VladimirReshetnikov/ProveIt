@@ -12,15 +12,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSumConstants
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
 open RationalAlgebra (add_congr multiply_congr)
 open RationalArithmetic (add multiply)
 open RationalFiniteSum (sum term)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

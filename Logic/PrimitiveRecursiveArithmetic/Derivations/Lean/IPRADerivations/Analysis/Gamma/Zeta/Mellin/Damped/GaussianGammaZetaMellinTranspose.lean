@@ -14,7 +14,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinTranspose
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (field0 field1 field2 field3 field4 field5
   field0_at field1_at field2_at field3_at field4_at field5_at)
 open GaussianGammaZetaMellinDecayPrefix
@@ -26,8 +26,6 @@ open GaussianRationalFubini (column columnBody column_entry columnSumBody column
 open GaussianRationalHorner (qmul)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,20 +45,11 @@ def transposedData (p z D M N A C E : PTm n) : PTm n :=
 def transposedValue (p z D M N A C E : PTm n) : PTm n :=
   sum transposedBody N (transposedData p z D M N A C E)
 
-@[simp] theorem subst_cell {m : ℕ} (σ : Fin n → PTm m) (j i p z D M A C E : PTm n) :
-    Syn.subst σ (cell j i p z D M A C E) = cell (Syn.subst σ j) (Syn.subst σ i) (Syn.subst σ p)
-      (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp [cell,factorClock]
+ipra_subst cell [factorClock]
 
-@[simp] theorem subst_transposedData {m : ℕ} (σ : Fin n → PTm m) (p z D M N A C E : PTm n) :
-    Syn.subst σ (transposedData p z D M N A C E) =
-      transposedData (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ M) (Syn.subst σ N)
-        (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [transposedData]
+ipra_subst transposedData
 
-@[simp] theorem subst_transposedValue {m : ℕ} (σ : Fin n → PTm m) (p z D M N A C E : PTm n) :
-    Syn.subst σ (transposedValue p z D M N A C E) =
-      transposedValue (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ M) (Syn.subst σ N)
-        (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E) := by simp [transposedValue]
+ipra_subst transposedValue
 
 theorem cell_at (j i p z D M N A C E : PTm n) :
     Γ ⊢[PRAAx] inst3 matrix j i (data p z D M N A C E) ≐ cell j i p z D M A C E := by

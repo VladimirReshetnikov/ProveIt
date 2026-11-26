@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinPoweredCompactProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (name_at precision)
 open GaussianFastValueCut (exponent)
@@ -34,9 +34,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,11 +60,7 @@ private theorem subst_top {m : ℕ} (σ : Fin n → PTm m) (q J S : PTm n) :
     Syn.subst σ (top q J S) = top (Syn.subst σ q) (Syn.subst σ J) (Syn.subst σ S) := by
   simp [top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p i N z R B A J S : PTm n) :
-    Syn.subst σ (data p i N z R B A J S) =
-      data (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-        (Syn.subst σ A) (Syn.subst σ J) (Syn.subst σ S) := by
-  simp [data,panelCutoff,cutoff,subst_etaDen,subst_top,one]
+ipra_subst data [panelCutoff, cutoff, subst_etaDen, subst_top, one]
 
 theorem compact_input (p i N z R B A J S : PTm n) (hz : Γ ⊢[PRAAx] GammaSource z R B A) :
     let q := panelCutoff p i N z R B A J S

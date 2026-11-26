@@ -1,7 +1,6 @@
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The positive half-angle roots of a Ravi triangle
@@ -27,13 +26,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.MollweideRoots
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (sq_inj)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveUniformBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerBetaPolynomialPrimitive (primitive primitive_length primitive_lookup coefficient kernel)
 open GaussianGammaEulerHeadShift (linear)
 open GaussianBetaKernelWeightedNorm (argument)
@@ -32,16 +32,11 @@ open GaussianCoefficientL1 (prefixNorm)
 open GaussianPositiveRealArithmetic (sign)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z B A : PTm n) : Fm PTm n := le one B ⋏ le one A ⋏ GaussianEulerLowerPowerCoefficients.realLower z A B
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z B A : PTm n) :
-    (source z B A).subst σ = source (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ A) := by simp [source]
+ipra_subst source
 
 /-- The actual reciprocal bound is Euclidean, with no factor two loss. -/
 theorem reciprocal_bound (z B A j : PTm n) (h : Γ ⊢[PRAAx] source z B A) : Γ ⊢[PRAAx]

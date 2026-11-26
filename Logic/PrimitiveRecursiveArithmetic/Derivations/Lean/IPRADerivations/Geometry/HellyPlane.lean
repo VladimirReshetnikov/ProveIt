@@ -36,10 +36,8 @@ instead), the division by `M`, and the gluing over the levels for more than four
 
 namespace LeanProofs.IPRA.Geometry.HellyPlane
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.RadonPartition
-open Syn
-open scoped Fm
 
 variable {n s : ℕ} {Γ : List (Fm PTm n)}
 

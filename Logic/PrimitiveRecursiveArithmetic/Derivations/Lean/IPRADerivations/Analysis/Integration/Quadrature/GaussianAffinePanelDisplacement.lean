@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarDifferenceEmbedding
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact displacement geometry for two native affine panels
@@ -16,25 +15,20 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianAffinePanelDisplacement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (grid value)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open RationalValueBounds (radius radius_of_upper radius_congr radius_cancel)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def endpointSource (a C b D A : PTm n) : Fm PTm n :=
   (le a (b+A) ⋏ le b (a+A)) ⋏ (le (a+C) (b+D+A) ⋏ le (b+D) (a+C+A))
-@[simp] theorem subst_endpointSource {m : ℕ} (σ : Fin n → PTm m) (a C b D A : PTm n) :
-    (endpointSource a C b D A).subst σ = endpointSource (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) := by simp [endpointSource]
+ipra_subst endpointSource
 
 theorem convex_upper (j N a C b D A : PTm n) (hj : Γ ⊢[PRAAx] le j N)
     (h0 : Γ ⊢[PRAAx] le a (b+A)) (h1 : Γ ⊢[PRAAx] le (a+C) (b+D+A)) : Γ ⊢[PRAAx]

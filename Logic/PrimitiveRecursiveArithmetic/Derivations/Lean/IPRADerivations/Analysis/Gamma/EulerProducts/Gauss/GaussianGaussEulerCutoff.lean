@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaEulerInverseApproximationName (cutoff_guards cutoff_threshold rateScale)
@@ -28,9 +28,6 @@ open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positiv
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -77,10 +74,7 @@ theorem scaled_log_cutoff (m N : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
 def commonCutoff (p R m a d : PTm n) : PTm n :=
   neededCutoff p (R+one) a (d*m)+neededCutoff p (scaledRadius R m) a d+neededCutoff p one one m+one
 
-@[simp] theorem subst_commonCutoff {l : ℕ} (σ : Fin n → PTm l) (p R m a d : PTm n) :
-    Syn.subst σ (commonCutoff p R m a d) =
-      commonCutoff (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp [commonCutoff,one]
+ipra_subst commonCutoff [one]
 
 theorem common_guards (p R m a d : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     let N := commonCutoff p R m a d

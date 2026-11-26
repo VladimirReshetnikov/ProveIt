@@ -16,16 +16,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalTranslationAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qadd qmul represents positive_product qadd_represents qmul_represents represents_congr canonical_unique)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub qsub_represents)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qadd_congr rescale_to)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra (equal_of_values re_add im_add re_sub im_sub re_mul im_mul)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,9 +43,7 @@ theorem cancel_shift_product_from_representations (z w u Z W U E : PTm n)
   apply equal_of_values <;> simp only [re_mul,im_mul,re_sub,im_sub,re_add,im_add] <;> ring
 
 def commonDenominator (z w u : PTm n) : PTm n := rawDen z*rawDen w*rawDen u
-@[simp] theorem subst_commonDenominator {m : ℕ} (σ : Fin n → PTm m) (z w u : PTm n) :
-    Syn.subst σ (commonDenominator z w u) = commonDenominator (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ u) := by
-  simp [commonDenominator]
+ipra_subst commonDenominator
 
 theorem common_denominator_positive (z w u : PTm n) : Γ ⊢[PRAAx] le one (commonDenominator z w u) :=
   positive_product _ _ (positive_product _ _ (raw_den_positive z) (raw_den_positive w)) (raw_den_positive u)
@@ -79,12 +74,8 @@ def hornerStep (_z w u v : PTm n) : PTm n := qadd (qmul u w) v
 def divisionStepF : PR 4 := PTm.toPR (divisionStep (var 0) (var 1) (var 2) (var 3))
 def hornerStepF : PR 4 := PTm.toPR (hornerStep (var 0) (var 1) (var 2) (var 3))
 
-@[simp] theorem subst_divisionStep {m : ℕ} (σ : Fin n → PTm m) (z w u v : PTm n) :
-    Syn.subst σ (divisionStep z w u v) = divisionStep (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ u) (Syn.subst σ v) := by
-  simp [divisionStep]
-@[simp] theorem subst_hornerStep {m : ℕ} (σ : Fin n → PTm m) (z w u v : PTm n) :
-    Syn.subst σ (hornerStep z w u v) = hornerStep (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ u) (Syn.subst σ v) := by
-  simp [hornerStep]
+ipra_subst divisionStep
+ipra_subst hornerStep
 
 theorem division_program (z w u v : PTm n) : Γ ⊢[PRAAx]
     PTm.app divisionStepF ![z,w,u,v] ≐ divisionStep z w u v := by

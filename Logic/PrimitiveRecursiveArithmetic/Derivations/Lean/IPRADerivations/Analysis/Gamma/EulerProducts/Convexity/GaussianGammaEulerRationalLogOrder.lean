@@ -15,7 +15,7 @@ set_option maxHeartbeats 1350000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (addF addData add_fast)
@@ -26,8 +26,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder real_order_at scalar_coord
 open GaussianRationalHorner (qadd qadd_canonical positive_product)
 open GaussianStirlingTailComparison (point_add_upper_same)
 open RationalValueBounds (upper upper_congr upper_mono upper_of_radius)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

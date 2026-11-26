@@ -19,7 +19,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinFiniteDampedComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (quadrature mesh precision)
 open GaussianEulerCompactPowerMajorant (majorant)
@@ -33,10 +33,6 @@ open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDeno
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -62,22 +58,11 @@ def clockCost (R H T C : PTm n) : PTm n := C*(majorant R H T+cost R H T)
 def finiteClock (p R H T C : PTm n) : PTm n := exponent (clockCost R H T C) (precision p T)
 def threshold (h R H T : PTm n) : PTm n := T*majorant R H T*(H*H)*unit h
 
-@[simp] theorem subst_finiteData {m : ℕ} (σ : Fin n → PTm m) (z R B N Q a C E T : PTm n) :
-    Syn.subst σ (finiteData z R B N Q a C E T) =
-      finiteData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N)
-        (Syn.subst σ Q) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [finiteData]
-@[simp] theorem subst_finiteInput {m : ℕ} (σ : Fin n → PTm m) (z R B N Q a C E T : PTm n) :
-    (finiteInput z R B N Q a C E T).subst σ =
-      finiteInput (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N)
-        (Syn.subst σ Q) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [finiteInput]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (R H T C : PTm n) :
-    Syn.subst σ (numerator R H T C) = numerator (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ T) (Syn.subst σ C) := by
-  simp [numerator,majorant,GaussianEulerCompactPowerMajorant.exponentRadius,one]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (E H N : PTm n) :
-    Syn.subst σ (denominator E H N) = denominator (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ N) := by simp [denominator]
-@[simp] theorem subst_threshold {m : ℕ} (σ : Fin n → PTm m) (h R H T : PTm n) :
-    Syn.subst σ (threshold h R H T) = threshold (Syn.subst σ h) (Syn.subst σ R) (Syn.subst σ H) (Syn.subst σ T) := by
-  simp [threshold,majorant,GaussianEulerCompactPowerMajorant.exponentRadius,one]
+ipra_subst finiteData
+ipra_subst finiteInput
+ipra_subst numerator [majorant, GaussianEulerCompactPowerMajorant.exponentRadius, one]
+ipra_subst denominator
+ipra_subst threshold [majorant, GaussianEulerCompactPowerMajorant.exponentRadius, one]
 
 theorem denominator_positive (z R B N a C E H T : PTm n)
     (hz : Γ ⊢[PRAAx] source z R B a C E H T) : Γ ⊢[PRAAx] le one (denominator E H N) :=

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicCompanion
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual repeated synthetic stripping at a fixed original width
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFixedWidthStrip
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -31,10 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMonicReduction
   (evaluate_congr canonical_coefficients_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,12 +39,9 @@ def initial : PTm 1 := fstT (var 0)
 def stepBody : PTm 3 := stripStep (var 1) (fstT (sndT (var 2))) (sndT (sndT (var 2)))
 def blockF : PR 2 := rec2 initial stepBody
 def block (Q D x r : PTm n) : PTm n := ap2 blockF r (data Q D x)
-@[simp] theorem subst_stripStep {l : ℕ} (σ : Fin n → PTm l) (Q D x : PTm n) :
-    Syn.subst σ (stripStep Q D x) = stripStep (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ x) := by simp [stripStep]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (Q D x : PTm n) :
-    Syn.subst σ (data Q D x) = data (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_block {l : ℕ} (σ : Fin n → PTm l) (Q D x r : PTm n) :
-    Syn.subst σ (block Q D x r) = block (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ x) (Syn.subst σ r) := by simp [block]
+ipra_subst stripStep
+ipra_subst data
+ipra_subst block
 
 theorem strip_congr {Q Q' D D' x x' : PTm n} (hQ : Γ ⊢[PRAAx] Q ≐ Q')
     (hD : Γ ⊢[PRAAx] D ≐ D') (hx : Γ ⊢[PRAAx] x ≐ x') : Γ ⊢[PRAAx]
@@ -96,8 +88,8 @@ theorem block_succ (Q D x r : PTm n) : Γ ⊢[PRAAx]
   simp only [stepBody,subst_stripStep,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] at e
   exact e.eqTrans (strip_congr (.eqRefl _)
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+    (snd_pair _ _).fstE
+    (snd_pair _ _).sndE)
 
 /-- No bound on the number of stripping steps occurs in this shape proof. -/
 theorem block_length (Q D x r : PTm n) (hQ : Γ ⊢[PRAAx] length Q ≐ succ D) : Γ ⊢[PRAAx]
@@ -137,23 +129,18 @@ def output (Q D x r : PTm n) : PTm n := pairT (block Q D x r)
   (pairT (block Q D x (succ r)) (stripStep (block Q D x r) D x))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (Q D x r : PTm n) : PTm n := app outputF ![Q,D,x,r]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (Q D x r : PTm n) :
-    Syn.subst σ (output Q D x r) = output (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ x) (Syn.subst σ r) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (Q D x r : PTm n) :
-    Syn.subst σ (run Q D x r) = run (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ x) (Syn.subst σ r) := by
-  simp [run]
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem block_program_at (Q D x r : PTm n) : Γ ⊢[PRAAx] app blockProgramF ![Q,D,x,r] ≐ block Q D x r := by
   simpa [blockProgramF] using toPR_eq (Γ := Γ) (block (var 0) (var 1) (var 2) (var 3) : PTm 4) ![Q,D,x,r]
 theorem program_at (Q D x r : PTm n) : Γ ⊢[PRAAx] run Q D x r ≐ output Q D x r := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![Q,D,x,r]
 theorem returned_current (Q D x r : PTm n) : Γ ⊢[PRAAx] fstT (run Q D x r) ≐ block Q D x r :=
-  (congrFst (program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).fstE
 theorem returned_next (Q D x r : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run Q D x r)) ≐ block Q D x (succ r) :=
-  (congrFst ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _).sndE.fstE
 theorem returned_strip (Q D x r : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run Q D x r)) ≐ stripStep (block Q D x r) D x :=
-  (congrSnd ((congrSnd (program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _).sndE.sndE
 theorem returned_successor_code (Q D x r : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run Q D x r)) ≐ sndT (sndT (run Q D x r)) :=
   (returned_next _ _ _ _).eqTrans ((block_succ _ _ _ _).eqTrans (returned_strip _ _ _ _).eqSymm)

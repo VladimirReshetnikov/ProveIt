@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineLaplaceResolvent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode normSq eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianBinetArctangentResolvent (pole poleNumerator pole_lower polynomial polynomial_lower product_polynomial signedTimeNumerator)
@@ -38,9 +38,6 @@ open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRootAlgebra (equal_of_values re_mul im_mul re_sub im_sub re_add im_add re_scale im_scale re_neg im_neg re_one im_one)
 open GaussianSineProductImaginaryLogDerivative (axisNumerator)
 open GaussianSineProductImaginaryLogDerivativeTail (axis_norm)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "LV" => GaussianBinetExponentialIntegralGrid.value

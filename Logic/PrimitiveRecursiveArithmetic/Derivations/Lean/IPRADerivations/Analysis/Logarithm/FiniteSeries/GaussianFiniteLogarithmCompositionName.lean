@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmCompositionName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (evaluate ofGaussian ofGaussian_represents positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -30,10 +30,6 @@ open GaussianNameEquivalence (diagonalEquivalent crossEquivalent)
 open GaussianFiniteLogarithmDyadicTail (clock precisionDenominator)
 open GaussianFiniteLogarithmPolynomial (composition)
 open GaussianFiniteLogarithmCompositionTail (linearValue)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,14 +39,10 @@ def nameF : PR 2 := PTm.toPR (value (var 0) (var 1))
 def sample (p w : PTm n) : PTm n := ap2 nameF p w
 def constantF : PR 2 := PTm.toPR (linearValue (var 1) : PTm 2)
 def constant (p w : PTm n) : PTm n := ap2 constantF p w
-@[simp] theorem subst_degree {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (degree p) = degree (Syn.subst σ p) := by simp [degree]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (p w : PTm n) :
-    Syn.subst σ (value p w) = value (Syn.subst σ p) (Syn.subst σ w) := by simp [value]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (p w : PTm n) :
-    Syn.subst σ (sample p w) = sample (Syn.subst σ p) (Syn.subst σ w) := by simp [sample]
-@[simp] theorem subst_constant {l : ℕ} (σ : Fin n → PTm l) (p w : PTm n) :
-    Syn.subst σ (constant p w) = constant (Syn.subst σ p) (Syn.subst σ w) := by simp [constant]
+ipra_subst degree
+ipra_subst value
+ipra_subst sample
+ipra_subst constant
 
 theorem sample_at (p w : PTm n) : Γ ⊢[PRAAx] sample p w ≐ value p w := by
   simpa [sample,nameF,ap2] using toPR_eq (Γ := Γ) (value (var 0) (var 1) : PTm 2) ![p,w]
@@ -162,27 +154,25 @@ def output (p z N : PTm n) : PTm n := pairT (sample p (ofGaussian z N))
   (pairT (GammaLogarithmFactorBridge.sumArgument z N (clock p)) (pairT (clock p) (ofGaussian z N)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (p z N : PTm n) : PTm n := ap3 outputF p z N
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (p z N : PTm n) :
-    Syn.subst σ (output p z N) = output (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (p z N : PTm n) :
-    Syn.subst σ (run p z N) = run (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (p z N : PTm n) : Γ ⊢[PRAAx] run p z N ≐ output p z N := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![p,z,N]
 theorem returned_sample (p z N : PTm n) : Γ ⊢[PRAAx] fstT (run p z N) ≐ sample p (ofGaussian z N) :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_tail (p z N : PTm n) : Γ ⊢[PRAAx] sndT (run p z N) ≐
     pairT (GammaLogarithmFactorBridge.sumArgument z N (clock p)) (pairT (clock p) (ofGaussian z N)) :=
-  (congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE
 theorem returned_argument (p z N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p z N)) ≐
     GammaLogarithmFactorBridge.sumArgument z N (clock p) :=
-  (congrFst (returned_tail _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _).fstE
 theorem returned_pair (p z N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p z N)) ≐ pairT (clock p) (ofGaussian z N) :=
-  (congrSnd (returned_tail _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _).sndE
 theorem returned_clock (p z N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p z N))) ≐ clock p :=
-  (congrFst (returned_pair _ _ _)).eqTrans (fst_pair _ _)
+  (returned_pair _ _ _).fstE
 theorem returned_query (p z N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p z N))) ≐ ofGaussian z N :=
-  (congrSnd (returned_pair _ _ _)).eqTrans (snd_pair _ _)
+  (returned_pair _ _ _).sndE
 theorem returned_original_evaluation (p z N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     fstT (run p z N) ≐ GaussianRationalPolynomialExponential.scalarSum
       (GammaLogarithmFactorBridge.sumArgument z N (clock p)) (clock p) :=

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliSharpRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDigammaBernoulliActualUpper (original_positive)
 open GaussianDigammaBernoulliImproperName (original_improper_cross)
 open GaussianDigammaBernoulliRadius (radiusNumerator radiusDenominator weighted_primitive_radius)
@@ -27,8 +27,6 @@ open GaussianRationalHorner (qzero)
 open GaussianStirlingAllOrderLogRateTransport (upperPoint)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder)
 open GaussianStirlingNames (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

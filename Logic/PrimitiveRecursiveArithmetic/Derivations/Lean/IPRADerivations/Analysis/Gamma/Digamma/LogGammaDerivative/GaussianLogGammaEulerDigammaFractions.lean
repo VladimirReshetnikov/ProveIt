@@ -19,7 +19,7 @@ set_option maxHeartbeats 440000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerDigammaFractions
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode zeroCode)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular harmonicPoint subst_harmonicPoint)
@@ -39,9 +39,6 @@ open GaussianRationalReciprocal (reciprocal)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qzero_add)
 open GaussianReciprocalHorner (qadd_commutative)
 open GaussianRootAlgebra (equal equal_of_values re_scale im_scale re_zero im_zero)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "sum" => GaussianRationalFiniteSum.sum
@@ -60,17 +57,11 @@ def nameF : PR 2 := addF negativeGammaF constantF
 
 def data (A B D neg N : PTm n) : PTm n := addData negativeGammaData (correction A B D neg N)
 
-@[simp] theorem subst_partialSum {m : ℕ} (σ : Fin n → PTm m) (z N : PTm n) :
-    Syn.subst σ (partialSum z N) = partialSum (Syn.subst σ z) (Syn.subst σ N) := by
-  simp [partialSum]
+ipra_subst partialSum
 
-@[simp] theorem subst_correction {m : ℕ} (σ : Fin n → PTm m) (A B D neg N : PTm n) :
-    Syn.subst σ (correction A B D neg N) = correction (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ neg) (Syn.subst σ N) := by simp [correction]
+ipra_subst correction
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D neg N : PTm n) :
-    Syn.subst σ (data A B D neg N) = data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ neg) (Syn.subst σ N) := by simp [data]
+ipra_subst data
 
 private theorem harmonic_at (i x : PTm n) :
     Γ ⊢[PRAAx] inst2 harmonicBody i x ≐ fraction one (succ i) := by

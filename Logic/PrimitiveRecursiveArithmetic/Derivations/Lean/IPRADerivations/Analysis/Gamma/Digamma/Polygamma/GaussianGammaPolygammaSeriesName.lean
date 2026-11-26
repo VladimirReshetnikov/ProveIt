@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPolygammaSeriesName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaEulerHeadLower (pole_at translated)
@@ -24,11 +24,7 @@ open GaussianGammaPolygammaTailRows (argument argument_lower)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono)
 open GaussianRationalHorner (positive_product ofGaussian_represents)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 open Products (fact)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -42,18 +38,10 @@ def body : PTm 2 := observation (var 0) (fstT (var 1)) (fstT (sndT (var 1)))
   (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1))))
 def nameF : PR 2 := PTm.toPR body
 
-@[simp] theorem subst_source {l : ℕ} (σ : Fin n → PTm l) (z R B E : PTm n) :
-    (source z R B E).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by
-  simp [source,one]
-@[simp] theorem subst_weight {l : ℕ} (σ : Fin n → PTm l) (m : PTm n) :
-    Syn.subst σ (weight m) = weight (Syn.subst σ m) := by
-  simp [weight,Products.fact,two]
-@[simp] theorem subst_observation {l : ℕ} (σ : Fin n → PTm l) (p z R B m : PTm n) :
-    Syn.subst σ (observation p z R B m) = observation (Syn.subst σ p) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) := by simp [observation,clock,one,two]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z R B m : PTm n) :
-    Syn.subst σ (data z R B m) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) := by
-  simp [data]
+ipra_subst source [one]
+ipra_subst weight [Products.fact, two]
+ipra_subst observation [clock, one, two]
+ipra_subst data
 
 theorem name_at (p z R B m : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B m) ≐ observation p z R B m := by
   let x := data z R B m

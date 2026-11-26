@@ -17,7 +17,7 @@ set_option maxHeartbeats 680000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetWeightedExponentialMidpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetWeightedExponentialGrid (evaluatorF rowValue primitiveData subst_primitiveData cell_at)
 open GaussianBinetWeightedExponentialRowRate (gain row_error numerator subst_numerator)
 open GaussianBinetWeightedExponentialUniform (readBudget finite_readback)
@@ -29,10 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

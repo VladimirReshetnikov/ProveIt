@@ -24,11 +24,9 @@ arbitrary iPRA formulas (open: upward closed, closed: downward closed, both as d
 
 namespace LeanProofs.IPRA.Topology.FiniteInteriorClosure
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.IntersectionEnumeration (disjFin disjFin_intro disjFin_imp)
 open LeanProofs.IPRA.Algebra.AdjugateInverse (conjFin_elim)
-open Syn
-open scoped Fm
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 variable (rel : Fin k → Fin k → Prop) [DecidableRel rel]

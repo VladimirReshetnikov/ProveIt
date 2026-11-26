@@ -144,9 +144,7 @@ theorem incr_canon {Γ : List (Fm PTm n)} :
 /-- The bound defect `Σ_q (x_q ∸ N)` of the first `k` entries over the base `b`. -/
 def bsum (k : ℕ) (v b : PTm n) : PTm n := fsum k (fun q => monus (proj q.val v) (fstT b))
 
-@[simp] theorem subst_bsum {m : ℕ} (σ : Fin n → PTm m) (k : ℕ) (v b : PTm n) :
-    Syn.subst σ (bsum k v b) = bsum k (Syn.subst σ v) (Syn.subst σ b) := by
-  simp [bsum]
+ipra_subst bsum
 
 /-- The vertices of a Kuhn simplex in an admissible position are grid points over the base. -/
 theorem incr_grid {Γ : List (Fm PTm n)} (k : ℕ) (bits : ℕ → Bool) (y b : PTm n)

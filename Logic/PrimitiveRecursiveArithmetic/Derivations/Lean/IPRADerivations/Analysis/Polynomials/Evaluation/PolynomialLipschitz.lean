@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Inequalities.PowerGap
 import IPRADerivations.Combinatorics.BinomialTheorem
-import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Probability.Variance
 
@@ -33,15 +32,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.PolynomialLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PowerGap (power_gap shift_le' shift_eq')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (ad_le_of)
 open LeanProofs.IPRA.Probability.Variance (ad)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -126,16 +121,12 @@ theorem poly_lip {Z W M d x : PTm n} (hd : Γ ⊢[PRAAx] Z ≐ W + d) (hU : Γ �
     Γ ⊢[PRAAx] LipInv c D Z W M d x := by
   have hall : Γ ⊢[PRAAx] Fm.all (LipInv c (var 0) (Syn.shift Z) (Syn.shift W) (Syn.shift M)
       (Syn.shift d) (Syn.shift x)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      have z1 := natEq (sum_zero (Γ := Γ) (polyB c) (pairT Z x))
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · have z1 := natEq (sum_zero (Γ := Γ) (polyB c) (pairT Z x))
       have z2 := natEq (sum_zero (Γ := Γ) (polyB c) (pairT W x))
       have z3 := natEq (sum_zero (Γ := Γ) (lipB c) (pairT M x))
       ipra_le 0 using rw [z1, z2, z3]; ring
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact lip_step (shift_eq' hd).wk (shift_le' hU).wk Prf.hyp0
+    · exact lip_step (shift_eq' hd).wk (shift_le' hU).wk Prf.hyp0
   have h := Prf.allE D hall
   simpa only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
     Syn.inst_zero, Syn.subst_inst_shift] using h

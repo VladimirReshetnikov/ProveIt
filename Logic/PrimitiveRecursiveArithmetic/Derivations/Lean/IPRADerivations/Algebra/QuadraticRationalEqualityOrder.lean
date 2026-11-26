@@ -16,15 +16,12 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalEqualityOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates (first second equal negative_first negative_second)
 open QuadraticConeOrder (equal_of_values equal_symm equal_first equal_second add_first add_second)
 open QuadraticRationalClearing (clear denominator represents clear_represents denominator_positive)
 open QuadraticPositiveScaling (scale scale_first scale_second sign_scale)
 open QuadraticRationalPairArithmetic (add negative positive isZero)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,16 +30,11 @@ def equivalent (d x y : PTm n) : Fm PTm n := isZero d (difference x y)
 def less (d x y : PTm n) : Fm PTm n := positive d (difference y x)
 def cross (A D B E : PTm n) : PTm n := QuadraticIntegerOrder.difference (scale E A) (scale D B)
 def crossOf (x y : PTm n) : PTm n := cross (clear x) (denominator x) (clear y) (denominator y)
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    Syn.subst σ (difference x y) = difference (Syn.subst σ x) (Syn.subst σ y) := by simp [difference]
-@[simp] theorem subst_equivalent {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    (equivalent d x y).subst σ = equivalent (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [equivalent]
-@[simp] theorem subst_less {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    (less d x y).subst σ = less (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [less]
-@[simp] theorem subst_cross {l : ℕ} (σ : Fin n → PTm l) (A D B E : PTm n) :
-    Syn.subst σ (cross A D B E) = cross (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ B) (Syn.subst σ E) := by simp [cross]
-@[simp] theorem subst_crossOf {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) :
-    Syn.subst σ (crossOf x y) = crossOf (Syn.subst σ x) (Syn.subst σ y) := by simp [crossOf]
+ipra_subst difference
+ipra_subst equivalent
+ipra_subst less
+ipra_subst cross
+ipra_subst crossOf
 
 theorem represents_native_congr (x A B D : PTm n) (h : Γ ⊢[PRAAx] represents x A D)
     (he : Γ ⊢[PRAAx] equal A B) : Γ ⊢[PRAAx] represents x B D :=
@@ -165,20 +157,18 @@ def output (d x y : PTm n) : PTm n := pairT (difference x y) (pairT (crossOf x y
   (pairT (QuadraticRationalClearing.sign d (difference x y)) (QuadraticSignCertificates.sign d (crossOf x y))))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (d x y : PTm n) : PTm n := ap3 outputF d x y
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    Syn.subst σ (output d x y) = output (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    Syn.subst σ (run d x y) = run (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d x y : PTm n) : Γ ⊢[PRAAx] run d x y ≐ output d x y := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![d,x,y]
 theorem returned_difference (d x y : PTm n) : Γ ⊢[PRAAx] fstT (run d x y) ≐ difference x y :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_cross (d x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d x y)) ≐ crossOf x y :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_rational_sign (d x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d x y))) ≐ QuadraticRationalClearing.sign d (difference x y) :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.sndE.fstE
 theorem returned_native_sign (d x y : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d x y))) ≐ QuadraticSignCertificates.sign d (crossOf x y) :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE.sndE
 theorem returned_equal_signs (d x y : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run d x y))) ≐ sndT (sndT (sndT (run d x y))) :=
   (returned_rational_sign _ _ _).eqTrans ((difference_sign _ _ _ hd).eqTrans (returned_native_sign _ _ _).eqSymm)

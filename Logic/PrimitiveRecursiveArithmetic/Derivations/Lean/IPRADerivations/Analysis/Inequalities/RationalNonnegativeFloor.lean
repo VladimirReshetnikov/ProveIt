@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexSecants
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact numerical floor cuts for original nonnegative rational codes
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalNonnegativeFloor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalConvexSecants (nonnegative naturalNumerator nonnegative_representation)
 open RationalSupMetric (denominatorOf)
 open RationalArgmin (rationalLE denominator_positive)
@@ -26,10 +25,6 @@ open GaussianRationalSyntheticBounds (natCode natCode_represents)
 open GaussianRationalMetric (comparison_to_cleared comparison_of_cleared)
 open GaussianRationalHorner (positive_product)
 open RationalValueBounds (upper radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -37,11 +32,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def index (q M : PTm n) : PTm n := quo (M*naturalNumerator q) (denominatorOf q)
 def quantized (q M : PTm n) : PTm n := fraction (index q M) M
 
-@[simp] theorem subst_index {m : ℕ} (σ : Fin n → PTm m) (q M : PTm n) :
-    Syn.subst σ (index q M) = index (Syn.subst σ q) (Syn.subst σ M) := by
-  simp [index,naturalNumerator,RationalSupMetric.numeratorOf,quo]
-@[simp] theorem subst_quantized {m : ℕ} (σ : Fin n → PTm m) (q M : PTm n) :
-    Syn.subst σ (quantized q M) = quantized (Syn.subst σ q) (Syn.subst σ M) := by simp [quantized]
+ipra_subst index [naturalNumerator, RationalSupMetric.numeratorOf, quo]
+ipra_subst quantized
 
 theorem original_division (q M : PTm n) : Γ ⊢[PRAAx]
     (M*naturalNumerator q ≐ denominatorOf q*index q M+rem (M*naturalNumerator q) (denominatorOf q)) ⋏

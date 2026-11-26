@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialForwardDifferenceGridIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr length)
 open LeanProofs.IPRA.Foundations.SequenceEquality (agree sequence_equal)
@@ -25,9 +25,6 @@ open GaussianRationalMetric (qsub)
 open GaussianRationalReciprocal (reciprocal power_succ)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianRationalTranslationStages (remaining remaining_positive remaining_step)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerMultiplicationHeight
 import IPRADerivations.Foundations.GuardedTotalization
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Three-call sign recipe and genuine lower operand bounds
@@ -21,7 +20,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerSignRecipe
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerCoefficients (width)
 open QuadraticTowerArrayCodec (arrayHeight code horizon)
@@ -32,9 +31,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedReflection
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero sel_cases)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,29 +55,15 @@ def dispatch (s t u : PTm n) : PTm n := sel (eqb s zero) (tagProduct t u)
 def recipe (h B D S A : PTm n) : PTm n :=
   dispatch (firstTag h B D S A) (secondTag h B D S A) (thirdTag h B D S A)
 
-@[simp] theorem subst_read {k : ℕ} (σ : Fin n → PTm k) (h B S A : PTm n) :
-    Syn.subst σ (read h B S A) = read (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ S) (Syn.subst σ A) := by simp [read]
-@[simp] theorem subst_firstTag {k : ℕ} (σ : Fin n → PTm k) (h B D S A : PTm n) :
-    Syn.subst σ (firstTag h B D S A) = firstTag (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ S) (Syn.subst σ A) := by simp [firstTag]
-@[simp] theorem subst_secondTag {k : ℕ} (σ : Fin n → PTm k) (h B D S A : PTm n) :
-    Syn.subst σ (secondTag h B D S A) = secondTag (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ S) (Syn.subst σ A) := by simp [secondTag]
-@[simp] theorem subst_norm {k : ℕ} (σ : Fin n → PTm k) (h B D A : PTm n) :
-    Syn.subst σ (norm h B D A) = norm (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ A) := by simp [norm]
-@[simp] theorem subst_thirdInput {k : ℕ} (σ : Fin n → PTm k) (h B D S A : PTm n) :
-    Syn.subst σ (thirdInput h B D S A) = thirdInput (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ S) (Syn.subst σ A) := by simp [thirdInput,sel]
-@[simp] theorem subst_thirdTag {k : ℕ} (σ : Fin n → PTm k) (h B D S A : PTm n) :
-    Syn.subst σ (thirdTag h B D S A) = thirdTag (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ S) (Syn.subst σ A) := by simp [thirdTag]
-@[simp] theorem subst_tagProduct {k : ℕ} (σ : Fin n → PTm k) (s t : PTm n) :
-    Syn.subst σ (tagProduct s t) = tagProduct (Syn.subst σ s) (Syn.subst σ t) := by simp [tagProduct,sel]
-@[simp] theorem subst_dispatch {k : ℕ} (σ : Fin n → PTm k) (s t u : PTm n) :
-    Syn.subst σ (dispatch s t u) = dispatch (Syn.subst σ s) (Syn.subst σ t) (Syn.subst σ u) := by simp [dispatch,sel]
-@[simp] theorem subst_recipe {k : ℕ} (σ : Fin n → PTm k) (h B D S A : PTm n) :
-    Syn.subst σ (recipe h B D S A) = recipe (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ S) (Syn.subst σ A) := by simp [recipe]
+ipra_subst read
+ipra_subst firstTag
+ipra_subst secondTag
+ipra_subst norm
+ipra_subst thirdInput [sel]
+ipra_subst thirdTag
+ipra_subst tagProduct [sel]
+ipra_subst dispatch [sel]
+ipra_subst recipe
 
 theorem read_bound (h B S A : PTm n) : Γ ⊢[PRAAx] lt (read h B S A) (succ two) :=
   .andE₂ (Foundations.RuntimeWordAppend.divide_spec _ _ (zero_lt_succ two))
@@ -242,24 +224,16 @@ theorem recipe_a_d_zero (h B D S A : PTm n) (ha : Γ ⊢[PRAAx] firstTag h B D S
 def output (h B D S A : PTm n) : PTm n := pairT (thirdInput h B D S A) (recipe h B D S A)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (h B D S A : PTm n) : PTm n := PTm.app outputF ![h,B,D,S,A]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h B D S A : PTm n) :
-    Syn.subst σ (output h B D S A) = output (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ S) (Syn.subst σ A) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h B D S A : PTm n) :
-    Syn.subst σ (run h B D S A) = run (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ S) (Syn.subst σ A) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h B D S A : PTm n) : Γ ⊢[PRAAx] run h B D S A ≐ output h B D S A := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![h,B,D,S,A]
 theorem returned_third (h B D S A : PTm n) : Γ ⊢[PRAAx] fstT (run h B D S A) ≐ thirdInput h B D S A :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_tag (h B D S A : PTm n) : Γ ⊢[PRAAx] sndT (run h B D S A) ≐ recipe h B D S A :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_fits (h B D S A b : PTm n) (hb : Γ ⊢[PRAAx] le b B)
     (hD : Γ ⊢[PRAAx] radicandsHeight D (succ h) b) (ha : Γ ⊢[PRAAx] arrayHeight (succ h) A b) : Γ ⊢[PRAAx]
     arrayHeight h (fstT (run h B D S A)) (budget h B D) :=

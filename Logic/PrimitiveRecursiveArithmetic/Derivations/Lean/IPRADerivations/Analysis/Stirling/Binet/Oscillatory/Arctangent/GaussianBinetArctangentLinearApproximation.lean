@@ -17,7 +17,7 @@ set_option maxHeartbeats 710000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentLinearApproximation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (evaluatorF fixedData nameF data evaluator_at)
 open GaussianBinetArctangentResolvent (polynomial value)
 open GaussianCompactRiemannName (grid sampleBody sampleData sample_body_at quadrature mesh mesh_positive precision)
@@ -35,21 +35,14 @@ open GaussianRationalRiemannRefinement (termsDistance constantBody constant_entr
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qadd_sub_cancel qsub_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def cube (u : PTm n) : PTm n := u*u*u
 def linear (X Y D sign A B : PTm n) : PTm n := qmul (fraction A B) (reciprocal (argument X Y D sign))
 
-@[simp] theorem subst_cube {m : ℕ} (σ : Fin n → PTm m) (u : PTm n) :
-    Syn.subst σ (cube u) = cube (Syn.subst σ u) := by simp [cube]
-@[simp] theorem subst_linear {m : ℕ} (σ : Fin n → PTm m) (X Y D sign A B : PTm n) :
-    Syn.subst σ (linear X Y D sign A B) =
-      linear (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) :=
-  by simp [linear,GaussianLogGammaEulerRepresentation.subst_argument]
+ipra_subst cube
+ipra_subst linear [GaussianLogGammaEulerRepresentation.subst_argument]
 
 private theorem right_distribute (a b c : PTm n) :
     Γ ⊢[PRAAx] qadd (qmul a c) (qmul b c) ≐ qmul (qadd a b) c :=

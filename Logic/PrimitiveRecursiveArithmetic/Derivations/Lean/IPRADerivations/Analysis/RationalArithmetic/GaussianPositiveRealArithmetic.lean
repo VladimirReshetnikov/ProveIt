@@ -16,16 +16,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRealArithmetic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalGaussianEmbedding (embed axis native)
 open GaussianRationalHorner (qzero qadd qmul canonical positive_product)
 open GaussianRationalReciprocal (power)
 open GaussianRationalNaturalScale (naturalPoint)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -34,10 +30,8 @@ def sign (a : PTm n) : Fm PTm n := le (numeratorOf a).neg (numeratorOf a).pos
 def positive (q : PTm n) : Fm PTm n := axis q ⋏ sign (fstT q)
 def numerator (a : PTm n) : PTm n := monus (numeratorOf a).pos (numeratorOf a).neg
 
-@[simp] theorem subst_sign {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    (sign a).subst σ = sign (Syn.subst σ a) := by simp [sign,numeratorOf,ZT.subst]
-@[simp] theorem subst_positive {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    (positive q).subst σ = positive (Syn.subst σ q) := by simp [positive]
+ipra_subst sign [numeratorOf, ZT.subst]
+ipra_subst positive
 
 theorem sign_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) (ha : Γ ⊢[PRAAx] sign a) :
     Γ ⊢[PRAAx] sign b := by
@@ -120,18 +114,15 @@ theorem positive_multiply (q r : PTm n) (hq : Γ ⊢[PRAAx] positive q) (hr : Γ
 theorem positive_power (q k : PTm n) (hq : Γ ⊢[PRAAx] positive q) : Γ ⊢[PRAAx] positive (power q k) := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] positive (Syn.shift q) := by simpa [Fm.shift,Syn.shift] using hq.shift
   have all : Γ ⊢[PRAAx] .all (positive (power (Syn.shift q) (var 0))) := by
-    refine PRA.qfInd _ (by simp [positive,axis,RationalArgmin.rationalEq,sign,Fm.QF,le_QF]) ?_ ?_
-    · simp only [subst_positive,GaussianRationalReciprocal.subst_power,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact positive_congr (GaussianRationalReciprocal.power_zero q).eqSymm positive_one
-    · simp only [subst_positive,GaussianRationalReciprocal.subst_power,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact positive_congr (GaussianRationalReciprocal.power_succ _ _).eqSymm (positive_multiply _ _ Prf.hyp0 hs.wk)
+    ipra_qfind (by simp [positive,axis,RationalArgmin.rationalEq,sign,Fm.QF,le_QF]) [subst_positive,
+        GaussianRationalReciprocal.subst_power]
+    · exact positive_congr (GaussianRationalReciprocal.power_zero q).eqSymm positive_one
+    · exact positive_congr (GaussianRationalReciprocal.power_succ _ _).eqSymm (positive_multiply _ _ Prf.hyp0 hs.wk)
   simpa only [subst_positive,GaussianRationalReciprocal.subst_power,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 def positiveTerms (t : PTm 2) (T x : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift T) ⟶ positive (inst2 t (var 0) (Syn.shift x)))
-@[simp] theorem subst_positiveTerms {m : ℕ} (σ : Fin n → PTm m) (t : PTm 2) (T x : PTm n) :
-    (positiveTerms t T x).subst σ = positiveTerms t (Syn.subst σ T) (Syn.subst σ x) := by
-  simp [positiveTerms,Syn.subst_shift,Syn.shift_subst]
+ipra_subst positiveTerms [Syn.subst_shift, Syn.shift_subst]
 
 theorem positive_term (t : PTm 2) (T x i : PTm n) (h : Γ ⊢[PRAAx] positiveTerms t T x)
     (hi : Γ ⊢[PRAAx] lt i T) : Γ ⊢[PRAAx] positive (inst2 t i x) := by
@@ -140,19 +131,16 @@ theorem positive_term (t : PTm 2) (T x i : PTm n) (h : Γ ⊢[PRAAx] positiveTer
   exact .impE e hi
 
 def sumLaw (t : PTm 2) (T x j : PTm n) : Fm PTm n := le j T ⟶ positive (GaussianRationalFiniteSum.sum t j x)
-@[simp] theorem subst_sumLaw {m : ℕ} (σ : Fin n → PTm m) (t : PTm 2) (T x j : PTm n) :
-    (sumLaw t T x j).subst σ = sumLaw t (Syn.subst σ T) (Syn.subst σ x) (Syn.subst σ j) := by simp [sumLaw]
+ipra_subst sumLaw
 
 theorem positive_sum (t : PTm 2) (T x : PTm n) (h : Γ ⊢[PRAAx] positiveTerms t T x) :
     Γ ⊢[PRAAx] positive (GaussianRationalFiniteSum.sum t T x) := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] positiveTerms t (Syn.shift T) (Syn.shift x) := by
     simpa only [Fm.shift,subst_positiveTerms,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (sumLaw t (Syn.shift T) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ (by simp [sumLaw,positive,axis,RationalArgmin.rationalEq,sign,Fm.QF,le_QF]) ?_ ?_
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (positive_congr (GaussianRationalFiniteSum.sum_zero t x).eqSymm positive_zero)
-    · simp only [subst_sumLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI (positive_congr (GaussianRationalFiniteSum.sum_succ _ _ _).eqSymm (positive_add _ _
+    ipra_qfind (by simp [sumLaw,positive,axis,RationalArgmin.rationalEq,sign,Fm.QF,le_QF]) [subst_sumLaw]
+    · exact .impI (positive_congr (GaussianRationalFiniteSum.sum_zero t x).eqSymm positive_zero)
+    · refine .impI (positive_congr (GaussianRationalFiniteSum.sum_succ _ _ _).eqSymm (positive_add _ _
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)) ?_))
       exact positive_term _ _ _ _ hs.wk.wk Prf.hyp0
   have last : Γ ⊢[PRAAx] sumLaw t T x T := by

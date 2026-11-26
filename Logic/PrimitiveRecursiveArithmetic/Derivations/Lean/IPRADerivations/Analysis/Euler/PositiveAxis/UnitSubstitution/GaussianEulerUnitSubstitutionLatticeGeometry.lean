@@ -16,15 +16,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionLatticeGeometry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionFloorCuts (absoluteF cut cutF data original_absolute_at original_at relativeCut)
 open GaussianEulerUnitDecayInput (compactDenominator clock)
 open GaussianPartitionedFiniteSumDistance (blockLength)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,18 +32,10 @@ def disk (E T : PTm n) : PTm n := two*(two*compactDenominator E T)
 def start (k N a C E T M : PTm n) : PTm n := cut zero k N a C E T M
 def count (k N a C E T M : PTm n) : PTm n := ap2 cutF N (data k N a C E T M)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (k N z R B a C E T M : PTm n) :
-    (source k N z R B a C E T M).subst σ = source (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by
-  simp [source]
-@[simp] theorem subst_disk {m : ℕ} (σ : Fin n → PTm m) (E T : PTm n) :
-    Syn.subst σ (disk E T) = disk (Syn.subst σ E) (Syn.subst σ T) := by simp [disk]
-@[simp] theorem subst_start {m : ℕ} (σ : Fin n → PTm m) (k N a C E T M : PTm n) :
-    Syn.subst σ (start k N a C E T M) = start (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [start]
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (k N a C E T M : PTm n) :
-    Syn.subst σ (count k N a C E T M) = count (Syn.subst σ k) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) := by simp [count]
+ipra_subst source
+ipra_subst disk
+ipra_subst start
+ipra_subst count
 
 theorem cuts_source (k N z R B a C E T M : PTm n) (h : Γ ⊢[PRAAx] source k N z R B a C E T M) : Γ ⊢[PRAAx]
     GaussianEulerUnitSubstitutionFloorCuts.source k N a C E T M := by
@@ -110,10 +98,9 @@ theorem original_positions (i j k N a C E T M : PTm n)
   have h : Γ ⊢[PRAAx] lt j (monus v u) := lt_congr (.eqRefl _) (original_width_at i k N a C E T M hs) hj
   have step := GaussianEulerUnitSubstitutionFloorCuts.original_cut_step i k N a C E T M hs
   have finish : Γ ⊢[PRAAx] lt (u+j) v := by
-    have e := natEq (eq_add_of_le step)
     change Γ ⊢[PRAAx] le (succ (u+j)) v
     have h' : Γ ⊢[PRAAx] le (succ j) (monus v u) := h
-    ipra_le sl h' with e
+    ipra_le sl h' with natEq (eq_add_of_le step)
   exact .andI (le_congr (.eqRefl _) eq.eqSymm (le_add_right _ _)) (lt_congr eq.eqSymm (.eqRefl _) finish)
 
 theorem original_count_bound (k N a C E T M : PTm n)

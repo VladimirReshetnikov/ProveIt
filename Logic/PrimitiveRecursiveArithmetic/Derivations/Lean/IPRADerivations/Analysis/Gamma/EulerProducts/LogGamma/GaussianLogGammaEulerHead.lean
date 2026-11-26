@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerHead
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiply_fast)
@@ -27,9 +27,6 @@ open GaussianRightHalfPlaneLogarithm (source)
 open ComplexLogarithmRemainder (code)
 open RationalArithmetic (select)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianRightHalfPlaneLogarithm.nameF
@@ -53,9 +50,7 @@ def nameF : PR 2 := addF (addF logF productF) (negativeF sumF)
 def data (A B D neg N : PTm n) : PTm n :=
   addData (addData (L (fact N) one) (productData A B D neg N)) (negativeData (sumData A B D neg N))
 
-@[simp] theorem subst_rowData {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (rowData A B D neg) = rowData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by
-  simp [rowData]
+ipra_subst rowData
 
 theorem row_at (i A B D neg : PTm n) :
     Γ ⊢[PRAAx] inst2 rowBody i (rowData A B D neg) ≐ P (A+i*D) B D neg := by

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelWeightedNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerBetaPolynomialPrimitive (base kernel base_length)
 open GaussianRationalHorner (qmul qzero positive_product)
 open GaussianRationalMetric (qnegative)
@@ -28,15 +28,11 @@ open GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open RationalArithmetic (add)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def argument (a b N : PTm n) : PTm n := GaussianRationalHorner.ofGaussian (ComplexLogarithmRemainder.scale a ComplexLogarithmRemainder.oneCode) (b*N)
-@[simp] theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (argument a b N) = argument (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [argument]
+ipra_subst argument
 
 theorem base_leading : Γ ⊢[PRAAx] entry (base : PTm n) zero ≐ qnegative qone := by
   have constant : Γ ⊢[PRAAx] entry (GaussianGammaEulerFactorPolynomial.constant : PTm n) zero ≐ qzero :=

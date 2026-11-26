@@ -1,6 +1,4 @@
 import IPRADerivations.Probability.ExpectationCorollaries
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite union bound and expected-utility maximization
@@ -22,15 +20,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.UnionUtility
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -152,13 +146,9 @@ theorem max_ge (m v : PTm n) : Γ ⊢[PRAAx] le m (m + monus v m) ⋏ le v (m + 
 private abbrev upF : Fm PTm 3 := lt (var 1) (var 0) ⟶ le (inst2 V (var 1) (var 2)) (Mx V (var 0) (var 2))
 
 private theorem up₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] upF V := by
-  refine ind _ ⟨lt_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [upF, Fm.subst_imp, subst_le, subst_lt, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero]
-    exact .impI (lt_zero_absurd _ Prf.hyp0)
-  · simp only [upF, Fm.subst_imp, subst_le, subst_lt, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
+  ipra_ind (⟨lt_QF _ _, le_QF _ _⟩) [upF, subst_le, subst_lt, subst_ap2, subst_inst2]
+  · exact .impI (lt_zero_absurd _ Prf.hyp0)
+  · refine .impI ?_
     have mg := max_ge (Γ := lt (var 1) (succ (var 0)) :: [upF V]) (Mx V (var 0) (var 2)) (inst2 V (var 0) (var 2))
     refine le_congr (.eqRefl _) (mx_succ V _ _).eqSymm ?_
     refine .orE (lt_succ_cases Prf.hyp0) ?_ ?_
@@ -177,10 +167,8 @@ private abbrev atF : Fm PTm 2 :=
   lt (Ag V (succ (var 0)) (var 1)) (succ (var 0)) ⋏ (inst2 V (Ag V (succ (var 0)) (var 1)) (var 1) ≐ Mx V (succ (var 0)) (var 1))
 
 private theorem at₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] atF V := by
-  refine ind _ ⟨lt_QF _ _, trivial⟩ ?_ ?_
-  · simp only [atF, Fm.subst_and, Fm.subst_eq, subst_lt, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have a1 : ([] : List (Fm PTm 1)) ⊢[PRAAx] Ag V (succ zero) (var 0) ≐ zero :=
+  ipra_ind (⟨lt_QF _ _, trivial⟩) [atF, subst_lt, subst_ap2, subst_inst2]
+  · have a1 : ([] : List (Fm PTm 1)) ⊢[PRAAx] Ag V (succ zero) (var 0) ≐ zero :=
       (ag_succ V zero (var 0)).eqTrans ((congrAdd (ag_zero V _) ((congrMul (.eqRefl _)
         ((congrMonus (.eqRefl _) (ag_zero V _)).eqTrans (monus_self _))).eqTrans (mul_zero _))).eqTrans (add_zero _))
     have m1 : ([] : List (Fm PTm 1)) ⊢[PRAAx] Mx V (succ zero) (var 0) ≐ inst2 V zero (var 0) :=
@@ -188,9 +176,7 @@ private theorem at₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] atF V := by
         (monus_zero _))).eqTrans (zero_add _))
     exact .andI (lt_congr a1.eqSymm (.eqRefl _) (zero_lt_succ _))
       ((congrInst2 V a1 (.eqRefl _)).eqTrans m1.eqSymm)
-  · simp only [atF, Fm.subst_and, Fm.subst_eq, subst_lt, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    let D : List (Fm PTm 2) := [atF V]
+  · let D : List (Fm PTm 2) := [atF V]
     have ih1 : D ⊢[PRAAx] lt (Ag V (succ (var 0)) (var 1)) (succ (var 0)) := Prf.andE₁ Prf.hyp0
     have ih2 : D ⊢[PRAAx] inst2 V (Ag V (succ (var 0)) (var 1)) (var 1) ≐ Mx V (succ (var 0)) (var 1) := Prf.andE₂ Prf.hyp0
     have as := ag_succ (Γ := D) V (succ (var 0)) (var 1)

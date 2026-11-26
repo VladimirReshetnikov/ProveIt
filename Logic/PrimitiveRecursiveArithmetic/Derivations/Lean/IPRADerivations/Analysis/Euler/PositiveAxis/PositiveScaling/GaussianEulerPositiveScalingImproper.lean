@@ -24,7 +24,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositiveScalingImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositiveScalingConstant (inverseF inverseData inverseBound)
 open GaussianGammaIntegralCutoffs (height etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width)
@@ -37,10 +37,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -65,31 +61,14 @@ def reader (p x : PTm n) : PTm n :=
     (fstT (sndT (sndT x))) (sndT (sndT (sndT x)))
 def nameF : PR 2 := PTm.toPR (reader (var 0) (var 1))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    (source z R B A c d).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [source]
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    Syn.subst σ (gain z R B A c d) = gain (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [gain,combined,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (p z R B A c d : PTm n) :
-    Syn.subst σ (cutoff p z R B A c d) = cutoff (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [cutoff]
-@[simp] theorem subst_compactData {m : ℕ} (σ : Fin n → PTm m) (k z R B A c d : PTm n) :
-    Syn.subst σ (compactData k z R B A c d) = compactData (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [compactData,etaDen,top,height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p z R B A c d : PTm n) :
-    Syn.subst σ (sample p z R B A c d) = sample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [sample]
-@[simp] theorem subst_referenceData {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    Syn.subst σ (referenceData z R B A c d) = referenceData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [referenceData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    Syn.subst σ (data z R B A c d) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [data]
-@[simp] theorem subst_reader {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
-    Syn.subst σ (reader p x) = reader (Syn.subst σ p) (Syn.subst σ x) := by simp [reader]
+ipra_subst source
+ipra_subst gain [combined, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst cutoff
+ipra_subst compactData [etaDen, top, height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst sample
+ipra_subst referenceData
+ipra_subst data
+ipra_subst reader
 
 theorem constant_source (z R B A c d : PTm n) (h : Γ ⊢[PRAAx] source z R B A c d) : Γ ⊢[PRAAx]
     GaussianEulerPositiveScalingConstant.source B c d := .andI h.andE₁.andE₁.andE₁ h.andE₂
@@ -165,9 +144,9 @@ theorem name_at (p z R B A c d : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B 
   have middle := (congrFst right).eqTrans (fst_pair (pairT B A) (pairT c d))
   have last := (congrSnd right).eqTrans (snd_pair (pairT B A) (pairT c d))
   exact program.eqTrans (sample_congr p _ _ _ _ _ _ _ _ _ _ _ _
-    ((congrFst left).eqTrans (fst_pair _ _)) ((congrSnd left).eqTrans (snd_pair _ _))
-    ((congrFst middle).eqTrans (fst_pair _ _)) ((congrSnd middle).eqTrans (snd_pair _ _))
-    ((congrFst last).eqTrans (fst_pair _ _)) ((congrSnd last).eqTrans (snd_pair _ _)))
+    left.fstE left.sndE
+    middle.fstE middle.sndE
+    last.fstE last.sndE)
 
 theorem compact_cross (k z R B A c d : PTm n) (h : Γ ⊢[PRAAx] source z R B A c d) : Γ ⊢[PRAAx]
     crossEquivalent Damped (multiplyF inverseF Compact) (compactData k z R B A c d)

@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNameBounds
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Dyadic brackets of positive integer Barnes radii
@@ -15,15 +14,11 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.BarnesDyadicRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (clog clog_spec clog_least)
 open LeanProofs.IPRA.Common (le_of_lt_succ lt_succ_of_le pred_lt)
 open GaussianCoefficientNameBounds (unit)
 open GaussianFactorBudget (power_monotone_length)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

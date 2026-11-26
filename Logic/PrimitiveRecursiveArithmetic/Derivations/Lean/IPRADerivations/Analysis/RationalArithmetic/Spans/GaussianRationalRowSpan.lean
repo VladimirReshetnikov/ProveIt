@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.RowReduction.GaussianRationalRowElimination
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite row combinations and their homogeneous dot equations
@@ -17,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRowSpan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr qmul_zero_right)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell subst_cell)
@@ -27,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum (sum sum_congr_bounded s
 open LeanProofs.IPRA.Analysis.GaussianRationalValueEquality (valueEqual)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,31 +45,22 @@ def weightedBody : PTm 2 := qmul (entry (fstT (sndT (sndT (var 1)))) (var 0))
   (rowDot (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (sndT (var 1)))) (var 0))
 def weightedDot (A R N C l : PTm n) : PTm n := sum weightedBody R (weightedData A N C l)
 
-@[simp] theorem subst_columnData {k : ℕ} (σ : Fin n → PTm k) (A C j : PTm n) :
-    Syn.subst σ (columnData A C j) = columnData (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ j) := by simp [columnData]
-@[simp] theorem subst_combinationAt {k : ℕ} (σ : Fin n → PTm k) (A R C j : PTm n) :
-    Syn.subst σ (combinationAt A R C j) = combinationAt (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ C) (Syn.subst σ j) := by simp [combinationAt]
-@[simp] theorem subst_combinationData {k : ℕ} (σ : Fin n → PTm k) (A R C : PTm n) :
-    Syn.subst σ (combinationData A R C) = combinationData (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ C) := by simp [combinationData]
-@[simp] theorem subst_rowCombination {k : ℕ} (σ : Fin n → PTm k) (A R N C : PTm n) :
-    Syn.subst σ (rowCombination A R N C) = rowCombination (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ C) := by simp [rowCombination]
-@[simp] theorem subst_vectorDot {k : ℕ} (σ : Fin n → PTm k) (N v l : PTm n) :
-    Syn.subst σ (vectorDot N v l) = vectorDot (Syn.subst σ N) (Syn.subst σ v) (Syn.subst σ l) := by simp [vectorDot]
-@[simp] theorem subst_tripleData {k : ℕ} (σ : Fin n → PTm k) (A C l : PTm n) :
-    Syn.subst σ (tripleData A C l) = tripleData (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ l) := by simp [tripleData]
-@[simp] theorem subst_triple {k : ℕ} (σ : Fin n → PTm k) (A C l i j : PTm n) :
-    Syn.subst σ (triple A C l i j) = triple (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ l) (Syn.subst σ i) (Syn.subst σ j) := by simp [triple]
-@[simp] theorem subst_weightedData {k : ℕ} (σ : Fin n → PTm k) (A N C l : PTm n) :
-    Syn.subst σ (weightedData A N C l) = weightedData (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ l) := by simp [weightedData]
-@[simp] theorem subst_weightedDot {k : ℕ} (σ : Fin n → PTm k) (A R N C l : PTm n) :
-    Syn.subst σ (weightedDot A R N C l) = weightedDot (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ l) := by simp [weightedDot]
+ipra_subst columnData
+ipra_subst combinationAt
+ipra_subst combinationData
+ipra_subst rowCombination
+ipra_subst vectorDot
+ipra_subst tripleData
+ipra_subst triple
+ipra_subst weightedData
+ipra_subst weightedDot
 
 theorem column_body_at (A C j i : PTm n) : Γ ⊢[PRAAx]
     inst2 columnBody i (columnData A C j) ≐ qmul (entry C i) (cell A i j) := by
   simp only [columnBody,inst2,GaussianRationalHorner.subst_qmul,subst_entry,subst_cell,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact qmul_congr (entry_congr ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _))
-    (entry_congr (entry_congr (fst_pair _ _) (.eqRefl _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  exact qmul_congr (entry_congr (snd_pair _ _).fstE (.eqRefl _))
+    (entry_congr (entry_congr (fst_pair _ _) (.eqRefl _)) (snd_pair _ _).sndE)
 theorem combination_body_at (A R C j : PTm n) : Γ ⊢[PRAAx]
     inst2 combinationBody j (combinationData A R C) ≐ combinationAt A R C j := by
   simp only [combinationBody,inst2,subst_combinationAt,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -82,8 +69,8 @@ theorem combination_body_at (A R C j : PTm n) : Γ ⊢[PRAAx]
     (σ' := ![A,R,C,j]) (fun k => by
       fin_cases k
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _)
 theorem combination_length (A R N C : PTm n) : Γ ⊢[PRAAx] length (rowCombination A R N C) ≐ N := sequence_length _ _ _
 theorem combination_lookup (A R N C j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx]
@@ -108,8 +95,8 @@ theorem triple_body_at (A C l i j : PTm n) : Γ ⊢[PRAAx]
     (σ' := ![A,C,l,i,j]) (fun k => by
       fin_cases k
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _
       · exact .eqRefl _)
 theorem weighted_body_at (A N C l i : PTm n) : Γ ⊢[PRAAx]
@@ -118,9 +105,9 @@ theorem weighted_body_at (A N C l i : PTm n) : Γ ⊢[PRAAx]
   have rest := (congrSnd tail).eqTrans (snd_pair N (pairT C l))
   simp only [weightedBody,inst2,GaussianRationalHorner.subst_qmul,subst_entry,GaussianRationalRowElimination.subst_rowDot,
     subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact qmul_congr (entry_congr ((congrFst rest).eqTrans (fst_pair _ _)) (.eqRefl _))
-    (GaussianRationalRowElimination.row_dot_congr (fst_pair _ _) ((congrFst tail).eqTrans (fst_pair _ _))
-      ((congrSnd rest).eqTrans (snd_pair _ _)) (.eqRefl _))
+  exact qmul_congr (entry_congr rest.fstE (.eqRefl _))
+    (GaussianRationalRowElimination.row_dot_congr (fst_pair _ _) tail.fstE
+      rest.sndE (.eqRefl _))
 
 def rightMultiplyBody (f : PTm 2) : PTm 2 := qmul (inst2 f (var 0) (sndT (var 1))) (fstT (var 1))
 theorem right_multiply_at (f : PTm 2) (a i z : PTm n) : Γ ⊢[PRAAx]
@@ -213,11 +200,8 @@ def membership (A R N C v : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift N) 
     (entry (rowCombination (Syn.shift A) (Syn.shift R) (Syn.shift N) (Syn.shift C)) (var 0)))
 def witness (A R N C v : PTm n) : Fm PTm n := GaussianRationalRowElimination.shape A R N ⋏
   ((length C ≐ R) ⋏ ((length v ≐ N) ⋏ membership A R N C v))
-@[simp] theorem subst_membership {k : ℕ} (σ : Fin n → PTm k) (A R N C v : PTm n) :
-    (membership A R N C v).subst σ = membership (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ v) := by
-  simp [membership,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_witness {k : ℕ} (σ : Fin n → PTm k) (A R N C v : PTm n) :
-    (witness A R N C v).subst σ = witness (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ C) (Syn.subst σ v) := by simp [witness]
+ipra_subst membership [Syn.subst_shift, Syn.shift_subst]
+ipra_subst witness
 theorem membership_at (A R N C v j : PTm n) (h : Γ ⊢[PRAAx] membership A R N C v)
     (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] valueEqual (entry v j) (entry (rowCombination A R N C) j) := by
   have rule : Γ ⊢[PRAAx] lt j N ⟶ valueEqual (entry v j) (entry (rowCombination A R N C) j) := by
@@ -259,12 +243,7 @@ theorem vector_dot_congr {N N' v v' l l' : PTm n} (hN : Γ ⊢[PRAAx] N ≐ N')
 input. The supplied C is the original numerical coefficient vector. -/
 def outputF : PR 4 := PTm.toPR (rowCombination (var 0) (var 1) (var 2) (var 3))
 def run (A R N C : PTm n) : PTm n := app outputF ![A,R,N,C]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R N C : PTm n) :
-    Syn.subst σ (run A R N C) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ C) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (A R N C : PTm n) : Γ ⊢[PRAAx] run A R N C ≐ rowCombination A R N C := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (rowCombination (var 0) (var 1) (var 2) (var 3) : PTm 4) ![A,R,N,C]
 theorem returned_length (A R N C : PTm n) : Γ ⊢[PRAAx] length (run A R N C) ≐ N :=

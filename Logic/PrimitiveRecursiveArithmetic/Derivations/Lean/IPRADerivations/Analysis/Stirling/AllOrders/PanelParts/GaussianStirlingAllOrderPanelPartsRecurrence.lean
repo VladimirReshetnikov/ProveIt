@@ -15,7 +15,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderPanelPartsFinite (interior weightAt weightBody weight_at interiorDensity)
 open GaussianStirlingAllOrderPanelPartsFold
   (weightInput prevInput nextInput mass previous following prev_at next_at fold_identity)
@@ -45,10 +45,6 @@ open RationalGaussianRealPart (embed_congr)
 open RationalArgmin (reflexive)
 open RationalFiniteSum (term)
 open RationalReciprocalPowerTail (add_zero_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum

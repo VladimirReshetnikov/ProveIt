@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderTruncationPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BernoulliBounds (zint toZ_zint bden bden_pos)
 open GaussianStirlingAllOrderTruncationCoefficients (literalCoefficient literalPower literalTerm coefficientNumerator coefficient_value)
 open GaussianStirlingAllOrderTruncationAlgebra (correction)
@@ -29,10 +29,6 @@ open RationalGaussianRealPart (embed_congr)
 open RationalIntegerNormalization (normalize normalize_preserves_value)
 open RationalNormalForm (normalize_well_formed)
 open GaussianEuclideanDistanceName (fraction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

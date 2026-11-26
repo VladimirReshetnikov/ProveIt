@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.RationalBivariateGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalCurveFibers
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Transport of finite rational curve points
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCurvePointsGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero)
 open RationalPolynomialGaussianEmbedding (embed_congr)
 open RationalRowSpanGaussianEmbedding (matrix)
@@ -27,9 +26,6 @@ open GaussianRationalValueEquality (valueEqual)
 open GaussianPolynomialMonicCompanion (rowShape monicValues values)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,10 +33,8 @@ def mapPoint (p : PTm n) : PTm n := pairT (embed (fstT p)) (embed (sndT p))
 def pointBody : PTm 2 := mapPoint (entry (var 1) (var 0))
 def points (L : PTm n) : PTm n := sequence pointBody (length L) L
 
-@[simp] theorem subst_mapPoint {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) :
-    Syn.subst σ (mapPoint p) = mapPoint (Syn.subst σ p) := by simp [mapPoint]
-@[simp] theorem subst_points {l : ℕ} (σ : Fin n → PTm l) (L : PTm n) :
-    Syn.subst σ (points L) = points (Syn.subst σ L) := by simp [points]
+ipra_subst mapPoint
+ipra_subst points
 
 theorem points_length (L : PTm n) : Γ ⊢[PRAAx] length (points L) ≐ length L :=
   sequence_length _ _ _
@@ -51,10 +45,10 @@ theorem points_lookup (L i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length L)) :
 
 theorem abscissa_at (L i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length L)) :
     Γ ⊢[PRAAx] abscissa (points L) i ≐ embed (abscissa L i) :=
-  (congrFst (points_lookup L i hi)).eqTrans (fst_pair _ _)
+  (points_lookup L i hi).fstE
 theorem ordinate_at (L i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length L)) :
     Γ ⊢[PRAAx] ordinate (points L) i ≐ embed (ordinate L i) :=
-  (congrSnd (points_lookup L i hi)).eqTrans (snd_pair _ _)
+  (points_lookup L i hi).sndE
 
 def distinctFrom (L i : PTm n) : Fm PTm n := .all
   (lt (var 0) (length (Syn.shift L)) ⟶ lt (Syn.shift i) (var 0) ⟶
@@ -72,18 +66,10 @@ def functionZeros (G m L : PTm n) : Fm PTm n := .all
       (ordinate (Syn.shift L) (var 0))) scalarZero)
 def sourceInput (F G m L : PTm n) : Fm PTm n := distinct L ⋏ (curveZeros F m L ⋏ functionZeros G m L)
 
-@[simp] theorem subst_distinctFrom {l : ℕ} (σ : Fin n → PTm l) (L i : PTm n) :
-    (distinctFrom L i).subst σ = distinctFrom (Syn.subst σ L) (Syn.subst σ i) := by
-  simp [distinctFrom,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_distinct {l : ℕ} (σ : Fin n → PTm l) (L : PTm n) :
-    (distinct L).subst σ = distinct (Syn.subst σ L) := by
-  simp [distinct,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_curveZeros {l : ℕ} (σ : Fin n → PTm l) (F m L : PTm n) :
-    (curveZeros F m L).subst σ = curveZeros (Syn.subst σ F) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [curveZeros,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_functionZeros {l : ℕ} (σ : Fin n → PTm l) (G m L : PTm n) :
-    (functionZeros G m L).subst σ = functionZeros (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [functionZeros,Syn.subst_shift,Syn.shift_subst]
+ipra_subst distinctFrom [Syn.subst_shift, Syn.shift_subst]
+ipra_subst distinct [Syn.subst_shift, Syn.shift_subst]
+ipra_subst curveZeros [Syn.subst_shift, Syn.shift_subst]
+ipra_subst functionZeros [Syn.subst_shift, Syn.shift_subst]
 
 theorem distinct_at (L i j : PTm n) (h : Γ ⊢[PRAAx] distinct L)
     (hi : Γ ⊢[PRAAx] lt i (length L)) (hj : Γ ⊢[PRAAx] lt j (length L)) (hij : Γ ⊢[PRAAx] lt i j) :

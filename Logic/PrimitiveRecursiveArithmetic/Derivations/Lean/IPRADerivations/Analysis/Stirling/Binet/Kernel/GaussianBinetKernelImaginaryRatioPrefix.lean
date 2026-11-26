@@ -16,7 +16,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelImaginaryRatioPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelImaginaryRatioRows (ratioNumerator ratioDenominator rational_time_row)
 open GaussianBinetKernelRows (rowF rowBody rowData inputData row_at)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -24,9 +24,6 @@ open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qmul_zero_right)
 open GaussianSineProductImaginaryLogDerivative (rationalReal logarithmRow logarithmSum logarithm_sum_succ)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,13 +31,9 @@ def rawPrefix (p N A B : PTm n) : PTm n := GaussianNamedFiniteSumFamily.finite r
 def timeSquare (A B : PTm n) : PTm n := fraction (A*A) (B*B)
 def ratio (p A B : PTm n) : PTm n := rationalReal (ratioNumerator p A) (ratioDenominator p B)
 
-@[simp] theorem subst_rawPrefix {m : ℕ} (σ : Fin n → PTm m) (p N A B : PTm n) :
-    Syn.subst σ (rawPrefix p N A B) = rawPrefix (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [rawPrefix,GaussianNamedFiniteSumFamily.finite,inputData]
-@[simp] theorem subst_timeSquare {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (timeSquare A B) = timeSquare (Syn.subst σ A) (Syn.subst σ B) := by simp [timeSquare]
-@[simp] theorem subst_ratio {m : ℕ} (σ : Fin n → PTm m) (p A B : PTm n) :
-    Syn.subst σ (ratio p A B) = ratio (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by simp [ratio]
+ipra_subst rawPrefix [GaussianNamedFiniteSumFamily.finite, inputData]
+ipra_subst timeSquare
+ipra_subst ratio
 
 private def prefixLaw (p N A B : PTm n) : Fm PTm n :=
   qmul (timeSquare A B) (rawPrefix p N A B) ≐

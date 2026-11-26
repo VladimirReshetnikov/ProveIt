@@ -14,7 +14,7 @@ set_option maxHeartbeats 1150000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalBaseProductShift (powerProduct terminal power_shift)
 open GaussianBarnesCanonicalCorrectionShift (exponent total total_shift)
 open GaussianBarnesCanonicalHead (source headData)
@@ -31,8 +31,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameRingLaws (multiply_associative multiply_commutative)
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalSyntheticDivision (qadd_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

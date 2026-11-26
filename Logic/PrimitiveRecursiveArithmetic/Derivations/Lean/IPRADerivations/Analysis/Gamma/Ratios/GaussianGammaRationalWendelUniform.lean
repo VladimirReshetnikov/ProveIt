@@ -13,7 +13,7 @@ set_option maxHeartbeats 1650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRationalWendelUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaEulerRationalLogOrder (add_order order_refl)
 open GaussianGammaFiniteApproximantName (exponentialInputData)
@@ -32,9 +32,6 @@ open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianStirlingLogDuplication (exponential_regular)
 open GaussianStirlingMultiplicativeBoundsOrder (exponential_order)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF

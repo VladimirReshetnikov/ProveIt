@@ -21,12 +21,8 @@ denominators and stated for natural terms:
 
 namespace LeanProofs.IPRA.Topology.MetricProducts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Topology.MetricUrysohn (numerator_upper numerator_lower)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

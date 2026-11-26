@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingLogDuplication
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
@@ -29,8 +29,6 @@ open GaussianRealNameExponentialInjectivity (axisSamples independent_radii_injec
 open GaussianStirlingGammaLogarithm (source arg gammaData gamma_regular logGammaF logGammaData log_gamma_axis log_gamma_regular
   log_input gammaRetimedF gammaRetimedData gamma_retimed_cross)
 open GaussianStirlingNativeDuplication (halfNumerator halfDenominator half_source double_source native_duplication)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

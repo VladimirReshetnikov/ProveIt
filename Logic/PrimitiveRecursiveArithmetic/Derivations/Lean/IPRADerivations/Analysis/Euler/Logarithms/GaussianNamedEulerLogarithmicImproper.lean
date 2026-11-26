@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianEulerLogarithmicContinuity (modulus subst_modulus)
 open GaussianNamedRightHalfPlane (source threshold radius numerator denominator actual_late_source)
@@ -26,10 +26,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "I" => GaussianEulerLogarithmicImproperName.nameF
@@ -47,14 +43,9 @@ def data (j x A : PTm n) : PTm n := pairT j (pairT x A)
 def body (f : PR 2) : PTm 2 := sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 def nameF (f : PR 2) : PR 2 := PTm.toPR (body f)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p j x A : PTm n) :
-    Syn.subst σ (clock f p j x A) = clock f (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [clock,outputPrecision,demandData]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p j x A : PTm n) :
-    Syn.subst σ (sample f p j x A) = sample f (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [sample,outputPrecision]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (j x A : PTm n) :
-    Syn.subst σ (data j x A) = data (Syn.subst σ j) (Syn.subst σ x) (Syn.subst σ A) := by simp [data]
+ipra_subst clock [outputPrecision, demandData]
+ipra_subst sample [outputPrecision]
+ipra_subst data
 
 private theorem demand_at (s j R A : PTm n) : Γ ⊢[PRAAx]
     inst2 demandBody s (demandData j R A) ≐ modulus s j R (two*A) := by
@@ -65,8 +56,8 @@ private theorem demand_at (s j R A : PTm n) : Γ ⊢[PRAAx]
       fin_cases i
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst right).eqTrans (fst_pair _ _)
-      · exact congrMul (.eqRefl _) ((congrSnd right).eqTrans (snd_pair _ _)))
+      · exact right.fstE
+      · exact congrMul (.eqRefl _) right.sndE)
   simpa only [inst2,demandBody,subst_modulus,Syn.subst_var,subst_fstT,subst_sndT,PTm.subst_mul,
     PTm.subst_succ,PTm.subst_zero,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.head_cons,Matrix.tail_cons,d] using h
@@ -139,8 +130,8 @@ theorem name_at (f : PR 2) (p j x A : PTm n) : Γ ⊢[PRAAx] ap2 (nameF f) p (da
       fin_cases i
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst last).eqTrans (fst_pair _ _)
-      · exact (congrSnd last).eqTrans (snd_pair _ _))
+      · exact last.fstE
+      · exact last.sndE)
   exact eval.eqTrans (by simpa only [subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
     Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using code)
 

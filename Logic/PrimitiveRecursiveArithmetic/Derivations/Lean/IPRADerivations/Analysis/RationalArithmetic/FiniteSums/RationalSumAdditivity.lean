@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalFiniteSum
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenters
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational finite sums commute with pointwise addition
@@ -22,14 +21,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalSumAdditivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArithmetic (add addF represents)
 open LeanProofs.IPRA.Analysis.RationalFiniteSum
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -39,9 +35,7 @@ def addedBody (A B : PTm 2) : PTm 2 := ap2 addF
   (ap2 (PTm.toPR B) (var 0) (sndT (var 1)))
 def addedSum (A B : PTm 2) (N x y : PTm n) : PTm n := sum (addedBody A B) N (pairT x y)
 
-@[simp] theorem subst_addedSum {m : ℕ} (σ : Fin n → PTm m) (A B : PTm 2) (N x y : PTm n) :
-    Syn.subst σ (addedSum A B N x y) = addedSum A B (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [addedSum,subst_sum,subst_pairT]
+ipra_subst addedSum
 
 theorem added_term (A B : PTm 2) (i x y : PTm n) : Γ ⊢[PRAAx]
     term (addedBody A B) i (pairT x y) ≐ add (term A i x) (term B i y) := by
@@ -64,12 +58,11 @@ theorem added_term_value (A B : PTm 2) (i x y : PTm n) : Γ ⊢[PRAAx]
   have code := added_term (Γ := Γ) A B i x y
   have p := natEq (congrFst (congrFst code))
   have q := natEq (congrSnd (congrFst code))
-  have d := natEq (congrSucc (congrSnd code))
   simp only [represents,RationalArithmetic.productDenominator,RationalArithmetic.addNumerator,
     ZT.toZ_mul,ZT.toZ_ofNat] at val ⊢
   simp only [ZT.toZ] at val ⊢
   rw [show 𝔞(denominatorOf (term (addedBody A B) i (pairT x y))) =
-    𝔞(denominatorOf (add (term A i x) (term B i y))) from d]
+    𝔞(denominatorOf (add (term A i x) (term B i y))) from (natEq (congrSucc (congrSnd code)))]
   simp only [numeratorOf] at p q ⊢
   rw [p,q]
   exact val
@@ -81,15 +74,10 @@ def rawAdd (A B : PTm 2) (N x y : PTm n) : Fm PTm n :=
     ((numerator A N x*ZT.ofNat (denominator B N y)+numerator B N y*ZT.ofNat (denominator A N x))*
       ZT.ofNat (denominator (addedBody A B) N (pairT x y)))
 
-@[simp] theorem subst_rawAdd {m : ℕ} (σ : Fin n → PTm m) (A B : PTm 2) (N x y : PTm n) :
-    (rawAdd A B N x y).subst σ = rawAdd A B (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [rawAdd,ZT.subst_eq,ZT.subst_mul,ZT.subst_add,ZT.subst_ofNat,subst_numerator,
-    PTm.subst_mul,subst_denominator,subst_pairT]
+ipra_subst rawAdd
 
 theorem raw_add_zero (A B : PTm 2) (x y : PTm n) : Γ ⊢[PRAAx] rawAdd A B zero x y := by
   apply ZT.derive
-  have pa := natEq (positive_zero (Γ := Γ) A x)
-  have qa := natEq (negative_zero (Γ := Γ) A x)
   have pb := natEq (positive_zero (Γ := Γ) B y)
   have qb := natEq (negative_zero (Γ := Γ) B y)
   have pc := natEq (positive_zero (Γ := Γ) (addedBody A B) (pairT x y))
@@ -97,7 +85,7 @@ theorem raw_add_zero (A B : PTm 2) (x y : PTm n) : Γ ⊢[PRAAx] rawAdd A B zero
   simp only [rawAdd,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat]
   simp only [numerator,ZT.toZ]
   ipra_simps
-  rw [pa,qa,pb,qb,pc,qc]
+  rw [natEq (positive_zero (Γ := Γ) A x),natEq (negative_zero (Γ := Γ) A x),pb,qb,pc,qc]
   ring
 
 /-- The step is qa*qb*qc times the old equality minus DA*DB*DC
@@ -124,11 +112,9 @@ theorem raw_add_succ (A B : PTm 2) (N x y : PTm n)
 
 theorem raw_add (A B : PTm 2) (N x y : PTm n) : Γ ⊢[PRAAx] rawAdd A B N x y := by
   have all : Γ ⊢[PRAAx] .all (rawAdd A B (var 0) (Syn.shift x) (Syn.shift y)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_rawAdd,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact raw_add_zero A B x y
-    · simp only [subst_rawAdd,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact raw_add_succ A B _ _ _ Prf.hyp0
+    ipra_qfind [subst_rawAdd]
+    · exact raw_add_zero A B x y
+    · exact raw_add_succ A B _ _ _ Prf.hyp0
   simpa only [subst_rawAdd,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 /-- Literal canonical additivity of the actual finite-sum outputs. The

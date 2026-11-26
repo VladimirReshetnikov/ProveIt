@@ -13,7 +13,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelFrozenIndependent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelRows (inputData rowF rowBody regular_rows)
 open GaussianBinetKernelTail (finiteF finiteData)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -23,10 +23,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRootApproximationWitness (pointBounds)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -42,17 +38,11 @@ def kernelNumerator (p q I : PTm n) : PTm n := unit p*unit q+I*(num 3*unit q+uni
 def dampedNumerator (p q I : PTm n) : PTm n :=
   two*(unit p*unit q)+I*(num 7*unit q+num 9*unit p)
 
-@[simp] theorem subst_errorDenominator {m : ℕ} (σ : Fin n → PTm m) (p q I : PTm n) :
-    Syn.subst σ (errorDenominator p q I) =
-      errorDenominator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ I) := by simp [errorDenominator]
+ipra_subst errorDenominator
 
-@[simp] theorem subst_kernelNumerator {m : ℕ} (σ : Fin n → PTm m) (p q I : PTm n) :
-    Syn.subst σ (kernelNumerator p q I) =
-      kernelNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ I) := by simp [kernelNumerator]
+ipra_subst kernelNumerator
 
-@[simp] theorem subst_dampedNumerator {m : ℕ} (σ : Fin n → PTm m) (p q I : PTm n) :
-    Syn.subst σ (dampedNumerator p q I) =
-      dampedNumerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ I) := by simp [dampedNumerator]
+ipra_subst dampedNumerator
 
 theorem error_denominator_positive (p q I : PTm n) (hI : Γ ⊢[PRAAx] le one I) :
     Γ ⊢[PRAAx] le one (errorDenominator p q I) :=

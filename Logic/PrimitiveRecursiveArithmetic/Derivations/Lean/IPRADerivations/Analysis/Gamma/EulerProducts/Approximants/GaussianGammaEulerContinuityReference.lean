@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerContinuityReference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (logF logExponentF logExponentData qF qData log_exponent_regular)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaLogExponentContinuity (logRadius exponentRadius exponent_input exponent_bound)
@@ -26,9 +26,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalPolynomialExponential (scalarSum)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,24 +48,13 @@ def query (r R N : PTm n) : PTm n := GaussianRadiusExponentialName.inputPrecisio
 def reference (r z R B N : PTm n) : PTm n := qmul (GaussianGammaEulerHead.run z B N)
   (scalarSum (ap2 logExponentF (query r R N) (logExponentData z B N)) (cutoff r R N))
 def input (z R B N : PTm n) : Fm PTm n := le one N ⋏ (le one B ⋏ ComplexLogarithmRemainder.bounded z (R*B))
-@[simp] theorem subst_headBound {l : ℕ} (σ : Fin n → PTm l) (R N : PTm n) :
-    Syn.subst σ (headBound R N) = headBound (Syn.subst σ R) (Syn.subst σ N) := by simp [headBound]
-@[simp] theorem subst_uniformExpData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (uniformExpData z R B N) = uniformExpData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [uniformExpData,logExponentData]
-@[simp] theorem subst_uniformData {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    Syn.subst σ (uniformData z R B N) = uniformData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [uniformData]
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (r R N : PTm n) :
-    Syn.subst σ (cutoff r R N) = cutoff (Syn.subst σ r) (Syn.subst σ R) (Syn.subst σ N) := by simp [cutoff]
-@[simp] theorem subst_query {l : ℕ} (σ : Fin n → PTm l) (r R N : PTm n) :
-    Syn.subst σ (query r R N) = query (Syn.subst σ r) (Syn.subst σ R) (Syn.subst σ N) := by simp [query]
-@[simp] theorem subst_reference {l : ℕ} (σ : Fin n → PTm l) (r z R B N : PTm n) :
-    Syn.subst σ (reference r z R B N) = reference (Syn.subst σ r) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [reference,logExponentData]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (z R B N : PTm n) :
-    (input z R B N).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [input,ComplexLogarithmRemainder.bounded]
+ipra_subst headBound
+ipra_subst uniformExpData [logExponentData]
+ipra_subst uniformData
+ipra_subst cutoff
+ipra_subst query
+ipra_subst reference [logExponentData]
+ipra_subst input [ComplexLogarithmRemainder.bounded]
 
 theorem head_bound (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : Γ ⊢[PRAAx]
     bounded (GaussianGammaEulerHead.run z B N) (headBound R N) one :=
@@ -96,9 +82,7 @@ theorem original_uniform (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) : �
 
 def productQuery (r z R B N : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus constantF Exp (GaussianGammaEulerHead.run z B N) (uniformExpData z R B N)) r
-@[simp] theorem subst_productQuery {l : ℕ} (σ : Fin n → PTm l) (r z R B N : PTm n) :
-    Syn.subst σ (productQuery r z R B N) = productQuery (Syn.subst σ r) (Syn.subst σ z)
-      (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [productQuery]
+ipra_subst productQuery
 
 theorem uniform_at (r z R B N : PTm n) : Γ ⊢[PRAAx] ap2 qF r (uniformData z R B N) ≐
     qmul (GaussianGammaEulerHead.run z B N) (ap2 Exp (productQuery r z R B N) (uniformExpData z R B N)) :=
@@ -188,9 +172,7 @@ theorem reference_distance_wide (r z w R B A D N : PTm n) (hN : Γ ⊢[PRAAx] le
 
 def reciprocalBudget (p r R N : PTm n) : PTm n := GaussianGammaEulerApproximationName.rate R*unit p*unit r+
   N*(unit r+(LeanProofs.IPRA.PTm.num 3+LeanProofs.IPRA.PTm.num 3*headBound R N)*unit p)
-@[simp] theorem subst_reciprocalBudget {l : ℕ} (σ : Fin n → PTm l) (p r R N : PTm n) :
-    Syn.subst σ (reciprocalBudget p r R N) = reciprocalBudget (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [reciprocalBudget]
+ipra_subst reciprocalBudget
 
 /-- The SAME original C7 observation is compared to the actual fixed
 finite reference using the genuine C10 rate and both observation errors. -/
@@ -220,19 +202,13 @@ def output (r z R B N : PTm n) : PTm n := pairT (reference r z R B N)
   (pairT (cutoff r R N) (pairT (query r R N) (headBound R N)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (r z R B N : PTm n) : PTm n := PTm.app outputF ![r,z,R,B,N]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (r z R B N : PTm n) :
-    Syn.subst σ (output r z R B N) = output (Syn.subst σ r) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (r z R B N : PTm n) :
-    Syn.subst σ (run r z R B N) = run (Syn.subst σ r) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (r z R B N : PTm n) : Γ ⊢[PRAAx] run r z R B N ≐ output r z R B N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![r,z,R,B,N]
 theorem returned_reference (r z R B N : PTm n) : Γ ⊢[PRAAx] fstT (run r z R B N) ≐ reference r z R B N :=
-  (congrFst (program_at r z R B N)).eqTrans (fst_pair _ _)
+  (program_at r z R B N).fstE
 theorem returned_cutoff (r z R B N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run r z R B N)) ≐ cutoff r R N :=
   ((congrFst (congrSnd (program_at r z R B N))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_query (r z R B N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run r z R B N))) ≐ query r R N :=

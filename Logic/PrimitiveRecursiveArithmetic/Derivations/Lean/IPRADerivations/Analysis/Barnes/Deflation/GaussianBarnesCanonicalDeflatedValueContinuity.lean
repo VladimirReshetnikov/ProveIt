@@ -15,7 +15,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDeflatedValueContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFactor (source)
 open GaussianBarnesCanonicalDeflatedValue (remainingLength headCoefficientF headCoefficientData head_coefficient_regular outerF outerData nameF data)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -30,9 +30,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianFastValueCut (exponent)
 open GaussianGammaCanonicalExponent (gammaF)
 open GaussianNameBounds (U)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

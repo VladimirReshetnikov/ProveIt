@@ -27,11 +27,7 @@ formalized.
 
 namespace LeanProofs.IPRA.Algebra.JacobiRotation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 abbrev p4 {n : ℕ} (u : ZT n) : ZT n := u * u * u * u
 

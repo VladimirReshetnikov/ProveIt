@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelCompactPositiveRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (source nameF data)
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianGammaRealValues (projection projection_represents)
@@ -25,8 +25,6 @@ open GaussianPositiveRadiusFiniteSum (boundBy)
 open RationalGaussianEmbedding (scalarZero)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open ComplexLogarithmRemainder (re)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -37,17 +35,10 @@ def nativeDenominator (v P Q : PTm n) : PTm n := denominator v Q*P
 def radius (p q z R B a C E G : PTm n) : PTm n := positiveRadius
   (ap2 nameF q (data (argument z) R B a C E G)) (unit p) (unit q)
 
-@[simp] theorem subst_positiveRadius {m : ℕ} (σ : Fin n → PTm m) (v P Q : PTm n) :
-    Syn.subst σ (positiveRadius v P Q) = positiveRadius (Syn.subst σ v) (Syn.subst σ P) (Syn.subst σ Q) := by simp [positiveRadius]
-@[simp] theorem subst_nativeNumerator {m : ℕ} (σ : Fin n → PTm m) (v P Q : PTm n) :
-    Syn.subst σ (nativeNumerator v P Q) = nativeNumerator (Syn.subst σ v) (Syn.subst σ P) (Syn.subst σ Q) := by
-  simp [nativeNumerator,gap,denominator,ComplexLogarithmRemainder.re]
-@[simp] theorem subst_nativeDenominator {m : ℕ} (σ : Fin n → PTm m) (v P Q : PTm n) :
-    Syn.subst σ (nativeDenominator v P Q) = nativeDenominator (Syn.subst σ v) (Syn.subst σ P) (Syn.subst σ Q) := by
-  simp [nativeDenominator,denominator]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (p q z R B a C E G : PTm n) :
-    Syn.subst σ (radius p q z R B a C E G) = radius (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ G) := by simp [radius]
+ipra_subst positiveRadius
+ipra_subst nativeNumerator [gap, denominator, ComplexLogarithmRemainder.re]
+ipra_subst nativeDenominator [denominator]
+ipra_subst radius
 
 theorem denominator_positive (v P Q : PTm n) (hP : Γ ⊢[PRAAx] le one P) (hQ : Γ ⊢[PRAAx] le one Q) : Γ ⊢[PRAAx]
     le one (nativeDenominator v P Q) := positive_product _ _ (GaussianEulerVerticalRealRadius.denominator_positive v Q hQ) hP

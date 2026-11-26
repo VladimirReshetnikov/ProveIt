@@ -14,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorGridUniformObservations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded scale)
 open GaussianBarnesCanonicalFiniteTaylorGrid (literalData gridData step_bound data_binding)
 open GaussianBarnesCanonicalFiniteTaylorGridObservations
@@ -26,9 +26,6 @@ open GaussianNamedInverseRate (independentRate subst_independentRate)
 open GaussianPolynomialForwardDifferenceGridError (rowBound)
 open GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

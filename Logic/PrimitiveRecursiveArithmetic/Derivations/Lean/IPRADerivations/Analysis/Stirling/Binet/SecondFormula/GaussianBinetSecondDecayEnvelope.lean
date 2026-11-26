@@ -16,7 +16,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayEnvelope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceDomination (realDecay realNumerator realDenominator nonnegative_real_radius)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerDecayMesh (observation)
@@ -35,10 +35,6 @@ open GaussianReciprocalHorner (qadd_zero_right qmul_associative)
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData sample_nonnegative sample_canonical)
 open RationalGaussianEmbedding (embed canonical_axis_roundtrip)
 open Products (fact)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -47,9 +43,7 @@ local notation "frac" => GaussianPositiveRationalLogarithm.fraction
 def envelope (p a b : PTm n) : PTm n :=
   RationalArithmetic.add (fstT (realDecay p a b)) (fraction two (unit p))
 
-@[simp] theorem subst_envelope {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (envelope p a b) = envelope (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [envelope,realDecay,signedTime,two]
+ipra_subst envelope [realDecay, signedTime, two]
 
 theorem fraction_majorized (x A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] bounded x A B) : Γ ⊢[PRAAx] majorized x (fraction A B) := by

@@ -13,16 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianExponentialUnitPerturbation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianRationalHorner (canonical qadd positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalPolynomialExponential (scalarSum)
 open GaussianRationalSyntheticDivision (qone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

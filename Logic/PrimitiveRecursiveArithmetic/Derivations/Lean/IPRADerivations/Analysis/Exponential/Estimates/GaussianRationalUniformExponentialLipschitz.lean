@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalUniformExponentialLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
@@ -24,10 +24,6 @@ open GaussianRationalPolynomialExponential (scalarSum inverseFactorial factorial
 open GaussianRationalExponentialLipschitz (termDifference difference difference_zero difference_one difference_succ difference_congr)
 open GaussianExponentialDiskMajorant (numerator numerator_zero numerator_succ)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -65,9 +61,7 @@ theorem term_bound (u v R A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 
 def prefixLaw (u v R A B k : PTm n) : Fm PTm n := bounded (difference u v (succ k))
   (A*numerator R k) (B*fact (succ k))
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (u v R A B k : PTm n) :
-    (prefixLaw u v R A B k).subst σ = prefixLaw (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ R)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by simp [prefixLaw,fact]
+ipra_subst prefixLaw [fact]
 
 theorem prefix_zero (u v R A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hu : Γ ⊢[PRAAx] bounded u R one) (hv : Γ ⊢[PRAAx] bounded v R one)
@@ -140,27 +134,25 @@ def output (u v R A B K : PTm n) : PTm n := pairT (scalarSum u K)
   (pairT (scalarSum v K) (pairT (pw (num 3) R*A) B))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (u v R A B K : PTm n) : PTm n := PTm.app outputF ![u,v,R,A,B,K]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (u v R A B K : PTm n) :
-    Syn.subst σ (output u v R A B K) = output (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ R)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ K) := by simp [output]
+ipra_subst output
 theorem program_at (u v R A B K : PTm n) : Γ ⊢[PRAAx] run u v R A B K ≐ output u v R A B K := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![u,v,R,A,B,K]
 theorem returned_first (u v R A B K : PTm n) : Γ ⊢[PRAAx] fstT (run u v R A B K) ≐ scalarSum u K :=
-  (congrFst (program_at u v R A B K)).eqTrans (fst_pair _ _)
+  (program_at u v R A B K).fstE
 theorem returned_tail (u v R A B K : PTm n) : Γ ⊢[PRAAx]
     sndT (run u v R A B K) ≐ pairT (scalarSum v K) (pairT (pw (num 3) R*A) B) :=
-  (congrSnd (program_at u v R A B K)).eqTrans (snd_pair _ _)
+  (program_at u v R A B K).sndE
 theorem returned_second (u v R A B K : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run u v R A B K)) ≐ scalarSum v K :=
-  (congrFst (returned_tail u v R A B K)).eqTrans (fst_pair _ _)
+  (returned_tail u v R A B K).fstE
 theorem returned_budget (u v R A B K : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run u v R A B K)) ≐ pairT (pw (num 3) R*A) B :=
-  (congrSnd (returned_tail u v R A B K)).eqTrans (snd_pair _ _)
+  (returned_tail u v R A B K).sndE
 theorem returned_numerator (u v R A B K : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run u v R A B K))) ≐ pw (num 3) R*A :=
-  (congrFst (returned_budget u v R A B K)).eqTrans (fst_pair _ _)
+  (returned_budget u v R A B K).fstE
 theorem returned_denominator (u v R A B K : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run u v R A B K))) ≐ B :=
-  (congrSnd (returned_budget u v R A B K)).eqTrans (snd_pair _ _)
+  (returned_budget u v R A B K).sndE
 theorem returned_distance (u v R A B K : PTm n) (h : Γ ⊢[PRAAx] input u v R A B) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run u v R A B K)) (fstT (sndT (run u v R A B K)))
       (fstT (sndT (sndT (run u v R A B K)))) (sndT (sndT (sndT (run u v R A B K)))) :=

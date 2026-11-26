@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperyRecurrence
 import IPRADerivations.Combinatorics.CatalanConvolution
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The two-colored Motzkin sum (Touchard's identity)
@@ -30,17 +29,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanTouchard
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_above)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cat cat_rec cat_zero succ_pos)
 open LeanProofs.IPRA.Combinatorics.CatalanConvolution (cat_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence (gr gl uv)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -165,13 +160,9 @@ theorem phi_step {N K : PTm n} (ih : Γ ⊢[PRAAx] phiL N K ≐ phiR N K) :
 private abbrev phiF : Fm PTm 2 := phiL (var 1) (var 0) ≐ phiR (var 1) (var 0)
 
 private theorem phi₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] phiF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact phi_base _
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact phi_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact phi_base _
+  · exact phi_step Prf.hyp0
 
 theorem phi (N K : PTm n) : Γ ⊢[PRAAx] phiL N K ≐ phiR N K := by
   have h := inst (Γ := Γ) phi₀ (![K, N] : Fin 2 → PTm n)
@@ -214,13 +205,9 @@ theorem M_step {N : PTm n} (ih : Γ ⊢[PRAAx] M N ≐ cat (succ N)) : Γ ⊢[PR
 private abbrev touchF : Fm PTm 1 := M (var 0) ≐ cat (succ (var 0))
 
 private theorem touch₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] touchF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact M_zero
-  · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, PTm.subst_monus, PTm.subst_num,
-      Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact M_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact M_zero
+  · exact M_step Prf.hyp0
 
 /-- (2.15): `∑_{k ≤ n} C(n, 2k) 2^{n − 2k} Cat_k = Cat_{n + 1}`. -/
 theorem touchard (N : PTm n) : Γ ⊢[PRAAx] M N ≐ cat (succ N) := by

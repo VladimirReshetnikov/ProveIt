@@ -16,19 +16,15 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootMembershipBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit)
 open LeanProofs.IPRA.Analysis.GaussianRootSchedule (four coefficientConstant toleranceDenominator)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def slackCoefficient (c M : PTm n) : PTm n := four*M+two*c
-@[simp] theorem subst_slackCoefficient {m : ℕ} (σ : Fin n → PTm m) (c M : PTm n) :
-    Syn.subst σ (slackCoefficient c M) = slackCoefficient (Syn.subst σ c) (Syn.subst σ M) := by simp [slackCoefficient]
+ipra_subst slackCoefficient
 
 theorem coefficient_constant_monotone (N R U : PTm n) (hRU : Γ ⊢[PRAAx] le R U) : Γ ⊢[PRAAx]
     le (coefficientConstant N R) (coefficientConstant N U) :=

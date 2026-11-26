@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalIntervalArithmeticPrecision
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual positive interval arithmetic at any sufficient common offset
@@ -13,14 +12,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalIntervalArithmeticNames
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open RationalNestedIntervals (read regular positiveWitness)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalIntervalPowerComparison (stage powerEndpoint productEndpoint)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -126,11 +121,8 @@ def productArray (F : PR 3) : PR 3 := PTm.toPR
   (productEndpoint F (fstT (var 0)) (fstT (sndT (var 0))) (fstT (sndT (sndT (var 0))))
     (fstT (sndT (sndT (sndT (var 0))))) (sndT (sndT (sndT (sndT (var 0))))) (var 1) (var 2) : PTm 3)
 
-@[simp] theorem subst_powerData {m : ℕ} (σ : Fin n → PTm m) (q e o : PTm n) :
-    Syn.subst σ (powerData q e o) = powerData (Syn.subst σ q) (Syn.subst σ e) (Syn.subst σ o) := by simp [powerData]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (X Y a b o : PTm n) :
-    Syn.subst σ (productData X Y a b o) = productData (Syn.subst σ X) (Syn.subst σ Y)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ o) := by simp [productData]
+ipra_subst powerData
+ipra_subst productData
 
 theorem power_at (F : PR 3) (q e o k x : PTm n) : Γ ⊢[PRAAx]
     read (powerArray F) (powerData q e o) k x ≐ powerEndpoint F q e o k x := by
@@ -141,8 +133,8 @@ theorem power_at (F : PR 3) (q e o k x : PTm n) : Γ ⊢[PRAAx]
       (powerEndpoint F (fstT (var 0)) (fstT (sndT (var 0))) (sndT (sndT (var 0))) (var 1) (var 2) : PTm 3)
       ![powerData q e o,k,x]
   exact h.eqTrans (power_endpoint_congr F (fst_pair _ _)
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _) (.eqRefl _))
+    (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _) (.eqRefl _))
 
 theorem product_at (F : PR 3) (X Y a b o k x : PTm n) : Γ ⊢[PRAAx]
     read (productArray F) (productData X Y a b o) k x ≐ productEndpoint F X Y a b o k x := by
@@ -155,11 +147,11 @@ theorem product_at (F : PR 3) (X Y a b o k x : PTm n) : Γ ⊢[PRAAx]
         (fstT (sndT (sndT (sndT (var 0))))) (sndT (sndT (sndT (sndT (var 0))))) (var 1) (var 2) : PTm 3)
       ![productData X Y a b o,k,x]
   have first : Γ ⊢[PRAAx] sndT (productData X Y a b o) ≐ pairT Y (pairT a (pairT b o)) := snd_pair _ _
-  have second := (congrSnd first).eqTrans (snd_pair _ _)
-  have third := (congrSnd second).eqTrans (snd_pair _ _)
+  have second := first.sndE
+  have third := second.sndE
   exact h.eqTrans (product_endpoint_congr F (fst_pair _ _)
-    ((congrFst first).eqTrans (fst_pair _ _)) ((congrFst second).eqTrans (fst_pair _ _))
-    ((congrFst third).eqTrans (fst_pair _ _)) ((congrSnd third).eqTrans (snd_pair _ _)) (.eqRefl _) (.eqRefl _))
+    first.fstE second.fstE
+    third.fstE third.sndE (.eqRefl _) (.eqRefl _))
 
 theorem power_step (L U : PR 3) (q e p s o k x : PTm n)
     (h : Γ ⊢[PRAAx] regular L U q x) (hp : Γ ⊢[PRAAx] positiveWitness L q p s x)
@@ -239,9 +231,7 @@ theorem product_center_at (L U : PR 3) (X Y a b o k x : PTm n) : Γ ⊢[PRAAx]
 def commonOffset (U : PR 3) (X Y Z a b p x : PTm n) : PTm n :=
   RationalIntervalArithmeticPrecision.offset U Z Z (a+b) p x+
     RationalIntervalArithmeticPrecision.offset U X Y (a+b) p x
-@[simp] theorem subst_commonOffset {m : ℕ} (σ : Fin n → PTm m) (U : PR 3) (X Y Z a b p x : PTm n) :
-    Syn.subst σ (commonOffset U X Y Z a b p x) = commonOffset U (Syn.subst σ X) (Syn.subst σ Y)
-      (Syn.subst σ Z) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) (Syn.subst σ x) := by simp [commonOffset]
+ipra_subst commonOffset
 theorem common_offset_power (U : PR 3) (X Y Z a b p x : PTm n) : Γ ⊢[PRAAx]
     le (RationalIntervalArithmeticPrecision.offset U Z Z (a+b) p x) (commonOffset U X Y Z a b p x) := by
   unfold commonOffset
@@ -265,29 +255,21 @@ def output (U : PR 3) (X Y Z a b p x : PTm n) : PTm n :=
     (pairT (productData X Y a b (commonOffset U X Y Z a b p x)) (commonOffset U X Y Z a b p x))
 def outputF (U : PR 3) : PR 7 := PTm.toPR (output U (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (U : PR 3) (X Y Z a b p x : PTm n) : PTm n := PTm.app (outputF U) ![X,Y,Z,a,b,p,x]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (U : PR 3) (X Y Z a b p x : PTm n) :
-    Syn.subst σ (output U X Y Z a b p x) = output U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ Z)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (U : PR 3) (X Y Z a b p x : PTm n) :
-    Syn.subst σ (run U X Y Z a b p x) = run U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ Z)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ p) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (U : PR 3) (X Y Z a b p x : PTm n) : Γ ⊢[PRAAx]
     run U X Y Z a b p x ≐ output U X Y Z a b p x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output U (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![X,Y,Z,a,b,p,x]
 theorem returned_power_data (U : PR 3) (X Y Z a b p x : PTm n) : Γ ⊢[PRAAx]
     fstT (run U X Y Z a b p x) ≐ powerData Z (a+b) (commonOffset U X Y Z a b p x) :=
-  (congrFst (program_at U X Y Z a b p x)).eqTrans (fst_pair _ _)
+  (program_at U X Y Z a b p x).fstE
 theorem returned_product_data (U : PR 3) (X Y Z a b p x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run U X Y Z a b p x)) ≐ productData X Y a b (commonOffset U X Y Z a b p x) :=
-  (congrFst ((congrSnd (program_at U X Y Z a b p x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at U X Y Z a b p x).sndE.fstE
 theorem returned_offset (U : PR 3) (X Y Z a b p x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run U X Y Z a b p x)) ≐ commonOffset U X Y Z a b p x :=
-  (congrSnd ((congrSnd (program_at U X Y Z a b p x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at U X Y Z a b p x).sndE.sndE
 
 theorem actual_stage_translation_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (le (var 0) (var 1) ⟶ stage (var 1) (var 2) ≐ stage (var 0) (var 2+monus (var 1) (var 0))) :=

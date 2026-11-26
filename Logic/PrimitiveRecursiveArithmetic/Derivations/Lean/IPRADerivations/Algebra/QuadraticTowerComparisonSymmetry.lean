@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerComparisonSymmetry
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticTowerArrayCodec (arrayHeight normalized)
 open QuadraticTowerCoefficientArithmetic (added negated added_congr)
 open QuadraticTowerMultiplicationHeight (radicandsHeight)
@@ -24,9 +24,6 @@ open QuadraticTowerScalarArrays (zeroArray)
 open QuadraticTowerScalarBudget (amp)
 open QuadraticTowerDifferenceIdentities (difference signDifference equivalent less)
 open QuadraticTowerSignNegation (opposite opposite_congr opposite_zero opposite_two opposite_one opposite_involution)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -94,9 +91,7 @@ theorem trichotomy (h B D A C b : PTm n) (hb : Γ ⊢[PRAAx] le (amp b) B)
 
 
 def input (h B D A C b : PTm n) : Fm PTm n := le (amp b) B ⋏ QuadraticTowerMultiplicationNegative.source h D A C b
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (h B D A C b : PTm n) :
-    (input h B D A C b).subst σ = input (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D)
-      (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ b) := by simp [input]
+ipra_subst input
 
 /-- The comparison frontend computes B=amp(b) from original bounds. -/
 def output (h b D A C : PTm n) : PTm n := pairT (difference h A C)
@@ -104,36 +99,30 @@ def output (h b D A C : PTm n) : PTm n := pairT (difference h A C)
     (pairT (signDifference h (amp b) D C A) (amp b))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (h b D A C : PTm n) : PTm n := PTm.app outputF ![h,b,D,A,C]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h b D A C : PTm n) :
-    Syn.subst σ (output h b D A C) = output (Syn.subst σ h) (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h b D A C : PTm n) :
-    Syn.subst σ (run h b D A C) = run (Syn.subst σ h) (Syn.subst σ b) (Syn.subst σ D) (Syn.subst σ A) (Syn.subst σ C) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (h b D A C : PTm n) : Γ ⊢[PRAAx] run h b D A C ≐ output h b D A C := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![h,b,D,A,C]
 theorem returned_difference (h b D A C : PTm n) : Γ ⊢[PRAAx] fstT (run h b D A C) ≐ difference h A C :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_tail (h b D A C : PTm n) : Γ ⊢[PRAAx] sndT (run h b D A C) ≐
     pairT (difference h C A) (pairT (signDifference h (amp b) D A C) (pairT (signDifference h (amp b) D C A) (amp b))) :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_reverse (h b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run h b D A C)) ≐ difference h C A :=
-  (congrFst (returned_tail _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _ _).fstE
 theorem returned_tags (h b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run h b D A C)) ≐
     pairT (signDifference h (amp b) D A C) (pairT (signDifference h (amp b) D C A) (amp b)) :=
-  (congrSnd (returned_tail _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _ _).sndE
 theorem returned_tag (h b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run h b D A C))) ≐ signDifference h (amp b) D A C :=
-  (congrFst (returned_tags _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tags _ _ _ _ _).fstE
 theorem returned_reverse_pair (h b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run h b D A C))) ≐
     pairT (signDifference h (amp b) D C A) (amp b) :=
-  (congrSnd (returned_tags _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tags _ _ _ _ _).sndE
 theorem returned_reverse_tag (h b D A C : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run h b D A C)))) ≐ signDifference h (amp b) D C A :=
-  (congrFst (returned_reverse_pair _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_reverse_pair _ _ _ _ _).fstE
 theorem returned_cap (h b D A C : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run h b D A C)))) ≐ amp b :=
-  (congrSnd (returned_reverse_pair _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_reverse_pair _ _ _ _ _).sndE
 
 theorem returned_trichotomy (h b D A C : PTm n) (p : Γ ⊢[PRAAx] QuadraticTowerMultiplicationNegative.source h D A C b) : Γ ⊢[PRAAx]
     (fstT (sndT (sndT (sndT (run h b D A C)))) ≐ one) ⋎

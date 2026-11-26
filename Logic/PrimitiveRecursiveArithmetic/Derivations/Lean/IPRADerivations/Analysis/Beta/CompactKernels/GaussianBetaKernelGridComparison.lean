@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelGridComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelExponential (kernel coefficient errorNumerator errorDenominator)
 open GaussianEulerCompactProductComparison (clock replacement replacement_error)
 open GaussianEulerCompactPowerMajorant (majorant)
@@ -35,8 +35,6 @@ open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width)
 open GaussianEulerVaryingCutoffName (cells evaluationPrecision)
 open GaussianGammaEulerCompactQuadrature (conservativeCells)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -47,15 +45,9 @@ def betaTerm (p t x : PTm n) : PTm n :=
 def evaluatorF : PR 3 := PTm.toPR (betaTerm (var 0) (var 1) (var 2))
 def row (p z B a b N : PTm n) : PTm n := replacement p z B a b (kernel a b N)
 
-@[simp] theorem subst_sampleDataBeta {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (sampleDataBeta z B N) = sampleDataBeta (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [sampleDataBeta, fixedData]
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (p z B a b N : PTm n) :
-    Syn.subst σ (row p z B a b N) = row (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [row,kernel,GaussianBetaKernelExponential.base]
-@[simp] theorem subst_betaTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (betaTerm p t x) = betaTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [betaTerm,kernel,GaussianBetaKernelExponential.base]
+ipra_subst sampleDataBeta [fixedData]
+ipra_subst row [kernel, GaussianBetaKernelExponential.base]
+ipra_subst betaTerm [kernel, GaussianBetaKernelExponential.base]
 
 theorem row_at (p z B a b N : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p (pairT a b) (sampleDataBeta z B N) ≐ row p z B a b N := by
@@ -101,11 +93,7 @@ theorem grid_domain (i M C E T : PTm n) (hM : Γ ⊢[PRAAx] le one M) (hE : Γ �
 def rowNumerator (p R E T N : PTm n) : PTm n :=
   majorant R E T*coefficient T*T*T*unit p+(majorant R E T+two)*N
 
-@[simp] theorem subst_rowNumerator {m : ℕ} (σ : Fin n → PTm m) (p R E T N : PTm n) :
-    Syn.subst σ (rowNumerator p R E T N) =
-      rowNumerator (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [rowNumerator,majorant,GaussianEulerCompactPowerMajorant.exponentRadius,coefficient,
-    GaussianRadiusExponentialLipschitzRate.factor,GaussianBetaKernelLogarithm.radius]
+ipra_subst rowNumerator [majorant, GaussianEulerCompactPowerMajorant.exponentRadius, coefficient, GaussianRadiusExponentialLipschitzRate.factor, GaussianBetaKernelLogarithm.radius]
 
 theorem row_error (p z R B E T a b N : PTm n) (hz : Γ ⊢[PRAAx] source z R B E)
     (ht : Γ ⊢[PRAAx] domain a b E T) (hN : Γ ⊢[PRAAx] le one N) (hT : Γ ⊢[PRAAx] le (two*T) N) :

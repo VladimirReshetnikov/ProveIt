@@ -14,7 +14,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDuplicationPeriodicity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHyperfactorial (barnesData barnes_regular)
 open GaussianBarnesCanonicalHyperfactorialBarnesStep (denominatorF denominatorData denominator_step)
 open GaussianBarnesCanonicalHyperfactorialPowerStep (gammaPowerF gammaPowerData gamma_power_regular)
@@ -29,8 +29,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNameRingLaws (multiply_associative multiply_commutative)
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingGammaLogarithm (source gammaData gamma_regular)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

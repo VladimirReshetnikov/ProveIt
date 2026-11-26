@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.SampleMedian
 import IPRADerivations.Probability.JointLotus
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The trinomial count law and the exact odd-sample median mass
@@ -31,7 +30,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.SampleMedianPmf
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self' pascal_at)
 open LeanProofs.IPRA.Probability.SampleMedian (ind_le ind_gt G G_congr G_zero G_succ_zero G_succ_succ)
@@ -40,10 +39,6 @@ open LeanProofs.IPRA.Probability.ProductPower (TB SB Pr Sr TB_at SB_at pr_peel s
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (eqb_succ_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -281,8 +276,8 @@ theorem f2_parts (t i k r M x : PTm n) :
   have s : Γ ⊢[PRAAx] sndT (pairT (pairT i k) (pairT r (pairT M x))) ≐ pairT r (pairT M x) := snd_pair _ _
   have f : Γ ⊢[PRAAx] fstT (pairT (pairT i k) (pairT r (pairT M x))) ≐ pairT i k := fst_pair _ _
   exact .andI ((congrInst2 _ (.eqRefl _) s).eqTrans (TB_at w _ _ _ _)) (.andI ((congrInst2 _ (.eqRefl _) s).eqTrans (SB_at Y _ _ _ _))
-    (.andI ((congrInst2 _ (.eqRefl _) s).eqTrans (SB_at Z _ _ _ _)) (.andI ((congrFst f).eqTrans (fst_pair _ _))
-      ((congrSnd f).eqTrans (snd_pair _ _)))))
+    (.andI ((congrInst2 _ (.eqRefl _) s).eqTrans (SB_at Z _ _ _ _)) (.andI f.fstE
+      f.sndE)))
 
 theorem f2B_at (t i k r M x : PTm n) :
     Γ ⊢[PRAAx] inst2 (f2B w Y Z) t (pairT (pairT i k) (pairT r (pairT M x))) ≐
@@ -489,17 +484,17 @@ theorem vI_at (i k B a b c r M x : PTm n) :
   rw [vI_eq]
   have hP : Γ ⊢[PRAAx] fstT (pairT i (Qt B a b c r M x)) ≐ i := fst_pair _ _
   have hQ : Γ ⊢[PRAAx] sndT (pairT i (Qt B a b c r M x)) ≐ Qt B a b c r M x := snd_pair _ _
-  have hT : Γ ⊢[PRAAx] sndT (sndT (pairT i (Qt B a b c r M x))) ≐ pairT r (pairT M x) := (congrSnd hQ).eqTrans (snd_pair _ _)
-  have hr : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT i (Qt B a b c r M x)))) ≐ r := (congrFst hT).eqTrans (fst_pair _ _)
+  have hT : Γ ⊢[PRAAx] sndT (sndT (pairT i (Qt B a b c r M x))) ≐ pairT r (pairT M x) := hQ.sndE
+  have hr : Γ ⊢[PRAAx] fstT (sndT (sndT (pairT i (Qt B a b c r M x)))) ≐ r := hT.fstE
   have hM : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (pairT i (Qt B a b c r M x))))) ≐ M :=
-    (congrFst ((congrSnd hT).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+    hT.sndE.fstE
   have hK : Γ ⊢[PRAAx] sndT (fstT (sndT (pairT i (Qt B a b c r M x)))) ≐ pairT a (pairT b c) :=
-    (congrSnd ((congrFst hQ).eqTrans (fst_pair _ _))).eqTrans (snd_pair _ _)
-  have ha : Γ ⊢[PRAAx] fstT (sndT (fstT (sndT (pairT i (Qt B a b c r M x))))) ≐ a := (congrFst hK).eqTrans (fst_pair _ _)
+    hQ.fstE.sndE
+  have ha : Γ ⊢[PRAAx] fstT (sndT (fstT (sndT (pairT i (Qt B a b c r M x))))) ≐ a := hK.fstE
   have hbc : Γ ⊢[PRAAx] sndT (sndT (fstT (sndT (pairT i (Qt B a b c r M x))))) ≐ pairT b c :=
-    (congrSnd hK).eqTrans (snd_pair _ _)
-  have hb : Γ ⊢[PRAAx] fstT (sndT (sndT (fstT (sndT (pairT i (Qt B a b c r M x)))))) ≐ b := (congrFst hbc).eqTrans (fst_pair _ _)
-  have hc : Γ ⊢[PRAAx] sndT (sndT (sndT (fstT (sndT (pairT i (Qt B a b c r M x)))))) ≐ c := (congrSnd hbc).eqTrans (snd_pair _ _)
+    hK.sndE
+  have hb : Γ ⊢[PRAAx] fstT (sndT (sndT (fstT (sndT (pairT i (Qt B a b c r M x)))))) ≐ b := hbc.fstE
+  have hc : Γ ⊢[PRAAx] sndT (sndT (sndT (fstT (sndT (pairT i (Qt B a b c r M x)))))) ≐ c := hbc.sndE
   exact congrMonus (.eqRefl _) (congrEqb (congrAp2 _ (congrAp2 powF hr hM) (congrPairT (congrPairT hP (.eqRefl _)) hT))
     (G2_congr ha hb hc hr hP (.eqRefl _)))
 
@@ -508,7 +503,7 @@ theorem vO_at (i B a b c r M x : PTm n) :
   have e : inst2 (vO w Y Z) i (Qt B a b c r M x) =
       ap2 (sumF (vI w Y Z)) (fstT (fstT (Qt B a b c r M x))) (pairT i (Qt B a b c r M x)) := by simp [inst2]
   rw [e]
-  exact congrAp2 _ ((congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _)
+  exact congrAp2 _ (fst_pair _ _).fstE (.eqRefl _)
 
 theorem V2_elim {B a b c i k r M x : PTm n} (hV : Γ ⊢[PRAAx] V2 w Y Z B a b c r M x ≐ zero)
     (hi : Γ ⊢[PRAAx] lt i B) (hk : Γ ⊢[PRAAx] lt k B) : Γ ⊢[PRAAx] F2 w Y Z i k r M x ≐ G2 a b c r i k :=
@@ -680,13 +675,9 @@ theorem count_law2 {i k r M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have hall : Γ ⊢[PRAAx] Fm.all (V2 w Y Z (Syn.shift (succ (i + k))) (ap2 (sumF (w * Y)) (Syn.shift M) (Syn.shift x))
       (ap2 (sumF (w * monus one (Y + Z))) (Syn.shift M) (Syn.shift x)) (ap2 (sumF (w * Z)) (Syn.shift M) (Syn.shift x))
       (var 0) (Syn.shift M) (Syn.shift x) ≐ zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [V2, Qt, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact V2_zero w Y Z _ _ _ _ _ _
-    · simp only [V2, Qt, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact V2_succ w Y Z hM'.wk hYZ'.wk Prf.hyp0
+    ipra_qfind [V2, Qt, subst_ap2, subst_pairT]
+    · exact V2_zero w Y Z _ _ _ _ _ _
+    · exact V2_succ w Y Z hM'.wk hYZ'.wk Prf.hyp0
   have h := Prf.allE r hall
   simp only [V2, Qt, Fm.subst_eq, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
@@ -729,11 +720,11 @@ theorem hT_at (i k a b c N : PTm n) :
   rw [e]
   have s : Γ ⊢[PRAAx] sndT (pairT (pairT a (pairT b c)) N) ≐ N := snd_pair _ _
   have f : Γ ⊢[PRAAx] fstT (pairT (pairT a (pairT b c)) N) ≐ pairT a (pairT b c) := fst_pair _ _
-  have hbc : Γ ⊢[PRAAx] sndT (fstT (pairT (pairT a (pairT b c)) N)) ≐ pairT b c := (congrSnd f).eqTrans (snd_pair _ _)
+  have hbc : Γ ⊢[PRAAx] sndT (fstT (pairT (pairT a (pairT b c)) N)) ≐ pairT b c := f.sndE
   have hN : Γ ⊢[PRAAx] half (sndT (pairT (pairT a (pairT b c)) N)) ≐ half N := congrAp1 _ s
   exact congrMul (congrMul (ind_congr (.eqRefl _) hN) (ind_congr (.eqRefl _) hN))
-    (G2_congr ((congrFst f).eqTrans (fst_pair _ _)) ((congrFst hbc).eqTrans (fst_pair _ _))
-      ((congrSnd hbc).eqTrans (snd_pair _ _)) s (.eqRefl _) (.eqRefl _))
+    (G2_congr f.fstE hbc.fstE
+      hbc.sndE s (.eqRefl _) (.eqRefl _))
 
 section Pmf
 
@@ -751,9 +742,9 @@ theorem pmf_point {i k N M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
   have sy : Γ ⊢[PRAAx] sndT (pairT i (pairT (pw M N) (pairT N (pairT M x)))) ≐ pairT (pw M N) (pairT N (pairT M x)) :=
     snd_pair _ _
   have xe : Γ ⊢[PRAAx] sndT (sndT (pairT i (pairT (pw M N) (pairT N (pairT M x))))) ≐ pairT N (pairT M x) :=
-    (congrSnd sy).eqTrans (snd_pair _ _)
+    sy.sndE
   have me : Γ ⊢[PRAAx] fstT (sndT (pairT i (pairT (pw M N) (pairT N (pairT M x))))) ≐ pw M N :=
-    (congrFst sy).eqTrans (fst_pair _ _)
+    sy.fstE
   refine .eqTrans ?_ ((congrInst3 hT (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans (hT_at _ _ _ _ _ _)).eqSymm
   refine (congrMul (congrInst3 gP fi (.eqRefl _) xe) (congrAp2 _ me (congrPairT (congrPairT fi (.eqRefl _)) xe))).eqTrans ?_
   exact congrMul (gP_at _ _ _ _) (count_law2 w Y Z hM hYZ)

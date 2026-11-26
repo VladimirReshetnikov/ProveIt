@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetFixedHorizonFrozenRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetFixedHorizonSine (error)
 open GaussianBinetSineDampedPanels (multiplier)
@@ -36,10 +36,6 @@ open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianStirlingConstant (piNumerator piDenominator)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBinetExponentialIntegralGrid.evaluatorF
@@ -60,11 +56,7 @@ def value (p k i A B U T N : PTm n) : PTm n :=
     GaussianGammaHalfPiName.meshIndex,GaussianGammaHalfPiName.orderAt,GaussianGammaHalfPiName.orderIndex,
     WallisFinite.Dm,one,two]
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p k i A B U T N : PTm n) :
-    Syn.subst σ (value p k i A B U T N) = value (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ i)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ U) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [value,realNumerator,realDenominator,GaussianBinetKernelImaginaryRatioRows.timeNumerator,
-    GaussianBinetKernelImaginaryRatioRows.timeDenominator,one,two]
+ipra_subst value [realNumerator, realDenominator, GaussianBinetKernelImaginaryRatioRows.timeNumerator, GaussianBinetKernelImaginaryRatioRows.timeDenominator, one, two]
 
 theorem frozen_margin (k i : PTm n) (hi : Γ ⊢[PRAAx] le one i) : Γ ⊢[PRAAx] le (realDenominator k) (realNumerator k i) := by
   have num := (GaussianBinetKernelPi.sample_margins (Γ := Γ) k).andE₁

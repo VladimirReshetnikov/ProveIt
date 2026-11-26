@@ -11,7 +11,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedProductSquare
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
@@ -19,9 +19,6 @@ open GaussianNameRingLaws (multiply_associative multiply_commutative multiply_on
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalReciprocal (qone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

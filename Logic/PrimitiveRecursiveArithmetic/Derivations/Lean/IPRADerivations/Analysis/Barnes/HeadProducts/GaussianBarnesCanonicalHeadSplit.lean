@@ -13,7 +13,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalHead (source parameters body nameF data regular factor_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus product_distance)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (qmul qzero)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_left qmul_zero_right)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

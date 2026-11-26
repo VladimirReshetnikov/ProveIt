@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaUpperEndpointInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul ofGaussian_represents canonical_unique)
 open GaussianRationalSyntheticDivision (qone qone_canonical)
 open GaussianRationalNaturalScale (natScale naturalPoint natScale_as_product natScale_represents)
@@ -32,9 +32,6 @@ open GaussianNameRingLaws (oneF multiply_commutative)
 open GaussianGammaWeierstrassApproximant (constant_product_cross constant_data_cross)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaEulerShiftLimit (reciprocalPoint)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

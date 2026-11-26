@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDegree
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A genuine numerical grid detects the zero polynomial
@@ -16,14 +15,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiniteGridIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero canonical evaluate ofGaussian represents_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,12 +27,9 @@ def nativePoint (i : PTm n) : PTm n := ComplexLogarithmRemainder.code (ZT.ofNat 
 def gridPoint (i : PTm n) : PTm n := ofGaussian (nativePoint i) one
 def gridBody : PTm 2 := gridPoint (var 0)
 def grid (N : PTm n) : PTm n := sequence gridBody (succ N) zero
-@[simp] theorem subst_nativePoint {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (nativePoint i) = nativePoint (Syn.subst σ i) := by simp [nativePoint]
-@[simp] theorem subst_gridPoint {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (gridPoint i) = gridPoint (Syn.subst σ i) := by simp [gridPoint]
-@[simp] theorem subst_grid {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (grid N) = grid (Syn.subst σ N) := by simp [grid]
+ipra_subst nativePoint
+ipra_subst gridPoint
+ipra_subst grid
 theorem point_represents (i : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.represents (gridPoint i) (nativePoint i) one :=
   GaussianRationalHorner.ofGaussian_represents _ _ (le_refl _)
 theorem point_canonical (i : PTm n) : Γ ⊢[PRAAx] canonical (gridPoint i) :=
@@ -105,16 +98,14 @@ theorem coefficient_zero (C N i : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ
 def output (C N : PTm n) : PTm n := pairT (grid N) (GaussianRationalPolynomialDegree.run C N)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (C N : PTm n) : PTm n := ap2 outputF C N
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N : PTm n) :
-    Syn.subst σ (run C N) = run (Syn.subst σ C) (Syn.subst σ N) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] run C N ≐ output C N := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1)) ![C,N]
 theorem returned_grid (C N : PTm n) : Γ ⊢[PRAAx] fstT (run C N) ≐ grid N :=
-  (congrFst (program_at _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _).fstE
 theorem returned_degree_program (C N : PTm n) : Γ ⊢[PRAAx] sndT (run C N) ≐ GaussianRationalPolynomialDegree.run C N :=
-  (congrSnd (program_at _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _).sndE
 theorem returned_flag (C N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C N)) ≐ GaussianRationalPolynomialDegree.flag C N :=
   (congrFst (returned_degree_program _ _)).eqTrans (GaussianRationalPolynomialDegree.returned_flag _ _)
 theorem returned_grid_length (C N : PTm n) : Γ ⊢[PRAAx] length (fstT (run C N)) ≐ succ N :=

@@ -14,7 +14,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceWeightedGridRectangle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceWeightedGridProduct (rowBudget difference_to_row)
 open GaussianBinetLaplaceWeightedGridReadback (cell_samples)
 open GaussianBinetLaplaceStrip (evaluatorF fixedData)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub qnegative)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at weighted_difference)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound leftSum)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => evaluatorF GaussianBinetLaplaceStrip.Kernel.cofinal
@@ -40,11 +37,7 @@ local notation "rectData" => GaussianBinetExponentialRectangle.data
 def panelData (q N X Y D sign R T : PTm n) : PTm n :=
   sampleData q N (one+zero) T one (fixedData X Y D sign R T zero)
 
-@[simp] theorem subst_panelData {m : ℕ} (σ : Fin n → PTm m) (q N X Y D sign R T : PTm n) :
-    Syn.subst σ (panelData q N X Y D sign R T) =
-      panelData (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
-        (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ T) := by
-  simp [panelData,one]
+ipra_subst panelData [one]
 
 private theorem subst_argument {m : ℕ} (σ : Fin n → PTm m) (X Y D sign : PTm n) :
     Syn.subst σ (argument X Y D sign) =

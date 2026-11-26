@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.DiophantineNumberTheory.Hurwitz
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite kernel of expectation
@@ -29,15 +27,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.Expectation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le mulParam inst2_mulParam sum_mul_param)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -209,14 +203,10 @@ private abbrev csF (w X Y : PTm 2) : Fm PTm 2 :=
     (Ew w (X * X) (var 0) (var 1) * Ew w (Y * Y) (var 0) (var 1))
 
 private theorem cs₀ (w X Y : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] csF w X Y := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (congrMul (sum_zero _ _) (sum_zero _ _)).eqSymm (congrMul (sum_zero _ _) (sum_zero _ _)).eqSymm
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (congrMul (sum_zero _ _) (sum_zero _ _)).eqSymm (congrMul (sum_zero _ _) (sum_zero _ _)).eqSymm
       (le_refl _)
-  · simp only [subst_le, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cs_sum_step w X Y Prf.hyp0
+  · exact cs_sum_step w X Y Prf.hyp0
 
 /-- Cauchy–Schwarz: `Ew(XY)² ≤ Ew(X²) · Ew(Y²)`. -/
 theorem cauchy_schwarz (w X Y : PTm 2) (N x : PTm n) :

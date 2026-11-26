@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerCompactTimeRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (numerator denominator)
 open GaussianNamedEulerIntegrandParameterContinuity (radius)
 open GaussianRationalMetric (qsub distanceBounded)
@@ -25,10 +25,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator den
 open GaussianCompactLogarithmBounds (domain)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,13 +33,9 @@ def auxiliary (f : PR 2) (x E T : PTm n) : PTm n := two*GaussianNamedEulerIntegr
 def input (f : PR 2) (x E T a b c d A N : PTm n) : Fm PTm n := pointCN f x ⋏
   (le one E ⋏ (domain a b E T ⋏ (domain c d E T ⋏ (le one N ⋏
     distanceBounded (GaussianPositiveRationalLogarithm.fraction a b) (GaussianPositiveRationalLogarithm.fraction c d) A N))))
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E T : PTm n) :
-    Syn.subst σ (gain f x E T) = gain f (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) := by simp [gain]
-@[simp] theorem subst_auxiliary {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E T : PTm n) :
-    Syn.subst σ (auxiliary f x E T) = auxiliary f (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) := by simp [auxiliary]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E T a b c d A N : PTm n) :
-    (input f x E T a b c d A N).subst σ = input f (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ N) := by simp [input]
+ipra_subst gain
+ipra_subst auxiliary
+ipra_subst input
 
 theorem frozen_source (f : PR 2) (x t E : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) (hE : Γ ⊢[PRAAx] le one E) : Γ ⊢[PRAAx]
     GaussianEulerExponentCompactBounds.source (numerator f t x) (radius f x) (denominator f t x) E :=

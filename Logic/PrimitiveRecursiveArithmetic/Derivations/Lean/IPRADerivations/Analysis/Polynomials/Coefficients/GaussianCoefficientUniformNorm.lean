@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCoefficientUniformNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientL1 (prefixNorm coefficientNorm)
 open GaussianRationalL1 (qL1)
 open GaussianRationalSyntheticBounds (natCode add_monotone)
@@ -21,25 +21,19 @@ open RationalArithmetic (multiply)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def entryBounds (C N E : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ rationalLE (qL1 (entry (Syn.shift C) (var 0))) (Syn.shift E))
-@[simp] theorem subst_entryBounds {m : ℕ} (σ : Fin n → PTm m) (C N E : PTm n) :
-    (entryBounds C N E).subst σ = entryBounds (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) := by
-  simp [entryBounds,Syn.subst_shift,Syn.shift_subst]
+ipra_subst entryBounds [Syn.subst_shift, Syn.shift_subst]
 theorem entry_at (C N E i : PTm n) (h : Γ ⊢[PRAAx] entryBounds C N E) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx]
     rationalLE (qL1 (entry C i)) E := by
   have gate : Γ ⊢[PRAAx] lt i N ⟶ rationalLE (qL1 (entry C i)) E := by simpa [entryBounds] using h.allE i
   exact Prf.impE gate hi
 
 def prefixLaw (C N E j : PTm n) : Fm PTm n := le j N ⟶ rationalLE (prefixNorm C j) (multiply (natCode j) E)
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C N E j : PTm n) :
-    (prefixLaw C N E j).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ E) (Syn.subst σ j) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_step (C N E j : PTm n) (h : Γ ⊢[PRAAx] entryBounds C N E)
     (ih : Γ ⊢[PRAAx] prefixLaw C N E j) : Γ ⊢[PRAAx] prefixLaw C N E (succ j) := by
@@ -53,13 +47,11 @@ theorem prefix_uniform (C N E : PTm n) (h : Γ ⊢[PRAAx] entryBounds C N E) : �
     rationalLE (prefixNorm C N) (multiply (natCode N) E) := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] entryBounds (Syn.shift C) (Syn.shift N) (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift N) (Syn.shift E) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (RationalArgmin.rationalLE_congr
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
+    · exact .impI (RationalArgmin.rationalLE_congr
         ((GaussianCoefficientL1.prefix_zero _).eqTrans GaussianRationalLinearProduct.scalar_zero_code.eqSymm).eqSymm
         (GaussianPolynomialDeterminantNorm.natural_scale_zero _).eqSymm (RationalArgmin.reflexive _))
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact prefix_step _ _ _ _ hs.wk Prf.hyp0
+    · exact prefix_step _ _ _ _ hs.wk Prf.hyp0
   have gate : Γ ⊢[PRAAx] prefixLaw C N E N := by
     simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
   exact Prf.impE gate (le_refl N)

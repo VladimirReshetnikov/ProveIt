@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDyadicLowerGrowth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open BarnesInteger (barnes)
 open ComplexLogarithmRemainder (normSq oneCode scale)
@@ -28,10 +28,6 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalLowerBounds (lower lower_from_representation lower_to_cleared)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

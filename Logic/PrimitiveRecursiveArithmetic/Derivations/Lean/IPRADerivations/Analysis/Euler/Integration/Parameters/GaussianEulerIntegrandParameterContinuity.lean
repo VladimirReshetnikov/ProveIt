@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrandParameterContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerExponentCompactBounds (source clock)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianEulerIntegrandName (coefficient exponentF exponentData exponent_at)
@@ -23,9 +23,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -34,12 +31,8 @@ def factor (R E T : PTm n) : PTm n := GaussianRadiusExponentialLipschitzRate.fac
   (GaussianEulerExponentCompactBounds.radius R E T)*GaussianCompactLogarithmBounds.radius E T
 def input (z w R B D E T a b A N : PTm n) : Fm PTm n := source z R B E ⋏
   (source w R D E ⋏ (domain a b E T ⋏ (le one N ⋏ distanceBounded (ofGaussian z B) (ofGaussian w D) A N)))
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (factor R E T) = factor (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [factor]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z w R B D E T a b A N : PTm n) :
-    (input z w R B D E T a b A N).subst σ = input (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b)
-      (Syn.subst σ A) (Syn.subst σ N) := by simp [input]
+ipra_subst factor
+ipra_subst input
 
 theorem coefficient_distance (z w B D A N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (h : Γ ⊢[PRAAx] distanceBounded (ofGaussian z B) (ofGaussian w D) A N) : Γ ⊢[PRAAx]

@@ -6,7 +6,8 @@ import IPRADerivations.Core.Integers
 A defined term `f (a b : PTm n) : PTm n` needs the simp lemma
 `subst_f σ a b : Syn.subst σ (f a b) = f (Syn.subst σ a) (Syn.subst σ b)` before it can be used under binders or
 in inductions. The command `ipra_subst f` states and proves it (`by simp [f]`); `ipra_subst f [l₁, …]` adds simp
-lemmas for the proof. Arguments of type `PTm n`, `ZT n`, `Fm PTm n` are substituted, the others are kept; for a
+lemmas for the proof. A term that applies a program to its arguments (`app F ![a, b]`) is proved by comparing the
+argument vectors entry by entry, and a constant `c : PTm n` gets `Syn.subst σ c = c`. Arguments of type `PTm n`, `ZT n`, `Fm PTm n` are substituted, the others are kept; for a
 formula or an integer term the lemma reads `(f a b).subst σ = …`.
 -/
 
@@ -78,11 +79,16 @@ elab_rules : command
           | .fm => args' := args'.push (← `(($nm).subst $σ))
           | .other => args' := args'.push nm
       let f := mkIdent c
-      let lhs ← if resKind == .tm then `(LeanProofs.ConciseIPRA.Syn.subst $σ ($f $args*))
-                else `(($f $args*).subst $σ)
-      let rhs ← `($f $args'*)
+      let app ← if args.isEmpty then `($f) else `($f $args*)
+      let lhs ← if resKind == .tm then `(LeanProofs.ConciseIPRA.Syn.subst $σ $app)
+                else `(($app).subst $σ)
+      let rhs ← if args'.isEmpty then `($f) else `($f $args'*)
       let first ← `(Lean.Parser.Tactic.simpLemma| $f:term)
       let lemmas : Array (TSyntax ``Lean.Parser.Tactic.simpLemma) :=
         #[first] ++ (match ext with | some ls => ls.getElems | none => #[])
-      `(command| @[simp] theorem $thmName $binders* : $lhs = $rhs := by simp [$lemmas,*])
+      `(command| @[simp] theorem $thmName $binders* : $lhs = $rhs := by
+          first
+          | (simp [$lemmas,*]; done)
+          | (simp only [$lemmas,*, LeanProofs.ConciseIPRA.PTm.subst_app]; congr 1; funext i; fin_cases i <;> rfl)
+          | (simp [$lemmas,*]; funext i; fin_cases i <;> rfl))
   elabCommand cmd

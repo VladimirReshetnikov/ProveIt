@@ -15,7 +15,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecaySuffixBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayFinite (terms_majorized dominated_bound)
 open GaussianBinetSecondDecayGrid (rowData rowBody envelopeData envelopeBody)
 open GaussianBinetSecondDecayFrozenTail (mesh)
@@ -32,9 +32,6 @@ open GaussianRationalSuffixMask (omitted retained suffix)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRightHalfPlaneLogarithm (source)
 open GaussianStirlingConstant (piDenominator)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

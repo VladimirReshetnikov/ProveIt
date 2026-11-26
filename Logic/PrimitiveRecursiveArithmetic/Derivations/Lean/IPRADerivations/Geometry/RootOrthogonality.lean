@@ -1,6 +1,4 @@
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite orthogonality by pairing (`isoperimetric_ipra`, `lem:ortho`)
@@ -35,11 +33,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.RootOrthogonality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -86,20 +80,15 @@ theorem sum_pair_congr (f₁ f₂ g₁ g₂ : PTm 2) {N x₁ x₂ y₁ y₂ : PT
     Γ ⊢[PRAAx] ap2 (sumF f₁) N x₁ + ap2 (sumF f₂) N x₂ ≐
       ap2 (sumF g₁) N y₁ + ap2 (sumF g₂) N y₂ := by
   have hall : Γ ⊢[PRAAx] Fm.all (pairF f₁ f₂ g₁ g₂ N x₁ x₂ y₁ y₂) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       have a₁ := natEq (sum_zero (Γ := le zero N :: Γ) f₁ x₁)
       have a₂ := natEq (sum_zero (Γ := le zero N :: Γ) f₂ x₂)
       have b₁ := natEq (sum_zero (Γ := le zero N :: Γ) g₁ y₁)
       have b₂ := natEq (sum_zero (Γ := le zero N :: Γ) g₂ y₂)
       apply deriveNat; ipra_simps
       linear_combination a₁ + a₂ - b₁ - b₂
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       have ih := natEq (Prf.impE (Prf.hyp1 (Γ := Γ.map Fm.shift)
         (φ := pairF f₁ f₂ g₁ g₂ N x₁ x₂ y₁ y₂) (ψ := le (succ (var 0)) (Syn.shift N)))
         (le_trans (le_succ_self _) Prf.hyp0))

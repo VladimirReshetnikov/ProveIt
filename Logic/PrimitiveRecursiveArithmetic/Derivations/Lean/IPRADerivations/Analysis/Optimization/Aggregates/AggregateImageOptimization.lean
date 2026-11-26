@@ -18,16 +18,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.AggregateImageOptimization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open AggregateEquality (sample unit nonempty regular)
 open AggregateOptimization (evaluate pointRegular supportZero)
 open AggregateApproximateImage (data clock nameF)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -65,9 +61,7 @@ theorem lifted_contract (g : PR 3) (e C D c x : PTm n)
 scans to agree, even with ties and independently denominated raw values. -/
 def valuesAgree (v w : PR 2) (K x y : PTm n) : Fm PTm n := .all
   (le (var 0) (Syn.shift K) ⟶ RationalArgmin.value v (var 0) (Syn.shift x) ≐ RationalArgmin.value w (var 0) (Syn.shift y))
-@[simp] theorem subst_valuesAgree {l : ℕ} (σ : Fin n → PTm l) (v w : PR 2) (K x y : PTm n) :
-    (valuesAgree v w K x y).subst σ = valuesAgree v w (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [valuesAgree,Syn.subst_shift,Syn.shift_subst]
+ipra_subst valuesAgree [Syn.subst_shift, Syn.shift_subst]
 
 theorem agree_at (v w : PR 2) (K x y i : PTm n) (h : Γ ⊢[PRAAx] valuesAgree v w K x y)
     (hi : Γ ⊢[PRAAx] le i K) : Γ ⊢[PRAAx] RationalArgmin.value v i x ≐ RationalArgmin.value w i y := by
@@ -100,12 +94,9 @@ def pullbackF (S : PR 2) (f g : PR 3) : PR 2 := PTm.toPR (pullbackBody S f g)
 def pullbackIndex (S : PR 2) (f g : PR 3) (s c x : PTm n) : PTm n :=
   RationalArgmin.selected (pullbackF S f g) (pred (length (sample S (s+c) x))) (pullbackData s c x)
 
-@[simp] theorem subst_pullbackData {l : ℕ} (σ : Fin n → PTm l) (s c x : PTm n) :
-    Syn.subst σ (pullbackData s c x) = pullbackData (Syn.subst σ s) (Syn.subst σ c) (Syn.subst σ x) := by simp [pullbackData]
-@[simp] theorem subst_pullbackValue {l : ℕ} (σ : Fin n → PTm l) (S : PR 2) (f g : PR 3) (i s c x : PTm n) :
-    Syn.subst σ (pullbackValue S f g i s c x) = pullbackValue S f g (Syn.subst σ i) (Syn.subst σ s) (Syn.subst σ c) (Syn.subst σ x) := by simp [pullbackValue]
-@[simp] theorem subst_pullbackIndex {l : ℕ} (σ : Fin n → PTm l) (S : PR 2) (f g : PR 3) (s c x : PTm n) :
-    Syn.subst σ (pullbackIndex S f g s c x) = pullbackIndex S f g (Syn.subst σ s) (Syn.subst σ c) (Syn.subst σ x) := by simp [pullbackIndex]
+ipra_subst pullbackData
+ipra_subst pullbackValue
+ipra_subst pullbackIndex
 
 theorem pullback_at (S : PR 2) (f g : PR 3) (i s c x : PTm n) : Γ ⊢[PRAAx]
     RationalArgmin.value (pullbackF S f g) i (pullbackData s c x) ≐ pullbackValue S f g i s c x := by
@@ -114,8 +105,8 @@ theorem pullback_at (S : PR 2) (f g : PR 3) (i s c x : PTm n) : Γ ⊢[PRAAx]
     simpa [RationalArgmin.value,ap2,pullbackF,pullbackBody] using
       toPR_eq (Γ := Γ) (pullbackBody S f g) ![i,pullbackData s c x]
   have ss := fst_pair (Γ := Γ) s (pairT c x)
-  have cc : Γ ⊢[PRAAx] fstT (sndT (pullbackData s c x)) ≐ c := (congrFst (snd_pair s (pairT c x))).eqTrans (fst_pair _ _)
-  have xx : Γ ⊢[PRAAx] sndT (sndT (pullbackData s c x)) ≐ x := (congrSnd (snd_pair s (pairT c x))).eqTrans (snd_pair _ _)
+  have cc : Γ ⊢[PRAAx] fstT (sndT (pullbackData s c x)) ≐ c := (snd_pair s (pairT c x)).fstE
+  have xx : Γ ⊢[PRAAx] sndT (sndT (pullbackData s c x)) ≐ x := (snd_pair s (pairT c x)).sndE
   exact raw.eqTrans (congrAp3 g
     (congrAp3 f (entry_congr (congrAp2 S (congrAdd ss cc) xx) (.eqRefl i)) (congrAdd ss cc) xx) ss xx)
 
@@ -174,9 +165,7 @@ theorem image_minimum_value (S : PR 2) (f g : PR 3) (s c x : PTm n)
 def input (S : PR 2) (f g : PR 3) (d e A B C D x : PTm n) : Fm PTm n :=
   AggregateApproximateImage.input S f d e A B x ⋏
     (le one D ⋏ AggregateOptimization.mapContract g e C D x)
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (S : PR 2) (f g : PR 3) (d e A B C D x : PTm n) :
-    (input S f g d e A B C D x).subst σ = input S f g (Syn.subst σ d) (Syn.subst σ e) (Syn.subst σ A)
-      (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) := by simp [input]
+ipra_subst input
 
 theorem image_optimization (S : PR 2) (f g : PR 3) (d e A B C D x : PTm n)
     (h : Γ ⊢[PRAAx] input S f g d e A B C D x) : Γ ⊢[PRAAx]
@@ -212,12 +201,8 @@ def pointObservation (U : PR 2) (f g : PR 3) (t A B C D x : PTm n) : PTm n :=
   evaluate g (evaluate f (sample U (t+AggregateOptimization.coarseValueShift C D+clock A B) x)
     (t+AggregateOptimization.coarseValueShift C D+clock A B) x) (t+AggregateOptimization.coarseValueShift C D) x
 
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (S : PR 2) (f g : PR 3) (k A B C D x : PTm n) :
-    Syn.subst σ (value S f g k A B C D x) = value S f g (Syn.subst σ k) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) := by simp [value,AggregateOptimization.coarseValueShift]
-@[simp] theorem subst_pointObservation {l : ℕ} (σ : Fin n → PTm l) (U : PR 2) (f g : PR 3) (t A B C D x : PTm n) :
-    Syn.subst σ (pointObservation U f g t A B C D x) = pointObservation U f g (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) := by simp [pointObservation,AggregateOptimization.coarseValueShift]
+ipra_subst value [AggregateOptimization.coarseValueShift]
+ipra_subst pointObservation [AggregateOptimization.coarseValueShift]
 
 theorem value_at_source_scan (S : PR 2) (f g : PR 3) (k A B C D x : PTm n)
     (hS : Γ ⊢[PRAAx] nonempty S x) : Γ ⊢[PRAAx]
@@ -264,16 +249,8 @@ def outputF (U S : PR 2) (f g : PR 3) : PR 7 :=
   PTm.toPR (output U S f g (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (U S : PR 2) (f g : PR 3) (k t A B C D x : PTm n) : PTm n :=
   PTm.app (outputF U S f g) ![k,t,A,B,C,D,x]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (U S : PR 2) (f g : PR 3) (k t A B C D x : PTm n) :
-    Syn.subst σ (output U S f g k t A B C D x) = output U S f g (Syn.subst σ k) (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) := by simp [output,AggregateOptimization.coarseValueShift]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (U S : PR 2) (f g : PR 3) (k t A B C D x : PTm n) :
-    Syn.subst σ (run U S f g k t A B C D x) = run U S f g (Syn.subst σ k) (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output [AggregateOptimization.coarseValueShift]
+ipra_subst run
 
 theorem run_at (U S : PR 2) (f g : PR 3) (k t A B C D x : PTm n) : Γ ⊢[PRAAx]
     run U S f g k t A B C D x ≐ output U S f g k t A B C D x := by
@@ -282,13 +259,13 @@ theorem run_at (U S : PR 2) (f g : PR 3) (k t A B C D x : PTm n) : Γ ⊢[PRAAx]
 
 theorem returned_value (U S : PR 2) (f g : PR 3) (k t A B C D x : PTm n) : Γ ⊢[PRAAx]
     fstT (run U S f g k t A B C D x) ≐ value S f g k A B C D x :=
-  (congrFst (run_at U S f g k t A B C D x)).eqTrans (fst_pair _ _)
+  (run_at U S f g k t A B C D x).fstE
 theorem returned_point_value (U S : PR 2) (f g : PR 3) (k t A B C D x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run U S f g k t A B C D x)) ≐ pointObservation U f g t A B C D x :=
-  (congrFst ((congrSnd (run_at U S f g k t A B C D x)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (run_at U S f g k t A B C D x).sndE.fstE
 theorem returned_index (U S : PR 2) (f g : PR 3) (k t A B C D x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run U S f g k t A B C D x)) ≐ pullbackIndex S f g (k+AggregateOptimization.coarseValueShift C D) (clock A B) x :=
-  (congrSnd ((congrSnd (run_at U S f g k t A B C D x)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (run_at U S f g k t A B C D x).sndE.sndE
 
 theorem returned_lower (U S : PR 2) (f g : PR 3) (d e A B C D x k t : PTm n)
     (h : Γ ⊢[PRAAx] input S f g d e A B C D x)

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentCayleyTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq_eval scale oneCode)
 open GaussianArctangentCayleyExponentialStep (row sample subst_row subst_sample
   sample_zero sample_canonical local_exponential_step conjugate_left_endpoint)
@@ -33,10 +33,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_one_right)
 open GaussianRootAlgebra (equal equal_of_values re_mul im_mul re_scale im_scale re_one im_one)
 open GaussianScalarExponentialProductTail (rectangleCutoff termsBounded sum_bound)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,8 +47,8 @@ private theorem row_at (j M L s : PTm n) : Γ ⊢[PRAAx]
     inst2 rowBody j (pairT M (pairT L s)) ≐ row M j s (prefixValue j M L) := by
   let x := pairT M (pairT L s)
   have hM : Γ ⊢[PRAAx] fstT x ≐ M := fst_pair _ _
-  have hL : Γ ⊢[PRAAx] fstT (sndT x) ≐ L := (congrFst (snd_pair M (pairT L s))).eqTrans (fst_pair _ _)
-  have hs : Γ ⊢[PRAAx] sndT (sndT x) ≐ s := (congrSnd (snd_pair M (pairT L s))).eqTrans (snd_pair _ _)
+  have hL : Γ ⊢[PRAAx] fstT (sndT x) ≐ L := (snd_pair M (pairT L s)).fstE
+  have hs : Γ ⊢[PRAAx] sndT (sndT x) ≐ s := (snd_pair M (pairT L s)).sndE
   simpa [rowBody,inst2,x] using Prf.eqCongr
     (row (var 0) (var 1) (var 2) (prefixValue (var 1) (var 0) (var 3)) : PTm 4)
     (σ := ![fstT x,j,sndT (sndT x),fstT (sndT x)]) (σ' := ![M,j,s,L])

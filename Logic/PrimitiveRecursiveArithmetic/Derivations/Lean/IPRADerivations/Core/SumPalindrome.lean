@@ -1,7 +1,5 @@
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Palindromic sums

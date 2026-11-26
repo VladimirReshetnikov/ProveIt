@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveRationalHalfLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -29,8 +29,6 @@ open GaussianPositiveRationalLogarithm (source logF fraction)
 open GaussianNamedBoundedSquareRoot (sqrtF observations square_root_cross)
 open GaussianExponentialRealPart (doubleRealF doubleRealData squareF squareData)
 open GaussianRadiusExponentialName (input)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF
@@ -40,8 +38,7 @@ def nameF : PR 2 := GaussianNamedHalf.nameF logF
 def data (a b : PTm n) : PTm n := GaussianNamedHalf.data logF (L a b)
 def exponentialData (a b : PTm n) : PTm n := exponentialInputData nameF (data a b)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst data
 
 theorem regular (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx] pointCN nameF (data a b) :=
   GaussianNamedHalf.regular logF (L a b) (GaussianPositiveRationalLogarithm.name_regular a b h)
@@ -70,9 +67,7 @@ abbrev quarterF : PR 2 := GaussianNamedHalf.nameF nameF
 abbrev positiveF : PR 2 := squareF (E quarterF)
 def positiveData (a b : PTm n) : PTm n := squareData (E quarterF) (exponentialInputData quarterF (quarterData a b))
 
-@[simp] theorem subst_positiveData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (positiveData a b) = positiveData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [positiveData,quarterData,exponentialInputData]
+ipra_subst positiveData [quarterData, exponentialInputData]
 
 theorem positive_cross (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx]
     crossEquivalent positiveF (E nameF) (positiveData a b) (exponentialData a b) := by

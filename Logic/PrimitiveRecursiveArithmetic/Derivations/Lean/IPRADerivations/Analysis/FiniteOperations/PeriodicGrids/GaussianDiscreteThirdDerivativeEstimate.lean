@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDiscreteThirdDerivativeEstimate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDiscreteDerivativeRounding (allowance body latticeScale signed_source source sample_at)
 open GaussianSignedObservationGrid (rounded)
 open SignedDiscreteDerivativeOperators (width divisor)
@@ -24,8 +24,6 @@ open SignedDiscreteDerivativeBounds (floorOn)
 open SignedDiscreteThirdDerivativeNormalization (stencil budget normalized_lower)
 open SignedCubicTaylorGrid (combination)
 open PolynomialBisection (zle_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

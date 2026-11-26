@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRadiusExponentialFreeze
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -29,18 +29,13 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalRadiusExponentialLipschitz (factor scalar_sum_lipschitz)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianReconstructionRoots (norm_from_distance)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 
 def radius (f : PR 2) (x : PTm n) : PTm n := U f x + num 3
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (radius f x) = radius f (Syn.subst σ x) := by simp [radius]
+ipra_subst radius
 
 theorem original_input (f : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] input f (radius f x) x :=

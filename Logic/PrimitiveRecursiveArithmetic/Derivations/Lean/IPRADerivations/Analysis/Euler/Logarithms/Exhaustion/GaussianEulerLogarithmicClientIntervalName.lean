@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIntervalName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicCompactName (evaluatorF fixedData wrapped_at original_variation)
 open GaussianEulerLogarithmicMultiplier (lipschitz)
 open GaussianCompactRiemannName (inside sampledModulus localBody)
@@ -22,8 +22,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,12 +31,8 @@ def source (z R B a C G E T : PTm n) : Fm PTm n :=
     (le one a ⋏ (le one G ⋏ (le G (E*a) ⋏ le (a+C) (G*T))))
 def data (j z R B a C G E T : PTm n) : PTm n :=
   GaussianCompactRiemannName.data a C G (lipschitz j R E T) T (fixedData j R E T z B)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C G E T : PTm n) :
-    (source z R B a C G E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ G) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (j z R B a C G E T : PTm n) :
-    Syn.subst σ (data j z R B a C G E T) = data (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ G) (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
+ipra_subst source
+ipra_subst data
 
 theorem domain_of_inside (z R B a C G E T t : PTm n)
     (h : Γ ⊢[PRAAx] source z R B a C G E T) (ht : Γ ⊢[PRAAx] inside a C G t) : Γ ⊢[PRAAx]

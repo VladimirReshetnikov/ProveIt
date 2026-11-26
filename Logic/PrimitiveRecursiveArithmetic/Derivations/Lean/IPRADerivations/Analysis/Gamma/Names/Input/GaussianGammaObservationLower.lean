@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaObservationLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalLowerBounds (lower lower_congr lower_from_representation)
 open GaussianRationalLowerPerturbation (lower_near_unit fractional_factor_lower)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -33,10 +33,6 @@ open GaussianBoundedInverseApartness (productError)
 open GaussianGammaReciprocalInverse (lambdaNumerator lambdaDenominator lambda_positive source gammaF gammaData)
 open GaussianGammaFiniteApproximantName (qF qData q_regular)
 open GaussianGammaC9Bound (majorant)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

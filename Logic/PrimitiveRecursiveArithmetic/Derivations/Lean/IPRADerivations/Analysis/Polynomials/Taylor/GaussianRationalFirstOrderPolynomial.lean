@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFirstOrderPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qadd evaluate canonical)
 open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalSyntheticDivision (quotient qmul_congr qsub_congr)
@@ -27,9 +27,6 @@ open GaussianRationalPolynomialBuffers (leftPad)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,16 +40,11 @@ def sizeNumerator (C U : PTm n) : PTm n := GaussianRationalVariableHornerBudget.
 def betaSlope (z B N t : PTm n) : PTm n := slope (GaussianEulerBetaPolynomialPrimitive.primitive z B N) t N
 def betaRemainder (z B N t h : PTm n) : PTm n := remainder (GaussianEulerBetaPolynomialPrimitive.primitive z B N) t h N
 
-@[simp] theorem subst_paddedQuotient {m : ℕ} (σ : Fin n → PTm m) (C t N : PTm n) :
-    Syn.subst σ (paddedQuotient C t N) = paddedQuotient (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ N) := by simp [paddedQuotient]
-@[simp] theorem subst_slope {m : ℕ} (σ : Fin n → PTm m) (C t N : PTm n) :
-    Syn.subst σ (slope C t N) = slope (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ N) := by simp [slope]
-@[simp] theorem subst_remainder {m : ℕ} (σ : Fin n → PTm m) (C t h N : PTm n) :
-    Syn.subst σ (remainder C t h N) = remainder (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ h) (Syn.subst σ N) := by simp [remainder]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (C t N U : PTm n) :
-    Syn.subst σ (numerator C t N U) = numerator (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ N) (Syn.subst σ U) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (C t N : PTm n) :
-    Syn.subst σ (denominator C t N) = denominator (Syn.subst σ C) (Syn.subst σ t) (Syn.subst σ N) := by simp [denominator]
+ipra_subst paddedQuotient
+ipra_subst slope
+ipra_subst remainder
+ipra_subst numerator
+ipra_subst denominator
 
 theorem padded_length (C t N : PTm n) : Γ ⊢[PRAAx] length (paddedQuotient C t N) ≐ succ N :=
   (GaussianRationalPolynomialBuffers.pad_length _ _).eqTrans

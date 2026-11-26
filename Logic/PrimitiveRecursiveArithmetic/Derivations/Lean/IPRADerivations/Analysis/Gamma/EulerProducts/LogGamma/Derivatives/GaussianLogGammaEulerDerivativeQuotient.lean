@@ -20,7 +20,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerDerivativeQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq)
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
@@ -40,9 +40,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rat
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (reciprocal qone)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -57,10 +54,7 @@ def nameF : PR 2 := BProduct incrementF
 def data (A B neg a b sign D : PTm n) : PTm n :=
   bpData D (reciprocal (step A B neg a b sign D)) (incrementData A B neg a b sign D)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B neg a b sign D : PTm n) :
-    Syn.subst σ (data A B neg a b sign D) =
-      data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ neg)
-        (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ sign) (Syn.subst σ D) := by simp [data]
+ipra_subst data
 
 def errorNumerator (H K : PTm n) : PTm n := num 8*H*(K*K+two)
 

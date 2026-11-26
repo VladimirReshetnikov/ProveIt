@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaSharpPartition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top height height_positive eta_den_positive)
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -20,10 +20,6 @@ open GaussianCompactRiemannName (fraction_congr)
 open GaussianCompactRiemannSplit (fraction_cancel)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

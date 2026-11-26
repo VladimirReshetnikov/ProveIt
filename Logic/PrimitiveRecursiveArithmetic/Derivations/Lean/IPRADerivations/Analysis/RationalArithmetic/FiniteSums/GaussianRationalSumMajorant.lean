@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSumMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic (sign sign_add sign_multiply numerator natural_representation)
 open GaussianRationalHorner (qadd qzero qmul positive_product scalar_congr)
 open GaussianRationalMetric (bounded)
@@ -26,18 +26,13 @@ open GaussianRationalReciprocal (bounded_sum bounded_product bound_congr)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalArithmetic (represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def majorized (u v : PTm n) : Fm PTm n := sign v ⋏ bounded u (numerator v) (denominatorOf v)
 
-@[simp] theorem subst_majorized {m : ℕ} (σ : Fin n → PTm m) (u v : PTm n) :
-    (majorized u v).subst σ = majorized (Syn.subst σ u) (Syn.subst σ v) := by
-  simp [majorized,numerator,numeratorOf]
+ipra_subst majorized [numerator, numeratorOf]
 
 private theorem natural_numerator_value (r : PTm n) (h : Γ ⊢[PRAAx] sign r) :
     ZT.toZ Γ (numeratorOf r) = 𝔞(numerator r) := by
@@ -116,12 +111,8 @@ def termsMajorized (f g : PTm 2) (N x y : PTm n) : Fm PTm n := .all
 def prefixMajorized (f g : PTm 2) (N x y k : PTm n) : Fm PTm n := le k N ⟶
   majorized (GaussianRationalFiniteSum.sum f k x) (RationalFiniteSum.sum g k y)
 
-@[simp] theorem subst_termsMajorized {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (N x y : PTm n) :
-    (termsMajorized f g N x y).subst σ = termsMajorized f g (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [termsMajorized,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_prefixMajorized {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (N x y k : PTm n) :
-    (prefixMajorized f g N x y k).subst σ =
-      prefixMajorized f g (Syn.subst σ N) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ k) := by simp [prefixMajorized]
+ipra_subst termsMajorized [Syn.subst_shift, Syn.shift_subst]
+ipra_subst prefixMajorized
 
 private theorem zero_majorized : Γ ⊢[PRAAx]
     majorized (qzero : PTm n) (RationalIntegerNormalization.integerCode (ZT.natLit 0)) := by

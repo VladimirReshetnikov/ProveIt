@@ -17,7 +17,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalIntegerLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BarnesInteger (barnes hyp hyper_cross)
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianEuclideanDistanceName (pointCN)
@@ -35,9 +35,6 @@ open GaussianRealNameExponentialInjectivity (axisSamples axis_sample_at independ
 open GaussianRootAlgebra (equal equal_of_values re_scale im_scale re_one im_one)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData log_gamma_regular log_gamma_axis)
 open Products (fact)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianBarnesCanonicalPositiveLogarithm.nameF

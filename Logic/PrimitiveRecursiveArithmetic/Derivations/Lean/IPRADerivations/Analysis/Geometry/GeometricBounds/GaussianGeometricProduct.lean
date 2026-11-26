@@ -17,16 +17,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeometricProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.RationalNonnegativePowers (power)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,14 +35,10 @@ def numerator (C K j : PTm n) : PTm n := ap3 numeratorF j C K
 def denominator (C K j : PTm n) : PTm n := ap3 denominatorF j C K
 def value (C K j : PTm n) : PTm n := fraction (numerator C K j) (denominator C K j)
 
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (C K j : PTm n) :
-    Syn.subst σ (factor C K j) = factor (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ j) := by simp [factor]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (C K j : PTm n) :
-    Syn.subst σ (numerator C K j) = numerator (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ j) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (C K j : PTm n) :
-    Syn.subst σ (denominator C K j) = denominator (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ j) := by simp [denominator]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (C K j : PTm n) :
-    Syn.subst σ (value C K j) = value (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ j) := by simp [value]
+ipra_subst factor
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst value
 
 theorem numerator_zero (C K : PTm n) : Γ ⊢[PRAAx] numerator C K zero ≐ one := by
   have h := rec_zero (Γ := Γ) (one : PTm 2) numeratorStep ![C,K]
@@ -93,13 +85,9 @@ theorem denominator_positive (C K j : PTm n) (hK : Γ ⊢[PRAAx] le one K) : Γ 
   have hK' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift K) := by
     simpa [Fm.shift,Syn.shift] using hK.shift
   have all : Γ ⊢[PRAAx] .all (le one (denominator (Syn.shift C) (Syn.shift K) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,subst_denominator,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (denominator_zero C K).eqSymm (le_refl one)
-    · simp only [subst_le,subst_denominator,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact le_congr (.eqRefl _) (denominator_succ _ _ _).eqSymm
+    ipra_qfind (le_QF _ _) [subst_le, subst_denominator]
+    · exact le_congr (.eqRefl _) (denominator_zero C K).eqSymm (le_refl one)
+    · exact le_congr (.eqRefl _) (denominator_succ _ _ _).eqSymm
         (positive_product _ _ Prf.hyp0 (RationalNonnegativePowers.denominator_positive _ _ hK'.wk))
   simpa only [subst_le,subst_denominator,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,
     Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
@@ -109,11 +97,9 @@ theorem denominator_le_numerator (C K j : PTm n) : Γ ⊢[PRAAx]
     le (denominator C K j) (numerator C K j) := by
   have all : Γ ⊢[PRAAx] .all (le (denominator (Syn.shift C) (Syn.shift K) (var 0))
       (numerator (Syn.shift C) (Syn.shift K) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,subst_denominator,subst_numerator,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (denominator_zero C K).eqSymm (numerator_zero C K).eqSymm (le_refl one)
-    · simp only [subst_le,subst_denominator,subst_numerator,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact le_congr (denominator_succ _ _ _).eqSymm (numerator_succ _ _ _).eqSymm
+    ipra_qfind (le_QF _ _) [subst_le, subst_denominator, subst_numerator]
+    · exact le_congr (denominator_zero C K).eqSymm (numerator_zero C K).eqSymm (le_refl one)
+    · exact le_congr (denominator_succ _ _ _).eqSymm (numerator_succ _ _ _).eqSymm
         (le_mul_mono Prf.hyp0 (factor_lower _ _ _))
   simpa only [subst_le,subst_denominator,subst_numerator,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
@@ -205,21 +191,19 @@ def output (C K j : PTm n) : PTm n := pairT (numerator C K j)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (C K j : PTm n) : PTm n := ap3 outputF C K j
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C K j : PTm n) :
-    Syn.subst σ (output C K j) = output (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C K j : PTm n) :
-    Syn.subst σ (run C K j) = run (Syn.subst σ C) (Syn.subst σ K) (Syn.subst σ j) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C K j : PTm n) : Γ ⊢[PRAAx] run C K j ≐ output C K j := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![C,K,j]
 theorem returned_numerator (C K j : PTm n) : Γ ⊢[PRAAx] fstT (run C K j) ≐ numerator C K j :=
-  (congrFst (program_at C K j)).eqTrans (fst_pair _ _)
+  (program_at C K j).fstE
 theorem returned_denominator (C K j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run C K j)) ≐ denominator C K j :=
-  (congrFst ((congrSnd (program_at C K j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C K j).sndE.fstE
 theorem returned_value (C K j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run C K j))) ≐ value C K j :=
-  (congrFst ((congrSnd ((congrSnd (program_at C K j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C K j).sndE.sndE.fstE
 theorem returned_factor (C K j : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run C K j))) ≐ factor C K j :=
-  (congrSnd ((congrSnd ((congrSnd (program_at C K j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C K j).sndE.sndE.sndE
 theorem returned_prefix_bound (C K j : PTm n) : Γ ⊢[PRAAx]
     le (fstT (run C K j)) (fstT (sndT (run C K j))*pw (one+C) j) :=
   le_congr (returned_numerator C K j).eqSymm (congrMul (returned_denominator C K j).eqSymm (.eqRefl _))

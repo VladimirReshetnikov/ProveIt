@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPolygammaTailRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode normSq)
 open GaussianDominantPairAlgebra (radiusPoint radius_power radius_bounded radius_multiply radius_one radius_congr)
 open GaussianGammaEulerHeadLower (translated)
@@ -23,8 +23,6 @@ open GaussianRationalLowerBounds (lower lower_from_representation inverse_bound)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (power reciprocal bounded_power bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,14 +33,9 @@ def halfInverse (z B j : PTm n) : PTm n := qmul (radiusPoint one two) (inverse z
 def normalizedTerm (z B j m : PTm n) : PTm n := power (halfInverse z B j) m
 def weight (m : PTm n) : PTm n := radiusPoint (pw two m) one
 
-@[simp] theorem subst_normalizedTerm {l : ℕ} (σ : Fin n → PTm l) (z B j m : PTm n) :
-    Syn.subst σ (normalizedTerm z B j m) =
-      normalizedTerm (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ j) (Syn.subst σ m) := by
-  simp [normalizedTerm,halfInverse,inverse,argument,one,two]
+ipra_subst normalizedTerm [halfInverse, inverse, argument, one, two]
 
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (z B j m : PTm n) :
-    Syn.subst σ (term z B j m) = term (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ j) (Syn.subst σ m) := by
-  simp [term,inverse,argument]
+ipra_subst term [inverse, argument]
 
 private theorem distance_from_integer (z R B j : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B))

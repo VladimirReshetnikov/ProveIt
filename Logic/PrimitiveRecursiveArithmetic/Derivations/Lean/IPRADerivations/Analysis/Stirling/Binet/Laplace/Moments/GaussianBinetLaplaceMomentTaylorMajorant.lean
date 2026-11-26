@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentTaylorMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceIntegrand (input)
 open GaussianBinetLaplaceMomentFloor (observation)
@@ -30,10 +30,6 @@ open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalSumMajorant (majorized from_representation)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open RationalGaussianEmbedding (embed embed_add embed_multiply canonical_axis_roundtrip)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,14 +40,9 @@ def scalar (p j X D T H Q A B : PTm n) : PTm n :=
     (fraction (allowance j T) (unit p))
 def errorCost (j T : PTm n) : PTm n := allowance j T+num 36*pw T (succ (succ j))
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (H Q : PTm n) :
-    Syn.subst σ (coefficient H Q) = coefficient (Syn.subst σ H) (Syn.subst σ Q) := by simp [coefficient]
-@[simp] theorem subst_scalar {m : ℕ} (σ : Fin n → PTm m) (p j X D T H Q A B : PTm n) :
-    Syn.subst σ (scalar p j X D T H Q A B) =
-      scalar (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ T)
-        (Syn.subst σ H) (Syn.subst σ Q) (Syn.subst σ A) (Syn.subst σ B) := by simp [scalar]
-@[simp] theorem subst_errorCost {m : ℕ} (σ : Fin n → PTm m) (j T : PTm n) :
-    Syn.subst σ (errorCost j T) = errorCost (Syn.subst σ j) (Syn.subst σ T) := by simp [errorCost]
+ipra_subst coefficient
+ipra_subst scalar
+ipra_subst errorCost
 
 theorem leading_denominator_positive (p j X D Q A B : PTm n)
     (hQ : Γ ⊢[PRAAx] le one Q) (hB : Γ ⊢[PRAAx] le one B) :

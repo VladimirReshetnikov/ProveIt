@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveFirstDerivativeRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDerivativeRow (offset)
 open GaussianBarnesCanonicalDeflatedFactor (inverseInteger)
 open GaussianBarnesCanonicalFactor (base)
@@ -34,9 +34,6 @@ open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qadd_congr qadd_sub_cancel qmul_congr qsub_congr qzero_add)
 open GaussianReciprocalHorner (qadd_commutative qadd_zero_right qmul_associative qmul_one_right qsub_add_cancel)
 open GaussianRootAlgebra (equal equal_of_values sub)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

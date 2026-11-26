@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentSignedPole
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs subst_zabs)
 open ComplexLogarithmRemainder (code re im eval_re_code eval_im_code normSq scale bounded normSq_neg)
@@ -31,9 +31,6 @@ open GaussianSineProductImaginaryLogDerivativeTail (axis_norm)
 open PolynomialBisection (selector selector_cases selector_zero)
 open RationalArithmetic (select select_zero select_one)
 open RationalIntegerNormalization (positivePart negativePart parts_value)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)

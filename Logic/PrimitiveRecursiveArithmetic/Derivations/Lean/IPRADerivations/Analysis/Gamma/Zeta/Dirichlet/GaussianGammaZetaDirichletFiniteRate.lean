@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletFiniteRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerPositiveScalingConstant (inverseF)
 open GaussianGammaEulerHeadShift (shifted)
@@ -25,9 +25,6 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianEulerIntegralGammaIdentification.source
@@ -36,12 +33,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def prefixData (N z R B A : PTm n) : PTm n := data N (shifted z B) (R+one) B A
 def budget (A : PTm n) : PTm n := num 4*unit A
 
-@[simp] theorem subst_prefixData {m : ℕ} (σ : Fin n → PTm m) (N z R B A : PTm n) :
-    Syn.subst σ (prefixData N z R B A) =
-      prefixData (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [prefixData,one]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (budget A) = budget (Syn.subst σ A) := by simp [budget]
+ipra_subst prefixData [one]
+ipra_subst budget
 
 theorem prefix_observation_error (p k N z R B A : PTm n) (hz : Γ ⊢[PRAAx] S z R B A) :
     Γ ⊢[PRAAx] distanceBounded (ap2 dirichletF p (prefixData N z R B A)) (value k N z R B A)

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Logarithm.Robin.GaussianRobinLogarithmParity
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmName
 import IPRADerivations.Analysis.Names.GaussianNameRingLaws
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusArithmetic
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Cofinal observations of the original Robin artanh series
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRobinOddLogarithmName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz)
 open GaussianRobinLogarithmParity (native)
 open GaussianRationalMetric (qsub distanceBounded)
@@ -25,10 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticDivision (qsub_congr)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,12 +37,8 @@ def difference (p a b : PTm n) : PTm n :=
   qsub (GaussianLocalLogarithmName.value p (native a) a b)
     (GaussianLocalLogarithmName.value p (negativeArgument a) a b)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (sample p a b) = sample (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [sample,stored,cutoff]
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (difference p a b) = difference (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [difference,negativeArgument]
+ipra_subst sample [stored, cutoff]
+ipra_subst difference [negativeArgument]
 
 theorem exact_degree (p : PTm n) : Γ ⊢[PRAAx]
     DyadicComplexLogarithm.precision (clock p)+two ≐ two*cutoff p := by
@@ -159,12 +150,9 @@ def pointTerm (p x : PTm n) : PTm n := sample p (fstT x) (sndT x)
 def pointF : PR 2 := PTm.toPR (pointTerm (var 0) (var 1))
 def point (p a b : PTm n) : PTm n := ap2 pointF p (inputs a b)
 
-@[simp] theorem subst_pointTerm {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
-    Syn.subst σ (pointTerm p x) = pointTerm (Syn.subst σ p) (Syn.subst σ x) := by simp [pointTerm]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (source a b).subst σ = source (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_inputs {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (inputs a b) = inputs (Syn.subst σ a) (Syn.subst σ b) := by simp [inputs]
+ipra_subst pointTerm
+ipra_subst source
+ipra_subst inputs
 
 theorem point_at (p a b : PTm n) : Γ ⊢[PRAAx] point p a b ≐ sample p a b := by
   have prog : Γ ⊢[PRAAx] point p a b ≐ pointTerm p (inputs a b) := by
@@ -198,9 +186,7 @@ def minusData (a b : PTm n) : PTm n := GaussianLocalLogarithmName.data (negative
 def logDifferenceF : PR 2 := addF localF (negativeF localF)
 def logDifferenceData (a b : PTm n) : PTm n := addData (plusData a b) (negativeData (minusData a b))
 
-@[simp] theorem subst_logDifferenceData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (logDifferenceData a b) = logDifferenceData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [logDifferenceData,plusData,minusData,negativeArgument]
+ipra_subst logDifferenceData [plusData, minusData, negativeArgument]
 
 theorem log_difference_name (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] pointCN logDifferenceF (logDifferenceData a b) := by

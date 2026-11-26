@@ -15,7 +15,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupFactorialNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupBracketEndpoints (rowBody row_at sumData sum_regular)
 open GaussianBohrMollerupChords (base argument_congr rescale_from)
 open GaussianBohrMollerupPresentation (Presentation argument laws observe_value)
@@ -29,9 +29,6 @@ open GaussianNamedFiniteSumFamilyCongruence (family_sum_cross)
 open GaussianNamedGammaHalfShift (add_cross)
 open GaussianStirlingGammaLogarithm (source)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF

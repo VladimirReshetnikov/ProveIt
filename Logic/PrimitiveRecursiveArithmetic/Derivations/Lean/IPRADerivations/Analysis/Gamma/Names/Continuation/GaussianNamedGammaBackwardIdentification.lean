@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaBackwardIdentification
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGammaBackwardShift (source nameF data name_regular)
 open GaussianNamedGammaBackwardFrozen (nativeW nativeZ nativeDen freezeClock accuracy positive_late_input late_anchor)
 open GaussianNamedRightHalfPlane (radius)
@@ -24,8 +24,6 @@ open GaussianGammaReciprocalInverse (gammaF gammaData)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNameEquivalence (cross_refl)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

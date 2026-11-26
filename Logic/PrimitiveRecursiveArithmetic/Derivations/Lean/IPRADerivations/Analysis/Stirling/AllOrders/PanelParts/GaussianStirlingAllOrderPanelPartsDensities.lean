@@ -13,7 +13,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsDensities
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderCenteredBernoulli (sample denominator_positive)
 open GaussianStirlingAllOrderPanelDerivative
   (degreeProduct secondSample secondScaled signedMean second_complement second_scale)
@@ -28,9 +28,6 @@ open RationalArithmetic (add multiply negative)
 open RationalAlgebra (add_congr multiply_congr negative_congr multiply_add multiply_negative multiply_associative add_commutative multiply_commutative)
 open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalNonnegativePowers (fraction_multiply fraction_congr)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -13,14 +13,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCubeInfimumComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalCubeGrid (scale)
 open RationalCubeMinimum (sample presentedCube coherence continuity)
 open RationalCubeInfimumName (data)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -43,22 +40,14 @@ def namedLE (f g : PR 2) (z u : PTm n) : Fm PTm n := .all (.all
   (namedAt f g (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift u)) (var 1) (var 0)))
 def equivalent (f g : PR 2) (z u : PTm n) : Fm PTm n := namedLE f g z u ⋏ namedLE g f u z
 
-@[simp] theorem subst_lowerAt {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (f : PR 2) (x z y p q : PTm n) :
-    (lowerAt A f x z y p q).subst σ = lowerAt A f (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ y) (Syn.subst σ p) (Syn.subst σ q) := by simp [lowerAt]
-@[simp] theorem subst_lowerBound {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (f : PR 2) (d x z : PTm n) :
-    (lowerBound A f d x z).subst σ = lowerBound A f (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ z) := by simp [lowerBound,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_cubePoints {l : ℕ} (σ : Fin n → PTm l) (b : PR 2) (d y : PTm n) :
-    (cubePoints b d y).subst σ = cubePoints b (Syn.subst σ d) (Syn.subst σ y) := by simp [cubePoints,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_attainedAt {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (g b : PR 2) (x u y k q p : PTm n) :
-    (attainedAt A g b x u y k q p).subst σ = attainedAt A g b (Syn.subst σ x) (Syn.subst σ u) (Syn.subst σ y) (Syn.subst σ k) (Syn.subst σ q) (Syn.subst σ p) := by simp [attainedAt]
-@[simp] theorem subst_attainment {l : ℕ} (σ : Fin n → PTm l) (A : PR 3) (g b : PR 2) (x u y : PTm n) :
-    (attainment A g b x u y).subst σ = attainment A g b (Syn.subst σ x) (Syn.subst σ u) (Syn.subst σ y) := by simp [attainment,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_namedAt {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (z u q t : PTm n) :
-    (namedAt f g z u q t).subst σ = namedAt f g (Syn.subst σ z) (Syn.subst σ u) (Syn.subst σ q) (Syn.subst σ t) := by simp [namedAt]
-@[simp] theorem subst_namedLE {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (z u : PTm n) :
-    (namedLE f g z u).subst σ = namedLE f g (Syn.subst σ z) (Syn.subst σ u) := by simp [namedLE,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_equivalent {l : ℕ} (σ : Fin n → PTm l) (f g : PR 2) (z u : PTm n) :
-    (equivalent f g z u).subst σ = equivalent f g (Syn.subst σ z) (Syn.subst σ u) := by simp [equivalent]
+ipra_subst lowerAt
+ipra_subst lowerBound [Syn.subst_shift, Syn.shift_subst]
+ipra_subst cubePoints [Syn.subst_shift, Syn.shift_subst]
+ipra_subst attainedAt
+ipra_subst attainment [Syn.subst_shift, Syn.shift_subst]
+ipra_subst namedAt
+ipra_subst namedLE [Syn.subst_shift, Syn.shift_subst]
+ipra_subst equivalent
 
 theorem lower_bound_at (A : PR 3) (f : PR 2) (d x z y p q : PTm n) (h : Γ ⊢[PRAAx] lowerBound A f d x z)
     (hy : Γ ⊢[PRAAx] presentedCube y d) : Γ ⊢[PRAAx] lowerAt A f x z y p q := by

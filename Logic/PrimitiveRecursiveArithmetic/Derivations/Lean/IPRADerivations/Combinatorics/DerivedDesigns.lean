@@ -22,9 +22,7 @@ Not derived: the descent for `t > 2` with its binomial factors, and the cancella
 
 namespace LeanProofs.IPRA.Combinatorics.DerivedDesigns
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n v b : ℕ} {Γ : List (Fm PTm n)}
 

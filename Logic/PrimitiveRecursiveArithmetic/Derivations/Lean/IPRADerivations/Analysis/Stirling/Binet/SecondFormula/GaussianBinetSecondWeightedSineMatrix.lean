@@ -15,7 +15,7 @@ set_option maxHeartbeats 680000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSineMatrix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayPointwise (fullDecay)
 open GaussianCompactRiemannName
   (sampleData field0 field1 field2 field3 field4 field5
@@ -27,12 +27,8 @@ open GaussianRationalFubini (row rowBody row_entry)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianReciprocalHorner (qmul_associative)
-open LeanProofs.IPRA.PTm (monus)
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "RectBody" => GaussianBinetOscillatorySineRectangle.body
@@ -51,11 +47,7 @@ private def decay (j d : PTm n) : PTm n := fullDecay (field0 (base d)) (field2 d
 def term (j r d : PTm n) : PTm n := qmul (inst2 (offB RectBody) r (angleData j d)) (decay j d)
 def matrix : PTm 3 := term (var 0) (var 1) (var 2)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (p M T H J X Y D sign R L N cut : PTm n) :
-    Syn.subst σ (data p M T H J X Y D sign R L N cut) =
-      data (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R)
-        (Syn.subst σ L) (Syn.subst σ N) (Syn.subst σ cut) := by simp [data,one]
+ipra_subst data [one]
 
 @[simp] private theorem subst_angleData {m : ℕ} (σ : Fin n → PTm m) (j d : PTm n) :
     Syn.subst σ (angleData j d) = angleData (Syn.subst σ j) (Syn.subst σ d) := by simp [angleData,base]

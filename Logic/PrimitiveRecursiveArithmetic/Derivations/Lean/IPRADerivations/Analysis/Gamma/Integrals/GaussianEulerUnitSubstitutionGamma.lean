@@ -15,21 +15,18 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionGamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionImproperName (nameF data)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z R B A : PTm n) : Fm PTm n := GaussianEulerIntegralGammaIdentification.source z R B A
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    (source z R B A).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by simp [source]
+ipra_subst source
 
 theorem original_density_is_Gamma (z R B A : PTm n) (hs : Γ ⊢[PRAAx] source z R B A) : Γ ⊢[PRAAx]
     crossEquivalent nameF gammaF (data z R B A) (gammaData z R B A) :=

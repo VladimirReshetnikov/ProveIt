@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerExponentIncrement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (coefficient powerExponentF powerExponentData powerClock power_exponent_at coefficient_bound)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qmul positive_product)
@@ -24,8 +24,6 @@ open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -33,9 +31,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def exponentSample (p z B a b : PTm n) : PTm n := ap2 powerExponentF p (powerExponentData z B a b)
 def increment (p q z B a b c : PTm n) : PTm n := qsub (exponentSample p z B (a+c) b) (exponentSample q z B a b)
 def linear (z B a c : PTm n) : PTm n := qmul (coefficient z B) (fraction c a)
-@[simp] theorem subst_linear {m : ℕ} (σ : Fin n → PTm m) (z B a c : PTm n) :
-    Syn.subst σ (linear z B a c) = linear (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ c) :=
-  by simp [linear]
+ipra_subst linear
 def errorNumerator (p q R a c : PTm n) : PTm n :=
   (R+one)*GaussianPositiveRationalLogarithmIncrement.errorNumerator p q a c
 abbrev errorDenominator := @GaussianPositiveRationalLogarithmIncrement.errorDenominator

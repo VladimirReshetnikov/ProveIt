@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalLagran
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFubini
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianInverseBinomialRows
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual full right inverse of the completed numerical fiber power table
@@ -20,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiberRightInverse
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical)
@@ -31,10 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalLagrangeCardinals (inverseCoeffici
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiberVandermonde (table scalarShape delta)
 open LeanProofs.IPRA.Analysis.GaussianRationalMatrixFiniteSums (scalarBody scalarData scalarDot matrixProduct deltaBody deltaSum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,22 +48,14 @@ def zEntry (R r j : PTm n) : PTm n := RationalArithmetic.select (Signum.sg (monu
 def zBody : PTm 3 := zEntry (var 2) (var 0) (var 1)
 def Z (R m : PTm n) : PTm n := table zBody m m R
 
-@[simp] theorem subst_N {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    Syn.subst σ (N R) = N (Syn.subst σ R) := by simp [N]
-@[simp] theorem subst_C {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (C R m) = C (Syn.subst σ R) (Syn.subst σ m) := by simp [C]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (R r j : PTm n) :
-    Syn.subst σ (data R r j) = data (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) := by simp [data]
-@[simp] theorem subst_ncTerm {l : ℕ} (σ : Fin n → PTm l) (R r j s : PTm n) :
-    Syn.subst σ (ncTerm R r j s) = ncTerm (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ s) := by simp [ncTerm]
-@[simp] theorem subst_NC {l : ℕ} (σ : Fin n → PTm l) (R r j : PTm n) :
-    Syn.subst σ (NC R r j) = NC (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) := by simp [NC]
-@[simp] theorem subst_upperEntry {l : ℕ} (σ : Fin n → PTm l) (R r j : PTm n) :
-    Syn.subst σ (upperEntry R r j) = upperEntry (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) := by simp [upperEntry]
-@[simp] theorem subst_zEntry {l : ℕ} (σ : Fin n → PTm l) (R r j : PTm n) :
-    Syn.subst σ (zEntry R r j) = zEntry (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) := by simp [zEntry]
-@[simp] theorem subst_Z {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (Z R m) = Z (Syn.subst σ R) (Syn.subst σ m) := by simp [Z]
+ipra_subst N
+ipra_subst C
+ipra_subst data
+ipra_subst ncTerm
+ipra_subst NC
+ipra_subst upperEntry
+ipra_subst zEntry
+ipra_subst Z
 
 theorem N_lookup (R r s : PTm n) (hr : Γ ⊢[PRAAx] lt r (length R)) (hs : Γ ⊢[PRAAx] lt s (length R)) : Γ ⊢[PRAAx]
     cell (N R) r s ≐ inverseCoefficient R r s := by
@@ -100,8 +87,8 @@ theorem C_canonical (R m r j : PTm n) (hr : Γ ⊢[PRAAx] lt r (length R)) (hj :
 theorem nc_body_at (R r j s : PTm n) : Γ ⊢[PRAAx] inst2 ncBody s (data R r j) ≐ ncTerm R r j s := by
   simp only [ncBody,inst2,subst_ncTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have e := snd_pair (Γ := Γ) R (pairT r j)
-  exact qmul_congr (GaussianRationalLagrangeCardinals.inverse_coefficient_congr (fst_pair _ _) ((congrFst e).eqTrans (fst_pair _ _)) (.eqRefl _))
-    (congrAp2 GaussianRationalReciprocal.powerF ((congrSnd e).eqTrans (snd_pair _ _)) (entry_congr (fst_pair _ _) (.eqRefl _)))
+  exact qmul_congr (GaussianRationalLagrangeCardinals.inverse_coefficient_congr (fst_pair _ _) e.fstE (.eqRefl _))
+    (congrAp2 GaussianRationalReciprocal.powerF e.sndE (entry_congr (fst_pair _ _) (.eqRefl _)))
 theorem NC_canonical (R r j : PTm n) : Γ ⊢[PRAAx] canonical (NC R r j) := GaussianRationalFiniteSum.sum_canonical _ _ _
 theorem z_upper_left (R r j : PTm n) (hr : Γ ⊢[PRAAx] lt r (length R)) (hj : Γ ⊢[PRAAx] lt j (length R)) : Γ ⊢[PRAAx]
     zEntry R r j ≐ inverseCoefficient R r j :=
@@ -132,16 +119,14 @@ theorem Z_shape (R m : PTm n) : Γ ⊢[PRAAx] scalarShape (Z R m) m m := by
 def tripleTerm (R r j k s : PTm n) : PTm n := qmul
   (qmul (power (entry R r) k) (inverseCoefficient R k s)) (power (entry R s) j)
 def tripleBody : PTm 3 := tripleTerm (fstT (var 2)) (fstT (sndT (var 2))) (sndT (sndT (var 2))) (var 0) (var 1)
-@[simp] theorem subst_tripleTerm {l : ℕ} (σ : Fin n → PTm l) (R r j k s : PTm n) :
-    Syn.subst σ (tripleTerm R r j k s) = tripleTerm (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j)
-      (Syn.subst σ k) (Syn.subst σ s) := by simp [tripleTerm]
+ipra_subst tripleTerm
 theorem triple_body_at (R r j k s : PTm n) : Γ ⊢[PRAAx]
     inst3 tripleBody k s (data R r j) ≐ tripleTerm R r j k s := by
   simp only [tripleBody,inst3,subst_tripleTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two]
   have e := snd_pair (Γ := Γ) R (pairT r j)
-  exact qmul_congr (qmul_congr (congrAp2 GaussianRationalReciprocal.powerF (.eqRefl _) (entry_congr (fst_pair _ _) ((congrFst e).eqTrans (fst_pair _ _))))
+  exact qmul_congr (qmul_congr (congrAp2 GaussianRationalReciprocal.powerF (.eqRefl _) (entry_congr (fst_pair _ _) e.fstE))
       (GaussianRationalLagrangeCardinals.inverse_coefficient_congr (fst_pair _ _) (.eqRefl _) (.eqRefl _)))
-    (congrAp2 GaussianRationalReciprocal.powerF ((congrSnd e).eqTrans (snd_pair _ _)) (entry_congr (fst_pair _ _) (.eqRefl _)))
+    (congrAp2 GaussianRationalReciprocal.powerF e.sndE (entry_congr (fst_pair _ _) (.eqRefl _)))
 
 
 theorem triple_row (R r j k : PTm n) : Γ ⊢[PRAAx]
@@ -218,12 +203,9 @@ def positiveBody : PTm 2 := positiveTerm (fstT (var 1)) (fstT (sndT (var 1))) (s
 def shiftPowerTerm (R r t i : PTm n) : PTm n := power (entry R r) (t+i)
 def shiftPowerBody : PTm 2 := shiftPowerTerm (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def zColumnBody : PTm 2 := cell (Z (fstT (var 1)) (fstT (sndT (var 1)))) (var 0) (sndT (sndT (var 1)))
-@[simp] theorem subst_powerData {l : ℕ} (σ : Fin n → PTm l) (R j : PTm n) :
-    Syn.subst σ (powerData R j) = powerData (Syn.subst σ R) (Syn.subst σ j) := by simp [powerData]
-@[simp] theorem subst_positiveTerm {l : ℕ} (σ : Fin n → PTm l) (R r j k : PTm n) :
-    Syn.subst σ (positiveTerm R r j k) = positiveTerm (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ k) := by simp [positiveTerm]
-@[simp] theorem subst_shiftPowerTerm {l : ℕ} (σ : Fin n → PTm l) (R r t i : PTm n) :
-    Syn.subst σ (shiftPowerTerm R r t i) = shiftPowerTerm (Syn.subst σ R) (Syn.subst σ r) (Syn.subst σ t) (Syn.subst σ i) := by simp [shiftPowerTerm]
+ipra_subst powerData
+ipra_subst positiveTerm
+ipra_subst shiftPowerTerm
 theorem NC_congr {R S r r' j j' : PTm n} (hR : Γ ⊢[PRAAx] R ≐ S) (hr : Γ ⊢[PRAAx] r ≐ r') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     NC R r j ≐ NC S r' j' := by
   ipra_congr (NC (var 0) (var 1) (var 2) : PTm 3) with [hR, hr, hj]
@@ -233,13 +215,13 @@ theorem power_body_at (R j i : PTm n) : Γ ⊢[PRAAx] inst2 powerBody i (powerDa
 theorem positive_body_at (R r j k : PTm n) : Γ ⊢[PRAAx] inst2 positiveBody k (data R r j) ≐ positiveTerm R r j k := by
   simp only [positiveBody,inst2,subst_positiveTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have e := snd_pair (Γ := Γ) R (pairT r j)
-  exact qmul_congr (congrAp2 GaussianRationalReciprocal.powerF (.eqRefl _) (entry_congr (fst_pair _ _) ((congrFst e).eqTrans (fst_pair _ _))))
-    (NC_congr (fst_pair _ _) (.eqRefl _) ((congrSnd e).eqTrans (snd_pair _ _)))
+  exact qmul_congr (congrAp2 GaussianRationalReciprocal.powerF (.eqRefl _) (entry_congr (fst_pair _ _) e.fstE))
+    (NC_congr (fst_pair _ _) (.eqRefl _) e.sndE)
 theorem shift_power_body_at (R r t i : PTm n) : Γ ⊢[PRAAx] inst2 shiftPowerBody i (data R r t) ≐ power (entry R r) (t+i) := by
   simp only [shiftPowerBody,inst2,subst_shiftPowerTerm,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have e := snd_pair (Γ := Γ) R (pairT r t)
-  exact congrAp2 GaussianRationalReciprocal.powerF (congrAdd ((congrSnd e).eqTrans (snd_pair _ _)) (.eqRefl _))
-    (entry_congr (fst_pair _ _) ((congrFst e).eqTrans (fst_pair _ _)))
+  exact congrAp2 GaussianRationalReciprocal.powerF (congrAdd e.sndE (.eqRefl _))
+    (entry_congr (fst_pair _ _) e.fstE)
 theorem z_column_body_at (R m j k : PTm n) : Γ ⊢[PRAAx] inst2 zColumnBody k (data R m j) ≐ cell (Z R m) k j := by
   simp only [zColumnBody,inst2,GaussianPolynomialDeterminantTerms.subst_cell,subst_Z,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
   have e := snd_pair (Γ := Γ) R (pairT m j)
@@ -247,9 +229,9 @@ theorem z_column_body_at (R m j k : PTm n) : Γ ⊢[PRAAx] inst2 zColumnBody k (
   · apply entry_congr
     · ipra_congr (Z (var 0) (var 1) : PTm 2) with
         [(show _ ⊢[PRAAx] fstT (data R m j) ≐ R from fst_pair _ _),
-          (show _ ⊢[PRAAx] fstT (sndT (data R m j)) ≐ m from (congrFst e).eqTrans (fst_pair _ _))]
+          (show _ ⊢[PRAAx] fstT (sndT (data R m j)) ≐ m from e.fstE)]
     · exact .eqRefl _
-  · exact (congrSnd e).eqTrans (snd_pair _ _)
+  · exact e.sndE
 
 theorem positive_sum_as_rows (R r j : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalFiniteSum.sum positiveBody (length R) (data R r j) ≐
@@ -290,12 +272,9 @@ theorem positive_total (R r j : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalFinite
 def dotData (R m r j : PTm n) : PTm n := scalarData (GaussianRationalFiberVandermonde.W R m) (Z R m) r j
 def leadingSum (R m r j : PTm n) : PTm n := GaussianRationalFiniteSum.sum scalarBody (length R) (dotData R m r j)
 def tail (R m r j : PTm n) : PTm n := GaussianRationalFiniteSum.sum (offB scalarBody) (monus m (length R)) (pairT (length R) (dotData R m r j))
-@[simp] theorem subst_dotData {l : ℕ} (σ : Fin n → PTm l) (R m r j : PTm n) :
-    Syn.subst σ (dotData R m r j) = dotData (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ r) (Syn.subst σ j) := by simp [dotData]
-@[simp] theorem subst_leadingSum {l : ℕ} (σ : Fin n → PTm l) (R m r j : PTm n) :
-    Syn.subst σ (leadingSum R m r j) = leadingSum (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ r) (Syn.subst σ j) := by simp [leadingSum]
-@[simp] theorem subst_tail {l : ℕ} (σ : Fin n → PTm l) (R m r j : PTm n) :
-    Syn.subst σ (tail R m r j) = tail (Syn.subst σ R) (Syn.subst σ m) (Syn.subst σ r) (Syn.subst σ j) := by simp [tail]
+ipra_subst dotData
+ipra_subst leadingSum
+ipra_subst tail
 theorem scalar_dot_split (R m r j : PTm n) (ht : Γ ⊢[PRAAx] le (length R) m) : Γ ⊢[PRAAx]
     scalarDot (GaussianRationalFiberVandermonde.W R m) (Z R m) m r j ≐ qadd (leadingSum R m r j) (tail R m r j) :=
   (GaussianRationalFiniteSum.sum_index_congr scalarBody (eq_add_of_le ht) (.eqRefl (dotData R m r j))).eqTrans
@@ -461,9 +440,7 @@ theorem small_inverse_at (R r j : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalFini
 
 def identityTable (P m : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m) ⟶ .all
   (lt (var 0) (Syn.shift (Syn.shift m)) ⟶ cell (Syn.shift (Syn.shift P)) (var 1) (var 0) ≐ delta (var 1) (var 0)))
-@[simp] theorem subst_identityTable {l : ℕ} (σ : Fin n → PTm l) (P m : PTm n) :
-    (identityTable P m).subst σ = identityTable (Syn.subst σ P) (Syn.subst σ m) := by
-  simp [identityTable,cell,Syn.subst_shift,Syn.shift_subst]
+ipra_subst identityTable [cell, Syn.subst_shift, Syn.shift_subst]
 theorem right_inverse (R m : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalFiniteRoots.distinct R)
     (ht : Γ ⊢[PRAAx] le (length R) m) : Γ ⊢[PRAAx]
     identityTable (matrixProduct (GaussianRationalFiberVandermonde.W R m) (Z R m) m) m := by
@@ -485,8 +462,7 @@ theorem empty_fiber_dot (R m r j : PTm n) (h0 : Γ ⊢[PRAAx] length R ≐ zero)
 def certificate (R m : PTm n) : Fm PTm n := scalarShape (N R) (length R) (length R) ⋏
   (scalarShape (C R m) (length R) (monus m (length R)) ⋏ (scalarShape (Z R m) m m ⋏
     identityTable (matrixProduct (GaussianRationalFiberVandermonde.W R m) (Z R m) m) m))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    (certificate R m).subst σ = certificate (Syn.subst σ R) (Syn.subst σ m) := by simp [certificate]
+ipra_subst certificate
 theorem inverse_correct (R m : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalFiniteRoots.distinct R)
     (ht : Γ ⊢[PRAAx] le (length R) m) : Γ ⊢[PRAAx] certificate R m :=
   .andI (N_shape _) (.andI (C_shape _ _) (.andI (Z_shape _ _) (right_inverse _ _ h ht)))
@@ -497,18 +473,15 @@ def output (R m : PTm n) : PTm n := pairT
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (R m : PTm n) : PTm n := ap2 outputF R m
 def productField (q : PTm n) : PTm n := GaussianRationalFiberVandermonde.fields (fstT q) 4
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (output R m) = output (Syn.subst σ R) (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (R m : PTm n) :
-    Syn.subst σ (run R m) = run (Syn.subst σ R) (Syn.subst σ m) := by simp [run]
-@[simp] theorem subst_productField {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    Syn.subst σ (productField q) = productField (Syn.subst σ q) := by simp [productField]
+ipra_subst output
+ipra_subst run
+ipra_subst productField
 theorem program_at (R m : PTm n) : Γ ⊢[PRAAx] run R m ≐ output R m := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![R,m]
 theorem returned_field (R m : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     GaussianRationalFiberVandermonde.fields (fstT (run R m)) i ≐ ![N R,C R m,GaussianRationalFiberVandermonde.W R m,Z R m,
       matrixProduct (GaussianRationalFiberVandermonde.W R m) (Z R m) m] i :=
-  (GaussianRationalLagrangeCardinals.fields_congr ((congrFst (program_at _ _)).eqTrans (fst_pair _ _)) i).eqTrans
+  (GaussianRationalLagrangeCardinals.fields_congr (program_at _ _).fstE i).eqTrans
     (GaussianRationalFiberVandermonde.field_at _ _ _ _ _ i)
 theorem returned_N (R m : PTm n) : Γ ⊢[PRAAx] fstT (fstT (run R m)) ≐ N R := returned_field _ _ 0
 theorem returned_C (R m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (fstT (run R m))) ≐ C R m := returned_field _ _ 1
@@ -516,12 +489,12 @@ theorem returned_W (R m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (fstT (run R m
 theorem returned_Z (R m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (fstT (run R m))))) ≐ Z R m := returned_field _ _ 3
 theorem returned_product (R m : PTm n) : Γ ⊢[PRAAx] productField (run R m) ≐ matrixProduct (GaussianRationalFiberVandermonde.W R m) (Z R m) m := returned_field _ _ 4
 theorem returned_data (R m : PTm n) : Γ ⊢[PRAAx] sndT (run R m) ≐ pairT R (pairT (length R) m) :=
-  (congrSnd (program_at _ _)).eqTrans (snd_pair _ _)
-theorem returned_roots (R m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run R m)) ≐ R := (congrFst (returned_data _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _).sndE
+theorem returned_roots (R m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run R m)) ≐ R := (returned_data _ _).fstE
 theorem returned_t (R m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run R m))) ≐ length R :=
-  (congrFst ((congrSnd (returned_data _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (returned_data _ _).sndE.fstE
 theorem returned_m (R m : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run R m))) ≐ m :=
-  (congrSnd ((congrSnd (returned_data _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (returned_data _ _).sndE.sndE
 theorem identity_table_congr {P Q m : PTm n} (e : Γ ⊢[PRAAx] P ≐ Q) (h : Γ ⊢[PRAAx] identityTable P m) : Γ ⊢[PRAAx] identityTable Q m := by
   simpa only [subst_identityTable,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
     Prf.eqSubst (Ax := PRAAx) (Γ := Γ) (identityTable (var 0) (var 1) : Fm PTm 2) ![P,m] ![Q,m]
@@ -534,27 +507,21 @@ def sourceOutput (L p g m : PTm n) : PTm n := pairT (run (GaussianRationalCurveF
   (pairT (GaussianRationalCurveFibers.selectedX L p g) (GaussianRationalFiberGrouping.partitionTotal L p))
 def sourceF : PR 4 := PTm.toPR (sourceOutput (var 0) (var 1) (var 2) (var 3))
 def sourceRun (L p g m : PTm n) : PTm n := app sourceF ![L,p,g,m]
-@[simp] theorem subst_sourceOutput {l : ℕ} (σ : Fin n → PTm l) (L p g m : PTm n) :
-    Syn.subst σ (sourceOutput L p g m) = sourceOutput (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) (Syn.subst σ m) := by simp [sourceOutput]
-@[simp] theorem subst_sourceRun {l : ℕ} (σ : Fin n → PTm l) (L p g m : PTm n) :
-    Syn.subst σ (sourceRun L p g m) = sourceRun (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) (Syn.subst σ m) := by
-  simp only [sourceRun,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst sourceOutput
+ipra_subst sourceRun
 theorem source_program_at (L p g m : PTm n) : Γ ⊢[PRAAx] sourceRun L p g m ≐ sourceOutput L p g m := by
   simpa [sourceRun,sourceF] using toPR_eq (Γ := Γ) (sourceOutput (var 0) (var 1) (var 2) (var 3) : PTm 4) ![L,p,g,m]
 theorem source_returned_generic (L p g m : PTm n) : Γ ⊢[PRAAx] fstT (sourceRun L p g m) ≐ run (GaussianRationalCurveFibers.yList L p g) m :=
-  (congrFst (source_program_at _ _ _ _)).eqTrans (fst_pair _ _)
+  (source_program_at _ _ _ _).fstE
 theorem source_returned_product (L p g m : PTm n) : Γ ⊢[PRAAx]
     productField (fstT (sourceRun L p g m)) ≐ matrixProduct (GaussianRationalFiberVandermonde.W (GaussianRationalCurveFibers.yList L p g) m) (Z (GaussianRationalCurveFibers.yList L p g) m) m :=
   (GaussianRationalLagrangeCardinals.fields_congr (congrFst (source_returned_generic _ _ _ _)) 4).eqTrans (returned_product _ _)
 theorem source_returned_roots (L p g m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (fstT (sourceRun L p g m))) ≐ GaussianRationalCurveFibers.yList L p g :=
   (congrFst (congrSnd (source_returned_generic _ _ _ _))).eqTrans (returned_roots _ _)
 theorem source_returned_x (L p g m : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sourceRun L p g m)) ≐ GaussianRationalCurveFibers.selectedX L p g :=
-  (congrFst ((congrSnd (source_program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (source_program_at _ _ _ _).sndE.fstE
 theorem source_returned_partition (L p g m : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sourceRun L p g m)) ≐ length L :=
-  ((congrSnd ((congrSnd (source_program_at _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)).eqTrans (GaussianRationalFiberGrouping.cardinal_partition _ _)
+  (source_program_at _ _ _ _).sndE.sndE.eqTrans (GaussianRationalFiberGrouping.cardinal_partition _ _)
 theorem source_size_bound (F m L p g : PTm n) (hCurve : Γ ⊢[PRAAx] GaussianRationalCurveFibers.curveZeros F m L)
     (hDistinct : Γ ⊢[PRAAx] GaussianRationalCurveFibers.pointDistinct L) : Γ ⊢[PRAAx] le (length (GaussianRationalCurveFibers.yList L p g)) m :=
   le_congr (GaussianRationalCurveFibers.y_length _ _ _).eqSymm (.eqRefl _) (GaussianRationalCurveFibers.fiber_size_bound _ _ _ _ _ hCurve hDistinct)

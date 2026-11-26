@@ -13,7 +13,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesGlaisherEndpointRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesGlaisherInterval (sample square square_positive)
 open GaussianBarnesGlaisherFinite (nameF data regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -22,9 +22,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSlackRemoval (slack_removal_at precision)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

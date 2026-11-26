@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (source radius numerator denominator)
 open GaussianGammaIntegralCutoffs (etaDen top eta_den_positive)
 open GaussianGammaCompactQuadratureBoundary (width width_bound exact_right_endpoint)
@@ -33,10 +33,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -143,13 +139,9 @@ private theorem original_grid_from_rows (f : PR 2) (p x A : PTm n) (h : Γ ⊢[P
   exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hE hd) (unit_positive p) enough whole
 
 
-@[simp] theorem subst_original {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x A : PTm n) :
-    Syn.subst σ (original f p x A) = original f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [original,width,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst original [width, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p x A : PTm n) :
-    Syn.subst σ (clock f p x A) = clock f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [clock,parameterGain,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst clock [parameterGain, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 private theorem cell (f : PR 2) (i p x A : PTm n)
     (h : Γ ⊢[PRAAx] source f x A) (hi : Γ ⊢[PRAAx] lt i (cells p (two*A) (radius f x))) :
@@ -271,8 +263,7 @@ def retimed (p : PTm n) : PTm n := p+num 3
 def body (f : PR 2) : PTm 2 := original f (retimed (var 0)) (fstT (var 1)) (sndT (var 1))
 def nameF (f : PR 2) : PR 2 := PTm.toPR (body f)
 
-@[simp] theorem subst_retimed {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (retimed p) = retimed (Syn.subst σ p) := by simp [retimed]
+ipra_subst retimed
 
 theorem name_at (f : PR 2) (p x A : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f) p (GaussianNamedGamma.data x A) ≐ original f (retimed p) x A := by

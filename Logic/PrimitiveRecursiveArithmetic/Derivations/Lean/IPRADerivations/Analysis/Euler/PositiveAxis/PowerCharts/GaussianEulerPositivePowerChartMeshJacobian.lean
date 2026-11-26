@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartMeshJacobian
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartMesh (source timeNumerator timeDenominator node correctedNode node_source time_domain)
 open GaussianEulerPositivePowerChartImage (query)
 open GaussianRationalHorner (qadd qmul positive_product canonical_unique)
@@ -24,10 +24,6 @@ open GaussianRationalMetric (qsub distanceBounded bounded)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -45,31 +41,13 @@ def numerator (p h Q S E T C N : PTm n) : PTm n :=
 def denominator (p h Q E T N : PTm n) : PTm n :=
   (timeDenominator N E*timeDenominator N E)*(unit (query p h Q E T)*unit (query p h Q E T))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (e f d h Q S E T a C N : PTm n) :
-    (input e f d h Q S E T a C N).subst σ = input (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h)
-      (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [input]
-@[simp] theorem subst_correctedPoint {m : ℕ} (σ : Fin n → PTm m) (p i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (correctedPoint p i e f d h Q S E T a C N) = correctedPoint (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [correctedPoint]
-@[simp] theorem subst_width {m : ℕ} (σ : Fin n → PTm m) (p i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (width p i e f d h Q S E T a C N) = width (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [width]
-@[simp] theorem subst_jacobian {m : ℕ} (σ : Fin n → PTm m) (p i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (jacobian p i e f d h Q S E T a C N) = jacobian (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [jacobian]
-@[simp] theorem subst_linearTerm {m : ℕ} (σ : Fin n → PTm m) (p i e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (linearTerm p i e f d h Q S E T a C N) = linearTerm (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ e)
-      (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by simp [linearTerm]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p h Q S E T C N : PTm n) :
-    Syn.subst σ (numerator p h Q S E T C N) = numerator (Syn.subst σ p) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) (Syn.subst σ N) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p h Q E T N : PTm n) :
-    Syn.subst σ (denominator p h Q E T N) = denominator (Syn.subst σ p) (Syn.subst σ h) (Syn.subst σ Q)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by simp [denominator]
+ipra_subst input
+ipra_subst correctedPoint
+ipra_subst width
+ipra_subst jacobian
+ipra_subst linearTerm
+ipra_subst numerator
+ipra_subst denominator
 
 theorem corrected_point_at (p i e f d h Q S E T a C N : PTm n)
     (hs : Γ ⊢[PRAAx] source e f d h Q S E T a C N) : Γ ⊢[PRAAx]

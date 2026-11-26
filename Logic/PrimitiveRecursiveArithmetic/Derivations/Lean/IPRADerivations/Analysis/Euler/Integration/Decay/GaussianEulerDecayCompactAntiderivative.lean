@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadraturePrecision
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Exact compact decay antiderivative
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayCompactAntiderivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDecayQuadrature (evaluatorF)
 open GaussianEulerDecayQuadraturePrecision (endpointDifference independent_quadrature_endpoint numerator denominator)
 open GaussianCompactRiemannName (mesh precision sample mesh_cost mesh_positive precision_lower)
@@ -25,10 +24,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,10 +32,8 @@ def endpointData (a C E : PTm n) : PTm n := pairT a (pairT C E)
 def endpointSample (p x : PTm n) : PTm n := endpointDifference (fstT x) (fstT (sndT x)) (sndT (sndT x)) (p+one)
 def endpointF : PR 2 := PTm.toPR (endpointSample (var 0) (var 1))
 
-@[simp] theorem subst_endpointData {m : ℕ} (σ : Fin n → PTm m) (a C E : PTm n) :
-    Syn.subst σ (endpointData a C E) = endpointData (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [endpointData]
-@[simp] theorem subst_endpointSample {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
-    Syn.subst σ (endpointSample p x) = endpointSample (Syn.subst σ p) (Syn.subst σ x) := by simp [endpointSample,endpointDifference]
+ipra_subst endpointData
+ipra_subst endpointSample [endpointDifference]
 
 theorem endpoint_at (p a C E : PTm n) : Γ ⊢[PRAAx]
     ap2 endpointF p (endpointData a C E) ≐ endpointDifference a C E (p+one) := by
@@ -48,8 +41,8 @@ theorem endpoint_at (p a C E : PTm n) : Γ ⊢[PRAAx]
   have pg : Γ ⊢[PRAAx] ap2 endpointF p x ≐ endpointSample p x := by
     simpa [endpointF,ap2] using toPR_eq (Γ := Γ) (endpointSample (var 0) (var 1) : PTm 2) ![p,x]
   have aa : Γ ⊢[PRAAx] fstT x ≐ a := fst_pair _ _
-  have cc : Γ ⊢[PRAAx] fstT (sndT x) ≐ C := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have ee : Γ ⊢[PRAAx] sndT (sndT x) ≐ E := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  have cc : Γ ⊢[PRAAx] fstT (sndT x) ≐ C := (snd_pair _ _).fstE
+  have ee : Γ ⊢[PRAAx] sndT (sndT x) ≐ E := (snd_pair _ _).sndE
   refine pg.eqTrans ?_
   ipra_congr (endpointDifference (var 0) (var 1) (var 2) (var 3) : PTm 4) with
     [aa, cc, ee, .eqRefl (p+one)] using [endpointSample, endpointDifference]

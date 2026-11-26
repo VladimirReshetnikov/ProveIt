@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmMercator
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianFastValueCut (exponent)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -33,9 +33,6 @@ open GaussianRationalReciprocal (bounded_sum bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRightHalfPlaneLogarithmOffset (offset source)
 open GaussianFiniteLogarithmCompositionTail (linearValue)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithm.nameF

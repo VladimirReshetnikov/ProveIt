@@ -13,26 +13,20 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRateComposition
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def leadingNumerator (A B C E : PTm n) : PTm n := A*E+C*B
 def leadingDenominator (B E : PTm n) : PTm n := B*E
 
-@[simp] theorem subst_leadingNumerator {m : ℕ} (σ : Fin n → PTm m) (A B C E : PTm n) :
-    Syn.subst σ (leadingNumerator A B C E) = leadingNumerator (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp [leadingNumerator]
-@[simp] theorem subst_leadingDenominator {m : ℕ} (σ : Fin n → PTm m) (B E : PTm n) :
-    Syn.subst σ (leadingDenominator B E) = leadingDenominator (Syn.subst σ B) (Syn.subst σ E) := by simp [leadingDenominator]
+ipra_subst leadingNumerator
+ipra_subst leadingDenominator
 
 theorem observation_slack (F G H : PR 2) (x y z A B C E p q t : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E)

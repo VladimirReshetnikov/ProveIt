@@ -14,13 +14,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticSubspaceTheorem
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSuperellipticSubspaceWitness (curveInput basisCount points)
 open GaussianSuperellipticSubspaceFromSpan (pointMembership subspace_witness_bound)
 open GaussianRationalAnnihilatorVector (certificate returned_certificate)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,13 +28,9 @@ def annihilator (f m c L A R : PTm n) : PTm n :=
 def input (f m c L A R : PTm n) : Fm PTm n := curveInput f m c ⋏
   GaussianRationalAnnihilatorVector.input A R (basisCount f m c L)
 
-@[simp] theorem subst_annihilator {k : ℕ} (σ : Fin n → PTm k) (f m c L A R : PTm n) :
-    Syn.subst σ (annihilator f m c L A R) = annihilator (Syn.subst σ f) (Syn.subst σ m)
-      (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ A) (Syn.subst σ R) := by simp [annihilator]
+ipra_subst annihilator
 
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (f m c L A R : PTm n) :
-    (input f m c L A R).subst σ = input (Syn.subst σ f) (Syn.subst σ m)
-      (Syn.subst σ c) (Syn.subst σ L) (Syn.subst σ A) (Syn.subst σ R) := by simp [input]
+ipra_subst input
 
 theorem computed_annihilator (f m c L A R : PTm n) (h : Γ ⊢[PRAAx] input f m c L A R) : Γ ⊢[PRAAx]
     certificate A R (basisCount f m c L) (annihilator f m c L A R) :=

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteCofinalRate (source)
 open GaussianEulerIncompleteName (lowerF upperF data original_regular_names)
 open GaussianEulerIncompleteBoundary (endpointData)
@@ -29,10 +29,6 @@ open GaussianRationalMetric (bounded distanceBounded qsub qnegative)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,18 +46,10 @@ def productCost (f : PR 2) (z R B A a b : PTm n) : PTm n :=
 def gain (f : PR 2) (z R B A a b : PTm n) : PTm n :=
   num 5*R+num 20+productCost f z R B A a b
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z R B A a b : PTm n) :
-    Syn.subst σ (productData f z R B A a b) =
-      productData f (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [productData]
-@[simp] theorem subst_lowerRhsData {m : ℕ} (σ : Fin n → PTm m) (z R B A a b : PTm n) :
-    Syn.subst σ (lowerRhsData z R B A a b) =
-      lowerRhsData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [lowerRhsData]
-@[simp] theorem subst_upperRhsData {m : ℕ} (σ : Fin n → PTm m) (z R B A a b : PTm n) :
-    Syn.subst σ (upperRhsData z R B A a b) =
-      upperRhsData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [upperRhsData]
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (z R B A a b : PTm n) :
-    Syn.subst σ (gain f z R B A a b) =
-      gain f (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ a) (Syn.subst σ b) := by simp [gain,productCost]
+ipra_subst productData
+ipra_subst lowerRhsData
+ipra_subst upperRhsData
+ipra_subst gain [productCost]
 
 private theorem at_base_radius (t c R x x' y v : PTm n) (hC : Γ ⊢[PRAAx] bounded c R one)
     (hX : Γ ⊢[PRAAx] distanceBounded x x' (unit t+unit t) (unit t*unit t))

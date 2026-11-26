@@ -14,15 +14,13 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteConstantFolds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameConjugation (equal_samples_cross pointwiseEqual)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedFiniteProductFamily (regularRows rowF row_at productData family_product_regular)
 open GaussianRationalFiniteProduct (qprod product_congr_bounded)
 open GaussianRationalFiniteSum (termsEqual)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

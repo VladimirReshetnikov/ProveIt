@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.ComplexLogarithmCauchy
 import IPRADerivations.Analysis.Series.ReciprocalSquares.ReciprocalSquareTail
 import IPRADerivations.Probability.TowerCommonDen
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Actual finite canonical Gamma factors and their rational tails
@@ -25,17 +23,13 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GammaCanonicalFactors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder
   (re im add mul scale zeroCode normSq bounded series bounded_scale bounded_add bounded_neg
     bounded_mul bounded_mono bounded_series normSq_eval eval_re_code eval_im_code)
 open LeanProofs.IPRA.Analysis.LogarithmRemainder
   (numerator denominator denominator_positive three finite_taylor_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,22 +46,11 @@ def factorDenominator (N L : PTm n) : PTm n := two*N*N*denominator N L
 def factorRadius (R N L : PTm n) : PTm n :=
   denominator N L*R*R+two*N*N*numerator R N L
 
-@[simp] theorem subst_factorNumerator {m : ℕ} (σ : Fin n → PTm m) (z N L : PTm n) :
-    Syn.subst σ (factorNumerator z N L) = factorNumerator (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp only [factorNumerator, ComplexLogarithmRemainder.subst_add, ComplexLogarithmRemainder.subst_neg,
-    ComplexLogarithmRemainder.subst_scale, ComplexLogarithmRemainder.subst_mul,
-    ComplexLogarithmRemainder.subst_series, LogarithmRemainder.subst_denominator,
-    PTm.subst_mul, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+ipra_subst factorNumerator
 
-@[simp] theorem subst_factorDenominator {m : ℕ} (σ : Fin n → PTm m) (N L : PTm n) :
-    Syn.subst σ (factorDenominator N L) = factorDenominator (Syn.subst σ N) (Syn.subst σ L) := by
-  simp only [factorDenominator, PTm.subst_mul, LogarithmRemainder.subst_denominator,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+ipra_subst factorDenominator
 
-@[simp] theorem subst_factorRadius {m : ℕ} (σ : Fin n → PTm m) (R N L : PTm n) :
-    Syn.subst σ (factorRadius R N L) = factorRadius (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp only [factorRadius, PTm.subst_add, PTm.subst_mul, LogarithmRemainder.subst_denominator,
-    LogarithmRemainder.subst_numerator, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+ipra_subst factorRadius
 
 private alias cancel_positive := Common.mul_cancel_le
 
@@ -117,11 +100,7 @@ def factorDifference (z N L K : PTm n) : PTm n :=
   add (scale (factorDenominator N L) (factorNumerator z N (L+K)))
     (ComplexLogarithmRemainder.neg (scale (factorDenominator N (L+K)) (factorNumerator z N L)))
 
-@[simp] theorem subst_factorDifference {m : ℕ} (σ : Fin n → PTm m) (z N L K : PTm n) :
-    Syn.subst σ (factorDifference z N L K) = factorDifference (Syn.subst σ z) (Syn.subst σ N)
-      (Syn.subst σ L) (Syn.subst σ K) := by
-  simp only [factorDifference, ComplexLogarithmRemainder.subst_add, ComplexLogarithmRemainder.subst_scale,
-    ComplexLogarithmRemainder.subst_neg, subst_factorDenominator, subst_factorNumerator, PTm.subst_add]
+ipra_subst factorDifference
 
 /-- The common quadratic term cancels from the actual rational cross difference. -/
 theorem difference_norm (z N L K C : PTm n) :
@@ -144,8 +123,7 @@ theorem finite_factor_cauchy (z N R L K : PTm n) (hz : Γ ⊢[PRAAx] bounded z R
   have eq : Γ ⊢[PRAAx] normSq (scale (pw two L) (factorDifference z N L K)) ≐
       normSq (scale ((two*N*N)*(two*N*N)) (scale (pw two L) (ComplexLogarithmCauchy.difference z N L K))) := by
     apply deriveNat
-    have E := natEq (difference_norm (Γ := Γ) z N L K (pw two L))
-    rw [E]
+    rw [natEq (difference_norm (Γ := Γ) z N L K (pw two L))]
     rw [normSq_eval, normSq_eval]
     simp only [scale, eval_re_code, eval_im_code, ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_mul, map_mul]
     ring
@@ -185,14 +163,9 @@ def radiusBody : PTm 2 := termRadius (fstT (var 1)) (fstT (sndT (var 1))) (var 0
   (fstT (sndT (sndT (var 1)))) (sndT (sndT (sndT (var 1))))
 def radiusF : PR 2 := PTm.toPR radiusBody
 
-@[simp] theorem subst_termRadius {m : ℕ} (σ : Fin n → PTm m) (R B k L D : PTm n) :
-    Syn.subst σ (termRadius R B k L D) = termRadius (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ L) (Syn.subst σ D) := by
-  simp only [termRadius, PTm.subst_mul, subst_ap2, subst_factorRadius, subst_factorDenominator]
+ipra_subst termRadius
 
-@[simp] theorem subst_radiusData {m : ℕ} (σ : Fin n → PTm m) (R B L D : PTm n) :
-    Syn.subst σ (radiusData R B L D) = radiusData (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ L) (Syn.subst σ D) := by simp only [radiusData, subst_pairT]
+ipra_subst radiusData
 
 theorem radius_at (R B k L D : PTm n) :
     Γ ⊢[PRAAx] ap2 radiusF k (radiusData R B L D) ≐ termRadius R B k L D := by
@@ -204,7 +177,7 @@ theorem radius_at (R B k L D : PTm n) :
     (σ' := ![R,B,k,L,D]) (fun i => by
       fin_cases i
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+      · exact (snd_pair _ _).fstE
       · exact .eqRefl _
       · exact ((congrFst (congrSnd (snd_pair _ _))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
       · exact ((congrSnd (congrSnd (snd_pair _ _))).eqTrans (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _))
@@ -254,11 +227,7 @@ def sumStep : PTm 7 := add (var 1) (summand (var 2) (var 3) (succ (var 4+var 0))
 def sumF : PR 6 := recDef (zeroCode : PTm 5) sumStep
 def finiteSum (z B N r L D : PTm n) : PTm n := app sumF ![r,z,B,N,L,D]
 
-@[simp] theorem subst_summand {m : ℕ} (σ : Fin n → PTm m) (z B k L D : PTm n) :
-    Syn.subst σ (summand z B k L D) = summand (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ k) (Syn.subst σ L) (Syn.subst σ D) := by
-  simp only [summand, ComplexLogarithmRemainder.subst_scale, subst_ap2, subst_factorDenominator,
-    subst_factorNumerator, PTm.subst_mul]
+ipra_subst summand
 
 @[simp] theorem subst_finiteSum {m : ℕ} (σ : Fin n → PTm m) (z B N r L D : PTm n) :
     Syn.subst σ (finiteSum z B N r L D) = finiteSum (Syn.subst σ z) (Syn.subst σ B)
@@ -301,19 +270,14 @@ theorem sum_domination (z R B N r L D : PTm n) (hz : Γ ⊢[PRAAx] bounded z R) 
       (finiteSum (Syn.shift z) (Syn.shift B) (Syn.shift N) (var 0) (Syn.shift L) (Syn.shift D))
       (ReciprocalSquareTail.tailSum radiusF (Syn.shift N) (var 0)
         (radiusData (Syn.shift R) (Syn.shift B) (Syn.shift L) (Syn.shift D)))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [ComplexLogarithmRemainder.subst_bounded, subst_finiteSum,
-        ReciprocalSquareTail.subst_tailSum, subst_radiusData, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      exact le_congr
+    ipra_qfind (le_QF _ _) [ComplexLogarithmRemainder.subst_bounded, subst_finiteSum,
+        ReciprocalSquareTail.subst_tailSum, subst_radiusData]
+    · exact le_congr
         ((ComplexLogarithmRemainder.congr_normSq (sum_zero z B N L D)).eqTrans
           ComplexLogarithmRemainder.normSq_zero).eqSymm
         (congrMul (ReciprocalSquareTail.tailSum_zero _ _ _) (ReciprocalSquareTail.tailSum_zero _ _ _)).eqSymm
         (zero_le (zero*zero))
-    · simp only [ComplexLogarithmRemainder.subst_bounded, subst_finiteSum,
-        ReciprocalSquareTail.subst_tailSum, subst_radiusData, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n+1)) :=
+    · let Δ : List (Fm PTm (n+1)) :=
         bounded (finiteSum (Syn.shift z) (Syn.shift B) (Syn.shift N) (var 0) (Syn.shift L) (Syn.shift D))
           (ReciprocalSquareTail.tailSum radiusF (Syn.shift N) (var 0)
             (radiusData (Syn.shift R) (Syn.shift B) (Syn.shift L) (Syn.shift D))) :: Γ.map Fm.shift
@@ -354,13 +318,9 @@ def tailDenominatorBody : PTm 2 := factorDenominator
   (fstT (var 1)*succ (fstT (sndT (var 1))+var 0)) (sndT (sndT (var 1)))
 def tailDenominator (B N r L : PTm n) : PTm n := ap2 (prodF tailDenominatorBody) r (denominatorData B N L)
 
-@[simp] theorem subst_denominatorData {m : ℕ} (σ : Fin n → PTm m) (B N L : PTm n) :
-    Syn.subst σ (denominatorData B N L) = denominatorData (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp only [denominatorData, subst_pairT]
+ipra_subst denominatorData
 
-@[simp] theorem subst_tailDenominator {m : ℕ} (σ : Fin n → PTm m) (B N r L : PTm n) :
-    Syn.subst σ (tailDenominator B N r L) = tailDenominator (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ r) (Syn.subst σ L) := by simp only [tailDenominator, subst_ap2, subst_denominatorData]
+ipra_subst tailDenominator
 
 theorem tailDenominatorBody_at (B N L i : PTm n) :
     Γ ⊢[PRAAx] inst2 tailDenominatorBody i (denominatorData B N L) ≐
@@ -372,8 +332,8 @@ theorem tailDenominatorBody_at (B N L i : PTm n) :
     (σ := ![fstT (denominatorData B N L)*succ (fstT (sndT (denominatorData B N L))+i),sndT (sndT (denominatorData B N L))])
     (σ' := ![B*succ (N+i),L]) (fun j => by
       fin_cases j
-      · exact congrMul (fst_pair _ _) (congrSucc (congrAdd ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _)))
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+      · exact congrMul (fst_pair _ _) (congrSucc (congrAdd (snd_pair _ _).fstE (.eqRefl _)))
+      · exact (snd_pair _ _).sndE)
   simpa only [subst_factorDenominator, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] using h
 
 private alias positive_successor := Common.pos_of_one_le
@@ -414,9 +374,7 @@ its computed positive denominator is `tailDenominator B N r L`. -/
 def finiteTail (z B N r L : PTm n) : PTm n := finiteSum z B N r L (tailDenominator B N r L)
 def finiteTailF : PR 5 := PTm.toPR (finiteTail (var 0) (var 1) (var 2) (var 3) (var 4))
 
-@[simp] theorem subst_finiteTail {m : ℕ} (σ : Fin n → PTm m) (z B N r L : PTm n) :
-    Syn.subst σ (finiteTail z B N r L) = finiteTail (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ r) (Syn.subst σ L) := by simp only [finiteTail, subst_finiteSum, subst_tailDenominator]
+ipra_subst finiteTail
 
 theorem finite_tail_at (z B N r L : PTm n) :
     Γ ⊢[PRAAx] app finiteTailF ![z,B,N,r,L] ≐ finiteTail z B N r L := by

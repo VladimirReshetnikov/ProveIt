@@ -14,7 +14,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentImproper (nameF data regular sample_canonical)
 open GaussianBinetLaplaceMomentImproperTaylor (observation_taylor_with_cap linearSample)
 open GaussianBinetLaplaceMomentMarginBound (marginBound)
@@ -29,10 +29,6 @@ open GaussianRationalHorner (qmul qzero positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianReconstructionRoots (distance_zero_iff)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk _ t)
@@ -45,13 +41,9 @@ def input (X D R Y E S K H Q : PTm n) : Fm PTm n :=
   (realSource X zero D zero R ⋏ realSource Y zero E zero S) ⋏
     ((le one K ⋏ le D (K*X)) ⋏ (le one Q ⋏ (le H Q ⋏ (X*Q+H*D)*E ≐ Y*(D*Q))))
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (j K : PTm n) :
-    Syn.subst σ (gain j K) = gain (Syn.subst σ j) (Syn.subst σ K) := by simp [gain]
+ipra_subst gain
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (X D R Y E S K H Q : PTm n) :
-    (input X D R Y E S K H Q).subst σ =
-      input (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ Y) (Syn.subst σ E)
-        (Syn.subst σ S) (Syn.subst σ K) (Syn.subst σ H) (Syn.subst σ Q) := by simp [input,one]
+ipra_subst input [one]
 
 theorem gain_positive (j K : PTm n) : Γ ⊢[PRAAx] le one (gain j K) := by
   have h : Γ ⊢[PRAAx] le one (num 11 : PTm n) := by ipra_le 10

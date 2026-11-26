@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadHarmonicNewton
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialFirstCoefficients
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual harmonic-power kernel multiplies the original head Euler buffer
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadLogarithmicKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul)
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside cauchySum term termBody data)
@@ -31,10 +30,6 @@ open GaussianGammaEulerHeadPolynomial (polynomial)
 open GaussianGammaHarmonicPowerPoints (point)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,10 +37,8 @@ def sourceCoefficient (N m : PTm n) : PTm n := RationalArithmetic.select (Signum
   (qmul (parityPoint (pred m)) (point m N))
 def rowBody : PTm 2 := sourceCoefficient (fstT (var 1)) (monus (sndT (var 1)) (var 0))
 def kernel (N D : PTm n) : PTm n := sequence rowBody (succ D) (pairT N D)
-@[simp] theorem subst_sourceCoefficient {l : ℕ} (σ : Fin n → PTm l) (N m : PTm n) :
-    Syn.subst σ (sourceCoefficient N m) = sourceCoefficient (Syn.subst σ N) (Syn.subst σ m) := by simp [sourceCoefficient,Signum.sg]
-@[simp] theorem subst_kernel {l : ℕ} (σ : Fin n → PTm l) (N D : PTm n) :
-    Syn.subst σ (kernel N D) = kernel (Syn.subst σ N) (Syn.subst σ D) := by simp [kernel]
+ipra_subst sourceCoefficient [Signum.sg]
+ipra_subst kernel
 
 theorem coefficient_congr {N M m k : PTm n} (hN : Γ ⊢[PRAAx] N ≐ M) (hm : Γ ⊢[PRAAx] m ≐ k) :
     Γ ⊢[PRAAx] sourceCoefficient N m ≐ sourceCoefficient M k := by

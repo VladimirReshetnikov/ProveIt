@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingDuplication
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -41,10 +41,6 @@ open GaussianStirlingNativeDuplication (halfNumerator halfDenominator half_sourc
 open GaussianStirlingNames (source arg nameF nameData name_regular logGammaF logGammaData log_gamma_regular
   logXF logXData log_x_regular point)
 open GaussianStirlingRecurrence (scaleBudget aBudget a_error)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "three" => GaussianNameRingLaws.three

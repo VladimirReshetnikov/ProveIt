@@ -15,7 +15,7 @@ set_option maxHeartbeats 470000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerNamedDigamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianLogGammaEulerSlopeContinuity (input coefficient)
 open GaussianLogGammaEulerDigammaContinuity (canonical_fraction_lipschitz)
@@ -25,8 +25,6 @@ open GaussianNamedRightHalfPlaneSigned (certificate point realNumerator imagNume
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalMetric (distanceBounded)
 open GaussianLogGammaEulerHead (subst_rowData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "digammaF" => GaussianLogGammaEulerDigammaFractionsCofinal.nameF

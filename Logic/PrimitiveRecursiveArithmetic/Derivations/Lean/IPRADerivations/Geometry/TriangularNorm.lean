@@ -1,9 +1,7 @@
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.ProdLemmas
 import IPRADerivations.Core.ParityArith
 import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The triangular norm and its 2-adic descent
@@ -33,13 +31,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.TriangularNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {N : ℕ} {Γ : List (Fm PTm N)}
 
@@ -122,7 +116,7 @@ theorem q_parity (m n : PTm N) :
 
 /-! ## One step of the descent -/
 
-theorem two_pos : Γ ⊢[PRAAx] (two : PTm N) ≐ succ (pred two) := pos_of_eq_succ (.eqRefl _)
+alias two_pos := Common.two_pos
 
 /-- From `Q(C, D) = 2 Q(A, B)`: `A` and `B` are even and `Q(C/2, D/2) = 2 Q(A/2, B/2)`. -/
 theorem halve_step {A B C D : PTm N} (h : Γ ⊢[PRAAx] qn C D ≐ two * qn A B) :
@@ -189,15 +183,9 @@ private abbrev invF : Fm PTm 5 :=
   (qn (var 3) (var 4) ≐ two * qn (var 1) (var 2)) ⟶ Inv (var 0) (var 1) (var 2) (var 3) (var 4)
 
 private theorem inv₀ : ([] : List (Fm PTm 5)) ⊢[PRAAx] invF := by
-  refine ind _ ⟨trivial, ⟨⟨trivial, trivial⟩, trivial⟩⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three, inst_four,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (inv_base Prf.hyp0)
-  · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three, repl_four,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (inv_step (.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨trivial, ⟨⟨trivial, trivial⟩, trivial⟩⟩) [subst_ap2]
+  · exact .impI (inv_base Prf.hyp0)
+  · exact .impI (inv_step (.impE Prf.hyp1 Prf.hyp0))
 
 /-- The equation survives `k` halvings, and `a`, `b` are divisible by `2^k`. -/
 theorem halving_invariant (k : PTm N) {a b c d : PTm N} (h : Γ ⊢[PRAAx] qn c d ≐ two * qn a b) :

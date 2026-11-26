@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerLowerFinite
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerTailRootGrid (rootDenominator rootNumerator timeNumerator timeDenominator)
 open GaussianEulerLowerTailPartition (cutF cutData offset offset_at panelWidth totalWidth root_right_guard
   uniform_panel_width grouped_original_quadrature)
@@ -29,9 +29,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,18 +65,9 @@ private def panelData (s N p q k R x : PTm n) : PTm n :=
     Syn.subst σ (rootNumerator i N p q) = rootNumerator (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) :=
   by simp [rootNumerator,GaussianEulerLowerTailRootGrid.rootRatio]
 
-@[simp] theorem subst_rightBody {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (i s N p q k R x : PTm n) :
-    (rightBody F i s N p q k R x).subst σ = rightBody F (Syn.subst σ i) (Syn.subst σ s)
-      (Syn.subst σ N) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) :=
-  by simp [rightBody,rightTime,timeDenominator]
-@[simp] theorem subst_rightEndpoints {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s N p q k R x : PTm n) :
-    (rightEndpoints F s N p q k R x).subst σ = rightEndpoints F (Syn.subst σ s) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) :=
-  by simp [rightEndpoints,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s N p q k R L x : PTm n) :
-    (source F s N p q k R L x).subst σ = source F (Syn.subst σ s) (Syn.subst σ N)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ x) :=
-  by simp [source,totalWidth,timeDenominator,one]
+ipra_subst rightBody [rightTime, timeDenominator]
+ipra_subst rightEndpoints [Syn.subst_shift, Syn.shift_subst]
+ipra_subst source [totalWidth, timeDenominator, one]
 @[simp] private theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (s N p q k R x : PTm n) :
     Syn.subst σ (gridData s N p q k R x) = gridData (Syn.subst σ s) (Syn.subst σ N)
       (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) :=

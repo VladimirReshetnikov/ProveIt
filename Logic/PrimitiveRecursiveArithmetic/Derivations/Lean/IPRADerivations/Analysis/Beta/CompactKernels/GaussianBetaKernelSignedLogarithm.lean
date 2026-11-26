@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelSignedLogarithm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelLogarithm (negativeNumerator target source localData observation)
 open ComplexLogarithmRemainder (re im scale oneCode series)
 open GaussianRootAlgebra (equal equal_of_values equal_re equal_im values_of_code re_scale im_scale re_one im_one re_zero im_zero re_neg im_neg re_mul im_mul re_add im_add)
@@ -25,10 +25,6 @@ open GaussianRationalNaturalScale (natScale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -36,43 +32,37 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def positivePowerLaw (a j : PTm n) : Fm PTm n :=
   equal (ComplexLogarithmRemainder.power (ComplexLogarithmRemainder.neg (negativeNumerator a)) j)
     (scale (pw a j) oneCode)
-@[simp] theorem subst_positivePowerLaw {m : ℕ} (σ : Fin n → PTm m) (a j : PTm n) :
-    (positivePowerLaw a j).subst σ = positivePowerLaw (Syn.subst σ a) (Syn.subst σ j) := by simp [positivePowerLaw]
+ipra_subst positivePowerLaw
 
 theorem positive_power_zero (a : PTm n) : Γ ⊢[PRAAx] positivePowerLaw a zero := by
   have h := values_of_code (ComplexLogarithmRemainder.power_zero (Γ := Γ) (ComplexLogarithmRemainder.neg (negativeNumerator a)))
-  have e := natEq (pw_zero (Γ := Γ) a)
   apply equal_of_values
-  · rw [h.1]; simp only [re_scale,re_one,e,Q.mk_one,map_one]; ring
+  · rw [h.1]; simp only [re_scale,re_one,natEq (pw_zero (Γ := Γ) a),Q.mk_one,map_one]; ring
   · rw [h.2]; simp only [im_scale,im_one]; ring
 
 theorem positive_power_step (a j : PTm n) (ih : Γ ⊢[PRAAx] positivePowerLaw a j) : Γ ⊢[PRAAx]
     positivePowerLaw a (succ j) := by
   have h := values_of_code (ComplexLogarithmRemainder.power_succ (Γ := Γ) (ComplexLogarithmRemainder.neg (negativeNumerator a)) j)
-  have e := natEq (pw_succ (Γ := Γ) a j)
   have hr := equal_re ih
   have hi := equal_im ih
   apply equal_of_values
   · rw [h.1,re_mul,hr,hi]
     simp only [negativeNumerator,re_neg,im_neg,re_scale,im_scale,re_one,im_one]
-    rw [e]; ipra_simps; ring
+    rw [natEq (pw_succ (Γ := Γ) a j)]; ipra_simps; ring
   · rw [h.2,im_mul,hr,hi]
     simp only [negativeNumerator,re_neg,im_neg,re_scale,im_scale,re_one,im_one]
     ring
 
 theorem positive_power (a j : PTm n) : Γ ⊢[PRAAx] positivePowerLaw a j := by
   have all : Γ ⊢[PRAAx] .all (positivePowerLaw (Syn.shift a) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_positivePowerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact positive_power_zero a
-    · simp only [subst_positivePowerLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact positive_power_step _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [subst_positivePowerLaw]
+    · exact positive_power_zero a
+    · exact positive_power_step _ _ Prf.hyp0
   simpa only [subst_positivePowerLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 def seriesLaw (a D L : PTm n) : Fm PTm n :=
   equal (series (negativeNumerator a) D L) (negativeNumerator (LogarithmRemainder.numerator a D L))
-@[simp] theorem subst_seriesLaw {m : ℕ} (σ : Fin n → PTm m) (a D L : PTm n) :
-    (seriesLaw a D L).subst σ = seriesLaw (Syn.subst σ a) (Syn.subst σ D) (Syn.subst σ L) := by simp [seriesLaw]
+ipra_subst seriesLaw
 
 theorem series_zero (a D : PTm n) : Γ ⊢[PRAAx] seriesLaw a D zero := by
   have h := values_of_code (ComplexLogarithmRemainder.series_zero (Γ := Γ) (negativeNumerator a) D)
@@ -84,7 +74,6 @@ theorem series_zero (a D : PTm n) : Γ ⊢[PRAAx] seriesLaw a D zero := by
 theorem series_step (a D L : PTm n) (ih : Γ ⊢[PRAAx] seriesLaw a D L) : Γ ⊢[PRAAx]
     seriesLaw a D (succ L) := by
   have h := values_of_code (ComplexLogarithmRemainder.series_succ (Γ := Γ) (negativeNumerator a) D L)
-  have e := natEq (LogarithmRemainder.numerator_succ (Γ := Γ) a D L)
   have hr := equal_re ih
   have hi := equal_im ih
   have pr := equal_re (positive_power (Γ := Γ) a (L+LogarithmRemainder.three))
@@ -92,17 +81,15 @@ theorem series_step (a D L : PTm n) (ih : Γ ⊢[PRAAx] seriesLaw a D L) : Γ �
   apply equal_of_values
   · rw [h.1,re_add,re_scale,re_neg,re_scale,hr,pr]
     simp only [negativeNumerator,re_neg,re_scale,re_one]
-    rw [e]; ipra_simps; ring
+    rw [natEq (LogarithmRemainder.numerator_succ (Γ := Γ) a D L)]; ipra_simps; ring
   · rw [h.2,im_add,im_scale,im_neg,im_scale,hi,pi]
     simp only [negativeNumerator,im_neg,im_scale,im_one]; ring
 
 theorem negative_series (a D L : PTm n) : Γ ⊢[PRAAx] seriesLaw a D L := by
   have all : Γ ⊢[PRAAx] .all (seriesLaw (Syn.shift a) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simp only [subst_seriesLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact series_zero a D
-    · simp only [subst_seriesLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact series_step _ _ _ Prf.hyp0
+    ipra_qfind (⟨trivial,trivial⟩) [subst_seriesLaw]
+    · exact series_zero a D
+    · exact series_step _ _ _ Prf.hyp0
   simpa only [subst_seriesLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE L
 
 /-- The ORIGINAL factor numerator has exactly its negative majorant,

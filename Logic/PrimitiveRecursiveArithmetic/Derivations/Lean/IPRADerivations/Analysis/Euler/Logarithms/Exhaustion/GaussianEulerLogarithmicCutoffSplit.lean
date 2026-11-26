@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCutoffSplit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicIntervalName (nameF data name_regular)
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianGammaIntegralCutoffs (etaDen top)
@@ -28,8 +28,6 @@ open GaussianNameArithmetic (addF addData add_fast)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_to_diagonal)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,35 +52,14 @@ def geometricData (j z R B A k l : PTm n) : PTm n :=
 def splitData (j z R B A k l : PTm n) : PTm n :=
   addData (lowerData j z R B A k l) (addData (fullData j z R B A k) (upperData j z R B A k l))
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A k l : PTm n) :
-    (source z R B A k l).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ l) := by simp [source]
-@[simp] theorem subst_fullData {m : ℕ} (σ : Fin n → PTm m) (j z R B A k : PTm n) :
-    Syn.subst σ (fullData j z R B A k) = fullData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) := by
-  simp [fullData,width,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (j z R B A k l : PTm n) :
-    Syn.subst σ (lowerData j z R B A k l) = lowerData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ l) := by
-  simp [lowerData,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_middleData {m : ℕ} (σ : Fin n → PTm m) (j z R B A k l : PTm n) :
-    Syn.subst σ (middleData j z R B A k l) = middleData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ l) := by
-  simp [middleData,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_upperData {m : ℕ} (σ : Fin n → PTm m) (j z R B A k l : PTm n) :
-    Syn.subst σ (upperData j z R B A k l) = upperData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ l) := by
-  simp [upperData,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_rightData {m : ℕ} (σ : Fin n → PTm m) (j z R B A k l : PTm n) :
-    Syn.subst σ (rightData j z R B A k l) = rightData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ l) := by
-  simp [rightData,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-@[simp] theorem subst_geometricData {m : ℕ} (σ : Fin n → PTm m) (j z R B A k l : PTm n) :
-    Syn.subst σ (geometricData j z R B A k l) = geometricData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ l) := by simp [geometricData]
-@[simp] theorem subst_splitData {m : ℕ} (σ : Fin n → PTm m) (j z R B A k l : PTm n) :
-    Syn.subst σ (splitData j z R B A k l) = splitData (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) (Syn.subst σ l) := by simp [splitData]
+ipra_subst source
+ipra_subst fullData [width, etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst lowerData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst middleData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst upperData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst rightData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst geometricData
+ipra_subst splitData
 
 private theorem enlarged_source (j z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianEulerUpperPowerCoefficients.source z R B) : Γ ⊢[PRAAx]
     GaussianEulerUpperPowerCoefficients.source z (R+j) B :=

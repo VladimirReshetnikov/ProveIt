@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingCofinalObservation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPowerChartCofinalSchedule (source cutoffSize samplingIndex)
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator width)
 open GaussianEulerPowerScalingGridSchedule (count precision imagePrecision)
@@ -32,9 +32,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

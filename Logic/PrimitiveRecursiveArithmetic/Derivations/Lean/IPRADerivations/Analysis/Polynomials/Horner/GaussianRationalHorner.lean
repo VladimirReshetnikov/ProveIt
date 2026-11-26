@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianR
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianPolynomialPerturbation
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalNormalization
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Canonical Gaussian-rational Horner evaluation
@@ -23,7 +22,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalHorner
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im scale zeroCode)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (equal equal_re equal_im re_add im_add re_mul im_mul re_scale im_scale re_zero im_zero)
@@ -32,12 +31,8 @@ open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_
 open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed normalize_well_formed)
 open LeanProofs.IPRA.Analysis.RationalRepresentations
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry sequence sequence_length sequence_decode subst_sequence)
-open LeanProofs.IPRA.PTm (monus)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -63,17 +58,12 @@ def qmul (q r : PTm n) : PTm n :=
     (RationalArithmetic.add (RationalArithmetic.multiply (fstT q) (sndT r))
       (RationalArithmetic.multiply (sndT q) (fstT r)))
 
-@[simp] theorem subst_represents {m : ℕ} (σ : Fin n → PTm m) (q a D : PTm n) :
-    (represents q a D).subst σ = represents (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ D) := by simp [represents]
-@[simp] theorem subst_canonical {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    (canonical q).subst σ = canonical (Syn.subst σ q) := by simp [canonical]
-@[simp] theorem subst_ofGaussian {m : ℕ} (σ : Fin n → PTm m) (a D : PTm n) :
-    Syn.subst σ (ofGaussian a D) = ofGaussian (Syn.subst σ a) (Syn.subst σ D) := by simp [ofGaussian]
-@[simp] theorem subst_qzero {m : ℕ} (σ : Fin n → PTm m) : Syn.subst σ (qzero : PTm n) = (qzero : PTm m) := by simp [qzero]
-@[simp] theorem subst_qadd {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    Syn.subst σ (qadd q r) = qadd (Syn.subst σ q) (Syn.subst σ r) := by simp [qadd]
-@[simp] theorem subst_qmul {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    Syn.subst σ (qmul q r) = qmul (Syn.subst σ q) (Syn.subst σ r) := by simp [qmul]
+ipra_subst represents
+ipra_subst canonical
+ipra_subst ofGaussian
+ipra_subst qzero
+ipra_subst qadd
+ipra_subst qmul
 
 theorem scalar_congr {c d : PTm n} {a b : ZT n} {A B : PTm n}
     (hcd : Γ ⊢[PRAAx] c ≐ d) (hab : Γ ⊢[PRAAx] ZT.eq a b) (hAB : Γ ⊢[PRAAx] A ≐ B)
@@ -81,13 +71,12 @@ theorem scalar_congr {c d : PTm n} {a b : ZT n} {A B : PTm n}
     Γ ⊢[PRAAx] RationalArithmetic.represents d b B := by
   apply ZT.derive
   have e := ZT.toZ_eq h
-  have ea := ZT.toZ_eq hab
   have num : ZT.toZ Γ (numeratorOf c) = ZT.toZ Γ (numeratorOf d) := by
     simp only [numeratorOf,ZT.toZ]
     rw [natEq (congrFst (congrFst hcd)),natEq (congrSnd (congrFst hcd))]
   have den : 𝔞(denominatorOf c) = 𝔞(denominatorOf d) := natEq (congrSucc (congrSnd hcd))
   simp only [RationalArithmetic.represents,ZT.toZ_mul,ZT.toZ_ofNat] at e ⊢
-  rw [ea,num,den,natEq hAB] at e
+  rw [ZT.toZ_eq hab,num,den,natEq hAB] at e
   exact e
 
 theorem scalar_rescale (c : PTm n) (a : ZT n) (A t : PTm n)
@@ -150,8 +139,7 @@ theorem represents_cancel (q a A t : PTm n) (ht : Γ ⊢[PRAAx] le one t)
     (scalar_cancel _ _ _ t ht (scalar_congr (.eqRefl _) ?_ (.eqRefl _) (Prf.andE₂ h)))
   all_goals apply ZT.derive; simp only [ZT.toZ_mul,ZT.toZ_ofNat,re_scale,im_scale]; ring
 
-theorem positive_product (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B) :
-    Γ ⊢[PRAAx] le one (A*B) := le_congr (one_mul one) (.eqRefl _) (le_mul_mono hA hB)
+alias positive_product := Common.one_le_mul
 
 theorem qadd_represents (q r a b A : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hq : Γ ⊢[PRAAx] represents q a A) (hr : Γ ⊢[PRAAx] represents r b A) :
@@ -182,10 +170,8 @@ def hornerF : PR 3 := recDef qzero hornerStep
 def horner (C z k : PTm n) : PTm n := ap3 hornerF k C z
 def evaluate (C z : PTm n) : PTm n := horner C z (length C)
 
-@[simp] theorem subst_horner {m : ℕ} (σ : Fin n → PTm m) (C z k : PTm n) :
-    Syn.subst σ (horner C z k) = horner (Syn.subst σ C) (Syn.subst σ z) (Syn.subst σ k) := by simp [horner]
-@[simp] theorem subst_evaluate {m : ℕ} (σ : Fin n → PTm m) (C z : PTm n) :
-    Syn.subst σ (evaluate C z) = evaluate (Syn.subst σ C) (Syn.subst σ z) := by simp [evaluate]
+ipra_subst horner
+ipra_subst evaluate
 
 theorem horner_zero (C z : PTm n) : Γ ⊢[PRAAx] horner C z zero ≐ qzero := by
   have h := rec_zero (Γ := Γ) (qzero : PTm 2) hornerStep ![C,z]
@@ -245,10 +231,7 @@ def coefficientRepresentations (Q C E : PTm n) : Fm PTm n :=
   .all (lt (var 0) (length (Syn.shift C)) ⟶
     represents (entry (Syn.shift Q) (var 0)) (entry (Syn.shift C) (var 0)) (Syn.shift E))
 
-@[simp] theorem subst_coefficientRepresentations {m : ℕ} (σ : Fin n → PTm m) (Q C E : PTm n) :
-    (coefficientRepresentations Q C E).subst σ =
-      coefficientRepresentations (Syn.subst σ Q) (Syn.subst σ C) (Syn.subst σ E) := by
-  simp [coefficientRepresentations,Syn.subst_shift,Syn.shift_subst]
+ipra_subst coefficientRepresentations [Syn.subst_shift, Syn.shift_subst]
 
 theorem coefficient_representation_at (Q C E i : PTm n)
     (h : Γ ⊢[PRAAx] coefficientRepresentations Q C E) (hi : Γ ⊢[PRAAx] lt i (length C)) :
@@ -275,10 +258,7 @@ theorem zero_represents (A : PTm n) : Γ ⊢[PRAAx] represents qzero zeroCode A 
 def prefixLaw (Q C w z E D k : PTm n) : Fm PTm n := le k (length C) ⟶
   represents (horner Q w k) (scale D (GaussianPolynomialPerturbation.H C z D k)) (E*pw D k)
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (Q C w z E D k : PTm n) :
-    (prefixLaw Q C w z E D k).subst σ = prefixLaw (Syn.subst σ Q) (Syn.subst σ C)
-      (Syn.subst σ w) (Syn.subst σ z) (Syn.subst σ E) (Syn.subst σ D) (Syn.subst σ k) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (Q C w z E D : PTm n) : Γ ⊢[PRAAx]
     represents (horner Q w zero) (scale D (GaussianPolynomialPerturbation.H C z D zero)) (E*pw D zero) := by
@@ -308,8 +288,7 @@ theorem prefix_step (Q C w z E D k : PTm n)
   have heR := equal_re he
   have heI := equal_im he
   have p : 𝔞(pw D (succ k)) = 𝔞(pw D k)*𝔞(D) := by
-    have e := natEq (pw_succ (Γ := Γ) D k)
-    simpa only [IPRA.Q.mk_mul,map_mul] using e
+    simpa only [IPRA.Q.mk_mul,map_mul] using natEq (pw_succ (Γ := Γ) D k)
   apply represents_congr (horner_succ Q w k).eqSymm (hAB := .eqRefl _) (h := hs)
   apply GaussianRootAlgebra.equal_of_values
   · simp only [re_add,re_mul,im_mul,re_scale,im_scale] at heR ⊢
@@ -337,15 +316,10 @@ theorem horner_represents (Q C w z E D k : PTm n)
     simpa only [Fm.shift,subst_represents,Syn.shift] using hw.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift Q) (Syn.shift C) (Syn.shift w)
       (Syn.shift z) (Syn.shift E) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,prefixLaw,Fm.subst_imp,
-        subst_le,subst_length,subst_represents,subst_horner,ComplexLogarithmRemainder.subst_scale,
-        GaussianPolynomialPerturbation.subst_H,ConciseIPRA.PTm.subst_zero,PTm.subst_mul,subst_ap2]
-      exact .impI (prefix_zero Q C w z E D)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift,prefixLaw,Fm.subst_imp,
-        subst_le,subst_length,subst_represents,subst_horner,ComplexLogarithmRemainder.subst_scale,
-        GaussianPolynomialPerturbation.subst_H,ConciseIPRA.PTm.subst_succ,PTm.subst_mul,subst_ap2]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨trivial,trivial⟩⟩) [subst_prefixLaw, prefixLaw, subst_le, subst_length, subst_represents,
+        subst_horner, ComplexLogarithmRemainder.subst_scale, GaussianPolynomialPerturbation.subst_H, subst_ap2]
+    · exact .impI (prefix_zero Q C w z E D)
+    · refine .impI ?_
       let I := prefixLaw (Syn.shift Q) (Syn.shift C) (Syn.shift w) (Syn.shift z) (Syn.shift E) (Syn.shift D) (var 0)
       let Δ := le (succ (var 0)) (length (Syn.shift C)) :: I :: Γ.map Fm.shift
       have d : Δ ⊢[PRAAx] le one (Syn.shift D) := dShift.wk.wk
@@ -365,9 +339,7 @@ def scaledBody : PTm 2 := GaussianRationalRootProduct.scaledCoefficient
 def scaledCoefficients (R N D : PTm n) : PTm n := sequence scaledBody (succ N)
   (GaussianRationalRootProduct.coefficientData R N D)
 
-@[simp] theorem subst_scaledCoefficients {m : ℕ} (σ : Fin n → PTm m) (R N D : PTm n) :
-    Syn.subst σ (scaledCoefficients R N D) =
-      scaledCoefficients (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ D) := by simp [scaledCoefficients]
+ipra_subst scaledCoefficients
 
 theorem scaled_body_at (R N D i : PTm n) : Γ ⊢[PRAAx]
     inst2 scaledBody i (GaussianRationalRootProduct.coefficientData R N D) ≐
@@ -380,8 +352,8 @@ theorem scaled_body_at (R N D i : PTm n) : Γ ⊢[PRAAx]
     (σ' := ![R,N,D,i]) (fun j => by
       fin_cases j
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _)
   simpa only [scaledBody,inst2,GaussianRationalRootProduct.subst_scaledCoefficient,
     subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
@@ -422,9 +394,7 @@ def scaledPrefixLaw (R N z D k : PTm n) : Fm PTm n := le k (succ N) ⟶
   equal (GaussianPolynomialPerturbation.H (scaledCoefficients R N D) z D k)
     (scale (pw D N) (GaussianRootProduct.horner (GaussianRootProduct.coefficients R N) z k))
 
-@[simp] theorem subst_scaledPrefixLaw {m : ℕ} (σ : Fin n → PTm m) (R N z D k : PTm n) :
-    (scaledPrefixLaw R N z D k).subst σ = scaledPrefixLaw (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ D) (Syn.subst σ k) := by simp [scaledPrefixLaw]
+ipra_subst scaledPrefixLaw
 
 theorem complementary_power (D N k : PTm n) (hk : Γ ⊢[PRAAx] le k N) :
     Γ ⊢[PRAAx] pw D k*pw D (monus N k) ≐ pw D N :=
@@ -473,17 +443,12 @@ theorem scaled_homogeneous (R N z D k : PTm n) (hk : Γ ⊢[PRAAx] le k (succ N)
     Γ ⊢[PRAAx] equal (GaussianPolynomialPerturbation.H (scaledCoefficients R N D) z D k)
       (scale (pw D N) (GaussianRootProduct.horner (GaussianRootProduct.coefficients R N) z k)) := by
   have all : Γ ⊢[PRAAx] .all (scaledPrefixLaw (Syn.shift R) (Syn.shift N) (Syn.shift z) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [subst_scaledPrefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,scaledPrefixLaw,
-        Fm.subst_imp,subst_le,ConciseIPRA.PTm.subst_succ,GaussianRootAlgebra.subst_equal,
-        GaussianPolynomialPerturbation.subst_H,subst_scaledCoefficients,ComplexLogarithmRemainder.subst_scale,
-        GaussianRootProduct.subst_horner,GaussianRootProduct.subst_coefficients,subst_ap2]
-      exact .impI (scaled_homogeneous_zero R N z D)
-    · simp only [subst_scaledPrefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift,scaledPrefixLaw,
-        Fm.subst_imp,subst_le,ConciseIPRA.PTm.subst_succ,GaussianRootAlgebra.subst_equal,
-        GaussianPolynomialPerturbation.subst_H,subst_scaledCoefficients,ComplexLogarithmRemainder.subst_scale,
-        GaussianRootProduct.subst_horner,GaussianRootProduct.subst_coefficients,subst_ap2]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨trivial,trivial⟩⟩) [subst_scaledPrefixLaw, scaledPrefixLaw, subst_le,
+        GaussianRootAlgebra.subst_equal, GaussianPolynomialPerturbation.subst_H, subst_scaledCoefficients,
+        ComplexLogarithmRemainder.subst_scale, GaussianRootProduct.subst_horner,
+        GaussianRootProduct.subst_coefficients, subst_ap2]
+    · exact .impI (scaled_homogeneous_zero R N z D)
+    · refine .impI ?_
       let I := scaledPrefixLaw (Syn.shift R) (Syn.shift N) (Syn.shift z) (Syn.shift D) (var 0)
       let Δ := le (succ (var 0)) (succ (Syn.shift N)) :: I :: Γ.map Fm.shift
       have bound : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
@@ -589,9 +554,7 @@ def rootEvaluation (R N z D : PTm n) : PTm n :=
   evaluate (GaussianRationalRootProduct.rationalCoefficients R N D) (ofGaussian z D)
 def rootEvaluationF : PR 4 := PTm.toPR (rootEvaluation (var 0) (var 1) (var 2) (var 3))
 
-@[simp] theorem subst_rootEvaluation {m : ℕ} (σ : Fin n → PTm m) (R N z D : PTm n) :
-    Syn.subst σ (rootEvaluation R N z D) = rootEvaluation (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ D) := by simp [rootEvaluation]
+ipra_subst rootEvaluation
 
 theorem evaluate_program_at (C z : PTm n) : Γ ⊢[PRAAx] ap2 evaluateF C z ≐ evaluate C z := by
   simpa [evaluateF,ap2] using toPR_eq (Γ := Γ) (evaluate (var 0) (var 1) : PTm 2) ![C,z]

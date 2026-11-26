@@ -12,7 +12,7 @@ set_option maxHeartbeats 1250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerMidpointLogGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaEulerMidpointLogHeadGap (margin head_log_order fraction_congr)
@@ -28,9 +28,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNaturalScaleProductName (productF productData)
 open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => productF powerF
@@ -42,12 +39,8 @@ def centerData (N a d b : PTm n) : PTm n :=
   addData (margin a d) (productData nameF two (data N (a+d) (two*b)))
 def weightedData (N a d b : PTm n) : PTm n := addData (data N a b) (data N d b)
 
-@[simp] theorem subst_centerData {m : ℕ} (σ : Fin n → PTm m) (N a d b : PTm n) :
-    Syn.subst σ (centerData N a d b) = centerData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ b) := by
-  simp [centerData]
-@[simp] theorem subst_weightedData {m : ℕ} (σ : Fin n → PTm m) (N a d b : PTm n) :
-    Syn.subst σ (weightedData N a d b) = weightedData (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ b) := by
-  simp [weightedData]
+ipra_subst centerData
+ipra_subst weightedData
 
 private theorem scale_one (N a b : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] crossEquivalent P powerF (productData powerF one (powerData N a b)) (powerData N a b) := by

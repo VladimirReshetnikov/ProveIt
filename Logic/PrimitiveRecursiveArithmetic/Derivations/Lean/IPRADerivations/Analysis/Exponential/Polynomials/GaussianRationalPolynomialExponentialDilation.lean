@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialRecomposition
 import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLowPrefix
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDilation
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Dilation and weighted exponential recomposition
@@ -18,7 +17,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPolynomialExponentialDilation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianNamedInverseRate (independentRate subst_independentRate)
@@ -32,10 +31,6 @@ open GaussianRationalSyntheticDivision (canonicalCoefficients qmul_congr qmul_ze
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open RationalArgmin (rationalLE)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

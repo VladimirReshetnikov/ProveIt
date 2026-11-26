@@ -15,7 +15,7 @@ set_option maxHeartbeats 2200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeProductDerivativeQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq)
 open GaussianGammaLocalPoleGuards (center)
 open GaussianGammaMinimumSignedStep (increment separated_norm)
@@ -33,9 +33,6 @@ open GaussianRationalReciprocal (normNumerator reciprocal reciprocal_identity bo
 open GaussianRationalSyntheticDivision (qmul_congr qone)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianStirlingGammaLogarithm (arg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,15 +42,9 @@ def step (a c b : PTm n) : PTm n := qsub (fraction c b) (fraction a b)
 
 def literalQuotient (a c b N : PTm n) : PTm n := qmul (reciprocal (step a c b)) (qsub (shiftProduct c b N) (shiftProduct a b N))
 
-@[simp] theorem subst_shiftProduct {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (shiftProduct a b N) = shiftProduct (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [shiftProduct]
-@[simp] theorem subst_step {m : ℕ} (σ : Fin n → PTm m) (a c b : PTm n) :
-    Syn.subst σ (step a c b) = step (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) := by
-  simp [step]
-@[simp] theorem subst_literalQuotient {m : ℕ} (σ : Fin n → PTm m) (a c b N : PTm n) :
-    Syn.subst σ (literalQuotient a c b N) = literalQuotient (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [literalQuotient]
+ipra_subst shiftProduct
+ipra_subst step
+ipra_subst literalQuotient
 
 theorem separated_step (a c b : PTm n) (hb : Γ ⊢[PRAAx] le one b)
     (hs : Γ ⊢[PRAAx] lt a c ⋎ lt c a) : Γ ⊢[PRAAx] le one (normNumerator (step a c b)) := by

@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRation
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalCurveFibers
 import IPRADerivations.Analysis.RationalArithmetic.GaussianScalarColumnSelection
 import IPRADerivations.Foundations.BoundedSyntaxInduction
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Computed degree and leading values of the actual determinant stages
@@ -22,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTermDegree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms
   (factor factorBody widthBody data factor_body_at width_at stage stage_zero stage_succ stage_length
     term signPoint sign_even sign_odd sign_canonical term_coefficient)
@@ -41,9 +40,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalMonicReduction (singleton singleto
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,18 +52,10 @@ def firstSum (M m L w j : PTm n) : PTm n := ap2 (sumF firstBody) j (data M m L w
 def degreeSum (M m L w j : PTm n) : PTm n := ap2 (sumF degreeBody) j (data M m L w)
 def leadingProduct (M m L w j : PTm n) : PTm n := GaussianRationalFiniteProduct.qprod leadingBody j (data M m L w)
 
-@[simp] theorem subst_factorFlags {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    (factorFlags M m L w j).subst σ = factorFlags (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ w) (Syn.subst σ j) := by simp [factorFlags,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_firstSum {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    Syn.subst σ (firstSum M m L w j) = firstSum (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ w) (Syn.subst σ j) := by simp [firstSum]
-@[simp] theorem subst_degreeSum {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    Syn.subst σ (degreeSum M m L w j) = degreeSum (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ w) (Syn.subst σ j) := by simp [degreeSum]
-@[simp] theorem subst_leadingProduct {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    Syn.subst σ (leadingProduct M m L w j) = leadingProduct (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ w) (Syn.subst σ j) := by simp [leadingProduct]
+ipra_subst factorFlags [Syn.subst_shift, Syn.shift_subst]
+ipra_subst firstSum
+ipra_subst degreeSum
+ipra_subst leadingProduct
 
 theorem first_congr {C D N M : PTm n} (hC : Γ ⊢[PRAAx] C ≐ D) (hN : Γ ⊢[PRAAx] N ≐ M) : Γ ⊢[PRAAx]
     first C N ≐ first D M := by
@@ -176,9 +164,7 @@ def factorsSyntax (M m L w j : PTm n) : BFm n := .all j
 def successSyntax (M m L w j : PTm n) : BFm n := .and
   (.imp (.eq (flag (stage M m L w j) (j*L)) one) (factorsSyntax M m L w j))
   (.imp (factorsSyntax M m L w j) (.eq (flag (stage M m L w j) (j*L)) one))
-@[simp] theorem subst_successLaw {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    (successLaw M m L w j).subst σ = successLaw (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ w) (Syn.subst σ j) := by simp [successLaw,Fm.iff]
+ipra_subst successLaw [Fm.iff]
 theorem success_formula (M m L w j : PTm n) : formula (successSyntax M m L w j) = successLaw M m L w j := by
   simp [successSyntax,factorsSyntax,formula,successLaw,factorFlags,Syn.shift,Fm.iff]
 
@@ -230,9 +216,7 @@ def stageCertificate (M m L w j : PTm n) : Fm PTm n := (flag (stage M m L w j) (
   ((first (stage M m L w j) (j*L) ≐ firstSum M m L w j) ⋏
     ((degree (stage M m L w j) (j*L) ≐ degreeSum M m L w j) ⋏
       (leading (stage M m L w j) (j*L) ≐ leadingProduct M m L w j)))
-@[simp] theorem subst_stageCertificate {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    (stageCertificate M m L w j).subst σ = stageCertificate (Syn.subst σ M) (Syn.subst σ m)
-      (Syn.subst σ L) (Syn.subst σ w) (Syn.subst σ j) := by simp [stageCertificate]
+ipra_subst stageCertificate
 
 theorem stage_certificate_zero (M m L w : PTm n) : Γ ⊢[PRAAx] stageCertificate M m L w zero :=
   .andI (stage_zero_success _ _ _ _) (.andI
@@ -257,9 +241,7 @@ theorem stage_certificate_step (M m L w j : PTm n) (h : Γ ⊢[PRAAx] stageCerti
         ((qmul_congr (.andE₂ (.andE₂ (.andE₂ h))) (.eqRefl _)).eqTrans (leading_product_succ _ _ _ _ _).eqSymm))
 
 def prefixLaw (M m L w N j : PTm n) : Fm PTm n := le j N ⟶ stageCertificate M m L w j
-@[simp] theorem subst_prefixLaw {l : ℕ} (σ : Fin n → PTm l) (M m L w N j : PTm n) :
-    (prefixLaw M m L w N j).subst σ = prefixLaw (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ w) (Syn.subst σ N) (Syn.subst σ j) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 /-- Local factor flags are the original bounded contract. Only an actual
 guarded conjunction of scalar equalities is the QF induction formula. -/
@@ -268,11 +250,9 @@ theorem stage_certificate (M m L w N : PTm n) (h : Γ ⊢[PRAAx] factorFlags M m
   have source : Γ.map Fm.shift ⊢[PRAAx] factorFlags (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift w) (Syn.shift N) := by
     simpa only [Fm.shift,subst_factorFlags,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift w) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,by trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (stage_certificate_zero _ _ _ _).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,by trivial⟩) [subst_prefixLaw]
+    · exact .impI (stage_certificate_zero _ _ _ _).wk
+    · refine .impI ?_
       let Δ := le (succ (var 0)) (Syn.shift N) ::
         prefixLaw (Syn.shift M) (Syn.shift m) (Syn.shift L) (Syn.shift w) (Syn.shift N) (var 0) :: Γ.map Fm.shift
       have bound : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
@@ -404,16 +384,8 @@ def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (M m L w j : PTm n) : PTm n := app outputF ![M,m,L,w,j]
 def fields (p : PTm n) (i : Fin 6) : PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),
   fstT (sndT (sndT (sndT p))),fstT (sndT (sndT (sndT (sndT p)))),sndT (sndT (sndT (sndT (sndT p))))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    Syn.subst σ (output M m L w j) = output (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ w) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (M m L w j : PTm n) :
-    Syn.subst σ (run M m L w j) = run (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L)
-      (Syn.subst σ w) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 6) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (M m L w j : PTm n) : Γ ⊢[PRAAx] run M m L w j ≐ output M m L w j := by
@@ -422,17 +394,17 @@ theorem returned_fields (M m L w j : PTm n) (i : Fin 6) : Γ ⊢[PRAAx]
     fields (run M m L w j) i ≐ ![stage M m L w j,term M m L w,firstSum M m L w j,
       degreeSum M m L w j,leadingProduct M m L w j,signPoint m w] i := by
   have e0 := program_at (Γ := Γ) M m L w j
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  have e4 := (congrSnd e3).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
+  have e4 := e3.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrFst e4).eqTrans (fst_pair _ _)
-  · exact (congrSnd e4).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e4.fstE
+  · exact e4.sndE
 theorem returned_stage_success (M m L w j : PTm n) (h : Γ ⊢[PRAAx] factorFlags M m L w j) : Γ ⊢[PRAAx]
     flag (fields (run M m L w j) 0) (j*L) ≐ one :=
   (flag_congr (returned_fields _ _ _ _ _ 0) (.eqRefl _)).eqTrans (stage_success_of_factors M m L w j h)

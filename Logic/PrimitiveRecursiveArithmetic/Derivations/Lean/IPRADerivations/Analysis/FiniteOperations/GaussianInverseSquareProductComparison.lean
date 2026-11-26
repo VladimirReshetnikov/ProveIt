@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianInverseSquareProductComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianInverseSquareProductGrowth (prefixNumerator prefixDenominator rowNumerator rowDenominator
   row_bound row_positive prefix_bound prefix_power_identity prefix_power_positive prefix_power_upper)
 open GaussianInverseSquareProductTail (factorBounds factor_bound_at)
@@ -26,9 +26,6 @@ open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianCoefficientNameBounds (unit)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -38,28 +35,17 @@ def rowErrorDenominator (M j : PTm n) : PTm n := M*(succ j*succ j)
 def errorNumerator (E H j : PTm n) : PTm n := E*(two*H*j+j*succ j)
 def errorDenominator (M j : PTm n) : PTm n := M*succ j
 
-@[simp] theorem subst_rowErrorNumerator {m : ℕ} (σ : Fin n → PTm m) (E H j : PTm n) :
-    Syn.subst σ (rowErrorNumerator E H j) = rowErrorNumerator (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ j) := by
-  simp [rowErrorNumerator]
-@[simp] theorem subst_rowErrorDenominator {m : ℕ} (σ : Fin n → PTm m) (M j : PTm n) :
-    Syn.subst σ (rowErrorDenominator M j) = rowErrorDenominator (Syn.subst σ M) (Syn.subst σ j) := by
-  simp [rowErrorDenominator]
-@[simp] theorem subst_errorNumerator {m : ℕ} (σ : Fin n → PTm m) (E H j : PTm n) :
-    Syn.subst σ (errorNumerator E H j) = errorNumerator (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ j) := by
-  simp [errorNumerator]
-@[simp] theorem subst_errorDenominator {m : ℕ} (σ : Fin n → PTm m) (M j : PTm n) :
-    Syn.subst σ (errorDenominator M j) = errorDenominator (Syn.subst σ M) (Syn.subst σ j) := by
-  simp [errorDenominator]
+ipra_subst rowErrorNumerator
+ipra_subst rowErrorDenominator
+ipra_subst errorNumerator
+ipra_subst errorDenominator
 
 def rowErrors (f g : PTm 2) (x y E H M K : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift K) ⟶
     distanceBounded (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift y))
       (rowErrorNumerator (Syn.shift E) (Syn.shift H) (var 0)) (rowErrorDenominator (Syn.shift M) (var 0)))
 
-@[simp] theorem subst_rowErrors {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (x y E H M K : PTm n) :
-    (rowErrors f g x y E H M K).subst σ = rowErrors f g (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ E) (Syn.subst σ H) (Syn.subst σ M) (Syn.subst σ K) := by
-  simp [rowErrors,Syn.subst_shift,Syn.shift_subst]
+ipra_subst rowErrors [Syn.subst_shift, Syn.shift_subst]
 
 theorem row_error_at (f g : PTm 2) (x y E H M K j : PTm n)
     (h : Γ ⊢[PRAAx] rowErrors f g x y E H M K) (hj : Γ ⊢[PRAAx] lt j K) :
@@ -90,10 +76,7 @@ def prefixDistance (f g : PTm 2) (x y C E H M j : PTm n) : Fm PTm n :=
   distanceBounded (qprod f j x) (qprod g j y) (pw (prefixNumerator j) C*errorNumerator E H j)
     (pw (prefixDenominator j) C*errorDenominator M j)
 
-@[simp] theorem subst_prefixDistance {m : ℕ} (σ : Fin n → PTm m) (f g : PTm 2) (x y C E H M j : PTm n) :
-    (prefixDistance f g x y C E H M j).subst σ =
-      prefixDistance f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ C) (Syn.subst σ E)
-        (Syn.subst σ H) (Syn.subst σ M) (Syn.subst σ j) := by simp [prefixDistance]
+ipra_subst prefixDistance
 
 private theorem prefix_zero (f g : PTm 2) (x y C E H M : PTm n) (hM : Γ ⊢[PRAAx] le one M) :
     Γ ⊢[PRAAx] prefixDistance f g x y C E H M zero := by
@@ -191,11 +174,9 @@ theorem compare_prefix (f g : PTm 2) (x y C E H M K j : PTm n)
   have hh : Δ ⊢[PRAAx] rowErrors f g sx sy sE sH sM sK := by
     simpa [Fm.shift,Syn.shift,Δ,sx,sy,sE,sH,sM,sK] using h.shift
   have all : Γ ⊢[PRAAx] .all (law f g sx sy sC sE sH sM sK (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,sx,sy,sC,sE,sH,sM,sK]
-      exact .impI (prefix_zero f g x y C E H M hM.wk)
-    · simp only [subst_law,Syn.subst_var,Syn.repl_zero,subst_repl_shift,sx,sy,sC,sE,sH,sM,sK,Δ]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_law, sx, sy, sC, sE, sH, sM, sK, Δ]
+    · exact .impI (prefix_zero f g x y C E H M hM.wk)
+    · refine .impI ?_
       exact prefix_succ f g sx sy sC sE sH sM (var 0) hhM.wk.wk hhf.wk.wk hhg.wk.wk
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
         (row_error_at f g sx sy sE sH sM sK (var 0) hh.wk.wk Prf.hyp0)

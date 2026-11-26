@@ -1,5 +1,6 @@
 import IPRADerivations.Core.Monus
 import ConciseIPRA.GuardedWitness
+import IPRADerivations.Core.SubstCommand
 
 /-!
 # The order of iPRA
@@ -34,12 +35,9 @@ def lt (a b : PTm n) : Fm PTm n := le (succ a) b
 /-- `¬ φ`. -/
 def neg (φ : Fm PTm n) : Fm PTm n := φ ⟶ Fm.bot
 
-@[simp] theorem subst_le {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (le a b).subst σ = le (Syn.subst σ a) (Syn.subst σ b) := by simp [le]
-@[simp] theorem subst_lt {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (lt a b).subst σ = lt (Syn.subst σ a) (Syn.subst σ b) := by simp [lt]
-@[simp] theorem subst_neg {m : ℕ} (σ : Fin n → PTm m) (φ : Fm PTm n) :
-    (neg φ).subst σ = neg (φ.subst σ) := by simp [neg]
+ipra_subst le
+ipra_subst lt
+ipra_subst neg
 
 theorem le_QF (a b : PTm n) : (le a b).QF := trivial
 theorem lt_QF (a b : PTm n) : (lt a b).QF := trivial

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitTimeRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitLogarithmicMargin (timeF timeData)
 open GaussianPositiveRationalLogarithm (fraction logF)
 open GaussianRationalHorner (positive_product)
@@ -25,16 +25,12 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def input (a b c d E X Y : PTm n) : Fm PTm n := GaussianEulerUnitCompactTimeBounds.source a b E ⋏
   (GaussianEulerUnitCompactTimeBounds.source c d E ⋏ (le one Y ⋏ distanceBounded (fraction a b) (fraction c d) X Y))
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (a b c d E X Y : PTm n) :
-    (input a b c d E X Y).subst σ = input (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d)
-      (Syn.subst σ E) (Syn.subst σ X) (Syn.subst σ Y) := by simp [input]
+ipra_subst input
 
 theorem original_observations (p q a b c d E X Y : PTm n) (h : Γ ⊢[PRAAx] input a b c d E X Y) : Γ ⊢[PRAAx]
     distanceBounded (ap2 timeF p (timeData a b)) (ap2 timeF q (timeData c d))

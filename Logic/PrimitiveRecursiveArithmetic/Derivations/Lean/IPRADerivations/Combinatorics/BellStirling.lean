@@ -1,8 +1,6 @@
 import IPRADerivations.Combinatorics.StirlingBinomial
 import IPRADerivations.Combinatorics.Bell
-import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Bell numbers as sums of Stirling numbers
@@ -23,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellStirling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Stirling (stir stir_zero stir_above stir_succ_zero gle gle_of_le)
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (congrStir)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb zB zsum inst2_z)
@@ -32,10 +30,6 @@ open LeanProofs.IPRA.Combinatorics.Bell (bell bell_zero bell_succ recB inst2_rec
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -143,13 +137,9 @@ theorem v_step {N : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (succ N) zero ≐ z
 private abbrev vF : Fm PTm 1 := ap2 (sumF vB) (succ (var 0)) zero ≐ zero
 
 private theorem v₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] vF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact v_base
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact v_step Prf.hyp0
+  ipra_ind [subst_ap2]
+  · exact v_base
+  · exact v_step Prf.hyp0
 
 /-- `B_n = ∑_{k ≤ n} S(n, k)`. -/
 theorem bell_stirling (N : PTm n) : Γ ⊢[PRAAx] T N ≐ bell N := by

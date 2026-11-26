@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerQuadraticGamma
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSquareIntegrand (factorF factorData)
 open GaussianEulerSquareFactorInverse (inverseFactorF inverseFactorData)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
@@ -25,8 +25,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans 
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Kernel" => GaussianEulerQuadraticImproperKernel.nameF
@@ -39,11 +37,8 @@ def productData (z R B A c d : PTm n) : PTm n := multiplyData inverseFactorF gam
 abbrev forwardF : PR 2 := multiplyF factorF Kernel
 def forwardData (z R B A c d : PTm n) : PTm n := multiplyData factorF Kernel (factorData z B c d) (kdata z R B A c d)
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    Syn.subst σ (productData z R B A c d) = productData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by simp [productData]
-@[simp] theorem subst_forwardData {m : ℕ} (σ : Fin n → PTm m) (z R B A c d : PTm n) :
-    Syn.subst σ (forwardData z R B A c d) = forwardData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [forwardData,GaussianEulerSquareIntegrand.factorData,GaussianEulerPositiveScalingConstant.scaleData]
+ipra_subst productData
+ipra_subst forwardData [GaussianEulerSquareIntegrand.factorData, GaussianEulerPositiveScalingConstant.scaleData]
 
 theorem constant_source (z R B A c d : PTm n) (hs : Γ ⊢[PRAAx] source z R B A c d) : Γ ⊢[PRAAx]
     GaussianEulerPositiveScalingConstant.source B c d :=

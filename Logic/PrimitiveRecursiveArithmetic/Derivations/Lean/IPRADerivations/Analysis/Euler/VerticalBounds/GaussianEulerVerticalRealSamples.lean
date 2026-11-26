@@ -14,14 +14,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalRealSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianRationalConjugation (point point_congr)
 open GaussianEulerVerticalNativeProjection (argument imaginary_zero)
 open GaussianRadiusExponentialName (inputPrecision index nameF data)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

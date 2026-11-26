@@ -14,15 +14,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalNamedProjection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaRealValues (axisF projection projection_represents)
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianNamedRightHalfPlane (source radius numerator denominator threshold actual_late_source)
 open GaussianRationalHorner (ofGaussian canonical_unique)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingDifferenceAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianRationalHorner (qadd qmul represents qadd_represents qmul_represents qadd_canonical
   canonical_unique represents_congr represents_rescale ofGaussian_represents positive_product)
@@ -25,21 +25,15 @@ open GaussianRootAlgebra (equal equal_of_values re_add im_add re_sub im_sub re_m
 open GaussianStirlingGammaLogarithm (source arg)
 open GaussianStirlingNames (point offset)
 open GaussianStirlingDifference (coefficient)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def rawA (a b g l : PTm n) : PTm n := qadd (qsub g (qmul (offset a b) l)) (point a b)
 def rawDifference (a b t : PTm n) : PTm n := qsub (qmul (coefficient a b) t) qone
 
-@[simp] theorem subst_rawA {m : ℕ} (σ : Fin n → PTm m) (a b g l : PTm n) :
-    Syn.subst σ (rawA a b g l) = rawA (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ g) (Syn.subst σ l) :=
-  by simp [rawA]
+ipra_subst rawA
 
-@[simp] theorem subst_rawDifference {m : ℕ} (σ : Fin n → PTm m) (a b t : PTm n) :
-    Syn.subst σ (rawDifference a b t) = rawDifference (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ t) :=
-  by simp [rawDifference,GaussianStirlingDifference.subst_coefficient]
+ipra_subst rawDifference [GaussianStirlingDifference.subst_coefficient]
 
 private theorem point_rep (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] represents (point a b) (scale two (arg a)) (two*b) :=

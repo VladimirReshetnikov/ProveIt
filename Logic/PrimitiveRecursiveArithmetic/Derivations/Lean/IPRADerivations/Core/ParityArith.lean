@@ -1,5 +1,4 @@
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.LinearCombination
 
 /-!

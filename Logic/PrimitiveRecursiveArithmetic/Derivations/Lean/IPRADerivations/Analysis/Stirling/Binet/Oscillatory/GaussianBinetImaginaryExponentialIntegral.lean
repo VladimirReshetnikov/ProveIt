@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetImaginaryExponentialIntegral
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq)
 open GaussianBinetExponentialIntegral (nonpositiveRows finite_error numerator)
 open GaussianBinetExponentialIntegralGrid (exponent value row)
@@ -28,9 +28,6 @@ open GaussianRationalReciprocal (bounded_negative)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalHorner (qmul)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

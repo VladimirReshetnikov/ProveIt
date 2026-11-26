@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalRowElimination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qadd qmul canonical qmul_canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub qnegative qsub_canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr qsub_congr)
@@ -28,9 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum (sum sum_canonical sum_c
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,34 +51,17 @@ def rowDot (A N l r : PTm n) : PTm n := sum dotBody N (dotData A l r)
 def nullRows (A R N l : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift R) ⟶ rowDot (Syn.shift A) (Syn.shift N) (Syn.shift l) (var 0) ≐ qzero)
 
-@[simp] theorem subst_shape {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    (shape A R N).subst σ = shape (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp [shape,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_pivot {k : ℕ} (σ : Fin n → PTm k) (A i p : PTm n) :
-    Syn.subst σ (pivot A i p) = pivot (Syn.subst σ A) (Syn.subst σ i) (Syn.subst σ p) := by simp [pivot]
-@[simp] theorem subst_inverse {k : ℕ} (σ : Fin n → PTm k) (A i p : PTm n) :
-    Syn.subst σ (inverse A i p) = inverse (Syn.subst σ A) (Syn.subst σ i) (Syn.subst σ p) := by simp [inverse]
-@[simp] theorem subst_normalizedPivot {k : ℕ} (σ : Fin n → PTm k) (A i p j : PTm n) :
-    Syn.subst σ (normalizedPivot A i p j) = normalizedPivot (Syn.subst σ A) (Syn.subst σ i)
-      (Syn.subst σ p) (Syn.subst σ j) := by simp [normalizedPivot]
-@[simp] theorem subst_entryValue {k : ℕ} (σ : Fin n → PTm k) (A i p r j : PTm n) :
-    Syn.subst σ (entryValue A i p r j) = entryValue (Syn.subst σ A) (Syn.subst σ i)
-      (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ j) := by simp [entryValue,sel]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (A i p : PTm n) :
-    Syn.subst σ (data A i p) = data (Syn.subst σ A) (Syn.subst σ i) (Syn.subst σ p) := by simp [data]
-@[simp] theorem subst_eliminate {k : ℕ} (σ : Fin n → PTm k) (A R N i p : PTm n) :
-    Syn.subst σ (eliminate A R N i p) = eliminate (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ i) (Syn.subst σ p) := by simp [eliminate]
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (A R N i p : PTm n) :
-    (input A R N i p).subst σ = input (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ i) (Syn.subst σ p) := by simp [input]
-@[simp] theorem subst_dotData {k : ℕ} (σ : Fin n → PTm k) (A l r : PTm n) :
-    Syn.subst σ (dotData A l r) = dotData (Syn.subst σ A) (Syn.subst σ l) (Syn.subst σ r) := by simp [dotData]
-@[simp] theorem subst_rowDot {k : ℕ} (σ : Fin n → PTm k) (A N l r : PTm n) :
-    Syn.subst σ (rowDot A N l r) = rowDot (Syn.subst σ A) (Syn.subst σ N) (Syn.subst σ l) (Syn.subst σ r) := by simp [rowDot]
-@[simp] theorem subst_nullRows {k : ℕ} (σ : Fin n → PTm k) (A R N l : PTm n) :
-    (nullRows A R N l).subst σ = nullRows (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ l) := by
-  simp [nullRows,Syn.subst_shift,Syn.shift_subst]
+ipra_subst shape [Syn.subst_shift, Syn.shift_subst]
+ipra_subst pivot
+ipra_subst inverse
+ipra_subst normalizedPivot
+ipra_subst entryValue [sel]
+ipra_subst data
+ipra_subst eliminate
+ipra_subst input
+ipra_subst dotData
+ipra_subst rowDot
+ipra_subst nullRows [Syn.subst_shift, Syn.shift_subst]
 
 theorem entry_body_at (A i p r j : PTm n) : Γ ⊢[PRAAx]
     Syn.subst ![r,j,data A i p] entryBody ≐ entryValue A i p r j := by
@@ -94,8 +74,8 @@ theorem entry_body_at (A i p r j : PTm n) : Γ ⊢[PRAAx]
       (σ' := ![A,i,p,r,j]) (fun k => by
         fin_cases k
         · exact fst_pair _ _
-        · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-        · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+        · exact (snd_pair _ _).fstE
+        · exact (snd_pair _ _).sndE
         · exact .eqRefl _
         · exact .eqRefl _)
 
@@ -135,8 +115,8 @@ theorem dot_body_at (A l r j : PTm n) : Γ ⊢[PRAAx]
     inst2 dotBody j (dotData A l r) ≐ qmul (cell A r j) (entry l j) := by
   simp only [dotBody,inst2,GaussianRationalHorner.subst_qmul,subst_cell,subst_entry,subst_fstT,subst_sndT,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact qmul_congr (entry_congr (entry_congr (fst_pair _ _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))) (.eqRefl _))
-    (entry_congr ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _))
+  exact qmul_congr (entry_congr (entry_congr (fst_pair _ _) (snd_pair _ _).sndE) (.eqRefl _))
+    (entry_congr (snd_pair _ _).fstE (.eqRefl _))
 theorem row_dot_canonical (A N l r : PTm n) : Γ ⊢[PRAAx] canonical (rowDot A N l r) := sum_canonical _ _ _
 
 theorem normalized_lookup (A R N i p j : PTm n) (hi : Γ ⊢[PRAAx] lt i R) (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx]
@@ -310,13 +290,7 @@ theorem null_rows_congr {A B R N l : PTm n} (hA : Γ ⊢[PRAAx] A ≐ B)
 independent numerical proof query; no presumed null vector is a producer input. -/
 def outputF : PR 5 := PTm.toPR (eliminate (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A R N i p : PTm n) : PTm n := app outputF ![A,R,N,i,p]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R N i p : PTm n) :
-    Syn.subst σ (run A R N i p) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ i) (Syn.subst σ p) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst run
 theorem program_at (A R N i p : PTm n) : Γ ⊢[PRAAx] run A R N i p ≐ eliminate A R N i p := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (eliminate (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,R,N,i,p]

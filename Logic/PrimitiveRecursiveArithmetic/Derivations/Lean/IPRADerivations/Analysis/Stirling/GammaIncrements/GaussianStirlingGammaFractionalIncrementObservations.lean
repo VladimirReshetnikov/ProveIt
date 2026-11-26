@@ -15,7 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingGammaFractionalIncrementObservations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -38,10 +38,6 @@ open GaussianStirlingGlobalBounds (small_join)
 open GaussianStirlingGlobalBoundsShiftArguments (deltaF deltaData slopeF slopeData shiftedNumerator shifted_positive)
 open GaussianStirlingNames (logXF logXData)
 open RationalValueBounds (upper upper_of_radius upper_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num pred monus)
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => productF logGammaF

@@ -1,5 +1,4 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Powers
 import IPRADerivations.Analysis.RationalArithmetic.PowerSums
 
 /-!
@@ -27,11 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.PowerGap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -80,13 +75,9 @@ theorem shift_eq' (hd : Γ ⊢[PRAAx] B ≐ A + d) :
 theorem gap_all (hd : Γ ⊢[PRAAx] B ≐ A + d) (hU : Γ ⊢[PRAAx] le B U) :
     Γ ⊢[PRAAx] Fm.all (le (pw (Syn.shift B) (succ (var 0)))
       (pw (Syn.shift A) (succ (var 0)) + Syn.shift d * (succ (var 0) * pw (Syn.shift U) (var 0)))) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact gap_base hd
-  · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact gap_step (shift_eq' hd).wk (shift_le' hU).wk Prf.hyp0
+  ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+  · exact gap_base hd
+  · exact gap_step (shift_eq' hd).wk (shift_le' hU).wk Prf.hyp0
 
 /-- `eq:power-gap`, algebraic core: `B^{b+1} ≤ A^{b+1} + (B − A)(b + 1) U^b` for `A ≤ B ≤ U`. -/
 theorem power_gap (hd : Γ ⊢[PRAAx] B ≐ A + d) (hU : Γ ⊢[PRAAx] le B U) (b : PTm n) :

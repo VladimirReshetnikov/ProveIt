@@ -22,7 +22,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBoundedIntegerExponentialStages
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (canonical positive_product qmul)
 open GaussianRationalReciprocal (power)
 open GaussianRationalSyntheticDivision (qone)
@@ -31,10 +31,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,22 +48,14 @@ def productF (f : PR 2) : PR 2 := GaussianNameArithmetic.multiplyF (expF f) (exp
 def productData (f : PR 2) (E i R x : PTm n) : PTm n :=
   GaussianNameArithmetic.multiplyData (expF f) (expF f) (expData E i R x) (expData E one R x)
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x c A : PTm n) :
-    (input f R x c A).subst σ = input f (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ c) (Syn.subst σ A) := by simp [input]
-@[simp] theorem subst_stageData {m : ℕ} (σ : Fin n → PTm m) (E i x : PTm n) :
-    Syn.subst σ (stageData E i x) = stageData (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ x) := by simp [stageData]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (E R : PTm n) :
-    Syn.subst σ (radius E R) = radius (Syn.subst σ E) (Syn.subst σ R) := by simp [radius]
-@[simp] theorem subst_expData {m : ℕ} (σ : Fin n → PTm m) (E i R x : PTm n) :
-    Syn.subst σ (expData E i R x) = expData (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ R) (Syn.subst σ x) := by simp [expData]
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p E i R x : PTm n) :
-    Syn.subst σ (point f p E i R x) = point f (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ R) (Syn.subst σ x) := by simp [point]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (E R : PTm n) :
-    Syn.subst σ (majorant E R) = majorant (Syn.subst σ E) (Syn.subst σ R) := by simp [majorant]
-@[simp] theorem subst_powerBudget {m : ℕ} (σ : Fin n → PTm m) (E A : PTm n) :
-    Syn.subst σ (powerBudget E A) = powerBudget (Syn.subst σ E) (Syn.subst σ A) := by simp [powerBudget]
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (E i R x : PTm n) :
-    Syn.subst σ (productData f E i R x) = productData f (Syn.subst σ E) (Syn.subst σ i) (Syn.subst σ R) (Syn.subst σ x) := by simp [productData]
+ipra_subst input
+ipra_subst stageData
+ipra_subst radius
+ipra_subst expData
+ipra_subst point
+ipra_subst majorant
+ipra_subst powerBudget
+ipra_subst productData
 
 theorem stage_input (f : PR 2) (E i R x c A : PTm n) (h : Γ ⊢[PRAAx] input f R x c A)
     (hi : Γ ⊢[PRAAx] le i E) : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input (scaledF f) (radius E R) (stageData E i x) :=

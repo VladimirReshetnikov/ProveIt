@@ -1,8 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.Topology.Sperner2D
 import IPRADerivations.Topology.StaggeredCells
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The finite dimension obstruction from the square to the line (`thm:finite`, `d = 2`)
@@ -45,15 +43,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.DimensionTwo
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum2_zero_of_bounded)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (term_le_sum2)
 open LeanProofs.IPRA.Topology.Sperner2D
 open LeanProofs.IPRA.Topology.StaggeredCells
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

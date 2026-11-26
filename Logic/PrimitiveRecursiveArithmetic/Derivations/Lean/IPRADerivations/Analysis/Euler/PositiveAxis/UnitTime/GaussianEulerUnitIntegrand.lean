@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayQuadrature
 import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original Euler integrand at one
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianEulerIntegrandName (coefficient exponentF exponentData decayPoint decayF decayData
@@ -27,9 +26,6 @@ open GaussianRationalMetric (qnegative_canonical)
 open GaussianEulerDecayMesh (observation)
 open GaussianCompactRiemannName (sampleBody sampleData sample_body_at quadrature)
 open GaussianRationalFiniteSum (termsEqual)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedGammaPoleFreeBinding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaNegativeIntervalNamedGamma (actualF actualData actual_regular rateFactor)
 open GaussianGammaNegativeIntervalNamedGammaNativeDomain (input radius shiftF shiftData shift_regular
@@ -30,9 +30,6 @@ open GaussianNamedInverseRate (independentRate diagonal_rate)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

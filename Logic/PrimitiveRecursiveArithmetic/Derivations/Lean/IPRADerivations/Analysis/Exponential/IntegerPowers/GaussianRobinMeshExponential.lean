@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRobinMeshExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (eb Bt one_le_Bt dt st c3)
 open GaussianRobinMeshLogDecomposition (baseData reducedData integerData integerF)
 open GaussianRobinOddLogarithmName (inputs)
@@ -36,10 +36,6 @@ open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianEuclideanDistanceName (pointCN)
 open ComplexLogarithmRemainder (oneCode scale)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

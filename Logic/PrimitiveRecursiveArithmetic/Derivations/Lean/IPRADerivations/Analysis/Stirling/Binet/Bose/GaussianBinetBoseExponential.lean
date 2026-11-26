@@ -16,7 +16,7 @@ set_option maxHeartbeats 450000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelPi (sample_fraction denominator_positive sample_margins)
 open GaussianDominantPairAlgebra (radiusPoint radius_multiply)
 open GaussianEuclideanDistanceName (pointCN)
@@ -26,10 +26,6 @@ open GaussianRationalHorner (canonical positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianStirlingConstant (piNumerator piDenominator)
 open RationalArgmin (rationalLE rationalLE_congr)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,17 +42,13 @@ def expData (s : Bool) (A B : PTm n) : PTm n :=
 
 abbrev expF : PR 2 := GaussianRadiusExponentialName.nameF scaleF
 
-@[simp] theorem subst_scaleBudget {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (scaleBudget A) = scaleBudget (Syn.subst σ A) := by simp [scaleBudget,two,one]
+ipra_subst scaleBudget [two, one]
 
-@[simp] theorem subst_scaleData {m : ℕ} (σ : Fin n → PTm m) (s : Bool) (A B : PTm n) :
-    Syn.subst σ (scaleData s A B) = scaleData s (Syn.subst σ A) (Syn.subst σ B) := by simp [scaleData,two]
+ipra_subst scaleData [two]
 
-@[simp] theorem subst_expRadius {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (expRadius A) = expRadius (Syn.subst σ A) := by simp [expRadius]
+ipra_subst expRadius
 
-@[simp] theorem subst_expData {m : ℕ} (σ : Fin n → PTm m) (s : Bool) (A B : PTm n) :
-    Syn.subst σ (expData s A B) = expData s (Syn.subst σ A) (Syn.subst σ B) := by simp [expData]
+ipra_subst expData
 
 theorem exp_input (s : Bool) (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] GaussianRadiusExponentialName.input scaleF (expRadius A) (scaleData s A B) := by

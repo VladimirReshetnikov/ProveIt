@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmLinearRecursion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qadd qmul canonical ofGaussian represents canonical_unique)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr qadd_congr canonicalCoefficients)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside exponent_outside data)
@@ -23,16 +23,11 @@ open GaussianRationalEulerCoefficients (euler parityPoint)
 open GaussianRationalNaturalScale (natScale)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence sequence_decode sequence_length entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def linear : PTm n := sequence (qone : PTm 2) two zero
-@[simp] theorem subst_linear {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (linear : PTm n) = (linear : PTm l) := by
-  simp [linear,two,one]
+ipra_subst linear [two, one]
 theorem linear_length : Γ ⊢[PRAAx] length (linear : PTm n) ≐ succ one := sequence_length _ _ _
 theorem linear_lookup (i : PTm n) (hi : Γ ⊢[PRAAx] le i one) : Γ ⊢[PRAAx] entry linear i ≐ qone := by
   simpa only [linear,inst2,GaussianRationalSyntheticDivision.qone,GaussianRationalHorner.subst_ofGaussian,
@@ -137,8 +132,7 @@ theorem higher_prior_zero (d k : PTm n) (hk : Γ ⊢[PRAAx] le (succ (succ k)) d
 
 def point (d e : PTm n) : Fm PTm n := natScale e (exponentCoefficient linear one e) ≐
   priorSum (euler (GaussianFiniteLogarithmPolynomial.polynomial d) d) d linear one e
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (d e : PTm n) :
-    (point d e).subst σ = point (Syn.subst σ d) (Syn.subst σ e) := by simp [point,one]
+ipra_subst point [one]
 theorem point_congr (d : PTm n) {e f : PTm n} (h : Γ ⊢[PRAAx] e ≐ f) (hp : Γ ⊢[PRAAx] point d e) : Γ ⊢[PRAAx] point d f := by
   have result := Prf.eqSubst (Γ := Γ) (Ax := PRAAx) (point (var 0) (var 1) : Fm PTm 2) ![d,e] ![d,f]
     (fun i => by fin_cases i; exact .eqRefl _; exact h) (by simpa only [subst_point,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using hp)
@@ -188,18 +182,16 @@ def output (d e : PTm n) : PTm n := pairT linear
   (priorSum (euler (GaussianFiniteLogarithmPolynomial.polynomial d) d) d linear one e)
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (d e : PTm n) : PTm n := ap2 outputF d e
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d e : PTm n) :
-    Syn.subst σ (output d e) = output (Syn.subst σ d) (Syn.subst σ e) := by simp [output,one]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d e : PTm n) :
-    Syn.subst σ (run d e) = run (Syn.subst σ d) (Syn.subst σ e) := by simp [run]
+ipra_subst output [one]
+ipra_subst run
 
 theorem program_at (d e : PTm n) : Γ ⊢[PRAAx] run d e ≐ output d e := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![d,e]
 theorem returned_linear (d e : PTm n) : Γ ⊢[PRAAx] fstT (run d e) ≐ linear :=
-  (congrFst (program_at d e)).eqTrans (fst_pair _ _)
+  (program_at d e).fstE
 theorem returned_prior (d e : PTm n) : Γ ⊢[PRAAx] sndT (run d e) ≐
     priorSum (euler (GaussianFiniteLogarithmPolynomial.polynomial d) d) d linear one e :=
-  (congrSnd (program_at d e)).eqTrans (snd_pair _ _)
+  (program_at d e).sndE
 theorem returned_recursion (d e : PTm n) (he : Γ ⊢[PRAAx] le e d) : Γ ⊢[PRAAx]
     natScale e (exponentCoefficient (fstT (run d e)) one e) ≐ sndT (run d e) :=
   (GaussianRationalNaturalScale.natScale_congr (.eqRefl _)

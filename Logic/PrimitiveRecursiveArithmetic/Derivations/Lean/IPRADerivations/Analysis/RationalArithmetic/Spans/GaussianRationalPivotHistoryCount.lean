@@ -2,7 +2,6 @@ import IPRADerivations.Core.SumOrder
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Foundations.SequenceComposition
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Counting actual nonzero pivot tags and selecting a free column
@@ -19,14 +18,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPivotHistoryCount
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,17 +35,11 @@ def free (H N : PTm n) : PTm n := Search.mu tagBody N H
 def allMarked (H N : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift N) ⟶ neg (entry (Syn.shift H) (var 0) ≐ zero))
 
-@[simp] theorem subst_markedBit {k : ℕ} (σ : Fin n → PTm k) (H j : PTm n) :
-    Syn.subst σ (markedBit H j) = markedBit (Syn.subst σ H) (Syn.subst σ j) := by simp [markedBit]
-@[simp] theorem subst_count {k : ℕ} (σ : Fin n → PTm k) (H N : PTm n) :
-    Syn.subst σ (count H N) = count (Syn.subst σ H) (Syn.subst σ N) := by simp [count]
-@[simp] theorem subst_zeroCount {k : ℕ} (σ : Fin n → PTm k) (H N : PTm n) :
-    Syn.subst σ (zeroCount H N) = zeroCount (Syn.subst σ H) (Syn.subst σ N) := by simp [zeroCount]
-@[simp] theorem subst_free {k : ℕ} (σ : Fin n → PTm k) (H N : PTm n) :
-    Syn.subst σ (free H N) = free (Syn.subst σ H) (Syn.subst σ N) := by simp [free]
-@[simp] theorem subst_allMarked {k : ℕ} (σ : Fin n → PTm k) (H N : PTm n) :
-    (allMarked H N).subst σ = allMarked (Syn.subst σ H) (Syn.subst σ N) := by
-  simp [allMarked,Syn.subst_shift,Syn.shift_subst]
+ipra_subst markedBit
+ipra_subst count
+ipra_subst zeroCount
+ipra_subst free
+ipra_subst allMarked [Syn.subst_shift, Syn.shift_subst]
 
 theorem tag_body_at (H j : PTm n) : inst2 tagBody j H = entry H j := by simp [tagBody,inst2]
 theorem marked_body_at (H j : PTm n) : inst2 markedBody j H = markedBit H j := by simp [markedBody,inst2]
@@ -80,11 +69,9 @@ theorem zeroCount_succ (H N : PTm n) : Γ ⊢[PRAAx] zeroCount H (succ N) ≐ ze
 
 theorem sum_units (N H : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N H ≐ N := by
   have all : Γ ⊢[PRAAx] .all (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift H) ≐ var 0) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact sum_zero _ _
-    · simp only [Fm.subst_eq,subst_ap2,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have s := sum_succ' (Γ := (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift H) ≐ var 0) :: Γ.map Fm.shift)
+    ipra_qfind [subst_ap2]
+    · exact sum_zero _ _
+    · have s := sum_succ' (Γ := (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift H) ≐ var 0) :: Γ.map Fm.shift)
         (one : PTm 2) (var 0) (Syn.shift H)
       have e := (congrAdd (Prf.hyp0 : (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift H) ≐ var 0) :: Γ.map Fm.shift ⊢[PRAAx] _)
         (.eqRefl one)).eqTrans (succ_eq_add_one (var 0)).eqSymm
@@ -203,14 +190,8 @@ def run (H N : PTm n) : PTm n := app outputF ![H,N]
 def outputField (p : PTm n) (i : Fin 4) : PTm n :=
   ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),sndT (sndT (sndT p))] i
 
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (H N : PTm n) :
-    Syn.subst σ (output H N) = output (Syn.subst σ H) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (H N : PTm n) :
-    Syn.subst σ (run H N) = run (Syn.subst σ H) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_outputField {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) (i : Fin 4) :
     Syn.subst σ (outputField p i) = outputField (Syn.subst σ p) i := by fin_cases i <;> simp [outputField]
 
@@ -222,9 +203,9 @@ theorem output_fields (H N : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
   have b := (congrSnd a).eqTrans (snd_pair (free H N) (pairT (entry H (free H N)) (zeroCount H N)))
   fin_cases i
   · exact fst_pair _ _
-  · exact (congrFst a).eqTrans (fst_pair _ _)
-  · exact (congrFst b).eqTrans (fst_pair _ _)
-  · exact (congrSnd b).eqTrans (snd_pair _ _)
+  · exact a.fstE
+  · exact b.fstE
+  · exact b.sndE
 theorem returned_fields (H N : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
     outputField (run H N) i ≐ ![count H N,free H N,entry H (free H N),zeroCount H N] i := by
   have e : Γ ⊢[PRAAx] outputField (run H N) i ≐ outputField (output H N) i := by

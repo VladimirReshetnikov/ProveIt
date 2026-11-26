@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaUpperEndpointName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul canonical_unique ofGaussian_canonical ofGaussian_represents positive_product)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianRationalNaturalScale (natScale naturalPoint natScale_congr natScale_product)
@@ -29,9 +29,6 @@ open GaussianTimeWeightedPolynomialIncrement (value)
 open GaussianEulerBetaPolynomialPrimitive (primitive)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,15 +38,10 @@ def data (z B b N : PTm n) : PTm n := multiplyData powerF constantF (powerData z
 def clock (p z B b N : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus powerF constantF (powerData z B (b*N) b) (endpointConstant z B b N)) p
 def upperSample (p z B b N : PTm n) : PTm n := ap2 nameF p (data z B b N)
-@[simp] theorem subst_endpointConstant {l : ℕ} (σ : Fin n → PTm l) (z B b N : PTm n) :
-    Syn.subst σ (endpointConstant z B b N) = endpointConstant (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [endpointConstant,GaussianBetaPrimitiveLinearStep.argument,GaussianTimeWeightedPolynomialIncrement.value]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z B b N : PTm n) :
-    Syn.subst σ (data z B b N) = data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ b) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (p z B b N : PTm n) :
-    Syn.subst σ (clock p z B b N) = clock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ b) (Syn.subst σ N) := by simp [clock]
-@[simp] theorem subst_upperSample {l : ℕ} (σ : Fin n → PTm l) (p z B b N : PTm n) :
-    Syn.subst σ (upperSample p z B b N) = upperSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ b) (Syn.subst σ N) := by simp [upperSample]
+ipra_subst endpointConstant [GaussianBetaPrimitiveLinearStep.argument, GaussianTimeWeightedPolynomialIncrement.value]
+ipra_subst data
+ipra_subst clock
+ipra_subst upperSample
 
 theorem power_source (z B b N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hb : Γ ⊢[PRAAx] le one b) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]

@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSignedPanelTailDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianPositiveRadiusFiniteSum (boundBy add_bound enlarge_radius)
@@ -23,9 +23,6 @@ open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalArithmetic (add add_value addNumerator productDenominator)
 open RationalSupMetric (numeratorOf denominatorOf)
 open PolynomialBisection (slack)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -62,11 +59,8 @@ theorem three_rearrangement (left middle right : PTm n) : Γ ⊢[PRAAx]
 
 def tailNumerator (A B C D J K : PTm n) : PTm n := (A*D+C*B)*K+J*(B*D)
 def tailDenominator (B D K : PTm n) : PTm n := B*D*K
-@[simp] theorem subst_tailNumerator {m : ℕ} (σ : Fin n → PTm m) (A B C D J K : PTm n) :
-    Syn.subst σ (tailNumerator A B C D J K) = tailNumerator (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ J) (Syn.subst σ K) := by simp [tailNumerator]
-@[simp] theorem subst_tailDenominator {m : ℕ} (σ : Fin n → PTm m) (B D K : PTm n) :
-    Syn.subst σ (tailDenominator B D K) = tailDenominator (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ K) := by simp [tailDenominator]
+ipra_subst tailNumerator
+ipra_subst tailDenominator
 
 theorem original_signed_companion_split_distance (fO fM fL fR gO gM gL gR rL rR P Q A B C D J K : PTm n)
     (hQ : Γ ⊢[PRAAx] le one Q) (hB : Γ ⊢[PRAAx] le one B)

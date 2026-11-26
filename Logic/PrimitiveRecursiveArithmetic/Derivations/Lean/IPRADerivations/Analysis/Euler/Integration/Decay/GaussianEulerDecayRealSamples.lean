@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
 import IPRADerivations.Analysis.Names.GaussianNameConjugation
 import IPRADerivations.Analysis.Gamma.GaussianGammaRealValues
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Exact reality of the original rational decay observations
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayRealSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianRationalConjugation (point point_congr point_represents)
 open GaussianRationalHorner (represents represents_congr canonical canonical_unique canonical_congr)
@@ -28,16 +27,11 @@ open ComplexLogarithmRemainder (re im normSq)
 open GaussianL1 (norm1)
 open RationalGaussianEmbedding (embed axis native)
 open GaussianGammaCanonicalExponent (constantF constant_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def observation (p a b : PTm n) : PTm n := ap2 decayF p (decayData a b)
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p a b : PTm n) :
-    Syn.subst σ (observation p a b) = observation (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [observation,decayData,GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst observation [decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
 theorem fixed_raw_imaginary_zero (q : PTm n) (h : Γ ⊢[PRAAx] point q ≐ q) : Γ ⊢[PRAAx]
     ZT.eq (im (rawGaussian q)) (ZT.ofNat zero) := by

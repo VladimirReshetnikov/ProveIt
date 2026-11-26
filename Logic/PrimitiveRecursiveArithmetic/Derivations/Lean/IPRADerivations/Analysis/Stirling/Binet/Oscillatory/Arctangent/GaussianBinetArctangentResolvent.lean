@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetArctangentResolvent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code scale oneCode normSq normSq_code eval_re_code eval_im_code)
 open GaussianLogGammaEulerHead (argument)
 open GaussianLogGammaEulerResidualDomain (native)
@@ -33,9 +33,6 @@ open GaussianRightHalfPlaneLogarithm (source)
 open GaussianRightHalfPlaneLogarithmOffset (signedImag)
 open GaussianRootAlgebra (equal_of_values re_add im_add re_mul im_mul re_neg im_neg re_scale im_scale re_one im_one)
 open GaussianSineProductImaginaryLogDerivative (axisNumerator)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,9 +56,7 @@ def average (X Y D sign A B : PTm n) : PTm n :=
     Syn.subst σ (pole s X Y D sign A B) = pole s (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
       (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) := by simp [pole,poleNumerator]
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (X Y D sign A B : PTm n) :
-    Syn.subst σ (value X Y D sign A B) = value (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D)
-      (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) := by simp [value,polynomial]
+ipra_subst value [polynomial]
 
 theorem pole_as_sum (s : Bool) (X Y D sign A B : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] qadd (argument X Y D sign) (ofGaussian (signedTimeNumerator s A) B) ≐ pole s X Y D sign A B := by

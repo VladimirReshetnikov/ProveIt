@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsCompactNameObservations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianEulerIntegrationByPartsCompactNames
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -24,10 +24,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (point_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -35,9 +31,7 @@ def rawLeft (t z R B a C E T : PTm n) : PTm n := qsub
   (qmul (ofGaussian z B) (ap2 compactF t (compactData z R B a C E T)))
   (ap2 compactF t (compactData (GaussianGammaEulerHeadShift.shifted z B) R B a C E T))
 
-@[simp] theorem subst_rawLeft {m : ℕ} (σ : Fin n → PTm m) (t z R B a C E T : PTm n) :
-    Syn.subst σ (rawLeft t z R B a C E T) = rawLeft (Syn.subst σ t) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [rawLeft]
+ipra_subst rawLeft
 
 theorem left_readback (t z R B a C E T : PTm n) (h : Γ ⊢[PRAAx] intervalSource z R B a C E T) : Γ ⊢[PRAAx]
     distanceBounded (ap2 leftF t (leftData z R B a C E T)) (rawLeft t z R B a C E T)

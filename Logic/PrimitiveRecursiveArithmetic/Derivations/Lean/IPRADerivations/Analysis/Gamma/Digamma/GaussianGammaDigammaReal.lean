@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaReal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale re im)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -33,10 +33,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingGammaLogarithm (arg source gammaData gamma_source gammaRetimedF gammaRetimedData gamma_retimed_cross log_input)
 open RationalGaussianEmbedding (axis axis_add axis_multiply axis_negative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "IF" => GaussianEulerLogarithmicImproperName.nameF
@@ -48,8 +44,7 @@ local notation "gg" => gammaRetimedData
 def nameF : PR 2 := multiplyF (axisF CF) (axisF IF)
 def data (a b : PTm n) : PTm n := multiplyData (axisF CF) (axisF IF) (reciprocalData a b) (derivativeData a b)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (data a b) = data (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst data
 
 def realSlope (t a b D : PTm n) : PTm n :=
   qmul (naturalPoint D) (qsub

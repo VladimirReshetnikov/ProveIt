@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBosePrefixQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (fixedData)
 open GaussianBinetBoseCompact (source arctangent_bound arctangent_samples tag_lower)
 open GaussianBinetBoseDenominator (reciprocalF reciprocalData reciprocal_regular)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance)
 open GaussianRationalRoundedPower (multiplication_difference)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Atan" => GaussianBinetArctangentQuadrature.nameF
@@ -45,15 +42,9 @@ def cost (D T E : PTm n) : PTm n := two*(T*D+E)+(T*D)*num 4
 def point (p N X Y D sign A B : PTm n) : PTm n :=
   qmul (ap2 Atan p (atanData X Y D sign A B)) (Literal (clock p N A B) N A B)
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (D T E : PTm n) :
-    Syn.subst σ (cost D T E) = cost (Syn.subst σ D) (Syn.subst σ T) (Syn.subst σ E) := by
-  simp [cost,two]
+ipra_subst cost [two]
 
-@[simp] theorem subst_point {m : ℕ} (σ : Fin n → PTm m) (p N X Y D sign A B : PTm n) :
-    Syn.subst σ (point p N X Y D sign A B) =
-      point (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ X) (Syn.subst σ Y)
-        (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [point,GaussianBinetBoseLiteralUniform.clock]
+ipra_subst point [GaussianBinetBoseLiteralUniform.clock]
 
 theorem point_error (p N X Y D sign A B T E : PTm n)
     (hz : Γ ⊢[PRAAx] GaussianRightHalfPlaneLogarithm.source X D sign)
@@ -86,9 +77,7 @@ def evaluatorTerm (p t z : PTm n) : PTm n :=
 
 def evaluatorF : PR 3 := PTm.toPR (evaluatorTerm (var 0) (var 1) (var 2))
 
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t z : PTm n) :
-    Syn.subst σ (evaluatorTerm p t z) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ z) := by
-  simp [evaluatorTerm]
+ipra_subst evaluatorTerm
 
 theorem evaluator_at (p N t X Y D sign : PTm n) :
     Γ ⊢[PRAAx] ap3 evaluatorF p t (pairT N (fixedData X Y D sign)) ≐

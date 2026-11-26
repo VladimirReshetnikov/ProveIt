@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedTaylorDifferenceQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_equivalent multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_to_diagonal cross_trans)
@@ -23,9 +23,6 @@ open GaussianNameReciprocal (R nameData name_fast product_one)
 open GaussianNameRingLaws (multiply_associative multiply_commutative multiply_one_left oneF one_fast)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedMultiplyRate (sampleBound leadingNumerator leadingDenominator)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "inverseF" => GaussianNameReciprocal.nameF

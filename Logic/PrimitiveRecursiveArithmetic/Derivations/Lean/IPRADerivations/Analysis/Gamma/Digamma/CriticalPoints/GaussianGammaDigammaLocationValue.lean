@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaLocationValue
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaDigammaDyadicLocation (locationF)
@@ -31,8 +31,6 @@ open GaussianNameRingLaws (zeroF zero_at zero_fast)
 open GaussianNamedGammaFirstCrossing (inverseClock positive_gamma_apart)
 open GaussianRationalHorner (qzero)
 open GaussianRationalSyntheticDivision (qmul_congr qmul_zero_left qzero_canonical)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "GF" => GaussianNamedGamma.nameF locationF

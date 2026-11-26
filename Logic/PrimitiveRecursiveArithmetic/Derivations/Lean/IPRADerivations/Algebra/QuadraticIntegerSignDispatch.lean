@@ -1,7 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerSignRecipe
 import IPRADerivations.Algebra.QuadraticIntegerEmbedding
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # The source three-query dispatch at an actual integer quadratic stage
@@ -17,16 +15,13 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticIntegerSignDispatch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates
 open QuadraticConeOrder (equal_of_values equal_first equal_second)
 open QuadraticIntegerEmbedding (integer integer_sign integer_equal integer_positive integer_isNegative integer_isZero integer_tag_classification)
 open QuadraticTowerSignRecipe (dispatch tagProduct)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.BoundedReflection
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -176,10 +171,8 @@ theorem tag_product_negative (a : ZT n) : Γ ⊢[PRAAx] tagProduct two (tag a) �
 
 def third (d x : PTm n) : PTm n := sel (eqb (tag (first x)) zero) (tag (ZT.ofNat d)) (tag (norm d x))
 def recipe (d x : PTm n) : PTm n := dispatch (tag (first x)) (tag (second x)) (third d x)
-@[simp] theorem subst_third {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (third d x) = third (Syn.subst σ d) (Syn.subst σ x) := by simp [third,sel]
-@[simp] theorem subst_recipe {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (recipe d x) = recipe (Syn.subst σ d) (Syn.subst σ x) := by simp [recipe]
+ipra_subst third [sel]
+ipra_subst recipe
 
 theorem nonzero_from_code {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) (hb : Γ ⊢[PRAAx] neg (b ≐ zero)) : Γ ⊢[PRAAx] neg (a ≐ zero) :=
   .impI (.impE hb.wk (h.wk.eqSymm.eqTrans Prf.hyp0))
@@ -338,8 +331,7 @@ theorem zero_radicand_dispatch (x : PTm n) : Γ ⊢[PRAAx] recipe zero x ≐ tag
         ((QuadraticTowerSignRecipe.tag_product_zero_right _ _ thirdZero).eqTrans ha.eqSymm)
 
 def uniformSign (d x : PTm n) : PTm n := sel (eqb d zero) (tag (first x)) (sign d x)
-@[simp] theorem subst_uniformSign {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (uniformSign d x) = uniformSign (Syn.subst σ d) (Syn.subst σ x) := by simp [uniformSign,sel]
+ipra_subst uniformSign [sel]
 theorem recipe_radicand_congr {d e : PTm n} (x : PTm n) (hd : Γ ⊢[PRAAx] d ≐ e) : Γ ⊢[PRAAx] recipe d x ≐ recipe e x := by
   ipra_congr (recipe (var 0) (var 1) : PTm 2) with [hd, .eqRefl x]
 
@@ -359,24 +351,22 @@ literal conditional third tag and the original native norm code. -/
 def output (d x : PTm n) : PTm n := pairT (recipe d x) (pairT (uniformSign d x) (pairT (third d x) (code (norm d x))))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (d x : PTm n) : PTm n := ap2 outputF d x
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (output d x) = output (Syn.subst σ d) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (d x : PTm n) :
-    Syn.subst σ (run d x) = run (Syn.subst σ d) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d x : PTm n) : Γ ⊢[PRAAx] run d x ≐ output d x := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![d,x]
 theorem returned_recipe (d x : PTm n) : Γ ⊢[PRAAx] fstT (run d x) ≐ recipe d x :=
-  (congrFst (program_at d x)).eqTrans (fst_pair _ _)
+  (program_at d x).fstE
 theorem returned_tail (d x : PTm n) : Γ ⊢[PRAAx] sndT (run d x) ≐ pairT (uniformSign d x) (pairT (third d x) (code (norm d x))) :=
-  (congrSnd (program_at d x)).eqTrans (snd_pair _ _)
+  (program_at d x).sndE
 theorem returned_uniform (d x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d x)) ≐ uniformSign d x :=
-  (congrFst (returned_tail d x)).eqTrans (fst_pair _ _)
+  (returned_tail d x).fstE
 theorem returned_pair (d x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d x)) ≐ pairT (third d x) (code (norm d x)) :=
-  (congrSnd (returned_tail d x)).eqTrans (snd_pair _ _)
+  (returned_tail d x).sndE
 theorem returned_third (d x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d x))) ≐ third d x :=
-  (congrFst (returned_pair d x)).eqTrans (fst_pair _ _)
+  (returned_pair d x).fstE
 theorem returned_norm (d x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d x))) ≐ code (norm d x) :=
-  (congrSnd (returned_pair d x)).eqTrans (snd_pair _ _)
+  (returned_pair d x).sndE
 theorem returned_equal (d x : PTm n) : Γ ⊢[PRAAx] fstT (run d x) ≐ fstT (sndT (run d x)) :=
   (returned_recipe d x).eqTrans ((uniform_dispatch d x).eqTrans (returned_uniform d x).eqSymm)
 theorem returned_positive_sign (d x : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Annihilators.GaussianAnnihilatorPolynomial
 import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialConstantInjectionGaussianEmbedding
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original rational weighted annihilator polynomial
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalAnnihilatorPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianWeightedMonomialBasis (count keep label position)
 open GaussianAnnihilatorPolynomial (data fields subst_fields fields_at)
 open GaussianPolynomialMultiplicationMatrix (slot)
@@ -26,10 +25,6 @@ open RationalPolynomialMonicCompanionGaussianEmbedding (rowsEmbedded)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open GaussianRationalFiberVandermonde (table table_length table_row_length table_lookup)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,13 +36,9 @@ def body : PTm 3 := coefficient (fields (var 2) 0) (fields (var 2) 1) (fields (v
 
 def polynomial (a m e L : PTm n) : PTm n := table body m (succ L) (data a m e L)
 
-@[simp] theorem subst_coefficient {q : ℕ} (σ : Fin n → PTm q) (a m e L i j : PTm n) :
-    Syn.subst σ (coefficient a m e L i j) = coefficient (Syn.subst σ a) (Syn.subst σ m) (Syn.subst σ e)
-      (Syn.subst σ L) (Syn.subst σ i) (Syn.subst σ j) := by simp [coefficient,RationalArithmetic.recode]
+ipra_subst coefficient [RationalArithmetic.recode]
 
-@[simp] theorem subst_polynomial {q : ℕ} (σ : Fin n → PTm q) (a m e L : PTm n) :
-    Syn.subst σ (polynomial a m e L) = polynomial (Syn.subst σ a) (Syn.subst σ m) (Syn.subst σ e) (Syn.subst σ L) := by
-  simp [polynomial]
+ipra_subst polynomial
 
 private theorem coefficient_congr {a a' m m' e e' L L' i i' j j' : PTm n}
     (ha : Γ ⊢[PRAAx] a ≐ a') (hm : Γ ⊢[PRAAx] m ≐ m') (he : Γ ⊢[PRAAx] e ≐ e')

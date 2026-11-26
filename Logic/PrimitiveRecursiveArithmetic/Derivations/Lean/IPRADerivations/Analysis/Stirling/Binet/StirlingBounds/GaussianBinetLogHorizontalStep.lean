@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLogHorizontalStep
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq normSq_one normSq_scale oneCode scale)
 open GaussianBinetReciprocalRows (same_imaginary_shift)
@@ -32,16 +32,12 @@ open GaussianRightHalfPlaneLogarithm (source nameF data)
 open GaussianRightHalfPlaneLogarithmIncrementMargin (admitted smallStep)
 open GaussianRightHalfPlaneLogarithmRelativeStep (relative relative_binding)
 open GaussianRootAlgebra (equal_symm normSq_equal sub)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def step (H D : PTm n) : PTm n := ofGaussian (scale H oneCode) D
 
-@[simp] theorem subst_step {m : ℕ} (σ : Fin n → PTm m) (H D : PTm n) :
-    Syn.subst σ (step H D) = step (Syn.subst σ H) (Syn.subst σ D) := by simp [step]
+ipra_subst step
 
 theorem relative_horizontal (A B D neg H : PTm n) (h : Γ ⊢[PRAAx] source A D neg) : Γ ⊢[PRAAx]
     relative (native A B neg) (native (A+H) B neg) ≐ qmul (step H D) (reciprocal (argument A B D neg)) := by

@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorGridComparison
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNativeDerivativeQuotientRate
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Small-step convergence of the literal finite Barnes forward differences
@@ -17,7 +16,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorGridLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (bounded bounded_mono normSq)
 open GaussianBarnesCanonicalFiniteCentralExponential (finiteNameF finiteData)
@@ -40,10 +39,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qmul qzero)
 open GaussianRationalLowerBounds (lower lower_from_representation)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

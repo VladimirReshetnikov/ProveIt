@@ -1,5 +1,4 @@
 import IPRADerivations.Algebra.QuadraticRationalCongruence
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Changing a positive rational radicand to an integer radicand
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalRadicand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open RationalSupMetric (numeratorOf denominatorOf)
 open RationalArgmin (rationalEq)
@@ -25,9 +24,6 @@ open QuadraticRationalClearing (clear denominator represents sameCoefficients cl
 open QuadraticPositiveScaling (scale scale_first scale_second)
 open QuadraticConeOrder (add_first add_second)
 open QuadraticRationalPairArithmetic (add negative scalar_code_congr scalar_value_congr scalar_add_same)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,18 +42,13 @@ def multiply (d x y : PTm n) : PTm n := pairT
     (RationalArithmetic.multiply d (RationalArithmetic.multiply (sndT x) (sndT y))))
   (RationalArithmetic.add (RationalArithmetic.multiply (fstT x) (sndT y)) (RationalArithmetic.multiply (sndT x) (fstT y)))
 
-@[simp] theorem subst_positiveNumerator {k : ℕ} (σ : Fin n → PTm k) (d : PTm n) :
-    Syn.subst σ (positiveNumerator d) = positiveNumerator (Syn.subst σ d) := by simp [positiveNumerator]
+ipra_subst positiveNumerator
 
-@[simp] theorem subst_integerRadicand {k : ℕ} (σ : Fin n → PTm k) (d : PTm n) :
-    Syn.subst σ (integerRadicand d) = integerRadicand (Syn.subst σ d) := by simp [integerRadicand]
+ipra_subst integerRadicand
 
-@[simp] theorem subst_rescale {k : ℕ} (σ : Fin n → PTm k) (q x : PTm n) :
-    Syn.subst σ (rescale q x) = rescale (Syn.subst σ q) (Syn.subst σ x) := by
-  simp [rescale,divideBy,reciprocalNatural,one]
+ipra_subst rescale [divideBy, reciprocalNatural, one]
 
-@[simp] theorem subst_multiply {k : ℕ} (σ : Fin n → PTm k) (d x y : PTm n) :
-    Syn.subst σ (multiply d x y) = multiply (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [multiply]
+ipra_subst multiply
 
 theorem numerator_value (d : PTm n) (h : Γ ⊢[PRAAx] isPositive d) :
     ZT.toZ Γ (numeratorOf d) = 𝔞(positiveNumerator d) := by

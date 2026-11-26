@@ -23,11 +23,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.HalfContractionTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,15 +37,11 @@ abbrev halfPrem (d : PTm 2) (x : PTm n) : Fm PTm n :=
 theorem halving (d : PTm 2) {x : PTm n} (hs : Γ ⊢[PRAAx] halfPrem d x) (i : PTm n) :
     Γ ⊢[PRAAx] le (pw two i * inst2 d i x) (inst2 d zero x) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (pw two (var 0) * inst2 d (var 0) (Syn.shift x)) (inst2 d zero (Syn.shift x))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have p0 := natEq (pw_zero (Γ := Γ) two)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_inst2]
+    · have p0 := natEq (pw_zero (Γ := Γ) two)
       ipra_le 0 using
         rw [p0]; ring
-    · simp only [subst_le, PTm.subst_mul, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let x' := Syn.shift x
+    · let x' := Syn.shift x
       let Δ := le (pw two (var 0) * inst2 d (var 0) x') (inst2 d zero x') :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le (pw two (var 0) * inst2 d (var 0) x') (inst2 d zero x') := Prf.hyp0
       have hk : Δ ⊢[PRAAx] le (two * inst2 d (succ (var 0)) x') (inst2 d (var 0) x') := hs.allOpen.wk
@@ -67,14 +59,11 @@ theorem antitone_le (u : PTm 2) {x m k : PTm n}
     (hmk : Γ ⊢[PRAAx] le m k) : Γ ⊢[PRAAx] le (inst2 u k x) (inst2 u m x) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (Syn.shift m) (var 0) ⟶
       le (inst2 u (var 0) (Syn.shift x)) (inst2 u (Syn.shift m) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_inst2]
+    · refine .impI ?_
       have e : (le m zero :: Γ) ⊢[PRAAx] m ≐ zero := le_antisymm Prf.hyp0 (zero_le _)
       exact le_congr (.eqRefl _) (congrInst2 u e.eqSymm (.eqRefl _)) (le_refl _)
-    · simp only [Fm.subst_imp, subst_le, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       let m' := Syn.shift m
       let x' := Syn.shift x
       let IH : Fm PTm (n + 1) := le m' (var 0) ⟶ le (inst2 u (var 0) x') (inst2 u m' x')

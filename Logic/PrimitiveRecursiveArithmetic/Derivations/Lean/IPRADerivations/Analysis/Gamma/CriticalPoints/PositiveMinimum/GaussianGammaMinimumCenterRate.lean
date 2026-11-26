@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumCenterRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaDigammaNative (derivativeData)
@@ -34,9 +34,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingGammaLogarithm
   (gammaData gamma_regular gammaRetimedF gammaRetimedData gamma_retimed_cross gammaLogMargin
     logGammaF logGammaData log_input)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "IF" => GaussianEulerLogarithmicImproperName.nameF
@@ -44,9 +41,7 @@ local notation "QF" => GaussianNamedDifferenceQuotient.nameF gammaF gammaF
 
 def rateCost (M C : PTm n) : PTm n := gammaLogMargin*(M*(one+C))
 
-@[simp] theorem subst_rateCost {k : ℕ} (σ : Fin n → PTm k) (M C : PTm n) :
-    Syn.subst σ (rateCost M C) = rateCost (Syn.subst σ M) (Syn.subst σ C) := by
-  simp [rateCost, one]
+ipra_subst rateCost [one]
 
 private theorem compose_at (F G H : PR 2) (x y z C N t : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (h1 : Γ ⊢[PRAAx] independentRate F G x y one N)

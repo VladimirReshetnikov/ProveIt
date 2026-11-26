@@ -14,7 +14,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseDenominator (reciprocalF reciprocalData reciprocal_regular subst_reciprocalData)
 open GaussianBinetBoseSeries (prefixValue partial_error)
 open GaussianBinetBoseSeriesRows (rowClock)
@@ -24,10 +24,6 @@ open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -40,9 +36,7 @@ def rawSample (p A B : PTm n) : PTm n :=
   GaussianBinetBoseLiteralPrefix.value (late p A B) (cutoff p B) A B
 def rawF : PR 2 := PTm.toPR (rawSample (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2)
 
-@[simp] theorem subst_rawSample {m : ℕ} (σ : Fin n → PTm m) (p A B : PTm n) :
-    Syn.subst σ (rawSample p A B) = rawSample (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [rawSample,late,cutoff]
+ipra_subst rawSample [late, cutoff]
 
 theorem raw_at (p A B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (pairT A B) ≐ rawSample p A B := by
   let x := pairT A B
@@ -136,8 +130,7 @@ abbrev nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def data (A B : PTm n) : PTm n := GaussianFastValueCut.nameData (num 5) (pairT A B)
 def clock (p : PTm n) : PTm n := GaussianFastValueCut.exponent (num 5) p
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (data A B) = data (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst data
 
 theorem sample_at (p A B : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data A B) ≐ rawSample (clock p) A B :=
   (GaussianFastValueCut.name_at rawF (num 5) (pairT A B) p).eqTrans

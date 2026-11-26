@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFixedCoefficientVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalL1 (qL1)
@@ -34,9 +34,6 @@ open RationalArgmin (rationalLE)
 open RationalArithmetic (multiply)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,24 +46,15 @@ def headBudget (R : PTm n) : PTm n := pw two (two*R)
 def exponentialFactor (R e : PTm n) : PTm n := integralBudget R e*(two*succ (degree e))
 def rowFactor (R e : PTm n) : PTm n := headBudget R*exponentialFactor R e
 def modulus (R e : PTm n) : PTm n := succ e*rowFactor R e
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (q R e : PTm n) :
-    Syn.subst σ (input q R e) = input (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ e) := by simp [input]
-@[simp] theorem subst_exponential {m : ℕ} (σ : Fin n → PTm m) (q R e : PTm n) :
-    Syn.subst σ (exponential q R e) = exponential (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ e) := by simp [exponential]
-@[simp] theorem subst_inputEnvelope {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (inputEnvelope R) = inputEnvelope (Syn.subst σ R) := by simp [inputEnvelope]
-@[simp] theorem subst_factorialBudget {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    Syn.subst σ (factorialBudget R e) = factorialBudget (Syn.subst σ R) (Syn.subst σ e) := by simp [factorialBudget]
-@[simp] theorem subst_integralBudget {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    Syn.subst σ (integralBudget R e) = integralBudget (Syn.subst σ R) (Syn.subst σ e) := by simp [integralBudget,numeratorOf]
-@[simp] theorem subst_headBudget {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (headBudget R) = headBudget (Syn.subst σ R) := by simp [headBudget]
-@[simp] theorem subst_exponentialFactor {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    Syn.subst σ (exponentialFactor R e) = exponentialFactor (Syn.subst σ R) (Syn.subst σ e) := by simp [exponentialFactor]
-@[simp] theorem subst_rowFactor {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    Syn.subst σ (rowFactor R e) = rowFactor (Syn.subst σ R) (Syn.subst σ e) := by simp [rowFactor]
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (R e : PTm n) :
-    Syn.subst σ (modulus R e) = modulus (Syn.subst σ R) (Syn.subst σ e) := by simp [modulus]
+ipra_subst input
+ipra_subst exponential
+ipra_subst inputEnvelope
+ipra_subst factorialBudget
+ipra_subst integralBudget [numeratorOf]
+ipra_subst headBudget
+ipra_subst exponentialFactor
+ipra_subst rowFactor
+ipra_subst modulus
 
 theorem rational_integral_upper (a : PTm n) : Γ ⊢[PRAAx] rationalLE a (natCode (numeratorOf a).pos) := by
   apply RationalArithmetic.order_of_representations _ _ _ _ _ _ (RationalRepresentations.represents_self a)

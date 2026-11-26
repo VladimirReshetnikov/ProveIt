@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNameEquivalence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded qsub)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (pointCN point_cn_at)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialValueName (programZero program_zero_at)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive 
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder
   (distance_congr distance_symmetric distance_radius_mono distance_two_errors)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,13 +37,9 @@ def crossEquivalent (f g : PR 2) (x y : PTm n) : Fm PTm n := .all (.all
     (ap2 g (var 0) (Syn.shift (Syn.shift y)))
     (unit (var 1)+unit (var 0)) (unit (var 1)*unit (var 0))))
 
-@[simp] theorem subst_diagonalEquivalent {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    (diagonalEquivalent f g x y).subst σ = diagonalEquivalent f g (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [diagonalEquivalent,Syn.subst_shift,Syn.shift_subst]
+ipra_subst diagonalEquivalent [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_crossEquivalent {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y : PTm n) :
-    (crossEquivalent f g x y).subst σ = crossEquivalent f g (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [crossEquivalent,Syn.subst_shift,Syn.shift_subst]
+ipra_subst crossEquivalent [Syn.subst_shift, Syn.shift_subst]
 
 theorem diagonal_at (f g : PR 2) (x y m : PTm n)
     (h : Γ ⊢[PRAAx] diagonalEquivalent f g x y) : Γ ⊢[PRAAx]

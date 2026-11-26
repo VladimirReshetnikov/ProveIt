@@ -1,7 +1,5 @@
 import IPRADerivations.Probability.PoissonShift
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Pascal recurrence of the binomial distribution function
@@ -30,15 +28,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.BinomialCdf
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (pascal_at binom_zero')
 open LeanProofs.IPRA.Probability.PoissonShift (monus_pred)
 open LeanProofs.IPRA.Foundations.ContractProducts (shift_fstT shift_sndT)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -76,8 +70,6 @@ theorem cdf_base (x : PTm n) : Γ ⊢[PRAAx] CInv zero x := by
   rw [inst2_cdB'] at s₂
   have e₁ := natEq s₁; have e₂ := natEq s₂
   have z := natEq (sum_zero (Γ := Γ) cdB x); have z' := natEq (sum_zero (Γ := Γ) cdB' x)
-  have c₀ := natEq (binom_zero' (Γ := Γ) (fstT x))
-  have c₀' := natEq (binom_zero' (Γ := Γ) (succ (fstT x)))
   have a₁ := natEq (pw_succ (Γ := Γ) (fstT (sndT x)) zero)
   have x₂ := natEq ((congrAp2 powF (monus_zero (Γ := Γ) (succ (fstT x))) (.eqRefl (sndT (sndT x)))).eqTrans
     ((pw_succ (sndT (sndT x)) (fstT x)).eqTrans
@@ -89,7 +81,7 @@ theorem cdf_base (x : PTm n) : Γ ⊢[PRAAx] CInv zero x := by
     𝔟(binom (fstT x) zero) * 𝔟(pw (sndT (sndT x)) (monus (fstT x) zero)) * a₁ -
     𝔟(binom (succ (fstT x)) zero) * 𝔟(pw (fstT (sndT x)) zero) * x₂ +
     𝔟(sndT (sndT x)) * 𝔟(pw (fstT (sndT x)) zero) * 𝔟(pw (sndT (sndT x)) (monus (fstT x) zero)) *
-      (c₀ - c₀')
+      (natEq (binom_zero' (Γ := Γ) (fstT x)) - natEq (binom_zero' (Γ := Γ) (succ (fstT x))))
 
 theorem cdf_step {k x : PTm n} (hk : Γ ⊢[PRAAx] lt k (fstT x)) (ih : Γ ⊢[PRAAx] CInv k x) :
     Γ ⊢[PRAAx] CInv (succ k) x := by

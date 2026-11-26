@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmDyadicTail
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual compact-interval Gaussian quadrature
@@ -17,17 +16,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactRiemannName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open ComplexLogarithmRemainder (scale oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -43,14 +38,10 @@ def inside (a C E t : PTm n) : Fm PTm n := le one (fstT t) ⋏ (le one (sndT t) 
   (le (a*sndT t) (E*fstT t) ⋏ le (E*fstT t) ((a+C)*sndT t)))
 def nameData (t x : PTm n) : PTm n := pairT t x
 def evaluatorName (F : PR 3) : PR 2 := PTm.toPR (ap3 F (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2)
-@[simp] theorem subst_grid {l : ℕ} (σ : Fin n → PTm l) (i N a C E : PTm n) :
-    Syn.subst σ (grid i N a C E) = grid (Syn.subst σ i) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [grid]
-@[simp] theorem subst_value {l : ℕ} (σ : Fin n → PTm l) (t : PTm n) :
-    Syn.subst σ (value t) = value (Syn.subst σ t) := by simp [value]
-@[simp] theorem subst_inside {l : ℕ} (σ : Fin n → PTm l) (a C E t : PTm n) :
-    (inside a C E t).subst σ = inside (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ t) := by simp [inside]
-@[simp] theorem subst_nameData {l : ℕ} (σ : Fin n → PTm l) (t x : PTm n) :
-    Syn.subst σ (nameData t x) = nameData (Syn.subst σ t) (Syn.subst σ x) := by simp [nameData]
+ipra_subst grid
+ipra_subst value
+ipra_subst inside
+ipra_subst nameData
 
 theorem evaluator_at (F : PR 3) (p t x : PTm n) : Γ ⊢[PRAAx]
     ap2 (evaluatorName F) p (nameData t x) ≐ ap3 F p t x := by
@@ -63,17 +54,13 @@ theorem evaluator_at (F : PR 3) (p t x : PTm n) : Γ ⊢[PRAAx]
 def localBody (F : PR 3) (a C E L x t u A D : PTm n) : Fm PTm n :=
   le one D ⟶ inside a C E t ⟶ inside a C E u ⟶ distanceBounded (value t) (value u) A D ⟶
     independentRate (evaluatorName F) (evaluatorName F) (nameData t x) (nameData u x) (L*A) D
-@[simp] theorem subst_localBody {l : ℕ} (σ : Fin n → PTm l) (F : PR 3) (a C E L x t u A D : PTm n) :
-    (localBody F a C E L x t u A D).subst σ = localBody F (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ L) (Syn.subst σ x) (Syn.subst σ t) (Syn.subst σ u) (Syn.subst σ A) (Syn.subst σ D) := by simp [localBody]
+ipra_subst localBody
 
 def sampledModulus (F : PR 3) (a C E L x : PTm n) : Fm PTm n := .all (.all (.all (.all
   (localBody F (Syn.shift (Syn.shift (Syn.shift (Syn.shift a)))) (Syn.shift (Syn.shift (Syn.shift (Syn.shift C))))
     (Syn.shift (Syn.shift (Syn.shift (Syn.shift E)))) (Syn.shift (Syn.shift (Syn.shift (Syn.shift L))))
     (Syn.shift (Syn.shift (Syn.shift (Syn.shift x)))) (var 3) (var 2) (var 1) (var 0)))))
-@[simp] theorem subst_sampledModulus {l : ℕ} (σ : Fin n → PTm l) (F : PR 3) (a C E L x : PTm n) :
-    (sampledModulus F a C E L x).subst σ = sampledModulus F (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ x) := by simp [sampledModulus,Syn.subst_shift,Syn.shift_subst,Syn.up]
+ipra_subst sampledModulus [Syn.subst_shift, Syn.shift_subst, Syn.up]
 
 theorem sampled_modulus_at (F : PR 3) (a C E L x p q t u A D : PTm n)
     (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) (hD : Γ ⊢[PRAAx] le one D)
@@ -169,32 +156,30 @@ def field2 (d : PTm n) : PTm n := fstT (sndT (sndT d))
 def field3 (d : PTm n) : PTm n := fstT (sndT (sndT (sndT d)))
 def field4 (d : PTm n) : PTm n := fstT (sndT (sndT (sndT (sndT d))))
 def field5 (d : PTm n) : PTm n := sndT (sndT (sndT (sndT (sndT d))))
-@[simp] theorem subst_sampleData {l : ℕ} (σ : Fin n → PTm l) (p N a C E x : PTm n) :
-    Syn.subst σ (sampleData p N a C E x) = sampleData (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by simp [sampleData]
-@[simp] theorem subst_field0 {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) : Syn.subst σ (field0 d) = field0 (Syn.subst σ d) := by simp [field0]
-@[simp] theorem subst_field1 {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) : Syn.subst σ (field1 d) = field1 (Syn.subst σ d) := by simp [field1]
-@[simp] theorem subst_field2 {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) : Syn.subst σ (field2 d) = field2 (Syn.subst σ d) := by simp [field2]
-@[simp] theorem subst_field3 {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) : Syn.subst σ (field3 d) = field3 (Syn.subst σ d) := by simp [field3]
-@[simp] theorem subst_field4 {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) : Syn.subst σ (field4 d) = field4 (Syn.subst σ d) := by simp [field4]
-@[simp] theorem subst_field5 {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) : Syn.subst σ (field5 d) = field5 (Syn.subst σ d) := by simp [field5]
+ipra_subst sampleData
+ipra_subst field0
+ipra_subst field1
+ipra_subst field2
+ipra_subst field3
+ipra_subst field4
+ipra_subst field5
 theorem field0_at (p N a C E x : PTm n) : Γ ⊢[PRAAx] field0 (sampleData p N a C E x) ≐ p := fst_pair _ _
 theorem field1_at (p N a C E x : PTm n) : Γ ⊢[PRAAx] field1 (sampleData p N a C E x) ≐ N :=
-  (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+  (snd_pair _ _).fstE
 theorem field2_at (p N a C E x : PTm n) : Γ ⊢[PRAAx] field2 (sampleData p N a C E x) ≐ a :=
-  (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE
 
 theorem field3_at (p N a C E x : PTm n) : Γ ⊢[PRAAx] field3 (sampleData p N a C E x) ≐ C :=
   (congrFst (congrSnd (congrSnd (snd_pair _ _)))).eqTrans
-    ((congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
+    ((congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE)
 theorem field4_at (p N a C E x : PTm n) : Γ ⊢[PRAAx] field4 (sampleData p N a C E x) ≐ E :=
   (congrFst (congrSnd (congrSnd (congrSnd (snd_pair _ _))))).eqTrans
     ((congrFst (congrSnd (congrSnd (snd_pair _ _)))).eqTrans
-      ((congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))))
+      ((congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE))
 theorem field5_at (p N a C E x : PTm n) : Γ ⊢[PRAAx] field5 (sampleData p N a C E x) ≐ x :=
   (congrSnd (congrSnd (congrSnd (congrSnd (snd_pair _ _))))).eqTrans
     ((congrSnd (congrSnd (congrSnd (snd_pair _ _)))).eqTrans
-      ((congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))))
+      ((congrSnd (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).sndE))
 
 def sampleBody (F : PR 3) : PTm 2 := ap3 F (field0 (var 1))
   (grid (var 0) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) (field4 (var 1))) (field5 (var 1))
@@ -212,9 +197,7 @@ theorem sample_body_at (F : PR 3) (i p N a C E x : PTm n) : Γ ⊢[PRAAx]
 
 def quadrature (F : PR 3) (p N a C E x : PTm n) : PTm n :=
   GaussianRationalRiemannRefinement.leftSum (sampleBody F) N (sampleData p N a C E x) C E
-@[simp] theorem subst_quadrature {l : ℕ} (σ : Fin n → PTm l) (F : PR 3) (p N a C E x : PTm n) :
-    Syn.subst σ (quadrature F p N a C E x) = quadrature F (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ x) := by simp [quadrature]
+ipra_subst quadrature
 
 
 theorem refinement_cell (F : PR 3) (i p q N R a C E L x : PTm n)
@@ -256,13 +239,9 @@ theorem quadrature_refinement (F : PR 3) (p q N R a C E L x : PTm n)
 def mesh (p L T : PTm n) : PTm n := unit (p+num 6)*(one+L*T*T)
 def precision (p T : PTm n) : PTm n := p+T+num 6
 def sample (F : PR 3) (p a C E L T x : PTm n) : PTm n := quadrature F (precision p T) (mesh p L T) a C E x
-@[simp] theorem subst_mesh {l : ℕ} (σ : Fin n → PTm l) (p L T : PTm n) :
-    Syn.subst σ (mesh p L T) = mesh (Syn.subst σ p) (Syn.subst σ L) (Syn.subst σ T) := by simp [mesh]
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (p T : PTm n) :
-    Syn.subst σ (precision p T) = precision (Syn.subst σ p) (Syn.subst σ T) := by simp [precision]
-@[simp] theorem subst_sample {l : ℕ} (σ : Fin n → PTm l) (F : PR 3) (p a C E L T x : PTm n) :
-    Syn.subst σ (sample F p a C E L T x) = sample F (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [sample]
+ipra_subst mesh
+ipra_subst precision
+ipra_subst sample
 theorem mesh_positive (p L T : PTm n) : Γ ⊢[PRAAx] le one (mesh p L T) :=
   positive_product _ _ (unit_positive _) (le_add_right one (L*T*T))
 theorem mesh_refines (p q L T : PTm n) (hpq : Γ ⊢[PRAAx] le p q) : Γ ⊢[PRAAx]
@@ -367,12 +346,8 @@ def nameF (F : PR 3) : PR 2 := PTm.toPR
   (sample F (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) (field4 (var 1)) (field5 (var 1)) : PTm 2)
 def input (F : PR 3) (a C E L T x : PTm n) : Fm PTm n :=
   le one a ⋏ (le one E ⋏ (le C (E*T) ⋏ sampledModulus F a C E L x))
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (a C E L T x : PTm n) :
-    Syn.subst σ (data a C E L T x) = data (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (F : PR 3) (a C E L T x : PTm n) :
-    (input F a C E L T x).subst σ = input F (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [input]
+ipra_subst data
+ipra_subst input
 
 theorem name_at (F : PR 3) (p a C E L T x : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF F) p (data a C E L T x) ≐ sample F p a C E L T x := by
@@ -414,9 +389,7 @@ def output (F : PR 3) (p a C E L T x : PTm n) : PTm n :=
   pairT (ap2 (nameF F) p (data a C E L T x)) (pairT (mesh p L T) (precision p T))
 def outputF (F : PR 3) : PR 7 := PTm.toPR (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (F : PR 3) (p a C E L T x : PTm n) : PTm n := PTm.app (outputF F) ![p,a,C,E,L,T,x]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (F : PR 3) (p a C E L T x : PTm n) :
-    Syn.subst σ (output F p a C E L T x) = output F (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [output]
+ipra_subst output
 theorem program_at (F : PR 3) (p a C E L T x : PTm n) : Γ ⊢[PRAAx] run F p a C E L T x ≐ output F p a C E L T x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![p,a,C,E,L,T,x]
 theorem returned_sample (F : PR 3) (p a C E L T x : PTm n) : Γ ⊢[PRAAx]

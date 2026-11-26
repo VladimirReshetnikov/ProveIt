@@ -14,15 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalBalance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd represents canonical_unique represents_congr positive_product qadd_represents)
 open GaussianRationalMetric (qsub qnegative qsub_represents qnegative_represents distanceBounded)
 open GaussianRationalSyntheticDivision (rescale_to)
 open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_symmetric)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumFreezeOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerVerticalProjection (projected_coordinate)
 open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
 open GaussianGammaMinimumFreeze (nameF data realF retimeF retimeData log_input name_regular)
@@ -28,9 +28,6 @@ open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingGammaLogarithm (gammaMargin gammaLogMargin)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_transport)
 open RationalValueBounds (upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianNamedGamma.nameF

@@ -17,7 +17,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq oneCode scale)
 open GaussianBinetKernelPi (sample sample_fraction sample_margins sample_bound sample_distance denominator_positive)
@@ -39,10 +39,6 @@ open GaussianRationalReciprocal
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianStirlingConstant (piNumerator piDenominator)
 open RationalArgmin (rationalLE)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -61,10 +57,7 @@ def nativeDen (B v : PTm n) : PTm n := (B*B)*(v*v)
 def value (p i A B : PTm n) : PTm n :=
   qmul (fraction two one) (reciprocal (denominator A B i (sample p)))
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p i A B : PTm n) :
-    Syn.subst σ (value p i A B) =
-      value (Syn.subst σ p) (Syn.subst σ i) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [value, denominator, weight, one, two]
+ipra_subst value [denominator, weight, one, two]
 
 private theorem denominator_fraction (p i A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] denominator A B i (sample p) ≐
@@ -196,11 +189,9 @@ def rowBody : PTm 2 := pairT (succ (var 0)) (var 1)
 def rowF : PR 2 := PTm.toPR
   (value (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_inputData {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (inputData A B) = inputData (Syn.subst σ A) (Syn.subst σ B) := by simp [inputData]
+ipra_subst inputData
 
-@[simp] theorem subst_rowData {m : ℕ} (σ : Fin n → PTm m) (i A B : PTm n) :
-    Syn.subst σ (rowData i A B) = rowData (Syn.subst σ i) (Syn.subst σ A) (Syn.subst σ B) := by simp [rowData]
+ipra_subst rowData
 
 theorem row_at (i A B : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (inputData A B) ≐ rowData i A B := by
   simpa [rowBody, rowData, inst2] using (Prf.eqRefl (rowData i A B) : Γ ⊢[PRAAx] _)
@@ -277,9 +268,7 @@ theorem row_majorized (p i A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
 
 def lowerDenominator (T i : PTm n) : PTm n := T*T+num 100*(succ i*succ i)
 
-@[simp] theorem subst_lowerDenominator {m : ℕ} (σ : Fin n → PTm m) (T i : PTm n) :
-    Syn.subst σ (lowerDenominator T i) = lowerDenominator (Syn.subst σ T) (Syn.subst σ i) := by
-  simp [lowerDenominator]
+ipra_subst lowerDenominator
 
 theorem lower_denominator_positive (T i : PTm n) :
     Γ ⊢[PRAAx] le one (lowerDenominator T i) :=

@@ -21,16 +21,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBalancedRadius
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit unit_positive coefficient nonconstant)
 open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusHeight (E)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq)
 open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,16 +40,11 @@ def radius (C N : PTm n) : PTm n := fraction (radiusNumerator C N) (radiusDenomi
 def term (C N i : PTm n) : PTm n :=
   GaussianBalancedRadiusZero.term C N (radiusNumerator C N) (radiusDenominator C N) i
 
-@[simp] theorem subst_inputContract {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (inputContract C N).subst σ = inputContract (Syn.subst σ C) (Syn.subst σ N) := by simp [inputContract]
-@[simp] theorem subst_radiusNumerator {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (radiusNumerator C N) = radiusNumerator (Syn.subst σ C) (Syn.subst σ N) := by simp [radiusNumerator]
-@[simp] theorem subst_radiusDenominator {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (radiusDenominator C N) = radiusDenominator (Syn.subst σ C) (Syn.subst σ N) := by simp [radiusDenominator]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (radius C N) = radius (Syn.subst σ C) (Syn.subst σ N) := by simp [radius]
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (C N i : PTm n) :
-    Syn.subst σ (term C N i) = term (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ i) := by simp [term]
+ipra_subst inputContract
+ipra_subst radiusNumerator
+ipra_subst radiusDenominator
+ipra_subst radius
+ipra_subst term
 
 theorem denominator_positive (C N : PTm n) : Γ ⊢[PRAAx] le one (radiusDenominator C N) := unit_positive _
 
@@ -115,9 +107,7 @@ theorem coefficient_bound (C N i : PTm n) (h : Γ ⊢[PRAAx] inputContract C N)
 def allCoefficients (C N : PTm n) : Fm PTm n := .all
   (le one (var 0) ⟶ le (var 0) (Syn.shift N) ⟶
     rationalLE (term (Syn.shift C) (Syn.shift N) (var 0)) (qnormSq (coefficient (Syn.shift C) (Syn.shift N) zero)))
-@[simp] theorem subst_allCoefficients {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (allCoefficients C N).subst σ = allCoefficients (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [allCoefficients,Syn.subst_shift,Syn.shift_subst]
+ipra_subst allCoefficients [Syn.subst_shift, Syn.shift_subst]
 
 theorem all_coefficient_bounds (C N : PTm n) (h : Γ ⊢[PRAAx] inputContract C N) : Γ ⊢[PRAAx] allCoefficients C N := by
   refine .allI (.impI (.impI ?_))
@@ -131,8 +121,7 @@ def balancedBranch (C N : PTm n) : Fm PTm n :=
     neg (rationalLE (RationalArithmetic.multiply (fraction (pw (two*two) N) one)
       (term C N (GaussianBalancedRadiusSearch.witness C N))) (qnormSq (coefficient C N zero)))
 
-@[simp] theorem subst_balancedBranch {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (balancedBranch C N).subst σ = balancedBranch (Syn.subst σ C) (Syn.subst σ N) := by simp [balancedBranch]
+ipra_subst balancedBranch
 
 theorem positive_balanced_branch (C N : PTm n) (h : Γ ⊢[PRAAx] inputContract C N)
     (h0 : Γ ⊢[PRAAx] le one (GaussianBalancedRadiusSyntax.numerator C N zero)) :
@@ -155,8 +144,7 @@ def certificate (C N : PTm n) : Fm PTm n := RationalNormalForm.wellFormed (radiu
   ((GaussianBalancedRadiusSyntax.numerator C N zero ≐ zero ⟶ radius C N ≐ fraction zero one) ⋏
    (le one (GaussianBalancedRadiusSyntax.numerator C N zero) ⟶ balancedBranch C N)))))
 
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    (certificate C N).subst σ = certificate (Syn.subst σ C) (Syn.subst σ N) := by simp [certificate]
+ipra_subst certificate
 
 theorem balanced_radius (C N : PTm n) (h : Γ ⊢[PRAAx] inputContract C N) : Γ ⊢[PRAAx] certificate C N :=
   .andI (radius_canonical C N) (.andI (radius_nonnegative C N) (.andI (radius_represents C N)
@@ -167,34 +155,33 @@ def output (C N : PTm n) : PTm n := pairT (radius C N) (pairT (radiusNumerator C
   (pairT (radiusDenominator C N) (pairT (GaussianBalancedRadiusSearch.radiusIndex C N)
     (pairT (GaussianBalancedRadiusSearch.witness C N) (E C N)))))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (output C N) = output (Syn.subst σ C) (Syn.subst σ N) := by simp [output]
+ipra_subst output
 
 theorem program_at (C N : PTm n) : Γ ⊢[PRAAx] ap2 outputF C N ≐ output C N := by
   simpa [outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![C,N]
 
 theorem returned_radius (C N : PTm n) : Γ ⊢[PRAAx] fstT (ap2 outputF C N) ≐ radius C N :=
-  (congrFst (program_at C N)).eqTrans (fst_pair _ _)
+  (program_at C N).fstE
 
 theorem returned_numerator (C N : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (ap2 outputF C N)) ≐ radiusNumerator C N :=
-  (congrFst ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.fstE
 
 theorem returned_denominator (C N : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (ap2 outputF C N))) ≐ radiusDenominator C N :=
-  (congrFst ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.fstE
 
 theorem returned_index (C N : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (ap2 outputF C N)))) ≐ GaussianBalancedRadiusSearch.radiusIndex C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.fstE
 
 theorem returned_witness (C N : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (sndT (ap2 outputF C N))))) ≐ GaussianBalancedRadiusSearch.witness C N :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE.fstE
 
 theorem returned_exponent (C N : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (sndT (sndT (ap2 outputF C N))))) ≐ E C N :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at C N)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C N).sndE.sndE.sndE.sndE.sndE
 
 theorem balanced_radius_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (inputContract (var 0) (var 1) ⟶ certificate (var 0) (var 1)) :=

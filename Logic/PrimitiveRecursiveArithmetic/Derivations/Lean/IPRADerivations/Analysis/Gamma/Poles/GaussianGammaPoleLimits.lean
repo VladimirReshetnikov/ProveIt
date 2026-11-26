@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaPoleLimits
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaPoleLimitModulus (clock half_clock pole_observations_at_clock)
 open GaussianGammaInputContinuity (modulus original_C7_independent_rate)
@@ -41,9 +41,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_triangle_same)
 open ComplexLogarithmRemainder (bounded normSq scale normSq_scale oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalDigammaRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeIntervalDerivativeTarget (reciprocalData)
@@ -25,8 +25,6 @@ open GaussianGammaReciprocalInverse (gammaF)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameBounds (U)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaC7Name.nameF

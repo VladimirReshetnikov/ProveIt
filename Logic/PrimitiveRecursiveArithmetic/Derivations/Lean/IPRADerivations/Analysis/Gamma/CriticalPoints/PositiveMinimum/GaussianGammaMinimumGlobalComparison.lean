@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumGlobalComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open GaussianGammaDigammaDyadicLocation (locationF lower)
@@ -33,10 +33,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData gammaLogMargin gammaMargin)
 open RationalValueBounds (upper upper_of_radius radius_symmetric upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -64,33 +60,17 @@ def nativeAt (f : PR 2) (p x y A C : PTm n) : Fm PTm n :=
 def nativeComparison (f : PR 2) (x y A C : PTm n) : Fm PTm n :=
   .all (nativeAt f (var 0) (Syn.shift x) (Syn.shift y) (Syn.shift A) (Syn.shift C))
 
-@[simp] theorem subst_lateClock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x y A : PTm n) :
-    Syn.subst σ (lateClock f p x y A) =
-      lateClock f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) := by
-  simp [lateClock]
+ipra_subst lateClock
 
-@[simp] theorem subst_comparisonRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (y : PTm n) :
-    Syn.subst σ (comparisonRadius f y) = comparisonRadius f (Syn.subst σ y) := by
-  simp [comparisonRadius]
+ipra_subst comparisonRadius
 
-@[simp] theorem subst_rootObservation {m : ℕ} (σ : Fin n → PTm m) (p k : PTm n) :
-    Syn.subst σ (rootObservation p k) = rootObservation (Syn.subst σ p) (Syn.subst σ k) := by
-  simp [rootObservation]
+ipra_subst rootObservation
 
-@[simp] theorem subst_comparisonObservation {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p k y : PTm n) :
-    Syn.subst σ (comparisonObservation f p k y) =
-      comparisonObservation f (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ y) := by
-  simp [comparisonObservation]
+ipra_subst comparisonObservation
 
-@[simp] theorem subst_nativeAt {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x y A C : PTm n) :
-    (nativeAt f p x y A C).subst σ =
-      nativeAt f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ C) := by
-  simp [nativeAt]
+ipra_subst nativeAt
 
-@[simp] theorem subst_nativeComparison {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x y A C : PTm n) :
-    (nativeComparison f x y A C).subst σ =
-      nativeComparison f (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ A) (Syn.subst σ C) := by
-  simp [nativeComparison, Syn.subst_shift, Syn.shift_subst]
+ipra_subst nativeComparison [Syn.subst_shift, Syn.shift_subst]
 
 theorem native_at (f : PR 2) (p x y A C : PTm n) (h : Γ ⊢[PRAAx] nativeComparison f x y A C) :
     Γ ⊢[PRAAx] nativeAt f p x y A C := by

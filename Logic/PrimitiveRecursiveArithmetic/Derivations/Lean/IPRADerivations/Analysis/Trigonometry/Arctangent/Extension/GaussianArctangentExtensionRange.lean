@@ -17,7 +17,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentExtensionRange
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (zeroCode eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
 open GaussianArctangentExponentialPrefix (prefixValue source total)
@@ -43,10 +43,6 @@ open RationalValueBounds (upper upper_congr upper_mono upper_of_order upper_of_r
   positive_cancel)
 open Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

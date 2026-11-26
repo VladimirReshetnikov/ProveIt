@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.GaussianDeflationTelescoping
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianApproximateFactorization
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The stored telescoping residual polynomial
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDeflationResidualPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianDeflationTelescoping (residuals residualSum residual_sum_zero residual_sum_succ telescoping_evaluation)
 open GaussianRationalDeflation (roots)
 open GaussianVandermondeNewtonPolynomials (polynomial polynomial_length evaluation_product)
@@ -35,19 +34,13 @@ open GaussianTranslatedNonconstant (recode_eq)
 open GaussianRationalReconstruction (evaluate_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def contribution (S R N j : PTm n) : PTm n :=
   leftPad (scaled (polynomial S j) (entry R j)) (monus N j)
 
-@[simp] theorem subst_contribution {k : ℕ} (σ : Fin n → PTm k) (S R N j : PTm n) :
-    Syn.subst σ (contribution S R N j) = contribution (Syn.subst σ S) (Syn.subst σ R)
-      (Syn.subst σ N) (Syn.subst σ j) := by simp [contribution]
+ipra_subst contribution
 
 theorem contribution_length (S R N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] length (contribution S R N j) ≐ succ N := by
@@ -81,14 +74,9 @@ def stepBody : PTm 3 := update (fstT (var 2)) (fstT (sndT (var 2)))
 def foldF : PR 2 := rec2 baseBody stepBody
 def fold (S R N j : PTm n) : PTm n := ap2 foldF j (data S R N)
 
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (S R N : PTm n) :
-    Syn.subst σ (data S R N) = data (Syn.subst σ S) (Syn.subst σ R) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_update {k : ℕ} (σ : Fin n → PTm k) (S R N j old : PTm n) :
-    Syn.subst σ (update S R N j old) = update (Syn.subst σ S) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ j) (Syn.subst σ old) := by simp [update]
-@[simp] theorem subst_fold {k : ℕ} (σ : Fin n → PTm k) (S R N j : PTm n) :
-    Syn.subst σ (fold S R N j) = fold (Syn.subst σ S) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ j) := by
-  simp [fold]
+ipra_subst data
+ipra_subst update
+ipra_subst fold
 
 theorem fold_zero (S R N : PTm n) : Γ ⊢[PRAAx] fold S R N zero ≐ zeros (succ N) := by
   have inner := (congrSnd (snd_pair (Γ := Γ) S (pairT R N))).eqTrans (snd_pair R N)
@@ -114,8 +102,8 @@ theorem fold_succ (S R N j : PTm n) :
         (σ' := ![S, R, N, j, fold S R N j]) (fun i => by
           fin_cases i
           · exact fst_pair _ _
-          · exact (congrFst tail).eqTrans (fst_pair _ _)
-          · exact (congrSnd tail).eqTrans (snd_pair _ _)
+          · exact tail.fstE
+          · exact tail.sndE
           · exact .eqRefl _
           · exact .eqRefl _)
   exact step.eqTrans args
@@ -158,14 +146,11 @@ theorem fold_evaluation (S R N j y : PTm n) (hj : Γ ⊢[PRAAx] le j N) :
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
       evaluate (fold (Syn.shift S) (Syn.shift R) (Syn.shift N) (var 0)) (Syn.shift y) ≐
         residualSum (Syn.shift S) (Syn.shift R) (var 0) (Syn.shift y)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, GaussianRationalHorner.subst_evaluate, subst_fold,
-        GaussianDeflationTelescoping.subst_residualSum, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .impI ((evaluate_congr (fold_zero S R N) (.eqRefl y)).eqTrans
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, GaussianRationalHorner.subst_evaluate, subst_fold,
+        GaussianDeflationTelescoping.subst_residualSum]
+    · exact .impI ((evaluate_congr (fold_zero S R N) (.eqRefl y)).eqTrans
         ((zeros_evaluation _ _).eqTrans (residual_sum_zero S R y).eqSymm))
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, GaussianRationalHorner.subst_evaluate, subst_fold,
-        GaussianDeflationTelescoping.subst_residualSum, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact .impI (fold_evaluation_step _ _ _ _ _ (le_trans (le_succ_self _) Prf.hyp0)
+    · exact .impI (fold_evaluation_step _ _ _ _ _ (le_trans (le_succ_self _) Prf.hyp0)
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have rule : Γ ⊢[PRAAx] le j N ⟶ evaluate (fold S R N j) y ≐ residualSum S R j y := by
     simpa only [Fm.subst_imp, subst_le, Fm.subst_eq, GaussianRationalHorner.subst_evaluate, subst_fold,
@@ -177,12 +162,8 @@ def difference (step : PR 3) (C N e f : PTm n) : PTm n :=
 def result (step : PR 3) (C N e f : PTm n) : PTm n :=
   fold (roots step C N e f N) (residuals step C N e f) N N
 
-@[simp] theorem subst_difference {k : ℕ} (σ : Fin n → PTm k) (step : PR 3) (C N e f : PTm n) :
-    Syn.subst σ (difference step C N e f) =
-      difference step (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ e) (Syn.subst σ f) := by simp [difference]
-@[simp] theorem subst_result {k : ℕ} (σ : Fin n → PTm k) (step : PR 3) (C N e f : PTm n) :
-    Syn.subst σ (result step C N e f) =
-      result step (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ e) (Syn.subst σ f) := by simp [result]
+ipra_subst difference
+ipra_subst result
 
 theorem exact_evaluation (step : PR 3) (C N e f y : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hM : Γ ⊢[PRAAx] entry C zero ≐ qone) :

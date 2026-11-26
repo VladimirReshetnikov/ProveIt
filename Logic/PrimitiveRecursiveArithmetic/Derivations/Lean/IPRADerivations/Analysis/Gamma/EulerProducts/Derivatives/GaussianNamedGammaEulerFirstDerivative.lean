@@ -16,16 +16,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaEulerFirstDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedGammaSmallIncrementInput (sumData)
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_refl)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "gF" => GaussianNamedGamma.nameF
@@ -42,9 +39,7 @@ def quotientF (f K : PR 2) : PR 2 := QF (gF (sumF f K)) (gF f) K
 def quotientData (f K : PR 2) (x y A a : PTm n) : PTm n :=
   QD (gF (sumF f K)) (gF f) K (gData (sumData x y) (two*A)) (gData x A) y a
 
-@[simp] theorem subst_quotientData {m : ℕ} (σ : Fin n → PTm m) (f K : PR 2) (x y A a : PTm n) :
-    Syn.subst σ (quotientData f K x y A a) = quotientData f K (Syn.subst σ x) (Syn.subst σ y)
-      (Syn.subst σ A) (Syn.subst σ a) := by simp [quotientData]
+ipra_subst quotientData
 
 theorem original_quotient_proper (f K : PR 2) (p x y A a : PTm n) (hs : Γ ⊢[PRAAx] source f K p x y A a) :
     Γ ⊢[PRAAx] crossEquivalent (GaussianNamedEulerLogarithmicNamedDerivative.quotientF f K) (quotientF f K)

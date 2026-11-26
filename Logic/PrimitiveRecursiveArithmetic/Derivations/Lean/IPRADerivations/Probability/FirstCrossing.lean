@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.MixedRadix
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # First-crossing indicators
@@ -24,12 +23,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.FirstCrossing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MixedRadix (prod_succ')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -114,13 +109,9 @@ private abbrev coverF : Fm PTm 2 :=
   ap2 (sumF (Ib c D)) (var 0) (var 1) + ap2 (prodF (nbB c D)) (var 0) (var 1) ≐ one
 
 private theorem cover₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] coverF c D := by
-  refine ind _ trivial ?_ ?_
-  · simp only [coverF, Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cover_base c D _
-  · simp only [coverF, Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cover_step c D Prf.hyp0
+  ipra_ind [coverF, subst_ap2]
+  · exact cover_base c D _
+  · exact cover_step c D Prf.hyp0
 
 /-- `cover`: `∑_{k<K} I_k + ∏_{l<K} [D_l < c_l] = 1`. -/
 theorem cover (K y : PTm n) :

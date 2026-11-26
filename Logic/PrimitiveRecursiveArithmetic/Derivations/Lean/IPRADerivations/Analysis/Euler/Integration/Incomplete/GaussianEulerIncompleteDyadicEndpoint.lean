@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteDyadicEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegralGammaIdentification (source subst_source original_gamma_regular)
 open GaussianEulerIncompleteName (lowerF upperF data lower_at upper_at original_regular_names)
 open GaussianGammaIntegralCutoffs (etaDen height)
@@ -28,20 +28,13 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNameEquivalence (cross_at)
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator)
 open GaussianRationalSlackRemoval (precision slack slack_removal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 def splitData (z R B A k : PTm n) : PTm n := data z R B A one (etaDen k A R)
 
-@[simp] theorem subst_splitData {m : ℕ} (σ : Fin n → PTm m) (z R B A k : PTm n) :
-    Syn.subst σ (splitData z R B A k) =
-      splitData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ k) := by
-  simp [splitData,etaDen,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst splitData [etaDen, height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem split_source (z R B A k : PTm n) (h : Γ ⊢[PRAAx] source z R B A) :
     Γ ⊢[PRAAx] GaussianEulerIncompleteCofinalRate.source z R B A one (etaDen k A R) :=

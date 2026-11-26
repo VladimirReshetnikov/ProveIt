@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerEtaToOneQuadratureBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerEtaToOneRootGrid (root rootDen time timeDen totalWidth right_guard)
 open GaussianEulerEtaToOneRowBound (stepScale uniform_panel_width actual_row_norm_bound)
 open GaussianEulerLowerTailPartition (cutF cutData offset offset_at panelWidth)
@@ -29,9 +29,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaIntegralCutoffs (height)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -66,14 +63,10 @@ def panelData (s z R B H k e : PTm n) : PTm n := pairT (weightedPoint H k e R)
   by simp [totalWidth,GaussianEulerLowerTailPartition.totalWidth,height,GaussianGammaIntegralCutoffs.tailCoefficient]
 @[simp] private theorem subst_panelWidth {m : ℕ} (σ : Fin n → PTm m) (i H p q A : PTm n) :
     Syn.subst σ (panelWidth i H p q A) = panelWidth (Syn.subst σ i) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by simp [panelWidth]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B H k e L : PTm n) :
-    (source z R B H k e L).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ k) (Syn.subst σ e) (Syn.subst σ L) := by simp [source]
-@[simp] theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (s z R B H k e : PTm n) :
-    Syn.subst σ (gridData s z R B H k e) = gridData (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ k) (Syn.subst σ e) := by simp [gridData]
-@[simp] theorem subst_weightedPoint {m : ℕ} (σ : Fin n → PTm m) (H k e R : PTm n) :
-    Syn.subst σ (weightedPoint H k e R) = weightedPoint (Syn.subst σ H) (Syn.subst σ k) (Syn.subst σ e) (Syn.subst σ R) := by simp [weightedPoint]
-@[simp] theorem subst_panelData {m : ℕ} (σ : Fin n → PTm m) (s z R B H k e : PTm n) :
-    Syn.subst σ (panelData s z R B H k e) = panelData (Syn.subst σ s) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ H) (Syn.subst σ k) (Syn.subst σ e) := by simp [panelData,height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source
+ipra_subst gridData
+ipra_subst weightedPoint
+ipra_subst panelData [height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem literal_weight (H k e R : PTm n) (hH : Γ ⊢[PRAAx] le one H)
     (hW : Γ ⊢[PRAAx] le one (totalWidth H k (succ e) R)) : Γ ⊢[PRAAx]

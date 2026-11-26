@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorDerivativeRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded bounded_add bounded_mono bounded_scale normSq normSq_one oneCode scale)
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -26,10 +26,6 @@ open GaussianL1 (norm1 norm1_one)
 open GaussianNameEquivalence (cross_refl)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian positive_product)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

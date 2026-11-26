@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedDigammaQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent query_budget)
@@ -32,10 +32,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -56,34 +52,13 @@ def value (f : PR 2) (p x E N : PTm n) : PTm n :=
 def nameF (f : PR 2) : PR 2 := PTm.toPR
   (value f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (stage p) = stage (Syn.subst σ p) := by simp [stage]
-@[simp] theorem subst_offsetClock {m : ℕ} (σ : Fin n → PTm m) (p E N : PTm n) :
-    Syn.subst σ (offsetClock p E N) = offsetClock (Syn.subst σ p) (Syn.subst σ E) (Syn.subst σ N) :=
-  by simp [offsetClock]
-@[simp] theorem subst_argumentNumerator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E N : PTm n) :
-    Syn.subst σ (argumentNumerator f p x E N) = argumentNumerator f (Syn.subst σ p) (Syn.subst σ x)
-      (Syn.subst σ E) (Syn.subst σ N) :=
-  by simp [argumentNumerator]
-@[simp] theorem subst_argumentDenominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E N : PTm n) :
-    Syn.subst σ (argumentDenominator f p x E N) = argumentDenominator f (Syn.subst σ p) (Syn.subst σ x)
-      (Syn.subst σ E) (Syn.subst σ N) :=
-  by simp [argumentDenominator]
-@[simp] theorem subst_demand {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E N : PTm n) :
-    Syn.subst σ (demand f p x E N) = demand f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [demand,cost,GaussianGammaNegativeIntervalDerivativeRate.cost,
-    GaussianGammaNegativeIntervalDerivativeRate.firstCost,GaussianGammaNegativeIntervalDerivativeRate.secondCost,
-    GaussianGammaNegativeIntervalDerivativeRate.eulerCap,GaussianGammaNegativeIntervalInverseStepCoefficient.inverseCap,
-    GaussianGammaNegativeIntervalDerivativeTarget.reciprocalData,GaussianGammaNegativeIntervalNative.argument,
-    GaussianNameRingLaws.three]
-@[simp] theorem subst_step {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E N : PTm n) :
-    Syn.subst σ (step f p x E N) = step f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) :=
-  by simp [step,minimumDenominator]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x E N : PTm n) :
-    Syn.subst σ (value f p x E N) = value f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [value,quotientData,GaussianGammaNegativeIntervalStep.data,GaussianGammaNegativeIntervalStep.denominator,
-    GaussianGammaDigammaStep.neighborNumerator,GaussianGammaNegativeIntervalDerivativeTarget.reciprocalData,
-    GaussianGammaNegativeIntervalNative.data,GaussianGammaNegativeIntervalNative.argument]
+ipra_subst stage
+ipra_subst offsetClock
+ipra_subst argumentNumerator
+ipra_subst argumentDenominator
+ipra_subst demand [cost, GaussianGammaNegativeIntervalDerivativeRate.cost, GaussianGammaNegativeIntervalDerivativeRate.firstCost, GaussianGammaNegativeIntervalDerivativeRate.secondCost, GaussianGammaNegativeIntervalDerivativeRate.eulerCap, GaussianGammaNegativeIntervalInverseStepCoefficient.inverseCap, GaussianGammaNegativeIntervalDerivativeTarget.reciprocalData, GaussianGammaNegativeIntervalNative.argument, GaussianNameRingLaws.three]
+ipra_subst step [minimumDenominator]
+ipra_subst value [quotientData, GaussianGammaNegativeIntervalStep.data, GaussianGammaNegativeIntervalStep.denominator, GaussianGammaDigammaStep.neighborNumerator, GaussianGammaNegativeIntervalDerivativeTarget.reciprocalData, GaussianGammaNegativeIntervalNative.data, GaussianGammaNegativeIntervalNative.argument]
 
 theorem sample_at (f : PR 2) (p x E N : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data x E N) ≐ value f p x E N := by

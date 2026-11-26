@@ -15,14 +15,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarDeterminantExpansion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qmul)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (cell signPoint)
 open LeanProofs.IPRA.Analysis.GaussianRationalFiniteSum (termsEqual)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
 
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

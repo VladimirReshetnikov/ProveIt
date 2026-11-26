@@ -76,18 +76,12 @@ private abbrev Rv : PTm 2 := rem (var 0) (succ (var 1))
 private abbrev Qv : PTm 2 := quo (var 0) (succ (var 1))
 
 private theorem div_mod₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] divModF := by
-  refine ind _ ⟨trivial, lt_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_lt, PTm.subst_add, PTm.subst_mul, subst_ap2,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    refine .andI ?_ (lt_congr (rem_zero _).eqSymm (.eqRefl _) (zero_lt_succ _))
+  ipra_ind (⟨trivial, lt_QF _ _⟩) [subst_lt, subst_ap2]
+  · refine .andI ?_ (lt_congr (rem_zero _).eqSymm (.eqRefl _) (zero_lt_succ _))
     refine withEq (rem_zero (Γ := ([] : List (Fm PTm 1))) (succ (var 0))) fun e₁ => ?_
     refine withEq (quo_zero (Γ := ([] : List (Fm PTm 1))) (succ (var 0))) fun e₂ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-  · simp only [Fm.subst_and, Fm.subst_eq, subst_lt, PTm.subst_add, PTm.subst_mul, subst_ap2,
-      Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have hz : [divModF] ⊢[PRAAx] var 0 ≐ Kv * Qv + Rv := .andE₁ Prf.hyp0
+  · have hz : [divModF] ⊢[PRAAx] var 0 ≐ Kv * Qv + Rv := .andE₁ Prf.hyp0
     have hr : [divModF] ⊢[PRAAx] lt Rv Kv := .andE₂ Prf.hyp0
     have hR := rem_succ (Γ := [divModF]) (var 0) Kv
     have hQ := quo_succ (Γ := [divModF]) (var 0) Kv

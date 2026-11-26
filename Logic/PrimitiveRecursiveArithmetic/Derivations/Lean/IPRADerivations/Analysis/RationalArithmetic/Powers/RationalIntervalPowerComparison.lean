@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalNestedIntervals
 import IPRADerivations.Analysis.Optimization.Convexity.RationalMultiplicativeConvexity
 import IPRADerivations.Analysis.Inequalities.RationalNonnegativePowerOrder
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Cofinal midpoint order reflects the actual powered endpoints
@@ -18,8 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalIntervalPowerComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open RationalArgmin (rationalLE transitive rationalLE_congr denominator_positive)
 open RationalArithmetic (multiply)
 open RationalConvexSecants (nonnegative nonnegative_representation naturalNumerator)
@@ -28,8 +26,6 @@ open RationalSupMetric (denominatorOf)
 open RationalValueBounds (upper crossLeft)
 open RationalCubeGrid (scale)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters (midpoint)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -49,34 +45,17 @@ def centerOrder (L U : PR 3) (X Y Z a b offset x : PTm n) : Fm PTm n :=
     (productCenter L U (Syn.shift X) (Syn.shift Y) (Syn.shift a) (Syn.shift b)
       (Syn.shift offset) (var 0) (Syn.shift x)) one (scale (var 0)))
 
-@[simp] theorem subst_stage {m : ℕ} (σ : Fin n → PTm m) (offset k : PTm n) :
-    Syn.subst σ (stage offset k) = stage (Syn.subst σ offset) (Syn.subst σ k) := by simp [stage]
+ipra_subst stage
 @[simp] theorem subst_power {m : ℕ} (σ : Fin n → PTm m) (q e : PTm n) :
     Syn.subst σ (RationalMultiplicativeConvexity.power q e) =
       RationalMultiplicativeConvexity.power (Syn.subst σ q) (Syn.subst σ e) := by
   simp [RationalMultiplicativeConvexity.power,naturalNumerator,RationalSupMetric.denominatorOf,
     RationalSupMetric.numeratorOf]
-@[simp] theorem subst_powerEndpoint {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (Z e offset k x : PTm n) :
-    Syn.subst σ (powerEndpoint F Z e offset k x) =
-      powerEndpoint F (Syn.subst σ Z) (Syn.subst σ e) (Syn.subst σ offset) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [powerEndpoint]
-@[simp] theorem subst_productEndpoint {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (X Y a b offset k x : PTm n) :
-    Syn.subst σ (productEndpoint F X Y a b offset k x) =
-      productEndpoint F (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ offset) (Syn.subst σ k) (Syn.subst σ x) := by simp [productEndpoint]
-@[simp] theorem subst_powerCenter {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (Z e offset k x : PTm n) :
-    Syn.subst σ (powerCenter L U Z e offset k x) =
-      powerCenter L U (Syn.subst σ Z) (Syn.subst σ e) (Syn.subst σ offset) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [powerCenter]
-@[simp] theorem subst_productCenter {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (X Y a b offset k x : PTm n) :
-    Syn.subst σ (productCenter L U X Y a b offset k x) =
-      productCenter L U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ offset) (Syn.subst σ k) (Syn.subst σ x) := by simp [productCenter]
-@[simp] theorem subst_centerOrder {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (X Y Z a b offset x : PTm n) :
-    (centerOrder L U X Y Z a b offset x).subst σ =
-      centerOrder L U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ Z) (Syn.subst σ a)
-        (Syn.subst σ b) (Syn.subst σ offset) (Syn.subst σ x) := by
-  simp [centerOrder,scale,Syn.subst_shift,Syn.shift_subst]
+ipra_subst powerEndpoint
+ipra_subst productEndpoint
+ipra_subst powerCenter
+ipra_subst productCenter
+ipra_subst centerOrder [scale, Syn.subst_shift, Syn.shift_subst]
 
 theorem stage_cofinal (offset k : PTm n) : Γ ⊢[PRAAx] le k (stage offset k) := by
   unfold stage
@@ -207,12 +186,7 @@ def input (L U : PR 3) (X Y Z offset p sx sy sz x : PTm n) : Fm PTm n :=
     (positiveWitness L X offset sx x ⋏ (positiveWitness L Y offset sy x ⋏
       (positiveWitness L Z offset sz x ⋏ le offset p)))))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3)
-    (X Y Z offset p sx sy sz x : PTm n) :
-    (input L U X Y Z offset p sx sy sz x).subst σ =
-      input L U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ Z) (Syn.subst σ offset)
-        (Syn.subst σ p) (Syn.subst σ sx) (Syn.subst σ sy) (Syn.subst σ sz) (Syn.subst σ x) := by
-  simp [input,positiveWitness,RationalConvexFiniteModulus.eps]
+ipra_subst input [positiveWitness, RationalConvexFiniteModulus.eps]
 
 theorem endpoint_comparison (L U : PR 3) (X Y Z a b offset p sx sy sz x : PTm n)
     (h : Γ ⊢[PRAAx] input L U X Y Z offset p sx sy sz x)
@@ -241,18 +215,8 @@ def outputF (L U : PR 3) : PR 8 :=
 def run (L U : PR 3) (X Y Z a b offset k x : PTm n) : PTm n :=
   PTm.app (outputF L U) ![X,Y,Z,a,b,offset,k,x]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (X Y Z a b offset k x : PTm n) :
-    Syn.subst σ (output L U X Y Z a b offset k x) =
-      output L U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ Z) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ offset) (Syn.subst σ k) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (L U : PR 3) (X Y Z a b offset k x : PTm n) :
-    Syn.subst σ (run L U X Y Z a b offset k x) =
-      run L U (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ Z) (Syn.subst σ a) (Syn.subst σ b)
-        (Syn.subst σ offset) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (L U : PR 3) (X Y Z a b offset k x : PTm n) :
     Γ ⊢[PRAAx] run L U X Y Z a b offset k x ≐ output L U X Y Z a b offset k x := by
@@ -262,22 +226,22 @@ theorem program_at (L U : PR 3) (X Y Z a b offset k x : PTm n) :
 
 theorem returned_power_lower (L U : PR 3) (X Y Z a b offset k x : PTm n) : Γ ⊢[PRAAx]
     fstT (run L U X Y Z a b offset k x) ≐ powerEndpoint L Z (a+b) offset k x :=
-  (congrFst (program_at L U X Y Z a b offset k x)).eqTrans (fst_pair _ _)
+  (program_at L U X Y Z a b offset k x).fstE
 theorem returned_power_upper (L U : PR 3) (X Y Z a b offset k x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run L U X Y Z a b offset k x)) ≐ powerEndpoint U Z (a+b) offset k x := by
   have h := congrFst (congrSnd (program_at (Γ := Γ) L U X Y Z a b offset k x))
   simpa only [output] using h.eqTrans
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+    (snd_pair _ _).fstE
 theorem returned_product_lower (L U : PR 3) (X Y Z a b offset k x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run L U X Y Z a b offset k x))) ≐ productEndpoint L X Y a b offset k x := by
   have h := congrFst (congrSnd (congrSnd (program_at (Γ := Γ) L U X Y Z a b offset k x)))
   simpa only [output] using h.eqTrans ((congrFst (congrSnd (snd_pair _ _))).eqTrans
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
+    (snd_pair _ _).fstE)
 theorem returned_product_upper (L U : PR 3) (X Y Z a b offset k x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run L U X Y Z a b offset k x)))) ≐ productEndpoint U X Y a b offset k x := by
   have h := congrFst (congrSnd (congrSnd (congrSnd (program_at (Γ := Γ) L U X Y Z a b offset k x))))
   simpa only [output] using h.eqTrans ((congrFst (congrSnd (congrSnd (snd_pair _ _)))).eqTrans
-    ((congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))))
+    ((congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE))
 theorem midpoint_congr {A B C D : PTm n} (hA : Γ ⊢[PRAAx] A ≐ C) (hB : Γ ⊢[PRAAx] B ≐ D) :
     Γ ⊢[PRAAx] midpoint A B ≐ midpoint C D := by
   ipra_congr (midpoint (var 0) (var 1) : PTm 2) with [hA, hB]

@@ -1,6 +1,5 @@
 import IPRADerivations.Algebra.QuadraticTowerScalarArrays
 import IPRADerivations.Algebra.QuadraticTowerSignCoherence
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual scalar and zero sign queries at numerical tower depth
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticTowerSignEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis
 open QuadraticTowerScalarArrays (zeroArray scalarArray zeroScalar)
 open QuadraticTowerScalarBudget (height)
@@ -29,10 +28,6 @@ open QuadraticTowerSignRecipe (read firstTag secondTag thirdTag recipe dispatch)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.BoundedReflection
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,16 +37,12 @@ theorem budget_inflation (h B D : PTm n) : Γ ⊢[PRAAx] le B (budget h B D) :=
 
 def floorLaw (H B D j : PTm n) : Fm PTm n :=
   le B (Foundations.BackwardDemand.backward demandF H B j D)
-@[simp] theorem subst_floorLaw {k : ℕ} (σ : Fin n → PTm k) (H B D j : PTm n) :
-    (floorLaw H B D j).subst σ = floorLaw (Syn.subst σ H) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ j) := by
-  simp [floorLaw]
+ipra_subst floorLaw
 theorem backward_floor (H B D j : PTm n) : Γ ⊢[PRAAx] floorLaw H B D j := by
   have all : Γ ⊢[PRAAx] .all (floorLaw (Syn.shift H) (Syn.shift B) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_floorLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (Foundations.BackwardDemand.backward_zero demandF H B D).eqSymm (le_refl B)
-    · simp only [subst_floorLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact le_trans Prf.hyp0 (le_congr (.eqRefl _)
+    ipra_qfind (le_QF _ _) [subst_floorLaw]
+    · exact le_congr (.eqRefl _) (Foundations.BackwardDemand.backward_zero demandF H B D).eqSymm (le_refl B)
+    · exact le_trans Prf.hyp0 (le_congr (.eqRefl _)
         (Foundations.BackwardDemand.backward_succ demandF _ _ _ _).eqSymm (budget_inflation _ _ _))
   simpa only [subst_floorLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 theorem cap_floor (H B t D : PTm n) : Γ ⊢[PRAAx] le B (cap H B t D) :=
@@ -102,9 +93,7 @@ theorem ground_scalar (B q : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hq : Γ ⊢[P
 def forwardLaw (H B D q t : PTm n) : Fm PTm n := le t H ⟶
   (read t (cap H B t D) (state H B t D) (zeroArray t) ≐ zero ⋏
     read t (cap H B t D) (state H B t D) (scalarArray t q) ≐ QuadraticTowerSignTable.groundTag q)
-@[simp] theorem subst_forwardLaw {k : ℕ} (σ : Fin n → PTm k) (H B D q t : PTm n) :
-    (forwardLaw H B D q t).subst σ = forwardLaw (Syn.subst σ H) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ q) (Syn.subst σ t) := by simp [forwardLaw]
+ipra_subst forwardLaw
 
 theorem forward_zero (H B D q : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hq : Γ ⊢[PRAAx] height q B) : Γ ⊢[PRAAx]
     forwardLaw H B D q zero := by
@@ -195,23 +184,16 @@ def output (h B D q : PTm n) : PTm n := pairT (QuadraticTowerSignTable.query h B
   (QuadraticTowerSignTable.query h B D (scalarArray h q))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (h B D q : PTm n) : PTm n := PTm.app outputF ![h,B,D,q]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (h B D q : PTm n) :
-    Syn.subst σ (output h B D q) = output (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ q) := by
-  simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (h B D q : PTm n) :
-    Syn.subst σ (run h B D q) = run (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ q) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (h B D q : PTm n) : Γ ⊢[PRAAx] run h B D q ≐ output h B D q := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![h,B,D,q]
 theorem produced_zero (h B D q : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     fstT (run h B D q) ≐ zero :=
-  ((congrFst (program_at h B D q)).eqTrans (fst_pair _ _)).eqTrans (zero_query h B D hB)
+  (program_at h B D q).fstE.eqTrans (zero_query h B D hB)
 theorem produced_scalar (h B D q : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hq : Γ ⊢[PRAAx] height q B) : Γ ⊢[PRAAx]
     sndT (run h B D q) ≐ QuadraticSignCertificates.tag (RationalSupMetric.numeratorOf q) :=
-  ((congrSnd (program_at h B D q)).eqTrans (snd_pair _ _)).eqTrans (scalar_query_native h B D q hB hq)
+  (program_at h B D q).sndE.eqTrans (scalar_query_native h B D q hB hq)
 
 theorem actual_sign_backward_cap_floor_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (le (var 1) (cap (var 0) (var 1) (var 2) (var 3))) := closeUniv 4 (cap_floor _ _ _ _)

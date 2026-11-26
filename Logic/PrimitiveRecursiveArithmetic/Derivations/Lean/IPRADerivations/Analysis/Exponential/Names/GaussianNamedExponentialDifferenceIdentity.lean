@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedExponentialDifferenceIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRadiusExponentialName (input nameF data name_regular)
 open GaussianNameRingLaws (negativeF negativeData oneF one_fast one_at)
 open GaussianNameArithmetic (multiplyF multiplyData)
@@ -27,8 +27,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qone qsub_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,12 +35,9 @@ def differenceData (x y : PTm n) : PTm n := GaussianNamedDifference.data x y
 def exponentialData (R x y : PTm n) : PTm n := data (R+R) (differenceData x y)
 def negativeExponentialData (R x y : PTm n) : PTm n := data (R+R) (negativeData (differenceData x y))
 
-@[simp] theorem subst_differenceData {m : ℕ} (σ : Fin n → PTm m) (x y : PTm n) :
-    Syn.subst σ (differenceData x y) = differenceData (Syn.subst σ x) (Syn.subst σ y) := by simp [differenceData]
-@[simp] theorem subst_exponentialData {m : ℕ} (σ : Fin n → PTm m) (R x y : PTm n) :
-    Syn.subst σ (exponentialData R x y) = exponentialData (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ y) := by simp [exponentialData]
-@[simp] theorem subst_negativeExponentialData {m : ℕ} (σ : Fin n → PTm m) (R x y : PTm n) :
-    Syn.subst σ (negativeExponentialData R x y) = negativeExponentialData (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ y) := by simp [negativeExponentialData]
+ipra_subst differenceData
+ipra_subst exponentialData
+ipra_subst negativeExponentialData
 
 theorem difference_input (f g : PR 2) (R x y : PTm n)
     (hf : Γ ⊢[PRAAx] input f R x) (hg : Γ ⊢[PRAAx] input g R y) : Γ ⊢[PRAAx]

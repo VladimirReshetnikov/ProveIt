@@ -14,7 +14,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalStationaryBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFastValueCut (exponent exponent_unit normalizer query_budget)
 open GaussianGammaNegativeCriticalCorrection (guard)
@@ -25,9 +25,6 @@ open GaussianNameRingLaws (zeroF)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianRationalHorner (qadd)
 open RationalValueBounds (upper upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

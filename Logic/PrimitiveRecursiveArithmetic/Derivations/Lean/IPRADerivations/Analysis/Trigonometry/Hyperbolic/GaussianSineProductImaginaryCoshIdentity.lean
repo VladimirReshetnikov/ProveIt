@@ -12,7 +12,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryCoshIdentity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code)
 open GaussianBoundedConstantProductName (constantF constant_at constant_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -34,9 +34,6 @@ open GaussianRootAlgebra (equal_of_values re_add im_add re_sub im_sub re_mul im_
 open GaussianSineProductImaginaryHyperbolic (expF expData)
 open GaussianSineProductImaginaryHyperbolicDerivative (branchF branchData derivativeF derivativeData derivative_regular negativeHalf)
 open GaussianSineProductImaginaryLogDerivative (realNumerator)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Pi" => GaussianGammaHalfPiName.nameF

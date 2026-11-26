@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetKernelElementaryRational
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetKernelFrozenHyperbolic (fixedCoshF fixedCoshData fixed_cosh_regular fixedSinhF fixedSinhData fixed_sinh_regular)
 open GaussianBinetKernelImaginaryRatioPrefix (timeSquare)
 open GaussianBinetKernelRationalTimeCleared (leftF leftData halfTime)
@@ -29,9 +29,6 @@ open GaussianNamedClearedScalarQuotient (quotientF quotientData)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qone)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Kernel" => GaussianBinetKernelCofinal.nameF

@@ -14,17 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedAffineRemainderRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (qadd qmul positive_product)
 open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,19 +38,10 @@ def input (F G H : PR 2) (x y z c A B C : PTm n) : Fm PTm n :=
   le one B ⋏ (bounded c one one ⋏ (pointCN F x ⋏ (pointCN G y ⋏
     (pointCN H z ⋏ diagonalEnvelope F G H x y z c A B C))))
 
-@[simp] theorem subst_affine {m : ℕ} (σ : Fin n → PTm m) (G H : PR 2) (q r y z c : PTm n) :
-    Syn.subst σ (affine G H q r y z c) = affine G H (Syn.subst σ q) (Syn.subst σ r)
-      (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ c) := by simp [affine]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (A B p q r : PTm n) :
-    Syn.subst σ (numerator A B p q r) = numerator (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ r) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (B p q r : PTm n) :
-    Syn.subst σ (denominator B p q r) = denominator (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ r) := by simp [denominator]
-@[simp] theorem subst_diagonalEnvelope {m : ℕ} (σ : Fin n → PTm m) (F G H : PR 2) (x y z c A B C : PTm n) :
-    (diagonalEnvelope F G H x y z c A B C).subst σ = diagonalEnvelope F G H (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ c) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp [diagonalEnvelope,Syn.subst_shift,Syn.shift_subst]
+ipra_subst affine
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst diagonalEnvelope [Syn.subst_shift, Syn.shift_subst]
 
 theorem denominator_positive (B p q r : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     le one (denominator B p q r) :=

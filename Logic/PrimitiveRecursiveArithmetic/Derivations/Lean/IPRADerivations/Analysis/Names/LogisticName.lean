@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.PolynomialRootName
 import IPRADerivations.Probability.Minkowski
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Exact rational logistic iteration of a finite regular name
@@ -16,17 +14,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.LogisticName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision
 open LeanProofs.IPRA.Analysis.PolynomialRootName (abs_mul abs_scale abs_ofNat)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (le_add_ad ad_le_of)
 open LeanProofs.IPRA.Probability.Minkowski (monus_le_of_le_add le_add_monus)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,9 +53,7 @@ theorem monus_scale (a b c : PTm n) :
 /-- The literal numerator of `min(1,max(0,(p-q)/D))`. -/
 def clip (p q D : PTm n) : PTm n := monus D (monus D (monus p q))
 
-@[simp] theorem subst_clip {m : ℕ} (σ : Fin n → PTm m) (p q D : PTm n) :
-    Syn.subst σ (clip p q D) = clip (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ D) := by
-  simp only [clip, PTm.subst_monus]
+ipra_subst clip
 
 alias monus_le_left := Common.monus_le_self
 
@@ -130,10 +122,7 @@ theorem clip_rational (p q d r s e : PTm n) :
 def advance (A B state : PTm n) : PTm n :=
   pairT (A*fstT state*monus (sndT state) (fstT state)) (B*sndT state*sndT state)
 
-@[simp] theorem subst_advance {m : ℕ} (σ : Fin n → PTm m) (A B state : PTm n) :
-    Syn.subst σ (advance A B state) =
-      advance (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ state) := by
-  simp only [advance, subst_pairT, PTm.subst_mul, PTm.subst_monus, subst_fstT, subst_sndT]
+ipra_subst advance
 
 theorem advance_num (A B state : PTm n) : Γ ⊢[PRAAx]
     fstT (advance A B state) ≐ A*fstT state*monus (sndT state) (fstT state) := fst_pair _ _
@@ -162,9 +151,7 @@ theorem advance_range {A B state : PTm n} (hA : Γ ⊢[PRAAx] le A (num 4*B))
 /-- Exact cross-numerator difference of two nonnegative rational points. -/
 def difference (s t : PTm n) : ZT n := ⟨fstT s*sndT t, fstT t*sndT s⟩
 
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (s t : PTm n) :
-    (difference s t).subst σ = difference (Syn.subst σ s) (Syn.subst σ t) := by
-  simp [difference, ZT.subst]
+ipra_subst difference [ZT.subst]
 
 /-- On the unit square the divided-difference factor has modulus at most one. -/
 theorem factor_bound {t d s e : PTm n} (ht : Γ ⊢[PRAAx] le t d) (hs : Γ ⊢[PRAAx] le s e) :
@@ -211,9 +198,7 @@ theorem advance_lipschitz {A B s t : PTm n}
 /-- Positivity and range of an encoded nonnegative rational point. -/
 def valid (s : PTm n) : Fm PTm n := le one (sndT s) ⋏ le (fstT s) (sndT s)
 
-@[simp] theorem subst_valid {m : ℕ} (σ : Fin n → PTm m) (s : PTm n) :
-    (valid s).subst σ = valid (Syn.subst σ s) := by
-  simp only [valid, Fm.subst_and, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, subst_fstT, subst_sndT]
+ipra_subst valid
 
 theorem valid_QF (s : PTm n) : (valid s).QF := ⟨le_QF _ _, le_QF _ _⟩
 
@@ -231,10 +216,7 @@ def orbitStep : PTm 3 := advance (fstT (var 2)) (fstT (sndT (var 2))) (var 1)
 def orbitF : PR 2 := rec2 orbitBase orbitStep
 def orbit (N A B seed : PTm n) : PTm n := ap2 orbitF N (orbitData A B seed)
 
-@[simp] theorem subst_orbit {m : ℕ} (σ : Fin n → PTm m) (N A B seed : PTm n) :
-    Syn.subst σ (orbit N A B seed) = orbit (Syn.subst σ N) (Syn.subst σ A)
-      (Syn.subst σ B) (Syn.subst σ seed) := by
-  simp only [orbit, orbitData, subst_ap2, subst_pairT]
+ipra_subst orbit [orbitData, subst_ap2, subst_pairT]
 
 theorem advance_congr {A A' B B' s s' : PTm n}
     (hA : Γ ⊢[PRAAx] A ≐ A') (hB : Γ ⊢[PRAAx] B ≐ B') (hs : Γ ⊢[PRAAx] s ≐ s') :
@@ -253,7 +235,7 @@ theorem orbit_succ (N A B seed : PTm n) :
   simp only [orbitStep, subst_advance, subst_fstT, subst_sndT, Syn.subst_var,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two] at eq
   exact eq.eqTrans (advance_congr (fst_pair _ _)
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _))
+    (snd_pair _ _).fstE (.eqRefl _))
 
 theorem valid_congr {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t) (hs : Γ ⊢[PRAAx] valid s) :
     Γ ⊢[PRAAx] valid t :=
@@ -265,12 +247,9 @@ theorem orbit_valid (N A B seed : PTm n) (hA : Γ ⊢[PRAAx] le A (num 4*B))
     (hB : Γ ⊢[PRAAx] le one B) (hs : Γ ⊢[PRAAx] valid seed) :
     Γ ⊢[PRAAx] valid (orbit N A B seed) := by
   have all : Γ ⊢[PRAAx] .all (valid (orbit (var 0) (Syn.shift A) (Syn.shift B) (Syn.shift seed))) := by
-    refine PRA.qfInd _ (valid_QF _) ?_ ?_
-    · simp only [subst_valid, subst_orbit, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      exact valid_congr (orbit_zero _ _ _).eqSymm hs
-    · simp only [subst_valid, subst_orbit, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have a : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift A) (num 4*Syn.shift B) := by
+    ipra_qfind (valid_QF _) [subst_valid, subst_orbit]
+    · exact valid_congr (orbit_zero _ _ _).eqSymm hs
+    · have a : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift A) (num 4*Syn.shift B) := by
         simpa only [Fm.shift, subst_le, PTm.subst_mul, PTm.subst_num, Syn.shift] using hA.shift
       have b : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by
         simpa only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift] using hB.shift
@@ -318,9 +297,7 @@ theorem budget_step {A B s t T R : PTm n} (hA : Γ ⊢[PRAAx] le A (num 4*B))
 /-- Amplification incurred by `N` logistic steps, written dyadically. -/
 def growth (N : PTm n) : PTm n := pw two (N+N)
 
-@[simp] theorem subst_growth {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (growth N) = growth (Syn.subst σ N) := by
-  simp only [growth, subst_ap2, PTm.subst_add, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+ipra_subst growth
 
 theorem growth_zero : Γ ⊢[PRAAx] growth (zero : PTm n) ≐ one :=
   (congrAp2 powF (add_zero zero) (.eqRefl _)).eqTrans (pw_zero _)
@@ -339,14 +316,10 @@ theorem orbit_budget (N A B s t T R : PTm n)
       (orbit (var 0) (Syn.shift A) (Syn.shift B) (Syn.shift s))
       (orbit (var 0) (Syn.shift A) (Syn.shift B) (Syn.shift t))
       (Syn.shift T) (growth (var 0)*Syn.shift R)) := by
-    refine PRA.qfInd _ (budget_QF _ _ _ _) ?_ ?_
-    · simp only [subst_budget, subst_orbit, subst_growth, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact budget_congr (orbit_zero _ _ _).eqSymm (orbit_zero _ _ _).eqSymm (.eqRefl _)
+    ipra_qfind (budget_QF _ _ _ _) [subst_budget, subst_orbit, subst_growth]
+    · exact budget_congr (orbit_zero _ _ _).eqSymm (orbit_zero _ _ _).eqSymm (.eqRefl _)
         ((congrMul growth_zero (.eqRefl _)).eqTrans (one_mul _)).eqSymm h
-    · simp only [subst_budget, subst_orbit, subst_growth, PTm.subst_mul,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have a : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift A) (num 4*Syn.shift B) := by
+    · have a : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift A) (num 4*Syn.shift B) := by
         simpa only [Fm.shift, subst_le, PTm.subst_mul, PTm.subst_num, Syn.shift] using hA.shift
       have b : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by
         simpa only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift] using hB.shift
@@ -377,10 +350,7 @@ def inputBudget (U : Input) (i j x : PTm n) : Fm PTm n :=
   le (pw two i*pw two j*zabs (inputDifference U i j x))
     ((pw two i+pw two j)*ap2 U.denominator i x*ap2 U.denominator j x)
 
-@[simp] theorem subst_inputDifference {m : ℕ} (σ : Fin n → PTm m) (U : Input) (i j x : PTm n) :
-    (inputDifference U i j x).subst σ =
-      inputDifference U (Syn.subst σ i) (Syn.subst σ j) (Syn.subst σ x) := by
-  simp only [inputDifference, ZT.subst, PTm.subst_add, PTm.subst_mul, subst_ap2]
+ipra_subst inputDifference [ZT.subst, PTm.subst_add, PTm.subst_mul, subst_ap2]
 
 @[simp] theorem subst_inputBudget {m : ℕ} (σ : Fin n → PTm m) (U : Input) (i j x : PTm n) :
     (inputBudget U i j x).subst σ =
@@ -396,12 +366,9 @@ def observation (U : Input) (H x : PTm n) : Fm PTm n :=
     le (var 0) (Syn.shift (Syn.shift H)) ⟶
     inputBudget U (var 1) (var 0) (Syn.shift (Syn.shift x)))))
 
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (U : Input) (H x : PTm n) :
-    (observation U H x).subst σ = observation U (Syn.subst σ H) (Syn.subst σ x) := by
-  simp only [observation, Fm.subst_and, Fm.subst_all, Fm.subst_imp, subst_le,
-    subst_inputBudget, subst_ap2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_shift, Syn.shift_subst,
-    Syn.shift_var, Fin.succ_zero_eq_one]
+ipra_subst observation [Fm.subst_and, Fm.subst_all, Fm.subst_imp, subst_le, subst_inputBudget, subst_ap2,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.up_zero, Syn.up_one, Syn.up_succ,
+    Syn.subst_shift, Syn.shift_subst, Syn.shift_var, Fin.succ_zero_eq_one]
 
 theorem observation_den (U : Input) {H x : PTm n} (h : Γ ⊢[PRAAx] observation U H x)
     (i : PTm n) (hi : Γ ⊢[PRAAx] le i H) : Γ ⊢[PRAAx] le one (ap2 U.denominator i x) := by
@@ -427,9 +394,7 @@ def sample (U : Input) (k x : PTm n) : PTm n :=
   pairT (clip (ap2 U.positive k x) (ap2 U.negative k x) (ap2 U.denominator k x))
     (ap2 U.denominator k x)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (U : Input) (k x : PTm n) :
-    Syn.subst σ (sample U k x) = sample U (Syn.subst σ k) (Syn.subst σ x) := by
-  simp only [sample, subst_pairT, subst_clip, subst_ap2]
+ipra_subst sample
 
 theorem sample_num (U : Input) (k x : PTm n) : Γ ⊢[PRAAx] fstT (sample U k x) ≐
     clip (ap2 U.positive k x) (ap2 U.negative k x) (ap2 U.denominator k x) := fst_pair _ _
@@ -465,10 +430,7 @@ theorem sample_budget (U : Input) (i j x : PTm n) (h : Γ ⊢[PRAAx] inputBudget
 def value (U : Input) (N k A B x : PTm n) : PTm n :=
   orbit N A B (sample U (k+(N+N)) x)
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (U : Input) (N k A B x : PTm n) :
-    Syn.subst σ (value U N k A B x) = value U (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ x) := by
-  simp only [value, subst_orbit, subst_sample, PTm.subst_add]
+ipra_subst value
 
 def valueF (U : Input) : PR 5 := PTm.toPR (value U (var 0) (var 1) (var 2) (var 3) (var 4))
 
@@ -502,11 +464,7 @@ theorem value_zero (U : Input) (k A B x : PTm n) :
 /-- The regular-name comparison `|s-t|≤2⁻ᵏ+2⁻ˡ`. -/
 def regular (s t k l : PTm n) : Fm PTm n := budget s t (pw two k*pw two l) (pw two k+pw two l)
 
-@[simp] theorem subst_regular {m : ℕ} (σ : Fin n → PTm m) (s t k l : PTm n) :
-    (regular s t k l).subst σ = regular (Syn.subst σ s) (Syn.subst σ t)
-      (Syn.subst σ k) (Syn.subst σ l) := by
-  simp only [regular, subst_budget, PTm.subst_mul, PTm.subst_add, subst_ap2,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+ipra_subst regular
 
 theorem growth_positive (N : PTm n) : Γ ⊢[PRAAx] le one (growth N) :=
   le_trans (le_of_eq_add (d := N+N) (by ipra_ring))
@@ -617,10 +575,8 @@ theorem parameter_shift_closed (U : Input) :
 def globalInput (U : Input) (x : PTm n) : Fm PTm n :=
   .all (observation U (var 0) (Syn.shift x))
 
-@[simp] theorem subst_globalInput {m : ℕ} (σ : Fin n → PTm m) (U : Input) (x : PTm n) :
-    (globalInput U x).subst σ = globalInput U (Syn.subst σ x) := by
-  simp only [globalInput, Fm.subst_all, subst_observation, Syn.subst_var, Syn.up_zero,
-    Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
+ipra_subst globalInput [Fm.subst_all, subst_observation, Syn.subst_var, Syn.up_zero, Syn.up_succ, Syn.subst_shift,
+    Syn.shift_subst]
 
 theorem globalInput_at (U : Input) {x : PTm n} (h : Γ ⊢[PRAAx] globalInput U x) (H : PTm n) :
     Γ ⊢[PRAAx] observation U H x := by

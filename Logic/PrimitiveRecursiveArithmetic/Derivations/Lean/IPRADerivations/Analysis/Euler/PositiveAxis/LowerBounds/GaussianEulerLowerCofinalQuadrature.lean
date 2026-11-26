@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerCofinalQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (quadrature sample mesh precision)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
@@ -24,10 +24,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactCutoffGeometry (lowerWidth)
 open GaussianEulerCompactModulus (lipschitz)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,20 +38,12 @@ def transformed (F : PR 3) (t A C E L T x : PTm n) : PTm n :=
 def input (F : PR 3) (A C E L T x : PTm n) : Fm PTm n :=
   le one A ⋏ (le one C ⋏ GaussianCompactRiemannName.input F one C E L T x)
 
-@[simp] theorem subst_rootMesh {m : ℕ} (σ : Fin n → PTm m) (t L T : PTm n) :
-    Syn.subst σ (rootMesh t L T) = rootMesh (Syn.subst σ t) (Syn.subst σ L) (Syn.subst σ T) := by simp [rootMesh]
-@[simp] theorem subst_scale {m : ℕ} (σ : Fin n → PTm m) (t A L T : PTm n) :
-    Syn.subst σ (scale t A L T) = scale (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ L) (Syn.subst σ T) := by simp [scale]
-@[simp] theorem subst_count {m : ℕ} (σ : Fin n → PTm m) (t A C L T : PTm n) :
-    Syn.subst σ (count t A C L T) = count (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ L) (Syn.subst σ T) := by simp [count]
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (t A C L T : PTm n) :
-    Syn.subst σ (factor t A C L T) = factor (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ L) (Syn.subst σ T) := by simp [factor]
-@[simp] theorem subst_transformed {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (t A C E L T x : PTm n) :
-    Syn.subst σ (transformed F t A C E L T x) = transformed F (Syn.subst σ t) (Syn.subst σ A) (Syn.subst σ C)
-      (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [transformed]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (A C E L T x : PTm n) :
-    (input F A C E L T x).subst σ = input F (Syn.subst σ A) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [input]
+ipra_subst rootMesh
+ipra_subst scale
+ipra_subst count
+ipra_subst factor
+ipra_subst transformed
+ipra_subst input
 
 theorem root_mesh_positive (t L T : PTm n) : Γ ⊢[PRAAx] le one (rootMesh t L T) :=
   positive_product _ _ (unit_positive t) (GaussianCompactRiemannName.mesh_positive t L T)

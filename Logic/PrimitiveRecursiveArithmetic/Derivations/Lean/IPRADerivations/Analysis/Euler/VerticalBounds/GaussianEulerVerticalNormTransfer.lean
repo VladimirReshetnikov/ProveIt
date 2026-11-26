@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerVerticalNormTransfer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianExponentialRealPart (squareF squareData squarePrecision)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
@@ -23,10 +23,6 @@ open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded qnormSq squaredTolerance qsub)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_congr distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

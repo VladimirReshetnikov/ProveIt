@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorDerivativeProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalPrefactorDerivative
   (exponentDerivativeF exponentDerivativeData derivativeF derivativeData derivative_regular)
 open GaussianBarnesCanonicalPrefactorExponentDerivative (exponentOf)
@@ -22,8 +22,6 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalHorner (ofGaussian qadd)
 open GaussianRationalReciprocal (qone)
 open GaussianRationalSyntheticDivision (qadd_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

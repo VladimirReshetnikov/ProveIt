@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetOscillatorySineSmallStrip
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (scale oneCode normSq)
 open GaussianBinetOscillatoryColumns (damping)
@@ -31,10 +31,6 @@ open GaussianRationalHorner (positive_product qadd qmul qzero ofGaussian_represe
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound constantBody)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -47,15 +43,9 @@ def prefixValue (p X Y D sign A B R U L N M : PTm n) : PTm n :=
 def suffixValue (p X Y D sign A B R U L N M : PTm n) : PTm n :=
   qmul (weight (D*L) one N) (sum (offB body) (monus N M) (pairT M (data p X Y D sign A B R U L N)))
 
-@[simp] theorem subst_prefixValue {m : ℕ} (σ : Fin n → PTm m) (p X Y D sign A B R U L N M : PTm n) :
-    Syn.subst σ (prefixValue p X Y D sign A B R U L N M) = prefixValue (Syn.subst σ p) (Syn.subst σ X)
-      (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R)
-      (Syn.subst σ U) (Syn.subst σ L) (Syn.subst σ N) (Syn.subst σ M) := by simp [prefixValue,one]
+ipra_subst prefixValue [one]
 
-@[simp] theorem subst_suffixValue {m : ℕ} (σ : Fin n → PTm m) (p X Y D sign A B R U L N M : PTm n) :
-    Syn.subst σ (suffixValue p X Y D sign A B R U L N M) = suffixValue (Syn.subst σ p) (Syn.subst σ X)
-      (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R)
-      (Syn.subst σ U) (Syn.subst σ L) (Syn.subst σ N) (Syn.subst σ M) := by simp [suffixValue,one]
+ipra_subst suffixValue [one]
 
 theorem split_value (p X Y D sign A B R U L N M : PTm n) (hM : Γ ⊢[PRAAx] le M N) : Γ ⊢[PRAAx]
     GaussianBinetOscillatorySineRectangle.value p X Y D sign A B R U L N ≐
@@ -72,8 +62,7 @@ theorem suffix_row_at (j p X Y D sign A B R U L N M : PTm n) : Γ ⊢[PRAAx]
     inst2 (offB body) j (pairT M (data p X Y D sign A B R U L N)) ≐ value (M+j) p X Y D sign A B R U L N :=
   (GaussianRationalFiniteProduct.offset_at body M j _).eqTrans (row_at (M+j) p X Y D sign A B R U L N)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p A B : PTm n) :
-    Syn.subst σ (numerator p A B) = numerator (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by simp [numerator]
+ipra_subst numerator
 
 private theorem fraction_bound (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx] bounded (fraction a b) a b := by
   let z := scale a oneCode

@@ -13,16 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCommonCutoff
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (height etaDen tailCoefficient top)
 open GaussianGammaCompactCutoffGeometry (delta ratio lowerWidth)
 open GaussianEulerLogarithmicLowerCutoffBudget (clock)
 open GaussianExponentialReference (unit_monotone)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -30,12 +26,9 @@ def indexOffset (R j : PTm n) : PTm n := monus (tailCoefficient (R+j)) (tailCoef
 def lowerIndex (k R j : PTm n) : PTm n := k+indexOffset R j
 def cutoff (r j A : PTm n) : PTm n := r+clock r j A
 
-@[simp] theorem subst_indexOffset {m : ℕ} (σ : Fin n → PTm m) (R j : PTm n) :
-    Syn.subst σ (indexOffset R j) = indexOffset (Syn.subst σ R) (Syn.subst σ j) := by simp [indexOffset,tailCoefficient]
-@[simp] theorem subst_lowerIndex {m : ℕ} (σ : Fin n → PTm m) (k R j : PTm n) :
-    Syn.subst σ (lowerIndex k R j) = lowerIndex (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ j) := by simp [lowerIndex]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (r j A : PTm n) :
-    Syn.subst σ (cutoff r j A) = cutoff (Syn.subst σ r) (Syn.subst σ j) (Syn.subst σ A) := by simp [cutoff]
+ipra_subst indexOffset [tailCoefficient]
+ipra_subst lowerIndex
+ipra_subst cutoff
 
 theorem coefficient_order (R j : PTm n) : Γ ⊢[PRAAx] le (tailCoefficient R) (tailCoefficient (R+j)) := by
   have hs : Γ ⊢[PRAAx] le (succ R) (succ (R+j)) := le_of_eq_add (d := j) (by ipra_ring)

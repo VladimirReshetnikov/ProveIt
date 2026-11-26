@@ -1,6 +1,4 @@
 import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.Pairing
 
 /-!
 # Sums and products with two parameters
@@ -159,16 +157,12 @@ private abbrev prodMulF (f g : PTm 3) : Fm PTm 3 :=
   ap3 (prod2F (f * g)) (var 0) (var 1) (var 2) ≐ ap3 (prod2F f) (var 0) (var 1) (var 2) * ap3 (prod2F g) (var 0) (var 1) (var 2)
 
 private theorem prod2_mul₀ (f g : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] prodMulF f g := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero]
-    refine (prod2_zero _ _ _).eqTrans ?_
+  ipra_ind [subst_ap3]
+  · refine (prod2_zero _ _ _).eqTrans ?_
     refine withEq (prod2_zero (Γ := []) f (var 0 : PTm 2) (var 1)) fun e₁ =>
       withEq (prod2_zero (Γ := []) g (var 0 : PTm 2) (var 1)) fun e₂ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-  · simp only [Fm.subst_eq, PTm.subst_mul, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have e : inst3 (f * g) (var 0 : PTm 3) (var 1) (var 2) = inst3 f (var 0) (var 1) (var 2) * inst3 g (var 0) (var 1) (var 2) := by
+  · have e : inst3 (f * g) (var 0 : PTm 3) (var 1) (var 2) = inst3 f (var 0) (var 1) (var 2) * inst3 g (var 0) (var 1) (var 2) := by
       simp [inst3]
     refine (prod2_succ _ (var 0) _ _).eqTrans ?_
     rw [e]
@@ -185,13 +179,9 @@ theorem prod2_mul (f g : PTm 3) (N p q : PTm n) :
 private abbrev prodOneF : Fm PTm 3 := ap3 (prod2F one) (var 0) (var 1) (var 2) ≐ one
 
 private theorem prod2_const_one₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] prodOneF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact prod2_zero _ _ _
-  · simp only [Fm.subst_eq, subst_ap3, Syn.subst_var, Syn.repl_zero, repl_one, repl_two,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine (prod2_succ _ (var 0) _ _).eqTrans ?_
+  ipra_ind [subst_ap3]
+  · exact prod2_zero _ _ _
+  · refine (prod2_succ _ (var 0) _ _).eqTrans ?_
     have e : inst3 (one : PTm 3) (var 0 : PTm 3) (var 1) (var 2) = one := by simp [inst3]
     rw [e]
     exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _)
@@ -228,15 +218,9 @@ private abbrev deltaF (F : PTm 2) : Fm PTm 3 :=
     (le (var 0) (var 1) ⟶ (ap3 (prod2F (deltaBody F)) (var 0) (var 1) (var 2) ≐ one))
 
 private theorem delta₀ (F : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] deltaF F := by
-  refine ind _ ⟨⟨lt_QF _ _, trivial⟩, ⟨le_QF _ _, trivial⟩⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_le, subst_ap3, subst_inst2,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .andI (.impI (lt_zero_absurd _ Prf.hyp0)) (.impI (prod2_zero _ _ _))
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_le, subst_ap3, subst_inst2,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have s := prod2_succ (Γ := [deltaF F]) (deltaBody F) (var 0) (var 1) (var 2)
+  ipra_ind (⟨⟨lt_QF _ _, trivial⟩, ⟨le_QF _ _, trivial⟩⟩) [subst_lt, subst_le, subst_ap3, subst_inst2]
+  · exact .andI (.impI (lt_zero_absurd _ Prf.hyp0)) (.impI (prod2_zero _ _ _))
+  · have s := prod2_succ (Γ := [deltaF F]) (deltaBody F) (var 0) (var 1) (var 2)
     rw [inst3_delta] at s
     have ih₁ : [deltaF F] ⊢[PRAAx] (lt (var 1) (var 0) ⟶
         (ap3 (prod2F (deltaBody F)) (var 0) (var 1) (var 2) ≐ inst2 F (var 1) (var 2))) := Prf.andE₁ Prf.hyp0
@@ -280,15 +264,9 @@ private abbrev sumDeltaF : Fm PTm 3 :=
     (le (var 0) (var 1) ⟶ (ap3 (sum2F indBody) (var 0) (var 1) (var 2) ≐ zero))
 
 private theorem sum_delta₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] sumDeltaF := by
-  refine ind _ ⟨⟨lt_QF _ _, trivial⟩, ⟨le_QF _ _, trivial⟩⟩ ?_ ?_
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_le, subst_ap3,
-      Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact .andI (.impI (lt_zero_absurd _ Prf.hyp0)) (.impI (sum2_zero _ _ _))
-  · simp only [Fm.subst_and, Fm.subst_imp, Fm.subst_eq, subst_lt, subst_le, subst_ap3,
-      Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    have s := sum2_succ (Γ := [sumDeltaF]) indBody (var 0) (var 1) (var 2)
+  ipra_ind (⟨⟨lt_QF _ _, trivial⟩, ⟨le_QF _ _, trivial⟩⟩) [subst_lt, subst_le, subst_ap3]
+  · exact .andI (.impI (lt_zero_absurd _ Prf.hyp0)) (.impI (sum2_zero _ _ _))
+  · have s := sum2_succ (Γ := [sumDeltaF]) indBody (var 0) (var 1) (var 2)
     have e : inst3 indBody (var 0 : PTm 3) (var 1) (var 2) = eqb (var 0) (var 1) := by simp [inst3]
     rw [e] at s
     have ih₁ : [sumDeltaF] ⊢[PRAAx] (lt (var 1) (var 0) ⟶ (ap3 (sum2F indBody) (var 0) (var 1) (var 2) ≐ one)) :=

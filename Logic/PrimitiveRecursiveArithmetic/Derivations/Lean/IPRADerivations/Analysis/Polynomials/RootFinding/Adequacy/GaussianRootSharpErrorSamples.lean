@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootSharpErrorSamples
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (CN unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianFactorParameters (monicRD)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub bounded)
@@ -26,10 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRootSchedule (coefficientConstant)
 open LeanProofs.IPRA.Analysis.GaussianRepresentedPointBounds (normLE norm_le_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,11 +35,8 @@ def observation (step a : PR 3) (point : PR 2) (N t x s : PTm n) : PTm n :=
   qsub (evaluate (GaussianRootRadius.product step a N t x) (ap2 point s x))
     (GaussianPolynomialValueName.observation a point N x s)
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (N Z : PTm n) :
-    Syn.subst σ (cost N Z) = cost (Syn.subst σ N) (Syn.subst σ Z) := by simp [cost]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (point : PR 2) (N t x s : PTm n) :
-    Syn.subst σ (observation step a point N t x s) = observation step a point
-      (Syn.subst σ N) (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ s) := by simp [observation]
+ipra_subst cost
+ipra_subst observation
 
 theorem coarse_power (Z H r : PTm n) (hH : Γ ⊢[PRAAx] le one H) : Γ ⊢[PRAAx]
     le (pw (Z*H+one) r) (pw (Z+one) r*pw H r) := by

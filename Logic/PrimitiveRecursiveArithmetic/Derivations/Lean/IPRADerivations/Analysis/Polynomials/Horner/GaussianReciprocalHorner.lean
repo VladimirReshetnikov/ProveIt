@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianReciprocalHorner
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul represents canonical qadd_canonical qmul_canonical qadd_represents qmul_represents
     represents_rescale represents_congr canonical_unique zero_represents positive_product)
@@ -30,10 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -172,10 +168,8 @@ def tailStep : PTm 3 := qmul (fstT (sndT (var 2)))
 def tailF : PR 2 := rec2 (qzero : PTm 1) tailStep
 def tail (C w N k : PTm n) : PTm n := ap2 tailF k (tailData C w N)
 
-@[simp] theorem subst_tailData {m : ℕ} (σ : Fin n → PTm m) (C w N : PTm n) :
-    Syn.subst σ (tailData C w N) = tailData (Syn.subst σ C) (Syn.subst σ w) (Syn.subst σ N) := by simp [tailData]
-@[simp] theorem subst_tail {m : ℕ} (σ : Fin n → PTm m) (C w N k : PTm n) :
-    Syn.subst σ (tail C w N k) = tail (Syn.subst σ C) (Syn.subst σ w) (Syn.subst σ N) (Syn.subst σ k) := by simp [tail]
+ipra_subst tailData
+ipra_subst tail
 
 theorem tail_zero (C w N : PTm n) : Γ ⊢[PRAAx] tail C w N zero ≐ qzero := by
   simpa only [tail,tailF,GaussianRationalHorner.subst_qzero] using rec2_zero (Γ := Γ) (qzero : PTm 1) tailStep (tailData C w N)
@@ -187,10 +181,10 @@ theorem tail_body_at (C w N k t : PTm n) : Γ ⊢[PRAAx]
     (σ := ![fstT (sndT (tailData C w N)),t,fstT (tailData C w N),sndT (sndT (tailData C w N)),k])
     (σ' := ![w,t,C,N,k]) (fun i => by
       fin_cases i
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+      · exact (snd_pair _ _).fstE
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+      · exact (snd_pair _ _).sndE
       · exact .eqRefl _)
   simpa only [tailStep,GaussianRationalHorner.subst_qmul,GaussianRationalHorner.subst_qadd,subst_entry,
     PTm.subst_monus,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
@@ -215,9 +209,7 @@ def prefixLaw (C z w N k : PTm n) : Fm PTm n := le k N ⟶
   qmul (GaussianRationalHorner.evaluate C z) (power w k) ≐
     qadd (GaussianRationalHorner.horner C z (succ (monus N k))) (tail C w N k)
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C z w N k : PTm n) :
-    (prefixLaw C z w N k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ z)
-      (Syn.subst σ w) (Syn.subst σ N) (Syn.subst σ k) := by simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (C z w N : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N) : Γ ⊢[PRAAx]
     qmul (GaussianRationalHorner.evaluate C z) (power w zero) ≐
@@ -253,11 +245,9 @@ theorem prefix_identity (C z w N k : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ suc
   have invShift : Γ.map Fm.shift ⊢[PRAAx] qmul (Syn.shift z) (Syn.shift w) ≐ qone := by
     simpa only [Fm.shift,Fm.subst_eq,GaussianRationalHorner.subst_qmul,GaussianRationalSyntheticDivision.subst_qone,Syn.shift] using hinverse.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift z) (Syn.shift w) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero C z w N hC.wk)
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero C z w N hC.wk)
+    · refine .impI ?_
       let I := prefixLaw (Syn.shift C) (Syn.shift z) (Syn.shift w) (Syn.shift N) (var 0)
       let Δ := le (succ (var 0)) (Syn.shift N) :: I :: Γ.map Fm.shift
       exact prefix_step _ _ _ _ _ Prf.hyp0 invShift.wk.wk (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))

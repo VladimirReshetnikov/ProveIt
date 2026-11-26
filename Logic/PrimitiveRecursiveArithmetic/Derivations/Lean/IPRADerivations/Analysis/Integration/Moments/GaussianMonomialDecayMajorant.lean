@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianMonomialDecayMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianEulerUpperTailPointwise (referenceTop referenceBottom reference_bottom_positive majorantTop majorantBottom majorant_bottom_positive)
 open GaussianEulerWeightedHalfDecay (majorant halfSample)
@@ -32,9 +32,6 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianNamedSmallPerturbationTransport (productClock product_at)
 open GaussianRationalSlackRemoval (slack precision slack_removal_at)
 open RationalGaussianEmbedding (embed)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,14 +44,10 @@ def halfWeightedF : PR 2 := multiplyF constantF decayF
 def halfWeightedData (d a b : PTm n) : PTm n := multiplyData constantF decayF (monomial d a b) (decayData a (two*b))
 def halfIntegrandF : PR 2 := multiplyF halfWeightedF decayF
 def halfIntegrandData (d a b : PTm n) : PTm n := multiplyData halfWeightedF decayF (halfWeightedData d a b) (decayData a (two*b))
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (source a b).subst σ = source (Syn.subst σ a) (Syn.subst σ b) := by simp [source]
-@[simp] theorem subst_monomial {m : ℕ} (σ : Fin n → PTm m) (d a b : PTm n) :
-    Syn.subst σ (monomial d a b) = monomial (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ b) := by simp [monomial]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (d a b : PTm n) :
-    Syn.subst σ (data d a b) = data (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ b) := by simp [data,decayData,GaussianGammaFiniteApproximantName.exponentialInputData]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p d a b : PTm n) :
-    Syn.subst σ (sample p d a b) = sample (Syn.subst σ p) (Syn.subst σ d) (Syn.subst σ a) (Syn.subst σ b) := by simp [sample]
+ipra_subst source
+ipra_subst monomial
+ipra_subst data [decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst sample
 
 theorem half_factorization (d a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     crossEquivalent halfIntegrandF nameF (halfIntegrandData d a b) (data d a b) := by

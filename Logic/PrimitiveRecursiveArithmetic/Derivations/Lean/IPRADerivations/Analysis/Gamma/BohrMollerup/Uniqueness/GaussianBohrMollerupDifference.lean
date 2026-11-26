@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (addF addData add_fast)
@@ -21,9 +21,6 @@ open GaussianNamedDifference (nameF data name_regular sample_error difference_di
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianRationalHorner (qadd)
 open GaussianRationalMetric (qsub distanceBounded)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

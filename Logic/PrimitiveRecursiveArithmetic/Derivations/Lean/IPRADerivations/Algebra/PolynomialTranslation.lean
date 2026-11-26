@@ -1,6 +1,4 @@
 import IPRADerivations.Combinatorics.BinomialTwo
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.SumSplit
 
 /-!
 # Polynomial translation
@@ -25,15 +23,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.PolynomialTranslation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_above zB zsum inst2_z)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.BinomialTwo (bt S bt_at binomial_two)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -99,7 +93,7 @@ theorem tail_pt (I J x : PTm n) :
   rw [inst2_offB, inst2_rowB, inst3_a3]
   have g : Γ ⊢[PRAAx] gb (fstT (sndT (pairT (succ J) (pairT J x))))
       (fstT (pairT (succ J) (pairT J x)) + I) ≐ zero :=
-    (congrGb ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (congrAdd (fst_pair _ _) (.eqRefl _))).eqTrans
+    (congrGb (snd_pair _ _).fstE (congrAdd (fst_pair _ _) (.eqRefl _))).eqTrans
       (gb_above (le_add_right (succ J) I))
   exact (congrMul (congrMul (congrMul (.eqRefl _) g) (.eqRefl _)) (.eqRefl _)).eqTrans
     ((congrMul (congrMul (mul_zero _) (.eqRefl _)) (.eqRefl _)).eqTrans

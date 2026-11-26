@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteEulerLateInput
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedFiniteEuler (source nameF data modulus late_step name_regular)
 open GaussianNamedRightHalfPlane (threshold radius numerator denominator)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator denominator_positive)
@@ -22,17 +22,12 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def referenceData (f : PR 2) (r x N : PTm n) : PTm n :=
   GaussianBetaAllDegreeEulerInverse.data (numerator f r x) (denominator f r x) N
-@[simp] theorem subst_referenceData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x N : PTm n) :
-    Syn.subst σ (referenceData f r x N) = referenceData f (Syn.subst σ r) (Syn.subst σ x) (Syn.subst σ N) := by simp [referenceData]
+ipra_subst referenceData
 
 theorem reference_regular (f : PR 2) (r x A N : PTm n)
     (h : Γ ⊢[PRAAx] source f x A N) (hm : Γ ⊢[PRAAx] le (threshold A) r) : Γ ⊢[PRAAx]

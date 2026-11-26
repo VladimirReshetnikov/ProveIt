@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingFactorialRobbinsConventionalRatio
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -31,8 +31,6 @@ open GaussianStirlingLogDuplication (exponential_regular)
 open GaussianStirlingMultiplicative (reciprocalF decayF decayData)
 open GaussianStirlingMultiplicativeAlgebra (normalizationF normalizationData normalization_regular)
 open GaussianStirlingNames (source)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

@@ -16,7 +16,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaSlopeLowerRational
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (fraction_congr)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -35,10 +35,6 @@ open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open RationalValueBounds (upper upper_congr upper_of_radius upper_triangle upper_mono)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,22 +42,16 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def domain (a b c d : PTm n) : Fm PTm n :=
   le one b ⋏ (le b a ⋏ (le one d ⋏ (le d c ⋏ (le (d*a) (b*c) ⋏ le c (two*d)))))
 
-@[simp] theorem subst_domain {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    (domain a b c d).subst σ = domain (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [domain,two]
+ipra_subst domain [two]
 
 def quarterGap (a b c d : PTm n) : PTm n := fraction (monus (c*b) (a*d)) (num 4*b*d)
 
-@[simp] theorem subst_quarterGap {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (quarterGap a b c d) = quarterGap (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [quarterGap]
+ipra_subst quarterGap
 
 def lowerData (a b c d : PTm n) : PTm n :=
   addData (data a b) (margin (d*a) (b*c) (d*b))
 
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a b c d : PTm n) :
-    Syn.subst σ (lowerData a b c d) = lowerData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) := by
-  simp [lowerData]
+ipra_subst lowerData
 
 theorem lower_slope_rational (a b c d : PTm n) (h : Γ ⊢[PRAAx] domain a b c d) :
     Γ ⊢[PRAAx] realOrder lowerF nameF (lowerData a b c d) (data c d) := by

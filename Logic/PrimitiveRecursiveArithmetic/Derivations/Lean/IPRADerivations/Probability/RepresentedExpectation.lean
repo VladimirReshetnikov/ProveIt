@@ -21,16 +21,12 @@ row weights `W_j` (the expectation `I x = ∑_j W_j x_j`, cleared of the common 
 
 namespace LeanProofs.IPRA.Probability.RepresentedExpectation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.ErrorBudget (nsum toG_nsum)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_mul ad_le_of)
 open LeanProofs.IPRA.Probability.ConditionalAveraging (nsum_mono ad_nsum_le)
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}
 
@@ -96,8 +92,7 @@ theorem tail_pt {xs xr B : PTm n} (hr : Γ ⊢[PRAAx] le xr B) (hs : Γ ⊢[PRAA
   refine meet_left ?_
   have hm : Γ ⊢[PRAAx] le (succ xr) xs := le_trans (by ipra_le sl hr + 1) hs
   have hle : Γ ⊢[PRAAx] le xr xs := le_trans (by ipra_le 1) hm
-  have e := natEq (eq_add_of_le hle)
   show Γ ⊢[PRAAx] le one (monus xs xr + monus xr xs)
-  ipra_le sl hm + 𝔟 (monus xr xs) with (-1) * e
+  ipra_le sl hm + 𝔟 (monus xr xs) with (-1) * natEq (eq_add_of_le hle)
 
 end LeanProofs.IPRA.Probability.RepresentedExpectation

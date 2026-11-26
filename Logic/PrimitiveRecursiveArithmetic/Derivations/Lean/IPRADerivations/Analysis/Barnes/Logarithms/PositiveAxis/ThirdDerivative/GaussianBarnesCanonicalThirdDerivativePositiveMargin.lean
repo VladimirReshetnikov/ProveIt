@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalThirdDerivativePositiveMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Common (add_le_add mul_le_mul)
 open ComplexLogarithmRemainder (add code)
 open GaussianBarnesCanonicalFactor (base)
@@ -25,9 +25,6 @@ open GaussianRationalLowerBounds (lower lower_congr lower_from_representation)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianRootAlgebra (equal equal_of_values equal_refl add_equal)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

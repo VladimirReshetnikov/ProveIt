@@ -20,7 +20,7 @@ set_option maxHeartbeats 1100000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorProductCoefficientCauchy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open GaussianBarnesCanonicalExponentTaylorBuffer (buffer buffer_length)
@@ -43,10 +43,6 @@ open GaussianRationalSyntheticBounds (natCode natCode_nonnegative)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (multiply)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "PP" => GaussianRationalPolynomialExponential.polynomial

@@ -14,7 +14,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorFirstGridRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded_mono normSq)
 open GaussianBarnesCanonicalFiniteTaylorDiskGridLimit (analyticGain clockGain)
 open GaussianBarnesCanonicalFiniteTaylorFirstPolynomial (quadraticCap)
@@ -29,10 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qmul)
 open GaussianRationalMetric (distanceBounded qsub)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

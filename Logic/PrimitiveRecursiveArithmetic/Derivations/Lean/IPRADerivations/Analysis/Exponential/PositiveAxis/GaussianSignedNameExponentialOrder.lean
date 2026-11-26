@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSignedNameExponentialOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at sampleOrder order_at scalar_coordinate_distance)
 open GaussianRadiusExponentialName (input nameF data)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -26,18 +26,13 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def realSamples (f : PR 2) (x : PTm n) : Fm PTm n := .all
   (GaussianRationalHorner.canonical (ap2 f (var 0) (Syn.shift x)) ⋏
     RationalGaussianEmbedding.axis (ap2 f (var 0) (Syn.shift x)))
-@[simp] theorem subst_realSamples {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    (realSamples f x).subst σ = realSamples f (Syn.subst σ x) := by simp [realSamples,Syn.subst_shift,Syn.shift_subst]
+ipra_subst realSamples [Syn.subst_shift, Syn.shift_subst]
 theorem real_sample_at (f : PR 2) (x j : PTm n) (h : Γ ⊢[PRAAx] realSamples f x) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (ap2 f j x) ⋏ RationalGaussianEmbedding.axis (ap2 f j x) := by
   simpa [realSamples] using h.allE j
@@ -102,8 +97,7 @@ theorem exponential_own_sample_rate (f : PR 2) (R x j : PTm n) (hf : Γ ⊢[PRAA
       (own_sample_rate f x j hf.andE₁))))
 
 def cost (R : PTm n) : PTm n := two*GaussianRadiusExponentialLipschitzRate.factor R+num 4
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (cost R) = cost (Syn.subst σ R) := by simp [cost]
+ipra_subst cost
 
 theorem budget (f g : PR 2) (R x y p q j : PTm n)
     (hf : Γ ⊢[PRAAx] input f R x) (hg : Γ ⊢[PRAAx] input g R y)

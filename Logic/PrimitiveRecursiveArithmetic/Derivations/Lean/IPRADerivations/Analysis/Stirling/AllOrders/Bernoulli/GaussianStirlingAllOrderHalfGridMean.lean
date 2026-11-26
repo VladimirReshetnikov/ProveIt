@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderHalfGridMean
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (nonnegative_of_representation)
@@ -26,10 +26,6 @@ open RationalFiniteSum (canonical_equal)
 open RationalNonnegativePowers (fraction_multiply fraction_congr)
 open RationalNormalForm (normalize_well_formed)
 open RationalSumConstants (count_add multiply_one_right)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

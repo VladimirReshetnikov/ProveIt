@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHead (factor head run head_zero head_succ program_at)
 open GaussianGammaEulerHeadLower (translated factor_represents)
 open GaussianRationalHorner (ofGaussian qmul represents positive_product ofGaussian_represents qmul_represents
@@ -22,20 +22,15 @@ open GaussianRationalHorner (ofGaussian qmul represents positive_product ofGauss
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def shifted (z B : PTm n) : PTm n := translated z B one
 def linear (z B k : PTm n) : PTm n := ofGaussian (translated z B k) B
 
-@[simp] theorem subst_shifted {l : ℕ} (σ : Fin n → PTm l) (z B : PTm n) :
-    Syn.subst σ (shifted z B) = shifted (Syn.subst σ z) (Syn.subst σ B) := by simp [shifted]
+ipra_subst shifted
 
-@[simp] theorem subst_linear {l : ℕ} (σ : Fin n → PTm l) (z B k : PTm n) :
-    Syn.subst σ (linear z B k) = linear (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ k) := by simp [linear]
+ipra_subst linear
 
 theorem shifted_translation (z B j : PTm n) : Γ ⊢[PRAAx]
     equal (translated (shifted z B) B j) (translated z B (succ j)) := by
@@ -65,8 +60,7 @@ theorem factor_exchange (z B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[P
 def shiftLaw (z B N : PTm n) : Fm PTm n :=
   qmul (ofGaussian z B) (head (shifted z B) B N) ≐ qmul (head z B N) (linear z B (succ N))
 
-@[simp] theorem subst_shiftLaw {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    (shiftLaw z B N).subst σ = shiftLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [shiftLaw]
+ipra_subst shiftLaw
 
 theorem shift_zero (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] shiftLaw z B zero :=
   (qmul_congr (.eqRefl _) (head_zero (shifted z B) B hB)).eqTrans
@@ -83,11 +77,9 @@ theorem shift_identity (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PR
   have hs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by
     simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (shiftLaw (Syn.shift z) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_shiftLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact shift_zero z B hB
-    · simp only [subst_shiftLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact shift_step _ _ _ hs.wk Prf.hyp0
+    ipra_qfind [subst_shiftLaw]
+    · exact shift_zero z B hB
+    · exact shift_step _ _ _ hs.wk Prf.hyp0
   simpa only [subst_shiftLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 theorem returned_shift_identity (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]

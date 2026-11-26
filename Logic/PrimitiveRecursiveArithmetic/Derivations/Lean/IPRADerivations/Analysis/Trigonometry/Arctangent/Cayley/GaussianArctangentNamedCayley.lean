@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedCayley
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyValues (value)
 open GaussianArctangentNamedExtension (clock numerator denominator denominator_positive numerator_le)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRadiusExponentialName (input inputPrecision index)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -50,15 +46,10 @@ def modulus : PTm n := num 4
 def nameF (f : PR 2) : PR 2 := GaussianFastValueCut.nameF (rawF f)
 def data (x : PTm n) : PTm n := GaussianFastValueCut.nameData modulus x
 
-@[simp] theorem subst_exponentialData {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (exponentialData x) = exponentialData (Syn.subst σ x) := by simp [exponentialData]
-@[simp] theorem subst_queryPrecision {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (queryPrecision p) = queryPrecision (Syn.subst σ p) := by simp [queryPrecision]
-@[simp] theorem subst_raw {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (raw f p x) = raw f (Syn.subst σ p) (Syn.subst σ x) := by
-  simp [raw,value,GaussianArctangentCayleyValues.numerator,GaussianArctangentCayleyValues.denominator]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (data x) = data (Syn.subst σ x) := by simp [data,modulus]
+ipra_subst exponentialData
+ipra_subst queryPrecision
+ipra_subst raw [value, GaussianArctangentCayleyValues.numerator, GaussianArctangentCayleyValues.denominator]
+ipra_subst data [modulus]
 
 theorem argument_bound (f : PR 2) (p x : PTm n) :
     Γ ⊢[PRAAx] bounded (ap2 (GaussianArctangentNamedExtension.nameF f) p x) two one :=

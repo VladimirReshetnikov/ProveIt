@@ -15,22 +15,18 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRootUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open QuadraticSignCertificates (first second equal add negative multiply)
 open QuadraticSignCertificates (multiply_first multiply_second negative_first negative_second)
 open QuadraticConeOrder (equal_of_values equal_symm add_first add_second)
 open QuadraticIntegerOrder (positive isZero equivalent difference root natural
   positive_add positive_add_zero positive_value_congr positive_zero_absurd
   zero_add zero_negative zero_value_congr zero_product_reflect equivalent_symm equivalent_trans root_positive root_square)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def nonnegative (d x : PTm n) : Fm PTm n := positive d x ⋎ isZero d x
-@[simp] theorem subst_nonnegative {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    (nonnegative d x).subst σ = nonnegative (Syn.subst σ d) (Syn.subst σ x) := by simp [nonnegative]
+ipra_subst nonnegative
 
 theorem add_commute (x y : PTm n) : Γ ⊢[PRAAx] equal (add x y) (add y x) := by
   apply equal_of_values <;> simp only [add_first,add_second] <;> ring
@@ -68,18 +64,16 @@ theorem unique_actual_root (d x : PTm n) (hd : Γ ⊢[PRAAx] le one d)
 def output (d : PTm n) : PTm n := pairT root (pairT (multiply d root root) (natural d))
 def outputF : PR 1 := PTm.toPR (output (var 0))
 def run (d : PTm n) : PTm n := ap1 outputF d
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) :
-    Syn.subst σ (output d) = output (Syn.subst σ d) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d : PTm n) :
-    Syn.subst σ (run d) = run (Syn.subst σ d) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d : PTm n) : Γ ⊢[PRAAx] run d ≐ output d := by
   simpa [run,outputF,ap1] using toPR_eq (Γ := Γ) (output (var 0) : PTm 1) ![d]
 theorem returned_root (d : PTm n) : Γ ⊢[PRAAx] fstT (run d) ≐ root :=
-  (congrFst (program_at d)).eqTrans (fst_pair _ _)
+  (program_at d).fstE
 theorem returned_square (d : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d)) ≐ multiply d root root :=
-  (congrFst (congrSnd (program_at d))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at d))).eqTrans (snd_pair _ _).fstE
 theorem returned_natural (d : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d)) ≐ natural d :=
-  (congrSnd (congrSnd (program_at d))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  (congrSnd (congrSnd (program_at d))).eqTrans (snd_pair _ _).sndE
 
 theorem equivalent_code_congr {d x x' y y' : PTm n} (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y')
     (h : Γ ⊢[PRAAx] equivalent d x y) : Γ ⊢[PRAAx] equivalent d x' y' := by

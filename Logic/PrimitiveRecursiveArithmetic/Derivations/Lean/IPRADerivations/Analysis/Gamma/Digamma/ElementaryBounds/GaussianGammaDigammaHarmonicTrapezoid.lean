@@ -13,15 +13,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaHarmonicTrapezoid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (mul_quo_succ)
 open GaussianRationalHorner (positive_product)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -38,9 +34,7 @@ theorem chord (A W F j : PTm n) (hj : Γ ⊢[PRAAx] le (succ j) W) :
 def prefixLaw (A W F j : PTm n) : Fm PTm n :=
   le j W ⟶ le (two*A*(A+W)*S (A+j) F+j*succ j*F) (two*A*(A+W)*S A F+two*(A+W)*j*F)
 
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (A W F j : PTm n) :
-    (prefixLaw A W F j).subst σ = prefixLaw (Syn.subst σ A) (Syn.subst σ W) (Syn.subst σ F) (Syn.subst σ j) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 private theorem prefix_zero (A W F : PTm n) : Γ ⊢[PRAAx] prefixLaw A W F zero := by
   refine .impI ?_

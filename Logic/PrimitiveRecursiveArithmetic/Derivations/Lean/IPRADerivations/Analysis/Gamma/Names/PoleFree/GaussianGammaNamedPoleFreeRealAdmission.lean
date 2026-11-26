@@ -18,7 +18,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFreeRealAdmission
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (fraction_order pointCN)
@@ -46,10 +46,6 @@ open RationalArgmin (rationalLE_congr)
 open RationalCompactObservationTightening (lower_guard upper_guard)
 open RationalGaussianEmbedding (axis_congr axis_add)
 open RationalValueBounds (upper upper_congr upper_triangle upper_of_order upper_of_radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -63,8 +59,7 @@ def offsetData (f : PR 2) (x E : PTm n) : PTm n :=
   addData (retimedData x (two*E)) (naturalPoint (succ (chartIndex f x E)))
 def readClock (p E : PTm n) : PTm n := GaussianNamedGammaIncrementInput.clock p+snapshot E
 
-@[simp] theorem subst_snapshot {m : ℕ} (σ : Fin n → PTm m) (E : PTm n) :
-    Syn.subst σ (snapshot E) = snapshot (Syn.subst σ E) := by simp [snapshot,two,one]
+ipra_subst snapshot [two, one]
 @[simp] theorem subst_chartIndex {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E : PTm n) :
     Syn.subst σ (chartIndex f x E) = chartIndex f (Syn.subst σ x) (Syn.subst σ E) := by
   simp only [chartIndex,interval,GaussianGammaNamedPoleFreeNegativeSnapshot.magnitude,subst_ap2,

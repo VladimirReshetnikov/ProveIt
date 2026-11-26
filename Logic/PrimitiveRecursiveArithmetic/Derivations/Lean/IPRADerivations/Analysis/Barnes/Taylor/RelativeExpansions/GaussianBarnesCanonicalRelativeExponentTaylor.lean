@@ -11,7 +11,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalRelativeExponentTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalPrefactorExponentDerivative (exponentOf square squareStep twicePoint linearSquare incrementData)
 open GaussianBarnesCanonicalRelativeLogIncrement (exponentData prefactorF prefactorData correctionF correctionData)
@@ -23,9 +23,6 @@ open GaussianNameRingLaws (negativeF negativeData negative_fast add_commutative)
 open GaussianRationalHorner (ofGaussian qadd qmul)
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

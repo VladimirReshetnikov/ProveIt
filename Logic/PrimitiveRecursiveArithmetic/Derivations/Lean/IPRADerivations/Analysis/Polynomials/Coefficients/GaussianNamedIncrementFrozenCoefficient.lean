@@ -13,7 +13,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedIncrementFrozenCoefficient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus)
 open GaussianNameEquivalence (cross_to_diagonal diagonal_at)
@@ -24,9 +24,6 @@ open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,14 +42,9 @@ def cost (F G K : PR 2) (x y z a H : PTm n) : PTm n :=
   ((multiplyModulus (RF K) (DF F G) (rd a z) (dd x y)+one)+R a*(num 6+(three+three)))+
     H*inverseCost K z a
 
-@[simp] theorem subst_inverseCost {m : ℕ} (σ : Fin n → PTm m) (K : PR 2) (z a : PTm n) :
-    Syn.subst σ (inverseCost K z a) = inverseCost K (Syn.subst σ z) (Syn.subst σ a) := by
-  simp [inverseCost,one,two]
+ipra_subst inverseCost [one, two]
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (F G K : PR 2) (x y z a H : PTm n) :
-    Syn.subst σ (cost F G K x y z a H) =
-      cost F G K (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ a) (Syn.subst σ H) := by
-  simp [cost,three,one,two]
+ipra_subst cost [three, one, two]
 
 theorem inverse_at_frozen_increment (K : PR 2) (q z a J : PTm n)
     (hk : Γ ⊢[PRAAx] GaussianNameReciprocal.input K a z)

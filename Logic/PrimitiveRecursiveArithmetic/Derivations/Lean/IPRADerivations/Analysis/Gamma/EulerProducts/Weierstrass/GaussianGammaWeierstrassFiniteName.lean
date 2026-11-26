@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaWeierstrassFiniteName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaWeierstrassFactors
   (width errorBudget literalPrefix foldedPrefix harmonicArgument harmonic_argument_bound prefix_comparison scaled_distance)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular source)
@@ -28,9 +28,6 @@ open GaussianScalarExponentialProductTail (rectangleCutoff)
 open GaussianExponentialReference (finite_reference index_below_rectangle)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -56,28 +53,17 @@ def modulus (z R B N : PTm n) : PTm n := foldedModulus z R B N+comparisonBudget 
 def nameF : PR 2 := GaussianFastValueCut.nameF rawF
 def nameData (z R B N : PTm n) : PTm n := GaussianFastValueCut.nameData (modulus z R B N) (data z R B N)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (data z R B N) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_rawPoint {m : ℕ} (σ : Fin n → PTm m) (p z R B N : PTm n) :
-    Syn.subst σ (rawPoint p z R B N) = rawPoint (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [rawPoint,rectangleCutoff,GaussianScalarExponentialProductTail.reserve,GaussianScalarExponentialProductTail.growthExponent]
+ipra_subst rawPoint [rectangleCutoff, GaussianScalarExponentialProductTail.reserve, GaussianScalarExponentialProductTail.growthExponent]
 
-@[simp] theorem subst_exponentData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (exponentData z R B N) = exponentData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [exponentData]
+ipra_subst exponentData
 
-@[simp] theorem subst_foldedRawData {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (foldedRawData z R B N) = foldedRawData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [foldedRawData]
+ipra_subst foldedRawData
 
-@[simp] theorem subst_comparisonBudget {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    Syn.subst σ (comparisonBudget R N) = comparisonBudget (Syn.subst σ R) (Syn.subst σ N) := by simp [comparisonBudget]
+ipra_subst comparisonBudget
 
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (z R B N : PTm n) :
-    Syn.subst σ (modulus z R B N) = modulus (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [modulus,foldedModulus]
+ipra_subst modulus [foldedModulus]
 
 theorem raw_at (p z R B N : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (data z R B N) ≐ rawPoint p z R B N := by
   let x := data z R B N
@@ -87,10 +73,10 @@ theorem raw_at (p z R B N : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (data z R B N) ≐
       (fstT (sndT (sndT x))) (sndT (sndT (sndT x))) := by
     simpa [ap2,rawF,read] using toPR_eq (Γ := Γ) read ![p,x]
   have s1 : Γ ⊢[PRAAx] sndT x ≐ pairT R (pairT B N) := snd_pair _ _
-  have s2 := (congrSnd s1).eqTrans (snd_pair _ _)
-  have er := (congrFst s1).eqTrans (fst_pair _ _)
-  have eb := (congrFst s2).eqTrans (fst_pair _ _)
-  have en := (congrSnd s2).eqTrans (snd_pair _ _)
+  have s2 := s1.sndE
+  have er := s1.fstE
+  have eb := s2.fstE
+  have en := s2.sndE
   exact ep.eqTrans (by
     simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (rawPoint (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
       (σ := ![p,fstT x,fstT (sndT x),fstT (sndT (sndT x)),sndT (sndT (sndT x))])

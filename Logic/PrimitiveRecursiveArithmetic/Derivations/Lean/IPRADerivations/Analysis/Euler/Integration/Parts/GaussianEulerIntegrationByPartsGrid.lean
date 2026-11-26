@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsGridObservation
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsStep
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual finite Euler integration-by-parts telescope
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrationByPartsLinear (primitive originalProduct cell)
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianEulerIntegrandName (fixedData)
@@ -29,9 +28,6 @@ open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr qadd_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,18 +44,11 @@ def numerator (p R E T C N : PTm n) : PTm n := GaussianEulerIntegrationByPartsSt
   T*GaussianEulerIntegrationByPartsProductStep.observationCost R E T*(E*E*N*N)
 def denominator (p E N : PTm n) : PTm n := E*E*N*unit p
 
-@[simp] theorem subst_operator {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (operator p z B a b) = operator (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [operator]
-@[simp] theorem subst_operatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (operatorTerm p t x) = operatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [operatorTerm]
-@[simp] theorem subst_endpointTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (endpointTerm p t x) = endpointTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [endpointTerm]
-@[simp] theorem subst_endpoint {m : ℕ} (σ : Fin n → PTm m) (i p z B a C E N : PTm n) :
-    Syn.subst σ (endpoint i p z B a C E N) = endpoint (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ N) := by simp [endpoint]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T N : PTm n) :
-    (source z R B a C E T N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by simp [source]
+ipra_subst operator
+ipra_subst operatorTerm
+ipra_subst endpointTerm
+ipra_subst endpoint
+ipra_subst source
 
 theorem operator_at (p z B a b : PTm n) : Γ ⊢[PRAAx]
     ap3 operatorF p (pairT a b) (fixedData z B) ≐ operator p z B a b := by
@@ -105,11 +94,9 @@ private def forwardLaw (f : PTm 2) (x k : PTm n) : Fm PTm n := sum (forward f) k
 private theorem forward_sum (f : PTm 2) (x k : PTm n) : Γ ⊢[PRAAx]
     sum (forward f) k x ≐ qsub (inst2 f k x) (inst2 f zero x) := by
   have all : Γ ⊢[PRAAx] .all (forwardLaw f (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_forwardLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
-    · simp only [subst_forwardLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine (GaussianRationalFiniteSum.sum_succ (forward f) _ _).eqTrans ?_
+    ipra_qfind [subst_forwardLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans (GaussianCoefficientNormOrder.qsub_self _).eqSymm
+    · refine (GaussianRationalFiniteSum.sum_succ (forward f) _ _).eqTrans ?_
       rw [forward_at]
       exact (qadd_congr Prf.hyp0 (.eqRefl _)).eqTrans
         ((GaussianReciprocalHorner.qadd_commutative _ _).eqTrans (GaussianReconstructionRoots.difference_chain _ _ _))

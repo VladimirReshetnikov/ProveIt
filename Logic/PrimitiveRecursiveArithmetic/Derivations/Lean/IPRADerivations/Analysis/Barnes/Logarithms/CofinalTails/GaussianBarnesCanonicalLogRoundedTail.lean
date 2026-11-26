@@ -16,7 +16,7 @@ set_option maxHeartbeats 250000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogRoundedTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogRow (roundedValue subst_roundedValue)
 open GaussianBarnesCanonicalLogTail (source row_source)
 open GaussianRationalFiniteSum (sum)
@@ -25,10 +25,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open DyadicComplexLogarithm (unit precision)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

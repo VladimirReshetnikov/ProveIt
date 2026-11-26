@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingExpansionExponentialError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientL1 (coefficientNorm)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF)
@@ -28,10 +28,6 @@ open GaussianStirlingExpansionCoefficients (logTable expTable log_table_length l
 open GaussianStirlingExpansionFiniteError (query logPolynomial approximation finiteTaylor query_bound norm_upper
   errorNumerator errorDenominator finite_error)
 open RationalSupMetric (numeratorOf denominatorOf)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

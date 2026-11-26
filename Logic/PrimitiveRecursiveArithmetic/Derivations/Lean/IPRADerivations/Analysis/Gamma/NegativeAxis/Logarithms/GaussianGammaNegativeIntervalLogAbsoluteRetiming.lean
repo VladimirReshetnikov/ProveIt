@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalLogAbsoluteRetiming
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeIntervalGammaSign (signedF signedData)
 open GaussianGammaNegativeIntervalUniformLower (lowerDenominator signed_gamma_source)
@@ -28,8 +28,6 @@ open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianNamedPositiveLateLogSource (retimedF retimedData)
 open GaussianRealNameExponentialInjectivity (independent_radii_injective)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianGammaNegativeIntervalLogAbsolute.nameF
@@ -48,15 +46,10 @@ private theorem subst_lower {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
     Syn.subst σ (lowerDenominator N) = lowerDenominator (Syn.subst σ N) := by
   simp [lowerDenominator,GaussianGammaNegativeIntervalUniformLower.productBound,GaussianStirlingGammaLogarithm.gammaMargin]
 
-@[simp] theorem subst_margin {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (margin N) = margin (Syn.subst σ N) := by simp [margin,subst_lower]
-@[simp] theorem subst_inputData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (inputData a b N) = inputData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by
-  simp [inputData,subst_lower]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (radius a b N) = radius (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [radius]
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (nameData a b N) = nameData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [nameData]
+ipra_subst margin [subst_lower]
+ipra_subst inputData [subst_lower]
+ipra_subst radius
+ipra_subst nameData
 
 theorem input_at (p a b N : PTm n) : Γ ⊢[PRAAx]
     ap2 inputF p (inputData a b N) ≐ projection

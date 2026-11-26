@@ -14,26 +14,20 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalNearest
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalHausdorff
 open LeanProofs.IPRA.Analysis.RationalSupMetric (metricF)
 open LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Foundations.FiniteHausdorff
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def selected (S T d i : PTm n) : PTm n :=
   nearest metricF (entry (grid .left S T d) i) (grid .right S T d) (parameter S T d)
 
-@[simp] theorem subst_selected {m : ℕ} (σ : Fin n → PTm m) (S T d i : PTm n) :
-    Syn.subst σ (selected S T d i) =
-      selected (Syn.subst σ S) (Syn.subst σ T) (Syn.subst σ d) (Syn.subst σ i) := by
-  simp only [selected, subst_nearest, MasterCertificate.subst_entry, subst_grid, subst_parameter]
+ipra_subst selected
 
 /-- The selected index belongs to the original target list. The program is
 total even on empty targets, but this useful range assertion retains its guard. -/

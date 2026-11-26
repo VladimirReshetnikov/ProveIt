@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactExhaustion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top height)
 open GaussianEulerCompactAdditivity (nameF data intervalSource)
 open GaussianEulerCompactModulus (lipschitz)
@@ -32,10 +32,6 @@ open GaussianNameArithmetic (addF addData)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
 open GaussianGammaCompactCutoffSplit (euler_data_congr add_data_congr)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarIdentityDeterminant
 import IPRADerivations.Foundations.RuntimePermutationDigitSum
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The actual numerical triangular determinant
@@ -19,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScalarTriangularDeterminant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (digit digitBody data horizon permutationBit count retained_bound retained_valid)
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB)
 open LeanProofs.IPRA.Analysis.GaussianScalarIdentityDeterminant
@@ -31,10 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qmul_congr
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,10 +63,8 @@ theorem equal_term_of_order_and_sum (f g : PTm 2) (N x i : PTm n) (h : Γ ⊢[PR
 def comparisonBody (f g : PTm 2) : PTm 2 := eqb (monus f g) zero
 def comparison (f g : PTm 2) (N x : PTm n) : PTm n := allB (comparisonBody f g) N x
 def firstBad (f g : PTm 2) (N x : PTm n) : PTm n := Search.mu (comparisonBody f g) N x
-@[simp] theorem subst_comparison {k : ℕ} (σ : Fin n → PTm k) (f g : PTm 2) (N x : PTm n) :
-    Syn.subst σ (comparison f g N x) = comparison f g (Syn.subst σ N) (Syn.subst σ x) := by simp [comparison,allB]
-@[simp] theorem subst_firstBad {k : ℕ} (σ : Fin n → PTm k) (f g : PTm 2) (N x : PTm n) :
-    Syn.subst σ (firstBad f g N x) = firstBad f g (Syn.subst σ N) (Syn.subst σ x) := by simp [firstBad,Search.mu]
+ipra_subst comparison [allB]
+ipra_subst firstBad [Search.mu]
 @[simp] theorem comparison_body_at (f g : PTm 2) (i x : PTm n) :
     inst2 (comparisonBody f g) i x = eqb (monus (inst2 f i x) (inst2 g i x)) zero := by simp [comparisonBody,inst2]
 theorem comparison_at (f g : PTm 2) (N x i : PTm n) (h : Γ ⊢[PRAAx] comparison f g N x ≐ one)
@@ -141,10 +134,8 @@ theorem above_word (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (horizon m))
 def excessIndex (m w : PTm n) : PTm n := firstBad digitBody (var 0 : PTm 2) m (data m w)
 def deficitIndex (m w : PTm n) : PTm n := firstBad (var 0 : PTm 2) digitBody m (data m w)
 @[simp] theorem position_body_at (i x : PTm n) : inst2 (var 0 : PTm 2) i x = i := by simp [inst2]
-@[simp] theorem subst_excessIndex {k : ℕ} (σ : Fin n → PTm k) (m w : PTm n) :
-    Syn.subst σ (excessIndex m w) = excessIndex (Syn.subst σ m) (Syn.subst σ w) := by simp [excessIndex]
-@[simp] theorem subst_deficitIndex {k : ℕ} (σ : Fin n → PTm k) (m w : PTm n) :
-    Syn.subst σ (deficitIndex m w) = deficitIndex (Syn.subst σ m) (Syn.subst σ w) := by simp [deficitIndex]
+ipra_subst excessIndex
+ipra_subst deficitIndex
 
 theorem excess_found (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (horizon m))
     (hp : Γ ⊢[PRAAx] permutationBit m w ≐ one) (hne : Γ ⊢[PRAAx] neg (w ≐ identityWord m)) : Γ ⊢[PRAAx]
@@ -177,18 +168,12 @@ def aboveZeros (A m : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m) ⟶ ab
 def triangular (A m : PTm n) : Fm PTm n := belowZeros A m ⋎ aboveZeros A m
 def diagonalBody : PTm 2 := cell (var 1) (var 0) (var 0)
 def diagonalProduct (A m : PTm n) : PTm n := GaussianRationalFiniteProduct.qprod diagonalBody m A
-@[simp] theorem subst_belowRow {k : ℕ} (σ : Fin n → PTm k) (A m r : PTm n) :
-    (belowRow A m r).subst σ = belowRow (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ r) := by simp [belowRow,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_aboveRow {k : ℕ} (σ : Fin n → PTm k) (A m r : PTm n) :
-    (aboveRow A m r).subst σ = aboveRow (Syn.subst σ A) (Syn.subst σ m) (Syn.subst σ r) := by simp [aboveRow,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_belowZeros {k : ℕ} (σ : Fin n → PTm k) (A m : PTm n) :
-    (belowZeros A m).subst σ = belowZeros (Syn.subst σ A) (Syn.subst σ m) := by simp [belowZeros,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_aboveZeros {k : ℕ} (σ : Fin n → PTm k) (A m : PTm n) :
-    (aboveZeros A m).subst σ = aboveZeros (Syn.subst σ A) (Syn.subst σ m) := by simp [aboveZeros,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_triangular {k : ℕ} (σ : Fin n → PTm k) (A m : PTm n) :
-    (triangular A m).subst σ = triangular (Syn.subst σ A) (Syn.subst σ m) := by simp [triangular]
-@[simp] theorem subst_diagonalProduct {k : ℕ} (σ : Fin n → PTm k) (A m : PTm n) :
-    Syn.subst σ (diagonalProduct A m) = diagonalProduct (Syn.subst σ A) (Syn.subst σ m) := by simp [diagonalProduct]
+ipra_subst belowRow [Syn.subst_shift, Syn.shift_subst]
+ipra_subst aboveRow [Syn.subst_shift, Syn.shift_subst]
+ipra_subst belowZeros [Syn.subst_shift, Syn.shift_subst]
+ipra_subst aboveZeros [Syn.subst_shift, Syn.shift_subst]
+ipra_subst triangular
+ipra_subst diagonalProduct
 @[simp] theorem diagonal_body_at (A j : PTm n) : inst2 diagonalBody j A = cell A j j := by simp [diagonalBody,inst2]
 
 theorem below_at (A m r j : PTm n) (h : Γ ⊢[PRAAx] belowZeros A m)
@@ -290,9 +275,7 @@ theorem lower_triangular_det (A m : PTm n) (h : Γ ⊢[PRAAx] aboveZeros A m) :
 
 def diagonalOnes (A m : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m) ⟶
   recode (cell (Syn.shift A) (var 0) (var 0)) ≐ qone)
-@[simp] theorem subst_diagonalOnes {k : ℕ} (σ : Fin n → PTm k) (A m : PTm n) :
-    (diagonalOnes A m).subst σ = diagonalOnes (Syn.subst σ A) (Syn.subst σ m) := by
-  simp [diagonalOnes,Syn.subst_shift,Syn.shift_subst]
+ipra_subst diagonalOnes [Syn.subst_shift, Syn.shift_subst]
 theorem diagonal_unit_product (A m : PTm n) (h : Γ ⊢[PRAAx] diagonalOnes A m) :
     Γ ⊢[PRAAx] diagonalProduct A m ≐ qone := by
   refine (GaussianRationalFiniteProduct.product_recode diagonalBody m A).eqSymm.eqTrans
@@ -307,14 +290,8 @@ def output (A m : PTm n) : PTm n := pairT A (pairT (scalarDet A m) (diagonalProd
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (A m : PTm n) : PTm n := app outputF ![A,m]
 def fields (p : PTm n) : Fin 3 → PTm n := ![fstT p,fstT (sndT p),sndT (sndT p)]
-@[simp] theorem subst_output {k : ℕ} (σ : Fin n → PTm k) (A m : PTm n) :
-    Syn.subst σ (output A m) = output (Syn.subst σ A) (Syn.subst σ m) := by simp [output]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A m : PTm n) :
-    Syn.subst σ (run A m) = run (Syn.subst σ A) (Syn.subst σ m) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) (i : Fin 3) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 theorem program_at (A m : PTm n) : Γ ⊢[PRAAx] run A m ≐ output A m := by
@@ -322,11 +299,11 @@ theorem program_at (A m : PTm n) : Γ ⊢[PRAAx] run A m ≐ output A m := by
 theorem returned_fields (A m : PTm n) (i : Fin 3) : Γ ⊢[PRAAx]
     fields (run A m) i ≐ ![A,scalarDet A m,diagonalProduct A m] i := by
   have e0 := program_at (Γ := Γ) A m
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrSnd e1).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e1.sndE
 theorem returned_equality (A m : PTm n) (h : Γ ⊢[PRAAx] triangular A m) : Γ ⊢[PRAAx]
     fields (run A m) 1 ≐ fields (run A m) 2 :=
   (returned_fields A m 1).eqTrans ((triangular_det A m h).eqTrans (returned_fields A m 2).eqSymm)

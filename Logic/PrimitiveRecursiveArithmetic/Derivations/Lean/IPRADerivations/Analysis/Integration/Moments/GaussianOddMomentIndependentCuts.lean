@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOddMomentIndependentCuts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianOddMomentSignedGrid (evaluatorF)
 open GaussianOddMomentWholeLine (gridWith query count span lowerDenominator halfData)
 open GaussianRationalHorner (qadd qzero qadd_canonical positive_product)
@@ -21,9 +21,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (point_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

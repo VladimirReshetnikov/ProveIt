@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.FormalDerivation
 import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Grid rotations and the scalar square-root inequality
@@ -32,13 +30,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.StableRootBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Foundations.ChainViability (monus_le)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 

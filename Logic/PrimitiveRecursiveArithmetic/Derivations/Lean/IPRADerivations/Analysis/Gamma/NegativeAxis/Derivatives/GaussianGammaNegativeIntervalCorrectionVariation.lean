@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalCorrectionVariation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerExponentCompactBounds (fraction_bound)
 open GaussianEulerUnitCompactTimeBounds (gap_margin)
 open GaussianGammaNegativeCriticalCorrection (guard correction body bottomDen den_expand positiveSum row row_at row_den_positive)
@@ -34,10 +34,6 @@ open GaussianRationalReciprocal (bound_congr bounded_difference bounded_product)
 open GaussianRationalRiemannRefinement (sum_distance)
 open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianStirlingRationalTelescopers (fraction_same)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -47,16 +43,11 @@ def correctionGain (E N : PTm n) : PTm n := succ (succ N)*(E*E)
 def gain (E N : PTm n) : PTm n :=
   inverseGapCost (succ N) (E*E)*correctionCap E N+(E*E)*correctionGain E N
 
-@[simp] theorem subst_correctionCap {m : ℕ} (σ : Fin n → PTm m) (E N : PTm n) :
-    Syn.subst σ (correctionCap E N) = correctionCap (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [correctionCap]
+ipra_subst correctionCap
 
-@[simp] theorem subst_correctionGain {m : ℕ} (σ : Fin n → PTm m) (E N : PTm n) :
-    Syn.subst σ (correctionGain E N) = correctionGain (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [correctionGain]
+ipra_subst correctionGain
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (E N : PTm n) :
-    Syn.subst σ (gain E N) = gain (Syn.subst σ E) (Syn.subst σ N) := by simp [gain]
+ipra_subst gain
 
 private theorem denominator_positive {a b : PTm n} (h : Γ ⊢[PRAAx] guard a b) : Γ ⊢[PRAAx] le one b :=
   le_trans h.andE₁ (le_of_lt h.andE₂)

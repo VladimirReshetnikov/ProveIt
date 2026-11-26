@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogHead
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaEulerRationalHead (numerator denominator)
 open GaussianGammaEulerRationalHeadConvexity (weight barycenter)
@@ -31,9 +31,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNaturalScaleProductName (productF productData scale_product_cross)
 open GaussianPositiveRationalLogarithm (logF data source name_regular)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => productF logF

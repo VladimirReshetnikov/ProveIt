@@ -13,7 +13,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSineSuffix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentSineUniform (clock cutoff count cutoff_positive count_dominates)
 open GaussianBinetSecondWeightedSineTranspose
   (suffixBody suffixData suffixValue transposedValue suffix_at scaled_transpose)
@@ -26,10 +26,7 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalRiemannRefinement (termsDistance)
-open LeanProofs.IPRA.PTm (num)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -39,16 +36,12 @@ local notation "Suffix" => GaussianBinetOscillatorySineSmallStrip.suffixValue
 
 def cost (T : PTm n) : PTm n := num 16*(T+one)
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (T : PTm n) :
-    Syn.subst σ (cost T) = cost (Syn.subst σ T) := by simp [cost,one]
+ipra_subst cost [one]
 
 def window (q D R T K cut E : PTm n) : Fm PTm n :=
   le cut (count q D R T K) ⋏ (le one E ⋏ le (((D*cutoff q T K)*cut)*E) (count q D R T K))
 
-@[simp] theorem subst_window {m : ℕ} (σ : Fin n → PTm m) (q D R T K cut E : PTm n) :
-    (window q D R T K cut E).subst σ =
-      window (Syn.subst σ q) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ T)
-        (Syn.subst σ K) (Syn.subst σ cut) (Syn.subst σ E) := by simp [window,one]
+ipra_subst window [one]
 
 private theorem cell_error (j q M T H J X Y D sign R K cut E : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R) (hM : Γ ⊢[PRAAx] le one M) (hJ : Γ ⊢[PRAAx] le one J)

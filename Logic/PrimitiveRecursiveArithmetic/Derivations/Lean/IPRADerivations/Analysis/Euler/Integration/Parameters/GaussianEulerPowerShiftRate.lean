@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerShiftRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerExponentF powerExponentData power_exponent_regular)
 open GaussianEulerPowerExponentIncrement (exponentSample increment linear linear_bound exponent_increment)
 open GaussianEulerCompactPowerMajorant (exponentRadius exponent_sample)
@@ -33,9 +33,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRadiusExponentialName (boundedSamples)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -48,17 +45,10 @@ def shiftedData (z B a b c : PTm n) : PTm n := addData (powerExponentData z B a 
 def shiftClock (p : PTm n) : PTm n := GaussianFastValueCut.exponent two p
 def numerator (R c : PTm n) : PTm n := (R+one)*(c*c)
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (radius R E T) = radius (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [radius,exponentRadius]
-@[simp] theorem subst_shiftedData {m : ℕ} (σ : Fin n → PTm m) (z B a b c : PTm n) :
-    Syn.subst σ (shiftedData z B a b c) = shiftedData (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [shiftedData]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (R c : PTm n) :
-    Syn.subst σ (numerator R c) = numerator (Syn.subst σ R) (Syn.subst σ c) := by simp [numerator]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B E T a b c : PTm n) :
-    (source z R B E T a b c).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by simp [source]
+ipra_subst radius [exponentRadius]
+ipra_subst shiftedData
+ipra_subst numerator
+ipra_subst source
 
 theorem shifted_at (p z B a b c : PTm n) :
     Γ ⊢[PRAAx] ap2 shiftedF p (shiftedData z B a b c) ≐

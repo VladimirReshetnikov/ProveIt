@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerIntegrandParameterContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedEulerIntegrand (coefficientF coefficientData powerExponentF powerExponentData exponentF exponentData)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianRationalHorner (qadd qmul ofGaussian positive_product)
@@ -25,9 +25,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -45,17 +42,10 @@ def logarithmClock (f : PR 2) (p x a b : PTm n) : PTm n := productClock f (addCl
 def inputClock (f : PR 2) (p x a b : PTm n) : PTm n := addClock (logarithmClock f p x a b)
 def coefficientPoint (f : PR 2) (p x : PTm n) : PTm n := qsub (ap2 f p x) qone
 
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    Syn.subst σ (radius f x) = radius f (Syn.subst σ x) := by simp [radius]
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E T : PTm n) :
-    Syn.subst σ (factor f x E T) = factor f (Syn.subst σ x) (Syn.subst σ E) (Syn.subst σ T) := by simp [factor]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x z B E T a b A N : PTm n) :
-    (input f x z B E T a b A N).subst σ = input f (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ A) (Syn.subst σ N) := by simp [input]
-@[simp] theorem subst_exponentData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x a b : PTm n) :
-    Syn.subst σ (exponentData f x a b) = exponentData f (Syn.subst σ x) (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [exponentData,powerExponentData,coefficientData,qone,ComplexLogarithmRemainder.oneCode,
-    ComplexLogarithmRemainder.code,ZT.ofNat]
+ipra_subst radius
+ipra_subst factor
+ipra_subst input
+ipra_subst exponentData [powerExponentData, coefficientData, qone, ComplexLogarithmRemainder.oneCode, ComplexLogarithmRemainder.code, ZT.ofNat]
 
 theorem coefficient_at (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx]
     ap2 (coefficientF f) p (coefficientData x) ≐ coefficientPoint f (addClock p) x :=

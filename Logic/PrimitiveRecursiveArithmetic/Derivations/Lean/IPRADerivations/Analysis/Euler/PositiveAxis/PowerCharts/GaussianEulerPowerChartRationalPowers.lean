@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartRationalPowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (argument source parameters)
 open GaussianPositiveRationalLogarithm (logF fraction)
 open GaussianEulerIntegrandName (powerExponentF powerExponentData powerF powerData)
@@ -27,8 +27,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_refl cross_symm)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (qmul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

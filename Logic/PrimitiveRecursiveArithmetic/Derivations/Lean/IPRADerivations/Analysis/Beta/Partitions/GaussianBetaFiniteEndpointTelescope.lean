@@ -13,17 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaFiniteEndpointTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (positive_product qmul_canonical)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianBetaPrimitiveGridUnscale (quadrature scaledEndpoint demand)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

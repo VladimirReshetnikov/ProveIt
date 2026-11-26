@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.RationalPhiFeatur
 import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalSubspaceCoverSearch
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.RationalCurvePointsGaussianEmbedding
 import IPRADerivations.Foundations.FiniteCoverAssignment
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual Phi_s feature tuples and first-cover point groups
@@ -18,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiCoverAssignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalPhiFeatures (dimension features)
 open RationalRowSpanGaussianEmbedding (hasCoefficients)
 open RationalSuperellipticNormDegree (pointPowers point_power_at)
@@ -29,9 +28,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_leng
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.FiniteCoverAssignment
   (hasCover groupBounds group_length group_lookup index_bound indices_increasing group_test)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,20 +43,13 @@ def members (A R s P : PTm n) : Fm PTm n := .all (lt (var 0) (length (Syn.shift 
   hasCoefficients (Syn.shift A) (Syn.shift R) (dimension (Syn.shift s)) (pointFeature (Syn.shift s) (entry (Syn.shift P) (var 0))))
 def group (s P D g : PTm n) : PTm n := Foundations.FiniteCoverAssignment.group testBody P (length D) (data s D) g
 
-@[simp] theorem subst_pointFeature {q : ℕ} (σ : Fin n → PTm q) (s v : PTm n) :
-    Syn.subst σ (pointFeature s v) = pointFeature (Syn.subst σ s) (Syn.subst σ v) := by simp [pointFeature]
-@[simp] theorem subst_featureList {q : ℕ} (σ : Fin n → PTm q) (s P : PTm n) :
-    Syn.subst σ (featureList s P) = featureList (Syn.subst σ s) (Syn.subst σ P) := by simp [featureList]
-@[simp] theorem subst_candidate {q : ℕ} (σ : Fin n → PTm q) (s D g v : PTm n) :
-    Syn.subst σ (candidate s D g v) = candidate (Syn.subst σ s) (Syn.subst σ D) (Syn.subst σ g) (Syn.subst σ v) := by simp [candidate]
-@[simp] theorem subst_data {q : ℕ} (σ : Fin n → PTm q) (s D : PTm n) :
-    Syn.subst σ (data s D) = data (Syn.subst σ s) (Syn.subst σ D) := by simp [data]
-@[simp] theorem subst_cover {q : ℕ} (σ : Fin n → PTm q) (s P D : PTm n) :
-    (cover s P D).subst σ = cover (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ D) := by simp [cover]
-@[simp] theorem subst_members {q : ℕ} (σ : Fin n → PTm q) (A R s P : PTm n) :
-    (members A R s P).subst σ = members (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ s) (Syn.subst σ P) := by simp [members,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_group {q : ℕ} (σ : Fin n → PTm q) (s P D g : PTm n) :
-    Syn.subst σ (group s P D g) = group (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ D) (Syn.subst σ g) := by simp [group]
+ipra_subst pointFeature
+ipra_subst featureList
+ipra_subst candidate
+ipra_subst data
+ipra_subst cover
+ipra_subst members [Syn.subst_shift, Syn.shift_subst]
+ipra_subst group
 
 private theorem point_feature_congr {s t v w : PTm n} (hs : Γ ⊢[PRAAx] s ≐ t) (hv : Γ ⊢[PRAAx] v ≐ w) : Γ ⊢[PRAAx]
     pointFeature s v ≐ pointFeature t w := by
@@ -189,10 +178,8 @@ theorem group_distinct (s P D g : PTm n) (h : Γ ⊢[PRAAx] distinct P) : Γ ⊢
 
 def total (s P D : PTm n) : PTm n := Foundations.FiniteCoverAssignment.total testBody P (length D) (data s D)
 def bounds (s P D m : PTm n) : Fm PTm n := groupBounds testBody P (length D) (data s D) m
-@[simp] theorem subst_total {q : ℕ} (σ : Fin n → PTm q) (s P D : PTm n) :
-    Syn.subst σ (total s P D) = total (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ D) := by simp [total]
-@[simp] theorem subst_bounds {q : ℕ} (σ : Fin n → PTm q) (s P D m : PTm n) :
-    (bounds s P D m).subst σ = bounds (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ D) (Syn.subst σ m) := by simp [bounds]
+ipra_subst total
+ipra_subst bounds
 theorem cardinal_partition (s P D : PTm n) (h : Γ ⊢[PRAAx] cover s P D) : Γ ⊢[PRAAx] total s P D ≐ length P :=
   Foundations.FiniteCoverAssignment.cardinal_partition _ _ _ _ (generic_cover s P D h)
 theorem count_from_groups (s P D m : PTm n) (h : Γ ⊢[PRAAx] cover s P D) (hb : Γ ⊢[PRAAx] bounds s P D m) : Γ ⊢[PRAAx]
@@ -201,10 +188,8 @@ theorem count_from_groups (s P D m : PTm n) (h : Γ ⊢[PRAAx] cover s P D) (hb 
 /-- The exact source Cover_{M,s}: its tuple is the original Phi_s list. -/
 def sourceCoverBit (s P M : PTm n) : PTm n := RationalSubspaceCoverSearch.coverBit (featureList s P) M (dimension s)
 def selectedFamily (s P M : PTm n) : PTm n := RationalSubspaceCoverSearch.chosen (featureList s P) M (dimension s)
-@[simp] theorem subst_sourceCoverBit {q : ℕ} (σ : Fin n → PTm q) (s P M : PTm n) :
-    Syn.subst σ (sourceCoverBit s P M) = sourceCoverBit (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ M) := by simp [sourceCoverBit]
-@[simp] theorem subst_selectedFamily {q : ℕ} (σ : Fin n → PTm q) (s P M : PTm n) :
-    Syn.subst σ (selectedFamily s P M) = selectedFamily (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ M) := by simp [selectedFamily]
+ipra_subst sourceCoverBit
+ipra_subst selectedFamily
 theorem source_cover_bit_cases (s P M : PTm n) : Γ ⊢[PRAAx] (sourceCoverBit s P M ≐ zero) ⋎ (sourceCoverBit s P M ≐ one) :=
   RationalSubspaceCoverSearch.cover_bit_cases _ _ _
 theorem source_candidate_bound (s P M : PTm n) : Γ ⊢[PRAAx]
@@ -252,18 +237,10 @@ def output (s P M : PTm n) : PTm n := pairT (sourceCoverBit s P M) (pairT (selec
   (pairT (featureList s P) (pairT (selectedGroups s P M) (selectedTotal s P M))))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (s P M : PTm n) : PTm n := app outputF ![s,P,M]
-@[simp] theorem subst_selectedGroups {q : ℕ} (σ : Fin n → PTm q) (s P M : PTm n) :
-    Syn.subst σ (selectedGroups s P M) = selectedGroups (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ M) := by simp [selectedGroups]
-@[simp] theorem subst_selectedTotal {q : ℕ} (σ : Fin n → PTm q) (s P M : PTm n) :
-    Syn.subst σ (selectedTotal s P M) = selectedTotal (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ M) := by simp [selectedTotal]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (s P M : PTm n) :
-    Syn.subst σ (output s P M) = output (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ M) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (s P M : PTm n) :
-    Syn.subst σ (run s P M) = run (Syn.subst σ s) (Syn.subst σ P) (Syn.subst σ M) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst selectedGroups
+ipra_subst selectedTotal
+ipra_subst output
+ipra_subst run
 
 theorem feature_list_program_at (s P : PTm n) : Γ ⊢[PRAAx] app featureListF ![s,P] ≐ featureList s P := by
   simpa [featureListF] using toPR_eq (Γ := Γ) (featureList (var 0) (var 1) : PTm 2) ![s,P]
@@ -273,19 +250,19 @@ theorem program_at (s P M : PTm n) : Γ ⊢[PRAAx] run s P M ≐ output s P M :=
   simpa [run,outputF,output,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![s,P,M]
 theorem returned_bit (s P M : PTm n) : Γ ⊢[PRAAx] fstT (run s P M) ≐ sourceCoverBit s P M :=
-  (congrFst (program_at s P M)).eqTrans (fst_pair _ _)
+  (program_at s P M).fstE
 theorem returned_family (s P M : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run s P M)) ≐ selectedFamily s P M :=
-  (congrFst ((congrSnd (program_at s P M)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at s P M).sndE.fstE
 theorem returned_features (s P M : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run s P M))) ≐ featureList s P :=
-  (congrFst ((congrSnd ((congrSnd (program_at s P M)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at s P M).sndE.sndE.fstE
 private theorem returned_tail (s P M : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run s P M))) ≐ pairT (selectedGroups s P M) (selectedTotal s P M) := by
-  have e := (congrSnd (program_at (Γ := Γ) s P M)).eqTrans (snd_pair _ _)
-  have e' := (congrSnd e).eqTrans (snd_pair _ _)
-  exact (congrSnd e').eqTrans (snd_pair _ _)
+  have e := (program_at (Γ := Γ) s P M).sndE
+  have e' := e.sndE
+  exact e'.sndE
 theorem returned_groups (s P M : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run s P M)))) ≐ selectedGroups s P M :=
-  (congrFst (returned_tail s P M)).eqTrans (fst_pair _ _)
+  (returned_tail s P M).fstE
 theorem returned_total (s P M : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run s P M)))) ≐ selectedTotal s P M :=
-  (congrSnd (returned_tail s P M)).eqTrans (snd_pair _ _)
+  (returned_tail s P M).sndE
 theorem selected_groups_length (s P M : PTm n) : Γ ⊢[PRAAx] length (selectedGroups s P M) ≐ M :=
   (Foundations.FiniteCoverAssignment.groups_length testBody P (length (selectedFamily s P M)) (data s (selectedFamily s P M))).eqTrans
     (selected_family_length s P M)

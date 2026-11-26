@@ -15,7 +15,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticRationalRing
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalAlgebra (positive_product)
 open QuadraticSignCertificates (encode first second first_value second_value negative_first negative_second)
@@ -24,9 +24,6 @@ open QuadraticRationalClearing (clear denominator represents sameCoefficients cl
 open QuadraticRationalPairArithmetic (add negative scalar_add_same scalar_code_congr scalar_value_congr)
 open QuadraticRationalEqualityOrder (difference cross)
 open QuadraticRationalRadicand (multiply isPositive scale_representation equal_pairs_from_representations)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -34,8 +31,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def productNumerator (d A B : PTm n) : PTm n := encode
   (ZT.ofNat (denominatorOf d)*(first A*first B)+numeratorOf d*(second A*second B))
   (ZT.ofNat (denominatorOf d)*(first A*second B+second A*first B))
-@[simp] theorem subst_productNumerator {l : ℕ} (σ : Fin n → PTm l) (d A B : PTm n) :
-    Syn.subst σ (productNumerator d A B) = productNumerator (Syn.subst σ d) (Syn.subst σ A) (Syn.subst σ B) := by simp [productNumerator]
+ipra_subst productNumerator
 theorem product_first (d A B : PTm n) : ZT.toZ Γ (first (productNumerator d A B)) =
     𝔞(denominatorOf d)*(ZT.toZ Γ (first A)*ZT.toZ Γ (first B))+
       ZT.toZ Γ (numeratorOf d)*(ZT.toZ Γ (second A)*ZT.toZ Γ (second B)) := by
@@ -130,10 +126,7 @@ theorem square_difference_factor (d x y : PTm n) : Γ ⊢[PRAAx]
 
 def nonnegative (d x : PTm n) : Fm PTm n :=
   QuadraticRationalRadicandOrder.positive d x ⋎ QuadraticRationalRadicandOrder.isZero d x
-@[simp] theorem subst_nonnegative {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    (nonnegative d x).subst σ = nonnegative (Syn.subst σ d) (Syn.subst σ x) := by
-  simp [nonnegative,QuadraticRationalRadicandOrder.positive,QuadraticRationalRadicandOrder.isZero,
-    QuadraticRationalRadicand.sign,QuadraticRationalRadicand.changeBasis]
+ipra_subst nonnegative [QuadraticRationalRadicandOrder.positive, QuadraticRationalRadicandOrder.isZero, QuadraticRationalRadicand.sign, QuadraticRationalRadicand.changeBasis]
 theorem same_coefficients_sign (d x y : PTm n) (hd : Γ ⊢[PRAAx] isPositive d)
     (h : Γ ⊢[PRAAx] sameCoefficients x y) : Γ ⊢[PRAAx] QuadraticRationalRadicand.sign d x ≐ QuadraticRationalRadicand.sign d y :=
   QuadraticRationalClearing.sign_congr _ _ _ (QuadraticRationalRadicand.integer_radicand_positive d hd)
@@ -183,8 +176,8 @@ theorem unique_actual_root (d x : PTm n) (hd : Γ ⊢[PRAAx] isPositive d)
 
 def zeroCode : PTm n := QuadraticRationalEmbedding.embed QuadraticRationalEmbedding.zeroScalar
 def oneCode : PTm n := QuadraticRationalEmbedding.embed QuadraticRationalEmbedding.oneScalar
-@[simp] theorem subst_zeroCode {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (zeroCode : PTm n) = (zeroCode : PTm l) := by simp [zeroCode]
-@[simp] theorem subst_oneCode {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (oneCode : PTm n) = (oneCode : PTm l) := by simp [oneCode]
+ipra_subst zeroCode
+ipra_subst oneCode
 theorem zero_represents : Γ ⊢[PRAAx] represents (zeroCode : PTm n) QuadraticSignCertificates.zeroCode one :=
   QuadraticRationalEmbedding.embedding_represents _ _ _ (QuadraticRationalPairArithmetic.scalar_represents zero)
 theorem one_represents : Γ ⊢[PRAAx] represents (oneCode : PTm n) QuadraticSignCertificates.oneCode one :=
@@ -218,20 +211,18 @@ def output (d x y : PTm n) : PTm n :=
       (pairT QuadraticRationalEmbedding.root (multiply d QuadraticRationalEmbedding.root QuadraticRationalEmbedding.root)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (d x y : PTm n) : PTm n := ap3 outputF d x y
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    Syn.subst σ (output d x y) = output (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) :
-    Syn.subst σ (run d x y) = run (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d x y : PTm n) : Γ ⊢[PRAAx] run d x y ≐ output d x y := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![d,x,y]
 theorem returned_product (d x y : PTm n) : Γ ⊢[PRAAx] fstT (run d x y) ≐ multiply d (difference x y) (add x y) :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_difference (d x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d x y)) ≐ difference (multiply d x x) (multiply d y y) :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_root (d x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run d x y))) ≐ QuadraticRationalEmbedding.root :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.sndE.fstE
 theorem returned_square (d x y : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run d x y))) ≐ multiply d QuadraticRationalEmbedding.root QuadraticRationalEmbedding.root :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE.sndE
 theorem coefficients_code_congr {x x' y y' : PTm n} (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y')
     (h : Γ ⊢[PRAAx] sameCoefficients x y) : Γ ⊢[PRAAx] sameCoefficients x' y' :=
   .andI (LeanProofs.IPRA.Analysis.RationalArgmin.rationalEq_congr (congrFst hx) (congrFst hy) (.andE₁ h))

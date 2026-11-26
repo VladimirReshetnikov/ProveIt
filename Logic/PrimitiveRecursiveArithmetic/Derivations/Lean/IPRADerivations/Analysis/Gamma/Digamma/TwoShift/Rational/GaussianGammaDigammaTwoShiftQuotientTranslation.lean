@@ -17,7 +17,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftQuotientTranslation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactLogarithmBounds (original_log_rate)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaDigammaTwoShiftBinding
@@ -31,9 +31,6 @@ open GaussianRationalHorner (canonical_unique ofGaussian_represents represents r
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical qsub_represents)
 open GaussianRootAlgebra (sub equal_of_values re_scale im_scale re_one im_one re_sub im_sub)
 open GaussianStirlingGammaLogarithm (arg logGammaF logGammaData log_gamma_regular)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -18,7 +18,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryCofinalLogDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedConstantProductName (constant_regular)
 open GaussianNameArithmetic (add_fast multiply_fast)
 open GaussianCoefficientNameBounds (unit)
@@ -27,9 +27,6 @@ open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianNameRingLaws (multiply_commutative)
 open GaussianSineProductImaginaryCoshIdentity (coshF coshData cosh_regular derivative_as_pi_cosh)
 open GaussianSineProductImaginaryDerivativeComparison (productFamily productRate scale scaled_source)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Pi" => GaussianGammaHalfPiName.nameF

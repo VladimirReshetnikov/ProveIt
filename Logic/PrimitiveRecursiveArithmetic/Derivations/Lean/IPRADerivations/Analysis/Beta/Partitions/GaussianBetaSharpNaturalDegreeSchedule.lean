@@ -13,15 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaSharpNaturalDegreeSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaSharpCofinalSchedule (cutoff factor supportCount minimumH minimumPrecision
   cutoff_bounds mesh_budgets factor_positive support_width_positive finite_binding_time_budget)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianBetaSharpPartition (lowWidth middleWidth)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

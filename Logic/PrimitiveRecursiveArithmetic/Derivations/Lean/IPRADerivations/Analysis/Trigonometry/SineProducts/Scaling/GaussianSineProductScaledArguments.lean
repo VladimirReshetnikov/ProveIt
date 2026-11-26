@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductScaledArguments
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale mul normSq normSq_neg normSq_eval normSq_scale normSq_mul oneCode
   eval_re_code eval_im_code)
 open GaussianArctangentCayleyValues (imaginaryCode)
@@ -35,9 +35,6 @@ open GaussianRadiusExponentialName (input)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRootAlgebra (re_mul im_mul re_neg im_neg re_scale im_scale equal_of_values)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -48,13 +45,8 @@ def coefficient (z B m : PTm n) : PTm n :=
 def nameF : PR 2 := GaussianBoundedConstantProductName.nameF quarterF
 def data (z R B m x : PTm n) : PTm n := GaussianBoundedConstantProductName.data (two*R) (coefficient z B m) x
 
-@[simp] theorem subst_coefficient {l : ℕ} (σ : Fin n → PTm l) (z B m : PTm n) :
-    Syn.subst σ (coefficient z B m) = coefficient (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ m) := by
-  simp [coefficient,imaginaryCode]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (z R B m x : PTm n) :
-    Syn.subst σ (data z R B m x) =
-      data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [data]
+ipra_subst coefficient [imaginaryCode]
+ipra_subst data
 
 theorem sample_at (z R B m x p : PTm n) : Γ ⊢[PRAAx]
     ap2 nameF p (data z R B m x) ≐ GaussianRationalHorner.qmul (coefficient z B m) (ap2 quarterF (clock p (two*R)) x) :=

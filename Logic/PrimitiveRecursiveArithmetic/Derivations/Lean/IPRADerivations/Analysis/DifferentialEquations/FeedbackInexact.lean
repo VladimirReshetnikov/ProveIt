@@ -19,17 +19,13 @@ Packet: `analysis/ipra_certified_continuation_2026-11-19`, `paper/sections/03_fe
 
 namespace LeanProofs.IPRA.Analysis.FeedbackInexact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.WeightedFeedback (Cert contract_scaled)
 open LeanProofs.IPRA.Analysis.WeightedRowContraction (half_contract_row)
 open LeanProofs.IPRA.Probability.EventAlgebraMetric (wsum)
 open LeanProofs.IPRA.Probability.BayesEvents (wsum_mul wsum_zero)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.ClipLaws (ad_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}
 
@@ -119,12 +115,11 @@ theorem neumann_power (hhalf : ∀ i, Γ ⊢[PRAAx] le (two * wsum (a i) w (List
     show Γ ⊢[PRAAx] le (num 1 * b i) (B * w i)
     ipra_le sl h
   | k + 1, i => by
-    have e := natEq (wsum_mul (Γ := Γ) (a i) (apow a b k) (num (2 ^ k)) (List.finRange m))
     have hg : Γ ⊢[PRAAx] le (num (2 ^ k) * apow a b (k + 1) i)
         (wsum (a i) (fun j => num (2 ^ k) * apow a b k j) (List.finRange m)) := by
       show Γ ⊢[PRAAx] le (num (2 ^ k) * wsum (a i) (apow a b k) (List.finRange m))
         (wsum (a i) (fun j => num (2 ^ k) * apow a b k j) (List.finRange m))
-      ipra_le 0 with e
+      ipra_le 0 with natEq (wsum_mul (Γ := Γ) (a i) (apow a b k) (num (2 ^ k)) (List.finRange m))
     have c := half_contract_row (a i) w (fun j => num (2 ^ k) * apow a b k j) (List.finRange m)
       (fun j _ => neumann_power hhalf hb k j) (hhalf i) hg
     ipra_le sl c using push_cast; ring

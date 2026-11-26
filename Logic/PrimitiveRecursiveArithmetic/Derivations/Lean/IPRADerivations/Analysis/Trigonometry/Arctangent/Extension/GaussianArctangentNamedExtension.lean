@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentNamedExtension
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (point_at crossEquivalent cross_to_diagonal diagonal_at)
@@ -27,9 +27,6 @@ open GaussianRationalMetric (distanceBounded)
 open RationalArithmetic (represents)
 open RationalCubeMidpoint (fraction fraction_represents)
 open RationalValueBounds (radius)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,16 +39,11 @@ def sample (f : PR 2) (p x : PTm n) : PTm n :=
     (GaussianArctangentPartialQuadrature.data (numerator f p x) (denominator f p x))
 def nameF (f : PR 2) : PR 2 := PTm.toPR (sample f (var 0) (var 1) : PTm 2)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (clock p) = clock (Syn.subst σ p) := by simp [clock]
-@[simp] theorem subst_parameter {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (parameter f p x) = parameter f (Syn.subst σ p) (Syn.subst σ x) := by simp [parameter]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (numerator f p x) = numerator f (Syn.subst σ p) (Syn.subst σ x) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (denominator f p x) = denominator f (Syn.subst σ p) (Syn.subst σ x) := by simp [denominator]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x : PTm n) :
-    Syn.subst σ (sample f p x) = sample f (Syn.subst σ p) (Syn.subst σ x) := by simp [sample]
+ipra_subst clock
+ipra_subst parameter
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst sample
 
 theorem denominator_positive (f : PR 2) (p x : PTm n) : Γ ⊢[PRAAx] le one (denominator f p x) :=
   GaussianArctangentClippedParameter.denominator_positive _
@@ -70,7 +62,7 @@ theorem parameter_represents_of_embedding (f : PR 2) (p x A B : PTm n) (hB : Γ 
     (h : Γ ⊢[PRAAx] ap2 f (clock p) x ≐ RationalGaussianEmbedding.embed (fraction A B)) :
     Γ ⊢[PRAAx] represents (parameter f p x) (ZT.ofNat A) B := by
   have realPart : Γ ⊢[PRAAx] parameter f p x ≐ RationalArithmetic.recode (fraction A B) :=
-    (congrFst h).eqTrans (fst_pair _ _)
+    h.fstE
   exact scalar_congr realPart.eqSymm (.eqRefl _) (.eqRefl _)
     (RationalGaussianEmbedding.scalar_recode_represents _ _ _ (fraction_represents A B hB))
 

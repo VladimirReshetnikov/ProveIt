@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationM2Transport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -34,9 +34,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric dist
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRootApproximationWitness (pointBounds)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,14 +54,8 @@ def cofinalM2 (z R B m a d : PTm n) : Fm PTm n := .all
   (m2At (cutoff (var 0) (Syn.shift R) (Syn.shift m) (Syn.shift a) (Syn.shift d))
     (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift m) (Syn.shift d))
 
-@[simp] theorem subst_m2At {l : ℕ} (σ : Fin n → PTm l) (N z R B m d : PTm n) :
-    (m2At N z R B m d).subst σ =
-      m2At (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) :=
-  by simp [m2At,fixedLeftData,fixedRightData,fixedInnerData]
-@[simp] theorem subst_cofinalM2 {l : ℕ} (σ : Fin n → PTm l) (z R B m a d : PTm n) :
-    (cofinalM2 z R B m a d).subst σ =
-      cofinalM2 (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) :=
-  by simp [cofinalM2,Syn.subst_shift,Syn.shift_subst]
+ipra_subst m2At [fixedLeftData, fixedRightData, fixedInnerData]
+ipra_subst cofinalM2 [Syn.subst_shift, Syn.shift_subst]
 
 theorem cofinal_at (p z R B m a d : PTm n) (h : Γ ⊢[PRAAx] cofinalM2 z R B m a d) :
     Γ ⊢[PRAAx] m2At (cutoff p R m a d) z R B m d := by
@@ -97,9 +88,7 @@ private def fixedRightBudget (z R B m d : PTm n) : PTm n :=
   alignmentCost (powerBound R m*scaledBound z R B m d) (refCap m) (refCap m) (fixedInnerBudget z R B m d) (refError m)
 def m2Budget (z R B m d : PTm n) : PTm n := (fixedLeftBudget R m d+two)+fixedRightBudget z R B m d
 
-@[simp] theorem subst_m2Budget {l : ℕ} (σ : Fin n → PTm l) (z R B m d : PTm n) :
-    Syn.subst σ (m2Budget z R B m d) = m2Budget (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ m) (Syn.subst σ d) := by
-  simp [m2Budget,fixedLeftBudget,fixedRightBudget,fixedInnerBudget,alignmentCost,shiftCap,shiftError,refCap,refError,two]
+ipra_subst m2Budget [fixedLeftBudget, fixedRightBudget, fixedInnerBudget, alignmentCost, shiftCap, shiftError, refCap, refError, two]
 
 theorem fixed_left_error (p z R B m a d : PTm n) (h : Γ ⊢[PRAAx] source z R B m a d) : Γ ⊢[PRAAx]
     distanceBounded (leftRaw p z R B m a d) (ap2 fixedLeftF p (fixedLeftData z R B m d (cutoff p R m a d)))

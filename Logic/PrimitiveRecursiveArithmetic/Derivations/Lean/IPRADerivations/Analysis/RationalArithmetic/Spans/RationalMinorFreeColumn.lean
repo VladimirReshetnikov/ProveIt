@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalMaximalMinors
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The actual least free column of a proper maximum minor
@@ -14,15 +13,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMinorFreeColumn
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open RationalSubtupleSpan (bit bitBody bit_body_at)
 open RationalSelectedMinors (count subst_count)
 open RationalMaximalMinors (bestColumn rank best_valid)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (sel sel_spec rank_succ rank_zero rank_lt_of_kept)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,14 +26,9 @@ def missingCount (d C : PTm n) : PTm n := Foundations.FilteredEnumeration.rank c
 def firstMissing (d C : PTm n) : PTm n := sel complementBody zero d C
 def free (P d : PTm n) : PTm n := firstMissing d (bestColumn P d)
 
-@[simp] theorem subst_missingCount {k : ℕ} (σ : Fin n → PTm k) (d C : PTm n) :
-    Syn.subst σ (missingCount d C) = missingCount (Syn.subst σ d) (Syn.subst σ C) := by
-  simp [missingCount,Foundations.FilteredEnumeration.rank]
-@[simp] theorem subst_firstMissing {k : ℕ} (σ : Fin n → PTm k) (d C : PTm n) :
-    Syn.subst σ (firstMissing d C) = firstMissing (Syn.subst σ d) (Syn.subst σ C) := by
-  simp [firstMissing]
-@[simp] theorem subst_free {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (free P d) = free (Syn.subst σ P) (Syn.subst σ d) := by simp [free]
+ipra_subst missingCount [Foundations.FilteredEnumeration.rank]
+ipra_subst firstMissing
+ipra_subst free
 
 theorem complement_at (i C : PTm n) : inst2 complementBody i C = monus one (bit C i) := by
   simp [complementBody,inst2,one]
@@ -64,11 +54,9 @@ theorem complementary_indicator (i C : PTm n) : Γ ⊢[PRAAx]
 
 theorem complementary_count (d C : PTm n) : Γ ⊢[PRAAx] count d C + missingCount d C ≐ d := by
   have all : Γ ⊢[PRAAx] .all (count (var 0) (Syn.shift C) + missingCount (var 0) (Syn.shift C) ≐ var 0) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,PTm.subst_add,subst_count,subst_missingCount,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrAdd (rank_zero bitBody C) (rank_zero complementBody C)).eqTrans (zero_add zero)
-    · simp only [Fm.subst_eq,PTm.subst_add,subst_count,subst_missingCount,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let i : PTm (n+1) := var 0
+    ipra_qfind [subst_count, subst_missingCount]
+    · exact (congrAdd (rank_zero bitBody C) (rank_zero complementBody C)).eqTrans (zero_add zero)
+    · let i : PTm (n+1) := var 0
       let c := Syn.shift C
       let Δ := (count i c + missingCount i c ≐ i) :: Γ.map Fm.shift
       have fold : Δ ⊢[PRAAx] count (succ i) c + missingCount (succ i) c ≐

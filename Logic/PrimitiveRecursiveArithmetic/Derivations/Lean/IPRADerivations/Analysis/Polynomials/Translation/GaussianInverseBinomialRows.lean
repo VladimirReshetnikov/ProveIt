@@ -3,8 +3,6 @@ import IPRADerivations.Analysis.Polynomials.Translation.GaussianTranslationCoeff
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerAlgebra
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Literal finite binomial rows of actual translation stages
@@ -22,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianInverseBinomialRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (canonical qadd qmul represents positive_product canonical_unique represents_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnegative qsub)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
@@ -32,10 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalTranslationStages (remaining remai
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_self gb_pascal)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -49,17 +43,10 @@ def termBody : PTm 2 := term (fstT (var 1)) (fstT (sndT (var 1)))
 def R (C N z j k : PTm n) : PTm n :=
   GaussianRationalFiniteSum.sum termBody (succ (monus N (j+k))) (data C N z j k)
 
-@[simp] theorem subst_b {m : ℕ} (σ : Fin n → PTm m) (C N z i : PTm n) :
-    Syn.subst σ (b C N z i) = b (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ i) := by simp [b]
-@[simp] theorem subst_term {m : ℕ} (σ : Fin n → PTm m) (C N z j k r : PTm n) :
-    Syn.subst σ (term C N z j k r) = term (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ j) (Syn.subst σ k) (Syn.subst σ r) := by simp [term]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C N z j k : PTm n) :
-    Syn.subst σ (data C N z j k) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ j) (Syn.subst σ k) := by simp [data]
-@[simp] theorem subst_R {m : ℕ} (σ : Fin n → PTm m) (C N z j k : PTm n) :
-    Syn.subst σ (R C N z j k) = R (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ j) (Syn.subst σ k) := by simp [R]
+ipra_subst b
+ipra_subst term
+ipra_subst data
+ipra_subst R
 
 theorem b_canonical (C N z i : PTm n) : Γ ⊢[PRAAx] canonical (b C N z i) :=
   GaussianTranslationCoefficientValues.translated_coefficient_canonical _ _ _ _
@@ -93,9 +80,9 @@ theorem term_at (C N z j k r : PTm n) : Γ ⊢[PRAAx]
   have tail := snd_pair (Γ := Γ) C (pairT N (pairT z (pairT j k)))
   have nt := (congrSnd tail).eqTrans (snd_pair N (pairT z (pairT j k)))
   have zt := (congrSnd nt).eqTrans (snd_pair z (pairT j k))
-  have eqs := term_congr c ((congrFst tail).eqTrans (fst_pair _ _))
-    ((congrFst nt).eqTrans (fst_pair _ _)) ((congrFst zt).eqTrans (fst_pair _ _))
-    ((congrSnd zt).eqTrans (snd_pair _ _)) (.eqRefl r)
+  have eqs := term_congr c tail.fstE
+    nt.fstE zt.fstE
+    zt.sndE (.eqRefl r)
   simpa only [termBody,inst2,subst_term,subst_fstT,subst_sndT,Syn.subst_var,data,
     Matrix.cons_val_zero,Matrix.cons_val_one] using eqs
 
@@ -219,9 +206,7 @@ theorem pair_sum_add (t u : PTm 2) (m x y : PTm n) : Γ ⊢[PRAAx]
 def linearTerms (t u v : PTm 2) (m x y z a : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ inst2 t (var 0) (Syn.shift x) ≐
     qadd (inst2 u (var 0) (Syn.shift y)) (qmul (Syn.shift a) (inst2 v (var 0) (Syn.shift z))))
-@[simp] theorem subst_linearTerms {l : ℕ} (σ : Fin n → PTm l) (t u v : PTm 2) (m x y z a : PTm n) :
-    (linearTerms t u v m x y z a).subst σ = linearTerms t u v (Syn.subst σ m) (Syn.subst σ x)
-      (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ a) := by simp [linearTerms,Syn.subst_shift,Syn.shift_subst]
+ipra_subst linearTerms [Syn.subst_shift, Syn.shift_subst]
 
 theorem linear_at (t u v : PTm 2) (m x y z a i : PTm n)
     (h : Γ ⊢[PRAAx] linearTerms t u v m x y z a) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx]
@@ -379,9 +364,7 @@ def row (C N z j : PTm n) : Fm PTm n := .all
     GaussianTranslationCoefficientValues.coefficient (Syn.shift C) (Syn.shift N) (Syn.shift z) (Syn.shift j) (var 0) ≐
       R (Syn.shift C) (Syn.shift N) (Syn.shift z) (Syn.shift j) (var 0))
 
-@[simp] theorem subst_row {m : ℕ} (σ : Fin n → PTm m) (C N z j : PTm n) :
-    (row C N z j).subst σ = row (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ j) := by
-  simp [row,Syn.subst_shift,Syn.shift_subst]
+ipra_subst row [Syn.subst_shift, Syn.shift_subst]
 
 def rowSyntax (C N z j : PTm n) : Foundations.BoundedSyntax.BFm n := .all (succ (remaining N j))
   (.eq (GaussianTranslationCoefficientValues.coefficient (Syn.shift C) (Syn.shift N) (Syn.shift z) (Syn.shift j) (var 0))

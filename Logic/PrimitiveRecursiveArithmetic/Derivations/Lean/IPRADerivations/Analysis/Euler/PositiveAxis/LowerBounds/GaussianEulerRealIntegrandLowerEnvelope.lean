@@ -16,14 +16,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerRealIntegrandLowerEnvelope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (powerF powerData decayF decayData productF productData nameF data sample)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (qmul positive_product)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

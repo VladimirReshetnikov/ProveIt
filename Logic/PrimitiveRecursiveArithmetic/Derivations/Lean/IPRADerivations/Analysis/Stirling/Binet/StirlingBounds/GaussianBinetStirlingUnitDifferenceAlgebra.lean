@@ -14,7 +14,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingUnitDifferenceAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add mul scale oneCode eval_re_code eval_im_code)
 open GaussianBinetStirlingRemainder (offset)
 open GaussianLogGammaEulerHead (argument)
@@ -26,8 +26,6 @@ open GaussianRationalL1 (rawDen rawGaussian raw_represents)
 open GaussianRationalMetric (qsub qnegative qsub_canonical qsub_represents)
 open GaussianRationalSyntheticDivision (qone qadd_congr qsub_congr rescale_to remainingDen remaining_den_positive)
 open GaussianRootAlgebra (sub equal_of_values re_add im_add re_sub im_sub re_mul im_mul re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,10 +39,7 @@ def rawRemainder (A B D sign g l c : PTm n) : PTm n := qsub (rawCore A B D sign 
 def rawDifference (A B D sign l m : PTm n) : PTm n :=
   qsub (qmul (coefficient A B D sign) (qsub m l)) qone
 
-@[simp] theorem subst_coefficient {k : ℕ} (σ : Fin n → PTm k) (A B D sign : PTm n) :
-    Syn.subst σ (coefficient A B D sign) =
-      coefficient (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ sign) := by
-  simp [coefficient,one,two,GaussianLogGammaEulerRepresentation.subst_argument]
+ipra_subst coefficient [one, two, GaussianLogGammaEulerRepresentation.subst_argument]
 
 private theorem cancel_constant (x y c : PTm n) :
     Γ ⊢[PRAAx] qsub (qsub x c) (qsub y c) ≐ qsub x y :=

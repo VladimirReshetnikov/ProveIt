@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetImaginaryExponentialScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code oneCode scale)
 open GaussianBinetExponentialIntegralGrid (exponent)
 open GaussianBinetImaginaryExponentialIntegral (coefficient)
@@ -25,9 +25,6 @@ open GaussianRationalMetric (qnegative qnegative_canonical qnegative_represents)
 open GaussianRightHalfPlaneLogarithmOffset (signedImag)
 open GaussianRootAlgebra (equal_of_values re_mul im_mul re_neg im_neg re_scale im_scale re_one im_one)
 open RationalArithmetic (select select_zero select_one)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

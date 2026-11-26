@@ -2,7 +2,6 @@ import IPRADerivations.Foundations.ShiftedInduction
 import IPRADerivations.Combinatorics.BinomialSigned
 import IPRADerivations.Analysis.RationalArithmetic.Powers.Pochhammer
 import IPRADerivations.Foundations.HurwitzProduct
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The Chu–Vandermonde summation
@@ -37,7 +36,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.ChuVandermonde
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero')
 open LeanProofs.IPRA.Combinatorics.BinomialSigned (cB cS cB_at cS_at pascal_sum)
@@ -46,10 +45,6 @@ open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_ne_one' congrEqb')
 open LeanProofs.IPRA.Foundations.HurwitzProduct (succ_monus_of_le)
 open LeanProofs.IPRA.Foundations.ShiftedInduction (shifted_induction)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

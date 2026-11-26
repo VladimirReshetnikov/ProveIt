@@ -21,10 +21,8 @@ Not derived: integrality of rational eigenvalues, the kernel basis, and the lowe
 
 namespace LeanProofs.IPRA.Combinatorics.LaplacianBounds
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.GraphIncidence (laplacian_identity)
-open Syn
-open scoped Fm
 
 variable {n k : ℕ} {Γ : List (Fm PTm n)}
 
@@ -97,8 +95,7 @@ theorem eigen_range (A : Fin k → Fin k → ZT n) (x : Fin k → ZT n) (D p q :
   have hs1 : ∀ v w, ZT.toZ Γ (A v w) = ZT.toZ Γ (A w v) := fun v w => ZT.toZ_eq (hs v w)
   have he1 : ∀ v, ZT.toZ Γ q * ((∑ w, ZT.toZ Γ (A v w)) * ZT.toZ Γ (x v) -
       ∑ w, ZT.toZ Γ (A v w) * ZT.toZ Γ (x w)) = ZT.toZ Γ p * ZT.toZ Γ (x v) := fun v => by
-    have h := ZT.toZ_eq (he v)
-    simpa only [ZT.toZ_mul, ZT.toZ_sub, ZT.toZ_sumFin] using h
+    simpa only [ZT.toZ_mul, ZT.toZ_sub, ZT.toZ_sumFin] using ZT.toZ_eq (he v)
   have lap := laplacian_identity (fun v w => ZT.toZ Γ (A v w)) (fun v => ZT.toZ Γ (x v)) hs1
   beta_reduce at lap
   have hpN : ZT.toZ Γ p * ∑ v, ZT.toZ Γ (x v) ^ 2 =
@@ -121,8 +118,7 @@ theorem mean_zero_pairs (x : Fin k → ZT n) (h0 : Γ ⊢[PRAAx] ZT.eq (ZT.sumFi
     Γ ⊢[PRAAx] ZT.eq (ZT.sumFin fun u => ZT.sumFin fun v => ZT.sq (x u - x v))
       (ZT.natLit 2 * (ZT.natLit k * ZT.sumFin fun u => ZT.sq (x u))) := by
   have h : ∑ i, ZT.toZ Γ (x i) = 0 := by
-    have e := ZT.toZ_eq h0
-    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_zero] using e
+    simpa only [ZT.toZ_sumFin, ZT.toZ_natLit, Nat.cast_zero] using ZT.toZ_eq h0
   have e := pair_sq (fun i => ZT.toZ Γ (x i))
   beta_reduce at e
   apply ZT.derive

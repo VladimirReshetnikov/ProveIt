@@ -15,14 +15,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHead (head factor head_zero head_succ)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -31,14 +28,9 @@ def input (z w R B A D : PTm n) : Fm PTm n := le one B ⋏ (le one D ⋏
     distanceBounded (ofGaussian z B) (ofGaussian w B) A D)))
 def gain (R N : PTm n) : PTm n := succ N*pw (one+R) N
 def law (z w R B A D N : PTm n) : Fm PTm n := distanceBounded (head z B N) (head w B N) (gain R N*A) D
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (z w R B A D : PTm n) :
-    (input z w R B A D).subst σ = input (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) := by simp [input,ComplexLogarithmRemainder.bounded]
-@[simp] theorem subst_gain {l : ℕ} (σ : Fin n → PTm l) (R N : PTm n) :
-    Syn.subst σ (gain R N) = gain (Syn.subst σ R) (Syn.subst σ N) := by simp [gain]
-@[simp] theorem subst_law {l : ℕ} (σ : Fin n → PTm l) (z w R B A D N : PTm n) :
-    (law z w R B A D N).subst σ = law (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ N) := by simp [law]
+ipra_subst input [ComplexLogarithmRemainder.bounded]
+ipra_subst gain
+ipra_subst law
 
 theorem translated_difference (z w B i : PTm n) : Γ ⊢[PRAAx] GaussianRootAlgebra.equal
     (GaussianRootAlgebra.sub (GaussianGammaEulerHeadLower.translated z B (succ i))
@@ -120,22 +112,14 @@ def output (z w R B A D N : PTm n) : PTm n := pairT (head z B N)
   (pairT (head w B N) (pairT (gain R N*A) D))
 def outputF : PR 7 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (z w R B A D N : PTm n) : PTm n := PTm.app outputF ![z,w,R,B,A,D,N]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (z w R B A D N : PTm n) :
-    Syn.subst σ (output z w R B A D N) = output (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ N) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (z w R B A D N : PTm n) :
-    Syn.subst σ (run z w R B A D N) = run (Syn.subst σ z) (Syn.subst σ w) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (z w R B A D N : PTm n) : Γ ⊢[PRAAx] run z w R B A D N ≐ output z w R B A D N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![z,w,R,B,A,D,N]
 theorem returned_left (z w R B A D N : PTm n) : Γ ⊢[PRAAx] fstT (run z w R B A D N) ≐ head z B N :=
-  (congrFst (program_at z w R B A D N)).eqTrans (fst_pair _ _)
+  (program_at z w R B A D N).fstE
 theorem returned_right (z w R B A D N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run z w R B A D N)) ≐ head w B N :=
   ((congrFst (congrSnd (program_at z w R B A D N))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_radius (z w R B A D N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run z w R B A D N))) ≐ gain R N*A :=

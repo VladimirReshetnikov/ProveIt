@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCofinalCoefficientName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul evaluate ofGaussian)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (bounded)
@@ -29,10 +29,6 @@ open GaussianGammaCanonicalExponentBound (numericalRadius)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_to_diagonal diagonal_refl)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaC9Bound (majorant)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,12 +46,9 @@ def exponentClock (p R : PTm n) : PTm n := GaussianGammaSynchronousExponentName.
 def coefficientPrecision (p R : PTm n) : PTm n := GaussianGammaSynchronousExponentName.gammaClock (exponentClock p R) R
 def degreeCutoff (p R : PTm n) : PTm n := GaussianGammaZetaTailSeries.cutoff (exponentClock p R) R
 def exponentialCutoff (p R : PTm n) : PTm n := GaussianRadiusExponentialName.index (numericalRadius R) (outerClock p R)
-@[simp] theorem subst_headMass {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (headMass R) = headMass (Syn.subst σ R) := by simp [headMass]
-@[simp] theorem subst_exponentialData {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    Syn.subst σ (exponentialData z R B) = exponentialData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [exponentialData]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    Syn.subst σ (data z R B) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [data]
+ipra_subst headMass
+ipra_subst exponentialData
+ipra_subst data
 
 theorem exponential_input (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     GaussianRadiusExponentialName.input GaussianGammaSynchronousExponentName.nameF (numericalRadius R)

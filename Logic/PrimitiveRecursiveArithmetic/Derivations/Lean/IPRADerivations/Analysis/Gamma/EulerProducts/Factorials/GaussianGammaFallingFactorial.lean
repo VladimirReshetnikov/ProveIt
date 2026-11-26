@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFallingFactorial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianRootAlgebra (equal equal_of_values)
 open GaussianGammaEulerHeadShift (shifted linear)
@@ -23,10 +23,6 @@ open GaussianGammaRepeatedShift (risingProduct)
 open GaussianRationalHorner (ofGaussian qmul canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRationalNaturalScale (naturalPoint)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,20 +34,13 @@ def fallingFactor (z B j : PTm n) : PTm n := ofGaussian (GaussianRootAlgebra.sub
 def factorialInverse (N : PTm n) : PTm n := GaussianGammaEulerShiftLimit.reciprocalPoint (Products.fact N)
 def binomial (z B N : PTm n) : PTm n := qmul (factorialInverse N) (fallingProduct z B N)
 
-@[simp] theorem subst_start {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (start z B N) = start (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [start]
-@[simp] theorem subst_baseRadius {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    Syn.subst σ (baseRadius R N) = baseRadius (Syn.subst σ R) (Syn.subst σ N) := by simp [baseRadius]
-@[simp] theorem subst_endpointRadius {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    Syn.subst σ (endpointRadius R N) = endpointRadius (Syn.subst σ R) (Syn.subst σ N) := by simp [endpointRadius]
-@[simp] theorem subst_fallingProduct {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (fallingProduct z B N) = fallingProduct (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [fallingProduct]
-@[simp] theorem subst_fallingFactor {m : ℕ} (σ : Fin n → PTm m) (z B j : PTm n) :
-    Syn.subst σ (fallingFactor z B j) = fallingFactor (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ j) := by simp [fallingFactor]
-@[simp] theorem subst_factorialInverse {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (factorialInverse N) = factorialInverse (Syn.subst σ N) := by simp [factorialInverse,GaussianGammaEulerShiftLimit.reciprocalPoint,Products.fact]
-@[simp] theorem subst_binomial {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (binomial z B N) = binomial (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [binomial]
+ipra_subst start
+ipra_subst baseRadius
+ipra_subst endpointRadius
+ipra_subst fallingProduct
+ipra_subst fallingFactor
+ipra_subst factorialInverse [GaussianGammaEulerShiftLimit.reciprocalPoint, Products.fact]
+ipra_subst binomial
 
 theorem endpoint_native (z B N : PTm n) : Γ ⊢[PRAAx] equal (point (start z B N) B N) (shifted z B) := by
   apply GaussianRootAlgebra.equal_trans (point_native (start z B N) B N)

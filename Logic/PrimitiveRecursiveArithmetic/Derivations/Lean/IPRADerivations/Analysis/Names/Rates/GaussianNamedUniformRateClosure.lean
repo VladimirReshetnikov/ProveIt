@@ -15,7 +15,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedUniformRateClosure
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (multiplyF multiplyData)
@@ -25,9 +25,6 @@ open GaussianNamedMultiplyRate (sampleBound leadingNumerator leadingDenominator)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -74,9 +71,7 @@ theorem same_denominator_product (F G H K : PR 2) (x y u v A C N M R : PTm n)
 def family (F G : PR 2) (x y C : PTm n) : Fm PTm n :=
   .all (independentRate F G (Syn.shift x) (Syn.shift y) (Syn.shift C) (unit (var 0)))
 
-@[simp] theorem subst_family {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (x y C : PTm n) :
-    (family F G x y C).subst σ = family F G (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ C) := by
-  simp [family,Syn.subst_shift,Syn.shift_subst]
+ipra_subst family [Syn.subst_shift, Syn.shift_subst]
 
 theorem family_at (F G : PR 2) (x y C p : PTm n) (h : Γ ⊢[PRAAx] family F G x y C) : Γ ⊢[PRAAx]
     independentRate F G x y C (unit p) := by

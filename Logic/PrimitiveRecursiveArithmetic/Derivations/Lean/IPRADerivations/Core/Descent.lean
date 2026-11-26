@@ -98,11 +98,9 @@ private theorem term_zero (H : Hyps χ β a' b') :
 
 /-- `T(N) = 0` for every `N`. -/
 theorem count_zero (H : Hyps χ β a' b') : ([] : List (Fm PTm 1)) ⊢[PRAAx] T χ β (var 0) ≐ zero := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero]
-    exact sum_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero]
-    refine (sum_succ' (outerBody χ β) (var 0) zero).eqTrans ?_
+  ipra_ind [subst_ap2]
+  · exact sum_zero _ _
+  · refine (sum_succ' (outerBody χ β) (var 0) zero).eqTrans ?_
     rw [inst2_outer]
     refine (congrAdd Prf.hyp0 ?_).eqTrans (add_zero _)
     refine sum_zero_of_all χ (var 0) (.allI ?_) _

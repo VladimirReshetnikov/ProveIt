@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalCurveFibers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate horner hornerF qzero)
@@ -30,10 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalValueEquality
 open LeanProofs.IPRA.Analysis.GaussianPolynomialMonicCompanion
   (values monicValues values_length values_lookup monic_length monic_head monic_tail)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -84,12 +80,9 @@ def yBody : PTm 2 := ordinate (fstT (var 1))
 def yList (L p g : PTm n) : PTm n := sequence yBody (fiberCount L p g) (data L p g)
 def yListF : PR 3 := PTm.toPR (yList (var 0) (var 1) (var 2))
 def yRun (L p g : PTm n) : PTm n := ap3 yListF L p g
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (L p g : PTm n) :
-    Syn.subst σ (data L p g) = data (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [data]
-@[simp] theorem subst_yList {l : ℕ} (σ : Fin n → PTm l) (L p g : PTm n) :
-    Syn.subst σ (yList L p g) = yList (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [yList]
-@[simp] theorem subst_yRun {l : ℕ} (σ : Fin n → PTm l) (L p g : PTm n) :
-    Syn.subst σ (yRun L p g) = yRun (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [yRun]
+ipra_subst data
+ipra_subst yList
+ipra_subst yRun
 theorem y_body_at (L p g r : PTm n) : Γ ⊢[PRAAx]
     inst2 yBody r (data L p g) ≐ ordinate L (entry (fiber L p g) r) := by
   simp only [yBody,inst2,GaussianRationalFiberGrouping.subst_ordinate,Foundations.MasterCertificate.subst_entry,
@@ -124,17 +117,10 @@ def functionZeros (G m L : PTm n) : Fm PTm n := .all
   (lt (var 0) (length (Syn.shift L)) ⟶
     evaluate (values (Syn.shift G) (Syn.shift m) (abscissa (Syn.shift L) (var 0)))
       (ordinate (Syn.shift L) (var 0)) ≐ qzero)
-@[simp] theorem subst_pointDistinctFrom {l : ℕ} (σ : Fin n → PTm l) (L i : PTm n) :
-    (pointDistinctFrom L i).subst σ = pointDistinctFrom (Syn.subst σ L) (Syn.subst σ i) := by
-  simp [pointDistinctFrom,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_pointDistinct {l : ℕ} (σ : Fin n → PTm l) (L : PTm n) :
-    (pointDistinct L).subst σ = pointDistinct (Syn.subst σ L) := by simp [pointDistinct,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_curveZeros {l : ℕ} (σ : Fin n → PTm l) (F m L : PTm n) :
-    (curveZeros F m L).subst σ = curveZeros (Syn.subst σ F) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [curveZeros,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_functionZeros {l : ℕ} (σ : Fin n → PTm l) (G m L : PTm n) :
-    (functionZeros G m L).subst σ = functionZeros (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [functionZeros,Syn.subst_shift,Syn.shift_subst]
+ipra_subst pointDistinctFrom [Syn.subst_shift, Syn.shift_subst]
+ipra_subst pointDistinct [Syn.subst_shift, Syn.shift_subst]
+ipra_subst curveZeros [Syn.subst_shift, Syn.shift_subst]
+ipra_subst functionZeros [Syn.subst_shift, Syn.shift_subst]
 
 theorem point_distinct_at (L i j : PTm n) (h : Γ ⊢[PRAAx] pointDistinct L)
     (hi : Γ ⊢[PRAAx] lt i (length L)) (hj : Γ ⊢[PRAAx] lt j (length L)) (hij : Γ ⊢[PRAAx] lt i j) : Γ ⊢[PRAAx]
@@ -276,19 +262,11 @@ def specializedFunction (G m L p g : PTm n) : PTm n := values G m (selectedX L p
 def certificate (C D R K m : PTm n) : Fm PTm n := (length R ≐ K) ⋏
   (GaussianRationalFiniteRoots.roots C R ⋏ (GaussianRationalFiniteRoots.roots D R ⋏
     (GaussianRationalFiniteRoots.distinct R ⋏ le K m)))
-@[simp] theorem subst_sourceInput {l : ℕ} (σ : Fin n → PTm l) (F G m L : PTm n) :
-    (sourceInput F G m L).subst σ = sourceInput (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ L) := by simp [sourceInput]
-@[simp] theorem subst_selectedX {l : ℕ} (σ : Fin n → PTm l) (L p g : PTm n) :
-    Syn.subst σ (selectedX L p g) = selectedX (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [selectedX]
-@[simp] theorem subst_specializedCurve {l : ℕ} (σ : Fin n → PTm l) (F m L p g : PTm n) :
-    Syn.subst σ (specializedCurve F m L p g) = specializedCurve (Syn.subst σ F) (Syn.subst σ m)
-      (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [specializedCurve]
-@[simp] theorem subst_specializedFunction {l : ℕ} (σ : Fin n → PTm l) (G m L p g : PTm n) :
-    Syn.subst σ (specializedFunction G m L p g) = specializedFunction (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [specializedFunction]
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (C D R K m : PTm n) :
-    (certificate C D R K m).subst σ = certificate (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ R)
-      (Syn.subst σ K) (Syn.subst σ m) := by simp [certificate]
+ipra_subst sourceInput
+ipra_subst selectedX
+ipra_subst specializedCurve
+ipra_subst specializedFunction
+ipra_subst certificate
 
 theorem curve_fiber (F G m L p g : PTm n) (h : Γ ⊢[PRAAx] sourceInput F G m L) : Γ ⊢[PRAAx]
     certificate (specializedCurve F m L p g) (specializedFunction G m L p g) (yList L p g) (fiberCount L p g) m :=
@@ -301,29 +279,21 @@ def output (F G m L p g : PTm n) : PTm n := pairT (yList L p g)
     (pairT (fiberCount L p g) (pairT (selectedX L p g) (GaussianRationalFiberGrouping.partitionTotal L p)))))
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (F G m L p g : PTm n) : PTm n := PTm.app outputF ![F,G,m,L,p,g]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (F G m L p g : PTm n) :
-    Syn.subst σ (output F G m L p g) = output (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (F G m L p g : PTm n) :
-    Syn.subst σ (run F G m L p g) = run (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem program_at (F G m L p g : PTm n) : Γ ⊢[PRAAx] run F G m L p g ≐ output F G m L p g := by
   simpa [outputF,run] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)) ![F,G,m,L,p,g]
 theorem returned_yList (F G m L p g : PTm n) : Γ ⊢[PRAAx] fstT (run F G m L p g) ≐ yList L p g :=
-  (congrFst (program_at _ _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).fstE
 theorem returned_curve (F G m L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run F G m L p g)) ≐ specializedCurve F m L p g :=
-  (congrFst ((congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).sndE.fstE
 theorem returned_function (F G m L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run F G m L p g))) ≐ specializedFunction G m L p g :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _ _).sndE.sndE.fstE
 theorem returned_count (F G m L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run F G m L p g)))) ≐ fiberCount L p g :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at _ _ _ _ _ _)).eqTrans (snd_pair _ _))).eqTrans
+  (congrFst ((congrSnd ((congrSnd (program_at _ _ _ _ _ _).sndE).eqTrans
     (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
 theorem returned_x (F G m L p g : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (sndT (run F G m L p g))))) ≐ selectedX L p g :=

@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussEulerHeads
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale)
 open GaussianGammaEulerDenominator (denominator_normalization linearBody)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator shiftedData shiftedBody shifted_at grouped
@@ -26,17 +26,12 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalReciprocal (power)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def cutoff (m N : PTm n) : PTm n := pred (m*succ N)
 
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (cutoff m N) = cutoff (Syn.subst σ m) (Syn.subst σ N) := by simp [cutoff]
+ipra_subst cutoff
 
 theorem cutoff_count (m N : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] m*succ N ≐ succ (cutoff m N) := by
@@ -60,15 +55,15 @@ theorem shifted_head_at (r z B m N : PTm n) : Γ ⊢[PRAAx]
     inst2 shiftedHeadBody r (shiftedData z B m N) ≐ run (shiftedNumerator z B m r) (B*m) N := by
   let X := shiftedData z B m N
   have p := snd_pair (Γ := Γ) N (pairT m (pairT z B))
-  have v := (congrSnd p).eqTrans (snd_pair _ _)
+  have v := p.sndE
   have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
     (run (shiftedNumerator (var 0) (var 1) (var 2) (var 3)) (var 1*var 2) (var 4) : PTm 5)
     (σ := ![fstT (sndT (sndT X)),sndT (sndT (sndT X)),fstT (sndT X),r,fstT X])
     (σ' := ![z,B,m,r,N]) (fun i => by
       fin_cases i
-      · exact (congrFst v).eqTrans (fst_pair _ _)
-      · exact (congrSnd v).eqTrans (snd_pair _ _)
-      · exact (congrFst p).eqTrans (fst_pair _ _)
+      · exact v.fstE
+      · exact v.sndE
+      · exact p.fstE
       · exact .eqRefl _
       · exact fst_pair _ _)
   simpa [shiftedHeadBody,shiftedNumerator,inst2,X] using e

@@ -29,14 +29,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Algebra.PolynomialFiniteRoots
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (drop drop_zero drop_push subst_drop)
 open LeanProofs.IPRA.Analysis.PolynomialBisection
   (naturalPower subst_naturalPower naturalPower_positive pack unpack subst_pack subst_unpack)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -233,8 +229,7 @@ theorem leading_vanishes (d : ℕ) (p : List (ZT n)) (hlen : p.length = d + 1)
       have hc : cs = [] := by simpa using hlen
       subst cs
       apply ZT.derive
-      have e := ZT.toZ_eq (hz 0)
-      simpa [homogeneous, leading, naturalPower] using e
+      simpa [homogeneous, leading, naturalPower] using ZT.toZ_eq (hz 0)
   | succ d ih =>
     cases p with
     | nil => simp at hlen
@@ -257,9 +252,7 @@ theorem leading_vanishes (d : ℕ) (p : List (ZT n)) (hlen : p.length = d + 1)
         have productZero : Γ ⊢[PRAAx] ZT.eq
             (ZT.ofNat (naturalPower (D 0) es.length) * leading (c :: e :: es)) (ZT.natLit 0) := by
           apply ZT.derive
-          have e1 := ZT.toZ_eq (synthetic_leading (Γ := Γ) c e es (a 0) (D 0))
-          have e2 := ZT.toZ_eq vanished
-          exact e1.symm.trans e2
+          exact (ZT.toZ_eq (synthetic_leading (Γ := Γ) c e es (a 0) (D 0))).symm.trans (ZT.toZ_eq vanished)
         exact zt_mul_cancel_left
           (positive_nonzero _ (naturalPower_positive _ _ (hD 0))) productZero
 
@@ -277,12 +270,9 @@ def read (code i : PTm n) : PTm n := fstT (drop i (sndT code))
 def encode (p : List (ZT n)) : PTm n := encodeNaturals (p.map pack)
 def coefficient (code i : PTm n) : ZT n := unpack (read code i)
 
-@[simp] theorem subst_read {m : ℕ} (σ : Fin n → PTm m) (code i : PTm n) :
-    Syn.subst σ (read code i) = read (Syn.subst σ code) (Syn.subst σ i) := by simp [read]
+ipra_subst read
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (code i : PTm n) :
-    (coefficient code i).subst σ = coefficient (Syn.subst σ code) (Syn.subst σ i) := by
-  simp [coefficient]
+ipra_subst coefficient
 
 theorem forward_lookup (p : List (PTm n)) (i : Fin p.length) :
     Γ ⊢[PRAAx] fstT (drop (num i.val) (forward p)) ≐ p.get i := by
@@ -290,7 +280,7 @@ theorem forward_lookup (p : List (PTm n)) (i : Fin p.length) :
   | nil => exact i.elim0
   | cons c cs ih =>
     refine Fin.cases ?_ (fun j => ?_) i
-    · exact (congrFst (drop_zero _)).eqTrans (fst_pair _ _)
+    · exact (drop_zero _).fstE
     · exact (congrFst (drop_push (num j.val) c (forward cs))).eqTrans (ih j)
 
 theorem read_encode (p : List (PTm n)) (i : ℕ) (hi : i < p.length) :
@@ -305,7 +295,7 @@ theorem coefficient_encode (p : List (ZT n)) (i : ℕ) (hi : i < p.length) :
   apply ZT.derive
   change Groth.ι (Q.mk Γ (fstT (read (encode p) (num i)))) -
     Groth.ι (Q.mk Γ (sndT (read (encode p) (num i)))) = _
-  rw [natEq ((congrFst er).eqTrans (fst_pair _ _)), natEq ((congrSnd er).eqTrans (snd_pair _ _))]
+  rw [natEq er.fstE, natEq er.sndE]
   rfl
 
 theorem encoded_length (p : List (ZT n)) : Γ ⊢[PRAAx] fstT (encode p) ≐ num p.length := by
@@ -380,9 +370,8 @@ theorem coded_synthetic_division (d : ℕ) (code : PTm n) (a b : ZT n) (A B : PT
   apply ZT.derive
   have e := ZT.toZ_eq (synthetic_division_length (Γ := Γ) (d + 1)
     (coefficients (d + 2) code) (by simp) a b A B)
-  have decoded := ZT.toZ_eq (evaluate_quotientCode (Γ := Γ) d code a b A B)
   simp only [ZT.toZ_sub, ZT.toZ_mul] at e ⊢
-  rw [decoded]
+  rw [ZT.toZ_eq (evaluate_quotientCode (Γ := Γ) d code a b A B)]
   exact e
 
 /-- Root removal refers to the actual generated quotient code. -/
@@ -467,15 +456,9 @@ theorem coded_quotient_leading (d : ℕ) (code : PTm n) (b : ZT n) (B : PTm n) :
     (coefficients count code).map (ZT.subst σ) = coefficients count (Syn.subst σ code) := by
   simp [coefficients, List.map_ofFn, Function.comp_def]
 
-@[simp] theorem subst_evaluate {m : ℕ} (σ : Fin n → PTm m)
-    (degree : ℕ) (code : PTm n) (a : ZT n) (D : PTm n) :
-    (evaluate degree code a D).subst σ =
-      evaluate degree (Syn.subst σ code) (a.subst σ) (Syn.subst σ D) := by simp [evaluate]
+ipra_subst evaluate
 
-@[simp] theorem subst_quotientCode {m : ℕ} (σ : Fin n → PTm m)
-    (degree : ℕ) (code : PTm n) (b : ZT n) (B : PTm n) :
-    Syn.subst σ (quotientCode degree code b B) =
-      quotientCode degree (Syn.subst σ code) (b.subst σ) (Syn.subst σ B) := by simp [quotientCode]
+ipra_subst quotientCode
 
 /-- One actual fixed primitive-recursive symbol, with runtime arguments
 `coefficientCode, rootPositiveNumerator, rootNegativeNumerator, rootDenominator`. -/
@@ -508,19 +491,14 @@ theorem coded_quotient_nonzero (d : ℕ) (code : PTm n) (b : ZT n) (B : PTm n)
 def rootNumerator (roots i : PTm n) : ZT n := unpack (fstT (read roots i))
 def rootDenominator (roots i : PTm n) : PTm n := sndT (read roots i)
 
-@[simp] theorem subst_rootNumerator {m : ℕ} (σ : Fin n → PTm m) (roots i : PTm n) :
-    (rootNumerator roots i).subst σ = rootNumerator (Syn.subst σ roots) (Syn.subst σ i) := by simp [rootNumerator]
+ipra_subst rootNumerator
 
-@[simp] theorem subst_rootDenominator {m : ℕ} (σ : Fin n → PTm m) (roots i : PTm n) :
-    Syn.subst σ (rootDenominator roots i) = rootDenominator (Syn.subst σ roots) (Syn.subst σ i) := by simp [rootDenominator]
+ipra_subst rootDenominator
 
 def rationalDistinct (a : ZT n) (A : PTm n) (b : ZT n) (B : PTm n) : Fm PTm n :=
   neg (ZT.eq (ZT.ofNat B * a) (b * ZT.ofNat A))
 
-@[simp] theorem subst_rationalDistinct {m : ℕ} (σ : Fin n → PTm m)
-    (a : ZT n) (A : PTm n) (b : ZT n) (B : PTm n) :
-    (rationalDistinct a A b B).subst σ =
-      rationalDistinct (a.subst σ) (Syn.subst σ A) (b.subst σ) (Syn.subst σ B) := by simp [rationalDistinct]
+ipra_subst rationalDistinct
 
 def rootsCondition (degree : ℕ) (code roots : PTm n) : Fm PTm n :=
   .all (lt (var 0) (fstT (Syn.shift roots)) ⟶

@@ -22,15 +22,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDeflation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (quotient canonicalCoefficients qone)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition
   (length empty append empty_length append_length append_left append_right subst_length subst_empty subst_append entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,27 +47,14 @@ def roots (step : PR 3) (C N e f j : PTm n) : PTm n := sndT (state step C N e f 
 def rootAt (step : PR 3) (C N e f j : PTm n) : PTm n :=
   GaussianDescentClock.approximateRoot step (remaining N j) (polynomial step C N e f j) e f
 
-@[simp] theorem subst_singleton {m : ℕ} (σ : Fin n → PTm m) (z : PTm n) :
-    Syn.subst σ (singleton z) = singleton (Syn.subst σ z) := by simp [singleton]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (C N e f : PTm n) :
-    Syn.subst σ (data C N e f) = data (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ e) (Syn.subst σ f) := by simp [data]
-@[simp] theorem subst_remaining {m : ℕ} (σ : Fin n → PTm m) (N j : PTm n) :
-    Syn.subst σ (remaining N j) = remaining (Syn.subst σ N) (Syn.subst σ j) := by simp [remaining]
-@[simp] theorem subst_next {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (j s N e f : PTm n) :
-    Syn.subst σ (next step j s N e f) = next step (Syn.subst σ j) (Syn.subst σ s)
-      (Syn.subst σ N) (Syn.subst σ e) (Syn.subst σ f) := by simp [next]
-@[simp] theorem subst_state {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N e f j : PTm n) :
-    Syn.subst σ (state step C N e f j) = state step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ j) := by simp [state]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N e f j : PTm n) :
-    Syn.subst σ (polynomial step C N e f j) = polynomial step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ j) := by simp [polynomial]
-@[simp] theorem subst_roots {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N e f j : PTm n) :
-    Syn.subst σ (roots step C N e f j) = roots step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ j) := by simp [roots]
-@[simp] theorem subst_rootAt {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N e f j : PTm n) :
-    Syn.subst σ (rootAt step C N e f j) = rootAt step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ j) := by simp [rootAt]
+ipra_subst singleton
+ipra_subst data
+ipra_subst remaining
+ipra_subst next
+ipra_subst state
+ipra_subst polynomial
+ipra_subst roots
+ipra_subst rootAt
 
 theorem singleton_length (z : PTm n) : Γ ⊢[PRAAx] length (singleton z) ≐ one := sequence_length _ _ _
 theorem singleton_entry (z : PTm n) : Γ ⊢[PRAAx] entry (singleton z) zero ≐ z := by
@@ -82,7 +65,7 @@ theorem state_zero (step : PR 3) (C N e f : PTm n) : Γ ⊢[PRAAx]
     state step C N e f zero ≐ pairT C empty := by
   have h := rec2_zero (Γ := Γ) initialBody (stepBody step) (data C N e f)
   have input : Γ ⊢[PRAAx] fstT (sndT (data C N e f)) ≐ C :=
-    (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
+    (snd_pair _ _).fstE
   exact h.eqTrans (by
     simpa only [initialBody,subst_pairT,subst_fstT,subst_sndT,subst_empty,Syn.subst_var,
       Matrix.cons_val_zero] using congrPairT input (.eqRefl (empty : PTm n)))
@@ -97,8 +80,8 @@ theorem step_body_at (step : PR 3) (j s C N e f : PTm n) : Γ ⊢[PRAAx]
       · exact .eqRefl _
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-      · exact (congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+      · exact (congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE
+      · exact (congrSnd (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).sndE)
   simpa only [stepBody,subst_next,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using h
@@ -108,16 +91,16 @@ theorem state_succ (step : PR 3) (C N e f j : PTm n) : Γ ⊢[PRAAx]
   (rec2_succ initialBody (stepBody step) j (data C N e f)).eqTrans (step_body_at step j _ C N e f)
 
 theorem polynomial_zero (step : PR 3) (C N e f : PTm n) : Γ ⊢[PRAAx]
-    polynomial step C N e f zero ≐ C := (congrFst (state_zero step C N e f)).eqTrans (fst_pair _ _)
+    polynomial step C N e f zero ≐ C := (state_zero step C N e f).fstE
 theorem roots_zero (step : PR 3) (C N e f : PTm n) : Γ ⊢[PRAAx]
-    roots step C N e f zero ≐ empty := (congrSnd (state_zero step C N e f)).eqTrans (snd_pair _ _)
+    roots step C N e f zero ≐ empty := (state_zero step C N e f).sndE
 
 theorem polynomial_succ (step : PR 3) (C N e f j : PTm n) : Γ ⊢[PRAAx]
     polynomial step C N e f (succ j) ≐ quotient (polynomial step C N e f j) (rootAt step C N e f j) (remaining N j) :=
-  (congrFst (state_succ step C N e f j)).eqTrans (fst_pair _ _)
+  (state_succ step C N e f j).fstE
 theorem roots_succ (step : PR 3) (C N e f j : PTm n) : Γ ⊢[PRAAx]
     roots step C N e f (succ j) ≐ append (roots step C N e f j) (singleton (rootAt step C N e f j)) :=
-  (congrSnd (state_succ step C N e f j)).eqTrans (snd_pair _ _)
+  (state_succ step C N e f j).sndE
 
 /-- The remaining degree decreases by exactly one at every active stage. -/
 theorem remaining_step (N j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) :
@@ -133,9 +116,7 @@ def invariant (step : PR 3) (C N e f j : PTm n) : Fm PTm n := le j N ⟶
   (length (polynomial step C N e f j) ≐ succ (remaining N j) ⋏
     (entry (polynomial step C N e f j) zero ≐ qone))
 
-@[simp] theorem subst_invariant {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N e f j : PTm n) :
-    (invariant step C N e f j).subst σ = invariant step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ j) := by simp [invariant]
+ipra_subst invariant
 
 theorem invariant_zero (step : PR 3) (C N e f : PTm n)
     (hC : Γ ⊢[PRAAx] length C ≐ succ N) (hm : Γ ⊢[PRAAx] entry C zero ≐ qone) : Γ ⊢[PRAAx]
@@ -162,11 +143,9 @@ theorem polynomial_invariant (step : PR 3) (C N e f j : PTm n)
     length (polynomial step C N e f j) ≐ succ (remaining N j) ⋏
       (entry (polynomial step C N e f j) zero ≐ qone) := by
   have all : Γ ⊢[PRAAx] .all (invariant step (Syn.shift C) (Syn.shift N) (Syn.shift e) (Syn.shift f) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [subst_invariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (invariant_zero step C N e f hC.wk hm.wk)
-    · simp only [subst_invariant,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,⟨trivial,trivial⟩⟩) [subst_invariant]
+    · exact .impI (invariant_zero step C N e f hC.wk hm.wk)
+    · refine .impI ?_
       let I := invariant step (Syn.shift C) (Syn.shift N) (Syn.shift e) (Syn.shift f) (var 0)
       let Δ := le (succ (var 0)) (Syn.shift N) :: I :: Γ.map Fm.shift
       exact invariant_step _ _ _ _ _ _ Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
@@ -179,11 +158,9 @@ even outside the active-degree range where no polynomial claim is made. -/
 theorem roots_length (step : PR 3) (C N e f j : PTm n) : Γ ⊢[PRAAx]
     length (roots step C N e f j) ≐ j := by
   have all : Γ ⊢[PRAAx] .all (length (roots step (Syn.shift C) (Syn.shift N) (Syn.shift e) (Syn.shift f) (var 0)) ≐ var 0) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_roots,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (congrFst (roots_zero step C N e f)).eqTrans empty_length
-    · simp only [Fm.subst_eq,subst_length,subst_roots,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (roots_succ _ _ _ _ _ _)).eqTrans ((append_length _ _).eqTrans
+    ipra_qfind [subst_length, subst_roots]
+    · exact (congrFst (roots_zero step C N e f)).eqTrans empty_length
+    · exact (congrFst (roots_succ _ _ _ _ _ _)).eqTrans ((append_length _ _).eqTrans
         ((congrAdd Prf.hyp0 (singleton_length _)).eqTrans (by ipra_ring)))
   simpa only [Fm.subst_eq,subst_length,subst_roots,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE j all
 
@@ -289,9 +266,7 @@ theorem rootAt_congr (step : PR 3) (C N e f : PTm n) {i j : PTm n}
 
 def lookupLaw (step : PR 3) (C N e f i j : PTm n) : Fm PTm n := lt i j ⟶
   (entry (roots step C N e f j) i ≐ rootAt step C N e f i)
-@[simp] theorem subst_lookupLaw {m : ℕ} (σ : Fin n → PTm m) (step : PR 3) (C N e f i j : PTm n) :
-    (lookupLaw step C N e f i j).subst σ = lookupLaw step (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ i) (Syn.subst σ j) := by simp [lookupLaw]
+ipra_subst lookupLaw
 
 theorem roots_lookup_step (step : PR 3) (C N e f i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (succ j))
     (ih : Γ ⊢[PRAAx] lookupLaw step C N e f i j) : Γ ⊢[PRAAx]
@@ -306,11 +281,9 @@ theorem roots_lookup_step (step : PR 3) (C N e f i j : PTm n) (hi : Γ ⊢[PRAAx
 theorem roots_lookup (step : PR 3) (C N e f j i : PTm n) (hi : Γ ⊢[PRAAx] lt i j) : Γ ⊢[PRAAx]
     entry (roots step C N e f j) i ≐ rootAt step C N e f i := by
   have all : Γ ⊢[PRAAx] .all (lookupLaw step (Syn.shift C) (Syn.shift N) (Syn.shift e) (Syn.shift f) (Syn.shift i) (var 0)) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_lookupLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [subst_lookupLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (roots_lookup_step _ _ _ _ _ _ _ Prf.hyp0 Prf.hyp1)
+    ipra_qfind (⟨lt_QF _ _,trivial⟩) [subst_lookupLaw]
+    · exact .impI (lt_zero_absurd _ Prf.hyp0)
+    · exact .impI (roots_lookup_step _ _ _ _ _ _ _ Prf.hyp0 Prf.hyp1)
   have rule : Γ ⊢[PRAAx] lookupLaw step C N e f i j := by
     simpa only [subst_lookupLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE j all
   exact .impE rule hi

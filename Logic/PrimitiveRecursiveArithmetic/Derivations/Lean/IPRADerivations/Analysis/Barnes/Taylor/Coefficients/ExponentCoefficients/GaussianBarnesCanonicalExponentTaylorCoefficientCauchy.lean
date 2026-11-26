@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorCoefficientCauchy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open GaussianBarnesCanonicalExponentTaylorBuffer
   (buffer entry_at buffer_zero coefficient_one coefficient_two coefficient_high
@@ -40,9 +40,6 @@ open GaussianRationalHorner (ofGaussian qadd qmul qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalPowerDifference (distance_refl_zero)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianStirlingConstant.nameF

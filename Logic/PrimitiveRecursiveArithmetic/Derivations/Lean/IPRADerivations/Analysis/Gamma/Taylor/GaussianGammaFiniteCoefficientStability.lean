@@ -18,15 +18,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteCoefficientStability
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaReciprocalDegreeCells (degree)
 open GaussianGammaFiniteCoefficientPolynomial (polynomial totalDegree)
 open GaussianGammaCofinalCoefficientName (coefficientPrecision degreeCutoff exponentialCutoff)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
 open GaussianPolynomialLowJetProduct (jetEqual)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -67,8 +64,7 @@ theorem whole_horizon_reader (q R L M K T e : PTm n)
 
 def fixedCoefficient (q R e : PTm n) : PTm n :=
   exponentCoefficient (polynomial q R e e) (totalDegree R e e) e
-@[simp] theorem subst_fixedCoefficient {m : ℕ} (σ : Fin n → PTm m) (q R e : PTm n) :
-    Syn.subst σ (fixedCoefficient q R e) = fixedCoefficient (Syn.subst σ q) (Syn.subst σ R) (Syn.subst σ e) := by simp [fixedCoefficient]
+ipra_subst fixedCoefficient
 
 theorem original_fixed_horizon (q R L K e : PTm n)
     (hHead : Γ ⊢[PRAAx] le e (succ (two*R)))
@@ -80,11 +76,7 @@ theorem original_fixed_horizon (q R L K e : PTm n)
 def cofinalObservation (p R e : PTm n) : PTm n :=
   exponentCoefficient (polynomial (coefficientPrecision (p+e) R) R (degreeCutoff (p+e) R) (exponentialCutoff (p+e) R))
     (totalDegree R (degreeCutoff (p+e) R) (exponentialCutoff (p+e) R)) e
-@[simp] theorem subst_cofinalObservation {m : ℕ} (σ : Fin n → PTm m) (p R e : PTm n) :
-    Syn.subst σ (cofinalObservation p R e) = cofinalObservation (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ e) := by
-  simp [cofinalObservation,coefficientPrecision,degreeCutoff,exponentialCutoff,
-    GaussianGammaCofinalCoefficientName.exponentClock,GaussianGammaCofinalCoefficientName.inputClock,
-    GaussianGammaCofinalCoefficientName.outerClock]
+ipra_subst cofinalObservation [coefficientPrecision, degreeCutoff, exponentialCutoff, GaussianGammaCofinalCoefficientName.exponentClock, GaussianGammaCofinalCoefficientName.inputClock, GaussianGammaCofinalCoefficientName.outerClock]
 
 theorem cofinal_observation_fixed (p R e : PTm n) (hHead : Γ ⊢[PRAAx] le e (succ (two*R))) : Γ ⊢[PRAAx]
     cofinalObservation p R e ≐ fixedCoefficient (coefficientPrecision (p+e) R) R e := by

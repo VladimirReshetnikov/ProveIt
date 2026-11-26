@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPowerChartCofinalEndpoints
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPowerChartExponentOrder
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Uniform physical endpoints for the original rational power chart
@@ -16,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerChartUniformEndpoints
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChart (parameters nameF data)
 open GaussianEulerPowerChartCofinalEndpoints (lowerDenominator upperNumerator physicalPanel)
 open GaussianEulerPowerChartExponentOrder (increasing_power decreasing_power scaled_order)
@@ -27,8 +26,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSeparatedDeflation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameReciprocal (lower lower_norm_positive inverse_bound)
 open GaussianRationalFiniteRoots (stage stage_zero stage_succ stage_length)
 open GaussianRationalHorner (evaluate qmul horner_canonical qmul_canonical)
@@ -27,9 +27,6 @@ open GaussianReciprocalHorner (qmul_associative qmul_one_right qsub_add_cancel)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -69,22 +66,13 @@ def laterResiduals (C R i E K : PTm n) : Fm PTm n := .all
 
 def budget (E D i : PTm n) : PTm n := E*pw (two*D) i
 
-@[simp] theorem subst_separationFrom {l : ℕ} (σ : Fin n → PTm l) (R D i : PTm n) :
-    (separationFrom R D i).subst σ = separationFrom (Syn.subst σ R) (Syn.subst σ D) (Syn.subst σ i) := by
-  simp [separationFrom,Syn.subst_shift,Syn.shift_subst]
+ipra_subst separationFrom [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_separation {l : ℕ} (σ : Fin n → PTm l) (R D : PTm n) :
-    (separation R D).subst σ = separation (Syn.subst σ R) (Syn.subst σ D) := by
-  simp [separation,Syn.subst_shift,Syn.shift_subst]
+ipra_subst separation [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_laterResiduals {l : ℕ} (σ : Fin n → PTm l) (C R i E K : PTm n) :
-    (laterResiduals C R i E K).subst σ =
-      laterResiduals (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ i) (Syn.subst σ E) (Syn.subst σ K) := by
-  simp [laterResiduals,Syn.subst_shift,Syn.shift_subst]
+ipra_subst laterResiduals [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (E D i : PTm n) :
-    Syn.subst σ (budget E D i) = budget (Syn.subst σ E) (Syn.subst σ D) (Syn.subst σ i) := by
-  simp [budget,two,one]
+ipra_subst budget [two, one]
 
 theorem budget_zero (E D : PTm n) : Γ ⊢[PRAAx] budget E D zero ≐ E :=
   (congrMul (.eqRefl _) (pw_zero _)).eqTrans (by ipra_ring)
@@ -156,10 +144,7 @@ theorem stage_formula (C N R E K D i : PTm n) :
     formula (stageSyntax C N R E K D i) = stageLaw C N R E K D i := by
   simp only [stageSyntax,stageLaw,laterResiduals,formula,BFm.le,bounded_formula,Syn.shift,subst_length,le]
 
-@[simp] theorem subst_stageLaw {l : ℕ} (σ : Fin n → PTm l) (C N R E K D i : PTm n) :
-    (stageLaw C N R E K D i).subst σ = stageLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ R)
-      (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ D) (Syn.subst σ i) := by
-  simp [stageLaw]
+ipra_subst stageLaw
 
 theorem stage_residuals (C N R E K D i : PTm n) (hc : Γ ⊢[PRAAx] length C ≐ succ N)
     (hk : Γ ⊢[PRAAx] le one K) (hd : Γ ⊢[PRAAx] le one D)

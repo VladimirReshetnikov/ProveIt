@@ -15,7 +15,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceRealFloor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetKernelRows (inputData lowerDenominator)
 open GaussianBinetLaplaceDomination (complexClock clock_later kernel_observation_bound)
@@ -29,10 +29,6 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -51,13 +47,9 @@ def floorDenominator (X T : PTm n) : PTm n :=
 def floor (X T : PTm n) : PTm n :=
   expFloor two (floorDenominator X T)
 
-@[simp] theorem subst_floorDenominator {m : ℕ} (σ : Fin n → PTm m) (X T : PTm n) :
-    Syn.subst σ (floorDenominator X T) = floorDenominator (Syn.subst σ X) (Syn.subst σ T) := by
-  simp [floorDenominator]
+ipra_subst floorDenominator
 
-@[simp] theorem subst_floor {m : ℕ} (σ : Fin n → PTm m) (X T : PTm n) :
-    Syn.subst σ (floor X T) = floor (Syn.subst σ X) (Syn.subst σ T) := by
-  simp [floor]
+ipra_subst floor
 
 theorem floor_denominator_positive (X T : PTm n) : Γ ⊢[PRAAx] le one (floorDenominator X T) :=
   positive_product _ _ (GaussianPolynomialPerturbation.power_positive (num 3) (X*T) (by ipra_le 2))

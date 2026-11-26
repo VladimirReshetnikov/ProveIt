@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentExponentialPrefix (prefixValue prefix_zero at_pi_observation)
 open GaussianArctangentExtensionAxis (prefix_axis_at)
 open GaussianArctangentPartialQuadrature (mesh clearing)
@@ -29,9 +29,6 @@ open GaussianRightHalfPlaneArgument
 open RationalArithmetic (add multiply negative)
 open RationalAlgebra (add_congr multiply_congr negative_congr)
 open RationalGaussianEmbedding (embed scalarZero scalar_zero_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

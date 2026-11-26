@@ -17,25 +17,20 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicClientIndependence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicClientIntervalName (nameF data compact_input canonical_source rescaled_source)
 open GaussianEulerLogarithmicCompactName (evaluatorF fixedData)
 open GaussianEulerLogarithmicMultiplier (lipschitz)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_trans)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z R S B a C G E T F U : PTm n) : Fm PTm n :=
   GaussianEulerLogarithmicClientIntervalName.source z R B a C G E T ⋏
     GaussianEulerLogarithmicClientIntervalName.source z S B a C G F U
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R S B a C G E T F U : PTm n) :
-    (source z R S B a C G E T F U).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ S)
-      (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ G) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ F) (Syn.subst σ U) := by simp [source]
+ipra_subst source
 
 theorem agreement_at (t j z R S B a C G E T F U : PTm n)
     (h : Γ ⊢[PRAAx] source z R S B a C G E T F U)

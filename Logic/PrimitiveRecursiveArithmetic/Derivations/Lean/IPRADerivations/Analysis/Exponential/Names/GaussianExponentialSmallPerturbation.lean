@@ -21,7 +21,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianExponentialSmallPerturbation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul canonical)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -29,10 +29,6 @@ open GaussianRationalPolynomialExponential (scalarSum)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianUnitDiskExponentialName (sample query shifted index nameF)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -62,12 +58,8 @@ def smallSamples (f : PR 2) (x A B : PTm n) : Fm PTm n :=
   .all (bounded (ap2 f (var 0) (Syn.shift x)) (Syn.shift A) (Syn.shift B))
 def nearOneSamples (f : PR 2) (x A B : PTm n) : Fm PTm n :=
   .all (distanceBounded (sample f (var 0) (Syn.shift x)) qone (num 3*Syn.shift A) (Syn.shift B))
-@[simp] theorem subst_smallSamples {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A B : PTm n) :
-    (smallSamples f x A B).subst σ = smallSamples f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [smallSamples,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_nearOneSamples {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A B : PTm n) :
-    (nearOneSamples f x A B).subst σ = nearOneSamples f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [nearOneSamples,Syn.subst_shift,Syn.shift_subst]
+ipra_subst smallSamples [Syn.subst_shift, Syn.shift_subst]
+ipra_subst nearOneSamples [Syn.subst_shift, Syn.shift_subst]
 
 theorem small_samples_at (f : PR 2) (x A B p : PTm n) (h : Γ ⊢[PRAAx] smallSamples f x A B) :
     Γ ⊢[PRAAx] bounded (ap2 f p x) A B := by simpa [smallSamples] using h.allE p

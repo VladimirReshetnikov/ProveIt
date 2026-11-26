@@ -15,9 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GammaEulerConstantName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero app)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.MeshChange (mesh_pair)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -28,8 +26,6 @@ open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_mono upper_triangle upper_order_left radius radius_of_upper)
 open RationalSupMetric (denominatorOf)
 open GaussianRationalSyntheticBounds (natCode)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -118,14 +114,10 @@ def mesh (p : PTm n) : PTm n := num 4*unit p
 def fixedValue (p N : PTm n) : PTm n := sample N (mesh p)
 def gammaValue (p : PTm n) : PTm n := sample (mesh p) (mesh p)
 
-@[simp] theorem subst_unit {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (unit p) = unit (Syn.subst σ p) := by simp [unit]
-@[simp] theorem subst_mesh {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (mesh p) = mesh (Syn.subst σ p) := by simp [mesh]
-@[simp] theorem subst_fixedValue {m : ℕ} (σ : Fin n → PTm m) (p N : PTm n) :
-    Syn.subst σ (fixedValue p N) = fixedValue (Syn.subst σ p) (Syn.subst σ N) := by simp [fixedValue]
-@[simp] theorem subst_gammaValue {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (gammaValue p) = gammaValue (Syn.subst σ p) := by simp [gammaValue]
+ipra_subst unit
+ipra_subst mesh
+ipra_subst fixedValue
+ipra_subst gammaValue
 
 theorem unit_positive (p : PTm n) : Γ ⊢[PRAAx] le one (unit p) :=
   GaussianFactorBudget.power_positive two p (le_succ_self one)
@@ -174,10 +166,8 @@ def fixedSample (p N : PTm n) : PTm n := ap2 fixedF p N
 def gammaF : PR 2 := PTm.toPR (gammaValue (var 0) : PTm 2)
 def gammaSample (p x : PTm n) : PTm n := ap2 gammaF p x
 
-@[simp] theorem subst_fixedSample {m : ℕ} (σ : Fin n → PTm m) (p N : PTm n) :
-    Syn.subst σ (fixedSample p N) = fixedSample (Syn.subst σ p) (Syn.subst σ N) := by simp [fixedSample]
-@[simp] theorem subst_gammaSample {m : ℕ} (σ : Fin n → PTm m) (p x : PTm n) :
-    Syn.subst σ (gammaSample p x) = gammaSample (Syn.subst σ p) (Syn.subst σ x) := by simp [gammaSample]
+ipra_subst fixedSample
+ipra_subst gammaSample
 
 theorem fixed_at (p N : PTm n) : Γ ⊢[PRAAx] fixedSample p N ≐ fixedValue p N := by
   simpa [fixedSample,fixedF,ap2] using toPR_eq (Γ := Γ) (fixedValue (var 0) (var 1) : PTm 2) ![p,N]

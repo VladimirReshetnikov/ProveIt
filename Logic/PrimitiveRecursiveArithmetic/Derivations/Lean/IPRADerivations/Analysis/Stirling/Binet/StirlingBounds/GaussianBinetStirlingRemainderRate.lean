@@ -18,7 +18,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetStirlingRemainderRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetStirlingRemainder (offset weightedF weightedData coreF coreData)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNamedInverseRate (independentRate)
@@ -27,9 +27,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded qnegative)
 open GaussianRationalReciprocal (bounded_negative)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianBinetStirlingRemainder.nameF
@@ -53,9 +50,7 @@ def pointData (q x : PTm n) : PTm n :=
 def productGain (R K : PTm n) : PTm n := lr R K+(R+one)*lc R K
 def gain (R K : PTm n) : PTm n := (gc R K+productGain R K)+one
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (R K : PTm n) :
-    Syn.subst σ (gain R K) = gain (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [gain,productGain,GaussianLogGammaEulerNamed.coefficient,GaussianRightHalfPlaneLogarithmNamed.coefficient,one]
+ipra_subst gain [productGain, GaussianLogGammaEulerNamed.coefficient, GaussianRightHalfPlaneLogarithmNamed.coefficient, one]
 
 private theorem offset_bound (q R K : PTm n) (hq : Γ ⊢[PRAAx] certificate q R K) :
     Γ ⊢[PRAAx] bounded (pointOffset q) (R+one) one := by

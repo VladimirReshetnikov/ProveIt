@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondRowCell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetOscillatoryColumns (damping)
 open GaussianBinetOscillatorySineQuotient (quotient)
 open GaussianBinetOscillatorySineRows (value_at_positive value_at_zero subst_endpoint)
@@ -29,9 +29,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianStirlingConstant (piDenominator)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "RectBody" => GaussianBinetOscillatorySineRectangle.body

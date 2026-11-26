@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveExponentialPowerTerm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic (positive positive_power positive_natural)
 open GaussianRationalHorner (qmul canonical)
 open GaussianRationalReciprocal (power bounded_product bound_congr)
@@ -29,8 +29,6 @@ open GaussianScalarExponentialDiagonal (coefficient)
 open GaussianRationalMetric (bounded)
 open RationalArgmin (rationalLE rationalLE_congr)
 open Products (fact)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -25,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNonmonicStepBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction fraction_represents)
@@ -33,8 +33,6 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.GaussianNonmonicTravelCoefficientBound (weight lowerBound selectedIndex)
 open LeanProofs.IPRA.Analysis.GaussianNonmonicDisplacementRadius
   (startingNumerator startingDenominator startingRadius deltaF)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,26 +50,12 @@ def input (C N z A B k L M E F q s R S j : PTm n) : Fm PTm n :=
   coefficientInput C N z A B k L M ⋏
     (rateInput N L M E F q s R S ⋏ bounded (evaluate C z) (E*pw q j) (F*pw s j))
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (N A M E R j : PTm n) :
-    Syn.subst σ (numerator N A M E R j) = numerator (Syn.subst σ N) (Syn.subst σ A)
-      (Syn.subst σ M) (Syn.subst σ E) (Syn.subst σ R) (Syn.subst σ j) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (B L F S j : PTm n) :
-    Syn.subst σ (denominator B L F S j) = denominator (Syn.subst σ B) (Syn.subst σ L)
-      (Syn.subst σ F) (Syn.subst σ S) (Syn.subst σ j) := by simp [denominator]
-@[simp] theorem subst_bound {m : ℕ} (σ : Fin n → PTm m) (N A B L M E F R S j : PTm n) :
-    Syn.subst σ (bound N A B L M E F R S j) = bound (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ L) (Syn.subst σ M) (Syn.subst σ E) (Syn.subst σ F)
-      (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ j) := by simp [bound]
-@[simp] theorem subst_coefficientInput {m : ℕ} (σ : Fin n → PTm m) (C N z A B k L M : PTm n) :
-    (coefficientInput C N z A B k L M).subst σ = coefficientInput (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ L) (Syn.subst σ M) := by simp [coefficientInput]
-@[simp] theorem subst_rateInput {m : ℕ} (σ : Fin n → PTm m) (N L M E F q s R S : PTm n) :
-    (rateInput N L M E F q s R S).subst σ = rateInput (Syn.subst σ N) (Syn.subst σ L) (Syn.subst σ M)
-      (Syn.subst σ E) (Syn.subst σ F) (Syn.subst σ q) (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ S) := by simp [rateInput]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (C N z A B k L M E F q s R S j : PTm n) :
-    (input C N z A B k L M E F q s R S j).subst σ = input (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) (Syn.subst σ L) (Syn.subst σ M)
-      (Syn.subst σ E) (Syn.subst σ F) (Syn.subst σ q) (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ S) (Syn.subst σ j) := by simp [input]
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst bound
+ipra_subst coefficientInput
+ipra_subst rateInput
+ipra_subst input
 
 theorem denominator_positive (B L F S j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hL : Γ ⊢[PRAAx] le one L) (hF : Γ ⊢[PRAAx] le one F) (hS : Γ ⊢[PRAAx] le one S) : Γ ⊢[PRAAx]

@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentNamedDerivative
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentBackwardWindow (lowerData lowerNumerator)
 open GaussianBinetLaplaceMomentForwardMargin (upperRadius)
 open GaussianBinetLaplaceMomentNamed (clock clock_margin frozen_rate name_regular)
@@ -35,9 +35,6 @@ open GaussianNameEquivalence (cross_refl cross_symm)
 open GaussianNameRingLaws (negativeF negativeData)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk Γ t)

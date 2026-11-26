@@ -16,7 +16,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetExponentialPanel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF)
@@ -33,10 +33,6 @@ open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianReciprocalHorner (qmul_one_right)
 open RationalArgmin (rationalLE)
 open GaussianRationalSyntheticBounds (natCode)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -45,9 +41,7 @@ abbrev expoF : PR 2 := GaussianRadiusExponentialName.nameF constantF
 def sample (p q R : PTm n) : PTm n := ap2 expoF p (data R q)
 def nonpositive (q : PTm n) : Fm PTm n := rationalLE (fstT q) (natCode zero)
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p q R : PTm n) :
-    Syn.subst σ (sample p q R) = sample (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ R) := by
-  simp [sample]
+ipra_subst sample
 
 theorem unit_bound (p q R : PTm n) (hq : Γ ⊢[PRAAx] input constantF R q)
     (hn : Γ ⊢[PRAAx] nonpositive q) :

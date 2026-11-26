@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.RationalBivariatePolynomialBuffersGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Elimination.Bivariate.GaussianBivariateMonicFactor
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual original rational full monic factor
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalBivariateMonicFactorGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarOne)
 open RationalPolynomialGaussianEmbedding (embed_congr)
 open RationalPolynomialBuffersGaussianEmbedding (leftPad embeddedEntries)
@@ -24,16 +23,11 @@ open GaussianPolynomialMonicCompanion (rowShape row_shape_at)
 open GaussianRationalMonicReduction (singleton singleton_length singleton_lookup)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (pred)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def monicRow (c : PTm n) : PTm n := leftPad (singleton scalarOne) c
-@[simp] theorem subst_monicRow {k : ℕ} (σ : Fin n → PTm k) (c : PTm n) :
-    Syn.subst σ (monicRow c) = monicRow (Syn.subst σ c) := by simp [monicRow]
+ipra_subst monicRow
 theorem monic_row_length (c : PTm n) : Γ ⊢[PRAAx] length (monicRow c) ≐ succ c :=
   (RationalPolynomialBuffersGaussianEmbedding.pad_length _ _).eqTrans
     ((congrAdd (.eqRefl _) (singleton_length _)).eqTrans (by ipra_ring))
@@ -45,13 +39,9 @@ def rowBody : PTm 2 := row (fstT (var 1)) (sndT (var 1)) (var 0)
 
 def table (F m c : PTm n) : PTm n := sequence rowBody (succ m) (pairT F c)
 
-@[simp] theorem subst_row {k : ℕ} (σ : Fin n → PTm k) (F c i : PTm n) :
-    Syn.subst σ (row F c i) = row (Syn.subst σ F) (Syn.subst σ c) (Syn.subst σ i) := by
-  simp [row, Signum.sg]
+ipra_subst row [Signum.sg]
 
-@[simp] theorem subst_table {k : ℕ} (σ : Fin n → PTm k) (F m c : PTm n) :
-    Syn.subst σ (table F m c) = table (Syn.subst σ F) (Syn.subst σ m) (Syn.subst σ c) := by
-  simp [table]
+ipra_subst table
 
 theorem row_body_at (F c i : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (pairT F c) ≐ row F c i := by
   simp only [rowBody, inst2, subst_row, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero,
@@ -166,12 +156,7 @@ theorem table_evaluation (F m c x y : PTm n) (hF : Γ ⊢[PRAAx] rowShape F m c)
 
 def tableF : PR 3 := PTm.toPR (table (var 0) (var 1) (var 2))
 def run (F m c : PTm n) : PTm n := PTm.app tableF ![F,m,c]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (F m c : PTm n) :
-    Syn.subst σ (run F m c) = run (Syn.subst σ F) (Syn.subst σ m) (Syn.subst σ c) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (F m c : PTm n) : Γ ⊢[PRAAx] run F m c ≐ table F m c := by
   simpa [run,tableF] using toPR_eq (Γ := Γ) (table (var 0) (var 1) (var 2) : PTm 3) ![F,m,c]
 

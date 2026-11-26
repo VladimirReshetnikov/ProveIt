@@ -19,7 +19,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingIntegerTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingNames (nameData source name_regular name_real add_real)
 open GaussianStirlingTelescope (shifted shifted_source)
 open GaussianStirlingTelescopeName (endpointData)
@@ -38,10 +38,6 @@ open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open RationalGaussianEmbedding (canonical_axis_roundtrip axis_zero)
 open RationalGaussianRealPart (real_zero_represents)
 open RationalValueBounds (upper upper_congr upper_triangle upper_mono radius_of_upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -54,10 +50,7 @@ def integerTailLaw (i N : PTm n) : Fm PTm n :=
     realOrder G C (endpointData N i one) (upperDifference i one N)
 def integerTailContract : Fm PTm n := .all (.all (le one (var 1) ⟶ integerTailLaw (var 1) (var 0)))
 
-@[simp] theorem subst_integerTailLaw {l : ℕ} (σ : Fin n → PTm l) (i N : PTm n) :
-    (integerTailLaw i N).subst σ = integerTailLaw (Syn.subst σ i) (Syn.subst σ N) := by
-  simp [integerTailLaw,one,GaussianRationalHorner.qzero,ComplexLogarithmRemainder.zeroCode,
-    ComplexLogarithmRemainder.code,ZT.ofNat]
+ipra_subst integerTailLaw [one, GaussianRationalHorner.qzero, ComplexLogarithmRemainder.zeroCode, ComplexLogarithmRemainder.code, ZT.ofNat]
 @[simp] theorem subst_integerTailContract {l : ℕ} (σ : Fin n → PTm l) :
     (integerTailContract : Fm PTm n).subst σ = (integerTailContract : Fm PTm l) := by
   simp [integerTailContract,one,Syn.up_zero,Syn.up_one,Syn.up_succ]
@@ -78,12 +71,9 @@ def point (p i : PTm n) : PTm n := ap2 A p (nameData i one)
 def after (i N : PTm n) : PTm n := shifted i one N
 def tailDen (i : PTm n) : PTm n := num 12*i
 
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (p i : PTm n) :
-    Syn.subst σ (point p i) = point (Syn.subst σ p) (Syn.subst σ i) := by simp [point,one]
-@[simp] theorem subst_after {l : ℕ} (σ : Fin n → PTm l) (i N : PTm n) :
-    Syn.subst σ (after i N) = after (Syn.subst σ i) (Syn.subst σ N) := by simp [after,one]
-@[simp] theorem subst_tailDen {l : ℕ} (σ : Fin n → PTm l) (i : PTm n) :
-    Syn.subst σ (tailDen i) = tailDen (Syn.subst σ i) := by simp [tailDen]
+ipra_subst point [one]
+ipra_subst after [one]
+ipra_subst tailDen
 
 theorem integer_source (i : PTm n) (hi : Γ ⊢[PRAAx] le one i) : Γ ⊢[PRAAx] source i one :=
   .andI hi (le_refl one)

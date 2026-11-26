@@ -21,7 +21,7 @@ set_option maxHeartbeats 1400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaCompactLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaNative (nameF data name_regular)
 open GaussianGammaDigammaReal (original_cross name_real)
@@ -39,9 +39,6 @@ open GaussianStirlingMultiplicativeBoundsOrder (fraction_real_part)
 open RationalGaussianEmbedding (canonical_axis_roundtrip)
 open RationalHarmonicIntervalVariation (gap)
 open RationalValueBounds (radius radius_of_upper radius_congr radius_mono radius_triangle upper_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -55,16 +52,11 @@ def window (a b K : PTm n) : Fm PTm n := source a b ⋏ le b (K*a)
 def input (a b c d K X D : PTm n) : Fm PTm n :=
   window a b K ⋏ (window c d K ⋏ (le one D ⋏ distanceBounded (fraction a b) (fraction c d) X D))
 
-@[simp] theorem subst_gain {m : ℕ} (σ : Fin n → PTm m) (K : PTm n) :
-    Syn.subst σ (gain K) = gain (Syn.subst σ K) := by simp [gain,one]
+ipra_subst gain [one]
 
-@[simp] theorem subst_window {m : ℕ} (σ : Fin n → PTm m) (a b K : PTm n) :
-    (window a b K).subst σ = window (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ K) := by simp [window]
+ipra_subst window
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (a b c d K X D : PTm n) :
-    (input a b c d K X D).subst σ =
-      input (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ K) (Syn.subst σ X) (Syn.subst σ D) := by
-  simp [input]
+ipra_subst input
 
 private theorem common_radius (p a c b K : PTm n) (ha : Γ ⊢[PRAAx] source a b)
     (hc : Γ ⊢[PRAAx] source c b) (hac : Γ ⊢[PRAAx] le a c) (hm : Γ ⊢[PRAAx] le b (K*a)) :

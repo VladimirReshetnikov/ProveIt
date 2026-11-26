@@ -15,16 +15,13 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftLogGammaTranslation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq code eval_re_code eval_im_code)
 open GaussianLogGammaEulerResidualDomain (native)
 open GaussianLogGammaEulerRationalContinuity (response)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRootAlgebra (sub equal equal_of_values normSq_equal re_sub im_sub)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

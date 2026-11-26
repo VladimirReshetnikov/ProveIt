@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductSynchronizedMagnitude
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianSineProductSynchronizedRow (angleData angleSineF angleSineData FactorBudget sincValue sampledRoot actualFactor
   modulus_eq argument_input sine_factor_error)
 open GaussianSineProductT4Budget (halfIndex multiple)
@@ -41,10 +41,6 @@ open GaussianReconstructionRoots (norm_from_distance)
 open GaussianSineRootNormalization (normalizedFactor)
 open ComplexLogarithmRemainder (normSq normSq_code)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -54,18 +50,9 @@ def reserve (z R B K x : PTm n) : PTm n :=
 def clock (z R B K x p : PTm n) : PTm n := p+reserve z R B K x
 def fine (z R B K x p : PTm n) : Fm PTm n := le (reserve z R B K x) (unit p)
 
-@[simp] theorem subst_reserve {l : ℕ} (σ : Fin n → PTm l) (z R B K x : PTm n) :
-    Syn.subst σ (reserve z R B K x) =
-      reserve (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ x) := by
-  simp [reserve,FactorBudget]
-@[simp] theorem subst_clock {l : ℕ} (σ : Fin n → PTm l) (z R B K x p : PTm n) :
-    Syn.subst σ (clock z R B K x p) =
-      clock (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ p) := by
-  simp [clock]
-@[simp] theorem subst_fine {l : ℕ} (σ : Fin n → PTm l) (z R B K x p : PTm n) :
-    (fine z R B K x p).subst σ =
-      fine (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ K) (Syn.subst σ x) (Syn.subst σ p) := by
-  simp [fine]
+ipra_subst reserve [FactorBudget]
+ipra_subst clock
+ipra_subst fine
 
 theorem clock_later (z R B K x p : PTm n) : Γ ⊢[PRAAx] le p (clock z R B K x p) :=
   le_add_right _ _

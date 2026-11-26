@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalExponentialLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (qzero qadd qmul positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
@@ -27,20 +27,14 @@ open GaussianRationalReciprocal (power bound_congr bounded_product bounded_sum)
 open GaussianRationalPolynomialExponential (inverseFactorial factorial_positive scalarSum scalarBody)
 open ExponentialSeries (en)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def termDifference (u v e : PTm n) : PTm n := qsub
   (qmul (inverseFactorial e) (power u e)) (qmul (inverseFactorial e) (power v e))
 def difference (u v K : PTm n) : PTm n := qsub (scalarSum u K) (scalarSum v K)
-@[simp] theorem subst_termDifference {l : ℕ} (σ : Fin n → PTm l) (u v e : PTm n) :
-    Syn.subst σ (termDifference u v e) = termDifference (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ e) := by simp [termDifference]
-@[simp] theorem subst_difference {l : ℕ} (σ : Fin n → PTm l) (u v K : PTm n) :
-    Syn.subst σ (difference u v K) = difference (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ K) := by simp [difference]
+ipra_subst termDifference
+ipra_subst difference
 
 theorem difference_zero (u v : PTm n) : Γ ⊢[PRAAx] difference u v zero ≐ qzero :=
   (qsub_congr (GaussianRationalPolynomialExponential.scalar_sum_zero u)
@@ -70,9 +64,7 @@ theorem term_bound (u v A B e : PTm n) (hB : Γ ⊢[PRAAx] le one B)
       (GaussianRationalPowerDifference.unit_disk_power_difference u v A B e hB hu hv hd))
 
 def boundLaw (u v A B k : PTm n) : Fm PTm n := bounded (difference u v (succ k)) (A*en k) (B*fact k)
-@[simp] theorem subst_boundLaw {l : ℕ} (σ : Fin n → PTm l) (u v A B k : PTm n) :
-    (boundLaw u v A B k).subst σ = boundLaw (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) :=
-  by simp [boundLaw,en,fact]
+ipra_subst boundLaw [en, fact]
 
 theorem bound_zero (u v A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hu : Γ ⊢[PRAAx] bounded u one one) (hv : Γ ⊢[PRAAx] bounded v one one)
@@ -161,35 +153,29 @@ def output (u v A B K : PTm n) : PTm n := pairT (scalarSum u K)
   (pairT (scalarSum v K) (pairT (difference u v K) (pairT (num 3*A) B)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (u v A B K : PTm n) : PTm n := PTm.app outputF ![u,v,A,B,K]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (u v A B K : PTm n) :
-    Syn.subst σ (output u v A B K) = output (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ K) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (u v A B K : PTm n) :
-    Syn.subst σ (run u v A B K) = run (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ K) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (u v A B K : PTm n) : Γ ⊢[PRAAx] run u v A B K ≐ output u v A B K := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![u,v,A,B,K]
 theorem returned_left (u v A B K : PTm n) : Γ ⊢[PRAAx] fstT (run u v A B K) ≐ scalarSum u K :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_tail (u v A B K : PTm n) : Γ ⊢[PRAAx] sndT (run u v A B K) ≐
     pairT (scalarSum v K) (pairT (difference u v K) (pairT (num 3*A) B)) :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_right (u v A B K : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run u v A B K)) ≐ scalarSum v K :=
-  (congrFst (returned_tail _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_tail _ _ _ _ _).fstE
 theorem returned_suffix (u v A B K : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run u v A B K)) ≐
     pairT (difference u v K) (pairT (num 3*A) B) :=
-  (congrSnd (returned_tail _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_tail _ _ _ _ _).sndE
 theorem returned_difference (u v A B K : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run u v A B K))) ≐ difference u v K :=
-  (congrFst (returned_suffix _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_suffix _ _ _ _ _).fstE
 theorem returned_pair (u v A B K : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run u v A B K))) ≐ pairT (num 3*A) B :=
-  (congrSnd (returned_suffix _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_suffix _ _ _ _ _).sndE
 theorem returned_numerator (u v A B K : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run u v A B K)))) ≐ num 3*A :=
-  (congrFst (returned_pair _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (returned_pair _ _ _ _ _).fstE
 theorem returned_denominator (u v A B K : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run u v A B K)))) ≐ B :=
-  (congrSnd (returned_pair _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (returned_pair _ _ _ _ _).sndE
 theorem returned_bound (u v A B K : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hu : Γ ⊢[PRAAx] bounded u one one) (hv : Γ ⊢[PRAAx] bounded v one one)
     (hd : Γ ⊢[PRAAx] distanceBounded u v A B) : Γ ⊢[PRAAx]

@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDirectionIteration
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (canonical positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power qone)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq qsub distanceBounded)
@@ -26,10 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianBalancedRadiusSyntax (unit unit_positive)
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax (four)
 open LeanProofs.IPRA.Analysis.GaussianRationalDirectionClock
   (sixteen eight steps period localIndex height roundedPower leftover)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,14 +34,10 @@ def direction (c k q : PTm n) : PTm n := power (last c k q) (roundedPower k q)
 def denominator (q : PTm n) : PTm n := sixteen*q
 def nearDenominator (k q : PTm n) : PTm n := sixteen*k*q
 
-@[simp] theorem subst_last {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (last c k q) = last (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [last]
-@[simp] theorem subst_direction {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (direction c k q) = direction (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [direction]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (denominator q) = denominator (Syn.subst σ q) := by simp [denominator]
-@[simp] theorem subst_nearDenominator {m : ℕ} (σ : Fin n → PTm m) (k q : PTm n) :
-    Syn.subst σ (nearDenominator k q) = nearDenominator (Syn.subst σ k) (Syn.subst σ q) := by simp [nearDenominator]
+ipra_subst last
+ipra_subst direction
+ipra_subst denominator
+ipra_subst nearDenominator
 
 theorem four_le_sixteen : Γ ⊢[PRAAx] le (four : PTm n) sixteen :=
   le_congr ((pw_succ two one).eqTrans (congrMul (pw_one two) (.eqRefl _))) (.eqRefl _)
@@ -140,8 +132,7 @@ theorem direction_close (c k q : PTm n) (hk : Γ ⊢[PRAAx] le one k) (hq : Γ �
 
 def certificate (c k q : PTm n) : Fm PTm n := canonical (direction c k q) ⋏
   (GaussianRationalHalfAngle.unit (direction c k q) ⋏ distanceBounded (power (direction c k q) k) c one (eight*q))
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    (certificate c k q).subst σ = certificate (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [certificate]
+ipra_subst certificate
 
 theorem direction_correct (c k q : PTm n) (hk : Γ ⊢[PRAAx] le one k) (hq : Γ ⊢[PRAAx] le one q)
     (hcanon : Γ ⊢[PRAAx] canonical c) (hc : Γ ⊢[PRAAx] GaussianRationalHalfAngle.unit c) : Γ ⊢[PRAAx]
@@ -153,21 +144,19 @@ def output (c k q : PTm n) : PTm n := pairT (direction c k q)
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (c k q : PTm n) : PTm n := ap3 outputF c k q
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (output c k q) = output (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (run c k q) = run (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem program_at (c k q : PTm n) : Γ ⊢[PRAAx] run c k q ≐ output c k q := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![c,k,q]
 theorem returned_direction (c k q : PTm n) : Γ ⊢[PRAAx] fstT (run c k q) ≐ direction c k q :=
-  (congrFst (program_at c k q)).eqTrans (fst_pair _ _)
+  (program_at c k q).fstE
 theorem returned_power (c k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run c k q)) ≐ power (direction c k q) k :=
-  (congrFst ((congrSnd (program_at c k q)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c k q).sndE.fstE
 theorem returned_last (c k q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run c k q))) ≐ last c k q :=
-  (congrFst ((congrSnd ((congrSnd (program_at c k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c k q).sndE.sndE.fstE
 theorem returned_clock (c k q : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run c k q))) ≐ GaussianRationalDirectionClock.run k q :=
-  (congrSnd ((congrSnd ((congrSnd (program_at c k q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at c k q).sndE.sndE.sndE
 
 theorem returned_distance (c k q : PTm n) (hk : Γ ⊢[PRAAx] le one k) (hq : Γ ⊢[PRAAx] le one q)
     (hcanon : Γ ⊢[PRAAx] canonical c) (hc : Γ ⊢[PRAAx] GaussianRationalHalfAngle.unit c) : Γ ⊢[PRAAx]

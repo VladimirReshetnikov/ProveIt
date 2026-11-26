@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactRiemannAdditivity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
@@ -23,17 +23,12 @@ open GaussianCompactRiemannName (grid value inside sampleBody sampleData sample_
 open GaussianCompactRiemannSplit (fullData prefixPart suffixPart weight_shared sum_width_positive)
 open GaussianRationalRiemannRefinement (weight termsDistance sum_distance)
 open GaussianRationalFiniteSum (sum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def input (F : PR 3) (a C1 C2 E K L x : PTm n) : Fm PTm n := le one a ⋏ (le one E ⋏ (le one K ⋏
   (le one C1 ⋏ (le one C2 ⋏ sampledModulus F a (C1+C2) E L x))))
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (a C1 C2 E K L x : PTm n) :
-    (input F a C1 C2 E K L x).subst σ = input F (Syn.subst σ a) (Syn.subst σ C1) (Syn.subst σ C2)
-      (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ L) (Syn.subst σ x) := by simp [input]
+ipra_subst input
 
 theorem inside_left (a C1 C2 E t : PTm n) (h : Γ ⊢[PRAAx] inside a C1 E t) : Γ ⊢[PRAAx] inside a (C1+C2) E t :=
   .andI h.andE₁ (.andI h.andE₂.andE₁ (.andI h.andE₂.andE₂.andE₁
@@ -153,27 +148,25 @@ def output (F : PR 3) (s a C1 C2 E K x : PTm n) : PTm n := pairT (quadrature F s
   (pairT (qadd (quadrature F s (C1*K) a C1 E x) (quadrature F s (C2*K) (a+C1) C2 E x)) (pairT (two*(C1+C2)) (E*unit s)))
 def outputF (F : PR 3) : PR 7 := PTm.toPR (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6))
 def run (F : PR 3) (s a C1 C2 E K x : PTm n) : PTm n := PTm.app (outputF F) ![s,a,C1,C2,E,K,x]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s a C1 C2 E K x : PTm n) :
-    Syn.subst σ (output F s a C1 C2 E K x) = output F (Syn.subst σ s) (Syn.subst σ a) (Syn.subst σ C1)
-      (Syn.subst σ C2) (Syn.subst σ E) (Syn.subst σ K) (Syn.subst σ x) := by simp [output]
+ipra_subst output
 theorem program_at (F : PR 3) (s a C1 C2 E K x : PTm n) : Γ ⊢[PRAAx] run F s a C1 C2 E K x ≐ output F s a C1 C2 E K x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![s,a,C1,C2,E,K,x]
 theorem returned_full (F : PR 3) (s a C1 C2 E K x : PTm n) : Γ ⊢[PRAAx]
     fstT (run F s a C1 C2 E K x) ≐ quadrature F s ((C1+C2)*K) a (C1+C2) E x :=
-  (congrFst (program_at F s a C1 C2 E K x)).eqTrans (fst_pair _ _)
+  (program_at F s a C1 C2 E K x).fstE
 theorem returned_tail (F : PR 3) (s a C1 C2 E K x : PTm n) : Γ ⊢[PRAAx]
     sndT (run F s a C1 C2 E K x) ≐ pairT (qadd (quadrature F s (C1*K) a C1 E x) (quadrature F s (C2*K) (a+C1) C2 E x))
-      (pairT (two*(C1+C2)) (E*unit s)) := (congrSnd (program_at F s a C1 C2 E K x)).eqTrans (snd_pair _ _)
+      (pairT (two*(C1+C2)) (E*unit s)) := (program_at F s a C1 C2 E K x).sndE
 theorem returned_pieces (F : PR 3) (s a C1 C2 E K x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run F s a C1 C2 E K x)) ≐ qadd (quadrature F s (C1*K) a C1 E x) (quadrature F s (C2*K) (a+C1) C2 E x) :=
-  (congrFst (returned_tail F s a C1 C2 E K x)).eqTrans (fst_pair _ _)
+  (returned_tail F s a C1 C2 E K x).fstE
 theorem returned_budget (F : PR 3) (s a C1 C2 E K x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run F s a C1 C2 E K x)) ≐ pairT (two*(C1+C2)) (E*unit s) :=
-  (congrSnd (returned_tail F s a C1 C2 E K x)).eqTrans (snd_pair _ _)
+  (returned_tail F s a C1 C2 E K x).sndE
 theorem returned_numerator (F : PR 3) (s a C1 C2 E K x : PTm n) : Γ ⊢[PRAAx]
-    fstT (sndT (sndT (run F s a C1 C2 E K x))) ≐ two*(C1+C2) := (congrFst (returned_budget F s a C1 C2 E K x)).eqTrans (fst_pair _ _)
+    fstT (sndT (sndT (run F s a C1 C2 E K x))) ≐ two*(C1+C2) := (returned_budget F s a C1 C2 E K x).fstE
 theorem returned_denominator (F : PR 3) (s a C1 C2 E K x : PTm n) : Γ ⊢[PRAAx]
-    sndT (sndT (sndT (run F s a C1 C2 E K x))) ≐ E*unit s := (congrSnd (returned_budget F s a C1 C2 E K x)).eqTrans (snd_pair _ _)
+    sndT (sndT (sndT (run F s a C1 C2 E K x))) ≐ E*unit s := (returned_budget F s a C1 C2 E K x).sndE
 theorem returned_distance (F : PR 3) (s a C1 C2 E K L x : PTm n) (h : Γ ⊢[PRAAx] input F a C1 C2 E K L x) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run F s a C1 C2 E K x)) (fstT (sndT (run F s a C1 C2 E K x)))
       (fstT (sndT (sndT (run F s a C1 C2 E K x)))) (sndT (sndT (sndT (run F s a C1 C2 E K x)))) :=

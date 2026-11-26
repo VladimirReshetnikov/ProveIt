@@ -18,7 +18,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNormalizedExponent
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalCorrectionShift (halfShift)
 open GaussianBarnesCanonicalPrefactorShiftBinding (Observation leaf const product difference)
 open GaussianBarnesCanonicalTerminalRemainder (source scaledF scaledData scaled_regular)
@@ -38,9 +38,6 @@ open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalSyntheticDivision (qone qzero_add qadd_congr qsub_congr)
 open GaussianRootAlgebra (equal_of_values equal_refl re_add im_add re_scale im_scale)
 open GaussianNamedGammaHalfShift (add_cross)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

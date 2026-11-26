@@ -1,7 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MeshChange
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalSyntheticBounds
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Exact Euler-constant mesh approximants
@@ -17,9 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GammaEulerMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus pred)
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (S_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.MeshChange (S_denom)
@@ -31,8 +28,6 @@ open Products (fact)
 open RationalIntegerNormalization (normalize)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalArithmetic (represents)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -42,14 +37,9 @@ def numerator (N K L : PTm n) : ZT n :=
 def commonSample (N K L : PTm n) : PTm n := normalize (numerator N K L) (fact L)
 def sample (N K : PTm n) : PTm n := commonSample N K (K*N)
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (N K L : PTm n) :
-    (numerator N K L).subst σ = numerator (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ L) := by
-  simp [numerator,ZT.subst,S]
-@[simp] theorem subst_commonSample {m : ℕ} (σ : Fin n → PTm m) (N K L : PTm n) :
-    Syn.subst σ (commonSample N K L) = commonSample (Syn.subst σ N) (Syn.subst σ K) (Syn.subst σ L) := by
-  simp [commonSample]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (N K : PTm n) :
-    Syn.subst σ (sample N K) = sample (Syn.subst σ N) (Syn.subst σ K) := by simp [sample]
+ipra_subst numerator [ZT.subst, S]
+ipra_subst commonSample
+ipra_subst sample
 
 theorem factorial_positive (L : PTm n) : Γ ⊢[PRAAx] le one (fact L) :=
   le_congr (.eqRefl _) (fact_pos L).eqSymm (zero_lt_succ _)
@@ -100,22 +90,20 @@ theorem synchronous_cleared (N M K L : PTm n) (hN : Γ ⊢[PRAAx] le one N)
   have e : Γ ⊢[PRAAx] succ (pred N)+monus M N ≐ M :=
     (congrAdd pN.eqSymm (.eqRefl _)).eqTrans (eq_add_of_le hNM).eqSymm
   have lr := log_refine (pos_of_one_le hK) (le_congr (congrMul (.eqRefl K) e).eqSymm (.eqRefl _) hL)
-  have eM := natEq (congrAp2 (sumF hB) e (.eqRefl (fact L)))
   have eN := natEq (congrAp2 (sumF hB) pN.eqSymm (.eqRefl (fact L)))
   have eKM := natEq (congrAp2 (sumF hB) (congrMul (.eqRefl K) e) (.eqRefl (fact L)))
   have eKN := natEq (congrAp2 (sumF hB) (congrMul (.eqRefl K) pN.eqSymm) (.eqRefl (fact L)))
   have low : Γ ⊢[PRAAx] le (S M (fact L)+S (K*N) (fact L)) (S N (fact L)+S (K*M) (fact L)) := by
-    ipra_le sl lr.andE₁ using linear_combination eM+eKN-eKM-eN
+    ipra_le sl lr.andE₁ using linear_combination natEq (congrAp2 (sumF hB) e (.eqRefl (fact L)))+eKN-eKM-eN
   have ep : Γ ⊢[PRAAx] pred N+monus M N ≐ pred M := by
     ipra_lc -natEq pN+natEq pM-natEq (eq_add_of_le hNM)
-  have ePred := natEq (congrAp2 (sumF hB) ep (.eqRefl (fact L)))
   have esN := natEq ((congrAp2 (sumF hB) pN (.eqRefl (fact L))).eqTrans
     ((S_succ (pred N) (fact L)).eqTrans (congrAdd (.eqRefl _) (congrAp2 quoF (.eqRefl _) pN.eqSymm))))
   have esM := natEq ((congrAp2 (sumF hB) pM (.eqRefl (fact L))).eqTrans
     ((S_succ (pred M) (fact L)).eqTrans (congrAdd (.eqRefl _) (congrAp2 quoF (.eqRefl _) pM.eqSymm))))
   have up : Γ ⊢[PRAAx] le (S N (fact L)+S (K*M) (fact L)+quo (fact L) M)
       (S M (fact L)+S (K*N) (fact L)+quo (fact L) N) := by
-    ipra_le sl lr.andE₂ using linear_combination eKM-eKN-ePred-esN+esM
+    ipra_le sl lr.andE₂ using linear_combination eKM-eKN-natEq (congrAp2 (sumF hB) ep (.eqRefl (fact L)))-esN+esM
   have mL : Γ ⊢[PRAAx] le M L := le_trans (by ipra_le 𝔞 M*sl hK) hL
   have qN := natEq (factorial_quotient N L hN (le_trans hNM mL))
   have qM := natEq (factorial_quotient M L hM mL)

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingCorrectedQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartCorrectedImage (input imageNumerator imageDenominator)
 open GaussianEulerPositivePowerChartImage (query reciprocalMargin)
 open GaussianEulerPositivePowerChart (majorant)
@@ -29,9 +29,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,27 +45,10 @@ def numerator (p k R h Q S E T C N : PTm n) : PTm n :=
 def denominator (p k h Q E T N : PTm n) : PTm n :=
   cellDenominator k h Q E T N*(unit (query k h Q E T)*unit p)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (k z R B e f d h Q S E T a C N : PTm n) :
-    (source k z R B e f d h Q S E T a C N).subst σ =
-      source (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ e) (Syn.subst σ f)
-        (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T)
-        (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [source,GaussianEulerPowerChartFrozenKernel.parameter,scaled,ComplexLogarithmRemainder.scale,
-    ComplexLogarithmRemainder.bounded]
-@[simp] theorem subst_correctedCell {m : ℕ} (σ : Fin n → PTm m) (p k i z B e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (correctedCell p k i z B e f d h Q S E T a C N) =
-      correctedCell (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ i) (Syn.subst σ z) (Syn.subst σ B)
-        (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S)
-        (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [correctedCell,scaled,ComplexLogarithmRemainder.scale]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p k R h Q S E T C N : PTm n) :
-    Syn.subst σ (numerator p k R h Q S E T C N) = numerator (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ R)
-      (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [numerator,gain,GaussianEulerCompactModulus.lipschitz,GaussianEulerExponentCompactBounds.radius,
-    GaussianEulerExponentCompactBounds.factor,GaussianRadiusExponentialLipschitzRate.factor]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p k h Q E T N : PTm n) :
-    Syn.subst σ (denominator p k h Q E T N) = denominator (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ h)
-      (Syn.subst σ Q) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by simp [denominator]
+ipra_subst source [GaussianEulerPowerChartFrozenKernel.parameter, scaled, ComplexLogarithmRemainder.scale, ComplexLogarithmRemainder.bounded]
+ipra_subst correctedCell [scaled, ComplexLogarithmRemainder.scale]
+ipra_subst numerator [gain, GaussianEulerCompactModulus.lipschitz, GaussianEulerExponentCompactBounds.radius, GaussianEulerExponentCompactBounds.factor, GaussianRadiusExponentialLipschitzRate.factor]
+ipra_subst denominator
 
 theorem original_cell (p k i z R B e f d h Q S E T a C N : PTm n)
     (hs : Γ ⊢[PRAAx] source k z R B e f d h Q S E T a C N) (hi : Γ ⊢[PRAAx] lt i N) :

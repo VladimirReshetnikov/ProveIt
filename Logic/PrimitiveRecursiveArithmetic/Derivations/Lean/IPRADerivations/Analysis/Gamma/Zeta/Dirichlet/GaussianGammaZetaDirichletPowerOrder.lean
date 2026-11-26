@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletPowerOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerCoefficients (realLower amplification)
 open GaussianEulerLowerPowerOrder (inputF expF leftData leftExpData radius product_input)
 open GaussianEulerUpperPowerCoefficients (realMultiplier real_multiplier_axis)
@@ -30,8 +30,6 @@ open GaussianNamedPositiveExponentialOrder (sampleOrder realOrder)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (ofGaussian qadd)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianEulerIntegralGammaIdentification.source

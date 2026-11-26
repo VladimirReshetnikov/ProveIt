@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinFiniteDampedUpper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianCompactRiemannName (quadrature sampleBody sampleData sample_body_at grid)
@@ -27,16 +27,13 @@ open GaussianNamedDampingPowerReciprocalTail (body gridData affine_grid_term ori
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalSumMajorant (majorized majorized_congr termsMajorized)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 def coefficient (R : PTm n) : PTm n := two*coefficientBound R+one
 
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (coefficient R) = coefficient (Syn.subst σ R) := by simp [coefficient,two,one]
+ipra_subst coefficient [two, one]
 
 theorem original_sample_bound (p z R B a b H T N : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerUpperPowerOrder.source z R B a b)

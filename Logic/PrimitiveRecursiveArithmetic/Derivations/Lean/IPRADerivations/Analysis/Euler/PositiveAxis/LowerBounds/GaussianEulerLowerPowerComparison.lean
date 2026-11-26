@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLowerPowerComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerPowerOrder (source inputF expF leftData rightData radius leftExpData rightExpData)
 open GaussianEulerLowerPowerCoefficients (amplification)
 open GaussianEulerUpperPowerCoefficients (realMultiplier)
@@ -26,9 +26,6 @@ open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,8 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Division.GaussianPolynomialRowQuotient
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProductDegree
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerNonzero
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual accumulated factors of the original numerical abscissa groups
@@ -20,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNormGroupFactorProduct
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero qmul evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qone qone_canonical canonicalCoefficients qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalMonicReduction (singleton singleton_length singleton_lookup canonical_coefficients_congr)
@@ -32,10 +30,6 @@ open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_congr
 open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialDegree (first degree nonzeroCoefficients)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,14 +40,10 @@ def stepBody : PTm 3 := update (var 1) (fstT (var 2)) (sndT (var 2)) (var 0)
 def productF : PR 2 := rec2 (singleton qone : PTm 1) stepBody
 def C (L p g : PTm n) : PTm n := ap2 productF g (data L p)
 
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (L p : PTm n) :
-    Syn.subst σ (data L p) = data (Syn.subst σ L) (Syn.subst σ p) := by simp [data]
-@[simp] theorem subst_T {l : ℕ} (σ : Fin n → PTm l) (L p g : PTm n) :
-    Syn.subst σ (T L p g) = T (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [T]
-@[simp] theorem subst_update {l : ℕ} (σ : Fin n → PTm l) (Q L p g : PTm n) :
-    Syn.subst σ (update Q L p g) = update (Syn.subst σ Q) (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [update]
-@[simp] theorem subst_C {l : ℕ} (σ : Fin n → PTm l) (L p g : PTm n) :
-    Syn.subst σ (C L p g) = C (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [C]
+ipra_subst data
+ipra_subst T
+ipra_subst update
+ipra_subst C
 
 theorem size_body_at (L p g : PTm n) : Γ ⊢[PRAAx]
     inst2 (Foundations.FiniteFiberGrouping.sizeBody xKeyF) g (data L p) ≐ fiberCount L p g := by
@@ -90,11 +80,9 @@ theorem C_succ (L p g : PTm n) : Γ ⊢[PRAAx]
 
 theorem C_length (L p g : PTm n) : Γ ⊢[PRAAx] length (C L p g) ≐ succ (T L p g) := by
   have all : Γ ⊢[PRAAx] .all (length (C (Syn.shift L) (Syn.shift p) (var 0)) ≐ succ (T (Syn.shift L) (Syn.shift p) (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_length,subst_C,subst_T,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact ((congrFst (C_zero _ _)).eqTrans (singleton_length _)).eqTrans (congrSucc (T_zero _ _)).eqSymm
-    · simp only [Fm.subst_eq,subst_length,subst_C,subst_T,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (congrFst (C_succ _ _ _)).eqTrans ((product_length _ _ _ _).eqTrans (congrSucc (T_succ _ _ _)).eqSymm)
+    ipra_qfind [subst_length, subst_C, subst_T]
+    · exact ((congrFst (C_zero _ _)).eqTrans (singleton_length _)).eqTrans (congrSucc (T_zero _ _)).eqSymm
+    · exact (congrFst (C_succ _ _ _)).eqTrans ((product_length _ _ _ _).eqTrans (congrSucc (T_succ _ _ _)).eqSymm)
   simpa only [Fm.subst_eq,subst_length,subst_C,subst_T,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE g
 theorem C_canonical (L p g : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (C L p g) := by
   refine .orE (zero_or_succ g) ?_ ?_
@@ -111,13 +99,9 @@ theorem product_head (P Q N M : PTm n) : Γ ⊢[PRAAx] entry (product P Q N M) z
     (GaussianRationalPolynomialProductDegree.product_entry_at _ _ _ _ _ _ (empty_zero_prefix _) (empty_zero_prefix _) (zero_le _) (zero_le _))
 theorem C_monic (L p g : PTm n) : Γ ⊢[PRAAx] entry (C L p g) zero ≐ qone := by
   have all : Γ ⊢[PRAAx] .all (entry (C (Syn.shift L) (Syn.shift p) (var 0)) zero ≐ qone) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_entry,subst_C,ConciseIPRA.PTm.subst_zero,GaussianRationalSyntheticDivision.subst_qone,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (Foundations.SequenceComposition.entry_congr (C_zero _ _) (.eqRefl _)).eqTrans (singleton_lookup _)
-    · simp only [Fm.subst_eq,subst_entry,subst_C,ConciseIPRA.PTm.subst_zero,GaussianRationalSyntheticDivision.subst_qone,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (Foundations.SequenceComposition.entry_congr (C_succ _ _ _) (.eqRefl _)).eqTrans
+    ipra_qfind [subst_entry, subst_C, GaussianRationalSyntheticDivision.subst_qone]
+    · exact (Foundations.SequenceComposition.entry_congr (C_zero _ _) (.eqRefl _)).eqTrans (singleton_lookup _)
+    · exact (Foundations.SequenceComposition.entry_congr (C_succ _ _ _) (.eqRefl _)).eqTrans
         ((product_head _ _ _ _).eqTrans ((qmul_congr
           ((recode_congr Prf.hyp0).eqTrans (recode_eq _ qone_canonical))
           ((recode_congr (H_monic _ _)).eqTrans (recode_eq _ qone_canonical))).eqTrans
@@ -178,14 +162,11 @@ theorem prefix_value_nonzero (L p g h : PTm n) (hh : Γ ⊢[PRAAx] lt h (groupCo
     simpa only [Fm.shift,subst_lt,Foundations.FiniteFiberGrouping.subst_groupCount,Syn.shift] using hh.shift
   have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift h) ⟶
       neg (evaluate (C (Syn.shift L) (Syn.shift p) (var 0)) (selectedX (Syn.shift L) (Syn.shift p) (Syn.shift h)) ≐ qzero)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,by trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,Fm.subst_bot,neg,subst_le,GaussianRationalHorner.subst_evaluate,subst_C,
-        GaussianRationalCurveFibers.subst_selectedX,GaussianRationalHorner.subst_qzero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (.impI (.impE GaussianRationalCurveFibers.gaussian_one_nonzero
+    ipra_qfind (⟨le_QF _ _,by trivial⟩) [Fm.subst_bot, neg, subst_le, GaussianRationalHorner.subst_evaluate, subst_C,
+        GaussianRationalCurveFibers.subst_selectedX, GaussianRationalHorner.subst_qzero]
+    · exact .impI (.impI (.impE GaussianRationalCurveFibers.gaussian_one_nonzero
         ((C_evaluation_zero _ _ _).wk.wk.eqSymm.eqTrans Prf.hyp0)))
-    · simp only [Fm.subst_imp,Fm.subst_eq,Fm.subst_bot,neg,subst_le,GaussianRationalHorner.subst_evaluate,subst_C,
-        GaussianRationalCurveFibers.subst_selectedX,GaussianRationalHorner.subst_qzero,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       exact next_value_step _ _ _ _ hs.wk.wk Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] le g h ⟶ neg (evaluate (C L p g) (selectedX L p h) ≐ qzero) := by
     simpa only [Fm.subst_imp,Fm.subst_eq,Fm.subst_bot,neg,subst_le,GaussianRationalHorner.subst_evaluate,subst_C,
@@ -201,10 +182,8 @@ def TProgramF : PR 3 := PTm.toPR (T (var 0) (var 1) (var 2))
 def output (L p g : PTm n) : PTm n := pairT (C L p g) (pairT (T L p g) (pairT (selectedX L p g) (fiberCount L p g)))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (L p g : PTm n) : PTm n := ap3 outputF L p g
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (L p g : PTm n) :
-    Syn.subst σ (output L p g) = output (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (L p g : PTm n) :
-    Syn.subst σ (run L p g) = run (Syn.subst σ L) (Syn.subst σ p) (Syn.subst σ g) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem C_program_at (L p g : PTm n) : Γ ⊢[PRAAx] ap3 CProgramF L p g ≐ C L p g := by
   simpa [CProgramF,ap3] using toPR_eq (Γ := Γ) (C (var 0) (var 1) (var 2) : PTm 3) ![L,p,g]
 theorem T_program_at (L p g : PTm n) : Γ ⊢[PRAAx] ap3 TProgramF L p g ≐ T L p g := by
@@ -212,13 +191,13 @@ theorem T_program_at (L p g : PTm n) : Γ ⊢[PRAAx] ap3 TProgramF L p g ≐ T L
 theorem program_at (L p g : PTm n) : Γ ⊢[PRAAx] run L p g ≐ output L p g := by
   simpa [run,outputF,ap3] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![L,p,g]
 theorem returned_C (L p g : PTm n) : Γ ⊢[PRAAx] fstT (run L p g) ≐ C L p g :=
-  (congrFst (program_at _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _).fstE
 theorem returned_T (L p g : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run L p g)) ≐ T L p g :=
-  (congrFst ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.fstE
 theorem returned_x (L p g : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run L p g))) ≐ selectedX L p g :=
-  (congrFst ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at _ _ _).sndE.sndE.fstE
 theorem returned_t (L p g : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run L p g))) ≐ fiberCount L p g :=
-  (congrSnd ((congrSnd ((congrSnd (program_at _ _ _)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at _ _ _).sndE.sndE.sndE
 theorem returned_length (L p g : PTm n) : Γ ⊢[PRAAx] length (fstT (run L p g)) ≐ succ (fstT (sndT (run L p g))) :=
   (congrFst (returned_C _ _ _)).eqTrans ((C_length _ _ _).eqTrans (congrSucc (returned_T _ _ _)).eqSymm)
 theorem returned_next_nonzero (L p g : PTm n) (hg : Γ ⊢[PRAAx] lt g (groupCount L p)) : Γ ⊢[PRAAx]

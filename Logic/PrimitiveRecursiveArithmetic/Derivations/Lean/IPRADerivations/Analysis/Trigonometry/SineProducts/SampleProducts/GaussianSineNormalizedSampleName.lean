@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineNormalizedSampleName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
@@ -30,9 +30,6 @@ open GaussianSineSquaredTrace (fromSine)
 open GaussianRootApproximationWitness (pointBounds)
 open GaussianNamedDiagonalRate (cross_of_diagonal_rate diagonalRate)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,20 +52,12 @@ def rawPolynomialF (f : PR 2) : PR 2 := PTm.toPR (polynomialBody f)
 def nameF (f : PR 2) : PR 2 := GaussianFastValueCut.nameF (rawProductF f)
 def polynomialF (f : PR 2) : PR 2 := GaussianFastValueCut.nameF (rawPolynomialF f)
 
-@[simp] theorem subst_budget {l : ℕ} (σ : Fin n → PTm l) (J B : PTm n) :
-    Syn.subst σ (budget J B) = budget (Syn.subst σ J) (Syn.subst σ B) := by simp [budget]
-@[simp] theorem subst_precision {l : ℕ} (σ : Fin n → PTm l) (J B p : PTm n) :
-    Syn.subst σ (precision J B p) = precision (Syn.subst σ J) (Syn.subst σ B) (Syn.subst σ p) := by simp [precision]
-@[simp] theorem subst_rawData {l : ℕ} (σ : Fin n → PTm l) (J x z : PTm n) :
-    Syn.subst σ (rawData J x z) = rawData (Syn.subst σ J) (Syn.subst σ x) (Syn.subst σ z) := by simp [rawData]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (J B x z : PTm n) :
-    Syn.subst σ (data J B x z) = data (Syn.subst σ J) (Syn.subst σ B) (Syn.subst σ x) (Syn.subst σ z) := by simp [data]
-@[simp] theorem subst_productSample {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p J x z : PTm n) :
-    Syn.subst σ (productSample f p J x z) = productSample f (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ x)
-      (Syn.subst σ z) := by simp [productSample]
-@[simp] theorem subst_polynomialSample {l : ℕ} (σ : Fin n → PTm l) (f : PR 2) (p J x : PTm n) :
-    Syn.subst σ (polynomialSample f p J x) = polynomialSample f (Syn.subst σ p) (Syn.subst σ J) (Syn.subst σ x) :=
-  by simp [polynomialSample,fromSine]
+ipra_subst budget
+ipra_subst precision
+ipra_subst rawData
+ipra_subst data
+ipra_subst productSample
+ipra_subst polynomialSample [fromSine]
 
 theorem raw_product_at (f : PR 2) (p J x z : PTm n) :
     Γ ⊢[PRAAx] ap2 (rawProductF f) p (rawData J x z) ≐ productSample f p J x z := by
@@ -81,8 +70,8 @@ theorem raw_product_at (f : PR 2) (p J x z : PTm n) :
       fin_cases i
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+      · exact (snd_pair _ _).fstE
+      · exact (snd_pair _ _).sndE)
   exact h.eqTrans (by simpa using eq)
 
 theorem raw_polynomial_at (f : PR 2) (p J x z : PTm n) :
@@ -96,7 +85,7 @@ theorem raw_polynomial_at (f : PR 2) (p J x z : PTm n) :
       fin_cases i
       · exact .eqRefl _
       · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+      · exact (snd_pair _ _).fstE)
   exact h.eqTrans (by simpa using eq)
 
 private theorem readback (g : PR 2) (p L x s : PTm n)

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerUnitKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -26,9 +26,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
 open GaussianCompactRiemannName (field0 field1 field2 field3 field4)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -47,19 +44,12 @@ def data (x z R B E : PTm n) : PTm n := GaussianCompactRiemannName.sampleData x 
 def nameF (f : PR 2) : PR 2 := PTm.toPR
   (observation f (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1)) (field3 (var 1)) (field4 (var 1)))
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p R E : PTm n) :
-    Syn.subst σ (clock p R E) = clock (Syn.subst σ p) (Syn.subst σ R) (Syn.subst σ E) := by simp [clock]
-@[simp] theorem subst_admissibleSamples {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x E : PTm n) :
-    (admissibleSamples f x E).subst σ = admissibleSamples f (Syn.subst σ x) (Syn.subst σ E) := by
-  simp [admissibleSamples,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x z R B E : PTm n) :
-    (source f x z R B E).subst σ = source f (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by simp [source]
-@[simp] theorem subst_encodedData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (r x z B : PTm n) :
-    Syn.subst σ (encodedData f r x z B) = encodedData f (Syn.subst σ r) (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ B) := by simp [encodedData]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x z R B E : PTm n) :
-    Syn.subst σ (observation f p x z R B E) = observation f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by simp [observation]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x z R B E : PTm n) :
-    Syn.subst σ (data x z R B E) = data (Syn.subst σ x) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) := by simp [data]
+ipra_subst clock
+ipra_subst admissibleSamples [Syn.subst_shift, Syn.shift_subst]
+ipra_subst source
+ipra_subst encodedData
+ipra_subst observation
+ipra_subst data
 
 /-- Literal readback of the original rational kernel and both real queries. -/
 theorem sample_at (f : PR 2) (p x z R B E : PTm n) : Γ ⊢[PRAAx]

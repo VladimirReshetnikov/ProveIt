@@ -2,8 +2,6 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentC
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMidpoint
 import IPRADerivations.Foundations.FiniteObservations.MetricKernel
 import IPRADerivations.Foundations.DyadicGain
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The two secants and dyadic clock of the local convexity modulus
@@ -21,14 +19,10 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalConvexSecantWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open RationalCubeMidpoint (fraction)
 open LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel (meet meet_left meet_right meet_le_left meet_le_right)
 open GaussianDescentClockArithmetic (ceiling ceiling_lower)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -164,7 +158,7 @@ theorem program_at (D P Q M k : PTm n) : Γ ⊢[PRAAx] run D P Q M k ≐ output 
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![D,P,Q,M,k]
 theorem returned_endpoints (D P Q M k : PTm n) : Γ ⊢[PRAAx]
     (fstT (run D P Q M k) ≐ leftPoint D P) ⋏ (fstT (sndT (run D P Q M k)) ≐ rightPoint D Q) :=
-  .andI ((congrFst (program_at D P Q M k)).eqTrans (fst_pair _ _))
+  .andI (program_at D P Q M k).fstE
     (((congrFst (congrSnd (program_at D P Q M k))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _))
 
 theorem actual_convex_left_secant_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalMonicNormalization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qmul qzero canonical)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
   (qone qmul_congr canonicalCoefficients)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (reciprocal normNumerat
 open LeanProofs.IPRA.Analysis.GaussianRationalCoefficientScaling (scaled)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -36,12 +33,9 @@ def head (C : PTm n) : PTm n := entry C zero
 def inverse (C : PTm n) : PTm n := reciprocal (head C)
 def normalized (C : PTm n) : PTm n := scaled C (inverse C)
 
-@[simp] theorem subst_head {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (head C) = head (Syn.subst σ C) := by simp [head]
-@[simp] theorem subst_inverse {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (inverse C) = inverse (Syn.subst σ C) := by simp [inverse]
-@[simp] theorem subst_normalized {m : ℕ} (σ : Fin n → PTm m) (C : PTm n) :
-    Syn.subst σ (normalized C) = normalized (Syn.subst σ C) := by simp [normalized]
+ipra_subst head
+ipra_subst inverse
+ipra_subst normalized
 
 theorem normalized_length (C : PTm n) : Γ ⊢[PRAAx] length (normalized C) ≐ length C :=
   GaussianRationalCoefficientScaling.scaled_length C (inverse C)

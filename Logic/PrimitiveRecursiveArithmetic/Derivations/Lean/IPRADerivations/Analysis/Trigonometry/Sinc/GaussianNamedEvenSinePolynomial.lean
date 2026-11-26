@@ -15,7 +15,7 @@ set_option maxHeartbeats 280000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEvenSinePolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianArctangentDivisionAngles (modulus)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius)
@@ -43,9 +43,6 @@ open GaussianSineSquaredTrace (fromSine sineValue evaluation_at_sine)
 open GaussianSineSquaredPolynomial (coefficients)
 open GaussianEuclideanDistanceName (pointCN)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -61,15 +58,9 @@ def scaledPolynomialF (f : PR 2) : PR 2 := multiplyF constantF (polynomialF f)
 def scaledPolynomialData (f : PR 2) (J R x z : PTm n) : PTm n :=
   multiplyData constantF (polynomialF f) (naturalPoint (modulus J)) (polynomialData f J R x z)
 
-@[simp] theorem subst_sineDisk {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (sineDisk f R x) = sineDisk f (Syn.subst σ R) (Syn.subst σ x) := by simp [sineDisk]
-@[simp] theorem subst_polynomialData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (J R x z : PTm n) :
-    Syn.subst σ (polynomialData f J R x z) = polynomialData f (Syn.subst σ J) (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ z) :=
-  by simp [polynomialData]
-@[simp] theorem subst_scaledPolynomialData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (J R x z : PTm n) :
-    Syn.subst σ (scaledPolynomialData f J R x z) =
-      scaledPolynomialData f (Syn.subst σ J) (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ z) :=
-  by simp [scaledPolynomialData]
+ipra_subst sineDisk
+ipra_subst polynomialData
+ipra_subst scaledPolynomialData
 
 theorem original_sine_bound (f : PR 2) (p R x : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] bounded (ap2 (sineF f) p (sineData f R x)) (sineDisk f R x) one :=
@@ -110,9 +101,7 @@ theorem scaled_polynomial_regular (f : PR 2) (J R x z : PTm n) (hf : Γ ⊢[PRAA
 def polynomialRadius (f : PR 2) (J R x : PTm n) : PTm n :=
   (GaussianSineNormalizedSampleName.budget J (sineDisk f R x)+one)+variationBudget J (sineDisk f R x)*baseRadius f R x
 
-@[simp] theorem subst_polynomialRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (J R x : PTm n) :
-    Syn.subst σ (polynomialRadius f J R x) = polynomialRadius f (Syn.subst σ J) (Syn.subst σ R) (Syn.subst σ x) :=
-  by simp [polynomialRadius,one]
+ipra_subst polynomialRadius [one]
 
 theorem polynomial_sample (f : PR 2) (p J R x z : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (polynomialF f) p (polynomialData f J R x z))
@@ -146,10 +135,7 @@ def scaledPolynomialRadius (f : PR 2) (J R x z : PTm n) : PTm n :=
   (multiplyModulus constantF (polynomialF f) (naturalPoint (modulus J)) (polynomialData f J R x z)+one)+
     modulus J*polynomialRadius f J R x
 
-@[simp] theorem subst_scaledPolynomialRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (J R x z : PTm n) :
-    Syn.subst σ (scaledPolynomialRadius f J R x z) =
-      scaledPolynomialRadius f (Syn.subst σ J) (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ z) :=
-  by simp [scaledPolynomialRadius,one]
+ipra_subst scaledPolynomialRadius [one]
 
 theorem scaled_polynomial_sample (f : PR 2) (p J R x z : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (scaledPolynomialF f) p (scaledPolynomialData f J R x z))
@@ -170,9 +156,7 @@ theorem scaled_polynomial_sample (f : PR 2) (p J R x z : PTm n) (hf : Γ ⊢[PRA
 
 def bridgeRadius (f : PR 2) (J R x z : PTm n) : PTm n := recurrenceRadius f (two*J) R x+scaledPolynomialRadius f J R x z
 
-@[simp] theorem subst_bridgeRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (J R x z : PTm n) :
-    Syn.subst σ (bridgeRadius f J R x z) = bridgeRadius f (Syn.subst σ J) (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ z) :=
-  by simp [bridgeRadius,two,one]
+ipra_subst bridgeRadius [two, one]
 
 theorem even_recurrence_at (f : PR 2) (p J R x z : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (recurrenceF f) p (recurrenceData f (two*J) R x))

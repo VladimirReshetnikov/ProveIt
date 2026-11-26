@@ -1,8 +1,6 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Probability.Variance
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Balance medians by counting
@@ -29,17 +27,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MedianCounts
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.Expectation (le_zero_of)
 open LeanProofs.IPRA.Probability.Variance (sum_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option maxHeartbeats 2000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumChordDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -34,9 +34,6 @@ open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData log_gamma_regular)
 open GaussianStirlingGlobalBounds (small_join)
 open RationalValueBounds (upper upper_congr upper_of_radius)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -59,21 +56,10 @@ def lowerData (a c b M W : PTm n) : PTm n :=
 def budget (a c b W : PTm n) : PTm n :=
   GaussianGammaMinimumChordReadback.budget a c b W+cost differenceF W (centerDifferenceData a c b W)+num 6*W+num 9
 
-@[simp] theorem subst_centerDifferenceData {m : ℕ} (σ : Fin n → PTm m) (a c b W : PTm n) :
-    Syn.subst σ (centerDifferenceData a c b W) =
-      centerDifferenceData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ W) := by
-  simp [centerDifferenceData]
-@[simp] theorem subst_targetDifferenceData {m : ℕ} (σ : Fin n → PTm m) (a c b : PTm n) :
-    Syn.subst σ (targetDifferenceData a c b) =
-      targetDifferenceData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) := by
-  simp [targetDifferenceData]
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a c b M W : PTm n) :
-    Syn.subst σ (lowerData a c b M W) =
-      lowerData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ M) (Syn.subst σ W) := by
-  simp [lowerData]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (a c b W : PTm n) :
-    Syn.subst σ (budget a c b W) = budget (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ W) := by
-  simp [budget]
+ipra_subst centerDifferenceData
+ipra_subst targetDifferenceData
+ipra_subst lowerData
+ipra_subst budget
 
 theorem target_regular (a c b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hc : Γ ⊢[PRAAx] le one c)
     (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx] pointCN differenceF (targetDifferenceData a c b) :=

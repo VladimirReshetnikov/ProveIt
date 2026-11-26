@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSquareIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (nameF data powerF powerData power_regular evaluatorF fixedData)
 open GaussianEulerSquareKernel (doubled kernelF kernelData kernel_regular factoredF factoredData weightedF weightedData)
 open GaussianEulerPositiveScalingIntegrand (source)
@@ -32,8 +32,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

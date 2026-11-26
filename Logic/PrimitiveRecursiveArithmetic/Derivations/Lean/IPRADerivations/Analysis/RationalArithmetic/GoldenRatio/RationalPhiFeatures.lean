@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.RationalAnnihilatorOnSpan
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerExpansion
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original (1,x,...,x^s,y) feature buffer and annihilator equation
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPhiFeatures
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed scalarZero scalarOne)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup embed_congr evaluate)
 open RationalScalarPowerGaussianEmbedding (power powerF power_embedding)
@@ -24,10 +23,6 @@ open GaussianRationalHorner (qmul qadd qzero)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.PTm (monus)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,20 +40,13 @@ def dot (a s x y : PTm n) : PTm n := RationalOriginalAnnihilator.rowDot
 def equation (a s x y : PTm n) : PTm n := RationalArithmetic.add (evaluate (polynomial a s) x)
   (RationalArithmetic.multiply (entry a (succ s)) y)
 
-@[simp] theorem subst_dimension {q : ℕ} (σ : Fin n → PTm q) (s : PTm n) :
-    Syn.subst σ (dimension s) = dimension (Syn.subst σ s) := by simp [dimension]
-@[simp] theorem subst_coordinate {q : ℕ} (σ : Fin n → PTm q) (s x y i : PTm n) :
-    Syn.subst σ (coordinate s x y i) = coordinate (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ i) := by simp [coordinate,RationalArithmetic.recode]
-@[simp] theorem subst_data {q : ℕ} (σ : Fin n → PTm q) (s x y : PTm n) :
-    Syn.subst σ (data s x y) = data (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) := by simp [data]
-@[simp] theorem subst_features {q : ℕ} (σ : Fin n → PTm q) (s x y : PTm n) :
-    Syn.subst σ (features s x y) = features (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) := by simp [features]
-@[simp] theorem subst_polynomial {q : ℕ} (σ : Fin n → PTm q) (a s : PTm n) :
-    Syn.subst σ (polynomial a s) = polynomial (Syn.subst σ a) (Syn.subst σ s) := by simp [polynomial]
-@[simp] theorem subst_dot {q : ℕ} (σ : Fin n → PTm q) (a s x y : PTm n) :
-    Syn.subst σ (dot a s x y) = dot (Syn.subst σ a) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) := by simp [dot]
-@[simp] theorem subst_equation {q : ℕ} (σ : Fin n → PTm q) (a s x y : PTm n) :
-    Syn.subst σ (equation a s x y) = equation (Syn.subst σ a) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) := by simp [equation]
+ipra_subst dimension
+ipra_subst coordinate [RationalArithmetic.recode]
+ipra_subst data
+ipra_subst features
+ipra_subst polynomial
+ipra_subst dot
+ipra_subst equation
 
 private theorem coordinate_congr {s t x u y v i j : PTm n} (hs : Γ ⊢[PRAAx] s ≐ t)
     (hx : Γ ⊢[PRAAx] x ≐ u) (hy : Γ ⊢[PRAAx] y ≐ v) (hi : Γ ⊢[PRAAx] i ≐ j) : Γ ⊢[PRAAx]
@@ -66,8 +54,8 @@ private theorem coordinate_congr {s t x u y v i j : PTm n} (hs : Γ ⊢[PRAAx] s
   ipra_congr (coordinate (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hs, hx, hy, hi]
 theorem feature_body_at (s x y i : PTm n) : Γ ⊢[PRAAx] inst2 featureBody i (data s x y) ≐ coordinate s x y i := by
   simp only [featureBody,inst2,subst_coordinate,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  exact coordinate_congr (fst_pair _ _) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact coordinate_congr (fst_pair _ _) (snd_pair _ _).fstE
+    (snd_pair _ _).sndE (.eqRefl _)
 theorem features_length (s x y : PTm n) : Γ ⊢[PRAAx] length (features s x y) ≐ dimension s := sequence_length _ _ _
 theorem features_lookup (s x y i : PTm n) (hi : Γ ⊢[PRAAx] lt i (dimension s)) : Γ ⊢[PRAAx]
     entry (features s x y) i ≐ coordinate s x y i := (sequence_decode featureBody (x := data s x y) hi).eqTrans (feature_body_at _ _ _ _)
@@ -110,8 +98,7 @@ theorem embedded_ascending (a s i : PTm n) (hi : Γ ⊢[PRAAx] le i s) : Γ ⊢[
 
 def dotData (a s x y : PTm n) : PTm n := GaussianRationalRowElimination.dotData
   (GaussianRationalMonicReduction.singleton (features s x y)) a zero
-@[simp] theorem subst_dotData {q : ℕ} (σ : Fin n → PTm q) (a s x y : PTm n) :
-    Syn.subst σ (dotData a s x y) = dotData (Syn.subst σ a) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) := by simp [dotData]
+ipra_subst dotData
 
 theorem dot_term_embedding (a s x y i : PTm n) (hi : Γ ⊢[PRAAx] lt i (dimension s)) : Γ ⊢[PRAAx]
     inst2 (RationalGaussianRealPart.embedBody RationalOriginalAnnihilator.dotBody) i (dotData a s x y) ≐
@@ -198,10 +185,8 @@ theorem span_equation (A R a s x y : PTm n)
 
 def annihilator (A R s : PTm n) : PTm n := RationalOriginalAnnihilator.vector A R (dimension s)
 def free (A R s : PTm n) : PTm n := RationalOriginalAnnihilator.free A R (dimension s)
-@[simp] theorem subst_annihilator {q : ℕ} (σ : Fin n → PTm q) (A R s : PTm n) :
-    Syn.subst σ (annihilator A R s) = annihilator (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ s) := by simp [annihilator]
-@[simp] theorem subst_free {q : ℕ} (σ : Fin n → PTm q) (A R s : PTm n) :
-    Syn.subst σ (free A R s) = free (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ s) := by simp [free]
+ipra_subst annihilator
+ipra_subst free
 
 theorem computed_certificate (A R s : PTm n) (hp : Γ ⊢[PRAAx] RationalSuperellipticSubspace.properSpan A R (dimension s)) : Γ ⊢[PRAAx]
     RationalOriginalAnnihilator.certificate A R (dimension s) (annihilator A R s) (free A R s) :=
@@ -218,14 +203,8 @@ def output (A R s x y : PTm n) : PTm n := pairT (features s x y)
     (pairT (equation (annihilator A R s) s x y) (free A R s))))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A R s x y : PTm n) : PTm n := app outputF ![A,R,s,x,y]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (A R s x y : PTm n) :
-    Syn.subst σ (output A R s x y) = output (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (A R s x y : PTm n) :
-    Syn.subst σ (run A R s x y) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem features_program_at (s x y : PTm n) : Γ ⊢[PRAAx] app featuresF ![s,x,y] ≐ features s x y := by
   simpa [featuresF] using toPR_eq (Γ := Γ) (features (var 0) (var 1) (var 2) : PTm 3) ![s,x,y]
@@ -235,15 +214,15 @@ theorem program_at (A R s x y : PTm n) : Γ ⊢[PRAAx] run A R s x y ≐ output 
   simpa [run,outputF,output,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,R,s,x,y]
 theorem returned_features (A R s x y : PTm n) : Γ ⊢[PRAAx] fstT (run A R s x y) ≐ features s x y :=
-  (congrFst (program_at A R s x y)).eqTrans (fst_pair _ _)
+  (program_at A R s x y).fstE
 theorem returned_annihilator (A R s x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A R s x y)) ≐ annihilator A R s :=
-  (congrFst ((congrSnd (program_at A R s x y)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A R s x y).sndE.fstE
 theorem returned_polynomial (A R s x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run A R s x y))) ≐ polynomial (annihilator A R s) s :=
-  (congrFst ((congrSnd ((congrSnd (program_at A R s x y)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A R s x y).sndE.sndE.fstE
 theorem returned_equation (A R s x y : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run A R s x y)))) ≐ equation (annihilator A R s) s x y :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at A R s x y)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A R s x y).sndE.sndE.sndE.fstE
 theorem returned_free (A R s x y : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run A R s x y)))) ≐ free A R s :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at A R s x y)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at A R s x y).sndE.sndE.sndE.sndE
 theorem returned_zero (A R s x y : PTm n) (hp : Γ ⊢[PRAAx] RationalSuperellipticSubspace.properSpan A R (dimension s))
     (hm : Γ ⊢[PRAAx] RationalRowSpanGaussianEmbedding.hasCoefficients A R (dimension s) (features s x y)) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (sndT (run A R s x y)))) ≐ scalarZero :=

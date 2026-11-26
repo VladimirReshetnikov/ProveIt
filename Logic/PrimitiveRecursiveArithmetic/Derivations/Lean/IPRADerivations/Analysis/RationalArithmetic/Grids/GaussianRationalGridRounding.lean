@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual nearest signed coordinate on a protected rational mesh
@@ -17,13 +16,9 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalGridRounding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,20 +33,13 @@ def error (P Q D R M : PTm n) : ZT n :=
   ZT.ofNat M*(ZT.ofNat P-ZT.ofNat Q)-ZT.ofNat D*coordinate P Q D R M
 
 def residual (P Q D R M : PTm n) : PTm n := rem (dividend P Q D R M) (two*D)
-@[simp] theorem subst_box {l : ℕ} (σ : Fin n → PTm l) (P Q D R : PTm n) :
-    (box P Q D R).subst σ = box (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ R) := by simp [box]
-@[simp] theorem subst_shifted {l : ℕ} (σ : Fin n → PTm l) (P Q D R : PTm n) :
-    Syn.subst σ (shifted P Q D R) = shifted (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ R) := by simp [shifted]
-@[simp] theorem subst_dividend {l : ℕ} (σ : Fin n → PTm l) (P Q D R M : PTm n) :
-    Syn.subst σ (dividend P Q D R M) = dividend (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ M) := by simp [dividend]
-@[simp] theorem subst_index {l : ℕ} (σ : Fin n → PTm l) (P Q D R M : PTm n) :
-    Syn.subst σ (index P Q D R M) = index (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ M) := by simp [index]
-@[simp] theorem subst_coordinate {l : ℕ} (σ : Fin n → PTm l) (P Q D R M : PTm n) :
-    (coordinate P Q D R M).subst σ = coordinate (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ M) := by simp [coordinate]
-@[simp] theorem subst_error {l : ℕ} (σ : Fin n → PTm l) (P Q D R M : PTm n) :
-    (error P Q D R M).subst σ = error (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ M) := by simp [error]
-@[simp] theorem subst_residual {l : ℕ} (σ : Fin n → PTm l) (P Q D R M : PTm n) :
-    Syn.subst σ (residual P Q D R M) = residual (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ M) := by simp [residual]
+ipra_subst box
+ipra_subst shifted
+ipra_subst dividend
+ipra_subst index
+ipra_subst coordinate
+ipra_subst error
+ipra_subst residual
 
 theorem shifted_identity (P Q D R : PTm n) (h : Γ ⊢[PRAAx] box P Q D R) : Γ ⊢[PRAAx]
     P+R*D ≐ Q+shifted P Q D R := eq_add_of_le (.andE₁ h)
@@ -130,23 +118,17 @@ def output (P Q D R M : PTm n) : PTm n := pairT (index P Q D R M)
   (pairT (shifted P Q D R) (residual P Q D R M))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (P Q D R M : PTm n) : PTm n := PTm.app outputF ![P,Q,D,R,M]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (P Q D R M : PTm n) :
-    Syn.subst σ (output P Q D R M) = output (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ M) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (P Q D R M : PTm n) :
-    Syn.subst σ (run P Q D R M) = run (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ M) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (P Q D R M : PTm n) : Γ ⊢[PRAAx] run P Q D R M ≐ output P Q D R M := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![P,Q,D,R,M]
 theorem returned_index (P Q D R M : PTm n) : Γ ⊢[PRAAx] fstT (run P Q D R M) ≐ index P Q D R M :=
-  (congrFst (program_at P Q D R M)).eqTrans (fst_pair _ _)
+  (program_at P Q D R M).fstE
 theorem returned_shifted (P Q D R M : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run P Q D R M)) ≐ shifted P Q D R :=
-  (congrFst (congrSnd (program_at P Q D R M))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at P Q D R M))).eqTrans (snd_pair _ _).fstE
 theorem returned_residual (P Q D R M : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run P Q D R M)) ≐ residual P Q D R M :=
-  (congrSnd (congrSnd (program_at P Q D R M))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  (congrSnd (congrSnd (program_at P Q D R M))).eqTrans (snd_pair _ _).sndE
 
 theorem actual_nearest_coordinate_range_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5
     (le one (var 2) ⟶ box (var 0) (var 1) (var 2) (var 3) ⟶

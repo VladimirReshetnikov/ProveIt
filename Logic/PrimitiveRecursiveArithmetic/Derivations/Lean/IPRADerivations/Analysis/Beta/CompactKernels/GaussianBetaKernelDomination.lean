@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelDomination
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelRefinement (source cutoff cutoff_succ cutoff_ge refined_source)
 open GaussianBetaKernelExponential (kernel)
 open GaussianRationalHorner (positive_product)
@@ -23,15 +23,11 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianNamedRealOrderTransport (upperSlack)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def cost (a : PTm n) : PTm n := GaussianBetaKernelExponential.coefficient a*a*a
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (cost a) = cost (Syn.subst σ a) := by simp [cost]
+ipra_subst cost
 
 theorem later_half_source (a b N j : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ ⊢[PRAAx]
     GaussianBetaKernelLogarithm.source a b (cutoff N (succ j)) := by
@@ -93,22 +89,21 @@ def output (p a b N : PTm n) : PTm n := pairT (kernel a b N)
   (pairT (ap2 decayF p (decayData a b)) (pairT one (unit p)))
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (p a b N : PTm n) : PTm n := PTm.app outputF ![p,a,b,N]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (p a b N : PTm n) :
-    Syn.subst σ (output p a b N) = output (Syn.subst σ p) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [output]
+ipra_subst output
 theorem program_at (p a b N : PTm n) : Γ ⊢[PRAAx] run p a b N ≐ output p a b N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![p,a,b,N]
 theorem returned_kernel (p a b N : PTm n) : Γ ⊢[PRAAx] fstT (run p a b N) ≐ kernel a b N :=
-  (congrFst (program_at p a b N)).eqTrans (fst_pair _ _)
+  (program_at p a b N).fstE
 theorem returned_tail (p a b N : PTm n) : Γ ⊢[PRAAx] sndT (run p a b N) ≐ pairT (ap2 decayF p (decayData a b)) (pairT one (unit p)) :=
-  (congrSnd (program_at p a b N)).eqTrans (snd_pair _ _)
+  (program_at p a b N).sndE
 theorem returned_decay (p a b N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run p a b N)) ≐ ap2 decayF p (decayData a b) :=
-  (congrFst (returned_tail p a b N)).eqTrans (fst_pair _ _)
+  (returned_tail p a b N).fstE
 theorem returned_last (p a b N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run p a b N)) ≐ pairT one (unit p) :=
-  (congrSnd (returned_tail p a b N)).eqTrans (snd_pair _ _)
+  (returned_tail p a b N).sndE
 theorem returned_numerator (p a b N : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run p a b N))) ≐ one :=
-  (congrFst (returned_last p a b N)).eqTrans (fst_pair _ _)
+  (returned_last p a b N).fstE
 theorem returned_denominator (p a b N : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (run p a b N))) ≐ unit p :=
-  (congrSnd (returned_last p a b N)).eqTrans (snd_pair _ _)
+  (returned_last p a b N).sndE
 theorem returned_upper (p a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ ⊢[PRAAx]
     upper (fstT (fstT (run p a b N))) (fstT (fstT (sndT (run p a b N))))
       (fstT (sndT (sndT (run p a b N)))) (sndT (sndT (sndT (run p a b N)))) :=

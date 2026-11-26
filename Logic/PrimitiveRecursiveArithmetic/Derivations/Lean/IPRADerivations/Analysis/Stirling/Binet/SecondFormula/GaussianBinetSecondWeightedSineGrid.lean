@@ -16,7 +16,7 @@ set_option maxHeartbeats 790000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSineGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentQuadrature (fixedData)
 open GaussianBinetSecondWeightedSinePoint (point subst_point cost subst_cost)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -29,8 +29,6 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalRiemannRefinement (leftSum termsDistance)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,27 +50,16 @@ def data (q M T H J X Y D sign R K : PTm n) : PTm n :=
 def value (q M T H J X Y D sign R K : PTm n) : PTm n :=
   leftSum body M (data q M T H J X Y D sign R K) T one
 
-@[simp] theorem subst_parameters {m : ℕ} (σ : Fin n → PTm m) (X Y D sign R K : PTm n) :
-    Syn.subst σ (parameters X Y D sign R K) =
-      parameters (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [parameters]
+ipra_subst parameters
 
 @[simp] private theorem subst_pointReader {m : ℕ} (σ : Fin n → PTm m) (q a b T H J x : PTm n) :
     Syn.subst σ (pointReader q a b T H J x) =
       pointReader (Syn.subst σ q) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ T)
         (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ x) := by simp [pointReader]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (q M T H J X Y D sign R K : PTm n) :
-    Syn.subst σ (data q M T H J X Y D sign R K) =
-      data (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [data]
+ipra_subst data
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (q M T H J X Y D sign R K : PTm n) :
-    Syn.subst σ (value q M T H J X Y D sign R K) =
-      value (Syn.subst σ q) (Syn.subst σ M) (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J)
-        (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) (Syn.subst σ R) (Syn.subst σ K) := by
-  simp [value,one]
+ipra_subst value [one]
 
 private theorem reader_at (q a b T H J X Y D sign R K : PTm n) :
     Γ ⊢[PRAAx] pointReader q a b T H J (parameters X Y D sign R K) ≐

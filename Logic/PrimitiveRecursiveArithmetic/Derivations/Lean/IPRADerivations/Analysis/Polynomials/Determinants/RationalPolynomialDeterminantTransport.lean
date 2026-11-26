@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialDeterminantTransport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed)
 open RationalPolynomialMonicCompanionGaussianEmbedding (rowsEmbedded row_embedded_at)
 open RationalPolynomialDeterminantTermsGaussianEmbedding
@@ -25,18 +25,13 @@ open GaussianPolynomialDeterminantTerms (cell)
 open RationalPolynomialDeterminantGaussianEmbedding (determinant determinant_length coefficient_embedding)
 open RationalPolynomialBuffersGaussianEmbedding (embeddedEntries)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def matrixEmbedded (M P m L : PTm n) : Fm PTm n := .all (lt (var 0) (Syn.shift m) ⟶
   rowsEmbedded (entry (Syn.shift M) (var 0)) (entry (Syn.shift P) (var 0)) (Syn.shift m) (Syn.shift L))
 
-@[simp] theorem subst_matrixEmbedded {l : ℕ} (σ : Fin n → PTm l) (M P m L : PTm n) :
-    (matrixEmbedded M P m L).subst σ = matrixEmbedded (Syn.subst σ M) (Syn.subst σ P) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [matrixEmbedded,Syn.subst_shift,Syn.shift_subst]
+ipra_subst matrixEmbedded [Syn.subst_shift, Syn.shift_subst]
 
 theorem cell_embedded (M P m L r j : PTm n) (h : Γ ⊢[PRAAx] matrixEmbedded M P m L)
     (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) :

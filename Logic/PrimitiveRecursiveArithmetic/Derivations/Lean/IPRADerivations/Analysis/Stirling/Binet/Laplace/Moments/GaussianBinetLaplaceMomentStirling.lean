@@ -13,12 +13,9 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentStirling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentZeroOrder (improper_equivalent)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "UJ" => GaussianBinetLaplaceImproperName.nameF

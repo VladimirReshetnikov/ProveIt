@@ -13,7 +13,7 @@ set_option maxHeartbeats 1350000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaIntegralCutoffs (top height omitted_tail_budget)
@@ -25,10 +25,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianExponentialReference (unit_monotone)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (succ zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -47,17 +43,11 @@ def value (p z R B j : PTm n) : PTm n :=
 def nameF : PR 2 := PTm.toPR (value (var 0) (fstT (fstT (var 1))) (sndT (fstT (var 1)))
   (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (cutoff p R) = cutoff (Syn.subst σ p) (Syn.subst σ R) := by simp [cutoff,one,two]
+ipra_subst cutoff [one, two]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B j : PTm n) :
-    Syn.subst σ (data z R B j) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp [data]
+ipra_subst data
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (p z R B j : PTm n) :
-    Syn.subst σ (value p z R B j) =
-      value (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp [value]
+ipra_subst value
 
 theorem sample_at (p z R B j : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B j) ≐ value p z R B j := by
   let x := data z R B j

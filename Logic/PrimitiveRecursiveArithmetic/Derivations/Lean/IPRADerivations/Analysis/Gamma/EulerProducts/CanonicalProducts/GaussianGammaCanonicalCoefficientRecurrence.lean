@@ -19,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalCoefficientRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open GaussianRationalMetric (distanceBounded)
@@ -29,9 +29,6 @@ open GaussianGammaCanonicalRecurrenceName (modulus sumSample)
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,12 +36,9 @@ def leftF : PR 2 := GaussianNamedNaturalScale.nameF GaussianGammaHigherCoefficie
 def leftData (s : PTm n) : PTm n := GaussianNamedNaturalScale.data s s (GaussianGammaHigherCoefficientName.data (succ s))
 def leftClock (p s : PTm n) : PTm n := GaussianNamedNaturalScale.clock p s
 def leftSample (p s : PTm n) : PTm n := ap2 leftF p (leftData s)
-@[simp] theorem subst_leftData {l : ℕ} (σ : Fin n → PTm l) (s : PTm n) :
-    Syn.subst σ (leftData s) = leftData (Syn.subst σ s) := by simp [leftData]
-@[simp] theorem subst_leftClock {l : ℕ} (σ : Fin n → PTm l) (p s : PTm n) :
-    Syn.subst σ (leftClock p s) = leftClock (Syn.subst σ p) (Syn.subst σ s) := by simp [leftClock]
-@[simp] theorem subst_leftSample {l : ℕ} (σ : Fin n → PTm l) (p s : PTm n) :
-    Syn.subst σ (leftSample p s) = leftSample (Syn.subst σ p) (Syn.subst σ s) := by simp [leftSample]
+ipra_subst leftData
+ipra_subst leftClock
+ipra_subst leftSample
 
 theorem coefficient_input (e : PTm n) : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input
     GaussianGammaHigherCoefficientName.nameF

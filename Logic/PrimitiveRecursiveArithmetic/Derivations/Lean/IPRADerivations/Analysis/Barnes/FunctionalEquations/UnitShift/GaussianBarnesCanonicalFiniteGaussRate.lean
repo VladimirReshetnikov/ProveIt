@@ -18,7 +18,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteGaussRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalHead (source)
 open GaussianBarnesCanonicalProduct (literalData literal_regular)
@@ -39,9 +39,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represen
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr qone)
 open GaussianRationalSyntheticDivision (qadd_sub_cancel)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -17,7 +17,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedExponentialQuarterUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -35,10 +35,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_r
 open GaussianRationalReciprocal (bounded_product bound_congr qone)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianRationalPolynomialExponential (scalarSum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF
@@ -49,9 +45,7 @@ local notation "halfPoint" => GaussianEulerSquareFactorInverse.half
 def lateRadius (f : PR 2) (x C : PTm n) : Fm PTm n := .all
   (le (Syn.shift C) (var 0) ⟶ bounded (ap2 f (var 0) (Syn.shift x)) (num 3) one)
 
-@[simp] theorem subst_lateRadius {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x C : PTm n) :
-    (lateRadius f x C).subst σ = lateRadius f (Syn.subst σ x) (Syn.subst σ C) := by
-  simp [lateRadius,Syn.subst_shift,Syn.shift_subst,one]
+ipra_subst lateRadius [Syn.subst_shift, Syn.shift_subst, one]
 
 private theorem late_at (f : PR 2) (x C p : PTm n) (h : Γ ⊢[PRAAx] lateRadius f x C)
     (hp : Γ ⊢[PRAAx] le C p) : Γ ⊢[PRAAx] bounded (ap2 f p x) (num 3) one := by

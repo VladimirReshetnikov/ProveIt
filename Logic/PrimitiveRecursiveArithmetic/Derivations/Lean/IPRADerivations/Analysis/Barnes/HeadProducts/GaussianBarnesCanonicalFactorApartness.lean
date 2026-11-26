@@ -13,7 +13,7 @@ set_option maxHeartbeats 450000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFactorApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalFactor (base correction exponentialData exponentRadius clock powerValue nameF data source)
 open GaussianGammaEulerHeadLower (translated)
 open GaussianGammaCanonicalExponent (constantF)
@@ -24,10 +24,6 @@ open GaussianRationalHorner (ofGaussian_represents positive_product)
 open GaussianRationalLowerBounds (lower lower_congr lower_from_representation product_lower)
 open GaussianRationalReciprocal (power power_zero power_succ)
 open GaussianCyclicExponentialSamples (inverseBudget sampleBound exponential_lower)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFiniteRoots
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qzero qadd qmul canonical evaluate hornerF canonical_unique represents_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -31,10 +31,6 @@ open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode recode_congr
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -96,27 +92,14 @@ def laterRoots (C R i : PTm n) : Fm PTm n := .all
   (lt (var 0) (length (Syn.shift R)) ⟶ le (Syn.shift i) (var 0) ⟶
     evaluate (Syn.shift C) (entry (Syn.shift R) (var 0)) ≐ qzero)
 
-@[simp] theorem subst_remaining {l : ℕ} (σ : Fin n → PTm l) (N i : PTm n) :
-    Syn.subst σ (remaining N i) = remaining (Syn.subst σ N) (Syn.subst σ i) := by simp [remaining]
-@[simp] theorem subst_stage {l : ℕ} (σ : Fin n → PTm l) (C N R i : PTm n) :
-    Syn.subst σ (stage C N R i) = stage (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ i) := by
-  simp only [stage,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
-@[simp] theorem subst_head {l : ℕ} (σ : Fin n → PTm l) (C : PTm n) :
-    Syn.subst σ (head C) = head (Syn.subst σ C) := by simp [head]
-@[simp] theorem subst_nonzeroHead {l : ℕ} (σ : Fin n → PTm l) (C : PTm n) :
-    (nonzeroHead C).subst σ = nonzeroHead (Syn.subst σ C) := by simp [nonzeroHead]
-@[simp] theorem subst_roots {l : ℕ} (σ : Fin n → PTm l) (C R : PTm n) :
-    (roots C R).subst σ = roots (Syn.subst σ C) (Syn.subst σ R) := by simp [roots,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_distinctFrom {l : ℕ} (σ : Fin n → PTm l) (R i : PTm n) :
-    (distinctFrom R i).subst σ = distinctFrom (Syn.subst σ R) (Syn.subst σ i) := by
-  simp [distinctFrom,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_distinct {l : ℕ} (σ : Fin n → PTm l) (R : PTm n) :
-    (distinct R).subst σ = distinct (Syn.subst σ R) := by simp [distinct,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_laterRoots {l : ℕ} (σ : Fin n → PTm l) (C R i : PTm n) :
-    (laterRoots C R i).subst σ = laterRoots (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ i) := by simp [laterRoots,Syn.subst_shift,Syn.shift_subst]
+ipra_subst remaining
+ipra_subst stage
+ipra_subst head
+ipra_subst nonzeroHead
+ipra_subst roots [Syn.subst_shift, Syn.shift_subst]
+ipra_subst distinctFrom [Syn.subst_shift, Syn.shift_subst]
+ipra_subst distinct [Syn.subst_shift, Syn.shift_subst]
+ipra_subst laterRoots [Syn.subst_shift, Syn.shift_subst]
 
 theorem stage_zero (C N R : PTm n) : Γ ⊢[PRAAx] stage C N R zero ≐ C := by
   have h := rec_zero (Γ := Γ) (var 0 : PTm 3) stageStep ![C,N,R]
@@ -182,17 +165,14 @@ theorem remaining_positive (N i : PTm n) (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PR
     le one (remaining N i) := GaussianRationalTranslationStages.remaining_positive N i hi
 
 def lengthLaw (C N R i : PTm n) : Fm PTm n := le i N ⟶ length (stage C N R i) ≐ succ (remaining N i)
-@[simp] theorem subst_lengthLaw {l : ℕ} (σ : Fin n → PTm l) (C N R i : PTm n) :
-    (lengthLaw C N R i).subst σ = lengthLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ i) := by simp [lengthLaw]
+ipra_subst lengthLaw
 
 theorem stage_length (C N R i : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] length (stage C N R i) ≐ succ (remaining N i) := by
   have all : Γ ⊢[PRAAx] .all (lengthLaw (Syn.shift C) (Syn.shift N) (Syn.shift R) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_lengthLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (((congrFst (stage_zero C N R)).eqTrans hC).eqTrans (congrSucc (monus_zero N)).eqSymm).wk
-    · simp only [subst_lengthLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_lengthLaw]
+    · exact .impI (((congrFst (stage_zero C N R)).eqTrans hC).eqTrans (congrSucc (monus_zero N)).eqSymm).wk
+    · refine .impI ?_
       exact (congrFst (stage_succ (Syn.shift C) (Syn.shift N) (Syn.shift R) (var 0))).eqTrans
         ((quotient_length _ _ _).eqTrans (remaining_step _ _ Prf.hyp0))
   have rule : Γ ⊢[PRAAx] lengthLaw C N R i := by
@@ -200,17 +180,14 @@ theorem stage_length (C N R i : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
   exact .impE rule hi
 
 def headLaw (C N R i : PTm n) : Fm PTm n := le i N ⟶ head (stage C N R i) ≐ head C
-@[simp] theorem subst_headLaw {l : ℕ} (σ : Fin n → PTm l) (C N R i : PTm n) :
-    (headLaw C N R i).subst σ = headLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ i) := by simp [headLaw]
+ipra_subst headLaw
 
 theorem stage_head (C N R i : PTm n) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]
     head (stage C N R i) ≐ head C := by
   have all : Γ ⊢[PRAAx] .all (headLaw (Syn.shift C) (Syn.shift N) (Syn.shift R) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_headLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (recode_congr (entry_congr (stage_zero C N R) (.eqRefl _))).wk
-    · simp only [subst_headLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_headLaw]
+    · exact .impI (recode_congr (entry_congr (stage_zero C N R) (.eqRefl _))).wk
+    · refine .impI ?_
       exact (recode_congr (entry_congr (stage_succ (Syn.shift C) (Syn.shift N) (Syn.shift R) (var 0)) (.eqRefl _))).eqTrans
         ((GaussianRationalSyntheticCoefficientValues.leading_coefficient _ _ _ (remaining_positive _ _ Prf.hyp0)).eqSymm.eqTrans
           (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
@@ -258,8 +235,7 @@ def laterSyntax (C R i : PTm n) : BFm n := .all (length R)
 def rootsSyntax (C N R i : PTm n) : BFm n := .imp (.le i N) (laterSyntax (stage C N R i) R i)
 theorem roots_formula (C N R i : PTm n) : formula (rootsSyntax C N R i) = rootsLaw C N R i := by
   simp only [rootsSyntax,laterSyntax,formula,BFm.le,rootsLaw,laterRoots,Syn.shift,subst_length,le]
-@[simp] theorem subst_rootsLaw {l : ℕ} (σ : Fin n → PTm l) (C N R i : PTm n) :
-    (rootsLaw C N R i).subst σ = rootsLaw (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ i) := by simp [rootsLaw]
+ipra_subst rootsLaw
 
 /-- The bounded remaining-root formula is proved by real QF induction on
 its compiled bit. The only global hypotheses are the original listed roots
@@ -317,8 +293,7 @@ def distinctFromSyntax (R i : PTm n) : BFm n := .all (length R)
 def distinctSyntax (R : PTm n) : BFm n := .all (length R) (distinctFromSyntax (Syn.shift R) (var 0))
 def inputSyntax (C N R : PTm n) : BFm n := .and (.eq (length C) (succ N))
   (.and (.not (.eq (head C) qzero)) (.and (originalRootsSyntax C R) (distinctSyntax R)))
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (C N R : PTm n) :
-    (input C N R).subst σ = input (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ R) := by simp [input]
+ipra_subst input
 
 theorem input_formula (C N R : PTm n) : formula (inputSyntax C N R) = input C N R := by
   simp only [inputSyntax,originalRootsSyntax,distinctSyntax,distinctFromSyntax,input,formula,BFm.lt,BFm.le,
@@ -326,12 +301,7 @@ theorem input_formula (C N R : PTm n) : formula (inputSyntax C N R) = input C N 
 
 def checkerF : PR 3 := Foundations.BoundedSyntax.bitF (inputSyntax (var 0) (var 1) (var 2))
 def check (C N R : PTm n) : PTm n := PTm.app checkerF ![C,N,R]
-@[simp] theorem subst_check {l : ℕ} (σ : Fin n → PTm l) (C N R : PTm n) :
-    Syn.subst σ (check C N R) = check (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ R) := by
-  simp only [check,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst check
 
 theorem eq_one_iff {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] Fm.iff (a ≐ one) (b ≐ one) :=
   .andI (.impI (h.wk.eqSymm.eqTrans Prf.hyp0)) (.impI (h.wk.eqTrans Prf.hyp0))
@@ -349,12 +319,7 @@ theorem checker_sound (C N R : PTm n) (h : Γ ⊢[PRAAx] check C N R ≐ one) : 
 
 def quotientF : PR 4 := PTm.toPR (stage (var 0) (var 1) (var 2) (var 3))
 def run (C N R i : PTm n) : PTm n := PTm.app quotientF ![C,N,R,i]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N R i : PTm n) :
-    Syn.subst σ (run C N R i) = run (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ i) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext j
-  fin_cases j <;> rfl
+ipra_subst run
 
 theorem program_at (C N R i : PTm n) : Γ ⊢[PRAAx] run C N R i ≐ stage C N R i := by
   simpa only [run,quotientF,subst_stage,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,

@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianExactDiskShrinking
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianRationalHorner (qmul represents represents_congr positive_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
@@ -27,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianFastValueCut (rawEnvelope raw_envelope_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -39,12 +36,9 @@ def factor (A B C p : PTm n) : PTm n :=
   GaussianRationalHorner.ofGaussian (scale (A*unit p) oneCode) (denominator A B C p)
 def shrink (q A B C p : PTm n) : PTm n := qmul (factor A B C p) q
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (A B C p : PTm n) :
-    Syn.subst σ (denominator A B C p) = denominator (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ p) := by simp [denominator]
-@[simp] theorem subst_factor {m : ℕ} (σ : Fin n → PTm m) (A B C p : PTm n) :
-    Syn.subst σ (factor A B C p) = factor (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ p) := by simp [factor]
-@[simp] theorem subst_shrink {m : ℕ} (σ : Fin n → PTm m) (q A B C p : PTm n) :
-    Syn.subst σ (shrink q A B C p) = shrink (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ p) := by simp [shrink]
+ipra_subst denominator
+ipra_subst factor
+ipra_subst shrink
 
 theorem denominator_positive (A B C p : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] le one (denominator A B C p) := by unfold denominator; ipra_le sl hB+𝔞 A*𝔞 (unit p)+𝔞 C*𝔞 B
@@ -119,16 +113,11 @@ def body (f : PR 2) : PTm 2 := value f (var 0) (sndT (sndT (sndT (var 1))))
 def nameF (f : PR 2) : PR 2 := PTm.toPR (body f)
 def sample (f : PR 2) (p x A B C : PTm n) : PTm n := ap2 (nameF f) p (data x A B C)
 
-@[simp] theorem subst_rawValue {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x A B C : PTm n) :
-    Syn.subst σ (rawValue f p x A B C) = rawValue f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by simp [rawValue]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (C p : PTm n) :
-    Syn.subst σ (clock C p) = clock (Syn.subst σ C) (Syn.subst σ p) := by simp [clock]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x A B C : PTm n) :
-    Syn.subst σ (value f p x A B C) = value f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by simp [value]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x A B C : PTm n) :
-    Syn.subst σ (data x A B C) = data (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by simp [data]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x A B C : PTm n) :
-    Syn.subst σ (sample f p x A B C) = sample f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by simp [sample]
+ipra_subst rawValue
+ipra_subst clock
+ipra_subst value
+ipra_subst data
+ipra_subst sample
 
 theorem raw_distance (f : PR 2) (p x A B C : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (he : Γ ⊢[PRAAx] rawEnvelope f x A B C) : Γ ⊢[PRAAx]
@@ -191,8 +180,8 @@ theorem sample_at (f : PR 2) (p x A B C : PTm n) : Γ ⊢[PRAAx]
       · exact .eqRefl _
       · exact (congrSnd tail).eqTrans (snd_pair C x)
       · exact fst_pair _ _
-      · exact (congrFst rest).eqTrans (fst_pair _ _)
-      · exact (congrFst tail).eqTrans (fst_pair _ _))
+      · exact rest.fstE
+      · exact tail.fstE)
   exact e'.eqTrans (by simpa using eq)
 
 theorem sample_bound (f : PR 2) (p x A B C : PTm n) (hB : Γ ⊢[PRAAx] le one B)

@@ -22,16 +22,12 @@ The list-indexed conjunctions and disjunctions `lconj`, `ldisj` carry the bounde
 
 namespace LeanProofs.IPRA.Analysis.WeightedComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.WeightedFeedback (Cert contract_scaled)
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.ClipLaws (ad_triangle)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of)
 open LeanProofs.IPRA.Probability.EventAlgebraMetric (wsum)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}
 
@@ -81,9 +77,8 @@ theorem ldisj_elim {α : Type} {φ : α → Fm PTm n} {χ : Fm PTm n} : {L : Lis
 /-- Cancelling a positive factor. -/
 theorem cancel_w {w a b : PTm n} (hw : Γ ⊢[PRAAx] le one w) (h : Γ ⊢[PRAAx] le (w * a) (w * b)) :
     Γ ⊢[PRAAx] le a b := by
-  have e := natEq (eq_add_of_le hw)
   have h' : Γ ⊢[PRAAx] le (succ (monus w one) * a) (succ (monus w one) * b) := by
-    ipra_le sl h with (𝔟 a - 𝔟 b) * e
+    ipra_le sl h with (𝔟 a - 𝔟 b) * natEq (eq_add_of_le hw)
   exact mul_le_cancel h'
 
 /-- `δ_j / w_j ≤ δ_i / w_i`, cross-multiplied. -/

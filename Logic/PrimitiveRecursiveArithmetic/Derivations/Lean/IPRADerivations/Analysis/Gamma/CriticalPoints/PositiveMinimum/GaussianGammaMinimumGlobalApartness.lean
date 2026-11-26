@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumGlobalApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (normSq scale oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
@@ -35,10 +35,6 @@ open GaussianRationalMetric (distanceBounded qsub qsub_represents bounded_differ
 open GaussianRationalSyntheticDivision (qsub_congr rescale_to)
 open GaussianRootAlgebra (sub equal_refl)
 open RationalHarmonicIntervalVariation (gap)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -53,12 +49,9 @@ def apart (f : PR 2) (h x y : PTm n) : Fm PTm n :=
 
 def separationDenominator (h : PTm n) : PTm n := two*R h
 
-@[simp] theorem subst_apart {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (h x y : PTm n) :
-    (apart f h x y).subst σ = apart f (Syn.subst σ h) (Syn.subst σ x) (Syn.subst σ y) := by simp [apart]
+ipra_subst apart
 
-@[simp] theorem subst_separationDenominator {m : ℕ} (σ : Fin n → PTm m) (h : PTm n) :
-    Syn.subst σ (separationDenominator h) = separationDenominator (Syn.subst σ h) := by
-  simp [separationDenominator]
+ipra_subst separationDenominator
 
 theorem separation_denominator_positive (h : PTm n) : Γ ⊢[PRAAx] le one (separationDenominator h) :=
   positive_product _ _ (le_succ_self one) (unit_positive (succ h))

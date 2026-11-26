@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayQuadraturePrecision
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianEulerDecayMesh (observation stepError errorDen)
 open GaussianEulerDecayQuadrature (evaluatorF cell_at actual_decay_quadrature)
@@ -31,10 +31,6 @@ open GaussianRationalRiemannRefinement (sum_distance termsDistance weight weight
 open GaussianRationalReciprocal (bounded_product bound_congr bounded_negative)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameRingLaws (three)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianExponentialRealPartMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianExponentialRealPart (projection squareF squareData squarePrecision doubleRealF doubleRealData)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
@@ -28,10 +28,6 @@ open GaussianRationalSyntheticBounds (natCode)
 open GaussianNamedPositiveExponentialOrder (realOrder real_order_at scalar_coordinate_distance)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,14 +38,10 @@ def modulusF : PR 2 := squareF expF
 def modulusData (q : PTm n) : PTm n := squareData expF (expData q)
 def majorant (M : PTm n) : PTm n := pw (num 3) (two*M)
 
-@[simp] theorem subst_doubleScalar {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (doubleScalar q) = doubleScalar (Syn.subst σ q) := by simp [doubleScalar]
-@[simp] theorem subst_expData {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (expData q) = expData (Syn.subst σ q) := by simp [expData,exponentialInputData]
-@[simp] theorem subst_modulusData {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (modulusData q) = modulusData (Syn.subst σ q) := by simp [modulusData]
-@[simp] theorem subst_majorant {m : ℕ} (σ : Fin n → PTm m) (M : PTm n) :
-    Syn.subst σ (majorant M) = majorant (Syn.subst σ M) := by simp [majorant]
+ipra_subst doubleScalar
+ipra_subst expData [exponentialInputData]
+ipra_subst modulusData
+ipra_subst majorant
 
 theorem conjugate_sum_real (q : PTm n) : Γ ⊢[PRAAx]
     qadd q (GaussianRationalConjugation.point q) ≐ embed (doubleScalar q) := by

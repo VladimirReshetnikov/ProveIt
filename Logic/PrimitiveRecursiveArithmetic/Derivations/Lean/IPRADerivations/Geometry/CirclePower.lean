@@ -1,6 +1,5 @@
 import IPRADerivations.Geometry.TriangleCentres
 import IPRADerivations.Combinatorics.FisherInequality
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Convexity of the disc, the power of a point, common points and the rational parametrization
@@ -30,11 +29,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.CirclePower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.TriangleCentres (dot det nsq)
 open LeanProofs.IPRA.Combinatorics.FisherInequality (znn_of_pos_mul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

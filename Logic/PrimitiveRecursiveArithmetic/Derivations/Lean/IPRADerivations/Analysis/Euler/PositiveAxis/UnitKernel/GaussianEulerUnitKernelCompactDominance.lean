@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelCompactDominance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitKernelCompactName (source evaluatorF fixedData lipschitz nameF data)
 open GaussianEulerVerticalNativeProjection (argument)
 open GaussianCompactRiemannName (sampleBody sampleData grid inside mesh precision)
@@ -26,9 +26,6 @@ open GaussianRationalHorner (qadd)
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (bounded)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

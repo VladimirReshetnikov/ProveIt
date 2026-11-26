@@ -12,28 +12,22 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalMinorMaskDeletion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open RationalSelectedMinors (count)
 open RationalSubtupleSpan (bit bitBody bit_body_at)
 open RationalMinorFreeColumn (complementBody complement_at missingCount complementary_count bit_cases)
 open RationalMinorMaskExtension (insert new_bit old_bit insert_count)
 open LeanProofs.IPRA.Foundations.BoundedReflection (sgB inst2_sgB)
 open LeanProofs.IPRA.Foundations.MixedRadix (Cd dP)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def flip (N M : PTm n) : PTm n := Cd (two : PTm 2) complementBody N M
 def erase (N M c : PTm n) : PTm n := flip N (insert N (flip N M) c)
 
-@[simp] theorem subst_flip {k : ℕ} (σ : Fin n → PTm k) (N M : PTm n) :
-    Syn.subst σ (flip N M) = flip (Syn.subst σ N) (Syn.subst σ M) := by simp [flip]
+ipra_subst flip
 
-@[simp] theorem subst_erase {k : ℕ} (σ : Fin n → PTm k) (N M c : PTm n) :
-    Syn.subst σ (erase N M c) = erase (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ c) := by simp [erase]
+ipra_subst erase
 
 theorem complement_digit_bounds (N M : PTm n) : Γ ⊢[PRAAx] .all
     (lt (var 0) (Syn.shift N) ⟶ lt (inst2 complementBody (var 0) (Syn.shift M))

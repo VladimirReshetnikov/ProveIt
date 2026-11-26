@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalHornerRadiusPerturbation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (horner evaluate positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalHornerPerturbation
@@ -25,20 +25,14 @@ open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (bound_congr bounded_pr
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def numerator (U A k : PTm n) : PTm n := k*pw U (pred k)*A
 def denominator (V B k : PTm n) : PTm n := pw V (pred k)*B
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (U A k : PTm n) :
-    Syn.subst σ (numerator U A k) = numerator (Syn.subst σ U) (Syn.subst σ A) (Syn.subst σ k) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (V B k : PTm n) :
-    Syn.subst σ (denominator V B k) = denominator (Syn.subst σ V) (Syn.subst σ B) (Syn.subst σ k) := by simp [denominator]
+ipra_subst numerator
+ipra_subst denominator
 
 theorem numerator_index_congr (U A : PTm n) {k l : PTm n} (h : Γ ⊢[PRAAx] k ≐ l) :
     Γ ⊢[PRAAx] numerator U A k ≐ numerator U A l :=
@@ -108,10 +102,7 @@ theorem step_comparison (U V A B k : PTm n) (hUV : Γ ⊢[PRAAx] le V U) : Γ �
 
 def prefixLaw (C D z N U V A B k : PTm n) : Fm PTm n := le k N ⟶
   distanceBounded (horner C z (succ k)) (horner D z (succ k)) (numerator U A k) (denominator V B k)
-@[simp] theorem subst_prefixLaw {m : ℕ} (σ : Fin n → PTm m) (C D z N U V A B k : PTm n) :
-    (prefixLaw C D z N U V A B k).subst σ = prefixLaw (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ z)
-      (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ V) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ k) := by
-  simp [prefixLaw]
+ipra_subst prefixLaw
 
 theorem prefix_zero (C D z U V A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hLead : Γ ⊢[PRAAx] entry C zero ≐ entry D zero) : Γ ⊢[PRAAx]
@@ -160,11 +151,9 @@ theorem prefix_bound (C D z N U V A B k : PTm n)
     simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,Syn.shift] using hz.shift
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
       (Syn.shift U) (Syn.shift V) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (prefix_zero C D z U V A B hB hLead).wk
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
+    · exact .impI (prefix_zero C D z U V A B hB hLead).wk
+    · refine .impI ?_
       let I := prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
         (Syn.shift U) (Syn.shift V) (Syn.shift A) (Syn.shift B) (var 0)
       exact prefix_step _ _ _ _ _ _ _ _ _ vpos.wk.wk vu.wk.wk bpos.wk.wk errors.wk.wk query.wk.wk
@@ -203,29 +192,21 @@ def output (C D z N U V A B : PTm n) : PTm n :=
 def outputF : PR 8 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7))
 def run (C D z N U V A B : PTm n) : PTm n := PTm.app outputF ![C,D,z,N,U,V,A,B]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (C D z N U V A B : PTm n) :
-    Syn.subst σ (output C D z N U V A B) = output (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ z)
-      (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ V) (Syn.subst σ A) (Syn.subst σ B) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (C D z N U V A B : PTm n) :
-    Syn.subst σ (run C D z N U V A B) = run (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ z)
-      (Syn.subst σ N) (Syn.subst σ U) (Syn.subst σ V) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C D z N U V A B : PTm n) : Γ ⊢[PRAAx] run C D z N U V A B ≐ output C D z N U V A B := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) : PTm 8) ![C,D,z,N,U,V,A,B]
 theorem output_value (C D z N U V A B : PTm n) : Γ ⊢[PRAAx]
     fstT (run C D z N U V A B) ≐ GaussianRationalMetric.qsub (evaluate C z) (evaluate D z) :=
-  (congrFst (program_at C D z N U V A B)).eqTrans (fst_pair _ _)
+  (program_at C D z N U V A B).fstE
 theorem output_numerator (C D z N U V A B : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run C D z N U V A B)) ≐ numerator U A N :=
-  (congrFst ((congrSnd (program_at C D z N U V A B)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at C D z N U V A B).sndE.fstE
 theorem output_denominator (C D z N U V A B : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run C D z N U V A B)) ≐ denominator V B N :=
-  (congrSnd ((congrSnd (program_at C D z N U V A B)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at C D z N U V A B).sndE.sndE
 
 theorem program_certificate (C D z N U V A B : PTm n)
     (hC : Γ ⊢[PRAAx] length C ≐ succ N) (hD : Γ ⊢[PRAAx] length D ≐ succ N)

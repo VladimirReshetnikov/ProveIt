@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.Exhaustion.GaussianEulerLogarithmicCutoffSplit
 import IPRADerivations.Analysis.Euler.Logarithms.UpperBounds.GaussianEulerLogarithmicUpperCutoffBudget
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Compare original logarithmic intervals with the same lower endpoint
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicTopExtension
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicIntervalName (data nameF name_regular)
 open GaussianEulerLogarithmicCutoffSplit (interval_data_congr)
 open GaussianEulerCompactAdditivity (intervalSource)
@@ -26,10 +25,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm cross_to_diagonal cross_trans)
 open GaussianNameArithmetic (addData addF)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

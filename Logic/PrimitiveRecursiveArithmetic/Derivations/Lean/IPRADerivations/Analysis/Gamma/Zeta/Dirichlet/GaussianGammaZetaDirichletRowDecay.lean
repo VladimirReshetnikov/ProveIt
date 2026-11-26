@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletRowDecay
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerIntegrandName (powerF powerData powerExponentF powerExponentData powerRadius)
 open GaussianEulerPositivePowerChart (argument)
@@ -30,10 +30,6 @@ open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianEulerPositiveScalingConstant (inverseF inverseData)
 open GaussianGammaZetaDirichletReciprocalRow (reciprocalRowF reciprocalRowData)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianEulerIntegralGammaIdentification.source
@@ -41,8 +37,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def block (A h : PTm n) : PTm n := pw (unit h) A
 
-@[simp] theorem subst_block {m : ℕ} (σ : Fin n → PTm m) (A h : PTm n) :
-    Syn.subst σ (block A h) = block (Syn.subst σ A) (Syn.subst σ h) := by simp [block]
+ipra_subst block
 
 theorem block_positive (A h : PTm n) : Γ ⊢[PRAAx] le one (block A h) :=
   GaussianPolynomialPerturbation.power_positive _ _ (unit_positive h)

@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRationalGautschi
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteApproximantName (exponentialInputData)
 open GaussianGammaRationalFractionalChord (harmonicF)
 open GaussianGammaRationalUnscaledChord (fractionalData fractional_regular fractional_real)
@@ -21,8 +21,6 @@ open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_exponen
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianStirlingGammaLogarithm (gammaData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "E" => GaussianRadiusExponentialName.nameF

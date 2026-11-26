@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerReflectionHead (body sineProduct squareFactor square_factor_at)
 open GaussianInverseSquareProductTail (sine_factor_bound sine_product_tail
   denominator_positive partial_product_bound)
@@ -28,10 +28,6 @@ open GaussianReciprocalHorner (qmul_one_right)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianBalancedRadiusArithmetic (unit_monotone)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,9 +36,7 @@ def bound (R : PTm n) : PTm n := two*pw (one+R*R) (initial R)
 def rate (R : PTm n) : PTm n := bound R*(two*(R*R))
 def cutoff (R p : PTm n) : PTm n := initial R+rate R*unit p
 
-@[simp] theorem subst_cutoff {l : ℕ} (σ : Fin n → PTm l) (R p : PTm n) :
-    Syn.subst σ (cutoff R p) = cutoff (Syn.subst σ R) (Syn.subst σ p) := by
-  simp [cutoff,rate,bound,initial]
+ipra_subst cutoff [rate, bound, initial]
 
 theorem initial_positive (R : PTm n) : Γ ⊢[PRAAx] le one (initial R) := zero_lt_succ _
 
@@ -131,9 +125,7 @@ def sampled (z R B p : PTm n) : PTm n := sineProduct z B (cutoff R p)
 def nameF : PR 2 := PTm.toPR
   (sampled (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0) : PTm 2)
 
-@[simp] theorem subst_sampled {l : ℕ} (σ : Fin n → PTm l) (z R B p : PTm n) :
-    Syn.subst σ (sampled z R B p) = sampled (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ p) := by
-  simp [sampled,sineProduct]
+ipra_subst sampled [sineProduct]
 
 theorem sample_at (z R B p : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B) ≐ sampled z R B p := by
   let d := data z R B
@@ -149,8 +141,8 @@ theorem sample_at (z R B p : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B) ≐
       (σ := ![fstT d,fstT (sndT d),sndT (sndT d),p]) (σ' := ![z,R,B,p])
       (fun i => by fin_cases i
                    exact fst_pair _ _
-                   exact (congrFst second).eqTrans (fst_pair _ _)
-                   exact (congrSnd second).eqTrans (snd_pair _ _)
+                   exact second.fstE
+                   exact second.sndE
                    exact .eqRefl _)
 
 theorem cofinal_error (z R B p M : PTm n) (hB : Γ ⊢[PRAAx] le one B)

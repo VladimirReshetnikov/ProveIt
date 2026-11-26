@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaLinearCoefficient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul evaluate qzero)
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qmul_congr)
@@ -35,21 +35,15 @@ open RationalArgmin (rationalLE)
 open RationalGaussianEmbedding (embed)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def coefficient (q N : PTm n) : PTm n := qsub (embed (GammaEulerConstantName.gammaSample q zero)) (harmonicPoint N)
 def monomial (a : PTm n) : PTm n := appendZero (singleton a)
 def polynomial (q N : PTm n) : PTm n := monomial (coefficient q N)
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (q N : PTm n) :
-    Syn.subst σ (coefficient q N) = coefficient (Syn.subst σ q) (Syn.subst σ N) := by simp [coefficient]
-@[simp] theorem subst_monomial {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (monomial a) = monomial (Syn.subst σ a) := by simp [monomial]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (q N : PTm n) :
-    Syn.subst σ (polynomial q N) = polynomial (Syn.subst σ q) (Syn.subst σ N) := by simp [polynomial]
+ipra_subst coefficient
+ipra_subst monomial
+ipra_subst polynomial
 
 theorem gamma_norm (q : PTm n) : Γ ⊢[PRAAx]
     rationalLE (qL1 (embed (GammaEulerConstantName.gammaSample q zero))) (natCode one) := by

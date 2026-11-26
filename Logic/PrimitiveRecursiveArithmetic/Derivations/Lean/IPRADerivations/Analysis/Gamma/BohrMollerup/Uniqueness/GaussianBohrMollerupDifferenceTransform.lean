@@ -15,7 +15,7 @@ set_option maxHeartbeats 1900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupDifferenceTransform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (qadd qmul)
 open GaussianRationalMetric (qsub qnegative distanceBounded)
 open GaussianRationalNaturalScale (natScale natScale_as_product naturalPoint)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

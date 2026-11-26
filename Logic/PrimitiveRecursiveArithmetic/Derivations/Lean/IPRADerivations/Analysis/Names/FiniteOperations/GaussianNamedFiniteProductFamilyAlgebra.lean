@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
@@ -27,8 +27,6 @@ open GaussianNamedFiniteProductName (nameF data cofinalRows rowBounds rowRegular
 open GaussianNamedFiniteProduct (rowDistance)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicMultiplier
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Constructive compact quadrature for every numerical logarithmic order
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicCompactName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicMultiplier (observationCost lipschitz majorant)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -23,8 +22,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate denominator_positive)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,19 +36,12 @@ def source (z R B E T C : PTm n) : Fm PTm n := GaussianEulerCompactModulus.sourc
 def data (j z R B E T C : PTm n) : PTm n := GaussianCompactRiemannName.data one C E (lipschitz j R E T) T (fixedData j R E T z B)
 def nameF : PR 2 := GaussianCompactRiemannName.nameF evaluatorF
 
-@[simp] theorem subst_query {m : ℕ} (σ : Fin n → PTm m) (p j R E T : PTm n) :
-    Syn.subst σ (query p j R E T) = query (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [query]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (p j R E T z B a b : PTm n) :
-    Syn.subst σ (sample p j R E T z B a b) = sample (Syn.subst σ p) (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T)
-      (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [sample]
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (j R E T z B : PTm n) :
-    Syn.subst σ (fixedData j R E T z B) = fixedData (Syn.subst σ j) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ z) (Syn.subst σ B) := by simp [fixedData]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B E T C : PTm n) :
-    (source z R B E T C).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (j z R B E T C : PTm n) :
-    Syn.subst σ (data j z R B E T C) = data (Syn.subst σ j) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) := by simp [data]
+ipra_subst query
+ipra_subst sample
+ipra_subst fixedData
+ipra_subst evaluatorTerm
+ipra_subst source
+ipra_subst data
 
 theorem query_budget (p j R E T : PTm n) : Γ ⊢[PRAAx] le (observationCost j R E T*unit p) (unit (query p j R E T)) :=
   GaussianFastValueCut.query_budget _ _
@@ -63,24 +53,24 @@ theorem sample_at (p j R E T z B a b : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p (pairT a b) (fixedData j R E T z B) ≐ sample p j R E T z B a b := by
   refine (evaluator_at p (pairT a b) (fixedData j R E T z B)).eqTrans ?_
   ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9) with
-    [.eqRefl p, (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _),
-      (congrFst (congrSnd (fst_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
-      (congrSnd (congrSnd (fst_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)),
-      (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _),
-      (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
-      (congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)), fst_pair _ _,
+    [.eqRefl p, (fst_pair _ _).fstE,
+      (congrFst (congrSnd (fst_pair _ _))).eqTrans (snd_pair _ _).fstE,
+      (congrSnd (congrSnd (fst_pair _ _))).eqTrans (snd_pair _ _).sndE,
+      (snd_pair _ _).fstE,
+      (congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE,
+      (congrSnd (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).sndE, fst_pair _ _,
       snd_pair _ _] using [evaluatorTerm, fixedData]
 
 theorem raw_evaluator_at (p t j R E T z B : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData j R E T z B) ≐ sample p j R E T z B (fstT t) (sndT t) := by
   refine (evaluator_at p t (fixedData j R E T z B)).eqTrans ?_
   ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9) with
-    [.eqRefl p, (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _),
-      (congrFst (congrSnd (fst_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
-      (congrSnd (congrSnd (fst_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)),
-      (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _),
-      (congrFst (congrSnd (snd_pair _ _))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)),
-      (congrSnd (congrSnd (snd_pair _ _))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)),
+    [.eqRefl p, (fst_pair _ _).fstE,
+      (congrFst (congrSnd (fst_pair _ _))).eqTrans (snd_pair _ _).fstE,
+      (congrSnd (congrSnd (fst_pair _ _))).eqTrans (snd_pair _ _).sndE,
+      (snd_pair _ _).fstE,
+      (congrFst (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).fstE,
+      (congrSnd (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).sndE,
       .eqRefl (fstT t), .eqRefl (sndT t)] using [evaluatorTerm, fixedData]
 
 /-- The computed query pays both independent observation errors without

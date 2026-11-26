@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSharpNamedRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (radius numerator denominator threshold actual_late_source)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
@@ -26,10 +26,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianReconstructionRoots (distance_triangle)
 open GaussianEulerSharpResidualAssembly (boundNumerator boundDenominator)
 open GaussianBetaContiguousUpperTailBudget (fixedNumerator fixedDenominator fixed_denominator_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

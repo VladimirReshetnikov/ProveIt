@@ -21,11 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Topology.Sperner
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable (f : PR 1) {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -85,14 +81,10 @@ private theorem dist_ne {v w : PTm n} (hv : Γ ⊢[PRAAx] (v ≐ zero) ⋎ (v �
     · exact .botE _ (.impE hne.wk.wk (Prf.hyp1.eqTrans Prf.hyp0.eqSymm))
 
 theorem parity_invariant₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] invFormula (f := f) := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap1, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      ConciseIPRA.PTm.subst_zero]
-    refine (congrAp1 parF ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _))).eqTrans ?_
+  ipra_ind [subst_ap1, subst_ap2]
+  · refine (congrAp1 parF ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _))).eqTrans ?_
     exact par_par _
-  · simp only [Fm.subst_eq, PTm.subst_add, subst_ap1, subst_ap2, Syn.subst_var, Syn.repl_zero,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have ih : [invFormula (f := f)] ⊢[PRAAx] par (C f (var 0) + ℓ f zero) ≐ ℓ f (var 0) := Prf.hyp0
+  · have ih : [invFormula (f := f)] ⊢[PRAAx] par (C f (var 0) + ℓ f zero) ≐ ℓ f (var 0) := Prf.hyp0
     -- C(N+1) + ℓ(0) = (C(N) + ℓ(0)) + |ℓ(N+1) − ℓ(N)|.
     have hs : [invFormula (f := f)] ⊢[PRAAx]
         C f (succ (var 0)) + ℓ f zero ≐ (C f (var 0) + ℓ f zero) + dist (ℓ f (succ (var 0))) (ℓ f (var 0)) := by

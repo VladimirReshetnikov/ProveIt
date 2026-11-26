@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCompactCutoffAlignment
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
 open GaussianGammaCompactCutoffGeometry (ratio middleWidth)
@@ -23,21 +23,14 @@ open GaussianEulerCompactAdditivity (nameF)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def source (z R B p q : PTm n) : Fm PTm n := GaussianGammaEulerCompactQuadrature.source z R B ⋏ le p q
 def middleData (z R B p q A : PTm n) : PTm n := GaussianEulerCompactAdditivity.data z R B
   (ratio p q A) (middleWidth p q A R) (etaDen q A R) (top q A R)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B p q : PTm n) :
-    (source z R B p q).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ p) (Syn.subst σ q) := by simp [source]
-@[simp] theorem subst_middleData {m : ℕ} (σ : Fin n → PTm m) (z R B p q A : PTm n) :
-    Syn.subst σ (middleData z R B p q A) = middleData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ A) := by
-  simp [middleData,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source
+ipra_subst middleData [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem cross_data_congr (f g : PR 2) (x x' y y' : PTm n) (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y')
     (h : Γ ⊢[PRAAx] crossEquivalent f g x y) : Γ ⊢[PRAAx] crossEquivalent f g x' y' := by

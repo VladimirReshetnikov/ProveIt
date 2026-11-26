@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelExponential
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CertificateTactics
 
 /-!
 # Full-interval beta kernel positivity and dyadic refinement
@@ -17,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelRefinement
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonical canonical_unique positive_product)
 open GaussianBetaKernelExponential (base kernel)
 open GaussianRationalReciprocal (qone)
@@ -25,10 +23,6 @@ open ComplexLogarithmRemainder (scale oneCode)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalArgmin (rationalLE)
 open RationalNonnegativePowers (power)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -37,14 +31,10 @@ def source (a b N : PTm n) : Fm PTm n := le one b ⋏ (le one N ⋏ le a (b*N))
 def value (a b N : PTm n) : PTm n := power (monus (b*N) a) (b*N) N
 def cutoff (N j : PTm n) : PTm n := N*unit j
 def refinementLaw (a b N j : PTm n) : Fm PTm n := rationalLE (value a b N) (value a b (cutoff N j))
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    (source a b N).subst σ = source (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (value a b N) = value (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [value]
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (N j : PTm n) :
-    Syn.subst σ (cutoff N j) = cutoff (Syn.subst σ N) (Syn.subst σ j) := by simp [cutoff]
-@[simp] theorem subst_refinementLaw {m : ℕ} (σ : Fin n → PTm m) (a b N j : PTm n) :
-    (refinementLaw a b N j).subst σ = refinementLaw (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) (Syn.subst σ j) := by simp [refinementLaw]
+ipra_subst source
+ipra_subst value
+ipra_subst cutoff
+ipra_subst refinementLaw
 
 theorem value_congr {a a' b b' N N' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') (hN : Γ ⊢[PRAAx] N ≐ N') : Γ ⊢[PRAAx]
     value a b N ≐ value a' b' N' := by
@@ -139,11 +129,9 @@ theorem refined_source (a b N j : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ �
 theorem dyadic_order (a b N j : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ ⊢[PRAAx] refinementLaw a b N j := by
   have hs : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift a) (Syn.shift b) (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all (refinementLaw (Syn.shift a) (Syn.shift b) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_refinementLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact RationalArgmin.rationalLE_congr (.eqRefl _) (value_congr (.eqRefl _) (.eqRefl _) (cutoff_zero N)).eqSymm (RationalArgmin.reflexive _)
-    · simp only [subst_refinementLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let i : PTm (n+1) := var 0
+    ipra_qfind (le_QF _ _) [subst_refinementLaw]
+    · exact RationalArgmin.rationalLE_congr (.eqRefl _) (value_congr (.eqRefl _) (.eqRefl _) (cutoff_zero N)).eqSymm (RationalArgmin.reflexive _)
+    · let i : PTm (n+1) := var 0
       have second := scalar_doubling (Γ := refinementLaw (Syn.shift a) (Syn.shift b) (Syn.shift N) i :: Γ.map Fm.shift)
         (Syn.shift a) (Syn.shift b) (cutoff (Syn.shift N) i) (refined_source _ _ _ _ hs.wk)
       exact RationalArgmin.transitive Prf.hyp0 (RationalArgmin.rationalLE_congr (.eqRefl _)

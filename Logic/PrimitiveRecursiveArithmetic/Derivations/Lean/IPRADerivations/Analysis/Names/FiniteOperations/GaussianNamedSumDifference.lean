@@ -14,7 +14,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSumDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -25,10 +25,6 @@ open GaussianNamedDifference (name_regular sample_error difference_distance)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_radius_mono)
 open GaussianRationalHorner (qadd)
 open GaussianRationalMetric (qsub distanceBounded)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

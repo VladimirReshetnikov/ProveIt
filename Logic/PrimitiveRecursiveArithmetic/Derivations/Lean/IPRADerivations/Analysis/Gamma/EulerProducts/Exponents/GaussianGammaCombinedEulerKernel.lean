@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCombinedEulerKernel
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianRationalEulerCoefficients (euler parityPoint)
@@ -29,15 +29,11 @@ open GaussianGammaReciprocalDegreeCells (degree)
 open RationalGaussianEmbedding (embed)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def fullPower (q m N : PTm n) : PTm n := qadd (point m N) (embed (RationalReciprocalPowerName.tailSample q m N))
-@[simp] theorem subst_fullPower {l : ℕ} (σ : Fin n → PTm l) (q m N : PTm n) :
-    Syn.subst σ (fullPower q m N) = fullPower (Syn.subst σ q) (Syn.subst σ m) (Syn.subst σ N) := by simp [fullPower]
+ipra_subst fullPower
 
 theorem full_power_is_original_reconstruction (q m N : PTm n) : Γ ⊢[PRAAx]
     fullPower q m N ≐ embed (RationalReciprocalPowerName.reconstructedSample q m N) :=

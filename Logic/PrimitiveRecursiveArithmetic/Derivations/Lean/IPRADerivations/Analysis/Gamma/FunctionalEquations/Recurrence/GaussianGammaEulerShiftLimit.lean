@@ -18,7 +18,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerShiftLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEulerHeadShift (shifted linear)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaFiniteApproximantName (qF qData q_regular)
@@ -27,9 +27,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianRationalHorner (ofGaussian qmul positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -39,14 +36,9 @@ def logInverse (N : PTm n) : Fm PTm n :=
 def correction (z B N : PTm n) : PTm n := qmul (linear z B (succ N)) (reciprocalPoint N)
 def correctedF : PR 2 := multiplyF constantF qF
 def correctedData (z B N : PTm n) : PTm n := multiplyData constantF qF (correction z B N) (qData z B N)
-@[simp] theorem subst_reciprocalPoint {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    Syn.subst σ (reciprocalPoint N) = reciprocalPoint (Syn.subst σ N) := by simp [reciprocalPoint]
-@[simp] theorem subst_logInverse {l : ℕ} (σ : Fin n → PTm l) (N : PTm n) :
-    (logInverse N).subst σ = logInverse (Syn.subst σ N) := by
-  simp [logInverse,negativeLogExpData,GaussianGammaEulerShift.negativeLogData,
-    GaussianGammaFiniteApproximantName.exponentialInputData]
-@[simp] theorem subst_correction {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
-    Syn.subst σ (correction z B N) = correction (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [correction]
+ipra_subst reciprocalPoint
+ipra_subst logInverse [negativeLogExpData, GaussianGammaEulerShift.negativeLogData, GaussianGammaFiniteApproximantName.exponentialInputData]
+ipra_subst correction
 @[simp] theorem subst_correctedData {l : ℕ} (σ : Fin n → PTm l) (z B N : PTm n) :
     Syn.subst σ (correctedData z B N) = correctedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
   simp [correctedData,qData,GaussianGammaFiniteApproximantName.approximantData,

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaSynchronousExponentCompatibility
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded qnegative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
@@ -25,10 +25,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNameRingLaws (three)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,10 +33,8 @@ def productPoint (p z R B : PTm n) : PTm n := ap2 productF p (productData z B (t
 def productModulus (z R B : PTm n) : PTm n := GaussianNameArithmetic.multiplyModulus differenceF constantF
   (differenceData (two*R)) (ofGaussian z B)
 def cost (z R B : PTm n) : PTm n := num 6*R+productModulus z R B+num 8
-@[simp] theorem subst_productModulus {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    Syn.subst σ (productModulus z R B) = productModulus (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [productModulus]
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    Syn.subst σ (cost z R B) = cost (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [cost]
+ipra_subst productModulus
+ipra_subst cost
 
 theorem shared_coefficient_error (p R : PTm n) : Γ ⊢[PRAAx]
     distanceBounded (GaussianGammaLinearCoefficient.coefficient (gammaClock p R) (two*R))

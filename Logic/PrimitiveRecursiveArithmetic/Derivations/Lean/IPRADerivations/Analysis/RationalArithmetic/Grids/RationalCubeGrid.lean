@@ -3,8 +3,6 @@ import IPRADerivations.Analysis.RationalArithmetic.RationalValueBounds
 import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalPointDistance
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalHausdorffConcat
 import IPRADerivations.Foundations.RuntimeWordAppend
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual dyadic cube grids in numerical dimension
@@ -20,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCubeGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalSupMetric (numeratorOf denominatorOf rationalCode)
 open RationalIntegerNormalization (normalize positivePart)
 open RationalArithmetic (represents)
@@ -29,10 +27,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_leng
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
 open LeanProofs.IPRA.Foundations.RuntimePermutationWords (digit)
 open LeanProofs.IPRA.Foundations.RuntimeWordAppend (divide_spec power_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -52,18 +46,16 @@ def point (d t w : PTm k) : PTm k := sequence coordinateBody d (pointData d t w)
 def gridBody : PTm 2 := point (fstT (var 1)) (sndT (var 1)) (var 0)
 def grid (d t : PTm k) : PTm k := sequence gridBody (count d t) (pairT d t)
 
-@[simp] theorem subst_scale {l : ℕ} (σ : Fin k → PTm l) (t : PTm k) : Syn.subst σ (scale t) = scale (Syn.subst σ t) := by simp [scale]
-@[simp] theorem subst_radix {l : ℕ} (σ : Fin k → PTm l) (t : PTm k) : Syn.subst σ (radix t) = radix (Syn.subst σ t) := by simp [radix]
-@[simp] theorem subst_count {l : ℕ} (σ : Fin k → PTm l) (d t : PTm k) : Syn.subst σ (count d t) = count (Syn.subst σ d) (Syn.subst σ t) := by simp [count]
-@[simp] theorem subst_reflected {l : ℕ} (σ : Fin k → PTm l) (d i : PTm k) : Syn.subst σ (reflected d i) = reflected (Syn.subst σ d) (Syn.subst σ i) := by simp [reflected]
-@[simp] theorem subst_fraction {l : ℕ} (σ : Fin k → PTm l) (j t : PTm k) : Syn.subst σ (fraction j t) = fraction (Syn.subst σ j) (Syn.subst σ t) := by simp [fraction]
-@[simp] theorem subst_interval {l : ℕ} (σ : Fin k → PTm l) (q : PTm k) :
-    (interval q).subst σ = interval (Syn.subst σ q) := by simp [interval,numeratorOf]
-@[simp] theorem subst_cube {l : ℕ} (σ : Fin k → PTm l) (x d : PTm k) :
-    (cube x d).subst σ = cube (Syn.subst σ x) (Syn.subst σ d) := by simp [cube,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_pointData {l : ℕ} (σ : Fin k → PTm l) (d t w : PTm k) : Syn.subst σ (pointData d t w) = pointData (Syn.subst σ d) (Syn.subst σ t) (Syn.subst σ w) := by simp [pointData]
-@[simp] theorem subst_point {l : ℕ} (σ : Fin k → PTm l) (d t w : PTm k) : Syn.subst σ (point d t w) = point (Syn.subst σ d) (Syn.subst σ t) (Syn.subst σ w) := by simp [point]
-@[simp] theorem subst_grid {l : ℕ} (σ : Fin k → PTm l) (d t : PTm k) : Syn.subst σ (grid d t) = grid (Syn.subst σ d) (Syn.subst σ t) := by simp [grid]
+ipra_subst scale
+ipra_subst radix
+ipra_subst count
+ipra_subst reflected
+ipra_subst fraction
+ipra_subst interval [numeratorOf]
+ipra_subst cube [Syn.subst_shift, Syn.shift_subst]
+ipra_subst pointData
+ipra_subst point
+ipra_subst grid
 
 theorem scale_positive (t : PTm k) : Γ ⊢[PRAAx] le one (scale t) := power_positive two t (le_succ_self one)
 theorem count_positive (d t : PTm k) : Γ ⊢[PRAAx] le one (count d t) := power_positive (radix t) d (zero_lt_succ _)
@@ -79,8 +71,8 @@ theorem reflected_twice (d i : PTm k) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx
 
 theorem point_data_at (d t w : PTm k) : Γ ⊢[PRAAx]
     fstT (pointData d t w) ≐ d ⋏ (fstT (sndT (pointData d t w)) ≐ t ⋏ sndT (sndT (pointData d t w)) ≐ w) :=
-  .andI (fst_pair _ _) (.andI ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  .andI (fst_pair _ _) (.andI (snd_pair _ _).fstE
+    (snd_pair _ _).sndE)
 theorem coordinate_body_at (d t w i : PTm k) : Γ ⊢[PRAAx]
     inst2 coordinateBody i (pointData d t w) ≐ fraction (digit (radix t) w (reflected d i)) t := by
   have e := point_data_at (Γ := Γ) d t w
@@ -107,14 +99,10 @@ def encode (P d b : PTm k) : PTm k := Foundations.MixedRadix.Cd Foundations.Runt
   Foundations.RuntimePermutationWords.vectorBody d (Foundations.RuntimePermutationWords.data b P)
 def roundIndex (x d t : PTm k) : PTm k := encode (roundedDigits x d t) d (radix t)
 
-@[simp] theorem subst_roundedDigit {l : ℕ} (σ : Fin k → PTm l) (q t : PTm k) :
-    Syn.subst σ (roundedDigit q t) = roundedDigit (Syn.subst σ q) (Syn.subst σ t) := by simp [roundedDigit]
-@[simp] theorem subst_roundedDigits {l : ℕ} (σ : Fin k → PTm l) (x d t : PTm k) :
-    Syn.subst σ (roundedDigits x d t) = roundedDigits (Syn.subst σ x) (Syn.subst σ d) (Syn.subst σ t) := by simp [roundedDigits]
-@[simp] theorem subst_encode {l : ℕ} (σ : Fin k → PTm l) (P d b : PTm k) :
-    Syn.subst σ (encode P d b) = encode (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ b) := by simp [encode]
-@[simp] theorem subst_roundIndex {l : ℕ} (σ : Fin k → PTm l) (x d t : PTm k) :
-    Syn.subst σ (roundIndex x d t) = roundIndex (Syn.subst σ x) (Syn.subst σ d) (Syn.subst σ t) := by simp [roundIndex]
+ipra_subst roundedDigit
+ipra_subst roundedDigits
+ipra_subst encode
+ipra_subst roundIndex
 
 theorem cube_at (x d i : PTm k) (h : Γ ⊢[PRAAx] cube x d) (hi : Γ ⊢[PRAAx] lt i d) : Γ ⊢[PRAAx] interval (entry x i) := by
   have rule : Γ ⊢[PRAAx] lt i d ⟶ interval (entry x i) := by simpa [cube] using (Prf.andE₂ h).allE i
@@ -134,9 +122,7 @@ theorem rounded_digit_bound (q t : PTm k) (h : Γ ⊢[PRAAx] interval q) : Γ �
   exact RationalValueBounds.positive_cancel (RationalArgmin.denominator_positive q) (le_congr (.eqRefl _) (mul_comm _ _) bound)
 
 def digitsBelow (P d b : PTm k) : Fm PTm k := .all (lt (var 0) (Syn.shift d) ⟶ lt (entry (Syn.shift P) (var 0)) (Syn.shift b))
-@[simp] theorem subst_digitsBelow {l : ℕ} (σ : Fin k → PTm l) (P d b : PTm k) :
-    (digitsBelow P d b).subst σ = digitsBelow (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ b) := by
-  simp [digitsBelow,Syn.subst_shift,Syn.shift_subst]
+ipra_subst digitsBelow [Syn.subst_shift, Syn.shift_subst]
 theorem digits_below_at (P d b i : PTm k) (h : Γ ⊢[PRAAx] digitsBelow P d b) (hi : Γ ⊢[PRAAx] lt i d) :
     Γ ⊢[PRAAx] lt (entry P i) b := by
   have rule : Γ ⊢[PRAAx] lt i d ⟶ lt (entry P i) b := by simpa [digitsBelow] using h.allE i
@@ -334,14 +320,8 @@ def gridF : PR 2 := PTm.toPR (grid (var 0) (var 1))
 def roundIndexF : PR 3 := PTm.toPR (roundIndex (var 0) (var 1) (var 2))
 def outputF : PR 3 := PTm.toPR (output (var 0) (var 1) (var 2))
 def run (x d t : PTm k) : PTm k := app outputF ![x,d,t]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin k → PTm l) (x d t : PTm k) :
-    Syn.subst σ (output x d t) = output (Syn.subst σ x) (Syn.subst σ d) (Syn.subst σ t) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin k → PTm l) (x d t : PTm k) :
-    Syn.subst σ (run x d t) = run (Syn.subst σ x) (Syn.subst σ d) (Syn.subst σ t) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem grid_program_at (d t : PTm k) : Γ ⊢[PRAAx] app gridF ![d,t] ≐ grid d t := by
   simpa [gridF] using toPR_eq (Γ := Γ) (grid (var 0) (var 1) : PTm 2) ![d,t]
@@ -351,18 +331,18 @@ theorem round_index_program_at (x d t : PTm k) : Γ ⊢[PRAAx] app roundIndexF !
 theorem program_at (x d t : PTm k) : Γ ⊢[PRAAx] run x d t ≐ output x d t := by
   simpa [run,outputF,Matrix.cons_val_succ',Matrix.cons_val_zero'] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![x,d,t]
 theorem returned_grid (x d t : PTm k) : Γ ⊢[PRAAx] fstT (run x d t) ≐ grid d t :=
-  (congrFst (program_at x d t)).eqTrans (fst_pair _ _)
+  (program_at x d t).fstE
 theorem returned_index (x d t : PTm k) : Γ ⊢[PRAAx] fstT (sndT (run x d t)) ≐ roundIndex x d t :=
-  (congrFst ((congrSnd (program_at x d t)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at x d t).sndE.fstE
 private theorem returned_tail (x d t : PTm k) : Γ ⊢[PRAAx] sndT (sndT (run x d t)) ≐
     pairT (point d t (roundIndex x d t)) (pairT (scale t) (count d t)) :=
-  (congrSnd ((congrSnd (program_at x d t)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at x d t).sndE.sndE
 theorem returned_point (x d t : PTm k) : Γ ⊢[PRAAx] fstT (sndT (sndT (run x d t))) ≐ point d t (roundIndex x d t) :=
-  (congrFst (returned_tail x d t)).eqTrans (fst_pair _ _)
+  (returned_tail x d t).fstE
 theorem returned_scale (x d t : PTm k) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run x d t)))) ≐ scale t :=
-  (congrFst ((congrSnd (returned_tail x d t)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (returned_tail x d t).sndE.fstE
 theorem returned_count (x d t : PTm k) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run x d t)))) ≐ count d t :=
-  (congrSnd ((congrSnd (returned_tail x d t)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (returned_tail x d t).sndE.sndE
 theorem returned_radius (x d t : PTm k) (h : Γ ⊢[PRAAx] cube x d) : Γ ⊢[PRAAx]
     RationalHausdorff.pointRadius x (fstT (sndT (sndT (run x d t)))) d one (scale t) :=
   RationalHausdorffConcat.pointRadius_congr (.eqRefl _) (returned_point x d t).eqSymm (rounded_point_radius x d t h)

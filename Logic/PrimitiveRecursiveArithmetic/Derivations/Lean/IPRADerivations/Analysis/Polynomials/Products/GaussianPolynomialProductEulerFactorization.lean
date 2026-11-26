@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialProductEulerFactorization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_inside)
 open GaussianRationalPolynomialProduct (product product_length)
@@ -25,9 +25,6 @@ open GaussianPolynomialLowJetProduct (jetEqual product_reader)
 open GaussianFiniteLogarithmCoefficientRecursion (product_commuted_exponent)
 open GaussianPolynomialExponentAlgebra (associative_reader commutative_jet left_distribution)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

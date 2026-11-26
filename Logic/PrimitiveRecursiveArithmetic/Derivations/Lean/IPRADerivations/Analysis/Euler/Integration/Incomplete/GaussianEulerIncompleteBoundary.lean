@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIncompleteBoundary
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIncompleteCutoff (clock denominator splitPoint lowerWidth upperWidth)
 open GaussianGammaIntegralCutoffs (etaDen top)
 open GaussianGammaEulerHeadShift (shifted)
@@ -29,17 +29,13 @@ open GaussianRationalMetric (qsub qnegative bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 def endpointData (z B a b : PTm n) : PTm n := GaussianEulerIntegrandName.data (shifted z B) B a b
 
-@[simp] theorem subst_endpointData {m : ℕ} (σ : Fin n → PTm m) (z B a b : PTm n) :
-    Syn.subst σ (endpointData z B a b) = endpointData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [endpointData]
+ipra_subst endpointData
 
 private theorem pair_to_dyadic (p q t x y : PTm n) (hp : Γ ⊢[PRAAx] le t p) (hq : Γ ⊢[PRAAx] le t q)
     (h : Γ ⊢[PRAAx] distanceBounded x y (unit p+unit q) (unit p*unit q)) : Γ ⊢[PRAAx]

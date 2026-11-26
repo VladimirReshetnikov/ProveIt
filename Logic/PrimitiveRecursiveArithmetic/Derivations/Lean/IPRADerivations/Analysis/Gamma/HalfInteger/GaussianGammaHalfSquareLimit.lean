@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfSquareLimit
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaHalfEulerSquare (squareF squareData eulerHalf)
 open GaussianGammaReciprocalInverse (gammaF lambdaNumerator lambda_positive)
 open GaussianGammaEulerReciprocalInverse (eulerF)
@@ -34,10 +34,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
 open GaussianNamedMultiplyRate (sampleBound leadingNumerator leadingDenominator)
 open ComplexLogarithmRemainder (oneCode)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

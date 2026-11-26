@@ -14,7 +14,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteExponentTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalCorrectedMercatorCofinal (input interval_input analyticDenominator analytic_denominator_positive)
 open GaussianBarnesCanonicalExponentTaylor (prefixIncrementF prefixIncrementData polynomialF polynomialData)
@@ -33,9 +33,6 @@ open GaussianNamedDifferenceRate (rate_parameters_congr self_rate)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedRateComposition (leadingNumerator leadingDenominator)
 open GaussianRationalHorner (positive_product)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaCombinedEulerKernelPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr)
 open GaussianRationalEulerCoefficients (euler parityPoint)
@@ -25,18 +25,13 @@ open GaussianRationalLowCoefficientConvolution (exponent_inside)
 open GaussianGammaHarmonicPowerPoints (point)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def polynomial (q N L : PTm n) : PTm n := GaussianRationalPolynomialBuffers.added
   (GaussianGammaEulerHeadLogarithmicKernel.kernel N (degree L))
   (euler (GaussianGammaExponentCoefficientPolynomial.polynomial q N L) (degree L)) (succ (degree L))
-@[simp] theorem subst_polynomial {l : ℕ} (σ : Fin n → PTm l) (q N L : PTm n) :
-    Syn.subst σ (polynomial q N L) = polynomial (Syn.subst σ q) (Syn.subst σ N) (Syn.subst σ L) := by simp [polynomial]
+ipra_subst polynomial
 
 theorem polynomial_length (q N L : PTm n) : Γ ⊢[PRAAx] length (polynomial q N L) ≐ succ (degree L) :=
   GaussianRationalPolynomialBuffers.added_length _ _ _

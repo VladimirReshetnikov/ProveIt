@@ -13,7 +13,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetSecondDecayPointwise (row rowEnvelope fullDecay)
 open GaussianCompactRiemannName
   (sampleData field0 field1 field2 field3 field4 field5
@@ -21,9 +21,6 @@ open GaussianCompactRiemannName
     subst_field0 subst_field1 subst_field2 subst_field3 subst_field4 subst_field5)
 open GaussianRationalHorner (qmul)
 open GaussianRationalRiemannRefinement (leftSum)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -85,20 +82,11 @@ def rowData (p N T H J X Y D sign : PTm n) : PTm n :=
 def envelopeData (p N T H J m K : PTm n) : PTm n := sampleData p N T H J (pairT m K)
 def value (p N T H J X Y D sign : PTm n) : PTm n := leftSum rowBody N (rowData p N T H J X Y D sign) T one
 
-@[simp] theorem subst_rowData {k : ℕ} (σ : Fin n → PTm k) (p N T H J X Y D sign : PTm n) :
-    Syn.subst σ (rowData p N T H J X Y D sign) = rowData (Syn.subst σ p) (Syn.subst σ N)
-      (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) := by
-  simp [rowData]
+ipra_subst rowData
 
-@[simp] theorem subst_envelopeData {k : ℕ} (σ : Fin n → PTm k) (p N T H J m K : PTm n) :
-    Syn.subst σ (envelopeData p N T H J m K) = envelopeData (Syn.subst σ p) (Syn.subst σ N)
-      (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ m) (Syn.subst σ K) := by
-  simp [envelopeData]
+ipra_subst envelopeData
 
-@[simp] theorem subst_value {k : ℕ} (σ : Fin n → PTm k) (p N T H J X Y D sign : PTm n) :
-    Syn.subst σ (value p N T H J X Y D sign) = value (Syn.subst σ p) (Syn.subst σ N)
-      (Syn.subst σ T) (Syn.subst σ H) (Syn.subst σ J) (Syn.subst σ X) (Syn.subst σ Y) (Syn.subst σ D) (Syn.subst σ sign) := by
-  simp [value,one]
+ipra_subst value [one]
 
 theorem row_at (i p N T H J X Y D sign : PTm n) :
     Γ ⊢[PRAAx] inst2 rowBody i (rowData p N T H J X Y D sign) ≐ row p X Y D sign (T*i) N H J := by

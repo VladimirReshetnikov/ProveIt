@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.RationalPolynomialMonicCompanionGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMultiplicationMatrix
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual original rational polynomial multiplication matrix
@@ -15,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialMultiplicationMatrixGaussianEmbedding
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalGaussianEmbedding (embed)
 open RationalPolynomialGaussianEmbedding (embed_congr)
 open RationalPolynomialMonicCompanionGaussianEmbedding
@@ -25,18 +24,13 @@ open GaussianPolynomialMultiplicationMatrix (bound_zero bound_succ slot padding 
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm formula)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def bound (a c j : PTm n) : PTm n := GaussianPolynomialMultiplicationMatrix.bound a c j
 def width (m a c : PTm n) : PTm n := GaussianPolynomialMultiplicationMatrix.width m a c
-@[simp] theorem subst_bound {l : ℕ} (σ : Fin n → PTm l) (a c j : PTm n) :
-    Syn.subst σ (bound a c j) = bound (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [bound]
-@[simp] theorem subst_width {l : ℕ} (σ : Fin n → PTm l) (m a c : PTm n) :
-    Syn.subst σ (width m a c) = width (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [width]
+ipra_subst bound
+ipra_subst width
 
 def normalizeBody : PTm 2 := normalizedRow (entry (var 1) (var 0))
 def normalizedRows (G m : PTm n) : PTm n := sequence normalizeBody m G
@@ -49,15 +43,10 @@ def stageF : PR 2 := rec2 initial stepBody
 def stage (F G m a c j : PTm n) : PTm n := ap2 stageF j (data F G m a c)
 def targetStage (F G m a c j : PTm n) : PTm n := GaussianPolynomialMultiplicationMatrix.stage
   (RationalRowSpanGaussianEmbedding.matrix F m (succ c)) (RationalRowSpanGaussianEmbedding.matrix G m (succ a)) m a c j
-@[simp] theorem subst_normalizedRows {l : ℕ} (σ : Fin n → PTm l) (G m : PTm n) :
-    Syn.subst σ (normalizedRows G m) = normalizedRows (Syn.subst σ G) (Syn.subst σ m) := by simp [normalizedRows]
-@[simp] theorem subst_advance {l : ℕ} (σ : Fin n → PTm l) (F m a c j H : PTm n) :
-    Syn.subst σ (advance F m a c j H) = advance (Syn.subst σ F) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) (Syn.subst σ H) := by simp [advance]
-@[simp] theorem subst_stage {l : ℕ} (σ : Fin n → PTm l) (F G m a c j : PTm n) :
-    Syn.subst σ (stage F G m a c j) = stage (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [stage]
-@[simp] theorem subst_targetStage {l : ℕ} (σ : Fin n → PTm l) (F G m a c j : PTm n) :
-    Syn.subst σ (targetStage F G m a c j) = targetStage (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [targetStage]
+ipra_subst normalizedRows
+ipra_subst advance
+ipra_subst stage
+ipra_subst targetStage
 
 theorem normalized_rows_length (G m : PTm n) : Γ ⊢[PRAAx] length (normalizedRows G m) ≐ m := sequence_length _ _ _
 theorem normalized_rows_lookup (G m r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
@@ -74,7 +63,7 @@ theorem stage_zero (F G m a c : PTm n) : Γ ⊢[PRAAx] stage F G m a c zero ≐ 
   simp only [initial,subst_normalizedRows,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero] at e
   have tail := snd_pair (Γ := Γ) F (pairT G (pairT m (pairT a c)))
   have rest := (congrSnd tail).eqTrans (snd_pair G (pairT m (pairT a c)))
-  exact e.eqTrans (normalized_rows_congr ((congrFst tail).eqTrans (fst_pair _ _)) ((congrFst rest).eqTrans (fst_pair _ _)))
+  exact e.eqTrans (normalized_rows_congr tail.fstE rest.fstE)
 theorem stage_succ (F G m a c j : PTm n) : Γ ⊢[PRAAx] stage F G m a c (succ j) ≐ companion F (stage F G m a c j) m (bound a c j) c := by
   have e := rec2_succ (Γ := Γ) initial stepBody j (data F G m a c)
   have vector : (fun i => Syn.subst ![j,stage F G m a c j,data F G m a c]
@@ -96,19 +85,17 @@ theorem stage_succ (F G m a c j : PTm n) : Γ ⊢[PRAAx] stage F G m a c (succ j
     (fun i => by
       fin_cases i
       · exact fst_pair _ _
-      · exact (congrFst rest).eqTrans (fst_pair _ _)
-      · exact (congrFst last).eqTrans (fst_pair _ _)
-      · exact (congrSnd last).eqTrans (snd_pair _ _)
+      · exact rest.fstE
+      · exact last.fstE
+      · exact last.sndE
       · exact .eqRefl _
       · exact .eqRefl _)
   exact e.eqTrans (fields.eqTrans (advance_program _ _ _ _ _ _))
 
 def pairedRows (H K m b : PTm n) : Fm PTm n := rowShape H m b ⋏ rowsEmbedded H K m b
 def profile (F G m a c j : PTm n) : Fm PTm n := pairedRows (stage F G m a c j) (targetStage F G m a c j) m (bound a c j)
-@[simp] theorem subst_pairedRows {l : ℕ} (σ : Fin n → PTm l) (H K m b : PTm n) :
-    (pairedRows H K m b).subst σ = pairedRows (Syn.subst σ H) (Syn.subst σ K) (Syn.subst σ m) (Syn.subst σ b) := by simp [pairedRows]
-@[simp] theorem subst_profile {l : ℕ} (σ : Fin n → PTm l) (F G m a c j : PTm n) :
-    (profile F G m a c j).subst σ = profile (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ j) := by simp [profile]
+ipra_subst pairedRows
+ipra_subst profile
 theorem paired_rows_congr {H H' K K' m b b' : PTm n} (hH : Γ ⊢[PRAAx] H ≐ H') (hK : Γ ⊢[PRAAx] K ≐ K')
     (hb : Γ ⊢[PRAAx] b ≐ b') (h : Γ ⊢[PRAAx] pairedRows H K m b) : Γ ⊢[PRAAx] pairedRows H' K' m b' := by
   have out := Prf.eqSubst (Γ := Γ) (pairedRows (var 0) (var 1) (var 2) (var 3) : Fm PTm 4)
@@ -177,9 +164,7 @@ theorem stage_rows_embedded (F G m a c j : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     rowsEmbedded (stage F G m a c j) (targetStage F G m a c j) m (bound a c j) := .andE₂ (stage_profile F G m a c j hm hF hG)
 def matrixEntry (F G m a c r j : PTm n) : PTm n := RationalPolynomialBuffersGaussianEmbedding.leftPad
   (entry (stage F G m a c j) (slot m r)) (padding m a c j)
-@[simp] theorem subst_matrixEntry {l : ℕ} (σ : Fin n → PTm l) (F G m a c r j : PTm n) :
-    Syn.subst σ (matrixEntry F G m a c r j) = matrixEntry (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ r) (Syn.subst σ j) := by simp [matrixEntry]
+ipra_subst matrixEntry
 theorem padding_width (m a c j : PTm n) (hm : Γ ⊢[PRAAx] le one m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     padding m a c j+succ (bound a c j) ≐ succ (width m a c) :=
   (by ipra_ring : Γ ⊢[PRAAx] padding m a c j+succ (bound a c j) ≐ succ (padding m a c j+bound a c j)).eqTrans
@@ -207,10 +192,8 @@ def entryProgram : PR 7 := PTm.toPR (matrixEntry (var 0) (var 1) (var 2) (var 3)
 def entryBody : PTm 3 := PTm.app entryProgram ![fstT (var 2),fstT (sndT (var 2)),fstT (sndT (sndT (var 2))),
   fstT (sndT (sndT (sndT (var 2)))),sndT (sndT (sndT (sndT (var 2)))),var 0,var 1]
 def matrix (F G m a c : PTm n) : PTm n := GaussianRationalFiberVandermonde.table entryBody m m (data F G m a c)
-@[simp] theorem subst_columns {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (columns F G m a c) = columns (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [columns]
-@[simp] theorem subst_matrix {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (matrix F G m a c) = matrix (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [matrix]
+ipra_subst columns
+ipra_subst matrix
 theorem columns_length (F G m a c : PTm n) : Γ ⊢[PRAAx] length (columns F G m a c) ≐ m := sequence_length _ _ _
 theorem column_program_at (F G m a c j : PTm n) : Γ ⊢[PRAAx] PTm.app columnProgram ![F,G,m,a,c,j] ≐ stage F G m a c j := by
   simpa [columnProgram] using toPR_eq (Γ := Γ) (stage (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![F,G,m,a,c,j]
@@ -236,10 +219,10 @@ theorem entry_body_at (F G m a c r j : PTm n) : Γ ⊢[PRAAx] Syn.subst ![r,j,da
     (fun i => by
       fin_cases i
       · exact fst_pair _ _
-      · exact (congrFst e).eqTrans (fst_pair _ _)
-      · exact (congrFst f).eqTrans (fst_pair _ _)
-      · exact (congrFst g).eqTrans (fst_pair _ _)
-      · exact (congrSnd g).eqTrans (snd_pair _ _)
+      · exact e.fstE
+      · exact f.fstE
+      · exact g.fstE
+      · exact g.sndE
       · exact .eqRefl _
       · exact .eqRefl _)
   exact h.eqTrans (entry_program_at F G m a c r j)
@@ -263,8 +246,7 @@ theorem matrix_entry_embedding (F G m a c r j s : PTm n) (hm : Γ ⊢[PRAAx] le 
       (entry_congr (target_matrix_cell _ _ _ _ _ _ _ hr hj).eqSymm (.eqRefl s)))
 
 def input (F G m a c : PTm n) : Fm PTm n := le one m ⋏ (rowShape F m c ⋏ rowShape G m a)
-@[simp] theorem subst_input {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    (input F G m a c).subst σ = input (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [input]
+ipra_subst input
 theorem matrix_row_length (F G m a c r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
     length (entry (matrix F G m a c) r) ≐ m := GaussianRationalFiberVandermonde.table_row_length _ _ _ _ _ hr
 theorem matrix_polynomial_length (F G m a c r j : PTm n) (h : Γ ⊢[PRAAx] input F G m a c)
@@ -295,14 +277,8 @@ def columnsF : PR 5 := PTm.toPR (columns (var 0) (var 1) (var 2) (var 3) (var 4)
 def output (F G m a c : PTm n) : PTm n := pairT (columns F G m a c) (matrix F G m a c)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (F G m a c : PTm n) : PTm n := PTm.app outputF ![F,G,m,a,c]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (output F G m a c) = output (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (F G m a c : PTm n) :
-    Syn.subst σ (run F G m a c) = run (Syn.subst σ F) (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ c) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 theorem matrix_program (F G m a c : PTm n) : Γ ⊢[PRAAx] PTm.app matrixF ![F,G,m,a,c] ≐ matrix F G m a c := by
   simpa only [matrixF,subst_matrix,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using toPR_eq (Γ := Γ) (matrix (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![F,G,m,a,c]
@@ -313,9 +289,9 @@ theorem program_at (F G m a c : PTm n) : Γ ⊢[PRAAx] run F G m a c ≐ output 
   simpa only [run,outputF,subst_output,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![F,G,m,a,c]
 theorem returned_columns (F G m a c : PTm n) : Γ ⊢[PRAAx] fstT (run F G m a c) ≐ columns F G m a c :=
-  (congrFst (program_at _ _ _ _ _)).eqTrans (fst_pair _ _)
+  (program_at _ _ _ _ _).fstE
 theorem returned_matrix (F G m a c : PTm n) : Γ ⊢[PRAAx] sndT (run F G m a c) ≐ matrix F G m a c :=
-  (congrSnd (program_at _ _ _ _ _)).eqTrans (snd_pair _ _)
+  (program_at _ _ _ _ _).sndE
 theorem returned_entry_embedding (F G m a c r j s : PTm n) (h : Γ ⊢[PRAAx] input F G m a c)
     (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) (hs : Γ ⊢[PRAAx] le s (width m a c)) : Γ ⊢[PRAAx]
     embed (entry (GaussianPolynomialDeterminantTerms.cell (sndT (run F G m a c)) r j) s) ≐ entry (GaussianPolynomialDeterminantTerms.cell

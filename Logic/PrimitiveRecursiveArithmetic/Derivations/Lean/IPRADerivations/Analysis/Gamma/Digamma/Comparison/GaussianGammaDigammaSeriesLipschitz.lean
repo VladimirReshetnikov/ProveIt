@@ -15,7 +15,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaSeriesLipschitz
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaDigammaSeries (nameF data partialValue)
 open GaussianGammaDigammaReciprocalLipschitz (difference cap finite_upper)
 open GaussianGammaDigammaFiniteSum (reciprocalSum)
@@ -34,10 +34,6 @@ open GaussianStirlingAllOrderFirstPanelReadback (upper_of_add_order)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open RationalValueBounds (upper upper_mono upper_triangle)
 open RationalArgmin (rationalLE_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

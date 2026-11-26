@@ -14,16 +14,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTailApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalTailExponential (nameF data log_input)
 open GaussianBarnesCanonicalFiniteLog (radius)
 open GaussianCoefficientNameBounds (unit)
 open GaussianCyclicExponentialSamples (inverseBudget sampleBound exponential_lower)
 open GaussianNameReciprocal (apart anchor)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

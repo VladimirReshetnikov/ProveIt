@@ -15,7 +15,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteLogarithmTaylorRemainder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianFiniteLogarithmPolynomial (coefficient signNumerator value sourceTerm)
 open GaussianRationalHorner (qzero qadd qmul positive_product)
@@ -23,10 +23,6 @@ open GaussianRationalMetric (bounded distanceBounded bounded_of_cleared)
 open GaussianRationalPowerDifference (bounded_sum_same)
 open GaussianRationalReciprocal (power bounded_power bounded_product bound_congr)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_sub_cancel)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

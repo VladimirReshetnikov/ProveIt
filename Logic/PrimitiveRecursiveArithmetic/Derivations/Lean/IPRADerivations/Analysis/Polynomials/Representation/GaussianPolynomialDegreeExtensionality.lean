@@ -18,14 +18,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialDegreeExtensionality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDegreePadding (extensionF data)
 open LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialEvaluation (observation observationF observationData T)
 open LeanProofs.IPRA.Analysis.GaussianNameEquivalence (diagonalEquivalent crossEquivalent)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,16 +37,9 @@ def input (a b : PR 3) (f g : PR 2) (N M U V x w y z : PTm n) : Fm PTm n :=
   (GaussianGeneralPolynomialEvaluation.input b g M V w z ⋏
     (coefficientEquivalent a b N M x w ⋏ diagonalEquivalent f g y z))
 
-@[simp] theorem subst_commonDegree {m : ℕ} (σ : Fin n → PTm m) (N M : PTm n) :
-    Syn.subst σ (commonDegree N M) = commonDegree (Syn.subst σ N) (Syn.subst σ M) := by simp [commonDegree]
-@[simp] theorem subst_coefficientEquivalent {m : ℕ} (σ : Fin n → PTm m) (a b : PR 3) (N M x w : PTm n) :
-    (coefficientEquivalent a b N M x w).subst σ =
-      coefficientEquivalent a b (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ x) (Syn.subst σ w) := by
-  simp [coefficientEquivalent]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (a b : PR 3) (f g : PR 2)
-    (N M U V x w y z : PTm n) : (input a b f g N M U V x w y z).subst σ =
-      input a b f g (Syn.subst σ N) (Syn.subst σ M) (Syn.subst σ U) (Syn.subst σ V)
-        (Syn.subst σ x) (Syn.subst σ w) (Syn.subst σ y) (Syn.subst σ z) := by simp [input]
+ipra_subst commonDegree
+ipra_subst coefficientEquivalent
+ipra_subst input
 
 theorem common_left (N M : PTm n) : Γ ⊢[PRAAx] le N (commonDegree N M) := le_add_right N M
 

@@ -16,7 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalExponentTaylor
   (nameF data headPolynomial polynomialF polynomialData coefficient_rate_of_cutoff)
 open GaussianBarnesCanonicalPrefactor (quadraticCoefficientF quadraticCoefficientData quadratic_coefficient_regular negativeHalf)
@@ -30,9 +30,6 @@ open GaussianGammaCanonicalExponent (constantF)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedRateComposition (leadingNumerator leadingDenominator)
 open GaussianRationalHorner (ofGaussian qadd qmul positive_product)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianStirlingConstant.nameF

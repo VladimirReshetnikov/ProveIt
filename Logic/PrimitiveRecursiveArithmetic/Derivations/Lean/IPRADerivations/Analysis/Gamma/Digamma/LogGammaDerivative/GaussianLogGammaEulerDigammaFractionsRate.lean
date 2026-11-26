@@ -17,7 +17,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerDigammaFractionsRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular harmonicPoint)
 open GaussianGammaDerivativeAtOne (negativeGammaF negativeGammaData negativeGamma_regular)
@@ -32,10 +32,6 @@ open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (qsub qnegative distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "cofinalF" => GaussianLogGammaEulerReciprocalSlopeCofinal.nameF

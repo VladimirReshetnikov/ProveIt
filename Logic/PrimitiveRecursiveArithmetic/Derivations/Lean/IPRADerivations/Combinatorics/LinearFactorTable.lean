@@ -1,7 +1,5 @@
 import IPRADerivations.Combinatorics.Stirling
 import IPRADerivations.Combinatorics.BellTouchardPower
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The coefficients of `(X + 1)(X + 2) ⋯ (X + N)` and their action on a sequence
@@ -31,15 +29,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.LinearFactorTable
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (nth nth_pair_zero monus_monus monus_le')
 open LeanProofs.IPRA.Combinatorics.Stirling (build nth_build gle sg gle_of_le gle_above sg_zero
   sg_succ congrNth)
 open LeanProofs.IPRA.Combinatorics.BellTouchardPower (cong_of_eq cong_mul cong_sum_lin)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -151,19 +145,14 @@ theorem sum_lin (F G H : PTm 2) {ρ x y z N : PTm n}
         Syn.shift ρ * inst2 G (var 0) (Syn.shift y) + inst2 H (var 0) (Syn.shift z)))) :
     Γ ⊢[PRAAx] ap2 (sumF F) N x ≐ ρ * ap2 (sumF G) N y + ap2 (sumF H) N z := by
   have hall : Γ ⊢[PRAAx] Fm.all (linF F G H ρ x y z N) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       have a := natEq (sum_zero (Γ := le zero N :: Γ) F x)
       have b := natEq (sum_zero (Γ := le zero N :: Γ) G y)
       have c := natEq (sum_zero (Γ := le zero N :: Γ) H z)
       apply deriveNat; ipra_simps
       linear_combination a - 𝔞 ρ * b - c
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
+    · refine .impI ?_
       have ih := natEq (Prf.impE (Prf.hyp1 (Γ := Γ.map Fm.shift)
         (φ := linF F G H ρ x y z N) (ψ := le (succ (var 0)) (Syn.shift N)))
         (le_trans (le_succ_self _) Prf.hyp0))
@@ -213,8 +202,8 @@ theorem act_at (K N m x : PTm n) :
     Γ ⊢[PRAAx] inst2 (actB f) K (par N m x) ≐ cyc N K * inst2 f (m + K) x := by
   rw [inst2_actB]
   exact congrMul (congrCyc (fst_pair _ _) (.eqRefl _))
-    (congrInst2 f (congrAdd ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _))
-      ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+    (congrInst2 f (congrAdd (snd_pair _ _).fstE (.eqRefl _))
+      (snd_pair _ _).sndE)
 
 /-- `Act f N m x = ∑_{K ≤ N} c(N, K) f(m + K, x)`. -/
 abbrev Act (N m x : PTm n) : PTm n := ap2 (sumF (actB f)) (succ N) (par N m x)

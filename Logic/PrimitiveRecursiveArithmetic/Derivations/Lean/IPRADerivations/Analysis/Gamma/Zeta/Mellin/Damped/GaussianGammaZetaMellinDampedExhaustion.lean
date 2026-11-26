@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedExhaustion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianCompactRiemannName (mesh quadrature)
 open GaussianEulerCompactExhaustion (budget denominator image_clock_equivalent)
@@ -29,10 +29,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianGammaCompactCutoffAlignment (cross_data_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,18 +44,9 @@ def data (z R B c a C E T : PTm n) : PTm n :=
 
 def gain (z R B A c : PTm n) : PTm n := inverseBound z B c one*budget A R
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A k c a C E T : PTm n) :
-    (source z R B A k c a C E T).subst σ =
-      source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A)
-        (Syn.subst σ k) (Syn.subst σ c) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [source,GaussianEulerCompactExhaustion.source,GaussianGammaIntegralCutoffs.etaDen,
-    GaussianGammaIntegralCutoffs.top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
+ipra_subst source [GaussianEulerCompactExhaustion.source, GaussianGammaIntegralCutoffs.etaDen, GaussianGammaIntegralCutoffs.top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B c a C E T : PTm n) :
-    Syn.subst σ (data z R B c a C E T) =
-      data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ c)
-        (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [data]
+ipra_subst data
 
 theorem image_source (z R B A k c a C E T : PTm n) (h : Γ ⊢[PRAAx] source z R B A k c a C E T) :
     Γ ⊢[PRAAx] GaussianEulerPositiveScalingCutoffGeometry.source z R B (c*a) (c*C) E T c one :=

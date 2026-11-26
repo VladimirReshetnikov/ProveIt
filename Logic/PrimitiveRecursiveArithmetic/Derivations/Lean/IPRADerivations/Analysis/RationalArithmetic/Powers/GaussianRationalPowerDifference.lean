@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPowerDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner
   (qadd qmul represents positive_product qmul_represents qadd_represents represents_congr canonical_unique)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
@@ -25,10 +25,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qsub bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power bound_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -67,13 +63,9 @@ def difference (u v j : PTm n) : PTm n := qsub (power u j) (power v j)
 def budget (R A j : PTm n) : PTm n := j*pw R (pred j)*A
 def distanceLaw (u v R A B j : PTm n) : Fm PTm n := bounded (difference u v j) (budget R A j) B
 
-@[simp] theorem subst_difference {m : ℕ} (σ : Fin n → PTm m) (u v j : PTm n) :
-    Syn.subst σ (difference u v j) = difference (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ j) := by simp [difference]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (R A j : PTm n) :
-    Syn.subst σ (budget R A j) = budget (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ j) := by simp [budget]
-@[simp] theorem subst_distanceLaw {m : ℕ} (σ : Fin n → PTm m) (u v R A B j : PTm n) :
-    (distanceLaw u v R A B j).subst σ = distanceLaw (Syn.subst σ u) (Syn.subst σ v)
-      (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ j) := by simp [distanceLaw]
+ipra_subst difference
+ipra_subst budget
+ipra_subst distanceLaw
 
 theorem difference_succ (u v j : PTm n) : Γ ⊢[PRAAx]
     difference u v (succ j) ≐ qadd (qmul (difference u v j) u) (qmul (power v j) (qsub u v)) :=
@@ -91,11 +83,10 @@ theorem budget_step (R A j : PTm n) : Γ ⊢[PRAAx]
   have first : Γ ⊢[PRAAx] budget R A j*R+pw R j*A ≐ succ j*pw R j*A := by
     refine .orE (zero_or_succ j) ?_ ?_
     · have e := natEq (Prf.hyp0 : (j ≐ zero)::Γ ⊢[PRAAx] j ≐ zero)
-      have p := natEq ((congrAp2 powF (Prf.hyp0 : (j ≐ zero)::Γ ⊢[PRAAx] j ≐ zero) (.eqRefl R)).eqTrans (pw_zero R))
       apply deriveNat
       unfold budget
       ipra_simps
-      rw [e,p]
+      rw [e,natEq ((congrAp2 powF (Prf.hyp0 : (j ≐ zero)::Γ ⊢[PRAAx] j ≐ zero) (.eqRefl R)).eqTrans (pw_zero R))]
       ring
     · have positive := Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := j ≐ succ (pred j))
       have p := natEq ((congrAp2 powF positive (.eqRefl R)).eqTrans (pw_succ R (pred j)))
@@ -157,11 +148,9 @@ theorem power_distance_bound (u v R A B j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have dShift : Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift u) (Syn.shift v) (Syn.shift A) (Syn.shift B) := by
     simpa only [Fm.shift,GaussianRationalMetric.subst_distanceBounded,Syn.shift] using hd.shift
   have all : Γ ⊢[PRAAx] .all (distanceLaw (Syn.shift u) (Syn.shift v) (Syn.shift R) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_distanceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact difference_zero_bound u v R A B hB
-    · simp only [subst_distanceLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact difference_step_bound _ _ _ _ _ _ bShift.wk uShift.wk vShift.wk dShift.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_distanceLaw]
+    · exact difference_zero_bound u v R A B hB
+    · exact difference_step_bound _ _ _ _ _ _ bShift.wk uShift.wk vShift.wk dShift.wk Prf.hyp0
   change Γ ⊢[PRAAx] distanceLaw u v R A B j
   simpa only [subst_distanceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
@@ -177,26 +166,18 @@ def output (u v R A B j : PTm n) : PTm n := pairT (difference u v j) (pairT (bud
 def outputF : PR 6 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5))
 def run (u v R A B j : PTm n) : PTm n := PTm.app outputF ![u,v,R,A,B,j]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (u v R A B j : PTm n) :
-    Syn.subst σ (output u v R A B j) = output (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ R)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (u v R A B j : PTm n) :
-    Syn.subst σ (run u v R A B j) = run (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ R)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (u v R A B j : PTm n) : Γ ⊢[PRAAx] run u v R A B j ≐ output u v R A B j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![u,v,R,A,B,j]
 theorem output_value (u v R A B j : PTm n) : Γ ⊢[PRAAx] fstT (run u v R A B j) ≐ difference u v j :=
-  (congrFst (program_at u v R A B j)).eqTrans (fst_pair _ _)
+  (program_at u v R A B j).fstE
 theorem output_numerator (u v R A B j : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run u v R A B j)) ≐ budget R A j :=
-  (congrFst ((congrSnd (program_at u v R A B j)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at u v R A B j).sndE.fstE
 theorem output_denominator (u v R A B j : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run u v R A B j)) ≐ B :=
-  (congrSnd ((congrSnd (program_at u v R A B j)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at u v R A B j).sndE.sndE
 
 theorem program_certificate (u v R A B j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hu : Γ ⊢[PRAAx] bounded u R one) (hv : Γ ⊢[PRAAx] bounded v R one)

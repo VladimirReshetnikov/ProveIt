@@ -13,14 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalMatrixFiniteSums (negativeBody sum_negative)
 open GaussianRationalRiemannRefinement (leftSum weight)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

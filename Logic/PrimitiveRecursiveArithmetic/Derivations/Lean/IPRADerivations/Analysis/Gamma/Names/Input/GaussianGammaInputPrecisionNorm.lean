@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaInputPrecisionNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalMetric (distanceBounded bounded qsub qnegative)
 open GaussianRationalDistanceOrder (distance_congr)
@@ -34,19 +34,13 @@ open RationalGaussianEmbedding (embed)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def radiusNumerator (p q : PTm n) : PTm n := unit p+unit q
 def radiusDenominator (p q : PTm n) : PTm n := unit p*unit q
-@[simp] theorem subst_radiusNumerator {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (radiusNumerator p q) = radiusNumerator (Syn.subst σ p) (Syn.subst σ q) := by simp [radiusNumerator]
-@[simp] theorem subst_radiusDenominator {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (radiusDenominator p q) = radiusDenominator (Syn.subst σ p) (Syn.subst σ q) := by simp [radiusDenominator]
+ipra_subst radiusNumerator
+ipra_subst radiusDenominator
 theorem denominator_positive (p q : PTm n) : Γ ⊢[PRAAx] le one (radiusDenominator p q) :=
   GaussianRationalHorner.positive_product _ _ (unit_positive p) (unit_positive q)
 

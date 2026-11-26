@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetOscillatoryPanelFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_im_code eval_re_code)
 open GaussianBinetArctangentCosineLaplace (mean mean_distance)
 open GaussianBinetArctangentResolvent (pole pole_as_sum signedTimeNumerator)
@@ -41,10 +41,6 @@ open GaussianReciprocalHorner (qmul_associative)
 open GaussianRootAlgebra (equal_of_values re_neg im_neg)
 open GaussianSineProductImaginaryLogDerivative (axisNumerator)
 open RationalArithmetic (select select_zero select_one)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

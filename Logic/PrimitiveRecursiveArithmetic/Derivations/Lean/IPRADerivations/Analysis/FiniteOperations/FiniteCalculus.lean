@@ -1,7 +1,4 @@
 import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.Pairing
-import IPRADerivations.Core.Tactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite calculus: summed increments and the cell error of a rectangle sum
@@ -32,11 +29,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.FiniteCalculus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,13 +43,9 @@ theorem increments_le (F g : PTm 2) (x N : PTm n)
       le (inst2 F (succ (var 0)) (Syn.shift x)) (inst2 F (var 0) (Syn.shift x) + inst2 g (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 F (var 0) (Syn.shift x)) (inst2 F zero (Syn.shift x) + ap2 (sumF g) (var 0) (Syn.shift x))) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var,
-      Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (le_add_right _ _)
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var,
-      Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have hf := h.allOpen
+  ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_inst2]
+  · exact .impI (le_add_right _ _)
+  · have hf := h.allOpen
     refine .impI ?_
     have hle : (le (succ (var 0)) (Syn.shift N) ::
         (le (var 0) (Syn.shift N) ⟶ le (inst2 F (var 0) (Syn.shift x))
@@ -80,13 +69,9 @@ theorem lip_up (f : PTm 2) (x N D : PTm n)
       le (inst2 f (succ (var 0)) (Syn.shift x)) (inst2 f (var 0) (Syn.shift x) + Syn.shift D))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 f (var 0) (Syn.shift x)) (inst2 f zero (Syn.shift x) + Syn.shift D * var 0)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (le_add_right _ _)
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have hf := h.allOpen
+  ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_inst2]
+  · exact .impI (le_add_right _ _)
+  · have hf := h.allOpen
     refine .impI ?_
     have hle : (le (succ (var 0)) (Syn.shift N) ::
         (le (var 0) (Syn.shift N) ⟶ le (inst2 f (var 0) (Syn.shift x))
@@ -124,13 +109,9 @@ private abbrev linF : Fm PTm 3 :=
     two * (var 0 * var 1) + var 2 * (var 0 * var 0)
 
 private theorem lin₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] linF := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lin_base _ _
-  · simp only [Fm.subst_eq, PTm.subst_add, PTm.subst_mul, subst_ap2, subst_pairT, Syn.subst_var, Syn.repl_zero,
-      repl_one, repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact lin_succ Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact lin_base _ _
+  · exact lin_succ Prf.hyp0
 
 /-- `2 ∑_{i<r} (c + D i) + D r = 2 r c + D r²`. -/
 theorem lin_sum (r c D : PTm n) :
@@ -171,13 +152,9 @@ theorem lip_down (f : PTm 2) (x N D : PTm n)
       le (inst2 f (var 0) (Syn.shift x)) (inst2 f (succ (var 0)) (Syn.shift x) + Syn.shift D))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 f zero (Syn.shift x)) (inst2 f (var 0) (Syn.shift x) + Syn.shift D * var 0)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (le_add_right _ _)
-  · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-      Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    have hf := h.allOpen
+  ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_inst2]
+  · exact .impI (le_add_right _ _)
+  · have hf := h.allOpen
     refine .impI ?_
     have hle : (le (succ (var 0)) (Syn.shift N) ::
         (le (var 0) (Syn.shift N) ⟶ le (inst2 f zero (Syn.shift x))

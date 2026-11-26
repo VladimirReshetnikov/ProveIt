@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsParameterShiftObservation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrationByPartsParameterShift (productF productData original_integrand_parameter_shift)
 open GaussianEulerIntegrandName (nameF data sample source)
 open GaussianGammaEulerHeadShift (shifted)
@@ -27,9 +27,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -39,15 +36,10 @@ def query (p z B a b : PTm n) : PTm n := GaussianFastValueCut.exponent
 def numerator (p q T : PTm n) : PTm n := unit q+T*unit p
 def denominator (p q : PTm n) : PTm n := unit p*unit q
 def primitiveCost (R E T : PTm n) : PTm n := T*(GaussianEulerCompactPowerMajorant.majorant R E T+LeanProofs.IPRA.PTm.num 5)+one
-@[simp] theorem subst_query {m : ℕ} (σ : Fin n → PTm m) (p z B a b : PTm n) :
-    Syn.subst σ (query p z B a b) = query (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) := by simp [query]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q T : PTm n) :
-    Syn.subst σ (numerator p q T) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ T) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (denominator p q) = denominator (Syn.subst σ p) (Syn.subst σ q) := by simp [denominator]
-@[simp] theorem subst_primitiveCost {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (primitiveCost R E T) = primitiveCost (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) :=
-  by simp [primitiveCost,GaussianEulerCompactPowerMajorant.majorant,GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst query
+ipra_subst numerator
+ipra_subst denominator
+ipra_subst primitiveCost [GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius]
 
 theorem original_product_query (p z B a b : PTm n) : Γ ⊢[PRAAx]
     ap2 productF p (productData z B a b) ≐ qmul (fraction a b) (ap2 nameF (query p z B a b) (data z B a b)) :=

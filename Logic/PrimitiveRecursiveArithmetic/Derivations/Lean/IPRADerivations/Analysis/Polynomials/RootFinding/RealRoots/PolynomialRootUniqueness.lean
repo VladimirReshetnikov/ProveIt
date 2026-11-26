@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.PolynomialRootName
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Quantitative uniqueness from an actual polynomial factor guard
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.PolynomialRootUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialBisection
 open LeanProofs.IPRA.Analysis.PolynomialRootName
   (abs_mul abs_scale signed_le_abs naturalPower_product)
@@ -27,10 +26,6 @@ open LeanProofs.IPRA.Analysis.RationalSummableTails (cross cross_triangle)
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_tri zabs_neg subst_zabs)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianWeightedHalfDecayEndpoint
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerWeightedHalfDecay (majorant radius_reciprocal)
 open GaussianEulerDecayMesh (observation)
 open GaussianEulerDecayQuadraturePrecision (endpointDifference)
@@ -24,10 +24,6 @@ open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianDominantPairAlgebra (radiusPoint radius_bounded radius_multiply radius_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

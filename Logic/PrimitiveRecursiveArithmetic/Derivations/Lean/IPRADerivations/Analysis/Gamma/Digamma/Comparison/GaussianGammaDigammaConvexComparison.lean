@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaStep (neighborNumerator neighborDenominator neighbor_source)
@@ -33,10 +33,6 @@ open GaussianStirlingGammaFractionalIncrementConvexity (gamma_rescale_from scale
 open GaussianStirlingGammaFractionalIncrementObservations (weighted_at weightedCost scalar_upper)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -50,12 +46,8 @@ def innerData (a c b D : PTm n) : PTm n :=
 def outerData (a c b D : PTm n) : PTm n :=
   addData (lg a b) (lg (neighborNumerator c b D) (neighborDenominator b D))
 
-@[simp] theorem subst_innerData {m : ℕ} (σ : Fin n → PTm m) (a c b D : PTm n) :
-    Syn.subst σ (innerData a c b D) = innerData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [innerData,neighborNumerator,neighborDenominator]
-@[simp] theorem subst_outerData {m : ℕ} (σ : Fin n → PTm m) (a c b D : PTm n) :
-    Syn.subst σ (outerData a c b D) = outerData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [outerData,neighborNumerator,neighborDenominator]
+ipra_subst innerData [neighborNumerator, neighborDenominator]
+ipra_subst outerData [neighborNumerator, neighborDenominator]
 
 theorem inner_regular (a c b D : PTm n) (ha : Γ ⊢[PRAAx] source a b)
     (hc : Γ ⊢[PRAAx] source c b) (hD : Γ ⊢[PRAAx] le one D) :
@@ -163,10 +155,7 @@ def budget (a c b D : PTm n) : PTm n :=
     weightedCost (b+gap a c D) b (gap a c D) (lg (D*c) (neighborDenominator b D))
       (lg (D*a) (neighborDenominator b D)) (lg (neighborNumerator c b D) (neighborDenominator b D)))+num 5
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (a c b D : PTm n) :
-    Syn.subst σ (budget a c b D) = budget (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) (Syn.subst σ D) := by
-  simp [budget,gap,weightedCost,GaussianStirlingGammaFractionalIncrementObservations.scaleCost,
-    neighborNumerator,neighborDenominator,GaussianNameRingLaws.three]
+ipra_subst budget [gap, weightedCost, GaussianStirlingGammaFractionalIncrementObservations.scaleCost, neighborNumerator, neighborDenominator, GaussianNameRingLaws.three]
 
 set_option maxHeartbeats 800000 in
 theorem diagonal_order (p a c b D : PTm n) (ha : Γ ⊢[PRAAx] source a b)

@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeStrongConvexity
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMinimizerUniqueness
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The source's literal strongly convex minimizer a_(2k+c)
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCubeStrongMinimizer
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalCubeMinimum (coherence continuity presentedCube sample precision minimizer)
 open RationalCubeGrid (scale)
 open RationalCubeStrongConvexity (linearIndex linearUniqueness midpointDrop cutoff)
@@ -24,10 +23,6 @@ open RationalCubeInfimumComparison (cubePoints)
 open RationalCubeMinimizerUniqueness (sameValue)
 open RationalHausdorff (pointRadius)
 open LeanProofs.IPRA.Probability.Ninther (mn)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -35,12 +30,9 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 def point (A : PR 3) (mu : PR 2) (d c k x : PTm n) : PTm n := minimizer A mu d (linearIndex k c) x
 def data (d c x : PTm n) : PTm n := pairT d (pairT c x)
 def evaluation (A : PR 3) (mu : PR 2) (d c p x : PTm n) : PTm n := sample A (point A mu d c (evaluationIndex mu p x) x) (precision p) x
-@[simp] theorem subst_point {j : ℕ} (σ : Fin n → PTm j) (A : PR 3) (mu : PR 2) (d c k x : PTm n) :
-    Syn.subst σ (point A mu d c k x) = point A mu (Syn.subst σ d) (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ x) := by simp [point]
-@[simp] theorem subst_data {j : ℕ} (σ : Fin n → PTm j) (d c x : PTm n) :
-    Syn.subst σ (data d c x) = data (Syn.subst σ d) (Syn.subst σ c) (Syn.subst σ x) := by simp [data]
-@[simp] theorem subst_evaluation {j : ℕ} (σ : Fin n → PTm j) (A : PR 3) (mu : PR 2) (d c p x : PTm n) :
-    Syn.subst σ (evaluation A mu d c p x) = evaluation A mu (Syn.subst σ d) (Syn.subst σ c) (Syn.subst σ p) (Syn.subst σ x) := by simp [evaluation]
+ipra_subst point
+ipra_subst data
+ipra_subst evaluation
 
 theorem linear_index_ge (k c : PTm n) : Γ ⊢[PRAAx] le k (linearIndex k c) := le_of_eq_add (d := k+c) (by unfold linearIndex; ipra_ring)
 theorem linear_index_mono (k l c : PTm n) (h : Γ ⊢[PRAAx] le k l) : Γ ⊢[PRAAx] le (linearIndex k c) (linearIndex l c) :=
@@ -149,7 +141,7 @@ def evaluationF (A : PR 3) (mu : PR 2) : PR 2 := PTm.toPR (evaluationBody A mu)
 
 theorem data_fields (d c x : PTm n) : Γ ⊢[PRAAx] fstT (data d c x) ≐ d ⋏
     fstT (sndT (data d c x)) ≐ c ⋏ sndT (sndT (data d c x)) ≐ x :=
-  .andI (fst_pair _ _) (.andI ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
+  .andI (fst_pair _ _) (.andI (snd_pair _ _).fstE (snd_pair _ _).sndE)
 theorem point_at (A : PR 3) (mu : PR 2) (d c k x : PTm n) : Γ ⊢[PRAAx] ap2 (pointF A mu) k (data d c x) ≐ point A mu d c k x := by
   have e := toPR_eq (Γ := Γ) (pointBody A mu) ![k,data d c x]
   have f := data_fields (Γ := Γ) d c x
@@ -304,12 +296,7 @@ theorem computed_source_unique_radius (A : PR 3) (mu b : PR 2) (L M d x z q t : 
 
 def computedF (A : PR 3) (mu : PR 2) : PR 4 := PTm.toPR (point A mu (var 1) (cutoff (var 0)) (var 2) (var 3))
 def run (A : PR 3) (mu : PR 2) (M d k x : PTm n) : PTm n := app (computedF A mu) ![M,d,k,x]
-@[simp] theorem subst_run {j : ℕ} (σ : Fin n → PTm j) (A : PR 3) (mu : PR 2) (M d k x : PTm n) :
-    Syn.subst σ (run A mu M d k x) = run A mu (Syn.subst σ M) (Syn.subst σ d) (Syn.subst σ k) (Syn.subst σ x) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 
 theorem computed_program_at (A : PR 3) (mu : PR 2) (M d k x : PTm n) : Γ ⊢[PRAAx]
     run A mu M d k x ≐ minimizer A mu d (two*k+num 8*M) x := by

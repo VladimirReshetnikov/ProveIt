@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalArithmetic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
 open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed normalize_well_formed)
@@ -25,10 +25,6 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (left rationalLE rationalEq denomin
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_le sg_lt)
 open LeanProofs.IPRA.Signum (sg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -44,22 +40,13 @@ def multiply (a b : PTm n) : PTm n := normalize (numeratorOf a*numeratorOf b) (p
 def negative (a : PTm n) : PTm n := normalize (-numeratorOf a) (denominatorOf a)
 def recode (a : PTm n) : PTm n := normalize (numeratorOf a) (denominatorOf a)
 
-@[simp] theorem subst_represents {m : ℕ} (σ : Fin n → PTm m) (c : PTm n) (a : ZT n) (D : PTm n) :
-    (represents c a D).subst σ = represents (Syn.subst σ c) (a.subst σ) (Syn.subst σ D) := by
-  simp [represents]
-@[simp] theorem subst_productDenominator {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (productDenominator a b) = productDenominator (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [productDenominator]
-@[simp] theorem subst_addNumerator {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    (addNumerator a b).subst σ = addNumerator (Syn.subst σ a) (Syn.subst σ b) := by simp [addNumerator]
-@[simp] theorem subst_add {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (add a b) = add (Syn.subst σ a) (Syn.subst σ b) := by simp [add]
-@[simp] theorem subst_multiply {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (multiply a b) = multiply (Syn.subst σ a) (Syn.subst σ b) := by simp [multiply]
-@[simp] theorem subst_negative {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (negative a) = negative (Syn.subst σ a) := by simp [negative]
-@[simp] theorem subst_recode {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (recode a) = recode (Syn.subst σ a) := by simp [recode]
+ipra_subst represents
+ipra_subst productDenominator
+ipra_subst addNumerator
+ipra_subst add
+ipra_subst multiply
+ipra_subst negative
+ipra_subst recode
 
 theorem product_denominator_positive (a b : PTm n) : Γ ⊢[PRAAx] le one (productDenominator a b) :=
   le_congr (one_mul one) (.eqRefl _) (le_mul_mono (denominator_positive a) (denominator_positive b))
@@ -127,14 +114,10 @@ def select (bit a b : PTm n) : PTm n := bit*b+monus one bit*a
 def minimum (a b : PTm n) : PTm n := select (orderBit a b) (recode a) (recode b)
 def maximum (a b : PTm n) : PTm n := select (orderBit a b) (recode b) (recode a)
 
-@[simp] theorem subst_orderBit {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (orderBit a b) = orderBit (Syn.subst σ a) (Syn.subst σ b) := by simp [orderBit,sg]
-@[simp] theorem subst_select {m : ℕ} (σ : Fin n → PTm m) (bit a b : PTm n) :
-    Syn.subst σ (select bit a b) = select (Syn.subst σ bit) (Syn.subst σ a) (Syn.subst σ b) := by simp [select]
-@[simp] theorem subst_minimum {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (minimum a b) = minimum (Syn.subst σ a) (Syn.subst σ b) := by simp [minimum]
-@[simp] theorem subst_maximum {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (maximum a b) = maximum (Syn.subst σ a) (Syn.subst σ b) := by simp [maximum]
+ipra_subst orderBit [sg]
+ipra_subst select
+ipra_subst minimum
+ipra_subst maximum
 
 theorem select_zero (bit a b : PTm n) (h : Γ ⊢[PRAAx] bit ≐ zero) : Γ ⊢[PRAAx] select bit a b ≐ a :=
   (congrAdd (congrMul h (.eqRefl _)) (congrMul ((congrMonus (.eqRefl one) h).eqTrans (monus_zero _)) (.eqRefl _))).eqTrans

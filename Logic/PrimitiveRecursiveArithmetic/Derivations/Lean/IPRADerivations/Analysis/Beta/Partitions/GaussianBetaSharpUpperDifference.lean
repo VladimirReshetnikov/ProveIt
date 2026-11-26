@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaSharpUpperDifference
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerSharpDegreeSchedule (degree height degree_positive degree_is_four_height height_positive)
 open GaussianBetaSharpPartition (halfPoint supportTailWidth halfDen even_denominator half_boundary_order half_point_decay_sample)
 open GaussianGammaIntegralCutoffs (etaDen eta_den_positive)
@@ -27,10 +27,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianCompactRiemannName (quadrature)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

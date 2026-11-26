@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicNamedUpperBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLogarithmicIntervalName (nameF data name_at name_regular)
 open GaussianEulerLogarithmicCompactName (evaluatorF fixedData)
 open GaussianEulerLogarithmicMultiplier (lipschitz)
@@ -30,10 +30,6 @@ open GaussianRationalMetric (bounded qsub)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -1,6 +1,4 @@
-import IPRADerivations.Core.SumLemmas
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The dyadic union bound
@@ -23,11 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.DyadicUnion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,13 +53,9 @@ theorem dyadic_union {P : PTm 2} {c K B x J : PTm n}
     Γ ⊢[PRAAx] UF P c K B J x := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift J) ⟶
       UF P (Syn.shift c) (Syn.shift K) (Syn.shift B) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (union_base P c K B x)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (union_step (Prf.impE hb.allOpen.wk.wk Prf.hyp0)
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+    · exact .impI (union_base P c K B x)
+    · exact .impI (union_step (Prf.impE hb.allOpen.wk.wk Prf.hyp0)
         (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have h := Prf.allE J hall
   simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,

@@ -13,7 +13,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPositiveRelativeLogarithmChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open Common
 open ComplexLogarithmRemainder (add oneCode normSq_one)
 open GaussianBarnesCanonicalBaseProductShift (powerBody powerProduct power_at)
@@ -28,10 +28,6 @@ open GaussianRationalHorner (ofGaussian_represents)
 open GaussianRationalLowerBounds (lower lower_congr lower_from_representation product_lower)
 open GaussianRationalReciprocal (qone)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

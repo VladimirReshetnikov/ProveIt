@@ -30,12 +30,8 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.EulerSqueeze
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,10 +42,9 @@ theorem upper_squeeze {a c w X P Y G H N : PTm n}
     (hX : Γ ⊢[PRAAx] w * X ≐ P * Y) (hH : Γ ⊢[PRAAx] H ≐ N * G)
     (hc : Γ ⊢[PRAAx] le (pw X (a + c)) (pw G c * pw H a)) :
     Γ ⊢[PRAAx] le (pw P (a + c) * pw Y (a + c)) (pw w (a + c) * (pw G (a + c) * pw N a)) := by
-  have e₁ := natEq (pw_mul_base (Γ := Γ) w X (a + c))
   have e₂ := natEq (pw_mul_base (Γ := Γ) P Y (a + c))
   have e₃ := natEq (congrAp2 powF (Prf.eqRefl (a + c)) hX)
-  have E₂ := e₁.symm.trans (e₃.trans e₂)
+  have E₂ := (natEq (pw_mul_base (Γ := Γ) w X (a + c))).symm.trans (e₃.trans e₂)
   have eH := (natEq (congrAp2 powF (Prf.eqRefl a) hH)).trans (natEq (pw_mul_base (Γ := Γ) N G a))
   have eG := natEq (pw_add (Γ := Γ) G a c)
   ipra_le 𝔟 (pw w (a + c)) * sl hc using
@@ -60,14 +55,11 @@ theorem lower_squeeze {a c w v m X Z P Y H : PTm n}
     (hX : Γ ⊢[PRAAx] w * X ≐ P * Y) (hZ : Γ ⊢[PRAAx] v * Z ≐ m * X)
     (hc : Γ ⊢[PRAAx] le (pw H (a + c)) (pw X a * pw Z c)) :
     Γ ⊢[PRAAx] le (pw v c * pw w (a + c) * pw H (a + c)) (pw m c * (pw P (a + c) * pw Y (a + c))) := by
-  have e₁ := natEq (pw_mul_base (Γ := Γ) w X (a + c))
   have e₂ := natEq (pw_mul_base (Γ := Γ) P Y (a + c))
   have e₃ := natEq (congrAp2 powF (Prf.eqRefl (a + c)) hX)
-  have E₂ := e₁.symm.trans (e₃.trans e₂)
-  have f₁ := natEq (pw_mul_base (Γ := Γ) v Z c)
-  have f₂ := natEq (pw_mul_base (Γ := Γ) m X c)
+  have E₂ := (natEq (pw_mul_base (Γ := Γ) w X (a + c))).symm.trans (e₃.trans e₂)
   have f₃ := natEq (congrAp2 powF (Prf.eqRefl c) hZ)
-  have E₁ := f₁.symm.trans (f₃.trans f₂)
+  have E₁ := (natEq (pw_mul_base (Γ := Γ) v Z c)).symm.trans (f₃.trans (natEq (pw_mul_base (Γ := Γ) m X c)))
   have eX := natEq (pw_add (Γ := Γ) X a c)
   ipra_le 𝔟 (pw v c) * 𝔟 (pw w (a + c)) * sl hc using
     linear_combination (-𝔟 (pw m c)) * E₂ + 𝔟 (pw m c) * 𝔟 (pw w (a + c)) * eX

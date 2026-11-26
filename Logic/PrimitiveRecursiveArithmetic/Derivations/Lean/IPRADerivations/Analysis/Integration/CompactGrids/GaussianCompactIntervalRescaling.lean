@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCompactIntervalRescaling
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (inside sampledModulus localBody grid value sampleData sampleBody sample quadrature mesh precision)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product qmul)
@@ -23,18 +23,12 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight)
 open GaussianRationalFiniteSum (sum)
 open GaussianNameEquivalence (crossEquivalent)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def input (F : PR 3) (k a C E L T x : PTm n) : Fm PTm n :=
   le one k ⋏ GaussianCompactRiemannName.input F a C E L T x
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (k a C E L T x : PTm n) :
-    (input F k a C E L T x).subst σ = input F (Syn.subst σ k) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E)
-      (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [input]
+ipra_subst input
 
 theorem inside_unscale (k a C E t : PTm n) (hk : Γ ⊢[PRAAx] le one k)
     (h : Γ ⊢[PRAAx] inside (k*a) (k*C) (k*E) t) : Γ ⊢[PRAAx] inside a C E t := by
@@ -162,31 +156,29 @@ def output (F : PR 3) (p q k a C E L T x : PTm n) : PTm n := pairT (sample F p a
   (pairT (sample F q (k*a) (k*C) (k*E) L T x) (pairT (unit p+unit q) (unit p*unit q)))
 def outputF (F : PR 3) : PR 9 := PTm.toPR (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8))
 def run (F : PR 3) (p q k a C E L T x : PTm n) : PTm n := PTm.app (outputF F) ![p,q,k,a,C,E,L,T,x]
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (p q k a C E L T x : PTm n) :
-    Syn.subst σ (output F p q k a C E L T x) = output F (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ a)
-      (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ L) (Syn.subst σ T) (Syn.subst σ x) := by simp [output]
+ipra_subst output
 theorem program_at (F : PR 3) (p q k a C E L T x : PTm n) : Γ ⊢[PRAAx]
     run F p q k a C E L T x ≐ output F p q k a C E L T x := by
   simpa [run,outputF] using toPR_eq (Γ := Γ)
     (output F (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9) ![p,q,k,a,C,E,L,T,x]
 theorem returned_left (F : PR 3) (p q k a C E L T x : PTm n) : Γ ⊢[PRAAx]
     fstT (run F p q k a C E L T x) ≐ sample F p a C E L T x :=
-  (congrFst (program_at F p q k a C E L T x)).eqTrans (fst_pair _ _)
+  (program_at F p q k a C E L T x).fstE
 theorem returned_tail (F : PR 3) (p q k a C E L T x : PTm n) : Γ ⊢[PRAAx]
     sndT (run F p q k a C E L T x) ≐ pairT (sample F q (k*a) (k*C) (k*E) L T x) (pairT (unit p+unit q) (unit p*unit q)) :=
-  (congrSnd (program_at F p q k a C E L T x)).eqTrans (snd_pair _ _)
+  (program_at F p q k a C E L T x).sndE
 theorem returned_right (F : PR 3) (p q k a C E L T x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (run F p q k a C E L T x)) ≐ sample F q (k*a) (k*C) (k*E) L T x :=
-  (congrFst (returned_tail F p q k a C E L T x)).eqTrans (fst_pair _ _)
+  (returned_tail F p q k a C E L T x).fstE
 theorem returned_budget (F : PR 3) (p q k a C E L T x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (run F p q k a C E L T x)) ≐ pairT (unit p+unit q) (unit p*unit q) :=
-  (congrSnd (returned_tail F p q k a C E L T x)).eqTrans (snd_pair _ _)
+  (returned_tail F p q k a C E L T x).sndE
 theorem returned_numerator (F : PR 3) (p q k a C E L T x : PTm n) : Γ ⊢[PRAAx]
     fstT (sndT (sndT (run F p q k a C E L T x))) ≐ unit p+unit q :=
-  (congrFst (returned_budget F p q k a C E L T x)).eqTrans (fst_pair _ _)
+  (returned_budget F p q k a C E L T x).fstE
 theorem returned_denominator (F : PR 3) (p q k a C E L T x : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run F p q k a C E L T x))) ≐ unit p*unit q :=
-  (congrSnd (returned_budget F p q k a C E L T x)).eqTrans (snd_pair _ _)
+  (returned_budget F p q k a C E L T x).sndE
 theorem returned_distance (F : PR 3) (p q k a C E L T x : PTm n) (h : Γ ⊢[PRAAx] input F k a C E L T x) : Γ ⊢[PRAAx]
     distanceBounded (fstT (run F p q k a C E L T x)) (fstT (sndT (run F p q k a C E L T x)))
       (fstT (sndT (sndT (run F p q k a C E L T x)))) (sndT (sndT (sndT (run F p q k a C E L T x)))) :=

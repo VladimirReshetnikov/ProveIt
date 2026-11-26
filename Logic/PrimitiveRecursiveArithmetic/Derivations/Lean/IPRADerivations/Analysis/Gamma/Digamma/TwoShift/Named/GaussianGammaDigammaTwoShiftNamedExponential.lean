@@ -15,7 +15,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftNamedExponential
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaTwoShiftNamedFreeze (source clock chartDenominator baseNumerator leftNumerator rightNumerator)
 open GaussianGammaDigammaTwoShiftNamedBinding (quotientF quotientData quotientLogF quotientLogData budget)
@@ -23,8 +23,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedRightHalfPlane (threshold)
 open GaussianRadiusExponentialLipschitzRate (factor)
 open GaussianRadiusExponentialName (data)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "U" => GaussianNameBounds.U
@@ -39,13 +37,9 @@ def commonRadius (f g h : PR 2) (x y z M : PTm n) : PTm n :=
 def quotientBudget (f g h : PR 2) (x y z M : PTm n) : PTm n :=
   factor (commonRadius f g h x y z M)*budget f g h x y z M
 
-@[simp] theorem subst_commonRadius {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (x y z M : PTm n) :
-    Syn.subst σ (commonRadius f g h x y z M) = commonRadius f g h (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ M) := by
-  simp [commonRadius,two]
+ipra_subst commonRadius [two]
 
-@[simp] theorem subst_quotientBudget {m : ℕ} (σ : Fin n → PTm m) (f g h : PR 2) (x y z M : PTm n) :
-    Syn.subst σ (quotientBudget f g h x y z M) = quotientBudget f g h (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ z) (Syn.subst σ M) := by
-  simp [quotientBudget]
+ipra_subst quotientBudget
 
 def frozenQuotientRate (f g h : PR 2) (s x y z M : PTm n) : Fm PTm n :=
   let k := clock g h s y z M

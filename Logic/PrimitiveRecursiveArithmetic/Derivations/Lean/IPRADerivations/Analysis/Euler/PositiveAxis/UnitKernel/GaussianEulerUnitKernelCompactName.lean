@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelCompactRate
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannName
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original rational unit kernel on a native affine compact
@@ -16,15 +15,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelCompactName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (inside sampledModulus localBody)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (pred monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,18 +33,11 @@ def source (z R B a C E G : PTm n) : Fm PTm n := GaussianEulerExponentCompactBou
 def data (z R B a C E G : PTm n) : PTm n := GaussianCompactRiemannName.data a C E (lipschitz R G) one (fixedData z B)
 abbrev nameF : PR 2 := GaussianCompactRiemannName.nameF evaluatorF
 
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (fixedData z B) = fixedData (Syn.subst σ z) (Syn.subst σ B) := by simp [fixedData]
-@[simp] theorem subst_evaluatorTerm {m : ℕ} (σ : Fin n → PTm m) (p t x : PTm n) :
-    Syn.subst σ (evaluatorTerm p t x) = evaluatorTerm (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [evaluatorTerm]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R G : PTm n) :
-    Syn.subst σ (lipschitz R G) = lipschitz (Syn.subst σ R) (Syn.subst σ G) := by simp [lipschitz]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E G : PTm n) :
-    (source z R B a C E G).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ G) := by simp [source]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B a C E G : PTm n) :
-    Syn.subst σ (data z R B a C E G) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ G) := by simp [data]
+ipra_subst fixedData
+ipra_subst evaluatorTerm
+ipra_subst lipschitz
+ipra_subst source
+ipra_subst data
 
 /-- Arbitrary raw time codes are decoded; no pair eta rule is assumed. -/
 theorem evaluator_at (p t z B : PTm n) : Γ ⊢[PRAAx]

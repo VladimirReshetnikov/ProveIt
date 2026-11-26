@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsCompact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianEulerIntegrationByPartsLinear (primitive)
 open GaussianEulerIntegrationByPartsGrid (endpoint operatorF)
@@ -29,10 +29,6 @@ open GaussianRationalMetric (distanceBounded qsub qnegative)
 open GaussianRationalReciprocal (bound_congr bounded_negative)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,21 +41,10 @@ def minimumObservation (t R E T N : PTm n) : PTm n :=
 def boundary (p z B a C E : PTm n) : PTm n :=
   qsub (sample p (shifted z B) B (a+C) E) (sample p (shifted z B) B a E)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B a C E T : PTm n) :
-    (source z R B a C E T).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_endpointCost {m : ℕ} (σ : Fin n → PTm m) (R E T : PTm n) :
-    Syn.subst σ (endpointCost R E T) = endpointCost (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by simp [endpointCost]
-@[simp] theorem subst_minimumObservation {m : ℕ} (σ : Fin n → PTm m) (t R E T N : PTm n) :
-    Syn.subst σ (minimumObservation t R E T N) = minimumObservation (Syn.subst σ t) (Syn.subst σ R)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [minimumObservation,GaussianEulerIntegrationByPartsGridBudget.minimumPrecision,
-    GaussianEulerIntegrationByPartsGridBudget.observationCost,GaussianEulerIntegrationByPartsProductStep.observationCost,
-    GaussianEulerIntegrationByPartsProductStep.linearBound,GaussianEulerCompactPowerMajorant.majorant,
-    GaussianEulerCompactPowerMajorant.exponentRadius]
-@[simp] theorem subst_boundary {m : ℕ} (σ : Fin n → PTm m) (p z B a C E : PTm n) :
-    Syn.subst σ (boundary p z B a C E) = boundary (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) := by simp [boundary]
+ipra_subst source
+ipra_subst endpointCost
+ipra_subst minimumObservation [GaussianEulerIntegrationByPartsGridBudget.minimumPrecision, GaussianEulerIntegrationByPartsGridBudget.observationCost, GaussianEulerIntegrationByPartsProductStep.observationCost, GaussianEulerIntegrationByPartsProductStep.linearBound, GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst boundary
 
 private theorem endpoint_source (z R B a C E T : PTm n)
     (h : Γ ⊢[PRAAx] intervalSource z R B a C E T) : Γ ⊢[PRAAx]

@@ -17,7 +17,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineDampedTransform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code normSq scale oneCode)
 open GaussianArctangentCayleyValues (imaginaryPoint imaginaryCode)
 open GaussianBinetArctangentResolvent (pole polynomial)
@@ -43,9 +43,6 @@ open GaussianRightHalfPlaneLogarithmOffset (signedImag)
 open GaussianRootAlgebra (equal_of_values re_neg im_neg re_mul im_mul re_scale im_scale re_one im_one)
 open GaussianSineProductImaginaryLogDerivativeTail (axis_norm)
 open RationalArithmetic (select select_one)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "LV" => GaussianBinetExponentialIntegralGrid.value

@@ -15,7 +15,7 @@ set_option maxHeartbeats 120000
 
 namespace LeanProofs.IPRA.Analysis.GaussianCyclicFullHalfAngle
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (scale oneCode)
 open GaussianCyclicExponentialRoots
   (source coefficient angleF angleData angle_input rootF rootData root_regular sample)
@@ -27,9 +27,6 @@ open GaussianRootAlgebra (equal_of_values re_scale im_scale re_one im_one)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_refl)
 open GaussianNamedSineFromExponential (sineF)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,13 +34,9 @@ def sineData (r m x : PTm n) : PTm n :=
   GaussianNamedSineFromExponential.sineData angleF fullTurnRadius (angleData r (two*m) x)
 def sineSample (p r m x : PTm n) : PTm n := ap2 (sineF angleF) p (sineData r m x)
 
-@[simp] theorem subst_sineData {L : ℕ} (σ : Fin n → PTm L) (r m x : PTm n) :
-    Syn.subst σ (sineData r m x) = sineData (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [sineData,fullTurnRadius,GaussianArctangentExponentialPeriod.twiceRadius,GaussianArctangentQuarterExponential.radius]
+ipra_subst sineData [fullTurnRadius, GaussianArctangentExponentialPeriod.twiceRadius, GaussianArctangentQuarterExponential.radius]
 
-@[simp] theorem subst_sineSample {L : ℕ} (σ : Fin n → PTm L) (p r m x : PTm n) :
-    Syn.subst σ (sineSample p r m x) = sineSample (Syn.subst σ p) (Syn.subst σ r) (Syn.subst σ m) (Syn.subst σ x) := by
-  simp [sineSample]
+ipra_subst sineSample
 
 private theorem modulus_le_doubled (m : PTm n) : Γ ⊢[PRAAx] le m (two*m) :=
   le_of_eq_add (d := m) (by ipra_ring)

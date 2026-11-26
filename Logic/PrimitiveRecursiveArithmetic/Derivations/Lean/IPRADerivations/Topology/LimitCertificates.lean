@@ -97,9 +97,7 @@ theorem no_extractor {Halts : ℕ → Prop} {A : ℕ → ℕ → Prop} (hA : ∀
 
 section IPRA
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogarithmRealPrefix
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re im eval_re_code eval_im_code)
 open GaussianBarnesCanonicalPrefactor (quadraticCoefficientF quadraticCoefficientData negativeHalf)
 open GaussianBarnesCanonicalPrefactorExponentDerivative (exponentOf)
@@ -28,9 +28,6 @@ open GaussianRootAlgebra (equal_of_values)
 open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingNames (constant_real multiply_real add_real)
 open RationalGaussianEmbedding (axis axis_congr axis_multiply axis_negative axis_add embed native embed_axis)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

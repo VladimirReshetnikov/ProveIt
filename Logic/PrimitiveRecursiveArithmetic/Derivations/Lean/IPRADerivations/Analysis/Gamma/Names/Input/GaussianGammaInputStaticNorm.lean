@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaInputStaticNorm
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalSyntheticDivision (qone qmul_congr canonicalCoefficients canonical_coefficient_at)
 open GaussianCoefficientL1 (coefficientNorm)
 open GaussianRationalPolynomialDilation (dilated weightedNorm)
@@ -26,9 +26,6 @@ open GaussianGammaReciprocalDegreeCells (degree)
 open GaussianEuclideanDistanceName (fraction fraction_order)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

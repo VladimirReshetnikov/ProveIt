@@ -1,7 +1,5 @@
 import IPRADerivations.Probability.Expectation
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.Permutation
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # The finite law of the unconscious statistician
@@ -24,13 +22,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.Lotus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Expectation (mul_one')
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,13 +53,9 @@ private abbrev cmF (f : PTm 2) : Fm PTm 3 :=
   ap2 (sumF (cmB f)) (var 0) (pairT (var 1) (var 2)) ≐ var 1 * ap2 (sumF f) (var 0) (var 2)
 
 private theorem cm₀ (f : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] cmF f := by
-  refine ind _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      inst_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact (sum_zero _ _).eqTrans ((mul_zero _).eqSymm.eqTrans (congrMul (.eqRefl _) (sum_zero _ _).eqSymm))
-  · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one,
-      repl_two, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact cm_step f Prf.hyp0
+  ipra_ind [subst_ap2, subst_pairT]
+  · exact (sum_zero _ _).eqTrans ((mul_zero _).eqSymm.eqTrans (congrMul (.eqRefl _) (sum_zero _ _).eqSymm))
+  · exact cm_step f Prf.hyp0
 
 /-- `∑_{j<N} K · f(j, x) = K · ∑_{j<N} f(j, x)`. -/
 theorem sum_const_mul (f : PTm 2) (N K x : PTm n) :
@@ -136,8 +126,8 @@ theorem row_point (i j x : PTm n) :
   refine (congrInst3 _ (fst_pair _ _) (.eqRefl _) (snd_pair _ _)).eqTrans ?_
   rw [inst3_aB]
   exact (congrMul (fst_pair _ _) (congrMul
-    (congrEqb ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _))
-    (congrInst2 g (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))))).eqSymm
+    (congrEqb (snd_pair _ _).fstE (.eqRefl _))
+    (congrInst2 g (.eqRefl _) (snd_pair _ _).sndE))).eqSymm
 
 /-- The row sum: `∑_{j<N} a(i, j, x) = w_i g(σ(i))`. -/
 theorem row_eval {i N x : PTm n} (h : Γ ⊢[PRAAx] lt (inst2 σ i x) N) :
@@ -159,9 +149,9 @@ theorem col_point (i j x : PTm n) :
         eqb (inst2 σ i (sndT (sndT (pairT (inst2 g j x) (pairT j x))))) (fstT (sndT (pairT (inst2 g j x) (pairT j x))))) ≐
       inst2 g j x * (inst2 w i x * eqb (inst2 σ i x) j) :=
     congrMul (fst_pair _ _) (congrMul
-      (congrInst2 w (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
-      (congrEqb (congrInst2 σ (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)))
-        ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))))
+      (congrInst2 w (.eqRefl _) (snd_pair _ _).sndE)
+      (congrEqb (congrInst2 σ (.eqRefl _) (snd_pair _ _).sndE)
+        (snd_pair _ _).fstE))
   refine .eqTrans ?_ e.eqSymm
   ipra_ring
 

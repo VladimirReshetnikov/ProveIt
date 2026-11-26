@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaConvexChords
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaDigammaStep (neighborNumerator neighborDenominator neighbor_source)
@@ -26,10 +26,6 @@ open GaussianNaturalScaleProductName (productF productData)
 open GaussianRationalHorner (positive_product)
 open GaussianStirlingGammaFractionalIncrementConvexity (gamma_rescale_from scaled_regular scale_cross)
 open GaussianStirlingGammaLogarithm (source source_shift logGammaF logGammaData log_gamma_regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

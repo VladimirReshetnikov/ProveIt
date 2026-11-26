@@ -13,7 +13,7 @@ set_option maxHeartbeats 1300000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderMidpointCorrection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_order fraction_represents)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (nonnegative_of_lower nonnegative_of_representation)
@@ -26,28 +26,19 @@ open RationalArgmin (rationalLE rationalLE_congr transitive)
 open RationalArithmetic (multiply multiply_monotone)
 open RationalNonnegativePowerOrder (power_order_preserve)
 open RationalReciprocalPowerTail (reciprocalPower)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 local notation "z" => fraction zero one
 
-@[simp] theorem subst_midpointCorrection {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (q A B S k : PTm n) :
-    Syn.subst σ (midpointCorrection m q A B S k) =
-      midpointCorrection m (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ S) (Syn.subst σ k) := by
-  simp [midpointCorrection]
+ipra_subst midpointCorrection
 
 def baseWeight (q A B : PTm n) : PTm n := fraction (pw B (succ q)) (pw A (succ q))
 def baseCap (m : ℕ) (q A B : PTm n) : PTm n := multiply (cap m) (baseWeight q A B)
 def tailCap (m : ℕ) (q k : PTm n) : PTm n := multiply (cap m) (reciprocalPower (succ q) k)
 
-@[simp] theorem subst_baseCap {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (q A B : PTm n) :
-    Syn.subst σ (baseCap m q A B) = baseCap m (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) := by simp [baseCap,baseWeight,pw]
-@[simp] theorem subst_tailCap {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (q k : PTm n) :
-    Syn.subst σ (tailCap m q k) = tailCap m (Syn.subst σ q) (Syn.subst σ k) := by simp [tailCap]
+ipra_subst baseCap [baseWeight, pw]
+ipra_subst tailCap
 
 private theorem zero_sign : Γ ⊢[PRAAx] GaussianPositiveRealArithmetic.sign (z : PTm n) :=
   nonnegative_of_representation _ _ _ (le_refl one) (fraction_represents zero one (le_refl one))

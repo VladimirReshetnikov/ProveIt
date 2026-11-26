@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorProductUniformMass
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalExponentTaylorBuffer (buffer buffer_length buffer_canonical)
 open GaussianBarnesCanonicalExponentTaylorMass (massCap mass)
 open GaussianBarnesCanonicalExponentTaylorRetainedCoefficient (cutoff precision)
@@ -34,10 +34,6 @@ open GaussianRationalPolynomialProduct (product product_length)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticBounds (natCode)
 open RationalArgmin (rationalLE rationalLE_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.FiniteOperations.PeriodicGrids.PeriodicThirdDifferenceConstancy
-import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.DiophantineNumberTheory.DigitCode
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 
@@ -17,16 +16,13 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.PeriodicThirdDifferenceModulo
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (rem_small)
 open LeanProofs.IPRA.Common (pos_of_one_le)
 open PolynomialBisection (zle_add zle_congr zle_refl)
 open SignedGridStepBounds (difference difference_value liftZT lowerSteps read_index)
 open PeriodicThirdDifferenceConstancy (periodic band cubicBudget periodic_range)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

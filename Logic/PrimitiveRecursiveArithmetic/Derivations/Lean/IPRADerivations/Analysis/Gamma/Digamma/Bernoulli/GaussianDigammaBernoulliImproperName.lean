@@ -15,8 +15,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliImproperName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDigammaBernoulliRecurrence (prefixAt)
 open GaussianDigammaFirstBernoulliImproper (baseF baseData meshDemand base_regular original_base_rate)
@@ -28,8 +27,6 @@ open GaussianFastValueCut (regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianValueNormalizerExtensionality (rawDiagonal)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,20 +60,13 @@ def rate (m : ℕ) (A B : PTm n) : PTm n := radius m A B+one
 def nameF (m : ℕ) : PR 2 := GaussianFastValueCut.nameF (rawF m)
 def data (m : ℕ) (A B : PTm n) : PTm n := GaussianFastValueCut.nameData (rate m A B) (rawData A B)
 
-@[simp] theorem subst_recurrenceData {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (recurrenceData m A B) = recurrenceData m (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [recurrenceData]
+ipra_subst recurrenceData
 
-@[simp] theorem subst_raw {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (p A B : PTm n) :
-    Syn.subst σ (raw m p A B) = raw m (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B) := by simp [raw,mesh]
-@[simp] theorem subst_rawData {l : ℕ} (σ : Fin n → PTm l) (A B : PTm n) :
-    Syn.subst σ (rawData A B) = rawData (Syn.subst σ A) (Syn.subst σ B) := by simp [rawData]
-@[simp] theorem subst_radius {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (radius m A B) = radius m (Syn.subst σ A) (Syn.subst σ B) := by simp [radius,two,one]
-@[simp] theorem subst_rate {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (rate m A B) = rate m (Syn.subst σ A) (Syn.subst σ B) := by simp [rate,one]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (data m A B) = data m (Syn.subst σ A) (Syn.subst σ B) := by simp [data]
+ipra_subst raw [mesh]
+ipra_subst rawData
+ipra_subst radius [two, one]
+ipra_subst rate [one]
+ipra_subst data
 
 theorem raw_at (m : ℕ) (p A B : PTm n) : Γ ⊢[PRAAx] ap2 (rawF m) p (rawData A B) ≐ raw m p A B := by
   let x := rawData A B

@@ -17,7 +17,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedLogGammaTaylorFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (unit_monotone)
@@ -35,10 +35,6 @@ open GaussianRationalHorner (canonical_unique positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical qsub_represents)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRationalValueEquality (commonDen common_den_positive)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

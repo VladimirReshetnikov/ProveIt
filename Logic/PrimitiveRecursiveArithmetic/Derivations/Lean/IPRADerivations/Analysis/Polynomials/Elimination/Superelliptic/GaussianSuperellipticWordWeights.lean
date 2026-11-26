@@ -2,10 +2,6 @@ import IPRADerivations.Foundations.RuntimePermutationSums
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.GaussianSuperellipticMatrixEntries
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialWeightedDegree
 import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.Search
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual weighted degree budgets along numerical permutation words
@@ -22,11 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSuperellipticWordWeights
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (pred)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,41 +46,22 @@ def rowFlags (G m a w : PTm n) : Fm PTm n := .all
   (lt (var 0) (Syn.shift m) ⟶ GaussianPolynomialWeightedDegree.rowFlag (Syn.shift G) (Syn.shift m) (Syn.shift a)
     (rowIndex (Syn.shift m) (Syn.shift w) (var 0)) ≐ one)
 
-@[simp] theorem subst_rowIndex {l : ℕ} (σ : Fin n → PTm l) (m w j : PTm n) :
-    Syn.subst σ (rowIndex m w j) = rowIndex (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by simp [rowIndex]
-@[simp] theorem subst_wrapAt {l : ℕ} (σ : Fin n → PTm l) (m w j : PTm n) :
-    Syn.subst σ (wrapAt m w j) = wrapAt (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by simp [wrapAt]
-@[simp] theorem subst_candidate {l : ℕ} (σ : Fin n → PTm l) (G m a d w j : PTm n) :
-    Syn.subst σ (candidate G m a d w j) = candidate (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ j) := by simp [candidate]
-@[simp] theorem subst_rowWeight {l : ℕ} (σ : Fin n → PTm l) (G m a d w j : PTm n) :
-    Syn.subst σ (rowWeight G m a d w j) = rowWeight (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ j) := by simp [rowWeight]
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (G m a d w : PTm n) :
-    Syn.subst σ (data G m a d w) = data (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a)
-      (Syn.subst σ d) (Syn.subst σ w) := by simp [data]
+ipra_subst rowIndex
+ipra_subst wrapAt
+ipra_subst candidate
+ipra_subst rowWeight
+ipra_subst data
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 5) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
 @[simp] theorem subst_prefix {l : ℕ} (σ : Fin n → PTm l) (f : PTm 6) (G m a d w j : PTm n) :
     Syn.subst σ (prefixSum f G m a d w j) = prefixSum f (Syn.subst σ G) (Syn.subst σ m)
       (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ j) := by simp [prefixSum]
-@[simp] theorem subst_candidatePrefix {l : ℕ} (σ : Fin n → PTm l) (G m a d w j : PTm n) :
-    Syn.subst σ (candidatePrefix G m a d w j) = candidatePrefix (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ j) := by simp [candidatePrefix]
-@[simp] theorem subst_weightPrefix {l : ℕ} (σ : Fin n → PTm l) (G m a d w j : PTm n) :
-    Syn.subst σ (weightPrefix G m a d w j) = weightPrefix (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ j) := by simp [weightPrefix]
-@[simp] theorem subst_digitPrefix {l : ℕ} (σ : Fin n → PTm l) (G m a d w j : PTm n) :
-    Syn.subst σ (digitPrefix G m a d w j) = digitPrefix (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ j) := by simp [digitPrefix]
-@[simp] theorem subst_positionPrefix {l : ℕ} (σ : Fin n → PTm l) (G m a d w j : PTm n) :
-    Syn.subst σ (positionPrefix G m a d w j) = positionPrefix (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) (Syn.subst σ j) := by simp [positionPrefix]
-@[simp] theorem subst_wrapPrefix {l : ℕ} (σ : Fin n → PTm l) (m w j : PTm n) :
-    Syn.subst σ (wrapPrefix m w j) = wrapPrefix (Syn.subst σ m) (Syn.subst σ w) (Syn.subst σ j) := by simp [wrapPrefix]
-@[simp] theorem subst_rowFlags {l : ℕ} (σ : Fin n → PTm l) (G m a w : PTm n) :
-    (rowFlags G m a w).subst σ = rowFlags (Syn.subst σ G) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ w) := by
-  simp [rowFlags,Syn.subst_shift,Syn.shift_subst]
+ipra_subst candidatePrefix
+ipra_subst weightPrefix
+ipra_subst digitPrefix
+ipra_subst positionPrefix
+ipra_subst wrapPrefix
+ipra_subst rowFlags [Syn.subst_shift, Syn.shift_subst]
 
 theorem fields_at (G m a d w : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     fields (data G m a d w) i ≐ ![G,m,a,d,w] i := by
@@ -176,19 +149,14 @@ theorem prefix_balance (G m a d w j : PTm n) (hj : Γ ⊢[PRAAx] le j m) : Γ �
         digitPrefix (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (var 0) ≐
       weightPrefix (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (var 0)+
         positionPrefix (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,PTm.subst_add,PTm.subst_mul,
-        subst_candidatePrefix,subst_digitPrefix,subst_weightPrefix,subst_positionPrefix,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_le, subst_candidatePrefix, subst_digitPrefix, subst_weightPrefix,
+        subst_positionPrefix]
+    · refine .impI ?_
       unfold candidatePrefix digitPrefix weightPrefix positionPrefix
       have z : (le zero m :: Γ) ⊢[PRAAx] m*zero+zero ≐ zero+zero := by ipra_ring
       exact (congrAdd (congrMul (.eqRefl _) (prefix_zero _ _ _ _ _ _)) (prefix_zero _ _ _ _ _ _)).eqTrans
         (z.eqTrans (congrAdd (prefix_zero _ _ _ _ _ _).eqSymm (prefix_zero _ _ _ _ _ _).eqSymm))
-    · simp only [Fm.subst_imp,Fm.subst_eq,subst_le,PTm.subst_add,PTm.subst_mul,
-        subst_candidatePrefix,subst_digitPrefix,subst_weightPrefix,subst_positionPrefix,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := (le (succ (var 0)) (Syn.shift m)) ::
         (le (var 0) (Syn.shift m) ⟶ Syn.shift m*candidatePrefix (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (var 0)+
             digitPrefix (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift d) (Syn.shift w) (var 0) ≐
@@ -308,9 +276,7 @@ theorem word_degree_le (G m a d w : PTm n)
 def matchSchema : PTm 6 := eqb (rowIndex (var 1) (var 4) (var 5))
   (GaussianPolynomialWeightedDegree.index (var 0) (var 1) (var 2) (var 3))
 def firstBad (G m a d w : PTm n) : PTm n := Search.mu (reader matchSchema) m (data G m a d w)
-@[simp] theorem subst_firstBad {l : ℕ} (σ : Fin n → PTm l) (G m a d w : PTm n) :
-    Syn.subst σ (firstBad G m a d w) = firstBad (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) := by simp [firstBad]
+ipra_subst firstBad
 theorem match_body_at (G m a d w j : PTm n) : Γ ⊢[PRAAx]
     inst2 (reader matchSchema) j (data G m a d w) ≐
       eqb (rowIndex m w j) (GaussianPolynomialWeightedDegree.index G m a d) := by
@@ -582,9 +548,7 @@ def wordInput (G m a _d w : PTm n) : Fm PTm n := GaussianPolynomialWeightedDegre
 def strictInput (G m a d w : PTm n) : Fm PTm n := wordInput G m a d w ⋏
   ((gcd m d ≐ one) ⋏ neg (w ≐ Foundations.RuntimeCyclicPermutation.rotationCode m
     (GaussianPolynomialWeightedDegree.index G m a d)))
-@[simp] theorem subst_wordInput {l : ℕ} (σ : Fin n → PTm l) (G m a d w : PTm n) :
-    (wordInput G m a d w).subst σ = wordInput (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) := by simp [wordInput]
+ipra_subst wordInput
 @[simp] theorem subst_strictInput {l : ℕ} (σ : Fin n → PTm l) (G m a d w : PTm n) :
     (strictInput G m a d w).subst σ = strictInput (Syn.subst σ G) (Syn.subst σ m)
       (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) := by
@@ -611,16 +575,8 @@ def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (G m a d w : PTm n) : PTm n := app outputF ![G,m,a,d,w]
 def outputField (p : PTm n) (i : Fin 5) : PTm n := ![fstT p,fstT (sndT p),fstT (sndT (sndT p)),
   fstT (sndT (sndT (sndT p))),sndT (sndT (sndT (sndT p)))] i
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (G m a d w : PTm n) :
-    Syn.subst σ (output G m a d w) = output (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (G m a d w : PTm n) :
-    Syn.subst σ (run G m a d w) = run (Syn.subst σ G) (Syn.subst σ m)
-      (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ w) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 @[simp] theorem subst_outputField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 5) :
     Syn.subst σ (outputField p i) = outputField (Syn.subst σ p) i := by fin_cases i <;> simp [outputField]
 theorem program_at (G m a d w : PTm n) : Γ ⊢[PRAAx] run G m a d w ≐ output G m a d w := by
@@ -629,15 +585,15 @@ theorem returned_fields (G m a d w : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     outputField (run G m a d w) i ≐ ![candidatePrefix G m a d w m,weightPrefix G m a d w m,
       GaussianPolynomialWeightedDegree.index G m a d,GaussianPolynomialWeightedDegree.weightedDegree G m a d,wrapPrefix m w m] i := by
   have e0 := program_at (Γ := Γ) G m a d w
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
+  have e1 := e0.sndE
+  have e2 := e1.sndE
+  have e3 := e2.sndE
   fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrSnd e3).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e3.fstE
+  · exact e3.sndE
 theorem returned_weak_bound (G m a d w : PTm n) (h : Γ ⊢[PRAAx] wordInput G m a d w) : Γ ⊢[PRAAx]
     le (outputField (run G m a d w) 0) (outputField (run G m a d w) 3) :=
   le_congr (returned_fields _ _ _ _ _ 0).eqSymm (returned_fields _ _ _ _ _ 3).eqSymm (weak_from_input _ _ _ _ _ h)

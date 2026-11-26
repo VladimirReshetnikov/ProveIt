@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPolynomialPr
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianPolynomialExponentialCapStability
 import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialRightLinearRows
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteValueProperness
-import IPRADerivations.Core.CongruenceTactic
 import IPRADerivations.Core.CertificateTactics
 
 /-!
@@ -20,7 +19,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerBetaPrimitivePascal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerBetaPolynomialPrimitive (base kernel primitive coefficient kernel_length kernel_entry_canonical)
 open GaussianRationalHorner (qzero qmul qadd canonical)
 open GaussianRationalMetric (qnegative qsub)
@@ -30,19 +29,13 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_ins
 open GaussianGammaEulerHeadShift (linear shifted)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def reader (N e : PTm n) : PTm n := exponentCoefficient (kernel N) N e
 def primitiveReader (z B N e : PTm n) : PTm n := exponentCoefficient (primitive z B N) N e
-@[simp] theorem subst_reader {m : ℕ} (σ : Fin n → PTm m) (N e : PTm n) :
-    Syn.subst σ (reader N e) = reader (Syn.subst σ N) (Syn.subst σ e) := by simp [reader]
-@[simp] theorem subst_primitiveReader {m : ℕ} (σ : Fin n → PTm m) (z B N e : PTm n) :
-    Syn.subst σ (primitiveReader z B N e) = primitiveReader (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ e) := by simp [primitiveReader]
+ipra_subst reader
+ipra_subst primitiveReader
 
 theorem base_leading : Γ ⊢[PRAAx] entry (base : PTm n) zero ≐ qnegative qone :=
   (GaussianRationalPolynomialBuffers.added_lookup _ _ _ _ (zero_lt_succ one)).eqTrans

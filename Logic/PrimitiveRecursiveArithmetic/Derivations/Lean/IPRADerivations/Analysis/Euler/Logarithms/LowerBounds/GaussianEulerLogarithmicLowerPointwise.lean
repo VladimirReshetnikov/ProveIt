@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowe
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTransformedIntegrand
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicCompactName
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClockArithmetic
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Original logarithmic Euler rows at transformed lower times
@@ -19,16 +18,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicLowerPointwise
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -47,12 +42,9 @@ def source (z R B A E T a b : PTm n) : Fm PTm n :=
   GaussianEulerLowerPowerOrder.source z R B A a b ⋏
     (le one E ⋏ GaussianCompactLogarithmBounds.domain (pw a (degree A)) (pw b (degree A)) E T)
 
-@[simp] theorem subst_degree {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (degree A) = degree (Syn.subst σ A) := by simp [degree]
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (A : PTm n) :
-    Syn.subst σ (exponent A) = exponent (Syn.subst σ A) := by simp [exponent]
-@[simp] theorem subst_coefficient {m : ℕ} (σ : Fin n → PTm m) (j A : PTm n) :
-    Syn.subst σ (coefficient j A) = coefficient (Syn.subst σ j) (Syn.subst σ A) := by simp [coefficient,fact]
+ipra_subst degree
+ipra_subst exponent
+ipra_subst coefficient [fact]
 
 theorem coefficient_positive (j A : PTm n) (hA : Γ ⊢[PRAAx] le one A) : Γ ⊢[PRAAx] le one (coefficient j A) :=
   positive_product _ _ (GaussianRationalPolynomialExponential.factorial_positive j)

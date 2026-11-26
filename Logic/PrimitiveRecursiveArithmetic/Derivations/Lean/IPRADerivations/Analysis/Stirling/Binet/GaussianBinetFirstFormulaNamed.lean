@@ -16,7 +16,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetFirstFormulaNamed
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceNamed (source)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -29,10 +29,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded qnegative)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianRightHalfPlaneLogarithmNamed.nameF
@@ -62,13 +58,9 @@ def remainderData (f : PR 2) (x M R w : PTm n) : PTm n := dd (coreData f x M R) 
 def productCost (f : PR 2) (x M R : PTm n) : PTm n := GaussianNameBounds.U (L f) (dataAt x M R)+(R+one)
 def cost (f : PR 2) (x M R : PTm n) : PTm n := productCost f x M R+num 5
 
-@[simp] theorem subst_remainderData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M R w : PTm n) :
-    Syn.subst σ (remainderData f x M R w) = remainderData f (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) (Syn.subst σ w) := by
-  simp [remainderData,coreData,weightedData,offsetData,negativeHalf,one,two]
+ipra_subst remainderData [coreData, weightedData, offsetData, negativeHalf, one, two]
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x M R : PTm n) :
-    Syn.subst σ (cost f x M R) = cost f (Syn.subst σ x) (Syn.subst σ M) (Syn.subst σ R) := by
-  simp [cost,productCost,one]
+ipra_subst cost [productCost, one]
 
 private theorem offset_regular (f : PR 2) (x : PTm n) (hx : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] pointCN (offsetF f) (offsetData x) :=

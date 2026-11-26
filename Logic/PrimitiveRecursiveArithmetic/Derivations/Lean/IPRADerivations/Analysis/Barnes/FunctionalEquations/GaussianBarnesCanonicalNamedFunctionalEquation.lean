@@ -17,7 +17,7 @@ set_option maxHeartbeats 1800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalNamedFunctionalEquation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalNamedDemand (source data native_source)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerNamedShiftInput (shiftF shiftData sample_fraction decoded_shift clock_later)
@@ -36,10 +36,6 @@ open GaussianRationalL1 (rawDen rawGaussian)
 open GaussianRationalMetric (bounded distanceBounded bounded_of_cleared)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRootApproximationWitness (pointBounds)
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

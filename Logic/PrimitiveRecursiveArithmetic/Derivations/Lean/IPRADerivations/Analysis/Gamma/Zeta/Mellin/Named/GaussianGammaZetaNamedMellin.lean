@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaNamedMellin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaZetaNamedChart (dirichletMap gammaMap)
 open GaussianGammaZetaNamedHalfPlane (mellinMap)
@@ -21,8 +21,6 @@ open GaussianGammaZetaNamedInput (source minusOneF minusOneData radius)
 open GaussianNamedRightHalfPlaneDemandLift (nameF name_regular)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "G" => GaussianNamedGamma.nameF

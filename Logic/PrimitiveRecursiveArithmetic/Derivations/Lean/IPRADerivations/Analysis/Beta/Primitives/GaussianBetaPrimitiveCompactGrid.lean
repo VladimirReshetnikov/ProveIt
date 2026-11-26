@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveGridTelescope
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveCompactStep
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Source-only beta primitive comparison on the unchanged compact grid
@@ -17,16 +16,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveCompactGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCompactLogarithmBounds (domain)
 open GaussianBetaPrimitiveGridTelescope (gridEndpoint gridRow endpoint step quadratureScaled cellNumerator globalDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,17 +33,9 @@ def source (z R B A a C E T M N : PTm n) : Fm PTm n :=
 def K (z R B E T N : PTm n) : PTm n := GaussianBetaPrimitiveCompactStep.curvature z R B E T N
 def Z (z B N : PTm n) : PTm n := GaussianBetaPrimitiveCompactStep.polynomialBound z B N
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B A a C E T M N : PTm n) :
-    (source z R B A a C E T M N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A)
-      (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ M) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_K {m : ℕ} (σ : Fin n → PTm m) (z R B E T N : PTm n) :
-    Syn.subst σ (K z R B E T N) = K (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [K,GaussianBetaPrimitiveCompactStep.curvature,GaussianBetaPrimitiveCompactStep.powerRemainder,
-    GaussianBetaPrimitiveCompactStep.powerLinear,GaussianBetaPrimitiveCompactStep.polynomialBound,
-    GaussianBetaPrimitiveCompactStep.polynomialRemainder,GaussianBetaPrimitiveCompactStep.polynomialVariation,
-    GaussianEulerCompactPowerMajorant.majorant,GaussianEulerCompactPowerMajorant.exponentRadius,GaussianTimeWeightedPolynomialIncrement.quadraticBound]
-@[simp] theorem subst_Z {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    Syn.subst σ (Z z B N) = Z (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [Z,GaussianBetaPrimitiveCompactStep.polynomialBound]
+ipra_subst source
+ipra_subst K [GaussianBetaPrimitiveCompactStep.curvature, GaussianBetaPrimitiveCompactStep.powerRemainder, GaussianBetaPrimitiveCompactStep.powerLinear, GaussianBetaPrimitiveCompactStep.polynomialBound, GaussianBetaPrimitiveCompactStep.polynomialRemainder, GaussianBetaPrimitiveCompactStep.polynomialVariation, GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius, GaussianTimeWeightedPolynomialIncrement.quadraticBound]
+ipra_subst Z [GaussianBetaPrimitiveCompactStep.polynomialBound]
 
 private theorem endpoint_congr {p p' z z' B B' a a' b b' N N' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B')
@@ -143,12 +131,12 @@ theorem returned_error (p z R B A a C E T M N : PTm n) (h : Γ ⊢[PRAAx] source
   have program := GaussianBetaPrimitiveGridTelescope.program_at (Γ := Γ) p z B a C E M N
   have first : Γ ⊢[PRAAx] fstT (GaussianBetaPrimitiveGridTelescope.run p z B a C E M N) ≐
       qsub (gridEndpoint M p z B a C E M N) (gridEndpoint zero p z B a C E M N) :=
-    (congrFst program).eqTrans (fst_pair _ _)
+    program.fstE
   have tail : Γ ⊢[PRAAx] sndT (GaussianBetaPrimitiveGridTelescope.run p z B a C E M N) ≐
       pairT (quadratureScaled p z B a C E M N)
         (GaussianCompactRiemannName.quadrature GaussianBetaKernelGridComparison.evaluatorF p M a C E (GaussianBetaKernelGridComparison.sampleDataBeta z B N)) :=
-    (congrSnd program).eqTrans (snd_pair _ _)
-  have second := (congrFst tail).eqTrans (fst_pair _ _)
+    program.sndE
+  have second := tail.fstE
   exact distance_congr first.eqSymm second.eqSymm (.eqRefl _) (.eqRefl _) (original_compact_grid p z R B A a C E T M N h)
 
 theorem original_Beta_compact_grid_cells_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 11

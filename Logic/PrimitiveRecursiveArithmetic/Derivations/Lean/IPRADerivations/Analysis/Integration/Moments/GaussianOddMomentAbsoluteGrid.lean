@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianOddMomentAbsoluteGrid
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianOddMomentIntegrand (degree clock)
 open GaussianOddMomentSignedGrid (evaluatorF literal_positive_at)
 open GaussianOddSymmetricQuadrature (fixedData)
@@ -35,16 +35,12 @@ open GaussianEulerDecayOrder (signedTime)
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianPositiveRealArithmetic (positive)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def absTerm (side : Bool) (p t x : PTm n) : PTm n := absolute (ap3 (evaluatorF side) p t x)
 def absF (side : Bool) : PR 3 := PTm.toPR (absTerm side (var 0) (var 1) (var 2))
-@[simp] theorem subst_absTerm {m : ℕ} (σ : Fin n → PTm m) (side : Bool) (p t x : PTm n) :
-    Syn.subst σ (absTerm side p t x) = absTerm side (Syn.subst σ p) (Syn.subst σ t) (Syn.subst σ x) := by simp [absTerm]
+ipra_subst absTerm
 
 theorem abs_at (side : Bool) (p t x : PTm n) : Γ ⊢[PRAAx]
     ap3 (absF side) p t x ≐ absTerm side p t x := by

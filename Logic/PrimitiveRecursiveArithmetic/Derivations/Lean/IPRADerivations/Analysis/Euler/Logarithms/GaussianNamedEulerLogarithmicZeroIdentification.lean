@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedEulerLogarithmicZeroIdentification
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (source threshold radius)
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive)
 open GaussianNameEquivalence (crossEquivalent cross_at)
@@ -24,10 +24,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "L" => GaussianNamedEulerLogarithmicImproper.nameF
@@ -39,9 +35,7 @@ def commonClock (f : PR 2) (t x A : PTm n) : PTm n := threshold A+
   (succ (GaussianEulerLogarithmicContinuity.modulus t zero (radius f x) (two*A))+
     succ (GaussianGammaHalfPlaneInputContinuity.modulus t (radius f x) (two*A)))
 
-@[simp] theorem subst_commonClock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (t x A : PTm n) :
-    Syn.subst σ (commonClock f t x A) = commonClock f (Syn.subst σ t) (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [commonClock]
+ipra_subst commonClock
 
 theorem logarithmic_source (f : PR 2) (t x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) : Γ ⊢[PRAAx]
     GaussianNamedEulerLogarithmicFrozenRate.source f t zero x A (commonClock f t x A) := by

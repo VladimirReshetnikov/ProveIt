@@ -15,8 +15,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedImproper
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ)
+open_ipra
 open GaussianEulerPositiveScalingConstant (inverseF inverseData)
 open GaussianEulerPositiveScalingGamma (productData)
 open GaussianEulerIntegralGammaIdentification (source)
@@ -29,8 +28,6 @@ open GaussianNamedFiniteProductFamily (regularRows)
 open GaussianNamedFiniteProductFamilyCongruence (equalRows)
 open GaussianNamedFiniteSumFamilyCongruence (family_sum_cross)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -58,15 +55,9 @@ def nameF : PR 2 := GaussianNamedFiniteSumFamily.nameF Damped dampedBody
 def productSumF : PR 2 := GaussianNamedFiniteSumFamily.nameF Product productBody
 def dirichletF : PR 2 := GaussianNamedFiniteSumFamily.nameF inverseF dirichletBody
 
-@[simp] theorem subst_parameters {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (parameters z R B A) =
-      parameters (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [parameters]
+ipra_subst parameters
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (N z R B A : PTm n) :
-    Syn.subst σ (data N z R B A) =
-      data (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [data]
+ipra_subst data
 
 private theorem five_at (t : PTm 5) (i z R B A : PTm n) :
     Γ ⊢[PRAAx] Syn.subst ![i, fstT (fstT (parameters z R B A)), sndT (fstT (parameters z R B A)),
@@ -178,10 +169,7 @@ def gammaProductF : PR 2 := multiplyF dirichletF gammaF
 def gammaProductData (N z R B A : PTm n) : PTm n :=
   multiplyData dirichletF gammaF (data N z R B A) (gammaData z R B A)
 
-@[simp] theorem subst_gammaProductData {m : ℕ} (σ : Fin n → PTm m) (N z R B A : PTm n) :
-    Syn.subst σ (gammaProductData N z R B A) =
-      gammaProductData (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [gammaProductData]
+ipra_subst gammaProductData
 
 theorem product_factored (N z R B A : PTm n) (h : Γ ⊢[PRAAx] source z R B A) :
     Γ ⊢[PRAAx] crossEquivalent productSumF gammaProductF (data N z R B A) (gammaProductData N z R B A) := by

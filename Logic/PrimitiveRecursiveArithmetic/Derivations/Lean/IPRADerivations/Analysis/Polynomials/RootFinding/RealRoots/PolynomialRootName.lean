@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.PolynomialBisection
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSummableTails
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A regular rational name from the actual polynomial bisection
@@ -28,7 +27,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.PolynomialRootName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.PolynomialBisection
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 open LeanProofs.IPRA.Analysis.RationalSummableTails (cross subst_cross)
@@ -36,10 +35,6 @@ open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq zabs_congr zabs_tri z
 open LeanProofs.IPRA.Foundations.QuantitativeIdentities (zpow toZ_zpow)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of le_add_ad)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,43 +58,25 @@ def sampleState (degree : ℕ) (k x : PTm n) : PTm n :=
 def sampleNumerator (degree : ℕ) (k x : PTm n) : ZT n := left (sampleState degree k x)
 def sampleDenominator (degree : ℕ) (k x : PTm n) : PTm n := denominator (sampleState degree k x)
 
-@[simp] theorem subst_coefficientCode {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (coefficientCode x) = coefficientCode (Syn.subst σ x) := by
-  simp only [coefficientCode, subst_fstT]
+ipra_subst coefficientCode
 
-@[simp] theorem subst_coefficientDenominator {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (coefficientDenominator x) = coefficientDenominator (Syn.subst σ x) := by
-  simp only [coefficientDenominator, subst_fstT, subst_sndT]
+ipra_subst coefficientDenominator
 
-@[simp] theorem subst_initialState {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (initialState x) = initialState (Syn.subst σ x) := by
-  simp only [initialState, subst_sndT]
+ipra_subst initialState
 
 @[simp] theorem subst_initialWidth {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
     Syn.subst σ (initialWidth x) = initialWidth (Syn.subst σ x) := by
   simp only [initialWidth, subst_zabs, ZT.subst_sub, subst_right, subst_left, subst_initialState]
 
-@[simp] theorem subst_offset {m : ℕ} (σ : Fin n → PTm m) (x : PTm n) :
-    Syn.subst σ (offset x) = offset (Syn.subst σ x) := by
-  simp only [offset, ConciseIPRA.PTm.subst_succ, subst_initialWidth]
+ipra_subst offset
 
-@[simp] theorem subst_admissible {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (x : PTm n) :
-    (admissible degree x).subst σ = admissible degree (Syn.subst σ x) := by
-  simp only [admissible, subst_bracket, subst_coefficientCode, subst_initialState]
+ipra_subst admissible
 
-@[simp] theorem subst_sampleState {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (k x : PTm n) :
-    Syn.subst σ (sampleState degree k x) = sampleState degree (Syn.subst σ k) (Syn.subst σ x) := by
-  simp only [sampleState, subst_run, PTm.subst_add, subst_offset, subst_coefficientCode, subst_initialState]
+ipra_subst sampleState
 
-@[simp] theorem subst_sampleNumerator {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (k x : PTm n) :
-    (sampleNumerator degree k x).subst σ =
-      sampleNumerator degree (Syn.subst σ k) (Syn.subst σ x) := by
-  simp only [sampleNumerator, subst_left, subst_sampleState]
+ipra_subst sampleNumerator
 
-@[simp] theorem subst_sampleDenominator {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (k x : PTm n) :
-    Syn.subst σ (sampleDenominator degree k x) =
-      sampleDenominator degree (Syn.subst σ k) (Syn.subst σ x) := by
-  simp only [sampleDenominator, subst_denominator, subst_sampleState]
+ipra_subst sampleDenominator
 
 /-- The explicit binary PR programs of the actual rational name. -/
 def numeratorPosF (degree : ℕ) : PR 2 := PTm.toPR (sampleNumerator degree (var 0) (var 1)).pos
@@ -728,15 +705,9 @@ theorem residual_bound (degree : ℕ) (N x : PTm n)
     rw [PTm.subst_add, PTm.subst_mul, PTm.subst_mul, ih, PTm.subst_num,
       subst_zabs, subst_coefficient, subst_naturalPower]
 
-@[simp] theorem subst_errorBudget {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (x : PTm n) :
-    Syn.subst σ (errorBudget degree x) = errorBudget degree (Syn.subst σ x) := by
-  simp only [errorBudget, PTm.subst_mul, subst_initialWidth, subst_coefficientBound,
-    subst_coefficientCode, subst_boxBound]
+ipra_subst errorBudget
 
-@[simp] theorem subst_residualSchedule {m : ℕ} (σ : Fin n → PTm m) (degree : ℕ) (N x : PTm n) :
-    Syn.subst σ (residualSchedule degree N x) =
-      residualSchedule degree (Syn.subst σ N) (Syn.subst σ x) := by
-  simp only [residualSchedule, PTm.subst_add, ConciseIPRA.PTm.subst_succ, subst_errorBudget]
+ipra_subst residualSchedule
 
 /-- Explicit PR modulus for the polynomial residual of the actual regular name. -/
 def residualScheduleF (degree : ℕ) : PR 2 := PTm.toPR (residualSchedule degree (var 0) (var 1))

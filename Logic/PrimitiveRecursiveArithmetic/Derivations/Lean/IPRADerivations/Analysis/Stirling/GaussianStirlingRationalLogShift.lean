@@ -12,13 +12,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingRationalLogShift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNameArithmetic (addF addData add_equivalent)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_to_diagonal cross_trans)
 open GaussianPositiveRationalLogarithm (logF data source name_regular)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "H" => GaussianHarmonicLogarithmName.nameF

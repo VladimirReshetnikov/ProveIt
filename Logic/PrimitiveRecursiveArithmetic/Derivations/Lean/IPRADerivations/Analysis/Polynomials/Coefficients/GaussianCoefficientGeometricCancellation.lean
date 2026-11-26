@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianCoefficientGeometricCancellation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open GaussianRationalMetric (qnegative qsub)
@@ -26,10 +26,6 @@ open GaussianRationalReciprocal (power)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
 open GaussianRationalFiniteSum (sum multiplyBody)
 open GaussianRationalMatrixFiniteSums (negativeBody)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,14 +38,9 @@ def term (a C D s j : PTm n) : PTm n :=
   qmul (power (qnegative a) j) (qmul a (exponentCoefficient C D (monus s j)))
 def body : PTm 2 := term (getA (var 1)) (getC (var 1)) (getD (var 1)) (getS (var 1)) (var 0)
 def geometricSum (a C D s : PTm n) : PTm n := sum body (succ s) (data a C D s)
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (a C D s : PTm n) :
-    Syn.subst σ (data a C D s) = data (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ s) := by simp [data]
-@[simp] theorem subst_term {l : ℕ} (σ : Fin n → PTm l) (a C D s j : PTm n) :
-    Syn.subst σ (term a C D s j) =
-      term (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ s) (Syn.subst σ j) := by simp [term]
-@[simp] theorem subst_geometricSum {l : ℕ} (σ : Fin n → PTm l) (a C D s : PTm n) :
-    Syn.subst σ (geometricSum a C D s) =
-      geometricSum (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ D) (Syn.subst σ s) := by simp [geometricSum]
+ipra_subst data
+ipra_subst term
+ipra_subst geometricSum
 
 theorem term_at (a C D s j : PTm n) : Γ ⊢[PRAAx] inst2 body j (data a C D s) ≐ term a C D s j := by
   have b := snd_pair (Γ := Γ) a (pairT C (pairT D s))
@@ -60,8 +51,8 @@ theorem term_at (a C D s j : PTm n) : Γ ⊢[PRAAx] inst2 body j (data a C D s) 
   · exact congrAp2 GaussianRationalReciprocal.powerF (.eqRefl _) (negative_congr (fst_pair _ _))
   · exact qmul_congr (fst_pair _ _)
       (GaussianRationalPolynomialExponentialStability.exponent_congr
-        ((congrFst b).eqTrans (fst_pair _ _)) ((congrFst c).eqTrans (fst_pair _ _))
-        (congrMonus ((congrSnd c).eqTrans (snd_pair _ _)) (.eqRefl _)))
+        b.fstE c.fstE
+        (congrMonus c.sndE (.eqRefl _)))
 
 theorem first_term (a C D s : PTm n) : Γ ⊢[PRAAx]
     term a C D s zero ≐ qmul a (exponentCoefficient C D s) :=

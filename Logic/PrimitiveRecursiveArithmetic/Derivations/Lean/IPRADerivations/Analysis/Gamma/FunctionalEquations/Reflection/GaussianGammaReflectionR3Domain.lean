@@ -15,15 +15,12 @@ set_option maxHeartbeats 215000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaReflectionR3Domain
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded bounded_neg)
 open GaussianGammaEulerHeadLower (poleAt poleGuard pole_at subst_poleGuard)
 open GaussianGammaReflectionProduct (complementarySource)
 open GaussianSineProductReflectionLower (guardCutoff automatic_pole_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

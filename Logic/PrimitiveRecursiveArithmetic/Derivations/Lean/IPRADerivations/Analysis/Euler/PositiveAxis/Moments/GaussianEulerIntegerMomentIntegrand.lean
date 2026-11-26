@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegerMomentIntegrand
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (nameF data name_regular)
 open GaussianGammaShiftTrajectory (point)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -29,8 +29,6 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (power)
 open GaussianCoefficientNameBounds (unit)
 open ComplexLogarithmRemainder (oneCode scale)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,17 +40,11 @@ def shiftedData (z B N a b : PTm n) : PTm n := data (point z B N) B a b
 def clock (p z B N a b : PTm n) : PTm n := GaussianFastValueCut.exponent
   (GaussianNameArithmetic.multiplyModulus constantF nameF (monomial N a b) (data z B a b)) p
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (B a b E T : PTm n) :
-    (source B a b E T).subst σ = source (Syn.subst σ B) (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_monomial {m : ℕ} (σ : Fin n → PTm m) (N a b : PTm n) :
-    Syn.subst σ (monomial N a b) = monomial (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [monomial]
-@[simp] theorem subst_momentData {m : ℕ} (σ : Fin n → PTm m) (z B N a b : PTm n) :
-    Syn.subst σ (momentData z B N a b) = momentData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [momentData]
-@[simp] theorem subst_shiftedData {m : ℕ} (σ : Fin n → PTm m) (z B N a b : PTm n) :
-    Syn.subst σ (shiftedData z B N a b) = shiftedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [shiftedData]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p z B N a b : PTm n) :
-    Syn.subst σ (clock p z B N a b) = clock (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ a) (Syn.subst σ b) := by simp [clock]
+ipra_subst source
+ipra_subst monomial
+ipra_subst momentData
+ipra_subst shiftedData
+ipra_subst clock
 
 theorem time_source (z B a b E T : PTm n) (h : Γ ⊢[PRAAx] source B a b E T) : Γ ⊢[PRAAx]
     GaussianEulerIntegrandName.source z B a b := .andI h.andE₁ h.andE₂.andE₂.andE₁

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayMesh
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The actual compact decay quadrature and its endpoints
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDecayMesh (observation observation_numerator_congr observation_rescale adjacent_step
   consecutiveDifference consecutive_difference_at consecutive_difference_sum stepError errorDen)
 open GaussianRationalHorner (positive_product qmul)
@@ -25,17 +24,13 @@ open GaussianRationalFiniteSum (multiplyBody multiply_body_at sum_multiply)
 open GaussianRationalRiemannRefinement (sum_distance termsDistance weight leftSum)
 open GaussianCompactRiemannName (grid sampleBody sampleData quadrature sample_body_at)
 open GaussianCoefficientNameBounds (unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def evaluator (p t : PTm n) : PTm n := observation (fstT t) (sndT t) p
 def evaluatorF : PR 3 := PTm.toPR (evaluator (var 0) (var 1) : PTm 3)
 
-@[simp] theorem subst_evaluator {m : ℕ} (σ : Fin n → PTm m) (p t : PTm n) :
-    Syn.subst σ (evaluator p t) = evaluator (Syn.subst σ p) (Syn.subst σ t) := by simp [evaluator]
+ipra_subst evaluator
 
 theorem evaluator_at (p a b x : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p (pairT a b) x ≐ observation a b p := by

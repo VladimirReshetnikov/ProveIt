@@ -16,9 +16,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianFiniteExponentialLocalUniqueness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (qadd canonical positive_product)
 open GaussianRationalSyntheticDivision (qone qsub_congr)
@@ -28,8 +26,6 @@ open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalDistanceOrder (distance_symmetric distance_radius_mono)
 
 open GaussianExponentialLinearRemainder (original_finite_linear_remainder)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -56,13 +52,9 @@ def tolerance (p : PTm n) : PTm n := num 16*unit p
 def radiusDen (k : PTm n) : PTm n := num 4*unit k
 def invariant (q p k : PTm n) : Fm PTm n := le k p ⟶ bounded q one (radiusDen k)
 
-@[simp] theorem subst_tolerance {m : ℕ} (σ : Fin n → PTm m) (p : PTm n) :
-    Syn.subst σ (tolerance p) = tolerance (Syn.subst σ p) := by simp [tolerance]
-@[simp] theorem subst_radiusDen {m : ℕ} (σ : Fin n → PTm m) (k : PTm n) :
-    Syn.subst σ (radiusDen k) = radiusDen (Syn.subst σ k) := by simp [radiusDen]
-@[simp] theorem subst_invariant {m : ℕ} (σ : Fin n → PTm m) (q p k : PTm n) :
-    (invariant q p k).subst σ = invariant (Syn.subst σ q) (Syn.subst σ p) (Syn.subst σ k) := by
-  simp [invariant]
+ipra_subst tolerance
+ipra_subst radiusDen
+ipra_subst invariant
 
 theorem tolerance_lower (p : PTm n) : Γ ⊢[PRAAx] le (num 16) (tolerance p) := by
   unfold tolerance
@@ -128,11 +120,9 @@ theorem contraction (q K p : PTm n) (hc : Γ ⊢[PRAAx] canonical q)
     (congrMul (.eqRefl _) (pw_zero two)).eqTrans (by ipra_ring)
   have initial := bound_congr (.eqRefl _) (.eqRefl _) denom.eqSymm base
   have all : Γ ⊢[PRAAx] .all (invariant (Syn.shift q) (Syn.shift p) (var 0)) := by
-    refine PRA.qfInd _ (by simp [invariant,bounded,RationalArgmin.rationalLE,Fm.QF,le_QF]) ?_ ?_
-    · simp only [subst_invariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI initial.wk
-    · simp only [subst_invariant,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let s := fun t : PTm n => Syn.shift t
+    ipra_qfind (by simp [invariant,bounded,RationalArgmin.rationalLE,Fm.QF,le_QF]) [subst_invariant]
+    · exact .impI initial.wk
+    · let s := fun t : PTm n => Syn.shift t
       let Δ := (le (succ (var 0)) (s p) :: invariant (s q) (s p) (var 0) :: Γ.map Fm.shift)
       have c : Δ ⊢[PRAAx] canonical (s q) := by simpa [Fm.shift,Syn.shift,s,Δ] using hc.shift.wk.wk
       have k : Δ ⊢[PRAAx] le one (s K) := by simpa [Fm.shift,Syn.shift,s,Δ] using hk.shift.wk.wk

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetOscillatoryZeroColumn
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetCosinePrimitive (cosineValue)
 open GaussianBinetExponentialIntegralGrid (row value exponent cell_at left_endpoint)
 open GaussianBinetExponentialPanel (sample)
@@ -30,9 +30,6 @@ open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalRiemannRefinement (constantBody constant_sum weight)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr qone qmul_zero_right)
 open GaussianReciprocalHorner (qmul_one_right)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "f" => sampleBody GaussianBinetExponentialIntegralGrid.evaluatorF

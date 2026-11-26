@@ -26,10 +26,8 @@ stated separately.
 
 namespace LeanProofs.IPRA.Geometry.SphericalHaversine
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Geometry.SphericalCore
-open Syn
-open scoped Fm
 
 /-! ## The ring-level certificates -/
 

@@ -12,7 +12,7 @@ set_option maxHeartbeats 600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseLiteralUniform
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetBoseDenominator (reciprocalF reciprocalData reciprocal_regular)
 open GaussianBinetBoseLiteralPrefix (budget value finite_error)
 open GaussianBinetBoseSeries (denominatorClock partial_error)
@@ -22,17 +22,12 @@ open GaussianFastValueCut (exponent)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def clock (p N A B : PTm n) : PTm n := exponent (N*budget N A B) p
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p N A B : PTm n) :
-    Syn.subst σ (clock p N A B) = clock (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [clock]
+ipra_subst clock
 
 theorem row_clock_later (p B : PTm n) : Γ ⊢[PRAAx] le p (rowClock p B) := by
   have first : Γ ⊢[PRAAx] le (exponent (GaussianNameReciprocal.modulus B) p) (denominatorClock p B) :=

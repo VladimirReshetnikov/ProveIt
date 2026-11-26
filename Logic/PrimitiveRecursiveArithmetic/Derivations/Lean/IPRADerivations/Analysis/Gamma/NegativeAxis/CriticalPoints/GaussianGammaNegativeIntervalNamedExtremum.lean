@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedExtremum
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaNegativeCriticalEndpoints (mesh)
 open GaussianGammaNegativeCriticalLocation (fractionLocationF)
 open GaussianGammaNegativeIntervalNamedApartness (apart)
@@ -33,9 +33,6 @@ open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNamedPositiveLateLogSource (retimedF retimedData original_cross)
 open GaussianStirlingMultiplicativeBoundsOrder (exponential_order)
 open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder strict_exponential_order)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

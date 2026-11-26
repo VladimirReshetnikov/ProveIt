@@ -4,8 +4,6 @@ import IPRADerivations.Analysis.LinearAlgebra.Determinants.RationalScalarDetermi
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDiagonalDeterminant
 import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianScalarDeterminantMultiplication
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalPowerNonzero
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual rational minors and their denominator-cleared counterparts
@@ -20,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSelectedMinors
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalSubtupleSpan (bit bitBody bit_body_at)
 open RationalMatrixClearingBounds (cleared_representation)
 open RationalSupMetric (coordinate commonDenominator normalizedList)
@@ -31,9 +29,6 @@ open GaussianPolynomialDeterminantTerms (cell)
 open GaussianRationalFiberVandermonde (table table_lookup table_length table_row_length)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,12 +36,9 @@ def count (N mask : PTm n) : PTm n := Foundations.FilteredEnumerationCode.count 
 def indices (N mask : PTm n) : PTm n := Foundations.FilteredEnumerationCode.list bitBody N mask
 def index (N mask i : PTm n) : PTm n := entry (indices N mask) i
 
-@[simp] theorem subst_count {k : ℕ} (σ : Fin n → PTm k) (N mask : PTm n) :
-    Syn.subst σ (count N mask) = count (Syn.subst σ N) (Syn.subst σ mask) := by simp [count]
-@[simp] theorem subst_indices {k : ℕ} (σ : Fin n → PTm k) (N mask : PTm n) :
-    Syn.subst σ (indices N mask) = indices (Syn.subst σ N) (Syn.subst σ mask) := by simp [indices]
-@[simp] theorem subst_index {k : ℕ} (σ : Fin n → PTm k) (N mask i : PTm n) :
-    Syn.subst σ (index N mask i) = index (Syn.subst σ N) (Syn.subst σ mask) (Syn.subst σ i) := by simp [index]
+ipra_subst count
+ipra_subst indices
+ipra_subst index
 
 theorem count_bound (N mask : PTm n) : Γ ⊢[PRAAx] le (count N mask) N := Foundations.FilteredEnumerationCode.count_le _ _ _
 theorem indices_length (N mask : PTm n) : Γ ⊢[PRAAx] length (indices N mask) ≐ count N mask :=
@@ -72,13 +64,8 @@ def selectedData (A M N R C : PTm n) : PTm n := pairT A (pairT (indices M R) (in
 def selected (A M N R C : PTm n) : PTm n :=
   table selectedBody (count M R) (count N C) (selectedData A M N R C)
 
-@[simp] theorem subst_selectedData {k : ℕ} (σ : Fin n → PTm k) (A M N R C : PTm n) :
-    Syn.subst σ (selectedData A M N R C) =
-      selectedData (Syn.subst σ A) (Syn.subst σ M) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ C) := by
-  simp [selectedData]
-@[simp] theorem subst_selected {k : ℕ} (σ : Fin n → PTm k) (A M N R C : PTm n) :
-    Syn.subst σ (selected A M N R C) =
-      selected (Syn.subst σ A) (Syn.subst σ M) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ C) := by simp [selected]
+ipra_subst selectedData
+ipra_subst selected
 
 theorem selected_length (A M N R C : PTm n) : Γ ⊢[PRAAx] length (selected A M N R C) ≐ count M R :=
   table_length _ _ _ _
@@ -91,8 +78,8 @@ theorem selected_lookup (A M N R C i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (count 
   refine (table_lookup _ _ _ _ _ _ hi hj).eqTrans ?_
   simp only [selectedBody,GaussianPolynomialDeterminantTerms.subst_cell,Foundations.MasterCertificate.subst_entry,
     subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two]
-  exact entry_congr (entry_congr (fst_pair _ _) (entry_congr ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)) (.eqRefl _)))
-    (entry_congr ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _))
+  exact entry_congr (entry_congr (fst_pair _ _) (entry_congr (snd_pair _ _).fstE (.eqRefl _)))
+    (entry_congr (snd_pair _ _).sndE (.eqRefl _))
 
 def fromInteger (a : PTm n) : PTm n := normalize (⟨fstT a,sndT a⟩ : ZT n) one
 def integerBody : PTm 3 := fromInteger (cell (var 2) (var 0) (var 1))
@@ -101,14 +88,9 @@ def original (P d R C : PTm n) : PTm n := selected P (length P) d R C
 def normalized (P d R C : PTm n) : PTm n := presentIntegers
   (selected (normalizedList P d) (length P) d R C) (count (length P) R) (count d C)
 
-@[simp] theorem subst_fromInteger {k : ℕ} (σ : Fin n → PTm k) (a : PTm n) :
-    Syn.subst σ (fromInteger a) = fromInteger (Syn.subst σ a) := by simp [fromInteger,ZT.subst]
-@[simp] theorem subst_original {k : ℕ} (σ : Fin n → PTm k) (P d R C : PTm n) :
-    Syn.subst σ (original P d R C) = original (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ R) (Syn.subst σ C) := by
-  simp [original]
-@[simp] theorem subst_normalized {k : ℕ} (σ : Fin n → PTm k) (P d R C : PTm n) :
-    Syn.subst σ (normalized P d R C) = normalized (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ R) (Syn.subst σ C) := by
-  simp [normalized,presentIntegers]
+ipra_subst fromInteger [ZT.subst]
+ipra_subst original
+ipra_subst normalized [presentIntegers]
 
 theorem from_integer_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] fromInteger a ≐ fromInteger b := by
   ipra_congr (fromInteger (var 0) : PTm 1) with [h]
@@ -159,8 +141,7 @@ open GaussianRationalReciprocal (power)
 
 def scale (P d : PTm n) : PTm n := embed (GaussianRationalSyntheticBounds.natCode (commonDenominator P d))
 
-@[simp] theorem subst_scale {k : ℕ} (σ : Fin n → PTm k) (P d : PTm n) :
-    Syn.subst σ (scale P d) = scale (Syn.subst σ P) (Syn.subst σ d) := by simp [scale]
+ipra_subst scale
 
 theorem normalized_embedded_cell (P d R C k i j : PTm n) (hR : Γ ⊢[PRAAx] k ≐ count (length P) R)
     (hC : Γ ⊢[PRAAx] k ≐ count d C) (hi : Γ ⊢[PRAAx] lt i k) (hj : Γ ⊢[PRAAx] lt j k) : Γ ⊢[PRAAx]

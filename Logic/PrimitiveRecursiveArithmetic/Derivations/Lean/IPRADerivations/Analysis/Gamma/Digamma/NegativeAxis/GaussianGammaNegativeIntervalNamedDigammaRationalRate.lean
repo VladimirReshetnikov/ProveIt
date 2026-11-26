@@ -19,7 +19,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNamedDigammaRationalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaNegativeCriticalCorrection (guard)
@@ -43,10 +43,6 @@ open RationalGaussianEmbedding (canonical_axis_roundtrip)
 open RationalGaussianRealPart (real_add real_zero)
 open RationalHarmonicIntervalVariation (gap)
 open RationalValueBounds (upper upper_mono upper_order_left radius radius_congr radius_mono radius_of_upper radius_triangle)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -55,14 +51,9 @@ local notation "compact" => GaussianEulerUnitCompactTimeBounds.source
 def input (a b c d E X D : PTm n) : Fm PTm n :=
   compact a b E ⋏ (compact c d E ⋏ (le one D ⋏ distanceBounded (fraction a b) (fraction c d) X D))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (a b c d E X D : PTm n) :
-    (input a b c d E X D).subst σ =
-      input (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) (Syn.subst σ d) (Syn.subst σ E) (Syn.subst σ X) (Syn.subst σ D) :=
-  by simp [input]
+ipra_subst input
 
-@[simp] theorem subst_realData {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (realData a b N) = realData (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) :=
-  by simp [realData]
+ipra_subst realData
 
 theorem real_regular (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) : Γ ⊢[PRAAx] pointCN realF (realData a b N) := by
   have e := original_cross a b N h

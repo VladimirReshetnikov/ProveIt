@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.PoleFree.GaussianGammaNamedPoleFreePositiveAdmission
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.GaussianEulerUnitCompactTimeBounds
-import IPRADerivations.Core.Gcd
 
 /-!
 # A negative pole interval from a real observation
@@ -15,7 +14,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNamedPoleFreeNegativeSnapshot
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_neg)
 open ComplexLogarithmRemainder (re im)
 open GaussianGammaEulerHeadLower (translated)
@@ -24,10 +23,6 @@ open GaussianNamedRightHalfPlane (numerator denominator threshold)
 open GaussianRationalL1 (raw_den_positive)
 open GaussianL1 (abs_ofNat)
 open GaussianSignedNameExponentialOrder (realSamples)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingCell
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerPositivePowerChartMesh (timeNumerator timeDenominator widthNumerator cellDenominator)
 open GaussianEulerPositivePowerChartMeshJacobian (width linearTerm)
 open GaussianEulerPositivePowerChartImage (query reciprocalMargin)
@@ -37,10 +37,6 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -77,38 +73,15 @@ def numerator (p k z R B e f d h Q S E T C N : PTm n) : PTm n :=
 def denominator (p k h Q E T N : PTm n) : PTm n :=
   (frozenDenominator p k E N*jacobianDenominator k h Q E T N)*clockDenominator p k h Q E T N
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B e f d h Q S E T a C N : PTm n) :
-    (source z R B e f d h Q S E T a C N).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-      (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S)
-      (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [source,parameter,scaled,ComplexLogarithmRemainder.scale,ComplexLogarithmRemainder.bounded]
+ipra_subst source [parameter, scaled, ComplexLogarithmRemainder.scale, ComplexLogarithmRemainder.bounded]
 
-@[simp] theorem subst_scaleSample {m : ℕ} (σ : Fin n → PTm m) (p z B e f d h : PTm n) :
-    Syn.subst σ (scaleSample p z B e f d h) =
-      scaleSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e)
-        (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) := by simp [scaleSample]
+ipra_subst scaleSample
 
-@[simp] theorem subst_imageCell {m : ℕ} (σ : Fin n → PTm m) (p k i z B e f d h Q S E T a C N : PTm n) :
-    Syn.subst σ (imageCell p k i z B e f d h Q S E T a C N) =
-      imageCell (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ i) (Syn.subst σ z) (Syn.subst σ B)
-        (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S)
-        (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ a) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [imageCell,imageEuler,eulerData,scaled,ComplexLogarithmRemainder.scale,decodedNumerator,decodedDenominator]
+ipra_subst imageCell [imageEuler, eulerData, scaled, ComplexLogarithmRemainder.scale, decodedNumerator, decodedDenominator]
 
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p k z R B e f d h Q S E T C N : PTm n) :
-    Syn.subst σ (numerator p k z R B e f d h Q S E T C N) =
-      numerator (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B)
-        (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ S)
-        (Syn.subst σ E) (Syn.subst σ T) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [numerator,frozenNumerator,frozenDenominator,jacobianNumerator,jacobianDenominator,clockNumerator,clockDenominator,
-    scaleBound,eulerBound,cost,GaussianEulerPositivePowerChart.majorant,GaussianEulerCompactPowerMajorant.majorant,
-    GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst numerator [frozenNumerator, frozenDenominator, jacobianNumerator, jacobianDenominator, clockNumerator, clockDenominator, scaleBound, eulerBound, cost, GaussianEulerPositivePowerChart.majorant, GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius]
 
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p k h Q E T N : PTm n) :
-    Syn.subst σ (denominator p k h Q E T N) =
-      denominator (Syn.subst σ p) (Syn.subst σ k) (Syn.subst σ h) (Syn.subst σ Q) (Syn.subst σ E)
-        (Syn.subst σ T) (Syn.subst σ N) := by
-  simp [denominator,frozenDenominator,jacobianDenominator,clockDenominator]
+ipra_subst denominator [frozenDenominator, jacobianDenominator, clockDenominator]
 
 private theorem fixed_product_distance (x y u A B C E : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E)

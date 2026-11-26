@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianInitialCoefficientBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalL1
   (qL1 rawDen rawGaussian raw_den_positive raw_represents qL1_represents)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
@@ -24,15 +24,11 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at subst_finiteMaximum)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def naturalCode (a : PTm n) : PTm n := normalize (ZT.ofNat a) one
-@[simp] theorem subst_naturalCode {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (naturalCode a) = naturalCode (Syn.subst σ a) := by simp [naturalCode]
+ipra_subst naturalCode
 
 theorem natural_code_monotone (a b : PTm n) (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] rationalLE (naturalCode a) (naturalCode b) :=
@@ -50,8 +46,7 @@ theorem raw_numerator_bound (q : PTm n) : Γ ⊢[PRAAx]
 def boundBody : PTm 2 := GaussianL1.norm1 (rawGaussian (entry (var 1) (var 0)))
 def initialBound (C N : PTm n) : PTm n := one+finiteMaximum boundBody N C
 
-@[simp] theorem subst_initialBound {m : ℕ} (σ : Fin n → PTm m) (C N : PTm n) :
-    Syn.subst σ (initialBound C N) = initialBound (Syn.subst σ C) (Syn.subst σ N) := by simp [initialBound]
+ipra_subst initialBound
 
 theorem bound_body_at (C i : PTm n) :
     inst2 boundBody i C = GaussianL1.norm1 (rawGaussian (entry C i)) := by

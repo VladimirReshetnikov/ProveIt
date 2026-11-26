@@ -14,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDirichletTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEulerPositiveScalingConstant (inverseF)
 open GaussianGammaEulerHeadShift (shifted)
@@ -24,10 +24,6 @@ open GaussianGammaZetaMellinDampedImproper (dirichletBody parameters)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "S" => GaussianEulerIntegralGammaIdentification.source
@@ -35,8 +31,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def clip (M J : PTm n) : PTm n := monus M (monus M J)
 
-@[simp] theorem subst_clip {m : ℕ} (σ : Fin n → PTm m) (M J : PTm n) :
-    Syn.subst σ (clip M J) = clip (Syn.subst σ M) (Syn.subst σ J) := by simp [clip]
+ipra_subst clip
 
 theorem clip_eq_left (M J : PTm n) (h : Γ ⊢[PRAAx] le M J) : Γ ⊢[PRAAx] clip M J ≐ M :=
   (congrMonus (.eqRefl _) h).eqTrans (monus_zero _)
@@ -98,20 +93,14 @@ def cost (p M A h j : PTm n) : PTm n :=
   two*unit A*pred (unit j)*unit p+num 3*M*j*(unit h*unit j)
 def denominator (p h j : PTm n) : PTm n := unit h*unit j*unit p
 
-@[simp] theorem subst_cost {m : ℕ} (σ : Fin n → PTm m) (p M A h j : PTm n) :
-    Syn.subst σ (cost p M A h j) = cost (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ j) := by
-  simp [cost,two]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p h j : PTm n) :
-    Syn.subst σ (denominator p h j) = denominator (Syn.subst σ p) (Syn.subst σ h) (Syn.subst σ j) := by simp [denominator]
+ipra_subst cost [two]
+ipra_subst denominator
 
 def inductionBound (p M z R B A h j : PTm n) : Fm PTm n :=
   distanceBounded (value p (clip M (block A (h+j))) z R B A) (value p (clip M (block A h)) z R B A)
     (cost p M A h j) (denominator p h j)
 
-@[simp] theorem subst_inductionBound {m : ℕ} (σ : Fin n → PTm m) (p M z R B A h j : PTm n) :
-    (inductionBound p M z R B A h j).subst σ =
-      inductionBound (Syn.subst σ p) (Syn.subst σ M) (Syn.subst σ z) (Syn.subst σ R)
-        (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ h) (Syn.subst σ j) := by simp [inductionBound]
+ipra_subst inductionBound
 
 private theorem denominator_positive (p h j : PTm n) : Γ ⊢[PRAAx] le one (denominator p h j) :=
   positive_product _ _ (positive_product _ _ (unit_positive h) (unit_positive j)) (unit_positive p)

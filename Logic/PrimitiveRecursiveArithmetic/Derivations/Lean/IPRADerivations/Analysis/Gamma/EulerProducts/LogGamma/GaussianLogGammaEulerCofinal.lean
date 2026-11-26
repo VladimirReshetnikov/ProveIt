@@ -15,7 +15,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianLogGammaEulerHead (rowData)
@@ -27,10 +27,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalSlackRemoval (precision slack_removal_at)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianLogGammaEulerNormalizedHead.nameF
@@ -55,22 +51,13 @@ private def body : PTm 2 :=
 
 def nameF : PR 2 := PTm.toPR body
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (R p : PTm n) :
-    Syn.subst σ (cutoff R p) = cutoff (Syn.subst σ R) (Syn.subst σ p) := by simp [cutoff,cost,one]
+ipra_subst cutoff [cost, one]
 
-@[simp] theorem subst_observed {m : ℕ} (σ : Fin n → PTm m) (p A B D neg R : PTm n) :
-    Syn.subst σ (observed p A B D neg R) = observed (Syn.subst σ p) (Syn.subst σ A)
-      (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ R) := by simp [observed]
+ipra_subst observed
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (A B D neg R : PTm n) :
-    Syn.subst σ (data A B D neg R) =
-      data (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) (Syn.subst σ R) := by
-  simp [data]
+ipra_subst data
 
-@[simp] theorem subst_canonicalData {m : ℕ} (σ : Fin n → PTm m) (A B D neg : PTm n) :
-    Syn.subst σ (canonicalData A B D neg) =
-      canonicalData (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ D) (Syn.subst σ neg) := by
-  simp [canonicalData]
+ipra_subst canonicalData
 
 private theorem index_five {α : Type} (a b c d e f : α) : ![a,b,c,d,e,f] (5 : Fin 6) = f := rfl
 

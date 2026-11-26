@@ -14,7 +14,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDerivativeIncrementPrecision
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add normSq oneCode)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial_positive)
@@ -24,8 +24,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianL1 (norm1 norm1_one)
 open GaussianNamedInverseRate (independentRate)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

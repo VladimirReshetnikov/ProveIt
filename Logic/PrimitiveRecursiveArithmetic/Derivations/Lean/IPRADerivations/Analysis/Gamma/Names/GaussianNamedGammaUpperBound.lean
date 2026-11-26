@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedGammaUpperBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (source threshold radius numerator denominator actual_late_source)
 open GaussianNamedHalfPlaneCorrection (correctedNumerator correctedDenominator point original_source point_distance)
 open GaussianNamedGamma (nameF data)
@@ -30,10 +30,6 @@ open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSlackRemoval (slack slack_removal_at)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -41,8 +37,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 def clock (f : PR 2) (s x A : PTm n) : PTm n :=
   threshold A+succ (modulus s (radius f x) (two*A))+
     GaussianFastValueCut.exponent (two*radius f x) (modulus s (radius f x) (two*A))
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (s x A : PTm n) :
-    Syn.subst σ (clock f s x A) = clock f (Syn.subst σ s) (Syn.subst σ x) (Syn.subst σ A) := by simp [clock]
+ipra_subst clock
 
 private theorem weaker_source (z R B A : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerLowerPowerCoefficients.source z R B A) : Γ ⊢[PRAAx]

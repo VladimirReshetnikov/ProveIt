@@ -16,17 +16,13 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open BarnesCutoff (cutoff maximum maximum_left maximum_right maximum_least)
 open DyadicComplexLogarithm (unit precision)
 open GaussianBarnesCanonicalLogTail (tailDenominator)
 open GaussianBarnesCanonicalLogRow (boundNumerator)
 open GaussianExponentialReference (unit_monotone)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

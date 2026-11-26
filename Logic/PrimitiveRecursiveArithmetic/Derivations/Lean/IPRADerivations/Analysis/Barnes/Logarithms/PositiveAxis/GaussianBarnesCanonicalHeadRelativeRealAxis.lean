@@ -9,7 +9,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadRelativeRealAxis
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (im)
 open GaussianBarnesCanonicalBaseProductShift (powerBody powerProduct power_at)
 open GaussianBarnesCanonicalHeadRelativeLog (data nameF numerator radius denominator relative)
@@ -24,9 +24,6 @@ open GaussianRationalReciprocal (power reciprocal subst_power)
 open GaussianRootAlgebra (im_add im_scale)
 open GaussianSignedNameExponentialOrder (realSamples)
 open RationalGaussianEmbedding (axis subst_axis axis_add axis_negative axis_multiply axis_congr axis_one canonical_axis_roundtrip)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

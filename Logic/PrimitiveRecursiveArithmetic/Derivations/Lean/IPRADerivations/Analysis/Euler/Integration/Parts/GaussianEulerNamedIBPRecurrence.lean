@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerNamedIBPRecurrence
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedRightHalfPlane (source radius numerator denominator threshold)
 open GaussianEulerNamedShiftInput (shiftF shiftData clock)
 open GaussianGammaEulerHeadShift (shifted)
@@ -31,10 +31,6 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_at point_at)
 open GaussianExponentialReference (unit_monotone)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -42,8 +38,7 @@ local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 abbrev productF (f : PR 2) : PR 2 := multiplyF f (nameF f)
 def productData (f : PR 2) (x A : PTm n) : PTm n := multiplyData f (nameF f) x (data x A)
 
-@[simp] theorem subst_productData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A : PTm n) :
-    Syn.subst σ (productData f x A) = productData f (Syn.subst σ x) (Syn.subst σ A) := by simp [productData]
+ipra_subst productData
 
 private theorem named_to_encoded (f : PR 2) (p q t r x A R : PTm n)
     (h : Γ ⊢[PRAAx] GaussianNamedGammaLateInput.input f t r x A)

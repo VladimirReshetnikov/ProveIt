@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaRecurrenceWeightName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -27,10 +27,6 @@ open GaussianRationalEulerCoefficients (parityPoint)
 open GaussianGammaRecurrenceWeights (weight weight_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalValueBounds (radius)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -98,8 +94,7 @@ theorem original_weight_regularity (p q N m : PTm n) : Γ ⊢[PRAAx]
 
 def data (N m : PTm n) : PTm n := pairT N m
 def nameF : PR 2 := PTm.toPR (weight (var 0) (fstT (var 1)) (sndT (var 1)))
-@[simp] theorem subst_data {l : ℕ} (σ : Fin n → PTm l) (N m : PTm n) :
-    Syn.subst σ (data N m) = data (Syn.subst σ N) (Syn.subst σ m) := by simp [data]
+ipra_subst data
 
 theorem name_at (p N m : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data N m) ≐ weight p N m := by
   have h := toPR_eq (Γ := Γ) (weight (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,data N m]

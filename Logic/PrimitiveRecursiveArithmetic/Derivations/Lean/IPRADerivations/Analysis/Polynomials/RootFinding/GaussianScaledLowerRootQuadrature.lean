@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianScaledLowerRootQuadrature
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerLowerTailRootGrid (rootDenominator rootNumerator timeNumerator timeDenominator)
 open GaussianEulerLowerTailPartition (cutF cutData offset offset_at panelWidth totalWidth root_right_guard uniform_panel_width grouped_original_quadrature)
 open GaussianEulerLowerTailRowBound (stepScale right_width)
@@ -28,9 +28,6 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -67,13 +64,9 @@ def panelRows (F : PR 3) (s H p q k R L C x : PTm n) : Fm PTm n := .all
       (pw (rootNumerator (succ (var 0)) (Syn.shift H) (Syn.shift p) (Syn.shift q)) (Syn.shift k)) (unit (Syn.shift s))))
 def source (F : PR 3) (s H p q k R L C x : PTm n) : Fm PTm n := le one H ⋏
   (le p q ⋏ (le one (totalWidth H p q (succ k)) ⋏ panelRows F s H p q k R L C x))
-@[simp] theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (s H p q k R x : PTm n) :
-    Syn.subst σ (gridData s H p q k R x) = gridData (Syn.subst σ s) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) := by simp [gridData,totalWidth]
-@[simp] theorem subst_panelRows {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s H p q k R L C x : PTm n) :
-    (panelRows F s H p q k R L C x).subst σ = panelRows F (Syn.subst σ s) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ C) (Syn.subst σ x) :=
-  by simp [panelRows,Syn.subst_shift,Syn.shift_subst,stepScale]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F : PR 3) (s H p q k R L C x : PTm n) :
-    (source F s H p q k R L C x).subst σ = source F (Syn.subst σ s) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ L) (Syn.subst σ C) (Syn.subst σ x) := by simp [source,totalWidth]
+ipra_subst gridData [totalWidth]
+ipra_subst panelRows [Syn.subst_shift, Syn.shift_subst, stepScale]
+ipra_subst source [totalWidth]
 
 theorem panel_rows_at (F : PR 3) (i s H p q k R L C x : PTm n) (h : Γ ⊢[PRAAx] panelRows F s H p q k R L C x) (hi : Γ ⊢[PRAAx] lt i H) : Γ ⊢[PRAAx]
     summandsBounded (offB (sampleBody F)) (panelWidth i H p q (succ k))
@@ -121,10 +114,8 @@ theorem panel_norm (F : PR 3) (i s H p q k R L C x : PTm n) (hi : Γ ⊢[PRAAx] 
 
 def weightedPanelBody (F : PR 3) : PTm 2 := multiplyBody (blockBody cutF (sampleBody F))
 def panelData (s H p q k R x : PTm n) : PTm n := pairT (weightedPoint H p q k R) (pairT (cutData H p q (succ k)) (gridData s H p q k R x))
-@[simp] theorem subst_weightedPoint {m : ℕ} (σ : Fin n → PTm m) (H p q k R : PTm n) :
-    Syn.subst σ (weightedPoint H p q k R) = weightedPoint (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) := by simp [weightedPoint]
-@[simp] theorem subst_panelData {m : ℕ} (σ : Fin n → PTm m) (s H p q k R x : PTm n) :
-    Syn.subst σ (panelData s H p q k R x) = panelData (Syn.subst σ s) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ k) (Syn.subst σ R) (Syn.subst σ x) := by simp [panelData]
+ipra_subst weightedPoint
+ipra_subst panelData
 
 theorem weighted_panel_at (F : PR 3) (i s H p q k R x : PTm n) : Γ ⊢[PRAAx]
     inst2 (weightedPanelBody F) i (panelData s H p q k R x) ≐

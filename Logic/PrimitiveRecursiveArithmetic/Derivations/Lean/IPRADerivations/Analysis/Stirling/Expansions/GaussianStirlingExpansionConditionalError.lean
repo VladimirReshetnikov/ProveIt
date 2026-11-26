@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingExpansionConditionalError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at)
@@ -33,10 +33,6 @@ open GaussianStirlingExpansionFiniteError (logPolynomial approximation)
 open GaussianStirlingMultiplicative (quotientF quotientData expRemainderF expRemainderData multiplicative_formula)
 open GaussianStirlingMultiplicativeAlgebra (remainderF remainderData remainder_regular)
 open GaussianStirlingNames (source)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "expF" => GaussianRadiusExponentialName.nameF

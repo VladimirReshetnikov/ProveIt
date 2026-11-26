@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.FiniteOperations.FiniteFTC
-import IPRADerivations.Core.Integers
 
 /-!
 # Constructive Stokes: a grid slice and two polynomial certificates
@@ -23,10 +22,7 @@ schedule and the equality of the two regular names (the Stokes theorem of the pa
 set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.StokesSlice
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

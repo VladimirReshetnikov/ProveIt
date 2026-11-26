@@ -21,14 +21,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.TowerCommonDen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.FiniteLaws (sb sB sB_at congrEqb')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_mul')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -54,13 +50,9 @@ theorem dvd_prod_term (b : PTm 2) {M i x : PTm n}
     exact e
   have hall : Γ ⊢[PRAAx] Fm.all (lt (Syn.shift i) (var 0) ⟶
       dvd (inst2 b (Syn.shift i) (Syn.shift x)) (ap2 (prodF b) (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_lt, subst_dvd', subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [Fm.subst_imp, subst_lt, subst_dvd', subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let D : List (Fm PTm (n + 1)) := (lt (Syn.shift i) (var 0) ⟶
+    ipra_qfind (⟨lt_QF _ _, trivial⟩) [subst_lt, subst_dvd', subst_ap2, subst_inst2]
+    · exact .impI (lt_zero_absurd _ Prf.hyp0)
+    · let D : List (Fm PTm (n + 1)) := (lt (Syn.shift i) (var 0) ⟶
         dvd (inst2 b (Syn.shift i) (Syn.shift x)) (ap2 (prodF b) (var 0) (Syn.shift x))) :: Γ.map Fm.shift
       refine .impI ?_
       let C : List (Fm PTm (n + 1)) := lt (Syn.shift i) (succ (var 0)) :: D

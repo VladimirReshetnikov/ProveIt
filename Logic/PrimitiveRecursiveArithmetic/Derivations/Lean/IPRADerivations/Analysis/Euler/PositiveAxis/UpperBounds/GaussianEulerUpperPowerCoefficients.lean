@@ -18,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperPowerCoefficients
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re im normSq)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq)
 open GaussianEulerIntegrandName (coefficient)
@@ -27,10 +27,6 @@ open GaussianRationalConjugation (point)
 open GaussianRationalMetric (bounded)
 open GaussianRationalSyntheticBounds (natCode)
 open RationalSupMetric (numeratorOf denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -39,14 +35,10 @@ def source (z R B : PTm n) : Fm PTm n := le one B ⋏ ComplexLogarithmRemainder.
 def realMultiplier (z B : PTm n) : PTm n := qadd (coefficient z B) (point (coefficient z B))
 def upperMultiplier (R : PTm n) : PTm n := GaussianRationalNaturalScale.naturalPoint (two*R)
 def amplification (R : PTm n) : PTm n := two*(R+one)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    (source z R B).subst σ = source (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [source,ComplexLogarithmRemainder.bounded]
-@[simp] theorem subst_realMultiplier {m : ℕ} (σ : Fin n → PTm m) (z B : PTm n) :
-    Syn.subst σ (realMultiplier z B) = realMultiplier (Syn.subst σ z) (Syn.subst σ B) := by simp [realMultiplier]
-@[simp] theorem subst_upperMultiplier {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (upperMultiplier R) = upperMultiplier (Syn.subst σ R) := by simp [upperMultiplier]
-@[simp] theorem subst_amplification {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (amplification R) = amplification (Syn.subst σ R) := by simp [amplification]
+ipra_subst source [ComplexLogarithmRemainder.bounded]
+ipra_subst realMultiplier
+ipra_subst upperMultiplier
+ipra_subst amplification
 
 theorem native_absolute_norm (z : PTm n) : Γ ⊢[PRAAx]
     normSq z ≐ zabs (re z)*zabs (re z)+zabs (im z)*zabs (im z) := by

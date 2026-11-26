@@ -18,7 +18,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionArbitraryPanels
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerUnitSubstitutionOrdinaryImproper (source resolution)
 open GaussianEulerUnitSubstitutionOrdinaryEndpoints
   (leftNumerator widthNumerator denominator canonical_endpoints)
@@ -33,8 +33,6 @@ open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalHorner (qzero)
 open GaussianRationalSyntheticDivision (qone)
 open RationalValueBounds (radius)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

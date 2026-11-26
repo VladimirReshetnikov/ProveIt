@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerShiftedChart
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code)
 open GaussianEulerNamedShiftInput (shiftF shiftData clock clock_later original_source)
 open GaussianGammaEulerHeadShift (shifted)
@@ -27,17 +27,13 @@ open GaussianNamedRightHalfPlaneSigned (certificate denominator imagNumerator re
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRootAlgebra (equal equal_of_values equal_re equal_im re_add im_add re_scale im_scale re_one im_one)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def shiftedPoint (q : PTm n) : PTm n :=
   argument (realNumerator q + denominator q) (imagNumerator q) (denominator q) (sign q)
 
-@[simp] theorem subst_shiftedPoint {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (shiftedPoint q) = shiftedPoint (Syn.subst σ q) := by
-  simp [shiftedPoint, argument, ZT.subst, ZT.ofNat]
+ipra_subst shiftedPoint [argument, ZT.subst, ZT.ofNat]
 
 private theorem shifted_native (q : PTm n) (hq : Γ ⊢[PRAAx] le one (realNumerator q)) : Γ ⊢[PRAAx]
     equal (shifted (rawGaussian q) (rawDen q))

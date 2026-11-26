@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialExponentAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalPolynomialProduct (product product_lookup)
@@ -25,10 +25,6 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_ins
 open GaussianFiniteLogarithmCoefficientRecursion (product_commuted_exponent)
 open GaussianPolynomialLowJetProduct (jetEqual)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaZeroExtensionAligned
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelGridComparison (sampleDataBeta)
 open GaussianBetaZeroExtension (evaluatorF evaluator_at)
 open GaussianRationalHorner (qzero positive_product)
@@ -26,10 +26,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianCompactLogarithmBounds (domain original_gaussian_time_distance)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
 open RationalHarmonicIntervalVariation (gap)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

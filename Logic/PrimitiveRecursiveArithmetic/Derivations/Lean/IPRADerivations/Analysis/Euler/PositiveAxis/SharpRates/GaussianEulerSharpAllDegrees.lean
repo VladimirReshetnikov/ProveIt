@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerSharpAllDegrees
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaSharpNaturalDegreeSchedule (source)
 open GaussianBetaSharpCofinalSchedule (cutoff factor)
 open GaussianEulerSharpFiniteRate (improperPoint numerator denominator)
@@ -24,9 +24,6 @@ open GaussianBetaContiguousUpperTailBudget (fixed_denominator_positive)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

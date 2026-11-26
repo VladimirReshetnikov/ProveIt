@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryCothExpansion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBoundedConstantProductName (constantF constant_regular)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -26,8 +26,6 @@ open GaussianSineProductImaginaryCofinalDerivative (sineData)
 open GaussianSineProductImaginaryCoshIdentity (coshF coshData cosh_regular)
 open GaussianSineProductImaginaryHyperbolic (expF expData sinhF sinhData)
 open GaussianSineProductImaginaryLogDerivative (rationalReal)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Scale" => GaussianPiRationalScale.nameF

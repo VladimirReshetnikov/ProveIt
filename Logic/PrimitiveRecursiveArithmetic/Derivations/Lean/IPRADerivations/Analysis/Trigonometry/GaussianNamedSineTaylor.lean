@@ -14,7 +14,7 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSineTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianArctangentCayleyValues (imaginaryPoint imaginaryCode)
 open GaussianNamedSineFromExponential (multiplier sineF sineData sine_regular differenceF differenceData)
 open GaussianScalarSineTaylor (signedSum finite_sine_taylor)
@@ -35,9 +35,6 @@ open GaussianExponentialReference (recode_fixed finite_reference)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody)
 open GaussianRationalFiniteSum (sum_index_congr)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -45,9 +42,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def imaginaryArgument (q : PTm n) : PTm n := qmul imaginaryPoint q
 def imaginaryF (f : PR 2) : PR 2 := PTm.toPR (imaginaryArgument (ap2 f (var 0) (var 1)) : PTm 2)
 
-@[simp] theorem subst_imaginaryArgument {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (imaginaryArgument q) = imaginaryArgument (Syn.subst σ q) := by
-  simp [imaginaryArgument, imaginaryPoint, imaginaryCode]
+ipra_subst imaginaryArgument [imaginaryPoint, imaginaryCode]
 
 theorem imaginary_at (f : PR 2) (p x : PTm n) :
     Γ ⊢[PRAAx] ap2 (imaginaryF f) p x ≐ imaginaryArgument (ap2 f p x) := by
@@ -97,17 +92,13 @@ def argumentPrecision (R p : PTm n) : PTm n :=
 def taylorValue (f : PR 2) (R x p : PTm n) : PTm n :=
   signedSum (ap2 f (argumentPrecision R p) x) (index R p)
 
-@[simp] theorem subst_argumentPrecision {m : ℕ} (σ : Fin n → PTm m) (R p : PTm n) :
-    Syn.subst σ (argumentPrecision R p) = argumentPrecision (Syn.subst σ R) (Syn.subst σ p) := by simp [argumentPrecision]
-@[simp] theorem subst_taylorValue {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x p : PTm n) :
-    Syn.subst σ (taylorValue f R x p) = taylorValue f (Syn.subst σ R) (Syn.subst σ x) (Syn.subst σ p) := by
-  simp [taylorValue]
+ipra_subst argumentPrecision
+ipra_subst taylorValue
 
 def budget (f : PR 2) (R x : PTm n) : PTm n :=
   multiplyModulus constantF (differenceF (imaginaryF f)) multiplier (differenceData R x)+num 9
 
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (budget f R x) = budget f (Syn.subst σ R) (Syn.subst σ x) := by simp [budget]
+ipra_subst budget
 
 private theorem negative_sample (f : PR 2) (q x : PTm n) :
     Γ ⊢[PRAAx] ap2 (negativeF f) q (negativeData x) ≐
@@ -158,8 +149,7 @@ def rawData (R x : PTm n) : PTm n := pairT R x
 def rawF (f : PR 2) : PR 2 := PTm.toPR
   (taylorValue f (fstT (var 1)) (sndT (var 1)) (var 0) : PTm 2)
 
-@[simp] theorem subst_rawData {m : ℕ} (σ : Fin n → PTm m) (R x : PTm n) :
-    Syn.subst σ (rawData R x) = rawData (Syn.subst σ R) (Syn.subst σ x) := by simp [rawData]
+ipra_subst rawData
 
 theorem raw_at (f : PR 2) (R x p : PTm n) :
     Γ ⊢[PRAAx] ap2 (rawF f) p (rawData R x) ≐ taylorValue f R x p := by
@@ -213,8 +203,7 @@ def taylorF (f : PR 2) : PR 2 := GaussianFastValueCut.nameF (rawF f)
 def taylorData (f : PR 2) (R x : PTm n) : PTm n :=
   GaussianFastValueCut.nameData (budget f R x+one) (rawData R x)
 
-@[simp] theorem subst_taylorData {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (taylorData f R x) = taylorData f (Syn.subst σ R) (Syn.subst σ x) := by simp [taylorData]
+ipra_subst taylorData
 
 theorem taylor_regular (f : PR 2) (R x : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] pointCN (taylorF f) (taylorData f R x) :=

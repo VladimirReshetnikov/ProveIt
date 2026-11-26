@@ -13,14 +13,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNameBranch
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianRationalDistanceOrder (distance_congr)
 open RationalArithmetic (select select_zero select_one)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -29,8 +26,7 @@ def body (F G : PR 2) : PTm 2 :=
   select (fstT (var 1)) (ap2 F (var 0) (fstT (sndT (var 1)))) (ap2 G (var 0) (sndT (sndT (var 1))))
 def nameF (F G : PR 2) : PR 2 := PTm.toPR (body F G)
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (b x y : PTm n) :
-    Syn.subst σ (data b x y) = data (Syn.subst σ b) (Syn.subst σ x) (Syn.subst σ y) := by simp [data]
+ipra_subst data
 
 theorem sample_at (F G : PR 2) (p b x y : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF F G) p (data b x y) ≐ select b (ap2 F p x) (ap2 G p y) := by
@@ -46,8 +42,8 @@ theorem sample_at (F G : PR 2) (p b x y : PTm n) :
       fin_cases i
       exact .eqRefl _
       exact fst_pair _ _
-      exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+      exact (snd_pair _ _).fstE
+      exact (snd_pair _ _).sndE)
   exact e.eqTrans (by simpa using d)
 
 theorem select_left (F G : PR 2) (b x y : PTm n) (hb : Γ ⊢[PRAAx] b ≐ zero)

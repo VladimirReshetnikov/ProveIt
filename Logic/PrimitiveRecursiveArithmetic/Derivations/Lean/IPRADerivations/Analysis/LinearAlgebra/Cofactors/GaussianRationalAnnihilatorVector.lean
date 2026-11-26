@@ -22,7 +22,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalAnnihilatorVector
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalRowElimination (shape pivot rowDot nullRows)
@@ -30,9 +30,6 @@ open GaussianRationalEliminationLoop (matrix history)
 open GaussianRationalFreeColumnVector (freeInput nonzeroVector pivotProfile fieldZeroRow)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (zero succ app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,21 +42,13 @@ def vector (A R N : PTm n) : PTm n :=
 def input (A R N : PTm n) : Fm PTm n := shape A R N ⋏ lt (markedCount A R N) N
 def certificate (A R N v : PTm n) : Fm PTm n := length v ≐ N ⋏ (nonzeroVector v N ⋏ nullRows A R N v)
 
-@[simp] theorem subst_finalMatrix {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (finalMatrix A R N) = finalMatrix (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [finalMatrix]
-@[simp] theorem subst_finalHistory {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (finalHistory A R N) = finalHistory (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [finalHistory]
-@[simp] theorem subst_markedCount {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (markedCount A R N) = markedCount (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [markedCount]
-@[simp] theorem subst_freeColumn {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (freeColumn A R N) = freeColumn (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [freeColumn]
-@[simp] theorem subst_vector {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (vector A R N) = vector (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [vector]
-@[simp] theorem subst_input {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    (input A R N).subst σ = input (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [input]
-@[simp] theorem subst_certificate {k : ℕ} (σ : Fin n → PTm k) (A R N v : PTm n) :
-    (certificate A R N v).subst σ = certificate (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) (Syn.subst σ v) := by
-  simp [certificate]
+ipra_subst finalMatrix
+ipra_subst finalHistory
+ipra_subst markedCount
+ipra_subst freeColumn
+ipra_subst vector
+ipra_subst input
+ipra_subst certificate
 
 theorem free_correct (A R N : PTm n) (h : Γ ⊢[PRAAx] input A R N) :
     Γ ⊢[PRAAx] freeInput (finalHistory A R N) N (freeColumn A R N) :=
@@ -147,12 +136,7 @@ theorem vector_correct (A R N : PTm n) (h : Γ ⊢[PRAAx] input A R N) :
 
 def vectorF : PR 3 := PTm.toPR (vector (var 0) (var 1) (var 2))
 def run (A R N : PTm n) : PTm n := app vectorF ![A,R,N]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (A R N : PTm n) :
-    Syn.subst σ (run A R N) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (A R N : PTm n) : Γ ⊢[PRAAx] run A R N ≐ vector A R N := by
   simpa [run,vectorF] using toPR_eq (Γ := Γ) (vector (var 0) (var 1) (var 2) : PTm 3) ![A,R,N]
 theorem certificate_congr {A R N v w : PTm n} (e : Γ ⊢[PRAAx] v ≐ w) (h : Γ ⊢[PRAAx] certificate A R N v) :

@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianModulusAggregateMap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalHausdorff (pointRadius coordinateRadius pointRadius_at crossNumerator denominatorProduct)
 open RationalSupMetric (numeratorOf denominatorOf rationalNumerator rationalDenominator)
 open GaussianRationalHorner (represents scalar_congr scalar_rescale represents_congr positive_product)
@@ -30,9 +30,6 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_leng
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -48,12 +45,9 @@ def differenceValue (v w : PTm n) : PTm n := ComplexLogarithmRemainder.code
   (ZT.ofNat (denominatorProduct v w zero)*crossNumerator v w one)
 def evaluatorF : PR 3 := PTm.toPR (GaussianRationalModulus.lower (point (var 0)) (var 1))
 
-@[simp] theorem subst_point {l : ℕ} (σ : Fin n → PTm l) (v : PTm n) :
-    Syn.subst σ (point v) = point (Syn.subst σ v) := by simp [point]
-@[simp] theorem subst_vector {l : ℕ} (σ : Fin n → PTm l) (z : PTm n) :
-    Syn.subst σ (vector z) = vector (Syn.subst σ z) := by simp [vector]
-@[simp] theorem subst_common {l : ℕ} (σ : Fin n → PTm l) (v w : PTm n) :
-    Syn.subst σ (common v w) = common (Syn.subst σ v) (Syn.subst σ w) := by simp [common]
+ipra_subst point
+ipra_subst vector
+ipra_subst common
 
 theorem vector_length (z : PTm n) : Γ ⊢[PRAAx] length (vector z) ≐ two := sequence_length _ _ _
 theorem vector_zero (z : PTm n) : Γ ⊢[PRAAx] entry (vector z) zero ≐ fstT z := by

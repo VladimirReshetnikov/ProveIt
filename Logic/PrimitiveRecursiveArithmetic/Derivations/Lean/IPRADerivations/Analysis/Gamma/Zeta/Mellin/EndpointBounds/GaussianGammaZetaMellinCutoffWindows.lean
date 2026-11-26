@@ -16,7 +16,7 @@ set_option maxHeartbeats 1050000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinCutoffWindows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCompactRiemannName (data)
 open GaussianGammaCompactQuadratureBoundary (width exact_right_endpoint)
 open GaussianGammaCompactCutoffGeometry
@@ -29,9 +29,6 @@ open GaussianGammaZetaMellinGrid (evaluatorF fixedData)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "nameF" => GaussianGammaZetaMellinCompact.nameF
@@ -43,11 +40,7 @@ def datum (z R B A p : PTm n) : PTm n :=
   let T := top p A R
   data one (width p A R) E (gain (R+one) E T) T (fixedData (shifted z B) B)
 
-@[simp] theorem subst_datum {m : ℕ} (σ : Fin n → PTm m) (z R B A p : PTm n) :
-    Syn.subst σ (datum z R B A p) =
-      datum (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) (Syn.subst σ p) := by
-  simp [datum,etaDen,top,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient,
-    Products.fact,one,two]
+ipra_subst datum [etaDen, top, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.tailCoefficient, Products.fact, one, two]
 
 theorem panel_source (z R B A a W E T : PTm n)
     (hz : Γ ⊢[PRAAx] S z R B A)

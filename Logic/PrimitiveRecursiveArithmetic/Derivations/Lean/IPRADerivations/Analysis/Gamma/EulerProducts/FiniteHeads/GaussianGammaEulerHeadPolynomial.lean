@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qmul evaluate ofGaussian)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianRationalPolynomialDilation (weightedNorm)
@@ -23,9 +23,6 @@ open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianRationalSyntheticBounds (natCode)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,10 +31,8 @@ def advance (N C : PTm n) : PTm n := GaussianRationalPolynomialProduct.product C
 def stepBody : PTm 3 := advance (var 0) (var 1)
 def headF : PR 2 := rec2 (monomial qone : PTm 1) stepBody
 def polynomial (N : PTm n) : PTm n := ap2 headF N zero
-@[simp] theorem subst_advance {m : ℕ} (σ : Fin n → PTm m) (N C : PTm n) :
-    Syn.subst σ (advance N C) = advance (Syn.subst σ N) (Syn.subst σ C) := by simp [advance]
-@[simp] theorem subst_polynomial {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (polynomial N) = polynomial (Syn.subst σ N) := by simp [polynomial]
+ipra_subst advance
+ipra_subst polynomial
 
 theorem polynomial_zero : Γ ⊢[PRAAx] polynomial (zero : PTm n) ≐ monomial qone := by
   simpa only [polynomial,headF,GaussianGammaLinearCoefficient.subst_monomial,GaussianRationalSyntheticDivision.subst_qone] using
@@ -49,20 +44,15 @@ theorem polynomial_succ (N : PTm n) : Γ ⊢[PRAAx] polynomial (succ N) ≐ adva
 
 theorem polynomial_length (N : PTm n) : Γ ⊢[PRAAx] length (polynomial N) ≐ succ (succ N) := by
   have all : Γ ⊢[PRAAx] .all (length (polynomial (var 0)) ≐ succ (succ (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,LeanProofs.IPRA.Foundations.SequenceComposition.subst_length,
-        subst_polynomial,PTm.subst_succ,Syn.subst_var,Syn.inst_zero]
-      exact (congrFst polynomial_zero).eqTrans (GaussianGammaLinearCoefficient.monomial_length qone)
-    · simp only [Fm.subst_eq,LeanProofs.IPRA.Foundations.SequenceComposition.subst_length,
-        subst_polynomial,PTm.subst_succ,Syn.subst_var,Syn.repl_zero]
-      exact (congrFst (polynomial_succ (var 0))).eqTrans
+    ipra_qfind [LeanProofs.IPRA.Foundations.SequenceComposition.subst_length, subst_polynomial, PTm.subst_succ]
+    · exact (congrFst polynomial_zero).eqTrans (GaussianGammaLinearCoefficient.monomial_length qone)
+    · exact (congrFst (polynomial_succ (var 0))).eqTrans
         ((GaussianRationalPolynomialProduct.product_length _ _ _ _).eqTrans (by ipra_ring))
   simpa only [Fm.subst_eq,LeanProofs.IPRA.Foundations.SequenceComposition.subst_length,
     subst_polynomial,PTm.subst_succ,Syn.subst_var,Syn.inst_zero] using all.allE N
 
 def evaluationLaw (z B N : PTm n) : Fm PTm n := evaluate (polynomial N) (ofGaussian z B) ≐ GaussianGammaEulerHead.head z B N
-@[simp] theorem subst_evaluationLaw {m : ℕ} (σ : Fin n → PTm m) (z B N : PTm n) :
-    (evaluationLaw z B N).subst σ = evaluationLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by simp [evaluationLaw]
+ipra_subst evaluationLaw
 
 theorem evaluation_zero (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] evaluationLaw z B zero :=
   (GaussianRationalMonicReduction.evaluate_congr polynomial_zero (.eqRefl _)).eqTrans
@@ -81,17 +71,14 @@ theorem evaluation_step (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 theorem original_head_evaluation (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] evaluationLaw z B N := by
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
   have all : Γ ⊢[PRAAx] .all (evaluationLaw (Syn.shift z) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact evaluation_zero z B hB
-    · simp only [subst_evaluationLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact evaluation_step _ _ _ bs.wk Prf.hyp0
+    ipra_qfind [subst_evaluationLaw]
+    · exact evaluation_zero z B hB
+    · exact evaluation_step _ _ _ bs.wk Prf.hyp0
   simpa only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 def massLaw (R N : PTm n) : Fm PTm n := rationalLE
   (weightedNorm (polynomial N) (succ N) (radiusPoint R one)) (natCode (R*pw (one+R) N))
-@[simp] theorem subst_massLaw {m : ℕ} (σ : Fin n → PTm m) (R N : PTm n) :
-    (massLaw R N).subst σ = massLaw (Syn.subst σ R) (Syn.subst σ N) := by simp [massLaw]
+ipra_subst massLaw
 
 theorem mass_zero (R : PTm n) : Γ ⊢[PRAAx] massLaw R zero := by
   have first := GaussianGammaLinearCoefficient.monomial_weighted_bound (Γ := Γ) qone R
@@ -118,11 +105,9 @@ theorem mass_step (R N : PTm n) (ih : Γ ⊢[PRAAx] massLaw R N) : Γ ⊢[PRAAx]
 
 theorem original_head_coefficient_mass (R N : PTm n) : Γ ⊢[PRAAx] massLaw R N := by
   have all : Γ ⊢[PRAAx] .all (massLaw (Syn.shift R) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_massLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact mass_zero R
-    · simp only [subst_massLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact mass_step _ _ Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_massLaw]
+    · exact mass_zero R
+    · exact mass_step _ _ Prf.hyp0
   simpa only [subst_massLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 theorem original_Euler_head_coefficient_evaluation_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

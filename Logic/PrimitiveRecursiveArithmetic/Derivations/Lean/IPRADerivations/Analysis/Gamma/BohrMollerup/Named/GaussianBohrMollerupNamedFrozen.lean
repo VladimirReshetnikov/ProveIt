@@ -16,7 +16,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupNamedFrozen
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupPresentation (Presentation argument laws native)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaMinimumFreezeRational (numerator denominator frozen_rational_domain)
@@ -24,8 +24,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedRightHalfPlane (radius threshold)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "nativeF" => GaussianLogGammaEulerNamed.nameF
@@ -41,14 +39,9 @@ def source (f : PR 2) (x A R : PTm n) : Fm PTm n :=
 def rationalData (P : Presentation) (f : PR 2) (k x : PTm n) : PTm n :=
   argument P (numerator f k x) (denominator f k x)
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A R : PTm n) :
-    (source f x A R).subst σ = source f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [source]
+ipra_subst source
 
-@[simp] theorem subst_rationalData {m : ℕ} (σ : Fin n → PTm m) (P : Presentation)
-    (f : PR 2) (k x : PTm n) :
-    Syn.subst σ (rationalData P f k x) = rationalData P f (Syn.subst σ k) (Syn.subst σ x) := by
-  simp [rationalData]
+ipra_subst rationalData
 
 theorem native_source (f : PR 2) (x A R : PTm n) (h : Γ ⊢[PRAAx] source f x A R) :
     Γ ⊢[PRAAx] GaussianLogGammaEulerNamed.source f x A R :=

@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaPositiveTerms
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular harmonicPoint)
 open GaussianGammaDerivativeAtOne (negativeGammaF negativeGammaData negativeGamma_regular)
@@ -30,10 +30,6 @@ open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (qsub bounded distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
 open GaussianStirlingGammaLogarithm (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -51,17 +47,12 @@ def budget (a N : PTm n) : PTm n := GaussianGammaDigammaSeries.budget a N+num 6
 
 def rateCoefficient (a : PTm n) : PTm n := a+one
 
-@[simp] theorem subst_rateCoefficient {m : ℕ} (σ : Fin n → PTm m) (a : PTm n) :
-    Syn.subst σ (rateCoefficient a) = rateCoefficient (Syn.subst σ a) := by simp [rateCoefficient]
+ipra_subst rateCoefficient
 
-@[simp] theorem subst_positiveSum {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (positiveSum a b N) = positiveSum (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [positiveSum]
-@[simp] theorem subst_correction {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (correction a b N) = correction (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [correction]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    Syn.subst σ (data a b N) = data (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [data]
-@[simp] theorem subst_budget {m : ℕ} (σ : Fin n → PTm m) (a N : PTm n) :
-    Syn.subst σ (budget a N) = budget (Syn.subst σ a) (Syn.subst σ N) := by simp [budget]
+ipra_subst positiveSum
+ipra_subst correction
+ipra_subst data
+ipra_subst budget
 
 theorem term_value (a b k : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] qsub (fraction one k) (fraction b (index a b k)) ≐ fraction a (k*index a b k) := by
@@ -90,8 +81,7 @@ theorem term_at (a b j : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
 
 def sumLaw (a b N : PTm n) : Fm PTm n :=
   positiveSum a b N ≐ qsub (harmonicPoint N) (GaussianRationalFiniteSum.sum (shiftBody reciprocalBody) N (pairT a b))
-@[simp] theorem subst_sumLaw {m : ℕ} (σ : Fin n → PTm m) (a b N : PTm n) :
-    (sumLaw a b N).subst σ = sumLaw (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ N) := by simp [sumLaw]
+ipra_subst sumLaw
 
 private theorem sum_base (a b : PTm n) : Γ ⊢[PRAAx] sumLaw a b zero :=
   (GaussianRationalFiniteSum.sum_zero termBody _).eqTrans ((qsub_congr GaussianGammaEulerHeadQuadratic.harmonic_zero

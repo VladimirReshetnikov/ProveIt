@@ -15,7 +15,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalPrefactor
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_regular gammaF gamma_regular)
@@ -30,9 +30,6 @@ open GaussianRationalReciprocal (conjugate)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open RationalGaussianEmbedding (axis canonical_axis_roundtrip)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

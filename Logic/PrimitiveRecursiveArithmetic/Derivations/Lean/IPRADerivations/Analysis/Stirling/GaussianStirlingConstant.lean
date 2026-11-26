@@ -16,7 +16,7 @@ set_option maxHeartbeats 750000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingConstant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGaussTriplicationPi (doubledPiF doubledPiData doubled_pi_regular)
 open GaussianStirlingNames (constant_real fraction_axis multiply_real positive_log_real)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
@@ -38,10 +38,6 @@ open RationalArgmin (rationalLE)
 open RationalGaussianEmbedding (axis axis_congr)
 open ComplexLogarithmRemainder (re oneCode)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -170,11 +166,8 @@ def logDoubledPiData (x : PTm n) : PTm n :=
 def nameF : PR 2 := multiplyF C logDoubledPiF
 def nameData (x : PTm n) : PTm n := multiplyData C logDoubledPiF (fraction one two) (logDoubledPiData x)
 
-@[simp] theorem subst_logDoubledPiData {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (logDoubledPiData x) = logDoubledPiData (Syn.subst σ x) := by
-  simp [logDoubledPiData,doubledPiData,two,one]
-@[simp] theorem subst_nameData {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (nameData x) = nameData (Syn.subst σ x) := by simp [nameData,one,two]
+ipra_subst logDoubledPiData [doubledPiData, two, one]
+ipra_subst nameData [one, two]
 
 theorem log_source (x : PTm n) :
     Γ ⊢[PRAAx] GaussianNamedPositiveLogarithm.source (retimedF doubledPiF)

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaHalfPlaneInputContinuity
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaEncodingRescaling (fraction_rescale fraction_denominator_congr
   rescaled_source original_C7_rescale)
 open GaussianGammaReciprocalInverse (lambdaNumerator lambdaDenominator inverseF inverseData
@@ -28,8 +28,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (ofGaussian positive_product)
 open ComplexLogarithmRemainder (scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -91,13 +89,9 @@ def inverseClock (s R A : PTm n) : PTm n :=
 def modulus (s R A : PTm n) : PTm n :=
   GaussianGammaInputContinuity.modulus (inverseClock s R A) R
 
-@[simp] theorem subst_inverseClock {m : ℕ} (σ : Fin n → PTm m) (s R A : PTm n) :
-    Syn.subst σ (inverseClock s R A) = inverseClock (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [inverseClock]
+ipra_subst inverseClock
 
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (s R A : PTm n) :
-    Syn.subst σ (modulus s R A) = modulus (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ A) := by
-  simp [modulus]
+ipra_subst modulus
 
 private theorem observation_budget (p q s R A : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
     Γ ⊢[PRAAx] le

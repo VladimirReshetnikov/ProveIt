@@ -46,9 +46,7 @@ def weightBody : PTm 2 :=
   let e := sndT (sndT d)
   weight (fstT d) (fstT (sndT d)) (fstT e+sndT e*var 0)
 
-@[simp] theorem subst_weightData {l : ℕ} (σ : Fin n → PTm l) (q A B S : PTm n) :
-    Syn.subst σ (weightData q A B S) = weightData (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ S) := by
-  simp [weightData,mesh,start]
+ipra_subst weightData [mesh, start]
 
 theorem weight_row_at (i q A B S : PTm n) :
     Γ ⊢[PRAAx] term weightBody i (weightData q A B S) ≐ singleWeight q A B S i := by

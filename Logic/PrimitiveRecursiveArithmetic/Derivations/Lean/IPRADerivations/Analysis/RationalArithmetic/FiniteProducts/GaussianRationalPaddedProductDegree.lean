@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalPaddedProductDegree
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalGridCoefficientEquality (coefficientsEqual)
 open LeanProofs.IPRA.Analysis.GaussianRationalLinearCancellation (coefficients_at pad_first pad_degree)
 open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialBuffers (leftPad)
@@ -26,9 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalPolynomialProductDegree
 open LeanProofs.IPRA.Analysis.GaussianTranslatedNonconstant (recode_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

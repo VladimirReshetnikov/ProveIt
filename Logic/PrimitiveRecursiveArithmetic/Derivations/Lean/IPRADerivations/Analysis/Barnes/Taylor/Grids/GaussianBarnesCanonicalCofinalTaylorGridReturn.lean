@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalCofinalTaylorGridReturn
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add bounded normSq scale)
 open GaussianBarnesCanonicalCofinalTaylorGridObservations (cofinal_at cofinalGrid deadline node_source)
 open GaussianBarnesCanonicalCofinalTaylorGridWindows (next_window)
@@ -29,10 +29,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRootAlgebra (equal equal_of_values re_add im_add re_neg im_neg normSq_equal)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

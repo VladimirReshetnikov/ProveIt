@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalFiniteSum
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Canonical rational algebra and affine order
@@ -16,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalAlgebra
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArithmetic
 open LeanProofs.IPRA.Analysis.RationalRepresentations
@@ -24,9 +23,6 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE rationalEq left denomin
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters
   (midpoint midpointNumerator midpointDenominator midpoint_denominator_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -99,12 +95,10 @@ theorem negative_involution (a : PTm n) : Γ ⊢[PRAAx] negative (negative a) �
 def half : PTm n := RationalIntegerNormalization.normalize (ZT.natLit 1) two
 def minusOne : PTm n := RationalIntegerNormalization.normalize (-(ZT.natLit 1)) one
 
-@[simp] theorem subst_half {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (half : PTm n) = (half : PTm m) := by simp [half]
-@[simp] theorem subst_minusOne {m : ℕ} (σ : Fin n → PTm m) :
-    Syn.subst σ (minusOne : PTm n) = (minusOne : PTm m) := by simp [minusOne]
+ipra_subst half
+ipra_subst minusOne
 
-theorem two_positive : Γ ⊢[PRAAx] le one (two : PTm n) := le_of_eq_add (d := one) (by ipra_ring)
+alias two_positive := Common.one_le_two
 theorem half_value : Γ ⊢[PRAAx] represents (half : PTm n) (ZT.natLit 1) two :=
   RationalIntegerNormalization.normalize_preserves_value _ _ two_positive
 theorem minus_one_value : Γ ⊢[PRAAx] represents (minusOne : PTm n) (-(ZT.natLit 1)) one :=

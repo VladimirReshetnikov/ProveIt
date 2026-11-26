@@ -15,7 +15,7 @@ set_option maxHeartbeats 245000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaReflectionQuotient
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaReflectionProduct (complementarySource complementaryData gammaPairF)
@@ -28,8 +28,6 @@ open GaussianNameRingLaws (oneF one_fast multiply_associative multiply_commutati
 open GaussianRationalHorner (ofGaussian)
 open GaussianSineProductReflectionLower (numerator denominator numerator_positive denominator_positive)
 open GaussianSineReflectionLower (actual_sine_lower threshold)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "P" => GaussianGammaHalfPiName.nameF

@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerIntegrationByPartsEndpointBudget
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrationByPartsLinear (primitive)
 open GaussianBetaPrimitiveLowerEndpoint (rootDen)
 open GaussianGammaIntegralCutoffs (etaDen height top tailCoefficient top_positive)
@@ -26,10 +26,6 @@ open GaussianRationalReciprocal (bound_congr bounded_sum bounded_negative)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianExponentialReference (unit_monotone)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)

@@ -14,8 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalCofactorSupport
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
+open_ipra
 open RationalSelectedMinors (count index index_bound index_selected)
 open RationalSubtupleSpan (bit)
 open RationalMinorFreeColumn (free bit_cases)
@@ -26,16 +25,12 @@ open RationalCofactorVector (positionParity)
 open GaussianScalarDeterminantLaplace (unitSign sign_bit_congr unit_sign_add)
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def supportedColumn (P d r : PTm n) : PTm n := index d (extendedColumn P d) r
 
-@[simp] theorem subst_supportedColumn {k : ℕ} (σ : Fin n → PTm k) (P d r : PTm n) :
-    Syn.subst σ (supportedColumn P d r) = supportedColumn (Syn.subst σ P) (Syn.subst σ d) (Syn.subst σ r) := by
-  simp [supportedColumn]
+ipra_subst supportedColumn
 
 theorem supported_label (P d r : PTm n) (h : Γ ⊢[PRAAx] lt r (count d (extendedColumn P d))) : Γ ⊢[PRAAx]
     lt (supportedColumn P d r) d ⋏ (bit (extendedColumn P d) (supportedColumn P d r) ≐ one ⋏

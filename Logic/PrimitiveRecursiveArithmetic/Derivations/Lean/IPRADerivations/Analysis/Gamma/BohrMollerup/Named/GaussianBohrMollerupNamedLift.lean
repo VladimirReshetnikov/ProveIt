@@ -14,7 +14,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBohrMollerupNamedLift
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBohrMollerupNamedFrozen (source rationalData native_source frozen_cross)
 open GaussianBohrMollerupPresentation (Presentation laws)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -24,9 +24,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "nativeF" => GaussianLogGammaEulerNamed.nameF
@@ -45,13 +42,9 @@ abbrev data (x A R : PTm n) : PTm n := GaussianLogGammaEulerNamed.data x A R
 def nameF (P : Presentation) (f : PR 2) : PR 2 := PTm.toPR
   (sample P f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)
 
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p A R : PTm n) :
-    Syn.subst σ (clock p A R) = clock (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [clock]
+ipra_subst clock
 
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (P : Presentation) (f : PR 2) (p x A R : PTm n) :
-    Syn.subst σ (sample P f p x A R) = sample P f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ R) := by
-  simp [sample]
+ipra_subst sample
 
 theorem sample_at (P : Presentation) (f : PR 2) (p x A R : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF P f) p (data x A R) ≐ sample P f p x A R := by

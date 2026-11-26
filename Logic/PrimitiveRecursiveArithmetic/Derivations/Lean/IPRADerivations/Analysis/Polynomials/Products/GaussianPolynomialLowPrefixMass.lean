@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.GaussianPolynomialLowPrefix
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianPolynomialNormBuffers
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # Coefficient mass of a stored low-degree prefix
@@ -14,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialLowPrefixMass
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientL1 (coefficientNorm prefix_monotone qL1_congr)
 open GaussianPolynomialLowPrefix (polynomial polynomial_length polynomial_lookup)
 open GaussianRationalHorner (canonical_congr)
@@ -24,10 +23,6 @@ open GaussianRationalSyntheticDivision (canonicalCoefficients canonical_coeffici
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr subst_length)
 open RationalArgmin (rationalLE rationalLE_congr)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -4,7 +4,6 @@ import IPRADerivations.Analysis.Names.RationalReciprocalPowerName
 import IPRADerivations.Analysis.Names.RationalGaussianNameEmbedding
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaCofinalDegreeTail
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # The original zeta-tail coefficients in a genuine finite-degree Gamma name
@@ -22,7 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaDegreeName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaReciprocalDegreeCells (degree monomial sourcePart separatedSum)
 open RationalGaussianEmbedding (embed)
 open GaussianRationalHorner (qmul positive_product)
@@ -32,10 +31,6 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianGammaCanonicalTailName (source)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -60,19 +55,11 @@ def coefficientBody : PTm 2 := coefficientPart (fstT (var 1)) (fstT (sndT (var 1
 def clock (p R : PTm n) : PTm n := succ p+R*R+num 5
 def horizon (p R : PTm n) : PTm n := RationalReciprocalPowerName.cutoff (clock p R)
 def observation (p z R B N L : PTm n) : PTm n := sum coefficientBody (succ L) (coefficientData (clock p R) z B N)
-@[simp] theorem subst_coefficientPart {m : ℕ} (σ : Fin n → PTm m) (q z B N j : PTm n) :
-    Syn.subst σ (coefficientPart q z B N j) = coefficientPart (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ B)
-      (Syn.subst σ N) (Syn.subst σ j) := by simp [coefficientPart]
-@[simp] theorem subst_coefficientData {m : ℕ} (σ : Fin n → PTm m) (q z B N : PTm n) :
-    Syn.subst σ (coefficientData q z B N) = coefficientData (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N) := by
-  simp [coefficientData]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (clock p R) = clock (Syn.subst σ p) (Syn.subst σ R) := by simp [clock]
-@[simp] theorem subst_horizon {m : ℕ} (σ : Fin n → PTm m) (p R : PTm n) :
-    Syn.subst σ (horizon p R) = horizon (Syn.subst σ p) (Syn.subst σ R) := by simp [horizon]
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R B N L : PTm n) :
-    Syn.subst σ (observation p z R B N L) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ L) := by simp [observation]
+ipra_subst coefficientPart
+ipra_subst coefficientData
+ipra_subst clock
+ipra_subst horizon
+ipra_subst observation
 
 theorem coefficient_part_congr {q z B N j q' z' B' N' j' : PTm n}
     (hq : Γ ⊢[PRAAx] q ≐ q') (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B')
@@ -85,8 +72,8 @@ theorem coefficient_term_at (q z B N j : PTm n) : Γ ⊢[PRAAx]
     Matrix.cons_val_zero,Matrix.cons_val_one]
   have t₁ := snd_pair (Γ := Γ) q (pairT z (pairT B N))
   have t₂ := (congrSnd t₁).eqTrans (snd_pair z (pairT B N))
-  exact coefficient_part_congr (fst_pair _ _) ((congrFst t₁).eqTrans (fst_pair _ _))
-    ((congrFst t₂).eqTrans (fst_pair _ _)) ((congrSnd t₂).eqTrans (snd_pair _ _)) (.eqRefl _)
+  exact coefficient_part_congr (fst_pair _ _) t₁.fstE
+    t₂.fstE t₂.sndE (.eqRefl _)
 theorem coefficient_part_finite (q z B N j : PTm n) : Γ ⊢[PRAAx]
     coefficientPart q z B N j ≐ sourcePart z B N (RationalReciprocalPowerName.cutoff q) j :=
   qmul_congr (.eqRefl _) (RationalGaussianRealPart.embed_congr (RationalReciprocalPowerName.tail_sample_at q (degree j) N))
@@ -157,8 +144,7 @@ def data (z R B N L : PTm n) : PTm n := GaussianGammaFixedDegreeHorizon.data z R
 def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1)))
   (fstT (sndT (sndT (var 1)))) (fstT (sndT (sndT (sndT (var 1))))) (sndT (sndT (sndT (sndT (var 1))))) : PTm 2)
 def sample (p z R B N L : PTm n) : PTm n := ap2 nameF p (data z R B N L)
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B N L : PTm n) :
-    Syn.subst σ (data z R B N L) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ L) := by simp [data]
+ipra_subst data
 theorem observation_congr {p p' z z' R R' B B' N N' L L' : PTm n}
     (hp : Γ ⊢[PRAAx] p ≐ p') (hz : Γ ⊢[PRAAx] z ≐ z') (hR : Γ ⊢[PRAAx] R ≐ R')
     (hB : Γ ⊢[PRAAx] B ≐ B') (hN : Γ ⊢[PRAAx] N ≐ N') (hL : Γ ⊢[PRAAx] L ≐ L') : Γ ⊢[PRAAx]
@@ -179,8 +165,8 @@ theorem sample_at (p z R B N L : PTm n) : Γ ⊢[PRAAx] sample p z R B N L ≐ o
   have t₁ := snd_pair (Γ := Γ) z (pairT R (pairT B (pairT N L)))
   have t₂ := (congrSnd t₁).eqTrans (snd_pair R (pairT B (pairT N L)))
   have t₃ := (congrSnd t₂).eqTrans (snd_pair B (pairT N L))
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) ((congrFst t₁).eqTrans (fst_pair _ _))
-    ((congrFst t₂).eqTrans (fst_pair _ _)) ((congrFst t₃).eqTrans (fst_pair _ _)) ((congrSnd t₃).eqTrans (snd_pair _ _)))
+  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) t₁.fstE
+    t₂.fstE t₃.fstE t₃.sndE)
 theorem sample_canonical (p z R B N L : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (sample p z R B N L) :=
   GaussianRationalHorner.canonical_congr (sample_at p z R B N L) (GaussianRationalFiniteSum.sum_canonical _ _ _)
 theorem sample_bound (p z R B N L : PTm n) (h : Γ ⊢[PRAAx] source z R B N) : Γ ⊢[PRAAx]

@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPowerScalingCompactRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerDampedNamedIntegrand (decayF decayData)
 open GaussianNameRingLaws (negativeF negativeData negative_fast)
 open GaussianRationalMetric (bounded distanceBounded qnegative)
@@ -26,8 +26,6 @@ open GaussianExponentialReference (unit_monotone)
 open GaussianNamedInverseRate (independentRate)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (positive_product qmul)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -45,16 +43,9 @@ def lipschitz (R Q S E T : PTm n) : PTm n :=
 def source (z R B e f d h Q S E T a b c v A D : PTm n) : Fm PTm n :=
   GaussianEulerExponentCompactBounds.source z R B E ⋏ GaussianEulerPositivePowerChart.input e f d h Q S E T a b c v A D
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z B e f d h S a b : PTm n) :
-    Syn.subst σ (data z B e f d h S a b) =
-      data (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ e) (Syn.subst σ f) (Syn.subst σ d) (Syn.subst σ h)
-        (Syn.subst σ S) (Syn.subst σ a) (Syn.subst σ b) := by simp [data]
+ipra_subst data
 
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (R Q S E T : PTm n) :
-    Syn.subst σ (lipschitz R Q S E T) = lipschitz (Syn.subst σ R) (Syn.subst σ Q) (Syn.subst σ S) (Syn.subst σ E)
-      (Syn.subst σ T) := by
-  simp [lipschitz,decayBound,GaussianEulerCompactPowerVariation.lipschitz,GaussianEulerCompactPowerMajorant.majorant,
-    GaussianEulerCompactPowerMajorant.exponentRadius]
+ipra_subst lipschitz [decayBound, GaussianEulerCompactPowerVariation.lipschitz, GaussianEulerCompactPowerMajorant.majorant, GaussianEulerCompactPowerMajorant.exponentRadius]
 
 private theorem negative_at (F : PR 2) (p x : PTm n) : Γ ⊢[PRAAx]
     ap2 (negativeF F) p (negativeData x) ≐ qnegative (ap2 F (GaussianFastValueCut.exponent (one+one) p) x) :=

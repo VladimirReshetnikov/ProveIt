@@ -13,9 +13,7 @@ set_option maxHeartbeats 850000
 
 namespace LeanProofs.IPRA.Analysis.RationalPolynomialGridMean
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open BernoulliBounds (zint toZ_zint)
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalHorner (positive_product)
@@ -27,8 +25,6 @@ open RationalPolynomialGridMeanError (meanNumerator radius cleared_error)
 open RationalPolynomialGridSum (body rowDen prefixNumerator fold_eq)
 open RationalRepresentedUpper (from_signed)
 open RationalValueBounds (upper)
-open Syn
-open scoped Fm
 
 variable {n d : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" x:max => Groth.ι (Q.mk Γ x)

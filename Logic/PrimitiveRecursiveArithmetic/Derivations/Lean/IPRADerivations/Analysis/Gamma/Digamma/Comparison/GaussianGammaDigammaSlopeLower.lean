@@ -15,7 +15,7 @@ set_option maxHeartbeats 3000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaSlopeLower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaDigammaFiniteSum (reciprocalSum)
@@ -31,10 +31,6 @@ open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
 open GaussianStirlingGammaLogarithm (source)
 open RationalValueBounds (upper upper_of_radius upper_order_right upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "DF" => GaussianGammaDigammaNative.nameF
@@ -45,9 +41,7 @@ def lowerF : PR 2 := addF DF constantF
 
 def lowerData (a c b : PTm n) : PTm n := addData (dd a b) (margin a c b)
 
-@[simp] theorem subst_lowerData {m : ℕ} (σ : Fin n → PTm m) (a c b : PTm n) :
-    Syn.subst σ (lowerData a c b) = lowerData (Syn.subst σ a) (Syn.subst σ c) (Syn.subst σ b) := by
-  simp [lowerData]
+ipra_subst lowerData
 
 private theorem cutoff_distance (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] distanceBounded (ap2 DF p (dd a b))

@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomialEvaluation
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual value names of general coefficient and point names
@@ -21,16 +20,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGeneralPolynomialValueName
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (canonical)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianGeneralCoefficientNames (generalCN)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (pointCN)
 open LeanProofs.IPRA.Analysis.GaussianRootApproximationWitness (pointBounds)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,17 +39,11 @@ def programZero (f : PR 2) (x : PTm n) : Fm PTm n := .all
 def rawZeroEnvelope (f : PR 2) (x K : PTm n) : Fm PTm n :=
   GaussianFastValueCut.rawEnvelope f x zero one K
 
-@[simp] theorem subst_normalizedZero {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (L x : PTm n) :
-    (normalizedZero f L x).subst σ = normalizedZero f (Syn.subst σ L) (Syn.subst σ x) := by
-  simp [normalizedZero,Syn.subst_shift,Syn.shift_subst]
+ipra_subst normalizedZero [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_programZero {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    (programZero f x).subst σ = programZero f (Syn.subst σ x) := by
-  simp [programZero,Syn.subst_shift,Syn.shift_subst]
+ipra_subst programZero [Syn.subst_shift, Syn.shift_subst]
 
-@[simp] theorem subst_rawZeroEnvelope {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x K : PTm n) :
-    (rawZeroEnvelope f x K).subst σ = rawZeroEnvelope f (Syn.subst σ x) (Syn.subst σ K) := by
-  simp [rawZeroEnvelope]
+ipra_subst rawZeroEnvelope
 
 theorem normalized_zero_at (f : PR 2) (L x k : PTm n)
     (h : Γ ⊢[PRAAx] normalizedZero f L x) : Γ ⊢[PRAAx]
@@ -140,29 +130,17 @@ def rawEnvelope (a : PR 3) (point : PR 2) (N x y K : PTm n) : Fm PTm n :=
   rawZeroEnvelope (GaussianGeneralPolynomialEvaluation.observationF a point)
     (GaussianGeneralPolynomialEvaluation.observationData N x y) K
 
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U x y k : PTm n) :
-    Syn.subst σ (value a point N U x y k) = value a point (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ k) := by simp [value]
+ipra_subst value
 
-@[simp] theorem subst_exponent {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x k : PTm n) :
-    Syn.subst σ (exponent a N U x k) = exponent a (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ x) (Syn.subst σ k) := by simp [exponent]
+ipra_subst exponent
 
-@[simp] theorem subst_nameData {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (N U x y : PTm n) :
-    Syn.subst σ (nameData a N U x y) = nameData a (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ x) (Syn.subst σ y) := by simp [nameData]
+ipra_subst nameData
 
-@[simp] theorem subst_valueZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U x y : PTm n) :
-    (valueZero a point N U x y).subst σ = valueZero a point (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ x) (Syn.subst σ y) := by simp [valueZero]
+ipra_subst valueZero
 
-@[simp] theorem subst_nameZero {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N U x y : PTm n) :
-    (nameZero a point N U x y).subst σ = nameZero a point (Syn.subst σ N) (Syn.subst σ U)
-      (Syn.subst σ x) (Syn.subst σ y) := by simp [nameZero]
+ipra_subst nameZero
 
-@[simp] theorem subst_rawEnvelope {m : ℕ} (σ : Fin n → PTm m) (a : PR 3) (point : PR 2) (N x y K : PTm n) :
-    (rawEnvelope a point N x y K).subst σ = rawEnvelope a point (Syn.subst σ N)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ K) := by simp [rawEnvelope]
+ipra_subst rawEnvelope
 
 theorem name_at (a : PR 3) (point : PR 2) (N U x y k : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF a point) k (nameData a N U x y) ≐ value a point N U x y k :=

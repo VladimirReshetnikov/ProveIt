@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialConstantInjection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (evaluate horner hornerF qzero qadd)
 open GaussianRationalSyntheticDivision (qadd_congr canonicalCoefficients)
 open GaussianPolynomialMonicCompanion (normalizedRow normalized_length normalized_canonical normalized_evaluation
@@ -24,10 +24,6 @@ open GaussianRationalPolynomialBuffers (zeros zeros_length zeros_evaluation left
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_one sel_zero)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
-open LeanProofs.IPRA.PTm (pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,16 +36,12 @@ def fields (p : PTm n) : Fin 5 → PTm n :=
 def rowBody : PTm 2 := injectedRow (fields (var 1) 0) (fields (var 1) 1) (fields (var 1) 2) (fields (var 1) 3) (fields (var 1) 4) (var 0)
 def inject (G C m a d : PTm n) : PTm n := sequence rowBody m (data G C m a d)
 
-@[simp] theorem subst_constantRow {k : ℕ} (σ : Fin n → PTm k) (C m a d r : PTm n) :
-    Syn.subst σ (constantRow C m a d r) = constantRow (Syn.subst σ C) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ r) := by simp [constantRow,sel]
-@[simp] theorem subst_injectedRow {k : ℕ} (σ : Fin n → PTm k) (G C m a d r : PTm n) :
-    Syn.subst σ (injectedRow G C m a d r) = injectedRow (Syn.subst σ G) (Syn.subst σ C) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) (Syn.subst σ r) := by simp [injectedRow]
-@[simp] theorem subst_data {k : ℕ} (σ : Fin n → PTm k) (G C m a d : PTm n) :
-    Syn.subst σ (data G C m a d) = data (Syn.subst σ G) (Syn.subst σ C) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [data]
+ipra_subst constantRow [sel]
+ipra_subst injectedRow
+ipra_subst data
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) (i : Fin 5) :
     Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
-@[simp] theorem subst_inject {k : ℕ} (σ : Fin n → PTm k) (G C m a d : PTm n) :
-    Syn.subst σ (inject G C m a d) = inject (Syn.subst σ G) (Syn.subst σ C) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by simp [inject]
+ipra_subst inject
 
 theorem constant_last (C m a d r : PTm n) (h : Γ ⊢[PRAAx] succ r ≐ m) : Γ ⊢[PRAAx]
     constantRow C m a d r ≐ leftPad (normalizedRow C) d := sel_one (eqb_of_eq h)
@@ -70,10 +62,10 @@ theorem fields_at (G C m a d : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (data G
   have e2 := (congrSnd e1).eqTrans (snd_pair m (pairT a d))
   fin_cases i
   · exact fst_pair _ _
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrSnd e2).eqTrans (snd_pair _ _)
+  · exact e0.fstE
+  · exact e1.fstE
+  · exact e2.fstE
+  · exact e2.sndE
 theorem tuple_six_last {α : Type} (a b c d e f : α) : ![a,b,c,d,e,f] (5 : Fin 6) = f := rfl
 
 theorem row_congr {G G' C C' m m' a a' d d' r r' : PTm n} (hG : Γ ⊢[PRAAx] G ≐ G') (hC : Γ ⊢[PRAAx] C ≐ C')
@@ -162,12 +154,7 @@ theorem inject_evaluation (G C m a d x y : PTm n) (hm : Γ ⊢[PRAAx] le one m)
 
 def injectF : PR 5 := PTm.toPR (inject (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (G C m a d : PTm n) : PTm n := app injectF ![G,C,m,a,d]
-@[simp] theorem subst_run {k : ℕ} (σ : Fin n → PTm k) (G C m a d : PTm n) :
-    Syn.subst σ (run G C m a d) = run (Syn.subst σ G) (Syn.subst σ C) (Syn.subst σ m) (Syn.subst σ a) (Syn.subst σ d) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst run
 theorem program_at (G C m a d : PTm n) : Γ ⊢[PRAAx] run G C m a d ≐ inject G C m a d := by
   simpa [run,injectF] using toPR_eq (Γ := Γ) (inject (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![G,C,m,a,d]
 theorem returned_stored (G C m a d : PTm n) : Γ ⊢[PRAAx]

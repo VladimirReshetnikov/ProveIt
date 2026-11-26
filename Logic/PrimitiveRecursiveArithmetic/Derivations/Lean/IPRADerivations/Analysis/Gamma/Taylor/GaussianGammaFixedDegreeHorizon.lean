@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFiniteDegreeRearrangement
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual fixed-degree Gamma tails over cofinal factor horizons
@@ -15,7 +14,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFixedDegreeHorizon
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaCanonicalTailFiniteSplit (gaussianSum term)
 open GaussianRationalHorner (qadd qzero)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qadd_sub_cancel)
@@ -26,17 +25,12 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianGammaFiniteDegreeRearrangement (degreeMajor)
 open GaussianGammaCanonicalTailName (source)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def splitLaw (z B N r L s : PTm n) : Fm PTm n := gaussianSum z B N (r+s) L ≐
   qadd (gaussianSum z B N r L) (gaussianSum z B (N+r) s L)
-@[simp] theorem subst_splitLaw {m : ℕ} (σ : Fin n → PTm m) (z B N r L s : PTm n) :
-    (splitLaw z B N r L s).subst σ = splitLaw (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ N)
-      (Syn.subst σ r) (Syn.subst σ L) (Syn.subst σ s) := by simp [splitLaw]
+ipra_subst splitLaw
 theorem split_zero (z B N r L : PTm n) : Γ ⊢[PRAAx] splitLaw z B N r L zero :=
   (GaussianRationalFiniteSum.sum_index_congr _ (add_zero r) (.eqRefl _)).eqTrans
     ((GaussianRationalLinearProduct.qadd_zero_right _ (GaussianRationalFiniteSum.sum_canonical _ _ _)).eqSymm.eqTrans
@@ -79,9 +73,7 @@ theorem finite_horizon_distance (z R B N r s L : PTm n) (h : Γ ⊢[PRAAx] sourc
     (original_sum_as_degree z B N r L h.andE₁) (.eqRefl _) (.eqRefl _) diff
 
 def observation (p z R B N L : PTm n) : PTm n := degreeMajor z B N (GammaCanonicalNames.count p R) L
-@[simp] theorem subst_observation {m : ℕ} (σ : Fin n → PTm m) (p z R B N L : PTm n) :
-    Syn.subst σ (observation p z R B N L) = observation (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R)
-      (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ L) := by simp [observation]
+ipra_subst observation
 
 theorem original_count_budget (p R N : PTm n) : Γ ⊢[PRAAx]
     le (unit p*(R*R)) (N+GammaCanonicalNames.count p R) := by
@@ -129,9 +121,7 @@ def data (z R B N L : PTm n) : PTm n := pairT z (pairT R (pairT B (pairT N L)))
 def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1)))
   (fstT (sndT (sndT (var 1)))) (fstT (sndT (sndT (sndT (var 1))))) (sndT (sndT (sndT (sndT (var 1))))) : PTm 2)
 def sample (p z R B N L : PTm n) : PTm n := ap2 nameF p (data z R B N L)
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z R B N L : PTm n) :
-    Syn.subst σ (data z R B N L) = data (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ N) (Syn.subst σ L) := by
-  simp [data]
+ipra_subst data
 theorem sample_at (p z R B N L : PTm n) : Γ ⊢[PRAAx] sample p z R B N L ≐ observation p z R B N L := by
   have raw := toPR_eq (Γ := Γ) (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1)))
     (fstT (sndT (sndT (var 1)))) (fstT (sndT (sndT (sndT (var 1))))) (sndT (sndT (sndT (sndT (var 1))))) : PTm 2)
@@ -144,8 +134,8 @@ theorem sample_at (p z R B N L : PTm n) : Γ ⊢[PRAAx] sample p z R B N L ≐ o
   have t₁ := snd_pair (Γ := Γ) z (pairT R (pairT B (pairT N L)))
   have t₂ := (congrSnd t₁).eqTrans (snd_pair R (pairT B (pairT N L)))
   have t₃ := (congrSnd t₂).eqTrans (snd_pair B (pairT N L))
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) ((congrFst t₁).eqTrans (fst_pair _ _))
-    ((congrFst t₂).eqTrans (fst_pair _ _)) ((congrFst t₃).eqTrans (fst_pair _ _)) ((congrSnd t₃).eqTrans (snd_pair _ _)))
+  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) t₁.fstE
+    t₂.fstE t₃.fstE t₃.sndE)
 theorem sample_canonical (p z R B N L : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (sample p z R B N L) :=
   GaussianRationalHorner.canonical_congr (sample_at p z R B N L)
     (GaussianGammaFiniteDegreeRearrangement.degree_major_canonical z B N (GammaCanonicalNames.count p R) L)

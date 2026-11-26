@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalRationalProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaHalfSqrtBrackets (fraction_first_represents)
 open GaussianGammaInputProperness (code_data_cross)
@@ -29,8 +29,6 @@ open GaussianGammaNegativeIntervalNamedInput (frozen_guard root_real_at root_sam
 open GaussianGammaNegativeIntervalRescale (guard_rescale)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianPositiveRationalLogarithm (fraction)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

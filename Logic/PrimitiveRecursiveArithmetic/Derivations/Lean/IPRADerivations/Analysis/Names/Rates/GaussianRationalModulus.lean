@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.RationalArithmetic.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Actual nonnegative modulus samples of original Gaussian rational points
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (qsub qnormSq distanceBounded)
 open GaussianEuclideanPointDistance (unit unit_positive)
@@ -29,9 +28,6 @@ open RationalArithmetic (add multiply negative)
 open RationalSupMetric (numeratorOf)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,15 +37,11 @@ def upper (q s : PTm n) : PTm n := GaussianEuclideanPointDistance.upper q zeroLi
 def denominator (q : PTm n) : PTm n := GaussianEuclideanPointDistance.denominator q zeroList
 def root (q s : PTm n) : PTm n := GaussianEuclideanPointDistance.root q zeroList s
 
-@[simp] theorem subst_zeroList {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (zeroList : PTm n) = (zeroList : PTm l) := by simp [zeroList]
-@[simp] theorem subst_lower {l : ℕ} (σ : Fin n → PTm l) (q s : PTm n) :
-    Syn.subst σ (lower q s) = lower (Syn.subst σ q) (Syn.subst σ s) := by simp [lower]
-@[simp] theorem subst_upper {l : ℕ} (σ : Fin n → PTm l) (q s : PTm n) :
-    Syn.subst σ (upper q s) = upper (Syn.subst σ q) (Syn.subst σ s) := by simp [upper]
-@[simp] theorem subst_denominator {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) :
-    Syn.subst σ (denominator q) = denominator (Syn.subst σ q) := by simp [denominator]
-@[simp] theorem subst_root {l : ℕ} (σ : Fin n → PTm l) (q s : PTm n) :
-    Syn.subst σ (root q s) = root (Syn.subst σ q) (Syn.subst σ s) := by simp [root]
+ipra_subst zeroList
+ipra_subst lower
+ipra_subst upper
+ipra_subst denominator
+ipra_subst root
 
 theorem zero_list_nonempty : Γ ⊢[PRAAx] le one (length (zeroList : PTm n)) :=
   le_congr (.eqRefl _) (singleton_length qzero).eqSymm (le_refl one)
@@ -131,10 +123,8 @@ theorem sample_upper (q r s t A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 
 def errorNumerator (A B s t : PTm n) : PTm n := A*unit s*unit t+B*(unit s+unit t)
 def errorDenominator (B s t : PTm n) : PTm n := B*unit s*unit t
-@[simp] theorem subst_errorNumerator {l : ℕ} (σ : Fin n → PTm l) (A B s t : PTm n) :
-    Syn.subst σ (errorNumerator A B s t) = errorNumerator (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ s) (Syn.subst σ t) := by simp [errorNumerator]
-@[simp] theorem subst_errorDenominator {l : ℕ} (σ : Fin n → PTm l) (B s t : PTm n) :
-    Syn.subst σ (errorDenominator B s t) = errorDenominator (Syn.subst σ B) (Syn.subst σ s) (Syn.subst σ t) := by simp [errorDenominator]
+ipra_subst errorNumerator
+ipra_subst errorDenominator
 
 theorem sample_radius (q r s t A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] distanceBounded q r A B) : Γ ⊢[PRAAx]
@@ -154,10 +144,8 @@ def evaluatorF : PR 3 := PTm.toPR (lower (var 0) (var 1))
 def output (q s : PTm n) : PTm n := pairT (lower q s) (pairT (upper q s) (qnormSq q))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (q s : PTm n) : PTm n := ap2 outputF q s
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (q s : PTm n) :
-    Syn.subst σ (output q s) = output (Syn.subst σ q) (Syn.subst σ s) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (q s : PTm n) :
-    Syn.subst σ (run q s) = run (Syn.subst σ q) (Syn.subst σ s) := by simp [run]
+ipra_subst output
+ipra_subst run
 
 theorem sample_at (q s : PTm n) : Γ ⊢[PRAAx] ap2 sampleF q s ≐ lower q s := by
   simpa [sampleF,ap2] using toPR_eq (Γ := Γ) (lower (var 0) (var 1) : PTm 2) ![q,s]
@@ -166,11 +154,11 @@ theorem evaluator_at (q s x : PTm n) : Γ ⊢[PRAAx] ap3 evaluatorF q s x ≐ lo
 theorem program_at (q s : PTm n) : Γ ⊢[PRAAx] run q s ≐ output q s := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![q,s]
 theorem returned_lower (q s : PTm n) : Γ ⊢[PRAAx] fstT (run q s) ≐ lower q s :=
-  (congrFst (program_at q s)).eqTrans (fst_pair _ _)
+  (program_at q s).fstE
 theorem returned_upper (q s : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run q s)) ≐ upper q s :=
-  (congrFst ((congrSnd (program_at q s)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at q s).sndE.fstE
 theorem returned_norm_square (q s : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run q s)) ≐ qnormSq q :=
-  (congrSnd ((congrSnd (program_at q s)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at q s).sndE.sndE
 theorem returned_bracket (q s : PTm n) : Γ ⊢[PRAAx]
     rationalLE (multiply (fstT (run q s)) (fstT (run q s))) (sndT (sndT (run q s))) ⋏
       rationalLE (sndT (sndT (run q s))) (multiply (fstT (sndT (run q s))) (fstT (sndT (run q s)))) :=

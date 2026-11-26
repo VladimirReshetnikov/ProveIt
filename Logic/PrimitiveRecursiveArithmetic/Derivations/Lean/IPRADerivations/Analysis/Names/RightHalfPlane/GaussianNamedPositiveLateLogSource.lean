@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN fraction fraction_represents)
@@ -28,9 +28,6 @@ open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalMetric (distanceBounded)
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open RationalValueBounds (upper upper_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -40,9 +37,7 @@ def retimedF (f : PR 2) : PR 2 :=
 
 def retimedData (x A : PTm n) : PTm n := pairT x (threshold A)
 
-@[simp] theorem subst_retimedData {m : ℕ} (σ : Fin n → PTm m) (x A : PTm n) :
-    Syn.subst σ (retimedData x A) = retimedData (Syn.subst σ x) (Syn.subst σ A) := by
-  simp [retimedData]
+ipra_subst retimedData
 
 theorem sample_at (f : PR 2) (p x A : PTm n) :
     Γ ⊢[PRAAx] ap2 (retimedF f) p (retimedData x A) ≐ ap2 f (p+threshold A) x := by

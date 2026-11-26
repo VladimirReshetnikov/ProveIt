@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinGeometricEnvelope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianEulerLowerTailPowerPanel (width)
@@ -27,10 +27,6 @@ open GaussianRationalPowerDifference (bounded_power_integer bounded_sum_same)
 open GaussianRationalReciprocal (power bounded_negative bounded_product bound_congr qone_bounded)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

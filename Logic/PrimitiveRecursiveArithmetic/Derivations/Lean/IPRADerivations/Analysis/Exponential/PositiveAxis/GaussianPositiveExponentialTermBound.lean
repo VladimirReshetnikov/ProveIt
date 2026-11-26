@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPositiveExponentialTermBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianPositiveRealArithmetic
   (positive positiveTerms positive_congr positive_sum natural_representation)
 open GaussianPositiveExponentialProduct (positive_coefficient positive_scalar_sum scalar_le_add)
@@ -34,10 +34,6 @@ open GaussianRationalMetric (bounded)
 open RationalArgmin (rationalLE rationalLE_congr transitive)
 open RationalSupMetric (denominatorOf)
 open Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

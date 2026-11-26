@@ -13,7 +13,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderMidpointPrefixRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEuclideanDistanceName (fraction fraction_represents)
 open GaussianRationalFiniteProduct (offset_at)
 open GaussianRationalHorner (positive_product)
@@ -33,10 +33,6 @@ open RationalNonnegativePowers (fraction_congr)
 open RationalReciprocalPowerTail (zero_fraction add_zero_right reciprocalPower potential tail reciprocal_congr sharp_tail)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
 open RationalSumSegments (sum_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "z" => fraction zero one
@@ -44,8 +40,7 @@ local notation "z" => fraction zero one
 def midpointBudget (m e : ℕ) (A B : PTm n) : PTm n :=
   add (add (baseCap m (num (e-1)) A B) (cap m)) (multiply (cap m) (potential (succ (num (e-1))) one))
 
-@[simp] theorem subst_midpointBudget {l : ℕ} (σ : Fin n → PTm l) (m e : ℕ) (A B : PTm n) :
-    Syn.subst σ (midpointBudget m e A B) = midpointBudget m e (Syn.subst σ A) (Syn.subst σ B) := by simp [midpointBudget]
+ipra_subst midpointBudget
 
 private theorem degree_guard (e : ℕ) (he : 2≤e) : Γ ⊢[PRAAx] le two (succ (num (e-1) : PTm n)) := by
   have eq : succ (num (e-1) : PTm n) = num e := by

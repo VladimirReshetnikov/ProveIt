@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianArctangentPartialRepresentation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianArctangentPartialQuadrature (clearing observation mesh sample nameF data sample_at name_regular
   finite_refinement mesh_positive)
@@ -26,10 +26,6 @@ open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianRationalMetric (distanceBounded comparison_to_cleared)
 open RationalCubeMidpoint (fraction fraction_represents)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

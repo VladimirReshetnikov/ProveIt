@@ -15,7 +15,7 @@ set_option maxHeartbeats 1400000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaEulerRationalLogPower
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
@@ -35,9 +35,6 @@ open GaussianRationalMetric (qnegative qnegative_canonical)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalSyntheticDivision (qmul_congr qzero_add)
 open GaussianStirlingGammaLogarithm (arg)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF

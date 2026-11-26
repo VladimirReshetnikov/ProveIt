@@ -2,12 +2,8 @@ import IPRADerivations.Probability.BinomialLaw
 import IPRADerivations.Probability.Variance
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.SumSplit
 import IPRADerivations.Combinatorics.CatalanValuation
 import IPRADerivations.Probability.MedianL1
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The central binomial coefficient: unimodality and `4^n/(2n + 1) ≤ C(2n, n) ≤ 4^n`
@@ -29,7 +25,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CentralBinomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (pascal_at binom_sum_open bBody inst2_b)
 open LeanProofs.IPRA.Probability.BinomialLaw (absorption)
@@ -37,10 +33,6 @@ open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -96,13 +88,9 @@ theorem left_out {N j : PTm n} (h : Γ ⊢[PRAAx] le N (succ j)) :
 private abbrev leftF : Fm PTm 2 := le (binom (two * var 1) (monus (var 1) (var 0))) (binom (two * var 1) (var 1))
 
 private theorem left₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] leftF := by
-  refine ind _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact le_congr (congrBinom (.eqRefl _) (monus_zero _)).eqSymm (.eqRefl _) (le_refl _)
-  · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .orE (le_total (succ (var 0)) (var 1)) (left_in Prf.hyp0 Prf.hyp1) (left_out Prf.hyp0)
+  ipra_ind (le_QF _ _) [subst_le, subst_ap2]
+  · exact le_congr (congrBinom (.eqRefl _) (monus_zero _)).eqSymm (.eqRefl _) (le_refl _)
+  · exact .orE (le_total (succ (var 0)) (var 1)) (left_in Prf.hyp0 Prf.hyp1) (left_out Prf.hyp0)
 
 /-- `C(2n, n − j) ≤ C(2n, n)`. -/
 theorem central_left (N j : PTm n) : Γ ⊢[PRAAx] le (binom (two * N) (monus N j)) (binom (two * N) N) := by
@@ -122,13 +110,9 @@ private abbrev rightF : Fm PTm 2 :=
   le (var 0) (var 1) ⟶ le (binom (two * var 1) (var 1 + var 0)) (binom (two * var 1) (var 1))
 
 private theorem right₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] rightF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, Syn.subst_var, Syn.inst_zero,
-      Syn.inst_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (le_congr (congrBinom (.eqRefl _) (add_zero _)).eqSymm (.eqRefl _) (le_refl _))
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, PTm.subst_monus, Syn.subst_var, Syn.repl_zero,
-      repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (right_step Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
+  · exact .impI (le_congr (congrBinom (.eqRefl _) (add_zero _)).eqSymm (.eqRefl _) (le_refl _))
+  · exact .impI (right_step Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
 
 /-- `C(2n, n + j) ≤ C(2n, n)` for `j ≤ n`. -/
 theorem central_right {N j : PTm n} (h : Γ ⊢[PRAAx] le j N) :

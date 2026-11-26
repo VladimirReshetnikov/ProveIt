@@ -13,7 +13,7 @@ set_option maxHeartbeats 560000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSecondWeightedSineCut
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetArctangentSineUniform
   (cutoff count clock angularScale cellFactor roundingCost cutoff_positive count_dominates clock_budget)
 open GaussianBinetSecondWeightedSineSuffix (window)
@@ -22,10 +22,6 @@ open GaussianCompactRiemannName (mesh_positive)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -33,13 +29,9 @@ local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 def cut (q D R T K E : PTm n) : PTm n := quo (count q D R T K) ((D*cutoff q T K)*E)
 def marginClock (k E : PTm n) : PTm n := exponent (two*E) k
 
-@[simp] theorem subst_cut {m : ℕ} (σ : Fin n → PTm m) (q D R T K E : PTm n) :
-    Syn.subst σ (cut q D R T K E) =
-      cut (Syn.subst σ q) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ T) (Syn.subst σ K) (Syn.subst σ E) := by
-  simp [cut,quo]
+ipra_subst cut [quo]
 
-@[simp] theorem subst_marginClock {m : ℕ} (σ : Fin n → PTm m) (k E : PTm n) :
-    Syn.subst σ (marginClock k E) = marginClock (Syn.subst σ k) (Syn.subst σ E) := by simp [marginClock,two]
+ipra_subst marginClock [two]
 
 theorem margin_clock_later (k E : PTm n) : Γ ⊢[PRAAx] le k (marginClock k E) := le_add_right _ _
 

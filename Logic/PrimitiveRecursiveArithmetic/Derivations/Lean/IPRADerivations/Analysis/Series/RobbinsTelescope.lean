@@ -30,14 +30,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RobbinsTelescope
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.BaselQuadrature (lift4 inst2_lift4)
 open LeanProofs.IPRA.Analysis.RobbinsSeries (Tr robbins_lower robbins_upper)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -154,15 +150,9 @@ private abbrev rF : Fm PTm 4 :=
   le (succ (two * succ (succ (var 2)))) (var 3) ⟶ RInv (var 0) (var 1) (var 2) (var 3)
 
 private theorem r₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] rF := by
-  refine ind _ ⟨le_QF _ _, le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_num, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, inst_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (r_base _ _ _)
-  · simp only [Fm.subst_imp, Fm.subst_and, subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul,
-      PTm.subst_num, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, repl_three,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (r_step Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
+  ipra_ind (⟨le_QF _ _, le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2, subst_pairT]
+  · exact .impI (r_base _ _ _)
+  · exact .impI (r_step Prf.hyp0 (Prf.impE Prf.hyp1 Prf.hyp0))
 
 /-- `eq:weaktel` and the lower half of `eq:strongtel`, at the precision `K = k + 2` (`2K + 1 ≤ L`), for
 `n = n₀ + 1` and every `t`:

@@ -15,7 +15,7 @@ set_option maxHeartbeats 440000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerTaylorMajorant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
@@ -34,10 +34,6 @@ open RationalNonnegativePowers (fraction_congr fraction_multiply)
 open RationalReciprocalPowerTail (tail tail_zero tail_succ reciprocalPower potential sharp_tail)
 open RationalSumLinearity (scaledBody scaled_term sum_homogeneous)
 open RationalSupMetric (denominatorOf)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (pred)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,8 +47,7 @@ private theorem fraction_add (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hd
   apply ZT.derive
   simp only [ZT.toZ_add, ZT.toZ_mul, ZT.toZ_ofNat, Q.mk_add, Q.mk_mul, map_add, map_mul]
 
-private theorem square_power (k : PTm n) : Γ ⊢[PRAAx] pw k two ≐ k * k :=
-  (pw_succ k one).eqTrans (congrMul (pw_one k) (.eqRefl _))
+private alias square_power := Common.pw_two
 
 private def squareSplit (N : PTm n) : Fm PTm n :=
   tail two zero (succ N) ≐ add (fraction one one) (tail two one N)
@@ -124,15 +119,9 @@ def rowBounds (t : PTm 2) (x A D N S C U : PTm n) : Fm PTm n :=
   .all (lt (var 0) (succ (Syn.shift N)) ⟶
     rowBound t (Syn.shift x) (Syn.shift A) (Syn.shift D) (Syn.shift S) (Syn.shift C) (Syn.shift U) (var 0))
 
-@[simp] theorem subst_rowBound {m : ℕ} (σ : Fin n → PTm m) (t : PTm 2) (x A D S C U k : PTm n) :
-    (rowBound t x A D S C U k).subst σ =
-      rowBound t (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ S) (Syn.subst σ C)
-        (Syn.subst σ U) (Syn.subst σ k) := by simp [rowBound, rowSquare]
+ipra_subst rowBound [rowSquare]
 
-@[simp] theorem subst_rowBounds {m : ℕ} (σ : Fin n → PTm m) (t : PTm 2) (x A D N S C U : PTm n) :
-    (rowBounds t x A D N S C U).subst σ =
-      rowBounds t (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ D) (Syn.subst σ N) (Syn.subst σ S)
-        (Syn.subst σ C) (Syn.subst σ U) := by simp [rowBounds, Syn.subst_shift, Syn.shift_subst]
+ipra_subst rowBounds [Syn.subst_shift, Syn.shift_subst]
 
 private theorem local_row (t : PTm 2) (x A D N S C U k : PTm n) (h : Γ ⊢[PRAAx] rowBounds t x A D N S C U)
     (hk : Γ ⊢[PRAAx] lt k (succ N)) : Γ ⊢[PRAAx] rowBound t x A D S C U k := by

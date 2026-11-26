@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDerivativeCofinalRate
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalDerivativeCofinal (nameF sample_at prefix_error regular)
 open GaussianBarnesCanonicalDerivativeRow (boundNumerator)
 open GaussianBarnesCanonicalDerivativeTail (value)
@@ -25,8 +25,6 @@ open GaussianNamedInverseRate (independentRate)
 open GaussianNamedLipschitzRate (diagonalEnvelope)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -17,7 +17,7 @@ set_option maxHeartbeats 900000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalSecondDerivativeInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalLogTail (row_source)
 open GaussianBarnesCanonicalSecondDerivativeStep (errorNumerator)
@@ -27,9 +27,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at finite_sum_difference)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBarnesCanonicalDerivativeTail.body

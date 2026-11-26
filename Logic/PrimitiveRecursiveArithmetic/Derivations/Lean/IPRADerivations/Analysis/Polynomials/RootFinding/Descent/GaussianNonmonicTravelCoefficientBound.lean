@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianTranslationCoefficientBound
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.GaussianDescentClock
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.GaussianDominantAlpha
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Original coefficient apartness and the actual balanced starting radius
@@ -19,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNonmonicTravelCoefficientBound
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate represents positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (qnormSq squaredTolerance)
 open LeanProofs.IPRA.Analysis.GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
@@ -32,10 +31,6 @@ open LeanProofs.IPRA.Analysis.RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (normSq scale normSq_scale)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -54,32 +49,16 @@ def combined (C N z A B L M : PTm n) : Fm PTm n :=
   le (L*L*pw (radiusNumerator C N z*B) (two*selectedIndex C N z A B)*(residualDenominator C z*residualDenominator C z))
     (weight N*weight N*M*M*residualNumerator C z*pw (radiusDenominator C N z*A) (two*selectedIndex C N z A B))
 
-@[simp] theorem subst_selectedIndex {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (selectedIndex C N z A B) = selectedIndex (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) := by simp [selectedIndex]
-@[simp] theorem subst_selectedCoefficient {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (selectedCoefficient C N z A B) = selectedCoefficient (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) := by simp [selectedCoefficient]
-@[simp] theorem subst_selectedNumerator {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (selectedNumerator C N z A B) = selectedNumerator (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) := by simp [selectedNumerator]
-@[simp] theorem subst_selectedDenominator {m : ℕ} (σ : Fin n → PTm m) (C N z A B : PTm n) :
-    Syn.subst σ (selectedDenominator C N z A B) = selectedDenominator (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ z) (Syn.subst σ A) (Syn.subst σ B) := by simp [selectedDenominator]
-@[simp] theorem subst_weight {m : ℕ} (σ : Fin n → PTm m) (N : PTm n) :
-    Syn.subst σ (weight N) = weight (Syn.subst σ N) := by simp [weight]
-@[simp] theorem subst_radiusNumerator {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (radiusNumerator C N z) = radiusNumerator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [radiusNumerator]
-@[simp] theorem subst_radiusDenominator {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (radiusDenominator C N z) = radiusDenominator (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [radiusDenominator]
-@[simp] theorem subst_radius {m : ℕ} (σ : Fin n → PTm m) (C N z : PTm n) :
-    Syn.subst σ (radius C N z) = radius (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z) := by simp [radius]
-@[simp] theorem subst_lowerBound {m : ℕ} (σ : Fin n → PTm m) (C N k L M : PTm n) :
-    (lowerBound C N k L M).subst σ = lowerBound (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ k)
-      (Syn.subst σ L) (Syn.subst σ M) := by simp [lowerBound]
-@[simp] theorem subst_combined {m : ℕ} (σ : Fin n → PTm m) (C N z A B L M : PTm n) :
-    (combined C N z A B L M).subst σ = combined (Syn.subst σ C) (Syn.subst σ N) (Syn.subst σ z)
-      (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ L) (Syn.subst σ M) := by simp [combined]
+ipra_subst selectedIndex
+ipra_subst selectedCoefficient
+ipra_subst selectedNumerator
+ipra_subst selectedDenominator
+ipra_subst weight
+ipra_subst radiusNumerator
+ipra_subst radiusDenominator
+ipra_subst radius
+ipra_subst lowerBound
+ipra_subst combined
 
 theorem selected_bounds (C N z A B : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     le one (selectedIndex C N z A B) ⋏ le (selectedIndex C N z A B) N :=

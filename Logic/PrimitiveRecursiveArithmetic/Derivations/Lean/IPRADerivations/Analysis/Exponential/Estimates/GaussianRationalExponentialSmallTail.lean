@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalExponentialSmallTail
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalExponentialTail (tail tail_zero tail_succ)
 open GaussianRationalHorner (qmul positive_product)
@@ -21,9 +21,6 @@ open GaussianRationalPolynomialExponential (inverseFactorial)
 open GaussianRationalReciprocal (power bounded_power bounded_product bounded_sum bound_congr)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open ExponentialMajorant (Gg Gg_zero Gg_succ geom)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

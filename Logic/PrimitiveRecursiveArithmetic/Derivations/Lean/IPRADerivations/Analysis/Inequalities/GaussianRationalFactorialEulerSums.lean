@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialPowerEuler
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialCoefficients
-import IPRADerivations.Core.CongruenceTactic
 
 /-!
 # Actual factorial-weighted Euler sums
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalFactorialEulerSums
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qzero qmul canonical represents canonical_unique)
 open GaussianRationalSyntheticDivision (qmul_congr canonicalCoefficients rescale_to)
 open GaussianRationalPolynomialExponential (inverseFactorial inverse_factorial_represents inverse_factorial_canonical factorial_positive)
@@ -31,10 +30,6 @@ open GaussianRationalFiniteSum (sum)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -70,8 +65,7 @@ theorem euler_exponent_total (P D e : PTm n) : Γ ⊢[PRAAx]
   · exact GaussianRationalEulerCoefficients.euler_exponent P D e Prf.hyp0
 
 def getE (x : PTm n) : PTm n := sndT (sndT (sndT x))
-@[simp] theorem subst_getE {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    Syn.subst σ (getE x) = getE (Syn.subst σ x) := by simp [getE]
+ipra_subst getE
 theorem get_e (C N K e : PTm n) : Γ ⊢[PRAAx] getE (data C N K e) ≐ e := by
   have h1 := snd_pair (Γ := Γ) C (pairT N (pairT K e))
   have h2 := (congrSnd h1).eqTrans (snd_pair N (pairT K e))
@@ -79,9 +73,7 @@ theorem get_e (C N K e : PTm n) : Γ ⊢[PRAAx] getE (data C N K e) ≐ e := by
 
 def eulerBody : PTm 2 := natScale (getE (var 1)) (inst2 termBody (var 0) (var 1))
 def eulerSum (C N K e j : PTm n) : PTm n := sum eulerBody (succ j) (data C N K e)
-@[simp] theorem subst_eulerSum {l : ℕ} (σ : Fin n → PTm l) (C N K e j : PTm n) :
-    Syn.subst σ (eulerSum C N K e j) = eulerSum (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ e) (Syn.subst σ j) := by simp [eulerSum]
+ipra_subst eulerSum
 theorem euler_body_at (C N K e k : PTm n) : Γ ⊢[PRAAx]
     inst2 eulerBody k (data C N K e) ≐ natScale e (term C N K e k) := by
   have h : inst2 eulerBody k (data C N K e) = natScale (getE (data C N K e)) (inst2 termBody k (data C N K e)) := by
@@ -123,12 +115,8 @@ def shiftedTerm (C N K e r : PTm n) : PTm n := qmul (inverseFactorial r)
 def shiftedBody : PTm 2 := shiftedTerm (fstT (var 1)) (fstT (sndT (var 1)))
   (fstT (sndT (sndT (var 1)))) (getE (var 1)) (var 0)
 def shiftedSum (C N K e j : PTm n) : PTm n := sum shiftedBody j (data C N K e)
-@[simp] theorem subst_shiftedTerm {l : ℕ} (σ : Fin n → PTm l) (C N K e r : PTm n) :
-    Syn.subst σ (shiftedTerm C N K e r) = shiftedTerm (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ e) (Syn.subst σ r) := by simp [shiftedTerm]
-@[simp] theorem subst_shiftedSum {l : ℕ} (σ : Fin n → PTm l) (C N K e j : PTm n) :
-    Syn.subst σ (shiftedSum C N K e j) = shiftedSum (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ e) (Syn.subst σ j) := by simp [shiftedSum]
+ipra_subst shiftedTerm
+ipra_subst shiftedSum
 theorem shifted_term_congr {C C' N N' K K' e e' r r' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C')
     (hN : Γ ⊢[PRAAx] N ≐ N') (hK : Γ ⊢[PRAAx] K ≐ K') (he : Γ ⊢[PRAAx] e ≐ e')
     (hr : Γ ⊢[PRAAx] r ≐ r') : Γ ⊢[PRAAx] shiftedTerm C N K e r ≐ shiftedTerm C' N' K' e' r' := by
@@ -139,8 +127,8 @@ theorem shifted_body_at (C N K e r : PTm n) : Γ ⊢[PRAAx]
     Matrix.cons_val_zero,Matrix.cons_val_one]
   have h1 := snd_pair (Γ := Γ) C (pairT N (pairT K e))
   have h2 := (congrSnd h1).eqTrans (snd_pair N (pairT K e))
-  exact shifted_term_congr (fst_pair _ _) ((congrFst h1).eqTrans (fst_pair _ _))
-    ((congrFst h2).eqTrans (fst_pair _ _)) (get_e C N K e) (.eqRefl _)
+  exact shifted_term_congr (fst_pair _ _) h1.fstE
+    h2.fstE (get_e C N K e) (.eqRefl _)
 
 theorem positive_term (C N K e r : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hCan : Γ ⊢[PRAAx] canonicalCoefficients C) (hr : Γ ⊢[PRAAx] lt r K)
@@ -209,25 +197,17 @@ def output (C N K e j : PTm n) : PTm n := pairT
   (natScale e (coefficientSum C N K e j)) (shiftedSum C N K e j)
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (C N K e j : PTm n) : PTm n := PTm.app outputF ![C,N,K,e,j]
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (C N K e j : PTm n) :
-    Syn.subst σ (output C N K e j) = output (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ e) (Syn.subst σ j) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (C N K e j : PTm n) :
-    Syn.subst σ (run C N K e j) = run (Syn.subst σ C) (Syn.subst σ N)
-      (Syn.subst σ K) (Syn.subst σ e) (Syn.subst σ j) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (C N K e j : PTm n) : Γ ⊢[PRAAx] run C N K e j ≐ output C N K e j := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,N,K,e,j]
 theorem returned_euler_sum (C N K e j : PTm n) : Γ ⊢[PRAAx]
     fstT (run C N K e j) ≐ natScale e (coefficientSum C N K e j) :=
-  (congrFst (program_at C N K e j)).eqTrans (fst_pair _ _)
+  (program_at C N K e j).fstE
 theorem returned_shifted_sum (C N K e j : PTm n) : Γ ⊢[PRAAx]
     sndT (run C N K e j) ≐ shiftedSum C N K e j :=
-  (congrSnd (program_at C N K e j)).eqTrans (snd_pair _ _)
+  (program_at C N K e j).sndE
 theorem returned_agreement (C N K e j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hCan : Γ ⊢[PRAAx] canonicalCoefficients C) (hj : Γ ⊢[PRAAx] le j K)
     (he : Γ ⊢[PRAAx] le e N) : Γ ⊢[PRAAx] fstT (run C N K e j) ≐ sndT (run C N K e j) :=

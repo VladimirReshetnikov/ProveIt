@@ -16,15 +16,11 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialRightLinearRows
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianRationalHorner (qadd qmul)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalPolynomialProduct (coefficient contribution contributionBody data product)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -34,10 +30,7 @@ theorem counter_congr (P Q M k : PTm n) {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t
 
 def trailingLaw (P Q M k r : PTm n) : Fm PTm n :=
   coefficient P Q M (succ k+r) k ≐ coefficient P Q M (succ k) k
-@[simp] theorem subst_trailingLaw {l : ℕ} (σ : Fin n → PTm l) (P Q M k r : PTm n) :
-    (trailingLaw P Q M k r).subst σ =
-      trailingLaw (Syn.subst σ P) (Syn.subst σ Q) (Syn.subst σ M) (Syn.subst σ k) (Syn.subst σ r) := by
-  simp [trailingLaw]
+ipra_subst trailingLaw
 
 theorem trailing_zero (P Q M k : PTm n) : Γ ⊢[PRAAx] trailingLaw P Q M k zero :=
   counter_congr P Q M k (by ipra_ring)
@@ -53,11 +46,9 @@ theorem trailing_step (P Q M k r : PTm n) (ih : Γ ⊢[PRAAx] trailingLaw P Q M 
 
 theorem trailing_rows (P Q M k r : PTm n) : Γ ⊢[PRAAx] trailingLaw P Q M k r := by
   have all : Γ ⊢[PRAAx] .all (trailingLaw (Syn.shift P) (Syn.shift Q) (Syn.shift M) (Syn.shift k) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_trailingLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact trailing_zero P Q M k
-    · simp only [subst_trailingLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact trailing_step _ _ _ _ _ Prf.hyp0
+    ipra_qfind [subst_trailingLaw]
+    · exact trailing_zero P Q M k
+    · exact trailing_step _ _ _ _ _ Prf.hyp0
   simpa only [subst_trailingLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
 
 theorem coefficient_stabilized (P Q M t k : PTm n) (ht : Γ ⊢[PRAAx] le (succ k) t) : Γ ⊢[PRAAx]

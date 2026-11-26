@@ -14,7 +14,7 @@ set_option maxHeartbeats 1600000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalLocationComparison
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaNegativeCriticalCorrection (guard)
@@ -32,9 +32,6 @@ open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open RationalValueBounds (upper upper_congr upper_triangle upper_mono)
-open Syn
-open scoped Fm
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -3,9 +3,7 @@ import IPRADerivations.Combinatorics.BellStirling
 import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.Combinatorics.LegendreFact
 import IPRADerivations.Combinatorics.FallingFactorial
-import IPRADerivations.Core.SumSplit
 import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Touchard's congruence
@@ -28,7 +26,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.BellTouchard
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Stirling (stir stir_above stir_succ_zero stir_zero)
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (congrStir)
 open LeanProofs.IPRA.Combinatorics.StirlingBinomial (stir_rec)
@@ -43,10 +41,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_dvd_binom dvd_sum prime_
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (zB)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_mul' dvd_of_eq' eq_of_dvd' dvd_sub' dvd_add')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -327,15 +321,11 @@ theorem stir_diag (N : PTm n) : Γ ⊢[PRAAx] stir N N ≐ one := by
 theorem not_dvd_fact {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (K : PTm n) (hK : Γ ⊢[PRAAx] lt K p) :
     Γ ⊢[PRAAx] neg (dvd p (ap2 factF K zero)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift p) ⟶ neg (dvd (Syn.shift p) (ap2 factF (var 0) zero))) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _, trivial, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_lt, subst_neg, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      have h2 : Γ ⊢[PRAAx] le two p := Prf.andE₁ hp
+    ipra_qfind (⟨lt_QF _ _, trivial, trivial⟩) [subst_lt, subst_neg, subst_ap2, Syn.repl_succ]
+    · have h2 : Γ ⊢[PRAAx] le two p := Prf.andE₁ hp
       refine .impI (.impI (.impE (AnalyticNumberTheory.ValuationMul.not_dvd_one h2.wk.wk) ?_))
       exact (congrAp2 remF (fact_zero _).eqSymm (.eqRefl _)).eqTrans Prf.hyp0
-    · simp only [Fm.subst_imp, subst_lt, subst_neg, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        Syn.repl_succ, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, subst_repl_shift]
-      have hp' := prime_shift hp
+    · have hp' := prime_shift hp
       refine .impI (.impI ?_)
       let φ : Fm PTm (n + 1) := lt (var 0) (Syn.shift p) ⟶ neg (dvd (Syn.shift p) (ap2 factF (var 0) zero))
       let C : List (Fm PTm (n + 1)) := [dvd (Syn.shift p) (ap2 factF (succ (var 0)) zero),
@@ -436,13 +426,9 @@ theorem all_viol {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) {K2 : PTm n} (h : Γ �
     Γ ⊢[PRAAx] ap2 (sumF rvB) K2 p ≐ zero := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (succ (succ (var 0))) (Syn.shift p) ⟶
       ap2 (sumF rvB) (var 0) (Syn.shift p) ≐ zero) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (sum_zero _ _)
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+    · exact .impI (sum_zero _ _)
+    · refine .impI ?_
       let C : List (Fm PTm (n + 1)) := [le (succ (succ (succ (var 0)))) (Syn.shift p),
           le (succ (succ (var 0))) (Syn.shift p) ⟶ ap2 (sumF rvB) (var 0) (Syn.shift p) ≐ zero] ++ Γ.map Fm.shift
       have hp' : C ⊢[PRAAx] prime (Syn.shift p) := (prime_shift hp).wk.wk

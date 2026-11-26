@@ -13,7 +13,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedSineSincFactorization
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedSincSamples
 open GaussianNamedSinc
 open GaussianNamedSineTaylor (imaginaryF imaginary_input rawData)
@@ -29,8 +29,6 @@ open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fas
 open GaussianNameRingLaws (normalized_to_sample multiply_sample_error through_identity)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianExponentialReference (dyadic_weaken)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,9 +36,7 @@ def factorBudget (f : PR 2) (R x : PTm n) : PTm n :=
   two+sineBudget f R x+
     ((multiplyModulus f (nameF f) x (data f R x)+one+R*(modulus f R x+one))+sampleSize f R x*two)
 
-@[simp] theorem subst_factorBudget {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (R x : PTm n) :
-    Syn.subst σ (factorBudget f R x) = factorBudget f (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [factorBudget]
+ipra_subst factorBudget
 
 theorem diagonal_factorization (f : PR 2) (R x p : PTm n) (h : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (sineF (imaginaryF f)) p (sineData (imaginaryF f) R x))

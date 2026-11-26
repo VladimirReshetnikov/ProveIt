@@ -19,16 +19,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianValueNormalizerExtensionality
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (distanceBounded qsub)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive subst_unit)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalDistanceOrder
   (distance_congr distance_radius_mono distance_triangle_same)
 open LeanProofs.IPRA.Analysis.GaussianFastValueCut (regular)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,13 +37,8 @@ def rawDiagonal (f g : PR 2) (x y K : PTm n) : Fm PTm n := .all
 def input (f g : PR 2) (L M x y K : PTm n) : Fm PTm n :=
   regular f L x ⋏ (regular g M y ⋏ rawDiagonal f g x y K)
 
-@[simp] theorem subst_rawDiagonal {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (x y K : PTm n) :
-    (rawDiagonal f g x y K).subst σ =
-      rawDiagonal f g (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ K) := by
-  simp [rawDiagonal,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (f g : PR 2) (L M x y K : PTm n) :
-    (input f g L M x y K).subst σ = input f g (Syn.subst σ L) (Syn.subst σ M)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ K) := by simp [input]
+ipra_subst rawDiagonal [Syn.subst_shift, Syn.shift_subst]
+ipra_subst input
 
 theorem raw_diagonal_at (f g : PR 2) (x y K m : PTm n)
     (h : Γ ⊢[PRAAx] rawDiagonal f g x y K) : Γ ⊢[PRAAx]

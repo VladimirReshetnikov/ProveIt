@@ -17,7 +17,7 @@ set_option maxHeartbeats 1500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalOrdinaryUpperGrowth
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open BarnesDyadicRadius (index bracket threshold_le_index)
 open ComplexLogarithmRemainder (normSq_neg normSq_one oneCode)
 open GaussianBarnesCanonicalDyadicUpperGrowth (exponent growthConstant named_sample_bound transfer_bound)
@@ -30,10 +30,6 @@ open GaussianGammaCanonicalExponent (constantF)
 open GaussianNameArithmetic (addF addData)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (bounded)
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

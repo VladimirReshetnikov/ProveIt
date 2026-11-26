@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalMetric
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder (re im normSq normSq_eval)
 open LeanProofs.IPRA.Analysis.GaussianRootAlgebra
   (equal_re equal_im re_neg im_neg re_sub im_sub equal_of_values)
@@ -28,10 +28,6 @@ open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
 open LeanProofs.IPRA.Analysis.RationalRepresentations
 open LeanProofs.IPRA.Foundations.BoundedSyntax
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -46,19 +42,12 @@ def squaredTolerance (A B : PTm n) : PTm n := normalize (ZT.ofNat (A*A)) (B*B)
 def bounded (q A B : PTm n) : Fm PTm n := RationalArgmin.rationalLE (qnormSq q) (squaredTolerance A B)
 def distanceBounded (q r A B : PTm n) : Fm PTm n := bounded (qsub q r) A B
 
-@[simp] theorem subst_qnegative {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (qnegative q) = qnegative (Syn.subst σ q) := by simp [qnegative]
-@[simp] theorem subst_qsub {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    Syn.subst σ (qsub q r) = qsub (Syn.subst σ q) (Syn.subst σ r) := by simp [qsub]
-@[simp] theorem subst_qnormSq {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (qnormSq q) = qnormSq (Syn.subst σ q) := by simp [qnormSq]
-@[simp] theorem subst_squaredTolerance {m : ℕ} (σ : Fin n → PTm m) (A B : PTm n) :
-    Syn.subst σ (squaredTolerance A B) = squaredTolerance (Syn.subst σ A) (Syn.subst σ B) := by simp [squaredTolerance]
-@[simp] theorem subst_bounded {m : ℕ} (σ : Fin n → PTm m) (q A B : PTm n) :
-    (bounded q A B).subst σ = bounded (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ B) := by simp [bounded]
-@[simp] theorem subst_distanceBounded {m : ℕ} (σ : Fin n → PTm m) (q r A B : PTm n) :
-    (distanceBounded q r A B).subst σ = distanceBounded (Syn.subst σ q) (Syn.subst σ r)
-      (Syn.subst σ A) (Syn.subst σ B) := by simp [distanceBounded]
+ipra_subst qnegative
+ipra_subst qsub
+ipra_subst qnormSq
+ipra_subst squaredTolerance
+ipra_subst bounded
+ipra_subst distanceBounded
 
 theorem qnegative_canonical (q : PTm n) : Γ ⊢[PRAAx] canonical (qnegative q) :=
   canonical_pair _ _ (RationalArithmetic.negative_guard _) (RationalArithmetic.negative_guard _)
@@ -193,8 +182,7 @@ theorem bounded_zero_norm (q a E B : PTm n)
 
 def metricOutput (q r : PTm n) : PTm n := pairT (qnegative q) (pairT (qsub q r) (qnormSq q))
 def metricOutputF : PR 2 := PTm.toPR (metricOutput (var 0) (var 1))
-@[simp] theorem subst_metricOutput {m : ℕ} (σ : Fin n → PTm m) (q r : PTm n) :
-    Syn.subst σ (metricOutput q r) = metricOutput (Syn.subst σ q) (Syn.subst σ r) := by simp [metricOutput]
+ipra_subst metricOutput
 
 theorem metric_program_at (q r : PTm n) : Γ ⊢[PRAAx] ap2 metricOutputF q r ≐ metricOutput q r := by
   simpa [metricOutputF,ap2] using toPR_eq (Γ := Γ) (metricOutput (var 0) (var 1) : PTm 2) ![q,r]

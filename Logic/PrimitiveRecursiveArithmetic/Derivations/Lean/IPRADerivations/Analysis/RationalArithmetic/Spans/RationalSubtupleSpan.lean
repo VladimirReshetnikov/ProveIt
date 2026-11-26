@@ -20,7 +20,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalSubtupleSpan
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open RationalRowSpanGaussianEmbedding (matrix matrix_shape matrix_lookup hasCoefficients span_embedding span_real_part)
 open RationalPolynomialGaussianEmbedding (coefficients coefficient_lookup embed_congr)
 open RationalGaussianEmbedding (embed scalarOne)
@@ -32,9 +32,6 @@ open GaussianTranslatedNonconstant (recode recode_congr recode_eq)
 open GaussianRationalRowSpan (vectorDot)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ app)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,21 +48,13 @@ def sourceMembers (A R N T mask : PTm n) : Fm PTm n := .all
 def dimensions (T N : PTm n) : Fm PTm n := .all
   (lt (var 0) (length (Syn.shift T)) ⟶ length (entry (Syn.shift T) (var 0)) ≐ Syn.shift N)
 
-@[simp] theorem subst_bit {q : ℕ} (σ : Fin n → PTm q) (mask i : PTm n) :
-    Syn.subst σ (bit mask i) = bit (Syn.subst σ mask) (Syn.subst σ i) := by simp [bit,Foundations.RuntimePermutationWords.digit]
-@[simp] theorem subst_size {q : ℕ} (σ : Fin n → PTm q) (T mask : PTm n) :
-    Syn.subst σ (size T mask) = size (Syn.subst σ T) (Syn.subst σ mask) := by simp [size]
-@[simp] theorem subst_indices {q : ℕ} (σ : Fin n → PTm q) (T mask : PTm n) :
-    Syn.subst σ (indices T mask) = indices (Syn.subst σ T) (Syn.subst σ mask) := by simp [indices]
-@[simp] theorem subst_selectedIndex {q : ℕ} (σ : Fin n → PTm q) (T mask r : PTm n) :
-    Syn.subst σ (selectedIndex T mask r) = selectedIndex (Syn.subst σ T) (Syn.subst σ mask) (Syn.subst σ r) := by simp [selectedIndex]
-@[simp] theorem subst_selected {q : ℕ} (σ : Fin n → PTm q) (T mask : PTm n) :
-    Syn.subst σ (selected T mask) = selected (Syn.subst σ T) (Syn.subst σ mask) := by simp [selected]
-@[simp] theorem subst_sourceMembers {q : ℕ} (σ : Fin n → PTm q) (A R N T mask : PTm n) :
-    (sourceMembers A R N T mask).subst σ = sourceMembers (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ T) (Syn.subst σ mask) := by simp [sourceMembers,Syn.subst_shift,Syn.shift_subst]
-@[simp] theorem subst_dimensions {q : ℕ} (σ : Fin n → PTm q) (T N : PTm n) :
-    (dimensions T N).subst σ = dimensions (Syn.subst σ T) (Syn.subst σ N) := by simp [dimensions,Syn.subst_shift,Syn.shift_subst]
+ipra_subst bit [Foundations.RuntimePermutationWords.digit]
+ipra_subst size
+ipra_subst indices
+ipra_subst selectedIndex
+ipra_subst selected
+ipra_subst sourceMembers [Syn.subst_shift, Syn.shift_subst]
+ipra_subst dimensions [Syn.subst_shift, Syn.shift_subst]
 
 theorem bit_body_at (mask i : PTm n) : inst2 bitBody i mask = bit mask i := by simp [bitBody,inst2]
 theorem indices_length (T mask : PTm n) : Γ ⊢[PRAAx] length (indices T mask) ≐ size T mask :=
@@ -250,11 +239,8 @@ def certificate (A R N T mask : PTm n) : Fm PTm n :=
     (GaussianRationalRowElimination.nullRows (matrix (selected T mask) (size T mask) N) (size T mask) N
       (coefficients (annihilator A R N) N) ⋏
       ((length (annihilator A R N) ≐ N) ⋏ GaussianRationalFreeColumnVector.nonzeroVector (coefficients (annihilator A R N) N) N))
-@[simp] theorem subst_annihilator {q : ℕ} (σ : Fin n → PTm q) (A R N : PTm n) :
-    Syn.subst σ (annihilator A R N) = annihilator (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N) := by simp [annihilator]
-@[simp] theorem subst_certificate {q : ℕ} (σ : Fin n → PTm q) (A R N T mask : PTm n) :
-    (certificate A R N T mask).subst σ = certificate (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ T) (Syn.subst σ mask) := by simp [certificate]
+ipra_subst annihilator
+ipra_subst certificate
 
 theorem produced_certificate (A R N T mask : PTm n) (hp : Γ ⊢[PRAAx] properSpan A R N)
     (hm : Γ ⊢[PRAAx] sourceMembers A R N T mask) : Γ ⊢[PRAAx] certificate A R N T mask := by
@@ -269,29 +255,21 @@ def output (A R N T mask : PTm n) : PTm n := pairT (selected T mask)
   (pairT (indices T mask) (pairT (size T mask) (annihilator A R N)))
 def outputF : PR 5 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3) (var 4))
 def run (A R N T mask : PTm n) : PTm n := app outputF ![A,R,N,T,mask]
-@[simp] theorem subst_output {q : ℕ} (σ : Fin n → PTm q) (A R N T mask : PTm n) :
-    Syn.subst σ (output A R N T mask) = output (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ T) (Syn.subst σ mask) := by simp [output]
-@[simp] theorem subst_run {q : ℕ} (σ : Fin n → PTm q) (A R N T mask : PTm n) :
-    Syn.subst σ (run A R N T mask) = run (Syn.subst σ A) (Syn.subst σ R) (Syn.subst σ N)
-      (Syn.subst σ T) (Syn.subst σ mask) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (A R N T mask : PTm n) : Γ ⊢[PRAAx] run A R N T mask ≐ output A R N T mask := by
   simpa [run,outputF,output,Matrix.cons_val_succ',Matrix.cons_val_zero'] using
     toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![A,R,N,T,mask]
 theorem returned_selected (A R N T mask : PTm n) : Γ ⊢[PRAAx] fstT (run A R N T mask) ≐ selected T mask :=
-  (congrFst (program_at A R N T mask)).eqTrans (fst_pair _ _)
+  (program_at A R N T mask).fstE
 theorem returned_indices (A R N T mask : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run A R N T mask)) ≐ indices T mask :=
-  (congrFst ((congrSnd (program_at A R N T mask)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A R N T mask).sndE.fstE
 theorem returned_count (A R N T mask : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run A R N T mask))) ≐ size T mask :=
-  (congrFst ((congrSnd ((congrSnd (program_at A R N T mask)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at A R N T mask).sndE.sndE.fstE
 theorem returned_annihilator (A R N T mask : PTm n) : Γ ⊢[PRAAx]
     sndT (sndT (sndT (run A R N T mask))) ≐ annihilator A R N :=
-  (congrSnd ((congrSnd ((congrSnd (program_at A R N T mask)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at A R N T mask).sndE.sndE.sndE
 
 theorem returned_proper (A R N T mask : PTm n) (hp : Γ ⊢[PRAAx] properSpan A R N)
     (hm : Γ ⊢[PRAAx] sourceMembers A R N T mask) : Γ ⊢[PRAAx]

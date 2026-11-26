@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductT4SharpRow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianArctangentDivisionAngles (modulus)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -38,10 +38,6 @@ open GaussianSineProductSynchronizedRow (angleData rootData sincValue sincFactor
   argument_input root_input modulus_eq)
 open GaussianSineProductT4Budget (halfIndex multiple squareDenominator denominator_positive argument_disk)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -10,7 +10,7 @@ set_option maxHeartbeats 500000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHeadPolynomialTaylor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalHeadPolynomial (polynomial degree polynomial_length original_evaluation)
 open GaussianBarnesCanonicalHeadPolynomialDerivative (input increment linear argument_bound argument_add step_bound)
@@ -18,9 +18,6 @@ open GaussianRationalHorner (qmul qadd ofGaussian)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qsub_congr)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

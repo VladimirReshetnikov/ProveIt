@@ -15,8 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPowerIntegralMesh
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
+open_ipra
 open GaussianEuclideanDistanceName (fraction)
 open GaussianRationalSyntheticBounds (add_monotone)
 open GaussianStirlingAllOrderKernel (multiply_zero_right)
@@ -30,18 +29,13 @@ open RationalArithmetic (add add_guard multiply)
 open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
 open RationalFiniteSum (sum)
 open RationalReciprocalPowerTail (add_zero_right zero_fraction)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def brackets (u v upperU upperV mass : PTm n) : Fm PTm n :=
   rationalLE u (add mass v) ⋏ rationalLE (add mass upperV) upperU
 
-@[simp] theorem subst_brackets {l : ℕ} (σ : Fin n → PTm l) (u v upperU upperV mass : PTm n) :
-    (brackets u v upperU upperV mass).subst σ =
-      brackets (Syn.subst σ u) (Syn.subst σ v) (Syn.subst σ upperU) (Syn.subst σ upperV) (Syn.subst σ mass) :=
-  by simp [brackets]
+ipra_subst brackets
 
 theorem join_brackets (u v w upperU upperV upperW p q r : PTm n)
     (before : Γ ⊢[PRAAx] brackets u v upperU upperV p)
@@ -69,9 +63,7 @@ def meshLaw (e : ℕ) (U B M N : PTm n) : Fm PTm n :=
   brackets (meshPotential e U B M zero) (meshPotential e U B M N)
     (meshUpper e U B M zero) (meshUpper e U B M N) (meshMass e U B M N)
 
-@[simp] theorem subst_meshLaw {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (U B M N : PTm n) :
-    (meshLaw e U B M N).subst σ = meshLaw e (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ M) (Syn.subst σ N) := by
-  simp [meshLaw,meshMass,meshUpper,meshPotential,gridSample,gridDen]
+ipra_subst meshLaw [meshMass, meshUpper, meshPotential, gridSample, gridDen]
 
 private theorem grid_positive (U B M N : PTm n) (hU : Γ ⊢[PRAAx] le one U) (hM : Γ ⊢[PRAAx] le one M) :
     Γ ⊢[PRAAx] le one (gridDen U B M N) :=
@@ -139,9 +131,7 @@ theorem mesh_integral_brackets (e : ℕ) (he : 2≤e) (U B M N : PTm n)
 
 def upperPrimitive (e : ℕ) (U B M : PTm n) : PTm n := add (primitive e U B) (endpointSample e U B M)
 
-@[simp] theorem subst_upperPrimitive {l : ℕ} (σ : Fin n → PTm l) (e : ℕ) (U B M : PTm n) :
-    Syn.subst σ (upperPrimitive e U B M) = upperPrimitive e (Syn.subst σ U) (Syn.subst σ B) (Syn.subst σ M) :=
-  by simp [upperPrimitive]
+ipra_subst upperPrimitive
 
 private theorem read_endpoint (e : ℕ) (he : 2≤e) (U B M N V : PTm n) (hV : Γ ⊢[PRAAx] le one V)
     (hM : Γ ⊢[PRAAx] le one M) (index : Γ ⊢[PRAAx] gridDen U B M N ≐ V*M) :

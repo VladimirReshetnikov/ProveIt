@@ -19,7 +19,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianPiRationalScale
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (eval_im_code eval_re_code normSq normSq_neg)
 open GaussianArctangentCayleyValues (imaginaryCode imaginaryPoint)
@@ -42,9 +42,6 @@ open GaussianRationalSyntheticDivision (qzero_add qmul_congr qsub_congr)
 open GaussianRootAlgebra (equal_of_values im_add im_mul im_neg re_add re_mul re_neg)
 open GaussianSineProductImaginaryLogDerivative (axisNumerator realNumerator)
 open GaussianSineProductImaginaryLogDerivativeTail (real_norm)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,9 +65,7 @@ def data (negative : Bool) (A B R x : PTm n) : PTm n :=
     Syn.subst σ (point s A B) = point s (Syn.subst σ A) (Syn.subst σ B) := by
   simp [point]
 
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (s : Bool) (A B R x : PTm n) :
-    Syn.subst σ (data s A B R x) = data s (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ R) (Syn.subst σ x) := by
-  simp [data]
+ipra_subst data
 
 theorem point_add (s : Bool) (A B C : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] qadd (point s A B) (point s C B) ≐ point s (A+C) B := by

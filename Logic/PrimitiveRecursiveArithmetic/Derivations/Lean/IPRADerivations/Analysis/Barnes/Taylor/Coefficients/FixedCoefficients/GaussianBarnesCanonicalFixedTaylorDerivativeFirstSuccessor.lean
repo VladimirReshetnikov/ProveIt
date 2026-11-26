@@ -12,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFixedTaylorDerivativeFirstSuccessor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add normSq)
 open GaussianBarnesCanonicalFiniteTaylorFirstDerivative (gain literalQuotientData wide_sources)
 open GaussianBarnesCanonicalFixedTaylorDerivativeZero (value_cross)
@@ -24,9 +24,6 @@ open GaussianFastValueCut (exponent query_budget)
 open GaussianL1 (norm1)
 open GaussianNameEquivalence (crossEquivalent cross_refl)
 open GaussianNamedInverseRate (independentRate)
-open ConciseIPRA.PTm (succ zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "V" => GaussianBarnesCanonicalValue.prefixF

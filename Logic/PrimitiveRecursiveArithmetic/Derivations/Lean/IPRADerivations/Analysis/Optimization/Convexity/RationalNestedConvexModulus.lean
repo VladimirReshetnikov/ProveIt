@@ -14,9 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.RationalNestedConvexModulus
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 open RationalArgmin (rationalLE transitive rationalLE_congr)
 open RationalConvexSecants (nonnegative within scale affine)
 open RationalConvexSecantWeights (leftPoint rightPoint displacement leftWidth rightWidth leftRemainder rightRemainder
@@ -28,8 +26,6 @@ open RationalCubeMidpoint (fraction)
 open RationalConvexFiniteModulus (eps finiteInput samplePrecision withinModulus sampleConclusion actual_local_sample_bound)
 open RationalAlgebra (multiply_congr add_congr)
 open GaussianRationalSyntheticBounds (natCode_congr)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)

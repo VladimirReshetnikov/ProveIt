@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianEulerDecayOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianEulerIntegrandName (decayF decayPoint decayData)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianGammaFiniteApproximantName (exponentialInputData)
@@ -29,8 +29,6 @@ open GaussianRationalHorner (canonical_unique ofGaussian_canonical ofGaussian_re
 open RationalGaussianEmbedding (embed embed_canonical embed_from_representation native embed_negative)
 open RationalIntegerNormalization (normalize_preserves_value)
 open RationalArithmetic (negative)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

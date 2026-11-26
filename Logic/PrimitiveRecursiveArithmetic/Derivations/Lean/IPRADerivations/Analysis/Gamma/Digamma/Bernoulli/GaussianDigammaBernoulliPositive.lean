@@ -16,9 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianDigammaBernoulliPositive
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianDigammaBernoulliBaseAgreement (agreement prefix_from_agreement)
 open GaussianDigammaBernoulliName (nameF nameData radius requiredMesh name_regular)
@@ -41,8 +39,6 @@ open GaussianStirlingMultiplicativeBoundsStrictOrder (strictOrder)
 open GaussianStirlingNames (source)
 open RationalArgmin (rationalLE rationalLE_congr eq_le transitive)
 open RationalValueBounds (upper upper_congr upper_of_radius upper_order_left)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "fraction" => GaussianPositiveRationalLogarithm.fraction
@@ -52,10 +48,7 @@ def floorDenominator (m : ℕ) (A B : PTm n) : PTm n :=
 
 def floorPoint (m : ℕ) (A B : PTm n) : PTm n := fraction one (floorDenominator m A B)
 
-@[simp] theorem subst_floorPoint {l : ℕ} (σ : Fin n → PTm l) (m : ℕ) (A B : PTm n) :
-    Syn.subst σ (floorPoint m A B) = floorPoint m (Syn.subst σ A) (Syn.subst σ B) := by
-  simp [floorPoint,floorDenominator,boundDenominator,GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen,
-    GaussianStirlingAllOrderCenteredBernoulli.denominator,pw,one]
+ipra_subst floorPoint [floorDenominator, boundDenominator, GaussianStirlingAllOrderBernoulliMeshMargin.coarseDen, GaussianStirlingAllOrderCenteredBernoulli.denominator, pw, one]
 
 theorem floor_den_positive (m : ℕ) (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
     Γ ⊢[PRAAx] le one (floorDenominator m A B) :=

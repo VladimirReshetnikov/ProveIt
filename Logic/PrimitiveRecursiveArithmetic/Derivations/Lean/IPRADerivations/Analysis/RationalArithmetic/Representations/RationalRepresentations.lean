@@ -1,6 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.RationalArithmetic
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenters
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Composition of rational cross-value representations
@@ -16,12 +15,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.RationalRepresentations
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
 open LeanProofs.IPRA.Analysis.RationalArithmetic
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

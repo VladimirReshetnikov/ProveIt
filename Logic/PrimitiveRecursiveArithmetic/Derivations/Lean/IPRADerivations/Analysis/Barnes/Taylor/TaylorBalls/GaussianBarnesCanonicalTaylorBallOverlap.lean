@@ -15,7 +15,7 @@ set_option maxHeartbeats 1200000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalTaylorBallOverlap
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalTaylorBall (nameF approxData numerator denominator input)
 open GaussianBarnesCanonicalHigherRows (previous)
@@ -24,9 +24,6 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedRateComposition (leadingNumerator leadingDenominator)
 open GaussianRationalHorner (ofGaussian positive_product)
-open ConciseIPRA.PTm (succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

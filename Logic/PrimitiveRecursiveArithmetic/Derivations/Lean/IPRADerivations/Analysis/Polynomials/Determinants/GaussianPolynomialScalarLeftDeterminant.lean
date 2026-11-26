@@ -16,14 +16,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianPolynomialScalarLeftDeterminant
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (evaluate qmul)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qmul_congr)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminantTerms (tableShape)
 open LeanProofs.IPRA.Analysis.GaussianPolynomialDeterminant (determinant)
 open LeanProofs.IPRA.Analysis.GaussianScalarDeterminant (scalarDet evaluatedTable)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,10 +62,7 @@ open GaussianScalarDeterminant (subst_scalarDet)
 /-- Independently stored scalar multiple of the original determinant. -/
 def scaledDeterminant (S M m L : PTm n) : PTm n := scaled (determinant M m L) (scalarDet S m)
 
-@[simp] theorem subst_scaledDeterminant {k : ℕ} (σ : Fin n → PTm k) (S M m L : PTm n) :
-    Syn.subst σ (scaledDeterminant S M m L) =
-      scaledDeterminant (Syn.subst σ S) (Syn.subst σ M) (Syn.subst σ m) (Syn.subst σ L) := by
-  simp [scaledDeterminant]
+ipra_subst scaledDeterminant
 
 theorem scaled_canonical (C s : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (scaled C s) := by
   refine .allI (.impI ?_)

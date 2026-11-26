@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # An approximate Brouwer fixed point on the interval, with a primitive recursive witness
@@ -23,12 +22,8 @@ stage, `x` a parameter) with `g(N, x) ≤ N`; the scan is the bounded search for
 
 namespace LeanProofs.IPRA.Topology.BrouwerInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_intro ex_elim ex_least)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -91,8 +86,7 @@ theorem brouwer_interval (N x E : PTm n) (hN : Γ ⊢[PRAAx] le (inst2 g N x) N)
     have ho := Prf.impE (hosc (monus (W g N x) (succ zero))).wk hjN
     have ec : (lt zero (W g N x) :: Γ) ⊢[PRAAx] succ (monus (W g N x) (succ zero)) ≐ W g N x := by
       ipra_lc -e
-    have eg := natEq (congrInst2 g ec (.eqRefl x))
-    ipra_le sl ho + sl hgj with eg + e
+    ipra_le sl ho + sl hgj with natEq (congrInst2 g ec (.eqRefl x)) + e
   · have h0 : (le (W g N x) zero :: Γ) ⊢[PRAAx] le (W g N x) zero := Prf.hyp0
     ipra_le sl h0 + 𝔟 (inst2 g (W g N x) x) + 𝔟 E
 

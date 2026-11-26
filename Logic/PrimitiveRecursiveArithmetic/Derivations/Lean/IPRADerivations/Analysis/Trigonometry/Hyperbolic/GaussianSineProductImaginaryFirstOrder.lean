@@ -15,7 +15,7 @@ set_option maxHeartbeats 550000
 
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryFirstOrder
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_im_code eval_re_code)
 open GaussianGammaEulerReflectionHead (body)
 open GaussianRationalCoefficientScaling (qmul_add)
@@ -32,9 +32,6 @@ open GaussianSineProductImaginaryLogDerivative
   (axisNumerator derivative derivative_succ derivative_zero factor factorDerivative factor_value product
     rationalReal realNumerator squareDenominator)
 open GaussianSineProductName (sine_product_succ)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,24 +52,15 @@ private def remainderBody : PTm 3 :=
 def remainderF : PR 2 := rec2 (qzero : PTm 1) remainderBody
 def remainder (A B C N : PTm n) : PTm n := ap2 remainderF N (pairT A (pairT B C))
 
-@[simp] theorem subst_step {m : ℕ} (σ : Fin n → PTm m) (B C : PTm n) :
-    Syn.subst σ (step B C) = step (Syn.subst σ B) (Syn.subst σ C) := by simp [step]
+ipra_subst step
 
-@[simp] theorem subst_quadraticRow {m : ℕ} (σ : Fin n → PTm m) (i B : PTm n) :
-    Syn.subst σ (quadraticRow i B) = quadraticRow (Syn.subst σ i) (Syn.subst σ B) := by simp [quadraticRow]
+ipra_subst quadraticRow
 
-@[simp] theorem subst_linearRow {m : ℕ} (σ : Fin n → PTm m) (i A B C : PTm n) :
-    Syn.subst σ (linearRow i A B C) = linearRow (Syn.subst σ i) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp [linearRow]
+ipra_subst linearRow
 
-@[simp] theorem subst_remainderStep {m : ℕ} (σ : Fin n → PTm m) (i V A B C : PTm n) :
-    Syn.subst σ (remainderStep i V A B C) =
-      remainderStep (Syn.subst σ i) (Syn.subst σ V) (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) := by
-  simp [remainderStep]
+ipra_subst remainderStep
 
-@[simp] theorem subst_remainder {m : ℕ} (σ : Fin n → PTm m) (A B C N : PTm n) :
-    Syn.subst σ (remainder A B C N) = remainder (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ C) (Syn.subst σ N) := by
-  simp [remainder]
+ipra_subst remainder
 
 private theorem real_congr {a a' d : PTm n} (e : Γ ⊢[PRAAx] a ≐ a') :
     Γ ⊢[PRAAx] rationalReal a d ≐ rationalReal a' d := by

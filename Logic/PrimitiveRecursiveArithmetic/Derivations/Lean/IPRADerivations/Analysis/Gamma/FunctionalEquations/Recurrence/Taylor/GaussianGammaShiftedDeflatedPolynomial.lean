@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaShiftedDeflatedPolynomial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaOriginalC19Prefix (buffer totalDegree)
 open GaussianGammaCanonicalExponent (source)
 open GaussianRationalHorner (ofGaussian qmul horner hornerF positive_product)
@@ -25,9 +25,6 @@ open GaussianRationalSyntheticDivision (qmul_congr qadd_congr)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -40,20 +37,13 @@ def auxiliaryCost (R B : PTm n) : PTm n := one+B*(recurrenceCost R+one)
 def numerator (p q B : PTm n) : PTm n := unit q+B*unit p
 def denominator (p q : PTm n) : PTm n := unit p*unit q
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (z R B : PTm n) :
-    (input z R B).subst σ = input (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [input]
-@[simp] theorem subst_rawValue {m : ℕ} (σ : Fin n → PTm m) (q z R B d : PTm n) :
-    Syn.subst σ (rawValue q z R B d) = rawValue (Syn.subst σ q) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ d) := by simp [rawValue]
-@[simp] theorem subst_shiftedSample {m : ℕ} (σ : Fin n → PTm m) (p z R B : PTm n) :
-    Syn.subst σ (shiftedSample p z R B) = shiftedSample (Syn.subst σ p) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) := by simp [shiftedSample]
-@[simp] theorem subst_recurrenceCost {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
-    Syn.subst σ (recurrenceCost R) = recurrenceCost (Syn.subst σ R) := by simp [recurrenceCost]
-@[simp] theorem subst_auxiliaryCost {m : ℕ} (σ : Fin n → PTm m) (R B : PTm n) :
-    Syn.subst σ (auxiliaryCost R B) = auxiliaryCost (Syn.subst σ R) (Syn.subst σ B) := by simp [auxiliaryCost]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (p q B : PTm n) :
-    Syn.subst σ (numerator p q B) = numerator (Syn.subst σ p) (Syn.subst σ q) (Syn.subst σ B) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (p q : PTm n) :
-    Syn.subst σ (denominator p q) = denominator (Syn.subst σ p) (Syn.subst σ q) := by simp [denominator]
+ipra_subst input
+ipra_subst rawValue
+ipra_subst shiftedSample
+ipra_subst recurrenceCost
+ipra_subst auxiliaryCost
+ipra_subst numerator
+ipra_subst denominator
 
 /-- This factorization is unconditional, even for a zero native input. -/
 theorem original_buffer_factor (q z R B d : PTm n) : Γ ⊢[PRAAx]

@@ -13,7 +13,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianImaginaryNameConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (re)
 open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
@@ -31,18 +31,13 @@ open GaussianRootAlgebra (equal equal_of_values re_neg im_neg)
 open GaussianRadiusExponentialName (input nameF data)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents)
 open RationalSupMetric (denominatorOf)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def imaginarySamples (f : PR 2) (x : PTm n) : Fm PTm n := .all
   (fstT (ap2 f (var 0) (Syn.shift x)) ≐ scalarZero)
 
-@[simp] theorem subst_imaginarySamples {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x : PTm n) :
-    (imaginarySamples f x).subst σ = imaginarySamples f (Syn.subst σ x) := by
-  simp [imaginarySamples, Syn.subst_shift, Syn.shift_subst]
+ipra_subst imaginarySamples [Syn.subst_shift, Syn.shift_subst]
 
 theorem imaginary_at (f : PR 2) (p x : PTm n) (h : Γ ⊢[PRAAx] imaginarySamples f x) :
     Γ ⊢[PRAAx] fstT (ap2 f p x) ≐ scalarZero := by

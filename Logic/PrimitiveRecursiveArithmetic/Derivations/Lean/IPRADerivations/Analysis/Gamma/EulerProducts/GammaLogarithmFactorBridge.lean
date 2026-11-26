@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GammaLogarithmFactorBridge
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LogarithmRemainder (denominator)
 open ComplexLogarithmRemainder (add scale series mul)
 open GaussianRootAlgebra (equal equal_symm equal_of_values re_add im_add re_scale im_scale re_neg im_neg)
@@ -23,9 +23,6 @@ open GammaCanonicalFactors (factorNumerator factorDenominator factorDenominator_
 open ComplexLogarithmName (finiteNumerator finiteDenominator)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represents represents_congr qadd qadd_represents qadd_canonical canonical_unique)
 open GaussianRationalSyntheticDivision (rescale_to)
-open ConciseIPRA.PTm (app)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,10 +30,8 @@ def localFactor (z N L : PTm n) : PTm n := ofGaussian (factorNumerator z N L) (f
 def linearScale (N L : PTm n) : PTm n := two*N*denominator N L
 def sumArgument (z N L : PTm n) : PTm n := qadd (ofGaussian z N) (localFactor z N L)
 
-@[simp] theorem subst_localFactor {k : ℕ} (σ : Fin n → PTm k) (z N L : PTm n) :
-    Syn.subst σ (localFactor z N L) = localFactor (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) := by simp [localFactor]
-@[simp] theorem subst_sumArgument {k : ℕ} (σ : Fin n → PTm k) (z N L : PTm n) :
-    Syn.subst σ (sumArgument z N L) = sumArgument (Syn.subst σ z) (Syn.subst σ N) (Syn.subst σ L) := by simp [sumArgument]
+ipra_subst localFactor
+ipra_subst sumArgument
 
 theorem source_denominator (N L : PTm n) : Γ ⊢[PRAAx] finiteDenominator N L ≐ factorDenominator N L :=
   .eqRefl _

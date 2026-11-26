@@ -14,7 +14,7 @@ set_option maxHeartbeats 700000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentForwardMargin
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBinetLaplaceMomentForwardQuotient
   (quotientF quotientData targetF targetData samplerBudget quotient_regular positive_parameter sample_of_taylor)
 open GaussianBinetLaplaceMomentImproper (nameF data regular sample_canonical)
@@ -27,10 +27,6 @@ open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDeno
 open GaussianNameRingLaws (negative_fast)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "realSource" => GaussianLogGammaEulerResidualDomain.source
@@ -45,17 +41,11 @@ def linearBudget (j K H : PTm n) : PTm n := num 3*H*(cap j K+num 3)
 
 abbrev upperRadius (X D H Q : PTm n) : PTm n := radius (X*Q+H*D) zero
 
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (X D R K H Q : PTm n) :
-    (source X D R K H Q).subst σ =
-      source (Syn.subst σ X) (Syn.subst σ D) (Syn.subst σ R) (Syn.subst σ K) (Syn.subst σ H) (Syn.subst σ Q) := by
-  simp [source,one]
+ipra_subst source [one]
 
-@[simp] theorem subst_cap {m : ℕ} (σ : Fin n → PTm m) (j K : PTm n) :
-    Syn.subst σ (cap j K) = cap (Syn.subst σ j) (Syn.subst σ K) := by simp [cap]
+ipra_subst cap
 
-@[simp] theorem subst_linearBudget {m : ℕ} (σ : Fin n → PTm m) (j K H : PTm n) :
-    Syn.subst σ (linearBudget j K H) = linearBudget (Syn.subst σ j) (Syn.subst σ K) (Syn.subst σ H) := by
-  simp [linearBudget]
+ipra_subst linearBudget
 
 theorem upper_source (X D R H Q : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R)
     (hQ : Γ ⊢[PRAAx] le one Q) :

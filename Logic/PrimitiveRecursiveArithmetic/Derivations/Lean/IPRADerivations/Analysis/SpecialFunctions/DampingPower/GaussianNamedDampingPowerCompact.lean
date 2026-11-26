@@ -13,16 +13,13 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedDampingPowerCompact
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianNamedDampingPowerIntegrand (gain)
 open GaussianCompactRiemannName (inside localBody value evaluatorName nameData)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianEuclideanDistanceName (pointCN)
-open Syn
-open ConciseIPRA.PTm (zero)
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,21 +38,10 @@ abbrev nameF (F G : PR 2) : PR 2 := GaussianCompactRiemannName.nameF (evaluatorF
 def data (z Rz B x y C R a W E T : PTm n) : PTm n :=
   GaussianCompactRiemannName.data a W E (lipschitz Rz C R E T) T (fixedData z B x y)
 
-@[simp] theorem subst_fixedData {m : ℕ} (σ : Fin n → PTm m) (z B x y : PTm n) :
-    Syn.subst σ (fixedData z B x y) = fixedData (Syn.subst σ z) (Syn.subst σ B) (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [fixedData]
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (F G : PR 2) (z Rz B x y C₀ C R₀ R a W E T : PTm n) :
-    (source F G z Rz B x y C₀ C R₀ R a W E T).subst σ = source F G (Syn.subst σ z) (Syn.subst σ Rz)
-      (Syn.subst σ B) (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ C₀) (Syn.subst σ C) (Syn.subst σ R₀)
-      (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ W) (Syn.subst σ E) (Syn.subst σ T) := by simp [source]
-@[simp] theorem subst_lipschitz {m : ℕ} (σ : Fin n → PTm m) (Rz C R E T : PTm n) :
-    Syn.subst σ (lipschitz Rz C R E T) = lipschitz (Syn.subst σ Rz) (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [lipschitz,gain,GaussianNamedDampingPowerIntegrand.decayBound,GaussianNamedDampingPowerChart.gain,
-    GaussianNamedDampingPowerChart.majorant,GaussianCompactLogarithmBounds.radius,one]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (z Rz B x y C R a W E T : PTm n) :
-    Syn.subst σ (data z Rz B x y C R a W E T) = data (Syn.subst σ z) (Syn.subst σ Rz) (Syn.subst σ B)
-      (Syn.subst σ x) (Syn.subst σ y) (Syn.subst σ C) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ W)
-      (Syn.subst σ E) (Syn.subst σ T) := by simp [data]
+ipra_subst fixedData
+ipra_subst source
+ipra_subst lipschitz [gain, GaussianNamedDampingPowerIntegrand.decayBound, GaussianNamedDampingPowerChart.gain, GaussianNamedDampingPowerChart.majorant, GaussianCompactLogarithmBounds.radius, one]
+ipra_subst data
 
 private theorem kernel_data_congr (F G : PR 2) {z z' B B' x x' y y' a b : PTm n}
     (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (hx : Γ ⊢[PRAAx] x ≐ x') (hy : Γ ⊢[PRAAx] y ≐ y') :

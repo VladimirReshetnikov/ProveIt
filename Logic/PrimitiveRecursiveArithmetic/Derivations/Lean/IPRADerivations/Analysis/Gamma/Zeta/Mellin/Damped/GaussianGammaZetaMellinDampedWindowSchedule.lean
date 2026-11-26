@@ -13,15 +13,11 @@ set_option maxHeartbeats 800000
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaZetaMellinDampedWindowSchedule
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaIntegralCutoffs (etaDen top eta_den_positive top_positive)
 open GaussianGammaZetaMellinDampedExhaustion (gain gridCount)
 open GaussianGammaZetaMellinDampedWindow (cutoff rowClock clock rowSource source)
 open GaussianRationalHorner (positive_product)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
-open LeanProofs.IPRA.PTm (monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -158,15 +154,9 @@ theorem row_encloses (z R B A k N c E₀ T₀ : PTm n)
   exact .andI (.andI hz (.andI (.andI param (.andI (.andI lowerNum hE) (.andI aApprox upperBound)))
     (.andI left right))) (.andI hc (le_refl one))
 
-@[simp] theorem subst_gainBudget {m : ℕ} (σ : Fin n → PTm m) (N z R B A : PTm n) :
-    Syn.subst σ (gainBudget N z R B A) =
-      gainBudget (Syn.subst σ N) (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [gainBudget,gainParameters]
+ipra_subst gainBudget [gainParameters]
 
-@[simp] theorem subst_mesh {m : ℕ} (σ : Fin n → PTm m) (p N R E T : PTm n) :
-    Syn.subst σ (mesh p N R E T) =
-      mesh (Syn.subst σ p) (Syn.subst σ N) (Syn.subst σ R) (Syn.subst σ E) (Syn.subst σ T) := by
-  simp [mesh,gridParameters,rowClock,one]
+ipra_subst mesh [gridParameters, rowClock, one]
 
 private theorem subst_leftDen {m : ℕ} (σ : Fin n → PTm m) (N k A R E₀ : PTm n) :
     Syn.subst σ (leftDen N k A R E₀) =

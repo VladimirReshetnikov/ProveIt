@@ -20,11 +20,7 @@ set_option linter.unnecessarySeqFocus false
 
 namespace LeanProofs.IPRA.Algebra.QuadraticSignCertificates
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (monus)
+open_ipra
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -57,31 +53,30 @@ def positiveBit (d x : PTm n) : PTm n := Signum.sg (positivePart (scalar d x))
 def negativeBit (d x : PTm n) : PTm n := Signum.sg (negativePart (scalar d x))
 def sign (d x : PTm n) : PTm n := positiveBit d x+two*negativeBit d x
 
-@[simp] theorem subst_code {l : ℕ} (σ : Fin n → PTm l) (a : ZT n) : Syn.subst σ (code a) = code (a.subst σ) := by simp [code,ZT.subst]
-@[simp] theorem subst_decode {l : ℕ} (σ : Fin n → PTm l) (q : PTm n) : (decode q).subst σ = decode (Syn.subst σ q) := by simp [decode,ZT.subst]
-@[simp] theorem subst_first {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) : (first x).subst σ = first (Syn.subst σ x) := by simp [first]
-@[simp] theorem subst_second {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) : (second x).subst σ = second (Syn.subst σ x) := by simp [second]
-@[simp] theorem subst_encode {l : ℕ} (σ : Fin n → PTm l) (a b : ZT n) : Syn.subst σ (encode a b) = encode (a.subst σ) (b.subst σ) := by simp [encode]
-@[simp] theorem subst_zeroCode {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (zeroCode : PTm n) = (zeroCode : PTm l) := by simp [zeroCode]
-@[simp] theorem subst_oneCode {l : ℕ} (σ : Fin n → PTm l) : Syn.subst σ (oneCode : PTm n) = (oneCode : PTm l) := by simp [oneCode,one]
-@[simp] theorem subst_naturalPair {l : ℕ} (σ : Fin n → PTm l) (a b : PTm n) : Syn.subst σ (naturalPair a b) = naturalPair (Syn.subst σ a) (Syn.subst σ b) := by simp [naturalPair]
-@[simp] theorem subst_add {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) : Syn.subst σ (add x y) = add (Syn.subst σ x) (Syn.subst σ y) := by simp [add]
-@[simp] theorem subst_negative {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) : Syn.subst σ (negative x) = negative (Syn.subst σ x) := by simp [negative]
-@[simp] theorem subst_multiply {l : ℕ} (σ : Fin n → PTm l) (d x y : PTm n) : Syn.subst σ (multiply d x y) = multiply (Syn.subst σ d) (Syn.subst σ x) (Syn.subst σ y) := by simp [multiply]
-@[simp] theorem subst_equal {l : ℕ} (σ : Fin n → PTm l) (x y : PTm n) : (equal x y).subst σ = equal (Syn.subst σ x) (Syn.subst σ y) := by simp [equal]
-@[simp] theorem subst_zle {l : ℕ} (σ : Fin n → PTm l) (a b : ZT n) :
-    (zle a b).subst σ = zle (a.subst σ) (b.subst σ) := by simp [zle,ZT.subst]
-@[simp] theorem subst_cone {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) : (cone x).subst σ = cone (Syn.subst σ x) := by simp only [cone,Fm.subst_and,subst_zle,ZT.subst_ofNat,ZT.subst_add,subst_first,subst_second,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ]
-@[simp] theorem subst_positivePart {l : ℕ} (σ : Fin n → PTm l) (a : ZT n) : Syn.subst σ (positivePart a) = positivePart (a.subst σ) := by simp [positivePart,ZT.subst]
-@[simp] theorem subst_negativePart {l : ℕ} (σ : Fin n → PTm l) (a : ZT n) : Syn.subst σ (negativePart a) = negativePart (a.subst σ) := by simp [negativePart,ZT.subst]
-@[simp] theorem subst_magnitude {l : ℕ} (σ : Fin n → PTm l) (a : ZT n) : Syn.subst σ (magnitude a) = magnitude (a.subst σ) := by simp [magnitude]
-@[simp] theorem subst_mass {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) : Syn.subst σ (mass x) = mass (Syn.subst σ x) := by simp [mass]
-@[simp] theorem subst_multiplier {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) : Syn.subst σ (multiplier x) = multiplier (Syn.subst σ x) := by simp [multiplier]
-@[simp] theorem subst_product {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) : Syn.subst σ (product d x) = product (Syn.subst σ d) (Syn.subst σ x) := by simp [product]
-@[simp] theorem subst_scalar {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) : (scalar d x).subst σ = scalar (Syn.subst σ d) (Syn.subst σ x) := by simp [scalar]
-@[simp] theorem subst_positiveBit {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) : Syn.subst σ (positiveBit d x) = positiveBit (Syn.subst σ d) (Syn.subst σ x) := by simp [positiveBit,Signum.sg]
-@[simp] theorem subst_negativeBit {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) : Syn.subst σ (negativeBit d x) = negativeBit (Syn.subst σ d) (Syn.subst σ x) := by simp [negativeBit,Signum.sg]
-@[simp] theorem subst_sign {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) : Syn.subst σ (sign d x) = sign (Syn.subst σ d) (Syn.subst σ x) := by simp [sign]
+ipra_subst code [ZT.subst]
+ipra_subst decode [ZT.subst]
+ipra_subst first
+ipra_subst second
+ipra_subst encode
+ipra_subst zeroCode
+ipra_subst oneCode [one]
+ipra_subst naturalPair
+ipra_subst add
+ipra_subst negative
+ipra_subst multiply
+ipra_subst equal
+ipra_subst zle [ZT.subst]
+ipra_subst cone
+ipra_subst positivePart [ZT.subst]
+ipra_subst negativePart [ZT.subst]
+ipra_subst magnitude
+ipra_subst mass
+ipra_subst multiplier
+ipra_subst product
+ipra_subst scalar
+ipra_subst positiveBit [Signum.sg]
+ipra_subst negativeBit [Signum.sg]
+ipra_subst sign
 
 theorem first_encode (a b : ZT n) : Γ ⊢[PRAAx] ZT.eq (first (encode a b)) a := by
   have hp : Γ ⊢[PRAAx] fstT (fstT (encode a b)) ≐ a.pos :=
@@ -168,8 +163,7 @@ theorem second_code_value {x y : PTm n} (h : Γ ⊢[PRAAx] x ≐ y) : ZT.toZ Γ 
 def aligned (x : PTm n) : Fm PTm n :=
   (zle (ZT.ofNat zero) (first x) ⋏ zle (ZT.ofNat zero) (second x)) ⋎
     (zle (first x) (ZT.ofNat zero) ⋏ zle (second x) (ZT.ofNat zero))
-@[simp] theorem subst_aligned {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    (aligned x).subst σ = aligned (Syn.subst σ x) := by simp [aligned]
+ipra_subst aligned
 
 theorem nonnegative_of_value (a : ZT n) (h : Nonneg Γ (ZT.toZ Γ a)) : Γ ⊢[PRAAx] zle (ZT.ofNat zero) a :=
   zle_of_comb (ZT.toZ Γ a) (by simp only [ZT.toZ_ofNat,Q.mk_zero,map_zero,_root_.sub_zero]) h
@@ -351,10 +345,8 @@ def classification (x : PTm n) : Fm PTm n :=
   ((tag (first x+second x) ≐ one) ⋏ cone x) ⋎
     (((tag (first x+second x) ≐ two) ⋏ cone (negative x)) ⋎
       ((tag (first x+second x) ≐ zero) ⋏ equal x zeroCode))
-@[simp] theorem subst_tag {l : ℕ} (σ : Fin n → PTm l) (a : ZT n) :
-    Syn.subst σ (tag a) = tag (a.subst σ) := by simp [tag,Signum.sg]
-@[simp] theorem subst_classification {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) :
-    (classification x).subst σ = classification (Syn.subst σ x) := by simp [classification]
+ipra_subst tag [Signum.sg]
+ipra_subst classification
 
 theorem tag_positive (a : ZT n) (hp : Γ ⊢[PRAAx] positivePart a ≐ succ (PTm.pred (positivePart a)))
     (hn : Γ ⊢[PRAAx] negativePart a ≐ zero) : Γ ⊢[PRAAx] tag a ≐ one := by
@@ -450,8 +442,7 @@ def certificate (d x : PTm n) : Fm PTm n := cone (multiplier x) ⋏
   (((sign d x ≐ one) ⋏ cone (product d x)) ⋎
     (((sign d x ≐ two) ⋏ cone (negative (product d x))) ⋎
       ((sign d x ≐ zero) ⋏ equal (product d x) zeroCode)))
-@[simp] theorem subst_certificate {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    (certificate d x).subst σ = certificate (Syn.subst σ d) (Syn.subst σ x) := by simp [certificate]
+ipra_subst certificate
 theorem actual_certificate (d x : PTm n) : Γ ⊢[PRAAx] certificate d x := sign_certificate d x
 
 theorem zero_first_value : ZT.toZ Γ (first (zeroCode : PTm n)) = 0 := by
@@ -477,8 +468,7 @@ theorem cone_not_zero (x : PTm n) (h : Γ ⊢[PRAAx] cone x) : Γ ⊢[PRAAx] neg
 
 
 def norm (d x : PTm n) : ZT n := first x*first x-ZT.ofNat d*(second x*second x)
-@[simp] theorem subst_norm {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    (norm d x).subst σ = norm (Syn.subst σ d) (Syn.subst σ x) := by simp [norm]
+ipra_subst norm
 theorem magnitude_nonnegative (a : ZT n) (h : Γ ⊢[PRAAx] zle (ZT.ofNat zero) a) : 𝔞(magnitude a) = ZT.toZ Γ a := by
   rw [parts_value]
   unfold magnitude
@@ -525,18 +515,16 @@ theorem negative_opposite_conjugation (d x : PTm n) (ha : Γ ⊢[PRAAx] zle (fir
 def output (d x : PTm n) : PTm n := pairT (multiplier x) (pairT (sign d x) (product d x))
 def outputF : PR 2 := PTm.toPR (output (var 0) (var 1))
 def run (d x : PTm n) : PTm n := ap2 outputF d x
-@[simp] theorem subst_output {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    Syn.subst σ (output d x) = output (Syn.subst σ d) (Syn.subst σ x) := by simp [output]
-@[simp] theorem subst_run {l : ℕ} (σ : Fin n → PTm l) (d x : PTm n) :
-    Syn.subst σ (run d x) = run (Syn.subst σ d) (Syn.subst σ x) := by simp [run]
+ipra_subst output
+ipra_subst run
 theorem program_at (d x : PTm n) : Γ ⊢[PRAAx] run d x ≐ output d x := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![d,x]
 theorem returned_multiplier (d x : PTm n) : Γ ⊢[PRAAx] fstT (run d x) ≐ multiplier x :=
-  (congrFst (program_at d x)).eqTrans (fst_pair _ _)
+  (program_at d x).fstE
 theorem returned_sign (d x : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run d x)) ≐ sign d x :=
-  (congrFst (congrSnd (program_at d x))).eqTrans ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
+  (congrFst (congrSnd (program_at d x))).eqTrans (snd_pair _ _).fstE
 theorem returned_product (d x : PTm n) : Γ ⊢[PRAAx] sndT (sndT (run d x)) ≐ product d x :=
-  (congrSnd (congrSnd (program_at d x))).eqTrans ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  (congrSnd (congrSnd (program_at d x))).eqTrans (snd_pair _ _).sndE
 
 theorem actual_integer_quadratic_sign_certificate_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (certificate (var 0) (var 1)) := closeUniv 2 (actual_certificate _ _)

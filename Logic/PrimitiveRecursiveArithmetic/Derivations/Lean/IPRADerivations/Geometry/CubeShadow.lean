@@ -23,13 +23,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Geometry.CubeShadow
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Probability.Variance (ad ad_sq)
 open LeanProofs.IPRA.Geometry.TetraShadow (Sgn sgn_sq)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

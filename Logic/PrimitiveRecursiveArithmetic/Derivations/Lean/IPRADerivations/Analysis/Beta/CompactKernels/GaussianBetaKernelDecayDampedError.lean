@@ -16,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBetaKernelDecayDampedError
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBetaKernelDampedRefinement (numerator denominator later_source)
 open GaussianBetaKernelRefinement (cutoff value)
 open GaussianBetaKernelExponential (kernel)
@@ -27,10 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData)
 open GaussianEulerDecayOrder (signedTime)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)

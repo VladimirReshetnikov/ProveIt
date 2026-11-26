@@ -13,7 +13,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesGlaisherQuartic
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (code oneCode zeroCode scale)
 open GaussianRootAlgebra (equal equal_of_values equal_re equal_im equal_refl equal_of_code
   re_add im_add re_mul im_mul re_scale im_scale re_neg im_neg re_sub im_sub re_one im_one)
@@ -23,10 +23,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonic
 open GaussianRationalMetric (qsub qsub_represents qsub_canonical)
 open GaussianLocalLogarithmTaylorRemainder (polynomial)
 open GaussianFiniteLogarithmPolynomial (coefficient signNumerator sourceTerm value)
-open LeanProofs.IPRA.PTm (num)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "neg" => ComplexLogarithmRemainder.neg

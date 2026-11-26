@@ -17,7 +17,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFiniteQuadraticExpansion
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianGammaFiniteCoefficientPolynomial (polynomial totalDegree polynomial_length)
 open GaussianGammaUnitCoefficientMass (budget)
 open GaussianRationalHorner (qadd qmul qzero qadd_canonical qmul_canonical canonical evaluate positive_product)
@@ -28,10 +28,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalPowerExpansion (partialSum prefix_succ prefix_zero)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianOffDominantTerms (term)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num monus)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -41,14 +37,10 @@ def numerator (q r R a b : PTm n) : PTm n :=
   budget R*pw a (num 3)*unit q*unit r+pw a two*b*(unit q+unit r)
 def denominator (q r b : PTm n) : PTm n := pw b (num 3)*unit q*unit r
 
-@[simp] theorem subst_gammaPoint {m : ℕ} (σ : Fin n → PTm m) (q : PTm n) :
-    Syn.subst σ (gammaPoint q) = gammaPoint (Syn.subst σ q) := by simp [gammaPoint]
-@[simp] theorem subst_quadratic {m : ℕ} (σ : Fin n → PTm m) (q w : PTm n) :
-    Syn.subst σ (quadratic q w) = quadratic (Syn.subst σ q) (Syn.subst σ w) := by simp [quadratic]
-@[simp] theorem subst_numerator {m : ℕ} (σ : Fin n → PTm m) (q r R a b : PTm n) :
-    Syn.subst σ (numerator q r R a b) = numerator (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ R) (Syn.subst σ a) (Syn.subst σ b) := by simp [numerator]
-@[simp] theorem subst_denominator {m : ℕ} (σ : Fin n → PTm m) (q r b : PTm n) :
-    Syn.subst σ (denominator q r b) = denominator (Syn.subst σ q) (Syn.subst σ r) (Syn.subst σ b) := by simp [denominator]
+ipra_subst gammaPoint
+ipra_subst quadratic
+ipra_subst numerator
+ipra_subst denominator
 
 theorem total_degree_two (R L K : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
     le two (totalDegree R L K) := by

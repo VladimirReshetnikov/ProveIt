@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.Referen
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtPi
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteProductAppend
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaFactorialValues
-import IPRADerivations.Core.Evaluation
 
 /-!
 # The exact normalization factor at Gauss order two
@@ -16,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussDuplicationFactor
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode scale)
 open GaussianGammaFactorialValues (gamma_fields_congr)
 open GaussianGammaGaussReferencePrefix (full_prefix_cross prefix_bounds prefix_regular)
@@ -25,9 +24,6 @@ open GaussianGammaHalfSquareLimit (gammaHalf)
 open GaussianGammaReciprocalInverse (gammaF)
 open GaussianNamedFiniteProductAppend (lastRow singleton_cross)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

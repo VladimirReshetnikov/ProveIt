@@ -13,7 +13,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingAllOrderPanelPartsCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianStirlingAllOrderPanelPartsOuter (finite_outer_recurrence)
 open GaussianStirlingAllOrderPanelPartsOuterFold (fold_identity massPrefix panelPrefix)
 open GaussianStirlingAllOrderPanelPartsRecurrence (errorCoefficient)
@@ -27,9 +27,6 @@ open GaussianRationalReciprocal (bound_congr)
 open RationalArithmetic (multiply)
 open RationalGaussianEmbedding (embed)
 open RationalGaussianRealPart (embed_congr)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)

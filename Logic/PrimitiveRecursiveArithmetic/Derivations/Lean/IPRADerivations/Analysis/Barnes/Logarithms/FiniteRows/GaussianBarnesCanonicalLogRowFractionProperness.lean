@@ -16,7 +16,7 @@ set_option maxHeartbeats 1150000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalLogRowFractionProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (add oneCode zeroCode scale series)
 open GaussianBarnesCanonicalLogRow (cubic finiteValue)
 open GaussianRationalHorner
@@ -28,10 +28,6 @@ open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qzero_canonical re
 open GaussianRootAlgebra (equal equal_of_code equal_of_values equal_refl)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LogarithmRemainder (denominator denominator_positive)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

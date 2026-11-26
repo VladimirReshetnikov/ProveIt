@@ -15,7 +15,7 @@ set_option maxHeartbeats 430000
 
 namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerDigammaFractionsCofinal
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianLogGammaEulerHead (rowData subst_rowData)
@@ -27,9 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRightHalfPlaneLogarithm (source)
-open ConciseIPRA.PTm (zero succ)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "cofinalF" => GaussianLogGammaEulerReciprocalSlopeCofinal.nameF
@@ -46,13 +43,9 @@ private def body : PTm 2 :=
 
 def nameF : PR 2 := PTm.toPR body
 
-@[simp] theorem subst_cutoff {m : ℕ} (σ : Fin n → PTm m) (A B p : PTm n) :
-    Syn.subst σ (cutoff A B p) = cutoff (Syn.subst σ A) (Syn.subst σ B) (Syn.subst σ p) := by
-  simp [cutoff, two, one]
+ipra_subst cutoff [two, one]
 
-@[simp] theorem subst_observed {m : ℕ} (σ : Fin n → PTm m) (p A B D neg : PTm n) :
-    Syn.subst σ (observed p A B D neg) = observed (Syn.subst σ p) (Syn.subst σ A) (Syn.subst σ B)
-      (Syn.subst σ D) (Syn.subst σ neg) := by simp [observed]
+ipra_subst observed
 
 theorem sample_at (p A B D neg : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data A B D neg) ≐ observed p A B D neg := by

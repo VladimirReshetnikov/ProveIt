@@ -14,7 +14,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteEuler
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianBetaAllDegreeInverseContinuity (gain)
@@ -24,9 +24,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,18 +40,12 @@ def sample (f : PR 2) (p x A N : PTm n) : PTm n :=
 def data (x A N : PTm n) : PTm n := pairT x (pairT A N)
 def body (f : PR 2) : PTm 2 := sample f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1)))
 def nameF (f : PR 2) : PR 2 := PTm.toPR (body f)
-@[simp] theorem subst_source {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (x A N : PTm n) :
-    (source f x A N).subst σ = source f (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ N) := by simp [source]
-@[simp] theorem subst_modulus {m : ℕ} (σ : Fin n → PTm m) (s R A N : PTm n) :
-    Syn.subst σ (modulus s R A N) = modulus (Syn.subst σ s) (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ N) := by simp [modulus]
-@[simp] theorem subst_parameters {m : ℕ} (σ : Fin n → PTm m) (R A N : PTm n) :
-    Syn.subst σ (parameters R A N) = parameters (Syn.subst σ R) (Syn.subst σ A) (Syn.subst σ N) := by simp [parameters]
-@[simp] theorem subst_clock {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x A N : PTm n) :
-    Syn.subst σ (clock f p x A N) = clock f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ N) := by simp [clock]
-@[simp] theorem subst_sample {m : ℕ} (σ : Fin n → PTm m) (f : PR 2) (p x A N : PTm n) :
-    Syn.subst σ (sample f p x A N) = sample f (Syn.subst σ p) (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ N) := by simp [sample]
-@[simp] theorem subst_data {m : ℕ} (σ : Fin n → PTm m) (x A N : PTm n) :
-    Syn.subst σ (data x A N) = data (Syn.subst σ x) (Syn.subst σ A) (Syn.subst σ N) := by simp [data]
+ipra_subst source
+ipra_subst modulus
+ipra_subst parameters
+ipra_subst clock
+ipra_subst sample
+ipra_subst data
 
 /-- The old numerical query budget spends the actual finite inverse gain. -/
 theorem modulus_budget (s R A N : PTm n) : Γ ⊢[PRAAx] le (gain R A N*unit s) (unit (modulus s R A N)) :=
@@ -80,8 +71,8 @@ theorem encoded_observations (p q s z w R B C A N : PTm n)
 private theorem demand_at (s R A N : PTm n) : Γ ⊢[PRAAx]
     inst2 demandBody s (parameters R A N) ≐ modulus s R (two*A) N := by
   have ra : Γ ⊢[PRAAx] fstT (parameters R A N) ≐ R := fst_pair _ _
-  have aa : Γ ⊢[PRAAx] fstT (sndT (parameters R A N)) ≐ A := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have na : Γ ⊢[PRAAx] sndT (sndT (parameters R A N)) ≐ N := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+  have aa : Γ ⊢[PRAAx] fstT (sndT (parameters R A N)) ≐ A := (snd_pair _ _).fstE
+  have na : Γ ⊢[PRAAx] sndT (sndT (parameters R A N)) ≐ N := (snd_pair _ _).sndE
   have h := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (modulus (var 0) (var 1) (var 2) (var 3) : PTm 4)
     (σ := ![s,fstT (parameters R A N),two*fstT (sndT (parameters R A N)),sndT (sndT (parameters R A N))])
     (σ' := ![s,R,two*A,N])
@@ -143,8 +134,8 @@ theorem name_at (f : PR 2) (p x A N : PTm n) : Γ ⊢[PRAAx] ap2 (nameF f) p (da
   have eq := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sample f (var 0) (var 1) (var 2) (var 3) : PTm 4)
     (σ := ![p,fstT (data x A N),fstT (sndT (data x A N)),sndT (sndT (data x A N))]) (σ' := ![p,x,A,N])
     (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _
-                 exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-                 exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+                 exact (snd_pair _ _).fstE
+                 exact (snd_pair _ _).sndE)
   exact h.eqTrans (by simpa only [subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
     Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using eq)
 

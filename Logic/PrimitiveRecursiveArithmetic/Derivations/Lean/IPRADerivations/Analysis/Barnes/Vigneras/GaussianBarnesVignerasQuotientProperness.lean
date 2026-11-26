@@ -1,5 +1,4 @@
 import IPRADerivations.Analysis.Barnes.Vigneras.GaussianBarnesVignerasLogQuotient
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Rational chart independence of the actual Barnes logarithmic quotient
@@ -14,7 +13,7 @@ set_option maxHeartbeats 650000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesVignerasQuotientProperness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (eval_re_code eval_im_code scale)
 open GaussianBarnesCanonicalThirdLogarithmRows (center)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
@@ -23,8 +22,6 @@ open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represen
   positive_product represents_congr represents_rescale)
 open GaussianRealNameExponentialInjectivity (independent_radii_injective)
 open GaussianRootAlgebra (equal equal_of_values equal_symm re_scale im_scale)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -2,7 +2,6 @@ import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalValueZer
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerCofinal
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 import IPRADerivations.Analysis.Exponential.GaussianRadiusExponentialName
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The analytic hyperfactorial on the positive rational axis
@@ -19,7 +18,7 @@ set_option maxHeartbeats 1000000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalHyperfactorial
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (bounded bounded_add bounded_mono bounded_neg bounded_scale normSq_one oneCode scale)
 open GaussianRootAlgebra (sub)
 open GaussianRationalHorner (ofGaussian)
@@ -29,9 +28,6 @@ open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameRingLaws (oneF one_fast multiply_associative multiply_one)
 open GaussianNameReciprocal (apart nameData name_fast product_one_left)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

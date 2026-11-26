@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRationalDirection
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRationalDirectionConstruction (direction normalized)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (power)
 open LeanProofs.IPRA.Analysis.GaussianRationalHorner (canonical positive_product)
@@ -26,10 +26,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalDirectionNormalizer (norm)
 open LeanProofs.IPRA.Analysis.GaussianRationalPhaseCertificate (directionDot directionCoefficient)
 open LeanProofs.IPRA.Analysis.GaussianEuclideanDistanceName (fraction)
 open LeanProofs.IPRA.Analysis.GaussianDominantSyntax (four)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,12 +39,9 @@ def certificate (c k p q : PTm n) : Fm PTm n := canonical (direction c k q) ⋏
         (neg (RationalArgmin.rationalLE (directionCoefficient (value c k q) p q) (fraction zero one)) ⋏
           GaussianRationalDirectionConstruction.certificate c k q))))
 
-@[simp] theorem subst_input {m : ℕ} (σ : Fin n → PTm m) (c k p q : PTm n) :
-    (input c k p q).subst σ = input (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ p) (Syn.subst σ q) := by simp [input]
-@[simp] theorem subst_value {m : ℕ} (σ : Fin n → PTm m) (c k q : PTm n) :
-    Syn.subst σ (value c k q) = value (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ q) := by simp [value]
-@[simp] theorem subst_certificate {m : ℕ} (σ : Fin n → PTm m) (c k p q : PTm n) :
-    (certificate c k p q).subst σ = certificate (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ p) (Syn.subst σ q) := by simp [certificate]
+ipra_subst input
+ipra_subst value
+ipra_subst certificate
 
 theorem input_denominator (c k p q : PTm n) (h : Γ ⊢[PRAAx] input c k p q) : Γ ⊢[PRAAx] le one q := by
   have hp := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))
@@ -103,32 +96,26 @@ def output (c k p q : PTm n) : PTm n := pairT (direction c k q)
 def outputF : PR 4 := PTm.toPR (output (var 0) (var 1) (var 2) (var 3))
 def run (c k p q : PTm n) : PTm n := PTm.app outputF ![c,k,p,q]
 
-@[simp] theorem subst_output {m : ℕ} (σ : Fin n → PTm m) (c k p q : PTm n) :
-    Syn.subst σ (output c k p q) = output (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ p) (Syn.subst σ q) := by simp [output]
-@[simp] theorem subst_run {m : ℕ} (σ : Fin n → PTm m) (c k p q : PTm n) :
-    Syn.subst σ (run c k p q) = run (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [run,ConciseIPRA.PTm.subst_app]
-  congr 1
-  funext i
-  fin_cases i <;> rfl
+ipra_subst output
+ipra_subst run
 
 theorem program_at (c k p q : PTm n) : Γ ⊢[PRAAx] run c k p q ≐ output c k p q := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![c,k,p,q]
 
 theorem returned_direction (c k p q : PTm n) : Γ ⊢[PRAAx] fstT (run c k p q) ≐ direction c k q :=
-  (congrFst (program_at c k p q)).eqTrans (fst_pair _ _)
+  (program_at c k p q).fstE
 
 theorem returned_norm (c k p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (run c k p q)) ≐ qnormSq c :=
-  (congrFst ((congrSnd (program_at c k p q)).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c k p q).sndE.fstE
 
 theorem returned_coefficient (c k p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (run c k p q))) ≐ directionCoefficient (value c k q) p q :=
-  (congrFst ((congrSnd ((congrSnd (program_at c k p q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c k p q).sndE.sndE.fstE
 
 theorem returned_dot (c k p q : PTm n) : Γ ⊢[PRAAx] fstT (sndT (sndT (sndT (run c k p q)))) ≐ directionDot c (value c k q) :=
-  (congrFst ((congrSnd ((congrSnd ((congrSnd (program_at c k p q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (fst_pair _ _)
+  (program_at c k p q).sndE.sndE.sndE.fstE
 
 theorem returned_construction (c k p q : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (sndT (run c k p q)))) ≐ GaussianRationalDirectionConstruction.run c k q :=
-  (congrSnd ((congrSnd ((congrSnd ((congrSnd (program_at c k p q)).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _))).eqTrans (snd_pair _ _)
+  (program_at c k p q).sndE.sndE.sndE.sndE
 
 theorem rational_direction_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
     (input (var 0) (var 1) (var 2) (var 3) ⟶ certificate (var 0) (var 1) (var 2) (var 3)) :=
@@ -145,9 +132,7 @@ def returnedCertificate (c k p q : PTm n) : Fm PTm n :=
         (GaussianRationalPhaseCertificate.square (fstT (sndT (sndT (run c k p q))))))
       (GaussianRationalPhaseCertificate.square (fstT (sndT (sndT (sndT (run c k p q))))))
 
-@[simp] theorem subst_returnedCertificate {m : ℕ} (σ : Fin n → PTm m) (c k p q : PTm n) :
-    (returnedCertificate c k p q).subst σ = returnedCertificate (Syn.subst σ c) (Syn.subst σ k) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp [returnedCertificate]
+ipra_subst returnedCertificate
 
 theorem returned_source_certificate (c k p q : PTm n) (h : Γ ⊢[PRAAx] input c k p q) : Γ ⊢[PRAAx]
     returnedCertificate c k p q := by

@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Analysis.GaussianRootSharpDistance
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.GaussianRootAdequacy (inputContract)
 open LeanProofs.IPRA.Analysis.GaussianRootSharpResidualSamples (M c)
 open LeanProofs.IPRA.Analysis.GaussianCoefficientNameBounds (unit unit_positive)
@@ -28,9 +28,6 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (positive_product)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded)
 open LeanProofs.IPRA.Analysis.GaussianRootRadius (roots)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (zero succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -43,9 +40,7 @@ def rhsDenominator (step a : PR 3) (point : PR 2) (N Z t x j : PTm n) : PTm n :=
   GaussianLinearDistanceName.rawDenominator point (roots step a N t x) x (GaussianRootSharpResidualSamples.D a N t x)
     (GaussianLinearDistanceName.exponent (M a N Z x) j)
 
-@[simp] theorem subst_rhsData {m : ℕ} (σ : Fin n → PTm m) (step a : PR 3) (N Z t x : PTm n) :
-    Syn.subst σ (rhsData step a N Z t x) = rhsData step a (Syn.subst σ N) (Syn.subst σ Z) (Syn.subst σ t) (Syn.subst σ x) := by
-  simp [rhsData]
+ipra_subst rhsData
 
 /-- Canonical recoding of an actual canonical Gaussian value is literal
 identity; this binds the generic residual name to the original P(z) program. -/

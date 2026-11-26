@@ -15,7 +15,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerFiniteApartness
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open ComplexLogarithmRemainder (oneCode normSq_one)
 open GaussianCoefficientNameBounds (unit)
 open GaussianGammaEulerInverseConvergence (subst_directData)
@@ -32,9 +32,6 @@ open GaussianRationalLowerBounds (lower_from_representation)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (qone reciprocal_canonical)
 open GaussianRootSchedule (binaryLength binary_length_correct)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "ER" => GaussianGammaGaussReferenceEulerProduct.rowF
@@ -78,9 +75,7 @@ def referenceDenominator (m N : PTm n) : PTm n := one+radius qF referenceQBody m
 def referenceApartClock (m N : PTm n) : PTm n :=
   GaussianNamedFiniteProductApartness.apartClock m (referenceDenominator m N)
 
-@[simp] theorem subst_referenceDenominator {l : ℕ} (σ : Fin n → PTm l) (m N : PTm n) :
-    Syn.subst σ (referenceDenominator m N) = referenceDenominator (Syn.subst σ m) (Syn.subst σ N) := by
-  simp [referenceDenominator,one]
+ipra_subst referenceDenominator [one]
 
 private theorem reference_q_at (r m N : PTm n) : Γ ⊢[PRAAx]
     inst2 referenceQBody r (rowData m N) ≐ qData (argument r) m N := by

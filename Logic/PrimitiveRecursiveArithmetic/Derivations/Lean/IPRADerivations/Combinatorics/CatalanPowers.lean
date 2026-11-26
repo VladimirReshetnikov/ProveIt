@@ -1,8 +1,6 @@
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Combinatorics.LinearFactorTable
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
 
 /-!
 # The iterated Catalan convolution
@@ -36,7 +34,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CatalanPowers
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Bell (nth monus_monus monus_le')
 open LeanProofs.IPRA.Combinatorics.Stirling (build nth_build congrNth gle_above)
 open LeanProofs.IPRA.Combinatorics.Catalan (cat cat_zero)
@@ -45,10 +43,6 @@ open LeanProofs.IPRA.Combinatorics.BellTouchardPower (pair_congr succ_monus_of_l
 open LeanProofs.IPRA.Combinatorics.LinearFactorTable (sum_lin)
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB all_elim all_intro one_ne_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -163,15 +157,15 @@ theorem tb_at (i m k N : PTm n) :
         (sndT (sndT (pairT m (pairT k N)))) := by simp [inst2]
   rw [h]
   have s : Γ ⊢[PRAAx] sndT (pairT m (pairT k N)) ≐ pairT k N := snd_pair _ _
-  exact congrMul (.eqRefl _) (congrTb ((congrFst s).eqTrans (fst_pair _ _))
-    (congrMonus (fst_pair _ _) (.eqRefl _)) ((congrSnd s).eqTrans (snd_pair _ _)))
+  exact congrMul (.eqRefl _) (congrTb s.fstE
+    (congrMonus (fst_pair _ _) (.eqRefl _)) s.sndE)
 
 theorem c_at (i m k N : PTm n) :
     Γ ⊢[PRAAx] inst2 cB i (pairT m (pairT N (row k N))) ≐ inst2 tbB i (pairT m (pairT k N)) := by
   rw [inst2_cB]
   have s : Γ ⊢[PRAAx] sndT (pairT m (pairT N (row k N))) ≐ pairT N (row k N) := snd_pair _ _
-  exact (congrMul (.eqRefl _) (congrNth ((congrSnd s).eqTrans (snd_pair _ _))
-    (congrMonus ((congrFst s).eqTrans (fst_pair _ _))
+  exact (congrMul (.eqRefl _) (congrNth s.sndE
+    (congrMonus s.fstE
       (congrMonus (fst_pair _ _) (.eqRefl _))))).eqTrans (tb_at i m k N).eqSymm
 
 /-- `T_N(k + 1, m) = Σ_{i ≤ m} Cat_i T_N(k, m − i)` for `m ≤ N`. -/

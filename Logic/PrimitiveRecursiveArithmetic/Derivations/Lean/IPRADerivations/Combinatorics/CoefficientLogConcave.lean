@@ -2,7 +2,6 @@ import IPRADerivations.Foundations.ProductSumDomination
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Combinatorics.BellLeastPeriod
 import IPRADerivations.Combinatorics.CatalanPowers
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # A finite coefficient inequality: log-concavity from a convolution recurrence
@@ -60,7 +59,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Combinatorics.CoefficientLogConcave
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le gle_above)
 open LeanProofs.IPRA.Combinatorics.BellTouchardPower (pair_congr succ_monus_of_le le_of_lt_succ)
 open LeanProofs.IPRA.Combinatorics.BellLeastPeriod (allB_extend ne_of_one)
@@ -69,10 +68,6 @@ open LeanProofs.IPRA.Combinatorics.CatalanPowers (shift_pair shift_succ shift_ze
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB allB_zero all_elim all_intro all_cases
   zero_of_compl_ne one_ne_zero sgB)
 open LeanProofs.IPRA.Foundations.ProductSumDomination (sum_trunc dom_step)
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -233,9 +228,8 @@ theorem inst2_oB (μ y : PTm n) :
 
 theorem delta_lt {μ δ N : PTm n} (hδ : Γ ⊢[PRAAx] lt (succ (μ + δ)) N) :
     Γ ⊢[PRAAx] lt δ (monus N (succ μ)) := by
-  have e := natEq (eq_add_of_le hδ)
   have e' : Γ ⊢[PRAAx] N ≐ (succ δ + monus N (succ (succ (μ + δ)))) + succ μ := by
-    ipra_lc e
+    ipra_lc natEq (eq_add_of_le hδ)
   exact le_of_eq_add (d := monus N (succ (succ (μ + δ))))
     ((congrMonus e' (.eqRefl _)).eqTrans (add_monus _ _))
 
@@ -462,7 +456,7 @@ theorem al_at (j M m y : PTm n) : Γ ⊢[PRAAx] inst2 (alB A) j (pairT M (pairT 
   rw [h]
   have f : Γ ⊢[PRAAx] fstT (pairT M (pairT m y)) ≐ M := fst_pair _ _
   have s : Γ ⊢[PRAAx] sndT (sndT (pairT M (pairT m y))) ≐ y :=
-    (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+    (snd_pair _ _).sndE
   exact congrMul (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) f))
     (congrInst2 A (congrMonus f (.eqRefl _)) s)
 
@@ -474,8 +468,8 @@ theorem be_at (j M m y : PTm n) : Γ ⊢[PRAAx] inst2 (beB A) j (pairT M (pairT 
     simp only [beB, inst2_sub2]; simp [inst2]
   rw [h]
   have s : Γ ⊢[PRAAx] sndT (pairT M (pairT m y)) ≐ pairT m y := snd_pair _ _
-  exact congrInst2 A (congrMonus ((congrFst s).eqTrans (fst_pair _ _)) (.eqRefl _))
-    ((congrSnd s).eqTrans (snd_pair _ _))
+  exact congrInst2 A (congrMonus s.fstE (.eqRefl _))
+    s.sndE
 
 theorem x0_at (j M m y : PTm n) : Γ ⊢[PRAAx] inst2 (x0B X) j (pairT M (pairT m y)) ≐
     inst2 X j y := by
@@ -483,7 +477,7 @@ theorem x0_at (j M m y : PTm n) : Γ ⊢[PRAAx] inst2 (x0B X) j (pairT M (pairT 
       inst2 X j (sndT (sndT (pairT M (pairT m y)))) := by
     simp only [x0B, inst2_sub2]; simp [inst2]
   rw [h]
-  exact congrInst2 X (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  exact congrInst2 X (.eqRefl _) (snd_pair _ _).sndE
 
 theorem x1_at (j M m y : PTm n) : Γ ⊢[PRAAx] inst2 (x1B X) j (pairT M (pairT m y)) ≐
     inst2 X (succ j) y := by
@@ -491,7 +485,7 @@ theorem x1_at (j M m y : PTm n) : Γ ⊢[PRAAx] inst2 (x1B X) j (pairT M (pairT 
       inst2 X (succ j) (sndT (sndT (pairT M (pairT m y)))) := by
     simp only [x1B, inst2_sub2]; simp [inst2]
   rw [h]
-  exact congrInst2 X (.eqRefl _) ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
+  exact congrInst2 X (.eqRefl _) (snd_pair _ _).sndE
 
 theorem p_at (j M m y : PTm n) : Γ ⊢[PRAAx] inst2 (pB X A) j (pairT M (pairT m y)) ≐
     inst2 X (succ j) y * (gle j M * inst2 A (monus M j) y) := by

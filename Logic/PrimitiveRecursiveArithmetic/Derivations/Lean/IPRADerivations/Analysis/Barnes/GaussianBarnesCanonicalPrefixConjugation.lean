@@ -13,15 +13,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefixConjugation
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalProduct (literalData)
 open GaussianBarnesCanonicalValue (prefixF)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
 open GaussianRationalReciprocal (conjugate)
-open ConciseIPRA.PTm (zero)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

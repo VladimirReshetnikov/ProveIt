@@ -22,7 +22,7 @@ set_option maxHeartbeats 950000
 
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDerivativeInterval
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalDerivativeAlgebra (linearTerm)
@@ -41,10 +41,6 @@ open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at finite_sum_difference)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianReciprocalSquareInterval (denominator denominator_positive)
-open ConciseIPRA.PTm (zero succ)
-open LeanProofs.IPRA.PTm (num)
-open Syn
-open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Diff" => GaussianNamedDifference.nameF

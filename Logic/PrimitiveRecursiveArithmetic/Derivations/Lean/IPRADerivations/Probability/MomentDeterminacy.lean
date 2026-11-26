@@ -3,9 +3,6 @@ import IPRADerivations.Foundations.ChainViability
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Combinatorics.StirlingPowers
 import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Finite-support moment determinacy: uniqueness by back substitution
@@ -43,7 +40,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Probability.MomentDeterminacy
 
-open LeanProofs.ConciseIPRA LeanProofs.IPRA
+open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (ff)
@@ -51,10 +48,6 @@ open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.CatalanConvolution (monus_monus)
 open LeanProofs.IPRA.Foundations.ChainViability (monus_le)
 open LeanProofs.IPRA.Foundations.FrontierSoundness (rdB inst2_rdB lt_succ_of_le')
-open Syn
-open scoped Fm
-open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
