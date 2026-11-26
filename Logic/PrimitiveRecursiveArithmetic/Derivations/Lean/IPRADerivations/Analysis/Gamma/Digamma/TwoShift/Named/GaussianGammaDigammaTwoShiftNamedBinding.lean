@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigamm
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.GaussianGammaDigammaTwoShiftBinding
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedUniformRateClosure
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedFrozenScalarOrder
 import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
 
 /-!
@@ -33,7 +34,7 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qsub_congr)
-open GaussianSignedNameExponentialOrder (realSamples own_sample_rate)
+open GaussianSignedNameExponentialOrder (realSamples)
 open GaussianStirlingGammaLogarithm (logGammaF logGammaData gammaLogMargin log_gamma_regular)
 open ConciseIPRA.PTm (zero)
 open LeanProofs.IPRA.PTm (num)
@@ -141,17 +142,6 @@ private theorem constant_difference (a b : PTm n) : Γ ⊢[PRAAx]
     (.eqRefl _) (.eqRefl _) raw
   simpa only [GaussianNamedDifference.subst_data,GaussianRationalMetric.subst_qsub,PTm.subst_num,Syn.shift] using actual
 
-private theorem sampled_rate (f : PR 2) (x s k q : PTm n) (h : Γ ⊢[PRAAx] pointCN f x)
-    (hsk : Γ ⊢[PRAAx] le s k) (hq : Γ ⊢[PRAAx] ap2 f k x ≐ q) :
-    Γ ⊢[PRAAx] independentRate f constantF x q one (unit s) := by
-  have grow := GaussianExponentialReference.unit_monotone hsk
-  have raw : Γ ⊢[PRAAx] independentRate f constantF x (ap2 f k x) one (unit s) :=
-    GaussianNamedRateRadius.weaken f constantF x (ap2 f k x) one (unit k) one (unit s)
-      (unit_positive k) (unit_positive s) (by ipra_le sl grow) (own_sample_rate f x k h)
-  exact GaussianNamedRateTransport.transport f constantF f constantF x (ap2 f k x) x q one (unit s)
-    (unit_positive s) raw (cross_refl f x h)
-    (GaussianSignedNameExponentialOrder.constant_equal_cross q (ap2 f k x) hq.eqSymm)
-
 private theorem coefficient_rate (g h : PR 2) (y z s k b c d : PTm n)
     (hy : Γ ⊢[PRAAx] pointCN g y) (hz : Γ ⊢[PRAAx] pointCN h z)
     (hk : Γ ⊢[PRAAx] le s k)
@@ -159,7 +149,9 @@ private theorem coefficient_rate (g h : PR 2) (y z s k b c d : PTm n)
     Γ ⊢[PRAAx] independentRate (Diff g h) constantF (DD y z) (GaussianGammaDigammaTwoShiftBinding.coefficient b c d) two (unit s) := by
   have hD := unit_positive (Γ := Γ) s
   have raw := difference_rate g h constantF constantF y z (fraction c b) (fraction d b) one one (unit s)
-    hD hy hz (constant_regular _) (constant_regular _) (sampled_rate g y s k _ hy hk hc) (sampled_rate h z s k _ hz hk hd)
+    hD hy hz (constant_regular _) (constant_regular _)
+    (GaussianNamedFrozenScalarOrder.own_rate g y s k _ hy hk hc)
+    (GaussianNamedFrozenScalarOrder.own_rate h z s k _ hz hk hd)
   let a := fraction c b
   let e := fraction d b
   let u := qsub a e

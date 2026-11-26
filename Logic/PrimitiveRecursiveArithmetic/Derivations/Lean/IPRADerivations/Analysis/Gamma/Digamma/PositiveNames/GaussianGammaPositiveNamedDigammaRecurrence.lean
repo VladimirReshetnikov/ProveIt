@@ -2,6 +2,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.PositiveNames.GaussianGammaPositiv
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaRecurrence
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # Positive named digamma recurrence
@@ -80,12 +81,8 @@ private theorem reciprocal_rate (f : PR 2) (p k x A : PTm n) (h : Γ ⊢[PRAAx] 
   let w := fraction (denominator f k x) (numerator f k x)
   have hi := reciprocal_input f x A h
   have ir := GaussianNameReciprocal.name_fast f (threshold A) x hi.andE₁ hi.andE₂
-  have wider : Γ ⊢[PRAAx] le (M*unit p) (M*unit k) :=
-    le_congr (mul_comm _ _) (mul_comm _ _)
-      (mul_le_mul_right M (GaussianExponentialReference.unit_monotone hp))
   have raw := GaussianNamedReciprocalFrozenRate.frozen_rate f (threshold A) x k hi hk
-  have rate := GaussianNamedRateRadius.weaken (R f) constantF u v M (unit k) M (unit p)
-    (unit_positive k) (unit_positive p) wider raw
+  have rate := GaussianNamedRateRadius.weaken_dyadic (R f) constantF u v M p k hp raw
   have e := cross_data_congr constantF constantF v w v v (frozen_reciprocal f k x A h hk) (.eqRefl v)
     (cross_refl _ _ (constant_regular v))
   exact GaussianNamedRateTransport.transport (R f) constantF (R f) constantF u v u w M (unit p)

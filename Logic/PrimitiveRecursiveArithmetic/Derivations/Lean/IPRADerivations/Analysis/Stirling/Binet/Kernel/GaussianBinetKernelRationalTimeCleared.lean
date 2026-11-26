@@ -1,6 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelFrozenHyperbolic
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelImaginaryRatioCofinal
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedUniformRateClosure
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # Cleared elementary Binet kernel at every rational time
@@ -73,9 +74,7 @@ private theorem reduce_clock (F G : PR 2) (x y C p A : PTm n)
     Γ ⊢[PRAAx] independentRate G F y x C (unit p) := by
   let k := referenceClock p A
   have hpk : Γ ⊢[PRAAx] le p k := le_trans (le_succ_self p) (le_add_right _ _)
-  have mono : Γ ⊢[PRAAx] le (unit p) (unit k) := GaussianBalancedRadiusArithmetic.unit_monotone p k hpk
-  have hyp := le_mul_mono (le_refl C) mono
-  have hr := GaussianNamedRateRadius.weaken F G x y C (unit k) C (unit p) (unit_positive k) (unit_positive p) hyp h
+  have hr := GaussianNamedRateRadius.weaken_dyadic F G x y C p k hpk h
   exact GaussianNamedRateComposition.symmetric F G x y C (unit p) (unit_positive p) hr
 
 theorem dyadic_rate (p A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :

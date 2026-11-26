@@ -9,7 +9,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedRateRadius
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator denominator_positive rate_at)
-open GaussianCoefficientNameBounds (unit)
+open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_radius_mono)
 open Syn
@@ -38,6 +38,13 @@ theorem weaken (F G : PR 2) (x y A B C D : PTm n)
     by simpa [Fm.shift,Syn.shift,sh] using hr.shift.shift
   refine .allI (.allI ?_)
   simpa only [independentRate,sh] using observation_at F G (var 1) (var 0) (sh x) (sh y) (sh A) (sh B) (sh C) (sh D) bs ds hs rs
+
+/-- Keep the leading numerator and use an earlier dyadic precision. -/
+theorem weaken_dyadic (F G : PR 2) (x y A p r : PTm n) (hp : Γ ⊢[PRAAx] le p r)
+    (h : Γ ⊢[PRAAx] independentRate F G x y A (unit r)) :
+    Γ ⊢[PRAAx] independentRate F G x y A (unit p) :=
+  weaken F G x y A (unit r) A (unit p) (unit_positive r) (unit_positive p)
+    (mul_le_mul_left A (GaussianFactorBudget.power_monotone_length two p r (le_succ_self one) hp)) h
 
 theorem original_independent_rate_radius_weakening_closed (F G : PR 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     ((le one (var 3) ⋏ (le one (var 5) ⋏ le (var 2*var 5) (var 4*var 3))) ⟶

@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRealOrderTransport
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianSignedNameExponentialOrder
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicCells
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
@@ -38,10 +39,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem own_rate (f : PR 2) (x s k q : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x)
     (hk : Γ ⊢[PRAAx] le s k) (hq : Γ ⊢[PRAAx] ap2 f k x ≐ q) :
     Γ ⊢[PRAAx] independentRate f constantF x q one (unit s) := by
-  have grow := GaussianExponentialReference.unit_monotone hk
   have raw : Γ ⊢[PRAAx] independentRate f constantF x (ap2 f k x) one (unit s) :=
-    GaussianNamedRateRadius.weaken f constantF x (ap2 f k x) one (unit k) one (unit s)
-      (unit_positive k) (unit_positive s) (le_congr (one_mul _).eqSymm (one_mul _).eqSymm grow)
+    GaussianNamedRateRadius.weaken_dyadic f constantF x (ap2 f k x) one s k hk
       (GaussianSignedNameExponentialOrder.own_sample_rate f x k hf)
   exact GaussianNamedRateTransport.transport f constantF f constantF x (ap2 f k x) x q one (unit s)
     (unit_positive s) raw (GaussianNameEquivalence.cross_refl f x hf)

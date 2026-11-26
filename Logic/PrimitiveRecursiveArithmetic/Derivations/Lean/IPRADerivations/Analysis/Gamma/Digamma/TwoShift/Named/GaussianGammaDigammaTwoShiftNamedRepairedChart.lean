@@ -3,6 +3,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigamm
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftChartProper
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftQuotientTranslation
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftCapRepair
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # A checked repaired chart at every precision of the original names
@@ -118,12 +119,6 @@ def ready (f g h j : PR 2) (p x y z w M : PTm n) : Fm PTm n :=
       (cap F.base F.denominator F.shiftBound) (capBudget f j x w M) (unit p) ⋏
     (sizeOrder f j x w ⟶ le (coefficient F.denominator F.shiftBound) (F.base*F.denominator))))
 
-private theorem dyadic_weaken (f g : PR 2) (x y A p s : PTm n) (hp : Γ ⊢[PRAAx] le p s)
-    (h : Γ ⊢[PRAAx] independentRate f g x y A (unit s)) :
-    Γ ⊢[PRAAx] independentRate f g x y A (unit p) :=
-  GaussianNamedRateRadius.weaken f g x y A (unit s) A (unit p) (unit_positive s) (unit_positive p)
-    (by ipra_le 𝔞 A*sl (GaussianExponentialReference.unit_monotone hp)) h
-
 private theorem logarithmic_source (a b u E C T : PTm n) (hs : Γ ⊢[PRAAx] GaussianCompactLogarithmBounds.domain a b E T)
     (he : Γ ⊢[PRAAx] le one E) (hC : Γ ⊢[PRAAx] le (two*T*b+u) (C*b))
     (hSmall : Γ ⊢[PRAAx] GaussianRightHalfPlaneLogarithmIncrementMargin.smallStep u E C b) :
@@ -224,8 +219,8 @@ theorem actual_chart (f g h j : PR 2) (p x y z w M : PTm n)
   have capOld := GaussianGammaDigammaTwoShiftNamedCap.frozen_rate f j s r x w M A B L hs.andE₁ hj ha hr vf.andE₁ hL rates.andE₂.andE₂.andE₂
   have capNew := GaussianGammaDigammaTwoShiftCapRepair.repaired_rate (GaussianGammaDigammaTwoShiftNamedCap.nameF f j) (GaussianGammaDigammaTwoShiftNamedCap.data f j x w M) (GaussianGammaDigammaTwoShiftNamedCap.budget f j x w M)
     A B L e u E R J s ha wA.andE₂.andE₁ he hL (le_refl _) pitch capOld
-  refine .andI repaired (.andI (dyadic_weaken F RF X q' (quotientBudget f g h j x y z w M) p s hp allQ)
-    (.andI (dyadic_weaken (GaussianGammaDigammaTwoShiftNamedCap.nameF f j) constantF (GaussianGammaDigammaTwoShiftNamedCap.data f j x w M) (cap (A+u) B (enlarged L e))
+  refine .andI repaired (.andI (GaussianNamedRateRadius.weaken_dyadic F RF X q' (quotientBudget f g h j x y z w M) p s hp allQ)
+    (.andI (GaussianNamedRateRadius.weaken_dyadic (GaussianGammaDigammaTwoShiftNamedCap.nameF f j) constantF (GaussianGammaDigammaTwoShiftNamedCap.data f j x w M) (cap (A+u) B (enlarged L e))
       (capBudget f j x w M) p s hp capNew) (.impI ?_)))
   have rel := GaussianGammaDigammaTwoShiftNamedSize.relative_guard f j x w A L B e s hj.wk hb.wk pitch.wk hL.wk rates.andE₂.andE₂.andE₂.wk rates.andE₁.wk Prf.hyp0
   exact GaussianGammaDigammaTwoShiftWindowBuffer.repairs_relative_threshold A B L e (GaussianGammaDigammaTwoShiftNamedSize.guardBudget j w) R rel
