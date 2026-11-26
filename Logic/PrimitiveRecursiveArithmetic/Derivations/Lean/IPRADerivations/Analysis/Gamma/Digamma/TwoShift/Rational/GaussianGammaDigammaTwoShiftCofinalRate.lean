@@ -35,14 +35,14 @@ open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "hd" => GaussianHarmonicLogarithmName.data
+local notation "harmonicData" => GaussianHarmonicLogarithmName.data
 local notation "H" => GaussianHarmonicLogarithmName.nameF
 
 def rawSample (p a b c d : PTm n) : PTm n :=
   qsub (qsub (logSample p c b) (logSample p d b)) (qmul (coefficient b c d) (sample p a b))
 
 def sampleCost (a b c d : PTm n) : PTm n :=
-  GaussianNameArithmetic.multiplyModulus constantF H (coefficient b c d) (hd a b)+num 10
+  GaussianNameArithmetic.multiplyModulus constantF H (coefficient b c d) (harmonicData a b)+num 10
 
 ipra_subst rawSample [logSample, sample]
 
@@ -63,7 +63,7 @@ theorem quotient_sample_error (p a b c d : PTm n) (ha : Γ ⊢[PRAAx] source a b
   have hz := power_log_regular a b c d ha
   have hden := denominator_log_regular a b c d ha hD
   have pr := distance_congr (.eqRefl _) (qmul_congr (constant_at p w) (.eqRefl _)) (.eqRefl _) (.eqRefl _)
-    (GaussianNameRingLaws.multiply_sample_error constantF H w (hd a b) p (constant_regular w)
+    (GaussianNameRingLaws.multiply_sample_error constantF H w (harmonicData a b) p (constant_regular w)
       (GaussianHarmonicLogarithmName.name_regular a b ha))
   have addErr := GaussianNameRingLaws.add_sample_error logGammaF powerLogF y z p hy hz
   have dy := GaussianRationalPowerDifference.distance_refl_zero (Γ := Γ) (ap2 logGammaF p y) u hU
@@ -77,18 +77,18 @@ theorem quotient_sample_error (p a b c d : PTm n) (ha : Γ ⊢[PRAAx] source a b
   exact distance_congr (.eqRefl _) arr.eqSymm (by unfold sampleCost GaussianNameRingLaws.three; ipra_ring)
     (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ hU named together)
 
-def finiteRate (a b c d K B : PTm n) : Fm PTm n := .all
+def finiteRateWithDenominator (a b c d K D B : PTm n) : Fm PTm n := .all
   ((upper (fstT qzero) (fstT (rawSample (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d)))
-    (Syn.shift K*unit (var 0)+Syn.shift B*Syn.shift a) (Syn.shift a*unit (var 0))) ⋏
+      (Syn.shift K*unit (var 0)+Syn.shift B*Syn.shift D) (Syn.shift D*unit (var 0))) ⋏
    (upper (fstT (rawSample (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d))) (fstT qzero)
-    (Syn.shift K*unit (var 0)+Syn.shift B*Syn.shift a) (Syn.shift a*unit (var 0))))
+      (Syn.shift K*unit (var 0)+Syn.shift B*Syn.shift D) (Syn.shift D*unit (var 0))))
 
-ipra_subst finiteRate [Syn.subst_shift, Syn.shift_subst]
+ipra_subst finiteRateWithDenominator [Syn.subst_shift, Syn.shift_subst]
 
-private theorem finite_at (p a b c d K B : PTm n) (h : Γ ⊢[PRAAx] finiteRate a b c d K B) :
-    Γ ⊢[PRAAx] (upper (fstT qzero) (fstT (rawSample p a b c d)) (K*unit p+B*a) (a*unit p) ⋏
-      upper (fstT (rawSample p a b c d)) (fstT qzero) (K*unit p+B*a) (a*unit p)) := by
-  simpa [finiteRate,Syn.subst_inst_shift,Syn.inst_zero] using h.allE p
+private theorem finite_at (p a b c d K D B : PTm n) (h : Γ ⊢[PRAAx] finiteRateWithDenominator a b c d K D B) :
+    Γ ⊢[PRAAx] (upper (fstT qzero) (fstT (rawSample p a b c d)) (K*unit p+B*D) (D*unit p) ⋏
+      upper (fstT (rawSample p a b c d)) (fstT qzero) (K*unit p+B*D) (D*unit p)) := by
+  simpa [finiteRateWithDenominator,Syn.subst_inst_shift,Syn.inst_zero] using h.allE p
 
 private theorem zero_rep : Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (qzero : PTm n)) (ZT.ofNat zero) one :=
   scalar_congr (RationalGaussianRealPart.real_zero (Γ := Γ)).eqSymm (.eqRefl _) (.eqRefl _)
@@ -136,29 +136,29 @@ private theorem move_radius_left (z K a B p : PTm n) (ha : Γ ⊢[PRAAx] le one 
   simp only [Q.mk_mul,Q.mk_add,Q.mk_one,Q.mk_zero,map_mul,map_add,map_one,map_zero] at eq ⊢
   linear_combination eq
 
-def logRate (a b c d K : PTm n) : Fm PTm n :=
-  realOrder constantF quotientLogF (qnegative (fraction K a)) (quotientLogData a b c d) ⋏
-  realOrder quotientLogF constantF (quotientLogData a b c d) (fraction K a)
+def logRateWithDenominator (a b c d K T : PTm n) : Fm PTm n :=
+  realOrder constantF quotientLogF (qnegative (fraction K T)) (quotientLogData a b c d) ⋏
+  realOrder quotientLogF constantF (quotientLogData a b c d) (fraction K T)
 
-private theorem diagonal (p a b c d K B : PTm n) (ha : Γ ⊢[PRAAx] source a b)
-    (hc : Γ ⊢[PRAAx] source c b) (hD : Γ ⊢[PRAAx] source d b)
-    (h : Γ ⊢[PRAAx] finiteRate a b c d K B) :
+private theorem diagonal (p a b c d K T B : PTm n) (ha : Γ ⊢[PRAAx] source a b)
+    (hc : Γ ⊢[PRAAx] source c b) (hd : Γ ⊢[PRAAx] source d b) (hT : Γ ⊢[PRAAx] le one T)
+    (h : Γ ⊢[PRAAx] finiteRateWithDenominator a b c d K T B) :
     Γ ⊢[PRAAx]
-      (upper (fstT (ap2 constantF p (qnegative (fraction K a))))
+      (upper (fstT (ap2 constantF p (qnegative (fraction K T))))
         (fstT (ap2 quotientLogF p (quotientLogData a b c d))) (B+sampleCost a b c d) (unit p) ⋏
        upper (fstT (ap2 quotientLogF p (quotientLogData a b c d)))
-        (fstT (ap2 constantF p (fraction K a))) (B+sampleCost a b c d) (unit p)) := by
+        (fstT (ap2 constantF p (fraction K T))) (B+sampleCost a b c d) (unit p)) := by
   let q := ap2 quotientLogF p (quotientLogData a b c d)
   let r := rawSample p a b c d
   let C := sampleCost a b c d
-  let L := qnegative (fraction K a)
-  let R := fraction K a
+  let L := qnegative (fraction K T)
+  let R := fraction K T
   let U := unit p
   have hp := unit_positive (Γ := Γ) p
-  have e := quotient_sample_error p a b c d ha hc hD
-  have base := finite_at p a b c d K B h
-  have lo := move_radius_left r K a B p ha.andE₁ base.andE₁
-  have hi := move_radius_right r K a B p ha.andE₁ base.andE₂
+  have e := quotient_sample_error p a b c d ha hc hd
+  have base := finite_at p a b c d K T B h
+  have lo := move_radius_left r K T B p hT base.andE₁
+  have hi := move_radius_right r K T B p hT base.andE₂
   have eF := scalar_upper q r C U hp e
   have eR := scalar_upper r q C U hp (distance_symmetric _ _ _ _ hp e)
   refine .andI ?_ ?_
@@ -169,23 +169,38 @@ private theorem diagonal (p a b c d K B : PTm n) (ha : Γ ⊢[PRAAx] source a b)
     exact upper_mono _ _ _ _ _ _ (positive_product _ _ hp hp) (upper_triangle _ _ _ _ _ _ _ eF hi)
       (le_of_eq_add (d := zero) (by ipra_ring))
 
-theorem cofinal_rate (a b c d K B : PTm n) (ha : Γ ⊢[PRAAx] source a b)
-    (hc : Γ ⊢[PRAAx] source c b) (hD : Γ ⊢[PRAAx] source d b)
-    (h : Γ ⊢[PRAAx] finiteRate a b c d K B) : Γ ⊢[PRAAx] logRate a b c d K := by
+/-- The limiting radius may have a denominator independent of the Gamma input. -/
+theorem cofinal_rate_with_denominator (a b c d K T B : PTm n) (ha : Γ ⊢[PRAAx] source a b)
+    (hc : Γ ⊢[PRAAx] source c b) (hd : Γ ⊢[PRAAx] source d b) (hT : Γ ⊢[PRAAx] le one T)
+    (h : Γ ⊢[PRAAx] finiteRateWithDenominator a b c d K T B) : Γ ⊢[PRAAx] logRateWithDenominator a b c d K T := by
   let q := quotientLogData a b c d
-  let L := qnegative (fraction K a)
-  let R := fraction K a
+  let L := qnegative (fraction K T)
+  let R := fraction K T
   let E := B+sampleCost a b c d
   have ha' : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift a) (Syn.shift b) := by simpa [Fm.shift,Syn.shift] using ha.shift
   have hc' : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift c) (Syn.shift b) := by simpa [Fm.shift,Syn.shift] using hc.shift
-  have hD' : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift d) (Syn.shift b) := by simpa [Fm.shift,Syn.shift] using hD.shift
-  have h' : Γ.map Fm.shift ⊢[PRAAx] finiteRate (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d) (Syn.shift K) (Syn.shift B) := by
-    simpa only [Fm.shift,subst_finiteRate,Syn.shift] using h.shift
-  have row := diagonal (var 0) _ _ _ _ _ _ ha' hc' hD' h'
+  have hd' : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift d) (Syn.shift b) := by simpa [Fm.shift,Syn.shift] using hd.shift
+  have hT' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift T) := by simpa [Fm.shift,Syn.shift,one] using hT.shift
+  have h' : Γ.map Fm.shift ⊢[PRAAx] finiteRateWithDenominator (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d) (Syn.shift K) (Syn.shift T) (Syn.shift B) := by
+    simpa only [Fm.shift,subst_finiteRateWithDenominator,Syn.shift] using h.shift
+  have row := diagonal (var 0) _ _ _ _ _ _ _ ha' hc' hd' hT' h'
   have low : Γ ⊢[PRAAx] envelope constantF quotientLogF L q E := .allI (by simpa [envelope,L,q,E,Syn.shift] using row.andE₁)
   have cap : Γ ⊢[PRAAx] envelope quotientLogF constantF q R E := .allI (by simpa [envelope,R,q,E,Syn.shift] using row.andE₂)
-  have hq := quotient_log_regular a b c d ha hc hD
+  have hq := quotient_log_regular a b c d ha hc hd
   exact .andI (order_from_envelope _ _ _ _ _ (constant_regular L) hq low)
     (order_from_envelope _ _ _ _ _ hq (constant_regular R) cap)
+
+def finiteRate (a b c d K B : PTm n) : Fm PTm n :=
+  finiteRateWithDenominator a b c d K a B
+
+ipra_subst finiteRate [finiteRateWithDenominator, Syn.subst_shift, Syn.shift_subst]
+
+def logRate (a b c d K : PTm n) : Fm PTm n :=
+  logRateWithDenominator a b c d K a
+
+theorem cofinal_rate (a b c d K B : PTm n) (ha : Γ ⊢[PRAAx] source a b)
+    (hc : Γ ⊢[PRAAx] source c b) (hD : Γ ⊢[PRAAx] source d b)
+    (h : Γ ⊢[PRAAx] finiteRate a b c d K B) : Γ ⊢[PRAAx] logRate a b c d K :=
+  cofinal_rate_with_denominator a b c d K a B ha hc hD ha.andE₁ h
 
 end LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftCofinalRate

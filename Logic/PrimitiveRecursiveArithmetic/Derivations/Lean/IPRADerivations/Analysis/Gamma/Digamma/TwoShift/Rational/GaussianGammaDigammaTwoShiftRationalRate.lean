@@ -161,7 +161,7 @@ theorem two_shift_log_rate (a b c d L : PTm n) (hs : Γ ⊢[PRAAx] input a b c d
   have hx : Γ.map Fm.shift ⊢[PRAAx] input (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d) (Syn.shift L) :=
     by simpa only [Fm.shift,GaussianGammaDigammaTwoShiftRationalWindow.subst_input,Syn.shift] using hs.shift
   refine .allI ?_
-  simpa only [finiteRate,Syn.shift,GaussianGammaDigammaTwoShiftRationalWindow.subst_coefficient,PTm.subst_mul,subst_budget] using
+  simpa only [finiteRate,GaussianGammaDigammaTwoShiftCofinalRate.finiteRateWithDenominator,Syn.shift,GaussianGammaDigammaTwoShiftRationalWindow.subst_coefficient,PTm.subst_mul,subst_budget] using
     row (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift c) (Syn.shift d) (Syn.shift L) hx
 
 theorem actual_original_Gamma_rational_window_logarithmic_rate_closed :
