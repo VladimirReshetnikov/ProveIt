@@ -23,7 +23,7 @@ open GaussianCompactRiemannName (sampleBody sampleData sample_body_at quadrature
   field0 field1 field2 field3 field4 field5 field0_at field1_at field2_at field3_at field4_at field5_at)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at weighted_difference)
 open GaussianRationalSumMajorant (majorized termsMajorized majorized_congr)
-open GaussianRationalRiemannRefinement (termsDistance)
+open GaussianRationalRiemannRefinement (leftSum termsDistance)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -86,32 +86,16 @@ theorem reference_row (i p M a C E R : PTm n) (hM : Γ ⊢[PRAAx] le one M)
   exact distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _)
     (GaussianBetaEulerTailDifferencePointwise.scalar_majorant_half_reference_error p R u v hv)
 
-theorem original_grid_bound_from_scaled_half (p M a C E z R B N U V : PTm n)
-    (hM : Γ ⊢[PRAAx] le one M) (hE : Γ ⊢[PRAAx] le one E) (hea : Γ ⊢[PRAAx] le E a)
-    (h : Γ ⊢[PRAAx] source z R B) (hN : Γ ⊢[PRAAx] le one N) (hRight : Γ ⊢[PRAAx] le (a+C) (E*N))
-    (hV : Γ ⊢[PRAAx] le one V)
-    (hHalf : Γ ⊢[PRAAx] bounded (qmul (radiusPoint (majorant R) one) (quadrature halfEvaluator p M a C E zero)) U V) : Γ ⊢[PRAAx]
-    distanceBounded (quadrature GaussianBetaKernelGridComparison.evaluatorF p M a C E (GaussianBetaKernelGridComparison.sampleDataBeta z B N))
-      (quadrature GaussianEulerIntegrandName.evaluatorF p M a C E (GaussianEulerIntegrandName.fixedData z B))
+/-- Sum an actual grid difference majorized by the scalar half-decay rows. -/
+theorem grid_bound_of_majorized_difference (f g : PTm 2) (p M a C E R X Y U V : PTm n)
+    (hM : Γ ⊢[PRAAx] le one M) (hE : Γ ⊢[PRAAx] le one E) (hV : Γ ⊢[PRAAx] le one V)
+    (hHalf : Γ ⊢[PRAAx] bounded (qmul (radiusPoint (majorant R) one) (quadrature halfEvaluator p M a C E zero)) U V)
+    (hm : Γ ⊢[PRAAx] termsMajorized (differenceBody f g) scalarBody M
+      (pairT X Y) (sampleData p M a C E R)) : Γ ⊢[PRAAx]
+    distanceBounded (leftSum f M X C E) (leftSum g M Y C E)
       ((C*referenceError R)*V+U*(E*unit p)) ((E*unit p)*V) := by
-  let f := sampleBody GaussianBetaKernelGridComparison.evaluatorF
-  let g := sampleBody GaussianEulerIntegrandName.evaluatorF
-  let X := sampleData p M a C E (GaussianBetaKernelGridComparison.sampleDataBeta z B N)
-  let Y := sampleData p M a C E (GaussianEulerIntegrandName.fixedData z B)
   let Z := sampleData p M a C E R
   let W := sampleData p M a C E (majorant R)
-  have hm : Γ ⊢[PRAAx] termsMajorized (differenceBody f g) scalarBody M (pairT X Y) Z := by
-    have m' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift M) := by simpa [Fm.shift,Syn.shift] using hM.shift
-    have e' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
-    have ea' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift E) (Syn.shift a) := by simpa [Fm.shift,Syn.shift] using hea.shift
-    have h' : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift z) (Syn.shift R) (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using h.shift
-    have n' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
-    have r' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a+Syn.shift C) (Syn.shift E*Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hRight.shift
-    refine .allI (.impI ?_)
-    simpa only [termsMajorized,X,Y,Z,f,g,Syn.shift,GaussianCompactRiemannName.subst_sampleData,subst_pairT,
-      GaussianBetaKernelGridComparison.subst_sampleDataBeta,GaussianEulerIntegrandName.subst_fixedData] using
-      majorized_row (var 0) (Syn.shift p) (Syn.shift M) (Syn.shift a) (Syn.shift C) (Syn.shift E)
-        (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) m'.wk e'.wk ea'.wk h'.wk n'.wk r'.wk Prf.hyp0
   have er : Γ ⊢[PRAAx] termsDistance (embedBody scalarBody) (sampleBody scaledF) M Z W (referenceError R) (unit p) := by
     have m' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift M) := by simpa [Fm.shift,Syn.shift] using hM.shift
     have e' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
@@ -131,6 +115,33 @@ theorem original_grid_bound_from_scaled_half (p M a C E z R B N U V : PTm n)
   have major := GaussianCompactScalarMajorant.weighted_majorant (differenceBody f g) scalarBody M (pairT X Y) Z C E hM hE hm
   exact GaussianRationalReciprocal.bound_congr (weighted_difference f g M X Y C E).eqSymm (.eqRefl _) (.eqRefl _)
     (GaussianRationalSumMajorant.majorant_bound _ _ _ _ (positive_product _ _ (positive_product _ _ hE (unit_positive p)) hV) major norm)
+
+theorem original_grid_bound_from_scaled_half (p M a C E z R B N U V : PTm n)
+    (hM : Γ ⊢[PRAAx] le one M) (hE : Γ ⊢[PRAAx] le one E) (hea : Γ ⊢[PRAAx] le E a)
+    (h : Γ ⊢[PRAAx] source z R B) (hN : Γ ⊢[PRAAx] le one N) (hRight : Γ ⊢[PRAAx] le (a+C) (E*N))
+    (hV : Γ ⊢[PRAAx] le one V)
+    (hHalf : Γ ⊢[PRAAx] bounded (qmul (radiusPoint (majorant R) one) (quadrature halfEvaluator p M a C E zero)) U V) : Γ ⊢[PRAAx]
+    distanceBounded (quadrature GaussianBetaKernelGridComparison.evaluatorF p M a C E (GaussianBetaKernelGridComparison.sampleDataBeta z B N))
+      (quadrature GaussianEulerIntegrandName.evaluatorF p M a C E (GaussianEulerIntegrandName.fixedData z B))
+      ((C*referenceError R)*V+U*(E*unit p)) ((E*unit p)*V) := by
+  let f := sampleBody GaussianBetaKernelGridComparison.evaluatorF
+  let g := sampleBody GaussianEulerIntegrandName.evaluatorF
+  let X := sampleData p M a C E (GaussianBetaKernelGridComparison.sampleDataBeta z B N)
+  let Y := sampleData p M a C E (GaussianEulerIntegrandName.fixedData z B)
+  let Z := sampleData p M a C E R
+  have hm : Γ ⊢[PRAAx] termsMajorized (differenceBody f g) scalarBody M (pairT X Y) Z := by
+    have m' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift M) := by simpa [Fm.shift,Syn.shift] using hM.shift
+    have e' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
+    have ea' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift E) (Syn.shift a) := by simpa [Fm.shift,Syn.shift] using hea.shift
+    have h' : Γ.map Fm.shift ⊢[PRAAx] source (Syn.shift z) (Syn.shift R) (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using h.shift
+    have n' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
+    have r' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a+Syn.shift C) (Syn.shift E*Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hRight.shift
+    refine .allI (.impI ?_)
+    simpa only [termsMajorized,X,Y,Z,f,g,Syn.shift,GaussianCompactRiemannName.subst_sampleData,subst_pairT,
+      GaussianBetaKernelGridComparison.subst_sampleDataBeta,GaussianEulerIntegrandName.subst_fixedData] using
+      majorized_row (var 0) (Syn.shift p) (Syn.shift M) (Syn.shift a) (Syn.shift C) (Syn.shift E)
+        (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) m'.wk e'.wk ea'.wk h'.wk n'.wk r'.wk Prf.hyp0
+  exact grid_bound_of_majorized_difference f g p M a C E R X Y U V hM hE hV hHalf hm
 
 theorem original_grid_bound_from_half (p M a C E z R B N U V : PTm n)
     (hM : Γ ⊢[PRAAx] le one M) (hE : Γ ⊢[PRAAx] le one E) (hea : Γ ⊢[PRAAx] le E a)

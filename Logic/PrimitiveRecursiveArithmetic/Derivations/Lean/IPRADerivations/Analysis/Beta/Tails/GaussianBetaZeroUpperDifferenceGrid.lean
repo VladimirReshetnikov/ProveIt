@@ -17,18 +17,15 @@ open_ipra
 open GaussianEulerUpperPowerCoefficients (source)
 open GaussianBetaEulerTailDifferencePointwise (referenceError)
 open GaussianEulerWeightedHalfDecay (majorant)
-open GaussianEulerCompactUpperTail (halfEvaluator scaledF scaled_quadrature)
-open GaussianBetaEulerUpperDifferenceGrid (scalarBody scalar_body_at reference_row)
+open GaussianEulerCompactUpperTail (halfEvaluator)
+open GaussianBetaEulerUpperDifferenceGrid (scalarBody scalar_body_at grid_bound_of_majorized_difference)
 open GaussianCompactRiemannName (sampleBody sampleData sample_body_at quadrature)
-open GaussianRationalQuadratureDifference (differenceBody difference_body_at weighted_difference)
+open GaussianRationalQuadratureDifference (differenceBody difference_body_at)
 open GaussianRationalSumMajorant (majorized termsMajorized majorized_congr)
-open GaussianRationalRiemannRefinement (termsDistance)
 open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
-open GaussianCoefficientNameBounds (unit unit_positive)
-open RationalGaussianRealPart (embedBody)
+open GaussianCoefficientNameBounds (unit)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -63,7 +60,6 @@ theorem original_grid_bound_from_scaled_half (p M a C E z R B N U V : PTm n)
   let X := sampleData p M a C E (GaussianBetaKernelGridComparison.sampleDataBeta z B N)
   let Y := sampleData p M a C E (GaussianEulerIntegrandName.fixedData z B)
   let Z := sampleData p M a C E R
-  let W := sampleData p M a C E (majorant R)
   have hm : Γ ⊢[PRAAx] termsMajorized (differenceBody f g) scalarBody M (pairT X Y) Z := by
     have m' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift M) := by simpa [Fm.shift,Syn.shift] using hM.shift
     have e' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
@@ -75,25 +71,7 @@ theorem original_grid_bound_from_scaled_half (p M a C E z R B N U V : PTm n)
       GaussianBetaKernelGridComparison.subst_sampleDataBeta,GaussianEulerIntegrandName.subst_fixedData] using
       majorized_row (var 0) (Syn.shift p) (Syn.shift M) (Syn.shift a) (Syn.shift C) (Syn.shift E)
         (Syn.shift z) (Syn.shift R) (Syn.shift B) (Syn.shift N) m'.wk e'.wk ea'.wk h'.wk n'.wk
-  have er : Γ ⊢[PRAAx] termsDistance (embedBody scalarBody) (sampleBody scaledF) M Z W (referenceError R) (unit p) := by
-    have m' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift M) := by simpa [Fm.shift,Syn.shift] using hM.shift
-    have e' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
-    refine .allI (.impI ?_)
-    simpa only [termsDistance,Z,W,Syn.shift,GaussianCompactRiemannName.subst_sampleData,
-      GaussianEulerWeightedHalfDecay.subst_majorant,GaussianBetaEulerTailDifferencePointwise.subst_referenceError,
-      GaussianCoefficientNameBounds.subst_unit] using
-      reference_row (var 0) (Syn.shift p) (Syn.shift M) (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift R) m'.wk e'.wk
-  have dist := GaussianCompactScalarMajorant.common_mesh_distance (embedBody scalarBody) (sampleBody scaledF)
-    M Z W C E (referenceError R) (unit p) hM hE (unit_positive p) er
-  have error := distance_congr (GaussianCompactScalarMajorant.scalar_left_embedding scalarBody M Z C E hE hM).eqSymm
-    (.eqRefl _) (.eqRefl _) (.eqRefl _) dist
-  have scaled : Γ ⊢[PRAAx] bounded (quadrature scaledF p M a C E (majorant R)) U V :=
-    GaussianRationalReciprocal.bound_congr (scaled_quadrature p M a C E (majorant R)).eqSymm (.eqRefl _) (.eqRefl _) hHalf
-  have norm := GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _
-    (positive_product _ _ hE (unit_positive p)) hV error scaled
-  have major := GaussianCompactScalarMajorant.weighted_majorant (differenceBody f g) scalarBody M (pairT X Y) Z C E hM hE hm
-  exact GaussianRationalReciprocal.bound_congr (weighted_difference f g M X Y C E).eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianRationalSumMajorant.majorant_bound _ _ _ _ (positive_product _ _ (positive_product _ _ hE (unit_positive p)) hV) major norm)
+  exact grid_bound_of_majorized_difference f g p M a C E R X Y U V hM hE hV hHalf hm
 
 theorem original_contiguous_zero_extended_upper_grid_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 11
     ((le one (var 1) ⋏ le one (var 4) ⋏ le (var 4) (var 2)) ⟶ source (var 5) (var 6) (var 7) ⟶ le one (var 8) ⟶
