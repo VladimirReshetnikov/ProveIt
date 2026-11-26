@@ -2852,3 +2852,6 @@ An explicit shared late clock encodes three original positive real names on one 
 
 A common actual late signed sample compares the original normalized product with the product of separately regular factors. The Gamma factor is the original named Gamma evaluated directly at s. The closed iPRA formula holds under an explicit positive margin for Re(s) above one.
 [GaussianGammaZetaNamedFactors](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedFactors.lean), [GaussianGammaZetaNamedMellin](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedMellin.lean)
+
+The original finite and cofinal Dirichlet sums agree across equal rational encodings and independently certified charts. The original named Dirichlet and Mellin values are proper for equivalent input names with independently chosen margin certificates.
+[GaussianGammaZetaDirichletOverlap](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletOverlap.lean), [GaussianGammaZetaDirichletPresentation](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletPresentation.lean), [GaussianGammaZetaNamedDirichletOverlap](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedDirichletOverlap.lean), [GaussianGammaZetaNamedMellinOverlap](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedMellinOverlap.lean)
