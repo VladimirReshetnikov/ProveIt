@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStrip
+import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerReciprocalTail
 
 /-!
 # Uniform-mesh Binet strip comparison
@@ -23,7 +24,8 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator den
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
-open GaussianRationalMetric (distanceBounded)
+open GaussianRationalMetric (bounded distanceBounded)
+open GaussianNamedDampingPowerReciprocalTail (body gridData affine_grid_majorant)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight weight_bound)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -38,6 +40,30 @@ theorem grid_tag (i M A C E : PTm n) :
   have ha : Γ ⊢[PRAAx] fstT (grid i M (E+A) C E) ≐ (A*M+C*i)+E*M :=
     (fst_pair _ _).eqTrans (by ipra_ring)
   exact .andI ((congrMonus ha hd).eqTrans (add_monus _ _)) hd
+
+theorem grid_tag_numerator_positive (i M A C E : PTm n)
+    (hA : Γ ⊢[PRAAx] le one A) (hM : Γ ⊢[PRAAx] le one M) :
+    Γ ⊢[PRAAx] le one (tagNumerator (grid i M (E+A) C E)) :=
+  le_congr (.eqRefl _) (grid_tag i M A C E).andE₁.eqSymm
+    (le_trans (positive_product _ _ hA hM) (le_add_right _ _))
+
+/-- Move an inverse-square bound at the decoded shifted-grid tag to the actual
+scalar majorant cell on the unshifted affine grid. -/
+theorem reciprocal_square_majorant (i K A C E N : PTm n) {u v : PTm n}
+    (hA : Γ ⊢[PRAAx] le one A) (hC : Γ ⊢[PRAAx] le one C) (hN : Γ ⊢[PRAAx] le one N)
+    (read : Γ ⊢[PRAAx] u ≐ v)
+    (h : let t := grid i (C*N) (E+A) C E
+         let a := tagNumerator t
+         let b := sndT t
+         Γ ⊢[PRAAx] bounded v (K*b*b) (a*a)) :
+    Γ ⊢[PRAAx] GaussianRationalSumMajorant.majorized u (inst2 body i (gridData K A E N)) := by
+  let t := grid i (C*N) (E+A) C E
+  let a := tagNumerator t
+  let b := sndT t
+  have ha := grid_tag_numerator_positive i (C*N) A C E hA (positive_product C N hC hN)
+  have tags := grid_tag (Γ := Γ) i (C*N) A C E
+  exact affine_grid_majorant i K A C E N a b hA hC hN ha
+    (.andI ((fst_pair _ _).eqTrans tags.andE₁.eqSymm) ((snd_pair _ _).eqTrans tags.andE₂.eqSymm)) read h
 
 theorem quadrature_refinement (K : Kernel) (p q M r X Y D sign R T N A C E : PTm n)
     (h : Γ ⊢[PRAAx] source X Y D sign R T A C E)

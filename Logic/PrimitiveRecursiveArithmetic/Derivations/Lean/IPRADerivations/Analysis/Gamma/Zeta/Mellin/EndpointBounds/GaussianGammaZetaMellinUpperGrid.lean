@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.GaussianGammaZetaMellinUpperPoint
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinGrid
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerReciprocalTail
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayEnvelope
 
 /-!
 # Uniform upper tail of the original Mellin quadrature
@@ -21,17 +20,13 @@ open GaussianCompactRiemannName (quadrature sampleBody sampleData sample_body_at
 open GaussianEulerUpperPowerCoefficients (source subst_source)
 open GaussianGammaZetaMellinGrid (evaluatorF fixedData sample_at subst_fixedData)
 open GaussianGammaZetaMellinUpperPoint (coefficientBound degree upper_observation_bound)
-open GaussianNamedDampingPowerReciprocalTail (body gridData affine_grid_term original_scalar_left_embedded_bound)
+open GaussianNamedDampingPowerReciprocalTail (body gridData subst_gridData affine_grid_majorant quadrature_bound_of_majorized)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianRationalSumMajorant (majorized majorized_congr termsMajorized)
+open GaussianRationalSumMajorant (majorized termsMajorized)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-@[simp] private theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (K a E N : PTm n) :
-    Syn.subst σ (gridData K a E N) = gridData (Syn.subst σ K) (Syn.subst σ a) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [gridData]
 
 private theorem cell_majorant (i p N z R B a C E : PTm n)
     (h : Γ ⊢[PRAAx] source z R B) (hE : Γ ⊢[PRAAx] le one E) (ha : Γ ⊢[PRAAx] le E a)
@@ -51,15 +46,8 @@ private theorem cell_majorant (i p N z R B a C E : PTm n)
     .andI h (.andI (.andI hx hy) time)
   have raw := upper_observation_bound p z R B x y support hp
   have read := (sample_body_at (Γ := Γ) evaluatorF i p M a C E (fixedData z B)).eqTrans (sample_at p z B x y)
-  have tagNum : Γ ⊢[PRAAx] fstT t ≐ x := fst_pair _ _
-  have tagDen : Γ ⊢[PRAAx] sndT t ≐ y := snd_pair _ _
-  have scalar : Γ ⊢[PRAAx] inst2 body i (gridData K a E N) ≐
-      GaussianEuclideanDistanceName.fraction (K*(y*y)) (x*x) :=
-    (affine_grid_term i K a C E N (le_trans hE ha) hC hN).eqTrans
-      (RationalNonnegativePowers.fraction_congr
-        ((congrMul (congrMul (.eqRefl K) tagDen) tagDen).eqTrans (by ipra_ring)) (congrMul tagNum tagNum))
-  have maj := GaussianBinetSecondDecayEnvelope.fraction_majorized _ _ _ (positive_product _ _ hx hx) raw
-  exact majorized_congr read.eqSymm scalar.eqSymm maj
+  exact affine_grid_majorant i K a C E N x y (le_trans hE ha) hC hN hx
+    (.andI (fst_pair _ _) (snd_pair _ _)) read (bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) raw)
 
 theorem upper_grid_bound (p N z R B a C E : PTm n)
     (h : Γ ⊢[PRAAx] source z R B) (hE : Γ ⊢[PRAAx] le one E) (ha : Γ ⊢[PRAAx] le E a)
@@ -85,9 +73,7 @@ theorem upper_grid_bound (p N z R B a C E : PTm n)
     simpa only [f,X,Y,M,Δ,i,s,Syn.shift,GaussianCompactRiemannName.subst_sampleData,subst_fixedData,
       subst_gridData,GaussianGammaZetaMellinUpperPoint.subst_coefficientBound,PTm.subst_mul] using
       cell_majorant (var 0) (s p) (s N) (s z) (s R) (s B) (s a) (s C) (s E) hz e a' c ns p'
-  exact GaussianRationalSumMajorant.majorant_bound _ _ _ _ ha'
-    (GaussianCompactScalarMajorant.weighted_majorant f body M X Y C E (positive_product C N hC hN) hE rows)
-    (original_scalar_left_embedded_bound (coefficientBound R) a C E N ha' hC hE hN)
+  exact quadrature_bound_of_majorized evaluatorF p (coefficientBound R) a a C E N _ ha' hC hE hN rows
 
 theorem actual_Mellin_upper_grid_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
     (let p := var 0

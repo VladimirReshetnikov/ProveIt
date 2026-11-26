@@ -46,9 +46,8 @@ def envelope (p a b : PTm n) : PTm n :=
 ipra_subst envelope [realDecay, signedTime, two]
 
 theorem fraction_majorized (x A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
-    (h : Γ ⊢[PRAAx] bounded x A B) : Γ ⊢[PRAAx] majorized x (fraction A B) := by
-  have rep := fraction_represents (Γ := Γ) A B hB
-  exact from_representation _ _ _ _ hB (GaussianRationalL1.nonnegative_of_representation _ _ _ hB rep) rep h
+    (h : Γ ⊢[PRAAx] bounded x A B) : Γ ⊢[PRAAx] majorized x (fraction A B) :=
+  GaussianRationalSumMajorant.fraction_majorized x A B hB h
 
 private theorem representative_error (p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] distanceBounded (realDecay p a b) (observation a b p) two (unit p) := by

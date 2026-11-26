@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.DerivativeQuotients.GaussianBinetLaplaceMomentMarginRows
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayEnvelope
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerReciprocalTail
+import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripCutoff
 
 /-!
 # Uniform positive-margin tails of the actual Binet quadrature
@@ -17,21 +17,21 @@ set_option maxHeartbeats 1100000
 namespace LeanProofs.IPRA.Analysis.GaussianBinetLaplaceMomentMarginTail
 
 open_ipra
+open GaussianBinetLaplaceStripCutoff (grid_tag_numerator_positive reciprocal_square_majorant)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBinetLaplaceMomentCompact (data compact_input)
 open GaussianBinetLaplaceMomentDecay (tailScale)
 open GaussianBinetLaplaceMomentMarginRows (allowance observation_inverse_square_bound)
 open GaussianBinetLaplaceMomentFloor (evaluatorF evaluator_at fixedData gain nameF)
 open GaussianBinetLaplaceStrip (source tagNumerator tag_inside)
-open GaussianBinetLaplaceStripCutoff (grid_tag)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianCompactRiemannName (grid inside grid_inside quadrature sampleBody sampleData sample_body_at precision mesh)
-open GaussianNamedDampingPowerReciprocalTail (body gridData affine_grid_term original_scalar_left_embedded_bound)
+open GaussianNamedDampingPowerReciprocalTail (body gridData subst_gridData quadrature_bound_of_majorized)
 open GaussianRationalDistanceOrder (distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianRationalSumMajorant (majorized majorized_congr termsMajorized)
+open GaussianRationalSumMajorant (majorized termsMajorized)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -39,10 +39,6 @@ local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
 def coefficient (j K : PTm n) : PTm n := tailScale j K+num 30
 
 ipra_subst coefficient
-
-@[simp] private theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (K A E N : PTm n) :
-    Syn.subst σ (gridData K A E N) = gridData (Syn.subst σ K) (Syn.subst σ A) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [gridData]
 
 private theorem cell_majorant (i p N j X D R K T A C E : PTm n)
     (h : Γ ⊢[PRAAx] source X zero D zero R T A C E)
@@ -56,15 +52,11 @@ private theorem cell_majorant (i p N j X D R K T A C E : PTm n)
   let a := tagNumerator t
   let b := sndT t
   let V := coefficient j K
-  let u := grid i M A C E
   have hM := positive_product C N hC hN
   have hE := h.andE₂.andE₁
   have ht : Γ ⊢[PRAAx] inside (E+A) C E t :=
     grid_inside i M (E+A) C E (le_trans hE (le_add_right _ _)) hE hM (le_of_lt hi)
-  have exactTag := grid_tag (Γ := Γ) i M A C E
-  have ha : Γ ⊢[PRAAx] le one a :=
-    le_congr (.eqRefl _) exactTag.andE₁.eqSymm
-      (le_trans (positive_product _ _ hA hM) (le_add_right _ _))
+  have ha := grid_tag_numerator_positive i M A C E hA hM
   have hb := ht.andE₂.andE₁
   have time := (tag_inside t A C E T hE h.andE₂.andE₂ ht).andE₂
   have hAA := positive_product _ _ ha ha
@@ -82,15 +74,9 @@ private theorem cell_majorant (i p N j X D R K T A C E : PTm n)
       (le_congr (by ipra_ring) (by ipra_ring) scaled)
   have bb := bounded_radius_mono _ _ _ (V*b*b) (a*a) (positive_product _ _ (unit_positive p) hAA) hAA
     (by dsimp only [V,coefficient]; ipra_le 𝔞(a)*𝔞(a)*sl cmp) raw
-  have maj := GaussianBinetSecondDecayEnvelope.fraction_majorized _ _ _ hAA bb
   have read := (sample_body_at (Γ := Γ) evaluatorF i p M (E+A) C E (fixedData j X D R T)).eqTrans
     (evaluator_at p t j X D R T)
-  have en : Γ ⊢[PRAAx] fstT u ≐ a := (fst_pair _ _).eqTrans exactTag.andE₁.eqSymm
-  have ed : Γ ⊢[PRAAx] sndT u ≐ b := (snd_pair _ _).eqTrans exactTag.andE₂.eqSymm
-  have scalar : Γ ⊢[PRAAx] inst2 body i (gridData V A E N) ≐ GaussianEuclideanDistanceName.fraction (V*b*b) (a*a) :=
-    (affine_grid_term i V A C E N hA hC hN).eqTrans
-      (RationalNonnegativePowers.fraction_congr (congrMul (congrMul (.eqRefl V) ed) ed) (congrMul en en))
-  exact majorized_congr read.eqSymm scalar.eqSymm maj
+  exact reciprocal_square_majorant i V A C E N hA hC hN read bb
 
 theorem upper_tail_bound (p N j X D R K T A C E : PTm n)
     (h : Γ ⊢[PRAAx] source X zero D zero R T A C E)
@@ -119,9 +105,8 @@ theorem upper_tail_bound (p N j X D R K T A C E : PTm n)
     simpa only [f,x,y,M,Δ,s,Syn.shift,GaussianCompactRiemannName.subst_sampleData,
       GaussianBinetLaplaceMomentFloor.subst_fixedData,subst_gridData,subst_coefficient,PTm.subst_add,PTm.subst_mul] using
       cell_majorant (var 0) (s p) (s N) (s j) (s X) (s D) (s R) (s K) (s T) (s A) (s C) (s E) hs ks ms a c ns q Prf.hyp0
-  exact GaussianRationalSumMajorant.majorant_bound _ _ _ _ hA
-    (GaussianCompactScalarMajorant.weighted_majorant f body M x y C E (positive_product C N hC hN) h.andE₂.andE₁ rows)
-    (original_scalar_left_embedded_bound (coefficient j K) A C E N hA hC h.andE₂.andE₁ hN)
+  exact quadrature_bound_of_majorized evaluatorF p (coefficient j K) A (E+A) C E N _
+    hA hC h.andE₂.andE₁ hN rows
 
 theorem name_bound (p j X D R K T A C E : PTm n)
     (h : Γ ⊢[PRAAx] source X zero D zero R T A C E)

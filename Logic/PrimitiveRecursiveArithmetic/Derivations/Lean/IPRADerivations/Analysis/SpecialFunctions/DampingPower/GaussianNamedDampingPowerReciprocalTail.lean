@@ -38,6 +38,10 @@ def conserved (S k r : PTm n) : Fm PTm n :=
     rationalLE (add (prefixSum S k r) (potential S (k+r))) (potential S k)
 
 def gridData (M a E N : PTm n) : PTm n := pairT (M*(E*N)*(E*N)) (a*N)
+@[simp] theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (M a E N : PTm n) :
+    Syn.subst σ (gridData M a E N) = gridData (Syn.subst σ M) (Syn.subst σ a) (Syn.subst σ E) (Syn.subst σ N) := by
+  simp [gridData]
+
 def quadrature (M a W E N : PTm n) : PTm n := prefixSum (M*(E*N)) (a*N) (W*N)
 
 ipra_subst row
@@ -157,6 +161,21 @@ theorem affine_grid_term (i M a W E N : PTm n) (ha : Γ ⊢[PRAAx] le one a)
   exact (grid_term i M a E N).eqTrans
     ((fraction_rescale (M*D*D) (k*k) (W*W) (positive_product k k hk hk) (positive_product W W hW hW)).eqSymm.eqTrans e.eqSymm)
 
+/-- Compare a Gaussian evaluator cell with the affine inverse-square cell at its
+decoded positive tag. -/
+theorem affine_grid_majorant (i M a W E N x y : PTm n) {u v : PTm n}
+    (ha : Γ ⊢[PRAAx] le one a) (hW : Γ ⊢[PRAAx] le one W) (hN : Γ ⊢[PRAAx] le one N)
+    (hx : Γ ⊢[PRAAx] le one x)
+    (tags : let t := GaussianCompactRiemannName.grid i (W*N) a W E
+            Γ ⊢[PRAAx] (fstT t ≐ x) ⋏ (sndT t ≐ y))
+    (read : Γ ⊢[PRAAx] u ≐ v) (h : Γ ⊢[PRAAx] GaussianRationalMetric.bounded v (M*y*y) (x*x)) :
+    Γ ⊢[PRAAx] GaussianRationalSumMajorant.majorized u (inst2 body i (gridData M a E N)) := by
+  have scalar : Γ ⊢[PRAAx] inst2 body i (gridData M a E N) ≐ row (M*y*y) x :=
+    (affine_grid_term i M a W E N ha hW hN).eqTrans
+      (fraction_congr (congrMul (congrMul (.eqRefl M) tags.andE₂) tags.andE₂) (congrMul tags.andE₁ tags.andE₁))
+  exact GaussianRationalSumMajorant.majorized_congr read.eqSymm scalar.eqSymm
+    (GaussianRationalSumMajorant.fraction_majorized _ _ _ (positive_product x x hx hx) h)
+
 private theorem weighted_term (i M a E N : PTm n) (ha : Γ ⊢[PRAAx] le one a)
     (hE : Γ ⊢[PRAAx] le one E) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     RationalFiniteSum.term (RationalSumLinearity.scaledBody body) i
@@ -224,6 +243,19 @@ theorem original_scalar_left_embedded_bound (M a W E N : PTm n) (ha : Γ ⊢[PRA
     (RationalGaussianEmbedding.embed_from_representation _ _ _ rep)
   exact le_congr ((congrMul (.eqRefl _) (GaussianDominantPairAlgebra.radius_numerator_norm u)).eqTrans (by ipra_ring)).eqSymm
     (by ipra_ring) (AnalyticNumberTheory.PhiLower.le_mul_mono hle hle)
+
+/-- Sum bounds by the inverse-square majorant on the original affine mesh. -/
+theorem quadrature_bound_of_majorized (F : PR 3) (p M a L W E N x : PTm n)
+    (ha : Γ ⊢[PRAAx] le one a) (hW : Γ ⊢[PRAAx] le one W)
+    (hE : Γ ⊢[PRAAx] le one E) (hN : Γ ⊢[PRAAx] le one N)
+    (h : Γ ⊢[PRAAx] GaussianRationalSumMajorant.termsMajorized (GaussianCompactRiemannName.sampleBody F)
+      body (W*N) (GaussianCompactRiemannName.sampleData p (W*N) L W E x) (gridData M a E N)) :
+    Γ ⊢[PRAAx] GaussianRationalMetric.bounded
+      (GaussianCompactRiemannName.quadrature F p (W*N) L W E x) (two*M*E) a :=
+  GaussianRationalSumMajorant.majorant_bound _ _ _ _ ha
+    (GaussianCompactScalarMajorant.weighted_majorant _ _ _ _ _ _ _
+      (positive_product W N hW hN) hE h)
+    (original_scalar_left_embedded_bound M a W E N ha hW hE hN)
 
 theorem actual_affine_reciprocal_square_quadrature_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5

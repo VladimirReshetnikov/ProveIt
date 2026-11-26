@@ -1,7 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.LiteralTails.GaussianBinetBoseFarBound
 import IPRADerivations.Analysis.Stirling.Binet.Bose.CompactIntegrand.GaussianBinetBoseCompact
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripCutoff
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayEnvelope
 import IPRADerivations.Analysis.Names.GaussianCompactNamedAdditivity
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerReciprocalTail
 
@@ -19,23 +18,20 @@ set_option maxHeartbeats 850000
 namespace LeanProofs.IPRA.Analysis.GaussianBinetBoseFarQuadrature
 
 open_ipra
+open GaussianBinetLaplaceStripCutoff (grid_tag_numerator_positive reciprocal_square_majorant)
 open GaussianBinetArctangentQuadrature (fixedData subst_fixedData)
-open GaussianBinetBoseCompact (evaluatorF evaluator_at tag_lower gain)
+open GaussianBinetBoseCompact (evaluatorF evaluator_at gain)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianBinetLaplaceStrip (tagNumerator)
 open GaussianCompactRiemannName (grid grid_inside inside quadrature sampleBody sampleData sample_body_at)
-open GaussianNamedDampingPowerReciprocalTail (row body gridData affine_grid_term original_scalar_left_embedded_bound)
+open GaussianNamedDampingPowerReciprocalTail (body gridData subst_gridData quadrature_bound_of_majorized)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
-open GaussianRationalSumMajorant (majorized majorized_congr termsMajorized)
+open GaussianRationalSumMajorant (majorized termsMajorized)
 open GaussianRightHalfPlaneLogarithm (source)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-@[simp] private theorem subst_gridData {m : ℕ} (σ : Fin n → PTm m) (K A E N : PTm n) :
-    Syn.subst σ (gridData K A E N) = gridData (Syn.subst σ K) (Syn.subst σ A) (Syn.subst σ E) (Syn.subst σ N) := by
-  simp [gridData]
 
 private theorem cell_majorant (i p N X Y D sign A C E K : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hA : Γ ⊢[PRAAx] le one A) (hC : Γ ⊢[PRAAx] le one C)
@@ -45,27 +41,17 @@ private theorem cell_majorant (i p N X Y D sign A C E K : PTm n)
       (inst2 body i (gridData K A E N)) := by
   let M := C*N
   let t := grid i M (E+A) C E
-  let u := grid i M A C E
   let a := tagNumerator t
   let b := sndT t
   have hM := positive_product C N hC hN
   have ht : Γ ⊢[PRAAx] inside (E+A) C E t :=
     grid_inside i M (E+A) C E (le_trans hE (le_add_right _ _)) hE hM (le_of_lt hi)
-  have ha := (tag_lower A C E t hA hE ht).andE₁
+  have ha := grid_tag_numerator_positive i M A C E hA hM
   have hb := ht.andE₂.andE₁
   have obs := GaussianBinetBoseFarBound.rational_time_bound p X Y D sign a b K hz ha hb hK
-  have maj := GaussianBinetSecondDecayEnvelope.fraction_majorized _ _ _ (positive_product _ _ ha ha) obs
   have read := (sample_body_at (Γ := Γ) evaluatorF i p M (E+A) C E (fixedData X Y D sign)).eqTrans
     (evaluator_at p t X Y D sign)
-  have exactTag := GaussianBinetLaplaceStripCutoff.grid_tag (Γ := Γ) i M A C E
-  have en : Γ ⊢[PRAAx] fstT u ≐ a := (fst_pair _ _).eqTrans exactTag.andE₁.eqSymm
-  have ed : Γ ⊢[PRAAx] sndT u ≐ b := (snd_pair _ _).eqTrans exactTag.andE₂.eqSymm
-  have scalar :
-      Γ ⊢[PRAAx] inst2 body i (gridData K A E N) ≐
-        GaussianEuclideanDistanceName.fraction (K*b*b) (a*a) :=
-    (affine_grid_term i K A C E N hA hC hN).eqTrans
-      (RationalNonnegativePowers.fraction_congr (congrMul (congrMul (.eqRefl K) ed) ed) (congrMul en en))
-  exact majorized_congr read.eqSymm scalar.eqSymm maj
+  exact reciprocal_square_majorant i K A C E N hA hC hN read obs
 
 theorem upper_tail_bound (p N X Y D sign A C E K : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hA : Γ ⊢[PRAAx] le one A) (hC : Γ ⊢[PRAAx] le one C)
@@ -90,9 +76,8 @@ theorem upper_tail_bound (p N X Y D sign A C E K : PTm n)
       subst_fixedData,subst_gridData,PTm.subst_add,PTm.subst_mul] using
       cell_majorant (var 0) (s p) (s N) (s X) (s Y) (s D) (s sign) (s A) (s C) (s E) (s K)
         zs as' cs es ns ks Prf.hyp0
-  exact GaussianRationalSumMajorant.majorant_bound _ _ _ _ hA
-    (GaussianCompactScalarMajorant.weighted_majorant f body M x y C E (positive_product C N hC hN) hE rows)
-    (original_scalar_left_embedded_bound K A C E N hA hC hE hN)
+  exact quadrature_bound_of_majorized evaluatorF p K A (E+A) C E N _
+    hA hC hE hN rows
 
 theorem name_bound (p X Y D sign T A C E K : PTm n)
     (h : Γ ⊢[PRAAx] GaussianBinetBoseCompact.source X D sign T A C E)

@@ -56,6 +56,12 @@ theorem from_representation (u r A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h :
   .andI h (bounded_radius_mono _ _ _ _ _ hB (RationalArgmin.denominator_positive r)
     (le_congr (natural_radius_equation r A B h hr).eqSymm (.eqRefl _) (le_refl _)) hu)
 
+/-- A bound by a natural ratio provides the corresponding nonnegative scalar majorant. -/
+theorem fraction_majorized (u A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
+    (h : Γ ⊢[PRAAx] bounded u A B) : Γ ⊢[PRAAx] majorized u (GaussianEuclideanDistanceName.fraction A B) := by
+  have rep := GaussianEuclideanDistanceName.fraction_represents (Γ := Γ) A B hB
+  exact from_representation _ _ _ _ hB (GaussianRationalL1.nonnegative_of_representation _ _ _ hB rep) rep h
+
 theorem majorant_bound (u r A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] majorized u r) (hr : Γ ⊢[PRAAx] bounded (RationalGaussianEmbedding.embed r) A B) :
     Γ ⊢[PRAAx] bounded u A B := by
