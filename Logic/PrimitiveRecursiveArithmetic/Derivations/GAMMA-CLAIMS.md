@@ -3053,3 +3053,6 @@ The actual terminal logarithm, harmonic difference and Stirling remainder give a
 
 The literal finite rational correction has an exact linear term and a quadratic remainder bounded by `N H²/B²` for a native Gaussian step of size at most `H/B`.
 [GaussianBarnesCanonicalHeadCorrectionDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadCorrectionDerivative.lean)
+
+The actual kept base-power product agrees with a rational coefficient polynomial at every Gaussian rational argument. Its value, slope, and quadratic remainder have uniform certified bounds and the estimate includes zeros.
+[GaussianBarnesCanonicalHeadPolynomial](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadPolynomial.lean), [GaussianBarnesCanonicalHeadPolynomialDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadPolynomialDerivative.lean)
