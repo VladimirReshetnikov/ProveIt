@@ -2990,3 +2990,6 @@ The actual relative quadratic term and direct exponent correction cancel to the 
 
 The actual prefactor preserves conjugation through its real constants and original exponentials. The exact Gaussian rational isometry also preserves independent observation rates for any original pair of conjugated names.
 [GaussianBarnesCanonicalPrefactorConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorConjugation.lean), [GaussianNamedRateConjugation](Lean/IPRADerivations/Analysis/GaussianNamedRateConjugation.lean)
+
+The actual literal finite product commutes with conjugation. Comparing both cofinal values with that same finite cutoff and removing independent rational slack proves exact conjugation of the original value at Gaussian rational arguments.
+[GaussianBarnesCanonicalPrefixConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixConjugation.lean), [GaussianBarnesCanonicalValueConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueConjugation.lean)
