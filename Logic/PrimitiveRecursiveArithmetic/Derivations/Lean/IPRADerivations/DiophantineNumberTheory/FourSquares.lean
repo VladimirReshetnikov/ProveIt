@@ -37,18 +37,16 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.FourSquares
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos lpf_prime' lpf_dvd')
-open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg congrEqb')
+open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresDescent (Af sf Uf mq descent)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresSeed (sa sb seed)
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (odd_of_prime_ne_two)
-open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex_elim ex_least eqb_cases
-  eq_of_eqb one_ne_zero)
-open LeanProofs.IPRA.Signum (sg sg_zero)
+open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex_elim eqb_cases
+  eq_of_eqb one_ne_zero signum_guard_nonzero least_positive_witness)
+open LeanProofs.IPRA.Signum (sg)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 
@@ -155,10 +153,8 @@ theorem inst2_lB (i p : PTm k) : inst2 lB i p = sg i * R (i * p) := by simp [ins
 abbrev ms (p : PTm k) : PTm k := wit lB p p
 
 theorem l_one {i p : PTm k} (hi : Γ ⊢[PRAAx] le one i) (hr : Γ ⊢[PRAAx] R (i * p) ≐ one) :
-    Γ ⊢[PRAAx] neg (inst2 lB i p ≐ zero) := by
-  rw [inst2_lB]
-  exact .impI (one_ne_zero _
-    (((congrMul (sg_pos (pos_of_one_le hi)) hr).eqTrans (one_mul one)).wk.eqSymm.eqTrans Prf.hyp0))
+    Γ ⊢[PRAAx] neg (inst2 lB i p ≐ zero) :=
+  signum_guard_nonzero (inst2_lB i p) hi hr
 
 theorem seed_alg {a b p m0 : PTm k} (es : Γ ⊢[PRAAx] a * a + (b * b + one) ≐ p * m0 + zero) :
     Γ ⊢[PRAAx] N4 a b one zero ≐ m0 * p := by
@@ -194,28 +190,11 @@ theorem rep_odd_prime {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (ep : Γ ⊢[PRAA
         esn' + (𝔞 p + 2 * 𝔞 (half p)) * epn'
     exact lt_zero_absurd _ bad
   have r0 := rep_intro (seed_alg es)
-  have ee := ex_elim lB (ex_intro lB (l_one m0pos r0) m0lt)
-  have hlt := Prf.andE₁ ee
-  have hne := Prf.andE₂ ee
-  rw [inst2_lB] at hne
-  have hms1 : Γ ⊢[PRAAx] le one (ms p) := by
-    refine .orE (zero_or_succ (ms p)) ?_ (one_le_pos Prf.hyp0)
-    exact .botE _ (.impE hne.wk ((congrMul ((congrSg Prf.hyp0).eqTrans sg_zero) (.eqRefl _)).eqTrans
-      (zero_mul _)))
-  have hR : Γ ⊢[PRAAx] R (ms p * p) ≐ one := by
-    refine .orE (ex_cases rB (bd (ms p * p)) (ms p * p)) ?_ Prf.hyp0
-    exact .botE _ (.impE hne.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
-  have nx := rep_elim hR
-  refine .orE (lt_or_eq_of_le hms1) ?_ ?_
-  · -- `m* ≥ 2`: descend, against leastness
-    have dsc := descent (x := Wf (ms p * p)) hp.wk Prf.hyp0 hlt.wk nx.wk
-    have r' := rep_intro (Prf.andE₁ dsc)
-    have nz := l_one (Prf.andE₁ (Prf.andE₂ dsc)) r'
-    exact .botE _ (.impE nz (ex_least lB (Prf.andE₂ (Prf.andE₂ dsc))))
-  · -- `m* = 1`
-    have e : ((one ≐ ms p) :: Γ) ⊢[PRAAx] ms p * p ≐ p := by
-      ipra_lc (-𝔞 p) * natEq (Prf.hyp0 (Γ := Γ) (φ := one ≐ ms p))
-    exact rep_intro (nx.wk.eqTrans e)
+  have least := least_positive_witness lB (fun i => R (i * p)) (N := p) (x := p) (fun i => inst2_lB i p)
+    (ex_cases rB (bd (ms p * p)) (ms p * p)) m0pos m0lt r0 (fun hlt hpass =>
+      let d := descent (x := Wf (ms p * p)) hp.wk Prf.hyp0 hlt (rep_elim hpass)
+      .andI (rep_intro d.andE₁) d.andE₂)
+  exact rep_intro ((rep_elim least.andE₂).eqTrans ((congrMul least.andE₁ (.eqRefl p)).eqTrans (one_mul p)))
 
 /-- Every prime is a sum of four squares. -/
 theorem rep_prime {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) : Γ ⊢[PRAAx] R p ≐ one := by

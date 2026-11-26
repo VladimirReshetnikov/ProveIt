@@ -252,4 +252,38 @@ theorem bounded_choice {N x : PTm n}
 
 end Ex
 
+/-- A positive index with test value `1` passes the signum-guarded test. -/
+theorem signum_guard_nonzero {f : PTm 2} {i x t : PTm n}
+    (read : inst2 f i x = sg i * t) (hi : Γ ⊢[PRAAx] le one i) (ht : Γ ⊢[PRAAx] t ≐ one) :
+    Γ ⊢[PRAAx] neg (inst2 f i x ≐ zero) := by
+  rw [read]
+  have value := (congrMul (Common.sg_of_one_le hi) ht).eqTrans (one_mul one)
+  exact .impI (one_ne_zero _ (value.wk.eqSymm.eqTrans Prf.hyp0))
+
+/-- If a positive bounded witness exists and a witness above `1` descends, the least witness is `1`. -/
+theorem least_positive_witness (f : PTm 2) (test : PTm n → PTm n) {N x seed next : PTm n}
+    (read : ∀ i, inst2 f i x = sg i * test i)
+    (bits : Γ ⊢[PRAAx] (test (wit f N x) ≐ zero) ⋎ (test (wit f N x) ≐ one))
+    (hseed : Γ ⊢[PRAAx] le one seed) (hbound : Γ ⊢[PRAAx] lt seed N)
+    (hpass : Γ ⊢[PRAAx] test seed ≐ one)
+    (descend : let m := wit f N x
+      let Δ := le two m :: Γ
+      (Δ ⊢[PRAAx] lt m N) → (Δ ⊢[PRAAx] test m ≐ one) →
+        (Δ ⊢[PRAAx] (test next ≐ one) ⋏ (le one next ⋏ lt next m))) :
+    Γ ⊢[PRAAx] (wit f N x ≐ one) ⋏ (test (wit f N x) ≐ one) := by
+  let m := wit f N x
+  have found := ex_elim f (ex_intro f (signum_guard_nonzero (read seed) hseed hpass) hbound)
+  have hne : Γ ⊢[PRAAx] neg (sg m * test m ≐ zero) := by simpa only [read] using found.andE₂
+  have hpos : Γ ⊢[PRAAx] le one m := by
+    refine .orE (zero_or_succ m) ?_ (Common.one_le_of_pos Prf.hyp0)
+    exact .botE _ (.impE hne.wk ((congrMul ((Common.congrSg Prf.hyp0).eqTrans sg_zero) (.eqRefl _)).eqTrans
+      (zero_mul _)))
+  have htest : Γ ⊢[PRAAx] test m ≐ one := by
+    refine .orE bits ?_ Prf.hyp0
+    exact .botE _ (.impE hne.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
+  refine .andI (.orE (lt_or_eq_of_le hpos) ?_ Prf.hyp0.eqSymm) htest
+  have lower := descend found.andE₁.wk htest.wk
+  exact .botE _ (.impE (signum_guard_nonzero (read next) lower.andE₂.andE₁ lower.andE₁)
+    (ex_least f lower.andE₂.andE₂))
+
 end LeanProofs.IPRA.Foundations.BoundedReflection

@@ -34,19 +34,17 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresByDescent
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg congrEqb')
+open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra (le_sq_part)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquares (lt_succ_of_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresDescent (two_descent)
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (rt root_minus_one mod4_parities)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements (root_of_sign minus_one_law)
-open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex_elim ex_least eqb_cases
-  eq_of_eqb one_ne_zero)
-open LeanProofs.IPRA.Signum (sg sg_zero)
+open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex_elim eqb_cases
+  eq_of_eqb one_ne_zero signum_guard_nonzero least_positive_witness)
+open LeanProofs.IPRA.Signum (sg)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 
@@ -133,10 +131,8 @@ theorem inst2_lB (i p : PTm k) : inst2 lB i p = sg i * T (i * p) := by simp [ins
 abbrev ms (p : PTm k) : PTm k := wit lB p p
 
 theorem l_one {i p : PTm k} (hi : Γ ⊢[PRAAx] le one i) (hr : Γ ⊢[PRAAx] T (i * p) ≐ one) :
-    Γ ⊢[PRAAx] neg (inst2 lB i p ≐ zero) := by
-  rw [inst2_lB]
-  exact .impI (one_ne_zero _
-    (((congrMul (sg_pos (pos_of_one_le hi)) hr).eqTrans (one_mul one)).wk.eqSymm.eqTrans Prf.hyp0))
+    Γ ⊢[PRAAx] neg (inst2 lB i p ≐ zero) :=
+  signum_guard_nonzero (inst2_lB i p) hi hr
 
 /-- **The descent**: a prime `p` with `p` odd and `⌊p/2⌋` even is a sum of two squares. -/
 theorem rep_mod4 {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] par p ≐ one)
@@ -148,28 +144,11 @@ theorem rep_mod4 {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] 
     (Prf.andE₁ (dm hp1 _)).eqTrans (congrAdd (.eqRefl _) (root_minus_one hp hodd hh))
   have sb := seed_bounds hp2 hr es
   have r0 := rep_intro (seed_alg es)
-  have ee := ex_elim lB (ex_intro lB (l_one (Prf.andE₁ sb) r0) (Prf.andE₂ sb))
-  have hlt := Prf.andE₁ ee
-  have hne := Prf.andE₂ ee
-  rw [inst2_lB] at hne
-  have hms1 : Γ ⊢[PRAAx] le one (ms p) := by
-    refine .orE (zero_or_succ (ms p)) ?_ (one_le_pos Prf.hyp0)
-    exact .botE _ (.impE hne.wk ((congrMul ((congrSg Prf.hyp0).eqTrans sg_zero) (.eqRefl _)).eqTrans
-      (zero_mul _)))
-  have hR : Γ ⊢[PRAAx] T (ms p * p) ≐ one := by
-    refine .orE (ex_cases tB (bd (ms p * p)) (ms p * p)) ?_ Prf.hyp0
-    exact .botE _ (.impE hne.wk ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)))
-  have nx := rep_elim hR
-  refine .orE (lt_or_eq_of_le hms1) ?_ ?_
-  · -- `m* ≥ 2`: descend, against leastness
-    have dsc := two_descent hp.wk Prf.hyp0 hlt.wk nx.wk
-    have r' := rep_intro (Prf.andE₁ dsc)
-    have nz := l_one (Prf.andE₁ (Prf.andE₂ dsc)) r'
-    exact .botE _ (.impE nz (ex_least lB (Prf.andE₂ (Prf.andE₂ dsc))))
-  · -- `m* = 1`
-    have e : ((one ≐ ms p) :: Γ) ⊢[PRAAx] ms p * p ≐ p := by
-      ipra_lc (-𝔞 p) * natEq (Prf.hyp0 (Γ := Γ) (φ := one ≐ ms p))
-    exact rep_intro (nx.wk.eqTrans e)
+  have least := least_positive_witness lB (fun i => T (i * p)) (N := p) (x := p) (fun i => inst2_lB i p)
+    (ex_cases tB (bd (ms p * p)) (ms p * p)) sb.andE₁ sb.andE₂ r0 (fun hlt hpass =>
+      let d := two_descent hp.wk Prf.hyp0 hlt (rep_elim hpass)
+      .andI (rep_intro d.andE₁) d.andE₂)
+  exact rep_intro ((rep_elim least.andE₂).eqTrans ((congrMul least.andE₁ (.eqRefl p)).eqTrans (one_mul p)))
 
 /-- **Fermat's two-square theorem by descent**: `X(p)² + Y(p)² = p` for a prime `p ≡ 1 (mod 4)`. -/
 theorem two_squares_descent {p : PTm k} (hp : Γ ⊢[PRAAx] prime p)
