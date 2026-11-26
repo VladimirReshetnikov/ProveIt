@@ -168,36 +168,24 @@ theorem prod_forward {m y : PTm n} (hb : Γ ⊢[PRAAx] Below aB bB m y) : Γ ⊢
 theorem prod_backward {m y : PTm n} (ht : Γ ⊢[PRAAx] ProdTest aB bB m y) : Γ ⊢[PRAAx] Below aB bB m y := by
   have ht' : (Γ.map Fm.shift) ⊢[PRAAx] ProdTest aB bB (Syn.shift m) (Syn.shift y) := by
     simpa [Fm.shift, Syn.shift] using ht.shift
-  refine .allI (.impI ?_)
-  let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift m) :: Γ.map Fm.shift
-  have hv : Θ ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
-  refine .orE (lt_or_le (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y))) ?_ Prf.hyp0
-  let Θ' : List (Fm PTm (n + 1)) := lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y)) :: Θ
-  have hbad : Θ' ⊢[PRAAx] lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y)) := Prf.hyp0
-  have hba := le_trans (le_succ_self _) hbad
-  have es := eq_add_of_le hba
-  have hs1 : Θ' ⊢[PRAAx] le one (monus (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y))) := by
-    have e := natEq es
-    ipra_le sl hbad with e
-  have ps := pos_of_one_le hs1
-  have ha := term_le_sum (Γ := Θ') (x := Syn.shift y) aB hv.wk
-  have htU : Θ' ⊢[PRAAx] lt (pred (monus (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y))))
-      (ap2 (sumF aB) (Syn.shift m) (Syn.shift y)) := by
-    have e := natEq es
-    have e2 := natEq ps
-    ipra_le sl ha + 𝔞 (inst2 bB (var 0) (Syn.shift y)) with e + e2
+  refine SymmetricPrefix.below_of_violation_absurd aB bB (fun hv hbad => ?_)
+  let Θ' := lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y)) ::
+    lt (var 0) (Syn.shift m) :: Γ.map Fm.shift
+  have gap := monus_succ (Γ := Θ') (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y))
+  have ps := (Common.monus_succ_of_lt hbad).eqTrans (congrSucc gap)
+  have htU := lt_of_lt_of_le (lt_congr gap (.eqRefl _) (Common.monus_succ_lt _ _ hbad))
+    (term_le_sum aB hv)
   have hz : Θ' ⊢[PRAAx] inst2 (fB aB bB) (var 0)
       (pairT (succ (pred (monus (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y))))) (Syn.shift y)) ≐
       zero := by
     have q : Θ' ⊢[PRAAx] succ (pred (monus (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y)))) +
         inst2 bB (var 0) (Syn.shift y) ≐ inst2 aB (var 0) (Syn.shift y) := by
-      have e := natEq es
-      have e2 := natEq ps
-      apply deriveNat; ipra_simps; linear_combination -e - e2
+      exact (congrAdd ps.eqSymm (.eqRefl _)).eqTrans
+        (((eq_add_of_le (le_of_lt hbad)).eqTrans (add_comm _ _)).eqSymm)
     refine (fB_at aB bB _ _ _).eqTrans ?_
     refine (congrAdd (congrMonus q (.eqRefl _)) (congrMonus (.eqRefl _) q)).eqTrans ?_
     exact (congrAdd (le_refl _) (le_refl _)).eqTrans (add_zero _)
-  have hin := prod_zero_at (f := fB aB bB) hv.wk hz
+  have hin := prod_zero_at (f := fB aB bB) hv hz
   have hout := prod_zero_at (f := oB aB bB) (x := pairT (Syn.shift m) (Syn.shift y)) htU
     ((oB_at aB bB _ _ _).eqTrans hin)
   have c : Θ' ⊢[PRAAx] le one zero := le_congr (.eqRefl _) hout ht'.wk.wk

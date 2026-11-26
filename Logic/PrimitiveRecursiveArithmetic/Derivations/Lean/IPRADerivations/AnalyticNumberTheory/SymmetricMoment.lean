@@ -114,12 +114,7 @@ theorem mom_forward {m y : PTm n} (hb : Γ ⊢[PRAAx] Below aB bB m y) : Γ ⊢[
       have hv : Θ ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
       have hab : Θ ⊢[PRAAx] le (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y)) :=
         Prf.impE hb.allOpen.wk hv
-      have hbs : Θ ⊢[PRAAx] le (inst2 bB (var 0) (Syn.shift y)) (hP bB (Syn.shift m) (Syn.shift y)) :=
-        le_trans (term_le_sum bB hv) (le_succ_self _)
-      have e := natEq (eq_add_of_le hbs)
-      have hz : Θ ⊢[PRAAx] le (inst2 aB (var 0) (Syn.shift y) + monus (hP bB (Syn.shift m) (Syn.shift y))
-          (inst2 bB (var 0) (Syn.shift y))) (hP bB (Syn.shift m) (Syn.shift y)) := by
-        ipra_le sl hab with e
+      have hz := Prf.impE (SymmetricPrefix.shifted_entry_bounds aB bB (var 0) (Syn.shift m) (Syn.shift y) hv).andE₁ hab
       have hp := pw_le_pw (rP bB (Syn.shift m) (Syn.shift y)) hz
       have ea := natEq (mom_at (Γ := Θ) aB bB (var 0) (Syn.shift m) (Syn.shift y))
       ipra_le sl hp with ea)))
@@ -129,23 +124,15 @@ theorem mom_forward {m y : PTm n} (hb : Γ ⊢[PRAAx] Below aB bB m y) : Γ ⊢[
 theorem mom_backward {m y : PTm n} (ht : Γ ⊢[PRAAx] MomTest aB bB m y) : Γ ⊢[PRAAx] Below aB bB m y := by
   have ht' : (Γ.map Fm.shift) ⊢[PRAAx] MomTest aB bB (Syn.shift m) (Syn.shift y) := by
     simpa [Fm.shift, Syn.shift] using ht.shift
-  refine .allI (.impI ?_)
-  let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift m) :: Γ.map Fm.shift
-  have hv : Θ ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
-  refine .orE (lt_or_le (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y))) ?_ Prf.hyp0
-  let Θ' : List (Fm PTm (n + 1)) := lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y)) :: Θ
-  have hbad : Θ' ⊢[PRAAx] lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y)) := Prf.hyp0
-  have hbs : Θ' ⊢[PRAAx] le (inst2 bB (var 0) (Syn.shift y)) (hP bB (Syn.shift m) (Syn.shift y)) :=
-    le_trans (term_le_sum bB hv.wk) (le_succ_self _)
-  have e := natEq (eq_add_of_le hbs)
-  have hz : Θ' ⊢[PRAAx] le (succ (hP bB (Syn.shift m) (Syn.shift y)))
-      (inst2 aB (var 0) (Syn.shift y) + monus (hP bB (Syn.shift m) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y))) := by
-    ipra_le sl hbad with e
+  refine SymmetricPrefix.below_of_violation_absurd aB bB (fun hv hbad => ?_)
+  let Θ' := lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y)) ::
+    lt (var 0) (Syn.shift m) :: Γ.map Fm.shift
+  have hz := Prf.impE (SymmetricPrefix.shifted_entry_bounds aB bB (var 0) (Syn.shift m) (Syn.shift y) hv).andE₂ hbad
   have hp := pw_le_pw (rP bB (Syn.shift m) (Syn.shift y)) hz
   have gap := allowance_lt (Γ := Θ') (m := Syn.shift m) (h := hP bB (Syn.shift m) (Syn.shift y))
     (by ipra_le 𝔞 (ap2 (sumF bB) (Syn.shift m) (Syn.shift y)))
   have ea := natEq (mom_at (Γ := Θ') aB bB (var 0) (Syn.shift m) (Syn.shift y))
-  have hts := term_le_sum (Γ := Θ') (x := ParM bB (Syn.shift m) (Syn.shift y)) (momB aB bB) hv.wk
+  have hts := term_le_sum (Γ := Θ') (x := ParM bB (Syn.shift m) (Syn.shift y)) (momB aB bB) hv
   have c : Θ' ⊢[PRAAx] lt (Syn.shift m * pw (hP bB (Syn.shift m) (Syn.shift y)) (rP bB (Syn.shift m) (Syn.shift y)))
       (Syn.shift m * pw (hP bB (Syn.shift m) (Syn.shift y)) (rP bB (Syn.shift m) (Syn.shift y))) := by
     ipra_le sl gap + sl hp + sl hts + sl ht'.wk.wk with ea

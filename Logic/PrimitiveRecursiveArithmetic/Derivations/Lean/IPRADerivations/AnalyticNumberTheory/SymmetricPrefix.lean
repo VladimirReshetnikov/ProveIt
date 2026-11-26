@@ -72,6 +72,32 @@ abbrev ExpTest (m y : PTm n) : Fm PTm n :=
 abbrev Below (m y : PTm n) : Fm PTm n :=
   Fm.all (lt (var 0) (Syn.shift m) ⟶ le (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y)))
 
+/-- A bounded pointwise comparison follows when every strict violation is contradictory. -/
+theorem below_of_violation_absurd {m y : PTm n}
+    (contradiction :
+      let bad := lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y))
+      let Δ := bad :: lt (var 0) (Syn.shift m) :: Γ.map Fm.shift
+      (Δ ⊢[PRAAx] lt (var 0) (Syn.shift m)) → (Δ ⊢[PRAAx] bad) → (Δ ⊢[PRAAx] Fm.bot)) :
+    Γ ⊢[PRAAx] Below aB bB m y := by
+  refine .allI (.impI ?_)
+  refine .orE (lt_or_le (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y))) ?_ Prf.hyp0
+  exact .botE _ (contradiction Prf.hyp1 Prf.hyp0)
+
+/-- Translating both entries by the same padding compares the left entry to the prefix bound. -/
+theorem shifted_entry_bounds (i m y : PTm n) (hi : Γ ⊢[PRAAx] lt i m) :
+    let a := inst2 aB i y
+    let b := inst2 bB i y
+    let H := hP bB m y
+    Γ ⊢[PRAAx] (le a b ⟶ le (a + monus H b) H) ⋏ (lt b a ⟶ lt H (a + monus H b)) := by
+  let b := inst2 bB i y
+  let H := hP bB m y
+  let padding := monus H b
+  have shape : Γ ⊢[PRAAx] H ≐ b + padding := eq_add_of_le (le_trans (term_le_sum bB hi) (le_succ_self _))
+  refine .andI (.impI ?_) (.impI ?_)
+  · exact le_congr (.eqRefl _) shape.wk.eqSymm (add_le_add_right padding Prf.hyp0)
+  · exact le_congr ((succ_add b padding).eqTrans (congrSucc shape.wk.eqSymm)) (.eqRefl _)
+      (add_le_add_right padding Prf.hyp0)
+
 theorem eB_at (i m y : PTm n) :
     Γ ⊢[PRAAx] inst2 (eB aB bB) i (Par bB m y) ≐
       pw (succ m) (inst2 aB i y + monus (hP bB m y) (inst2 bB i y)) := by
@@ -95,12 +121,7 @@ theorem exp_forward {m y : PTm n} (hb : Γ ⊢[PRAAx] Below aB bB m y) : Γ ⊢[
       have hv : Θ ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
       have hab : Θ ⊢[PRAAx] le (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y)) :=
         Prf.impE hb.allOpen.wk hv
-      have hbs : Θ ⊢[PRAAx] le (inst2 bB (var 0) (Syn.shift y)) (hP bB (Syn.shift m) (Syn.shift y)) :=
-        le_trans (term_le_sum bB hv) (le_succ_self _)
-      have e := natEq (eq_add_of_le hbs)
-      have hz : Θ ⊢[PRAAx] le (inst2 aB (var 0) (Syn.shift y) + monus (hP bB (Syn.shift m) (Syn.shift y))
-          (inst2 bB (var 0) (Syn.shift y))) (hP bB (Syn.shift m) (Syn.shift y)) := by
-        ipra_le sl hab with e
+      have hz := Prf.impE (shifted_entry_bounds aB bB (var 0) (Syn.shift m) (Syn.shift y) hv).andE₁ hab
       have hp := pw_le_exp (congrSucc (pred_succ (Syn.shift m)).eqSymm) hz
       have ea := natEq (eB_at (Γ := Θ) aB bB (var 0) (Syn.shift m) (Syn.shift y))
       ipra_le sl hp with ea)))
@@ -111,22 +132,14 @@ theorem exp_forward {m y : PTm n} (hb : Γ ⊢[PRAAx] Below aB bB m y) : Γ ⊢[
 theorem exp_backward {m y : PTm n} (ht : Γ ⊢[PRAAx] ExpTest aB bB m y) : Γ ⊢[PRAAx] Below aB bB m y := by
   have ht' : (Γ.map Fm.shift) ⊢[PRAAx] ExpTest aB bB (Syn.shift m) (Syn.shift y) := by
     simpa [Fm.shift, Syn.shift] using ht.shift
-  refine .allI (.impI ?_)
-  let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift m) :: Γ.map Fm.shift
-  have hv : Θ ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
-  refine .orE (lt_or_le (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y))) ?_ Prf.hyp0
-  let Θ' : List (Fm PTm (n + 1)) := lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y)) :: Θ
-  have hbad : Θ' ⊢[PRAAx] lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y)) := Prf.hyp0
-  have hbs : Θ' ⊢[PRAAx] le (inst2 bB (var 0) (Syn.shift y)) (hP bB (Syn.shift m) (Syn.shift y)) :=
-    le_trans (term_le_sum bB hv.wk) (le_succ_self _)
-  have e := natEq (eq_add_of_le hbs)
-  have hz : Θ' ⊢[PRAAx] le (succ (hP bB (Syn.shift m) (Syn.shift y)))
-      (inst2 aB (var 0) (Syn.shift y) + monus (hP bB (Syn.shift m) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y))) := by
-    ipra_le sl hbad with e
+  refine below_of_violation_absurd aB bB (fun hv hbad => ?_)
+  let Θ' := lt (inst2 bB (var 0) (Syn.shift y)) (inst2 aB (var 0) (Syn.shift y)) ::
+    lt (var 0) (Syn.shift m) :: Γ.map Fm.shift
+  have hz := Prf.impE (shifted_entry_bounds aB bB (var 0) (Syn.shift m) (Syn.shift y) hv).andE₂ hbad
   have hp := pw_le_exp (congrSucc (pred_succ (Syn.shift m)).eqSymm) hz
   have es := natEq (pw_succ (Γ := Θ') (succ (Syn.shift m)) (hP bB (Syn.shift m) (Syn.shift y)))
   have ea := natEq (eB_at (Γ := Θ') aB bB (var 0) (Syn.shift m) (Syn.shift y))
-  have hts := term_le_sum (Γ := Θ') (x := Par bB (Syn.shift m) (Syn.shift y)) (eB aB bB) hv.wk
+  have hts := term_le_sum (Γ := Θ') (x := Par bB (Syn.shift m) (Syn.shift y)) (eB aB bB) hv
   have one_le : Θ' ⊢[PRAAx] le one (pw (succ (Syn.shift m)) (hP bB (Syn.shift m) (Syn.shift y))) :=
     le_congr (LeanProofs.IPRA.AnalyticNumberTheory.Order.pw_one_base _) (.eqRefl _)
       (pw_le_pw _ (show Θ' ⊢[PRAAx] le one (succ (Syn.shift m)) by ipra_le 𝔞 (Syn.shift m)))
