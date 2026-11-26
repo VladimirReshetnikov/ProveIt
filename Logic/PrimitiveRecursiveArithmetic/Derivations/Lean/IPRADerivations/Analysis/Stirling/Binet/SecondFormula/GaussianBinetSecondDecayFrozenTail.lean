@@ -80,19 +80,29 @@ theorem clock_bounds (q N T M k m : PTm n) (hM : Γ ⊢[PRAAx] le m M)
     (le_trans (le_add_left E B) rest)
   exact .andI (le_trans (le_add_right A _) grow) (.andI row slack)
 
+theorem row_bound_at (q N T M k m K X Y D sign : PTm n)
+    (hz : Γ ⊢[PRAAx] source X D sign) (hT : Γ ⊢[PRAAx] le one T)
+    (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAAx] le m M) (hK : Γ ⊢[PRAAx] le D (K*X))
+    (hn : Γ ⊢[PRAAx] le (mesh T M k) N) (hq : Γ ⊢[PRAAx] le (clockFloor N T M k) (unit q)) :
+    Γ ⊢[PRAAx] bounded (value q N T (frozenPiNumerator m k) (piDenominator k) X Y D sign)
+      (num 11*K) (m*m) := by
+  have rate := frozen_pi_rate (Γ := Γ) m k
+  have meshBound := mesh_bounds N T M k m hM hn
+  have clockBound := clock_bounds q N T M k m hM hq
+  exact finite_bound q N T _ _ m K X Y D sign hz meshBound.andE₁ hT rate.andE₁ hm rate.andE₂ hK
+    meshBound.andE₂.andE₁ meshBound.andE₂.andE₂ clockBound.andE₁ clockBound.andE₂.andE₁ clockBound.andE₂.andE₂
+
+private theorem clock_scheduled (p T M k : PTm n) :
+    Γ ⊢[PRAAx] le (clockFloor (mesh T M k) T M k) (unit (clock p T M k)) :=
+  le_trans (le_add_left _ p) (le_unit _)
+
 theorem scheduled_row_bound (p T M k m K X Y D sign : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hT : Γ ⊢[PRAAx] le one T)
     (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAAx] le m M) (hK : Γ ⊢[PRAAx] le D (K*X)) :
     Γ ⊢[PRAAx] bounded
       (value (clock p T M k) (mesh T M k) T (frozenPiNumerator m k) (piDenominator k) X Y D sign)
-      (num 11*K) (m*m) := by
-  let N := mesh T M k
-  let q := clock p T M k
-  have rate := frozen_pi_rate (Γ := Γ) m k
-  have meshBound := mesh_bounds N T M k m hM (le_refl N)
-  have clockBound := clock_bounds q N T M k m hM (le_trans (le_add_left _ p) (le_unit q))
-  exact finite_bound q N T _ _ m K X Y D sign hz meshBound.andE₁ hT rate.andE₁ hm rate.andE₂ hK
-    meshBound.andE₂.andE₁ meshBound.andE₂.andE₂ clockBound.andE₁ clockBound.andE₂.andE₁ clockBound.andE₂.andE₂
+      (num 11*K) (m*m) :=
+  row_bound_at _ _ T M k m K X Y D sign hz hT hm hM hK (le_refl _) (clock_scheduled p T M k)
 
 private theorem val_five {α : Type} {m : ℕ} (a : α) (u : Fin (m+5) → α) :
     Matrix.vecCons a u 5 = Matrix.vecHead (Matrix.vecTail (Matrix.vecTail (Matrix.vecTail (Matrix.vecTail u)))) := rfl
@@ -122,10 +132,14 @@ private def term (i p N T k C x : PTm n) : PTm n :=
 def body : PTm 2 := term (var 0) (field0 (var 1)) (field1 (var 1)) (field2 (var 1))
   (field3 (var 1)) (field4 (var 1)) (field5 (var 1))
 
+def data_at (q N T k C X Y D sign : PTm n) : PTm n :=
+  sampleData q N T k C (pairT (D*D) (GaussianBinetArctangentQuadrature.fixedData X Y D sign))
+
+ipra_subst data_at
+
 def data (p T k C r X Y D sign : PTm n) : PTm n :=
   let M := succ (C+r)
-  sampleData (clock p T M k) (mesh T M k) T k C
-    (pairT (D*D) (GaussianBinetArctangentQuadrature.fixedData X Y D sign))
+  data_at (clock p T M k) (mesh T M k) T k C X Y D sign
 
 ipra_subst mesh [frozenPiNumerator]
 
@@ -161,11 +175,13 @@ theorem row_at (i p T k C r X Y D sign : PTm n) :
       value (clock p T M k) (mesh T M k) T (frozenPiNumerator (succ (C+i)) k) (piDenominator k) X Y D sign :=
   row_at_sample_data i _ _ T k C _
 
-theorem frozen_tail_bound (p T k C r K X Y D sign : PTm n)
+theorem tail_bound_at (q N T k C r K X Y D sign : PTm n)
     (hz : Γ ⊢[PRAAx] source X D sign) (hT : Γ ⊢[PRAAx] le one T)
-    (hC : Γ ⊢[PRAAx] le one C) (hK : Γ ⊢[PRAAx] le D (K*X)) :
-    Γ ⊢[PRAAx] bounded (GaussianRationalFiniteSum.sum body r (data p T k C r X Y D sign)) (num 11*K) C := by
-  have rows : Γ ⊢[PRAAx] rowBounds body (data p T k C r X Y D sign) (num 11*K) C r := by
+    (hC : Γ ⊢[PRAAx] le one C) (hK : Γ ⊢[PRAAx] le D (K*X))
+    (hn : Γ ⊢[PRAAx] le (mesh T (succ (C+r)) k) N)
+    (hq : Γ ⊢[PRAAx] le (clockFloor N T (succ (C+r)) k) (unit q)) :
+    Γ ⊢[PRAAx] bounded (GaussianRationalFiniteSum.sum body r (data_at q N T k C X Y D sign)) (num 11*K) C := by
+  have rows : Γ ⊢[PRAAx] rowBounds body (data_at q N T k C X Y D sign) (num 11*K) C r := by
     refine .allI (.impI ?_)
     let s (z : PTm n) := Syn.shift z
     let i : PTm (n+1) := var 0
@@ -176,15 +192,29 @@ theorem frozen_tail_bound (p T k C r K X Y D sign : PTm n)
       simpa [Δ,s,Fm.shift,Syn.shift,source,GaussianRightHalfPlaneArgument.source] using hz.shift.wk
     have st : Δ ⊢[PRAAx] le one (s T) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hT.shift.wk
     have sk : Δ ⊢[PRAAx] le (s D) (s K*s X) := by simpa [Δ,s,Fm.shift,Syn.shift] using hK.shift.wk
+    have sn : Δ ⊢[PRAAx] le (mesh (s T) M (s k)) (s N) := by
+      simpa only [Δ,M,s,Fm.shift,Syn.shift,subst_le,subst_mesh,
+        ConciseIPRA.PTm.subst_succ,PTm.subst_add] using hn.shift.wk
+    have sq : Δ ⊢[PRAAx] le (clockFloor (s N) (s T) M (s k)) (unit (s q)) := by
+      simpa only [Δ,M,s,Fm.shift,Syn.shift,subst_le,subst_clockFloor,
+        ConciseIPRA.PTm.subst_succ,PTm.subst_add,GaussianCoefficientNameBounds.subst_unit] using hq.shift.wk
     have hi : Δ ⊢[PRAAx] le i (s r) := le_of_lt Prf.hyp0
     have order : Δ ⊢[PRAAx] le m M :=
       le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm
         (add_le_add_right one (add_le_add_left (s C) hi))
-    have estimate := scheduled_row_bound (s p) (s T) M (s k) m (s K) (s X) (s Y) (s D) (s sign)
-      sz st (zero_lt_succ _) order sk
-    have read := row_at (Γ := Δ) i (s p) (s T) (s k) (s C) (s r) (s X) (s Y) (s D) (s sign)
-    simpa only [rowBounds,Δ,i,m,M,s,Syn.shift,subst_data,PTm.subst_mul,PTm.subst_num] using
+    have estimate := row_bound_at (s q) (s N) (s T) M (s k) m (s K) (s X) (s Y) (s D) (s sign)
+      sz st (zero_lt_succ _) order sk sn sq
+    have read : Δ ⊢[PRAAx] inst2 body i (data_at (s q) (s N) (s T) (s k) (s C) (s X) (s Y) (s D) (s sign)) ≐
+        value (s q) (s N) (s T) (frozenPiNumerator m (s k)) (piDenominator (s k)) (s X) (s Y) (s D) (s sign) :=
+      row_at_sample_data i (s q) (s N) (s T) (s k) (s C) _
+    simpa only [rowBounds,Δ,i,m,M,s,Syn.shift,subst_data_at,PTm.subst_mul,PTm.subst_num] using
       bound_congr read.eqSymm (.eqRefl _) (.eqRefl _) estimate
   exact finite_tail _ _ _ _ _ hC rows
+
+theorem frozen_tail_bound (p T k C r K X Y D sign : PTm n)
+    (hz : Γ ⊢[PRAAx] source X D sign) (hT : Γ ⊢[PRAAx] le one T)
+    (hC : Γ ⊢[PRAAx] le one C) (hK : Γ ⊢[PRAAx] le D (K*X)) :
+    Γ ⊢[PRAAx] bounded (GaussianRationalFiniteSum.sum body r (data p T k C r X Y D sign)) (num 11*K) C :=
+  tail_bound_at _ _ T k C r K X Y D sign hz hT hC hK (le_refl _) (clock_scheduled p T _ k)
 
 end LeanProofs.IPRA.Analysis.GaussianBinetSecondDecayFrozenTail
