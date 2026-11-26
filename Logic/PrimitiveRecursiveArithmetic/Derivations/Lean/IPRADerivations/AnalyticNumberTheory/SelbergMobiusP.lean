@@ -1,5 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SelbergMobius
-import IPRADerivations.AnalyticNumberTheory.MobiusInversionP
+import IPRADerivations.AnalyticNumberTheory.MobiusInversion
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.AnalyticNumberTheory.DivisorCases
 

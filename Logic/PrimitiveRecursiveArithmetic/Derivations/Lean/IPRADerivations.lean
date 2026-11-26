@@ -437,7 +437,6 @@ import IPRADerivations.AnalyticNumberTheory.SelbergComparison
 import IPRADerivations.AnalyticNumberTheory.FloorTelescope
 import IPRADerivations.AnalyticNumberTheory.FourthRootSum
 import IPRADerivations.AnalyticNumberTheory.ComparisonEnvelope
-import IPRADerivations.AnalyticNumberTheory.MobiusInversionP
 import IPRADerivations.AnalyticNumberTheory.SelbergMobiusP
 import IPRADerivations.AnalyticNumberTheory.ConvSummatory
 import IPRADerivations.AnalyticNumberTheory.SymmetrySum
