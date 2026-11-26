@@ -214,8 +214,8 @@ conclusion or an incoming global budget recurrence. -/
 theorem total_bound (G Eta N D r : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hEta : Γ ⊢[PRAAx] errorsBound Eta N D) (hr : Γ ⊢[PRAAx] le r N) : Γ ⊢[PRAAx]
     rationalLE (total G Eta r) (fraction (pw (base G N) r) D) := by
-  have ds : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift D) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hD.shift
+  have ds : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift D) :=
+    Order.shift_one_le hD
   have es : Γ.map Fm.shift ⊢[PRAAx] errorsBound (Syn.shift Eta) (Syn.shift N) (Syn.shift D) := by
     simpa only [Fm.shift,subst_errorsBound,Syn.shift] using hEta.shift
   have all : Γ ⊢[PRAAx] .all (totalBoundLaw (Syn.shift G) (Syn.shift Eta) (Syn.shift N) (Syn.shift D) (var 0)) := by
@@ -237,8 +237,8 @@ an input assertion about that list or its values. -/
 theorem uniform_errors_bound (N D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
     errorsBound (uniformErrors N D) N D := by
   refine .allI (.impI ?_)
-  have ds : lt (var 0) (Syn.shift N) :: Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift D) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hD.shift.wk
+  have ds : lt (var 0) (Syn.shift N) :: Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift D) :=
+    (Order.shift_one_le hD).wk
   have actual := uniform_error_at (Syn.shift N) (Syn.shift D) (var 0) ds Prf.hyp0
   simpa only [Syn.shift,subst_uniformErrors] using
     Analysis.RationalArgmin.rationalLE_congr actual.eqSymm (.eqRefl _) (Analysis.RationalArgmin.reflexive _)

@@ -136,15 +136,11 @@ theorem rs_alg {Xn Xd Xn1 Xd1 Yn Yd Yn1 Yd1 Xn0 Xd0 Yn0 Yd0 U k i α β γ δ G 
       𝔞 (Xd * Yd * α * β * (γ * γ) * (δ * δ) * Xd1 * Yd1 * Xd0 * Yd0 * (U + succ i * k) * k * k * i)
   exact mul_le_cancel (le_congr (congrMul hM (.eqRefl _)) (congrMul hM (.eqRefl _)) c)
 
-theorem le_shift {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) := by
-  have b := h.shift
-  simp only [Fm.shift, subst_le] at b
-  exact b
+theorem le_shift {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_le h
 
-theorem le_shift_one {a : PTm n} (h : Γ ⊢[PRAAx] le one a) : (Γ.map Fm.shift) ⊢[PRAAx] le one (Syn.shift a) := by
-  have b := h.shift
-  simp only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at b
-  exact b
+theorem le_shift_one {a : PTm n} (h : Γ ⊢[PRAAx] le one a) : (Γ.map Fm.shift) ⊢[PRAAx] le one (Syn.shift a) :=
+  LeanProofs.IPRA.Order.shift_one_le h
 
 theorem le_shift_mul {a b c : PTm n} (h : Γ ⊢[PRAAx] le a (b * c)) :
     (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift a) (Syn.shift b * Syn.shift c) := by

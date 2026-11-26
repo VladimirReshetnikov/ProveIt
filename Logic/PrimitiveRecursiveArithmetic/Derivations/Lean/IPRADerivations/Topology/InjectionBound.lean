@@ -58,10 +58,8 @@ theorem inj_at {d x : PTm n} (h : Γ ⊢[PRAAx] injBelow f d x) (i j : PTm n) :
   simpa [subst_sh2', subst_ap2] using a
 
 theorem shift_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) :
-    Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) := by
-  have e := h.shift
-  simp only [Fm.shift, subst_lt] at e
-  exact e
+    Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_lt h
 
 /-- More indices than values: the pair search over the prefix `0, …, m` returns a collision
 below `d`. -/

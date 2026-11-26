@@ -42,6 +42,23 @@ ipra_subst neg
 theorem le_QF (a b : PTm n) : (le a b).QF := trivial
 theorem lt_QF (a b : PTm n) : (lt a b).QF := trivial
 
+namespace Order
+
+/-- Shift a derived comparison into the context with one fresh variable. -/
+theorem shift_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
+    Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) := by
+  simpa only [Fm.shift, subst_le, Syn.shift] using h.shift
+
+theorem shift_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) :
+    Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) := by
+  simpa only [Fm.shift, subst_lt, Syn.shift] using h.shift
+
+theorem shift_one_le {a : PTm n} (h : Γ ⊢[PRAAx] le (succ zero) a) :
+    Γ.map Fm.shift ⊢[PRAAx] le (succ zero) (Syn.shift a) := by
+  simpa only [Syn.shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] using shift_le h
+
+end Order
+
 /-! ## Witnesses -/
 
 theorem le_of_eq_add {a b d : PTm n} (h : Γ ⊢[PRAAx] b ≐ a + d) : Γ ⊢[PRAAx] le a b :=

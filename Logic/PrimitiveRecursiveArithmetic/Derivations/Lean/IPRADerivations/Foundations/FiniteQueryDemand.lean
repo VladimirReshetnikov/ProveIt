@@ -314,8 +314,8 @@ theorem queries_from_prefix (A : BoundedSyntax.BFm 3) (m : PR 3) (q : PR 4)
   have pref : Γ.map Fm.shift ⊢[PRAAx]
       prefixAt A (Syn.shift stage) (ap3 (envelopeF m q) (Syn.shift stage) (Syn.shift H) (Syn.shift x)) (Syn.shift x) := by
     simpa only [Fm.shift, subst_prefixAt, subst_ap3, Syn.shift] using hp.shift
-  have range : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift index) (Syn.shift H) := by
-    simpa only [Fm.shift, subst_le, Syn.shift] using hj.shift
+  have range : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift index) (Syn.shift H) :=
+    Order.shift_le hj
   have bound : (lt (var 0) (ap3 m (Syn.shift stage) (Syn.shift index) (Syn.shift x)) :: Γ.map Fm.shift)
       ⊢[PRAAx] le (apply4 q (Syn.shift stage) (Syn.shift index) (var 0) (Syn.shift x))
         (ap3 (envelopeF m q) (Syn.shift stage) (Syn.shift H) (Syn.shift x)) :=

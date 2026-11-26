@@ -171,10 +171,8 @@ theorem code_lt (r d : PTm 2) (x m : PTm n)
 /-! ## Decoding -/
 
 theorem shift_le' {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
-    Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) := by
-  have e := h.shift
-  simp only [Fm.shift, subst_le] at e
-  exact e
+    Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_le h
 
 /-- `a < b` gives `b = succ (pred b)`. -/
 theorem pos_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] b ≐ succ (pred b) := by

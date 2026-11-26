@@ -152,8 +152,8 @@ theorem empty_interval {a b : PTm n} (h : Γ ⊢[PRAAx] le b a) :
     Γ ⊢[PRAAx] least a b ≐ b := by
   apply failure_of_no_even
   refine .allI (.impI (.impI ?_))
-  have shifted : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift b) (Syn.shift a) := by
-    simpa only [Fm.shift, subst_le, Syn.shift] using h.shift
+  have shifted : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift b) (Syn.shift a) :=
+    Order.shift_le h
   exact le_lt_absurd _ (le_trans shifted.wk.wk Prf.hyp0) Prf.hyp1
 
 /-- Full concrete interval specification, including the failure convention. -/

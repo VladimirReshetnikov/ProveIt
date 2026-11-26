@@ -206,10 +206,8 @@ theorem inst3_sig (k m N : PTm n) : inst3 sig3 k m N = rem k m + m * rem k N := 
 
 theorem shift_quo' (a b : PTm n) : Syn.shift (quo a b) = quo (Syn.shift a) (Syn.shift b) := by simp [Syn.shift]
 
-theorem shift_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) := by
-  have e := h.shift
-  simp only [Fm.shift, subst_lt] at e
-  exact e
+theorem shift_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_lt h
 
 /-- `gcd(k mod m, m) = gcd(k, m)`. -/
 theorem gcd_rem {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (k : PTm n) :

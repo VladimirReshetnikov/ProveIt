@@ -88,10 +88,10 @@ theorem ordered_vector {a b c d : PTm n} (ha : Γ ⊢[PRAAx] le a c) (hb : Γ �
     Γ ⊢[PRAAx] ordered two (vector a b) (vector c d) := by
   apply ordered_intro
   refine .allI (.impI ?_)
-  have ha' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift c) := by
-    simpa only [Fm.shift,subst_le,Syn.shift] using ha.shift
-  have hb' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift b) (Syn.shift d) := by
-    simpa only [Fm.shift,subst_le,Syn.shift] using hb.shift
+  have ha' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift c) :=
+    Order.shift_le ha
+  have hb' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift b) (Syn.shift d) :=
+    Order.shift_le hb
   have h : (lt (var 0) (two : PTm (n+1)) :: Γ.map Fm.shift) ⊢[PRAAx]
       le (value (Syn.shift a) (Syn.shift b) (var 0)) (value (Syn.shift c) (Syn.shift d) (var 0)) :=
     add_le_add₂ (mul_le_mul_right _ ha'.wk) (mul_le_mul_right _ hb'.wk)

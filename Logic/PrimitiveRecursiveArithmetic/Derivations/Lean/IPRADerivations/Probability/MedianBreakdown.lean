@@ -49,11 +49,8 @@ theorem subst_dataG (i z : PTm n) (g f : PTm 2) :
   unfold inst2
   rw [Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
 
-theorem lt_shift {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) := by
-  have e := le_shift h
-  have hs : Syn.shift (succ a) = succ (Syn.shift a) := by simp [Syn.shift]
-  rw [hs] at e
-  exact e
+theorem lt_shift {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_lt h
 
 theorem monus_one_le (e : PTm n) (h : Γ ⊢[PRAAx] le e one) : Γ ⊢[PRAAx] le (monus one e) one :=
   le_of_eq_add (d := e) ((eq_add_of_le h).eqTrans (add_comm _ _))

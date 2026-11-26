@@ -101,10 +101,8 @@ theorem shift_noRep {M x : PTm n} (h : Γ ⊢[PRAAx] noRep S M x) :
   simp only [Fm.shift, subst_noRep] at e
   exact e
 
-theorem shift_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) := by
-  have e := h.shift
-  simp only [Fm.shift, subst_le] at e
-  exact e
+theorem shift_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_le h
 
 /-- The counts below `K + 1` add up to `K + 1`, but without a repetition they total at most `K`. -/
 theorem no_rep_absurd {K x : PTm n} (hr : Γ ⊢[PRAAx] Permutation.rangeAll S K x)

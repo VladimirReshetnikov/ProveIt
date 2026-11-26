@@ -89,10 +89,8 @@ theorem sorted_shift {N p : PTm n} (hS : Γ ⊢[PRAAx] Sorted X N p) :
     Γ.map Fm.shift ⊢[PRAAx] Sorted X (Syn.shift N) (Syn.shift p) := by
   simpa [Sorted, Fm.shift, Syn.shift, Syn.subst_subst] using hS.shift
 
-theorem le_shift {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) := by
-  have e := h.shift
-  simp only [Fm.shift, subst_le] at e
-  exact e
+theorem le_shift {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_le h
 
 theorem shift_inst2 (a b : PTm n) : Syn.shift (inst2 X a b) = inst2 X (Syn.shift a) (Syn.shift b) := by
   simp only [inst2, Syn.shift, Syn.subst_subst]

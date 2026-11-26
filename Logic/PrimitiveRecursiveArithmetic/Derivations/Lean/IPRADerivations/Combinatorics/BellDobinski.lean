@@ -102,8 +102,8 @@ theorem row_at (a : PTm 3) (i k N : PTm n) : Γ ⊢[PRAAx] inst2 (rowB a) i (pai
 theorem col_at (a : PTm 3) (k i N : PTm n) : Γ ⊢[PRAAx] inst2 (colB a) k (pairT i N) ≐ inst3 a k i N := by
   rw [inst2_colB]; exact congrInst3 a (.eqRefl _) (fst_pair _ _) (snd_pair _ _)
 
-theorem le_shift {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) := by
-  have e := h.shift; simp only [Fm.shift, subst_le] at e; exact e
+theorem le_shift {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_le h
 
 /-- `(n)_{n−k} [k − i even] C(k, i) iⁿ = [k − i even] C(n, i) iⁿ (n − i)_{n−k}`. -/
 theorem pt_e {N K i : PTm n} (hk : Γ ⊢[PRAAx] le K N) :

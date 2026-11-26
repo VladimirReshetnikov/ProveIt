@@ -31,10 +31,8 @@ open LeanProofs.IPRA.Probability.Ninther (leb leb_one leb_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-theorem shift_lt' {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) := by
-  have e := h.shift
-  simp only [Fm.shift, subst_lt] at e
-  exact e
+theorem shift_lt' {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_lt h
 
 /-! ## Pointwise -/
 

@@ -76,10 +76,8 @@ theorem shift_le' {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
   exact e
 
 theorem shift_lt' {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) :
-    Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) := by
-  have e := h.shift
-  simp only [Fm.shift, subst_lt] at e
-  exact e
+    Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_lt h
 
 /-- A sum over `i ≤ M` whose terms vanish is zero. -/
 theorem sum2_zero_le (f : PTm 3) {M p q : PTm n}
