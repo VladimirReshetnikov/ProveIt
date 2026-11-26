@@ -3014,3 +3014,6 @@ The two original finite logarithms differ from the input increment times the lit
 
 The literal shifted finite head times the plain product equals the original head times the final translated power and the exact harmonic exponential correction. The identity admits zero factors and separate disk certificates.
 [GaussianBarnesCanonicalBaseProductShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalBaseProductShift.lean), [GaussianNamedFiniteConstantFolds](Lean/IPRADerivations/Analysis/GaussianNamedFiniteConstantFolds.lean), [GaussianBarnesCanonicalHeadExponentialFactors](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadExponentialFactors.lean), [GaussianBarnesCanonicalHeadShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadShift.lean)
+
+The literal finite products and cofinal rate give an explicit common-disk input demand for the actual exponential tail sampler.
+[GaussianBarnesCanonicalTailContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailContinuity.lean)
