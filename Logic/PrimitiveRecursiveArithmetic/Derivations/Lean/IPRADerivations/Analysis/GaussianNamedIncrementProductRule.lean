@@ -1,4 +1,6 @@
 import IPRADerivations.Analysis.GaussianNamedIncrementDifferenceQuotient
+import IPRADerivations.Analysis.GaussianNamedDifferenceQuotient
+import IPRADerivations.Analysis.GaussianNamedGammaHalfShift
 
 /-!
 # Finite product rule for a common regular named increment
@@ -253,6 +255,54 @@ theorem product_rule (I1 I0 G1 G0 K : PR 2) (i1 i0 g1 g0 z a : PTm n)
     (cross_trans _ _ _ _ _ _ lhsScaled
       (cross_trans _ _ _ _ _ _ (split_cross I1 I0 G1 G0 i1 i0 g1 g0 hi1 hi0 hg1 hg0)
         (cross_symm _ _ _ _ rhsScaled)))
+
+/-- The exact product split also applies to the original quotient by a
+rational Gaussian increment, with the same literal reciprocal in every quotient. -/
+theorem native_product_rule (I1 I0 G1 G0 : PR 2) (i1 i0 g1 g0 h B : PTm n)
+    (hi1 : Γ ⊢[PRAAx] pointCN I1 i1) (hi0 : Γ ⊢[PRAAx] pointCN I0 i0)
+    (hg1 : Γ ⊢[PRAAx] pointCN G1 g1) (hg0 : Γ ⊢[PRAAx] pointCN G0 g0) :
+    Γ ⊢[PRAAx] crossEquivalent
+      (GaussianNamedDifferenceQuotient.nameF (multiplyF I1 G1) (multiplyF I0 G0))
+      (addF (multiplyF I1 (GaussianNamedDifferenceQuotient.nameF G1 G0))
+        (multiplyF G0 (GaussianNamedDifferenceQuotient.nameF I1 I0)))
+      (GaussianNamedDifferenceQuotient.data (multiplyF I1 G1) (multiplyF I0 G0)
+        (multiplyData I1 G1 i1 g1) (multiplyData I0 G0 i0 g0) h B)
+      (addData (multiplyData I1 (GaussianNamedDifferenceQuotient.nameF G1 G0) i1
+          (GaussianNamedDifferenceQuotient.data G1 G0 g1 g0 h B))
+        (multiplyData G0 (GaussianNamedDifferenceQuotient.nameF I1 I0) g0
+          (GaussianNamedDifferenceQuotient.data I1 I0 i1 i0 h B))) := by
+  let C := GaussianBoundedConstantProductName.constantF
+  let c := GaussianNamedDifferenceQuotient.inverse h B
+  let QG := DF G1 G0
+  let QI := DF I1 I0
+  let x := dd g1 g0
+  let y := dd i1 i0
+  let F := multiplyF I1 QG
+  let G := multiplyF G0 QI
+  let a := multiplyData I1 QG i1 x
+  let b := multiplyData G0 QI g0 y
+  have hc := GaussianBoundedConstantProductName.constant_regular (Γ := Γ) c
+  have hx := GaussianNamedDifference.name_regular G1 G0 g1 g0 hg1 hg0
+  have hy := GaussianNamedDifference.name_regular I1 I0 i1 i0 hi1 hi0
+  have ha := multiply_fast I1 QG i1 x hi1 hx
+  have hb := multiply_fast G0 QI g0 y hg0 hy
+  have hs := split_cross I1 I0 G1 G0 i1 i0 g1 g0 hi1 hi0 hg1 hg0
+  have hd := GaussianNamedDifference.name_regular (multiplyF I1 G1) (multiplyF I0 G0)
+    (multiplyData I1 G1 i1 g1) (multiplyData I0 G0 i0 g0)
+    (multiply_fast I1 G1 i1 g1 hi1 hg1) (multiply_fast I0 G0 i0 g0 hi0 hg0)
+  have leading := GaussianGammaAdjacentCutoff.multiply_cross C C _ (addF F G) c c _ (addData a b)
+    hc hc hd (add_fast F G a b ha hb) (cross_refl C c hc) hs
+  have distrib := distributive C F G c a b hc ha hb
+  have swap := GaussianNamedGammaHalfShift.add_cross
+    (multiplyF C F) (multiplyF I1 (multiplyF C QG))
+    (multiplyF C G) (multiplyF G0 (multiplyF C QI))
+    (multiplyData C F c a) (multiplyData I1 (multiplyF C QG) i1 (multiplyData C QG c x))
+    (multiplyData C G c b) (multiplyData G0 (multiplyF C QI) g0 (multiplyData C QI c y))
+    (multiply_fast C F c a hc ha) (multiply_fast _ _ _ _ hi1 (multiply_fast C QG c x hc hx))
+    (multiply_fast C G c b hc hb) (multiply_fast _ _ _ _ hg0 (multiply_fast C QI c y hc hy))
+    (swap_adjacent C I1 QG c i1 x hc hi1 hx) (swap_adjacent C G0 QI c g0 y hc hg0 hy)
+  exact cross_trans _ _ _ _ _ _ leading (cross_trans _ _ _ _ _ _ distrib swap)
+
 
 theorem actual_named_increment_product_rule_closed (I1 I0 G1 G0 K : PR 2) :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6

@@ -3044,3 +3044,6 @@ The difference of the two original tail exponential names agrees to quadratic er
 
 For nonzero rational Gaussian steps the actual divided differences approach the original cofinal derivative names with leading errors linear in the step size. Each comparison has a closed iPRA dyadic precision theorem retaining two independent observations. The exponential derivative uses the named product of the base tail exponential and the logarithmic derivative.
 [GaussianRationalConstantProductRate](Lean/IPRADerivations/Analysis/GaussianRationalConstantProductRate.lean), [GaussianNativeDerivativeQuotientRate](Lean/IPRADerivations/Analysis/GaussianNativeDerivativeQuotientRate.lean), [GaussianBarnesCanonicalLogDerivativeQuotient](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalLogDerivativeQuotient.lean), [GaussianBarnesCanonicalTailExponentialQuotient](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTailExponentialQuotient.lean)
+
+The exact product split applies to the original quotient by a literal rational Gaussian step. Independent quotient and continuity rates for the two factors give the product derivative rate with a common denominator, including at zeros of either factor.
+[GaussianNamedNativeProductDerivativeRate](Lean/IPRADerivations/Analysis/GaussianNamedNativeProductDerivativeRate.lean)
