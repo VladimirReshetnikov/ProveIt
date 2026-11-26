@@ -91,7 +91,7 @@ theorem derivative_sample_bound (p z R B : PTm n) (hs : Γ ⊢[PRAAx] GaussianBa
   have w := GaussianBarnesCanonicalDerivativeTail.tail_bound z R B N k init
   have hN := initial_positive (Γ := Γ) R
   have fit : Γ ⊢[PRAAx] le (A*one) (A*N) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right A hN)
+    mul_le_mul_left A hN
   exact bound_congr (GaussianBarnesCanonicalDerivativeCofinal.sample_at p z R B).eqSymm (.eqRefl _) (.eqRefl _)
     (bounded_radius_mono _ _ _ _ _ hN (le_refl one) fit w)
 

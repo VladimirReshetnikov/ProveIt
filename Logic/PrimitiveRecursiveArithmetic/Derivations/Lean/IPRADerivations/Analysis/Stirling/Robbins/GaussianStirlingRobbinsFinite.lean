@@ -120,7 +120,7 @@ private theorem observation (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (h
   have h := raw_lower q N a b hs hba
   have e := congrFst (GaussianStirlingTelescopeName.name_at (Γ := Γ) p K a b).eqSymm
   have m := GaussianExponentialReference.unit_monotone (Γ := Γ) (le_add_right p (GaussianFastValueCut.normalizer K))
-  have cmp := le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right K m)
+  have cmp := mul_le_mul_left K m
   exact upper_congr (congrFst (constant_at p (lowerCap N a b)).eqSymm) e (.eqRefl _) (.eqRefl _)
       (upper_mono _ _ _ _ _ _ (unit_positive q) h cmp)
 

@@ -135,8 +135,8 @@ theorem separated_grid_gap (q A B S u v : PTm n) (ha : Γ ⊢[PRAAx] le one A) (
   let r := upperCenter B S
   have hQ : Γ ⊢[PRAAx] le one Q := positive_product _ _ hS (positive_product _ _ (by ipra_le 7) ha)
   have hlr : Γ ⊢[PRAAx] le l r := by unfold l r lowerCenter upperCenter; ipra_le 2*Groth.ι (IPRA.Q.mk Γ S)*Groth.ι (IPRA.Q.mk Γ B)
-  have hrM : Γ ⊢[PRAAx] le (two*r) M := le_trans (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right two hv)) hvM
-  have hlM : Γ ⊢[PRAAx] le (two*l) M := le_trans (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right two hlr)) hrM
+  have hrM : Γ ⊢[PRAAx] le (two*r) M := le_trans (mul_le_mul_left two hv) hvM
+  have hlM : Γ ⊢[PRAAx] le (two*l) M := le_trans (mul_le_mul_left two hlr) hrM
   have lo := pair_monotone q M Q u l hQ hu hlM
   have hi := pair_monotone q M Q r v hQ hv hvM
   have exactCenter := pair_gap q M Q l r hQ hlr hrM

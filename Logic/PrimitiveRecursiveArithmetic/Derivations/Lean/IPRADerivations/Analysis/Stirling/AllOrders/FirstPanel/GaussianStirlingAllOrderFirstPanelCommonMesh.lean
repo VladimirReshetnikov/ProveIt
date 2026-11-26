@@ -94,7 +94,7 @@ private theorem half_to_affine (A B Q k p : PTm n)
     unfold d
     ipra_le 𝔞 Q*sl ha+2*𝔞 (succ (Q*a))*sl hB+𝔞 (Q*a)+2
   have pd := le_trans hQ Qd
-  exact distance_radius_mono _ _ _ _ (a+B) (unit p) hd (unit_positive p) (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (a+B) pd))
+  exact distance_radius_mono _ _ _ _ (a+B) (unit p) hd (unit_positive p) (mul_le_mul_left (a+B) pd)
     (harmonic_distance A B Q k hA hB (le_trans (unit_positive p) hQ))
 
 theorem half_panel_comparison (A B Q R k p : PTm n)

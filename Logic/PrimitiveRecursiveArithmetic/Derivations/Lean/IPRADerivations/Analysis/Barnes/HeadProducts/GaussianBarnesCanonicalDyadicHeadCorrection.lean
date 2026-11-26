@@ -57,7 +57,7 @@ theorem correction_bound (z R B N j : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
   have larger : Γ ⊢[PRAAx] le B (two*B) :=
     le_congr (one_mul B) (.eqRefl _) (mul_le_mul_right B (le_succ_self one))
   have hy := fraction_disk z R (two*B) (le_trans hz.andE₁ larger)
-    (bounded_mono hz.andE₂ (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right R larger)))
+    (bounded_mono hz.andE₂ (mul_le_mul_left R larger))
   have square : Γ ⊢[PRAAx] bounded (halfSquare z B) (R*R) one :=
     bound_congr (.eqRefl _) (.eqRefl _) (one_mul one) (bounded_product x y R one R one onePos onePos hx hy)
   have quadratic : Γ ⊢[PRAAx] bounded (qmul (halfSquare z B) H) (R*R*L) one :=

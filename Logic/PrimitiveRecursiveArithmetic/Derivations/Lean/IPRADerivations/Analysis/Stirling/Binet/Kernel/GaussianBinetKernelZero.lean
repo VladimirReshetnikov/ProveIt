@@ -206,7 +206,7 @@ theorem observations (p B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
   have b := late_zero_distance k (N+r) B (le_add_left r N) hB
   have later : Γ ⊢[PRAAx] le p k := le_trans (le_succ_self p) (le_add_right (succ p) _)
   have b' := distance_radius_mono _ _ _ _ (num 10) U (unit_positive k) hu
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 10) (GaussianExponentialReference.unit_monotone later))) b
+    (mul_le_mul_left (num 10) (GaussianExponentialReference.unit_monotone later)) b
   have e := (GaussianBinetKernelCofinal.sample_at (Γ := Γ) p zero B).eqTrans
     (GaussianNamedFiniteSumFamily.sample_at rowF rowBody (succ p) N (inputData zero B))
   exact distance_congr e.eqSymm (.eqRefl _) (by ipra_ring) (.eqRefl _)

@@ -54,7 +54,7 @@ theorem cutoff_budget (k C : PTm n) :
     dsimp only [lowerCost,GaussianRaabeDyadicPrimitive.cost,h,cutoff,t,base]
     ipra_le 194*𝔞(k)+193*𝔞(C)+197
   have unitLarge : Γ ⊢[PRAAx] le (num 256*succ t) (num 256*unit t) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 256) (RationalClosure.succ_le_two_pow t))
+    mul_le_mul_left (num 256) (RationalClosure.succ_le_two_pow t)
   have grow : Γ ⊢[PRAAx] le (unit k) (unit t) :=
     GaussianExponentialReference.unit_monotone (le_trans (le_add_right k C) (le_add_right (k+C) one))
   have e : Γ ⊢[PRAAx] unit h ≐ num 256*unit t*unit t :=

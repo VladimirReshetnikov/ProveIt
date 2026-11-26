@@ -55,7 +55,7 @@ theorem refined_prefix_error (p q R N X Y D sign T A C E : PTm n)
   have read := GaussianCompactRiemannName.name_at (Γ := Γ) f p (E+A) C E L T x
   have raw := distance_congr (.eqRefl plain) read.eqSymm (.eqRefl _) (.eqRefl _) refineDistance
   have first : Γ ⊢[PRAAx] distanceBounded old plain (num 3) (unit p) :=
-    distance_radius_mono _ _ _ _ _ _ (unit_positive _) hp (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 3) hs))
+    distance_radius_mono _ _ _ _ _ _ (unit_positive _) hp (mul_le_mul_left (num 3) hs)
       (distance_symmetric plain old (num 3) W (unit_positive _) raw)
   have hWidth := width.andE₂.andE₂.andE₁
   have den := positive_product _ _ hE (unit_positive q)

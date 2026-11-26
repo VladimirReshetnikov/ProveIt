@@ -95,7 +95,7 @@ theorem original_approximation (m : ℕ) (p a b x C : PTm n) (hs : Γ ⊢[PRAAx]
     ipra_le 𝔞 H*sl hab
   have inp : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input remainderF R X :=
     from_constant _ _ Q H A D C (remainder_regular a b x hs) hd
-      (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right C (pw_le_pw d hab))) h hQ
+      (mul_le_mul_left C (pw_le_pw d hab)) h hQ
   have hQ' : Γ ⊢[PRAAx] bounded Q R one := by
     apply GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) ?_ hQ
     unfold R radius

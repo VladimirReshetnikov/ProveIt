@@ -97,7 +97,7 @@ theorem row_envelope (m : ℕ) (q A B M k r : PTm n) (hA : Γ ⊢[PRAAx] le one 
 
 private theorem reflect_scaled (B M r : PTm n) (hr : Γ ⊢[PRAAx] le r M) :
     Γ ⊢[PRAAx] B*monus M r ≐ monus (B*M) (B*r) := by
-  have h := le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right B hr)
+  have h := mul_le_mul_left B hr
   have ex := natEq (eq_add_of_le hr)
   have ey := natEq (eq_add_of_le h)
   apply deriveNat

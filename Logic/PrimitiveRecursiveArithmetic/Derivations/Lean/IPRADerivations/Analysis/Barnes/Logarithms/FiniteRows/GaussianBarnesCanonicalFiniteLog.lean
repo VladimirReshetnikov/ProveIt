@@ -133,7 +133,7 @@ theorem rounded_bound (v z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N)
   have hD := tail_denominator_positive N h.andE₂.andE₁
   have exactBound : Γ ⊢[PRAAx] bounded exactSum (boundNumerator R) one :=
     bounded_radius_mono _ _ _ _ _ hD (le_refl one)
-      (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (boundNumerator R) hD))
+      (mul_le_mul_left (boundNumerator R) hD)
       (tail_bound z R B N r _ h)
   have approx : Γ ⊢[PRAAx] distanceBounded (value v z R B N r) exactSum one one :=
     distance_radius_mono _ _ _ _ _ _ (GaussianLocalLogarithmName.unit_positive v) (le_refl one)

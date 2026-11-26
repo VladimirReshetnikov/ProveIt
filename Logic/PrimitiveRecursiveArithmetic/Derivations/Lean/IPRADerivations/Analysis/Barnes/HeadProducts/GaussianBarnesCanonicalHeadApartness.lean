@@ -90,7 +90,7 @@ private theorem row_lower (p z R B N r i : PTm n) (h : Γ ⊢[PRAAx] source z R 
     le_congr ((add_comm (succ i) N).eqTrans (add_succ N i)) (add_comm r N) (add_le_add_right N hi)
   have hD := positive_product _ _ h.andE₁ (zero_lt_succ (N+i))
   have hd' : Γ ⊢[PRAAx] le (B*k) (B*succ (N+r)) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right B (le_trans hK (le_succ_self (N+r))))
+    mul_le_mul_left B (le_trans hK (le_succ_self (N+r)))
   have order : Γ ⊢[PRAAx] le (GaussianBarnesCanonicalFactorApartness.denominator R (B*k) k)
       (rowDenominator R B N r) := mul_le_mul_right (two*GaussianCyclicExponentialSamples.sampleBound
       (GaussianBarnesCanonicalFactor.exponentRadius R))
