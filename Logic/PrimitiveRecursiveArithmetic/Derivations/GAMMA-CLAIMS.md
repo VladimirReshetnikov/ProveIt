@@ -3071,3 +3071,6 @@ Equal Gaussian fractions on a fixed certified disk give identical cofinal logari
 
 The actual dynamic-radius finite exponential has the named derivative equal to that exponential times the exact finite correction slope. The independent first-order bound is quadratic in the native Gaussian step and its coefficients depend only on the disk and cutoff.
 [GaussianNamedExponentialTaylorTransport](Lean/IPRADerivations/Analysis/GaussianNamedExponentialTaylorTransport.lean), [GaussianBarnesCanonicalHeadCorrectionExponentialDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadCorrectionExponentialDerivative.lean)
+
+The original finite recurrence exponent and actual terminal power are matched to the combined named remainder. The adjacent Euler logarithm has an independent `1/N` bound, preserving the difference between the actual Gauss cutoff and the Barnes recurrence cutoff.
+[GaussianBarnesCanonicalNormalizedExponentAlgebra](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNormalizedExponentAlgebra.lean), [GaussianBarnesCanonicalAdjacentLog](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalAdjacentLog.lean), [GaussianBarnesCanonicalNormalizedExponent](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNormalizedExponent.lean), [GaussianBarnesCanonicalTerminalPower](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalTerminalPower.lean)

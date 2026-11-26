@@ -61,7 +61,8 @@ theorem regular (z B : PTm n) : Γ ⊢[PRAAx] pointCN nameF (data z B) :=
   add_fast _ _ _ _ (GaussianStirlingConstant.name_regular zero) (add_fast _ _ _ _ (constant_regular _)
     (multiply_fast _ _ _ _ (constant_regular _) quadratic_coefficient_regular))
 
-private structure Observation (Γ : List (Fm PTm n)) where
+/-- A named evaluator and a rational observation formula with a certified dyadic error. -/
+structure Observation (Γ : List (Fm PTm n)) where
   f : PR 2
   x : PTm n
   value : PTm n → PTm n
@@ -71,7 +72,7 @@ private structure Observation (Γ : List (Fm PTm n)) where
   close (p : PTm n) : Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (value p) cost (unit p)
   bound (p : PTm n) : Γ ⊢[PRAAx] bounded (value p) radius one
 
-private def leaf (f : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) : Observation Γ where
+def leaf (f : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) : Observation Γ where
   f := f
   x := x
   value p := ap2 f p x
@@ -81,7 +82,7 @@ private def leaf (f : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) : Observ
   close p := GaussianRationalPowerDifference.distance_refl_zero _ _ (unit_positive p)
   bound p := sample_bound f x p h
 
-private def const (a : PTm n) : Observation Γ where
+def const (a : PTm n) : Observation Γ where
   f := C
   x := a
   value _ := a
@@ -92,7 +93,7 @@ private def const (a : PTm n) : Observation Γ where
     (GaussianRationalPowerDifference.distance_refl_zero a _ (unit_positive p))
   bound p := bound_congr (constant_at p a) (.eqRefl _) (.eqRefl _) (sample_bound C a p (constant_regular _))
 
-private def sum (a b : Observation Γ) : Observation Γ where
+def sum (a b : Observation Γ) : Observation Γ where
   f := addF a.f b.f
   x := addData a.x b.x
   value p := qadd (a.value p) (b.value p)
@@ -105,7 +106,7 @@ private def sum (a b : Observation Γ) : Observation Γ where
   bound p := bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
     (bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) (a.bound p) (b.bound p))
 
-private def product (a b : Observation Γ) : Observation Γ where
+def product (a b : Observation Γ) : Observation Γ where
   f := multiplyF a.f b.f
   x := multiplyData a.f b.f a.x b.x
   value p := qmul (a.value p) (b.value p)
@@ -119,7 +120,7 @@ private def product (a b : Observation Γ) : Observation Γ where
   bound p := bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
     (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) (a.bound p) (b.bound p))
 
-private def difference (a b : Observation Γ) : Observation Γ where
+def difference (a b : Observation Γ) : Observation Γ where
   f := GaussianNamedDifference.nameF a.f b.f
   x := GaussianNamedDifference.data a.x b.x
   value p := qsub (a.value p) (b.value p)
