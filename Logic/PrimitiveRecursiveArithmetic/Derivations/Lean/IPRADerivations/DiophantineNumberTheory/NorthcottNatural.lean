@@ -33,8 +33,7 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural
 open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv gv_zero gv_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (congrGcd qBody q_le gv_quotients)
-open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (code entriesLt entry_lt code_lt code_digit)
-open LeanProofs.IPRA.Combinatorics.LegendreDigits (dB_at dm)
+open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (code entriesLt code_lt digits_of_code)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne pw_pos')
 
@@ -43,27 +42,30 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 /-- The digit vector, `LegendreDigits.dB`. -/
 abbrev digB : PTm 2 := LeanProofs.IPRA.Combinatorics.LegendreDigits.dB
 
+/-- Pointwise-equal vectors have equal gcds for every prefix of length at most `N`. -/
+theorem gv_congr_all (f g : PTm 2) {N x y : PTm k}
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ inst2 f (var 0) (Syn.shift x) ≐ inst2 g (var 0) (Syn.shift y))) :
+    Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶ gv f (var 0) (Syn.shift x) ≐ gv g (var 0) (Syn.shift y)) := by
+  refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    exact .impI ((gv_zero f x).eqTrans (gv_zero g y).eqSymm)
+  · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    refine .impI ?_
+    let Δ := le (succ (var 0)) (Syn.shift N) ::
+      (le (var 0) (Syn.shift N) ⟶ gv f (var 0) (Syn.shift x) ≐ gv g (var 0) (Syn.shift y)) :: Γ.map Fm.shift
+    have hle : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
+    have ih : Δ ⊢[PRAAx] gv f (var 0) (Syn.shift x) ≐ gv g (var 0) (Syn.shift y) := Prf.impE Prf.hyp1 hle
+    have hf : Δ ⊢[PRAAx] inst2 f (var 0) (Syn.shift x) ≐ inst2 g (var 0) (Syn.shift y) :=
+      Prf.impE h.allOpen.wk.wk Prf.hyp0
+    exact (gv_succ f (var 0) (Syn.shift x)).eqTrans ((congrGcd ih hf).eqTrans (gv_succ g (var 0) (Syn.shift y)).eqSymm)
+
 /-- Pointwise-equal vectors have equal gcds. -/
 theorem gv_congr (f g : PTm 2) {N x y : PTm k}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ inst2 f (var 0) (Syn.shift x) ≐ inst2 g (var 0) (Syn.shift y))) :
     Γ ⊢[PRAAx] gv f N x ≐ gv g N y := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      gv f (var 0) (Syn.shift x) ≐ gv g (var 0) (Syn.shift y)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI ((gv_zero f x).eqTrans (gv_zero g y).eqSymm)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
-      let Δ := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶ gv f (var 0) (Syn.shift x) ≐ gv g (var 0) (Syn.shift y)) :: Γ.map Fm.shift
-      have hle : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Δ ⊢[PRAAx] gv f (var 0) (Syn.shift x) ≐ gv g (var 0) (Syn.shift y) := Prf.impE Prf.hyp1 hle
-      have hf : Δ ⊢[PRAAx] inst2 f (var 0) (Syn.shift x) ≐ inst2 g (var 0) (Syn.shift y) :=
-        Prf.impE h.allOpen.wk.wk Prf.hyp0
-      exact (gv_succ f (var 0) (Syn.shift x)).eqTrans ((congrGcd ih hf).eqTrans (gv_succ g (var 0) (Syn.shift y)).eqSymm)
-  have h2 := Prf.allE N hall
+  have h2 := Prf.allE N (gv_congr_all f g h)
   simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
   exact Prf.impE h2 (le_refl N)
@@ -109,21 +111,7 @@ theorem north_complete {V : PTm 2} {b x N : PTm k} (hb : Γ ⊢[PRAAx] b ≐ suc
     Γ ⊢[PRAAx] lt (rank kB (code V b x N) (pairT b N)) (rank kB (pw b N) (pairT b N)) ⋏
       (sel kB (rank kB (code V b x N) (pairT b N)) (pw b N) (pairT b N) ≐ code V b x N) := by
   have hlt := code_lt hV (le_refl N)
-  -- the digit vector of the code is `V`
-  have hd : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
-      inst2 digB (var 0) (Syn.shift (pairT b (code V b x N))) ≐ inst2 V (var 0) (Syn.shift x)) := by
-    refine .allI (.impI ?_)
-    have hbs : Γ.map Fm.shift ⊢[PRAAx] Syn.shift b ≐ succ (pred (Syn.shift b)) := by
-      have e := hb.shift; simpa [Fm.shift, Syn.shift] using e
-    have hVs : Γ.map Fm.shift ⊢[PRAAx] entriesLt V (Syn.shift b) (Syn.shift x) (Syn.shift N) := by
-      have e := hV.shift
-      simpa [Fm.shift, Syn.shift, entriesLt, Syn.subst_subst, Syn.up_succ, Syn.up_zero, Syn.shift_var] using e
-    have c := code_digit hbs.wk hVs.wk (Prf.hyp0 : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] _)
-    have e : Syn.shift (pairT b (code V b x N)) = pairT (Syn.shift b) (code V (Syn.shift b) (Syn.shift x) (Syn.shift N)) := by
-      simp [Syn.shift]
-    rw [e]
-    exact (dB_at _ _ _).eqTrans c
-  have hk := kept_of (gv_congr digB V hd |>.eqTrans hg)
+  have hk := kept_of (gv_congr digB V (digits_of_code hb hV) |>.eqTrans hg)
   exact .andI (rank_lt_size kB hlt hk) (sel_rank kB hlt hk)
 
 /-- The normalization of a nonzero vector with entries below `b` is listed. -/

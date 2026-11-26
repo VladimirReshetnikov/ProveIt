@@ -27,9 +27,8 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus
 
 open_ipra
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv)
-open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (code entriesLt code_lt code_digit)
+open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (code entriesLt code_lt digits_of_code)
 open LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural (digB gv_congr congrEqb)
-open LeanProofs.IPRA.Combinatorics.LegendreDigits (dB_at)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 
@@ -94,21 +93,7 @@ theorem locus_complete (T : PTm 2) {V : PTm 2} {b x N q : PTm k} (hb : Γ ⊢[PR
     Γ ⊢[PRAAx] lt (rank (kL T) (code V b x N) (prm b N q)) (rank (kL T) (pw b N) (prm b N q)) ⋏
       (sel (kL T) (rank (kL T) (code V b x N) (prm b N q)) (pw b N) (prm b N q) ≐ code V b x N) := by
   have hlt := code_lt hV (le_refl N)
-  have hd : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
-      inst2 digB (var 0) (Syn.shift (pairT b (code V b x N))) ≐ inst2 V (var 0) (Syn.shift x)) := by
-    refine .allI (.impI ?_)
-    have hbs : Γ.map Fm.shift ⊢[PRAAx] Syn.shift b ≐ succ (pred (Syn.shift b)) := by
-      have e := hb.shift; simpa [Fm.shift, Syn.shift] using e
-    have hVs : Γ.map Fm.shift ⊢[PRAAx] entriesLt V (Syn.shift b) (Syn.shift x) (Syn.shift N) := by
-      have e := hV.shift
-      simpa [Fm.shift, Syn.shift, entriesLt, Syn.subst_subst, Syn.up_succ, Syn.up_zero, Syn.shift_var] using e
-    have c := code_digit hbs.wk hVs.wk (Prf.hyp0 : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] _)
-    have e : Syn.shift (pairT b (code V b x N)) =
-        pairT (Syn.shift b) (code V (Syn.shift b) (Syn.shift x) (Syn.shift N)) := by
-      simp [Syn.shift]
-    rw [e]
-    exact (dB_at _ _ _).eqTrans c
-  have hk := kept_of T (q := q) (gv_congr digB V hd |>.eqTrans hg) ht
+  have hk := kept_of T (q := q) (gv_congr digB V (digits_of_code hb hV) |>.eqTrans hg) ht
   exact .andI (rank_lt_size (kL T) hlt hk) (sel_rank (kL T) hlt hk)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus

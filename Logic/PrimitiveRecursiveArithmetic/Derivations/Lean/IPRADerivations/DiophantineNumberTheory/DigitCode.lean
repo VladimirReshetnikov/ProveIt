@@ -19,7 +19,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DigitCode
 
 open_ipra
-open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
+open LeanProofs.IPRA.Combinatorics.LegendreDigits (dB dB_at dm dmu)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 
@@ -169,5 +169,22 @@ theorem code_digit {V : PTm 2} {b x N j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ 
   have eN : Γ ⊢[PRAAx] N ≐ succ j + monus N (succ j) := eq_add_of_le hj
   have r := Prf.impE h2 (le_congr eN (.eqRefl _) (le_refl N))
   exact (congrAp2 remF (congrAp2 quoF (congrCode V eN) (.eqRefl _)) (.eqRefl _)).eqTrans r
+
+/-- Decoding a bounded digit vector's code recovers every entry in its prefix. -/
+theorem digits_of_code {V : PTm 2} {b x N : PTm k}
+    (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hV : Γ ⊢[PRAAx] entriesLt V b x N) :
+    Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
+      inst2 dB (var 0) (Syn.shift (pairT b (code V b x N))) ≐ inst2 V (var 0) (Syn.shift x)) := by
+  refine .allI (.impI ?_)
+  have hbs : Γ.map Fm.shift ⊢[PRAAx] Syn.shift b ≐ succ (pred (Syn.shift b)) := by
+    have e := hb.shift; simpa [Fm.shift, Syn.shift] using e
+  have hVs : Γ.map Fm.shift ⊢[PRAAx] entriesLt V (Syn.shift b) (Syn.shift x) (Syn.shift N) := by
+    have e := hV.shift
+    simpa [Fm.shift, Syn.shift, entriesLt, Syn.subst_subst, Syn.up_succ, Syn.up_zero, Syn.shift_var] using e
+  have c := code_digit hbs.wk hVs.wk (Prf.hyp0 : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] _)
+  have e : Syn.shift (pairT b (code V b x N)) = pairT (Syn.shift b) (code V (Syn.shift b) (Syn.shift x) (Syn.shift N)) := by
+    simp [Syn.shift]
+  rw [e]
+  exact (dB_at _ _ _).eqTrans c
 
 end LeanProofs.IPRA.DiophantineNumberTheory.DigitCode
