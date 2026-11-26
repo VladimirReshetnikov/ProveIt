@@ -20,8 +20,8 @@ open SignedDiscreteDerivativeBlock (slice block slice_at source residual residua
 open SignedDiscreteDerivativeOperators (width divisor delta accumulate delta_at accumulate_at subtract_at)
 open SignedDiscreteThirdDerivativeIdentity (defect)
 open SignedGridStepBounds (subst_val subst_order neg_order neg_value)
-open PeriodicThirdDifferenceConstancy (band)
-open PolynomialBisection (zle_add zle_congr zle_scale)
+open PeriodicThirdDifferenceConstancy (band band_add band_congr band_neg band_scale subst_band)
+open PolynomialBisection (zle_congr)
 open PowerSums (sum_le)
 open LeanProofs.IPRA.Foundations.FiniteCoverAssignment (constant_sum)
 open ConciseIPRA.PTm (zero succ)
@@ -35,9 +35,6 @@ def floorOn (b : ZB) (x L E : PTm n) : Fm PTm n :=
 
 def bandOn (b : ZB) (x L E : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift L) ⟶ band (b.val (var 0) (Syn.shift x)) (Syn.shift E))
-
-@[simp] private theorem subst_band {m : ℕ} (σ : Fin n → PTm m) (z : ZT n) (E : PTm n) :
-    (band z E).subst σ = band (z.subst σ) (Syn.subst σ E) := by simp [band]
 
 @[simp] theorem subst_floorOn {m : ℕ} (σ : Fin n → PTm m) (b : ZB) (x L E : PTm n) :
     (floorOn b x L E).subst σ = floorOn b (Syn.subst σ x) (Syn.subst σ L) (Syn.subst σ E) := by
@@ -132,13 +129,10 @@ theorem delta_band (b : ZB) (x L E i : PTm n)
     Γ ⊢[PRAAx] band ((delta b).val i x) (divisor x*(two*E)) := by
   have a := band_at b x L E i h (lt_of_le_of_lt (le_add_right _ _) hi)
   have c := band_at b x L E (i+width x) h hi
-  have lo := zle_scale (divisor x) (zle_add c.andE₁ (neg_order a.andE₂))
-  have up := zle_scale (divisor x) (zle_add c.andE₂ (neg_order a.andE₁))
-  exact .andI
-    (zle_congr (by simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_mul,map_mul]; ipra_simps; ring)
-      (by rw [delta_at]; simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg]; ring) lo)
-    (zle_congr (by rw [delta_at]; simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg]; ring)
-      (by simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_mul,map_mul]; ipra_simps; ring) up)
+  refine band_congr ?_ (by ipra_ring) (band_scale (divisor x) (band_add c (band_neg a)))
+  rw [delta_at]
+  simp only [ZT.toZ_mul,ZT.toZ_add,ZT.toZ_neg]
+  ring
 
 theorem defect_band (b g : ZB) (x L E i : PTm n)
     (h : Γ ⊢[PRAAx] source b g x L (divisor x) E) (hi : Γ ⊢[PRAAx] le (i+width x) L) :
@@ -146,6 +140,6 @@ theorem defect_band (b g : ZB) (x L E i : PTm n)
   have raw := residual_bound b g x L i (divisor x) E (width x) h hi
   have e : ZT.toZ Γ (residual b g x i (divisor x) (width x)) = ZT.toZ Γ ((defect b g).val i x) := by
     simp only [residual,defect,subtract_at,delta_at,accumulate_at,ZT.toZ_sub,ZT.toZ_mul]
-  exact .andI (zle_congr rfl e raw.andE₁) (zle_congr e rfl raw.andE₂)
+  exact band_congr e (.eqRefl _) raw
 
 end LeanProofs.IPRA.Analysis.SignedDiscreteDerivativeBounds

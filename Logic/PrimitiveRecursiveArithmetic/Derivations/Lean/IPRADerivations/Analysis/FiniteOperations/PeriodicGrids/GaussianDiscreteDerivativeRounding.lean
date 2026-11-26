@@ -25,9 +25,8 @@ open GaussianRationalMetric (distanceBounded bounded_difference_iff qsub qsub_re
 open GaussianRootAlgebra (sub equal_refl re_sub re_scale)
 open ComplexLogarithmRemainder (scale normSq re)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs)
-open PolynomialBisection (zle_add zle_congr zle_scale zle_scale_cancel)
-open SignedGridStepBounds (neg_order difference_value)
-open PeriodicThirdDifferenceConstancy (band)
+open SignedGridStepBounds (difference_value)
+open PeriodicThirdDifferenceConstancy (band band_add band_congr band_neg band_scale band_scale_cancel)
 open SignedDiscreteDerivativeOperators (divisor subst_divisor)
 open Syn
 open scoped Fm
@@ -38,23 +37,6 @@ def allowance (D E : PTm n) : PTm n := E+two*D+one
 
 def signedResidual (a b g D S : PTm n) : ZT n :=
   ZT.ofNat D*(rounded b S-rounded a S)-rounded g S
-
-private theorem band_plus (a b : ZT n) (A B : PTm n)
-    (ha : Γ ⊢[PRAAx] band a A) (hb : Γ ⊢[PRAAx] band b B) :
-    Γ ⊢[PRAAx] band (a+b) (A+B) :=
-  .andI (zle_congr (by simp only [ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_add,map_add]; ring)
-    rfl (zle_add ha.andE₁ hb.andE₁))
-    (zle_congr rfl (by simp only [ZT.toZ_add,ZT.toZ_ofNat,Q.mk_add,map_add]) (zle_add ha.andE₂ hb.andE₂))
-
-private theorem band_neg (a : ZT n) (A : PTm n) (h : Γ ⊢[PRAAx] band a A) :
-    Γ ⊢[PRAAx] band (-a) A :=
-  .andI (neg_order h.andE₂) (zle_congr rfl (by simp only [ZT.toZ_neg,neg_neg]) (neg_order h.andE₁))
-
-private theorem band_scale (a : ZT n) (A K : PTm n) (h : Γ ⊢[PRAAx] band a A) :
-    Γ ⊢[PRAAx] band (ZT.ofNat K*a) (K*A) :=
-  .andI (zle_congr (by simp only [ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_mul,map_mul]; ring)
-    rfl (zle_scale K h.andE₁))
-    (zle_congr rfl (by simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul]) (zle_scale K h.andE₂))
 
 theorem residual_bound (a b g D S E : PTm n) (hS : Γ ⊢[PRAAx] le one S)
     (h : Γ ⊢[PRAAx] distanceBounded (natScale D (qsub b a)) g E S) :
@@ -87,28 +69,16 @@ theorem residual_bound (a b g D S E : PTm n) (hS : Γ ⊢[PRAAx] le one S)
     (GaussianL1.abs_multiply _ _).eqTrans (congrMul (GaussianL1.abs_ofNat S) (.eqRefl _))
   have axis : Γ ⊢[PRAAx] band (ZT.ofNat S*re v) (K*E) :=
     band_of_absolute _ _ (le_congr eabs.eqSymm (.eqRefl _) (scaled_real_absolute v S E K raw))
-  have next := band_scale _ _ (D*(A*C)) (rounding_band (Γ := Γ) b S)
-  have prev := band_scale _ _ (D*(B*C)) (band_neg _ _ (rounding_band (Γ := Γ) a S))
-  have deriv := band_scale _ _ (A*B) (band_neg _ _ (rounding_band (Γ := Γ) g S))
-  have total := band_plus _ _ _ _ (band_plus _ _ _ _ (band_plus _ _ _ _ axis next) prev) deriv
-  let target := ZT.ofNat K*signedResidual a b g D S
-  have shiftLower : Γ ⊢[PRAAx] zle (ZT.ofNat K*(-ZT.ofNat (allowance D E))) target := by
-    refine zle_congr ?_ ?_ total.andE₁
-    · simp only [allowance,K,A,B,C,ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_add,map_add,Q.mk_mul,map_mul]
-      ipra_simps
-      ring
-    · simp only [target,signedResidual,clearedError,v,d,b',a',g',K,A,B,C,
-        re_sub,re_scale,ZT.toZ_add,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_mul,map_mul]
-      ring
-  have shiftUpper : Γ ⊢[PRAAx] zle target (ZT.ofNat K*ZT.ofNat (allowance D E)) := by
-    refine zle_congr ?_ ?_ total.andE₂
-    · simp only [target,signedResidual,clearedError,v,d,b',a',g',K,A,B,C,
-        re_sub,re_scale,ZT.toZ_add,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_mul,map_mul]
-      ring
-    · simp only [allowance,K,A,B,C,ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_add,map_add,Q.mk_mul,map_mul]
-      ipra_simps
-      ring
-  exact .andI (zle_scale_cancel hK shiftLower) (zle_scale_cancel hK shiftUpper)
+  have next := band_scale (D*(A*C)) (rounding_band (Γ := Γ) b S)
+  have prev := band_scale (D*(B*C)) (band_neg (rounding_band (Γ := Γ) a S))
+  have deriv := band_scale (A*B) (band_neg (rounding_band (Γ := Γ) g S))
+  apply band_scale_cancel hK
+  refine band_congr ?_ ?_ (band_add (band_add (band_add axis next) prev) deriv)
+  · simp only [signedResidual,clearedError,v,d,b',a',g',K,A,B,C,
+      re_sub,re_scale,ZT.toZ_add,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_mul,map_mul]
+    ring
+  · unfold allowance K A B C
+    ipra_ring
 
 def latticeScale (x : PTm n) : PTm n := fstT (sndT (sndT x))
 
@@ -152,7 +122,7 @@ theorem signed_source (f g : PTm 2) (x L E : PTm n) (hS : Γ ⊢[PRAAx] le one (
       difference_value (Γ := Δ) (body f) i X,sample_at]
   have result : Δ ⊢[PRAAx] band
       (SignedDiscreteDerivativeBlock.stepError (body f) (body g) X (divisor X) i) (allowance (divisor X) (Syn.shift E)) :=
-    .andI (zle_congr rfl he band'.andE₁) (zle_congr he rfl band'.andE₂)
+    band_congr he (.eqRefl _) band'
   simpa only [Δ,i,X,allowance,Syn.shift,subst_divisor,LeanProofs.IPRA.PTm.subst_add,
     LeanProofs.IPRA.PTm.subst_mul,two,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using result
 

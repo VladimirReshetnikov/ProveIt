@@ -26,8 +26,7 @@ open GaussianSignedObservationGrid (rounded realPoint clearedError rounding_erro
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq)
 open LeanProofs.IPRA.Probability.MedianWeighted (ad_le_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open PeriodicThirdDifferenceConstancy (band cubicBudget)
-open PolynomialBisection (zle_congr)
+open PeriodicThirdDifferenceConstancy (band band_congr cubicBudget)
 open ConciseIPRA.PTm (zero)
 open Syn
 open scoped Fm
@@ -107,8 +106,7 @@ theorem wrapped_projected_distance (f : PTm 2) (x S i j N E : PTm n)
   have ei := ZT.toZ_eq (wrapped_sample_mod (Γ := Γ) f x S i N)
   have ej := ZT.toZ_eq (wrapped_sample_mod (Γ := Γ) f x S j N)
   apply projected_distance _ _ S E hS
-  exact .andI (zle_congr rfl (by simp only [ZT.toZ_sub,ei,ej]) h.andE₁)
-    (zle_congr (by simp only [ZT.toZ_sub,ei,ej]) rfl h.andE₂)
+  exact band_congr (by simp only [ZT.toZ_sub,ei,ej]) (.eqRefl _) h
 
 def cyclicThirdLower (f : PTm 2) (x S N E : PTm n) : Fm PTm n :=
   PeriodicThirdDifferenceModulo.thirdLower (PeriodicThirdDifferenceModulo.wrapped (body f))

@@ -25,6 +25,7 @@ open SignedDiscreteDerivativeOperators (width divisor delta accumulate accumulat
 open SignedDiscreteThirdDerivativeIdentity (defect coarseThird third_decomposition decomposition)
 open SignedDiscreteDerivativeBounds
   (floorOn bandOn floor_at band_at block_floor block_band delta_band defect_band subst_floorOn subst_bandOn)
+open PeriodicThirdDifferenceConstancy (band_congr)
 open PolynomialBisection (zle_add zle_congr)
 open ConciseIPRA.PTm (zero succ)
 open LeanProofs.IPRA.PTm (num)
@@ -84,7 +85,7 @@ private theorem sum_window (b : ZB) (x K L E : PTm n)
   have hb := block_band b (sh x) (sh L) (sh E) i (width (sh x)) hs he
   have e := accumulate_at (Γ := Δ) b (sh x) i
   have result : Δ ⊢[PRAAx] PeriodicThirdDifferenceConstancy.band ((accumulate b).val i (sh x))
-      (width (sh x)*sh E) := .andI (zle_congr rfl e.symm hb.andE₁) (zle_congr e.symm rfl hb.andE₂)
+      (width (sh x)*sh E) := band_congr e.symm (.eqRefl _) hb
   simpa only [Δ,i,sh,Syn.shift,LeanProofs.IPRA.PTm.subst_mul,subst_width] using result
 
 private theorem difference_window (b : ZB) (x K L E : PTm n)

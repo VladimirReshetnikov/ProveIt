@@ -29,9 +29,9 @@ open GaussianRationalMetric (distanceBounded bounded_difference_iff)
 open GaussianRootAlgebra (sub re_sub re_scale)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_congr zabs_sq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open PolynomialBisection (zle_add zle_congr zle_scale_cancel zle_trans)
+open PolynomialBisection (zle_congr zle_trans)
 open SignedGridStepBounds (neg_order)
-open PeriodicThirdDifferenceConstancy (band)
+open PeriodicThirdDifferenceConstancy (band band_add band_congr band_scale_cancel)
 open ConciseIPRA.PTm (zero)
 open Syn
 open scoped Fm
@@ -120,27 +120,12 @@ private theorem original_coordinate_error (q : PTm n) (a : ZT n) (S E : PTm n)
 theorem near_lattice (q : PTm n) (a : ZT n) (S E : PTm n)
     (hS : Γ ⊢[PRAAx] le one S) (h : Γ ⊢[PRAAx] distanceBounded q (realPoint a S) E S) :
     Γ ⊢[PRAAx] band (rounded q S-a) (E+one) := by
-  let D := rawDen q
-  let d := rounded q S-a
   have rb := rounding_band (Γ := Γ) q S
   have cb := original_coordinate_error q a S E hS h
-  have sum := zle_add rb.andE₁ cb.andE₁
-  have sum' := zle_add rb.andE₂ cb.andE₂
-  have low : Γ ⊢[PRAAx] zle (ZT.ofNat D*(-ZT.ofNat (E+one))) (ZT.ofNat D*d) := by
-    refine zle_congr ?_ ?_ sum
-    · simp only [ZT.toZ_add,ZT.toZ_neg,ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_add,map_add,Q.mk_mul,map_mul]
-      ipra_simps
-      ring
-    · simp only [clearedError,d,ZT.toZ_add,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_ofNat]
-      ring
-  have high : Γ ⊢[PRAAx] zle (ZT.ofNat D*d) (ZT.ofNat D*ZT.ofNat (E+one)) := by
-    refine zle_congr ?_ ?_ sum'
-    · simp only [clearedError,d,ZT.toZ_add,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_ofNat]
-      ring
-    · simp only [ZT.toZ_add,ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_add,map_add,Q.mk_mul,map_mul]
-      ipra_simps
-      ring
-  exact .andI (zle_scale_cancel (raw_den_positive q) low) (zle_scale_cancel (raw_den_positive q) high)
+  apply band_scale_cancel (raw_den_positive q)
+  refine band_congr ?_ (by ipra_ring) (band_add rb cb)
+  simp only [clearedError,ZT.toZ_add,ZT.toZ_sub,ZT.toZ_mul,ZT.toZ_ofNat]
+  ring
 
 theorem near_lattice_ratio (q : PTm n) (a : ZT n) (S A B E : PTm n)
     (hS : Γ ⊢[PRAAx] le one S) (hB : Γ ⊢[PRAAx] le one B)
@@ -195,8 +180,7 @@ theorem wrapped_near_lattice (f : PTm 2) (x S i N E : PTm n) (a : ZT n)
       (PeriodicThirdDifferenceModulo.data (data x S) N)-a) (E+one) := by
   have e := ZT.toZ_eq (wrapped_sample_mod (Γ := Γ) f x S i N)
   have b := near_lattice _ a S E hS h
-  exact .andI (zle_congr rfl (by simp only [ZT.toZ_sub,e]) b.andE₁)
-    (zle_congr (by simp only [ZT.toZ_sub,e]) rfl b.andE₂)
+  exact band_congr (by simp only [ZT.toZ_sub,e]) (.eqRefl _) b
 
 theorem actual_gaussian_signed_rounding_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5
     (let q := var 0

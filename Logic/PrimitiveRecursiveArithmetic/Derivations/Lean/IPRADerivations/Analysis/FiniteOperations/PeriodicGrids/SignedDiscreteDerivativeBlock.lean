@@ -16,8 +16,8 @@ namespace LeanProofs.IPRA.Analysis.SignedDiscreteDerivativeBlock
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open SignedGridStepBounds (difference difference_value read_index)
-open PeriodicThirdDifferenceConstancy (band)
-open PolynomialBisection (zle_add zle_congr zle_refl)
+open PeriodicThirdDifferenceConstancy (band band_add band_congr subst_band)
+open PolynomialBisection (zle_congr zle_refl)
 open ConciseIPRA.PTm (zero succ)
 open Syn
 open scoped Fm
@@ -56,10 +56,6 @@ theorem block_succ (b : ZB) (x i M : PTm n) :
     ZT.toZ Γ (block b x i (succ M)) = ZT.toZ Γ (block b x i M)+ZT.toZ Γ (b.val (i+M) x) := by
   rw [block, ZB.toZ_sum_succ, slice_at]
   rfl
-
-@[simp] private theorem subst_band {m : ℕ} (σ : Fin n → PTm m) (z : ZT n) (E : PTm n) :
-    (band z E).subst σ = band (z.subst σ) (Syn.subst σ E) := by
-  simp [band]
 
 def stepError (b g : ZB) (x D i : PTm n) : ZT n :=
   ZT.ofNat D*(difference b).val i x-g.val i x
@@ -126,13 +122,7 @@ private theorem law_succ (b g : ZB) (x L i D E M : PTm n)
     le_congr (add_succ i M) (.eqRefl _) Prf.hyp0
   have old := Prf.impE ih.wk (le_of_lt step)
   have edge := step_at b g x L D E (i+M) h.wk step
-  have low := zle_add old.andE₁ edge.andE₁
-  have high := zle_add old.andE₂ edge.andE₂
-  exact .andI
-    (zle_congr (by simp only [ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat]; ipra_simps; ring)
-      (by rw [ZT.toZ_add,residual_succ]) low)
-    (zle_congr (by rw [ZT.toZ_add,residual_succ])
-      (by simp only [ZT.toZ_add,ZT.toZ_ofNat]; ipra_simps; ring) high)
+  exact band_congr (by rw [ZT.toZ_add,residual_succ]) (by ipra_ring) (band_add old edge)
 
 theorem residual_bound (b g : ZB) (x L i D E M : PTm n)
     (h : Γ ⊢[PRAAx] source b g x L D E) (hm : Γ ⊢[PRAAx] le (i+M) L) :

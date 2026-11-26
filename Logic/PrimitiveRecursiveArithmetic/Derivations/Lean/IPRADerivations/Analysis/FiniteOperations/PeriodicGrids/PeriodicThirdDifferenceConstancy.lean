@@ -15,7 +15,7 @@ set_option maxHeartbeats 1700000
 namespace LeanProofs.IPRA.Analysis.PeriodicThirdDifferenceConstancy
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
-open PolynomialBisection (slack zle_add zle_antisym zle_congr zle_refl zle_scale_cancel zle_trans)
+open PolynomialBisection (slack zle_add zle_antisym zle_congr zle_refl zle_scale zle_scale_cancel zle_trans)
 open SignedGridStepBounds
   (difference difference_value liftZT lowerSteps upperSteps lower_span upper_span neg_order read_index)
 open ConciseIPRA.PTm (zero succ)
@@ -50,6 +50,40 @@ def periodic (b : ZB) (x N : PTm n) : Fm PTm n :=
     (periodic b x N).subst σ = periodic b (Syn.subst σ x) (Syn.subst σ N) := by simp [periodic]
 
 def band (u : ZT n) (D : PTm n) : Fm PTm n := zle (-ZT.ofNat D) u ⋏ zle u (ZT.ofNat D)
+
+@[simp] theorem subst_band {m : ℕ} (σ : Fin n → PTm m) (a : ZT n) (A : PTm n) :
+    (band a A).subst σ = band (a.subst σ) (Syn.subst σ A) := by
+  simp [band]
+
+theorem band_congr {a b : ZT n} {A B : PTm n}
+    (hab : ZT.toZ Γ a = ZT.toZ Γ b) (hAB : Γ ⊢[PRAAx] A ≐ B)
+    (h : Γ ⊢[PRAAx] band a A) : Γ ⊢[PRAAx] band b B :=
+  .andI (zle_congr (by simp only [ZT.toZ_neg,ZT.toZ_ofNat,natEq hAB]) hab h.andE₁)
+    (zle_congr hab (by simp only [ZT.toZ_ofNat,natEq hAB]) h.andE₂)
+
+theorem band_add {a b : ZT n} {A B : PTm n}
+    (ha : Γ ⊢[PRAAx] band a A) (hb : Γ ⊢[PRAAx] band b B) :
+    Γ ⊢[PRAAx] band (a+b) (A+B) :=
+  .andI (zle_congr (by simp only [ZT.toZ_add,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_add,map_add]; ring)
+    rfl (zle_add ha.andE₁ hb.andE₁))
+    (zle_congr rfl (by simp only [ZT.toZ_add,ZT.toZ_ofNat,Q.mk_add,map_add]) (zle_add ha.andE₂ hb.andE₂))
+
+theorem band_neg {a : ZT n} {A : PTm n} (h : Γ ⊢[PRAAx] band a A) :
+    Γ ⊢[PRAAx] band (-a) A :=
+  .andI (neg_order h.andE₂) (zle_congr rfl (by simp only [ZT.toZ_neg,neg_neg]) (neg_order h.andE₁))
+
+theorem band_scale (K : PTm n) {a : ZT n} {A : PTm n} (h : Γ ⊢[PRAAx] band a A) :
+    Γ ⊢[PRAAx] band (ZT.ofNat K*a) (K*A) :=
+  .andI (zle_congr (by simp only [ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_mul,map_mul]; ring)
+    rfl (zle_scale K h.andE₁))
+    (zle_congr rfl (by simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul]) (zle_scale K h.andE₂))
+
+theorem band_scale_cancel {K A : PTm n} {a : ZT n} (hK : Γ ⊢[PRAAx] le one K)
+    (h : Γ ⊢[PRAAx] band (ZT.ofNat K*a) (K*A)) : Γ ⊢[PRAAx] band a A :=
+  .andI (zle_scale_cancel hK (zle_congr
+    (by simp only [ZT.toZ_neg,ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul]; ring) rfl h.andE₁))
+    (zle_scale_cancel hK (zle_congr rfl
+      (by simp only [ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul]) h.andE₂))
 
 def derivativeBand (b : ZB) (x N D : PTm n) : Fm PTm n :=
   .all (lt (var 0) (Syn.shift N) ⟶ band ((difference b).val (var 0) (Syn.shift x)) (Syn.shift D))

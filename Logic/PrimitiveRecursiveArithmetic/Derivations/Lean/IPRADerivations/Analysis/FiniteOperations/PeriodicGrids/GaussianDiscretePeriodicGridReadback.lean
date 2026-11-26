@@ -26,8 +26,7 @@ open GaussianRationalHorner (positive_product)
 open SignedDiscreteDerivativeOperators (width)
 open SignedCubicTaylorGrid (combination)
 open PeriodicThirdDifferenceModulo (wrapped third thirdLower third_value)
-open PeriodicThirdDifferenceConstancy (band cubicBudget)
-open PolynomialBisection (zle_congr zle_scale_cancel)
+open PeriodicThirdDifferenceConstancy (band band_congr band_scale_cancel cubicBudget)
 open ConciseIPRA.PTm (zero succ)
 open LeanProofs.IPRA.PTm (num)
 open Syn
@@ -108,17 +107,9 @@ theorem projected_distance_of_third_lower (f : PTm 2) (x N i E : PTm n)
       ZT.toZ Γ (ZT.ofNat C*d) := by
     simp only [ZT.toZ_sub,ZT.toZ_mul,read_at,d,C,S,q,r]
     ring
-  have lower : Γ ⊢[PRAAx] zle (ZT.ofNat C*(-ZT.ofNat (num 4*E))) (ZT.ofNat C*d) :=
-    zle_congr (by
-      simp only [cubicBudget,C,factor,ZT.toZ_mul,ZT.toZ_neg,ZT.toZ_ofNat,Q.mk_mul,map_mul]
-      ipra_simps
-      ring) read span.andE₁
-  have upper : Γ ⊢[PRAAx] zle (ZT.ofNat C*d) (ZT.ofNat C*ZT.ofNat (num 4*E)) :=
-    zle_congr read (by
-      simp only [cubicBudget,C,factor,ZT.toZ_mul,ZT.toZ_ofNat,Q.mk_mul,map_mul]
-      ipra_simps
-      ring) span.andE₂
-  exact projected_distance q r S (num 4*E) hS (.andI (zle_scale_cancel pos lower) (zle_scale_cancel pos upper))
+  apply projected_distance q r S (num 4*E) hS
+  apply band_scale_cancel pos
+  exact band_congr read (by unfold cubicBudget C factor; ipra_ring) span
 
 theorem actual_scaled_periodic_grid_projected_distance_closed (f : PTm 2) :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4
