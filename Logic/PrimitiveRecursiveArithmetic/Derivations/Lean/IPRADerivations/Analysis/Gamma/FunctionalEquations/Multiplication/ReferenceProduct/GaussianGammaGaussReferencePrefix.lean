@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianGammaGaussReferencePrefix
 
 open_ipra
-open GaussianGammaGaussReferenceProduct (rowF rowRadius row_at row_bound_at row_distance_at row_bounds row_regular nameF)
+open GaussianGammaGaussReferenceProduct (rowF rowRadius row_at row_bounds row_regular nameF)
 open GaussianGammaGaussReflectionDomain (referenceData)
 open GaussianGammaGaussReference (reference_source)
 open GaussianGammaReciprocalInverse (gammaF gammaHeight original_gamma_inverse)
@@ -25,7 +25,7 @@ open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNameRingLaws (oneF one_fast multiply_one)
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_trans diagonal_at cross_to_diagonal)
-open GaussianNamedFiniteProduct (sample sample_succ sample_bound sample_canonical rowBoundsAt rowDistance)
+open GaussianNamedFiniteProduct (sample sample_succ sample_bound sample_canonical)
 open GaussianNamedFiniteProductName (rowBounds rowRegular bounds_at raw_regular rawF rawData raw_at)
 open GaussianValueNormalizerExtensionality (rawDiagonal normalized_names_equivalent)
 open GaussianEuclideanDistanceName (pointCN)
@@ -74,25 +74,14 @@ theorem terminal_at (p N : PTm n) :
     (diagonal_at _ _ _ _ p (cross_to_diagonal _ _ _ _ h))
 
 theorem prefix_bounds (N : PTm n) :
-    Γ ⊢[PRAAx] rowBounds rowF N (rowRadius (succ N)) (succ N) := by
-  refine .allI (.allI (.impI ?_))
-  let K := Syn.shift (Syn.shift N)
-  let i : PTm (n+2) := var 0
-  let p : PTm (n+2) := var 1
-  let Δ := lt i K :: (Γ.map Fm.shift).map Fm.shift
-  have hi : Δ ⊢[PRAAx] lt i (succ K) := lt_of_lt_of_le Prf.hyp0 (le_succ_self _)
-  simpa [rowBounds,rowBoundsAt,Syn.shift,K,p,i,Δ,one] using row_bound_at p i (succ K) hi
+    Γ ⊢[PRAAx] rowBounds rowF N (rowRadius (succ N)) (succ N) :=
+  GaussianNamedFiniteProductName.row_bounds_mono rowF N (succ N) _ _ _ (row_bounds (succ N))
+    (le_succ_self N) (le_refl _)
 
 theorem prefix_regular (N : PTm n) :
-    Γ ⊢[PRAAx] rowRegular rowF N one (succ N) := by
-  refine .allI (.allI (.allI (.impI ?_)))
-  let K := Syn.shift (Syn.shift (Syn.shift N))
-  let i : PTm (n+3) := var 0
-  let p : PTm (n+3) := var 2
-  let q : PTm (n+3) := var 1
-  let Δ := lt i K :: ((Γ.map Fm.shift).map Fm.shift).map Fm.shift
-  have hi : Δ ⊢[PRAAx] lt i (succ K) := lt_of_lt_of_le Prf.hyp0 (le_succ_self _)
-  simpa [rowRegular,rowDistance,Syn.shift,K,p,q,i,Δ,one] using row_distance_at p q i (succ K) hi
+    Γ ⊢[PRAAx] rowRegular rowF N one (succ N) :=
+  GaussianNamedFiniteProductName.row_regular_restrict rowF N (succ N) _ _ (row_regular (succ N))
+    (le_succ_self N)
 
 theorem name_regular (N : PTm n) : Γ ⊢[PRAAx] pointCN nameF (data N) :=
   GaussianNamedFiniteProductName.name_regular rowF N (rowRadius (succ N)) one (succ N) (prefix_bounds N) (prefix_regular N)

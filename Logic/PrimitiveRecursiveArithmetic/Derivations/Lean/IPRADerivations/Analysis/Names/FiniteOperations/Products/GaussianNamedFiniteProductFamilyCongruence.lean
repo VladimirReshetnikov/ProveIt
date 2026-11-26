@@ -14,10 +14,10 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductFamilyCongruence
 
 open_ipra
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
-open GaussianNamedFiniteProduct (rowBoundsAt rowDistance row_bound_at amplification)
+open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianNamedFiniteProduct (rowDistance amplification)
 open GaussianNamedFiniteProductFamily (rowF row_at regularRows radius productData family_bounds family_regular)
-open GaussianNamedFiniteProductName (nameF rowBounds cofinalRows cofinal_raw bounds_at raw_regular)
+open GaussianNamedFiniteProductName (nameF rowBounds cofinalRows cofinal_raw raw_regular)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product)
@@ -56,18 +56,8 @@ theorem row_rate (f g : PR 2) (t u : PTm 2) (N x y : PTm n) (h : Γ ⊢[PRAAx] e
     distance_congr (row_at f t p i (sh x)).eqSymm (row_at g u p i (sh y)).eqSymm (.eqRefl _) (.eqRefl _) rate
 
 theorem row_bounds_widen (f : PR 3) (N R S x : PTm n) (h : Γ ⊢[PRAAx] rowBounds f N R x)
-    (hr : Γ ⊢[PRAAx] le R S) : Γ ⊢[PRAAx] rowBounds f N S x := by
-  refine .allI (.allI (.impI ?_))
-  let sh := fun t : PTm n => Syn.shift (Syn.shift t)
-  let Δ := lt (var 0) (sh N) :: (Γ.map Fm.shift).map Fm.shift
-  let p : PTm (n+2) := var 1
-  let i : PTm (n+2) := var 0
-  have hs : Δ ⊢[PRAAx] rowBounds f (sh N) (sh R) (sh x) := by
-    simpa [Fm.shift,Syn.shift,sh,Δ] using h.shift.shift.wk
-  have hR : Δ ⊢[PRAAx] le (sh R) (sh S) := by simpa [Fm.shift,Syn.shift,sh,Δ] using hr.shift.shift.wk
-  have b := row_bound_at f p (sh N) (sh R) (sh x) i (bounds_at f p (sh N) (sh R) (sh x) hs) Prf.hyp0
-  simpa [rowBounds,rowBoundsAt,Syn.shift,sh,Δ,p,i] using
-    bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (mul_le_mul_right one hR) b
+    (hr : Γ ⊢[PRAAx] le R S) : Γ ⊢[PRAAx] rowBounds f N S x :=
+  GaussianNamedFiniteProductName.row_bounds_mono f N N R S x h (le_refl N) hr
 
 theorem family_product_cross (f g : PR 2) (t u : PTm 2) (N x y : PTm n)
     (hf : Γ ⊢[PRAAx] regularRows f t N x) (hg : Γ ⊢[PRAAx] regularRows g u N y)

@@ -18,12 +18,11 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaEulerDenominatorGrouping (shiftedNumerator)
 open GaussianGammaGaussShiftedProduct
-  (source rowF rowData rowRadius rowValue row_at row_bound_at row_distance_at row_source nameF data)
+  (source rowF rowData rowRadius rowValue row_at row_source nameF data)
 open GaussianGammaReciprocalInverse (gammaF gammaData gamma_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
 open GaussianNameRingLaws (oneF one_fast multiply_one_left)
-open GaussianNamedFiniteProduct (rowBoundsAt rowDistance)
 open GaussianNamedFiniteProductAppend (append_cross empty_cross lastRow)
 open GaussianNamedFiniteProductName (rowBounds rowRegular)
 
@@ -50,31 +49,15 @@ theorem gamma_row_regular (r z R B m a d : PTm n) (hs : Γ ⊢[PRAAx] source z R
 
 private theorem prefix_bounds (K z R B m a d : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B m a d) (hK : Γ ⊢[PRAAx] le K m) :
-    Γ ⊢[PRAAx] rowBounds rowF K (rowRadius R m d) (rowData z R B m d) := by
-  refine .allI (.allI (.impI ?_))
-  let sh (t : PTm n) := Syn.shift (Syn.shift t)
-  let Δ := lt (var 0) (sh K) :: (Γ.map Fm.shift).map Fm.shift
-  have hs' : Δ ⊢[PRAAx] source (sh z) (sh R) (sh B) (sh m) (sh a) (sh d) := by
-    simpa [Δ,sh,Fm.shift,Syn.shift] using hs.shift.shift.wk
-  have hK' : Δ ⊢[PRAAx] le (sh K) (sh m) := by
-    simpa [Δ,sh,Fm.shift,Syn.shift] using hK.shift.shift.wk
-  have hr : Δ ⊢[PRAAx] lt (var 0) (sh m) := le_trans Prf.hyp0 hK'
-  simpa [Δ,sh,rowBounds,rowBoundsAt,Syn.shift] using
-    row_bound_at (var 1) (var 0) (sh z) (sh R) (sh B) (sh m) (sh a) (sh d) hs' hr
+    Γ ⊢[PRAAx] rowBounds rowF K (rowRadius R m d) (rowData z R B m d) :=
+  GaussianNamedFiniteProductName.row_bounds_mono rowF K m _ _ _ (GaussianGammaGaussShiftedProduct.row_bounds z R B m a d hs)
+    hK (le_refl _)
 
 private theorem prefix_row_regular (K z R B m a d : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B m a d) (hK : Γ ⊢[PRAAx] le K m) :
-    Γ ⊢[PRAAx] rowRegular rowF K one (rowData z R B m d) := by
-  refine .allI (.allI (.allI (.impI ?_)))
-  let sh (t : PTm n) := Syn.shift (Syn.shift (Syn.shift t))
-  let Δ := lt (var 0) (sh K) :: ((Γ.map Fm.shift).map Fm.shift).map Fm.shift
-  have hs' : Δ ⊢[PRAAx] source (sh z) (sh R) (sh B) (sh m) (sh a) (sh d) := by
-    simpa [Δ,sh,Fm.shift,Syn.shift] using hs.shift.shift.shift.wk
-  have hK' : Δ ⊢[PRAAx] le (sh K) (sh m) := by
-    simpa [Δ,sh,Fm.shift,Syn.shift] using hK.shift.shift.shift.wk
-  have hr : Δ ⊢[PRAAx] lt (var 0) (sh m) := le_trans Prf.hyp0 hK'
-  simpa [Δ,sh,rowRegular,rowDistance,Syn.shift,one] using
-    row_distance_at (var 2) (var 1) (var 0) (sh z) (sh R) (sh B) (sh m) (sh a) (sh d) hs' hr
+    Γ ⊢[PRAAx] rowRegular rowF K one (rowData z R B m d) :=
+  GaussianNamedFiniteProductName.row_regular_restrict rowF K m _ _
+    (GaussianGammaGaussShiftedProduct.row_regular z R B m a d hs) hK
 
 theorem prefix_regular (K z R B m a d : PTm n)
     (hs : Γ ⊢[PRAAx] source z R B m a d) (hK : Γ ⊢[PRAAx] le K m) :

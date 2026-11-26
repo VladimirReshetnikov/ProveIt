@@ -15,6 +15,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAlgebra
 
 open_ipra
+open GaussianNamedFiniteProductName (shift_row_bounds shift_row_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyRawF multiplyModulus multiply_raw_at
   multiply_regular product_distance)
@@ -89,10 +90,8 @@ theorem product_row_bounds (f g : PR 3) (N R S x y : PTm n) (hf : Γ ⊢[PRAAx] 
   refine .allI ?_
   let sh := fun t : PTm n => Syn.shift t
   let Δ := Γ.map Fm.shift
-  have hF : Δ ⊢[PRAAx] rowBounds f (sh N) (sh R) (sh x) := by
-    simpa [Fm.shift,Syn.shift,sh,Δ] using hf.shift
-  have hG : Δ ⊢[PRAAx] rowBounds g (sh N) (sh S) (sh y) := by
-    simpa [Fm.shift,Syn.shift,sh,Δ] using hg.shift
+  have hF := shift_row_bounds hf
+  have hG := shift_row_bounds hg
   simpa [rowBounds,Syn.shift,sh,Δ] using bounded_rows_at f g (var 0) (sh N) (sh R) (sh S) (sh x) (sh y)
     (bounds_at _ _ _ _ _ hF) (bounds_at _ _ _ _ _ hG)
 
@@ -133,14 +132,10 @@ theorem product_row_regular (f g : PR 3) (N R S L M x y : PTm n) (hf : Γ ⊢[PR
   let q : PTm (n+2) := var 0
   let D := unit p*unit q
   let c := unit p+unit q
-  have hF : Δ ⊢[PRAAx] rowBounds f (sh N) (sh R) (sh x) := by
-    simpa [Fm.shift,Syn.shift,sh,Δ] using hf.shift.shift
-  have hG : Δ ⊢[PRAAx] rowBounds g (sh N) (sh S) (sh y) := by
-    simpa [Fm.shift,Syn.shift,sh,Δ] using hg.shift.shift
-  have dF : Δ ⊢[PRAAx] rowRegular f (sh N) (sh L) (sh x) := by
-    simpa [Fm.shift,Syn.shift,sh,Δ] using df.shift.shift
-  have dG : Δ ⊢[PRAAx] rowRegular g (sh N) (sh M) (sh y) := by
-    simpa [Fm.shift,Syn.shift,sh,Δ] using dg.shift.shift
+  have hF := shift_row_bounds (shift_row_bounds hf)
+  have hG := shift_row_bounds (shift_row_bounds hg)
+  have dF := shift_row_regular (shift_row_regular df)
+  have dG := shift_row_regular (shift_row_regular dg)
   have d := product_rows_distance f g p q (sh N) (sh R) (sh S) (sh L*c) (sh M*c) D
     ((sh L*sh S+sh R*sh M)*c) (sh x) (sh y)
     (positive_product _ _ (unit_positive p) (unit_positive q)) (by ipra_ring)

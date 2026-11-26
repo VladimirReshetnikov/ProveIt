@@ -16,7 +16,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductName
 
 open_ipra
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedFiniteProduct (sample radius amplification rowBoundsAt rowDistance sample_canonical
@@ -61,6 +61,14 @@ ipra_subst data
 
 ipra_subst clock
 
+theorem shift_row_bounds {f : PR 3} {N R x : PTm n} (h : Γ ⊢[PRAAx] rowBounds f N R x) :
+    Γ.map Fm.shift ⊢[PRAAx] rowBounds f (Syn.shift N) (Syn.shift R) (Syn.shift x) := by
+  simpa only [Fm.shift, subst_rowBounds, Syn.shift] using h.shift
+
+theorem shift_row_regular {f : PR 3} {N L x : PTm n} (h : Γ ⊢[PRAAx] rowRegular f N L x) :
+    Γ.map Fm.shift ⊢[PRAAx] rowRegular f (Syn.shift N) (Syn.shift L) (Syn.shift x) := by
+  simpa only [Fm.shift, subst_rowRegular, Syn.shift] using h.shift
+
 theorem bounds_at (f : PR 3) (p N R x : PTm n) (h : Γ ⊢[PRAAx] rowBounds f N R x) : Γ ⊢[PRAAx] rowBoundsAt f p N R x :=
   by simpa [rowBounds] using h.allE p
 
@@ -73,6 +81,22 @@ theorem regular_rows_at (f : PR 3) (p q N L x : PTm n) (h : Γ ⊢[PRAAx] rowReg
       Syn.up_succ,subst_up_shift',Syn.inst_zero,Syn.inst_succ,Syn.subst_inst_shift,Syn.shift_var] using h.allE p
   simpa only [GaussianNamedFiniteProduct.subst_rowDistance,GaussianCoefficientNameBounds.subst_unit,PTm.subst_add,PTm.subst_mul,
     Syn.subst_var,Syn.inst_zero,Syn.inst_succ,Syn.subst_inst_shift] using atP.allE q
+
+/-- Bound a shorter prefix by the same radius or by a larger one. -/
+theorem row_bounds_mono (f : PR 3) (K N R S x : PTm n) (h : Γ ⊢[PRAAx] rowBounds f N R x)
+    (hK : Γ ⊢[PRAAx] le K N) (hR : Γ ⊢[PRAAx] le R S) : Γ ⊢[PRAAx] rowBounds f K S x := by
+  refine .allI (.allI (.impI ?_))
+  have short := Order.shift_le (Order.shift_le hK)
+  have wider := Order.shift_le (Order.shift_le hR)
+  have b := Prf.impE h.allOpen.allOpen.wk (lt_of_lt_of_le Prf.hyp0 short.wk)
+  exact bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (mul_le_mul_right one wider.wk) b
+
+/-- The row observation rate also holds for every shorter prefix. -/
+theorem row_regular_restrict (f : PR 3) (K N L x : PTm n) (h : Γ ⊢[PRAAx] rowRegular f N L x)
+    (hK : Γ ⊢[PRAAx] le K N) : Γ ⊢[PRAAx] rowRegular f K L x := by
+  refine .allI (.allI (.allI (.impI ?_)))
+  exact .impE h.allOpen.allOpen.allOpen.wk
+    (lt_of_lt_of_le Prf.hyp0 (Order.shift_le (Order.shift_le (Order.shift_le hK))).wk)
 
 theorem cofinal_rows_at (f g : PR 3) (p N C x y : PTm n) (h : Γ ⊢[PRAAx] cofinalRows f g N C x y) :
     Γ ⊢[PRAAx] rowDistance f g p p N C (unit p) x y := by
@@ -116,8 +140,8 @@ theorem raw_regular (f : PR 3) (N R L x : PTm n) (hb : Γ ⊢[PRAAx] rowBounds f
   let R' := lift R
   let L' := lift L
   let X := lift x
-  have b : Δ ⊢[PRAAx] rowBounds f N' R' X := by simpa [Δ,N',R',X,lift,Fm.shift,Syn.shift] using hb.shift.shift
-  have r : Δ ⊢[PRAAx] rowRegular f N' L' X := by simpa [Δ,N',L',X,lift,Fm.shift,Syn.shift] using hr.shift.shift
+  have b := shift_row_bounds (shift_row_bounds hb)
+  have r := shift_row_regular (shift_row_regular hr)
   have d := sample_distance f f p q N' R' (L'*(unit p+unit q)) (unit p*unit q) X X
     (positive_product _ _ (unit_positive p) (unit_positive q)) (bounds_at f p N' R' X b) (bounds_at f q N' R' X b)
     (regular_rows_at f p q N' L' X r)

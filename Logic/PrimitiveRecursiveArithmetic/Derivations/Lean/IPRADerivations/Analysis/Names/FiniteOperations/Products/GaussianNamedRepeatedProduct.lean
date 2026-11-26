@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductName
+import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamily
 
 /-!
 # Finite repeated products of a named Gaussian value
@@ -14,12 +14,9 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRepeatedProduct
 
 open_ipra
-open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianNameEquivalence (point_at)
-open GaussianNamedFiniteProduct (sample sample_zero sample_succ rowBoundsAt rowDistance)
+open GaussianNamedFiniteProduct (sample sample_zero sample_succ rowBoundsAt)
 open GaussianNamedFiniteProductName (rowBounds rowRegular)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalReciprocal (power power_zero power_succ bound_congr)
 open GaussianRationalMetric (bounded)
 open GaussianRationalSyntheticDivision (qmul_congr)
@@ -65,15 +62,9 @@ theorem repeated_row_bounds (f : PR 2) (N R x : PTm n) (h : Γ ⊢[PRAAx] bounds
 
 theorem repeated_row_regular (f : PR 2) (N x : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] rowRegular (repeatF f) N one x := by
-  refine .allI (.allI (.allI (.impI ?_)))
-  let sh := fun t : PTm n => Syn.shift (Syn.shift (Syn.shift t))
-  let Δ := lt (var 0) (sh N) :: ((Γ.map Fm.shift).map Fm.shift).map Fm.shift
-  have hf : Δ ⊢[PRAAx] pointCN f (sh x) := by
-    simpa [Fm.shift,Syn.shift,Δ,sh] using h.shift.shift.shift.wk
-  have err := point_at f (sh x) (var 2) (var 1) hf
-  simpa [rowRegular,rowDistance,Syn.shift,Δ,sh,one] using
-    distance_congr (row_at f (var 2) (var 0) (sh x)).eqSymm (row_at f (var 1) (var 0) (sh x)).eqSymm
-      (one_mul (unit (var 2)+unit (var 1))).eqSymm (.eqRefl _) err
+  have rows : Γ ⊢[PRAAx] GaussianNamedFiniteProductFamily.regularRows f (var 1) N x :=
+    .allI (.impI (GaussianEuclideanDistanceName.shift_pointCN h).wk)
+  exact GaussianNamedFiniteProductFamily.family_regular f (var 1) N x rows
 
 theorem actual_named_repeated_product_sample_closed (f : PR 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (repeatLaw f (var 0) (var 1) (var 2)) :=
