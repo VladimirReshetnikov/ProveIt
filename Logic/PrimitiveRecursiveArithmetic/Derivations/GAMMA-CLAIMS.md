@@ -3011,3 +3011,6 @@ The named row difference is the literal linear term plus a named relative cubic 
 
 The two original finite logarithms differ from the input increment times the literal first-derivative sum by the exact finite reciprocal-square bound. The actual derivative prefix and its cofinal sampler also have an explicit independent-clock rate.
 [GaussianBarnesCanonicalDerivativeInterval](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeInterval.lean), [GaussianBarnesCanonicalDerivativeCofinalRate](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeCofinalRate.lean)
+
+The literal shifted finite head times the plain product equals the original head times the final translated power and the exact harmonic exponential correction. The identity admits zero factors and separate disk certificates.
+[GaussianBarnesCanonicalBaseProductShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalBaseProductShift.lean), [GaussianNamedFiniteConstantFolds](Lean/IPRADerivations/Analysis/GaussianNamedFiniteConstantFolds.lean), [GaussianBarnesCanonicalHeadExponentialFactors](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadExponentialFactors.lean), [GaussianBarnesCanonicalHeadShift](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadShift.lean)
