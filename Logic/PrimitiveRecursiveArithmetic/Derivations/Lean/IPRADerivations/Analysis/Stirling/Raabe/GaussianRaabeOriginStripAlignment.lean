@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeLogGammaAlignedTime
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeStripGridRecurrence
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeUnitStripBound
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactAlignedSplit
 
 /-!
 # Align the two truncated Raabe strips with the original [1,2] grid

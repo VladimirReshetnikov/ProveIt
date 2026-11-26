@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingFiniteBounds
+import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingFiniteBounds
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalUpperAddition
 
 /-!

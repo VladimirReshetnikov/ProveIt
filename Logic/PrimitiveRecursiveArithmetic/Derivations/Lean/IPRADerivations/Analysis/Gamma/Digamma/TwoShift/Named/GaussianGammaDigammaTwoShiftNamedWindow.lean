@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Names.Rates.GaussianNamedFrozenScalarOrder
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftWindowBuffer
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.GaussianNamedGammaHalfShift
-import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureSquareCells
+import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquareCells
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
 
 /-!

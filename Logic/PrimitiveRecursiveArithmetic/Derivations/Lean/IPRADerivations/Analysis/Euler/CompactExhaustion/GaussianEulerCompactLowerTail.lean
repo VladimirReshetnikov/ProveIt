@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailRowBound
-import IPRADerivations.Analysis.FiniteOperations.GaussianUniformFiniteSumBound
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianUniformFiniteSumBound
 
 /-!
 # Finite lower-tail bound for the original Euler quadrature

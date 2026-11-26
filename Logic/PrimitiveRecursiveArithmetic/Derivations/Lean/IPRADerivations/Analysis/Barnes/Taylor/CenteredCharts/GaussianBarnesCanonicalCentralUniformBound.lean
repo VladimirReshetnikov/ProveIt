@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Growth.GaussianBarnesCanonicalDiskBound
 import IPRADerivations.Analysis.Barnes.GaussianBarnesCanonicalSingleExponential
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalCenteredExponentialShift
-import IPRADerivations.Analysis.FiniteOperations.GaussianUniformFiniteSumBound
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianUniformFiniteSumBound
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedBoundedSumObservation
 
 /-!

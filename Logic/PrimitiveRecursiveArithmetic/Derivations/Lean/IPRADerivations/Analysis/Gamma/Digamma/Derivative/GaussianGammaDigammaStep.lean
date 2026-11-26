@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogShift
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogShift
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingRationalTelescopers
 
 /-!

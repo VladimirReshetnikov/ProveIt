@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaPosit
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianNamedPositiveLogarithmRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogarithm
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsOrder
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaStep
 

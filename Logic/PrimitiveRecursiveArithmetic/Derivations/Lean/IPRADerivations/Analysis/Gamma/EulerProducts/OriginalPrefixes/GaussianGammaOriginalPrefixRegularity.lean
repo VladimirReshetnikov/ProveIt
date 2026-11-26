@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.OriginalPrefixes.GaussianGammaOriginalPrefixCoefficientVariation
-import IPRADerivations.Analysis.FiniteOperations.GaussianFiniteSumL1Variation
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianFiniteSumL1Variation
 
 /-!
 # Actual original C19 prefix-evaluation regularity

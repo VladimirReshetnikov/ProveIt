@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.GaussianBarnesCanonicalIntegerLogarithm
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingCubicRate
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogShift
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogShift
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 

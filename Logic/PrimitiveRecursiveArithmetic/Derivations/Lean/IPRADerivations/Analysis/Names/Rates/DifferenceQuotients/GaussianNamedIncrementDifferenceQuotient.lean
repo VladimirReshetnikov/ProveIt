@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
-import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 
 /-!
 # An original divided difference with a genuinely named increment

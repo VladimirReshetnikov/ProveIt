@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannAdditivity
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannAdditivity
 
 /-!
 # Actual compact samples at equal represented times

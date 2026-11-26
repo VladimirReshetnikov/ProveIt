@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementAffine
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementConvexity
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogShift
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogShift
 
 /-!
 # Finite observations of the log-gamma chord slopes

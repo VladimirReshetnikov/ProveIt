@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedThreeSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactAlignedThreeSplit
 import IPRADerivations.Analysis.Names.Rates.GaussianCompactModulusAlignedTime
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpAlignedFourSplit
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity

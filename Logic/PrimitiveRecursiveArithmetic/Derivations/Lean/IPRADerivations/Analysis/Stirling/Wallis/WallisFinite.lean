@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Wallis.WallisRecurrence
-import IPRADerivations.Analysis.Integration.BaselRiemann
+import IPRADerivations.Analysis.Integration.Quadrature.BaselRiemann
 
 /-!
 # The finite Wallis inequality

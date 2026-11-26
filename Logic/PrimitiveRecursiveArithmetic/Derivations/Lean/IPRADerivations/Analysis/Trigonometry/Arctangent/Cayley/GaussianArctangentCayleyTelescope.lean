@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyExponentialStep
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentExponentialPrefix
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
-import IPRADerivations.Analysis.Series.GaussianRationalParameterTelescope
+import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
 
 /-!
 # Finite exponential transport along the native arctangent grid

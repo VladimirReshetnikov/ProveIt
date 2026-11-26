@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBounds
-import IPRADerivations.Analysis.Stirling.GaussianStirlingConstantIdentification
+import IPRADerivations.Analysis.Stirling.Constants.GaussianStirlingConstantIdentification
 
 /-!
 # Finite d-sums and the named Stirling remainder

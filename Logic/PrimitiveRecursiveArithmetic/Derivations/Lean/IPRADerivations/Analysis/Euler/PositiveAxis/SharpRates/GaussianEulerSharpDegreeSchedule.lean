@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
-import IPRADerivations.Analysis.Integration.Moments.GaussianMonomialDecayQuadrature
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannSplit
+import IPRADerivations.Analysis.Integration.Moments.Decay.GaussianMonomialDecayQuadrature
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannSplit
 
 /-!
 # Literal finite-degree schedule for the sharp Euler integral estimate

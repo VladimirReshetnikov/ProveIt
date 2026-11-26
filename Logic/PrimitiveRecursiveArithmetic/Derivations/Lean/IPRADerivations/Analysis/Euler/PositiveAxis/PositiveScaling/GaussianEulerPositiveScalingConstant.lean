@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsParameterShift
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
-import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 
 /-!
 # The actual scaling constant alpha^z and its original inverse

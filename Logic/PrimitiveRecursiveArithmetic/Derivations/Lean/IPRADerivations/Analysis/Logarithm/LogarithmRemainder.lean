@@ -1,5 +1,5 @@
 import IPRADerivations.Core.MultiSums
-import IPRADerivations.Analysis.FiniteOperations.Products
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.Products
 import IPRADerivations.Core.LinearCombination
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailPartition
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannSplit
 
 /-!
 # Comparing each original lower-grid row to its transformed right endpoint

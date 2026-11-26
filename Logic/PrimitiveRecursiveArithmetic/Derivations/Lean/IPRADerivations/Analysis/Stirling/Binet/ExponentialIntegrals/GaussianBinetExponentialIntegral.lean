@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialIntegralGrid
-import IPRADerivations.Analysis.Series.GaussianRationalParameterTelescope
+import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRepresentation
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.GaussianRationalFiberRightInverse
-import IPRADerivations.Analysis.Series.GaussianRationalParameterTelescope
+import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingOddCoefficients
 
 /-!

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.GaussianBarnesCan
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.FirstDerivative.GaussianBarnesCanonicalPositiveFirstDerivativeRow
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmSignedIncrement
-import IPRADerivations.Analysis.Series.SignedTelescope
+import IPRADerivations.Analysis.Series.Telescoping.SignedTelescope
 
 /-!
 # Linear estimate for a literal kept positive Barnes logarithm row

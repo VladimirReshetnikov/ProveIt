@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperGridMonomialComparison
-import IPRADerivations.Analysis.Integration.Moments.GaussianMonomialDecayBudget
+import IPRADerivations.Analysis.Integration.Moments.Decay.GaussianMonomialDecayBudget
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaIntegralThreeSplit
 
 /-!

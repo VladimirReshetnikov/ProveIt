@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.GaussianBinetBoseSeriesRows
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 
 /-!
 # Literal finite sum of the original damped exponentials

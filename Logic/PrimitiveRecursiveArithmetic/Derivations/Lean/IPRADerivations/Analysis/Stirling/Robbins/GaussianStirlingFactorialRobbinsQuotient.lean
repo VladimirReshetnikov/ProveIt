@@ -1,6 +1,6 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingMultiplicative
+import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicative
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianStirlingWallisGammaRatio
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogShift
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogShift
 
 /-!
 # The original factorial normalization of the Stirling quotient

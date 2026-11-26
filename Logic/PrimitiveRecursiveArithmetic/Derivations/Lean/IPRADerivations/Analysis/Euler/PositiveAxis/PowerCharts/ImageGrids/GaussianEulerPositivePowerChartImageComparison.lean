@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartImageRows
 import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSumTotalDistance
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactSafeGridComparison
+import IPRADerivations.Analysis.Integration.CompactGrids.Comparisons.GaussianCompactSafeGridComparison
 
 /-!
 # Ordinary quadrature on the exact corrected image interval

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.GaussianGaussExplicitShiftedProducts
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussExplicitShiftedProducts
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.Normalization.GaussianGaussMultiplicationHalfPowers
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussTriplicationPi
 

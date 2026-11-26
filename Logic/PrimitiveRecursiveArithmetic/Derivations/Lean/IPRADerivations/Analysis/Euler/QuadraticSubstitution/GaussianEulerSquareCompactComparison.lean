@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerSquareMappedInterval
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerSquareJacobianCompactName
-import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureSquareCorrectedComparison
+import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquareCorrectedComparison
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.OriginalPrefixes.GaussianGammaOriginalPrefixCoefficientNames
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaUnitCoefficientMass
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianShrinkingPolynomialTail
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
 
 /-!

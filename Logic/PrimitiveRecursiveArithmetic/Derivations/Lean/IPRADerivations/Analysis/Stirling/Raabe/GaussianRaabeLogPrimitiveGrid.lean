@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeLogPrimitiveCell
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeUnitGridRecurrence
-import IPRADerivations.Analysis.Series.GaussianRationalParameterTelescope
+import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
 
 /-!
 # The logarithm primitive on the original compact grid

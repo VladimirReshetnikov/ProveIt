@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBoundsFinite
-import IPRADerivations.Analysis.Stirling.GaussianStirlingOriginalIntegerLimit
-import IPRADerivations.Analysis.Stirling.GaussianStirlingConstant
+import IPRADerivations.Analysis.Stirling.IntegerLimits.GaussianStirlingOriginalIntegerLimit
+import IPRADerivations.Analysis.Stirling.Constants.GaussianStirlingConstant
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 
 /-!

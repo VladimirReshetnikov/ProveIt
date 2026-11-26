@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.GaussianPositiveScalarProductBound
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianPositiveScalarProductBound
 
 /-!
 # Transfer a product norm through an exact scalar radius

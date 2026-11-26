@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.Products
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.Products
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 import IPRADerivations.Combinatorics.Binomial
 import IPRADerivations.AnalyticNumberTheory.Euler

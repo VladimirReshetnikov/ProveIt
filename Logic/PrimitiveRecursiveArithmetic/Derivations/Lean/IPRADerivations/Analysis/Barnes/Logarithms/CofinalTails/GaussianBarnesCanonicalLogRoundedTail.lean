@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.CofinalTails.GaussianBarnesCanonicalLogObservation
 import IPRADerivations.Analysis.Barnes.Logarithms.CofinalTails.GaussianBarnesCanonicalLogTail
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 
 /-!
 # Finite sums of actual rounded Barnes logarithms

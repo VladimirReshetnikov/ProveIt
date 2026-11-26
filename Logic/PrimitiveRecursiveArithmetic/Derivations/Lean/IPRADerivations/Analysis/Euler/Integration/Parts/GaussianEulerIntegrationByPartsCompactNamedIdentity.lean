@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.GaussianEulerIntegrationByPartsCompactNameObservations
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactZeroWidth
 
 /-!
 # Original regular compact Euler integration by parts

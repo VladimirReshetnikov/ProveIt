@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceSourceObservations
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Coefficients.GaussianGammaRecurrenceCoefficientBounds
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 
 /-!
 # The original recurrence sum against canonical coefficient observations

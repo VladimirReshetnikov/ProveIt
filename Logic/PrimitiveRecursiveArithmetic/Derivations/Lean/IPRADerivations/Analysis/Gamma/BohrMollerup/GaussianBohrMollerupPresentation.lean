@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeLogConvexity
 import IPRADerivations.Analysis.Stirling.GaussianStirlingNames
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogRescale
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogShift
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogRescale
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogShift
 
 /-!
 # Fixed rational log presentations in the Bohr–Mollerup theorem

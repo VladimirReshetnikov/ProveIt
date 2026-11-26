@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponentialSample
-import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 import IPRADerivations.Analysis.Exponential.GaussianExponentialInverse
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingConstant
+import IPRADerivations.Analysis.Stirling.Constants.GaussianStirlingConstant
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds
 
 /-!

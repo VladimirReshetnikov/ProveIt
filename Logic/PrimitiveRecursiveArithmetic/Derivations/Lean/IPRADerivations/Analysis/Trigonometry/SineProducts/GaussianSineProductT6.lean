@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.GaussianInverseSquareProductComparison
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianInverseSquareProductComparison
 import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineProductT4Budget
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
 

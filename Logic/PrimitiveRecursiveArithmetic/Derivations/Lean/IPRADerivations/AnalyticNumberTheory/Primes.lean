@@ -1,6 +1,6 @@
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Search
-import IPRADerivations.Analysis.FiniteOperations.Products
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.Products
 import IPRADerivations.Core.InductionTactic
 import IPRADerivations.Core.Header
 

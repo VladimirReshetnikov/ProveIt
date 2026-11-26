@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmDyadicTail
 

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleFormula
 import IPRADerivations.Analysis.Gamma.GaussianGammaInputProperness
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalCorrection
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogarithm
 
 /-!
 # The original Gamma function on a negative pole interval

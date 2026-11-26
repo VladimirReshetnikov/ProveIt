@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativePrecision
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativeEndpointBinding
 import IPRADerivations.Analysis.Euler.Derivatives.GaussianEulerDerivativeCompactSlopeRows
-import IPRADerivations.Analysis.Series.GaussianRationalNormalizedTelescope
+import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalNormalizedTelescope
 
 /-!
 # Differentiate the original logarithmic improper name at a native rational input

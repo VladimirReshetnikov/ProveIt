@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.Partitions.GaussianPartitionedFiniteSum
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 
 /-!
 # Actual finite Gaussian sum comparison along numerical blocks

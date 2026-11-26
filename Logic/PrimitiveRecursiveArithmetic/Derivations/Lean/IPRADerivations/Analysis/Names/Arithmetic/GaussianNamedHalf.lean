@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
-import IPRADerivations.Analysis.Integration.Moments.GaussianEvenMomentWholeLineValue
+import IPRADerivations.Analysis.Integration.Moments.Even.GaussianEvenMomentWholeLineValue
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedBoundedProductObservation
 
 /-!

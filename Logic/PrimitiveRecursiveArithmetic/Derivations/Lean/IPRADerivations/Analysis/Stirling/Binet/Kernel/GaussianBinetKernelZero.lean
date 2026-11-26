@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetBaselName
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelCofinal
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactZeroWidth
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 
 /-!

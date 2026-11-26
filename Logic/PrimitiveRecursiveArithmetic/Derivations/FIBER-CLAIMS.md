@@ -235,7 +235,7 @@ Tden(N,x) * |a(M,x)*d(N,x) − a(N,x)*d(M,x)|
 Thus the finite error sum can be compared to an independently supplied rational
 tail bound. A specified rate at which that bound tends to zero remains input
 when the application requests a global Cauchy rate. The original
-[SummableTails](Lean/IPRADerivations/Analysis/FiniteOperations/SummableTails.lean) is the simpler
+[SummableTails](Lean/IPRADerivations/Analysis/FiniteOperations/FiniteSums/SummableTails.lean) is the simpler
 signed-integer/common-unit specialization, with its own direct finite sums.
 
 ### Finite-net lifting

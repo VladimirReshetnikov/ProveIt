@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.WeierstrassProduct
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.WeierstrassProduct
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.AnalyticNumberTheory.PhiLower
 

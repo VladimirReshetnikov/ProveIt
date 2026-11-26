@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Cyclic.GaussianCyclicRootHalfAngle
-import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 
 /-!
 # Finite exponential product and margin estimates

@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.FiniteOperations.GaussianPositiveRadiusFiniteSum
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianPositiveRadiusFiniteSum
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerWeightedHalfDecay
 
 /-!

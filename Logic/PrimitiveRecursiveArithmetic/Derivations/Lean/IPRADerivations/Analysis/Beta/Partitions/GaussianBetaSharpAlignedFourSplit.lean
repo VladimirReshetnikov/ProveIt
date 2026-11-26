@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedFourSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactAlignedFourSplit
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpPartition
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpFourSplit
 

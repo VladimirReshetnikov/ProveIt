@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.GaussianPositiveExponentialTermBound
-import IPRADerivations.Analysis.FiniteOperations.GaussianPositiveScalarProductBound
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianPositiveScalarProductBound
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialLinearRemainder
 
 /-!

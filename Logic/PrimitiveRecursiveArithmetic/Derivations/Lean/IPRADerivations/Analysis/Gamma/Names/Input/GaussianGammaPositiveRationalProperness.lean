@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicImproperInputProperness
 import IPRADerivations.Analysis.Euler.Logarithms.GaussianEulerLogarithmicZeroIdentification
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogarithm
 
 /-!
 # Input properness of the original Gamma name at positive rationals

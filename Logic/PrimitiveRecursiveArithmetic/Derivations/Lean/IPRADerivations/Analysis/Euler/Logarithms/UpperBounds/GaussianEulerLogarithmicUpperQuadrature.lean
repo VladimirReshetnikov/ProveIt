@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.UpperBounds.GaussianEulerLogarithmicUpperScalar
-import IPRADerivations.Analysis.Integration.Moments.GaussianMonomialDecayQuadrature
+import IPRADerivations.Analysis.Integration.Moments.Decay.GaussianMonomialDecayQuadrature
 
 /-!
 # The actual upper logarithmic Euler grid and its left decay observation

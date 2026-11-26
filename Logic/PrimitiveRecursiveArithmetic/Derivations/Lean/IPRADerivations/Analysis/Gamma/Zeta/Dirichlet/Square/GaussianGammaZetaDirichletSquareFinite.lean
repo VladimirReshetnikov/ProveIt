@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.Square.GaussianGammaZetaDir
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellinDampedImproper
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetBaselBinding
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactZeroWidth
 
 /-!
 # Common finite Dirichlet and Basel sums

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaRecurrence
-import IPRADerivations.Analysis.Series.GaussianRationalParameterTelescope
+import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
 
 /-!
 # Finite reciprocal sums for the original digamma name

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductFamily
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 
 /-!
 # Sum a finite family of regular Gaussian names

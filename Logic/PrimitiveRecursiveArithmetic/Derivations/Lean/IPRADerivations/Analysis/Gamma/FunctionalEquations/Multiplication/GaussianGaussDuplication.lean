@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussDuplicationFactor
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFiniteIdentity
-import IPRADerivations.Analysis.FiniteOperations.GaussianGaussExplicitShiftedProducts
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussExplicitShiftedProducts
 
 /-!
 # The original Gamma duplication identity

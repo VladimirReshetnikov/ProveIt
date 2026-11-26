@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianGammaHalfRisingFactorial
-import IPRADerivations.Analysis.Integration.Moments.GaussianEvenMomentIntegral
+import IPRADerivations.Analysis.Integration.Moments.Even.GaussianEvenMomentIntegral
 
 /-!
 # Actual half-integer Gamma and Gaussian values relative to Gamma(1/2)

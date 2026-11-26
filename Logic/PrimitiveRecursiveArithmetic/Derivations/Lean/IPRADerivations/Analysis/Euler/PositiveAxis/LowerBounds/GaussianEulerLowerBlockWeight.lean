@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.GaussianUniformFiniteSumBound
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianUniformFiniteSumBound
 
 /-!
 # Uniform weighted radius of an actual lower-tail block

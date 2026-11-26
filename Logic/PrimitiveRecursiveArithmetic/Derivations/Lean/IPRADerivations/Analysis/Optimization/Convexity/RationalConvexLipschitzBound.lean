@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexScheduledModulus
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexCoarseIntervalBudget
-import IPRADerivations.Analysis.Series.SignedTelescope
+import IPRADerivations.Analysis.Series.Telescoping.SignedTelescope
 
 /-!
 # The exact Lipschitz comparison for the source convex presentation

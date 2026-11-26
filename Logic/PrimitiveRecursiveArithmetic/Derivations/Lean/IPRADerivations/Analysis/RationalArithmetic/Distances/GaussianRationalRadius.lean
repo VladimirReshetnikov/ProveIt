@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
-import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianProductStability
 
 /-!
 # An actual common-scale radius for original Gaussian rational lists

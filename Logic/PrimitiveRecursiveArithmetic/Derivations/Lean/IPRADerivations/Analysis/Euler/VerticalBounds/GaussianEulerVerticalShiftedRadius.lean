@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealRadius
-import IPRADerivations.Analysis.FiniteOperations.GaussianPositiveRadiusFiniteSum
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianPositiveRadiusFiniteSum
 
 /-!
 # A signed observation shifted by its requested tolerance

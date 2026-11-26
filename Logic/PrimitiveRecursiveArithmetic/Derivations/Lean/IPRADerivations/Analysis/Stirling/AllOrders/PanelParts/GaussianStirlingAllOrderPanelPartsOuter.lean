@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelPartsRecurrence
-import IPRADerivations.Analysis.FiniteOperations.GaussianUniformFiniteSumBound
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianUniformFiniteSumBound
 
 /-!
 # Quantitative outer sum of the actual panel recurrences

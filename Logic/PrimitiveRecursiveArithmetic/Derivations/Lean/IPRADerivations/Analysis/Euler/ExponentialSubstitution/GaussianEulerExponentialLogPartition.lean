@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.ExponentialSubstitution.GaussianEulerExponentialLogGrid
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmSign
-import IPRADerivations.Analysis.Series.GaussianRationalParameterTelescope
+import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
 
 /-!
 # Order, mesh size, and total width of the logarithmic partition

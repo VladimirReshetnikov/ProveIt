@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Raabe.GaussianRaabeLogPrimitiveCell
-import IPRADerivations.Analysis.Stirling.GaussianStirlingConstant
+import IPRADerivations.Analysis.Stirling.Constants.GaussianStirlingConstant
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
-import IPRADerivations.Analysis.Stirling.GaussianStirlingConstant
-import IPRADerivations.Analysis.Integration.Moments.GaussianEvenMomentWholeLineValue
+import IPRADerivations.Analysis.Stirling.Constants.GaussianStirlingConstant
+import IPRADerivations.Analysis.Integration.Moments.Even.GaussianEvenMomentWholeLineValue
 
 /-!
 # The original Stirling constant in the duplication formula

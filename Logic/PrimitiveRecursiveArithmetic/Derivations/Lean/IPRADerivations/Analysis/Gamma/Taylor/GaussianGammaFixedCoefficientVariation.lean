@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputPrecisionNorm
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputStaticNorm
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianPolynomialExponentialCoefficientVariation
-import IPRADerivations.Analysis.FiniteOperations.GaussianFiniteSumL1Variation
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianFiniteSumL1Variation
 import IPRADerivations.Analysis.Gamma.Taylor.GaussianGammaFiniteCoefficientStability
 
 /-!

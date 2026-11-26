@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSincQuadraticBounds
-import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 
 /-!
 # Sinc ratio error on two small disks

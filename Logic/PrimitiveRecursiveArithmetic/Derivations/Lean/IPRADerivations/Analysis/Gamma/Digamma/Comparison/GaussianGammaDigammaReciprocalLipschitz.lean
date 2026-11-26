@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaReciprocalPair
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicPrefix
-import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureSquareCells
+import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquareCells
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsLog
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 

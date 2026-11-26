@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderDiscreteParts
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalSumLinearity
 import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 
 /-!
 # Finite error transfer for integration by parts

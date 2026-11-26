@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.GaussianInverseSquareProductGrowth
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianInverseSquareProductGrowth
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryFirstOrder
 import IPRADerivations.Analysis.Trigonometry.Hyperbolic.GaussianSineProductImaginaryLogDerivativeTail
 

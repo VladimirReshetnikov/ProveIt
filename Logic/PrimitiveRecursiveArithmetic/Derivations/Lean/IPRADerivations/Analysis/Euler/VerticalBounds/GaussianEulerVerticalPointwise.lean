@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalIntegr
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealSamples
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalRealRadius
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerVerticalNormTransfer
-import IPRADerivations.Analysis.FiniteOperations.GaussianPositiveRadiusFiniteSum
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianPositiveRadiusFiniteSum
 
 /-!
 # Source-only vertical domination of each original Euler row

@@ -4,7 +4,7 @@ import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Analysis.FiniteOperations.Products
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.Products
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
 

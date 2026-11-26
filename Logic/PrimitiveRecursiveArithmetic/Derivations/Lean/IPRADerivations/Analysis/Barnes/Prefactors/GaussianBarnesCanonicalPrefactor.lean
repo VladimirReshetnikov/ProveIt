@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingConstant
+import IPRADerivations.Analysis.Stirling.Constants.GaussianStirlingConstant
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteApproximantName
 import IPRADerivations.Analysis.Exponential.GaussianExponentialAddition
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialRadiusIndependence

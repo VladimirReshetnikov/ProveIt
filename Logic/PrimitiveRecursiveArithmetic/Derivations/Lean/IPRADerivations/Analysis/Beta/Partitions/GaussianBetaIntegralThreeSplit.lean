@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannThreeSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannThreeSplit
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaIntegralCutoffPartition
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelCompactModulus
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling

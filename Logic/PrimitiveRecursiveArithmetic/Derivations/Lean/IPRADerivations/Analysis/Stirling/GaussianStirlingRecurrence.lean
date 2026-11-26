@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogShift
-import IPRADerivations.Analysis.Stirling.GaussianStirlingRationalLogShift
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogShift
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingRationalLogShift
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifferenceAlgebra
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 

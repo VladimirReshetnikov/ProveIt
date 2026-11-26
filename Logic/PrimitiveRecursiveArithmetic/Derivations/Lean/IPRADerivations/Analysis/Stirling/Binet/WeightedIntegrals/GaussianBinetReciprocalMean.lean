@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.GaussianBinetReciprocalRows
-import IPRADerivations.Analysis.Series.GaussianRationalNormalizedTelescope
+import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalNormalizedTelescope
 
 /-!
 # The literal finite reciprocal average on a complex horizontal cell

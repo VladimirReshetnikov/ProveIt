@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannSplit
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactUniformGridComparison
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Comparisons.GaussianCompactUniformGridComparison
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithm
 
 /-!

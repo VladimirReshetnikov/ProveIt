@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripTailEnvelope
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactZeroWidth
 
 /-!
 # The sharp real exponential bound for the actual Binet tail

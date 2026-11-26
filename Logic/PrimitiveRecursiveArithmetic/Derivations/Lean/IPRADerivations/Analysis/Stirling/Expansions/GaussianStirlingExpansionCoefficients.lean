@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Series.BernoulliBounds
+import IPRADerivations.Analysis.Series.Bernoulli.BernoulliBounds
 import IPRADerivations.Analysis.RationalArithmetic.GoldenRatio.RationalPhiSharpQuintic
 import IPRADerivations.Analysis.Polynomials.CompanionMatrices.GaussianPolynomialMonicCompanion
 import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianRationalFiniteExponentialEuler

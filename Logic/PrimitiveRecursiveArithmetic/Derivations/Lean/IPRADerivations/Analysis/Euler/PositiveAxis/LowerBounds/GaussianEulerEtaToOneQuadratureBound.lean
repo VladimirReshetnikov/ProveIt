@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerEtaToOneRowBound
-import IPRADerivations.Analysis.FiniteOperations.GaussianUniformFiniteSumBound
+import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianUniformFiniteSumBound
 
 /-!
 # Finite original eta-to-one quadrature on the transformed root grid

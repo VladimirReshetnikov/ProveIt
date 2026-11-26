@@ -858,7 +858,7 @@ the environment labels. Completion needs the following evidence:
    [actual product recursor](Lean/IPRADerivations/Analysis/Geometry/GeometricBounds/GaussianGeometricProduct.lean),
    [tail gap](Lean/IPRADerivations/Analysis/Geometry/GeometricBounds/GaussianGeometricProductTail.lean)
    and [finite uniform bound](Lean/IPRADerivations/Analysis/Geometry/GeometricBounds/GaussianGeometricProductBound.lean)
-   prove the [computed source product bound](Lean/IPRADerivations/Analysis/FiniteOperations/GaussianGeneralProductBound.lean)
+   prove the [computed source product bound](Lean/IPRADerivations/Analysis/FiniteOperations/FiniteProducts/GaussianGeneralProductBound.lean)
    1<=U_j<=R from N>=1 alone, without a supplied global bound or infinite product.
    The [actual trajectory](Lean/IPRADerivations/Analysis/Polynomials/RootFinding/FundamentalTheorem/GaussianGeneralFTATrajectory.lean)
    samples P_j at j+L and has proved updates, canonicality and initial residual.

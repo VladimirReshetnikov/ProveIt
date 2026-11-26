@@ -1,6 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
 import IPRADerivations.AnalyticNumberTheory.RobinUpperEnd
-import IPRADerivations.Analysis.FiniteOperations.WeierstrassProduct
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.WeierstrassProduct
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
 

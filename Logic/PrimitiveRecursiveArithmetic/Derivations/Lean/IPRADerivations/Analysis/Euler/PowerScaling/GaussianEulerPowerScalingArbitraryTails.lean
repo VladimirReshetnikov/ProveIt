@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingTailGeometry
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactTailFromComparison
+import IPRADerivations.Analysis.Integration.CompactGrids.Comparisons.GaussianCompactTailFromComparison
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactZeroWidth
 
 /-!
 # Arbitrary physical tails of the rational power-damped Euler integral

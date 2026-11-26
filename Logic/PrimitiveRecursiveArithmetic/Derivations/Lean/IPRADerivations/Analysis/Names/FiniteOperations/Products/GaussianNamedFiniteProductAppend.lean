@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.GaussianNamedFiniteProductName
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
-import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 
 /-!
 # Appending one row to a named Gaussian product

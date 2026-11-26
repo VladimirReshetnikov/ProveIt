@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactZeroWidth
 
 /-!
 # Actual original compact Euler quadratures split at earlier cutoffs

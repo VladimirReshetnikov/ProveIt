@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEulerRationalLogConvexity
 import IPRADerivations.Analysis.Names.Rates.GaussianNaturalScaleProductRate
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogarithm
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
 
 /-!

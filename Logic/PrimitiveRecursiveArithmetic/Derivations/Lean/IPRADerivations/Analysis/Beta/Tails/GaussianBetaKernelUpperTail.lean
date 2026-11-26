@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelDomination
-import IPRADerivations.Analysis.FiniteOperations.GaussianPositiveScalarProductBound
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianPositiveScalarProductBound
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelGridComparison
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEulerUnitSubstitutionLatticeComparison
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelLatticeComparison
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactSafeGridComparison
+import IPRADerivations.Analysis.Integration.CompactGrids.Comparisons.GaussianCompactSafeGridComparison
 
 /-!
 # An independently chosen ordinary unit quadrature versus the original density

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayIncrement
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannSplit
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerExponentCompactBounds

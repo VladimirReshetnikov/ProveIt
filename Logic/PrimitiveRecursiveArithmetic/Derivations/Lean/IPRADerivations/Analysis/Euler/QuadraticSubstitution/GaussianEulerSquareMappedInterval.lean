@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerSquareTimeGeometry
-import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureSquarePartition
+import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquarePartition
 
 /-!
 # Bounds for the image of a compact Euler interval under a rational square

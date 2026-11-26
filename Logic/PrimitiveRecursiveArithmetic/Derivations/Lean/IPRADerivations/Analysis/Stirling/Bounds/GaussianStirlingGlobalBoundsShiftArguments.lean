@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBounds
-import IPRADerivations.Analysis.Stirling.GaussianStirlingRationalLogShift
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingRationalLogShift
 
 /-!
 # Fractional arguments in the translated Stirling estimate

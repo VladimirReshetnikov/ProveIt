@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerLowerCutoffSource
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerLowerFinite
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedSplit
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactAlignedSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactZeroWidth
 
 /-!
 # Actual named damping lower-cutoff convergence

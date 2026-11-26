@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.GaussianBarnesCanonicalIntegerValues
 import IPRADerivations.Analysis.Barnes.Growth.BarnesIntegerGrowth
 import IPRADerivations.Analysis.Exponential.Names.GaussianExponentialReference
-import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 
 /-!
 # Integer lower growth in observations of the original Barnes sampler

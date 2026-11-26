@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.EvenPowerIntegrals
+import IPRADerivations.Analysis.Integration.Moments.Even.EvenPowerIntegrals
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 
 /-!

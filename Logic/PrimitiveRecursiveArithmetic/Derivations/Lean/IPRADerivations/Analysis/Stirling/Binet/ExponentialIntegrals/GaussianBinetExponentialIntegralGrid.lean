@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialPanel
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStrip
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactZeroWidth
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannSplit
-import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureSquareCells
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactZeroWidth
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannSplit
+import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquareCells
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalTailExponential
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureSquareJacobian
+import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquareJacobian
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
 

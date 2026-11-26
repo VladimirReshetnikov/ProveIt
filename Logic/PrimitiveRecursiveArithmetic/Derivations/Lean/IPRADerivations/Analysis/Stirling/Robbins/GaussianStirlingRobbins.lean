@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBounds
 import IPRADerivations.Analysis.Stirling.Robbins.GaussianStirlingRobbinsFinite
-import IPRADerivations.Analysis.Stirling.GaussianStirlingConstantIdentification
+import IPRADerivations.Analysis.Stirling.Constants.GaussianStirlingConstantIdentification
 
 /-!
 # Sharp Robbins bounds at the original integer Stirling remainder

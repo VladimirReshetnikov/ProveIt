@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
-import IPRADerivations.Analysis.Stirling.GaussianStirlingMultiplicative
+import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicative
 import IPRADerivations.Analysis.Optimization.Convexity.RationalConvexEndpointBudget
 
 /-!

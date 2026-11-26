@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTATrajectory
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAStepBound
-import IPRADerivations.Analysis.FiniteOperations.GaussianGeneralProductBound
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianGeneralProductBound
 
 /-!
 # The actual general-FTA step preserves the exact position margin

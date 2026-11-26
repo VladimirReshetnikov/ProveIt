@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialScaling
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalHorner
-import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianProductStability
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalMetric
 
 /-!

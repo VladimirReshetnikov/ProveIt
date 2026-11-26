@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalCorrection
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisRate
-import IPRADerivations.Analysis.Integration.GaussianRationalRiemannRefinement
+import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 
 /-!

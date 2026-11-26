@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Series.BernoulliBounds
+import IPRADerivations.Analysis.Series.Bernoulli.BernoulliBounds
 import Mathlib.NumberTheory.BernoulliPolynomials
 
 /-!

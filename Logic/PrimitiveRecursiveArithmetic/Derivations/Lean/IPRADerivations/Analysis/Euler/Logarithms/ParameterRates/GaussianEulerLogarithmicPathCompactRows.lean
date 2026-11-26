@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicPathCompactTaylor
-import IPRADerivations.Analysis.Series.GaussianRationalParameterTelescope
+import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
 
 /-!
 # Actual compact path samples as finite parameter-telescope rows

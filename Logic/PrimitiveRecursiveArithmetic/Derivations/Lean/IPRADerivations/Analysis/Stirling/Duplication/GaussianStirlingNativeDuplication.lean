@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussDuplication
-import IPRADerivations.Analysis.Stirling.GaussianStirlingGammaLogarithm
+import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogarithm
 import IPRADerivations.Analysis.Gamma.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Gamma.GaussianGammaRadiusOverlap
 import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment

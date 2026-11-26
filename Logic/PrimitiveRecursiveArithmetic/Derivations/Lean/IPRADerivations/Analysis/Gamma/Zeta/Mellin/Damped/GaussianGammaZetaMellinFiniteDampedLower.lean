@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.GaussianGammaZetaMellin
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinGeometricEnvelope
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerLowerTailRootedMajorant
 import IPRADerivations.Analysis.Euler.VerticalBounds.GaussianEulerNamedLowerTail
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactAlignedSplit
 
 /-!
 # Uniform lower-tail bound for the original finite damped rows

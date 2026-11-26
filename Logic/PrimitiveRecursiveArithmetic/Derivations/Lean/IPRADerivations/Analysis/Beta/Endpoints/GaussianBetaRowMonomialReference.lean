@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUpperRowDampedError
-import IPRADerivations.Analysis.Integration.Moments.GaussianMonomialDecayQuadrature
+import IPRADerivations.Analysis.Integration.Moments.Decay.GaussianMonomialDecayQuadrature
 
 /-!
 # Exact scalar row majorants and the literal monomial-decay observation

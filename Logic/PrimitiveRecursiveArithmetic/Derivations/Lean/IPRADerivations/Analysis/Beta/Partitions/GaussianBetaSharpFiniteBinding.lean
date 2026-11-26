@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianBetaFiniteEulerAtCutoff
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaZeroExtendedGrid
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaZeroExtensionAligned
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactAlignedSplit
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactAlignedSplit
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpPartition
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaRefinedFixedCompactComparison
 import IPRADerivations.Analysis.Euler.GaussianEulerImproperName

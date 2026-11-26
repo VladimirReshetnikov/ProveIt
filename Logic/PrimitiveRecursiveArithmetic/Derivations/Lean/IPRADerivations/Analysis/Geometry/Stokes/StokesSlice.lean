@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.FiniteFTC
+import IPRADerivations.Analysis.FiniteOperations.FiniteDifferences.FiniteFTC
 
 /-!
 # Constructive Stokes: a grid slice and two polynomial certificates

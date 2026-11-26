@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.GaussianEulerRealIntegrandNonnegative
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannLower
+import IPRADerivations.Analysis.Integration.CompactGrids.Comparisons.GaussianCompactRiemannLower
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactAdditivity
 
 /-!

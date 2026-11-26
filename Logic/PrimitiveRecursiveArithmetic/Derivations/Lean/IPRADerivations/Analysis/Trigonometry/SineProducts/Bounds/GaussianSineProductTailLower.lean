@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineProductHeadLower
-import IPRADerivations.Analysis.FiniteOperations.GaussianInverseSquareProductGrowth
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianInverseSquareProductGrowth
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianApproximateInverseDistance
-import IPRADerivations.Analysis.FiniteOperations.GaussianBoundedInverseApartness
+import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductAlgebra
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactRiemannAdditivity
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannAdditivity
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.GaussianEulerSquareKernel
 import IPRADerivations.Analysis.Euler.PositiveAxis.PositiveScaling.GaussianEulerPositiveScalingCancellation
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDampedTimeRate
-import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureSquareJacobian
+import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquareJacobian
 
 /-!
 # The original Euler integrand under the quadratic substitution

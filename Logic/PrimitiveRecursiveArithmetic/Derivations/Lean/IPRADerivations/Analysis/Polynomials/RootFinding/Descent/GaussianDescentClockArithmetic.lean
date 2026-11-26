@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.GaussianProductStability
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianProductStability
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 
 /-!

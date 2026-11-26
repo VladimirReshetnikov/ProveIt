@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianRationalParityPower
 import IPRADerivations.Analysis.Logarithm.Robin.GaussianRobinLogarithmParity
-import IPRADerivations.Analysis.Integration.Moments.GaussianEvenMomentIntegrand
+import IPRADerivations.Analysis.Integration.Moments.Even.GaussianEvenMomentIntegrand
 
 /-!
 # Exact reflected Gaussian polynomial rows

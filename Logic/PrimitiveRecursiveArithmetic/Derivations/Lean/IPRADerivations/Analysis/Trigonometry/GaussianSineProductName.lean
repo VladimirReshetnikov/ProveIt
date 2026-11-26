@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.FiniteOperations.GaussianInverseSquareProductTail
+import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianInverseSquareProductTail
 
 /-!
 # Cofinal regular name of the literal sine product
