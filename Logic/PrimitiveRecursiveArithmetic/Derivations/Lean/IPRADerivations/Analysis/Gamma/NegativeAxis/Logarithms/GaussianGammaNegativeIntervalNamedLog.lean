@@ -22,10 +22,10 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaNegativeIntervalNamedLogVariation (modulus rational_rate)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_refl)
-open GaussianNamedInverseRate (rateNumerator rateDenominator rate_at)
+open GaussianNamedInverseRate (rate_at)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianNamedRateRadius (distance_at_later_clocks distance_at_succ_clocks)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_of_ordered_observations)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
@@ -125,12 +125,9 @@ theorem original_observations (f g : PR 2) (p q x y E N : PTm n)
       (unit p+unit q) (unit p*unit q) := by
   have sourceResult : Γ ⊢[PRAAx] distanceBounded (sample f p x E N) (sample g q y E N)
       (unit p+unit q) (unit p*unit q) := by
-    refine .orE (le_total p q) (observations_of_le f g p q x y E N hf.wk hg.wk he.wk Prf.hyp0) ?_
-    have back := observations_of_le g f q p y x E N hg.wk hf.wk (cross_symm _ _ _ _ he.wk) Prf.hyp0
-    have den : (le q p)::Γ ⊢[PRAAx] le one (unit q*unit p) :=
-      positive_product _ _ (unit_positive q) (unit_positive p)
-    exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
-      (distance_symmetric _ _ _ _ den back)
+    exact distance_of_ordered_observations _ _ p q
+      (observations_of_le f g p q x y E N hf.wk hg.wk he.wk Prf.hyp0)
+      (observations_of_le g f q p y x E N hg.wk hf.wk (cross_symm _ _ _ _ he.wk) Prf.hyp0)
   exact distance_congr (name_at f p x E N).eqSymm (name_at g q y E N).eqSymm (.eqRefl _) (.eqRefl _) sourceResult
 
 theorem proper (f g : PR 2) (x y E N : PTm n)

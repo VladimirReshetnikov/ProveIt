@@ -23,9 +23,9 @@ open GaussianGammaHalfPlaneInputContinuity (modulus subst_modulus)
 open GaussianGammaReciprocalInverse (gammaF gammaData gamma_regular)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm cross_refl)
-open GaussianNamedInverseRate (rateNumerator rateDenominator rate_at)
+open GaussianNamedInverseRate (rate_at)
 open GaussianNamedRateRadius (distance_at_later_clocks distance_at_succ_clocks)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_of_ordered_observations)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
@@ -126,12 +126,9 @@ theorem original_observations (f g : PR 2) (p q x y R E : PTm n)
       (unit p+unit q) (unit p*unit q) := by
   have sourceResult : Γ ⊢[PRAAx] distanceBounded (sample f p x R E) (sample g q y R E)
       (unit p+unit q) (unit p*unit q) := by
-    refine .orE (le_total p q) (observations_of_le f g p q x y R E hf.wk hg.wk he.wk Prf.hyp0) ?_
-    have back := observations_of_le g f q p y x R E hg.wk hf.wk (cross_symm _ _ _ _ he.wk) Prf.hyp0
-    have den : (le q p)::Γ ⊢[PRAAx] le one (unit q*unit p) :=
-      positive_product _ _ (unit_positive q) (unit_positive p)
-    exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
-      (distance_symmetric _ _ _ _ den back)
+    exact distance_of_ordered_observations _ _ p q
+      (observations_of_le f g p q x y R E hf.wk hg.wk he.wk Prf.hyp0)
+      (observations_of_le g f q p y x R E hg.wk hf.wk (cross_symm _ _ _ _ he.wk) Prf.hyp0)
   exact distance_congr (name_at f p x R E).eqSymm (name_at g q y R E).eqSymm (.eqRefl _) (.eqRefl _) sourceResult
 
 theorem proper (f g : PR 2) (x y R E : PTm n)

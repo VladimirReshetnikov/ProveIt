@@ -78,6 +78,16 @@ theorem distance_two_errors (z w B C D : PTm n)
   exact le_congr (by ipra_ring) (by ipra_ring)
     (add_le_add₂ (mul_le_mul_right B hDC) (mul_le_mul_right C hDB))
 
+/-- Combine two ordered cases for independent observations, reversing the
+samples and the radius factors in the second case. -/
+theorem distance_of_ordered_observations (z w p q : PTm n)
+    (hpq : le p q :: Γ ⊢[PRAAx] distanceBounded z w (unit p+unit q) (unit p*unit q))
+    (hqp : le q p :: Γ ⊢[PRAAx] distanceBounded w z (unit q+unit p) (unit q*unit p)) :
+    Γ ⊢[PRAAx] distanceBounded z w (unit p+unit q) (unit p*unit q) := by
+  refine .orE (le_total p q) hpq ?_
+  exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
+    (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) hqp)
+
 /-- A later observation within one unit of the earlier precision gives the
 usual symmetric two-clock comparison. -/
 theorem distance_from_later_observations (z w p q : PTm n)

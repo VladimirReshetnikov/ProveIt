@@ -22,8 +22,8 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm)
 open GaussianNamedInverseRate (independentRate rate_at)
 open GaussianNamedRateRadius (distance_at_later_clocks distance_at_succ_clocks)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
-open GaussianRationalHorner (ofGaussian positive_product)
+open GaussianRationalDistanceOrder (distance_congr distance_of_ordered_observations)
+open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalMetric (distanceBounded bounded_iff)
 open GaussianRootApproximationWitness (pointBounds)
@@ -135,11 +135,10 @@ theorem late_observations (f g : PR 2) (p q k l x y R : PTm n)
     (hk : Γ ⊢[PRAAx] le (clock p R) k) (hl : Γ ⊢[PRAAx] le (clock q R) l) :
     Γ ⊢[PRAAx] distanceBounded (ap2 V (succ p) (frozenData f k x R)) (ap2 V (succ q) (frozenData g l y R))
       (unit p+unit q) (unit p*unit q) := by
-  refine .orE (le_total p q) (observations_of_le f g p q k l x y R hf.wk hg.wk he.wk hk.wk hl.wk Prf.hyp0) ?_
-  have rev := observations_of_le g f q p l k y x R hg.wk hf.wk
-    (cross_symm _ _ _ _ he.wk) hl.wk hk.wk Prf.hyp0
-  exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
-    (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) rev)
+  exact distance_of_ordered_observations _ _ p q
+    (observations_of_le f g p q k l x y R hf.wk hg.wk he.wk hk.wk hl.wk Prf.hyp0)
+    (observations_of_le g f q p l k y x R hg.wk hf.wk
+    (cross_symm _ _ _ _ he.wk) hl.wk hk.wk Prf.hyp0)
 
 theorem proper (f g : PR 2) (x y R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R) (hg : Γ ⊢[PRAAx] source g y R)

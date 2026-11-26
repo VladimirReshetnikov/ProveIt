@@ -24,7 +24,7 @@ open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positiv
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_of_ordered_observations)
 open GaussianEuclideanDistanceName (pointCN)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -114,10 +114,9 @@ private theorem observations_of_le (f : PR 2) (p q j x A : PTm n) (h : Γ ⊢[PR
 
 theorem original_observations (f : PR 2) (p q j x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) :
     Γ ⊢[PRAAx] distanceBounded (sample f p j x A) (sample f q j x A) (unit p+unit q) (unit p*unit q) := by
-  refine .orE (le_total p q) (observations_of_le f p q j x A h.wk Prf.hyp0) ?_
-  exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
-    (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p))
-      (observations_of_le f q p j x A h.wk Prf.hyp0))
+  exact distance_of_ordered_observations _ _ p q
+    (observations_of_le f p q j x A h.wk Prf.hyp0)
+    (observations_of_le f q p j x A h.wk Prf.hyp0)
 
 theorem name_at (f : PR 2) (p j x A : PTm n) : Γ ⊢[PRAAx] ap2 (nameF f) p (data j x A) ≐ sample f p j x A := by
   let d := data j x A

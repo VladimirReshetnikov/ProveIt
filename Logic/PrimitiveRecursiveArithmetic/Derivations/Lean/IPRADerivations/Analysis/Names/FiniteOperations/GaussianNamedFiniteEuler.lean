@@ -21,9 +21,8 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianBetaAllDegreeInverseContinuity (gain)
 open GaussianNamedRightHalfPlane (threshold radius numerator denominator actual_late_source)
 open GaussianNamedInverseRate (rateNumerator rateDenominator denominator_positive)
-open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_of_ordered_observations)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -111,10 +110,9 @@ private theorem observations_of_le (f : PR 2) (p q x A N : PTm n)
 
 theorem sample_observations (f : PR 2) (p q x A N : PTm n) (h : Γ ⊢[PRAAx] source f x A N) : Γ ⊢[PRAAx]
     distanceBounded (sample f p x A N) (sample f q x A N) (unit p+unit q) (unit p*unit q) := by
-  refine .orE (le_total p q) (observations_of_le f p q x A N h.wk Prf.hyp0) ?_
-  have obs := observations_of_le f q p x A N h.wk Prf.hyp0
-  exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
-    (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) obs)
+  exact distance_of_ordered_observations _ _ p q
+    (observations_of_le f p q x A N h.wk Prf.hyp0)
+    (observations_of_le f q p x A N h.wk Prf.hyp0)
 
 theorem name_at (f : PR 2) (p x A N : PTm n) : Γ ⊢[PRAAx] ap2 (nameF f) p (data x A N) ≐ sample f p x A N := by
   have h : Γ ⊢[PRAAx] ap2 (nameF f) p (data x A N) ≐

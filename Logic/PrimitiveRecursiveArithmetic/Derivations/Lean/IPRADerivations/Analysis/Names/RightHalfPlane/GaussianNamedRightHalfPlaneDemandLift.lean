@@ -26,7 +26,7 @@ open GaussianNamedRightHalfPlaneSigned (certificate point point_distance)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm)
 open GaussianNamedInverseRate (independentRate rate_at)
 open GaussianNamedRateRadius (distance_at_later_clocks)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_of_ordered_observations)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
@@ -134,11 +134,10 @@ theorem late_observations (map : RationalMap) (f g : PR 2) (p q r t x y M R : PT
     (hr : Γ ⊢[PRAAx] le (clock map p M R) r) (ht : Γ ⊢[PRAAx] le (clock map q M R) t) :
     Γ ⊢[PRAAx] distanceBounded (ap2 map.evaluator (succ p) (frozenData map f r x M R))
       (ap2 map.evaluator (succ q) (frozenData map g t y M R)) (unit p+unit q) (unit p*unit q) := by
-  refine .orE (le_total p q) (observations_of_le map f g p q r t x y M R hf.wk hg.wk he.wk hr.wk ht.wk Prf.hyp0) ?_
-  have observation := observations_of_le map g f q p t r y x M R hg.wk hf.wk
-    (cross_symm _ _ _ _ he.wk) ht.wk hr.wk Prf.hyp0
-  exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _)
-    (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) observation)
+  exact distance_of_ordered_observations _ _ p q
+    (observations_of_le map f g p q r t x y M R hf.wk hg.wk he.wk hr.wk ht.wk Prf.hyp0)
+    (observations_of_le map g f q p t r y x M R hg.wk hf.wk
+    (cross_symm _ _ _ _ he.wk) ht.wk hr.wk Prf.hyp0)
 
 theorem proper (map : RationalMap) (f g : PR 2) (x y M R : PTm n)
     (hf : Γ ⊢[PRAAx] source f x M R) (hg : Γ ⊢[PRAAx] source g y M R)
