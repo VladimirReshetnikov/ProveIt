@@ -1301,6 +1301,9 @@ import IPRADerivations.Probability.DominatedConvergence
 import IPRADerivations.Probability.OptionalStopping
 import IPRADerivations.Probability.MartingaleRate
 import IPRADerivations.Probability.QuantumExpectation
+import IPRADerivations.Analysis.Trigonometry.UnitCircle.ComplexPowers
+import IPRADerivations.Analysis.Trigonometry.UnitCircle.RotationRemainder
+import IPRADerivations.Probability.CharacteristicDerivative
 import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Probability.MomentDeterminacy
 import IPRADerivations.Probability.Variance
