@@ -988,8 +988,9 @@ the environment labels. Completion needs the following evidence:
    Arbitrary high-Y reduction, its literal stored division identity,
    and the explicit completed Vandermonde formula are checked in this
    Gaussian-rational coding. Further coded-field instances remain open.
-6. **Verification:** register each completed module in `IPRADerivations`, audit
-   its named public endpoints in `Checks/Axioms.lean`, run normal Lake builds
+6. **Verification:** register each completed module in `IPRADerivations` (the
+   axiom audit `Checks/Axioms.lean` then covers all its declarations
+   automatically; no rows are added there), run normal Lake builds
    and the source import-closure gate, and document exact assumptions and
    malformed-code conventions. Reports must not count target definitions or
    native semantic proofs as object derivations.

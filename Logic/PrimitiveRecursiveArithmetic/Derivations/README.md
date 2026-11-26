@@ -24,9 +24,10 @@ contains externally stated proof-generator and obstruction metatheorems,
 identified in the module descriptions and source-claim audit. The transfer
 theorem `ConciseIPRA.pra_iff_native` applies to the ordinary object derivations.
 The audit file
-[`Checks/Axioms.lean`](Lean/IPRADerivations/Checks/Axioms.lean) prints the
-axioms of the named public endpoints. Their reports use only Lean's standard
-`propext`, `Quot.sound` and `Classical.choice` in the metatheory.
+[`Checks/Axioms.lean`](Lean/IPRADerivations/Checks/Axioms.lean) checks every
+declaration of every module of the library (nothing is registered by hand): the
+build fails unless each depends only on Lean's standard `propext`, `Quot.sound`
+and `Classical.choice` in the metatheory.
 
 The Lake library is `IPRADerivations` (namespace `LeanProofs.IPRA`), built with
 
