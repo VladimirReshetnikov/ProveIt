@@ -66,7 +66,7 @@ private theorem width_le (a b A c d : PTm n)
   exact le_congr (.eqRefl _) ((congrMonus (add_comm _ _) (.eqRefl _)).eqTrans (add_monus _ _))
     (AnalyticNumberTheory.BlockFamily.monus_le_monus (c := d) h)
 
-private theorem low_gap (p a b u k : PTm n)
+theorem low_gap (p a b u k : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hu : Γ ⊢[PRAAx] le one u)
     (h3 : Γ ⊢[PRAAx] le a (num 3*u))
     (hA : Γ ⊢[PRAAx] le a (u+k)) (hU : Γ ⊢[PRAAx] le u (a+k)) :

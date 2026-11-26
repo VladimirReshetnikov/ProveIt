@@ -16,14 +16,12 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftRationalWindow
 
 open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianGammaDigammaTwoShiftExactFiniteRate (raw_rate leftSlack rightSlack)
 open GaussianGammaDigammaTwoShiftFiniteRate (raw log_gap_at)
-open GaussianGammaDigammaTwoShiftWindow (low width numerator_mono)
-open GaussianHarmonicLogarithmName (sample data nameF)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
+open GaussianGammaDigammaTwoShiftWindow (low width numerator_mono low_gap)
+open GaussianHarmonicLogarithmName (sample nameF)
+open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (qzero positive_product)
-open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingGammaLogarithm (source)
 open RationalValueBounds (upper)
 
@@ -71,27 +69,6 @@ theorem width_le (a L c d : PTm n)
   have h : Γ ⊢[PRAAx] le c (d+two*L) := by ipra_le sl hc.andE₂ + sl hd.andE₁
   exact le_congr (.eqRefl _) ((congrMonus (add_comm _ _) (.eqRefl _)).eqTrans (add_monus _ _))
     (AnalyticNumberTheory.BlockFamily.monus_le_monus (c := d) h)
-
-private theorem low_gap (p a b u k : PTm n)
-    (ha : Γ ⊢[PRAAx] le one a) (hu : Γ ⊢[PRAAx] le one u)
-    (h3 : Γ ⊢[PRAAx] le a (num 3*u))
-    (hA : Γ ⊢[PRAAx] le a (u+k)) (hU : Γ ⊢[PRAAx] le u (a+k)) :
-    Γ ⊢[PRAAx] distanceBounded (sample p u b) (sample p a b) (two*k) a := by
-  refine .orE (le_total u a) ?_ ?_
-  · have h : (le u a :: Γ) ⊢[PRAAx] le u a := Prf.hyp0
-    let r := monus a u
-    have e : (le u a :: Γ) ⊢[PRAAx] u+r ≐ a := (eq_add_of_le h).eqSymm
-    have hR : (le u a :: Γ) ⊢[PRAAx] le r k :=
-      le_congr (.eqRefl _) ((congrMonus (add_comm _ _) (.eqRefl _)).eqTrans (add_monus _ _))
-        (AnalyticNumberTheory.BlockFamily.monus_le_monus (c := u) hA.wk)
-    have hT : (le u a :: Γ) ⊢[PRAAx] le (u+r) (num 3*u) := le_congr e.eqSymm (.eqRefl _) h3.wk
-    have t := GaussianGammaDigammaTwoShiftTrapezoidGap.trapezoid_gap p u r b k hu.wk hR hT
-    exact distance_symmetric _ _ _ _ ha.wk
-      (distance_congr (congrAp2 nameF (.eqRefl _) (congrPairT e (.eqRefl _))) (.eqRefl _) (.eqRefl _) e t)
-  · have h : (le a u :: Γ) ⊢[PRAAx] le a u := Prf.hyp0
-    have h2 : (le a u :: Γ) ⊢[PRAAx] le a (two*u) := by
-      ipra_le sl h + Groth.ι (IPRA.Q.mk (le a u :: Γ) u)
-    exact log_gap_at p a u b k ha.wk hu.wk h2 hA.wk hU.wk
 
 theorem forward_raw (p a b c d L : PTm n) (h : Γ ⊢[PRAAx] input a b c d L)
     (hlt : Γ ⊢[PRAAx] lt d c) : Γ ⊢[PRAAx]

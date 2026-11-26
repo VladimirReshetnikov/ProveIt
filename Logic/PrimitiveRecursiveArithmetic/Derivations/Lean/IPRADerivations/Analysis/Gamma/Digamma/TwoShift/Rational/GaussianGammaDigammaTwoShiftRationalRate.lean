@@ -18,81 +18,30 @@ set_option maxHeartbeats 1750000
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftRationalRate
 
 open_ipra
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaDigammaTwoShiftBinding (quotientLogF quotientLogData quotientF quotientData quotient_log_regular)
-open GaussianGammaDigammaTwoShiftCofinalRate (rawSample subst_rawSample)
+open GaussianGammaDigammaTwoShiftCofinalRate
+  (rawSample raw_positive_coefficient raw_data_congr raw_bounds_from_ordered)
 open GaussianGammaDigammaTwoShiftExactCofinalRate (finiteRate logRate cofinal_rate)
 open GaussianGammaDigammaTwoShiftExponentialCaps (lower upperPoint constant_caps)
-open GaussianGammaDigammaTwoShiftFiniteRate (raw)
-open GaussianGammaDigammaTwoShiftSecants (logSample upper_negative negative_mul)
-open GaussianGammaDigammaTwoShiftWindow (low width numerator_mono)
+open GaussianGammaDigammaTwoShiftWindow (low width)
 open GaussianGammaDigammaTwoShiftRationalWindow
   (input coefficient cost low_split high_split forward_raw positive_endpoint)
-open GaussianHarmonicLogarithmName (sample)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (reversed_difference)
-open GaussianRationalHorner (qadd qmul qzero ofGaussian_canonical positive_product)
-open GaussianRationalMetric (qsub qnegative qnegative_canonical)
-open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalSyntheticDivision (qadd_sub_cancel qmul_congr qsub_congr qmul_zero_left)
+open GaussianRationalHorner (qzero positive_product ofGaussian_canonical)
+open GaussianRationalMetric (qnegative qnegative_canonical)
 open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingNames (constant_real fraction_axis)
 open RationalGaussianEmbedding (axis_negative)
-open RationalValueBounds (upper upper_congr upper_of_order)
+open RationalValueBounds (upper upper_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def budget (b c d : PTm n) : PTm n := cost b c d+cost b d c
 
 ipra_subst budget
-
-private theorem raw_data_congr (p a b c d c' d' : PTm n) (ec : Γ ⊢[PRAAx] c ≐ c') (ed : Γ ⊢[PRAAx] d ≐ d') :
-    Γ ⊢[PRAAx] rawSample p a b c d ≐ rawSample p a b c' d' := by
-  have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (rawSample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![p,a,b,c,d]) (σ' := ![p,a,b,c',d']) (fun i => by
-      fin_cases i <;> first | exact ec | exact ed | exact .eqRefl _)
-  simpa only [subst_rawSample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using e
-
-private theorem coefficient_exact (b d r : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
-    Γ ⊢[PRAAx] GaussianGammaDigammaTwoShiftBinding.coefficient b (d+r) d ≐ fraction r b := by
-  have ad := GaussianEulerPositivePowerChartCorrectedImage.fraction_sum d b r b hb hb
-  have same := GaussianStirlingRationalTelescopers.fraction_same (d*b+r*b) (b*b) (d+r) b
-    (GaussianRationalHorner.positive_product _ _ hb hb) hb (by ipra_ring)
-  exact (qsub_congr (ad.eqTrans same).eqSymm (.eqRefl _)).eqTrans
-    (qadd_sub_cancel _ _ (ofGaussian_canonical _ _ hb))
-
-private theorem raw_positive_coefficient (p a u b r : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
-    Γ ⊢[PRAAx] rawSample p a b (u+b+r) (u+b) ≐ raw p a u b r :=
-  qsub_congr (.eqRefl _) (qmul_congr (coefficient_exact b (u+b) r hb) (.eqRefl _))
-
-private theorem reversed_raw (p a b c d : PTm n) : Γ ⊢[PRAAx] qnegative (rawSample p a b c d) ≐ rawSample p a b d c := by
-  let g := logSample p c b
-  let h := logSample p d b
-  let l := sample p a b
-  let x := qsub g h
-  let w := GaussianGammaDigammaTwoShiftBinding.coefficient b c d
-  let v := GaussianGammaDigammaTwoShiftBinding.coefficient b d c
-  let y := qmul w l
-  have eX : Γ ⊢[PRAAx] qnegative x ≐ qsub h g := reversed_difference g h
-  have eV : Γ ⊢[PRAAx] qnegative w ≐ v := reversed_difference (fraction c b) (fraction d b)
-  have eY : Γ ⊢[PRAAx] qnegative y ≐ qmul v l :=
-    (GaussianRationalMatrixFiniteSums.negative_as_minusOne (Γ := Γ) y).eqTrans
-      ((qmul_congr (.eqRefl _) (qmul_commutative w l)).eqTrans
-        ((GaussianRationalMatrixFiniteSums.negative_as_minusOne (qmul l w)).eqSymm.eqTrans
-          ((negative_mul l w).eqTrans ((qmul_congr (.eqRefl _) eV).eqTrans (qmul_commutative _ _)))))
-  have invol := GaussianDeterminantSignTransport.negative_involution (Γ := Γ) y (GaussianRationalHorner.qmul_canonical _ _)
-  have swap : Γ ⊢[PRAAx] qsub (qnegative x) (qnegative y) ≐ qsub y x :=
-    (GaussianRationalSyntheticDivision.qadd_congr (.eqRefl _) invol).eqTrans (GaussianReciprocalHorner.qadd_commutative _ _)
-  exact (reversed_difference x y).eqTrans (swap.eqSymm.eqTrans (qsub_congr eX eY))
-
-private theorem same_raw (p a b c : PTm n) : Γ ⊢[PRAAx] rawSample p a b c c ≐ qzero := by
-  have e := GaussianCoefficientNormOrder.qsub_self (Γ := Γ) (logSample p c b)
-  have w := GaussianCoefficientNormOrder.qsub_self (Γ := Γ) (fraction c b)
-  exact (qsub_congr e ((qmul_congr w (.eqRefl _)).eqTrans (qmul_zero_left _))).eqTrans
-    (GaussianCoefficientNormOrder.qsub_self qzero)
 
 private theorem forward (p a b c d L : PTm n) (hs : Γ ⊢[PRAAx] input a b c d L)
     (h : Γ ⊢[PRAAx] lt d c) :
@@ -113,41 +62,13 @@ private theorem row (p a b c d L : PTm n) (hs : Γ ⊢[PRAAx] input a b c d L) :
     Γ ⊢[PRAAx]
       (upper (fstT qzero) (fstT (rawSample p a b c d)) (coefficient b L*unit p+budget b c d*(a*b)) ((a*b)*unit p) ⋏
        upper (fstT (rawSample p a b c d)) (fstT qzero) (coefficient b L*unit p+budget b c d*(a*b)) ((a*b)*unit p)) := by
-  let K := coefficient b L*unit p+budget b c d*(a*b)
-  let D := (a*b)*unit p
-  let r := rawSample p a b c d
-  have fwd {Δ : List (Fm PTm n)} (h : Δ ⊢[PRAAx] input a b c d L) (hlt : Δ ⊢[PRAAx] lt d c) :
-      Δ ⊢[PRAAx] (upper (fstT qzero) (fstT r) K D ⋏ upper (fstT r) (fstT qzero) K D) := by
-    have rate := forward p a b c d L h hlt
-    have hD := positive_product _ _ (positive_product _ _ h.andE₁.andE₁ h.andE₁.andE₂) (unit_positive p)
-    have widen : Δ ⊢[PRAAx] le (coefficient b L*unit p+cost b c d*(a*b)) K :=
-      le_of_eq_add (d := cost b d c*(a*b)) (by unfold K budget; ipra_ring)
-    exact .andI (numerator_mono _ _ _ _ _ hD widen rate.andE₁)
-      (numerator_mono _ _ _ _ _ hD widen rate.andE₂)
-  have backward {Δ : List (Fm PTm n)} (h : Δ ⊢[PRAAx] input a b c d L) (hlt : Δ ⊢[PRAAx] lt c d) :
-      Δ ⊢[PRAAx] (upper (fstT qzero) (fstT r) K D ⋏ upper (fstT r) (fstT qzero) K D) := by
-    have hs' : Δ ⊢[PRAAx] input a b d c L := .andI h.andE₁ (.andI h.andE₂.andE₁ (.andI h.andE₂.andE₂.andE₁
-      (.andI h.andE₂.andE₂.andE₂.andE₂ h.andE₂.andE₂.andE₂.andE₁)))
-    have t := forward p a b d c L hs' hlt
-    have hD := positive_product _ _ (positive_product _ _ h.andE₁.andE₁ h.andE₁.andE₂) (unit_positive p)
-    have e := reversed_raw (Γ := Δ) p a b d c
-    have nz : Δ ⊢[PRAAx] qnegative qzero ≐ qzero :=
-      (GaussianRationalMatrixFiniteSums.negative_as_minusOne _).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_right _)
-    have w : Δ ⊢[PRAAx] le (coefficient b L*unit p+cost b d c*(a*b)) K :=
-      le_of_eq_add (d := cost b c d*(a*b)) (by unfold K budget; ipra_ring)
-    have l := upper_congr (congrFst nz) (congrFst e) (.eqRefl _) (.eqRefl _) (upper_negative _ _ _ _ t.andE₂)
-    have u := upper_congr (congrFst e) (congrFst nz) (.eqRefl _) (.eqRefl _) (upper_negative _ _ _ _ t.andE₁)
-    exact .andI (numerator_mono _ _ _ _ _ hD w l)
-      (numerator_mono _ _ _ _ _ hD w u)
-  have coincident {Δ : List (Fm PTm n)} (e : Δ ⊢[PRAAx] c ≐ d) :
-      Δ ⊢[PRAAx] (upper (fstT qzero) (fstT r) K D ⋏ upper (fstT r) (fstT qzero) K D) := by
-    have same := (raw_data_congr p a b c d d d e (.eqRefl _)).eqTrans (same_raw p a b d)
-    have o := upper_of_order (Γ := Δ) (fstT (qzero : PTm n)) (fstT qzero) K D (le_refl _)
-    exact .andI (upper_congr (.eqRefl _) (congrFst same.eqSymm) (.eqRefl _) (.eqRefl _) o)
-      (upper_congr (congrFst same.eqSymm) (.eqRefl _) (.eqRefl _) (.eqRefl _) o)
-  refine .orE (le_total c d) ?_ ?_
-  · exact .orE (lt_or_eq_of_le Prf.hyp0) (backward hs.wk.wk Prf.hyp0) (coincident Prf.hyp0)
-  · exact .orE (lt_or_eq_of_le Prf.hyp0) (fwd hs.wk.wk Prf.hyp0) (coincident Prf.hyp0.eqSymm)
+  have swapped : Γ ⊢[PRAAx] input a b d c L := .andI hs.andE₁
+    (.andI hs.andE₂.andE₁ (.andI hs.andE₂.andE₂.andE₁
+      (.andI hs.andE₂.andE₂.andE₂.andE₂ hs.andE₂.andE₂.andE₂.andE₁)))
+  exact raw_bounds_from_ordered p a b c d (coefficient b L*unit p) (a*b)
+    (cost b c d) (cost b d c) (positive_product _ _ hs.andE₁.andE₁ hs.andE₁.andE₂)
+    (.impI (forward p a b c d L hs.wk Prf.hyp0))
+    (.impI (forward p a b d c L swapped.wk Prf.hyp0))
 
 theorem two_shift_log_rate (a b c d L : PTm n) (hs : Γ ⊢[PRAAx] input a b c d L) :
     Γ ⊢[PRAAx] logRate a b c d (coefficient b L) (a*b) := by

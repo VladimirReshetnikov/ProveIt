@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftFiniteRate
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
+import IPRADerivations.Analysis.LinearAlgebra.Determinants.GaussianDeterminantSignTransport
 
 /-!
 # Cofinal transfer to the original two-shift log quotient
@@ -20,19 +21,21 @@ open GaussianGammaDigammaHarmonicCells (point_fraction_represents)
 open GaussianGammaDigammaTwoShiftBinding
   (coefficient powerLogF powerLogData denominatorLogF denominatorLogData quotientLogF quotientLogData
     power_log_regular denominator_log_regular quotient_log_regular)
-open GaussianGammaDigammaTwoShiftSecants (logSample upper_negative)
+open GaussianGammaDigammaTwoShiftFiniteRate (raw)
+open GaussianGammaDigammaTwoShiftSecants (logSample upper_negative negative_mul)
 open GaussianHarmonicLogarithmName (sample)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNamedRealOrderEnvelope (envelope order_from_envelope)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
-open GaussianRationalHorner (qadd qmul qzero positive_product scalar_congr)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same reversed_difference)
+open GaussianRationalHorner (qadd qmul qzero positive_product scalar_congr ofGaussian_canonical)
 open GaussianRationalMetric (qsub qnegative distanceBounded)
-open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
+open GaussianRationalPowerAlgebra (qmul_commutative)
+open GaussianRationalSyntheticDivision (qmul_congr qsub_congr qadd_sub_cancel qmul_zero_left)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open RationalRepresentedUpper (left right to_signed from_signed)
-open RationalValueBounds (upper upper_congr upper_mono upper_triangle)
+open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_order)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "harmonicData" => GaussianHarmonicLogarithmName.data
@@ -47,6 +50,94 @@ def sampleCost (a b c d : PTm n) : PTm n :=
 ipra_subst rawSample [logSample, sample]
 
 ipra_subst sampleCost
+
+theorem raw_data_congr (p a b c d c' d' : PTm n) (ec : Γ ⊢[PRAAx] c ≐ c') (ed : Γ ⊢[PRAAx] d ≐ d') :
+    Γ ⊢[PRAAx] rawSample p a b c d ≐ rawSample p a b c' d' := by
+  have e := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (rawSample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
+    (σ := ![p,a,b,c,d]) (σ' := ![p,a,b,c',d']) (fun i => by
+      fin_cases i <;> first | exact ec | exact ed | exact .eqRefl _)
+  simpa only [subst_rawSample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
+    Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using e
+
+private theorem coefficient_exact (b d r : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
+    Γ ⊢[PRAAx] GaussianGammaDigammaTwoShiftBinding.coefficient b (d+r) d ≐ fraction r b := by
+  have ad := GaussianEulerPositivePowerChartCorrectedImage.fraction_sum d b r b hb hb
+  have same := GaussianStirlingRationalTelescopers.fraction_same (d*b+r*b) (b*b) (d+r) b
+    (GaussianRationalHorner.positive_product _ _ hb hb) hb (by ipra_ring)
+  exact (qsub_congr (ad.eqTrans same).eqSymm (.eqRefl _)).eqTrans
+    (qadd_sub_cancel _ _ (ofGaussian_canonical _ _ hb))
+
+theorem raw_positive_coefficient (p a u b r : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
+    Γ ⊢[PRAAx] rawSample p a b (u+b+r) (u+b) ≐ raw p a u b r :=
+  qsub_congr (.eqRefl _) (qmul_congr (coefficient_exact b (u+b) r hb) (.eqRefl _))
+
+private theorem reversed_raw (p a b c d : PTm n) : Γ ⊢[PRAAx] qnegative (rawSample p a b c d) ≐ rawSample p a b d c := by
+  let g := logSample p c b
+  let h := logSample p d b
+  let l := sample p a b
+  let x := qsub g h
+  let w := GaussianGammaDigammaTwoShiftBinding.coefficient b c d
+  let v := GaussianGammaDigammaTwoShiftBinding.coefficient b d c
+  let y := qmul w l
+  have eX : Γ ⊢[PRAAx] qnegative x ≐ qsub h g := reversed_difference g h
+  have eV : Γ ⊢[PRAAx] qnegative w ≐ v := reversed_difference (fraction c b) (fraction d b)
+  have eY : Γ ⊢[PRAAx] qnegative y ≐ qmul v l :=
+    (GaussianRationalMatrixFiniteSums.negative_as_minusOne (Γ := Γ) y).eqTrans
+      ((qmul_congr (.eqRefl _) (qmul_commutative w l)).eqTrans
+        ((GaussianRationalMatrixFiniteSums.negative_as_minusOne (qmul l w)).eqSymm.eqTrans
+          ((negative_mul l w).eqTrans ((qmul_congr (.eqRefl _) eV).eqTrans (qmul_commutative _ _)))))
+  have invol := GaussianDeterminantSignTransport.negative_involution (Γ := Γ) y (GaussianRationalHorner.qmul_canonical _ _)
+  have swap : Γ ⊢[PRAAx] qsub (qnegative x) (qnegative y) ≐ qsub y x :=
+    (GaussianRationalSyntheticDivision.qadd_congr (.eqRefl _) invol).eqTrans (GaussianReciprocalHorner.qadd_commutative _ _)
+  exact (reversed_difference x y).eqTrans (swap.eqSymm.eqTrans (qsub_congr eX eY))
+
+private theorem same_raw (p a b c : PTm n) : Γ ⊢[PRAAx] rawSample p a b c c ≐ qzero := by
+  have e := GaussianCoefficientNormOrder.qsub_self (Γ := Γ) (logSample p c b)
+  have w := GaussianCoefficientNormOrder.qsub_self (Γ := Γ) (fraction c b)
+  exact (qsub_congr e ((qmul_congr w (.eqRefl _)).eqTrans (qmul_zero_left _))).eqTrans
+    (GaussianCoefficientNormOrder.qsub_self qzero)
+
+/-- The scalar part lies between the two signed bounds with radius `A/D`. -/
+abbrev symmetricUpper (q A D : PTm n) : Fm PTm n :=
+  (upper (fstT qzero) (fstT q) A D) ⋏ upper (fstT q) (fstT qzero) A D
+
+/-- Combine the two ordered window estimates and their respective error allowances. -/
+theorem raw_bounds_from_ordered (p a b c d A T F G : PTm n) (hT : Γ ⊢[PRAAx] le one T)
+    (forward : Γ ⊢[PRAAx] lt d c ⟶ symmetricUpper (rawSample p a b c d) (A+F*T) (T*unit p))
+    (backward : Γ ⊢[PRAAx] lt c d ⟶ symmetricUpper (rawSample p a b d c) (A+G*T) (T*unit p)) :
+    Γ ⊢[PRAAx] symmetricUpper (rawSample p a b c d) (A+(F+G)*T) (T*unit p) := by
+  let K := A+(F+G)*T
+  let D := T*unit p
+  let r := rawSample p a b c d
+  have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ hT (unit_positive p)
+  have fw : Γ ⊢[PRAAx] le (A+F*T) K := le_of_eq_add (d := G*T) (by unfold K; ipra_ring)
+  have bw : Γ ⊢[PRAAx] le (A+G*T) K := le_of_eq_add (d := F*T) (by unfold K; ipra_ring)
+  have widen {Δ : List (Fm PTm n)} {B : PTm n} (hD : Δ ⊢[PRAAx] le one D)
+      (hB : Δ ⊢[PRAAx] le B K) (h : Δ ⊢[PRAAx] symmetricUpper r B D) :
+      Δ ⊢[PRAAx] symmetricUpper r K D := by
+    have bound := mul_le_mul_right D hB
+    exact .andI (upper_mono _ _ _ _ _ _ hD h.andE₁ bound) (upper_mono _ _ _ _ _ _ hD h.andE₂ bound)
+  have flip {Δ : List (Fm PTm n)} (h : Δ ⊢[PRAAx] symmetricUpper (rawSample p a b d c) (A+G*T) D) :
+      Δ ⊢[PRAAx] symmetricUpper r (A+G*T) D := by
+    have e := reversed_raw (Γ := Δ) p a b d c
+    have nz : Δ ⊢[PRAAx] qnegative qzero ≐ qzero :=
+      (GaussianRationalMatrixFiniteSums.negative_as_minusOne _).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_right _)
+    exact .andI
+      (upper_congr (congrFst nz) (congrFst e) (.eqRefl _) (.eqRefl _) (upper_negative _ _ _ _ h.andE₂))
+      (upper_congr (congrFst e) (congrFst nz) (.eqRefl _) (.eqRefl _) (upper_negative _ _ _ _ h.andE₁))
+  have coincident {Δ : List (Fm PTm n)} (e : Δ ⊢[PRAAx] c ≐ d) :
+      Δ ⊢[PRAAx] symmetricUpper r K D := by
+    have same := (raw_data_congr p a b c d d d e (.eqRefl _)).eqTrans (same_raw p a b d)
+    have o := upper_of_order (Γ := Δ) (fstT (qzero : PTm n)) (fstT qzero) K D (le_refl _)
+    exact .andI (upper_congr (.eqRefl _) (congrFst same.eqSymm) (.eqRefl _) (.eqRefl _) o)
+      (upper_congr (congrFst same.eqSymm) (.eqRefl _) (.eqRefl _) (.eqRefl _) o)
+  refine .orE (le_total c d) ?_ ?_
+  · exact .orE (lt_or_eq_of_le Prf.hyp0)
+      (widen hD.wk.wk bw.wk.wk (flip (Prf.impE backward.wk.wk Prf.hyp0)))
+      (coincident Prf.hyp0)
+  · exact .orE (lt_or_eq_of_le Prf.hyp0)
+      (widen hD.wk.wk fw.wk.wk (Prf.impE forward.wk.wk Prf.hyp0))
+      (coincident Prf.hyp0.eqSymm)
 
 theorem quotient_sample_error (p a b c d : PTm n) (ha : Γ ⊢[PRAAx] source a b)
     (hc : Γ ⊢[PRAAx] source c b) (hD : Γ ⊢[PRAAx] source d b) :
