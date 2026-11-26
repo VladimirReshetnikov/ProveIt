@@ -2954,3 +2954,6 @@ The exact sums of the literal first-derivative rows give a regular sampler with 
 
 The original rational evaluator, applied to an explicit late original input observation, gives a regular Barnes name. On a common certified disk it respects equivalent input names and agrees with the original rational value on constant inputs. The disk can be computed from the input name.
 [GaussianBarnesCanonicalNamedDemand](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedDemand.lean), [GaussianBarnesCanonicalNamed](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamed.lean)
+
+Throughout the certified half-unit neighborhood, each retained factor has a lower bound independent of the input numerator and denominator. The same uniform apartness holds at the exact skipped-head observation.
+[GaussianBarnesCanonicalDeflatedHeadUniform](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedHeadUniform.lean)
