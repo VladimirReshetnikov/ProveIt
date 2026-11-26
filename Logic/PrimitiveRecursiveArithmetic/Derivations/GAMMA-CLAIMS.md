@@ -3176,3 +3176,6 @@ Scaling each higher logarithmic coefficient sum by the encoded factorial gives t
 
 The original corrected log-row increment and the literal finite retained interval compare to their actual Mercator-based Taylor polynomials at every internally encoded degree at least two. The interval error retains the exact inverse-square telescoping factor for all lengths.
 [GaussianBarnesCanonicalCorrectedMercator](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercator.lean), [GaussianBarnesCanonicalCorrectedMercatorInterval](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCorrectedMercatorInterval.lean)
+
+The literal weighted Mercator polynomial splits at degree two. The exact low terms are the original derivative rows with their finite correction, and the higher terms transpose from logarithmic rows to the original retained coefficient-prefix sums.
+[GaussianBarnesCanonicalHigherMercatorSum](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherMercatorSum.lean), [GaussianBarnesCanonicalQuadraticBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalQuadraticBinding.lean), [GaussianBarnesCanonicalHigherMercatorTranspose](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherMercatorTranspose.lean)
