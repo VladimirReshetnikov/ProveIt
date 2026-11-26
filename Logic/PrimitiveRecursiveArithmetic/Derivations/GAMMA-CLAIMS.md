@@ -3110,3 +3110,6 @@ At a common positive cutoff, the original Barnes truncations satisfy the finite 
 
 Comparing the actual padded synthetic quotients and finite harmonic correction gives a disk Lipschitz bound for the original kept head derivative at arbitrary Gaussian rational presentations. The same program has an explicit uniform bound on every sample.
 [GaussianRationalSyntheticSlopeLipschitz](Lean/IPRADerivations/Analysis/GaussianRationalSyntheticSlopeLipschitz.lean), [GaussianBarnesCanonicalHeadCorrectionContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadCorrectionContinuity.lean), [GaussianBarnesCanonicalHeadDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHeadDerivativeContinuity.lean)
+
+A uniform Lipschitz bound and all-sample cap for the original kept-prefix derivative follow from the checked head and prefactor bounds and the actual named sum and product observation laws.
+[GaussianNamedBoundedSumObservation](Lean/IPRADerivations/Analysis/GaussianNamedBoundedSumObservation.lean), [GaussianBarnesCanonicalPrefixDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefixDerivativeContinuity.lean)
