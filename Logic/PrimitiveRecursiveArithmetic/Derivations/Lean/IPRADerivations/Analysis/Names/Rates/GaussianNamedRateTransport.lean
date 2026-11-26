@@ -17,7 +17,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRateTransport
 
 open_ipra
-open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator denominator_positive)
+open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator denominator_positive shift_independent_rate)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -57,8 +57,7 @@ theorem observation_error (F G H K : PR 2) (x y u v D N p q : PTm n)
   apply GaussianRationalSlackRemoval.slack_removal _ _ _ (two*two) (denominator_positive N p q hN)
   refine .allI ?_
   have ns : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
-  have hs : Γ.map Fm.shift ⊢[PRAAx] independentRate F G (Syn.shift x) (Syn.shift y) (Syn.shift D) (Syn.shift N) := by
-    simpa [Fm.shift,Syn.shift] using h.shift
+  have hs := shift_independent_rate h
   have ls : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent H F (Syn.shift u) (Syn.shift x) := by simpa [Fm.shift,Syn.shift] using hl.shift
   have rs : Γ.map Fm.shift ⊢[PRAAx] crossEquivalent K G (Syn.shift v) (Syn.shift y) := by simpa [Fm.shift,Syn.shift] using hr.shift
   simpa only [GaussianRationalSlackRemoval.allSlack,GaussianRationalMetric.subst_qsub,subst_ap2,
@@ -73,8 +72,7 @@ theorem transport (F G H K : PR 2) (x y u v D N : PTm n)
     (hr : Γ ⊢[PRAAx] crossEquivalent K G v y) : Γ ⊢[PRAAx] independentRate H K u v D N := by
   refine .allI (.allI ?_)
   have ns : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (Syn.shift (Syn.shift N)) := by simpa [Fm.shift,Syn.shift] using hN.shift.shift
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate F G (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y))
-      (Syn.shift (Syn.shift D)) (Syn.shift (Syn.shift N)) := by simpa [Fm.shift,Syn.shift] using h.shift.shift
+  have hs := shift_independent_rate (shift_independent_rate h)
   have ls : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] crossEquivalent H F (Syn.shift (Syn.shift u)) (Syn.shift (Syn.shift x)) := by
     simpa [Fm.shift,Syn.shift] using hl.shift.shift
   have rs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] crossEquivalent K G (Syn.shift (Syn.shift v)) (Syn.shift (Syn.shift y)) := by

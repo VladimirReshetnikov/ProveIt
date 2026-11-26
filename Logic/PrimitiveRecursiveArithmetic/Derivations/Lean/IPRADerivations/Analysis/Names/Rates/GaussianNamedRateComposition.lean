@@ -14,7 +14,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRateComposition
 
 open_ipra
-open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
+open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive shift_independent_rate)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
@@ -64,12 +64,10 @@ theorem compose (F G H : PR 2) (x y z A B C E : PTm n)
     independentRate F H x z (leadingNumerator A B C E) (leadingDenominator B E) := by
   refine .allI (.allI ?_)
   let sh (v : PTm n) := Syn.shift (Syn.shift v)
-  have bs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (sh B) := by simpa [Fm.shift,Syn.shift,sh] using hB.shift.shift
-  have es : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (sh E) := by simpa [Fm.shift,Syn.shift,sh] using hE.shift.shift
-  have fs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate F G (sh x) (sh y) (sh A) (sh B) :=
-    by simpa [Fm.shift,Syn.shift,sh] using hf.shift.shift
-  have gs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate G H (sh y) (sh z) (sh C) (sh E) :=
-    by simpa [Fm.shift,Syn.shift,sh] using hg.shift.shift
+  have bs := Order.shift_one_le (Order.shift_one_le hB)
+  have es := Order.shift_one_le (Order.shift_one_le hE)
+  have fs := shift_independent_rate (shift_independent_rate hf)
+  have gs := shift_independent_rate (shift_independent_rate hg)
   simpa only [independentRate,Syn.shift,subst_leadingNumerator,subst_leadingDenominator,sh] using
     independent_at F G H (sh x) (sh y) (sh z) (sh A) (sh B) (sh C) (sh E) (var 1) (var 0) bs es fs gs
 
@@ -86,11 +84,9 @@ theorem same_denominator (F G H : PR 2) (x y z A B C : PTm n)
     (hg : Γ ⊢[PRAAx] independentRate G H y z C B) : Γ ⊢[PRAAx] independentRate F H x z (A+C) B := by
   refine .allI (.allI ?_)
   let sh (v : PTm n) := Syn.shift (Syn.shift v)
-  have bs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (sh B) := by simpa [Fm.shift,Syn.shift,sh] using hB.shift.shift
-  have fs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate F G (sh x) (sh y) (sh A) (sh B) :=
-    by simpa [Fm.shift,Syn.shift,sh] using hf.shift.shift
-  have gs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate G H (sh y) (sh z) (sh C) (sh B) :=
-    by simpa [Fm.shift,Syn.shift,sh] using hg.shift.shift
+  have bs := Order.shift_one_le (Order.shift_one_le hB)
+  have fs := shift_independent_rate (shift_independent_rate hf)
+  have gs := shift_independent_rate (shift_independent_rate hg)
   simpa only [independentRate,Syn.shift,PTm.subst_add,sh] using
     same_denominator_at F G H (sh x) (sh y) (sh z) (sh A) (sh B) (sh C) (var 1) (var 0) bs fs gs
 
@@ -98,9 +94,8 @@ theorem symmetric (F G : PR 2) (x y A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] independentRate F G x y A B) : Γ ⊢[PRAAx] independentRate G F y x A B := by
   refine .allI (.allI ?_)
   let sh (v : PTm n) := Syn.shift (Syn.shift v)
-  have bs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (sh B) := by simpa [Fm.shift,Syn.shift,sh] using hB.shift.shift
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate F G (sh x) (sh y) (sh A) (sh B) :=
-    by simpa [Fm.shift,Syn.shift,sh] using h.shift.shift
+  have bs := Order.shift_one_le (Order.shift_one_le hB)
+  have hs := shift_independent_rate (shift_independent_rate h)
   have obs := distance_symmetric _ _ _ _ (denominator_positive _ _ _ bs) (rate_at F G (sh x) (sh y) (sh A) (sh B) (var 0) (var 1) hs)
   have swapped : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
       distanceBounded (ap2 G (var 1) (sh y)) (ap2 F (var 0) (sh x))

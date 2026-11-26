@@ -16,7 +16,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianBoundedConstantProductRate
 
 open_ipra
 open GaussianBoundedConstantProductName (nameF data sample_at clock)
-open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
+open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator shift_independent_rate)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
@@ -60,10 +60,9 @@ theorem original_rate (f g : PR 2) (A c x y X D : PTm n)
     (hr : Γ ⊢[PRAAx] independentRate f g x y X D) : Γ ⊢[PRAAx]
     independentRate (nameF f) (nameF g) (data A c x) (data A c y) (A*X) D := by
   let sh (u : PTm n) := Syn.shift (Syn.shift u)
-  have hd : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le one (sh D) := by simpa [Fm.shift,Syn.shift,sh,one] using hD.shift.shift
+  have hd := Order.shift_one_le (Order.shift_one_le hD)
   have hb : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] bounded (sh c) (sh A) one := by simpa [Fm.shift,Syn.shift,sh,one] using hc.shift.shift
-  have hh : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate f g (sh x) (sh y) (sh X) (sh D) := by
-    simpa [Fm.shift,Syn.shift,sh] using hr.shift.shift
+  have hh := shift_independent_rate (shift_independent_rate hr)
   refine .allI (.allI ?_)
   simpa only [independentRate,GaussianBoundedConstantProductName.subst_data,PTm.subst_mul,Syn.shift,sh] using
     original_observations f g (var 1) (var 0) (sh A) (sh c) (sh x) (sh y) (sh X) (sh D) hd hb hh

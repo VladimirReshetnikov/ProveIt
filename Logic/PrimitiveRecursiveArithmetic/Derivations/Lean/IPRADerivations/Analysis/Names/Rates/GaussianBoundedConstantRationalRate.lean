@@ -16,7 +16,7 @@ open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBoundedConstantProductName (nameF data sample_at clock)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
+open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator shift_independent_rate)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -68,14 +68,13 @@ theorem original_rate (f g : PR 2) (A c x y P Qd B D : PTm n)
     independentRate (nameF f) (nameF g) (data A c x) (data A c y) (P*B) (Qd*D) := by
   let Δ := (Γ.map Fm.shift).map Fm.shift
   let sh (u : PTm n) := Syn.shift (Syn.shift u)
-  have hq : Δ ⊢[PRAAx] le one (sh Qd) := by simpa [Δ, Fm.shift, Syn.shift, sh, one] using hQ.shift.shift
-  have hd : Δ ⊢[PRAAx] le one (sh D) := by simpa [Δ, Fm.shift, Syn.shift, sh, one] using hD.shift.shift
+  have hq := Order.shift_one_le (Order.shift_one_le hQ)
+  have hd := Order.shift_one_le (Order.shift_one_le hD)
   have ha : Δ ⊢[PRAAx] le (sh P) (sh A * sh Qd) := by
     simpa [Δ, Fm.shift, Syn.shift, sh] using hClock.shift.shift
   have hb : Δ ⊢[PRAAx] bounded (sh c) (sh P) (sh Qd) := by
     simpa [Δ, Fm.shift, Syn.shift, sh] using hc.shift.shift
-  have hh : Δ ⊢[PRAAx] independentRate f g (sh x) (sh y) (sh B) (sh D) := by
-    simpa [Δ, Fm.shift, Syn.shift, sh] using hr.shift.shift
+  have hh := shift_independent_rate (shift_independent_rate hr)
   refine .allI (.allI ?_)
   simpa only [Δ, independentRate, GaussianBoundedConstantProductName.subst_data, PTm.subst_mul, Syn.shift, sh] using
     original_observations f g (var 1) (var 0) (sh A) (sh c) (sh x) (sh y) (sh P) (sh Qd) (sh B) (sh D)

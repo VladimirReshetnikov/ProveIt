@@ -57,6 +57,12 @@ ipra_subst residualCost
 ipra_subst auxiliaryCost
 ipra_subst input
 
+/-- Carry an independent rate into the context with one new variable. -/
+theorem shift_independent_rate {F G : PR 2} {x y D N : PTm n}
+    (h : Γ ⊢[PRAAx] independentRate F G x y D N) :
+    Γ.map Fm.shift ⊢[PRAAx] independentRate F G (Syn.shift x) (Syn.shift y) (Syn.shift D) (Syn.shift N) := by
+  simpa only [Fm.shift, subst_independentRate, Syn.shift] using h.shift
+
 theorem denominator_positive (N p q : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] le one (rateDenominator N p q) :=
   positive_product _ _ (positive_product _ _ hN (unit_positive p)) (unit_positive q)

@@ -13,7 +13,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianNamedRateConjugation
 
 open_ipra
-open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
+open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive shift_independent_rate)
 open GaussianRationalConjugation (point_distance)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalMetric (distanceBounded)
@@ -35,9 +35,8 @@ theorem transport (F G : PR 2) (x y A N : PTm n)
   refine .allI (.allI ?_)
   let sh (t : PTm n) := Syn.shift (Syn.shift t)
   let Δ := (Γ.map Fm.shift).map Fm.shift
-  have positive : Δ ⊢[PRAAx] le one (sh N) := by simpa [Fm.shift,Syn.shift,sh,Δ] using hN.shift.shift
-  have rate : Δ ⊢[PRAAx] independentRate F G (sh x) (sh y) (sh A) (sh N) := by
-    simpa [Fm.shift,Syn.shift,sh,Δ] using h.shift.shift
+  have positive := Order.shift_one_le (Order.shift_one_le hN)
+  have rate := shift_independent_rate (shift_independent_rate h)
   simpa only [independentRate,Syn.shift,sh,Δ] using
     observation F G (sh x) (sh y) (sh A) (sh N) (var 1) (var 0) positive rate
 
