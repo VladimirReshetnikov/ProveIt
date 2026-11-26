@@ -2816,3 +2816,6 @@ The literal finite summation program propagates a bounded family of row comparis
 
 On a fixed compact time panel the actual Euler log-power has a checked parameter rate. The same estimate controls each original Mellin integrand sample and the original Dirichlet row. A common, internally chosen truncation and the existing Dirichlet tail rates give a primitive-recursive input demand for every independent cofinal observation error.
 [GaussianEulerCompactPowerParameterRate](Lean/IPRADerivations/Analysis/GaussianEulerCompactPowerParameterRate.lean), [GaussianGammaZetaParameterRates](Lean/IPRADerivations/Analysis/GaussianGammaZetaParameterRates.lean), [GaussianGammaZetaDirichletParameterRate](Lean/IPRADerivations/Analysis/GaussianGammaZetaDirichletParameterRate.lean)
+
+A primitive-recursive maximum of the input demands selects actual late signed samples. The checked lift is regular and proper, agrees with arbitrary later frozen rational evaluations, and preserves rational agreement for two evaluators using the same demand.
+[GaussianNamedRightHalfPlaneDemandLift](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneDemandLift.lean), [GaussianNamedRightHalfPlaneDemandComparison](Lean/IPRADerivations/Analysis/GaussianNamedRightHalfPlaneDemandComparison.lean)
