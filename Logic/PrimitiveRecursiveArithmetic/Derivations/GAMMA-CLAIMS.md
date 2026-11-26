@@ -2942,3 +2942,6 @@ The original factor equals the exact rational power $(z+m)^m$ times its actual r
 
 The original ranges on both sides of the isolated index are apart throughout the certified closed half-unit rational neighborhood. The disk guard forces the chosen factor into the fixed initial head.
 [GaussianBarnesCanonicalDeflatedHead](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedHead.lean)
+
+On each common rational disk, an explicit input clock certifies a dyadic value budget for the original cofinal evaluator. The estimate combines the literal prefactor and head variation with two uniform convergence errors.
+[GaussianBarnesCanonicalPrefactorLipschitz](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorLipschitz.lean), [GaussianBarnesCanonicalUniformContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalUniformContinuity.lean)

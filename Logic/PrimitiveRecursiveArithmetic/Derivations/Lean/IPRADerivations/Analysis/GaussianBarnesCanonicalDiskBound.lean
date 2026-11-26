@@ -84,6 +84,10 @@ private def C (R : PTm n) : PTm n := R+(R*R)*(one+U gammaF zero)
 def prefactorRadius (R : PTm n) : PTm n := (two*L R+two)+(two*C R+two)
 def prefactorBound (R : PTm n) : PTm n := factor (prefactorRadius R)*factor (prefactorRadius R)
 
+@[simp] theorem subst_prefactorBound {m : ℕ} (σ : Fin n → PTm m) (R : PTm n) :
+    Syn.subst σ (prefactorBound R) = prefactorBound (Syn.subst σ R) := by
+  simp [prefactorBound,prefactorRadius,L,C,one,two,GaussianStirlingConstant.nameData]
+
 private theorem linear_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] bounded (ap2 linearF p (linearData z B)) (L R) one :=
   multiply_bound _ _ _ _ p R _ (fun s => constant_bound _ s _ (fraction_bound z R B h))
