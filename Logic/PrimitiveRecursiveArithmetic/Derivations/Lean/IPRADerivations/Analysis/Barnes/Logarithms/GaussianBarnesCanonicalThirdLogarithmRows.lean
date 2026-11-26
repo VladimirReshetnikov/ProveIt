@@ -74,7 +74,7 @@ theorem denominator_positive (A B i : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
     Γ ⊢[PRAAx] le one (denominator A B i) :=
   GaussianFactorBudget.power_positive _ _ (shifted_positive A B i hA)
 
-private theorem base_at (A B i : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
+theorem base_at (A B i : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] base (center A B) B (succ i) ≐ radiusPoint (shiftedNumerator A B i) (B*succ i) := by
   let d := B*succ i
   let c := shiftedNumerator A B i
