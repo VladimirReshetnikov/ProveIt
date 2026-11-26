@@ -3140,3 +3140,6 @@ The actual named base and shifted values both have an independent leading error 
 
 The actual named divided difference converges to the actual named derivative for apart regular Gaussian increments with a certified dyadic sample bound. The requested step bound depends only on the disk and target precision. The apartness certificate determines only the later observation clock.
 [GaussianBarnesCanonicalNamedIncrementDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedIncrementDerivative.lean)
+
+The original first-derivative row increments by the actual rational second derivative times the step, with exact resolvent remainder and uniform bound `8H²/(B²k²)`. The second-derivative row has radius `12R/k²` and its original finite sums obey the inverse-square telescope.
+[GaussianBarnesCanonicalSecondDerivativeRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeRow.lean), [GaussianBarnesCanonicalSecondDerivativeTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeTail.lean), [GaussianBarnesCanonicalSecondDerivativeStep](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalSecondDerivativeStep.lean)
