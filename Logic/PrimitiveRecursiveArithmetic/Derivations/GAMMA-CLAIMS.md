@@ -3023,3 +3023,6 @@ The two retained finite ranges of the actual head give an explicit common-disk L
 
 Combining the actual prefactor, multiplier, skipped head and cofinal tail gives an explicit uniform input demand for the exact deflated coefficient.
 [GaussianBarnesCanonicalDeflatedValueContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedValueContinuity.lean)
+
+The original cofinal log difference and original named product of the literal step with the cofinal rational derivative series have the independent rate `(3R+342)H²/(B² N₀)` plus two dyadic observation errors, with `N₀ = max(1,2R)`. The cutoff is shared only in the finite proof. The actual observations use independent clocks.
+[GaussianBarnesCanonicalDerivativeTailBinding](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeTailBinding.lean)
