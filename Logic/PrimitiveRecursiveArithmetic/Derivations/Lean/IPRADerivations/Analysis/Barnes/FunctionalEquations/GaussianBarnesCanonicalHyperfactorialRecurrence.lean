@@ -54,7 +54,7 @@ private theorem rotate (f g h : PR 2) (x y z : PTm n)
     (cross_refl _ _ hy) (multiply_commutative f h x z hx hz)
   exact cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ b (cross_trans _ _ _ _ _ _ c d))
 
-private theorem regroup (f g h k : PR 2) (x y u v : PTm n)
+theorem regroup (f g h k : PR 2) (x y u v : PTm n)
     (hx : Γ ⊢[PRAAx] pointCN f x) (hy : Γ ⊢[PRAAx] pointCN g y)
     (hu : Γ ⊢[PRAAx] pointCN h u) (hv : Γ ⊢[PRAAx] pointCN k v) :
     Γ ⊢[PRAAx] crossEquivalent (M (M f g) (M h k)) (M (M f h) (M k g))
@@ -85,7 +85,7 @@ private theorem inverse_reduction (f g : PR 2) (x y s : PTm n)
     (multiply_fast _ _ _ _ hy hw) (one_fast x) (cross_refl _ _ hx) identity
   exact cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ b (multiply_one f x hx))
 
-private theorem cancel_right (f g h : PR 2) (x y z s : PTm n)
+theorem cancel_right (f g h : PR 2) (x y z s : PTm n)
     (hx : Γ ⊢[PRAAx] pointCN f x) (hy : Γ ⊢[PRAAx] pointCN g y)
     (hz : Γ ⊢[PRAAx] pointCN h z) (ha : Γ ⊢[PRAAx] GaussianNameReciprocal.apart h s z)
     (he : Γ ⊢[PRAAx] crossEquivalent (M f h) (M g h) (Md f h x z) (Md g h y z)) :
