@@ -27,11 +27,11 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_upper)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt lw_prime tr_pos tr_le Hy)
+open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev
+  (S_mono wt Hy trace_readback_congr trace_stationary trace_factor_readback trace_end_readback)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (subadd le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda (Sw harmonic_sandwich)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace (trT tr_zero tr_succ step_small trace_prime trace_end lpf_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf prime)
+open LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace (trT tr_zero lpf_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (congrLw lw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero lt_zero_of_pos)
@@ -51,48 +51,20 @@ abbrev K (m M L i : PTm n) : Fm PTm n :=
     (S (M * trT i m) (fact L) + Lw wt m (pairT M (fact L)) + i * quo (fact L) M)
 
 theorem k_zero (m M L : PTm n) : Γ ⊢[PRAAx] K m M L zero := by
-  have t0 := tr_zero (Γ := Γ) m
-  have eS := natEq (congrAp2 (Γ := Γ) (sumF hB) (congrMul (.eqRefl M) t0) (.eqRefl (fact L)))
-  have eL := natEq (congrLw (Γ := Γ) (w := wt) (pairT M (fact L)) t0)
-  ipra_le 0 with eL - eS
+  have terms := trace_readback_congr M (fact L) (tr_zero (Γ := Γ) m)
+  ipra_le 0 with natEq terms.andE₂ - natEq terms.andE₁
 
 theorem k_step {m M L i : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAAx] le one M)
     (hL : Γ ⊢[PRAAx] le (M * m) L) (ih : Γ ⊢[PRAAx] K m M L i) : Γ ⊢[PRAAx] K m M L (succ i) := by
-  have hx1 := tr_pos hm i
-  have hxm := tr_le hm i
   refine .orE (lt_or_le one (trT i m)) ?_ ?_
   · let Δ := lt one (trT i m) :: Γ
-    have hx2 : Δ ⊢[PRAAx] le two (trT i m) := Prf.hyp0
-    have tp := trace_prime hx2
-    have hp := Prf.andE₁ tp
-    have ex := Prf.andE₂ tp
-    have hx'p := pos_of_lt_zero (tr_pos (Γ := Δ) hm.wk (succ i))
-    have hpp : Δ ⊢[PRAAx] lpf (trT i m) ≐ succ (pred (lpf (trT i m))) := lpf_pos _
-    have hMp := pos_of_lt_zero (Γ := Δ) hM.wk
-    have hL' : Δ ⊢[PRAAx] le (M * (lpf (trT i m) * trT (succ i) m)) L := by
-      refine le_trans (le_of_eq_add (d := M * monus m (trT i m)) ?_) hL.wk
-      ipra_lc 𝔞 M * natEq (eq_add_of_le (Γ := Δ) hxm.wk) - 𝔞 M * natEq ex
-    have sub := subadd hMp hpp hx'p hL'
-    have q1 : Δ ⊢[PRAAx] M * (lpf (trT i m) * trT (succ i) m) ≐ M * trT i m := by
-      ipra_lc 𝔞 M * natEq ex
-    have e1 := natEq (congrAp2 (Γ := Δ) (sumF hB) q1 (.eqRefl (fact L)))
-    have hmono : Δ ⊢[PRAAx] le M (M * lpf (trT i m)) := by
-      refine le_of_eq_add (d := M * pred (lpf (trT i m))) ?_
-      ipra_lc 𝔞 M * natEq hpp
-    have dec := natEq (eq_add_of_le (S_mono (fact L) hmono))
-    have sp : Δ ⊢[PRAAx] Lw wt (trT i m) (pairT M (fact L)) ≐
-        monus (S (M * lpf (trT i m)) (fact L)) (S M (fact L)) + Lw wt (trT (succ i) m) (pairT M (fact L)) :=
-      (congrLw (w := wt) _ (ex.eqSymm.eqTrans (mul_comm _ _))).eqTrans
-        ((lw_mul (w := wt) hpp hx'p).eqTrans (congrAdd (lw_prime M (fact L) hp) (.eqRefl _)))
-    have e3 := natEq sp
-    ipra_le sl ih.wk + sl sub with dec - e1 - e3
-  · let Δ := le (trT i m) one :: Γ
-    have xo : Δ ⊢[PRAAx] trT i m ≐ one := le_antisymm Prf.hyp0 hx1.wk
-    have sx : Δ ⊢[PRAAx] trT (succ i) m ≐ one := (tr_succ i m).eqTrans (step_small Prf.hyp0)
-    have exx := sx.eqTrans xo.eqSymm
-    have eS := natEq (congrAp2 (Γ := Δ) (sumF hB) (congrMul (.eqRefl M) exx) (.eqRefl (fact L)))
-    have eL := natEq (congrLw (Γ := Δ) (w := wt) (pairT M (fact L)) exx)
-    ipra_le sl ih.wk + 𝔞 (quo (fact L) M) with eL - eS
+    have hx : Δ ⊢[PRAAx] le two (trT i m) := Prf.hyp0
+    have factor := trace_factor_readback (Γ := Δ) i hm.wk hL.wk hx
+    have bound := subadd (pos_of_lt_zero (Γ := Δ) hM.wk) (lpf_pos _) factor.andE₁ factor.andE₂.andE₁
+    have terms := factor.andE₂.andE₂
+    ipra_le sl ih.wk + sl bound with natEq terms.andE₂.andE₁ - natEq terms.andE₁ - natEq terms.andE₂.andE₂
+  · have terms := trace_readback_congr M (fact L) (trace_stationary i hm.wk Prf.hyp0)
+    ipra_le sl ih.wk + 𝔞 (quo (fact L) M) with natEq terms.andE₂ - natEq terms.andE₁
 
 /-- Variables: `0 = i`, `1 = m`, `2 = M`, `3 = L`. -/
 private abbrev lowF : Fm PTm 4 := Hy (var 1) (var 2) (var 3) ⟶ K (var 1) (var 2) (var 3) (var 0)
@@ -111,11 +83,8 @@ theorem lw_lower {m M L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAA
   have i := inst (Γ := Γ) low₀ (![m, m, M, L] : Fin 4 → PTm n)
   simp at i
   have I : Γ ⊢[PRAAx] K m M L m := Prf.impE i (.andI hm (.andI hM hL))
-  have te := trace_end (pos_of_lt_zero hm)
-  have q : Γ ⊢[PRAAx] M * trT m m ≐ M := (congrMul (.eqRefl M) te).eqTrans (by ipra_ring)
-  have eS := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))
-  have eL := natEq ((congrLw (w := wt) (pairT M (fact L)) te).eqTrans (MuLambda.lw_one (w := wt) _))
-  ipra_le sl I with eS - eL
+  have terms := trace_end_readback M (fact L) hm
+  ipra_le sl I with natEq terms.andE₁ - natEq terms.andE₂
 
 /-! ## The increments and the factorial -/
 

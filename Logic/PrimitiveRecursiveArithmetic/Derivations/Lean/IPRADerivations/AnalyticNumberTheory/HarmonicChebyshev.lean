@@ -135,53 +135,66 @@ theorem tr_le {m : PTm n} (hm : Γ ⊢[PRAAx] le one m) (i : PTm n) : Γ ⊢[PRA
 
 /-! ## `L_w(m) ≤ λ_M(m)` along the trace -/
 
+/-- Read back equal trace positions in the harmonic and weighted Mangoldt sums. -/
+theorem trace_readback_congr (M F : PTm n) {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
+    Γ ⊢[PRAAx] (S (M * a) F ≐ S (M * b) F) ⋏ (Lw wt a (pairT M F) ≐ Lw wt b (pairT M F)) :=
+  .andI (congrAp2 (sumF hB) (congrMul (.eqRefl _) h) (.eqRefl _)) (congrLw (w := wt) _ h)
+
+/-- A positive trace is stationary once it is at most one. -/
+theorem trace_stationary (i : PTm n) {m : PTm n} (hm : Γ ⊢[PRAAx] le one m)
+    (h : Γ ⊢[PRAAx] le (trT i m) one) : Γ ⊢[PRAAx] trT (succ i) m ≐ trT i m :=
+  ((tr_succ i m).eqTrans (step_small h)).eqTrans (le_antisymm h (tr_pos hm i)).eqSymm
+
+/-- The active trace step supplies the shared bounds and exact changes in both sums. -/
+theorem trace_factor_readback (i : PTm n) {m M L : PTm n} (hm : Γ ⊢[PRAAx] le one m)
+    (hL : Γ ⊢[PRAAx] le (M * m) L) (hx : Γ ⊢[PRAAx] le two (trT i m)) :
+    let a := trT i m
+    let b := trT (succ i) m
+    let p := lpf a
+    let F := fact L
+    let z := pairT M F
+    let d := monus (S (M * p) F) (S M F)
+    Γ ⊢[PRAAx] (b ≐ succ (pred b)) ⋏ le (M * (p * b)) L ⋏
+      (S (M * (p * b)) F ≐ S (M * a) F) ⋏ (S (M * p) F ≐ S M F + d) ⋏
+      (Lw wt a z ≐ d + Lw wt b z) := by
+  have step := trace_prime hx
+  have positive := pos_of_lt_zero (tr_pos hm (succ i))
+  have primePositive := lpf_pos (Γ := Γ) (trT i m)
+  have scale := congrMul (.eqRefl M) ((mul_comm _ _).eqTrans step.andE₂)
+  have within := le_congr scale.eqSymm (.eqRefl _) (le_trans (mul_le_mul_left M (tr_le hm i)) hL)
+  have monotone := le_congr (Common.mul_one_right M) (.eqRefl _)
+    (mul_le_mul_left M (Common.one_le_of_pos primePositive))
+  have split := (congrLw (w := wt) (pairT M (fact L)) (step.andE₂.eqSymm.eqTrans (mul_comm _ _))).eqTrans
+    ((lw_mul (w := wt) primePositive positive).eqTrans (congrAdd (lw_prime M (fact L) step.andE₁) (.eqRefl _)))
+  exact .andI positive (.andI within (.andI (congrAp2 (sumF hB) scale (.eqRefl _))
+    (.andI (eq_add_of_le (S_mono (fact L) monotone)) split)))
+
+/-- At the terminal trace, the harmonic sum is `S(M)` and the weighted sum is zero. -/
+theorem trace_end_readback (M F : PTm n) {m : PTm n} (hm : Γ ⊢[PRAAx] le one m) :
+    Γ ⊢[PRAAx] (S (M * trT m m) F ≐ S M F) ⋏ (Lw wt (trT m m) (pairT M F) ≐ zero) := by
+  have terms := trace_readback_congr M F (trace_end (pos_of_lt_zero hm))
+  exact .andI (terms.andE₁.eqTrans (congrAp2 (sumF hB) (Common.mul_one_right M) (.eqRefl _)))
+    (terms.andE₂.eqTrans (MuLambda.lw_one (w := wt) _))
+
 /-- The invariant `L_w(m) + S(M x_i) ≤ S(Mm) + L_w(x_i)`. -/
 abbrev J (m M L i : PTm n) : Fm PTm n :=
   le (Lw wt m (pairT M (fact L)) + S (M * trT i m) (fact L)) (S (M * m) (fact L) + Lw wt (trT i m) (pairT M (fact L)))
 
 theorem j_zero (m M L : PTm n) : Γ ⊢[PRAAx] J m M L zero := by
-  have t0 := tr_zero (Γ := Γ) m
-  have eS := natEq (congrAp2 (Γ := Γ) (sumF hB) (congrMul (.eqRefl M) t0) (.eqRefl (fact L)))
-  have eL := natEq (congrLw (Γ := Γ) (w := wt) (pairT M (fact L)) t0)
-  ipra_le 0 with eS - eL
+  have terms := trace_readback_congr M (fact L) (tr_zero (Γ := Γ) m)
+  ipra_le 0 with natEq terms.andE₁ - natEq terms.andE₂
 
 theorem j_step {m M L i : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[PRAAx] le one M)
     (hL : Γ ⊢[PRAAx] le (M * m) L) (ih : Γ ⊢[PRAAx] J m M L i) : Γ ⊢[PRAAx] J m M L (succ i) := by
-  have hx1 := tr_pos hm i
-  have hxm := tr_le hm i
   refine .orE (lt_or_le one (trT i m)) ?_ ?_
   · let Δ := lt one (trT i m) :: Γ
-    have hx2 : Δ ⊢[PRAAx] le two (trT i m) := Prf.hyp0
-    have tp := trace_prime hx2
-    have hp := Prf.andE₁ tp
-    have ex := Prf.andE₂ tp
-    have hx'p := pos_of_lt_zero (tr_pos (Γ := Δ) hm.wk (succ i))
-    have hpp : Δ ⊢[PRAAx] lpf (trT i m) ≐ succ (pred (lpf (trT i m))) := lpf_pos _
-    have hMp := pos_of_lt_zero (Γ := Δ) hM.wk
-    have hL' : Δ ⊢[PRAAx] le (M * (lpf (trT i m) * trT (succ i) m)) L := by
-      refine le_trans (le_of_eq_add (d := M * monus m (trT i m)) ?_) hL.wk
-      ipra_lc 𝔞 M * natEq (eq_add_of_le (Γ := Δ) hxm.wk) - 𝔞 M * natEq ex
-    have sa := superadd hMp hpp hx'p hL'
-    have q1 : Δ ⊢[PRAAx] M * (lpf (trT i m) * trT (succ i) m) ≐ M * trT i m := by
-      ipra_lc 𝔞 M * natEq ex
-    have e1 := natEq (congrAp2 (Γ := Δ) (sumF hB) q1 (.eqRefl (fact L)))
-    have hmono : Δ ⊢[PRAAx] le M (M * lpf (trT i m)) := by
-      refine le_of_eq_add (d := M * pred (lpf (trT i m))) ?_
-      ipra_lc 𝔞 M * natEq hpp
-    have dec := natEq (eq_add_of_le (S_mono (fact L) hmono))
-    have sp : Δ ⊢[PRAAx] Lw wt (trT i m) (pairT M (fact L)) ≐
-        monus (S (M * lpf (trT i m)) (fact L)) (S M (fact L)) + Lw wt (trT (succ i) m) (pairT M (fact L)) :=
-      (congrLw (w := wt) _ (ex.eqSymm.eqTrans (mul_comm _ _))).eqTrans
-        ((lw_mul (w := wt) hpp hx'p).eqTrans (congrAdd (lw_prime M (fact L) hp) (.eqRefl _)))
-    have e3 := natEq sp
-    ipra_le sl ih.wk + sl sa with e1 - dec + e3
-  · let Δ := le (trT i m) one :: Γ
-    have xo : Δ ⊢[PRAAx] trT i m ≐ one := le_antisymm Prf.hyp0 hx1.wk
-    have sx : Δ ⊢[PRAAx] trT (succ i) m ≐ one := (tr_succ i m).eqTrans (step_small Prf.hyp0)
-    have exx := sx.eqTrans xo.eqSymm
-    have eS := natEq (congrAp2 (Γ := Δ) (sumF hB) (congrMul (.eqRefl M) exx) (.eqRefl (fact L)))
-    have eL := natEq (congrLw (Γ := Δ) (w := wt) (pairT M (fact L)) exx)
-    ipra_le sl ih.wk with eS - eL
+    have hx : Δ ⊢[PRAAx] le two (trT i m) := Prf.hyp0
+    have factor := trace_factor_readback (Γ := Δ) i hm.wk hL.wk hx
+    have bound := superadd (pos_of_lt_zero (Γ := Δ) hM.wk) (lpf_pos _) factor.andE₁ factor.andE₂.andE₁
+    have terms := factor.andE₂.andE₂
+    ipra_le sl ih.wk + sl bound with natEq terms.andE₁ - natEq terms.andE₂.andE₁ + natEq terms.andE₂.andE₂
+  · have terms := trace_readback_congr M (fact L) (trace_stationary i hm.wk Prf.hyp0)
+    ipra_le sl ih.wk with natEq terms.andE₁ - natEq terms.andE₂
 
 /-- Hypotheses of the trace induction. -/
 abbrev Hy (m M L : PTm n) : Fm PTm n := le one m ⋏ (le one M ⋏ le (M * m) L)
@@ -203,11 +216,8 @@ theorem harmonic_lw {m M L : PTm n} (hm : Γ ⊢[PRAAx] le one m) (hM : Γ ⊢[P
   have i := inst (Γ := Γ) main₀ (![m, m, M, L] : Fin 4 → PTm n)
   simp at i
   have I : Γ ⊢[PRAAx] J m M L m := Prf.impE i (.andI hm (.andI hM hL))
-  have te := trace_end (pos_of_lt_zero hm)
-  have q : Γ ⊢[PRAAx] M * trT m m ≐ M := (congrMul (.eqRefl M) te).eqTrans (by ipra_ring)
-  have eS := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))
-  have eL := natEq ((congrLw (w := wt) (pairT M (fact L)) te).eqTrans (MuLambda.lw_one (w := wt) _))
-  ipra_le sl I with eL - eS
+  have terms := trace_end_readback M (fact L) hm
+  ipra_le sl I with natEq terms.andE₂ - natEq terms.andE₁
 
 /-! ## `con:global`: Chebyshev's bound -/
 
