@@ -3170,3 +3170,6 @@ At every encoded order at least three, the original relative logarithm term mult
 
 The literal finite base-power product equals its displacement polynomial, including at zeros. Every truncation through the actual degree has error controlled by a computed Horner mass times the displacement radius to the first omitted power.
 [GaussianBarnesCanonicalCenteredHead](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredHead.lean), [GaussianBarnesCanonicalCenteredHeadTaylor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredHeadTaylor.lean)
+
+Scaling each higher logarithmic coefficient sum by the encoded factorial gives the literal derivative-row sum. The normalized cofinal name is regular and each actual sample equals that derivative sum at its own explicit finite cutoff.
+[GaussianBarnesCanonicalHigherDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherDerivative.lean)
