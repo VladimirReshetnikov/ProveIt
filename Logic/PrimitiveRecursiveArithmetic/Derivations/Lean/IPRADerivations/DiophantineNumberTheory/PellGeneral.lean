@@ -157,39 +157,58 @@ theorem seed_square {D T K : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hK
 where
   mul_one' (a : PTm n) : Γ ⊢[PRAAx] a * one ≐ a := by ipra_ring
 
-/-! ## The case N > 0 -/
+/-! ## The two signs of the norm -/
 
-section Pos
+section Signed
+
+/-- The norm relation of a residual: `r² = D t² + K` (`s = true`, `N > 0`) or `r² + K = D t²` (`s = false`, `N < 0`). -/
+abbrev Nm (s : Bool) (D K r t : PTm n) : Fm PTm n :=
+  match s with
+  | true => r * r ≐ D * (t * t) + K
+  | false => r * r + K ≐ D * (t * t)
+
+/-- The uniform descent for either sign (`PellGenDescent.gen_descent_pos`, `gen_descent_neg`). -/
+theorem gen_descent {s : Bool} {A B D K x y : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B))
+    (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hK : Γ ⊢[PRAAx] K ≐ succ (pred K))
+    (hx : Γ ⊢[PRAAx] Nm s D K x y) (hy : Γ ⊢[PRAAx] lt (A * K) y) :
+    Γ ⊢[PRAAx] Nm s D K (rr A B D x y) (tt A B D x y) ⋏
+      (le one (rr A B D x y) ⋏ le one (tt A B D x y) ⋏ lt (tt A B D x y) y ⋏
+      (x ≐ A * rr A B D x y + D * (B * tt A B D x y)) ⋏ (y ≐ B * rr A B D x y + A * tt A B D x y)) := by
+  cases s
+  · exact gen_descent_neg hA hB hD hK hx hy
+  · exact gen_descent_pos hA hB hD hK hx hy
 
 /-- The invariant for a residual `(r, t)`, counter `c` and stage `k`. -/
-abbrev InvAt_pos (ps : Fin 6 → PTm n) (r t c k : PTm n) : Fm PTm n :=
+abbrev InvAt (s : Bool) (ps : Fin 6 → PTm n) (r t c k : PTm n) : Fm PTm n :=
   (ps 3 ≐ Xp c (p3 ps) * r + ps 2 * (Yp c (p3 ps) * t)) ⋏ (ps 4 ≐ Yp c (p3 ps) * r + Xp c (p3 ps) * t) ⋏
-    (r * r ≐ ps 2 * (t * t) + ps 5) ⋏ (le t (ps 0 * ps 5) ⋎ le (t + k) (ps 4)) ⋏ le c k
+    Nm s (ps 2) (ps 5) r t ⋏ (le t (ps 0 * ps 5) ⋎ le (t + k) (ps 4)) ⋏ le c k
 
-abbrev Inv_pos (ps : Fin 6 → PTm n) (k : PTm n) : Fm PTm n := InvAt_pos ps (R k ps) (T k ps) (C k ps) k
+abbrev Inv (s : Bool) (ps : Fin 6 → PTm n) (k : PTm n) : Fm PTm n := InvAt s ps (R k ps) (T k ps) (C k ps) k
 
-theorem subst_Inv_pos {m : ℕ} (σ : Fin n → PTm m) (ps : Fin 6 → PTm n) (k : PTm n) :
-    (Inv_pos ps k).subst σ = Inv_pos (fun i => Syn.subst σ (ps i)) (Syn.subst σ k) := by
-  simp [Inv_pos, InvAt_pos, p3]
+theorem subst_Inv {m : ℕ} (σ : Fin n → PTm m) (s : Bool) (ps : Fin 6 → PTm n) (k : PTm n) :
+    (Inv s ps k).subst σ = Inv s (fun i => Syn.subst σ (ps i)) (Syn.subst σ k) := by
+  cases s <;> simp [Inv, InvAt, Nm, p3]
 
-theorem invAt_congr_pos {ps : Fin 6 → PTm n} {r r' t t' c c' k : PTm n} (hr : Γ ⊢[PRAAx] r ≐ r')
-    (ht : Γ ⊢[PRAAx] t ≐ t') (hc : Γ ⊢[PRAAx] c ≐ c') (h : Γ ⊢[PRAAx] InvAt_pos ps r t c k) :
-    Γ ⊢[PRAAx] InvAt_pos ps r' t' c' k := by
+theorem invAt_congr {s : Bool} {ps : Fin 6 → PTm n} {r r' t t' c c' k : PTm n} (hr : Γ ⊢[PRAAx] r ≐ r')
+    (ht : Γ ⊢[PRAAx] t ≐ t') (hc : Γ ⊢[PRAAx] c ≐ c') (h : Γ ⊢[PRAAx] InvAt s ps r t c k) :
+    Γ ⊢[PRAAx] InvAt s ps r' t' c' k := by
   have hX := congrX ps hc
   have hY := congrY ps hc
   refine .andI ?_ (.andI ?_ (.andI ?_ (.andI ?_ ?_)))
   · exact (Prf.andE₁ h).eqTrans (congrAdd (congrMul hX hr) (congrMul (.eqRefl _) (congrMul hY ht)))
   · exact (Prf.andE₁ (Prf.andE₂ h)).eqTrans (congrAdd (congrMul hY hr) (congrMul hX ht))
-  · exact (congrMul hr hr).eqSymm.eqTrans ((Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))).eqTrans (congrAdd (congrMul (.eqRefl _) (congrMul ht ht)) (.eqRefl _)))
+  · cases s
+    · exact (congrAdd (congrMul hr hr) (.eqRefl _)).eqSymm.eqTrans ((Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))).eqTrans (congrMul (.eqRefl _) (congrMul ht ht)))
+    · exact (congrMul hr hr).eqSymm.eqTrans ((Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))).eqTrans (congrAdd (congrMul (.eqRefl _) (congrMul ht ht)) (.eqRefl _)))
   · refine .orE (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h)))) ?_ ?_
     · exact .orI₁ (le_congr ht.wk (.eqRefl _) Prf.hyp0)
     · exact .orI₂ (le_congr (congrAdd ht.wk (.eqRefl _)) (.eqRefl _) Prf.hyp0)
   · exact le_congr hc (.eqRefl _) (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))))
 
 /-- One stage preserves the invariant. -/
-theorem inv_step_pos {ps : Fin 6 → PTm n} {k : PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ one + ps 2 * (ps 1 * ps 1))
+theorem inv_step {s : Bool} {ps : Fin 6 → PTm n} {k : PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ one + ps 2 * (ps 1 * ps 1))
     (hB : Γ ⊢[PRAAx] ps 1 ≐ succ (pred (ps 1))) (hD : Γ ⊢[PRAAx] ps 2 ≐ succ (pred (ps 2)))
-    (hK : Γ ⊢[PRAAx] ps 5 ≐ succ (pred (ps 5))) (ih : Γ ⊢[PRAAx] Inv_pos ps k) : Γ ⊢[PRAAx] Inv_pos ps (succ k) := by
+    (hK : Γ ⊢[PRAAx] ps 5 ≐ succ (pred (ps 5))) (ih : Γ ⊢[PRAAx] Inv s ps k) : Γ ⊢[PRAAx] Inv s ps (succ k) := by
   have rs := R_succ (Γ := Γ) ps k
   have ts := T_succ (Γ := Γ) ps k
   have cs := C_succ (Γ := Γ) ps k
@@ -198,7 +217,7 @@ theorem inv_step_pos {ps : Fin 6 → PTm n} {k : PTm n} (hA : Γ ⊢[PRAAx] ps 0
     let Δ := ((monus (T k ps) (ps 0 * ps 5) ≐ zero) ⋏ le (T k ps) (ps 0 * ps 5)) :: Γ
     have hz : Δ ⊢[PRAAx] monus (T k ps) (ps 0 * ps 5) ≐ zero := Prf.andE₁ Prf.hyp0
     have hs : Δ ⊢[PRAAx] G k ps ≐ zero := (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hz)).eqTrans sg_zero
-    refine invAt_congr_pos (r := R k ps) (t := T k ps) (c := C k ps) (rs.wk.eqTrans (Bezout.guard_zero hz)).eqSymm
+    refine invAt_congr (r := R k ps) (t := T k ps) (c := C k ps) (rs.wk.eqTrans (Bezout.guard_zero hz)).eqSymm
       (ts.wk.eqTrans (Bezout.guard_zero hz)).eqSymm ((cs.wk.eqTrans ((congrAdd (.eqRefl _) hs).eqTrans (add_zero _))).eqSymm) ?_
     have i := (ih.wk : Δ ⊢[PRAAx] _)
     refine .andI (Prf.andE₁ i) (.andI (Prf.andE₁ (Prf.andE₂ i)) (.andI (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ i)))
@@ -210,9 +229,9 @@ theorem inv_step_pos {ps : Fin 6 → PTm n} {k : PTm n} (hA : Γ ⊢[PRAAx] ps 0
     have hlt : Δ ⊢[PRAAx] lt (ps 0 * ps 5) (T k ps) := Prf.andE₂ Prf.hyp0
     have i := (ih.wk : Δ ⊢[PRAAx] _)
     have e₃ := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ i))
-    have d := gen_descent_pos hA.wk hB.wk hD.wk hK.wk e₃ hlt
+    have d := gen_descent hA.wk hB.wk hD.wk hK.wk e₃ hlt
     have hs : Δ ⊢[PRAAx] G k ps ≐ one := (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hg)).eqTrans (sg_succ _)
-    refine invAt_congr_pos (rs.wk.eqTrans (Bezout.guard_succ hg)).eqSymm (ts.wk.eqTrans (Bezout.guard_succ hg)).eqSymm
+    refine invAt_congr (rs.wk.eqTrans (Bezout.guard_succ hg)).eqSymm (ts.wk.eqTrans (Bezout.guard_succ hg)).eqSymm
       ((cs.wk.eqTrans (congrAdd (.eqRefl _) hs))).eqSymm ?_
     have hX := X_succ (Γ := Δ) ps (C k ps)
     have hY := Y_succ (Γ := Δ) ps (C k ps)
@@ -234,21 +253,21 @@ theorem inv_step_pos {ps : Fin 6 → PTm n} {k : PTm n} (hA : Γ ⊢[PRAAx] ps 0
     · have l := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ i)))
       exact (succ_monus_succ _ _).eqTrans l |> fun h => le_congr (succ_eq_add_one _) (.eqRefl _) h
 
-/-- `thm:general` (N > 0): `(x, y) = (r, t) uᶜ`, `c ≤ y`, with a seed of norm `N` in the box `t ≤ A K`,
+/-- `thm:general` for either sign of `N`: `(x, y) = (r, t) uᶜ`, `c ≤ y`, with a seed of norm `N` in the box `t ≤ A K`,
 `r ≤ D A K + K`. -/
-theorem general_pos {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ one + ps 2 * (ps 1 * ps 1))
+theorem general {s : Bool} {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ one + ps 2 * (ps 1 * ps 1))
     (hB : Γ ⊢[PRAAx] ps 1 ≐ succ (pred (ps 1))) (hD : Γ ⊢[PRAAx] ps 2 ≐ succ (pred (ps 2)))
-    (hK : Γ ⊢[PRAAx] ps 5 ≐ succ (pred (ps 5))) (hx : Γ ⊢[PRAAx] ps 3 * ps 3 ≐ ps 2 * (ps 4 * ps 4) + ps 5) :
+    (hK : Γ ⊢[PRAAx] ps 5 ≐ succ (pred (ps 5))) (hx : Γ ⊢[PRAAx] Nm s (ps 2) (ps 5) (ps 3) (ps 4)) :
     Γ ⊢[PRAAx] (ps 3 ≐ Xp (C (ps 4) ps) (p3 ps) * R (ps 4) ps + ps 2 * (Yp (C (ps 4) ps) (p3 ps) * T (ps 4) ps)) ⋏
       ((ps 4 ≐ Yp (C (ps 4) ps) (p3 ps) * R (ps 4) ps + Xp (C (ps 4) ps) (p3 ps) * T (ps 4) ps) ⋏
-      ((R (ps 4) ps * R (ps 4) ps ≐ ps 2 * (T (ps 4) ps * T (ps 4) ps) + ps 5) ⋏ (le (T (ps 4) ps) (ps 0 * ps 5) ⋏
+      (Nm s (ps 2) (ps 5) (R (ps 4) ps) (T (ps 4) ps) ⋏ (le (T (ps 4) ps) (ps 0 * ps 5) ⋏
       (le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) ⋏ le (C (ps 4) ps) (ps 4))))) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (Inv_pos (fun i => Syn.shift (ps i)) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial, trivial, trivial, ⟨le_QF _ _, le_QF _ _⟩, le_QF _ _⟩ ?_ ?_
+  have hall : Γ ⊢[PRAAx] Fm.all (Inv s (fun i => Syn.shift (ps i)) (var 0)) := by
+    refine PRA.qfInd _ (by cases s <;> exact ⟨trivial, trivial, trivial, ⟨le_QF _ _, le_QF _ _⟩, le_QF _ _⟩) ?_ ?_
     · have e₁ : (fun i => Syn.subst (Syn.inst zero) (Syn.shift (ps i))) = ps := by
         funext i; simp [Syn.subst_inst_shift]
-      rw [subst_Inv_pos, e₁, show Syn.subst (Syn.inst zero) (var 0 : PTm (n + 1)) = zero by simp]
-      refine invAt_congr_pos (R_zero ps).eqSymm (T_zero ps).eqSymm (C_zero ps).eqSymm ?_
+      rw [subst_Inv, e₁, show Syn.subst (Syn.inst zero) (var 0 : PTm (n + 1)) = zero by simp]
+      refine invAt_congr (R_zero ps).eqSymm (T_zero ps).eqSymm (C_zero ps).eqSymm ?_
       refine .andI ?_ (.andI ?_ (.andI hx (.andI (.orI₂ (le_congr (add_zero _).eqSymm (.eqRefl _) (le_refl _))) (le_refl _))))
       · refine withEq (X_zero (Γ := Γ) ps) fun e₁ => withEq (Y_zero (Γ := Γ) ps) fun e₂ => ?_
         apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
@@ -256,18 +275,18 @@ theorem general_pos {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ o
         apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
     · have e₁ : (fun i => Syn.subst (Syn.repl (succ (var 0))) (Syn.shift (ps i))) = fun i => Syn.shift (ps i) := by
         funext i; simp
-      rw [subst_Inv_pos, e₁, show Syn.subst (Syn.repl (succ (var 0))) (var 0 : PTm (n + 1)) = succ (var 0) by simp]
+      rw [subst_Inv, e₁, show Syn.subst (Syn.repl (succ (var 0))) (var 0 : PTm (n + 1)) = succ (var 0) by simp]
       have hA' := hA.shift
       have hB' := hB.shift
       have hD' := hD.shift
       have hK' := hK.shift
       simp only [Fm.shift, Fm.subst_eq, PTm.subst_mul, PTm.subst_add, PTm.subst_pred,
         ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at hA' hB' hD' hK'
-      exact inv_step_pos (ps := fun i => Syn.shift (ps i)) hA'.wk hB'.wk hD'.wk hK'.wk Prf.hyp0
+      exact inv_step (ps := fun i => Syn.shift (ps i)) hA'.wk hB'.wk hD'.wk hK'.wk Prf.hyp0
   have h := Prf.allE (ps 4) hall
   have e₁ : (fun i => Syn.subst (Syn.inst (ps 4)) (Syn.shift (ps i))) = ps := by
     funext i; simp [Syn.subst_inst_shift]
-  rw [subst_Inv_pos, e₁, show Syn.subst (Syn.inst (ps 4)) (var 0 : PTm (n + 1)) = ps 4 by simp] at h
+  rw [subst_Inv, e₁, show Syn.subst (Syn.inst (ps 4)) (var 0 : PTm (n + 1)) = ps 4 by simp] at h
   -- The residual is in the box `t ≤ A K`.
   have ht : Γ ⊢[PRAAx] le (T (ps 4) ps) (ps 0 * ps 5) := by
     refine .orE (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h)))) Prf.hyp0 ?_
@@ -280,9 +299,33 @@ theorem general_pos {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ o
   have hn := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))
   have hr : Γ ⊢[PRAAx] le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) := by
     refine le_of_sq_le (le_trans ?_ (seed_square hD hK))
-    exact le_congr hn.eqSymm (.eqRefl _) (add_le_add_right _ (le_mul_mono (le_refl _) (le_mul_mono ht ht)))
+    cases s
+    · exact le_trans (le_add_right _ _) (le_congr hn.eqSymm (.eqRefl _) (le_trans (le_mul_mono (le_refl _) (le_mul_mono ht ht)) (le_add_right _ _)))
+    · exact le_congr hn.eqSymm (.eqRefl _) (add_le_add_right _ (le_mul_mono (le_refl _) (le_mul_mono ht ht)))
   exact .andI (Prf.andE₁ h) (.andI (Prf.andE₁ (Prf.andE₂ h)) (.andI hn (.andI ht (.andI hr
     (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))))))))
+
+/-- `thm:general` (N > 0): `(x, y) = (r, t) uᶜ`, `c ≤ y`, with a seed of norm `N` in the box `t ≤ A K`,
+`r ≤ D A K + K`. -/
+theorem general_pos {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ one + ps 2 * (ps 1 * ps 1))
+    (hB : Γ ⊢[PRAAx] ps 1 ≐ succ (pred (ps 1))) (hD : Γ ⊢[PRAAx] ps 2 ≐ succ (pred (ps 2)))
+    (hK : Γ ⊢[PRAAx] ps 5 ≐ succ (pred (ps 5))) (hx : Γ ⊢[PRAAx] ps 3 * ps 3 ≐ ps 2 * (ps 4 * ps 4) + ps 5) :
+    Γ ⊢[PRAAx] (ps 3 ≐ Xp (C (ps 4) ps) (p3 ps) * R (ps 4) ps + ps 2 * (Yp (C (ps 4) ps) (p3 ps) * T (ps 4) ps)) ⋏
+      ((ps 4 ≐ Yp (C (ps 4) ps) (p3 ps) * R (ps 4) ps + Xp (C (ps 4) ps) (p3 ps) * T (ps 4) ps) ⋏
+      ((R (ps 4) ps * R (ps 4) ps ≐ ps 2 * (T (ps 4) ps * T (ps 4) ps) + ps 5) ⋏ (le (T (ps 4) ps) (ps 0 * ps 5) ⋏
+      (le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) ⋏ le (C (ps 4) ps) (ps 4))))) :=
+  general (s := true) hA hB hD hK hx
+
+/-- `thm:general` (N < 0): `(x, y) = (r, t) uᶜ`, `c ≤ y`, with a seed of norm `N` in the box `t ≤ A K`,
+`r ≤ D A K + K`. -/
+theorem general_neg {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ one + ps 2 * (ps 1 * ps 1))
+    (hB : Γ ⊢[PRAAx] ps 1 ≐ succ (pred (ps 1))) (hD : Γ ⊢[PRAAx] ps 2 ≐ succ (pred (ps 2)))
+    (hK : Γ ⊢[PRAAx] ps 5 ≐ succ (pred (ps 5))) (hx : Γ ⊢[PRAAx] ps 3 * ps 3 + ps 5 ≐ ps 2 * (ps 4 * ps 4)) :
+    Γ ⊢[PRAAx] (ps 3 ≐ Xp (C (ps 4) ps) (p3 ps) * R (ps 4) ps + ps 2 * (Yp (C (ps 4) ps) (p3 ps) * T (ps 4) ps)) ⋏
+      ((ps 4 ≐ Yp (C (ps 4) ps) (p3 ps) * R (ps 4) ps + Xp (C (ps 4) ps) (p3 ps) * T (ps 4) ps) ⋏
+      ((R (ps 4) ps * R (ps 4) ps + ps 5 ≐ ps 2 * (T (ps 4) ps * T (ps 4) ps)) ⋏ (le (T (ps 4) ps) (ps 0 * ps 5) ⋏
+      (le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) ⋏ le (C (ps 4) ps) (ps 4))))) :=
+  general (s := false) hA hB hD hK hx
 
 /-- `thm:general` (N > 0), converse: every seed of norm `N` times a power of `u` is a solution. -/
 theorem seed_pos {A B D K r t : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B)) (hs : Γ ⊢[PRAAx] r * r ≐ D * (t * t) + K)
@@ -304,135 +347,6 @@ theorem seed_pos {A B D K r t : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (
   rw [eX, eY] at pw
   ipra_lc (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * natEq (Prf.impE pw ((hA.eqTrans (add_comm _ _)))) + natEq hs
 
-end Pos
-
-/-! ## The case N < 0 -/
-
-section Neg
-
-/-- The invariant for a residual `(r, t)`, counter `c` and stage `k`. -/
-abbrev InvAt_neg (ps : Fin 6 → PTm n) (r t c k : PTm n) : Fm PTm n :=
-  (ps 3 ≐ Xp c (p3 ps) * r + ps 2 * (Yp c (p3 ps) * t)) ⋏ (ps 4 ≐ Yp c (p3 ps) * r + Xp c (p3 ps) * t) ⋏
-    (r * r + ps 5 ≐ ps 2 * (t * t)) ⋏ (le t (ps 0 * ps 5) ⋎ le (t + k) (ps 4)) ⋏ le c k
-
-abbrev Inv_neg (ps : Fin 6 → PTm n) (k : PTm n) : Fm PTm n := InvAt_neg ps (R k ps) (T k ps) (C k ps) k
-
-theorem subst_Inv_neg {m : ℕ} (σ : Fin n → PTm m) (ps : Fin 6 → PTm n) (k : PTm n) :
-    (Inv_neg ps k).subst σ = Inv_neg (fun i => Syn.subst σ (ps i)) (Syn.subst σ k) := by
-  simp [Inv_neg, InvAt_neg, p3]
-
-theorem invAt_congr_neg {ps : Fin 6 → PTm n} {r r' t t' c c' k : PTm n} (hr : Γ ⊢[PRAAx] r ≐ r')
-    (ht : Γ ⊢[PRAAx] t ≐ t') (hc : Γ ⊢[PRAAx] c ≐ c') (h : Γ ⊢[PRAAx] InvAt_neg ps r t c k) :
-    Γ ⊢[PRAAx] InvAt_neg ps r' t' c' k := by
-  have hX := congrX ps hc
-  have hY := congrY ps hc
-  refine .andI ?_ (.andI ?_ (.andI ?_ (.andI ?_ ?_)))
-  · exact (Prf.andE₁ h).eqTrans (congrAdd (congrMul hX hr) (congrMul (.eqRefl _) (congrMul hY ht)))
-  · exact (Prf.andE₁ (Prf.andE₂ h)).eqTrans (congrAdd (congrMul hY hr) (congrMul hX ht))
-  · exact (congrAdd (congrMul hr hr) (.eqRefl _)).eqSymm.eqTrans ((Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))).eqTrans (congrMul (.eqRefl _) (congrMul ht ht)))
-  · refine .orE (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h)))) ?_ ?_
-    · exact .orI₁ (le_congr ht.wk (.eqRefl _) Prf.hyp0)
-    · exact .orI₂ (le_congr (congrAdd ht.wk (.eqRefl _)) (.eqRefl _) Prf.hyp0)
-  · exact le_congr hc (.eqRefl _) (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))))
-
-/-- One stage preserves the invariant. -/
-theorem inv_step_neg {ps : Fin 6 → PTm n} {k : PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ one + ps 2 * (ps 1 * ps 1))
-    (hB : Γ ⊢[PRAAx] ps 1 ≐ succ (pred (ps 1))) (hD : Γ ⊢[PRAAx] ps 2 ≐ succ (pred (ps 2)))
-    (hK : Γ ⊢[PRAAx] ps 5 ≐ succ (pred (ps 5))) (ih : Γ ⊢[PRAAx] Inv_neg ps k) : Γ ⊢[PRAAx] Inv_neg ps (succ k) := by
-  have rs := R_succ (Γ := Γ) ps k
-  have ts := T_succ (Γ := Γ) ps k
-  have cs := C_succ (Γ := Γ) ps k
-  refine .orE (guard_cases ps k) ?_ ?_
-  · -- `t ≤ A K`: nothing changes.
-    let Δ := ((monus (T k ps) (ps 0 * ps 5) ≐ zero) ⋏ le (T k ps) (ps 0 * ps 5)) :: Γ
-    have hz : Δ ⊢[PRAAx] monus (T k ps) (ps 0 * ps 5) ≐ zero := Prf.andE₁ Prf.hyp0
-    have hs : Δ ⊢[PRAAx] G k ps ≐ zero := (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hz)).eqTrans sg_zero
-    refine invAt_congr_neg (r := R k ps) (t := T k ps) (c := C k ps) (rs.wk.eqTrans (Bezout.guard_zero hz)).eqSymm
-      (ts.wk.eqTrans (Bezout.guard_zero hz)).eqSymm ((cs.wk.eqTrans ((congrAdd (.eqRefl _) hs).eqTrans (add_zero _))).eqSymm) ?_
-    have i := (ih.wk : Δ ⊢[PRAAx] _)
-    refine .andI (Prf.andE₁ i) (.andI (Prf.andE₁ (Prf.andE₂ i)) (.andI (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ i)))
-      (.andI (.orI₁ (Prf.andE₂ Prf.hyp0)) ?_)))
-    exact le_trans (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ i)))) (le_succ_self _)
-  · -- `t > A K`: one uniform descent.
-    let Δ := ((monus (T k ps) (ps 0 * ps 5) ≐ succ (pred (monus (T k ps) (ps 0 * ps 5)))) ⋏ lt (ps 0 * ps 5) (T k ps)) :: Γ
-    have hg : Δ ⊢[PRAAx] monus (T k ps) (ps 0 * ps 5) ≐ succ (pred (monus (T k ps) (ps 0 * ps 5))) := Prf.andE₁ Prf.hyp0
-    have hlt : Δ ⊢[PRAAx] lt (ps 0 * ps 5) (T k ps) := Prf.andE₂ Prf.hyp0
-    have i := (ih.wk : Δ ⊢[PRAAx] _)
-    have e₃ := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ i))
-    have d := gen_descent_neg hA.wk hB.wk hD.wk hK.wk e₃ hlt
-    have hs : Δ ⊢[PRAAx] G k ps ≐ one := (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hg)).eqTrans (sg_succ _)
-    refine invAt_congr_neg (rs.wk.eqTrans (Bezout.guard_succ hg)).eqSymm (ts.wk.eqTrans (Bezout.guard_succ hg)).eqSymm
-      ((cs.wk.eqTrans (congrAdd (.eqRefl _) hs))).eqSymm ?_
-    have hX := X_succ (Γ := Δ) ps (C k ps)
-    have hY := Y_succ (Γ := Δ) ps (C k ps)
-    have hX' := (congrX ps (succ_eq_add_one (C k ps)).eqSymm).eqTrans hX
-    have hY' := (congrY ps (succ_eq_add_one (C k ps)).eqSymm).eqTrans hY
-    have hR := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ d))))
-    have hT' := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ d))))
-    refine .andI (alg_x (Prf.andE₁ i) hR hT' hX' hY') (.andI (alg_y (Prf.andE₁ (Prf.andE₂ i)) hR hT' hX' hY')
-      (.andI (Prf.andE₁ d) (.andI ?_ ?_)))
-    · -- `t' + k + 1 ≤ t + k ≤ y` (the first disjunct contradicts `A K < t`).
-      refine .orE (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ i)))) ?_ ?_
-      · exact le_lt_absurd _ Prf.hyp0 hlt.wk
-      · refine .orI₂ (le_trans ?_ Prf.hyp0)
-        have l := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ d)))
-        have w := eq_add_of_le (l.wk (ψ := le (T k ps + k) (ps 4)))
-        refine le_of_eq_add (d := monus (T k ps) (succ (tt (ps 0) (ps 1) (ps 2) (R k ps) (T k ps)))) ?_
-        refine withEq w fun e => ?_
-        apply deriveNat; ipra_simps; rw [e]; ring
-    · have l := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ i)))
-      exact (succ_monus_succ _ _).eqTrans l |> fun h => le_congr (succ_eq_add_one _) (.eqRefl _) h
-
-/-- `thm:general` (N < 0): `(x, y) = (r, t) uᶜ`, `c ≤ y`, with a seed of norm `N` in the box `t ≤ A K`,
-`r ≤ D A K + K`. -/
-theorem general_neg {ps : Fin 6 → PTm n} (hA : Γ ⊢[PRAAx] ps 0 * ps 0 ≐ one + ps 2 * (ps 1 * ps 1))
-    (hB : Γ ⊢[PRAAx] ps 1 ≐ succ (pred (ps 1))) (hD : Γ ⊢[PRAAx] ps 2 ≐ succ (pred (ps 2)))
-    (hK : Γ ⊢[PRAAx] ps 5 ≐ succ (pred (ps 5))) (hx : Γ ⊢[PRAAx] ps 3 * ps 3 + ps 5 ≐ ps 2 * (ps 4 * ps 4)) :
-    Γ ⊢[PRAAx] (ps 3 ≐ Xp (C (ps 4) ps) (p3 ps) * R (ps 4) ps + ps 2 * (Yp (C (ps 4) ps) (p3 ps) * T (ps 4) ps)) ⋏
-      ((ps 4 ≐ Yp (C (ps 4) ps) (p3 ps) * R (ps 4) ps + Xp (C (ps 4) ps) (p3 ps) * T (ps 4) ps) ⋏
-      ((R (ps 4) ps * R (ps 4) ps + ps 5 ≐ ps 2 * (T (ps 4) ps * T (ps 4) ps)) ⋏ (le (T (ps 4) ps) (ps 0 * ps 5) ⋏
-      (le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) ⋏ le (C (ps 4) ps) (ps 4))))) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (Inv_neg (fun i => Syn.shift (ps i)) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial, trivial, trivial, ⟨le_QF _ _, le_QF _ _⟩, le_QF _ _⟩ ?_ ?_
-    · have e₁ : (fun i => Syn.subst (Syn.inst zero) (Syn.shift (ps i))) = ps := by
-        funext i; simp [Syn.subst_inst_shift]
-      rw [subst_Inv_neg, e₁, show Syn.subst (Syn.inst zero) (var 0 : PTm (n + 1)) = zero by simp]
-      refine invAt_congr_neg (R_zero ps).eqSymm (T_zero ps).eqSymm (C_zero ps).eqSymm ?_
-      refine .andI ?_ (.andI ?_ (.andI hx (.andI (.orI₂ (le_congr (add_zero _).eqSymm (.eqRefl _) (le_refl _))) (le_refl _))))
-      · refine withEq (X_zero (Γ := Γ) ps) fun e₁ => withEq (Y_zero (Γ := Γ) ps) fun e₂ => ?_
-        apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-      · refine withEq (X_zero (Γ := Γ) ps) fun e₁ => withEq (Y_zero (Γ := Γ) ps) fun e₂ => ?_
-        apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-    · have e₁ : (fun i => Syn.subst (Syn.repl (succ (var 0))) (Syn.shift (ps i))) = fun i => Syn.shift (ps i) := by
-        funext i; simp
-      rw [subst_Inv_neg, e₁, show Syn.subst (Syn.repl (succ (var 0))) (var 0 : PTm (n + 1)) = succ (var 0) by simp]
-      have hA' := hA.shift
-      have hB' := hB.shift
-      have hD' := hD.shift
-      have hK' := hK.shift
-      simp only [Fm.shift, Fm.subst_eq, PTm.subst_mul, PTm.subst_add, PTm.subst_pred,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at hA' hB' hD' hK'
-      exact inv_step_neg (ps := fun i => Syn.shift (ps i)) hA'.wk hB'.wk hD'.wk hK'.wk Prf.hyp0
-  have h := Prf.allE (ps 4) hall
-  have e₁ : (fun i => Syn.subst (Syn.inst (ps 4)) (Syn.shift (ps i))) = ps := by
-    funext i; simp [Syn.subst_inst_shift]
-  rw [subst_Inv_neg, e₁, show Syn.subst (Syn.inst (ps 4)) (var 0 : PTm (n + 1)) = ps 4 by simp] at h
-  -- The residual is in the box `t ≤ A K`.
-  have ht : Γ ⊢[PRAAx] le (T (ps 4) ps) (ps 0 * ps 5) := by
-    refine .orE (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h)))) Prf.hyp0 ?_
-    have w := eq_add_of_le (Prf.hyp0 : (le (T (ps 4) ps + ps 4) (ps 4) :: Γ) ⊢[PRAAx] _)
-    have z : (le (T (ps 4) ps + ps 4) (ps 4) :: Γ) ⊢[PRAAx] T (ps 4) ps ≐ zero := by
-      refine add_eq_zero_left (y := monus (ps 4) (T (ps 4) ps + ps 4)) (add_right_cancel (c := ps 4) ?_)
-      refine withEq w fun e => ?_
-      ipra_lc -e
-    exact le_congr z.eqSymm (.eqRefl _) (zero_le _)
-  have hn := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ h))
-  have hr : Γ ⊢[PRAAx] le (R (ps 4) ps) (ps 2 * (ps 0 * ps 5) + ps 5) := by
-    refine le_of_sq_le (le_trans ?_ (seed_square hD hK))
-    exact le_trans (le_add_right _ _) (le_congr hn.eqSymm (.eqRefl _) (le_trans (le_mul_mono (le_refl _) (le_mul_mono ht ht)) (le_add_right _ _)))
-  exact .andI (Prf.andE₁ h) (.andI (Prf.andE₁ (Prf.andE₂ h)) (.andI hn (.andI ht (.andI hr
-    (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))))))))
-
 /-- `thm:general` (N < 0), converse: every seed of norm `N` times a power of `u` is a solution. -/
 theorem seed_neg {A B D K r t : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (B * B)) (hs : Γ ⊢[PRAAx] r * r + K ≐ D * (t * t))
     (c : PTm n) :
@@ -453,6 +367,6 @@ theorem seed_neg {A B D K r t : PTm n} (hA : Γ ⊢[PRAAx] A * A ≐ one + D * (
   rw [eX, eY] at pw
   ipra_lc (𝔞 r * 𝔞 r - 𝔞 D * 𝔞 t * 𝔞 t) * natEq (Prf.impE pw ((hA.eqTrans (add_comm _ _)))) + natEq hs
 
-end Neg
+end Signed
 
 end LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral
