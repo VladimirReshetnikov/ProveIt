@@ -64,6 +64,31 @@ theorem first_three_endpoint (k A R N : PTm n) (h : Γ ⊢[PRAAx] GaussianBetaSh
   (congrAdd (first_two_endpoint k A R N h) (.eqRefl _)).eqTrans
     (GaussianBetaSharpPartition.exact_partition k A R N h).andE₂.andE₂.andE₁
 
+/-- Transport the shared-step four-piece estimate to the exact sharp Beta endpoints. -/
+theorem transport_four_piece_split (F : PR 3) (s k A R N K x : PTm n)
+    (h : Γ ⊢[PRAAx] GaussianBetaSharpPartition.source k A R N)
+    (old :
+      let C1 := lowWidth k A R
+      let C2 := middleWidth k A R N
+      let C3 := supportTailWidth k A R N
+      let C4 := exteriorWidth k A R N
+      let W := GaussianCompactRiemannFourSplit.totalWidth C1 C2 C3 C4
+      Γ ⊢[PRAAx] distanceBounded (quadrature F s (W*K) one W (etaDen k A R) x)
+        (GaussianCompactRiemannFourSplit.pieces F s one C1 C2 C3 C4 (etaDen k A R) K x)
+        (num 4*W) (etaDen k A R*unit s)) : Γ ⊢[PRAAx]
+    distanceBounded (quadrature F s (width k A R*K) one (width k A R) (etaDen k A R) x)
+      (pieces F s k A R N K x) (num 4*width k A R) (etaDen k A R*unit s) := by
+  let C2 := middleWidth k A R N
+  let C3 := supportTailWidth k A R N
+  let C4 := exteriorWidth k A R N
+  have w := total_width k A R N h
+  have all := GaussianBetaSharpPartition.exact_partition k A R N h
+  have full := quadrature_congr (Γ := Γ) F (.eqRefl s) (congrMul w (.eqRefl K)) (.eqRefl one) w (.eqRefl (etaDen k A R)) (.eqRefl x)
+  have q2 := quadrature_congr (Γ := Γ) F (.eqRefl s) (.eqRefl (C2*K)) all.andE₁ (.eqRefl C2) (.eqRefl (etaDen k A R)) (.eqRefl x)
+  have q3 := quadrature_congr (Γ := Γ) F (.eqRefl s) (.eqRefl (C3*K)) (first_two_endpoint k A R N h) (.eqRefl C3) (.eqRefl (etaDen k A R)) (.eqRefl x)
+  have q4 := quadrature_congr (Γ := Γ) F (.eqRefl s) (.eqRefl (C4*K)) (first_three_endpoint k A R N h) (.eqRefl C4) (.eqRefl (etaDen k A R)) (.eqRefl x)
+  exact distance_congr full (qadd_congr (qadd_congr (.eqRefl _) q2) (qadd_congr q3 q4)) (congrMul (.eqRefl (num 4)) w) (.eqRefl _) old
+
 /-- Original rational endpoints, actual piece grids and original evaluator. -/
 theorem original_sharp_four_piece_split (F : PR 3) (s k A R N K L x : PTm n)
     (h : Γ ⊢[PRAAx] source F k A R N K L x) : Γ ⊢[PRAAx]
@@ -76,25 +101,15 @@ theorem original_sharp_four_piece_split (F : PR 3) (s k A R N K L x : PTm n)
   let W := GaussianCompactRiemannFourSplit.totalWidth C1 C2 C3 C4
   have w := total_width k A R N h.andE₁
   have modulus : Γ ⊢[PRAAx] sampledModulus F one W (etaDen k A R) L x := by
-    have direct := Prf.eqSubst (Γ := Γ) (Ax := PRAAx)
-      (sampledModulus F one (var 0) (var 1) (var 2) (var 3) : Fm PTm 4)
-      ![width k A R,etaDen k A R,L,x] ![W,etaDen k A R,L,x]
-      (fun i => by fin_cases i; exact w.eqSymm; exact .eqRefl _; exact .eqRefl _; exact .eqRefl _)
-      (by simpa only [GaussianCompactRiemannName.subst_sampledModulus,Syn.subst_var,Matrix.cons_val_zero,
-        Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using h.andE₂.andE₂)
-    simpa only [GaussianCompactRiemannName.subst_sampledModulus,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,
-      ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using direct
+    have direct := Prf.eqSubst1
+      (sampledModulus F (Syn.shift one) (var 0) (Syn.shift (etaDen k A R)) (Syn.shift L) (Syn.shift x)) w.eqSymm
+      (by simpa only [GaussianCompactRiemannName.subst_sampledModulus,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
+        using h.andE₂.andE₂)
+    simpa only [GaussianCompactRiemannName.subst_sampledModulus,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using direct
   have input : Γ ⊢[PRAAx] GaussianCompactRiemannFourSplit.input F one C1 C2 C3 C4 (etaDen k A R) K L x :=
     .andI (le_refl one) (.andI (eta_den_positive k A R) (.andI h.andE₂.andE₁ modulus))
   have old := GaussianCompactRiemannFourSplit.original_four_piece_split F s one C1 C2 C3 C4 (etaDen k A R) K L x input
-  have all := GaussianBetaSharpPartition.exact_partition k A R N h.andE₁
-  have full := quadrature_congr (Γ := Γ) F (.eqRefl s) (congrMul w (.eqRefl K)) (.eqRefl one) w (.eqRefl (etaDen k A R)) (.eqRefl x)
-  have q2 := quadrature_congr (Γ := Γ) F (.eqRefl s) (.eqRefl (C2*K)) all.andE₁ (.eqRefl C2) (.eqRefl (etaDen k A R)) (.eqRefl x)
-  have q3 := quadrature_congr (Γ := Γ) F (.eqRefl s) (.eqRefl (C3*K)) (first_two_endpoint k A R N h.andE₁) (.eqRefl C3) (.eqRefl (etaDen k A R)) (.eqRefl x)
-  have q4 := quadrature_congr (Γ := Γ) F (.eqRefl s) (.eqRefl (C4*K)) (first_three_endpoint k A R N h.andE₁) (.eqRefl C4) (.eqRefl (etaDen k A R)) (.eqRefl x)
-  exact distance_congr full (qadd_congr (qadd_congr (.eqRefl _) q2) (qadd_congr q3 q4)) (congrMul (.eqRefl (num 4)) w) (.eqRefl _) old
+  exact transport_four_piece_split F s k A R N K x h.andE₁ old
 
 /-- The actual original Euler evaluator supplies its global local rate
 from the original disk and numerical cutoff guards. -/

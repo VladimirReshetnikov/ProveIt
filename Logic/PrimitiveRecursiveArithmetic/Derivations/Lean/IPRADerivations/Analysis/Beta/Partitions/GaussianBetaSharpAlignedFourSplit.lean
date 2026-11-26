@@ -22,11 +22,7 @@ open GaussianGammaIntegralCutoffs (etaDen top eta_den_positive)
 open GaussianGammaCompactQuadratureBoundary (width)
 open GaussianCompactRiemannName (quadrature)
 open GaussianCompactAlignedTime (alignedSamples)
-open GaussianRationalHorner (qadd)
-open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
-open GaussianCompactAlignedSplit (quadrature_congr)
 open GaussianCoefficientNameBounds (unit)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -38,28 +34,11 @@ def source (F : PR 3) (k A R N K x : PTm n) : Fm PTm n :=
   GaussianBetaSharpPartition.source k A R N ⋏ (le one K ⋏ alignedSamples F one (width k A R) (etaDen k A R) x)
 
 theorem total_width (k A R N : PTm n) (h : Γ ⊢[PRAAx] GaussianBetaSharpPartition.source k A R N) : Γ ⊢[PRAAx]
-    GaussianCompactAlignedFourSplit.totalWidth (lowWidth k A R) (middleWidth k A R N) (supportTailWidth k A R N) (exteriorWidth k A R N) ≐ width k A R := by
-  have all := GaussianBetaSharpPartition.exact_partition k A R N h
-  have a := natEq all.andE₁
-  have b := natEq all.andE₂.andE₁
-  have c := natEq all.andE₂.andE₂.andE₁
-  have d := natEq all.andE₂.andE₂.andE₂
-  have e := natEq (GaussianGammaCompactQuadratureBoundary.exact_right_endpoint (Γ := Γ) k A R)
-  apply deriveNat
-  unfold GaussianCompactAlignedFourSplit.totalWidth
-  ipra_simps
-  linear_combination a+b+c+d-e
+    GaussianCompactAlignedFourSplit.totalWidth (lowWidth k A R) (middleWidth k A R N) (supportTailWidth k A R N) (exteriorWidth k A R N) ≐ width k A R :=
+  GaussianBetaSharpFourSplit.total_width k A R N h
 
-theorem first_two_endpoint (k A R N : PTm n) (h : Γ ⊢[PRAAx] GaussianBetaSharpPartition.source k A R N) : Γ ⊢[PRAAx]
-    one+(lowWidth k A R+middleWidth k A R N) ≐ halfPoint k A R N := by
-  have all := GaussianBetaSharpPartition.exact_partition k A R N h
-  exact (add_assoc _ _ _).eqSymm.eqTrans
-    ((congrAdd all.andE₁ (.eqRefl _)).eqTrans all.andE₂.andE₁)
-
-theorem first_three_endpoint (k A R N : PTm n) (h : Γ ⊢[PRAAx] GaussianBetaSharpPartition.source k A R N) : Γ ⊢[PRAAx]
-    (one+(lowWidth k A R+middleWidth k A R N))+supportTailWidth k A R N ≐ etaDen k A R*N :=
-  (congrAdd (first_two_endpoint k A R N h) (.eqRefl _)).eqTrans
-    (GaussianBetaSharpPartition.exact_partition k A R N h).andE₂.andE₂.andE₁
+alias first_two_endpoint := GaussianBetaSharpFourSplit.first_two_endpoint
+alias first_three_endpoint := GaussianBetaSharpFourSplit.first_three_endpoint
 
 /-- Original rational endpoints, actual piece grids and original evaluator. -/
 theorem original_sharp_four_piece_split (F : PR 3) (s k A R N K x : PTm n)
@@ -73,25 +52,15 @@ theorem original_sharp_four_piece_split (F : PR 3) (s k A R N K x : PTm n)
   let W := GaussianCompactAlignedFourSplit.totalWidth C1 C2 C3 C4
   have w := total_width k A R N h.andE₁
   have aligned : Γ ⊢[PRAAx] alignedSamples F one W (etaDen k A R) x := by
-    have direct := Prf.eqSubst (Γ := Γ) (Ax := PRAAx)
-      (alignedSamples F one (var 0) (var 1) (var 2) : Fm PTm 3)
-      ![width k A R,etaDen k A R,x] ![W,etaDen k A R,x]
-      (fun i => by fin_cases i; exact w.eqSymm; exact .eqRefl _; exact .eqRefl _)
-      (by simpa only [GaussianCompactAlignedTime.subst_alignedSamples,Syn.subst_var,Matrix.cons_val_zero,
-        Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using h.andE₂.andE₂)
-    simpa only [GaussianCompactAlignedTime.subst_alignedSamples,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,
-      ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using direct
+    have direct := Prf.eqSubst1
+      (alignedSamples F (Syn.shift one) (var 0) (Syn.shift (etaDen k A R)) (Syn.shift x)) w.eqSymm
+      (by simpa only [GaussianCompactAlignedTime.subst_alignedSamples,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
+        using h.andE₂.andE₂)
+    simpa only [GaussianCompactAlignedTime.subst_alignedSamples,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using direct
   have input : Γ ⊢[PRAAx] GaussianCompactAlignedFourSplit.input F one C1 C2 C3 C4 (etaDen k A R) K x :=
     .andI (le_refl one) (.andI (eta_den_positive k A R) (.andI h.andE₂.andE₁ aligned))
   have old := GaussianCompactAlignedFourSplit.original_four_piece_split F s one C1 C2 C3 C4 (etaDen k A R) K x input
-  have all := GaussianBetaSharpPartition.exact_partition k A R N h.andE₁
-  have full := quadrature_congr (Γ := Γ) F (.eqRefl s) (congrMul w (.eqRefl K)) (.eqRefl one) w (.eqRefl (etaDen k A R)) (.eqRefl x)
-  have q2 := quadrature_congr (Γ := Γ) F (.eqRefl s) (.eqRefl (C2*K)) all.andE₁ (.eqRefl C2) (.eqRefl (etaDen k A R)) (.eqRefl x)
-  have q3 := quadrature_congr (Γ := Γ) F (.eqRefl s) (.eqRefl (C3*K)) (first_two_endpoint k A R N h.andE₁) (.eqRefl C3) (.eqRefl (etaDen k A R)) (.eqRefl x)
-  have q4 := quadrature_congr (Γ := Γ) F (.eqRefl s) (.eqRefl (C4*K)) (first_three_endpoint k A R N h.andE₁) (.eqRefl C4) (.eqRefl (etaDen k A R)) (.eqRefl x)
-  exact distance_congr full (qadd_congr (qadd_congr (.eqRefl _) q2) (qadd_congr q3 q4)) (congrMul (.eqRefl (num 4)) w) (.eqRefl _) old
+  exact GaussianBetaSharpFourSplit.transport_four_piece_split F s k A R N K x h.andE₁ old
 
 /-- Public parameter order matches the original partition first, then
 its shared mesh, observation precision and original evaluator data. -/
