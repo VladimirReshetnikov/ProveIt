@@ -1,5 +1,6 @@
 import IPRADerivations.Probability.Independence
 import IPRADerivations.AnalyticNumberTheory.Mobius
+import IPRADerivations.Core.Reindex
 
 /-!
 # Exchanging a weighted sum with a sum over divisors
@@ -50,9 +51,7 @@ variable (c u : PTm 2)
 def dvB : PTm 2 := eqb (rem (fstT (var 1)) (var 0)) zero * Syn.subst ![var 0, sndT (var 1)] u
 
 theorem inst2_dvB (d z : PTm n) : inst2 (dvB u) d z = eqb (rem (fstT z) d) zero * inst2 u d (sndT z) := by
-  have hf : Syn.subst ![d, z] (Syn.subst ![var 0, sndT (var 1)] u) = inst2 u d (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, dvB, PTm.subst_mul, hf]
+  simp only [inst2, dvB, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem dvB_at (d m y : PTm n) :
@@ -65,9 +64,7 @@ theorem dvB_at (d m y : PTm n) :
 def mdB : PTm 2 := Syn.subst ![var 0, sndT (var 1)] c * eqb (rem (var 0) (fstT (var 1))) zero
 
 theorem inst2_mdB (m z : PTm n) : inst2 (mdB c) m z = inst2 c m (sndT z) * eqb (rem m (fstT z)) zero := by
-  have hf : Syn.subst ![m, z] (Syn.subst ![var 0, sndT (var 1)] c) = inst2 c m (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, mdB, PTm.subst_mul, hf]
+  simp only [inst2, mdB, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem mdB_at (m d y : PTm n) :
@@ -95,9 +92,7 @@ def LW : PTm 2 :=
 
 theorem inst2_LW (m z : PTm n) :
     inst2 (LW c u) m z = inst2 c m (sndT z) * ap2 (sumF (dvB u)) (fstT z) (pairT m (sndT z)) := by
-  have hf : Syn.subst ![m, z] (Syn.subst ![var 0, sndT (var 1)] c) = inst2 c m (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, LW, PTm.subst_mul, hf]
+  simp only [inst2, LW, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem LW_at (m Z y : PTm n) :
@@ -112,9 +107,7 @@ def RW : PTm 2 :=
 
 theorem inst2_RW (d z : PTm n) :
     inst2 (RW c u) d z = inst2 u d (sndT z) * ap2 (sumF (mdB c)) (fstT z) (pairT d (sndT z)) := by
-  have hf : Syn.subst ![d, z] (Syn.subst ![var 0, sndT (var 1)] u) = inst2 u d (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, RW, PTm.subst_mul, hf]
+  simp only [inst2, RW, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem RW_at (d X y : PTm n) :

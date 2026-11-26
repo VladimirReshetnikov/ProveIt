@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicHalfSquare
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Reindex
 
 /-!
 # The main term of the discrete contraction (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -64,9 +65,7 @@ def mtB : PTm 2 := Syn.subst ![var 0, sndT (var 1)] u2B * (sndT (sndT (var 1)) *
 
 theorem inst2_mtB (j z : PTm n) :
     inst2 mtB j z = inst2 u2B j (sndT z) * (sndT (sndT z) * quo (fstT z) (succ (succ j))) := by
-  have h : Syn.subst ![j, z] (Syn.subst ![var 0, sndT (var 1)] u2B) = inst2 u2B j (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  simp only [inst2, mtB, PTm.subst_mul, h]; simp
+  simp only [inst2, mtB, PTm.subst_mul, subst_reindex2]; simp
 
 theorem mt_pt {j x K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx] le (K * succ (succ j)) L) :
     Γ ⊢[PRAAx] le (inst2 mtB j (pairT x (pairT K (fact L)))) (inst2 (cmB udB) j (pairT x (pairT K (fact L)))) := by

@@ -4,6 +4,7 @@ import IPRADerivations.Core.Fubini
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.AnalyticNumberTheory.DivisorCases
+import IPRADerivations.Core.Reindex
 
 /-!
 # Möbius inversion and the Möbius formula for `φ`
@@ -168,16 +169,12 @@ def aN : PTm 3 := ((sg (var 0) * eqb (rem (fstT (var 2)) (var 0)) zero) * muN (s
 theorem inst3_aP (d e Z : PTm n) : inst3 (aP f) d e Z =
     ((sg d * eqb (rem (fstT Z) d) zero) * muP (succ (fstT Z)) d) *
       ((sg e * eqb (rem (quo (fstT Z) d) e) zero) * inst2 f e Z) := by
-  have hf : Syn.subst ![d, e, Z] (Syn.subst ![var 1, var 2] f) = inst2 f e Z := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst3, aP, PTm.subst_mul, hf]
+  simp only [inst3, aP, PTm.subst_mul, subst_reindex2]
   simp
 theorem inst3_aN (d e Z : PTm n) : inst3 (aN f) d e Z =
     ((sg d * eqb (rem (fstT Z) d) zero) * muN (succ (fstT Z)) d) *
       ((sg e * eqb (rem (quo (fstT Z) d) e) zero) * inst2 f e Z) := by
-  have hf : Syn.subst ![d, e, Z] (Syn.subst ![var 1, var 2] f) = inst2 f e Z := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst3, aN, PTm.subst_mul, hf]
+  simp only [inst3, aN, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem a_pt (d e Z : PTm n) :
@@ -263,9 +260,7 @@ theorem col_pt {e Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred (fstT Z))
 def dltB : PTm 2 := eqb (fstT (sndT (var 1))) (var 0) * Syn.subst ![var 0, sndT (var 1)] f
 
 theorem inst2_dlt (e y : PTm n) : inst2 (dltB f) e y = eqb (fstT (sndT y)) e * inst2 f e (sndT y) := by
-  have hf : Syn.subst ![e, y] (Syn.subst ![var 0, sndT (var 1)] f) = inst2 f e (sndT y) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, dltB, PTm.subst_mul, hf]
+  simp only [inst2, dltB, PTm.subst_mul, subst_reindex2]
   simp
 
 /-- Möbius inversion with a parameter: for `N = fst Z ≥ 1`,
@@ -399,15 +394,11 @@ def aN : PTm 3 := ((sg (var 0) * eqb (rem (var 2) (var 0)) zero) * muN (succ (va
 
 theorem inst3_aP (d e N : PTm n) : inst3 (aP f) d e N =
     ((sg d * eqb (rem N d) zero) * muP (succ N) d) * ((sg e * eqb (rem (quo N d) e) zero) * inst2 f e N) := by
-  have hf : Syn.subst ![d, e, N] (Syn.subst ![var 1, var 2] f) = inst2 f e N := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst3, aP, PTm.subst_mul, hf]
+  simp only [inst3, aP, PTm.subst_mul, subst_reindex2]
   simp
 theorem inst3_aN (d e N : PTm n) : inst3 (aN f) d e N =
     ((sg d * eqb (rem N d) zero) * muN (succ N) d) * ((sg e * eqb (rem (quo N d) e) zero) * inst2 f e N) := by
-  have hf : Syn.subst ![d, e, N] (Syn.subst ![var 1, var 2] f) = inst2 f e N := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst3, aN, PTm.subst_mul, hf]
+  simp only [inst3, aN, PTm.subst_mul, subst_reindex2]
   simp
 
 /-- `f` read at a packed parameter `Z` through `N = fst Z`. -/

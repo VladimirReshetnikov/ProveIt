@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SievePairBound
 import IPRADerivations.Probability.SymmetrizedMoments
+import IPRADerivations.Core.Reindex
 
 /-!
 # Summing the pair count bounds over all pairs of weight indices
@@ -88,11 +89,7 @@ variable (U V : PTm 2)
 def wB : PTm 3 := Syn.subst ![var 0, sndT (var 2)] U * Syn.subst ![var 1, sndT (var 2)] V
 
 theorem inst3_wB (i j x : PTm n) : inst3 (wB U V) i j x = inst2 U i (sndT x) * inst2 V j (sndT x) := by
-  have h1 : Syn.subst ![i, j, x] (Syn.subst ![var 0, sndT (var 2)] U) = inst2 U i (sndT x) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have h2 : Syn.subst ![i, j, x] (Syn.subst ![var 1, sndT (var 2)] V) = inst2 V j (sndT x) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst3, wB, LeanProofs.IPRA.PTm.subst_mul, h1, h2]
+  simp only [inst3, wB, LeanProofs.IPRA.PTm.subst_mul, subst_reindex2]
 
 /-- `ind · U V · (q d e K)` over `(d, e, ⟨X, ⟨q, ⟨a, w⟩⟩⟩)`. -/
 def Am : PTm 3 :=

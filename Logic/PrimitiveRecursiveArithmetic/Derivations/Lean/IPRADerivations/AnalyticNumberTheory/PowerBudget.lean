@@ -8,6 +8,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Topology.CollisionScales
 import IPRADerivations.AnalyticNumberTheory.BlockChain
 import IPRADerivations.Core.CommonLemmas
+import IPRADerivations.Core.Reindex
 
 /-!
 # The harmonic budget and the logarithm absorption (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -156,9 +157,7 @@ variable (u : PTm 2)
 def maskB : PTm 2 := Syn.subst ![var 0, sndT (var 1)] u * sg (monus (fstT (var 1)) (var 0))
 
 theorem inst2_maskB (i P : PTm n) : inst2 (maskB u) i P = inst2 u i (sndT P) * sg (monus (fstT P) i) := by
-  have hu : Syn.subst ![i, P] (Syn.subst ![var 0, sndT (var 1)] u) = inst2 u i (sndT P) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, maskB, PTm.subst_mul, PTm.subst_monus, hu]
+  simp only [inst2, maskB, PTm.subst_mul, PTm.subst_monus, subst_reindex2]
   simp
 
 theorem maskB_at (i N y : PTm n) :

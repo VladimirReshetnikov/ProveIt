@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Reindex
 
 /-!
 # The Leibniz rule for the weighted derivation of Dirichlet convolution
@@ -53,12 +54,7 @@ def DwB (f : PTm 2) : PTm 2 := ap2 (sumF (ellB w)) (succ (var 0)) (pairT (var 0)
 
 theorem inst2_cvB (f g : PTm 2) (d z : PTm n) : inst2 (cvB f g) d z =
     (sg d * eqb (rem (fstT z) d) zero) * (inst2 f d (sndT z) * inst2 g (quo (fstT z) d) (sndT z)) := by
-  have hf : Syn.subst ![d, z] (Syn.subst ![var 0, sndT (var 1)] f) = inst2 f d (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have hg : Syn.subst ![d, z] (Syn.subst ![quo (fstT (var 1)) (var 0), sndT (var 1)] g) =
-      inst2 g (quo (fstT z) d) (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, cvB, PTm.subst_mul, hf, hg]
+  simp only [inst2, cvB, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem inst2_DwB (f : PTm 2) (d y : PTm n) : inst2 (DwB w f) d y = Lw w d y * inst2 f d y := by

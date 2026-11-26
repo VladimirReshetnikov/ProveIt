@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.AnalyticNumberTheory.DivisorCases
+import IPRADerivations.Core.Reindex
 
 /-!
 # The Möbius–Mangoldt convolution
@@ -89,9 +90,7 @@ def ivB (f : PTm 2) : PTm 2 :=
 
 theorem inst2_ivB (f : PTm 2) (e z : PTm n) :
     inst2 (ivB f) e z = (sg e * eqb (rem (fstT z) e) zero) * inst2 f e (sndT z) := by
-  have hf : Syn.subst ![e, z] (Syn.subst ![var 0, sndT (var 1)] f) = inst2 f e (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, ivB, PTm.subst_mul, hf]
+  simp only [inst2, ivB, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem iv_at (f : PTm 2) (e k N : PTm n) :

@@ -1,6 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorRow
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
 import IPRADerivations.AnalyticNumberTheory.EulerProduct
+import IPRADerivations.Core.Reindex
 
 /-!
 # Möbius inversion from an abstract row identity (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -55,9 +56,7 @@ def kB : PTm 2 := (sg (var 0) * eqb (rem (fstT (var 1)) (var 0)) zero) * Syn.sub
 
 theorem inst2_kB (d P : PTm n) : inst2 (kB w) d P =
     (sg d * eqb (rem (fstT P) d) zero) * inst2 w d (sndT P) := by
-  have hw : Syn.subst ![d, P] (Syn.subst ![var 0, sndT (var 1)] w) = inst2 w d (sndT P) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, kB, PTm.subst_mul, hw]
+  simp only [inst2, kB, PTm.subst_mul, subst_reindex2]
   simp
 
 /-- `μ⁺_{N+1}(d)` over `0 = d`, `1 = ⟨⟨N, h⟩, y⟩`. -/
@@ -161,18 +160,12 @@ theorem inst2_rBg (d P : PTm n) : inst2 (rBg R w) d P = sg d * inst2 w d P * ins
 
 theorem inst3_a3g (d m P : PTm n) : inst3 (a3g G w) d m P = (sg d * inst2 w d P) *
     (eqb (rem m d) zero * sg m * inst2 G m P) := by
-  have hw : Syn.subst ![d, m, P] (Syn.subst ![var 0, var 2] w) = inst2 w d P := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have hg : Syn.subst ![d, m, P] (Syn.subst ![var 1, var 2] G) = inst2 G m P := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst3, a3g, PTm.subst_mul, hw, hg]
+  simp only [inst3, a3g, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem inst2_dmBg (m W : PTm n) :
     inst2 (dmBg G) m W = eqb (rem m (fstT W)) zero * sg m * inst2 G m (sndT W) := by
-  have hg : Syn.subst ![m, W] (Syn.subst ![var 0, sndT (var 1)] G) = inst2 G m (sndT W) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext j; fin_cases j <;> simp
-  simp only [inst2, dmBg, PTm.subst_mul, hg]
+  simp only [inst2, dmBg, PTm.subst_mul, subst_reindex2]
   simp
 
 /-- The row identity `R(d) = Σ_{m<N+1} [d ∣ m] sg(m) G(m)` for `d ≥ 1`, in every context `Δ ⊇ Θ`. -/
@@ -186,9 +179,7 @@ def RowHyp {k : ℕ} (Θ : List (Fm PTm k)) (N h y : PTm k) : Prop :=
 def hBg : PTm 2 := sg (var 0) * Syn.subst ![fstT (var 1) * var 0, sndT (var 1)] G
 
 theorem inst2_hBg (k W : PTm n) : inst2 (hBg G) k W = sg k * inst2 G (fstT W * k) (sndT W) := by
-  have hg : Syn.subst ![k, W] (Syn.subst ![fstT (var 1) * var 0, sndT (var 1)] G) = inst2 G (fstT W * k) (sndT W) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext j; fin_cases j <;> simp
-  simp only [inst2, hBg, PTm.subst_mul, hg]
+  simp only [inst2, hBg, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem hBg_at (k d P : PTm n) : Γ ⊢[PRAAx] inst2 (hBg G) k (pairT d P) ≐ sg k * inst2 G (d * k) P := by

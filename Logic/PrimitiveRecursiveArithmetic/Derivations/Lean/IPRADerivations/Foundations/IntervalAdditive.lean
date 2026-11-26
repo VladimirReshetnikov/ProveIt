@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.Foundations.LatticeCount
 import IPRADerivations.Foundations.InjectionCount
+import IPRADerivations.Core.Reindex
 
 /-!
 # Additivity of length for disjoint finite unions
@@ -55,11 +56,7 @@ def prB : PTm 2 := sg (Syn.subst ![var 0, sndT (var 1)] a) * sg (Syn.subst ![fst
 
 theorem inst2_prB (j' z : PTm n) :
     inst2 (prB a) j' z = sg (inst2 a j' (sndT z)) * sg (inst2 a (fstT z) (sndT z)) := by
-  have h1 : Syn.subst ![j', z] (Syn.subst ![var 0, sndT (var 1)] a) = inst2 a j' (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have h2 : Syn.subst ![j', z] (Syn.subst ![fstT (var 1), sndT (var 1)] a) = inst2 a (fstT z) (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, prB, PTm.subst_mul, Signum.sg, PTm.subst_monus, h1, h2]
+  simp only [inst2, prB, PTm.subst_mul, Signum.sg, PTm.subst_monus, subst_reindex2]
   simp
 
 /-- The pairs below `j`: `Σ_{j'<j} [a(j')][a(j)]` over `0 = j`, `1 = y`. -/
@@ -181,11 +178,7 @@ variable (lo hi : PTm 2)
 def ajB : PTm 2 := cnt (Syn.subst ![var 0, sndT (var 1)] lo) (Syn.subst ![var 0, sndT (var 1)] hi) (fstT (var 1))
 
 theorem inst2_ajB (j z : PTm n) : inst2 (ajB lo hi) j z = cnt (inst2 lo j (sndT z)) (inst2 hi j (sndT z)) (fstT z) := by
-  have h1 : Syn.subst ![j, z] (Syn.subst ![var 0, sndT (var 1)] lo) = inst2 lo j (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have h2 : Syn.subst ![j, z] (Syn.subst ![var 0, sndT (var 1)] hi) = inst2 hi j (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, ajB, cnt, PTm.subst_mul, Signum.sg, PTm.subst_monus, h1, h2]
+  simp only [inst2, ajB, cnt, PTm.subst_mul, Signum.sg, PTm.subst_monus, subst_reindex2]
   simp
 
 /-- The doubly covered pairs of the cell `c`: `Σ_{j<K} Σ_{j'<j} [c ∈ I_{j'}][c ∈ I_j]` over `0 = c`, `1 = ⟨K, x⟩`. -/
@@ -199,9 +192,7 @@ theorem inst2_ovlB (c z : PTm n) :
 def outB : PTm 2 := monus (Syn.subst ![var 0, sndT (var 1)] hi) (fstT (var 1))
 
 theorem inst2_outB (j z : PTm n) : inst2 (outB hi) j z = monus (inst2 hi j (sndT z)) (fstT z) := by
-  have h2 : Syn.subst ![j, z] (Syn.subst ![var 0, sndT (var 1)] hi) = inst2 hi j (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, outB, PTm.subst_monus, h2]
+  simp only [inst2, outB, PTm.subst_monus, subst_reindex2]
   simp
 
 /-- A covered-cell count `Σ_{j<K} [c ∈ I_j]` is the bit sum of `ajB`. -/

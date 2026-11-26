@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Reindex
 
 /-!
 # Associativity of the finite Dirichlet convolution
@@ -114,13 +115,7 @@ def aT : PTm 3 := (sg (var 0) * eqb (rem (fstT (var 2)) (var 0)) zero) *
 
 theorem inst3_aT (k d z : PTm n) : inst3 (aT f g h) k d z =
     dv k (fstT z) * inst2 (cvB f g) d (pairT k (sndT z)) * inst2 h (quo (fstT z) k) (sndT z) := by
-  have h1 : Syn.subst ![k, d, z] (Syn.subst ![var 1, pairT (var 0) (sndT (var 2))] (cvB f g)) =
-      inst2 (cvB f g) d (pairT k (sndT z)) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  have h2 : Syn.subst ![k, d, z] (Syn.subst ![quo (fstT (var 2)) (var 0), sndT (var 2)] h) =
-      inst2 h (quo (fstT z) k) (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  simp only [inst3, aT, PTm.subst_mul, h1, h2]
+  simp only [inst3, aT, PTm.subst_mul, subst_reindex2]
   simp
 
 /-- `[de ∣ m] [e ≥ 1] f(d) g(e) h(m/(de))` over `0 = e`, `1 = ⟨d, ⟨m, y⟩⟩`. -/
@@ -132,15 +127,7 @@ theorem inst2_HB (e w : PTm n) : inst2 (HB f g h) e w =
     eqb (rem (fstT (sndT w)) (fstT w * e)) zero * sg e *
       (inst2 f (fstT w) (sndT (sndT w)) * inst2 g e (sndT (sndT w))) *
       inst2 h (quo (fstT (sndT w)) (fstT w * e)) (sndT (sndT w)) := by
-  have h1 : Syn.subst ![e, w] (Syn.subst ![fstT (var 1), sndT (sndT (var 1))] f) =
-      inst2 f (fstT w) (sndT (sndT w)) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  have h2 : Syn.subst ![e, w] (Syn.subst ![var 0, sndT (sndT (var 1))] g) = inst2 g e (sndT (sndT w)) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  have h3 : Syn.subst ![e, w] (Syn.subst ![quo (fstT (sndT (var 1))) (fstT (var 1) * var 0), sndT (sndT (var 1))] h) =
-      inst2 h (quo (fstT (sndT w)) (fstT w * e)) (sndT (sndT w)) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  simp only [inst2, HB, PTm.subst_mul, h1, h2, h3]
+  simp only [inst2, HB, PTm.subst_mul, subst_reindex2, subst_reindex2]
   simp
 
 theorem HB_at (e d m y : PTm n) : Γ ⊢[PRAAx] inst2 (HB f g h) e (pairT d (pairT m y)) ≐

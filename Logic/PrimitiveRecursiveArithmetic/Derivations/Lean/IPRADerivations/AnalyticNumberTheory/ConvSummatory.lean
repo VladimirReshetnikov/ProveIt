@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
 import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.InductionTactic
+import IPRADerivations.Core.Reindex
 
 /-!
 # The summatory function of a Dirichlet convolution (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -58,9 +59,7 @@ def RB : PTm 2 := (sg (var 0) * Syn.subst ![var 0, sndT (var 1)] a) *
 
 theorem inst2_RB (d z : PTm n) :
     inst2 (RB a b) d z = (sg d * inst2 a d (sndT z)) * Bs b (quo (fstT z) d) (sndT z) := by
-  have ha : Syn.subst ![d, z] (Syn.subst ![var 0, sndT (var 1)] a) = inst2 a d (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  simp only [inst2, RB, PTm.subst_mul, ha]
+  simp only [inst2, RB, PTm.subst_mul, subst_reindex2]
   simp
 
 theorem RB_at (d X y : PTm n) :

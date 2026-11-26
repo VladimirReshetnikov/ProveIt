@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.HyperbolaSwap
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Reindex
 
 /-!
 # The Chebyshev block identity (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -103,22 +104,17 @@ abbrev gB (b : PTm 2) : PTm 2 := (sg (var 0) * Syn.subst ![var 0, sndT (var 1)] 
 
 theorem eB_at (b : PTm 2) (k X D z : PTm n) :
     Γ ⊢[PRAAx] inst2 (eB b) k (pairT X (pairT D z)) ≐ (sg k * inst2 b k (pairT D z)) * monus (quo X k) D := by
-  have h : Syn.subst ![k, pairT X (pairT D z)] (Syn.subst ![var 0, sndT (var 1)] b) =
-      inst2 b k (sndT (pairT X (pairT D z))) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
   have raw : inst2 (eB b) k (pairT X (pairT D z)) = (sg k * inst2 b k (sndT (pairT X (pairT D z)))) *
       monus (quo (fstT (pairT X (pairT D z))) k) (fstT (sndT (pairT X (pairT D z)))) := by
-    simp only [inst2, eB, PTm.subst_mul, PTm.subst_monus, h]; simp [sg]
+    simp only [inst2, eB, PTm.subst_mul, PTm.subst_monus, subst_reindex2]; simp [sg]
   rw [raw]
   exact congrMul (congrMul (.eqRefl _) (congrInst2 b (.eqRefl _) (snd_pair _ _)))
     (congrMonus (congrAp2 quoF (fst_pair _ _) (.eqRefl _)) ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)))
 
 theorem gB_at (b : PTm 2) (k X y : PTm n) :
     Γ ⊢[PRAAx] inst2 (gB b) k (pairT X y) ≐ (sg k * inst2 b k y) * quo X k := by
-  have h : Syn.subst ![k, pairT X y] (Syn.subst ![var 0, sndT (var 1)] b) = inst2 b k (sndT (pairT X y)) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
   have raw : inst2 (gB b) k (pairT X y) = (sg k * inst2 b k (sndT (pairT X y))) * quo (fstT (pairT X y)) k := by
-    simp only [inst2, gB, PTm.subst_mul, h]; simp [sg]
+    simp only [inst2, gB, PTm.subst_mul, subst_reindex2]; simp [sg]
   rw [raw]
   exact congrMul (congrMul (.eqRefl _) (congrInst2 b (.eqRefl _) (snd_pair _ _))) (congrAp2 quoF (fst_pair _ _) (.eqRefl _))
 

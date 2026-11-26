@@ -1,5 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorSplit
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorInversion
+import IPRADerivations.Core.Reindex
 
 /-!
 # Divisor sums over a coprime product (`robin_ipra_research_2026-11-19`, multiplicativity of `σ`)
@@ -107,9 +108,7 @@ theorem lB_at (d m N y : PTm n) :
     Γ ⊢[PRAAx] inst2 (lB g) d (Xp m N y) ≐ eqb (rem (m * N) d) zero * inst2 g d y := by
   have e : inst2 (lB g) d (Xp m N y) = eqb (rem (fstT (fstT (Xp m N y)) * sndT (fstT (Xp m N y))) d) zero *
       inst2 g d (sndT (Xp m N y)) := by
-    have hg : Syn.subst ![d, Xp m N y] (Syn.subst ![var 0, sndT (var 1)] g) = inst2 g d (sndT (Xp m N y)) := by
-      simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-    simp only [inst2, lB, PTm.subst_mul, hg]; simp
+    simp only [inst2, lB, PTm.subst_mul, subst_reindex2]; simp
   rw [e]
   have e1 : Γ ⊢[PRAAx] fstT (fstT (Xp m N y)) ≐ m := (congrFst (fst_pair _ _)).eqTrans (fst_pair _ _)
   have e2 : Γ ⊢[PRAAx] sndT (fstT (Xp m N y)) ≐ N := (congrSnd (fst_pair _ _)).eqTrans (snd_pair _ _)
@@ -120,10 +119,7 @@ theorem riB_at (b a m N y : PTm n) :
     Γ ⊢[PRAAx] inst2 (riB g) b (pairT a (Xp m N y)) ≐ eqb (rem N b) zero * inst2 g (a * b) y := by
   have e : inst2 (riB g) b (pairT a (Xp m N y)) = eqb (rem (sndT (fstT (sndT (pairT a (Xp m N y))))) b) zero *
       inst2 g (fstT (pairT a (Xp m N y)) * b) (sndT (sndT (pairT a (Xp m N y)))) := by
-    have hg : Syn.subst ![b, pairT a (Xp m N y)] (Syn.subst ![fstT (var 1) * var 0, sndT (sndT (var 1))] g) =
-        inst2 g (fstT (pairT a (Xp m N y)) * b) (sndT (sndT (pairT a (Xp m N y)))) := by
-      simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-    simp only [inst2, riB, PTm.subst_mul, hg]; simp
+    simp only [inst2, riB, PTm.subst_mul, subst_reindex2]; simp
   rw [e]
   have e3 : Γ ⊢[PRAAx] sndT (fstT (sndT (pairT a (Xp m N y)))) ≐ N :=
     (congrSnd ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))).eqTrans (snd_pair _ _)

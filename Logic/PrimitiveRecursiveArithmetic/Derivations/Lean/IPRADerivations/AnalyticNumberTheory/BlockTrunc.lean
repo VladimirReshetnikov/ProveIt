@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.BlockFloor
 import IPRADerivations.AnalyticNumberTheory.PNTStageStep
 import IPRADerivations.Foundations.ProductSumDomination
 import IPRADerivations.Core.LinearCombination
+import IPRADerivations.Core.Reindex
 
 /-!
 # Truncating the excess sum of the Chebyshev block identity (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -103,12 +104,9 @@ abbrev dB (b : PTm 2) : PTm 2 := fstT (sndT (var 1)) * (sg (var 0) * Syn.subst !
 
 theorem dB_at (b : PTm 2) (k X D z : PTm n) :
     Γ ⊢[PRAAx] inst2 (dB b) k (pairT X (pairT D z)) ≐ D * (sg k * inst2 b k (pairT D z)) := by
-  have h : Syn.subst ![k, pairT X (pairT D z)] (Syn.subst ![var 0, sndT (var 1)] b) =
-      inst2 b k (sndT (pairT X (pairT D z))) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
   have raw : inst2 (dB b) k (pairT X (pairT D z)) =
       fstT (sndT (pairT X (pairT D z))) * (sg k * inst2 b k (sndT (pairT X (pairT D z)))) := by
-    simp only [inst2, dB, PTm.subst_mul, h]; simp [sg]
+    simp only [inst2, dB, PTm.subst_mul, subst_reindex2]; simp [sg]
   rw [raw]
   exact congrMul ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
     (congrMul (.eqRefl _) (congrInst2 b (.eqRefl _) (snd_pair _ _)))
