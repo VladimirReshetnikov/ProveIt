@@ -16,8 +16,8 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureAffineRemainder
 
 open_ipra
-open GaussianRationalFiniteSum (multiplyBody multiply_body_at sum sum_multiply)
-open GaussianRationalQuadratureDifference (differenceBody difference_body_at weighted_difference)
+open GaussianRationalFiniteSum (multiplyBody sum sum_multiply)
+open GaussianRationalQuadratureDifference (differenceBody affine_difference_body_at weighted_difference)
 open GaussianRationalRiemannRefinement (leftSum weight termsDistance constantBody)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalHorner (qzero qadd qmul positive_product)
@@ -34,9 +34,8 @@ ipra_subst rowData
 
 theorem row_at (f g h : PTm 2) (i c x y z : PTm n) : Γ ⊢[PRAAx]
     inst2 (rowBody f g h) i (rowData c x y z) ≐ qsub (inst2 f i x) (qadd (inst2 g i y) (qmul c (inst2 h i z))) :=
-  (difference_body_at (differenceBody f g) (multiplyBody h) i (pairT x y) (pairT c z)).eqTrans
-    ((qsub_congr (difference_body_at f g i x y) (multiply_body_at h c i z)).eqTrans
-      (displaced_difference _ _ _ (GaussianRationalHorner.qmul_canonical _ _)))
+  (affine_difference_body_at f g h i c x y z (.eqRefl _) (.eqRefl _) (.eqRefl _)).eqTrans
+    (displaced_difference _ _ _ (GaussianRationalHorner.qmul_canonical _ _))
 
 private theorem left_sum_multiply (h : PTm 2) (c N z C E : PTm n) : Γ ⊢[PRAAx]
     leftSum (multiplyBody h) N (pairT c z) C E ≐ qmul c (leftSum h N z C E) := by

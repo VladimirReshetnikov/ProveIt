@@ -21,12 +21,11 @@ open_ipra
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalLogTail (row_source)
 open GaussianBarnesCanonicalSecondDerivativeStep (errorNumerator)
-open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply)
+open GaussianRationalFiniteSum (sum multiplyBody)
 open GaussianRationalHorner (ofGaussian qmul positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
-open GaussianRationalQuadratureDifference (differenceBody difference_body_at finite_sum_difference)
+open GaussianRationalQuadratureDifference (differenceBody affine_difference_body_at finite_sum_affine_difference)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianRationalSyntheticDivision (qsub_congr qmul_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "F" => GaussianBarnesCanonicalDerivativeTail.body
@@ -71,25 +70,15 @@ def errorData (z h B N : PTm n) : PTm n :=
 theorem error_body_at (z h B N i : PTm n) : Γ ⊢[PRAAx]
     inst2 errorBody i (errorData z h B N) ≐ qsub
       (GaussianBarnesCanonicalSecondDerivativeStep.increment z h B (succ (N+i)))
-      (GaussianBarnesCanonicalSecondDerivativeStep.linear z h B (succ (N+i))) := by
-  let x := fd (add z h) B N
-  let y := fd z B N
-  let a := ofGaussian h B
-  let v := sd z B N
-  have l := (difference_body_at (Γ := Γ) F F i x y).eqTrans (qsub_congr
-    (GaussianBarnesCanonicalDerivativeTail.body_at (add z h) B N i) (GaussianBarnesCanonicalDerivativeTail.body_at z B N i))
-  have r := (multiply_body_at (Γ := Γ) S a i v).eqTrans (qmul_congr (.eqRefl a)
-    (GaussianBarnesCanonicalSecondDerivativeTail.body_at z B N i))
-  exact (difference_body_at (differenceBody F F) (multiplyBody S) i (pairT x y) (pairT a v)).eqTrans (qsub_congr l r)
+      (GaussianBarnesCanonicalSecondDerivativeStep.linear z h B (succ (N+i))) :=
+  affine_difference_body_at F F S i (ofGaussian h B) (fd (add z h) B N) (fd z B N) (sd z B N)
+    (GaussianBarnesCanonicalDerivativeTail.body_at (add z h) B N i)
+    (GaussianBarnesCanonicalDerivativeTail.body_at z B N i)
+    (GaussianBarnesCanonicalSecondDerivativeTail.body_at z B N i)
 
 theorem exact_sum (z h B N r : PTm n) :
-    Γ ⊢[PRAAx] sum errorBody r (errorData z h B N) ≐ qsub (increment z h B N r) (linear z h B N r) := by
-  let x := fd (add z h) B N
-  let y := fd z B N
-  let a := ofGaussian h B
-  let v := sd z B N
-  exact (finite_sum_difference (differenceBody F F) (multiplyBody S) r (pairT x y) (pairT a v)).eqTrans
-    (qsub_congr (finite_sum_difference F F r x y) (sum_multiply S a r v))
+    Γ ⊢[PRAAx] sum errorBody r (errorData z h B N) ≐ qsub (increment z h B N r) (linear z h B N r) :=
+  finite_sum_affine_difference F F S r (ofGaussian h B) (fd (add z h) B N) (fd z B N) (sd z B N)
 
 theorem rows_bounded (z h R B N H : PTm n) (hs : Γ ⊢[PRAAx] source z h R B N H) :
     Γ ⊢[PRAAx] GaussianScaledReciprocalSquareInterval.rows errorBody N (errorNumerator H) (B*B) (errorData z h B N) := by

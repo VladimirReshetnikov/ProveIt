@@ -21,10 +21,10 @@ open LeanProofs.IPRA.Common (mul_le_mul)
 open GaussianBarnesCanonicalThirdDerivativePositiveMargin (source step)
 open GaussianBarnesCanonicalThirdDerivativeStep (errorNumerator)
 open GaussianBarnesCanonicalThirdLogarithmRows (center derivative_at)
-open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply)
+open GaussianRationalFiniteSum (sum multiplyBody)
 open GaussianRationalHorner (ofGaussian positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalQuadratureDifference (differenceBody difference_body_at finite_sum_difference)
+open GaussianRationalQuadratureDifference (differenceBody affine_difference_body_at finite_sum_affine_difference)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
@@ -76,25 +76,15 @@ theorem error_body_at (A C B N i : PTm n) : Γ ⊢[PRAAx]
     inst2 errorBody i (errorData A C B N) ≐ residual A C B (succ (N+i)) := by
   let z := center A B
   let w := center C B
-  let x := sd w B N
-  let y := sd z B N
-  let a := ofGaussian (step A C) B
-  let v := td z B N zero
-  have l := (difference_body_at (Γ := Γ) S S i x y).eqTrans
-    (qsub_congr (GaussianBarnesCanonicalSecondDerivativeTail.body_at w B N i)
-      (GaussianBarnesCanonicalSecondDerivativeTail.body_at z B N i))
-  have r := (multiply_body_at (Γ := Γ) T a i v).eqTrans
-    (qmul_congr (.eqRefl a) (GaussianBarnesCanonicalHigherDerivative.body_at z B N zero i))
-  exact (difference_body_at (differenceBody S S) (multiplyBody T) i (pairT x y) (pairT a v)).eqTrans (qsub_congr l r)
+  exact affine_difference_body_at S S T i (ofGaussian (step A C) B) (sd w B N) (sd z B N) (td z B N zero)
+    (GaussianBarnesCanonicalSecondDerivativeTail.body_at w B N i)
+    (GaussianBarnesCanonicalSecondDerivativeTail.body_at z B N i)
+    (GaussianBarnesCanonicalHigherDerivative.body_at z B N zero i)
 
 theorem exact_sum (A C B N r : PTm n) : Γ ⊢[PRAAx]
-    sum errorBody r (errorData A C B N) ≐ qsub (increment A C B N r) (linear A C B N r) := by
-  let x := sd (center C B) B N
-  let y := sd (center A B) B N
-  let a := ofGaussian (step A C) B
-  let v := td (center A B) B N zero
-  exact (finite_sum_difference (differenceBody S S) (multiplyBody T) r (pairT x y) (pairT a v)).eqTrans
-    (qsub_congr (finite_sum_difference S S r x y) (sum_multiply T a r v))
+    sum errorBody r (errorData A C B N) ≐ qsub (increment A C B N r) (linear A C B N r) :=
+  finite_sum_affine_difference S S T r (ofGaussian (step A C) B)
+    (sd (center C B) B N) (sd (center A B) B N) (td (center A B) B N zero)
 
 private theorem error_at_index (A C B H K j : PTm n) (h : Γ ⊢[PRAAx] source A C B H K) :
     Γ ⊢[PRAAx] bounded (residual A C B (succ j)) (errorNumerator H K) ((B*B)*(succ j*succ j)) := by

@@ -16,7 +16,8 @@ namespace LeanProofs.IPRA.Analysis.GaussianRationalQuadratureDifference
 open_ipra
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
-open GaussianRationalFiniteSum (sum)
+open GaussianRationalFiniteSum (sum multiplyBody multiply_body_at sum_multiply)
+open GaussianRationalHorner (qmul)
 open GaussianRationalMatrixFiniteSums (negativeBody sum_negative)
 open GaussianRationalRiemannRefinement (leftSum weight)
 
@@ -66,6 +67,23 @@ theorem finite_sum_difference (f g : PTm 2) (N x y : PTm n) :
   (GaussianRationalFiniteSum.sum_add (leftBody f) (negativeBody (rightBody g)) N (pairT x y)).eqTrans
     ((qadd_congr (.eqRefl _) (sum_negative (rightBody g) N (pairT x y))).eqTrans
       (qsub_congr (left_sum f N x y) (right_sum g N x y)))
+
+/-- Read a row of a difference minus a fixed multiple using the three original row values. -/
+theorem affine_difference_body_at (f g h : PTm 2) (i c x y z : PTm n)
+    {u v w : PTm n} (hf : Γ ⊢[PRAAx] inst2 f i x ≐ u) (hg : Γ ⊢[PRAAx] inst2 g i y ≐ v)
+    (hh : Γ ⊢[PRAAx] inst2 h i z ≐ w) :
+    Γ ⊢[PRAAx] inst2 (differenceBody (differenceBody f g) (multiplyBody h)) i (pairT (pairT x y) (pairT c z)) ≐
+      qsub (qsub u v) (qmul c w) :=
+  (difference_body_at (differenceBody f g) (multiplyBody h) i (pairT x y) (pairT c z)).eqTrans
+    (qsub_congr ((difference_body_at f g i x y).eqTrans (qsub_congr hf hg))
+      ((multiply_body_at h c i z).eqTrans (qmul_congr (.eqRefl c) hh)))
+
+/-- Sum a difference minus a fixed multiple over a common finite row count. -/
+theorem finite_sum_affine_difference (f g h : PTm 2) (N c x y z : PTm n) :
+    Γ ⊢[PRAAx] sum (differenceBody (differenceBody f g) (multiplyBody h)) N (pairT (pairT x y) (pairT c z)) ≐
+      qsub (qsub (sum f N x) (sum g N y)) (qmul c (sum h N z)) :=
+  (finite_sum_difference (differenceBody f g) (multiplyBody h) N (pairT x y) (pairT c z)).eqTrans
+    (qsub_congr (finite_sum_difference f g N x y) (sum_multiply h c N z))
 
 theorem weighted_difference (f g : PTm 2) (N x y C E : PTm n) :
     Γ ⊢[PRAAx] qsub (leftSum f N x C E) (leftSum g N y C E) ≐
