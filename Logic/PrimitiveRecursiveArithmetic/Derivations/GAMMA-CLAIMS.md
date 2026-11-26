@@ -2936,3 +2936,6 @@ The original finite product at each common segment has an explicit independent-c
 
 The actual rational first-derivative expression has radius $2R^2/k^2$ and its exact finite tail has radius $2R^2/N$. This establishes the rational tail estimate used by a future differentiation proof.
 [GaussianBarnesCanonicalDerivativeRow](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeRow.lean), [GaussianReciprocalSquareInterval](Lean/IPRADerivations/Analysis/GaussianReciprocalSquareInterval.lean), [GaussianBarnesCanonicalDerivativeTail](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDerivativeTail.lean)
+
+The original factor equals the exact rational power $(z+m)^m$ times its actual regular exponential multiplier, with a certified positive lower bound.
+[GaussianBarnesCanonicalDeflatedFactor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalDeflatedFactor.lean)
