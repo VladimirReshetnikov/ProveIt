@@ -3092,3 +3092,6 @@ Equivalent fractions give identical data for the actual prefactor derivative sam
 
 A rational input distance bound `A/M` on a common certified disk gives a uniform leading derivative error `gain(R) A/M` for the original independent observations.
 [GaussianBarnesCanonicalPrefactorDerivativeContinuity](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalPrefactorDerivativeContinuity.lean)
+
+The original full Barnes value quotient converges to its explicit product-rule derivative name, with independent observations and a uniform bound linear in the step size. The same bound applies to the actual named quotient for names representing the corresponding rational configuration.
+[GaussianBarnesCanonicalValueDerivative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalValueDerivative.lean)
