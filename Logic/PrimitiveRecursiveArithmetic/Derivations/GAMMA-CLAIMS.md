@@ -3149,3 +3149,6 @@ When a regular input name represents an exact Gaussian rational, the original na
 
 At every internal order r≥3 the rational coefficient through the original base reciprocal has the bound `2^r/(r*k^(r−1))`. Exact multiplication by r! gives the factorial-scaled row with its sharp bound. Both programs have inverse-square bounds for finite tails.
 [GaussianBarnesCanonicalHigherRows](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherRows.lean)
+
+The original Barnes and reciprocal-Gamma evaluators on the actual named unit shift satisfy the cleared functional equation at every regular Gaussian input on a certified disk. The proof aligns their late rational observations and passes the exact rational equation through independent dyadic rate bounds.
+[GaussianBarnesCanonicalNamedFunctionalEquation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedFunctionalEquation.lean)
