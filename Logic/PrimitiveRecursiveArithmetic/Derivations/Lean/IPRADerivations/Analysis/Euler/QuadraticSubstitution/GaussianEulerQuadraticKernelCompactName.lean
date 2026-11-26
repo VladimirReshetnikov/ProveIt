@@ -20,7 +20,6 @@ open GaussianEulerPositiveScalingIntegrand (fixedData)
 open GaussianCompactRiemannName (inside sampledModulus localBody)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianNamedInverseRate (independentRate)
-open GaussianRationalDistanceOrder (distance_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -92,17 +91,9 @@ theorem local_modulus_at (z R B c d a C E T t u A D : PTm n) (h : Γ ⊢[PRAAx] 
   have rate := GaussianEulerQuadraticKernelTimeRate.original_rate (doubled z B) (two*R) B E T c d
     (fstT t) (sndT t) (fstT u) (sndT u) A D hz ha hb hD near
   let sh := fun x : PTm n => Syn.shift (Syn.shift x)
-  have rs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate kernelF kernelF
-      (kernelData (doubled (sh z) (sh B)) (sh B) (fstT (sh t)) (sndT (sh t)) (sh c) (sh d))
-      (kernelData (doubled (sh z) (sh B)) (sh B) (fstT (sh u)) (sndT (sh u)) (sh c) (sh d))
-      (lipschitz (sh R) (sh E) (sh T) (sh c) (sh d)*sh A) (sh D) := by
-    simpa [Fm.shift,Syn.shift,sh,lipschitz] using rate.shift.shift
-  refine .allI (.allI ?_)
-  simpa only [independentRate,GaussianCompactRiemannName.subst_nameData,GaussianEulerPositiveScalingIntegrand.subst_fixedData,
-    subst_lipschitz,PTm.subst_mul,Syn.shift,sh] using distance_congr
-    (wrapped_at (var 1) (sh t) (sh z) (sh B) (sh c) (sh d)).eqSymm
-    (wrapped_at (var 0) (sh u) (sh z) (sh B) (sh c) (sh d)).eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianNamedInverseRate.rate_at _ _ _ _ _ _ (var 1) (var 0) rs)
+  apply GaussianNamedInverseRate.transport_by_sample_eq rate
+  · simpa [sh, Syn.shift] using wrapped_at (var 1) (sh t) (sh z) (sh B) (sh c) (sh d)
+  · simpa [sh, Syn.shift] using wrapped_at (var 0) (sh u) (sh z) (sh B) (sh c) (sh d)
 
 theorem sampled_modulus (z R B c d a C E T : PTm n) (h : Γ ⊢[PRAAx] source z R B c d a C E T) : Γ ⊢[PRAAx]
     sampledModulus evaluatorF a C E (lipschitz R E T c d) (fixedData z B c d) := by

@@ -19,7 +19,6 @@ open GaussianEulerPositiveScalingIntegrand (evaluatorF fixedData dampedF dampedD
 open GaussianEulerDampedTimeRate (lipschitz)
 open GaussianCompactRiemannName (inside sampledModulus localBody)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -74,17 +73,10 @@ theorem local_modulus_at (z R B c d a C E T t u A D : PTm n) (h : Γ ⊢[PRAAx] 
     (.andI (.andI h.andE₁.andE₁ h.andE₂)
       (.andI (GaussianEulerCompactAdditivity.domain_of_inside t a C E T h.andE₁.andE₂.andE₁ h.andE₁.andE₁.andE₂.andE₁ h.andE₁.andE₂.andE₂ ht)
         (.andI (GaussianEulerCompactAdditivity.domain_of_inside u a C E T h.andE₁.andE₂.andE₁ h.andE₁.andE₁.andE₂.andE₁ h.andE₁.andE₂.andE₂ hu) (.andI hD hd))))
-  have rs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate dampedF dampedF
-      (dampedData (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B)) (fstT (Syn.shift (Syn.shift t))) (sndT (Syn.shift (Syn.shift t))) (Syn.shift (Syn.shift c)) (Syn.shift (Syn.shift d)))
-      (dampedData (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B)) (fstT (Syn.shift (Syn.shift u))) (sndT (Syn.shift (Syn.shift u))) (Syn.shift (Syn.shift c)) (Syn.shift (Syn.shift d)))
-      (lipschitz (Syn.shift (Syn.shift R)) (Syn.shift (Syn.shift E)) (Syn.shift (Syn.shift T)) (Syn.shift (Syn.shift c)) (Syn.shift (Syn.shift d))*Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift D)) := by
-    simpa [Fm.shift,Syn.shift] using raw.shift.shift
-  refine .allI (.allI ?_)
-  simpa only [independentRate,GaussianCompactRiemannName.subst_nameData,GaussianEulerPositiveScalingIntegrand.subst_fixedData,
-    GaussianEulerDampedTimeRate.subst_lipschitz,PTm.subst_mul,Syn.shift] using
-    distance_congr (wrapped_at (var 1) (Syn.shift (Syn.shift t)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift c)) (Syn.shift (Syn.shift d))).eqSymm
-      (wrapped_at (var 0) (Syn.shift (Syn.shift u)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift c)) (Syn.shift (Syn.shift d))).eqSymm
-      (.eqRefl _) (.eqRefl _) (GaussianNamedInverseRate.rate_at _ _ _ _ _ _ (var 1) (var 0) rs)
+  let sh (v : PTm n) := Syn.shift (Syn.shift v)
+  apply GaussianNamedInverseRate.transport_by_sample_eq raw
+  · simpa [sh, Syn.shift] using wrapped_at (var 1) (sh t) (sh z) (sh B) (sh c) (sh d)
+  · simpa [sh, Syn.shift] using wrapped_at (var 0) (sh u) (sh z) (sh B) (sh c) (sh d)
 
 theorem sampled_modulus (z R B c d a C E T : PTm n) (h : Γ ⊢[PRAAx] source z R B c d a C E T) : Γ ⊢[PRAAx]
     sampledModulus evaluatorF a C E (lipschitz R E T c d) (fixedData z B c d) := by

@@ -77,6 +77,17 @@ theorem rate_at (F G : PR 2) (x y D N p q : PTm n) (h : Γ ⊢[PRAAx] independen
   simpa only [GaussianRationalMetric.subst_distanceBounded,subst_ap2,subst_rateNumerator,subst_rateDenominator,
     Syn.subst_var,Syn.inst_zero,Syn.inst_succ,Syn.subst_inst_shift] using pair.allE q
 
+/-- Carry an independent rate across exact readbacks at its two observation precisions. -/
+theorem transport_by_sample_eq {F G P Q : PR 2} {x y u v A D : PTm n}
+    (h : Γ ⊢[PRAAx] independentRate F G x y A D)
+    (hl : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
+      ap2 P (var 1) (Syn.shift (Syn.shift u)) ≐ ap2 F (var 1) (Syn.shift (Syn.shift x)))
+    (hr : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
+      ap2 Q (var 0) (Syn.shift (Syn.shift v)) ≐ ap2 G (var 0) (Syn.shift (Syn.shift y))) :
+    Γ ⊢[PRAAx] independentRate P Q u v A D :=
+  .allI (.allI (distance_congr hl.eqSymm hr.eqSymm (.eqRefl _) (.eqRefl _)
+    (rate_at F G _ _ _ _ (var 1) (var 0) (shift_independent_rate (shift_independent_rate h)))))
+
 /-- An independent rate with a later second clock fits the diagonal budget
 with two observation allowances at the first clock. -/
 theorem diagonal_of_later_rate (x y A N p r : PTm n)

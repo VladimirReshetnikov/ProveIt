@@ -18,7 +18,6 @@ namespace LeanProofs.IPRA.Analysis.GaussianEulerUnitKernelCompactName
 open_ipra
 open GaussianCompactRiemannName (inside sampledModulus localBody)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -123,14 +122,9 @@ theorem local_modulus_at (z R B a C E G t u A D : PTm n) (h : Γ ⊢[PRAAx] sour
   have rate := GaussianEulerUnitKernelCompactRate.original_rate z R B (fstT t) (sndT t) (fstT u) (sndT u) G A D
     (.andI (inside_source z R B a C E G t h ht) (.andI (inside_source z R B a C E G u h hu) (.andI hD near)))
   let sh := fun x : PTm n => Syn.shift (Syn.shift x)
-  have rs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate GaussianEulerUnitSubstitutionKernel.nameF GaussianEulerUnitSubstitutionKernel.nameF
-      (GaussianEulerUnitSubstitutionKernel.data (sh z) (sh B) (fstT (sh t)) (sndT (sh t)))
-      (GaussianEulerUnitSubstitutionKernel.data (sh z) (sh B) (fstT (sh u)) (sndT (sh u))) (lipschitz (sh R) (sh G)*sh A) (sh D) := by
-    simpa [Fm.shift,Syn.shift,sh,lipschitz] using rate.shift.shift
-  refine .allI (.allI ?_)
-  simpa only [independentRate,GaussianCompactRiemannName.subst_nameData,subst_fixedData,subst_lipschitz,PTm.subst_mul,Syn.shift,sh] using
-    distance_congr (wrapped_at (var 1) (sh t) (sh z) (sh B)).eqSymm (wrapped_at (var 0) (sh u) (sh z) (sh B)).eqSymm
-      (.eqRefl _) (.eqRefl _) (GaussianNamedInverseRate.rate_at _ _ _ _ _ _ (var 1) (var 0) rs)
+  apply GaussianNamedInverseRate.transport_by_sample_eq rate
+  · simpa [sh, Syn.shift] using wrapped_at (var 1) (sh t) (sh z) (sh B)
+  · simpa [sh, Syn.shift] using wrapped_at (var 0) (sh u) (sh z) (sh B)
 
 theorem sampled_modulus (z R B a C E G : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E G) : Γ ⊢[PRAAx]
     sampledModulus evaluatorF a C E (lipschitz R G) (fixedData z B) := by

@@ -21,7 +21,6 @@ namespace LeanProofs.IPRA.Analysis.GaussianEulerCompactModulus
 
 open_ipra
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianEulerIntegrandName (exponentF exponentData)
@@ -102,15 +101,10 @@ theorem wrapped_rate (t u z B A D : PTm n)
       (GaussianCompactRiemannName.evaluatorName GaussianEulerIntegrandName.evaluatorF)
       (GaussianCompactRiemannName.nameData t (GaussianEulerIntegrandName.fixedData z B))
       (GaussianCompactRiemannName.nameData u (GaussianEulerIntegrandName.fixedData z B)) A D := by
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] independentRate GaussianEulerIntegrandName.nameF GaussianEulerIntegrandName.nameF
-      (GaussianEulerIntegrandName.data (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B)) (fstT (Syn.shift (Syn.shift t))) (sndT (Syn.shift (Syn.shift t))))
-      (GaussianEulerIntegrandName.data (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B)) (fstT (Syn.shift (Syn.shift u))) (sndT (Syn.shift (Syn.shift u))))
-      (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift D)) := by simpa [Fm.shift,Syn.shift] using h.shift.shift
-  refine .allI (.allI ?_)
-  simpa only [independentRate,GaussianCompactRiemannName.subst_nameData,GaussianEulerIntegrandName.subst_fixedData,Syn.shift] using
-    distance_congr (wrapped_at (var 1) (Syn.shift (Syn.shift t)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B))).eqSymm
-      (wrapped_at (var 0) (Syn.shift (Syn.shift u)) (Syn.shift (Syn.shift z)) (Syn.shift (Syn.shift B))).eqSymm
-      (.eqRefl _) (.eqRefl _) (GaussianNamedInverseRate.rate_at _ _ _ _ _ _ (var 1) (var 0) hs)
+  let sh (v : PTm n) := Syn.shift (Syn.shift v)
+  apply GaussianNamedInverseRate.transport_by_sample_eq h
+  · simpa [sh, Syn.shift] using wrapped_at (var 1) (sh t) (sh z) (sh B)
+  · simpa [sh, Syn.shift] using wrapped_at (var 0) (sh u) (sh z) (sh B)
 
 theorem local_modulus_at (z R B E T C t u A D : PTm n) (hz : Γ ⊢[PRAAx] source z R B E T C)
     (hD : Γ ⊢[PRAAx] le one D) (ht : Γ ⊢[PRAAx] GaussianCompactRiemannName.inside one C E t)

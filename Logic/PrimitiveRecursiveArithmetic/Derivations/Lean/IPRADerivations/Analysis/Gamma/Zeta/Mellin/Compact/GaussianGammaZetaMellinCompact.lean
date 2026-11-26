@@ -31,7 +31,6 @@ open GaussianNamedInverseRate (independentRate rate_at)
 open GaussianNamedMultiplyRate (sampleBound)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
 open RationalValueBounds (positive_cancel)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -143,15 +142,9 @@ theorem local_rate (z R B a W E H T t u A D : PTm n) (hz : Γ ⊢[PRAAx] source 
   have rate := time_rate z R B (fstT t) (sndT t) (fstT u) (sndT u) H T A D hz.andE₁
     (tag_domain a W E H T t hz.andE₂ ht) (tag_domain a W E H T u hz.andE₂ hu) hD near
   let s (v : PTm n) := Syn.shift (Syn.shift v)
-  let Δ := (Γ.map Fm.shift).map Fm.shift
-  have shifted : Δ ⊢[PRAAx] independentRate F F (fd (s z) (s B) (fstT (s t)) (sndT (s t)))
-      (fd (s z) (s B) (fstT (s u)) (sndT (s u))) (gain (s R) (s H) (s T)*s A) (s D) :=
-    by simpa [Δ,s,Fm.shift,Syn.shift] using rate.shift.shift
-  refine .allI (.allI ?_)
-  simpa only [independentRate,Δ,s,Syn.shift,GaussianCompactRiemannName.subst_nameData,subst_fixedData,subst_gain,PTm.subst_mul] using
-    distance_congr (wrapped_at (Γ := Δ) (var 1) (s t) (s z) (s B)).eqSymm
-      (wrapped_at (Γ := Δ) (var 0) (s u) (s z) (s B)).eqSymm (.eqRefl _) (.eqRefl _)
-      (rate_at _ _ _ _ _ _ (var 1) (var 0) shifted)
+  apply GaussianNamedInverseRate.transport_by_sample_eq rate
+  · simpa [s, Syn.shift] using wrapped_at (var 1) (s t) (s z) (s B)
+  · simpa [s, Syn.shift] using wrapped_at (var 0) (s u) (s z) (s B)
 
 theorem sampled_modulus (z R B a W E H T : PTm n) (h : Γ ⊢[PRAAx] source z R B a W E H T) :
     Γ ⊢[PRAAx] sampledModulus evaluatorF a W E (gain R H T) (fixedData z B) := by

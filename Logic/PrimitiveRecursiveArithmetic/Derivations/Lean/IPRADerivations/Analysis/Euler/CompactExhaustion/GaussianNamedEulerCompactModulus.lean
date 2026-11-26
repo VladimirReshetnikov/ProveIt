@@ -17,7 +17,6 @@ open_ipra
 open GaussianNamedEulerCompactTimeRate (gain)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr)
 open GaussianCompactRiemannName (inside value nameData evaluatorName)
 open GaussianEuclideanDistanceName (pointCN)
 
@@ -39,16 +38,10 @@ theorem wrapped_rate (f : PR 2) (t u x A N : PTm n)
       (GaussianNamedEulerIntegrand.data f x (fstT t) (sndT t)) (GaussianNamedEulerIntegrand.data f x (fstT u) (sndT u)) A N) : Γ ⊢[PRAAx]
     independentRate (evaluatorName (GaussianNamedEulerIntegrand.evaluatorF f)) (evaluatorName (GaussianNamedEulerIntegrand.evaluatorF f))
       (nameData t x) (nameData u x) A N := by
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
-      independentRate (GaussianNamedEulerIntegrand.nameF f) (GaussianNamedEulerIntegrand.nameF f)
-        (GaussianNamedEulerIntegrand.data f (Syn.shift (Syn.shift x)) (fstT (Syn.shift (Syn.shift t))) (sndT (Syn.shift (Syn.shift t))))
-        (GaussianNamedEulerIntegrand.data f (Syn.shift (Syn.shift x)) (fstT (Syn.shift (Syn.shift u))) (sndT (Syn.shift (Syn.shift u))))
-        (Syn.shift (Syn.shift A)) (Syn.shift (Syn.shift N)) := by simpa [Fm.shift,Syn.shift] using h.shift.shift
-  refine .allI (.allI ?_)
-  simpa only [independentRate,GaussianCompactRiemannName.subst_nameData,Syn.shift] using
-    distance_congr (wrapped_at f (var 1) (Syn.shift (Syn.shift t)) (Syn.shift (Syn.shift x))).eqSymm
-      (wrapped_at f (var 0) (Syn.shift (Syn.shift u)) (Syn.shift (Syn.shift x))).eqSymm
-      (.eqRefl _) (.eqRefl _) (GaussianNamedInverseRate.rate_at _ _ _ _ _ _ (var 1) (var 0) hs)
+  let sh (v : PTm n) := Syn.shift (Syn.shift v)
+  apply GaussianNamedInverseRate.transport_by_sample_eq h
+  · simpa [sh, Syn.shift] using wrapped_at f (var 1) (sh t) (sh x)
+  · simpa [sh, Syn.shift] using wrapped_at f (var 0) (sh u) (sh x)
 
 theorem local_modulus_at (f : PR 2) (x E T C t u A N : PTm n) (h : Γ ⊢[PRAAx] source f x E T C)
     (hN : Γ ⊢[PRAAx] le one N) (ht : Γ ⊢[PRAAx] inside one C E t) (hu : Γ ⊢[PRAAx] inside one C E u)

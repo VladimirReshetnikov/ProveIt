@@ -176,19 +176,11 @@ theorem local_modulus_at (K : Kernel) (X Y D sign R T N A C E t u M Q : PTm n)
     Γ ⊢[PRAAx] independentRate (evaluatorName (evaluatorF K)) (evaluatorName (evaluatorF K))
       (nameData t (fixedData X Y D sign R T N)) (nameData u (fixedData X Y D sign R T N)) (meshGain R T*M) Q := by
   let s (z : PTm n) := Syn.shift (Syn.shift z)
-  let Δ := (Γ.map Fm.shift).map Fm.shift
   have hr := integrand_rate K X Y D sign R T N t u M Q h.andE₁
     (tag_source t u A C E T M Q h.andE₂.andE₁ h.andE₂.andE₂ hQ ht hu hd)
-  have hs : Δ ⊢[PRAAx] independentRate (integrandF K) (integrandF K)
-      (integrandData K (s X) (s Y) (s D) (s sign) (s R) (s T) (s N) (tagNumerator (s t)) (sndT (s t)))
-      (integrandData K (s X) (s Y) (s D) (s sign) (s R) (s T) (s N) (tagNumerator (s u)) (sndT (s u)))
-      (meshGain (s R) (s T)*s M) (s Q) := by simpa [Δ, Fm.shift, Syn.shift, s] using hr.shift.shift
-  refine .allI (.allI ?_)
-  simpa only [independentRate, Syn.shift, s, GaussianCompactRiemannName.subst_nameData,
-    GaussianCompactRiemannName.subst_sampleData, subst_pairT, subst_meshGain, PTm.subst_mul, Δ] using
-    distance_congr (wrapped_at (Γ := Δ) K (var 1) (s t) (s X) (s Y) (s D) (s sign) (s R) (s T) (s N)).eqSymm
-      (wrapped_at K (var 0) (s u) (s X) (s Y) (s D) (s sign) (s R) (s T) (s N)).eqSymm
-      (.eqRefl _) (.eqRefl _) (GaussianNamedInverseRate.rate_at _ _ _ _ _ _ (var 1) (var 0) hs)
+  apply GaussianNamedInverseRate.transport_by_sample_eq hr
+  · simpa [s, Syn.shift] using wrapped_at K (var 1) (s t) (s X) (s Y) (s D) (s sign) (s R) (s T) (s N)
+  · simpa [s, Syn.shift] using wrapped_at K (var 0) (s u) (s X) (s Y) (s D) (s sign) (s R) (s T) (s N)
 
 theorem sampled_modulus (K : Kernel) (X Y D sign R T N A C E : PTm n)
     (h : Γ ⊢[PRAAx] source X Y D sign R T A C E) :
