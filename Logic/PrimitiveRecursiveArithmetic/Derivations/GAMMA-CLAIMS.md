@@ -3167,3 +3167,6 @@ At every internally encoded order r at least three, the literal retained rationa
 
 At every encoded order at least three, the original relative logarithm term multiplied by the Barnes row index equals the factorial-normalized coefficient times the literal displacement raised to that degree. The proof uses the checked inverse of the original base and the actual parity and radius powers.
 [GaussianBarnesCanonicalHigherRelative](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalHigherRelative.lean)
+
+The literal finite base-power product equals its displacement polynomial, including at zeros. Every truncation through the actual degree has error controlled by a computed Horner mass times the displacement radius to the first omitted power.
+[GaussianBarnesCanonicalCenteredHead](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredHead.lean), [GaussianBarnesCanonicalCenteredHeadTaylor](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalCenteredHeadTaylor.lean)
