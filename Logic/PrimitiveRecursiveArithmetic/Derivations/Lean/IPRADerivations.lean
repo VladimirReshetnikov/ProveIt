@@ -81,6 +81,7 @@ import IPRADerivations.Analysis.SpecialFunctions.LambertW.LambertCalculus
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RatioMajorant
 import IPRADerivations.Analysis.Exponential.ExponentialTail
 import IPRADerivations.Analysis.Barnes.BarnesInteger
+import IPRADerivations.Analysis.Barnes.BarnesIntegerGrowth
 import IPRADerivations.Analysis.Barnes.BarnesProducts
 import IPRADerivations.Analysis.RationalArithmetic.RationalClosure
 import IPRADerivations.Analysis.Names.DyadicCauchy

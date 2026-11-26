@@ -3296,3 +3296,6 @@ Reading the actual stored coefficient, scaling by its factorial, and applying th
 
 A finite maximum of the retained coefficient clocks selects a single actual polynomial for the chosen grid chart. The closed iPRA certificate gives its exact center readback, geometric value error against the original Barnes evaluator, and independently observed dyadic error against the cofinal factorial Taylor name at every retained order.
 [GaussianBarnesCanonicalWeightedTaylorBallCoefficientFamily](Lean/IPRADerivations/Analysis/Barnes/Taylor/Coefficients/GaussianBarnesCanonicalWeightedTaylorBallCoefficientFamily.lean), [GaussianBarnesCanonicalWeightedTaylorBallCoverCertificate](Lean/IPRADerivations/Analysis/Barnes/Taylor/GaussianBarnesCanonicalWeightedTaylorBallCoverCertificate.lean)
+
+At every encoded integer m at least one, the original integer superfactorial sequence dominates the m-squared power of twice m at index four times m. A second closed bound uses base m and index four times m plus one. This establishes the arithmetic lower witness for the order and type argument.
+[BarnesIntegerGrowth](Lean/IPRADerivations/Analysis/Barnes/BarnesIntegerGrowth.lean)
