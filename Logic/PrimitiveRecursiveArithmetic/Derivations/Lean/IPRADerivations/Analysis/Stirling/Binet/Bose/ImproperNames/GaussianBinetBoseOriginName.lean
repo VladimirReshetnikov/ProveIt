@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.ImproperNames.GaussianBinetBoseOriginExhaustion
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # The original Bose integral including the origin at a fixed horizon
@@ -87,9 +88,6 @@ private theorem cutoff_denominator_positive (X L : PTm n) (hX : Γ ⊢[PRAAx] le
   positive_product _ _ (GaussianBinetBoseOriginExhaustion.cutoff_positive L)
     (positive_product _ _ (by ipra_le 3) hX)
 
-private theorem unit_successor (p : PTm n) : Γ ⊢[PRAAx] unit (succ p) ≐ two*unit p :=
-  (pw_succ two p).eqTrans (mul_comm _ _)
-
 theorem sample_canonical (p X Y D sign T : PTm n) :
     Γ ⊢[PRAAx] GaussianRationalHorner.canonical (ap2 nameF p (data X Y D sign T)) := by
   let L := schedule p D
@@ -108,17 +106,11 @@ theorem late_observations (p q X Y D sign T L : PTm n)
       (unit p+unit q) (unit p*unit q) := by
   let C := schedule p D
   let N := panelDen C*(num 4*X)
-  let U := unit p
-  let V := unit q
   let W := unit (succ p)
   let a := cutData X Y D sign T C
   let b := cutData X Y D sign T L
   have hX := h.andE₁.andE₁.andE₁
-  have hu := unit_positive (Γ := Γ) p
-  have hv := unit_positive (Γ := Γ) q
-  have hw := unit_positive (Γ := Γ) (succ p)
   have hN : Γ ⊢[PRAAx] le one N := cutoff_denominator_positive X C hX
-  have hDen := denominator_positive N (succ p) q hN
   have hb : Γ ⊢[PRAAx] le (D*W) N := by
     have fourX : Γ ⊢[PRAAx] le one (num 4*X) := positive_product _ _ (by ipra_le 3) hX
     have cutoff_later : Γ ⊢[PRAAx] le (unit C) (panelDen C) :=
@@ -127,42 +119,17 @@ theorem late_observations (p q X Y D sign T L : PTm n)
       (le_trans cutoff_later (le_congr (by ipra_ring : Γ ⊢[PRAAx] panelDen C*one ≐ panelDen C) (.eqRefl N) (le_mul_mono (le_refl (panelDen C)) fourX)))
   have original := rate_at CompactF CompactF a b D N (succ p) q
     (ordered_rate X Y D sign T C L h.andE₁ h.andE₂ hL)
-  have first : Γ ⊢[PRAAx] distanceBounded (sample p X Y D sign T) (ap2 CompactF q b)
-      (two*V+W) (W*V) := by
-    apply distance_radius_mono _ _ _ _ _ _ hDen (positive_product _ _ hw hv) ?_ original
-    change Γ ⊢[PRAAx] le ((D*W*V+N*(W+V))*(W*V)) ((two*V+W)*(N*W*V))
-    ipra_le 𝔞(W)*𝔞(V)*𝔞(V)*sl hb
-  apply distance_congr (sample_at p X Y D sign T).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hw hv) (positive_product _ _ hu hv) ?_ first
-  refine le_of_eq_add (d := zero) ?_
-  have he := natEq (unit_successor (Γ := Γ) p)
-  apply deriveNat
-  dsimp only [U,V,W]
-  ipra_simps
-  rw [he]
-  ring
-
-private theorem relax_second (x y p q : PTm n)
-    (h : Γ ⊢[PRAAx] distanceBounded x y (unit p+unit (succ q)) (unit p*unit (succ q))) :
-    Γ ⊢[PRAAx] distanceBounded x y (unit p+unit q) (unit p*unit q) := by
-  let U := unit p
-  let V := unit q
-  let W := unit (succ q)
-  have grow : Γ ⊢[PRAAx] le V W := GaussianExponentialReference.unit_monotone (le_succ_self q)
-  apply distance_radius_mono _ _ _ _ _ _
-    (positive_product _ _ (unit_positive p) (unit_positive (succ q)))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) ?_ h
-  change Γ ⊢[PRAAx] le ((U+W)*(U*V)) ((U+V)*(U*W))
-  ipra_le 𝔞(U)*𝔞(U)*sl grow
+  exact distance_congr (sample_at p X Y D sign T).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    (GaussianNamedRateRadius.distance_at_first_succ _ _ D N p q hN hb original)
 
 theorem observations (p q X Y D sign T : PTm n) (h : Γ ⊢[PRAAx] source X Y D sign T) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data X Y D sign T)) (ap2 nameF q (data X Y D sign T))
       (unit p+unit q) (unit p*unit q) := by
   refine (le_total (schedule p D) (schedule q D)).orE ?_ ?_
-  · exact relax_second _ _ p q
+  · exact GaussianNamedRateRadius.relax_second_clock _ _ p q (succ q) (le_succ_self q)
       (distance_congr (.eqRefl _) (sample_at q X Y D sign T).eqSymm (.eqRefl _) (.eqRefl _)
         (late_observations p (succ q) X Y D sign T (schedule q D) h.wk Prf.hyp0))
-  · have raw := relax_second _ _ q p
+  · have raw := GaussianNamedRateRadius.relax_second_clock _ _ q p (succ p) (le_succ_self p)
       (distance_congr (.eqRefl _) (sample_at p X Y D sign T).eqSymm (.eqRefl _) (.eqRefl _)
         (late_observations q (succ p) X Y D sign T (schedule p D) h.wk Prf.hyp0))
     exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)

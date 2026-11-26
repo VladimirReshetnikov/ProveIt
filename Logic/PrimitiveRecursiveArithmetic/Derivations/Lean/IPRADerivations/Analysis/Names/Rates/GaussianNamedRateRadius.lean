@@ -36,6 +36,44 @@ theorem distance_at_succ_clocks (a b p q : PTm n)
   distance_radius_mono _ _ _ _ _ _ (denominator_positive _ _ _ (unit_positive (succ p)))
     (positive_product _ _ (unit_positive p) (unit_positive q)) (succ_clock_budget p q) h
 
+/-- At the successor of the first observation clock, both the leading error
+and the first observation allowance fit the earlier unit if the leading
+budget is paid by the denominator. -/
+theorem distance_at_first_succ (a b A B p q : PTm n)
+    (hB : Γ ⊢[PRAAx] le one B) (paid : Γ ⊢[PRAAx] le (A*unit (succ p)) B)
+    (h : Γ ⊢[PRAAx] distanceBounded a b (rateNumerator A B (succ p) q) (rateDenominator B (succ p) q)) :
+    Γ ⊢[PRAAx] distanceBounded a b (unit p+unit q) (unit p*unit q) := by
+  let U := unit p
+  let V := unit q
+  let W := unit (succ p)
+  apply distance_radius_mono _ _ _ _ _ _ (denominator_positive B (succ p) q hB)
+    (positive_product _ _ (unit_positive p) (unit_positive q)) ?_ h
+  change Γ ⊢[PRAAx] le ((A*W*V+B*(W+V))*(U*V)) ((U+V)*(B*W*V))
+  refine le_of_eq_add (d := U*V*V*monus B (A*W)) ?_
+  have paidEq : Γ ⊢[PRAAx] B ≐ A*W+monus B (A*W) := eq_add_of_le paid
+  have doubled : Γ ⊢[PRAAx] W ≐ U*two := pw_succ two p
+  have budget := natEq paidEq
+  have next := natEq doubled
+  apply deriveNat
+  ipra_simps
+  linear_combination 𝔞(U)*𝔞(V)^2*budget + 𝔞(B)*𝔞(V)^2*next
+
+/-- Enlarge the second dyadic allowance while keeping both observations and
+the first allowance fixed. -/
+theorem relax_second_clock (a b p q r : PTm n) (hqr : Γ ⊢[PRAAx] le q r)
+    (h : Γ ⊢[PRAAx] distanceBounded a b (unit p+unit r) (unit p*unit r)) :
+    Γ ⊢[PRAAx] distanceBounded a b (unit p+unit q) (unit p*unit q) := by
+  let U := unit p
+  let V := unit q
+  let W := unit r
+  have grow : Γ ⊢[PRAAx] le V W :=
+    GaussianFactorBudget.power_monotone_length two q r (le_succ_self one) hqr
+  apply distance_radius_mono _ _ _ _ _ _
+    (positive_product _ _ (unit_positive p) (unit_positive r))
+    (positive_product _ _ (unit_positive p) (unit_positive q)) ?_ h
+  change Γ ⊢[PRAAx] le ((U+W)*(U*V)) ((U+V)*(U*W))
+  ipra_le 𝔞(U)*𝔞(U)*sl grow
+
 theorem observation_at (F G : PR 2) (p q x y A B C D : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) (h : Γ ⊢[PRAAx] le (A*D) (C*B))
     (hr : Γ ⊢[PRAAx] independentRate F G x y A B) :

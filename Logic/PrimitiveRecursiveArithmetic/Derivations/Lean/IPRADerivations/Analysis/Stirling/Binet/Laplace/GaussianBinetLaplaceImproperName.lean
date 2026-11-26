@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.GaussianBinetLaplaceOrderedPrefixes
+import IPRADerivations.Analysis.Names.Rates.GaussianNamedRateRadius
 
 /-!
 # The actual cofinal Binet Laplace name
@@ -21,7 +22,7 @@ open GaussianCompactRiemannName (sampleData field0 field1 field2 field3 field4
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent normalizer query_budget)
 open GaussianLogGammaEulerResidualDomain (source subst_source)
-open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator denominator_positive)
+open GaussianNamedInverseRate (independentRate rate_at denominator_positive)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
@@ -76,9 +77,6 @@ private theorem prefix_denominator_positive (X L : PTm n) (hX : Γ ⊢[PRAAx] le
     Γ ⊢[PRAAx] le one (twelve*X*unit L) :=
   positive_product _ _ (positive_product _ _ (by ipra_le 11) hX) (unit_positive L)
 
-private theorem unit_successor (p : PTm n) : Γ ⊢[PRAAx] unit (succ p) ≐ two*unit p :=
-  (pw_succ two p).eqTrans (mul_comm _ _)
-
 theorem sample_canonical (p X Y D sign R : PTm n) :
     Γ ⊢[PRAAx] GaussianRationalHorner.canonical (ap2 nameF p (data X Y D sign R)) := by
   let T := D*cutoff p D*one
@@ -97,59 +95,28 @@ theorem late_observations (p q X Y D sign R L : PTm n)
       (unit p+unit q) (unit p*unit q) := by
   let C := cutoff p D
   let N := twelve*X*unit C
-  let U := unit p
-  let V := unit q
   let W := unit (succ p)
   let a := prefixData X Y D sign R C
   let b := prefixData X Y D sign R L
   have hX := h.andE₁.andE₁.andE₁
-  have hu := unit_positive (Γ := Γ) p
-  have hv := unit_positive (Γ := Γ) q
-  have hw := unit_positive (Γ := Γ) (succ p)
   have hN : Γ ⊢[PRAAx] le one N := prefix_denominator_positive X C hX
-  have hDen := denominator_positive N (succ p) q hN
   have hb : Γ ⊢[PRAAx] le (D*W) N := by
     have twelveX : Γ ⊢[PRAAx] le one (twelve*X) := positive_product _ _ (by ipra_le 11) hX
     exact le_trans (query_budget D (succ p))
       (le_congr (by ipra_ring : Γ ⊢[PRAAx] one*unit C ≐ unit C) (.eqRefl N) (mul_le_mul_right (unit C) twelveX))
   have original := rate_at StripF StripF a b D N (succ p) q
     (ordered_rate X Y D sign R C L h (cutoff_positive p D) hL)
-  have first : Γ ⊢[PRAAx] distanceBounded (sample p X Y D sign R) (ap2 StripF q b)
-      (two*V+W) (W*V) := by
-    apply distance_radius_mono _ _ _ _ _ _ hDen (positive_product _ _ hw hv) ?_ original
-    change Γ ⊢[PRAAx] le ((D*W*V+N*(W+V))*(W*V)) ((two*V+W)*(N*W*V))
-    ipra_le 𝔞(W)*𝔞(V)*𝔞(V)*sl hb
-  apply distance_congr (sample_at p X Y D sign R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hw hv) (positive_product _ _ hu hv) ?_ first
-  refine le_of_eq_add (d := zero) ?_
-  have he := natEq (unit_successor (Γ := Γ) p)
-  apply deriveNat
-  dsimp only [U,V,W]
-  ipra_simps
-  rw [he]
-  ring
-
-private theorem relax_second (x y p q : PTm n)
-    (h : Γ ⊢[PRAAx] distanceBounded x y (unit p+unit (succ q)) (unit p*unit (succ q))) :
-    Γ ⊢[PRAAx] distanceBounded x y (unit p+unit q) (unit p*unit q) := by
-  let U := unit p
-  let V := unit q
-  let W := unit (succ q)
-  have grow : Γ ⊢[PRAAx] le V W := GaussianExponentialReference.unit_monotone (le_succ_self q)
-  apply distance_radius_mono _ _ _ _ _ _
-    (positive_product _ _ (unit_positive p) (unit_positive (succ q)))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) ?_ h
-  change Γ ⊢[PRAAx] le ((U+W)*(U*V)) ((U+V)*(U*W))
-  ipra_le 𝔞(U)*𝔞(U)*sl grow
+  exact distance_congr (sample_at p X Y D sign R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    (GaussianNamedRateRadius.distance_at_first_succ _ _ D N p q hN hb original)
 
 theorem observations (p q X Y D sign R : PTm n) (h : Γ ⊢[PRAAx] source X Y D sign R) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data X Y D sign R)) (ap2 nameF q (data X Y D sign R))
       (unit p+unit q) (unit p*unit q) := by
   refine (le_total (cutoff p D) (cutoff q D)).orE ?_ ?_
-  · exact relax_second _ _ p q
+  · exact GaussianNamedRateRadius.relax_second_clock _ _ p q (succ q) (le_succ_self q)
       (distance_congr (.eqRefl _) (sample_at q X Y D sign R).eqSymm (.eqRefl _) (.eqRefl _)
         (late_observations p (succ q) X Y D sign R (cutoff q D) h.wk Prf.hyp0))
-  · have raw := relax_second _ _ q p
+  · have raw := GaussianNamedRateRadius.relax_second_clock _ _ q p (succ p) (le_succ_self p)
       (distance_congr (.eqRefl _) (sample_at p X Y D sign R).eqSymm (.eqRefl _) (.eqRefl _)
         (late_observations q (succ p) X Y D sign R (cutoff p D) h.wk Prf.hyp0))
     exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
