@@ -2840,3 +2840,6 @@ The original normalized quotient has the exact paper logarithmic and relative bo
 
 At a certified positive real name, both actual normalized difference quotients agree in the limit with the negative successor moment from the same unshifted input. Their independent observation bounds have explicit leading rate proportional to the step size on the fixed physical margin.
 [GaussianNamedDifferenceQuotientRate](Lean/IPRADerivations/Analysis/GaussianNamedDifferenceQuotientRate.lean), [GaussianBinetLaplaceMomentNamedShift](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedShift.lean), [GaussianBinetLaplaceMomentNamedDerivative](Lean/IPRADerivations/Analysis/GaussianBinetLaplaceMomentNamedDerivative.lean)
+
+A shared late signed input sample compares the Gamma chart provider with the repository’s original named Gamma on the actual input. The adapter admits the original argument directly and proves agreement at independent output clocks.
+[GaussianGammaZetaNamedGammaAlignment](Lean/IPRADerivations/Analysis/GaussianGammaZetaNamedGammaAlignment.lean)
