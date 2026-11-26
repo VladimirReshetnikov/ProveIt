@@ -128,13 +128,13 @@ theorem coefficient_square_bound (z R B k j : PTm n) (h : Γ ⊢[PRAAx] source z
     le_trans (square_le k j hk)
       (le_congr (one_mul P) (.eqRefl _) (mul_le_mul_right P (degree_positive j)))
   exact bounded_radius_mono _ _ _ _ _ (coefficient_denominator_positive k j hk) (positive_product _ _ hk hk)
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (coefficientGain j) fit)) (coefficient_bound z R B k j h)
+    (mul_le_mul_left (coefficientGain j) fit) (coefficient_bound z R B k j h)
 
 theorem derivative_square_bound (z R B k j : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
     Γ ⊢[PRAAx] bounded (derivative z B k j) (derivativeGain j) (k*k) := by
   let hk := h.andE₂.andE₁
   exact bounded_radius_mono _ _ _ _ _ (power_denominator_positive k j hk) (positive_product _ _ hk hk)
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (derivativeGain j) (square_le k j hk)))
+    (mul_le_mul_left (derivativeGain j) (square_le k j hk))
     (derivative_bound z R B k j h)
 
 theorem factorial_binding (z B k j : PTm n) (hk : Γ ⊢[PRAAx] le one k) :

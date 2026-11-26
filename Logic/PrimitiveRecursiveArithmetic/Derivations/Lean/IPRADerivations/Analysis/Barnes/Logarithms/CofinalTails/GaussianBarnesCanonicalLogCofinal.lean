@@ -90,7 +90,7 @@ private theorem row_budget (m r E : PTm n) (h : Γ ⊢[PRAAx] m+r ≐ E) :
     Γ ⊢[PRAAx] le (r*(num 5*(m+r))) (num 5*E*E) := by
   have bound : Γ ⊢[PRAAx] le r E := le_congr (.eqRefl _) h (le_add_left r m)
   have first : Γ ⊢[PRAAx] le (num 5*r) (num 5*E) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 5) bound)
+    mul_le_mul_left (num 5) bound
   have e : Γ ⊢[PRAAx] (num 5*r)*E ≐ r*(num 5*(m+r)) :=
     (congrMul (.eqRefl _) h.eqSymm).eqTrans (by ipra_ring)
   exact le_congr e (.eqRefl _) (mul_le_mul_right E first)

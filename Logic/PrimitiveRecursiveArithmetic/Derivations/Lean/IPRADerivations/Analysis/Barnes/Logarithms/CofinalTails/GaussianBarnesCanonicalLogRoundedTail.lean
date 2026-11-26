@@ -112,7 +112,7 @@ theorem rounding_error (p z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N) 
     (row_source (sh z) (sh R) (sh B) (sh N) i hs)
   have u := GaussianLocalLogarithmName.unit_positive (Γ := Δ) (sh p)
   have e := distance_radius_mono _ _ _ _ _ _ u u (mul_le_mul_right (unit (sh p))
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right two le))) err
+    (mul_le_mul_left two le)) err
   simpa only [termsDistance,x,y,sh,Syn.shift,Δ,i,subst_data,GaussianBarnesCanonicalLogTail.subst_data,
     DyadicComplexLogarithm.subst_unit,DyadicComplexLogarithm.subst_precision,PTm.subst_mul,PTm.subst_add,two,
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
@@ -136,7 +136,7 @@ theorem ordered_distance (p q z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B
     (row_source (sh z) (sh R) (sh B) (sh N) i hs) hp
   have u := GaussianLocalLogarithmName.unit_positive (Γ := Δ) (sh p)
   have e := distance_radius_mono _ _ _ _ _ _ u u (mul_le_mul_right (unit (sh p))
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (num 5) le))) err
+    (mul_le_mul_left (num 5) le)) err
   simpa only [termsDistance,x,y,sh,Syn.shift,Δ,i,subst_data,DyadicComplexLogarithm.subst_unit,
     PTm.subst_mul,PTm.subst_add,PTm.subst_num] using
     distance_congr (body_at (sh q) (sh z) (sh R) (sh B) (sh N) i).eqSymm (body_at (sh p) (sh z) (sh R) (sh B) (sh N) i).eqSymm

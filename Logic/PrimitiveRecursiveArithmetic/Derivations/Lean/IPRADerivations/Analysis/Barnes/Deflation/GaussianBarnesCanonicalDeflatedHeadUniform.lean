@@ -117,7 +117,7 @@ private theorem range_row_lower (p z R B m N r i : PTm n) (h : Γ ⊢[PRAAx] fac
   have hd := positive_product _ _ (le_succ_self one) hk
   have hs : Γ ⊢[PRAAx] le one (two*succ K) := positive_product _ _ (le_succ_self one) (zero_lt_succ _)
   have hd' : Γ ⊢[PRAAx] le (two*k) (two*succ K) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right two (le_trans hK (le_succ_self K)))
+    mul_le_mul_left two (le_trans hK (le_succ_self K))
   have order : Γ ⊢[PRAAx] le (denominator R (two*k) k) (rowDenominator R N r) :=
     mul_le_mul_right (two*sampleBound (GaussianBarnesCanonicalFactor.exponentRadius R))
       (le_trans (pw_le_pw k hd') (GaussianFactorBudget.power_monotone_length _ _ _ hs hK))

@@ -96,7 +96,7 @@ theorem regular (f : PR 2) (x R m : PTm n) (h : Γ ⊢[PRAAx] source f x R m)
 private theorem later_to_earlier (a b A p q : PTm n) (hpq : Γ ⊢[PRAAx] le p q)
     (h : Γ ⊢[PRAAx] distanceBounded a b A (unit q)) : Γ ⊢[PRAAx] distanceBounded a b A (unit p) :=
   distance_radius_mono _ _ _ _ _ _ (unit_positive q) (unit_positive p)
-    (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right A (unit_monotone hpq))) h
+    (mul_le_mul_left A (unit_monotone hpq)) h
 
 private theorem value_readback (f : PR 2) (p k x R : PTm n)
     (h : Γ ⊢[PRAAx] GaussianBarnesCanonicalNamedDemand.source f x R)

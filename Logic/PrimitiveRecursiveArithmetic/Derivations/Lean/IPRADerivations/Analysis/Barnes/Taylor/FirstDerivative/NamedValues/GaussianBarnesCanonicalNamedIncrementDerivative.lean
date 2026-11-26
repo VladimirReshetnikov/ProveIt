@@ -79,7 +79,7 @@ theorem step_source (K : PR 2) (y M : PTm n) (hM : Γ ⊢[PRAAx] le one M)
     by simpa only [subst_stepSamples,Fm.shift,Syn.shift,sh,Δ] using h.shift
   have d := step_at K (sh y) (sh M) (var 0) hs
   have fit : Δ ⊢[PRAAx] le (one*one) (one*sh M) :=
-    le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right one hm)
+    mul_le_mul_left one hm
   simpa only [GaussianRootApproximationWitness.pointBounds,Syn.shift,sh,Δ,one,
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
     bounded_radius_mono _ _ _ _ _ hm (le_refl one) fit d

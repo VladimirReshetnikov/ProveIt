@@ -59,9 +59,9 @@ theorem rate (p z h R B J e : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
   let a := baseClock p R
   let b := higherClock p R (pred e) e
   have h₀ : Γ ⊢[PRAAx] le (norm1 h*unit a) B :=
-    le_trans (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (norm1 h) (unit_monotone (le_add_right a b)))) hs
+    le_trans (mul_le_mul_left (norm1 h) (unit_monotone (le_add_right a b))) hs
   have h₁ : Γ ⊢[PRAAx] le (norm1 h*unit b) B :=
-    le_trans (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (norm1 h) (unit_monotone (le_add_left b a)))) hs
+    le_trans (mul_le_mul_left (norm1 h) (unit_monotone (le_add_left b a))) hs
   refine .orE (lt_or_le zero e) ?_ ?_
   · exact GaussianBarnesCanonicalTaylorDerivativeSuccessor.positive_order_rate p z h R B J e
       hz.wk hw.wk hn.wk Prf.hyp0 he.wk h₁.wk

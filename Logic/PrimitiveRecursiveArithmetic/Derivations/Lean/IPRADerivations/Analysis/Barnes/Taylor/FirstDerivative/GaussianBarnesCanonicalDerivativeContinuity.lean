@@ -171,7 +171,7 @@ theorem sample_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
   have hi := initial_positive (Γ := Γ) R
   exact bound_congr (sample_at p z R B).eqSymm (.eqRefl _) (.eqRefl _)
     (bounded_radius_mono _ _ _ _ _ hi (le_refl one)
-      (le_congr (mul_comm _ _) (mul_comm _ _) (mul_le_mul_right (boundNumerator R) hi)) b)
+      (mul_le_mul_left (boundNumerator R) hi) b)
 
 theorem samples (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] GaussianNamedMultiplyRate.sampleBound nameF (data z R B) (boundNumerator R) := by
