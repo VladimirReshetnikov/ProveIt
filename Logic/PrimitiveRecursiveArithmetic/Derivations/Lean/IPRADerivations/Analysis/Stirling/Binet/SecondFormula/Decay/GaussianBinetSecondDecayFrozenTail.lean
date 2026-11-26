@@ -190,7 +190,7 @@ theorem tail_bound_at (q N T k C r K X Y D sign : PTm n)
     let M := succ (s C+s r)
     have sz : Δ ⊢[PRAAx] source (s X) (s D) (s sign) := by
       simpa [Δ,s,Fm.shift,Syn.shift,source,GaussianRightHalfPlaneArgument.source] using hz.shift.wk
-    have st : Δ ⊢[PRAAx] le one (s T) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hT.shift.wk
+    have st : Δ ⊢[PRAAx] le one (s T) := (Order.shift_one_le hT).wk
     have sk : Δ ⊢[PRAAx] le (s D) (s K*s X) := by simpa [Δ,s,Fm.shift,Syn.shift] using hK.shift.wk
     have sn : Δ ⊢[PRAAx] le (mesh (s T) M (s k)) (s N) := by
       simpa only [Δ,M,s,Fm.shift,Syn.shift,subst_le,subst_mesh,

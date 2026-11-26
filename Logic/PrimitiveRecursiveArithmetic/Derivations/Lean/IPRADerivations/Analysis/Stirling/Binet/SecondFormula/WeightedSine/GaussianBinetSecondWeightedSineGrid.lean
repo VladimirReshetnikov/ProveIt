@@ -180,8 +180,8 @@ theorem grid_error (q M T H J X Y D sign R K : PTm n)
     let Δ := lt (var 0) (s M)::Γ.map Fm.shift
     have hz : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) :=
       by simpa [Δ,s,Fm.shift,Syn.shift] using z.shift.wk
-    have hms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hm.shift.wk
-    have hjs : Δ ⊢[PRAAx] le one (s J) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hJ.shift.wk
+    have hms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hm).wk
+    have hjs : Δ ⊢[PRAAx] le one (s J) := (Order.shift_one_le hJ).wk
     have hks : Δ ⊢[PRAAx] le (s D) (s K*s X) := by simpa [Δ,s,Fm.shift,Syn.shift] using hK.shift.wk
     simpa only [f,x,y,s,Δ,Syn.shift,GaussianBinetSecondDecayGrid.subst_rowData,subst_data,subst_cost,
       GaussianCoefficientNameBounds.subst_unit] using

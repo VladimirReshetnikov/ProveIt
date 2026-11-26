@@ -105,8 +105,8 @@ theorem grid_error (q M T H J X Y D sign R K cut E : PTm n)
     let Δ := lt (var 0) (s M)::Γ.map Fm.shift
     have z : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) :=
       by simpa [Δ,s,Fm.shift,Syn.shift] using hz.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
-    have js : Δ ⊢[PRAAx] le one (s J) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hJ.shift.wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
+    have js : Δ ⊢[PRAAx] le one (s J) := (Order.shift_one_le hJ).wk
     have ws : Δ ⊢[PRAAx] window (s q) (s D) (s R) (s T) (s K) (s cut) (s E) :=
       by simpa only [Δ,s,Fm.shift,Syn.shift,subst_window] using hw.shift.wk
     simpa only [s,Δ,x,y,p,L,N,f,Syn.shift,GaussianBinetSecondWeightedSineGrid.subst_data,

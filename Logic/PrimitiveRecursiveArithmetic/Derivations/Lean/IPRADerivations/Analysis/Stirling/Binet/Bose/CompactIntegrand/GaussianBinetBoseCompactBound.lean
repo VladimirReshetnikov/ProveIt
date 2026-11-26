@@ -38,9 +38,9 @@ theorem quadrature_bound (p M X Y D sign A C E : PTm n) (hz : Γ ⊢[PRAAx] Gaus
     let t := grid (var 0) (s M) (s E+s A) (s C) (s E)
     have zs : Δ ⊢[PRAAx] GaussianRightHalfPlaneLogarithm.source (s X) (s D) (s sign) := by
       simpa [Δ,s,Fm.shift,Syn.shift,GaussianRightHalfPlaneLogarithm.source,GaussianRightHalfPlaneArgument.source] using hz.shift.wk
-    have as' : Δ ⊢[PRAAx] le one (s A) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hA.shift.wk
-    have es : Δ ⊢[PRAAx] le one (s E) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hE.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
+    have as' : Δ ⊢[PRAAx] le one (s A) := (Order.shift_one_le hA).wk
+    have es : Δ ⊢[PRAAx] le one (s E) := (Order.shift_one_le hE).wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have hi : Δ ⊢[PRAAx] GaussianCompactRiemannName.inside (s E+s A) (s C) (s E) t :=
       grid_inside (var 0) (s M) (s E+s A) (s C) (s E) (le_trans es (le_add_right _ _)) es ms (le_of_lt Prf.hyp0)
     have ha := (tag_lower (s A) (s C) (s E) t as' es hi).andE₁

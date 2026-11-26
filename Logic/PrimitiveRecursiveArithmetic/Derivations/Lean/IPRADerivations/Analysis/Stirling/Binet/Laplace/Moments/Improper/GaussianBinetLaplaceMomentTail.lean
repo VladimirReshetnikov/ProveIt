@@ -120,9 +120,9 @@ theorem upper_tail_bound (p N j X D R T A C E : PTm n)
     let Δ := lt (var 0) (s C*s N) :: Γ.map Fm.shift
     have hs : Δ ⊢[PRAAx] source (s X) zero (s D) zero (s R) (s T) (s A) (s C) (s E) := by
       simpa only [Δ,s,Fm.shift,Syn.shift,GaussianBinetLaplaceStrip.subst_source,ConciseIPRA.PTm.subst_zero] using h.shift.wk
-    have a : Δ ⊢[PRAAx] le one (s A) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hA.shift.wk
-    have c : Δ ⊢[PRAAx] le one (s C) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hC.shift.wk
-    have ns : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
+    have a : Δ ⊢[PRAAx] le one (s A) := (Order.shift_one_le hA).wk
+    have c : Δ ⊢[PRAAx] le one (s C) := (Order.shift_one_le hC).wk
+    have ns : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
     have q : Δ ⊢[PRAAx] le (s T*s T) (unit (s p)) := by
       simpa only [Δ,s,Fm.shift,Syn.shift,subst_le,PTm.subst_mul,GaussianCoefficientNameBounds.subst_unit] using hq.shift.wk
     simpa only [f,x,y,M,Δ,s,Syn.shift,GaussianCompactRiemannName.subst_sampleData,

@@ -95,9 +95,9 @@ theorem terms_majorized (p N T H J m K X Y D sign : PTm n)
   let Δ := lt i (s N) :: Γ.map Fm.shift
   have sz : Δ ⊢[PRAAx] source (s X) (s D) (s sign) := by
     simpa [Δ,s,Fm.shift,Syn.shift,source,GaussianRightHalfPlaneArgument.source] using hz.shift.wk
-  have sn : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
-  have sj : Δ ⊢[PRAAx] le one (s J) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hJ.shift.wk
-  have sm : Δ ⊢[PRAAx] le one (s m) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hm.shift.wk
+  have sn : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
+  have sj : Δ ⊢[PRAAx] le one (s J) := (Order.shift_one_le hJ).wk
+  have sm : Δ ⊢[PRAAx] le one (s m) := (Order.shift_one_le hm).wk
   have sr : Δ ⊢[PRAAx] le (s m*s J) (s H) := by simpa [Δ,s,Fm.shift,Syn.shift] using hr.shift.wk
   have sk : Δ ⊢[PRAAx] le (s D) (s K*s X) := by simpa [Δ,s,Fm.shift,Syn.shift] using hK.shift.wk
   have sc : Δ ⊢[PRAAx] le (two*(s T*s N*s H)) (unit (s p)) := by
@@ -131,9 +131,9 @@ private theorem envelope_grid_distance (p N T H J m K : PTm n)
     let s (v : PTm n) := Syn.shift v
     let i : PTm (n+1) := var 0
     let Δ := lt i (s N) :: Γ.map Fm.shift
-    have sn : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
-    have sj : Δ ⊢[PRAAx] le one (s J) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hJ.shift.wk
-    have sm : Δ ⊢[PRAAx] le one (s m) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hm.shift.wk
+    have sn : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
+    have sj : Δ ⊢[PRAAx] le one (s J) := (Order.shift_one_le hJ).wk
+    have sm : Δ ⊢[PRAAx] le one (s m) := (Order.shift_one_le hm).wk
     let xs := envelopeData (s p) (s N) (s T) (s H) (s J) (s m) (s K)
     let ys := sampleData (s p) (s N) zero (s H*s T) (s J) zero
     let cs := fraction (two*s K) (s m)

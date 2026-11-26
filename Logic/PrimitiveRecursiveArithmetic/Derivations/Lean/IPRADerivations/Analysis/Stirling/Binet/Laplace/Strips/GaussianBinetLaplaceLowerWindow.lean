@@ -51,7 +51,7 @@ theorem quadrature_bound (p M X Y D sign R T N A C E : PTm n)
     have hs : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) (s T) (s A) (s C) (s E) := by
       simpa only [Δ,s,Fm.shift,Syn.shift,subst_source] using h.shift.wk
     have he := hs.andE₂.andE₁
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have hi : Δ ⊢[PRAAx] GaussianCompactRiemannName.inside (s E+s A) (s C) (s E) t :=
       grid_inside (var 0) (s M) (s E+s A) (s C) (s E) (le_trans he (le_add_right _ _)) he ms (le_of_lt Prf.hyp0)
     have tag := tag_inside t (s A) (s C) (s E) (s T) he hs.andE₂.andE₂ hi

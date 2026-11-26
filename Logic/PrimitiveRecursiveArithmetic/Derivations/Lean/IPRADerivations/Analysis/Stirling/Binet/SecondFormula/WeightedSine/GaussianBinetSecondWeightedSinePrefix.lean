@@ -120,7 +120,7 @@ theorem prefix_error (q k N M T X Y D sign R K : PTm n)
     let J := piDenominator (s k)
     have hs : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) :=
       by simpa [Δ,s,Fm.shift,Syn.shift] using hz.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hm.shift.wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hm).wk
     have ks : Δ ⊢[PRAAx] le (s D) (s K*s X) := by simpa [Δ,s,Fm.shift,Syn.shift] using hk.shift.wk
     have js : Δ ⊢[PRAAx] le one J := GaussianBinetKernelPi.denominator_positive (s k)
     have row := GaussianBinetSecondWeightedSineGrid.grid_error (s q) (s M) (s T) H J

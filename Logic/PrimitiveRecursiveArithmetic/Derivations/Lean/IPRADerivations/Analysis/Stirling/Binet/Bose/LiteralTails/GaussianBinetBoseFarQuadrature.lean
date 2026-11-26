@@ -67,10 +67,10 @@ theorem upper_tail_bound (p N X Y D sign A C E K : PTm n)
     let Δ := lt (var 0) (s C*s N) :: Γ.map Fm.shift
     have zs : Δ ⊢[PRAAx] source (s X) (s D) (s sign) := by
       simpa [Δ,s,Fm.shift,Syn.shift,source,GaussianRightHalfPlaneArgument.source] using hz.shift.wk
-    have as' : Δ ⊢[PRAAx] le one (s A) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hA.shift.wk
-    have cs : Δ ⊢[PRAAx] le one (s C) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hC.shift.wk
-    have es : Δ ⊢[PRAAx] le one (s E) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hE.shift.wk
-    have ns : Δ ⊢[PRAAx] le one (s N) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hN.shift.wk
+    have as' : Δ ⊢[PRAAx] le one (s A) := (Order.shift_one_le hA).wk
+    have cs : Δ ⊢[PRAAx] le one (s C) := (Order.shift_one_le hC).wk
+    have es : Δ ⊢[PRAAx] le one (s E) := (Order.shift_one_le hE).wk
+    have ns : Δ ⊢[PRAAx] le one (s N) := (Order.shift_one_le hN).wk
     have ks : Δ ⊢[PRAAx] le (s D) (s K*s X) := by simpa [Δ,s,Fm.shift,Syn.shift] using hK.shift.wk
     simpa only [f,x,y,M,Δ,s,Syn.shift,GaussianCompactRiemannName.subst_sampleData,
       subst_fixedData,subst_gridData,PTm.subst_add,PTm.subst_mul] using

@@ -97,8 +97,8 @@ theorem grid_distance (p q M T H J X Y D sign R K : PTm n)
     let s (z : PTm n) := Syn.shift z
     let Δ := lt (var 0) (s M) :: Γ.map Fm.shift
     have zs : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) := by simpa [Δ,s,Fm.shift,Syn.shift] using hz.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift] using hM.shift.wk
-    have js : Δ ⊢[PRAAx] le one (s J) := by simpa [Δ,s,Fm.shift,Syn.shift] using hJ.shift.wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
+    have js : Δ ⊢[PRAAx] le one (s J) := (Order.shift_one_le hJ).wk
     have ks : Δ ⊢[PRAAx] le (s D) (s K*s X) := by simpa [Δ,s,Fm.shift,Syn.shift] using hK.shift.wk
     have cs : Δ ⊢[PRAAx] le (s p) (s q) := by simpa [Δ,s,Fm.shift,Syn.shift] using hpq.shift.wk
     simpa only [Δ,s,x,y,Syn.shift,subst_rowData,subst_cost,GaussianCoefficientNameBounds.subst_unit] using
@@ -124,7 +124,7 @@ theorem prefix_distance (p q k I M T X Y D sign R K : PTm n)
     let H := frozenPiNumerator (succ (zero+j)) (s k)
     let J := piDenominator (s k)
     have zs : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) := by simpa [Δ,s,Fm.shift,Syn.shift] using hz.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift] using hM.shift.wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have ks : Δ ⊢[PRAAx] le (s D) (s K*s X) := by simpa [Δ,s,Fm.shift,Syn.shift] using hK.shift.wk
     have cs : Δ ⊢[PRAAx] le (s p) (s q) := by simpa [Δ,s,Fm.shift,Syn.shift] using hpq.shift.wk
     have rowRate := grid_distance (s p) (s q) (s M) (s T) H J (s X) (s Y) (s D) (s sign) (s R) (s K)

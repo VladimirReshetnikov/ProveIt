@@ -50,7 +50,7 @@ theorem quadrature_bound (p M j X D R T A C E : PTm n)
     let t := grid (var 0) (s M) (s E+s A) (s C) (s E)
     have hs : Δ ⊢[PRAAx] source (s X) zero (s D) zero (s R) (s T) (s A) (s C) (s E) := by
       simpa only [Δ,s,Fm.shift,Syn.shift,GaussianBinetLaplaceStrip.subst_source,ConciseIPRA.PTm.subst_zero] using h.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have e := hs.andE₂.andE₁
     have ht : Δ ⊢[PRAAx] inside (s E+s A) (s C) (s E) t :=
       grid_inside _ _ _ _ _ (le_trans e (le_add_right _ _)) e ms (le_of_lt Prf.hyp0)

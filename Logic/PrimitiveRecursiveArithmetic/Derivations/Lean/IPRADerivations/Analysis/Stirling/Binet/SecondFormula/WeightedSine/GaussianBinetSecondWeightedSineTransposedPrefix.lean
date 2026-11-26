@@ -140,7 +140,7 @@ theorem prefix_error (q k I M T X Y D sign R K cut E : PTm n)
     let J := piDenominator (s k)
     have z : Δ ⊢[PRAAx] source (s X) (s Y) (s D) (s sign) (s R) :=
       by simpa [Δ,s,Fm.shift,Syn.shift] using hz.shift.wk
-    have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
+    have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have ws : Δ ⊢[PRAAx] window (s q) (s D) (s R) (s T) (s K) (s cut) (s E) :=
       by simpa only [Δ,s,Fm.shift,Syn.shift,GaussianBinetSecondWeightedSineSuffix.subst_window] using hw.shift.wk
     have js : Δ ⊢[PRAAx] le one J := GaussianBinetKernelPi.denominator_positive (s k)

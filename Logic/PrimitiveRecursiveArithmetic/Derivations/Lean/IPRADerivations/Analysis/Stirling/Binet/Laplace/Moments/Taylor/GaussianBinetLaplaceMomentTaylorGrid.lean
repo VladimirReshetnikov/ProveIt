@@ -181,8 +181,8 @@ theorem aligned_taylor_bound (p M j X D R S T H Q A C E U V : PTm n)
   have hs' : Δ ⊢[PRAAx] source (s X*s Q+s H*s D) zero (s D*s Q) zero (s S) (s T) (s A) (s C) (s E) := by
     simpa only [Δ,s,Fm.shift,Syn.shift,GaussianBinetLaplaceStrip.subst_source,ConciseIPRA.PTm.subst_zero,PTm.subst_mul,PTm.subst_add]
       using h'.shift.wk
-  have ms : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
-  have qs : Δ ⊢[PRAAx] le one (s Q) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hQ.shift.wk
+  have ms : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
+  have qs : Δ ⊢[PRAAx] le one (s Q) := (Order.shift_one_le hQ).wk
   have sm : Δ ⊢[PRAAx] le (s H) (s Q) := by simpa [Δ,s,Fm.shift,Syn.shift] using hH.shift.wk
   have rows : Γ ⊢[PRAAx] termsMajorized (rowBody f f f) scalarBody M r sc := by
     refine .allI (.impI ?_)

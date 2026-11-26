@@ -146,7 +146,7 @@ theorem quadrature_error (p M N X Y D sign T A C E : PTm n)
     let Δ := lt (var 0) (s M) :: Γ.map Fm.shift
     have h' : Δ ⊢[PRAAx] source (s X) (s D) (s sign) (s T) (s A) (s C) (s E) := by
       simpa [Δ,s,Fm.shift,Syn.shift] using h.shift.wk
-    have hm' : Δ ⊢[PRAAx] le one (s M) := by simpa [Δ,s,Fm.shift,Syn.shift,one] using hM.shift.wk
+    have hm' : Δ ⊢[PRAAx] le one (s M) := (Order.shift_one_le hM).wk
     have hn' : Δ ⊢[PRAAx] le (s E*s E*unit (s p)) (s N) := by
       simpa [Δ,s,Fm.shift,Syn.shift] using hN.shift.wk
     have vv : s v = sampleData (s p) (s M) (s E+s A) (s C) (s E) (fixedData (s X) (s Y) (s D) (s sign)) := by
