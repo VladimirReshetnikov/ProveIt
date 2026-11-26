@@ -19,7 +19,8 @@ namespace LeanProofs.IPRA.Analysis.GaussianBetaPrimitiveEndpointEncoding
 open_ipra
 open GaussianEulerLowerPowerCoefficients (source)
 open GaussianGammaIntegralCutoffs (height etaDen eta_den_positive)
-open GaussianBetaPrimitiveLowerEndpoint (rootDen budget numerator denominator eta_factorization root_den_positive precision)
+open GaussianBetaPrimitiveLowerEndpoint (rootDen budget numerator denominator root_den_positive precision
+  cutoff_argument_bound endpoint_bound_of_factors scale_endpoint_bound dyadic_bound_of_eta_bound)
 open GaussianBetaPrimitiveLinearStep (argument)
 open GaussianEulerPowerIncrement (point)
 open GaussianEulerCompactProductComparison (clock)
@@ -27,7 +28,7 @@ open GaussianEulerBetaPolynomialPrimitive (primitive)
 open GaussianTimeWeightedPolynomialIncrement (value)
 open GaussianRationalHorner (qmul evaluate positive_product canonical_unique ofGaussian_represents ofGaussian_canonical represents_congr represents_rescale)
 open GaussianRationalMetric (bounded)
-open GaussianRationalReciprocal (bound_congr bounded_product)
+open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open ComplexLogarithmRemainder (oneCode scale)
@@ -92,54 +93,41 @@ theorem encoded_primitive_bound (z B k A R N J : PTm n) (hN : Γ ⊢[PRAAx] le o
     (bound_congr (argument_encoding k A R N J hN hJ).eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianBetaPrimitiveLowerEndpoint.argument_unit_disk k A R N hN))
 
+theorem encoded_endpoint_bound_of_primitive (p z R B A k N J M : PTm n)
+    (h : Γ ⊢[PRAAx] source z R B A) (hN : Γ ⊢[PRAAx] le one N) (hJ : Γ ⊢[PRAAx] le one J)
+    (hPrimitive : Γ ⊢[PRAAx] bounded (evaluate (primitive z B N) (argument J (etaDen k A R*J) N)) M one) :
+    Γ ⊢[PRAAx] bounded (endpoint p z B k A R N J)
+      (M*(pw (rootDen k A R) (pred A)*unit p+one)) (denominator p k A R N) :=
+  endpoint_bound_of_factors p z B J (etaDen k A R*J) k A R N M hN
+    (bound_congr (argument_encoding k A R N J hN hJ).eqSymm (.eqRefl _) (.eqRefl _) (cutoff_argument_bound k A R N hN))
+    hPrimitive (encoded_power_bound p z R B A k J h hJ)
+
 theorem encoded_lower_endpoint_bound (p z R B A k N J : PTm n) (h : Γ ⊢[PRAAx] source z R B A)
     (hN : Γ ⊢[PRAAx] le one N) (hJ : Γ ⊢[PRAAx] le one J) : Γ ⊢[PRAAx]
-    bounded (endpoint p z B k A R N J) (numerator p z B k A R N) (denominator p k A R N) := by
-  have hd := positive_product (Γ := Γ) _ _ (eta_den_positive k A R) hN
-  have argumentBound : Γ ⊢[PRAAx] bounded (argument J (etaDen k A R*J) N) one (etaDen k A R*N) :=
-    bound_congr (argument_encoding k A R N J hN hJ).eqSymm (.eqRefl _) (.eqRefl _)
-      (bound_congr (GaussianEulerDecayFactorBounds.fraction_is_radius_point one (etaDen k A R*N) hd).eqSymm
-        (.eqRefl _) (.eqRefl _) (GaussianDominantPairAlgebra.radius_bounded one _ hd))
-  have poly := bounded_product _ _ (budget z B N) one one (etaDen k A R*N) (le_refl one) hd
-    (encoded_primitive_bound z B k A R N J hN hJ) argumentBound
-  have result := bounded_product _ _ _ _ _ _ (unit_positive p) (positive_product _ _ (le_refl one) hd)
-    (encoded_power_bound p z R B A k J h hJ) poly
-  exact bound_congr (.eqRefl _) (by unfold numerator; ipra_ring) (by unfold denominator; ipra_ring) result
+    bounded (endpoint p z B k A R N J) (numerator p z B k A R N) (denominator p k A R N) :=
+  encoded_endpoint_bound_of_primitive p z R B A k N J (budget z B N) h hN hJ
+    (encoded_primitive_bound z B k A R N J hN hJ)
 
 theorem encoded_scaled_endpoint_bound (p z R B A k N J : PTm n) (h : Γ ⊢[PRAAx] source z R B A)
     (hN : Γ ⊢[PRAAx] le one N) (hJ : Γ ⊢[PRAAx] le one J) : Γ ⊢[PRAAx]
-    bounded (scaledEndpoint p z B k A R N J) (numerator p z B k A R N) (etaDen k A R*unit p) := by
-  have hd := positive_product (Γ := Γ) _ _ (positive_product _ _ hN (eta_den_positive k A R)) (unit_positive p)
-  have natural : Γ ⊢[PRAAx] bounded (naturalPoint N) N one :=
-    bound_congr (GaussianEulerDecayFactorBounds.fraction_is_radius_point N one (le_refl one)).eqSymm (.eqRefl _) (.eqRefl _)
-      (GaussianDominantPairAlgebra.radius_bounded N one (le_refl one))
-  have result := bounded_product _ _ N one _ _ (le_refl one) hd natural (encoded_lower_endpoint_bound p z R B A k N J h hN hJ)
-  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ (le_refl one) hd)
-    (positive_product _ _ (eta_den_positive k A R) (unit_positive p))
-    (le_of_eq_add (d := zero) (by ipra_ring)) result
+    bounded (scaledEndpoint p z B k A R N J) (numerator p z B k A R N) (etaDen k A R*unit p) :=
+  scale_endpoint_bound p k A R N _ _ hN (encoded_lower_endpoint_bound p z R B A k N J h hN hJ)
 
 theorem encoded_dyadic_bound (p z R B A k N J : PTm n) (h : Γ ⊢[PRAAx] source z R B A)
     (hN : Γ ⊢[PRAAx] le one N) (hJ : Γ ⊢[PRAAx] le one J) : Γ ⊢[PRAAx]
     bounded (scaledEndpoint p z B k A R N J) (budget z B N*unit p+budget z B N*rootDen k A R)
-      (rootDen k A R*unit p) := by
+      (rootDen k A R*unit p) :=
+  dyadic_bound_of_eta_bound p k A R _ _ h.andE₁ (encoded_scaled_endpoint_bound p z R B A k N J h hN hJ)
+
+theorem retime_dyadic_bound (p q k A R y M : PTm n) (hpq : Γ ⊢[PRAAx] le p q)
+    (h : Γ ⊢[PRAAx] bounded y (M*unit q+M*rootDen k A R) (rootDen k A R*unit q)) : Γ ⊢[PRAAx]
+    bounded y (M*unit p+M*rootDen k A R) (rootDen k A R*unit p) := by
   let d := rootDen k A R
-  let E := etaDen k A R
-  let M := budget z B N
-  let P := unit p
-  have compare : Γ ⊢[PRAAx] le ((M*(pw d (pred A)*P+one))*(d*P)) ((M*P+M*d)*(E*P)) := by
-    have e := natEq (eta_factorization (Γ := Γ) k A R h.andE₁)
-    have growth : Γ ⊢[PRAAx] le (M*d*P) (M*d*P*E) :=
-      le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right (M*d*P) (eta_den_positive (Γ := Γ) k A R))
-    have g := natEq (eq_add_of_le growth)
-    apply le_of_eq_add (d := LeanProofs.IPRA.PTm.monus (M*d*P*E) (M*d*P))
-    apply deriveNat
-    dsimp only [E,d] at g ⊢
-    ipra_simps
-    rw [e] at g ⊢
-    linear_combination g
-  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ (eta_den_positive k A R) (unit_positive p))
-    (positive_product _ _ (root_den_positive k A R) (unit_positive p)) compare
-    (encoded_scaled_endpoint_bound p z R B A k N J h hN hJ)
+  have compare : Γ ⊢[PRAAx] le ((M*unit q+M*d)*(d*unit p)) ((M*unit p+M*d)*(d*unit q)) :=
+    le_congr (by ipra_ring) (by ipra_ring)
+      (add_le_add_right (M*unit q*d*unit p) (mul_le_mul_right (M*d*d) (GaussianExponentialReference.unit_monotone hpq)))
+  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ (root_den_positive k A R) (unit_positive q))
+    (positive_product _ _ (root_den_positive k A R) (unit_positive p)) compare h
 
 /-- Actual argument-dependent grid clock, with the requested outer p
 retained in its error budget. -/
@@ -148,14 +136,7 @@ theorem original_clock_scaled_endpoint_bound (p z R B A k N J : PTm n) (h : Γ �
     bounded (clockScaledEndpoint p z B k A R N J) (budget z B N*unit p+budget z B N*rootDen k A R)
       (rootDen k A R*unit p) := by
   let q := clock p z B J (etaDen k A R*J)
-  let M := budget z B N
-  let d := rootDen k A R
-  have grow := GaussianExponentialReference.unit_monotone (GaussianEulerCompactProductComparison.clock_later (Γ := Γ) p z B J (etaDen k A R*J))
-  have compare : Γ ⊢[PRAAx] le ((M*unit q+M*d)*(d*unit p)) ((M*unit p+M*d)*(d*unit q)) :=
-    le_congr (by ipra_ring) (by ipra_ring)
-      (add_le_add_right (M*unit q*d*unit p) (mul_le_mul_right (M*d*d) grow))
-  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ (root_den_positive k A R) (unit_positive q))
-    (positive_product _ _ (root_den_positive k A R) (unit_positive p)) compare
+  exact retime_dyadic_bound p q k A R _ (budget z B N) (GaussianEulerCompactProductComparison.clock_later p z B J (etaDen k A R*J))
     (encoded_dyadic_bound q z R B A k N J h hN hJ)
 
 /-- The computed degree-dependent precision from the original endpoint
