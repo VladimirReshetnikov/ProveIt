@@ -19,7 +19,8 @@ open_ipra
 open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianCompactRiemannName (sampledModulus localBody inside evaluatorName nameData sample quadrature mesh precision)
+open GaussianCompactRiemannName (sampledModulus localBody inside evaluatorName nameData sample quadrature mesh precision
+  sampled_modulus_rate shift_sampled_modulus)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent point_at_later)
 open GaussianRationalReciprocal (bound_congr)
@@ -31,34 +32,26 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 theorem local_rate (F : PR 3) (a C E L x t u A D : PTm n) (h : Γ ⊢[PRAAx] sampledModulus F a C E L x)
     (hD : Γ ⊢[PRAAx] le one D) (ht : Γ ⊢[PRAAx] inside a C E t) (hu : Γ ⊢[PRAAx] inside a C E u)
     (hd : Γ ⊢[PRAAx] distanceBounded (GaussianCompactRiemannName.value t) (GaussianCompactRiemannName.value u) A D) : Γ ⊢[PRAAx]
-    GaussianNamedInverseRate.independentRate (evaluatorName F) (evaluatorName F) (nameData t x) (nameData u x) (L*A) D := by
-  have rule : Γ ⊢[PRAAx] localBody F a C E L x t u A D := by
-    simpa only [sampledModulus,Fm.subst_all,GaussianCompactRiemannName.subst_localBody,Foundations.BoundedFormulas.subst_up_shift',
-      Syn.subst_var,GaussianCompactRiemannName.up_three,GaussianCompactRiemannName.up_two,Syn.up_one,Syn.up_zero,Syn.up_succ,
-      Syn.inst_zero,Syn.inst_succ,Syn.subst_inst_shift,Syn.shift_var] using (((h.allE t).allE u).allE A).allE D
-  exact .impE (.impE (.impE (.impE rule hD) ht) hu) hd
+    GaussianNamedInverseRate.independentRate (evaluatorName F) (evaluatorName F) (nameData t x) (nameData u x) (L*A) D :=
+  sampled_modulus_rate F a C E L x t u A D h hD ht hu hd
 
 theorem left_modulus (F : PR 3) (a C1 C2 E L x : PTm n) (h : Γ ⊢[PRAAx] sampledModulus F a (C1+C2) E L x) : Γ ⊢[PRAAx]
     sampledModulus F a C1 E L x := by
-  have hs : (((Γ.map Fm.shift).map Fm.shift).map Fm.shift).map Fm.shift ⊢[PRAAx]
-      sampledModulus F (Syn.shift (Syn.shift (Syn.shift (Syn.shift a))))
-        (Syn.shift (Syn.shift (Syn.shift (Syn.shift C1)))+Syn.shift (Syn.shift (Syn.shift (Syn.shift C2))))
-        (Syn.shift (Syn.shift (Syn.shift (Syn.shift E)))) (Syn.shift (Syn.shift (Syn.shift (Syn.shift L))))
-        (Syn.shift (Syn.shift (Syn.shift (Syn.shift x)))) := by simpa [Fm.shift,Syn.shift] using h.shift.shift.shift.shift
+  have hs := shift_sampled_modulus <| shift_sampled_modulus <|
+    shift_sampled_modulus <| shift_sampled_modulus h
+  simp only [Syn.shift, PTm.subst_add] at hs
   refine .allI (.allI (.allI (.allI (.impI (.impI (.impI (.impI ?_)))))))
-  simpa only [localBody,PTm.subst_add,Syn.shift] using local_rate F _ _ _ _ _ (var 3) (var 2) (var 1) (var 0) hs.wk.wk.wk.wk
+  simpa only [localBody, PTm.subst_add, Syn.shift] using sampled_modulus_rate F _ _ _ _ _ (var 3) (var 2) (var 1) (var 0) hs.wk.wk.wk.wk
     Prf.hyp0.wk.wk.wk (GaussianCompactRiemannAdditivity.inside_left _ _ _ _ _ Prf.hyp0.wk.wk)
     (GaussianCompactRiemannAdditivity.inside_left _ _ _ _ _ Prf.hyp1) Prf.hyp0
 
 theorem right_modulus (F : PR 3) (a C1 C2 E L x : PTm n) (h : Γ ⊢[PRAAx] sampledModulus F a (C1+C2) E L x) : Γ ⊢[PRAAx]
     sampledModulus F (a+C1) C2 E L x := by
-  have hs : (((Γ.map Fm.shift).map Fm.shift).map Fm.shift).map Fm.shift ⊢[PRAAx]
-      sampledModulus F (Syn.shift (Syn.shift (Syn.shift (Syn.shift a))))
-        (Syn.shift (Syn.shift (Syn.shift (Syn.shift C1)))+Syn.shift (Syn.shift (Syn.shift (Syn.shift C2))))
-        (Syn.shift (Syn.shift (Syn.shift (Syn.shift E)))) (Syn.shift (Syn.shift (Syn.shift (Syn.shift L))))
-        (Syn.shift (Syn.shift (Syn.shift (Syn.shift x)))) := by simpa [Fm.shift,Syn.shift] using h.shift.shift.shift.shift
+  have hs := shift_sampled_modulus <| shift_sampled_modulus <|
+    shift_sampled_modulus <| shift_sampled_modulus h
+  simp only [Syn.shift, PTm.subst_add] at hs
   refine .allI (.allI (.allI (.allI (.impI (.impI (.impI (.impI ?_)))))))
-  simpa only [localBody,PTm.subst_add,Syn.shift] using local_rate F _ _ _ _ _ (var 3) (var 2) (var 1) (var 0) hs.wk.wk.wk.wk
+  simpa only [localBody, PTm.subst_add, Syn.shift] using sampled_modulus_rate F _ _ _ _ _ (var 3) (var 2) (var 1) (var 0) hs.wk.wk.wk.wk
     Prf.hyp0.wk.wk.wk (GaussianCompactRiemannAdditivity.inside_right _ _ _ _ _ Prf.hyp0.wk.wk)
     (GaussianCompactRiemannAdditivity.inside_right _ _ _ _ _ Prf.hyp1) Prf.hyp0
 

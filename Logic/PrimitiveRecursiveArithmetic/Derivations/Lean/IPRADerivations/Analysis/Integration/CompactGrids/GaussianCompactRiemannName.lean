@@ -62,16 +62,31 @@ def sampledModulus (F : PR 3) (a C E L x : PTm n) : Fm PTm n := .all (.all (.all
     (Syn.shift (Syn.shift (Syn.shift (Syn.shift x)))) (var 3) (var 2) (var 1) (var 0)))))
 ipra_subst sampledModulus [Syn.subst_shift, Syn.shift_subst, Syn.up]
 
+/-- Carry the sampled modulus into the context with one fresh variable. -/
+theorem shift_sampled_modulus {F : PR 3} {a C E L x : PTm n}
+    (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) :
+    Γ.map Fm.shift ⊢[PRAAx] sampledModulus F (Syn.shift a) (Syn.shift C)
+      (Syn.shift E) (Syn.shift L) (Syn.shift x) := by
+  simpa only [Fm.shift, subst_sampledModulus, Syn.shift] using h.shift
+
+/-- Specialize the sampled modulus at two points and a distance bound. -/
+theorem sampled_modulus_rate (F : PR 3) (a C E L x t u A D : PTm n)
+    (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) (hD : Γ ⊢[PRAAx] le one D)
+    (ht : Γ ⊢[PRAAx] inside a C E t) (hu : Γ ⊢[PRAAx] inside a C E u)
+    (hd : Γ ⊢[PRAAx] distanceBounded (value t) (value u) A D) : Γ ⊢[PRAAx]
+    independentRate (evaluatorName F) (evaluatorName F) (nameData t x) (nameData u x) (L*A) D := by
+  have rule : Γ ⊢[PRAAx] localBody F a C E L x t u A D := by
+    simpa only [sampledModulus, Fm.subst_all, subst_localBody, Foundations.BoundedFormulas.subst_up_shift',
+      Syn.subst_var, up_three, up_two, Syn.up_one, Syn.up_zero, Syn.up_succ, Syn.inst_zero, Syn.inst_succ,
+      Syn.subst_inst_shift, Syn.shift_var] using (((h.allE t).allE u).allE A).allE D
+  exact .impE (.impE (.impE (.impE rule hD) ht) hu) hd
+
 theorem sampled_modulus_at (F : PR 3) (a C E L x p q t u A D : PTm n)
     (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) (hD : Γ ⊢[PRAAx] le one D)
     (ht : Γ ⊢[PRAAx] inside a C E t) (hu : Γ ⊢[PRAAx] inside a C E u)
     (hd : Γ ⊢[PRAAx] distanceBounded (value t) (value u) A D) : Γ ⊢[PRAAx]
     distanceBounded (ap3 F p t x) (ap3 F q u x) (rateNumerator (L*A) D p q) (rateDenominator D p q) := by
-  have rule : Γ ⊢[PRAAx] localBody F a C E L x t u A D := by
-    simpa only [sampledModulus,Fm.subst_all,subst_localBody,Foundations.BoundedFormulas.subst_up_shift',
-      Syn.subst_var,up_three,up_two,Syn.up_one,Syn.up_zero,Syn.up_succ,Syn.inst_zero,Syn.inst_succ,Syn.subst_inst_shift,Syn.shift_var] using
-      (((h.allE t).allE u).allE A).allE D
-  have rate := Prf.impE (Prf.impE (Prf.impE (Prf.impE rule hD) ht) hu) hd
+  have rate := sampled_modulus_rate F a C E L x t u A D h hD ht hu hd
   exact distance_congr (evaluator_at F p t x) (evaluator_at F q u x) (.eqRefl _) (.eqRefl _)
     (GaussianNamedInverseRate.rate_at _ _ _ _ _ _ p q rate)
 
@@ -260,12 +275,11 @@ theorem quadrature_refinement (F : PR 3) (p q N R a C E L x : PTm n)
     (hR : Γ ⊢[PRAAx] le one R) (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) : Γ ⊢[PRAAx]
     distanceBounded (quadrature F p (R*N) a C E x) (quadrature F q N a C E x)
       (C*rateNumerator (L*C) (E*N) p q) (E*rateDenominator (E*N) p q) := by
-  have as' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift a) := by simpa [Fm.shift,Syn.shift] using ha.shift
-  have es : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift E) := by simpa [Fm.shift,Syn.shift] using hE.shift
-  have ns : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift N) := by simpa [Fm.shift,Syn.shift] using hN.shift
-  have rs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift R) := by simpa [Fm.shift,Syn.shift] using hR.shift
-  have hs : Γ.map Fm.shift ⊢[PRAAx] sampledModulus F (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift L) (Syn.shift x) := by
-    simpa [Fm.shift,Syn.shift] using h.shift
+  have as' := Order.shift_one_le ha
+  have es := Order.shift_one_le hE
+  have ns := Order.shift_one_le hN
+  have rs := Order.shift_one_le hR
+  have hs := shift_sampled_modulus h
   have cells : Γ ⊢[PRAAx] GaussianRationalRiemannRefinement.cellDistances (sampleBody F) (sampleBody F) N R
       (sampleData p (R*N) a C E x) (sampleData q N a C E x)
       (rateNumerator (L*C) (E*N) p q) (rateDenominator (E*N) p q) := by

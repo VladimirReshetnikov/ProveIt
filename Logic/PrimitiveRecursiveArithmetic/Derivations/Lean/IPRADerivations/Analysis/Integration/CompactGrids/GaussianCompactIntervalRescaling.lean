@@ -15,7 +15,8 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianCompactIntervalRescaling
 
 open_ipra
-open GaussianCompactRiemannName (inside sampledModulus localBody grid value sampleData sampleBody sample quadrature mesh precision)
+open GaussianCompactRiemannName (inside sampledModulus localBody grid value sampleData sampleBody sample quadrature mesh precision
+  sampled_modulus_rate shift_sampled_modulus)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (distanceBounded)
@@ -40,14 +41,11 @@ theorem inside_unscale (k a C E t : PTm n) (hk : Γ ⊢[PRAAx] le one k)
 
 theorem rescaled_modulus (F : PR 3) (k a C E L x : PTm n) (hk : Γ ⊢[PRAAx] le one k)
     (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) : Γ ⊢[PRAAx] sampledModulus F (k*a) (k*C) (k*E) L x := by
-  have hs : (((Γ.map Fm.shift).map Fm.shift).map Fm.shift).map Fm.shift ⊢[PRAAx]
-      sampledModulus F (Syn.shift (Syn.shift (Syn.shift (Syn.shift a)))) (Syn.shift (Syn.shift (Syn.shift (Syn.shift C))))
-        (Syn.shift (Syn.shift (Syn.shift (Syn.shift E)))) (Syn.shift (Syn.shift (Syn.shift (Syn.shift L))))
-        (Syn.shift (Syn.shift (Syn.shift (Syn.shift x)))) := by simpa [Fm.shift,Syn.shift] using h.shift.shift.shift.shift
-  have ks : (((Γ.map Fm.shift).map Fm.shift).map Fm.shift).map Fm.shift ⊢[PRAAx]
-      le one (Syn.shift (Syn.shift (Syn.shift (Syn.shift k)))) := by simpa [Fm.shift,Syn.shift] using hk.shift.shift.shift.shift
+  have hs := shift_sampled_modulus <| shift_sampled_modulus <|
+    shift_sampled_modulus <| shift_sampled_modulus h
+  have ks := Order.shift_one_le <| Order.shift_one_le <| Order.shift_one_le <| Order.shift_one_le hk
   refine .allI (.allI (.allI (.allI (.impI (.impI (.impI (.impI ?_)))))))
-  simpa only [localBody,PTm.subst_mul,Syn.shift] using GaussianCompactNamedAdditivity.local_rate F _ _ _ _ _
+  simpa only [localBody,PTm.subst_mul,Syn.shift] using sampled_modulus_rate F _ _ _ _ _
     (var 3) (var 2) (var 1) (var 0) hs.wk.wk.wk.wk Prf.hyp0.wk.wk.wk
     (inside_unscale _ _ _ _ _ ks.wk.wk.wk.wk Prf.hyp0.wk.wk) (inside_unscale _ _ _ _ _ ks.wk.wk.wk.wk Prf.hyp1) Prf.hyp0
 
