@@ -2996,3 +2996,6 @@ The actual literal finite product commutes with conjugation. Comparing both cofi
 
 The original named Barnes evaluator commutes with conjugation on regular Gaussian complex names with independent disk certificates. The proof uses one common late input observation, the rational conjugation identity, and exact removal of observation slack.
 [GaussianBarnesCanonicalNamedConjugation](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedConjugation.lean)
+
+A finite exact telescope bounds the difference of two literal Gaussian rational sums when each row has an inverse-square error and a common clock error.
+[GaussianReciprocalSquareSumDistance](Lean/IPRADerivations/Analysis/GaussianReciprocalSquareSumDistance.lean)
