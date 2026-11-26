@@ -3035,3 +3035,6 @@ The primitive-recursive sampler uses the verified rational deflated evaluator at
 
 The normalized sampler reads the genuine translated integer power of a late original input sample. The certified half-unit disk supplies a unit bound and a finite comparison to the power at a shared late clock.
 [GaussianBarnesCanonicalNamedTranslatedPower](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedTranslatedPower.lean)
+
+The original named Barnes evaluator agrees at independent precisions with the named product of the translated power and the original named deflated coefficient. The same iPRA theorem gives uniform apartness of the coefficient on the certified half-unit disk.
+[GaussianBarnesCanonicalNamedLocalFactorization](Lean/IPRADerivations/Analysis/GaussianBarnesCanonicalNamedLocalFactorization.lean)
