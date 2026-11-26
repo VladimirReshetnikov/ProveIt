@@ -16,7 +16,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorRetained
 
 open_ipra
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
-open GaussianBarnesCanonicalExponentTaylorBuffer (buffer)
+open GaussianBarnesCanonicalExponentTaylorBuffer (buffer degree_cases)
 open GaussianBarnesCanonicalExponentTaylorCoefficientCauchy
   (stored cutoffNumerator cutoffDenominator clockNumerator clockDenominator gapNumerator gapDenominator
     linearGain cutoff_denominator_positive constant_entry_gap linear_entry_gap quadratic_entry_gap higher_entry_gap)
@@ -82,43 +82,33 @@ theorem entry_gap (q t z R B r s M L e : PTm n) (h : Γ ⊢[PRAAx] source z R B)
     (hm : Γ ⊢[PRAAx] le e (previous M)) (hl : Γ ⊢[PRAAx] le e (previous L)) :
     Γ ⊢[PRAAx] distanceBounded (stored q z R B r M e) (stored t z R B s L e)
       (gapNumerator q t R r s (tailGain R M) (prefactorGain R)) (gapDenominator q t R r s) := by
-  refine .orE (lt_or_le e one) ?_ ?_
-  · have eq : lt e one :: Γ ⊢[PRAAx] e ≐ zero :=
-      le_antisymm ((succ_monus_succ e zero).eqSymm.eqTrans Prf.hyp0) (zero_le e)
-    have raw := constant_entry_gap (Γ := lt e one :: Γ) q t z R B r s M L
-    have room : lt e one :: Γ ⊢[PRAAx] le
+  refine degree_cases e ?_ ?_ ?_ ?_
+  · have raw := constant_entry_gap (Γ := (e ≐ zero) :: Γ) q t z R B r s M L
+    have room : (e ≐ zero) :: Γ ⊢[PRAAx] le
         (zero*gapDenominator q t R r s) (gapNumerator q t R r s (tailGain R M) (prefactorGain R)*one) :=
       le_congr (zero_mul _).eqSymm (.eqRefl _) (zero_le _)
-    exact transport_index q t z R B r s M L e zero _ _ eq
+    exact transport_index q t z R B r s M L e zero _ _ Prf.hyp0
       (distance_radius_mono _ _ _ _ _ _ (le_refl one) (gap_denominator_positive q t R r s) room raw)
-  · refine .orE (lt_or_le e two) ?_ ?_
-    · have eq : lt e two :: le one e :: Γ ⊢[PRAAx] e ≐ one :=
-        le_antisymm ((succ_monus_succ e one).eqSymm.eqTrans Prf.hyp0) Prf.hyp1
-      exact transport_index q t z R B r s M L e one _ _ eq (increase _ _ q t R r s _ _ _ _
-        (tail_gain_first R M) (le_add_right _ _) (linear_entry_gap q t z R B r s M L h.wk.wk))
-    · refine .orE (lt_or_le e (num 3)) ?_ ?_
-      · have eq : lt e (num 3) :: le two e :: le one e :: Γ ⊢[PRAAx] e ≐ two :=
-          le_antisymm ((succ_monus_succ e two).eqSymm.eqTrans Prf.hyp0) Prf.hyp1
-        exact transport_index q t z R B r s M L e two _ _ eq (increase _ _ q t R r s _ _ _ _
-          (tail_gain_second R M) (le_add_left _ _) (quadratic_entry_gap q t z R B r s M L h.wk.wk.wk))
-      · let Δ := le (num 3) e :: le two e :: le one e :: Γ
-        let j := monus e (num 3)
-        have add := eq_add_of_le (Prf.hyp0 : Δ ⊢[PRAAx] le (num 3) e)
-        have eq : Δ ⊢[PRAAx] e ≐ degree j :=
-          add.eqTrans (by unfold degree previous j; ipra_ring)
-        have hm' : Δ ⊢[PRAAx] le (degree j) (previous M) :=
-          le_congr eq (.eqRefl _) hm.wk.wk.wk
-        have hl' : Δ ⊢[PRAAx] le (degree j) (previous L) :=
-          le_congr eq (.eqRefl _) hl.wk.wk.wk
-        have small : Δ ⊢[PRAAx] le (coefficientGain j) (tailGain R M) :=
-          le_trans (GaussianFactorBudget.power_monotone_length two _ _ (le_succ_self one) hm') (le_add_left _ _)
-        have near := higher_entry_gap q t z R B j r s M L h.wk.wk.wk hm' hl'
-        have pay := mul_le_mul_right (cutoffDenominator R r s)
-          (add_le_add₂ (mul_le_mul_right (initial R+s) small) (mul_le_mul_right (initial R+r) small))
-        exact transport_index q t z R B r s M L e (degree j) _ _ eq
-          (with_clocks _ _ q t R r s (tailGain R M) (prefactorGain R)
-            (distance_radius_mono _ _ _ _ _ _ (cutoff_denominator_positive R r s) (cutoff_denominator_positive R r s)
-              pay near))
+  · exact transport_index q t z R B r s M L e one _ _ Prf.hyp0 (increase _ _ q t R r s _ _ _ _
+      (tail_gain_first R M) (le_add_right _ _) (linear_entry_gap q t z R B r s M L h.wk))
+  · exact transport_index q t z R B r s M L e two _ _ Prf.hyp0 (increase _ _ q t R r s _ _ _ _
+      (tail_gain_second R M) (le_add_left _ _) (quadratic_entry_gap q t z R B r s M L h.wk))
+  · let j := monus e (num 3)
+    let Δ := (e ≐ degree j) :: Γ
+    have eq : Δ ⊢[PRAAx] e ≐ degree j := Prf.hyp0
+    have hm' : Δ ⊢[PRAAx] le (degree j) (previous M) :=
+      le_congr eq (.eqRefl _) hm.wk
+    have hl' : Δ ⊢[PRAAx] le (degree j) (previous L) :=
+      le_congr eq (.eqRefl _) hl.wk
+    have small : Δ ⊢[PRAAx] le (coefficientGain j) (tailGain R M) :=
+      le_trans (GaussianFactorBudget.power_monotone_length two _ _ (le_succ_self one) hm') (le_add_left _ _)
+    have near := higher_entry_gap q t z R B j r s M L h.wk hm' hl'
+    have pay := mul_le_mul_right (cutoffDenominator R r s)
+      (add_le_add₂ (mul_le_mul_right (initial R+s) small) (mul_le_mul_right (initial R+r) small))
+    exact transport_index q t z R B r s M L e (degree j) _ _ eq
+      (with_clocks _ _ q t R r s (tailGain R M) (prefactorGain R)
+        (distance_radius_mono _ _ _ _ _ _ (cutoff_denominator_positive R r s) (cutoff_denominator_positive R r s)
+          pay near))
 
 theorem late_entry_gap (p q t z R B r s M L e : PTm n) (h : Γ ⊢[PRAAx] source z R B)
     (hm : Γ ⊢[PRAAx] le e (previous M)) (hl : Γ ⊢[PRAAx] le e (previous L))

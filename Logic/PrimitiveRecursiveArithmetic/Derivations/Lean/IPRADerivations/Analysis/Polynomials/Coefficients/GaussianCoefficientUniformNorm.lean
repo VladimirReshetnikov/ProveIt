@@ -1,5 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantNorm
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianCoefficientNormOrder
+import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
 
 /-!
 # Uniform entry bounds for actual coefficient norms
@@ -14,13 +15,17 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianCoefficientUniformNorm
 
 open_ipra
-open GaussianCoefficientL1 (prefixNorm coefficientNorm)
+open GaussianCoefficientL1 (prefixNorm coefficientNorm subCoefficients sub_lookup qL1_congr)
+open GaussianEuclideanDistanceName (fraction)
+open GaussianRationalL1Algebra (qL1_of_bounded)
+open GaussianRationalMetric (distanceBounded)
+open GaussianRationalSyntheticDivision (qsub_congr)
 open GaussianRationalL1 (qL1)
 open GaussianRationalSyntheticBounds (natCode add_monotone)
 open RationalArithmetic (multiply)
-open RationalArgmin (rationalLE)
+open RationalArgmin (rationalLE rationalLE_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open LeanProofs.IPRA.Foundations.SequenceComposition (length)
+open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -59,6 +64,38 @@ theorem prefix_uniform (C N E : PTm n) (h : Γ ⊢[PRAAx] entryBounds C N E) : �
 theorem coefficient_uniform (C N E : PTm n) (hL : Γ ⊢[PRAAx] length C ≐ N)
     (h : Γ ⊢[PRAAx] entryBounds C N E) : Γ ⊢[PRAAx] rationalLE (coefficientNorm C) (multiply (natCode N) E) :=
   RationalArgmin.rationalLE_congr (GaussianRationalLinearProduct.norm_length C N hL).eqSymm (.eqRefl _) (prefix_uniform C N E h)
+
+/-- A common Euclidean bound at each degree bounds the L1 norm of the
+difference of two descending coefficient buffers. -/
+theorem difference_uniform_of_degree_bounds (C D N A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
+    (bounds :
+      let sh (v : PTm n) := Syn.shift v
+      let Δ := lt (var 0) (sh (succ N)) :: Γ.map Fm.shift
+      ∀ e : PTm (n+1), (Δ ⊢[PRAAx] le e (sh N)) →
+        (Δ ⊢[PRAAx] distanceBounded (entry (sh C) (monus (sh N) e))
+          (entry (sh D) (monus (sh N) e)) (sh A) (sh B))) :
+    Γ ⊢[PRAAx] rationalLE (coefficientNorm (subCoefficients C D (succ N)))
+      (fraction (succ N*(two*A)) B) := by
+  have rows : Γ ⊢[PRAAx] entryBounds (subCoefficients C D (succ N)) (succ N) (fraction (two*A) B) := by
+    refine .allI (.impI ?_)
+    let sh (v : PTm n) := Syn.shift v
+    let i : PTm (n+1) := var 0
+    let Δ := lt i (sh (succ N)) :: Γ.map Fm.shift
+    let e := monus (sh N) i
+    have hi : Δ ⊢[PRAAx] lt i (succ (sh N)) := by
+      simpa [Δ,sh,Syn.shift] using (Prf.hyp0 : Δ ⊢[PRAAx] lt i (sh (succ N)))
+    have hb : Δ ⊢[PRAAx] le one (sh B) := by
+      simpa [Δ,sh,Fm.shift,Syn.shift] using hB.shift.wk
+    have slot := Common.monus_monus_of_le ((succ_monus_succ i (sh N)).eqSymm.eqTrans hi)
+    have code := (sub_lookup (sh C) (sh D) (succ (sh N)) i hi).eqTrans
+      (qsub_congr (entry_congr (.eqRefl _) slot.eqSymm) (entry_congr (.eqRefl _) slot.eqSymm))
+    have norm := qL1_of_bounded _ (sh A) (sh B) hb (bounds e (Common.monus_le_self _ _))
+    simpa [entryBounds,Δ,sh,e,i,Syn.shift,fraction,one,two] using
+      rationalLE_congr (qL1_congr code).eqSymm (.eqRefl _) norm
+  have norm := coefficient_uniform _ (succ N) _ (GaussianCoefficientL1.zip_length _ _ _ _) rows
+  have exactBudget := (RationalNonnegativePowers.fraction_multiply (succ N) one (two*A) B (le_refl one) hB).eqTrans
+    (RationalNonnegativePowers.fraction_congr (.eqRefl _) (one_mul B))
+  exact rationalLE_congr (.eqRefl _) exactBudget norm
 
 theorem actual_uniform_coefficient_norm_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
     (length (var 0) ≐ var 1 ⟶ entryBounds (var 0) (var 1) (var 2) ⟶

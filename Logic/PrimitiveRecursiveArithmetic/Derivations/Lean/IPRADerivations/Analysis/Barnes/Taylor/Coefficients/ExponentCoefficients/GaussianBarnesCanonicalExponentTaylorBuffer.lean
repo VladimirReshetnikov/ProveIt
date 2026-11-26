@@ -105,6 +105,44 @@ def buffer (q z R B r M : PTm n) : PTm n := sequence bufferBody (succ (previous 
     Syn.subst σ (buffer q z R B r M) = buffer (Syn.subst σ q) (Syn.subst σ z)
       (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ r) (Syn.subst σ M) := by simp [buffer]
 
+theorem coefficient_index_congr (q z R B r : PTm n) {e f : PTm n}
+    (h : Γ ⊢[PRAAx] e ≐ f) : Γ ⊢[PRAAx]
+    coefficient q z R B r e ≐ coefficient q z R B r f := by
+  ipra_congr (coefficient (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl q,.eqRefl z,.eqRefl R,.eqRefl B,.eqRefl r,h]
+
+/-- Split a positive encoded degree into the linear, quadratic, and higher cases. -/
+theorem positive_degree_cases (e : PTm n) {P : Fm PTm n} (he : Γ ⊢[PRAAx] le one e)
+    (linear : (e ≐ one) :: Γ ⊢[PRAAx] P)
+    (quadratic : (e ≐ two) :: Γ ⊢[PRAAx] P)
+    (higher : (e ≐ degree (monus e (num 3))) :: Γ ⊢[PRAAx] P) : Γ ⊢[PRAAx] P := by
+  refine .orE (lt_or_le e two) ?_ ?_
+  · have h : lt e two :: Γ ⊢[PRAAx] e ≐ one :=
+      le_antisymm ((succ_monus_succ e one).eqSymm.eqTrans Prf.hyp0) he.wk
+    exact (Prf.impI linear).wk.impE h
+  · refine .orE (lt_or_le e (num 3)) ?_ ?_
+    · have h : lt e (num 3) :: le two e :: Γ ⊢[PRAAx] e ≐ two :=
+        le_antisymm ((succ_monus_succ e two).eqSymm.eqTrans Prf.hyp0) Prf.hyp1
+      exact (Prf.impI quadratic).wk.wk.impE h
+    · have h : le (num 3) e :: le two e :: Γ ⊢[PRAAx] e ≐ degree (monus e (num 3)) :=
+        (eq_add_of_le Prf.hyp0).eqTrans (by unfold degree previous; ipra_ring)
+      exact (Prf.impI higher).wk.wk.impE h
+
+/-- The degree split used by the stored exponent coefficient reader. -/
+theorem degree_cases (e : PTm n) {P : Fm PTm n}
+    (constant : (e ≐ zero) :: Γ ⊢[PRAAx] P)
+    (linear : (e ≐ one) :: Γ ⊢[PRAAx] P)
+    (quadratic : (e ≐ two) :: Γ ⊢[PRAAx] P)
+    (higher : (e ≐ degree (monus e (num 3))) :: Γ ⊢[PRAAx] P) : Γ ⊢[PRAAx] P := by
+  refine .orE (lt_or_le e one) ?_ ?_
+  · have h : lt e one :: Γ ⊢[PRAAx] e ≐ zero :=
+      le_antisymm ((succ_monus_succ e zero).eqSymm.eqTrans Prf.hyp0) (zero_le e)
+    exact (Prf.impI constant).wk.impE h
+  · exact positive_degree_cases e Prf.hyp0
+      ((Prf.impI linear).wk.wk.impE Prf.hyp0)
+      ((Prf.impI quadratic).wk.wk.impE Prf.hyp0)
+      ((Prf.impI higher).wk.wk.impE Prf.hyp0)
+
 theorem coefficient_zero (q z R B r : PTm n) : Γ ⊢[PRAAx] coefficient q z R B r zero ≐ qzero :=
   select_zero _ _ _ LeanProofs.IPRA.Signum.sg_zero
 
@@ -132,16 +170,15 @@ theorem coefficient_high (q z R B r j : PTm n) :
     ((select_one _ _ _ (sg_lt h₁)).eqTrans ((select_one _ _ _ (sg_lt h₂)).eqTrans read))
 
 private theorem coefficient_canonical (q z R B r e : PTm n) : Γ ⊢[PRAAx] canonical (coefficient q z R B r e) := by
-  unfold coefficient
-  refine .orE (LeanProofs.IPRA.Common.sg_zero_or_one e) ?_ ?_
-  · exact canonical_congr (select_zero _ _ _ Prf.hyp0) qzero_canonical
-  · apply canonical_congr (select_one _ _ _ Prf.hyp0)
-    refine .orE (LeanProofs.IPRA.Common.sg_zero_or_one (monus e one)) ?_ ?_
-    · exact canonical_congr (select_zero _ _ _ Prf.hyp0) (qadd_canonical _ _)
-    · apply canonical_congr (select_one _ _ _ Prf.hyp0)
-      refine .orE (LeanProofs.IPRA.Common.sg_zero_or_one (monus e two)) ?_ ?_
-      · exact canonical_congr (select_zero _ _ _ Prf.hyp0) (qadd_canonical _ _)
-      · exact canonical_congr (select_one _ _ _ Prf.hyp0) (GaussianRationalFiniteSum.sum_canonical _ _ _)
+  refine degree_cases e ?_ ?_ ?_ ?_
+  · exact canonical_congr ((coefficient_index_congr q z R B r Prf.hyp0).eqTrans
+      (coefficient_zero q z R B r)) qzero_canonical
+  · exact canonical_congr ((coefficient_index_congr q z R B r Prf.hyp0).eqTrans
+      (coefficient_one q z R B r)) (qadd_canonical _ _)
+  · exact canonical_congr ((coefficient_index_congr q z R B r Prf.hyp0).eqTrans
+      (coefficient_two q z R B r)) (qadd_canonical _ _)
+  · exact canonical_congr ((coefficient_index_congr q z R B r Prf.hyp0).eqTrans
+      (coefficient_high q z R B r (monus e (num 3)))) (GaussianRationalFiniteSum.sum_canonical _ _ _)
 
 theorem buffer_length (q z R B r M : PTm n) : Γ ⊢[PRAAx] length (buffer q z R B r M) ≐ succ (previous M) :=
   sequence_length _ _ _

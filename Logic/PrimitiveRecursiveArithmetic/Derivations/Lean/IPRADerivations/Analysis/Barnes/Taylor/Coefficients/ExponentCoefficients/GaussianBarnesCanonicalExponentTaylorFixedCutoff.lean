@@ -17,7 +17,7 @@ open_ipra
 open GaussianBarnesCanonicalExponentTaylorBuffer
   (buffer coefficient entry_at linearCoefficient quadraticCoefficient highCoefficient prefactorLinear prefactorQuadratic)
 open GaussianBarnesCanonicalExponentTaylorCoefficientCauchy (stored clockNumerator clockDenominator linearGain)
-open GaussianBarnesCanonicalExponentTaylorCoefficientMassGap (difference entryError massError)
+open GaussianBarnesCanonicalExponentTaylorCoefficientMassGap (difference massError)
 open GaussianBarnesCanonicalExponentTaylorRetainedCoefficient (prefactorGain)
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -25,9 +25,9 @@ open GaussianBarnesCanonicalLogSchedule (initial)
 open GaussianBarnesCanonicalPrefactor (negativeHalf quadraticCoefficientF quadraticCoefficientData quadratic_coefficient_regular)
 open GaussianBarnesCanonicalPrefactorExponentDerivative (twicePoint)
 open GaussianBarnesCanonicalPrefactorLipschitz (halfGain)
-open GaussianCoefficientL1 (coefficientNorm qL1_congr sub_lookup)
+open GaussianCoefficientL1 (coefficientNorm)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianCoefficientUniformNorm (entryBounds coefficient_uniform)
+open GaussianCoefficientUniformNorm (difference_uniform_of_degree_bounds)
 open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular harmonicPoint)
 open GaussianNameBounds (sample_bound)
@@ -36,16 +36,13 @@ open GaussianNameRingLaws (sum_left_error sum_right_error)
 open GaussianNamedDifferenceQuotient (scale_distance)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (ofGaussian qmul qzero positive_product)
-open GaussianRationalL1 (qL1)
+open GaussianEuclideanDistanceName (fraction_order)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianRationalSyntheticBounds (natCode)
-open GaussianRationalSyntheticDivision (qsub_congr qone)
-open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
-open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
+open GaussianRationalSyntheticDivision (qone)
 open LeanProofs.IPRA.Signum (sg)
 open RationalArithmetic (select select_zero select_one)
-open RationalArgmin (rationalLE rationalLE_congr)
+open RationalArgmin (rationalLE)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -143,49 +140,24 @@ theorem late_entry_gap (p q t z R B r M e : PTm n) (hz : Γ ⊢[PRAAx] source z 
       (add_le_add₂ (mul_le_mul_right (unit t) hq) (mul_le_mul_right (unit q) ht)))
     (entry_gap q t z R B r M e hz he)
 
-private theorem late_slot (p q t z R B r M i : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
-    (hi : Γ ⊢[PRAAx] lt i (succ (previous M))) (hq : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit q))
-    (ht : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit t)) : Γ ⊢[PRAAx]
-    rationalLE (qL1 (entry (difference q t z R B r r M) i)) (entryError p) := by
-  let N := previous M
-  let e := monus N i
-  let C := buffer q z R B r M
-  let D := buffer t z R B r M
-  have idx := Common.monus_monus_of_le ((succ_monus_succ i N).eqSymm.eqTrans hi)
-  have a : Γ ⊢[PRAAx] stored q z R B r M e ≐ entry C i := entry_congr (.eqRefl _) idx
-  have b : Γ ⊢[PRAAx] stored t z R B r M e ≐ entry D i := entry_congr (.eqRefl _) idx
-  have code := (sub_lookup C D (succ N) i hi).eqTrans (qsub_congr a.eqSymm b.eqSymm)
-  have near := late_entry_gap p q t z R B r M e hz (Common.monus_le_self _ _) hq ht
-  have large := distance_radius_mono _ _ _ _ (num 4) _ (unit_positive p) (unit_positive p)
-    (mul_le_mul_right _ (le_trans (le_succ_self two) (le_succ_self (num 3)))) near
-  have norm := GaussianRationalL1Algebra.qL1_of_bounded _ (num 4) (unit p) (unit_positive p) large
-  exact rationalLE_congr (qL1_congr code).eqSymm
-    (RationalNonnegativePowers.fraction_congr (by ipra_ring) (.eqRefl _)) norm
-
 theorem late_mass_gap (p q t z R B r M : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hq : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit q))
     (ht : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit t)) : Γ ⊢[PRAAx]
     rationalLE (coefficientNorm (difference q t z R B r r M)) (massError p M) := by
-  let N := succ (previous M)
-  let D := difference q t z R B r r M
-  have len : Γ ⊢[PRAAx] length D ≐ N := GaussianRationalMonicCompanion.sub_length _ _ _
-  have rows : Γ ⊢[PRAAx] entryBounds D N (entryError p) := by
-    refine .allI (.impI ?_)
-    let a (v : PTm n) := Syn.shift v
-    let Δ := lt (var 0) (a N) :: Γ.map Fm.shift
-    have shz : Δ ⊢[PRAAx] source (a z) (a R) (a B) := by simpa [Δ,a,Fm.shift,Syn.shift] using hz.shift.wk
-    have shift_budget {w : PTm n} (h : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit w)) :
-        Δ ⊢[PRAAx] le (prefactorGain (a R)*unit (a p)) (unit (a w)) := by
-      simpa [Δ,a,Fm.shift,Syn.shift,prefactorGain,linearGain,halfGain,negativeHalf,one,two] using h.shift.wk
-    simpa only [Δ,a,D,N,Syn.shift,entryBounds,
-      GaussianBarnesCanonicalExponentTaylorCoefficientMassGap.subst_difference,
-      GaussianBarnesCanonicalExponentTaylorCoefficientMassGap.subst_entryError,
-      GaussianBarnesCanonicalHigherRows.subst_previous,ConciseIPRA.PTm.subst_succ] using
-      late_slot (a p) (a q) (a t) (a z) (a R) (a B) (a r) (a M) (var 0) shz Prf.hyp0 (shift_budget hq) (shift_budget ht)
-  have norm := coefficient_uniform D N (entryError p) len rows
-  have same : Γ ⊢[PRAAx] RationalArithmetic.multiply (natCode N) (entryError p) ≐ massError p M :=
-    (RationalNonnegativePowers.fraction_multiply N one (num 8) (unit p) (le_refl one) (unit_positive p)).eqTrans
-      (RationalNonnegativePowers.fraction_congr (by dsimp only [N]; ipra_ring) (one_mul _))
-  exact rationalLE_congr (.eqRefl _) same norm
+  refine RationalArgmin.transitive
+    (difference_uniform_of_degree_bounds (buffer q z R B r M) (buffer t z R B r M)
+      (previous M) two (unit p) (unit_positive p) ?_) ?_
+  · intro sh Δ e he
+    have h' : Δ ⊢[PRAAx] source (sh z) (sh R) (sh B) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hz.shift.wk
+    have shift_clock {w : PTm n} (h : Γ ⊢[PRAAx] le (prefactorGain R*unit p) (unit w)) :
+        Δ ⊢[PRAAx] le (prefactorGain (sh R)*unit (sh p)) (unit (sh w)) := by
+      simpa [Δ,sh,Fm.shift,Syn.shift,prefactorGain,linearGain,halfGain,negativeHalf,one,two] using h.shift.wk
+    simpa only [Δ,sh,Syn.shift,stored,GaussianBarnesCanonicalExponentTaylorBuffer.subst_buffer,
+      GaussianBarnesCanonicalHigherRows.subst_previous,GaussianCoefficientNameBounds.subst_unit,two,one,
+      ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
+      late_entry_gap (sh p) (sh q) (sh t) (sh z) (sh R) (sh B) (sh r) (sh M) e
+        h' he (shift_clock hq) (shift_clock ht)
+  · exact fraction_order _ _ _ _ (unit_positive p) (unit_positive p)
+      (le_of_eq_add (d := num 4*succ (previous M)*unit p) (by ipra_ring))
 
 end LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorFixedCutoff

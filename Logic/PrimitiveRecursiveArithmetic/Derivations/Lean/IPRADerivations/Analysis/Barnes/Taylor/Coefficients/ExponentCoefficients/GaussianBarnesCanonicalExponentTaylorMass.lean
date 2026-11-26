@@ -20,7 +20,8 @@ namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorMass
 
 open_ipra
 open GaussianBarnesCanonicalExponentTaylorBuffer
-  (buffer buffer_length descending_at coefficient coefficient_zero coefficient_one coefficient_two coefficient_high
+  (buffer buffer_length descending_at coefficient coefficient_index_congr degree_cases
+    coefficient_zero coefficient_one coefficient_two coefficient_high
     prefactorLinear prefactorQuadratic linearCoefficient quadraticCoefficient highCoefficient)
 open GaussianBarnesCanonicalHigherRows (previous degree coefficientGain)
 open GaussianBarnesCanonicalLogCofinal (source)
@@ -116,11 +117,6 @@ theorem higher_bound (z R B r j : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
   weaken_one _ _ _ _ (initial_positive R) (le_refl _)
     (GaussianBarnesCanonicalHigherTail.tail_bound z R B (initial R) j r (initial_source z R B h))
 
-private theorem coefficient_congr (q z R B r : PTm n) {e f : PTm n} (he : Γ ⊢[PRAAx] e ≐ f) :
-    Γ ⊢[PRAAx] coefficient q z R B r e ≐ coefficient q z R B r f := by
-  ipra_congr (coefficient (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
-    [.eqRefl q,.eqRefl z,.eqRefl R,.eqRefl B,.eqRefl r,he]
-
 theorem coefficient_bound (q z R B r M e : PTm n) (h : Γ ⊢[PRAAx] source z R B)
     (he : Γ ⊢[PRAAx] le e (previous M)) :
     Γ ⊢[PRAAx] bounded (coefficient q z R B r e) (coefficientCap R M) one := by
@@ -131,35 +127,26 @@ theorem coefficient_bound (q z R B r M e : PTm n) (h : Γ ⊢[PRAAx] source z R 
   have hquad : Γ ⊢[PRAAx] le (squareCap R) T :=
     le_trans (le_add_left _ _) (le_add_right _ _)
   have hhigh : Γ ⊢[PRAAx] le E T := le_add_left _ _
-  refine (lt_or_le e one).orE ?_ ?_
-  · let Δ := lt e one :: Γ
-    have ez : Δ ⊢[PRAAx] e ≐ zero :=
-      le_antisymm ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) (zero_le e)
-    have read := (coefficient_congr q z R B r ez).eqTrans (coefficient_zero q z R B r)
+  refine degree_cases e ?_ ?_ ?_ ?_
+  · have read := (coefficient_index_congr (Γ := (e ≐ zero) :: Γ) q z R B r Prf.hyp0).eqTrans
+      (coefficient_zero q z R B r)
     exact bound_congr read.eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianMonicResidualRadius.zero_bounded T one (le_refl one))
-  · refine (lt_or_le e two).orE ?_ ?_
-    · let Δ := lt e two :: le one e :: Γ
-      have eq : Δ ⊢[PRAAx] e ≐ one :=
-        le_antisymm ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) Prf.hyp1
-      have read := (coefficient_congr q z R B r eq).eqTrans (coefficient_one q z R B r)
-      exact bound_congr read.eqSymm (.eqRefl _) (.eqRefl _)
-        (weaken_one _ _ _ _ (le_refl one) hlin.wk.wk (linear_bound q z R B r h.wk.wk))
-    · refine (lt_or_le e (num 3)).orE ?_ ?_
-      · let Δ := lt e (num 3) :: le two e :: le one e :: Γ
-        have eq : Δ ⊢[PRAAx] e ≐ two :=
-          le_antisymm ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) Prf.hyp1
-        have read := (coefficient_congr q z R B r eq).eqTrans (coefficient_two q z R B r)
-        exact bound_congr read.eqSymm (.eqRefl _) (.eqRefl _)
-          (weaken_one _ _ _ _ (le_refl one) hquad.wk.wk.wk (quadratic_bound q z R B r h.wk.wk.wk))
-      · let j := monus e (num 3)
-        have eq : (le (num 3) e :: le two e :: le one e :: Γ) ⊢[PRAAx] e ≐ degree j :=
-          (eq_add_of_le Prf.hyp0).eqTrans (by unfold degree previous; ipra_ring)
-        have leDegree := le_congr eq (.eqRefl _) he.wk.wk.wk
-        have powLe := GaussianFactorBudget.power_monotone_length two _ _ (le_succ_self one) leDegree
-        have read := (coefficient_congr q z R B r eq).eqTrans (coefficient_high q z R B r j)
-        exact bound_congr read.eqSymm (.eqRefl _) (.eqRefl _)
-          (weaken_one _ _ _ _ (le_refl one) (le_trans powLe hhigh.wk.wk.wk) (higher_bound z R B r j h.wk.wk.wk))
+  · have read := (coefficient_index_congr (Γ := (e ≐ one) :: Γ) q z R B r Prf.hyp0).eqTrans
+      (coefficient_one q z R B r)
+    exact bound_congr read.eqSymm (.eqRefl _) (.eqRefl _)
+      (weaken_one _ _ _ _ (le_refl one) hlin.wk (linear_bound q z R B r h.wk))
+  · have read := (coefficient_index_congr (Γ := (e ≐ two) :: Γ) q z R B r Prf.hyp0).eqTrans
+      (coefficient_two q z R B r)
+    exact bound_congr read.eqSymm (.eqRefl _) (.eqRefl _)
+      (weaken_one _ _ _ _ (le_refl one) hquad.wk (quadratic_bound q z R B r h.wk))
+  · let j := monus e (num 3)
+    have eq : (e ≐ degree j) :: Γ ⊢[PRAAx] e ≐ degree j := Prf.hyp0
+    have leDegree := le_congr eq (.eqRefl _) he.wk
+    have powLe := GaussianFactorBudget.power_monotone_length two _ _ (le_succ_self one) leDegree
+    have read := (coefficient_index_congr q z R B r eq).eqTrans (coefficient_high q z R B r j)
+    exact bound_congr read.eqSymm (.eqRefl _) (.eqRefl _)
+      (weaken_one _ _ _ _ (le_refl one) (le_trans powLe hhigh.wk) (higher_bound z R B r j h.wk))
 
 theorem mass (q z R B r M : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] rationalLE (coefficientNorm (buffer q z R B r M)) (fraction (massCap R M) one) := by

@@ -19,7 +19,8 @@ namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorWeighted
 
 open_ipra
 open GaussianBarnesCanonicalExponentTaylorBuffer
-  (buffer coefficient descending_at coefficient_zero coefficient_one coefficient_two coefficient_high)
+  (buffer coefficient descending_at coefficient_index_congr positive_degree_cases
+    coefficient_zero coefficient_one coefficient_two coefficient_high)
 open GaussianBarnesCanonicalExponentTaylorMass
   (linearCap squareCap stirlingCap halfCap quadraticCap linear_bound quadratic_bound higher_bound)
 open GaussianBarnesCanonicalHigherRows (previous degree)
@@ -89,11 +90,6 @@ private theorem low_budget (A R e : PTm n) (he : Γ ⊢[PRAAx] le one e)
     le_congr (pw_one two) (.eqRefl _) (GaussianFactorBudget.power_monotone_length two one e two_positive he)
   exact le_congr (mul_comm _ _) (.eqRefl _) (Common.mul_le_mul ha ht)
 
-private theorem coefficient_congr (q z R B r : PTm n) {e f : PTm n} (he : Γ ⊢[PRAAx] e ≐ f) :
-    Γ ⊢[PRAAx] coefficient q z R B r e ≐ coefficient q z R B r f := by
-  ipra_congr (coefficient (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
-    [.eqRefl q,.eqRefl z,.eqRefl R,.eqRefl B,.eqRefl r,he]
-
 private theorem coefficient_bound (q z R B r e : PTm n) (hs : Γ ⊢[PRAAx] source z R B)
     (he : Γ ⊢[PRAAx] le one e) :
     Γ ⊢[PRAAx] rationalLE (qL1 (qmul (coefficient q z R B r e) (power point e))) (majorant (massCap R) e) := by
@@ -102,29 +98,24 @@ private theorem coefficient_bound (q z R B r e : PTm n) (hs : Γ ⊢[PRAAx] sour
   have l : Γ ⊢[PRAAx] le (linearCap R) C := le_trans (le_add_right _ _) (le_add_right _ _)
   have s : Γ ⊢[PRAAx] le (squareCap R) C := le_trans (le_add_left _ _) (le_add_right _ _)
   have t : Γ ⊢[PRAAx] le two C := le_add_left _ _
-  refine (lt_or_le e two).orE ?_ ?_
-  · have eq : (lt e two :: Γ) ⊢[PRAAx] e ≐ one :=
-      le_antisymm ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) he.wk
-    have rd := (coefficient_congr q z R B r eq).eqTrans (coefficient_one q z R B r)
+  refine positive_degree_cases e he ?_ ?_ ?_
+  · have rd := (coefficient_index_congr (Γ := (e ≐ one) :: Γ) q z R B r Prf.hyp0).eqTrans
+      (coefficient_one q z R B r)
     exact scaled_entry c (linearCap R) e C
       (bound_congr rd.eqSymm (.eqRefl _) (.eqRefl _) (linear_bound q z R B r hs.wk))
       (low_budget (linearCap R) R e he.wk l.wk)
-  · refine (lt_or_le e (num 3)).orE ?_ ?_
-    · have eq : (lt e (num 3) :: le two e :: Γ) ⊢[PRAAx] e ≐ two :=
-        le_antisymm ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) Prf.hyp1
-      have rd := (coefficient_congr q z R B r eq).eqTrans (coefficient_two q z R B r)
-      exact scaled_entry c (squareCap R) e C
-        (bound_congr rd.eqSymm (.eqRefl _) (.eqRefl _) (quadratic_bound q z R B r hs.wk.wk))
-        (low_budget (squareCap R) R e he.wk.wk s.wk.wk)
-    · let j := monus e (num 3)
-      have eq : (le (num 3) e :: le two e :: Γ) ⊢[PRAAx] e ≐ degree j :=
-        (eq_add_of_le Prf.hyp0).eqTrans (by unfold degree previous; ipra_ring)
-      have rd := (coefficient_congr q z R B r eq).eqTrans (coefficient_high q z R B r j)
-      have p : (le (num 3) e :: le two e :: Γ) ⊢[PRAAx] pw two (degree j) ≐ pw two e :=
-        congrAp2 powF eq.eqSymm (.eqRefl _)
-      exact scaled_entry c (pw two e) e C
-        (bound_congr rd.eqSymm p (.eqRefl _) (higher_bound z R B r j hs.wk.wk))
-        (mul_le_mul_right (pw two e) t.wk.wk)
+  · have rd := (coefficient_index_congr (Γ := (e ≐ two) :: Γ) q z R B r Prf.hyp0).eqTrans
+      (coefficient_two q z R B r)
+    exact scaled_entry c (squareCap R) e C
+      (bound_congr rd.eqSymm (.eqRefl _) (.eqRefl _) (quadratic_bound q z R B r hs.wk))
+      (low_budget (squareCap R) R e he.wk s.wk)
+  · let j := monus e (num 3)
+    have eq : (e ≐ degree j) :: Γ ⊢[PRAAx] e ≐ degree j := Prf.hyp0
+    have rd := (coefficient_index_congr q z R B r eq).eqTrans (coefficient_high q z R B r j)
+    have p := congrAp2 powF eq.eqSymm (.eqRefl two)
+    exact scaled_entry c (pw two e) e C
+      (bound_congr rd.eqSymm p (.eqRefl _) (higher_bound z R B r j hs.wk))
+      (mul_le_mul_right (pw two e) t.wk)
 
 private theorem majorant_step (C e : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.add (majorant C (succ e)) (majorant C (succ e)) ≐ majorant C e := by
@@ -230,7 +221,7 @@ theorem mass (q z R B r M : PTm n) (hs : Γ ⊢[PRAAx] source z R B) :
     simpa only [sh,Syn.shift,W,C,D,subst_dilated,GaussianBarnesCanonicalExponentTaylorBuffer.subst_buffer,
       GaussianBarnesCanonicalHigherRows.subst_previous,subst_point,subst_massCap] using
       stored_entry (sh q) (sh z) (sh R) (sh B) (sh r) (sh M) (var 0) hz
-  have coeffZero := (coefficient_congr (Γ := Γ) q z R B r (monus_self D)).eqTrans (coefficient_zero q z R B r)
+  have coeffZero := (coefficient_index_congr (Γ := Γ) q z R B r (monus_self D)).eqTrans (coefficient_zero q z R B r)
   have qZero := (dilated_lookup C D point D (le_refl D)).eqTrans
     ((qmul_congr (descending_at q z R B r M D (le_refl D)) (.eqRefl _)).eqTrans
       ((qmul_congr coeffZero (.eqRefl _)).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_left _)))
