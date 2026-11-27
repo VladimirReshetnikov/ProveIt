@@ -22,14 +22,13 @@ open GaussianEulerIntegrandName (powerF powerData decayF decayData)
 open GaussianEulerWeightedHalfDecay (majorant halfSample)
 open GaussianEulerLogarithmicHalfDecay (powerAndLog powerAllowance halfAllowance weightedSample)
 open GaussianEulerUpperTailPointwise (referenceTop referenceBottom majorantTop majorantBottom
-  reference_bottom_positive majorant_bottom_positive)
-open GaussianEulerHalfDecayReference (scalar numerator denominator denominator_positive reference_norm decay_reference_error)
+  reference_bottom_positive majorant_bottom_positive reference_observation_slack)
 open GaussianEulerLogarithmicMultiplier (logarithmicPower)
 open GaussianEulerCompactPowerMajorant (original_power_observation)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
@@ -112,27 +111,15 @@ theorem original_split_error (p j z R B E T a b : PTm n)
 
 theorem half_reference_bound (q p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] bounded (halfSample p a b)
-      (referenceTop q a b*unit p+referenceBottom q a b) (referenceBottom q a b*unit p) := by
-  have den : Γ ⊢[PRAAx] le one (unit q*unit p) := positive_product _ _ (unit_positive q) (unit_positive p)
-  have near := distance_symmetric _ _ _ _ den (decay_reference_error q p a b hb)
-  have estimate := norm_from_distance _ _ _ _ (numerator q a b) (denominator q a b)
-    den (denominator_positive q a b) near (reference_norm q a b)
-  exact bound_congr (.eqRefl _) (by unfold referenceTop referenceBottom; ipra_ring)
-    (by unfold referenceBottom; ipra_ring) estimate
+      (referenceTop q a b*unit p+referenceBottom q a b) (referenceBottom q a b*unit p) :=
+  GaussianEulerUpperTailPointwise.half_reference_bound q p a b hb
 
 theorem approximate_reference_product (x y M K N D U : PTm n)
     (hd : Γ ⊢[PRAAx] le one D) (hu : Γ ⊢[PRAAx] le one U)
     (hx : Γ ⊢[PRAAx] bounded x (M*U+K) U)
     (hy : Γ ⊢[PRAAx] bounded y (N*U+D) (D*U)) : Γ ⊢[PRAAx]
-    bounded (qmul x y) (M*N*U+(M+K*(N+one))*D) (D*U) := by
-  have du := positive_product _ _ hd hu
-  have compare : Γ ⊢[PRAAx] le ((M*U+K)*(N*U+D)) ((M*N*U+(M+K*(N+one))*D)*U) := by
-    ipra_le (𝔞 K*𝔞 N*𝔞 U)*sl hd+(𝔞 K*𝔞 D)*sl hu
-  have reorder : Γ ⊢[PRAAx] ((M*N*U+(M+K*(N+one))*D)*U)*(D*U) ≐
-      (M*N*U+(M+K*(N+one))*D)*(U*(D*U)) := by ipra_ring
-  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ hu du) du
-    (le_congr (.eqRefl _) reorder (mul_le_mul_right (D*U) compare))
-    (bounded_product x y _ _ _ _ hu du hx hy)
+    bounded (qmul x y) (M*N*U+(M+K*(N+one))*D) (D*U) :=
+  GaussianEulerUpperTailPointwise.approximate_reference_product x y M K N D U hd hu hx hy
 
 theorem original_raw_envelope (p q j z R B E T a b : PTm n)
     (h : Γ ⊢[PRAAx] source z R B E T a b) : Γ ⊢[PRAAx]
@@ -191,15 +178,7 @@ theorem original_observation_slack (p q s j z R B E T a b : PTm n)
           ipra_le (𝔞(unit s)*𝔞(unit s))*sl (GaussianEulerLogarithmicCompactName.query_budget (Γ := Γ) p j R E T)) raw'
   have base : Γ ⊢[PRAAx] bounded (GaussianEulerLogarithmicMultiplier.sample s j z B a b)
       (A*V+K*D) (D*V) := original_raw_envelope s q j z R B E T a b h
-  have dv := positive_product _ _ (reference_bottom_positive q a b) us
-  have bound := norm_from_distance _ _ (V+H*U) (U*V) (A*V+K*D) (D*V) next dv near base
-  have finalden := positive_product _ _ (majorant_bottom_positive p q a b) us
-  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ next dv) finalden
-    (le_of_eq_add (d := zero) (by
-      unfold majorantTop majorantBottom observationCost
-      dsimp only [A,D,U,V,H,K]
-      unfold unit
-      ipra_ring)) bound
+  exact reference_observation_slack _ _ A D H K p s (reference_bottom_positive q a b) near base
 
 /-- The genuine compact log-power evaluator has the same sharp half-decay
 coefficient, with only its requested observation error remaining. -/
