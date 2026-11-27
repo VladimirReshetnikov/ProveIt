@@ -57,19 +57,17 @@ private theorem double_gaussian_point (a D : PTm n) (hD : Γ ⊢[PRAAx] le one D
     apply GaussianRootAlgebra.equal_of_values <;>
       simp only [GaussianRootAlgebra.re_add,GaussianRootAlgebra.im_add,
         GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale] <;> ipra_simps <;> ring
-  exact canonical_unique _ _ _ D (qadd_canonical _ _) (ofGaussian_canonical _ _ hD) hD
+  exact GaussianRationalHorner.cleared_input_exact _ _ D (qadd_canonical _ _) hD
     (represents_congr (.eqRefl _) e (.eqRefl _) (qadd_represents _ _ _ _ D hD r r))
-    (ofGaussian_represents _ _ hD)
 
 theorem half_imaginary_doubled :
     Γ ⊢[PRAAx] qadd (GaussianArctangentQuarterExponential.halfImaginary : PTm n)
       GaussianArctangentQuarterExponential.halfImaginary ≐ imaginaryPoint := by
   have hD : Γ ⊢[PRAAx] le one two := le_succ_self one
   refine (double_gaussian_point imaginaryCode two hD).eqTrans ?_
-  exact canonical_unique _ _ _ two (ofGaussian_canonical _ _ hD) (ofGaussian_canonical _ _ (le_refl one))
-    hD (ofGaussian_represents _ _ hD)
+  exact (GaussianRationalHorner.cleared_input_exact _ _ two (ofGaussian_canonical _ _ (le_refl one)) hD
     (represents_congr (.eqRefl _) (GaussianRootAlgebra.equal_refl _) (one_mul two)
-      (represents_rescale _ _ one two (ofGaussian_represents _ _ (le_refl one))))
+      (represents_rescale _ _ one two (ofGaussian_represents _ _ (le_refl one))))).eqSymm
 
 private theorem double_scaled_observation (c d q : PTm n) (h : Γ ⊢[PRAAx] qadd c c ≐ d) :
     Γ ⊢[PRAAx] qadd (qmul c q) (qmul c q) ≐ qmul d q :=
@@ -103,8 +101,8 @@ theorem square_gaussian_point (a b : PTm n)
     Γ ⊢[PRAAx] qmul (ofGaussian a one) (ofGaussian a one) ≐ ofGaussian b one := by
   have hr := ofGaussian_represents (Γ := Γ) a one (le_refl one)
   have hs := qmul_represents _ _ a a one one (le_refl _) (le_refl _) hr hr
-  exact canonical_unique _ _ _ one (qmul_canonical _ _) (ofGaussian_canonical _ _ (le_refl one))
-    (le_refl one) (represents_congr (.eqRefl _) he (one_mul one) hs) (ofGaussian_represents _ _ (le_refl one))
+  exact GaussianRationalHorner.cleared_input_exact _ _ one (qmul_canonical _ _) (le_refl one)
+    (represents_congr (.eqRefl _) he (one_mul one) hs)
 
 theorem imaginary_square : Γ ⊢[PRAAx] qmul (imaginaryPoint : PTm n) imaginaryPoint ≐ minusOne := by
   apply square_gaussian_point

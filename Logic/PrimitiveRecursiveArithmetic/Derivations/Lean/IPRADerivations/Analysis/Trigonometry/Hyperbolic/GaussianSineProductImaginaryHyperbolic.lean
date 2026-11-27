@@ -95,8 +95,8 @@ private theorem rotate_axis (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     dsimp only [ni]
     apply equal_of_values <;> simp only [re_mul, im_mul, re_neg, im_neg, imaginaryCode, axisNumerator,
       realNumerator, eval_re_code, eval_im_code, ZT.toZ_ofNat] <;> ipra_simps <;> ring
-  exact canonical_unique _ _ _ B (qmul_canonical _ _) (ofGaussian_canonical _ _ hB) hB
-    (represents_congr (.eqRefl _) e (one_mul B) raw) (ofGaussian_represents _ _ hB)
+  exact GaussianRationalHorner.cleared_input_exact _ _ B (qmul_canonical _ _) hB
+    (represents_congr (.eqRefl _) e (one_mul B) raw)
 
 private theorem rotate_multiplier :
     Γ ⊢[PRAAx] qmul negativeImaginary GaussianNamedSineFromExponential.multiplier ≐ GaussianPiRationalScale.point true one two := by
@@ -109,8 +109,8 @@ private theorem rotate_multiplier :
     dsimp only [ni]
     apply equal_of_values <;> simp only [re_mul, im_mul, re_neg, im_neg, imaginaryCode,
       realNumerator, eval_re_code, eval_im_code, ZT.toZ_ofNat] <;> ipra_simps <;> ring
-  exact canonical_unique _ _ _ two (qmul_canonical _ _) (ofGaussian_canonical _ _ htwo) htwo
-    (represents_congr (.eqRefl _) e (one_mul two) raw) (ofGaussian_represents _ _ htwo)
+  exact GaussianRationalHorner.cleared_input_exact _ _ two (qmul_canonical _ _) htwo
+    (represents_congr (.eqRefl _) e (one_mul two) raw)
 
 theorem as_negative_pi (A B R x : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le A (R*B)) :
     Γ ⊢[PRAAx] crossEquivalent (imaginaryF argumentF) Scale

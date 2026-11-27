@@ -37,8 +37,8 @@ theorem sine_projection (B A : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
   have eq : Γ ⊢[PRAAx] equal (native (im a)) (sineCode B A) := by
     dsimp only [a]
     apply equal_of_values <;> simp only [native, numerator, sineCode, eval_re_code, eval_im_code]
-  exact canonical_unique _ _ _ d (embed_canonical _) (ofGaussian_canonical _ _ hd) hd
-    (represents_congr (.eqRefl _) eq (.eqRefl _) r) (ofGaussian_represents _ _ hd)
+  exact GaussianRationalHorner.cleared_input_exact _ _ d (embed_canonical _) hd
+    (represents_congr (.eqRefl _) eq (.eqRefl _) r)
 
 theorem cosine_projection (B A : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] embed (fstT (value B A)) ≐ cosinePoint B A := by
@@ -49,8 +49,8 @@ theorem cosine_projection (B A : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
   have eq : Γ ⊢[PRAAx] equal (native (re a)) (cosineCode B A) := by
     dsimp only [a]
     apply equal_of_values <;> simp only [native, numerator, cosineCode, eval_re_code, eval_im_code]
-  exact canonical_unique _ _ _ d (embed_canonical _) (ofGaussian_canonical _ _ hd) hd
-    (represents_congr (.eqRefl _) eq (.eqRefl _) r) (ofGaussian_represents _ _ hd)
+  exact GaussianRationalHorner.cleared_input_exact _ _ d (embed_canonical _) hd
+    (represents_congr (.eqRefl _) eq (.eqRefl _) r)
 
 def samplePrecision (p : PTm n) : PTm n := queryPrecision (GaussianFastValueCut.exponent modulus p)
 
