@@ -109,6 +109,8 @@ For the exchange used in McNew’s Question 7.4, [IntegerBoundaryExchangeReplace
 
 [BoundedPrimeBlockConvergence.lean](GRHArticle/ProgressionFree/BoundedPrimeBlockConvergence.lean) proves convergence of the bounded-width density suprema to the unrestricted supremum. At width $d$, with $p$ the next prime after the first $d$, the loss is at most $1/((k-2)(p-1)^{k-2})$. For three-term progressions the sharper bound is $1/p$.
 
+[GreedyLengthDensityComputability.lean](GRHArticle/ProgressionFree/GreedyLengthDensityComputability.lean) computes the unrestricted natural-density supremum for positive integers at every progression length $k\ge3$. The rational output of `integerLengthNaturalDensityApprox k n` has absolute error at most $2^{-(n+1)}$.
+
 ## Geometric progressions of ideals in number fields
 
 [Density.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/Density.lean) counts nonzero integral ideals in norm order. Multiplying an arbitrary set with natural density by a fixed ideal divides that density by the ideal norm. [LocalFactors.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/LocalFactors.lean) computes the density of ideals coprime to finitely many primes. [ValuationCylinders.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/ValuationCylinders.lean) proves that the exponents at any finite set of prime ideals have the independent geometric densities in `gpi:lem:product`, for every number field.
