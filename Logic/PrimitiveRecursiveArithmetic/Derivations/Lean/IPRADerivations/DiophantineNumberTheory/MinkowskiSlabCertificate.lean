@@ -71,14 +71,11 @@ theorem doubled_facets_length (N F : PTm n) : Γ ⊢[PRAAx] length (doubledFacet
 
 theorem doubled_facet_at (N F j : PTm n) (hj : Γ ⊢[PRAAx] lt j (length F)) : Γ ⊢[PRAAx]
     entry (doubledFacets N F) j ≐ pairT (doubleVector N (fstT (entry F j))) (sndT (entry F j)) := by
-  have b := sequence_decode (Γ := Γ) doubledFacetBody (x := pairT N F) hj
-  have e := Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-    (pairT (doubleVector (var 0) (fstT (entry (var 1) (var 2)))) (sndT (entry (var 1) (var 2))) : PTm 3)
-    (σ := ![fstT (pairT N F),sndT (pairT N F),j]) (σ' := ![N,F,j])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
-  exact b.eqTrans (by simpa only [doubledFacetBody,inst2,subst_pairT,subst_doubleVector,subst_fstT,
-    subst_sndT,subst_entry,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.head_cons,Matrix.tail_cons] using e)
+  refine (sequence_decode (Γ := Γ) doubledFacetBody (x := pairT N F) hj).eqTrans ?_
+  simpa [doubledFacetBody, inst2, pairVector, pairVectorField] using
+    (subst_pairVector_eq (Γ := Γ)
+      (pairT (doubleVector (var 1) (fstT (entry (var 2) (var 0))))
+        (sndT (entry (var 2) (var 0))) : PTm 3) j ![N, F])
 
 theorem doubled_containment (N F q : PTm n) (h : Γ ⊢[PRAAx] facetsMember N (doubledFacets N F) q) :
     Γ ⊢[PRAAx] facetsMember N F (doubleVector N q) := by

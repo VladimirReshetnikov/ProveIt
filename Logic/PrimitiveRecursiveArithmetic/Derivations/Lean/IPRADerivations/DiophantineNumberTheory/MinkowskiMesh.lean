@@ -49,12 +49,9 @@ def colorFamily : PR 2 := PTm.toPR colorBody
 
 theorem colorFamily_at (N m L i : PTm n) :
     Γ ⊢[PRAAx] ap2 colorFamily i (data N m L) ≐ color N m (entry L i) := by
-  have program := toPR_eq (Γ := Γ) colorBody ![i,data N m L]
-  simp only [colorBody, MinkowskiResidues.subst_color, subst_entry, subst_fstT, subst_sndT,
-    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] at program
-  exact program.eqTrans (congrAp3 colorF (fst_pair _ _)
-    ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _))
-    (entry_congr ((congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)) (.eqRefl _)))
+  simpa [colorFamily, colorBody, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ)
+      (color (var 1) (var 2) (entry (var 3) (var 0)) : PTm 4) i ![N, m, L])
 
 theorem horizon_positive (N m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] le one (horizon N m) :=
