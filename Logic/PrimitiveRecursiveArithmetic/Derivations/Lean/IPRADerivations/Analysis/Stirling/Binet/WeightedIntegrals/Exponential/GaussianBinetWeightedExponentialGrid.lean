@@ -79,18 +79,11 @@ private theorem row_congr (p a b j j' N N' : PTm n)
 
 theorem evaluator_at (p t a b : PTm n) :
     Γ ⊢[PRAAx] ap3 evaluatorF p t (pairT a b) ≐ rowValue p a b (tagNumerator t) (sndT t) := by
-  have e : Γ ⊢[PRAAx] ap3 evaluatorF p t (pairT a b) ≐ evaluatorTerm p t (pairT a b) := by
-    simpa only [evaluatorF,ap3,subst_evaluatorTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,pairT a b]
-  exact e.eqTrans (by
-    simpa only [evaluatorTerm,subst_rowValue,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-        (rowValue (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-        (σ := ![p,fstT (pairT a b),sndT (pairT a b),tagNumerator t,sndT t])
-        (σ' := ![p,a,b,tagNumerator t,sndT t])
-        (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _; exact .eqRefl _))
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 1)
+    (rowValue (var 0) (var 2) (var 3) (tagNumerator (var 1)) (sndT (var 1))) p t ![a, b]
+  simp only [subst_rowValue,
+    GaussianBinetLaplaceStrip.subst_tagNumerator, subst_sndT, Syn.subst_var] at read
+  exact read
 
 theorem cell_at (i p N a b : PTm n) :
     Γ ⊢[PRAAx] inst2 (sampleBody evaluatorF) i (sampleData p N one one one (pairT a b)) ≐ rowValue p a b i N := by

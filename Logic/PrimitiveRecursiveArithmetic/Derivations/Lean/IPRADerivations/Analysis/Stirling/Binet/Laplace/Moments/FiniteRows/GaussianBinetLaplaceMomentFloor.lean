@@ -122,27 +122,14 @@ ipra_subst unitPanelData [one, two]
 theorem evaluator_at (p t j X D R T : PTm n) :
     Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData j X D R T) ≐
       observation p j X D R T (tagNumerator t) (sndT t) := by
-  let b := GaussianBinetLaplaceStrip.fixedData X zero D zero R T zero
-  let x := fixedData j X D R T
-  have io : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ evaluatorTerm p t x := by
-    simpa only [evaluatorF,ap3,subst_evaluatorTerm,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  have hj : Γ ⊢[PRAAx] fstT x ≐ j := fst_pair _ _
-  have hT : Γ ⊢[PRAAx] fstT (sndT x) ≐ T := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have hb : Γ ⊢[PRAAx] sndT (sndT x) ≐ b := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-  have c : Γ ⊢[PRAAx] clock p (fstT x) (fstT (sndT x)) ≐ clock p j T := by
-    simpa only [subst_clock,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (clock (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![p,fstT x,fstT (sndT x)]) (σ' := ![p,j,T])
-        (fun i => by fin_cases i; exact .eqRefl _; exact hj; exact hT)
-  have w : Γ ⊢[PRAAx] weight (fstT x) (tagNumerator t) (sndT t) ≐ weight j (tagNumerator t) (sndT t) := by
-    simpa only [subst_weight,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (weight (var 0) (Syn.shift (tagNumerator t)) (Syn.shift (sndT t))) hj
-  exact io.eqTrans (GaussianRationalSyntheticDivision.qmul_congr
-    ((congrAp3 baseF c (.eqRefl _) hb).eqTrans
-      (GaussianBinetLaplaceStrip.evaluator_at Kernel.cofinal (clock p j T) t X zero D zero R T zero)) w)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 2)
+    (qmul (ap3 baseF (clock (var 0) (var 2) (var 3)) (var 1) (var 4))
+        (weight (var 2) (tagNumerator (var 1)) (sndT (var 1)))) p t ![j, T, GaussianBinetLaplaceStrip.fixedData X zero D zero R T zero]
+  simp only [GaussianRationalHorner.subst_qmul, subst_ap3, subst_clock, subst_weight,
+    GaussianBinetLaplaceStrip.subst_tagNumerator, subst_sndT, Syn.subst_var] at read
+  exact read.eqTrans (GaussianRationalSyntheticDivision.qmul_congr
+    (GaussianBinetLaplaceStrip.evaluator_at Kernel.cofinal (clock p j T) t X zero D zero R T zero)
+    (.eqRefl _))
 
 private theorem unit_rows (p M j X D R S : PTm n) (h : Γ ⊢[PRAAx] realSource X zero D zero R)
     (hM : Γ ⊢[PRAAx] le one M) (hCap : Γ ⊢[PRAAx] le X (S*D)) : Γ ⊢[PRAAx]

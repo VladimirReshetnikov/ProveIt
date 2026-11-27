@@ -120,39 +120,17 @@ theorem tag_source (t u A C E T M Q : PTm n) (hE : Γ ⊢[PRAAx] le one E) (hT :
   exact .andI ht.andE₂.andE₁ (.andI hu.andE₂.andE₁ (.andI hQ
     (.andI lt.andE₂ (.andI lu.andE₂ (distance_congr dt du (.eqRefl _) (.eqRefl _) d)))))
 
-private theorem val_five {α : Type} (a b c d e f g h i : α) : ![a,b,c,d,e,f,g,h,i] (5 : Fin 9) = f := rfl
-private theorem val_six {α : Type} (a b c d e f g h i : α) : ![a,b,c,d,e,f,g,h,i] (6 : Fin 9) = g := rfl
-private theorem val_seven {α : Type} (a b c d e f g h i : α) : ![a,b,c,d,e,f,g,h,i] (7 : Fin 9) = h := rfl
-private theorem val_eight {α : Type} (a b c d e f g h i : α) : ![a,b,c,d,e,f,g,h,i] (8 : Fin 9) = i := rfl
 
 theorem evaluator_at (K : Kernel) (p t X Y D sign R T N : PTm n) :
     Γ ⊢[PRAAx] ap3 (evaluatorF K) p t (fixedData X Y D sign R T N) ≐
       ap2 (integrandF K) p (integrandData K X Y D sign R T N (tagNumerator t) (sndT t)) := by
-  let x := fixedData X Y D sign R T N
-  have ev : Γ ⊢[PRAAx] ap3 (evaluatorF K) p t x ≐ evaluatorTerm K p t x := by
-    simpa only [evaluatorF, ap3, subst_evaluatorTerm, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] using
-      toPR_eq (Γ := Γ) (evaluatorTerm K (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  have fields := Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-      (integrandData K (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9)
-      (σ := ![GaussianCompactRiemannName.field0 x, GaussianCompactRiemannName.field1 x, GaussianCompactRiemannName.field2 x,
-        GaussianCompactRiemannName.field3 x, GaussianCompactRiemannName.field4 x, fstT (GaussianCompactRiemannName.field5 x),
-        sndT (GaussianCompactRiemannName.field5 x), tagNumerator t, sndT t])
-      (σ' := ![X,Y,D,sign,R,T,N,tagNumerator t,sndT t]) (fun i => by
-        fin_cases i
-        exact GaussianCompactRiemannName.field0_at _ _ _ _ _ _
-        exact GaussianCompactRiemannName.field1_at _ _ _ _ _ _
-        exact GaussianCompactRiemannName.field2_at _ _ _ _ _ _
-        exact GaussianCompactRiemannName.field3_at _ _ _ _ _ _
-        exact GaussianCompactRiemannName.field4_at _ _ _ _ _ _
-        exact (congrFst (GaussianCompactRiemannName.field5_at _ _ _ _ _ _)).eqTrans (fst_pair _ _)
-        exact (congrSnd (GaussianCompactRiemannName.field5_at _ _ _ _ _ _)).eqTrans (snd_pair _ _)
-        exact .eqRefl _
-        exact .eqRefl _)
-  exact ev.eqTrans (congrAp2 (integrandF K) (.eqRefl p)
-    (by simpa only [subst_integrandData, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.cons_val_two, Matrix.cons_val_three, Matrix.cons_val_four, val_five, val_six, val_seven, val_eight,
-      Matrix.head_cons, Matrix.tail_cons] using fields))
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 6)
+    (ap2 (integrandF K) (var 0)
+        (integrandData K (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8)
+          (tagNumerator (var 1)) (sndT (var 1)))) p t ![X, Y, D, sign, R, T, N]
+  simp only [subst_ap2, subst_integrandData,
+    subst_tagNumerator, subst_sndT, Syn.subst_var] at read
+  exact read
 
 theorem wrapped_at (K : Kernel) (p t X Y D sign R T N : PTm n) :
     Γ ⊢[PRAAx] ap2 (evaluatorName (evaluatorF K)) p (nameData t (fixedData X Y D sign R T N)) ≐

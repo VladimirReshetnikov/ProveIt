@@ -51,53 +51,16 @@ ipra_subst evaluatorTerm
 
 ipra_subst value
 
-private theorem val_4 {α : Type} (a b c d e f g h : α) : ![a,b,c,d,e,f,g,h] (4 : Fin 8) = e := rfl
-private theorem val_5 {α : Type} (a b c d e f g h : α) : ![a,b,c,d,e,f,g,h] (5 : Fin 8) = f := rfl
-private theorem val_6 {α : Type} (a b c d e f g h : α) : ![a,b,c,d,e,f,g,h] (6 : Fin 8) = g := rfl
-private theorem val_7 {α : Type} (a b c d e f g h : α) : ![a,b,c,d,e,f,g,h] (7 : Fin 8) = h := rfl
 
 theorem evaluator_at (p t k N X Y D sign R T : PTm n) :
     Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData k N X Y D sign R T) ≐
       rowValue p k N X Y D sign R T (tagNumerator t) (sndT t) := by
-  let x := fixedData k N X Y D sign R T
-  have eval : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ evaluatorTerm p t x := by
-    simpa only [evaluatorF,ap3,subst_evaluatorTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-      Matrix.head_cons,Matrix.tail_cons] using
-      toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  have ps : Γ ⊢[PRAAx] sndT (field5 x) ≐ pairT k N :=
-    (congrSnd (field5_at X Y D sign R (pairT T (pairT k N)))).eqTrans (snd_pair _ _)
-  let A := tagNumerator t
-  let B := sndT t
-  have exp : Γ ⊢[PRAAx] expData (field0 x) (field1 x) (field2 x) (field3 x) (field4 x) (fstT (field5 x)) A B ≐
-      expData X Y D sign R T A B := by
-    simpa only [GaussianBinetLaplaceExponential.subst_data,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_three,val_4,val_5,val_6,val_7,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-        (expData (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) : PTm 8)
-        (σ := ![field0 x,field1 x,field2 x,field3 x,field4 x,fstT (field5 x),A,B])
-        (σ' := ![X,Y,D,sign,R,T,A,B]) (fun i => by
-          fin_cases i
-          exact field0_at _ _ _ _ _ _
-          exact field1_at _ _ _ _ _ _
-          exact field2_at _ _ _ _ _ _
-          exact field3_at _ _ _ _ _ _
-          exact field4_at _ _ _ _ _ _
-          exact (congrFst (field5_at X Y D sign R (pairT T (pairT k N)))).eqTrans (fst_pair _ _)
-          exact (Prf.eqRefl A : Γ ⊢[PRAAx] A ≐ A)
-          exact (Prf.eqRefl B : Γ ⊢[PRAAx] B ≐ B))
-  have ker : Γ ⊢[PRAAx] GaussianBinetKernelFrozenPrefix.value (fstT (sndT (field5 x))) (sndT (sndT (field5 x))) A B ≐
-      GaussianBinetKernelFrozenPrefix.value k N A B := by
-    simpa only [GaussianBinetKernelFrozenPrefix.subst_value,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (GaussianBinetKernelFrozenPrefix.value (var 0) (var 1) (var 2) (var 3) : PTm 4)
-        (σ := ![fstT (sndT (field5 x)),sndT (sndT (field5 x)),A,B]) (σ' := ![k,N,A,B])
-        (fun i => by
-          fin_cases i
-          exact (congrFst ps).eqTrans (fst_pair _ _)
-          exact (congrSnd ps).eqTrans (snd_pair _ _)
-          exact (Prf.eqRefl A : Γ ⊢[PRAAx] A ≐ A)
-          exact (Prf.eqRefl B : Γ ⊢[PRAAx] B ≐ B))
-  exact eval.eqTrans (GaussianRationalSyntheticDivision.qmul_congr (congrAp2 Exp (.eqRefl p) exp) ker)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 7)
+    (rowValue (var 0) (var 8) (var 9) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7)
+      (tagNumerator (var 1)) (sndT (var 1))) p t ![X, Y, D, sign, R, T, k, N]
+  simp only [subst_rowValue,
+    GaussianBinetLaplaceStrip.subst_tagNumerator, subst_sndT, Syn.subst_var] at read
+  exact read
 
 theorem row_at (i p k N M X Y D sign R T A C E : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody evaluatorF) i (sampleData p M (E+A) C E (fixedData k N X Y D sign R T)) ≐

@@ -58,36 +58,15 @@ ipra_subst scalarData
 ipra_subst rowInput
 ipra_subst residualData
 
-private theorem val_four {α : Type} (a b c d e x g h i : α) : ![a,b,c,d,e,x,g,h,i] (4 : Fin 9) = e := rfl
-private theorem val_five {α : Type} (a b c d e x g h i : α) : ![a,b,c,d,e,x,g,h,i] (5 : Fin 9) = x := rfl
-private theorem val_six {α : Type} (a b c d e x g h i : α) : ![a,b,c,d,e,x,g,h,i] (6 : Fin 9) = g := rfl
-private theorem val_seven {α : Type} (a b c d e x g h i : α) : ![a,b,c,d,e,x,g,h,i] (7 : Fin 9) = h := rfl
-private theorem val_eight {α : Type} (a b c d e x g h i : α) : ![a,b,c,d,e,x,g,h,i] (8 : Fin 9) = i := rfl
 
 private theorem scalar_evaluator_at (p t j X D T H Q : PTm n) :
     Γ ⊢[PRAAx] ap3 scalarEvaluatorF p t (sampleData j X D T H Q) ≐ scalar p j X D T H Q (tagNumerator t) (sndT t) := by
-  let x := sampleData j X D T H Q
-  have read : Γ ⊢[PRAAx] ap3 scalarEvaluatorF p t x ≐ scalarEvaluatorTerm p t x := by
-    simpa only [scalarEvaluatorF,ap3,subst_scalarEvaluatorTerm,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      toPR_eq (Γ := Γ) (scalarEvaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  apply read.eqTrans
-  simpa only [scalarEvaluatorTerm,GaussianBinetLaplaceMomentTaylorMajorant.subst_scalar,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons,
-    val_four,val_five,val_six,val_seven,val_eight] using
-    Prf.eqCongr (scalar (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9)
-      (σ := ![p,field0 x,field1 x,field2 x,field3 x,field4 x,field5 x,tagNumerator t,sndT t])
-      (σ' := ![p,j,X,D,T,H,Q,tagNumerator t,sndT t]) (fun i => by
-        fin_cases i
-        exact .eqRefl _
-        exact field0_at _ _ _ _ _ _
-        exact field1_at _ _ _ _ _ _
-        exact field2_at _ _ _ _ _ _
-        exact field3_at _ _ _ _ _ _
-        exact field4_at _ _ _ _ _ _
-        exact field5_at _ _ _ _ _ _
-        exact .eqRefl _
-        exact .eqRefl _)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 5)
+    (scalar (var 0) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7)
+      (tagNumerator (var 1)) (sndT (var 1))) p t ![j, X, D, T, H, Q]
+  simp only [GaussianBinetLaplaceMomentTaylorMajorant.subst_scalar,
+    GaussianBinetLaplaceStrip.subst_tagNumerator, subst_sndT, Syn.subst_var] at read
+  exact read
 
 private theorem scalar_at (i p M j X D T H Q A C E : PTm n) :
     let t := grid i M (E+A) C E
