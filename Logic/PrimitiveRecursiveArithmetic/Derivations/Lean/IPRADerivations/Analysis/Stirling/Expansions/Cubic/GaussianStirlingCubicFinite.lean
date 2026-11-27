@@ -121,11 +121,6 @@ private theorem upper_first (a b : PTm n) :
   · unfold GaussianStirlingRationalTelescopers.gap
     ipra_ring
 
-private theorem group (a b c d : PTm n) :
-    Γ ⊢[PRAAx] qadd (qadd a b) (qadd c d) ≐ qadd (qadd a c) (qadd b d) :=
-  (qadd_associative _ _ _).eqSymm.eqTrans
-    ((qadd_congr (swap_suffix a b c) (.eqRefl d)).eqTrans (qadd_associative _ _ _))
-
 theorem strong_cell (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] upper (fstT (qadd (geometricMain a b) (margin a b)))
       (fstT (qadd (ap2 D p (DD a b)) (cellCorrection a b))) one (unit p) := by
@@ -168,7 +163,8 @@ private theorem raw_succ (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b)
   have next := weak_cell p c b (shifted_source a b t hs)
   have both := point_add_upper_same (qadd X M) (qadd Y J) G (qadd P K) t one (unit p) (unit_positive p) h next
   have L := (swap_suffix X M G).eqTrans (qadd_congr (upper_step t a b hs) (.eqRefl M))
-  have R := (group Y J P K).eqTrans (qadd_congr (raw_step p t a b).eqSymm (cubic_step t a b hs))
+  have R := (GaussianRationalFiniteSum.add_shuffle Y J P K).eqTrans
+    (qadd_congr (raw_step p t a b).eqSymm (cubic_step t a b hs))
   exact upper_congr (congrFst L) (congrFst R) (succ_eq_add_one t).eqSymm (.eqRefl _) both
 
 theorem raw_lower (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx] rawLower p N a b := by

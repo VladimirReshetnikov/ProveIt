@@ -27,7 +27,7 @@ open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianRationalHorner (qmul)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
-open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
+open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle commute_nested)
 open GaussianPositiveRationalLogarithm (fraction)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -86,9 +86,6 @@ theorem original_raw_readback (p k z B e f d h Q S E T a b : PTm n) : Γ ⊢[PRA
   exact (multiply_readback factorF EulerRow p (factorData z B e f d h a b) (imageData k z B e f d h Q S E T a b)).eqTrans
     (qmul_congr factor image)
 
-private theorem swap_first (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (qmul_associative a b c).eqSymm.eqTrans ((qmul_congr (qmul_commutative a b) (.eqRefl _)).eqTrans (qmul_associative b a c))
-
 /-- Only true normalized multiplication laws; no canonical raw operands
 or cancellation of a possibly zero cell width is needed. -/
 theorem six_factor_reorder (r t s u v w : PTm n) : Γ ⊢[PRAAx]
@@ -102,7 +99,7 @@ theorem six_factor_reorder (r t s u v w : PTm n) : Γ ⊢[PRAAx]
     ((qmul_associative _ _ w).eqTrans
       ((qmul_congr (.eqRefl _) ((qmul_associative s v w).eqTrans
         (qmul_congr (.eqRefl _) (qmul_commutative v w)))).eqTrans
-          ((swap_first _ s _).eqTrans (qmul_congr (.eqRefl _) (qmul_associative _ w v).eqSymm))))
+          ((commute_nested _ s _).eqTrans (qmul_congr (.eqRefl _) (qmul_associative _ w v).eqSymm))))
 
 /-- Literal evaluated-Jacobian readback of the frozen image. -/
 theorem original_image_Jacobian (k e f d h Q S E T a b : PTm n)
