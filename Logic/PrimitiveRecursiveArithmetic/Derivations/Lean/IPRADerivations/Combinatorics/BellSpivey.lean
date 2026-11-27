@@ -308,14 +308,11 @@ theorem hpt (k N j : PTm n) : Γ ⊢[PRAAx] inst2 hB k (pairT N j) ≐ j * inst2
   rw [inst2_shiftBody]
   refine (h_at _ _ _).eqTrans (.eqTrans ?_ (congrMul (.eqRefl _) (g_at _ _ _)).eqSymm)
   refine .orE (lt_or_le k N) ?_ ?_
-  · have hl : (lt k N :: Γ) ⊢[PRAAx] lt k N := Prf.hyp0
-    have e₀ : (lt k N :: Γ) ⊢[PRAAx] N ≐ succ (monus N (succ k)) + k := by
-      ipra_lc natEq (eq_add_of_le hl)
-    have e : (lt k N :: Γ) ⊢[PRAAx] monus N k ≐ succ (monus N (succ k)) :=
-      (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
+  · have e : (lt k N :: Γ) ⊢[PRAAx] monus N k ≐ succ (monus N (succ k)) :=
+      Common.monus_succ_of_lt Prf.hyp0
     refine (congrMul (congrMul (.eqRefl _) ((congrPw (.eqRefl _) e).eqTrans (pw_succ _ _))) (.eqRefl _)).eqTrans ?_
     ipra_ring
-  · have z : (le N k :: Γ) ⊢[PRAAx] gb N (succ k) ≐ zero := gb_above ((succ_monus_succ _ _).eqTrans Prf.hyp0)
+  · have z : (le N k :: Γ) ⊢[PRAAx] gb N (succ k) ≐ zero := gb_above (Common.succ_le_succ Prf.hyp0)
     refine ((congrMul (congrMul z (.eqRefl _)) (.eqRefl _)).eqTrans ?_).eqTrans
       (congrMul (.eqRefl _) (congrMul (congrMul z (.eqRefl _)) (.eqRefl _))).eqSymm
     exact (congrMul (zero_mul _) (.eqRefl _)).eqTrans ((zero_mul _).eqTrans
@@ -357,13 +354,9 @@ theorem G_zero (N : PTm n) : Γ ⊢[PRAAx] G N zero ≐ bell N := by
     have ez : Syn.shift (zero : PTm n) = zero := by simp [Syn.shift]
     simp only [shift_y, ez]
     rw [inst2_z]
-    have hl : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
-    have e₀ : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx]
-        Syn.shift N ≐ succ (monus (Syn.shift N) (succ (var 0))) + var 0 := by
-      ipra_lc natEq (eq_add_of_le hl)
     have e : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx]
         monus (Syn.shift N) (var 0) ≐ succ (monus (Syn.shift N) (succ (var 0))) :=
-      (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
+      Common.monus_succ_of_lt Prf.hyp0
     refine (g_at _ _ _).eqTrans ?_
     refine (congrMul (congrMul (.eqRefl _) ((congrPw (.eqRefl _) e).eqTrans ((pw_succ _ _).eqTrans (mul_zero _))))
       (.eqRefl _)).eqTrans ?_

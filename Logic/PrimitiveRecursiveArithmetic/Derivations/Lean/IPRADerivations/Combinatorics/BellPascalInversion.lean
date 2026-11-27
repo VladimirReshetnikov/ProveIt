@@ -199,13 +199,10 @@ theorem hp_pt (j N R : PTm n) :
     congrMul (congrEv (congrMonus (snd_pair N R) (.eqRefl j))) (congrGb (snd_pair N R) (.eqRefl (succ j)))
   refine congrMul (c₁.eqTrans ?_) (congrBell (congrSucc (congrAdd (fst_pair N R) (.eqRefl (succ j)))))
   · refine .orE (lt_or_le j R) ?_ ?_
-    · have hl : (lt j R :: Γ) ⊢[PRAAx] lt j R := Prf.hyp0
-      have e₀ : (lt j R :: Γ) ⊢[PRAAx] R ≐ succ (monus R (succ j)) + j := by
-        ipra_lc natEq (eq_add_of_le hl)
-      have e : (lt j R :: Γ) ⊢[PRAAx] monus R j ≐ succ (monus R (succ j)) :=
-        (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
+    · have e : (lt j R :: Γ) ⊢[PRAAx] monus R j ≐ succ (monus R (succ j)) :=
+        Common.monus_succ_of_lt Prf.hyp0
       exact congrMul ((congrEv e).eqTrans (ev_succ _)) (.eqRefl _)
-    · have z : (le R j :: Γ) ⊢[PRAAx] gb R (succ j) ≐ zero := gb_above ((succ_monus_succ _ _).eqTrans Prf.hyp0)
+    · have z : (le R j :: Γ) ⊢[PRAAx] gb R (succ j) ≐ zero := gb_above (Common.succ_le_succ Prf.hyp0)
       exact ((congrMul (.eqRefl _) z).eqTrans (mul_zero _)).eqTrans ((congrMul (.eqRefl _) z).eqTrans (mul_zero _)).eqSymm
 
 /-- `od(r − i) C(r, i + 1) = ev(r − i − 1) C(r, i + 1)`, for every `i`. -/
@@ -217,13 +214,10 @@ theorem hm_pt (j N R : PTm n) :
     congrMul (congrOd (congrMonus (snd_pair N R) (.eqRefl j))) (congrGb (snd_pair N R) (.eqRefl (succ j)))
   refine congrMul (c₁.eqTrans ?_) (congrBell (congrSucc (congrAdd (fst_pair N R) (.eqRefl (succ j)))))
   · refine .orE (lt_or_le j R) ?_ ?_
-    · have hl : (lt j R :: Γ) ⊢[PRAAx] lt j R := Prf.hyp0
-      have e₀ : (lt j R :: Γ) ⊢[PRAAx] R ≐ succ (monus R (succ j)) + j := by
-        ipra_lc natEq (eq_add_of_le hl)
-      have e : (lt j R :: Γ) ⊢[PRAAx] monus R j ≐ succ (monus R (succ j)) :=
-        (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
+    · have e : (lt j R :: Γ) ⊢[PRAAx] monus R j ≐ succ (monus R (succ j)) :=
+        Common.monus_succ_of_lt Prf.hyp0
       exact congrMul ((congrOd e).eqTrans (od_succ _)) (.eqRefl _)
-    · have z : (le R j :: Γ) ⊢[PRAAx] gb R (succ j) ≐ zero := gb_above ((succ_monus_succ _ _).eqTrans Prf.hyp0)
+    · have z : (le R j :: Γ) ⊢[PRAAx] gb R (succ j) ≐ zero := gb_above (Common.succ_le_succ Prf.hyp0)
       exact ((congrMul (.eqRefl _) z).eqTrans (mul_zero _)).eqTrans ((congrMul (.eqRefl _) z).eqTrans (mul_zero _)).eqSymm
 
 theorem kp_pt (j N R : PTm n) : Γ ⊢[PRAAx] inst2 kpB j (pairT N R) ≐ inst2 gpB j (pairT (succ N) R) := by

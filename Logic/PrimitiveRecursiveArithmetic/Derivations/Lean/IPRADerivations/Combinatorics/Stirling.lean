@@ -151,10 +151,7 @@ theorem sg_succ (k : PTm n) : Γ ⊢[PRAAx] sg (succ k) ≐ one :=
   (congrMonus (.eqRefl _) ((succ_monus_succ _ _).eqTrans (zero_monus _))).eqTrans (monus_zero _)
 
 theorem gle_above {k N : PTm n} (h : Γ ⊢[PRAAx] le (succ N) k) : Γ ⊢[PRAAx] gle k N ≐ zero := by
-  have e : Γ ⊢[PRAAx] k ≐ succ (monus k (succ N)) + N := by
-    ipra_lc natEq (eq_add_of_le h)
-  have m : Γ ⊢[PRAAx] monus k N ≐ succ (monus k (succ N)) :=
-    (congrMonus e (.eqRefl _)).eqTrans (add_monus _ _)
+  have m := Common.monus_succ_of_lt h
   exact (congrMonus (.eqRefl _) m).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
 
 /-! ## The Stirling table -/
