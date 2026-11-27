@@ -169,23 +169,9 @@ ipra_subst radiusData
 
 theorem radius_at (R B k L D : PTm n) :
     Γ ⊢[PRAAx] ap2 radiusF k (radiusData R B L D) ≐ termRadius R B k L D := by
-  have prog := toPR_eq (Γ := Γ) radiusBody ![k,radiusData R B L D]
-  have decode := Prf.eqCongr (Γ := Γ)
-    (termRadius (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![fstT (radiusData R B L D),fstT (sndT (radiusData R B L D)),k,
-      fstT (sndT (sndT (radiusData R B L D))),sndT (sndT (sndT (radiusData R B L D)))])
-    (σ' := ![R,B,k,L,D]) (fun i => by
-      fin_cases i
-      · exact fst_pair _ _
-      · exact (snd_pair _ _).fstE
-      · exact .eqRefl _
-      · exact ((congrFst (congrSnd (snd_pair _ _))).eqTrans (congrFst (snd_pair _ _))).eqTrans (fst_pair _ _)
-      · exact ((congrSnd (congrSnd (snd_pair _ _))).eqTrans (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _))
-  have expr : Γ ⊢[PRAAx] inst2 radiusBody k (radiusData R B L D) ≐ termRadius R B k L D := by
-    simpa only [radiusBody, inst2, subst_termRadius, subst_fstT, subst_sndT, Syn.subst_var,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
-      Matrix.cons_val_four, Matrix.cons_val_succ, Matrix.head_cons, Matrix.tail_cons] using decode
-  exact prog.eqTrans expr
+  simpa [radiusF, radiusBody, radiusData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3)
+      (termRadius (var 1) (var 2) (var 0) (var 3) (var 4)) k ![R, B, L, D])
 
 theorem positive_product {a b : PTm n} (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] le one (a*b) := le_congr (one_mul one) (.eqRefl _) (le_mul_mono ha hb)

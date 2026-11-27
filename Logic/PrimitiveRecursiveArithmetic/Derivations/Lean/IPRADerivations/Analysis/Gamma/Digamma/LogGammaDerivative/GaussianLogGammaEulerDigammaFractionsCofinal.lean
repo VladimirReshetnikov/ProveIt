@@ -49,31 +49,9 @@ ipra_subst observed
 
 theorem sample_at (p A B D neg : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data A B D neg) ≐ observed p A B D neg := by
-  let x := data A B D neg
-  let a := fstT x
-  let b := fstT (sndT x)
-  let d := fstT (sndT (sndT x))
-  let s := sndT (sndT (sndT x))
-  have read : Γ ⊢[PRAAx] ap2 nameF p x ≐ observed p a b d s := by
-    simpa only [nameF, body, ap2, a, b, d, s, subst_observed, subst_fstT, subst_sndT, Syn.subst_var,
-      Matrix.cons_val_zero, Matrix.cons_val_one] using toPR_eq (Γ := Γ) body ![p, x]
-  have ea : Γ ⊢[PRAAx] a ≐ A := fst_pair A _
-  have tail : Γ ⊢[PRAAx] sndT x ≐ pairT B (pairT D neg) := snd_pair A _
-  have eb : Γ ⊢[PRAAx] b ≐ B := (congrFst tail).eqTrans (fst_pair B _)
-  have tail2 := (congrSnd tail).eqTrans (snd_pair B (pairT D neg))
-  have ed : Γ ⊢[PRAAx] d ≐ D := (congrFst tail2).eqTrans (fst_pair D neg)
-  have es : Γ ⊢[PRAAx] s ≐ neg := (congrSnd tail2).eqTrans (snd_pair D neg)
-  refine read.eqTrans ?_
-  simpa only [subst_observed, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.cons_val_four, Matrix.head_cons, Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (observed (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-        (σ := ![p, a, b, d, s]) (σ' := ![p, A, B, D, neg]) (fun i => by
-          fin_cases i
-          · exact .eqRefl p
-          · exact ea
-          · exact eb
-          · exact ed
-          · exact es)
+  simpa [nameF, body, data, rowData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3)
+      (observed (var 0) (var 1) (var 2) (var 3) (var 4)) p ![A, B, D, neg])
 
 private theorem cutoff_positive (A B p : PTm n) : Γ ⊢[PRAAx] le one (cutoff A B p) :=
   positive_product _ _ (le_trans (le_succ_self one) (le_add_left two (radius A B))) (unit_positive (succ p))

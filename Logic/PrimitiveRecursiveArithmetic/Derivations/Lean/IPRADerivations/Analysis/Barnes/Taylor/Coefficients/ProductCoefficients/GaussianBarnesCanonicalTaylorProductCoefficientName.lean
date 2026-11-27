@@ -157,18 +157,9 @@ theorem sample_comparison (p P z R B M e q r : PTm n)
       (ready_weaken P p z R B M e _ _ Prf.hyp0 (sample_ready p z R B M e)) h.wk)
 
 theorem sample_at (p z R B M e : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B M e) ≐ sample p z R B M e := by
-  let x := data z R B M e
-  have raw : Γ ⊢[PRAAx] ap2 nameF p x ≐ sample p (fstT x) (fstT (sndT x)) (fstT (sndT (sndT x)))
-      (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
-    simpa [nameF,sampleBody,ap2] using toPR_eq (Γ := Γ) sampleBody ![p,x]
-  have tail := snd_pair (Γ := Γ) z (pairT R (pairT B (pairT M e)))
-  have tail₂ := (congrSnd tail).eqTrans (snd_pair R (pairT B (pairT M e)))
-  have tail₃ := (congrSnd tail₂).eqTrans (snd_pair B (pairT M e))
-  refine raw.eqTrans ?_
-  unfold x data
-  ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
-    [.eqRefl p, fst_pair z _, (congrFst tail).eqTrans (fst_pair R _), (congrFst tail₂).eqTrans (fst_pair B _),
-      (congrFst tail₃).eqTrans (fst_pair M e), (congrSnd tail₃).eqTrans (snd_pair M e)]
+  simpa [nameF, sampleBody, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 4)
+      (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)) p ![z, R, B, M, e])
 
 theorem finite_observation (p P z R B M e q r : PTm n)
     (hz : Γ ⊢[PRAAx] source z R B) (he : Γ ⊢[PRAAx] le e (previous M)) (hr : Γ ⊢[PRAAx] ready P z R B M e q r) :

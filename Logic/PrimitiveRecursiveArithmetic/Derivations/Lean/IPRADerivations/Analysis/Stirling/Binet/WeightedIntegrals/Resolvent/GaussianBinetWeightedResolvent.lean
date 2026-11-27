@@ -171,26 +171,9 @@ ipra_subst rawSample
 
 theorem raw_at (p A B D sign : PTm n) :
     Γ ⊢[PRAAx] ap2 rawF p (rowData A B D sign) ≐ rawSample p A B D sign := by
-  let d := rowData A B D sign
-  let x := sndT d
-  let y := sndT x
-  have start : Γ ⊢[PRAAx] ap2 rawF p d ≐ rawSample p (fstT d) (fstT x) (fstT y) (sndT y) := by
-    simpa only [rawF,ap2,subst_rawSample,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,x,y] using
-      toPR_eq (Γ := Γ)
-        (rawSample (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (fstT (sndT (sndT (var 1))))
-          (sndT (sndT (sndT (var 1)))) : PTm 2) ![p,d]
-  have hx : Γ ⊢[PRAAx] x ≐ pairT B (pairT D sign) := snd_pair _ _
-  have hy := (congrSnd hx).eqTrans (snd_pair B (pairT D sign))
-  have eq := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (rawSample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![p,fstT d,fstT x,fstT y,sndT y]) (σ' := ![p,A,B,D,sign]) (fun i => by
-      fin_cases i
-      exact .eqRefl _
-      exact fst_pair _ _
-      exact (congrFst hx).eqTrans (fst_pair _ _)
-      exact (congrFst hy).eqTrans (fst_pair _ _)
-      exact (congrSnd hy).eqTrans (snd_pair _ _))
-  exact start.eqTrans (by simpa only [subst_rawSample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using eq)
+  simpa [rawF, rowData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3)
+      (rawSample (var 0) (var 1) (var 2) (var 3) (var 4)) p ![A, B, D, sign])
 
 theorem raw_error (p A B D sign : PTm n) (h : Γ ⊢[PRAAx] source A D sign) :
     Γ ⊢[PRAAx] distanceBounded (ap2 rawF p (rowData A B D sign)) (ap2 targetF p (targetData A B D sign))

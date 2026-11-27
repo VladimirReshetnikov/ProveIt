@@ -59,32 +59,11 @@ ipra_subst data
 
 ipra_subst canonicalData
 
-private theorem index_five {α : Type} (a b c d e f : α) : ![a,b,c,d,e,f] (5 : Fin 6) = f := rfl
-
 theorem sample_at (p A B D neg R : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data A B D neg R) ≐ observed p A B D neg R := by
-  let x := data A B D neg R
-  let a := fstT (sndT x)
-  let b := fstT (sndT (sndT x))
-  let d := fstT (sndT (sndT (sndT x)))
-  let s := sndT (sndT (sndT (sndT x)))
-  have read : Γ ⊢[PRAAx] ap2 nameF p x ≐ observed p a b d s (fstT x) := by
-    simpa [nameF,body,ap2,a,b,d,s] using toPR_eq (Γ := Γ) body ![p,x]
-  have rows : Γ ⊢[PRAAx] sndT x ≐ rowData A B D neg := snd_pair _ _
-  have firstTail := (congrSnd rows).eqTrans (snd_pair A _)
-  have lastTail := (congrSnd firstTail).eqTrans (snd_pair B _)
-  have eA : Γ ⊢[PRAAx] a ≐ A := (congrFst rows).eqTrans (fst_pair A _)
-  have eB : Γ ⊢[PRAAx] b ≐ B := (congrFst firstTail).eqTrans (fst_pair B _)
-  have eD : Γ ⊢[PRAAx] d ≐ D := (congrFst lastTail).eqTrans (fst_pair D neg)
-  have eS : Γ ⊢[PRAAx] s ≐ neg := (congrSnd lastTail).eqTrans (snd_pair D neg)
-  have eR : Γ ⊢[PRAAx] fstT x ≐ R := fst_pair _ _
-  refine read.eqTrans ?_
-  simpa only [subst_observed,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,index_five,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-      (observed (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,a,b,d,s,fstT x]) (σ' := ![p,A,B,D,neg,R])
-      (fun i => by fin_cases i; exact .eqRefl _; exact eA; exact eB; exact eD; exact eS; exact eR)
+  simpa [nameF, body, data, rowData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 4)
+      (observed (var 0) (var 2) (var 3) (var 4) (var 5) (var 1)) p ![R, A, B, D, neg])
 
 theorem cutoff_positive (R p : PTm n) : Γ ⊢[PRAAx] le one (cutoff R p) :=
   le_trans (le_add_left one _) (le_add_right _ _)

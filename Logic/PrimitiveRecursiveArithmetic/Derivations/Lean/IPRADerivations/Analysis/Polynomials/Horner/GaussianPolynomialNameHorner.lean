@@ -79,14 +79,9 @@ theorem raw_congr (a : PR 3) (point : PR 2) {N N' j j' x x' y y' s s' : PTm n}
 
 theorem raw_at (a : PR 3) (point : PR 2) (N j x y s : PTm n) : Γ ⊢[PRAAx]
     ap2 (rawF a point) s (data N j x y) ≐ raw a point N j x y s := by
-  have tail := snd_pair (Γ := Γ) N (pairT j (pairT x y))
-  have last := (congrSnd tail).eqTrans (snd_pair j (pairT x y))
-  have fields := raw_congr a point (fst_pair N (pairT j (pairT x y)))
-    ((congrFst tail).eqTrans (fst_pair j (pairT x y)))
-    ((congrFst last).eqTrans (fst_pair x y)) ((congrSnd last).eqTrans (snd_pair x y)) (.eqRefl s)
-  exact (toPR_eq (rawBody a point) ![s,data N j x y]).eqTrans (by
-    simpa only [rawBody,subst_raw,subst_fstT,subst_sndT,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,data] using fields)
+  simpa [rawF, rawBody, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3)
+      (raw a point (var 1) (var 2) (var 3) (var 4) (var 0)) s ![N, j, x, y])
 
 theorem weighted_monotone (U k N : PTm n) (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     le (GaussianRationalHornerLipschitz.weighted U k) (GaussianRationalHornerLipschitz.weighted U N) :=

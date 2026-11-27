@@ -44,27 +44,9 @@ ipra_subst observation [clock, one, two]
 ipra_subst data
 
 theorem name_at (p z R B m : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B m) ≐ observation p z R B m := by
-  let x := data z R B m
-  let Y := fstT x
-  let S := fstT (sndT x)
-  let D := fstT (sndT (sndT x))
-  let M := sndT (sndT (sndT x))
-  have read : Γ ⊢[PRAAx] ap2 nameF p x ≐ observation p Y S D M := by
-    simpa only [nameF,body,ap2,subst_observation,subst_fstT,subst_sndT,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Y,S,D,M] using toPR_eq (Γ := Γ) body ![p,x]
-  have y : Γ ⊢[PRAAx] sndT x ≐ pairT R (pairT B m) := snd_pair _ _
-  have w := (congrSnd y).eqTrans (snd_pair R (pairT B m))
-  have eq := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (observation (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![p,Y,S,D,M]) (σ' := ![p,z,R,B,m]) (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact (congrFst y).eqTrans (fst_pair _ _)
-      · exact (congrFst w).eqTrans (fst_pair _ _)
-      · exact (congrSnd w).eqTrans (snd_pair _ _))
-  exact read.eqTrans (by
-    simpa only [subst_observation,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-      Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using eq)
+  simpa [nameF, body, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3)
+      (observation (var 0) (var 1) (var 2) (var 3) (var 4)) p ![z, R, B, m])
 
 theorem row_norm_positive (z R B E k : PTm n) (h : Γ ⊢[PRAAx] source z R B E) : Γ ⊢[PRAAx]
     le one (GaussianRationalReciprocal.normNumerator (argument z B k)) := by
