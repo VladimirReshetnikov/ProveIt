@@ -27,19 +27,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## Powers of powers -/
 
-/-- Variables: `0 = d`, `1 = x`, `2 = e`. -/
-private abbrev pwMulF : Fm PTm 3 := pw (pw (var 1) (var 2)) (var 0) ≐ pw (var 1) (var 2 * var 0)
-
-private theorem pw_mul₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwMulF := by
-  ipra_ind [subst_ap2]
-  · exact (pw_zero _).eqTrans ((congrPw (.eqRefl _) (mul_zero _)).eqTrans (pw_zero _)).eqSymm
-  · refine (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans ?_)
-    refine (pw_add _ _ _).eqSymm.eqTrans (congrPw (.eqRefl _) ?_)
-    ipra_ring
-
-theorem pw_mul (x e d : PTm n) : Γ ⊢[PRAAx] pw (pw x e) d ≐ pw x (e * d) := by
-  have h := inst (Γ := Γ) pw_mul₀ (![d, x, e] : Fin 3 → PTm n)
-  simpa using h
+theorem pw_mul (x e d : PTm n) : Γ ⊢[PRAAx] pw (pw x e) d ≐ pw x (e * d) :=
+  pw_pow x e d
 
 /-! ## Congruences -/
 

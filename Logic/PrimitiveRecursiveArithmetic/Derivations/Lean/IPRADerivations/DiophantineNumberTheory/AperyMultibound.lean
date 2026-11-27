@@ -48,35 +48,8 @@ theorem cube_lt : Γ ⊢[PRAAx] lt (pw (num Aval : PTm k) (num 3)) (pw (num 28) 
   lt_congr (pw_num Aval 3).eqSymm (pw_num 28 41).eqSymm (num_lt _ _ (by unfold Aval; norm_num))
 
 /-- `(a b)^m = a^m b^m`. -/
-theorem mul_pw (a b m : PTm k) : Γ ⊢[PRAAx] pw (a * b) m ≐ pw a m * pw b m := by
-  have hall : Γ ⊢[PRAAx] Fm.all (pw (Syn.shift a * Syn.shift b) (Syn.var 0) ≐
-      pw (Syn.shift a) (Syn.var 0) * pw (Syn.shift b) (Syn.var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      have p1 := natEq (pw_zero (Γ := Γ) (a * b))
-      have p2 := natEq (pw_zero (Γ := Γ) a)
-      have p3 := natEq (pw_zero (Γ := Γ) b)
-      apply deriveNat; ipra_simps
-      rw [p1, p2, p3]; ring
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have ih : ((pw (Syn.shift a * Syn.shift b) (Syn.var 0) ≐
-          pw (Syn.shift a) (Syn.var 0) * pw (Syn.shift b) (Syn.var 0)) :: Γ.map Fm.shift) ⊢[PRAAx]
-          pw (Syn.shift a * Syn.shift b) (Syn.var 0) ≐ pw (Syn.shift a) (Syn.var 0) * pw (Syn.shift b) (Syn.var 0) :=
-        Prf.hyp0
-      have e := natEq ih
-      have p1 := natEq (pw_succ (Γ := ((pw (Syn.shift a * Syn.shift b) (Syn.var 0) ≐
-          pw (Syn.shift a) (Syn.var 0) * pw (Syn.shift b) (Syn.var 0)) :: Γ.map Fm.shift)) (Syn.shift a * Syn.shift b)
-          (Syn.var 0))
-      have p2 := natEq (pw_succ (Γ := ((pw (Syn.shift a * Syn.shift b) (Syn.var 0) ≐
-          pw (Syn.shift a) (Syn.var 0) * pw (Syn.shift b) (Syn.var 0)) :: Γ.map Fm.shift)) (Syn.shift a) (Syn.var 0))
-      have p3 := natEq (pw_succ (Γ := ((pw (Syn.shift a * Syn.shift b) (Syn.var 0) ≐
-          pw (Syn.shift a) (Syn.var 0) * pw (Syn.shift b) (Syn.var 0)) :: Γ.map Fm.shift)) (Syn.shift b) (Syn.var 0))
-      apply deriveNat; ipra_simps
-      rw [p1, p2, p3, e]; ring
-  have h2 := Prf.allE m hall
-  simpa only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using h2
+theorem mul_pw (a b m : PTm k) : Γ ⊢[PRAAx] pw (a * b) m ≐ pw a m * pw b m :=
+  pw_mul_bases a b m
 
 /-- `42^{42m} = A^m (21^{21m} 14^{14m} 6^{6m})`. -/
 theorem power_identity (m : PTm k) :

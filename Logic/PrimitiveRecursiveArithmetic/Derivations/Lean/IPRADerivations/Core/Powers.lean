@@ -6,6 +6,7 @@ import IPRADerivations.Core.Pairing
 With `pw a m = aᵐ` (the symbol `powF` of `Core.Definitions`):
 
 * `pw_add`: `a^{m+k} = aᵐ aᵏ`;
+* `pw_mul_bases`, `pw_pow`: `(ab)^m = a^m b^m` and `(a^e)^d = a^{ed}`;
 * `pw_le_pw`: `a ≤ b → aᵐ ≤ bᵐ`;
 * `pw_one_le`, `pw_le_pw_exp`: for a base at least one, powers stay at least one and increase with the exponent;
 * `le_self_pw`: `S a ≤ (S a)^{S m}`;
@@ -65,6 +66,38 @@ private theorem pw_add₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwAddF := by
 
 theorem pw_add (a m k : PTm n) : Γ ⊢[PRAAx] pw a (m + k) ≐ pw a m * pw a k := by
   simpa using inst (Γ := Γ) pw_add₀ (![k, m, a] : Fin 3 → PTm n)
+
+/-- Variables: `0 = m`, `1 = a`, `2 = b`. -/
+private abbrev pwMulBasesF : Fm PTm 3 :=
+  pw (var 1 * var 2) (var 0) ≐ pw (var 1) (var 0) * pw (var 2) (var 0)
+
+private theorem pw_mul_bases₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwMulBasesF := by
+  refine ind _ trivial ?_ ?_
+  · pw_subst
+    exact (pw_zero _).eqTrans ((congrMul (pw_zero _) (pw_zero _)).eqTrans (one_mul one)).eqSymm
+  · pw_subst
+    refine withEq Prf.hyp0 fun ih => withEq (pw_succ (var 1 * var 2) (var 0)) fun product =>
+      withEq (pw_succ (var 1) (var 0)) fun left => withEq (pw_succ (var 2) (var 0)) fun right => ?_
+    apply deriveNat; ipra_simps; rw [product, left, right, ih]; ring
+
+/-- The power of a product is the product of the powers. -/
+theorem pw_mul_bases (a b m : PTm n) : Γ ⊢[PRAAx] pw (a * b) m ≐ pw a m * pw b m := by
+  simpa using inst (Γ := Γ) pw_mul_bases₀ (![m, a, b] : Fin 3 → PTm n)
+
+/-- Variables: `0 = d`, `1 = a`, `2 = e`. -/
+private abbrev pwPowF : Fm PTm 3 := pw (pw (var 1) (var 2)) (var 0) ≐ pw (var 1) (var 2 * var 0)
+
+private theorem pw_pow₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwPowF := by
+  refine ind _ trivial ?_ ?_
+  · pw_subst
+    exact (pw_zero _).eqTrans ((congrAp2 powF (mul_zero _) (.eqRefl _)).eqTrans (pw_zero _)).eqSymm
+  · pw_subst
+    refine (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans ?_)
+    exact (pw_add _ _ _).eqSymm.eqTrans (congrAp2 powF (mul_succ _ _).eqSymm (.eqRefl _))
+
+/-- Iterated powers multiply their exponents. -/
+theorem pw_pow (a e d : PTm n) : Γ ⊢[PRAAx] pw (pw a e) d ≐ pw a (e * d) := by
+  simpa using inst (Γ := Γ) pw_pow₀ (![d, a, e] : Fin 3 → PTm n)
 
 /-- Variables: `0 = m` (induction), `1 = a`, `2 = b`. -/
 private abbrev pwLeF : Fm PTm 3 := le (var 1) (var 2) ⟶ le (pw (var 1) (var 0)) (pw (var 2) (var 0))

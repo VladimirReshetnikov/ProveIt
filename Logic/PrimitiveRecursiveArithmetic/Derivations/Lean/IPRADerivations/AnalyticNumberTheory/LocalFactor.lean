@@ -26,20 +26,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## Powers of products -/
 
-/-- Variables: `0 = m`, `1 = a`, `2 = b`. -/
-private abbrev pwMulBaseF : Fm PTm 3 := pw (var 1 * var 2) (var 0) ≐ pw (var 1) (var 0) * pw (var 2) (var 0)
-
-private theorem pw_mul_base₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] pwMulBaseF := by
-  ipra_ind [subst_ap2]
-  · refine (pw_zero _).eqTrans (.eqTrans ?_ (congrMul (pw_zero _) (pw_zero _)).eqSymm)
-    ipra_ring
-  · refine withEq Prf.hyp0 fun e₀ => withEq (pw_succ (var 1 * var 2) (var 0)) fun e₁ =>
-      withEq (pw_succ (var 1) (var 0)) fun e₂ => withEq (pw_succ (var 2) (var 0)) fun e₃ => ?_
-    apply deriveNat; ipra_simps; rw [e₁, e₂, e₃, e₀]; ring
-
-theorem pw_mul_base (a b m : PTm n) : Γ ⊢[PRAAx] pw (a * b) m ≐ pw a m * pw b m := by
-  have h := inst (Γ := Γ) pw_mul_base₀ (![m, a, b] : Fin 3 → PTm n)
-  simpa using h
+theorem pw_mul_base (a b m : PTm n) : Γ ⊢[PRAAx] pw (a * b) m ≐ pw a m * pw b m :=
+  pw_mul_bases a b m
 
 /-! ## Bernoulli's inequality -/
 

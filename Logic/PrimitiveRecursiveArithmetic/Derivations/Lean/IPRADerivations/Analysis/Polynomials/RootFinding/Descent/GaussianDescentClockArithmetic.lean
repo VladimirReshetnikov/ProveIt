@@ -81,14 +81,8 @@ theorem block_decay (M : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]
   exact le_trans first (le_congr (.eqRefl _)
     (congrAp2 powF m.eqSymm m.eqSymm) second)
 
-theorem power_composition (a M K : PTm n) : Γ ⊢[PRAAx] pw (pw a M) K ≐ pw a (M*K) := by
-  have all : Γ ⊢[PRAAx] .all (pw (pw (Syn.shift a) (Syn.shift M)) (var 0) ≐
-      pw (Syn.shift a) (Syn.shift M*var 0)) := by
-    ipra_qfind [subst_ap2]
-    · exact (pw_zero _).eqTrans ((congrAp2 powF (mul_zero M) (.eqRefl _)).eqTrans (pw_zero _)).eqSymm
-    · exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans
-        ((pw_add _ _ _).eqSymm.eqTrans (congrAp2 powF (by ipra_ring) (.eqRefl _))))
-  simpa only [Fm.subst_eq,PTm.subst_mul,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE K all
+theorem power_composition (a M K : PTm n) : Γ ⊢[PRAAx] pw (pw a M) K ≐ pw a (M*K) :=
+  pw_pow a M K
 
 theorem dyadic_decay (M K : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx]
     le (pw two K*pw (pred M) (M*K)) (pw M (M*K)) := by

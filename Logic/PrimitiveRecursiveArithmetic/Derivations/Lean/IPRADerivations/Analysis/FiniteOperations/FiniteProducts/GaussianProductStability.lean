@@ -41,22 +41,8 @@ def sourceCondition (N R δ A B : PTm n) : Fm PTm n :=
 ipra_subst coefficientBudget
 ipra_subst sourceCondition
 
-theorem power_product (a b N : PTm n) : Γ ⊢[PRAAx] pw (a*b) N ≐ pw a N*pw b N := by
-  have all : Γ ⊢[PRAAx] .all (pw (Syn.shift a*Syn.shift b) (var 0) ≐
-      pw (Syn.shift a) (var 0)*pw (Syn.shift b) (var 0)) := by
-    ipra_qfind [subst_ap2]
-    · exact (pw_zero _).eqTrans ((congrMul (pw_zero a) (pw_zero b)).eqTrans (one_mul one)).eqSymm
-    · have h := natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ.map Fm.shift)
-        (φ := pw (Syn.shift a*Syn.shift b) (var 0) ≐ pw (Syn.shift a) (var 0)*pw (Syn.shift b) (var 0)))
-      have p := natEq (pw_succ (Γ := (pw (Syn.shift a*Syn.shift b) (var 0) ≐
-          pw (Syn.shift a) (var 0)*pw (Syn.shift b) (var 0)) :: Γ.map Fm.shift)
-        (Syn.shift a*Syn.shift b) (var 0))
-      have q := natEq (pw_succ (Γ := (pw (Syn.shift a*Syn.shift b) (var 0) ≐
-          pw (Syn.shift a) (var 0)*pw (Syn.shift b) (var 0)) :: Γ.map Fm.shift) (Syn.shift a) (var 0))
-      have r := natEq (pw_succ (Γ := (pw (Syn.shift a*Syn.shift b) (var 0) ≐
-          pw (Syn.shift a) (var 0)*pw (Syn.shift b) (var 0)) :: Γ.map Fm.shift) (Syn.shift b) (var 0))
-      apply deriveNat; ipra_simps; rw [p,q,r,h]; ring
-  simpa only [Fm.subst_eq,PTm.subst_mul,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
+theorem power_product (a b N : PTm n) : Γ ⊢[PRAAx] pw (a*b) N ≐ pw a N*pw b N :=
+  pw_mul_bases a b N
 
 theorem difference_norm_symmetric (a b : PTm n) : Γ ⊢[PRAAx]
     normSq (sub a b) ≐ normSq (sub b a) := by
