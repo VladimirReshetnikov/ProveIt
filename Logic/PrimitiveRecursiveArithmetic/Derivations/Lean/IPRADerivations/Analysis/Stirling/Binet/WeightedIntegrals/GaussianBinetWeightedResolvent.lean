@@ -27,7 +27,7 @@ open GaussianLogGammaEulerHead (rowData subst_rowData)
 open GaussianLogGammaEulerRecurrenceFinite (shift_source)
 open GaussianNameArithmetic (multiplyModulus)
 open GaussianNameBounds (U sample_bound)
-open GaussianNameEquivalence (crossEquivalent cross_at cross_symm point_at)
+open GaussianNameEquivalence (crossEquivalent cross_at cross_symm point_at point_at_later)
 open GaussianNameRingLaws (multiply_sample_error product_right_error)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product qmul)
@@ -85,9 +85,8 @@ private theorem endpoint_error (p s A B D sign M : PTm n) (h : Γ ⊢[PRAAx] sou
   let d := logDifferenceData A B D sign
   have hp := unit_positive (Γ := Γ) p
   have hu := unit_positive (Γ := Γ) s
-  have g := GaussianExponentialReference.unit_monotone hs
-  have near := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hu) hp
-    (by ipra_le 𝔞(unit p)*sl g) (point_at logDifferenceF d p s (log_difference_regular A B D sign h))
+  have near := distance_symmetric _ _ _ _ hp
+    (point_at_later logDifferenceF d p s (log_difference_regular A B D sign h) hs)
   have read := GaussianNamedDifference.sample_error Lf Lf x y s
     (GaussianRightHalfPlaneLogarithm.regular (A+D) B D sign (shift_source A D sign h))
     (GaussianRightHalfPlaneLogarithm.regular A B D sign h)
@@ -249,15 +248,12 @@ private theorem error_at (p A B D sign : PTm n) (h : Γ ⊢[PRAAx] source A D si
       (budget A B D sign+two) (unit p) := by
   let s := clock p A B D sign
   have hp := unit_positive (Γ := Γ) p
-  have hs := unit_positive (Γ := Γ) s
   have later : Γ ⊢[PRAAx] le p s := le_add_right _ _
-  have grow := GaussianExponentialReference.unit_monotone later
   have raw := distance_congr (sample_at p A B D sign).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (distance_congr (raw_at s A B D sign) (.eqRefl _) (.eqRefl _) (.eqRefl _) (raw_error s A B D sign h))
   have compare := GaussianExponentialReference.dyadic_weaken _ _ _ p s later raw
-  have point := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hs hp) hp
-    (by ipra_le 𝔞(unit p)*sl grow)
-    (point_at targetF (targetData A B D sign) s p (GaussianBinetStirlingUnitDifference.regular A B D sign h))
+  have point := point_at_later targetF (targetData A B D sign) p s
+    (GaussianBinetStirlingUnitDifference.regular A B D sign h) later
   exact distance_triangle_same _ _ _ _ _ _ hp compare point
 
 theorem equivalent (A B D sign : PTm n) (h : Γ ⊢[PRAAx] source A D sign) :

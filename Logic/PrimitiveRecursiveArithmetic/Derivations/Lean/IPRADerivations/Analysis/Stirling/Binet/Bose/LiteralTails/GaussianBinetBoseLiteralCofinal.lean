@@ -20,7 +20,7 @@ open GaussianBinetBoseSeries (prefixValue partial_error)
 open GaussianBinetBoseSeriesRows (rowClock)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianNameEquivalence (crossEquivalent point_at)
+open GaussianNameEquivalence (crossEquivalent point_at point_at_later)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
@@ -79,7 +79,6 @@ private theorem rawSample_error (p A B : PTm n) (h : Γ ⊢[PRAAx] source A B) :
   let s := late p A B
   let r := rowClock s B
   have hp := unit_positive (Γ := Γ) p
-  have hs := unit_positive (Γ := Γ) s
   have hr := unit_positive (Γ := Γ) r
   have hN : Γ ⊢[PRAAx] le one N := positive_product _ _ (positive_product _ _ h.andE₂ h.andE₂) hp
   have later : Γ ⊢[PRAAx] le p s := le_add_right _ _
@@ -89,9 +88,8 @@ private theorem rawSample_error (p A B : PTm n) (h : Γ ⊢[PRAAx] source A B) :
   have literal := distance_radius_mono _ _ _ _ one (unit p) hr hp budgeted
     (GaussianBinetBoseLiteralPrefix.finite_error s N A B hN h.andE₂)
   have trunc := truncation_error p s A B h.andE₁ h.andE₂
-  have look := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hs hp) hp
-    (by ipra_le 𝔞(unit p)*sl (GaussianExponentialReference.unit_monotone later))
-    (point_at reciprocalF (reciprocalData A B) s p (reciprocal_regular A B h.andE₁ h.andE₂))
+  have look := point_at_later reciprocalF (reciprocalData A B) p s
+    (reciprocal_regular A B h.andE₁ h.andE₂) later
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hp (distance_triangle_same _ _ _ _ _ _ hp literal trunc) look)
 
@@ -144,14 +142,12 @@ theorem error_at (p A B : PTm n) (h : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A B)) (ap2 reciprocalF p (reciprocalData A B)) (num 6) (unit p) := by
   let s := clock p
   have hp := unit_positive (Γ := Γ) p
-  have hs := unit_positive (Γ := Γ) s
   have later : Γ ⊢[PRAAx] le p s := le_add_right _ _
   have raw := distance_congr (sample_at p A B).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (rawSample_error s A B h)
   have compare := GaussianExponentialReference.dyadic_weaken _ _ _ p s later raw
-  have look := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hs hp) hp
-    (by ipra_le 𝔞(unit p)*sl (GaussianExponentialReference.unit_monotone later))
-    (point_at reciprocalF (reciprocalData A B) s p (reciprocal_regular A B h.andE₁ h.andE₂))
+  have look := point_at_later reciprocalF (reciprocalData A B) p s
+    (reciprocal_regular A B h.andE₁ h.andE₂) later
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hp compare look)
 

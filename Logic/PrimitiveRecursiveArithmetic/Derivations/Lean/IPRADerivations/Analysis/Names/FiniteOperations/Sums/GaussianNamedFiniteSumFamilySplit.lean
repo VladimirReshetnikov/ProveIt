@@ -19,13 +19,12 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteSumFamilySplit
 open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianNamedFiniteProductFamily (regularRows regular_at)
 open GaussianNamedFiniteProductFamilyAppend (regular_prefix)
 open GaussianNamedFiniteSumFamily (body data finite observation nameF term_at sample_at finite_distance regular)
 open GaussianNameArithmetic (addF addData)
-open GaussianNameEquivalence (crossEquivalent point_at)
+open GaussianNameEquivalence (crossEquivalent point_at_later)
 open GaussianNameRingLaws (equivalent_of_envelope add_sample_error three)
 open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
@@ -78,15 +77,6 @@ theorem finite_sample_distance (f : PR 2) (t : PTm 2) (k p N x : PTm n)
   exact distance_congr (.eqRefl _) (sample_at f t p N x).eqSymm (.eqRefl _) (.eqRefl _)
     (distance_radius_mono _ _ _ _ two (unit p) hkl (unit_positive p) comparison e)
 
-private theorem late_row (f : PR 2) (x k p : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x)
-    (hpk : Γ ⊢[PRAAx] le p k) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 f k x) (ap2 f p x) two (unit p) := by
-  have grow := unit_monotone hpk
-  have hp := unit_positive (Γ := Γ) p
-  have den := positive_product _ _ (unit_positive k) hp
-  exact distance_radius_mono _ _ _ _ two (unit p) den hp
-    (by ipra_le 𝔞(unit p)*sl grow) (point_at f x k p hf)
-
 private theorem sum_readback (f g : PR 2) (z a b x y p : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)
     (he : Γ ⊢[PRAAx] z ≐ qadd a b)
@@ -111,7 +101,7 @@ theorem first_sample (f : PR 2) (t : PTm 2) (p N x : PTm n)
   have hTail := regular_tail f t N x h
   have e := (sample_at (Γ := Γ) f t p (succ N) x).eqTrans (finite_first f t k N x)
   exact sum_readback f (nameF f (shiftBody t)) _ _ _ _ _ p hFirst (regular f (shiftBody t) N x hTail) e
-    (late_row f (inst2 t zero x) k p hFirst hpk) (finite_sample_distance f (shiftBody t) k p N x hTail hk)
+    (point_at_later f (inst2 t zero x) p k hFirst hpk) (finite_sample_distance f (shiftBody t) k p N x hTail hk)
 
 theorem append_sample (f : PR 2) (t : PTm 2) (p N x : PTm n)
     (h : Γ ⊢[PRAAx] regularRows f t (succ N) x) :
@@ -124,7 +114,7 @@ theorem append_sample (f : PR 2) (t : PTm 2) (p N x : PTm n)
   have hInit := regular_prefix f t N (succ N) x (le_succ_self N) h
   have e := (sample_at (Γ := Γ) f t p (succ N) x).eqTrans (finite_append f t k N x)
   exact sum_readback (nameF f t) f _ _ _ _ _ p (regular f t N x hInit) hLast e
-    (finite_sample_distance f t k p N x hInit hk) (late_row f (inst2 t N x) k p hLast hpk)
+    (finite_sample_distance f t k p N x hInit hk) (point_at_later f (inst2 t N x) p k hLast hpk)
 
 theorem first_cross (f : PR 2) (t : PTm 2) (N x : PTm n)
     (h : Γ ⊢[PRAAx] regularRows f t (succ N) x) :

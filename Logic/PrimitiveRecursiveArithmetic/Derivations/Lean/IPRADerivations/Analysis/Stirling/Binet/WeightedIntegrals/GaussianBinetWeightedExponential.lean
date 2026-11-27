@@ -23,7 +23,7 @@ open GaussianEulerIntegrandName (decayF decayData)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fast)
-open GaussianNameEquivalence (crossEquivalent point_at)
+open GaussianNameEquivalence (crossEquivalent point_at point_at_later)
 open GaussianNameRingLaws (multiply_sample_error)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
 open GaussianRationalHorner (positive_product qmul qmul_canonical)
@@ -202,14 +202,11 @@ private theorem error_at (p a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
       (budget a b+two) (unit p) := by
   let s := clock p a b
   have hp := unit_positive (Γ := Γ) p
-  have hs := unit_positive (Γ := Γ) s
   have later : Γ ⊢[PRAAx] le p s := le_add_right _ _
-  have grow := GaussianExponentialReference.unit_monotone later
   have raw := distance_congr (sample_at p a b).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (distance_congr (raw_at s a b) (.eqRefl _) (.eqRefl _) (.eqRefl _) (raw_error s a b h))
   have compare := GaussianExponentialReference.dyadic_weaken _ _ _ p s later raw
-  have point := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hs hp) hp
-    (by ipra_le 𝔞(unit p)*sl grow) (point_at endpointF (endpointData a b) s p (endpoint_regular a b))
+  have point := point_at_later endpointF (endpointData a b) p s (endpoint_regular a b) later
   exact distance_triangle_same _ _ _ _ _ _ hp compare point
 
 theorem equivalent (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
