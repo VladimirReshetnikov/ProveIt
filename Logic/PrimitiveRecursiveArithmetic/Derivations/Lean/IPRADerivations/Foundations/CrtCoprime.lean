@@ -200,6 +200,24 @@ theorem found_with_bound (B : PR 2)
     ((congrAdd hprefix next).eqTrans (add_zero zero))
   exact search_solution_of_witness mB aB allZero (rem_lt' (positive (succ K) y) x)
 
+/-- Merge a compatible congruence and find an extended solution below the next search bound. -/
+theorem extend_with_bound (B : PR 2)
+    (positive : ∀ {d : ℕ} {Δ : List (Fm PTm d)} (j y : PTm d),
+      Δ ⊢[PRAAx] ap2 B j y ≐ succ (pred (ap2 B j y)))
+    (divides : ∀ {d : ℕ} {Δ : List (Fm PTm d)} {i j y : PTm d},
+      (Δ ⊢[PRAAx] lt i j) → (Δ ⊢[PRAAx] dvd (inst2 (mS mB) i y) (ap2 B j y)))
+    {x K y : PTm n} (hV : Γ ⊢[PRAAx] V mB aB x K y ≐ zero)
+    (hc : Γ ⊢[PRAAx] rem x (gcd (ap2 B K y) (inst2 (mS mB) K y)) ≐
+      rem (inst2 aB K y) (gcd (ap2 B K y) (inst2 (mS mB) K y))) :
+    Γ ⊢[PRAAx] (V mB aB (Search.mu (fB mB aB) (ap2 B (succ K) y) (pairT (succ K) y)) (succ K) y ≐ zero) ⋏
+      lt (Search.mu (fB mB aB) (ap2 B (succ K) y) (pairT (succ K) y)) (ap2 B (succ K) y) := by
+  refine Prf.exE (crt_exists_at (positive K y) (m_pos mB K y) hc) ?_
+  have hV' : Γ.map Fm.shift ⊢[PRAAx] V mB aB (Syn.shift x) (Syn.shift K) (Syn.shift y) ≐ zero := by
+    simpa [Fm.shift, Syn.shift] using hV.shift
+  simp only [Fm.shift, Fm.subst_and, Fm.subst_eq, subst_lt, subst_ap2, subst_pairT, subst_inst2,
+    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift]
+  exact found_with_bound mB aB B positive divides (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0) hV'.wk
+
 /-- A common solution `x` of `X K y` modulo `L K` and of `a_K` modulo `m_K` gives a solution of the first `K + 1`
 congruences below `L(K + 1)`; the search finds the least one. -/
 theorem found {x K y : PTm n} (hx1 : Γ ⊢[PRAAx] rem x (L mB K y) ≐ rem (X mB aB K y) (L mB K y))
@@ -221,27 +239,13 @@ theorem step {K y : PTm n}
   rw [inst2_h] at g0
   have gK : Γ ⊢[PRAAx] gcd (inst2 (mS mB) K y) (L mB K y) ≐ one := eq_of_viol g0
   have Lp := L_pos (Γ := Γ) mB K y
-  have hmK := m_pos (Γ := Γ) mB K y
   have gL : Γ ⊢[PRAAx] gcd (L mB K y) (inst2 (mS mB) K y) ≐ one := gcd_comm_one Lp gK
   have hc : Γ ⊢[PRAAx] rem (X mB aB K y) (gcd (L mB K y) (inst2 (mS mB) K y)) ≐
       rem (inst2 aB K y) (gcd (L mB K y) (inst2 (mS mB) K y)) :=
     (congrAp2 remF (.eqRefl _) gL).eqTrans ((rem_one' _).eqTrans
       ((rem_one' _).eqSymm.eqTrans (congrAp2 remF (.eqRefl _) gL.eqSymm)))
-  refine Prf.exE (crt_exists_at Lp hmK hc) ?_
-  have hV' : Γ.map Fm.shift ⊢[PRAAx] V mB aB (X mB aB (Syn.shift K) (Syn.shift y)) (Syn.shift K) (Syn.shift y) ≐ zero := by
-    simpa [Fm.shift, Syn.shift] using (Prf.andE₁ ih').shift
-  have sL : Syn.shift (L mB K y) = L mB (Syn.shift K) (Syn.shift y) := by simp [Syn.shift]
-  have sX : Syn.shift (X mB aB K y) = X mB aB (Syn.shift K) (Syn.shift y) := by simp [Syn.shift]
-  have sM : Syn.shift (inst2 (mS mB) K y) = inst2 (mS mB) (Syn.shift K) (Syn.shift y) :=
-    AnalyticNumberTheory.MobiusInversion.shift_inst2 _ _ _
-  have sA : Syn.shift (inst2 aB K y) = inst2 aB (Syn.shift K) (Syn.shift y) :=
-    AnalyticNumberTheory.MobiusInversion.shift_inst2 _ _ _
-  have e : Fm.shift ((V mB aB (X mB aB (succ K) y) (succ K) y ≐ zero) ⋏ lt (X mB aB (succ K) y) (L mB (succ K) y)) =
-      ((V mB aB (X mB aB (succ (Syn.shift K)) (Syn.shift y)) (succ (Syn.shift K)) (Syn.shift y) ≐ zero) ⋏
-        lt (X mB aB (succ (Syn.shift K)) (Syn.shift y)) (L mB (succ (Syn.shift K)) (Syn.shift y))) := by
-    simp [Fm.shift, Syn.shift]
-  rw [e, sL, sX, sM, sA]
-  exact found mB aB (Prf.andE₁ Prf.hyp0) (Prf.andE₂ Prf.hyp0) hV'.wk
+  exact extend_with_bound mB aB (prodF (mS mB)) (fun j y => L_pos mB j y) (fun hi => m_dvd mB hi)
+    ih'.andE₁ hc
 
 theorem base (y : PTm n) :
     Γ ⊢[PRAAx] (V mB aB (X mB aB zero y) zero y ≐ zero) ⋏ lt (X mB aB zero y) (L mB zero y) := by
@@ -255,17 +259,10 @@ theorem crt_coprime {K y : PTm n} (hH : Γ ⊢[PRAAx] H mB K y ≐ zero) :
   have hall : Γ ⊢[PRAAx] Fm.all ((H mB (var 0) (Syn.shift y) ≐ zero) ⟶
       ((V mB aB (X mB aB (var 0) (Syn.shift y)) (var 0) (Syn.shift y) ≐ zero) ⋏
         lt (X mB aB (var 0) (Syn.shift y)) (L mB (var 0) (Syn.shift y)))) := by
-    refine PRA.qfInd _ ⟨trivial, trivial, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_lt, subst_ap2, subst_pairT, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (base mB aB y)
-    · simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_lt, subst_ap2, subst_pairT, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (step mB aB Prf.hyp1 Prf.hyp0)
-  have h2 := Prf.allE K hall
-  simp only [Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_lt, subst_ap2, subst_pairT, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact .impE h2 hH
+    ipra_qfind (⟨trivial, trivial, le_QF _ _⟩) [subst_le, subst_lt, subst_ap2, subst_pairT]
+    · exact .impI (base mB aB y)
+    · exact .impI (step mB aB Prf.hyp1 Prf.hyp0)
+  exact .impE (by simpa using Prf.allE K hall) hH
 
 /-- **The solution**: `X K y ≡ a_i (mod m_i)` for every `i < K`. -/
 theorem crt_coprime_at {K y i : PTm n} (hH : Γ ⊢[PRAAx] H mB K y ≐ zero) (hi : Γ ⊢[PRAAx] lt i K) :
