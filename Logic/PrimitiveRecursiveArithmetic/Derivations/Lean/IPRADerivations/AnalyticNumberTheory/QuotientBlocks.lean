@@ -34,9 +34,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `t ≤ ⌊F/d⌋` gives `d t ≤ F`. -/
 theorem mul_le_of_le_quo {d t F : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
-    (h : Γ ⊢[PRAAx] le t (quo F d)) : Γ ⊢[PRAAx] le (d * t) F := by
-  have e := natEq (div_eq (Γ := Γ) (j := F) hd)
-  ipra_le 𝔞 d * sl h + 𝔞 (rem F d) with e
+    (h : Γ ⊢[PRAAx] le t (quo F d)) : Γ ⊢[PRAAx] le (d * t) F :=
+  Division.mul_le_of_le_quo hd h
 
 theorem comm_le {a q N : PTm n} (h : Γ ⊢[PRAAx] le (a * q) N) : Γ ⊢[PRAAx] le (q * a) N :=
   le_congr (mul_comm a q) (.eqRefl _) h
@@ -46,24 +45,19 @@ alias succ_pos := Common.succ_pos
 /-- **The block of the quotient `q`**: `⌊N/a⌋ = q` gives `⌊N/(q + 1)⌋ < a ≤ ⌊N/q⌋`. -/
 theorem block_of_quo {a q N : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hq : Γ ⊢[PRAAx] q ≐ succ (pred q))
     (e : Γ ⊢[PRAAx] quo N a ≐ q) : Γ ⊢[PRAAx] lt (quo N (succ q)) a ⋏ le a (quo N q) := by
-  have hqa : Γ ⊢[PRAAx] le q (quo N a) := le_congr (.eqRefl _) e.eqSymm (le_refl q)
-  refine .andI ?_ (le_quo_of_mul_le hq (comm_le (mul_le_of_le_quo ha hqa)))
-  refine .orE (lt_or_le (quo N (succ q)) a) Prf.hyp0 ?_
-  have h : (le a (quo N (succ q)) :: Γ) ⊢[PRAAx] le a (quo N (succ q)) := Prf.hyp0
-  have l : (le a (quo N (succ q)) :: Γ) ⊢[PRAAx] le (succ q) (quo N a) :=
-    le_quo_of_mul_le ha.wk (comm_le (mul_le_of_le_quo (succ_pos q) h))
-  exact lt_irrefl q _ (le_congr (.eqRefl _) e.wk l)
+  have lo := le_congr (congrMul (.eqRefl a) e) (.eqRefl _) (Division.mul_quo_le ha)
+  have hi := lt_congr (.eqRefl _) (congrMul (.eqRefl a) (congrSucc e)) (Division.lt_mul_succ_quo ha)
+  exact .andI
+    (Division.quo_lt_of_lt_mul (.eqRefl (succ q)) (lt_congr (.eqRefl _) (mul_comm _ _) hi))
+    (Division.le_quo_of_mul_le hq (comm_le lo))
 
 /-- **Conversely**: `⌊N/(q + 1)⌋ < a ≤ ⌊N/q⌋` gives `⌊N/a⌋ = q`. -/
 theorem quo_of_block {a q N : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hq : Γ ⊢[PRAAx] q ≐ succ (pred q))
     (h1 : Γ ⊢[PRAAx] lt (quo N (succ q)) a) (h2 : Γ ⊢[PRAAx] le a (quo N q)) : Γ ⊢[PRAAx] quo N a ≐ q := by
-  have lo : Γ ⊢[PRAAx] le q (quo N a) := le_quo_of_mul_le ha (comm_le (mul_le_of_le_quo hq h2))
-  refine le_antisymm ?_ lo
-  refine .orE (lt_or_le q (quo N a)) ?_ Prf.hyp0
-  have h : (lt q (quo N a) :: Γ) ⊢[PRAAx] le (succ q) (quo N a) := Prf.hyp0
-  have l : (lt q (quo N a) :: Γ) ⊢[PRAAx] le a (quo N (succ q)) :=
-    le_quo_of_mul_le (succ_pos q) (comm_le (mul_le_of_le_quo ha.wk h))
-  exact lt_irrefl (quo N (succ q)) _ (le_trans h1.wk l)
+  have lo := Division.le_quo_of_mul_le ha (comm_le (mul_le_of_le_quo hq h2))
+  have hi := Division.lt_mul_of_quo_lt (.eqRefl (succ q)) h1
+  exact le_antisymm
+    (Order.le_of_lt_succ (Division.quo_lt_of_lt_mul ha (lt_congr (.eqRefl _) (mul_comm _ _) hi))) lo
 
 /-! ## The number of blocks -/
 

@@ -53,28 +53,16 @@ alias sg_one := Common.sg_of_one_le
 /-- `[(a + 1)(b + 1) ≤ F] = [b < ⌊F/(a+1)⌋]`. -/
 theorem ind_eq (a b F : PTm n) :
     Γ ⊢[PRAAx] leI (succ a * succ b) F ≐ cnt zero (quo F (succ a)) b := by
-  have dm := div_mod_at (Γ := Γ) (x := F) (y := succ a) (c := a) (.eqRefl _)
-  have hr : Γ ⊢[PRAAx] lt (rem F (succ a)) (succ a) := Prf.andE₂ dm
   have c1 : Γ ⊢[PRAAx] cnt zero (quo F (succ a)) b ≐ sg (monus (quo F (succ a)) b) :=
     (congrMul ((congrMonus (.eqRefl _) (zero_monus _)).eqTrans (monus_zero _)) (.eqRefl _)).eqTrans (one_mul _)
   refine .eqTrans ?_ c1.eqSymm
   refine .orE (lt_or_le b (quo F (succ a))) ?_ ?_
-  · let Δ : List (Fm PTm n) := lt b (quo F (succ a)) :: Γ
-    have h : Δ ⊢[PRAAx] lt b (quo F (succ a)) := Prf.hyp0
-    have e' := natEq ((Prf.andE₁ dm).wk : Δ ⊢[PRAAx] _ ≐ _)
-    have l1 : Δ ⊢[PRAAx] le (succ a * succ b) F := by
-      ipra_le (𝔞 a + 1) * sl h + 𝔞 (rem F (succ a)) with e'
-    have l2 : Δ ⊢[PRAAx] le one (monus (quo F (succ a)) b) := by
-      have e2 := natEq (eq_add_of_le (le_trans (le_succ_self b) h))
-      ipra_le sl h with e2
-    exact (leI_one l1).eqTrans (sg_one l2).eqSymm
-  · let Δ : List (Fm PTm n) := le (quo F (succ a)) b :: Γ
-    have h : Δ ⊢[PRAAx] le (quo F (succ a)) b := Prf.hyp0
-    have e' := natEq ((Prf.andE₁ dm).wk : Δ ⊢[PRAAx] _ ≐ _)
-    have hr' : Δ ⊢[PRAAx] lt (rem F (succ a)) (succ a) := hr.wk
-    have l1 : Δ ⊢[PRAAx] lt F (succ a * succ b) := by
-      ipra_le (𝔞 a + 1) * sl h + sl hr' with e'
-    exact (leI_zero l1).eqTrans ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)).eqTrans sg_zero).eqSymm
+  · have h : (lt b (quo F (succ a)) :: Γ) ⊢[PRAAx] lt b (quo F (succ a)) := Prf.hyp0
+    exact (leI_one (Division.mul_le_of_le_quo (.eqRefl (succ a)) h)).eqTrans
+      (sg_one (Common.one_le_monus_of_lt b (quo F (succ a)) h)).eqSymm
+  · have h : (le (quo F (succ a)) b :: Γ) ⊢[PRAAx] le (quo F (succ a)) b := Prf.hyp0
+    have hm := Division.lt_mul_of_quo_lt (.eqRefl (succ a)) (Order.lt_succ_of_le h)
+    exact (leI_zero hm).eqTrans ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) h)).eqTrans sg_zero).eqSymm
 
 /-! ## Rows -/
 

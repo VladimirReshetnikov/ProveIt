@@ -200,6 +200,16 @@ theorem quo_lt_of_lt_mul {x d c q : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
   refine .orE (lt_or_le (quo x d) q) Prf.hyp0 ?_
   exact le_lt_absurd _ (le_trans (mul_le_mul_left d Prf.hyp0) (mul_quo_le hd.wk)) h.wk
 
+/-- A quotient lower bound gives the corresponding lower bound on the dividend. -/
+theorem mul_le_of_le_quo {x d c q : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
+    (h : Γ ⊢[PRAAx] le q (quo x d)) : Γ ⊢[PRAAx] le (d * q) x :=
+  le_trans (mul_le_mul_left d h) (mul_quo_le hd)
+
+/-- A strict quotient upper bound gives the corresponding strict bound on the dividend. -/
+theorem lt_mul_of_quo_lt {x d c q : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
+    (h : Γ ⊢[PRAAx] lt (quo x d) q) : Γ ⊢[PRAAx] lt x (d * q) :=
+  lt_of_lt_of_le (lt_mul_succ_quo hd) (mul_le_mul_left d h)
+
 theorem quo_mono {x y d c : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c) (h : Γ ⊢[PRAAx] le x y) :
     Γ ⊢[PRAAx] le (quo x d) (quo y d) :=
   le_quo_of_mul_le hd (le_trans (mul_quo_le hd) h)

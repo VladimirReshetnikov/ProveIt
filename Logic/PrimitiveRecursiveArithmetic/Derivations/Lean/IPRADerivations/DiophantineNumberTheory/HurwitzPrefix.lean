@@ -39,15 +39,10 @@ theorem nxt_of_dig {s Y W Z V : PTm n} (h : Γ ⊢[PRAAx] dig s Y W ≐ dig s Z 
 
 /-- `q Dn ≤ A < (q + 1) Dn` with `Dn ≥ 1` gives `⌊A/Dn⌋ = q`. -/
 theorem quo_of_between {A Dn q : PTm n} (hD : Γ ⊢[PRAAx] Dn ≐ succ (pred Dn))
-    (h : Γ ⊢[PRAAx] le (q * Dn) A ⋏ lt A (succ q * Dn)) : Γ ⊢[PRAAx] quo A Dn ≐ q := by
-  have em := natEq (eq_add_of_le (Prf.andE₁ h))
-  have hr : Γ ⊢[PRAAx] lt (monus A (q * Dn)) Dn := by
-    have hl := Prf.andE₂ h
-    ipra_le sl hl with em
-  have hz : Γ ⊢[PRAAx] A ≐ succ (pred Dn) * q + monus A (q * Dn) := by
-    ipra_lc em + 𝔞 q * natEq hD
-  exact (congrAp2 quoF (.eqRefl _) hD).eqTrans
-    (Prf.andE₁ (div_mod_unique hz (lt_congr (.eqRefl _) hD hr)))
+    (h : Γ ⊢[PRAAx] le (q * Dn) A ⋏ lt A (succ q * Dn)) : Γ ⊢[PRAAx] quo A Dn ≐ q :=
+  le_antisymm
+    (Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hD (lt_congr (.eqRefl _) (mul_comm _ _) (Prf.andE₂ h))))
+    (Division.le_quo_of_mul_le hD (le_congr (mul_comm _ _) (.eqRefl _) (Prf.andE₁ h)))
 
 /-- `Dn ≐ succ (pred Dn)` gives `1 ≤ Dn`. -/
 alias one_le_of_succ := Common.one_le_of_pos

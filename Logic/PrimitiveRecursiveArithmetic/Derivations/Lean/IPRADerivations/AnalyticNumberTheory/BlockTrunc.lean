@@ -38,9 +38,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem quo_le_of_gt {x D k : PTm n} (hD : Γ ⊢[PRAAx] le one D) (hk : Γ ⊢[PRAAx] le (succ (quo x D)) k) :
     Γ ⊢[PRAAx] le (quo x k) D := by
   have hk1 := le_trans (zero_lt_succ (quo x D)) hk
-  have below := lt_of_lt_of_le (Division.lt_mul_succ_quo (x := x) (pos_of_one_le hD)) (mul_le_mul_left D hk)
-  have result := Division.quo_lt_of_lt_mul (pos_of_one_le hk1) (lt_congr (.eqRefl _) (mul_comm _ _) below)
-  exact le_trans (le_succ_self _) result
+  have hi := Division.lt_mul_of_quo_lt (pos_of_one_le hD) hk
+  exact le_of_lt (Division.quo_lt_of_lt_mul (pos_of_one_le hk1) (lt_congr (.eqRefl _) (mul_comm _ _) hi))
 
 /-- `D ≤ ⌊x/k⌋` for `1 ≤ k ≤ ⌊x/D⌋`. -/
 theorem le_quo_of_le {x D k : PTm n} (hk1 : Γ ⊢[PRAAx] le one k) (hk : Γ ⊢[PRAAx] le k (quo x D)) :
@@ -49,10 +48,8 @@ theorem le_quo_of_le {x D k : PTm n} (hk1 : Γ ⊢[PRAAx] le one k) (hk : Γ ⊢
   refine .orE (zero_or_succ D) ?_ ?_
   · have e := natEq (Prf.hyp0 : ((D ≐ zero) :: Γ) ⊢[PRAAx] D ≐ zero)
     ipra_le 𝔞 x with 𝔞 k * e
-  · have dD := div_mod_at (Γ := ((D ≐ succ (pred D)) :: Γ)) (x := x) Prf.hyp0
-    have e1 := natEq (Prf.andE₁ dD)
-    have m := le_scale D (hk.wk (ψ := D ≐ succ (pred D)))
-    ipra_le sl m + 𝔞 (rem x D) with e1
+  · have hD : ((D ≐ succ (pred D)) :: Γ) ⊢[PRAAx] D ≐ succ (pred D) := Prf.hyp0
+    exact le_congr (mul_comm _ _) (.eqRefl _) (Division.mul_le_of_le_quo hD hk.wk)
 
 /-- `E_b(D) = Σ_{n≤⌊x/D⌋} b(n)(⌊x/n⌋ ∸ D)`. -/
 theorem e_trunc (b : PTm 2) {x D z : PTm n} (hD : Γ ⊢[PRAAx] le one D) :
