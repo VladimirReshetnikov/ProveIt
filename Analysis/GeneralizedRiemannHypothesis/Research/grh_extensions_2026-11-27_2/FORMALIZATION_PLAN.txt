@@ -1,0 +1,73 @@
+FORMALIZATION PLAN — NO COMPILED LEAN RESULT IS CLAIMED
+
+A. UNEQUAL BRANCH RECORDS
+
+1. Work over a field F. Represent branches u_b in X F[[X]], their finite contact
+   valuations, target quotient F[[X,Y]]/(X,Y)^d, and finite records F[[X]]/X^n_b.
+   Prove that truncation in total degree L >= max n_b preserves every record.
+   This turns all record and target maps into finite-dimensional linear maps.
+
+2. Product domination is the main algebraic obligation. Extend the discrete
+   valuation on F((X)) to a splitting field of a polynomial in Y. Prove Gauss
+   valuation multiplicativity, also after Y -> X^kappa Z. Separate roots by
+   valuation >= kappa; show the residual scalar exponent is a nonnegative
+   integer even when root valuations are fractional or negative. Replace each
+   high root by a nearest observed branch using the ultrametric inequality.
+   Formal-series domination then follows from finite truncation and padding.
+
+3. Establish the exact distance by two inequalities between finite zero sets.
+   Formalize error/erasure uniqueness as a Hamming-distance argument on records.
+   Define the compressed tree via the contact ultrametric; prove the recurrence
+   by decomposing shared path lengths. The mathematical operation count needs
+   cached max-convolutions at each common inherited value.
+
+4. Componentwise saturation can be formalized independently of the root lemma:
+   use the product through the d-1 closest neighbors for necessity, and monic
+   division plus Lagrange interpolation over F((X)) for sufficiency. Each
+   interpolation scalar has valuation >= 1. The weighted proof replaces this
+   threshold by a+1 and uses k+1 branches when d-1=a+kappa*k.
+
+5. For the decoder, make finite truncation of the monic error locator explicit.
+   The first system is consistent because an actual locator exists. Any solution
+   has Q-EH with at most w nonzero records, so D_(d+w)>w forces Q-EH into
+   (X,Y)^(d+w). Use that the associated graded ring F[X,Y] is a domain to
+   prove multiplication by E is injective on the target jet. The second system
+   therefore has exactly one answer. This is a sufficient decoder condition,
+   not a proof of decoding at the whole optimal uniqueness radius.
+
+B. TWO-FREQUENCY POSITIVE MEASURES
+
+1. Normalize two positive frequencies to 1 and r>1. Establish invariance under
+   translation and scaling, and the single-frequency diameter lower bound pi.
+
+2. Prove the last-positive-lobe comparison for -s cos(rt)/cos(t). Formalize the
+   unique critical point using the fact that every zero of r tan(rt)-tan(t)
+   has positive derivative r^2-1. Establish strict monotonicity of the outer
+   ratio and existence of H. Prove the dual function q=M cos(t)+s cos(rt)
+   is nonnegative and determine its zero set exactly.
+
+3. For a nonnegative continuous function with zero integral, prove support
+   containment in its zero set. Solve the two sine equations and mass/cosine
+   equations; the determinant is nonzero because q'(H)<0. This gives uniqueness
+   for arbitrary probability measures, without assuming symmetry or finiteness.
+
+4. At odd resonance, first prove u,v -> 0 by compactness and strict sine-ratio
+   inequalities. Then establish two-sided scale bounds before using Taylor
+   expansions, obtaining eta ~ m(m^2-1)u^3/3 and v/u -> 2. Uniform local
+   remainders are needed; numerical samples are not a substitute.
+
+5. Formalize the perturbed dual and perturbed masses for shortening, with
+   O(h^2) constants for each fixed r. At the odd ratio use the preceding-lobe
+   certificate. The constants need not be uniform as r approaches resonance.
+
+6. The prime-error application uses the source ramp explicit formula and its
+   absolute convergence. Termwise integration supplies the Fourier multiplier.
+   If relying on the supplied Lean Dirichlet-GRH theorem, import its exact
+   exported statement only after checking a compatible toolchain and dependencies.
+
+PRACTICAL ORDER
+Start with finite saturation and the finite distance/uniqueness interfaces.
+Next formalize the valued root-domination lemma. Separately formalize the
+analytic dual certificate; delay singular asymptotics until the global
+optimization and equality case are complete. Pin a Lean/Mathlib revision in
+an isolated package before implementation; no untested Lean skeleton is included.

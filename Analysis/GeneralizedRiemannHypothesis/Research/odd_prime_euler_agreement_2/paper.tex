@@ -1,0 +1,277 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,microtype}
+\usepackage[margin=1.12in]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,pdftitle={Sharp Euler-factor agreement for odd-prime-order Dirichlet characters},pdfauthor={Research note for ProveIt}]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\mass}{\mathfrak m}
+\title{Sharp Euler-factor agreement for packets of\newline odd-prime-order Dirichlet characters}
+\author{Research note for ProveIt}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For products of $k$ Dirichlet $L$-functions whose characters lie in a fixed elementary abelian group of prime exponent $\ell$ and rank $r$, we study the density of primes where the local Euler polynomials differ. Write $k=\ell^d s+u$, $1\le s\le\ell-1$, $0\le u<\ell^d$. If $d\le r-2$, every distinct pair disagrees at a density at least $(\ell-1)(\ell+1-s)/\ell^{d+2}$; for $d\ge r-1$ the exact minimum is $(\ell-1)/\ell^r$. The first bound is attained if $s$ is a proper divisor of $\ell-1$ or $\ell+1$, or if $s=\ell-1$. In particular we determine the minimum for every $k,r$ at exponents three and five. The proof lifts a cyclotomic valuation of an integral Fourier transform to a homogeneous polynomial over $\F_\ell$ and invokes the minimum-distance theorem of projective Reed--Muller codes. Split and nonsplit conics supply extremizers, and an independent Radon inversion gives rigidity at power-sized packets. Under the Dirichlet GRH theorem stated in the vendored Lean development, a signed hyperplane-count test yields a uniform finite-window disagreement bound and a robust decoding guarantee at scale $k^2\log^2(2Q)$. This partially answers an explicit odd-order extension question in the merged ProveIt article; the density theorem itself is unconditional.
+\end{abstract}
+
+\section{The source and the precise question}
+The merged article \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits} \cite{article} contains a sharp theorem for packets of quadratic characters. In its section ``Recovering zeros and characters from prime data,'' the subsection ``Matching Euler factors of products of quadratic $L$-functions'' (labels \texttt{rec:thm:qmatch} and \texttt{rec:thm:qmatchfinite}) treats minimum disagreement density, the high-agreement spectrum, and finite detection. The fifth item in the open questions of that section explicitly asks for an analogous result for characters of odd prime order. We settle the minimum-density portion for exponents $3$ and $5$, and a family of sharp cases for all prime exponents. We do not claim the full spectrum or a solution of a named classical conjecture.
+
+The vendored proof \cite{vendor} is recorded as the readable version of \texttt{lsernau/grh-lean} at upstream commit \texttt{72fead102f66} (full hash in the references). The public interface \texttt{src/Statements.lean} defines \texttt{DirichletLZerosOnLine} with quantifiers over all positive moduli and complex Dirichlet characters, and \texttt{src/Main.lean} exports \path{LFunction_eq_zero_re} and \path{LFunction_ne_zero_of_half_lt_re}. Its README reports independent checker and Comparator acceptance, and the standard Lean axioms \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}. The import README explicitly says that the vendored package is not checked by the root ProveIt build. We read the interfaces and README, not the entire proof or its compiled artifacts; we do not independently attest to the checker claims. Only Section~\ref{sec:finite} uses Dirichlet GRH, via the standard explicit-formula consequence also proved in the article (label \texttt{rec:lem:gram}). No nonabelian or automorphic GRH is used.
+
+\section{Setup and exact minimum theorem}
+Let $Q\ge 1$, $\ell$ be a prime, and $X$ be a subgroup of Dirichlet characters modulo $Q$ isomorphic to $(\Z/\ell\Z)^r$, $r\ge1$. The identity is allowed among the characters. Choose a primitive $\ell$th root $\zeta$ and identify $X$ with $U=\F_\ell^r$. Its dual is $V=\operatorname{Hom}_{\F_\ell}(U,\F_\ell)$. For a prime $p\nmid Q$ let $v_p\in V$ satisfy $\chi_a(p)=\zeta^{v_p(a)}$. The map $(\Z/Q\Z)^\times\to V$ is onto: if its image were a proper subspace, some nonzero $a$ would annihilate it, contrary to the faithfulness of the parametrization of $X$.
+
+A packet $A$ is a multiset of $k$ characters. Its local polynomial is $P_{A,p}(T)=\prod_{a\in A}(1-\chi_a(p)T)$ (multiplicities included). Let $A,C$ be distinct packets of the same size, and set
+\[
+ c(a)=\operatorname{mult}_A(a)-\operatorname{mult}_C(a),\qquad
+ m=\sum_{c(a)>0}c(a)=\tfrac12\sum_a|c(a)|\le k.
+\]
+Thus $m$ is the size after cancellation. Put $H(v)=\sum_a c(a)\zeta^{v(a)}$ and define the integral hyperplane sums
+\[
+ R_v(j)=\sum_{a:v(a)=j}c(a),\quad j\in\F_\ell.
+\]
+Their sum over $j$ is zero, and their positive mass is at most $m$.
+
+\begin{lemma}[Trace detects the entire local polynomial]\label{lem:trace}
+For every $v\in V$, the two local polynomials agree if and only if $R_v(j)=0$ for all $j$, equivalently $H(v)=0$. Moreover $H(0)=0$, $H$ is not identically zero, and its support is invariant under multiplication of $v$ by $\F_\ell^\times$.
+\end{lemma}
+\begin{proof}
+Distinct powers of $\zeta$ give distinct linear factors. If $H(v)=0$, the integer polynomial $\sum_{j=0}^{\ell-1}R_v(j)Z^j$ is a constant multiple of $\Phi_\ell(Z)=1+Z+\cdots+Z^{\ell-1}$. Its value at $1$ is zero, so this multiple is zero. Fourier inversion proves $H\not\equiv0$, and Galois conjugation $\zeta\mapsto\zeta^\lambda$ proves invariance.
+\end{proof}
+
+The prime number theorem in arithmetic progressions gives the (ordinary relative prime) disagreement density
+\begin{equation}\label{eq:density}
+ \delta(A,C)=\frac{|\supp H|}{\ell^r}.
+\end{equation}
+Indeed each fibre of the surjective map to $V$ has equally many reduced residue classes. This uses no RH. The minimum $D_\ell(r,k)$ is over distinct size-$k$ packets in any such $X$; it depends only on $\ell,r,k$. A projective direction means a one-dimensional subspace of $V$.
+
+\begin{theorem}[Sharp lower bound and exact regimes]\label{thm:main}
+Let $d=\lfloor\log_\ell k\rfloor$ and $s=\lfloor k/\ell^d\rfloor$, so $1\le s\le\ell-1$. Then:
+\begin{enumerate}
+\item If $d\ge r-1$, $D_\ell(r,k)=(\ell-1)/\ell^r$.
+\item If $d\le r-2$, then
+\begin{equation}\label{eq:bound}
+ D_\ell(r,k)\ge \frac{(\ell-1)(\ell+1-s)}{\ell^{d+2}}.
+\end{equation}
+\item Equality holds in \eqref{eq:bound} whenever $s=1$, $s=\ell-1$, or $s$ is a proper positive divisor of $\ell-1$ or $\ell+1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{corollary}[Complete minimum formula for cubic and quintic packets]\label{cor:complete}
+For $\ell\in\{2,3,5\}$ and all $r,k\ge1$, the minimum is exactly
+\[
+ D_\ell(r,k)=\begin{cases}
+ (\ell-1)(\ell+1-s)/\ell^{d+2}, & d\le r-2,\\
+ (\ell-1)/\ell^r, & d\ge r-1.
+ \end{cases}
+\]
+In particular the largest possible agreement density is $1-D_\ell(r,k)$.
+\end{corollary}
+The quadratic case agrees with the article's minimum theorem (not its stronger spectrum classification). For $\ell=3$, the nonsaturated values are $2/3^{d+1}$ and $4/3^{d+2}$. For $\ell=5$, the four leading digits give $20,16,12,8$, divided by $5^{d+2}$. For example two distinct packets of $15$ quintic characters can agree at $113/125$ of primes, and no two can agree more, provided $r\ge3$. Padding both packets with the same characters does not affect agreement.
+
+\section{Cyclotomic valuations and projective codes}
+Work in $\mathcal O=\Z[\zeta]$, write $\pi=\zeta-1$, and let $v_\pi$ be the additive valuation at the prime above $\ell$ normalized by $v_\pi(\pi)=1$. We use the elementary cyclotomic facts $\mathcal O/(\pi)\cong\F_\ell$ and $(\ell)=(\pi)^{\ell-1}$, from $\Phi_\ell(1)=\ell$ and the conjugates of $1-\zeta$. All divisibility below is in $\mathcal O$.
+
+\begin{lemma}[Augmentation lattice]\label{lem:aug}
+The map $\{(b_0,\ldots,b_{\ell-1})\in\Z^\ell:\sum b_j=0\}\to\pi\mathcal O$, $b\mapsto\sum b_j\zeta^j$, is an isomorphism of abelian groups. Consequently if $\pi^{(\ell-1)e+1}$ divides the image, every $b_j$ is divisible by $\ell^e$.
+\end{lemma}
+\begin{proof}
+Injectivity is the argument of Lemma~\ref{lem:trace}. The image is the $\Z$-span of $\zeta^j-1$; the differences $(\zeta^{j+1}-1)-(\zeta^j-1)=\pi\zeta^j$ for $0\le j\le\ell-2$ span $\pi\mathcal O$, since $1,\zeta,\ldots,\zeta^{\ell-2}$ is an integral basis. Multiplication by $\ell^e$ transports through this isomorphism, giving the assertion.
+\end{proof}
+
+\begin{lemma}[A digit-sensitive valuation bound]\label{lem:val}
+If $b\in\Z^\ell$ is nonzero with sum zero and positive mass at most $k$, then
+\[
+ v_\pi\left(\sum_j b_j\zeta^j\right)\le (\ell-1)d+s.
+\]
+\end{lemma}
+\begin{proof}
+Suppose the valuation exceeds the bound. By Lemma~\ref{lem:aug}, $b=\ell^d b'$ with integral $b'$, positive mass $h\le s$ and zero sum. If $s=\ell-1$, the assumed valuation is at least $(\ell-1)(d+1)+1$, so all $b_j$ are divisible by $\ell^{d+1}$, impossible since $k<\ell^{d+1}$. Otherwise $1\le s\le\ell-2$. Expand
+\[
+ \sum_j b'_j\zeta^j=\sum_{i=0}^{\ell-1}M_i\pi^i,\qquad M_i=\sum_j b'_j\binom ji\in\Z.
+\]
+Here $M_0=0$. If some $M_i$ with $1\le i\le s$ is nonzero modulo $\ell$, take the smallest such index $i$. All lower terms have valuation at least $\ell-1>s$ (or are zero), and higher terms have valuation greater than $i$. Thus the valuation is $i$, contradicting divisibility by $\pi^{s+1}$. It follows that the first $s$ binomial moments vanish modulo $\ell$. Since $i!$ is invertible for $i<\ell$, the power moments of orders $1,\ldots,s$ also vanish. Write the positive and negative parts of $b'$ as two multisets of $h$ elements of $\F_\ell$. Their power sums agree through order $h$, so Newton's identities (with $1,\ldots,h$ invertible) give identical monic root polynomials. They have identical multiplicities in the field, hence $b'=0$, a contradiction.
+\end{proof}
+
+\begin{lemma}[Projective reduction of an integral spectrum]\label{lem:projective}
+Let $c\ne0$ be integral on $U$ with sum zero, and put $t=\min_{H(v)\ne0}v_\pi(H(v))$. There is a homogeneous polynomial $F$ of degree $t$ over $\F_\ell$ in $r$ variables, whose evaluation is nonzero and satisfies
+\[
+ F(v)\ne0\quad\Longrightarrow\quad H(v)\ne0.
+\]
+In fact its evaluations are precisely $H(v)/\pi^t\bmod\pi$ in the chosen coordinates.
+\end{lemma}
+\begin{proof}
+Use coordinates $a_i,v_i\in\{0,\ldots,\ell-1\}$. For each $v$,
+\[
+ H(v)=\sum_{0\le j_i\le\ell-1} A_{\mathbf j}\prod_i\binom{v_i}{j_i},\qquad
+ A_{\mathbf j}=\sum_a c(a)\prod_i(\zeta^{a_i}-1)^{j_i}.
+\]
+The coefficients are integral and divisible by $\pi^{|\mathbf j|}$ (with $0^0=1$). They are also divisible by $\pi^t$: the coefficient transform is the tensor product of unit triangular integer matrices, equivalently repeated forward differences at the origin. Divide by $\pi^t$, then reduce modulo $\pi$. Terms of degree $|\mathbf j|>t$ vanish, and each binomial polynomial has invertible denominator over $\F_\ell$. Thus the residue function $P$ is represented by a reduced polynomial of degree at most $t$ (individual degrees $<\ell$). It is nonzero by the definition of $t$, and $P(0)=0$.
+
+For $\lambda\in\F_\ell^\times$, the automorphism $\sigma_\lambda$ sends $H(v)$ to $H(\lambda v)$ and $\pi$ to $\pi$ times a unit congruent to $\lambda$ modulo $\pi$. It acts trivially on the residue field. Hence $P(\lambda v)=\lambda^t P(v)$. Uniqueness of the reduced polynomial for a function on $\F_\ell^r$ follows from the univariate root bound by induction on $r$. Comparing coefficients shows that each monomial occurring in $P$ has degree congruent to $t$ modulo $\ell-1$. (For $\ell=2$ this is automatic.) No constant monomial occurs. For each monomial of degree $j\le t$, choose a variable with positive exponent and add $t-j$ to its exponent. This changes no evaluation over $\F_\ell$ and makes the degree exactly $t$. Summing the resulting monomials gives $F$.
+\end{proof}
+
+\begin{proof}[Proof of the lower bounds in Theorem~\ref{thm:main}]
+Every nonempty Galois-invariant support contains at least $\ell-1$ vectors. This proves the saturated bound. In the remaining case Lemma~\ref{lem:val}, applied to $R_v$ for each nonzero trace, bounds $1\le t\le T=(\ell-1)d+s\le(r-1)(\ell-1)$. Lemma~\ref{lem:projective} gives a nonzero projective Reed--Muller word. We may raise the degree to $T$ by multiplying the homogeneous polynomial by $L^{T-t}$ for a linear form $L$ nonzero at one nonzero evaluation; the support can only shrink, and the word remains nonzero. S\o rensen's minimum-distance theorem \cite{Sorensen,Ghorpade} states that for degree $T=a(\ell-1)+b$, $1\le b\le\ell-1$, $0\le a\le r-2$, a nonzero homogeneous evaluation on $\mathbb P^{r-1}(\F_\ell)$ has at least $(\ell+1-b)\ell^{r-a-2}$ nonzero projective points. Apply it with $(a,b)=(d,s)$. Each direction accounts for $\ell-1$ elements of $\supp H$; divide by $\ell^r$ in \eqref{eq:density}. This proves \eqref{eq:bound}.
+\end{proof}
+
+\section{Constructions attaining the bound}
+\begin{lemma}[Planar packets]\label{lem:plane}
+In $\F_\ell^2$ there are disjoint size-$s$ sets whose projections agree in exactly $s$ of the $\ell+1$ projective directions if $s=1$, $s=\ell-1$, or $s$ is a proper positive divisor of $\ell-1$ or $\ell+1$.
+\end{lemma}
+\begin{proof}
+For $s=1$ any distinct pair of points works. For $s=\ell-1$, take the two coordinate axes with their origin deleted. Their signed indicator is the difference of the full axis indicators. The Fourier transform of a line indicator is $\ell$ times the indicator of its annihilator, so precisely two projective directions have nonzero Fourier transform.
+
+For a proper divisor $s$ of $\ell-1$, choose the subgroup $B\subset\F_\ell^\times$ of size $s$ and a coset $bB\ne B$. On the split hyperbola use the two sets
+\[
+ A=\{(z,z^{-1}):z\in B\},\qquad C=\{(z,z^{-1}):z\in bB\}.
+\]
+Every cross-chord between parameters $z,u$ has direction $(1,-(zu)^{-1})$; the product $zu$ ranges over $bB$, giving exactly $s$ different directions. For a fixed $h\in bB$, pairing $z$ with $h/z$ is a bijection $B\to bB$ and all these chords are parallel. Their annihilator direction therefore gives equal projection multisets. In any other direction, no cross-pair has equal projection, so the multisets differ.
+
+For a proper divisor $s$ of $\ell+1$, regard $\F_{\ell^2}$ as a two-dimensional $\F_\ell$-space and let $G=\{z:z^{\ell+1}=1\}$, a cyclic group of order $\ell+1$. Take the subgroup $B$ of size $s$ and a disjoint coset $bB$ as point sets on the norm-one conic. For $z\in B,u\in bB$,
+\[
+ (z-u)^{\ell-1}=\frac{z^{-1}-u^{-1}}{z-u}=-(zu)^{-1}.
+\]
+Two nonzero chord vectors have the same direction exactly when their ratio belongs to $\F_\ell^\times$, equivalently their $(\ell-1)$st powers agree. Again the $s$ products give exactly $s$ directions, and $z\mapsto h/z$ matches the two sets for each. No other projection can agree. This completes the proof, including the small odd primes.
+\end{proof}
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+If $d\le r-2$, decompose $U=U_2\oplus W\oplus U_0$ with dimensions $2,d,r-d-2$, respectively. Embed the planar sets from Lemma~\ref{lem:plane} as $A_2\times W\times\{0\}$ and $C_2\times W\times\{0\}$. Their Fourier difference is the planar difference times $\ell^d\ind_{v|_W=0}$, independent of $v|_{U_0}$. Its density is therefore the planar density divided by $\ell^d$, which is exactly \eqref{eq:bound}. Both sets have size $s\ell^d\le k$; pad with a common multiset. In the saturated case take two distinct cosets of a hyperplane of $U$, each of size $\ell^{r-1}\le k$. Their Fourier difference is supported on precisely one projective direction. The lower bounds are attained as asserted.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:complete}]
+For $\ell=2$ only $s=1$ occurs; for $\ell=3$ the digits are $1,2$; for $\ell=5$ they are $1,2,3,4$, with $2\mid4$, $3\mid6$ proper and $4=\ell-1$. Theorem~\ref{thm:main} covers all possibilities.
+\end{proof}
+
+\section{Radon inversion and rigidity at powers}
+The preceding construction proves sharpness but need not characterize all minimizers for every leading digit. At powers of $\ell$ an independent argument gives a full characterization.
+\begin{theorem}[Mass bound and equality]\label{thm:rigid}
+For a nonzero balanced integral $c$ of positive mass $m$, with disagreement density $\delta$,
+\begin{equation}\label{eq:mass}
+ \delta\ge\frac{\ell-1}{\ell m}.
+\end{equation}
+Equality holds exactly when $c$ is the difference of indicators of two distinct cosets of the same subspace $W\subset U$. In particular equality requires $m=\ell^{\dim W}$. For size $k=\ell^d$ with $0\le d\le r-1$, all minimizing packet pairs are disjoint cosets of a $d$-dimensional subspace, with no padding.
+\end{theorem}
+\begin{proof}
+For each $a\in U$ sum $R_v(v(a))$ over one representative $v$ of each projective direction. The result is independent of the representatives. A point $b=a$ occurs in all $(\ell^r-1)/(\ell-1)$ directions, whereas $b\ne a$ occurs in $(\ell^{r-1}-1)/(\ell-1)$ directions. Since $\sum c=0$, this gives the exact identity
+\begin{equation}\label{eq:radon}
+ \sum_{[v]\in\mathbb P(V)} R_v(v(a))=\ell^{r-1}c(a).
+\end{equation}
+Let $N$ be the number of active directions (those with $H(v)\ne0$). Every summand has absolute value at most $m$, and inactive ones vanish. Choosing any $a$ with $c(a)>0$ gives $Nm\ge\ell^{r-1}$, hence \eqref{eq:mass}.
+
+If equality holds then applying \eqref{eq:radon} at every point shows $|c(a)|\le1$. At each positive point every active summand must be $m$, which implies that the full positive support has a single common projection for every active direction, with no negative point on that fibre. At negative points all active summands must be $-m$, giving the same assertion for the negative support. Let $W$ be the common annihilator of the active directions. Each support lies in a single coset of $W$. Fourier inversion also implies invariance of $c$ under translation by $W$, since its Fourier transform vanishes outside $W^\perp$. Both supports are therefore entire distinct cosets. Conversely the difference of two coset indicators has Fourier support $W^\perp\setminus(W+\F_\ell(a-b))^\perp$, giving density $(\ell-1)/(\ell|W|)$.
+
+If $k=\ell^d$ in the stated range, Theorem~\ref{thm:main} gives the minimum $(\ell-1)/(\ell k)$. The bound \eqref{eq:mass} forces $m=k$ and equality, proving the classification.
+\end{proof}
+
+\begin{proposition}[Saturated minimizers]\label{prop:saturated}
+If $k\ge\ell^{r-1}$, a pair is minimizing exactly when its nonzero signed difference is constant on the cosets of a hyperplane $W\subset U$. More explicitly, it is $c(a)=b_{v(a)}$ for a nonzero $v\in V$ and integers $b_j$ with $\sum b_j=0$, $0<\ell^{r-1}\sum b_j^+\le k$.
+\end{proposition}
+\begin{proof}
+The minimum corresponds to a single active projective direction. Fourier inversion is equivalent to invariance under its kernel, which is the stated description. Conversely a nonzero balanced vector on $\F_\ell$ has a nonzero trace at every nonzero dual argument by cyclotomic irreducibility, so the lifted function has exactly that active direction.
+\end{proof}
+
+\section{Finite-prime detection and robust identification under GRH}\label{sec:finite}
+Here we use the Dirichlet GRH input from \cite{vendor,article}. Fix a smooth nonnegative weight $w$ supported in $(1/2,1)$, normalized by $\int w=1$. For a function $f:V\to\C$ let $\widehat f(a)=\ell^{-r}\sum_v f(v)\zeta^{-v(a)}$, $\|f\|_A=\sum_a|\widehat f(a)|$, and
+\[
+ M_x(f)=\sum_{p\nmid Q}(\log p)w(p/x)f(v_p).
+\]
+\begin{lemma}[Smoothed prime estimate]\label{lem:prime}
+There is a constant $C_w$ depending only on $w$ such that for all $x\ge2$,
+\begin{equation}\label{eq:prime}
+ |M_x(f)-x\E_V f|\le C_w\|f\|_A\sqrt x\log(2Q).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a single character modulo $Q$, pass to its inducing primitive character, of conductor $q\mid Q$. Mellin inversion of the logarithmic derivative gives the pole term $\ind_{\chi=1}x$ and the nontrivial-zero contribution $-\sum_\rho x^\rho\widetilde w(\rho)$. On GRH this is $O_w(\sqrt x\log(2Q))$: the Mellin transform has rapid decay on vertical lines, and the number of zeros per unit ordinate interval is $O(\log(2q(2+|t|)))$. Shifting to $\Re s=-1/4$ with horizontal contours separated from zeros gives a smaller integral, and the possible trivial zero at zero contributes $O_w(1)$. Prime powers with exponent at least two have total log weight $O_w(\sqrt x)$ by Chebyshev's estimate (the exponent-$2$ term is $O(\sqrt x)$, higher exponents total $O(x^{1/3}\log x)$). Removing primes dividing $Q$ and changing primitive to imprimitive costs $O_w(\log(2Q))$ at the prime stage. This is the standard smooth explicit formula, also the proof of the article's prime Gram estimate. Expand $f$ in its finite Fourier series and use the triangle inequality. Enlarge $C_w$ to cover bounded $x$.
+\end{proof}
+
+\begin{theorem}[A rank-free signed detection bound]\label{thm:finite}
+Let $S=\supp H$, and let $m$ denote the cancelled mass. Under Dirichlet GRH,
+\begin{equation}\label{eq:finite}
+ M_x(\ind_S)\ge \frac{\ell-1}{\ell m}x-2\frac{\ell-1}{\ell}C_w\sqrt x\log(2Q).
+\end{equation}
+Thus if $x>4 C_w^2m^2\log^2(2Q)$ and $x\ge2$, some prime $p\in(x/2,x)$ distinguishes the two packets. In particular the same threshold with $k$ in place of $m$ works simultaneously for every pair of size-$k$ packets in $X$, without dependence on $r$ or $\ell$ in the constant.
+\end{theorem}
+\begin{proof}
+Choose $a$ with $c(a)\ge1$, and set $f_a(v)=R_v(v(a))/m$. This signed function is real and is pointwise at most $\ind_S$: at inactive $v$ it is zero, at active $v$ it is at most one. Expanding the hyperplane indicator by additive characters, using $\sum c=0$, gives
+\[
+ f_a(v)=\frac1{\ell m}\sum_{\lambda\in\F_\ell^\times}\sum_{b\in U}c(b)\zeta^{v(\lambda(b-a))}.
+\]
+The coefficient bound is $\|f_a\|_A\le 2(\ell-1)/\ell$, and its mean is $(\ell-1)c(a)/(\ell m)\ge(\ell-1)/(\ell m)$. Apply Lemma~\ref{lem:prime} and nonnegativity of the weights. Positivity of the lower bound gives the assertion.
+\end{proof}
+
+\begin{corollary}[Adversarial errors in local Euler factors]\label{cor:decode}
+Suppose at every prime $p\nmid Q$ in $(x/2,x)$ a polynomial is reported, possibly incorrectly, and the total weight of corrupt reports is at most $E$, with weight $(\log p)w(p/x)$. If the unknown packet has size $k$, there is at most one size-$k$ packet whose local polynomials disagree with the reports on weight at most $E$, provided
+\[
+ 2E<\frac{\ell-1}{\ell k}x-2\frac{\ell-1}{\ell}C_w\sqrt x\log(2Q).
+\]
+\end{corollary}
+\begin{proof}
+Two such packets would disagree on weight at most $2E$ by the triangle inequality for weighted Hamming distance. This contradicts Theorem~\ref{thm:finite}. Exhaustive enumeration provides a (not necessarily efficient) decoder.
+\end{proof}
+
+\begin{proposition}[Sharp finite density estimates for the constructed packets]\label{prop:finiteext}
+For the lifted planar constructions of Section 4, and also for all minimizers in Theorem~\ref{thm:rigid},
+\[
+ M_x(\ind_S)=x\delta+O_w(2s\sqrt x\log(2Q)),
+\]
+where $s=1$ for the coset-difference minimizers, including the saturated construction. The implicit constant is uniform in $r,d,\ell$.
+\end{proposition}
+\begin{proof}
+Every subspace indicator has Fourier $A$-norm one (its Fourier transform is constant nonnegative on the annihilator). For the planar construction let $J=W^\perp$ in $V$. Inside $J$ the $s$ inactive hyperplanes $J_i$ meet pairwise in one common subspace $K$ (the annihilator of the two-dimensional plane as well as $W$). Therefore
+\[
+ \ind_S=\ind_J-\sum_{i=1}^s\ind_{J_i}+(s-1)\ind_K.
+\]
+The formula also holds for $s=1$ with the last term zero. Its norm is at most $2s$. For coset differences the support is the difference of two nested subspaces, giving norm at most two. Apply Lemma~\ref{lem:prime}.
+\end{proof}
+
+\section{Examples, limits, and further research}
+The formulas are realizable in genuine Dirichlet groups: for any $\ell,r$ choose distinct primes $q_i\equiv1\pmod\ell$ and take an order-$\ell$ character on each $(\Z/q_i\Z)^\times$. The Chinese remainder theorem gives independent characters modulo $Q=\prod q_i$. In any given rank-$r$ subgroup, the same abstract constructions are transported through a basis. For a prime $p\nmid Q$, equality of the local factor polynomials also means equality of the local reciprocal Euler factors as rational functions. Global equality of distinct packets is impossible by the positive disagreement bound.
+
+\begin{center}
+\begin{tabular}{ccrrl}
+\toprule
+$\ell$ & $k$ & $d$ & $s$ & minimum disagreement (rank $r\ge d+2$)\\
+\midrule
+3 & 1 & 0 & 1 & $2/3$\\
+3 & 2 & 0 & 2 & $4/9$\\
+3 & 3--5 & 1 & 1 & $2/9$\\
+3 & 6--8 & 1 & 2 & $4/27$\\
+5 & 2 & 0 & 2 & $16/25$\\
+5 & 3 & 0 & 3 & $12/25$\\
+5 & 4 & 0 & 4 & $8/25$\\
+5 & 15--19 & 1 & 3 & $12/125$\\
+7 & 3 & 0 & 3 & $30/49$\\
+7 & 5 & 0 & 5 & $\ge18/49$ (attainment not established here)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Significance and novelty.} The proof is not merely an application of a standard prime-in-progressions bound. The novel candidate contribution is the digit-sensitive cyclotomic reduction and its use in an exact extremal arithmetic problem, with conic constructions completing two entire odd exponents. The minimum-distance formula itself is classical, as is the analytic input under GRH. A targeted literature search found the coding theorem and related work on finite-plane uncertainty and discrete tomography, but did not establish that this precise packet theorem is already published; priority is not certified. The merged article itself poses this extension as open. No claim is made that the result resolves a widely recognized named conjecture. The article's stronger quadratic classification of every density below twice the minimum is not obtained here.
+
+\paragraph{Further research questions.} Determine whether the digit bound is attained for every leading digit at larger primes (the first uncovered example is $\ell=7,s=5$). Classify all densities close to the minimum, not only minimizers at powers. Determine when a minimum-weight projective codeword is the reduction of an integral Fourier spectrum with a prescribed mass. Sharpen the finite-window result at the exact cubic and quintic plateaus, and determine how far the $m^2\log^2 Q$ scale can be reduced for extremal configurations. Explore composite orders, where a single trace no longer determines the polynomial by the augmentation argument. Formalize the algebraic lemmas and the transfer from the existing Lean statements; this note supplies a written proof, not a compiled new Lean development.
+
+\paragraph{Verification.} The companion Python program checks planar minima by exact projection-signature enumeration for exponents 2, 3 and 5 in rank two, verifies the conic constructions and selected higher-rank lifts, and tests the cyclotomic valuation bound on reproducible finite examples. Its output is included separately: 173,846 exhaustive signature tests, 43 planar constructions, 36 lifted examples, and 599 reproducible random pairs all passed. These finite checks are supplementary, not a substitute for the general proof.
+
+\begin{thebibliography}{9}
+\bibitem{article} ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, 26 November 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{Article directory}; \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/Article/sections/rec.tex}{recovery section source}, especially labels \texttt{rec:lem:gram}, \texttt{rec:thm:qmatch}, \texttt{rec:thm:qmatchfinite} and \texttt{rec:sec:open}. Source blob \texttt{da56d6ad5a1a699e335dcfd327bcdc9492c64017}.
+\bibitem{vendor} L. Alp\"oge with Claude, \emph{The Generalized Riemann Hypothesis for Dirichlet L-functions, in Lean 4}, readable rewrite, upstream commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{Vendored development}; \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{upstream snapshot}. The theorem interface is in \texttt{src/Statements.lean} and \texttt{src/Main.lean}.
+\bibitem{Sorensen} A. B. S\o rensen, Projective Reed--Muller codes, \emph{IEEE Trans. Inform. Theory} \textbf{37} (1991), 1567--1576. \href{https://doi.org/10.1109/18.104317}{doi:10.1109/18.104317}.
+\bibitem{Ghorpade} S. R. Ghorpade and R. Ludhani, On the minimum distance, minimum weight codewords, and the dimension of projective Reed--Muller codes, \emph{Adv. Math. Commun.} \textbf{18} (2024), 360--382. \href{https://doi.org/10.3934/amc.2023035}{doi:10.3934/amc.2023035}.
+\bibitem{Davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000.
+\end{thebibliography}
+\end{document}

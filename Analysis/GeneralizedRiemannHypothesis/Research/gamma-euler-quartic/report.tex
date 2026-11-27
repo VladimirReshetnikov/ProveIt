@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+\usepackage[margin=.84in]{geometry}
+\usepackage{amsmath,amssymb,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\title{\vspace{-1.6em}A fourth-order certificate for the\\ original finite Euler Gamma sampler}
+\author{Constructive Gamma / Beta research supplement}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+
+For \(N\ge1\) and \(\operatorname{Re}z>0\), set
+\[
+ E_N(z)=\frac{N^z N!}{z(z+1)\cdots(z+N)},\qquad
+ A=\frac{z(z+1)}2,\qquad
+ D=-\frac{z(z+1)(2z+1)}{12},\qquad C=\frac{A^2}{3}.
+\]
+The reciprocal \(Q_N=1/E_N\) is the literal folded Euler approximant
+in the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/3539ad1a8960af7f812b826057c3409eccaa3c49/Logic/PrimitiveRecursiveArithmetic/Derivations/Lean/IPRADerivations/Analysis/GaussianGammaFiniteApproximantName.lean}{pinned ProveIt implementation}. Define an exact rational multiplier
+for a Gaussian-rational input:
+\[
+ P_N=1+\frac{A}{N}+\frac{D+A^2/2}{N^2}
+             +\frac{C+AD+A^3/6}{N^3}.
+\]
+Let \(R\ge1\) be an integer, \(a>0\), \(M=R+1\), and
+\(B=\max\{1/a,(R-1)!\}\). Uniformly on the Euclidean chart
+\(|z|\le R,\ \operatorname{Re}z\ge a\), for \(N\ge2M^2\),
+\begin{equation}
+ |\Gamma(z)-E_N(z)P_N(z)|\le \frac{3BM^8}{N^4},
+ \qquad |P_N(z)|\le\frac32. \label{thm}
+\end{equation}
+The coefficients are classical
+\href{https://dlmf.nist.gov/5.11#iii}{Gamma-ratio coefficients};
+the point here is the explicit, finite certificate for this particular
+sampler, with no change to its defining product.
+
+\paragraph{Uniform size without using the Gamma integral.}
+Writing \(x=\operatorname{Re}z\), termwise comparison gives
+\(|E_N(z)|\le E_N(x)\). The function \(\log E_N(x)\) is convex on
+the positive reals because its nonlinear terms are \(-\log(x+j)\).
+Use endpoints \(b=\min(a,1)\) and \(R\). For \(0<b\le1\),
+concavity of \(t^b\) gives
+\(\prod_{j=1}^N(1+b/j)\ge (N+1)^b\), so \(E_N(b)\le 1/b\).
+At integer \(R\), the product gives \(E_N(R)\le (R-1)!\).
+Thus \(B\) bounds the finite observations and their limit.
+
+\paragraph{A finite logarithmic telescope.}
+Set \(w=z+1,\ t=1/n\) and \(S_n=A/n+D/n^2+C/n^3\).
+The product identity gives \(E_{n+1}=E_n e^{L_n}\) with
+\(L_n=w\log(1+t)-\log(1+wt)\), using the logarithm power series
+for \(|wt|\le1/2\). Its coefficients at degrees 2, 3 and 4 are
+\[
+ A,\quad (w-w^3)/3,\quad (w^4-w)/4.
+\]
+Those of \(S_n-S_{n+1}\) are \(A,-A+2D,A-3D+3C\), respectively,
+and match exactly. The remaining logarithm series has norm at most
+\((M+M^5)t^5/[5(1-Mt)]\le M^5t^5\).
+\newpage
+For the rational difference, the tail after degree 4 has norm
+at most \((|A|+4|D|+6|C|)t^5\). The first bound follows from
+the exact geometric identity for \((1+t)^{-1}\), and the other
+two from the Taylor bounds on \((1+t)^{-2}\) and \((1+t)^{-3}\)
+for \(t\ge0\): their next coefficients in absolute value are 4 and 6.
+These bounds can also be checked by multiplying by the positive
+denominators. Since
+\[
+ |A|\le M^2/2,\qquad |D|\le M^3/6,\qquad |C|\le M^4/12,
+\]
+the one-step defect \(d_n=L_n-S_n+S_{n+1}\) has norm at most
+\(2M^5/n^5\).
+For \(n\ge4\), Bernoulli's inequality gives
+\(1/n^4-1/(n+1)^4\ge2/n^5\), so every finite sum of defects
+starting at \(N\) has norm at most \(M^5/N^4\).
+The exact recursion now reads
+\[
+ E_K=E_N\exp\left(S_N-S_K+\sum_{n=N}^{K-1}d_n\right).
+\]
+The absolute sum converges, \(S_K\to0\), and \(E_K\) tends to
+the original Gamma value. This proves \(\Gamma=E_N e^{S_N+d}\)
+with \(|d|\le M^5/N^4\); it uses no logarithm of a Gamma value.
+
+\paragraph{Return to a rational multiplier.}
+Put \(u=M^2/N\le1/2\). The coefficients of \(e^{S_N}\), viewed as
+a power series in \(u\), are bounded by the nonnegative coefficients
+of \(\exp(u/2+u^2/6+u^3/12)\).
+Its sum at \(u=1\) is \(e^{3/4}<5/2\).
+Thus discarding powers at least four costs at most
+\((5/2)u^4\), and the cubic polynomial retained is exactly \(P_N\).
+Its first three coefficient bounds in \(u\) are \(1/2,7/24,3/16\),
+which give \(|P_N|\le3/2\).
+Using \(|S_N|+|d|\le1\),
+\(|e^{S_N+d}-e^{S_N}|\le3|d|\). With \(M\ge2\),
+\((5/2)M^8+3M^5<3M^8\), giving \eqref{thm}.
+
+\paragraph{The radius-eight example and Lean handoff.}
+For \(R=8,\ a=1/2\) and \(N=2^{42}\), a Euclidean observation
+of \(E_N\) with absolute error at most \(2^{-130}\) suffices for
+128 output bits: the exact budget is
+\[
+ 3\cdot5040\cdot9^8\,2^{-168}+\tfrac32\,2^{-130}<2^{-128}.
+\]
+If sampling the literal \(Q_N\) instead, 156 absolute bits suffice
+before exact inversion and multiplication: \(|Q_N|\ge1/5040\),
+and the inverse error is at most \(2\cdot5040^2\) times its input
+error when that error is at most \(1/(2\cdot5040)\).
+These are external absolute error budgets, not claims about internal
+query indices or runtime. Uncorrected \(E_N(1)=N/(N+1)\) alone
+requires \(N\ge2^{128}-1\) at this accuracy.
+
+The Lean route is to use the literal product successor, clear
+denominators in the rational defect estimate, telescope finitely
+and transport via the existing cofinal comparison. The
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/063656519229a310f5de38fbe5d993a13df43408}{recent compact Euler refactor}
+concerns integral observations and does not perform this finite-product
+correction. The present result is a written proof with exact
+rational checks, not a new kernel-checked endpoint.
+\end{document}

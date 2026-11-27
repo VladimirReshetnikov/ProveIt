@@ -1,0 +1,210 @@
+\documentclass[11pt]{article}
+\usepackage[top=.79in,bottom=.79in,left=.86in,right=.86in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,microtype,xcolor}
+\usepackage[colorlinks=true,urlcolor=blue!45!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\F}{\mathbb F}
+\newcommand{\PP}{\mathbb P}
+\title{Seven-step graph towers:\\a strict bound at every prime}
+\author{}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\vspace{-2em}
+\begin{abstract}
+We sharpen the universal spanning-tree valuation bound for seven-step
+rank-two graph towers at every prime $p>14$. For $p\equiv1\bmod14$ we
+give a simple graph tower with two directions of maximal depth.
+Exact searches give the maxima at the five smallest eligible primes.
+A separate argument sharpens the universal bound for every prime
+number of steps and sufficiently large residue characteristic.
+\end{abstract}
+
+\section{The seven-step bound}
+For $m$ integer steps $S=(s_i)_{i=0}^{m-1}$ spanning $\F_p^2$ modulo $p$,
+the level-$n$ graph has vertices $(\mathbb Z/p^n\mathbb Z)^2$ and
+one undirected edge from $v$ to $v+s_i$ for each pair $(v,i)$.
+Let $\kappa_n$ be its spanning-tree count, and define
+\[
+ M_j(u)=\sum_i(u\cdot s_i)^{2j}\quad\text{over }\F_p,\qquad
+ r(L)=\min\{j\ge1:M_j(L)\ne0\},\qquad A=2\sum_{L\in\PP^1(\F_p)}r(L).
+\]
+We use the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/21c0252ffe8611baa0fbf528fbb003d6c42ca9af/Analysis/GeneralizedRiemannHypothesis/Research/grh_transfers_lubin_tate_and_graph_towers/graphs.tex}{ProveIt valuation identity}
+$v_p(\kappa_n)=A(p^n-1)/(p-1)-2n$ for $p>2m$. Newton's identities
+give $r(L)\le m$. If $r(L)=m$, the squared projections are the
+roots of $T^m-c$ with $c\ne0$. These roots are distinct nonzero
+squares, and dividing by any one root gives $2m\mid p-1$.
+The \href{https://github.com/VladimirReshetnikov/ProveIt/blob/21c0252ffe8611baa0fbf528fbb003d6c42ca9af/Analysis/GeneralizedRiemannHypothesis/Research/grh_transfer_extensions_2026-11-26/sections/graph_extremum.tex}{first-moment lemma}
+bounds the first nonzero moment polynomial index by
+$k=\lfloor m/2\rfloor$. Zero residues can be discarded for the lemma.
+If the first nonzero polynomial is $M_t$ and pointwise depth is at
+most $d$, its at most $2t$ projective roots give
+$A\le2t(p+1+2d-2t)$.
+
+\begin{theorem}
+For $m=7$ and every prime $p>14$, $A\le6(p+1)+38$,
+improving the former $6(p+1)+48$. For $p\not\equiv1\bmod14$,
+the bound improves to $6(p+1)+36$.
+If $M_1=M_2=0$ and two directions have depth seven, those are the
+only directions of depth above three, and $A=6(p+1)+16$.
+This last case occurs in simple graphs for every $p\equiv1\bmod14$.
+\end{theorem}
+
+For $t\le2$, the bound above gives at most $4(p+1)+40$, which is
+below $6(p+1)+36$. When $t=3$, there are at most six exceptional
+directions. If none has depth seven, each adds at most six above
+the depth-three baseline. If exactly one has depth seven, it adds
+eight and the other five add at most six each. It remains to
+handle two or more depth-seven directions with $t=3$.
+
+\section{The seven-step certificate}
+Take two depth-seven directions as coordinate axes. Each projection
+row has squared entries in a coset of $\mu_7$. As squaring is
+bijective on $\mu_7$, row scalings, column permutations and column
+signs put the rows in the form $a_i=z^i$, $b_i=\epsilon_i z^{\sigma(i)}$,
+where $z$ has order seven, $\sigma(0)=0$, and $\epsilon_0=1$.
+The coefficient of $X^2Y^2$ in $M_2$ requires $f(z^2)=0$ for
+$f(Z)=\sum_{i=0}^6 Z^{(i+\sigma(i))\bmod7}$.
+
+\pagebreak[2]
+The table gives the absolute norms of $f$ over $\mathbb Q(\zeta_7)$
+for the $6!=720$ permutations. A norm can be computed as the
+determinant of multiplication by $f$ on $\mathbb Z[Z]/(\Phi_7)$.
+If $f_h$ is the coefficient of degree $h$, the entry $(i,j)$ for
+$0\le i,j<6$ is $f_{(i-j)\bmod7}-f_{(6-j)\bmod7}$.
+Evaluation at $z^2$ annihilates its image modulo $p$, so $p$
+divides its determinant. The checker also computes the norm by
+an exact product of the six conjugates.
+\begin{center}
+\small
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Absolute norm & 0 & 49 & 343 & 392 & 2744 & 3479 & 8281 & 117649\\
+Multiplicity  &19 &441 &42 &126 &28 &42 &21 &1\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The only prime $p>14$ dividing a nonzero entry is $71$.
+Elsewhere the norm is zero, so irreducibility of $\Phi_7$ forces
+all seven coefficients of $f$ to be one. The cross moment
+$\sum_i a_i b_i$ is now a signed sum of the seven distinct roots
+of unity. Among sign polynomials with constant coefficient $+1$,
+the absolute norms are $0,64,512$, with counts $1,49,14$. The only
+case vanishing at an odd prime has every sign positive.
+The $X^3Y$ and $XY^3$ coefficients in $M_2$ give the two additional
+exponent lists $3i+\sigma(i)$ and $i+3\sigma(i)$ modulo seven.
+The same norm table applies (relabel the indices or the outputs
+of $\sigma$). Thus all three exponent lists must be permutations.
+The 720-case test leaves just $\sigma(i)=ki$ for $k=1,3,5$; the
+identity is not spanning. For $k=3,5$, geometric sums give
+$M_3=105X^2Y^4$ or $105X^4Y^2$, respectively. As $p>14$ this
+has only the two axis roots. Both have depth seven.
+
+At $71$ take $z=20$ and check all $720\cdot64$ permutation/sign
+choices by testing the mixed coefficients of $M_1$ and $M_2$.
+After excluding dependent rows, precisely $k=3,5$ with positive
+signs survive. This finishes the two-direction classification.
+The steps $(z^i,z^{3i})$ in that classification span and have
+distinct nonzero signed classes, so give simple graphs at every
+level. Their depth pattern proves the claimed attainment.
+
+\section{An obstruction for a prime number of steps}
+\begin{theorem}
+Let $m\ge5$ be prime, $k=(m-1)/2$, and
+$p>\max(m^{m-1},27^k)$. Then
+\[
+ A\le 2k(p+1+2m-2k)-2(m-3).
+\]
+More precisely, if $M_1=0$ there are at most two depth-$m$
+directions.
+\end{theorem}
+\begin{proof}
+Suppose there are three distinct depth-$m$ directions. Choose a
+primitive $m$th root $z\in\F_p$. As above, normalize the projection
+rows to $a_i=z^i$, $b_i=\epsilon_i z^{\sigma(i)}$ and
+$c_i=\eta_i z^{\tau(i)}$. Lift by replacing $z$ with a complex
+primitive root $\zeta$. A cross moment $\sum_i a_i b_i$ and
+all $3\times3$ minors of the three-row matrix have zero reduction
+at $(p,\zeta-z)$. If one is nonzero, its integral norm is
+divisible by $p$. Each conjugate of the cross moment has
+absolute value at most $m$, and each conjugate of a minor at
+most $3\sqrt3$ by Hadamard's inequality. The norm bounds are
+therefore $m^{m-1}$ and $27^k$, both less than $p$. Thus the
+cross moment and the minors vanish exactly.
+
+Reducing its exponents modulo $m$, the cross moment is a sum of
+$m$ signs on powers of $\zeta$. Its coefficient vector is
+constant by irreducibility of $\Phi_m$. The coefficient sum is
+odd with absolute value at most $m$, so the constant is $\pm1$
+and all signs agree. Absorb the common sign in $b$.
+The three rows are pairwise independent, as witnessed already
+in their reductions modulo $p$. The vanishing minors give
+$c=\alpha a+\beta b$ with $\alpha\beta\ne0$.
+Every ratio $w=b_i/a_i$ satisfies $|w|=|\alpha+\beta w|=1$.
+Expanding the second condition gives a real affine line in $w$;
+it intersects the unit circle in at most two points.
+Thus $\sigma$ acts by at most two translations $u,v$ modulo $m$.
+If it translates $I$ by $u$ and the complement by $v$, bijectivity
+gives $I+u=I+v$. A proper nonempty $I$ cannot be invariant
+under a nonzero translation modulo a prime. Therefore only one
+translation occurs, making $a,b$ proportional, a contradiction.
+
+For $t=k$, there are at most $2k$ exceptional directions, and
+all but two have depth at most $m-1$. Relative to the universal
+bound the savings is at least $2(2k-2)=2(m-3)$. If $t<k$,
+the universal bound for $t=k-1$ already saves $2(p+5)$ or more.
+\end{proof}
+
+\section{Five exact benchmarks}
+To enumerate lists with $M_1=M_2=0$, normalize two independent
+steps to the standard basis and use fixed sign representatives
+for the other five. The three quadratic and five quartic
+coefficients, after dividing by the binomial factors, are
+linear in the sum of the keys
+\[
+  (x^2,xy,y^2,x^4,x^3y,x^2y^2,xy^3,y^4).
+\]
+Store every sorted pair by its key sum. For each sorted triple,
+fetch every complementary pair whose first index is at least the
+last triple index. This is an exhaustive search, including
+repetitions and zero residues. At $29$ there are exactly twelve
+normalized candidates. The best has $A=196$; lists with first
+nonzero index at most two satisfy $A\le160$. One witness is the
+basis and
+\[
+  (2,3),\ (6,2),\ (10,24),\ (11,21),\ (12,10).
+\]
+Its only exceptional directions are $(1,7)$ and $(1,24)$, both at
+depth seven.
+
+At $17,19,23,31$, a second pass uses just the first three key
+coordinates, so exhausts every list with $M_1=0$. At these primes
+the depth cap is six; lists with $M_1\ne0$ have $A\le2(p+1)+20$,
+strictly below the best in each class. Here are the exact maxima:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$p$ & Zero allowed & Nonzero residues & Simple graphs\\
+\midrule
+17 & 88  & 82  & 82\\
+19 & 120 & 94  & 94\\
+23 & 104 & 104 & 104\\
+29 & 196 & 196 & 196\\
+31 & 192 & 140 & 140\\
+\bottomrule
+\end{tabular}
+\end{center}
+The search logs give normal-form counts and explicit simple
+witnesses. Here simplicity is enforced by distinct nonzero
+residues up to sign, which ensures simple graphs at every layer.
+The valuation identity turns each column into exact all-layer
+maxima within the stated class.
+For example, at $p=29$ the simple maximum is
+$196(29^n-1)/28-2n$.
+
+\paragraph{Scope.}
+These conclusions concern the odd-step extremal problem in the
+cited ProveIt reports. They are unconditional and do not
+use RH or GRH. The exact seven-step maximum at general $p$ remains open.
+\end{document}

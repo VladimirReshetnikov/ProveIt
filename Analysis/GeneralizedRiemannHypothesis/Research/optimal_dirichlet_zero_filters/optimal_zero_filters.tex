@@ -1,0 +1,295 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\usepackage{enumitem}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\F}{\widehat\mu}
+\newcommand{\dist}{\operatorname{dist}}
+\title{Optimal Positive Filters for Clusters of Dirichlet Zero Frequencies\\[4pt]\large Exact symmetric clusters, analytic deformation, and robust prime-error cancellation}
+\author{Research note for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We solve a local version of the shortest-positive-average problem posed in the merged ProveIt article. For a symmetric cluster of positive frequencies, with paired orders and total order $N$, we give the exact minimum diameter $N\pi/\kappa$ in an explicit bandwidth, where $\kappa$ is the center of the cluster. The unique minimizing probability measure has $N+1$ equally spaced atoms; a positive exponential-polynomial dual certificate proves optimality among all Borel probability measures, not just discrete or symmetric ones. For two frequencies with double cancellation we extend the exact formula to the full ratio range $(1,3)$. More generally, for \emph{arbitrary} sufficiently close frequencies with repetitions, the unique minimum filter is an analytic deformation of the binomial filter. Its support diameter is $N\pi/\bar\lambda$ up to cubic order in relative deviations from the mean frequency. We prove sharp square-root stability and a linear cost of shortening. Under the Dirichlet GRH input of the vendored Lean development, the filters act on the absolutely convergent zero expansion of ramp-smoothed prime errors, with explicit robustness bounds. The extremal results are unconditional; the arithmetic application uses only Dirichlet GRH. The proofs are classical mathematical proofs, not new checked Lean declarations.
+\end{abstract}
+
+\section{Source analysis and the problem}
+The vendored README identifies the upstream snapshot (25 November 2026) as the commit
+\begin{center}\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.\end{center}
+It is the readable edition of \texttt{lsernau/grh-lean} \cite{vendor}. We inspected the vendored README, the upstream README, \path{src/Statements.lean}, \path{src/Main.lean}, \path{src/New/Main.lean}, \path{src/New/Reduction/OneSidedBound.lean} and \path{src/New/Reduction/Zeros/Criterion.lean} through the GitHub connector. The latter two show the connection of the proof with ramp-smoothed prime remainders: the one-sided bound for a quadratically twisted progression is converted into half-plane nonvanishing by a Landau-type pole criterion. The symmetry step gives the critical-line result. The exported declaration \path{LFunction_eq_zero_re} states that every zero of every Dirichlet $L$-function in $0<\Re s<1$ lies on $\Re s=1/2$. The separate half-plane statement excludes the principal pole at $s=1$. The quantifiers do not cover arbitrary nonabelian or automorphic $L$-functions, and they say nothing about simplicity or independence of ordinates.
+
+The upstream README reports successful independent checker replays and only the three usual Lean axioms. We did not rebuild the roughly 300,000-line development, reproduce its kernel export, or independently audit its proof. We use the exported mathematical theorem as a named input, as the merged article does. This distinguishes a checked claim reported by the repository from verification performed here.
+
+The Article README describes a merge of 131 reports into 723 pages, rather than an independent review \cite{article}. We inspected its introduction, theorem and subsection inventories and open questions in the sections on zero recovery, zero statistics, direct arithmetic and Li coefficients. The relevant existing results are the simple two-frequency filter theorem \texttt{rec:thm:twofreq}, its stability theorem \texttt{rec:prop:twostable}, the logarithmic support construction \texttt{rec:thm:logfilter}, and the open questions in \texttt{rec:sec:open}. The latter specifically asks for shortest positive averages when vanishing derivatives are required at two frequencies. The arithmetic interface is \texttt{zer:lem:ramp} and \texttt{zer:eq:Zexp}. We develop the extremal problem for clusters, rather than attempting to re-prove the upstream GRH or to infer an unrelated Riemann hypothesis.
+
+\paragraph{Novelty and precedent.} The engineering literature on positive input shaping already contains simple and derivative-cancelling two-mode shapers, including closed-form five-impulse designs for the low ratio range \cite{command,trolley}. The equally spaced two-mode construction and convolution idea are therefore not claimed as novel. Our candidate extensions are the explicit many-frequency optimality certificate over arbitrary probability measures, the analytic deformation theorem for nonsymmetric clusters with repetitions, and their stability and arithmetic consequences. We found no matching statement for these extensions in the inspected Article or the limited literature search; this is not a claim of certified priority over all literature.
+
+\paragraph{Problem.} For a finite nonempty multiset $\mathcal L$ of positive real numbers, let $m(\lambda)$ be the multiplicity of a distinct frequency $\lambda$ and let $N=\sum_\lambda m(\lambda)$. Define
+\begin{equation}\label{eq:problem}
+ B(\mathcal L)=\inf\left\{\diam\supp\mu:\ \begin{array}{l}\mu\text{ a compactly supported probability measure},\\ \widehat\mu^{(k)}(\lambda)=0\quad(0\le k<m(\lambda))\end{array}\right\},
+\end{equation}
+where $\widehat\mu(\omega)=\int e^{\ii\omega t}\dd\mu(t)$. Thus repetitions represent required cancellation order, not necessarily the multiplicity of a zero of an $L$-function. The conditions are equivalent to annihilating all $t^k\cos(\lambda t)$ and $t^k\sin(\lambda t)$ with $k<m(\lambda)$. Translation preserves them, because translating the measure multiplies its Fourier transform by an entire exponential without zeros. Reflection also preserves them. Scaling frequencies by $c>0$ divides $B$ by $c$. No symmetry, discrete support, or density is imposed in \eqref{eq:problem}.
+
+\section{An exact solution for symmetric clusters}
+Let $\kappa>0$, and let the distinct frequencies be $\kappa$ (order $m_0\ge0$, omitted if zero) and $\kappa\pm\delta_j$ (order $m_j\ge1$ each), where $0<\delta_1<\cdots<\delta_s<\kappa$. Set
+\[
+ N=m_0+2\sum_{j=1}^s m_j,\qquad T=\pi/\kappa,\qquad \delta_* =\max(\{0\}\cup\{\delta_j\}).
+\]
+\begin{theorem}[Exact symmetric-cluster optimum]\label{thm:sym}
+If $N\ge1$ and $N\delta_*<\kappa$, then
+\[
+ \boxed{B(\mathcal L)=NT=\frac{N\pi}{\kappa}}.
+\]
+The unique minimizer with left endpoint zero is $\mu_*=\sum_{j=0}^N w_j\delta_{jT}$, where the strictly positive weights are the coefficients of
+\begin{equation}\label{eq:poly}
+ P(z)=\frac{(1+z)^{m_0}}{2^{m_0}}
+ \prod_{j=1}^s\left(\frac{z^2+2\cos(\delta_j T)z+1}{2+2\cos(\delta_j T)}\right)^{m_j}.
+\end{equation}
+In particular, its centered Fourier transform is
+\begin{equation}\label{eq:transform}
+ \Phi(\omega)=\cos(T\omega/2)^{m_0}\prod_{j=1}^s
+ \left(\frac{\cos(T\omega)+\cos(\delta_j T)}{1+\cos(\delta_j T)}\right)^{m_j}.
+\end{equation}
+\end{theorem}
+
+The key lemma is a short-interval zero bound, proved here to avoid relying on an unstated Chebyshev-system theorem.
+\begin{lemma}[Disconjugacy on a short interval]\label{lem:dis}
+On a closed interval $I$ of length $L$ satisfying $L\delta_*<\pi$, every nonzero real solution of
+\[
+ \mathcal D h=0,\qquad \mathcal D=D^{m_0}\prod_{j=1}^s(D^2+\delta_j^2)^{m_j},\quad D=\frac{\mathrm d}{\mathrm dt},
+\]
+has at most $N-1$ zeros counted with multiplicity, including endpoints.
+\end{lemma}
+\begin{proof}
+Let $b$ be the midpoint of $I$. The functions $v_j(t)=\cos(\delta_j(t-b))$ are strictly positive on an open neighborhood of $I$. Direct differentiation gives the operator identity
+\[
+ (D^2+\delta_j^2)h=v_j^{-1}D\left(v_j^2D(h/v_j)\right).
+\]
+Consequently $\mathcal D$ can be written as a composition of $N$ ordinary derivatives separated by smooth strictly positive multipliers (and possibly positive multipliers at either end). Multiplication by such a factor preserves all zero multiplicities. Rolle's theorem with multiplicities says that a differentiable function with at least $r$ zeros counted with multiplicity on $I$ has derivative with at least $r-1$ zeros there, unless the derivative vanishes identically, in which case it has arbitrarily many. If $h$ had $N$ zeros, after each of the first $k$ derivatives the resulting function would have at least $N-k$ zeros for $0\le k<N$. The function immediately before the last derivative is constant because $\mathcal D h=0$, and has a zero, so it vanishes identically. Reversing through the multipliers and derivatives, each preceding function is constant at its differentiation step and has at least one zero, hence is identically zero. This implies $h=0$, a contradiction. All functions are analytic on a neighborhood of $I$, so the multiplicities are well defined; the same argument works if an intermediate function is identically zero.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:sym}]
+For the upper bound, the assumption ensures $\cos(\delta_j T)>0$ (if any pair occurs then $N\ge2$). The polynomial in \eqref{eq:poly} has all $N+1$ coefficients positive and $P(1)=1$. At $z=e^{\ii\lambda T}$ it has the prescribed root of order $m(\lambda)$: for the center $z=-1$, and for a pair $z=-e^{\pm\ii\delta_j T}$. Since $z'(\omega)\ne0$, the transform $P(e^{\ii\omega T})$ has precisely the required orders at those frequencies. The support diameter is $NT$. Centering gives \eqref{eq:transform}.
+
+For the lower bound let $I=[0,NT]$. The solution space of $\mathcal D h=0$ is the real span of $t^k$ for $k<m_0$ and $t^k\cos\delta_jt,t^k\sin\delta_jt$ for $k<m_j$. Its dimension is $N$, by the elementary constant-coefficient ODE solution formula. Impose the $N-1$ homogeneous conditions $h(jT)=0$ for $1\le j<N$. There is a nonzero solution. Lemma~\ref{lem:dis} implies that these are all its zeros on $I$, and that each is simple. Choose the overall sign so that
+\begin{equation}\label{eq:dual}
+ g(t)=\sin(\kappa t)h(t)\ge0\quad(0\le t\le NT).
+\end{equation}
+This is possible because both factors change sign at every interior grid point, and neither changes sign between grid points. The zeros of $g$ are exactly $0,T,\dots,NT$, simple at endpoints and double in the interior. Multiplying by $\sin\kappa t$ expands $g$ into the real span of the annihilated functions at the original frequencies, with the prescribed degree bounds on powers of $t$. Thus any admissible measure supported on $I$ has $\int g\dd\mu=0$. Positivity forces its support to be contained in the grid.
+
+Write $Q(z)=\sum_{j=0}^N \mu(\{jT\})z^j$. Its prescribed zeros are the $N$ roots of the numerator of \eqref{eq:poly}, counted with multiplicity. They are distinct between distinct frequencies because every frequency is in $(0,2\kappa)$. Since $\deg Q\le N$ and $Q(1)=1$, necessarily $Q=P$. Both endpoints carry positive mass. Translating any measure of diameter at most $NT$ to left endpoint zero places it on $I$; the conclusion therefore proves both the lower bound and uniqueness.\end{proof}
+
+\paragraph{Savings.} Canceling each of the $N$ frequencies separately, with its prescribed order, by convolving symmetric two-point filters of diameter $\pi/\lambda$ requires diameter $\pi\sum_{\lambda\in\mathcal L}1/\lambda$. Theorem~\ref{thm:sym} is strictly shorter whenever a noncentral pair occurs, by strict convexity of $1/x$. For a pair of frequencies $\alpha<\beta$ of order $m$ each it gives
+\[
+ B=\frac{4m\pi}{\alpha+\beta},\qquad
+ \frac{B}{m\pi(1/\alpha+1/\beta)}=\frac{4\alpha\beta}{(\alpha+\beta)^2},
+\]
+provided $(\beta-\alpha)/(\alpha+\beta)<1/(2m)$. The next theorem greatly enlarges this explicit range when $m=2$.
+
+\section{Two double zeros: the full first ratio band}
+\begin{theorem}[Two-frequency derivative cancellation]\label{thm:double}
+For $0<\alpha<\beta<3\alpha$ and cancellation order two at each frequency,
+\[
+ B(\{\alpha,\alpha,\beta,\beta\})=\frac{8\pi}{\alpha+\beta}.
+\]
+The unique minimizer up to translation is the five-node convolution square of the three-node simple-zero filter: with $T=2\pi/(\alpha+\beta)$ and $c=\cos(\alpha T)<0$ its weights on $0,T,2T,3T,4T$ are
+\[
+ \frac{(1,-4c,2+4c^2,-4c,1)}{4(1-c)^2}.
+\]
+\end{theorem}
+\begin{proof}
+Put $\kappa=(\alpha+\beta)/2$, $\delta=(\beta-\alpha)/2$. Then $0<\delta T<\pi/2$. The displayed weights come from the polynomial $P(z)=[(z^2-2cz+1)/(2-2c)]^2$, so admissibility and positivity follow directly as above.
+
+On $[-2T,2T]$ consider the explicit even dual function
+\[
+ g(t)=-\sin(\kappa t)\left(\sin(\delta t)-\frac{\tan(\delta T)}T\,t\cos(\delta t)\right).
+\]
+By product-to-sum identities it belongs to the span of the real functions $\cos\alpha t,\cos\beta t,t\sin\alpha t,t\sin\beta t$, all annihilated by admissible measures. Write $h(t)$ for the bracket. For $0<t<T$, the strict increase of $\tan x/x$ on $(0,\pi/2)$ gives $h(t)<0$. Indeed its derivative has sign of $x-\sin x\cos x>0$ there. For $T<t<2T$ and $\delta t<\pi/2$ the same strict increase gives $h(t)>0$; for $\pi/2\le\delta t<\pi$ the sine is positive and cosine nonpositive, giving the same conclusion. Thus $g$ is strictly positive between the five grid points and nonnegative everywhere. Its endpoint zeros are simple; the inner zeros are double, since $h'(0)=\delta-\tan(\delta T)/T<0$ and $h'(T)>0$. Translating to $[0,4T]$ keeps the annihilated space unchanged. The polynomial uniqueness argument of Theorem~\ref{thm:sym} now proves the lower bound and uniqueness without any small-bandwidth restriction beyond $\beta<3\alpha$.
+\end{proof}
+\begin{remark}
+At the boundary $\beta=3\alpha$ one may cancel both frequencies to order two using the single-frequency binomial filter of diameter $2\pi/\alpha$, which is optimal by Theorem~\ref{thm:sym} with $s=0,m_0=2$. The boundary is not part of the five-positive-weight statement: two of its weights tend to zero. No assertion for all ratios above three is made.
+\end{remark}
+
+\section{Arbitrary nearby clusters: analytic optimality}\label{sec:local}
+The assumption of exact reflection symmetry in Theorem~\ref{thm:sym} is unnatural for actual zero ordinates. It can be removed locally. In the next result the $N$ input entries may coincide; when they do, the combined multiplicity is imposed as in \eqref{eq:problem}.
+\begin{theorem}[Analytic cluster deformation]\label{thm:local}
+For every integer $N\ge1$ there is $\varepsilon_N>0$ such that, if $\lambda_1,\ldots,\lambda_N>0$ and $\max_j|\lambda_j/\kappa-1|<\varepsilon_N$ for some $\kappa>0$, the minimizer in \eqref{eq:problem} is unique up to translation. With left endpoint zero, it has exactly $N+1$ strictly positive atoms at
+\[
+ 0=t_0<t_1<\cdots<t_N,
+\]
+with weights $w_0,\ldots,w_N$. The nodes and weights are real analytic in the entries of the frequency multiset, including at coincidences. They are invariant under permutation of the entries. At $\lambda_1=\cdots=\lambda_N=\kappa$ they equal $t_j=j\pi/\kappa$ and $w_j=2^{-N}\binom Nj$. For the mean $\bar\lambda=N^{-1}\sum_j\lambda_j$ and $d=\max_j|\lambda_j/\bar\lambda-1|$ sufficiently small,
+\begin{equation}\label{eq:width}
+ B(\mathcal L)=\frac{N\pi}{\bar\lambda}+O_N\left(\frac{d^3}{\bar\lambda}\right).
+\end{equation}
+The minimizer is symmetric about $t_N/2$, even for a nonsymmetric frequency multiset. The neighborhood and constants here are existential, not numerically certified.
+\end{theorem}
+
+\begin{proof}
+By scaling it is enough to work near the vector $(1,\dots,1)$; we keep the symbol $\kappa$ to display dimensions. There are two steps: an analytic solution of the moment constraints, and a global positivity certificate.
+
+\paragraph{Step 1: an analytic confluent basis.} For $0\le k<N$, define
+\[
+ f_k(t;\boldsymbol\lambda)=\frac{k!\,\ii^{-k}}{2\pi\ii}
+ \oint_C\frac{e^{\ii zt}}{\prod_{j=1}^{k+1}(z-\lambda_j)}\dd z,
+\]
+where $C$ is a fixed positively oriented circle around $\kappa$, of radius less than $\kappa/2$, containing all entries. These functions and their derivatives in $t$ vary real analytically in the real frequency entries near the diagonal. At the diagonal, Cauchy's formula gives $f_k(t)=t^ke^{\ii\kappa t}$.
+
+The conditions $\int f_k\dd\mu=0$ for $0\le k<N$ are equivalent to \eqref{eq:problem}. To see this, integrate the definition against $\mu$ and replace $e^{\ii zt}$ by the entire function $\widehat\mu(z)$. The resulting contour integrals, without their nonzero normalization factors, are exactly the confluent Newton divided differences. For completeness, the finite telescoping identity
+\[
+ \frac1{z-w}=\sum_{k=0}^{N-1}\frac{\prod_{j=1}^k(w-\lambda_j)}{\prod_{j=1}^{k+1}(z-\lambda_j)}
+ +\frac{\prod_{j=1}^N(w-\lambda_j)}{(z-w)\prod_{j=1}^N(z-\lambda_j)}
+\]
+inside the Cauchy integral for $\widehat\mu(w)$ shows that the first $N$ divided differences are the coefficients of a polynomial of degree less than $N$ whose difference from $\widehat\mu$ vanishes at each entry with the required order. If the coefficients vanish, the conditions hold; conversely, if the conditions hold, this polynomial has $N$ roots counted with multiplicity and must be zero. This works also at repeated entries, with no division by their differences.
+
+Seek weights $w_0,\dots,w_N$ and nodes $t_1,\dots,t_N$ ($t_0=0$) satisfying the $2N+1$ real equations
+\begin{equation}\label{eq:system}
+ \sum_{j=0}^N w_j=1,\qquad \sum_{j=0}^N w_j f_k(t_j;\boldsymbol\lambda)=0\quad(0\le k<N),
+\end{equation}
+where each complex equation means two real equations. At the diagonal the solution is the binomial filter, by the $N$th finite-difference identity for polynomials of degree less than $N$.
+
+The Jacobian with respect to the $2N+1$ real unknowns is invertible there. Indeed let $x_j=j\pi/\kappa$, $b_j=2^{-N}\binom Nj$. In the kernel of the Jacobian, the imaginary equations depend only on the node variations $\Delta t_j$ ($1\le j\le N$), since $e^{\ii\kappa x_j}=(-1)^j$. They read
+\[
+ \sum_{j=1}^N \kappa b_j(-1)^j x_j^k\Delta t_j=0\quad(0\le k<N).
+\]
+The Vandermonde matrix at the $N$ distinct nonzero nodes is invertible, and all prefactors are nonzero. Hence $\Delta t_j=0$. The remaining real equations are $\sum_j(-1)^j x_j^k\Delta w_j=0$ for $k<N$ and $\sum_j\Delta w_j=0$. The first $N$ have one-dimensional kernel spanned by the binomial vector $(b_j)_j$, by Vandermonde rank and the same finite-difference identity. The normalization eliminates this kernel. The analytic implicit function theorem yields nodes and weights analytic in all entries, with strict positivity and strict node order persisting on a sufficiently small neighborhood.
+
+\paragraph{Step 2: a global dual certificate.} Consider the real functions $\Re f_k,\Im f_k$ as a $2N$-dimensional coefficient space. At the diagonal they are independent, and independence persists in a neighborhood, for instance by continuity of a nonsingular finite evaluation minor. We seek $g$ in this space satisfying
+\begin{equation}\label{eq:dualconditions}
+ g(t_j)=0\quad(0\le j\le N),\qquad g'(t_j)=0\quad(1\le j<N).
+\end{equation}
+These are $2N$ homogeneous conditions. Their rows are dependent because the weighted sum of the evaluation rows, with the positive weights from \eqref{eq:system}, is zero. At the diagonal their rank is exactly $2N-1$: writing $g(t)=A(t)\cos\kappa t+C_1(t)\sin\kappa t$ with polynomials of degree at most $N-1$, the $N+1$ values force $A=0$, and the $N-1$ derivative conditions force $C_1$ to be proportional to $\prod_{j=1}^{N-1}(t-x_j)$. Thus the kernel has dimension one. Continuity preserves a nonzero minor of order $2N-1$; the rank is therefore exactly $2N-1$ near the diagonal. Normalizing one nonzero coefficient and using this minor gives a continuous, indeed analytic, choice of nonzero $g$.
+
+At the diagonal choose its sign so that $g=\pm\sin(\kappa t)\prod_{j=1}^{N-1}(t-x_j)$ is positive between grid points. It has simple zeros at endpoints and double zeros at the interior points; its derivatives there have the appropriate strictly inward or strictly convex signs. For nearby parameters these signs persist by uniform convergence of $g,g',g''$ on a fixed compact interval containing the moving nodes. In small neighborhoods of the endpoints, the first derivative gives positivity on the interior side. In small neighborhoods of the interior nodes, the second derivative stays positive, and the two equations at each such node give strict positivity away from it. On the remaining compact subintervals strict positivity persists by continuity (or by rescaling to the fixed interval $[0,N\pi/\kappa]$). Therefore $g\ge0$ on $[0,t_N]$ with precisely these zeros.
+
+Any admissible probability measure supported on this interval annihilates $g$, so it is supported on these $N+1$ nodes. At the diagonal the evaluation matrix for the normalization and the moment constraints has full column rank $N+1$, as proved in the weight part of the Jacobian argument. A nonzero minor persists in a neighborhood; the weights are therefore uniquely the ones in \eqref{eq:system}. Both endpoints have positive mass. Translation now proves that no shorter admissible measure exists and that this is the unique minimizer up to translation. Reflecting about its midpoint gives another minimizer with left endpoint zero, hence the measure equals its reflection. Permutation of the frequencies preserves the constraints, and uniqueness proves that the analytic solution is permutation invariant.
+
+\paragraph{Step 3: cubic error in the diameter.} Work at mean one, writing $\lambda_j=1+u_j$ with $\sum_j u_j=0$. The real analytic function $L(\boldsymbol u)=t_N$ is symmetric in all $N$ variables. Its linear part on the mean-zero hyperplane is zero; its quadratic part restricted there is a multiple of $\sum_j u_j^2$ (the Hessian has a constant diagonal and a constant off-diagonal). For $N\ge2$, along $\boldsymbol u=(v,-v,0,\dots,0)$ Theorem~\ref{thm:sym} gives $L=N\pi$ identically for sufficiently small $v$. Thus the quadratic coefficient also vanishes. Taylor's theorem gives $L=N\pi+O_N(\max|u_j|^3)$. When $N=1$ the assertion is exact. Restoring scale gives \eqref{eq:width}.\end{proof}
+
+\section{Stability and the price of a shorter window}\label{sec:stability}
+The three theorems above give the same structural certificate: positive weights at nodes $0=t_0<\cdots<t_N=L$, and a nonnegative annihilated function with simple endpoint zeros and double interior zeros. We now quantify what the certificate says about nearly feasible measures. Define
+\[
+ E(\nu)=\max_{\lambda,\ 0\le k<m(\lambda)}\left|\int t^ke^{\ii\lambda t}\dd\nu(t)\right|.
+\]
+This uses the original moment basis, not the analytic divided-difference basis. Constants below can depend on the fixed frequencies and their orders (and hence may become large as frequencies coalesce).
+\begin{theorem}[Sharp stability and linear shortening cost]\label{thm:stable}
+In the setting of any of Theorems~\ref{thm:sym}, \ref{thm:double}, \ref{thm:local}, let $\mu_*$ have left endpoint zero. For probabilities $\nu$ on $[0,L]$,
+\[
+ W_1(\nu,\mu_*)\le C\sqrt{E(\nu)}\quad(N\ge2).
+\]
+The exponent $1/2$ is optimal. For $N=1$ the sharp exponent is $1$. For $0<d<L$ write
+\[
+ e(d)=\inf\{E(\nu):\supp\nu\subset[d/2,L-d/2],\ \nu\text{ a probability measure}\}.
+\]
+Then $c d\le e(d)\le C' d$ for sufficiently small $d>0$, with strictly positive constants depending on the fixed filter.
+\end{theorem}
+\begin{proof}
+Let $G=\{t_j\}$, and let $g$ be the appropriate dual certificate. Its stated root orders and compactness give $g(t)\ge c_1\dist(t,G)^2$ on $[0,L]$. The coefficients of $g$ in the original annihilated real basis have finite sum, so $\int g\dd\nu\le c_2 E(\nu)$. Round every point to a nearest grid point, breaking ties consistently, and call the pushforward $\nu_G$. Then
+\[
+ W_1(\nu,\nu_G)\le \int\dist(t,G)\dd\nu\le \sqrt{c_2 E(\nu)/c_1}.
+\]
+All the finitely many moment functions are Lipschitz on $[0,L]$. Their errors after rounding are $O(E+\sqrt E)$. In each of the three theorems the normalization and annihilated functions restricted to the grid determine weights uniquely: for the first two this follows from the root polynomial proof (which also works for signed weights of total mass zero), and for the local theorem from the full-rank evaluation matrix. A bounded left inverse for this finite matrix yields $\sum_j|\nu_G(\{t_j\})-w_j|=O(\sqrt E)$ for $E\le1$. The trivial bound $W_1\le L$ covers $E>1$. The triangle inequality proves the estimate. For $N=1$ the simple endpoint zeros instead give $g\ge c_1\dist(t,G)$, yielding $O(E)$ throughout.
+
+If $N\ge2$, replace the mass at an interior node by equal half-masses at distances $h$ on either side, keeping everything else fixed. The moment residual is $O(h^2)$ by Taylor expansion and the transport distance is at least $w_jh$, by testing the 1-Lipschitz function $\dist(t,G)$. Thus a uniform estimate with exponent greater than $1/2$ is impossible. If $N=1$, move the endpoints inward by $h$ to see that a linear estimate is sharp.
+
+For the lower shortening bound, round as before. When $E$ is small the rounded endpoint weights differ from the strictly positive $w_0,w_N$ by $O(\sqrt E)$ (or $O(E)$ if $N=1$), hence are bounded below by half their original values. On the cells rounding to the endpoints, $g(t)\ge c_3\min(t,L-t)$ by the simple zeros and positivity elsewhere in those cells. If the support lies in $[d/2,L-d/2]$, these cells contribute at least $c_4d$ to $\int g\dd\nu$, giving $E\ge c_4d/c_2$. When $E$ is not small, the same bound holds with a smaller constant for sufficiently small $d$. The upper bound follows by pushing $\mu_*$ forward under the affine map $t\mapsto d/2+(1-d/L)t$ and using the Lipschitz bounds of the original moment functions.\end{proof}
+
+\section{Application to prime errors under Dirichlet GRH}\label{sec:prime}
+We now use the theorem exported in \path{src/Main.lean}. Fix $q\ge1$, $G=(\mathbb Z/q\mathbb Z)^\times$, $h=\varphi(q)$, and $a\in G$. Define
+\[
+ S_a(x)=\sum_{\substack{n\le x\\n\equiv a\bmod q}}\Lambda(n)(1/n-1/x),\qquad
+ c_a=h^{-1}\sum_{\chi\bmod q}\overline{\chi(a)}c_\chi,
+\]
+where $c_\chi=\lim_{s\to1}(-L'/L(s,\chi)-\delta_\chi/(s-1))-\delta_\chi$ and $\delta_\chi=1$ for principal $\chi$, zero otherwise. If $m_\chi(\gamma)$ is the order of the primitive inducing $L$-function at $1/2+\ii\gamma$, let
+\[
+ v_a(\gamma)=h^{-1}\sum_\chi\overline{\chi(a)}m_\chi(\gamma),\qquad
+ Z_a(t)=e^{t/2}(S_a(e^t)-t/h-c_a)-4v_a(0).
+\]
+The centering includes central zeros; no nonvanishing at $1/2$ is assumed. The Article's ramp explicit formula, also obtained by shifting the Mellin integral of $(-L'/L)(s)x^{s-1}/(s(s-1))$ from $\Re s>1$ to $-1/2$, is
+\begin{equation}\label{eq:ramp}
+ Z_a(t)=\sum_{\gamma\ne0}\frac{v_a(\gamma)}{1/4+\gamma^2}e^{\ii\gamma t}+O_q((1+t)e^{-t/2}).
+\end{equation}
+Here equal ordinates are grouped before summation. In brief, residues at the zeros contribute $m_\chi(\gamma)x^{-1/2+\ii\gamma}/(1/4+\gamma^2)$ under Dirichlet GRH; the pole and the origin supply the displayed main terms and an $O_q((1+\log x)/x)$ error before normalization. The new line is bounded by the functional equation and Stirling; horizontal segments tend to zero along heights away from ordinates. Removing imprimitive factors contributes a constant and $O_q((1+\log x)/x)$ by the geometric series. The local zero count $O_q(\log(2+|y|))$ in unit intervals ensures absolute and uniform convergence of the zero series. This is the argument of \texttt{zer:lem:ramp}; no additional hypothesis on ordinates is introduced.
+
+\begin{corollary}[Optimal robust prime averaging; uses Dirichlet GRH]\label{cor:prime}
+Choose any finite multiset of positive zero ordinates, or approximations to them, satisfying one of the three cluster theorems, and use the corresponding optimal centered filter $\mu_c$ of diameter $L$, with $H=L/2$. Define
+\[
+ A_a(t)=\int Z_a(t+u)\dd\mu_c(u),\qquad t\ge H+\log2.
+\]
+Then simultaneously for all reduced classes $a$,
+\begin{equation}\label{eq:filtered}
+ A_a(t)=\sum_{\gamma\ne0}\frac{v_a(\gamma)}{1/4+\gamma^2}e^{\ii\gamma t}\widehat\mu_c(\gamma)
+ +O_q\bigl((1+t+H)e^{-(t-H)/2}\bigr).
+\end{equation}
+Exact target ordinates (and their negatives) contribute zero, regardless of multiplicity or shared zeros. If a true ordinate is within $\eta$ of a target of cancellation order $m$, then its multiplier is at most $\min(1,(H\eta)^m/m!)$ in modulus. The filter uses only $N+1$ evaluations of the same arithmetic statistic at scales between $e^{t-H}$ and $e^{t+H}$. No translation-independent positive averaging rule with the same exact cancellation and derivative requirements can use a smaller log-window.
+\end{corollary}
+\begin{proof}
+Uniform absolute convergence permits termwise integration of \eqref{eq:ramp}; the error is bounded uniformly on $|u|\le H$, giving \eqref{eq:filtered}. Differentiating the transform under the integral gives $|\widehat\mu_c^{(m)}(\omega)|\le H^m$ for real $\omega$. Taylor's formula at a target proves the estimate, and $|\widehat\mu_c|\le1$ by positivity. The support and optimality assertions are those of the extremal theorems.\end{proof}
+
+\paragraph{Stronger pair bound.} In the symmetric pair case with equal cancellation order $m$, write $\kappa=(\alpha+\beta)/2$, $\delta=(\beta-\alpha)/2$, $T=\pi/\kappa$. The identity
+\[
+ \cos(T\omega)+\cos(\delta T)=2\sin\bigl(T(\omega-\alpha)/2\bigr)\sin\bigl(T(\omega-\beta)/2\bigr)
+\]
+implies the explicit simultaneous robustness estimate
+\begin{equation}\label{eq:pairbound}
+ |\widehat\mu_c(\omega)|\le\min\left(1,\left[\frac{T^2|\omega-\alpha|\,|\omega-\beta|}{2(1+\cos\delta T)}\right]^m\right).
+\end{equation}
+Thus a pair of close target frequencies attenuates every frequency in the intervening gap by at most $[T^2(\beta-\alpha)^2/(8(1+\cos\delta T))]^m$. This strengthens the separate single-target Taylor bound in the small-gap regime and is explicit even for imperfect numerical zero data. For the general symmetric cluster, multiply the corresponding bounds factor by factor in \eqref{eq:transform}. These are local suppression bounds, not a claim that the entire prime fluctuation is small: all untargeted frequencies remain in \eqref{eq:filtered}.
+
+\paragraph{Actual zero clusters.} The nonzero ordinates of the completed zeta function are unbounded and distinct ordinates have bounded gaps relative to height in the sense needed here: for each fixed $r>1$ there are infinitely many pairs of consecutive distinct positive ordinates with ratio $<r$. Indeed if all successive ratios were eventually at least $r$, then there would be $O(\log T)$ distinct ordinates below $T$; the usual unit-interval bound $O(\log T)$ on total multiplicity would give $O(\log^2 T)$ zeros, contrary to the Riemann--von Mangoldt formula. The same argument with $N$ consecutive distinct ordinates and multiplicative blocks shows that for each fixed $N$ and relative radius there are arbitrarily high clusters of $N$ distinct ordinates inside that radius: otherwise every such multiplicative interval would contain fewer than $N$ distinct ordinates, again giving $O_N(\log^2 T)$ zeros. Thus the local theorem applies to genuine arbitrarily high clusters under the exported RH, not merely formal spectral examples. It does not require an explicit lower bound on consecutive zero gaps.
+
+\section{Examples and computational evidence}
+The proofs above do not rely on computations. The included \texttt{check\_filters.py} checks exact polynomial identities for two examples using SymPy, and numerically solves the moment constraints for two nonsymmetric clusters using 65-digit arithmetic. It also produces an illustrative zeta example. The output \texttt{checks.json} is included. The numerical moment checks are not interval certificates of optimality; the exact symmetric theorems and the local existence theorem supply the mathematical conclusions in their respective ranges.
+
+\paragraph{Exact examples.} For $\alpha=1$, $\beta=2$, orders two each, the optimizer has width $8\pi/3$ and weights $(1,2,3,2,1)/9$. Its polynomial is $(1+z+z^2)^2/9$, which has double roots at the primitive cube roots of unity. For a symmetric cluster of frequencies $10,12,14$ with orders $1,2,1$, the bandwidth condition reads $4\cdot2<12$. The width is $\pi/3$, and the weights are
+\[
+ \left(\tfrac12-\tfrac{\sqrt3}4,\ \tfrac14,\ -\tfrac12+\tfrac{\sqrt3}2,\ \tfrac14,\ \tfrac12-\tfrac{\sqrt3}4\right).
+\]
+
+\paragraph{Nonsymmetric illustrations.} Numerical solutions of \eqref{eq:system} (here in the equivalent original moment basis):
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Frequencies (with repetitions)&Computed width&$N\pi/\bar\lambda$\\
+\midrule
+$0.98,1.00,1.05$&9.33146333059&9.33146332749\\
+$0.98,0.98,1.01,1.06$&12.47282444263&12.47282443113\\
+\bottomrule
+\end{tabular}
+\end{center}
+The local theorem has no explicit certified radius, so these numerical solutions illustrate the deformation and are not claimed to be certified global optima at these particular parameters. They have positive weights and high-precision residuals below $10^{-48}$ in the numerical computation.
+
+\paragraph{Zeta example.} Approximate first two positive ordinates $\alpha=14.13472514\ldots$, $\beta=21.02203964\ldots$ give the double-cancellation filter of Theorem~\ref{thm:double}. Numerically its width is $0.71487639$ versus $0.74340684$ for separate convolution; the weights are approximately
+\[ (0.075764,0.247449,0.353574,0.247449,0.075764). \]
+The numerical ordinates lie well within the first ratio band; the displayed approximations are illustrative rather than rigorous zero enclosures. The window of prime arguments has multiplicative span $e^{0.71487639}\approx2.044$. Even with uncertainty in either ordinate, \eqref{eq:pairbound} controls the remaining contribution.
+
+\section{Further research questions}
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item Make the local deformation neighborhood $\varepsilon_N$ explicit using the inverse Vandermonde Jacobian and quantitative control of the dual certificate. Improve its dependence on $N$ using confluent interpolation instead of raw monomials.
+\item Determine the first nonzero Taylor term beyond the mean-frequency expression \eqref{eq:width}, including its sign on nonsymmetric clusters. Exact symmetry makes all Taylor corrections vanish along reflection-symmetric configurations.
+\item Determine the full two-frequency phase diagram for derivative order $m\ge2$, including ratios above three, unequal orders, and resonance transitions. Our result leaves those ranges open.
+\item Group actual zero ordinates into clusters to improve explicit constants in the logarithmic-support filter theorem of the Article. The present optimality result is local in frequency; it does not establish an optimal global $\log B$ constant.
+\item Develop a quantitative exact arithmetic implementation of the dual certificates, and formalize Rolle with multiplicities, the constant-coefficient ODE factorization, and the finite polynomial uniqueness lemma in Lean. The analytic implicit function and positivity persistence steps would be a second stage; the ramp explicit formula a third.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{vendor} ProveIt, \emph{Vendored grh-lean (readable edition)}, upstream snapshot \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{Vendored source}; \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{pinned upstream}. Inspected 27 November 2026.
+\bibitem{article} ProveIt Contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, 26 November 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{Article directory}, particularly \texttt{sections/rec.tex} and \texttt{sections/zer.tex}.
+\bibitem{command} W. Singhose, \emph{Command Generation for Flexible Systems}, thesis, 1997, chapter 3, Fig.~3.24 (direct two-mode ZVD--ZVD shapers). \href{https://www.researchgate.net/publication/37605267_Command_generation_for_flexible_systems}{Bibliographic page and accessible excerpts}.
+\bibitem{trolley} \emph{A Reasoned Attempt to Mitigate Vibrations in Nonlinear Flexible Systems Influenced by Tractive--Elastic Rolling Contact Friction Through Input Shaping: A Case Study on a Trolley--Pipe Benchmark Transport System}, Actuators 14 (2025), 97, section 2.4. \href{https://doi.org/10.3390/act14020097}{doi:10.3390/act14020097}.
+\end{thebibliography}
+\end{document}

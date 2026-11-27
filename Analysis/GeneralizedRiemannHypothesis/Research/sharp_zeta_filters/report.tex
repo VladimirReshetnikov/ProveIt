@@ -1,0 +1,327 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Sharp positive zeta filters}\rhead{\small Research note}\cfoot{\thepage}\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\e}{\mathrm e}\newcommand{\ii}{\mathrm i}\newcommand{\dd}{\,\mathrm d}\newcommand{\abs}[1]{\left|#1\right|}\newcommand{\norm}[1]{\left\|#1\right\|}\newcommand{\ord}{\operatorname{ord}}\newcommand{\re}{\operatorname{Re}}\newcommand{\im}{\operatorname{Im}}\newcommand{\supp}{\operatorname{supp}}
+\DeclareMathOperator{\TV}{TV}
+\title{The sharp logarithmic support constant\ for positive Riemann-zero filters\\[4pt]\large Exact moment compression, stopband costs, and prime-ramp averaging}
+\author{Research note for ProveIt}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The merged ProveIt article asks for the optimal constant in the logarithmic support bound for positive Fourier filters annihilating low Riemann zeros. We prove that the least half-width for multiplicity-preserving exact cancellation up to height $B$ is $\frac12\log B+O(\log\log B)$, attaining the leading constant in the existing Jensen lower bound. The construction compresses the classical positive Riemann theta density into a finite interval while preserving prescribed exponential-polynomial moments exactly. It requires neither zero separation nor simplicity, and applies unconditionally to complex zeros of the completed zeta function. We also prove an additional lower bound for uniform exponential stopband suppression, give a positive probabilistic upper bound, and use the vendored RH theorem to obtain an explicit prime-ramp average on scales within a factor $O(\sqrt{\log X\log\log X})$ of $X$, with error $O(X^{-3/2})$ after removal of its exact secondary term. The new arguments are human-readable proofs, not a new Lean-checked development.
+\end{abstract}
+
+\section{Input, scope, and the question addressed}
+\label{sec:input}
+The input directories were retrieved through GitHub on the main branch of ProveIt \cite{vendor,article}. The vendor README identifies upstream commit
+\begin{center}\small\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}\end{center}
+from 25 November 2026, with Lean 4.35.0 and Mathlib revision \path{56a005855ea17e0b0958f73ec801ae140b0a1679}. The exported declarations in \texttt{src/Main.lean} are \texttt{riemannHypothesis}, \path{riemannZeta_eq_zero_re}, \path{LFunction_ne_zero_of_half_lt_re}, \path{LFunction_eq_zero_re} and its primitive-character variant. Their types in \texttt{Statements.lean} use Mathlib's analytic functions. The vendor reports ordinary Lean axioms only and independent checks; the vendored import was not built by ProveIt's root package. We did not replay those checks. We take the exported statement as an input precisely where marked RH. Dirichlet GRH is not GRH for arbitrary Artin or automorphic $L$-functions.
+
+The source proof uses three bounds on the same twisted lattice: short integral forms, enough independent translates, and a lower bound for integral covolume corrected by index. Their common main term cancels in \texttt{New.star\_inequality}; the resulting estimate for the ramp remainder is passed through a one-sided Mellin--Landau criterion in \path{New.LFunction_ne_zero_of_primeRemainder_le}. The auxiliary quadratic twist is chosen zero-free in the relevant rectangle. Functional-equation symmetry then gives the critical line. The relevant files are listed with blob identifiers in the accompanying audit. We do not claim to have re-established the underlying arithmetic estimates.
+
+The merged article \cite{article} consolidates 131 reports, with 914 theorem-like results according to its README. We examined its introduction, source mechanism, and headings of the analytic, zero, reconstruction, arithmetic, Li, and spanning sections; we read the relevant positive-filter and ramp-formula statements in detail. In \texttt{sections/rec.tex}, \texttt{rec:thm:logfilter} constructs multiplicity-preserving positive filters with half-width $O(\log B)$ and a uniform stopband of size $\exp(-c_0B\log B)$. The lemma \texttt{rec:lem:jensensupport} gives the leading lower bound $\frac12\log B$ for zeta. The open-question list asks for the best constant. The present note solves the exact-cancellation version and separates it from the stronger stopband problem, where the latter constant cannot be $1/2$ for a fixed positive rate. It also sharpens the zeta case of \texttt{rec:thm:polylogavg}. This is a proposed new result relative to the retrieved article; a targeted literature search found no matching formulation, not a proof of priority.
+
+\section{Statements of the main results}
+Set
+\begin{equation}\label{eq:xi}
+\xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),\qquad
+\Xi(z)=\xi(\tfrac12+\ii z),\qquad F_\mu(z)=\int \e^{\ii zt}\dd\mu(t).
+\end{equation}
+A probability measure supported on $[-H,H]$ is called a positive filter of half-width $H$. Vanishing with multiplicity $m$ means $F_\mu^{(j)}(z)=0$ for $0\le j<m$. Count zeros with multiplicity. Let $M(B)$ count all zeros $z$ of $\Xi$ with $|z|\le B$, and let $H_*(B)$ be the infimum of the half-widths of filters that vanish at all these zeros with multiplicity. All logarithms are natural.
+
+\begin{theorem}[Sharp leading constant, unconditional]\label{thm:main}
+For every $B\ge2$ there is an even probability density $\mu_B$ supported on $[-H_B,H_B]$ with
+\[
+ H_B=\log(16\sqrt{M(B)+3}),
+\]
+whose Fourier transform has all zeros of $\Xi$ in $|z|\le B$ with at least their multiplicities. It can also be required that
+\begin{equation}\label{eq:matchmoment}
+F_{\mu_B}(\ii/2)=F_{\mu_B}(-\ii/2)=\frac{1}{2\xi(1/2)}.
+\end{equation}
+As $B\to\infty$,
+\begin{align}
+\tfrac12\log B-\tfrac12\log(2\pi)-1-O(\log^2 B/B)
+ &\le H_*(B)\label{eq:lower}\\
+ &\le \tfrac12\log B+\tfrac12\log\log B+O(1).\nonumber
+\end{align}
+In particular $H_*(B)/\log B\to1/2$. Under RH, this is exactly the corresponding multiplicity-preserving problem for the real ordinates $0<|\gamma|\le B$.
+\end{theorem}
+
+The density in Theorem~\ref{thm:main} is extremely close to the original positive theta density, despite having compact support. In particular, with $n=M(B)+3$, it satisfies
+\begin{equation}\label{eq:tvmain}
+\int_\R \abs{\frac{\dd\mu_B}{\dd t}(t)-\frac{\Phi(t)}{\Xi(0)}}\dd t\le 2\e^{-100n},
+\end{equation}
+where $\Phi$ is defined in \eqref{eq:phi}. The exponentially small correction is relative to the original density inside its support, a stronger property than mere total-variation proximity.
+
+\begin{theorem}[Additional stopband cost, unconditional]\label{thm:stop}
+Let $H_c(B)$ be the infimum of half-widths for the same exact cancellation problem, with the additional constraint
+\[
+\sup_{|x|\ge B}|F_\mu(x)|\le \e^{-cB\log B},\qquad c\ge0.
+\]
+For each fixed $c\ge0$,
+\begin{equation}\label{eq:trade}
+\frac12+\frac{\pi c}{4}\ \le\ \liminf_{B\to\infty}\frac{H_c(B)}{\log B}\ \le\ \limsup_{B\to\infty}\frac{H_c(B)}{\log B}\ \le\ \frac12+c.
+\end{equation}
+Thus the infimum of the achievable leading constants over unspecified positive $c$ is $1/2$, but no fixed $c>0$ attains it. For $c=0$ the leading constant is determined exactly. The sharp tradeoff at any fixed $c>0$ remains open.
+\end{theorem}
+
+\begin{theorem}[A nearly minimal exact zero-cancelling prime average, uses RH]\label{thm:primes}
+Write $\Lambda$ for von Mangoldt's function, $\gamma_E$ for Euler's constant, and
+\[
+R(x)=\sum_{n\le x}\Lambda(n)\left(\frac1n-\frac1x\right)-\log x+1+\gamma_E.
+\]
+For every sufficiently large $X$ put $B=4\log X$ and use the density in Theorem~\ref{thm:main}. Then
+\begin{equation}\label{eq:primeavg}
+\int \e^{u/2}R(X\e^u)\dd\mu_B(u)
+=\frac{\log(2\pi)}{2\xi(1/2)X}+O(X^{-3/2}).
+\end{equation}
+All sampled scales lie in $[X/L_X,XL_X]$, where $L_X=O(\sqrt{\log X\log\log X})$. The measure is independent of the centre once $B$ is fixed. It cancels each zero contribution up to $B$, not merely their sum at one centre. The formula is for prime powers, not a prime-only statistic.
+\end{theorem}
+
+\section{A finite-dimensional compression principle}
+\label{sec:compression}
+The key idea is to preserve the exact moments of a positive density with a doubly exponential tail. We first prove a gap-free extrapolation inequality by a discrete recurrence. No separation between exponential frequencies is needed, and repeated frequencies are allowed.
+
+\begin{lemma}[Gap-free extrapolation]\label{lem:extrap}
+Let $p(t)=\sum_{j=1}^r P_j(t)\e^{\lambda_jt}$, where the $\lambda_j\in\C$ are distinct, $\deg P_j<d_j$, $\sum d_j=n\ge1$, and $|\re\lambda_j|\le a$. For $t\ge h>0$,
+\begin{equation}\label{eq:extrap}
+|p(t)|\le\frac{4n^2}{h}\left(\frac{8\e t}{h}\right)^n\e^{at}\int_0^h|p(v)|\dd v.
+\end{equation}
+The analogous bound at $-t$ uses the integral on $[-h,0]$.
+\end{lemma}
+\begin{proof}
+Fix $t\ge h$ and $k=\lceil 2nt/h\rceil$. For $v\in[0,h/2]$ put $\Delta=(t-v)/k>0$ and $a_j=p(v+j\Delta)\e^{-a j\Delta}$ for $j\ge0$. The characteristic roots of this sequence are $z_\ell=\e^{(\lambda_\ell-a)\Delta}$, each repeated $d_\ell$ times, with $|z_\ell|\le1$. Indeed the operator $E-z_\ell$ (where $E$ shifts the index by one) lowers the degree of the polynomial factor, so the product of the $n$ factors annihilates the sequence. This works even if some sampled roots coincide.
+
+List those $n$ roots with repetitions as $z_1',\dots,z_n'$. The formal generating function is
+\[
+\sum_{j\ge0}a_jw^j=\frac{\sum_{j=0}^{n-1}b_jw^j}{\prod_{\ell=1}^n(1-z_\ell'w)}.
+\]
+Each $|b_j|\le 2^n\max_{0\le i<n}|a_i|$, because the sum of the absolute coefficients of the denominator is at most $2^n$. Each coefficient of its reciprocal of degree $l\ge0$ is at most $\binom{l+n-1}{n-1}$ in absolute value, by expanding the $n$ geometric series. It follows that
+\[
+|a_k|\le n2^n\binom{k+n-1}{n-1}\max_{i<n}|a_i|
+\le n(8\e t/h)^n\max_{i<n}|a_i|.
+\]
+For the last step use $\binom{k+n-1}{n-1}\le\binom{k+n}{n}\le(\e(k+n)/n)^n$ and $(k+n)/n\le 2t/h+2\le4t/h$. The case $n=1$ is included.
+
+Since $v+k\Delta=t$, multiplying back costs at most $\e^{at}$. For each $i<n$, the point $v+i(t-v)/k$ belongs to $[0,h]$ and has derivative $1-i/k\ge1/2$ as a function of $v$. Also $|a_i|\le|p(v+i\Delta)|$. Replace the maximum by the sum, integrate over $v\in[0,h/2]$, and divide by $h/2$. The sum of the integrals is at most $2n\int_0^h|p|$, proving \eqref{eq:extrap}. Replacing $p(t)$ by $p(-t)$ gives the second claim.
+\end{proof}
+
+\begin{lemma}[Explicit weighted tail domination]\label{lem:tail}
+Suppose $w$ is an even positive density (not necessarily normalized) and for all $t\ge0$,
+\begin{equation}\label{eq:weightbounds}
+\e^{-4\e^{2t}}\le w(t)\le128\e^{-\e^{2t}}.
+\end{equation}
+For an exponential-polynomial space as in Lemma~\ref{lem:extrap}, with $a\le1/2$, set $H=\log(16\sqrt n)$ and $\delta=\e^{-100n}$. Then every $p$ in the space satisfies
+\begin{equation}\label{eq:tail}
+\int_{|t|>H}|p(t)|w(t)\dd t\le\delta\int_{-H}^{H}|p(t)|w(t)\dd t.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $h=H/2$, so $H>2$ and $h>1$. For $t=H+u$, $u\ge0$, Lemma~\ref{lem:extrap} and \eqref{eq:weightbounds} yield an upper bound for the positive tail, divided by $\int_0^h |p(v)|\dd v$, of
+\[
+\frac{512n^2}{h}(16\e)^n\e^{aH-\e^{2H}}
+\int_0^\infty \e^{-(2\e^{2H}-n/H-a)u}\dd u.
+\]
+Here $(1+u/H)^n\le\e^{nu/H}$ and $\e^{2u}\ge1+2u$. On $[0,h]$, $w\ge\e^{-4\e^H}$. Thus the tail relative to the weighted central integral is bounded by
+\begin{equation}\label{eq:delta}
+D_n=\frac{512n^2}{h(2\e^{2H}-n/H-a)}\exp\bigl(n\log(16\e)+aH-\e^{2H}+4\e^H\bigr).
+\end{equation}
+The same bound applies to the negative side. To see that $D_n\le\delta$, use $\e^{2H}=256n$, $4\e^H=64\sqrt n\le64n$, $\log(16\e)<4$, and $aH\le\log4+\tfrac14\log n\le2n$. The prefactor is at most $2n$ because $h>1$ and $2\e^{2H}-n/H-a\ge511n$. Consequently $D_n\le 2n\e^{-186n}\le\e^{-184n}<\delta$. Adding the two bounds gives \eqref{eq:tail} without a factor of two because the central half-intervals are disjoint except at the origin.
+\end{proof}
+
+\begin{theorem}[Positive moment compression]\label{thm:compress}
+Under \eqref{eq:weightbounds}, let $V$ be a real vector space of real-valued exponential polynomials lying in a space as in Lemma~\ref{lem:extrap} with $a\le1/2$. Assume $1\in V$ and $p(-t)\in V$ for $p\in V$. There is an even, measurable function $r$ on $[-H,H]$ with $|r|\le\delta$ a.e. such that the positive density
+\[
+w_H(t)=\mathbf1_{[-H,H]}(t)w(t)(1+r(t))
+\]
+satisfies $\int p w_H=\int p w$ for every $p\in V$. It has the same total mass $W=\int w$, and $\int |w_H-w|\le 2\delta W$.
+\end{theorem}
+\begin{proof}
+On $V$ restricted to the central interval, considered as a subspace of $L^1([-H,H],w\dd t;\R)$, define $\ell(p)=\int_{|t|>H}p(t)w(t)\dd t$. The bound \eqref{eq:tail} makes this well defined even as an equivalence class in $L^1$, and $\norm{\ell}\le\delta$. By real Hahn--Banach extend it to all of $L^1$ with the same bound. The $L^1$ duality theorem gives $r\in L^\infty$ with $\norm r_\infty\le\delta$ and $\ell(p)=\int_{-H}^H pwr$. Reflection invariance and evenness of $w$ let us replace $r(t)$ by $(r(t)+r(-t))/2$ without changing any prescribed moment. Since $\delta<1$, $w_H\ge0$. The moment of 1 gives equality of masses. The omitted mass is at most $\delta\int_{-H}^H w$ by \eqref{eq:tail} for 1, and the added signed correction has absolute integral at most the same. This proves the last claim.
+\end{proof}
+
+\begin{remark}[Why this avoids zero-spacing hypotheses]
+The bound uses the number of exponential modes counted with polynomial multiplicity, not their separations or the inverse of a Vandermonde matrix. It therefore remains valid as frequencies merge. The construction is existential, via a norm-controlled dual extension; finite-grid linear programming can approximate it but is not part of the proof. The same argument works for other positive densities with comparable tails (with adjusted constants). This is the main new analytic mechanism.
+\end{remark}
+
+\section{The positive Riemann theta density and the support constant}
+\label{sec:xi}
+For $t\ge0$ let
+\begin{equation}\label{eq:phi}
+\Phi(t)=\sum_{m=1}^\infty\left(4\pi^2 m^4\e^{9t/2}-6\pi m^2\e^{5t/2}\right)\e^{-\pi m^2\e^{2t}},
+\end{equation}
+and extend it evenly. The classical Fourier representation \cite[\S2.16]{titchmarsh} is $\Xi(z)=\int_\R\Phi(t)\e^{\ii zt}\dd t$ for all complex $z$. For completeness, put $q(t)=\e^{t/2}\sum_{m\ge1}\e^{-\pi m^2\e^{2t}}$. The theta transformation makes $\e^{t/2}+2q(t)$ even, so $q'(0)=-1/4$. Splitting the Mellin integral for the completed zeta function at 1 gives
+\[
+\Xi(z)=\tfrac12-2(z^2+\tfrac14)\int_0^\infty q(t)\cos(zt)\dd t.
+\]
+Two integrations by parts turn this into $2\int_0^\infty(q''-q/4)(t)\cos(zt)\dd t$. Termwise differentiation gives \eqref{eq:phi}; convergence of the differentiated series and vanishing boundary terms follow from double-exponential decay. The formula extends to all $z$ by holomorphy.
+
+\begin{lemma}[Elementary theta bounds]\label{lem:theta}
+The density $\Phi$ satisfies \eqref{eq:weightbounds}.
+\end{lemma}
+\begin{proof}
+For $t\ge0$ every summand in \eqref{eq:phi} is positive, since $2\pi m^2\e^{2t}>3$. The $m=1$ summand alone is at least $(4\pi^2-6\pi)\e^{9t/2}\e^{-\pi\e^{2t}}\ge \e^{-4\e^{2t}}$. For the upper bound, drop the negative term and factor out $\e^{-\pi\e^{2t}}$. The remaining sum of $m^4\e^{-\pi(m^2-1)\e^{2t}}$ is bounded by $\sum_{m\ge1}\e^{-5(m-1)}<2$, using $\log m\le m-1$ and $m+1\ge3$ for $m\ge2$. Thus $\Phi(t)\le128\e^{9t/2-\pi\e^{2t}}\le128\e^{-\e^{2t}}$: the last inequality follows from $\e^{2t}\ge(1+t)^2\ge4t$ and $\pi-9/8>1$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}: upper bound]
+The classical zero-free half-planes and functional equation give $|\im z|<1/2$ at every zero of $\Xi$; the zero set is invariant under $z\mapsto-z$ and conjugation. Also $\Xi(0)>0$ by Lemma~\ref{lem:theta}. For the finite multiset $Z_B$ of zeros in the closed disk, take the complex span of
+\[
+1,\quad \e^{t/2},\quad\e^{-t/2},\quad t^j\e^{\ii zt}\quad(z\in Z_B\text{ distinct},\ 0\le j<\ord_z\Xi).
+\]
+Its real-valued subspace contains the real and imaginary parts of each displayed function (the spectrum is closed under conjugation of exponents), and is reflection invariant. The exponential-polynomial dimension parameter is $n=M(B)+3$ and the real-part bound is $1/2$. Apply Theorem~\ref{thm:compress} with $w=\Phi$. Divide the resulting density by $W=\Xi(0)=\xi(1/2)>0$. All the derivatives of its transform at the prescribed zeros match those of $\Xi/\Xi(0)$, since differentiation inserts $(\ii t)^j$. The two extra moments match $\Xi(\pm\ii/2)/\Xi(0)=\xi(0)/\xi(1/2)=\xi(1)/\xi(1/2)=1/(2\xi(1/2))$. This proves \eqref{eq:matchmoment} and \eqref{eq:tvmain}. In addition,
+\begin{equation}\label{eq:domdensity}
+0\le \frac{\dd\mu_B}{\dd t}\le(1+\delta)\frac{\Phi(t)}{\Xi(0)}\quad\text{a.e. on }\R.
+\end{equation}
+By the classical Riemann--von Mangoldt formula, $N(T)=\tfrac{T}{2\pi}\log(T/(2\pi))-\tfrac{T}{2\pi}+O(\log T)$, where $N$ counts positive ordinates. Because $0\le |z|-|\re z|\le1/2$ and the unit-interval count is $O(\log T)$, the disk count is $M(B)=2N(B)+O(\log B)$. Thus $n\asymp B\log B$ and the stated upper bound follows.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}: lower bound]
+If $\supp\mu\subset[-H,H]$, then $F_\mu(0)=1$ and $|F_\mu(z)|\le\e^{H|\im z|}$. Jensen's formula at radius $B$ gives
+\[
+\sum_{z\in Z_B}\log\frac{B}{|z|}\le\frac1{2\pi}\int_0^{2\pi}\log|F_\mu(B\e^{\ii\theta})|\dd\theta\le \frac{2HB}{\pi}.
+\]
+Boundary zeros contribute zero to the sum, and the formula at a boundary zero follows by continuity of the Jensen mean. The left side is $\int_0^B M(t)\dd t/t$. Integrating the count from the preceding proof (with the bounded low-height contribution absorbed) yields
+\[
+\int_0^B\frac{M(t)}t\dd t
+=\frac B\pi(\log(B/(2\pi))-2)+O(\log^2 B).
+\]
+Rearrangement proves \eqref{eq:lower}. In particular the leading constant agrees with \texttt{rec:lem:jensensupport} even without RH, if the zeros are understood as complex points rather than ordinates. Under RH the two formulations coincide.
+\end{proof}
+
+\begin{remark}[Exact atoms and stability]
+For each fixed $B$ the finite real moment vector of $\mu_B$ belongs to the convex hull of the evaluation vectors on $[-H_B,H_B]$. Carath\'eodory gives a positive atomic measure with at most $M(B)+3$ atoms, since the constant coordinate is fixed. Symmetrizing gives at most twice as many atoms. It preserves the exact cancellation and extra moments, but need not preserve the uniform stopband or density domination. For a bounded interval the Fourier transform of any such measure satisfies, at a zero $z$ of order at least $m$,
+\[
+|F_\mu(z+\eta)|\le \e^{H(|\im z|+|\eta|)}(H|\eta|)^m/m!,
+\]
+by Taylor's integral remainder under the integral. No numerical root-spacing estimate is implicit here.
+\end{remark}
+
+\section{The fixed-rate stopband problem}
+\label{sec:stop}
+The article's stronger filter also controls the entire real stopband. The following lower bound combines two different constraints, rather than taking the maximum of separate lower bounds.
+\begin{lemma}[Jensen with a stopband]\label{lem:stoplower}
+Suppose $\mu$ is any probability measure on $[-H,H]$, $B>0$, and $|F_\mu(x)|\le\e^{-D}$ for every real $|x|\ge B$, $D\ge0$. Then
+\begin{equation}\label{eq:stopjensen}
+\sum_{F_\mu(z)=0,\,|z|< B}\ord_z F_\mu\log(B/|z|)\le \frac{2HB}{\pi}-\frac D2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In the upper half-plane $g(z)=\e^{\ii Hz}F_\mu(z)$ is holomorphic and bounded by 1. Its boundary logarithmic modulus is at most $-D$ outside $[-B,B]$ and at most zero inside. The two-constants theorem for bounded holomorphic functions gives
+\[
+\log|F_\mu(z)|\le H\im z-D\omega(z,\R\setminus[-B,B]),\qquad\im z>0,
+\]
+where $\omega$ is harmonic measure in the upper half-plane. One proof maps the half-plane to the disk and majorizes the subharmonic logarithm by the Poisson integral of the bounded, piecewise constant boundary majorant, using the bounded-above maximum principle; the exceptional two endpoints and infinity have harmonic measure zero. For $z=B\e^{\ii\theta}$, $0<\theta<\pi$, the interval $[-B,B]$ subtends angle $\pi/2$ at $z$ (Thales' theorem); its harmonic measure is $1/2$, and the complementary measure is also $1/2$. Apply the same argument to $F_\mu$ in the lower half-plane, using $\e^{-\ii Hz}$. Hence on both semicircles the bound is $HB|\sin\theta|-D/2$. Jensen's formula, with $F_\mu(0)=1$, yields \eqref{eq:stopjensen}.
+\end{proof}
+
+\begin{lemma}[A positive stopband filter of half-width $h$]\label{lem:tele}
+For $B>0$, $h\ge0$, an even probability measure $\nu_{B,h}$ on $[-h,h]$ has transform
+\begin{equation}\label{eq:tele}
+F_{\nu_{B,h}}(z)=\frac{\cosh(h\sqrt{B^2-z^2})}{\cosh(hB)}.
+\end{equation}
+The numerator is an entire function of $z$ by its power series. In particular $\sup_{|x|\ge B}|F_{\nu_{B,h}}(x)|\le 2\e^{-Bh}$.
+\end{lemma}
+\begin{proof}
+Let a particle move with velocity $+1$ or $-1$, initially equally likely, changing velocity at the arrival times of an independent Poisson process of rate $B$. Let $Y=\int_0^h v(t)\dd t$ be its displacement. Condition on the final velocity equalling the initial velocity. The conditional law is symmetric and supported on $[-h,h]$. To compute its transform, the two-state Fourier-weighted transition matrix at time $h$ is $\exp(hA)$ with
+\[
+A=\begin{pmatrix}\ii z-B&B\\B&-\ii z-B\end{pmatrix}.
+\]
+This follows from conditioning on the first short time increment (probability $B\dd t$ of a switch and multiplication by $\e^{\pm\ii z\dd t}$). The unnormalized expectation restricted to the event is half its trace. Since $(A+BI)^2=(B^2-z^2)I$, this trace divided by two is $\e^{-Bh}\cosh(h\sqrt{B^2-z^2})$. Dividing by its value at $z=0$ proves \eqref{eq:tele}. For real $|x|\ge B$ the numerator is a cosine of a real argument, proving the last bound.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:stop}]
+Use Lemma~\ref{lem:stoplower} with $D=cB\log B$ and retain the prescribed zeros. The zero-count integral in the proof of Theorem~\ref{thm:main} gives
+\[
+H\ge\tfrac12\log B-\tfrac12\log(2\pi)-1+\frac{\pi D}{4B}-O(\log^2 B/B).
+\]
+For the upper bound convolve the compact density of Theorem~\ref{thm:main} with $\nu_{B,h}$ for $h=(D+\log2)/B$. Convolution preserves positivity and total mass, adds half-widths, and multiplies Fourier transforms, so no prescribed zero is lost. By Lemma~\ref{lem:tele} the stopband has the required attenuation because a probability transform has modulus at most 1 on the real axis. Thus
+\[
+H_c(B)\le\log(16\sqrt{M(B)+3})+\frac{D+\log2}{B}.
+\]
+Divide by $\log B$ and let $B\to\infty$. This proves \eqref{eq:trade}. For $c=0$ one can omit the convolution. The auxiliary exponential moments \eqref{eq:matchmoment} need not survive this convolution; the statement does not require them.
+\end{proof}
+
+\section{Application to the source's prime statistic}\label{sec:prime}
+We now invoke the vendored theorem \texttt{riemannHypothesis}, and only in this section identify all the zeros with real ordinates. A once-smoothed explicit formula is particularly useful here: it is the same ramp kernel as in \texttt{New.Reduction.Zeros.Criterion} and the merged article's \texttt{zer:lem:ramp}.
+
+\begin{lemma}[Ramp formula with the secondary term, uses RH]\label{lem:ramp}
+For $x\ge2$,
+\begin{equation}\label{eq:ramp}
+R(x)=x^{-1/2}\sum_\gamma\frac{m_\gamma\e^{\ii\gamma\log x}}{1/4+\gamma^2}+\frac{\log(2\pi)}x+O(x^{-3/2}),
+\end{equation}
+where the sum is over distinct signed ordinates, with multiplicities $m_\gamma$. The sum converges absolutely, uniformly as a function of $\log x$.
+\end{lemma}
+\begin{proof}
+For $b>1$ and $A(s)=-\zeta'(s)/\zeta(s)$, Mellin inversion gives
+\[
+\sum_{n\le x}\Lambda(n)(1/n-1/x)=\frac1{2\pi\ii}\int_{b-\ii\infty}^{b+\ii\infty} A(s)\frac{x^{s-1}}{s(s-1)}\dd s.
+\]
+The identity includes integer $x$ because the ramp vanishes at the endpoint. Shift the line to $\re s=-1/2$. The functional equation and the absolutely convergent logarithmic derivative on $\re(1-s)=3/2$ give $A(-1/2+\ii t)=O(\log(2+|t|))$, and the integral on that line is $O(x^{-3/2})$. The usual local partial-fraction formula for $\zeta'/\zeta$ on a fixed strip, and $O(\log T)$ zeros in each unit interval, give a sequence of horizontal heights tending to infinity at distance $\gg1/\log T$ from all ordinates. On these segments $A(s)=O(\log^2 T)$, so the horizontal integrals tend to zero for each fixed $x$. These classical bounds follow, for example, from the Hadamard product and Stirling's formula; they are also the contour bounds used in the article's ramp lemma \cite{article,titchmarsh}.
+
+At $s=1$, $A(s)=1/(s-1)-\gamma_E+O(s-1)$; its residue in the integral is $\log x-1-\gamma_E$. At $s=0$, $A(0)=-\log(2\pi)$ and the residue is $\log(2\pi)/x$. At a nontrivial zero $\rho$ the residue is $m_\rho x^{\rho-1}/(\rho(1-\rho))$, and there are no other crossed poles. RH gives $\rho(1-\rho)=1/4+\gamma^2$ and $x^{\rho-1}=x^{-1/2}\e^{\ii\gamma\log x}$. Absolute convergence follows from the zero count $N(T)=O(T\log T)$. This proves \eqref{eq:ramp}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:primes}]
+First, for $|y|\ge2$, Stirling's formula in \eqref{eq:xi} and any polynomial bound for $\zeta(1/2+\ii y)$ imply
+\[
+|\Xi(y)/\Xi(0)|\ll (1+|y|)^C\e^{-\pi|y|/4}\ll \e^{-|y|/2},
+\]
+for an absolute constant $C$. Such a polynomial bound follows already by summation by parts of the zeta Dirichlet series after subtracting its integral. By \eqref{eq:tvmain} and $n\asymp B\log B$,
+\begin{equation}\label{eq:tailexp}
+\sup_{|y|\ge B}|F_{\mu_B}(y)|\ll \e^{-B/2}+\e^{-100n}\ll\e^{-B/2}.
+\end{equation}
+Take $B=4\log X$. For sufficiently large $X$, $X\e^{-H_B}\ge2$. Insert \eqref{eq:ramp} into the integral of Theorem~\ref{thm:primes} and interchange the absolutely convergent zero sum and the probability integral. The zero contribution is
+\[
+X^{-1/2}\sum_{|\gamma|>B}\frac{m_\gamma\e^{\ii\gamma\log X}}{1/4+\gamma^2}F_{\mu_B}(\gamma)=O(X^{-5/2}),
+\]
+using \eqref{eq:tailexp}; the low zeros vanish exactly. The secondary term equals $\log(2\pi)X^{-1}\int\e^{-u/2}\dd\mu_B(u)$, which is the stated coefficient by \eqref{eq:matchmoment}. Finally the integrated contour error is at most a constant times
+\[
+X^{-3/2}\int\e^{-u}\dd\mu_B(u)\le 2X^{-3/2}\int_\R \e^{-u}\frac{\Phi(u)}{\Xi(0)}\dd u=O(X^{-3/2}),
+\]
+by \eqref{eq:domdensity}. It is important to use density domination, not the cruder bound $\e^{H_B}$; the moment remains uniformly bounded. Since $\e^{H_B}=16\sqrt{M(4\log X)+3}=O(\sqrt{\log X\log\log X})$, the scale statement follows.
+\end{proof}
+
+\begin{remark}[Extension to finite further residues]
+For any fixed $a>0$, the same extrapolation proof works for $|\re\lambda|\le a$, and the tail domination follows with $H=\frac12\log n+C_a$ and a sufficiently large constant $C_a$. One may add finitely many $\e^{ct}$ moments, then shift the Mellin contour farther to the left and explicitly preserve the contributions from trivial zeros. This gives variants with any fixed number of lower-order residue terms. The theorem above only uses the two moments needed for the first secondary term.
+\end{remark}
+
+\section{Significance, limitations, and a formalization route}
+\label{sec:status}
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.37\linewidth}>{\raggedright\arraybackslash}p{.56\linewidth}@{}}
+\toprule
+Result or issue & Status\\\midrule
+Multiplicity-preserving support constant & $1/2$ proved; unconditional for complex zeros; real-ordinate version uses RH.\\[3pt]
+Fixed positive stopband rate $c$ & Lower $1/2+\pi c/4$, upper $1/2+c$; exact constant not determined.\\[3pt]
+Prime-ramp average & Uses vendored RH; explicit secondary term and uniform error after averaging.\\[3pt]
+All primitive Dirichlet characters together & Not settled here. Their theta kernels need not be positive; the compression proof needs a positive density with the required moments.\\[3pt]
+Proof verification & Human-readable arguments; finite reproducible computations illustrate them. No Lean replay or new formalization claimed.\\\bottomrule
+\end{tabular}
+\end{center}
+
+The earlier logarithmic-width construction in the merged article colors zero ordinates into separated sets and convolves positive filters. That makes the upper constant depend on maximal local occupancy. Our compression avoids this bottleneck entirely. The exponential-polynomial recurrence is related to classical Tur\'an extrapolation, but we give a self-contained integrated estimate with explicit constants. The passage to a positive density uses duality instead of solving an ill-conditioned finite interpolation system. Jensen gives the matching obstruction, and the stopband improvement shows why the fixed-attenuation problem is genuinely different.
+
+For a Lean extension, retain \texttt{riemannHypothesis : RiemannHypothesis} from \texttt{Main.lean} as an explicit import only for Lemma~\ref{lem:ramp}. Formalize the rest in layers: (1) a finite recurrence and a geometric-series coefficient bound; (2) integrated extrapolation and explicit inequalities for the theta kernel; (3) the real Hahn--Banach and $L^1$ duality interface for finite measures; (4) the classical theta integral and Riemann--von Mangoldt count; (5) Jensen and the upper-half-plane harmonic measure estimate; (6) Mellin inversion and residue calculus. The first three give an abstract positive compression theorem independent of number theory. Layer (4) transfers it to zeta, layer (5) proves sharpness and stopband cost, and layer (6) yields the RH application. A mathematical statement-level blueprint is supplied separately; it is deliberately not presented as compilable Lean code.
+
+The strongest remaining question is to close the $\pi/4$ versus 1 gap in the additional stopband coefficient, or to find positive super-exponential moment representations for wider families of completed $L$-functions. Determining the second-order term in $H_*(B)$ is also open. Neither RH nor Dirichlet GRH alone asserts these stronger properties.
+
+\begin{thebibliography}{9}
+\bibitem{vendor} ProveIt contributors and L. Sernau et al., \emph{Vendored grh-lean (readable edition)}, upstream commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}.
+\bibitem{article} ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet L-functions: consequences, transfers and limits}, 26 November 2026, especially \texttt{rec:thm:logfilter}, \texttt{rec:lem:jensensupport}, \texttt{rec:thm:polylogavg}, \texttt{rec:sec:open}, \texttt{zer:lem:ramp}. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}.
+\bibitem{titchmarsh} E. C. Titchmarsh, revised by D. R. Heath-Brown, \emph{The Theory of the Riemann Zeta-function}, 2nd ed., Oxford University Press, 1986. Classical theta formula, local logarithmic derivative estimates, and zero counting.
+\bibitem{nazarov} F. L. Nazarov, Local estimates for exponential polynomials and their applications to inequalities of the uncertainty principle type, \emph{St. Petersburg Math. J.} 5 (1994), 663--717. Background on gap-independent extrapolation; not needed for our elementary proof.
+\bibitem{dlmf} NIST Digital Library of Mathematical Functions, \S25.10, Zeros of the zeta function. \url{https://dlmf.nist.gov/25.10}.
+\end{thebibliography}
+\end{document}

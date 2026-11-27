@@ -1,0 +1,359 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,hmargin=1in,vmargin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,hyperref,xcolor,microtype}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black,pdftitle={Sharp Euler-factor agreement for products of odd-prime-order Dirichlet L-functions},pdfauthor={Research note for ProveIt}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\Gal}{\operatorname{Gal}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\mass}{\operatorname{mass}}
+\newcommand{\vp}{v_{\varpi}}
+\DeclareMathOperator{\lcm}{lcm}
+\title{\bfseries Sharp Euler-factor agreement for\\ products of odd-prime-order Dirichlet \(L\)-functions}
+\author{Research note and reproducibility packet for ProveIt}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For two different size-$k$ multisets in a rank-$r$ elementary abelian group of Dirichlet characters of odd prime exponent $p$, let $\delta$ be the density of primes where their local Euler polynomials differ. We prove a universal lower bound determined by the leading base-$p$ digit of $k$. Below the saturation threshold $p^{r-1}$, writing $a=\lfloor\log_p k\rfloor$ and $b=\lfloor k/p^a\rfloor$, the bound is $(p-1)(p+1-b)/p^{a+2}$. It is attained precisely when $b\mid p-1$ or $b\mid p+1$. At and above saturation the exact minimum is $(p-1)/p^r$. Thus the minimum is determined for \emph{all} ranks and sizes at exponents three and five. The lower bound is proved from cyclotomic divisibility and a projective polynomial weight inequality, and the equality obstruction uses two published finite-geometric classification theorems. Dirichlet GRH, used only in the analytic portion, turns these density statements into quantitative finite-prime tests; a single smoothed count identifies the reduced size of any nonsaturated extremal packet pair at a scale quadratic in a size bound, for fixed $p$. This directly addresses the odd-prime-order question in the merged ProveIt article.
+\end{abstract}
+
+\section{Source interface and the question}
+The starting point is the vendored readable Lean development \cite{vendor,lean}, which identifies its upstream commit as
+\begin{center}\small\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.\end{center}
+The files \texttt{src/Statements.lean} and \texttt{src/Main.lean} state and export, respectively, RH and GRH for Dirichlet characters (including imprimitive characters). In particular the exported theorem \texttt{LFunction\_eq\_zero\_re} asserts that a zero of a Dirichlet $L$-function in the open strip $0<\Re s<1$ has real part $1/2$; \texttt{LFunction\_ne\_zero\_of\_half\_lt\_re} asserts the complementary right-half-plane nonvanishing, except at the principal pole. These are the exact zero hypotheses used below. The upstream README reports that the proofs depend only on \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound} and reports independent checker acceptance. This note inspected the source statements and selected reduction files through GitHub; it did not repeat the Lean build or the external checker runs. Consequently the analytic results are explicitly labeled ``using Dirichlet GRH.'' No nonabelian Artin or general automorphic RH is used.
+
+In the reduction file \texttt{MainInequality.lean}, the theorem \texttt{star\_inequality} compares two bounds on one corrected covolume. The file \texttt{OneSidedBound.lean} turns the comparison into a one-sided bound for a weighted prime sum and then into right-half-plane nonvanishing. The merged article \cite{article} abstracts this as a transfer principle. Its Section~\texttt{rec:sec:qmatch} treats quadratic-character products: its key step reduces a local agreement question to the support of an integral Walsh transform and uses the binary Reed--Muller minimum distance. In its final questions (\texttt{rec:sec:open}, item on pooled zero statistics) it asks for an analogous description at odd prime exponent and for finite density recovery at smaller scales. The article's \texttt{rec:lem:gram} and \texttt{rec:thm:qmatchfinite} give the analytic interface. The present work replaces binary valuation by the ramified cyclotomic prime, binary polynomial weights by \emph{projective} weights, and uses finite-plane configurations to understand when the weight bound is attainable.
+
+The article README describes a 723-page merge of 131 research reports and explicitly says that their mathematical claims have not been independently rechecked. Here the relevant statements were read in their TeX sources, not inferred from the table of contents. The proofs below are new derivations relative to the inspected article; the coding-theoretic and finite-geometric ingredients used in the equality analysis are credited explicitly. Priority in the wider literature is not asserted.
+
+\section{Statement of the extremal problem}
+Let $p$ be an odd prime, $Q\ge2$, and let $X$ be a subgroup of the Dirichlet character group modulo $Q$, isomorphic to $(\Z/p\Z)^r$ for $r\ge1$. Write $V=\widehat X\simeq\F_p^r$, identify $X$ with $V^*$ additively, and fix $\zeta=e^{2\pi i/p}$. The evaluation of $\chi\in X$ on $v\in V$ is $\zeta^{\langle\chi,v\rangle}$. Let $A,C$ be distinct size-$k$ multisets of $X$ (including the principal character if desired). At primes $\ell\nmid Q$ compare the local polynomials
+\[
+ P_{A,\ell}(T)=\prod_{\chi\in A}(1-\chi(\ell)T),\qquad
+ P_{C,\ell}(T)=\prod_{\chi\in C}(1-\chi(\ell)T).
+\]
+The inverse polynomials are the Euler factors of the corresponding products. Let $\delta(A,C)$ be the relative natural density among primes of the disagreement set. Define the signed multiplicity vector, reduced size, and transform by
+\[
+ c_x=\operatorname{mult}_A(x)-\operatorname{mult}_C(x),\qquad
+ h=\sum_{c_x>0}c_x=\tfrac12\sum_x|c_x|\le k,
+ \qquad H(v)=\sum_{x\in X}c_x\zeta^{\langle x,v\rangle}.
+\]
+Thus $\sum c_x=0$, $c\ne0$, and $h$ is the size of each packet after common entries are cancelled.
+
+\begin{theorem}[Universal bound and exact attainability]\label{thm:main}
+Let $D_{p,r}(k)$ denote the minimum positive disagreement density over size-$k$ packet pairs. If $k\ge p^{r-1}$, then
+\begin{equation}\label{eq:sat}
+ D_{p,r}(k)=\frac{p-1}{p^r}.
+\end{equation}
+If $1\le k<p^{r-1}$, put $a=\lfloor\log_p k\rfloor$ and $b=\lfloor k/p^a\rfloor$, so $1\le b\le p-1$ and $a\le r-2$. Then
+\begin{equation}\label{eq:bound}
+ D_{p,r}(k)\ge L_{p,a,b}:=\frac{(p-1)(p+1-b)}{p^{a+2}}.
+\end{equation}
+Equality holds if and only if $b$ divides $p-1$ or $p+1$. In particular the equality assertion holds for every nonsaturated size when $p=3$ or $5$.
+
+For every nonsaturated pair attaining \eqref{eq:bound}, the reduced size is exactly $h=bp^a$; after cancellation the packets are disjoint \emph{sets}, each a union of cosets of one common $a$-dimensional subgroup of $X$. For $b=1$ the two sets are exactly two distinct cosets of that subgroup. At saturation, all equality cases are precisely those with $\supp H=L\setminus\{0\}$ for some one-dimensional $L\subset V$, or equivalently those for which $c$ is constant on the cosets of $L^\perp$, with $c\ne0$ and $\sum c_x=0$.
+\end{theorem}
+
+The necessity of the divisibility condition in Theorem~\ref{thm:main} uses the projective minimum-weight classification of Ghorpade--Ludhani \cite[Theorem 4.3]{GL} and the collinear-component classification of Blokhuis--Korchm\'aros--Mazzocca \cite[Theorem 5.1 and the discussion following it]{BKM}. We give an independent proof of the weight inequality itself. These published results are unconditional and their use is separate from GRH.
+
+\begin{corollary}[Complete formulas at exponents three and five]\label{cor:35}
+Below saturation, the exact minima are as follows. At and above saturation use \eqref{eq:sat}.
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+$p$ & range of $k$ & $D_{p,r}(k)$\\
+\midrule
+3 & $3^a\le k<2\cdot3^a$ & $2/3^{a+1}$\\
+3 & $2\cdot3^a\le k<3^{a+1}$ & $4/3^{a+2}$\\
+\addlinespace
+5 & $5^a\le k<2\cdot5^a$ & $4/5^{a+1}$\\
+5 & $2\cdot5^a\le k<3\cdot5^a$ & $16/5^{a+2}$\\
+5 & $3\cdot5^a\le k<4\cdot5^a$ & $12/5^{a+2}$\\
+5 & $4\cdot5^a\le k<5^{a+1}$ & $8/5^{a+2}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{corollary}
+\begin{proof}
+For $p=3$, each digit $1,2$ divides $p-1$. For $p=5$, digits $1,2,4$ divide $p-1$ and digit $3$ divides $p+1$. Substitute these digits in \eqref{eq:bound}.
+\end{proof}
+
+\begin{corollary}[A strict gap and additional exact cases]\label{cor:gap}
+In the nonsaturated case let $b_0$ be the largest integer at most $b$ dividing $p-1$ or $p+1$. If $b_0<b$, then
+\[
+ L_{p,a,b}+\frac{p-1}{p^r}\ \le\ D_{p,r}(k)\ \le\ L_{p,a,b_0}.
+\]
+If also $r=a+2$ and $b_0=b-1$, these bounds coincide. In particular at exponent seven, in rank two, size five has minimum $24/49$, not the projective lower bound $18/49$. At exponent seven all nonsaturated sizes with $r=a+2$ are determined by this rule and Theorem~\ref{thm:main}.
+\end{corollary}
+\begin{proof}
+The support consists of nonzero projective directions, each of size $p-1$ (Lemma~\ref{lem:local}). Hence a strict inequality improves by at least $(p-1)/p^r$. The upper bound is obtained by the construction at digit $b_0$ and padding. If $r=a+2$ the improvement equals the difference between adjacent digit bounds. For $p=7$ the only digit not dividing $6$ or $8$ is $5$, and its predecessor $4$ divides $8$.
+\end{proof}
+
+\section{From local factors to cyclotomic valuations}
+\begin{lemma}[A single trace detects the whole local polynomial]\label{lem:local}
+For $v\in V$, write $n_j(v)=\sum_{\langle x,v\rangle=j} c_x$ for $j\in\F_p$, represented by $0,\ldots,p-1$. Then $P_{A,v}=P_{C,v}$ if and only if $H(v)=0$. Moreover, $H(0)=0$, the support is invariant under nonzero scalar multiplication, and
+\begin{equation}\label{eq:delta}
+ \delta(A,C)=p^{-r}|\supp H|.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The local polynomials are equal exactly when every $n_j(v)$ is zero. Now $\sum_j n_j(v)=0$, and the only rational relation among the $p$ powers of $\zeta$ is a multiple of $1+\zeta+\cdots+\zeta^{p-1}=0$, by irreducibility of $\Phi_p$. If $H(v)=0$, the $n_j$ are all equal, hence zero. For $\lambda\in\F_p^*$, $H(\lambda v)=\sigma_\lambda H(v)$ with $\sigma_\lambda(\zeta)=\zeta^\lambda$. Finally, the natural evaluation map $(\Z/Q\Z)^\times\to V$ is surjective: its annihilator in $X$ is trivial by the definition of a Dirichlet character group. All fibers have equal size. The prime number theorem in arithmetic progressions gives \eqref{eq:delta}; omitting the finitely many primes dividing $Q$ has no effect. Fourier inversion ensures $H$ is not identically zero.
+\end{proof}
+
+Let $\mathcal O=\Z[\zeta]$, $\varpi=1-\zeta$, and normalize the valuation by $v_{\varpi}(\varpi)=1$. We use the elementary cyclotomic facts $\mathcal O/(\varpi)=\F_p$ and $p\mathcal O=\varpi^{p-1}\mathcal O$. Indeed $\Phi_p(1)=p=\prod_{j=1}^{p-1}(1-\zeta^j)$ and the factors $(1-\zeta^j)/(1-\zeta)$ are cyclotomic units (the inverse follows by choosing $j'$ with $jj'\equiv1\pmod p$). Put $t=\min_{H(v)\ne0}\vp(H(v))$. Since $\sum_xc_x=0$, $t\ge1$.
+
+\begin{lemma}[The augmentation lattice]\label{lem:aug}
+The map
+\[
+ \{(n_0,\ldots,n_{p-1})\in\Z^p:\ \sum_j n_j=0\}\longrightarrow\varpi\mathcal O,
+ \quad n\longmapsto \sum_j n_j\zeta^j
+\]
+is an isomorphism of abelian groups. Consequently if its value belongs to $p^u\varpi\mathcal O$, then every $n_j$ is divisible by $p^u$.
+\end{lemma}
+\begin{proof}
+Injectivity follows as in Lemma~\ref{lem:local}. The vectors $e_j-e_0$ map to $\zeta^j-1$; consecutive differences are $(\zeta-1)\zeta^{j-1}$ for $1\le j\le p-1$. These form a $\Z$-basis of $\varpi\mathcal O$. Apply the isomorphism to the quotient by $p^u$.
+\end{proof}
+
+\begin{lemma}[Leading-digit valuation bound]\label{lem:t}
+If $p^a\le k<p^{a+1}$ and $b=\lfloor k/p^a\rfloor$, then
+\begin{equation}\label{eq:t}
+ 1\le t\le a(p-1)+b.
+\end{equation}
+The same statement holds with $k$ replaced by $h$.
+\end{lemma}
+\begin{proof}
+Choose any $v$ with $H(v)\ne0$. Suppose, seeking a contradiction, that $\vp(H(v))\ge a(p-1)+b+1$. By Lemma~\ref{lem:aug}, all $n_j(v)$ are multiples of $p^a$. Write $m_j=n_j(v)/p^a$. Their sum is zero, and their positive mass is at most $\lfloor h/p^a\rfloor\le b$. The nonzero element $G=H(v)/p^a=\sum_j m_j\zeta^j$ has $\vp(G)\ge b+1$. Expand
+\[
+ G=\sum_{i=1}^{p-1}(-\varpi)^i M_i,
+ \qquad M_i=\sum_{j=0}^{p-1}m_j\binom ji.
+\]
+If a first $M_i$ with $i\le b$ is nonzero modulo $p$, its term has valuation $i$. Every earlier term has valuation at least $p-1+1=p>i$; every later term has valuation greater than $i$. Thus $\vp(G)=i$, a contradiction. Therefore $M_1,\ldots,M_b$ vanish modulo $p$. Because $i!$ is invertible modulo $p$ for $i\le b$, triangular change of basis gives $\sum_jm_j j^i=0$ in $\F_p$ for $0\le i\le b$.
+
+The positive and negative parts of $m$ are multisets in $\F_p$ of equal size $s\le b<p$. Their power sums through degree $s$ coincide, so Newton's identities show that the monic polynomials having these multisets as their roots coincide. Consequently $m=0$, a contradiction. This proves the bound for each nonzero value and hence for $t$; the proof also works using $h$ instead of $k$.
+\end{proof}
+
+\begin{lemma}[Projective leading residue]\label{lem:residue}
+The function $f(v)=\varpi^{-t}H(v)\bmod\varpi$ on $V$ is nonzero, vanishes at $0$, has a polynomial representative of total degree at most $t$, and satisfies $f(\lambda v)=\lambda^t f(v)$ for $\lambda\in\F_p^*$. In particular it has a homogeneous polynomial representative of degree $t$, and $\supp f\subseteq\supp H$.
+\end{lemma}
+\begin{proof}
+Use coordinates $v_i=0,\ldots,p-1$. The finite forward difference of order $\alpha=(\alpha_1,\ldots,\alpha_r)$ at the origin is
+\[
+ \Delta^\alpha H(0)=\sum_xc_x\prod_i(\zeta^{x_i}-1)^{\alpha_i}.
+\]
+It is divisible by $\varpi^{|\alpha|}$ and also by $\varpi^t$ (as an integral linear combination of values). Multivariate Newton interpolation on the integer grid expresses $H(v)$ as the sum of $\Delta^\alpha H(0)\prod_i\binom{v_i}{\alpha_i}$ for $0\le\alpha_i\le p-1$. Divide by $\varpi^t$ and reduce: terms with $|\alpha|>t$ disappear, and the binomial polynomials have degree $|\alpha|$ over $\F_p$. The Galois identity from Lemma~\ref{lem:local}, together with $\sigma_\lambda(\varpi)/\varpi\equiv\lambda\pmod\varpi$, gives the scaling law. The quotient is nonzero at some point by the choice of $t$.
+
+In the unique reduced polynomial (each exponent at most $p-1$) for $f$, every monomial with nonzero coefficient has total degree congruent to $t$ modulo $p-1$, by the scaling law and uniqueness of the reduced representative. Its constant term is zero. Increase one positive exponent in each such monomial by $t$ minus its total degree (a nonnegative multiple of $p-1$). Its function on $\F_p^r$ is unchanged, including when that coordinate is zero. This produces a homogeneous polynomial of degree $t$.
+\end{proof}
+
+\section{Projective support and the universal bound}
+\begin{lemma}[Affine polynomial weight]\label{lem:affine}
+For a nonzero polynomial function on $\F_p^m$ of total degree at most $d=u(p-1)+s<m(p-1)$, $0\le s<p-1$, its number of nonzero values is at least $(p-s)p^{m-u-1}$. For larger degree the bound $1$ suffices.
+\end{lemma}
+\begin{proof}
+Reduce the polynomial using $x_i^p=x_i$. Induct on $m$, selecting a largest exponent $e_m$ of the last variable and its nonzero leading coefficient. On every point where that coefficient is nonzero, the polynomial in the last variable is nonzero at at least $p-e_m$ points. Iterating gives a monomial with exponents $0\le e_i\le p-1$, $\sum e_i\le d$, and a lower bound $\prod_i(p-e_i)$. To minimize this product, allocate the allowed degree to as many exponents $p-1$ as possible and then one remainder: moving a unit from $0<e_i\le e_j<p-1$ to $e_j$ strictly decreases the product. This gives the stated expression. The case of zero variables is immediate.
+\end{proof}
+
+\begin{lemma}[Projective polynomial weight]\label{lem:proj}
+If a degree-$t\ge1$ homogeneous polynomial on $\F_p^r$ is not identically zero as a function, then it is nonzero at at least
+\begin{equation}\label{eq:proj}
+ D_r(t)=\begin{cases}
+ (p-s)p^{r-u-2},&t-1=u(p-1)+s,\quad t\le(r-1)(p-1),\\
+ 1,& t\ge(r-1)(p-1)+1,
+ \end{cases}
+\end{equation}
+projective points, where $0\le s<p-1$. The bound is strictly decreasing with $t$ up to the threshold in the second line.
+\end{lemma}
+\begin{proof}
+This is the classical projective Reed--Muller minimum-distance bound \cite{Sorensen,GL}; here is a short proof of the needed lower bound. For $r=1$ or for degrees at or above the threshold, at least one projective point is nonzero. Otherwise let $S$ be the projective support. If some hyperplane is disjoint from $S$, take it as $x_0=0$. Subtract the restriction $F(0,x_1,\ldots,x_{r-1})$, which vanishes at every vector, to obtain an equivalent homogeneous polynomial divisible by $x_0$. On the affine complement $x_0=1$ the resulting polynomial has degree at most $t-1$. Lemma~\ref{lem:affine} gives \eqref{eq:proj}.
+
+If every hyperplane meets $S$, induct on $r$. Each hyperplane contains at least $D_{r-1}(t)$ support points. Counting incidences gives
+\[
+ |S|\ge \frac{p^r-1}{p^{r-1}-1}D_{r-1}(t)>p D_{r-1}(t).
+\]
+When $t\le(r-2)(p-1)$, the right-hand side is strictly greater than $D_r(t)=pD_{r-1}(t)$. When $(r-2)(p-1)<t\le(r-1)(p-1)$, one has $D_{r-1}(t)=1$ and $D_r(t)\le p$. This proves the claim. Strict decrease follows from the formula, including at each digit transition.
+\end{proof}
+
+\begin{proof}[Proof of the lower bounds in Theorem~\ref{thm:main}]
+Every nonzero scalar orbit in $V$ has $p-1$ members, so by Lemma~\ref{lem:local} every distinct pair has $\delta\ge(p-1)/p^r$. If $k<p^{r-1}$, Lemmas~\ref{lem:t} and \ref{lem:residue} give a nonzero homogeneous polynomial of degree at most $a(p-1)+b$, whose support is contained in $\supp H$. By monotonicity of \eqref{eq:proj}, the number of projective support points is at least
+\[
+ D_r(a(p-1)+b)=(p+1-b)p^{r-a-2}.
+\]
+Multiply by $(p-1)/p^r$ to get \eqref{eq:bound}.
+\end{proof}
+
+\section{Explicit constructions and sharpness}
+The constructions below are in $X=V^*$, hence give Dirichlet character packets for \emph{every} character group of the indicated rank. A common twist of both packets changes $H(v)$ by a nonzero factor and preserves the disagreement set. If desired, in these constructions the principal character can be avoided by a common twist: the two disjoint reduced sets occupy fewer than $p^r$ characters, and common padding can be chosen nonprincipal. Since $p$ is prime all remaining characters then have exact order $p$.
+
+\begin{lemma}[Two planar constructions]\label{lem:construct}
+For $1\le b\le p-1$ dividing $p-1$ or $p+1$, there exist two disjoint $b$-element subsets of $(\F_p^2)^*$ whose local projections agree at exactly $b$ of the $p+1$ nonzero projective directions.
+\end{lemma}
+\begin{proof}
+\emph{Split construction.} If $b\mid p-1$, let $B$ be the subgroup of $\F_p^*$ of size $b$. Take the linear forms $\{\alpha x:\alpha\in B\}$ and $\{\alpha y:\alpha\in B\}$. At $(x,y)\ne0$ the multisets of values coincide precisely when $x,y\ne0$ and $x/y\in B$. This gives exactly $b$ projective directions.
+
+\emph{Nonsplit construction.} If $b\mid p+1$, view the plane as $K=\F_{p^2}$, pairing $z,v$ by $\Tr_{K/\F_p}(zv)$. This is a nondegenerate pairing. The norm-one group $G=\{z:z^{p+1}=1\}$ is cyclic of order $p+1$. Let $B\le G$ have order $b$, and choose $\beta\in G\setminus B$ (possible since $b<p+1$). Take forms labeled by $B$ and $\beta B$. For $v\ne0$, all elements of $Bv$ and $\beta Bv$ have the same norm. Two elements with equal trace and norm either coincide or are Galois conjugates, as they are roots of the same quadratic over $\F_p$. The two sets are disjoint; hence equal trace multisets force $v^p\in\beta Bv$ by looking at the trace of $v$. Conversely that condition implies $(Bv)^p=\beta Bv$ and gives equal trace multisets. The map $v\mapsto v^{p-1}$ induces a bijection $K^*/\F_p^*\to G$; equality is exactly $v^{p-1}\in\beta B$, giving $b$ directions.
+\end{proof}
+
+\begin{proof}[Attainability in Theorem~\ref{thm:main}]
+In the nonsaturated case, decompose $X=U\oplus Y\oplus Z$ with $\dim U=a$ and $\dim Y=2$. Lift the two planar sets of Lemma~\ref{lem:construct} to packets by taking all sums with $U$. Their size is $bp^a$. Their difference transform is the planar transform times
+\[
+ \sum_{u\in U}\zeta^{\langle u,v\rangle}=p^a\ind_{U^\perp}(v).
+\]
+On $U^\perp$ the planar coordinates are uniform and the disagreement fraction there is $(p-1)(p+1-b)/p^2$. This gives $L_{p,a,b}$; pad both sides by identical entries to reach size $k$.
+
+At saturation, take a subgroup $U\subset X$ of dimension $r-1$ and two distinct cosets $x+U$ and $y+U$. The difference transform is $p^{r-1}\ind_{U^\perp}(v)(\zeta^{\langle x,v\rangle}-\zeta^{\langle y,v\rangle})$, which is nonzero at precisely the $p-1$ nonzero vectors in the line $U^\perp$. Pad to size $k$. Conversely if equality holds, the support is a single punctured line by Lemma~\ref{lem:local}. Fourier inversion makes $c$ constant on the cosets of the annihilator of that line. Conversely such a nonzero zero-sum $c$ has transform supported in the line; its support is nonempty and invariant under scalar multiplication, hence is the whole punctured line.
+\end{proof}
+
+\section{Equality obstruction and rigidity}
+We now use two known classification results to show that the preceding constructions attain the universal bound exactly on the stated digits. This portion is not a claim to reprove the classification theorems themselves.
+
+\begin{lemma}[Geometry of equality]\label{lem:geometry}
+In the nonsaturated case, if a pair realizes $L_{p,a,b}$ then there is a subspace $W\subset V$ of codimension $a$ such that $\supp H$ is $W$ with $b$ distinct hyperplanes of $W$ removed. For $b\ge2$ those hyperplanes have a common codimension-two intersection in $W$.
+\end{lemma}
+\begin{proof}
+All the inequalities in the lower-bound proof must be equalities. Strict monotonicity in Lemma~\ref{lem:proj} implies $t=a(p-1)+b$. Also $\supp f=\supp H$, since the former is contained in the latter and its lower bound equals the latter's size. The projective codeword of $f$ has minimum weight. The Ghorpade--Ludhani classification \cite[Theorem 4.3]{GL}, applied with projective dimension $r-1$ and degree $a(p-1)+b$, says that its function on projective representatives has the same support as a polynomial of the form
+\[
+ L_a\prod_{i=0}^{a-1}(L_a^{p-1}-L_i^{p-1})
+ \prod_{j=1}^{b-1}(L_{a+1}-\omega_jL_a),
+\]
+where the indicated linear forms are independent and the $\omega_j$ distinct. When $b=1$ the final product is empty. Its nonzero values require $L_a\ne0$, $L_i=0$ for $i<a$, and $L_{a+1}\ne\omega_j L_a$ for each $j$. This gives $W=\bigcap_{i<a}\ker L_i$ and the asserted hyperplanes. For $b=1$ only $L_a$ is needed, and the statement follows as well.
+\end{proof}
+
+\begin{lemma}[Reduction of equality to two dimensions]\label{lem:plane}
+Under the hypotheses of Lemma~\ref{lem:geometry}, let $U=W^\perp\subset X$. Then $c$ is constant on the cosets of $U$, and $h=bp^a$. Moreover there exist disjoint $b$-element sets of the affine plane over $\F_p$ whose projection multisets agree at $b$ directions. After cancellation the original packets are sets, each a union of $b$ cosets of $U$.
+\end{lemma}
+\begin{proof}
+Fourier inversion and $\supp H\subset W$ show $c_{x+u}=c_x$ for $u\in U$. The quotient signed vector $\bar c$ on $X/U$ has positive mass $h/p^a\le b$. Its transform on $W$ is $H/p^a$. Choose a two-dimensional subspace $J$ of $W$ complementary to the common codimension-two intersection of the removed hyperplanes. For $b=1$, choose any codimension-one subspace of the removed hyperplane and use it instead; $\dim W\ge2$. The restricted transform has exactly $b$ projective directions of vanishing in $J$. It is the transform of the projection of $\bar c$ to $J^*$, with cancellation performed after projection. Write $h'$ for that projected positive mass, $1\le h'\le h/p^a\le b$.
+
+For any two disjoint nonempty multisets of size $h'$ in an affine plane, the number of matching directions is at most $h'$. Indeed fix one point in the positive multiset. Each matching projection forces some negative point on the parallel line through that point. The corresponding lines through it have distinct directions and meet only there, and that point is absent from the negative multiset. Thus each consumes a distinct negative point. This proves $b\le h'$ here. All inequalities are equalities, giving $h=bp^a$ and $h'=b$. At equality the $b$ negative points must be distinct; reversing roles gives distinct positive points. In the projection no cancellation or collisions within a packet can have occurred, because its size is unchanged and it consists of distinct points. The quotient packets are sets, hence the original reduced packets are unions of disjoint cosets, each with coefficient of absolute value one.
+\end{proof}
+
+\begin{lemma}[A planar obstruction]\label{lem:net}
+For an odd prime $p$ and $1\le b<p$, two disjoint $b$-element sets of the affine plane over $\F_p$ can have equal projection multisets at $b$ projective directions only if $b\mid(p-1)$ or $b\mid(p+1)$.
+\end{lemma}
+\begin{proof}
+The cases $b=1,2$ satisfy the conclusion automatically. Otherwise let $A,C$ be such sets and $D$ the $b$ directions, viewed as points on the line at infinity. As in the preceding counting argument, through each point of $A$ each of the $b$ directions contains exactly one point of $C$; all points of $C$ are exhausted. The reverse holds for each point of $C$. Thus every cross-joining line has its direction in $D$ and contains exactly one point from each set. A line through a point in $D$ and one of the two sets has exactly one point of the other and no further points of either. Therefore $(A,C,D)$ is a dual $3$-net of order $b$ in $\mathrm{PG}(2,p)$ with a collinear component.
+
+By the theorem of Blokhuis--Korchm\'aros--Mazzocca \cite[Theorem 5.1]{BKM}, applicable because $b<p$, the two affine components lie on a conic. The classification in the same section is over the ground field. For clarity, the possibilities give the claimed divisibility as follows. On two intersecting lines the ratio of the two coordinates determines the cross-direction; on two parallel lines the difference does. If the conic is nonsingular, it can be put in affine normal form as a parabola, a split hyperbola, or a nonsplit norm conic. For a parabola the sum of its parameters determines the cross-direction; for the hyperbola it is their product up to inversion and sign; for the norm conic use $(z-w)^{p-1}=-1/(zw)$ after normalizing to norm one. The corresponding ambient parameter groups are respectively $(\F_p,+)$, $\F_p^*$, or the cyclic norm-one group of size $p+1$ (the line cases give the first two groups). In each case two size-$b$ sets of parameters have a sumset or product set of size $b$, so they are cosets of a common subgroup: translate to contain the identity, after which both sets equal their product or sum set and that set is closed under the group operation. The additive case would force $b=1$ or $p$. The latter is excluded. The multiplicative cases force $b\mid p-1$ or $b\mid p+1$. In the reducible conic case the two components must occupy different lines: any line containing both colors can contain only one point of each, while $2b\ge6$ points on two lines force a monochromatic line with at least three points. The other line must contain all points of the other color and cannot contain a point of the first color. Degenerate one-line cases cannot be a net of order $b>1$.
+\end{proof}
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+The lower bound, construction and saturation characterization have been proved. If the nonsaturated lower bound is attained, Lemmas~\ref{lem:geometry}--\ref{lem:net} force the divisibility condition. Lemma~\ref{lem:plane} gives the reduced-size and coset conclusions, including the special case $b=1$. The converse follows from the constructions. This completes the theorem.
+\end{proof}
+
+\section{Effective arithmetic using Dirichlet GRH}
+Let $w\ge0$ be a fixed smooth function compactly supported in $(1/2,1)$, normalized by $\int w=1$. For $g:V\to\C$, use the normalized Fourier convention
+\[
+ \widehat g(x)=p^{-r}\sum_{v\in V}g(v)\zeta^{-\langle x,v\rangle},\qquad
+ \|g\|_{\mathcal A}=\sum_{x\in X}|\widehat g(x)|,
+\]
+and define
+\[
+ M_Y(g)=\sum_{\ell\nmid Q\text{ prime}}(\log\ell)w(\ell/Y)g(v_\ell),
+ \qquad \E g=p^{-r}\sum_{v\in V}g(v).
+\]
+\begin{lemma}[Smoothed prime measurement; uses Dirichlet GRH]\label{lem:prime}
+Uniformly in $p,r,Q$ and $g$, for $Y\ge2$,
+\begin{equation}\label{eq:prime}
+ |M_Y(g)-Y\E g|\le C_w\|g\|_{\mathcal A}\sqrt Y\log(2Q).
+\end{equation}
+\end{lemma}
+\begin{proof}
+This is the Fourier version of \cite[\texttt{rec:lem:gram}]{article}. For each character $x$ in $X$, pass to its primitive inducer of conductor $f\mid Q$. Mellin inversion for the von Mangoldt sum uses $-(L'/L)(s,x^*)$, with kernel $Y^s\widetilde w(s)$, where $\widetilde w(s)=\int_0^\infty w(u)u^{s-1}\,du$. Move the line from $\Re s=2$ to $-1/4$. The pole for the trivial primitive character contributes $Y\widetilde w(1)=Y$. Nontrivial zeros contribute $-\sum_\rho Y^\rho\widetilde w(\rho)$; by Dirichlet GRH their real parts are $1/2$, and the standard unit-interval zero count $O(\log(f(3+|t|)))$ and rapid vertical decay of $\widetilde w$ bound this contribution by $O_w(\sqrt Y\log(2f))$. The possible residue at zero and the displaced line are harmless by the functional equation and Stirling estimates; horizontal edges can be chosen away from zeros. Removing higher prime powers costs $O_w(\sqrt Y)$ by Chebyshev's estimate (the powers of exponent at least three give $O(Y^{1/3}\log Y)$). Omitting primes dividing $Q$ costs $O_w(\log Q)$. This gives the required bound for each basis character, with main term only for the principal character. Sum the Fourier expansion. Standard analytic details are also in \cite{Davenport} and the cited article lemma.
+\end{proof}
+
+\begin{theorem}[Finite distinguishing primes; uses Dirichlet GRH]\label{thm:detect}
+There is a constant $C'_w$ depending only on $w$ such that every distinct pair of reduced size $h$ has a distinguishing prime in every interval $(Y/2,Y)$ with
+\[
+ Y\ge C'_w h^2\log^2(2Q).
+\]
+More quantitatively the weighted mass of distinguishing primes is at least $Y/(4h)$ on this scale, after increasing the constant if necessary.
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:prime} to $g=|H|^2$. It is nonnegative, vanishes off the disagreement set, and satisfies
+\[
+ \E g=\sum_x c_x^2\ge 2h,\qquad
+ \|g\|_{\mathcal A}\le (2h)^2,\qquad 0\le g(v)\le4h^2.
+\]
+The mean identity is Parseval, the lower bound uses integrality, and the norm bound uses Fourier convolution. If $Y\ge (4C_w h\log(2Q))^2$, then $M_Y(g)\ge hY>0$. Since $w\ge0$ and $g\le4h^2$, this implies $M_Y(\ind_{\supp H})\ge Y/(4h)$. Enlarge the constant to ensure $Y\ge2$.
+\end{proof}
+
+\begin{proposition}[Bounded Fourier cost at equality]\label{prop:norm}
+For a nonsaturated extremal pair as in Theorem~\ref{thm:main}, write $S=\supp H$. Then
+\[
+ \|\ind_S\|_{\mathcal A}\le 2\min(b,p+1-b).
+\]
+At saturation, for a pair realizing \eqref{eq:sat}, the bound is $2$.
+\end{proposition}
+\begin{proof}
+The indicator of any linear subspace has Fourier coefficients nonnegative and summing to one, so its Fourier norm equals one. By Lemma~\ref{lem:geometry}, let $W$ be the containing subspace and let $K$ be the common codimension-two intersection of the excluded hyperplanes $W_1,\ldots,W_b$ (choose a codimension-two subspace as before if $b=1$). Then
+\[
+ \ind_S=\ind_W-\sum_{j=1}^b\ind_{W_j}+(b-1)\ind_K.
+\]
+This gives the bound $2b$. Alternatively $S$ is the union of the other $m=p+1-b$ punctured members of the pencil through $K$ in $W$, so $\ind_S=\sum_{j=1}^m\ind_{W'_j}-m\ind_K$, giving $2m$. At saturation $\ind_S=\ind_L-\ind_{\{0\}}$.
+\end{proof}
+
+\begin{theorem}[One smoothed count recovers the extremal size; uses Dirichlet GRH]\label{thm:recover}
+Fix $p$ and suppose a pair is known to attain the nonsaturated projective bound in Theorem~\ref{thm:main}, for some packet size $k<p^{r-1}$. Suppose only an upper bound $K_0$ on its reduced size $h$ is known, not $a,b$ or $h$. Then from the single number $M_Y(\ind_{\supp H})/Y$ one can recover the exact density and $h$ by nearest-candidate rounding, provided
+\[
+ Y\ge C_{w,p} K_0^2\log^2(2Q).
+\]
+The guarantee holds uniformly in the rank. More explicitly take $A_0=\lfloor\log_p K_0\rfloor$ and $d_0=(p-1)/p^{A_0+2}$. An error less than $d_0/2$ suffices.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:main}, $h=bp^a$ and $a\le A_0$. List the candidates $L_{p,a,b}$ with $1\le b<p$, $a\le\min(A_0,r-2)$, $bp^a\le K_0$, and $b\mid(p-1)$ or $b\mid(p+1)$. The full sequence of digit bounds decreases strictly in increasing lexicographic order of $(a,b)$. Within a block the spacing is $(p-1)/p^{a+2}$; across the transition from digit $p-1$ at $a$ to digit $1$ at $a+1$ the spacing is also $(p-1)/p^{a+2}$. Thus any two listed candidates differ by at least $d_0$. By Lemma~\ref{lem:prime} and Proposition~\ref{prop:norm},
+\[
+ \left|Y^{-1}M_Y(\ind_S)-\delta\right|\le 2p C_w\,Y^{-1/2}\log(2Q).
+\]
+For example the sufficient inequality $\sqrt Y\ge 8p C_w\log(2Q)/d_0$ makes the error at most $d_0/4$. As $p^{A_0}\le K_0$, this has the claimed scale. Rounding selects one unique candidate, and $h=bp^a$. No zero-spacing or linear-independence hypothesis is used. If the input number has additional measurement error, include it in the $d_0/2$ budget.
+\end{proof}
+
+The promise of extremality matters: the last theorem is not a general reconstruction theorem for arbitrary pairs, and at saturation the density no longer determines the reduced size. It measures disagreement by comparing local Euler polynomials; it does not reconstruct the character labels from the scalar density. The constants in the smoothed prime estimates are effective in principle but are not numerically optimized here. All results through Section~6 are unconditional, including the density statements (which require only the prime number theorem in progressions).
+
+\section{Examples, significance, and further research}
+\begin{center}
+\small
+\begin{tabular}{rrrrl}
+\toprule
+$p$&$r$&$k$& minimum $\delta$ & largest agreement $1-\delta$\\
+\midrule
+3&2&1&$2/3$&$1/3$\\
+3&2&2&$4/9$&$5/9$\\
+3&3&3,4,5&$2/9$&$7/9$\\
+3&3&6,7,8&$4/27$&$23/27$\\
+3&3&9&$2/27$&$25/27$\\
+5&2&3&$12/25$&$13/25$\\
+5&3&15&$12/125$&$113/125$\\
+7&2&5&$24/49$&$25/49$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The abrupt plateaux and jumps, rather than just a generic $1/k$ lower bound, reveal arithmetic constraints on how often distinct $L$-products can be locally indistinguishable. The obstruction for $p=7,b=5$ demonstrates that even the exact projective minimum-distance formula is not always attainable by integral character packets. The cyclotomic valuation converts the packet-size budget into a polynomial degree, and projective geometry imposes an additional divisibility constraint. This mechanism is absent in the original binary statement.
+
+The main new contribution relative to \cite{article} is the odd-prime theorem, including exact attainability of the natural universal lower bound, complete minima at exponents $3$ and $5$, coset rigidity, and the finite-prime inversion guarantee for nonsaturated extremizers. This is not a proof of a major named conjecture about $L$-functions; rather, it resolves a specific open extension question from the article in the sense stated above. It does not classify the full high-agreement spectrum at odd exponent. Nor does it assert a closed minimum formula for every digit not dividing $p\pm1$ at arbitrary rank. The latter is a genuinely remaining extremal problem.
+
+The accompanying \texttt{verify.py} uses only Python's standard library and exact integer arithmetic. It checks the split and nonsplit constructions over several primes and ranks, enumerates all small packets in selected finite spaces to obtain exact minima, independently checks the nonattainment at exponent seven and size five in rank two, and tests the valuation/residue lemma on deterministic pseudorandom data. It also enumerates the residue classes of three actual Dirichlet character groups and compares the observed prime frequencies with the theoretical density. These tests supplement, rather than replace, the proofs. See \texttt{verification.json} for the executed results and \texttt{README.md} for rebuilding.
+
+\paragraph{Further research questions.}
+(1) Determine $D_{p,r}(k)$ at all nondivisor digits, including the dependence on rank beyond $a+2$. Can the second and higher projective Reed--Muller weights be combined with cyclotomic divisibility to obtain a full spectrum? (2) Classify the higher-dimensional lifts of planar extremizers up to common twist and character-group automorphisms; the present theorem forces coset structure but not a full description of the quotient sets. (3) Treat exponent $p^j$ or mixed exponents: the local trace alone no longer determines the polynomial, and a vector of Galois-orbit traces is needed. (4) Remove the extremality promise in the finite recovery theorem while retaining a polynomial-in-$k$ scale independent of rank. (5) Formalize the finite Fourier and valuation lemmas in Mathlib, then attach the analytic interface to the vendored GRH theorem. The projective equality and finite-plane classification are the most substantial formalization dependencies. A more detailed plan is included in \texttt{formalization-notes.md}.
+
+\begin{thebibliography}{9}
+\bibitem{vendor} ProveIt, \emph{Vendored grh-lean (readable edition)}, GitHub repository, inspected 27 November 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{Vendor directory}.
+\bibitem{lean} L. Sernau et al., rewriting of the proof of L. Alp\"oge with Claude, \emph{The Generalized Riemann Hypothesis for Dirichlet L-functions, in Lean 4}, readable edition, commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{Pinned upstream source}.
+\bibitem{article} ProveIt, \emph{Beyond the Riemann hypothesis for Dirichlet L-functions: consequences, transfers and limits}, merged article, in particular \texttt{sections/src.tex} and \texttt{sections/rec.tex}, inspected 27 November 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{Article directory}; \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/Article/sections/rec.tex}{reconstruction section}.
+\bibitem{Sorensen} A. B. S\o rensen, Projective Reed--Muller codes, \emph{IEEE Trans. Inform. Theory} \textbf{37} (1991), 1567--1576.
+\bibitem{GL} S. R. Ghorpade and R. Ludhani, On the minimum distance, minimum weight codewords, and the dimension of projective Reed--Muller codes, \emph{Advances in Mathematics of Communications} \textbf{18} (2024), 360--382. \href{https://doi.org/10.3934/amc.2023035}{DOI}; \href{https://arxiv.org/abs/2309.10196}{arXiv:2309.10196}. In particular Theorem 4.3.
+\bibitem{BKM} A. Blokhuis, G. Korchm\'aros and F. Mazzocca, On the structure of 3-nets embedded in a projective plane, \emph{J. Combin. Theory Ser. A} \textbf{118} (2011), 1228--1238. \href{https://doi.org/10.1016/j.jcta.2010.11.007}{DOI}. In particular Section 5, Theorem 5.1 and the ensuing affine conic cases.
+\bibitem{Davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000.
+\end{thebibliography}
+\end{document}

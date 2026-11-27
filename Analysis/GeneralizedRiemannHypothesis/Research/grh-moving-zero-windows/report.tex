@@ -1,0 +1,135 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,hyperref}
+\setlength{\emergencystretch}{1.5em}
+\newtheorem{theorem}{Theorem}
+\DeclareMathOperator{\Rea}{Re}
+\title{An explicit lower bound for zeros in a moving Dirichlet window}
+\author{GRH transfer supplement}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\noindent This is a classical paper deduction from Dirichlet GRH, not a new kernel-checked
+corollary. The added feature is an elementary numerical bound with a free bandwidth,
+valid for every window center. The centered asymptotic phenomenon and a sharper centered
+second-order bound are already in Zhao's work.
+\begin{theorem}
+Let $\chi$ have conductor $q>1$. Assume Dirichlet GRH. Let $H\in\mathbb R$,
+$\Delta\ge 1$, $T\Delta\ge 1/2$, and count the nontrivial zeros with
+$|\operatorname{Im}\rho-H|<T$, including multiplicities. Then
+\[
+ N_\chi(H;T)\ \ge\
+ \frac{\pi}{16\Delta}\left(1-\frac{1}{4\Delta^2T^2}\right)
+ \log\frac{q(2+|H|)}{\pi}
+ -\frac{32}{\Delta}-\frac{32 e^{\pi\Delta}}{\Delta^2}.
+\]
+\end{theorem}
+\begin{proof}
+Use the primitive inducing character; the additional Euler factors of an imprimitive
+character have no zeros in the open critical strip. Put $b=\Delta T$ and use the
+Fourier convention $\widehat f(v)=\int_{\mathbb R}f(u)e^{-2\pi iuv}\,du$. Define
+\[
+ k(v)=\frac{\pi}{2}\cos(\pi v)\mathbf 1_{[-1/2,1/2]}(v),\qquad
+ g(u)=\frac{\cos(\pi u)}{1-4u^2},\qquad
+ f(t)=\left(1-\frac{(t-H)^2}{T^2}\right)g(\Delta(t-H))^2.
+\]
+The removable singularities in $g$ are filled by continuity. Integration of $k$
+gives $g=\check k$, and $k\ge0$ with integral 1 gives $|g|\le1$ on the real line.
+Thus $f(t)\le\mathbf 1_{|t-H|<T}$, including the boundary where $f$ is zero.
+The function is entire, with quadratic decay in horizontal strips; its
+Fourier transform is supported in $[-\Delta,\Delta]$.
+
+Write $K=k*k$. Fourier scaling and differentiation give
+\[
+ \widehat f(v)=\frac{e^{-2\pi i Hv}}{\Delta}
+ \left(K(v/\Delta)+\frac{K''(v/\Delta)}{4\pi^2 b^2}\right).
+\]
+There are no boundary atoms in $k'$ because $k$ is continuous. Hence
+$K''=k'*k'$, $K(0)=\pi^2/8$ and $K''(0)=-\pi^4/8$ by integrating
+$\cos^2$ and $\sin^2$. For $0\le v\le\Delta$ put $s=1-v/\Delta$.
+The convolution overlap has length $s$. There $k$ is bounded by
+$\pi^2/2$ times distance to its relevant endpoint, so
+$|K(v/\Delta)|\le \pi^4s^3/24$ and $|K''(v/\Delta)|\le \pi^4s/4$.
+Consequently $|\widehat f(v)|\le 7(\Delta-v)/\Delta^2$, using $b\ge1/2$.
+
+The Guinand--Weil formula for the completed primitive nonprincipal function
+has conductor contribution $(2\pi)^{-1}\widehat f(0)\log(q/\pi)$,
+archimedean contribution $(2\pi)^{-1}\int f(t)\Rea\psi(\sigma+it/2)\,dt$
+with $\sigma=1/4$ or $3/4$, and a prime-power term of absolute value at most
+\[
+ \frac1\pi\sum_{n\le X}\frac{\Lambda(n)}{\sqrt n}
+ |\widehat f(\log n/(2\pi))|,\qquad X=e^{2\pi\Delta}.
+\]
+For the translated test the two prime terms are the character and its conjugate
+times the transforms at opposite frequencies; their absolute values agree.
+GRH ensures that the left-hand side of the explicit formula is $\sum_\rho f(\operatorname{Im}\rho)$,
+which is bounded above by the desired strict-window count.
+
+For the prime term, $\sum_{n\le x}\Lambda(n)\le4x$ follows by
+$\sum_{m<n\le2m}\Lambda(n)\le\log\binom{2m}{m}\le 2m\log 2$, summation at dyadic powers,
+and rounding up to the next dyadic power. Now split at $Xe^{-j}$ for $j\ge0$:
+\[
+ \sum_{n\le X}\frac{\Lambda(n)}{\sqrt n}\log(X/n)
+ \le \frac{4\sqrt e}{(1-e^{-1/2})^2}\sqrt X.
+\]
+Indeed the interval $(Xe^{-(j+1)},Xe^{-j}]$ contributes at most
+$4\sqrt e\sqrt X(j+1)e^{-j/2}$. Combining with the linear edge bound gives a prime error
+at most $32e^{\pi\Delta}/\Delta^2$.
+
+For the archimedean term, the digamma series and a unit-panel comparison give
+$|\psi(z)-\log z|\le 1/\Rea z$ when $\Rea z>0$. In detail, compare each
+$(z+n)^{-1}$ with its integral on $[n,n+1]$, bound the error by
+$\int_n^{n+1}(\Rea z+x)^{-2}\,dx$, and use
+$\psi(z)=\lim_{N\to\infty}(\log N-\sum_{0\le n<N}(z+n)^{-1})$.
+For $\sigma$ as above, $\tfrac1{12}(2+|t|)\le|\sigma+it/2|\le 2+|t|$.
+Writing $u=\Delta(t-H)$, the two quantities $2+|t|$ and $2+|H|$
+are within a factor $1+|u|/2$ of one another. Thus
+\[
+ |\Rea\psi(\sigma+it/2)-\log(2+|H|)|
+ \le 7+\log(1+|u|/2).
+\]
+For $|u|\le1$ the absolute value of $(1-u^2/b^2)g(u)^2$ is at most 5;
+for $|u|\ge1$ it is at most $5/(9u^2)$. On the latter region use
+$\log(1+|u|/2)\le\log(3/2)+\log|u|$ and
+$\int_1^\infty u^{-2}\log u\,du=1$.
+The archimedean term is therefore
+$(2\pi)^{-1}\log(2+|H|)\widehat f(0)$ with error at most $32/\Delta$.
+Substituting the value of $\widehat f(0)$ proves the claim.
+\end{proof}
+
+\paragraph{Conductor thresholds and shrinking windows.}
+For a fixed $T>0$, take $\Delta=\max(1,1/T)$, so the coefficient
+$1-1/(4\Delta^2T^2)$ is at least $3/4$. At $H=0$, it suffices that
+\[
+ \log(2q/\pi)\ \ge\ \frac{64}{3\pi}
+ \left(M\Delta+32+\frac{32e^{\pi\Delta}}{\Delta}\right)
+\]
+to guarantee $M$ zeros strictly inside the window. For $T\le1$ a
+narrower bandwidth $\Delta=(1+T)/(2T)$ may be used in the full theorem
+to reduce the exponential scale of the threshold to $e^{\pi/(2T)}$
+times factors of polynomial size in $1/T$.
+
+For a moving window let $U=\log(q(2+|H|)/\pi)$ tend to infinity.
+Take $\Delta=(\log U-6)/\pi$ and $T=1/(2\Delta)+1/\Delta^2$.
+For $\Delta\ge2$, $1-1/(4\Delta^2T^2)\ge 1/\Delta$.
+Since $32 e^{-6}<\pi/32$, the theorem gives
+$N_\chi(H;T)\ge \pi U/(32\Delta^2)-32/\Delta$, uniformly in $H$.
+In particular every such window has a number of zeros tending to infinity, with
+$T=\pi/(2\log U)+O((\log U)^{-2})$.
+
+\paragraph{Provenance and scope.}
+Bennett--Martin--O'Bryant--Rechnitzer, \href{https://doi.org/10.1090/mcom/3599}{Counting zeros of Dirichlet \(L\)-functions},
+already point out that their qualitative Conjecture 1.3 follows from Selberg under
+Dirichlet GRH. Their separate Conjecture 1.4 is not addressed.
+See \href{https://arxiv.org/abs/1503.00955}{Carneiro--Chandee--Milinovich} for the
+explicit formula with general strip-analytic tests, and
+\href{https://arxiv.org/abs/2503.15832}{Zhao, Theorems 1 and 8}, for the related
+cosine test, the earlier centered shrinking-window result, and its sharper
+second-order constant. No novelty claim is made for the centered result.
+The \href{https://math.mit.edu/~drew/shortgrh/}{exact-revision audit}
+covers both editions at \texttt{72fead10}, not this deduction.
+The latest incoming transfer archive inspected
+(\href{https://github.com/VladimirReshetnikov/ProveIt/commit/b35eb211b859d2883c98ef71fbe47e1fcbcc4a74}{\texttt{b35eb21}})
+covers different consequences and a cubic-field target.
+\end{document}
+

@@ -1,0 +1,186 @@
+\section{Explicit centering and the height carrying half the total}
+\label{sec:median}
+
+We now specialize to the positive noncentral zero ordinates of $\zeta$
+or of a fixed primitive real Dirichlet character $\chi$. For $\zeta$ put
+$q=1$; otherwise $q$ is the conductor. Keep a fixed $\theta>0$.
+Every occurrence of a zero is counted, so a zero of multiplicity $m$
+contributes $m$ independent shape-$\theta$ variables, equivalently one
+shape-$m\theta$ variable. A possible central zero is excluded from the
+series and removed from the completed-function product.
+
+The positive-ordinate counting formula is
+\begin{equation}\label{med:eq:count}
+ N(T)=\frac{T}{2\pi}\left(\log\frac{qT}{2\pi}-1\right)
+       +O_\chi(\log(T+2)).
+\end{equation}
+For real characters this is half the usual both-sign count, up to the
+finite central multiplicity; see~\cite{BennettEtAl}. For $\zeta$ it is
+the Riemann--von Mangoldt formula. All constants below may depend on the
+fixed function and on $\theta$.
+
+Let $u$ be the exact saddle from \eqref{mc:eq:saddle} with $p=2$, and set
+\[
+ \ell=\log\frac{qu}{2\pi},\qquad
+ J(c)=\int_0^c\frac{\log r}{1+r^2}\,dr,\qquad
+ M_u(c)=\frac{\theta}{2\pi u}
+                 \bigl(\ell\arctan c+J(c)\bigr).
+\]
+The first correction $J$ matters: $J(1)=-G$, where
+$G=\sum_{n\ge0}(-1)^n/(2n+1)^2$ is Catalan's constant.
+
+\begin{lemma}[Centering accurate on the fluctuation scale]
+\label{med:lem:center}
+Uniformly for $c$ in any compact subset of $(0,\infty)$,
+\begin{align}
+ m_x(c)&=M_u(c)+O_\chi\left(\frac{\log u}{u^2}\right)
+                  =M_u(c)+o(\sigma_x),\label{med:eq:mean}\\
+ x&=\frac{\theta\ell}{4u}
+                  +O_\chi\left(\frac{\log u}{u^2}\right),\label{med:eq:total}\\
+ \sigma_x^2&=\frac{\theta(\ell-1)}{8u^3}
+                  +O_\chi\left(\frac{\log u}{u^4}\right).
+                  \label{med:eq:variance}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+Write the error in \eqref{med:eq:count} as $R(T)$, extending the formula
+to $T\ge0$ by increasing its constant; then $R(0)=0$. Stieltjes
+integration by parts with $f(T)=(T^2+u^2)^{-1}$ gives
+\[
+ m_x(c)=\frac{\theta}{2\pi u}
+       (\ell\arctan c+J(c))
+       +\theta f(cu)R(cu)-\theta\int_0^{cu}f'(T)R(T)\,dT.
+\]
+Both error terms are $O_\chi(\log u/u^2)$, uniformly on the stated
+compact sets. The same estimate holds at $c=\infty$; the boundary term
+there vanishes and the integral is absolutely convergent. Substitution
+$r\mapsto1/r$ gives $J(\infty)=0$, proving \eqref{med:eq:total}.
+
+Apply the same argument to $(T^2+u^2)^{-2}$. The main integrals are
+\[
+ \int_0^\infty\frac{dr}{(1+r^2)^2}=\frac\pi4,
+ \qquad
+ \int_0^\infty\frac{\log r}{(1+r^2)^2}\,dr=-\frac\pi4.
+\]
+For the second identity, use
+$(1+r^2)^{-2}=\tfrac12(r/(1+r^2))'+\tfrac12(1+r^2)^{-1}$,
+integrate by parts, and use $J(\infty)=0$. The error is
+$O_\chi(\log u/u^4)$, giving \eqref{med:eq:variance}.
+Finally
+$(\log u/u^2)/\sigma_x=O(\sqrt{\log u/u})\to0$.
+\end{proof}
+
+\begin{remark}[A leading-order mean is insufficient]
+The uniform law of large numbers permits the centering $xA(c)$ at scale
+$x$, but the bridge theorem generally does not permit it at scale
+$\sigma_x$. For instance
+\[
+ m_x(1)-\frac x2=-\frac{\theta G}{2\pi u}
+                    +O_\chi\left(\frac{\log u}{u^2}\right).
+\]
+The magnitude of this deterministic difference divided by $\sigma_x$
+grows on the order of $\sqrt{u/\log u}$. Exact or sufficiently accurate
+centering is therefore a mathematical requirement.
+\end{remark}
+
+Define the random height
+\begin{equation}\label{med:eq:height}
+ H_x=\min\left\{\gamma_j:
+        \sum_{\gamma_i\le\gamma_j}\frac{G_i}{\gamma_i^2}
+                 \ge\frac X2\right\}.
+\end{equation}
+It exists almost surely because the partial sums increase to $X>0$.
+For $\ell>0$, let $c_\ell>1$ be the unique solution of
+\begin{equation}\label{med:eq:centerroot}
+ \ell\arctan c_\ell+J(c_\ell)=\frac{\pi\ell}{4}.
+\end{equation}
+The equation is a scalar monotone root problem: its left side minus
+the right side is $-G$ at $1$, tends to $\pi\ell/4$ at infinity, and has
+positive derivative $(\ell+\log c)/(1+c^2)$ for $c\ge1$.
+
+\begin{theorem}[Conditional half-contribution height]
+\label{med:thm:height}
+Under the conditional law $X\le x$, as $x\downarrow0$,
+\begin{equation}\label{med:eq:CLT}
+ \boxed{\quad
+ \frac{x}{\pi\sigma_x}\left(\frac{H_x}{u}-c_\ell\right)
+ \ \Longrightarrow\
+ N\left(0,\frac14-\frac1{\pi^2}\right).
+ \quad}
+\end{equation}
+The center and height scale satisfy
+\begin{align}
+ c_\ell&=1+\frac{2G}{\ell}+\frac{2G^2}{\ell^2}
+                            +O(\ell^{-3}),\label{med:eq:expansion}\\
+ \frac{u\pi\sigma_x}{x}
+       &\sim\pi\sqrt{\frac{2u}{\theta\ell}}.
+       \label{med:eq:heightscale}
+\end{align}
+In \eqref{med:eq:CLT} the implicit center \eqref{med:eq:centerroot}
+must be used, not a fixed truncation of \eqref{med:eq:expansion}.
+\end{theorem}
+
+\begin{proof}
+We first justify a moving-cutoff version of the one-band assertion in
+Theorem~\ref{mc:thm:joint}. If $c_u\to1$, split the tilted coordinates
+at $c_uu$. The variance fractions of the two centered blocks tend to
+\[
+ v_1=V(1)=\frac12+\frac1\pi,\qquad 1-v_1.
+\]
+This follows from the spectral sum lemma and monotone bracketing of
+$c_u$ between fixed cutoffs. The local limit proof remains valid:
+$[u/4,u/2]$ lies in the lower block and $[2u,3u]$ in the upper block
+for all sufficiently large $u$. Both intervals contain order
+$u\log u$ ordinates and supply the same integrable Fourier envelope.
+Thus their normalized densities converge uniformly to
+$\varphi_{v_1}$ and $\varphi_{1-v_1}$.
+
+Applying the exact two-band density change of variables from
+\eqref{mc:eq:jointdensity} proves
+\begin{equation}\label{med:eq:moving}
+ \left(\frac{X_x(c_u)-m_x(c_u)}{\sigma_x},
+              u^2(x-X)\right)
+ \Longrightarrow (Z,E),
+\end{equation}
+where $Z\sim N(0,v_1(1-v_1))$ and $E\sim\operatorname{Exp}(1)$ are
+independent. This step is only a two-dimensional density argument;
+it requires no functional central limit theorem.
+
+Put $d_u=\pi\sigma_x/x\to0$ and fix $z\in\mathbb R$. Take
+$c_u=c_\ell+zd_u$, which tends to one. Lemma~\ref{med:lem:center} and
+\eqref{med:eq:centerroot} give $m_x(c_\ell)-x/2=o(\sigma_x)$. Also
+\[
+ M'_u(c)=\frac{\theta}{2\pi u}
+                  \frac{\ell+\log c}{1+c^2}
+          \sim\frac{x}{\pi}\qquad(c\to1),
+\]
+uniformly in a shrinking neighborhood of one. Hence
+\[
+ \frac{m_x(c_u)-x/2}{\sigma_x}\longrightarrow z.
+\]
+Under the conditional law,
+$(x-X)/(2\sigma_x)=u^2(x-X)/(2u^2\sigma_x)\to0$ in probability,
+by \eqref{med:eq:moving}. Consequently
+\[
+ \frac{X_x(c_u)-X/2}{\sigma_x}\Longrightarrow Z+z.
+\]
+The exact monotone equivalence
+$H_x\le uc_u\Longleftrightarrow X_x(c_u)\ge X/2$ now shows that the
+distribution function in \eqref{med:eq:CLT} tends at $z$ to
+$\Pr(Z\ge-z)$, the stated normal distribution function. Repeated
+ordinates cause no problem for this equivalence.
+
+Since $v_1(1-v_1)=1/4-1/\pi^2$, the variance is as claimed.
+Equations~\eqref{med:eq:total}--\eqref{med:eq:variance} yield
+\eqref{med:eq:heightscale}. Finally, Taylor expansion at $c=1$, using
+$J(1)=-G$ and $J'(1)=0$, gives \eqref{med:eq:expansion}.
+\end{proof}
+
+The second term omitted by the first-order center
+$1+2G/\ell$ is asymptotic to $2G^2/\ell^2$. After the normalization
+in \eqref{med:eq:CLT}, this error grows like
+$\sqrt u/\ell^{3/2}$. Thus even the first correction, although larger
+than the random fluctuations and informative about their location,
+cannot replace the exact root in the central limit theorem.
+

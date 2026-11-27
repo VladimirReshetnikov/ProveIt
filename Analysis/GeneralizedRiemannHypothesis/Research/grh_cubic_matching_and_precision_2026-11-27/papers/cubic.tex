@@ -1,0 +1,531 @@
+\section{The exact cubic matching theorem}\label{sec:cubic}
+
+The article asks whether its quadratic Euler-factor matching results have an
+analogue for characters of odd prime order \cite{article}. We determine the
+minimum disagreement density for characters of order dividing three, for every
+packet size and every rank, and classify every pair attaining that minimum.
+The resulting function has two different steps between successive powers of
+three. The extremal configurations also give exact erasure and corruption
+thresholds for identifying a product from its local factors.
+
+\subsection{Packets and the extremal function}
+
+Let $X$ be a group of Dirichlet characters modulo $Q$, of exponent three and
+rank $r\geq1$. Thus $X\simeq\F_3^r$. The principal character belongs to $X$.
+We write the group law on $X$ additively when describing its subspaces and
+cosets. A \emph{packet} $A$ is a multiset of $k\geq1$ members of $X$, and its
+local polynomial at $p\nmid Q$ is
+\[
+ P_A(p,T)=\prod_{\chi\in A}(1-\chi(p)T).
+\]
+For distinct packets $A,C$ of the same size, let $\delta(A,C)$ be the natural
+density, among rational primes, of the set on which $P_A(p,T)\ne P_C(p,T)$.
+Write $\Delta_{r,k}$ for the minimum of these densities over all such pairs.
+
+\begin{theorem}[Exact minimum disagreement]\label{thm:cubic-min}
+The density $\delta(A,C)$ exists. Put $a=\lfloor\log_3 k\rfloor$. Then
+\begin{equation}\label{eq:cubic-min}
+ \Delta_{r,k}=
+ \begin{cases}
+  2/3^r,&k\geq3^{r-1},\\[2pt]
+  2/3^{a+1},&a\leq r-2,\quad 3^a\leq k<2\cdot3^a,\\[2pt]
+  4/3^{a+2},&a\leq r-2,\quad 2\cdot3^a\leq k<3^{a+1}.
+ \end{cases}
+\end{equation}
+The theorem is unconditional.
+\end{theorem}
+
+For example, at rank at least three, the least disagreement densities for
+$k=1,2,3,4,5,6,7,8,9$ are respectively
+\[
+ \frac23,\quad\frac49,\quad\frac29,\quad\frac29,\quad\frac29,
+ \quad\frac4{27},\quad\frac4{27},\quad\frac4{27},\quad\frac2{27}.
+\]
+Consequently two distinct products of six factors can have identical local
+polynomials at a proportion $23/27$ of the primes, and no larger proportion
+is possible. With nine factors the optimal proportion is $25/27$.
+
+For the classification, cancel common entries of $A$ and $C$, and write
+\[
+ c(\chi)=m_A(\chi)-m_C(\chi),\qquad
+ b=\sum_{c(\chi)>0}c(\chi)=\frac12\sum_\chi\abs{c(\chi)}\leq k.
+\]
+Here $b$ is the size of either packet after cancellation.
+
+\begin{theorem}[All extremizers]\label{thm:cubic-equality}
+Every pair attaining \eqref{eq:cubic-min} has the following form, up to
+interchanging the two packets and adding the same multiset to both.
+\begin{enumerate}
+\item If $a\leq r-2$ and $3^a\leq k<2\cdot3^a$, there are a subspace
+  $U\leq X$ of dimension $a$, an element $\eta\in X$, and $\theta\notin U$
+  such that the reduced packets are
+  \[
+   A=\eta+U,\qquad C=\eta+\theta+U.
+  \]
+  In particular, $b=3^a$ and neither reduced packet has repeated entries.
+\item If $a\leq r-2$ and $2\cdot3^a\leq k<3^{a+1}$, there are a subspace
+  $U\leq X$ of dimension $a$, an element $\eta\in X$, and $\alpha,\beta$
+  linearly independent modulo $U$ such that
+  \begin{align*}
+   A&=(\eta+\alpha+U)\mathbin{\dot\cup}(\eta-\alpha+U),\\
+   C&=(\eta+\beta+U)\mathbin{\dot\cup}(\eta-\beta+U).
+  \end{align*}
+  Here $b=2\cdot3^a$, again without repetitions.
+\item If $k\geq3^{r-1}$, there is a hyperplane $U<X$ such that $c$ is
+  constant on its three cosets. Its three integer values $d_0,d_1,d_2$
+  satisfy
+  \[
+   d_0+d_1+d_2=0,\qquad(d_0,d_1,d_2)\ne(0,0,0),\qquad
+   b=3^{r-1}\max_j\abs{d_j}\leq k.
+  \]
+  Every such coefficient function is an extremizer.
+\end{enumerate}
+Conversely every displayed construction attains the stated minimum.
+\end{theorem}
+
+The third case covers $r=1$ and every $k\geq1$. The theorem concerns the exact
+extremal function and its complete equality classification. The other
+attainable densities form a further classification problem.
+
+\begin{corollary}[Characters of exact order three]\label{cor:cubic-nonprincipal}
+Formula~\eqref{eq:cubic-min} remains valid if every packet entry must be
+nonprincipal, hence of exact order three.
+\end{corollary}
+
+\begin{proof}
+The lower bound already applies to this restricted family. For the lower
+construction use the two cosets $\theta+U$ and $-\theta+U$, where
+$\theta\notin U$; neither contains the identity. For the upper
+construction the four cosets $\alpha+U$, $-\alpha+U$, $\beta+U$ and
+$-\beta+U$ already avoid the identity. At saturation take the two
+nonzero cosets of a hyperplane. Pad both packets by the same nonprincipal
+character as necessary; one exists because $r\geq1$. This also handles
+$r=1$. The equality classification is the restriction of
+Theorem~\ref{thm:cubic-equality} to configurations and common fillers
+that avoid the identity.
+\end{proof}
+
+\subsection{From local factors to an integral Fourier transform}
+
+Fix $\zeta=e^{2\pi i/3}$, and let
+$V=\operatorname{Hom}(X,\{1,\zeta,\zeta^2\})\simeq\F_3^r$.
+For $v\in V$ write $\chi(v)$ for evaluation. Define
+\begin{equation}\label{eq:cubic-H}
+ H(v)=\sum_{\chi\in X}c(\chi)\chi(v).
+\end{equation}
+Finite Fourier inversion shows that $H\ne0$. Also
+\begin{equation}\label{eq:cubic-symmetry}
+ H(0)=0,\qquad H(-v)=\overline{H(v)}.
+\end{equation}
+
+\begin{lemma}[Trace detects the whole cubic local polynomial]
+\label{lem:cubic-trace}
+At every $v\in V$, equality of the two traces is equivalent to equality of
+the two local polynomials. Moreover
+\begin{equation}\label{eq:cubic-density}
+ \delta(A,C)=3^{-r}\abs{\supp H}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+ C_j(v)=\sum_{\chi(v)=\zeta^j}c(\chi)\qquad(j=0,1,2).
+\]
+Then $\sum_jC_j(v)=0$ and
+$H(v)=C_0(v)+C_1(v)\zeta+C_2(v)\zeta^2$.
+The minimal polynomial $1+Z+Z^2$ implies that this expression vanishes
+precisely when $C_0(v)=C_1(v)=C_2(v)$; their zero sum then makes all three
+zero. This says exactly that the multiplicities of the three possible
+local roots agree.
+
+The evaluation homomorphism $(\Z/Q\Z)^\times\to V$ is surjective. Indeed,
+the annihilator of its image in $X$ consists of the character trivial on
+every reduced residue class, which is the identity character. A proper
+subgroup of a finite elementary abelian group has a nontrivial annihilator.
+All fibers therefore have the same size. The prime number theorem in
+arithmetic progressions gives \eqref{eq:cubic-density}.
+\end{proof}
+
+\subsection{The Eisenstein valuation and the degree bound}
+
+Put $R=\Z[\zeta]$ and $\varpi=1-\zeta$. We use
+\[
+ \varpi^2=-3\zeta,\qquad R/(\varpi)\simeq\F_3,
+ \qquad\overline\varpi=-\zeta^2\varpi.
+\]
+For a nonzero element of $R$, let $v_{\varpi}$ be its divisibility order at
+$\varpi$. Set
+\[
+ t=\min_{H(v)\ne0}v_{\varpi}(H(v)),\qquad
+ f(v)=\varpi^{-t}H(v)\pmod\varpi.
+\]
+The function $f:V\to\F_3$ is nonzero. Since all character values are
+$1\pmod\varpi$ and $\sum c(\chi)=0$, one has $t\geq1$.
+
+\begin{lemma}[Low degree after dividing by the common valuation]
+\label{lem:cubic-degree}
+The reduced polynomial representing $f$ on $\F_3^r$ has total degree at most
+$t$. In addition,
+\begin{equation}\label{eq:cubic-fparity}
+ f(0)=0,\qquad f(-v)=(-1)^t f(v),\qquad\supp f\subseteq\supp H.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Represent each coordinate by $0,1,2$. For $e\in\{0,1,2\}$ the polynomial
+\[
+ 1+(\zeta^e-1)x+(\zeta^e-1)^2\frac{x(x-1)}2
+\]
+interpolates $x\mapsto\zeta^{ex}$ on these three representatives. Its
+coefficient of $x^j$ is divisible by $\varpi^j$, for $j=0,1,2$, in
+$R[1/2]$. Taking products in the coordinates and integer linear
+combinations produces the reduced interpolating polynomial for $H$;
+every coefficient of total degree $j$ is divisible by $\varpi^j$.
+
+Every coefficient is also divisible by $\varpi^t$. To see this, interpolate
+the values $\varpi^{-t}H(v)$ instead. The one-variable evaluation matrix
+on $0,1,2$ has determinant $2$, so its inverse, and the tensor product
+inverse in $r$ variables, have entries in $R[1/2]$. Thus division of the
+interpolating polynomial by $\varpi^t$ leaves its coefficients in
+$R[1/2]$. Reducing modulo $\varpi$ kills every monomial of degree greater
+than $t$, proving the degree claim.
+
+The support and value at zero follow from the definition. Conjugation
+acts trivially on $R/(\varpi)$, while
+$\overline\varpi/\varpi=-\zeta^2\equiv-1\pmod\varpi$.
+Equation \eqref{eq:cubic-symmetry} therefore gives the parity identity.
+\end{proof}
+
+\begin{lemma}[Exact cost of an odd or even valuation]
+\label{lem:cubic-cost}
+If $t=2j+1$, then $b\geq3^j$. If $t=2j+2$, then $b\geq2\cdot3^j$.
+\end{lemma}
+
+\begin{proof}
+Choose $v$ attaining the minimum defining $t$, and abbreviate $C_j(v)$ to
+$C_j$. For any zero-sum integer triple the positive mass is its largest
+absolute entry. Coalescing the coefficients of $c$ into this triple
+cannot increase its positive mass, so
+\[
+ \max_j\abs{C_j}\leq b.
+\]
+Factor the largest common power $3^m$ from $(C_0,C_1,C_2)$, obtaining a
+zero-sum integer triple $(n_0,n_1,n_2)$ not all divisible by three. Its
+residue triple is either a permutation of $(0,1,2)$, or has three equal
+nonzero entries.
+
+In the first case,
+$n_0+n_1\zeta+n_2\zeta^2$ is divisible by $\varpi$ but not by
+$\varpi^2$, because its two coefficients in the basis $1,\zeta$ are not
+both divisible by three. Thus $t=2m+1$ and
+$b\geq3^m$.
+
+In the second case put $A=n_0-n_2$, $B=n_1-n_2$. Both are divisible by
+three, whereas
+\[
+ \frac{A+B}{3}=-n_2\not\equiv0\pmod3.
+\]
+Consequently $(A+B\zeta)/3$ is not divisible by $\varpi$, so $t=2m+2$.
+Three integers with a common nonzero residue modulo three and zero sum
+cannot all have absolute value at most one. Hence
+$b\geq2\cdot3^m$.
+\end{proof}
+
+\subsection{The coding input and the minimum}
+
+We use these established Reed--Muller facts
+\cite{leducq2012,leducq2010}. On $\F_3^r$, nonzero reduced polynomials of
+degree at most $2j+1<2r$ have support at least
+$2\cdot3^{r-j-1}$. At degree at most $2j<2r$, the minimum is $3^{r-j}$,
+and minimum supports are affine subspaces of codimension $j$. For
+$1\leq j\leq r-1$, the next weight is $4\cdot3^{r-j-1}$; each support
+of that weight is contained in an affine subspace of codimension $j-1$.
+Minimum supports at odd degree lie in an affine subspace of codimension
+$j$. The second-weight formula at degree two includes $r=2$.
+
+\begin{lemma}[The symmetry excludes the even minimum]
+\label{lem:cubic-weight}
+For the function $H$ in \eqref{eq:cubic-H}, the following bounds hold:
+\begin{align}
+ t=2j+1<2r&\quad\Longrightarrow\quad
+  3^{-r}\abs{\supp H}\geq\frac2{3^{j+1}},\label{eq:cubic-odd}\\
+ t=2j<2r&\quad\Longrightarrow\quad
+  3^{-r}\abs{\supp H}\geq\frac4{3^{j+1}}.
+  \label{eq:cubic-even}
+\end{align}
+In all cases $3^{-r}\abs{\supp H}\geq2/3^r$.
+\end{lemma}
+
+\begin{proof}
+For odd $t$, apply the minimum-weight bound to $f$ and use
+$\supp f\subseteq\supp H$. For even $t=2j$, a minimum-weight $f$ would
+have support an affine subspace $A$ of codimension $j$.
+Equation \eqref{eq:cubic-fparity} gives $A=-A$. An affine subspace over
+$\F_3$ invariant under negation contains zero: it contains the midpoint
+of any $v$ and $-v$. This contradicts $f(0)=0$. The second-weight bound
+therefore applies. Finally $\supp H$ is nonempty, invariant under
+negation, and excludes zero, so it contains at least one pair
+$\{v,-v\}$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:cubic-min}]
+The density formula is Lemma~\ref{lem:cubic-trace}. First suppose
+$a\leq r-2$ and $3^a\leq k<2\cdot3^a$. Lemma~\ref{lem:cubic-cost}
+forces $t\leq2a+1$. An odd value $t=2j+1$ has $j\leq a$, and
+\eqref{eq:cubic-odd} gives $\delta(A,C)\geq2/3^{a+1}$.
+An even value $t=2j$ has $j\leq a$ and gives the strictly larger bound
+$4/3^{a+1}$.
+
+If $a\leq r-2$ and $2\cdot3^a\leq k<3^{a+1}$, the cost lemma forces
+$t\leq2a+2$. The weakest bound is now at $t=2a+2$, giving
+$4/3^{a+2}$; every smaller $t$ gives a larger bound. If
+$k\geq3^{r-1}$, use the universal two-point bound.
+
+For sharpness choose a subspace $U\leq X$ of dimension $a$ and
+$\theta\notin U$. The packets $U$ and $\theta+U$ have size $3^a$ and
+Fourier difference
+\begin{equation}\label{eq:cubic-construct-odd}
+ H(v)=3^a\mathbf1_{U^\perp}(v)(1-\theta(v)).
+\end{equation}
+Its support has relative size $3^{-a}(2/3)$.
+For the other range choose $\alpha,\beta$ independent modulo $U$ and
+take the two packets
+$(\alpha+U)\mathbin{\dot\cup}(-\alpha+U)$ and
+$(\beta+U)\mathbin{\dot\cup}(-\beta+U)$.
+For $v\in U^\perp$, write $\alpha(v)=\zeta^x$ and
+$\beta(v)=\zeta^y$. Then
+\begin{equation}\label{eq:cubic-construct-even}
+ H(v)=3^{a+1}\bigl(\mathbf1_{x=0}-\mathbf1_{y=0}\bigr).
+\end{equation}
+Exactly one of $x,y$ vanishes in four of their nine equally frequent
+values, giving $4/3^{a+2}$. Append identical entries to both packets to
+reach the prescribed size $k$. For saturation use
+\eqref{eq:cubic-construct-odd} with $\dim U=r-1$.
+\end{proof}
+
+\subsection{Rigidity of equality}
+
+\begin{lemma}[Support in a subspace forces repeated coefficients]
+\label{lem:cubic-periods}
+If $H$ is supported in a linear subspace $A\leq V$, then its integral
+Fourier coefficients $c$ are constant on each coset of $A^\perp\leq X$.
+\end{lemma}
+
+\begin{proof}
+Fourier inversion gives
+\[
+ c(\chi)=3^{-r}\sum_{v\in A}H(v)\overline{\chi(v)}.
+\]
+Replacing $\chi$ by $\chi+u$ for $u\in A^\perp$ leaves every summand
+unchanged.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:cubic-equality}]
+In the lower nonsaturated range, equality in the preceding bounds forces
+$t=2a+1$. The support of $f$ is contained in that of $H$ and already has
+the minimum permitted size, so the two supports agree. The coding
+classification puts this support inside an affine subspace $A\leq V$
+of codimension $a$, occupying $2/3$ of it. It spans $A$, because a
+proper affine subspace contains at most $1/3$ of $A$. The symmetry of
+$\supp H$ implies $A=-A$, so $A$ is linear.
+
+Let $U=A^\perp$, of dimension $a$. By
+Lemma~\ref{lem:cubic-periods}, $c$ is constant on cosets of $U$. Its
+positive mass is therefore a positive integer multiple of $3^a$, less
+than $2\cdot3^a$. On $X/U$ its coefficient vector has one $+1$ and
+one $-1$. This is the two-coset description in part~1.
+
+In the upper nonsaturated range equality similarly forces $t=2a+2$,
+and $\supp f=\supp H$ has the second Reed--Muller weight. Its support
+lies in an affine subspace $A$ of codimension $a$, occupying $4/9$ of
+it. Since $4/9>1/3$, this is again the affine span of the support and is
+linear by symmetry. With $U=A^\perp$, the coefficient vector descends
+to $X/U$. Its positive mass is at least $2\cdot3^a$ by the cost lemma
+and less than $3\cdot3^a$, so the quotient consists of two disjoint
+packets of size two.
+
+If either quotient packet repeats a character, agreement of the two
+traces forces all its local character values to coincide with those
+of the other packet, by equality in the triangle inequality. Agreement
+then lies in a proper linear subspace and has relative size at most
+$1/3$. The required agreement is $5/9$, so both quotient packets have
+distinct entries. Write them as $\{x,y\}$ and $\{z,w\}$, with all four
+entries different. If $x+y-z-w\ne0$, agreement of the local polynomials
+implies that this nontrivial character takes the value one. This again
+allows agreement on at most $1/3$ of the quotient dual. Thus
+$x+y=z+w$.
+
+Division by two in $\F_3$ defines
+\[
+ \eta=(x+y)/2,\qquad\alpha=(x-y)/2,\qquad\beta=(z-w)/2.
+\]
+Distinctness of the four entries says that $\alpha,\beta$ are nonzero
+and unequal up to sign. Over $\F_3$, this is their linear independence.
+Lifting the quotient elements gives part~2.
+
+At saturation, equality means $\supp H=\{v,-v\}$ for some nonzero
+$v$. Let $U=\ker v<X$. Lemma~\ref{lem:cubic-periods} makes $c$
+constant on the three cosets of $U$. Its three integer values sum to
+zero and are not all zero. Their positive mass is their largest
+absolute value, giving the formula in part~3. Conversely any such
+function has Fourier support contained in $U^\perp$; its value at
+zero vanishes, and nonzero conjugate values remain at the other two
+points. All stated converses also follow from the explicit
+constructions above.
+\end{proof}
+
+\subsection{Sharp tolerance of erased and corrupted observations}
+
+\begin{corollary}[Exact asymptotic observation thresholds]
+\label{cor:cubic-errors}
+Consider products of exactly $k$ characters from a fixed rank-$r$ group
+$X$, observed through their local polynomials at primes not dividing $Q$.
+\begin{enumerate}
+\item If an indicated erasure set has upper natural density strictly less
+than $\Delta_{r,k}$, the remaining exact observations identify at most one
+packet. The threshold is sharp.
+\item If an arbitrary record differs from the true packet on a set of upper
+natural density strictly less than $\Delta_{r,k}/2$, there is at most one
+packet satisfying that error bound. This threshold is sharp as well.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Two packets agreeing outside an erasure set would have disagreement
+density bounded by that set's upper density. Two packets each within
+error density $\varepsilon$ of one record would disagree on a set of
+upper density at most $2\varepsilon$. Theorem~\ref{thm:cubic-min} gives
+uniqueness in both cases.
+
+For sharpness choose an extremizing pair and erase precisely its
+disagreement primes. For corrupted observations, order the disagreement
+primes and alternate their allocation to two sets. Each has natural
+density $\Delta_{r,k}/2$. Use the first packet's value on one set and
+the second packet's value on the other, and their common value elsewhere.
+This single record is at the threshold distance from both packets.
+\end{proof}
+
+\subsection{Effective arithmetic consequences of Dirichlet GRH}
+
+We now use the input Dirichlet GRH to make separation visible in a finite
+prime interval. Fix a smooth nonnegative function $w$ supported in
+$(1/2,1)$ with $\int_0^\infty w(u)\,du=1$. For $F:V\to\C$ set
+\[
+ M_x(F)=\sum_{p\nmid Q}(\log p)w(p/x)F([p]),
+ \qquad \norm{F}_{\mathrm A}=\sum_{\chi\in X}\abs{\widehat F(\chi)},
+\]
+where $\widehat F$ uses normalized finite Fourier coefficients and
+$\E_V F=3^{-r}\sum_{v\in V}F(v)$.
+
+\begin{lemma}[Smoothed GRH interface]\label{lem:cubic-grh}
+Under Dirichlet GRH, for $x\geq2$,
+\begin{equation}\label{eq:cubic-grh-interface}
+ \abs{M_x(F)-x\E_V F}
+ \leq C_w\norm{F}_{\mathrm A}\sqrt{x}\log(2Q).
+\end{equation}
+The constant $C_w$ is independent of $X,Q,r,F$ and $x$.
+\end{lemma}
+
+\begin{proof}
+For a character $\chi\in X$, apply the smoothed explicit formula to its
+primitive inducer. The principal character contributes $x$. Under GRH
+each nontrivial zero contributes a term of absolute value
+$\sqrt{x}\abs{\widetilde w(1/2+i\gamma)}$, where
+$\widetilde w$ is the Mellin transform. Repeated integration by parts
+gives rapid decay in $\gamma$, while the usual unit-interval zero count
+is $O(\log(2Q(\abs\gamma+2)))$. Their sum is
+$O_w(\sqrt{x}\log(2Q))$. The trivial-zero and archimedean terms satisfy
+the same bound. Subtracting prime powers of exponent at least two costs
+$O_w(\sqrt{x})$, and removing primes dividing $Q$ costs
+$O_w(\log Q)$. This proves
+\eqref{eq:cubic-grh-interface} for each character, including imprimitive
+ones. Fourier expansion and the triangle inequality prove the assertion
+for $F$. This is the analytic interface used in the article's quadratic
+matching result \cite{article}.
+\end{proof}
+
+\begin{theorem}[A finite distinguishing prime]\label{thm:cubic-prime}
+Under Dirichlet GRH there is a constant $C_w'>0$ such that every distinct
+pair of size-$k$ packets from $X$ has a prime with different local
+polynomials in $(x/2,x)$ whenever
+\[
+ x\geq C_w' k^2\log^2(2Q).
+\]
+\end{theorem}
+
+\begin{proof}
+Let $B=\sum_\chi\abs{c(\chi)}=2b\leq2k$ and use $F=\abs H^2$.
+Parseval and integrality give
+\[
+ \E_V\abs H^2=\sum_\chi c(\chi)^2\geq B,\qquad
+ \norm{\abs H^2}_{\mathrm A}\leq B^2.
+\]
+Hence $M_x(\abs H^2)\geq Bx-C_wB^2\sqrt{x}\log(2Q)>0$ once the
+constant $C_w'$ is large enough. A positive summand supplies the
+required prime, and Lemma~\ref{lem:cubic-trace} identifies it as a
+local-polynomial disagreement.
+\end{proof}
+
+The $k^2\log^2 Q$ scale follows from the general Fourier argument. The
+complete extremizer classification gives a stronger uniform statement
+for counting the distinguishing primes of an extremal pair.
+
+\begin{theorem}[Exact norms and uniform counting for all extremizers]
+\label{thm:cubic-norm}
+Let $S\subset V$ be the disagreement set of a pair attaining
+$\Delta_{r,k}$. Then
+\begin{equation}\label{eq:cubic-exactnorm}
+ \norm{\mathbf1_S}_{\mathrm A}=
+ \begin{cases}
+  4/3,&\text{the lower nonsaturated range or the saturated range},\\
+  16/9,&\text{the upper nonsaturated range}.
+ \end{cases}
+\end{equation}
+Consequently, under Dirichlet GRH,
+\begin{equation}\label{eq:cubic-extcount}
+ \sum_{\substack{p\nmid Q\\P_A(p,T)\ne P_C(p,T)}}
+    (\log p)w(p/x)
+ =\Delta_{r,k}x+O_w\bigl(\sqrt{x}\log(2Q)\bigr),
+\end{equation}
+with a constant independent of packet size and rank.
+\end{theorem}
+
+\begin{proof}
+The common translation $\eta$ multiplies $H$ by a unit-modulus character
+and does not change its support. In the lower range, put
+$K=U+\langle\theta\rangle$. Then
+\[
+ \mathbf1_S=\mathbf1_{U^\perp}-\mathbf1_{K^\perp}.
+\]
+The normalized Fourier transform of $\mathbf1_{L^\perp}$ is
+$\abs{L}^{-1}\mathbf1_L$. Thus the coefficients above have magnitude
+$2/3^{a+1}$ on $U$, magnitude $1/3^{a+1}$ on the other two cosets of
+$U$ in $K$, and vanish elsewhere. Their absolute sum is $4/3$.
+
+For the upper range let
+\[
+ K_1=U+\langle\alpha\rangle,\quad
+ K_2=U+\langle\beta\rangle,\quad
+ K=U+\langle\alpha,\beta\rangle.
+\]
+Equation \eqref{eq:cubic-construct-even} gives
+\[
+ \mathbf1_S=\mathbf1_{K_1^\perp}+\mathbf1_{K_2^\perp}
+             -2\mathbf1_{K^\perp}.
+\]
+On the nine cosets of $U$ in $K$, the absolute Fourier coefficients
+are $4/3^{a+2}$ on $U$, $1/3^{a+2}$ on four cosets, and
+$2/3^{a+2}$ on the remaining four. Their sum is
+$(4+4+8)/9=16/9$.
+
+At saturation $S=U^\perp\setminus\{0\}$ with $\dim U=r-1$;
+the first norm calculation applies with $K=X$. Finally apply
+Lemma~\ref{lem:cubic-grh} to $\mathbf1_S$.
+\end{proof}
+
+Equation \eqref{eq:cubic-extcount} supplies a finite observation guarantee:
+after division by $x$, the weighted disagreement estimate differs from
+the exact density by $O_w(x^{-1/2}\log(2Q))$, uniformly over every
+extremizer. The algebraic classification is responsible for this
+uniformity.

@@ -1,0 +1,144 @@
+\documentclass[11pt]{article}
+\usepackage[top=.76in,bottom=.76in,left=.85in,right=.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,microtype,xcolor}
+\usepackage[colorlinks=true,urlcolor=blue!45!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\title{Five-step spanning-tree divisibility\\in rank-two graph towers}
+\author{}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\vspace{-2em}
+\begin{abstract}
+The ProveIt upper bound for odd step counts is attained for five steps
+at $p=11$, at every layer, by one simple Cayley graph tower.
+We give an unconditional proof, an independent determinant check,
+and exhaustive maxima at all 22 primes between 11 and 101.
+\end{abstract}
+\section{Sharpness at eleven}
+Let $p>10$ be prime and let $S=(s_1,\ldots,s_5)$ be a list of integer
+vectors spanning $\mathbb F_p^2$ after reduction. Repetitions are
+allowed. At level $n\ge1$, each vertex $v$ of $(\mathbb Z/p^n\mathbb Z)^2$
+and each index $i$ supply an undirected edge from $v$ to $v+s_i$.
+Write $\kappa_n(S)$ for the spanning-tree count.
+\begin{theorem}
+For every $n\ge1$,
+\[
+\max_S v_{11}(\kappa_n(S))=72(11^n-1)/10-2n.
+\]
+The list $((1,0),(0,1),(0,2),(1,1),(3,7))$ attains all these maxima.
+Its graphs are simple and ten-regular.
+\end{theorem}
+\begin{proof}
+Put $M_j(u)=\sum_i(u\cdot s_i)^{2j}$ over $\mathbb F_p$ and let $r(L)$
+be its first nonzero index in projective direction $L$. Newton's
+identities give $r(L)\le5$, since otherwise the five squared
+projections would all be zero, contrary to spanning. The character
+calculation below gives
+\[
+ A(S)=2\sum_L r(L),\qquad v_p(\kappa_n(S))=A(S)(p^n-1)/(p-1)-2n.
+\]
+We show $A(S)\le4(p+1)+24$. If $M_1$ is nonzero, its at most two
+projective roots give $A(S)\le2(p+1)+16$. Otherwise $M_2$ is nonzero.
+Indeed, discard zero steps and group the linear forms by projective
+class. Fourth powers of up to five distinct forms are independent:
+choose finite slopes and use the first Vandermonde rows and the
+invertible degree-four binomial coefficients. If $M_2=0$, every
+group would have at least two terms, so there would be exactly two
+groups by spanning and the step limit. Independence of the two
+squared forms then forces both the first and the second power sums
+of squared scales to vanish in each group. By Newton's identities
+this is impossible for two nonzero scales, so the groups would
+require at least six steps. Thus the quartic $M_2$ is nonzero.
+At most four directions have depth above two, proving the bound.
+
+For the stated list the integer coefficients of $M_1$ are $11,44,55$.
+In directions $(1,t)$ for $0\le t\le10$, then $(0,1)$, the $M_2$
+residues are
+\[
+ 6,\ 2,\ 0,\ 0,\ 0,\ 7,\ 4,\ 5,\ 0,\ 10,\ 10,\ 10.
+\]
+At each of its four zeros, $(M_3,M_4,M_5)=(0,0,5)$ modulo eleven.
+Thus $A=2(8\cdot2+4\cdot5)=72$. The steps are nonzero and distinct up
+to sign modulo eleven, so no loops or parallel edges occur.
+\end{proof}
+\section{The character calculation}
+At conductor $p^h$ let $u$ be a primitive covector. The Laplacian
+eigenvalue is $\sum_i(2-Z^{a_i}-Z^{-a_i})$, where $a_i=u\cdot s_i$
+and $Z=\zeta_{p^h}$. Write $T=Z-1$ and $e=(p-1)p^{h-1}$. The
+cyclotomic valuation gives $v_p(T)=1/e$. Modulo $p$, the invertible
+substitution $1+T=\exp(z)$ through degree ten yields coefficients
+$-2M_j(\bar u)/(2j)!$ at $z^{2j}$ and zero at odd degrees.
+Thus the first unit coefficient of the integral $T$-expansion
+is at degree $2r(L)\le10$. All earlier nonconstant terms have
+valuation at least $1+1/e$, and the constant term is exactly zero.
+Later terms have valuation strictly larger than $2r(L)/e$.
+This proves the eigenvalue valuation even when $2r(L)=e=10$.
+Each residue direction has $p^{h-1}$ projective lifts, each giving
+$e$ primitive characters. Summation over $h$ and division by
+$p^{2n}$ in the matrix-tree theorem give the formula above.
+
+Independently, fraction-free elimination on the $120\times120$
+reduced integer Laplacian for the witness at $n=1$ gives valuation
+70 and quotient by $11^{70}$ congruent to 1 modulo eleven.
+\section{Other primes}
+\paragraph{Congruence obstruction.}
+For $m$ steps and $p>2m$, a direction of depth $m$ has squared
+projections with monic polynomial $z^m-c$, $c\ne0$. Its $m$
+distinct roots are nonzero squares. Their ratios to any one root
+form the group of $m$th roots of unity, so $2m\mid p-1$.
+If this fails, all depths are at most $m-1$. For five steps the
+upper bound drops to $4(p+1)+16$. In general, by the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/21c0252ffe8611baa0fbf528fbb003d6c42ca9af/Analysis/GeneralizedRiemannHypothesis/Research/grh_transfer_extensions_2026-11-26/sections/graph_extremum.tex}{ProveIt first-moment bound},
+the first nonzero moment polynomial has index $a\le k=\lfloor m/2\rfloor$.
+It has at most $2a$ exceptional directions, so the improved bound
+is $2a(p+1+2m-2-2a)$, increasing in $a$ up to $k$.
+
+\paragraph{Infinite family.}
+For $p\equiv1\pmod{10}$, use $(\xi^i,\xi^{2i})$ for $0\le i<5$,
+where $\xi$ has order five. The geometric sum in the monomial
+of degree $2j$ and $Y$-degree $b$ is supported on $5\mid 2j+b$.
+Hence $M_1=0$, $M_2=20X^3Y$, and both axis directions have
+depth five. The other directions have depth two, proving the
+lower bound $4(p+1)+12$ on that progression.
+
+\paragraph{Exhaustive search.}
+For $M_1=0$, a change of basis sends two independent steps to
+$(1,0),(0,1)$, without changing $A$. Use sign representatives in
+the remaining triple, optionally including zero. The key
+$K(x,y)=(x^2,xy,y^2)$ is injective on these representatives.
+For each sorted pair $u\le v$ in the triple the remaining $w\ge v$
+must have key $(-1,0,-1)-K(u)-K(v)$. This exhausts all normalized
+lists. In every tested case the best score exceeds the
+$M_1\ne0$ ceiling $2(p+1)+16$.
+The table gives $A_{\max}$, and the CSV also records the counts, with and without
+zero residues. Allowing zero changes eight of the 22 maxima.
+An integer step divisible by $p$ in both coordinates counts as
+a zero residue even if it is nonzero at higher layers.
+
+\begin{center}
+\small
+\begin{tabular}{r rr @{\qquad} r rr @{\qquad} r rr}
+\toprule
+$p$ & Nonzero & Zero OK & $p$ & Nonzero & Zero OK & $p$ & Nonzero & Zero OK\\
+\midrule
+11 & 72 & 72 & 41 & 180 & 184 & 73 & 306 & 312\\
+13 & 58 & 64 & 43 & 180 & 184 & 79 & 328 & 328\\
+17 & 80 & 88 & 47 & 200 & 200 & 83 & 344 & 344\\
+19 & 84 & 88 & 53 & 224 & 224 & 89 & 368 & 376\\
+23 & 96 & 96 & 59 & 248 & 248 & 97 & 402 & 408\\
+29 & 128 & 128 & 61 & 260 & 260 & 101 & 424 & 424\\
+31 & 148 & 148 & 67 & 280 & 280 &  &  & \\
+37 & 160 & 160 & 71 & 300 & 300 &  &  & \\
+\bottomrule
+\end{tabular}
+\end{center}
+\paragraph{Scope.}
+This resolves one sharpness case of the odd-step question in the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/21c0252ffe8611baa0fbf528fbb003d6c42ca9af/Analysis/GeneralizedRiemannHypothesis/Research/grh_transfers_lubin_tate_and_graph_towers/graphs.tex}{ProveIt graph-tower report}.
+The transfer is of cyclotomic specialization, not of an RH or GRH
+theorem. For general graph-tower growth see
+\href{https://doi.org/10.5802/alco.304}{On $\mathbb Z_\ell^d$-towers of graphs}.
+The exact maximum at arbitrary odd step counts and primes remains
+open here; no claim of historical priority is made.
+\end{document}

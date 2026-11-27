@@ -1,0 +1,182 @@
+\documentclass[11pt]{article}
+\usepackage[top=.64in,bottom=.69in,left=.8in,right=.8in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,microtype,xcolor}
+\usepackage[colorlinks=true,urlcolor=blue!45!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\linespread{.95}
+\newcommand{\F}{\mathbb F}
+\newcommand{\PP}{\mathbb P}
+\begin{document}
+\begin{center}
+{\LARGE Three- and four-step graph towers}\\[3pt]
+{\large Distributions and extremizer orbits}\\[6pt]
+{\small 27 November 2026}
+\end{center}
+\begin{abstract}
+We give the full three-step valuation distribution, including a
+classification of the three extremizer orbits when $p\equiv1\bmod6$.
+For four steps with identically zero quadratic moment we compute the
+distribution from a finite-field curve point count and classify the
+extremizers when $p\equiv1\bmod8$. The four-step maximum itself is
+already known from the cited ProveIt report.
+\end{abstract}
+
+\section{Setup and three steps}
+Fix a prime $p>2m$ and a spanning list of $m$ step residues in
+$\F_p^2$. Form the $2\times m$ matrix of columns, with row plane
+$W\subset\F_p^m$. Changing the basis in $\F_p^2$ gives precisely
+the other matrices with row plane $W$. We count these row planes
+before quotienting by sign changes and permutations.
+For a direction $L\in\PP(W)$ let $r(L)$ be the least $j\ge1$
+for which the sum of the $2j$th powers of a representative's
+coordinates is nonzero. If $A=2\sum_L r(L)$, the
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/21c0252ffe8611baa0fbf528fbb003d6c42ca9af/Analysis/GeneralizedRiemannHypothesis/Research/grh_transfers_lubin_tate_and_graph_towers/graphs.tex}{ProveIt formula}
+gives $v_p(\kappa_n)=A(p^n-1)/(p-1)-2n$ for the spanning-tree
+count of the corresponding Cayley tower.
+Distinct nonzero signed column classes ensure simplicity at every layer.
+
+\begin{theorem}[Three-step distribution]
+For $m=3$ put $E=A-2(p+1)$ and $t=p-7$. The counts of row planes are:
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+$E$ & $p\equiv1\bmod6$ & $p\equiv5\bmod6$\\
+\midrule
+0 & $p(p-1)/2$ & $p(p-1)/2$\\
+2 & $t$ & $p+1$\\
+4 & $8+\binom t2$ & $p(p+1)/2$\\
+6 & $8t$ & $0$\\
+8 & $28$ & $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the simple-tower counts remove $3$ planes from $E=4$ if
+$-1$ is a square and from $E=0$ otherwise; also remove $6$ from
+$E=4$ if $-2$ is a square and from $E=0$ otherwise.
+\end{theorem}
+\begin{proof}
+Every $\PP(W)$ is a line in $\PP^2$ and cannot be contained in the
+smooth conic $Q:\sum x_i^2=0$. The excess is two per conic point
+and an extra two per point with $\sum x_i^4=0$. A nondegenerate
+ternary form over a finite field is isotropic (compare the two
+sets of square values in a diagonal equation); projection from
+a rational conic point gives $p+1$ points. Thus there are
+$p+1$ tangents, $\binom{p+1}{2}$ secants, and $p(p-1)/2$ external
+lines. Newton's identities show that the special points have
+squared coordinates the roots of $T^3-c$, $c\ne0$. They exist
+exactly when $p\equiv1\bmod6$, in which case there are eight:
+normalize the first coordinate to $1$, then order the other
+two squared coordinates and choose their signs independently.
+Counting tangents and unordered secant pairs by the number of
+special points proves the table.
+
+Nonsimple row planes have a normal proportional to a coordinate
+vector or to $e_i\pm e_j$. There are three of the first type,
+six of the second. Their lines impose $x_i=0$ or $x_i=\pm x_j$,
+so contain no special points. Substituting into the conic gives
+a secant or an external line according as $-1$ or $-2$ is a
+square or a nonsquare. The simple-tower maximum thus agrees
+with the unrestricted one for both congruence classes.
+\end{proof}
+
+For $p\equiv1\bmod6$, fix $z$ of order three and a special point
+$a=(1,z,z^2)$. The signed permutation group is transitive on the
+eight special points. The stabilizer of $a$ contains cyclic
+permutation of the coordinates, acting projectively. On the other
+seven points it fixes $(1,z^2,z)$ and cycles the three points of
+each of the two remaining types: a single sign change of $a$, or a
+single sign change of $(1,z^2,z)$. Taking cross products gives normals
+\[
+ (0,-z,1),\qquad (1,1,1),\qquad (z^2-z,1,-1)
+\]
+for the respective types (the middle case is the fixed point).
+These three types cannot become equivalent even on unordered pairs:
+the first normal has a zero coordinate, the second has three equal
+squares, and the third has squares $-3,1,1$. The 28 maximizing planes
+therefore form precisely three orbits, of sizes $12,4,12$.
+
+\section{Four steps with vanishing quadratic moment}
+Take $m=4$ and restrict to $M_1\equiv0$, i.e., maximal isotropic
+planes $W$ for the dot product. The quadric
+$Q:\sum_{i=1}^4 x_i^2=0$ is split: take $u^2+v^2=-1$ by
+intersecting two sets of $(p+1)/2$ square values, then use the
+orthogonal isotropic rows $(1,0,u,v),(0,1,-v,u)$. Its two rulings
+therefore give $2(p+1)$ rational planes, and exactly two such
+planes pass through each rational point of $Q$.
+Put $C:\sum_i x_i^2=\sum_i x_i^4=0$ in $\PP^3$, and let
+$c_p=\#C(\F_p)$.
+
+\begin{theorem}[Four-step distribution and orbit]
+For $m=4$ with $M_1=0$, set $E=A-4(p+1)$ and
+$k=12\,{\bf 1}_{p\equiv1\bmod8}$. The numbers of row planes
+at excess $0,8,16$ are respectively
+\[
+    2(p+1)-k-c_p/2,\qquad c_p/2,\qquad k.
+\]
+All these planes give simple towers. If $p\equiv1\bmod8$,
+the twelve maximizing planes form one orbit under signed
+permutations, also giving one orbit of maximizing residue
+lists under change of basis, signs and permutations.
+\end{theorem}
+
+\begin{proof}
+The quartic restricts nontrivially to every $W$ by the first-moment
+lemma in the ProveIt report. Depth four requires that the squared
+coordinates be a coset of the fourth roots of unity inside the
+nonzero squares, by Newton's identities. Write $D$ for the set
+of depth-four points. It is empty if $p\not\equiv1\bmod8$.
+Otherwise, with $g$ of order eight, all $D$ points are signed
+permutations of $a=(1,g,g^2,g^3)$ up to projective scaling.
+Normalizing the first coordinate to $1$ gives
+$3!\,2^3=48$ such points.
+
+There are exactly two isotropic planes through $[a]$, obtained
+by adjoining respectively $b=(-g,1,-g^3,g^2)$ and
+$d=(-g,1,g^3,-g^2)$. They are distinct since their dot product is
+$2(1+g^2)\ne0$. On the first plane the coordinate linear forms
+are $U,V,g^2U,g^2V$ with $U=X-gY$, $V=gX+Y$. The quartic is
+$2(U^4+V^4)$, with four distinct rational roots. The sextic
+vanishes identically, so all four roots are in $D$.
+On the second plane the quartic is $24g^2X^2Y^2$.
+Both axis points are in $D$, and there are no other roots.
+Consequently the planes that meet $D$ have either four $D$ points
+and excess $16$, or two $D$ points and excess $8$.
+Counting incidences with the 48 points of $D$ gives twelve of
+the first type and twenty-four of the second. Transitivity on
+$D$ and uniqueness of the four-point plane through each such
+point prove the orbit assertion.
+
+For completeness, on a plane avoiding $D$ the quartic has
+either zero or four rational zeros. Indeed, make two independent
+columns the coordinate basis and write the column matrix as
+$[I\mid B]$. Since $BB^{\mathsf T}=-I$, a sign choice for the last
+column puts $B$ in the form
+$\left(\begin{smallmatrix}u&v\\v&-u\end{smallmatrix}\right)$.
+With $J=\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)$,
+the matrices $B,J$ permute the signed columns and generate a
+Klein four group projectively: $J^2=B^2=(JB)^2=-I$ and $JB=-BJ$.
+On covectors the transposes preserve every moment. If a quartic
+zero is fixed by a nonidentity group element, its covector
+eigenvalue $\lambda$ has $\lambda^2=-1$ and hence
+$\lambda^6=-1$. Its sextic vanishes, which would put the point
+in $D$. Thus every quartic root on a plane avoiding $D$ belongs
+to an orbit of four. Each such orbit gives excess $8$.
+
+Every point of $C\setminus D$ occurs on two planes avoiding $D$.
+It follows that $(c_p-\#D)/2$ such planes contribute excess $8$,
+in addition to the $\#D/2$ planes having two depth-four points.
+This gives the claimed counts. A nonsimple plane would lie in
+the orthogonal complement of a coordinate vector or
+$e_i\pm e_j$. Both complements are nondegenerate of dimension
+three and cannot contain a totally isotropic plane.
+\end{proof}
+
+When $p\equiv1\bmod8$, lists with $M_1\ne0$ have at most two
+exceptional directions, so $A\le2(p+1)+12$; they cannot be
+maximizers. Outside that congruence the theorem gives the number
+of maximizing row planes as $c_p/2$ if $c_p>0$, and $2(p+1)$
+otherwise. The already known four-step maximum and the seven
+primes with $c_p=0$ are in the linked ProveIt report. This note
+adds the distribution and orbit statements, without an RH or
+GRH assumption.
+\end{document}
