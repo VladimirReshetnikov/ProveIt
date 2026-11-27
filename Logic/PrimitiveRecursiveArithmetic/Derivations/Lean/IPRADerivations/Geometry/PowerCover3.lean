@@ -194,11 +194,12 @@ def Cover {n : ℕ} (x : PTm n) : Fm PTm n := ZT.eq (U x) (ZT.natLit 1)
 theorem inv_base {x : PTm n} (hu : Γ ⊢[PRAAx] Cover x) : Γ ⊢[PRAAx] Inv (st zero x) x zero := by
   have eu := ZT.toZ_eq hu
   have p₀ := natEq (pw_zero (Γ := Γ) (g0 x)); have p₁ := natEq (pw_zero (Γ := Γ) (g1 x))
+  have p₂ := natEq (pw_zero (Γ := Γ) (g2 x))
   unfold Inv
   apply ZT.derive
   simp only [U, X0, X1, X2] at eu ⊢
   ipra_simps
-  rw [toZ_D0_zero, toZ_D1_zero, toZ_D2_zero, p₀, p₁, natEq (pw_zero (Γ := Γ) (g2 x))]
+  rw [toZ_D0_zero, toZ_D1_zero, toZ_D2_zero, p₀, p₁, p₂]
   linear_combination eu
 
 theorem inv_step {x k : PTm n} (hu : Γ ⊢[PRAAx] Cover x) (ih : Γ ⊢[PRAAx] Inv (st k x) x k) :
@@ -206,12 +207,13 @@ theorem inv_step {x k : PTm n} (hu : Γ ⊢[PRAAx] Cover x) (ih : Γ ⊢[PRAAx] 
   have e := ZT.toZ_eq (cover_step₃ (P₀ := ZT.ofNat (pw (g0 x) k)) (P₁ := ZT.ofNat (pw (g1 x) k))
     (P₂ := ZT.ofNat (pw (g2 x) k)) (d₀ := D0 (st k x)) (d₁ := D1 (st k x)) (d₂ := D2 (st k x)) hu ih)
   have p₀ := natEq (pw_succ (Γ := Γ) (g0 x) k); have p₁ := natEq (pw_succ (Γ := Γ) (g1 x) k)
+  have p₂ := natEq (pw_succ (Γ := Γ) (g2 x) k)
   unfold Inv
   apply ZT.derive
   simp only [X0, X1, X2, ZT.toZ_add, ZT.toZ_mul, toZ_D0_succ, toZ_D1_succ, toZ_D2_succ]
   simp only [NX0, NX1, NX2, X0, X1, X2, U, bucket] at e ⊢
   ipra_simps
-  rw [p₀, p₁, natEq (pw_succ (Γ := Γ) (g2 x) k)]
+  rw [p₀, p₁, p₂]
   linear_combination e
 
 /-- Variables: `0 = k` (induction), `1 = x`. -/
