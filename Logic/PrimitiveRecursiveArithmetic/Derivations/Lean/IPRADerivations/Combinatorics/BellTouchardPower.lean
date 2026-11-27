@@ -342,8 +342,9 @@ theorem tele_step {p ρ q c j : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
 
 /-! ## The level bit -/
 
-open LeanProofs.IPRA.Foundations.BoundedReflection (allB all_elim all_intro)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne pw_pos')
+open LeanProofs.IPRA.Foundations.BoundedReflection
+  (allB all_elim all_intro guarded_eqb_read guarded_eqb_gt guarded_eqb_le guarded_eqb_nonzero paired_level_induction)
+open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 
 /-- The parameter `⟨r, ⟨T, p⟩⟩`. -/
@@ -379,37 +380,29 @@ theorem level_at {m r T p : PTm n} (hQ : Γ ⊢[PRAAx] allB lvB (succ T) (lvP r 
     Γ ⊢[PRAAx] rem (bell (m + pw p r)) p ≐ rem (bell (succ m) + r * bell m) p := by
   have hlt : Γ ⊢[PRAAx] lt m (succ T) :=
     (succ_monus_succ m T).eqTrans (le_trans (le_add_right m _) hm)
-  have ne := all_elim lvB hQ hlt
-  refine eq_of_eqb_ne (.impI (.impE ne.wk ?_))
-  exact (lv_at m r T p).eqTrans ((congrAdd hm.wk Prf.hyp0).eqTrans (add_zero _))
+  exact guarded_eqb_read (lv_at m r T p) hm (all_elim lvB hQ hlt)
 
 /-- `T < a` gives `a ∸ T = (a ∸ (T + 1)) + 1`. -/
 theorem monus_of_lt {a T : PTm n} (h : Γ ⊢[PRAAx] lt T a) :
-    Γ ⊢[PRAAx] monus a T ≐ succ (monus a (succ T)) := by
-  have w : Γ ⊢[PRAAx] a ≐ T + succ (monus a (succ T)) := by
-    ipra_lc natEq (eq_add_of_le h)
-  exact (congrMonus w (.eqRefl T)).eqTrans (add_monus' _ T)
+    Γ ⊢[PRAAx] monus a T ≐ succ (monus a (succ T)) :=
+  Common.monus_succ_of_lt h
 
 theorem lv_ne_gt {m r T p : PTm n} (h : Γ ⊢[PRAAx] lt T (m + pw p r))
-    (hz : Γ ⊢[PRAAx] inst2 lvB m (lvP r T p) ≐ zero) : Γ ⊢[PRAAx] Fm.bot := by
-  refine succ_ne_zero' _ (a := monus (m + pw p r) (succ T) +
-    eqb (rem (bell (m + pw p r)) p) (rem (bell (succ m) + r * bell m) p)) ?_
-  ipra_lc natEq hz - natEq (lv_at (Γ := Γ) m r T p) - natEq (monus_of_lt h)
+    (hz : Γ ⊢[PRAAx] inst2 lvB m (lvP r T p) ≐ zero) : Γ ⊢[PRAAx] Fm.bot :=
+  guarded_eqb_gt (lv_at m r T p) h hz
 
 theorem lv_ne_le {m r T p : PTm n}
     (h : Γ ⊢[PRAAx] rem (bell (m + pw p r)) p ≐ rem (bell (succ m) + r * bell m) p)
     (hm : Γ ⊢[PRAAx] le (m + pw p r) T)
     (hz : Γ ⊢[PRAAx] inst2 lvB m (lvP r T p) ≐ zero) : Γ ⊢[PRAAx] Fm.bot :=
-  Foundations.BoundedReflection.one_ne_zero _
-    (((lv_at m r T p).eqTrans ((congrAdd hm (eqb_of_eq h)).eqTrans (zero_add one))).eqSymm.eqTrans hz)
+  guarded_eqb_le (lv_at m r T p) hm h hz
 
 /-- Writing the level bit at a point: it suffices to prove the congruence under the bound. -/
 theorem lv_ne {m r T p : PTm n}
     (h : Γ ⊢[PRAAx] le (m + pw p r) T ⟶
       (rem (bell (m + pw p r)) p ≐ rem (bell (succ m) + r * bell m) p)) :
     Γ ⊢[PRAAx] neg (inst2 lvB m (lvP r T p) ≐ zero) :=
-  .impI (.orE (lt_or_le T (m + pw p r)) (lv_ne_gt Prf.hyp0 Prf.hyp1)
-    (lv_ne_le (.impE h.wk.wk Prf.hyp0) Prf.hyp0 Prf.hyp1))
+  guarded_eqb_nonzero (lv_at m r T p) h
 
 /-! ## The telescoping chain -/
 
@@ -532,21 +525,11 @@ abbrev powF (p T : PTm n) : Fm PTm (n + 1) :=
 /-- Every level holds below every bound. -/
 theorem level_all {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (r T : PTm n) :
     Γ ⊢[PRAAx] allB lvB (succ T) (lvP r T p) ≐ one := by
-  have hall : Γ ⊢[PRAAx] Fm.all (powF p T) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · have b : Γ ⊢[PRAAx] allB lvB (succ T) (lvP zero T p) ≐ one := by
-        refine all_intro lvB (.allI (.impI ?_))
-        have e : Syn.shift (lvP zero T p) = lvP zero (Syn.shift T) (Syn.shift p) := by
-          simp [Syn.shift]
-        rw [e]
-        exact level_zero _ _ _
-      simpa using b
-    · have st : (powF p T :: Γ.map Fm.shift) ⊢[PRAAx]
-          allB lvB (succ (Syn.shift T)) (lvP (succ (var 0)) (Syn.shift T) (Syn.shift p)) ≐ one :=
-        level_succ (prime_shift hp).wk Prf.hyp0
-      simpa [subst_repl_shift, Syn.repl_zero] using st
-  have h2 := Prf.allE r hall
-  simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
+  refine paired_level_induction lvB (succ T) (pairT T p) r ?_ ?_
+  · refine all_intro lvB (.allI (.impI ?_))
+    simpa [lvP, Syn.shift] using level_zero (var 0) (Syn.shift T) (Syn.shift p)
+  · simp only [Syn.shift, subst_pairT, ConciseIPRA.PTm.subst_succ]
+    exact level_succ (r := var 0) (T := Syn.shift T) (prime_shift hp).wk Prf.hyp0
 
 /-! ## The theorem -/
 

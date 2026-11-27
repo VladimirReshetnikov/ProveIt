@@ -66,6 +66,32 @@ theorem zero_of_compl_ne {a : PTm n} (h : Γ ⊢[PRAAx] neg (monus one a ≐ zer
   refine .orE (zero_or_succ a) Prf.hyp0 (.botE _ (.impE h.wk ?_))
   exact (congrMonus (.eqRefl _) Prf.hyp0).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
 
+/-- A nonzero guarded equality bit gives equality when its mask vanishes. -/
+theorem guarded_eqb_read {b mask x y : PTm n}
+    (shape : Γ ⊢[PRAAx] b ≐ mask + eqb x y) (guard : Γ ⊢[PRAAx] mask ≐ zero)
+    (hne : Γ ⊢[PRAAx] neg (b ≐ zero)) : Γ ⊢[PRAAx] x ≐ y := by
+  refine .orE (eqb_cases x y) ?_ (eq_of_eqb Prf.hyp0)
+  exact .botE _ (.impE hne.wk (shape.wk.eqTrans
+    ((congrAdd guard.wk Prf.hyp0).eqTrans (zero_add _))))
+
+theorem guarded_eqb_gt {b a T x y : PTm n}
+    (shape : Γ ⊢[PRAAx] b ≐ monus a T + eqb x y) (h : Γ ⊢[PRAAx] lt T a)
+    (hz : Γ ⊢[PRAAx] b ≐ zero) : Γ ⊢[PRAAx] Fm.bot :=
+  succ_ne_zero ((shape.eqTrans ((congrAdd (Common.monus_succ_of_lt h) (.eqRefl _)).eqTrans
+    (succ_add _ _))).eqSymm.eqTrans hz)
+
+theorem guarded_eqb_le {b a T x y : PTm n}
+    (shape : Γ ⊢[PRAAx] b ≐ monus a T + eqb x y) (guard : Γ ⊢[PRAAx] le a T)
+    (he : Γ ⊢[PRAAx] x ≐ y) (hz : Γ ⊢[PRAAx] b ≐ zero) : Γ ⊢[PRAAx] Fm.bot :=
+  one_ne_zero _ ((shape.eqTrans ((congrAdd guard (eqb_of_eq he)).eqTrans (zero_add one))).eqSymm.eqTrans hz)
+
+/-- The bit for the implication `a ≤ T → x = y` is nonzero when that implication holds. -/
+theorem guarded_eqb_nonzero {b a T x y : PTm n}
+    (shape : Γ ⊢[PRAAx] b ≐ monus a T + eqb x y) (h : Γ ⊢[PRAAx] le a T ⟶ (x ≐ y)) :
+    Γ ⊢[PRAAx] neg (b ≐ zero) :=
+  .impI (.orE (lt_or_le T a) (guarded_eqb_gt shape.wk.wk Prf.hyp0 Prf.hyp1)
+    (guarded_eqb_le shape.wk.wk Prf.hyp0 (.impE h.wk.wk Prf.hyp0) Prf.hyp1))
+
 /-! ## The universal aggregator -/
 
 section All
@@ -185,6 +211,19 @@ theorem all_dec (N x : PTm n) :
   exact one_ne_zero _ ((all_intro f Prf.hyp0).eqSymm.eqTrans Prf.hyp1)
 
 end All
+
+/-- Quantifier-free induction on the first field of a bounded test's paired data. -/
+theorem paired_level_induction (body : PTm 2) (N x k : PTm n)
+    (base : Γ ⊢[PRAAx] allB body N (pairT zero x) ≐ one)
+    (step : (allB body (Syn.shift N) (pairT (var 0) (Syn.shift x)) ≐ one) :: Γ.map Fm.shift ⊢[PRAAx]
+      allB body (Syn.shift N) (pairT (succ (var 0)) (Syn.shift x)) ≐ one) :
+    Γ ⊢[PRAAx] allB body N (pairT k x) ≐ one := by
+  let law : Fm PTm (n + 1) := allB body (Syn.shift N) (pairT (var 0) (Syn.shift x)) ≐ one
+  have all : Γ ⊢[PRAAx] Fm.all law := by
+    refine PRA.qfInd _ trivial ?_ ?_
+    · simpa [law] using base
+    · simpa [law, subst_repl_shift, Syn.repl_zero] using step
+  simpa [law, Syn.subst_inst_shift, Syn.inst_zero] using Prf.allE k all
 
 /-! ## The existential aggregator -/
 

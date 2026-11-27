@@ -179,27 +179,18 @@ theorem overlap_elim {N K x q i j : PTm k} (ho : Γ ⊢[PRAAx] ovB u f N K q ≐
     (huj : Γ ⊢[PRAAx] neg (inst2 u j (pairT x q) ≐ zero)) :
     Γ ⊢[PRAAx] inst2 f i (pairT x q) ≐ inst2 f j (pairT x q) := by
   -- level 1: the point `x`
-  have a₁ : Γ ⊢[PRAAx] neg (inst2 (o1 u f) x (pairT K q) ≐ zero) := all_elim (o1 u f) ho hx
+  have a₁ := all_elim (o1 u f) ho hx
   have b₁ : Γ ⊢[PRAAx] allB (o2 u f) K (pairT K (pairT x q)) ≐ one :=
     one_of_ne (all_cases _ _ _) (.impI (.impE a₁.wk ((o1_at u f x K q).eqTrans Prf.hyp0)))
   -- level 2: the index `i`
-  have a₂ : Γ ⊢[PRAAx] neg (inst2 (o2 u f) i (pairT K (pairT x q)) ≐ zero) :=
-    all_elim (o2 u f) b₁ hi
+  have a₂ := all_elim (o2 u f) b₁ hi
   have b₂ : Γ ⊢[PRAAx] allB (o3 u f) K (pairT i (pairT x q)) ≐ one :=
     one_of_ne (all_cases _ _ _) (.impI (.impE a₂.wk ((o2_at u f i K _).eqTrans Prf.hyp0)))
   -- level 3: the index `j`
-  have a₃ : Γ ⊢[PRAAx] neg (inst2 (o3 u f) j (pairT i (pairT x q)) ≐ zero) :=
-    all_elim (o3 u f) b₂ hj
-  -- the premise bit vanishes, so the equality bit does not
-  have z : Γ ⊢[PRAAx]
-      monus one (sg (inst2 u i (pairT x q)) * sg (inst2 u j (pairT x q))) ≐ zero :=
-    (congrMonus (.eqRefl _) ((congrMul (sg_of_ne hui) (sg_of_ne huj)).eqTrans (one_mul _))).eqTrans
-      (le_refl one)
-  have ne : Γ ⊢[PRAAx]
-      neg (eqb (inst2 f i (pairT x q)) (inst2 f j (pairT x q)) ≐ zero) := by
-    refine .impI (.impE a₃.wk ?_)
-    exact (o3_at u f j i _).eqTrans ((congrAdd z.wk Prf.hyp0).eqTrans (add_zero _))
-  exact eq_of_eqb (one_of_ne (eqb_cases _ _) ne)
+  have a₃ := all_elim (o3 u f) b₂ hj
+  exact guarded_eqb_read (o3_at u f j i _)
+    ((congrMonus (.eqRefl _) ((congrMul (sg_of_ne hui) (sg_of_ne huj)).eqTrans (one_mul _))).eqTrans
+      (le_refl one)) a₃
 
 /-! ### Gluing -/
 

@@ -42,12 +42,11 @@ open_ipra
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul bden binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel)
-open LeanProofs.IPRA.Combinatorics.BellTouchardPower (monus_of_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_sub')
-open LeanProofs.IPRA.Foundations.BoundedReflection (allB allB_zero all_elim all_intro)
+open LeanProofs.IPRA.Foundations.BoundedReflection
+  (allB allB_zero all_elim all_intro guarded_eqb_read guarded_eqb_gt guarded_eqb_le guarded_eqb_nonzero paired_level_induction)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -180,26 +179,21 @@ theorem level_at {m k T : PTm n} (hQ : Γ ⊢[PRAAx] allB vB (succ T) (lvP k T) 
     (hm : Γ ⊢[PRAAx] le (m + k) T) : Γ ⊢[PRAAx] dvd (De m k) (Nu m k) := by
   have hlt : Γ ⊢[PRAAx] lt m (succ T) :=
     (succ_monus_succ m T).eqTrans (le_trans (le_add_right m _) hm)
-  have ne := all_elim vB hQ hlt
-  refine eq_of_eqb_ne (.impI (.impE ne.wk ?_))
-  exact (v_at m k T).eqTrans ((congrAdd hm.wk Prf.hyp0).eqTrans (add_zero _))
+  exact guarded_eqb_read (v_at m k T) hm (all_elim vB hQ hlt)
 
 theorem lv_ne_gt {m k T : PTm n} (h : Γ ⊢[PRAAx] lt T (m + k))
-    (hz : Γ ⊢[PRAAx] inst2 vB m (lvP k T) ≐ zero) : Γ ⊢[PRAAx] Fm.bot := by
-  refine succ_ne_zero' _ (a := monus (m + k) (succ T) + eqb (rem (Nu m k) (De m k)) zero) ?_
-  ipra_lc natEq hz - natEq (v_at (Γ := Γ) m k T) - natEq (monus_of_lt h)
+    (hz : Γ ⊢[PRAAx] inst2 vB m (lvP k T) ≐ zero) : Γ ⊢[PRAAx] Fm.bot :=
+  guarded_eqb_gt (v_at m k T) h hz
 
 theorem lv_ne_le {m k T : PTm n} (h : Γ ⊢[PRAAx] dvd (De m k) (Nu m k))
     (hm : Γ ⊢[PRAAx] le (m + k) T)
     (hz : Γ ⊢[PRAAx] inst2 vB m (lvP k T) ≐ zero) : Γ ⊢[PRAAx] Fm.bot :=
-  Foundations.BoundedReflection.one_ne_zero _
-    (((v_at m k T).eqTrans ((congrAdd hm (eqb_of_eq h)).eqTrans (zero_add one))).eqSymm.eqTrans hz)
+  guarded_eqb_le (v_at m k T) hm h hz
 
 theorem lv_ne {m k T : PTm n}
     (h : Γ ⊢[PRAAx] le (m + k) T ⟶ dvd (De m k) (Nu m k)) :
     Γ ⊢[PRAAx] neg (inst2 vB m (lvP k T) ≐ zero) :=
-  .impI (.orE (lt_or_le T (m + k)) (lv_ne_gt Prf.hyp0 Prf.hyp1)
-    (lv_ne_le (.impE h.wk.wk Prf.hyp0) Prf.hyp0 Prf.hyp1))
+  guarded_eqb_nonzero (v_at m k T) h
 
 theorem shift_lvP (k T : PTm n) : Syn.shift (lvP k T) = lvP (Syn.shift k) (Syn.shift T) := by
   simp [Syn.shift]
@@ -230,19 +224,12 @@ abbrev powF (T : PTm n) : Fm PTm (n + 1) :=
   allB vB (succ (Syn.shift T)) (lvP (var 0) (Syn.shift T)) ≐ one
 
 theorem level_all (k T : PTm n) : Γ ⊢[PRAAx] allB vB (succ T) (lvP k T) ≐ one := by
-  have hall : Γ ⊢[PRAAx] Fm.all (powF T) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · have b : Γ ⊢[PRAAx] allB vB (succ T) (lvP zero T) ≐ one := by
-        refine all_intro vB (.allI (.impI ?_))
-        rw [shift_lvP_zero]
-        exact lv_ne (.impI (dvd_base _))
-      simpa using b
-    · have st : (powF T :: Γ.map Fm.shift) ⊢[PRAAx]
-          allB vB (succ (Syn.shift T)) (lvP (succ (var 0)) (Syn.shift T)) ≐ one :=
-        level_succ Prf.hyp0
-      simpa [subst_repl_shift, Syn.repl_zero] using st
-  have h2 := Prf.allE k hall
-  simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
+  refine paired_level_induction vB (succ T) T k ?_ ?_
+  · refine all_intro vB (.allI (.impI ?_))
+    rw [shift_lvP_zero]
+    exact lv_ne (.impI (dvd_base _))
+  · simp only [Syn.shift, ConciseIPRA.PTm.subst_succ]
+    exact level_succ (k := var 0) (T := Syn.shift T) Prf.hyp0
 
 /-! ## The theorem -/
 
