@@ -41,8 +41,7 @@ theorem observations (f g : PR 2) (p q A E c x y X D : PTm n)
   have raw := GaussianNamedInverseRate.rate_at f g x y X D s t hr
   have scaled : Γ ⊢[PRAAx] distanceBounded (qmul c (ap2 f s x)) (qmul c (ap2 g t y))
       (A*rateNumerator X D s t) (E*K) :=
-    GaussianRationalReciprocal.bound_congr (GaussianRationalRoundedPower.multiplication_difference c _ _).eqSymm
-      (.eqRefl _) (.eqRefl _) (GaussianRationalReciprocal.bounded_product c _ A E _ _ hE hK hc raw)
+    GaussianRationalRoundedPower.distance_mul_left hE hK hc raw
   have bP : Γ ⊢[PRAAx] le (A*unit p) (E*unit s) :=
     le_trans (GaussianFastValueCut.query_budget A p)
       (le_congr (one_mul _) (.eqRefl _) (mul_le_mul_right (unit s) hE))

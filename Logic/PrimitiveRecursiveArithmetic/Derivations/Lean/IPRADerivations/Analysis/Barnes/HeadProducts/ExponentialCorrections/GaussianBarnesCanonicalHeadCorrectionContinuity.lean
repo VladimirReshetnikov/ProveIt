@@ -46,8 +46,7 @@ def gain (R N : PTm n) : PTm n := factor (exponentRadius R N)*totalGain R N
 private theorem scale_left (c x y K A E : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (hc : Γ ⊢[PRAAx] bounded c K one) (hd : Γ ⊢[PRAAx] distanceBounded x y A E) :
     Γ ⊢[PRAAx] distanceBounded (qmul c x) (qmul c y) (K*A) E :=
-  bound_congr (GaussianRationalRoundedPower.multiplication_difference c x y).eqSymm
-    (.eqRefl _) (one_mul _) (bounded_product _ _ _ _ _ _ (le_refl one) hE hc hd)
+  GaussianRationalRoundedPower.distance_mul_left_one hE hc hd
 
 private theorem scale_right (x y c K A E : PTm n) (hE : Γ ⊢[PRAAx] le one E)
     (hc : Γ ⊢[PRAAx] bounded c K one) (hd : Γ ⊢[PRAAx] distanceBounded x y A E) :

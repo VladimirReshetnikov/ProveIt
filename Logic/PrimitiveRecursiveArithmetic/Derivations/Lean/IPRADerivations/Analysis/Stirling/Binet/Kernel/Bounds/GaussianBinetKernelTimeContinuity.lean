@@ -77,8 +77,7 @@ theorem row_time_distance (p i A B a b T E D : PTm n)
   have scalar := GaussianEulerExponentCompactBounds.fraction_bound (Γ := Γ) two one two (le_refl one)
     (le_congr (.eqRefl _) (by ipra_ring) (le_refl two))
   have raw : Γ ⊢[PRAAx] distanceBounded (value p k A B) (value p k a b) (two*F) (D*(R*R)) :=
-    bound_congr (GaussianRationalRoundedPower.multiplication_difference (fraction two one) _ _).eqSymm
-      (.eqRefl _) (one_mul _) (bounded_product _ _ two one F (D*(R*R)) (le_refl one) hS scalar inv)
+    GaussianRationalRoundedPower.distance_mul_left_one hS scalar inv
   have rowPad : Γ ⊢[PRAAx] le (num 4*(k*l)) (R*R) := by
     dsimp only [R, denominatorLower, k, l]
     ipra_le 256*𝔞(succ i*succ i)*sl hkk+248*𝔞(succ i*succ i)+4*𝔞(succ i)*𝔞(i)

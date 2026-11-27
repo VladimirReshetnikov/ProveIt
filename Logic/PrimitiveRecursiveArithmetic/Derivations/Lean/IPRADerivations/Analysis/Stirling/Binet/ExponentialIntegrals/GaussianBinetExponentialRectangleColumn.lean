@@ -136,9 +136,7 @@ theorem column_error (j p X Y D sign R T N M : PTm n)
       (GaussianDominantPairAlgebra.radius_bounded T N hN)
   have scale : Γ ⊢[PRAAx] distanceBounded (qmul c (column matrix j N d)) (qmul c (qmul w (sum f N x)))
       (T*(N*num 20)) (N*V) :=
-    bound_congr (GaussianRationalRoundedPower.multiplication_difference c _ _).eqSymm
-      (.eqRefl _) (.eqRefl _)
-      (bounded_product _ _ T N (N*num 20) V hN hv hc comp)
+    GaussianRationalRoundedPower.distance_mul_left hN hv hc comp
   have ew : Γ ⊢[PRAAx] c ≐ GaussianRationalRiemannRefinement.weight T one N :=
     GaussianCompactRiemannName.fraction_congr _ _ _ _ (.eqRefl _) (one_mul _).eqSymm
   have target : Γ ⊢[PRAAx] qmul c (qmul w (sum f N x)) ≐ qmul w (LV p q S T N) :=

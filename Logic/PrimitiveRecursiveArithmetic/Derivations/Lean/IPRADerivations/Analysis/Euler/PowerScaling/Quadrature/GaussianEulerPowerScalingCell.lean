@@ -88,8 +88,7 @@ private theorem fixed_product_distance (x y u A B C E : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hE : Γ ⊢[PRAAx] le one E)
     (hxy : Γ ⊢[PRAAx] distanceBounded x y A B) (hu : Γ ⊢[PRAAx] bounded u C E) :
     Γ ⊢[PRAAx] distanceBounded (qmul u x) (qmul u y) (C*A) (E*B) :=
-  bound_congr (GaussianRationalRoundedPower.multiplication_difference u x y).eqSymm (.eqRefl _) (.eqRefl _)
-    (bounded_product _ _ _ _ _ _ hE hB hu hxy)
+  GaussianRationalRoundedPower.distance_mul_left hE hB hu hxy
 
 private theorem later_sample_distance (F : PR 2) (p j x : PTm n)
     (hj : Γ ⊢[PRAAx] le p j) (hf : Γ ⊢[PRAAx] pointCN F x) :

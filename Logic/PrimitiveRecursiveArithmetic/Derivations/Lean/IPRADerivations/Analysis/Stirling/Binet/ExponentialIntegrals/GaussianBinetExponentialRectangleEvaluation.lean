@@ -101,8 +101,7 @@ theorem finite_error (p X Y D sign R K L N M : PTm n)
       (GaussianDominantPairAlgebra.radius_bounded one M hM)
   have weighted : Γ ⊢[PRAAx] distanceBounded (qmul w (qmul c (columnFirst matrix N M d)))
       (qmul w (sum g M y)) (one*(M*B)) (M*U) :=
-    bound_congr (GaussianRationalRoundedPower.multiplication_difference w _ _).eqSymm
-      (.eqRefl _) (.eqRefl _) (bounded_product _ _ one M (M*B) U hM hU hw summed)
+    GaussianRationalRoundedPower.distance_mul_left hM hU hw summed
   have again : Γ ⊢[PRAAx] rectangle (p+N) X Y D sign R T N M ≐ qmul w (qmul c (columnFirst matrix N M d)) :=
     (swap_weighted_grid (p+N) z (R*T) T N M).eqTrans
       (GaussianRationalPowerAlgebra.commute_nested c w (columnFirst matrix N M d))

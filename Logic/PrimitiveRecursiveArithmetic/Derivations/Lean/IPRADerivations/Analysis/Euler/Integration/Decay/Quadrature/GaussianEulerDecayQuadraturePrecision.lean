@@ -62,8 +62,8 @@ theorem same_mesh_precision (p q N a C E x : PTm n)
       (cell_precision (Γ := _ :: Γ.map Fm.shift) (var 0) (Syn.shift p) (Syn.shift q) (Syn.shift N)
         (Syn.shift a) (Syn.shift C) (Syn.shift E) (Syn.shift x))
   have near := sum_distance f f N X Y (unit p+unit q) V hV entries
-  have scaled := bound_congr (GaussianRationalRoundedPower.multiplication_difference (weight C E N) _ _).eqSymm
-    (.eqRefl _) (.eqRefl _) (bounded_product _ _ C B _ V hB hV (weight_bound C E N hE hN) near)
+  have scaled := GaussianRationalRoundedPower.distance_mul_left hB hV
+    (weight_bound C E N hE hN) near
   refine distance_radius_mono _ _ (C*(N*(unit p+unit q))) (B*V) _ _
     (positive_product _ _ hB hV) (positive_product _ _ hE hV) ?_ scaled
   exact le_of_eq_add (d := zero) (by dsimp [B,V]; ipra_ring)

@@ -238,8 +238,7 @@ private theorem cutoff_diagonal (p X Y D sign R T N A B : PTm n)
       (GaussianBinetKernelCofinal.cutoff_rate N A B hN hB)
   have ed := GaussianBinetLaplaceExponential.unit_bound p X Y D sign R T A B h.andE₁ hB h.andE₂.andE₂
   have raw : Γ ⊢[PRAAx] distanceBounded (qmul a b) (qmul a c) ((U+one)*(one*U+two*K)) (U*W) :=
-    bound_congr (GaussianRationalRoundedPower.multiplication_difference a b c).eqSymm
-      (.eqRefl _) (.eqRefl _) (bounded_product a _ _ _ _ _ hU hW ed kd)
+    GaussianRationalRoundedPower.distance_mul_left hU hW ed kd
   have middle := distance_radius_mono _ _ _ _ (one*U+num 5*K) W (positive_product _ _ hU hW) hW
     (by dsimp only [W]; ipra_le 𝔞(K*U*U)*sl hK+2*𝔞(K*K*U)*sl hU) raw
   have before : Γ ⊢[PRAAx] distanceBounded (ap2 cofinalF p (cofinalData X Y D sign R T A B)) (qmul a b) L U :=

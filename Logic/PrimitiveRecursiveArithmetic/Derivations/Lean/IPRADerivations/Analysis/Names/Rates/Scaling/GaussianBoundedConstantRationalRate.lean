@@ -48,8 +48,7 @@ theorem original_observations (f g : PR 2) (p q A c x y P Qd B D : PTm n)
   have raw := GaussianNamedInverseRate.rate_at f g x y B D s t hr
   have product : Γ ⊢[PRAAx] distanceBounded (qmul c (ap2 f s x)) (qmul c (ap2 g t y))
       (P*rateNumerator B D s t) (Qd*rateDenominator D s t) :=
-    bound_congr (multiplication_difference c _ _).eqSymm (.eqRefl _) (.eqRefl _)
-      (bounded_product c _ P Qd _ _ hQ hInput hc raw)
+    GaussianRationalRoundedPower.distance_mul_left hQ hInput hc raw
   have bP := clock_budget p A P Qd hClock
   have bQ := clock_budget q A P Qd hClock
   have widened := distance_radius_mono _ _ _ _ (rateNumerator (P*B) (Qd*D) p q) (rateDenominator (Qd*D) p q)

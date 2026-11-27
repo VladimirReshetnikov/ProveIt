@@ -45,9 +45,7 @@ theorem equal_ratio (p q A B C D : PTm n) (hA : Γ ⊢[PRAAx] source A B)
     cross_at logF logF (data A B) (data C D) p q
       (GaussianPositiveRationalLogarithmProperness.original_logarithm_proper A B C D hA hC h)
   have product : Γ ⊢[PRAAx] distanceBounded (qmul a x) (qmul a y) (A*(U+V)) W :=
-    GaussianRationalReciprocal.bound_congr (GaussianRationalRoundedPower.multiplication_difference a x y).eqSymm
-      (.eqRefl _) (.eqRefl _)
-      (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ hA.andE₂ hu (fraction_bound A B hA.andE₂) log)
+    GaussianRationalRoundedPower.distance_mul_left hA.andE₂ hu (fraction_bound A B hA.andE₂) log
   have shifted := GaussianNamedDifference.difference_distance (qmul a x) (qmul a y) a a (A*(U+V)) zero W hw
     product (GaussianRationalPowerDifference.distance_refl_zero a W hw)
   exact distance_congr (.eqRefl _) (qsub_congr (qmul_congr e (.eqRefl y)) e)

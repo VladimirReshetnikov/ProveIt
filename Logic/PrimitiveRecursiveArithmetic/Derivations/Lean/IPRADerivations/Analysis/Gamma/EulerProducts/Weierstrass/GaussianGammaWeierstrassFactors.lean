@@ -147,8 +147,7 @@ theorem folded_zero (z B K : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
 theorem scaled_distance (t u v A M D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (ht : Γ ⊢[PRAAx] bounded t M one) (hd : Γ ⊢[PRAAx] distanceBounded u v A D) :
     Γ ⊢[PRAAx] distanceBounded (qmul t u) (qmul t v) (M*A) D :=
-  bound_congr (GaussianRationalRoundedPower.multiplication_difference t u v).eqSymm (.eqRefl _) (one_mul D)
-    (bounded_product _ _ _ _ _ _ (le_refl _) hD ht hd)
+  GaussianRationalRoundedPower.distance_mul_left_one hD ht hd
 
 def width (R N : PTm n) : PTm n := one+R+N*R
 
