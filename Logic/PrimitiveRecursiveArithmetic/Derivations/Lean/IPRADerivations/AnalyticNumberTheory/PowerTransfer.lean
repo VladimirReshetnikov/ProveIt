@@ -121,36 +121,26 @@ theorem mx_pow_bound (body : PTm 2) {N x R K : PTm n} (hR : Γ ⊢[PRAAx] le one
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       le (pw (inst2 body (var 0) (Syn.shift x)) (Syn.shift R)) (Syn.shift K))) :
     Γ ⊢[PRAAx] le (pw (mx body N x) R) K := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (pw (mx body (var 0) (Syn.shift x)) (Syn.shift R)) (Syn.shift K)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, subst_mx, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI ?_
-      have hp := pos_of_one_le (Γ := le zero N :: Γ) hR.wk
-      have z : (le zero N :: Γ) ⊢[PRAAx] pw (mx body zero x) R ≐ zero :=
-        (congrPw (mx_zero body x) hp).eqTrans ((pw_succ zero (pred R)).eqTrans (mul_zero _))
+  let P : Fm PTm (n + 1) := le (pw (mx body (var 0) (Syn.shift x)) (Syn.shift R)) (Syn.shift K)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, subst_ap2, subst_mx, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      have z : Γ ⊢[PRAAx] pw (mx body zero x) R ≐ zero :=
+        (congrPw (mx_zero body x) (pos_of_one_le hR)).eqTrans
+          ((pw_succ zero (pred R)).eqTrans (mul_zero _))
       exact le_congr z.eqSymm (.eqRefl _) (by ipra_le 𝔞 K)
-    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, subst_mx, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    · simp only [P, subst_le, subst_ap2, subst_mx, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let φ : Fm PTm (n + 1) := le (var 0) (Syn.shift N) ⟶
-        le (pw (mx body (var 0) (Syn.shift x)) (Syn.shift R)) (Syn.shift K)
-      let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) :: φ :: Γ.map Fm.shift
-      have hlt : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
-      have ih : Δ ⊢[PRAAx] le (pw (mx body (var 0) (Syn.shift x)) (Syn.shift R)) (Syn.shift K) :=
-        .impE Prf.hyp1 (le_trans (le_succ_self _) hlt)
+      let Δ := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have ih : Δ ⊢[PRAAx] P := Prf.hyp1
       have ht : Δ ⊢[PRAAx] le (pw (inst2 body (var 0) (Syn.shift x)) (Syn.shift R)) (Syn.shift K) :=
-        .impE h.allOpen.wk.wk hlt
+        .impE h.allOpen.wk.wk Prf.hyp0
       have hs : Δ ⊢[PRAAx] mx body (succ (var 0)) (Syn.shift x) ≐
           maxT (mx body (var 0) (Syn.shift x)) (inst2 body (var 0) (Syn.shift x)) := mx_succ _ _ _
       refine .orE (maxT_cases (Γ := Δ) (mx body (var 0) (Syn.shift x)) (inst2 body (var 0) (Syn.shift x))) ?_ ?_
       · exact le_congr (congrPw (hs.wk.eqTrans Prf.hyp0) (.eqRefl _)).eqSymm (.eqRefl _) ih.wk
       · exact le_congr (congrPw (hs.wk.eqTrans Prf.hyp0) (.eqRefl _)).eqSymm (.eqRefl _) ht.wk
-  have a := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, subst_mx, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift] at a
-  exact .impE a (le_refl N)
+  simpa [P] using atBound
 
 /-! ## The transfer -/
 

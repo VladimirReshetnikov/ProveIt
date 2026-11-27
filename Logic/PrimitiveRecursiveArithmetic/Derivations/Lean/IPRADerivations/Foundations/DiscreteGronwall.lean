@@ -69,28 +69,16 @@ theorem gronwall (e dl : PTm 2) (x N p q : PTm n) (hq : Γ ⊢[PRAAx] le q p)
       le (Syn.shift q * inst2 e (succ (var 0)) (Syn.shift x))
         (Syn.shift p * inst2 e (var 0) (Syn.shift x) + Syn.shift q * inst2 dl (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] GInv e dl N x p q := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      GInv e dl (var 0) (Syn.shift x) (Syn.shift p) (Syn.shift q)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI (g_base e dl x p q)
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hf := h.allOpen
+  let P := GInv e dl (var 0) (Syn.shift x) (Syn.shift p) (Syn.shift q)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [P] using g_base (Γ := Γ) e dl x p q
+    · simp only [P, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
+        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
       have hq' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift q) (Syn.shift p) := by
-        have a := hq.shift
-        simp only [Fm.shift, subst_le] at a
-        exact a
-      refine .impI ?_
-      have hk : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ GInv e dl (var 0) (Syn.shift x) (Syn.shift p) (Syn.shift q)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift N) := Prf.hyp0
-      exact g_step hq'.wk.wk (Prf.impE hf.wk.wk hk) (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) hk))
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+        simpa only [Fm.shift, subst_le, Syn.shift] using hq.shift
+      exact .impI (g_step hq'.wk.wk (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P] using atBound
 
 /-! ## Bernoulli, cleared -/
 

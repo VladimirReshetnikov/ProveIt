@@ -89,26 +89,14 @@ theorem par_replacement {P₁ P₂ T C : PTm n} (h : Γ ⊢[PRAAx] P₁ + T ≐ 
 theorem sum_even_bounded (t : PTm 2) (x M : PTm n)
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift M) ⟶ (par (inst2 t (var 0) (Syn.shift x)) ≐ zero))) :
     Γ ⊢[PRAAx] par (ap2 (sumF t) M x) ≐ zero := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift M) ⟶
-      (par (ap2 (sumF t) (var 0) (Syn.shift x)) ≐ zero)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap1, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI ((congrAp1 parF (sum_zero t _)).eqTrans par_zero)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap1, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hf := h.allOpen
-      refine .impI ?_
-      have hle : (le (succ (var 0)) (Syn.shift M) ::
-          (le (var 0) (Syn.shift M) ⟶ (par (ap2 (sumF t) (var 0) (Syn.shift x)) ≐ zero)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift M) :=
-        le_trans (le_succ_self _) Prf.hyp0
-      have ihh := Prf.impE Prf.hyp1 hle
-      exact (congrAp1 parF (sum_succ' t (var 0) _)).eqTrans
-        ((par_add_even _ (.impE hf.wk.wk Prf.hyp0)).eqTrans ihh)
-  have h2 := Prf.allE M hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap1, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact .impE h2 (le_refl M)
+  let P : Fm PTm (n + 1) := par (ap2 (sumF t) (var 0) (Syn.shift x)) ≐ zero
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst M) := by
+    refine qfIndUpTo M trivial ?_ ?_
+    · simpa [P] using (congrAp1 parF (sum_zero (Γ := Γ) t x)).eqTrans par_zero
+    · simp only [P, Fm.subst_eq, subst_ap1, subst_ap2, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+      exact .impI ((congrAp1 parF (sum_succ' t (var 0) _)).eqTrans
+        ((par_add_even _ (.impE h.allOpen.wk.wk Prf.hyp0)).eqTrans Prf.hyp1))
+  simpa [P] using atBound
 
 end LeanProofs.IPRA

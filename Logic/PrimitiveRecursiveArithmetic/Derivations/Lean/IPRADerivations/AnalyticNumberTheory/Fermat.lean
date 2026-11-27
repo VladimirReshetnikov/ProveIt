@@ -86,23 +86,15 @@ theorem dvd_sum (f : PTm 2) {d' N x : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       dvd (succ (Syn.shift d')) (inst2 f (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] dvd (succ d') (ap2 (sumF f) N x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      dvd (succ (Syn.shift d')) (ap2 (sumF f) (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simpa using .impI (dvd_congr (sum_zero (Γ := le zero N :: Γ) f x).eqSymm (dvd_zero d'))
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hf := h.allOpen
-      refine .impI ?_
-      have hle : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ dvd (succ (Syn.shift d')) (ap2 (sumF f) (var 0) (Syn.shift x))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-        le_trans (le_succ_self _) Prf.hyp0
-      exact dvd_congr (sum_succ' f (var 0) _).eqSymm (dvd_add (.impE Prf.hyp1 hle) (.impE hf.wk.wk Prf.hyp0))
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact .impE h2 (le_refl N)
+  let P : Fm PTm (n + 1) := dvd (succ (Syn.shift d')) (ap2 (sumF f) (var 0) (Syn.shift x))
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using dvd_congr (sum_zero (Γ := Γ) f x).eqSymm (dvd_zero d')
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+      exact .impI (dvd_congr (sum_succ' f (var 0) _).eqSymm
+        (dvd_add Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)))
+  simpa [P] using atBound
 
 /-! ## The freshman's dream -/
 

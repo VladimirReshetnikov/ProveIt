@@ -87,27 +87,18 @@ theorem prod_pos_bounded (f : PTm 2) (x N : PTm n)
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       (inst2 f (var 0) (Syn.shift x) ≐ succ (pred (inst2 f (var 0) (Syn.shift x)))))) :
     Γ ⊢[PRAAx] ap2 (prodF f) N x ≐ succ (pred (ap2 (prodF f) N x)) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      (ap2 (prodF f) (var 0) (Syn.shift x) ≐ succ (pred (ap2 (prodF f) (var 0) (Syn.shift x))))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (pos_of_eq_succ (prod_zero f x))
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hf := h.allOpen
+  let P : Fm PTm (n + 1) :=
+    ap2 (prodF f) (var 0) (Syn.shift x) ≐ succ (pred (ap2 (prodF f) (var 0) (Syn.shift x)))
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using pos_of_eq_succ (prod_zero (Γ := Γ) f x)
+    · simp only [P, Fm.subst_eq, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_succ]
       refine .impI ?_
-      have hle : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶
-            (ap2 (prodF f) (var 0) (Syn.shift x) ≐ succ (pred (ap2 (prodF f) (var 0) (Syn.shift x))))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-        le_trans (le_succ_self _) Prf.hyp0
-      have hm := pos_mul' (.impE Prf.hyp1 hle) (.impE hf.wk.wk Prf.hyp0)
-      exact pos_of_eq_succ ((prod_succ f (var 0) _).eqTrans hm)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact .impE h2 (le_refl N)
+      let C := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have product := pos_mul' (Prf.hyp1 : C ⊢[PRAAx] P) (.impE h.allOpen.wk.wk Prf.hyp0)
+      exact pos_of_eq_succ ((prod_succ f (var 0) _).eqTrans product)
+  simpa [P] using atBound
 
 /-! ## A zero factor -/
 

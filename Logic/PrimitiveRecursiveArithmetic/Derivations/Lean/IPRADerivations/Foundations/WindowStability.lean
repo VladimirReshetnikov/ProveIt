@@ -79,21 +79,16 @@ theorem lower_guard {f : PTm 2} {k x m N : PTm n} (hkN : Γ ⊢[PRAAx] le (succ 
 theorem sum_lower {f : PTm 2} {N x m : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le (Syn.shift m) (inst2 f (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] le (N * m) (ap2 (sumF f) N x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (var 0 * Syn.shift m) (ap2 (sumF f) (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
-      have z := natEq (sum_zero (Γ := le zero N :: Γ) f x)
+  let P : Fm PTm (n + 1) := le (var 0 * Syn.shift m) (ap2 (sumF f) (var 0) (Syn.shift x))
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
+        Syn.subst_inst_shift]
+      have z := natEq (sum_zero (Γ := Γ) f x)
       ipra_le 0 using rw [z]; ring
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (lower_guard Prf.hyp0 (Prf.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
-  have a := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at a
-  exact .impE a (le_refl N)
+    · simp only [P, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      exact .impI (lower_step (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P] using atBound
 
 /-! ## Telescoping shifted increments -/
 
@@ -115,24 +110,18 @@ theorem telescope_incr {a d : PTm 2} {N x c : PTm n}
       (inst2 d (var 0) (Syn.shift x) + inst2 a (var 0) (Syn.shift x) ≐
         inst2 a (succ (var 0)) (Syn.shift x) + Syn.shift c))) :
     Γ ⊢[PRAAx] ap2 (sumF d) N x + inst2 a zero x ≐ inst2 a N x + N * c := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      (ap2 (sumF d) (var 0) (Syn.shift x) + inst2 a zero (Syn.shift x) ≐
-        inst2 a (var 0) (Syn.shift x) + var 0 * Syn.shift c)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      refine .impI ?_
-      ipra_lc natEq (sum_zero (Γ := le zero N :: Γ) d x)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      exact .impI (incr_guard Prf.hyp0 (Prf.impE hd.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
-  have b := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero,
-    ConciseIPRA.PTm.subst_succ] at b
-  exact .impE b (le_refl N)
+  let P : Fm PTm (n + 1) :=
+    (ap2 (sumF d) (var 0) (Syn.shift x) + inst2 a zero (Syn.shift x) ≐
+      inst2 a (var 0) (Syn.shift x) + var 0 * Syn.shift c)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
+        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+      ipra_lc natEq (sum_zero (Γ := Γ) d x)
+    · simp only [P, Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, PTm.subst_mul,
+        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+      exact .impI (incr_step (.impE hd.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P] using atBound
 
 /-! ## The minimal gap -/
 

@@ -66,27 +66,20 @@ theorem R_dvd {a b N : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ isP (var 0) ≐ one ⟶
       le (val (var 0) (Syn.shift a)) (val (var 0) (Syn.shift b)))) :
     Γ ⊢[PRAAx] dvd (R N a) (R N b) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      dvd (R (var 0) (Syn.shift a)) (R (var 0) (Syn.shift b))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_dvd, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI ((congrAp2 remF (prod_zero _ _) (prod_zero _ _)).eqTrans (dvd_self' one_pos'))
-    · simp only [Fm.subst_imp, subst_le, subst_dvd, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  let P : Fm PTm (n + 1) := dvd (R (var 0) (Syn.shift a)) (R (var 0) (Syn.shift b))
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simp only [P, subst_dvd, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      exact (congrAp2 remF (prod_zero _ _) (prod_zero _ _)).eqTrans (dvd_self' one_pos')
+    · simp only [P, subst_dvd, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       refine .impI ?_
-      let C : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) :: (le (var 0) (Syn.shift N) ⟶
-          dvd (R (var 0) (Syn.shift a)) (R (var 0) (Syn.shift b))) :: Γ.map Fm.shift
-      have hle : C ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have ih := Prf.impE (Prf.hyp1 : C ⊢[PRAAx] _) hle
+      let C := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
       have hb : C ⊢[PRAAx] lt (var 0) (Syn.shift N) ⟶ isP (var 0) ≐ one ⟶
           le (val (var 0) (Syn.shift a)) (val (var 0) (Syn.shift b)) := h.allOpen.wk.wk
-      have fd := f_dvd (Prf.impE hb Prf.hyp0)
-      exact (congrAp2 remF (R_succ _ _) (R_succ _ _)).eqTrans (Smooth.dvd_mul_mul (R_pos _ _) (f_pos _ _) ih fd)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_dvd, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+      exact (congrAp2 remF (R_succ _ _) (R_succ _ _)).eqTrans
+        (Smooth.dvd_mul_mul (R_pos _ _) (f_pos _ _) Prf.hyp1 (f_dvd (.impE hb Prf.hyp0)))
+  simpa [P] using atBound
 
 /-- If `1 ≤ a, b < N` and `v_p(a) ≤ v_p(b)` for every prime `p < N`, then `a ∣ b`. -/
 theorem dvd_of_val_le {a b N : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))
