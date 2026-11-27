@@ -49,7 +49,7 @@ theorem square_denominator (N : PTm n) : Γ ⊢[PRAAx] squareDen N ≐ da (succ 
     (congrMul (da_succ N).eqSymm (.eqRefl _))
 
 theorem df_positive (N : PTm n) : Γ ⊢[PRAAx] le one (da N) :=
-  le_congr (.eqRefl _) (LeanProofs.IPRA.Probability.NormalMoments.df_pos (Γ := Γ) N).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (LeanProofs.IPRA.Probability.NormalMoments.df_pos (Γ := Γ) N)
 
 theorem square_denominator_positive (N : PTm n) : Γ ⊢[PRAAx] le one (squareDen N) :=
   le_congr (.eqRefl _) (square_denominator N).eqSymm
