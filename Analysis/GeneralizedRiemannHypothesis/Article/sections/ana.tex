@@ -21,7 +21,8 @@ exponent of a family of Dirichlet $L$-functions exactly and recover its central 
 finite positive grid, tests from samples on sparse meshes,
 the choice of the auxiliary second scale, and tests on thin sets of twists and of scales. Two
 related positivity results close the section: sparse Hankel tests at rational centres and a
-small-deviation law for random sums over zeros. With the exceptions
+small-deviation law for random sums over zeros, with the conditional spectral structure of its
+lower tail; a finite certificate for Euler's Gamma product follows. With the exceptions
 marked ``\stG'', the results are unconditional statements of analysis. None of them supplies
 the arithmetic inequality that a criterion asks for. For every function outside the scope of
 \cref{src:thm:dgrh} that inequality is open.
@@ -3167,7 +3168,7 @@ $\det H=(u\bar u)^2(u-\bar u)^2=-11226235159675972800/61^{24}<0$ for $u=(\gamma-
 \artifact{sparse_dirichlet_zero_tests/checks/verification.txt}.
 
 \subsection{A small-deviation law for sums over zeros}\label{ana:sec:smalldev}
-{\raggedright\sources{rh_sampling_and_small_deviations_2026-11-26}}
+{\raggedright\sources{rh_sampling_and_small_deviations_2026-11-26; dirichlet_spectral_conditioning_2026-11-27}}
 
 Sums over zeros with weights $1/\gamma^2$ also occur as random variables. Let $\gamma_j>0$ be a
 multiset with $N(T)=\#\set{j:\gamma_j\le T}\sim T\log T/(2\pi)$, and suppose that for
@@ -3270,6 +3271,393 @@ factorization methods for such laws are in \cite{GaoHannigLeeTorcaso2003Laplace}
 local Gaussian limit for the same density appears in \cite{Sra2026Positivity}. No simplicity
 of zeros, pair correlation or central nonvanishing is used.
 
+\paragraph{Conditioning a spectral gamma sum to be small.}
+\Cref{ana:thm:gammasum} gives the size of the lower tail. Its conditional structure is as
+follows: the small value is shared among the spectral coordinates along a deterministic profile,
+with Brownian-bridge fluctuations, an independent exponential slack at the boundary, and a sharp
+threshold for the number of low coordinates that look like independent gamma variables. The
+probability statements hold for every regularly varying spectrum; \cref{src:thm:dgrh} enters only
+to identify the law with a reciprocal completed $L$-function.
+
+Let $0<\gamma_1\le\gamma_2\le\cdots\to\infty$, with repetitions, and $N(T)=\#\set{j:\gamma_j\le T}$.
+Assume that $N$ is regularly varying of index $\alpha>0$, that is $N(rT)/N(T)\to r^\alpha$ for every
+$r>0$. Fix $p>\alpha$ and $\theta>0$, let $G_j$ be independent gamma variables of shape $\theta$ and
+rate $1$, and put
+\[
+ X=\sum_j\frac{G_j}{\gamma_j^p},\qquad K(t)=\theta\sum_j\log\Bigl(1+\frac t{\gamma_j^p}\Bigr),
+\]
+so that $\anaEx e^{-tX}=e^{-K(t)}$. For $0<x<\anaEx X$ let $t=t_x$ be the unique positive root of
+$K'(t)=\theta\sum_j(\gamma_j^p+t)^{-1}=x$, and $u=t^{1/p}$; this \emph{exact} saddle replaces the
+explicit $u$ of \cref{ana:thm:gammasum}, and $t,u\to\infty$ as $x\downarrow0$. For $c\in[0,\infty]$
+put
+\[
+ X_x(c)=\sum_{\gamma_j\le cu}\frac{G_j}{\gamma_j^p},\quad
+ m_x(c)=\theta\sum_{\gamma_j\le cu}\frac1{\gamma_j^p+t},\quad
+ \sigma_x^2=\theta\sum_j\frac1{(\gamma_j^p+t)^2},\quad Y_x=t(x-X).
+\]
+Let $C_q=\int_0^\infty\alpha r^{\alpha-1}(1+r^p)^{-q}\,\dd r$ for $q>\alpha/p$, so that
+$C_1=\alpha\pi/(p\sin(\pi\alpha/p))$ and $C_2=(1-\alpha/p)C_1$, and
+\[
+ A(c)=\frac1{C_1}\int_0^c\frac{\alpha r^{\alpha-1}}{1+r^p}\,\dd r,\qquad
+ V(c)=\frac1{C_2}\int_0^c\frac{\alpha r^{\alpha-1}}{(1+r^p)^2}\,\dd r .
+\]
+Let $B$ be a standard Brownian bridge, $\Phi$ the standard normal distribution function and
+$\varphi_\lambda$ the centred normal density of variance $\lambda$. Total variation is
+$d_{\mathrm{TV}}(P,Q)=\sup_E\abs{P(E)-Q(E)}$.
+
+\begin{theorem}[Joint conditional spectral law; \stU]\label{ana:thm:condlaw}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $tx\sim\theta C_1N(u)$, $t^2\sigma_x^2\sim\theta C_2N(u)$ and
+ $\sigma_x/x\sim\sqrt{C_2}/(\sqrt\theta\,C_1\sqrt{N(u)})$.
+\item Fix $0<c_1<\dots<c_k<\infty$ and $m\ge0$. Conditionally on $X\le x$ the vector
+\[
+ \Bigl(\Bigl(\frac{X_x(c_i)-m_x(c_i)}{\sigma_x}\Bigr)_{i\le k},\ Y_x,\
+ \Bigl(\frac{tG_j}{\gamma_j^p}\Bigr)_{j\le m}\Bigr)
+\]
+converges in total variation to $\bigl((B(V(c_i)))_{i\le k},E,(\Gamma_j)_{j\le m}\bigr)$, where $E$ is
+exponential of rate $1$, the $\Gamma_j$ are gamma of shape $\theta$ and rate $1$, and the three
+objects are independent.
+\item Conditionally on $X\le x$, $\sup_{0\le c\le\infty}\abs{X_x(c)/x-A(c)}\to0$ in probability, and
+the same holds with $X$ in place of $x$.
+\end{enumerate}
+\end{theorem}
+
+The centring $m_x(c)$ is the exact tilted mean; replacing it by its leading term is in general
+false on the fluctuation scale (\cref{ana:rem:centring}). At $c=\infty$ the standardized value is
+$-Y_x/(t\sigma_x)$, so total variation is claimed only at finite cutoffs, and no functional limit
+theorem is asserted.
+
+\begin{lemma}[Spectral sums; \stU]\label{ana:lem:specsums}
+For $q>\alpha/p$, $N(u)^{-1}\sum_j(1+(\gamma_j/u)^p)^{-q}\to C_q$, also with sum and integral restricted
+to a fixed interval $(a,b]$, $0\le a<b\le\infty$. Moreover $\sum_j\gamma_j^{-p}<\infty$ and
+$\sum_{\gamma_j\le h}\gamma_j^{2p}\sim\frac\alpha{\alpha+2p}h^{2p}N(h)$ as $h\to\infty$.
+\end{lemma}
+
+\begin{proof}
+The measures $N(u)^{-1}\sum_j\delta_{\gamma_j/u}$ converge to $\alpha r^{\alpha-1}\dd r$ on compact
+subintervals of $(0,\infty)$; near $0$ the integrand is at most $1$ and the mass below $\delta$ tends
+to $\delta^\alpha$. At infinity, given $\eps>0$ one has $N(2T)/N(T)\le2^{\alpha+\eps}$ for $T\ge T_0$,
+hence $N(ru)/N(u)\le C_\eps r^{\alpha+\eps}$ for $u\ge T_0$, $r\ge1$; with $\eps<pq-\alpha$ the part with
+$\gamma_j/u>R$ is at most $C\sum_{\ell\ge0}(2^\ell R)^{-pq}(2^{\ell+1}R)^{\alpha+\eps}$, uniformly small.
+The same dyadic estimate gives $\sum_j\gamma_j^{-p}<\infty$. Finally
+$\sum_{\gamma_j\le h}\gamma_j^{2p}=h^{2p}N(h)-2p\int_0^hr^{2p-1}N(r)\,\dd r$, and dominated convergence on
+$[0,1]$ after the substitution $r=hs$ gives the limit $1-2p/(\alpha+2p)$. The values of $C_1,C_2$ are
+beta integrals.
+\end{proof}
+
+Under the tilted measure $\dd\anaPr_t=e^{-tX+K(t)}\dd\anaPr$ the variables
+$\widetilde G_j=(1+t/\gamma_j^p)G_j$ are independent gamma of shape $\theta$ and rate $1$ (first for
+finite groups, by integrating out the independent tail). Put
+\[
+ a_j=\frac1{1+(\gamma_j/u)^p},\qquad\varsigma^2=\theta\sum_ja_j^2=t^2\sigma_x^2,\qquad
+ S=tX=\sum_ja_j\widetilde G_j,
+\]
+so $S$ has $\anaPr_t$-mean $tx$ and variance $\varsigma^2$. \Cref{ana:lem:specsums} gives (i) of
+\cref{ana:thm:condlaw}. The event $X\le x$ has positive probability: take a finite initial segment
+whose expected tail is below $x/4$, apply Markov's inequality to the tail and make the finitely many
+initial summands small.
+
+\begin{lemma}[Uniform local limit on a spectral band; \stU]\label{ana:lem:band}
+Let $I=(a,b]$ with $0\le a<b\le\infty$, delete any fixed finite set of indices, and put
+$Z_{I,u}=\varsigma^{-1}\sum_{\gamma_j/u\in I}a_j(\widetilde G_j-\theta)$. For large $u$ it has a
+continuous density $f_{I,u}$, and $f_{I,u}\to\varphi_{\lambda_I}$ uniformly and in $L^1$, where
+$\lambda_I=C_2^{-1}\int_I\alpha r^{\alpha-1}(1+r^p)^{-2}\,\dd r$. The same holds for the whole spectrum
+with a lower block $\set{\gamma_j\le h(u)}$ removed, if $h=o(u)$, with limiting variance $1$.
+\end{lemma}
+
+\begin{proof}
+By \cref{ana:lem:specsums}, $\theta\sum_Ia_j^2/\varsigma^2\to\lambda_I$, and since $0<a_j\le1$,
+\[
+ \log\phi_{I,u}(z)=\theta\sum_I\Bigl[-\frac{iza_j}\varsigma-\log\Bigl(1-\frac{iza_j}\varsigma\Bigr)\Bigr]
+ =-\frac{\theta z^2}{2\varsigma^2}\sum_Ia_j^2+O_{\theta,z}(\varsigma^{-1})\to-\frac{\lambda_Iz^2}2 .
+\]
+For a compact $[a',b']$ inside $I$ with $a'>0$ there are at least $dN(u)$ indices there, each with
+$a_j\ge(1+b'^p)^{-1}$; as $\varsigma^2\asymp N(u)=n$,
+$\abs{\phi_{I,u}(z)}=\prod_I(1+z^2a_j^2/\varsigma^2)^{-\theta/2}\le(1+Az^2/n)^{-Dn}$, unchanged by a finite
+deletion. This is at most $\exp(-ADz^2/(1+A))$ for $\abs z\le\sqrt n$, and
+$\int_{\sqrt n}^\infty(1+Az^2/n)^{-Dn}\dd z\le C\sqrt n(1+A)^{-Dn/2}\to0$. Hence the characteristic
+functions converge in $L^1$, Fourier inversion gives uniform convergence of densities, and Scheff\'e's
+lemma gives $L^1$ convergence. For a deleted block, $h\le\delta u$ eventually gives
+$\limsup N(h)/N(u)\le\delta^\alpha$, so the removed variance $\theta N(h)$ is $o(\varsigma^2)$, and the
+interval $[u,2u]$ still supplies the envelope.
+\end{proof}
+
+\begin{proof}[Proof of \cref{ana:thm:condlaw}]
+Under $\anaPr_t$ let $W=(S-tx)/\varsigma$ and $D_u=\anaEx_t[e^{\varsigma W}\anaone_{W\le0}]$. By
+\cref{ana:lem:band} the density $f_u$ of $W$ tends uniformly to $\varphi_1$, so
+\begin{equation}\label{ana:eq:Du}
+ \varsigma D_u=\int_0^\infty e^{-y}f_u(-y/\varsigma)\,\dd y\to\varphi_1(0)=(2\pi)^{-1/2},
+\end{equation}
+and the density of $\anaPr(\cdot\mid X\le x)$ with respect to $\anaPr_t$ is exactly
+$D_u^{-1}e^{\varsigma W}\anaone_{W\le0}$. Omit the $m$ low coordinates and split the rest into the bands
+$I_1=(0,c_1],\dots,I_k=(c_{k-1},c_k],I_{k+1}=(c_k,\infty)$, with independent standardized sums of
+densities $f_{i,u}$ and limiting variances $\lambda_i=V(c_i)-V(c_{i-1})$ ($c_0=0$), $\lambda_{k+1}=1-V(c_k)$.
+Let $U_i$ be the standardized increment on the full band $I_i$. For values $r=(r_1,\dots,r_m)>0$ of
+$tG_j/\gamma_j^p=a_j\widetilde G_j$ put $\delta_u(r)=\varsigma^{-1}\sum_{j\le m}(r_j-\theta a_j)$; their
+tilted density $q_u(r)=\prod_j r_j^{\theta-1}e^{-r_j/a_j}/(\Gamma(\theta)a_j^\theta)$ tends to the
+product $q(r)$ of unit-rate gamma densities, and $\delta_u(r)\to0$. Changing the last increment to
+$y=-\varsigma\sum_{i\le k+1}U_i$ (Jacobian $1/\varsigma$), the conditional density of
+$(U_1,\dots,U_k,Y_x,r)$ is
+\[
+ \frac{e^{-y}\anaone_{y\ge0}q_u(r)}{\varsigma D_u}\,f_{1,u}(z_1-\delta_u(r))\prod_{i=2}^kf_{i,u}(z_i)\,
+ f_{k+1,u}\Bigl(-\frac y\varsigma-\sum_{i\le k}z_i\Bigr),
+\]
+which converges almost everywhere to
+$e^{-y}\anaone_{y\ge0}q(r)\varphi_1(0)^{-1}\prod_{i\le k}\varphi_{\lambda_i}(z_i)\,
+\varphi_{\lambda_{k+1}}(-\sum_iz_i)$. The normal part divided by $\varphi_1(0)$ is the density of
+independent centred normal increments of variances $\lambda_i$ conditioned to sum to zero, so the limit
+integrates to one and Scheff\'e's lemma gives total-variation convergence. The cumulative increments
+have covariance $V(\min(c_a,c_b))-V(c_a)V(c_b)$, which is the law of $(B(V(c_i)))_i$; an invertible
+linear map preserves total variation, and the factorization gives independence.
+
+For (iii), $m_x(c)/x\to A(c)$ by \cref{ana:lem:specsums} and $\sigma_x/x\to0$, so (ii) gives
+$X_x(c)/x\to A(c)$ at each finite $c$; at $c=\infty$, $X/x=1-Y_x/(tx)\to1$. A finite grid on which $A$
+varies by at most $\eps$, monotonicity of $X_x(c)$ and a union bound give the uniform statement.
+\end{proof}
+
+For a cutoff $h=h(u)$ let $J_u=\set{j:\gamma_j\le h}$, $s_j=(\gamma_j/u)^p$,
+$\tau_u^2=\theta\sum_{J_u}s_j^2$, let $Q_u$ be the conditional law of $(tG_j/\gamma_j^p)_{j\in J_u}$ given
+$X\le x$, and put $P_u=\bigotimes_{J_u}\mathrm{Gamma}(\theta,1+s_j)$ and
+$R_u=\bigotimes_{J_u}\mathrm{Gamma}(\theta,1)$ (second parameter the rate).
+
+\begin{theorem}[Sharp growing-block law; \stU]\label{ana:thm:block}
+Let $h=o(u)$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $d_{\mathrm{TV}}(Q_u,P_u)\to0$; more strongly the joint conditional law of the block and $Y_x$ is
+ $o(1)$-close to $P_u\otimes\mathrm{Exp}(1)$.
+\item $d_{\mathrm{TV}}(Q_u,R_u)=2\Phi(\tau_u/2)-1+o(1)$. So the block is asymptotically independent
+ unit-rate gamma if and only if $\tau_u\to0$, and the distance tends to $1$ if $\tau_u\to\infty$; the
+ same holds with the slack included and compared with an independent $\mathrm{Exp}(1)$.
+\item If $h\to\infty$, $\tau_u^2\sim\frac{\theta\alpha}{\alpha+2p}N(h)(h/u)^{2p}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Under $\anaPr_t$ write $S=S_B+S_R$ for the block and the independent remainder, with means
+$\mu_B+\mu_R=tx$. The block has law $P_u$, and $\mathrm{Var}_t(S_B)\le\theta N(h)=o(\varsigma^2)$. By
+\cref{ana:lem:band} the density $g_u$ of $(S_R-\mu_R)/\varsigma$ tends uniformly to $\varphi_1$ and is
+uniformly bounded. Relative to $P_u\otimes\mathrm{Exp}(1)$ the conditional law of the block values $r$
+and the slack $y$ has density
+\begin{equation}\label{ana:eq:blockratio}
+ L_u(r,y)=\frac1{\varsigma D_u}\,g_u\Bigl(-\frac{\sum_{J_u}r_j-\mu_B+y}\varsigma\Bigr),
+\end{equation}
+since the remainder must equal $tx-\sum r_j-y$. Under the reference measure the argument tends to $0$ in
+probability, so $L_u\to1$ in probability by \eqref{ana:eq:Du}; $L_u$ is uniformly bounded, so
+$\anaEx\abs{L_u-1}\to0$, proving (i).
+
+For (ii), under $R_u$ with coordinates $Z_j$ the log-likelihood of $P_u$ is
+$\ell_u=\sum_{J_u}\{\theta\log(1+s_j)-s_jZ_j\}$, with $\max s_j\le(h/u)^p\to0$, mean
+$-\tau_u^2/2+O(\max s_j\,\tau_u^2)$ and variance $\tau_u^2$. If $\tau_u\to\tau\in(0,\infty)$, Lyapunov's
+condition $\sum\anaEx\abs{s_j(Z_j-\theta)}^3\le C_\theta\max s_j\sum s_j^2\to0$ gives
+$\ell_u\Rightarrow\mathcal N(-\tau^2/2,\tau^2)$ (a point mass if $\tau=0$), and
+$d_{\mathrm{TV}}(P_u,R_u)=\anaEx_{R_u}(1-e^{\ell_u})_+\to\Phi(\tau/2)-\Phi(-\tau/2)$. If $\tau_u\to\infty$,
+the Hellinger affinity $\prod_{J_u}(2\sqrt{1+s_j}/(2+s_j))^\theta=\exp(-\tau_u^2(1+o(1))/8)$ tends to $0$,
+and bounds $1-d_{\mathrm{TV}}$. Passing to subsequences in $[0,\infty]$ gives the formula in general;
+the triangle inequality and (i) give (ii), and tensoring with the same exponential law preserves total
+variation. (iii) is \cref{ana:lem:specsums}.
+\end{proof}
+
+Put $\mathcal D(\rho)=2\bigl[\Phi\bigl(\sqrt{-\log(1-\rho)/\rho}\bigr)-
+\Phi\bigl(\sqrt{-(1-\rho)\log(1-\rho)/\rho}\bigr)\bigr]$ for $0<\rho<1$, with $\mathcal D(0)=0$ and
+$\mathcal D(1)=1$.
+
+\begin{theorem}[Independence with the tilted rates; \stU]\label{ana:thm:macro}
+For every positive cutoff $h(u)$, $d_{\mathrm{TV}}(Q_u,P_u)=\mathcal D(V(h/u))+o(1)$. Thus
+$d_{\mathrm{TV}}(Q_u,P_u)\to0$ if and only if $h=o(u)$; if $h/u\to c\in(0,\infty)$ the limit is
+$\mathcal D(V(c))>0$, and if $h/u\to\infty$ it is $1$.
+\end{theorem}
+
+\begin{proof}
+Let $h/u\to c\in(0,\infty)$ and $\rho=V(c)$. Bracketing $h/u$ between $c\pm\eps$, the sum and band
+lemmas apply to the moving cutoff, so under $P_u$ the centred block sum $Z_u=(S_B-\mu_B)/\varsigma$
+tends in law to $\mathcal N(0,\rho)$ and $g_u\to\varphi_{1-\rho}$ uniformly. Integrating
+\eqref{ana:eq:blockratio} over the slack (whose shift $y/\varsigma$ has mean $1/\varsigma$), the
+likelihood of $Q_u$ relative to $P_u$ is, uniformly in the block, $o(1)$-close to
+$r(Z_u)=\varphi_{1-\rho}(Z_u)/\varphi_1(0)=(1-\rho)^{-1/2}\exp(-Z_u^2/(2(1-\rho)))$, a bounded continuous
+function. Hence $d_{\mathrm{TV}}(Q_u,P_u)\to\frac12\anaEx\abs{r(Z)-1}$ with $Z\sim\mathcal N(0,\rho)$. Now
+$r$ times the density of $\mathcal N(0,\rho)$ is that of $\mathcal N(0,\rho(1-\rho))$; the two densities
+cross at $\abs z=\sqrt{-(1-\rho)\log(1-\rho)}$, and integrating the difference between the crossings
+gives $\mathcal D(\rho)$. The case $h=o(u)$ is \cref{ana:thm:block}. If $h/u\to\infty$, marginalizing to
+the cutoff $bu$ gives $\liminf d_{\mathrm{TV}}\ge\mathcal D(V(b))\to1$ as $b\to\infty$. Subsequences in
+$[0,\infty]$ give the general formula.
+\end{proof}
+
+\begin{corollary}[The four-fifths transition for completed Dirichlet $L$-functions; \stG]\label{ana:cor:fourfifths}
+Take $p=2$ and let the spectrum be the positive ordinates, with multiplicity, of a finite product of
+$d$ completed degree-one factors: copies of $\xi(\frac12+w)$, primitive real Dirichlet factors with
+their central zeros removed, and conjugate pairs
+$H_\chi(w)=\Lambda_\chi(\frac12+w)\Lambda_{\bar\chi}(\frac12+w)/w^{2m}$, $m=\ord_{s=1/2}\Lambda_\chi$,
+for nonreal primitive $\chi$ (each pair counting $2$). Then $\anaEx e^{-tX}=(H(0)/H(\sqrt t))^\theta$
+for the even entire product $H$, $N(T)\sim\frac d{2\pi}T\log T$, $\alpha=1$, $C_1=\pi/2$, $C_2=\pi/4$,
+\[
+ A(c)=\frac2\pi\arctan c,\qquad V(c)=\frac2\pi\Bigl(\arctan c+\frac c{1+c^2}\Bigr),\qquad
+ x\sim\frac{\theta d\log u}{4u},\qquad\sigma_x^2\sim\frac{\theta d\log u}{8u^3},
+\]
+and $\tau_u^2\sim\theta d\,h^5\log h/(10\pi u^4)$ as $h\to\infty$. With $h_*(u)=(u^4/\log u)^{1/5}$ and
+$h/h_*(u)\to c\in[0,\infty]$, the conditional block $(u^2G_j/\gamma_j^2)_{\gamma_j\le h}$ is at
+total-variation distance
+\[
+ 2\Phi\Bigl(c^{5/2}\sqrt{\frac{\theta d}{50\pi}}\Bigr)-1+o(1)
+\]
+from independent unit-rate gamma coordinates (limits $0$ and $1$ at $c=0,\infty$). In terms of
+$n=N(u)$ and $k=N(h)$, if $k/n^{4/5}\to\kappa\in[0,\infty]$ the distance tends to
+$2\Phi\bigl(\frac12\sqrt{125\theta\kappa^5/256}\bigr)-1$, independently of $d$. Independence with the
+tilted rates holds exactly for $k=o(n)$.
+\end{corollary}
+
+\begin{proof}
+For a nonreal $\chi$ the functional equations make $H_\chi$ even, and on the real axis
+$H_\chi(0)=\abs{\Lambda_\chi^{(m)}(\frac12)/m!}^2>0$. By \cref{src:thm:dgrh} the paired Hadamard product
+gives $H_\chi(w)/H_\chi(0)=\prod_{\gamma_j>0}(1+w^2/\gamma_j^2)$, with the positive zeros of both completed
+functions; evenness removes the exponential factor. The real factors are as in the proof of
+\cref{ana:thm:smalldev}. The count is the sum of the zero counts, and the constants follow from
+\cref{ana:thm:condlaw,ana:lem:specsums}. At $h=ch_*(u)$, $\tau_u^2\to2\theta dc^5/(25\pi)$, which gives
+the distance by \cref{ana:thm:block}. If $h/h_*\to\infty$, restrict to $h'=\min(h,u/\log u)$, which is
+$o(u)$ with $h'/h_*\to\infty$, and marginalize. For the count form,
+$N(h)/N(u)^{4/5}\to\frac{4c}5(d/2\pi)^{1/5}$ at $h=ch_*$; substituting $c=\frac{5\kappa}4(2\pi/d)^{1/5}$
+gives $\tau^2=125\theta\kappa^5/256$, and monotone bracketing handles general sequences. Regular
+variation gives $N(h)/N(u)\to0$ if and only if $h/u\to0$, so \cref{ana:thm:macro} gives the last
+claim.
+\end{proof}
+
+For example, for $\zeta$ with $\theta=1$ the limiting distances at $c=1,2,3,4$ are about $0.0636$,
+$0.3483$, $0.7864$ and $0.9893$. The transition is set by the accumulated squared rate corrections,
+not by the largest one, and it involves of order $n^{4/5}$ coordinates. The conductors, root numbers,
+multiplicities and individual ordinates affect only the exact saddle and finite-scale corrections.
+Monte Carlo comparisons at $u=10^3,10^4$ on a synthetic spectrum with the Riemann--von Mangoldt count
+approach the limit slowly, and no finite-$u$ error bound is claimed; the data are in
+\begin{center}
+\artifact{dirichlet_spectral_conditioning_2026-11-27/data/verification.json}.
+\end{center}
+
+For the height carrying half the total, take $\zeta$ ($q=1$) or a primitive real character of conductor
+$q$, $p=2$, with central zeros removed and every zero counted with multiplicity, and recall
+$N(T)=\frac T{2\pi}(\log\frac{qT}{2\pi}-1)+O_\chi(\log(T+2))$
+\cite{BennettMartinOBryantRechnitzer2021Counting}. With the exact saddle $u$ put
+\[
+ \ell=\log\frac{qu}{2\pi},\qquad J(c)=\int_0^c\frac{\log r}{1+r^2}\,\dd r,\qquad
+ M_u(c)=\frac\theta{2\pi u}\bigl(\ell\arctan c+J(c)\bigr),
+\]
+so that $J(1)=-G$ with Catalan's constant $G$ and $J(\infty)=0$.
+
+\begin{lemma}[Centring on the fluctuation scale; \stG]\label{ana:lem:centring}
+Uniformly for $c$ in compact subsets of $(0,\infty)$,
+\begin{gather*}
+ m_x(c)=M_u(c)+O_\chi\Bigl(\frac{\log u}{u^2}\Bigr)=M_u(c)+o(\sigma_x),\\
+ x=\frac{\theta\ell}{4u}+O_\chi\Bigl(\frac{\log u}{u^2}\Bigr),\qquad
+ \sigma_x^2=\frac{\theta(\ell-1)}{8u^3}+O_\chi\Bigl(\frac{\log u}{u^4}\Bigr).
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+Let $R(T)$ be the error of the count, extended to $T\ge0$ with $R(0)=0$. Stieltjes integration by
+parts with $f(T)=(T^2+u^2)^{-1}$ gives $m_x(c)=M_u(c)+\theta f(cu)R(cu)-\theta\int_0^{cu}f'(T)R(T)\,\dd T$,
+with both error terms $O_\chi(\log u/u^2)$; at $c=\infty$ the boundary term vanishes and $J(\infty)=0$
+by $r\mapsto1/r$. For $(T^2+u^2)^{-2}$ the main integrals are $\int_0^\infty(1+r^2)^{-2}\dd r=\pi/4$ and
+$\int_0^\infty\log r\,(1+r^2)^{-2}\dd r=-\pi/4$ (write $(1+r^2)^{-2}=\frac12(r/(1+r^2))'+\frac12(1+r^2)^{-1}$
+and integrate by parts), with error $O_\chi(\log u/u^4)$. Finally $(\log u/u^2)/\sigma_x\to0$.
+\end{proof}
+
+\begin{remark}[A leading-order centring is insufficient]\label{ana:rem:centring}
+$m_x(1)-x/2=-\theta G/(2\pi u)+O_\chi(\log u/u^2)$, which divided by $\sigma_x$ grows like
+$\sqrt{u/\log u}$. So the centring $xA(c)$, valid on the scale $x$ in \cref{ana:thm:condlaw}(iii), is
+not valid in (ii).
+\end{remark}
+
+Let $H_x=\min\{\gamma_j:\sum_{\gamma_i\le\gamma_j}G_i/\gamma_i^2\ge X/2\}$, and for $\ell>0$ let $c_\ell>1$
+be the unique root of $\ell\arctan c_\ell+J(c_\ell)=\pi\ell/4$; the left side minus the right is $-G$ at
+$1$, tends to $\pi\ell/4$ at infinity, and has derivative $(\ell+\log c)/(1+c^2)>0$ for $c\ge1$.
+
+\begin{theorem}[The height carrying half the total; \stG]\label{ana:thm:medianheight}
+Conditionally on $X\le x$, as $x\downarrow0$,
+\[
+ \frac x{\pi\sigma_x}\Bigl(\frac{H_x}u-c_\ell\Bigr)\Longrightarrow\mathcal N\Bigl(0,\frac14-\frac1{\pi^2}\Bigr),
+\]
+with $c_\ell=1+2G/\ell+2G^2/\ell^2+O(\ell^{-3})$ and $u\pi\sigma_x/x\sim\pi\sqrt{2u/(\theta\ell)}$. The
+implicit centre $c_\ell$ must be used: the error of the truncation $1+2G/\ell$, after normalization,
+grows like $\sqrt u/\ell^{3/2}$.
+\end{theorem}
+
+\begin{proof}
+If $c_u\to1$, splitting at $c_uu$ gives variance fractions $v_1=V(1)=\frac12+\frac1\pi$ and $1-v_1$ by
+bracketing; the intervals $[u/4,u/2]$ and $[2u,3u]$ lie in the two blocks and supply the Fourier
+envelope of \cref{ana:lem:band}. The two-band density argument of the proof of \cref{ana:thm:condlaw}
+gives $\bigl((X_x(c_u)-m_x(c_u))/\sigma_x,u^2(x-X)\bigr)\Rightarrow(Z,E)$ with
+$Z\sim\mathcal N(0,v_1(1-v_1))$ and $E$ exponential, independent. Let $d_u=\pi\sigma_x/x\to0$, fix $z$, and
+take $c_u=c_\ell+zd_u$. By \cref{ana:lem:centring} and the definition of $c_\ell$,
+$m_x(c_\ell)-x/2=o(\sigma_x)$, and $M_u'(c)=\frac\theta{2\pi u}\frac{\ell+\log c}{1+c^2}\sim x/\pi$ near
+$c=1$, so $(m_x(c_u)-x/2)/\sigma_x\to z$. Also $(x-X)/\sigma_x\to0$ in conditional probability, hence
+$(X_x(c_u)-X/2)/\sigma_x\Rightarrow Z+z$. The exact equivalence $H_x\le uc_u\iff X_x(c_u)\ge X/2$ gives the
+limit $\anaPr(Z\ge-z)$, and $v_1(1-v_1)=\frac14-\frac1{\pi^2}$. \Cref{ana:lem:centring} gives the height
+scale, and Taylor expansion at $c=1$ with $J(1)=-G$, $J'(1)=0$ gives the expansion of $c_\ell$.
+\end{proof}
+
+Conditioning small Gaussian norms and conditional bridge limits for weighted sums have classical
+precedents \cite{VanCampenhoutCover1981Maximum,MayerWolfZeitouni1993Probability,SobolevShklyaev2020Large}.
+All randomness here comes from the gamma weights; nothing is asserted about randomness, spacing,
+simplicity or independence of the zeros, and no uniformity in a growing conductor or degree is
+claimed.
+
+\subsection{A finite certificate for Euler's Gamma product}\label{ana:sec:eulergamma}
+{\raggedright\sources{gamma-euler-quartic}}
+
+Archimedean factors such as those in \cref{ana:thm:smalldev} are values of the Gamma function. For
+$N\ge1$ and $\Re z>0$ put
+\[
+ E_N(z)=\frac{N^zN!}{z(z+1)\cdots(z+N)},\qquad A=\frac{z(z+1)}2,\qquad D=-\frac{z(z+1)(2z+1)}{12},\qquad
+ C=\frac{A^2}3,
+\]
+so that $E_N(z)\to\Gamma(z)$ (Euler's product), and define the polynomial multiplier
+\[
+ P_N=1+\frac AN+\frac{D+A^2/2}{N^2}+\frac{C+AD+A^3/6}{N^3},
+\]
+the cubic truncation of $\exp(A/N+D/N^2+C/N^3)$; its coefficients are the classical Gamma-ratio
+coefficients. The point is an explicit finite error bound for this particular sampler that uses no
+logarithm of a Gamma value.
+
+\begin{proposition}[Fourth-order Euler sampler; \stU]\label{ana:prop:eulergamma}
+Let $R\ge1$ be an integer, $a>0$, $M=R+1$ and $B=\max\{1/a,(R-1)!\}$. Uniformly for $\abs z\le R$ and
+$\Re z\ge a$, and for $N\ge2M^2$,
+\[
+ \abs{\Gamma(z)-E_N(z)P_N(z)}\le\frac{3BM^8}{N^4},\qquad\abs{P_N(z)}\le\frac32 .
+\]
+\end{proposition}
+
+\begin{proof}
+\emph{Size.} With $x=\Re z$, termwise comparison gives $\abs{E_N(z)}\le E_N(x)$, and $\log E_N(x)$ is
+convex in $x>0$, its nonlinear terms being $-\log(x+j)$. At $b=\min(a,1)$, concavity of $t^b$ gives
+$\prod_{j\le N}(1+b/j)\ge(N+1)^b$, so $E_N(b)\le1/b$; at the integer $R$, $E_N(R)\le(R-1)!$. Thus $B$
+bounds $\abs{E_N(z)}$ and its limit.
+
+\emph{Telescope.} Put $w=z+1$, $t=1/n$ and $S_n=A/n+D/n^2+C/n^3$. The product gives $E_{n+1}=E_ne^{L_n}$
+with $L_n=w\log(1+t)-\log(1+wt)$, by the logarithm series for $\abs{wt}\le1/2$. Its coefficients in
+degrees $2,3,4$ are $A$, $(w-w^3)/3$, $(w^4-w)/4$, and those of $S_n-S_{n+1}$ are $A$, $-A+2D$,
+$A-3D+3C$, which agree. The rest of the logarithm series is at most
+$(M+M^5)t^5/[5(1-Mt)]\le M^5t^5$. In $S_n-S_{n+1}$ the tail after degree $4$ is at most
+$(\abs A+4\abs D+6\abs C)t^5$, from the geometric series for $(1+t)^{-1}$ and the Taylor bounds for
+$(1+t)^{-2},(1+t)^{-3}$, whose next coefficients are $4$ and $6$ in absolute value. As $\abs A\le M^2/2$,
+$\abs D\le M^3/6$ and $\abs C\le M^4/12$, the defect $d_n=L_n-S_n+S_{n+1}$ satisfies
+$\abs{d_n}\le2M^5/n^5$. For $n\ge4$, $1/n^4-1/(n+1)^4\ge2/n^5$, so every finite sum of defects from $N$
+on is at most $M^5/N^4$. The exact recursion $E_K=E_N\exp(S_N-S_K+\sum_{n=N}^{K-1}d_n)$, $S_K\to0$ and
+$E_K\to\Gamma(z)$ give $\Gamma=E_Ne^{S_N+d}$ with $\abs d\le M^5/N^4$.
+
+\emph{Rational multiplier.} With $u=M^2/N\le1/2$, the coefficients of $e^{S_N}$ as a series in $u$ are
+bounded by those of $\exp(u/2+u^2/6+u^3/12)$, whose sum at $u=1$ is $e^{3/4}<5/2$. Discarding powers
+$u^{\ge4}$ costs at most $\frac52u^4$, and the retained cubic is exactly $P_N$; its coefficient bounds
+$1/2,7/24,3/16$ give $\abs{P_N}\le3/2$. Since $\abs{S_N}+\abs d\le1$,
+$\abs{e^{S_N+d}-e^{S_N}}\le3\abs d$, and $\frac52M^8+3M^5<3M^8$ for $M\ge2$.
+\end{proof}
+
+For $R=8$, $a=1/2$ and $N=2^{42}$, an observation of $E_N$ with absolute error at most $2^{-130}$ gives
+$\Gamma(z)$ to within $2^{-128}$, since $3\cdot5040\cdot9^8\,2^{-168}+\frac32\,2^{-130}<2^{-128}$; for
+the reciprocal $1/E_N$, $156$ absolute bits suffice before exact inversion, as $\abs{1/E_N}\ge1/5040$
+and the inverse error is at most $2\cdot5040^2$ times the input error when that is at most
+$1/(2\cdot5040)$. The uncorrected value $E_N(1)=N/(N+1)$ would need $N\ge2^{128}-1$ for the same
+accuracy. Exact rational checks at $680$ integer inputs and $2232$ nonreal rational local defect
+enclosures are recorded in \artifact{gamma-euler-quartic/verification.txt}. The proposition is
+independent of \cref{ana:thm:window}, whose Gamma averages are probability measures on the logarithmic
+variable rather than values of $\Gamma$.
+
 \subsection{Open questions}\label{ana:sec:open}
 
 \begin{question}[Arithmetic inputs]\label{ana:q:input}
@@ -3351,6 +3739,13 @@ removed on the lattice $k^{-1}\Z$ within the abstract spectral class; is the rat
 spectra? Do the converses of \cref{ana:thm:gridconverse,ana:thm:binomial}(i) hold for a depth
 that grows slowly with $t$? Can noncentral multiplicities be recovered robustly from finitely
 many data with bounded errors when ordinates are close?
+\end{question}
+
+\begin{question}[Conditional laws at finite saddles]\label{ana:q:condlaw}
+\Cref{ana:thm:condlaw,ana:thm:block,ana:cor:fourfifths,ana:thm:medianheight} are limit theorems for a
+fixed function. Give explicit error bounds in the saddle $u$ for the total-variation transitions, which
+Monte Carlo comparisons show to be slow, and versions uniform in the conductor or in the degree $d$ of
+the product.
 \end{question}
 
 \begin{question}[Hankel tests]\label{ana:q:hankel}

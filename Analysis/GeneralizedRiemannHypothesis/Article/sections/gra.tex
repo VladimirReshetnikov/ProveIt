@@ -6,6 +6,7 @@
 \providecommand{\gramu}{\boldsymbol{\mu}}
 \providecommand{\graPi}{\Pi}
 \providecommand{\gracut}{\vartheta}
+\providecommand{\graunit}{\operatorname{unit}_p}
 \providecommand{\grafiles}[1]{\begin{center}\footnotesize#1\end{center}}
 
 The results of this section are unconditional and use no hypothesis on zeros
@@ -18,7 +19,10 @@ abelian deck groups this reads off the $p$-adic valuation of a Laplacian
 eigenvalue at every character, and the valuations can be summed. The second
 device is the restriction of a positive form to a principal submatrix,
 followed by a Schur complement; it gives the local obstruction used for
-signed cycles in \cref{gra:sec:cycles}. A third, purely methodological,
+signed cycles in \cref{gra:sec:cycles}. For the prime-to-$p$ part of the
+spanning-tree count, \cref{gra:sec:units} replaces individual valuations by
+Galois stabilisers and the cyclotomic reciprocity map, and treats towers
+with nonabelian $p$-adic analytic deck groups. A third, purely methodological,
 transfer (rotation, and exclusion of zeros from one half-plane by a
 positivity certificate) locates the zeros of a family of Ehrhart
 polynomials in \cref{gra:sec:ehrhart}.
@@ -802,14 +806,81 @@ level one and the formula by geometric summation. This is the method of
 \cref{gra:thm:moments} applied to a base with two vertices.
 \end{example}
 
-\subsection{A finite-field formula when the prime exceeds the valency}\label{gra:sec:moments}
+\subsection{Residue formulas when the prime exceeds the number of steps}\label{gra:sec:moments}
 {\raggedright
-\sources{grh_method_transfers_graph_towers_and_finite_rings; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26}
+\sources{grh_method_transfers_graph_towers_and_finite_rings; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; spanning-tree-sharp-cutoff}
 }
 
 The preceding arguments have a uniform form when the prime exceeds the
-valency. Fix a bouquet with $m$ steps $s_i\in\Z^d$ spanning $\F_p^d$ modulo
-$p$, and assume $p>2m$. For $u\in\F_p^d$ and $j\ge1$ put
+number of steps. Fix an odd prime $p$ and a bouquet with $m$ steps
+$s_i\in\Z^d$ spanning $\F_p^d$ modulo $p$, with multiplicities kept. For
+$a\in\F_p^d\setminus\{0\}$ define the following polynomial in
+$\F_p[T]/(T^p)$:
+\[
+ L_a(T)=2m-\sum_{i=1}^m
+ \bigl((1+T)^{[a\cdot s_i]}+(1+T)^{[-a\cdot s_i]}\bigr),
+\]
+where brackets denote representatives in $\{0,\dots,p-1\}$. When
+$L_a\ne0$, let $j(a)$ be its least nonzero degree.
+
+In the variable $Z=1+T$, which identifies the polynomials of degree less
+than $p$ on both sides, the coefficient of $Z^r$ for $r\ne0$ is the
+negative of the number of steps whose projection $a\cdot s_i$ lies in
+$\{r,-r\}$, and the coefficients sum to zero. Hence $L_a\ne0$ precisely
+when some nonzero unordered pair $\{r,-r\}$ of projected residues occurs
+among the $m$ projected steps a number of times not divisible by $p$.
+Spanning gives a nonzero projected residue in every nonzero direction, so
+$m<p$ suffices for $L_a\ne0$ for all $a$.
+
+\begin{theorem}[Residue formula below the sharp cutoff; \stU]\label{gra:thm:cutoff}
+Let $p$ be odd, and suppose that $L_a\ne0$ for every
+$a\in\F_p^d\setminus\{0\}$; this holds whenever $m<p$. Then for every
+$n\ge1$
+\[
+ \nu_n=C\sum_{h=1}^np^{(d-1)(h-1)}-dn,\qquad
+ C=\frac1{p-1}\sum_{a\in\F_p^d\setminus\{0\}}j(a).
+\]
+In particular, for fewer than $p$ steps the reductions of the steps modulo
+$p$ determine the valuation at every level. The bound $m<p$ is sharp
+(\cref{gra:prop:cutoffsharp}).
+\end{theorem}
+
+\begin{proof}
+A character of exact order $p^h$ has a primitive vector
+$b\in(\Z/p^h\Z)^d$. With $\zeta=\zeta_h$, $\pi=\zeta-1$ and $e=e_h$, its
+Laplacian eigenvalue is $F_b(\zeta)$, where the integer polynomial $F_b(Z)$
+is given by the formula for $L_a$ with $Z$ in place of $1+T$ and with
+representatives modulo $p^h$. In particular $F_b(1)=0$. Over $\F_p$ one
+has $(1+T)^p=1+T^p$, so the coefficients of $F_b(1+T)$ in degrees below
+$p$, reduced modulo $p$, are those of $L_{\bar b}(T)$. Whenever
+$j(\bar b)<e$, \cref{gra:lem:rules}(i) gives
+$v_p(F_b(\zeta))=j(\bar b)/e$.
+
+Since $j(\bar b)\le p-1\le e$, the only boundary case is $h=1$,
+$j(\bar b)=p-1$. Then $F_b(Z)$ has degree at most $p-1$ and is congruent
+to $c\,\Phi_p(Z)$ modulo $p$ for an integer $c$ prime to $p$, because
+$\Phi_p(Z)\equiv(Z-1)^{p-1}\pmod p$. Write $F_b=c\,\Phi_p+pG$ with
+$G\in\Z[Z]$. Evaluating at $1$ gives $G(1)=-c$. As $\zeta\equiv1$ modulo
+$\pi$, $G(\zeta)$ is a unit, and $v_p(F_b(\zeta))=1=j(\bar b)/e_1$. This
+uses the exact zero at $1$ and needs no bound on the multiplicities.
+
+Each nonzero $a\in\F_p^d$ has $p^{d(h-1)}$ primitive lifts to
+$(\Z/p^h\Z)^d$, so the shell sum is
+$S_h=p^{d(h-1)}e_h^{-1}\sum_aj(a)=p^{(d-1)(h-1)}C$. The steps span, so
+$\nu_0=0$, and \eqref{gra:eq:shells} gives the formula.
+\end{proof}
+
+\begin{remark}[More residue digits]\label[remark]{gra:rem:digits}
+The same reduction works with more digits. If a primitive projection $b$
+is known modulo $p^k$, expand $F_b(1+T)$ in $\F_p[T]/(T^{p^k})$ using
+representatives modulo $p^k$. If its order there is $j<e_h$ and $h\ge k$,
+all lifts to order $p^h$ give valuation $j/e_h$; in particular any nonzero
+such polynomial suffices for $h>k$. This is useful when $L_{\bar b}=0$;
+compare the reduction of the state space in \cref{gra:sec:effective}.
+\end{remark}
+
+When $p>2m$ the integers $j(a)$ are read off from power sums. For
+$u\in\F_p^d$ and $j\ge1$ put
 \[
  M_j(u)=\sum_{i=1}^m\langle u,s_i\rangle^{2j}\in\F_p ,
 \]
@@ -822,12 +893,11 @@ $L\in\graP^{d-1}(\F_p)$ represented by $u$, define the \emph{depth} and the
 Scaling $u$ preserves the first nonvanishing degree.
 
 \begin{theorem}[Moment formula; \stU]\label{gra:thm:moments}
-Each $r(L)$ is at most $m$, and for every $n\ge1$
+Assume $p>2m$. Each $r(L)$ is at most $m$, and $j(a)=2r(L)$ for every
+nonzero $a$ on $L$. Consequently, for every $n\ge1$,
 \[
  \nu_n=\graA\sum_{h=0}^{n-1}p^{(d-1)h}-dn .
 \]
-In particular, the reductions of the steps modulo $p$ determine the
-valuation at every level.
 \end{theorem}
 
 \begin{proof}
@@ -836,17 +906,14 @@ vanished, Newton's identities (with $1,\dots,m$ invertible) would give
 $\prod_i(Z-x_i)=Z^m$. This forces all projections to be zero and
 contradicts spanning. Next take the truncated exponential coordinate
 $1+T=\exp z$ modulo $z^{2m+1}$ over $\F_p$; all denominators used are
-units, and the linear term is invertible. The eigenvalue becomes
+units, and the linear term is invertible. Since the representative of
+$-a\cdot s_i$ is congruent to $-[a\cdot s_i]$, the polynomial $L_a$ becomes
 \[
- -2\sum_{j=1}^m\frac{z^{2j}}{(2j)!}\,M_j(u)\pmod{z^{2m+1}} .
+ -2\sum_{j=1}^m\frac{z^{2j}}{(2j)!}\,M_j(a)\pmod{z^{2m+1}} .
 \]
-Its first nonzero degree is $2r(L)$. The integral series in $T$ has zero
-constant and linear coefficients. Since $2r(L)\le2m\le p-1\le e$,
-\cref{gra:lem:rules}(ii) proves that the orbit contributes exactly
-$2r(L)$, including the possible boundary case $2r(L)=p-1$. There are
-$p^{(d-1)(h-1)}$ lifts of each projective residue direction to conductor
-$p^h$: normalise the first unit coordinate to one and lift the other $d-1$
-coordinates freely. Formula \eqref{gra:eq:shells} now gives the claim.
+Its first nonzero degree is $2r(L)\le2m<p$, so $j(a)=2r(L)$. Each
+projective point carries $p-1$ nonzero vectors, hence the constant $C$ of
+\cref{gra:thm:cutoff} equals $\graA$, and that theorem gives the formula.
 \end{proof}
 
 \begin{example}\label[example]{gra:ex:torus}
@@ -862,11 +929,87 @@ moments and analysed the distribution of the one-variable Iwasawa
 invariant, including the two-loop case
 \cite[Theorem~4.13 and Proposition~4.19]{DionLeiRayVallieres2024Distribution}.
 \Cref{gra:thm:moments} counts all residual projective directions and their
-lifts in arbitrary rank.
+lifts in arbitrary rank, and \cref{gra:thm:cutoff} removes the factor two
+from its hypothesis $2m<p$.
+
+\begin{proposition}[The cutoff $m<p$ is sharp; \stU]\label[proposition]{gra:prop:cutoffsharp}
+Let $p$ be odd and $d=2$. For $0\le i<p$ take the $p$ steps $s_i=(1,i)$,
+and alternatively the $p$ steps $s_i'=(1+pi^2,i)$. Both give simple
+connected graphs at every level, and the two step lists agree modulo $p$.
+Put $E=p(p-1)$ and $\delta=1$ if $p\equiv3\pmod4$, $\delta=0$ otherwise.
+For every $n\ge1$ the two valuations are
+\begin{align}
+ \nu_n&=\sum_{j=0}^{n-1}\bigl[p^2-1+j(p-1)^2\bigr]p^j
+ =\bigl((p-1)n+1\bigr)p^n-1,\label{gra:eq:flat}\\
+ \nu_n'&=E+p+1+\Bigl(\frac{3E}2+\delta\Bigr)\sum_{j=1}^{n-1}p^j-2n .
+ \label{gra:eq:curved}
+\end{align}
+They agree at $n=1$, and their difference at $n=2$ is
+$pE/2+2-p\delta>0$. Thus for $m=p$ the residues of the steps determine
+neither the valuations nor their growth order, which is $np^n$ for the
+first list and $p^n$ for the second.
+\end{proposition}
+
+\begin{proof}
+The steps and their negatives are distinct modulo $p$, and the first two
+steps span; this gives simplicity and connectedness. Write the character
+vector as $(a,b)$ at exact order $p^h$ and keep the notation of the
+previous proof.
+
+\emph{Common contributions.} At level one an order-$p$ character with
+$b\ne0$ has eigenvalue $2p$, since the projections $a+bi$ run through all
+residues. Otherwise the eigenvalue is $p(2-\zeta^a-\zeta^{-a})$, of
+valuation $1+2/(p-1)$. The level-one contribution, before the vertex-count
+term, is $E+p+1$ for both lists. For $h\ge2$ and $b$ a unit, the residue
+polynomial is $-2\sum_{r=0}^{p-1}(1+T)^r=-2T^{p-1}$. Each such eigenvalue
+has valuation $(p-1)/e_h$, and these characters contribute $Ep^{h-1}$ in
+total. The remaining primitive vectors have $a$ a unit and $p\mid b$.
+
+\emph{Straight steps.} If $b=0$ at order $p^h$, the contribution is
+$e_h+2$. When $t=v_p(b)$ satisfies $1\le t\le h-1$, the eigenvalue is
+\[
+ 2p-\bigl(\zeta^a+\zeta^{-a-(p-1)b}\bigr)\sum_{i=0}^{p-1}\zeta^{bi}.
+\]
+The parenthesis is a unit because it reduces to $2$ modulo $\pi$. If
+$t<h-1$, the geometric sum has valuation $(p-1)p^t/e_h<1$, by writing it
+as $(1-\zeta^{pb})/(1-\zeta^b)$. For $t=h-1$ the geometric sum is zero and
+the eigenvalue has valuation $1$, which is again $(p-1)p^t/e_h$. There are
+$e_h$ choices for $a$ and $(p-1)p^{h-1-t}$ choices for $b$ at each $t$, so
+each $t$ contributes $(p-1)^2p^{h-1}$. Adding the common contributions and
+subtracting $2n$ gives \eqref{gra:eq:flat}.
+
+\emph{Quadratic steps.} Write $a=a_0+pa_1$ with $a_0\in\{1,\dots,p-1\}$,
+and $b=pc$. The positive projected residues are congruent modulo $p^2$ to
+$a_0+pk_i$, where $k_i=a_1+ci+a_0i^2\bmod p$. With $U=T^p$ and $Z=1+T$,
+the sum of the positive projected terms modulo $(p,T^{p^2})$ is
+$Z^{a_0}\sum_i(1+U)^{k_i}$. The negative sum has the factor $Z^{p-a_0}$ and
+exponents $-1-k_i\bmod p$. Let $r=(p-1)/2$. For each $j<r$ the coefficient
+of $U^j$ vanishes in both sums: it is a polynomial in $i$ of degree
+$2j<p-1$, and every monomial of such degree, including the constant, sums
+to zero over $\F_p$. At $j=r$ the positive coefficient is
+$A=-a_0^r/r!\ne0$, coming from the term of degree $p-1$, and the negative
+coefficient is $(-1)^rA$.
+
+Consequently the first surviving degree in the Laplacian is $pr$ if $r$ is
+even. If $r$ is odd, the constant of the $Z$-factor cancels, but its
+coefficient of $T$ is $2a_0A$ up to the overall sign, which is nonzero, and
+the degree is $pr+1$. In either case the degree is $E/2+\delta<e_h$, and
+dividing by $e_h$ gives the eigenvalue valuation by
+\cref{gra:lem:rules}(i). There are $e_hp^{h-1}$ such vectors, so the common
+and quadratic contributions sum to $(3E/2+\delta)p^{h-1}$ for $h\ge2$.
+Formula \eqref{gra:eq:shells} gives \eqref{gra:eq:curved}.
+\end{proof}
+
+At $p=3$, $n=2$ the two valuations are $44$ and $36$; independent integer
+cofactors of the $80\times80$ reduced Laplacians give the same values
+(\artifact{spanning-tree-sharp-cutoff/verification.txt}). In rank two the
+pair of \cref{gra:prop:cutoffsharp} differs in the coefficient of $np^n$,
+in accordance with the linear range $m\ge\max(3,p)$ of
+\cref{gra:thm:loops}.
 
 \subsection{The largest moment coefficient in rank two}\label{gra:sec:extremal}
 {\raggedright
-\sources{grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_method_transfers_graph_towers_and_finite_rings}
+\sources{grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_method_transfers_graph_towers_and_finite_rings; short_tower_distributions_2026-11-27; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27}
 }
 
 How divisible by $p$ can the spanning-tree count of a connected abelian
@@ -876,15 +1019,31 @@ this subsection $d=2$, $p>2m$, and the $m$ steps span $\F_p^2$ after
 reduction; repetitions and steps with zero residue are allowed. The forms
 $M_j$ are binary forms of degree $2j$ over $\F_p$.
 
+The value $\graA(S)$ depends only on the \emph{row plane}
+$W\subset\F_p^m$ of the $2\times m$ matrix whose columns are the step
+residues: a change of basis of $\F_p^2$ gives precisely the other matrices
+with the same row plane, and a direction $L$ corresponds to the point of
+$\graP(W)$ given by the projections $(\langle u,s_i\rangle)_i$. Permuting
+the steps and changing their signs act on $W$ by signed permutations of
+the coordinates. Distinct nonzero step residues up to sign give simple
+graphs at every level.
+
 \begin{theorem}[First nonzero moment form and the interpolation bound; \stU]\label{gra:thm:extremal}
 Let $t$ be the first index $j$ for which $M_j$ is a nonzero polynomial, and
 put $s=\floor{m/2}$. Then $t\le s$ and
 \begin{equation}\label{gra:eq:tbound}
  \graA(S)\le2t(p+1)+4t(m-t)\le2s(p+1)+4s(m-s).
 \end{equation}
-For even $m=2s$, equality $\graA(S)=m(p+1+m)$ in the outer bound is
-attainable exactly at the primes with $2m\mid p-1$. The maximising
-configuration has $M_1=0$ identically whenever $m\ge4$.
+A direction of depth $m$ exists only if $2m\mid p-1$. If no direction has
+depth above $D$, then $\graA(S)\le2t(p+1+2D-2t)$; in particular, if
+$2m\nmid p-1$,
+\begin{equation}\label{gra:eq:tboundnc}
+ \graA(S)\le2t(p+1)+4t(m-1-t)\le2s(p+1)+4s(m-1-s).
+\end{equation}
+For even $m=2s$, equality $\graA(S)=m(p+1+m)$ in the outer bound of
+\eqref{gra:eq:tbound} is attainable exactly at the primes with
+$2m\mid p-1$. The maximising configuration has $M_1=0$ identically
+whenever $m\ge4$.
 \end{theorem}
 
 \begin{proof}
@@ -916,17 +1075,19 @@ both cases.
 
 A nonzero binary form of degree $2t$ has at most $2t$ projective roots.
 The other directions have depth $t$, and each exceptional direction has
-depth at most $m$ by \cref{gra:thm:moments}. Hence
-$\graA/2\le t(p+1)+2t(m-t)$. The right side increases strictly for
-integers $1\le t\le s$: the successive difference of
-$2t(p+1+2m-2t)$ is $2(p+1+2m-4t-2)>0$ in that range because $p>2m$. This
-proves \eqref{gra:eq:tbound}.
+depth at most $D$, where $D\le m$ by \cref{gra:thm:moments}. Hence
+$\graA/2\le t(p+1)+2t(D-t)$. For $D\in\{m-1,m\}$ the right side increases
+strictly for integers $1\le t\le s$: the successive difference of
+$2t(p+1+2D-2t)$ is $2(p+1+2D-4t-2)>0$ in that range because $p>2m$ and
+$4t\le2m$.
 
-For even $m=2s$, equality requires $t=s$ and $2s$ exceptional directions
-of depth $m$. In any direction of depth $m$, Newton's identities give
+In any direction of depth $m$, Newton's identities give
 $\prod_i(X-\langle u,s_i\rangle^2)=X^m-c$ with $c\ne0$. The roots are
 distinct nonzero squares. Dividing by one root shows that all $m$th roots
-of unity belong to the square subgroup, and hence $2m\mid p-1$.
+of unity belong to the square subgroup, and hence $2m\mid p-1$. This
+proves \eqref{gra:eq:tbound} and \eqref{gra:eq:tboundnc}. For even $m=2s$,
+equality in the outer bound of \eqref{gra:eq:tbound} requires $t=s$ and
+$2s$ exceptional directions of depth $m$, hence $2m\mid p-1$.
 
 Conversely, assume $4s\mid p-1$ and choose $g\in\F_p^\times$ of order
 $2s$. Use the $s$ steps $(g^j,0)$ and the $s$ steps $(0,g^j)$,
@@ -989,6 +1150,79 @@ integral Laplacian determinant directly; see
 \grafiles{\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/graph_checks.txt}\\
 \artifact{grh_transfer_extensions_2026-11-26/verification/graph_check.txt}}
 \end{example}
+
+\paragraph{Three steps.}
+For $m=3$ the bound \eqref{gra:eq:tbound} is $2(p+1)+8$; it is attained
+when $p\equiv1\pmod6$ by \cref{gra:cor:quadratic}, and \eqref{gra:eq:tboundnc}
+gives $2(p+1)+4$ otherwise. The full distribution is as follows.
+
+\begin{theorem}[Three-step distribution; \stU]\label{gra:thm:three}
+Let $m=3$ and $p>6$, put $E=\graA-2(p+1)$ and $t=p-7$. The numbers of row
+planes $W\subset\F_p^3$ with each value of $E$ are:
+\begin{center}\small\upshape
+\begin{tabular}{crr}
+\toprule
+$E$ & $p\equiv1\pmod6$ & $p\equiv5\pmod6$\\
+\midrule
+0 & $p(p-1)/2$ & $p(p-1)/2$\\
+2 & $t$ & $p+1$\\
+4 & $8+\binom t2$ & $p(p+1)/2$\\
+6 & $8t$ & $0$\\
+8 & $28$ & $0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the planes giving simple towers remove $3$ planes from $E=4$ if $-1$
+is a square modulo $p$ and from $E=0$ otherwise, and remove $6$ planes
+from $E=4$ if $-2$ is a square and from $E=0$ otherwise. In particular the
+maximum of $\graA$ over three-step lists is $2(p+1)+8$ for
+$p\equiv1\pmod6$ and $2(p+1)+4$ for $p\equiv5\pmod6$, also among simple
+towers. For $p\equiv1\pmod6$ the $28$ maximising planes form exactly three
+orbits under signed permutations, of sizes $12$, $4$ and $12$.
+\end{theorem}
+
+\begin{proof}
+Every $\graP(W)$ is a line in $\graP^2$ and cannot be contained in the
+smooth conic $Q:\sum x_i^2=0$. The excess $E$ is two for each point of
+$Q$ on the line and an extra two for each point with also $\sum x_i^4=0$;
+call the latter \emph{special}. A nondegenerate ternary form over a
+finite field is isotropic (compare the two sets of square values in a
+diagonal equation), and projection from a rational point of $Q$ gives
+$p+1$ points. Thus there are $p+1$ tangents, $\binom{p+1}2$ secants and
+$p(p-1)/2$ external lines. Newton's identities show that the special
+points have squared coordinates the roots of $T^3-c$, $c\ne0$. They exist
+exactly when $p\equiv1\pmod6$, in which case there are eight: normalise
+the first coordinate to $1$, then order the other two squared coordinates
+and choose their signs independently. Counting tangents and unordered
+secant pairs by the number of special points proves the table.
+
+Nonsimple row planes have a normal proportional to a coordinate vector or
+to $e_i\pm e_j$; there are three of the first type and six of the second.
+Their lines impose $x_i=0$ or $x_i=\pm x_j$, so contain no special point.
+Substituting into the conic gives a secant or an external line according
+as $-1$ or $-2$ is a square or a nonsquare. Hence the simple-tower maximum
+agrees with the unrestricted one in both congruence classes.
+
+For $p\equiv1\pmod6$ fix $z$ of order three and the special point
+$a=(1,z,z^2)$. The signed permutation group is transitive on the eight
+special points. The stabiliser of $a$ contains the cyclic permutation of
+the coordinates, acting projectively. On the other seven special points
+it fixes $(1,z^2,z)$ and cycles the three points of each of the two
+remaining types: a single sign change of $a$, or a single sign change of
+$(1,z^2,z)$. Cross products give the normals
+\[
+ (0,-z,1),\qquad(1,1,1),\qquad(z^2-z,1,-1)
+\]
+of the maximising lines through $a$ of the respective types, the middle
+one being the line through the fixed point. These types are inequivalent
+even as unordered pairs: the first normal has a zero coordinate, the
+second has three equal squares, and the third has squares $-3,1,1$. Hence
+the $28$ maximising planes form exactly three orbits, of sizes $12,4,12$.
+\end{proof}
+
+Distributions at thirteen primes from $7$ to $103$, obtained by direct
+incidence enumeration, agree with the table; see
+\grafiles{\artifact{short_tower_distributions_2026-11-27/verification.txt}}
 
 \begin{theorem}[Four steps at every prime; \stU]\label{gra:thm:four}
 For $m=4$ and every prime $p>8$, the unrestricted maximum of $\graA(S)$,
@@ -1087,18 +1321,347 @@ a totally isotropic plane would violate $\dim W+\dim W^\perp=3$. Distinct
 nonzero steps up to sign modulo $p$ give a simple graph at every level.
 \end{remark}
 
-\begin{remark}
 Reduced Laplacians at $p=11$ and $p=13$ give four-step valuations $46$ and
 $62$ at level one, in agreement with \eqref{gra:eq:four} and
-\cref{gra:thm:moments}. The bound \eqref{gra:eq:tbound} leaves open the
-exact maxima for odd $m\ge5$ and for even $m\ge6$ with
-$2m\nmid p-1$: simultaneous projective
-roots of several moment forms determine which exceptional depths can
-coexist on a single plane.
-\end{remark}
+\cref{gra:thm:moments}. The extremal lists with $M_1=0$ are the maximal
+isotropic planes $W\subset\F_p^4$ for the dot product; their distribution
+is governed by the curve $C$ of the proof of \cref{gra:thm:four}.
+
+\begin{theorem}[Four-step distribution and the extremal orbit; \stU]\label{gra:thm:fourdist}
+Let $m=4$, $p>8$, and $c_p=\#C(\F_p)$. Among the row planes with $M_1=0$,
+put $E=\graA-4(p+1)$ and $k=12$ if $p\equiv1\pmod8$, $k=0$ otherwise.
+The numbers of such row planes with $E=0,8,16$ are respectively
+\[
+ 2(p+1)-k-c_p/2,\qquad c_p/2,\qquad k .
+\]
+All these planes give simple towers. If $p\equiv1\pmod8$, the twelve
+maximising planes form one orbit under signed permutations; thus the
+maximising residue lists form one orbit under change of basis, signs and
+permutations.
+\end{theorem}
+
+\begin{proof}
+The quadric $\sum_{i=1}^4x_i^2=0$ is split: choose $u^2+v^2=-1$ as in the
+proof of \cref{gra:thm:four} and take the orthogonal isotropic rows
+$(1,0,u,v)$, $(0,1,-v,u)$. Its two rulings therefore give $2(p+1)$
+rational planes, and exactly two of them pass through each rational point
+of the quadric. The quartic restricts nontrivially to every such plane by
+\cref{gra:thm:extremal}. Depth four requires that the squared coordinates
+form a coset of the fourth roots of unity inside the nonzero squares. Let
+$D$ be the set of depth-four points; it is empty unless $p\equiv1\pmod8$.
+Otherwise, with $g$ of order eight, the points of $D$ are the signed
+permutations of $a=(1,g,g^2,g^3)$ up to scaling; normalising the first
+coordinate to $1$ gives $3!\,2^3=48$ points.
+
+Exactly two isotropic planes pass through $[a]$, obtained by adjoining
+$b=(-g,1,-g^3,g^2)$ and $d=(-g,1,g^3,-g^2)$ respectively; they are
+distinct since $b\cdot d=2(1+g^2)\ne0$. On the first plane the coordinate
+linear forms are $U,V,g^2U,g^2V$ with $U=X-gY$, $V=gX+Y$. The quartic is
+$2(U^4+V^4)$, with four distinct rational roots, and the sextic vanishes
+identically, so all four roots lie in $D$. On the second plane the quartic
+is $24g^2X^2Y^2$; both axis points lie in $D$, and there are no other
+roots. Consequently a plane meeting $D$ has either four points of $D$ and
+excess $16$, or two points of $D$ and excess $8$. Counting incidences with
+the $48$ points of $D$ gives twelve planes of the first type and
+twenty-four of the second. Transitivity on $D$ and uniqueness of the
+four-point plane through each point of $D$ give the orbit assertion.
+
+On a plane avoiding $D$ the quartic has zero or four rational roots, each
+of depth three, by the Klein four group argument in the proof of
+\cref{gra:thm:four}; such a plane has excess $0$ or $8$. Every point of
+$C\setminus D$ lies on two planes avoiding $D$. Hence $(c_p-\#D)/2$ planes
+avoiding $D$ have excess $8$, in addition to the $\#D/2$ planes with two
+points of $D$, which proves the counts. Simplicity is \cref{gra:rem:simple}.
+\end{proof}
+
+When $p\equiv1\pmod8$, lists with $M_1\ne0$ have $\graA\le2(p+1)+12$ and
+are not maximisers. For $p\not\equiv1\pmod8$ the number of maximising row
+planes is $c_p/2$ if $c_p>0$ and $2(p+1)$ if $c_p=0$. The distributions at
+sixteen primes from $11$ to $509$, computed from both rulings with a
+separate chart count of $C$, agree with \cref{gra:thm:fourdist}:
+\grafiles{\artifact{short_tower_distributions_2026-11-27/verification.txt}}
+
+\paragraph{Five steps.}
+For $m=5$ the bound \eqref{gra:eq:tbound} is $4(p+1)+24$.
+
+\begin{theorem}[Five steps; \stU]\label{gra:thm:fivestep}
+Let $m=5$ and $p>10$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\graA(S)=4(p+1)+24$ for some list if and only if $p=11$. At $p=11$
+every maximiser is equivalent to
+\[
+ \bigl((1,0),(0,1),(0,2),(1,1),(3,7)\bigr)
+\]
+under a common invertible linear map on the residues, permutation and
+independent signs. This list gives simple ten-regular graphs, and for
+every $n\ge1$
+\[
+ \max_Sv_{11}(\kappa_n(S))=\frac{72(11^n-1)}{10}-2n .
+\]
+\item At $p=31$ the maximum is $148=4(p+1)+20$, attained by one orbit,
+represented by $((1,1),(2,29),(4,8),(8,16),(16,27))$.
+\item For every other prime $p>10$, $\graA(S)\le4(p+1)+18$, and
+$\graA(S)\le4(p+1)+16$ if $p\not\equiv1\pmod{10}$.
+\item If $p\equiv1\pmod{10}$ and $\xi$ has order five modulo $p$, the steps
+$(\xi^i,\xi^{2i})$, $0\le i<5$, give $\graA=4(p+1)+12$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \cref{gra:thm:moments} every depth is at most five. If $M_1\ne0$, then
+$\graA\le2(p+1)+16$ by \eqref{gra:eq:tbound} with $t=1$, below all
+values claimed. Otherwise $t=2$ by \cref{gra:thm:extremal}: the
+baseline is $4(p+1)$, with at most four exceptional directions, each
+contributing $2(r-2)$ above the baseline. A direction of depth five forces
+$p\equiv1\pmod{10}$; its squared projections are a coset of $\gramu_5$
+inside the nonzero squares, which also rules out a zero step. Thus zero,
+one or four depth-five directions allow at most $16$, $18$ or $24$ above
+the baseline, and $24$ requires four depth-five directions.
+
+Take two depth-five directions as coordinate covectors. Squaring is a
+bijection on $\gramu_5$, so after independent row scalings each row
+consists of the five powers of a fixed primitive fifth root $z\in\F_p$, up
+to independent signs. Permute and sign the columns so that the first row
+is $(z^i)_{0\le i<5}$, and scale the second row so that its zeroth entry is
+$1$. It is now $(\epsilon_iz^{\sigma(i)})_i$ with $\epsilon_0=1$ and
+$\sigma(0)=0$. The cross term of $M_1=0$ gives
+\[
+ f(z)=0,\qquad f(Z)=\sum_{i=0}^4\epsilon_iZ^{(i+\sigma(i))\bmod5}.
+\]
+There are $4!\,2^4=384$ choices. Multiplication by $f$ on $\Z[Z]/(\Phi_5)$
+has the matrix with entry $f_{(i-j)\bmod5}-f_{(4-j)\bmod5}$ at $(i,j)$,
+$0\le i,j<4$, where $f_h$ is the coefficient of $Z^h$. If $f(z)=0$ in
+$\F_p$, evaluation at $z$ annihilates the image of this matrix modulo $p$,
+so $p$ divides its determinant. The absolute determinants of the $384$
+cases form the set $\{0,1,11,16,25,31,81,101,121,131,625\}$. Thus for
+$p>10$ every case with nonzero determinant has $p\in\{11,31,101,131\}$.
+If the determinant vanishes, the coefficient vector of $f$ is constant,
+because $\Phi_5$ is irreducible over $\Q$; its odd coefficient sum, with
+$\epsilon_0=1$, forces all five signs to be positive. Then $i+\sigma(i)$
+is a permutation modulo five, which leaves $\sigma(i)=ki\bmod5$ with
+$k=1,2,3$. For $k=1$ the rows coincide. For $k=2,3$ a geometric sum gives
+$M_2=20X^3Y$ or $20XY^3$, so only the axes are exceptional, both of depth
+five, with excess $12$; for $k=2$ this is (d).
+
+For the four exceptional primes, evaluating the $384$ cases at one
+primitive fifth root $z$ per prime gives the following complete list of
+surviving depth patterns, after discarding coincident rows; counts refer to
+normalised cases, not equivalence classes.
+\begin{center}\small\upshape
+\begin{tabular}{rrl}
+\toprule
+$p$ & $z$ & exceptional depths, with multiplicities\\
+\midrule
+11 & 3 & $(5,5)$: 2;\quad $(5,5,5,5)$: 30\\
+31 & 2 & $(5,5)$: 2;\quad $(3,5,5,5)$: 10\\
+101 & 36 & $(5,5)$: 2;\quad $(3,3,5,5)$: 5\\
+131 & 53 & $(5,5)$: 7\\
+\bottomrule
+\end{tabular}
+\end{center}
+Hence four depth-five directions occur only at $p=11$. At $p=31$ the best
+excess with two or more depth-five directions is $20$, while at most one
+such direction allows only $18$. At the other primes two or more
+depth-five directions give excess at most $16$. This proves the bounds in
+(a)--(c).
+
+For the orbits take each ordered independent pair of columns and both
+relative signs, map the pair to the coordinate basis, take the smaller
+representative of each sign pair and sort the list. The least list
+obtained is constant on each orbit and identifies it, since every move is
+invertible. The $30$ sharp cases at $p=11$ reduce to the representative in
+(a), and the $10$ maximal cases at $p=31$ reduce to the orbit of the
+stated witness. For the witness in (a) the integer coefficients of $M_1$
+are $11,44,55$. In the directions $(1,t)$, $0\le t\le10$, and then
+$(0,1)$, the residues of $M_2$ are
+\[
+ 6,\ 2,\ 0,\ 0,\ 0,\ 7,\ 4,\ 5,\ 0,\ 10,\ 10,\ 10,
+\]
+and at each of its four zeros $(M_3,M_4,M_5)\equiv(0,0,5)$. Thus
+$\graA=2(8\cdot2+4\cdot5)=72$. The steps are nonzero and distinct up to
+sign modulo eleven, and \cref{gra:thm:moments} gives the layer formula.
+\end{proof}
+
+The multiplication determinants agree with Sylvester resultants in all
+$384$ cases, and independent fraction-free elimination of the
+$120\times120$ reduced Laplacian of the witness at $n=1$ gives valuation
+$70$; see
+\grafiles{\artifact{five_step_sharpness_2026-11-27/verification.txt}\\
+\artifact{five_step_graph_towers_2026-11-26/maxima.csv}}
+The second file records exhaustive maxima at the $22$ primes from $11$ to
+$101$. For lists with $M_1=0$, a change of basis sends two independent
+steps to $(1,0),(0,1)$; with sign representatives for the remaining three
+steps, the key $(x^2,xy,y^2)$ is injective, and each sorted pair of the
+remaining steps determines the key of the last. In every case the maximum
+exceeds the ceiling $2(p+1)+16$ for $M_1\ne0$. The maxima of $\graA$ are,
+for all residue lists and for lists with nonzero residues:
+\begin{center}\small\upshape
+\begin{tabular}{rrr@{\qquad}rrr@{\qquad}rrr}
+\toprule
+$p$ & all & nonzero & $p$ & all & nonzero & $p$ & all & nonzero\\
+\midrule
+11 & 72 & 72 & 41 & 184 & 180 & 73 & 312 & 306\\
+13 & 64 & 58 & 43 & 184 & 180 & 79 & 328 & 328\\
+17 & 88 & 80 & 47 & 200 & 200 & 83 & 344 & 344\\
+19 & 88 & 84 & 53 & 224 & 224 & 89 & 376 & 368\\
+23 & 96 & 96 & 59 & 248 & 248 & 97 & 408 & 402\\
+29 & 128 & 128 & 61 & 260 & 260 & 101 & 424 & 424\\
+31 & 148 & 148 & 67 & 280 & 280 & & & \\
+37 & 160 & 160 & 71 & 300 & 300 & & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+A step divisible by $p$ in both coordinates counts as a zero residue. At
+$p=131$ the same search gives the maximum $540=4(p+1)+12$, with or without
+zero residues; the witness $((1,0),(0,1),(0,42),(1,20),(28,18))$ has
+distinct nonzero signed classes, so
+$\max_Sv_{131}(\kappa_n(S))=540(131^n-1)/130-2n$, also among simple
+towers:
+\grafiles{\artifact{five_step_sharpness_2026-11-27/benchmark_131.txt}}
+
+\paragraph{Seven steps and prime step counts.}
+For $m=7$ the bound \eqref{gra:eq:tbound} is $6(p+1)+48$.
+
+\begin{theorem}[Seven steps; \stU]\label{gra:thm:seven}
+Let $m=7$ and $p>14$. Then $\graA(S)\le6(p+1)+38$, and
+$\graA(S)\le6(p+1)+36$ if $p\not\equiv1\pmod{14}$. If $M_1=M_2=0$ and two
+directions have depth seven, these are the only directions of depth above
+three, and $\graA(S)=6(p+1)+16$. This case occurs in simple graphs for
+every $p\equiv1\pmod{14}$: if $z$ has order seven modulo $p$, take the
+steps $(z^i,z^{3i})$, $0\le i<7$.
+\end{theorem}
+
+\begin{proof}
+For $t\le2$, \eqref{gra:eq:tbound} gives at most
+$4(p+1)+40<6(p+1)+36$. When $t=3$ there are at most six exceptional
+directions. If none has depth seven, each adds at most six above the
+depth-three baseline. If exactly one has depth seven, it adds eight and
+the other five add at most six each. A depth-seven direction requires
+$14\mid p-1$ by \cref{gra:thm:extremal}. It remains to treat two or more
+depth-seven directions with $t=3$.
+
+Take two depth-seven directions as coordinate axes. Each projection row
+has squared entries in a coset of $\gramu_7$, and squaring is bijective on
+$\gramu_7$. Row scalings, column permutations and column signs put the
+rows in the form $a_i=z^i$, $b_i=\epsilon_iz^{\sigma(i)}$, where $z$ has
+order seven, $\sigma(0)=0$ and $\epsilon_0=1$. The coefficient of
+$X^2Y^2$ in $M_2$ requires $f(z^2)=0$ for
+$f(Z)=\sum_{i=0}^6Z^{(i+\sigma(i))\bmod7}$. The absolute norms of $f$ over
+$\Q(\zeta_7)$ for the $6!=720$ permutations, computed as determinants of
+multiplication by $f$ on $\Z[Z]/(\Phi_7)$ (entry
+$f_{(i-j)\bmod7}-f_{(6-j)\bmod7}$ at $(i,j)$, $0\le i,j<6$) and
+independently as exact products of conjugates, are:
+\begin{center}\small\upshape
+\begin{tabular}{lrrrrrrrr}
+\toprule
+absolute norm & 0 & 49 & 343 & 392 & 2744 & 3479 & 8281 & 117649\\
+multiplicity & 19 & 441 & 42 & 126 & 28 & 42 & 21 & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+Evaluation at $z^2$ annihilates the image modulo $p$, so $p$ divides the
+norm. The only prime $p>14$ dividing a nonzero entry is $71$. Elsewhere
+the norm is zero, so irreducibility of $\Phi_7$ forces all seven
+coefficients of $f$ to equal one. The cross moment $\sum_ia_ib_i$ is then a
+signed sum of the seven distinct seventh roots of unity. Among sign
+polynomials with constant coefficient $+1$ the absolute norms are
+$0,64,512$, with multiplicities $1,49,14$; the only one vanishing at an
+odd prime has every sign positive. The coefficients of $X^3Y$ and $XY^3$
+in $M_2$ give the two further exponent lists $3i+\sigma(i)$ and
+$i+3\sigma(i)$ modulo seven, and the same norm table applies after
+relabelling. Hence all three exponent lists are permutations, which leaves
+$\sigma(i)=ki$ with $k\in\{1,3,5\}$; the identity does not span. For
+$k=3,5$ geometric sums give $M_3=105X^2Y^4$ or $105X^4Y^2$, respectively.
+As $p>14$ this has only the two axis roots, both of depth seven, and
+$\graA=6(p+1)+16$.
+
+At $p=71$ take $z=20$ and test all $720\cdot64$ permutation and sign
+choices on the mixed coefficients of $M_1$ and $M_2$. After dependent rows
+are excluded, precisely $k=3,5$ with positive signs survive. This
+completes the classification. The steps $(z^i,z^{3i})$ span and have
+distinct nonzero signed classes, so they give simple graphs at every
+level, and their depth pattern proves the attainment.
+\end{proof}
+
+The norm and moment certificate is
+\grafiles{\artifact{seven_step_graph_towers_2026-11-27/certificate_output.txt}}
+Exhaustive searches give the following maxima of $\graA$ for seven steps.
+At $p=29$ the search covers all lists with $M_1=M_2=0$: there are twelve
+normalised candidates, the best has $\graA=196=6(p+1)+16$, and lists with
+$t\le2$ have $\graA\le160$; a witness is the basis together with
+$(2,3),(6,2),(10,24),(11,21),(12,10)$, whose only exceptional directions
+are $(1,7)$ and $(1,24)$, both of depth seven. At $p=17,19,23,31$ the
+search covers all lists with $M_1=0$; there the depth is at most six and
+lists with $M_1\ne0$ have $\graA\le2(p+1)+20$, below the best value in
+each class.
+\begin{center}\small\upshape
+\begin{tabular}{rrrr}
+\toprule
+$p$ & all residues & nonzero residues & simple graphs\\
+\midrule
+17 & 88 & 82 & 82\\
+19 & 120 & 94 & 94\\
+23 & 104 & 104 & 104\\
+29 & 196 & 196 & 196\\
+31 & 192 & 140 & 140\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each column gives exact maxima at every level within its class by
+\cref{gra:thm:moments}; for example the simple maximum at $p=29$ is
+$196(29^n-1)/28-2n$. The search logs with explicit simple witnesses are
+\grafiles{\artifact{seven_step_graph_towers_2026-11-27/search_output.txt}\\
+\artifact{seven_step_graph_towers_2026-11-27/search_lower_output.txt}}
+
+\begin{theorem}[Prime step counts; \stU]\label{gra:thm:primestep}
+Let $m\ge5$ be prime, $k=(m-1)/2$ and $p>\max(m^{m-1},27^k)$. If $M_1=0$,
+there are at most two directions of depth $m$. Consequently
+\[
+ \graA(S)\le2k(p+1+2m-2k)-2(m-3),
+\]
+which is $2(m-3)$ below the outer bound of \eqref{gra:eq:tbound}.
+\end{theorem}
+
+\begin{proof}
+Suppose there are three distinct depth-$m$ directions. Choose a primitive
+$m$th root of unity $z\in\F_p$ and, as above, normalise the projection rows
+to $a_i=z^i$, $b_i=\epsilon_iz^{\sigma(i)}$ and $c_i=\eta_iz^{\tau(i)}$.
+Lift by replacing $z$ with a complex primitive $m$th root of unity
+$\zeta$. The cross moment $\sum_ia_ib_i$ and all $3\times3$ minors of the
+three-row matrix have zero reduction at the prime $(p,\zeta-z)$. If one of
+them is nonzero, its integral norm is divisible by $p$. Each conjugate of
+the cross moment has absolute value at most $m$, and each conjugate of a
+minor at most $3\sqrt3$ by Hadamard's inequality, so the norms are at most
+$m^{m-1}$ and $27^k$, both less than $p$. Hence the cross moment and the
+minors vanish exactly.
+
+Reducing exponents modulo $m$, the cross moment is a sum of $m$ signs on
+powers of $\zeta$. Its coefficient vector is constant by irreducibility of
+$\Phi_m$. The coefficient sum is odd with absolute value at most $m$, so
+the constant is $\pm1$ and all signs agree; absorb the common sign in $b$.
+The three rows are pairwise independent, as their reductions modulo $p$
+already show, and the vanishing minors give $c=\alpha a+\beta b$ with
+$\alpha\beta\ne0$. Every ratio $w=b_i/a_i$ satisfies
+$\abs w=\abs{\alpha+\beta w}=1$. Expanding the second condition on the
+unit circle gives a real affine line in $w$, which meets the unit circle
+in at most two points. Thus $\sigma$ acts by at most two translations
+$u,v$ modulo $m$. If it translates a set $I$ by $u$ and the complement by
+$v$, bijectivity gives $I+u=I+v$; a proper nonempty $I$ is not invariant
+under a nonzero translation modulo a prime. So only one translation
+occurs and $a,b$ are proportional, a contradiction.
+
+For $t=k$ there are at most $2k$ exceptional directions, and all but two
+have depth at most $m-1$; relative to the outer bound of
+\eqref{gra:eq:tbound} this saves at least $2(2k-2)=2(m-3)$. If $t<k$, the
+bound \eqref{gra:eq:tbound} at $t=k-1$ already saves $2(p+5)$.
+\end{proof}
+
+Thus for odd $m$ the outer bound of \eqref{gra:eq:tbound} is attained for
+$m=3$ exactly when $p\equiv1\pmod6$, for $m=5$ only at $p=11$, never for
+$m=7$, and never for prime $m\ge5$ once $p>\max(m^{m-1},27^k)$.
 
 \subsection{How late can the eventual law start?}\label{gra:sec:onset}
-\sources{Effective_Graph_Towers; grh_method_transfers}
+\sources{Effective_Graph_Towers; grh_method_transfers; spanning-tree-sharp-cutoff}
 
 The \emph{onset} of a tower is the least level from which the eventual
 polynomial agrees with $\nu_n$. This subsection shows that the onset is
@@ -1450,17 +2013,10 @@ $p$ and $m<p$ the onset is at most one.
 The upper bound $O_p(b)$, with constants independent of $m$, is
 \cref{gra:cor:logbound}.
 
-\emph{The bounded range.} Let $p$ be odd and $m<p$, and take a projective
-direction modulo $p$. The projected step residues are not all zero,
-because connectedness forces the steps to span $\F_p^2$. In the group ring
-$\F_p[Z]/(Z^p-1)$ take any nonzero residue $a$ occupied by a step, and let
-$j$ count the steps in $\{a,-a\}$. The coefficient of $Z^a$ in the
-projected Laplacian is $-j\ne0$, since $a\ne-a$ and $1\le j\le m<p$. Thus
-its expansion at $Z=1$ has first surviving order $<p$. Since $e_h\ge p$
-for $h\ge2$, every orbit of depth $h$ lifting that projective direction
-has exactly that integral order. Every residue direction has $p^{h-1}$
-lifts, so $S_h$ is a fixed multiple of $p^{h-1}$ for $h\ge2$, and
-summation from level one proves the claim. For $p=2$, $m=2$ the two steps
+\emph{The bounded range.} Let $p$ be odd and $m<p$. Connectedness forces
+the steps to span $\F_p^2$, so \cref{gra:thm:cutoff} gives
+$\nu_n=C(p^n-1)/(p-1)-2n$ for every $n\ge1$, and the onset is at most
+one. For $p=2$, $m=2$ the two steps
 form an invertible basis modulo $2$, hence modulo $2^n$ for every $n$. A
 change of coordinates gives the same square grid at every fixed level for
 all choices of voltages, so the support bound $h_0$ evaluated at $H=1$
@@ -1522,6 +2078,166 @@ with the upper bound this proves the classification.
 Sample shell sums for \cref{gra:thm:shell} and the vanishing directions
 used in the two constructions are recorded in
 \artifact{grh_method_transfers/checks/onset_output.txt}.
+
+\subsection{Stabilisation of the prime-to-$p$ part}\label{gra:sec:units}
+\sources{spanning-tree-unit-stabilization}
+
+For a nonzero rational $z$ put $\graunit(z)=z/p^{v_p(z)}$. The valuations
+$\nu_n$ describe the $p$-part of the spanning-tree counts; the following
+theorem describes the remaining factor, also for nonabelian deck groups.
+Let $\Gamma$ be a compact $p$-adic analytic pro-$p$ group and $W$ an open
+normal uniform subgroup. Let $X$ be a finite connected regular graph and
+$(X_n)_{n\ge0}$ a tower of connected Galois covers of $X$, compatible
+under the quotient maps, with deck groups $\Gamma/W^{p^n}$. Write
+$\kappa_n$ for the number of spanning trees of $X_n$ and
+$U_n=\graunit(\kappa_n)$.
+
+\begin{theorem}[Sharp stabilisation of the prime-to-$p$ part; \stU]\label{gra:thm:units}
+For every $n\ge1$,
+\[
+ U_n\equiv U_{n-1}\pmod{p^n}\quad(p\text{ odd}),\qquad
+ U_n\equiv U_{n-1}\pmod{2^{n+1}}\quad(p=2,\ n\ge2),
+\]
+and $U_1\equiv U_0\pmod2$ for $p=2$. Consequently $U_n$ converges in
+$\Z_p^\times$, and $U_N$ determines the limit modulo $p^{N+1}$ for odd $p$
+and modulo $2^{N+2}$ for $p=2$ ($N\ge1$). These moduli are sharp at every
+level, even for towers of simple graphs (\cref{gra:prop:unitsharp}).
+\end{theorem}
+
+\begin{proof}
+\emph{Reduction to one step.} Let $G=\Gamma/W^{p^n}$ and
+$K=W^{p^{n-1}}/W^{p^n}$, so that $X_n\to X_{n-1}$ is the quotient by $K$.
+The kernel $K$ is elementary abelian and central in $W/W^{p^n}$, and every
+element of $K$ is the $p^{n-1}$st power of an element of $W/W^{p^n}$, by
+standard properties of uniform pro-$p$ groups. Only these properties are
+used: for each nontrivial character of $K$ it suffices to have one such
+power that the character detects, with the root centralising $K$ and of
+order dividing $p^n$.
+
+Choose $L=\Q(\zeta_{p^M})$ with $M\ge n$ and $p^M$ a multiple of the
+exponent of $G$. Let $A$ be its Galois group over $\Q$, identified with
+the local Galois group at $p$ and with $(\Z/p^M\Z)^\times$. Decompose the
+lifted Laplacian into blocks using the regular representation of $G$ on
+each fibre over the base. For each irreducible representation $\rho$ the
+block $D_\rho$ appears $d_\rho=\dim\rho$ times; it is invertible for
+nontrivial $\rho$, because connectivity makes the constants the whole
+kernel. The matrix-tree theorem cancels the factors from representations
+trivial on $K$ and gives
+\[
+ \frac{\kappa_n}{\kappa_{n-1}}=\frac1{\abs K}
+ \prod_{\rho:\,K\not\subseteq\ker\rho}(\det D_\rho)^{d_\rho}.
+\]
+All blocks are Hermitian in unitary bases, and their determinants are
+real and positive. The Galois action on these determinants agrees with its
+action on the representations, since the voltage Laplacian has rational
+group-ring coefficients.
+
+\emph{The stabiliser.} Fix $\rho$ in this product, let $H\le A$ be the
+stabiliser of its character, and write $d_\rho=p^k$. The character
+eigenspaces of $\rho|_K$ are permuted transitively by $G$, by
+irreducibility and normality, and only nontrivial characters of $K$
+occur. Write $\bar H_n$ for the image of $H$ modulo $p^n$. Every
+$\sigma\in H$ acts trivially on the $p$th roots of unity: if $\sigma$
+sends a constituent $\chi$ of $\rho|_K$ to $\chi^a$, then $\chi^a=g\chi$
+for some $g\in G$, and iterating gives $g^j\chi=\chi^{a^j}$; the order of
+$g$ is a power of $p$, whereas $a\in\F_p^\times$ has order dividing $p-1$,
+so $a=1$ (for $p=2$ this is automatic). Choose $w\in W/W^{p^n}$ with
+$\chi(w^{p^{n-1}})\ne1$. It preserves the $\chi$-eigenspace, and all its
+eigenvalues there are primitive $p^n$th roots of unity. This multiset is
+$H$-invariant, because conjugation by $H$ preserves $\chi$ and the
+isomorphism type of $\rho$. The action of $\bar H_n$ on the primitive
+roots is free, so $\abs{\bar H_n}$ divides each eigenspace dimension and
+hence $d_\rho$. Write $\abs{\bar H_n}=p^s$, so $s\le k$.
+
+\emph{The orbit norm, $p$ odd.} Let $\alpha=\det D_\rho$. The contribution
+of the Galois orbit of $\rho$ is $N_{L^H/\Q}(\alpha)^{d_\rho}$. By
+cyclotomic local reciprocity, for $B\le A$ the unit part $u$ of a norm
+from $L^B\otimes\Q_p$ lies in $B$ modulo $p^M$: the reciprocity map sends
+$p$ to the identity and a unit to its residue or its inverse, and norms
+from the fixed field map into $B$. Thus
+$u\bmod p^n\in\bar H_n\subseteq1+p\Z/p^n\Z$. This cyclic group has a
+unique subgroup of order $p^s$, so $u\equiv1\pmod{p^{n-s}}$, and
+$u^{p^k}\equiv1\pmod{p^{n-s+k}}$, in particular modulo $p^n$.
+
+\emph{The orbit norm, $p=2$, $n\ge2$.} Realness puts $\alpha$ in $L^J$
+with $J=\langle H,-1\rangle$, and the orbit contribution is
+$N_{L^J/\Q}(\alpha)^{2^k[J:H]}$. Let $u$ be the unit part of this norm and
+write $u=\pm v$ with $v\in1+4\Z_2$. The image of $J$ contains $-1$, so
+$v\bmod2^n$ lies in its principal-unit subgroup, whose order is half the
+order of the image. If $J=H$, this subgroup has order $2^{s-1}$; then
+$k\ge s\ge1$, the sign disappears under the exponent, and
+$v^{2^k}\equiv1\pmod{2^{n+1-s+k}}$. If $J\ne H$, the subgroup has order at
+most $2^s$, and the exponent $2^{k+1}$ removes the sign and gives the same
+precision. These follow from the cyclic structure of
+$(1+4\Z_2)/(1+2^n\Z_2)$ and the gain of one bit per squaring on $1+4\Z_2$.
+For $p=2$, $n=1$ the assertion says only that the units are odd.
+
+Multiplying the orbit contributions, and noting that $\abs K$ is a power
+of $p$, proves the congruences for $U_n/U_{n-1}$ and hence for
+$U_n-U_{n-1}$. Convergence and the precision of the limit follow by
+summing the successive differences.
+\end{proof}
+
+\begin{proposition}[Sharpness at every level; \stU]\label[proposition]{gra:prop:unitsharp}
+Let $X$ be the bouquet with $(r-1)^2$ loops of voltage $1$ and $r$ loops of
+voltage $2$ in the $\Z_p$-tower, so $d=1$. Take $r=p-1$ for $p\ge5$,
+$r=5$ for $p=3$, and $r=3$ for $p=2$. Then for every $n\ge1$ the ratio
+$U_n/U_{n-1}$ differs from $1$ by valuation exactly $n$ for odd $p$, and by
+valuation exactly $n+1$ for $p=2$ and $n\ge2$. For $p=2$, $n=1$, the
+bouquet of three loops of voltage $1$ has $U_1/U_0=3$. Subdividing every
+edge into a path of length $p^2$ gives towers of simple graphs with the
+same $U_n$.
+\end{proposition}
+
+\begin{proof}
+Using $\grah(z^2)=\grah(z)(4-\grah(z))$, the nontrivial Laplacian factor at
+a character value $z$ is
+\[
+ (r-1)^2\grah(z)+r\grah(z^2)=\grah(z)(r+z)(r+z^{-1}).
+\]
+For the primitive roots of order $p^n$, whose number is even except at
+order two, the product over the layer is $p^2\Phi_{p^n}(-r)^2$; the same
+formula holds at order two by direct evaluation. After the matrix-tree
+division by $p$ between successive levels, the unit ratio is
+$\graunit(\Phi_{p^n}(-r))^2$.
+
+For odd $p$ write $(-r)^{p^{n-1}}=1+x$; lifting the exponent gives
+$v_p(x)=n$. The geometric sum yields
+\[
+ \frac{\Phi_{p^n}(-r)}p=1+\frac{p-1}2x
+ +\sum_{j=2}^{p-1}\frac1p\binom p{j+1}x^j .
+\]
+Every term of the displayed sum has valuation at least $n+1$: the last
+has valuation $(p-1)n-1$ and the others at least $2n$. The one exception
+to this estimate is $p=3$, $n=1$, where $\Phi_3(-5)/3=7$ and
+$v_3(7^2-1)=1$. In all cases $\Phi_{p^n}(-r)/p$ is a unit, and its square
+differs from $1$ by valuation exactly $n$.
+
+For $p=2$, $r=3$, $n\ge2$, the unit is $(3^{2^{n-1}}+1)/2$. Its
+difference from $1$ has valuation $n$ and its sum with $1$ has valuation
+$1$, so its square differs from $1$ by valuation $n+1$. For $p=2$, $n=1$,
+three loops of voltage $1$ give the unit ratio $3$, which is sharp modulo
+$2$ in \cref{gra:thm:units}. Since later levels are more divisible, these
+examples also show that the stated precision for the limit is optimal.
+
+Subdivide each edge, equivariantly and with separate internal vertices,
+into a path of length $p^2$; a loop becomes a cycle of length at least
+four. Replacing every edge by a path of length $\ell$ multiplies the
+spanning-tree count by $\ell^{\abs E-\abs V+1}$, as in
+\cref{gra:rem:simplebase}, so the unit parts do not change.
+\end{proof}
+
+In the abelian case, cyclic and iterated multivariable resultants govern
+these counts \cite{UekiYoshizaki2022Cyclic,Yoshizaki2025Iterated}, and
+the case $r=2$ of the step pattern above is the Fibonacci tower of
+Kobayashi's graph class-number programme \cite{Kobayashi2025Graph}. The
+argument above uses Galois stabilisers and norm groups instead of
+individual cyclotomic valuations, and the representation argument
+replaces the scalar characters of the abelian setting. Exact integer
+Laplacian cofactors for two nonabelian covers at $n=2$ give
+$(U_2,U_1)\equiv(1,10)\pmod{27}$ on $81$ vertices and
+$(U_2,U_1)\equiv(13,5)\pmod{16}$ on $64$ vertices
+(\artifact{spanning-tree-unit-stabilization/verification.txt}).
 
 \subsection{Exact spectral tests for Grover walks}\label{gra:sec:grover}
 \sources{Effective_Graph_Towers}
@@ -2322,7 +3038,7 @@ with \eqref{gra:eq:rotated}; see
 
 \subsection{Open questions}\label{gra:sec:open}
 {\raggedright
-\sources{Effective_Graph_Towers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26}
+\sources{Effective_Graph_Towers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27}
 }
 
 \begin{enumerate}
@@ -2350,10 +3066,21 @@ rational voltages support a terminating algorithm as in
 need additional control of carries or an alternative way of recognising
 coincident exponents; \cref{gra:cor:oracle} shows that an input model
 matters.
-\item \emph{Extremal moment coefficients.} Determine the maximum of
-$\graA(S)$ in rank two for odd $m\ge5$ and for even $m\ge6$ at primes
-with $2m\nmid p-1$. Which root configurations of the quartic, sextic and
-higher directional moments can occur on a single plane for $m=5$? In
+\item \emph{Extremal moment coefficients.} In rank two the maximum of
+$\graA(S)$ is known for three steps at every $p>6$ (\cref{gra:thm:three}),
+for four steps at every $p>8$ (\cref{gra:thm:four}), for even $m$ at the
+primes with $2m\mid p-1$ (\cref{gra:cor:layers}), and for five steps at
+$p=11,31$, at the primes up to $101$ and at $131$ (\cref{gra:thm:fivestep}).
+Determine the five-step maximum at the other primes; for
+$p\equiv1\pmod{10}$ it lies between $4(p+1)+12$ and $4(p+1)+18$. Determine
+the seven-step maximum at general $p>14$, where it is at most $6(p+1)+38$
+(\cref{gra:thm:seven}), the maximum for even $m\ge6$ with $2m\nmid p-1$,
+and the exact maximum for general odd $m$ and $p$.
+\item \emph{Distributions.} For three steps, and for four steps with
+$M_1=0$, the distribution of $\graA$ over row planes is given by
+\cref{gra:thm:three,gra:thm:fourdist} through point counts of a conic and
+of the curve $C$. Which root configurations of the quartic, sextic and
+higher directional moments can occur on a single plane for $m\ge5$? In
 higher dimension, can the distribution of $\graA$ for random step lists be
 expressed through point counts of the successive moment varieties?
 \item \emph{Square cycles at lengths incompatible with period eight.}

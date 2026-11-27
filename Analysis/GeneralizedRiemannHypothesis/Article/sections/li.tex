@@ -636,7 +636,7 @@ gives exactly one zero in each disk. Inserting the ordinate intervals into
 \end{proof}
 
 \subsection{Moment pencils and Ritz values}\label{li:sec:ritz}
-\sources{li_ritz_zero_recovery; grh_new_results_2026-11-26; li_zero_separation}
+\sources{li_ritz_zero_recovery; grh_new_results_2026-11-26; li_zero_separation; grh_ritz_relative_asymptotics}
 
 Let $0<\gamma_1<\gamma_2<\cdots$ be the distinct positive ordinates of zeros of $\zeta$, and $m_i$
 the multiplicity of $\frac12+i\gamma_i$. Under \cref{src:thm:dgrh} put
@@ -692,7 +692,8 @@ multiplicities are allowed.
 \end{theorem}
 
 Each pencil approximates several zeros simultaneously, and earlier zeros are not inputs. The
-error law is for exact moments. The lower bound needs many distinct tail atoms at controlled
+error law is for exact moments; \cref{li:thm:ritzexact,li:cor:ritzzeta} below replace the remainder
+$O_j(N)$ by an exact multiplicative asymptotic in terms of one Hankel determinant quotient. The lower bound needs many distinct tail atoms at controlled
 separation; counting zeros with multiplicity would not suffice.
 
 \begin{lemma}\label{li:lem:packing}
@@ -900,11 +901,313 @@ of \cref{li:thm:ritzcert} gives the upper bound. The data and checker are
 An uncertified floating-point run of the pencil with $N=8$ reproduces $\gamma_1$ to about $13$
 digits from the upper side (\artifact{li_ritz_zero_recovery/verification/ritz_output.txt}).
 
+\paragraph{Exact relative error laws.}
+The rate \eqref{li:eq:ritzrate} fixes two terms and leaves a rank-dependent remainder $O_j(N)$.
+That remainder is governed at every rank simultaneously by one scalar sequence, the squared monic
+norm $h_N=\int Q_N^2\dd\mu=\det\liHk_{N+1}/\det\liHk_N$. The results hold for an abstract spectrum
+\begin{equation}\label{li:eq:abstract}
+ x_1>x_2>\cdots>0,\qquad\sum_ix_i<\infty,\qquad\mu=\sum_iw_i\delta_{x_i},\quad w_i>0,\quad
+ \sum_iw_i<\infty,
+\end{equation}
+with no condition on the separation of the small atoms or on the decay of their weights; for $\zeta$
+one takes $w_i=m_ix_i$. Put $M_k=\int t^k\dd\mu$ (so $M_k=p_{k+1}$ for $\zeta$), let $\liHk_N=(M_{a+b})$
+and $\liKk_N=(M_{a+b+1})$ for $0\le a,b<N$, and define $Q_N$, $r_{j,N}$, $S_{j,N}=Q_N/(t-r_{j,N})$ and
+$v_{j,N}=h_N/\int S_{j,N}^2\dd\mu$ as above. With $q_N=Q_N/\sqrt{h_N}$ put
+\[
+ \nu_N=q_N^2\mu,\qquad\tau_{\ell,N}=\int t^\ell\dd\nu_N(t)\quad(\tau_{0,N}=1).
+\]
+Thus $\nu_N$ is a probability measure, and $r_{j,N},v_{j,N},\tau_{\ell,N}$ are exact functions of
+$M_0,\dots,M_{2N+\ell}$. Write $T$ for multiplication by $t$ on $L^2(\mu)$: it is compact and positive,
+with eigenvalues $x_i$ and normalized eigenvectors $w_i^{-1/2}\liind_{\{x_i\}}$.
+
+\begin{lemma}[Spectral facts; \stU]\label{li:lem:ritzabs}
+Under \eqref{li:eq:abstract} the forms $\liHk_N,\liKk_N$ are positive definite, the $r_{j,N}$ are the
+simple roots of $Q_N$, and $0<r_{j,N}<x_j$ with $r_{j,N}\uparrow x_j$ for each fixed $j$. Moreover
+$\nu_N\to\delta_0$ weakly on $[0,x_1]$, and $0<h_{N+1}/h_N\le\tau_{2,N}\to0$.
+\end{lemma}
+
+\begin{proof}
+Positivity, simplicity, $r_{j,N}\le x_j$ and monotonicity are proved exactly as in the first step of
+the proof of \cref{li:thm:ritz}, which uses only that $\mu$ is positive with infinitely many atoms.
+For strictness, every nonzero polynomial of $V_N$ vanishing at $x_1,\dots,x_{j-1}$ has positive mass on
+atoms below $x_j$, so its Rayleigh quotient is below $x_j$, and so is the maximum on the compact unit
+sphere of this subspace of codimension at most $j-1$. Polynomials are dense in $L^2(\mu)$ (approximate by
+continuous functions on $[0,x_1]$ and apply Weierstrass), so approximating the first $j$ eigenvectors
+in $V_N$ and applying min--max gives $r_{j,N}\to x_j$. For fixed $i$, Bessel's inequality for the
+orthonormal sequence $(q_N)$ gives $w_iq_N(x_i)^2\to0$; only finitely many atoms lie above any
+$\epsilon>0$, so $\nu_N([\epsilon,x_1])\to0$. Finally $tQ_N$ is monic of degree $N+1$, so the minimality
+of $Q_{N+1}$ gives $h_{N+1}/h_N\le\int t^2\dd\nu_N=\tau_{2,N}\to0$.
+\end{proof}
+
+Fix $j$ and abbreviate $r=r_{j,N}$, $x=x_j$, $\delta=x-r>0$, $S=S_{j,N}$, $v=v_{j,N}$ and
+$\tau_\ell=\tau_{\ell,N}$. Put
+\[
+ A=\frac{w_jS(x)^2}{\int S^2\dd\mu},\qquad I=\sum_{i\ne j}\frac{\nu_N(\{x_i\})}{r-x_i}.
+\]
+By \cref{li:lem:ritzabs}, for all large $N$ there is a fixed $g>0$ with $\abs{r-x_i}\ge g$ for every
+$i\ne j$; this uses only that the fixed atom $x_j$ is isolated, not a uniform gap property.
+
+\begin{theorem}[Residual identity and finite enclosure; \stU]\label{li:thm:ritzid}
+Suppose $\abs{r-x_i}\ge g>0$ for all $i\ne j$ and $\eta=v/g^2<1$. Then
+\begin{equation}\label{li:eq:ritzid}
+ \delta A=vI,\qquad 1-\eta\le A\le1,\qquad \nu_N(\{x\})=\frac{\delta^2A}{v},
+\end{equation}
+and
+\begin{equation}\label{li:eq:ritzinterval}
+ \frac vr\max\Bigl\{0,1-\tau_1\Bigl(\frac1g+\frac1r\Bigr)\Bigr\}\le\delta\le
+ \frac vr\,\frac{1+\tau_1/g}{1-v/g^2}.
+\end{equation}
+For $j=1$ the lower bound $\delta\ge v/r$ holds without the isolation hypothesis.
+\end{theorem}
+
+\begin{proof}
+Orthogonality gives $\int(t-r)S^2\dd\mu=\int Q_NS\dd\mu=0$, so the probability measure
+$S^2\mu/\int S^2\dd\mu$ has mean $r$ and variance $v$. Separating its atom at $x$ and using
+$Q_N=(t-r)S$ gives $\delta w_jS(x)^2=\sum_{i\ne j}w_iQ_N(x_i)^2/(r-x_i)=h_NI$; dividing by
+$\int S^2\dd\mu$ gives the identity. The variance bounds the mass off the selected atom by $v/g^2$, and
+the third assertion follows by evaluating $Q_N$ at $x$. Next
+\[
+ rI=1-\nu_N(\{x\})+\sum_{i\ne j}\frac{x_i\nu_N(\{x_i\})}{r-x_i},
+\]
+where the sum has absolute value at most $\tau_1/g$ and $\nu_N(\{x\})\le\tau_1/x\le\tau_1/r$. Hence
+$1-\tau_1/g-\tau_1/r\le rI\le1+\tau_1/g$; since $I\ge0$ by \eqref{li:eq:ritzid}, dividing by $A$ and
+using its bounds gives \eqref{li:eq:ritzinterval}. For $j=1$ the support lies in $[0,x_1]$, so
+$\int t(x_1-t)S^2\dd\mu\ge0$, that is $x_1r\ge r^2+v$.
+\end{proof}
+
+\begin{theorem}[Asymptotically sharp computable residual; \stU]\label{li:thm:ritzsharp}
+For each fixed $j$, $x_j-r_{j,N}\sim v_{j,N}/r_{j,N}$, and the relative discrepancy is summable:
+\[
+ \sum_{N\ge j}\Bigl\lvert\frac{r_{j,N}(x_j-r_{j,N})}{v_{j,N}}-1\Bigr\rvert<\infty .
+\]
+\end{theorem}
+
+\begin{proof}
+The normalized Ritz vector $u=S/\lVert S\rVert$ has degree at most $N-1$, and $(T-r)u$ is a multiple of
+$q_N$ of squared norm $v$. Orthogonality by degree gives
+$v=\abs{\langle q_N,Tu\rangle}^2=(h_N/h_{N-1})\abs{\langle q_{N-1},u\rangle}^2\le h_N/h_{N-1}\to0$,
+since $\langle q_N,Tq_{N-1}\rangle=\sqrt{h_N/h_{N-1}}$ by leading coefficients. Also $\tau_{1,N}\to0$ by
+\cref{li:lem:ritzabs}. For large $N$ take a fixed $g$ in \cref{li:thm:ritzid}; since $r\to x_j>0$,
+\eqref{li:eq:ritzinterval} gives $\abs{r\delta/v-1}=O_j(\tau_{1,N}+v_{j,N})$. By Tonelli and the
+completeness of the polynomials, $\sum_N\tau_{1,N}=\sum_N\langle q_N,Tq_N\rangle=\sum_ix_i<\infty$, and
+$\sum_Nv_{j,N}\le\sum_N\abs{\langle q_N,Tq_{N-1}\rangle}^2\le\sum_ix_i^2$ by the Hilbert--Schmidt norm
+of $T$.
+\end{proof}
+
+\begin{theorem}[Higher residual-moment corrections; \stU]\label{li:thm:ritzhigh}
+For fixed integers $k\ge0$ and $j\ge1$,
+\begin{equation}\label{li:eq:ritzexpansion}
+ \frac{r\delta}v=\sum_{\ell=0}^k\frac{\tau_\ell}{r^\ell}+O_{j,k}(\tau_{k+1}+v)\qquad(N\to\infty).
+\end{equation}
+Explicitly, under the hypothesis of \cref{li:thm:ritzid} take $B\ge x_1$ and put
+\[
+ P_k=\sum_{\ell=0}^k\frac{\tau_\ell}{r^\ell},\qquad
+ E_k=\frac{\tau_{k+1}}{r^kg}+\min\Bigl\{\frac{\tau_1}r,\frac\eta{1-\eta}\Bigr\}\sum_{\ell=0}^k(B/r)^\ell .
+\]
+Then
+\begin{equation}\label{li:eq:ritzhighint}
+ \frac vr\max\{0,P_k-E_k\}\le\delta\le\frac vr\,\frac{P_k+E_k}{1-\eta}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+From $\abs I\le1/g$ and \eqref{li:eq:ritzid}, $\nu_N(\{x\})=vI^2/A\le\eta/(1-\eta)$, besides
+$\nu_N(\{x\})\le\tau_1/r$. For every $t\ne r$,
+$r/(r-t)=\sum_{\ell=0}^k(t/r)^\ell+t^{k+1}/(r^k(r-t))$, also for $t>r$. Summing against $\nu_N$ over all
+atoms except $x$, the last term is at most $\tau_{k+1}/(r^kg)$ in absolute value, and the omitted atom
+in the finite sum is bounded by the other term of $E_k$. Hence $\abs{rI-P_k}\le E_k$, and dividing by
+$A\in[1-\eta,1]$ gives \eqref{li:eq:ritzhighint}. For large $N$, $g$ and $r$ stay away from zero, so
+$E_k=O_{j,k}(\tau_{k+1}+v)$; with $A=1+O_j(v)$ this gives \eqref{li:eq:ritzexpansion}.
+\end{proof}
+
+For example the first corrected approximation $r+(v/r)(1+\tau_1/r)$ has error $O_j(v\tau_2+v^2)$,
+without any zero-spacing estimate. When isolation is certified, \eqref{li:eq:ritzhighint} is a
+two-sided interval of width $O_{j,k}(v(\tau_{k+1}+v))$.
+
+\begin{lemma}[Strict hierarchy of residual moments; \stU]\label{li:lem:ritzhier}
+For every fixed $k\ge0$, $\tau_{k+1,N}=o(\tau_{k,N})$ as $N\to\infty$.
+\end{lemma}
+
+\begin{proof}
+In the orthonormal basis $(q_n)$ the operator $T$ is tridiagonal. For fixed $k$ and $N>k+1$ let
+$J_{N,k}$ be its compression to the span of $q_{N-k-1},\dots,q_{N+k+1}$. Applying $T$ at most $k+1$
+times to $q_N$ stays in this span, and the compressed powers agree with the full ones on $q_N$, so
+$\tau_{l,N}=\langle q_N,J_{N,k}^lq_N\rangle$ for $l\le k+1$. Diagonalizing the positive matrix
+$J_{N,k}$ gives $0\le J_{N,k}^{k+1}\le\lVert J_{N,k}\rVert J_{N,k}^k$, and
+$\lVert J_{N,k}\rVert\le\sum_{l=N-k-1}^{N+k+1}\tau_{1,l}\to0$. Thus
+$0<\tau_{k+1,N}/\tau_{k,N}\le\lVert J_{N,k}\rVert\to0$.
+\end{proof}
+
+For each $j$ put
+\begin{equation}\label{li:eq:ritzC}
+ C_j=\prod_{i\ne j}(1-x_i/x_j),
+\end{equation}
+a convergent nonzero product over the distinct sites: the finitely many factors with $i<j$ may be
+negative, those with $i>j$ are positive, and $\sum_ix_i<\infty$.
+
+\begin{theorem}[Exact relative asymptotics; \stU]\label{li:thm:ritzexact}
+Under \eqref{li:eq:abstract}, for each fixed $j$,
+\begin{equation}\label{li:eq:ritzexact}
+ x_j-r_{j,N}\sim\frac{h_N}{w_jx_j^{2N-1}C_j^2},\qquad h_N=\frac{\det\liHk_{N+1}}{\det\liHk_N}.
+\end{equation}
+In particular, for fixed $j,k$,
+\[
+ \lim_{N\to\infty}\Bigl(\frac{x_j}{x_k}\Bigr)^{2N-1}\frac{x_j-r_{j,N}}{x_k-r_{k,N}}
+ =\frac{w_kC_k^2}{w_jC_j^2}.
+\]
+\end{theorem}
+
+\begin{proof}
+Before normalization, \eqref{li:eq:ritzid} reads $\delta w_jS(x_j)^2=h_NI$, and
+\eqref{li:eq:ritzinterval} (or the weak concentration of $\nu_N$ at $0$) gives $I\to1/x_j$. Now
+$S_{j,N}(x_j)=x_j^{N-1}\prod_{i\le N,\,i\ne j}(1-r_{i,N}/x_j)$. For fixed $i\ne j$, $r_{i,N}\to x_i$, so
+the finitely many leading factors converge to nonzero limits. For large $i$,
+$0<r_{i,N}\le x_i\le x_j/2$, hence $\abs{\log(1-r_{i,N}/x_j)}\le2x_i/x_j$, a summable bound independent of
+$N$. Extending the factors by $1$ for $i>N$, dominated convergence gives $S_{j,N}(x_j)/x_j^{N-1}\to C_j$,
+and substitution proves \eqref{li:eq:ritzexact}. No asymptotic formula for $h_N$ is used.
+\end{proof}
+
+\begin{corollary}[Superlinear one-step convergence; \stU]\label{li:cor:ritzstep}
+At every fixed rank $j$,
+\[
+ \frac{x_j-r_{j,N+1}}{x_j-r_{j,N}}\sim\frac{h_{N+1}}{x_j^2h_N}\to0 .
+\]
+Hence $r_{j,N+1}-r_{j,N}\sim x_j-r_{j,N}$: one further pencil asymptotically removes the whole previous
+error, and $N^d(x_j-r_{j,N})\to0$ for every fixed $d$.
+\end{corollary}
+
+\begin{proof}
+Divide \eqref{li:eq:ritzexact} at $N+1$ and $N$, and use \cref{li:lem:ritzabs}.
+\end{proof}
+
+\begin{theorem}[Next correction under a logarithmic norm law; \stU]\label{li:thm:ritznext}
+Suppose in addition that $\log h_N=-cN\log N+o(N\log N)$ for some $c>0$. Then for every fixed $j$ and
+$k\ge0$,
+\[
+ \delta-\frac vr\sum_{\ell=0}^k\frac{\tau_\ell}{r^\ell}\sim\frac{v\,\tau_{k+1}}{r^{k+2}} .
+\]
+Thus each corrected approximation eventually lies strictly below $x_j$, and the next omitted
+correction is asymptotic to its remaining error. This is a fixed-order hierarchy, not the convergence
+of a series at fixed $N$.
+\end{theorem}
+
+\begin{proof}
+Subtracting the norm law at adjacent indices gives $\log(h_{N+1}/h_N)=o(N\log N)$, and
+\cref{li:lem:ritzabs} gives $h_{N+1}/h_N\le\tau_{2,N}\le x_1\tau_{1,N}\le x_1^2$, so
+$\log\tau_{1,N}=o(N\log N)$. By Jensen, $\tau_{l,N}\ge\tau_{1,N}^l$, so $\log\tau_{l,N}=o(N\log N)$ for
+fixed $l\ge1$. By \cref{li:thm:ritzexact,li:thm:ritzsharp}, $\log v=-cN\log N+o(N\log N)$, so
+$v=o(\tau_{l,N})$ for every fixed $l\ge1$. Apply \eqref{li:eq:ritzexpansion} at order $k+1$: by
+\cref{li:lem:ritzhier} the remainder $O_{j,k}(\tau_{k+2,N}+v)$ is $o(\tau_{k+1,N})$, and $r\to x_j>0$.
+\end{proof}
+
+\begin{proposition}[The distinct-site product and the masses; \stU]\label{li:prop:ritzprod}
+The polynomials $F_N(z)=\prod_{i\le N}(1-r_{i,N}z)$ converge locally uniformly on $\C$ to
+$F(z)=\prod_i(1-x_iz)$, so $C_j=-F'(1/x_j)/x_j$. Moreover
+$a_{j,N}=\int S_{j,N}^2\dd\mu/S_{j,N}(r_{j,N})^2\to w_j$.
+\end{proposition}
+
+\begin{proof}
+Put $r_{i,N}=0$ for $i>N$. By dominated convergence $\sum_i(x_i-r_{i,N})\to0$, and the telescoping
+product identity with $\abs{1-az}\le e^{a\abs z}$ bounds the difference on $\abs z\le R$ by
+$Re^{2R\sum_ix_i}\sum_i(x_i-r_{i,N})$. For fixed $j$ and large $N$ the other Ritz values stay away from
+$r_{j,N}$ and $x_j$ (convergence for the ranks below $j$, and $r_{i,N}\le x_{j+1}$ for $i>j$), so the
+logarithm of $\abs{S_{j,N}(x_j)/S_{j,N}(r_{j,N})}$ is $O_j(N\delta)$, which tends to $0$ by
+\cref{li:cor:ritzstep}. Since $A\to1$ by \eqref{li:eq:ritzid},
+$a_{j,N}=w_j[S(x_j)/S(r)]^2/A\to w_j$.
+\end{proof}
+
+The limits identify the constants from moment data alone, also when zeros are multiple, but they do
+not determine distinct sites inside an unresolved cluster at finite $N$.
+
+\begin{corollary}[Relative zeta-zero error law; \stG]\label{li:cor:ritzzeta}
+In the notation \eqref{li:eq:mu}, for each fixed $j$,
+\begin{equation}\label{li:eq:ritzzeta}
+ x_j-r_{j,N}\sim\frac{h_N}{m_jx_j^{2N}C_j^2},
+\end{equation}
+and for fixed $j,k$
+\[
+ \log\frac{x_j-r_{j,N}}{x_k-r_{k,N}}-2N\log\frac{x_k}{x_j}\longrightarrow\log\frac{m_kC_k^2}{m_jC_j^2}.
+\]
+The approximation $\widehat\gamma_{j,N}=\sqrt{1/r_{j,N}-1/4}$ lies above $\gamma_j$ and
+\[
+ \widehat\gamma_{j,N}-\gamma_j\sim\frac{h_N}{2\gamma_jm_jx_j^{2N+2}C_j^2}\sim\frac{v_{j,N}}{2\gamma_jx_j^3}.
+\]
+Also $a_{j,N}/r_{j,N}\to m_j$, so rounding eventually recovers the multiplicity (an asymptotic statement,
+not a finite certificate). Finally $\log h_N=-4N\log N+4N\log\log N+O(N)$, so \cref{li:thm:ritznext}
+applies with $c=4$: every corrected estimate of $x_j$ is eventually from below, its remaining error is
+asymptotic to the next computable term $v\tau_{k+1}/r^{k+2}$, and the corresponding estimate of
+$\gamma_j$ is eventually from above with remaining error $\sim v\tau_{k+1}/(2\gamma_jx_j^{k+4})$.
+\end{corollary}
+
+\begin{proof}
+By \cref{li:prop:moments} the measure \eqref{li:eq:mu} satisfies \eqref{li:eq:abstract} with $w_j=m_jx_j$;
+apply \cref{li:thm:ritzexact,li:prop:ritzprod}. The map $f(t)=\sqrt{1/t-1/4}$ is decreasing with
+$f'(x_j)=-1/(2\gamma_jx_j^2)$, so Taylor's theorem and \cref{li:thm:ritzsharp} give the ordinate law.
+The norm law is the estimate of $h_n$ in the proof of \cref{li:cor:hankel} (equivalently,
+\eqref{li:eq:ritzrate} combined with \eqref{li:eq:ritzzeta}); the last assertion follows from
+\cref{li:thm:ritznext} and the mean value theorem for $f$.
+\end{proof}
+
+Thus the unknown absolute coefficient of $N$ in \eqref{li:eq:ritzrate} is common to all ranks once the
+explicit term $2N\log(x_k/x_j)$ is removed: if for one $k$ the limit
+$L_k=\lim_N N^{-1}\bigl[\log(x_k-r_{k,N})+4N\log N-4N\log\log N\bigr]$ exists, then $L_j$ exists for every
+fixed $j$ and equals $L_k+2\log(x_k/x_j)$, and \cref{li:cor:ritzzeta} gives an $o(1)$ remainder in the
+difference. The existence of any $L_k$ is open (\cref{li:q:ritz}).
+
+\begin{corollary}[Dirichlet distance spectra; \stG]\label{li:cor:ritzdirexact}
+In the setting of \cref{li:cor:ritzdir}, let $d_j$ be the $j$th distinct distance and $m_j$ its total
+multiplicity, so $x_j=(a^2+d_j^2)^{-1}$ (a central distance $d_1=0$ is allowed). Then
+\cref{li:lem:ritzabs,li:thm:ritzid,li:thm:ritzsharp,li:thm:ritzhigh,li:thm:ritzexact,li:cor:ritzstep,li:prop:ritzprod}
+hold with $w_j=m_jx_j$, \eqref{li:eq:ritzzeta} holds, and so does \cref{li:thm:ritznext} with $c=4$. For
+$d_j>0$ the distance error of $\sqrt{1/r_{j,N}-a^2}$ is asymptotic to
+$h_N/(2d_jm_jx_j^{2N+2}C_j^2)$; for $d_j=0$,
+\[
+ \sqrt{1/r_{j,N}-a^2}=\sqrt{\frac{x_j-r_{j,N}}{x_jr_{j,N}}}\sim\frac{\sqrt{h_N}}{\sqrt{m_j}\,x_j^{N+1}\abs{C_j}} .
+\]
+The same abstract results hold for finite products of such normalized even completions, with masses
+added at coincident distances; the norm law needed for \cref{li:thm:ritznext} must then be checked
+separately. All statements fix $q,t_0,a,j$ before the limit.
+\end{corollary}
+
+\begin{proof}
+The proof of \cref{li:cor:ritzdir} gives the product $\prod_j(1-x_jz)^{m_j}$ and $\sum_jm_jx_j<\infty$, so
+\eqref{li:eq:abstract} holds. The rate $\log(x_j-r_{j,N})/(N\log N)\to-4$ of \cref{li:cor:ritzdir} and
+\eqref{li:eq:ritzexact} give $\log h_N=-4N\log N+o(N\log N)$. The distance laws follow from the
+derivative of $\sqrt{1/t-a^2}$ at $x_j$ when $d_j>0$, and from the displayed identity and
+\eqref{li:eq:ritzzeta} when $d_j=0$. A finite union of such spectra still satisfies
+\eqref{li:eq:abstract}.
+\end{proof}
+
+\begin{remark}[Moment-based isolation certificates]\label{li:rem:ritzgap}
+The gap input of \cref{li:thm:ritzid,li:thm:ritzhigh} can be taken from the moments. With
+$b_{j,N}$ from \eqref{li:eq:septest}, the proof of \cref{li:thm:ritzcert} shows $b_{j,N}\ge x_{j+1}$,
+and $b_{j,N}<r_{j,N}$ certifies that the first $j$ sites are simple. Then
+$g=r_{1,N}-b_{1,N}$ for $j=1$ and $g=\min\{r_{j,N}-b_{j,N},r_{j-1,N}-r_{j,N}\}$ for $j>1$ is admissible,
+since the atoms above $x_j$ are at least $r_{j-1,N}$ and those below are at most $b_{j,N}$; take
+$B=p_1\ge x_1$. If $\eta<1$, \eqref{li:eq:ritzinterval} and \eqref{li:eq:ritzhighint} are certified
+intervals, and $f$ maps them to enclosures of $\gamma_j$. When the first $j$ sites are simple the test
+eventually passes (\cref{li:thm:ritzcert}), and the enclosures have relative width tending to zero.
+With inexact moments one must propagate intervals and check the strict inequalities.
+\end{remark}
+
+At $N=14$, an uncertified high-precision run (two precisions, agreeing in every printed digit) gives
+$r\delta/v=1.0575$, $1.1431$, $1.2247$ for $j=1,2,3$, and relative errors $0.0544$, $0.1252$, $0.1835$
+for $v/r$ against $0.0045$, $0.0231$, $0.0487$ for the corrected value $(v/r)(1+\tau_1/r)$. An exact
+rational check of \cref{li:thm:ritzid,li:thm:ritzhigh} through $k=3$ on a three-atom measure is also
+delivered:
+\begin{center}
+\artifact{grh_ritz_relative_asymptotics/experiment.csv},\\
+\artifact{grh_ritz_relative_asymptotics/experiment_repeat.csv},\\
+\artifact{grh_ritz_relative_asymptotics/exact_checks.py}.
+\end{center}
+
 Voros derived \eqref{li:eq:logmoments} and studied the associated secondary zeta functions
 \cite{Voros2006Sharpenings,Voros2003Zeta}. Pavesi treats the same symmetric coordinate, Li
 transforms and Hankel inertia \cite{Pavesi2026Klein}; Lasserre derives monotone support estimates
 from generalized eigenvalues of moment matrices \cite{Lasserre2011Bounding}; Kawalec recovers
-individual ordinates by limits of deflated power sums \cite{Kawalec2022Analytical}.
+individual ordinates by limits of deflated power sums \cite{Kawalec2022Analytical}. Lanczos residuals
+and the orthogonal-polynomial recurrence are classical \cite{Zemke2003Krylov}; Malejki studies
+eigenvalues of finite sections of unbounded Jacobi matrices \cite{Malejki2007Approximation}.
 
 \subsection{Matched ordinates of two \texorpdfstring{$L$}{L}-functions}\label{li:sec:match}
 \sources{li_zero_separation; li_ritz_zero_recovery}
@@ -2211,9 +2514,14 @@ vary.
 \end{question}
 
 \begin{question}[Finer Ritz asymptotics]\label{li:q:ritz}
-Does the remainder $O_j(N)$ in \eqref{li:eq:ritzrate}, divided by $N$, have a limit? How does the
-estimate change when $j$ grows with $N$? The proof uses the isolation of each of the first $j$ atoms;
-uniform control would need quantitative information on their spacings and on the tail.
+By \cref{li:cor:ritzzeta} the errors at all fixed ranks have explicit relative constants, so the
+remainder in \eqref{li:eq:ritzrate} is controlled by the single sequence $h_N$. Determine the
+asymptotic of $\log h_N$ beyond its two leading terms: does
+$N^{-1}\bigl[\log h_N+4N\log N-4N\log\log N\bigr]$ have a limit, and what information on the distinct
+ordinates, their local packing and their multiplicities fixes it? How do the estimates change when
+$j$ grows with $N$? Explicit conductor- and rank-uniform bounds for $\tau_{k,N}$ and for the isolation
+input of \cref{li:thm:ritzhigh}, and rigorous interval evaluation of the moments at larger $N$, would
+be needed.
 \end{question}
 
 \begin{question}[Economy of the matched-pair test]\label{li:q:economy}
