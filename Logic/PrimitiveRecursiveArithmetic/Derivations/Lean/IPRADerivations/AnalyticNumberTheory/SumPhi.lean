@@ -211,12 +211,9 @@ theorem count_point (j : PTm n) :
       have hr : ((rem N j ≐ zero) :: (j ≐ succ (pred j)) :: Γ) ⊢[PRAAx] rem N j ≐ zero := Prf.hyp0
       have hj' : ((rem N j ≐ zero) :: (j ≐ succ (pred j)) :: Γ) ⊢[PRAAx] j ≐ succ (pred j) := hj.wk
       have hN' : ((rem N j ≐ zero) :: (j ≐ succ (pred j)) :: Γ) ⊢[PRAAx] N ≐ succ (pred N) := hN.wk.wk
-      have hNe : ((rem N j ≐ zero) :: (j ≐ succ (pred j)) :: Γ) ⊢[PRAAx] N ≐ quo N j * j :=
-        (div_eq hj').eqTrans ((congrAdd (.eqRefl _) hr).eqTrans ((add_zero _).eqTrans (mul_comm _ _)))
-      have he : ((rem N j ≐ zero) :: (j ≐ succ (pred j)) :: Γ) ⊢[PRAAx] quo N j ≐ succ (pred (quo N j)) := by
-        refine .orE (zero_or_succ (quo N j)) ?_ Prf.hyp0
-        exact succ_ne_zero' _ (hN'.wk.eqSymm.eqTrans (hNe.wk.eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans
-          (zero_mul _))))
+      have factor := eq_of_dvd' hj' hr
+      have hNe := factor.eqTrans (mul_comm _ _)
+      have he := pos_of_eq_mul hN' factor
       have cnt : ((rem N j ≐ zero) :: (j ≐ succ (pred j)) :: Γ) ⊢[PRAAx]
           ap3 (sum2F (Permutation.mB qB)) N j N ≐ ap3 (sum2F gB) N N (quo N j) := by
         refine sum2_congr_bounded _ _ _ _ _ _ _ (.allI (.impI ?_))

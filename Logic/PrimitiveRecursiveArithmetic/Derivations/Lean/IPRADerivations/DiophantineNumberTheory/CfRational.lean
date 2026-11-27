@@ -349,7 +349,7 @@ theorem cf_last {a b : PTm n} (h2 : Γ ⊢[PRAAx] le two (M a b)) :
   -- the last remainder vanishes: `EA j = EB j · cf j`
   have z : Γ ⊢[PRAAx] rem (EA (pred (M a b)) a b) (EB (pred (M a b)) a b) ≐ zero :=
     (EB_succ _ a b).eqSymm.eqTrans ((congrEB_j eM.eqSymm).eqTrans (Prf.andE₂ (M_found a b)))
-  have d := (div_eq (j := EA (pred (M a b)) a b) hB).eqTrans ((congrAdd (.eqRefl _) z).eqTrans (add_zero _))
+  have d := Coprime.eq_of_dvd' hB z
   refine AnalyticNumberTheory.CoprimeModulus.two_le_of_ne (cf_pos hj h1) (.impI ?_)
   have e1 : ((cf (pred (M a b)) a b ≐ one) :: Γ) ⊢[PRAAx] EA (pred (M a b)) a b ≐ EB (pred (M a b)) a b :=
     d.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (by ipra_ring))

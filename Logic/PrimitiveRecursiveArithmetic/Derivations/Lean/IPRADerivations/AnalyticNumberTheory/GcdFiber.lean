@@ -150,8 +150,7 @@ theorem fiber_point (k : PTm n) :
     Γ ⊢[PRAAx] eqb (gcd k (d * m)) d ≐ eqb (rem k d) zero * eqb (gcd (quo k d) m) one := by
   refine .orE (eq_or_ne (rem k d) zero) ?_ ?_
   · have hr : ((rem k d ≐ zero) :: Γ) ⊢[PRAAx] rem k d ≐ zero := Prf.hyp0
-    have hk : ((rem k d ≐ zero) :: Γ) ⊢[PRAAx] k ≐ d * quo k d :=
-      (div_eq hd.wk).eqTrans ((congrAdd (.eqRefl _) hr).eqTrans (add_zero _))
+    have hk := eq_of_dvd' hd.wk hr
     have e := eqb_iff (.impI (fiber_fwd hd.wk.wk hm.wk.wk hk.wk Prf.hyp0))
       (.impI (fiber_bwd hd.wk.wk hm.wk.wk hk.wk Prf.hyp0))
     exact e.eqTrans ((one_mul _).eqSymm.eqTrans (congrMul (eqb_of_eq hr).eqSymm (.eqRefl _)))

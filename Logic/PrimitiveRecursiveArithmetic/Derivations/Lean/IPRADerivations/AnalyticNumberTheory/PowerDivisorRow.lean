@@ -126,8 +126,7 @@ theorem guarded_quotient (G : PTm 2) (i d P : PTm n) (hd : Γ ⊢[PRAAx] d ≐ s
         ((congrMul (zero_mul _) (.eqRefl _)).eqTrans (zero_mul _))).eqSymm
   · have o : (eqb (rem i d) zero ≐ one) :: Γ ⊢[PRAAx] eqb (rem i d) zero ≐ one := Prf.hyp0
     have r₀ := LeanProofs.IPRA.Foundations.BoundedReflection.eq_of_eqb o
-    have dv := ((div_eq hd.wk).eqTrans
-      ((congrAdd (.eqRefl _) r₀).eqTrans (add_zero _))).eqSymm
+    have dv := (LeanProofs.IPRA.DiophantineNumberTheory.Coprime.eq_of_dvd' hd.wk r₀).eqSymm
     have s := (sg_mul_pos hd.wk _).eqSymm.eqTrans (congrSg dv)
     exact (congrMul (.eqRefl _) (congrMul s (congrInst2 G dv (.eqRefl _)))).eqTrans (mul_assoc _ _ _).eqSymm
 
