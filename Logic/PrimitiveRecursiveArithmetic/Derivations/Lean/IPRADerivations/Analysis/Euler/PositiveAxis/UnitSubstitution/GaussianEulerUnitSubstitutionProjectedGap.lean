@@ -84,7 +84,8 @@ theorem original_projected_gap (s u z R B A a C E G : PTm n)
     (surrounding_sources s u z R B A a C E G h).andE₁
   have tail : Γ ⊢[PRAAx] upper (fstT m) (fstT (ap2 nameF u (data Z R B a C E G))) (num 6*I) D :=
     upper_mono _ _ _ _ _ _ (positive_product _ _ hU hU) middle (by dsimp only [D,U]; ipra_le 0)
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ hD hD)
-    (upper_triangle _ _ _ _ _ _ _ coordinate tail) (by dsimp only [D,I,U,gapNumerator,gapDenominator,b]; ipra_le 0)
+  exact RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _)
+    (by dsimp only [I,U,gapNumerator,b]; ipra_ring) (.eqRefl _)
+    (RationalValueBounds.upper_triangle_same hD coordinate tail)
 
 end LeanProofs.IPRA.Analysis.GaussianEulerUnitSubstitutionProjectedGap

@@ -40,11 +40,11 @@ theorem observation_widen (q E D : PTm n) (hs : Γ ⊢[PRAAx] GaussianUnitInterv
   have hi : Γ ⊢[PRAAx] upper (upperPoint E) (upperPoint D) zero one := by
     exact rational_order (monus E one) E (monus D one) D hE hD
       (by ipra_le sl hED with 𝔞(D)*natEq (eq_add_of_le hE)-𝔞(E)*natEq (eq_add_of_le hD))
-  have lower := upper_triangle (lowerPoint D) (lowerPoint E) (fstT q) zero one zero one lo hs.andE₂.andE₂.andE₁
-  have upper' := upper_triangle (fstT q) (upperPoint E) (upperPoint D) zero one zero one hs.andE₂.andE₂.andE₂ hi
   exact .andI hs.andE₁ (.andI hD (.andI
-    (upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) lower)
-    (upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) upper')))
+    (RationalValueBounds.upper_order_left _ _ _ _ _
+      (RationalValueBounds.order_of_upper_zero (le_refl one) lo) hs.andE₂.andE₂.andE₁)
+    (RationalValueBounds.upper_order_right _ _ _ _ _ hs.andE₂.andE₂.andE₂
+      (RationalValueBounds.order_of_upper_zero (le_refl one) hi))))
 
 theorem widen (f : PR 2) (x E D : PTm n) (hs : Γ ⊢[PRAAx] source f x E) (hED : Γ ⊢[PRAAx] le E D) :
     Γ ⊢[PRAAx] source f x D := by

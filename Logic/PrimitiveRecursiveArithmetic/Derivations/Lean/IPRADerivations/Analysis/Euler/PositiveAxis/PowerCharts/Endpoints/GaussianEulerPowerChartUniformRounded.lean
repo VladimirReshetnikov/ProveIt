@@ -110,10 +110,9 @@ private theorem pay_observation_errors (a b c A B p V : PTm n)
     (h₂ : Γ ⊢[PRAAx] upper b c B (unit p))
     (hk : Γ ⊢[PRAAx] le ((A+B)*V) (unit p)) :
     Γ ⊢[PRAAx] upper a c one V := by
-  let U := unit p
-  have combined := upper_triangle a b c A U B U h₁ h₂
-  apply upper_mono _ _ _ _ _ _ (positive_product U U (unit_positive p) (unit_positive p)) combined
-  exact le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right U hk)
+  have hp := unit_positive (Γ := Γ) p
+  exact upper_mono _ _ _ _ _ _ hp (RationalValueBounds.upper_triangle_same hp h₁ h₂)
+    (le_congr (.eqRefl _) (one_mul _).eqSymm hk)
 
 private theorem cleared_allowance (a b c d V : PTm n)
     (hb : Γ ⊢[PRAAx] le one b) (hd : Γ ⊢[PRAAx] le one d)

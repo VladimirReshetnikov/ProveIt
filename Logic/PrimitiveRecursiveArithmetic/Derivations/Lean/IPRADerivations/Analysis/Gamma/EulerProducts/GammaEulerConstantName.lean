@@ -103,11 +103,10 @@ theorem fixed_against_diagonal (N M K : PTm n) (hN : Γ ⊢[PRAAx] le one N)
   · have sync := synchronous_samples M N K hM.wk Prf.hyp0 hK.wk
     have mesh := cross_mesh (Γ := le M N :: Γ) M K M hM.wk hK.wk hM.wk
     have f := upper_order_left _ _ _ _ _ sync.andE₁ mesh.andE₁
-    have b := upper_triangle _ _ _ one M one M mesh.andE₂
+    have b := RationalValueBounds.upper_triangle_same hM.wk mesh.andE₂
       (relaxed_synchronous M N K hM.wk Prf.hyp0 hK.wk)
     exact .andI (upper_mono _ _ _ _ _ _ hK.wk f (le_of_eq_add (d := K*K) (by ipra_ring)))
-      (upper_mono _ _ _ _ _ _ (RationalAlgebra.positive_product hM.wk hM.wk) b
-        (le_of_eq_add (d := zero) (by ipra_ring)))
+      (RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _) b)
 
 def unit (p : PTm n) : PTm n := pw two p
 def mesh (p : PTm n) : PTm n := num 4*unit p

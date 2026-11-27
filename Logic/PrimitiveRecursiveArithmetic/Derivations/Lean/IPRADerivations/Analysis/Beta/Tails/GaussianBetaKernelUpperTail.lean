@@ -70,10 +70,9 @@ theorem kernel_below_upper_reference (s a b N : PTm n) (h : Γ ⊢[PRAAx] Gaussi
   have scalar := RationalValueBounds.upper_of_radius _ _ _ _
     (GaussianNamedPositiveExponentialOrder.scalar_coordinate_distance _ _ _ _ hu
       (distance_symmetric _ _ _ _ hu near))
-  have both := RationalValueBounds.upper_triangle _ _ _ one U two U
-    (GaussianBetaKernelDomination.original_kernel_upper s a b N h) scalar
   have up : Γ ⊢[PRAAx] RationalValueBounds.upper (fstT (kernel a b N)) (fstT (positiveReference s a b)) (num 3) U :=
-    RationalValueBounds.upper_mono _ _ _ _ _ _ hd both (le_of_eq_add (d := zero) (by ipra_ring))
+    RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+      (RationalValueBounds.upper_triangle_same hu (GaussianBetaKernelDomination.original_kernel_upper s a b N h) scalar)
   exact RationalArgmin.rationalLE_congr (.eqRefl _) (upper_reference_real s a b).eqSymm
     (RationalConvexEndpointBudget.order_of_upper _ _ _ _ hu up)
 

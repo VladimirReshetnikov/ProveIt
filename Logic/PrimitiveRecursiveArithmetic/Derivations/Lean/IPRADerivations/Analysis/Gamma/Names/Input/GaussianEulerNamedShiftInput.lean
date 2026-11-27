@@ -101,9 +101,8 @@ theorem certificate_at (f : PR 2) (x A p q : PTm n) (h : Γ ⊢[PRAAx] certifica
     upper (fstT (ap2 constantF p (marginPoint A))) (fstT (ap2 (shiftF f) q (shiftData x)))
       (unit p+unit q) (unit p*unit q) := by
   have old := GaussianNamedRightHalfPlane.actual_sample_upper f x A (clock q) h
-  have extended := upper_triangle _ _ _ one (unit (clock q)) zero one old (add_one_upper (ap2 f (clock q) x))
-  have oneS : Γ ⊢[PRAAx] upper (fstT (marginPoint A)) (fstT (qadd (ap2 f (clock q) x) qone)) one (unit (clock q)) :=
-    upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) extended
+  have oneS := RationalValueBounds.upper_order_right _ _ _ _ _ old
+    (RationalValueBounds.order_of_upper_zero (le_refl one) (add_one_upper (ap2 f (clock q) x)))
   have grow := GaussianExponentialReference.unit_monotone (clock_later (Γ := Γ) q)
   have widened := upper_mono _ _ one (unit (clock q)) (unit p+unit q) (unit p*unit q) (unit_positive _) oneS
     (by ipra_le 𝔞(unit p)*sl grow + 𝔞(unit q)*𝔞(unit (clock q)))

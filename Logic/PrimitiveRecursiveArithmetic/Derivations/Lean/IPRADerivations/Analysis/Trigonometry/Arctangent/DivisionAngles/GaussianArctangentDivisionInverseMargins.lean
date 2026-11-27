@@ -44,7 +44,6 @@ open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper radius radius_symmetric radius_congr radius_triangle radius_mono radius_diagonal upper_of_radius upper_of_order
   upper_triangle upper_mono upper_congr upper_order_right positive_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open GaussianArctangentInverseForward renaming upper_sum_same → sum_upper
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -147,8 +146,8 @@ theorem inverse_gap_of_samples (i j m N p A B e f : PTm n)
     upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
       (RationalUpperAddition.add_upper a A K K _ _ zero one (mesh_error _ _ _ _ hla)
         (upper_of_order _ _ _ _ (RationalArgmin.reflexive _)))
-  have s := sum_upper _ _ _ _ _ _ hM (upper_order_right _ _ _ _ _ step hg)
-    (sum_upper _ _ _ _ _ _ hM (mesh_error _ _ _ _ hra) (grid_slope i j M hM hi hj))
+  have s := RationalValueBounds.upper_triangle_same hM (upper_order_right _ _ _ _ _ step hg)
+    (RationalValueBounds.upper_triangle_same hM (mesh_error _ _ _ _ hra) (grid_slope i j M hM hi hj))
   have clear : Γ ⊢[PRAAx] le M (m*(C+two*D)) :=
     le_trans (le_congr (one_mul M) (.eqRefl _) (le_mul_mono hN (le_refl M)))
       (le_congr (.eqRefl _) (by dsimp only [C,D]; ipra_ring) (cancel_addition a N m _ M hm s))

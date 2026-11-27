@@ -95,9 +95,9 @@ private theorem ordered_ordinate_radius (p q A B C D H K : PTm n)
   have pay := upper_mono (add x (fraction (two*G) E)) x (two*G) E (two*H) K hE
     (RationalReciprocalPowerName.fraction_add_upper x (two*G) E hE) twice
   have right := upper_triangle y (add x (fraction (two*G) E)) x S T (two*H) K slopes.andE₂ pay
-  have before := upper_triangle x (add x (fraction G E)) y zero one S T (below_added_fraction x G E hE) slopes.andE₁
   have forward : Γ ⊢[PRAAx] upper x y S T :=
-    RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (one_mul T) before
+    RationalValueBounds.upper_order_left _ _ _ _ _
+      (RationalValueBounds.order_of_upper_zero (le_refl one) (below_added_fraction x G E hE)) slopes.andE₁
   have nonneg := upper_of_order y y (two*H) K (RationalArgmin.reflexive (Γ := Γ) y)
   exact radius_of_upper _ _ _ _ (upper_triangle x y y S T (two*H) K forward nonneg) right
 

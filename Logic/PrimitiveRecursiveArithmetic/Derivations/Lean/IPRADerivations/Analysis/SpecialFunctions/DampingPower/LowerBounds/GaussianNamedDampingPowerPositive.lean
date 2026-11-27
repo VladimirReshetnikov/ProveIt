@@ -31,18 +31,6 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 private theorem power_denominator_positive (R E T : PTm n) : Γ ⊢[PRAAx] le one (powerDenominator R E T) :=
   GaussianFactorBudget.power_positive (num 3) (exponentRadius R E T) (le_of_eq_add (d := two) (by ipra_ring))
 
-private theorem exact_order (u v : PTm n) (h : Γ ⊢[PRAAx] upper u v zero one) :
-    Γ ⊢[PRAAx] RationalArgmin.rationalLE u v := by
-  unfold upper at h
-  have lhs : Γ ⊢[PRAAx] one*RationalValueBounds.crossLeft u v ≐ RationalArgmin.left u v := by
-    unfold RationalValueBounds.crossLeft RationalArgmin.left
-    ipra_ring
-  have rhs : Γ ⊢[PRAAx] one*RationalValueBounds.crossLeft v u+zero*RationalSupMetric.denominatorOf u*
-      RationalSupMetric.denominatorOf v ≐ RationalArgmin.left v u := by
-    unfold RationalValueBounds.crossLeft RationalArgmin.left
-    ipra_ring
-  exact le_congr lhs rhs h
-
 theorem parameter_positive_at (F : PR 2) (p x E T : PTm n)
     (hs : Γ ⊢[PRAAx] GaussianNamedPositiveLogarithm.source F x E T) : Γ ⊢[PRAAx] positive (ap2 F p x) := by
   have d := GaussianNamedPositiveLogarithm.decoded_domain F p x E T hs
@@ -63,7 +51,7 @@ theorem power_positive_at (G : PR 2) (p y R₀ R E T a b : PTm n)
   have fsign : Γ ⊢[PRAAx] sign (fraction one D) := nonnegative_of_representation _ _ _ d
     (RationalIntegerNormalization.normalize_preserves_value _ _ d)
   exact .andI (real_sample_at _ _ _ (power_real G y R₀ R a b hs)).andE₂
-    (nonnegative_of_lower _ _ fsign (exact_order _ _ low))
+    (nonnegative_of_lower _ _ fsign (RationalValueBounds.order_of_upper_zero (le_refl one) low))
 
 theorem original_positive_at (F G : PR 2) (p x y C₀ C R₀ R E T a b : PTm n)
     (hs : Γ ⊢[PRAAx] source F G x y C₀ C R₀ R E T a b)

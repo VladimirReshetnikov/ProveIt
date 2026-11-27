@@ -67,12 +67,6 @@ private theorem coordinate_upper (z w A p : PTm n)
     Γ ⊢[PRAAx] upper (fstT z) (fstT w) A (unit p) :=
   upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ (unit_positive p) h)
 
-private theorem join (z w v A B p : PTm n)
-    (h : Γ ⊢[PRAAx] upper z w A (unit p)) (j : Γ ⊢[PRAAx] upper w v B (unit p)) :
-    Γ ⊢[PRAAx] upper z v (A+B) (unit p) :=
-  upper_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p))
-    (upper_triangle _ _ _ _ _ _ _ h j) (le_of_eq_add (d := ConciseIPRA.PTm.zero) (by ipra_ring))
-
 theorem observation (a d b r s K C p : PTm n)
     (ha : Γ ⊢[PRAAx] le one a) (hd : Γ ⊢[PRAAx] le one d) (hb : Γ ⊢[PRAAx] le one b)
     (rateX : Γ ⊢[PRAAx] familyRate a b K C) (rateY : Γ ⊢[PRAAx] familyRate d b K C)
@@ -129,7 +123,8 @@ theorem observation (a d b r s K C p : PTm n)
     (le_of_eq_add (d := ConciseIPRA.PTm.zero) (by ipra_ring))
   have l := coordinate_upper _ _ _ p (distance_symmetric _ _ _ _ Upos center)
   have e := coordinate_upper _ _ _ p sum
-  have aligned := join _ _ _ _ _ p (join _ _ _ _ _ p l normalized) e
+  have hp := unit_positive (Γ := Γ) p
+  have aligned := RationalValueBounds.upper_triangle_same hp (RationalValueBounds.upper_triangle_same hp l normalized) e
   exact RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _)
     (by unfold GaussianNameRingLaws.three; ipra_ring) (.eqRefl _) aligned
 

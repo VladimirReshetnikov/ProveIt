@@ -61,10 +61,10 @@ theorem transport_at (L U : PR 3) (X Y Z a b o f k sx sy sz x : PTm n)
     RationalCubeInfimumName.midpoint_half_right _ _ _ _ hw.andE₂
   have first' : Γ ⊢[PRAAx] upper A u one (two*s) :=
     RationalValueBounds.upper_order_right _ _ _ _ _ first rel
-  have both := RationalValueBounds.upper_triangle A u B one (two*s) one (two*s) first' last
   have positive := RationalConvexIntervalBounds.half_width_positive (Γ := Γ) k
-  exact RationalValueBounds.upper_mono _ _ _ _ _ _ (RationalAlgebra.positive_product positive positive) both
-    (le_of_eq_add (d := zero) (by dsimp only [s,scale]; ipra_ring))
+  exact RationalValueBounds.upper_cancel A B one s two (le_succ_self one)
+    (RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+      (RationalValueBounds.upper_triangle_same positive first' last))
 
 def witnessInput (L U : PR 3) (X Y Z o sx sy sz x : PTm n) : Fm PTm n :=
   regular L U X x ⋏ (regular L U Y x ⋏ (regular L U Z x ⋏

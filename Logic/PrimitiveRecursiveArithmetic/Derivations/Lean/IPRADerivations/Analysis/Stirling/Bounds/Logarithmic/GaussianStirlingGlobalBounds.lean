@@ -124,8 +124,7 @@ theorem endpoint_close (a b x K p : PTm n) (hs : Γ ⊢[PRAAx] source a b)
 
 theorem small_join (x y z M N p : PTm n) (a : Γ ⊢[PRAAx] upper x y M (unit p))
     (b : Γ ⊢[PRAAx] upper y z N (unit p)) : Γ ⊢[PRAAx] upper x z (M+N) (unit p) :=
-  upper_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p))
-    (upper_triangle _ _ _ _ _ _ _ a b) (le_of_eq_add (d := zero) (by ipra_ring))
+  RationalValueBounds.upper_triangle_same (unit_positive p) a b
 
 theorem upper_cap_le (N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] rationalLE (fstT (upperCap N a b)) (fstT (finalUpper a b)) := by

@@ -41,7 +41,6 @@ open GaussianApproximateInverseDistance (multiply_distance)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_radius upper_order_left)
 open PolynomialBisection (zle_scale_cancel slack)
-open GaussianArctangentInverseForward renaming upper_sum_same → add_upper_same
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -124,7 +123,7 @@ private theorem diagonal_bound (k m z p : PTm n) (h : Γ ⊢[PRAAx] source k m) 
   have readback := multiply_sample_error (sineF nameF) quarterF (chordSineData k m z) z p
     (sine_regular _ _ _ (chord_exp_input k m z h)) (quarter_regular z)
   have rightBound := upper_of_radius _ _ _ _ (imaginary_coordinate_radius _ _ _ _ hU readback)
-  have joined := add_upper_same _ _ _ _ _ _ hU (add_upper_same _ _ _ _ _ _ hU leftBound middle) rightBound
+  have joined := RationalValueBounds.upper_triangle_same hU (RationalValueBounds.upper_triangle_same hU leftBound middle) rightBound
   exact cancel_quarter c S _ U p z (upper_congr (.eqRefl _) (.eqRefl _) (by unfold amplitude; ipra_ring) (.eqRefl _) joined)
 
 private theorem cofinal_bound (k m z q : PTm n) (h : Γ ⊢[PRAAx] source k m) :

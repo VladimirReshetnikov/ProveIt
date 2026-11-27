@@ -56,10 +56,9 @@ private theorem kernel_upper (q a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) 
     (le_of_eq_add (d := zero) (by ipra_ring)) near
   have radius := GaussianNamedPositiveExponentialOrder.scalar_coordinate_distance _ _ _ _ hU
     (distance_symmetric _ _ _ _ hU near')
-  have both := upper_triangle _ _ _ one U two U
-    (GaussianBetaKernelDomination.original_kernel_upper q a b N h)
-    (upper_of_radius _ _ _ _ radius)
-  exact upper_mono _ _ _ _ (num 3) U d both (le_of_eq_add (d := zero) (by ipra_ring))
+  exact RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (RationalValueBounds.upper_triangle_same hU (GaussianBetaKernelDomination.original_kernel_upper q a b N h)
+      (upper_of_radius _ _ _ _ radius))
 
 theorem original_kernel_reference_distance (q a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) :
     Γ ⊢[PRAAx] distanceBounded (kernel a b N) (reference q a b)

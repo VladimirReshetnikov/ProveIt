@@ -123,6 +123,11 @@ theorem upper_of_order (a b A B : PTm n)
   exact le_trans (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right B h))
     (le_add_right _ _)
 
+/-- A zero upper budget at a positive denominator gives exact order. -/
+theorem order_of_upper_zero {a b B : PTm n} (hB : Γ ⊢[PRAAx] le one B)
+    (h : Γ ⊢[PRAAx] upper a b zero B) : Γ ⊢[PRAAx] le (crossLeft a b) (crossLeft b a) :=
+  positive_cancel hB (le_congr (.eqRefl _) (by ipra_ring) h)
+
 theorem upper_mono (a b A B C D : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] upper a b A B) (hAD : Γ ⊢[PRAAx] le (A*D) (C*B)) :
     Γ ⊢[PRAAx] upper a b C D := by
