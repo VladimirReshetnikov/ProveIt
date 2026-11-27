@@ -60,14 +60,14 @@ theorem positive_from_comparison (u v A B D E : PTm n)
   · have impossible : (B ≐ zero)::Γ ⊢[PRAAx] le one zero :=
       le_congr (.eqRefl _) ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)) positive.wk
     exact not_succ_le_self zero _ impossible
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem factor_positive_left (a b : PTm n) (h : Γ ⊢[PRAAx] le one (a*b)) : Γ ⊢[PRAAx] le one a := by
   refine .orE (zero_or_succ a) ?_ ?_
   · have impossible : (a ≐ zero)::Γ ⊢[PRAAx] le one zero :=
       le_congr (.eqRefl _) ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)) h.wk
     exact not_succ_le_self zero _ impossible
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem negative_score_order_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     (Fm.iff (rationalLE (negate (var 0)) (negate (var 1))) (rationalLE (var 1) (var 0)) ⋏

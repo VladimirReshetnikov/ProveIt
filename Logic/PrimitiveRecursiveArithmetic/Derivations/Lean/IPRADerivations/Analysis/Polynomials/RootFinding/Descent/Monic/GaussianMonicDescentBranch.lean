@@ -95,7 +95,7 @@ theorem rd_at (descent : PR 3) (N C z : PTm n) (hz : Γ ⊢[PRAAx] canonical z)
     exact RationalArgmin.rationalLE_congr value.eqSymm (.eqRefl _)
       (GaussianZeroResidualContraction.zero_contraction N C z Prf.hyp0)
   · have pos : (residualNumerator C z ≐ succ (PTm.pred (residualNumerator C z)))::Γ ⊢[PRAAx]
-        le one (residualNumerator C z) := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+        le one (residualNumerator C z) := Order.zero_lt_of_eq_succ Prf.hyp0
     have value := GaussianRationalProductWitness.qnormSq_congr
       (GaussianRationalTranslation.evaluate_congr (.eqRefl C) (advance_positive descent N C z pos))
     exact RationalArgmin.rationalLE_congr value.eqSymm (.eqRefl _) (.impE hPositive.wk pos)

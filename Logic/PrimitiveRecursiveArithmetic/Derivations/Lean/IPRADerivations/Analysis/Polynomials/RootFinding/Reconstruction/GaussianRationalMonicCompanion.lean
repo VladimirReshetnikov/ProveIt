@@ -162,7 +162,7 @@ theorem full_difference_head (P R D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
   have shifted : Γ ⊢[PRAAx] entry (appendZero R) zero ≐ lead R :=
     (append_lookup R zero (zero_le _)).eqTrans (GaussianRationalLinearProduct.padded_inside _ _ _ shape)
   have pzero : Γ ⊢[PRAAx] lt zero (length P) :=
-    le_congr (.eqRefl _) hP.eqSymm (zero_lt_succ _)
+    Order.zero_lt_of_eq_succ hP
   exact (sub_lookup _ _ _ _ (zero_lt_succ D)).eqTrans
     ((qsub_congr shifted ((scaled_lookup P (lead R) zero pzero).eqTrans
       (qmul_congr (.eqRefl _) hMonic))).eqTrans (raw_unit_difference (lead R)))

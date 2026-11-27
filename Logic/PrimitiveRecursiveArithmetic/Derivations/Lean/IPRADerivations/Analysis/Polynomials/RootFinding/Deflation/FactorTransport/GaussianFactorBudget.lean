@@ -73,7 +73,7 @@ theorem factor_positive (N A j : PTm n) : Γ ⊢[PRAAx] le one (factor N A j) :=
   ipra_ring
 
 theorem power_positive (a k : PTm n) (ha : Γ ⊢[PRAAx] le one a) : Γ ⊢[PRAAx] le one (pw a k) :=
-  le_congr (.eqRefl _) (AnalyticNumberTheory.Valuation.pw_pos' (positive_form ha) k).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (AnalyticNumberTheory.Valuation.pw_pos' (positive_form ha) k)
 
 theorem bound_step_monotone (N A j : PTm n) : Γ ⊢[PRAAx] le (bound N A j) (bound N A (succ j)) := by
   have h : Γ ⊢[PRAAx] le ((bound N A j+one)*one) ((bound N A j+one)*pw (factor N A j) N) :=
@@ -318,7 +318,7 @@ theorem positive_numerator (c p D : PTm n) (hp : Γ ⊢[PRAAx] le one p)
         p*denominatorOf c ≐ zero := difference.wk.eqTrans
       ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))
     exact lt_zero_absurd _ (le_congr (.eqRefl _) eq productPos.wk)
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem epsilon_positive (N A p q : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hp : Γ ⊢[PRAAx] le one p) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx]

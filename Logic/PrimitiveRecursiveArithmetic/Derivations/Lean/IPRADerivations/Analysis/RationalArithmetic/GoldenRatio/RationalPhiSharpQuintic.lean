@@ -54,7 +54,7 @@ theorem buffer_lookup (xs : List (PTm n)) (j : ℕ) (hj : j < xs.length) : Γ �
   | nil => simp at hj
   | cons a as ih =>
     cases j with
-    | zero => exact (append_left (lt_congr (.eqRefl _) (singleton_length a).eqSymm (zero_lt_succ zero))).eqTrans (singleton_lookup a)
+    | zero => exact (append_left (Order.zero_lt_of_eq_succ (singleton_length a))).eqTrans (singleton_lookup a)
     | succ j =>
       have small : j < as.length := by simpa using hj
       have bound : Γ ⊢[PRAAx] lt (num j) (length (buffer as)) := lt_congr (.eqRefl _) (buffer_length as).eqSymm (numeral_lt j as.length small)

@@ -53,7 +53,7 @@ ipra_subst rationalCoefficient
 theorem common_denominator_positive (D N : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] le one (commonDenominator D N) := by
   have h := AnalyticNumberTheory.Valuation.pw_pos' (positive_form hD) N
-  exact le_congr (.eqRefl _) h.eqSymm (zero_lt_succ _)
+  exact Order.zero_lt_of_eq_succ h
 
 def coefficientClearing (R N D i : PTm n) : Fm PTm n :=
   ZT.eq (numeratorOf (realCoefficient R N D i)*ZT.ofNat (commonDenominator D N))

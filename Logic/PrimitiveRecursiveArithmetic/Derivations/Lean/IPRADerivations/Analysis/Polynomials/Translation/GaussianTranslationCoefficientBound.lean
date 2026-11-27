@@ -127,7 +127,7 @@ theorem backward_at (C N z A B j k : PTm n) (hInput : Γ ⊢[PRAAx] input C N z 
     exact relative_congr (GaussianTranslationScaledCoefficients.scaledCoefficient_index_congr C N z A B j Prf.hyp0.eqSymm)
       (.eqRefl _) (.eqRefl _) (.eqRefl _) atZero
   · have kpos : (k ≐ succ (pred k))::Γ ⊢[PRAAx] le one k :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have predRange : (k ≐ succ (pred k))::Γ ⊢[PRAAx] le (pred k) (remaining N (succ j)) :=
       (succ_monus_succ _ _).eqSymm.eqTrans
         (le_congr Prf.hyp0 (GaussianRationalTranslationStages.remaining_step N j hj.wk) hk.wk)

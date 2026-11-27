@@ -97,7 +97,7 @@ theorem delta_radius (C N z : PTm n) : Γ ⊢[PRAAx]
   · exact GaussianRationalReciprocal.bound_congr (delta_zero C N z Prf.hyp0).eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianMonicResidualRadius.zero_bounded _ _ (starting_denominator_positive C N z))
   · have positive : (residualNumerator C z ≐ succ (PTm.pred (residualNumerator C z)))::Γ ⊢[PRAAx]
-        le one (residualNumerator C z) := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+        le one (residualNumerator C z) := Order.zero_lt_of_eq_succ Prf.hyp0
     exact GaussianRationalReciprocal.bound_congr (delta_positive C N z positive).eqSymm (.eqRefl _) (.eqRefl _)
       (positive_delta_radius C N z positive)
 

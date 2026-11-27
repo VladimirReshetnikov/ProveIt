@@ -54,7 +54,7 @@ theorem predecessor_form (m : PTm n) (hm : Γ ⊢[PRAAx] le two m) :
   (congrPred (exponent_form m hm)).eqTrans (pred_succ _)
 theorem predecessor_positive (m : PTm n) (hm : Γ ⊢[PRAAx] le two m) :
     Γ ⊢[PRAAx] le one (pred m) :=
-  le_congr (.eqRefl _) (predecessor_form m hm).eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ (predecessor_form m hm)
 theorem potential_denominator_positive (m N : PTm n) (hm : Γ ⊢[PRAAx] le two m)
     (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] le one (pred m*pw N (pred m)) :=
   RationalAlgebra.positive_product (predecessor_positive m hm) (GaussianFactorBudget.power_positive _ _ hN)

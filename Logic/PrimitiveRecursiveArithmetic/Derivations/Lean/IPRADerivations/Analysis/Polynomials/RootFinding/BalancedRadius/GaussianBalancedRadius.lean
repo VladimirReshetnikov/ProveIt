@@ -97,7 +97,7 @@ theorem coefficient_bound (C N i : PTm n) (h : Γ ⊢[PRAAx] inputContract C N)
       (numerator_zero C N Prf.hyp0)
   · have hp : (GaussianBalancedRadiusSyntax.numerator C N zero ≐ succ (PTm.pred (GaussianBalancedRadiusSyntax.numerator C N zero)))::Γ
         ⊢[PRAAx] le one (GaussianBalancedRadiusSyntax.numerator C N zero) :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have source := GaussianBalancedRadiusSearch.search_correct C N (positive_input C N h.wk hp)
     have fit := GaussianBalancedRadiusSearch.fits_degree_at C N (E C N) (GaussianBalancedRadiusSearch.radiusIndex C N) i
       (Prf.andE₁ (Prf.andE₂ source)) hi.wk hiN.wk

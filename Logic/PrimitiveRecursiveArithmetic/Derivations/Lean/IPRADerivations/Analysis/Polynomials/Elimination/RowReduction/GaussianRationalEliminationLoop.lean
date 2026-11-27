@@ -100,7 +100,7 @@ theorem history_previous (A R N c j : PTm n) (hj : Γ ⊢[PRAAx] lt j c) : Γ �
 theorem append_last (H a : PTm n) : Γ ⊢[PRAAx] entry (append H (singleton a)) (length H) ≐ a :=
   (entry_congr (.eqRefl _) (add_zero (length H)).eqSymm).eqTrans
     ((Foundations.SequenceComposition.append_right (a := H) (b := singleton a) (i := zero)
-      (lt_congr (.eqRefl _) (singleton_length a).eqSymm (zero_lt_succ zero))).eqTrans (singleton_lookup _))
+      (Order.zero_lt_of_eq_succ (singleton_length a))).eqTrans (singleton_lookup _))
 theorem history_tag (A R N c : PTm n) : Γ ⊢[PRAAx] entry (history A R N (succ c)) c ≐
     GaussianRationalPivotSearch.tag (matrix A R N c) R (history A R N c) c c :=
   (entry_congr (history_succ _ _ _ _) (history_length _ _ _ _).eqSymm).eqTrans (append_last _ _)

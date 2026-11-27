@@ -202,7 +202,7 @@ theorem quotient_leading (C z N : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N
   have q := values_of_code (quotient_lookup C z N zero hN)
   have h := values_of_code (horner_succ (Γ := Γ) C z zero)
   have hz := values_of_code (horner_zero (Γ := Γ) C z)
-  have c := padded_inside C zero (lt_congr (.eqRefl _) hC.eqSymm (zero_lt_succ N))
+  have c := padded_inside C zero (Order.zero_lt_of_eq_succ hC)
   apply equal_of_values
   · rw [q.1,h.1,re_add,re_mul,hz.1,hz.2,re_zero,im_zero,equal_re c]; ring
   · rw [q.2,h.2,im_add,im_mul,hz.1,hz.2,re_zero,im_zero,equal_im c]; ring

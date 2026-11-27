@@ -290,7 +290,7 @@ theorem initial_evaluate (z : PTm n) : Γ ⊢[PRAAx] equal (evaluate initial z) 
   have eq := values_of_code er
   have hz := values_of_code (horner_zero (Γ := Γ) (initial : PTm n) z)
   have pad := equal_trans (padded_inside (initial : PTm n) zero
-    (lt_congr (.eqRefl _) len.eqSymm (zero_lt_succ zero))) (equal_of_code initial_entry)
+    (Order.zero_lt_of_eq_succ len)) (equal_of_code initial_entry)
   apply equal_of_values
   · rw [eq.1,re_add,re_mul,hz.1,hz.2,equal_re pad]
     simp only [re_zero,im_zero,re_one]; ring
@@ -367,7 +367,7 @@ theorem coefficients_monic_step (R N : PTm n)
     (h : Γ ⊢[PRAAx] equal (entry (coefficients R N) zero) oneCode) :
     Γ ⊢[PRAAx] equal (entry (coefficients R (succ N)) zero) oneCode :=
   equal_trans (equal_of_code (Foundations.SequenceComposition.entry_congr (coefficients_succ R N) (.eqRefl zero)))
-    (equal_trans (linear_leading _ _ (le_congr (.eqRefl _) (coefficients_length R N).eqSymm (zero_lt_succ N))) h)
+    (equal_trans (linear_leading _ _ (Order.zero_lt_of_eq_succ (coefficients_length R N))) h)
 
 /-- The generated list is genuinely monic, uniformly in its numerical degree. -/
 theorem coefficients_monic (R N : PTm n) :

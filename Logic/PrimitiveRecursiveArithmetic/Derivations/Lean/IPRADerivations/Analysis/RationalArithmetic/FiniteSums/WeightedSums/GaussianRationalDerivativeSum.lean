@@ -180,7 +180,7 @@ theorem mesh_positive (C N U p q : PTm n) (hp : Γ ⊢[PRAAx] le one p) (hq : Γ
   · have bad : (mesh C N U p q ≐ zero) :: Γ ⊢[PRAAx] le one zero :=
       le_trans num.wk (le_congr (.eqRefl _) ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)) (mesh_budget C N U p q hp.wk))
     exact succ_ne_zero' _ ((monus_zero one).eqSymm.eqTrans bad)
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem mesh_variation_budget (C N U p q : PTm n) (hp : Γ ⊢[PRAAx] le one p) : Γ ⊢[PRAAx]
     le (total C N U*(four*q)) (p*(denominator C*mesh C N U p q)) := by

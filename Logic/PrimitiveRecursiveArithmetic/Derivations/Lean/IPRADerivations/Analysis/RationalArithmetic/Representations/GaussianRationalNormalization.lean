@@ -233,7 +233,7 @@ theorem pool_target (S T z j : PTm n) (hj : Γ ⊢[PRAAx] lt j (length T)) : Γ 
 
 theorem pool_query (S T z : PTm n) : Γ ⊢[PRAAx] entry (pool S T z) (length S+length T) ≐ z := by
   have zeroBound : Γ ⊢[PRAAx] lt zero (length (singleton z)) :=
-    lt_congr (.eqRefl _) (singleton_length z).eqSymm (zero_lt_succ zero)
+    Order.zero_lt_of_eq_succ (singleton_length z)
   have inner : Γ ⊢[PRAAx] lt (length T+zero) (length (append T (singleton z))) :=
     lt_congr (.eqRefl _) (append_length _ _).eqSymm (Foundations.SequenceComposition.add_lt_left _ zeroBound)
   exact (entry_congr (.eqRefl _) (congrAdd (.eqRefl _) (add_zero (length T))).eqSymm).eqTrans

@@ -34,7 +34,7 @@ theorem singleton_length (z : PTm n) : Γ ⊢[PRAAx] length (singleton z) ≐ on
 theorem singleton_zero (z : PTm n) : Γ ⊢[PRAAx] entry (singleton z) zero ≐ z := by
   simpa [singleton,inst2] using sequence_decode (Γ := Γ) (var 1 : PTm 2) (x := z) (zero_lt_succ zero)
 theorem singleton_index (z : PTm n) : Γ ⊢[PRAAx] lt zero (length (singleton z)) :=
-  lt_congr (.eqRefl _) (singleton_length z).eqSymm (zero_lt_succ zero)
+  Order.zero_lt_of_eq_succ (singleton_length z)
 
 def numerator (z T d : PTm n) : PTm n :=
   distanceTo metricF (entry (grid .left (singleton z) T d) zero)

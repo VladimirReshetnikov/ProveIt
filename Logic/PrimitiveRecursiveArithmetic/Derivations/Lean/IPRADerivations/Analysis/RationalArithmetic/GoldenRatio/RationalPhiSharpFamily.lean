@@ -48,9 +48,9 @@ theorem polynomial_length (Q s r m : PTm n) : Γ ⊢[PRAAx] length (polynomial Q
 theorem powered_head_zero (Q s r m : PTm n) (hm : Γ ⊢[PRAAx] lt (r*s) m) : Γ ⊢[PRAAx] entry (powered Q s r m) zero ≐ scalarZero := by
   have split : Γ ⊢[PRAAx] m ≐ r*s+succ (monus m (succ (r*s))) := (eq_add_of_le hm).eqTrans (by ipra_ring)
   have gap := (congrMonus split (.eqRefl (r*s))).eqTrans (add_monus' (succ (monus m (succ (r*s)))) (r*s))
-  have positive : Γ ⊢[PRAAx] lt zero (monus m (r*s)) := le_congr (.eqRefl _) gap.eqSymm (zero_lt_succ _)
+  have positive : Γ ⊢[PRAAx] lt zero (monus m (r*s)) := Order.zero_lt_of_eq_succ gap
   have stored : Γ ⊢[PRAAx] lt zero (monus m (r*s)+length (RationalPolynomialPowers.power Q s r)) :=
-    lt_congr (.eqRefl _) (pad_length _ _) (lt_congr (.eqRefl _) (powered_length Q s r m (le_of_lt hm)).eqSymm (zero_lt_succ m))
+    lt_congr (.eqRefl _) (pad_length _ _) (Order.zero_lt_of_eq_succ (powered_length Q s r m (le_of_lt hm)))
   exact (pad_lookup _ _ _ stored).eqTrans (pad_coefficient_before _ _ _ positive)
 theorem polynomial_head (Q s r m : PTm n) (hm : Γ ⊢[PRAAx] lt (r*s) m) : Γ ⊢[PRAAx] embed (entry (polynomial Q s r m) zero) ≐ qone :=
   (embed_congr (added_lookup _ _ _ _ (zero_lt_succ m))).eqTrans ((embed_add _ _).eqTrans

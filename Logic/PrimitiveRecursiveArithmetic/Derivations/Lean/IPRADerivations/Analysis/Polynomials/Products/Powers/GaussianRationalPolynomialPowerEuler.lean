@@ -424,7 +424,7 @@ theorem zero_degree_euler (C e : PTm n) : Γ ⊢[PRAAx]
       ((GaussianRationalLowCoefficientConvolution.exponent_inside _ zero zero (le_refl _)).eqTrans
         ((entry_congr (.eqRefl _) (monus_self zero)).eqTrans (GaussianRationalEulerCoefficients.euler_constant _ _)))
   · exact GaussianRationalLowCoefficientConvolution.exponent_outside _ _ e
-      (lt_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _))
+      (Order.zero_lt_of_eq_succ Prf.hyp0)
 
 theorem zero_power_euler (C N K e : PTm n) : Γ ⊢[PRAAx]
     exponentCoefficient (euler (powerPrefix C N K zero) (zero*N)) (zero*N) e ≐ qzero :=

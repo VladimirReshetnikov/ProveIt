@@ -57,7 +57,7 @@ theorem min_product (e j N : PTm n) (hN : Γ ⊢[PRAAx] le e N)
   · exact le_congr (.eqRefl _) ((congrMul (.eqRefl j) Prf.hyp0).eqTrans (mul_zero j)).eqSymm
       (le_congr (.eqRefl _) Prf.hyp0 hN.wk)
   · have hp : ((N ≐ succ (PTm.pred N)) :: Γ) ⊢[PRAAx] le one N :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact le_trans hj.wk (le_congr (one_mul j) (mul_comm N j) (mul_le_mul_right j hp))
 
 theorem cauchy_term_zero (C N K j e i : PTm n) (hC : Γ ⊢[PRAAx] entry C N ≐ qzero)

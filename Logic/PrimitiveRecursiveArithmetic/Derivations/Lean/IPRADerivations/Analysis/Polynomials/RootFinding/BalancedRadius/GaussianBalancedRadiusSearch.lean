@@ -157,7 +157,7 @@ theorem failed_numerator_positive (C N E j i : PTm n)
   · have scoreZero : ((numerator C N i ≐ zero) :: Γ) ⊢[PRAAx] score C N E j i ≐ zero :=
       (congrMul (congrMul Prf.hyp0 (.eqRefl _)) (.eqRefl _)).eqTrans (by ipra_ring)
     exact lt_zero_absurd _ (lt_congr (.eqRefl _) scoreZero hf.wk)
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (PTm.pred (numerator C N i)))
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 def firstBody : PTm 2 := check (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0)
 def first (C N E : PTm n) : PTm n := Search.mu firstBody (succ (two*E)) (data C N E)

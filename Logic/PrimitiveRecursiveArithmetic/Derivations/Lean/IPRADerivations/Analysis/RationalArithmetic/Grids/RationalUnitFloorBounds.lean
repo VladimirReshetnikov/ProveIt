@@ -66,7 +66,7 @@ theorem cut_positive (q G M : PTm n) (hs : Γ ⊢[PRAAx] source q G)
       le_congr (.eqRefl _) d (le_trans hs.wk.andE₂.andE₁
         (mul_le_mul_right (naturalNumerator q) gm.wk))
     exact le_lt_absurd _ bad (original_division q M).andE₂
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem lower_margin (q G M : PTm n) (hs : Γ ⊢[PRAAx] source q G)
     (hM : Γ ⊢[PRAAx] le (two*G) M) : Γ ⊢[PRAAx] le M ((two*G)*index q M) := by

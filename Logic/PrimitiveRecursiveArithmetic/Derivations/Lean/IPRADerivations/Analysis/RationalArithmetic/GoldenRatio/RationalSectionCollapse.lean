@@ -92,7 +92,7 @@ theorem first_leading_zero (P s r m : PTm n) (h : Γ ⊢[PRAAx] lt (r*s) m) :
   have split : Γ ⊢[PRAAx] m ≐ r*s+succ (monus m (succ (r*s))) :=
     (eq_add_of_le h).eqTrans (by ipra_ring)
   have gap := (congrMonus split (.eqRefl (r*s))).eqTrans (add_monus' (succ (monus m (succ (r*s)))) (r*s))
-  exact le_congr (.eqRefl _) gap.eqSymm (zero_lt_succ _)
+  exact Order.zero_lt_of_eq_succ gap
 
 private theorem evaluate_input (C d x : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ d) : Γ ⊢[PRAAx]
     evaluate (coefficients C (succ d)) (embed x) ≐ embed (RationalPolynomialGaussianEmbedding.evaluate C x) :=

@@ -406,7 +406,7 @@ theorem backward_at (C N z j k : PTm n) (hLen : Γ ⊢[PRAAx] length C ≐ succ 
         ((qsub_congr (.eqRefl _) (qmul_congr (.eqRefl _) next)).eqTrans
           ((R_constant C N z j hj.wk).eqSymm.eqTrans (R_index_congr C N z j Prf.hyp0.eqSymm))))
   · have kpos : (k ≐ succ (pred k))::Γ ⊢[PRAAx] le one k :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have predRange : (k ≐ succ (pred k))::Γ ⊢[PRAAx] le (pred k) (remaining N (succ j)) :=
       (succ_monus_succ _ _).eqSymm.eqTrans
         (le_congr Prf.hyp0 (remaining_step N j hj.wk) hk.wk)
