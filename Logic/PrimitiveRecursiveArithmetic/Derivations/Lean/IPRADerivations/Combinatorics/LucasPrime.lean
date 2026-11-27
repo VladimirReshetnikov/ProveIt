@@ -205,16 +205,9 @@ theorem congrLuc {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] luc a
 
 /-- An even prime is `2`. -/
 theorem even_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (he : Γ ⊢[PRAAx] par p ≐ zero) : Γ ⊢[PRAAx] p ≐ two := by
-  have hp2 : Γ ⊢[PRAAx] le two p := by have h := hp; unfold prime at h; exact Prf.andE₁ h
-  have hp' := hp
-  unfold prime at hp'
-  have hall := Prf.allE two (Prf.andE₂ hp')
-  simp only [Fm.subst_imp, subst_le, subst_lt, subst_neg, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at hall
   have d2 : Γ ⊢[PRAAx] dvd two p :=
     dvd_of_eq' two_pos ((half_par p).eqTrans ((congrAdd (.eqRefl _) he).eqTrans (add_zero _)))
-  refine .orE (lt_or_eq_of_le hp2) ?_ (Prf.hyp0.eqSymm)
-  exact .botE _ (.impE (.impE (.impE hall.wk (le_refl _)) Prf.hyp0) d2.wk)
+  exact (prime_eq_of_dvd hp (le_refl two) d2).eqSymm
 
 /-- The odd case: `L_p ≡ 1` from `2^p L_p ≡ 2` and `2^p ≡ 2`. -/
 theorem lucas_odd {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ho : Γ ⊢[PRAAx] par p ≐ one) :

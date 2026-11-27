@@ -106,35 +106,35 @@ theorem dvd_congr_left {Δ : List (Fm PTm n)} {d d' x : PTm n} (h : Δ ⊢[PRAAx
     (hx : Δ ⊢[PRAAx] dvd d x) : Δ ⊢[PRAAx] dvd d' x :=
   (congrAp2 remF (.eqRefl _) h.eqSymm).eqTrans hx
 
+/-- A divisor at least two of a prime is the prime itself. -/
+theorem prime_eq_of_dvd {p d : PTm n} (hp : Γ ⊢[PRAAx] prime p)
+    (hd₂ : Γ ⊢[PRAAx] le two d) (hdvd : Γ ⊢[PRAAx] dvd d p) : Γ ⊢[PRAAx] d ≐ p := by
+  have hd : Γ ⊢[PRAAx] d ≐ succ (succ (monus d two)) :=
+    (eq_add_of_le hd₂).eqTrans (by ipra_ring)
+  have hdp := le_congr hd.eqSymm (.eqRefl _)
+    (dvd_le (dvd_congr_left hd hdvd) (prime_eq_succ_pred hp))
+  unfold prime at hp
+  have hall := Prf.allE d (Prf.andE₂ hp)
+  simp only [Fm.subst_imp, subst_le, subst_lt, subst_neg, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
+    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at hall
+  refine .orE (lt_or_eq_of_le hdp) ?_ Prf.hyp0
+  exact .botE _ (.impE (.impE (.impE hall.wk hd₂.wk) Prf.hyp0) hdvd.wk)
+
 /-- For a prime `p` with `p ∤ a`: `gcd(p, a) = 1`. -/
 theorem gcd_prime {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p)
     (hna : Γ ⊢[PRAAx] neg (dvd p a)) : Γ ⊢[PRAAx] gcd p a ≐ one := by
   have e := prime_eq_succ_succ hp
-  have hx := prime_eq_succ_pred hp
-  unfold prime at hp
-  have hall := Prf.allE (gcd p a) (Prf.andE₂ hp)
-  simp only [Fm.subst_imp, subst_le, subst_lt, subst_neg, Fm.subst_eq, subst_ap2,
-    Syn.subst_inst_shift, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_succ,
-    ConciseIPRA.PTm.subst_zero] at hall
-  -- g ≠ 0, since g = 0 forces p = 0.
   refine .orE (zero_or_succ (gcd p a)) ?_ ?_
   · exact succ_ne_zero' _ (a := succ (monus p two)) (e.wk.eqSymm.eqTrans (gcd_eq_zero Prf.hyp0))
   have hg : ((gcd p a ≐ succ (pred (gcd p a))) :: Γ) ⊢[PRAAx] gcd p a ≐ succ (pred (gcd p a)) :=
     Prf.hyp0
   have hd := gcd_dvd_at hg
-  have hle := dvd_le (d' := pred (gcd p a)) (dvd_congr_left hg (Prf.andE₁ hd)) hx.wk
-  have hle' := le_congr hg.eqSymm (.eqRefl _) hle
-  -- g ≠ 1 is what we refute: g = S (S _) is impossible.
   refine .orE (zero_or_succ (pred (gcd p a))) ?_ ?_
   · exact hg.wk.eqTrans (congrSucc Prf.hyp0)
-  refine .botE _ ?_
-  -- g ≥ 2: either g < p, contradicting primality, or g = p, contradicting p ∤ a.
-  refine .orE (lt_or_eq_of_le hle'.wk) ?_ ?_
-  · refine .impE (.impE (.impE hall.wk.wk.wk ?_) Prf.hyp0) (Prf.andE₁ hd).wk.wk
-    refine le_of_eq_add (d := pred (pred (gcd p a))) ?_
-    refine hg.wk.wk.eqTrans ((congrSucc Prf.hyp1).eqTrans ?_)
-    ipra_ring
-  · exact .impE hna.wk.wk.wk (dvd_congr_left Prf.hyp0 (Prf.andE₂ hd).wk.wk)
+  refine .botE _ (.impE hna.wk.wk (dvd_congr_left ?_ hd.andE₂.wk))
+  refine prime_eq_of_dvd hp.wk.wk ?_ hd.andE₁.wk
+  refine le_of_eq_add (d := pred (pred (gcd p a))) ?_
+  exact hg.wk.eqTrans ((congrSucc Prf.hyp0).eqTrans (by ipra_ring))
 
 /-- The algebra of case one: `g + X a = Y p`, `g = 1`, `a b = q w`, `p = q` give
 `b + q (X w) = q (Y b)`. -/

@@ -65,13 +65,10 @@ theorem sum3 {V A B C : PTm n} (h : Γ ⊢[PRAAx] le V C) : Γ ⊢[PRAAx] le V (
 /-- An even number `2y` with `y ≥ 2` is not prime. -/
 theorem even_not_prime {q y : PTm n} (hq : Γ ⊢[PRAAx] prime q) (e : Γ ⊢[PRAAx] q ≐ two * y)
     (hy : Γ ⊢[PRAAx] le two y) : Γ ⊢[PRAAx] Fm.bot := by
-  have hq2 := prime_two hq
-  have hz : Γ ⊢[PRAAx] q ≐ two * y + zero := e.eqTrans (add_zero _).eqSymm
-  have hr : Γ ⊢[PRAAx] lt (zero : PTm n) two := le_of_eq_add (d := one) (by ipra_ring)
-  have d2 : Γ ⊢[PRAAx] dvd two q := Prf.andE₂ (dmu two_pos' hz hr)
-  have l := le_congr (lpf_of_prime hq) (.eqRefl _) (lpf_min (p_pos hq2) (le_refl two) d2)
-  have en := natEq e
-  have bad : Γ ⊢[PRAAx] le two zero := by ipra_le sl l + 2 * sl hy with en
+  have d2 := dvd_of_eq' two_pos' e
+  have hq2 := prime_eq_of_dvd hq (le_refl two) d2
+  have en := natEq (hq2.eqTrans e)
+  have bad : Γ ⊢[PRAAx] le two zero := by ipra_le 2 * sl hy with en
   exact lt_zero_absurd _ bad
 
 /-- `v_q(q) = 1` for a prime `q`. -/

@@ -71,21 +71,8 @@ theorem congrVal {p p' m m' : PTm n} (h₁ : Γ ⊢[PRAAx] p ≐ p') (h₂ : Γ 
 
 /-- A prime `q ≠ p` does not divide the prime `p`. -/
 theorem not_dvd_prime {q p : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[PRAAx] prime p)
-    (hne : Γ ⊢[PRAAx] neg (q ≐ p)) : Γ ⊢[PRAAx] neg (dvd q p) := by
-  refine .impI ?_
-  let C : List (Fm PTm n) := dvd q p :: Γ
-  have hd : C ⊢[PRAAx] dvd q p := Prf.hyp0
-  have hq1 := p_pos (prime_two hq.wk : C ⊢[PRAAx] _)
-  have hp1 := p_pos (prime_two hp.wk : C ⊢[PRAAx] _)
-  have hle := dvd_le' hq1 hd hp1
-  refine .orE (lt_or_le q p) ?_ ?_
-  · have hp' := (hp.wk (ψ := dvd q p)).wk (ψ := lt q p)
-    unfold prime at hp'
-    have a := Prf.allE q (Prf.andE₂ hp')
-    simp only [Fm.subst_imp, subst_le, subst_lt, subst_neg, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at a
-    exact Prf.impE (Prf.impE (Prf.impE a (prime_two hq.wk.wk)) Prf.hyp0) hd.wk
-  · exact Prf.impE hne.wk.wk (le_antisymm hle.wk Prf.hyp0)
+    (hne : Γ ⊢[PRAAx] neg (q ≐ p)) : Γ ⊢[PRAAx] neg (dvd q p) :=
+  .impI (.impE hne.wk (prime_eq_of_dvd hp.wk (prime_two hq.wk) Prf.hyp0))
 
 /-- `v_q(p) = [q = p]` for primes `q`, `p`. -/
 theorem val_pp {q p : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[PRAAx] prime p) :

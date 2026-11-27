@@ -49,17 +49,8 @@ theorem sq_pred_ge {p : PTm n} (h : Γ ⊢[PRAAx] le (succ two) p) :
 theorem prime_odd {N p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hpN : Γ ⊢[PRAAx] dvd p N)
     (hodd : Γ ⊢[PRAAx] rem N two ≐ one) : Γ ⊢[PRAAx] rem p two ≐ one := by
   refine eq_one_of_lt_two (rem_lt' two_pos' p) (.impI ?_)
-  -- `2 ∣ p` forces `p = 2`, and then `2 ∣ N`.
-  have hp2 : Γ ⊢[PRAAx] le two p := by have h := hp; unfold prime at h; exact Prf.andE₁ h
-  have hp' := hp
-  unfold prime at hp'
-  have hall := Prf.allE two (Prf.andE₂ hp')
-  simp only [Fm.subst_imp, subst_le, subst_lt, subst_neg, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at hall
-  refine .orE (lt_or_eq_of_le hp2.wk) ?_ ?_
-  · exact .impE (.impE (.impE hall.wk.wk (le_refl _)) Prf.hyp0) Prf.hyp1
-  · exact succ_ne_zero' _ (a := zero) (hodd.wk.wk.eqSymm.eqTrans (dvd_trans' two_pos' (prime_eq_succ_pred hp).wk.wk
-      Prf.hyp1 hpN.wk.wk))
+  exact succ_ne_zero' _ (a := zero) (hodd.wk.eqSymm.eqTrans
+    (dvd_trans' two_pos' (prime_eq_succ_pred hp).wk Prf.hyp0 hpN.wk))
 
 /-- An odd prime is `≥ 3`. -/
 theorem three_le_of_odd_prime {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] rem p two ≐ one) :

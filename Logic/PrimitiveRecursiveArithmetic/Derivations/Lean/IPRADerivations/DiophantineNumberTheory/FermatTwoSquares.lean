@@ -33,7 +33,6 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares
 
 open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.BertrandFactor (even_not_prime)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 open LeanProofs.IPRA.Combinatorics.IndependentSets (half_double half_double_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB)
@@ -125,16 +124,9 @@ theorem fermat_witness {p : PTm n} (hp : Γ ⊢[PRAAx] prime p)
 theorem odd_of_prime_ne_two {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hne : Γ ⊢[PRAAx] neg (p ≐ two)) :
     Γ ⊢[PRAAx] par p ≐ one := by
   refine .orE (par_cases p) ?_ Prf.hyp0
-  have pz : ((par p ≐ zero) :: Γ) ⊢[PRAAx] par p ≐ zero := Prf.hyp0
-  have e : ((par p ≐ zero) :: Γ) ⊢[PRAAx] p ≐ two * half p :=
-    (half_par p).eqTrans ((congrAdd (.eqRefl _) pz).eqTrans (add_zero _))
-  refine .orE (lt_or_le (half p) two) ?_ ?_
-  · have hlt : (lt (half p) two :: (par p ≐ zero) :: Γ) ⊢[PRAAx] lt (half p) two := Prf.hyp0
-    have en := natEq (e.wk (ψ := lt (half p) two))
-    have l : (lt (half p) two :: (par p ≐ zero) :: Γ) ⊢[PRAAx] le p two := by
-      ipra_le 2 * sl hlt with en
-    exact .botE _ (.impE hne.wk.wk (le_antisymm l (prime_two hp).wk.wk))
-  · exact .botE _ (even_not_prime hp.wk.wk e.wk Prf.hyp0)
+  have ep : ((par p ≐ zero) :: Γ) ⊢[PRAAx] p ≐ two * half p :=
+    (half_par p).eqTrans ((congrAdd (.eqRefl _) Prf.hyp0).eqTrans (add_zero _))
+  exact .botE _ (.impE hne.wk (prime_eq_of_dvd hp.wk (le_refl two) (dvd_of_eq ep)).eqSymm)
 
 theorem ee_alg {a b p a' b' : PTm n} (ea : Γ ⊢[PRAAx] a ≐ two * a') (eb : Γ ⊢[PRAAx] b ≐ two * b')
     (e : Γ ⊢[PRAAx] a * a + b * b ≐ p) : Γ ⊢[PRAAx] p ≐ two * (two * (a' * a') + two * (b' * b')) := by

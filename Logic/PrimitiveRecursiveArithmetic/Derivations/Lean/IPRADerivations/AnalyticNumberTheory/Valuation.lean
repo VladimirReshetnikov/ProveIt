@@ -191,19 +191,10 @@ theorem two_le_lpf (z : PTm n) : Γ ⊢[PRAAx] le two (lpf z) :=
 
 /-- A prime is its own least prime factor. -/
 theorem lpf_of_prime {q : PTm n} (hp : Γ ⊢[PRAAx] prime q) : Γ ⊢[PRAAx] lpf q ≐ q := by
-  have hq2 := prime_eq_succ_succ hp
-  have hL := lpf_congr hq2
-  have d := lpf_dvd (Γ := Γ) (monus q two)
-  refine hL.eqTrans (.eqTrans ?_ hq2.eqSymm)
-  refine .orE (lt_or_eq_of_le (Prf.andE₂ d)) ?_ Prf.hyp0
-  have hp' := hp
-  unfold prime at hp'
-  have hall := Prf.allE (lpf (succ (succ (monus q two)))) (Prf.andE₂ hp')
-  simp only [Fm.subst_imp, subst_le, subst_lt, subst_neg, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at hall
-  refine .botE _ (.impE (.impE (.impE hall.wk (two_le_lpf _)) ?_) ?_)
-  · exact lt_congr (.eqRefl _) hq2.wk.eqSymm Prf.hyp0
-  · exact dvd_congr hq2.wk.eqSymm (Prf.andE₁ d).wk
+  have hq := prime_eq_succ_succ hp
+  have hd := lpf_dvd (Γ := Γ) (monus q two)
+  exact (lpf_congr hq).eqTrans (prime_eq_of_dvd hp (two_le_lpf _)
+    (dvd_congr hq.eqSymm hd.andE₁))
 
 theorem sg_monus_one_succ (y : PTm n) : Γ ⊢[PRAAx] sg (monus (succ (succ y)) one) ≐ one :=
   (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) ((succ_monus_succ _ _).eqTrans (monus_zero _)))).eqTrans
