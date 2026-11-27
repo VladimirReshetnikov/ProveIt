@@ -65,6 +65,8 @@ For the distinct four-marker construction in `gpi:thm:explicit`, [ExplicitArithm
 
 [PolynomialCounterexample.lean](GRHArticle/ProgressionFree/PolynomialCounterexample.lean) proves the counterexample to Asada–Fourakis–Manski–McNew–Miller–Moreland's Conjecture 6.3. For every finite field, a single infinite set has no three-term progression with a polynomial ratio of positive degree and has upper density strictly larger than the greedy degree benchmark. Its quantitative lower bound implies the strict inequality $m_q<\beta_q$ for the [supremum over all admissible sets](GRHArticle/ProgressionFree/PolynomialDensitySupremum.lean). [PolynomialSupremum.lean](GRHArticle/ProgressionFree/PolynomialSupremum.lean) proves the attainment assertion in `gpp:thm:supremum`. There is a single zero-free progression-free set over each finite field whose upper density equals $\beta_q$. [Article section](../Article/sections/gpp.tex)
 
+For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/ProgressionFree/PolynomialIrreducibleDegrees.lean) proves the exact divisor recurrence for the counts of monic irreducibles by factoring the Frobenius polynomial. [PolynomialRoughDensityBound.lean](GRHArticle/ProgressionFree/PolynomialRoughDensityBound.lean) bounds the prime-weight sum by a harmonic number and proves $c_2>2^{-12}$. [PolynomialSearchCutoff.lean](GRHArticle/ProgressionFree/PolynomialSearchCutoff.lean) defines the article's upward-rounded budgets and proves all five displayed numerical bounds on $R_q^*$, including $R_2^*+13<2^{476}$. The concentration estimate is still needed to locate a positive coefficient within these bounds.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
