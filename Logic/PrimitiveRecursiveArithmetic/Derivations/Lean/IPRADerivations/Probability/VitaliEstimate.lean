@@ -1,5 +1,4 @@
-import IPRADerivations.Probability.Expectation
-import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Probability.TruncationEstimate
 import IPRADerivations.Core.Fubini
 
 /-!
@@ -15,8 +14,8 @@ For a finite weighted law with weights `w(i, x)`, the distance `d = |X_n − X|`
 with `d ≤ a + b`, and bodies `e₁, e₂, e₃` that are `1` on `{d > η}`, `{a > K}`, `{b > K}` (in particular the
 indicators):
 
-* `vitali_pt`: `w d ≤ η w + 2K w e₁ + w a e₂ + w b e₃`, by the regions `d ≤ η` and, for `d > η`, the four
-  combinations of `a ≶ K`, `b ≶ K`;
+* `vitali_pt`: `w d ≤ η w + 2K w e₁ + w a e₂ + w b e₃`, using the separate tail bounds
+  `a ≤ K + a e₂` and `b ≤ K + b e₃` when `d > η`;
 * `vitali`: `Σ w d ≤ η Σ w + 2K Σ w e₁ + Σ w a e₂ + Σ w b e₃`, i.e.
   `E|X_n − X| ≤ η + 2K P(|X_n − X| > η) + E[|X_n| 1_{|X_n|>K}] + E[|X| 1_{|X|>K}]`: the two uniform-integrability
   tails and the convergence-in-probability term control the `L¹` distance;
@@ -32,12 +31,13 @@ namespace LeanProofs.IPRA.Probability.VitaliEstimate
 
 open_ipra
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
+open LeanProofs.IPRA.Probability.TruncationEstimate (le_cap_add_tail)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-/-- The pointwise Vitali inequality, by the regions `d ≤ η` and the four tail combinations. -/
+/-- The pointwise Vitali inequality, using separate bounds for the two tails. -/
 theorem vitali_pt {w d a b η K e₁ e₂ e₃ : PTm n}
     (hd : Γ ⊢[PRAAx] le d (a + b))
     (h₁ : Γ ⊢[PRAAx] lt η d ⟶ (e₁ ≐ one))
@@ -45,48 +45,12 @@ theorem vitali_pt {w d a b η K e₁ e₂ e₃ : PTm n}
     (h₃ : Γ ⊢[PRAAx] lt K b ⟶ (e₃ ≐ one)) :
     Γ ⊢[PRAAx] le (w * d) (η * w + two * K * (w * e₁) + w * (a * e₂) + w * (b * e₃)) := by
   refine .orE (lt_or_le η d) ?_ ?_
-  · let C : List (Fm PTm n) := lt η d :: Γ
-    have E₁ : C ⊢[PRAAx] e₁ ≐ one := Prf.impE h₁.wk Prf.hyp0
-    have hd₁ : C ⊢[PRAAx] le d (a + b) := hd.wk
-    have h₂₁ : C ⊢[PRAAx] lt K a ⟶ (e₂ ≐ one) := h₂.wk
-    have h₃₁ : C ⊢[PRAAx] lt K b ⟶ (e₃ ≐ one) := h₃.wk
-    refine .orE (lt_or_le K a) ?_ ?_
-    · let C₂ : List (Fm PTm n) := lt K a :: C
-      have E₂ : C₂ ⊢[PRAAx] e₂ ≐ one := Prf.impE h₂₁.wk Prf.hyp0
-      have E₁' : C₂ ⊢[PRAAx] e₁ ≐ one := E₁.wk
-      have hd₂ : C₂ ⊢[PRAAx] le d (a + b) := hd₁.wk
-      have h₃₂ : C₂ ⊢[PRAAx] lt K b ⟶ (e₃ ≐ one) := h₃₁.wk
-      refine .orE (lt_or_le K b) ?_ ?_
-      · have E₃ := natEq (Prf.impE h₃₂.wk Prf.hyp0 : (lt K b :: C₂) ⊢[PRAAx] e₃ ≐ one)
-        have a₂ := natEq (E₂.wk : (lt K b :: C₂) ⊢[PRAAx] e₂ ≐ one)
-        have hd₃ : (lt K b :: C₂) ⊢[PRAAx] le d (a + b) := hd₂.wk
-        ipra_le 𝔟 η * 𝔟 w + 2 * 𝔟 K * (𝔟 w * 𝔟 e₁) + 𝔟 w * sl hd₃ using
-          linear_combination 𝔟 w * 𝔟 a * a₂ + 𝔟 w * 𝔟 b * E₃
-      · have hbK : (le b K :: C₂) ⊢[PRAAx] le b K := Prf.hyp0
-        have a₁ := natEq (E₁'.wk : (le b K :: C₂) ⊢[PRAAx] e₁ ≐ one)
-        have a₂ := natEq (E₂.wk : (le b K :: C₂) ⊢[PRAAx] e₂ ≐ one)
-        have hd₃ : (le b K :: C₂) ⊢[PRAAx] le d (a + b) := hd₂.wk
-        ipra_le 𝔟 η * 𝔟 w + 𝔟 w * sl hd₃ + 𝔟 w * sl hbK + 𝔟 K * 𝔟 w + 𝔟 w * (𝔟 b * 𝔟 e₃) using
-          linear_combination 2 * 𝔟 K * 𝔟 w * a₁ + 𝔟 w * 𝔟 a * a₂
-    · let C₂ : List (Fm PTm n) := le a K :: C
-      have haK : C₂ ⊢[PRAAx] le a K := Prf.hyp0
-      have E₁' : C₂ ⊢[PRAAx] e₁ ≐ one := E₁.wk
-      have hd₂ : C₂ ⊢[PRAAx] le d (a + b) := hd₁.wk
-      have h₃₂ : C₂ ⊢[PRAAx] lt K b ⟶ (e₃ ≐ one) := h₃₁.wk
-      refine .orE (lt_or_le K b) ?_ ?_
-      · have E₃ := natEq (Prf.impE h₃₂.wk Prf.hyp0 : (lt K b :: C₂) ⊢[PRAAx] e₃ ≐ one)
-        have a₁ := natEq (E₁'.wk : (lt K b :: C₂) ⊢[PRAAx] e₁ ≐ one)
-        have hd₃ : (lt K b :: C₂) ⊢[PRAAx] le d (a + b) := hd₂.wk
-        have haK' : (lt K b :: C₂) ⊢[PRAAx] le a K := haK.wk
-        ipra_le 𝔟 η * 𝔟 w + 𝔟 w * sl hd₃ + 𝔟 w * sl haK' + 𝔟 K * 𝔟 w + 𝔟 w * (𝔟 a * 𝔟 e₂) using
-          linear_combination 2 * 𝔟 K * 𝔟 w * a₁ + 𝔟 w * 𝔟 b * E₃
-      · have hbK : (le b K :: C₂) ⊢[PRAAx] le b K := Prf.hyp0
-        have a₁ := natEq (E₁'.wk : (le b K :: C₂) ⊢[PRAAx] e₁ ≐ one)
-        have hd₃ : (le b K :: C₂) ⊢[PRAAx] le d (a + b) := hd₂.wk
-        have haK' : (le b K :: C₂) ⊢[PRAAx] le a K := haK.wk
-        ipra_le 𝔟 η * 𝔟 w + 𝔟 w * sl hd₃ + 𝔟 w * sl haK' + 𝔟 w * sl hbK + 𝔟 w * (𝔟 a * 𝔟 e₂) +
-            𝔟 w * (𝔟 b * 𝔟 e₃) using
-          linear_combination 2 * 𝔟 K * 𝔟 w * a₁
+  · have E := natEq (Prf.impE h₁.wk Prf.hyp0)
+    have hd' := hd.wk (ψ := lt η d)
+    have ha := le_cap_add_tail (h₂.wk (ψ := lt η d))
+    have hb := le_cap_add_tail (h₃.wk (ψ := lt η d))
+    ipra_le 𝔟 η * 𝔟 w + 𝔟 w * (sl hd' + sl ha + sl hb) using
+      linear_combination 2 * 𝔟 K * 𝔟 w * E
   · have hdη : (le d η :: Γ) ⊢[PRAAx] le d η := Prf.hyp0
     ipra_le 𝔟 w * sl hdη + 2 * 𝔟 K * (𝔟 w * 𝔟 e₁) + 𝔟 w * (𝔟 a * 𝔟 e₂) + 𝔟 w * (𝔟 b * 𝔟 e₃)
 

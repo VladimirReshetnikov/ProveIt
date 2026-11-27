@@ -13,8 +13,8 @@ For a finite weighted law with weights `w(i, x)`, the distance `d(i, x) = |X −
 function `G(i, x)`, with `d ≤ 2G` (the consequence `|X − Y| ≤ |X| + |Y| ≤ 2G` of the domination), and for
 any bodies `e₁`, `e₂` that are `1` on the events `{d > η}` and `{G > K}` (in particular the indicators):
 
-* `trunc_pt`: the pointwise inequality `w d ≤ η w + 2K w e₁ + 2 w G e₂`, by the three regions
-  `d ≤ η`; `d > η` and `G ≤ K`; `G > K`;
+* `trunc_pt`: the pointwise inequality `w d ≤ η w + 2K w e₁ + 2 w G e₂`, using the tail bound
+  `G ≤ K + G e₂` when `d > η`;
 * `truncation`: `∑ w d ≤ η ∑ w + 2K ∑ w e₁ + 2 ∑ w G e₂`.
 
 The division by the total weight and the refinement argument for effective names are not derived.
@@ -31,25 +31,29 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
-/-- The pointwise truncation inequality, by three decidable regions. -/
+/-- The cap plus the selected tail dominates the original size. -/
+theorem le_cap_add_tail {a K e : PTm n}
+    (he : Γ ⊢[PRAAx] lt K a ⟶ (e ≐ one)) : Γ ⊢[PRAAx] le a (K + a * e) := by
+  refine .orE (lt_or_le K a) ?_ ?_
+  · have E := natEq (Prf.impE he.wk Prf.hyp0)
+    ipra_le 𝔟 K using linear_combination 𝔟 a * E
+  · have h : (le a K :: Γ) ⊢[PRAAx] le a K := Prf.hyp0
+    ipra_le sl h + 𝔟 a * 𝔟 e
+
+/-- The pointwise truncation inequality. -/
 theorem trunc_pt {w d G η K e₁ e₂ : PTm n}
     (hd : Γ ⊢[PRAAx] le d (two * G))
     (h₁ : Γ ⊢[PRAAx] lt η d ⟶ (e₁ ≐ one))
     (h₂ : Γ ⊢[PRAAx] lt K G ⟶ (e₂ ≐ one)) :
     Γ ⊢[PRAAx] le (w * d) (η * w + two * K * (w * e₁) + two * (w * (G * e₂))) := by
-  refine .orE (lt_or_le K G) ?_ ?_
-  · have E₂ := natEq (Prf.impE h₂.wk Prf.hyp0)
-    have hd' := hd.wk (ψ := lt K G)
-    ipra_le 𝔟 η * 𝔟 w + 2 * 𝔟 K * (𝔟 w * 𝔟 e₁) + 𝔟 w * sl hd' using
-      linear_combination 2 * 𝔟 w * 𝔟 G * E₂
-  · refine .orE (lt_or_le η d) ?_ ?_
-    · have E₁ := natEq (Prf.impE ((h₁.wk (ψ := le G K)).wk (ψ := lt η d)) Prf.hyp0)
-      have hGK : (lt η d :: le G K :: Γ) ⊢[PRAAx] le G K := Prf.hyp1
-      have hd' := (hd.wk (ψ := le G K)).wk (ψ := lt η d)
-      ipra_le 𝔟 η * 𝔟 w + 𝔟 w * (2 * sl hGK + sl hd') + 2 * (𝔟 w * (𝔟 G * 𝔟 e₂)) using
-        linear_combination 2 * 𝔟 K * 𝔟 w * E₁
-    · have hdη : (le d η :: le G K :: Γ) ⊢[PRAAx] le d η := Prf.hyp0
-      ipra_le 𝔟 w * sl hdη + 2 * 𝔟 K * (𝔟 w * 𝔟 e₁) + 2 * (𝔟 w * (𝔟 G * 𝔟 e₂))
+  refine .orE (lt_or_le η d) ?_ ?_
+  · have E := natEq (Prf.impE h₁.wk Prf.hyp0)
+    have hd' := hd.wk (ψ := lt η d)
+    have hG := le_cap_add_tail (h₂.wk (ψ := lt η d))
+    ipra_le 𝔟 η * 𝔟 w + 𝔟 w * (sl hd' + 2 * sl hG) using
+      linear_combination 2 * 𝔟 K * 𝔟 w * E
+  · have hdη : (le d η :: Γ) ⊢[PRAAx] le d η := Prf.hyp0
+    ipra_le 𝔟 w * sl hdη + 2 * 𝔟 K * (𝔟 w * 𝔟 e₁) + 2 * (𝔟 w * (𝔟 G * 𝔟 e₂))
 
 section Sums
 
