@@ -90,11 +90,9 @@ private theorem harmonic_step (N : PTm n) (h : Γ ⊢[PRAAx] harmonicLaw N) :
 
 private theorem harmonic_sum (N : PTm n) : Γ ⊢[PRAAx] harmonicLaw N := by
   have all : Γ ⊢[PRAAx] .all (harmonicLaw (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_harmonicLaw, Syn.subst_var, Syn.inst_zero]
-      exact (GaussianRationalFiniteSum.sum_zero harmonicBody zero).eqTrans GaussianGammaEulerHeadQuadratic.harmonic_zero.eqSymm
-    · simp only [subst_harmonicLaw, Syn.subst_var, Syn.repl_zero]
-      exact harmonic_step (var 0) Prf.hyp0
+    ipra_qfind [subst_harmonicLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero harmonicBody zero).eqTrans GaussianGammaEulerHeadQuadratic.harmonic_zero.eqSymm
+    · exact harmonic_step (var 0) Prf.hyp0
   simpa only [subst_harmonicLaw, Syn.subst_var, Syn.inst_zero] using all.allE N
 
 private theorem zero_reciprocal_row (A B D neg : PTm n) (hD : Γ ⊢[PRAAx] le one D) :

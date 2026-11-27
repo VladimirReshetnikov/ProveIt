@@ -68,13 +68,9 @@ theorem polynomial_proper (z w B D N : PTm n)
     simpa [Δ,Fm.shift,Syn.shift] using hq.shift
   have all : Γ ⊢[PRAAx] .all
       (polynomial (Syn.shift z) (Syn.shift B) (var 0) ≐ polynomial (Syn.shift w) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,GaussianBarnesCanonicalCenteredHead.subst_polynomial,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (polynomial_zero z B).eqTrans (polynomial_zero w D).eqSymm
-    · simp only [Fm.subst_eq,GaussianBarnesCanonicalCenteredHead.subst_polynomial,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (polynomial_succ _ _ _).eqTrans
+    ipra_qfind [GaussianBarnesCanonicalCenteredHead.subst_polynomial]
+    · exact (polynomial_zero z B).eqTrans (polynomial_zero w D).eqSymm
+    · exact (polynomial_succ _ _ _).eqTrans
         ((advance_proper _ _ _ _ (var 0) _ _ Prf.hyp0 (factor_proper _ _ _ _ _ bs.wk ds.wk qs.wk)).eqTrans
           (polynomial_succ _ _ _).eqSymm)
   simpa only [Fm.subst_eq,GaussianBarnesCanonicalCenteredHead.subst_polynomial,

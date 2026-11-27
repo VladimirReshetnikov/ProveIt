@@ -45,10 +45,9 @@ theorem split_step (z B N r L s : PTm n) (ih : Γ ⊢[PRAAx] splitLaw z B N r L 
       (qadd_congr (.eqRefl _) (GaussianGammaCanonicalTailFiniteSplit.gaussian_sum_succ z B (N+r) s L).eqSymm)))
 theorem sum_split (z B N r s L : PTm n) : Γ ⊢[PRAAx] splitLaw z B N r L s := by
   have hall : Γ ⊢[PRAAx] .all (splitLaw (Syn.shift z) (Syn.shift B) (Syn.shift N) (Syn.shift r) (Syn.shift L) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using split_zero (Γ := Γ) z B N r L
-    · simp only [subst_splitLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact split_step _ _ _ _ _ _ Prf.hyp0
+    ipra_qfind [subst_splitLaw]
+    · exact split_zero (Γ := Γ) z B N r L
+    · exact split_step _ _ _ _ _ _ Prf.hyp0
   simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE s
 
 theorem original_sum_as_degree (z B N r L : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]

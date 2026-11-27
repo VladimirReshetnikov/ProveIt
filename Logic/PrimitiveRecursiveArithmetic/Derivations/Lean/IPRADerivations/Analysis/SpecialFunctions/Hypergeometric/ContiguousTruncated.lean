@@ -108,18 +108,14 @@ theorem contig_step {a b y N : PTm n} (ih : Γ ⊢[PRAAx] CInv w a b y N) : Γ �
 /-- "Finite contiguous relation": `a S_N(a + 1, b) + b S_N(a, b) = b S_N(a, b + 1) + a S_N(a, b)`. -/
 theorem contig_truncated (a b y N : PTm n) : Γ ⊢[PRAAx] CInv w a b y N := by
   have hall : Γ ⊢[PRAAx] Fm.all (CInv w (Syn.shift a) (Syn.shift b) (Syn.shift y) (Syn.var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      have z1 := natEq (sum_zero (Γ := Γ) (TAB w) (pairT a (pairT b y)))
+    ipra_qfind [subst_ap2, subst_pairT]
+    · have z1 := natEq (sum_zero (Γ := Γ) (TAB w) (pairT a (pairT b y)))
       have z2 := natEq (sum_zero (Γ := Γ) (T0B w) (pairT a (pairT b y)))
       have z3 := natEq (sum_zero (Γ := Γ) (TBB w) (pairT a (pairT b y)))
       apply deriveNat
       ipra_simps
       rw [z1, z2, z3]; ring
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact contig_step w Prf.hyp0
+    · exact contig_step w Prf.hyp0
   have h2 := Prf.allE N hall
   simpa only [Fm.subst_eq, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
     Syn.inst_zero, Syn.subst_inst_shift] using h2

@@ -36,12 +36,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- The actual finite scalar sum at zero is one for EVERY runtime cutoff. -/
 theorem scalar_zero_point (K : PTm n) : Γ ⊢[PRAAx] scalarSum qzero K ≐ qone := by
   have all : Γ ⊢[PRAAx] .all (scalarSum qzero (var 0) ≐ qone) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [Fm.subst_eq,GaussianRationalPolynomialExponential.subst_scalarSum,GaussianRationalHorner.subst_qzero,
-        GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.inst_zero] using GaussianRationalPolynomialExponential.scalar_sum_zero (Γ := Γ) (qzero : PTm n)
-    · simp only [Fm.subst_eq,GaussianRationalPolynomialExponential.subst_scalarSum,GaussianRationalHorner.subst_qzero,
-        GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.repl_zero]
-      exact (GaussianRationalPolynomialExponential.scalar_sum_succ qzero (var 0)).eqTrans
+    ipra_qfind [GaussianRationalPolynomialExponential.subst_scalarSum, GaussianRationalHorner.subst_qzero, GaussianRationalSyntheticDivision.subst_qone]
+    · exact GaussianRationalPolynomialExponential.scalar_sum_zero (Γ := Γ) (qzero : PTm n)
+    · exact (GaussianRationalPolynomialExponential.scalar_sum_succ qzero (var 0)).eqTrans
         ((GaussianRationalSyntheticDivision.qadd_congr Prf.hyp0
           ((GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _) (GaussianRationalPowerNonzero.zero_positive_power (var 0))).eqTrans
             (GaussianRationalSyntheticDivision.qmul_zero_right _))).eqTrans

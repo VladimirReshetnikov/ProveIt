@@ -749,16 +749,11 @@ theorem run_denominator (degree : ℕ) (k code initial : PTm n) :
   have hall : Γ ⊢[PRAAx] .all (denominator
       (run degree (var 0) (Syn.shift code) (Syn.shift initial)) ≐
       denominator (Syn.shift initial) * pw two (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_denominator, subst_run, PTm.subst_mul,
-        subst_ap2, subst_two, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      exact (denominator_congr (run_zero degree code initial)).eqTrans
+    ipra_qfind [subst_denominator, subst_run, subst_ap2, subst_two]
+    · exact (denominator_congr (run_zero degree code initial)).eqTrans
         ((by ipra_ring : Γ ⊢[PRAAx] denominator initial ≐ denominator initial * one).eqTrans
           (congrMul (.eqRefl _) (pw_zero two).eqSymm))
-    · simp only [Fm.subst_eq, subst_denominator, subst_run, PTm.subst_mul,
-        subst_ap2, subst_two, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ := (denominator (run degree (var 0) (Syn.shift code) (Syn.shift initial)) ≐
+    · let Δ := (denominator (run degree (var 0) (Syn.shift code) (Syn.shift initial)) ≐
         denominator (Syn.shift initial) * pw two (var 0)) :: Γ.map Fm.shift
       have final : Δ ⊢[PRAAx] two * (denominator (Syn.shift initial) * pw two (var 0)) ≐
           denominator (Syn.shift initial) * pw two (succ (var 0)) := by

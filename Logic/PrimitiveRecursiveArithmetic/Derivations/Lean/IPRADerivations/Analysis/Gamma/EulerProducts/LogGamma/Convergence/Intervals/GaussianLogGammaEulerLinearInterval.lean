@@ -87,12 +87,10 @@ private theorem reciprocal_step (N j : PTm n) (h : Γ ⊢[PRAAx] reciprocalLaw N
 
 private theorem reciprocal_harmonic_tail (N r : PTm n) : Γ ⊢[PRAAx] reciprocalLaw N r := by
   have all : Γ ⊢[PRAAx] .all (reciprocalLaw (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_reciprocalLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (GaussianRationalFiniteSum.sum_zero reciprocalBody (pairT (succ N) one)).eqTrans
+    ipra_qfind [subst_reciprocalLaw]
+    · exact (GaussianRationalFiniteSum.sum_zero reciprocalBody (pairT (succ N) one)).eqTrans
         (((embed_eq (tail_zero one N)).eqTrans embed_zero).eqSymm)
-    · simp only [subst_reciprocalLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact reciprocal_step (Syn.shift N) (var 0) Prf.hyp0
+    · exact reciprocal_step (Syn.shift N) (var 0) Prf.hyp0
   simpa only [subst_reciprocalLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
 
 theorem reciprocal_harmonic_interval (N r : PTm n) :

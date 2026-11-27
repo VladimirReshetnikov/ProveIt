@@ -118,10 +118,9 @@ theorem ideal_common_denominator (N a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
   change Γ ⊢[PRAAx] normalForm N a b
   have bs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift b) := by simpa [Fm.shift,Syn.shift] using hb.shift
   have all : Γ ⊢[PRAAx] .all (normalForm (var 0) (Syn.shift a) (Syn.shift b)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_normalForm,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using normal_form_zero (Γ := Γ) a b
-    · simp only [subst_normalForm,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact normal_form_step _ _ _ bs.wk Prf.hyp0
+    ipra_qfind [subst_normalForm]
+    · exact normal_form_zero (Γ := Γ) a b
+    · exact normal_form_step _ _ _ bs.wk Prf.hyp0
   simpa only [subst_normalForm,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 theorem quotient_integer_form (N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx]

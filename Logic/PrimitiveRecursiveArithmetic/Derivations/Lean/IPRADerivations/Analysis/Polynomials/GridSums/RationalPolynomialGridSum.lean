@@ -121,10 +121,9 @@ private theorem fold_succ (a : Fin (d+1) → ℤ) (D : ℕ) (hD : 0 < D) (N M : 
 theorem fold_eq (a : Fin (d+1) → ℤ) (D : ℕ) (hD : 0 < D) (N M : PTm n)
     (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx] foldLaw a D N M := by
   have all : Γ ⊢[PRAAx] .all (foldLaw a D (var 0) (Syn.shift M)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_foldLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using fold_zero a D hD M hM
-    · simp only [subst_foldLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact fold_succ a D hD _ (Syn.shift M) (by
+    ipra_qfind [subst_foldLaw]
+    · exact fold_zero a D hD M hM
+    · exact fold_succ a D hD _ (Syn.shift M) (by
         apply Prf.wk
         simpa [Fm.shift,Syn.shift,one] using hM.shift) Prf.hyp0
   simpa only [subst_foldLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N

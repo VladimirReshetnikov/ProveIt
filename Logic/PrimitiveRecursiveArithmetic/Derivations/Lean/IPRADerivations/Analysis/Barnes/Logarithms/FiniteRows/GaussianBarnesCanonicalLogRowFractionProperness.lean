@@ -112,11 +112,10 @@ theorem cubic_equal (z w N D L : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hD : Γ �
   have hes : Γ.map Fm.shift ⊢[PRAAx] ofGaussian (s z) (s N) ≐ ofGaussian (s w) (s D) := by
     simpa [s,Fm.shift,Syn.shift] using he.shift
   have all : Γ ⊢[PRAAx] .all (cubic (s z) (s N) (var 0) ≐ cubic (s w) (s D) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [Fm.subst_eq,GaussianBarnesCanonicalLogRow.subst_cubic,s,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
+    ipra_qfind [GaussianBarnesCanonicalLogRow.subst_cubic, s]
+    · exact
         (cubic_zero z N hN).eqTrans (cubic_zero w D hD).eqSymm
-    · simp only [Fm.subst_eq,GaussianBarnesCanonicalLogRow.subst_cubic,s,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (cubic_succ _ _ _ hns.wk).eqTrans
+    · exact (cubic_succ _ _ _ hns.wk).eqTrans
         ((qadd_congr Prf.hyp0 (term_congr _ _ _ _ _ hes.wk)).eqTrans (cubic_succ _ _ _ hds.wk).eqSymm)
   simpa only [Fm.subst_eq,GaussianBarnesCanonicalLogRow.subst_cubic,s,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE L
 

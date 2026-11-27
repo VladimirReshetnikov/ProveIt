@@ -47,10 +47,9 @@ private theorem split_succ (body : PTm 2) (N M x : PTm n)
 
 theorem split (body : PTm 2) (N M x : PTm n) : Γ ⊢[PRAAx] splitLaw body N M x := by
   have h : Γ ⊢[PRAAx] .all (splitLaw body (Syn.shift N) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using split_zero (Γ := Γ) body N x
-    · simp only [subst_splitLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact split_succ body (Syn.shift N) (var 0) (Syn.shift x) Prf.hyp0
+    ipra_qfind [subst_splitLaw]
+    · exact split_zero (Γ := Γ) body N x
+    · exact split_succ body (Syn.shift N) (var 0) (Syn.shift x) Prf.hyp0
   simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE M
 
 theorem actual_rational_segment_split_closed (body : PTm 2) :

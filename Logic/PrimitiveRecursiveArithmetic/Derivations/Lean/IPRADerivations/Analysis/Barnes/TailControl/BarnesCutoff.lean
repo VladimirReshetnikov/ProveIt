@@ -155,12 +155,9 @@ theorem zero_majorant (e : PR 2) (N r C x : PTm n)
     (hm : Γ ⊢[PRAAx] majorant e three N C x) (hC : Γ ⊢[PRAAx] C ≐ zero) :
     Γ ⊢[PRAAx] tailSum e N r x ≐ zero := by
   have all : Γ ⊢[PRAAx] .all (tailSum e (Syn.shift N) (var 0) (Syn.shift x) ≐ zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [Fm.subst_eq, ReciprocalSquareTail.subst_tailSum, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] using tailSum_zero e N x
-    · simp only [Fm.subst_eq, ReciprocalSquareTail.subst_tailSum, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      have shifted : Γ.map Fm.shift ⊢[PRAAx]
+    ipra_qfind [ReciprocalSquareTail.subst_tailSum]
+    · exact tailSum_zero e N x
+    · have shifted : Γ.map Fm.shift ⊢[PRAAx]
           majorant e three (Syn.shift N) (Syn.shift C) (Syn.shift x) := by
         simpa [ReciprocalSquareTail.shift_majorant, Syn.shift] using hm.shift
       have point := Prf.allE (var 0) shifted

@@ -143,10 +143,9 @@ theorem split_step (q N k : PTm n) (ih : Γ ⊢[PRAAx] splitLaw q N k) : Γ ⊢[
 /-- Literal split of the SAME original scalarBody sum. -/
 theorem prefix_split (q N k : PTm n) : Γ ⊢[PRAAx] splitLaw q N k := by
   have all : Γ ⊢[PRAAx] .all (splitLaw (Syn.shift q) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using split_zero q N
-    · simp only [subst_splitLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact split_step (Syn.shift q) (Syn.shift N) (var 0) Prf.hyp0
+    ipra_qfind [subst_splitLaw]
+    · exact split_zero q N
+    · exact split_step (Syn.shift q) (Syn.shift N) (var 0) Prf.hyp0
   simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 theorem prefix_difference (q N k : PTm n) : Γ ⊢[PRAAx]

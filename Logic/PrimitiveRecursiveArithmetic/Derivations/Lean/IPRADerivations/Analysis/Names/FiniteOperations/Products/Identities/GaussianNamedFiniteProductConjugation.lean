@@ -43,12 +43,10 @@ private def sampleLaw (f : PR 2) (body : PTm 2) (p r x : PTm n) : Fm PTm n :=
 theorem sample_conjugate (f : PR 2) (body : PTm 2) (p r x : PTm n) : Γ ⊢[PRAAx]
     point (sample (rowF f body) p r x) ≐ sample (rowF (Conj f) body) p r x := by
   have h : Γ ⊢[PRAAx] .all (sampleLaw f body (Syn.shift p) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (point_congr (sample_zero (rowF f body) p x)).eqTrans
+    ipra_qfind [subst_sampleLaw]
+    · exact (point_congr (sample_zero (rowF f body) p x)).eqTrans
         (point_one.eqTrans (sample_zero (rowF (Conj f) body) p x).eqSymm)
-    · simp only [subst_sampleLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let P := Syn.shift p
+    · let P := Syn.shift p
       let X := Syn.shift x
       let i : PTm (n+1) := var 0
       let F := rowF f body

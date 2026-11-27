@@ -73,11 +73,9 @@ ipra_subst reversal
 the first term of its reversal. -/
 theorem reverse (f : PTm 2) (N x : PTm n) : Γ ⊢[PRAAx] reversal f N x := by
   have all : Γ ⊢[PRAAx] .all (reversal f (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_reversal,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (RationalFiniteSum.sum_zero _ _).eqTrans (RationalFiniteSum.sum_zero f x).eqSymm
-    · simp only [subst_reversal,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let K : PTm (n+1) := var 0
+    ipra_qfind [subst_reversal]
+    · exact (RationalFiniteSum.sum_zero _ _).eqTrans (RationalFiniteSum.sum_zero f x).eqSymm
+    · let K : PTm (n+1) := var 0
       let y := Syn.shift x
       let Δ := reversal f K y :: Γ.map Fm.shift
       have step := sum_first (Γ := Δ) (reverseBody f) K (data (succ K) y)
