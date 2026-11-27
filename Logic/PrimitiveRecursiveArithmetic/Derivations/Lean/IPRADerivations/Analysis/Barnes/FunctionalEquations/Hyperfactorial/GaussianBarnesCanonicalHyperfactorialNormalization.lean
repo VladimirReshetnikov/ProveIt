@@ -60,11 +60,8 @@ theorem normalization : Γ ⊢[PRAAx] crossEquivalent nameF oneF (data (one : PT
   have z : Γ ⊢[PRAAx] normSq (center (one : PTm n) one) ≐ zero :=
     (GaussianRootAlgebra.normSq_equal center_zero).eqTrans ComplexLogarithmRemainder.normSq_zero
   have gOne := GaussianBarnesCanonicalNormalization.normalization (center one one) (radius one one) one h z
-  have constOne : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by
-    apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast x)
-    refine .allI ?_
-    simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalSyntheticDivision.subst_qone] using
-      (constant_at (var 0) qone).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm
+  have constOne : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x :=
+    GaussianNameRingLaws.constant_one_cross x
   have cleared := cleared_relation one one h h
   have collapse := GaussianGammaAdjacentCutoff.multiply_cross nameF nameF G oneF x x y x
     hx hx hy (one_fast x) (cross_refl _ _ hx) (cross_trans _ _ _ _ _ _ gOne constOne)

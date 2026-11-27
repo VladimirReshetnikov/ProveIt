@@ -45,13 +45,9 @@ private theorem first_factorial : Γ ⊢[PRAAx] factorialValue (one : PTm n) ≐
     ((congrMul (fact_zero zero) (.eqRefl _)).eqTrans (one_mul one)))).eqTrans natural_one
 
 private theorem first_factorial_name (x : PTm n) :
-    Γ ⊢[PRAAx] crossEquivalent constantF oneF (factorialValue one) x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast x)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianGammaFactorialValues.subst_factorialValue,
-    one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
-    (constant_at (Γ := Γ.map Fm.shift) (var 0) (factorialValue (one : PTm (n+1)))).eqTrans
-      (first_factorial.eqTrans (one_at (var 0) (Syn.shift x)).eqSymm)
+    Γ ⊢[PRAAx] crossEquivalent constantF oneF (factorialValue one) x :=
+  GaussianNameEquivalence.cross_data_congr _ _ _ _ _ _ (first_factorial (Γ := Γ)).eqSymm (.eqRefl _)
+    (GaussianNameRingLaws.constant_one_cross x)
 
 theorem gamma_at_two (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent gammaF oneF
     (GaussianGammaZetaDirichletProduct.actualGammaData oneCode one one one) x := by

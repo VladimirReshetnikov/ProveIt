@@ -38,20 +38,8 @@ def productData (f : PR 2) (x : PTm n) : PTm n := multiplyData f (minusF f) x (m
 def equation (f : PR 2) (x : PTm n) : Fm PTm n :=
   crossEquivalent (productF f) constantF (productData f x) qone
 
-private theorem constant_zero (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF zeroF qzero x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (zero_fast _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalHorner.subst_qzero] using
-    (constant_at (Γ := Γ.map Fm.shift) (var 0) qzero).eqTrans (zero_at (var 0) (Syn.shift x)).eqSymm
-
 private theorem zero_at_other_data (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y :=
-  cross_trans zeroF constantF zeroF x qzero y (cross_symm _ _ _ _ (constant_zero x)) (constant_zero y)
-
-private theorem constant_one (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalReciprocal.subst_qone] using
-    (constant_at (Γ := Γ.map Fm.shift) (var 0) qone).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm
+  cross_trans zeroF constantF zeroF x qzero y (cross_symm _ _ _ _ (GaussianNameRingLaws.constant_zero_cross x)) (GaussianNameRingLaws.constant_zero_cross y)
 
 private theorem one_eq : Γ ⊢[PRAAx] (onePoint : PTm n) ≐ qone := by
   exact GaussianRationalHorner.canonical_unique _ _ (scale one oneCode) one
@@ -94,7 +82,7 @@ private theorem restore (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) 
   have a := GaussianNameRingLaws.add_associative f constantF constantF x minusOne qone hf hneg hOne
   have eq : Γ ⊢[PRAAx] GaussianRationalHorner.qadd (minusOne : PTm n) qone ≐ qzero :=
     (GaussianReciprocalHorner.qadd_commutative _ _).eqTrans (GaussianNameRingLaws.additive_inverse_value qone)
-  have h := cross_trans C constantF zeroF d qzero x (constant_sum _ _ _ eq) (constant_zero x)
+  have h := cross_trans C constantF zeroF d qzero x (constant_sum _ _ _ eq) (GaussianNameRingLaws.constant_zero_cross x)
   have tr := add_cross f f C zeroF x x d x hf hf (add_fast _ _ _ _ hneg hOne) (zero_fast _)
     (cross_refl _ _ hf) h
   exact cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ tr (GaussianNameRingLaws.add_zero f x hf))
@@ -113,7 +101,7 @@ theorem rearranged (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     (cross_refl _ _ hf) (cross_symm _ _ _ _ (restore f x hf))
   have dist := GaussianNameRingLaws.distributive f F constantF x m qone hf hm hOne
   have convert := GaussianGammaAdjacentCutoff.multiply_cross f f constantF oneF x x qone x hf hf hOne (one_fast _)
-    (cross_refl _ _ hf) (constant_one x)
+    (cross_refl _ _ hf) (GaussianNameRingLaws.constant_one_cross x)
   have removed := cross_trans _ _ _ _ _ _ convert (GaussianNameRingLaws.multiply_one f x hf)
   have hp : Γ ⊢[PRAAx] pointCN (productF f) (productData f x) := multiply_fast f F x m hf hm
   have plus := add_cross (productF f) (productF f) (multiplyF f constantF) f (productData f x) (productData f x)

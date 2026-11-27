@@ -55,12 +55,8 @@ private theorem decay_zero (B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     ConciseIPRA.PTm.subst_zero] using e
 
 private theorem zero_const :
-    Γ ⊢[PRAAx] crossEquivalent zeroF constantF (zero : PTm n) qzero := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast _) (constant_regular _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,ConciseIPRA.PTm.subst_zero,
-    GaussianRationalHorner.subst_qzero] using
-    (zero_at (Γ := Γ.map Fm.shift) (var 0) zero).eqTrans (constant_at (var 0) qzero).eqSymm
+    Γ ⊢[PRAAx] crossEquivalent zeroF constantF (zero : PTm n) qzero :=
+  GaussianNameEquivalence.cross_symm _ _ _ _ (GaussianNameRingLaws.constant_zero_cross zero)
 
 private theorem kernel_damping_zero (B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] crossEquivalent F zeroF (fd zero B) zero := by

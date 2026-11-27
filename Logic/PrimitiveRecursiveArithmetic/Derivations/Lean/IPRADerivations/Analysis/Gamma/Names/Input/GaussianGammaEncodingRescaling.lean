@@ -158,14 +158,8 @@ theorem original_encoded_one_at_radius (R B : PTm n) (hR : Γ ⊢[PRAAx] le one 
     (GaussianGammaRadiusOverlap.original_P_overlap (scale B oneCode) R one B
       (encoded_one_radius_source R B hR hB) (encoded_one_source B hB)) (original_encoded_one B hB)
 
-theorem one_constant_cross : Γ ⊢[PRAAx] crossEquivalent GaussianNameRingLaws.oneF constantF (zero : PTm n) GaussianRationalSyntheticDivision.qone := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (GaussianNameRingLaws.one_fast _) (GaussianGammaCanonicalExponent.constant_regular _)
-  refine .allI ?_
-  have e : Γ.map Fm.shift ⊢[PRAAx] ap2 GaussianNameRingLaws.oneF (var 0) zero ≐
-      ap2 constantF (var 0) GaussianRationalSyntheticDivision.qone :=
-    (GaussianNameRingLaws.one_at _ _).eqTrans (GaussianGammaCanonicalExponent.constant_at _ _).eqSymm
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,ConciseIPRA.PTm.subst_zero,
-    GaussianRationalSyntheticDivision.subst_qone] using e
+theorem one_constant_cross : Γ ⊢[PRAAx] crossEquivalent GaussianNameRingLaws.oneF constantF (zero : PTm n) GaussianRationalSyntheticDivision.qone :=
+  GaussianNameEquivalence.cross_symm _ _ _ _ (GaussianNameRingLaws.constant_one_cross zero)
 
 theorem original_encoded_one_constant (R B : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     crossEquivalent GaussianGammaC7Name.nameF constantF (GaussianGammaC7Name.data (scale B oneCode) R B) GaussianRationalSyntheticDivision.qone :=

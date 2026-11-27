@@ -102,11 +102,10 @@ private theorem real_order_congr {F H : PR 2} {x x' y y' : PTm n}
 
 private theorem scale_one_cross (x : PTm n) (hx : Γ ⊢[PRAAx] pointCN G x) :
     Γ ⊢[PRAAx] crossEquivalent scaledF G (productData G one x) x := by
-  have e : Γ ⊢[PRAAx] crossEquivalent C oneF (naturalPoint one) x := by
-    apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast _)
-    refine .allI ?_
-    simpa [Syn.shift] using ((constant_at (var 0) (naturalPoint (one : PTm (n+1)))).eqTrans
-      (GaussianGammaEulerDenominator.natural_one.eqTrans (one_at (var 0) (Syn.shift x)).eqSymm))
+  have e : Γ ⊢[PRAAx] crossEquivalent C oneF (naturalPoint one) x :=
+    GaussianNameEquivalence.cross_data_congr _ _ _ _ _ _
+      (GaussianGammaEulerDenominator.natural_one (Γ := Γ)).eqSymm (.eqRefl _)
+      (GaussianNameRingLaws.constant_one_cross x)
   exact cross_trans _ _ _ _ _ _
     (GaussianGammaAdjacentCutoff.multiply_cross C oneF G G (naturalPoint one) x x x
       (constant_regular _) (one_fast _) hx hx e (cross_refl _ _ hx))

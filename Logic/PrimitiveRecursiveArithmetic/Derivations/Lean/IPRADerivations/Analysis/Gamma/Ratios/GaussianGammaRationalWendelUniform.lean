@@ -42,15 +42,11 @@ local notation "Q" => relativeF
 def deficitF : PR 2 := nameF C Q
 def deficitData (a b r s : PTm n) : PTm n := data qone (relativeData a b r s)
 
-theorem zero_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF C x qzero := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast _) (constant_regular _)
-  refine .allI ?_
-  simpa [Syn.shift] using (zero_at (Γ := Γ.map Fm.shift) (var 0) (Syn.shift x)).eqTrans (constant_at (var 0) qzero).eqSymm
+theorem zero_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF C x qzero :=
+  GaussianNameEquivalence.cross_symm _ _ _ _ (GaussianNameRingLaws.constant_zero_cross x)
 
-theorem one_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF C x qone := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (one_fast _) (constant_regular _)
-  refine .allI ?_
-  simpa [Syn.shift] using (one_at (Γ := Γ.map Fm.shift) (var 0) (Syn.shift x)).eqTrans (constant_at (var 0) qone).eqSymm
+theorem one_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF C x qone :=
+  GaussianNameEquivalence.cross_symm _ _ _ _ (GaussianNameRingLaws.constant_one_cross x)
 
 theorem one_le_relative_plus_error (a b r s : PTm n) (ha : Γ ⊢[PRAAx] le one a)
     (hb : Γ ⊢[PRAAx] le one b) (h : Γ ⊢[PRAAx] b ≐ r+s) :

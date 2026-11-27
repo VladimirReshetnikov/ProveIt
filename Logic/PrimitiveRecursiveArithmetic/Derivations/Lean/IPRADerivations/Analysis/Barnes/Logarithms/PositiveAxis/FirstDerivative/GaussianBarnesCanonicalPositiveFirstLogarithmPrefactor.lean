@@ -82,11 +82,8 @@ private theorem negative_half_twice : Γ ⊢[PRAAx] qmul (negativeHalf : PTm n) 
   exact (GaussianInverseBinomialRows.negative_product f (qadd qone qone)).eqSymm.eqTrans
     (GaussianInverseBinomialRows.negative_congr sum)
 
-private theorem constant_zero (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent C zeroF qzero x := by
-  apply equal_samples_cross _ _ _ _ (constant_regular _) (zero_fast _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalHorner.subst_qzero] using
-    (constant_at (var 0) qzero).eqTrans (zero_at (var 0) (Syn.shift x)).eqSymm
+private theorem constant_zero (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent C zeroF qzero x :=
+  GaussianNameRingLaws.constant_zero_cross x
 
 private theorem annihilate (f : PR 2) (x y : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] crossEquivalent (multiplyF C f) zeroF (multiplyData C f qzero x) y := by
