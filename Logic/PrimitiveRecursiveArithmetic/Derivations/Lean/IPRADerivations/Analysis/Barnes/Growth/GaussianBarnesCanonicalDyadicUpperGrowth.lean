@@ -35,7 +35,7 @@ open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalL1 (rawDen rawGaussian)
 open GaussianRationalMetric (bounded)
-open GaussianRationalReciprocal (bound_congr bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_product_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -71,8 +71,8 @@ theorem factorized_bound (p z B j : PTm n) (hz : Γ ⊢[PRAAx] source z (unit j)
   have read := GaussianNamedBoundedProductObservation.name_at (Γ := Γ) constantF E p a b
   have sum : Γ ⊢[PRAAx] H+C ≐ factorExponent j := by dsimp [H,C,R,factorExponent]; ipra_ring
   have power := (pw_add two H C).eqSymm.eqTrans (congrAp2 powF sum (.eqRefl _))
-  exact bound_congr read.eqSymm power (one_mul one)
-    (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) ha hc)
+  exact bound_congr read.eqSymm power (.eqRefl _)
+    (bounded_product_one ha hc)
 
 private theorem allowance (j : PTm n) : Γ ⊢[PRAAx] le (factorExponent j+two) (exponent j) := by
   have h := positive_product _ _ (zero_lt_succ (Γ := Γ) j)

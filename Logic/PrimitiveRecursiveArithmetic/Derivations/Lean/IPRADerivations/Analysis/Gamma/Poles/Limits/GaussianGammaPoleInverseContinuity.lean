@@ -25,7 +25,7 @@ open GaussianGammaPoleMultiplier
 open GaussianRationalHorner (ofGaussian qmul qmul_canonical positive_product)
 open GaussianRationalSyntheticDivision (qone qone_canonical)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalReciprocal (reciprocal qone_bounded bound_congr bounded_product)
+open GaussianRationalReciprocal (reciprocal qone_bounded bound_congr bounded_product_one)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianReciprocalHorner (qmul_one_right)
 open ComplexLogarithmRemainder (oneCode normSq scale normSq_scale)
@@ -80,8 +80,8 @@ theorem inverse_product_bound (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
         GaussianCoefficientNameBounds.subst_unit, one, subst_succ, subst_zero]
     · exact bound_congr (GaussianRationalFiniteProduct.product_zero inverseFactorBody _).eqSymm
         (pw_zero two).eqSymm (.eqRefl _) qone_bounded
-    · exact bound_congr (inverseFactorProduct_succ _ _ _).eqSymm (pw_succ two _).eqSymm (one_mul one)
-        (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) Prf.hyp0
+    · exact bound_congr (inverseFactorProduct_succ _ _ _).eqSymm (pw_succ two _).eqSymm (.eqRefl _)
+        (bounded_product_one Prf.hyp0
           (inverse_factor_bound _ _ _ b.wk r.wk))
   simpa only [GaussianRationalMetric.subst_bounded, GaussianGammaPoleMultiplier.subst_inverseFactorProduct,
     GaussianCoefficientNameBounds.subst_unit, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
@@ -127,8 +127,8 @@ theorem signed_inverse_factorial_bound (j : PTm n) :
   have sign := bound_congr (.eqRefl _) (GaussianPolynomialPerturbation.one_power j)
     (GaussianPolynomialPerturbation.one_power j)
     (GaussianRationalReciprocal.bounded_power _ _ _ _ (le_refl one) minus)
-  exact bound_congr (.eqRefl _) (one_mul one) (one_mul one)
-    (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) sign root)
+  exact bound_congr (.eqRefl _) (one_mul one) (.eqRefl _)
+    (bounded_product_one sign root)
 
 theorem original_regular_multiplier_error (h B A D j : PTm n)
     (hi : Γ ⊢[PRAAx] input h B A D) (hrad : Γ ⊢[PRAAx] le (two*A) D) :

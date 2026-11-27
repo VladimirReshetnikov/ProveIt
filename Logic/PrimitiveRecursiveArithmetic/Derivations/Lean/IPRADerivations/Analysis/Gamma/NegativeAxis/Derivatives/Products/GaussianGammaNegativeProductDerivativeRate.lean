@@ -28,7 +28,7 @@ open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (qadd qmul qzero)
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical)
 open GaussianRationalPowerDifference (bounded_sum_same bounded_sum_one distance_refl_zero product_difference)
-open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product qone_bounded)
+open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product bounded_product_one qone_bounded)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qone)
 open GaussianReciprocalHorner (qadd_zero_right)
 open GaussianStirlingGammaLogarithm (arg)
@@ -114,10 +114,9 @@ private theorem bounds_succ (a c b j A D i : PTm n)
   have hg := factor_bound a b j i ha hi
   have power : Γ ⊢[PRAAx] productCap j (succ i) ≐ productCap j i*H := pw_succ H i
   have product : Γ ⊢[PRAAx] bounded (differenceProduct x b (succ i)) (productCap j (succ i)) one :=
-    bound_congr (difference_succ x b i).eqSymm power.eqSymm (one_mul one)
-      (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) ih.andE₁ hg)
-  have mainCoeff := bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-    (bounded_product Y g (coefficientCap j i) one H one (le_refl one) (le_refl one) ih.andE₂.andE₁ hg)
+    bound_congr (difference_succ x b i).eqSymm power.eqSymm (.eqRefl _)
+      (bounded_product_one ih.andE₁ hg)
+  have mainCoeff := bounded_product_one ih.andE₂.andE₁ hg
   have coeffBound := bounded_sum_one mainCoeff ih.andE₁
   have coeffCmp : Γ ⊢[PRAAx] le ((coefficientCap j i*H+productCap j i)*one) (coefficientCap j (succ i)*one) := by
     have e := natEq power

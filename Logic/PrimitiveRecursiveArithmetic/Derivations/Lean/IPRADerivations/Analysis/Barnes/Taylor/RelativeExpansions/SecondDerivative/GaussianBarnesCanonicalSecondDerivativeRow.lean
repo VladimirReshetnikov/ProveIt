@@ -25,7 +25,7 @@ open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represen
 open GaussianRationalMetric (bounded bounded_of_cleared qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
 open GaussianRationalPowerDifference (bounded_sum_same product_difference)
-open GaussianRationalReciprocal (qone qone_bounded reciprocal reciprocal_identity reciprocal_canonical bounded_product bound_congr)
+open GaussianRationalReciprocal (qone qone_bounded reciprocal reciprocal_identity reciprocal_canonical bounded_product bounded_product_one bound_congr)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qone_canonical qadd_congr qsub_congr qmul_congr qadd_sub_cancel)
@@ -124,7 +124,7 @@ theorem row_bound (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
   have hv := bounded_product w u R k (one+one+one) one hk ho (offset_bound z R B k h) hu
   have inverse := inverse_base_bound z R B k h
   have hj : Γ ⊢[PRAAx] bounded j (two*two) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (one_mul one) (bounded_product i i two one two one ho ho inverse inverse)
+    bounded_product_one inverse inverse
   have hinner := bounded_product v j (R*(one+one+one)) (k*one) (two*two) one
     (positive_product _ _ hk ho) ho hv hj
   have prod := bounded_product (inverseInteger k) (qmul v j) one k _ _ hk

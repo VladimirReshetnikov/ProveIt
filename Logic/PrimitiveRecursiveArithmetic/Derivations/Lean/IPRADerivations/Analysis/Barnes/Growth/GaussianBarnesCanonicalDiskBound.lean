@@ -28,7 +28,7 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents qmul)
 open GaussianRationalMetric (bounded bounded_of_cleared comparison_to_cleared qnegative_represents)
 open RationalIntegerNormalization (positivePart)
 open RationalSupMetric (numeratorOf denominatorOf)
-open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum)
+open GaussianRationalReciprocal (bound_congr bounded_product bounded_product_one bounded_sum)
 open GaussianRadiusExponentialLipschitzRate (factor)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -94,8 +94,7 @@ private theorem correction_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R
   let a := ofGaussian z B
   have ha : Γ ⊢[PRAAx] bounded a R one := fraction_bound z R B h
   have hs : Γ ⊢[PRAAx] bounded (qmul a a) (R*R) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-      (bounded_product a a R one R one (le_refl one) (le_refl one) ha ha)
+    bounded_product_one ha ha
   have qc : ∀ s : PTm n, Γ ⊢[PRAAx] bounded (ap2 quadraticCoefficientF s quadraticCoefficientData)
       (one+U gammaF zero) one := fun s =>
     add_bound _ _ _ _ s one _ (fun t => bound_congr (GaussianNameRingLaws.one_at t zero).eqSymm

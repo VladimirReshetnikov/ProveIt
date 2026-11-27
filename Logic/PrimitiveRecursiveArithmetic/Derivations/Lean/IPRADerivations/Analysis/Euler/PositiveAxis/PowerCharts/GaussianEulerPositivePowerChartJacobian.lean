@@ -107,9 +107,7 @@ theorem jacobian_bound (q e f d h Q S E T a b : PTm n)
   have upper : Γ ⊢[PRAAx] le (e*b) ((Q*E)*(f*a)) := by
     ipra_le 𝔞 b*sl exponent+𝔞 Q*𝔞 f*sl lowerTime
   have factor := GaussianEulerExponentCompactBounds.fraction_bound (e*b) (f*a) (Q*E) (positive_product _ _ hf ha) upper
-  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-    (GaussianRationalReciprocal.bounded_product _ _ _ one _ one (le_refl _) (le_refl _)
-      (GaussianEulerPositivePowerChart.original_bound q e f d h Q S E T a b hs) factor)
+  exact GaussianRationalReciprocal.bounded_product_one (GaussianEulerPositivePowerChart.original_bound q e f d h Q S E T a b hs) factor
 
 /-- Scaling transports the genuine original increment before any clock coarsening. -/
 theorem original_retimed_increment (p q e f d h Q S E T a b step : PTm n)

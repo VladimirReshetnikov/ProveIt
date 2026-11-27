@@ -100,9 +100,8 @@ theorem original_bound (p e f d h Q S E T a b : PTm n) (hs : Γ ⊢[PRAAx] sourc
     bounded (ap2 nameF p (data e f d h S a b)) (majorant Q S E T) one := by
   have old := GaussianEulerCompactPowerMajorant.original_power_observation (clock p S) (argument e f) (Q+one) f E T a b
     (power_source e f d h Q S E T a b hs) hs.andE₂.andE₂
-  exact bound_congr (sample_at p e f d h S a b).eqSymm (.eqRefl _) (by ipra_ring)
-    (GaussianRationalReciprocal.bounded_product _ _ S one _ one (le_refl _) (le_refl _)
-      (scale_bound e f d h Q S hs.andE₁) old)
+  exact bound_congr (sample_at p e f d h S a b).eqSymm (.eqRefl _) (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_product_one (scale_bound e f d h Q S hs.andE₁) old)
 
 theorem original_rate (e f d h Q S E T a b c v X D : PTm n) (hs : Γ ⊢[PRAAx] input e f d h Q S E T a b c v X D) : Γ ⊢[PRAAx]
     independentRate nameF nameF (data e f d h S a b) (data e f d h S c v) (lipschitz Q S E T*X) D := by

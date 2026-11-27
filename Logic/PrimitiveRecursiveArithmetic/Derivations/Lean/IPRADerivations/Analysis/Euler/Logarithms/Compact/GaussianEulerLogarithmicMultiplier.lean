@@ -79,9 +79,7 @@ theorem logarithmic_power_bound (p j a b E T : PTm n) (hE : Γ ⊢[PRAAx] le one
 
 theorem original_sample_bound (p j z R B E T a b : PTm n) (h : Γ ⊢[PRAAx] source z R B E T a b) : Γ ⊢[PRAAx]
     bounded (sample p j z B a b) (majorant j R E T) one :=
-  bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-    (GaussianRationalReciprocal.bounded_product _ _ _ one _ one (le_refl one) (le_refl one)
-      (euler_bound p z R B E T a b h) (logarithmic_power_bound p j a b E T h.andE₁.andE₂.andE₁ h.andE₂))
+  GaussianRationalReciprocal.bounded_product_one (euler_bound p z R B E T a b h) (logarithmic_power_bound p j a b E T h.andE₁.andE₂.andE₁ h.andE₂)
 
 theorem original_sample_canonical (p j z B a b : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (sample p j z B a b) := GaussianRationalHorner.qmul_canonical _ _

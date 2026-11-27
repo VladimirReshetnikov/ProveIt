@@ -36,7 +36,7 @@ open GaussianEuclideanDistanceName (fraction)
 open GaussianNameBounds (sample_bound U)
 open GaussianRationalHorner (qadd qmul qzero)
 open GaussianRationalMetric (bounded)
-open GaussianRationalReciprocal (bound_congr bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_product_one)
 open GaussianRationalSyntheticBounds (natCode)
 open RationalArgmin (rationalLE)
 
@@ -65,8 +65,7 @@ def massCap (R M : PTm n) : PTm n := succ (previous M)*(two*coefficientCap R M)
 
 private theorem product_one (x y A E : PTm n) (hx : Γ ⊢[PRAAx] bounded x A one)
     (hy : Γ ⊢[PRAAx] bounded y E one) : Γ ⊢[PRAAx] bounded (qmul x y) (A*E) one :=
-  bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-    (bounded_product x y A one E one (le_refl one) (le_refl one) hx hy)
+  bounded_product_one hx hy
 
 private theorem add_one (x y A E : PTm n) (hx : Γ ⊢[PRAAx] bounded x A one)
     (hy : Γ ⊢[PRAAx] bounded y E one) : Γ ⊢[PRAAx] bounded (qadd x y) (A+E) one :=

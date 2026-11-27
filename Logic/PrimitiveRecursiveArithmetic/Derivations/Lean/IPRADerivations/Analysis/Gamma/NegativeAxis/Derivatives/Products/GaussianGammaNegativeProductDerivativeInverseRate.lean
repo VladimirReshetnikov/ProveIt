@@ -31,7 +31,7 @@ open GaussianRationalHorner (canonical qmul)
 open GaussianRationalMetric (bounded distanceBounded qnegative qsub_canonical)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalPowerDifference (bounded_sum_same distance_refl_zero)
-open GaussianRationalReciprocal (bound_congr bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_product bounded_product_one)
 open GaussianRationalSyntheticDivision (qmul_congr qone)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianReconstructionRoots (distance_zero_iff)
@@ -67,9 +67,8 @@ theorem first_bounded (a b j : PTm n) (ha : Γ ⊢[PRAAx] guard a b) : Γ ⊢[PR
     (distance_refl_zero (fraction a b) one (le_refl one)) (le_refl j)
   have factor : Γ ⊢[PRAAx] bounded
       (qmul (prefixDifference (arg a) (arg a) b j) (fraction a b)) (coefficientCap j j) one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (bounded_product _ _ (coefficientCap j j) one one one
-      (le_refl _) (le_refl _) h.andE₂.andE₁ (endpoint_bound a b ha))
+    bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+      (bounded_product_one h.andE₂.andE₁ (endpoint_bound a b ha))
   exact bounded_sum_same _ _ _ _ _ (le_refl one) factor h.andE₁
 
 theorem divided_bounded (a c b j : PTm n) (ha : Γ ⊢[PRAAx] guard a b) (hc : Γ ⊢[PRAAx] guard c b) : Γ ⊢[PRAAx]

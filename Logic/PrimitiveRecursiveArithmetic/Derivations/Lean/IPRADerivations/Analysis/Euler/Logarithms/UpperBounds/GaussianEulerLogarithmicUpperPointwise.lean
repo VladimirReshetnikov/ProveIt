@@ -26,7 +26,7 @@ open GaussianEulerUpperTailPointwise (referenceTop referenceBottom majorantTop m
 open GaussianEulerLogarithmicMultiplier (logarithmicPower)
 open GaussianEulerCompactPowerMajorant (original_power_observation)
 open GaussianRationalHorner (qmul positive_product)
-open GaussianRationalReciprocal (bounded_product bound_congr)
+open GaussianRationalReciprocal (bounded_product_one)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
@@ -94,8 +94,7 @@ theorem original_split_error (p j z R B E T a b : PTm n)
     distance_congr (qmul_commutative _ _) ((qmul_commutative L _).eqTrans (GaussianRationalPowerAlgebra.swap_last P D L))
       (.eqRefl _) (.eqRefl _) first
   have coeff : Γ ⊢[PRAAx] bounded (qmul P L) (M*J) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-      (bounded_product P L M one J one (le_refl one) (le_refl one) pb lb)
+    bounded_product_one pb lb
   have second := GaussianApproximateInverseDistance.multiply_distance (qmul P L) D (qmul H H)
     (M*J) (num 14) (unit p) up coeff
     (half_square_error p a b h.andE₁.andE₂.andE₁.andE₁ h.andE₁.andE₂.andE₁.andE₂)

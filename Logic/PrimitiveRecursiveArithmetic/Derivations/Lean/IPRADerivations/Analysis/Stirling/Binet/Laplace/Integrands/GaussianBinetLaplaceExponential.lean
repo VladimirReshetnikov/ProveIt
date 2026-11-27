@@ -31,7 +31,7 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
 open GaussianRationalHorner (ofGaussian_represents positive_product qmul qmul_represents qzero)
 open GaussianRationalMetric (bounded bounded_iff distanceBounded qnegative qnegative_represents qnormSq)
-open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product bounded_product_one)
 open GaussianRationalSyntheticBounds (natCode natCode_represents natCode_congr)
 open GaussianReconstructionRoots (distance_zero_iff)
 open RationalArgmin (rationalLE)
@@ -64,10 +64,8 @@ theorem parameter_bound (X Y D sign R : PTm n) (h : Γ ⊢[PRAAx] source X Y D s
 theorem exponent_bound (X Y D sign R T A B : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R) (hB : Γ ⊢[PRAAx] le one B) (ht : Γ ⊢[PRAAx] le A (T*B)) :
     Γ ⊢[PRAAx] bounded (exponent X Y D sign A B) (R*T) one :=
-  bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-    (bounded_product _ _ R one T one (le_refl one) (le_refl one)
-      (bounded_negative _ _ _ (le_refl one) (parameter_bound X Y D sign R hz))
-      (GaussianEulerExponentCompactBounds.fraction_bound A B T hB ht))
+  bounded_product_one (bounded_negative _ _ _ (le_refl one) (parameter_bound X Y D sign R hz))
+      (GaussianEulerExponentCompactBounds.fraction_bound A B T hB ht)
 
 theorem exponent_nonpositive (X Y D sign A B : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hB : Γ ⊢[PRAAx] le one B) :

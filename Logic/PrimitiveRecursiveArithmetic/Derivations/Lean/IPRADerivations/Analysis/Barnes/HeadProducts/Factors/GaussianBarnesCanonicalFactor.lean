@@ -23,7 +23,7 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_at multiply_fast)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents qadd qmul qzero qmul_canonical positive_product)
 open GaussianRationalMetric (bounded bounded_of_cleared qsub)
-open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product bounded_difference power powerF power_succ qone_bounded)
+open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product bounded_product_one bounded_difference power powerF power_succ qone_bounded)
 open GaussianRationalSyntheticDivision (qone qmul_congr qmul_zero_left qmul_zero_right)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -144,8 +144,8 @@ theorem sample_bound (p z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
     (GaussianRadiusExponentialName.query_bound constantF S x s (exponential_input z R B k h))
   have exp := bound_congr (GaussianRadiusExponentialName.sample_at constantF S s x).eqSymm (.eqRefl _) (.eqRefl _) b
   have poly := GaussianRationalPowerDifference.bounded_power_integer (base z B k) (R+one) k (base_bound z R B k h)
-  exact bound_congr (sample_at p z R B k).eqSymm (.eqRefl _) (by ipra_ring)
-    (bounded_product _ _ _ one _ one (le_refl one) (le_refl one) poly exp)
+  exact bound_congr (sample_at p z R B k).eqSymm (.eqRefl _) (.eqRefl _)
+    (bounded_product_one poly exp)
 
 theorem zero_sample (p z R B k : PTm n) (hk : Γ ⊢[PRAAx] le one k)
     (h : Γ ⊢[PRAAx] base z B k ≐ qzero) : Γ ⊢[PRAAx] ap2 nameF p (data z R B k) ≐ qzero := by

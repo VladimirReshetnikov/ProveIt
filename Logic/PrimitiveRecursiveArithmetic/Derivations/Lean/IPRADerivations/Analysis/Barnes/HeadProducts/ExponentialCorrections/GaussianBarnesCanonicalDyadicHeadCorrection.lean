@@ -26,7 +26,7 @@ open GaussianNamedNaturalScale (natural_point_bound)
 open GaussianRationalHorner (ofGaussian qmul)
 open GaussianRationalMetric (bounded)
 open GaussianRationalNaturalScale (naturalPoint)
-open GaussianRationalReciprocal (bound_congr bounded_difference bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_difference bounded_product_one)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 
@@ -59,13 +59,11 @@ theorem correction_bound (z R B N j : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
   have hy := fraction_disk z R (two*B) (le_trans hz.andE₁ larger)
     (bounded_mono hz.andE₂ (mul_le_mul_left R larger))
   have square : Γ ⊢[PRAAx] bounded (halfSquare z B) (R*R) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (one_mul one) (bounded_product x y R one R one onePos onePos hx hy)
+    bounded_product_one hx hy
   have quadratic : Γ ⊢[PRAAx] bounded (qmul (halfSquare z B) H) (R*R*L) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-      (bounded_product _ _ (R*R) one L one onePos onePos square (harmonic_bound N j hN))
+    bounded_product_one square (harmonic_bound N j hN)
   have linear : Γ ⊢[PRAAx] bounded (qmul (naturalPoint N) x) (N*R) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-      (bounded_product _ _ N one R one onePos onePos (natural_point_bound N) hx)
+    bounded_product_one (natural_point_bound N) hx
   exact bound_congr (total_formula z B N hz.andE₁).eqSymm
     (by dsimp [radius,L]; ipra_ring) (one_mul one)
     (bounded_difference _ _ _ one _ one onePos onePos quadratic linear)

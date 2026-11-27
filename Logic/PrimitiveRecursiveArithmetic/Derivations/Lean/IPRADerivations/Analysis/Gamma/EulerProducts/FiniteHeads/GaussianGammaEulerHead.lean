@@ -19,7 +19,7 @@ open_ipra
 open GaussianRationalFiniteProduct (qprod product_zero product_succ product_split)
 open GaussianRationalHorner (qadd qmul ofGaussian ofGaussian_represents positive_product canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
-open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product qone_bounded)
+open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product_one qone_bounded)
 open GaussianRationalMetric (bounded bounded_iff)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -98,8 +98,8 @@ theorem prefix_bound_succ (z R B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (ih : Γ ⊢[PRAAx] prefixBound z R B N) : Γ ⊢[PRAAx] prefixBound z R B (succ N) := by
   have e : Γ ⊢[PRAAx] (R*pw (one+R) N)*(one+R) ≐ R*pw (one+R) (succ N) :=
     (mul_assoc _ _ _).eqTrans (congrMul (.eqRefl _) (pw_succ _ _).eqSymm)
-  exact bound_congr (head_succ z B N).eqSymm e (one_mul _)
-    (bounded_product (head z B N) (factor N z B) _ one (one+R) one (le_refl _) (le_refl _) ih
+  exact bound_congr (head_succ z B N).eqSymm e (.eqRefl _)
+    (bounded_product_one ih
       (factor_bound N z R B hB hz))
 
 theorem prefix_bound (z R B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)

@@ -30,7 +30,7 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product qmul qzero)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerDifference (bounded_sum_same product_difference)
-open GaussianRationalReciprocal (bound_congr bounded_difference bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_difference bounded_product bounded_product_one)
 open GaussianRationalRiemannRefinement (sum_distance)
 open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianStirlingRationalTelescopers (fraction_same)
@@ -87,9 +87,7 @@ theorem correction_bound (a b E N : PTm n) (h : Γ ⊢[PRAAx] window a b E) :
 
 theorem factor_bound (a b E N : PTm n) (h : Γ ⊢[PRAAx] window a b E) :
     Γ ⊢[PRAAx] bounded (correctionFactor a b N) ((E*E)*correctionCap E N) one :=
-  bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-    (bounded_product _ _ (E*E) one (correctionCap E N) one (le_refl one) (le_refl one)
-      (inverse_bound_on_window a b E N h) (correction_bound a b E N h))
+  bounded_product_one (inverse_bound_on_window a b E N h) (correction_bound a b E N h)
 
 private theorem gap_budget (a c b A D : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hD : Γ ⊢[PRAAx] le one D)
     (hac : Γ ⊢[PRAAx] le a c) (hStep : Γ ⊢[PRAAx] distanceBounded (fraction c b) (fraction a b) A D) :

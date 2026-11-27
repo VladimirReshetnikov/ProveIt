@@ -30,7 +30,7 @@ open GaussianGammaPoleReciprocalFactor (quotientF quotientData)
 open GaussianGammaLocalPoleFormula (resultF regularData regularMultiplier)
 open GaussianRationalHorner (qmul qmul_canonical)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum)
+open GaussianRationalReciprocal (bound_congr bounded_product_one bounded_sum)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianReciprocalHorner (qmul_one_right)
@@ -69,9 +69,8 @@ theorem original_quotient_multiplier_bound (h B A D j : PTm n) (hi : Γ ⊢[PRAA
 
 theorem original_regular_multiplier_bound (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hh : Γ ⊢[PRAAx] halfDisk h B) : Γ ⊢[PRAAx] bounded (regularMultiplier h B j) (unit j) one :=
-  bound_congr (.eqRefl _) (one_mul _) (one_mul _)
-    (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one)
-      (signed_inverse_factorial_bound j) (inverse_product_bound h B j hB hh))
+  bound_congr (.eqRefl _) (one_mul _) (.eqRefl _)
+    (bounded_product_one (signed_inverse_factorial_bound j) (inverse_product_bound h B j hB hh))
 
 def terminalRate (h B j C E : PTm n) : Fm PTm n := independentRate GaussianGammaC7Name.nameF oneF
   (GaussianGammaC7Name.data (terminal h B j) two B) zero C E

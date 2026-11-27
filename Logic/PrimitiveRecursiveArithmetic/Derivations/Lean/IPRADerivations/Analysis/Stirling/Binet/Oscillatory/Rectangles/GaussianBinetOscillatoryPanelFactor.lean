@@ -35,7 +35,7 @@ open GaussianRationalHorner (qadd qmul qzero ofGaussian ofGaussian_canonical ofG
   represents_congr positive_product)
 open GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (bounded_product bound_congr)
+open GaussianRationalReciprocal (bounded_product_one bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qzero_add qzero_canonical)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRootAlgebra (equal_of_values re_neg im_neg)
@@ -121,9 +121,8 @@ theorem factor_sample (s : Bool) (p X Y D sign A B a b R U T : PTm n)
   have hD := hz.andE₁.andE₂
   have hR := GaussianBinetLaplaceExponential.exponent_bound X Y D sign R T a b hz hb ht
   have hn := GaussianBinetLaplaceExponential.exponent_nonpositive X Y D sign a b hD hb
-  have hy := bound_congr (.eqRefl _ : Γ ⊢[PRAAx] y ≐ y) (.eqRefl _) (one_mul one)
-    (bounded_product _ _ U one T one (le_refl one) (le_refl one) (coefficient_bound A B (polarity s) U hB (polarity_bit s) hU)
-      (GaussianEulerExponentCompactBounds.fraction_bound a b T hb ht))
+  have hy := bounded_product_one (coefficient_bound A B (polarity s) U hB (polarity_bit s) hU)
+      (GaussianEulerExponentCompactBounds.fraction_bound a b T hb ht)
   have hy₀ := exponent_nonpositive A B (polarity s) a b hB hb
   have w := chart_source s X Y D sign A B R U hz hB hU
   have zBound := GaussianBinetLaplaceExponential.exponent_bound A' B' D' sign' (R+U) T a b w hb ht

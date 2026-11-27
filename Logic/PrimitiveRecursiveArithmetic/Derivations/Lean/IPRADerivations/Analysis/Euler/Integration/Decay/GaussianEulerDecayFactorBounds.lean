@@ -27,7 +27,7 @@ open GaussianRationalPolynomialExponential (scalarSum scalarBody)
 open GaussianDominantPairAlgebra (radiusPoint radiusNumerator radius_represents radius_bounded radius_power)
 open GaussianRationalHorner (ofGaussian positive_product canonical_unique represents_congr qmul qmul_canonical qzero)
 open GaussianRationalMetric (bounded qnegative qsub)
-open GaussianRationalReciprocal (reciprocal power bound_congr bounded_product bounded_sum)
+open GaussianRationalReciprocal (reciprocal power bound_congr bounded_product_one bounded_sum)
 open GaussianRationalSyntheticDivision (qsub_congr qmul_congr qzero_add)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_diagonal_at)
 open GaussianNameRingLaws (negativeF negativeData negative_at negative_fast)
@@ -127,8 +127,7 @@ theorem original_half_decay_factor_bound (a b j p : PTm n)
     (qmul_congr (doubled_monomial a b j hb) (.eqRefl y)).eqTrans
       (GaussianReciprocalHorner.qmul_associative A (power (radiusPoint a b) j) y)
   have exactBound : Γ ⊢[PRAAx] bounded (qmul w y) (unit j*fact j) one :=
-    bound_congr repr.eqSymm (.eqRefl _) (one_mul _) (bounded_product A _ _ one _ one
-      (le_refl one) (le_refl one) (radius_bounded (unit j) one (le_refl one))
+    bound_congr repr.eqSymm (.eqRefl _) (.eqRefl _) (bounded_product_one (radius_bounded (unit j) one (le_refl one))
       (exact_reciprocal_weighted_decay a b j p ha hb))
   have e := cross_symm F decayF (inverseData a b j) (decayData a b) (original_decay_matches_reciprocal a b j hb)
   have d := cross_diagonal_at p e

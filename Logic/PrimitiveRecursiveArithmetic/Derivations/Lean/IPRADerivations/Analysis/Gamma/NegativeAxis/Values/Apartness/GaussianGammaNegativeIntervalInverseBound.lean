@@ -32,7 +32,7 @@ open GaussianRationalHorner (qmul ofGaussian_represents ofGaussian_canonical pos
 open GaussianRationalMatrixFiniteSums (minusOne)
 open GaussianRationalMetric (bounded qnormSq bounded_of_cleared comparison_to_cleared)
 open GaussianRationalPowerAlgebra (qmul_commutative unit_bounded unit_power norm_one)
-open GaussianRationalReciprocal (bounded_product bound_congr)
+open GaussianRationalReciprocal (bounded_product_one bound_congr)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianStirlingGammaLogarithm (arg)
@@ -97,9 +97,8 @@ theorem bound_from_margin (a b N R : PTm n) (h : Γ ⊢[PRAAx] guard a b)
       ((qmul_congr ((qmul_commutative P A).eqTrans read) (.eqRefl _)).eqTrans reciprocal)
   have eq : Γ ⊢[PRAAx] W ≐ multiplier (arg a) b j :=
     GaussianEulerBetaProductPascal.inverse_unique P _ _ (qmul_canonical _ _) (qmul_canonical _ _) invert (literal_inverse a b N h)
-  exact bound_congr eq (by ipra_ring) (by ipra_ring)
-    (bounded_product A (fraction E C) one one R one (le_refl _) (le_refl _)
-      (sign_unit_bound j) (fraction_bound E C R hC cap))
+  exact bound_congr eq (by ipra_ring) (.eqRefl _)
+    (bounded_product_one (sign_unit_bound j) (fraction_bound E C R hC cap))
 
 theorem base_bound (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) :
     Γ ⊢[PRAAx] bounded (multiplier (arg a) b (succ N)) (b*b) one := by
