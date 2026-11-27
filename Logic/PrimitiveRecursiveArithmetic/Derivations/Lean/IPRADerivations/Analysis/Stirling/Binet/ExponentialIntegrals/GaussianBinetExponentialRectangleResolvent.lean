@@ -31,7 +31,7 @@ open GaussianRationalFubini (column)
 open GaussianRationalHorner (qmul qmul_canonical qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal reciprocal_canonical reciprocal_identity bounded_negative)
+open GaussianRationalReciprocal (reciprocal reciprocal_canonical bounded_negative)
 open GaussianRationalSyntheticDivision (qone qmul_congr qzero_add)
 open GaussianReciprocalHorner (qmul_one_right qmul_associative)
 
@@ -52,12 +52,10 @@ theorem inverse_bounds (X Y D sign R K M j : PTm n) (hz : Γ ⊢[PRAAx] source X
   have hA := h.andE₁.andE₁
   have hD := h.andE₂
   have lower := GaussianBinetReciprocalRows.real_part_lower A (M*Y) (M*D) sign h
-  have norm := GaussianNameReciprocal.lower_norm_positive w (M*D) hD
-    (GaussianRationalLowerBounds.name_lower w A (M*D) hA hD lower)
   have inverse := GaussianRationalLowerBounds.inverse_bound w A (M*D) hA hD lower
   exact .andI (bounded_radius_mono _ _ _ _ _ hA (le_refl one)
       (le_congr (by ipra_ring) (.eqRefl _) (shifted_margin X D K M j hm)) inverse)
-    ((qmul_commutative _ _).eqTrans (reciprocal_identity w norm))
+    ((qmul_commutative _ _).eqTrans (GaussianRationalLowerBounds.reciprocal_identity_of_lower w A (M*D) hA hD lower))
 
 theorem shifted_integral_error (j p X Y D sign R K L N M : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R) (hm : Γ ⊢[PRAAx] le D (K*X))

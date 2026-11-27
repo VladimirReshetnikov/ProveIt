@@ -32,7 +32,7 @@ open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalLowerBounds (name_lower inverse_bound lower_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal reciprocal_identity reciprocal_canonical bound_congr bounded_product)
+open GaussianRationalReciprocal (reciprocal reciprocal_canonical bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRightHalfPlaneLogarithm (source)
@@ -126,10 +126,9 @@ private theorem inverse_error (p A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB 
   let u := ap2 Den p (denData A B)
   let v := query p A B
   have ha : Γ ⊢[PRAAx] le one (num 4*A) := positive_product _ _ (by ipra_le 3) hA
-  have lU := name_lower u (num 4*A) B ha hB (GaussianBinetBoseDenominator.observation_lower p A B hB)
-  have lV := name_lower v A B hA hB (query_lower p A B hB)
-  have uP := GaussianNameReciprocal.lower_norm_positive u B hB lU
-  have vP := GaussianNameReciprocal.lower_norm_positive v B hB lV
+  have uP := GaussianRationalLowerBounds.norm_positive u (num 4*A) B ha hB
+    (GaussianBinetBoseDenominator.observation_lower p A B hB)
+  have vP := GaussianRationalLowerBounds.norm_positive v A B hA hB (query_lower p A B hB)
   have d := GaussianBinetBoseLinearApproximation.denominator_error p A B hB small
   have hE := positive_product _ _ hB hB
   have uB := denominator_inverse_bound p A B hA hB
@@ -147,11 +146,9 @@ private theorem cancelled_time (p X Y D sign A B : PTm n) (hA : Γ ⊢[PRAAx] le
   let v := query p A B
   let c := coefficient (coefficientClock p A)
   let Z := factor X Y D sign
-  have vl := name_lower v A B hA hB (query_lower p A B hB)
-  have cl := name_lower (Γ := Γ) c one one (le_refl one) (le_refl one)
+  have iv := GaussianRationalLowerBounds.reciprocal_identity_of_lower v A B hA hB (query_lower p A B hB)
+  have ic := GaussianRationalLowerBounds.reciprocal_identity_of_lower (Γ := Γ) c one one (le_refl one) (le_refl one)
     (GaussianBinetBoseLinearApproximation.coefficient_lower (coefficientClock p A))
-  have iv := reciprocal_identity v (GaussianNameReciprocal.lower_norm_positive v B hB vl)
-  have ic := reciprocal_identity c (GaussianNameReciprocal.lower_norm_positive c one (le_refl one) cl)
   have product := GaussianEulerBetaProductPascal.inverse_factor t c v (reciprocal v) (reciprocal c)
     (reciprocal_canonical c) ((query_factor p A B hB).eqTrans (qmul_commutative t c)) iv ic
   exact (qmul_congr (qmul_commutative t Z) (.eqRefl (reciprocal v))).eqTrans

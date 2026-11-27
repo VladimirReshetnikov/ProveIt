@@ -29,10 +29,10 @@ open GaussianLogGammaEulerHead (argument)
 open GaussianLogGammaEulerResidualDomain (source)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product qmul qmul_canonical qzero)
-open GaussianRationalLowerBounds (inverse_bound name_lower)
+open GaussianRationalLowerBounds (inverse_bound)
 open GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical qsub subst_qnegative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal reciprocal_canonical reciprocal_identity bounded_negative bound_congr)
+open GaussianRationalReciprocal (reciprocal reciprocal_canonical bounded_negative bound_congr)
 open GaussianRationalSyntheticDivision (qone qmul_congr qzero_add)
 open GaussianReciprocalHorner (qmul_one_right qmul_associative)
 
@@ -106,7 +106,7 @@ theorem pole_integral_error (s : Bool) (p X Y D sign A B R U K L N : PTm n)
   have hX := hz.andE₁.andE₁.andE₁
   have hD := hz.andE₁.andE₂
   have lower := pole_lower s X Y D sign A B hD hB
-  have np := GaussianNameReciprocal.lower_norm_positive w D hD (name_lower w X D hX hD lower)
+  have wi := GaussianRationalLowerBounds.reciprocal_identity_of_lower w X D hX hD lower
   have bound : Γ ⊢[PRAAx] bounded q K one := bounded_negative _ _ _ (le_refl one)
     (bounded_radius_mono _ _ _ _ _ hX (le_refl one) (le_congr (by ipra_ring) (.eqRefl _) hm)
       (inverse_bound w X D hX hD lower))
@@ -121,7 +121,7 @@ theorem pole_integral_error (s : Bool) (p X Y D sign A B R U K L N : PTm n)
       (chart_source s X Y D sign A B R U hz hB hU) hN hpN)
   have cancel : Γ ⊢[PRAAx] qmul q (qmul (qnegative w) v) ≐ v :=
     ((qmul_associative _ _ _).eqSymm.eqTrans (qmul_congr
-      ((GaussianScalarColumnSelection.negative_both_product k w).eqTrans ((qmul_commutative _ _).eqTrans (reciprocal_identity w np)))
+      ((GaussianScalarColumnSelection.negative_both_product k w).eqTrans ((qmul_commutative _ _).eqTrans wi))
       (.eqRefl _))).eqTrans ((qmul_commutative _ _).eqTrans (qmul_one_right v (qmul_canonical _ _)))
   have first : Γ ⊢[PRAAx] distanceBounded v (qmul q (qsub e qone)) (K*C) P :=
     distance_congr cancel (.eqRefl _) (.eqRefl _) (.eqRefl _)

@@ -29,7 +29,6 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (positive_product qmul qmul_canonical ofGaussian_canonical ofGaussian_represents
   qmul_represents represents_congr canonical_unique)
-open GaussianRationalLowerBounds (name_lower)
 open GaussianRationalMetric (bounded bounded_iff distanceBounded qsub qsub_represents qnegative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (reciprocal reciprocal_canonical reciprocal_identity bounded_product bound_congr)
@@ -84,13 +83,12 @@ theorem reciprocal_difference (X Y D sign A B : PTm n) (hz : Γ ⊢[PRAAx] Gauss
   have hX := hz.andE₁.andE₁
   have hD := hz.andE₂
   have hd := positive_product D D hD hD
-  have na := GaussianNameReciprocal.lower_norm_positive a D hD (name_lower a X D hX hD (pole_lower false X Y D sign A B hD hB))
-  have nb := GaussianNameReciprocal.lower_norm_positive b D hD (name_lower b X D hX hD (pole_lower true X Y D sign A B hD hB))
-  have nQ := GaussianNameReciprocal.lower_norm_positive Q (D*D) hd
-    (name_lower Q (X*X) (D*D) (positive_product X X hX hX) hd (polynomial_lower X Y D sign A B hD hB))
+  have na := GaussianRationalLowerBounds.norm_positive a X D hX hD (pole_lower false X Y D sign A B hD hB)
+  have nb := GaussianRationalLowerBounds.norm_positive b X D hX hD (pole_lower true X Y D sign A B hD hB)
   have ha := reciprocal_identity a na
   have hb := reciprocal_identity b nb
-  have hQ := reciprocal_identity Q nQ
+  have hQ := GaussianRationalLowerBounds.reciprocal_identity_of_lower Q (X*X) (D*D) (positive_product X X hX hX) hd
+    (polynomial_lower X Y D sign A B hD hB)
   have cancel : Γ ⊢[PRAAx] qmul Q (qmul v u) ≐ qone :=
     (qmul_congr (product_polynomial X Y D sign A B hD hB).eqSymm (.eqRefl _)).eqTrans
       ((qmul_associative (qmul a b) v u).eqSymm.eqTrans

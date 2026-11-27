@@ -33,10 +33,10 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (canonical_unique ofGaussian_canonical ofGaussian_represents positive_product qmul qmul_canonical
   qmul_represents represents_congr)
-open GaussianRationalLowerBounds (lower lower_from_representation name_lower inverse_bound)
+open GaussianRationalLowerBounds (lower lower_from_representation inverse_bound)
 open GaussianRationalMetric (bounded bounded_iff distanceBounded qnegative qnegative_canonical qnegative_represents qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal reciprocal_identity reciprocal_canonical)
+open GaussianRationalReciprocal (reciprocal reciprocal_canonical)
 open GaussianRationalSyntheticDivision (qmul_congr qone)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRightHalfPlaneLogarithmOffset (signedImag)
@@ -130,13 +130,13 @@ theorem finite_error (p X Y D sign A B R U K L N : PTm n)
   have first := distance_congr eq₁ eq₂ (one_mul E) (.eqRefl _)
     (GaussianApproximateInverseDistance.multiply_distance imaginaryPoint v w one E H hH imaginary_bound origin)
   have low := coefficient_lower A B hB
-  have norm := GaussianNameReciprocal.lower_norm_positive c B hB (name_lower c A B hA hB low)
+  have ci := GaussianRationalLowerBounds.reciprocal_identity_of_lower c A B hA hB low
   have raw : Γ ⊢[PRAAx] le (B*one) (B*A) := le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right B hA)
   have inverse : Γ ⊢[PRAAx] bounded (reciprocal c) B one :=
     bounded_radius_mono _ _ _ _ _ hA (le_refl one) raw (inverse_bound _ _ _ hA hB low)
   have cancelled : Γ ⊢[PRAAx] qmul (reciprocal c) (qmul c W) ≐ W :=
     (qmul_associative _ _ _).eqSymm.eqTrans
-      ((qmul_congr ((qmul_commutative _ _).eqTrans (reciprocal_identity c norm)) (.eqRefl _)).eqTrans
+      ((qmul_congr ((qmul_commutative _ _).eqTrans ci) (.eqRefl _)).eqTrans
         ((qmul_commutative _ _).eqTrans (qmul_one_right W (reciprocal_canonical _))))
   exact distance_congr (.eqRefl _) cancelled (.eqRefl _) (.eqRefl _)
     (GaussianApproximateInverseDistance.multiply_distance (reciprocal c) _ _ B E H hH inverse first)

@@ -23,7 +23,7 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRadiusExponentialName (index inputPrecision sample_at)
 open GaussianRationalExponentialTail (scalarPrefix)
 open GaussianRationalHorner (qadd qmul canonical positive_product)
-open GaussianRationalLowerBounds (lower name_lower)
+open GaussianRationalLowerBounds (lower)
 open GaussianRationalMetric (bounded)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody)
 open GaussianRationalReciprocal (reciprocal)
@@ -67,8 +67,7 @@ theorem inverse_pair (p A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] qmul (ap2 expF p (expData false A B)) (reciprocal (ap2 expF p (expData false A B))) ≐ qone := by
   let x := ap2 expF p (expData false A B)
   have positive : Γ ⊢[PRAAx] le one (B+num 4*A) := le_trans hB (le_add_right B _)
-  exact GaussianRationalReciprocal.reciprocal_identity x (GaussianNameReciprocal.lower_norm_positive x B hB
-    (name_lower x (B+num 4*A) B positive hB (positive_lower p A B hB)))
+  exact GaussianRationalLowerBounds.reciprocal_identity_of_lower x (B+num 4*A) B positive hB (positive_lower p A B hB)
 
 theorem inverse_bound (p A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] bounded (reciprocal (ap2 expF p (expData false A B))) B (B+num 4*A) :=

@@ -27,10 +27,10 @@ open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (canonical qadd qmul qmul_canonical ofGaussian_canonical positive_product)
-open GaussianRationalLowerBounds (name_lower inverse_bound)
+open GaussianRationalLowerBounds (inverse_bound)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal reciprocal_identity reciprocal_canonical bound_congr bounded_product)
+open GaussianRationalReciprocal (reciprocal reciprocal_canonical bound_congr bounded_product)
 open GaussianRationalRiemannRefinement (termsDistance constantBody constant_entry constant_sum weight weight_repetition)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr qadd_sub_cancel qsub_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
@@ -87,9 +87,8 @@ theorem resolvent_error (X Y D sign a b A B : PTm n) (hz : Γ ⊢[PRAAx] source 
   have hD2 := positive_product _ _ hD hD
   have hzL := GaussianBinetReciprocalRows.real_part_lower X Y D sign hz
   have hpL := GaussianBinetArctangentResolvent.polynomial_lower X Y D sign a b hD hb
-  have hzI := reciprocal_identity Z (GaussianNameReciprocal.lower_norm_positive Z D hD (name_lower Z X D hX hD hzL))
-  have hpI := reciprocal_identity P
-    (GaussianNameReciprocal.lower_norm_positive P (D*D) hD2 (name_lower P (X*X) (D*D) hX2 hD2 hpL))
+  have hzI := GaussianRationalLowerBounds.reciprocal_identity_of_lower Z X D hX hD hzL
+  have hpI := GaussianRationalLowerBounds.reciprocal_identity_of_lower P (X*X) (D*D) hX2 hD2 hpL
   have raw := bounded_product _ _ _ _ _ _ hB hB ht ht
   have first := bounded_product _ _ _ _ _ _ hX (positive_product _ _ hB hB) (inverse_bound Z X D hX hD hzL) raw
   have last := bounded_product _ _ _ _ _ _ (positive_product _ _ hX (positive_product _ _ hB hB)) hX2 first

@@ -71,8 +71,7 @@ theorem partial_error (p A B N : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ �
   have hd := GaussianRationalLowerBounds.lower_congr
     (GaussianBinetBoseDenominator.sample_at (Γ := Γ) r A B) (.eqRefl C) (.eqRefl B) (observation_lower r A B hB)
   have exactPair : Γ ⊢[PRAAx] qmul w d ≐ qone :=
-    (qmul_commutative w d).eqTrans (GaussianRationalReciprocal.reciprocal_identity d
-      (GaussianNameReciprocal.lower_norm_positive d B hB (GaussianRationalLowerBounds.name_lower d C B hC hB hd)))
+    (qmul_commutative w d).eqTrans (GaussianRationalLowerBounds.reciprocal_identity_of_lower d C B hC hB hd)
   have invert : Γ ⊢[PRAAx] qmul w (qmul d S) ≐ S :=
     (qmul_associative w d S).eqSymm.eqTrans
       ((qmul_congr exactPair (.eqRefl S)).eqTrans

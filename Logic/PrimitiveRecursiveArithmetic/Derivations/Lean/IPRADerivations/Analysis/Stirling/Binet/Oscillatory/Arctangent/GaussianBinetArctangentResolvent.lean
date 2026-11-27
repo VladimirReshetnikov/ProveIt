@@ -24,8 +24,8 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represents qadd qmul
   qadd_represents qmul_represents qadd_canonical qmul_canonical positive_product canonical_unique represents_congr)
-open GaussianRationalLowerBounds (lower lower_from_representation lower_congr product_lower name_lower)
-open GaussianRationalReciprocal (reciprocal reciprocal_identity)
+open GaussianRationalLowerBounds (lower lower_from_representation lower_congr product_lower)
+open GaussianRationalReciprocal (reciprocal)
 open GaussianRationalSyntheticDivision (qone qadd_congr qmul_congr rescale_to)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right qadd_commutative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
@@ -155,14 +155,11 @@ theorem reciprocal_average (X Y D sign A B : PTm n) (h : Γ ⊢[PRAAx] source X 
   have hX := h.andE₁.andE₁
   have hD := h.andE₂
   have hd := positive_product D B hD hB
-  have lp := name_lower p X D hX hD (pole_lower false X Y D sign A B hD hB)
-  have lm := name_lower m X D hX hD (pole_lower true X Y D sign A B hD hB)
+  have invp := GaussianRationalLowerBounds.reciprocal_identity_of_lower p X D hX hD (pole_lower false X Y D sign A B hD hB)
+  have invm := GaussianRationalLowerBounds.reciprocal_identity_of_lower m X D hX hD (pole_lower true X Y D sign A B hD hB)
   have hQ := polynomial_lower X Y D sign A B hD hB
   have D₂ := positive_product D D hD hD
-  have lq := name_lower Q (X*X) (D*D) (positive_product X X hX hX) D₂ hQ
-  have invp := reciprocal_identity p (GaussianNameReciprocal.lower_norm_positive p D hD lp)
-  have invm := reciprocal_identity m (GaussianNameReciprocal.lower_norm_positive m D hD lm)
-  have invq := reciprocal_identity Q (GaussianNameReciprocal.lower_norm_positive Q (D*D) D₂ lq)
+  have invq := GaussianRationalLowerBounds.reciprocal_identity_of_lower Q (X*X) (D*D) (positive_product X X hX hX) D₂ hQ
   have cleared : Γ ⊢[PRAAx] qmul V Q ≐ z :=
     (qmul_congr (.eqRefl V) (product_polynomial X Y D sign A B hD hB).eqSymm).eqTrans
       ((qmul_commutative V W).eqTrans

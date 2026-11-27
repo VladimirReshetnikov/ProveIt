@@ -24,7 +24,7 @@ open GaussianLogGammaEulerHead (argument)
 open GaussianLogGammaEulerResidualDomain (source)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (positive_product qmul qmul_canonical qzero)
-open GaussianRationalLowerBounds (inverse_bound name_lower)
+open GaussianRationalLowerBounds (inverse_bound)
 open GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (reciprocal reciprocal_canonical reciprocal_identity bounded_negative)
@@ -87,7 +87,7 @@ theorem pole_integral_error (s : Bool) (p X Y D sign A B R U K T L N : PTm n)
   have hX := hz.andE₁.andE₁.andE₁
   have hD := hz.andE₁.andE₂
   have low := pole_lower s X Y D sign A B hD hB
-  have np := GaussianNameReciprocal.lower_norm_positive w D hD (name_lower w X D hX hD low)
+  have np := GaussianRationalLowerBounds.norm_positive w X D hX hD low
   have bound : Γ ⊢[PRAAx] bounded k K one :=
     bounded_radius_mono _ _ _ _ _ hX (le_refl one) (le_congr (by ipra_ring) (.eqRefl _) hm) (inverse_bound w X D hX hD low)
   have same : Γ ⊢[PRAAx] qnegative (argument X' Y' D' s') ≐ qnegative w :=

@@ -31,10 +31,10 @@ open GaussianLogGammaEulerResidualDomain (native source)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (qmul qmul_canonical positive_product ofGaussian_represents)
-open GaussianRationalLowerBounds (lower lower_from_representation name_lower inverse_bound)
+open GaussianRationalLowerBounds (lower lower_from_representation inverse_bound)
 open GaussianRationalMetric (bounded distanceBounded qnegative_represents)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal reciprocal_identity)
+open GaussianRationalReciprocal (reciprocal)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 
@@ -100,7 +100,7 @@ theorem quotient_error (j p M X Y D sign A B R U L N : PTm n)
     (GaussianRationalPowerAlgebra.commute_nested k e (qmul w u)).eqTrans
       (qmul_congr (.eqRefl _) ((qmul_associative k w u).eqSymm.eqTrans (qmul_congr exact_angle (.eqRefl _))))
   have admit := imaginary_lower S N hN
-  have nonzero := GaussianNameReciprocal.lower_norm_positive k N hN (name_lower k S N hS hN admit)
+  have ki := GaussianRationalLowerBounds.reciprocal_identity_of_lower k S N hS hN admit
   have inverseRadius : Γ ⊢[PRAAx] le (N*one) (N*S) := by
     change Γ ⊢[PRAAx] le (N*one) (N*(D*L*j))
     exact le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right N hS)
@@ -111,7 +111,7 @@ theorem quotient_error (j p M X Y D sign A B R U L N : PTm n)
     distance_congr kx.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) scaled
   have first : Γ ⊢[PRAAx] qmul (reciprocal k) (qmul k x) ≐ x :=
     (qmul_associative _ _ _).eqSymm.eqTrans
-      ((qmul_congr ((qmul_commutative _ _).eqTrans (reciprocal_identity k nonzero)) (.eqRefl _)).eqTrans
+      ((qmul_congr ((qmul_commutative _ _).eqTrans ki) (.eqRefl _)).eqTrans
         ((qmul_commutative _ _).eqTrans (qmul_one_right x (qmul_canonical _ _))))
   have last : Γ ⊢[PRAAx] qmul (reciprocal k) (qmul e v) ≐ qmul e (qmul (reciprocal k) v) :=
     GaussianRationalPowerAlgebra.commute_nested (reciprocal k) e v

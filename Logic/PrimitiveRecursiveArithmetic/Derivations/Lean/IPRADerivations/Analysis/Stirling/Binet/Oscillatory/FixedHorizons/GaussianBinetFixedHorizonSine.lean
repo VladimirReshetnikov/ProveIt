@@ -28,10 +28,9 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (canonical_unique ofGaussian_canonical ofGaussian_represents positive_product qmul qmul_canonical
   qmul_represents represents_congr)
-open GaussianRationalLowerBounds (name_lower)
 open GaussianRationalMetric (distanceBounded qnegative qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal reciprocal_canonical reciprocal_identity)
+open GaussianRationalReciprocal (reciprocal reciprocal_canonical)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianLogGammaEulerResidualDomain (source)
@@ -77,9 +76,8 @@ theorem reciprocal_value (X Y D sign A B : PTm n) (hz : Γ ⊢[PRAAx] GaussianRi
   have h₂ : Γ ⊢[PRAAx] qmul imaginaryPoint (qmul sineMultiplier d) ≐ qmul c W :=
     (qmul_congr (.eqRefl _) h).eqTrans
       ((qmul_associative _ _ _).eqSymm.eqTrans (qmul_congr (coefficient_product A B hB) (.eqRefl _)))
-  have norm := GaussianNameReciprocal.lower_norm_positive c B hB (name_lower c A B hA hB (coefficient_lower A B hB))
   have hc : Γ ⊢[PRAAx] qmul k c ≐ GaussianRationalSyntheticDivision.qone :=
-    (qmul_commutative _ _).eqTrans (reciprocal_identity c norm)
+    (qmul_commutative _ _).eqTrans (GaussianRationalLowerBounds.reciprocal_identity_of_lower c A B hA hB (coefficient_lower A B hB))
   exact (qmul_associative k (fraction one two) d).eqTrans ((qmul_congr (.eqRefl _) (h₁.eqTrans h₂)).eqTrans
     ((qmul_associative k c W).eqSymm.eqTrans ((qmul_congr hc (.eqRefl _)).eqTrans
       ((qmul_commutative _ _).eqTrans (qmul_one_right W (reciprocal_canonical _))))))

@@ -24,7 +24,7 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonical positive_product
   qadd qmul qmul_canonical qmul_represents canonical_unique represents_congr)
-open GaussianRationalLowerBounds (inverse_bound name_lower)
+open GaussianRationalLowerBounds (inverse_bound)
 open GaussianRationalMetric (bounded bounded_iff distanceBounded qsub qsub_canonical)
 open GaussianRationalReciprocal (reciprocal bound_congr bounded_sum bounded_product)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_congr qzero_add)
@@ -83,8 +83,8 @@ theorem reciprocal_distance (s : Bool) (X Y D sign A B a b E H : PTm n)
   have hD := hz.andE₂
   have hp := pole_lower s X Y D sign A B hD hB
   have hq := pole_lower s X Y D sign a b hD hb
-  have np := GaussianNameReciprocal.lower_norm_positive p D hD (name_lower p X D hX hD hp)
-  have nq := GaussianNameReciprocal.lower_norm_positive q D hD (name_lower q X D hX hD hq)
+  have np := GaussianRationalLowerBounds.norm_positive p X D hX hD hp
+  have nq := GaussianRationalLowerBounds.norm_positive q X D hX hD hq
   have dpq := distance_symmetric _ _ _ _ hH (pole_distance s X Y D sign A B a b E H hD hB hb hH h)
   have b₁ := bounded_product (reciprocal p) (qsub q p) D X E H hX hH
     (inverse_bound p X D hX hD hp) dpq

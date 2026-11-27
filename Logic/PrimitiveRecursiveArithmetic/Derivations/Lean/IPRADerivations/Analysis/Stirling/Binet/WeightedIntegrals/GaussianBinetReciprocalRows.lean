@@ -25,7 +25,7 @@ open GaussianLogGammaEulerReciprocalSlope (shiftedPoint)
 open GaussianLogGammaEulerResidualDomain (native)
 open GaussianLogGammaEulerResidualRadius (native_norm)
 open GaussianRationalHorner (ofGaussian_represents positive_product qmul)
-open GaussianRationalLowerBounds (lower lower_from_representation inverse_bound name_lower)
+open GaussianRationalLowerBounds (lower lower_from_representation inverse_bound)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub qsub_represents)
 open GaussianRationalReciprocal (reciprocal bound_congr bounded_product)
 open GaussianRightHalfPlaneLogarithm (source)
@@ -71,8 +71,8 @@ theorem horizontal_reciprocal_distance (A B D neg U : PTm n) (h : Γ ⊢[PRAAx] 
   have hU := le_trans hA (le_add_right A U)
   have hx := real_part_lower A B D neg h
   have hy := real_part_lower (A+U) B D neg (.andI (.andI hU h.andE₁.andE₂) hD)
-  have nx := GaussianNameReciprocal.lower_norm_positive x D hD (name_lower x A D hA hD hx)
-  have ny := GaussianNameReciprocal.lower_norm_positive y D hD (name_lower y (A+U) D hU hD hy)
+  have nx := GaussianRationalLowerBounds.norm_positive x A D hA hD hx
+  have ny := GaussianRationalLowerBounds.norm_positive y (A+U) D hU hD hy
   have first := bounded_product (reciprocal x) (qsub y x) D A U D hA hD
     (inverse_bound x A D hA hD hx) (horizontal_step A B D neg U hD)
   have both := bounded_product (qmul (reciprocal x) (qsub y x)) (reciprocal y) (D*U) (A*D) D (A+U)

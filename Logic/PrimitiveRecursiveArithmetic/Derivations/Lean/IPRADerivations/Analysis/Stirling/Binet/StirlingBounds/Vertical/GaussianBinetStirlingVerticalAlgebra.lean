@@ -117,10 +117,8 @@ theorem linear_expression (A B D sign H g l : PTm n) (h : Γ ⊢[PRAAx] source A
   let b := fraction (one : PTm n) two
   let w := reciprocal z
   let u := offset A B D sign
-  have hNorm := GaussianNameReciprocal.lower_norm_positive z D h.andE₂
-    (GaussianRationalLowerBounds.name_lower z A D h.andE₁.andE₁ h.andE₂
-      (GaussianBinetReciprocalRows.real_part_lower A B D sign h))
-  have inv := GaussianRationalReciprocal.reciprocal_identity z hNorm
+  have inv := GaussianRationalLowerBounds.reciprocal_identity_of_lower z A D h.andE₁.andE₁ h.andE₂
+    (GaussianBinetReciprocalRows.real_part_lower A B D sign h)
   have o : Γ ⊢[PRAAx] qmul u w ≐ qsub qone (qmul b w) :=
     (qmul_commutative u w).eqTrans ((mul_sub w z b).eqTrans
       (qsub_congr ((qmul_commutative w z).eqTrans inv) (qmul_commutative w b)))

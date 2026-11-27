@@ -32,7 +32,7 @@ open GaussianRationalMetric (qsub qnegative qsub_canonical qsub_represents qnega
 open GaussianRationalNaturalScale (naturalPoint natScale natScale_as_product)
 open GaussianRationalNormalizedTelescope (weight weight_sum_one)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal reciprocal_identity)
+open GaussianRationalReciprocal (reciprocal)
 open GaussianRationalSyntheticDivision (qone qsub_congr qadd_congr qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRightHalfPlaneLogarithm (source)
@@ -116,8 +116,8 @@ theorem tag_identity (A B D sign M j : PTm n)
     (GaussianLogGammaEulerHead.shifted_source zero A D sign h).andE₁.andE₁) (le_add_right _ _)
   have he : Γ ⊢[PRAAx] le one E := positive_product _ _ hM h.andE₂
   have ht : Γ ⊢[PRAAx] source a E sign := .andI (.andI ha h.andE₁.andE₂) he
-  have hn := GaussianNameReciprocal.lower_norm_positive t E he
-    (GaussianRationalLowerBounds.name_lower t a E ha he (GaussianBinetReciprocalRows.real_part_lower a (M*B) E sign ht))
+  have ti := GaussianRationalLowerBounds.reciprocal_identity_of_lower t a E ha he
+    (GaussianBinetReciprocalRows.real_part_lower a (M*B) E sign ht)
   have diff : Γ ⊢[PRAAx] qsub c t ≐ qsub v u :=
     (qsub_congr (.eqRefl c) (tag_add A B D sign M j h hM)).eqTrans
       ((GaussianNameArithmetic.sum_difference z z v u).eqTrans
@@ -126,7 +126,7 @@ theorem tag_identity (A B D sign M j : PTm n)
   exact (row_at A B D sign M j).eqTrans
     ((qmul_congr diff.eqSymm (.eqRefl _)).eqTrans
       ((GaussianEulerBetaPrimitivePascal.right_product_difference c t (reciprocal t)).eqTrans
-        (qsub_congr (.eqRefl _) (reciprocal_identity t hn))))
+        (qsub_congr (.eqRefl _) ti)))
 
 private def affineBody : PTm 2 := GaussianRationalFiniteSum.addBody (multiplyBody rows) (qnegative qone)
 
