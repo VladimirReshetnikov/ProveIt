@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedLogGammaTaylorEstimate
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedTaylorDifferenceQuotient
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.DerivativeRates.GaussianNamedTaylorDifferenceQuotient
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.ImproperNames.GaussianDigammaBernoulliName
 import IPRADerivations.Analysis.Gamma.BohrMollerup.Uniqueness.GaussianBohrMollerupZeroAlgebra
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelUniform
+import IPRADerivations.Analysis.Gamma.Ratios.Wendel.GaussianGammaRationalWendelUniform
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
 
 /-!

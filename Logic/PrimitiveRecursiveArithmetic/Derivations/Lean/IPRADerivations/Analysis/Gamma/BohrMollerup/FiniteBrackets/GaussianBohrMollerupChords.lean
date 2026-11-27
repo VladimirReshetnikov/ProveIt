@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupPresentation
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalFractionalChord
+import IPRADerivations.Analysis.Gamma.Ratios.Chords.GaussianGammaRationalFractionalChord
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementConvexity
 
 /-!

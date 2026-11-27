@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.FiniteBrackets.GaussianBohrMollerupBracketEndpoints
 import IPRADerivations.Analysis.Gamma.BohrMollerup.Uniqueness.GaussianBohrMollerupLogWindow
-import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
+import IPRADerivations.Analysis.Gamma.HalfInteger.SquareRoots.GaussianGammaHalfSqrtBrackets
 
 /-!
 # The exact general-B Bohr–Mollerup width bound

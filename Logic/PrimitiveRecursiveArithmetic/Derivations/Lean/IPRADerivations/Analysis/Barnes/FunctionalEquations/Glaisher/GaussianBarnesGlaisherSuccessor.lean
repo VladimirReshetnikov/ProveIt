@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherFinite
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Glaisher.GaussianBarnesGlaisherIncrement
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelUniform
+import IPRADerivations.Analysis.Gamma.Ratios.Wendel.GaussianGammaRationalWendelUniform
 
 /-!
 # Exact named successor law for the Glaisher logarithm approximants

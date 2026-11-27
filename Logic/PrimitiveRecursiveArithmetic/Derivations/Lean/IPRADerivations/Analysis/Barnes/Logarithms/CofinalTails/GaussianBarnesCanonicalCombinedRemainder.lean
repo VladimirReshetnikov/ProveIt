@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.ExponentNormalization.GaussianBarnesCanonicalHarmonicRemainder
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.ExponentNormalization.GaussianBarnesCanonicalTerminalRemainder
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingRealBound
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Remainders.GaussianBinetStirlingRealBound
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 
 /-!

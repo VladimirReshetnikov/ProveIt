@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalFirstOrderPolynomial
+import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRational.GaussianRationalFirstOrderPolynomial
 
 /-!
 # Actual first-order product errors and their uniform quadratic bound

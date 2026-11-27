@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Reflection.GaussianGammaReflectionProduct
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSineSincFactorization
-import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
+import IPRADerivations.Analysis.Trigonometry.Sinc.Identities.GaussianNamedSineSincFactorization
+import IPRADerivations.Analysis.Gamma.HalfInteger.SquareRoots.GaussianGammaHalfPiName
 
 /-!
 # Transfer of the complementary reflection product to the original sine

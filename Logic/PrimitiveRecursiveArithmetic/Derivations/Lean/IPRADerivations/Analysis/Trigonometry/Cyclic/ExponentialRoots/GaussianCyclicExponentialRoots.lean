@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentOriginalExponential
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianBoundedConstantProductName
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponentialSample
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSincSamples
+import IPRADerivations.Analysis.Trigonometry.Sinc.Series.GaussianNamedSincSamples
 
 /-!
 # Actual cyclic exponential roots for an internal order

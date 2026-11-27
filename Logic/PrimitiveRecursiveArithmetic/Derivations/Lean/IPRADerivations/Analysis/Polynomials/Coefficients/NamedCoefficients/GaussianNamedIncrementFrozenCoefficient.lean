@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementDifferenceQuotient
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.NamedIncrements.GaussianNamedIncrementDifferenceQuotient
 
 /-!
 # Comparison with a frozen coefficient for a named increment

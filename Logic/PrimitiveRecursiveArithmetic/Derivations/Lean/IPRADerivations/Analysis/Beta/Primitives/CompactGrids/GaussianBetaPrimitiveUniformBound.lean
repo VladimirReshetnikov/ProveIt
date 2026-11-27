@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.GaussianBetaKernelWeightedNorm
-import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianEuclideanPolynomialMajorant
+import IPRADerivations.Analysis.Polynomials.Evaluation.Bounds.GaussianEuclideanPolynomialMajorant
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPoleGuard
 import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaCoefficientNorm
 

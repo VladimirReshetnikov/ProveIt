@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Apartness.GaussianGammaNegativeIntervalNamedApartness
 import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedApartnessTransport
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.EndpointRates.GaussianNamedDifferenceQuotientProperness
 
 /-!
 # Transport of apartness from the negative-interval critical point

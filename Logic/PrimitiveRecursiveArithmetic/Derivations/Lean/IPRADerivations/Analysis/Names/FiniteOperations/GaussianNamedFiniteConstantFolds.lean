@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamily
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Families.GaussianNamedFiniteSumFamily
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 

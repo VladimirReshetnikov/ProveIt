@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.Growth.GaussianBarnesCanonicalDiskBound
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.Values.GaussianBarnesCanonicalSingleExponential
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalCenteredExponentialShift
 import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianUniformFiniteSumBound
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedBoundedSumObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Observations.GaussianNamedBoundedSumObservation
 
 /-!
 # Disk-uniform bounds for the original Barnes central exponential

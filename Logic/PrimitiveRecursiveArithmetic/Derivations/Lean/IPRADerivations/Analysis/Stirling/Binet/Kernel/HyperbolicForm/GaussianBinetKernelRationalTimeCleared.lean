@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelFrozenHyperbolic
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelImaginaryRatioCofinal
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.ImaginaryRatios.GaussianBinetKernelFrozenHyperbolic
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.ImaginaryRatios.GaussianBinetKernelImaginaryRatioCofinal
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedUniformRateClosure
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Named.GaussianBinetLaplaceMomentNamedShift
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientRate
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.EndpointRates.GaussianNamedDifferenceQuotientRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 
 /-!

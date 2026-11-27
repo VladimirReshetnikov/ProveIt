@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Cofinal.GaussianBa
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedBoundedProductObservation
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
 import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingPowerFrozen
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNativeDerivativeQuotientRate
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.DerivativeRates.GaussianNativeDerivativeQuotientRate
 
 /-!
 # Differentiate the original cofinal Barnes first-derivative name

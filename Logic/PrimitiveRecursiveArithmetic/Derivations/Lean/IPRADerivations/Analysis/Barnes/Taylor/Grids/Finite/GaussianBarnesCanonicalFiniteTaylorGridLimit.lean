@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.Finite.GaussianBarnesCanonicalFiniteTaylorGridComparison
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.Finite.GaussianBarnesCanonicalFiniteTaylorNormalizedGridBudget
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNativeDerivativeQuotientRate
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.DerivativeRates.GaussianNativeDerivativeQuotientRate
 
 /-!
 # Small-step convergence of the literal finite Barnes forward differences

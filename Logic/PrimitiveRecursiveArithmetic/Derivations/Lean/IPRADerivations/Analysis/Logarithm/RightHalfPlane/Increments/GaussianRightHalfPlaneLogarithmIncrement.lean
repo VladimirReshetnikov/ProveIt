@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.Increments.GaussianRightHalfPlaneLogarithmIncrementBound
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.EndpointRates.GaussianNamedDifferenceQuotientProperness
 
 /-!
 # Actual canonical logarithm increments and their linear term

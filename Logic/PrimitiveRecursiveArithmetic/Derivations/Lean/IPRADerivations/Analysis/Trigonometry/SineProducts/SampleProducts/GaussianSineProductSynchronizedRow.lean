@@ -1,9 +1,9 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Scaling.GaussianSineProductRelativeArgument
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineRawRootBinding
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Scaling.GaussianSineProductQuotientTransport
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianSincRatioProductRow
+import IPRADerivations.Analysis.Trigonometry.Sinc.Identities.GaussianSincRatioProductRow
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineSampleRootGuards
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSineSincFactorization
+import IPRADerivations.Analysis.Trigonometry.Sinc.Identities.GaussianNamedSineSincFactorization
 
 /-!
 # Transport from the actual sampled sine row to the sinc ratio row

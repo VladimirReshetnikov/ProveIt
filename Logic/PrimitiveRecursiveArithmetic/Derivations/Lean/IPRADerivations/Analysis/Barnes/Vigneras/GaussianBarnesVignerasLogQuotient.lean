@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.FunctionalEquations.GaussianBarnesCanonic
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceAlgebra
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifferenceZero
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.EndpointRates.GaussianNamedDifferenceQuotientProperness
 
 /-!
 # The real logarithmic quotient in the Barnes characterization

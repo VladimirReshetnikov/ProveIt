@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.Named.GaussianNamedEulerLogarithmicNamedDerivative
 import IPRADerivations.Analysis.Euler.Logarithms.Improper.GaussianNamedEulerLogarithmicZeroIdentification
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.NamedIncrements.GaussianNamedIncrementDifferenceQuotientProperness
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianShrinkingGridCoefficientSensitivity
-import IPRADerivations.Analysis.Polynomials.Taylor.GaussianShrinkingPolynomialTail
+import IPRADerivations.Analysis.Polynomials.Taylor.WeightedTails.GaussianShrinkingPolynomialTail
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 
 /-!

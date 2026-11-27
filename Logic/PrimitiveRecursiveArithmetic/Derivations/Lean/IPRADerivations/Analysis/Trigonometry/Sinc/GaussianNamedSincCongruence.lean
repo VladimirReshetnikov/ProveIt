@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSineSincFactorization
+import IPRADerivations.Analysis.Trigonometry.Sinc.Identities.GaussianNamedSineSincFactorization
 
 /-!
 # Congruence of sinc for independently certified names

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.LiteralTails.GaussianBinetBoseLiteralUniform
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayPiBridge
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.Tails.GaussianBinetSecondDecayPiBridge
 
 /-!
 # Move actual literal Bose cells to a common frozen Pi clock

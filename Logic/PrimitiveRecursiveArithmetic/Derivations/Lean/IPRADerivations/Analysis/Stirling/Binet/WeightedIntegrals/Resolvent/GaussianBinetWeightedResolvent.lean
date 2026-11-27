@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Resolvent.GaussianBinetWeightedResolventGrid
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetLogCellGrid
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingUnitDifference
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Logarithms.GaussianBinetLogCellGrid
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.UnitDifferences.GaussianBinetStirlingUnitDifference
 
 /-!
 # Cofinal evaluation of the weighted Binet resolvent

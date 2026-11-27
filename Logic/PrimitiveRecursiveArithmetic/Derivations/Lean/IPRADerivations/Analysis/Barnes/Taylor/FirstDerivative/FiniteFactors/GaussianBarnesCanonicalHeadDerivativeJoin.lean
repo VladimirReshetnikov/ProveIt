@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.ExponentialCorrections.GaussianBarnesCanonicalHeadExponentialFactors
 import IPRADerivations.Analysis.Barnes.HeadProducts.BasePowers.GaussianBarnesCanonicalHeadPolynomialQuotient
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadCorrectionDerivative
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedNativeProductDerivativeRate
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.DerivativeRates.GaussianNamedNativeProductDerivativeRate
 
 /-!
 # Product rule for the original finite kept Barnes head

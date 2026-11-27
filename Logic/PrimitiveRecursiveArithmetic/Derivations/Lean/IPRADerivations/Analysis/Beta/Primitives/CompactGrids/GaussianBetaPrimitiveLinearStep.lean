@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Polynomials.Taylor.GaussianTimeWeightedPolynomialIncrement
-import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalPolynomialEulerSlope
+import IPRADerivations.Analysis.Polynomials.Taylor.WeightedTails.GaussianTimeWeightedPolynomialIncrement
+import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRational.GaussianRationalPolynomialEulerSlope
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerIncrement
 import IPRADerivations.Analysis.Beta.CompactKernels.Regularity.GaussianBetaKernelGridComparison
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Scaling.GaussianSineProductScaledArgumentCancellation
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedEvenSinePolynomial
+import IPRADerivations.Analysis.Trigonometry.Sinc.Series.GaussianNamedEvenSinePolynomial
 
 /-!
 # The zero branch of the encoded odd sine product

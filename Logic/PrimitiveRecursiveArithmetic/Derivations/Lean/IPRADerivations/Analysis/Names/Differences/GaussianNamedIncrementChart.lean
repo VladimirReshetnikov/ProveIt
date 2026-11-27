@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementDifferenceQuotient
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.NamedIncrements.GaussianNamedIncrementDifferenceQuotient
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianL1

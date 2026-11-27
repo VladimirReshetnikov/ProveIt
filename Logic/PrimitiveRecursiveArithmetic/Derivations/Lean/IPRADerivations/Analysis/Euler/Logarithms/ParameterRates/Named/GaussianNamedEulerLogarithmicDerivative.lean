@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.Named.GaussianNamedEulerLogarithmicIncrementBinding
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientApproximation
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.EndpointRates.GaussianNamedDifferenceQuotientApproximation
 import IPRADerivations.Analysis.Euler.Logarithms.ParameterRates.GaussianEulerLogarithmicDerivative
 
 /-!

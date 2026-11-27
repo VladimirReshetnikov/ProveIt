@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelFrozenHyperbolic
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.ImaginaryRatios.GaussianBinetKernelFrozenHyperbolic
 import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayQuadratureAtZero
 
 /-!

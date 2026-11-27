@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingExpansionCoefficients
-import IPRADerivations.Analysis.Polynomials.Taylor.GaussianShrinkingPolynomialTail
+import IPRADerivations.Analysis.Polynomials.Taylor.WeightedTails.GaussianShrinkingPolynomialTail
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReference
 
 /-!

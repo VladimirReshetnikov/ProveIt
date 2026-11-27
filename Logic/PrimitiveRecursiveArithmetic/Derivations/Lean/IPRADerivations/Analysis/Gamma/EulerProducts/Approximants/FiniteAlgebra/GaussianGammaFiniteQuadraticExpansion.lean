@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Taylor.FinitePolynomials.GaussianGammaPolynomialQuadratic
 import IPRADerivations.Analysis.Gamma.Taylor.DegreeTails.GaussianGammaUnitCoefficientMass
-import IPRADerivations.Analysis.Polynomials.Taylor.GaussianShrinkingPolynomialTail
+import IPRADerivations.Analysis.Polynomials.Taylor.WeightedTails.GaussianShrinkingPolynomialTail
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
 
 /-!

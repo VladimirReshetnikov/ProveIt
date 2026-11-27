@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinGeometric
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.GaussianGammaZetaMellinOriginCell
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.Origin.GaussianGammaZetaMellinOriginCell
 
 /-!
 # A magnitude bound independent of the finite Mellin count

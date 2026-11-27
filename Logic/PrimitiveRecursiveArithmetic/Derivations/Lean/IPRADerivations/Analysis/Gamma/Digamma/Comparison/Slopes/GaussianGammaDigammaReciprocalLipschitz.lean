@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaRecipro
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicPrefix
 import IPRADerivations.Analysis.Integration.Quadrature.SquareSubstitution.GaussianRationalQuadratureSquareCells
 import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsLog
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.Wendel.GaussianGammaRationalWendelBoundary
 
 /-!
 # A sharp elementary bound for the finite reciprocal slope

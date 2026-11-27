@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Taylor.GaussianShrinkingPolynomialTail
+import IPRADerivations.Analysis.Polynomials.Taylor.WeightedTails.GaussianShrinkingPolynomialTail
 
 /-!
 # Exact shrinking Taylor tails for an original Horner prefix

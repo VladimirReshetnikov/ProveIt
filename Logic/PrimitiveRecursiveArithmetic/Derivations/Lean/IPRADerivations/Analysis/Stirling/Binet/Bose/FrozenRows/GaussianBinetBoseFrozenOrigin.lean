@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.FrozenRows.GaussianBinetBoseFrozenMatrix
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecaySharedTail
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.Tails.GaussianBinetSecondDecaySharedTail
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Strips.GaussianBinetLaplaceStripCutoff
 
 /-!

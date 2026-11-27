@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArct
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialUnitEndpoint
 import IPRADerivations.Analysis.Exponential.RightHalfPlane.GaussianRightHalfPlaneArgumentExponential
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.EndpointRates.GaussianNamedDifferenceQuotientProperness
 
 /-!
 # Continuity of the two original right-half-plane argument charts

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaFirstCrossing
 import IPRADerivations.Analysis.Gamma.EulerProducts.Derivatives.GaussianNamedGammaEulerFirstDerivative
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelUniform
+import IPRADerivations.Analysis.Gamma.Ratios.Wendel.GaussianGammaRationalWendelUniform
 
 /-!
 # The original normalized digamma on named positive real inputs

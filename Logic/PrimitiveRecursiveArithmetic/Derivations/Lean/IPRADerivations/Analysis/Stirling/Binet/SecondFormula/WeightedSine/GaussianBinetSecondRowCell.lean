@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Rectangles.GaussianBinetOscillatorySineRectangle
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineRealDampedPanels
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayPointwise
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.FiniteRows.GaussianBinetSecondDecayPointwise
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.SineTransforms.GaussianBinetSineFrozenPiTerm
 
 /-!

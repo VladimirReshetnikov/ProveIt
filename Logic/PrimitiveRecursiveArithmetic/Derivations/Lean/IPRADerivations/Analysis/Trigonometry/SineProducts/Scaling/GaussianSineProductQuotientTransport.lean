@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Roots.GaussianSineRootNormalization
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSincRatio
+import IPRADerivations.Analysis.Trigonometry.Sinc.Identities.GaussianNamedSincRatio
 
 /-!
 # Finite transport from a multiplied sine identity to a quotient row

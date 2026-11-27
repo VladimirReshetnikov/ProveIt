@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSincSamples
+import IPRADerivations.Analysis.Trigonometry.Sinc.Series.GaussianNamedSincSamples
 
 /-!
 # A primitive-recursive name for sinc

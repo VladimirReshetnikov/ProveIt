@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Membership.Gaus
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
 import IPRADerivations.Analysis.Names.Approximation.GaussianRepresentedPointBounds
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
-import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianPolynomialValueName
+import IPRADerivations.Analysis.Polynomials.Evaluation.NamedValues.GaussianPolynomialValueName
 
 /-!
 # Sharp M_Z residual estimates from actual finite root hits

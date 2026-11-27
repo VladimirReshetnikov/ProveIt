@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.GaussianGammaZetaMellinCutoffWindows
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.GaussianGammaZetaMellinLowerRooted
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.GaussianGammaZetaMellinCompactUpperTail
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.Origin.GaussianGammaZetaMellinLowerRooted
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.UpperTails.GaussianGammaZetaMellinCompactUpperTail
 
 /-!
 # Cauchy comparison on nested original Mellin windows

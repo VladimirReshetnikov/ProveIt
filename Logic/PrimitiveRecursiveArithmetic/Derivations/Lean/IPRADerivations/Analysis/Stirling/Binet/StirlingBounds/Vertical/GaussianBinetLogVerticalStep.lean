@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetLogHorizontalStep
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Logarithms.GaussianBinetLogHorizontalStep
 
 /-!
 # First-order logarithm comparison on a vertical Binet mesh

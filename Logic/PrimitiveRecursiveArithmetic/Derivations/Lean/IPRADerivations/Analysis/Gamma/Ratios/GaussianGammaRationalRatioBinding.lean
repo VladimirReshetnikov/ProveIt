@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalLogGautschi
+import IPRADerivations.Analysis.Gamma.Ratios.Gautschi.GaussianGammaRationalLogGautschi
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
 
 /-!

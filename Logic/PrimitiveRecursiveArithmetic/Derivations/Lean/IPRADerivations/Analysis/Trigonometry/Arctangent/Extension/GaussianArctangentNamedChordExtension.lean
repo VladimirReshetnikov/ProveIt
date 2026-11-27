@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.Coordinates.GaussianArctangentCayleyProjections
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseForward
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.Correctness.GaussianArctangentInverseForward
 
 /-!
 # The arctangent chord bound for regular named parameters

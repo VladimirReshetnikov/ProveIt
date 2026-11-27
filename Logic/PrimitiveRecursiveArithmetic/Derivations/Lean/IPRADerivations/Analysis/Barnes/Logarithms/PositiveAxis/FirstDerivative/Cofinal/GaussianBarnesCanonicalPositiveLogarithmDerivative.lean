@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.FirstDerivative.Cofinal.GaussianBarnesCanonicalPositiveLogarithmIncrement
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.FirstDerivative.Cofinal.GaussianBarnesCanonicalPositiveRelativeLogarithmDerivative
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNativeDerivativeQuotientRate
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.DerivativeRates.GaussianNativeDerivativeQuotientRate
 
 /-! The actual difference quotient of the positive Barnes logarithm converges to its first
 logarithmic derivative. The endpoints can use independent admitted disk bounds. -/

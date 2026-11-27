@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.GaussianBarnesCanonicalTaylorDerivativeZero
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.CofinalIdentities.GaussianBarnesCanonicalTaylorFirstDerivativeAnchor
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.CofinalIdentities.GaussianBarnesCanonicalTaylorNamedQuotient
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.EndpointRates.GaussianNamedDifferenceQuotientProperness
 
 /-!
 # The order-zero to order-one Barnes factorial derivative

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingUnitDifferenceAlgebra
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.UnitDifferences.GaussianBinetStirlingUnitDifferenceAlgebra
 import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Reciprocal.GaussianBinetReciprocalMean
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannSplit
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaPrimitivePascal

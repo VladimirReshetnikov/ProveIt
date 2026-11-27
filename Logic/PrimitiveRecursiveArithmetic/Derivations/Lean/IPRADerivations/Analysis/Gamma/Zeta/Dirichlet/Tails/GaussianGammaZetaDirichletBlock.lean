@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.Tails.GaussianGammaZetaDirichletRowDecay
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyRange
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Families.GaussianNamedFiniteSumFamilyRange
 import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalFactorialEulerSums
 
 /-!

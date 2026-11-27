@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadDerivative
 import IPRADerivations.Analysis.Barnes.HeadProducts.ExponentialCorrections.GaussianBarnesCanonicalHeadCorrectionContinuity
 import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalSyntheticSlopeLipschitz
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedBoundedSumObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Observations.GaussianNamedBoundedSumObservation
 
 /-!
 # Uniform disk continuity of the original finite Barnes head derivative

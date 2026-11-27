@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Panels.GaussianEulerUnitKernelNestedPanels
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Compact.GaussianEulerUnitKernelCompactDominance
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedThreeSumObservations
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Observations.GaussianNamedThreeSumObservations
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianBudgets.GaussianRationalThreeSumLower
 
 /-!

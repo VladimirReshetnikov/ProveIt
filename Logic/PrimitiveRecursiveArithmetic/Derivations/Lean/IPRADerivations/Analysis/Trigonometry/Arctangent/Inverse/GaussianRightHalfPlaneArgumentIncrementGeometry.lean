@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.ResidualBounds.GaussianLogGammaEulerResidualDomain
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentClippedParameter
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.Sampling.GaussianArctangentClippedParameter
 import IPRADerivations.Analysis.RationalArithmetic.Grids.GaussianRationalGridRounding
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Probability.ClipLaws

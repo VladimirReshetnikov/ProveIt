@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedClearedSincMultipleAngle
+import IPRADerivations.Analysis.Trigonometry.Sinc.Identities.GaussianNamedClearedSincMultipleAngle
 import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSincCongruence
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Scaling.GaussianSineProductScaledZero
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineProductReflectionArgument

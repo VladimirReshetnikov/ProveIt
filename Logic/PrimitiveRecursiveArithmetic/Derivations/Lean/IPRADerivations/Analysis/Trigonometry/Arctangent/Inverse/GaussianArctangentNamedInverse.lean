@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseForward
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseGap
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.Correctness.GaussianArctangentInverseForward
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.Correctness.GaussianArctangentInverseGap
 import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentPhysicalRefinement
 
 /-!

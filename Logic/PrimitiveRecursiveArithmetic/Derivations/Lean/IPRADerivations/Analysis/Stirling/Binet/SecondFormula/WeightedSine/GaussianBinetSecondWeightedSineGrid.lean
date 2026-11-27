@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.WeightedSine.GaussianBinetSecondWeightedSinePoint
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayGrid
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.FiniteRows.GaussianBinetSecondDecayGrid
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianCompactScalarMajorant
 
 /-!

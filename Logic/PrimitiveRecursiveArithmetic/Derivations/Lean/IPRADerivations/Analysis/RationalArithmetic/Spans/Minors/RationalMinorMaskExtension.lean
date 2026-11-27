@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Spans.Minors.RationalMinorFreeColumn
-import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalFiniteSpanCover
+import IPRADerivations.Analysis.RationalArithmetic.Covers.Subspaces.RationalFiniteSpanCover
 
 /-!
 # Extending a selected minor by an actual new row or column

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.GaussianBinetFirstFormula
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingRemainderRate
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Remainders.GaussianBinetStirlingRemainderRate
 
 /-!
 # The actual improper Binet integral on regular right half-plane names

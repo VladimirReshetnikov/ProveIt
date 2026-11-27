@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupPresentation
 import IPRADerivations.Analysis.Gamma.BohrMollerup.Uniqueness.GaussianBohrMollerupDifference
 import IPRADerivations.Analysis.Names.FiniteOperations.GaussianNamedFiniteEqualityChain
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.Wendel.GaussianGammaRationalWendelBoundary
 
 /-!
 # Integer shifts of the difference of two Bohr–Mollerup presentations

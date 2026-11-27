@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalFiniteLog
 import IPRADerivations.Analysis.Barnes.Logarithms.FiniteRows.GaussianBarnesCanonicalLogFactor
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamily
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Families.GaussianNamedFiniteSumFamily
 
 /-!
 # The actual finite Barnes logarithm and its original row names

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Evaluation.PolynomialLipschitz
+import IPRADerivations.Analysis.Polynomials.Evaluation.Bounds.PolynomialLipschitz
 import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerIncrement
 
 /-!

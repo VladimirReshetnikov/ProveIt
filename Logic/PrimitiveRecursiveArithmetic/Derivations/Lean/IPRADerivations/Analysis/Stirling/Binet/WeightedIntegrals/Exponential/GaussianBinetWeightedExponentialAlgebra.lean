@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactR
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
-import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfEulerSquare
+import IPRADerivations.Analysis.Gamma.HalfInteger.EulerProducts.GaussianGammaHalfEulerSquare
 
 /-!
 # Exact algebra for the weighted Binet exponential antiderivative

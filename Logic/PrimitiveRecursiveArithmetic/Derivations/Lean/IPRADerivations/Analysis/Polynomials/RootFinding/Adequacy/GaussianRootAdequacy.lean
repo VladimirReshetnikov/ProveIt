@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.Membership.GaussianRootMembership
-import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianPolynomialValueName
+import IPRADerivations.Analysis.Polynomials.Evaluation.NamedValues.GaussianPolynomialValueName
 import IPRADerivations.Analysis.Names.Approximation.GaussianRepresentedPointBounds
 
 /-!

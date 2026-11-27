@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalGautschi
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalLogWendel
+import IPRADerivations.Analysis.Gamma.Ratios.Gautschi.GaussianGammaRationalGautschi
+import IPRADerivations.Analysis.Gamma.Ratios.Wendel.GaussianGammaRationalLogWendel
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
 import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialInverse
 

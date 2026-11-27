@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.FirstDerivative.C
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.SecondDerivative.GaussianBarnesCanonicalPositiveSecondLogarithm
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.FiniteDerivatives.GaussianBarnesCanonicalThirdDerivativePositiveMargin
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
-import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
+import IPRADerivations.Analysis.Gamma.Ratios.Wendel.GaussianGammaRationalWendelBoundary
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedSumDifference
 
 /-!

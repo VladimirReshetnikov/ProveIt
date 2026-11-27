@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Vertical.GaussianBinetLogVerticalStep
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingSlopeBound
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingUnitDifference
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.UnitDifferences.GaussianBinetStirlingSlopeBound
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.UnitDifferences.GaussianBinetStirlingUnitDifference
 import IPRADerivations.Analysis.Polynomials.Coefficients.GaussianRationalCoefficientScaling
 
 /-!

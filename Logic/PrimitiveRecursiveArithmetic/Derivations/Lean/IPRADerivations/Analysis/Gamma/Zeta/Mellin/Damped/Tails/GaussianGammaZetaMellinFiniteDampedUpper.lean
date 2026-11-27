@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.GaussianGammaZetaMellinUpperGrid
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.UpperTails.GaussianGammaZetaMellinUpperGrid
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.FiniteRows.GaussianGammaZetaMellinFiniteDampedModulus
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinGeometricEnvelope
 

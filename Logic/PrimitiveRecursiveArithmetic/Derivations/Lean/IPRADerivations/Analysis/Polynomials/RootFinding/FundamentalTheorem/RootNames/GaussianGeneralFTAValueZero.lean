@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomialValueName
+import IPRADerivations.Analysis.Polynomials.Evaluation.NamedValues.GaussianGeneralPolynomialValueName
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.RootNames.GaussianGeneralFTAPolynomialValueName
 import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.RootNames.GaussianGeneralFTAName
 

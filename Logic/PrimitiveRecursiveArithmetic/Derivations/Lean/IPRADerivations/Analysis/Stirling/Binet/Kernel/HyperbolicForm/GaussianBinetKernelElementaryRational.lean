@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelRationalTimeCleared
-import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelSinhApartness
+import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.HyperbolicSine.GaussianBinetKernelSinhApartness
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.BaselNormalization.GaussianBinetKernelZero
 import IPRADerivations.Analysis.Names.Apartness.GaussianNamedClearedScalarQuotient
 

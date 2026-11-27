@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.GaussianBinetKernelRows
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.Bounds.GaussianBinetKernelTailMajorant
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyRange
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Families.GaussianNamedFiniteSumFamilyRange
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.WeightedSums.GaussianRationalSumMajorant
 

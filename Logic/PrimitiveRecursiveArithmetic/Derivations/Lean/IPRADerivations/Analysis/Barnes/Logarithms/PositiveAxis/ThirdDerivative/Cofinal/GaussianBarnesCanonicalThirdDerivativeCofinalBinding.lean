@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.SecondDerivative.GaussianBarnesCanonicalPositiveSecondLogarithm
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.FiniteDerivatives.GaussianBarnesCanonicalThirdDerivativeInterval
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.Cofinal.GaussianBarnesCanonicalThirdLogarithmCofinal
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNativeDerivativeQuotientRate
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.DerivativeRates.GaussianNativeDerivativeQuotientRate
 
 /-!
 # The positive Barnes second-logarithm expression differentiates to the cubic name

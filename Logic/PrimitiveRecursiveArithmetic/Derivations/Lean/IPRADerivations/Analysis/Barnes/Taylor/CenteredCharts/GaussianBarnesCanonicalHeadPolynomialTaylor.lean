@@ -3,7 +3,7 @@ A second-order expansion of the literal kept Barnes base powers.
 The head product is evaluated by its existing exact finite polynomial.
 -/
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadPolynomialDerivative
-import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalUniformSecondOrderPolynomial
+import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRational.GaussianRationalUniformSecondOrderPolynomial
 
 set_option autoImplicit false
 set_option maxHeartbeats 500000

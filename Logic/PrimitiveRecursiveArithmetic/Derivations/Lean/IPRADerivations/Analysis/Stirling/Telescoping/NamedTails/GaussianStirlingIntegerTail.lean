@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Telescoping.NamedTails.GaussianStirlingTelescopeName
 import IPRADerivations.Analysis.Stirling.Telescoping.FiniteTelescopes.GaussianStirlingRationalTelescopers
 import IPRADerivations.Analysis.Names.Arithmetic.RationalGaussianNameEmbedding
-import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfSqrtBrackets
+import IPRADerivations.Analysis.Gamma.HalfInteger.SquareRoots.GaussianGammaHalfSqrtBrackets
 import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 
 /-!

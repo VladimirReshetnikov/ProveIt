@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Vertical.GaussianBinetStirlingVerticalGrid
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingRescale
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetStirlingRealBound
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Remainders.GaussianBinetStirlingRescale
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Remainders.GaussianBinetStirlingRealBound
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateComposition
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
 

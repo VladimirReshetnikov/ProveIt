@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianPolynomialLowPrefix
-import IPRADerivations.Analysis.Polynomials.Taylor.GaussianShrinkingPolynomialTail
+import IPRADerivations.Analysis.Polynomials.Taylor.WeightedTails.GaussianShrinkingPolynomialTail
 import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianFiniteExponentialWeightedNorm
 
 /-!

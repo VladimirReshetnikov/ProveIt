@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedFrozen
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedIncrementChart
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedBoundedSumObservation
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedIncrementQuotientFrozenRate
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Observations.GaussianNamedBoundedSumObservation
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.NamedIncrements.GaussianNamedIncrementQuotientFrozenRate
 
 /-!
 # Simultaneous rational readback of the original named Barnes endpoints

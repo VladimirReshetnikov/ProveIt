@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianPolynomialDegreePadding
-import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomialExtensionality
+import IPRADerivations.Analysis.Polynomials.Evaluation.NamedValues.GaussianGeneralPolynomialExtensionality
 
 /-!
 # Degree-independent general polynomial value names

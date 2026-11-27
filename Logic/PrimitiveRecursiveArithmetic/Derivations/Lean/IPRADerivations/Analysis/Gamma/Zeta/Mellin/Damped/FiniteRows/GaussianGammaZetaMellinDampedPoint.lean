@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.FiniteRows.GaussianGamm
 import IPRADerivations.Analysis.Euler.PositiveAxis.PositiveScaling.GaussianEulerPositiveScalingIntegrand
 import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerDampedTimeRate
 import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialPanel
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSincSamples
+import IPRADerivations.Analysis.Trigonometry.Sinc.Series.GaussianNamedSincSamples
 
 /-!
 # Original positive-scaling observations of the Mellin decay terms

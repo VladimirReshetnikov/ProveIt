@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomialValueName
+import IPRADerivations.Analysis.Polynomials.Evaluation.NamedValues.GaussianGeneralPolynomialValueName
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 

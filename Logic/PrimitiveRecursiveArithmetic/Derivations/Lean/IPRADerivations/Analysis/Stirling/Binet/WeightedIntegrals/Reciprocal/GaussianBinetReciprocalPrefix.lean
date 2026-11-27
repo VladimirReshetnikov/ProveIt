@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.GaussianBinetLogCellComparison
+import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Logarithms.GaussianBinetLogCellComparison
 
 /-!
 # The logarithm–reciprocal comparison telescopes over the original prefix

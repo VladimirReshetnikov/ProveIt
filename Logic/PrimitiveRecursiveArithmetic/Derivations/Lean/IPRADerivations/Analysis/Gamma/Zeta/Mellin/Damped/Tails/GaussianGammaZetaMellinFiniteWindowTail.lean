@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.GaussianGammaZetaMellinImproper
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.Tails.GaussianGammaZetaMellinFiniteNestedBound
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Damped.Tails.GaussianGammaZetaMellinFiniteDampedLower
-import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.GaussianGammaZetaMellinFiniteCompactUpper
+import IPRADerivations.Analysis.Gamma.Zeta.Mellin.EndpointBounds.UpperTails.GaussianGammaZetaMellinFiniteCompactUpper
 
 /-!
 # The finite damped window error is uniform in the number of terms

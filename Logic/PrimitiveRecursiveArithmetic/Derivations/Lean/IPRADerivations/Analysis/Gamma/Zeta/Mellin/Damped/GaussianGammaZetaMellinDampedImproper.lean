@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Integrals.Substitutions.GaussianEulerPositiveScalingGamma
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyCongruence
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyMultiply
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Families.GaussianNamedFiniteSumFamilyCongruence
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Families.GaussianNamedFiniteSumFamilyMultiply
 
 /-!
 # Finite sums of the original damped Euler improper integrals

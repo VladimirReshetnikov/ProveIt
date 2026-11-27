@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
-import IPRADerivations.Analysis.Polynomials.Evaluation.GaussianGeneralPolynomialValueName
+import IPRADerivations.Analysis.Polynomials.Evaluation.NamedValues.GaussianGeneralPolynomialValueName
 
 /-!
 # Actual numerical-prefix Horner interpretation of polynomial value names

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Extension.GaussianArctangentNamedExtension
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseUniqueness
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.Correctness.GaussianArctangentInverseUniqueness
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Extension.GaussianArctangentExtensionRange
 
 /-!

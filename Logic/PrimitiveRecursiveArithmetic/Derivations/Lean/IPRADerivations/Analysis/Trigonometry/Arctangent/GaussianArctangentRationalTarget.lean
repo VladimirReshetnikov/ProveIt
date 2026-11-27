@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentGridSearch
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.Sampling.GaussianArctangentGridSearch
 
 /-!
 # Exact rational arctangent targets on the finite grid

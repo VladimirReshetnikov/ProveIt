@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Bose.FrozenRows.GaussianBinetBoseFrozenSuffix
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecaySuffixBound
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.Tails.GaussianBinetSecondDecaySuffixBound
 
 /-!
 # Trim the geometric tail on the actual frozen time suffix

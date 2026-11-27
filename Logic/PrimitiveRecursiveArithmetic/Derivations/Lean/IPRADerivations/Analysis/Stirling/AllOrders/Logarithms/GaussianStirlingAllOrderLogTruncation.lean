@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.Truncation.GaussianStirlingAllOrderTruncationAlgebra
+import IPRADerivations.Analysis.Stirling.AllOrders.Truncation.Algebra.GaussianStirlingAllOrderTruncationAlgebra
 import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderImproperName
 
 /-!

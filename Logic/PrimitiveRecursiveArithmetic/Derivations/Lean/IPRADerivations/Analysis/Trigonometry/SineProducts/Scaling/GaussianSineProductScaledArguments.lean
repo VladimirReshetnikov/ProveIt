@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.DivisionAngles.GaussianArctangentDivisionAngles
-import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSincQuadraticBounds
+import IPRADerivations.Analysis.Trigonometry.Sinc.Series.GaussianNamedSincQuadraticBounds
 import IPRADerivations.Analysis.Trigonometry.SineProducts.GaussianSineProductT4Budget
 
 /-!

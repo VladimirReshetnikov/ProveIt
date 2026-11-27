@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBoundsFinite
 import IPRADerivations.Analysis.Stirling.IntegerLimits.GaussianStirlingOriginalIntegerLimit
 import IPRADerivations.Analysis.Stirling.Constants.GaussianStirlingConstant
-import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
+import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.EndpointRates.GaussianNamedDifferenceQuotientProperness
 
 /-!
 # Cofinal sharp Stirling remainder bounds

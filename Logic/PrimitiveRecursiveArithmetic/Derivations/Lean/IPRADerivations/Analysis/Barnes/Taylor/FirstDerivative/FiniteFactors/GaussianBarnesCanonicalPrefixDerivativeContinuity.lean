@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalHeadDerivativeContinuity
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Prefactors.GaussianBarnesCanonicalPrefactorDerivativeContinuity
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.FiniteFactors.GaussianBarnesCanonicalPrefixDerivative
-import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedBoundedSumObservation
+import IPRADerivations.Analysis.Names.FiniteOperations.Sums.Observations.GaussianNamedBoundedSumObservation
 
 /-!
 # Uniform disk continuity of the original Barnes prefix derivative

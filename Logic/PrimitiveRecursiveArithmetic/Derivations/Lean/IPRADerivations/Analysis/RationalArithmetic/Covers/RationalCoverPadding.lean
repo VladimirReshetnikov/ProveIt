@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Covers.RationalSubspaceCoverSearch
+import IPRADerivations.Analysis.RationalArithmetic.Covers.Subspaces.RationalSubspaceCoverSearch
 
 /-!
 # Padding a supplied rational span cover

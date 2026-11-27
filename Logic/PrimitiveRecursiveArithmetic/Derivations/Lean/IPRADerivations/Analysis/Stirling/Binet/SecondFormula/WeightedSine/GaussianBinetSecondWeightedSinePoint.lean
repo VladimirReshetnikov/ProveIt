@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.Arctangent.SineComparisons.GaussianBinetArctangentSineUniform
-import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.GaussianBinetSecondDecayPointwise
+import IPRADerivations.Analysis.Stirling.Binet.SecondFormula.Decay.FiniteRows.GaussianBinetSecondDecayPointwise
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedProductObservationBound
 
 /-!
