@@ -72,14 +72,9 @@ theorem mu_pm (d : PTm n) :
 
 /-- `⌊x/q⌋ ≥ 1` for `1 ≤ q ≤ x`. -/
 theorem quo_pos {x q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (h : Γ ⊢[PRAAx] le q x) :
-    Γ ⊢[PRAAx] quo x q ≐ succ (pred (quo x q)) := by
-  have dm := div_mod_at (Γ := Γ) (x := x) hq
-  refine .orE (zero_or_succ (quo x q)) ?_ Prf.hyp0
-  let C : List (Fm PTm n) := (quo x q ≐ zero) :: Γ
-  have e := natEq ((Prf.andE₁ dm).wk (ψ := quo x q ≐ zero)); have z := natEq (Prf.hyp0 : C ⊢[PRAAx] quo x q ≐ zero)
-  have er : C ⊢[PRAAx] rem x q ≐ x := by ipra_lc -e - 𝔞 q * z
-  have hl : C ⊢[PRAAx] lt x x := le_trans (le_congr (congrSucc er) (.eqRefl _) ((Prf.andE₂ dm).wk (ψ := quo x q ≐ zero))) (h.wk (ψ := quo x q ≐ zero))
-  exact lt_irrefl x _ hl
+    Γ ⊢[PRAAx] quo x q ≐ succ (pred (quo x q)) :=
+  Common.pos_of_one_le (Division.le_quo_of_mul_le hq
+    (le_congr (Common.mul_one_right _).eqSymm (.eqRefl _) h))
 
 /-! ## The generic summation step -/
 

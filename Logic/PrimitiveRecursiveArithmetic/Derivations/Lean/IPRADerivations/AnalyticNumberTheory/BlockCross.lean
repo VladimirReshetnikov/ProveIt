@@ -91,11 +91,8 @@ theorem case_C_core (h1 : Γ ⊢[PRAAx] le one D₁) (hdu : Γ ⊢[PRAAx] le D�
     (one_le_quo hdu1 hdux) (Prf.andE₂ dU) (Prf.andE₂ dV) (Prf.andE₁ dU) (Prf.andE₁ dV) edv
     (eq_add_of_le hxy) (eq_add_of_le hb)
 where
-  quo_le_self' {d : PTm n} (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx] le (quo x d) x := by
-    have dm := div_mod_at (Γ := Γ) (x := x) (pos_of_one_le hd)
-    have e1 := natEq (Prf.andE₁ dm)
-    have w := natEq (eq_add_of_le hd)
-    ipra_le 𝔞 (quo x d) * 𝔞 (monus d one) + 𝔞 (rem x d) with e1 + 𝔞 (quo x d) * w
+  quo_le_self' {d : PTm n} (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx] le (quo x d) x :=
+    Division.quo_le_self (pos_of_one_le hd)
 
 end Core
 

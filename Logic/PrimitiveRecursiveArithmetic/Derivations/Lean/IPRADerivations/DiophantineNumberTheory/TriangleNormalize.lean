@@ -89,9 +89,7 @@ theorem triangle_normalize {a b c s : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pre
     apply deriveNat; ipra_simps
     linear_combination x - 𝔞 b * y - 𝔞 (gcd a b) * 𝔞 (quo a (gcd a b)) * z +
       2 * (𝔞 s + 𝔞 (gcd a b) * 𝔞 (quo s (gcd a b))) * w
-  have small : Γ ⊢[PRAAx] le (quo c (gcd a b)) c := by
-    refine le_of_eq_add (d := pred (gcd a b) * quo c (gcd a b)) ?_
-    ipra_lc natEq eC + 𝔞 (quo c (gcd a b)) * natEq hg
+  have small := Division.quo_le_self (x := c) hg
   exact .andI pA (.andI pB (.andI pC (.andI pS (.andI pyth (.andI area (.andI cop small))))))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.TriangleNormalize

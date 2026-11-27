@@ -172,12 +172,9 @@ theorem upper_step {m x : PTm n} (hS : Γ ⊢[PRAAx] ap2 (sumF QB) m x ≐ zero)
     have dvP : C ⊢[PRAAx] m ≐ two * quo m two + rem m two := GcdFiber.div_eq two_pos'
     have rl : C ⊢[PRAAx] le (rem m two) one := (succ_monus_succ _ _).eqSymm.eqTrans (Multiplicative.rem_lt' two_pos' m)
     -- `s = ⌊m/2⌋ ≥ 1`
-    have spos : C ⊢[PRAAx] quo m two ≐ succ (pred (quo m two)) := by
-      refine .orE (zero_or_succ (quo m two)) ?_ Prf.hyp0
-      have mr : ((quo m two ≐ zero) :: C) ⊢[PRAAx] m ≐ rem m two :=
-        dvP.wk.eqTrans ((congrAdd ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _)) (.eqRefl _)).eqTrans (zero_add _))
-      have h21 : ((quo m two ≐ zero) :: C) ⊢[PRAAx] le two one := le_trans h2.wk (le_congr mr.eqSymm (.eqRefl _) rl.wk)
-      exact lt_zero_absurd _ ((succ_monus_succ one zero).eqSymm.eqTrans h21)
+    have spos : C ⊢[PRAAx] quo m two ≐ succ (pred (quo m two)) :=
+      Common.pos_of_one_le (Division.le_quo_of_mul_le two_pos'
+        (le_congr (Common.mul_one_right _).eqSymm (.eqRefl _) h2))
     have dv := natEq dvP
     have sp := natEq spos
     have r1 := natEq (eq_add_of_le rl)

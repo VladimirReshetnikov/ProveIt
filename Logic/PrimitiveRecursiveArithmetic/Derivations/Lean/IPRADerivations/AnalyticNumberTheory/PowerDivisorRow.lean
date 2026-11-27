@@ -177,9 +177,7 @@ theorem row_identity {d h : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hh 
   have hp : Γ ⊢[PRAAx] h ≐ succ (pred h) := pos_of_one_le hh
   have hdp : Γ ⊢[PRAAx] pw d h ≐ succ (pred (pw d h)) :=
     pos_of_one_le (one_le_pw' (le_congr (.eqRefl _) hd.eqSymm (by ipra_le 𝔞 (pred d))) _)
-  have hdN : Γ ⊢[PRAAx] le (quo N (pw d h)) N := by
-    have q := LeanProofs.IPRA.AnalyticNumberTheory.DivisorSwap.quo_lt' (N := N) hdp
-    ipra_le sl q
+  have hdN := Division.quo_le_self (x := N) hdp
   -- (1) the row over `e`
   have s1 := row_bt a hh N d y hdN
   -- (2) its terms are `sg(e+1) G(d(e+1))`

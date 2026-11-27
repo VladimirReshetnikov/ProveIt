@@ -86,11 +86,8 @@ theorem p_pos : Γ ⊢[PRAAx] le one (quo x D) :=
   le_quo_of_mul_le (pos_of_one_le hD1) (le_congr (by ipra_ring) (.eqRefl _) hDx)
 
 include hD1 in
-theorem p_le_x : Γ ⊢[PRAAx] le (quo x D) x := by
-  have dD := div_mod_at (Γ := Γ) (x := x) (pos_of_one_le hD1)
-  have e1 := natEq (Prf.andE₁ dD)
-  have w := natEq (eq_add_of_le hD1)
-  ipra_le 𝔞 (quo x D) * 𝔞 (monus D one) + 𝔞 (rem x D) with e1 + 𝔞 (quo x D) * w
+theorem p_le_x : Γ ⊢[PRAAx] le (quo x D) x :=
+  Division.quo_le_self (pos_of_one_le hD1)
 
 include hD1 hDx hK1 hPK hNN hKx hP
 

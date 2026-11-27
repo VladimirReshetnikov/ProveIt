@@ -150,9 +150,8 @@ include hN
 theorem N_eq (k : PTm n) : Γ ⊢[PRAAx] N ≐ gcd k N * quo N (gcd k N) :=
   eq_of_dvd' (gcd_pos_right hN) (Prf.andE₂ (gcd_dvd_at (gcd_pos_right hN)))
 
-theorem q_le (k : PTm n) : Γ ⊢[PRAAx] le (quo N (gcd k N)) N := by
-  refine le_of_eq_add (d := pred (gcd k N) * quo N (gcd k N)) ?_
-  ipra_lc natEq (N_eq hN k) + Groth.ι (Q.mk _ (quo N (gcd k N))) * natEq (gcd_pos_right (a := k) hN)
+theorem q_le (k : PTm n) : Γ ⊢[PRAAx] le (quo N (gcd k N)) N :=
+  Division.quo_le_self (gcd_pos_right (a := k) hN)
 
 omit hN in
 theorem q_range (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) : Γ ⊢[PRAAx] Permutation.rangeAll qB (succ N) N := by

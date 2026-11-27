@@ -318,15 +318,8 @@ theorem EB_lt_EA {a b j : PTm n} (hj : Γ ⊢[PRAAx] lt j (M a b)) (h1 : Γ ⊢[
 
 /-- `B ≤ A` with `B ≥ 1` gives `⌊A/B⌋ ≥ 1`. -/
 theorem quo_pos {A B : PTm n} (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) (h : Γ ⊢[PRAAx] le B A) :
-    Γ ⊢[PRAAx] le one (quo A B) := by
-  refine .orE (zero_or_succ (quo A B)) ?_ (DiophantineNumberTheory.Coprime.one_le_of_pos Prf.hyp0)
-  have d := natEq ((div_eq (j := A) hB).wk (ψ := quo A B ≐ zero))
-  have e := natEq (Prf.hyp0 : ((quo A B ≐ zero) :: Γ) ⊢[PRAAx] quo A B ≐ zero)
-  have hr : ((quo A B ≐ zero) :: Γ) ⊢[PRAAx] lt (rem A B) B := rem_lt' hB.wk A
-  have h' := h.wk (ψ := quo A B ≐ zero)
-  have bad : ((quo A B ≐ zero) :: Γ) ⊢[PRAAx] le one zero := by
-    ipra_le sl h' + sl hr with -d - 𝔞 B * e
-  exact lt_zero_absurd _ bad
+    Γ ⊢[PRAAx] le one (quo A B) :=
+  Division.le_quo_of_mul_le hB (le_congr (Common.mul_one_right _).eqSymm (.eqRefl _) h)
 
 /-- **The later coefficients are positive**: `cf j ≥ 1` for `1 ≤ j < m`. -/
 theorem cf_pos {a b j : PTm n} (hj : Γ ⊢[PRAAx] lt j (M a b)) (h1 : Γ ⊢[PRAAx] j ≐ succ (pred j)) :
