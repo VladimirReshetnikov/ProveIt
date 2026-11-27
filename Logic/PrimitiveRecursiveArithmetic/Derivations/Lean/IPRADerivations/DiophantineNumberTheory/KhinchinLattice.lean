@@ -42,13 +42,10 @@ abbrev latticeA (X M α γ β : PTm n) : PTm n := ap2 (sumF aK) X (pairT M (pair
 /-- `⌈qγ/β⌉ ≤ q` for `γ ≤ β`. -/
 theorem ceil_le_q {q γ β b0 : PTm n} (hβ : Γ ⊢[PRAAx] β ≐ succ b0) (hγ : Γ ⊢[PRAAx] le γ β) :
     Γ ⊢[PRAAx] le (quo (q * γ + b0) β) q := by
-  refine .orE (lt_or_le q (quo (q * γ + b0) β)) ?_ Prf.hyp0
-  let Δ : List (Fm PTm n) := lt q (quo (q * γ + b0) β) :: Γ
-  have d := div_mod_at (Γ := Δ) (x := q * γ + b0) hβ.wk
-  -- `qγ + b0 = βQ + R ≥ β(q + 1)` while `qγ + b0 ≤ qβ + b0 < β(q + 1)`
-  refine .botE _ (succ_ne_zero (a := q * monus β γ + β * monus (quo (q * γ + b0) β) (succ q) + rem (q * γ + b0) β) ?_)
-  ipra_lc -natEq (Prf.andE₁ d) - 𝔞 β * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) -
-    𝔞 q * natEq (eq_add_of_le (Γ := Δ) hγ.wk) - natEq (Γ := Δ) hβ.wk
+  apply Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hβ ?_)
+  change Γ ⊢[PRAAx] le (succ (q * γ + b0)) (β * succ q)
+  exact le_congr ((congrAdd (.eqRefl _) hβ).eqTrans (add_succ _ _))
+    (by ipra_ring) (add_le_add_right β (mul_le_mul_left q hγ))
 
 /-- The invariant. -/
 def latInv (X M α γ β : PTm n) : Fm PTm n :=

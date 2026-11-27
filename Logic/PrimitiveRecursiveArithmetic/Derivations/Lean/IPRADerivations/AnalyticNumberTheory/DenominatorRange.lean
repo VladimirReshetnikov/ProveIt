@@ -112,15 +112,9 @@ theorem leI_zero {t z : PTm n} (h : Γ ⊢[PRAAx] lt z t) : Γ ⊢[PRAAx] monus 
 /-- `⌊N/p⌋ < N` for `N ≥ 1` and `p ≥ 2`. -/
 theorem quo_lt {N p : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp2 : Γ ⊢[PRAAx] le two p) :
     Γ ⊢[PRAAx] lt (quo N p) N := by
-  have hp1 := p_pos hp2
-  refine .orE (lt_or_le (quo N p) N) Prf.hyp0 ?_
-  have hle : (le N (quo N p) :: Γ) ⊢[PRAAx] le N (quo N p) := Prf.hyp0
-  have e := natEq ((div_eq (Γ := Γ) (j := N) hp1).wk (ψ := le N (quo N p)))
-  have hp2' := hp2.wk (ψ := le N (quo N p))
-  have hN1 : (le N (quo N p) :: Γ) ⊢[PRAAx] le one N := one_le_pos hN.wk
-  have bad : (le N (quo N p) :: Γ) ⊢[PRAAx] le one zero := by
-    ipra_le sl hp2' * 𝔞 (quo N p) + 2 * sl hle + 𝔞 (rem N p) + sl hN1 with e
-  exact lt_zero_absurd _ bad
+  apply Division.quo_lt_of_lt_mul (p_pos hp2)
+  change Γ ⊢[PRAAx] le (succ N) (p * N)
+  ipra_le sl hp2 * 𝔞 N + sl (one_le_pos hN)
 
 theorem S_zero (a L F : PTm n) : Γ ⊢[PRAAx] Sm a L F (succ zero) ≐ zero :=
   (Sm_succ a L F zero).eqTrans ((congrAdd (sum_zero gB _) (term_zero (.eqRefl _))).eqTrans (zero_add zero))

@@ -46,29 +46,25 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem quo_far {A B r s Dn E cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (hs : Γ ⊢[PRAAx] s ≐ succ cs)
     (h : Γ ⊢[PRAAx] A * s ≐ B * r + Dn * (r * s) + E) :
     Γ ⊢[PRAAx] le (quo B s + Dn) (quo A r) := by
-  refine .orE (lt_or_le (quo A r) (quo B s + Dn)) ?_ Prf.hyp0
-  let Δ : List (Fm PTm n) := lt (quo A r) (quo B s + Dn) :: Γ
-  have dA := div_mod_at (Γ := Δ) (x := A) hr.wk
-  have dB := div_mod_at (Γ := Δ) (x := B) hs.wk
-  refine .botE _ (succ_ne_zero (a := cs + monus r (succ (rem A r)) * s +
-    monus (quo B s + Dn) (succ (quo A r)) * (r * s) + rem B s * r + E) ?_)
-  ipra_lc -natEq (Γ := Δ) h.wk + 𝔞 s * natEq (Prf.andE₁ dA) - 𝔞 r * natEq (Prf.andE₁ dB) -
-    𝔞 s * natEq (eq_add_of_le (Prf.andE₂ dA)) - (𝔞 r * 𝔞 s) * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) -
-    natEq (Γ := Δ) hs.wk
+  have bound := mul_le_mul_right r (Division.mul_quo_le (x := B) hs)
+  have lower : Γ ⊢[PRAAx] le (s * (r * (quo B s + Dn))) (B * r + Dn * (r * s)) :=
+    le_congr (by ipra_ring) (.eqRefl _) (add_le_add_right (Dn * (r * s)) bound)
+  have scaled := le_trans lower (le_of_eq_add ((mul_comm s A).eqTrans h))
+  exact Division.le_quo_of_mul_le hr
+    (mul_le_cancel (le_congr (congrMul hs (.eqRefl _)) (congrMul hs (.eqRefl _)) scaled))
 
 /-- `A/r < B/s + 1` gives `⌊A/r⌋ ≤ ⌊B/s⌋ + 1`. -/
 theorem quo_le_succ {A B r s cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (hs : Γ ⊢[PRAAx] s ≐ succ cs)
     (h : Γ ⊢[PRAAx] lt (A * s) (B * r + r * s)) :
     Γ ⊢[PRAAx] le (quo A r) (succ (quo B s)) := by
-  refine .orE (lt_or_le (succ (quo B s)) (quo A r)) ?_ Prf.hyp0
-  let Δ : List (Fm PTm n) := lt (succ (quo B s)) (quo A r) :: Γ
-  have dA := div_mod_at (Γ := Δ) (x := A) hr.wk
-  have dB := div_mod_at (Γ := Δ) (x := B) hs.wk
-  refine .botE _ (succ_ne_zero (a := r + monus s (succ (rem B s)) * r +
-    monus (quo A r) (succ (succ (quo B s))) * (r * s) + rem A r * s +
-    monus (B * r + r * s) (succ (A * s))) ?_)
-  ipra_lc -natEq (eq_add_of_le (Γ := Δ) h.wk) + 𝔞 r * natEq (Prf.andE₁ dB) - 𝔞 s * natEq (Prf.andE₁ dA) -
-    (𝔞 r * 𝔞 s) * natEq (eq_add_of_le (Γ := Δ) Prf.hyp0) - 𝔞 r * natEq (eq_add_of_le (Prf.andE₂ dB))
+  let upper := r * succ (succ (quo B s))
+  have hB : Γ ⊢[PRAAx] le B (s * succ (quo B s)) := le_trans (le_succ_self _) (Division.lt_mul_succ_quo hs)
+  have bound : Γ ⊢[PRAAx] le (B * r + r * s) (upper * s) :=
+    le_congr (.eqRefl _) (by unfold upper; ipra_ring) (add_le_add_right (r * s) (mul_le_mul_right r hB))
+  have hA : Γ ⊢[PRAAx] lt A upper := by
+    refine .orE (lt_or_le A upper) Prf.hyp0 ?_
+    exact le_lt_absurd _ (le_trans bound.wk (mul_le_mul_right s Prf.hyp0)) h.wk
+  exact Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hr hA)
 
 /-- `|A/r − B/s| < 1` gives `|⌊A/r⌋ − ⌊B/s⌋| ≤ 1`. -/
 theorem quo_near {A B r s cr cs : PTm n} (hr : Γ ⊢[PRAAx] r ≐ succ cr) (hs : Γ ⊢[PRAAx] s ≐ succ cs)

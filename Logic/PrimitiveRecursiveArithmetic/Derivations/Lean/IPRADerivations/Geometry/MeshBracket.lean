@@ -24,12 +24,8 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Geometry.MeshBracket
 
 open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `p S²` with `S = 2^k`. -/
 abbrev XT (p k : PTm n) : PTm n := p * (pw two k * pw two k)
@@ -41,40 +37,20 @@ variable {p r k : PTm n}
 
 /-- Lower bracket: `r j² ≤ p S²`. -/
 theorem mesh_lower (hr : Γ ⊢[PRAAx] r ≐ succ (pred r)) :
-    Γ ⊢[PRAAx] le (r * (rho p r k * rho p r k)) (XT p k) := by
-  have d := natEq (div_eq (j := XT p k) hr)
-  refine le_of_eq_add (d := r * monus (quo (XT p k) r) (rho p r k * rho p r k) + rem (XT p k) r) ?_
-  ipra_lc d + 𝔞 r * natEq (eq_add_of_le (isqrt_le (Γ := Γ) (quo (XT p k) r)))
+    Γ ⊢[PRAAx] le (r * (rho p r k * rho p r k)) (XT p k) :=
+  le_trans (mul_le_mul_left r (isqrt_le _)) (Division.mul_quo_le hr)
 
 /-- Upper bracket: `p S² < r (j + 1)²`. -/
 theorem mesh_upper (hr : Γ ⊢[PRAAx] r ≐ succ (pred r)) :
     Γ ⊢[PRAAx] lt (XT p k) (r * ((rho p r k + one) * (rho p r k + one))) := by
-  have d := natEq (div_eq (j := XT p k) hr)
-  refine le_of_eq_add (d := r * monus ((rho p r k + one) * (rho p r k + one)) (succ (quo (XT p k) r)) +
-    monus r (succ (rem (XT p k) r))) ?_
-  ipra_lc 𝔞 r * natEq (eq_add_of_le (lt_isqrt_succ_sq (Γ := Γ) (quo (XT p k) r))) +
-    natEq (eq_add_of_le (rem_lt' hr (XT p k))) - d
+  exact lt_of_lt_of_le (Division.lt_mul_succ_quo hr)
+    (mul_le_mul_left r (lt_isqrt_succ_sq _))
 
 /-- The bracket determines the numerator: `r t² ≤ p S² < r (t + 1)²` gives `t = j`. -/
 theorem mesh_unique (hr : Γ ⊢[PRAAx] r ≐ succ (pred r)) {t : PTm n}
     (h₁ : Γ ⊢[PRAAx] le (r * (t * t)) (XT p k))
     (h₂ : Γ ⊢[PRAAx] lt (XT p k) (r * ((t + one) * (t + one)))) :
-    Γ ⊢[PRAAx] rho p r k ≐ t := by
-  have dv := div_eq (j := XT p k) hr
-  have rl := rem_lt' hr (XT p k)
-  refine isqrt_unique ?_ ?_
-  · refine .orE (lt_or_le (quo (XT p k) r) (t * t)) ?_ Prf.hyp0
-    have w := natEq (eq_add_of_le (Prf.hyp0 : (lt (quo (XT p k) r) (t * t) :: Γ) ⊢[PRAAx] _))
-    have e₁ := natEq (eq_add_of_le (h₁.wk (ψ := lt (quo (XT p k) r) (t * t))))
-    have e₂ := natEq (dv.wk (ψ := lt (quo (XT p k) r) (t * t)))
-    refine succ_ne_zero' _ (a := monus r (succ (rem (XT p k) r)) +
-      r * monus (t * t) (succ (quo (XT p k) r)) + monus (XT p k) (r * (t * t))) ?_
-    ipra_lc -e₁ + e₂ - 𝔞 r * w - natEq (eq_add_of_le (rl.wk (ψ := lt (quo (XT p k) r) (t * t))))
-  · refine .orE (lt_or_le (quo (XT p k) r) ((t + one) * (t + one))) Prf.hyp0 ?_
-    have w := natEq (eq_add_of_le (Prf.hyp0 : (le ((t + one) * (t + one)) (quo (XT p k) r) :: Γ) ⊢[PRAAx] _))
-    have e₂ := natEq (dv.wk (ψ := le ((t + one) * (t + one)) (quo (XT p k) r)))
-    refine succ_ne_zero' _ (a := r * monus (quo (XT p k) r) ((t + one) * (t + one)) + rem (XT p k) r +
-      monus (r * ((t + one) * (t + one))) (succ (XT p k))) ?_
-    ipra_lc -natEq (eq_add_of_le (h₂.wk (ψ := le ((t + one) * (t + one)) (quo (XT p k) r)))) - e₂ - 𝔞 r * w
+    Γ ⊢[PRAAx] rho p r k ≐ t :=
+  isqrt_unique (Division.le_quo_of_mul_le hr h₁) (Division.quo_lt_of_lt_mul hr h₂)
 
 end LeanProofs.IPRA.Geometry.MeshBracket
