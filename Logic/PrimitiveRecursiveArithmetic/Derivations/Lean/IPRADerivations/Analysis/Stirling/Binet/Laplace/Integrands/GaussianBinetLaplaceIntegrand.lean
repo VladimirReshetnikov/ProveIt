@@ -246,14 +246,11 @@ private theorem cutoff_diagonal (p X Y D sign R T N A B : PTm n)
     GaussianNameRingLaws.multiply_sample_error ExpF CofinalK x y p e r
   have after : Γ ⊢[PRAAx] distanceBounded (ap2 finiteF p (finiteData X Y D sign R T N A B)) (qmul a c) J U :=
     GaussianNameRingLaws.multiply_sample_error ExpF FiniteK x v p e s
-  have first := distance_radius_mono _ _ _ _ (L*K) W hU hW
-    (le_of_eq_add (d := zero) (by dsimp only [W]; ipra_ring)) before
-  have last := distance_radius_mono _ _ _ _ (J*K) W hU hW
-    (le_of_eq_add (d := zero) (by dsimp only [W]; ipra_ring))
-    (distance_symmetric _ _ _ _ hU after)
-  exact distance_congr (.eqRefl _) (.eqRefl _)
-    (by dsimp only [L,J,K,U,x,y,v,diagonalNumerator,cutoffCost]; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ W hW (distance_triangle_same _ _ _ _ _ W hW first middle) last)
+  have joined := GaussianRationalDistanceOrder.distance_from_model_comparison
+    (one*U+num 5*K) W U L J hW hU before middle after
+  exact distance_radius_mono _ _ _ _ _ W (positive_product _ _ hW hU) hW
+    (le_of_eq_add (d := zero) (by dsimp only [L,J,K,U,W,x,y,v,diagonalNumerator,cutoffCost]; ipra_ring))
+    joined
 
 theorem cutoff_rate (X Y D sign R T N A B : PTm n)
     (h : Γ ⊢[PRAAx] input X Y D sign R T A B) (hN : Γ ⊢[PRAAx] le one N) :

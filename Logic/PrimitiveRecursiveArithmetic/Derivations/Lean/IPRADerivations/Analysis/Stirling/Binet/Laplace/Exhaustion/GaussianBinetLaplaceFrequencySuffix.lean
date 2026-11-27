@@ -204,20 +204,16 @@ theorem improper_suffix_error (p t q N X Y D sign R L J E : PTm n)
   have hX := h.andE₁.andE₁.andE₁
   have hV := denominator_positive H p t (positive_tail X L hX)
   have hZ := positive_product _ _ (le_succ_self one) hE
-  have hC := error_denominator_positive p t X L E hX hE
   have rawPrefix := rate_at Improper StripF (improperData X Y D sign R) (prefixData X Y D sign R L) D H p t
     (GaussianBinetLaplaceImproperName.prefix_rate X Y D sign R L h hL)
-  have first := distance_radius_mono _ _ _ _ (A*Z) C hV hC
-    (le_of_eq_add (d := zero) (by dsimp only [C,errorDenominator,A,V,H,Z]; ipra_ring)) rawPrefix
-  have middle := distance_radius_mono _ _ _ _ (B*Z) C (unit_positive t) hC
-    (le_of_eq_add (d := zero) (by dsimp only [B,C,errorDenominator,rateDenominator,H,Z]; ipra_ring))
+  have middle := distance_radius_mono _ _ _ _ B V (unit_positive t) hV
+    (le_of_eq_add (d := zero) (by dsimp only [B,V,rateDenominator,H]; ipra_ring))
     (compact_prefix_quadrature t q N X Y D sign R L h hN hq hmesh)
-  have last := distance_radius_mono _ _ _ _ V C hZ hC
-    (le_of_eq_add (d := zero) (by dsimp only [C,errorDenominator,V,H,Z]; ipra_ring))
+  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hV hZ
+    (distance_triangle_same _ _ _ _ _ _ hV rawPrefix middle)
     (discard_prefix_error q N X Y D sign R L J E h hN hJ hE hsmall)
   exact distance_congr (.eqRefl _) (.eqRefl _)
-    (by dsimp only [errorNumerator,A,B,V,H,Z]; ipra_ring) (.eqRefl C)
-    (distance_triangle_same _ _ _ _ _ _ hC (distance_triangle_same _ _ _ _ _ _ hC first middle) last)
+    (by dsimp only [errorNumerator,A,B,V,H,Z]; ipra_ring) (.eqRefl C) joined
 
 theorem sine_suffix_error (p t q N X Y D sign R L E : PTm n)
     (h : Γ ⊢[PRAAx] source X Y D sign R) (hL : Γ ⊢[PRAAx] le one L)
