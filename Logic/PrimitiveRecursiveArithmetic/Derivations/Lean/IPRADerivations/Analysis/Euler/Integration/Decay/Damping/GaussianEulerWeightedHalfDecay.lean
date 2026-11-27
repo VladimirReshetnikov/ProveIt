@@ -44,7 +44,7 @@ ipra_subst productSlack [slack]
 
 ipra_subst halfSample [decayData, GaussianGammaFiniteApproximantName.exponentialInputData]
 
-private theorem radius_embedding (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
+theorem radius_embedding (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] embed (fraction a b) ≐ radiusPoint a b :=
   (GaussianEulerDecayOrder.fraction_embedding a b hb).eqTrans (fraction_is_radius_point a b hb)
 

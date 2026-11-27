@@ -23,7 +23,7 @@ open ComplexLogarithmRemainder (scale oneCode normSq_scale normSq_one)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (cross_at)
 open GaussianNamedDifference (difference_distance)
-open GaussianPositiveRationalLogarithm (data logF sample source fraction)
+open GaussianPositiveRationalLogarithm (data logF sample source fraction sample_congr)
 open GaussianPositiveRationalLogarithmIncrement (increment errorNumerator errorDenominator original_increment)
 open GaussianPositiveRationalLogarithmProperness (original_logarithm_proper)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same reversed_difference)
@@ -54,10 +54,6 @@ private theorem fraction_step (a k b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] qsub (fraction (a+k) b) (fraction a b) ≐ fraction k b :=
   (qsub_congr (fraction_add_same a k b hb).eqSymm (.eqRefl _)).eqTrans
     (qadd_sub_cancel _ _ (ofGaussian_canonical _ _ hb))
-
-private theorem sample_congr (p b : PTm n) {a c : PTm n} (he : Γ ⊢[PRAAx] a ≐ c) :
-    Γ ⊢[PRAAx] sample p a b ≐ sample p c b :=
-  congrAp2 logF (.eqRefl p) (congrPairT (.eqRefl two) (congrPairT he (.eqRefl _)))
 
 private theorem local_size {a b k R A D : PTm n} (hl : Γ ⊢[PRAAx] le b (R*a))
     (hs : Γ ⊢[PRAAx] le (D*k) (A*b)) : Γ ⊢[PRAAx] le (D*k) ((R*A)*a) :=

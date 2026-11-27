@@ -21,7 +21,7 @@ open GaussianEulerIntegrandName (powerF powerData powerExponentF powerExponentDa
 open GaussianHarmonicLogarithmName (sample)
 open GaussianNamedPositiveExponentialOrder (sampleOrder realOrder)
 open GaussianNameEquivalence (cross_symm)
-open GaussianPositiveRationalLogarithm (fraction)
+open GaussianPositiveRationalLogarithm (fraction scalar_represents)
 open RationalArgmin (rationalLE rationalLE_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -31,14 +31,6 @@ def source (e f u v Q a b : PTm n) : Fm PTm n :=
     (le (e*v) (u*f) ⋏ GaussianPositiveRationalLogarithm.source a b))
 
 ipra_subst source
-
-private theorem scalar_represents (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
-    Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (fraction a b)) (ZT.ofNat a) b := by
-  apply GaussianRationalHorner.scalar_congr (.eqRefl _) ?_ (.eqRefl _)
-    (GaussianRationalHorner.ofGaussian_represents (ComplexLogarithmRemainder.scale a ComplexLogarithmRemainder.oneCode) b hb).andE₁
-  apply ZT.derive
-  simp only [GaussianRootAlgebra.re_scale,GaussianRootAlgebra.re_one,ZT.toZ_ofNat]
-  ring
 
 theorem coefficient_order (e f u v : PTm n)
     (hf : Γ ⊢[PRAAx] le one f) (hv : Γ ⊢[PRAAx] le one v)

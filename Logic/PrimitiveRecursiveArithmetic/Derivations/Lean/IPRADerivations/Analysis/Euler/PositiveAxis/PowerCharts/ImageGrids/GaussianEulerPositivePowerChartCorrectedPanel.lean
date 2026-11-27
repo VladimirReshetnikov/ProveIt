@@ -23,6 +23,7 @@ open GaussianUnitIntervalInputDecoding (numerator denominator)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianPositiveRationalLogarithm renaming scalar_represents → scalar_fraction_represents
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -34,14 +35,6 @@ def denominator (k e f d h Q S E T a C N : PTm n) : PTm n :=
 def endpoint (k e f d h Q S E T a C N : PTm n) : PTm n :=
   imageNumerator k N e f d h Q S E T a C N*imageDenominator k zero e f d h Q S E T a C N
 def span (k e f d h Q S E T a C N : PTm n) : PTm n := monus (endpoint k e f d h Q S E T a C N) (start k e f d h Q S E T a C N)
-
-private theorem scalar_fraction_represents (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
-    RationalArithmetic.represents (fstT (fraction A B)) (ZT.ofNat A) B := by
-  apply GaussianRationalHorner.scalar_congr (.eqRefl _) ?_ (.eqRefl _)
-    (GaussianRationalHorner.ofGaussian_represents (ComplexLogarithmRemainder.scale A ComplexLogarithmRemainder.oneCode) B hB).andE₁
-  apply ZT.derive
-  simp only [GaussianRootAlgebra.re_scale,GaussianRootAlgebra.re_one,ZT.toZ_ofNat]
-  ring
 
 private theorem raw_represents (k i e f d h Q S E T a C N : PTm n)
     (hs : Γ ⊢[PRAAx] source e f d h Q S E T a C N) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]

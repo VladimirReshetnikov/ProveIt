@@ -107,14 +107,7 @@ theorem uniform_scalar_reference_distance (p v q R a b N T : PTm n)
   dsimp only [samplingNumerator,samplingDenominator]
   ipra_le (𝔞 (num 3*N*unit q*unit p*unit p*unit v*unit v))*sl (natural_power_bound a b T (R+two) ht)
 
-theorem radial_embedding (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
-    embed (fraction A B) ≐ radiusPoint A B := by
-  have left := RationalGaussianEmbedding.embed_from_representation _ _ _ (fraction_represents A B hB)
-  apply canonical_unique _ _ (radiusNumerator A) B (RationalGaussianEmbedding.embed_canonical _) (GaussianRationalHorner.ofGaussian_canonical _ _ hB) hB
-    (represents_congr (.eqRefl _) ?_ (.eqRefl _) left) (radius_represents A B hB)
-  apply GaussianRootAlgebra.equal_of_values
-  all_goals simp only [RationalGaussianEmbedding.native,radiusNumerator,ComplexLogarithmRemainder.eval_re_code,
-    ComplexLogarithmRemainder.eval_im_code,ZT.toZ_ofNat]
+alias radial_embedding := GaussianEulerWeightedHalfDecay.radius_embedding
 
 theorem reference_radial (q a b : PTm n) : Γ ⊢[PRAAx]
     reference q a b ≐ radiusPoint (referenceNumerator q a b) (referenceDenominator q a b) := by

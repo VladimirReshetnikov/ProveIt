@@ -24,6 +24,7 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianEuclideanDistanceName (pointCN)
+open GaussianGammaAdjacentCutoff renaming swap_first → commute_left
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -71,17 +72,6 @@ theorem all_inverse_samples_bounded (z B c d : PTm n) (h : Γ ⊢[PRAAx] source 
   simpa only [GaussianNamedMultiplyRate.sampleBound,subst_inverseFactorData,subst_inverseBound,
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using
     inverse_sample_bound (var 0) (Syn.shift z) (Syn.shift B) (Syn.shift c) (Syn.shift d) hs
-
-private theorem commute_left (f g h : PR 2) (x y z : PTm n)
-    (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) (hh : Γ ⊢[PRAAx] pointCN h z) : Γ ⊢[PRAAx]
-    crossEquivalent (multiplyF f (multiplyF g h)) (multiplyF g (multiplyF f h))
-      (multiplyData f (multiplyF g h) x (multiplyData g h y z))
-      (multiplyData g (multiplyF f h) y (multiplyData f h x z)) := by
-  have permute := multiply_cross (multiplyF f g) (multiplyF g f) h h
-    (multiplyData f g x y) (multiplyData g f y x) z z (multiply_fast _ _ _ _ hf hg)
-    (multiply_fast _ _ _ _ hg hf) hh hh (multiply_commutative f g x y hf hg) (cross_refl _ _ hh)
-  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (multiply_associative f g h x y z hf hg hh))
-    (cross_trans _ _ _ _ _ _ permute (multiply_associative g f h y x z hg hf hh))
 
 private theorem half_times_two : Γ ⊢[PRAAx] qmul (half : PTm n) (fraction two one) ≐ GaussianRationalSyntheticDivision.qone := by
   have htwo := zero_lt_succ (Γ := Γ) (one : PTm n)
