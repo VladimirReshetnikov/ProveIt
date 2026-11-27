@@ -67,11 +67,8 @@ theorem difference_exponential_one (f g : PR 2) (R x y : PTm n)
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ addition)
     (cross_trans _ _ _ _ _ _ replace (GaussianExponentialInverse.exponential_inverse g R y hg))
 
-theorem ones_equivalent (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF oneF x y := by
-  apply GaussianNameConjugation.equal_samples_cross oneF oneF x y (one_fast x) (one_fast y)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift] using
-    (one_at (Γ := Γ.map Fm.shift) (var 0) (Syn.shift x)).eqTrans (one_at (var 0) (Syn.shift y)).eqSymm
+theorem ones_equivalent (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF oneF x y :=
+  GaussianNameRingLaws.one_name_cross x y
 
 theorem negative_exponential_of_one (f : PR 2) (R x anchor : PTm n)
     (hf : Γ ⊢[PRAAx] input f R x)

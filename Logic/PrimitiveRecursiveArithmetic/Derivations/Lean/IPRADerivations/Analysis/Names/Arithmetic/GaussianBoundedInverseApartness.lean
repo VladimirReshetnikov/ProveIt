@@ -146,12 +146,8 @@ theorem bounded_inverse_input (f g : PR 2) (x y A B : PTm n) (hA : Γ ⊢[PRAAx]
       (small_samples_at g (Syn.shift y) (Syn.shift A) (Syn.shift B) (var 0) hs)
   simpa only [smallSamples, Syn.shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] using b
 
-theorem ones_equivalent (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF oneF x y := by
-  refine .allI (.allI ?_)
-  have h := GaussianNameEquivalence.cross_at (Γ := (Γ.map Fm.shift).map Fm.shift) _ _ _ _ (var 1) (var 0)
-    (GaussianNameEquivalence.cross_refl oneF (Syn.shift (Syn.shift x)) (one_fast _))
-  exact distance_congr (.eqRefl _) ((one_at _ _).eqTrans (one_at _ (Syn.shift (Syn.shift y))).eqSymm)
-    (.eqRefl _) (.eqRefl _) h
+theorem ones_equivalent (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF oneF x y :=
+  GaussianNameRingLaws.one_name_cross x y
 
 theorem reciprocal_matches_inverse (f g : PR 2) (h x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)

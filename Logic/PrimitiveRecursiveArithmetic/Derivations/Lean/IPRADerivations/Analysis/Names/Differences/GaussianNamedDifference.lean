@@ -41,13 +41,7 @@ theorem sub_add_cancel (f g : PR 2) (x y : PTm n)
   let neg := negativeF g
   let w := negativeData y
   have hn := negative_fast g y hg
-  have zeros : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF y x := by
-    apply equivalent_of_envelope _ _ _ _ zero (zero_fast y) (zero_fast x)
-    refine .allI ?_
-    simpa only [Syn.shift, ConciseIPRA.PTm.subst_zero] using
-      distance_congr (zero_at (var 0) (Syn.shift y)).eqSymm (zero_at (var 0) (Syn.shift x)).eqSymm
-        (.eqRefl zero) (.eqRefl (unit (var 0)))
-        (GaussianRationalPowerDifference.distance_refl_zero qzero (unit (var 0)) (unit_positive _))
+  have zeros := GaussianNameRingLaws.zero_name_cross (Γ := Γ) y x
   have inverse := cross_trans _ _ _ _ _ _ (add_commutative neg g w y hn hg)
     (cross_trans _ _ _ _ _ _ (add_negative g y hg) zeros)
   have drop := add_equivalent f f (addF neg g) zeroF x x (addData w y) x

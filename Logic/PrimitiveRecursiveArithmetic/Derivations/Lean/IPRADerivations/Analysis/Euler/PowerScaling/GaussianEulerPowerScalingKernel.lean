@@ -73,13 +73,7 @@ private theorem subtract_leading (f g : PR 2) (x y : PTm n)
   have assoc := GaussianNameRingLaws.add_associative (negativeF f) f g (negativeData x) x y hn hf hg
   have commute := GaussianNameRingLaws.add_commutative (negativeF f) f (negativeData x) x hn hf
   have cancel := cross_trans _ _ _ _ _ _ commute (GaussianNameRingLaws.add_negative f x hf)
-  have sameZero : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y := by
-    apply GaussianNameConjugation.equal_samples_cross _ _ _ _
-      (GaussianNameRingLaws.zero_fast x) (GaussianNameRingLaws.zero_fast y)
-    refine .allI ?_
-    simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift] using
-      (GaussianNameRingLaws.zero_at (Γ := Γ.map Fm.shift) (var 0) (Syn.shift x)).eqTrans
-        (GaussianNameRingLaws.zero_at (var 0) (Syn.shift y)).eqSymm
+  have sameZero := GaussianNameRingLaws.zero_name_cross (Γ := Γ) x y
   have cancelAtY := cross_trans _ _ _ _ _ _ cancel sameZero
   have sum := sum_congr _ _ _ _ _ _ _ _
     (add_fast _ _ _ _ hn hf) (GaussianNameRingLaws.zero_fast y) hg hg cancelAtY (cross_refl _ _ hg)

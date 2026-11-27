@@ -47,15 +47,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
   simp only [GaussianNameArithmetic.subst_multiplyData,GaussianGammaCutoffName.subst_head,
     GaussianRadiusExponentialName.subst_data,GaussianNameBounds.subst_U,GaussianGammaCanonicalExponent.subst_productData]
 
-theorem one_any_data (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF oneF x y := by
-  refine GaussianNameEquivalence.diagonal_to_cross _ _ _ _ (one_fast x) (one_fast y) (.allI ?_)
-  have e := distance_radius_mono (Γ := Γ.map Fm.shift) _ _ zero (unit (var 0)) two (unit (var 0))
-    (unit_positive _) (unit_positive _) (le_of_eq_add (d := two*unit (var 0)) (by ipra_ring))
-    (GaussianRationalPowerDifference.distance_refl_zero (GaussianRationalSyntheticDivision.qone : PTm (n+1))
-      (unit (var 0)) (unit_positive _))
-  simpa only [diagonalEquivalent,Syn.shift] using
-    distance_congr (one_at (var 0) (Syn.shift x)).eqSymm (one_at (var 0) (Syn.shift y)).eqSymm
-      (.eqRefl _) (.eqRefl _) e
+theorem one_any_data (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF oneF x y :=
+  GaussianNameRingLaws.one_name_cross x y
 
 def tailData (z R B N : PTm n) : PTm n := GaussianGammaCanonicalTailName.data z R B N
 def tailRadius (z R B N : PTm n) : PTm n := GaussianNameBounds.U GaussianGammaCanonicalTailName.pointF (tailData z R B N)
