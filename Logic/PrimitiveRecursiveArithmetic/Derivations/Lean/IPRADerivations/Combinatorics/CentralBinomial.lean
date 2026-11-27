@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Combinatorics.CatalanValuation
 import IPRADerivations.Probability.MedianL1
+import IPRADerivations.Combinatorics.BellTriangle
 
 /-!
 # The central binomial coefficient: unimodality and `4^n/(2n + 1) ≤ C(2n, n) ≤ 4^n`
@@ -29,7 +30,6 @@ open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (pascal_at binom_sum_open bBody inst2_b)
 open LeanProofs.IPRA.Probability.BinomialLaw (absorption)
-open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
@@ -105,32 +105,22 @@ theorem right_step {N j : PTm n} (h : Γ ⊢[PRAAx] le (succ j) N)
   exact le_trans (le_congr (congrBinom (.eqRefl _) (add_succ _ _)).eqSymm (.eqRefl _)
     (fall (le_of_eq_add (d := j) (.eqRefl _)) hk)) ih
 
-/-- Variables: `0 = j`, `1 = N`. -/
-private abbrev rightF : Fm PTm 2 :=
-  le (var 0) (var 1) ⟶ le (binom (two * var 1) (var 1 + var 0)) (binom (two * var 1) (var 1))
-
-private theorem right₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] rightF := by
-  ipra_ind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_ap2]
-  · exact .impI (le_congr (congrBinom (.eqRefl _) (add_zero _)).eqSymm (.eqRefl _) (le_refl _))
-  · exact .impI (right_step Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
-
 /-- `C(2n, n + j) ≤ C(2n, n)` for `j ≤ n`. -/
 theorem central_right {N j : PTm n} (h : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] le (binom (two * N) (N + j)) (binom (two * N) N) := by
-  have i := inst (Γ := Γ) right₀ (![j, N] : Fin 2 → PTm n)
-  simp at i
-  exact .impE i h
+  have row : Γ ⊢[PRAAx] two * N ≐ N + N := by ipra_ring
+  have hi := le_congr (.eqRefl _) row.eqSymm (add_le_add₂ (le_refl N) h)
+  have complement := (congrMonus row (add_comm N j)).eqTrans (monus_add_add N j N)
+  exact le_congr ((congrBinom (.eqRefl _) complement.eqSymm).eqTrans (BellTriangle.binom_symm hi))
+    (.eqRefl _) (central_left N j)
 
 alias monus_monus' := Common.monus_monus_of_le
 
 theorem central_hi {N k : PTm n} (h₁ : Γ ⊢[PRAAx] le N k) (h : Γ ⊢[PRAAx] le k (two * N)) :
     Γ ⊢[PRAAx] le (binom (two * N) k) (binom (two * N) N) := by
-  have e := eq_add_of_le h₁
-  have e' := natEq e; have h' := natEq (eq_add_of_le h)
-  have hj : Γ ⊢[PRAAx] le (monus k N) N := by
-    refine le_of_eq_add (d := monus (two * N) k) ?_
-    ipra_lc h' + e'
-  exact le_congr (congrBinom (.eqRefl _) e.eqSymm) (.eqRefl _) (central_right hj)
+  have hj := LeanProofs.IPRA.Order.monus_le_of_le_add (y := N) (z := N)
+    (le_congr (.eqRefl _) (by ipra_ring) h)
+  exact le_congr (congrBinom (.eqRefl _) (eq_add_of_le h₁).eqSymm) (.eqRefl _) (central_right hj)
 
 /-- `C(2n, k) ≤ C(2n, n)` for `k ≤ 2n`. -/
 theorem central_max {N k : PTm n} (h : Γ ⊢[PRAAx] le k (two * N)) :
@@ -161,16 +151,9 @@ theorem central_upper (N : PTm n) : Γ ⊢[PRAAx] le (binom (two * N) N) (pw two
 
 /-- `4^n ≤ (2n + 1) C(2n, n)`: the `2n + 1` terms of the row sum are each at most `C(2n, n)`. -/
 theorem central_lower (N : PTm n) : Γ ⊢[PRAAx] le (pw two (two * N)) (succ (two * N) * binom (two * N) N) := by
-  have hle := sum_le_params (Γ := Γ) bBody (var 1) (two * N) (binom (two * N) N) (succ (two * N)) (.allI (.impI (by
-    have e : inst2 (var 1 : PTm 2) (var 0 : PTm (n + 1)) (Syn.shift (binom (two * N) N)) =
-        binom (two * Syn.shift N) (Syn.shift N) := by
-      simp only [inst2, Syn.subst_var]; simp [Syn.shift]
-    rw [inst2_b, e, shift_two_mul]
-    exact central_max (LeanProofs.IPRA.Probability.MedianL1.le_of_lt_succ' (by
-      have e2 : Syn.shift (succ (two * N)) = succ (two * Syn.shift N) := by simp [Syn.shift]
-      rw [e2]; exact Prf.hyp0)))))
-  have hc := sum_const_of (Γ := Γ) (var 1) (succ (two * N)) (binom (two * N) N) (binom (two * N) N)
-    (.allI (.impI (by simp only [inst2, Syn.subst_var]; simp [Syn.shift]; exact .eqRefl _)))
-  exact le_congr (row_sum N) hc hle
+  refine le_congr (row_sum N) (.eqRefl _) (sum_le_uniform_bound bBody (.allI (.impI ?_)))
+  rw [inst2_b, shift_binom, shift_two_mul,
+    show Syn.shift (succ (two * N)) = succ (two * Syn.shift N) by simp [Syn.shift]]
+  exact central_max (LeanProofs.IPRA.Order.le_of_lt_succ Prf.hyp0)
 
 end LeanProofs.IPRA.Combinatorics.CentralBinomial

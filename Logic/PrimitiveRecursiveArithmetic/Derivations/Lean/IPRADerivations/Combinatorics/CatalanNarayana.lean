@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.Vandermonde
 import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Core.ProdLemmas
+import IPRADerivations.Combinatorics.BellTriangle
 
 /-!
 # Squares of binomial coefficients and the Narayana sum
@@ -25,14 +26,12 @@ namespace LeanProofs.IPRA.Combinatorics.CatalanNarayana
 
 open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
-open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq mul_cancel catalan_ratio_open)
+open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel catalan_ratio_open)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
-open LeanProofs.IPRA.Combinatorics.Bell (monus_monus monus_le')
+open LeanProofs.IPRA.Combinatorics.Bell (monus_le')
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le)
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb vsB vs_at shift_y vandermonde)
 open LeanProofs.IPRA.Combinatorics.Catalan (cat cb cat_spec succ_pos)
-open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -42,15 +41,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `C(M, M − j) = C(M, j)` for `j ≤ M`. -/
 theorem gb_symm {j M : PTm n} (h : Γ ⊢[PRAAx] le j M) : Γ ⊢[PRAAx] gb M (monus M j) ≐ gb M j := by
-  have s : Γ ⊢[PRAAx] binom M (monus M j) ≐ binom M j := by
-    refine mul_cancel (D := fact j * fact (monus M j)) (pos_mul' (fact_pos _) (fact_pos _)) ?_
-    ipra_lc -natEq (binom_eq (monus_le' h)) + natEq (binom_eq h) -
-      𝔞(fact (monus M j)) * 𝔞(binom M (monus M j)) * natEq (congrAp2 factF (monus_monus (Γ := Γ) h) (.eqRefl zero))
-  have g₁ := natEq (gle_of_le (monus_le' h) : Γ ⊢[PRAAx] gle (monus M j) M ≐ one)
-  have g₂ := natEq (gle_of_le h)
-  have s' := natEq s
-  apply deriveNat; ipra_simps
-  linear_combination 𝔞(binom M (monus M j)) * g₁ - 𝔞(binom M j) * g₂ + s'
+  exact (congrMul (gle_of_le (monus_le' h)) (BellTriangle.binom_symm h)).eqTrans
+    (congrMul (gle_of_le h).eqSymm (.eqRefl _))
 
 /-! ## Sums of squares -/
 
