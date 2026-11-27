@@ -71,3 +71,6 @@ preceding fetch and dispatch.
 ```sh
 bash "$dir/check-mp-command.sh" /path/to/checked-mp-prefix /path/to/fresh-mp-command
 ```
+
+The [scheduler-frame proof](mp-frame/README.md) adds the preceding
+fetch and dispatch and compares the result to the coded radix-five step.
