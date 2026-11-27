@@ -19,12 +19,9 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaFixedEulerExponentBalance
 
 open_ipra
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiplyModulus)
-open GaussianRationalHorner (qadd qmul ofGaussian represents represents_congr qadd_represents qmul_represents
-  canonical_unique positive_product)
-open GaussianRationalMetric (qsub qnegative qsub_represents qnegative_represents distanceBounded)
-open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
-open GaussianRationalSyntheticDivision (rescale_to qadd_congr qmul_congr)
-open GaussianRootAlgebra (equal_of_values re_mul im_mul re_sub im_sub re_add im_add re_neg im_neg)
+open GaussianRationalHorner (qadd qmul ofGaussian)
+open GaussianRationalMetric (qsub qnegative distanceBounded)
+open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular harmonicPoint gammaF)
 open GaussianGammaLogHarmonicName (fixedF fixed_regular)
 open GaussianGammaFixedEulerExponent (differenceF differenceData difference_regular productF productData product_regular)
@@ -40,28 +37,8 @@ open GaussianEuclideanDistanceName (pointCN)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem finite_product_balance (g a l w : PTm n) : Γ ⊢[PRAAx]
-    qadd (qmul (qsub g l) w) (qmul (qsub a g) w) ≐ qmul (qsub a l) w := by
-  let E := rawDen g*rawDen a*rawDen l*rawDen w
-  have hE := positive_product (Γ := Γ) _ _
-    (positive_product _ _ (positive_product _ _ (raw_den_positive g) (raw_den_positive a))
-      (raw_den_positive l)) (raw_den_positive w)
-  have gR := rescale_to g (rawGaussian g) (rawDen g) (rawDen a*rawDen l*rawDen w) E (raw_represents (Γ := Γ) g)
-    (by unfold E; ipra_ring)
-  have aR := rescale_to a (rawGaussian a) (rawDen a) (rawDen g*rawDen l*rawDen w) E (raw_represents (Γ := Γ) a)
-    (by unfold E; ipra_ring)
-  have lR := rescale_to l (rawGaussian l) (rawDen l) (rawDen g*rawDen a*rawDen w) E (raw_represents (Γ := Γ) l)
-    (by unfold E; ipra_ring)
-  have wR := rescale_to w (rawGaussian w) (rawDen w) (rawDen g*rawDen a*rawDen l) E (raw_represents (Γ := Γ) w)
-    (by unfold E; ipra_ring)
-  have hE2 := positive_product _ _ hE hE
-  have lhs := qadd_represents _ _ _ _ _ hE2
-    (qmul_represents _ _ _ _ _ _ hE hE (qsub_represents _ _ _ _ _ hE gR lR) wR)
-    (qmul_represents _ _ _ _ _ _ hE hE (qsub_represents _ _ _ _ _ hE aR gR) wR)
-  have rhs := qmul_represents _ _ _ _ _ _ hE hE (qsub_represents _ _ _ _ _ hE aR lR) wR
-  apply canonical_unique _ _ _ _ (GaussianRationalHorner.qadd_canonical _ _)
-    (GaussianRationalHorner.qmul_canonical _ _) hE2 (hrv := rhs)
-  apply represents_congr (.eqRefl _) (hAB := .eqRefl _) (h := lhs)
-  apply equal_of_values <;> simp only [re_add, im_add, re_mul, im_mul, re_sub, im_sub, re_neg, im_neg] <;> ring
+    qadd (qmul (qsub g l) w) (qmul (qsub a g) w) ≐ qmul (qsub a l) w :=
+  GaussianGammaFoldedExponentBalance.finite_product_balance g a l w
 
 def fixedCore (p z B K N : PTm n) : PTm n :=
   qmul (qsub (ap2 fixedF p N) (harmonicPoint K)) (ofGaussian z B)

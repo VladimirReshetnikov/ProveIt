@@ -17,12 +17,9 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaFoldedExponentBalance
 
 open_ipra
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiplyModulus)
-open GaussianRationalHorner (qadd qmul ofGaussian represents represents_congr qadd_represents qmul_represents
-  canonical_unique positive_product)
-open GaussianRationalMetric (qsub qnegative qsub_represents qnegative_represents distanceBounded)
-open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
-open GaussianRationalSyntheticDivision (rescale_to qadd_congr qmul_congr qsub_congr)
-open GaussianRootAlgebra (equal_of_values re_mul im_mul re_sub im_sub re_add im_add re_neg im_neg)
+open GaussianRationalHorner (qadd qmul ofGaussian)
+open GaussianRationalMetric (qsub qnegative distanceBounded)
+open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr)
 open GaussianGammaLogHarmonicName (fixedF fixed_regular)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular harmonicPoint gammaF gamma_regular
   gamma_sample_at differenceF differenceData difference_regular productF productData product_regular)
@@ -37,29 +34,27 @@ open GaussianEuclideanDistanceName (pointCN)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
+/-- The middle raw value cancels after factoring the common multiplier. -/
+theorem finite_product_balance (g a l w : PTm n) : Γ ⊢[PRAAx]
+    qadd (qmul (qsub g l) w) (qmul (qsub a g) w) ≐ qmul (qsub a l) w :=
+  (GaussianRationalPolynomialBuffers.distribute_right (qsub g l) (qsub a g) w).eqSymm.eqTrans
+    (qmul_congr ((GaussianReciprocalHorner.qadd_commutative (qsub g l) (qsub a g)).eqTrans
+      (GaussianReconstructionRoots.difference_chain a g l)) (.eqRefl _))
+
 theorem finite_balance (g a l w : PTm n) : Γ ⊢[PRAAx]
     qadd (qmul (qsub g (qadd a l)) w) (qmul (qsub a g) w) ≐ qmul l (qnegative w) := by
-  let E := rawDen g*rawDen a*rawDen l*rawDen w
-  have hE := positive_product (Γ := Γ) _ _
-    (positive_product _ _ (positive_product _ _ (raw_den_positive g) (raw_den_positive a))
-      (raw_den_positive l)) (raw_den_positive w)
-  have gR := rescale_to g (rawGaussian g) (rawDen g) (rawDen a*rawDen l*rawDen w) E (raw_represents (Γ := Γ) g)
-    (by unfold E; ipra_ring)
-  have aR := rescale_to a (rawGaussian a) (rawDen a) (rawDen g*rawDen l*rawDen w) E (raw_represents (Γ := Γ) a)
-    (by unfold E; ipra_ring)
-  have lR := rescale_to l (rawGaussian l) (rawDen l) (rawDen g*rawDen a*rawDen w) E (raw_represents (Γ := Γ) l)
-    (by unfold E; ipra_ring)
-  have wR := rescale_to w (rawGaussian w) (rawDen w) (rawDen g*rawDen a*rawDen l) E (raw_represents (Γ := Γ) w)
-    (by unfold E; ipra_ring)
-  have hE2 := positive_product _ _ hE hE
-  have lhs := qadd_represents _ _ _ _ _ hE2
-    (qmul_represents _ _ _ _ _ _ hE hE (qsub_represents _ _ _ _ _ hE gR (qadd_represents _ _ _ _ _ hE aR lR)) wR)
-    (qmul_represents _ _ _ _ _ _ hE hE (qsub_represents _ _ _ _ _ hE aR gR) wR)
-  have rhs := qmul_represents _ _ _ _ _ _ hE hE lR (qnegative_represents _ _ _ wR)
-  apply canonical_unique _ _ _ _ (GaussianRationalHorner.qadd_canonical _ _)
-    (GaussianRationalHorner.qmul_canonical _ _) hE2 (hrv := rhs)
-  apply represents_congr (.eqRefl _) (hAB := .eqRefl _) (h := lhs)
-  apply equal_of_values <;> simp only [re_add, im_add, re_mul, im_mul, re_sub, im_sub, re_neg, im_neg] <;> ring
+  have difference : Γ ⊢[PRAAx] qsub a (qadd a l) ≐ qnegative l :=
+    (GaussianRationalDistanceOrder.reversed_difference (qadd a l) a).eqSymm.eqTrans
+      ((GaussianInverseBinomialRows.negative_congr
+        (GaussianRationalSyntheticCoefficientValues.qadd_sub_recode a l)).eqTrans
+        (RationalGaussianEmbedding.negative_recode l))
+  have product : Γ ⊢[PRAAx] qmul (qnegative l) w ≐ qmul l (qnegative w) :=
+    (GaussianInverseBinomialRows.negative_product l w).eqSymm.eqTrans
+      ((GaussianInverseBinomialRows.negative_congr (GaussianRationalPowerAlgebra.qmul_commutative l w)).eqTrans
+        ((GaussianInverseBinomialRows.negative_product w l).eqTrans
+          (GaussianRationalPowerAlgebra.qmul_commutative (qnegative w) l)))
+  exact (finite_product_balance g a (qadd a l) w).eqTrans
+    ((qmul_congr difference (.eqRefl _)).eqTrans product)
 
 theorem fixed_and_log_at (p N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] qadd (ap2 fixedF p N) (ap2 logF p N) ≐ harmonicPoint N := by
