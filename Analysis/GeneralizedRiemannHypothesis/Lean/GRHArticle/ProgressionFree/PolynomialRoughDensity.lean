@@ -16,16 +16,17 @@ open scoped Classical BigOperators
 
 variable {F : Type*} [Field F] [Fintype F]
 
-private noncomputable def monicLayer (F : Type*) [Field F] [Fintype F] (n : ℕ) :
+/-- All monic polynomials over the finite field of degree exactly `n`. -/
+noncomputable def monicLayer (F : Type*) [Field F] [Fintype F] (n : ℕ) :
     Finset (Polynomial F) :=
   (polynomialDegreeLayer F n).filter Monic
 
-private theorem mem_monicLayer {n : ℕ} {f : Polynomial F} :
+theorem mem_monicLayer {n : ℕ} {f : Polynomial F} :
     f ∈ monicLayer F n ↔ f.Monic ∧ f.natDegree = n := by
   simp only [monicLayer, Finset.mem_filter, mem_polynomialDegreeLayer]
   exact ⟨fun ⟨⟨_, hd⟩, hm⟩ ↦ ⟨hm, hd⟩, fun ⟨hm, hd⟩ ↦ ⟨⟨hm.ne_zero, hd⟩, hm⟩⟩
 
-private theorem card_monicLayer (n : ℕ) :
+theorem card_monicLayer (n : ℕ) :
     (monicLayer F n).card = Fintype.card F ^ n := by
   let e : ↥(monicLayer F n) ≃ (Fin n → F) :=
     (Equiv.subtypeEquivRight (fun _ ↦ mem_monicLayer)).trans
@@ -116,7 +117,7 @@ private theorem squarefree_square_injective {g h g' h' : Polynomial F}
 
 end Factorization
 
-private theorem card_monicLayer_squarefree (n : ℕ) :
+theorem card_monicLayer_squarefree (n : ℕ) :
     Fintype.card F ^ n =
       ∑ k ∈ Finset.range (n / 2 + 1),
         (squarefreeLayer F ∅ (n - 2*k)).card * Fintype.card F ^ k := by

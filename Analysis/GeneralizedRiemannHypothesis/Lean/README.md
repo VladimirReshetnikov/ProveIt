@@ -71,6 +71,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialSmoothOptimization.lean](GRHArticle/ProgressionFree/PolynomialSmoothOptimization.lean) computes the maximum size of a progression-free subset of the monic smooth degree ball. [PolynomialSmoothApproximation.lean](GRHArticle/ProgressionFree/PolynomialSmoothApproximation.lean) gives rational truncations of the article's upper approximation $U_T$, proves that they converge, and bounds the error explicitly in the number of enumerated primes, the field size and the truncation degree.
 
+[PolynomialRoughCount.lean](GRHArticle/ProgressionFree/PolynomialRoughCount.lean) shows the normalized count of monic polynomials avoiding the smooth primes equals its Euler factor once the degree reaches the sum of the prime degrees. [PolynomialEulerTail.lean](GRHArticle/ProgressionFree/PolynomialEulerTail.lean) proves $0\le 1-v_T\le q^{-(T+1)}$ by evaluating the smooth series at $q^{-2}$. Its first $T+1$ coefficients count every monic polynomial. [PolynomialOptimizationBounds.lean](GRHArticle/ProgressionFree/PolynomialOptimizationBounds.lean) partitions each smooth ball by degree and proves $0\le U_T\le1$.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in

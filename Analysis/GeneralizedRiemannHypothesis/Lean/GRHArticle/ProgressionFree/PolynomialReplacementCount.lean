@@ -29,7 +29,8 @@ noncomputable def polynomialSquarefreeRoughLayer (F : Type*) [Field F] [Fintype 
   exact ⟨fun ⟨⟨_, hdeg⟩, hm, hs, hp⟩ ↦ ⟨hm, hdeg, hs, hp⟩,
     fun ⟨hm, hdeg, hs, hp⟩ ↦ ⟨⟨hm.ne_zero, hdeg⟩, hm, hs, hp⟩⟩
 
-private theorem monic_polynomialSmoothPart (L : ℕ) (f : Polynomial F) :
+/-- The product of the smooth normalized factors is monic. -/
+theorem monic_polynomialSmoothPart (L : ℕ) (f : Polynomial F) :
     (polynomialSmoothPart L f).Monic := by
   rw [polynomialSmoothPart]
   simpa only [Multiset.map_id] using
@@ -40,7 +41,8 @@ private theorem monic_polynomialSmoothPart (L : ℕ) (f : Polynomial F) :
         exact (Polynomial.normalize_eq_self_iff_monic
           (irreducible_of_normalized_factor p hp').ne_zero).mp (normalize_normalized_factor p hp')))
 
-private theorem normalizedFactors_polynomialSmoothPart (L : ℕ) (f : Polynomial F) :
+/-- Extracting the smooth part retains precisely the normalized factors of degree at most `L`. -/
+theorem normalizedFactors_polynomialSmoothPart (L : ℕ) (f : Polynomial F) :
     normalizedFactors (polynomialSmoothPart L f) =
       (normalizedFactors f).filter fun p ↦ p.natDegree ≤ L := by
   rw [polynomialSmoothPart, normalizedFactors_prod_eq _ (fun p hp ↦
@@ -48,14 +50,17 @@ private theorem normalizedFactors_polynomialSmoothPart (L : ℕ) (f : Polynomial
   rw [Multiset.map_congr rfl (f := normalize) (g := id) (fun p hp ↦
     normalize_normalized_factor p (Multiset.mem_filter.mp hp).1), Multiset.map_id]
 
-private theorem natDegree_roughPart_add_smoothPart (L : ℕ) {f : Polynomial F} (hf : f ≠ 0) :
+/-- The rough and smooth degrees add to the degree of the nonzero polynomial. -/
+theorem natDegree_roughPart_add_smoothPart (L : ℕ) {f : Polynomial F} (hf : f ≠ 0) :
     (polynomialRoughPart L f).natDegree + (polynomialSmoothPart L f).natDegree = f.natDegree := by
   have h := congrArg Polynomial.natDegree (polynomial_eq_leadingCoeff_mul_roughPart_mul_smoothPart L f)
   rwa [natDegree_mul (mul_ne_zero (C_ne_zero.mpr (leadingCoeff_ne_zero.mpr hf))
     (monic_polynomialRoughPart L f).ne_zero) (monic_polynomialSmoothPart L f).ne_zero,
     natDegree_C_mul (leadingCoeff_ne_zero.mpr hf)] at h
 
-private theorem parts_of_scalar_mul (L : ℕ) (c : Fˣ) {g h : Polynomial F}
+/-- Extracting the parts of a scalar times a monic rough factor and a monic smooth
+factor recovers both monic factors. -/
+theorem parts_of_scalar_mul (L : ℕ) (c : Fˣ) {g h : Polynomial F}
     (hg : g.Monic) (hh : h.Monic)
     (hrough : ∀ p ∈ normalizedFactors g, L < p.natDegree)
     (hsmooth : ∀ p ∈ normalizedFactors h, p.natDegree ≤ L) :
