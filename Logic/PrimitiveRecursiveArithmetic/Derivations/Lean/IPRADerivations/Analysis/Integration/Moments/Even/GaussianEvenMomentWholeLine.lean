@@ -61,25 +61,9 @@ ipra_subst doubledData
 ipra_subst sample [finiteSample, clock, query, count, span, lowerDenominator, upperEndpoint, GaussianEulerQuadraticCutoffGeometry.width, GaussianEulerQuadraticUpperEndpoint.preimage, etaDen, height, top, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem sample_at (p N c d : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data N c d) ≐ sample p N c d := by
-  let x := data N c d
-  have e : Γ ⊢[PRAAx] ap2 nameF p x ≐ sample p (fstT x) (fstT (sndT x)) (sndT (sndT x)) := by
-    simpa only [nameF,body,ap2,subst_sample,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-      using toPR_eq (Γ := Γ) body ![p,x]
-  have r : Γ ⊢[PRAAx] sndT x ≐ pairT c d := snd_pair N (pairT c d)
-  let K : PTm 4 := sample (var 0) (var 1) (var 2) (var 3)
-  let left : Fin 4 → PTm n := ![p,fstT x,fstT (sndT x),sndT (sndT x)]
-  let right : Fin 4 → PTm n := ![p,N,c,d]
-  have bodyAt (σ : Fin 4 → PTm n) : Syn.subst σ K = sample (σ 0) (σ 1) (σ 2) (σ 3) := by
-    simp only [K,subst_sample,Syn.subst_var]
-  have h : Γ ⊢[PRAAx] Syn.subst left K ≐ Syn.subst right K :=
-    Prf.eqCongr K (σ := left) (σ' := right) (fun i => by
-      fin_cases i
-      · exact .eqRefl p
-      · exact fst_pair N (pairT c d)
-      · exact (congrFst r).eqTrans (fst_pair c d)
-      · exact (congrSnd r).eqTrans (snd_pair c d))
-  rw [bodyAt left,bodyAt right] at h
-  exact e.eqTrans h
+  simpa [nameF, body, data, GaussianEvenMomentSymmetricGrid.momentData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2)
+      (sample (var 0) (var 1) (var 2) (var 3)) p ![N, c, d])
 
 theorem endpoints_cofinal (p N c d : PTm n) (hd : Γ ⊢[PRAAx] le one d) : Γ ⊢[PRAAx]
     le (unit p) (lowerDenominator p N c d) ⋏ le p (upperEndpoint p N c d) :=

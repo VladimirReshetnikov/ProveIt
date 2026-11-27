@@ -51,16 +51,9 @@ ipra_subst cutGap
 ipra_subst source
 
 theorem cut_at (i N c a C : PTm n) : Γ ⊢[PRAAx] ap2 cutF i (cutData N c a C) ≐ cutValue i N c a C := by
-  have program : Γ ⊢[PRAAx] ap2 cutF i (cutData N c a C) ≐ cutTerm i (cutData N c a C) := by
-    simpa [cutF,ap2] using toPR_eq (Γ := Γ) (cutTerm (var 0) (var 1) : PTm 2) ![i,cutData N c a C]
-  have ht := snd_pair (Γ := Γ) N (pairT c (pairT a C))
-  have hu := (congrSnd ht).eqTrans (snd_pair c (pairT a C))
-  have hn := fst_pair (Γ := Γ) N (pairT c (pairT a C))
-  have hc := (congrFst ht).eqTrans (fst_pair c (pairT a C))
-  have ha := (congrFst hu).eqTrans (fst_pair a C)
-  have hC := (congrSnd hu).eqTrans (snd_pair a C)
-  exact program.eqTrans (congrMul (congrMul (congrMul hc hC) (.eqRefl i))
-    (congrAdd (congrMul (congrMul (.eqRefl two) ha) hn) (congrMul hC (.eqRefl i))))
+  simpa [cutF, cutTerm, cutData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3)
+      (cutValue (var 0) (var 1) (var 2) (var 3) (var 4)) i ![N, c, a, C])
 
 theorem cut_increment (i N c a C : PTm n) : Γ ⊢[PRAAx]
     cutValue (succ i) N c a C ≐ cutValue i N c a C+increment i N c a C := by

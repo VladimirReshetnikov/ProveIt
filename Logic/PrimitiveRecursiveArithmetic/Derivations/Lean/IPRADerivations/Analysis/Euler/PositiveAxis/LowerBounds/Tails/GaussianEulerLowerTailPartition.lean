@@ -46,23 +46,9 @@ ipra_subst offset [timeNumerator, rootNumerator, rootRatio]
 ipra_subst cutData
 
 theorem offset_at (i N p q A : PTm n) : Γ ⊢[PRAAx] ap2 cutF i (cutData N p q A) ≐ offset i N p q A := by
-  let d := cutData N p q A
-  have eval : Γ ⊢[PRAAx] ap2 cutF i d ≐ offset i (fstT d) (fstT (sndT d)) (fstT (sndT (sndT d))) (sndT (sndT (sndT d))) := by
-    simpa [cutF,ap2] using toPR_eq (Γ := Γ)
-      (offset (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (fstT (sndT (sndT (var 1))))
-        (sndT (sndT (sndT (var 1)))) : PTm 2) ![i,d]
-  have tail : Γ ⊢[PRAAx] sndT d ≐ pairT p (pairT q A) := snd_pair _ _
-  have tail₂ := (congrSnd tail).eqTrans (snd_pair p (pairT q A))
-  have value := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (offset (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![i,fstT d,fstT (sndT d),fstT (sndT (sndT d)),sndT (sndT (sndT d))]) (σ' := ![i,N,p,q,A])
-    (fun k => by
-      fin_cases k
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact tail.fstE
-      · exact tail₂.fstE
-      · exact tail₂.sndE)
-  exact eval.eqTrans (by simpa using value)
+  simpa [cutF, cutData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3)
+      (offset (var 0) (var 1) (var 2) (var 3) (var 4)) i ![N, p, q, A])
 
 theorem offset_zero (N p q A : PTm n) : Γ ⊢[PRAAx] offset zero N p q A ≐ zero :=
   monus_self _

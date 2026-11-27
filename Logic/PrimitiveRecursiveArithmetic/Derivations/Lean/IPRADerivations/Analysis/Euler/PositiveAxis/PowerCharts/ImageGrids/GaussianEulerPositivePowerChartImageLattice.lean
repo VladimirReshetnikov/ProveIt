@@ -145,19 +145,9 @@ ipra_subst relative
 
 theorem absolute_at (P D : PTm 2) (i N x J : PTm n) : Γ ⊢[PRAAx]
     ap2 (absoluteF P D) i (cutData N x J) ≐ absolute P D i N x J := by
-  have compiled : Γ ⊢[PRAAx] ap2 (absoluteF P D) i (cutData N x J) ≐ absoluteReader P D i (cutData N x J) := by
-    simpa [absoluteF,ap2,absoluteReader] using
-      toPR_eq (Γ := Γ) (absoluteReader P D (var 0) (var 1) : PTm 2) ![i,cutData N x J]
-  have hN : Γ ⊢[PRAAx] fstT (cutData N x J) ≐ N := fst_pair _ _
-  have hx : Γ ⊢[PRAAx] fstT (sndT (cutData N x J)) ≐ x :=
-    (snd_pair _ _).fstE
-  have hJ : Γ ⊢[PRAAx] sndT (sndT (cutData N x J)) ≐ J :=
-    (snd_pair _ _).sndE
-  apply compiled.eqTrans
-  simpa [absoluteReader] using Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-    (absolute P D (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![i, fstT (cutData N x J),fstT (sndT (cutData N x J)),sndT (sndT (cutData N x J))])
-    (σ' := ![i,N,x,J]) (fun j => by fin_cases j; exact .eqRefl _; exact hN; exact hx; exact hJ)
+  simpa [absoluteF, absoluteReader, cutData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2)
+      (absolute P D (var 0) (var 1) (var 2) (var 3)) i ![N, x, J])
 
 theorem cut_at (P D : PTm 2) (i N x J : PTm n) : Γ ⊢[PRAAx]
     ap2 (cutF P D) i (cutData N x J) ≐ relative P D i N x J := by

@@ -51,25 +51,9 @@ ipra_subst doubledData [halfData]
 ipra_subst sample [finiteSample, clock, GaussianEvenMomentWholeLine.clock, gridWith, query, count, span, lowerDenominator, upperEndpoint, GaussianOddMomentWholeLine.cutoff, GaussianEulerQuadraticImproperKernel.invBound, GaussianEulerQuadraticCutoffGeometry.width, GaussianEulerQuadraticUpperEndpoint.preimage, GaussianGammaIntegralCutoffs.etaDen, GaussianGammaIntegralCutoffs.height, GaussianGammaIntegralCutoffs.top, GaussianGammaIntegralCutoffs.tailCoefficient]
 
 theorem sample_at (p N c d : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data N c d) ≐ sample p N c d := by
-  let x := data N c d
-  have e : Γ ⊢[PRAAx] ap2 nameF p x ≐ sample p (fstT x) (fstT (sndT x)) (sndT (sndT x)) := by
-    simpa only [nameF,body,ap2,subst_sample,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-      using toPR_eq (Γ := Γ) body ![p,x]
-  have r : Γ ⊢[PRAAx] sndT x ≐ pairT c d := snd_pair N (pairT c d)
-  let template : PTm 4 := sample (var 0) (var 1) (var 2) (var 3)
-  let left : Fin 4 → PTm n := ![p,fstT x,fstT (sndT x),sndT (sndT x)]
-  let right : Fin 4 → PTm n := ![p,N,c,d]
-  have bodyAt (σ : Fin 4 → PTm n) : Syn.subst σ template = sample (σ 0) (σ 1) (σ 2) (σ 3) := by
-    simp only [template,subst_sample,Syn.subst_var]
-  have h : Γ ⊢[PRAAx] Syn.subst left template ≐ Syn.subst right template :=
-    Prf.eqCongr template (σ := left) (σ' := right) (fun i => by
-      fin_cases i
-      · exact .eqRefl p
-      · exact fst_pair N (pairT c d)
-      · exact (congrFst r).eqTrans (fst_pair c d)
-      · exact (congrSnd r).eqTrans (snd_pair c d))
-  rw [bodyAt left,bodyAt right] at h
-  exact e.eqTrans h
+  simpa [nameF, body, data, fixedData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2)
+      (sample (var 0) (var 1) (var 2) (var 3)) p ![N, c, d])
 
 private theorem unit_succ_succ (p : PTm n) : Γ ⊢[PRAAx] unit (succ (succ p)) ≐ num 4*unit p := by
   unfold unit

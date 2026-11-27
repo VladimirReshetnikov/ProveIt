@@ -69,43 +69,13 @@ theorem sample_program (p z R B a C E T : PTm n) : Γ ⊢[PRAAx]
 
 theorem name_at (p z R B a C E T : PTm n) : Γ ⊢[PRAAx]
     ap2 nameF p (data z R B a C E T) ≐ observation p z R B a C E T := by
-  have program : Γ ⊢[PRAAx] ap2 nameF p (data z R B a C E T) ≐ reader p (data z R B a C E T) := by
-    have decode : Syn.subst (![p,data z R B a C E T] : Fin 2 → PTm n) (reader (var 0) (var 1)) =
-        reader p (data z R B a C E T) := by
-      unfold reader
-      change PTm.app _ _ = PTm.app _ _
-      congr 1
-      funext i
-      fin_cases i
-      · rfl
-      · change Syn.subst (![p,data z R B a C E T] : Fin 2 → PTm n) (field0 (var 1)) = _
-        simp
-      · change Syn.subst (![p,data z R B a C E T] : Fin 2 → PTm n) (field1 (var 1)) = _
-        simp
-      · change Syn.subst (![p,data z R B a C E T] : Fin 2 → PTm n) (field2 (var 1)) = _
-        simp
-      · change Syn.subst (![p,data z R B a C E T] : Fin 2 → PTm n) (field3 (var 1)) = _
-        simp
-      · change Syn.subst (![p,data z R B a C E T] : Fin 2 → PTm n) (field4 (var 1)) = _
-        simp
-      · change Syn.subst (![p,data z R B a C E T] : Fin 2 → PTm n) (fstT (field5 (var 1))) = _
-        simp
-      · change Syn.subst (![p,data z R B a C E T] : Fin 2 → PTm n) (sndT (field5 (var 1))) = _
-        simp
-    simpa only [nameF,ap2,decode] using toPR_eq (Γ := Γ) (reader (var 0) (var 1) : PTm 2) ![p,data z R B a C E T]
-  have fields : Γ ⊢[PRAAx] reader p (data z R B a C E T) ≐ PTm.app sampleF ![p,z,R,B,a,C,E,T] := by
-    apply congrApp sampleF
-    intro i
-    fin_cases i
-    · exact .eqRefl _
-    · exact GaussianCompactRiemannName.field0_at _ _ _ _ _ _
-    · exact GaussianCompactRiemannName.field1_at _ _ _ _ _ _
-    · exact GaussianCompactRiemannName.field2_at _ _ _ _ _ _
-    · exact GaussianCompactRiemannName.field3_at _ _ _ _ _ _
-    · exact GaussianCompactRiemannName.field4_at _ _ _ _ _ _
-    · exact (congrFst (GaussianCompactRiemannName.field5_at _ _ _ _ _ _)).eqTrans (fst_pair E T)
-    · exact (congrSnd (GaussianCompactRiemannName.field5_at _ _ _ _ _ _)).eqTrans (snd_pair E T)
-  exact program.eqTrans (fields.eqTrans (sample_program p z R B a C E T))
+  have read : Γ ⊢[PRAAx] ap2 nameF p (data z R B a C E T) ≐ PTm.app sampleF ![p,z,R,B,a,C,E,T] := by
+    simpa [nameF, reader, data, sampleData, field0, field1, field2, field3, field4, field5,
+      pairVector, pairVectorField] using
+      (toPR_pairVector_eq (Γ := Γ) (k := 6)
+        (PTm.app sampleF var)
+        p ![z, R, B, a, C, E, T])
+  exact read.eqTrans (sample_program p z R B a C E T)
 
 theorem refinement_positive (p R C E T : PTm n) : Γ ⊢[PRAAx] le one (refinement p R C E T) :=
   le_trans (le_add_right one C) (le_add_right _ _)

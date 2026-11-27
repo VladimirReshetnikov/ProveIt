@@ -63,19 +63,9 @@ ipra_subst raw
 ipra_subst data
 
 theorem raw_at (p N A B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData N A B) ≐ raw p N A B := by
-  let x := rawData N A B
-  have r : Γ ⊢[PRAAx] ap2 rawF p x ≐ raw p (fstT x) (fstT (sndT x)) (sndT (sndT x)) := by
-    simpa [rawF,ap2] using toPR_eq (Γ := Γ)
-      (raw (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,x]
-  have v : Γ ⊢[PRAAx] sndT x ≐ pairT A B := snd_pair _ _
-  exact r.eqTrans (by
-    simpa using Prf.eqCongr (Γ := Γ) (raw (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,fstT x,fstT (sndT x),sndT (sndT x)]) (σ' := ![p,N,A,B]) (fun i => by
-        fin_cases i
-        exact .eqRefl _
-        exact fst_pair _ _
-        exact (congrFst v).eqTrans (fst_pair _ _)
-        exact (congrSnd v).eqTrans (snd_pair _ _)))
+  simpa [rawF, rawData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2)
+      (raw (var 0) (var 1) (var 2) (var 3)) p ![N, A, B])
 
 private theorem rows (p q N A B : PTm n) (h : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] termsDistance rowBody dBody N (sampleData p A B) (sampleData q A B) (unit p+unit q) (unit p*unit q) := by

@@ -44,18 +44,9 @@ ipra_subst body [halfPanel, mesh, GaussianStirlingAllOrderFirstPanelNamed.logClo
 ipra_subst data
 
 theorem name_at (A B k p : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data A B k) ≐ body A B k p := by
-  let x := data A B k
-  have step : Γ ⊢[PRAAx] ap2 nameF p x ≐ body (fstT x) (fstT (sndT x)) (sndT (sndT x)) p := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ)
-      (body (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0) : PTm 2) ![p,x]
-  have endStep := Prf.eqCongr (Γ := Γ) (body (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![fstT x,fstT (sndT x),sndT (sndT x),p]) (σ' := ![A,B,k,p]) (fun i => by
-      fin_cases i
-      exact fst_pair _ _
-      exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-      exact .eqRefl _)
-  exact step.eqTrans (by simpa using endStep)
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2)
+      (body (var 1) (var 2) (var 3) (var 0)) p ![A, B, k])
 
 theorem point_cross (A B k p q : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A B k)) (ap2 dF q (dData (A+B*k) B))
