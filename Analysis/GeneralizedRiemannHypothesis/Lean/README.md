@@ -44,6 +44,8 @@ Each entry below identifies the part of the article covered by the Lean statemen
 
 [QuarticCoefficientChecks.lean](GRHArticle/SingularModuli/QuarticCoefficientChecks.lean) checks the endpoint comparisons for all ten real coefficients. [QuarticClassPolynomialCertificates.lean](GRHArticle/SingularModuli/QuarticClassPolynomialCertificates.lean) proves that the real part of each analytic coefficient lies strictly within one half of the printed integer. The polynomial identifications and exact five-term minimum support for the listed singular moduli follow under the remaining coefficient integrality hypothesis.
 
+[CMHeckeInvariance.lean](GRHArticle/SingularModuli/CMHeckeInvariance.lean) proves invariance of the entire prime-level orbit polynomial under the modular group. [ModularInvariantPolynomial.lean](GRHArticle/SingularModuli/ModularInvariantPolynomial.lean) expresses every level-one form of weight $12n$ as the modular discriminant to the power $n$ times a polynomial in the modular invariant of degree at most $n$.
+
 The five-term classification still needs the CM reduction, bounds on the conjugates
 to place them in the disks, and finite certificates from the
 [singular-moduli section](../Article/sections/smd.tex).

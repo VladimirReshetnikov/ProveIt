@@ -107,6 +107,7 @@ import GRHArticle.ProgressionFree.SharedDeletionProgressions
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
 import GRHArticle.SingularModuli.CMHeckeDiagonal
+import GRHArticle.SingularModuli.CMHeckeInvariance
 import GRHArticle.SingularModuli.CMPoints
 import GRHArticle.SingularModuli.ClassPolynomialConstants
 import GRHArticle.SingularModuli.ClassPolynomialQEnclosure
@@ -120,6 +121,7 @@ import GRHArticle.SingularModuli.CuspSeparation
 import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.HasseCoefficients
+import GRHArticle.SingularModuli.ModularInvariantPolynomial
 import GRHArticle.SingularModuli.NewtonValuation
 import GRHArticle.SingularModuli.PadicCutoff
 import GRHArticle.SingularModuli.PadicDiskRoots
