@@ -61,16 +61,12 @@ theorem add_one_r (X : PTm n) : Γ ⊢[PRAAx] X + one ≐ succ X := by ipra_ring
 /-- No carry: when `(z mod K) + 1 ≠ K`, the quotient is unchanged and the remainder increases by one. -/
 theorem dig_no {z K : PTm n} (h : Γ ⊢[PRAAx] eqb (succ (rem z K)) K ≐ zero) :
     Γ ⊢[PRAAx] (quo (succ z) K ≐ quo z K) ⋏ (rem (succ z) K ≐ succ (rem z K)) :=
-  .andI ((quo_succ z K).eqTrans ((congrAdd (.eqRefl _) h).eqTrans (add_zero _)))
-    ((rem_succ z K).eqTrans ((congrMul (.eqRefl _)
-      ((congrMonus (.eqRefl _) h).eqTrans (monus_zero one))).eqTrans (mul_one_r _)))
+  Division.div_mod_succ_no_carry h
 
 /-- Carry: when `(z mod K) + 1 = K`, the quotient increases by one and the remainder is zero. -/
 theorem dig_carry {z K : PTm n} (h : Γ ⊢[PRAAx] eqb (succ (rem z K)) K ≐ one) :
     Γ ⊢[PRAAx] (quo (succ z) K ≐ succ (quo z K)) ⋏ (rem (succ z) K ≐ zero) :=
-  .andI ((quo_succ z K).eqTrans ((congrAdd (.eqRefl _) h).eqTrans (add_one_r _)))
-    ((rem_succ z K).eqTrans ((congrMul (.eqRefl _)
-      ((congrMonus (.eqRefl _) h).eqTrans (monus_self one))).eqTrans (mul_zero _)))
+  Division.div_mod_succ_carry h
 
 /-- `x < p` and `x + 1 ≠ p` give `x + 1 < p`. -/
 theorem lt_succ_of_ne {x p : PTm n} (hx : Γ ⊢[PRAAx] lt x p) (h : Γ ⊢[PRAAx] eqb (succ x) p ≐ zero) :

@@ -61,6 +61,25 @@ theorem quo_succ (z K : PTm n) :
     Matrix.tail_cons] at h
   exact h
 
+namespace Division
+
+/-- A zero carry bit leaves the quotient fixed and advances the remainder. -/
+theorem div_mod_succ_no_carry {z K : PTm n} (h : Γ ⊢[PRAAx] eqb (succ (rem z K)) K ≐ zero) :
+    Γ ⊢[PRAAx] (quo (succ z) K ≐ quo z K) ⋏ (rem (succ z) K ≐ succ (rem z K)) :=
+  .andI ((quo_succ z K).eqTrans ((congrAdd (.eqRefl _) h).eqTrans (add_zero _)))
+    ((rem_succ z K).eqTrans ((congrMul (.eqRefl _)
+      ((congrMonus (.eqRefl _) h).eqTrans (monus_zero one))).eqTrans
+      ((mul_comm _ _).eqTrans (one_mul _))))
+
+/-- A unit carry bit advances the quotient and resets the remainder to zero. -/
+theorem div_mod_succ_carry {z K : PTm n} (h : Γ ⊢[PRAAx] eqb (succ (rem z K)) K ≐ one) :
+    Γ ⊢[PRAAx] (quo (succ z) K ≐ succ (quo z K)) ⋏ (rem (succ z) K ≐ zero) :=
+  .andI ((quo_succ z K).eqTrans ((congrAdd (.eqRefl _) h).eqTrans (succ_eq_add_one _).eqSymm))
+    ((rem_succ z K).eqTrans ((congrMul (.eqRefl _)
+      ((congrMonus (.eqRefl _) h).eqTrans (monus_self one))).eqTrans (mul_zero _)))
+
+end Division
+
 /-- `0 < S K'`. -/
 theorem zero_lt_succ (K' : PTm n) : Γ ⊢[PRAAx] lt zero (succ K') :=
   Order.lt_succ_of_le (zero_le K')
@@ -84,24 +103,18 @@ private theorem div_mod₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] divModF := by
     apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
   · have hz : [divModF] ⊢[PRAAx] var 0 ≐ Kv * Qv + Rv := .andE₁ Prf.hyp0
     have hr : [divModF] ⊢[PRAAx] lt Rv Kv := .andE₂ Prf.hyp0
-    have hR := rem_succ (Γ := [divModF]) (var 0) Kv
-    have hQ := quo_succ (Γ := [divModF]) (var 0) Kv
     refine .orE (eq_or_ne (succ Rv) Kv) ?_ ?_
     · -- S r = K: the remainder wraps to 0 and the quotient increases.
-      have e₀ : ((succ Rv ≐ Kv) :: [divModF]) ⊢[PRAAx] rem (succ (var 0)) Kv ≐ zero :=
-        hR.wk.eqTrans ((congrMul (.eqRefl _) ((congrMonus (.eqRefl _) (eqb_of_eq Prf.hyp0)).eqTrans
-          (monus_self _))).eqTrans (mul_zero _))
-      have e₁ : ((succ Rv ≐ Kv) :: [divModF]) ⊢[PRAAx] quo (succ (var 0)) Kv ≐ Qv + one :=
-        hQ.wk.eqTrans (congrAdd (.eqRefl _) (eqb_of_eq Prf.hyp0))
+      have h := Division.div_mod_succ_carry (Γ := _ :: [divModF]) (z := var 0) (K := Kv) (eqb_of_eq Prf.hyp0)
+      have e₀ := Prf.andE₂ h
+      have e₁ := Prf.andE₁ h
       refine .andI ?_ (lt_congr e₀.eqSymm (.eqRefl _) (zero_lt_succ _))
       refine withEq hz.wk fun f₁ => withEq Prf.hyp0 fun f₂ => withEq e₀ fun f₃ => withEq e₁ fun f₄ => ?_
       apply deriveNat; ipra_simps; rw [f₃, f₄]; linear_combination f₁ + f₂
     · -- S r ≠ K: the remainder increases.
-      have e₀ : ((neg (succ Rv ≐ Kv)) :: [divModF]) ⊢[PRAAx] rem (succ (var 0)) Kv ≐ succ Rv :=
-        hR.wk.eqTrans ((congrMul (.eqRefl _) ((congrMonus (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans
-          (monus_zero _))).eqTrans ((mul_comm _ _).eqTrans (one_mul _)))
-      have e₁ : ((neg (succ Rv ≐ Kv)) :: [divModF]) ⊢[PRAAx] quo (succ (var 0)) Kv ≐ Qv :=
-        hQ.wk.eqTrans ((congrAdd (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (add_zero _))
+      have h := Division.div_mod_succ_no_carry (Γ := _ :: [divModF]) (z := var 0) (K := Kv) (eqb_of_ne Prf.hyp0)
+      have e₀ := Prf.andE₂ h
+      have e₁ := Prf.andE₁ h
       refine .andI ?_ ?_
       · refine withEq hz.wk fun f₁ => withEq e₀ fun f₃ => withEq e₁ fun f₄ => ?_
         apply deriveNat; ipra_simps; rw [f₃, f₄]; linear_combination f₁

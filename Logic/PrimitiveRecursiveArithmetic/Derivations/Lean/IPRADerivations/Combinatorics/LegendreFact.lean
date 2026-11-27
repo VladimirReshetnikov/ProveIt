@@ -51,16 +51,13 @@ theorem succ_ne_zero' {x : PTm n} {φ : Fm PTm n} (h : Γ ⊢[PRAAx] succ x ≐ 
 /-- If `K ∣ m + 1` then `[rem m K + 1 = K] = 1`. -/
 theorem inc_one {m K : PTm n} (hd : Γ ⊢[PRAAx] dvd K (succ m)) : Γ ⊢[PRAAx] eqb (succ (rem m K)) K ≐ one := by
   refine .orE (eqb_bit (succ (rem m K)) K) ?_ Prf.hyp0
-  exact succ_ne_zero' (x := rem m K)
-    (((congrMul (.eqRefl _) ((congrMonus (.eqRefl one) Prf.hyp0).eqTrans (monus_zero one))).eqTrans
-      ((mul_comm _ _).eqTrans (one_mul _))).eqSymm.eqTrans ((rem_succ m K).eqSymm.eqTrans hd.wk))
+  have qr := Division.div_mod_succ_no_carry (Γ := _ :: Γ) (z := m) (K := K) Prf.hyp0
+  exact succ_ne_zero' ((Prf.andE₂ qr).eqSymm.eqTrans hd.wk)
 
 /-- If `K ∤ m + 1` then `[rem m K + 1 = K] = 0`. -/
 theorem inc_zero {m K : PTm n} (hnd : Γ ⊢[PRAAx] neg (dvd K (succ m))) : Γ ⊢[PRAAx] eqb (succ (rem m K)) K ≐ zero := by
   refine .orE (eqb_bit (succ (rem m K)) K) Prf.hyp0 ?_
-  refine .botE _ (.impE hnd.wk ?_)
-  exact (rem_succ m K).eqTrans ((congrMul (.eqRefl _) ((congrMonus (.eqRefl one) Prf.hyp0).eqTrans (monus_self one))).eqTrans
-    (mul_zero _))
+  exact .botE _ (.impE hnd.wk (Prf.andE₂ (Division.div_mod_succ_carry (z := m) (K := K) Prf.hyp0)))
 
 theorem pw_dvd_pw {p a b : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (h : Γ ⊢[PRAAx] le a b) :
     Γ ⊢[PRAAx] dvd (pw p a) (pw p b) :=

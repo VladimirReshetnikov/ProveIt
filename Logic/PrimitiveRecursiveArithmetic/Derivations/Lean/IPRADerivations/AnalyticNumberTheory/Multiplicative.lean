@@ -72,7 +72,6 @@ theorem block_step {K m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     Γ ⊢[PRAAx] ap3 (sum2F hB) (succ K) m N ≐ blockR (succ K) m N := by
   have hT := (sum2_succ hB K m N).eqTrans (congrAdd ih (.eqRefl _))
   rw [inst3_hB] at hT
-  have hd := div_eq (j := K) hm
   have hr := rem_lt' hm K
   have hSm : Γ ⊢[PRAAx] ap2 (sumF totBody) (succ (rem K m)) m ≐
       ap2 (sumF totBody) (rem K m) m + eqb (gcd (rem K m) m) one := by
@@ -85,10 +84,9 @@ theorem block_step {K m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
   refine .orE (lt_or_eq_of_le hr) ?_ ?_
   · -- `K mod m + 1 < m`: same block.
     have hlt : (lt (succ (rem K m)) m :: Γ) ⊢[PRAAx] lt (succ (rem K m)) m := Prf.hyp0
-    have hz : (lt (succ (rem K m)) m :: Γ) ⊢[PRAAx] succ K ≐ m * quo K m + succ (rem K m) :=
-      withEq hd.wk fun e => by apply deriveNat; ipra_simps; rw [e]; ring
-    have rq := quo_eq hm.wk hz hlt
-    have rr := rem_eq' hm.wk hz hlt
+    have qr := Division.div_mod_succ_no_carry (z := K) (eqb_zero_of_lt hlt)
+    have rq := Prf.andE₁ qr
+    have rr := Prf.andE₂ qr
     have e₁ : (lt (succ (rem K m)) m :: Γ) ⊢[PRAAx] blockR (succ K) m N ≐
         phi m * ap2 (sumF totBody) (quo K m) N + eqb (gcd (quo K m) N) one *
           (ap2 (sumF totBody) (rem K m) m + eqb (gcd (rem K m) m) one) :=
@@ -99,11 +97,9 @@ theorem block_step {K m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     ipra_ring
   · -- `K mod m + 1 = m`: the next block starts.
     have heq : ((succ (rem K m) ≐ m) :: Γ) ⊢[PRAAx] succ (rem K m) ≐ m := Prf.hyp0
-    have hz : ((succ (rem K m) ≐ m) :: Γ) ⊢[PRAAx] succ K ≐ m * succ (quo K m) + zero :=
-      withEq hd.wk fun e₁ => withEq heq fun e₂ => by
-        apply deriveNat; ipra_simps; rw [e₁]; linear_combination e₂
-    have rq := quo_eq hm.wk hz (zero_lt' hm.wk)
-    have rr := rem_eq' hm.wk hz (zero_lt' hm.wk)
+    have qr := Division.div_mod_succ_carry (z := K) (eqb_of_eq heq)
+    have rq := Prf.andE₁ qr
+    have rr := Prf.andE₂ qr
     have hφ : ((succ (rem K m) ≐ m) :: Γ) ⊢[PRAAx] phi m ≐
         ap2 (sumF totBody) (rem K m) m + eqb (gcd (rem K m) m) one :=
       (congrAp2 (sumF totBody) heq.eqSymm (.eqRefl _)).eqTrans hSm.wk

@@ -34,28 +34,15 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `⌊(N+1)/d⌋ = ⌊N/d⌋ + [d ∣ N+1]` for `d ≥ 1`. -/
 theorem quo_succ {N d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     Γ ⊢[PRAAx] quo (succ N) d ≐ quo N d + eqb (rem (succ N) d) zero := by
-  have rl := rem_lt' hd N
-  refine .orE (lt_or_le (succ (rem N d)) d) ?_ ?_
-  · let C : List (Fm PTm n) := lt (succ (rem N d)) d :: Γ
-    have h : C ⊢[PRAAx] lt (succ (rem N d)) d := Prf.hyp0
-    have dv' := natEq ((div_eq (j := N) hd).wk : C ⊢[PRAAx] _)
-    have q : C ⊢[PRAAx] quo (succ N) d ≐ quo N d :=
-      quo_eq hd.wk (r := succ (rem N d)) (by ipra_lc dv') h
-    have r : C ⊢[PRAAx] rem (succ N) d ≐ succ (rem N d) :=
-      rem_eq' hd.wk (q := quo N d) (by ipra_lc dv') h
-    have e : C ⊢[PRAAx] eqb (rem (succ N) d) zero ≐ zero :=
-      (congrEqb' r (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ Prf.hyp0)))
-    exact q.eqTrans ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) e.eqSymm))
-  · let C : List (Fm PTm n) := le d (succ (rem N d)) :: Γ
-    have e₁ : C ⊢[PRAAx] succ (rem N d) ≐ d := le_antisymm rl.wk Prf.hyp0
-    have dv' := natEq ((div_eq (j := N) hd).wk : C ⊢[PRAAx] _)
-    have a := natEq e₁
-    have q : C ⊢[PRAAx] quo (succ N) d ≐ succ (quo N d) :=
-      quo_eq hd.wk (r := zero) (by ipra_lc dv' + a) (zero_lt' hd.wk)
-    have r : C ⊢[PRAAx] rem (succ N) d ≐ zero :=
-      rem_eq' hd.wk (q := succ (quo N d)) (by ipra_lc dv' + a) (zero_lt' hd.wk)
-    have e : C ⊢[PRAAx] eqb (rem (succ N) d) zero ≐ one := eqb_of_eq r
-    exact q.eqTrans ((succ_eq_add_one _).eqTrans (congrAdd (.eqRefl _) e.eqSymm))
+  refine .orE (lt_or_eq_of_le (rem_lt' hd N)) ?_ ?_
+  · have h : (lt (succ (rem N d)) d :: Γ) ⊢[PRAAx] lt (succ (rem N d)) d := Prf.hyp0
+    have qr := Division.div_mod_succ_no_carry (z := N) (eqb_zero_of_lt h)
+    have e := (congrEqb' (Prf.andE₂ qr) (.eqRefl zero)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ Prf.hyp0)))
+    exact (Prf.andE₁ qr).eqTrans ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) e.eqSymm))
+  · have h : ((succ (rem N d) ≐ d) :: Γ) ⊢[PRAAx] succ (rem N d) ≐ d := Prf.hyp0
+    have qr := Division.div_mod_succ_carry (z := N) (eqb_of_eq h)
+    exact (Prf.andE₁ qr).eqTrans
+      ((succ_eq_add_one _).eqTrans (congrAdd (.eqRefl _) (eqb_of_eq (Prf.andE₂ qr)).eqSymm))
 
 /-- `e · e = e` for an equality indicator. -/
 theorem eqb_sq (a b : PTm n) : Γ ⊢[PRAAx] eqb a b * eqb a b ≐ eqb a b := by
