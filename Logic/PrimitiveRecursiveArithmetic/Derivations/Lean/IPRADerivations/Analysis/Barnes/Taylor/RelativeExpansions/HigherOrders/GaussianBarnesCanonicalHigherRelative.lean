@@ -33,7 +33,7 @@ open GaussianRationalHorner (qmul qmul_canonical ofGaussian ofGaussian_canonical
 open GaussianRationalMatrixFiniteSums (negative_as_minusOne)
 open GaussianRationalMetric (qnegative)
 open GaussianRationalParityPower (negative_power parity_succ)
-open GaussianRationalPowerAlgebra (qmul_commutative power_product)
+open GaussianRationalPowerAlgebra (qmul_commutative power_product commute_nested)
 open GaussianRationalReciprocal (power powerF reciprocal)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
@@ -46,11 +46,6 @@ private theorem radius_product_native (a z : PTm n) :
   apply equal_of_values <;> simp only [radiusNumerator,re_mul,im_mul,re_scale,im_scale,
     ComplexLogarithmRemainder.eval_re_code,ComplexLogarithmRemainder.eval_im_code,ZT.toZ_ofNat] <;>
     ipra_simps <;> ring
-
-private theorem left_comm (a b c : PTm n) : Γ ⊢[PRAAx]
-    qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (qmul_associative a b c).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative a b) (.eqRefl c)).eqTrans (qmul_associative b a c))
 
 private theorem scale_step (h B k : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] qmul (radiusPoint k one) (step h B k) ≐ ofGaussian h B := by
@@ -76,7 +71,7 @@ theorem scaled_relative (z h R B k H : PTm n) (hs : Γ ⊢[PRAAx] source z h R B
       ((qmul_associative i a v).eqSymm.eqTrans
         ((qmul_congr inv (.eqRefl v)).eqTrans ((qmul_commutative _ v).eqTrans (qmul_one_right v vCanon))))
   exact (qmul_congr (.eqRefl i) (scale_step h B k hs.andE₁.andE₁ hs.andE₁.andE₂.andE₁).eqSymm).eqTrans
-    ((left_comm i w (step h B k)).eqTrans (qmul_congr (.eqRefl w) unscaled))
+    ((commute_nested i w (step h B k)).eqTrans (qmul_congr (.eqRefl w) unscaled))
 
 private theorem signed_power (a j : PTm n) : Γ ⊢[PRAAx]
     qnegative (power (qnegative a) (degree j)) ≐ qmul (parityPoint (previous j)) (power a (degree j)) := by
@@ -149,14 +144,14 @@ theorem term_binding (z h R B k H j : PTm n) (hs : Γ ⊢[PRAAx] source z h R B 
     (power_product a b d).eqSymm.eqTrans
       ((congrAp2 powerF (.eqRefl d) (scaled_relative z h R B k H hs)).eqTrans (power_product K v d))
   have pair : Γ ⊢[PRAAx] qmul (qmul P W) Q ≐ qmul (qmul K C) T :=
-    (qmul_associative P W Q).eqTrans ((left_comm P W Q).eqTrans
+    (qmul_associative P W Q).eqTrans ((commute_nested P W Q).eqTrans
       ((qmul_congr (.eqRefl W) power_step).eqTrans
         ((qmul_associative W (power K d) T).eqSymm.eqTrans
           (qmul_congr (weight k j hs.andE₁.andE₂.andE₁) (.eqRefl T)))))
   have attach : Γ ⊢[PRAAx] qmul S (qmul (qmul K C) T) ≐
       qmul K (qmul (GaussianFiniteLogarithmPolynomial.coefficient (previous j)) T) :=
     (qmul_congr (.eqRefl S) (qmul_associative K C T)).eqTrans
-      ((left_comm S K (qmul C T)).eqTrans
+      ((commute_nested S K (qmul C T)).eqTrans
         (qmul_congr (.eqRefl K) ((qmul_associative S C T).eqSymm.eqTrans
           (qmul_congr (mercator_scalar (previous j)) (.eqRefl T)))))
   exact (qmul_congr (qmul_congr (signed_power a j) (.eqRefl W)) (.eqRefl Q)).eqTrans

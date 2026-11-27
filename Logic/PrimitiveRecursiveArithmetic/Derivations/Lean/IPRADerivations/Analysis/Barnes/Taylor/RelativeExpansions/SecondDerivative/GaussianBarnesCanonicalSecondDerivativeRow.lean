@@ -23,13 +23,13 @@ open GaussianBarnesCanonicalLogRow (source)
 open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represents qadd qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded bounded_of_cleared qsub)
-open GaussianRationalPowerAlgebra (qmul_commutative)
+open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
 open GaussianRationalPowerDifference (bounded_sum_same product_difference)
 open GaussianRationalReciprocal (qone qone_bounded reciprocal reciprocal_identity reciprocal_canonical bounded_product bound_congr)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSumAlgebra (qadd_associative)
 open GaussianRationalSyntheticDivision (qone_canonical qadd_congr qsub_congr qmul_congr qadd_sub_cancel)
-open GaussianReciprocalHorner (qmul_associative qmul_one_right qadd_commutative)
+open GaussianReciprocalHorner (qmul_one_right qadd_commutative)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -64,13 +64,6 @@ theorem reciprocal_base (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
     Γ ⊢[PRAAx] qmul (base z B k) (reciprocal (base z B k)) ≐ qone :=
   reciprocal_identity _ (GaussianNameReciprocal.lower_norm_positive _ two (zero_lt_succ one) (base_lower z R B k h))
 
-private theorem exchange_products (a b c d : PTm n) :
-    Γ ⊢[PRAAx] qmul (qmul a b) (qmul c d) ≐ qmul (qmul a c) (qmul b d) := by
-  have middle := (qmul_associative (Γ := Γ) b c d).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative b c) (.eqRefl d)).eqTrans (qmul_associative c b d))
-  exact (qmul_associative a b (qmul c d)).eqTrans
-    ((qmul_congr (.eqRefl a) middle).eqTrans (qmul_associative a c (qmul b d)).eqSymm)
-
 private theorem base_square_minus_one (w : PTm n) (hw : Γ ⊢[PRAAx] GaussianRationalHorner.canonical w) :
     Γ ⊢[PRAAx] qsub (qmul (qadd qone w) (qadd qone w)) qone ≐ qmul w (qadd (qadd qone qone) w) := by
   let b := qadd qone w
@@ -95,7 +88,7 @@ theorem expanded_formula (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
   have inv := reciprocal_base z R B k h
   have product : Γ ⊢[PRAAx] qmul j (qmul b b) ≐ qone :=
     (qmul_commutative j (qmul b b)).eqTrans
-      ((exchange_products b b i i).eqTrans
+      ((qmul_shuffle b b i i).eqTrans
         ((qmul_congr inv inv).eqTrans (qmul_one_right qone qone_canonical)))
   have attach : Γ ⊢[PRAAx] qmul j (qsub (qmul b b) qone) ≐ qsub qone j :=
     (multiplication_difference j (qmul b b) qone).eqSymm.eqTrans

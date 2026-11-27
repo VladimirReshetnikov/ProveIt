@@ -28,7 +28,7 @@ open GaussianEulerIncompleteFactorialDenominator (radius_rescale)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represents canonical_unique qadd qmul qmul_canonical)
 open GaussianRationalInverseQuadraticAlgebra (cancel_nested_product)
 open GaussianRationalMetric (qsub)
-open GaussianRationalPowerAlgebra (qmul_commutative power_two)
+open GaussianRationalPowerAlgebra (qmul_commutative power_two qmul_shuffle)
 open GaussianRationalReciprocal (qone reciprocal power)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalSyntheticDivision (qsub_congr qadd_congr qmul_congr)
@@ -51,13 +51,6 @@ def secondTerm (z h B k : PTm n) : PTm n :=
 @[simp] theorem subst_secondTerm {m : ℕ} (σ : Fin n → PTm m) (z h B k : PTm n) :
     Syn.subst σ (secondTerm z h B k) = secondTerm (Syn.subst σ z) (Syn.subst σ h) (Syn.subst σ B) (Syn.subst σ k) :=
   by simp [secondTerm,two]
-
-private theorem exchange (a b c d : PTm n) : Γ ⊢[PRAAx]
-    qmul (qmul a b) (qmul c d) ≐ qmul (qmul a c) (qmul b d) := by
-  have middle := (qmul_associative (Γ := Γ) b c d).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative b c) (.eqRefl d)).eqTrans (qmul_associative c b d))
-  exact (qmul_associative a b (qmul c d)).eqTrans
-    ((qmul_congr (.eqRefl a) middle).eqTrans (qmul_associative a c (qmul b d)).eqSymm)
 
 private theorem radius_cancel (k : PTm n) (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] qmul (radiusPoint k two) (inverseInteger k) ≐ radiusPoint one two := by
@@ -87,12 +80,12 @@ theorem quadratic_error (z h R B k H : PTm n) (hs : Γ ⊢[PRAAx] source z h R B
   have rel : Γ ⊢[PRAAx] v ≐ qmul g i :=
     ((qmul_congr (.eqRefl i) (recover_step z h R B k H hs).eqSymm).eqTrans
       (cancel_nested_product i a v vCanon inv)).eqSymm.eqTrans (qmul_commutative i g)
-  have sq : Γ ⊢[PRAAx] qmul v v ≐ qmul G I := (qmul_congr rel rel).eqTrans (exchange g i g i)
+  have sq : Γ ⊢[PRAAx] qmul v v ≐ qmul G I := (qmul_congr rel rel).eqTrans (qmul_shuffle g i g i)
   have difference : Γ ⊢[PRAAx] qsub G (qmul v v) ≐ qmul G r :=
     (qsub_congr (qmul_one_right G (qmul_canonical g g)).eqSymm sq).eqTrans (multiplication_difference G qone I)
   have change_step : Γ ⊢[PRAAx] qmul b t ≐ g := GaussianBarnesCanonicalSecondDerivativeStep.step_factor h B k hB hk
   have gsq : Γ ⊢[PRAAx] G ≐ qmul Q (qmul t t) :=
-    (qmul_congr change_step.eqSymm change_step.eqSymm).eqTrans (exchange b t b t)
+    (qmul_congr change_step.eqSymm change_step.eqSymm).eqTrans (qmul_shuffle b t b t)
   have scale : Γ ⊢[PRAAx] qmul K G ≐ qmul (qmul L t) Q :=
     (qmul_congr (.eqRefl K) (gsq.eqTrans (qmul_commutative Q (qmul t t)))).eqTrans
       ((qmul_associative K (qmul t t) Q).eqSymm.eqTrans
@@ -102,7 +95,7 @@ theorem quadratic_error (z h R B k H : PTm n) (hs : Γ ⊢[PRAAx] source z h R B
     ((qmul_associative K G r).eqSymm.eqTrans
       ((qmul_congr scale (.eqRefl r)).eqTrans
         ((qmul_associative (qmul L t) Q r).eqTrans
-          ((exchange L t Q r).eqTrans
+          ((qmul_shuffle L t Q r).eqTrans
             ((qmul_commutative (qmul L Q) (qmul t r)).eqTrans
               ((qmul_associative (qmul t r) L Q).eqSymm.eqTrans
                 (qmul_congr (qmul_commutative (qmul t r) L) powers.eqSymm)))))))
