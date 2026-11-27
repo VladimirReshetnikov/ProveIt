@@ -28,6 +28,7 @@ open GaussianRationalHorner (qadd qmul)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
+open GaussianGammaAdjacentCutoff renaming swap_first → swap_adjacent
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -148,19 +149,6 @@ private theorem split_cross (I1 I0 G1 G0 : PR 2) (i1 i0 g1 g0 : PTm n)
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
     split_at I1 I0 G1 G0 (Syn.shift i1) (Syn.shift i0) (Syn.shift g1) (Syn.shift g0) (var 0)
       (shift_regular _ _ hi1) (shift_regular _ _ hi0) (shift_regular _ _ hg1) (shift_regular _ _ hg0)
-
-private theorem swap_adjacent (F G H : PR 2) (x y z : PTm n)
-    (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y) (hh : Γ ⊢[PRAAx] pointCN H z) : Γ ⊢[PRAAx]
-    crossEquivalent (multiplyF F (multiplyF G H)) (multiplyF G (multiplyF F H))
-      (multiplyData F (multiplyF G H) x (multiplyData G H y z))
-      (multiplyData G (multiplyF F H) y (multiplyData F H x z)) := by
-  have swap := multiply_equivalent (multiplyF F G) (multiplyF G F) H H
-    (multiplyData F G x y) (multiplyData G F y x) z z
-    (multiply_fast F G x y hf hg) (multiply_fast G F y x hg hf) hh hh
-    (cross_to_diagonal _ _ _ _ (multiply_commutative F G x y hf hg))
-    (cross_to_diagonal _ _ _ _ (cross_refl H z hh))
-  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (multiply_associative F G H x y z hf hg hh))
-    (cross_trans _ _ _ _ _ _ swap (multiply_associative G F H y x z hg hf hh))
 
 private theorem cancel_increment (K F G : PR 2) (z a x y : PTm n)
     (hk : Γ ⊢[PRAAx] GaussianNameReciprocal.input K a z)

@@ -26,17 +26,12 @@ open GaussianGammaZetaMellinIntegrand (nameF data reciprocalF reciprocalData den
 open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_refl)
 open GaussianPositiveRationalLogarithm (fraction)
+open GaussianHarmonicIntegerExponential renaming row_source → time_chart
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def integrandF : PR 2 := multiplyF constantF reciprocalF
 def integrandData (a b : PTm n) : PTm n := multiplyData constantF reciprocalF (fraction a b) (reciprocalData a b)
-
-private theorem time_chart (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
-    Γ ⊢[PRAAx] GaussianHarmonicIntegerExponential.source a b b a :=
-  .andI hb (.andI (.andI ha hb) (.andI
-    (le_congr (one_mul b) (mul_comm a b) (mul_le_mul_right b ha))
-    (le_congr (one_mul a) (mul_comm b a) (mul_le_mul_right a hb))))
 
 theorem original_power_at_two (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] crossEquivalent powerF constantF (powerData (shifted oneCode one) one a b) (fraction a b) := by
