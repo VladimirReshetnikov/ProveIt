@@ -28,8 +28,11 @@ valuation rule excludes all nonconstant three-term geometric progressions
 with rational ratios. It uses the equivalence between `a * c = b * b` and the
 arithmetic midpoint relation at every prime exponent. It also proves
 progression-freeness for the positive-integer instance of the one-digit
-exchange in `gpi:thm:onedigit`. The remaining parts are the natural-density
-comparison and the specific 225-prime exchange. [Article section](../Article/sections/gpi.tex)
+exchange in `gpi:thm:onedigit`. The same file proves the exact finite
+reciprocal-mass difference and uses divergence of prime reciprocals to find
+a finite set of odd-prime satellites giving a strict gain with marker two.
+The natural-density transfer and the specific 225-prime exchange remain open
+in Lean. [Article section](../Article/sections/gpi.tex)
 
 ## RH and Dirichlet GRH input
 
