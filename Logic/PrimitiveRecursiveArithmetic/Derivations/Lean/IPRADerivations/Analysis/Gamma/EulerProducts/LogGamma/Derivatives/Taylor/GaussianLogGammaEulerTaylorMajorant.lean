@@ -24,7 +24,7 @@ open GaussianLogGammaEulerResidualIntervalMajorant
 open GaussianRationalFiniteSum (sum_shift_first)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded comparison_to_cleared subst_bounded)
-open GaussianRationalReciprocal (bound_congr bounded_sum)
+open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSumMajorant (majorized majorized_congr from_representation termsMajorized sum_majorized)
 open GaussianRationalSyntheticBounds (add_monotone)
 open RationalAlgebra (add_congr multiply_congr add_associative add_commutative)
@@ -263,11 +263,9 @@ theorem finite_sum_bound (t : PTm 2) (x A D K N S C U : PTm n)
     le_congr (.eqRefl _) (by dsimp only [A₂]; ipra_ring) (le_mul_mono (le_refl S) (le_mul_mono hK hK))
   have near : Γ ⊢[PRAAx] bounded v H B := reweight v S (S * (K * K)) C U A₂ D₂ hU ha₂ hd₂ sq first
   have far : Γ ⊢[PRAAx] bounded w T B := positive_error t x A D N S C U hA hD hU h
-  have total := bounded_sum v w H B T B hB hB near far
-  have small := bounded_radius_mono _ _ _ (errorNumerator S C U D K N) (errorDenominator U D)
-    (positive_product _ _ hB hB) hB
-    (le_of_eq_add (d := zero) (by dsimp only [H, T, B, D₂, errorNumerator, errorDenominator]; ipra_ring)) total
-  exact bound_congr (sum_shift_first t N x).eqSymm (.eqRefl _) (.eqRefl _) small
+  exact bound_congr (sum_shift_first t N x).eqSymm
+    (by dsimp only [H, T, D₂, errorNumerator]; ipra_ring) (.eqRefl _)
+    (GaussianRationalPowerDifference.bounded_sum_same v w H T B hB near far)
 
 theorem actual_Euler_logarithm_quadratic_sum_bound_closed (t : PTm 2) :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8

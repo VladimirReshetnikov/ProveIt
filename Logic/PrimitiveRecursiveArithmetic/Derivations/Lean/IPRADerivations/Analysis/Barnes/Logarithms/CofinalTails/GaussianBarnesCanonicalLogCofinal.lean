@@ -25,7 +25,7 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (positive_product qadd)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianReconstructionRoots (norm_from_distance distance_zero_iff)
+open GaussianReconstructionRoots (distance_zero_iff)
 open DyadicComplexLogarithm (unit)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -120,10 +120,9 @@ theorem ordered_observations (p q z R B : PTm n) (hs : Γ ⊢[PRAAx] source z R 
   have d := GaussianBarnesCanonicalLogTail.tail_denominator_positive N hTail.andE₂.andE₁
   have exactBound : Γ ⊢[PRAAx] bounded t one U :=
     bounded_radius_mono _ _ _ _ _ d hU (GaussianBarnesCanonicalLogSchedule.suffix_budget p R) hat
-  have combined := norm_from_distance y t one U one U hU hU discrepancy exactBound
   have radius : Γ ⊢[PRAAx] bounded y two U :=
-    bounded_radius_mono _ _ _ _ _ (positive_product _ _ hU hU) hU
-      (le_of_eq_add (d := zero) (by ipra_ring)) combined
+    bound_congr (.eqRefl _) (succ_eq_add_one one).eqSymm (.eqRefl _)
+      (GaussianRationalDistanceOrder.norm_from_distance_same hU discrepancy exactBound)
   have newQuery : Γ ⊢[PRAAx] sample q z R B ≐ qadd x y := by
     have e : Γ ⊢[PRAAx] value v z R B n₀ b ≐ value v z R B n₀ (a+r) := by
       ipra_congr (value (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with

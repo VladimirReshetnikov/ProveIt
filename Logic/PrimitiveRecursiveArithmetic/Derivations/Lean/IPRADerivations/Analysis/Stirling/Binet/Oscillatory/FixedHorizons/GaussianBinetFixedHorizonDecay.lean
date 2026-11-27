@@ -28,7 +28,7 @@ open GaussianNameEquivalence (cross_at)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_two_errors)
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalReciprocal (bounded_product bounded_sum bound_congr)
+open GaussianRationalReciprocal (bounded_product bound_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -78,11 +78,8 @@ theorem real_decay (p a B L : PTm n) (hB : Γ ⊢[PRAAx] le one B)
       (bounded_product _ _ (num 3) V two one hV (le_refl one) shrink rem)
   have can : Γ ⊢[PRAAx] GaussianRationalHorner.canonical w :=
     GaussianRadiusExponentialName.sample_canonical _ _ p (decayPoint a B)
-  have sum : Γ ⊢[PRAAx] bounded w (num 6*V+two*V) (V*V) :=
-    bound_congr (GaussianRationalLinearProduct.add_sub_right W w can) (.eqRefl _) (.eqRefl _)
-      (bounded_sum W (qsub w W) (num 6) V two V hV hV hw near)
-  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ hV hV) hV
-    (le_of_eq_add (d := zero) (by ipra_ring)) sum
+  exact bound_congr (GaussianRationalLinearProduct.add_sub_right W w can) (by ipra_ring) (.eqRefl _)
+    (GaussianRationalPowerDifference.bounded_sum_same W (qsub w W) (num 6) two V hV hw near)
 
 theorem endpoint (p X Y D sign R T L : PTm n) (hz : Γ ⊢[PRAAx] source X Y D sign R)
     (hcut : Γ ⊢[PRAAx] le (L*D) (X*T)) (hL : Γ ⊢[PRAAx] le L p) : Γ ⊢[PRAAx]

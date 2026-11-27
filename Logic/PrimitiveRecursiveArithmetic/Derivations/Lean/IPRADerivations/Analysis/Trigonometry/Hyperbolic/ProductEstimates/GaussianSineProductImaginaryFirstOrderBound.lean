@@ -96,9 +96,7 @@ private theorem linear_bound (i A B C R : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have second : Γ ⊢[PRAAx] bounded (qmul (step B C) (quadraticRow i B)) R D :=
     bound_congr (.eqRefl _) (by ipra_ring) (one_mul D)
       (bounded_product _ _ _ _ _ _ (le_refl one) hD hc (quadratic_bound i B hB))
-  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ hD hD) hD
-    (le_of_eq_add (d := zero) (by ipra_ring))
-    (bounded_sum _ _ _ _ _ _ hD hD hd second)
+  exact GaussianRationalPowerDifference.bounded_sum_same _ _ _ _ _ hD hd second
 
 private theorem factor_bound (i A B R : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le A (R*B)) :
     Γ ⊢[PRAAx] bounded (factor i A B) (succ i*succ i+R*R) (succ i*succ i) := by
@@ -119,8 +117,7 @@ private theorem forcing_bound (i A B C R : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have second : Γ ⊢[PRAAx] bounded (qmul (derivative A B i) (linearRow i A B C)) (derivativeBound R*(two*R+R)) D :=
     bound_congr (.eqRefl _) (.eqRefl _) (one_mul _)
       (bounded_product _ _ _ _ _ _ (le_refl one) hD (derivative_bound A B R i hB hA) (linear_bound i A B C R hB hA hC))
-  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ hD hD) hD
-    (le_of_eq_add (d := zero) (by unfold forcingBound; ipra_ring)) (bounded_sum _ _ _ _ _ _ hD hD first second)
+  exact GaussianRationalPowerDifference.bounded_sum_same _ _ _ _ _ hD first second
 
 private theorem prefix_lower (j : PTm n) : Γ ⊢[PRAAx] le (prefixDenominator j) (prefixNumerator j) := by
   refine .orE (zero_or_succ j) ?_ ?_

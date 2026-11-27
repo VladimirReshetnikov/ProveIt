@@ -44,9 +44,8 @@ def continuityGain (R N : PTm n) : PTm n := errorGain R N + slopeCap R N
 private theorem increment_norm (x y J P H B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (he : Γ ⊢[PRAAx] distanceBounded x y (J*H) B)
     (hy : Γ ⊢[PRAAx] bounded y (P*H) B) : Γ ⊢[PRAAx] bounded x ((J+P)*H) B :=
-  GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (positive_product _ _ hB hB) hB
-    (le_of_eq_add (d := ConciseIPRA.PTm.zero) (by ipra_ring))
-    (GaussianReconstructionRoots.norm_from_distance x y _ _ _ _ hB hB he hy)
+  bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (GaussianRationalDistanceOrder.norm_from_distance_same hB he hy)
 
 private theorem constant_difference_at (x y p : PTm n) : Γ ⊢[PRAAx]
     ap2 (Diff constantF constantF) p (dd x y) ≐ qsub x y := by

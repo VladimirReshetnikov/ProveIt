@@ -32,7 +32,7 @@ open GaussianRationalFiniteSum (sum_shift_first)
 open GaussianRationalHorner (positive_product ofGaussian_represents qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical comparison_to_cleared)
 open GaussianRationalQuadratureDifference (differenceBody difference_body_at finite_sum_difference)
-open GaussianRationalReciprocal (reciprocal inverse_bound norm_positive bound_congr bounded_product bounded_sum)
+open GaussianRationalReciprocal (reciprocal inverse_bound norm_positive bound_congr bounded_product)
 open GaussianRationalSumMajorant (majorized termsMajorized majorized_congr from_representation sum_majorized)
 open GaussianRationalSyntheticDivision (qadd_congr qzero_add qsub_congr)
 open GaussianRightHalfPlaneLogarithm (source)
@@ -206,12 +206,10 @@ theorem reciprocal_sum_lipschitz (A B D neg a b d sign M H E N : PTm n)
       (qsub_congr (row_at z zero) (row_at w zero))
     exact bound_congr eq.eqSymm (.eqRefl _) (.eqRefl _) (first_error A B D neg a b d sign M H E h hE close)
   have rest := positive_sum A B D neg a b d sign H E N h.andE₁ h.andE₂.andE₁ hE close
-  have total := bounded_sum c t (M * M * H) E (two * H) E hE hE first rest
-  have smaller := bounded_radius_mono _ _ _ (coefficient M * H) E (positive_product _ _ hE hE) hE
-    (le_of_eq_add (d := zero) (by unfold coefficient; ipra_ring)) total
   have eq := (sum_shift_first (Γ := Γ) difference N (pairT z w)).eqSymm.eqTrans
     (finite_sum_difference rowBody rowBody (succ N) z w)
-  exact bound_congr eq (.eqRefl _) (.eqRefl _) smaller
+  exact bound_congr eq (by unfold coefficient; ipra_ring) (.eqRefl _)
+    (GaussianRationalPowerDifference.bounded_sum_same c t _ _ E hE first rest)
 
 theorem actual_complex_finite_reciprocal_sum_Lipschitz_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 12

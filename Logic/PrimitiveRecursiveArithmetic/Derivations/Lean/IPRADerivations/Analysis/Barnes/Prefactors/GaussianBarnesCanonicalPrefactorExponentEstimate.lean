@@ -17,7 +17,7 @@ set_option maxHeartbeats 1000000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorExponentEstimate
 
 open_ipra
-open GaussianRationalPowerDifference (bounded_sum_one)
+open GaussianRationalPowerDifference (bounded_sum_one bounded_sum_same)
 open ComplexLogarithmRemainder (add)
 open GaussianBarnesCanonicalPrefactor
   (linearF quadraticCoefficientF quadraticCoefficientData quadraticF polynomialF negativeHalf correctionF quadratic_coefficient_regular)
@@ -33,7 +33,7 @@ open GaussianNamedDifferenceRate (rate_parameters_congr self_rate)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonical qadd qmul qmul_canonical qadd_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalReciprocal (bounded_sum bounded_product bound_congr qone qone_bounded)
+open GaussianRationalReciprocal (bounded_product bound_congr qone qone_bounded)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr qsub_congr qadd_sub_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
@@ -70,10 +70,8 @@ private theorem bounds_sum (f g : PR 2) (p x y A D B : PTm n) (hB : Γ ⊢[PRAAx
   let k := GaussianFastValueCut.exponent two p
   have read := (GaussianNameArithmetic.add_at (Γ := Γ) f g x y p).eqTrans
     (GaussianExponentialReference.recode_fixed _ (qadd_canonical (ap2 f k x) (ap2 g k y)))
-  have raw := bounded_sum _ _ _ _ _ _ hB hB (hf k) (hg k)
   exact bound_congr read.eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (positive_product _ _ hB hB) hB
-      (le_of_eq_add (d := zero) (by ipra_ring)) raw)
+    (bounded_sum_same _ _ _ _ _ hB (hf k) (hg k))
 
 private theorem constant_bound (p q A B : PTm n) (h : Γ ⊢[PRAAx] bounded q A B) :
     Γ ⊢[PRAAx] bounded (ap2 C p q) A B := bound_congr (constant_at p q).eqSymm (.eqRefl _) (.eqRefl _) h
