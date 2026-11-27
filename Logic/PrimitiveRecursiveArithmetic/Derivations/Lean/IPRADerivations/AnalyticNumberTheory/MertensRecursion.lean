@@ -35,8 +35,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `∑_{a<2} G(a) = G(0) + G(1)`. -/
 theorem head2 (G : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF G) two x ≐ inst2 G zero x + inst2 G one x :=
-  (sum_succ' G one x).eqTrans (congrAdd ((sum_succ' G zero x).eqTrans
-    ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _))) (.eqRefl _))
+  sum_two_terms G x
 
 theorem gP_zero (x : PTm n) : Γ ⊢[PRAAx] inst2 GPB zero x ≐ zero := by
   rw [inst2_GPB]; exact zero_mul_l sg_zero _

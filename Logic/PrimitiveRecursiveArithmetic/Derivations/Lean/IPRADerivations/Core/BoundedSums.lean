@@ -42,6 +42,17 @@ theorem sum_succ' (body : PTm 2) (N x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF body) (succ N) x ≐ ap2 (sumF body) N x + inst2 body N x :=
   sum_succ body N x
 
+/-- A sum with bound one consists of the term at zero. -/
+theorem sum_singleton (body : PTm 2) (x : PTm n) :
+    Γ ⊢[PRAAx] ap2 (sumF body) one x ≐ inst2 body zero x :=
+  (sum_succ' body zero x).eqTrans
+    ((congrAdd (sum_zero body x) (.eqRefl _)).eqTrans (zero_add _))
+
+/-- A sum with bound two consists of the terms at zero and one. -/
+theorem sum_two_terms (body : PTm 2) (x : PTm n) :
+    Γ ⊢[PRAAx] ap2 (sumF body) two x ≐ inst2 body zero x + inst2 body one x :=
+  (sum_succ' body one x).eqTrans (congrAdd (sum_singleton body x) (.eqRefl _))
+
 theorem lt_zero_absurd {i : PTm n} (φ : Fm PTm n) (h : Γ ⊢[PRAAx] lt i zero) : Γ ⊢[PRAAx] φ :=
   succ_ne_zero' φ ((monus_zero (succ i)).eqSymm.eqTrans h)
 

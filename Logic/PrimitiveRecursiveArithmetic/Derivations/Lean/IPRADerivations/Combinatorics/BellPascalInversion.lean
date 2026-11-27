@@ -321,13 +321,11 @@ theorem claim_zero (N : PTm n) : Γ ⊢[PRAAx] F N zero + Gm N zero ≐ Gp N zer
       (congrBell (zero_add _)))
   have m0 : Γ ⊢[PRAAx] monus (zero : PTm n) zero ≐ zero := monus_zero _
   have hP : Γ ⊢[PRAAx] Gp N zero ≐ bell (succ N) := by
-    refine (sum_succ' gpB zero (pairT N zero)).eqTrans ((congrAdd (sum_zero _ _) (gppt _ _ _)).eqTrans ?_)
-    refine (zero_add _).eqTrans ?_
+    refine ((sum_singleton gpB (pairT N zero)).eqTrans (gppt _ _ _)).eqTrans ?_
     exact (congrMul ((congrMul ((congrEv m0).eqTrans ev_zero) (gb_zero _)).eqTrans (one_mul _))
       (congrBell (congrSucc (add_zero N)))).eqTrans (one_mul _)
   have hM : Γ ⊢[PRAAx] Gm N zero ≐ zero := by
-    refine (sum_succ' gmB zero (pairT N zero)).eqTrans ((congrAdd (sum_zero _ _) (gmpt _ _ _)).eqTrans ?_)
-    refine (zero_add _).eqTrans ?_
+    refine ((sum_singleton gmB (pairT N zero)).eqTrans (gmpt _ _ _)).eqTrans ?_
     exact (congrMul ((congrMul ((congrOd m0).eqTrans par_zero) (.eqRefl _)).eqTrans (zero_mul _)) (.eqRefl _)).eqTrans
       (zero_mul _)
   exact (congrAdd hF hM).eqTrans ((add_zero _).eqTrans hP.eqSymm)

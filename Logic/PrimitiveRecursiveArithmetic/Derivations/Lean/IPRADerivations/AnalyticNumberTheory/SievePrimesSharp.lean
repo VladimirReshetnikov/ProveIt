@@ -84,7 +84,7 @@ theorem count_pos (X Z : PTm n) : Γ ⊢[PRAAx] le (ap2 (sumF lowP) X Z) (pred Z
       Prf.hyp0.eqTrans (by ipra_ring)
     have E := (congrAp2 (sumF lowP) e (.eqRefl Z)).eqTrans (sum_split lowP one (pred X) Z)
     have F : C ⊢[PRAAx] ap2 (sumF lowP) one Z ≐ zero := by
-      refine (sum_succ' lowP zero Z).eqTrans ((congrAdd (sum_zero lowP Z) ?_).eqTrans (add_zero _))
+      refine (sum_singleton lowP Z).eqTrans ?_
       rw [inst2_lowP]
       exact zero_mul_l sg_zero _
     have T : C ⊢[PRAAx] le (ap2 (sumF (offB lowP)) (pred X) (pairT one Z)) (ap2 (sumF lowB) (pred X) (pred Z)) := by

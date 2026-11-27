@@ -68,8 +68,7 @@ theorem log_pair {P K L : PTm n} (hP1 : Γ ⊢[PRAAx] le one P) (hK1 : Γ ⊢[PR
   have q1 : Γ ⊢[PRAAx] inst2 hB zero (fact L) ≐ fact L := by
     rw [inst2_h]
     exact quo_mul (congrSucc (pred_succ _).eqSymm) (by ipra_ring)
-  have c1 := natEq ((sum_succ' (Γ := Γ) hB zero (fact L)).eqTrans
-    ((congrAdd (sum_zero _ _) q1).eqTrans (zero_add _)))
+  have c1 := natEq ((sum_singleton hB (fact L)).eqTrans q1)
   have c0 := natEq (sum_zero (Γ := Γ) hB (fact L))
   have m := S_mono (Γ := Γ) (fact L) (le_of_eq_add (d := one) (b := P) (a := zero + pred P)
     (by have e := natEq hP'; apply deriveNat; ipra_simps; linear_combination e))

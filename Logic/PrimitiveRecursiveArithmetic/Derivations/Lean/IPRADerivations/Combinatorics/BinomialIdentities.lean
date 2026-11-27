@@ -48,9 +48,9 @@ abbrev binomSumFormula : Fm PTm 1 := ap2 (sumF bBody) (succ (var 0)) (var 0) ≐
 
 theorem binom_sum_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] binomSumFormula := by
   ipra_ind [subst_ap2]
-  · refine (sum_succ' bBody zero zero).eqTrans ?_
+  · refine (sum_singleton bBody zero).eqTrans ?_
     rw [inst2_b]
-    exact (congrAdd (sum_zero _ _) (binom_self' _)).eqTrans ((zero_add _).eqTrans (pw_zero _).eqSymm)
+    exact (binom_self' _).eqTrans (pw_zero _).eqSymm
   · have q₁ := sum_shift (Γ := [binomSumFormula]) bBody (succ (var 0)) (succ (var 0))
     rw [inst2_b] at q₁
     have q₃ : [binomSumFormula] ⊢[PRAAx] ap2 (sumF (shiftBody bBody)) (succ (var 0)) (succ (var 0))

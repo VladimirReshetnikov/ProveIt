@@ -337,7 +337,7 @@ theorem congrP {N K K' : PTm n} (hk : Γ ⊢[PRAAx] K ≐ K') (h : Γ ⊢[PRAAx]
   exact (congrAdd (congrMul cf cs) co).eqTrans (h.eqTrans ce.eqSymm)
 
 theorem sum1 (f : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF f) (succ zero) x ≐ inst2 f zero x :=
-  (sum_succ' f zero x).eqTrans ((congrAdd (sum_zero f x) (.eqRefl _)).eqTrans (zero_add _))
+  sum_singleton f x
 
 theorem base0 : Γ ⊢[PRAAx] P (zero : PTm n) zero := by
   ipra_lc 𝔞(gle (zero : PTm n) zero) * 𝔞(Bell.nth (Stirling.row (zero : PTm n)) (monus zero zero)) * natEq (fact_zero (Γ := Γ) (zero : PTm n)) +

@@ -143,8 +143,11 @@ structure Hyp : Prop where
 
 theorem id2_zero (y : PTm n) :
     Γ ⊢[PRAAx] inst2 X zero y * (succ zero * inst2 A zero y) ≐
-      ap2 (sumF (idB X A)) (succ zero) (pairT zero y) := by
-  ipra_lc -natEq ((sum_succ' (Γ := Γ) (idB X A) zero (pairT zero y)).eqTrans (congrAdd (sum_zero _ _) ((id_at X A zero zero y).eqTrans (congrMul (.eqRefl _) (congrInst2 A (monus_zero zero) (.eqRefl _))))))
+      ap2 (sumF (idB X A)) (succ zero) (pairT zero y) :=
+  ((sum_singleton (idB X A) (pairT zero y)).eqTrans
+    ((id_at X A zero zero y).eqTrans
+      (congrMul (.eqRefl _)
+        ((congrInst2 A (monus_zero zero) (.eqRefl _)).eqTrans (one_mul _).eqSymm)))).eqSymm
 
 variable {X A Nb}
 

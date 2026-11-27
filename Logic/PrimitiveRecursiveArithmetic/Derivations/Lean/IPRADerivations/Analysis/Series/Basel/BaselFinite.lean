@@ -278,9 +278,9 @@ theorem block_up (P d F : PTm n) :
   exact i
 
 theorem T_one (F : PTm n) : Γ ⊢[PRAAx] T (pw two zero) F ≐ F := by
-  refine (congrAp2 (sumF tB) (pw_zero _) (.eqRefl _)).eqTrans ((sum_succ' tB zero F).eqTrans ?_)
+  refine (congrAp2 (sumF tB) (pw_zero _) (.eqRefl _)).eqTrans ((sum_singleton tB F).eqTrans ?_)
   rw [inst2_t]
-  refine (congrAdd (sum_zero _ _) (quo_eq (q := F) (r := zero) (odd_pos _) ?_ ?_)).eqTrans (zero_add _)
+  refine quo_eq (q := F) (r := zero) (odd_pos _) ?_ ?_
   · ipra_ring
   · exact le_of_eq_add (d := two * zero) (by ipra_ring)
 

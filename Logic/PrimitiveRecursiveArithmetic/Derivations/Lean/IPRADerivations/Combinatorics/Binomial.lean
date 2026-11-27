@@ -144,7 +144,7 @@ where
 /-- `T(n) = 0` for every `n`: `k! (n − k)!` divides `n!` for all `k ≤ n`. -/
 theorem binom_open : ([] : List (Fm PTm 1)) ⊢[PRAAx] T (var 0) ≐ zero := by
   ipra_ind [subst_ap2]
-  · refine (sum_succ' rBody zero zero).eqTrans ((congrAdd (sum_zero _ _) ?_).eqTrans (add_zero _))
+  · refine (sum_singleton rBody zero).eqTrans ?_
     rw [inst2_r]
     exact rem_zero_of_eq (bden_pos _ _) (bden_zero _)
   · refine sum_zero_of_bounded rBody _ _ (.allI ?_)

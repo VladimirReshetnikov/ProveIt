@@ -70,7 +70,7 @@ theorem last_term (K N : PTm n) : Γ ⊢[PRAAx] inst2 tB K (pairT K N) ≐ bell 
     (congrBell (congrMonus (snd_pair _ _) (.eqRefl _)))).eqTrans (one_mul _)
 
 theorem tri_zero (N : PTm n) : Γ ⊢[PRAAx] tri N zero ≐ bell N :=
-  (sum_succ' tB zero _).eqTrans ((congrAdd (sum_zero _ _) (first_term _ _)).eqTrans (zero_add _))
+  (sum_singleton tB _).eqTrans (first_term _ _)
 
 /-- The defining addition rule `T(m + 1, k + 1) = T(m + 1, k) + T(m, k)`. -/
 theorem tri_step (m k : PTm n) : Γ ⊢[PRAAx] tri (succ m) (succ k) ≐ tri (succ m) k + tri m k := by

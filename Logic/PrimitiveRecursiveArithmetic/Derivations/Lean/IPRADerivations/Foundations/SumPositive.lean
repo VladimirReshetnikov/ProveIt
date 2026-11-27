@@ -41,7 +41,7 @@ theorem sum_le_pos_const (f : PTm 2) {x c N : PTm n} (h0 : Γ ⊢[PRAAx] inst2 f
   have e : Γ ⊢[PRAAx] succ N ≐ one + N := by ipra_ring
   have E := (congrAp2 (sumF f) e (.eqRefl x)).eqTrans (sum_split f one N x)
   have F : Γ ⊢[PRAAx] ap2 (sumF f) one x ≐ zero :=
-    (sum_succ' f zero x).eqTrans ((congrAdd (sum_zero f x) h0).eqTrans (add_zero _))
+    (sum_singleton f x).eqTrans h0
   have T : Γ ⊢[PRAAx] le (ap2 (sumF (offB f)) N (pairT one x)) (N * c) := by
     refine sum_le_const (offB f) (.allI (.impI ?_))
     have s1 : Syn.shift (pairT one x) = pairT one (Syn.shift x) := by simp [Syn.shift]

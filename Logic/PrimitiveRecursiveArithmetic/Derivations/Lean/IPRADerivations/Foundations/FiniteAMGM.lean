@@ -95,7 +95,7 @@ theorem finite_amgm (N x : PTm n) :
         have e₂ := natEq ((prod_succ'' (Γ := Γ) y zero x).eqTrans
           (congrMul (prod_zero y x) (.eqRefl _)))
         have e₃ := natEq ((pw_one (Γ := Γ) (ap2 (sumF y) (succ zero) x)).eqTrans
-          ((sum_succ' y zero x).eqTrans (congrAdd (sum_zero y x) (.eqRefl _))))
+          (sum_singleton y x))
         refine le_of_eq_add (d := zero) ?_
         ipra_lc e₃ - 𝔞 (ap2 (prodF y) (succ zero) x) * natEq (pw_one (Γ := Γ) (succ zero)) - e₂
       simpa using b

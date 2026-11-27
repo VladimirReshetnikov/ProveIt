@@ -103,10 +103,9 @@ theorem block (d F j : PTm n) (h : Γ ⊢[PRAAx] le d (pw two j)) :
 /-! ## The dyadic induction -/
 
 theorem S_one (F : PTm n) : Γ ⊢[PRAAx] S (pw two zero) F ≐ F := by
-  refine (congrAp2 (sumF hB) (pw_zero _) (.eqRefl _)).eqTrans ((sum_succ' hB zero F).eqTrans ?_)
+  refine (congrAp2 (sumF hB) (pw_zero _) (.eqRefl _)).eqTrans ((sum_singleton hB F).eqTrans ?_)
   rw [inst2_h]
-  refine (congrAdd (sum_zero _ _) (quo_eq (q := F) (r := zero) (congrSucc (pred_succ _).eqSymm) ?_ ?_)).eqTrans
-    (zero_add _)
+  refine quo_eq (q := F) (r := zero) (congrSucc (pred_succ _).eqSymm) ?_ ?_
   · ipra_ring
   · exact le_refl _
 

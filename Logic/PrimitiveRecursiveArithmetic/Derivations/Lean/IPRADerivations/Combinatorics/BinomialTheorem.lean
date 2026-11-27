@@ -156,13 +156,10 @@ abbrev binomThmFormula : Fm PTm 2 :=
 
 theorem binomial_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] binomThmFormula := by
   ipra_ind [subst_ap2, subst_pairT]
-  · refine (sum_succ' tBody zero _).eqTrans ?_
+  · refine (sum_singleton tBody _).eqTrans ?_
     rw [inst2_t]
-    refine withEq (sum_zero (Γ := []) tBody (pairT zero (var 0))) fun e₁ =>
-      withEq (binom_zero' (Γ := []) (fstT (pairT (zero : PTm 1) (var 0)))) fun e₂ =>
-      withEq (pw_zero (Γ := []) (sndT (pairT (zero : PTm 1) (var 0)))) fun e₃ =>
-      withEq (pw_zero (Γ := []) (succ (var 0) : PTm 1)) fun e₄ => ?_
-    apply deriveNat; ipra_simps; rw [e₁, e₂, e₃, e₄]; ring
+    refine (congrMul (binom_zero' _) (pw_zero _)).eqTrans ?_
+    exact (one_mul _).eqTrans (pw_zero _).eqSymm
   · generalize hΓ : ([binomThmFormula] : List (Fm PTm 2)) = Γ₀
     have ih : Γ₀ ⊢[PRAAx] binomThmFormula := hΓ ▸ Prf.hyp0
     let m : PTm 2 := var 0

@@ -131,26 +131,21 @@ theorem apery_pos (m : PTm n) : Γ ⊢[PRAAx] apery m ≐ succ (pred (apery m)) 
 /-! ## The first values -/
 
 /-- `a_0 = 1`. -/
-theorem apery_zero : Γ ⊢[PRAAx] apery (zero : PTm n) ≐ one := by
-  have t : Γ ⊢[PRAAx] inst2 apB (zero : PTm n) zero ≐ one := by
-    rw [inst2_ap]
-    exact (congrMul (congrMul (binom_zero' _) (binom_zero' _)) (congrMul (binom_zero' _) (binom_zero' _))).eqTrans
-      ((congrMul (one_mul _) (one_mul _)).eqTrans (one_mul _))
-  exact (sum_succ' apB zero zero).eqTrans ((congrAdd (sum_zero apB zero) t).eqTrans (zero_add _))
+private theorem apery_first_term (N : PTm n) : Γ ⊢[PRAAx] inst2 apB zero N ≐ one := by
+  rw [inst2_ap]
+  exact (congrMul (congrMul (binom_zero' _) (binom_zero' _)) (congrMul (binom_zero' _) (binom_zero' _))).eqTrans
+    ((congrMul (one_mul _) (one_mul _)).eqTrans (one_mul _))
+
+theorem apery_zero : Γ ⊢[PRAAx] apery (zero : PTm n) ≐ one :=
+  (sum_singleton apB zero).eqTrans (apery_first_term zero)
 
 theorem cb_one : Γ ⊢[PRAAx] cb (one : PTm n) ≐ two := by
   ipra_lc natEq (cb_rec (Γ := Γ) (zero : PTm n)) + 2 * natEq (cb_zero (Γ := Γ))
 
 /-- `a_1 = 5`. -/
 theorem apery_one : Γ ⊢[PRAAx] apery (one : PTm n) ≐ two * two + one := by
-  have t₀ : Γ ⊢[PRAAx] inst2 apB (zero : PTm n) one ≐ one := by
-    rw [inst2_ap]
-    exact (congrMul (congrMul (binom_zero' _) (binom_zero' _)) (congrMul (binom_zero' _) (binom_zero' _))).eqTrans
-      ((congrMul (one_mul _) (one_mul _)).eqTrans (one_mul _))
   have t₁ : Γ ⊢[PRAAx] inst2 apB (one : PTm n) one ≐ two * two := (last_term one).eqTrans (congrMul cb_one cb_one)
-  have e : Γ ⊢[PRAAx] apery (one : PTm n) ≐ (zero + one) + two * two :=
-    (sum_succ' apB one one).eqTrans (congrAdd ((sum_succ' apB zero one).eqTrans
-      (congrAdd (sum_zero apB one) t₀)) t₁)
-  exact e.eqTrans (by ipra_ring)
+  exact (sum_two_terms apB one).eqTrans
+    ((congrAdd (apery_first_term one) t₁).eqTrans (add_comm _ _))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers

@@ -207,8 +207,7 @@ theorem off_at (g : PTm 2) (a i x : PTm n) : Γ ⊢[PRAAx]
   exact congrInst2 g (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)
 theorem sum_two (g : PTm 2) (x : PTm n) : Γ ⊢[PRAAx]
     ap2 (sumF g) two x ≐ inst2 g zero x+inst2 g one x :=
-  (sum_succ' g one x).eqTrans (congrAdd ((sum_succ' g zero x).eqTrans
-    ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _))) (.eqRefl _))
+  sum_two_terms g x
 theorem tau_before (j i : PTm n) (hi : Γ ⊢[PRAAx] lt i j) : Γ ⊢[PRAAx] tau j i ≐ i :=
   tau_other _ _ (different_of_lt hi) (different_of_lt (lt_of_lt_of_le hi (le_succ_self _)))
 theorem tau_after (j i : PTm n) (hi : Γ ⊢[PRAAx] le (succ (succ j)) i) : Γ ⊢[PRAAx] tau j i ≐ i :=

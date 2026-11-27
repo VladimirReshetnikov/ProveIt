@@ -42,8 +42,7 @@ private abbrev shiftF (f : PTm 2) : Fm PTm 2 :=
 
 private theorem sum_shift₀ (f : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] shiftF f := by
   ipra_ind [subst_ap2, subst_inst2]
-  · refine (sum_succ' f zero (var 0)).eqTrans ?_
-    exact ((congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _)).eqTrans
+  · exact (sum_singleton f (var 0)).eqTrans
       ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) (sum_zero _ _).eqSymm))
   · refine (sum_succ' f (succ (var 0)) (var 1)).eqTrans ?_
     refine (congrAdd Prf.hyp0 (.eqRefl _)).eqTrans ?_
