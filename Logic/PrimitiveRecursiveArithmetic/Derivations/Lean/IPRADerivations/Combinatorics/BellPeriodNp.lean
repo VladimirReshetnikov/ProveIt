@@ -163,25 +163,19 @@ abbrev tele1F (p N : PTm n) : Fm PTm (n + 1) :=
 /-- `B_{N + (p + p² + ⋯ + p^p)} ≡ ((E + 1) ⋯ (E + p) B)_N (mod p)`. -/
 theorem tele1 {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (N : PTm n) :
     Γ ⊢[PRAAx] rem (bell (N + Hs p zero)) p ≐ rem (Act bellB p N zero) p := by
-  have hall : Γ ⊢[PRAAx] Fm.all (tele1F p N) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · have a0 := act_zero (Γ := le zero p :: Γ) bellB (N + Hs p zero) zero
+  let I : Fm PTm (n + 1) :=
+    rem (bell (Syn.shift N + Hs (Syn.shift p) zero)) (Syn.shift p) ≐
+      rem (Act bellB (var 0) (Syn.shift N + Hs (Syn.shift p) (var 0)) zero) (Syn.shift p)
+  have atBound : Γ ⊢[PRAAx] I.subst (Syn.inst p) := by
+    refine qfIndUpTo p trivial ?_ ?_
+    · have a0 := act_zero (Γ := Γ) bellB (N + Hs p zero) zero
       rw [inst2_bellB] at a0
-      have b : (le zero p :: Γ) ⊢[PRAAx] rem (bell (N + Hs p zero)) p ≐
-          rem (Act bellB zero (N + Hs p zero) zero) p := cong_of_eq a0.eqSymm
-      simpa using .impI b
-    · have st : (tele1F p N :: Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift p) ⟶
-          (rem (bell (Syn.shift N + Hs (Syn.shift p) zero)) (Syn.shift p) ≐
-            rem (Act bellB (succ (var 0)) (Syn.shift N + Hs (Syn.shift p) (succ (var 0))) zero)
-              (Syn.shift p)) :=
-        .impI ((Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)).eqTrans
-          (link1' (prime_shift hp).wk.wk Prf.hyp0))
-      simpa [subst_repl_shift, Syn.repl_zero] using st
-  have h2 := Prf.allE p hall
-  have h3 : Γ ⊢[PRAAx] le p p ⟶ (rem (bell (N + Hs p zero)) p ≐
-      rem (Act bellB p (N + Hs p p) zero) p) := by
-    simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
-  refine (Prf.impE h3 (le_refl p)).eqTrans (cong_of_eq (congrAct bellB ?_ (.eqRefl zero)))
+      simpa [I] using cong_of_eq (p := p) a0.eqSymm
+    · simp [I, subst_repl_shift]
+      exact .impI (Prf.eqTrans Prf.hyp1 (link1' (prime_shift hp).wk.wk Prf.hyp0))
+  have result : Γ ⊢[PRAAx] rem (bell (N + Hs p zero)) p ≐ rem (Act bellB p (N + Hs p p) zero) p := by
+    simpa [I] using atBound
+  refine result.eqTrans (cong_of_eq (congrAct bellB ?_ (.eqRefl zero)))
   ipra_lc natEq (Hs_end (Γ := Γ) p)
 
 /-! ## The falling factorials produce the same factors -/
@@ -225,27 +219,20 @@ abbrev tele2F (p N : PTm n) : Fm PTm (n + 1) :=
 /-- `G(N, p) ≡ ((E + 1) ⋯ (E + p) B)_N (mod p)`, for every modulus `p ≥ 1`. -/
 theorem tele2_pos {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (N : PTm n) :
     Γ ⊢[PRAAx] rem (G N p) p ≐ rem (Act bellB p N zero) p := by
-  have hall : Γ ⊢[PRAAx] Fm.all (tele2F p N) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · have a0 := act_zero (Γ := le zero p :: Γ) gyB N (monus p zero)
+  let I : Fm PTm (n + 1) :=
+    rem (G (Syn.shift N) (Syn.shift p)) (Syn.shift p) ≐
+      rem (Act gyB (var 0) (Syn.shift N) (monus (Syn.shift p) (var 0))) (Syn.shift p)
+  have atBound : Γ ⊢[PRAAx] I.subst (Syn.inst p) := by
+    refine qfIndUpTo p trivial ?_ ?_
+    · simp [I]
+      have a0 := act_zero (Γ := Γ) gyB N (monus p zero)
       rw [inst2_gyB] at a0
-      have b : (le zero p :: Γ) ⊢[PRAAx] rem (G N p) p ≐
-          rem (Act gyB zero N (monus p zero)) p :=
-        cong_of_eq ((congrG (.eqRefl N) (monus_zero p).eqSymm).eqTrans a0.eqSymm)
-      simpa using .impI b
-    · have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-        simpa [Fm.shift, Syn.shift] using hq.shift
-      have st : (tele2F p N :: Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift p) ⟶
-          (rem (G (Syn.shift N) (Syn.shift p)) (Syn.shift p) ≐
-            rem (Act gyB (succ (var 0)) (Syn.shift N) (monus (Syn.shift p) (succ (var 0))))
-              (Syn.shift p)) :=
-        .impI ((Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)).eqTrans
-          (link2 hq'.wk.wk Prf.hyp0))
-      simpa [subst_repl_shift, Syn.repl_zero] using st
-  have h2 := Prf.allE p hall
-  have h3 : Γ ⊢[PRAAx] le p p ⟶ (rem (G N p) p ≐ rem (Act gyB p N (monus p p)) p) := by
-    simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
-  refine (Prf.impE h3 (le_refl p)).eqTrans (cong_of_eq ?_)
+      exact cong_of_eq ((congrG (.eqRefl N) (monus_zero p).eqSymm).eqTrans a0.eqSymm)
+    · simp [I, subst_repl_shift]
+      exact .impI (Prf.eqTrans Prf.hyp1 (link2 (Common.pos_shift hq).wk.wk Prf.hyp0))
+  have result : Γ ⊢[PRAAx] rem (G N p) p ≐ rem (Act gyB p N (monus p p)) p := by
+    simpa [I] using atBound
+  refine result.eqTrans (cong_of_eq ?_)
   refine sum_congr_bounded (actB gyB) (actB bellB) (LinearFactorTable.par p N (monus p p)) (LinearFactorTable.par p N zero) (succ p)
     (.allI (.impI ?_))
   simp only [shift_pair, shift_monus, shift_zero]

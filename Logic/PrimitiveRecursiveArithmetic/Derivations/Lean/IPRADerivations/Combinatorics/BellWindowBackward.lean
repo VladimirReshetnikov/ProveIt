@@ -184,25 +184,19 @@ theorem back_link {a T m k : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
 /-- `v_a = v_{a+T}` gives `v_0 = v_T`. -/
 theorem back_all {a T m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     (hW : Γ ⊢[PRAAx] W a (a + T) m ≐ one) : Γ ⊢[PRAAx] W zero T m ≐ one := by
-  have hall : Γ ⊢[PRAAx] Fm.all (backF a T m) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · have b : (le zero a :: Γ) ⊢[PRAAx] W (monus a zero) (monus a zero + T) m ≐ one :=
-        (congrW (monus_zero a) (congrAdd (monus_zero a) (.eqRefl T))).eqTrans hW.wk
-      simpa using .impI b
-    · have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-        simpa [Fm.shift, Syn.shift] using hm.shift
-      have st : (backF a T m :: Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift a) ⟶
-          (W (monus (Syn.shift a) (succ (var 0)))
-            (monus (Syn.shift a) (succ (var 0)) + Syn.shift T) (Syn.shift m) ≐ one) :=
-        .impI (back_link hm'.wk.wk
-          (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)) Prf.hyp0)
-      simpa [subst_repl_shift, Syn.repl_zero] using st
-  have h2 := Prf.allE a hall
-  have h3 : Γ ⊢[PRAAx] le a a ⟶ (W (monus a a) (monus a a + T) m ≐ one) := by
-    simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
+  let I : Fm PTm (n + 1) :=
+    W (monus (Syn.shift a) (var 0)) (monus (Syn.shift a) (var 0) + Syn.shift T) (Syn.shift m) ≐ one
+  have atBound : Γ ⊢[PRAAx] I.subst (Syn.inst a) := by
+    refine qfIndUpTo a trivial ?_ ?_
+    · simpa [I] using
+        (congrW (monus_zero a) (congrAdd (monus_zero a) (.eqRefl T))).eqTrans hW
+    · simp [I, subst_repl_shift]
+      exact .impI (back_link (Common.pos_shift hm).wk.wk Prf.hyp1 Prf.hyp0)
+  have result : Γ ⊢[PRAAx] W (monus a a) (monus a a + T) m ≐ one := by
+    simpa [I] using atBound
   have z : Γ ⊢[PRAAx] monus a a + T ≐ T :=
     (congrAdd (monus_self a) (.eqRefl T)).eqTrans (zero_add T)
-  exact (congrW (monus_self a) z).eqSymm.eqTrans (Prf.impE h3 (le_refl a))
+  exact (congrW (monus_self a) z).eqSymm.eqTrans result
 
 /-! ## The matching window -/
 

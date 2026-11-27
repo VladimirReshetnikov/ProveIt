@@ -71,25 +71,18 @@ theorem cong_sum (f g : PTm 2) {p x y N : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ 
       (rem (inst2 f (var 0) (Syn.shift x)) (Syn.shift p) ≐
         rem (inst2 g (var 0) (Syn.shift y)) (Syn.shift p)))) :
     Γ ⊢[PRAAx] rem (ap2 (sumF f) N x) p ≐ rem (ap2 (sumF g) N y) p := by
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-    simpa [Fm.shift, Syn.shift] using hq.shift
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      (rem (ap2 (sumF f) (var 0) (Syn.shift x)) (Syn.shift p) ≐
-        rem (ap2 (sumF g) (var 0) (Syn.shift y)) (Syn.shift p))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simpa using .impI (cong_of_eq
-        ((sum_zero (Γ := le zero N :: Γ) f x).eqTrans (sum_zero _ _).eqSymm))
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      exact ((cong_of_eq (sum_succ' f (var 0) _)).eqTrans
-        (cong_add hq'.wk.wk
-          (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-          (.impE h.allOpen.wk.wk Prf.hyp0))).eqTrans (cong_of_eq (sum_succ' g (var 0) _)).eqSymm
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  let I : Fm PTm (n + 1) :=
+    rem (ap2 (sumF f) (var 0) (Syn.shift x)) (Syn.shift p) ≐
+      rem (ap2 (sumF g) (var 0) (Syn.shift y)) (Syn.shift p)
+  have atBound : Γ ⊢[PRAAx] I.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [I] using cong_of_eq (p := p)
+        ((sum_zero (Γ := Γ) f x).eqTrans (sum_zero g y).eqSymm)
+    · simp [I, subst_repl_shift]
+      exact .impI (((cong_of_eq (sum_succ' f (var 0) _)).eqTrans
+        (cong_add (Common.pos_shift hq).wk.wk Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0))).eqTrans
+          (cong_of_eq (sum_succ' g (var 0) _)).eqSymm)
+  simpa [I] using atBound
 
 /-! ## The weighted binomial sum -/
 
@@ -272,35 +265,26 @@ theorem cong_sum_lin (f g h : PTm 2) {p ρ x y z N : PTm n} (hq : Γ ⊢[PRAAx] 
         rem (inst2 g (var 0) (Syn.shift y) + Syn.shift ρ * inst2 h (var 0) (Syn.shift z))
           (Syn.shift p)))) :
     Γ ⊢[PRAAx] rem (ap2 (sumF f) N x) p ≐ rem (ap2 (sumF g) N y + ρ * ap2 (sumF h) N z) p := by
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-    simpa [Fm.shift, Syn.shift] using hq.shift
-  have hall : Γ ⊢[PRAAx] Fm.all (linF f g h p ρ x y z N) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · have b : (le zero N :: Γ) ⊢[PRAAx] ap2 (sumF f) zero x ≐
-          ap2 (sumF g) zero y + ρ * ap2 (sumF h) zero z := by
-        have a₁ := natEq (sum_zero (Γ := le zero N :: Γ) f x)
-        have a₂ := natEq (sum_zero (Γ := le zero N :: Γ) g y)
-        have a₃ := natEq (sum_zero (Γ := le zero N :: Γ) h z)
-        apply deriveNat; ipra_simps
-        linear_combination a₁ - a₂ - 𝔞 ρ * a₃
-      simpa using .impI (cong_of_eq (p := p) b)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      refine ((cong_of_eq (sum_succ' f (var 0) _)).eqTrans
-        (cong_add hq'.wk.wk
-          (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-          (.impE H.allOpen.wk.wk Prf.hyp0))).eqTrans (cong_of_eq ?_)
-      have a₂ := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linF f g h p ρ x y z N :: Γ.map Fm.shift) g (var 0) (Syn.shift y))
-      have a₃ := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linF f g h p ρ x y z N :: Γ.map Fm.shift) h (var 0) (Syn.shift z))
-      apply deriveNat; ipra_simps
-      linear_combination -a₂ - 𝔞 (Syn.shift ρ) * a₃
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  let I : Fm PTm (n + 1) :=
+    rem (ap2 (sumF f) (var 0) (Syn.shift x)) (Syn.shift p) ≐
+      rem (ap2 (sumF g) (var 0) (Syn.shift y) + Syn.shift ρ * ap2 (sumF h) (var 0) (Syn.shift z))
+        (Syn.shift p)
+  have atBound : Γ ⊢[PRAAx] I.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simp [I]
+      refine cong_of_eq ?_
+      have a₁ := natEq (sum_zero (Γ := Γ) f x)
+      have a₂ := natEq (sum_zero (Γ := Γ) g y)
+      have a₃ := natEq (sum_zero (Γ := Γ) h z)
+      ipra_lc a₁ - a₂ - 𝔞 ρ * a₃
+    · simp [I, subst_repl_shift]
+      refine .impI (((cong_of_eq (sum_succ' f (var 0) _)).eqTrans
+        (cong_add (Common.pos_shift hq).wk.wk Prf.hyp1 (.impE H.allOpen.wk.wk Prf.hyp0))).eqTrans (cong_of_eq ?_))
+      let Δ := lt (var 0) (Syn.shift N) :: I :: Γ.map Fm.shift
+      have a₂ := natEq (sum_succ' (Γ := Δ) g (var 0) (Syn.shift y))
+      have a₃ := natEq (sum_succ' (Γ := Δ) h (var 0) (Syn.shift z))
+      ipra_lc -a₂ - 𝔞 (Syn.shift ρ) * a₃
+  simpa [I] using atBound
 
 /-- One term: `C ρ^{j−i} B_{c+q+i} ≡ C ρ^{j−i} B_{c+1+i} + ρ · C ρ^{j−i} B_{c+i}`. -/
 theorem pt_cong {p ρ q c i j : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
@@ -457,34 +441,28 @@ theorem tele {p r T m J : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
     (hQ : Γ ⊢[PRAAx] allB lvB (succ T) (lvP r T p) ≐ one)
     (hm : Γ ⊢[PRAAx] le (m + J * pw p r) T) :
     Γ ⊢[PRAAx] rem (bell (m + J * pw p r)) p ≐ rem (U J r m) p := by
-  have hall : Γ ⊢[PRAAx] Fm.all (teleF p r m J) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · have b : (le zero J :: Γ) ⊢[PRAAx] rem (bell (m + J * pw p r)) p ≐
-          rem (U zero r (m + monus J zero * pw p r)) p :=
-        cong_of_eq ((congrBell (congrAdd (.eqRefl m)
-          (congrMul (monus_zero J).eqSymm (.eqRefl _)))).eqTrans (U_zero r _).eqSymm)
-      simpa using .impI b
-    · have hQ' : (Γ.map Fm.shift) ⊢[PRAAx]
+  let I : Fm PTm (n + 1) :=
+    rem (bell (Syn.shift m + Syn.shift J * pw (Syn.shift p) (Syn.shift r))) (Syn.shift p) ≐
+      rem (U (var 0) (Syn.shift r)
+        (Syn.shift m + monus (Syn.shift J) (var 0) * pw (Syn.shift p) (Syn.shift r))) (Syn.shift p)
+  have atBound : Γ ⊢[PRAAx] I.subst (Syn.inst J) := by
+    refine qfIndUpTo J trivial ?_ ?_
+    · simp [I]
+      exact cong_of_eq ((congrBell (congrAdd (.eqRefl m)
+        (congrMul (monus_zero J).eqSymm (.eqRefl _)))).eqTrans (U_zero r _).eqSymm)
+    · simp [I, subst_repl_shift]
+      have hQ' : (Γ.map Fm.shift) ⊢[PRAAx]
           allB lvB (succ (Syn.shift T)) (lvP (Syn.shift r) (Syn.shift T) (Syn.shift p)) ≐ one := by
         simpa [Fm.shift, Syn.shift] using hQ.shift
-      have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-        simpa [Fm.shift, Syn.shift] using hq.shift
       have hm' : (Γ.map Fm.shift) ⊢[PRAAx]
           le (Syn.shift m + Syn.shift J * pw (Syn.shift p) (Syn.shift r)) (Syn.shift T) := by
-        simpa [Fm.shift, Syn.shift] using hm.shift
-      have st : (teleF p r m J :: Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (Syn.shift J) ⟶
-          (rem (bell (Syn.shift m + Syn.shift J * pw (Syn.shift p) (Syn.shift r))) (Syn.shift p) ≐
-            rem (U (succ (var 0)) (Syn.shift r)
-              (Syn.shift m + monus (Syn.shift J) (succ (var 0)) * pw (Syn.shift p) (Syn.shift r)))
-              (Syn.shift p)) :=
-        .impI ((Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)).eqTrans
-          (tele_link hq'.wk.wk hQ'.wk.wk Prf.hyp0 hm'.wk.wk))
-      simpa [subst_repl_shift, Syn.repl_zero] using st
-  have h2 := Prf.allE J hall
-  have h3 : Γ ⊢[PRAAx] le J J ⟶ (rem (bell (m + J * pw p r)) p ≐
-      rem (U J r (m + monus J J * pw p r)) p) := by
-    simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
-  refine (Prf.impE h3 (le_refl J)).eqTrans (cong_of_eq (congrU ?_))
+        simpa [Syn.shift] using LeanProofs.IPRA.Order.shift_le hm
+      exact .impI (Prf.eqTrans Prf.hyp1
+        (tele_link (Common.pos_shift hq).wk.wk hQ'.wk.wk Prf.hyp0 hm'.wk.wk))
+  have result : Γ ⊢[PRAAx] rem (bell (m + J * pw p r)) p ≐
+      rem (U J r (m + monus J J * pw p r)) p := by
+    simpa [I] using atBound
+  refine result.eqTrans (cong_of_eq (congrU ?_))
   ipra_lc 𝔞 (pw p r) * natEq (monus_self (Γ := Γ) J)
 
 /-! ## From level `r` to level `r + 1` -/

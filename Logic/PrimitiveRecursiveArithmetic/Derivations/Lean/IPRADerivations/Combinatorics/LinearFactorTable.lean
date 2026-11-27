@@ -144,33 +144,26 @@ theorem sum_lin (F G H : PTm 2) {ρ x y z N : PTm n}
       (inst2 F (var 0) (Syn.shift x) ≐
         Syn.shift ρ * inst2 G (var 0) (Syn.shift y) + inst2 H (var 0) (Syn.shift z)))) :
     Γ ⊢[PRAAx] ap2 (sumF F) N x ≐ ρ * ap2 (sumF G) N y + ap2 (sumF H) N z := by
-  have hall : Γ ⊢[PRAAx] Fm.all (linF F G H ρ x y z N) := by
-    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
-    · refine .impI ?_
-      have a := natEq (sum_zero (Γ := le zero N :: Γ) F x)
-      have b := natEq (sum_zero (Γ := le zero N :: Γ) G y)
-      have c := natEq (sum_zero (Γ := le zero N :: Γ) H z)
-      apply deriveNat; ipra_simps
-      linear_combination a - 𝔞 ρ * b - c
-    · refine .impI ?_
-      have ih := natEq (Prf.impE (Prf.hyp1 (Γ := Γ.map Fm.shift)
-        (φ := linF F G H ρ x y z N) (ψ := le (succ (var 0)) (Syn.shift N)))
-        (le_trans (le_succ_self _) Prf.hyp0))
-      have pt := natEq (Prf.impE hp.allOpen.wk.wk
-        (Prf.hyp0 (Γ := linF F G H ρ x y z N :: Γ.map Fm.shift)
-          (φ := le (succ (var 0)) (Syn.shift N))))
-      have a := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linF F G H ρ x y z N :: Γ.map Fm.shift) F (var 0) (Syn.shift x))
-      have b := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linF F G H ρ x y z N :: Γ.map Fm.shift) G (var 0) (Syn.shift y))
-      have c := natEq (sum_succ' (Γ := le (succ (var 0)) (Syn.shift N) ::
-        linF F G H ρ x y z N :: Γ.map Fm.shift) H (var 0) (Syn.shift z))
-      apply deriveNat; ipra_simps
-      linear_combination a - 𝔞 (Syn.shift ρ) * b - c + ih + pt
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  let I : Fm PTm (n + 1) :=
+    ap2 (sumF F) (var 0) (Syn.shift x) ≐
+      Syn.shift ρ * ap2 (sumF G) (var 0) (Syn.shift y) + ap2 (sumF H) (var 0) (Syn.shift z)
+  have atBound : Γ ⊢[PRAAx] I.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simp [I]
+      have a := natEq (sum_zero (Γ := Γ) F x)
+      have b := natEq (sum_zero (Γ := Γ) G y)
+      have c := natEq (sum_zero (Γ := Γ) H z)
+      ipra_lc a - 𝔞 ρ * b - c
+    · simp [I, subst_repl_shift]
+      refine .impI ?_
+      let Δ := lt (var 0) (Syn.shift N) :: I :: Γ.map Fm.shift
+      have ih := natEq (Prf.hyp1 : Δ ⊢[PRAAx] I)
+      have pt := natEq (Prf.impE hp.allOpen.wk.wk (Prf.hyp0 : Δ ⊢[PRAAx] lt (var 0) (Syn.shift N)))
+      have a := natEq (sum_succ' (Γ := Δ) F (var 0) (Syn.shift x))
+      have b := natEq (sum_succ' (Γ := Δ) G (var 0) (Syn.shift y))
+      have c := natEq (sum_succ' (Γ := Δ) H (var 0) (Syn.shift z))
+      ipra_lc a - 𝔞 (Syn.shift ρ) * b - c + ih + pt
+  simpa [I] using atBound
 
 /-! ## The action on a sequence -/
 
