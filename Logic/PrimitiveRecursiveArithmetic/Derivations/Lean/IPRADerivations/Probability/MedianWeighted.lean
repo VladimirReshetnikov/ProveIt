@@ -54,34 +54,20 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem up_below {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le X M)
     (hs : Γ ⊢[PRAAx] β + ε ≐ one) (ha : Γ ⊢[PRAAx] α ≐ zero) :
-    Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) := by
-  have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
-  have hle : Γ ⊢[PRAAx] le X (M + d) := le_of_eq_add (d := monus M X + d) (by
-    ipra_lc h2)
-  have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
-  have s := natEq hs; have a := natEq ha
-  refine le_of_eq_add (d := zero) ?_
-  ipra_lc h3 - h4 + h2 - h1 + 𝔞 d * a - 𝔞 d * s
+    Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) :=
+  MedianCounts.deviation_up_below d h hs ha
 
 theorem up_above₁ {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le M X)
     (hb : Γ ⊢[PRAAx] β ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (ha : Γ ⊢[PRAAx] α ≐ one)
     (hle : Γ ⊢[PRAAx] le X (M + d)) :
-    Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) := by
-  have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
-  have b := natEq hb; have e := natEq he; have a := natEq ha
-  have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
-  refine le_of_eq_add (d := monus (M + d) X + monus (M + d) X) ?_
-  ipra_lc h3 + h4 + h2 - h1 + 𝔞 d * a - 𝔞 d * b - 𝔞 d * e
+    Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) :=
+  MedianCounts.deviation_up_above₁ d h hb he ha hle
 
 theorem up_above₂ {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le M X)
     (hb : Γ ⊢[PRAAx] β ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (ha : Γ ⊢[PRAAx] α ≐ one)
     (hge : Γ ⊢[PRAAx] le (M + d) X) :
-    Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) := by
-  have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
-  have b := natEq hb; have e := natEq he; have a := natEq ha
-  have h3 := natEq hge; have h4 := natEq (eq_add_of_le hge)
-  refine le_of_eq_add (d := zero) ?_
-  ipra_lc -h4 + h2 + h3 - h1 + 𝔞 d * a - 𝔞 d * b - 𝔞 d * e
+    Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) :=
+  MedianCounts.deviation_up_above₂ d h hb he ha hge
 
 /-- For `M ≤ X` with indicators `β = ε = 0`, `α = 1`:
 `|X − M| + d (β + ε) ≤ |X − (M + d)| + d α`. -/
@@ -93,34 +79,20 @@ theorem up_above {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx]
 
 theorem down_above {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le (t + d) X)
     (hs : Γ ⊢[PRAAx] α + ε ≐ one) (hb : Γ ⊢[PRAAx] β ≐ zero) :
-    Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) := by
-  have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
-  have hle : Γ ⊢[PRAAx] le t X := le_of_eq_add (d := d + monus X (t + d)) (by
-    ipra_lc h2)
-  have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
-  have s := natEq hs; have b := natEq hb
-  refine le_of_eq_add (d := zero) ?_
-  ipra_lc -h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * s
+    Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) :=
+  MedianCounts.deviation_down_above d h hs hb
 
 theorem down_below₁ {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le X (t + d))
     (ha : Γ ⊢[PRAAx] α ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (hb : Γ ⊢[PRAAx] β ≐ one)
     (hle : Γ ⊢[PRAAx] le t X) :
-    Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) := by
-  have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
-  have a := natEq ha; have e := natEq he; have b := natEq hb
-  have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
-  refine le_of_eq_add (d := monus X t + monus X t) ?_
-  ipra_lc h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * a - 𝔞 d * e
+    Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) :=
+  MedianCounts.deviation_down_below₁ d h ha he hb hle
 
 theorem down_below₂ {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le X (t + d))
     (ha : Γ ⊢[PRAAx] α ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (hb : Γ ⊢[PRAAx] β ≐ one)
     (hge : Γ ⊢[PRAAx] le X t) :
-    Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) := by
-  have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
-  have a := natEq ha; have e := natEq he; have b := natEq hb
-  have h3 := natEq hge; have h4 := natEq (eq_add_of_le hge)
-  refine le_of_eq_add (d := zero) ?_
-  ipra_lc -h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * a - 𝔞 d * e
+    Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) :=
+  MedianCounts.deviation_down_below₂ d h ha he hb hge
 
 /-- For `X ≤ t + d` with indicators `α = ε = 0`, `β = 1`:
 `|X − (t + d)| + d (α + ε) ≤ |X − t| + d β`. -/

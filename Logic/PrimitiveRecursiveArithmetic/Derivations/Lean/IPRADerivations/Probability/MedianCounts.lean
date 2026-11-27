@@ -33,7 +33,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Probability.Expectation (le_zero_of)
-open LeanProofs.IPRA.Probability.Variance (sum_one)
+open LeanProofs.IPRA.Probability.Variance (ad sum_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -175,5 +175,57 @@ theorem med_interval {N t₁ t t₂ p : PTm n} (h₁ : Γ ⊢[PRAAx] le t₁ t) 
     (le_trans (le_mul_mono (le_refl two) (above_anti X h₁ N p)) (Prf.andE₂ m₁))
 
 end Counts
+
+/-! ## Pointwise absolute deviations -/
+
+local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
+
+theorem deviation_up_below {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le X M)
+    (hs : Γ ⊢[PRAAx] β + ε ≐ one) (ha : Γ ⊢[PRAAx] α ≐ zero) :
+    Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) := by
+  have hle := le_trans h (le_add_right M d)
+  refine le_of_eq_add (d := zero) ?_
+  ipra_lc natEq hle - natEq (eq_add_of_le hle) + natEq (eq_add_of_le h) - natEq h +
+    𝔞 d * (natEq ha - natEq hs)
+
+theorem deviation_up_above₁ {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le M X)
+    (hb : Γ ⊢[PRAAx] β ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (ha : Γ ⊢[PRAAx] α ≐ one)
+    (hle : Γ ⊢[PRAAx] le X (M + d)) :
+    Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) := by
+  refine le_of_eq_add (d := monus (M + d) X + monus (M + d) X) ?_
+  ipra_lc natEq hle + natEq (eq_add_of_le hle) + natEq (eq_add_of_le h) - natEq h +
+    𝔞 d * (natEq ha - natEq hb - natEq he)
+
+theorem deviation_up_above₂ {X M : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le M X)
+    (hb : Γ ⊢[PRAAx] β ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (ha : Γ ⊢[PRAAx] α ≐ one)
+    (hge : Γ ⊢[PRAAx] le (M + d) X) :
+    Γ ⊢[PRAAx] le (ad X M + d * (β + ε)) (ad X (M + d) + d * α) := by
+  refine le_of_eq_add (d := zero) ?_
+  ipra_lc -natEq (eq_add_of_le hge) + natEq (eq_add_of_le h) + natEq hge - natEq h +
+    𝔞 d * (natEq ha - natEq hb - natEq he)
+
+theorem deviation_down_above {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le (t + d) X)
+    (hs : Γ ⊢[PRAAx] α + ε ≐ one) (hb : Γ ⊢[PRAAx] β ≐ zero) :
+    Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) := by
+  have hle := le_trans (le_add_right t d) h
+  refine le_of_eq_add (d := zero) ?_
+  ipra_lc -natEq (eq_add_of_le hle) + natEq (eq_add_of_le h) + natEq hle - natEq h +
+    𝔞 d * (natEq hb - natEq hs)
+
+theorem deviation_down_below₁ {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le X (t + d))
+    (ha : Γ ⊢[PRAAx] α ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (hb : Γ ⊢[PRAAx] β ≐ one)
+    (hle : Γ ⊢[PRAAx] le t X) :
+    Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) := by
+  refine le_of_eq_add (d := monus X t + monus X t) ?_
+  ipra_lc natEq (eq_add_of_le hle) + natEq (eq_add_of_le h) + natEq hle - natEq h +
+    𝔞 d * (natEq hb - natEq ha - natEq he)
+
+theorem deviation_down_below₂ {X t : PTm n} (d : PTm n) {β ε α : PTm n} (h : Γ ⊢[PRAAx] le X (t + d))
+    (ha : Γ ⊢[PRAAx] α ≐ zero) (he : Γ ⊢[PRAAx] ε ≐ zero) (hb : Γ ⊢[PRAAx] β ≐ one)
+    (hge : Γ ⊢[PRAAx] le X t) :
+    Γ ⊢[PRAAx] le (ad X (t + d) + d * (α + ε)) (ad X t + d * β) := by
+  refine le_of_eq_add (d := zero) ?_
+  ipra_lc -natEq (eq_add_of_le hge) + natEq (eq_add_of_le h) + natEq hge - natEq h +
+    𝔞 d * (natEq hb - natEq ha - natEq he)
 
 end LeanProofs.IPRA.Probability.MedianCounts

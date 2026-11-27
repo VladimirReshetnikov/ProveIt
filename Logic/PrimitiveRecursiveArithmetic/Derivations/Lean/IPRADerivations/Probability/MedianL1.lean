@@ -44,32 +44,16 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem pt_up_below {x m : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] le x m)
     (hs : Γ ⊢[PRAAx] sg (monus m x) + eqb x m ≐ one) (ha : Γ ⊢[PRAAx] sg (monus x m) ≐ zero) :
-    Γ ⊢[PRAAx] le (ad x m + d * (sg (monus m x) + eqb x m)) (ad x (m + d) + d * sg (monus x m)) := by
-  have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
-  have hle : Γ ⊢[PRAAx] le x (m + d) := le_of_eq_add (d := monus m x + d) (by
-    ipra_lc h2)
-  have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
-  have s := natEq hs; have a := natEq ha
-  refine le_of_eq_add (d := zero) ?_
-  ipra_lc h3 - h4 + h2 - h1 + 𝔞 d * a - 𝔞 d * s
+    Γ ⊢[PRAAx] le (ad x m + d * (sg (monus m x) + eqb x m)) (ad x (m + d) + d * sg (monus x m)) :=
+  MedianCounts.deviation_up_below d h hs ha
 
 theorem pt_up_above₁ {x m : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] lt m x) (hle : Γ ⊢[PRAAx] le x (m + d)) :
-    Γ ⊢[PRAAx] le (ad x m + d * (sg (monus m x) + eqb x m)) (ad x (m + d) + d * sg (monus x m)) := by
-  have hmx := le_of_lt h
-  have h1 := natEq hmx; have h2 := natEq (eq_add_of_le hmx)
-  have b := natEq (sg_le hmx); have e := natEq (eqb_zero_of_gt h); have a := natEq (sg_lt h)
-  have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
-  refine le_of_eq_add (d := monus (m + d) x + monus (m + d) x) ?_
-  ipra_lc h3 + h4 + h2 - h1 + 𝔞 d * a - 𝔞 d * b - 𝔞 d * e
+    Γ ⊢[PRAAx] le (ad x m + d * (sg (monus m x) + eqb x m)) (ad x (m + d) + d * sg (monus x m)) :=
+  MedianCounts.deviation_up_above₁ d (le_of_lt h) (sg_le (le_of_lt h)) (eqb_zero_of_gt h) (sg_lt h) hle
 
 theorem pt_up_above₂ {x m : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] lt m x) (hge : Γ ⊢[PRAAx] le (m + d) x) :
-    Γ ⊢[PRAAx] le (ad x m + d * (sg (monus m x) + eqb x m)) (ad x (m + d) + d * sg (monus x m)) := by
-  have hmx := le_of_lt h
-  have h1 := natEq hmx; have h2 := natEq (eq_add_of_le hmx)
-  have b := natEq (sg_le hmx); have e := natEq (eqb_zero_of_gt h); have a := natEq (sg_lt h)
-  have h3 := natEq hge; have h4 := natEq (eq_add_of_le hge)
-  refine le_of_eq_add (d := zero) ?_
-  ipra_lc -h4 + h2 + h3 - h1 + 𝔞 d * a - 𝔞 d * b - 𝔞 d * e
+    Γ ⊢[PRAAx] le (ad x m + d * (sg (monus m x) + eqb x m)) (ad x (m + d) + d * sg (monus x m)) :=
+  MedianCounts.deviation_up_above₂ d (le_of_lt h) (sg_le (le_of_lt h)) (eqb_zero_of_gt h) (sg_lt h) hge
 
 theorem pt_up_above {x m : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] lt m x) :
     Γ ⊢[PRAAx] le (ad x m + d * (sg (monus m x) + eqb x m)) (ad x (m + d) + d * sg (monus x m)) :=
@@ -89,32 +73,16 @@ theorem pt_up (x m d : PTm n) :
 
 theorem pt_down_above {x t : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] le (t + d) x)
     (hs : Γ ⊢[PRAAx] sg (monus x (t + d)) + eqb x (t + d) ≐ one) (hb : Γ ⊢[PRAAx] sg (monus (t + d) x) ≐ zero) :
-    Γ ⊢[PRAAx] le (ad x (t + d) + d * (sg (monus x (t + d)) + eqb x (t + d))) (ad x t + d * sg (monus (t + d) x)) := by
-  have h1 := natEq h; have h2 := natEq (eq_add_of_le h)
-  have hle : Γ ⊢[PRAAx] le t x := le_of_eq_add (d := d + monus x (t + d)) (by
-    ipra_lc h2)
-  have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
-  have s := natEq hs; have b := natEq hb
-  refine le_of_eq_add (d := zero) ?_
-  ipra_lc -h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * s
+    Γ ⊢[PRAAx] le (ad x (t + d) + d * (sg (monus x (t + d)) + eqb x (t + d))) (ad x t + d * sg (monus (t + d) x)) :=
+  MedianCounts.deviation_down_above d h hs hb
 
 theorem pt_down_below₁ {x t : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] lt x (t + d)) (hle : Γ ⊢[PRAAx] le t x) :
-    Γ ⊢[PRAAx] le (ad x (t + d) + d * (sg (monus x (t + d)) + eqb x (t + d))) (ad x t + d * sg (monus (t + d) x)) := by
-  have hxm := le_of_lt h
-  have h1 := natEq hxm; have h2 := natEq (eq_add_of_le hxm)
-  have a := natEq (sg_le hxm); have e := natEq (eqb_zero_of_lt h); have b := natEq (sg_lt h)
-  have h3 := natEq hle; have h4 := natEq (eq_add_of_le hle)
-  refine le_of_eq_add (d := monus x t + monus x t) ?_
-  ipra_lc h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * a - 𝔞 d * e
+    Γ ⊢[PRAAx] le (ad x (t + d) + d * (sg (monus x (t + d)) + eqb x (t + d))) (ad x t + d * sg (monus (t + d) x)) :=
+  MedianCounts.deviation_down_below₁ d (le_of_lt h) (sg_le (le_of_lt h)) (eqb_zero_of_lt h) (sg_lt h) hle
 
 theorem pt_down_below₂ {x t : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] lt x (t + d)) (hge : Γ ⊢[PRAAx] le x t) :
-    Γ ⊢[PRAAx] le (ad x (t + d) + d * (sg (monus x (t + d)) + eqb x (t + d))) (ad x t + d * sg (monus (t + d) x)) := by
-  have hxm := le_of_lt h
-  have h1 := natEq hxm; have h2 := natEq (eq_add_of_le hxm)
-  have a := natEq (sg_le hxm); have e := natEq (eqb_zero_of_lt h); have b := natEq (sg_lt h)
-  have h3 := natEq hge; have h4 := natEq (eq_add_of_le hge)
-  refine le_of_eq_add (d := zero) ?_
-  ipra_lc -h4 + h2 + h3 - h1 + 𝔞 d * b - 𝔞 d * a - 𝔞 d * e
+    Γ ⊢[PRAAx] le (ad x (t + d) + d * (sg (monus x (t + d)) + eqb x (t + d))) (ad x t + d * sg (monus (t + d) x)) :=
+  MedianCounts.deviation_down_below₂ d (le_of_lt h) (sg_le (le_of_lt h)) (eqb_zero_of_lt h) (sg_lt h) hge
 
 theorem pt_down_below {x t : PTm n} (d : PTm n) (h : Γ ⊢[PRAAx] lt x (t + d)) :
     Γ ⊢[PRAAx] le (ad x (t + d) + d * (sg (monus x (t + d)) + eqb x (t + d))) (ad x t + d * sg (monus (t + d) x)) :=
