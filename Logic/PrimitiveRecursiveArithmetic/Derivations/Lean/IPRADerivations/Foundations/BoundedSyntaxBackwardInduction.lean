@@ -78,13 +78,11 @@ theorem reverse_le (N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx] le 
 
 theorem reverse_complement (N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx]
     monus N (monus N j) ≐ j :=
-  (congrMonus (eq_add_of_le hj) (.eqRefl _)).eqTrans (add_monus _ _)
+  Common.monus_monus_of_le hj
 
 theorem reverse_successor (N t : PTm n) (ht : Γ ⊢[PRAAx] lt t N) : Γ ⊢[PRAAx]
-    succ (monus N (succ t)) ≐ monus N t := by
-  have e : Γ ⊢[PRAAx] N ≐ succ (monus N (succ t))+t :=
-    (eq_add_of_le ht).eqTrans (by ipra_ring)
-  exact ((congrMonus e (.eqRefl t)).eqTrans (add_monus _ _)).eqSymm
+    succ (monus N (succ t)) ≐ monus N t :=
+  (Common.monus_succ_of_lt ht).eqSymm
 
 alias reverse_strict := LeanProofs.IPRA.Common.monus_succ_lt
 

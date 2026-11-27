@@ -41,11 +41,8 @@ theorem shift_succ₁ (t : PTm k) : Syn.shift (succ t) = succ (Syn.shift t) := b
 
 /-- `n ∸ (n ∸ j) = j` for `j ≤ n`. -/
 theorem monus_monus' {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
-    Γ ⊢[PRAAx] monus n (monus n j) ≐ j := by
-  have e₁ := natEq (eq_add_of_le h)
-  have hd : Γ ⊢[PRAAx] le (monus n j) n :=
-    le_of_eq_add (d := j) (by ipra_lc e₁)
-  ipra_lc e₁ - natEq (eq_add_of_le hd)
+    Γ ⊢[PRAAx] monus n (monus n j) ≐ j :=
+  Common.monus_monus_of_le h
 
 variable (a : PTm 2)
 

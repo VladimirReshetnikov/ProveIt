@@ -39,8 +39,8 @@ alias monus_le := Common.monus_le_self
 
 /-- `h ∸ (j + 1) < h` for `j < h`. -/
 theorem monus_succ_lt {h j : PTm k} (hj : Γ ⊢[PRAAx] lt j h) :
-    Γ ⊢[PRAAx] lt (monus h (succ j)) h := by
-  exact le_of_eq_add (d := j) (by ipra_lc natEq (eq_add_of_le hj))
+    Γ ⊢[PRAAx] lt (monus h (succ j)) h :=
+  Common.monus_succ_lt h j hj
 
 /-- A chain `c(t, p)` with supplied derivations of its bounds and of all local and edge
 tests. -/

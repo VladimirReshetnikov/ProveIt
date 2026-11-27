@@ -54,8 +54,8 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 
 /-- `(n + 1) ∸ j = (n ∸ j) + 1` for `j ≤ n`. -/
 theorem succ_monus_of_le {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
-    Γ ⊢[PRAAx] monus (succ n) j ≐ succ (monus n j) := by
-  ipra_lc natEq (eq_add_of_le h) - natEq (eq_add_of_le (le_trans h (le_succ_self n)))
+    Γ ⊢[PRAAx] monus (succ n) j ≐ succ (monus n j) :=
+  Common.monus_succ_of_le h
 
 section Product
 
@@ -159,11 +159,8 @@ open LeanProofs.IPRA.Analysis.Products (fact)
 
 /-- `n ∸ (n ∸ j) = j` for `j ≤ n`. -/
 theorem monus_monus_of_le {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
-    Γ ⊢[PRAAx] monus n (monus n j) ≐ j := by
-  have e₁ := natEq (eq_add_of_le h)
-  have hd : Γ ⊢[PRAAx] le (monus n j) n :=
-    le_of_eq_add (d := j) (by ipra_lc e₁)
-  ipra_lc e₁ - natEq (eq_add_of_le hd)
+    Γ ⊢[PRAAx] monus n (monus n j) ≐ j :=
+  Common.monus_monus_of_le h
 
 /-- `C(n, n ∸ j) = C(n, j)` for `j ≤ n`. -/
 theorem binom_symm_of_le {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :

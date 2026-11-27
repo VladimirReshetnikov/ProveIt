@@ -140,9 +140,7 @@ where
 theorem min_le_right (a b : PTm n) : Γ ⊢[PRAAx] le (monus a (monus a b)) b := by
   refine .orE (le_total a b) ?_ ?_
   · exact le_congr ((monus_zero _).eqSymm.eqTrans (congrMonus (.eqRefl _) Prf.hyp0.eqSymm)) (.eqRefl _) Prf.hyp0
-  · have e : (le b a :: Γ) ⊢[PRAAx] monus a (monus a b) ≐ b :=
-      (congrMonus (eq_add_of_le Prf.hyp0) (.eqRefl _)).eqTrans (add_monus _ _)
-    exact le_congr e.eqSymm (.eqRefl _) (le_refl _)
+  · exact le_congr (Common.monus_monus_of_le Prf.hyp0).eqSymm (.eqRefl _) (le_refl _)
 
 section Fatou
 

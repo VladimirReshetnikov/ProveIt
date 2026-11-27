@@ -45,6 +45,12 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias monus_of_eq := Common.monus_of_eq
 
+/-- `(n)_{n−k} k! = n!` for `k ≤ n`. -/
+theorem ff_fact_k {N k : PTm n} (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] ff N (monus N k) * fact k ≐ fact N :=
+  let m := Common.monus_monus_of_le hk
+  (congrMul (.eqRefl _) (congrAp2 factF m (.eqRefl _))).eqSymm.eqTrans
+    (ff_fact (Common.monus_le_self N k))
+
 /-- `(n)_{n−k} C(k, i) = C(n, i) (n − i)_{n−k}` for `k ≤ n` (guarded binomials, any `i`). -/
 theorem ff_gb {N k i : PTm n} (hk : Γ ⊢[PRAAx] le k N) :
     Γ ⊢[PRAAx] ff N (monus N k) * gb k i ≐ gb N i * ff (monus N i) (monus N k) := by
@@ -69,13 +75,11 @@ theorem ff_gb {N k i : PTm n} (hk : Γ ⊢[PRAAx] le k N) :
     have g2 : (le i k :: Γ) ⊢[PRAAx] gle i N ≐ one := gle_of_le hiN
     have e1 := natEq (eq_add_of_le (hk.wk : (le i k :: Γ) ⊢[PRAAx] le k N)); have e2 := natEq (eq_add_of_le hik)
     -- monus arithmetic
-    have m1 : (le i k :: Γ) ⊢[PRAAx] monus N (monus N k) ≐ k := monus_of_eq (by apply deriveNat; ipra_simps; linear_combination e1)
     have m2 : (le i k :: Γ) ⊢[PRAAx] monus N i ≐ monus N k + monus k i :=
       monus_of_eq (by apply deriveNat; ipra_simps; linear_combination e1 + e2)
     have m3 : (le i k :: Γ) ⊢[PRAAx] monus (monus N i) (monus N k) ≐ monus k i := monus_of_eq m2
     have f1 : (le i k :: Γ) ⊢[PRAAx] ff N (monus N k) * fact k ≐ fact N :=
-      (congrMul (.eqRefl _) (congrAp2 factF m1 (.eqRefl _))).eqSymm.eqTrans
-        (ff_fact (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; linear_combination e1)))
+      ff_fact_k hk.wk
     have f2 : (le i k :: Γ) ⊢[PRAAx] ff (monus N i) (monus N k) * fact (monus k i) ≐ fact (monus N i) :=
       (congrMul (.eqRefl _) (congrAp2 factF m3 (.eqRefl _))).eqSymm.eqTrans
         (ff_fact (le_of_eq_add (d := monus k i) m2))
@@ -311,13 +315,6 @@ theorem sumM (N : PTm n) : Γ ⊢[PRAAx] ap2 (sumF mkB) (succ N) N ≐ Rm N := b
         dM (monus (Syn.shift N) (var 0)) := by simp [inst2]
     rw [e, shift_pairT, shift_succ', inst2_pB]
     exact (congrAp2 _ (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqTrans (colsum_o hk)
-
-/-- `(n)_{n−k} k! = n!` for `k ≤ n`. -/
-theorem ff_fact_k {N k : PTm n} (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] ff N (monus N k) * fact k ≐ fact N := by
-  have e := natEq (eq_add_of_le hk)
-  have m : Γ ⊢[PRAAx] monus N (monus N k) ≐ k := monus_of_eq (by apply deriveNat; ipra_simps; linear_combination e)
-  exact (congrMul (.eqRefl _) (congrAp2 factF m (.eqRefl _))).eqSymm.eqTrans
-    (ff_fact (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps; linear_combination e)))
 
 theorem split_P (N : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF pkB) (succ N) N ≐ ap2 (sumF hkB) (succ N) N + ap2 (sumF mkB) (succ N) N := by

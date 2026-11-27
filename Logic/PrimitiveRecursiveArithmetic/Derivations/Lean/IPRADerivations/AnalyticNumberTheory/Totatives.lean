@@ -96,7 +96,7 @@ theorem split_lt {j N : PTm n} (h : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] N ≐ 
 /-- `N − j = (N − (j+1)) + 1` for `j < N`. -/
 theorem monus_succ_of_lt {j N : PTm n} (h : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] monus N j ≐ succ (monus N (succ j)) :=
-  (congrMonus (split_lt h) (.eqRefl j)).eqTrans (add_monus _ _)
+  Common.monus_succ_of_lt h
 
 theorem monus_pos {j N : PTm n} (h : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] monus N j ≐ succ (pred (monus N j)) :=
   AnalyticNumberTheory.Primes.eq_succ_pred (monus_succ_of_lt h)

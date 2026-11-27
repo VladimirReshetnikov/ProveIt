@@ -47,24 +47,19 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 
 /-- `(h ∸ (t + 1)) + 1 = h ∸ t` for `t < h`. -/
 theorem succ_monus {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
-    Γ ⊢[PRAAx] succ (monus h (succ t)) ≐ monus h t := by
-  ipra_lc natEq (eq_add_of_le (le_trans (le_succ_self t) ht)) - natEq (eq_add_of_le ht)
+    Γ ⊢[PRAAx] succ (monus h (succ t)) ≐ monus h t :=
+  (Common.monus_succ_of_lt ht).eqSymm
 
 /-- `h ∸ (h ∸ (t + 1)) = t + 1` for `t < h`. -/
 theorem monus_sub {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
-    Γ ⊢[PRAAx] monus h (monus h (succ t)) ≐ succ t := by
-  have e₁ := natEq (eq_add_of_le ht)
-  have hd : Γ ⊢[PRAAx] le (monus h (succ t)) h :=
-    le_of_eq_add (d := succ t) (by ipra_lc e₁)
-  ipra_lc e₁ - natEq (eq_add_of_le hd)
+    Γ ⊢[PRAAx] monus h (monus h (succ t)) ≐ succ t :=
+  Common.monus_monus_of_le ht
 
 /-- `h ∸ ((h ∸ (t + 1)) + 1) = t` for `t < h`. -/
 theorem monus_succ_sub {t h : PTm k} (ht : Γ ⊢[PRAAx] lt t h) :
-    Γ ⊢[PRAAx] monus h (succ (monus h (succ t))) ≐ t := by
-  have e₁ := natEq (eq_add_of_le ht)
-  have hd : Γ ⊢[PRAAx] le (succ (monus h (succ t))) h :=
-    le_of_eq_add (d := t) (by ipra_lc e₁)
-  ipra_lc e₁ - natEq (eq_add_of_le hd)
+    Γ ⊢[PRAAx] monus h (succ (monus h (succ t))) ≐ t :=
+  (congrMonus (.eqRefl _) (succ_monus ht)).eqTrans
+    (Common.monus_monus_of_le (le_trans (le_succ_self t) ht))
 
 /-! ## Congruence of the instance terms -/
 
