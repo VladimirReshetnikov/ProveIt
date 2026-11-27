@@ -108,10 +108,9 @@ theorem prefix_bound (z R B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have hz' : Γ.map Fm.shift ⊢[PRAAx] ComplexLogarithmRemainder.bounded (Syn.shift z) (Syn.shift R*Syn.shift B) := by
     simpa [Fm.shift,Syn.shift] using hz.shift
   have law : Γ ⊢[PRAAx] .all (prefixBound (Syn.shift z) (Syn.shift R) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using prefix_bound_zero z R B hB hz
-    · simp only [subst_prefixBound,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact prefix_bound_succ _ _ _ _ hB'.wk hz'.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_prefixBound]
+    · exact prefix_bound_zero z R B hB hz
+    · exact prefix_bound_succ _ _ _ _ hB'.wk hz'.wk Prf.hyp0
   simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using law.allE N
 
 theorem factor_is_local_constant (p i z B : PTm n) : Γ ⊢[PRAAx]

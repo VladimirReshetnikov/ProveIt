@@ -107,10 +107,9 @@ private theorem raw_succ (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b)
 theorem raw_bounds (p N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx] rawBounds p N a b := by
   let sh (x : PTm n) := Syn.shift x
   have hall : Γ ⊢[PRAAx] .all (rawBounds (sh p) (var 0) (sh a) (sh b)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simpa only [subst_rawBounds,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using raw_zero p a b hs
-    · simp only [subst_rawBounds,sh,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      let Δ := rawBounds (sh p) (var 0) (sh a) (sh b) :: Γ.map Fm.shift
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_rawBounds, sh]
+    · exact raw_zero p a b hs
+    · let Δ := rawBounds (sh p) (var 0) (sh a) (sh b) :: Γ.map Fm.shift
       have h : Δ ⊢[PRAAx] source (sh a) (sh b) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hs.shift.wk
       exact raw_succ _ _ _ _ h Prf.hyp0
   simpa only [subst_rawBounds,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE N

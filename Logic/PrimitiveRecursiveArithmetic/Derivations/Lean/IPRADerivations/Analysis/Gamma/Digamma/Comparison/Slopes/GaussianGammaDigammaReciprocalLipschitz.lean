@@ -133,10 +133,9 @@ private theorem next (a c b N : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hac : Γ �
 theorem finite_conservation (a c b N : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hac : Γ ⊢[PRAAx] le a c) :
     Γ ⊢[PRAAx] law a c b N := by
   have hall : Γ ⊢[PRAAx] .all (law (Syn.shift a) (Syn.shift c) (Syn.shift b) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_law,Syn.subst_var,Syn.subst_inst_shift,Syn.inst_zero] using initial a c b ha hac
-    · simp only [subst_law,subst_repl_shift]
-      have ah : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift a) := by simpa [Fm.shift,Syn.shift] using ha.shift
+    ipra_qfind (le_QF _ _) [subst_law]
+    · exact initial a c b ha hac
+    · have ah : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift a) := by simpa [Fm.shift,Syn.shift] using ha.shift
       have ch : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift c) := by simpa [Fm.shift,Syn.shift] using hac.shift
       exact next (Syn.shift a) (Syn.shift c) (Syn.shift b) (var 0) ah.wk ch.wk Prf.hyp0
   simpa only [subst_law,Syn.subst_var,Syn.subst_inst_shift,Syn.inst_zero] using hall.allE N

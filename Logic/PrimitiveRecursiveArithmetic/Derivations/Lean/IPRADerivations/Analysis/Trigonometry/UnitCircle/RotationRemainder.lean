@@ -275,17 +275,9 @@ theorem inv_succ {a b k : PTm n} (ih : Γ ⊢[PRAAx] Inv a b k) : Γ ⊢[PRAAx] 
 
 /-- Variables: `0 = k` (induction), `1 = a`, `2 = b`. -/
 private theorem inv₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] Inv (var 1) (var 2) (var 0) := by
-  refine ind _ ⟨⟨trivial, trivial⟩, trivial⟩ ?_ ?_
-  · simp only [Inv, Un, cx, cy, cB, Ex, Ey, Bd, Fx, Fy, Cd, Fm.subst_and, ZT.subst_eq, subst_zle, ZT.subst_add,
-      ZT.subst_sub, ZT.subst_mul, ZT.subst_neg, ZT.subst_sq, ZT.subst_ofNat, subst_rotRe, subst_rotIm, subst_nrm,
-      subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.inst_one, inst_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact inv_zero _ _
-  · simp only [Inv, Un, cx, cy, cB, Ex, Ey, Bd, Fx, Fy, Cd, Fm.subst_and, ZT.subst_eq, subst_zle, ZT.subst_add,
-      ZT.subst_sub, ZT.subst_mul, ZT.subst_neg, ZT.subst_sq, ZT.subst_ofNat, subst_rotRe, subst_rotIm, subst_nrm,
-      subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, repl_one, repl_two, ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ]
-    exact inv_succ Prf.hyp0
+  ipra_ind (⟨⟨trivial, trivial⟩, trivial⟩) [Inv, Un, cx, cy, cB, Ex, Ey, Bd, Fx, Fy, Cd, ZT.subst_eq, subst_zle, ZT.subst_add, ZT.subst_sub, ZT.subst_mul, ZT.subst_neg, ZT.subst_sq, ZT.subst_ofNat, subst_rotRe, subst_rotIm, subst_nrm, subst_ap2]
+  · exact inv_zero _ _
+  · exact inv_succ Prf.hyp0
 
 /-- The invariant at every exponent. -/
 theorem inv (a b k : PTm n) : Γ ⊢[PRAAx] Inv a b k := by
