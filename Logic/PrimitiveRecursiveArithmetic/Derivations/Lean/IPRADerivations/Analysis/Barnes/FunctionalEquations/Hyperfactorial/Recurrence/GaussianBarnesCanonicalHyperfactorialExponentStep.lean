@@ -62,11 +62,8 @@ theorem point_from_center (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
   (GaussianBarnesCanonicalShiftChart.translated_fraction (center A B) B hB).eqTrans
     (GaussianGammaFiniteValueProperness.fraction_equal _ _ _ hB (translated_center A B))
 
-private theorem constant_one (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast x)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalSyntheticDivision.subst_qone] using
-    (constant_at (var 0) qone).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm
+private theorem constant_one (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x :=
+  GaussianNameRingLaws.constant_one_cross x
 
 theorem logarithm_sum (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] crossEquivalent L (addF L T) (specialLogData (A+B) B)

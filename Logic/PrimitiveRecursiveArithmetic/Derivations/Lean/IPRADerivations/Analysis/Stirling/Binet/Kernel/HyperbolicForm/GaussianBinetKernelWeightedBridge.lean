@@ -114,11 +114,8 @@ private theorem mul_sub (a b c : Named Γ) : a *ₙ (b -ₙ c) ≈ₙ (a *ₙ b)
 private theorem add_sub (a b : Named Γ) : (a +ₙ b) -ₙ b ≈ₙ a :=
   GaussianNamedStrictOrderDifference.sum_sub_right _ _ _ _ a.reg b.reg
 
-private theorem one_as_constant (a : PTm n) : (namedOne a : Named Γ) ≈ₙ cst qone := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (one_fast a) (constant_regular _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,cst,GaussianRationalSyntheticDivision.subst_qone] using
-    (one_at (Γ := Γ.map Fm.shift) (var 0) (Syn.shift a)).eqTrans (constant_at (var 0) qone).eqSymm
+private theorem one_as_constant (a : PTm n) : (namedOne a : Named Γ) ≈ₙ cst qone :=
+  GaussianNameEquivalence.cross_symm _ _ _ _ (GaussianNameRingLaws.constant_one_cross a)
 
 private theorem zero_change (a b : PTm n) : (namedZero a : Named Γ) ≈ₙ namedZero b :=
   GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast a) (zero_fast b)

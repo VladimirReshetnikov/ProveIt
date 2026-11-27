@@ -54,11 +54,8 @@ ipra_subst differenceDataWithRadius
 
 ipra_subst factoredData
 
-private theorem one_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast x)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,GaussianRationalSyntheticDivision.subst_qone,Syn.shift] using
-    (constant_at (Γ := Γ.map Fm.shift) (var 0) qone).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm
+private theorem one_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x :=
+  GaussianNameRingLaws.constant_one_cross x
 
 private theorem difference_times (f g h : PR 2) (x y z : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) (hh : Γ ⊢[PRAAx] pointCN h z) :

@@ -205,12 +205,8 @@ theorem same_exp_different_radius_at (f : PR 2) (R S x p : PTm n)
 alias same_exp_different_radius := GaussianExponentialRadiusIndependence.same_input_cross
 
 theorem constant_one_cross (x : PTm n) :
-    Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast x)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalReciprocal.subst_qone] using
-    (constant_at (Γ := Γ.map Fm.shift) (var 0) (qone : PTm (n+1))).eqTrans
-      (one_at (var 0) (Syn.shift x)).eqSymm
+    Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x :=
+  GaussianNameRingLaws.constant_one_cross x
 
 def translationRadius (R : PTm n) : PTm n := (R+fullTurnRadius)+(R+fullTurnRadius)
 

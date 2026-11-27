@@ -62,12 +62,8 @@ theorem oriented_regular (m : ℕ) (A B x : PTm n) (hs : Γ ⊢[PRAAx] source A 
 def zeroPoint : PTm n := GaussianPositiveRationalLogarithm.fraction zero one
 
 private theorem one_constant (x : PTm n) :
-    Γ ⊢[PRAAx] crossEquivalent C GaussianNameRingLaws.oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (GaussianNameRingLaws.one_fast _)
-  refine .allI ?_
-  simpa [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalReciprocal.qone] using
-    (constant_at (Γ := Γ.map Fm.shift) (var 0) qone).eqTrans
-      (GaussianNameRingLaws.one_at (var 0) (Syn.shift x)).eqSymm
+    Γ ⊢[PRAAx] crossEquivalent C GaussianNameRingLaws.oneF qone x :=
+  GaussianNameRingLaws.constant_one_cross x
 
 private theorem zero_point (t : PTm n) :
     Γ ⊢[PRAAx] crossEquivalent (productF C) C (productData C t zeroPoint) zeroPoint := by

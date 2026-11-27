@@ -71,11 +71,8 @@ theorem regular (A B : PTm n) : Γ ⊢[PRAAx] pointCN nameF (data A B) :=
     (GaussianStirlingLogDuplication.exponential_regular linearExponentF _
       (multiply_fast C L _ _ (constant_regular _) log_half_regular))
 
-private theorem unit_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent C oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast x)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalSyntheticDivision.subst_qone] using
-    (constant_at (var 0) qone).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm
+private theorem unit_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent C oneF qone x :=
+  GaussianNameRingLaws.constant_one_cross x
 
 theorem linear_step (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] crossEquivalent (M G linearF) linearF

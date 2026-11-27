@@ -47,11 +47,10 @@ def weightedData (a d b r s : PTm n) : PTm n := nativeWeightedData a d b r (succ
 
 private theorem scale_one (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] crossEquivalent (productF f) f (productData f one x) x := by
-  have oneCross : Γ ⊢[PRAAx] crossEquivalent C oneF (naturalPoint one) x := by
-    apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast _)
-    refine .allI ?_
-    simpa [Syn.shift] using ((constant_at (var 0) (naturalPoint (one : PTm (n+1)))).eqTrans
-      (GaussianGammaEulerDenominator.natural_one.eqTrans (one_at (var 0) (Syn.shift x)).eqSymm))
+  have oneCross : Γ ⊢[PRAAx] crossEquivalent C oneF (naturalPoint one) x :=
+    GaussianNameEquivalence.cross_data_congr _ _ _ _ _ _
+      (GaussianGammaEulerDenominator.natural_one (Γ := Γ)).eqSymm (.eqRefl _)
+      (GaussianNameRingLaws.constant_one_cross x)
   have first := GaussianGammaAdjacentCutoff.multiply_cross C oneF f f (naturalPoint one) x x x
     (constant_regular _) (one_fast _) hf hf oneCross (cross_refl _ _ hf)
   exact cross_trans _ _ _ _ _ _ first (multiply_one_left f x hf)

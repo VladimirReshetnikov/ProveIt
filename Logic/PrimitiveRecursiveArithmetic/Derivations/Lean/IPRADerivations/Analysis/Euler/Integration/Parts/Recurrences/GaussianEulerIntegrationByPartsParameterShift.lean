@@ -52,11 +52,8 @@ private theorem add_cross (f f' g g' : PR 2) (x x' y y' : PTm n)
     crossEquivalent (addF f g) (addF f' g') (addData x y) (addData x' y') :=
   GaussianNameArithmetic.add_equivalent _ _ _ _ _ _ _ _ hf hf' hg hg' (cross_to_diagonal _ _ _ _ he) (cross_to_diagonal _ _ _ _ he')
 
-private theorem constant_one (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF GaussianNameRingLaws.oneF (qone : PTm n) x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (GaussianNameRingLaws.one_fast _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,GaussianRationalSyntheticDivision.subst_qone,Syn.shift] using
-    (constant_at (var 0) (qone : PTm (n+1))).eqTrans (GaussianNameRingLaws.one_at (var 0) (Syn.shift x)).eqSymm
+private theorem constant_one (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF GaussianNameRingLaws.oneF (qone : PTm n) x :=
+  GaussianNameRingLaws.constant_one_cross x
 
 theorem one_logarithm (a b : PTm n) (h : Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.source a b) : Γ ⊢[PRAAx]
     crossEquivalent powerExponentF logarithmF

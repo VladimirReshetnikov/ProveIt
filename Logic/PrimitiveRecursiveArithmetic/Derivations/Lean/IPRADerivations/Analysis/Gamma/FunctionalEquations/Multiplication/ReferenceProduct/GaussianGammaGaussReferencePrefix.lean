@@ -63,8 +63,7 @@ theorem terminal_one (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     GaussianBoundedInverseApartness.reciprocal_matches_inverse P oneF (gammaHeight z one m m) x x
       hP (one_fast x) inv.andE₂ prod
   have constantOne : Γ ⊢[PRAAx] crossEquivalent oneF constantF x qone :=
-    cross_trans oneF oneF constantF x zero qone (GaussianBoundedInverseApartness.ones_equivalent x zero)
-      GaussianGammaEncodingRescaling.one_constant_cross
+    GaussianNameEquivalence.cross_symm _ _ _ _ (GaussianNameRingLaws.constant_one_cross x)
   exact cross_trans gammaF oneF constantF (referenceData m m) x qone gammaOne constantOne
 
 theorem terminal_at (p N : PTm n) :

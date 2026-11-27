@@ -58,17 +58,11 @@ private theorem unit_sum : Γ ⊢[PRAAx] qadd (qone : PTm n) minusOne ≐ qzero 
     GaussianRationalSyntheticDivision.qzero_canonical (le_refl _)
     (GaussianRationalHorner.represents_congr (.eqRefl _) eq (.eqRefl _) hsum) (GaussianRationalHorner.zero_represents one)
 
-private theorem zero_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF zeroF qzero x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (zero_fast x)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalHorner.subst_qzero] using
-    (constant_at (var 0) qzero).eqTrans (zero_at (var 0) (Syn.shift x)).eqSymm
+private theorem zero_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF zeroF qzero x :=
+  GaussianNameRingLaws.constant_zero_cross x
 
-private theorem one_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast x)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalSyntheticDivision.subst_qone] using
-    (constant_at (var 0) qone).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm
+private theorem one_constant (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x :=
+  GaussianNameRingLaws.constant_one_cross x
 
 private theorem cancel_constants (f : PR 2) (x a b : PTm n) (hx : Γ ⊢[PRAAx] pointCN f x)
     (h : Γ ⊢[PRAAx] qadd a b ≐ qzero) :
