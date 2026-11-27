@@ -204,7 +204,7 @@ theorem gauss_product {p a a' : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + 
     simp only [shift_pairT]
     rw [inst2_rB, inst2_mB]
     exact (congrAp2 remF (congrAp2 remF (.eqRefl _) (fst_pair _ _)) (.eqRefl _)).eqTrans
-      (rem_small (rem_lt' hp1'.wk _))
+      (Division.rem_idempotent hp1'.wk)
   have f2 : Γ ⊢[PRAAx] ap2 (prodF aB) (half p) (pairT p a) ≐ pw a (half p) := by
     refine prod_const_of aB (half p) a (pairT p a) (.allI (.impI ?_))
     simp only [shift_pairT]

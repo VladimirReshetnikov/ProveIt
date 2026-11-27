@@ -177,8 +177,7 @@ theorem back {p a a' i : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + one)
     Γ ⊢[PRAAx] rem (rem (succ i * a) p * a') p ≐ succ i := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
     pos_of_eq_succ (c := two * half p) (ep.eqTrans (by ipra_ring))
-  have h1 : Γ ⊢[PRAAx] rem (rem (succ i * a) p) p ≐ rem (succ i * a) p := rem_small (rem_lt' hp1 _)
-  have s1 := rem_mul_congr a' hp1 h1
+  have s1 := rem_mul_congr a' hp1 (Division.rem_idempotent (x := succ i * a) hp1)
   have s2 : Γ ⊢[PRAAx] rem (succ i * a * a') p ≐ rem (succ i * (a * a')) p :=
     congrAp2 remF (mul_assoc _ _ _) (.eqRefl _)
   have s3 := rem_mul_congr2 hp1 (.eqRefl (rem (succ i) p)) hinv
@@ -211,8 +210,8 @@ theorem comp {p a a' i : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + one) (h
       (congrAp2 remF (add_alg e) (.eqRefl _)).eqTrans ((rem_add_mul hp1' a' zero).eqTrans (rem_zero _))
     have c1 : C ⊢[PRAAx] rem (rem (fold p (rem (succ i * a) p) * a') p + succ i) p ≐
         rem (fold p (rem (succ i * a) p) * a' + rem (succ i * a) p * a') p :=
-      rem_add_congr hp1' (rem_small hrx)
-        ((congrAp2 remF bk.wk.eqSymm (.eqRefl _)).eqTrans (rem_small (rem_lt' hp1' _)))
+      rem_add_congr hp1' (Division.rem_idempotent hp1')
+        ((congrAp2 remF bk.wk.eqSymm (.eqRefl _)).eqTrans (Division.rem_idempotent hp1'))
     have s1 : C ⊢[PRAAx] rem (fold p (rem (succ i * a) p) * a') p + succ i ≐
         succ (pred (rem (fold p (rem (succ i * a) p) * a') p + succ i)) :=
       pos_of_eq_succ (c := rem (fold p (rem (succ i * a) p) * a') p + i) (by ipra_ring)

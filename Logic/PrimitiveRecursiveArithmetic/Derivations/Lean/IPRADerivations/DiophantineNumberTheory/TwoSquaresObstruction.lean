@@ -53,7 +53,7 @@ theorem no_root {q : PTm k} (hq : Γ ⊢[PRAAx] prime q) (hodd : Γ ⊢[PRAAx] p
   have hq1 := p_pos (prime_two hq)
   have hs : Γ ⊢[PRAAx] signBit q (pred q) ≐ one := (minus_one_law hq hodd).eqTrans h3
   have nr := no_root_of_sign hs (rem_lt' hq1 z)
-  have rr : Γ ⊢[PRAAx] rem (rem z q) q ≐ rem z q := rem_small (rem_lt' hq1 z)
+  have rr := Division.rem_idempotent (x := z) hq1
   have sq : Γ ⊢[PRAAx] rem (rem z q * rem z q) q ≐ rem (z * z) q := rem_mul_congr2 hq1 rr rr
   have pq : Γ ⊢[PRAAx] rem (pred q + one) q ≐ zero :=
     (congrAp2 remF (pred_alg hq1) (.eqRefl _)).eqTrans ((rem_add_mul hq1 one zero).eqTrans (rem_zero q))

@@ -92,13 +92,8 @@ theorem two_pos : Γ ⊢[PRAAx] (two : PTm k) ≐ succ (pred two) :=
 /-- `(x mod 2^m) mod 2^n = x mod 2^n` for `n ≤ m`. -/
 theorem rem_rem {x n m : PTm k} (h : Γ ⊢[PRAAx] le n m) :
     Γ ⊢[PRAAx] rem (rem x (pw two m)) (pw two n) ≐ rem x (pw two n) := by
-  have hm : Γ ⊢[PRAAx] pw two m ≐ pw two n * pw two (monus m n) :=
-    (congrPw (.eqRefl _) (eq_add_of_le h)).eqTrans (pw_add _ _ _)
-  -- `x = (⌊x / 2^m⌋ · 2^{m−n}) · 2^n + (x mod 2^m)`
-  have ex : Γ ⊢[PRAAx] x ≐
-      (quo x (pw two m) * pw two (monus m n)) * pw two n + rem x (pw two m) := by
-    ipra_lc natEq (div_eq' (t := x) (pw_pos' two_pos m)) + 𝔞 (quo x (pw two m)) * natEq hm
-  exact ((congrAp2 remF ex (.eqRefl _)).eqTrans (rem_shift (pw_pos' two_pos n))).eqSymm
+  have factor := (congrPw (.eqRefl _) (eq_add_of_le h)).eqTrans (pw_add two n (monus m n))
+  exact Division.rem_rem_of_mul (pw_pos' two_pos n) (pw_pos' two_pos m) factor
 
 /-- Residues modulo `2^n`: `C(x, n, z)` is `z = x mod 2^n`, the equivalence is equality, and
 restriction reduces modulo the smaller power. -/

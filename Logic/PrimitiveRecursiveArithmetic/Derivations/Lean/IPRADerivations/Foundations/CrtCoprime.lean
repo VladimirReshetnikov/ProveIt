@@ -117,9 +117,8 @@ end System
 
 /-- `(x mod M) mod d = x mod d` for `d ∣ M`, `d, M ≥ 1`. -/
 theorem remdvd {d M x : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
-    (h : Γ ⊢[PRAAx] dvd d M) : Γ ⊢[PRAAx] rem (rem x M) d ≐ rem x d := by
-  refine rem_eq_of_eq hd (k₁ := quo M d * quo x M) (k₂ := zero) ?_
-  ipra_lc -natEq (Prf.andE₁ (dm hM x)) - 𝔞 (quo x M) * natEq (eq_of_dvd' hd h)
+    (h : Γ ⊢[PRAAx] dvd d M) : Γ ⊢[PRAAx] rem (rem x M) d ≐ rem x d :=
+  Division.rem_rem_of_mul hd hM (eq_of_dvd' hd h)
 
 /-- `x ≡ X (mod M)` and `d ∣ M` give `x ≡ X (mod d)`. -/
 theorem rem_down {d M x X : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))

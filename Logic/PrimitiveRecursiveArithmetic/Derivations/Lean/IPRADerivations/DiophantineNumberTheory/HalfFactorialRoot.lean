@@ -199,12 +199,8 @@ theorem root_residue {p h : PTm n} (hp : Γ ⊢[PRAAx] prime p) (e : Γ ⊢[PRAA
       dvd p (rem (fact h) p * rem (fact h) p + one)) := by
   have hp2 := prime_two hp
   have hp1 := p_pos hp2
-  have rr : Γ ⊢[PRAAx] rem (rem (fact h) p) p ≐ rem (fact h) p := AnalyticNumberTheory.Euler.rem_rem hp2 (fact h)
-  have s1 : Γ ⊢[PRAAx] rem (rem (fact h) p * rem (fact h) p) p ≐ rem (fact h * rem (fact h) p) p :=
-    rem_mul_congr _ hp1 rr
-  have s2 : Γ ⊢[PRAAx] rem (rem (fact h) p * fact h) p ≐ rem (fact h * fact h) p := rem_mul_congr _ hp1 rr
-  have sq : Γ ⊢[PRAAx] rem (rem (fact h) p * rem (fact h) p) p ≐ rem (fact h * fact h) p :=
-    s1.eqTrans ((congrAp2 remF (mul_comm _ _) (.eqRefl _)).eqTrans s2)
+  have rr := Division.rem_idempotent (x := fact h) hp1
+  have sq := ModularCertificate.rem_mul_congr2 hp1 rr rr
   have hd : Γ ⊢[PRAAx] dvd p (rem (fact h) p * rem (fact h) p + one) :=
     (rem_add_congr hp1 sq (.eqRefl (rem one p))).eqTrans (half_factorial_root hp e hh)
   refine .andI ?_ (.andI (rem_lt' hp1 _) hd)

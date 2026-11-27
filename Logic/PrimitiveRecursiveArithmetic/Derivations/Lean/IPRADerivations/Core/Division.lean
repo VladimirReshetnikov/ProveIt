@@ -265,6 +265,22 @@ theorem div_mod_of_lt {x d c : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
   div_mod_unique_at hd
     ((zero_add x).eqSymm.eqTrans (congrAdd (mul_zero d).eqSymm (.eqRefl x))) h
 
+/-- Reducing first modulo a positive multiple of `d` preserves the residue modulo `d`. -/
+theorem rem_rem_of_mul {x d M k c e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
+    (hM : Γ ⊢[PRAAx] M ≐ succ e) (factor : Γ ⊢[PRAAx] M ≐ d * k) :
+    Γ ⊢[PRAAx] rem (rem x M) d ≐ rem x d := by
+  have split := Prf.andE₁ (div_mod_at (x := x) hM)
+  have replace := congrAdd (congrMul factor (.eqRefl (quo x M))) (.eqRefl (rem x M))
+  have regroup : Γ ⊢[PRAAx] d * k * quo x M + rem x M ≐ rem x M + d * (k * quo x M) :=
+    (congrAdd (mul_assoc d k (quo x M)) (.eqRefl (rem x M))).eqTrans (add_comm _ _)
+  have dividend := split.eqTrans (replace.eqTrans regroup)
+  exact ((congrAp2 remF dividend (.eqRefl _)).eqTrans (Prf.andE₂ (div_mod_add_mul hd))).eqSymm
+
+/-- Taking the remainder again modulo the same positive divisor leaves it unchanged. -/
+theorem rem_idempotent {x d c : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c) :
+    Γ ⊢[PRAAx] rem (rem x d) d ≐ rem x d :=
+  Prf.andE₂ (div_mod_of_lt hd (Prf.andE₂ (div_mod_at hd)))
+
 end Division
 
 end LeanProofs.IPRA

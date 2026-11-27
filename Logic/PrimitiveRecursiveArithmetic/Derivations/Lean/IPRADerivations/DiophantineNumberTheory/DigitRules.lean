@@ -53,10 +53,8 @@ theorem last_alg {n P d q r c : PTm k} (e : Γ ⊢[PRAAx] n ≐ P * q + r) (f : 
 /-- If `m ∣ b^j` then `n mod m = (n mod b^j) mod m`. -/
 theorem last_digits {m b j : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))
     (h : Γ ⊢[PRAAx] dvd m (pw b j)) (n : PTm k) :
-    Γ ⊢[PRAAx] rem n m ≐ rem (rem n (pw b j)) m := by
-  have d := Prf.andE₁ (dm (pw_pos' hb j) n)
-  have f := eq_of_dvd' hm h
-  exact (congrAp2 remF (last_alg d f) (.eqRefl _)).eqTrans (rem_add_mul hm _ _)
+    Γ ⊢[PRAAx] rem n m ≐ rem (rem n (pw b j)) m :=
+  (Division.rem_rem_of_mul hm (pw_pos' hb j) (eq_of_dvd' hm h)).eqSymm
 
 /-- If `m ∣ b^j` then `m ∣ n` exactly when `m` divides the number formed by the last `j` digits. -/
 theorem last_digits_dvd {m b j : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))

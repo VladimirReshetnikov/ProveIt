@@ -278,10 +278,9 @@ theorem point1 (k : PTm n) :
 
 theorem rem_rem_mul (x : PTm n) :
     Γ ⊢[PRAAx] rem (rem x (m * N)) m ≐ rem x m ⋏ rem (rem x (m * N)) N ≐ rem x N := by
-  refine .andI (rem_eq_of_eq hm (k₁ := N * quo x (m * N)) (k₂ := zero) ?_)
-    (rem_eq_of_eq hN (k₁ := m * quo x (m * N)) (k₂ := zero) ?_)
-  · ipra_lc -natEq (div_eq (j := x) (pos_mul hm hN))
-  · ipra_lc -natEq (div_eq (j := x) (pos_mul hm hN))
+  have hM := pos_mul hm hN
+  exact .andI (Division.rem_rem_of_mul hm hM (.eqRefl _))
+    (Division.rem_rem_of_mul hN hM (mul_comm _ _))
 
 omit hN in
 theorem quo_lt {j : PTm n} (hj : Γ ⊢[PRAAx] lt j (m * N)) : Γ ⊢[PRAAx] lt (quo j m) N :=

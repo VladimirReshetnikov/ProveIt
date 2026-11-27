@@ -95,9 +95,8 @@ theorem cop_of_mul {a i : PTm n} (h : Γ ⊢[PRAAx] gcd (a * i) N ≐ one) : Γ 
   exact eq_one_of_dvd_one hd (dvd_congr (cop_comm hN h) (gcd_greatest' hd (Prf.andE₁ hdd) dai))
 
 /-- `rem (rem y N) N = rem y N`. -/
-theorem rem_rem (y : PTm n) : Γ ⊢[PRAAx] rem (rem y N) N ≐ rem y N := by
-  have hPos := N_pos hN
-  exact Prf.andE₂ (Division.div_mod_of_lt hPos (Prf.andE₂ (div_mod_at (x := y) hPos)))
+theorem rem_rem (y : PTm n) : Γ ⊢[PRAAx] rem (rem y N) N ≐ rem y N :=
+  Division.rem_idempotent (N_pos hN)
 
 /-- `rem j N = j` for `j < N`. -/
 theorem rem_small {j : PTm n} (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] rem j N ≐ j :=
