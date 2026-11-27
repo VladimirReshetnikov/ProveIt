@@ -153,10 +153,8 @@ theorem sep_count {N a s lam y : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s))
       (Δ ⊢[PRAAx] (sg (inst2 act i (Syn.shift y)) ≐ one) ⟶
         (le (Syn.shift a) (inst2 A i (Syn.shift y)) ⋏ le (inst2 A i (Syn.shift y)) (Syn.shift a + Syn.shift lam)))) :
     Γ ⊢[PRAAx] le (ap2 (sumF (acB act)) N y) (succ (quo lam s)) := by
-  have hs1 : Γ.map Fm.shift ⊢[PRAAx] Syn.shift s ≐ succ (pred (Syn.shift s)) := by
-    simpa [Fm.shift, Syn.shift] using hs.shift
-  have hs2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] Syn.shift (Syn.shift s) ≐ succ (pred (Syn.shift (Syn.shift s))) := by
-    simpa [Fm.shift, Syn.shift] using hs1.shift
+  have hs1 := Common.pos_shift hs
+  have hs2 := Common.pos_shift hs1
   have hX1 : Syn.shift (pairT a (pairT s y)) = pairT (Syn.shift a) (pairT (Syn.shift s) (Syn.shift y)) := by
     simp only [shift_pairT]
   refine le_congr ?_ (.eqRefl _) (injection_count (cK act) (gK A) (N := N) (R := succ (quo lam s))

@@ -211,8 +211,7 @@ theorem om_mul {N a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hpN : Γ ⊢[PRAAx]
     (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hpa : Γ ⊢[PRAAx] val p a ≐ zero) :
     Γ ⊢[PRAAx] om N (a * p) ≐ succ (om N a) := by
   have hp' : (Γ.map Fm.shift) ⊢[PRAAx] prime (Syn.shift p) := by simpa [Fm.shift, Syn.shift] using hp.shift
-  have ha' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift a ≐ succ (pred (Syn.shift a)) := by
-    simpa [Fm.shift, Syn.shift] using ha.shift
+  have ha' := Common.pos_shift ha
   have hpa' : (Γ.map Fm.shift) ⊢[PRAAx] val (Syn.shift p) (Syn.shift a) ≐ zero := by
     simpa [Fm.shift, Syn.shift] using hpa.shift
   have c₁ : Γ ⊢[PRAAx] om N (a * p) ≐ ap2 (sumF (addBody (lB omB) (dB (one : PTm 2)))) N (pairT p a) := by
@@ -232,8 +231,7 @@ theorem om_mul {N a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hpN : Γ ⊢[PRAAx]
 theorem sq_mul {N a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
     (hpa : Γ ⊢[PRAAx] val p a ≐ zero) : Γ ⊢[PRAAx] sq N (a * p) ≐ sq N a := by
   have hp' : (Γ.map Fm.shift) ⊢[PRAAx] prime (Syn.shift p) := by simpa [Fm.shift, Syn.shift] using hp.shift
-  have ha' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift a ≐ succ (pred (Syn.shift a)) := by
-    simpa [Fm.shift, Syn.shift] using ha.shift
+  have ha' := Common.pos_shift ha
   have hpa' : (Γ.map Fm.shift) ⊢[PRAAx] val (Syn.shift p) (Syn.shift a) ≐ zero := by
     simpa [Fm.shift, Syn.shift] using hpa.shift
   refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))

@@ -65,6 +65,11 @@ theorem pos_mul {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ 
 theorem pos_of_two_le {a : PTm n} (h : Γ ⊢[PRAAx] le two a) : Γ ⊢[PRAAx] a ≐ succ (pred a) :=
   pos_of_succ ((eq_add_of_le h).eqTrans (succ_add _ _))
 
+/-- Shift a proof that a natural term is positive to a context with one new variable. -/
+theorem pos_shift {a : PTm n} (h : Γ ⊢[PRAAx] a ≐ succ (pred a)) :
+    Γ.map Fm.shift ⊢[PRAAx] Syn.shift a ≐ succ (pred (Syn.shift a)) := by
+  simpa [Fm.shift, Syn.shift] using h.shift
+
 /-! ## Order -/
 
 theorem le_of_eq_zero {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ zero) : Γ ⊢[PRAAx] le a b :=

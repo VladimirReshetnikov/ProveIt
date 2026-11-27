@@ -67,8 +67,8 @@ theorem sq_tail {q d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h : Γ �
     sg_zero)).eqTrans (by ipra_ring)
 
 theorem shift_pos {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
-    (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) := by
-  simpa [Fm.shift, Syn.shift] using hd.shift
+    (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) :=
+  Common.pos_shift hd
 
 /-- `μ^±_N(d) = μ^±_{d+1}(d)` for `d ≥ 1` and `N ≥ d + 1`. -/
 theorem mu_bound {N d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hN : Γ ⊢[PRAAx] le (succ d) N) :

@@ -72,10 +72,6 @@ theorem rem_mul_congr_both {M x y x' y' : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ 
     ((congrAp2 remF (mul_comm y x') (.eqRefl _)).eqTrans
       ((rem_mul_right_congr y hM h2).eqTrans (congrAp2 remF (mul_comm y' y) (.eqRefl _))))
 
-private theorem shift_positive {m : PTm n} (h : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
-    Γ.map Fm.shift ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-  simpa [Fm.shift, Syn.shift] using h.shift
-
 /-- Compare two folds using the same operation on remainders at each successor step. -/
 theorem fold_congr_mod (fold : PTm 2 → PR 2)
     (combine : PTm (n + 1) → PTm (n + 1) → PTm (n + 1))
@@ -97,7 +93,7 @@ theorem fold_congr_mod (fold : PTm 2 → PR 2)
     · simpa [P, rem] using congrAp2 remF base (.eqRefl M)
     · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ((congrAp2 remF (advance f (var 0) (Syn.shift x)) (.eqRefl _)).eqTrans ?_)
-      exact (combine_congr (shift_positive hM).wk.wk Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)).eqTrans
+      exact (combine_congr (Common.pos_shift hM).wk.wk Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)).eqTrans
         (congrAp2 remF (advance g (var 0) (Syn.shift y)) (.eqRefl _)).eqSymm
   simpa [P, rem] using atBound
 
@@ -122,7 +118,7 @@ theorem rem_pow_congr {M x y : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
       have factor : Γ.map Fm.shift ⊢[PRAAx] rem (Syn.shift x) (Syn.shift M) ≐ rem (Syn.shift y) (Syn.shift M) := by
         simpa [Fm.shift, Syn.shift] using h.shift
       exact (congrAp2 remF (pw_succ _ _) (.eqRefl _)).eqTrans
-        ((rem_mul_congr_both (shift_positive hM).wk Prf.hyp0 factor.wk).eqTrans
+        ((rem_mul_congr_both (Common.pos_shift hM).wk Prf.hyp0 factor.wk).eqTrans
           (congrAp2 remF (pw_succ _ _) (.eqRefl _)).eqSymm)
   simpa [P, rem] using all.allE e
 

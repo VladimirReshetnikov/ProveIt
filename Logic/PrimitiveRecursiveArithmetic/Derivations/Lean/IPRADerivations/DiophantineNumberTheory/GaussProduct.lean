@@ -169,8 +169,7 @@ theorem gauss_product {p a a' : PTm n} (ep : Γ ⊢[PRAAx] p ≐ two * half p + 
   have sP : Syn.shift (pred p) = pred (Syn.shift p) := by simp [Syn.shift]
   have ep' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ two * half (Syn.shift p) + one := by
     simpa [Fm.shift, Syn.shift, subst_ap1] using ep.shift
-  have hp1' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-    simpa [Fm.shift, Syn.shift] using hp1.shift
+  have hp1' := Common.pos_shift hp1
   have hcS := shift_cop hc
   -- `∏ (p − 1)^{e_i} r_i ≡ ∏ b_i`
   have P2 : Γ ⊢[PRAAx] rem (ap2 (prodF cB) (half p) (pairT p a)) p ≐

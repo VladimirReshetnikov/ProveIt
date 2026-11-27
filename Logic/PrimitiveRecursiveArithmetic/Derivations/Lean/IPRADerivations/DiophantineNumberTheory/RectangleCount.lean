@@ -143,8 +143,7 @@ theorem row_a1 {p q P Q i : PTm n} (e2 : Γ ⊢[PRAAx] p ≐ two * P + one) (e3 
     Γ ⊢[PRAAx] ap2 (sumF (rowB a1)) Q (pairT i (pairT p q)) ≐ quo (succ i * q) p := by
   have hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p) :=
     pos_of_eq_succ (c := two * P) (e2.eqTrans (by ipra_ring))
-  have hp1' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-    simpa [Fm.shift, Syn.shift] using hp1.shift
+  have hp1' := Common.pos_shift hp1
   refine (sum_congr_bounded (rowB a1) IB (pairT i (pairT p q)) (pairT (pred p) (succ i * q)) Q
     (.allI (.impI ?_))).eqTrans ((row_count (quo_bound e2 e3 hi)).eqTrans
       (congrAp2 quoF (.eqRefl _) hp1.eqSymm))
@@ -163,8 +162,7 @@ theorem col_a2 {p q P Q j : PTm n} (e2 : Γ ⊢[PRAAx] p ≐ two * P + one) (e3 
     Γ ⊢[PRAAx] ap2 (sumF (colB a2)) P (pairT j (pairT p q)) ≐ quo (succ j * p) q := by
   have hq1 : Γ ⊢[PRAAx] q ≐ succ (pred q) :=
     pos_of_eq_succ (c := two * Q) (e3.eqTrans (by ipra_ring))
-  have hq1' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift q ≐ succ (pred (Syn.shift q)) := by
-    simpa [Fm.shift, Syn.shift] using hq1.shift
+  have hq1' := Common.pos_shift hq1
   have e2' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ two * Syn.shift P + one := by
     simpa [Fm.shift, Syn.shift] using e2.shift
   have hc' := shift_cop hc

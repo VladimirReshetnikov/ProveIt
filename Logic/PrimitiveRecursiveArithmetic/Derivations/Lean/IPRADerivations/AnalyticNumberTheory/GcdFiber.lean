@@ -179,10 +179,8 @@ theorem inst3_gB (k N d : PTm n) : inst3 gB k N d = eqb (gcd k N) d := by
     ConciseIPRA.PTm.subst_zero]
 
 theorem shift_pos {d : PTm n} (h : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
-    Γ.map Fm.shift ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) := by
-  have e := h.shift
-  simp only [Fm.shift, Fm.subst_eq, PTm.subst_pred, ConciseIPRA.PTm.subst_succ] at e
-  exact e
+    Γ.map Fm.shift ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) :=
+  Common.pos_shift h
 
 /-- `thm:gcd-fiber` at arbitrary `d, m ≥ 1`: `#{k < dm : gcd(k, dm) = d} = φ(m)`. -/
 theorem gcd_fiber_at {d m : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :

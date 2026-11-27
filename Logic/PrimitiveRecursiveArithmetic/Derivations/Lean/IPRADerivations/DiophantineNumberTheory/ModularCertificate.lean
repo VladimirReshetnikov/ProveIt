@@ -24,7 +24,7 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate
 
 open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv gv_greatest)
-open LeanProofs.IPRA.DiophantineNumberTheory.GcdUnique (sh shift_succ' shift_pred')
+open LeanProofs.IPRA.DiophantineNumberTheory.GcdUnique (shift_pred')
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
@@ -38,10 +38,10 @@ theorem unimodular {V : PTm 2} {N x m d : PTm k} (hg : Γ ⊢[PRAAx] gv V N x �
       dvd (succ (Syn.shift (pred d))) (inst2 V (var 0) (Syn.shift x))) := by
     refine .allI (.impI ?_)
     rw [shift_pred']
-    have hds : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) := by
-      have e := sh hd; rw [shift_succ', shift_pred'] at e; exact e.wk
-    have hms : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-      have e := sh hm; rw [shift_succ', shift_pred'] at e; exact e.wk
+    have hds : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift d ≐ succ (pred (Syn.shift d)) :=
+      (Common.pos_shift hd).wk
+    have hms : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) :=
+      (Common.pos_shift hm).wk
     have hdms : (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] dvd (Syn.shift d) (Syn.shift m) := by
       have e := hdm.shift; simpa [Fm.shift, Syn.shift] using e.wk
     have dv := Prf.andE₁ (dm hms (inst2 V (var 0) (Syn.shift x)))
@@ -79,8 +79,8 @@ theorem rem_mul_congr2 {M x y x' y' : PTm k} (hM : Γ ⊢[PRAAx] M ≐ succ (pre
   Foundations.ChineseRemainder.rem_mul_congr_both hM h1 h2
 
 theorem shift_pos {M : PTm k} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
-    Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
-  have e := sh hM; rw [shift_succ', shift_pred'] at e; exact e
+    Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) :=
+  Common.pos_shift hM
 
 /-- Finite sums of pointwise-congruent bodies are congruent. -/
 theorem sum_congr_mod (f g : PTm 2) {N x y M : PTm k} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))

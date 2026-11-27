@@ -36,10 +36,8 @@ open LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection (rem_small)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem pos_shift {x : PTm n} (h : Γ ⊢[PRAAx] x ≐ succ (pred x)) :
-    Γ.map Fm.shift ⊢[PRAAx] Syn.shift x ≐ succ (pred (Syn.shift x)) := by
-  have e := h.shift
-  simp only [Fm.shift, Fm.subst_eq, PTm.subst_pred, ConciseIPRA.PTm.subst_succ] at e
-  exact e
+    Γ.map Fm.shift ⊢[PRAAx] Syn.shift x ≐ succ (pred (Syn.shift x)) :=
+  Common.pos_shift h
 
 theorem one_pos : Γ ⊢[PRAAx] (one : PTm n) ≐ succ (pred one) := (congrSucc (pred_succ _)).eqSymm
 

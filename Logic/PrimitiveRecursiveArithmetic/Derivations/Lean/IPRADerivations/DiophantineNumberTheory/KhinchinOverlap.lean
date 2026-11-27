@@ -231,8 +231,7 @@ theorem cnt_meet {lo wk wl M Ql Q'l R G α γ β s : PTm n} (hM : Γ ⊢[PRAAx] 
     obtain ⟨_, _, p3, _⟩ := projW (Γ := lt (var 0) (Syn.shift (monus Ql Q'l * M)) :: Γ.map Fm.shift)
       (Syn.shift lo) (Syn.shift (lo + wk)) (Syn.shift wl) (Syn.shift (tup M Q'l (fact R * G) α γ β))
     exact (mt_c2 _ _).eqTrans (congrMul p3 (c2_bit _ _).eqSymm)
-  have hM1 : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
-    simpa [Fm.shift, Syn.shift] using hM.shift
+  have hM1 := Common.pos_shift hM
   have hQl1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Q'l) (Syn.shift Ql) := by
     simpa [Fm.shift, Syn.shift] using hQl.shift
   have hQR1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Ql) (Syn.shift R) := by
@@ -363,14 +362,12 @@ theorem overlap_bound {M Qk Q'k Ql Q'l R G wk wl α γ β s T' : PTm n} (hM : Γ
     rw [inst2_hB, inst2_acB]
     exact congrMul (fst_pair _ _) (congrSg (congrInst2 actK (.eqRefl _) (snd_pair _ _)))
   refine le_trans ?_ (le_congr (.eqRefl _) eR (le_refl _))
-  have hM1 : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
-    simpa [Fm.shift, Syn.shift] using hM.shift
+  have hM1 := Common.pos_shift hM
   have hQl1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Q'l) (Syn.shift Ql) := by
     simpa [Fm.shift, Syn.shift] using hQl.shift
   have hQR1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Ql) (Syn.shift R) := by
     simpa [Fm.shift, Syn.shift] using hQR.shift
-  have hs1 : Γ.map Fm.shift ⊢[PRAAx] Syn.shift s ≐ succ (pred (Syn.shift s)) := by
-    simpa [Fm.shift, Syn.shift] using hs.shift
+  have hs1 := Common.pos_shift hs
   have hw1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Ql * Syn.shift Ql * Syn.shift s)
       (fact (Syn.shift R) * Syn.shift G) := by
     simpa [Fm.shift, Syn.shift] using hw.shift

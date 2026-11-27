@@ -66,10 +66,7 @@ theorem block {A M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :
       simp [Syn.shift],
     show Syn.shift (pairT A x) = pairT (Syn.shift A) (Syn.shift x) by simp [Syn.shift]]
   let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift M) :: Γ.map Fm.shift
-  have hM' : Θ ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
-    have s0 : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
-      simpa [Fm.shift, Syn.shift] using hM.shift
-    exact s0.wk
+  have hM' : Θ ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := (Common.pos_shift hM).wk
   have d := decode (A := Syn.shift A) hM' (Prf.hyp0 : Θ ⊢[PRAAx] lt (var 0) (Syn.shift M))
   have s1 : Θ ⊢[PRAAx] sndT (pairT (Syn.shift A * Syn.shift M) (pairT (Syn.shift M) (Syn.shift x))) ≐
       pairT (Syn.shift M) (Syn.shift x) := snd_pair _ _
@@ -96,10 +93,7 @@ theorem flatten {M x : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (A : PTm 
       let Δ : List (Fm PTm (n + 1)) := flInv g (var 0) (Syn.shift M) (Syn.shift x) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] ap2 (sumF (flB g)) (var 0 * Syn.shift M) (pairT (Syn.shift M) (Syn.shift x)) ≐
           ap2 (sumF (oB g)) (var 0) (pairT (Syn.shift M) (Syn.shift x)) := Prf.hyp0
-      have hM' : Δ ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
-        have s0 : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
-          simpa [Fm.shift, Syn.shift] using hM.shift
-        exact s0.wk
+      have hM' : Δ ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := (Common.pos_shift hM).wk
       have es : Δ ⊢[PRAAx] succ (var 0) * Syn.shift M ≐ var 0 * Syn.shift M + Syn.shift M := by
         ipra_ring
       show Δ ⊢[PRAAx] ap2 (sumF (flB g)) (succ (var 0) * Syn.shift M) (pairT (Syn.shift M) (Syn.shift x)) ≐

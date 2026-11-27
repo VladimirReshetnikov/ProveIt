@@ -96,8 +96,7 @@ theorem dirichlet {D Q : PTm n} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (hQ : �
        lt (monus (Q * dp D Q) one * monus (Q * dp D Q) one) (Q * dq D Q * (Q * dq D Q) * D))))) := by
   -- Every bin is below `Q`.
   have hr : Γ ⊢[PRAAx] Permutation.rangeAll bB Q (pairT D Q) := by
-    have hQ' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift Q ≐ succ (pred (Syn.shift Q)) := by
-      simpa [Fm.shift, Syn.shift] using hQ.shift
+    have hQ' := Common.pos_shift hQ
     refine .allI ?_
     rw [shift_pairT]
     have wb := w_bounds hQ' (Syn.shift D) (var 0)

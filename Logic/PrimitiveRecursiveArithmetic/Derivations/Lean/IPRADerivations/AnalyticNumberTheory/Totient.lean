@@ -54,10 +54,7 @@ theorem coprime_pow {j p : PTm n} (hj : Γ ⊢[PRAAx] j ≐ succ (pred j)) (h : 
       exact eq_one_of_dvd_one hd (dvd_congr (pw_zero _) (Prf.andE₂ hdd))
     · simp only [Fm.subst_eq, subst_ex2, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
         ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have hj' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift j ≐ succ (pred (Syn.shift j)) := by
-        have e := hj.shift
-        simp only [Fm.shift, Fm.subst_eq, PTm.subst_pred, ConciseIPRA.PTm.subst_succ] at e
-        exact e
+      have hj' := Common.pos_shift hj
       have h' : Γ.map Fm.shift ⊢[PRAAx] gcd (Syn.shift j) (Syn.shift p) ≐ one := by
         have e := h.shift
         simp only [Fm.shift, Fm.subst_eq, subst_ex2, ConciseIPRA.PTm.subst_succ,

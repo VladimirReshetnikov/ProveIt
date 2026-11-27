@@ -124,8 +124,7 @@ theorem code_digit {V : PTm 2} {b x N j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ 
         (le (succ (Syn.shift j) + var 0) (Syn.shift N) ⟶
           rem (quo (code V (Syn.shift b) (Syn.shift x) (succ (Syn.shift j) + var 0)) (pw (Syn.shift b) (Syn.shift j)))
             (Syn.shift b) ≐ inst2 V (Syn.shift j) (Syn.shift x)) :: Γ.map Fm.shift
-      have hbs : Γ.map Fm.shift ⊢[PRAAx] Syn.shift b ≐ succ (pred (Syn.shift b)) := by
-        have e := hb.shift; simpa [Fm.shift, Syn.shift] using e
+      have hbs := Common.pos_shift hb
       have hb' : Δ ⊢[PRAAx] Syn.shift b ≐ succ (pred (Syn.shift b)) := hbs.wk.wk
       have hle : Δ ⊢[PRAAx] le (succ (Syn.shift j) + var 0) (Syn.shift N) :=
         le_trans (by ipra_le 1) Prf.hyp0
@@ -159,8 +158,7 @@ theorem digits_of_code {V : PTm 2} {b x N : PTm k}
     Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       inst2 dB (var 0) (Syn.shift (pairT b (code V b x N))) ≐ inst2 V (var 0) (Syn.shift x)) := by
   refine .allI (.impI ?_)
-  have hbs : Γ.map Fm.shift ⊢[PRAAx] Syn.shift b ≐ succ (pred (Syn.shift b)) := by
-    have e := hb.shift; simpa [Fm.shift, Syn.shift] using e
+  have hbs := Common.pos_shift hb
   have hVs : Γ.map Fm.shift ⊢[PRAAx] entriesLt V (Syn.shift b) (Syn.shift x) (Syn.shift N) := by
     have e := hV.shift
     simpa [Fm.shift, Syn.shift, entriesLt, Syn.subst_subst, Syn.up_succ, Syn.up_zero, Syn.shift_var] using e

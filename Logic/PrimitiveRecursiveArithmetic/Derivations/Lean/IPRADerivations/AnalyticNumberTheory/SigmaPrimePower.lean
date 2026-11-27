@@ -192,8 +192,7 @@ theorem sigma_step {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a : PTm n) :
   have hp1 := prime_eq_succ_pred hp
   have hQ := pos_pw hp1 a
   have hP := pos_mul hp1 hQ
-  have hp1' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-    simpa [Fm.shift, Syn.shift] using hp1.shift
+  have hp1' := Common.pos_shift hp1
   have hQ' : Γ.map Fm.shift ⊢[PRAAx] pw (Syn.shift p) (Syn.shift a) ≐ succ (pred (pw (Syn.shift p) (Syn.shift a))) :=
     pos_pw hp1' _
   have hpr' := prime_shift hp
