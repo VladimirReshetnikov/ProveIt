@@ -37,8 +37,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem le_mx_left (a b : PTm n) : Γ ⊢[PRAAx] le a (mx a b) := le_add_right a (monus b a)
 
 theorem le_mx_right (a b : PTm n) : Γ ⊢[PRAAx] le b (mx a b) :=
-  .orE (le_total a b) (le_congr (.eqRefl b) (Prf.eqSymm (mx_le Prf.hyp0)) (le_refl b))
-    (le_congr (.eqRefl b) (Prf.eqSymm (mx_ge Prf.hyp0)) Prf.hyp0)
+  Common.le_add_monus b a
 
 theorem mx_lub {a b c : PTm n} (ha : Γ ⊢[PRAAx] le a c) (hb : Γ ⊢[PRAAx] le b c) :
     Γ ⊢[PRAAx] le (mx a b) c :=

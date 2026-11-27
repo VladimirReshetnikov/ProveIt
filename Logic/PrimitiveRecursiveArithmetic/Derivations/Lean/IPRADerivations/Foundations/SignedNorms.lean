@@ -205,10 +205,8 @@ def mx (a b : PTm n) : PTm n := a + monus b a
 
 theorem le_mx_left (a b : PTm n) : Γ ⊢[PRAAx] le a (mx a b) := le_add_right a _
 
-theorem le_mx_right (a b : PTm n) : Γ ⊢[PRAAx] le b (mx a b) := by
-  have m := natEq (monus_max (Γ := Γ) a b)
-  show Γ ⊢[PRAAx] le b (a + monus b a)
-  ipra_le 𝔞 (monus a b) with m
+theorem le_mx_right (a b : PTm n) : Γ ⊢[PRAAx] le b (mx a b) :=
+  Common.le_add_monus b a
 
 theorem mx_le {a b c : PTm n} (ha : Γ ⊢[PRAAx] le a c) (hb : Γ ⊢[PRAAx] le b c) : Γ ⊢[PRAAx] le (mx a b) c := by
   refine .orE (le_total a b) ?_ ?_

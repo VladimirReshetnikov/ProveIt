@@ -58,8 +58,7 @@ abbrev mx (a b : PTm k) : PTm k := a + monus b a
 theorem le_mx_left (a b : PTm k) : Γ ⊢[PRAAx] le a (mx a b) := le_add_right a _
 
 theorem le_mx_right (a b : PTm k) : Γ ⊢[PRAAx] le b (mx a b) :=
-  .orE (le_total a b) (le_congr (.eqRefl b) (eq_add_of_le Prf.hyp0) (le_refl b))
-    (le_trans Prf.hyp0 (le_add_right a _))
+  Common.le_add_monus b a
 
 /-- `|a_i - b_i|`, the absolute value of the coefficient `c_i = a_i - b_i`. -/
 abbrev absd (a b : PTm 2) (i x : PTm k) : PTm k :=

@@ -72,10 +72,8 @@ theorem lcm_mono {d e c : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : 
 
 /-! ## Distributivity, one way -/
 
-theorem le_max_right (a b : PTm n) : Γ ⊢[PRAAx] le b (a + monus b a) := by
-  refine .orE (lt_or_le b a) ?_ ?_
-  · exact le_trans (le_trans (le_succ_self b) Prf.hyp0) (le_add_right a _)
-  · exact le_congr (.eqRefl _) (eq_add_of_le Prf.hyp0) (le_refl b)
+theorem le_max_right (a b : PTm n) : Γ ⊢[PRAAx] le b (a + monus b a) :=
+  Common.le_add_monus b a
 
 /-- `v_p(gcd(lcm(A, B), C)) ≤ v_p(lcm(gcd(A, C), gcd(B, C)))` for a prime `p`. -/
 theorem dist_val {p A B C : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hA : Γ ⊢[PRAAx] A ≐ succ (pred A))

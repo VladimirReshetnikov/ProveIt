@@ -134,11 +134,8 @@ theorem ag_succ (k x : PTm n) :
   rw [e] at h; exact h
 
 /-- `m + (v ∸ m)` is at least `m` and at least `v`. -/
-theorem max_ge (m v : PTm n) : Γ ⊢[PRAAx] le m (m + monus v m) ⋏ le v (m + monus v m) := by
-  refine .andI (le_add_right _ _) ?_
-  refine .orE (lt_or_le m v) ?_ ?_
-  · exact le_congr (.eqRefl _) (eq_add_of_le (le_of_lt Prf.hyp0)) (le_refl _)
-  · exact le_trans Prf.hyp0 (le_add_right _ _)
+theorem max_ge (m v : PTm n) : Γ ⊢[PRAAx] le m (m + monus v m) ⋏ le v (m + monus v m) :=
+  .andI (le_add_right _ _) (Common.le_add_monus v m)
 
 /-- Variables `0 = K`, `1 = b`, `2 = x`. -/
 private abbrev upF : Fm PTm 3 := lt (var 1) (var 0) ⟶ le (inst2 V (var 1) (var 2)) (Mx V (var 0) (var 2))

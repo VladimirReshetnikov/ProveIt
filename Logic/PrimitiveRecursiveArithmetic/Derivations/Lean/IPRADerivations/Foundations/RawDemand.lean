@@ -37,13 +37,12 @@ abbrev capT (C s r e : PTm k) : PTm k := mn C (mx (mx s r) e)
 
 /-- `min(C, M) ≤ M`. -/
 theorem mn_le_right (C M : PTm k) : Γ ⊢[PRAAx] le (mn C M) M :=
-  .orE (le_total C M) (le_congr (mn_le Prf.hyp0).eqSymm (.eqRefl _) Prf.hyp0)
-    (le_congr (mn_ge Prf.hyp0).eqSymm (.eqRefl _) (le_refl _))
+  Order.monus_le_of_le_add
+    (le_congr (.eqRefl _) (add_comm M (monus C M)) (Common.le_add_monus C M))
 
 /-- `min(C, M) ≤ C`. -/
 theorem mn_le_left (C M : PTm k) : Γ ⊢[PRAAx] le (mn C M) C :=
-  .orE (le_total C M) (le_congr (mn_le Prf.hyp0).eqSymm (.eqRefl _) (le_refl _))
-    (le_congr (mn_ge Prf.hyp0).eqSymm (.eqRefl _) Prf.hyp0)
+  Common.monus_le_self C (monus C M)
 
 /-- `cor:raw-demand-adequacy`, the edge inequality: a fixed point without overflow satisfies `e ≤ r`. -/
 theorem raw_adequate {C s r e : PTm k} (hfix : Γ ⊢[PRAAx] capT C s r e ≐ r) (hs : Γ ⊢[PRAAx] le s C)

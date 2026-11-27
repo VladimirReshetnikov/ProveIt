@@ -130,17 +130,12 @@ theorem center_mass (p q : PTm 1) (m X : PTm 2) (N x : PTm n) :
 
 /-! ## Finite Fatou -/
 
-theorem min_le_left (a b : PTm n) : Γ ⊢[PRAAx] le (monus a (monus a b)) a := by
-  refine .orE (le_total a (monus a b)) (le_zero_of' Prf.hyp0) ?_
-  exact le_of_eq_add (d := monus a b) ((eq_add_of_le Prf.hyp0).eqTrans (add_comm _ _))
-where
-  le_zero_of' {Δ : List (Fm PTm n)} {u v : PTm n} (h : Δ ⊢[PRAAx] le u v) : Δ ⊢[PRAAx] le (monus u v) u :=
-    le_congr h.eqSymm (.eqRefl _) (zero_le _)
+theorem min_le_left (a b : PTm n) : Γ ⊢[PRAAx] le (monus a (monus a b)) a :=
+  Common.monus_le_self a (monus a b)
 
-theorem min_le_right (a b : PTm n) : Γ ⊢[PRAAx] le (monus a (monus a b)) b := by
-  refine .orE (le_total a b) ?_ ?_
-  · exact le_congr ((monus_zero _).eqSymm.eqTrans (congrMonus (.eqRefl _) Prf.hyp0.eqSymm)) (.eqRefl _) Prf.hyp0
-  · exact le_congr (Common.monus_monus_of_le Prf.hyp0).eqSymm (.eqRefl _) (le_refl _)
+theorem min_le_right (a b : PTm n) : Γ ⊢[PRAAx] le (monus a (monus a b)) b :=
+  Order.monus_le_of_le_add
+    (le_congr (.eqRefl _) (add_comm b (monus a b)) (Common.le_add_monus a b))
 
 section Fatou
 

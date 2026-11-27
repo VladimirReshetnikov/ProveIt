@@ -80,13 +80,12 @@ theorem coherent_ge (opt : Opt (Γ := Γ) G W) (uniq : Uniq (Γ := Γ) u x G D W
 
 /-- `min(k, l) ≤ k`. -/
 theorem mn_le_left (k l : PTm n) : Γ ⊢[PRAAx] le (mn k l) k :=
-  .orE (le_total k l) (le_congr (mn_le Prf.hyp0).eqSymm (.eqRefl _) (le_refl k))
-    (le_congr (mn_ge Prf.hyp0).eqSymm (.eqRefl _) Prf.hyp0)
+  Common.monus_le_self k (monus k l)
 
 /-- `min(k, l) ≤ l`. -/
 theorem mn_le_right (k l : PTm n) : Γ ⊢[PRAAx] le (mn k l) l :=
-  .orE (le_total k l) (le_congr (mn_le Prf.hyp0).eqSymm (.eqRefl _) Prf.hyp0)
-    (le_congr (mn_ge Prf.hyp0).eqSymm (.eqRefl _) (le_refl l))
+  Order.monus_le_of_le_add
+    (le_congr (.eqRefl _) (add_comm l (monus k l)) (Common.le_add_monus k l))
 
 /-- `2^k 2^l ≤ (2^k + 2^l) 2^{min(k,l)}`. -/
 theorem pw_min (k l : PTm n) :
