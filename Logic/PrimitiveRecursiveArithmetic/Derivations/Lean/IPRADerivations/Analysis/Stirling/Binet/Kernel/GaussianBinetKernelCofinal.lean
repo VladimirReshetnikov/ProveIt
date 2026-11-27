@@ -21,7 +21,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator denominator_positive)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_at_earlier_precisions distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
@@ -70,26 +70,13 @@ theorem late_observations (p q N A B : PTm n) (hN : Γ ⊢[PRAAx] le (cutoff p) 
   exact distance_congr (sample_at p A B).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (distance_radius_mono _ _ _ _ _ _ den (positive_product _ _ hU hV) pad (distance_symmetric _ _ _ _ den raw))
 
-private theorem lower_second_error (x y p q : PTm n)
-    (h : Γ ⊢[PRAAx] distanceBounded x y (unit p+unit (succ q)) (unit p*unit (succ q))) :
-    Γ ⊢[PRAAx] distanceBounded x y (unit p+unit q) (unit p*unit q) := by
-  have hp := unit_positive (Γ := Γ) p
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hp (unit_positive (succ q)))
-    (positive_product _ _ hp (unit_positive q)) ?_ h
-  refine le_of_eq_add (d := unit p*unit p*unit q) ?_
-  have eq := natEq (unit_successor (Γ := Γ) q)
-  apply deriveNat
-  ipra_simps
-  rw [eq]
-  ring
-
 theorem observations (p q A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     distanceBounded (ap2 nameF p (inputData A B)) (ap2 nameF q (inputData A B)) (unit p+unit q) (unit p*unit q) := by
   refine (le_total (cutoff p) (cutoff q)).orE ?_ ?_
-  · exact lower_second_error _ _ p q
+  · exact distance_at_earlier_precisions p q p (succ q) (le_refl _) (le_succ_self _)
       (distance_congr (.eqRefl _) (sample_at q A B).eqSymm (.eqRefl _) (.eqRefl _)
         (late_observations p (succ q) (cutoff q) A B Prf.hyp0 hB.wk))
-  · have rev := lower_second_error _ _ q p
+  · have rev := distance_at_earlier_precisions q p q (succ p) (le_refl _) (le_succ_self _)
       (distance_congr (.eqRefl _) (sample_at p A B).eqSymm (.eqRefl _) (.eqRefl _)
         (late_observations q (succ p) (cutoff p) A B Prf.hyp0 hB.wk))
     exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)

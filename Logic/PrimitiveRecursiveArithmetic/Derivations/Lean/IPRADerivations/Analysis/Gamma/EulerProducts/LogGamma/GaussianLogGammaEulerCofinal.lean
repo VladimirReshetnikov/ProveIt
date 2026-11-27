@@ -25,7 +25,7 @@ open GaussianNameEquivalence (crossEquivalent cross_at cross_symm)
 open GaussianNameRingLaws (equivalent_of_envelope)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_at_earlier_precisions distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalSlackRemoval (precision slack_removal_at)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -155,20 +155,6 @@ private theorem absorb_tail (x y C N p q : PTm n)
   rw [e]
   ring
 
-private theorem halve_second_error (x y p q : PTm n)
-    (h : Γ ⊢[PRAAx] distanceBounded x y (unit p+unit (succ q)) (unit p*unit (succ q))) :
-    Γ ⊢[PRAAx] distanceBounded x y (unit p+unit q) (unit p*unit q) := by
-  have hp := unit_positive (Γ := Γ) p
-  apply distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hp (unit_positive (succ q)))
-    (positive_product _ _ hp (unit_positive q)) ?_ h
-  have e := natEq (pw_succ (Γ := Γ) two q)
-  refine le_of_eq_add (d := unit p*unit p*unit q) ?_
-  apply deriveNat
-  dsimp only [unit]
-  ipra_simps
-  rw [e]
-  ring
-
 theorem late_cutoff_distance (p q A B D neg R N : PTm n)
     (h : Γ ⊢[PRAAx] source A B D neg R) (hle : Γ ⊢[PRAAx] le (cutoff R p) N) :
     Γ ⊢[PRAAx] distanceBounded (observed p A B D neg R) (ap2 F q (headData A B D neg N))
@@ -187,8 +173,9 @@ theorem observed_distance (p q A B D neg R : PTm n)
     Γ ⊢[PRAAx] distanceBounded (observed p A B D neg R) (observed q A B D neg R)
       (unit p+unit q) (unit p*unit q) := by
   refine (le_total (cutoff R p) (cutoff R q)).orE ?_ ?_
-  · exact halve_second_error _ _ p q (late_cutoff_distance p (succ q) A B D neg R _ h.wk Prf.hyp0)
-  · have rev := halve_second_error _ _ q p
+  · exact distance_at_earlier_precisions p q p (succ q) (le_refl _) (le_succ_self _)
+      (late_cutoff_distance p (succ q) A B D neg R _ h.wk Prf.hyp0)
+  · have rev := distance_at_earlier_precisions q p q (succ p) (le_refl _) (le_succ_self _)
       (late_cutoff_distance q (succ p) A B D neg R (cutoff R p) h.wk Prf.hyp0)
     have fwd := distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive p)) rev
     exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring) fwd
