@@ -50,14 +50,14 @@ theorem growth_mono (t B C : PTm n) (hBC : Γ ⊢[PRAAx] le B C) : Γ ⊢[PRAAx]
     · exact le_congr (growth_zero B).eqSymm (growth_zero C).eqSymm hBC
     · exact le_congr (growth_succ _ _).eqSymm (growth_succ _ _).eqSymm (amp_mono Prf.hyp0)
   change Γ ⊢[PRAAx] monotoneLaw t B C
-  simpa only [subst_monotoneLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
+  ipra_simpa_inst [subst_monotoneLaw] using all.allE t
 theorem growth_inflation (t B : PTm n) : Γ ⊢[PRAAx] le B (growth t B) := by
   have all : Γ ⊢[PRAAx] .all (inflationLaw (var 0) (Syn.shift B)) := by
     ipra_qfind (le_QF _ _) [subst_inflationLaw]
     · exact le_congr (.eqRefl _) (growth_zero B).eqSymm (le_refl B)
     · exact le_trans Prf.hyp0 (le_congr (.eqRefl _) (growth_succ _ _).eqSymm (amp_inflation _))
   change Γ ⊢[PRAAx] inflationLaw t B
-  simpa only [subst_inflationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
+  ipra_simpa_inst [subst_inflationLaw] using all.allE t
 
 theorem composition_zero (u B : PTm n) : Γ ⊢[PRAAx] compositionLaw zero u B :=
   (growth_zero _).eqTrans (growth_congr (zero_add u).eqSymm (.eqRefl _))
@@ -71,7 +71,7 @@ theorem growth_composition (t u B : PTm n) : Γ ⊢[PRAAx] growth t (growth u B)
     · exact composition_zero _ _
     · exact composition_step _ _ _ Prf.hyp0
   change Γ ⊢[PRAAx] compositionLaw t u B
-  simpa only [subst_compositionLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
+  ipra_simpa_inst [subst_compositionLaw] using all.allE t
 theorem growth_counter_mono (t u B : PTm n) (h : Γ ⊢[PRAAx] le t u) :
     Γ ⊢[PRAAx] le (growth t B) (growth u B) := by
   have e : Γ ⊢[PRAAx] monus u t+t ≐ u := (add_comm _ _).eqTrans (eq_add_of_le h).eqSymm

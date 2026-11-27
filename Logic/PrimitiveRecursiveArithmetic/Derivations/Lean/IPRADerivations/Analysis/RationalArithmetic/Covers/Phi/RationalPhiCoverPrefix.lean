@@ -111,8 +111,7 @@ theorem prefix_distinct (P K : PTm n) (hc : Γ ⊢[PRAAx] le K (length P)) (hd :
 theorem extra_at (A : BFm 2) (P x i : PTm n) (h : Γ ⊢[PRAAx] extra A P x) (hi : Γ ⊢[PRAAx] lt i (length P)) : Γ ⊢[PRAAx]
     (formula A).subst ![entry P i,x] := by
   have rule : Γ ⊢[PRAAx] lt i (length P) ⟶ (formula A).subst ![entry P i,x] := by
-    simpa only [extra,Fm.subst_imp,Foundations.FiniteCoverAssignment.property_inst,subst_lt,Foundations.SequenceComposition.subst_length,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [extra,Fm.subst_imp,Foundations.FiniteCoverAssignment.property_inst,subst_lt,Foundations.SequenceComposition.subst_length] using h.allE i
   exact .impE rule hi
 
 theorem prefix_extra (A : BFm 2) (P K x : PTm n) (hc : Γ ⊢[PRAAx] le K (length P)) (he : Γ ⊢[PRAAx] extra A P x) : Γ ⊢[PRAAx]

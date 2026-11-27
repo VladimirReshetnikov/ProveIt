@@ -430,12 +430,12 @@ ipra_subst tableEqual [Syn.subst_shift, Syn.shift_subst]
 theorem row_equal_at (g h : PTm 3) (m p q i l : PTm n) (he : Γ ⊢[PRAAx] rowEqual g h m p q i)
     (hl : Γ ⊢[PRAAx] lt l m) : Γ ⊢[PRAAx] inst3 g i l p ≐ inst3 h i l q := by
   have gate : Γ ⊢[PRAAx] lt l m ⟶ inst3 g i l p ≐ inst3 h i l q := by
-    simpa only [rowEqual,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_inst3,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using he.allE l
+    ipra_simpa_inst [rowEqual,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_inst3] using he.allE l
   exact .impE gate hl
 theorem table_equal_row (g h : PTm 3) (m p q i : PTm n) (he : Γ ⊢[PRAAx] tableEqual g h m p q)
     (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx] rowEqual g h m p q i := by
   have gate : Γ ⊢[PRAAx] lt i m ⟶ rowEqual g h m p q i := by
-    simpa only [tableEqual,Fm.subst_imp,subst_lt,subst_rowEqual,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using he.allE i
+    ipra_simpa_inst [tableEqual,Fm.subst_imp,subst_lt,subst_rowEqual] using he.allE i
   exact .impE gate hi
 
 theorem row_entry_at (g : PTm 3) (i l p : PTm n) : Γ ⊢[PRAAx] inst2 (rowB g) l (pairT i p) ≐ inst3 g i l p := by

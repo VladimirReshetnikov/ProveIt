@@ -157,7 +157,7 @@ theorem selected_spec (v : PR 2) (K x : PTm n) : Γ ⊢[PRAAx] le (selected v K 
     · exact le_congr (selected_zero v x).eqSymm (.eqRefl _) (le_refl zero)
     · exact le_congr (selected_succ v (var 0) (Syn.shift x)).eqSymm (.eqRefl _)
         (choice_bound v _ _ _ _ (le_trans Prf.hyp0 (le_succ_self _)) (le_refl _))
-  simpa only [subst_le, subst_selected, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE K all
+  ipra_simpa_inst [subst_le, subst_selected] using Prf.allE K all
 
 theorem selected_le_old (v : PR 2) (K x : PTm n) :
     Γ ⊢[PRAAx] rationalLE (value v (selected v (succ K) x) x) (value v (selected v K x) x) :=
@@ -183,8 +183,7 @@ theorem selected_minimal (v : PR 2) (K i x : PTm n) (hi : Γ ⊢[PRAAx] le i K) 
       · exact rationalLE_congr (.eqRefl _) (congrAp2 v Prf.hyp0.eqSymm (.eqRefl _))
           (selected_le_new v (var 0) (Syn.shift x))
   have result : Γ ⊢[PRAAx] le i K ⟶ rationalLE (value v (selected v K x) x) (value v i x) := by
-    simpa only [Fm.subst_imp, subst_le, subst_rationalLE, subst_value, subst_selected,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE K all
+    ipra_simpa_inst [Fm.subst_imp, subst_le, subst_rationalLE, subst_value, subst_selected] using Prf.allE K all
   exact .impE result hi
 
 theorem selected_new (v : PR 2) (K x : PTm n)
@@ -245,8 +244,7 @@ theorem earlier_distinct (v : PR 2) (K i x : PTm n)
           (rationalEq_congr (.eqRefl _) (congrAp2 v old.wk (.eqRefl _)) Prf.hyp0))
   have result : Γ ⊢[PRAAx] lt i (selected v K x) ⟶
       neg (rationalEq (value v i x) (value v (selected v K x) x)) := by
-    simpa only [Fm.subst_imp, subst_lt, subst_neg, subst_rationalEq, subst_value, subst_selected,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE K all
+    ipra_simpa_inst [Fm.subst_imp, subst_lt, subst_neg, subst_rationalEq, subst_value, subst_selected] using Prf.allE K all
   exact .impE result hi
 
 theorem selected_least (v : PR 2) (K i x : PTm n)

@@ -68,8 +68,7 @@ theorem reconstruct_length (S N k : PTm n) : Γ ⊢[PRAAx] length (reconstruct S
     ipra_qfind [subst_length, subst_reconstruct]
     · exact (congrFst (reconstruct_zero S N)).eqTrans (singleton_length _)
     · exact (congrFst (reconstruct_succ _ _ _)).eqTrans ((linear_length _ _ _).eqTrans (congrSucc Prf.hyp0))
-  simpa only [Fm.subst_eq,subst_length,subst_reconstruct,ConciseIPRA.PTm.subst_succ,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [Fm.subst_eq,subst_length,subst_reconstruct,ConciseIPRA.PTm.subst_succ] using Prf.allE k all
 
 theorem singleton_canonical : Γ ⊢[PRAAx] canonicalCoefficients (singleton (qone : PTm n)) := by
   refine .allI (.impI ?_)
@@ -115,8 +114,8 @@ theorem reconstruct_monic (S N k : PTm n) : Γ ⊢[PRAAx] entry (reconstruct S N
     · have pos : Γ.map Fm.shift ⊢[PRAAx] le one (length (reconstruct (Syn.shift S) (Syn.shift N) (var 0))) := le_congr (.eqRefl one) (reconstruct_length (Syn.shift S) (Syn.shift N) (var 0)).eqSymm
         (le_of_eq_add (d := (var 0 : PTm (n+1))) (by ipra_ring))
       exact (entry_congr (reconstruct_succ _ _ _) (.eqRefl _)).eqTrans (linear_monic _ _ _ pos.wk Prf.hyp0)
-  simpa only [Fm.subst_eq,subst_entry,subst_reconstruct,ConciseIPRA.PTm.subst_zero,
-    GaussianRationalSyntheticDivision.subst_qone,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [Fm.subst_eq,subst_entry,subst_reconstruct,ConciseIPRA.PTm.subst_zero,
+    GaussianRationalSyntheticDivision.subst_qone] using Prf.allE k all
 
 
 /-- Actual suffix polynomials retain the original forward root indices. -/
@@ -191,8 +190,7 @@ theorem reconstruction_evaluation (S N y k : PTm n) : Γ ⊢[PRAAx]
     · exact (evaluate_congr (reconstruct_succ _ _ _) (.eqRefl _)).eqTrans
         ((GaussianRationalLinearProduct.linear_evaluation _ _ _ _ (.eqRefl _) (reconstruct_canonical _ _ _)).eqTrans
           ((qmul_congr (.eqRefl _) Prf.hyp0).eqTrans (factors_succ _ _ _ _).eqSymm))
-  simpa only [Fm.subst_eq,GaussianRationalHorner.subst_evaluate,subst_reconstruct,subst_factors,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [Fm.subst_eq,GaussianRationalHorner.subst_evaluate,subst_reconstruct,subst_factors] using Prf.allE k all
 
 /-- The final scalar program has normal forward factor order: factor j
 multiplies the already computed tail of factors j+1 through N-1. -/

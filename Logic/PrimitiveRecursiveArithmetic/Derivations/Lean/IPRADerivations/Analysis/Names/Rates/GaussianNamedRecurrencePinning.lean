@@ -34,7 +34,7 @@ ipra_subst regularFamily [Syn.subst_shift, Syn.shift_subst]
 
 theorem regular_at (f : PR 2) (b : PTm 2) (x j : PTm n) (h : Γ ⊢[PRAAx] regularFamily f b x) :
     Γ ⊢[PRAAx] pointCN f (inst2 b j x) := by
-  simpa only [regularFamily,subst_pointCN,subst_inst2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE j
+  ipra_simpa_inst [regularFamily,subst_pointCN,subst_inst2] using h.allE j
 
 def decayAt (f : PR 2) (b : PTm 2) (x B C j : PTm n) : Fm PTm n :=
   le one j ⟶ .all
@@ -54,11 +54,10 @@ theorem decay_at (f : PR 2) (b : PTm 2) (x B C j p : PTm n) (hj : Γ ⊢[PRAAx] 
     (h : Γ ⊢[PRAAx] decayEnvelope f b x B C) :
     Γ ⊢[PRAAx] bounded (sample f b p j x) (B*unit p+C*j) (j*unit p) := by
   have atIndex : Γ ⊢[PRAAx] decayAt f b x B C j := by
-    simpa only [decayEnvelope,subst_decayAt,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE j
+    ipra_simpa_inst [decayEnvelope,subst_decayAt] using h.allE j
   have all := Prf.impE atIndex hj
-  simpa only [GaussianRationalMetric.subst_bounded,GaussianNamedFiniteEqualityChain.subst_sample,
-    GaussianCoefficientNameBounds.subst_unit,PTm.subst_mul,PTm.subst_add,Syn.subst_var,Syn.inst_zero,
-    Syn.subst_inst_shift] using all.allE p
+  ipra_simpa_inst [GaussianRationalMetric.subst_bounded,GaussianNamedFiniteEqualityChain.subst_sample,
+    GaussianCoefficientNameBounds.subst_unit,PTm.subst_mul,PTm.subst_add] using all.allE p
 
 theorem index_cross (f : PR 2) (b : PTm 2) (x j : PTm n)
     (hr : Γ ⊢[PRAAx] regularFamily f b x) (hs : Γ ⊢[PRAAx] allSteps f b x) :

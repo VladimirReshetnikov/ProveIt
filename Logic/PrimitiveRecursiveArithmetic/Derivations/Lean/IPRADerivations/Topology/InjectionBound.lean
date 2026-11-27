@@ -48,8 +48,7 @@ abbrev injBelow (d x : PTm n) : Fm PTm n :=
 theorem range_at {d m x i : PTm n} (h : Γ ⊢[PRAAx] rangeBelow f d m x) (hi : Γ ⊢[PRAAx] lt i d) :
     Γ ⊢[PRAAx] lt (ap2 f i x) m := by
   have a : Γ ⊢[PRAAx] lt i d ⟶ lt (ap2 f i x) m := by
-    simpa only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift] using Prf.allE i h
+    ipra_simpa_inst [Fm.subst_imp, subst_le, subst_lt, subst_ap2] using Prf.allE i h
   exact .impE a hi
 
 theorem inj_at {d x : PTm n} (h : Γ ⊢[PRAAx] injBelow f d x) (i j : PTm n) :

@@ -169,9 +169,9 @@ theorem box_test_at (N B F j : PTm n) (h : Γ ⊢[PRAAx] boxTests N B F)
   have rule : Γ ⊢[PRAAx] lt j (length B) ⟶
       (MinkowskiSlabInterval.check N (doubledFacets N F) (MinkowskiRationalBoxes.lowerRow B j)
         (MinkowskiRationalBoxes.upperRow B j) ≐ one) := by
-    simpa only [Fm.subst_imp,Fm.subst_eq,subst_lt,subst_length,MinkowskiSlabInterval.subst_check,
+    ipra_simpa_inst [Fm.subst_imp,Fm.subst_eq,subst_lt,subst_length,MinkowskiSlabInterval.subst_check,
       subst_doubledFacets,MinkowskiRationalBoxes.subst_lowerRow,MinkowskiRationalBoxes.subst_upperRow,
-      ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE j
+      ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ] using h.allE j
   exact .impE rule hj
 
 /-- Each genuine interval test derives the original doubled-coordinate

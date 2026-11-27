@@ -112,8 +112,8 @@ theorem member_at (N F q j : PTm n) (h : Γ ⊢[PRAAx] facetsMember N F q)
     (hj : Γ ⊢[PRAAx] lt j (length F)) :
     Γ ⊢[PRAAx] rowMember N (fstT (entry F j)) (sndT (entry F j)) q := by
   have rule : Γ ⊢[PRAAx] lt j (length F) ⟶ rowMember N (fstT (entry F j)) (sndT (entry F j)) q := by
-    simpa only [Fm.subst_imp,subst_lt,subst_length,subst_rowMember,subst_fstT,subst_sndT,
-      subst_entry,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE j
+    ipra_simpa_inst [Fm.subst_imp,subst_lt,subst_length,subst_rowMember,subst_fstT,subst_sndT,
+      subst_entry] using h.allE j
   exact .impE rule hj
 
 theorem facets_opposite (N F q : PTm n) (h : Γ ⊢[PRAAx] facetsMember N F q) :

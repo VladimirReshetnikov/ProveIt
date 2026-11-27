@@ -193,8 +193,7 @@ theorem bounded_power (z R k : PTm n) (h : Γ ⊢[PRAAx] bounded z R) :
             (pw (Syn.shift R) (var 0) * Syn.shift R) := bounded_mul Prf.hyp0 shifted.wk
       exact le_congr (congr_normSq (power_succ _ _)).eqSymm
         (congrMul (pw_succ _ _) (pw_succ _ _)).eqSymm p
-  simpa only [subst_bounded, subst_power, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [subst_bounded, subst_power, subst_ap2] using Prf.allE k all
 
 #print axioms bounded_power
 
@@ -246,8 +245,7 @@ theorem bounded_series (z N R L : PTm n) (hz : Γ ⊢[PRAAx] bounded z R) :
       have combined := bounded_add first second
       exact le_congr (congr_normSq (series_succ _ _ _)).eqSymm
         (congrMul (numerator_succ _ _ _) (numerator_succ _ _ _)).eqSymm combined
-  simpa only [subst_bounded, subst_series, LogarithmRemainder.subst_numerator,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE L all
+  ipra_simpa_inst [subst_bounded, subst_series, LogarithmRemainder.subst_numerator] using Prf.allE L all
 
 theorem bounded_mono {z R S : PTm n} (hz : Γ ⊢[PRAAx] bounded z R)
     (h : Γ ⊢[PRAAx] le R S) : Γ ⊢[PRAAx] bounded z S :=

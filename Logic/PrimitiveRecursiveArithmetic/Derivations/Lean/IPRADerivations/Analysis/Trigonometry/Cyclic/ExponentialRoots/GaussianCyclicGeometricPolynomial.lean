@@ -100,7 +100,7 @@ private theorem prefix_identity (m z j : PTm n) (hj : Γ ⊢[PRAAx] le j m) :
         prefix_law_step (Γ := prefixLaw (Syn.shift m) (Syn.shift z) (var 0) :: Γ.map Fm.shift)
           (Syn.shift m) (Syn.shift z) (var 0) Prf.hyp0
   have rule : Γ ⊢[PRAAx] prefixLaw m z j := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE j
+    ipra_simpa_inst [subst_prefixLaw] using h.allE j
   exact .impE rule hj
 
 private theorem subtract_exchange (a b c : PTm n) :
@@ -159,7 +159,7 @@ theorem evaluation_at_one (m : PTm n) :
         counting_step (Γ := countingLaw (Syn.shift m) (var 0) :: Γ.map Fm.shift)
           (Syn.shift m) (var 0) Prf.hyp0
   have rule : Γ ⊢[PRAAx] countingLaw m m := by
-    simpa only [subst_countingLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE m
+    ipra_simpa_inst [subst_countingLaw] using h.allE m
   exact (evaluate_at_length m qone).eqTrans (.impE rule (le_refl _))
 
 theorem actual_cyclic_geometric_polynomial_closed :

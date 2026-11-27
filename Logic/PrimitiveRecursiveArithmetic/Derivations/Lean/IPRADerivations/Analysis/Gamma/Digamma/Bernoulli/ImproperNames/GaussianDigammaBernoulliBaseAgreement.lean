@@ -44,9 +44,8 @@ theorem agreement_at (initial : PR 2) (demand : PR 3) (A B x cost p Q : PTm n)
       Foundations.BoundedFormulas.subst_up_shift',Syn.shift_var] using h.allE p
   have bound : Γ ⊢[PRAAx] (le one Q ⋏ le (ap3 demand p A B) Q) ⟶
       distanceBounded (prefixAt 0 A B Q p) (ap2 initial p x) cost (unit p) := by
-    simpa only [sh,Fm.subst_imp,Fm.subst_and,subst_le,subst_distanceBounded,subst_prefixAt,subst_ap2,subst_ap3,
-      subst_unit,one,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using first.allE Q
+    ipra_simpa_inst [sh,Fm.subst_imp,Fm.subst_and,subst_le,subst_distanceBounded,subst_prefixAt,subst_ap2,subst_ap3,
+      subst_unit,one,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ] using first.allE Q
   exact .impE bound (.andI hp hQ)
 
 theorem prefix_from_agreement (initial : PR 2) (demand : PR 3) (m : ℕ) (A B Q p x cost : PTm n)

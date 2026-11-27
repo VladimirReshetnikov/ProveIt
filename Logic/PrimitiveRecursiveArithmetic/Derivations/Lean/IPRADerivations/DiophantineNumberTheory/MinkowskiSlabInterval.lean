@@ -115,8 +115,8 @@ theorem coordinate_at (N l u q i : PTm n) (h : Γ ⊢[PRAAx] coordinateBox N l u
     rationalLE (entry l i) (entry q i) ⋏ rationalLE (entry q i) (entry u i) := by
   have ht : Γ ⊢[PRAAx] lt i N ⟶
       (rationalLE (entry l i) (entry q i) ⋏ rationalLE (entry q i) (entry u i)) := by
-    simpa only [Fm.subst_imp,Fm.subst_and,subst_lt,Analysis.RationalArgmin.subst_rationalLE,
-      subst_entry,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [Fm.subst_imp,Fm.subst_and,subst_lt,Analysis.RationalArgmin.subst_rationalLE,
+      subst_entry] using h.allE i
   exact .impE ht hi
 
 /-- The sum inequalities are derived from genuine coordinate inequalities. -/
@@ -197,8 +197,8 @@ theorem facet_at (N F l u j : PTm n) (h : Γ ⊢[PRAAx] facetsCertificate N F l 
     (hj : Γ ⊢[PRAAx] lt j (length F)) : Γ ⊢[PRAAx]
     rowCertificate N (fstT (entry F j)) (sndT (entry F j)) l u := by
   have ht : Γ ⊢[PRAAx] lt j (length F) ⟶ rowCertificate N (fstT (entry F j)) (sndT (entry F j)) l u := by
-    simpa only [Fm.subst_imp,subst_lt,subst_length,subst_rowCertificate,subst_fstT,subst_sndT,
-      subst_entry,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE j
+    ipra_simpa_inst [Fm.subst_imp,subst_lt,subst_length,subst_rowCertificate,subst_fstT,subst_sndT,
+      subst_entry] using h.allE j
   exact .impE ht hj
 
 theorem facets_containment (N F l u q : PTm n)

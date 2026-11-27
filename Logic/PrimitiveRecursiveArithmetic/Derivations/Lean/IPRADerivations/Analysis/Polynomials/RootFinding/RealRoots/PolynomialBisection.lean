@@ -703,7 +703,7 @@ theorem run_bracket (degree : ℕ) (k code initial : PTm n)
     · exact bracket_congr degree code (run_zero degree code initial).eqSymm h
     · exact bracket_congr degree (Syn.shift code) (run_succ degree _ _ _).eqSymm
         (advance_bracket degree _ _ Prf.hyp0)
-  simpa only [subst_bracket, subst_run, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k hall
+  ipra_simpa_inst [subst_bracket, subst_run] using Prf.allE k hall
 
 private theorem left_congr_value {s t : PTm n} (h : Γ ⊢[PRAAx] s ≐ t) :
     ZT.toZ Γ (left s) = ZT.toZ Γ (left t) := unpack_congr (congrFst h)
@@ -740,8 +740,7 @@ theorem run_width (degree : ℕ) (k code initial : PTm n) :
       simp only [ZT.toZ_sub] at step ih ⊢
       rw [left_congr_value (run_succ degree _ _ _), right_congr_value (run_succ degree _ _ _)]
       exact step.trans ih
-  simpa only [ZT.subst_eq, ZT.subst_sub, subst_right, subst_left, subst_run,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k hall
+  ipra_simpa_inst [ZT.subst_eq, ZT.subst_sub, subst_right, subst_left, subst_run] using Prf.allE k hall
 
 /-- The actual run denominator is `D₀ * 2^k`, so its rational width halves. -/
 theorem run_denominator (degree : ℕ) (k code initial : PTm n) :
@@ -765,8 +764,8 @@ theorem run_denominator (degree : ℕ) (k code initial : PTm n) :
       exact (denominator_congr (run_succ degree _ _ _)).eqTrans
         ((advance_denominator degree _ _).eqTrans
           ((congrMul (.eqRefl two) Prf.hyp0).eqTrans final))
-  simpa only [Fm.subst_eq, subst_denominator, subst_run, PTm.subst_mul,
-    subst_ap2, subst_two, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k hall
+  ipra_simpa_inst [Fm.subst_eq, subst_denominator, subst_run, PTm.subst_mul,
+    subst_ap2, subst_two] using Prf.allE k hall
 
 #print axioms run_bracket
 #print axioms run_width
@@ -820,7 +819,7 @@ theorem run_nested (degree : ℕ) (k code initial : PTm n)
             (φ := nestedBound degree (Syn.shift code) (Syn.shift initial) (var 0)))))
         exact zle_congr (right_congr_value next).symm
           (scale_pow_succ (Γ := Δ) (right (Syn.shift initial)) (var 0)) upper
-  simpa only [subst_nestedBound, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k hall
+  ipra_simpa_inst [subst_nestedBound] using Prf.allE k hall
 
 /-- Arbitrary finite windows are nested, using the proved composition of the actual PR run. -/
 theorem nested_window (degree : ℕ) (N r code initial : PTm n)

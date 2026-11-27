@@ -140,8 +140,7 @@ theorem fold_length (inner : PR 2) (outer x j : PTm n) :
     · exact ((congrFst (fold_zero inner outer x)).eqTrans empty_length).eqTrans (prefix_zero _ _ _).eqSymm
     · exact ((congrFst (fold_succ inner _ _ _)).eqTrans (append_length _ _)).eqTrans
         ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (prefix_succ _ _ _ _).eqSymm)
-  simpa only [Fm.subst_eq, subst_length, subst_fold, subst_prefix,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE j all
+  ipra_simpa_inst [Fm.subst_eq, subst_length, subst_fold, subst_prefix] using Prf.allE j all
 
 theorem prefix_add_mono (inner : PR 2) (outer x a k : PTm n) :
     Γ ⊢[PRAAx] le (prefixSum inner outer x a) (prefixSum inner outer x (a + k)) := by
@@ -158,8 +157,7 @@ theorem prefix_add_mono (inner : PR 2) (outer x a k : PTm n) :
           (((congrAp3 _ (add_succ _ _) (.eqRefl _) (.eqRefl _)).eqTrans (prefix_succ _ _ _ _)).eqSymm)
           (le_add_right _ _)
       exact le_trans Prf.hyp0 step
-  simpa only [subst_le, subst_prefix, PTm.subst_add, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [subst_le, subst_prefix, PTm.subst_add] using Prf.allE k all
 
 theorem prefix_mono (inner : PR 2) (outer x : PTm n) {a b : PTm n}
     (hab : Γ ⊢[PRAAx] le a b) :

@@ -38,8 +38,7 @@ theorem power_nonzero (q k : PTm n) (hc : Γ ⊢[PRAAx] canonical q)
         (power q' j) q' (power_canonical _ _) hcs.wk Prf.hyp0 hzs.wk
       have eq := power_succ (Γ := Δ) q' j
       exact .impI (.impE nonzero.wk (eq.wk.eqSymm.eqTrans Prf.hyp0))
-  simpa only [neg,Fm.subst_imp,Fm.subst_eq,Fm.subst_bot,subst_power,subst_qzero,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  ipra_simpa_inst [neg,Fm.subst_imp,Fm.subst_eq,Fm.subst_bot,subst_power,subst_qzero] using all.allE k
 
 theorem zero_positive_power (k : PTm n) : Γ ⊢[PRAAx] power qzero (succ k) ≐ qzero :=
   (power_succ _ _).eqTrans (qmul_zero_right _)

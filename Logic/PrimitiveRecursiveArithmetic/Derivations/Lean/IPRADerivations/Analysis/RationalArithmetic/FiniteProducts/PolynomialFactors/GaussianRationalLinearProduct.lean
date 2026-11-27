@@ -337,8 +337,7 @@ theorem delayed_sum_shift (C N k : PTm n) : Γ ⊢[PRAAx] delaySum C N (succ k) 
     · exact (delay_sum_succ _ _ _).eqTrans
         ((RationalAlgebra.add_congr Prf.hyp0 (qL1_congr (delayed_succ _ _ _))).eqTrans
           (pad_sum_succ _ _ _).eqSymm)
-  simpa only [Fm.subst_eq,subst_delaySum,subst_padSum,ConciseIPRA.PTm.subst_succ,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  ipra_simpa_inst [Fm.subst_eq,subst_delaySum,subst_padSum,ConciseIPRA.PTm.subst_succ] using all.allE k
 
 theorem delay_total (C N : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ N) : Γ ⊢[PRAAx]
     delaySum C N (succ N) ≐ coefficientNorm C :=

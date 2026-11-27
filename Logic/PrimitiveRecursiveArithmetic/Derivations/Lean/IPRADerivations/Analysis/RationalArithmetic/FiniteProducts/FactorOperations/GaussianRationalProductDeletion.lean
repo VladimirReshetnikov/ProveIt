@@ -31,8 +31,7 @@ theorem retained_at (t u : PTm 2) (N p x y i : PTm n)
     (h : Γ ⊢[PRAAx] retainedValues t u N p x y) (hi : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] inst2 u i y ≐ inst2 t (slot p i) x := by
   have rule : Γ ⊢[PRAAx] lt i N ⟶ inst2 u i y ≐ inst2 t (slot p i) x := by
-    simpa only [retainedValues,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_slot,subst_inst2,Syn.subst_var,
-      Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [retainedValues,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_slot,subst_inst2] using h.allE i
   exact .impE rule hi
 
 theorem product_before (t u : PTm 2) (p q x y : PTm n) (h : Γ ⊢[PRAAx] retainedValues t u (p+q) p x y) :

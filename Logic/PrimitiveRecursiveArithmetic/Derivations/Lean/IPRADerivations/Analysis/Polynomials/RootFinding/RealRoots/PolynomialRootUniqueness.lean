@@ -320,8 +320,7 @@ def covered (A : PR 2) (initial x : PTm n) : Fm PTm n :=
 
 theorem covered_at (A : PR 2) (initial x k : PTm n) (h : Γ ⊢[PRAAx] covered A initial x) :
     Γ ⊢[PRAAx] pointDomain initial (ap2 A k x) := by
-  simpa only [covered, subst_pointDomain, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift] using Prf.allE k h
+  ipra_simpa_inst [covered, subst_pointDomain, subst_ap2] using Prf.allE k h
 
 /-- Regularity of one input name, separate from agreement of the two names. -/
 def regularAt (A : PR 2) (x N K : PTm n) : Fm PTm n :=
@@ -363,8 +362,8 @@ theorem vanishing_at (degree : ℕ) (A μ : PR 2) (code C x K : PTm n)
     (h : Γ ⊢[PRAAx] vanishing degree A μ code C x) :
     Γ ⊢[PRAAx] le K (ap2 μ K x) ⋏
       pointResidual degree code C (pw two K) (ap2 A (ap2 μ K x) x) := by
-  simpa only [vanishing, Fm.subst_and, subst_le, subst_pointResidual, subst_ap2,
-    subst_two, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE K h
+  ipra_simpa_inst [vanishing, Fm.subst_and, subst_le, subst_pointResidual, subst_ap2,
+    subst_two] using Prf.allE K h
 
 /-- Finite-query equivalence of the two names, with the explicit two-bit shift. -/
 def agreement (A B : PR 2) (N x : PTm n) : Fm PTm n :=

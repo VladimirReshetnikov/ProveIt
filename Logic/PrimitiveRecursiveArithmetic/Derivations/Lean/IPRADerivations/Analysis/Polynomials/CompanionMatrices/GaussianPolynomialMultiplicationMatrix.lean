@@ -177,7 +177,7 @@ theorem stage_stored (F G m a c j : PTm n) (hG : Γ ⊢[PRAAx] rowShape G m a) :
       exact stored_congr (stage_succ (Syn.shift F) (Syn.shift G) (Syn.shift m) (Syn.shift a) (Syn.shift c) (var 0)).eqSymm
         (.eqRefl _) (bound_succ (Syn.shift a) (Syn.shift c) (var 0)).eqSymm
         (companion_stored _ _ _ _ _)
-  simpa only [A,formula_stored,subst_stored,subst_stage,subst_bound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [A,formula_stored,subst_stored,subst_stage,subst_bound] using all.allE j
 
 theorem stage_length (F G m a c j : PTm n) (hG : Γ ⊢[PRAAx] rowShape G m a) : Γ ⊢[PRAAx]
     length (stage F G m a c j) ≐ m := .andE₁ (stage_stored _ _ _ _ _ _ hG)
@@ -188,8 +188,7 @@ theorem stage_row_canonical (F G m a c j r : PTm n)
     canonicalCoefficients (entry (stage F G m a c j) r) := by
   have h := Prf.andE₂ (Prf.andE₂ (stage_stored F G m a c j hG))
   have gate : Γ ⊢[PRAAx] lt r m ⟶ canonicalCoefficients (entry (stage F G m a c j) r) := by
-    simpa only [Fm.subst_imp,subst_lt,GaussianRationalSyntheticDivision.subst_canonicalCoefficients,subst_entry,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE r
+    ipra_simpa_inst [Fm.subst_imp,subst_lt,GaussianRationalSyntheticDivision.subst_canonicalCoefficients,subst_entry] using h.allE r
   exact .impE gate hr
 
 theorem normalized_values_entry (G m r x : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]
@@ -248,7 +247,7 @@ theorem stage_evaluation (F G m a c x y j : PTm n)
         ((GaussianPolynomialMonicCompanion.curve_step _ _ _ _ _ _ _ ms.wk fs.wk shape curve.wk).eqSymm.eqTrans
           ((qmul_congr (.eqRefl _) (Prf.hyp0 : Δ ⊢[PRAAx] evaluationLaw _ _ _ _ _ _ _ _)).eqTrans
             (multiply_power_step _ _ _)))
-  simpa only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [subst_evaluationLaw] using all.allE j
 
 def slot (m r : PTm n) : PTm n := monus m (succ r)
 def width (m a c : PTm n) : PTm n := a+pred m*c

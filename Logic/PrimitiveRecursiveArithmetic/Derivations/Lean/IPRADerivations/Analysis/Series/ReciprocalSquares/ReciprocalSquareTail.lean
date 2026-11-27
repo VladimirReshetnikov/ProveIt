@@ -104,8 +104,7 @@ theorem sharp (e : PR 2) (A N r C x : PTm n)
         ((congrMul (congrMul (.eqRefl _) (add_succ _ _)) (.eqRefl _)).eqTrans
           (congrMul (.eqRefl _) (tailSum_succ e _ _ _))).eqSymm
         (.eqRefl _) step
-  simpa only [subst_le, PTm.subst_mul, PTm.subst_add, subst_tailSum,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE r all
+  ipra_simpa_inst [subst_le, PTm.subst_mul, PTm.subst_add, subst_tailSum] using Prf.allE r all
 
 /-- The uniform cleared bound `A N ∑ e ≤ C`. -/
 theorem uniform (e : PR 2) (A N r C x : PTm n)

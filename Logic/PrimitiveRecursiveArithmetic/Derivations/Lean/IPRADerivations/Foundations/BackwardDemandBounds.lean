@@ -44,8 +44,7 @@ theorem backward_loss (loss : PR 1) (N K j c : PTm n) :
     · exact (backward_zero (lossF loss) N K c).eqTrans (by ipra_ring)
     · exact (backward_succ (lossF loss) (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift c)).eqTrans
         ((loss_at loss _ _ _).eqTrans ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (by ipra_ring)))
-  simpa only [Fm.subst_eq, subst_backward, PTm.subst_add, PTm.subst_mul, subst_ap1,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE j all
+  ipra_simpa_inst [Fm.subst_eq, subst_backward, PTm.subst_add, PTm.subst_mul, subst_ap1] using Prf.allE j all
 
 theorem horizon_loss (loss : PR 1) (N K t c : PTm n) :
     Γ ⊢[PRAAx] horizon (lossF loss) N K t c ≐ K + ap1 loss c * monus N t :=

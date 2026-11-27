@@ -55,9 +55,8 @@ theorem orbit_at (f : PR 2) (t : PTm 2) (x N i : PTm n)
     (hi : Γ ⊢[PRAAx] lt i N) (hs : Γ ⊢[PRAAx] orbits f t x N) :
     Γ ⊢[PRAAx] source f t (numerator x (i*width x)) (divisor x) := by
   have spec : Γ ⊢[PRAAx] lt i N ⟶ source f t (numerator x (i*width x)) (divisor x) := by
-    simpa only [orbits,Fm.subst_imp,subst_lt,GaussianBarnesVignerasIntegerPeriod.subst_source,
-      subst_numerator,subst_divisor,subst_width,LeanProofs.IPRA.PTm.subst_mul,Syn.subst_var,
-      Syn.inst_zero,Syn.subst_inst_shift] using hs.allE i
+    ipra_simpa_inst [orbits,Fm.subst_imp,subst_lt,GaussianBarnesVignerasIntegerPeriod.subst_source,
+      subst_numerator,subst_divisor,subst_width,LeanProofs.IPRA.PTm.subst_mul] using hs.allE i
   exact spec.impE hi
 
 theorem unwrapped_numerator (x N j : PTm n) (hN : Γ ⊢[PRAAx] le one N)

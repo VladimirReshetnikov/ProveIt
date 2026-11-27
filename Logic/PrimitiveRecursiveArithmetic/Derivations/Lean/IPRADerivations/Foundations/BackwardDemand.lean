@@ -212,8 +212,7 @@ def globalStep (A : BF) (D : PR 3) (x : PTm n) : Fm PTm n :=
 
 theorem allBase_at (A : BF) {x : PTm n} (h : Γ ⊢[PRAAx] allBase A x) (k : PTm n) :
     Γ ⊢[PRAAx] observation A zero k x := by
-  simpa only [allBase, subst_observation, ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k h
+  ipra_simpa_inst [allBase, subst_observation, ConciseIPRA.PTm.subst_zero] using Prf.allE k h
 
 theorem localStep_of_global (A : BF) (D : PR 3) (N x : PTm n)
     (h : Γ ⊢[PRAAx] globalStep A D x) : Γ ⊢[PRAAx] localStep A D N x :=

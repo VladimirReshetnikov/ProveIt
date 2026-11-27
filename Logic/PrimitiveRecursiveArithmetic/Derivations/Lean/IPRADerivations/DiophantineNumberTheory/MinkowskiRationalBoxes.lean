@@ -221,7 +221,7 @@ theorem rationalSides_at (N B j k : PTm n) (h : Γ ⊢[PRAAx] rationalSides N B)
       Syn.subst_var, Syn.inst_zero, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_inst_shift,
       LeanProofs.IPRA.AnalyticNumberTheory.Fermat.subst_up_shift'] using Prf.allE j h
   have last : Γ ⊢[PRAAx] lt k N ⟶ rationalSide B j k := by
-    simpa only [Fm.subst_imp, subst_lt, subst_rationalSide, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using
+    ipra_simpa_inst [Fm.subst_imp, subst_lt, subst_rationalSide] using
       Prf.allE k (Prf.impE first hj)
   exact .impE last hk
 
@@ -323,7 +323,7 @@ theorem rationalDisjoint_at (N B i j : PTm n) (h : Γ ⊢[PRAAx] rationalDisjoin
       Syn.subst_var, Syn.inst_zero, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_inst_shift,
       LeanProofs.IPRA.AnalyticNumberTheory.Fermat.subst_up_shift'] using Prf.allE j h
   have last : Γ ⊢[PRAAx] lt i j ⟶ rationalSeparated N B i j := by
-    simpa only [Fm.subst_imp, subst_lt, subst_rationalSeparated, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using
+    ipra_simpa_inst [Fm.subst_imp, subst_lt, subst_rationalSeparated] using
       Prf.allE i (Prf.impE first hj)
   exact .impE last hij
 

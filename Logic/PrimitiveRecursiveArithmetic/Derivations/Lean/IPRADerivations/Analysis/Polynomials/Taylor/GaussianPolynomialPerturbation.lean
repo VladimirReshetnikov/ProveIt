@@ -119,9 +119,8 @@ theorem weighted_error_at (F G N D δ j : PTm n)
     Γ ⊢[PRAAx] bounded (sub (entry G (succ j)) (entry F (succ j))) (pw D (succ j)*δ) := by
   have rule : Γ ⊢[PRAAx] lt j N ⟶
       bounded (sub (entry G (succ j)) (entry F (succ j))) (pw D (succ j)*δ) := by
-    simpa only [weightedErrors,Fm.subst_imp,subst_lt,ComplexLogarithmRemainder.subst_bounded,
-      GaussianRootAlgebra.subst_sub,subst_entry,subst_ap2,PTm.subst_mul,ConciseIPRA.PTm.subst_succ,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE j h
+    ipra_simpa_inst [weightedErrors,Fm.subst_imp,subst_lt,ComplexLogarithmRemainder.subst_bounded,
+      GaussianRootAlgebra.subst_sub,subst_entry,subst_ap2,PTm.subst_mul,ConciseIPRA.PTm.subst_succ] using Prf.allE j h
   exact .impE rule hj
 
 theorem residual_one (F G z : PTm n)
@@ -257,9 +256,8 @@ theorem coefficient_error_at (F G N δ j : PTm n)
     (h : Γ ⊢[PRAAx] coefficientErrors F G N δ) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] bounded (sub (entry G (succ j)) (entry F (succ j))) δ := by
   have rule : Γ ⊢[PRAAx] lt j N ⟶ bounded (sub (entry G (succ j)) (entry F (succ j))) δ := by
-    simpa only [coefficientErrors,Fm.subst_imp,subst_lt,ComplexLogarithmRemainder.subst_bounded,
-      GaussianRootAlgebra.subst_sub,subst_entry,ConciseIPRA.PTm.subst_succ,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE j h
+    ipra_simpa_inst [coefficientErrors,Fm.subst_imp,subst_lt,ComplexLogarithmRemainder.subst_bounded,
+      GaussianRootAlgebra.subst_sub,subst_entry,ConciseIPRA.PTm.subst_succ] using Prf.allE j h
   exact .impE rule hj
 
 /-- Every weighted error is produced from an original coefficient bound

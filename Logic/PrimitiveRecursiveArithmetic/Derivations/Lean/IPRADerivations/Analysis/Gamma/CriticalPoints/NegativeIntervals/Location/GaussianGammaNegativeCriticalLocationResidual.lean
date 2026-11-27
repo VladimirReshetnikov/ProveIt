@@ -67,7 +67,7 @@ theorem prefix_axis (a b N : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
       let B := Syn.shift b
       exact axis_congr (prefix_succ A B (var 0)).eqSymm (axis_add _ _ Prf.hyp0
         (fraction_axis B (bottomDen A B (var 0)) (row_den_positive A B (var 0) hs.wk)))
-  simpa only [subst_prefixAxis,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+  ipra_simpa_inst [subst_prefixAxis] using all.allE N
 
 theorem correction_axis (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) :
     Γ ⊢[PRAAx] axis (correction a b N) :=

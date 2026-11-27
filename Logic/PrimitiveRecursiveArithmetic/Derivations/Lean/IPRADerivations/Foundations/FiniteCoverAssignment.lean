@@ -270,8 +270,7 @@ theorem group_property_at (φ : Fm PTm 2) (f : PTm 3) (P M p g r q : PTm n)
     φ.subst ![entry (group f P M p g) r,q] := by
   have rule : Γ ⊢[PRAAx] lt (entry (indices f P M p g) r) (length P) ⟶
       φ.subst ![entry P (entry (indices f P M p g) r),q] := by
-    simpa only [Fm.subst_imp,property_inst,subst_lt,subst_length,Syn.subst_var,Syn.inst_zero,
-      Syn.subst_inst_shift] using h.allE (entry (indices f P M p g) r)
+    ipra_simpa_inst [Fm.subst_imp,property_inst,subst_lt,subst_length] using h.allE (entry (indices f P M p g) r)
   exact property_congr φ _ _ q (group_lookup f P M p g r hr).eqSymm
     (.impE rule (index_bound f P M p g r hr))
 

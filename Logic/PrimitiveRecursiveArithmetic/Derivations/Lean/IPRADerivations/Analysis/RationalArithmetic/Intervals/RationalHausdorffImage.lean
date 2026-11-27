@@ -97,8 +97,7 @@ theorem localLaw_at (s t : Side) (f : PR 2) (S T d e A B x i j : PTm n)
       Syn.subst_var, Syn.inst_zero, Syn.up_zero, Syn.up_one, Syn.up_succ, Syn.subst_inst_shift,
       LeanProofs.IPRA.AnalyticNumberTheory.Fermat.subst_up_shift'] using Prf.allE i h
   have second : Γ ⊢[PRAAx] lt j (length (source t S T)) ⟶ localPair s t f S T d e A B x i j := by
-    simpa only [Fm.subst_imp, subst_lt, subst_length, subst_source, subst_localPair,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE j (Prf.impE first hi)
+    ipra_simpa_inst [Fm.subst_imp, subst_lt, subst_length, subst_source, subst_localPair] using Prf.allE j (Prf.impE first hi)
   exact .impE second hj
 
 /-- The reverse finite law is derived from symmetry, not another hypothesis. -/

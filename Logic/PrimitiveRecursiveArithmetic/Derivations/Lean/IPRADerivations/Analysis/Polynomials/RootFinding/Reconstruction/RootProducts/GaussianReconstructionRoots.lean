@@ -48,8 +48,7 @@ theorem zero_after (S N z K r : PTm n)
     · exact (congrAp2 factorsF (add_succ _ _) (.eqRefl _)).eqTrans
         ((factors_succ _ _ _ _).eqTrans ((qmul_congr (.eqRefl _) Prf.hyp0).eqTrans
           (GaussianRationalSyntheticDivision.qmul_zero_right _)))
-  simpa only [Fm.subst_eq,subst_factors,GaussianRationalHorner.subst_qzero,PTm.subst_add,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
+  ipra_simpa_inst [Fm.subst_eq,subst_factors,GaussianRationalHorner.subst_qzero,PTm.subst_add] using all.allE r
 
 /-- The actual reverse factor fold hits its listed zero at its computed
 step N-i, rather than assuming a factorization or evaluation equation. -/

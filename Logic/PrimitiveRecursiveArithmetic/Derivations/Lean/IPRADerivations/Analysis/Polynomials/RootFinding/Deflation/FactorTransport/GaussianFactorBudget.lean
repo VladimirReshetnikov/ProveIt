@@ -88,7 +88,7 @@ theorem bound_offset (N A j r : PTm n) : Γ ⊢[PRAAx] le (bound N A j) (bound N
     · exact le_congr (.eqRefl _) (congrAp2 boundF (add_zero _) (.eqRefl _)).eqSymm (le_refl _)
     · have step := bound_step_monotone (Γ := Γ.map Fm.shift) (Syn.shift N) (Syn.shift A) (Syn.shift j+var 0)
       exact le_trans Prf.hyp0 (le_congr (.eqRefl _) (congrAp2 boundF (add_succ _ _) (.eqRefl _)).eqSymm step.wk)
-  simpa only [subst_le,subst_bound,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
+  ipra_simpa_inst [subst_le,subst_bound,PTm.subst_add] using all.allE r
 
 theorem bound_monotone (N A i j : PTm n) (hij : Γ ⊢[PRAAx] le i j) : Γ ⊢[PRAAx]
     le (bound N A i) (bound N A j) :=
@@ -127,7 +127,7 @@ theorem prefix_offset (N A j r : PTm n) : Γ ⊢[PRAAx] le (prefixProduct N A j)
     · exact le_congr (.eqRefl _) (congrAp2 (prodF factorBody) (add_zero _) (.eqRefl _)).eqSymm (le_refl _)
     · have step := prefix_step_monotone (Γ := Γ.map Fm.shift) (Syn.shift N) (Syn.shift A) (Syn.shift j+var 0)
       exact le_trans Prf.hyp0 (le_congr (.eqRefl _) (congrAp2 (prodF factorBody) (add_succ _ _) (.eqRefl _)).eqSymm step.wk)
-  simpa only [subst_le,subst_prefixProduct,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
+  ipra_simpa_inst [subst_le,subst_prefixProduct,PTm.subst_add] using all.allE r
 
 theorem prefix_le_L (N A j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx] le (prefixProduct N A j) (L N A) :=
   le_congr (.eqRefl _) (congrAp2 (prodF factorBody) (eq_add_of_le hj).eqSymm (.eqRefl _))
@@ -161,8 +161,7 @@ theorem prefixSum_bound (N A j : PTm n) (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRA
       exact le_congr (prefixSum_succ _ _ _).eqSymm (by ipra_ring)
         (sum_mono ih (prefix_le_L _ _ _ bound))
   have out : Γ ⊢[PRAAx] le j N ⟶ le (prefixSum N A j) (j*L N A) := by
-    simpa only [Fm.subst_imp,subst_le,subst_prefixSum,PTm.subst_mul,subst_L,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+    ipra_simpa_inst [Fm.subst_imp,subst_le,subst_prefixSum,PTm.subst_mul,subst_L] using all.allE j
   exact .impE out hj
 
 /-! ## The local coefficient recurrence estimate -/
@@ -177,8 +176,8 @@ ipra_subst recurrence [Fm.subst_all, Fm.subst_imp, subst_lt, subst_le, PTm.subst
 theorem recurrence_at (b : PR 2) (N A Z x k : PTm n) (h : Γ ⊢[PRAAx] recurrence b N A Z x)
     (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx] le (ap2 b (succ k) x) (A+Z*ap2 b k x) := by
   have all : Γ ⊢[PRAAx] lt k N ⟶ le (ap2 b (succ k) x) (A+Z*ap2 b k x) := by
-    simpa only [Fm.subst_imp,subst_lt,subst_le,PTm.subst_add,PTm.subst_mul,subst_ap2,
-      ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE k
+    ipra_simpa_inst [Fm.subst_imp,subst_lt,subst_le,PTm.subst_add,PTm.subst_mul,subst_ap2,
+      ConciseIPRA.PTm.subst_succ] using h.allE k
   exact .impE all hk
 
 theorem recurrence_step (b : PR 2) (A Z x k : PTm n)
@@ -221,8 +220,8 @@ theorem recurrence_prefix (b : PR 2) (N A Z x k : PTm n)
         simpa only [Fm.shift,subst_recurrence,Syn.shift] using hrec.shift
       exact recurrence_step b _ _ _ _ ih (recurrence_at b _ _ _ _ _ contract.wk.wk Prf.hyp0)
   have inst : Γ ⊢[PRAAx] le k N ⟶ le (ap2 b k x) ((A+one)*pw (one+Z) k) := by
-    simpa only [Fm.subst_imp,subst_le,subst_ap2,PTm.subst_add,PTm.subst_mul,
-      ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+    ipra_simpa_inst [Fm.subst_imp,subst_le,subst_ap2,PTm.subst_add,PTm.subst_mul,
+      ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using all.allE k
   exact .impE inst hk
 
 theorem power_monotone_length (a j k : PTm n) (ha : Γ ⊢[PRAAx] le one a)

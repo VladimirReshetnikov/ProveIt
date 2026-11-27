@@ -261,8 +261,8 @@ theorem matches_at (m k w i : PTm n) (h : Γ ⊢[PRAAx] matchesRotation m k w)
     (hi : Γ ⊢[PRAAx] lt i m) :
     Γ ⊢[PRAAx] RuntimePermutationWords.digit m w i ≐ rotation m k i := by
   have rule : Γ ⊢[PRAAx] lt i m ⟶ RuntimePermutationWords.digit m w i ≐ rotation m k i := by
-    simpa only [matchesRotation,Fm.subst_imp,Fm.subst_eq,subst_lt,RuntimePermutationWords.subst_digit,
-      subst_rotation,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [matchesRotation,Fm.subst_imp,Fm.subst_eq,subst_lt,RuntimePermutationWords.subst_digit,
+      subst_rotation] using h.allE i
   exact .impE rule hi
 
 theorem rotation_unique (m k w : PTm n)

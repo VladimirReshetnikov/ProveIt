@@ -166,8 +166,7 @@ theorem termwise_at (A B : PTm 2) (N x y i : PTm n)
     (h : Γ ⊢[PRAAx] termwiseLE A B N x y) (hi : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] rationalLE (term A i x) (term B i y) := by
   have inst : Γ ⊢[PRAAx] lt i N ⟶ rationalLE (term A i x) (term B i y) := by
-    simpa only [Fm.subst_imp,subst_lt,RationalArgmin.subst_rationalLE,subst_term,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [Fm.subst_imp,subst_lt,RationalArgmin.subst_rationalLE,subst_term] using h.allE i
   exact .impE inst hi
 
 /-- The successor cross numerator separates the old comparison and new term. -/
@@ -233,7 +232,7 @@ theorem raw_monotone (A B : PTm 2) (N x y : PTm n)
         simpa only [Fm.shift,subst_termwiseLE,Syn.shift] using h.shift
       exact rawOrder_succ A B _ _ _ ih (termwise_at A B _ _ _ _ contract.wk.wk Prf.hyp0)
   have out : Γ ⊢[PRAAx] le N N ⟶ rawOrder A B N x y := by
-    simpa only [Fm.subst_imp,subst_le,subst_rawOrder,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+    ipra_simpa_inst [Fm.subst_imp,subst_le,subst_rawOrder] using all.allE N
   exact .impE out (le_refl _)
 
 /-- The signed cross comparison is exactly the natural prefix invariant. -/

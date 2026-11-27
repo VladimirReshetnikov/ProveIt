@@ -93,8 +93,7 @@ theorem quotient_length (P D L p g : PTm n) (hP : Γ ⊢[PRAAx] length P ≐ suc
     ipra_qfind [subst_length, subst_groupQuotient]
     · exact (congrFst (quotient_zero P D L p)).eqTrans hP
     · exact (congrFst (quotient_succ _ _ _ _ _)).eqTrans (block_length _ _ _ _ Prf.hyp0)
-  simpa only [Fm.subst_eq,subst_length,subst_groupQuotient,ConciseIPRA.PTm.subst_succ,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE g
+  ipra_simpa_inst [Fm.subst_eq,subst_length,subst_groupQuotient,ConciseIPRA.PTm.subst_succ] using all.allE g
 
 def paddedNorm (P L p g : PTm n) : PTm n := leftPad P (T L p g)
 

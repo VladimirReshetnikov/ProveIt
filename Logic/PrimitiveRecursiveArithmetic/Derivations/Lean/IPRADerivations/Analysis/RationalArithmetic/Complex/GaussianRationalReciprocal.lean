@@ -272,8 +272,7 @@ theorem bounded_power (q A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
         GaussianPolynomialPerturbation.power_positive _ _ bShift.wk
       have product := bounded_product _ _ _ _ _ _ positive bShift.wk Prf.hyp0 qShift.wk
       exact bound_congr (power_succ _ _).eqSymm (pw_succ _ _).eqSymm (pw_succ _ _).eqSymm product
-  simpa only [GaussianRationalMetric.subst_bounded,subst_power,subst_ap2,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [GaussianRationalMetric.subst_bounded,subst_power,subst_ap2] using Prf.allE k all
 
 theorem reciprocal_power_bound (q R k : PTm n) (hR : Γ ⊢[PRAAx] le one R)
     (h : Γ ⊢[PRAAx] normLower q R) : Γ ⊢[PRAAx]

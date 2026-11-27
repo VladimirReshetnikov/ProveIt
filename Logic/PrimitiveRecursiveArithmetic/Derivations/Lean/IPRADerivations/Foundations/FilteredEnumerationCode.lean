@@ -99,7 +99,7 @@ theorem count_le (K : PTm 2) (P p : PTm n) : Γ ⊢[PRAAx] le (count K P p) P :=
     · exact le_congr (FilteredEnumeration.rank_zero K p).eqSymm (.eqRefl _) (le_refl zero)
     · exact le_congr (FilteredEnumeration.rank_succ K _ _).eqSymm (succ_eq_add_one _).eqSymm
         (add_le_add₂ Prf.hyp0 (sg_le_one _))
-  simpa only [subst_le,subst_count,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE P
+  ipra_simpa_inst [subst_le,subst_count] using all.allE P
 
 theorem bound_zero (P : PTm n) : Γ ⊢[PRAAx] boundStack P zero ≐ zero := by
   simpa [boundStack,boundF] using rec2_zero (Γ := Γ) zero boundStep P

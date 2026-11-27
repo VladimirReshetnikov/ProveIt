@@ -121,8 +121,7 @@ ipra_subst positive [Fm.subst_all, subst_le, subst_one, subst_ap2, Syn.subst_var
 
 theorem positive_at {d : PR 2} {x : PTm n} (h : Γ ⊢[PRAAx] positive d x) (k : PTm n) :
     Γ ⊢[PRAAx] le one (ap2 d k x) := by
-  simpa only [positive, subst_le, subst_one, subst_ap2, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k h
+  ipra_simpa_inst [positive, subst_le, subst_one, subst_ap2] using Prf.allE k h
 
 /-- The product denominator of the actual finite rational sum is positive. -/
 theorem sumDen_positive (e f : PR 2) (N r x : PTm n)
@@ -136,8 +135,7 @@ theorem sumDen_positive (e f : PR 2) (N r x : PTm n)
         simpa only [Fm.shift, subst_positive, Syn.shift] using hf.shift
       exact le_congr (one_mul one) (sumDen_succ e f _ _ _).eqSymm
         (le_mul_mono Prf.hyp0 (positive_at shifted (Syn.shift N + var 0)).wk)
-  simpa only [subst_le, subst_one, subst_sumDen, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE r hall
+  ipra_simpa_inst [subst_le, subst_one, subst_sumDen] using Prf.allE r hall
 
 private theorem abs_scale (c : PTm n) (u : ZT n) :
     Γ ⊢[PRAAx] zabs (ZT.ofNat c * u) ≐ c * zabs u :=
@@ -219,9 +217,8 @@ theorem motion_at (p q d e f : PR 2) {x : PTm n} (h : Γ ⊢[PRAAx] motion p q d
     (k : PTm n) :
     Γ ⊢[PRAAx] le (ap2 f k x * zabs (difference p q d k (succ k) x))
       (ap2 e k x * ap2 d k x * ap2 d (succ k) x) := by
-  simpa only [motion, subst_le, PTm.subst_mul, subst_zabs, subst_difference,
-    subst_ap2, ConciseIPRA.PTm.subst_succ, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE k h
+  ipra_simpa_inst [motion, subst_le, PTm.subst_mul, subst_zabs, subst_difference,
+    subst_ap2, ConciseIPRA.PTm.subst_succ] using Prf.allE k h
 
 /-- One step of the finite rational telescoping invariant. -/
 theorem discrepancy_step (p q d e f : PR 2) (N r x : PTm n)

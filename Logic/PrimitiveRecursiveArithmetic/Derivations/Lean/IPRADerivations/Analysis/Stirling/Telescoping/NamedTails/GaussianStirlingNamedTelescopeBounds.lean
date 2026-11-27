@@ -38,8 +38,7 @@ ipra_subst allRows [Syn.subst_shift, Syn.shift_subst]
 ipra_subst endpointBounds
 
 theorem rows_at (p a b : PTm n) (h : Γ ⊢[PRAAx] allRows a b) : Γ ⊢[PRAAx] rows p a b := by
-  simpa only [allRows,GaussianStirlingFiniteTelescopeBounds.subst_rows,Syn.subst_var,
-    Syn.inst_zero,Syn.subst_inst_shift] using h.allE p
+  ipra_simpa_inst [allRows,GaussianStirlingFiniteTelescopeBounds.subst_rows] using h.allE p
 
 theorem name_bounds_at (p N a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (h : Γ ⊢[PRAAx] allRows a b) :
     Γ ⊢[PRAAx] upper (fstT (ap2 constantF p qzero)) (fstT (ap2 nameF p (data N a b))) N (unit p) ⋏

@@ -19,7 +19,7 @@ def rowAxes (t : PTm 2) (x : PTm n) : Fm PTm n := .all (axis (inst2 t (var 0) (S
     (rowAxes t x).subst σ = rowAxes t (Syn.subst σ x) := by simp [rowAxes,Syn.subst_shift,Syn.shift_subst]
 
 theorem row_axis (t : PTm 2) (x i : PTm n) (h : Γ ⊢[PRAAx] rowAxes t x) : Γ ⊢[PRAAx] axis (inst2 t i x) := by
-  simpa only [rowAxes,subst_axis,subst_inst2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+  ipra_simpa_inst [rowAxes,subst_axis,subst_inst2] using h.allE i
 
 theorem sum_axis (t : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] rowAxes t x) : Γ ⊢[PRAAx] axis (sum t N x) := by
   let y := Syn.shift x
@@ -32,6 +32,6 @@ theorem sum_axis (t : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] rowAxes t x) : Γ 
         (axis_congr (GaussianRationalFiniteSum.sum_zero (Γ := Γ) t x).eqSymm axis_zero)
     · exact axis_congr (GaussianRationalFiniteSum.sum_succ t (var 0) y).eqSymm
         (axis_add _ _ Prf.hyp0 (row_axis t y (var 0) rows.wk))
-  simpa only [motive,y,subst_axis,subst_sum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+  ipra_simpa_inst [motive,y,subst_axis,subst_sum] using all.allE N
 
 end LeanProofs.IPRA.Analysis.GaussianRationalFiniteSumAxis

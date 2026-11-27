@@ -139,7 +139,7 @@ theorem row_length (G Eta r : PTm n) : Γ ⊢[PRAAx] length (row G Eta r) ≐ r 
     · simp only [Fm.subst_eq,SequenceComposition.subst_length,subst_row,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
       exact (congrFst (row_succ (Syn.shift G) (Syn.shift Eta) (var 0))).eqTrans
         ((append_length _ _).eqTrans ((congrAdd Prf.hyp0 (singleton_length _)).eqTrans (succ_eq_add_one _).eqSymm))
-  simpa only [Fm.subst_eq,SequenceComposition.subst_length,subst_row,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
+  ipra_simpa_inst [Fm.subst_eq,SequenceComposition.subst_length,subst_row] using all.allE r
 
 theorem row_old (G Eta r w : PTm n) (hw : Γ ⊢[PRAAx] lt w r) : Γ ⊢[PRAAx]
     entry (row G Eta (succ r)) w ≐ entry (row G Eta r) w :=
@@ -183,7 +183,7 @@ theorem row_lookup (G Eta r w : PTm n) (hw : Γ ⊢[PRAAx] lt w r) : Γ ⊢[PRAA
           ((row_new (Syn.shift G) (Syn.shift Eta) (var 0)).eqTrans
             (node_index_congr (Syn.shift G) (Syn.shift Eta) Prf.hyp0.eqSymm))
   have rule : Γ ⊢[PRAAx] lookupLaw G Eta w r := by
-    simpa only [subst_lookupLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
+    ipra_simpa_inst [subst_lookupLaw] using all.allE r
   exact .impE rule hw
 
 def weightF : PR 3 := PTm.toPR (weight (var 0) (var 1) (var 2))
@@ -312,14 +312,14 @@ theorem sum_nonnegative (A : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] nonnegative
         .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
       have gate : Γ.map Fm.shift ⊢[PRAAx] lt (var 0) (Syn.shift N) ⟶
           rationalLE zeroCode (Analysis.RationalFiniteSum.term A (var 0) (Syn.shift x)) := by
-        simpa only [nonnegativeTerms,Fm.subst_imp,subst_lt,Analysis.RationalArgmin.subst_rationalLE,
-          subst_zeroCode,Analysis.RationalFiniteSum.subst_term,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hs.allE (var 0)
+        ipra_simpa_inst [nonnegativeTerms,Fm.subst_imp,subst_lt,Analysis.RationalArgmin.subst_rationalLE,
+          subst_zeroCode,Analysis.RationalFiniteSum.subst_term] using hs.allE (var 0)
       have term : Δ ⊢[PRAAx] rationalLE zeroCode (Analysis.RationalFiniteSum.term A (var 0) (Syn.shift x)) :=
         .impE gate.wk.wk Prf.hyp0
       exact Analysis.RationalArgmin.rationalLE_congr (.eqRefl _)
         (Analysis.RationalFiniteSum.sum_succ A (var 0) (Syn.shift x)).eqSymm (add_nonnegative _ _ previous term)
   have final : Γ ⊢[PRAAx] sumNonnegativeLaw A N x N := by
-    simpa only [subst_sumNonnegativeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+    ipra_simpa_inst [subst_sumNonnegativeLaw] using all.allE N
   exact .impE final (le_refl _)
 
 /-- This finite all-bit, not a quantified induction predicate, records
@@ -396,7 +396,7 @@ theorem rows_nonnegative (G Eta r : PTm n) : Γ ⊢[PRAAx] rowsNonnegative r (ro
       exact BoundedReflection.allB_zero nonnegativeBody _
     · simp only [subst_rowsNonnegative,subst_row,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
       exact rows_nonnegative_step _ _ _ Prf.hyp0
-  simpa only [subst_rowsNonnegative,subst_row,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
+  ipra_simpa_inst [subst_rowsNonnegative,subst_row] using all.allE r
 
 theorem zero_fst : Γ ⊢[PRAAx] fstT (zero : PTm n) ≐ zero :=
   (congrFst (show Γ ⊢[PRAAx] zero ≐ pairT zero zero by unfold pairT; ipra_ring)).eqTrans (fst_pair zero zero)

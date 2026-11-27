@@ -125,24 +125,23 @@ theorem stage_index_congr (C N R : PTm n) {i j : PTm n} (h : Γ ⊢[PRAAx] i ≐
 theorem roots_at (C R i : PTm n) (h : Γ ⊢[PRAAx] roots C R) (hi : Γ ⊢[PRAAx] lt i (length R)) : Γ ⊢[PRAAx]
     evaluate C (entry R i) ≐ qzero := by
   have gate : Γ ⊢[PRAAx] lt i (length R) ⟶ evaluate C (entry R i) ≐ qzero := by
-    simpa only [roots,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_length,GaussianRationalHorner.subst_evaluate,
-      subst_entry,GaussianRationalHorner.subst_qzero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [roots,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_length,GaussianRationalHorner.subst_evaluate,
+      subst_entry,GaussianRationalHorner.subst_qzero] using h.allE i
   exact .impE gate hi
 
 theorem later_roots_at (C R i j : PTm n) (h : Γ ⊢[PRAAx] laterRoots C R i)
     (hj : Γ ⊢[PRAAx] lt j (length R)) (hij : Γ ⊢[PRAAx] le i j) : Γ ⊢[PRAAx]
     evaluate C (entry R j) ≐ qzero := by
   have gate : Γ ⊢[PRAAx] lt j (length R) ⟶ le i j ⟶ evaluate C (entry R j) ≐ qzero := by
-    simpa only [laterRoots,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_le,subst_length,GaussianRationalHorner.subst_evaluate,
-      subst_entry,GaussianRationalHorner.subst_qzero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE j
+    ipra_simpa_inst [laterRoots,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_le,subst_length,GaussianRationalHorner.subst_evaluate,
+      subst_entry,GaussianRationalHorner.subst_qzero] using h.allE j
   exact .impE (.impE gate hj) hij
 
 theorem distinct_at (R i j : PTm n) (h : Γ ⊢[PRAAx] distinct R)
     (hi : Γ ⊢[PRAAx] lt i (length R)) (hj : Γ ⊢[PRAAx] lt j (length R)) (hij : Γ ⊢[PRAAx] lt i j) : Γ ⊢[PRAAx]
     neg (qsub (entry R j) (entry R i) ≐ qzero) := by
   have outer : Γ ⊢[PRAAx] lt i (length R) ⟶ distinctFrom R i := by
-    simpa only [distinct,Fm.subst_imp,subst_lt,subst_length,subst_distinctFrom,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [distinct,Fm.subst_imp,subst_lt,subst_length,subst_distinctFrom] using h.allE i
   have inner := (Prf.impE outer hi).allE j
   have gate : Γ ⊢[PRAAx] lt j (length R) ⟶ lt i j ⟶ neg (qsub (entry R j) (entry R i) ≐ qzero) := by
     simpa [distinctFrom,neg] using inner
@@ -169,7 +168,7 @@ theorem stage_length (C N R i : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
       exact (congrFst (stage_succ (Syn.shift C) (Syn.shift N) (Syn.shift R) (var 0))).eqTrans
         ((quotient_length _ _ _).eqTrans (remaining_step _ _ Prf.hyp0))
   have rule : Γ ⊢[PRAAx] lengthLaw C N R i := by
-    simpa only [subst_lengthLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE i
+    ipra_simpa_inst [subst_lengthLaw] using all.allE i
   exact .impE rule hi
 
 def headLaw (C N R i : PTm n) : Fm PTm n := le i N ⟶ head (stage C N R i) ≐ head C
@@ -185,7 +184,7 @@ theorem stage_head (C N R i : PTm n) (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]
         ((GaussianRationalSyntheticCoefficientValues.leading_coefficient _ _ _ (remaining_positive _ _ Prf.hyp0)).eqSymm.eqTrans
           (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
   have rule : Γ ⊢[PRAAx] headLaw C N R i := by
-    simpa only [subst_headLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE i
+    ipra_simpa_inst [subst_headLaw] using all.allE i
   exact .impE rule hi
 
 theorem later_roots_congr {C E : PTm n} (R i : PTm n) (hC : Γ ⊢[PRAAx] C ≐ E)
@@ -259,7 +258,7 @@ theorem stage_roots (C N R i : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
         exact later_roots_congr (Syn.shift R) (succ (var 0)) (stage_succ (Syn.shift C) (Syn.shift N) (Syn.shift R) (var 0)).eqSymm
           (later_roots_divide _ _ _ _ shape previous ds.wk.wk))
   have rule : Γ ⊢[PRAAx] rootsLaw C N R i := by
-    simpa only [subst_rootsLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE i
+    ipra_simpa_inst [subst_rootsLaw] using all.allE i
   exact .impE rule hi
 
 /-- A supplied finite list of genuinely distinct field roots has length at

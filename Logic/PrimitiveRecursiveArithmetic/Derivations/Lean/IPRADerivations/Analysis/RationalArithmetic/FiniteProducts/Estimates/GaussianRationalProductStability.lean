@@ -178,9 +178,8 @@ theorem coefficient_bound_at (S T N D A B j : PTm n)
   have rule : Γ ⊢[PRAAx] lt j N ⟶ GaussianRationalMetric.distanceBounded
       (entry (GaussianRationalRootProduct.rationalCoefficients T N D) (succ j))
       (entry (GaussianRationalRootProduct.rationalCoefficients S N D) (succ j)) A B := by
-    simpa only [coefficientBounds,Fm.subst_imp,subst_lt,GaussianRationalMetric.subst_distanceBounded,
-      subst_entry,GaussianRationalRootProduct.subst_rationalCoefficients,ConciseIPRA.PTm.subst_succ,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE j h
+    ipra_simpa_inst [coefficientBounds,Fm.subst_imp,subst_lt,GaussianRationalMetric.subst_distanceBounded,
+      subst_entry,GaussianRationalRootProduct.subst_rationalCoefficients,ConciseIPRA.PTm.subst_succ] using Prf.allE j h
   exact .impE rule hj
 
 /-- Independent normalized component denominators are retained by their

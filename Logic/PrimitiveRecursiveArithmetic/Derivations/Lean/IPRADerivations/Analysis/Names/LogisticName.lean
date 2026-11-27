@@ -254,7 +254,7 @@ theorem orbit_valid (N A B seed : PTm n) (hA : Γ ⊢[PRAAx] le A (num 4*B))
       have b : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by
         simpa only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift] using hB.shift
       exact valid_congr (orbit_succ _ _ _ _).eqSymm (advance_valid a.wk b.wk Prf.hyp0)
-  simpa only [subst_valid, subst_orbit, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE N all
+  ipra_simpa_inst [subst_valid, subst_orbit] using Prf.allE N all
 
 /-- A denominator-cleared rational discrepancy budget. -/
 def budget (s t T R : PTm n) : Fm PTm n :=
@@ -333,8 +333,7 @@ theorem orbit_budget (N A B s t T R : PTm n)
             (congrMul (growth_succ _).eqSymm (.eqRefl _)))
         (budget_step a.wk (Prf.andE₂ (orbit_valid _ _ _ _ a b s0)).wk
           (Prf.andE₂ (orbit_valid _ _ _ _ a b t0)).wk Prf.hyp0)
-  simpa only [subst_budget, subst_orbit, subst_growth, PTm.subst_mul,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE N all
+  ipra_simpa_inst [subst_budget, subst_orbit, subst_growth, PTm.subst_mul] using Prf.allE N all
 
 /-- Fixed primitive recursive presentation of a signed rational input family. -/
 structure Input where
@@ -580,7 +579,7 @@ ipra_subst globalInput [Fm.subst_all, subst_observation, Syn.subst_var, Syn.up_z
 
 theorem globalInput_at (U : Input) {x : PTm n} (h : Γ ⊢[PRAAx] globalInput U x) (H : PTm n) :
     Γ ⊢[PRAAx] observation U H x := by
-  simpa only [globalInput, subst_observation, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE H h
+  ipra_simpa_inst [globalInput, subst_observation] using Prf.allE H h
 
 /-- The source's global corollary still proceeds through the finite theorem. -/
 theorem globally_regular_output (U : Input) (N A B x : PTm n)

@@ -83,7 +83,7 @@ theorem C_length (L p g : PTm n) : Γ ⊢[PRAAx] length (C L p g) ≐ succ (T L 
     ipra_qfind [subst_length, subst_C, subst_T]
     · exact ((congrFst (C_zero _ _)).eqTrans (singleton_length _)).eqTrans (congrSucc (T_zero _ _)).eqSymm
     · exact (congrFst (C_succ _ _ _)).eqTrans ((product_length _ _ _ _).eqTrans (congrSucc (T_succ _ _ _)).eqSymm)
-  simpa only [Fm.subst_eq,subst_length,subst_C,subst_T,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE g
+  ipra_simpa_inst [Fm.subst_eq,subst_length,subst_C,subst_T,ConciseIPRA.PTm.subst_succ] using all.allE g
 theorem C_canonical (L p g : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (C L p g) := by
   refine .orE (zero_or_succ g) ?_ ?_
   · exact canonical_coefficients_congr ((C_index_congr _ _ Prf.hyp0).eqTrans (C_zero _ _))
@@ -106,8 +106,7 @@ theorem C_monic (L p g : PTm n) : Γ ⊢[PRAAx] entry (C L p g) zero ≐ qone :=
           ((recode_congr Prf.hyp0).eqTrans (recode_eq _ qone_canonical))
           ((recode_congr (H_monic _ _)).eqTrans (recode_eq _ qone_canonical))).eqTrans
             (GaussianReciprocalHorner.qmul_one_right _ qone_canonical)))
-  simpa only [Fm.subst_eq,subst_entry,subst_C,ConciseIPRA.PTm.subst_zero,GaussianRationalSyntheticDivision.subst_qone,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE g
+  ipra_simpa_inst [Fm.subst_eq,subst_entry,subst_C,ConciseIPRA.PTm.subst_zero,GaussianRationalSyntheticDivision.subst_qone] using all.allE g
 
 theorem C_recoded_head (L p g : PTm n) : Γ ⊢[PRAAx] recode (entry (C L p g) zero) ≐ qone :=
   (recode_congr (C_monic _ _ _)).eqTrans (recode_eq _ qone_canonical)
@@ -169,8 +168,8 @@ theorem prefix_value_nonzero (L p g h : PTm n) (hh : Γ ⊢[PRAAx] lt h (groupCo
     · refine .impI ?_
       exact next_value_step _ _ _ _ hs.wk.wk Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] le g h ⟶ neg (evaluate (C L p g) (selectedX L p h) ≐ qzero) := by
-    simpa only [Fm.subst_imp,Fm.subst_eq,Fm.subst_bot,neg,subst_le,GaussianRationalHorner.subst_evaluate,subst_C,
-      GaussianRationalCurveFibers.subst_selectedX,GaussianRationalHorner.subst_qzero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE g
+    ipra_simpa_inst [Fm.subst_imp,Fm.subst_eq,Fm.subst_bot,neg,subst_le,GaussianRationalHorner.subst_evaluate,subst_C,
+      GaussianRationalCurveFibers.subst_selectedX,GaussianRationalHorner.subst_qzero] using all.allE g
   exact .impE rule hg
 theorem next_group_nonzero (L p g : PTm n) (hg : Γ ⊢[PRAAx] lt g (groupCount L p)) : Γ ⊢[PRAAx]
     neg (evaluate (C L p g) (selectedX L p g) ≐ qzero) := prefix_value_nonzero _ _ _ _ hg (le_refl _)

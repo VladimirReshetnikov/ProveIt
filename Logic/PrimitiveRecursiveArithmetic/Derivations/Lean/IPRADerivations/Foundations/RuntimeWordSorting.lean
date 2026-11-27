@@ -134,7 +134,7 @@ theorem inversion_row_bound (m w i t : PTm n) : Γ ⊢[PRAAx] le (RuntimePermuta
     · have hb := inversion_bit_bound (Γ := le (RuntimePermutationWords.rowPrefix (Syn.shift m) (Syn.shift w) (Syn.shift i) (var 0)) (var 0) :: Γ.map Fm.shift)
         (Syn.shift m) (Syn.shift w) (Syn.shift i) (var 0)
       exact le_congr (RuntimePermutationWords.row_succ _ _ _ _).eqSymm (.eqRefl _) (by ipra_le sl Prf.hyp0 + sl hb)
-  simpa only [subst_le,RuntimePermutationWords.subst_rowPrefix,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
+  ipra_simpa_inst [subst_le,RuntimePermutationWords.subst_rowPrefix] using all.allE t
 theorem inversion_prefix_bound (m w t : PTm n) : Γ ⊢[PRAAx] le (RuntimePermutationWords.inversionPrefix m w t) (t*m) := by
   have all : Γ ⊢[PRAAx] .all (le (RuntimePermutationWords.inversionPrefix (Syn.shift m) (Syn.shift w) (var 0)) (var 0*Syn.shift m)) := by
     ipra_qfind (le_QF _ _) [subst_le, RuntimePermutationWords.subst_inversionPrefix]
@@ -142,7 +142,7 @@ theorem inversion_prefix_bound (m w t : PTm n) : Γ ⊢[PRAAx] le (RuntimePermut
     · have hb := inversion_row_bound (Γ := le (RuntimePermutationWords.inversionPrefix (Syn.shift m) (Syn.shift w) (var 0)) (var 0*Syn.shift m) :: Γ.map Fm.shift)
         (Syn.shift m) (Syn.shift w) (var 0) (Syn.shift m)
       exact le_congr (RuntimePermutationWords.inversion_prefix_succ _ _ _).eqSymm (.eqRefl _) (by ipra_le sl Prf.hyp0 + sl hb)
-  simpa only [subst_le,RuntimePermutationWords.subst_inversionPrefix,PTm.subst_mul,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
+  ipra_simpa_inst [subst_le,RuntimePermutationWords.subst_inversionPrefix,PTm.subst_mul] using all.allE t
 theorem inversion_bound (m w : PTm n) : Γ ⊢[PRAAx] le (RuntimePermutationWords.inversions m w) (m*m) := inversion_prefix_bound _ _ _
 
 theorem state_zero (m w : PTm n) : Γ ⊢[PRAAx] state m w zero ≐ w := by
@@ -212,7 +212,7 @@ theorem state_invariant (m w j : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermuta
     · simpa only [subst_stateInvariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using invariant_zero m w hw
     · simpa only [subst_stateInvariant,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
         invariant_succ (Syn.shift m) (Syn.shift w) (var 0) Prf.hyp0
-  simpa only [subst_stateInvariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [subst_stateInvariant] using all.allE j
 theorem state_bound (m w j : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermutationWords.horizon m)) :
     Γ ⊢[PRAAx] lt (state m w j) (RuntimePermutationWords.horizon m) := .andE₁ (state_invariant _ _ _ hw)
 theorem final_inactive (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermutationWords.horizon m)) :
@@ -266,7 +266,7 @@ theorem checker_preserved (m w j : PTm n) (hw : Γ ⊢[PRAAx] lt w (RuntimePermu
         simpa only [Fm.shift,subst_lt,RuntimePermutationWords.subst_horizon,Syn.shift] using hw.shift
       exact (checker_congr (.eqRefl _) (state_succ _ _ _)).eqTrans
         ((step_checker_preserved _ _ (state_bound _ _ _ hs.wk)).eqTrans Prf.hyp0)
-  simpa only [Fm.subst_eq,RuntimePermutationWords.subst_permutationBit,subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [Fm.subst_eq,RuntimePermutationWords.subst_permutationBit,subst_state] using all.allE j
 
 def sorted (m w : PTm n) : Fm PTm n := .all
   (lt (succ (var 0)) (Syn.shift m) ⟶ le (RuntimePermutationWords.digit (Syn.shift m) (Syn.shift w) (var 0))
@@ -467,7 +467,7 @@ theorem state_from_inactive (m w j : PTm n) (h : Γ ⊢[PRAAx] inactive m w ≐ 
       have hs : Γ.map Fm.shift ⊢[PRAAx] inactive (Syn.shift m) (Syn.shift w) ≐ one := by
         simpa only [Fm.shift,Fm.subst_eq,subst_inactive,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using h.shift
       exact (state_succ _ _ _).eqTrans ((sortStep_congr (.eqRefl _) Prf.hyp0).eqTrans (step_inactive _ _ hs.wk))
-  simpa only [Fm.subst_eq,subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [Fm.subst_eq,subst_state] using all.allE j
 theorem inactive_small (m w : PTm n) (hm : Γ ⊢[PRAAx] le m one) : Γ ⊢[PRAAx] inactive m w ≐ one := by
   refine .orE (active_cases m w) (inactive_of_active_zero _ _ Prf.hyp0) ?_
   have hi := Prf.andE₁ (descent_found m w (Prf.hyp0 (Γ := Γ)))

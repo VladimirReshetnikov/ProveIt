@@ -109,9 +109,8 @@ ipra_subst euclideanCoefficientBounds [Fm.subst_all, Fm.subst_imp, subst_lt, sub
 theorem euclidean_coefficient_at (C A i : PTm n) (h : Γ ⊢[PRAAx] euclideanCoefficientBounds C A)
     (hi : Γ ⊢[PRAAx] lt i (length C)) : Γ ⊢[PRAAx] bounded (entry C i) A one := by
   have rule : Γ ⊢[PRAAx] lt i (length C) ⟶ bounded (entry C i) A one := by
-    simpa only [euclideanCoefficientBounds,Fm.subst_imp,subst_lt,subst_length,
-      GaussianRationalMetric.subst_bounded,subst_entry,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [euclideanCoefficientBounds,Fm.subst_imp,subst_lt,subst_length,
+      GaussianRationalMetric.subst_bounded,subst_entry,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ] using h.allE i
   exact .impE rule hi
 
 /-- A coefficientwise L1 certificate gives the Euclidean certificate with the same constant. -/
@@ -167,9 +166,8 @@ theorem euclidean_tail_bound (C w N A k : PTm n)
     · exact bound_congr (tail_zero C w N).eqSymm (.eqRefl _) (.eqRefl _)
         (zero_bounded _ _ (GaussianPolynomialPerturbation.power_positive _ _ (GaussianRadiusBudget.radius_positive A)))
     · exact euclidean_tail_bound_step _ _ _ _ _ lenShift.wk cShift.wk wShift.wk Prf.hyp0
-  simpa only [GaussianRationalMetric.subst_bounded,subst_tail,PTm.subst_mul,
-    GaussianRadiusBudget.subst_geometric,GaussianRadiusBudget.subst_radius,subst_ap2,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [GaussianRationalMetric.subst_bounded,subst_tail,PTm.subst_mul,
+    GaussianRadiusBudget.subst_geometric,GaussianRadiusBudget.subst_radius,subst_ap2] using Prf.allE k all
 
 /-- The monic reciprocal-Horner identity and the genuine residual bound
 contradict the strict finite geometric budget at every outside point. -/

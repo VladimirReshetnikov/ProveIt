@@ -51,9 +51,8 @@ theorem diagonal_at (F G H : PR 2) (x y z c A B C t : PTm n)
     (h : Γ ⊢[PRAAx] diagonalEnvelope F G H x y z c A B C) : Γ ⊢[PRAAx]
     distanceBounded (ap2 F t x) (affine G H t t y z c)
       (diagonalNumerator A B C t) (diagonalDenominator B t) := by
-  simpa only [diagonalEnvelope,GaussianRationalMetric.subst_distanceBounded,subst_ap2,subst_affine,
-    GaussianNamedLipschitzRate.subst_diagonalNumerator,GaussianNamedLipschitzRate.subst_diagonalDenominator,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE t
+  ipra_simpa_inst [diagonalEnvelope,GaussianRationalMetric.subst_distanceBounded,subst_ap2,subst_affine,
+    GaussianNamedLipschitzRate.subst_diagonalNumerator,GaussianNamedLipschitzRate.subst_diagonalDenominator] using h.allE t
 
 theorem independent_slack (F G H : PR 2) (x y z c A B C p q r t : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hc : Γ ⊢[PRAAx] bounded c one one)

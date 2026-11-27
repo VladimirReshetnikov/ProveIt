@@ -39,8 +39,7 @@ def prefixRange (f : PR 2) (H x : PTm n) : Fm PTm n :=
 theorem prefixRange_at (f : PR 2) {H x : PTm n} (h : Γ ⊢[PRAAx] prefixRange f H x)
     (i : PTm n) (hi : Γ ⊢[PRAAx] le i H) : Γ ⊢[PRAAx] lt (ap2 f i x) H := by
   have contract : Γ ⊢[PRAAx] le i H ⟶ lt (ap2 f i x) H := by
-    simpa only [prefixRange, Fm.subst_imp, subst_le, subst_lt, subst_ap2,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE i h
+    ipra_simpa_inst [prefixRange, Fm.subst_imp, subst_le, subst_lt, subst_ap2] using Prf.allE i h
   exact Prf.impE contract hi
 
 private alias positive_successor := Common.pos_of_one_le

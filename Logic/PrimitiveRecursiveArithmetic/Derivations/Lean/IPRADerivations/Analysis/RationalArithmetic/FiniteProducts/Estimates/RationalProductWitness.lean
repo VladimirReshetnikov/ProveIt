@@ -66,8 +66,7 @@ theorem large_at (P Q : PTm 2) (N A B x i : PTm n) (h : Γ ⊢[PRAAx] allLarge P
     (hi : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] lt (A*inst2 Q i x) (B*inst2 P i x) := by
   have rule : Γ ⊢[PRAAx] lt i N ⟶ lt (A*inst2 Q i x) (B*inst2 P i x) := by
-    simpa only [allLarge,Fm.subst_imp,subst_lt,PTm.subst_mul,subst_inst2,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE i h
+    ipra_simpa_inst [allLarge,Fm.subst_imp,subst_lt,PTm.subst_mul,subst_inst2] using Prf.allE i h
   exact .impE rule hi
 
 theorem strict_step (P Q : PTm 2) (k A B x : PTm n)

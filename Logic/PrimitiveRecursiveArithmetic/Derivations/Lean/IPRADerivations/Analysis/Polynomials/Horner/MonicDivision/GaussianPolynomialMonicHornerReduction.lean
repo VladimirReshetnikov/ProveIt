@@ -102,8 +102,7 @@ theorem stage_stored (F H m a c j : PTm n) : Γ ⊢[PRAAx] stored (stage F H m a
     · simp only [S,formula_stored,GaussianPolynomialMultiplicationMatrix.subst_stored,subst_stage,subst_width,
         Syn.subst_var,Syn.repl_zero,subst_repl_shift]
       exact stored_congr (stage_succ _ _ _ _ _ _).eqSymm (.eqRefl _) (.eqRefl _) (inject_stored _ _ _ _ _)
-  simpa only [S,formula_stored,GaussianPolynomialMultiplicationMatrix.subst_stored,subst_stage,subst_width,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [S,formula_stored,GaussianPolynomialMultiplicationMatrix.subst_stored,subst_stage,subst_width] using all.allE j
 
 theorem stage_length (F H m a c j : PTm n) : Γ ⊢[PRAAx] length (stage F H m a c j) ≐ m := .andE₁ (stage_stored _ _ _ _ _ _)
 theorem stage_shape (F H m a c j : PTm n) : Γ ⊢[PRAAx] rowShape (stage F H m a c j) m (width a c j) := .andE₁ (.andE₂ (stage_stored _ _ _ _ _ _))
@@ -166,7 +165,7 @@ theorem prefix_evaluation (F H m a c L x y j : PTm n) (hm : Γ ⊢[PRAAx] le one
       exact step.eqTrans ((qadd_congr (qmul_congr ih (.eqRefl _)) (values_lookup _ _ _ _ Prf.hyp0).eqSymm).eqTrans
         (GaussianRationalHorner.horner_succ _ _ _).eqSymm)
   have queried : Γ ⊢[PRAAx] prefixLaw F H m a c L x y j := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+    ipra_simpa_inst [subst_prefixLaw] using all.allE j
   exact .impE queried hj
 
 def input (F H m a c N : PTm n) : Fm PTm n := le one m ⋏ ((length F ≐ m) ⋏

@@ -145,9 +145,8 @@ theorem repeated_factors (x t z k : PTm n) (hk : Γ ⊢[PRAAx] le k t) : Γ ⊢[
           (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))).eqTrans
           ((GaussianRationalPowerAlgebra.qmul_commutative _ _).eqTrans (power_succ _ _).eqSymm))
   have rule : Γ ⊢[PRAAx] le k t ⟶ factors (repeated x t) t z k ≐ power (qsub z x) k := by
-    simpa only [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalReconstruction.subst_factors,
-      subst_repeated,GaussianRationalReciprocal.subst_power,GaussianRationalMetric.subst_qsub,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+    ipra_simpa_inst [Fm.subst_imp,Fm.subst_eq,subst_le,GaussianRationalReconstruction.subst_factors,
+      subst_repeated,GaussianRationalReciprocal.subst_power,GaussianRationalMetric.subst_qsub] using all.allE k
   exact .impE rule hk
 theorem H_evaluation (x t z : PTm n) : Γ ⊢[PRAAx] evaluate (H x t) z ≐ power (qsub z x) t :=
   (GaussianRationalReconstruction.reconstruction_evaluation _ _ _ _).eqTrans (repeated_factors _ _ _ _ (le_refl _))

@@ -156,8 +156,7 @@ private theorem raw_head_sample (p z R B N r : PTm n) (hB : Γ ⊢[PRAAx] le one
         Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
           (GaussianNamedFiniteProduct.sample_succ rows (sh p) j (sh x)).eqTrans
             ((qmul_congr hi e).eqTrans (GaussianReciprocalHorner.qmul_one_right qone qone_canonical))
-  simpa only [law,sh,Fm.subst_eq,GaussianNamedFiniteProduct.subst_sample,GaussianRationalReciprocal.subst_qone,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
+  ipra_simpa_inst [law,sh,Fm.subst_eq,GaussianNamedFiniteProduct.subst_sample,GaussianRationalReciprocal.subst_qone] using all.allE r
 
 theorem head_sample (p z R B N r : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hz : Γ ⊢[PRAAx] normSq z ≐ zero) :
     Γ ⊢[PRAAx] ap2 H p (hd z R B N r) ≐ qone :=

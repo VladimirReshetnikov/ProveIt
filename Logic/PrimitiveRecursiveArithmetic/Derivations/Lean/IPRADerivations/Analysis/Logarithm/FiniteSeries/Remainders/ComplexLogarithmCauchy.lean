@@ -237,8 +237,7 @@ theorem difference_domination (z N L R K : PTm n) (hz : Γ ⊢[PRAAx] bounded z 
             (positive (Syn.shift L) (Syn.shift R) (Syn.shift N) (var 0)))))))
       exact le_congr (difference_step_norm _ _ _ _).eqSymm
         (congrMul (positive_succ _ _ _ _) (positive_succ _ _ _ _)).eqSymm (bounded_add first second)
-  simpa only [ComplexLogarithmRemainder.subst_bounded, subst_difference, subst_positive,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE K all
+  ipra_simpa_inst [ComplexLogarithmRemainder.subst_bounded, subst_difference, subst_positive] using Prf.allE K all
 
 theorem finite_cauchy_bound (z N L R K : PTm n) (hz : Γ ⊢[PRAAx] bounded z R)
     (hN : Γ ⊢[PRAAx] le (two * R) N) :

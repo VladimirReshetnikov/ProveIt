@@ -50,7 +50,7 @@ theorem finite (B C N : PTm n) : Γ ⊢[PRAAx] law B C N := by
     ipra_qfind (le_QF _ _) [subst_law]
     · exact base B C
     · exact step _ _ _ Prf.hyp0
-  simpa only [subst_law,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE N
+  ipra_simpa_inst [subst_law] using h.allE N
 
 theorem power_tail (q B C N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hq : Γ ⊢[PRAAx] bounded q B (B+C)) : Γ ⊢[PRAAx]

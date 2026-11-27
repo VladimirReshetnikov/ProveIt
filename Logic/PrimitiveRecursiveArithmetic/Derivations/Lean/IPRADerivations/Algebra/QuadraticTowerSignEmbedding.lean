@@ -44,7 +44,7 @@ theorem backward_floor (H B D j : PTm n) : Γ ⊢[PRAAx] floorLaw H B D j := by
     · exact le_congr (.eqRefl _) (Foundations.BackwardDemand.backward_zero demandF H B D).eqSymm (le_refl B)
     · exact le_trans Prf.hyp0 (le_congr (.eqRefl _)
         (Foundations.BackwardDemand.backward_succ demandF _ _ _ _).eqSymm (budget_inflation _ _ _))
-  simpa only [subst_floorLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [subst_floorLaw] using all.allE j
 theorem cap_floor (H B t D : PTm n) : Γ ⊢[PRAAx] le B (cap H B t D) :=
   backward_floor H B D (monus H t)
 

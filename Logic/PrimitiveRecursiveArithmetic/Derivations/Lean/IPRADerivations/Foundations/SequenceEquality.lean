@@ -40,8 +40,7 @@ def agree (A B : PTm 2) (N x y : PTm n) : Fm PTm n :=
 theorem agree_at (A B : PTm 2) (N x y i : PTm n) (h : Γ ⊢[PRAAx] agree A B N x y)
     (hi : Γ ⊢[PRAAx] lt i N) : Γ ⊢[PRAAx] inst2 A i x ≐ inst2 B i y := by
   have rule : Γ ⊢[PRAAx] lt i N ⟶ (inst2 A i x ≐ inst2 B i y) := by
-    simpa only [agree,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_inst2,Syn.subst_var,
-      Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE i h
+    ipra_simpa_inst [agree,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_inst2] using Prf.allE i h
   exact .impE rule hi
 
 theorem stack_equal (A B : PTm 2) (N x y : PTm n) (h : Γ ⊢[PRAAx] agree A B N x y) :

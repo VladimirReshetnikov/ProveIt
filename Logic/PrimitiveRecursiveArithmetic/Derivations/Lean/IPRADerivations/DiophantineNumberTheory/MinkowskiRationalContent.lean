@@ -193,8 +193,8 @@ theorem prefix_integer_count_sum (N B r : PTm n) :
     · exact (MinkowskiBoxes.prefixCount_zero _ _).eqTrans (integerCountSum_zero N B).eqSymm
     · exact (MinkowskiBoxes.prefixCount_succ _ _ _).eqTrans
         ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (integerCountSum_succ _ _ _).eqSymm)
-  simpa only [Fm.subst_eq, MinkowskiBoxes.subst_prefixCount, subst_integerBoxes,
-    subst_integerCountSum, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE r all
+  ipra_simpa_inst [Fm.subst_eq, MinkowskiBoxes.subst_prefixCount, subst_integerBoxes,
+    subst_integerCountSum] using Prf.allE r all
 
 /-- The sum-facing count is the actual concatenated integer point-list count,
 not a separate cardinality quantity assumed equal to it. -/

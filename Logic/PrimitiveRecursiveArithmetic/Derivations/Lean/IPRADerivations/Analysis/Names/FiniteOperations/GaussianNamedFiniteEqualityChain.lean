@@ -58,7 +58,7 @@ theorem finite_estimate (f : PR 2) (t : PTm 2) (p j x : PTm n)
     ipra_qfind (by simp [estimate,distanceBounded,GaussianRationalMetric.bounded,RationalArgmin.rationalLE,Fm.QF,le_QF]) [subst_estimate]
     · exact estimate_zero (Γ := Γ) f t p x
     · exact estimate_succ f t (Syn.shift p) (var 0) (Syn.shift x) h'.wk Prf.hyp0
-  simpa only [subst_estimate,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE j
+  ipra_simpa_inst [subst_estimate] using hall.allE j
 
 theorem finite_cross (f : PR 2) (t : PTm 2) (j x : PTm n) (h : Γ ⊢[PRAAx] allSteps f t x)
     (hj : Γ ⊢[PRAAx] pointCN f (inst2 t j x)) (hz : Γ ⊢[PRAAx] pointCN f (inst2 t zero x)) :

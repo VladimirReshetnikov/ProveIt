@@ -69,8 +69,7 @@ theorem clearing_at (C P Q : PTm 2) (N K x j : PTm n)
     (h : Γ ⊢[PRAAx] clearing C P Q N K x) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] inst2 Q j x*inst2 C j x ≐ K*inst2 P j x := by
   have r : Γ ⊢[PRAAx] lt j N ⟶ (inst2 Q j x*inst2 C j x ≐ K*inst2 P j x) := by
-    simpa only [clearing,Fm.subst_imp,Fm.subst_eq,subst_lt,PTm.subst_mul,subst_inst2,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE j h
+    ipra_simpa_inst [clearing,Fm.subst_imp,Fm.subst_eq,subst_lt,PTm.subst_mul,subst_inst2] using Prf.allE j h
   exact .impE r hj
 
 theorem sum_clearing (C P Q : PTm 2) (N K x : PTm n)

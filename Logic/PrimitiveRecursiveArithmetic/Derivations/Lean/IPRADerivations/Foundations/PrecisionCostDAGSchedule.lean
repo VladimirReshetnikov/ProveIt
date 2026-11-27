@@ -165,9 +165,8 @@ ipra_subst totalBoundLaw
 theorem errors_bound_at (Eta N D v : PTm n) (h : Γ ⊢[PRAAx] errorsBound Eta N D) (hv : Γ ⊢[PRAAx] lt v N) : Γ ⊢[PRAAx]
     rationalLE (localError Eta v) (fraction one D) := by
   have gate : Γ ⊢[PRAAx] lt v N ⟶ rationalLE (localError Eta v) (fraction one D) := by
-    simpa only [errorsBound,Fm.subst_imp,subst_lt,Analysis.RationalArgmin.subst_rationalLE,
-      subst_localError,subst_fraction,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE v
+    ipra_simpa_inst [errorsBound,Fm.subst_imp,subst_lt,Analysis.RationalArgmin.subst_rationalLE,
+      subst_localError,subst_fraction,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using h.allE v
   exact .impE gate hv
 
 theorem base_positive (G N : PTm n) : Γ ⊢[PRAAx] le one (base G N) :=

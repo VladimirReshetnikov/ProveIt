@@ -68,8 +68,7 @@ ipra_subst sumBounds
 
 theorem row_at (p a b i : PTm n) (h : Γ ⊢[PRAAx] rows p a b) :
     Γ ⊢[PRAAx] localBounds p (shifted a b i) b := by
-  simpa only [rows,subst_localBounds,GaussianStirlingTelescope.subst_shifted,Syn.subst_var,
-    Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+  ipra_simpa_inst [rows,subst_localBounds,GaussianStirlingTelescope.subst_shifted] using h.allE i
 
 private theorem sum_upper_step (p i a b : PTm n) (ha : Γ ⊢[PRAAx] le one a)
     (h : Γ ⊢[PRAAx] sumBounds p i a b) (row : Γ ⊢[PRAAx] localBounds p (shifted a b i) b) :
@@ -103,6 +102,6 @@ theorem sum_bounds (p N a b : PTm n) (ha : Γ ⊢[PRAAx] le one a)
       have ha' : Δ ⊢[PRAAx] le one a' := by simpa [Fm.shift,Syn.shift,a',Δ,one] using ha.shift.wk
       have h' : Δ ⊢[PRAAx] rows p' a' b' := by simpa [Fm.shift,Syn.shift,p',a',b',Δ] using h.shift.wk
       exact sum_upper_step p' j a' b' ha' Prf.hyp0 (row_at p' a' b' j h')
-  simpa only [subst_sumBounds,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+  ipra_simpa_inst [subst_sumBounds] using all.allE N
 
 end LeanProofs.IPRA.Analysis.GaussianStirlingFiniteTelescopeBounds

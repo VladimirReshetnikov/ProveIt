@@ -113,7 +113,7 @@ theorem finite_rescale (A B k N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ 
         (logarithm_sum_succ (m*a) (m*b) i).eqTrans
           ((qadd_congr h.andE₂ (row_rescale i a b m hBs.wk hks.wk)).eqTrans (logarithm_sum_succ a b i).eqSymm)
       exact .andI p q
-  simpa only [subst_invariance, s, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using all.allE N
+  ipra_simpa_inst [subst_invariance, s] using all.allE N
 
 private abbrev sineF := GaussianSineProductName.nameF
 private abbrev rowF := GaussianSineProductImaginaryLogDerivativeTail.nameF

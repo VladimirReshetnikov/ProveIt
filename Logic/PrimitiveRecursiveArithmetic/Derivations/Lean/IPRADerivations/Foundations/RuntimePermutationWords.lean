@@ -74,7 +74,7 @@ theorem digit_bound (m w i : PTm n) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx] 
   have all := MixedRadixExpansion.digits_bounded (radices_positive (Γ := Γ) m w)
   have gate : Γ ⊢[PRAAx] lt i m ⟶
       lt (inst2 (MixedRadixExpansion.dgB radixBody) i (data m w)) (inst2 radixBody i (data m w)) := by
-    simpa only [Fm.subst_imp,subst_lt,subst_inst2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE i
+    ipra_simpa_inst [Fm.subst_imp,subst_lt,subst_inst2] using all.allE i
   exact lt_congr (decoded_digit m w i) (radix_at m w i) (.impE gate hi)
 
 theorem digit_body_at (m w i : PTm n) : Γ ⊢[PRAAx]
@@ -89,17 +89,17 @@ theorem word_lookup (m w i : PTm n) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx]
 theorem range_at (P m i : PTm n) (h : Γ ⊢[PRAAx] range P m) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx]
     lt (entry P i) m := by
   have gate : Γ ⊢[PRAAx] lt i m ⟶ lt (entry P i) m := by
-    simpa only [range,Fm.subst_imp,subst_lt,subst_entry,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [range,Fm.subst_imp,subst_lt,subst_entry] using h.allE i
   exact .impE gate hi
 theorem entries_at (P Q m i : PTm n) (h : Γ ⊢[PRAAx] entriesEqual P Q m) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx]
     entry P i ≐ entry Q i := by
   have gate : Γ ⊢[PRAAx] lt i m ⟶ entry P i ≐ entry Q i := by
-    simpa only [entriesEqual,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_entry,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [entriesEqual,Fm.subst_imp,Fm.subst_eq,subst_lt,subst_entry] using h.allE i
   exact .impE gate hi
 theorem distinct_at (P m i j : PTm n) (h : Γ ⊢[PRAAx] distinct P m)
     (hi : Γ ⊢[PRAAx] lt i m) (hj : Γ ⊢[PRAAx] lt j i) : Γ ⊢[PRAAx] neg (entry P i ≐ entry P j) := by
   have outer : Γ ⊢[PRAAx] lt i m ⟶ distinctFrom P i := by
-    simpa only [distinct,Fm.subst_imp,subst_lt,subst_distinctFrom,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [distinct,Fm.subst_imp,subst_lt,subst_distinctFrom] using h.allE i
   have gate : Γ ⊢[PRAAx] lt j i ⟶ neg (entry P i ≐ entry P j) := by
     simpa [distinctFrom,neg] using (Prf.impE outer hi).allE j
   exact .impE gate hj

@@ -54,8 +54,7 @@ ipra_subst nonpositiveRows [Syn.subst_shift, Syn.shift_subst]
 private theorem row_negative (j q T N : PTm n) (hr : Γ ⊢[PRAAx] nonpositiveRows q T N)
     (hj : Γ ⊢[PRAAx] le j N) : Γ ⊢[PRAAx] nonpositive (exponent q (T*j) N) := by
   have h : Γ ⊢[PRAAx] le j N ⟶ nonpositive (exponent q (T*j) N) := by
-    simpa only [nonpositiveRows,Fm.subst_imp,subst_nonpositive,subst_exponent,subst_le,PTm.subst_mul,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hr.allE j
+    ipra_simpa_inst [nonpositiveRows,Fm.subst_imp,subst_nonpositive,subst_exponent,subst_le,PTm.subst_mul] using hr.allE j
   exact .impE h hj
 
 private theorem sample_congr (p S x y : PTm n) (e : Γ ⊢[PRAAx] x ≐ y) :

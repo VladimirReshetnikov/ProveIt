@@ -220,8 +220,7 @@ theorem fast_scalar (point : PR 2) (T x : PTm n)
 
 theorem distance_le_at (point : PR 2) (T x A B m : PTm n) (h : Γ ⊢[PRAAx] distanceLE point T x A B) : Γ ⊢[PRAAx]
     rationalLE (distanceSample point T x m) (cutRadius A B m) := by
-  simpa only [distanceLE,RationalArgmin.subst_rationalLE,subst_distanceSample,subst_cutRadius,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE m
+  ipra_simpa_inst [distanceLE,RationalArgmin.subst_rationalLE,subst_distanceSample,subst_cutRadius] using h.allE m
 
 theorem cut_to_hit (point : PR 2) (T x A B m : PTm n)
     (hT : Γ ⊢[PRAAx] le one (length T)) (hB : Γ ⊢[PRAAx] le one B)

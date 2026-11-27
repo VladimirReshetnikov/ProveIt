@@ -70,7 +70,7 @@ theorem quotient_stage_head (C N h j : PTm n) (hj : Γ ⊢[PRAAx] le j N) :
         (remaining (Syn.shift N) (var 0)) (remaining_positive _ _ next)
       exact (recode_congr (entry_congr (stage_succ _ _ _ _) (.eqRefl _))).eqTrans (raw.eqSymm.eqTrans ih)
   have rule : Γ ⊢[PRAAx] headLaw C N h j := by
-    simpa only [subst_headLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+    ipra_simpa_inst [subst_headLaw] using all.allE j
   exact .impE rule hj
 
 private theorem two_prefix (C h : PTm n) : Γ ⊢[PRAAx] horner C h two ≐
@@ -129,7 +129,7 @@ theorem quotient_stage_second (C N h j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) :
           ⊢[PRAAx] lt (succ (var 0)) (Syn.shift N) := Prf.hyp0
       exact second_step _ _ _ _ next (.impE Prf.hyp1 (lt_of_le_of_lt (le_succ_self _) next))
   have rule : Γ ⊢[PRAAx] secondLaw C N h j := by
-    simpa only [subst_secondLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+    ipra_simpa_inst [subst_secondLaw] using all.allE j
   exact .impE rule hj
 
 theorem translated_head (C N h : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N) :

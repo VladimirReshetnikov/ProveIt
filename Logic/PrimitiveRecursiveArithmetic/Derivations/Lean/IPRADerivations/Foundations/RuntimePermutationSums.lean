@@ -79,7 +79,7 @@ theorem sorting_total (f : PTm 2) (m w x t : PTm n) : Γ ⊢[PRAAx]
     · exact total_congr f (.eqRefl _) (RuntimeWordSorting.state_zero _ _) (.eqRefl _)
     · exact (total_congr f (.eqRefl _) (RuntimeWordSorting.state_succ _ _ _) (.eqRefl _)).eqTrans
         ((step_total _ _ _ _).eqTrans Prf.hyp0)
-  simpa only [Fm.subst_eq,subst_total,RuntimeWordSorting.subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
+  ipra_simpa_inst [Fm.subst_eq,subst_total,RuntimeWordSorting.subst_state] using all.allE t
 theorem identity_total (f : PTm 2) (m x : PTm n) : Γ ⊢[PRAAx]
     total f m (RuntimeWordSorting.identityCode m) x ≐ ordinary f m x := by
   apply sum_congr_bounded

@@ -207,7 +207,7 @@ theorem linear_prefix (C r z k : PTm n) : Γ ⊢[PRAAx] prefixLaw C r z k := by
         simp only [re_add,im_add,re_mul,im_mul]
         linear_combination ZT.toZ Δ (im (Syn.shift z))*ir+ZT.toZ Δ (re (Syn.shift z))*ii-
           ZT.toZ Δ (re (Syn.shift r))*pi-ZT.toZ Δ (im (Syn.shift r))*pr+ci
-  simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [subst_prefixLaw] using Prf.allE k all
 
 /-- Horner evaluation of the actual constructed coefficient list is exactly
 `(z-r)` times the old Horner value, at arbitrary runtime list length. -/
@@ -259,7 +259,7 @@ theorem coefficients_length (R N : PTm n) : Γ ⊢[PRAAx] length (coefficients R
     ipra_qfind [subst_length, subst_coefficients]
     · exact (congrFst (coefficients_zero R)).eqTrans (sequence_length _ _ _)
     · exact (congrFst (coefficients_succ _ _)).eqTrans ((linear_length _ _).eqTrans (congrSucc Prf.hyp0))
-  simpa only [Fm.subst_eq,subst_length,subst_coefficients,ConciseIPRA.PTm.subst_succ,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
+  ipra_simpa_inst [Fm.subst_eq,subst_length,subst_coefficients,ConciseIPRA.PTm.subst_succ] using Prf.allE N all
 
 def factorStep : PTm 4 := mul (sub (var 3) (entry (var 2) (var 0))) (var 1)
 def factorF : PR 3 := recDef oneCode factorStep
@@ -314,7 +314,7 @@ theorem evaluate_product (R z N : PTm n) : Γ ⊢[PRAAx] evaluationLaw R z N := 
     · exact equal_trans (equal_of_code (evaluate_code_congr (coefficients_zero R) (.eqRefl z)))
         (equal_trans (initial_evaluate z) (equal_symm (equal_of_code (factors_zero R z))))
     · exact evaluation_step _ _ _ Prf.hyp0
-  simpa only [subst_evaluationLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
+  ipra_simpa_inst [subst_evaluationLaw] using Prf.allE N all
 
 theorem factor_tail_step (R z s k : PTm n) (h : Γ ⊢[PRAAx] equal (factors R z (s+k)) zeroCode) :
     Γ ⊢[PRAAx] equal (factors R z (s+succ k)) zeroCode := by
@@ -329,8 +329,7 @@ theorem factor_tail_zero (R z s k : PTm n) (h : Γ ⊢[PRAAx] equal (factors R z
     ipra_qfind (⟨trivial,trivial⟩) [subst_equal, subst_factors, ComplexLogarithmRemainder.subst_zeroCode]
     · exact equal_trans (equal_of_code (congrAp3 factorF (add_zero s) (.eqRefl _) (.eqRefl _))) h
     · exact factor_tail_step _ _ _ _ Prf.hyp0
-  simpa only [subst_equal,subst_factors,PTm.subst_add,ComplexLogarithmRemainder.subst_zeroCode,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [subst_equal,subst_factors,PTm.subst_add,ComplexLogarithmRemainder.subst_zeroCode] using Prf.allE k all
 
 theorem root_factor_zero (R j : PTm n) : Γ ⊢[PRAAx] equal (factors R (entry R j) (succ j)) zeroCode :=
   equal_trans (equal_of_code (factors_succ R (entry R j) j))
@@ -377,8 +376,8 @@ theorem coefficients_monic (R N : PTm n) :
         ComplexLogarithmRemainder.subst_oneCode]
     · exact equal_of_code ((Foundations.SequenceComposition.entry_congr (coefficients_zero R) (.eqRefl zero)).eqTrans initial_entry)
     · exact coefficients_monic_step _ _ Prf.hyp0
-  simpa only [subst_equal,subst_entry,subst_coefficients,ConciseIPRA.PTm.subst_zero,
-    ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
+  ipra_simpa_inst [subst_equal,subst_entry,subst_coefficients,ConciseIPRA.PTm.subst_zero,
+    ComplexLogarithmRemainder.subst_oneCode] using Prf.allE N all
 
 def normBody : PTm 2 := normSq (sub (sndT (var 1)) (entry (fstT (var 1)) (var 0)))
 def normFactors (R z N : PTm n) : PTm n := ap2 (prodF normBody) N (pairT R z)
@@ -416,8 +415,7 @@ theorem factors_norm (R z N : PTm n) : Γ ⊢[PRAAx] normSq (factors R z N) ≐ 
     · exact (ComplexLogarithmRemainder.congr_normSq (factors_zero R z)).eqTrans
         ((normSq_one (Γ := Γ)).eqTrans (normFactors_zero R z).eqSymm)
     · exact factors_norm_step _ _ _ Prf.hyp0
-  simpa only [Fm.subst_eq,ComplexLogarithmRemainder.subst_normSq,subst_factors,subst_normFactors,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE N all
+  ipra_simpa_inst [Fm.subst_eq,ComplexLogarithmRemainder.subst_normSq,subst_factors,subst_normFactors] using Prf.allE N all
 
 theorem evaluation_norm_product (R z N : PTm n) :
     Γ ⊢[PRAAx] normSq (evaluate (coefficients R N) z) ≐ normFactors R z N :=

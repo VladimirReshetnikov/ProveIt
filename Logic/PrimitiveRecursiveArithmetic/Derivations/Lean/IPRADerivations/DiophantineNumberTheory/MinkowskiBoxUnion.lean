@@ -250,8 +250,7 @@ theorem disjoint_at (N B i j : PTm n) (h : Γ ⊢[PRAAx] disjoint N B)
       subst_fstT, subst_sndT, subst_entry, Syn.subst_var, Syn.inst_zero, Syn.up_zero, Syn.up_one,
       Syn.up_succ, Syn.subst_inst_shift, LeanProofs.IPRA.AnalyticNumberTheory.Fermat.subst_up_shift'] using Prf.allE j h
   have contract : Γ ⊢[PRAAx] lt i j ⟶ separated N (fstT (entry B i)) (sndT (entry B i)) (fstT (entry B j)) (sndT (entry B j)) := by
-    simpa only [Fm.subst_imp, subst_lt, subst_separated, subst_fstT, subst_sndT, subst_entry,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE i (Prf.impE first hj)
+    ipra_simpa_inst [Fm.subst_imp, subst_lt, subst_separated, subst_fstT, subst_sndT, subst_entry] using Prf.allE i (Prf.impE first hj)
   exact .impE contract hij
 
 

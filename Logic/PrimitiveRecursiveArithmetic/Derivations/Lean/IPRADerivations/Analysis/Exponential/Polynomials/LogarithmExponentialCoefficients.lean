@@ -482,8 +482,7 @@ theorem history_add (N j : PTm n) :
     · exact (congrFst (congrAp2 iS (.eqRefl _) (congrAp1 tableF (add_zero N)))).eqTrans (congrFst (iS_zero _))
     · exact (congrFst (congrAp2 iS (.eqRefl _) (congrAp1 tableF (add_succ _ _)))).eqTrans
         ((history_succ _ _).eqTrans Prf.hyp0)
-  simpa only [Fm.subst_eq,subst_history,subst_table,subst_coefficientCode,PTm.subst_add,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE j all
+  ipra_simpa_inst [Fm.subst_eq,subst_history,subst_table,subst_coefficientCode,PTm.subst_add] using Prf.allE j all
 
 theorem history_at (N j : PTm n) (hj : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] nth (table N) j ≐ coefficientCode (monus N j) :=

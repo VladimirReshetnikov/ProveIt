@@ -73,8 +73,7 @@ theorem polynomial_proper (z w B D N : PTm n)
     · exact (polynomial_succ _ _ _).eqTrans
         ((advance_proper _ _ _ _ (var 0) _ _ Prf.hyp0 (factor_proper _ _ _ _ _ bs.wk ds.wk qs.wk)).eqTrans
           (polynomial_succ _ _ _).eqSymm)
-  simpa only [Fm.subst_eq,GaussianBarnesCanonicalCenteredHead.subst_polynomial,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+  ipra_simpa_inst [Fm.subst_eq,GaussianBarnesCanonicalCenteredHead.subst_polynomial] using all.allE N
 
 theorem head_proper (z w R B D : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D)

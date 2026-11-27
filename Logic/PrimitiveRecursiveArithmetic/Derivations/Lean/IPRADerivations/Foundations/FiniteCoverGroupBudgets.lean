@@ -52,8 +52,7 @@ theorem scale_budget_sum (K B m : PTm n) : Γ ⊢[PRAAx] scaledSum K B m ≐ m *
     · exact (sum_zero _ _).eqTrans ((congrMul (.eqRefl _) (sum_zero _ _)).eqTrans (mul_zero _)).eqSymm
     · exact (scaled_sum_succ _ _ _).eqTrans ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans
         ((mul_add _ _ _).eqSymm.eqTrans (congrMul (.eqRefl _) (budget_sum_succ _ _).eqSymm)))
-  simpa only [Fm.subst_eq,subst_scaledSum,subst_budgetSum,LeanProofs.IPRA.PTm.subst_mul,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
+  ipra_simpa_inst [Fm.subst_eq,subst_scaledSum,subst_budgetSum,LeanProofs.IPRA.PTm.subst_mul] using all.allE K
 
 theorem total_bound (f : PTm 3) (P K p B m : PTm n) (h : Γ ⊢[PRAAx] groupBudgets f P K p B m) :
     Γ ⊢[PRAAx] le (total f P K p) (m * budgetSum K B) := by

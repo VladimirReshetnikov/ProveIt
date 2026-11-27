@@ -92,13 +92,12 @@ ipra_subst forwardDiagonal [Syn.subst_shift, Syn.shift_subst]
 
 theorem selected_at (f a b : PR 2) (p x : PTm n) (h : Γ ⊢[PRAAx] selected f a b x) :
     Γ ⊢[PRAAx] selectedAt f a b p x := by
-  simpa only [selected,subst_selectedAt,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE p
+  ipra_simpa_inst [selected,subst_selectedAt] using h.allE p
 
 theorem forward_diagonal_at (a b c d : PR 2) (p x y H : PTm n)
     (h : Γ ⊢[PRAAx] forwardDiagonal a b c d x y H) :
     Γ ⊢[PRAAx] radius (forwardAt a b p x) (forwardAt c d p y) H (unit p) := by
-  simpa only [forwardDiagonal,RationalValueBounds.subst_radius,subst_forwardAt,GaussianCoefficientNameBounds.subst_unit,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE p
+  ipra_simpa_inst [forwardDiagonal,RationalValueBounds.subst_radius,subst_forwardAt,GaussianCoefficientNameBounds.subst_unit] using h.allE p
 
 theorem parameter_diagonal (f g a b c d : PR 2) (x y H : PTm n)
     (hf : Γ ⊢[PRAAx] selected f a b x) (hg : Γ ⊢[PRAAx] selected g c d y)

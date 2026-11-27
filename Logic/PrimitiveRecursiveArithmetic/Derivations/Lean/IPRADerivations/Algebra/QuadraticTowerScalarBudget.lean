@@ -183,7 +183,7 @@ theorem growth_bound (t B : PTm n) : Γ ⊢[PRAAx] growthLaw t B := by
     ipra_qfind (le_QF _ _) [subst_growthLaw]
     · exact growth_law_zero B
     · exact growth_law_step _ _ Prf.hyp0
-  simpa only [subst_growthLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
+  ipra_simpa_inst [subst_growthLaw] using all.allE t
 theorem growth_le_majorant (t B : PTm n) : Γ ⊢[PRAAx] le (growth t B) (majorant t B) :=
   le_trans (le_congr (.eqRefl _) (by ipra_ring) (le_add_right (growth t B) (growth t B)))
     (growth_bound t B)

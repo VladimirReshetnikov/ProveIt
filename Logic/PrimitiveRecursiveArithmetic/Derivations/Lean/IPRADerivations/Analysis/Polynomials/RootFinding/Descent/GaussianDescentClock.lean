@@ -108,8 +108,7 @@ ipra_subst localRD [Syn.subst_shift, Syn.shift_subst]
 theorem local_rd_at (step : PR 3) (d C z : PTm n)
     (h : Γ ⊢[PRAAx] localRD step d C) (hz : Γ ⊢[PRAAx] canonical z) : Γ ⊢[PRAAx] rdAt step d C z := by
   have rule : Γ ⊢[PRAAx] canonical z ⟶ rdAt step d C z := by
-    simpa only [localRD,Fm.subst_imp,GaussianRationalHorner.subst_canonical,subst_rdAt,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE z h
+    ipra_simpa_inst [localRD,Fm.subst_imp,GaussianRationalHorner.subst_canonical,subst_rdAt] using Prf.allE z h
   exact .impE rule hz
 
 /-- The genuine local rational comparison supplies this cleared inequality;
@@ -215,7 +214,7 @@ theorem iterate_decay (step : PR 3) (d C a b k : PTm n) (hb : Γ ⊢[PRAAx] le o
     ipra_qfind (le_QF _ _) [subst_decay]
     · exact decay_zero step d C a b ((residual_bound_iff _ _ _ _ hb).iffMp hInitial)
     · exact decay_succ _ _ _ _ _ _ rdShift.wk Prf.hyp0
-  simpa only [subst_decay,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+  ipra_simpa_inst [subst_decay] using Prf.allE k all
 
 theorem clock_residual (step : PR 3) (d C a b e f : PTm n)
     (hb : Γ ⊢[PRAAx] le one b) (he : Γ ⊢[PRAAx] le one e) (hf : Γ ⊢[PRAAx] le one f)

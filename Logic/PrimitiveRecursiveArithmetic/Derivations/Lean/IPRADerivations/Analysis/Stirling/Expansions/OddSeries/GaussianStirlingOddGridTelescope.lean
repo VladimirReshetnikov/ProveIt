@@ -41,8 +41,7 @@ private theorem zero_argument (K s : PTm n) : Γ ⊢[PRAAx] Nz K zero s ≐ zero
       ipra_simps
       rw [e,h,z]
       ring
-  simpa only [Fm.subst_eq,subst_ap2,subst_pairT,ConciseIPRA.PTm.subst_zero,Syn.subst_var,
-    Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
+  ipra_simpa_inst [Fm.subst_eq,subst_ap2,subst_pairT,ConciseIPRA.PTm.subst_zero] using all.allE K
 
 def prefixBounds (X G K L i : PTm n) : Fm PTm n :=
   le (fact L*numerator X K i) (leftSum X i (fact L)*denominator X K i) ⋏

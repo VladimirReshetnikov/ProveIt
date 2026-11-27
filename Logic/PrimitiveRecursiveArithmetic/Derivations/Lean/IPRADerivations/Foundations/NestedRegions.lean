@@ -97,8 +97,7 @@ theorem nested_interval (B : BallCodes) (N r z x : PTm n)
       exact .impE Prf.hyp1 (.impE
         (nesting_at B (Syn.shift N + var 0) (Syn.shift z) (Syn.shift x) shifted.wk.wk)
         (ball_congr_index B (add_succ (Syn.shift N) (var 0)) Prf.hyp0))
-  simpa only [Fm.subst_imp, subst_ball, PTm.subst_add, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE r all
+  ipra_simpa_inst [Fm.subst_imp, subst_ball, PTm.subst_add] using Prf.allE r all
 
 /-- The source endpoint form of transitive ball inclusion. -/
 theorem nested_between (B : BallCodes) {N M z x : PTm n}
@@ -211,8 +210,7 @@ theorem compatible_agreement (B : BallCodes) (N y s x : PTm n)
     Γ ⊢[PRAAx] lt zero (dd B y (center B N x) x) ⋏
       le (pw two (N + s) * dn B y (center B N x) x) (dd B y (center B N x) x) := by
   have atN : Γ ⊢[PRAAx] ball B N y x := by
-    simpa only [compatible, subst_ball, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift] using Prf.allE N member
+    ipra_simpa_inst [compatible, subst_ball] using Prf.allE N member
   have radius := radius_at B N s x radii
   exact .andI
     (distance_positive_at B y (center B N x) x positive (.andE₁ atN)

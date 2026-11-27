@@ -145,7 +145,7 @@ theorem weighted_leading (C N h j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ
       exact (weighted_step (Syn.shift C) (Syn.shift N) (Syn.shift h) (var 0) shape next).eqTrans
         ((qmul_congr ih (.eqRefl _)).eqTrans (target_step _ _ _ _).eqSymm)
   have rule : Γ ⊢[PRAAx] leadingLaw C N h j := by
-    simpa only [subst_leadingLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+    ipra_simpa_inst [subst_leadingLaw] using all.allE j
   exact .impE rule hj
 
 theorem terminal_evaluation (C N h x : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N) :

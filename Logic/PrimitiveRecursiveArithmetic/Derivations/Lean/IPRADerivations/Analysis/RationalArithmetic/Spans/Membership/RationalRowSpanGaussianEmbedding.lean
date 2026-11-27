@@ -123,8 +123,7 @@ theorem combination_real_part (A R N C j : PTm n) (hj : Γ ⊢[PRAAx] lt j N) : 
 theorem membership_at (A R N C v j : PTm n) (h : Γ ⊢[PRAAx] membership A R N C v) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] RationalArgmin.rationalEq (entry v j) (entry (rowCombination A R N C) j) := by
   have rule : Γ ⊢[PRAAx] lt j N ⟶ RationalArgmin.rationalEq (entry v j) (entry (rowCombination A R N C) j) := by
-    simpa only [membership,Fm.subst_imp,RationalArgmin.subst_rationalEq,subst_lt,subst_entry,subst_rowCombination,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE j
+    ipra_simpa_inst [membership,Fm.subst_imp,RationalArgmin.subst_rationalEq,subst_lt,subst_entry,subst_rowCombination] using h.allE j
   exact .impE rule hj
 
 theorem membership_embedding (A R N C v : PTm n) (h : Γ ⊢[PRAAx] membership A R N C v) : Γ ⊢[PRAAx]
