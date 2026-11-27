@@ -42,18 +42,10 @@ ipra_subst clock
 ipra_subst input
 ipra_subst cost
 
-theorem constant_at (p a : PTm n) : Γ ⊢[PRAAx] ap2 constantF p a ≐ a := by
-  simpa [constantF,ap2] using toPR_eq (Γ := Γ) (var 1 : PTm 2) ![p,a]
-theorem constant_regular (a : PTm n) : Γ ⊢[PRAAx] pointCN constantF a := by
-  refine .allI (.allI ?_)
-  have hD := GaussianRationalHorner.positive_product (Γ := (Γ.map Fm.shift).map Fm.shift) _ _ (unit_positive (var 1)) (unit_positive (var 0))
-  have zeroBound := GaussianRationalPowerDifference.distance_refl_zero (Syn.shift (Syn.shift a)) _ hD
-  have enlarged := distance_radius_mono (Syn.shift (Syn.shift a)) (Syn.shift (Syn.shift a)) zero
-    (unit (var 1)*unit (var 0)) (unit (var 1)+unit (var 0)) (unit (var 1)*unit (var 0)) hD hD
-    (le_of_eq_add (d := (unit (var 1)+unit (var 0))*(unit (var 1)*unit (var 0))) (by ipra_ring)) zeroBound
-  have bound := distance_congr (constant_at (var 1) (Syn.shift (Syn.shift a))).eqSymm
-    (constant_at (var 0) (Syn.shift (Syn.shift a))).eqSymm (.eqRefl _) (.eqRefl _) enlarged
-  simpa only [pointCN,GaussianEuclideanPointDistance.unit,unit,Syn.shift] using bound
+theorem constant_at (p a : PTm n) : Γ ⊢[PRAAx] ap2 constantF p a ≐ a :=
+  GaussianNameRingLaws.constant_parameter_at p a
+theorem constant_regular (a : PTm n) : Γ ⊢[PRAAx] pointCN constantF a :=
+  GaussianNameRingLaws.constant_parameter_regular a
 
 theorem raw_at (f : PR 2) (p a x : PTm n) : Γ ⊢[PRAAx] ap2 (rawF f) p (rawData a x) ≐ rawValue f p a x := by
   simpa [rawF, rawData] using

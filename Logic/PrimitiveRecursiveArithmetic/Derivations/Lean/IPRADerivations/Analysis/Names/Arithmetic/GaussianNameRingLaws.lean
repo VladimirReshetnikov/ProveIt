@@ -346,29 +346,53 @@ theorem zero_at (k x : PTm n) : Γ ⊢[PRAAx] ap2 zeroF k x ≐ qzero := by
 theorem one_at (k x : PTm n) : Γ ⊢[PRAAx] ap2 oneF k x ≐ qone := by
   simpa [oneF,ap2] using toPR_eq (Γ := Γ) (qone : PTm 2) ![k,x]
 
-theorem zero_fast (x : PTm n) : Γ ⊢[PRAAx] pointCN zeroF x := by
-  refine .allI (.allI ?_)
-  exact distance_congr (zero_at (var 1) (Syn.shift (Syn.shift x))).eqSymm
-    (zero_at (var 0) (Syn.shift (Syn.shift x))).eqSymm (.eqRefl _) (.eqRefl _)
-    (distance_radius_mono _ _ zero (unit (var 1)*unit (var 0))
-      (unit (var 1)+unit (var 0)) (unit (var 1)*unit (var 0))
-      (positive_product _ _ (unit_positive _) (unit_positive _))
-      (positive_product _ _ (unit_positive _) (unit_positive _))
+private theorem distance_of_common_sample (s t : PTm n) {u v a : PTm n}
+    (hu : Γ ⊢[PRAAx] u ≐ a) (hv : Γ ⊢[PRAAx] v ≐ a) :
+    Γ ⊢[PRAAx] distanceBounded u v (unit s+unit t) (unit s*unit t) := by
+  have hD := positive_product _ _ (unit_positive (Γ := Γ) s) (unit_positive t)
+  exact distance_congr hu.eqSymm hv.eqSymm (.eqRefl _) (.eqRefl _)
+    (distance_radius_mono a a zero _ _ _ hD hD
       (le_congr (by ipra_ring) (.eqRefl _) (zero_le _))
-      (GaussianRationalPowerDifference.distance_refl_zero _ _
-        (positive_product _ _ (unit_positive _) (unit_positive _))))
+      (GaussianRationalPowerDifference.distance_refl_zero a _ hD))
 
-theorem one_fast (x : PTm n) : Γ ⊢[PRAAx] pointCN oneF x := by
-  refine .allI (.allI ?_)
-  exact distance_congr (one_at (var 1) (Syn.shift (Syn.shift x))).eqSymm
-    (one_at (var 0) (Syn.shift (Syn.shift x))).eqSymm (.eqRefl _) (.eqRefl _)
-    (distance_radius_mono _ _ zero (unit (var 1)*unit (var 0))
-      (unit (var 1)+unit (var 0)) (unit (var 1)*unit (var 0))
-      (positive_product _ _ (unit_positive _) (unit_positive _))
-      (positive_product _ _ (unit_positive _) (unit_positive _))
-      (le_congr (by ipra_ring) (.eqRefl _) (zero_le _))
-      (GaussianRationalPowerDifference.distance_refl_zero _ _
-        (positive_product _ _ (unit_positive _) (unit_positive _))))
+private theorem cross_of_common_sample (f g : PR 2) (x y : PTm n) {value : PTm (n+2)}
+    (hx : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] ap2 f (var 1) (Syn.shift (Syn.shift x)) ≐ value)
+    (hy : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] ap2 g (var 0) (Syn.shift (Syn.shift y)) ≐ value) :
+    Γ ⊢[PRAAx] crossEquivalent f g x y :=
+  .allI (.allI (distance_of_common_sample (var 1) (var 0) hx hy))
+
+/-- The program that returns its parameter samples it exactly. -/
+theorem constant_parameter_at (p a : PTm n) :
+    Γ ⊢[PRAAx] ap2 (PTm.toPR (var 1 : PTm 2)) p a ≐ a := by
+  simpa [ap2] using toPR_eq (Γ := Γ) (var 1 : PTm 2) ![p,a]
+
+theorem constant_parameter_regularity (a s t : PTm n) : Γ ⊢[PRAAx]
+    distanceBounded (ap2 (PTm.toPR (var 1 : PTm 2)) s a)
+      (ap2 (PTm.toPR (var 1 : PTm 2)) t a) (unit s+unit t) (unit s*unit t) :=
+  distance_of_common_sample s t (constant_parameter_at s a) (constant_parameter_at t a)
+
+theorem constant_parameter_regular (a : PTm n) : Γ ⊢[PRAAx] pointCN (PTm.toPR (var 1 : PTm 2)) a :=
+  .allI (.allI (constant_parameter_regularity (Syn.shift (Syn.shift a)) (var 1) (var 0)))
+
+theorem zero_fast (x : PTm n) : Γ ⊢[PRAAx] pointCN zeroF x :=
+  cross_of_common_sample zeroF zeroF x x (zero_at _ _) (zero_at _ _)
+
+theorem one_fast (x : PTm n) : Γ ⊢[PRAAx] pointCN oneF x :=
+  cross_of_common_sample oneF oneF x x (one_at _ _) (one_at _ _)
+
+/-- Compare the parameter sampler at zero with the constant zero program. -/
+theorem constant_zero_cross (x : PTm n) :
+    Γ ⊢[PRAAx] crossEquivalent (PTm.toPR (var 1 : PTm 2)) zeroF qzero x := by
+  refine cross_of_common_sample _ _ _ _ ?_ (zero_at _ _)
+  simpa only [Syn.shift,GaussianRationalHorner.subst_qzero] using
+    constant_parameter_at (var 1) (Syn.shift (Syn.shift (qzero : PTm n)))
+
+/-- Compare the parameter sampler at one with the constant one program. -/
+theorem constant_one_cross (x : PTm n) :
+    Γ ⊢[PRAAx] crossEquivalent (PTm.toPR (var 1 : PTm 2)) oneF qone x := by
+  refine cross_of_common_sample _ _ _ _ ?_ (one_at _ _)
+  simpa only [Syn.shift,GaussianRationalReciprocal.subst_qone] using
+    constant_parameter_at (var 1) (Syn.shift (Syn.shift (qone : PTm n)))
 
 theorem add_zero_recode (a : PTm n) : Γ ⊢[PRAAx] qadd a qzero ≐ GaussianFastValueCut.recode a := by
   have d := GaussianRationalL1.raw_den_positive (Γ := Γ) a

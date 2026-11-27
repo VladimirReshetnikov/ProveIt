@@ -53,13 +53,9 @@ theorem division_regular (h B j : PTm n) (hi : Γ ⊢[PRAAx] input h B) : Γ ⊢
     (GaussianGammaC7Name.name_regular _ _ _ (GaussianGammaLocalPoleGuards.center_source_disk h B j hi.andE₁ (step_disk h B hi)))
 
 theorem constant_unit_cross (c y : PTm n) (e : Γ ⊢[PRAAx] c ≐ qone) : Γ ⊢[PRAAx]
-    crossEquivalent constantF GaussianNameRingLaws.oneF c y := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (GaussianNameRingLaws.one_fast y)
-  refine .allI ?_
-  have es : Γ.map Fm.shift ⊢[PRAAx] Syn.shift c ≐ qone := by simpa [Fm.shift,Syn.shift] using e.shift
-  have actual : Γ.map Fm.shift ⊢[PRAAx] ap2 constantF (var 0) (Syn.shift c) ≐ ap2 GaussianNameRingLaws.oneF (var 0) (Syn.shift y) :=
-    (GaussianGammaCanonicalExponent.constant_at _ _).eqTrans (es.eqTrans (GaussianNameRingLaws.one_at _ _).eqSymm)
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift] using actual
+    crossEquivalent constantF GaussianNameRingLaws.oneF c y :=
+  GaussianNameEquivalence.cross_data_congr constantF GaussianNameRingLaws.oneF qone c y y
+    e.eqSymm (.eqRefl _) (GaussianNameRingLaws.constant_one_cross y)
 
 /-- The source C23 difference quotient is the actual original P sampler
 multiplied by the actual reciprocal step, at every nonzero encoded h. -/

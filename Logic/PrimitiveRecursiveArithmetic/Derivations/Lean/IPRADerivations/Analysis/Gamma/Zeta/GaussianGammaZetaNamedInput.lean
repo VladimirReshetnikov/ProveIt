@@ -78,11 +78,8 @@ theorem lift_source (f : PR 2) (x M : PTm n) (h : Γ ⊢[PRAAx] source f x M) :
     Γ ⊢[PRAAx] GaussianNamedRightHalfPlaneLift.source (minusOneF f) (minusOneData x) M (radius f x) :=
   .andI (original_source f x M h) (le_refl _)
 
-private theorem constant_zero_cross (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF zeroF (qzero : PTm n) x := by
-  apply equal_samples_cross _ _ _ _ (constant_regular _) (zero_fast x)
-  refine .allI ?_
-  simpa only [pointwiseEqual,Syn.shift,GaussianRationalHorner.subst_qzero] using
-    (constant_at (Γ := Γ.map Fm.shift) (var 0) qzero).eqTrans (zero_at (var 0) (Syn.shift x)).eqSymm
+private theorem constant_zero_cross (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF zeroF (qzero : PTm n) x :=
+  GaussianNameRingLaws.constant_zero_cross x
 
 theorem original_restored (f : PR 2) (x : PTm n) (hx : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] crossEquivalent (GaussianEulerNamedShiftInput.shiftF (minusOneF f)) f

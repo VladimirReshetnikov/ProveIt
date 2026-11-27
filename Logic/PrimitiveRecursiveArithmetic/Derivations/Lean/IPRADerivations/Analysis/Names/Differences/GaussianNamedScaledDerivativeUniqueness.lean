@@ -68,13 +68,6 @@ theorem inverse_bound (D s : PTm n) : Γ ⊢[PRAAx] bounded (inverseStep D s) (D
   rational_real_bound _ _ _ _ (le_refl one) (le_refl one)
     (le_of_eq_add (d := zero) (by ipra_ring))
 
-private theorem constant_one (c x : PTm n) (h : Γ ⊢[PRAAx] c ≐ qone) :
-    Γ ⊢[PRAAx] crossEquivalent constantF oneF c x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular c) (one_fast x)
-  refine .allI ?_
-  have hs : Γ.map Fm.shift ⊢[PRAAx] Syn.shift c ≐ qone := by simpa [Fm.shift, Syn.shift] using h.shift
-  exact (constant_at (var 0) (Syn.shift c)).eqTrans (hs.eqTrans (one_at (var 0) (Syn.shift x)).eqSymm)
-
 theorem inverse_weight (F : PR 2) (x D s : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hF : Γ ⊢[PRAAx] pointCN F x) : Γ ⊢[PRAAx]
     crossEquivalent (GaussianBoundedConstantProductName.nameF (weightedF F)) F
@@ -88,7 +81,8 @@ theorem inverse_weight (F : PR 2) (x D s : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (weightedF F) (D*unit s) a (weightedData F x D s) (.andI hw (inverse_bound D s))
   have assoc := GaussianNameRingLaws.multiply_associative constantF constantF F a b x ha hb hF
   have c₁ := GaussianArctangentExponentialPeriod.constant_product (Γ := Γ) a b
-  have c₂ := constant_one (qmul a b) x (inverse_product D s hD)
+  have c₂ := GaussianNameEquivalence.cross_data_congr constantF oneF qone (qmul a b) x x
+    (inverse_product D s hD).eqSymm (.eqRefl _) (GaussianNameRingLaws.constant_one_cross x)
   have c := cross_trans (multiplyF constantF constantF) constantF oneF
     (multiplyData constantF constantF a b) (qmul a b) x c₁ c₂
   have lift := GaussianGammaAdjacentCutoff.multiply_cross (multiplyF constantF constantF) oneF F F

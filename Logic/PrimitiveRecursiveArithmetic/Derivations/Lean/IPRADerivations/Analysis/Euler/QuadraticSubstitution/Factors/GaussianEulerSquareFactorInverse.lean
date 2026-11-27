@@ -86,11 +86,8 @@ private theorem half_times_two : Γ ⊢[PRAAx] qmul (half : PTm n) (fraction two
   exact prod.eqTrans (cancelled.eqTrans single)
 
 private theorem constant_one (x : PTm n) : Γ ⊢[PRAAx]
-    crossEquivalent constantF oneF (GaussianRationalSyntheticDivision.qone : PTm n) x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,GaussianRationalSyntheticDivision.subst_qone,Syn.shift] using
-    (constant_at (var 0) (GaussianRationalSyntheticDivision.qone : PTm (n+1))).eqTrans (GaussianNameRingLaws.one_at (var 0) (Syn.shift x)).eqSymm
+    crossEquivalent constantF oneF (GaussianRationalSyntheticDivision.qone : PTm n) x :=
+  GaussianNameRingLaws.constant_one_cross x
 
 private theorem half_double_product (x : PTm n) : Γ ⊢[PRAAx]
     crossEquivalent (multiplyF constantF constantF) oneF (multiplyData constantF constantF half (fraction two one)) x :=

@@ -51,12 +51,6 @@ private theorem zero_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF z
   apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast x) (zero_fast y)
   exact .allI ((zero_at (var 0) (Syn.shift x)).eqTrans (zero_at (var 0) (Syn.shift y)).eqSymm)
 
-private theorem constant_one (c x : PTm n) (h : Γ ⊢[PRAAx] c ≐ qone) : Γ ⊢[PRAAx] crossEquivalent constantF oneF c x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular c) (one_fast x)
-  refine .allI ?_
-  have hs : Γ.map Fm.shift ⊢[PRAAx] Syn.shift c ≐ qone := by simpa [Fm.shift,Syn.shift] using h.shift
-  exact (constant_at (var 0) (Syn.shift c)).eqTrans (hs.eqTrans (one_at (var 0) (Syn.shift x)).eqSymm)
-
 theorem subtract_first_addend (F G : PR 2) (x y : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y) :
     Γ ⊢[PRAAx] crossEquivalent (Diff (addF F G) F) G (difference (addData x y) x) y := by
   let N := negativeF F
@@ -138,7 +132,9 @@ theorem quotient_agrees (L S K : PR 2) (l s k a b c h : PTm n)
     (cross_refl _ _ (constant_regular c)) ratio
   have regroup := cross_symm _ _ _ _ (multiply_associative constantF constantF K c a k (constant_regular c) (constant_regular a) hK)
   have cc := cross_trans (multiplyF constantF constantF) constantF oneF (multiplyData constantF constantF c a)
-    (qmul c a) k (constant_product_cross c a) (constant_one (qmul c a) k hc)
+    (qmul c a) k (constant_product_cross c a)
+    (GaussianNameEquivalence.cross_data_congr constantF oneF qone (qmul c a) k k
+      hc.eqSymm (.eqRefl _) (GaussianNameRingLaws.constant_one_cross k))
   have one := multiply_cross (multiplyF constantF constantF) oneF K K _ k k k
     (multiply_fast _ _ _ _ (constant_regular c) (constant_regular a)) (one_fast k) hK hK cc (cross_refl _ _ hK)
   exact cross_trans _ _ _ _ _ _ outer (cross_trans _ _ _ _ _ _ regroup
