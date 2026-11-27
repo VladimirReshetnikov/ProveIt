@@ -28,7 +28,7 @@ open GaussianGammaCompactQuadratureBoundary (width)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_same)
 open GaussianNameEquivalence (point_at)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalSlackRemoval (slack slack_removal_at precision)
@@ -92,8 +92,7 @@ theorem endpoint_raw_distance (p z R B A k : PTm n) (h : Γ ⊢[PRAAx] source z 
       (add_le_add₂ (le_refl K) (le_congr (by ipra_ring) (.eqRefl _) (mul_le_mul_right (num 6) (top_positive k A R))))
   exact .andI
     (distance_congr (sample_at p _ _ _ _) (.eqRefl _) (.eqRefl _) (.eqRefl _)
-      (distance_radius_mono _ _ _ _ _ _ hp hp
-        (mul_le_mul_right (unit p) grow) leftFull))
+      (distance_radius_mono_same hp grow leftFull))
     (distance_congr (sample_at p _ _ _ _) (.eqRefl _) (by unfold sampleCost; ipra_ring) (.eqRefl _) rightFull)
 
 private theorem add_query_error (q p x v C : PTm n)

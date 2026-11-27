@@ -23,7 +23,7 @@ open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianNamedFiniteProductFamily (regularRows regular_at radius family_radius_at)
 open GaussianNamedFiniteSumFamily (body data finite nameF term_at sample_at regular)
 open GaussianNameRingLaws (multiply_sample_error equivalent_of_envelope)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_same)
 open GaussianRationalFiniteSum (multiplyBody multiply_body_at sum_multiply)
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (distanceBounded)
@@ -98,9 +98,7 @@ theorem finite_multiply_distance (f g : PR 2) (t : PTm 2) (u : PTm 1) (k N x : P
         qmul (ap2 f p (inst2 t i X)) (ap2 g p (inst1 u X)) :=
       (multiply_body_at (body f t) _ i _).eqTrans
         ((qmul_congr (.eqRefl _) (term_at f t i p X)).eqTrans (qmul_commutative _ _))
-    have widen := distance_radius_mono _ _ _ _ (rowCost f g t u (Syn.shift N) X) (unit p)
-      (unit_positive p) (unit_positive p)
-      (mul_le_mul_right (unit p) (add_le_add_right one (add_le_add_right (U g (inst1 u X)) rowR))) e
+    have widen := distance_radius_mono_same (unit_positive p) (add_le_add_right one (add_le_add_right (U g (inst1 u X)) rowR)) e
     change Δ ⊢[PRAAx] distanceBounded (inst2 F i (Syn.shift y)) (inst2 G i (Syn.shift (pairT c y)))
       (Syn.shift (rowCost f g t u N x)) (Syn.shift (unit k))
     simpa only [y,c,p,X,Syn.shift,subst_pairT,subst_ap2,subst_inst1,rowCost,PTm.subst_add,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,one,

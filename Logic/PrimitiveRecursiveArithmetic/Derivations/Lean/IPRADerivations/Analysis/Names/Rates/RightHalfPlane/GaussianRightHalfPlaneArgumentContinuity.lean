@@ -22,7 +22,7 @@ open GaussianRightHalfPlaneArgument (nameF data source unsignedF unsignedData sm
 open GaussianRightHalfPlaneArgumentChartContinuity (small_distance large_distance mixed_distance)
 open GaussianRightHalfPlaneArgumentIncrementGeometry (step coordinates opposite_height small_ratio large_ratio mixed_ratios)
 open LeanProofs.IPRA.Probability.Variance (ad)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_same)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (distanceBounded)
 open RationalArithmetic (select_zero select_one)
@@ -67,7 +67,7 @@ theorem unsigned_distance (p A B a b H M : PTm n)
         (ap2 unsignedF p (unsignedData A B)) (ap2 unsignedF p (unsignedData a b)) (num 4*H*U+num 14*M) D :=
         distance_congr (unsigned_large_at p A B Prf.hyp1).eqSymm
         (unsigned_large_at p a b Prf.hyp0).eqSymm (by ipra_ring) (.eqRefl D) old
-      exact distance_radius_mono _ _ _ _ _ _ hd.wk.wk hd.wk.wk (mul_le_mul_right D step₂.wk.wk) moved
+      exact distance_radius_mono_same hd.wk.wk step₂.wk.wk moved
     · have hB : (le b a :: lt A B :: Γ) ⊢[PRAAx] le A B := le_of_lt Prf.hyp1
       have hb : (le b a :: lt A B :: Γ) ⊢[PRAAx] le b a := Prf.hyp0
       have r' : (le b a :: lt A B :: Γ) ⊢[PRAAx] le (ad A a) H := le_congr (add_comm _ _) (.eqRefl H) hr.wk.wk
@@ -94,7 +94,7 @@ theorem unsigned_distance (p A B a b H M : PTm n)
         (ap2 unsignedF p (unsignedData A B)) (ap2 unsignedF p (unsignedData a b)) (num 4*H*U+two*M) D :=
         distance_congr (unsigned_small_at p A B hB).eqSymm
         (unsigned_small_at p a b hb).eqSymm (by ipra_ring) (.eqRefl D) old
-      exact distance_radius_mono _ _ _ _ _ _ hd.wk.wk hd.wk.wk (mul_le_mul_right D step₁.wk.wk) moved
+      exact distance_radius_mono_same hd.wk.wk step₁.wk.wk moved
 
 private theorem positive_at (p A B neg : PTm n) (h : Γ ⊢[PRAAx] neg ≐ zero) :
     Γ ⊢[PRAAx] ap2 nameF p (data A B neg) ≐ ap2 unsignedF p (unsignedData A B) :=

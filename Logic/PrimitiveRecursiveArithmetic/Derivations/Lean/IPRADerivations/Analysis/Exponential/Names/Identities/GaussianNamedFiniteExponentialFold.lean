@@ -26,7 +26,7 @@ open GaussianNameArithmetic (addF addData multiplyF multiplyData multiplyModulus
 open GaussianNameBounds (U sample_bound)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_diagonal_at)
 open GaussianNamedFiniteProductFamily (rowF regularRows regular_at family_product_regular)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_same)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalHorner (qmul qzero)
 open GaussianRationalSyntheticDivision (qone)
@@ -188,7 +188,7 @@ theorem step (f : PR 2) (t : PTm 2) (p N i x : PTm n) (h : Γ ⊢[PRAAx] regular
     apply le_congr (.eqRefl _) (pw_succ (Γ := Γ) (two*M+one) (succ i)).eqSymm
     change Γ ⊢[PRAAx] le ((A+B+two*C+num 6)+C*d) (d*(two*M+one))
     ipra_le sl cap+𝔞(d)*sl cg+𝔞(M)*sl hd+𝔞(d)
-  exact distance_radius_mono _ _ _ _ _ _ hU hU (mul_le_mul_right (unit p) growth) total
+  exact distance_radius_mono_same hU growth total
 
 theorem prefix_error (f : PR 2) (t : PTm 2) (p N i x : PTm n) (h : Γ ⊢[PRAAx] regularRows f t N x)
     (hi : Γ ⊢[PRAAx] le i N) :

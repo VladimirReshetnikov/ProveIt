@@ -32,7 +32,7 @@ open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianL1 (norm1)
 open GaussianNamedInverseRate (rate_at rateNumerator rateDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalNaturalScale (natScale natScale_as_product naturalPoint)
@@ -137,7 +137,7 @@ theorem rate (z h R B r M e t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     change Γ ⊢[PRAAx] le (((a*H+two)*U)+two*(two*U+B)) ((a+num 6)*H*U+two*B)
     ipra_le 6*𝔞(U)*sl hH
   exact distance_congr (.eqRefl x) target (.eqRefl _) (.eqRefl _)
-    (distance_radius_mono _ _ _ _ _ _ hE hE (mul_le_mul_right (B*U) fit) total)
+    (distance_radius_mono_same hE fit total)
 
 theorem actual_Barnes_finite_mixed_grid_next_factorial_rate_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9
     (let z := var 0

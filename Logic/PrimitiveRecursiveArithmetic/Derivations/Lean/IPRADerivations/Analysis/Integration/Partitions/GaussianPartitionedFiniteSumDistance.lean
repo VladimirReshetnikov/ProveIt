@@ -22,7 +22,7 @@ open GaussianRationalRiemannRefinement (termsDistance constantBody sum_distance 
 open GaussianRationalNaturalScale (natScale)
 open GaussianRationalMetric (distanceBounded bounded)
 open GaussianRationalHorner (qmul positive_product)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono_same)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -76,8 +76,7 @@ theorem bounded_block_error (cut : PR 2) (f g : PTm 2) (K d x y A B H i : PTm n)
     (hb : Γ ⊢[PRAAx] blockBound cut K d H) (hi : Γ ⊢[PRAAx] lt i K) : Γ ⊢[PRAAx]
     distanceBounded (inst2 (blockBody cut f) i (pairT d x)) (inst2 (coarseBody cut g) i (pairT d y)) (H*A) B :=
   distance_congr (GaussianPartitionedFiniteSum.block_at cut f i d x).eqSymm (coarse_at cut g i d y).eqSymm (.eqRefl _) (.eqRefl _)
-    (distance_radius_mono _ _ _ _ (H*A) B hB hB
-      (mul_le_mul_right B (mul_le_mul_right A (bound_at cut K d H i hb hi))) (block_error cut f g K d x y A B i hB h hi))
+    (distance_radius_mono_same hB (mul_le_mul_right A (bound_at cut K d H i hb hi)) (block_error cut f g K d x y A B i hB h hi))
 
 theorem outer_agreement (cut : PR 2) (f g : PTm 2) (K d x y A B H : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (h : Γ ⊢[PRAAx] blockAgreement cut f g K d x y A B)

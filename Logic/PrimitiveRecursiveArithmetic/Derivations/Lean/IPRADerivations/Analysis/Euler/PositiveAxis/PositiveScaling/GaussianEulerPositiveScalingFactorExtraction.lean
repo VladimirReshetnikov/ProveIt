@@ -27,7 +27,7 @@ open GaussianNameArithmetic (multiplyModulus)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded bounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_radius_mono_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianPositiveRationalLogarithm (fraction)
 
@@ -115,8 +115,7 @@ theorem row_error (i p N z B a C E c d : PTm n) (hs : Γ ⊢[PRAAx] source B a E
         (pairT (factor p z B c d) (sampleData p N a C E (fixedData z B c d))))
       (rowCost z B (a*N+C*i) (E*N) c d) (unit p) :=
     distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _) original
-  exact distance_radius_mono _ _ _ _ _ _ (unit_positive p) (unit_positive p)
-    (mul_le_mul_right (unit p) (row_cost_bound i N z B a C E c d hi)) raw
+  exact distance_radius_mono_same (unit_positive p) (row_cost_bound i N z B a C E c d hi) raw
 
 /-- One fixed original factor observation is outside the entire genuine
 finite modified quadrature; its clock is exactly p on every row. -/

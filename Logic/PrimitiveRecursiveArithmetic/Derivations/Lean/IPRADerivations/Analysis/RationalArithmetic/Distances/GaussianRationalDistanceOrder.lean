@@ -68,6 +68,12 @@ theorem distance_radius_mono (z w A B C D : PTm n)
     (h : Γ ⊢[PRAAx] distanceBounded z w A B) : Γ ⊢[PRAAx] distanceBounded z w C D :=
   GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ hB hD hrad h
 
+/-- Increase the distance numerator with the positive denominator fixed. -/
+theorem distance_radius_mono_same {z w A C B : PTm n}
+    (hB : Γ ⊢[PRAAx] le one B) (hAC : Γ ⊢[PRAAx] le A C)
+    (h : Γ ⊢[PRAAx] distanceBounded z w A B) : Γ ⊢[PRAAx] distanceBounded z w C B :=
+  GaussianCoefficientNameBounds.bounded_radius_mono_same hB hAC h
+
 /-- If both observation denominators are at least D, their two errors add to
 at most 2/D. The order of the two observations is arbitrary. -/
 theorem distance_two_errors (z w B C D : PTm n)

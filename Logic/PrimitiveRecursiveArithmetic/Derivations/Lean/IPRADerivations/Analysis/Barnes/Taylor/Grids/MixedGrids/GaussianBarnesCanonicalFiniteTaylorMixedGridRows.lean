@@ -28,7 +28,7 @@ open GaussianBarnesCanonicalWeightedTaylorBallSource (stepDivisor)
 open GaussianCoefficientNameBounds (unit)
 open GaussianPolynomialForwardDifferenceGrid (point)
 open GaussianPolynomialForwardDifferenceGridError (rowBound)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono_same)
 open GaussianRationalHorner (ofGaussian qzero)
 open GaussianRationalMetric (distanceBounded qnegative)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
@@ -66,8 +66,7 @@ theorem node_error (t q z δ R B H r M x k j : PTm n)
     le_of_eq_add (d := J*unit t+D*two) (by
       dsimp only [rowNumerator,rowNumeratorWithGains,D,J]
       ipra_ring)
-  exact distance_radius_mono _ _ _ _ _ _ hE hE (mul_le_mul_right E fit)
-    (literal_node_error t q z δ R B H r M x k j hz hδ hs hj hp)
+  exact distance_radius_mono_same hE fit (literal_node_error t q z δ R B H r M x k j hz hδ hs hj hp)
 
 theorem forward_rows (t q z h R B H r M : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hh : Γ ⊢[PRAAx] bounded h H)

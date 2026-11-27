@@ -34,7 +34,7 @@ open GaussianNameBounds (sample_bound)
 open GaussianNameEquivalence (point_at)
 open GaussianNameRingLaws (sum_left_error sum_right_error)
 open GaussianNamedDifferenceQuotient (scale_distance)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_mono_same)
 open GaussianRationalHorner (ofGaussian qmul qzero positive_product)
 open GaussianEuclideanDistanceName (fraction_order)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -84,8 +84,7 @@ private theorem linear_gap (q t z R B : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
 private theorem enlarge_gain (q t x y A K : PTm n) (hK : Γ ⊢[PRAAx] le A K)
     (h : Γ ⊢[PRAAx] distanceBounded x y (clockNumerator q t A) (clockDenominator q t)) : Γ ⊢[PRAAx]
     distanceBounded x y (clockNumerator q t K) (clockDenominator q t) :=
-  distance_radius_mono _ _ _ _ _ _ (clock_denominator_positive q t) (clock_denominator_positive q t)
-    (mul_le_mul_right _ (mul_le_mul_right _ hK)) h
+  distance_radius_mono_same (clock_denominator_positive q t) (mul_le_mul_right _ hK) h
 
 private theorem select_distance (bit a b c d A D : PTm n)
     (hBit : Γ ⊢[PRAAx] (bit ≐ zero) ⋎ (bit ≐ one))

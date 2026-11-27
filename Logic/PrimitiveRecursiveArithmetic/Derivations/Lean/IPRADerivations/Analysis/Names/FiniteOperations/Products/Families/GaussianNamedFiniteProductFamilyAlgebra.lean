@@ -25,7 +25,7 @@ open GaussianNamedFiniteProductFamily (rowF row_at regularRows regular_at radius
 open GaussianNamedFiniteProductFamilyCongruence (row_bounds_widen)
 open GaussianNamedFiniteProductName (nameF data cofinalRows rowBounds rowRegular raw_regular cofinal_raw)
 open GaussianNamedFiniteProduct (rowDistance)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono_same)
 open GaussianRationalSyntheticDivision (qmul_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -78,7 +78,7 @@ theorem row_comparison (f g : PR 2) (t u : PTm 2) (N x : PTm n)
     (qmul_congr (row_at f t p i (sh x)) (row_at g u p i (sh x)))
   simpa [cofinalRows, rowDistance, rowBudget, Syn.shift, sh, Δ, X, Y, i, p, one] using
     distance_congr left.eqSymm right.eqSymm (.eqRefl _) (.eqRefl _)
-      (distance_radius_mono _ _ _ _ _ _ (unit_positive p) (unit_positive p) (mul_le_mul_right (unit p) b) h)
+      (distance_radius_mono_same (unit_positive p) b h)
 
 theorem family_multiply_cross (f g : PR 2) (t u : PTm 2) (N x : PTm n)
     (hf : Γ ⊢[PRAAx] regularRows f t N x) (hg : Γ ⊢[PRAAx] regularRows g u N x) :

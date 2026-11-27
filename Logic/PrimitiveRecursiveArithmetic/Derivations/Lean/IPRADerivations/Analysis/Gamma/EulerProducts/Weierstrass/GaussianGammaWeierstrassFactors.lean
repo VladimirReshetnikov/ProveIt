@@ -29,7 +29,7 @@ open GaussianRationalPolynomialExponential (scalarSum)
 open GaussianRationalFiniteProduct (qprod product_zero product_succ)
 open GaussianReciprocalHorner (qmul_one_right qmul_associative qadd_zero_right)
 open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono_same distance_triangle_same)
 open GaussianGammaCanonicalExponent (harmonicPoint)
 open GaussianScalarExponentialProductTail (rectangleCutoff actual_scalar_product_dyadic)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -182,10 +182,8 @@ theorem folded_step_distance (z R B N j p : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have hu' : Γ ⊢[PRAAx] le (j*R) C := le_trans (mul_le_mul_right R hj) (by
     dsimp [C,width]
     exact le_congr (.eqRefl _) (add_comm _ _) (le_add_right _ _))
-  have hu := GaussianCoefficientNameBounds.bounded_radius_mono u (j*R) one C one
-    (le_refl _) (le_refl _) (le_congr (by ipra_ring) (by ipra_ring) hu') (harmonic_argument_bound z R B j hB hz)
-  have hv := GaussianCoefficientNameBounds.bounded_radius_mono v R one C one
-    (le_refl _) (le_refl _) (le_congr (by ipra_ring) (by ipra_ring) hr) (local_argument_bound j z R B hB hz)
+  have hu := GaussianCoefficientNameBounds.bounded_radius_mono_one hu' (harmonic_argument_bound z R B j hB hz)
+  have hv := GaussianCoefficientNameBounds.bounded_radius_mono_one hr (local_argument_bound j z R B hB hz)
   have small := actual_scalar_product_dyadic u v C p hc hu hv
   have small' := scaled_distance H steps _ one (R*pw (one+R) (succ j)) (unit p) (unit_positive _)
     (GaussianGammaEulerHead.prefix_bound z R B (succ j) hB hz) small
@@ -241,8 +239,7 @@ theorem prefix_comparison_step (z R B N p j : PTm n) (hB : Γ ⊢[PRAAx] le one 
       (.eqRefl _) (.eqRefl _) dx
   have last := folded_step_distance z R B N j p hB.wk hz.wk hj
   have all := distance_triangle_same _ _ _ _ _ _ (unit_positive p) part last
-  exact distance_radius_mono _ _ _ _ _ _ (unit_positive p) (unit_positive p)
-    (mul_le_mul_right (unit p) (budget_step R j)) all
+  exact distance_radius_mono_same (unit_positive p) (budget_step R j) all
 
 theorem prefix_comparison (z R B N p j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) (hj : Γ ⊢[PRAAx] le j N) :

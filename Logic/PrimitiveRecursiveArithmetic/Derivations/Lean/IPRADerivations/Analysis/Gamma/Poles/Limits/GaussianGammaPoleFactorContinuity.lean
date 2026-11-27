@@ -23,7 +23,7 @@ open GaussianGammaEulerHead (factor product product_step)
 open GaussianRationalHorner (ofGaussian qmul positive_product)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -110,8 +110,7 @@ theorem error_step (h B A D j : PTm n) (hi : Γ ⊢[PRAAx] input h B A D)
   have aligned : Γ ⊢[PRAAx] distanceBounded (correction h B (succ j)) qone (two*budget A j+A) D :=
     distance_congr (correction_succ h B j).eqSymm
     (GaussianReciprocalHorner.qmul_one_right qone qone_canonical) (by ipra_ring) (.eqRefl _) raw
-  exact distance_radius_mono _ _ _ _ _ _ hi.andE₂.andE₁ hi.andE₂.andE₁
-    (mul_le_mul_right D (budget_growth A j)) aligned
+  exact distance_radius_mono_same hi.andE₂.andE₁ (budget_growth A j) aligned
 
 /-- The inducted formula is one actual finite-product distance. -/
 theorem correction_error (h B A D j : PTm n) (hi : Γ ⊢[PRAAx] input h B A D) : Γ ⊢[PRAAx]

@@ -29,7 +29,7 @@ open GaussianNamedInverseRate (rate_at rateNumerator rateDenominator)
 open GaussianPolynomialForwardDifferenceGrid (point samples sample_lookup)
 open GaussianPolynomialForwardDifferenceGridError (rowBound)
 open GaussianRationalCoefficientScaling (scaled evaluation_linearity)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_radius_mono_same)
 open GaussianRationalHorner (evaluate ofGaussian positive_product qmul qzero)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr)
@@ -207,8 +207,7 @@ private theorem compose_row (u v w A D t s L K : PTm n) (hD : Γ ⊢[PRAAx] le o
   have fit : Γ ⊢[PRAAx] le M N := by
     dsimp only [M,N,rateNumerator,T,U]
     ipra_le (𝔞 D*𝔞 (unit t))*sl hL
-  exact distance_radius_mono _ _ _ _ _ _ hE hE (mul_le_mul_right E fit)
-    (distance_triangle_same _ _ _ _ _ _ hE h₁ next)
+  exact distance_radius_mono_same hE fit (distance_triangle_same _ _ _ _ _ _ hE h₁ next)
 
 theorem row_error_from_rate (t s p z h R B H r M e j A : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hj : Γ ⊢[PRAAx] lt j (succ e))

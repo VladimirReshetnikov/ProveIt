@@ -22,7 +22,7 @@ open GaussianGammaHalfPlaneInputContinuity (modulus)
 open GaussianGammaReciprocalInverse (source gammaF gammaData gamma_regular)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedInverseRate (rate_at rateNumerator rateDenominator denominator_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_mono_same)
 open GaussianRationalHorner (qadd represents represents_congr represents_rescale positive_product
   ofGaussian ofGaussian_represents ofGaussian_canonical qadd_represents)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
@@ -92,8 +92,7 @@ private theorem equal_at (p z w R B D E : PTm n)
   have hm := unit_positive (Γ := Γ) (modulus p R E)
   have hU := unit_positive (Γ := Γ) p
   have h := GaussianNameConjugation.equal_distance _ _ m hm hEq
-  have near := distance_radius_mono _ _ _ _ one m hm hm
-    (mul_le_mul_right m (zero_le one)) h
+  have near := distance_radius_mono_same hm (zero_le one) h
   have rate := GaussianGammaNamedPoleFreeModulus.original_rate p z w R B D E hz hw near
   exact distance_radius_mono _ _ _ _ (num 3) U (denominator_positive U p p hU) hU
     (le_of_eq_add (d := zero) (by unfold rateNumerator rateDenominator; ipra_ring))

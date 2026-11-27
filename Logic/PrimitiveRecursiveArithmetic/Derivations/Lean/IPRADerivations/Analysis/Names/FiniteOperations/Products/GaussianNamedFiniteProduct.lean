@@ -19,7 +19,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedFiniteProduct
 open_ipra
 open GaussianCoefficientNameBounds (bounded_radius_mono)
 open GaussianNameArithmetic (product_distance)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono_same)
 open GaussianRationalFiniteProduct (product_zero product_canonical)
 open GaussianRationalHorner (canonical qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -125,8 +125,7 @@ private theorem prefix_succ (f g : PR 3) (p q N R E K x y i : PTm n)
   have d := row_distance_at f g p q N E K x y i hd.wk hi
   have raw := product_distance (sample f p i x) (sample g q i y) (ap3 f p i x) (ap3 g q i y)
     (amplification R i*E) E K R (radius R i) hk.wk prev.andE₂ d a prev.andE₁.andE₂
-  have close := distance_radius_mono _ _ _ _ _ _ hk.wk hk.wk
-    (mul_le_mul_right K (increment_error R i E)) raw
+  have close := distance_radius_mono_same hk.wk (increment_error R i E) raw
   exact .andI (.andI (pref_radius f p i R x prev.andE₁.andE₁ a) (pref_radius g q i R y prev.andE₁.andE₂ b))
     (distance_congr (sample_succ f p i x).eqSymm (sample_succ g q i y).eqSymm (.eqRefl _) (.eqRefl _) close)
 
