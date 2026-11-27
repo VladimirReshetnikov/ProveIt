@@ -1,0 +1,124 @@
+\section{Source analysis and the advance developed here}
+\label{sec:context}
+
+\subsection{What was inspected}
+
+The starting points are the readable edition of \texttt{lsernau/grh-lean}
+and the \texttt{ProveIt} merged article \cite{Sernau2026,ProveIt2026},
+at the following respective commits:
+\begin{center}\small
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}\\
+\texttt{fc9889c80312959aee9893ab21bfc9e741719e88}.
+\end{center}
+Source identities are pinned so that
+later repository changes cannot silently alter the comparison.
+
+The upstream exported statements concern the Riemann hypothesis and
+GRH for Dirichlet $L$-functions over $\mathbb Q$, including imprimitive
+characters in the open critical strip. They do not quantify over
+general Artin or automorphic $L$-functions. The repository reports
+machine checks and dependency on the usual three Lean axioms
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+The present investigation inspected the statements, entry point,
+reading guide, prime-error reduction, one-sided criterion, and related
+source files. It did not rebuild the full upstream development or
+repeat an independent kernel replay. These are statements about the
+scope and reported status of that source, not a new verification of it.
+
+At the pinned commit, the article's README describes a 621-page merger
+of 103 reports, counting 760 theorem-like results. It explicitly says
+that it is a compilation, that the input Dirichlet-GRH theorem is taken
+as given, and that the merged mathematical claims were not independently
+recomputed or formalized in that compilation. All 21 section source
+files and the bibliography were retrieved for comparison. The source
+analysis below uses the article as a record of the existing methods and
+results; the new arguments in this note are supplied in full.
+
+\subsection{Which mechanism transfers}
+
+Three mechanisms organize the source proof and its existing extensions.
+First, nonnegative prime-power weights and a one-sided smoothed-error
+bound lead to zero exclusion through a Landau-type analytic argument.
+Second, a lattice covolume receives both an archimedean upper bound and
+an arithmetic lower bound; cancellation of a common main term produces
+the required prime-error estimate. Third, finite-field matrix statistics
+support second-moment arguments that produce enough independent forms.
+The article develops these themes in
+\artifact{sections/src.tex}, \artifact{sections/ana.tex} and
+\artifact{sections/spn.tex}.
+
+The third mechanism is the useful point of departure here.
+The article's section ``Which blocks of a random symplectic matrix
+look uniform?'' treats finite-field compressions; its subsequent
+section shows that rank statistics can miss information in the
+whole matrix law. Such finite-field results do not determine a
+distribution modulo $\pi^2$, let alone at all higher precisions.
+Local arithmetic applications can see precisely those extra digits.
+
+The new question is therefore concrete: \emph{how much additional
+nonuniformity can appear when a finite-field symplectic compression
+is lifted to a complete valuation ring?} For a compression between
+symplectic planes, the answer is exact, not only asymptotic. Its full
+likelihood changes with the valuation of $1-\det A$, but the signs of
+``more likely than uniform'' and ``less likely than uniform'' are
+already determined modulo $\pi$. This yields the precision-independent
+distance in Theorem~\ref{thm:padic-TV}. Theorem~\ref{thm:padic-lift-exact}
+separately quantifies the genuinely new bias in the higher digits.
+
+All theorems proved in this note are \textbf{unconditional}.
+The connection with the requested sources is a transfer and sharpening
+of their matrix-counting methods. No zero-location theorem, prime
+estimate, Selmer comparison, or unproved arithmetic bridge is used
+in these proofs.
+
+\subsection{Prior work and precise novelty scope}
+
+The general technique of lifting a random-matrix statistic through
+successive congruence quotients is established. Pirani uses symplectic
+Lie-algebra lifting, uniform higher digits on favorable residue classes,
+and exceptional-class bounds in total variation for characteristic
+coefficients and traces over local fields
+\cite[Sections~8.2.1--8.2.3]{Pirani2024}. That lifting strategy is
+credited here. The compression-specific intersection formula and the
+explicit laws below are the additional statements being derived.
+
+Nearby exact local random-matrix laws also exist. Van Peski studies
+singular numbers of corners of Haar $\mathrm{GL}_N(\OO)$ matrices
+\cite{VanPeski2021}. Shen and Van Peski study corners of additive-Haar
+alternating and Hermitian matrices \cite{ShenVanPeski2025}; an additive
+alternating matrix is a different ensemble from a Haar element of a
+symplectic group. Neretin constructs matrix Hua measures and their
+Grassmannian interpretations \cite{Neretin2013}. Garton studies
+cokernels of $I-S$ for full-size symplectic-similitude matrices
+\cite{Garton2015}; a fixed compression of $S$ is a different observable.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Existing ingredient & Advance proved in this note \\
+\midrule
+Finite-field symplectic frame counting & Exact compression density at every
+precision, including the terminal finite-ring correction. \\
+Lie-algebra congruence lifting & Exact obstruction
+$\binom{\dim(U\cap V)}2$ for a rectangular compression, valid also in
+residue characteristic two. \\
+Comparison with independent entries & Exact equality of total variation
+at every precision; optimal determinant event identified. \\
+Finite-precision approximation & Exact error for uniformly completing
+any precision, with optimal next-digit event. \\
+Local random-matrix cokernels & A common exact factor for every nontrivial
+cokernel type of the symplectic-plane compression. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+A targeted search and inspection of these primary sources did not
+locate a matching statement of the exact symplectic-compression law,
+the precision-independent distance, or its full precision hierarchy.
+This is a documented novelty screen, not a proof of worldwide priority.
+In particular, neither elementary symplectic frame counting, the
+one-vector valuation decomposition used in the proof, nor the
+finite-field endpoint by itself is claimed as a new general technique.
+The archive records the search scope in
+\artifact{provenance/novelty_screen.md}.

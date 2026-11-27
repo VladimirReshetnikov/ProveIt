@@ -1,0 +1,82 @@
+\section{What the two sources contribute}\label{sec:sources}
+
+\subsection{The upstream theorem and its transferable mechanism}
+
+We inspect \texttt{lsernau/grh-lean} at commit
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207} \cite{Sernau}.
+Its exported statements concern RH and GRH for \emph{Dirichlet}
+$L$-functions, including imprimitive characters. This scope does not
+include every automorphic or Artin $L$-function. The repository reports
+machine checks with the usual axioms \texttt{propext},
+\texttt{Classical.choice}, and \texttt{Quot.sound}, using Lean 4.35.0 and
+Mathlib commit \texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}.
+We inspected statements and selected proof components; we did not reproduce
+the complete upstream build.
+
+The arithmetic argument compares upper and lower bounds on the same
+twisted lattice covolume. Divisibility produces short images, a second
+moment produces sufficiently many independent images, and a determinant
+argument controls their total size. Cancellation of the common main terms
+yields a one-sided smoothed prime-sum bound, to which an analytic
+zero-detection criterion applies. The component used here is the
+finite-field estimate inside the second-moment argument.
+
+In the compact source,
+\texttt{grh-compact/src/New/Heights/OneDeterminant.lean},
+the theorem \texttt{card\_mul\_sum\_det\_le} controls singular compressions
+of a finite-group representation $\pi$:
+\begin{equation}\label{eq:source}
+ q\sum_{\det(A_1^{\tr}\pi(g)A_0)=0}\Theta(g)
+ \le 2\sum_g\Theta(g)+q^{r+n/2}Y.
+\end{equation}
+Here the ambient dimension is $n$, the compression is $r$ by $r$,
+$\Theta$ is nonnegative and of positive type, and $Y$ bounds the relevant
+weighted stabilizer masses. Its proof uses additive-character
+orthogonality, a tensor-product construction, and Cauchy--Schwarz.
+It enters the Poincare-series second moment through
+\texttt{grh-compact/src/New/Filling/Moments.lean}.
+The readable counterpart is
+\texttt{grh/src/New/Spanning/SecondMoment/PositiveType.lean}.
+
+Our theorem determines the full reference distribution for the finite
+symplectic group with uniform measure. It does not automatically replace
+\eqref{eq:source} for arbitrary nonuniform positive-type weights.
+Thus the connection is a concrete extension of a finite-field ingredient,
+not a new consequence of the zero-location statement itself.
+
+\subsection{The article's explicit gap}
+
+The ProveIt \Article{} is pinned at commit
+\texttt{fc9889c80312959aee9893ab21bfc9e741719e88} \cite{Article}.
+Its README describes a merge of 103 reports into 621 pages and 760 stated
+results, and says the merged mathematics was not independently recomputed.
+We inspected the theorem inventory and the relevant proofs, not all 760
+proofs. The archive records the section-level source hashes.
+
+The section \texttt{spn.tex}, \emph{Spanning, frames, auxiliary characters
+and matrix statistics}, proves a general compression bound, an exact
+limiting law for an isotropic family, and an exact likelihood for an
+arbitrary source with Lagrangian target. Its question
+\texttt{spn:q:symplectic} asks for the law, or a limiting discrepancy, when
+both compressed subspaces are arbitrary.
+Theorem \ref{thm:law} answers the finite-law question for all dimensions
+and restricted forms. Theorem \ref{thm:boundary} gives the limit in a
+natural boundary regime with nondegenerate target.
+
+\subsection{Contribution and prior art}
+
+The proof uses classical finite geometry. Witt extension and symplectic
+basis counting are standard; see Sprehn--Wahl \cite{SprehnWahl}.
+De Boeck--Van de Voorde \cite{DeBoeck} give exact counts of nonsingular
+subspaces disjoint from a fixed subspace and generating a nonsingular
+span. Those incidence counts overlap special aggregations of our law.
+Ishizuka \cite{Ishizuka} uses isometry-group orbits for uniform sampling
+with prescribed hull dimension. These ingredients and symplectic incidence
+counting are not claimed to be new.
+
+The specific extension is a formula for \emph{each prescribed cross-pairing
+matrix}, with arbitrary degeneracies on both sides, its three-invariant
+support criterion, and the complement-Gram boundary law with quantitative
+rank blindness. The novelty comparison is to the pinned \Article{}.
+A focused primary-source search did not identify these statements in
+this form; it does not establish worldwide priority.

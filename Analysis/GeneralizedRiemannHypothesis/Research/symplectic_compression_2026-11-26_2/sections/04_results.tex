@@ -1,0 +1,166 @@
+\section{Exact constants and reproducible checks}\label{sec:checks}
+
+\subsection{Boundary constants}
+
+The following values were obtained from \eqref{eq:Delta} using exact
+rational arithmetic. They illustrate source dimensions beyond the plane.
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+$q=2$; source dimension $a$ & $c=0$ & $c=1$ & $c=2$ & $c=3$\\
+\midrule
+$2$ & $1/2$ & $1/8$ & $1/32$ & $1/128$\\
+$3$ & $7/8$ & $7/32$ & $7/128$ & $7/512$\\
+$4$ & $63/64$ & $7/16$ & $133/1024$ & $553/16384$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $c=0$, the hidden Gram matrix is zero, so the answer is
+$1-q^{-\binom a2}$, as in the table.
+
+\subsection{Independent finite verification}
+
+The code uses Python's standard library, integers, and
+\texttt{fractions.Fraction}. The independent verifier generates
+symplectic bases solely from their defining pairings. It does not
+generate observations using the proposed probability formula.
+For each selected dimension/form type it compares every possible
+matrix, including impossible ones.
+
+The principal enumeration includes all feasible types for
+$\Sp_2(\F_2)$, $\Sp_4(\F_2)$, and $\Sp_2(\F_3)$, plus all feasible
+types with $ab\le9$ for $\Sp_4(\F_3)$. The following checks passed.
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Verification & Count\\
+\midrule
+Distinct symplectic group elements & $52\,590$\\
+Source/target dimension and form cases & $87$\\
+Complete matrix-outcome comparisons & $125\,232$\\
+Zero-probability outcomes included & $105\,850$\\
+Independent Lagrangian-formula comparisons & $199$\\
+Plane likelihood comparisons & $7\,011$\\
+Plane full/rank distance comparisons & $12$\\
+Separate calculator comparisons & $125\,232$\\
+Unrestricted maps for boundary checks & $418$\\
+Boundary Gram-matrix comparisons & $85$\\
+Alternating-form rank-stratum comparisons & $11$\\
+Exact boundary-distance comparisons & $5$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These computations check implementations and delicate normalizations;
+the preceding proofs establish the general theorems.
+The theorem applies to all finite fields. The delivered matrix
+elimination code supports prime fields, and the exhaustive checks
+use $\F_2$ and $\F_3$; no extension-field enumeration is claimed.
+Scalar counting formulas can also be evaluated at prime powers
+without performing field arithmetic.
+
+\subsection{Reproduction and proof status}
+
+From the archive directory:
+\begin{verbatim}
+python3 code/compression_law.py
+python3 code/verify_counts.py --check-calculator --output results.json
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The README documents the calculator. The PDF was compiled from the
+included source and inspected after rendering.
+No Lean-checked proof of the new theorems is claimed. The
+formalization plan lists the finite bijections and supporting lemmas
+to formalize; it is an outline, not completed Lean code.
+
+\section{Resolution and remaining directions}
+
+The exact finite law answers the article's
+\texttt{spn:q:symplectic}: both restricted forms may be degenerate
+and neither subspace must be Lagrangian. The least-ambient-dimension
+criterion is a separate extremal consequence. The boundary theorem
+identifies the full limiting discrepancy for arbitrary fixed source
+form and nondegenerate target with fixed-dimensional complement,
+and proves that rank loses the surviving information.
+
+The result does not classify all asymptotic regimes where source,
+target, radicals, and complement dimensions grow simultaneously.
+Formula \eqref{eq:law} supplies their exact starting point, but
+uniform asymptotic analysis remains to be done. Another concrete
+direction is to extend the reference law to the nonuniform
+positive-type weights in the original spanning argument.
+Analogous full laws for orthogonal and unitary groups would require
+the appropriate additional form invariants.
+
+The advance established here is a complete finite distribution
+beyond the article's Lagrangian cases, together with a universal,
+explicitly computable discrepancy that rank statistics miss.
+
+\appendix
+\section{Artifact map}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.63\textwidth}}
+\toprule
+Artifact & Purpose\\
+\midrule
+\endhead
+\texttt{report.tex}, \texttt{sections/}, \texttt{report.pdf}
+& Complete statements, proofs, source analysis, prior-art comparison and results.\\
+\texttt{code/compression\_law.py}
+& Exact probability, support, plane-distance and boundary-constant calculator.\\
+\texttt{code/verify\_counts.py}
+& Independent group and Gram enumeration, with exact formula comparisons.\\
+\texttt{results.json}
+& Verification coverage and outcomes.\\
+\texttt{example\_results.json}
+& Exact rational examples and decimal displays.\\
+\texttt{formalization/PLAN.md}
+& Finite-dimensional proof decomposition for future Lean formalization.\\
+\texttt{provenance/}
+& Pinned source identifiers, hashes and focused source-analysis notes.\\
+\texttt{SHA256SUMS.txt}
+& Checksums of delivered files other than this checksum file itself.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{9}
+\bibitem{Sernau}
+L. Sernau and contributors.
+\emph{GRH for Dirichlet $L$-functions, in Lean 4}.
+Repository snapshot, commit
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, 2026.
+\url{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}.
+Relevant source paths are in Section \ref{sec:sources}.
+
+\bibitem{Article}
+ProveIt Contributors.
+\emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions:
+consequences, transfers and limits}.
+Merged article, 26 November 2026.
+ProveIt commit \texttt{fc9889c80312959aee9893ab21bfc9e741719e88}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fc9889c80312959aee9893ab21bfc9e741719e88/Analysis/GeneralizedRiemannHypothesis/Article}.
+Relevant labels in \texttt{sections/spn.tex}:
+\texttt{spn:thm:symplectic}, \texttt{spn:thm:lagrangian},
+\texttt{spn:thm:rank-blind}, \texttt{spn:q:symplectic}.
+
+\bibitem{SprehnWahl}
+D. Sprehn and N. Wahl.
+\emph{Forms over fields and Witt's lemma}.
+Mathematica Scandinavica \textbf{126} (2020), 401--423.
+\url{https://arxiv.org/abs/1811.12219}.
+
+\bibitem{DeBoeck}
+M. De Boeck and G. Van de Voorde.
+\emph{Anzahl theorems for trivially intersecting subspaces generating
+a non-singular subspace I: symplectic and hermitian forms}.
+Linear Algebra and its Applications \textbf{699} (2024), 367--402.
+\url{https://doi.org/10.1016/j.laa.2024.07.004}.
+Preprint: \url{https://arxiv.org/abs/2407.07486}.
+
+\bibitem{Ishizuka}
+K. Ishizuka.
+\emph{Uniform Sampling of Linear Codes with Prescribed Hull Dimension}.
+arXiv:2611.03578v2, revised 25 November 2026.
+\url{https://arxiv.org/abs/2611.03578v2}.
+\end{thebibliography}
