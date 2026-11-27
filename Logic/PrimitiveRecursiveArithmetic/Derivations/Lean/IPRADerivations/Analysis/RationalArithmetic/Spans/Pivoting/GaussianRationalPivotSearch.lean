@@ -68,10 +68,7 @@ theorem available_unmarked (H c r : PTm n) (h : Γ ⊢[PRAAx] available H c r �
     simpa only [Fm.shift,Fm.subst_eq,subst_available,Syn.shift,one,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using h.shift
   have nonzero := all_elim differentBody (i := var 0) hs.wk Prf.hyp0
   have actual := (different_body_at (Γ := lt (var 0) (Syn.shift c) :: Γ.map Fm.shift) (Syn.shift H) (Syn.shift r) (var 0))
-  have eqzero : (lt (var 0) (Syn.shift c)) :: Γ.map Fm.shift ⊢[PRAAx]
-      eqb (entry (Syn.shift H) (var 0)) (succ (Syn.shift r)) ≐ zero :=
-    Foundations.BoundedReflection.zero_of_compl_ne (.impI (.impE nonzero.wk (actual.wk.eqTrans Prf.hyp0)))
-  exact .impI (succ_ne_zero ((eqb_of_eq Prf.hyp0).eqSymm.eqTrans eqzero.wk))
+  exact .impI (.impE nonzero.wk (actual.wk.eqTrans (Common.eqb_compl_zero_of_eq Prf.hyp0)))
 
 theorem unmarked_available (H c r : PTm n) (h : Γ ⊢[PRAAx] unmarked H c r) : Γ ⊢[PRAAx] available H c r ≐ one := by
   apply all_intro differentBody
@@ -81,7 +78,7 @@ theorem unmarked_available (H c r : PTm n) (h : Γ ⊢[PRAAx] unmarked H c r) : 
     simpa only [Fm.shift,subst_unmarked,Syn.shift] using h.shift
   have neq := unmarked_at (Syn.shift H) (Syn.shift c) (Syn.shift r) (var 0) hs.wk Prf.hyp0
   have actual := (different_body_at (Γ := lt (var 0) (Syn.shift c) :: Γ.map Fm.shift) (Syn.shift H) (Syn.shift r) (var 0)).eqTrans
-    ((congrMonus (.eqRefl _) (eqb_of_ne neq)).eqTrans (monus_zero _))
+    (Common.eqb_compl_one_of_ne neq)
   exact .impI (succ_ne_zero (actual.wk.eqSymm.eqTrans Prf.hyp0))
 
 theorem fields_at (A H c p : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data A H c p) i ≐ ![A,H,c,p] i :=
@@ -93,13 +90,13 @@ theorem candidate_body_at (A H c p r : PTm n) : Γ ⊢[PRAAx]
     [fields_at _ _ _ _ 0, fields_at _ _ _ _ 1, fields_at _ _ _ _ 2, fields_at _ _ _ _ 3, .eqRefl r]
 
 theorem candidate_one (A H c p r : PTm n) (h : Γ ⊢[PRAAx] eligible A H c p r) : Γ ⊢[PRAAx] candidate A H c p r ≐ one :=
-  (congrMul (unmarked_available H c r (.andE₁ h)) ((congrMonus (.eqRefl _) (eqb_of_ne (.andE₂ h))).eqTrans (monus_zero _))).eqTrans (one_mul _)
+  (congrMul (unmarked_available H c r (.andE₁ h)) (Common.eqb_compl_one_of_ne (.andE₂ h))).eqTrans (one_mul _)
 theorem candidate_eligible (A H c p r : PTm n) (h : Γ ⊢[PRAAx] neg (candidate A H c p r ≐ zero)) : Γ ⊢[PRAAx] eligible A H c p r := by
   have av : Γ ⊢[PRAAx] available H c r ≐ one := by
     refine .orE (available_cases H c r) ?_ Prf.hyp0
     exact .botE _ (.impE h.wk ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)))
   refine .andI (available_unmarked H c r av) (.impI ?_)
-  exact .impE h.wk ((congrMul (.eqRefl _) ((congrMonus (.eqRefl _) (eqb_of_eq Prf.hyp0)).eqTrans (monus_self _))).eqTrans (mul_zero _))
+  exact .impE h.wk ((congrMul (.eqRefl _) (Common.eqb_compl_zero_of_eq Prf.hyp0)).eqTrans (mul_zero _))
 
 theorem flag_cases (A R H c p : PTm n) : Γ ⊢[PRAAx] (flag A R H c p ≐ zero) ⋎ (flag A R H c p ≐ one) := ex_cases _ _ _
 theorem selected_bound (A R H c p : PTm n) : Γ ⊢[PRAAx] le (selected A R H c p) R :=

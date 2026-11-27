@@ -93,7 +93,7 @@ theorem inst2_o2 (M x : PTm n) : inst2 o2B M x = rem M two * monus one (eqb M on
     sg (monus (two * M) (phi M * phi M)) := by simp [inst2]
 
 theorem not_one {M a : PTm n} (h : Γ ⊢[PRAAx] neg (M ≐ a)) : Γ ⊢[PRAAx] monus one (eqb M a) ≐ one :=
-  (congrMonus (.eqRefl _) (eqb_of_ne h)).eqTrans (monus_zero _)
+  Common.eqb_compl_one_of_ne h
 
 /-- Reading the claim off a vanishing term. -/
 theorem o2_read {M x : PTm n} (hodd : Γ ⊢[PRAAx] rem M two ≐ one) (h1 : Γ ⊢[PRAAx] neg (M ≐ one))

@@ -46,19 +46,15 @@ theorem marked_body_at (H j : PTm n) : inst2 markedBody j H = markedBit H j := b
 theorem zero_body_at (H j : PTm n) : inst2 zeroBody j H = eqb (entry H j) zero := by simp [zeroBody,inst2]
 
 theorem marked_zero (H j : PTm n) (h : Γ ⊢[PRAAx] entry H j ≐ zero) : Γ ⊢[PRAAx] markedBit H j ≐ zero :=
-  (congrMonus (.eqRefl _) (eqb_of_eq h)).eqTrans (monus_self _)
+  Common.eqb_compl_zero_of_eq h
 theorem marked_one (H j : PTm n) (h : Γ ⊢[PRAAx] neg (entry H j ≐ zero)) : Γ ⊢[PRAAx] markedBit H j ≐ one :=
-  (congrMonus (.eqRefl _) (eqb_of_ne h)).eqTrans (monus_zero _)
+  Common.eqb_compl_one_of_ne h
 theorem marked_cases (H j : PTm n) : Γ ⊢[PRAAx] (markedBit H j ≐ zero) ⋎ (markedBit H j ≐ one) := by
   refine .orE (eq_or_ne (entry H j) zero) (.orI₁ (marked_zero _ _ Prf.hyp0)) (.orI₂ (marked_one _ _ Prf.hyp0))
-theorem marked_bound (H j : PTm n) : Γ ⊢[PRAAx] le (markedBit H j) one := by
-  refine .orE (marked_cases H j) ?_ ?_
-  · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le _)
-  · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (le_refl _)
-theorem bit_partition (H j : PTm n) : Γ ⊢[PRAAx] markedBit H j + eqb (entry H j) zero ≐ one := by
-  refine .orE (eq_or_ne (entry H j) zero) ?_ ?_
-  · exact (congrAdd (marked_zero _ _ Prf.hyp0) (eqb_of_eq Prf.hyp0)).eqTrans (zero_add _)
-  · exact (congrAdd (marked_one _ _ Prf.hyp0) (eqb_of_ne Prf.hyp0)).eqTrans (add_zero _)
+theorem marked_bound (H j : PTm n) : Γ ⊢[PRAAx] le (markedBit H j) one :=
+  Common.monus_le_self _ _
+theorem bit_partition (H j : PTm n) : Γ ⊢[PRAAx] markedBit H j + eqb (entry H j) zero ≐ one :=
+  Common.eqb_compl_add _ _
 
 theorem count_zero (H : PTm n) : Γ ⊢[PRAAx] count H zero ≐ zero := sum_zero _ _
 theorem zeroCount_zero (H : PTm n) : Γ ⊢[PRAAx] zeroCount H zero ≐ zero := sum_zero _ _

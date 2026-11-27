@@ -47,13 +47,11 @@ theorem ord_at (i a N : PTm n) : Γ ⊢[PRAAx] inst2 ordBody i (pairT a N) ≐ o
 
 theorem ordVal_zero {i a N : PTm n} (h : Γ ⊢[PRAAx] rem (pw a (succ i)) N ≐ rem one N) :
     Γ ⊢[PRAAx] ordVal i a N ≐ zero :=
-  (congrMonus (.eqRefl _) (eqb_of_eq h)).eqTrans (monus_self _)
+  Common.eqb_compl_zero_of_eq h
 
 theorem cong_of_ordVal {i a N : PTm n} (h : Γ ⊢[PRAAx] ordVal i a N ≐ zero) :
-    Γ ⊢[PRAAx] rem (pw a (succ i)) N ≐ rem one N := by
-  refine .orE (eq_or_ne (rem (pw a (succ i)) N) (rem one N)) Prf.hyp0 ?_
-  refine succ_ne_zero' _ (a := zero) (.eqTrans ?_ h.wk)
-  exact ((monus_zero _).eqSymm.eqTrans (congrMonus (.eqRefl _) (eqb_of_ne Prf.hyp0).eqSymm))
+    Γ ⊢[PRAAx] rem (pw a (succ i)) N ≐ rem one N :=
+  Common.eq_of_eqb_compl_zero h
 
 /-- Powers respect congruence. -/
 theorem pw_rem_congr {x y N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h : Γ ⊢[PRAAx] rem x N ≐ rem y N)

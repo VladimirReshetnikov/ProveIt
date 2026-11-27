@@ -139,7 +139,7 @@ theorem column_found (H c r : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalPivotSea
   have found := Foundations.BoundedReflection.all_fail GaussianRationalPivotSearch.differentBody h
   have hit : Γ ⊢[PRAAx] PTm.monus one (eqb (entry H (column H c r)) (succ r)) ≐ zero :=
     (GaussianRationalPivotSearch.different_body_at H r (column H c r)).eqSymm.eqTrans (.andE₂ found)
-  exact .andI (.andE₁ found) (AnalyticNumberTheory.Valuation.eq_of_eqb_ne (Foundations.BoundedReflection.ne_of_compl hit))
+  exact .andI (.andE₁ found) (Common.eq_of_eqb_compl_zero hit)
 theorem column_default (H c r : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalPivotSearch.unmarked H c r) : Γ ⊢[PRAAx]
     column H c r ≐ c :=
   Foundations.BoundedReflection.eq_of_eqb ((Foundations.BoundedReflection.all_eq_search GaussianRationalPivotSearch.differentBody c
@@ -147,11 +147,11 @@ theorem column_default (H c r : PTm n) (h : Γ ⊢[PRAAx] GaussianRationalPivotS
 theorem column_witness (H c r j : PTm n) (hj : Γ ⊢[PRAAx] lt j c) (he : Γ ⊢[PRAAx] entry H j ≐ succ r) : Γ ⊢[PRAAx]
     lt (column H c r) c ⋏ entry H (column H c r) ≐ succ r := by
   have hit := (GaussianRationalPivotSearch.different_body_at (Γ := Γ) H r j).eqTrans
-    ((congrMonus (.eqRefl _) (eqb_of_eq he)).eqTrans (monus_self one))
+    (Common.eqb_compl_zero_of_eq he)
   have found := Search.search_found (f := GaussianRationalPivotSearch.differentBody) hit hj
   have actual : Γ ⊢[PRAAx] PTm.monus one (eqb (entry H (column H c r)) (succ r)) ≐ zero :=
     (GaussianRationalPivotSearch.different_body_at H r (column H c r)).eqSymm.eqTrans (.andE₁ (.andE₂ found))
-  exact .andI (.andE₁ found) (AnalyticNumberTheory.Valuation.eq_of_eqb_ne (Foundations.BoundedReflection.ne_of_compl actual))
+  exact .andI (.andE₁ found) (Common.eq_of_eqb_compl_zero actual)
 theorem row_column_bound (A R N c r : PTm n) : Γ ⊢[PRAAx] le (rowColumn A R N c r) c := column_bound _ _ _
 theorem row_column_found (A R N c r : PTm n)
     (h : Γ ⊢[PRAAx] GaussianRationalPivotSearch.available (history A R N c) c r ≐ zero) : Γ ⊢[PRAAx]

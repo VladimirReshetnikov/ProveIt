@@ -201,16 +201,10 @@ def eqE : PTm 2 := monus one (eqb (var 0) (var 1))
 theorem inst2_eqE (a b : PTm k) : inst2 eqE a b = monus one (eqb a b) := by simp [inst2, eqE]
 
 theorem eqE_of_eq {a b : PTm k} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] E eqE a b := by
-  show Γ ⊢[PRAAx] inst2 eqE a b ≐ zero
-  rw [inst2_eqE]
-  exact (congrMonus (.eqRefl _) (eqb_of_eq h)).eqTrans (le_refl one)
+  simpa only [E, inst2_eqE] using Common.eqb_compl_zero_of_eq h
 
-theorem eq_of_eqE {a b : PTm k} (h : Γ ⊢[PRAAx] E eqE a b) : Γ ⊢[PRAAx] a ≐ b := by
-  have h' : Γ ⊢[PRAAx] inst2 eqE a b ≐ zero := h
-  rw [inst2_eqE] at h'
-  refine .orE (eqb_cases a b) ?_ (eq_of_eqb Prf.hyp0)
-  exact one_ne_zero _ ((monus_zero _).eqSymm.eqTrans
-    ((congrMonus (.eqRefl _) Prf.hyp0).eqSymm.eqTrans h'.wk))
+theorem eq_of_eqE {a b : PTm k} (h : Γ ⊢[PRAAx] E eqE a b) : Γ ⊢[PRAAx] a ≐ b :=
+  Common.eq_of_eqb_compl_zero (by simpa only [E, inst2_eqE] using h)
 
 /-- Equality satisfies the laws. -/
 theorem eq_laws : Laws eqE where

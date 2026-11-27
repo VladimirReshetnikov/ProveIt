@@ -133,8 +133,7 @@ theorem main_pt {p D r P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) (hp : Γ 
           (mul_zero _))
       · let E : List (Fm PTm n) := neg (rem (quo r p) p ≐ zero) :: C
         have hne : E ⊢[PRAAx] neg (rem (quo r p) p ≐ zero) := Prf.hyp0
-        have cp1 : E ⊢[PRAAx] monus one (eqb (rem (quo r p) p) zero) ≐ one :=
-          (congrMonus (.eqRefl _) (eqb_of_ne hne)).eqTrans (monus_zero _)
+        have cp1 := Common.eqb_compl_one_of_ne hne
         have xp : E ⊢[PRAAx] p ≐ one + monus p one := eq_add_of_le (le_trans (le_succ_self _) hp2.wk.wk.wk)
         have S0 := abs_step (Γ := E) hq.wk.wk.wk hp.wk.wk.wk hKpos.wk hne hz'.wk
         have S : E ⊢[PRAAx] le (monus p one * hv r P) (hv (quo r p) P) :=
