@@ -13,6 +13,9 @@ import GRHArticle.ProgressionFree.IntegerPrefix
 import GRHArticle.ProgressionFree.IntegerPrefixEighty
 import GRHArticle.ProgressionFree.IntegerPrefixEightyExact
 import GRHArticle.ProgressionFree.IntegerPrefixTransfer
+import GRHArticle.ProgressionFree.IntegerPrimeGapCertificate
+import GRHArticle.ProgressionFree.IntegerPrimeSquareTail
+import GRHArticle.ProgressionFree.IntegerWheelTail
 import GRHArticle.ProgressionFree.PolynomialBlocks
 import GRHArticle.ProgressionFree.PolynomialBoundedReplacement
 import GRHArticle.ProgressionFree.PolynomialCoefficientConcentration

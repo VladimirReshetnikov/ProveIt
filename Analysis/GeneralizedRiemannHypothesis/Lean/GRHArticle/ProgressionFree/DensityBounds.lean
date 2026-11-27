@@ -102,7 +102,7 @@ theorem densityUpTo_divisibleByOneOf_le {ι : Type*} (T : Finset ι) (d : ι →
   (densityUpTo_finiteUnion_le T (fun i => {n | d i ∣ n}) N).trans
     (Finset.sum_le_sum fun i hi => densityUpTo_dvd_le _ _ (hd i hi))
 
-private theorem sum_Ioc_one_div_sq_le (Y N : ℕ) (hY : 0 < Y) :
+theorem sum_Ioc_one_div_sq_le (Y N : ℕ) (hY : 0 < Y) :
     (∑ q ∈ Finset.Ioc Y N, 1 / (q : ℝ) ^ 2) ≤ 1 / (Y : ℝ) := by
   by_cases hYN : Y ≤ N
   · have he : Finset.Ico (Y + 1) (N + 1) = Finset.Ioc Y N := by
