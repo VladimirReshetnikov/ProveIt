@@ -47,20 +47,8 @@ def error (a b r s : PTm n) : PTm n := fraction (s*r) (b*a)
 def negativeError (a b r s : PTm n) : PTm n := qsub qzero (error a b r s)
 
 theorem product_zero_right (c z x : PTm n) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF C zeroF) zeroF (multiplyData C zeroF c z) x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _
-    (GaussianNameArithmetic.multiply_fast _ _ _ _ (constant_regular _) (zero_fast _)) (zero_fast _)
-  refine .allI ?_
-  let Δ := Γ.map Fm.shift
-  let X := Syn.shift x
-  let Z := Syn.shift z
-  let B := Syn.shift c
-  let p : PTm (n+1) := var 0
-  let k := GaussianFastValueCut.exponent (multiplyModulus C zeroF B Z) p
-  have read : Δ ⊢[PRAAx] ap2 (multiplyF C zeroF) p (multiplyData C zeroF B Z) ≐ qmul (ap2 C k B) (ap2 zeroF k Z) :=
-    (multiply_at C zeroF B Z p).eqTrans (GaussianExponentialReference.recode_fixed _ (qmul_canonical _ _))
-  have eq : Δ ⊢[PRAAx] qmul (ap2 C k B) (ap2 zeroF k Z) ≐ qzero := (qmul_congr (.eqRefl (ap2 C k B)) (zero_at k Z)).eqTrans (qmul_zero_right _)
-  simpa [Syn.shift,Δ,X,Z,B,p] using read.eqTrans (eq.eqTrans (zero_at p X).eqSymm)
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF C zeroF) zeroF (multiplyData C zeroF c z) x :=
+  GaussianNameRingLaws.multiply_zero_right C c z x
 
 theorem fractional_inverse (a j b s : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hj : Γ ⊢[PRAAx] le one j) :
     Γ ⊢[PRAAx] crossEquivalent L (negativeF L) (fractionalData s b a j) (negativeData (fractionalData s b j a)) := by

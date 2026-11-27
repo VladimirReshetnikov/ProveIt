@@ -54,10 +54,8 @@ theorem difference_cross (F F' J J' : PR 2) (x x' y y' : PTm n)
   add_cross F F' (negativeF J) (negativeF J') x x' (negativeData y) (negativeData y')
     hf hf' (negative_fast _ _ hj) (negative_fast _ _ hj') hxx (negative_equivalent _ _ _ _ hj hj' (GaussianNameEquivalence.cross_to_diagonal _ _ _ _ hyy))
 
-theorem zero_data_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast _) (zero_fast _)
-  refine .allI ?_
-  exact (zero_at _ (Syn.shift x)).eqTrans (zero_at _ (Syn.shift y)).eqSymm
+theorem zero_data_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y :=
+  GaussianNameRingLaws.zero_name_cross x y
 
 theorem fraction_zero (b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] fraction zero b ≐ qzero := by
@@ -69,11 +67,8 @@ theorem fraction_zero (b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     (ofGaussian_represents _ _ hb)).eqSymm
 
 theorem zero_product_at (f : PR 2) (p c x : PTm n) (hc : Γ ⊢[PRAAx] c ≐ qzero) :
-    Γ ⊢[PRAAx] ap2 (multiplyF C f) p (multiplyData C f c x) ≐ qzero := by
-  let s := GaussianFastValueCut.exponent (multiplyModulus C f c x) p
-  have mid : Γ ⊢[PRAAx] ap2 (multiplyF C f) p (multiplyData C f c x) ≐ qmul (ap2 C s c) (ap2 f s x) :=
-    (multiply_at C f c x p).eqTrans (GaussianExponentialReference.recode_fixed _ (qmul_canonical _ _))
-  exact mid.eqTrans ((qmul_congr ((constant_at s c).eqTrans hc) (.eqRefl _)).eqTrans (qmul_zero_left _))
+    Γ ⊢[PRAAx] ap2 (multiplyF C f) p (multiplyData C f c x) ≐ qzero :=
+  GaussianNameRingLaws.constant_zero_multiply_at f p c x hc
 
 theorem fractional_zero (b a d x : PTm n) (hb : Γ ⊢[PRAAx] le one b)
     (hs : Γ ⊢[PRAAx] source a d) : Γ ⊢[PRAAx] crossEquivalent L zeroF (fractionalData zero b a d) x := by

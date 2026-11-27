@@ -52,26 +52,12 @@ theorem name_regular (x : PTm n) : Γ ⊢[PRAAx] pointCN nameF (data x) :=
     (GaussianNamedEulerLogarithmicImproper.name_regular locationF one x one (named_source x))
     (reciprocal_regular x)
 
-private theorem zero_product (f : PR 2) (x y : PTm n) (h : Γ ⊢[PRAAx] pointCN f y) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF zeroF f) zeroF (multiplyData zeroF f x y) x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (multiply_fast _ _ _ _ (zero_fast x) h) (zero_fast x)
-  refine .allI ?_
-  let a := Syn.shift x
-  let b := Syn.shift y
-  let p : PTm (n+1) := var 0
-  have e : Γ.map Fm.shift ⊢[PRAAx] ap2 (multiplyF zeroF f) p (multiplyData zeroF f a b) ≐ qzero :=
-    (multiply_at zeroF f a b p).eqTrans
-      ((recode_congr ((qmul_congr (zero_at _ _) (.eqRefl _)).eqTrans (qmul_zero_left _))).eqTrans
-        (GaussianExponentialReference.recode_fixed _ qzero_canonical))
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,a,b,p,GaussianNameArithmetic.subst_multiplyData]
-    using e.eqTrans (zero_at p a).eqSymm
-
 theorem original_digamma_zero (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent nameF zeroF (data x) x := by
   have h := reciprocal_regular (Γ := Γ) x
   have derivative := GaussianNamedEulerLogarithmicImproper.name_regular locationF one x one (named_source (Γ := Γ) x)
   have replaced := multiply_cross LF zeroF RF RF (derivativeData x) x (inverseData x) (inverseData x)
     derivative (zero_fast x) h h (original_integral_zero x) (cross_refl _ _ h)
-  exact cross_trans _ _ _ _ _ _ replaced (zero_product RF x (inverseData x) h)
+  exact cross_trans _ _ _ _ _ _ replaced (GaussianNameRingLaws.multiply_zero_left RF x (inverseData x) x)
 
 theorem actual_positive_location_digamma_zero_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 (crossEquivalent nameF zeroF (data (var 0)) (var 0)) :=

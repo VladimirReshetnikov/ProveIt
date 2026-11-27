@@ -402,6 +402,65 @@ theorem constant_one_cross (x : PTm n) :
   simpa only [Syn.shift,GaussianRationalReciprocal.subst_qone] using
     constant_parameter_at (var 1) (Syn.shift (Syn.shift (qone : PTm n)))
 
+private theorem multiply_zero_raw_at (f g : PR 2) (x y p : PTm n)
+    (h : Γ ⊢[PRAAx] GaussianNameArithmetic.multiplyRaw f g
+      (GaussianFastValueCut.exponent (multiplyModulus f g x y) p) x y ≐ qzero) :
+    Γ ⊢[PRAAx] ap2 (multiplyF f g) p (multiplyData f g x y) ≐ qzero :=
+  (GaussianNameArithmetic.multiply_at f g x y p).eqTrans
+    ((GaussianNameArithmetic.recode_congr h).eqTrans
+      (GaussianRationalHorner.canonical_unique _ _ _ _
+        (GaussianFastValueCut.recode_canonical _) GaussianRationalSyntheticDivision.qzero_canonical
+        (GaussianRationalL1.raw_den_positive _) (GaussianFastValueCut.recode_represents _)
+        (GaussianRationalL1.raw_represents _)))
+
+/-- An exact zero parameter annihilates every observation of the product. -/
+theorem constant_zero_multiply_at (f : PR 2) (p c x : PTm n) (hc : Γ ⊢[PRAAx] c ≐ qzero) :
+    Γ ⊢[PRAAx] ap2 (multiplyF (PTm.toPR (var 1 : PTm 2)) f) p
+      (multiplyData (PTm.toPR (var 1 : PTm 2)) f c x) ≐ qzero :=
+  multiply_zero_raw_at _ _ c x p
+    ((GaussianRationalSyntheticDivision.qmul_congr ((constant_parameter_at _ c).eqTrans hc) (.eqRefl _)).eqTrans
+      (GaussianRationalSyntheticDivision.qmul_zero_left _))
+
+private theorem multiply_zero_samples_cross (f g : PR 2) (x y anchor : PTm n)
+    (h : ∀ k : PTm (n+2), (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
+      GaussianNameArithmetic.multiplyRaw f g k (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) ≐ qzero) :
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF f g) zeroF (multiplyData f g x y) anchor := by
+  refine cross_of_common_sample _ _ _ _ ?_ (zero_at _ _)
+  simpa only [Syn.shift,GaussianNameArithmetic.subst_multiplyData] using
+    multiply_zero_raw_at f g (Syn.shift (Syn.shift x)) (Syn.shift (Syn.shift y)) (var 1) (h _)
+
+theorem multiply_zero_left (f : PR 2) (x y anchor : PTm n) :
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF zeroF f) zeroF (multiplyData zeroF f x y) anchor :=
+  multiply_zero_samples_cross zeroF f x y anchor fun k =>
+    (GaussianRationalSyntheticDivision.qmul_congr (zero_at k _) (.eqRefl _)).eqTrans
+      (GaussianRationalSyntheticDivision.qmul_zero_left _)
+
+theorem multiply_zero_right (f : PR 2) (x y anchor : PTm n) :
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF f zeroF) zeroF (multiplyData f zeroF x y) anchor :=
+  multiply_zero_samples_cross f zeroF x y anchor fun k =>
+    (GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _) (zero_at k _)).eqTrans
+      (GaussianRationalSyntheticDivision.qmul_zero_right _)
+
+/-- Multiply a parameter sampler at zero by any sampler and read zero. -/
+theorem constant_zero_multiply (f : PR 2) (x anchor : PTm n) :
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF (PTm.toPR (var 1 : PTm 2)) f) zeroF
+      (multiplyData (PTm.toPR (var 1 : PTm 2)) f qzero x) anchor := by
+  refine cross_of_common_sample _ _ _ _ ?_ (zero_at _ _)
+  simpa only [Syn.shift,GaussianNameArithmetic.subst_multiplyData,GaussianRationalHorner.subst_qzero] using
+    constant_zero_multiply_at f (var 1) qzero (Syn.shift (Syn.shift x)) (.eqRefl _)
+
+/-- Multiply any sampler by a parameter sampler at zero and read zero. -/
+theorem multiply_constant_zero (f : PR 2) (x anchor : PTm n) :
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF f (PTm.toPR (var 1 : PTm 2))) zeroF
+      (multiplyData f (PTm.toPR (var 1 : PTm 2)) x qzero) anchor := by
+  refine multiply_zero_samples_cross _ _ x qzero anchor fun k => ?_
+  have hz : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
+      ap2 (PTm.toPR (var 1 : PTm 2)) k (Syn.shift (Syn.shift (qzero : PTm n))) ≐ qzero := by
+    simpa only [Syn.shift,GaussianRationalHorner.subst_qzero] using
+      constant_parameter_at (Γ := (Γ.map Fm.shift).map Fm.shift) k (qzero : PTm (n+2))
+  exact (GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _) hz).eqTrans
+    (GaussianRationalSyntheticDivision.qmul_zero_right _)
+
 theorem add_zero_recode (a : PTm n) : Γ ⊢[PRAAx] qadd a qzero ≐ GaussianFastValueCut.recode a := by
   have d := GaussianRationalL1.raw_den_positive (Γ := Γ) a
   have rep := GaussianRationalHorner.qadd_represents a qzero (GaussianRationalL1.rawGaussian a)

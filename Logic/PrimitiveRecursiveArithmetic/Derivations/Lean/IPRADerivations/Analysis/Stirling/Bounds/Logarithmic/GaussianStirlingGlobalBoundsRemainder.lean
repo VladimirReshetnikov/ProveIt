@@ -44,10 +44,6 @@ def sumF : PR 2 := addF P remainderF
 def sumData (N a b x : PTm n) : PTm n := addData (PD N a b) (remainderData (shifted a b N) b x)
 ipra_subst sumData
 
-private theorem zeros_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y :=
-  GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast x) (zero_fast y)
-    (.allI ((zero_at (var 0) (Syn.shift x)).eqTrans (zero_at (var 0) (Syn.shift y)).eqSymm))
-
 private theorem cancel_differences (f g h : PR 2) (x y z : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x)
     (hg : Γ ⊢[PRAAx] pointCN g y) (hh : Γ ⊢[PRAAx] pointCN h z) :
     Γ ⊢[PRAAx] crossEquivalent (addF (GaussianNamedDifference.nameF f g) (GaussianNamedDifference.nameF g h))
@@ -64,7 +60,7 @@ private theorem cancel_differences (f g h : PR 2) (x y z : PTm n) (hf : Γ ⊢[P
   have cancel := cross_trans _ _ _ _ _ _ (add_commutative G g u y hu hg) (add_negative g y hg)
   have drop := add_cross (addF G g) zeroF H H (addData u y) v v v
     (add_fast _ _ _ _ hu hg) (zero_fast v) hv hv
-    (cross_trans _ _ _ _ _ _ cancel (zeros_cross y v)) (cross_refl _ _ hv)
+    (cross_trans _ _ _ _ _ _ cancel (GaussianNameRingLaws.zero_name_cross y v)) (cross_refl _ _ hv)
   have inner := cross_trans _ _ _ _ _ _ swap (cross_trans _ _ _ _ _ _ drop (add_zero_left H v hv))
   have lift := add_cross f f (addF G (addF g H)) H x x (addData u (addData y v)) v
     hf hf (add_fast _ _ _ _ hu (add_fast _ _ _ _ hg hv)) hv (cross_refl _ _ hf) inner

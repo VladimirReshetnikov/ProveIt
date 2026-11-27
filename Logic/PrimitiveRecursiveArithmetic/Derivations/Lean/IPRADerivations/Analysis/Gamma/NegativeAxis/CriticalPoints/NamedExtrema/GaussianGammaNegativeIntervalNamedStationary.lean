@@ -40,21 +40,6 @@ local notation "dd" => GaussianGammaNegativeIntervalNamedDigamma.data
 local notation "TF" => GaussianGammaNegativeIntervalNamedDerivative.nameF
 local notation "td" => GaussianGammaNegativeIntervalNamedDerivative.data
 
-private theorem product_zero (F : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF F zeroF) zeroF (multiplyData F zeroF x zero) zero := by
-  have zeroProduct : Γ ⊢[PRAAx] crossEquivalent (multiplyF constantF F) zeroF
-      (multiplyData constantF F qzero x) zero := by
-    apply GaussianNameConjugation.equal_samples_cross _ _ _ _
-      (multiply_fast _ _ _ _ (constant_regular _) hf) (zero_fast _)
-    refine .allI ?_
-    simpa [GaussianNameConjugation.pointwiseEqual,Syn.shift] using
-      (GaussianGammaRationalWendelBoundary.zero_product_at (Γ := Γ.map Fm.shift) F (var 0)
-        qzero (Syn.shift x) (.eqRefl _)).eqTrans (zero_at (var 0) zero).eqSymm
-  have turn := multiply_commutative F zeroF x zero hf (zero_fast _)
-  have move := multiply_cross zeroF constantF F F zero qzero x x (zero_fast _) (constant_regular _) hf hf
-    (GaussianGammaRationalWendelUniform.zero_constant zero) (cross_refl _ _ hf)
-  exact cross_trans _ _ _ _ _ _ turn (cross_trans _ _ _ _ _ _ move zeroProduct)
-
 theorem derivative_zero_of_digamma_zero (f : PR 2) (x W N : PTm n) (hs : Γ ⊢[PRAAx] source f x W)
     (hz : Γ ⊢[PRAAx] crossEquivalent (D f) zeroF (dd x W N) zero) :
     Γ ⊢[PRAAx] crossEquivalent (TF f) zeroF (td f x W N) zero := by
@@ -62,7 +47,7 @@ theorem derivative_zero_of_digamma_zero (f : PR 2) (x W N : PTm n) (hs : Γ ⊢[
   have hD := GaussianGammaNegativeIntervalNamedDigamma.name_regular f x W N hs
   have move := multiply_cross (actualF f) (actualF f) (D f) zeroF (actualData f x W N) (actualData f x W N)
     (dd x W N) zero hG hG hD (zero_fast _) (cross_refl _ _ hG) hz
-  exact cross_trans _ _ _ _ _ _ move (product_zero _ _ hG)
+  exact cross_trans _ _ _ _ _ _ move (GaussianNameRingLaws.multiply_zero_right _ _ zero zero)
 
 private theorem cancel_zero (I G P : PR 2) (u v w a : PTm n) (hI : Γ ⊢[PRAAx] pointCN I u)
     (hG : Γ ⊢[PRAAx] pointCN G v) (hP : Γ ⊢[PRAAx] pointCN P w)
@@ -83,7 +68,7 @@ private theorem cancel_zero (I G P : PR 2) (u v w a : PTm n) (hI : Γ ⊢[PRAAx]
     cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (multiply_associative I G P u v w hI hG hP)) drop
   have kill := multiply_cross I I GP zeroF u u gp zero hI hI hGP (zero_fast _) (cross_refl _ _ hI) hz
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ recover)
-    (cross_trans _ _ _ _ _ _ kill (product_zero I u hI))
+    (cross_trans _ _ _ _ _ _ kill (GaussianNameRingLaws.multiply_zero_right I u zero zero))
 
 theorem digamma_zero_of_derivative_zero (f : PR 2) (x W N : PTm n) (hs : Γ ⊢[PRAAx] source f x W)
     (hz : Γ ⊢[PRAAx] crossEquivalent (TF f) zeroF (td f x W N) zero) :

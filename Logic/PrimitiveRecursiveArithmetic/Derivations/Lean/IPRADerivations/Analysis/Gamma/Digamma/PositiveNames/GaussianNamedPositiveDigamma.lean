@@ -91,21 +91,6 @@ theorem gamma_times_digamma (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRAAx] source f
   exact cross_trans (multiplyF G (nameF f)) (multiplyF GI D) D _ _ d
     (cross_symm _ _ _ _ assoc) (cross_trans _ _ _ _ _ _ cancel (multiply_one_left D d hD))
 
-private theorem factor_times_zero (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF f zeroF) zeroF (multiplyData f zeroF x zero) zero := by
-  have constantZero : Γ ⊢[PRAAx] crossEquivalent (multiplyF constantF f) zeroF
-      (multiplyData constantF f qzero x) zero := by
-    apply GaussianNameConjugation.equal_samples_cross _ _ _ _
-      (multiply_fast constantF f qzero x (constant_regular qzero) hf) (zero_fast zero)
-    refine .allI ?_
-    simpa [GaussianNameConjugation.pointwiseEqual,Syn.shift] using
-      (GaussianGammaRationalWendelBoundary.zero_product_at (Γ := Γ.map Fm.shift) f (var 0)
-        qzero (Syn.shift x) (.eqRefl _)).eqTrans (zero_at (var 0) zero).eqSymm
-  have turn := multiply_commutative f zeroF x zero hf (zero_fast zero)
-  have move := multiply_cross zeroF constantF f f zero qzero x x (zero_fast zero) (constant_regular qzero)
-    hf hf (GaussianGammaRationalWendelUniform.zero_constant zero) (cross_refl f x hf)
-  exact cross_trans _ _ _ _ _ _ turn (cross_trans _ _ _ _ _ _ move constantZero)
-
 theorem digamma_zero_of_derivative_zero (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRAAx] source f x A)
     (hz : Γ ⊢[PRAAx] crossEquivalent (derivativeF f) zeroF (derivativeData x A) zero) :
     Γ ⊢[PRAAx] crossEquivalent (nameF f) zeroF (data f x A) zero := by
@@ -114,7 +99,7 @@ theorem digamma_zero_of_derivative_zero (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRA
   have hI := inverse_regular f x A h
   have move := multiply_cross I I (derivativeF f) zeroF i i (derivativeData x A) zero hI hI
     (derivative_regular f x A h) (zero_fast zero) (cross_refl I i hI) hz
-  exact cross_trans _ _ _ _ _ _ move (factor_times_zero I i hI)
+  exact cross_trans _ _ _ _ _ _ move (GaussianNameRingLaws.multiply_zero_right I i zero zero)
 
 theorem derivative_zero_of_digamma_zero (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRAAx] source f x A)
     (hz : Γ ⊢[PRAAx] crossEquivalent (nameF f) zeroF (data f x A) zero) :
@@ -125,7 +110,7 @@ theorem derivative_zero_of_digamma_zero (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRA
   have move := multiply_cross G G (nameF f) zeroF g g (data f x A) zero hG hG
     (name_regular f x A h) (zero_fast zero) (cross_refl G g hG) hz
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (gamma_times_digamma f x A h))
-    (cross_trans _ _ _ _ _ _ move (factor_times_zero G g hG))
+    (cross_trans _ _ _ _ _ _ move (GaussianNameRingLaws.multiply_zero_right G g zero zero))
 
 theorem zero_equivalent (f : PR 2) (x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) :
     Γ ⊢[PRAAx] Fm.iff (crossEquivalent (nameF f) zeroF (data f x A) zero)

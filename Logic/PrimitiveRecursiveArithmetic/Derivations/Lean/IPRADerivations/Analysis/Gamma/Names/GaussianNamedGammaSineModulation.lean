@@ -72,22 +72,6 @@ theorem product_constant_one (f : PR 2) (x : PTm n) (hx : Γ ⊢[PRAAx] pointCN 
     (cross_refl _ _ hx) e
   exact cross_trans _ _ _ _ _ _ mid (multiply_one _ _ hx)
 
-private theorem product_constant_zero (f : PR 2) (x anchor : PTm n) (hx : Γ ⊢[PRAAx] pointCN f x) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF f constantF) zeroF (multiplyData f constantF x qzero) anchor := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _
-    (multiply_fast f constantF x qzero hx (constant_regular _)) (zero_fast anchor)
-  refine .allI ?_
-  let y := Syn.shift x
-  let p : PTm (n+1) := var 0
-  have e : Γ.map Fm.shift ⊢[PRAAx] ap2 (multiplyF f constantF) p (multiplyData f constantF y qzero) ≐ qzero :=
-    (GaussianNameArithmetic.multiply_at f constantF y qzero p).eqTrans
-      ((GaussianNameArithmetic.recode_congr ((GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _)
-          (constant_at _ _)).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_right _))).eqTrans
-        (GaussianExponentialReference.recode_fixed _ (GaussianRationalSyntheticDivision.qzero_canonical)))
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,y,p,
-    GaussianNameArithmetic.subst_multiplyData,GaussianRationalHorner.subst_qzero] using
-    e.eqTrans (zero_at p (Syn.shift anchor)).eqSymm
-
 theorem factor_at_zero (c s : PR 2) (a y x : PTm n)
     (hc : Γ ⊢[PRAAx] pointCN c a) (hs : Γ ⊢[PRAAx] pointCN s y)
     (he : Γ ⊢[PRAAx] crossEquivalent s constantF y qzero) :
@@ -96,7 +80,7 @@ theorem factor_at_zero (c s : PR 2) (a y x : PTm n)
   have exp := independent_radii_proper (exponentF c constantF) zeroF _ one
     (exponentData c constantF a qzero) x
     (exponential_input _ _ (exponent_regular _ _ _ _ hc (constant_regular _)))
-    (GaussianExponentialInverse.zero_input _ _) (product_constant_zero c a x hc)
+    (GaussianExponentialInverse.zero_input _ _) (GaussianNameRingLaws.multiply_constant_zero c a x)
   exact cross_trans _ _ _ _ _ _ mid
     (cross_trans _ _ _ _ _ _ exp (GaussianExponentialInverse.zero_exponential_cross one x))
 

@@ -57,23 +57,6 @@ def nameF : PR 2 := multiplyF (valueF P) signedQuotientF
 def nameData (a b N D : PTm n) : PTm n :=
   multiplyData (valueF P) signedQuotientF (valueData P N (reciprocalData a b N)) (signedQuotientData a b N D)
 
-private theorem zero_product (f : PR 2) (x y : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF constantF f) zeroF (multiplyData constantF f qzero x) y := by
-  refine GaussianNameConjugation.equal_samples_cross _ _ _ _
-    (multiply_fast constantF f qzero x (constant_regular qzero) hf) (zero_fast y) (.allI ?_)
-  let X := Syn.shift x
-  let p : PTm (n+1) := var 0
-  let Z : PTm (n+1) := qzero
-  let s := GaussianFastValueCut.exponent (multiplyModulus constantF f Z X) p
-  let Δ := Γ.map Fm.shift
-  have code : Δ ⊢[PRAAx] GaussianNameArithmetic.multiplyRaw constantF f s Z X ≐ Z :=
-    (qmul_congr (constant_at s Z) (.eqRefl _)).eqTrans (qmul_zero_left _)
-  have read := (multiply_at (Γ := Δ) constantF f Z X p).eqTrans
-    ((recode_congr code).eqTrans (GaussianExponentialReference.recode_fixed Z qzero_canonical))
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianNameArithmetic.subst_multiplyData,
-    GaussianRationalHorner.subst_qzero,X,p,Z,Δ] using
-    read.eqTrans (zero_at p (Syn.shift y)).eqSymm
-
 theorem quotient_sign_cross (a b N D : PTm n) (h : Γ ⊢[PRAAx] guard a b)
     (hD : Γ ⊢[PRAAx] lt b D) :
     Γ ⊢[PRAAx] crossEquivalent signedQuotientF (valueF Q) (signedQuotientData a b N D) (valueData Q N (QD a b N D)) := by
@@ -97,7 +80,7 @@ theorem quotient_sign_cross (a b N D : PTm n) (h : Γ ⊢[PRAAx] guard a b)
   have discard : Γ ⊢[PRAAx] crossEquivalent (rhsF gammaF gammaF) (addF (valueF Q) zeroF)
       (addData v w) (addData v v) :=
     add_cross (valueF Q) (valueF Q) (valueF gammaF) zeroF v v w v hv hv hw (zero_fast v)
-      (cross_refl _ _ hv) (zero_product gammaF y v hm)
+      (cross_refl _ _ hv) (GaussianNameRingLaws.constant_zero_multiply gammaF y v)
   exact cross_trans _ _ _ _ _ _ rule (cross_trans _ _ _ _ _ _ discard (GaussianNameRingLaws.add_zero (valueF Q) v hv))
 
 theorem double_sign_product (f g : PR 2) (N x y : PTm n)

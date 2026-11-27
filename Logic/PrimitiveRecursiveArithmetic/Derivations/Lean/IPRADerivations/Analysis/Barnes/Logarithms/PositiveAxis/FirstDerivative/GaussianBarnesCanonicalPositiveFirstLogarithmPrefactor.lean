@@ -85,15 +85,6 @@ private theorem negative_half_twice : Γ ⊢[PRAAx] qmul (negativeHalf : PTm n) 
 private theorem constant_zero (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent C zeroF qzero x :=
   GaussianNameRingLaws.constant_zero_cross x
 
-private theorem annihilate (f : PR 2) (x y : PTm n) (h : Γ ⊢[PRAAx] pointCN f x) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF C f) zeroF (multiplyData C f qzero x) y := by
-  apply equal_samples_cross _ _ _ _ (multiply_fast _ _ _ _ (constant_regular _) h) (zero_fast _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianNameArithmetic.subst_multiplyData,
-    GaussianRationalHorner.subst_qzero] using
-    (GaussianGammaRationalWendelBoundary.zero_product_at f (var 0) qzero (Syn.shift x) (.eqRefl _)).eqTrans
-      (zero_at (var 0) (Syn.shift y)).eqSymm
-
 private theorem coefficient_sample (p : PTm n) : Γ ⊢[PRAAx] GaussianRationalMetric.distanceBounded
     (ap2 (multiplyF C Q) p (multiplyData C Q minusOne quadraticCoefficientData))
     (ap2 K p coefficientData)
@@ -141,7 +132,8 @@ theorem basis : Γ ⊢[PRAAx] crossEquivalent E K (exponentOf (qzero : PTm n) (q
   have linear : Γ ⊢[PRAAx] pointCN linearF (linearOf (qzero : PTm n)) :=
     multiply_fast _ _ _ _ (constant_regular _) (GaussianStirlingConstant.name_regular zero)
   have changed := add_cross linearF zeroF correctionF correctionF (linearOf qzero) w w w linear (zero_fast _) cr cr
-    (annihilate GaussianStirlingConstant.nameF (GaussianStirlingConstant.nameData zero) w (GaussianStirlingConstant.name_regular zero))
+    (GaussianNameRingLaws.constant_zero_multiply GaussianStirlingConstant.nameF
+      (GaussianStirlingConstant.nameData zero) w)
     (cross_refl _ _ cr)
   have corr := cross_trans _ _ _ _ _ _ strip (cross_trans _ _ _ _ _ _
     (cross_symm _ _ _ t assoc) (cross_trans _ _ _ _ _ _ scaled coefficient_mul))
