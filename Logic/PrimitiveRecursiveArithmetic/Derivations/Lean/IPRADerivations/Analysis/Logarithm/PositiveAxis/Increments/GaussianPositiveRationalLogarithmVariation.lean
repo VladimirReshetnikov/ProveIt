@@ -21,7 +21,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open RationalHarmonicIntervalVariation (gap)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_radius_mono distance_from_model_comparison)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -85,13 +85,10 @@ theorem diagonal_native (p a b c d M A D : PTm n)
     distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hD hQ) den
       (le_of_eq_add (d := two*D*D*unit p) (by
         dsimp [Q,GammaEulerConstantName.mesh,GammaEulerConstantName.unit,unit]; ipra_ring)) old
-  have left := distance_radius_mono _ _ _ _ (num 8*D) (D*unit p) (unit_positive p) den
-    (le_of_eq_add (d := zero) (by ipra_ring)) (sample_interval_error p a b hab)
-  have right := distance_radius_mono _ _ _ _ (num 8*D) (D*unit p) (unit_positive p) den
-    (le_of_eq_add (d := zero) (by ipra_ring))
-    (distance_symmetric _ _ _ _ (unit_positive p) (sample_interval_error p c d hcd))
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ den (distance_triangle_same _ _ _ _ _ _ den left middle) right)
+  have joined := distance_from_model_comparison ((M*A)*unit p+D) (D*unit p) (unit p) (num 8) (num 8)
+    den (unit_positive p) (sample_interval_error p a b hab) middle (sample_interval_error p c d hcd)
+  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ den (unit_positive p)) den
+    (le_of_eq_add (d := zero) (by ipra_ring)) joined
 
 
 

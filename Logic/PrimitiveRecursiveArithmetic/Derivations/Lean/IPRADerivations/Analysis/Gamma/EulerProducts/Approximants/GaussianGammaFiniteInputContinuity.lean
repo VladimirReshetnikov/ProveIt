@@ -23,7 +23,7 @@ open GaussianGammaEulerContinuityReference (reference query cutoff headBound hea
 open GaussianGammaLogExponentContinuity (logRadius exponentRadius exponent_bound exponent_distance distanceBudget)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_model_comparison)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 
@@ -112,13 +112,10 @@ theorem diagonal_distance (t z w R B A D N : PTm n)
   have rightRaw := distance_radius_mono _ _ _ _ L U (positive_product _ _ hu hu) hu
     (le_of_eq_add (d := zero) (by dsimp only [L,H,U]; ipra_ring))
     (original_sample_reference t t w R B N wi)
-  have left := distance_radius_mono _ _ _ _ (L*D) (D*U) hu den
-    (le_of_eq_add (d := zero) (by ipra_ring)) leftRaw
-  have right := distance_radius_mono _ _ _ _ (L*D) (D*U) hu den
-    (le_of_eq_add (d := zero) (by ipra_ring)) (distance_symmetric _ _ _ _ hu rightRaw)
-  have middle := reference_distance_wide t z w R B A D N h
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [L,H,loss]; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ den (distance_triangle_same _ _ _ _ _ _ den left middle) right)
+  have joined := distance_from_model_comparison _ (D*U) U L L den hu
+    leftRaw (reference_distance_wide t z w R B A D N h) rightRaw
+  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ den hu) den
+    (le_of_eq_add (d := zero) (by dsimp only [L,H,U,loss]; ipra_ring)) joined
 
 theorem diagonal_envelope (z w R B A D N : PTm n)
     (h : Γ ⊢[PRAAx] input z w R B A D N) : Γ ⊢[PRAAx]

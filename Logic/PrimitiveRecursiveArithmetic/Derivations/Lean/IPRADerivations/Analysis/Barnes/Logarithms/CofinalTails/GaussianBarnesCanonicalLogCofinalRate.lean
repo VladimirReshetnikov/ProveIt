@@ -25,7 +25,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_from_model_comparison)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
@@ -135,14 +135,10 @@ theorem diagonal_observation (p z R B r : PTm n) (h : Γ ⊢[PRAAx] source z R B
   have middle := common_difference p v z R B r h
     (GaussianBarnesCanonicalFiniteLog.clock_budget _ p a r v (le_refl _) (le_add_right f g))
     (cofinal_clock_budget p R v (le_add_left g f))
-  have scale : Γ ⊢[PRAAx] le (one*(W*U)) (W*U) :=
-    le_congr (one_mul _).eqSymm (.eqRefl _) (le_refl _)
-  have left := distance_radius_mono x P one U W (W*U) hU hWU scale
-    (distance_symmetric _ _ _ _ hU first)
-  have right := distance_radius_mono Q y one U W (W*U) hU hWU scale last
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [diagonalNumerator,D,W,U]; ipra_ring) (.eqRefl _)
-    (distance_triangle_same x P y W ((D*U+two*W)+W) (W*U) hWU left
-      (distance_triangle_same P Q y (D*U+two*W) W (W*U) hWU middle right))
+  have joined := distance_from_model_comparison (D*U+two*W) (W*U) U one one hWU hU
+    (distance_symmetric _ _ _ _ hU first) middle (distance_symmetric _ _ _ _ hU last)
+  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hWU hU) hWU
+    (le_of_eq_add (d := zero) (by dsimp only [diagonalNumerator,diagonalDenominator,D,W,U]; ipra_ring)) joined
 
 theorem finite_tail_rate (z R B r : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] independentRate F G (Fdata z R B (initial R) r) (Gdata z R B)
