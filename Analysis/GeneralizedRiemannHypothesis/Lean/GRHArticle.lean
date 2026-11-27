@@ -74,7 +74,9 @@ import GRHArticle.ProgressionFree.IntegerUpperDensityUpperBound
 import GRHArticle.ProgressionFree.IntegerWheelTail
 import GRHArticle.ProgressionFree.LightPrimeBlocks
 import GRHArticle.ProgressionFree.NumberFieldIdeals.Density
+import GRHArticle.ProgressionFree.NumberFieldIdeals.DensityExtrema
 import GRHArticle.ProgressionFree.NumberFieldIdeals.DisjointProducts
+import GRHArticle.ProgressionFree.NumberFieldIdeals.ExteriorProductLoss
 import GRHArticle.ProgressionFree.NumberFieldIdeals.FiniteExponentProducts
 import GRHArticle.ProgressionFree.NumberFieldIdeals.FiniteLocalRules
 import GRHArticle.ProgressionFree.NumberFieldIdeals.GreedyPredecessors
@@ -84,6 +86,7 @@ import GRHArticle.ProgressionFree.NumberFieldIdeals.InfiniteLocalRules
 import GRHArticle.ProgressionFree.NumberFieldIdeals.LocalFactors
 import GRHArticle.ProgressionFree.NumberFieldIdeals.LocalMassBounds
 import GRHArticle.ProgressionFree.NumberFieldIdeals.NormCutoffWeights
+import GRHArticle.ProgressionFree.NumberFieldIdeals.PrimeNormTailBound
 import GRHArticle.ProgressionFree.NumberFieldIdeals.PrimeSquareSieve
 import GRHArticle.ProgressionFree.NumberFieldIdeals.ProductAdmissibility
 import GRHArticle.ProgressionFree.NumberFieldIdeals.ProductSetDensity
@@ -93,6 +96,7 @@ import GRHArticle.ProgressionFree.NumberFieldIdeals.SmoothOptimization
 import GRHArticle.ProgressionFree.NumberFieldIdeals.SmoothOptimizationGap
 import GRHArticle.ProgressionFree.NumberFieldIdeals.SmoothProducts
 import GRHArticle.ProgressionFree.NumberFieldIdeals.SquareNormTail
+import GRHArticle.ProgressionFree.NumberFieldIdeals.SquarefreeExterior
 import GRHArticle.ProgressionFree.NumberFieldIdeals.UniformCounts
 import GRHArticle.ProgressionFree.NumberFieldIdeals.ValuationCylinders
 import GRHArticle.ProgressionFree.PolynomialBlocks
@@ -165,7 +169,9 @@ import GRHArticle.SingularModuli.CuspSeparation
 import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.HasseCoefficients
+import GRHArticle.SingularModuli.HeckeDiagonalFiniteCertificate
 import GRHArticle.SingularModuli.HeckeRootOfUnityIntegrality
+import GRHArticle.SingularModuli.HeckeTraceCoefficientFormula
 import GRHArticle.SingularModuli.ModularIntegralExpansions
 import GRHArticle.SingularModuli.ModularInvariantPolynomial
 import GRHArticle.SingularModuli.NewtonValuation

@@ -20,7 +20,7 @@ variable {K : Type*} [Field K] [NumberField K]
 def infiniteLocalRule (A : HeightOneSpectrum (𝓞 K) → Set ℕ) : Set (Ideal (𝓞 K))⁰ :=
   {I | ∀ p, primeExponent p I ∈ A p}
 
-private theorem finite_primes_norm_le (Y : ℕ) :
+theorem finite_primes_norm_le (Y : ℕ) :
     {p : HeightOneSpectrum (𝓞 K) | absNorm p.asIdeal ≤ Y}.Finite := by
   have hi : Function.Injective (primeIdeal (K := K)) := fun _ _ h ↦
     HeightOneSpectrum.ext (congrArg (fun I : (Ideal (𝓞 K))⁰ ↦ I.val) h)

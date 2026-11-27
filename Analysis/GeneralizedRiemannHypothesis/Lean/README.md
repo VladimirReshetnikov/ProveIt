@@ -60,6 +60,8 @@ to place them in the disks, and finite certificates from the
 
 [QuarticClassPolynomialIntegrality.lean](GRHArticle/SingularModuli/QuarticClassPolynomialIntegrality.lean) proves that every coefficient of the analytic class polynomials of discriminants −55 and −68 is an algebraic integer. For either discriminant, rationality of the coefficients suffices to identify the polynomial with the article's printed quartic, using the certified coefficient enclosures.
 
+[HeckeDiagonalFiniteCertificate.lean](GRHArticle/SingularModuli/HeckeDiagonalFiniteCertificate.lean) reduces a proposed prime Hecke diagonal identity to its first $2p+1$ cleared series coefficients. [HeckeTraceCoefficientFormula.lean](GRHArticle/SingularModuli/HeckeTraceCoefficientFormula.lean) expresses the power sums of the shifted factors through integer series coefficients.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's
@@ -118,6 +120,8 @@ For the exchange used in McNew’s Question 7.4, [IntegerBoundaryExchangeReplace
 [ProductSetDensity.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/ProductSetDensity.lean) proves the natural density formula in `gpi:lem:product` for every number field. Any set of smooth ideals may be combined with separate exponent rules at each exterior prime. If all exterior rules allow zero and all but finitely many allow one, their Euler product converges to a strictly positive value. The density equals this product times the smooth reciprocal-norm sum and the finite coprimality factor. [ProductSets.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/ProductSets.lean) proves that this construction preserves progression-freeness for both ratio conventions when the smooth template and the exterior rules are admissible.
 
 [SmoothOptimizationGap.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/SmoothOptimizationGap.lean) proves the quantitative gap between the two smooth optimization problems in `gpi:thm:ideal-separation`. For either ratio convention, any finite set of smooth primes and any member of norm $Q$, the upper optimization exceeds the lower one by at least the finite coprimality factor divided by $Q^8(Q^8+1)$. [SmoothOptimization.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/SmoothOptimization.lean) constructs an actual maximizer at every finite cutoff.
+
+[PrimeNormTailBound.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/PrimeNormTailBound.lean) bounds the inverse-square prime-ideal tail beyond norm $Y$ by $[K:\mathbb Q]/Y$. [ExteriorProductLoss.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/ExteriorProductLoss.lean) proves the same bound for the loss from arbitrary exterior exponent rules allowing zero and one. [SquarefreeExterior.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/SquarefreeExterior.lean) specializes both the error and the product-set density to squarefree rough ideals. [DensityExtrema.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/DensityExtrema.lean) gives product-set lower bounds for the unrestricted natural-density supremum, including rules that exclude exponent one at finitely many exterior primes.
 
 ## Polynomial geometric progressions
 
