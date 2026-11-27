@@ -30,7 +30,7 @@ open GaussianGammaWeierstrassApproximant (constant_data_cross constant_product_c
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiply_fast)
 open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
-open GaussianNameRingLaws (multiply_associative multiply_commutative add_associative add_commutative negativeF negativeData negative_fast)
+open GaussianNameRingLaws (multiply_associative multiply_commutative)
 open GaussianNamedGammaHalfShift (add_cross)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (qnegative)
@@ -65,24 +65,6 @@ private theorem merge (f g h : PR 2) (x y z : PTm n) (hf : Γ ⊢[PRAAx] pointCN
     crossEquivalent (multiplyF (E f) (E g)) (E h) (multiplyData (E f) (E g) (ed f x) (ed g y)) (ed h z) :=
   GaussianGammaFoldedApproximantBalance.exponential_product_equivalent f g h (U f x) (U g y) (U h z) x y z
     (exponential_input _ _ hf) (exponential_input _ _ hg) (exponential_input _ _ hh) e
-
-private theorem add_back (f g : PR 2) (x y : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) :
-    Γ ⊢[PRAAx] crossEquivalent (addF (GaussianNamedDifference.nameF f g) g) f
-      (addData (GaussianNamedDifference.data x y) y) x := by
-  let N := negativeF g
-  let t := negativeData y
-  have hn := negative_fast g y hg
-  have neg := cross_trans _ _ _ _ _ _ (add_commutative N g t y hn hg) (GaussianNameRingLaws.add_negative g y hg)
-  have drop := add_cross f f (addF N g) GaussianNameRingLaws.zeroF x x (addData t y) y hf hf
-    (add_fast _ _ _ _ hn hg) (GaussianNameRingLaws.zero_fast y) (cross_refl _ _ hf) neg
-  have eq : Γ ⊢[PRAAx] crossEquivalent GaussianNameRingLaws.zeroF GaussianNameRingLaws.zeroF y x := by
-    apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (GaussianNameRingLaws.zero_fast y) (GaussianNameRingLaws.zero_fast x)
-    refine .allI ?_
-    exact (GaussianNameRingLaws.zero_at (var 0) (Syn.shift y)).eqTrans (GaussianNameRingLaws.zero_at (var 0) (Syn.shift x)).eqSymm
-  have replace := add_cross f f GaussianNameRingLaws.zeroF GaussianNameRingLaws.zeroF x x y x hf hf
-    (GaussianNameRingLaws.zero_fast y) (GaussianNameRingLaws.zero_fast x) (cross_refl _ _ hf) eq
-  exact cross_trans _ _ _ _ _ _ (add_associative f N g x t y hf hn hg)
-    (cross_trans _ _ _ _ _ _ drop (cross_trans _ _ _ _ _ _ replace (GaussianNameRingLaws.add_zero f x hf)))
 
 private theorem offset_cross (z B K : PTm n) (hK : Γ ⊢[PRAAx] le one K) : Γ ⊢[PRAAx]
     crossEquivalent (addF integerLogF logExponentF) offsetF
@@ -181,7 +163,7 @@ theorem multiplier_cross (z R B N : PTm n) (hs : Γ ⊢[PRAAx] source (translate
     (multiplyData (E integerLogF) gaussF (ed integerLogF i) (gaussData z B K)) (ed offsetF o)
     (multiply_fast _ _ _ _ hF hT) (exp_regular _ _ p) (multiply_fast _ _ _ _ hI hJ) (exp_regular _ _ ho) l m
   have toSum := merge (addF F scaledF) offsetF Z (addData a t) o s p ho hz (cross_refl _ _ hz)
-  have back := merge X G Z x g s hx hg hz (add_back Z G s g hz hg)
+  have back := merge X G Z x g s hx hg hz (GaussianNamedDifference.sub_add_cancel Z G s g hz hg)
   have fact := multiply_cross nameF nameF (E G) C (data z R B K) (data z R B K)
     (ed G g) (naturalPoint (fact N)) (exp_regular _ _ hx) (exp_regular _ _ hx)
     (exp_regular _ _ hg) (constant_regular _) (cross_refl _ _ (exp_regular _ _ hx)) (factorial_log_exponential N)

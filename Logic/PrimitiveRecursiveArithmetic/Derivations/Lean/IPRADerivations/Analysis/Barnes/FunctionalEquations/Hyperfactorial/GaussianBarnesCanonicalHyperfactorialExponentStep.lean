@@ -16,8 +16,8 @@ open GaussianBarnesCanonicalHyperfactorial
 open GaussianGammaCanonicalExponent (constantF constant_regular constant_at)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
-open GaussianNameRingLaws (add_associative add_commutative add_negative zeroF zero_fast zero_at
-  multiply_one_left oneF one_at one_fast negativeF negativeData negative_fast distributive right_distributive)
+open GaussianNameRingLaws (add_associative add_commutative multiply_one_left oneF
+  one_at one_fast distributive right_distributive)
 open GaussianNamedGammaHalfShift (add_cross constant_sum)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianEuclideanDistanceName (pointCN)
@@ -68,26 +68,6 @@ private theorem constant_one (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constan
   simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,GaussianRationalSyntheticDivision.subst_qone] using
     (constant_at (var 0) qone).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm
 
-private theorem add_back (f g : PR 2) (x y : PTm n)
-    (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) :
-    Γ ⊢[PRAAx] crossEquivalent (addF (Df f g) g) f (addData (Dd x y) y) x := by
-  let neg := negativeF g
-  let w := negativeData y
-  have hr := negative_fast g y hg
-  have hb := add_fast neg g w y hr hg
-  have comm := add_commutative neg g w y hr hg
-  have canc := cross_trans _ _ _ _ _ _ comm (add_negative g y hg)
-  have zs : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF y x := by
-    apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast y) (zero_fast x)
-    refine .allI ?_
-    simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift] using
-      (zero_at (var 0) (Syn.shift y)).eqTrans (zero_at (var 0) (Syn.shift x)).eqSymm
-  have zero := cross_trans _ _ _ _ _ _ canc zs
-  have replace := add_cross f f (addF neg g) zeroF x x (addData w y) x
-    hf hf hb (zero_fast x) (cross_refl _ _ hf) zero
-  exact cross_trans _ _ _ _ _ _ (add_associative f neg g x w y hf hr hg)
-    (cross_trans _ _ _ _ _ _ replace (GaussianNameRingLaws.add_zero f x hf))
-
 theorem logarithm_sum (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] crossEquivalent L (addF L T) (specialLogData (A+B) B)
       (addData (specialLogData A B) (logarithmData A B)) := by
@@ -102,7 +82,7 @@ theorem logarithm_sum (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[P
   have dd := GaussianNamedDifference.name_regular L L y x hy hx
   have move := add_cross (Df L L) T L L (Dd y x) t x x dd ht hx hx
     (GaussianLogGammaEulerRecurrence.recurrence A zero B zero h) (cross_refl _ _ hx)
-  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (add_back L L y x hy hx))
+  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (GaussianNamedDifference.sub_add_cancel L L y x hy hx))
     (cross_trans _ _ _ _ _ _ move (add_commutative T L t x ht hx))
 
 theorem step_exponent_regular (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B) :

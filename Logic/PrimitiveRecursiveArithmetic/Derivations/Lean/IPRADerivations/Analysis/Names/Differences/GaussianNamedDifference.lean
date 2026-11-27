@@ -15,8 +15,10 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedDifference
 
 open_ipra
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianNameArithmetic (addF addData add_fast sum_distance)
-open GaussianNameRingLaws (negativeF negativeData negative_fast negative_sample_error add_sample_error)
+open GaussianNameArithmetic (addF addData add_fast add_equivalent sum_distance)
+open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_trans diagonal_refl)
+open GaussianNameRingLaws (negativeF negativeData negative_fast negative_sample_error add_sample_error
+  add_associative add_commutative add_negative equivalent_of_envelope zeroF zero_at zero_fast)
 open GaussianRationalHorner (qadd qzero)
 open GaussianRationalMetric (qsub qnegative distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_negative)
@@ -32,6 +34,26 @@ ipra_subst data
 theorem name_regular (f g : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) : Γ ⊢[PRAAx] pointCN (nameF f g) (data x y) :=
   add_fast f (negativeF g) x (negativeData y) hf (negative_fast g y hg)
+
+theorem sub_add_cancel (f g : PR 2) (x y : PTm n)
+    (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) :
+    Γ ⊢[PRAAx] crossEquivalent (addF (nameF f g) g) f (addData (data x y) y) x := by
+  let neg := negativeF g
+  let w := negativeData y
+  have hn := negative_fast g y hg
+  have zeros : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF y x := by
+    apply equivalent_of_envelope _ _ _ _ zero (zero_fast y) (zero_fast x)
+    refine .allI ?_
+    simpa only [Syn.shift, ConciseIPRA.PTm.subst_zero] using
+      distance_congr (zero_at (var 0) (Syn.shift y)).eqSymm (zero_at (var 0) (Syn.shift x)).eqSymm
+        (.eqRefl zero) (.eqRefl (unit (var 0)))
+        (GaussianRationalPowerDifference.distance_refl_zero qzero (unit (var 0)) (unit_positive _))
+  have inverse := cross_trans _ _ _ _ _ _ (add_commutative neg g w y hn hg)
+    (cross_trans _ _ _ _ _ _ (add_negative g y hg) zeros)
+  have drop := add_equivalent f f (addF neg g) zeroF x x (addData w y) x
+    hf hf (add_fast _ _ _ _ hn hg) (zero_fast x) (diagonal_refl f x) (cross_to_diagonal _ _ _ _ inverse)
+  exact cross_trans _ _ _ _ _ _ (add_associative f neg g x w y hf hn hg)
+    (cross_trans _ _ _ _ _ _ drop (GaussianNameRingLaws.add_zero f x hf))
 
 theorem negative_distance (a b A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] distanceBounded a b A B) : Γ ⊢[PRAAx] distanceBounded (qnegative a) (qnegative b) A B :=
