@@ -16,6 +16,25 @@ open NumberField Ideal IsDedekindDomain Finset
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/-- Distinct prime ideals whose norms share one rational prime divisor
+all lie above that prime, so their number is at most the field degree. -/
+theorem card_le_finrank_of_prime_dvd_absNorm {ι : Type*} (s : Finset ι)
+    (P : ι → HeightOneSpectrum (𝓞 K)) (hP : Set.InjOn P s) {p : ℕ}
+    (hp : p.Prime) (hd : ∀ i ∈ s, p ∣ absNorm (P i).asIdeal) : s.card ≤ Module.finrank ℚ K := by
+  classical
+  let b : Ideal ℤ := span {(p : ℤ)}
+  have hp' := Nat.prime_iff_prime_int.mp hp
+  have hb : b ≠ ⊥ := by simpa [b] using hp'.ne_zero
+  haveI : b.IsMaximal := hp'.isMaximal_span_singleton
+  apply le_trans _ (Ideal.card_primesOverFinset_le_finrank (𝓞 K) ℚ K hb)
+  apply Finset.card_le_card_of_injOn (fun j ↦ (P j).asIdeal)
+  · intro j hj
+    obtain ⟨Q, hQ, he, hdvd⟩ := exists_isMaximal_dvd_of_dvd_absNorm' hp (P j).asIdeal
+      (hd j hj)
+    have hPQ := (P j).isMaximal.eq_of_le hQ.ne_top (dvd_iff_le.mp hdvd)
+    exact (IsDedekindDomain.mem_primesOverFinset_iff hb _).mpr ⟨(P j).isPrime, ⟨by simpa [hPQ] using he.symm⟩⟩
+  · exact fun i hi j hj he ↦ hP hi hj (HeightOneSpectrum.ext he)
+
 /-- Any finite family of distinct prime ideals of one absolute norm has at
 most as many members as the degree of the number field. -/
 theorem card_le_finrank_of_absNorm_eq {ι : Type*} (s : Finset ι)
@@ -27,18 +46,7 @@ theorem card_le_finrank_of_absNorm_eq {ι : Type*} (s : Finset ι)
   have hne : m ≠ 1 := fun h ↦ (P i).isMaximal.ne_top
     (absNorm_eq_one_iff.mp ((hm i hi).trans h))
   obtain ⟨p, hp, hd⟩ := Nat.exists_prime_and_dvd hne
-  let b : Ideal ℤ := span {(p : ℤ)}
-  have hp' := Nat.prime_iff_prime_int.mp hp
-  have hb : b ≠ ⊥ := by simpa [b] using hp'.ne_zero
-  haveI : b.IsMaximal := hp'.isMaximal_span_singleton
-  apply le_trans _ (Ideal.card_primesOverFinset_le_finrank (𝓞 K) ℚ K hb)
-  apply Finset.card_le_card_of_injOn (fun j ↦ (P j).asIdeal)
-  · intro j hj
-    obtain ⟨Q, hQ, he, hdvd⟩ := exists_isMaximal_dvd_of_dvd_absNorm' hp (P j).asIdeal
-      (by rwa [hm j hj])
-    have hPQ := (P j).isMaximal.eq_of_le hQ.ne_top (dvd_iff_le.mp hdvd)
-    exact (IsDedekindDomain.mem_primesOverFinset_iff hb _).mpr ⟨(P j).isPrime, ⟨by simpa [hPQ] using he.symm⟩⟩
-  · exact fun i hi j hj he ↦ hP hi hj (HeightOneSpectrum.ext he)
+  exact card_le_finrank_of_prime_dvd_absNorm s P hP hp (fun j hj ↦ hm j hj ▸ hd)
 
 /-- The contribution of prime ideals above norm cutoff `Y` to the
 inverse-square series is at most the field degree divided by `Y`. -/
