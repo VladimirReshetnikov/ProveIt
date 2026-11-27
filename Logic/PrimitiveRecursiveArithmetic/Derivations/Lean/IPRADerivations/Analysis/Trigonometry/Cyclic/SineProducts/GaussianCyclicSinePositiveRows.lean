@@ -62,9 +62,8 @@ theorem first_half_upper (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
   have rest := sine_error p r m x (GaussianCyclicRootHalfAngle.cyclic_source r m h)
   have upper2 := upper_of_radius _ _ _ _ (coordinates s q (two+num 10) U hU
     (distance_triangle_same s t q two (num 10) U hU near rest)).andE₁
-  have joined := upper_triangle _ _ _ _ _ _ _ (divided_sine_at p r m x h) upper2
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ hU hU) joined
-    (le_of_eq_add (d := zero) (by dsimp only [U]; ipra_ring))
+  exact upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (RationalValueBounds.upper_triangle_same hU (divided_sine_at p r m x h) upper2)
 
 theorem scalar_nonnegative_of_upper (r m q A U : PTm n)
     (hm : Γ ⊢[PRAAx] le one m) (hU : Γ ⊢[PRAAx] le one U)

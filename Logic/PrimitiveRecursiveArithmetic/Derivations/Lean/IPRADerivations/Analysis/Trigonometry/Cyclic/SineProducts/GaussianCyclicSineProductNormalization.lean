@@ -87,11 +87,7 @@ theorem positive_at (p r m x : PTm n) (hr : Γ ⊢[PRAAx] le one r) (hm : Γ ⊢
     have hU := unit_positive (Γ := Δ) p
     have about := distance_symmetric _ _ _ _ hU (supplementary_sine_distance p r d m x h₁ h₂ eq)
     have ext := upper_of_radius _ _ _ _ (coordinates _ _ _ _ hU about).andE₁
-    have pre := upper_triangle _ _ _ _ _ _ _ (first_half_upper p d m x hhalf) ext
-    have upper' : Δ ⊢[PRAAx] upper (fstT (coefficient d m)) (fstT (realSine p r m x))
-        (num 14+supplementError) U :=
-      upper_mono _ _ _ _ _ _ (positive_product _ _ hU hU) pre
-        (le_of_eq_add (d := zero) (by dsimp only [U]; ipra_ring))
+    have upper' := RationalValueBounds.upper_triangle_same hU (first_half_upper p d m x hhalf) ext
     exact scalar_nonnegative_of_upper d m _ _ _ hM.wk hU upper'
       (le_trans hp.wk (le_congr (one_mul U) (.eqRefl _)
         (le_mul_mono (le_trans hD (le_of_eq_add (d := d) (by ipra_ring))) (le_refl _))))

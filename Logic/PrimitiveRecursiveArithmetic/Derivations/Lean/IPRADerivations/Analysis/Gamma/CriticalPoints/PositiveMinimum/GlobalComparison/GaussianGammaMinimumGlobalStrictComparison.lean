@@ -104,8 +104,7 @@ theorem strict_log_order_at (f : PR 2) (p x y A C E : PTm n) (hs : Γ ⊢[PRAAx]
   have hU := unit_positive (Γ := Δ) p
   have reverse := real_order_at (nameF f) (nameF locationF) (data y A) (data x one) p p (Prf.hyp0 (Γ := Γ))
   have h : Δ ⊢[PRAAx] upper b a two U :=
-    upper_mono _ _ _ _ _ _ (positive_product _ _ hU hU) reverse
-      (le_of_eq_add (d := zero) (by dsimp only [U]; ipra_ring))
+    RationalValueBounds.upper_two_errors_same hU reverse
   have forward := margin_observation (Γ := Δ) f p x y A C E hs.wk hn.wk
   have joined : Δ ⊢[PRAAx] upper (add (fraction one E) a) a (C+num 80) U :=
     RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)

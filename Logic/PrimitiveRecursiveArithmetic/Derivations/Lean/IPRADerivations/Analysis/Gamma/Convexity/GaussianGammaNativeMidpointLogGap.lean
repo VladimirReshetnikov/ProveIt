@@ -34,7 +34,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingGammaFractionalIncrementObservations (scalar_upper)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
-open GaussianStirlingGlobalBounds (small_join)
 open RationalValueBounds (upper upper_mono upper_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -125,11 +124,10 @@ theorem observation (a d b K A p : PTm n) (ha : Γ ⊢[PRAAx] le one a)
     (base_sample_error a b K A p hx) (base_sample_error d b K A p hy)
   have middle := real_order_at (addF C P) (addF E E) e f p p
     (GaussianGammaEulerMidpointLogGap.midpoint_order N a d b hN ha hd hb)
-  have mid := upper_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) middle
-    (le_of_eq_add (d := zero) (by ipra_ring))
+  have mid := RationalValueBounds.upper_two_errors_same hp middle
   have left := scalar_upper _ _ _ _ hp (distance_symmetric _ _ _ _ hp centerDist)
   have right := scalar_upper _ _ _ _ hp endDist
-  have answer := small_join _ _ _ _ _ p (small_join _ _ _ _ _ p left mid) right
+  have answer := RationalValueBounds.upper_triangle_same hp (RationalValueBounds.upper_triangle_same hp left mid) right
   exact upper_congr (.eqRefl _) (.eqRefl _) (by unfold GaussianNameRingLaws.three; ipra_ring) (.eqRefl _) answer
 
 theorem order_from_rates (a d b K A : PTm n) (ha : Γ ⊢[PRAAx] le one a)

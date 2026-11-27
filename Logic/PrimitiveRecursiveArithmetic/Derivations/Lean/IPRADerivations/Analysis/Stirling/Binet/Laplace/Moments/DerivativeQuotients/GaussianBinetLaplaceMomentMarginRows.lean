@@ -63,8 +63,7 @@ theorem positive_decay_order_at (p a b c d : PTm n)
     (positiveData (signedTime c d)) (decayData c d) (decayData a b) (positiveData (signedTime a b)) p p
     left (GaussianNameEquivalence.cross_symm _ _ _ _ right)
     (GaussianEulerDecayOrder.original_decay_order a b c d hb hd hc)
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p)) h
-    (le_of_eq_add (d := zero) (by ipra_ring))
+  exact RationalValueBounds.upper_two_errors_same (unit_positive p) h
 
 private theorem buffered_product (p j X D K T A B : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hK : Γ ⊢[PRAAx] le one K) (hB : Γ ⊢[PRAAx] le one B)
