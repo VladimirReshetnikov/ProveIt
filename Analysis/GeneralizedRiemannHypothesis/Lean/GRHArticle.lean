@@ -4,6 +4,9 @@ import GRHArticle.ProgressionFree.ExplicitArithmetic
 import GRHArticle.ProgressionFree.ExplicitExchange
 import GRHArticle.ProgressionFree.ExplicitExponentBound
 import GRHArticle.ProgressionFree.FourMarkerExchange
+import GRHArticle.ProgressionFree.PolynomialDeficitCertificate
+import GRHArticle.ProgressionFree.PolynomialDeficitSet
+import GRHArticle.ProgressionFree.PolynomialDeficitWeight
 import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinApproximation
 import GRHArticle.ProgressionFree.RankinTruncation

@@ -55,6 +55,10 @@ a finite set of odd-prime satellites giving a strict gain with marker two.
 
 For the distinct four-marker construction in `gpi:thm:explicit`, [ExplicitArithmetic.lean](GRHArticle/ProgressionFree/ExplicitArithmetic.lean) verifies the count of 225 primes through 1427, the odd-prime product bound, the scaled mass inequality and the finite factor used for the rough density bound. [FourMarkerExchange.lean](GRHArticle/ProgressionFree/FourMarkerExchange.lean) proves that this exact exchange excludes all nonconstant rational-ratio progressions. [ExplicitExponentBound.lean](GRHArticle/ProgressionFree/ExplicitExponentBound.lean) bounds every finite truncation of the greedy exponent mass at two, and [SatelliteProfiles.lean](GRHArticle/ProgressionFree/SatelliteProfiles.lean) computes the weights of the distinguished satellite profiles. The limiting quantitative gain remains open. [Article section](../Article/sections/gpi.tex)
 
+## Polynomial geometric progressions
+
+[PolynomialDeficitCertificate.lean](GRHArticle/ProgressionFree/PolynomialDeficitCertificate.lean) verifies the 74 distinct degree deficits between 0 and 480 used in `gpp:thm:counterexample` and proves that they contain no nonconstant three-term arithmetic progression. [PolynomialDeficitWeight.lean](GRHArticle/ProgressionFree/PolynomialDeficitWeight.lean) bounds the gain over the full greedy series strictly above 3/200 at 127/128. [PolynomialDeficitSet.lean](GRHArticle/ProgressionFree/PolynomialDeficitSet.lean) proves the deficit rule excludes progressions with a positive-degree polynomial ratio in each degree ball. The rough-factor count and the construction of a single infinite set with greater upper density remain open. [Article section](../Article/sections/gpp.tex)
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
