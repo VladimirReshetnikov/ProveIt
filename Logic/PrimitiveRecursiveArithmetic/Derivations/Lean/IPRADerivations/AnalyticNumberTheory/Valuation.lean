@@ -238,6 +238,27 @@ theorem isP_01 (q : PTm n) : Γ ⊢[PRAAx] (isP q ≐ zero) ⋎ (isP q ≐ one) 
     · exact .orI₂ ((congrMul s.wk (eqb_of_eq Prf.hyp0)).eqTrans (one_mul _))
     · exact .orI₁ ((congrMul s.wk (eqb_of_ne Prf.hyp0)).eqTrans (mul_zero _))
 
+/-- The prime-power part and its complementary factor are coprime. -/
+theorem coprime_prime_power_cofactor {p N : PTm n}
+    (hp : Γ ⊢[PRAAx] prime p) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
+    Γ ⊢[PRAAx] gcd (pw p (val p N)) (quo N (pw p (val p N))) ≐ one := by
+  have hp2 := hp.andE₁
+  have hm := cof_eq_succ_pred hp2 hN
+  have cop := LeanProofs.IPRA.gcd_prime hp (cof_not_dvd hp2 hN)
+  exact gcd_comm_one (pw_val_pos (m := N) hp2)
+    (Totient.coprime_pow hm (gcd_comm_one hm cop) (val p N))
+
+/-- Factor the totient at the exact prime-power decomposition. -/
+theorem phi_prime_power_product {p N : PTm n}
+    (hp : Γ ⊢[PRAAx] prime p) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
+    Γ ⊢[PRAAx] Totient.phi N ≐ Totient.phi (pw p (val p N)) *
+      Totient.phi (quo N (pw p (val p N))) := by
+  have hp2 := hp.andE₁
+  have e := cof_eq (m := N) hp2
+  exact (congrAp2 (sumF Totient.totBody) e e).eqTrans
+    (Multiplicative.phi_mul_at (pw_val_pos (m := N) hp2) (cof_eq_succ_pred hp2 hN)
+      (coprime_prime_power_cofactor hp hN))
+
 end LeanProofs.IPRA.AnalyticNumberTheory.Valuation
 
 export_ipra AnalyticNumberTheory.Valuation (cof_eq cof_not_dvd eq_of_eqb_ne isP isP_01 isP_of_prime lpf_congr lt_pw

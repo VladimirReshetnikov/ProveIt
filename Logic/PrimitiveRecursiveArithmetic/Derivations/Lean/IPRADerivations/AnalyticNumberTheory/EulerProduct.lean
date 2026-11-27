@@ -225,7 +225,6 @@ theorem eu_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
     Γ ⊢[PRAAx] LHS N ≐ RHS N := by
   have hp2 : Γ ⊢[PRAAx] le two p := by have h := hp; unfold prime at h; exact Prf.andE₁ h
   have ha := val_eq_succ_pred_of_dvd hp2 hN hpN
-  have hP := pw_val_pos (m := N) hp2
   have hNe := cof_eq (m := N) hp2
   have hrm := cof_rem_eq_succ_pred hp2 hN
   have hm := cof_eq_succ_pred hp2 hN
@@ -235,9 +234,6 @@ theorem eu_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
   rw [inst2_eu] at h₀
   have ih := eq_of_viol h₀
   -- Multiplicativity and the peeled products.
-  have g₁ := gcd_prime hp (.impI (succ_ne_zero' _ (hrm.wk.eqSymm.eqTrans Prf.hyp0)))
-  have hg := gcd_comm_one hP (coprime_pow hm (gcd_comm_one hm g₁) (val p N))
-  have hmul := Multiplicative.phi_mul_at hP hm hg
   have h₁ := pp_peel hp ha hrm hm F₁ hF₁
   have h₂ := pp_peel hp ha hrm hm F₂ hF₂
   rw [inst2_F₁] at h₁
@@ -249,7 +245,7 @@ theorem eu_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
   have ps := (congrAp2 powF ha (.eqRefl p)).eqTrans (pw_succ p (pred (val p N)))
   have pq := eq_add_of_le (le_trans (le_succ_self _) hp2)
   -- Transport to `N = p^a m`.
-  have hφ := (congrAp2 (sumF totBody) hNe hNe).eqTrans hmul
+  have hφ := Valuation.phi_prime_power_product hp hN
   have k₁ := (congrAp2 (prodF (pB F₁)) (congrSucc hNe) hNe).eqTrans h₁
   have k₂ := (congrAp2 (prodF (pB F₂)) (congrSucc hNe) hNe).eqTrans h₂
   ipra_lc Groth.ι (Q.mk _ (PP F₁ N)) * natEq hφ +

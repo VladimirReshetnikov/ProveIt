@@ -97,13 +97,7 @@ theorem prime_power_totient_split {N p : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (
     let M := quo N P
     (Γ ⊢[PRAAx] M ≐ succ (pred M)) ∧ (Γ ⊢[PRAAx] N ≐ P * M) ∧
       (Γ ⊢[PRAAx] phi N ≐ phi P * phi M) := by
-  have hp2 := hp.andE₁
-  have e := cof_eq (m := N) hp2
-  have hM := pos_of_eq_mul hN e
-  have hP := pw_val_pos (m := N) hp2
-  have cop := gcd_prime hp (cof_not_dvd hp2 hN)
-  have hg := gcd_comm_one hP (coprime_pow hM (gcd_comm_one hM cop) (val p N))
-  exact ⟨hM, e, (congrAp2 (sumF totBody) e e).eqTrans (Multiplicative.phi_mul_at hP hM hg)⟩
+  exact ⟨cof_eq_succ_pred hp.andE₁ hN, cof_eq hp.andE₁, Valuation.phi_prime_power_product hp hN⟩
 
 /-- Every right factor of an odd number is odd. -/
 theorem odd_right_factor {N P M : PTm n} (h : Γ ⊢[PRAAx] N ≐ P * M)

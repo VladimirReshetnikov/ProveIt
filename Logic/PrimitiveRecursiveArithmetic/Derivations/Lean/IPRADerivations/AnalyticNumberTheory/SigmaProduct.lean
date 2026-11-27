@@ -190,11 +190,7 @@ theorem sp_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
   have hrm := cof_rem_pos hN hp hpN
   have ha := val_pos hN hp hpN
   -- multiplicativity
-  have g1 : Γ ⊢[PRAAx] gcd p (quo N (pw p (val p N))) ≐ one := gcd_prime hp (not_dvd_m hrm)
-  have g2 : Γ ⊢[PRAAx] gcd (quo N (pw p (val p N))) p ≐ one := gcd_comm_one hmp g1
-  have g3 : Γ ⊢[PRAAx] gcd (quo N (pw p (val p N))) (pw p (val p N)) ≐ one := cop_pow hmp g2 _
-  have g4 : Γ ⊢[PRAAx] gcd (pw p (val p N)) (quo N (pw p (val p N))) ≐ one :=
-    gcd_comm_one (pw_pos' hp1 _) g3
+  have g4 := Valuation.coprime_prime_power_cofactor hp hN
   have s1 : Γ ⊢[PRAAx] sig N ≐ sig (pw p (val p N)) * sig (quo N (pw p (val p N))) :=
     (sig_congr hNe).eqTrans (sigma_mul (pw_pos' hp1 _) hmp g4)
   have s2 := pm_peel hN hp hpN

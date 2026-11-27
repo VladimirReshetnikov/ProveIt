@@ -270,7 +270,6 @@ theorem ev_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
     Γ ⊢[PRAAx] dvd (pw two (oddR N)) (phi N) := by
   have hp2 : Γ ⊢[PRAAx] le two p := by have h := hp; unfold prime at h; exact Prf.andE₁ h
   have ha := val_eq_succ_pred_of_dvd hp2 hN hpN
-  have hP := pw_val_pos (m := N) hp2
   have hNe := cof_eq (m := N) hp2
   have hrm := cof_rem_eq_succ_pred hp2 hN
   have hm := cof_eq_succ_pred hp2 hN
@@ -280,9 +279,6 @@ theorem ev_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
   rw [inst2_ev] at h₀
   have dm := PhiDivides.sg_zero_inv h₀
   -- `φ(n) = φ(p^a) φ(m)` with `2 ∣ φ(p^a)`, and `r(n) = r(m) + 1`.
-  have g₁ := gcd_prime hp (.impI (succ_ne_zero' _ (hrm.wk.eqSymm.eqTrans Prf.hyp0)))
-  have hg := gcd_comm_one hP (coprime_pow hm (gcd_comm_one hm g₁) (val p N))
-  have hmul := Multiplicative.phi_mul_at hP hm hg
   have e₂ : Γ ⊢[PRAAx] pw p (succ (pred (val p N))) ≐ pw p (val p N) := congrAp2 powF ha.eqSymm (.eqRefl _)
   have heven := dvd_congr (congrAp2 (sumF totBody) e₂ e₂) (phi_ppow_even hp hodd (pred (val p N)))
   have hr := r_peel hp hodd ha hrm hm
@@ -296,7 +292,7 @@ theorem ev_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
       quo (phi (quo N (pw p (val p N)))) (pw two (oddR (quo N (pw p (val p N)))))) ?_
     refine (congrMul eP em).eqTrans (.eqTrans ?_ (congrMul ep.eqSymm (.eqRefl _)))
     ipra_ring
-  have hφ := (congrAp2 (sumF totBody) hNe hNe).eqTrans hmul
+  have hφ := Valuation.phi_prime_power_product hp hN
   have hR := (congrAp2 (sumF oddB) (congrSucc hNe) hNe).eqTrans hr
   exact dvd_congr_left (congrAp2 powF hR.eqSymm (.eqRefl _)) (dvd_congr hφ.eqSymm hd)
 
