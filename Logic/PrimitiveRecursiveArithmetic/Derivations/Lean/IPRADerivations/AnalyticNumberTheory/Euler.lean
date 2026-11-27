@@ -64,11 +64,8 @@ theorem cop_comm' {x : PTm n} (h : Γ ⊢[PRAAx] gcd N x ≐ one) : Γ ⊢[PRAAx
   exact not_one_zero hN.wk _ (.orI₂ ((congrGcd (.eqRefl _) Prf.hyp0.eqSymm).eqTrans h.wk))
 
 /-- `y = N q + r` relates the common divisors of `(y, N)` and `(r, N)`. -/
-theorem rem_decomp (y : PTm n) : Γ ⊢[PRAAx] y ≐ N * quo y N + rem y N := by
-  have hp := N_pos hN
-  have d := div_mod (Γ := Γ) y (pred N)
-  exact (Prf.andE₁ d).eqTrans (congrAdd (congrMul hp.eqSymm (congrAp2 quoF (.eqRefl _) hp.eqSymm))
-    (congrAp2 remF (.eqRefl _) hp.eqSymm))
+theorem rem_decomp (y : PTm n) : Γ ⊢[PRAAx] y ≐ N * quo y N + rem y N :=
+  Prf.andE₁ (div_mod_at (x := y) (N_pos hN))
 
 theorem cop_rem {y : PTm n} (h : Γ ⊢[PRAAx] gcd y N ≐ one) : Γ ⊢[PRAAx] gcd (rem y N) N ≐ one := by
   have hp := N_pos hN

@@ -135,13 +135,10 @@ theorem freshman {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
 /-- `x ≡ y (mod M)` gives `x + 1 ≡ y + 1 (mod M)`. -/
 theorem rem_succ_congr {M x y : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) : Γ ⊢[PRAAx] rem (succ x) M ≐ rem (succ y) M := by
-  have dx := div_mod (Γ := Γ) x (pred M)
-  have dy := div_mod (Γ := Γ) y (pred M)
-  have h' : Γ ⊢[PRAAx] rem x (succ (pred M)) ≐ rem y (succ (pred M)) :=
-    (congrAp2 remF (.eqRefl _) hM.eqSymm).eqTrans (h.eqTrans (congrAp2 remF (.eqRefl _) hM))
-  refine rem_eq_of_eq hM (k₁ := quo y (succ (pred M))) (k₂ := quo x (succ (pred M))) ?_
-  ipra_lc natEq (Prf.andE₁ dx) - natEq (Prf.andE₁ dy) + natEq h' +
-    (Groth.ι (IPRA.Q.mk Γ (quo y (succ (pred M)))) - Groth.ι (IPRA.Q.mk Γ (quo x (succ (pred M))))) * natEq hM
+  have dx := div_mod_at (x := x) hM
+  have dy := div_mod_at (x := y) hM
+  refine rem_eq_of_eq hM (k₁ := quo y M) (k₂ := quo x M) ?_
+  ipra_lc natEq (Prf.andE₁ dx) - natEq (Prf.andE₁ dy) + natEq h
 
 /-- `aᵖ ≡ a (mod p)` for a prime `p`. -/
 theorem fermat_at {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a : PTm n) :

@@ -30,18 +30,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `⌊F/d₂⌋ ≤ ⌊F/d₁⌋` for `1 ≤ d₁ ≤ d₂`. -/
 theorem quo_anti {F d₁ d₂ : PTm n} (h₁ : Γ ⊢[PRAAx] d₁ ≐ succ (pred d₁)) (h : Γ ⊢[PRAAx] le d₁ d₂) :
     Γ ⊢[PRAAx] le (quo F d₂) (quo F d₁) := by
-  have h₂ : Γ ⊢[PRAAx] d₂ ≐ succ (pred d₂) := by
-    refine eq_succ_pred ((eq_add_of_le h).eqTrans ((congrAdd h₁ (.eqRefl _)).eqTrans ?_)) (y := pred d₁ + monus d₂ d₁)
-    ipra_ring
-  refine .orE (lt_or_le (quo F d₁) (quo F d₂)) ?_ Prf.hyp0
-  refine .botE _ ?_
-  refine succ_ne_zero' _ (a := monus d₁ (succ (rem F d₁)) + d₁ * monus (quo F d₂) (succ (quo F d₁)) +
-    monus d₂ d₁ * quo F d₂ + rem F d₂) ?_
-  ipra_lc natEq ((div_eq (j := F) h₁).wk (ψ := lt (quo F d₁) (quo F d₂))) -
-    natEq ((div_eq (j := F) h₂).wk (ψ := lt (quo F d₁) (quo F d₂))) -
-    natEq ((eq_add_of_le (rem_lt' h₁ F)).wk (ψ := lt (quo F d₁) (quo F d₂))) -
-    Groth.ι (IPRA.Q.mk _ (quo F d₂)) * natEq ((eq_add_of_le h).wk (ψ := lt (quo F d₁) (quo F d₂))) -
-    Groth.ι (IPRA.Q.mk _ d₁) * natEq (eq_add_of_le (Prf.hyp0 : (lt (quo F d₁) (quo F d₂) :: Γ) ⊢[PRAAx] _))
+  have positive := Common.pos_of_one_le (le_trans (Common.one_le_of_pos h₁) h)
+  exact Division.le_quo_of_mul_le h₁ (le_trans (mul_le_mul_right _ h) (Division.mul_quo_le positive))
 
 /-! ## The sums -/
 

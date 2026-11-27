@@ -65,11 +65,8 @@ theorem lt_sq_of_ge {y a D : PTm n} (hB : Γ ⊢[PRAAx] lt D (succ a * succ a)) 
 /-- The quotient and remainder by a positive `d`: `a = c d + t`, `t < d`. -/
 theorem div_split (x : PTm n) {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     Γ ⊢[PRAAx] (quo x d * d + rem x d ≐ x) ⋏ lt (rem x d) d := by
-  have dm := div_mod (Γ := Γ) x (pred d)
-  have q : Γ ⊢[PRAAx] quo x d ≐ quo x (succ (pred d)) := congrAp2 quoF (.eqRefl _) hd
-  have r : Γ ⊢[PRAAx] rem x d ≐ rem x (succ (pred d)) := congrAp2 remF (.eqRefl _) hd
-  refine .andI ?_ (lt_congr r.eqSymm hd.eqSymm (Prf.andE₂ dm))
-  ipra_lc -natEq (Prf.andE₁ dm) + 𝔞 (quo x (succ (pred d))) * natEq hd + 𝔞 d * natEq q + natEq r
+  have div := div_mod_at (x := x) hd
+  exact .andI ((Prf.andE₁ div).eqTrans (congrAdd (mul_comm _ _) (.eqRefl _))).eqSymm (Prf.andE₂ div)
 
 /-! ## Reduced states -/
 

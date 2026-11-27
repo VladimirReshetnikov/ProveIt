@@ -56,13 +56,10 @@ theorem rem_eq_of_eq {M x y k₁ k₂ : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (p
 /-- Multiplying both sides of a congruence by a fixed factor preserves it. -/
 theorem rem_mul_right_congr {M x y : PTm n} (c : PTm n) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) : Γ ⊢[PRAAx] rem (x * c) M ≐ rem (y * c) M := by
-  have dx := div_mod (Γ := Γ) x (pred M)
-  have dy := div_mod (Γ := Γ) y (pred M)
-  have residues : Γ ⊢[PRAAx] rem x (succ (pred M)) ≐ rem y (succ (pred M)) :=
-    (congrAp2 remF (.eqRefl _) hM.eqSymm).eqTrans (h.eqTrans (congrAp2 remF (.eqRefl _) hM))
-  refine rem_eq_of_eq hM (k₁ := quo y (succ (pred M)) * c) (k₂ := quo x (succ (pred M)) * c) ?_
-  ipra_lc 𝔞 c * (natEq (Prf.andE₁ dx) - natEq (Prf.andE₁ dy) + natEq residues) +
-    𝔞 c * (𝔞 (quo y (succ (pred M))) - 𝔞 (quo x (succ (pred M)))) * natEq hM
+  have dx := div_mod_at (x := x) hM
+  have dy := div_mod_at (x := y) hM
+  refine rem_eq_of_eq hM (k₁ := quo y M * c) (k₂ := quo x M * c) ?_
+  ipra_lc 𝔞 c * (natEq (Prf.andE₁ dx) - natEq (Prf.andE₁ dy) + natEq h)
 
 /-- Multiplication preserves congruence in both factors. -/
 theorem rem_mul_congr_both {M x y x' y' : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))

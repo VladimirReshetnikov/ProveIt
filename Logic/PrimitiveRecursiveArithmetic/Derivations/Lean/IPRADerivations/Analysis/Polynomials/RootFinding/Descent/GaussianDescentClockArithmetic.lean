@@ -84,15 +84,14 @@ theorem ceiling_lower (s t : PTm n) (ht : Γ ⊢[PRAAx] le one t) : Γ ⊢[PRAAx
 
 theorem ceiling_upper (s t : PTm n) (ht : Γ ⊢[PRAAx] le one t) :
     Γ ⊢[PRAAx] le (t*ceiling s t) (s+pred t) :=
-  le_of_eq_add (Prf.andE₁ (div_mod_at (x := s+pred t) (positive_form ht)))
+  Division.mul_quo_le (positive_form ht)
 
 theorem ceiling_least (s t k : PTm n) (ht : Γ ⊢[PRAAx] le one t) (h : Γ ⊢[PRAAx] le s (t*k)) :
     Γ ⊢[PRAAx] le (ceiling s t) k := by
-  refine .orE (lt_or_le k (ceiling s t)) ?_ Prf.hyp0
-  refine succ_ne_zero' _ (a := monus (t*k) s+t*monus (ceiling s t) (succ k)+monus (s+pred t) (t*ceiling s t)) ?_
-  ipra_lc -natEq (eq_add_of_le ((ceiling_upper (Γ := Γ) s t ht).wk (ψ := lt k (ceiling s t))))-
-    Groth.ι (Q.mk (lt k (ceiling s t) :: Γ) t)*natEq (eq_add_of_le (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := lt k (ceiling s t))))-
-    natEq (eq_add_of_le (h.wk (ψ := lt k (ceiling s t))))-natEq (positive_form (ht.wk (ψ := lt k (ceiling s t))))
+  apply Order.le_of_lt_succ (Division.quo_lt_of_lt_mul (positive_form ht) ?_)
+  change Γ ⊢[PRAAx] le (succ (s+pred t)) (t*succ k)
+  have left := (congrAdd (.eqRefl s) (positive_form ht)).eqTrans (add_succ _ _)
+  exact le_congr left (mul_succ t k).eqSymm (add_le_add_right t h)
 
 theorem geometric_budget (a b e f : PTm n) (hb : Γ ⊢[PRAAx] le one b) (he : Γ ⊢[PRAAx] le one e) : Γ ⊢[PRAAx]
     le (a*f) (b*e*pw two (blocks a b e f)) :=

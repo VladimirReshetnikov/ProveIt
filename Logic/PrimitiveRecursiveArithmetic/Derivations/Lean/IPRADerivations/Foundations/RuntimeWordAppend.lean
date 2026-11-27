@@ -31,22 +31,13 @@ theorem power_positive (m d : PTm n) (hm : Γ ⊢[PRAAx] le one m) : Γ ⊢[PRAA
 
 /-- The actual quotient/remainder equations at any genuinely positive divisor. -/
 theorem divide_spec (D z : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx]
-    (z ≐ D*quo z D+rem z D) ⋏ lt (rem z D) D := by
-  have pos := positive_form D hD
-  have old := div_mod (Γ := Γ) z (pred D)
-  have q := congrAp2 quoF (.eqRefl z) pos.eqSymm
-  have r := congrAp2 remF (.eqRefl z) pos.eqSymm
-  exact .andI ((Prf.andE₁ old).eqTrans (congrAdd (congrMul pos.eqSymm q) r))
-    (lt_congr r pos.eqSymm (.andE₂ old))
+    (z ≐ D*quo z D+rem z D) ⋏ lt (rem z D) D :=
+  div_mod_at (x := z) (positive_form D hD)
 
 theorem divide_unique (D z q r : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hz : Γ ⊢[PRAAx] z ≐ D*q+r) (hr : Γ ⊢[PRAAx] lt r D) : Γ ⊢[PRAAx]
-    (quo z D ≐ q) ⋏ (rem z D ≐ r) := by
-  have pos := positive_form D hD
-  have actual := div_mod_unique (hz.eqTrans (congrAdd (congrMul pos (.eqRefl _)) (.eqRefl _)))
-    (lt_congr (.eqRefl _) pos hr)
-  exact .andI ((congrAp2 quoF (.eqRefl _) pos).eqTrans (.andE₁ actual))
-    ((congrAp2 remF (.eqRefl _) pos).eqTrans (.andE₂ actual))
+    (quo z D ≐ q) ⋏ (rem z D ≐ r) :=
+  div_mod_unique_at (positive_form D hD) hz hr
 
 theorem remainder_small (m v : PTm n) (hm : Γ ⊢[PRAAx] le one m) (hv : Γ ⊢[PRAAx] lt v m) : Γ ⊢[PRAAx]
     rem v m ≐ v := .andE₂ (divide_unique m v zero v hm (by ipra_ring) hv)

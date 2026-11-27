@@ -50,11 +50,8 @@ theorem code_inv {u v j K : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (hv 
 /-- `j = ⌊j/K⌋ K + j mod K` and `j mod K < K` for `K ≥ 1`. -/
 theorem code_split (j : PTm n) {K : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) :
     Γ ⊢[PRAAx] (quo j K * K + rem j K ≐ j) ⋏ lt (rem j K) K := by
-  have d := div_mod (Γ := Γ) j (pred K)
-  have q : Γ ⊢[PRAAx] quo j K ≐ quo j (succ (pred K)) := congrAp2 quoF (.eqRefl _) hK
-  have r : Γ ⊢[PRAAx] rem j K ≐ rem j (succ (pred K)) := congrAp2 remF (.eqRefl _) hK
-  refine .andI ?_ (lt_congr r.eqSymm hK.eqSymm (Prf.andE₂ d))
-  ipra_lc -natEq (Prf.andE₁ d) + 𝔞 (quo j (succ (pred K))) * natEq hK + 𝔞 K * natEq q + natEq r
+  have div := div_mod_at (x := j) hK
+  exact .andI ((Prf.andE₁ div).eqTrans (congrAdd (mul_comm _ _) (.eqRefl _))).eqSymm (Prf.andE₂ div)
 
 theorem one_ne_zero' {φ : Fm PTm n} (h : Γ ⊢[PRAAx] (one : PTm n) ≐ zero) : Γ ⊢[PRAAx] φ :=
   .botE _ (succ_ne_zero h)

@@ -78,13 +78,8 @@ theorem positive_form (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
 
 /-- An internal positive modulus instantiates the existing proved natural law. -/
 theorem natural_divmod (p m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
-    Γ ⊢[PRAAx] (p ≐ m * quo p m + rem p m) ⋏ lt (rem p m) m := by
-  have positive := positive_form m hm
-  have h := div_mod (Γ := Γ) p (pred m)
-  exact .andI ((Prf.andE₁ h).eqTrans
-    (congrAdd (congrMul positive.eqSymm (congrAp2 quoF (.eqRefl _) positive.eqSymm))
-      (congrAp2 remF (.eqRefl _) positive.eqSymm)))
-    (lt_congr (congrAp2 remF (.eqRefl _) positive.eqSymm) positive.eqSymm (Prf.andE₂ h))
+    Γ ⊢[PRAAx] (p ≐ m * quo p m + rem p m) ⋏ lt (rem p m) m :=
+  div_mod_at (x := p) (positive_form m hm)
 
 /-- Actual signed Euclidean division: `a=m*q+r` and `0≤r<m`. -/
 theorem euclidean (a : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :

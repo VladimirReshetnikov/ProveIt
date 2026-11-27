@@ -34,19 +34,12 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## Division by a positive modulus -/
 
 theorem dm {K : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (z : PTm n) :
-    Γ ⊢[PRAAx] (z ≐ K * quo z K + rem z K) ⋏ lt (rem z K) K := by
-  have d := div_mod (Γ := Γ) z (pred K)
-  have q : Γ ⊢[PRAAx] quo z (succ (pred K)) ≐ quo z K := congrAp2 quoF (.eqRefl _) hK.eqSymm
-  have r : Γ ⊢[PRAAx] rem z (succ (pred K)) ≐ rem z K := congrAp2 remF (.eqRefl _) hK.eqSymm
-  exact .andI ((Prf.andE₁ d).eqTrans (congrAdd (congrMul hK.eqSymm q) r))
-    (lt_congr r hK.eqSymm (Prf.andE₂ d))
+    Γ ⊢[PRAAx] (z ≐ K * quo z K + rem z K) ⋏ lt (rem z K) K :=
+  div_mod_at (x := z) hK
 
 theorem dmu {K z q r : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (hz : Γ ⊢[PRAAx] z ≐ K * q + r)
-    (hr : Γ ⊢[PRAAx] lt r K) : Γ ⊢[PRAAx] (quo z K ≐ q) ⋏ (rem z K ≐ r) := by
-  have u := div_mod_unique (K' := pred K) (hz.eqTrans (congrAdd (congrMul hK (.eqRefl _)) (.eqRefl _)))
-    (lt_congr (.eqRefl _) hK hr)
-  exact .andI ((congrAp2 quoF (.eqRefl _) hK).eqTrans (Prf.andE₁ u))
-    ((congrAp2 remF (.eqRefl _) hK).eqTrans (Prf.andE₂ u))
+    (hr : Γ ⊢[PRAAx] lt r K) : Γ ⊢[PRAAx] (quo z K ≐ q) ⋏ (rem z K ≐ r) :=
+  div_mod_unique_at hK hz hr
 
 alias pos_mul' := Common.pos_mul
 

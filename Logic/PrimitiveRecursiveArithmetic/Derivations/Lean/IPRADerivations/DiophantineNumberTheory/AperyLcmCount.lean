@@ -56,20 +56,9 @@ theorem terms_lt' {m q : PTm k} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (hm : �
 
 /-- `q ≤ N` gives `⌊N/q⌋ ≥ 1`. -/
 theorem quo_pos {N q : PTm k} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (h : Γ ⊢[PRAAx] le q N) :
-    Γ ⊢[PRAAx] le one (quo N q) := by
-  have d := div_mod (Γ := Γ) N (pred q)
-  refine .orE (zero_or_succ (quo N q)) ?_ ?_
-  · have h0 : ((quo N q ≐ zero) :: Γ) ⊢[PRAAx] quo N q ≐ zero := Prf.hyp0
-    have e := natEq ((Prf.andE₁ d).wk (ψ := quo N q ≐ zero))
-    have eq := natEq (hq.wk (ψ := quo N q ≐ zero))
-    have e0 := natEq ((congrAp2 quoF (.eqRefl N) (hq.wk (ψ := quo N q ≐ zero))).eqSymm.eqTrans h0)
-    have hr : ((quo N q ≐ zero) :: Γ) ⊢[PRAAx] le (succ (rem N (succ (pred q)))) (succ (pred q)) := (Prf.andE₂ d).wk
-    have hN : ((quo N q ≐ zero) :: Γ) ⊢[PRAAx] le q N := h.wk
-    have c : ((quo N q ≐ zero) :: Γ) ⊢[PRAAx] le (succ zero) zero := by
-      ipra_le sl hr + sl hN using
-        linear_combination -e - (𝔞 (pred q) + 1) * e0 + eq
-    exact not_succ_le_self zero _ c
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (by ipra_le 𝔞 (pred (quo N q)))
+    Γ ⊢[PRAAx] le one (quo N q) :=
+  Division.le_quo_of_mul_le hq
+    (le_congr ((mul_comm q one).eqTrans (one_mul q)).eqSymm (.eqRefl _) h)
 
 theorem pos_of_lt {a b : PTm k} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] b ≐ succ (pred b) := by
   refine .orE (zero_or_succ b) ?_ Prf.hyp0
