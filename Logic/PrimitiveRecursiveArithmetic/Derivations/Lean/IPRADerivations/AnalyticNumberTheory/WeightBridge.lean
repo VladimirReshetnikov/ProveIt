@@ -54,19 +54,12 @@ theorem sum_le_add_const (f g : PTm 2) {x y c N : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       le (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift y) + Syn.shift c))) :
     Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (ap2 (sumF g) N y + N * c) := by
-  have s1 := sum_le_params f (gcB g) x (pairT y c) N (.allI (.impI (by
-    rw [inst2_gcB, shift_pairT]
-    exact le_congr (.eqRefl _) (congrAdd (congrInst2 g (.eqRefl _) (fst_pair _ _)) (snd_pair _ _)).eqSymm
+  have hs := sum_scaled_le_weighted_pair f g (var 1) one one one x y c N (.allI (.impI (by
+    rw [show Syn.shift (one : PTm n) = one by simp [Syn.shift],
+      show inst2 (var 1 : PTm 2) (var 0) (Syn.shift c) = Syn.shift c by simp [inst2]]
+    exact le_congr (one_mul _).eqSymm (congrAdd (one_mul _) (one_mul _)).eqSymm
       (Prf.impE h.allOpen.wk Prf.hyp0))))
-  have s2 := sum_add2 (Γ := Γ) g sndB (gcB g) (K := N) (x := y) (x' := pairT y c) (z := pairT y c)
-    (.allI (.impI (by
-      rw [inst2_gcB, inst2_sndB, shift_pairT]
-      exact congrAdd (congrInst2 g (.eqRefl _) (fst_pair _ _)) (.eqRefl _))))
-  have s3 := sum_le_const (Γ := Γ) sndB (N := N) (L := c) (x := pairT y c) (.allI (.impI (by
-    rw [inst2_sndB, shift_pairT]
-    exact le_congr (snd_pair _ _).eqSymm (.eqRefl _) (le_refl _))))
-  have e2 := natEq s2
-  ipra_le sl s1 + sl s3 with e2
+  exact le_congr (one_mul _) (congrAdd (one_mul _) ((one_mul _).eqTrans (sum_const_param N c))) hs
 
 /-! ## Pointwise comparison -/
 

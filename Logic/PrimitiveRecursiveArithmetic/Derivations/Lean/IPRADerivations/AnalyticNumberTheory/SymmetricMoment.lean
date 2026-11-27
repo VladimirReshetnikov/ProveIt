@@ -18,7 +18,6 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricMoment
 
 open_ipra exports
-open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix (term_le_sum hP Below)
 
 set_option autoImplicit false
@@ -99,22 +98,14 @@ theorem shift_parm (m y : PTm n) : Syn.shift (ParM bB m y) = ParM bB (Syn.shift 
   simp [Syn.shift]
 
 theorem mom_forward {m y : PTm n} (hb : Γ ⊢[PRAAx] Below aB bB m y) : Γ ⊢[PRAAx] MomTest aB bB m y := by
-  have h := sum_le_lin1 (Γ := Γ) (momB aB bB) one one (pw (hP bB m y) (rP bB m y)) (ParM bB m y) (ParM bB m y) m
-    (.allI (.impI (by
-      rw [shift_parm, show Syn.shift (one : PTm n) = one by simp [Syn.shift],
-        show Syn.shift (pw (hP bB m y) (rP bB m y)) = pw (hP bB (Syn.shift m) (Syn.shift y))
-          (rP bB (Syn.shift m) (Syn.shift y)) by simp [Syn.shift],
-        show inst2 (one : PTm 2) (var 0) (ParM bB (Syn.shift m) (Syn.shift y)) = one by simp [inst2]]
-      let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift m) :: Γ.map Fm.shift
-      have hv : Θ ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
-      have hab : Θ ⊢[PRAAx] le (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y)) :=
-        Prf.impE hb.allOpen.wk hv
-      have hz := Prf.impE (SymmetricPrefix.shifted_entry_bounds aB bB (var 0) (Syn.shift m) (Syn.shift y) hv).andE₁ hab
-      have hp := pw_le_pw (rP bB (Syn.shift m) (Syn.shift y)) hz
-      have ea := natEq (mom_at (Γ := Θ) aB bB (var 0) (Syn.shift m) (Syn.shift y))
-      ipra_le sl hp with ea)))
-  have so := natEq (sum_ones (Γ := Γ) m (ParM bB m y))
-  ipra_le sl h with 𝔞 (pw (hP bB m y) (rP bB m y)) * so
+  refine sum_le_uniform_bound (momB aB bB) (.allI (.impI ?_))
+  rw [shift_parm, show Syn.shift (pw (hP bB m y) (rP bB m y)) = pw (hP bB (Syn.shift m) (Syn.shift y))
+    (rP bB (Syn.shift m) (Syn.shift y)) by simp [Syn.shift]]
+  have hv : (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
+  have hab := Prf.impE hb.allOpen.wk hv
+  have hz := Prf.impE (SymmetricPrefix.shifted_entry_bounds aB bB (var 0) (Syn.shift m) (Syn.shift y) hv).andE₁ hab
+  have hp := pw_le_pw (rP bB (Syn.shift m) (Syn.shift y)) hz
+  exact le_congr (mom_at aB bB (var 0) (Syn.shift m) (Syn.shift y)).eqSymm (.eqRefl _) hp
 
 theorem mom_backward {m y : PTm n} (ht : Γ ⊢[PRAAx] MomTest aB bB m y) : Γ ⊢[PRAAx] Below aB bB m y := by
   have ht' : (Γ.map Fm.shift) ⊢[PRAAx] MomTest aB bB (Syn.shift m) (Syn.shift y) := by

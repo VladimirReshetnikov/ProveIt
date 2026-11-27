@@ -20,7 +20,6 @@ For arbitrary data bodies `a(i, y)`, `b(i, y)` (parameters packed into `y`):
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix
 
 open_ipra exports
-open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 
 set_option autoImplicit false
 
@@ -28,12 +27,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- A summand is at most the partial sum containing it. -/
 theorem term_le_sum (f : PTm 2) {j m x : PTm n} (h : Γ ⊢[PRAAx] lt j m) :
-    Γ ⊢[PRAAx] le (inst2 f j x) (ap2 (sumF f) m x) := by
-  have sp := natEq ((congrAp2 (sumF f) (eq_add_of_le h) (.eqRefl x)).eqTrans
-    (sum_split (Γ := Γ) f (succ j) (monus m (succ j)) x))
-  have ss' : Γ ⊢[PRAAx] ap2 (sumF f) (succ j) x ≐ ap2 (sumF f) j x + inst2 f j x := sum_succ f j x
-  have ss := natEq ss'
-  ipra_le 𝔞 (ap2 (sumF f) j x) + 𝔞 (ap2 (sumF (offB f)) (monus m (succ j)) (pairT (succ j) x)) with sp + ss
+    Γ ⊢[PRAAx] le (inst2 f j x) (ap2 (sumF f) m x) :=
+  LeanProofs.IPRA.term_le_sum f h
 
 variable (aB bB : PTm 2)
 
@@ -100,22 +95,14 @@ theorem shift_par (m y : PTm n) : Syn.shift (Par bB m y) = Par bB (Syn.shift m) 
 
 /-- Forward: every `z_i ≤ h`, so the sum is at most `m (m+1)^h`. -/
 theorem exp_forward {m y : PTm n} (hb : Γ ⊢[PRAAx] Below aB bB m y) : Γ ⊢[PRAAx] ExpTest aB bB m y := by
-  have h := sum_le_lin1 (Γ := Γ) (eB aB bB) one one (pw (succ m) (hP bB m y)) (Par bB m y) (Par bB m y) m
-    (.allI (.impI (by
-      rw [shift_par, show Syn.shift (one : PTm n) = one by simp [Syn.shift],
-        show Syn.shift (pw (succ m) (hP bB m y)) = pw (succ (Syn.shift m)) (hP bB (Syn.shift m) (Syn.shift y)) by
-          simp [Syn.shift],
-        show inst2 (one : PTm 2) (var 0) (Par bB (Syn.shift m) (Syn.shift y)) = one by simp [inst2]]
-      let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift m) :: Γ.map Fm.shift
-      have hv : Θ ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
-      have hab : Θ ⊢[PRAAx] le (inst2 aB (var 0) (Syn.shift y)) (inst2 bB (var 0) (Syn.shift y)) :=
-        Prf.impE hb.allOpen.wk hv
-      have hz := Prf.impE (shifted_entry_bounds aB bB (var 0) (Syn.shift m) (Syn.shift y) hv).andE₁ hab
-      have hp := pw_le_exp (congrSucc (pred_succ (Syn.shift m)).eqSymm) hz
-      have ea := natEq (eB_at (Γ := Θ) aB bB (var 0) (Syn.shift m) (Syn.shift y))
-      ipra_le sl hp with ea)))
-  have so := natEq (sum_ones (Γ := Γ) m (Par bB m y))
-  ipra_le sl h with 𝔞 (pw (succ m) (hP bB m y)) * so
+  refine sum_le_uniform_bound (eB aB bB) (.allI (.impI ?_))
+  rw [shift_par, show Syn.shift (pw (succ m) (hP bB m y)) = pw (succ (Syn.shift m)) (hP bB (Syn.shift m) (Syn.shift y))
+    by simp [Syn.shift]]
+  have hv : (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift m) := Prf.hyp0
+  have hab := Prf.impE hb.allOpen.wk hv
+  have hz := Prf.impE (shifted_entry_bounds aB bB (var 0) (Syn.shift m) (Syn.shift y) hv).andE₁ hab
+  have hp := pw_le_exp (congrSucc (pred_succ (Syn.shift m)).eqSymm) hz
+  exact le_congr (eB_at aB bB (var 0) (Syn.shift m) (Syn.shift y)).eqSymm (.eqRefl _) hp
 
 /-- Backward: a violation `a_j > b_j` makes its single term exceed the allowance. -/
 theorem exp_backward {m y : PTm n} (ht : Γ ⊢[PRAAx] ExpTest aB bB m y) : Γ ⊢[PRAAx] Below aB bB m y := by
