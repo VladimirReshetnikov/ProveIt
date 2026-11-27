@@ -31,8 +31,7 @@ def inst2 (body : PTm 2) (i x : PTm n) : PTm n := Syn.subst ![i, x] body
 
 @[simp] theorem subst_inst2 {m : ℕ} (σ : Fin n → PTm m) (body : PTm 2) (i x : PTm n) :
     Syn.subst σ (inst2 body i x) = inst2 body (Syn.subst σ i) (Syn.subst σ x) := by
-  simp only [inst2, Syn.subst_subst]
-  congr 1; funext j; fin_cases j <;> rfl
+  simp only [inst2, Syn.subst_subst, subst_vecCons, subst_vecEmpty]
 
 theorem congrInst2 (body : PTm 2) {i i' x x' : PTm n} (h₁ : Γ ⊢[PRAAx] i ≐ i')
     (h₂ : Γ ⊢[PRAAx] x ≐ x') : Γ ⊢[PRAAx] inst2 body i x ≐ inst2 body i' x' :=

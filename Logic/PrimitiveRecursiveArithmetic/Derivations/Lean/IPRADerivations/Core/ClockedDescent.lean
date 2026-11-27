@@ -39,8 +39,7 @@ variable {P D r}
 
 @[simp] theorem subst_Pat {n m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
     (Pat P t).subst σ = Pat P (Syn.subst σ t) := by
-  simp only [Pat, Fm.subst_subst]
-  congr 1; funext j; fin_cases j; rfl
+  simp only [Pat, Fm.subst_subst, subst_vecCons, subst_vecEmpty]
 
 omit P in
 theorem subst_QF' {n m : ℕ} {φ : Fm PTm n} (h : φ.QF) (σ : Fin n → PTm m) : (φ.subst σ).QF := by
@@ -63,23 +62,14 @@ theorem orb_zero (s : PTm n) : Γ ⊢[PRAAx] orb D zero s ≐ s := by
 
 theorem orb_succ (k s : PTm n) : Γ ⊢[PRAAx] orb D (succ k) s ≐ inst1 D (orb D k s) := by
   have h := rec2_succ (Γ := Γ) (var 0) (Syn.subst ![var 1] D) k s
-  have e : Syn.subst ![k, ap2 (rec2 (var 0) (Syn.subst ![var 1] D)) k s, s] (Syn.subst ![var 1] D) =
-      inst1 D (orb D k s) := by
-    simp only [inst1, Syn.subst_subst]
-    congr 1; funext j; fin_cases j; rfl
-  rw [e] at h; exact h
+  change Γ ⊢[PRAAx] orb D (succ k) s ≐ Syn.subst ![k, orb D k s, s] (inst1 D (var 1)) at h
+  simpa only [subst_inst1, Syn.subst_var, Matrix.cons_val_one, Matrix.cons_val_zero] using h
 
 /-- The step hypothesis at a state `t`. -/
 theorem step_at (hstep : ([] : List (Fm PTm 1)) ⊢[PRAAx] P ⟶ (Pat P D ⋏ lt (inst1 r D) r)) (t : PTm n) :
     Γ ⊢[PRAAx] Pat P t ⟶ (Pat P (inst1 D t) ⋏ lt (inst1 r (inst1 D t)) (inst1 r t)) := by
   have h := inst (Γ := Γ) hstep ![t]
-  have e₁ : P.subst ![t] = Pat P t := rfl
-  simp only [Fm.subst_imp, Fm.subst_and, subst_Pat, subst_lt, e₁] at h
-  have e₂ : Syn.subst ![t] D = inst1 D t := rfl
-  have e₃ : ∀ u : PTm 1, Syn.subst ![t] (inst1 r u) = inst1 r (Syn.subst ![t] u) := fun u => by
-    simp only [inst1, Syn.subst_subst]; congr 1; funext j; fin_cases j; rfl
-  have e₄ : Syn.subst ![t] r = inst1 r t := rfl
-  rw [e₃, e₂, e₄] at h
+  simp only [Fm.subst_imp, Fm.subst_and, subst_Pat, subst_lt, subst_inst1] at h
   exact h
 
 /-- The invariant step. -/

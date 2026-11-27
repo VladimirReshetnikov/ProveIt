@@ -33,8 +33,7 @@ def inst1 (β : PTm 1) (b : PTm n) : PTm n := Syn.subst ![b] β
 
 @[simp] theorem subst_inst1 {m : ℕ} (σ : Fin n → PTm m) (β : PTm 1) (b : PTm n) :
     Syn.subst σ (inst1 β b) = inst1 β (Syn.subst σ b) := by
-  simp only [inst1, Syn.subst_subst]
-  congr 1; funext j; fin_cases j; rfl
+  simp only [inst1, Syn.subst_subst, subst_vecCons, subst_vecEmpty]
 
 namespace Descent
 

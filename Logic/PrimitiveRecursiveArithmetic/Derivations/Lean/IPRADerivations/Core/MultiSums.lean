@@ -45,8 +45,7 @@ def inst3 (body : PTm 3) (i p q : PTm n) : PTm n := Syn.subst ![i, p, q] body
 
 @[simp] theorem subst_inst3 {m : ℕ} (σ : Fin n → PTm m) (body : PTm 3) (i p q : PTm n) :
     Syn.subst σ (inst3 body i p q) = inst3 body (Syn.subst σ i) (Syn.subst σ p) (Syn.subst σ q) := by
-  simp only [inst3, Syn.subst_subst]
-  congr 1; funext j; fin_cases j <;> rfl
+  simp only [inst3, Syn.subst_subst, subst_vecCons, subst_vecEmpty]
 
 theorem congrInst3 (body : PTm 3) {i i' p p' q q' : PTm n} (h₁ : Γ ⊢[PRAAx] i ≐ i')
     (h₂ : Γ ⊢[PRAAx] p ≐ p') (h₃ : Γ ⊢[PRAAx] q ≐ q') : Γ ⊢[PRAAx] inst3 body i p q ≐ inst3 body i' p' q' :=
@@ -67,8 +66,8 @@ private theorem cases_eq' (y p q : PTm n) : (Fin.cases y ![p, q] : Fin 3 → PTm
 
 private theorem step_eq (body : PTm 3) (y p q A : PTm n) :
     Syn.subst ![y, A, p, q] (bodyStep3 body) = inst3 body y p q := by
-  simp only [bodyStep3, inst3, Syn.subst_subst]
-  congr 1; funext i; fin_cases i <;> rfl
+  simp only [bodyStep3, inst3, Syn.subst_subst, subst_vecCons, subst_vecEmpty, Syn.subst_var,
+    Matrix.cons_val_zero, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons]
 
 theorem sum2_zero (body : PTm 3) (p q : PTm n) : Γ ⊢[PRAAx] ap3 (sum2F body) zero p q ≐ zero := by
   have h := rec_zero (Γ := Γ) zero (var 1 + bodyStep3 body) ![p, q]

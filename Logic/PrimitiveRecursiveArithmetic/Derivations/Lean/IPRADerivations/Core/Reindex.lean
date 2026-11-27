@@ -19,13 +19,11 @@ open Syn
 variable {n k : ℕ}
 
 theorem subst_reindex2 (σ : Fin k → PTm n) (a b : PTm k) (f : PTm 2) :
-    Syn.subst σ (Syn.subst ![a, b] f) = inst2 f (Syn.subst σ a) (Syn.subst σ b) := by
-  simp only [inst2, Syn.subst_subst]
-  congr 1; funext j; fin_cases j <;> rfl
+    Syn.subst σ (Syn.subst ![a, b] f) = inst2 f (Syn.subst σ a) (Syn.subst σ b) :=
+  subst_inst2 σ f a b
 
 theorem subst_reindex3 (σ : Fin k → PTm n) (a b c : PTm k) (f : PTm 3) :
-    Syn.subst σ (Syn.subst ![a, b, c] f) = inst3 f (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) := by
-  simp only [inst3, Syn.subst_subst]
-  congr 1; funext j; fin_cases j <;> rfl
+    Syn.subst σ (Syn.subst ![a, b, c] f) = inst3 f (Syn.subst σ a) (Syn.subst σ b) (Syn.subst σ c) :=
+  subst_inst3 σ f a b c
 
 end LeanProofs.IPRA
