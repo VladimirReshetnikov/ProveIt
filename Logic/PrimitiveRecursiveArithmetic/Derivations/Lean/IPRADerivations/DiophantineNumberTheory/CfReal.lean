@@ -48,12 +48,18 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-- The step `⟨c P + P', c Q + Q', P, Q⟩`. -/
 abbrev nx (c s : PTm n) : PTm n := st (c * sP s + sP' s) (c * sQ s + sQ' s) (sP s) (sQ s)
 
-theorem proj_nx {c s s' : PTm n} (h : Γ ⊢[PRAAx] s' ≐ nx c s) :
-    (Γ ⊢[PRAAx] sP s' ≐ c * sP s + sP' s) ∧ (Γ ⊢[PRAAx] sQ s' ≐ c * sQ s + sQ' s) ∧
-      (Γ ⊢[PRAAx] sP' s' ≐ sP s) ∧ (Γ ⊢[PRAAx] sQ' s' ≐ sQ s) := by
-  obtain ⟨p1, p2, p3, p4⟩ := proj_st (Γ := Γ) (c * sP s + sP' s) (c * sQ s + sQ' s) (sP s) (sQ s)
+/-- Project all entries of a continuant matrix from a coded equality. -/
+theorem proj_matrix {s P Q P' Q' : PTm n} (h : Γ ⊢[PRAAx] s ≐ st P Q P' Q') :
+    (Γ ⊢[PRAAx] sP s ≐ P) ∧ (Γ ⊢[PRAAx] sQ s ≐ Q) ∧
+      (Γ ⊢[PRAAx] sP' s ≐ P') ∧ (Γ ⊢[PRAAx] sQ' s ≐ Q') := by
+  obtain ⟨p1, p2, p3, p4⟩ := proj_st (Γ := Γ) P Q P' Q'
   exact ⟨(congrFst h).eqTrans p1, (congrFst (congrSnd h)).eqTrans p2,
     (congrFst (congrSnd (congrSnd h))).eqTrans p3, (congrSnd (congrSnd (congrSnd h))).eqTrans p4⟩
+
+theorem proj_nx {c s s' : PTm n} (h : Γ ⊢[PRAAx] s' ≐ nx c s) :
+    (Γ ⊢[PRAAx] sP s' ≐ c * sP s + sP' s) ∧ (Γ ⊢[PRAAx] sQ s' ≐ c * sQ s + sQ' s) ∧
+      (Γ ⊢[PRAAx] sP' s' ≐ sP s) ∧ (Γ ⊢[PRAAx] sQ' s' ≐ sQ s) :=
+  proj_matrix h
 
 /-- `s` is `w` times `C`: `s = ⟨u P + v P', u Q + v Q', u' P + v' P', u' Q + v' Q'⟩` for `w = ⟨u, v, u', v'⟩`,
 `C = ⟨P, Q, P', Q'⟩`. -/
@@ -293,12 +299,10 @@ theorem uv_succ (k N : PTm n) : Γ ⊢[PRAAx] uv a' (succ k) N ≐ nx (co a' (su
 
 theorem lin_base (N : PTm n) : Γ ⊢[PRAAx] Lin4 (cv a' (N + zero)) (cv a' N) (uv a' zero N) := by
   have e0 : Γ ⊢[PRAAx] cv a' (N + zero) ≐ cv a' N := congrAp2 _ (add_zero N) (.eqRefl _)
-  obtain ⟨p1, p2, p3, p4⟩ := proj_st (Γ := Γ) one zero zero one
-  have w := uv_zero (Γ := Γ) (a' := a') N
+  obtain ⟨p1, p2, p3, p4⟩ := proj_matrix (uv_zero (Γ := Γ) (a' := a') N)
   unfold Lin4
   exact lin_base_alg (congrFst e0) (congrFst (congrSnd e0)) (congrFst (congrSnd (congrSnd e0)))
-    (congrSnd (congrSnd (congrSnd e0))) ((congrFst w).eqTrans p1) ((congrFst (congrSnd w)).eqTrans p2)
-    ((congrFst (congrSnd (congrSnd w))).eqTrans p3) ((congrSnd (congrSnd (congrSnd w))).eqTrans p4)
+    (congrSnd (congrSnd (congrSnd e0))) p1 p2 p3 p4
 
 /-- **`p_{N+k} = u_k p_N + v_k p_{N−1}`, `q_{N+k} = u_k q_N + v_k q_{N−1}`**, and one row down. -/
 theorem lin (N k : PTm n) : Γ ⊢[PRAAx] Lin4 (cv a' (N + k)) (cv a' N) (uv a' k N) := by
@@ -316,16 +320,25 @@ theorem lin (N k : PTm n) : Γ ⊢[PRAAx] Lin4 (cv a' (N + k)) (cv a' N) (uv a' 
     Syn.subst_inst_shift] at h2
   exact h2
 
+/-- The tail matrix at origin zero acts on the initial convergent. -/
+theorem lin_origin (m : PTm n) : Γ ⊢[PRAAx] Lin4 (cv a' m) (cv a' zero) (uv a' m zero) := by
+  have h := lin (Γ := Γ) (a' := a') zero m
+  have e : Γ ⊢[PRAAx] cv a' m ≐ cv a' (zero + m) :=
+    congrAp2 _ (zero_add m).eqSymm (.eqRefl _)
+  unfold Lin4 at h ⊢
+  exact .andI (.andI ((congrFst e).eqTrans h.andE₁.andE₁)
+      ((congrFst (congrSnd e)).eqTrans h.andE₁.andE₂))
+    (.andI ((congrFst (congrSnd (congrSnd e))).eqTrans h.andE₂.andE₁)
+      ((congrSnd (congrSnd (congrSnd e))).eqTrans h.andE₂.andE₂))
+
 /-- **The unit determinant** `p_{m−1} q_m − p_m q_{m−1} = ±1`. -/
 theorem det (m : PTm n) : Γ ⊢[PRAAx] Det (cv a' m) := by
   have hall : Γ ⊢[PRAAx] Fm.all (Det (cv a' (var 0))) := by
     refine PRA.qfInd _ (det_QF _) ?_ ?_
     · simp only [subst_Det, subst_cv, Syn.subst_var, Syn.inst_zero]
-      obtain ⟨_, p2, p3, p4⟩ := proj_st (Γ := Γ) (ap1 a' zero) one one zero
-      have w := cv_zero (Γ := Γ) (a' := a')
+      obtain ⟨_, p2, p3, p4⟩ := proj_matrix (cv_zero (Γ := Γ) (a' := a'))
       unfold Det
-      exact det_base ((congrFst (congrSnd w)).eqTrans p2) ((congrFst (congrSnd (congrSnd w))).eqTrans p3)
-        ((congrSnd (congrSnd (congrSnd w))).eqTrans p4)
+      exact det_base p2 p3 p4
     · simp only [subst_Det, subst_cv, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_succ]
       exact det_step (cv_succ _) Prf.hyp0
   have h2 := Prf.allE m hall
@@ -337,11 +350,9 @@ theorem jinv (k N : PTm n) : Γ ⊢[PRAAx] Jf (uv a' k N) := by
   have hall : Γ ⊢[PRAAx] Fm.all (Jf (uv a' (var 0) (Syn.shift N))) := by
     refine PRA.qfInd _ (jf_QF _) ?_ ?_
     · simp only [subst_Jf, subst_uv, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      obtain ⟨p1, p2, p3, p4⟩ := proj_st (Γ := Γ) one zero zero one
-      have w := uv_zero (Γ := Γ) (a' := a') N
+      obtain ⟨p1, p2, p3, p4⟩ := proj_matrix (uv_zero (Γ := Γ) (a' := a') N)
       unfold Jf
-      exact j_base ((congrFst w).eqTrans p1) ((congrFst (congrSnd w)).eqTrans p2)
-        ((congrFst (congrSnd (congrSnd w))).eqTrans p3) ((congrSnd (congrSnd (congrSnd w))).eqTrans p4)
+      exact j_base p1 p2 p3 p4
     · simp only [subst_Jf, subst_uv, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
         ConciseIPRA.PTm.subst_succ]
       obtain ⟨g1, g2, g3, g4⟩ := proj_nx (uv_succ (Γ := (Jf (uv a' (var 0) (Syn.shift N)) :: Γ.map Fm.shift))
@@ -385,10 +396,9 @@ theorem q_pow (k : PTm n) : Γ ⊢[PRAAx] le (pw two (succ k)) (sQ (cv a' (idx k
     refine PRA.qfInd _ (le_QF _ _) ?_ ?_
     · simp only [subst_le, subst_ap2, subst_cv, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var,
         Syn.inst_zero, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      obtain ⟨_, p2, _, _⟩ := proj_st (Γ := Γ) (ap1 a' zero) one one zero
+      obtain ⟨_, p2, _, _⟩ := proj_matrix (cv_zero (Γ := Γ) (a' := a'))
       have q0 : Γ ⊢[PRAAx] sQ (cv a' (zero + zero)) ≐ one :=
-        (congrFst (congrSnd (congrAp2 _ (add_zero zero) (.eqRefl _)))).eqTrans
-          ((congrFst (congrSnd (cv_zero (a' := a')))).eqTrans p2)
+        (congrFst (congrSnd (congrAp2 _ (add_zero zero) (.eqRefl _)))).eqTrans p2
       exact pow_base_alg (pw_succ two zero) (pw_zero two) (two_step (zero + zero)) q0
     · simp only [subst_le, subst_ap2, subst_cv, subst_fstT, subst_sndT, PTm.subst_add, Syn.subst_var,
         Syn.repl_zero, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
@@ -404,9 +414,8 @@ theorem q_pow (k : PTm n) : Γ ⊢[PRAAx] le (pw two (succ k)) (sQ (cv a' (idx k
 
 /-! ## Growth of the denominators (`dio:continuants`) -/
 
-theorem q_zero : Γ ⊢[PRAAx] sQ (cv a' zero) ≐ one := by
-  obtain ⟨_, p2, _, _⟩ := proj_st (Γ := Γ) (ap1 a' zero) one one zero
-  exact (congrFst (congrSnd (cv_zero (a' := a')))).eqTrans p2
+theorem q_zero : Γ ⊢[PRAAx] sQ (cv a' zero) ≐ one :=
+  (proj_matrix (cv_zero (a' := a'))).2.1
 
 theorem mono_alg {c0 Q Q' Q1 : PTm n} (a1 : Γ ⊢[PRAAx] Q1 ≐ succ c0 * Q + Q') : Γ ⊢[PRAAx] le Q Q1 := by
   have f := natEq a1

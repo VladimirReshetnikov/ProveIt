@@ -26,8 +26,8 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CfValue
 
 open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (sP sQ sP' sQ' st proj_st)
-open LeanProofs.IPRA.DiophantineNumberTheory.CfReal (nx proj_nx co cv uv cv_zero cv_succ uv_zero uv_succ lin Lin4
+open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (sP sQ sP' sQ' st)
+open LeanProofs.IPRA.DiophantineNumberTheory.CfReal (nx proj_matrix proj_nx co cv uv cv_zero cv_succ uv_zero uv_succ lin_origin Lin4
   subst_cv subst_uv)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
@@ -85,15 +85,11 @@ variable {a' : PR 1}
 
 theorem pre_base (N : PTm n) : Γ ⊢[PRAAx] Pre (uv a' (succ zero) N) (co a' (succ N)) (uv a' zero (succ N)) := by
   obtain ⟨h1, h2, h3, h4⟩ := proj_nx (uv_succ (Γ := Γ) (a' := a') zero N)
-  obtain ⟨p1, p2, p3, p4⟩ := proj_st (Γ := Γ) one zero zero one
-  have w := uv_zero (Γ := Γ) (a' := a') N
-  have w' := uv_zero (Γ := Γ) (a' := a') (succ N)
+  obtain ⟨p1, p2, p3, p4⟩ := proj_matrix (uv_zero (Γ := Γ) (a' := a') N)
+  obtain ⟨q1, q2, q3, q4⟩ := proj_matrix (uv_zero (Γ := Γ) (a' := a') (succ N))
   have ec : Γ ⊢[PRAAx] co a' (succ (N + zero)) ≐ co a' (succ N) := congrSucc (congrAp1 a' (congrSucc (add_zero N)))
   unfold Pre
-  exact pre_base_alg ec h1 h2 h3 h4 ((congrFst w).eqTrans p1) ((congrFst (congrSnd w)).eqTrans p2)
-    ((congrFst (congrSnd (congrSnd w))).eqTrans p3) ((congrSnd (congrSnd (congrSnd w))).eqTrans p4)
-    ((congrFst w').eqTrans p1) ((congrFst (congrSnd w')).eqTrans p2)
-    ((congrFst (congrSnd (congrSnd w'))).eqTrans p3) ((congrSnd (congrSnd (congrSnd w'))).eqTrans p4)
+  exact pre_base_alg ec h1 h2 h3 h4 p1 p2 p3 p4 q1 q2 q3 q4
 
 theorem pre_step {N k : PTm n} (ih : Γ ⊢[PRAAx] Pre (uv a' (succ k) N) (co a' (succ N)) (uv a' k (succ N))) :
     Γ ⊢[PRAAx] Pre (uv a' (succ (succ k)) N) (co a' (succ N)) (uv a' (succ k) (succ N)) := by
@@ -174,6 +170,17 @@ theorem monus_step {j m : PTm n} (h : Γ ⊢[PRAAx] le (succ (succ j)) m) :
 theorem monus_one {m : PTm n} (h : Γ ⊢[PRAAx] le one m) : Γ ⊢[PRAAx] succ (monus m one) ≐ m := by
   ipra_lc -natEq (eq_add_of_le h)
 
+/-- Reindex the shorter tail and its coefficient for one inward step. -/
+theorem tail_step_data {j m : PTm n} (hj : Γ ⊢[PRAAx] lt (succ j) m) :
+    let N := monus m (succ (succ j))
+    let k := monus m (succ j)
+    (Γ ⊢[PRAAx] Pre (uv a' (succ (succ j)) N) (co a' (succ N)) (uv a' (succ j) (succ N))) ∧
+      (Γ ⊢[PRAAx] uv a' (succ j) (succ N) ≐ uv a' (succ j) k) ∧
+      (Γ ⊢[PRAAx] sg k ≐ one) ∧
+      (Γ ⊢[PRAAx] co a' (succ N) ≐ succ (ap1 a' k)) := by
+  have h := monus_step hj
+  exact ⟨pre _ _, congrAp2 _ (.eqRefl _) h, (congrSg' h.eqSymm).eqTrans (sg_succ _), congrSucc (congrAp1 a' h)⟩
+
 theorem tail_base_alg {F S A Z s c U V x1 x2 x3 x4 : PTm n} (hF : Γ ⊢[PRAAx] F ≐ A) (hS : Γ ⊢[PRAAx] S ≐ one)
     (hA : Γ ⊢[PRAAx] A ≐ Z + s) (hs : Γ ⊢[PRAAx] s ≐ one) (hc : Γ ⊢[PRAAx] c ≐ succ Z)
     (h1 : Γ ⊢[PRAAx] U ≐ c * x1 + x3) (h2 : Γ ⊢[PRAAx] V ≐ c * x2 + x4)
@@ -206,35 +213,27 @@ theorem tail_zero {m : PTm n} (hm : Γ ⊢[PRAAx] lt zero m) :
       (sndT (bk a' zero m) ≐ sQ (uv a' (succ zero) (monus m (succ zero)))) := by
   have m1 := monus_one hm
   obtain ⟨h1, h2, _, _⟩ := proj_nx (uv_succ (Γ := Γ) (a' := a') zero (monus m one))
-  obtain ⟨p1, p2, p3, p4⟩ := proj_st (Γ := Γ) one zero zero one
-  have w := uv_zero (Γ := Γ) (a' := a') (monus m one)
+  obtain ⟨p1, p2, p3, p4⟩ := proj_matrix (uv_zero (Γ := Γ) (a' := a') (monus m one))
   have b := bk_zero (Γ := Γ) (a' := a') m
   have hF : Γ ⊢[PRAAx] fstT (bk a' zero m) ≐ Av a' m := (congrFst b).eqTrans (fst_pair _ _)
   have hS : Γ ⊢[PRAAx] sndT (bk a' zero m) ≐ one := (congrSnd b).eqTrans (snd_pair _ _)
   have hs : Γ ⊢[PRAAx] sg m ≐ one := (congrSg' m1.eqSymm).eqTrans (sg_succ _)
   have hc : Γ ⊢[PRAAx] co a' (succ (monus m one + zero)) ≐ succ (ap1 a' m) :=
     congrSucc (congrAp1 a' ((congrSucc (add_zero _)).eqTrans m1))
-  exact tail_base_alg hF hS (.eqRefl _) hs hc h1 h2 ((congrFst w).eqTrans p1) ((congrFst (congrSnd w)).eqTrans p2)
-    ((congrFst (congrSnd (congrSnd w))).eqTrans p3) ((congrSnd (congrSnd (congrSnd w))).eqTrans p4)
+  exact tail_base_alg hF hS (.eqRefl _) hs hc h1 h2 p1 p2 p3 p4
 
 theorem tail_succ {j m : PTm n} (hj : Γ ⊢[PRAAx] lt (succ j) m)
     (ih : Γ ⊢[PRAAx] (fstT (bk a' j m) ≐ sP (uv a' (succ j) (monus m (succ j)))) ⋏
       (sndT (bk a' j m) ≐ sQ (uv a' (succ j) (monus m (succ j))))) :
     Γ ⊢[PRAAx] (fstT (bk a' (succ j) m) ≐ sP (uv a' (succ (succ j)) (monus m (succ (succ j))))) ⋏
       (sndT (bk a' (succ j) m) ≐ sQ (uv a' (succ (succ j)) (monus m (succ (succ j))))) := by
-  have M1 := monus_step hj
-  have P := pre (Γ := Γ) (a' := a') (succ j) (monus m (succ (succ j)))
+  obtain ⟨P, eUV, hs, hc⟩ := tail_step_data (a' := a') hj
   unfold Pre at P
-  have eUV : Γ ⊢[PRAAx] uv a' (succ j) (succ (monus m (succ (succ j)))) ≐ uv a' (succ j) (monus m (succ j)) :=
-    congrAp2 _ (.eqRefl _) M1
   have b := bk_succ (Γ := Γ) (a' := a') j m
   have hb1 := (congrFst b).eqTrans (fst_pair _ _)
   have hb2 := (congrSnd b).eqTrans (snd_pair _ _)
   have ihX := (Prf.andE₁ ih).eqTrans (congrFst eUV).eqSymm
   have ihY := (Prf.andE₂ ih).eqTrans (congrFst (congrSnd eUV)).eqSymm
-  have hs : Γ ⊢[PRAAx] sg (monus m (succ j)) ≐ one := (congrSg' M1.eqSymm).eqTrans (sg_succ _)
-  have hc : Γ ⊢[PRAAx] co a' (succ (monus m (succ (succ j)))) ≐ succ (ap1 a' (monus m (succ j))) :=
-    congrSucc (congrAp1 a' M1)
   exact tail_step_alg hb1 hb2 ihX ihY (Prf.andE₁ (Prf.andE₁ P)) (Prf.andE₂ (Prf.andE₁ P)) (.eqRefl _) hs hc
 
 theorem tail_all (m : PTm n) : Γ ⊢[PRAAx] Fm.all (TailF (a' := a') (var 0) (Syn.shift m)) := by
@@ -277,7 +276,6 @@ theorem last_alg {F S A X Y U V a0 x1 x2 x3 x4 : PTm n} (hb1 : Γ ⊢[PRAAx] F �
 inside out, is exactly `(p_m, q_m)`. -/
 theorem nest_value (m : PTm n) :
     Γ ⊢[PRAAx] (fstT (nest a' m) ≐ sP (cv a' m)) ⋏ (sndT (nest a' m) ≐ sQ (cv a' m)) := by
-  obtain ⟨c1, c2, c3, c4⟩ := proj_st (Γ := Γ) (ap1 a' zero) one one zero
   refine .orE (zero_or_succ m) ?_ ?_
   · -- `m = 0`
     have hm : ((m ≐ zero) :: Γ) ⊢[PRAAx] m ≐ zero := Prf.hyp0
@@ -288,8 +286,7 @@ theorem nest_value (m : PTm n) :
     have F : ((m ≐ zero) :: Γ) ⊢[PRAAx] fstT (nest a' m) ≐ ap1 a' zero + sg zero :=
       (congrFst eb).eqTrans (fst_pair _ _)
     have S : ((m ≐ zero) :: Γ) ⊢[PRAAx] sndT (nest a' m) ≐ one := (congrSnd eb).eqTrans (snd_pair _ _)
-    have P : ((m ≐ zero) :: Γ) ⊢[PRAAx] sP (cv a' m) ≐ ap1 a' zero := (congrFst ec).eqTrans c1.wk
-    have Q : ((m ≐ zero) :: Γ) ⊢[PRAAx] sQ (cv a' m) ≐ one := (congrFst (congrSnd ec)).eqTrans c2.wk
+    obtain ⟨P, Q, _, _⟩ := proj_matrix ec
     have f := natEq F; have p := natEq P
     refine .andI ?_ (S.eqTrans Q.eqSymm)
     ipra_lc f - p + natEq (sg_zero (Γ := ((m ≐ zero) :: Γ)) (n := n))
@@ -311,16 +308,11 @@ theorem nest_value (m : PTm n) :
       congrAp2 _ hm.eqSymm e0
     have X := (Prf.andE₁ T).eqTrans (congrFst eU)
     have Y := (Prf.andE₂ T).eqTrans (congrFst (congrSnd eU))
-    have L := lin (Γ := Θ) (a' := a') zero m
+    have L := lin_origin (Γ := Θ) (a' := a') m
     unfold Lin4 at L
-    have ez : Θ ⊢[PRAAx] cv a' (zero + m) ≐ cv a' m := congrAp2 _ ((add_comm _ _).eqTrans (add_zero m)) (.eqRefl _)
-    have l1 := (congrFst ez).eqSymm.eqTrans (Prf.andE₁ (Prf.andE₁ L))
-    have l2 := (congrFst (congrSnd ez)).eqSymm.eqTrans (Prf.andE₂ (Prf.andE₁ L))
-    have w := cv_zero (Γ := Θ) (a' := a')
-    have r := last_alg hb1 hb2 hA (l1.eqTrans (congrAdd (congrMul X.eqSymm (.eqRefl _)) (congrMul Y.eqSymm (.eqRefl _))))
-      (l2.eqTrans (congrAdd (congrMul X.eqSymm (.eqRefl _)) (congrMul Y.eqSymm (.eqRefl _))))
-      ((congrFst w).eqTrans c1.wk) ((congrFst (congrSnd w)).eqTrans c2.wk)
-      ((congrFst (congrSnd (congrSnd w))).eqTrans c3.wk) ((congrSnd (congrSnd (congrSnd w))).eqTrans c4.wk)
-    exact r
+    obtain ⟨c1, c2, c3, c4⟩ := proj_matrix (cv_zero (Γ := Θ) (a' := a'))
+    exact last_alg hb1 hb2 hA
+      (L.andE₁.andE₁.eqTrans (congrAdd (congrMul X.eqSymm (.eqRefl _)) (congrMul Y.eqSymm (.eqRefl _))))
+      (L.andE₁.andE₂.eqTrans (congrAdd (congrMul X.eqSymm (.eqRefl _)) (congrMul Y.eqSymm (.eqRefl _)))) c1 c2 c3 c4
 
 end LeanProofs.IPRA.DiophantineNumberTheory.CfValue
