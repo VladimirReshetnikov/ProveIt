@@ -21,13 +21,13 @@ open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianFastValueCut (exponent exponent_unit normalizer query_budget)
-open GaussianGammaCanonicalExponent (constantF constant_at)
+open GaussianGammaCanonicalExponent (constantF)
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaNegativeCriticalGrid (denominator locationF location_at)
 open GaussianGammaNegativeCriticalLocation (lower lower_guard location_regular denominator_positive)
 open GaussianGammaNegativeCriticalLocationResidual (residualCost original_residual_at)
-open GaussianGammaNegativeCriticalLocationZero (inner clock_budget)
-open GaussianGammaNegativeIntervalCriticalQuotientZero (stage)
+open GaussianGammaNegativeCriticalLocationZero (regular_zero_of_sample_error inner clock_budget)
+open GaussianGammaNegativeIntervalCriticalQuotientZero (stage zero_error_from_stage)
 open GaussianGammaNegativeIntervalDigammaRate (minimumDenominator original_derivative_rate)
 open GaussianGammaNegativeIntervalUniformBounds (cap grid_bounded)
 open GaussianGammaReciprocalInverse (gammaF)
@@ -35,7 +35,7 @@ open GaussianNameArithmetic (multiplyModulus multiply_at add_canonical)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedInverseRate (diagonal_rate)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (qmul qmul_canonical qzero positive_product canonical_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bounded_product bound_congr)
@@ -84,9 +84,6 @@ theorem name_at (p N : PTm n) : Γ ⊢[PRAAx] ap2 nameF p N ≐ value p N := by
 private theorem unit_le_exponent (L p : PTm n) : Γ ⊢[PRAAx] le (unit p) (unit (exponent L p)) :=
   le_congr (.eqRefl _) (exponent_unit L p).eqSymm
     (by ipra_le 𝔞(unit p)*sl (unit_positive (normalizer L)))
-
-private theorem stage_unit (p : PTm n) : Γ ⊢[PRAAx] unit (stage p) ≐ num 4*unit p :=
-  (pw_succ two (succ p)).eqTrans ((congrMul (pw_succ two p) (.eqRefl _)).eqTrans (by unfold unit; ipra_ring))
 
 theorem shifted_small (p q N : PTm n) (hq : Γ ⊢[PRAAx] le (two*unit (evaluationClock p N)) (unit q)) :
     Γ ⊢[PRAAx] bounded (ap2 SF q (SD (argumentNumerator p N) (argumentDenominator p N) N))
@@ -174,40 +171,14 @@ theorem target_error (p N : PTm n) : Γ ⊢[PRAAx]
     (by change Γ ⊢[PRAAx] le ((C*V+two*P)*U) (two*(P*V))
         ipra_le 𝔞(V)*sl demandBound+𝔞(P)*sl clockBound) diag
 
-theorem value_bound (p N : PTm n) : Γ ⊢[PRAAx] distanceBounded (value p N) qzero one (unit p) := by
-  let s := stage p
-  have h := unit_positive (Γ := Γ) s
-  have e := natEq (stage_unit (Γ := Γ) p)
-  have joined := distance_triangle_same _ _ _ _ _ _ h (target_error p N) (target_small p N)
-  exact distance_radius_mono _ _ _ _ _ _ h (unit_positive p)
-    (by ipra_le 𝔞(unit p) using rw [e]; ring) joined
+theorem value_bound (p N : PTm n) : Γ ⊢[PRAAx] distanceBounded (value p N) qzero one (unit p) :=
+  zero_error_from_stage p _ _ (target_error p N) (target_small p N)
 
-theorem name_regular (N : PTm n) : Γ ⊢[PRAAx] pointCN nameF N := by
-  refine .allI (.allI ?_)
-  let W := Syn.shift (Syn.shift N)
-  let p : PTm (n+2) := var 1
-  let q : PTm (n+2) := var 0
-  let Δ := (Γ.map Fm.shift).map Fm.shift
-  have bp := value_bound (Γ := Δ) p W
-  have bq := value_bound (Γ := Δ) q W
-  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ (unit_positive p) (unit_positive q)
-    bp (distance_symmetric _ _ _ _ (unit_positive q) bq)
-  change Δ ⊢[PRAAx] distanceBounded (ap2 nameF p W) (ap2 nameF q W) (unit p+unit q) (unit p*unit q)
-  exact distance_congr (name_at p W).eqSymm (name_at q W).eqSymm (by ipra_ring) (.eqRefl _) joined
+theorem name_regular (N : PTm n) : Γ ⊢[PRAAx] pointCN nameF N :=
+  (regular_zero_of_sample_error nameF N _ (fun p => name_at p _) (fun p => value_bound p _)).andE₁
 
-theorem zero_cross (N : PTm n) : Γ ⊢[PRAAx] crossEquivalent nameF constantF N qzero := by
-  refine .allI (.allI ?_)
-  let W := Syn.shift (Syn.shift N)
-  let p : PTm (n+2) := var 1
-  let q : PTm (n+2) := var 0
-  let Z : PTm (n+2) := qzero
-  let Δ := (Γ.map Fm.shift).map Fm.shift
-  have dp := value_bound (Γ := Δ) p W
-  have joined := distance_radius_mono _ _ _ _ (unit p+unit q) (unit p*unit q)
-    (unit_positive p) (positive_product _ _ (unit_positive p) (unit_positive q))
-    (by ipra_le Groth.ι (Q.mk Δ (unit p))^2) dp
-  simpa only [p,q,W,Z,Syn.shift,GaussianRationalHorner.subst_qzero] using
-    distance_congr (name_at p W).eqSymm (constant_at q Z).eqSymm (.eqRefl _) (.eqRefl _) joined
+theorem zero_cross (N : PTm n) : Γ ⊢[PRAAx] crossEquivalent nameF constantF N qzero :=
+  (regular_zero_of_sample_error nameF N _ (fun p => name_at p _) (fun p => value_bound p _)).andE₂
 
 theorem actual_original_negative_Gamma_critical_derivative_zero_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1

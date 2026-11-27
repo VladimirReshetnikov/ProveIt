@@ -70,32 +70,40 @@ theorem value_bound (p N : PTm n) : Γ ⊢[PRAAx] distanceBounded (value p N) qz
     change Γ ⊢[PRAAx] le ((C*V+B)*U) (one*(B*V))
     ipra_le 𝔞(U)*sl h using rw [e]; ring) (original_residual_at t (succ p) N)
 
-theorem value_regular (N : PTm n) : Γ ⊢[PRAAx] pointCN valueF N := by
-  refine .allI (.allI ?_)
-  let w := Syn.shift (Syn.shift N)
+/-- Exact dyadic error to zero yields a regular name and cross-equivalence to
+the constant zero name. The sample readbacks use the original query precisions. -/
+theorem regular_zero_of_sample_error (f : PR 2) (x : PTm n)
+    (sample : PTm (n+2) → PTm (n+2))
+    (readback : ∀ p, (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
+      ap2 f p (Syn.shift (Syn.shift x)) ≐ sample p)
+    (error : ∀ p, (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
+      distanceBounded (sample p) qzero one (unit p)) :
+    Γ ⊢[PRAAx] pointCN f x ⋏ crossEquivalent f constantF x qzero := by
   let p : PTm (n+2) := var 1
   let q : PTm (n+2) := var 0
   let Δ := (Γ.map Fm.shift).map Fm.shift
-  have dp := value_bound (Γ := Δ) p w
-  have dq := value_bound (Γ := Δ) q w
-  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ (unit_positive p) (unit_positive q)
-    dp (distance_symmetric _ _ _ _ (unit_positive q) dq)
-  change Δ ⊢[PRAAx] distanceBounded (ap2 valueF p w) (ap2 valueF q w) (unit p+unit q) (unit p*unit q)
-  exact distance_congr (value_at p w).eqSymm (value_at q w).eqSymm (by ipra_ring) (.eqRefl _) joined
+  have hp := unit_positive (Γ := Δ) p
+  have hq := unit_positive (Γ := Δ) q
+  have dp := error p
+  have dq := error q
+  apply Prf.andI
+  · refine .allI (.allI ?_)
+    change Δ ⊢[PRAAx] distanceBounded (ap2 f p (Syn.shift (Syn.shift x)))
+      (ap2 f q (Syn.shift (Syn.shift x))) (unit p+unit q) (unit p*unit q)
+    have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hp hq
+      dp (distance_symmetric _ _ _ _ hq dq)
+    exact distance_congr (readback p).eqSymm (readback q).eqSymm (by ipra_ring) (.eqRefl _) joined
+  · refine .allI (.allI ?_)
+    have joined := distance_radius_mono _ _ _ _ (unit p+unit q) (unit p*unit q)
+      hp (positive_product _ _ hp hq) (by ipra_le Groth.ι (Q.mk Δ (unit p))^2) dp
+    simpa only [p,q,Syn.shift,GaussianRationalHorner.subst_qzero] using
+      distance_congr (readback p).eqSymm (constant_at q qzero).eqSymm (.eqRefl _) (.eqRefl _) joined
 
-theorem zero_cross (N : PTm n) : Γ ⊢[PRAAx] crossEquivalent valueF constantF N qzero := by
-  refine .allI (.allI ?_)
-  let w := Syn.shift (Syn.shift N)
-  let p : PTm (n+2) := var 1
-  let q : PTm (n+2) := var 0
-  let z : PTm (n+2) := qzero
-  let Δ := (Γ.map Fm.shift).map Fm.shift
-  have dp := value_bound (Γ := Δ) p w
-  have joined := distance_radius_mono _ _ _ _ (unit p+unit q) (unit p*unit q)
-    (unit_positive p) (positive_product _ _ (unit_positive p) (unit_positive q))
-    (by ipra_le Groth.ι (Q.mk Δ (unit p))^2) dp
-  simpa only [p,q,w,z,Syn.shift,GaussianRationalHorner.subst_qzero] using
-    distance_congr (value_at p w).eqSymm (constant_at q z).eqSymm (.eqRefl _) (.eqRefl _) joined
+theorem value_regular (N : PTm n) : Γ ⊢[PRAAx] pointCN valueF N :=
+  (regular_zero_of_sample_error valueF N _ (fun p => value_at p _) (fun p => value_bound p _)).andE₁
+
+theorem zero_cross (N : PTm n) : Γ ⊢[PRAAx] crossEquivalent valueF constantF N qzero :=
+  (regular_zero_of_sample_error valueF N _ (fun p => value_at p _) (fun p => value_bound p _)).andE₂
 
 theorem original_shifted_negative_gamma_critical_zero_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1
     (pointCN locationF (var 0) ⋏ (pointCN valueF (var 0) ⋏ crossEquivalent valueF constantF (var 0) qzero)) :=
