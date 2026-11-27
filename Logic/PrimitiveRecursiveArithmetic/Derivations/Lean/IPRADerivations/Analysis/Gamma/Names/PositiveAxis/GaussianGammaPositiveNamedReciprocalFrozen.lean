@@ -19,7 +19,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaPositiveNamedReciprocalFrozen
 
 open_ipra
 open ComplexLogarithmRemainder (oneCode re normSq)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_one)
 open GaussianEuclideanDistanceName (pointCN fraction fraction_represents)
 open GaussianGammaDigammaNative (reciprocalData)
 open GaussianGammaMinimumFreezeRational (numerator denominator frozen_rational_domain)
@@ -192,9 +192,7 @@ theorem rational_observation_bounded (p a b : PTm n) (hs : Γ ⊢[PRAAx] Gaussia
     exact (by unfold unit; ipra_ring : Γ ⊢[PRAAx] unit H+unit H ≐ unit H*two).eqTrans (pw_succ two H).eqSymm
   have reduced : Γ ⊢[PRAAx] bounded x (two+V) one :=
     GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring) disk
-  exact bounded_radius_mono x (two+V) one bound one (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) (le_congr (.eqRefl _) double paid))
-    reduced
+  exact bounded_radius_mono_one (le_congr (.eqRefl _) double paid) reduced
 
 theorem rational_bounded (a b : PTm n) (h : Γ ⊢[PRAAx] GaussianStirlingGammaLogarithm.source a b) :
     Γ ⊢[PRAAx] sampleBound C7 (reciprocalData a b) bound := by

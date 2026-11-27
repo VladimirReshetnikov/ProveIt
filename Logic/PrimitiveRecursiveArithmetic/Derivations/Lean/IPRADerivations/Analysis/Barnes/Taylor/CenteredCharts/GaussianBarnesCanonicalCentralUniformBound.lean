@@ -24,7 +24,7 @@ open GaussianBarnesCanonicalFactor (exponentRadius correction_bound)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial)
 open GaussianBarnesCanonicalSingleExponential (prefactorExponentData prefixF prefixData exponentF exponentData)
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono_one)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
 open GaussianNameBounds (U)
@@ -76,8 +76,7 @@ private theorem widen_samples (f : PR 2) (x A C : PTm n) (hA : Γ ⊢[PRAAx] le 
   have hs : Γ.map Fm.shift ⊢[PRAAx] sampleBound f (a x) (a A) := by simpa [Fm.shift,a,Syn.shift] using h.shift
   have hAs : Γ.map Fm.shift ⊢[PRAAx] le (a A) (a C) := by simpa [Fm.shift,a,Syn.shift] using hA.shift
   simpa only [sampleBound,a,Syn.shift] using
-    bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (mul_le_mul_right one hAs)
-      (sample_bound_at f (a x) (a A) (var 0) hs)
+    bounded_radius_mono_one hAs (sample_bound_at f (a x) (a A) (var 0) hs)
 
 theorem prefix_argument_samples (z R B : PTm n) (hz : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     sampleBound prefixF (prefixData z R B) (prefixArgumentCap R) := by
@@ -127,7 +126,7 @@ private theorem exponential_samples (f : PR 2) (x C : PTm n)
     (GaussianRadiusExponentialName.query_bound f u (a x) (var 0) (exponential_input f (a x) hp))
   have hF : Δ ⊢[PRAAx] le (factor u) (factor c) :=
     GaussianFactorBudget.power_monotone_length (num 3) u c (zero_lt_succ _) hU
-  have bound := bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) (mul_le_mul_right one hF) b
+  have bound := bounded_radius_mono_one hF b
   simpa only [sampleBound,a,Δ,u,c,Syn.shift,exponentialInputData,GaussianRadiusExponentialName.subst_data,
     GaussianRadiusExponentialName.sample,GaussianNameBounds.subst_U,subst_factor,LeanProofs.IPRA.PTm.subst_add,LeanProofs.IPRA.PTm.subst_mul,
     one,two,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
