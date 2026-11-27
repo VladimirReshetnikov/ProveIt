@@ -15,6 +15,7 @@ set_option maxHeartbeats 800000
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneLogarithmMercatorHalfDisk
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianFastValueCut (exponent)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaFiniteApproximantName (exponential_input)
@@ -77,13 +78,12 @@ private theorem late_difference_at (A B D neg R C p : PTm n)
   have right := GaussianRadiusExponentialName.bounded_samples_at pointF one y u
     (GaussianExponentialRadiusIndependence.radius_one_input pointF y
       (GaussianLocalLogarithmName.original_exponential_input z R D (local_source A B D neg R h))).andE₂
-  have both := bounded_sum a v two one one one (le_refl one) (le_refl one) left
-    (bounded_negative b one one (le_refl one) right)
   have exactSample := (add_at (Γ := Γ) L (negativeF pointF) x (negativeData y) p).eqTrans
     ((recode_congr (qadd_congr (.eqRefl a)
       (GaussianRealNameExponentialUnitReflection.negative_sample_at pointF t y))).eqTrans
       (GaussianExponentialReference.recode_fixed _ (qadd_canonical _ _)))
-  exact bound_congr exactSample.eqSymm (by ipra_ring) (one_mul _) both
+  exact bound_congr exactSample.eqSymm (by ipra_ring) (.eqRefl _)
+    (bounded_sum_one left (bounded_negative b one one (le_refl one) right))
 
 theorem late_difference (A B D neg R C : PTm n) (h : Γ ⊢[PRAAx] source A B D neg R)
     (hl : Γ ⊢[PRAAx] lateLogBound A B D neg C) :

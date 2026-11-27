@@ -16,6 +16,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianStirlingMultiplicativeBoundsOrder
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
@@ -97,9 +98,7 @@ private theorem observation (f g : PR 2) (V x y p : PTm n)
   have sb := fraction_bound two W hw
   have sbFixed := GaussianCoefficientNameBounds.bounded_radius_mono _ two W two one hw (le_refl one)
     (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right two hw)) sb
-  have yb : Γ ⊢[PRAAx] bounded Y R one :=
-    bound_congr (.eqRefl _) (by change Γ ⊢[PRAAx] V*one+two*one ≐ R; dsimp [R]; ipra_ring)
-    (by ipra_ring) (bounded_sum B S V one two one (le_refl one) (le_refl one) bb sbFixed)
+  have yb : Γ ⊢[PRAAx] bounded Y R one := bounded_sum_one bb sbFixed
   have ineq := upper_mono _ _ _ _ two W (positive_product _ _ hw hw) (real_order_at f g x y t t ho)
     (le_of_eq_add (d := zero) (by dsimp only [W]; ipra_ring))
   have shiftOrder := RationalConvexEndpointBudget.order_of_upper (fstT A) (fstT B) two W hw ineq

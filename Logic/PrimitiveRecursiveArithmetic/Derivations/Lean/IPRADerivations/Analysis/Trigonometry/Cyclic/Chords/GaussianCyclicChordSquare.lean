@@ -38,7 +38,7 @@ open GaussianRationalNormSquareTransport (value product_value)
 open GaussianRationalReciprocal (qone qone_bounded bound_congr bounded_product bounded_difference bounded_sum)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
-open GaussianRationalPowerDifference (distance_refl_zero)
+open GaussianRationalPowerDifference (distance_refl_zero bounded_sum_one)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianApproximateInverseDistance (multiply_distance)
 
@@ -85,8 +85,8 @@ theorem real_sine_bound (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
 theorem doubled_sine_bound (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
     Γ ⊢[PRAAx] bounded (doubledSine p r m x) twiceSineRadius one := by
   have hs := real_sine_bound p r m x h
-  exact bound_congr (.eqRefl _) (by unfold twiceSineRadius; ipra_ring) (by ipra_ring)
-    (bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) hs hs)
+  exact bound_congr (.eqRefl _) (by unfold twiceSineRadius; ipra_ring) (.eqRefl _)
+    (bounded_sum_one hs hs)
 
 theorem chord_bound (p r m x : PTm n) (h : Γ ⊢[PRAAx] source r m) :
     Γ ⊢[PRAAx] bounded (chord p r m x) chordRadius one :=

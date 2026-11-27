@@ -147,7 +147,7 @@ private theorem prefactor_linear_gap (q t z R B : PTm n) (h : Γ ⊢[PRAAx] sour
   have dpos : Γ ⊢[PRAAx] le one D := positive_product _ _ (unit_positive q) (unit_positive t)
   have hz := GaussianGammaEulerHead.fraction_disk z R B h.andE₁ h.andE₂
   have hc : Γ ⊢[PRAAx] bounded c (R+R) one :=
-    GaussianRationalPowerDifference.bounded_sum_same zq zq R R one (le_refl one) hz hz
+    GaussianRationalPowerDifference.bounded_sum_one hz hz
   have fs := point_at S (sd zero) q t (GaussianStirlingConstant.name_regular (Γ := Γ) zero)
   have fg := point_at Q qd q t (quadratic_coefficient_regular (Γ := Γ))
   have mul := scale_distance c (ap2 Q q qd) (ap2 Q t qd) (R+R) A D dpos hc fg

@@ -33,7 +33,7 @@ open GaussianRationalL1 (rawGaussian rawDen raw_den_positive raw_represents)
 open GaussianRationalLowerBounds (lower lower_from_representation lower_to_cleared)
 open GaussianRationalMetric (bounded bounded_of_cleared bounded_to_cleared distanceBounded)
 open GaussianRationalNaturalScale (naturalPoint)
-open GaussianRationalPowerDifference (bounded_sum_same distance_refl_zero)
+open GaussianRationalPowerDifference (bounded_sum_one distance_refl_zero)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalSyntheticCoefficientValues (qadd_recode_left qadd_sub_recode)
@@ -88,7 +88,7 @@ theorem native_increment (q u R E : PTm n) (hq : Γ ⊢[PRAAx] native (rawGaussi
   have small : Γ ⊢[PRAAx] bounded u one one :=
     bounded_radius_mono u one (two*E) one one he (le_refl one) (le_congr (one_mul _).eqSymm (one_mul _).eqSymm he) hu
   have sum : Γ ⊢[PRAAx] bounded r (succ R) one :=
-    bound_congr (.eqRefl _) (succ_eq_add_one R).eqSymm (.eqRefl _) (bounded_sum_same q u R one one (le_refl one) base small)
+    bound_congr (.eqRefl _) (succ_eq_add_one R).eqSymm (.eqRefl _) (bounded_sum_one base small)
   have disk : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded (rawGaussian r) (succ R*rawDen r) :=
     le_congr (by ipra_ring) (by ipra_ring)
       (bounded_to_cleared _ _ _ _ _ (raw_den_positive r) (le_refl one) (raw_represents r) sum)

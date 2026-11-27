@@ -23,7 +23,7 @@ open GaussianGammaZetaMellinGeometric (weightedValue ratio partial_value ratio_b
 open GaussianGammaZetaMellinIntegrand (nameF data factorClock reciprocalF reciprocalData sample_at)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded qsub qnegative)
-open GaussianRationalPowerDifference (bounded_power_integer bounded_sum_same)
+open GaussianRationalPowerDifference (bounded_power_integer bounded_sum_one)
 open GaussianRationalReciprocal (power bounded_negative bounded_product bound_congr qone_bounded)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
@@ -55,7 +55,7 @@ theorem factor_bound (p z D a b N : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
   have hp : Γ ⊢[PRAAx] bounded (power x N) one one :=
     bound_congr (.eqRefl _) (GaussianPolynomialPerturbation.one_power N) (.eqRefl _)
       (bounded_power_integer x one N hx)
-  have h := bounded_sum_same qone (qnegative (power x N)) one one one (le_refl one) qone_bounded
+  have h := bounded_sum_one qone_bounded
     (bounded_negative _ _ _ (le_refl one) hp)
   exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) h
 

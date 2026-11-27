@@ -29,7 +29,7 @@ open GaussianRationalHorner (qzero qmul positive_product ofGaussian_represents r
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_represents qsub_canonical)
 open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum bounded_negative)
 open GaussianRationalSyntheticDivision (qmul_congr rescale_to)
-open GaussianRationalPowerDifference (distance_refl_zero)
+open GaussianRationalPowerDifference (distance_refl_zero bounded_sum_one)
 open GaussianRootAlgebra (equal equal_of_values sub re_sub im_sub re_mul im_mul re_scale im_scale re_one im_one)
 open GaussianStirlingGlobalBoundsShiftArguments (shiftedNumerator positiveFraction ratioData shifted_positive log_ratio_regular)
 open GaussianStirlingNames (offset point)
@@ -80,8 +80,8 @@ private theorem coefficient_bound (i r b : PTm n) (hb : Γ ⊢[PRAAx] le one b) 
   have c := bounded_radius_mono _ _ _ _ _ hb (le_refl one) cle (fraction_bound z b hb)
   have H : Γ ⊢[PRAAx] bounded h one one := bounded_radius_mono h one two one one RationalAlgebra.two_positive (le_refl one) (by ipra_le 1)
     (fraction_bound one two RationalAlgebra.two_positive)
-  have sum := bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) c (bounded_negative _ _ _ (le_refl one) H)
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring) sum
+  have sum := bounded_sum_one c (bounded_negative _ _ _ (le_refl one) H)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) sum
 
 private theorem centered_identity (i r b : PTm n) (hi : Γ ⊢[PRAAx] le one i) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] qsub (positiveFraction r b) (qmul (offset (shiftedNumerator i r b) b) (fraction r (b*i))) ≐
@@ -126,7 +126,7 @@ private theorem centered_bound (i r b : PTm n) (hi : Γ ⊢[PRAAx] le one i) (hb
   have ht := bounded_radius_mono t r (b*i) one i (positive_product _ _ hb hi) hi
     (by ipra_le 𝔞 i*sl hr) (fraction_bound r (b*i) (positive_product _ _ hb hi))
   have hC : Γ ⊢[PRAAx] bounded (qsub H u) two one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring) (bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) hH
+    bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) (bounded_sum_one hH
       (bounded_negative _ _ _ (le_refl one) hu))
   exact bound_congr (centered_identity i r b hi hb).eqSymm (by ipra_ring) (by ipra_ring)
     (bounded_product _ _ _ _ _ _ (le_refl one) hi hC ht)

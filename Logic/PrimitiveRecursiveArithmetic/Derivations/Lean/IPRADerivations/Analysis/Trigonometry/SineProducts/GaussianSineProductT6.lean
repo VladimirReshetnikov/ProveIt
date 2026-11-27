@@ -18,6 +18,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductT6
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianSineProductT4Budget (halfIndex squareDenominator headError productError prefactorError rate
   absorb_errors cutoff_le_half_index)
 open GaussianInverseSquareProductTail (factorBounds factor_bound_at sharp_tail sine_factor_bound)
@@ -132,8 +133,8 @@ theorem tail_estimate (f : PTm 2) (x R K J : PTm n)
   have hP := uniform_bound (Γ := le K (two*C) :: Γ) f x C J hf.wk
   have hQ := uniform_bound (Γ := le K (two*C) :: Γ) f x C K hf.wk
   have raw : le K (two*C) :: Γ ⊢[PRAAx] distanceBounded (qprod f J x) (qprod f K x) (two*G) one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (one_mul one)
-      (bounded_sum _ _ G one G one (le_refl one) (le_refl one) hP (bounded_negative _ _ _ (le_refl one) hQ))
+    bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+      (bounded_sum_one hP (bounded_negative _ _ _ (le_refl one) hQ))
   exact distance_radius_mono _ _ _ _ _ _ (le_refl one) hK.wk
     (le_congr (.eqRefl _) (by unfold C factorSize; ipra_ring)
       (le_mul_mono (growth_budget R hR.wk) small)) raw

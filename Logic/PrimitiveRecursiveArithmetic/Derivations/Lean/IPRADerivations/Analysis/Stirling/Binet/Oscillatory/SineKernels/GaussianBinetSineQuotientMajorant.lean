@@ -16,6 +16,7 @@ set_option maxHeartbeats 850000
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineQuotientMajorant
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq)
 open GaussianBinetExponentialIntegralGrid (exponent row)
@@ -132,8 +133,8 @@ theorem pair_bound (p A B C : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hC : Γ ⊢[
     have pos := row_unit_bound true p A B C hB.wk hC.wk (Γ := Δ)
     have neg := row_unit_bound false p A B C hB.wk hC.wk (Γ := Δ)
     have raw : Δ ⊢[PRAAx] bounded (qsub x y) (num 4) one :=
-      bound_congr (.eqRefl _) (by ipra_ring) (one_mul one)
-        (bounded_sum x (qnegative y) two one two one (le_refl one) (le_refl one) pos
+      bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+        (bounded_sum_one pos
           (bounded_negative _ _ _ (le_refl one) neg))
     have hBA : Δ ⊢[PRAAx] le B A := Prf.hyp0
     have larger : Δ ⊢[PRAAx] le (num 4*H) ((num 4*A*P+num 4*B)*one) := by

@@ -15,6 +15,7 @@ set_option maxHeartbeats 850000
 namespace LeanProofs.IPRA.Analysis.GaussianBinetSineRealDampedPanels
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianBinetExponentialIntegralGrid (row exponent)
 open GaussianBinetExponentialPanel (unit_bound)
 open GaussianBinetImaginaryExponentialIntegral (coefficient coefficient_bound exponent_nonpositive)
@@ -54,8 +55,8 @@ theorem quotient_bound (p A B a b U T : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB
         (GaussianEulerExponentCompactBounds.fraction_bound a b T hb ht)
     exact unit_bound p _ C (GaussianSignedNameExponentialOrder.constant_input _ _ expo) (exponent_nonpositive A B _ a b hB hb)
   have dif : Γ ⊢[PRAAx] bounded (qsub x y) (num 4) one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (one_mul one)
-      (bounded_sum x (qnegative y) two one two one (le_refl one) (le_refl one) (bd true)
+    bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+      (bounded_sum_one (bd true)
         (bounded_negative y two one (le_refl one) (bd false)))
   exact bound_congr (quotient_at p A B a b C hB hb) (.eqRefl _) (.eqRefl _)
     (bounded_product_one (multiplier_bound A B hA hB) dif)

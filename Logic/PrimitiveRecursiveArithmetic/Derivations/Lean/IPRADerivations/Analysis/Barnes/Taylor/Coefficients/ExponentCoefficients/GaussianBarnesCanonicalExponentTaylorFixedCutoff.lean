@@ -70,7 +70,7 @@ private theorem linear_gap (q t z R B : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
   have dpos := clock_denominator_positive (Γ := Γ) q t
   have hx := GaussianGammaEulerHead.fraction_disk z R B hz.andE₁ hz.andE₂
   have hc : Γ ⊢[PRAAx] bounded c (R+R) one :=
-    GaussianRationalPowerDifference.bounded_sum_same x x R R one (le_refl one) hx hx
+    GaussianRationalPowerDifference.bounded_sum_one hx hx
   have stirling := point_at GaussianStirlingConstant.nameF (GaussianStirlingConstant.nameData zero) q t
     (GaussianStirlingConstant.name_regular (Γ := Γ) zero)
   have quadratic := point_at quadraticCoefficientF quadraticCoefficientData q t

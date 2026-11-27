@@ -55,7 +55,7 @@ theorem shifted_source (X Y D sign R M j : PTm n) (h : Γ ⊢[PRAAx] source X Y 
   have frac := GaussianEulerExponentCompactBounds.fraction_bound j M one hM (le_congr (.eqRefl _) (one_mul M).eqSymm hj)
   have bw : Γ ⊢[PRAAx] bounded w (R+one) one :=
     bound_congr (GaussianBinetWeightedResolventGrid.tag_add X Y D sign M j h.andE₁ hM).eqSymm (.eqRefl _) (.eqRefl _)
-      (GaussianRationalPowerDifference.bounded_sum_same z (fraction j M) R one one (le_refl one)
+      (GaussianRationalPowerDifference.bounded_sum_one
         (GaussianBinetLaplaceExponential.parameter_bound X Y D sign R h) frac)
   have cleared := (bounded_iff w (native A B sign) E (R+one) one he (le_refl one) (ofGaussian_represents _ _ he)).iffMp bw
   have bn : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded (native A B sign) ((R+one)*E) :=
