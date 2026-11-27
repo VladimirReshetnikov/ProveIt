@@ -22,7 +22,7 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_same)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianRationalReciprocal (qone reciprocal)
 open GaussianRationalLowerBounds (lower inverse_bound)
@@ -124,7 +124,7 @@ private theorem away_pair (f : PR 2) (R x p q : PTm n) (h : Γ ⊢[PRAAx] input 
   have cost : Γ ⊢[PRAAx] le (two*sineBudget f R x+two+sampleSize f R x*two) (modulus f R x) := by
     unfold modulus
     ipra_le 4
-  exact distance_radius_mono _ _ _ _ _ _ hU hU (le_mul_mono cost (le_refl _))
+  exact distance_radius_mono_same hU cost
     (sample_distance_away f f R R x x p q _ h (argument_pair_error f R x p q h hpq)
       (sine_pair_error f R x p q h hpq) hp)
 

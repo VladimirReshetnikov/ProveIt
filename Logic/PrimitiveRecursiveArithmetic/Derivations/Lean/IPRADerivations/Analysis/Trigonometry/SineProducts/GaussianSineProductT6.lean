@@ -31,7 +31,7 @@ open GaussianBalancedRadiusArithmetic (unit_monotone)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalReciprocal (qone bound_congr bounded_sum bounded_negative)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_radius_mono_same)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianReciprocalHorner (qmul_one_right)
@@ -60,8 +60,7 @@ theorem reference_factors (z R B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have mono : Δ ⊢[PRAAx] le (r*r) (factorSize r) := by
     unfold factorSize
     exact le_of_eq_add (d := num 15*(r*r)) (by ipra_ring)
-  have step := distance_radius_mono _ _ _ _ (factorSize r) _ p p
-    (le_mul_mono mono (le_refl _)) (sine_factor_bound j a r d hd ha)
+  have step := distance_radius_mono_same p mono (sine_factor_bound j a r d hd ha)
   have result : Δ ⊢[PRAAx] distanceBounded (inst2 body j (pairT a d)) qone (factorSize r) (succ j*succ j) :=
     distance_congr (square_factor_at j a d).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) step
   change Δ ⊢[PRAAx] distanceBounded (inst2 body j (Syn.shift (pairT z B))) qone

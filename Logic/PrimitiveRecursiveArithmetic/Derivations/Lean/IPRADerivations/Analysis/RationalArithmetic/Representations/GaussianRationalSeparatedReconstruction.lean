@@ -20,7 +20,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianRationalSeparatedReconstruction
 
 open_ipra
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono bounded_radius_mono_same)
 open GaussianRationalFiniteRoots (stage remaining stage_succ stage_zero stage_length stage_head stage_index_congr
   remaining_step head evaluate_congr)
 open GaussianRationalHorner (evaluate qzero qmul qadd)
@@ -143,8 +143,7 @@ private theorem error_succ (C N R E K D B y k : PTm n)
   have hb := difference_at R y B j hy inList
   have hRemainder := later_at _ _ _ _ _ _
     (stage_residuals C N R E K D j hc hk hd hr hs (le_of_lt hj)) inList (le_refl _)
-  have hRemainder' : Γ ⊢[PRAAx] bounded v F K := bounded_radius_mono _ _ _ _ _ hk hk
-    (le_mul_mono (budget_mono E D j N hd (le_of_lt hj)) (le_refl _)) hRemainder
+  have hRemainder' : Γ ⊢[PRAAx] bounded v F K := bounded_radius_mono_same hk (budget_mono E D j N hd (le_of_lt hj)) hRemainder
   have hPrev := bound_congr (discrepancy_index_congr C N R y (remaining_step N k step)) (.eqRefl _) (.eqRefl _)
     (Prf.impE prev (le_of_lt step))
   have hProd := bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring : Γ ⊢[PRAAx] one*K ≐ K)

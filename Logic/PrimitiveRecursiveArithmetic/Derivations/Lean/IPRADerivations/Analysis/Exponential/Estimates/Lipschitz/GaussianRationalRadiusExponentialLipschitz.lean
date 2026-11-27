@@ -77,8 +77,7 @@ theorem term_bound (u v R A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
         (le_mul_mono (pw_le_pw k (le_of_eq_add (d := one) (by ipra_ring) : Γ ⊢[PRAAx] le (succ R) (R+two))) (le_refl (succ R))))
     exact le_congr (GaussianRationalPowerDifference.budget_succ R A k).eqSymm
       (by unfold factor; ipra_ring) (le_mul_mono native (le_refl A))
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ hB hB
-    (le_mul_mono budget (le_refl B)) old
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_same hB budget old
 
 def boundLaw (u v R A B K : PTm n) : Fm PTm n := bounded (difference u v K) (factor R K*A) B
 ipra_subst boundLaw

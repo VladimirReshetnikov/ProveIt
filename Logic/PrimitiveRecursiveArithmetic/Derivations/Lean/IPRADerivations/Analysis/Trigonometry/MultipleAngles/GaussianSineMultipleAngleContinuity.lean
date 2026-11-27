@@ -19,7 +19,7 @@ open GaussianSineMultipleAngleRecurrence (previous value previous_zero value_zer
 open GaussianRationalHorner (qzero qmul)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (qone qone_bounded bound_congr bounded_product bounded_difference)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_mono_same)
 open GaussianCoefficientNameBounds (bounded_radius_mono bounded_radius_mono_one)
 open GaussianRationalPowerDifference (distance_refl_zero)
 open GaussianNameArithmetic (product_distance)
@@ -86,7 +86,7 @@ private theorem step (S T M A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have dif := h.andE₂
   have next1 : Γ ⊢[PRAAx] distanceBounded (previous S (succ k)) (previous T (succ k)) (A*X) B :=
     distance_congr (previous_succ S k).eqSymm (previous_succ T k).eqSymm (.eqRefl _) (.eqRefl _)
-      (distance_radius_mono _ _ _ _ _ _ hB hB (le_mul_mono (le_mul_mono (le_refl A) grow) (le_refl B)) dif.andE₂)
+      (distance_radius_mono_same hB (le_mul_mono (le_refl A) grow) dif.andE₂)
   have product := product_distance S T (value S k) (value T k) A (A*W) B W M hB hST dif.andE₂ oldS.andE₂ hT
   have next2 := difference_distance _ _ _ _ _ _ _ hB product dif.andE₁
   exact .andI (.andI (build S hS oldS.andE₁ oldS.andE₂) (build T hT oldT.andE₁ oldT.andE₂))

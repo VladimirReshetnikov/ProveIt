@@ -21,7 +21,7 @@ open_ipra
 open GaussianScalarSincTaylor (sincTerm sincTaylor sincTail sinc_tail_zero sinc_tail_succ
   sinc_head_tail sinc_difference_tail)
 open GaussianRationalPolynomialExponential (inverseFactorial factorial_positive)
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono bounded_radius_mono_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (qone qone_bounded power powerF bounded_power bounded_product bound_congr)
@@ -137,7 +137,7 @@ private theorem tail_budget_step (z A B k : PTm n)
   have pay : Γ ⊢[PRAAx] le (T+two*(A*A)) ((A*A)*monus G one) :=
     le_congr (by dsimp only [T]; ipra_ring) (.eqRefl _) (le_mul_mono (le_refl (A*A)) (reserve_step k))
   exact bound_congr (sinc_tail_succ z k).eqSymm (.eqRefl _) (.eqRefl _)
-    (bounded_radius_mono _ _ _ _ _ hE hE (le_mul_mono pay (le_refl E)) sum)
+    (bounded_radius_mono_same hE pay sum)
 
 private theorem tail_budget (z A B K : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hAB : Γ ⊢[PRAAx] le A B) (hz : Γ ⊢[PRAAx] bounded z A B) :

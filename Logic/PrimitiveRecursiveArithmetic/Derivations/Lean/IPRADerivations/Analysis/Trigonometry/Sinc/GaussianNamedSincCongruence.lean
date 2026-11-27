@@ -24,7 +24,7 @@ open GaussianNamedSineFromExponential (sineF sineData sine_regular sine_proper)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (qone reciprocal bound_congr)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_same)
 open GaussianRationalLowerBounds (lower)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone dyadic_weaken)
@@ -94,7 +94,7 @@ private theorem near_error (f g : PR 2) (R S x y p : PTm n)
   have cost : Γ ⊢[PRAAx] le (two+two) (rawCost f g R S x y) := by
     unfold rawCost
     ipra_le 𝔞 (sineCost f g R S x y)+2*𝔞 (sampleSize g S y)
-  exact distance_radius_mono _ _ _ _ _ _ hU hU (le_mul_mono cost (le_refl _))
+  exact distance_radius_mono_same hU cost
     (sample_distance_near f g R S x y p p hgap hnear)
 
 private theorem away_error (f g : PR 2) (R S x y p : PTm n) (hg : Γ ⊢[PRAAx] input g S y)
@@ -105,7 +105,7 @@ private theorem away_error (f g : PR 2) (R S x y p : PTm n) (hg : Γ ⊢[PRAAx] 
   have hU := unit_positive (Γ := Γ) (succ p)
   have cost : Γ ⊢[PRAAx] le (sineCost f g R S x y+sampleSize g S y*two) (rawCost f g R S x y) :=
     le_add_right _ _
-  exact distance_radius_mono _ _ _ _ _ _ hU hU (le_mul_mono cost (le_refl _))
+  exact distance_radius_mono_same hU cost
     (sample_distance_away f g R S x y p p _ hg hgap hSin hfar)
 
 theorem raw_error (f g : PR 2) (R S x y p : PTm n)
