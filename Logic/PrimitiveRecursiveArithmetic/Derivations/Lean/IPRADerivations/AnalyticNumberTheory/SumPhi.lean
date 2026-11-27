@@ -178,7 +178,7 @@ theorem q_iff {j e : PTm n} (hj : Γ ⊢[PRAAx] j ≐ succ (pred j)) (he : Γ �
     ipra_lc -Groth.ι (Q.mk _ (gcd k N)) * natEq (Prf.hyp0 : ((quo N (gcd k N) ≐ j) :: Γ) ⊢[PRAAx] quo N (gcd k N) ≐ j) -
       natEq (N_eq (hN.wk : ((quo N (gcd k N) ≐ j) :: Γ) ⊢[PRAAx] _) k) + natEq (hNe.wk (ψ := quo N (gcd k N) ≐ j))
   · refine (congrAp2 quoF (.eqRefl _) Prf.hyp0).eqTrans (quo_eq he.wk (q := j) (r := zero)
-      (hNe.wk.eqTrans (add_zero _).eqSymm) (lt_congr (.eqRefl _) he.wk.eqSymm (zero_lt_succ _)))
+      (hNe.wk.eqTrans (add_zero _).eqSymm) (Order.zero_lt_of_eq_succ he.wk))
 
 /-- `N / gcd(k, N) ≠ j` when `j ∤ N`. -/
 theorem q_ne {j : PTm n} (hj : Γ ⊢[PRAAx] j ≐ succ (pred j))

@@ -53,10 +53,10 @@ theorem pos_of_succ {a c : PTm n} (h : Γ ⊢[PRAAx] a ≐ succ c) : Γ ⊢[PRAA
 theorem pos_of_one_le {a : PTm n} (h : Γ ⊢[PRAAx] le one a) : Γ ⊢[PRAAx] a ≐ succ (pred a) :=
   pos_of_succ ((eq_add_of_le h).eqTrans (succ_add _ _))
 
-theorem one_le_succ (a : PTm n) : Γ ⊢[PRAAx] le one (succ a) := (succ_monus_succ _ _).eqTrans (zero_le a)
+theorem one_le_succ (a : PTm n) : Γ ⊢[PRAAx] le one (succ a) := Order.lt_succ_of_le (zero_le a)
 
 theorem one_le_of_pos {a : PTm n} (h : Γ ⊢[PRAAx] a ≐ succ (pred a)) : Γ ⊢[PRAAx] le one a :=
-  le_congr (.eqRefl _) h.eqSymm (one_le_succ _)
+  Order.zero_lt_of_eq_succ h
 
 theorem pos_mul {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :
     Γ ⊢[PRAAx] a * b ≐ succ (pred (a * b)) :=
@@ -226,7 +226,7 @@ theorem monus_succ_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) :
   monus_of_eq ((eq_add_of_le h).eqTrans (by ipra_ring))
 
 theorem one_le_monus_of_lt (a b : PTm n) (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] le one (monus b a) :=
-  le_congr (.eqRefl _) (monus_succ_of_lt h).eqSymm (one_le_succ _)
+  Order.zero_lt_of_eq_succ (monus_succ_of_lt h)
 
 theorem monus_succ_lt (a b : PTm n) (h : Γ ⊢[PRAAx] lt b a) : Γ ⊢[PRAAx] lt (monus a (succ b)) a :=
   le_congr (monus_succ_of_lt h) (.eqRefl _) (monus_le_self a b)

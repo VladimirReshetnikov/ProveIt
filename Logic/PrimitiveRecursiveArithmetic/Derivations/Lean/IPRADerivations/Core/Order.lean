@@ -154,6 +154,10 @@ theorem lt_congr {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ 
     (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] lt a' b' :=
   le_congr (congrSucc h₁) h₂ h
 
+/-- A natural term equal to a successor is positive. -/
+theorem Order.zero_lt_of_eq_succ {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ succ b) : Γ ⊢[PRAAx] lt zero a :=
+  le_congr (.eqRefl _) h.eqSymm (Order.lt_succ_of_le (zero_le b))
+
 /-! ## Strict order and decidability -/
 
 theorem not_succ_le_self (a : PTm n) (φ : Fm PTm n) (h : Γ ⊢[PRAAx] le (succ a) a) : Γ ⊢[PRAAx] φ := by

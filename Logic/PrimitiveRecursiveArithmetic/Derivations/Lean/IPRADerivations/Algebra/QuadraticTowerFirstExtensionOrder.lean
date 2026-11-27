@@ -30,7 +30,7 @@ open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem first_index : Γ ⊢[PRAAx] lt zero (QuadraticTowerCoefficients.width (one : PTm n)) :=
-  lt_congr (.eqRefl _) (pw_one two).eqSymm (zero_lt_succ one)
+  Order.zero_lt_of_eq_succ (pw_one two)
 theorem second_index : Γ ⊢[PRAAx] lt one (QuadraticTowerCoefficients.width (one : PTm n)) :=
   lt_congr (.eqRefl _) (pw_one two).eqSymm (le_refl two)
 theorem coefficients_entries (A : PTm n) : Γ ⊢[PRAAx] coefficients A ≐ pairT (entry A zero) (entry A one) :=

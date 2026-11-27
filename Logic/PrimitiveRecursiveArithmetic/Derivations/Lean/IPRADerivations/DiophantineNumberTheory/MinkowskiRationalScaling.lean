@@ -50,7 +50,7 @@ theorem cofactor_positive (a c m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
   · have zeroEq : (c ≐ zero) :: Γ ⊢[PRAAx] m ≐ zero := h.wk.eqSymm.eqTrans
       ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))
     exact lt_zero_absurd _ (lt_congr (.eqRefl zero) zeroEq hm.wk)
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem scaled_left_identity (a b c d m : PTm n)
     (ha : Γ ⊢[PRAAx] denominatorOf a*c ≐ m) (hb : Γ ⊢[PRAAx] denominatorOf b*d ≐ m) :

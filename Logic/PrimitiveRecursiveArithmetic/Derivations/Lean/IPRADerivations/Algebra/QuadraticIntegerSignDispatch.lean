@@ -341,7 +341,7 @@ theorem uniform_dispatch (d x : PTm n) : Γ ⊢[PRAAx] recipe d x ≐ uniformSig
   · exact ((recipe_radicand_congr x Prf.hyp0).eqTrans (zero_radicand_dispatch x)).eqTrans
       (sel_one (eqb_of_eq Prf.hyp0)).eqSymm
   · have hd : (d ≐ succ (PTm.pred d)) :: Γ ⊢[PRAAx] le one d :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have dn : (d ≐ succ (PTm.pred d)) :: Γ ⊢[PRAAx] neg (d ≐ zero) :=
       nonzero_from_code Prf.hyp0 (.impI (succ_ne_zero' _ Prf.hyp0))
     exact (positive_radicand_dispatch d x hd).eqTrans (sel_zero (eqb_of_ne dn)).eqSymm

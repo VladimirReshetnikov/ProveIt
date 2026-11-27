@@ -31,7 +31,7 @@ theorem amp_inflation (B : PTm n) : Γ ⊢[PRAAx] le B (amp B) := by
   refine .orE (zero_or_succ B) ?_ ?_
   · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le _)
   · have hp : ((B ≐ succ (pred B)) :: Γ) ⊢[PRAAx] le one B :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact le_trans (le_congr (one_mul B) (.eqRefl _) (mul_le_mul_right B hp))
       (QuadraticTowerScalarBudget.square_le_amp B)
 theorem growth_congr {t u B C : PTm n} (ht : Γ ⊢[PRAAx] t ≐ u) (hB : Γ ⊢[PRAAx] B ≐ C) :

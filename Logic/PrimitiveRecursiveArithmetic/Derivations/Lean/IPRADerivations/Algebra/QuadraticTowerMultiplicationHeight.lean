@@ -360,7 +360,7 @@ theorem singleton_height (q b : PTm n) (hq : Γ ⊢[PRAAx] height q b) :
 theorem word_zero_lookup (B u : PTm n) : Γ ⊢[PRAAx] entry (word zero B u) zero ≐
     QuadraticTowerArrayCodec.digit (codeCap B) u zero :=
   QuadraticTowerArrayCodec.decoded_lookup _ _ _ _
-    (lt_congr (.eqRefl _) width_zero.eqSymm (zero_lt_succ zero))
+    (Order.zero_lt_of_eq_succ width_zero)
 theorem base_row_at_words (B u v : PTm n)
     (hv : Γ ⊢[PRAAx] lt v (QuadraticTowerArrayCodec.horizon zero B)) : Γ ⊢[PRAAx]
     QuadraticTowerMultiplicationTable.baseRow B (rowIndex zero B u v) ≐ singleton (RationalArithmetic.multiply
@@ -380,7 +380,7 @@ theorem base_height_at (B _D b u v : PTm n)
     (hc : Γ ⊢[PRAAx] arrayHeight zero (word zero B v) b) : Γ ⊢[PRAAx]
     arrayHeight zero (entry (QuadraticTowerMultiplicationTable.base B) (rowIndex zero B u v)) (growth (path zero) b) := by
   have hi : Γ ⊢[PRAAx] lt (zero : PTm n) (width zero) :=
-    lt_congr (.eqRefl _) width_zero.eqSymm (zero_lt_succ zero)
+    Order.zero_lt_of_eq_succ width_zero
   have aH := height_congr (word_zero_lookup B u) (.eqRefl _) (height_at zero _ b zero ha hi)
   have cH := height_congr (word_zero_lookup B v) (.eqRefl _) (height_at zero _ b zero hc hi)
   have scalar := height_mono _ (b*b) (amp b) (QuadraticTowerScalarBudget.multiply_height _ _ _ aH cH)

@@ -195,7 +195,7 @@ theorem gap_positive {r a b i : PTm n} (hi : Γ ⊢[PRAAx] lt i r)
     (hlt : Γ ⊢[PRAAx] lt (entry a i) (entry b i)) :
     Γ ⊢[PRAAx] le one (gap r a b) := by
   have pos : Γ ⊢[PRAAx] le one (monus (entry b i) (entry a i)) :=
-    le_congr (.eqRefl _) (AnalyticNumberTheory.Totatives.monus_succ_of_lt hlt).eqSymm (one_le_succ _)
+    Order.zero_lt_of_eq_succ (AnalyticNumberTheory.Totatives.monus_succ_of_lt hlt)
   exact le_trans (le_congr (.eqRefl _) (gapBody_at i a b).eqSymm pos) (term_le_sum gapBody hi)
 
 /-- A strict increase in one in-range coordinate strictly increases the finite rank. -/

@@ -147,7 +147,7 @@ theorem multiplier_cone (x : PTm n) : Γ ⊢[PRAAx] cone (multiplier x) := by
     have h : (mass x ≐ zero)::Γ ⊢[PRAAx] cone oneCode := cone_natural one zero (le_congr (.eqRefl _) (add_zero _).eqSymm (le_refl _))
     exact cone_code_congr e.eqSymm h
   · let Δ := (mass x ≐ succ (PTm.pred (mass x))) :: Γ
-    have positive : Δ ⊢[PRAAx] le one (mass x) := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+    have positive : Δ ⊢[PRAAx] le one (mass x) := Order.zero_lt_of_eq_succ Prf.hyp0
     have h := cone_natural (magnitude (first x)) (magnitude (second x)) positive
     have e := multiplier_nonzero x positive
     exact cone_code_congr e.eqSymm h
@@ -278,7 +278,7 @@ theorem product_aligned (d x : PTm n) : Γ ⊢[PRAAx] aligned (product d x) := b
     rw [product,multiply_second,v.1,v.2]
     ring
   · let Δ := (mass x ≐ succ (PTm.pred (mass x)))::Γ
-    have pos : Δ ⊢[PRAAx] le one (mass x) := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+    have pos : Δ ⊢[PRAAx] le one (mass x) := Order.zero_lt_of_eq_succ Prf.hyp0
     exact aligned_code_congr (multiply_code_congr (.eqRefl _) (multiplier_nonzero x pos) (.eqRefl _)).eqSymm
       (absolute_product_aligned d x)
 
@@ -423,13 +423,13 @@ theorem aligned_classification (x : PTm n) (h : Γ ⊢[PRAAx] aligned x) : Γ �
       refine .orE h.wk.wk ?_ ?_
       · have z := negative_part_zero _ (nonnegative_sum (first x) (second x) (.andE₁ (Prf.hyp0 (Γ := Δ))) (.andE₂ Prf.hyp0))
         exact succ_ne_zero' _ (Prf.hyp1.eqSymm.eqTrans z)
-      · have hn : (zle (first x) (ZT.ofNat zero) ⋏ zle (second x) (ZT.ofNat zero))::Δ ⊢[PRAAx] le one (negativePart (first x+second x)) := le_congr (.eqRefl _) Prf.hyp1.eqSymm (zero_lt_succ _)
+      · have hn : (zle (first x) (ZT.ofNat zero) ⋏ zle (second x) (ZT.ofNat zero))::Δ ⊢[PRAAx] le one (negativePart (first x+second x)) := Order.zero_lt_of_eq_succ Prf.hyp1
         exact .orI₂ (.orI₁ (.andI (tag_negative _ Prf.hyp0.wk.wk Prf.hyp1)
           (cone_negative x (.andE₁ Prf.hyp0) (.andE₂ Prf.hyp0) hn)))
   · let Δ := (positivePart (first x+second x) ≐ succ (PTm.pred (positivePart (first x+second x)))) :: Γ
     refine .orE h.wk ?_ ?_
     · have hn := negative_part_zero _ (nonnegative_sum (first x) (second x) (.andE₁ (Prf.hyp0 (Γ := Δ))) (.andE₂ Prf.hyp0))
-      have hp : (zle (ZT.ofNat zero) (first x) ⋏ zle (ZT.ofNat zero) (second x))::Δ ⊢[PRAAx] le one (positivePart (first x+second x)) := le_congr (.eqRefl _) Prf.hyp1.eqSymm (zero_lt_succ _)
+      have hp : (zle (ZT.ofNat zero) (first x) ⋏ zle (ZT.ofNat zero) (second x))::Δ ⊢[PRAAx] le one (positivePart (first x+second x)) := Order.zero_lt_of_eq_succ Prf.hyp1
       exact .orI₁ (.andI (tag_positive _ Prf.hyp1 hn) (cone_positive x (.andE₁ Prf.hyp0) (.andE₂ Prf.hyp0) hp))
     · have z := positive_part_zero _ (nonpositive_sum (first x) (second x) (.andE₁ (Prf.hyp0 (Γ := Δ))) (.andE₂ Prf.hyp0))
       exact succ_ne_zero' _ (Prf.hyp1.eqSymm.eqTrans z)

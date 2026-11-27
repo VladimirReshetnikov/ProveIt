@@ -66,7 +66,7 @@ theorem absolute_positive (d : ZT n) (hd : Γ ⊢[PRAAx] neg (ZT.eq d (ZT.natLit
       ipra_simps
       linear_combination natEq equal
     exact .botE _ (.impE hd.wk bad)
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem pivot_positive (m : PTm n) (h : Γ ⊢[PRAAx] source m) : Γ ⊢[PRAAx] le one (pivot m) :=
   Analysis.RationalAlgebra.positive_product (absolute_positive _ h.andE₂) (absolute_positive _ h.andE₂)

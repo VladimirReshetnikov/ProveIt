@@ -81,7 +81,7 @@ theorem square_root_bound (x : PTm n) : Γ ⊢[PRAAx] le (isqrt x) x := by
   refine .orE (zero_or_succ (isqrt x)) ?_ ?_
   · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le _)
   · have h1 : ((isqrt x ≐ succ (PTm.pred (isqrt x))) :: Γ) ⊢[PRAAx] le one (isqrt x) :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have sq := mul_le_mul_right (isqrt x) h1
     exact le_trans (le_congr (one_mul _) (.eqRefl _) sq) (isqrt_le x)
 theorem second_bound (x : PTm n) : Γ ⊢[PRAAx] le (sndT x) x := le_trans (monus_bound _ _) (square_root_bound x)

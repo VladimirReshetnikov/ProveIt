@@ -146,11 +146,11 @@ theorem input_certificate (X : Interface) (C q p : PTm n)
     (h : Γ ⊢[PRAAx] masterValid X (demands q) C p) : Γ ⊢[PRAAx] valid X (entry C zero) q p :=
   valid_congr X (.eqRefl _) (demand_lookup q zero (zero_lt_succ zero)) (.eqRefl _)
     (master_values_at X (.andE₂ (.andE₂ h))
-      (lt_congr (.eqRefl _) (demand_length q).eqSymm (zero_lt_succ zero)))
+      (Order.zero_lt_of_eq_succ (demand_length q)))
 theorem input_related (X : Interface) (C C' q p : PTm n)
     (h : Γ ⊢[PRAAx] masterRelated X (demands q) C C' p) : Γ ⊢[PRAAx] related X (entry C zero) (entry C' zero) q p :=
   related_congr X (.eqRefl _) (.eqRefl _) (demand_lookup q zero (zero_lt_succ zero)) (.eqRefl _)
-    (master_related_at X h (lt_congr (.eqRefl _) (demand_length q).eqSymm (zero_lt_succ zero)))
+    (master_related_at X h (Order.zero_lt_of_eq_succ (demand_length q)))
 theorem related_values (X : Interface) (v v' q p : PTm n)
     (h : Γ ⊢[PRAAx] ap4 X.related v v' q p ≐ one) : Γ ⊢[PRAAx] related (output X) v v' q p := by
   have e := congrApp (Γ := Γ) X.related
@@ -316,7 +316,7 @@ theorem sum_master_valid (q p : PTm n) : Γ ⊢[PRAAx] masterValid sumInput (dem
   simpa [inst2,subst_demands,Syn.shift] using point
 theorem sum_master_entry (q : PTm n) : Γ ⊢[PRAAx] entry (sumMaster q) zero ≐ q := by
   apply MasterCertificate.sequence_decode (var 1)
-  exact lt_congr (.eqRefl _) (demand_length q).eqSymm (zero_lt_succ zero)
+  exact Order.zero_lt_of_eq_succ (demand_length q)
 theorem sum_run (q p : PTm n) : Γ ⊢[PRAAx] sumRun q p ≐ q+p :=
   (transform_at sumInput (sumMaster q) q p).eqTrans
     ((sum_observation_at _ q p).eqTrans (congrAdd (sum_master_entry q) (.eqRefl _)))

@@ -71,7 +71,7 @@ theorem collision {d m x : PTm n} (hmd : Γ ⊢[PRAAx] lt m d) (hr : Γ ⊢[PRAA
     · have h0 : ((m ≐ zero) :: Γ) ⊢[PRAAx] lt zero d := lt_of_le_of_lt (zero_le m) hmd.wk
       have r := range_at f hr.wk h0
       exact lt_zero_absurd _ (lt_congr (.eqRefl _) Prf.hyp0 r)
-    · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred m))
+    · exact Order.zero_lt_of_eq_succ Prf.hyp0
   have hp : Γ ⊢[PRAAx] prefixRange f m x := by
     refine .allI (.impI ?_)
     have ho := hr.allOpen

@@ -115,11 +115,11 @@ theorem product_coefficients (M D A C b : PTm n) (hb : Γ ⊢[PRAAx] le b M)
   have lenR : Γ ⊢[PRAAx] length R ≐ one :=
     (QuadraticTowerCoefficientArithmetic.added_length _ _ _).eqTrans QuadraticTowerCoefficients.width_zero
   have first := (left_head (query one M D A C)).eqTrans ((entry_congr produced (.eqRefl zero)).eqTrans
-    ((Foundations.SequenceComposition.append_left (lt_congr (.eqRefl _) lenL.eqSymm (zero_lt_succ zero))).eqTrans Lhead))
+    ((Foundations.SequenceComposition.append_left (Order.zero_lt_of_eq_succ lenL)).eqTrans Lhead))
   have atRight : Γ ⊢[PRAAx] one ≐ length L+zero :=
     ((add_zero one).eqSymm).eqTrans (congrAdd lenL.eqSymm (.eqRefl zero))
   have second := (right_head (query one M D A C)).eqTrans ((entry_congr produced atRight).eqTrans
-    ((Foundations.SequenceComposition.append_right (lt_congr (.eqRefl _) lenR.eqSymm (zero_lt_succ zero))).eqTrans Rhead))
+    ((Foundations.SequenceComposition.append_right (Order.zero_lt_of_eq_succ lenR)).eqTrans Rhead))
   exact (congrPairT first second).eqTrans (native_product_pair (radicand D) (entry a zero) (entry v zero) (entry c zero) (entry w zero)).eqSymm
 
 theorem native_sign_code_congr (d : PTm n) {x y : PTm n} (e : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx]

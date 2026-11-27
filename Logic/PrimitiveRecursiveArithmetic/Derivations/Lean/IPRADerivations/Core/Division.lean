@@ -63,7 +63,7 @@ theorem quo_succ (z K : PTm n) :
 
 /-- `0 < S K'`. -/
 theorem zero_lt_succ (K' : PTm n) : Γ ⊢[PRAAx] lt zero (succ K') :=
-  (succ_monus_succ _ _).eqTrans (zero_monus _)
+  Order.lt_succ_of_le (zero_le K')
 
 /-! ## Existence -/
 
@@ -195,13 +195,13 @@ theorem quo_mono {x y d c : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c) (h : Γ ⊢
 
 theorem quo_le_self {x d c : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c) :
     Γ ⊢[PRAAx] le (quo x d) x := by
-  have hd1 := lt_congr (.eqRefl _) hd.eqSymm (zero_lt_succ c)
+  have hd1 := Order.zero_lt_of_eq_succ hd
   exact le_trans (le_congr (one_mul _) (.eqRefl _) (mul_le_mul_right (quo x d) hd1)) (mul_quo_le hd)
 
 theorem quo_eq_mul {x d c q : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
     (h : Γ ⊢[PRAAx] x ≐ d * q) : Γ ⊢[PRAAx] quo x d ≐ q :=
   Prf.andE₁ (div_mod_unique_at hd (h.eqTrans (add_zero _).eqSymm)
-    (lt_congr (.eqRefl _) hd.eqSymm (zero_lt_succ c)))
+    (Order.zero_lt_of_eq_succ hd))
 
 end Division
 

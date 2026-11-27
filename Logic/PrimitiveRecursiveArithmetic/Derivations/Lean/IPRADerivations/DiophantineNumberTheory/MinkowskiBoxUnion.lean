@@ -79,7 +79,7 @@ theorem location_found (N B q : PTm n) (hq : Γ ⊢[PRAAx] lt q (total N B)) :
     · have zeroCount : (length B ≐ zero) :: Γ ⊢[PRAAx] total N B ≐ zero :=
         (congrAp3 _ Prf.hyp0 (.eqRefl B) (.eqRefl N)).eqTrans (MinkowskiBoxes.prefixCount_zero N B)
       exact lt_zero_absurd _ (lt_congr (.eqRefl _) zeroCount hq.wk)
-    · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+    · exact Order.zero_lt_of_eq_succ Prf.hyp0
   have e := SignedEuclidean.positive_form (length B) positive
   have bound : Γ ⊢[PRAAx] lt (pred (length B)) (length B) :=
     lt_congr (.eqRefl _) e.eqSymm (le_refl _)

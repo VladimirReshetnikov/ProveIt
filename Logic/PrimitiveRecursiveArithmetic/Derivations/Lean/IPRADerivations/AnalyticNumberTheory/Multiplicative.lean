@@ -39,7 +39,7 @@ theorem rem_eq' {z q r M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hz :
   Prf.andE₂ (div_mod_unique_at hM hz hr)
 
 theorem zero_lt' {M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) : Γ ⊢[PRAAx] lt zero M :=
-  lt_congr (.eqRefl _) hM.eqSymm (zero_lt_succ _)
+  Order.zero_lt_of_eq_succ hM
 
 /-! ## Block sums -/
 

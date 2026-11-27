@@ -103,7 +103,7 @@ include hN
 theorem phi_pos : Γ ⊢[PRAAx] phi N ≐ succ (pred (phi N)) := by
   refine .orE (zero_or_succ (pred N)) ?_ ?_
   · have e : ((pred N ≐ zero) :: Γ) ⊢[PRAAx] N ≐ one := hN.wk.eqTrans (congrSucc Prf.hyp0)
-    refine phi_pos_of (j := zero) (lt_congr (.eqRefl _) e.eqSymm (zero_lt_succ _)) ?_
+    refine phi_pos_of (j := zero) (Order.zero_lt_of_eq_succ e) ?_
     exact gcd_eq_one_of_dvd (gcd_pos_right hN.wk) (.orI₂ e)
   · have h2 : ((pred N ≐ succ (pred (pred N))) :: Γ) ⊢[PRAAx] lt one N :=
       le_of_eq_add (d := pred (pred N)) (hN.wk.eqTrans ((congrSucc Prf.hyp0).eqTrans

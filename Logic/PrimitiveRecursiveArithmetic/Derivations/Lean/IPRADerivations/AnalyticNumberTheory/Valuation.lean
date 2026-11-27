@@ -41,7 +41,7 @@ private abbrev ltPwF : Fm PTm 2 := le two (var 1) ⟶ lt (var 0) (pw (var 1) (va
 
 private theorem lt_pw₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] ltPwF := by
   ipra_ind (⟨le_QF _ _, lt_QF _ _⟩) [subst_le, subst_lt, subst_ap2]
-  · exact .impI (lt_congr (.eqRefl _) (pw_zero _).eqSymm (zero_lt_succ _))
+  · exact .impI (Order.zero_lt_of_eq_succ (pw_zero _))
   · exact .impI (lt_pw_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 theorem lt_pw {p : PTm n} (hp : Γ ⊢[PRAAx] le two p) (m : PTm n) : Γ ⊢[PRAAx] lt m (pw p m) := by

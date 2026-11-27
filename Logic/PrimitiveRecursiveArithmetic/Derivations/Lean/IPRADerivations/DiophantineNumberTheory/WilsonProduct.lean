@@ -178,7 +178,7 @@ theorem fixed_prod {p : PTm n} (hp : Γ ⊢[PRAAx] prime p)
       (f.eqTrans (congrAdd (.eqRefl _) (congrEqb' (congrPred (congrPred (fst_pair _ _))).eqSymm (.eqRefl _)))))).eqTrans
       (pw_add _ _ _)
   have p0 : Γ ⊢[PRAAx] ap2 (prodF d0B) (pred p) (pairT p one) ≐ succ zero := by
-    refine delta_id d0B (c := zero) (le_congr (.eqRefl _) hMp.eqSymm (zero_lt_succ _)) (.allI (.impI ?_))
+    refine delta_id d0B (c := zero) (Order.zero_lt_of_eq_succ hMp) (.allI (.impI ?_))
     have sz : Syn.shift (zero : PTm n) = zero := by simp [Syn.shift]
     rw [sz, inst2_d0B]
     exact .eqRefl _

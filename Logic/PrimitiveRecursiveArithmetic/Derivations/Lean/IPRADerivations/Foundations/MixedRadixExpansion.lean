@@ -47,7 +47,7 @@ theorem inst2_dgB (r : PTm 2) (i y : PTm n) :
   simp [inst2]
 
 theorem lt_of_pos {b c : PTm n} (h : Γ ⊢[PRAAx] b ≐ succ c) : Γ ⊢[PRAAx] lt zero b :=
-  lt_congr (.eqRefl _) h.eqSymm (zero_lt_succ c)
+  Order.zero_lt_of_eq_succ h
 
 /-! ## The quotient-remainder expansion -/
 
