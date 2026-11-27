@@ -41,10 +41,8 @@ theorem eq_of_rem_zero {x D : PTm m} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (h
   exact e.eqTrans (congrMul hD.eqSymm (congrAp2 quoF (.eqRefl _) hD.eqSymm))
 
 theorem quo_of_eq {x D w : PTm m} (hD : Γ ⊢[PRAAx] D ≐ succ (pred D)) (h : Γ ⊢[PRAAx] x ≐ D * w) :
-    Γ ⊢[PRAAx] quo x D ≐ w := by
-  have u := div_mod_unique (K' := pred D) (q := w) (r := zero)
-    ((h.eqTrans (congrMul hD (.eqRefl _))).eqTrans (add_zero _).eqSymm) (zero_lt_succ _)
-  exact (congrAp2 quoF (.eqRefl _) hD).eqTrans (Prf.andE₁ u)
+    Γ ⊢[PRAAx] quo x D ≐ w :=
+  Division.quo_eq_mul hD h
 
 /-! ## The coefficients -/
 

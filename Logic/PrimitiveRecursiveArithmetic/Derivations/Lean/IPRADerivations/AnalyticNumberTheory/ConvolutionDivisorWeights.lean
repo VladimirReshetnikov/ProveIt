@@ -88,8 +88,7 @@ theorem quotient_product {a b m N : PTm n}
   have pp := pos_mul' pa pb
   have prod : Γ ⊢[PRAAx] m * N ≐ (a * b) * (quo m a * quo N b) := by
     ipra_lc 𝔞 N * natEq (eq_of_dvd' pa ha) + 𝔞 (a * quo m a) * natEq (eq_of_dvd' pb hb)
-  exact .andI (dvd_of_eq' pp prod)
-    (quo_eq pp (prod.eqTrans (add_zero _).eqSymm) (one_le_of_pos pp))
+  exact .andI (dvd_of_eq' pp prod) (Division.quo_eq_mul pp prod)
 
 /-- The weight on a split divisor is the product of the original weights
 on its two factors under the actual divisor-table tests. -/

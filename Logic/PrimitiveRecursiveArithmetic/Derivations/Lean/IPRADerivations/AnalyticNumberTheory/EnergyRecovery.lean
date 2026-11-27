@@ -111,10 +111,8 @@ theorem sq_alg' {D f q Qt : PTm n} (hf : Γ ⊢[PRAAx] f ≐ D * q) (hq : Γ ⊢
 theorem sq_exact {d' N : PTm n} (h : Γ ⊢[PRAAx] le (succ d') N) :
     Γ ⊢[PRAAx] (succ d' * succ d') * quo (fact N * fact N) (succ d' * succ d') ≐ fact N * fact N := by
   have fe := eq_of_dvd' (pos_succ d') (dvd_fact h)
-  have q : Γ ⊢[PRAAx] quo (fact N * fact N) (succ d' * succ d') ≐
-      quo (fact N) (succ d') * quo (fact N) (succ d') :=
-    quo_eq (pos_mul (pos_succ d') (pos_succ d')) (sq_alg fe)
-      (le_of_eq_add (d := d' * succ d' + d') (by ipra_ring))
+  have q := Division.quo_eq_mul (pos_mul (pos_succ d') (pos_succ d'))
+    ((sq_alg fe).eqTrans (add_zero _))
   exact sq_alg' fe q
 
 /-- Abstract form: `m ≤ 1`, `D q = f²`, `D ≤ 4J` give `(m f)² ≤ J · 4q`. -/

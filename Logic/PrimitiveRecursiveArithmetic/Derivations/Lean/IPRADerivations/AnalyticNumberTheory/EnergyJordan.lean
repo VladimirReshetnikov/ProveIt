@@ -181,11 +181,8 @@ theorem vb_le (j d : PTm n) : Γ ⊢[PRAAx] le (inst2 vB j d) (inst2 (shiftBody 
       quo_eq ht.wk (congrAdd ed (.eqRefl _)) (le_refl _)
     have htt : Θ ⊢[PRAAx] succ (succ j) * succ (succ j) ≐ succ (pred (succ (succ j) * succ (succ j))) :=
       pos_mul ht.wk ht.wk
-    have q : Θ ⊢[PRAAx] quo (d * d) (succ (succ j) * succ (succ j)) ≐ quo d (succ (succ j)) * quo d (succ (succ j)) := by
-      refine quo_eq htt (z := d * d) (q := quo d (succ (succ j)) * quo d (succ (succ j))) (r := zero) ?_ ?_
-      · have e1 := natEq ed
-        apply deriveNat; ipra_simps; rw [e1]; ring
-      · exact le_of_eq_add (d := succ j * succ (succ j) + succ j) (by ipra_ring)
+    have q : Θ ⊢[PRAAx] quo (d * d) (succ (succ j) * succ (succ j)) ≐ quo d (succ (succ j)) * quo d (succ (succ j)) :=
+      Division.quo_eq_mul htt ((congrMul ed ed).eqTrans (by ipra_ring))
     have v1 : Θ ⊢[PRAAx] eqb (rem d (succ (succ j))) zero *
         (quo (d + succ j) (succ (succ j)) * quo (d + succ j) (succ (succ j))) ≐
         quo d (succ (succ j)) * quo d (succ (succ j)) :=

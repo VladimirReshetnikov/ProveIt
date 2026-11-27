@@ -131,8 +131,7 @@ theorem gcd_distinct_primes {p q : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hq : Γ 
   exact .impE (.impE (.impE hall.wk.wk (Prf.andE₁ hp').wk.wk) Prf.hyp0) Prf.hyp1
 
 theorem quo_one (q : PTm n) : Γ ⊢[PRAAx] quo q one ≐ q :=
-  Prf.andE₁ (div_mod_unique (K' := zero) (q := q) (r := zero)
-    ((add_zero _).eqSymm.eqTrans (congrAdd (one_mul _).eqSymm (.eqRefl _))) (zero_lt_succ _))
+  Division.quo_eq_mul (.eqRefl _) (one_mul _).eqSymm
 
 /-- RSA correctness at arbitrary terms. -/
 theorem rsa_at {p q e d t x : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hq : Γ ⊢[PRAAx] prime q)

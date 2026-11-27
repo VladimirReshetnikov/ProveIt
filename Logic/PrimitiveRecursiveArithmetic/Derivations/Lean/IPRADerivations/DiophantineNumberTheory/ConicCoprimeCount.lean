@@ -112,8 +112,7 @@ theorem coprime_count (N₁ : PTm k) :
     (congrMul s0 ((congrEqb' o0 (.eqRefl _)).eqTrans (eqb_of_ne zero_ne_one'))).eqTrans
       (by ipra_ring)
   -- `D⁺ ≥ N²` from the term `d = 1`
-  have q1 := Prf.andE₁ (div_mod_unique (Γ := Γ) (z := succ N₁) (q := succ N₁) (r := zero) (K' := zero)
-    (by ipra_ring) (zero_lt_succ zero))
+  have q1 := Division.quo_eq_mul (Γ := Γ) (.eqRefl one) (one_mul (succ N₁)).eqSymm
   have t := term_le_sum (Γ := Γ) DPB (i := one) (M := succ (succ N₁)) (x := succ N₁)
     (by show Γ ⊢[PRAAx] le (succ one) (succ (succ N₁)); ipra_le 𝔞 N₁)
   rw [inst2_DP] at t

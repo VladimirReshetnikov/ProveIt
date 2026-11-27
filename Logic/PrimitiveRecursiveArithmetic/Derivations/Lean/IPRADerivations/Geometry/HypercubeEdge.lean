@@ -56,21 +56,15 @@ theorem two_pw_pos (i : PTm n) : Γ ⊢[PRAAx] pw two i ≐ succ (pred (pw two i
 /-- `bit_{i+1}(2w + ε) = bit_i(w)` for `ε ≤ 1`. -/
 theorem bit_succ {i w e : PTm n} (he : Γ ⊢[PRAAx] le e one) : Γ ⊢[PRAAx] bit (succ i) (two * w + e) ≐ bit i w := by
   have hP := two_pw_pos (Γ := Γ) i
-  have hP' := two_pw_pos (Γ := Γ) (succ i)
-  have hr := rem_lt' hP w
-  have q : Γ ⊢[PRAAx] quo (two * w + e) (pw two (succ i)) ≐ quo w (pw two i) := by
-    refine quo_eq hP' (r := two * rem w (pw two i) + e) ?_ ?_
-    · ipra_lc 2 * natEq (div_eq (j := w) hP) - 𝔞 (quo w (pw two i)) * natEq (pw_succ (Γ := Γ) two i)
-    · have w₁ := natEq (eq_add_of_le hr); have w₂ := natEq (eq_add_of_le he)
-      refine le_of_eq_add (d := two * monus (pw two i) (succ (rem w (pw two i))) + monus one e) ?_
-      ipra_lc natEq (pw_succ (Γ := Γ) two i) + 2 * w₁ + w₂
-  exact congrAp1 parF q
+  have q₂ := Prf.andE₁ (div_mod_unique (q := w) (.eqRefl (two * w + e)) (Order.lt_succ_of_le he))
+  have composed := Prf.andE₁ (Division.div_mod_mul (.eqRefl (two : PTm n)) hP (x := two * w + e))
+  have hp := (pw_succ (Γ := Γ) two i).eqTrans (mul_comm _ _)
+  exact congrAp1 parF ((congrAp2 quoF (.eqRefl _) hp).eqTrans
+    (composed.eqTrans (congrAp2 quoF q₂ (.eqRefl _))))
 
-theorem bit_zero (v : PTm n) : Γ ⊢[PRAAx] bit zero v ≐ par v := by
-  have h1 := two_pw_pos (Γ := Γ) (zero : PTm n)
-  refine congrAp1 parF (quo_eq h1 (r := zero) ?_ ?_)
-  · ipra_lc -𝔞 v * natEq (pw_zero (Γ := Γ) (two : PTm n))
-  · exact le_congr (.eqRefl _) (pw_zero two).eqSymm (le_refl _)
+theorem bit_zero (v : PTm n) : Γ ⊢[PRAAx] bit zero v ≐ par v :=
+  congrAp1 parF (Division.quo_eq_mul (two_pw_pos zero)
+    ((one_mul _).eqSymm.eqTrans (congrMul (pw_zero two).eqSymm (.eqRefl _))))
 
 theorem bit_double (i w : PTm n) : Γ ⊢[PRAAx] bit (succ i) (two * w) ≐ bit i w :=
   (congrAp1 parF (congrAp2 quoF (add_zero _).eqSymm (.eqRefl _))).eqTrans (bit_succ (zero_le one))

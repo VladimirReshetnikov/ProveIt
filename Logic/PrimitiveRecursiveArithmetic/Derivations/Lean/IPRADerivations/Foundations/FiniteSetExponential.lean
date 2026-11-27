@@ -190,9 +190,12 @@ private abbrev reconF : Fm PTm 3 :=
 private theorem recon₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] reconF := by
   ipra_ind (⟨trivial, trivial⟩) [subst_ap2, subst_pairT]
   · refine .impI ?_
-    ipra_lc natEq (code_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) evT (var 0) (pairT (var 0) (var 1))) +
-      𝔞 (quo (var 1 : PTm 2) (pw (var 0) zero)) * natEq (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0)) +
-      natEq ((congrAp2 quoF (.eqRefl (var 1 : PTm 2)) (pw_zero (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (var 0))).eqTrans (Prf.andE₁ (dmu (Γ := [(var 0 : PTm 2) ≐ succ (pred (var 0))]) (K := one) (q := var 1) (r := zero) (pos_of_eq_succ (c := zero) (.eqRefl _)) (by ipra_ring) (le_refl one))))
+    let Δ : List (Fm PTm 2) := [var 0 ≐ succ (pred (var 0))]
+    have pz := pw_zero (Γ := Δ) (var 0)
+    have q1 := Division.quo_eq_mul (Γ := Δ) (.eqRefl one) (one_mul (var 1)).eqSymm
+    have q := (congrAp2 quoF (.eqRefl _) pz).eqTrans q1
+    have z := code_zero (Γ := Δ) evT (var 0) (pairT (var 0) (var 1))
+    exact (congrAdd z (congrMul q pz)).eqTrans ((zero_add _).eqTrans (Common.mul_one_right _))
   · exact .impI (recon_step Prf.hyp0 (.impE Prf.hyp1 Prf.hyp0))
 
 /-- Reconstruction from digits: `∑_{j<N} ev(c, j) m^j + ⌊c / m^N⌋ m^N = c`. -/
