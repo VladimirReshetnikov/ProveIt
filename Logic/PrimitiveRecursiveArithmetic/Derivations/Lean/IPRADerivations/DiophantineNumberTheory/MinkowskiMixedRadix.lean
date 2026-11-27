@@ -94,17 +94,9 @@ theorem rem_one (i : PTm n) : Γ ⊢[PRAAx] rem i one ≐ zero := by
 natural divmods and uniqueness, including either radix equal to one. -/
 theorem rem_product (i P d : PTm n) (hP : Γ ⊢[PRAAx] le one P)
     (hd : Γ ⊢[PRAAx] le one d) :
-    Γ ⊢[PRAAx] rem i (P*d) ≐ rem i P+P*rem (quo i P) d := by
-  have first := natural_divmod i P hP
-  have second := natural_divmod (quo i P) d hd
-  have hp : Γ ⊢[PRAAx] le one (P*d) :=
-    le_congr (one_mul one) (.eqRefl _) (le_mul_mono hP hd)
-  have bound : Γ ⊢[PRAAx] lt (rem i P+P*rem (quo i P) d) (P*d) :=
-    lt_congr (add_comm _ _) (mul_comm _ _) (MinkowskiResidues.range_step (Prf.andE₂ second) (Prf.andE₂ first))
-  have reconstruct : Γ ⊢[PRAAx] i ≐ (P*d)*quo (quo i P) d+(rem i P+P*rem (quo i P) d) := by
-    ipra_lc natEq (Prf.andE₁ first) + Groth.ι (Q.mk Γ P)*natEq (Prf.andE₁ second)
-  have actual := natural_divmod i (P*d) hp
-  exact Prf.andE₂ (euclid_unique ((Prf.andE₁ actual).eqSymm.eqTrans reconstruct) (Prf.andE₂ actual) bound)
+    Γ ⊢[PRAAx] rem i (P*d) ≐ rem i P+P*rem (quo i P) d :=
+  (Prf.andE₂ (Division.div_mod_mul (Common.pos_of_one_le hP) (Common.pos_of_one_le hd) (x := i))).eqTrans
+    (add_comm _ _)
 
 theorem digit_bound (N W i k : PTm n) (h : Γ ⊢[PRAAx] positive N W)
     (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx] lt (digit W i k) (entry W k) :=

@@ -54,13 +54,8 @@ theorem rem_small {k a : PTm n} (h : Γ ⊢[PRAAx] lt k a) : Γ ⊢[PRAAx] rem k
 
 /-- `⌊⌊m/d⌋/e⌋ = ⌊m/(de)⌋` for `d, e ≥ 1`. -/
 theorem quo_quo {m d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) :
-    Γ ⊢[PRAAx] quo (quo m d) e ≐ quo m (d * e) := by
-  have hde := pos_mul' hd he
-  have lower := Division.mul_le_of_le_quo hd (Division.mul_quo_le (x := quo m d) he)
-  have upper := Division.lt_mul_of_quo_lt hd (Division.lt_mul_succ_quo (x := quo m d) he)
-  exact le_antisymm
-    (Division.le_quo_of_mul_le hde (le_congr (mul_assoc _ _ _).eqSymm (.eqRefl _) lower))
-    (Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hde (lt_congr (.eqRefl _) (mul_assoc _ _ _).eqSymm upper)))
+    Γ ⊢[PRAAx] quo (quo m d) e ≐ quo m (d * e) :=
+  (Prf.andE₁ (Division.div_mod_mul hd he)).eqSymm
 
 /-- `Q + 1 + (d − 1) = d (⌊Q/d⌋ + 1) + (Q mod d)`, with atoms. -/
 theorem quo_add_aux {Q d u r e : PTm n} (h1 : Γ ⊢[PRAAx] Q ≐ d * u + r) (h2 : Γ ⊢[PRAAx] d ≐ succ e) :

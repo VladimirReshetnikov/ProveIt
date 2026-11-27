@@ -1,6 +1,7 @@
 import IPRADerivations.Combinatorics.KummerDigits
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.AnalyticNumberTheory.RSA
+import IPRADerivations.Core.OrderCertificates
 
 /-!
 # Kummer's carry formula
@@ -74,17 +75,8 @@ theorem carry_le_one {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (a b :
 
 /-- `a mod (P p) = P · (⌊a/P⌋ mod p) + (a mod P)`. -/
 theorem rem_digit {p P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (hp : Γ ⊢[PRAAx] p ≐ succ (pred p))
-    (a : PTm n) : Γ ⊢[PRAAx] rem a (P * p) ≐ P * rem (quo a P) p + rem a P := by
-  have d₁ := dm hP a; have d₂ := dm hp (quo a P)
-  have e₁ := natEq (Prf.andE₁ d₁); have e₂ := natEq (Prf.andE₁ d₂)
-  have hr₁ : Γ ⊢[PRAAx] le (succ (rem a P)) P := Prf.andE₂ d₁
-  have hr₂ : Γ ⊢[PRAAx] le (succ (rem (quo a P) p)) p := Prf.andE₂ d₂
-  have f₁ := natEq (eq_add_of_le hr₁); have f₂ := natEq (eq_add_of_le hr₂)
-  have lt₁ : Γ ⊢[PRAAx] lt (P * rem (quo a P) p + rem a P) (P * p) := by
-    refine le_of_eq_add (d := monus P (succ (rem a P)) + P * monus p (succ (rem (quo a P) p))) ?_
-    ipra_lc f₁ + 𝔞 P * f₂
-  refine Prf.andE₂ (dmu (pos_mul' hP hp) (q := quo (quo a P) p) ?_ lt₁)
-  ipra_lc e₁ + 𝔞 P * e₂
+    (a : PTm n) : Γ ⊢[PRAAx] rem a (P * p) ≐ P * rem (quo a P) p + rem a P :=
+  Prf.andE₂ (Division.div_mod_mul hP hp)
 
 /-- The carry out of a position from the two digits and the carry into it. -/
 theorem carry_rec {p P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (hp : Γ ⊢[PRAAx] p ≐ succ (pred p))

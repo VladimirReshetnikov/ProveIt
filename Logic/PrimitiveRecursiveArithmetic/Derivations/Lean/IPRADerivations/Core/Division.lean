@@ -224,6 +224,34 @@ theorem quo_eq_mul {x d c q : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
   Prf.andE₁ (div_mod_unique_at hd (h.eqTrans (add_zero _).eqSymm)
     (Order.zero_lt_of_eq_succ hd))
 
+private theorem mul_eq_succ {d e c f : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
+    (he : Γ ⊢[PRAAx] e ≐ succ f) : Γ ⊢[PRAAx] d * e ≐ succ (succ c * f + c) :=
+  (congrMul hd he).eqTrans ((mul_succ _ _).eqTrans (add_succ _ _))
+
+/-- Two successive divisions give the quotient and the mixed-radix remainder for the product. -/
+theorem div_mod_mul {x d e c f : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
+    (he : Γ ⊢[PRAAx] e ≐ succ f) :
+    Γ ⊢[PRAAx] (quo x (d * e) ≐ quo (quo x d) e) ⋏
+      (rem x (d * e) ≐ d * rem (quo x d) e + rem x d) := by
+  have hd' := div_mod_at (x := x) hd
+  have he' := div_mod_at (x := quo x d) he
+  refine div_mod_unique_at (mul_eq_succ hd he) ?_ ?_
+  · exact (Prf.andE₁ hd').eqTrans
+      ((congrAdd (congrMul (.eqRefl _) (Prf.andE₁ he')) (.eqRefl _)).eqTrans
+        ((congrAdd (mul_add _ _ _) (.eqRefl _)).eqTrans
+          ((add_assoc _ _ _).eqTrans (congrAdd (mul_assoc _ _ _).eqSymm (.eqRefl _)))))
+  · exact lt_congr (congrAdd (mul_comm _ _) (.eqRefl _)) (mul_comm _ _)
+      (Order.mul_add_lt_mul (Prf.andE₂ he') (Prf.andE₂ hd'))
+
+/-- Dividing a scaled dividend by the equally scaled divisor preserves the quotient. -/
+theorem quo_mul_mul {x d k c f : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
+    (hk : Γ ⊢[PRAAx] k ≐ succ f) : Γ ⊢[PRAAx] quo (k * x) (k * d) ≐ quo x d := by
+  have div := div_mod_at (x := x) hd
+  refine Prf.andE₁ (div_mod_unique_at (mul_eq_succ hk hd) (r := k * rem x d) ?_ ?_)
+  · exact (congrMul (.eqRefl _) (Prf.andE₁ div)).eqTrans
+      ((mul_add _ _ _).eqTrans (congrAdd (mul_assoc _ _ _).eqSymm (.eqRefl _)))
+  · exact Order.mul_lt_mul_left (Order.zero_lt_of_eq_succ hk) (Prf.andE₂ div)
+
 end Division
 
 end LeanProofs.IPRA

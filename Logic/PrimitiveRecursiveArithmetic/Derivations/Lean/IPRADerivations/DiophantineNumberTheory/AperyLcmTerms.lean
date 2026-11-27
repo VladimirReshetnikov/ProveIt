@@ -9,8 +9,7 @@ Packet: `diophantine-number-theory/apery_ipra`, Lemma `lem:lcm-div` ("The divisi
 `v_p(M_m)` is `⌊42m/q⌋ − ⌊21m/q⌋ − ⌊14m/q⌋ − ⌊6m/q⌋ − ⌊m/q⌋ = w(J)` (`lem:floor`), which is `≥ 0`, and `≥ 1` when
 `q > m` and `q ≤ 42m`.
 
-* `floor_comp`: `⌊⌊cY/q⌋/c⌋ = ⌊Y/q⌋` for `c, q ≥ 1` (with `cY = qJ + r`, `J = cA + s`:
-  `c (Y − qA) = qs + r < cq`);
+* `floor_comp`: `⌊⌊cY/q⌋/c⌋ = ⌊Y/q⌋` for `c, q ≥ 1`, by composing the divisions and cancelling the scale;
 * `terms_le`: `⌊21m/q⌋ + ⌊14m/q⌋ + ⌊6m/q⌋ + ⌊m/q⌋ ≤ ⌊42m/q⌋` (`AperyFloor.floor_sum_le` at `J`);
 * `terms_lt`: if `m < q` and `1 ≤ ⌊42m/q⌋`, the inequality is strict (`J ≤ 41`, `AperyFloor.floor_sum_lt`).
 -/
@@ -25,17 +24,10 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 /-- `⌊⌊cY/q⌋/c⌋ = ⌊Y/q⌋` for `c = c' + 1`, `q = q' + 1`. -/
 theorem floor_comp (c' Y q' : PTm k) :
     Γ ⊢[PRAAx] quo (quo (succ c' * Y) (succ q')) (succ c') ≐ quo Y (succ q') := by
-  let c := succ c'
-  let q := succ q'
-  have hc : Γ ⊢[PRAAx] c ≐ succ c' := .eqRefl _
-  have hq : Γ ⊢[PRAAx] q ≐ succ q' := .eqRefl _
-  have lower : Γ ⊢[PRAAx] le (c * quo Y q) (quo (c * Y) q) :=
-    Division.le_quo_of_mul_le hq
-      (le_congr (by ipra_ring) (.eqRefl _) (mul_le_mul_left c (Division.mul_quo_le hq)))
-  have upper : Γ ⊢[PRAAx] lt (quo (c * Y) q) (c * succ (quo Y q)) :=
-    Division.quo_lt_of_lt_mul hq (lt_congr (.eqRefl _) (by ipra_ring)
-      (Order.mul_lt_mul_left (zero_lt_succ c') (Division.lt_mul_succ_quo hq)))
-  exact le_antisymm (Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hc upper)) (Division.le_quo_of_mul_le hc lower)
+  have hc : Γ ⊢[PRAAx] succ c' ≐ succ c' := .eqRefl _
+  have hq : Γ ⊢[PRAAx] succ q' ≐ succ q' := .eqRefl _
+  exact (Prf.andE₁ (Division.div_mod_mul hq hc (x := succ c' * Y))).eqSymm.eqTrans
+    ((congrAp2 quoF (.eqRefl _) (mul_comm _ _)).eqTrans (Division.quo_mul_mul hq hc))
 
 /-- `⌊⌊X/q⌋/c⌋ = ⌊Y/q⌋` when `X = cY`. -/
 theorem comp42 (c' : PTm k) {Y X q' : PTm k} (hX : Γ ⊢[PRAAx] X ≐ succ c' * Y) :

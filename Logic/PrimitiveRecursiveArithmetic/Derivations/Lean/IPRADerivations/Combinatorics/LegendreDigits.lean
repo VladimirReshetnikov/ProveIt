@@ -45,18 +45,8 @@ alias pos_mul' := Common.pos_mul
 
 /-- `⌊⌊m/a⌋/b⌋ = ⌊m/(ab)⌋` for `a, b ≥ 1`. -/
 theorem quo_quo {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (m : PTm n) :
-    Γ ⊢[PRAAx] quo (quo m a) b ≐ quo m (a * b) := by
-  have d₁ := dm ha m; have d₂ := dm hb (quo m a)
-  have e₁ := natEq (Prf.andE₁ d₁); have e₂ := natEq (Prf.andE₁ d₂)
-  -- the remainder `a r₂ + r₁ < a b`
-  have hr₁ : Γ ⊢[PRAAx] le (succ (rem m a)) a := Prf.andE₂ d₁
-  have hr₂ : Γ ⊢[PRAAx] le (succ (rem (quo m a) b)) b := Prf.andE₂ d₂
-  have f₁ := natEq (eq_add_of_le hr₁); have f₂ := natEq (eq_add_of_le hr₂)
-  have lt₁ : Γ ⊢[PRAAx] lt (a * rem (quo m a) b + rem m a) (a * b) := by
-    refine le_of_eq_add (d := monus a (succ (rem m a)) + a * monus b (succ (rem (quo m a) b))) ?_
-    ipra_lc f₁ + 𝔞 a * f₂
-  refine (Prf.andE₁ (dmu (pos_mul' ha hb) ?_ lt₁)).eqSymm
-  ipra_lc e₁ + 𝔞 a * e₂
+    Γ ⊢[PRAAx] quo (quo m a) b ≐ quo m (a * b) :=
+  (Prf.andE₁ (Division.div_mod_mul ha hb (x := m))).eqSymm
 
 /-- `⌊z/K⌋ = 0` for `z < K`. -/
 theorem quo_small {K z : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (h : Γ ⊢[PRAAx] lt z K) :
