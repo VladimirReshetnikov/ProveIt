@@ -50,22 +50,10 @@ ipra_subst errorBudget
 ipra_subst threshold [one]
 
 theorem row_at (p r m N : PTm n) : Γ ⊢[PRAAx] ap3 rowF p r (rowData m N) ≐ rowValue p r m N := by
-  let x := rowData m N
-  have first : Γ ⊢[PRAAx] ap3 rowF p r x ≐ rowValue p r (fstT x) (sndT x) := by
-    change Γ ⊢[PRAAx] ConciseIPRA.PTm.app (PTm.toPR rowBody) ![p,r,x] ≐ _
-    simpa only [rowBody,subst_rowValue,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using toPR_eq (Γ := Γ) rowBody ![p,r,x]
-  have last : Γ ⊢[PRAAx] rowValue p r (fstT x) (sndT x) ≐ rowValue p r m N := by
-    simpa only [subst_rowValue,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (rowValue (var 0) (var 1) (var 2) (var 3) : PTm 4)
-        (σ := ![p,r,fstT x,sndT x]) (σ' := ![p,r,m,N]) (fun i => by
-          fin_cases i
-          · exact .eqRefl _
-          · exact .eqRefl _
-          · exact fst_pair _ _
-          · exact snd_pair _ _)
-  exact first.eqTrans last
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 1)
+    (rowValue (var 0) (var 1) (var 2) (var 3)) p r ![m, N]
+  simp only [subst_rowValue, Syn.subst_var] at read
+  exact read
 
 theorem row_error_at (p q r m N : PTm n) (hr : Γ ⊢[PRAAx] lt r m)
     (hN : Γ ⊢[PRAAx] le (threshold p m) N) :

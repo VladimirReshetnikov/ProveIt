@@ -40,16 +40,10 @@ def rowProduct (f g : PR 3) : PR 3 := PTm.toPR (rowProductBody f g)
 
 theorem row_at (f g : PR 3) (p i x y : PTm n) : Γ ⊢[PRAAx]
     ap3 (rowProduct f g) p i (pairT x y) ≐ qmul (ap3 f p i x) (ap3 g p i y) := by
-  have read : Γ ⊢[PRAAx] ap3 (rowProduct f g) p i (pairT x y) ≐
-      qmul (ap3 f p i (fstT (pairT x y))) (ap3 g p i (sndT (pairT x y))) := by
-    change Γ ⊢[PRAAx] PTm.app (rowProduct f g) ![p,i,pairT x y] ≐
-      qmul (ap3 f p i (fstT (pairT x y))) (ap3 g p i (sndT (pairT x y)))
-    simpa only [rowProduct,rowProductBody,GaussianRationalHorner.subst_qmul,subst_ap3,
-      subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      toPR_eq (Γ := Γ) (rowProductBody f g) ![p,i,pairT x y]
-  exact read.eqTrans (qmul_congr (congrAp3 f (.eqRefl _) (.eqRefl _) (fst_pair x y))
-    (congrAp3 g (.eqRefl _) (.eqRefl _) (snd_pair x y)))
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 1)
+    (qmul (ap3 f (var 0) (var 1) (var 2)) (ap3 g (var 0) (var 1) (var 3))) p i ![x, y]
+  simp only [GaussianRationalHorner.subst_qmul, subst_ap3, Syn.subst_var] at read
+  exact read
 
 def sampleLaw (f g : PR 3) (p N x y : PTm n) : Fm PTm n :=
   sample (rowProduct f g) p N (pairT x y) ≐ qmul (sample f p N x) (sample g p N y)

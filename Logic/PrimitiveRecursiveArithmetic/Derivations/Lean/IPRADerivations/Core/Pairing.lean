@@ -286,6 +286,20 @@ theorem toPR_pairVector_eq {k : ℕ} (body : PTm (k + 2)) (p : PTm n)
         p (pairVector k entries) ≐ Syn.subst (Matrix.vecCons p entries) body :=
   (toPR_eq _ ![p, pairVector k entries]).eqTrans (subst_pairVector_eq body p entries)
 
+/-- Read a two-parameter program whose remaining arguments form a right-nested pair vector. -/
+theorem toPR_pairVector3_eq {k : ℕ} (body : PTm (k + 3)) (p r : PTm n)
+    (entries : Fin (k + 1) → PTm n) :
+    Γ ⊢[PRAAx] app
+      (PTm.toPR (Syn.subst (Matrix.vecCons (var 0) (Matrix.vecCons (var 1) (pairVectorField k (var 2)))) body))
+      ![p, r, pairVector k entries] ≐ Syn.subst (Matrix.vecCons p (Matrix.vecCons r entries)) body := by
+  refine (toPR_eq _ ![p, r, pairVector k entries]).eqTrans ?_
+  rw [Syn.subst_subst]
+  exact Prf.eqCongr body (fun i => by
+    refine Fin.cases (.eqRefl _) (fun j => ?_) i
+    refine Fin.cases (.eqRefl _) (fun j => ?_) j
+    simp only [Matrix.cons_val_succ, subst_pairVectorField, Syn.subst_var, Matrix.cons_val_two]
+    exact pairVectorField_eq k entries (.eqRefl _) j)
+
 /-! ## Simultaneous recursion -/
 
 section Simultaneous

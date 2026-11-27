@@ -70,26 +70,10 @@ ipra_subst data [one]
 ipra_subst clock [one]
 
 theorem row_at (p r z R B m d : PTm n) : Γ ⊢[PRAAx] ap3 rowF p r (rowData z R B m d) ≐ rowValue p r z R B m d := by
-  let x := rowData z R B m d
-  have s₁ : Γ ⊢[PRAAx] sndT x ≐ pairT R (pairT B (pairT m d)) := snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] sndT (sndT x) ≐ pairT B (pairT m d) := s₁.sndE
-  have s₃ : Γ ⊢[PRAAx] sndT (sndT (sndT x)) ≐ pairT m d := s₂.sndE
-  have first : Γ ⊢[PRAAx] ap3 rowF p r x ≐ rowValue p r (fstT x) (fstT (sndT x))
-      (fstT (sndT (sndT x))) (fstT (sndT (sndT (sndT x)))) (sndT (sndT (sndT (sndT x)))) := by
-    simpa [rowF,rowBody,ap3] using toPR_eq (Γ := Γ) rowBody ![p,r,x]
-  have last := Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (rowValue (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7)
-    (σ := ![p,r,fstT x,fstT (sndT x),fstT (sndT (sndT x)),fstT (sndT (sndT (sndT x))),
-      sndT (sndT (sndT (sndT x)))]) (σ' := ![p,r,z,R,B,m,d]) (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact s₁.fstE
-      · exact s₂.fstE
-      · exact s₃.fstE
-      · exact s₃.sndE)
-  exact first.eqTrans (by simpa using last)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 4)
+    (rowValue (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6)) p r ![z, R, B, m, d]
+  simp only [subst_rowValue, Syn.subst_var] at read
+  exact read
 
 theorem row_source (z R B m r a d : PTm n) (h : Γ ⊢[PRAAx] source z R B m a d)
     (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]

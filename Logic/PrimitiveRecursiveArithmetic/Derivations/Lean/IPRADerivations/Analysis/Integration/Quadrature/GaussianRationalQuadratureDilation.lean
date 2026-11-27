@@ -39,13 +39,10 @@ ipra_subst source
 
 theorem pull_at (F : PR 3) (p t c d x : PTm n) : Γ ⊢[PRAAx]
     ap3 (pullF F) p t (pullData c d x) ≐ ap3 F p (timeMap c d t) x := by
-  have program : Γ ⊢[PRAAx] ap3 (pullF F) p t (pullData c d x) ≐ pullTerm F p t (pullData c d x) := by
-    simpa [pullF,ap3] using toPR_eq (Γ := Γ) (pullTerm F (var 0) (var 1) (var 2) : PTm 3) ![p,t,pullData c d x]
-  have tail := snd_pair (Γ := Γ) c (pairT d x)
-  exact program.eqTrans (congrAp3 F (.eqRefl _)
-    (congrPairT (congrMul (fst_pair _ _) (.eqRefl _))
-      (congrMul tail.fstE (.eqRefl _)))
-    tail.sndE)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 2)
+    (ap3 F (var 0) (timeMap (var 2) (var 3) (var 1)) (var 4)) p t ![c, d, x]
+  simp only [subst_ap3, subst_timeMap, Syn.subst_var] at read
+  exact read
 
 theorem pull_fraction_at (F : PR 3) (p a b c d x : PTm n) : Γ ⊢[PRAAx]
     ap3 (pullF F) p (pairT a b) (pullData c d x) ≐ ap3 F p (pairT (c*a) (d*b)) x :=

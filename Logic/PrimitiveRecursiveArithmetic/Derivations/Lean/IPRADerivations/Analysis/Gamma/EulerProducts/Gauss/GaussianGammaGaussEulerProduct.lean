@@ -69,58 +69,10 @@ ipra_subst threshold [one]
 
 theorem row_at (p r z R B m d N : PTm n) :
     Γ ⊢[PRAAx] ap3 rowF p r (rowData z R B m d N) ≐ rowValue p r z R B m d N := by
-  let x := rowData z R B m d N
-  let tail₁ := sndT x
-  let tail₂ := sndT tail₁
-  let tail₃ := sndT tail₂
-  let tail₄ := sndT tail₃
-  have s₁ : Γ ⊢[PRAAx] tail₁ ≐ pairT R (pairT B (pairT m (pairT d N))) := snd_pair _ _
-  have s₂ : Γ ⊢[PRAAx] tail₂ ≐ pairT B (pairT m (pairT d N)) := s₁.sndE
-  have s₃ : Γ ⊢[PRAAx] tail₃ ≐ pairT m (pairT d N) := s₂.sndE
-  have s₄ : Γ ⊢[PRAAx] tail₄ ≐ pairT d N := s₃.sndE
-  have hz : Γ ⊢[PRAAx] fstT x ≐ z := fst_pair _ _
-  have hR : Γ ⊢[PRAAx] fstT tail₁ ≐ R := s₁.fstE
-  have hB : Γ ⊢[PRAAx] fstT tail₂ ≐ B := s₂.fstE
-  have hm : Γ ⊢[PRAAx] fstT tail₃ ≐ m := s₃.fstE
-  have hd : Γ ⊢[PRAAx] fstT tail₄ ≐ d := s₄.fstE
-  have hN : Γ ⊢[PRAAx] sndT tail₄ ≐ N := s₄.sndE
-  have first : Γ ⊢[PRAAx] ap3 rowF p r x ≐
-      rowValue p r (fstT x) (fstT tail₁) (fstT tail₂) (fstT tail₃) (fstT tail₄) (sndT tail₄) := by
-    change Γ ⊢[PRAAx] ConciseIPRA.PTm.app (PTm.toPR rowBody) ![p,r,x] ≐ _
-    simpa only [rowBody,subst_rowValue,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons,tail₁,tail₂,tail₃,tail₄] using
-      toPR_eq (Γ := Γ) rowBody ![p,r,x]
-  let w := shiftedNumerator (fstT x) (fstT tail₂) (fstT tail₃) r
-  let w' := shiftedNumerator z B m r
-  have hw : Γ ⊢[PRAAx] w ≐ w' := by
-    simpa only [w,w',shiftedNumerator,GaussianGammaEulerHeadLower.subst_translated,
-      ComplexLogarithmRemainder.subst_scale,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-      (shiftedNumerator (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![fstT x,fstT tail₂,fstT tail₃,r]) (σ' := ![z,B,m,r]) (fun i => by
-        fin_cases i
-        · exact hz
-        · exact hB
-        · exact hm
-        · exact .eqRefl _)
-  have hradius := congrAdd hR (.eqRefl (one : PTm n))
-  have hden := congrMul hB hm
-  have hmargin := congrMul hd hm
-  have dataEq : Γ ⊢[PRAAx] eulerData w (fstT tail₁+one) (fstT tail₂*fstT tail₃)
-      (fstT tail₄*fstT tail₃) (sndT tail₄) ≐ eulerData w' (R+one) (B*m) (d*m) N := by
-    simpa only [GaussianGammaEulerInverseApproximationName.subst_eulerData,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-      Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-      (eulerData (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-      (σ := ![w,fstT tail₁+one,fstT tail₂*fstT tail₃,fstT tail₄*fstT tail₃,sndT tail₄])
-      (σ' := ![w',R+one,B*m,d*m,N]) (fun i => by
-        fin_cases i
-        · exact hw
-        · exact hradius
-        · exact hden
-        · exact hmargin
-        · exact hN)
-  exact first.eqTrans (congrAp2 eulerF (.eqRefl (succ p)) dataEq)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 5)
+    (rowValue (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7)) p r ![z, R, B, m, d, N]
+  simp only [subst_rowValue, Syn.subst_var] at read
+  exact read
 
 theorem row_error_at (p q r z R B m a d N : PTm n) (h : Γ ⊢[PRAAx] source z R B m a d)
     (hr : Γ ⊢[PRAAx] lt r m) (hN : Γ ⊢[PRAAx] le (threshold p R m a d) N) :

@@ -51,15 +51,10 @@ ipra_subst rowBounds
 
 theorem pull_at (F : PR 3) (p t c d x : PTm n) : Γ ⊢[PRAAx]
     ap3 (pullF F) p t (pullData c d x) ≐ ap3 F p (timeMap c d t) x := by
-  have term : Γ ⊢[PRAAx] ap3 (pullF F) p t (pullData c d x) ≐ pullTerm F p t (pullData c d x) := by
-    simpa [pullF,ap3] using toPR_eq (Γ := Γ) (pullTerm F (var 0) (var 1) (var 2) : PTm 3) ![p,t,pullData c d x]
-  have tail := snd_pair (Γ := Γ) c (pairT d x)
-  have left := fst_pair (Γ := Γ) c (pairT d x)
-  have middle := (congrFst tail).eqTrans (fst_pair d x)
-  have map : Γ ⊢[PRAAx] timeMap (fstT (pullData c d x)) (fstT (sndT (pullData c d x))) t ≐ timeMap c d t :=
-    congrPairT (congrMul (congrMul left (.eqRefl _)) (.eqRefl _))
-      (congrMul (congrMul middle (.eqRefl _)) (.eqRefl _))
-  exact term.eqTrans (congrAp3 F (.eqRefl _) map ((congrSnd tail).eqTrans (snd_pair d x)))
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 2)
+    (ap3 F (var 0) (timeMap (var 2) (var 3) (var 1)) (var 4)) p t ![c, d, x]
+  simp only [subst_ap3, GaussianRationalQuadratureSquareCells.subst_timeMap, Syn.subst_var] at read
+  exact read
 
 theorem jacobian_at (F : PR 3) (p t c d x : PTm n) : Γ ⊢[PRAAx]
     ap3 (jacobianF F) p t (pullData c d x) ≐ qmul (jacobian c d t) (ap3 F p (timeMap c d t) x) := by
@@ -74,11 +69,11 @@ theorem corrected_at (F : PR 3) (p t N c d C E x : PTm n) : Γ ⊢[PRAAx]
     ap3 (correctedF F) p t (correctedData N c d C E x) ≐
       qadd (ap3 (jacobianF F) p t (pullData c d x))
         (qmul (fraction (c*C) (d*(E*N))) (ap3 (pullF F) p t (pullData c d x))) := by
-  have term : Γ ⊢[PRAAx] ap3 (correctedF F) p t (correctedData N c d C E x) ≐
-      correctedTerm F p t (correctedData N c d C E x) := by
-    simpa [correctedF,ap3] using toPR_eq (Γ := Γ) (correctedTerm F (var 0) (var 1) (var 2) : PTm 3) ![p,t,correctedData N c d C E x]
-  exact term.eqTrans (qadd_congr (congrAp3 _ (.eqRefl _) (.eqRefl _) (snd_pair _ _))
-    (qmul_congr (fst_pair _ _) (congrAp3 _ (.eqRefl _) (.eqRefl _) (snd_pair _ _))))
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 1)
+    (qadd (ap3 (jacobianF F) (var 0) (var 1) (var 3))
+        (qmul (var 2) (ap3 (pullF F) (var 0) (var 1) (var 3)))) p t ![(fraction (c * C) (d * (E * N))), pullData c d x]
+  simp only [GaussianRationalHorner.subst_qadd, GaussianRationalHorner.subst_qmul, subst_ap3, Syn.subst_var] at read
+  exact read
 
 theorem actual_mapped_row (F : PR 3) (i p N c d a C E x : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody (pullF F)) i (sampleData p N a C E (pullData c d x)) ≐ ap3 F p (timeMap c d (grid i N a C E)) x :=

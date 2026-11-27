@@ -56,25 +56,11 @@ ipra_subst data
 
 theorem evaluator_at (p t X Y D sign : PTm n) :
     Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData X Y D sign) ≐ ap2 F p (fd X Y D sign (tagNumerator t) (sndT t)) := by
-  let x := fixedData X Y D sign
-  have read : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ evaluatorTerm p t x := by
-    simpa only [evaluatorF,ap3,subst_evaluatorTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-      Matrix.head_cons,Matrix.tail_cons] using
-      toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  have x₁ : Γ ⊢[PRAAx] sndT x ≐ pairT Y (pairT D sign) := snd_pair _ _
-  have x₂ := (congrSnd x₁).eqTrans (snd_pair Y (pairT D sign))
-  have decode := Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (ap2 F (var 0) (fd (var 1) (var 2) (var 3) (var 4) (tagNumerator (var 5)) (sndT (var 5))) : PTm 6)
-    (σ := ![p,fstT x,fstT (sndT x),fstT (sndT (sndT x)),sndT (sndT (sndT x)),t])
-    (σ' := ![p,X,Y,D,sign,t]) (fun j => by
-      fin_cases j
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact (congrFst x₁).eqTrans (fst_pair _ _)
-      · exact (congrFst x₂).eqTrans (fst_pair _ _)
-      · exact (congrSnd x₂).eqTrans (snd_pair _ _)
-      · exact .eqRefl _)
-  exact read.eqTrans (by simpa [evaluatorTerm] using decode)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 3)
+    (ap2 F (var 0) (fd (var 2) (var 3) (var 4) (var 5) (tagNumerator (var 1)) (sndT (var 1)))) p t ![X, Y, D, sign]
+  simp only [subst_ap2,
+    GaussianBinetBoseIntegrandBound.subst_data, GaussianBinetLaplaceStrip.subst_tagNumerator, subst_sndT, Syn.subst_var] at read
+  exact read
 
 theorem tag_lower (A C E t : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hE : Γ ⊢[PRAAx] le one E)
     (ht : Γ ⊢[PRAAx] inside (E+A) C E t) :
