@@ -98,10 +98,9 @@ theorem tail_bound (q N B k : PTm n) (hq : Γ ⊢[PRAAx] bounded q B one) : Γ �
   have hs : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift q) (Syn.shift B) one := by
     simpa [Fm.shift,Syn.shift] using hq.shift
   have all : Γ ⊢[PRAAx] .all (boundLaw (Syn.shift q) (Syn.shift N) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using bound_zero q N B
-    · simp only [subst_boundLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact bound_step (Syn.shift q) (Syn.shift N) (Syn.shift B) (var 0) hs.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_boundLaw]
+    · exact bound_zero q N B
+    · exact bound_step (Syn.shift q) (Syn.shift N) (Syn.shift B) (var 0) hs.wk Prf.hyp0
   simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 def cutoff (B p : PTm n) : PTm n := ExponentialTail.Nt B p

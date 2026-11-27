@@ -106,10 +106,9 @@ theorem tangents (j v u M L : PTm n) (hM : Γ ⊢[PRAAx] le u M) (hL : Γ ⊢[PR
   have hM' : Δ ⊢[PRAAx] le (sh u) (sh M) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hM.shift
   have hL' : Δ ⊢[PRAAx] le (sh M) (sh L) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hL.shift
   have all : Γ ⊢[PRAAx] .all (law (var 0) (sh v) (sh u) (sh M) (sh L)) := by
-    refine PRA.qfInd _ (by simp [law,upperTangent,lowerTangent,Fm.QF,le]) ?_ ?_
-    · simpa only [subst_law,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using base (Γ := Γ) v u M L
-    · simp only [subst_law,sh,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (by simp [law,upperTangent,lowerTangent,Fm.QF,le]) [subst_law, sh]
+    · exact base (Γ := Γ) v u M L
+    · refine .impI ?_
       have hprev : le (sh v+succ (var 0)) (sh u) :: law (var 0) (sh v) (sh u) (sh M) (sh L) :: Δ ⊢[PRAAx]
           le (sh v+var 0) (sh u) :=
         le_trans (le_congr (.eqRefl _) (add_succ _ _).eqSymm (le_succ_self _)) Prf.hyp0

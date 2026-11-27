@@ -97,17 +97,13 @@ theorem mass (z R B N : PTm n) (hz : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     simpa [Fm.shift,Syn.shift,s] using hz.shift
   have all : Γ ⊢[PRAAx] .all (rationalLE
       (coefficientNorm (polynomial (s z) (s B) (var 0))) (natCode (cap (s R) (var 0)))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [s,subst_rationalLE,subst_coefficientNorm,GaussianBarnesCanonicalCenteredHead.subst_polynomial,
-        subst_natCode,subst_cap,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have norm := (coefficientNorm_congr (polynomial_zero (Γ := Γ) z B)).eqTrans
+    ipra_qfind (le_QF _ _) [s, subst_rationalLE, subst_coefficientNorm, GaussianBarnesCanonicalCenteredHead.subst_polynomial, subst_natCode, subst_cap]
+    · have norm := (coefficientNorm_congr (polynomial_zero (Γ := Γ) z B)).eqTrans
         ((singleton_norm qone).eqTrans GaussianRationalSyntheticBounds.qL1_qone)
       have cost : Γ ⊢[PRAAx] cap R zero ≐ one :=
         (congrAp2 powF degree_zero (.eqRefl (linearCap R))).eqTrans (pw_zero _)
       exact rationalLE_congr norm.eqSymm (natCode_congr cost).eqSymm (RationalArgmin.reflexive _)
-    · simp only [s,subst_rationalLE,subst_coefficientNorm,GaussianBarnesCanonicalCenteredHead.subst_polynomial,
-        subst_natCode,subst_cap,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact mass_step (s z) (s R) (s B) (var 0) shift_source.wk Prf.hyp0
+    · exact mass_step (s z) (s R) (s B) (var 0) shift_source.wk Prf.hyp0
   simpa only [s,subst_rationalLE,subst_coefficientNorm,GaussianBarnesCanonicalCenteredHead.subst_polynomial,
     subst_natCode,subst_cap,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 

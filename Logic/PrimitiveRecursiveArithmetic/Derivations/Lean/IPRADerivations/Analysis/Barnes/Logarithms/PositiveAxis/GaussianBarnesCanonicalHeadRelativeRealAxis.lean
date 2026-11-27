@@ -33,11 +33,9 @@ private theorem power_axis (q k : PTm n) (hq : Γ ⊢[PRAAx] axis q) : Γ ⊢[PR
   let motive : Fm PTm (n+1) := axis (power x (var 0))
   have hx : Δ ⊢[PRAAx] axis x := by simpa [Fm.shift,Syn.shift,x,Δ] using hq.shift
   have all : Γ ⊢[PRAAx] .all motive := by
-    refine PRA.qfInd _ (by simp [motive,axis,RationalArgmin.rationalEq,Fm.QF]) ?_ ?_
-    · simp only [motive,x,subst_axis,subst_power,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact axis_congr (GaussianRationalReciprocal.power_zero q).eqSymm axis_one
-    · simp only [motive,x,subst_axis,subst_power,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact axis_congr (GaussianRationalReciprocal.power_succ x (var 0)).eqSymm (axis_multiply _ _ Prf.hyp0 hx.wk)
+    ipra_qfind (by simp [motive,axis,RationalArgmin.rationalEq,Fm.QF]) [motive, x, subst_axis, subst_power]
+    · exact axis_congr (GaussianRationalReciprocal.power_zero q).eqSymm axis_one
+    · exact axis_congr (GaussianRationalReciprocal.power_succ x (var 0)).eqSymm (axis_multiply _ _ Prf.hyp0 hx.wk)
   simpa only [motive,x,subst_axis,subst_power,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
 private theorem product_axis (t : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] rowAxes t x) :
@@ -47,11 +45,9 @@ private theorem product_axis (t : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] rowAxe
   let motive : Fm PTm (n+1) := axis (qprod t (var 0) y)
   have rows : Δ ⊢[PRAAx] rowAxes t y := by simpa [Δ,y,Fm.shift,Syn.shift] using h.shift
   have all : Γ ⊢[PRAAx] .all motive := by
-    refine PRA.qfInd _ (by simp [motive,axis,RationalArgmin.rationalEq,Fm.QF]) ?_ ?_
-    · simp only [motive,y,subst_axis,subst_qprod,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact axis_congr (GaussianRationalFiniteProduct.product_zero t x).eqSymm axis_one
-    · simp only [motive,y,subst_axis,subst_qprod,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact axis_congr (GaussianRationalFiniteProduct.product_succ t (var 0) y).eqSymm
+    ipra_qfind (by simp [motive,axis,RationalArgmin.rationalEq,Fm.QF]) [motive, y, subst_axis, subst_qprod]
+    · exact axis_congr (GaussianRationalFiniteProduct.product_zero t x).eqSymm axis_one
+    · exact axis_congr (GaussianRationalFiniteProduct.product_succ t (var 0) y).eqSymm
         (axis_multiply _ _ Prf.hyp0 (row_axis t y (var 0) rows.wk))
   simpa only [motive,y,subst_axis,subst_qprod,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 

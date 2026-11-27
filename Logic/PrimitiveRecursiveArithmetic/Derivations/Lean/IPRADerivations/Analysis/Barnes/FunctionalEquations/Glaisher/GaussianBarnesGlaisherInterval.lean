@@ -120,10 +120,9 @@ theorem finite_estimate (p N r : PTm n) (hN : Γ ⊢[PRAAx] le two N) : Γ ⊢[P
   have hs : Γ.map Fm.shift ⊢[PRAAx] le two (Syn.shift N) := by simpa [Fm.shift,Syn.shift,two,one] using hN.shift
   have h1 := le_trans (le_succ_self one) hN
   have all : Γ ⊢[PRAAx] .all (estimate (Syn.shift p) (Syn.shift N) (var 0)) := by
-    refine PRA.qfInd _ (by simp [estimate,distanceBounded,GaussianRationalMetric.bounded,RationalArgmin.rationalLE,le_QF]) ?_ ?_
-    · simpa only [subst_estimate,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using estimate_zero p N h1
-    · simp only [subst_estimate,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact estimate_succ (Syn.shift p) (Syn.shift N) (var 0) hs.wk Prf.hyp0
+    ipra_qfind (by simp [estimate,distanceBounded,GaussianRationalMetric.bounded,RationalArgmin.rationalLE,le_QF]) [subst_estimate]
+    · exact estimate_zero p N h1
+    · exact estimate_succ (Syn.shift p) (Syn.shift N) (var 0) hs.wk Prf.hyp0
   simpa only [subst_estimate,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
 
 theorem uniform_interval (p N r : PTm n) (hN : Γ ⊢[PRAAx] le two N) :

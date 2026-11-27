@@ -78,12 +78,10 @@ private theorem power_one_step (k : PTm n)
 private theorem power_one (k : PTm n) :
     Γ ⊢[PRAAx] equal (ComplexLogarithmRemainder.power oneCode k) oneCode := by
   have all : Γ ⊢[PRAAx] .all (equal (ComplexLogarithmRemainder.power oneCode (var 0)) oneCode) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simpa only [GaussianRootAlgebra.subst_equal,ComplexLogarithmRemainder.subst_power,
-        ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Syn.inst_zero] using
+    ipra_qfind (⟨trivial,trivial⟩) [GaussianRootAlgebra.subst_equal, ComplexLogarithmRemainder.subst_power, ComplexLogarithmRemainder.subst_oneCode]
+    · exact
         equal_of_code (ComplexLogarithmRemainder.power_zero (oneCode : PTm n))
-    · simpa only [GaussianRootAlgebra.subst_equal,ComplexLogarithmRemainder.subst_power,
-        ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Syn.repl_zero] using power_one_step (var 0) Prf.hyp0
+    · exact power_one_step (var 0) Prf.hyp0
   simpa only [GaussianRootAlgebra.subst_equal,ComplexLogarithmRemainder.subst_power,
     ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Syn.inst_zero] using all.allE k
 

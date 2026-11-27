@@ -51,12 +51,9 @@ theorem factorial_block (a t : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
   have hs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift a) := by
     simpa [Fm.shift, Syn.shift, one] using ha.shift
   have all : Γ ⊢[PRAAx] .all (blockLaw (Syn.shift a) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [blockLaw, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] using block_base a
-    · simp only [blockLaw, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      exact block_step (Syn.shift a) (var 0) hs.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [blockLaw, subst_le, subst_ap2]
+    · exact block_base a
+    · exact block_step (Syn.shift a) (var 0) hs.wk Prf.hyp0
   simpa only [blockLaw, subst_le, subst_ap2, PTm.subst_add, Syn.subst_var,
     Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] using all.allE t
 

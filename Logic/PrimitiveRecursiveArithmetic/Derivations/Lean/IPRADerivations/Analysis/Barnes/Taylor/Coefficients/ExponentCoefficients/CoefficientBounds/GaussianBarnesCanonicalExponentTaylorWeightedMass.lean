@@ -178,15 +178,13 @@ private theorem prefix_bound (C d A : PTm n)
       AnalyticNumberTheory.Fermat.subst_up_shift',Syn.up_zero] at e
     simpa only [Syn.shift] using e
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift d) (Syn.shift A) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
+    · refine .impI ?_
       exact rationalLE_congr ((prefix_zero C).eqTrans GaussianRationalLinearProduct.scalar_zero_code.eqSymm).eqSymm
         (.eqRefl _)
         (fraction_order zero one A (pw two (monus d zero)) (le_refl _) (dyadic_positive _)
           (le_congr (mul_zero _).eqSymm (.eqRefl _) (zero_le (A*one))))
-    · simp only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (prefix_step _ _ _ _ Prf.hyp0 (entry_at _ _ _ _ es.wk.wk) Prf.hyp1)
+    · exact .impI (prefix_step _ _ _ _ Prf.hyp0 (entry_at _ _ _ _ es.wk.wk) Prf.hyp1)
   have atD : Γ ⊢[PRAAx] prefixLaw C d A d := by
     simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE d
   have eq : Γ ⊢[PRAAx] majorant A (monus d d) ≐ fraction A one :=

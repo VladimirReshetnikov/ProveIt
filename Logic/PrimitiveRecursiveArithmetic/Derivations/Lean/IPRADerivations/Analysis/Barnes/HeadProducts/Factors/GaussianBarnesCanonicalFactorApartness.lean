@@ -47,18 +47,12 @@ theorem power_lower (q D k : PTm n) (hD : Γ ⊢[PRAAx] le one D)
   have ds : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift D) := by
     simpa [Fm.shift,Syn.shift,one] using hD.shift
   have all : Γ ⊢[PRAAx] .all (lower (power (Syn.shift q) (var 0)) one (pw (Syn.shift D) (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [GaussianRationalLowerBounds.subst_lower,GaussianRationalReciprocal.subst_power,
-        subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift,one,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-      apply lower_congr (power_zero q).eqSymm (.eqRefl _) (pw_zero D).eqSymm
+    ipra_qfind (le_QF _ _) [GaussianRationalLowerBounds.subst_lower, GaussianRationalReciprocal.subst_power, subst_ap2, one]
+    · apply lower_congr (power_zero q).eqSymm (.eqRefl _) (pw_zero D).eqSymm
       exact lower_from_representation _ oneCode one one one (le_refl _) (le_refl _)
         (ofGaussian_represents _ _ (le_refl _))
         (le_congr (by ipra_ring) (congrMul (.eqRefl _) ComplexLogarithmRemainder.normSq_one).eqSymm (le_refl _))
-    · simp only [GaussianRationalLowerBounds.subst_lower,GaussianRationalReciprocal.subst_power,
-        subst_ap2,Syn.subst_var,Syn.repl_zero,subst_repl_shift,one,
-        ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero]
-      let Q := power (Syn.shift q) (var 0)
+    · let Q := power (Syn.shift q) (var 0)
       let D' := pw (Syn.shift D) (var 0)
       let Δ := lower Q one D' :: Γ.map Fm.shift
       have hD' : Δ ⊢[PRAAx] le one D' := GaussianFactorBudget.power_positive _ _ ds.wk

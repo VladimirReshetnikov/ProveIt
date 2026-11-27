@@ -39,11 +39,9 @@ private theorem real_power (z k : PTm n) (hz : Γ ⊢[PRAAx] realCode z) : Γ �
   let motive : Fm PTm (n+1) := realCode (power Z (var 0))
   have hs : Δ ⊢[PRAAx] realCode Z := by simpa [Fm.shift,Syn.shift,Z,Δ] using hz.shift
   have p : Γ ⊢[PRAAx] .all motive := by
-    refine PRA.qfInd _ (by simp [motive,realCode,ZT.eq,Fm.QF]) ?_ ?_
-    · simp only [motive,Z,subst_realCode,ComplexLogarithmRemainder.subst_power,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact real_congr (ComplexLogarithmRemainder.power_zero z) (ZT.derive (by simp [im_one,ZT.toZ_ofNat]))
-    · simp only [motive,Z,subst_realCode,ComplexLogarithmRemainder.subst_power,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      apply real_congr (ComplexLogarithmRemainder.power_succ Z (var 0))
+    ipra_qfind (by simp [motive,realCode,ZT.eq,Fm.QF]) [motive, Z, subst_realCode, ComplexLogarithmRemainder.subst_power]
+    · exact real_congr (ComplexLogarithmRemainder.power_zero z) (ZT.derive (by simp [im_one,ZT.toZ_ofNat]))
+    · apply real_congr (ComplexLogarithmRemainder.power_succ Z (var 0))
       apply ZT.derive
       change ZT.toZ (motive :: Δ) (im (mul (power Z (var 0)) Z)) = ZT.toZ (motive :: Δ) (ZT.ofNat zero)
       have hi := ZT.toZ_eq (Prf.hyp0 : motive :: Δ ⊢[PRAAx] realCode (power Z (var 0)))
@@ -59,11 +57,9 @@ private theorem real_series (z D k : PTm n) (hz : Γ ⊢[PRAAx] realCode z) : Γ
   let motive : Fm PTm (n+1) := realCode (series Z E (var 0))
   have hs : Δ ⊢[PRAAx] realCode Z := by simpa [Fm.shift,Syn.shift,Z,Δ] using hz.shift
   have p : Γ ⊢[PRAAx] .all motive := by
-    refine PRA.qfInd _ (by simp [motive,realCode,ZT.eq,Fm.QF]) ?_ ?_
-    · simp only [motive,Z,E,subst_realCode,ComplexLogarithmRemainder.subst_series,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact real_congr (ComplexLogarithmRemainder.series_zero z D) (ZT.derive (by simp [im_zero,ZT.toZ_ofNat]))
-    · simp only [motive,Z,E,subst_realCode,ComplexLogarithmRemainder.subst_series,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      apply real_congr (ComplexLogarithmRemainder.series_succ Z E (var 0))
+    ipra_qfind (by simp [motive,realCode,ZT.eq,Fm.QF]) [motive, Z, E, subst_realCode, ComplexLogarithmRemainder.subst_series]
+    · exact real_congr (ComplexLogarithmRemainder.series_zero z D) (ZT.derive (by simp [im_zero,ZT.toZ_ofNat]))
+    · apply real_congr (ComplexLogarithmRemainder.series_succ Z E (var 0))
       have hx := ZT.toZ_eq (hs.wk : motive :: Δ ⊢[PRAAx] realCode Z)
       let w := ComplexLogarithmRemainder.neg Z
       have hneg : motive :: Δ ⊢[PRAAx] realCode w := ZT.derive (by dsimp only [w]; rw [im_neg,hx]; simp)

@@ -153,10 +153,9 @@ private theorem estimate_succ (p N : PTm n) (ih : Γ ⊢[PRAAx] estimate p N) :
 
 theorem finite_estimate (p N : PTm n) : Γ ⊢[PRAAx] estimate p N := by
   have all : Γ ⊢[PRAAx] .all (estimate (Syn.shift p) (var 0)) := by
-    refine PRA.qfInd _ (by simp [estimate,distanceBounded,GaussianRationalMetric.bounded,RationalArgmin.rationalLE,le_QF]) ?_ ?_
-    · simpa only [subst_estimate,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using estimate_zero (Γ := Γ) p
-    · simp only [subst_estimate,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact estimate_succ (Syn.shift p) (var 0) Prf.hyp0
+    ipra_qfind (by simp [estimate,distanceBounded,GaussianRationalMetric.bounded,RationalArgmin.rationalLE,le_QF]) [subst_estimate]
+    · exact estimate_zero (Γ := Γ) p
+    · exact estimate_succ (Syn.shift p) (var 0) Prf.hyp0
   simpa only [subst_estimate,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
 
 theorem prefix_hyperfactorial_logarithm (N : PTm n) :

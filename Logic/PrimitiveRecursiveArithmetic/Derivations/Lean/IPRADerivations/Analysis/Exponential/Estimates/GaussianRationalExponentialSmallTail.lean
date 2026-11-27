@@ -109,10 +109,9 @@ theorem small_tail (q N A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have hs : Γ.map Fm.shift ⊢[PRAAx] bounded (sh q) one two :=
     by simpa [Fm.shift,Syn.shift,sh,one,two] using hh.shift
   have all : Γ ⊢[PRAAx] .all (budgetedTail (sh q) (sh N) (sh A) (sh B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [sh,subst_budgetedTail,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using start q N A B hB
-    · simp only [sh,subst_budgetedTail,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact advance _ _ _ _ _ ds.wk qs.wk hs.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [sh, subst_budgetedTail]
+    · exact start q N A B hB
+    · exact advance _ _ _ _ _ ds.wk qs.wk hs.wk Prf.hyp0
   have tailBound : Γ ⊢[PRAAx] budgetedTail q N A B k := by
     simpa only [sh,subst_budgetedTail,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
   have pos := GaussianFactorBudget.power_positive B N hB
