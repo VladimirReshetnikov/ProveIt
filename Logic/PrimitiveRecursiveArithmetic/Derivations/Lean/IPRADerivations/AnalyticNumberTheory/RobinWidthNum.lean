@@ -35,16 +35,12 @@ abbrev FG (K : PTm n) : Fm PTm n := le (pw two K) (Fv (succ K))
 
 theorem fact_ge (K : PTm n) : Γ ⊢[PRAAx] FG K := by
   have hall : Γ ⊢[PRAAx] Fm.all (FG (var 0 : PTm (n + 1))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-        Syn.inst_zero]
-      have e0 := natEq (pw_zero (Γ := Γ) (two : PTm n))
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have e0 := natEq (pw_zero (Γ := Γ) (two : PTm n))
       have f1 := natEq (F_succ (Γ := Γ) (zero : PTm n))
       have f0 := natEq (F_zero (Γ := Γ) (n := n))
       ipra_le 0 with -e0 + f1 + f0
-    · simp only [subst_le, subst_ap2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var,
-        Syn.repl_zero]
-      let Δ : List (Fm PTm (n + 1)) := FG (var 0 : PTm (n + 1)) :: Γ.map Fm.shift
+    · let Δ : List (Fm PTm (n + 1)) := FG (var 0 : PTm (n + 1)) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] FG (var 0 : PTm (n + 1)) := Prf.hyp0
       have e1 := natEq (pw_succ (Γ := Δ) (two : PTm (n + 1)) (var 0))
       have f := natEq (F_succ (Γ := Δ) (succ (var 0 : PTm (n + 1))))

@@ -72,13 +72,9 @@ theorem finiteMaximum_at (body : PTm 2) {N i x : PTm n}
     Γ ⊢[PRAAx] le (inst2 body i x) (finiteMaximum body N x) := by
   have all : Γ ⊢[PRAAx] .all (lt (Syn.shift i) (var 0) ⟶
       le (inst2 body (Syn.shift i) (Syn.shift x)) (finiteMaximum body (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_lt, subst_le, subst_inst2, subst_finiteMaximum, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [Fm.subst_imp, subst_lt, subst_le, subst_inst2, subst_finiteMaximum,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨lt_QF _ _, le_QF _ _⟩) [subst_lt, subst_le, subst_inst2, subst_finiteMaximum]
+    · exact .impI (lt_zero_absurd _ Prf.hyp0)
+    · refine .impI ?_
       refine .orE (Order.lt_succ_cases Prf.hyp0) ?_ ?_
       · exact le_trans (Prf.impE Prf.hyp1.wk Prf.hyp0) (finiteMaximum_increasing body _ _)
       · exact le_congr (congrInst2 body Prf.hyp0 (.eqRefl _)).eqSymm

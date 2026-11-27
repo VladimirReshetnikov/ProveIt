@@ -66,11 +66,9 @@ theorem smul_op (hA : Assoc G) (hC : Comm G) (hI : IdL G e) (k X Y : PTm n) :
     Γ ⊢[PRAAx] smul G e k (op G X Y) ≐ op G (smul G e k X) (smul G e k Y) := by
   have hall : Γ ⊢[PRAAx] Fm.all (smul G e (var 0) (op G (Syn.shift X) (Syn.shift Y)) ≐
       op G (smul G e (var 0) (Syn.shift X)) (smul G e (var 0) (Syn.shift Y))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (smul_zero _).eqTrans ((hI (num e)).eqSymm.eqTrans (congrOp G (smul_zero _) (smul_zero _)).eqSymm)
-    · simp only [Fm.subst_eq, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine (smul_succ _ _).eqTrans ?_
+    ipra_qfind (trivial) [subst_ap2, subst_inst2]
+    · exact (smul_zero _).eqTrans ((hI (num e)).eqSymm.eqTrans (congrOp G (smul_zero _) (smul_zero _)).eqSymm)
+    · refine (smul_succ _ _).eqTrans ?_
       refine .eqTrans ?_ (congrOp G (smul_succ _ _) (smul_succ _ _)).eqSymm
       exact (congrOp G Prf.hyp0 (.eqRefl _)).eqTrans (swap4 hA hC _ _ _ _)
   have h2 := Prf.allE k hall
@@ -81,12 +79,10 @@ theorem smul_add (hA : Assoc G) (hC : Comm G) (hI : IdL G e) (a b X : PTm n) :
     Γ ⊢[PRAAx] smul G e (a + b) X ≐ op G (smul G e a X) (smul G e b X) := by
   have hall : Γ ⊢[PRAAx] Fm.all (smul G e (Syn.shift a + var 0) (Syn.shift X) ≐
       op G (smul G e (Syn.shift a) (Syn.shift X)) (smul G e (var 0) (Syn.shift X))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine (congrSmul (add_zero _) (.eqRefl _)).eqTrans ?_
+    ipra_qfind (trivial) [subst_ap2, subst_inst2]
+    · refine (congrSmul (add_zero _) (.eqRefl _)).eqTrans ?_
       exact (hI _).eqSymm.eqTrans ((hC _ _).eqTrans (congrOp G (.eqRefl _) (smul_zero _).eqSymm))
-    · simp only [Fm.subst_eq, subst_ap2, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have e1 : ((smul G e (Syn.shift a + var 0) (Syn.shift X) ≐
+    · have e1 : ((smul G e (Syn.shift a + var 0) (Syn.shift X) ≐
           op G (smul G e (Syn.shift a) (Syn.shift X)) (smul G e (var 0) (Syn.shift X))) :: Γ.map Fm.shift) ⊢[PRAAx]
           Syn.shift a + succ (var 0) ≐ succ (Syn.shift a + var 0) := by ipra_ring
       refine (congrSmul e1 (.eqRefl _)).eqTrans ((smul_succ _ _).eqTrans ?_)
@@ -101,11 +97,9 @@ theorem smul_mul (hA : Assoc G) (hC : Comm G) (hI : IdL G e) (a b X : PTm n) :
     Γ ⊢[PRAAx] smul G e (b * a) X ≐ smul G e a (smul G e b X) := by
   have hall : Γ ⊢[PRAAx] Fm.all (smul G e (Syn.shift b * var 0) (Syn.shift X) ≐
       smul G e (var 0) (smul G e (Syn.shift b) (Syn.shift X))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (congrSmul (mul_zero _) (.eqRefl _)).eqTrans ((smul_zero _).eqTrans (smul_zero _).eqSymm)
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have e1 : ((smul G e (Syn.shift b * var 0) (Syn.shift X) ≐
+    ipra_qfind (trivial) [subst_ap2]
+    · exact (congrSmul (mul_zero _) (.eqRefl _)).eqTrans ((smul_zero _).eqTrans (smul_zero _).eqSymm)
+    · have e1 : ((smul G e (Syn.shift b * var 0) (Syn.shift X) ≐
           smul G e (var 0) (smul G e (Syn.shift b) (Syn.shift X))) :: Γ.map Fm.shift) ⊢[PRAAx]
           Syn.shift b * succ (var 0) ≐ Syn.shift b * var 0 + Syn.shift b := by ipra_ring
       refine (congrSmul e1 (.eqRefl _)).eqTrans ((smul_add hA hC hI _ _ _).eqTrans ?_)

@@ -116,13 +116,9 @@ theorem le_two_mul (a : PTm n) : Γ ⊢[PRAAx] le a (two * a) := by ipra_le 𝔞
 /-- `s_j ≥ D + 1600`. -/
 theorem s_ge (j D : PTm n) : Γ ⊢[PRAAx] le (D + num 1600) (sT j D) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (Syn.shift D + num 1600) (sT (var 0) (Syn.shift D))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, PTm.subst_add, PTm.subst_num, subst_sT, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      exact le_congr (.eqRefl _) (s_zero D).eqSymm (le_refl _)
-    · simp only [subst_le, PTm.subst_add, PTm.subst_num, subst_sT, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := le (Syn.shift D + num 1600) (sT (var 0) (Syn.shift D)) :: Γ.map Fm.shift
+    ipra_qfind (le_QF _ _) [subst_le, subst_sT]
+    · exact le_congr (.eqRefl _) (s_zero D).eqSymm (le_refl _)
+    · let Δ : List (Fm PTm (n + 1)) := le (Syn.shift D + num 1600) (sT (var 0) (Syn.shift D)) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le (Syn.shift D + num 1600) (sT (var 0) (Syn.shift D)) := Prf.hyp0
       have g : Δ ⊢[PRAAx] le (sT (var 0) (Syn.shift D)) (sN (Syn.shift D) (Aj (var 0) (Syn.shift D))
           (sT (var 0) (Syn.shift D))) := le_trans (le_add_right _ _) (le_trans (le_two_mul _) (le_add_right _ _))

@@ -110,11 +110,9 @@ theorem successor_count (m : PTm n) : Γ ⊢[PRAAx] count (succ m) ≐ grid m :=
 
 theorem count_factorial (m : PTm n) : Γ ⊢[PRAAx] count m ≐ factorial m := by
   have all : Γ ⊢[PRAAx] .all (count (var 0) ≐ factorial (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,RuntimePermutationWords.subst_count,RuntimePermutationFactorialBound.subst_factorial,Syn.subst_var,Syn.inst_zero]
-      exact RuntimePermutationWords.count_zero.eqTrans factorial_zero.eqSymm
-    · simp only [Fm.subst_eq,RuntimePermutationWords.subst_count,RuntimePermutationFactorialBound.subst_factorial,Syn.subst_var,Syn.repl_zero]
-      exact (successor_count (var 0)).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (factorial_succ (var 0)).eqSymm)
+    ipra_qfind (trivial) [RuntimePermutationWords.subst_count, RuntimePermutationFactorialBound.subst_factorial]
+    · exact RuntimePermutationWords.count_zero.eqTrans factorial_zero.eqSymm
+    · exact (successor_count (var 0)).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (factorial_succ (var 0)).eqSymm)
   simpa only [Fm.subst_eq,RuntimePermutationWords.subst_count,RuntimePermutationFactorialBound.subst_factorial,Syn.subst_var,Syn.inst_zero] using all.allE m
 
 theorem actual_permutation_packing_roundtrip_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2

@@ -136,13 +136,9 @@ theorem v_succ (m y : PTm n) : Γ ⊢[PRAAx] Vc e (succ m) y ≐ Vc e m y * succ
   simpa [inst2] using h
 
 theorem v_clean {y : PTm n} (h : Γ ⊢[PRAAx] Clean e y) : Γ ⊢[PRAAx] Fm.all (Vc e (var 0) (Syn.shift y) ≐ one) := by
-  refine PRA.qfInd _ trivial ?_ ?_
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    exact prod_zero _ _
-  · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-      ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-    have ih : ((Vc e (var 0) (Syn.shift y) ≐ one) :: Γ.map Fm.shift) ⊢[PRAAx] Vc e (var 0) (Syn.shift y) ≐ one :=
+  ipra_qfind (trivial) [subst_ap2]
+  · exact prod_zero _ _
+  · have ih : ((Vc e (var 0) (Syn.shift y) ≐ one) :: Γ.map Fm.shift) ⊢[PRAAx] Vc e (var 0) (Syn.shift y) ≐ one :=
       Prf.hyp0
     have hz : ((Vc e (var 0) (Syn.shift y) ≐ one) :: Γ.map Fm.shift) ⊢[PRAAx] inst2 e (var 0) (Syn.shift y) ≐ zero :=
       h.allOpen.wk

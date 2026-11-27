@@ -64,11 +64,9 @@ theorem tel_all (h0 : Γ ⊢[PRAAx] inst2 D zero x ≐ zero)
     (hstep : Γ ⊢[PRAAx] Fm.all (le (inst2 D (succ (var 0)) (Syn.shift x))
       (inst2 D (var 0) (Syn.shift x) + inst2 s (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (le (inst2 D (var 0) (Syn.shift x)) (ap2 (sumF s) (var 0) (Syn.shift x))) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-    exact tel_base h0
-  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-    exact tel_step hstep.allOpen.wk Prf.hyp0
+  ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_inst2]
+  · exact tel_base h0
+  · exact tel_step hstep.allOpen.wk Prf.hyp0
 
 /-- The triangle inequality telescopes: `D(k) ≤ ∑_{i<k} s(i)`. -/
 theorem telescope (h0 : Γ ⊢[PRAAx] inst2 D zero x ≐ zero)

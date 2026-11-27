@@ -112,15 +112,10 @@ theorem step_case : Δ done step m ⊢[PRAAx]
 theorem termination : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 (terminationFormula done step m) := by
   refine closeUniv 1 (.impI ?_)
   have hall : [decrease done step m] ⊢[PRAAx] Fm.all (invariant done step m) := by
-    refine PRA.qfInd _ ⟨trivial, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, PTm.subst_monus, subst_ap1, subst_ap2,
-        Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine .orI₂ (le_congr ?_ (.eqRefl _) (le_refl _))
+    ipra_qfind (⟨trivial, le_QF _ _⟩) [subst_le, subst_ap1, subst_ap2, List.map_cons, List.map_nil, shift_decrease]
+    · refine .orI₂ (le_congr ?_ (.eqRefl _) (le_refl _))
       exact (congrAp1 m (r_zero _)).eqSymm.eqTrans (add_zero _).eqSymm
-    · simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, PTm.subst_monus, subst_ap1, subst_ap2,
-        Syn.subst_var, Syn.repl_zero, repl_one, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ, List.map_cons,
-        List.map_nil, shift_decrease]
-      exact step_case
+    · exact step_case
   have h := Prf.allE (succ (ap1 m (var 0))) hall
   simp only [Fm.subst_or, Fm.subst_eq, subst_le, PTm.subst_add, PTm.subst_monus, subst_ap1, subst_ap2, Syn.subst_var,
     Syn.inst_zero, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h

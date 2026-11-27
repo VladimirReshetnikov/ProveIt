@@ -64,11 +64,9 @@ theorem factorial_zero : Γ ⊢[PRAAx] factorial (zero : PTm n) ≐ one := fact_
 theorem factorial_succ (m : PTm n) : Γ ⊢[PRAAx] factorial (succ m) ≐ factorial m*succ m := fact_succ m zero
 theorem count_factorial_bound (m : PTm n) : Γ ⊢[PRAAx] le (count m) (factorial m) := by
   have all : Γ ⊢[PRAAx] .all (le (count (var 0)) (factorial (var 0))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,RuntimePermutationWords.subst_count,subst_factorial,Syn.subst_var,Syn.inst_zero]
-      exact le_congr RuntimePermutationWords.count_zero.eqSymm factorial_zero.eqSymm (le_refl one)
-    · simp only [subst_le,RuntimePermutationWords.subst_count,subst_factorial,Syn.subst_var,Syn.repl_zero]
-      exact le_congr (.eqRefl _) (factorial_succ (var 0)).eqSymm
+    ipra_qfind (le_QF _ _) [subst_le, RuntimePermutationWords.subst_count, subst_factorial]
+    · exact le_congr RuntimePermutationWords.count_zero.eqSymm factorial_zero.eqSymm (le_refl one)
+    · exact le_congr (.eqRefl _) (factorial_succ (var 0)).eqSymm
         (le_trans (successor_count_bound (var 0)) (mul_le_mul_right (succ (var 0)) Prf.hyp0))
   simpa only [subst_le,RuntimePermutationWords.subst_count,subst_factorial,Syn.subst_var,Syn.inst_zero] using all.allE m
 

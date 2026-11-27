@@ -40,13 +40,9 @@ theorem backward_loss (loss : PR 1) (N K j c : PTm n) :
   have all : Γ ⊢[PRAAx] .all
       (backward (lossF loss) (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift c) ≐
         Syn.shift K + ap1 loss (Syn.shift c) * var 0) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_backward, PTm.subst_add, PTm.subst_mul, subst_ap1,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (backward_zero (lossF loss) N K c).eqTrans (by ipra_ring)
-    · simp only [Fm.subst_eq, subst_backward, PTm.subst_add, PTm.subst_mul, subst_ap1,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact (backward_succ (lossF loss) (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift c)).eqTrans
+    ipra_qfind (trivial) [subst_backward, subst_ap1]
+    · exact (backward_zero (lossF loss) N K c).eqTrans (by ipra_ring)
+    · exact (backward_succ (lossF loss) (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift c)).eqTrans
         ((loss_at loss _ _ _).eqTrans ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (by ipra_ring)))
   simpa only [Fm.subst_eq, subst_backward, PTm.subst_add, PTm.subst_mul, subst_ap1,
     Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE j all

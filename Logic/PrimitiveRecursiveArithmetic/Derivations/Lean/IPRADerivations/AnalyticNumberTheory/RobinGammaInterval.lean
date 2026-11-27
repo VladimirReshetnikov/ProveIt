@@ -164,13 +164,9 @@ theorem Ad_succ (t K : PTm n) : Γ ⊢[PRAAx] Ad (succ t) K ≐ Ad t K * dU (suc
 
 theorem Ad_pos (t K : PTm n) : Γ ⊢[PRAAx] Ad t K ≐ succ (pred (Ad t K)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (Ad (var 0) (Syn.shift K) ≐ succ (pred (Ad (var 0) (Syn.shift K)))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, ConciseIPRA.PTm.subst_succ, LeanProofs.IPRA.PTm.subst_pred, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      exact (Ad_zero _).eqTrans (congrSucc ((pred_succ _).eqSymm.eqTrans (congrPred (Ad_zero _).eqSymm)))
-    · simp only [Fm.subst_eq, subst_ap2, ConciseIPRA.PTm.subst_succ, LeanProofs.IPRA.PTm.subst_pred, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := (Ad (var 0) (Syn.shift K) ≐ succ (pred (Ad (var 0) (Syn.shift K)))) ::
+    ipra_qfind (trivial) [subst_ap2]
+    · exact (Ad_zero _).eqTrans (congrSucc ((pred_succ _).eqSymm.eqTrans (congrPred (Ad_zero _).eqSymm)))
+    · let Δ : List (Fm PTm (n + 1)) := (Ad (var 0) (Syn.shift K) ≐ succ (pred (Ad (var 0) (Syn.shift K)))) ::
         Γ.map Fm.shift
       have h0 := Ad_succ (Γ := Δ) (var 0) (Syn.shift K)
       have hm : Δ ⊢[PRAAx] le one (succ (var 0)) := by ipra_le 𝔞 (var 0)
@@ -252,15 +248,11 @@ theorem acc_step (i K : PTm n) (ih : Γ ⊢[PRAAx] MF i K) : Γ ⊢[PRAAx] MF (s
 
 theorem acc_mono (i K : PTm n) : Γ ⊢[PRAAx] MF i K := by
   have hall : Γ ⊢[PRAAx] Fm.all (MF (var 0) (Syn.shift K)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have e : Γ ⊢[PRAAx] t3 + zero ≐ t3 := add_zero _
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have e : Γ ⊢[PRAAx] t3 + zero ≐ t3 := add_zero _
       exact le_congr (congrMul (.eqRefl _) (congrAp2 _ e (.eqRefl _)).eqSymm)
         (congrMul (congrAp2 _ e (.eqRefl _)).eqSymm (.eqRefl _)) (le_refl _)
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact acc_step _ _ Prf.hyp0
+    · exact acc_step _ _ Prf.hyp0
   have r := Prf.allE i hall
   simpa [Syn.subst_inst_shift] using r
 

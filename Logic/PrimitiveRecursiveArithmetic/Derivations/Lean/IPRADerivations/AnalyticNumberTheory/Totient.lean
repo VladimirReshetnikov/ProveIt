@@ -44,15 +44,11 @@ theorem inst2_mul (a x : PTm n) : inst2 mulBody a x = eqb (rem a x) zero := by s
 theorem coprime_pow {j p : PTm n} (hj : Γ ⊢[PRAAx] j ≐ succ (pred j)) (h : Γ ⊢[PRAAx] gcd j p ≐ one)
     (m : PTm n) : Γ ⊢[PRAAx] gcd j (pw p m) ≐ one := by
   have hall : Γ ⊢[PRAAx] Fm.all (gcd (Syn.shift j) (pw (Syn.shift p) (var 0)) ≐ one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ex2, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have hd := gcd_pos (B := pw p zero) hj
+    ipra_qfind (trivial) [subst_ex2, subst_ap2]
+    · have hd := gcd_pos (B := pw p zero) hj
       have hdd := gcd_dvd' (b := pw p zero) hj
       exact eq_one_of_dvd_one hd (dvd_congr (pw_zero _) (Prf.andE₂ hdd))
-    · simp only [Fm.subst_eq, subst_ex2, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have hj' := Common.pos_shift hj
+    · have hj' := Common.pos_shift hj
       have h' := Gcd.shift_coprime h
       have c := coprime_mul (c := pw (Syn.shift p) (var 0)) (c' := Syn.shift p) hj'.wk Prf.hyp0 h'.wk
       have hd := gcd_pos (Γ := (gcd (Syn.shift j) (pw (Syn.shift p) (var 0)) ≐ one) :: Γ.map Fm.shift)
@@ -167,13 +163,9 @@ theorem totient_prime_power_at {p k : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
   -- `∑_{j<N} [gcd(j, P) = 1] + ∑_{j<N} [p ∣ j] = N` for every `N`.
   have hall : Γ ⊢[PRAAx] Fm.all (ap2 (sumF totBody) (var 0) (pw (Syn.shift p) (succ (Syn.shift k))) +
       ap2 (sumF mulBody) (var 0) (Syn.shift p) ≐ var 0) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ]
-      exact (congrAdd (sum_zero _ _) (sum_zero _ _)).eqTrans (add_zero _)
-    · simp only [Fm.subst_eq, PTm.subst_add, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ]
-      have hp' := (prime_shift hp).wk (ψ := ap2 (sumF totBody) (var 0) (pw (Syn.shift p) (succ (Syn.shift k))) +
+    ipra_qfind (trivial) [subst_ap2]
+    · exact (congrAdd (sum_zero _ _) (sum_zero _ _)).eqTrans (add_zero _)
+    · have hp' := (prime_shift hp).wk (ψ := ap2 (sumF totBody) (var 0) (pw (Syn.shift p) (succ (Syn.shift k))) +
         ap2 (sumF mulBody) (var 0) (Syn.shift p) ≐ var 0)
       have ind := indicator_sum (j := var 0) (k := Syn.shift k) hp'
       have e₁ := sum_succ' (Γ := (ap2 (sumF totBody) (var 0) (pw (Syn.shift p) (succ (Syn.shift k))) +

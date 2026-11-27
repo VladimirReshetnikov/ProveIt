@@ -40,13 +40,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem lcmu_dvd_add (a d : PTm n) : Γ ⊢[PRAAx] dvd (lcmu a) (lcmu (a + d)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (dvd (lcmu (Syn.shift a)) (lcmu (Syn.shift a + var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_dvd, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      exact (congrAp2 remF (congrAp2 LcmUpto.lcmuF (add_zero _) (.eqRefl _)) (.eqRefl _)).eqTrans (dvd_self' (lcmu_pos a))
-    · simp only [subst_dvd, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero]
-      let D : List (Fm PTm (n + 1)) := dvd (lcmu (Syn.shift a)) (lcmu (Syn.shift a + var 0)) :: Γ.map Fm.shift
+    ipra_qfind (trivial) [subst_dvd, subst_ap2]
+    · exact (congrAp2 remF (congrAp2 LcmUpto.lcmuF (add_zero _) (.eqRefl _)) (.eqRefl _)).eqTrans (dvd_self' (lcmu_pos a))
+    · let D : List (Fm PTm (n + 1)) := dvd (lcmu (Syn.shift a)) (lcmu (Syn.shift a + var 0)) :: Γ.map Fm.shift
       have h2 := Prf.andE₁ (lcmu_dvd (Γ := D) (Syn.shift a + var 0))
       have e : D ⊢[PRAAx] lcmu (Syn.shift a + succ (var 0)) ≐ lcmu (succ (Syn.shift a + var 0)) :=
         congrAp2 LcmUpto.lcmuF (add_succ _ _) (.eqRefl _)
@@ -203,15 +199,11 @@ theorem lcmu_upper (x : PTm n) : Γ ⊢[PRAAx] le (lcmu x) (pw two (two * (two *
 /-- `2n + 1 ≤ 2^n` for `n ≥ 3`. -/
 theorem two_pow_ge {N : PTm n} (h : Γ ⊢[PRAAx] le (succ two) N) : Γ ⊢[PRAAx] le (succ (two * N)) (pw two N) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (succ (two * (succ two + var 0))) (pw two (succ two + var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have p3 := natEq ((pw_succ (Γ := Γ) two (succ (succ zero))).eqTrans (congrMul ((pw_succ two (succ zero)).eqTrans
+    ipra_qfind (trivial) [subst_le, subst_ap2]
+    · have p3 := natEq ((pw_succ (Γ := Γ) two (succ (succ zero))).eqTrans (congrMul ((pw_succ two (succ zero)).eqTrans
         (congrMul ((pw_succ two zero).eqTrans (congrMul (pw_zero two) (.eqRefl _))) (.eqRefl _))) (.eqRefl _)))
       exact le_of_eq_add (d := one) (by ipra_lc natEq (congrAp2 powF (add_zero (Γ := Γ) (succ two)) (.eqRefl two)) + p3)
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let D : List (Fm PTm (n + 1)) := le (succ (two * (succ two + var 0))) (pw two (succ two + var 0)) :: Γ.map Fm.shift
+    · let D : List (Fm PTm (n + 1)) := le (succ (two * (succ two + var 0))) (pw two (succ two + var 0)) :: Γ.map Fm.shift
       refine le_of_eq_add (d := monus (pw two (succ two + var 0)) (succ (two * (succ two + var 0))) +
         monus (pw two (succ two + var 0)) (succ (two * (succ two + var 0))) + two * var 0 + succ (succ (succ two))) ?_
       ipra_lc natEq ((congrAp2 powF (add_succ (Γ := D) (succ two) (var 0)) (.eqRefl two)).eqTrans (pw_succ two _)) +

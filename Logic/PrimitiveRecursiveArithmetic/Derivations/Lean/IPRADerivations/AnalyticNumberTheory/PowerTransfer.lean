@@ -75,13 +75,9 @@ theorem le_mx (body : PTm 2) {i N x : PTm n} (h : Γ ⊢[PRAAx] lt i N) :
     Γ ⊢[PRAAx] le (inst2 body i x) (mx body N x) := by
   have hall : Γ ⊢[PRAAx] Fm.all (lt (Syn.shift i) (var 0) ⟶
       le (inst2 body (Syn.shift i) (Syn.shift x)) (mx body (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_inst2, subst_mx, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [Fm.subst_imp, subst_le, subst_lt, subst_inst2, subst_mx, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, le_QF _ _⟩) [subst_le, subst_lt, subst_inst2, subst_mx]
+    · exact .impI (lt_zero_absurd _ Prf.hyp0)
+    · refine .impI ?_
       let φ : Fm PTm (n + 1) := lt (Syn.shift i) (var 0) ⟶
         le (inst2 body (Syn.shift i) (Syn.shift x)) (mx body (var 0) (Syn.shift x))
       let Δ : List (Fm PTm (n + 1)) := lt (Syn.shift i) (succ (var 0)) :: φ :: Γ.map Fm.shift

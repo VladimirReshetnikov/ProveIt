@@ -65,17 +65,13 @@ theorem pd_base_eqs (a : PTm n) : Γ ⊢[PRAAx] pw a (succ zero) ≐ a :=
 
 theorem pd1 {a b d : PTm n} (he : Γ ⊢[PRAAx] a ≐ b + d) (j : PTm n) : Γ ⊢[PRAAx] PD1 j a b d := by
   have hall : Γ ⊢[PRAAx] Fm.all (PD1 (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift d)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      have eA1 := natEq (pd_base_eqs (Γ := Γ) a)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have eA1 := natEq (pd_base_eqs (Γ := Γ) a)
       have eB1 := natEq (pd_base_eqs (Γ := Γ) b)
       have eA0 := natEq (pw_zero (Γ := Γ) a)
       have he' := natEq he
       ipra_le 0 with eB1 + 𝔞 d * eA0 - eA1 - he'
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      have he' : (PD1 (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift d) :: Γ.map Fm.shift) ⊢[PRAAx]
+    · have he' : (PD1 (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift d) :: Γ.map Fm.shift) ⊢[PRAAx]
           Syn.shift a ≐ Syn.shift b + Syn.shift d := by
         have b := he.shift
         simp only [Fm.shift, Fm.subst_eq, PTm.subst_add] at b
@@ -88,17 +84,13 @@ theorem pd1 {a b d : PTm n} (he : Γ ⊢[PRAAx] a ≐ b + d) (j : PTm n) : Γ �
 
 theorem pd2 {a b d : PTm n} (he : Γ ⊢[PRAAx] a ≐ b + d) (j : PTm n) : Γ ⊢[PRAAx] PD2 j a b d := by
   have hall : Γ ⊢[PRAAx] Fm.all (PD2 (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift d)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      have eA1 := natEq (pd_base_eqs (Γ := Γ) a)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have eA1 := natEq (pd_base_eqs (Γ := Γ) a)
       have eB1 := natEq (pd_base_eqs (Γ := Γ) b)
       have eB0 := natEq (pw_zero (Γ := Γ) b)
       have he' := natEq he
       ipra_le 0 with eA1 - eB1 - 𝔞 d * eB0 + he'
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      have he' : (PD2 (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift d) :: Γ.map Fm.shift) ⊢[PRAAx]
+    · have he' : (PD2 (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift d) :: Γ.map Fm.shift) ⊢[PRAAx]
           Syn.shift a ≐ Syn.shift b + Syn.shift d := by
         have b := he.shift
         simp only [Fm.shift, Fm.subst_eq, PTm.subst_add] at b
@@ -168,13 +160,9 @@ theorem lip_up_gen {p s p' s' W' d : PTm n} (hW' : Γ ⊢[PRAAx] s' * s' ≐ W' 
     (hd : Γ ⊢[PRAAx] p' * s ≐ p * s' + d) (K : PTm n) : Γ ⊢[PRAAx] SUF K p s p' s' W' d := by
   have hall : Γ ⊢[PRAAx] Fm.all (SUF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s')
       (Syn.shift W') (Syn.shift d)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact su_zero p s p' s' W' d
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := SUF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s')
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · exact su_zero p s p' s' W' d
+    · let Δ : List (Fm PTm (n + 1)) := SUF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s')
         (Syn.shift W') (Syn.shift d) :: Γ.map Fm.shift
       have hW'' : Δ ⊢[PRAAx] Syn.shift s' * Syn.shift s' ≐ Syn.shift W' + Syn.shift p' * Syn.shift p' := by
         have b := hW'.shift
@@ -234,13 +222,9 @@ theorem lip_low {p s p' s' W d : PTm n} (hW : Γ ⊢[PRAAx] s * s ≐ W + p * p)
     (hd : Γ ⊢[PRAAx] p' * s ≐ p * s' + d) (K : PTm n) : Γ ⊢[PRAAx] SLF K p s p' s' W d := by
   have hall : Γ ⊢[PRAAx] Fm.all (SLF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s')
       (Syn.shift W) (Syn.shift d)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact sl_zero p s p' s' W d
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := SLF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s')
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · exact sl_zero p s p' s' W d
+    · let Δ : List (Fm PTm (n + 1)) := SLF (var 0) (Syn.shift p) (Syn.shift s) (Syn.shift p') (Syn.shift s')
         (Syn.shift W) (Syn.shift d) :: Γ.map Fm.shift
       have hW'' : Δ ⊢[PRAAx] Syn.shift s * Syn.shift s ≐ Syn.shift W + Syn.shift p * Syn.shift p := by
         have b := hW.shift

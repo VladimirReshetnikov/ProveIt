@@ -152,17 +152,13 @@ theorem pow_step {j a b P c K : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ �
 theorem lo_pow {a b P c : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRAAx] le b a)
     (hP : Γ ⊢[PRAAx] le one P) (hc : Γ ⊢[PRAAx] P ≐ one + c) (K j : PTm n) : Γ ⊢[PRAAx] LPF j a b P c K := by
   have hall : Γ ⊢[PRAAx] Fm.all (LPF (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift P) (Syn.shift c) (Syn.shift K)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, LeanProofs.IPRA.PTm.subst_monus,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have p0 := one_le_of_pos' (pw_pos' (Γ := Γ) (pos_of_one_le hP) zero)
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · have p0 := one_le_of_pos' (pw_pos' (Γ := Γ) (pos_of_one_le hP) zero)
       have hb0 : Γ ⊢[PRAAx] le b (a * pw P zero) := by
         have m := le_mul_mono hab p0
         ipra_le sl m
       exact pow_base (lo_val hb hb0 hb hab (by ipra_lc 𝔞 a * 𝔞 b * natEq (pw_zero (Γ := Γ) P)) K)
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, LeanProofs.IPRA.PTm.subst_monus,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have hc' : (LPF (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift P) (Syn.shift c) (Syn.shift K) :: Γ.map Fm.shift)
+    · have hc' : (LPF (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift P) (Syn.shift c) (Syn.shift K) :: Γ.map Fm.shift)
           ⊢[PRAAx] Syn.shift P ≐ one + Syn.shift c := by
         have b := hc.shift
         simp only [Fm.shift, Fm.subst_eq, PTm.subst_add, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at b

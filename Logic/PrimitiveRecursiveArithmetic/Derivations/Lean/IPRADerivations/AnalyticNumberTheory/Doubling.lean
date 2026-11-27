@@ -40,17 +40,13 @@ theorem S_pow2_lower {M : PTm n} (F m : PTm n) (hM : Γ ⊢[PRAAx] le one M) :
   have hM' : (Γ.map Fm.shift) ⊢[PRAAx] le one (Syn.shift M) := by simpa [Fm.shift, Syn.shift] using hM.shift
   have hall : Γ ⊢[PRAAx] Fm.all (le (two * S (Syn.shift M) (Syn.shift F) + var 0 * Syn.shift F)
       (two * S (Syn.shift M * pw two (var 0)) (Syn.shift F) + two * (Syn.shift M * pw two (var 0)))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have e0 : Γ ⊢[PRAAx] M * pw two zero ≐ M := by
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have e0 : Γ ⊢[PRAAx] M * pw two zero ≐ M := by
         ipra_lc 𝔞 M * natEq (pw_zero (two : PTm n))
       have e := natEq (congrAp2 (Γ := Γ) (sumF hB) e0 (.eqRefl F))
       have e0' := natEq e0
       ipra_le 2 * 𝔞 M with -2 * e - 2 * e0'
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      let Δ : List (Fm PTm (n + 1)) := le (two * S (Syn.shift M) (Syn.shift F) + var 0 * Syn.shift F)
+    · let Δ : List (Fm PTm (n + 1)) := le (two * S (Syn.shift M) (Syn.shift F) + var 0 * Syn.shift F)
           (two * S (Syn.shift M * pw two (var 0)) (Syn.shift F) + two * (Syn.shift M * pw two (var 0))) ::
           Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le (two * S (Syn.shift M) (Syn.shift F) + var 0 * Syn.shift F)

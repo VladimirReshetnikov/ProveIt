@@ -172,13 +172,9 @@ theorem rs_all {α β γ δ U k K : PTm n} (hα : Γ ⊢[PRAAx] le one α) (hγ 
     Γ ⊢[PRAAx] RF N α β γ δ U k K := by
   have hall : Γ ⊢[PRAAx] Fm.all (RF (var 0) (Syn.shift α) (Syn.shift β) (Syn.shift γ) (Syn.shift δ) (Syn.shift U)
       (Syn.shift k) (Syn.shift K)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, LeanProofs.IPRA.PTm.subst_monus,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact rs_zero α β γ δ U k K
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, LeanProofs.IPRA.PTm.subst_monus,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact rs_step (le_shift_one hα).wk (le_shift_one hγ).wk (le_shift_one hβ).wk (le_shift_mul hαβ).wk
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · exact rs_zero α β γ δ U k K
+    · exact rs_step (le_shift_one hα).wk (le_shift_one hγ).wk (le_shift_one hβ).wk (le_shift_mul hαβ).wk
         (le_shift_one hδ).wk (le_shift_mul hγδ).wk (le_shift_one hU).wk (le_shift hk).wk Prf.hyp0
   have r := Prf.allE N hall
   simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, LeanProofs.IPRA.PTm.subst_monus,

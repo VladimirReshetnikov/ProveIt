@@ -75,11 +75,9 @@ theorem sorting_total (f : PTm 2) (m w x t : PTm n) : Γ ⊢[PRAAx]
   have all : Γ ⊢[PRAAx] .all (total f (Syn.shift m)
       (RuntimeWordSorting.state (Syn.shift m) (Syn.shift w) (var 0)) (Syn.shift x) ≐
         total f (Syn.shift m) (Syn.shift w) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_total,RuntimeWordSorting.subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact total_congr f (.eqRefl _) (RuntimeWordSorting.state_zero _ _) (.eqRefl _)
-    · simp only [Fm.subst_eq,subst_total,RuntimeWordSorting.subst_state,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact (total_congr f (.eqRefl _) (RuntimeWordSorting.state_succ _ _ _) (.eqRefl _)).eqTrans
+    ipra_qfind (trivial) [subst_total, RuntimeWordSorting.subst_state]
+    · exact total_congr f (.eqRefl _) (RuntimeWordSorting.state_zero _ _) (.eqRefl _)
+    · exact (total_congr f (.eqRefl _) (RuntimeWordSorting.state_succ _ _ _) (.eqRefl _)).eqTrans
         ((step_total _ _ _ _).eqTrans Prf.hyp0)
   simpa only [Fm.subst_eq,subst_total,RuntimeWordSorting.subst_state,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 theorem identity_total (f : PTm 2) (m x : PTm n) : Γ ⊢[PRAAx]

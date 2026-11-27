@@ -90,13 +90,9 @@ theorem add_step {m k : PTm n} (ih : Γ ⊢[PRAAx] addF u v D m k) : Γ ⊢[PRAA
 
 theorem add_formula (m k : PTm n) : Γ ⊢[PRAAx] addF u v D m k := by
   have hall : Γ ⊢[PRAAx] Fm.all (addF (Syn.shift u) (Syn.shift v) (Syn.shift D) (Syn.shift m) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_and, Fm.subst_eq, subst_PX, subst_PY, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      exact add_base _
-    · simp only [Fm.subst_and, Fm.subst_eq, subst_PX, subst_PY, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      exact add_step Prf.hyp0
+    ipra_qfind (⟨trivial, trivial⟩) [subst_PX, subst_PY]
+    · exact add_base _
+    · exact add_step Prf.hyp0
   have h := Prf.allE k hall
   simp only [Fm.subst_and, Fm.subst_eq, subst_PX, subst_PY, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
     Syn.inst_zero, Syn.subst_inst_shift] at h
@@ -160,14 +156,10 @@ theorem Y_dvd_mul {u v D g : PTm n} (hg : Γ ⊢[PRAAx] PY u v D g ≐ succ (pre
     exact h
   have hall : Γ ⊢[PRAAx] Fm.all (dvd (PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (Syn.shift g))
       (PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (var 0 * Syn.shift g))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_PY, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact dvd_congr ((Y_zero u v D).eqSymm.eqTrans (congrPY u v D (zero_mul _).eqSymm))
+    ipra_qfind (trivial) [subst_ap2, subst_PY]
+    · exact dvd_congr ((Y_zero u v D).eqSymm.eqTrans (congrPY u v D (zero_mul _).eqSymm))
         (rem_zero _)
-    · simp only [Fm.subst_eq, subst_ap2, subst_PY, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero]
-      have e : (dvd (PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (Syn.shift g))
+    · have e : (dvd (PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (Syn.shift g))
           (PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (var 0 * Syn.shift g)) :: Γ.map Fm.shift) ⊢[PRAAx]
           PY (Syn.shift u) (Syn.shift v) (Syn.shift D) (succ (var 0) * Syn.shift g) ≐
             PX (Syn.shift u) (Syn.shift v) (Syn.shift D) (var 0 * Syn.shift g) *

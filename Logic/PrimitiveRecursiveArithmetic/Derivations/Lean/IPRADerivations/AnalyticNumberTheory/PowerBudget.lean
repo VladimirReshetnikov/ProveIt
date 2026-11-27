@@ -85,10 +85,8 @@ theorem block_tail {z X : PTm n} (hv : Γ ⊢[PRAAx] Budget v z X) (M : PTm n) :
 theorem dyadic_budget {z X : PTm n} (hv : Γ ⊢[PRAAx] Budget v z X) (e : PTm n) :
     Γ ⊢[PRAAx] le (ap2 (sumF v) (pw two e) z) (succ e * X) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (ap2 (sumF v) (pw two (var 0)) (Syn.shift z)) (succ (var 0) * Syn.shift X)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have s1 : Γ ⊢[PRAAx] ap2 (sumF v) (pw two zero) z ≐ ap2 (sumF v) one z :=
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have s1 : Γ ⊢[PRAAx] ap2 (sumF v) (pw two zero) z ≐ ap2 (sumF v) one z :=
         congrAp2 (sumF v) (pw_zero two) (.eqRefl _)
       have s2 : Γ ⊢[PRAAx] ap2 (sumF v) one z ≐ ap2 (sumF v) zero z + inst2 v zero z := sum_succ v zero z
       have s3 : Γ ⊢[PRAAx] ap2 (sumF v) zero z ≐ zero := sum_zero v z
@@ -97,9 +95,7 @@ theorem dyadic_budget {z X : PTm n} (hv : Γ ⊢[PRAAx] Budget v z X) (e : PTm n
       have f2 := natEq s2
       have f3 := natEq s3
       ipra_le sl h0 with -f1 - f2 - f3
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let φ : Fm PTm (n + 1) := le (ap2 (sumF v) (pw two (var 0)) (Syn.shift z)) (succ (var 0) * Syn.shift X)
+    · let φ : Fm PTm (n + 1) := le (ap2 (sumF v) (pw two (var 0)) (Syn.shift z)) (succ (var 0) * Syn.shift X)
       let Δ : List (Fm PTm (n + 1)) := φ :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] φ := Prf.hyp0
       have hv' : Δ ⊢[PRAAx] Budget v (Syn.shift z) (Syn.shift X) := by

@@ -107,16 +107,12 @@ theorem exact_descent {y r : PTm n} (hD : Γ ⊢[PRAAx] Fm.all (DepEdge par dep 
     (hE : Γ ⊢[PRAAx] Fm.all (ObsEdge par dep o y)) (hR : Γ ⊢[PRAAx] Fm.all (RootObs dep o y r))
     (v : PTm n) : Γ ⊢[PRAAx] inst2 o v y ≐ inst2 o r y := by
   have hall : Γ ⊢[PRAAx] Fm.all (DepInv par dep o v y) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial, trivial⟩ ?_ ?_
-    · simp only [DepInv, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_inst2, subst_ap2, subst_pairT,
-        PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI (.andI ?_ ?_)
+    ipra_qfind (⟨le_QF _ _, trivial, trivial⟩) [DepInv, subst_le, subst_inst2, subst_ap2, subst_pairT]
+    · refine .impI (.andI ?_ ?_)
       · exact congrInst2 o (anc_zero par v y) (.eqRefl y)
       · have a := natEq (congrInst2 (Γ := le zero (inst2 dep v y) :: Γ) dep (anc_zero par v y) (.eqRefl y))
         apply deriveNat; ipra_simps; rw [a]; ring
-    · simp only [DepInv, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_inst2, subst_ap2, subst_pairT,
-        PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       have hk : (le (succ (var 0)) (inst2 dep (Syn.shift v) (Syn.shift y)) ::
           DepInv par dep o v y :: Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (inst2 dep (Syn.shift v) (Syn.shift y)) :=
         Prf.hyp0
@@ -176,10 +172,8 @@ theorem metric_descent {y r : PTm n} (hD : Γ ⊢[PRAAx] Fm.all (DepEdge par dep
     (v : PTm n) :
     Γ ⊢[PRAAx] le (ad (inst2 o r y) (inst2 o v y)) (ap2 (sumF (epsA par eps)) (inst2 dep v y) (pairT v y)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (MetInv par dep o eps v y) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [MetInv, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_inst2, subst_ap2, subst_pairT,
-        PTm.subst_add, PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI (.andI ?_ ?_)
+    ipra_qfind (⟨le_QF _ _, le_QF _ _, trivial⟩) [MetInv, subst_le, subst_inst2, subst_ap2, subst_pairT]
+    · refine .impI (.andI ?_ ?_)
       · have c := natEq (congrAd' (Γ := le zero (inst2 dep v y) :: Γ)
           (congrInst2 o (anc_zero par v y) (.eqRefl y)) (.eqRefl (inst2 o v y)))
         have z := natEq (sum_zero (Γ := le zero (inst2 dep v y) :: Γ) (epsA par eps) (pairT v y))
@@ -187,9 +181,7 @@ theorem metric_descent {y r : PTm n} (hD : Γ ⊢[PRAAx] Fm.all (DepEdge par dep
         ipra_le 0 using linear_combination z - c - 2 * m
       · have a := natEq (congrInst2 (Γ := le zero (inst2 dep v y) :: Γ) dep (anc_zero par v y) (.eqRefl y))
         apply deriveNat; ipra_simps; rw [a]; ring
-    · simp only [MetInv, Fm.subst_imp, Fm.subst_and, Fm.subst_eq, subst_le, subst_inst2, subst_ap2, subst_pairT,
-        PTm.subst_add, PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       have hk : (le (succ (var 0)) (inst2 dep (Syn.shift v) (Syn.shift y)) ::
           MetInv par dep o eps v y :: Γ.map Fm.shift) ⊢[PRAAx] le (succ (var 0)) (inst2 dep (Syn.shift v) (Syn.shift y)) :=
         Prf.hyp0

@@ -56,13 +56,9 @@ theorem cop_step {p M : PTm n} (hp : Γ ⊢[PRAAx] prime p)
 /-- A prime `p` is coprime to `A(M)` for `M ≤ p`. -/
 theorem cop_A {p M : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h : Γ ⊢[PRAAx] le M p) : Γ ⊢[PRAAx] gcd p (A M) ≐ one := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift p) ⟶ (gcd (Syn.shift p) (A (var 0)) ≐ one)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_ex2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (gcd_eq_one_of_dvd (gcd_pos (prime_eq_succ_pred hp).wk) (.orI₂ (prod_zero pB zero)))
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_ex2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact .impI (cop_step (prime_shift hp).wk.wk Prf.hyp1 Prf.hyp0)
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2, subst_ex2]
+    · exact .impI (gcd_eq_one_of_dvd (gcd_pos (prime_eq_succ_pred hp).wk) (.orI₂ (prod_zero pB zero)))
+    · exact .impI (cop_step (prime_shift hp).wk.wk Prf.hyp1 Prf.hyp0)
   have h2 := Prf.allE M hall
   simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_ex2, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2

@@ -48,14 +48,10 @@ theorem fs_step {h i : PTm n} (ih : Γ ⊢[PRAAx] le (fact h * pw h i) (fact (h 
 /-- `h! h^i ≤ (h + i)!`. -/
 theorem fact_shift (h i : PTm n) : Γ ⊢[PRAAx] le (fact h * pw h i) (fact (h + i)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (fact (Syn.shift h) * pw (Syn.shift h) (var 0)) (fact (Syn.shift h + var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      refine le_of_eq_add (d := zero) ?_
+    ipra_qfind (trivial) [subst_le, subst_ap2]
+    · refine le_of_eq_add (d := zero) ?_
       ipra_lc natEq (congrAp2 factF (add_zero h) (.eqRefl zero)) - 𝔞 (fact h) * natEq (pw_zero h)
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero]
-      let D : List (Fm PTm (n + 1)) :=
+    · let D : List (Fm PTm (n + 1)) :=
         le (fact (Syn.shift h) * pw (Syn.shift h) (var 0)) (fact (Syn.shift h + var 0)) :: Γ.map Fm.shift
       exact fs_step (Prf.hyp0 : D ⊢[PRAAx] _)
   have r := Prf.allE i hall
@@ -104,15 +100,11 @@ theorem term_bound {c D K : PTm n} (hB : Γ ⊢[PRAAx] le (c * pw D (succ K)) (f
     Γ ⊢[PRAAx] le (pw two i * (c * pw D (succ K + i))) (fact (succ K + i)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (pw two (var 0) * (Syn.shift c * pw (Syn.shift D) (succ (Syn.shift K) + var 0)))
       (fact (succ (Syn.shift K) + var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine le_congr ?_ (congrAp2 factF (add_zero (succ K)) (.eqRefl zero)).eqSymm hB
+    ipra_qfind (trivial) [subst_le, subst_ap2]
+    · refine le_congr ?_ (congrAp2 factF (add_zero (succ K)) (.eqRefl zero)).eqSymm hB
       ipra_lc (-(𝔞 c * 𝔞 (pw D (succ K + zero)))) * natEq (pw_zero (two : PTm n)) -
         𝔞 c * natEq (congrAp2 powF (add_zero (succ K)) (.eqRefl D))
-    · simp only [subst_le, subst_ap2, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let Δ : List (Fm PTm (n + 1)) := le (pw two (var 0) * (Syn.shift c * pw (Syn.shift D) (succ (Syn.shift K) + var 0)))
+    · let Δ : List (Fm PTm (n + 1)) := le (pw two (var 0) * (Syn.shift c * pw (Syn.shift D) (succ (Syn.shift K) + var 0)))
         (fact (succ (Syn.shift K) + var 0)) :: Γ.map Fm.shift
       have hk' : Δ ⊢[PRAAx] le (two * Syn.shift D) (succ (succ (Syn.shift K))) := by
         have b := hk.shift
@@ -171,14 +163,10 @@ theorem ti_step {c K D T : PTm n}
 theorem tail_inv {c K D : PTm n} (hB : Γ ⊢[PRAAx] le (two * c * pw D (succ K)) (fact (succ K)))
     (hk : Γ ⊢[PRAAx] le (two * D) (succ (succ K))) (T : PTm n) : Γ ⊢[PRAAx] TI c K D T := by
   have hall : Γ ⊢[PRAAx] Fm.all (TI (Syn.shift c) (Syn.shift K) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      refine le_of_eq_add (d := zero) ?_
+    ipra_qfind (trivial) [subst_le, subst_ap2, subst_pairT]
+    · refine le_of_eq_add (d := zero) ?_
       ipra_lc 𝔞 (fact (K + zero)) * natEq (pw_zero (two : PTm n)) - 𝔞 c * 𝔞 (pw two zero) * natEq (A_zero K D)
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_mul, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let Δ : List (Fm PTm (n + 1)) := TI (Syn.shift c) (Syn.shift K) (Syn.shift D) (var 0) :: Γ.map Fm.shift
+    · let Δ : List (Fm PTm (n + 1)) := TI (Syn.shift c) (Syn.shift K) (Syn.shift D) (var 0) :: Γ.map Fm.shift
       have hB' : Δ ⊢[PRAAx] le (two * Syn.shift c * pw (Syn.shift D) (succ (Syn.shift K))) (fact (succ (Syn.shift K))) := by
         have b := hB.shift
         simp only [Fm.shift, subst_le, subst_ap2, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,

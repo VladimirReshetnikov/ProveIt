@@ -120,13 +120,9 @@ theorem sum_extend {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (k : PTm
     Γ ⊢[PRAAx] ap2 (sumF oddB) (succ m + k) m ≐ ap2 (sumF oddB) (succ m) m := by
   have hall : Γ ⊢[PRAAx] Fm.all (ap2 (sumF oddB) (succ (Syn.shift m) + var 0) (Syn.shift m) ≐
       ap2 (sumF oddB) (succ (Syn.shift m)) (Syn.shift m)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ]
-      exact congrAp2 (sumF oddB) (add_zero _) (.eqRefl _)
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.repl_zero, Syn.subst_shift, Syn.repl_succ,
-        ConciseIPRA.PTm.subst_succ]
-      refine (congrAp2 (sumF oddB) (add_succ _ _) (.eqRefl _)).eqTrans ((sum_succ' _ _ _).eqTrans ?_)
+    ipra_qfind (trivial) [subst_ap2, Syn.subst_shift, Syn.repl_succ]
+    · exact congrAp2 (sumF oddB) (add_zero _) (.eqRefl _)
+    · refine (congrAp2 (sumF oddB) (add_succ _ _) (.eqRefl _)).eqTrans ((sum_succ' _ _ _).eqTrans ?_)
       exact (congrAdd Prf.hyp0 (odd_far (shift_pos hm).wk _)).eqTrans (add_zero _)
   have h := Prf.allE k hall
   simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,

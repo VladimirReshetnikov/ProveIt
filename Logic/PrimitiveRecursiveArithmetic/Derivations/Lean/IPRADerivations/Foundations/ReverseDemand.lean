@@ -109,11 +109,9 @@ theorem least_all
     (hpe : Γ ⊢[PRAAx] Fm.all (le (dAt d (var 0) (inst2 p (var 0) (Syn.shift x)) (Syn.shift x))
       (inst2 p (succ (var 0)) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (le (rd term d (var 0) (Syn.shift x)) (inst2 p (var 0) (Syn.shift x))) := by
-  refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-    exact least_base hp0
-  · simp only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-    exact least_step hmono hpt.allOpen.wk hpe.allOpen.wk Prf.hyp0
+  ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_inst2]
+  · exact least_base hp0
+  · exact least_step hmono hpt.allOpen.wk hpe.allOpen.wk Prf.hyp0
 
 /-- `lem:demand-least`, chain case: the reverse demand is below every satisfying request vector. -/
 theorem least

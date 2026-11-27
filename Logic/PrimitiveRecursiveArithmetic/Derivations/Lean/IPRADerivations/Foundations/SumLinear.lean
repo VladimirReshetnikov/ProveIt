@@ -45,14 +45,10 @@ theorem sum_linear (A B E F : PTm 2) {N lam al kap be x : PTm k}
     Γ ⊢[PRAAx] ap2 (sumF A) N x + N * lam + al * ap2 (sumF B) N x ≐
       N * kap + be * ap2 (sumF E) N x + ap2 (sumF F) N x := by
   have hall : Γ ⊢[PRAAx] Fm.all (linF A B E F N lam al kap be x) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+    · refine .impI ?_
       ipra_lc natEq (sum_zero A x) + 𝔞 al * natEq (sum_zero B x) - 𝔞 be * natEq (sum_zero E x) - natEq (sum_zero F x)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       have hm : (le (succ (var 0)) (Syn.shift N) :: linF A B E F N lam al kap be x ::
           Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
         le_trans (le_succ_self _) Prf.hyp0

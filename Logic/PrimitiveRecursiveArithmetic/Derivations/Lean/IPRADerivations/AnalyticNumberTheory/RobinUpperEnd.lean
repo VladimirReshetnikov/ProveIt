@@ -62,13 +62,11 @@ theorem gf_step {t j K : PTm n} (ih : Γ ⊢[PRAAx] GF t j K) : Γ ⊢[PRAAx] GF
 
 theorem lo_t_mono (t j K : PTm n) : Γ ⊢[PRAAx] GF t j K := by
   have hall : Γ ⊢[PRAAx] Fm.all (GF (Syn.shift t) (var 0) (Syn.shift K)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have e : Γ ⊢[PRAAx] t + zero ≐ t := add_zero _
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have e : Γ ⊢[PRAAx] t + zero ≐ t := add_zero _
       exact le_congr (congrMul (.eqRefl _) (congrAp2 _ e (.eqRefl _)).eqSymm)
         (congrMul (congrAp2 _ e (.eqRefl _)).eqSymm (.eqRefl _)) (le_refl _)
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact gf_step Prf.hyp0
+    · exact gf_step Prf.hyp0
   have r := Prf.allE j hall
   simpa [Syn.subst_inst_shift] using r
 
@@ -77,14 +75,10 @@ theorem dd_pos {m : PTm n} (hm : Γ ⊢[PRAAx] le one m) (K : PTm n) : Γ ⊢[PR
 
 theorem Qt_pos (t K : PTm n) : Γ ⊢[PRAAx] Qt t (pairT one K) ≐ succ (pred (Qt t (pairT one K))) := by
   have hall : Γ ⊢[PRAAx] Fm.all (Qt (var 0) (pairT one (Syn.shift K)) ≐ succ (pred (Qt (var 0) (pairT one (Syn.shift K))))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        LeanProofs.IPRA.PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have z := prod_zero (Γ := Γ) RobinGamma.dB (pairT one K)
+    ipra_qfind (trivial) [subst_ap2, subst_pairT]
+    · have z := prod_zero (Γ := Γ) RobinGamma.dB (pairT one K)
       exact z.eqTrans (congrSucc ((pred_succ _).eqSymm.eqTrans (congrPred z.eqSymm)))
-    · simp only [Fm.subst_eq, subst_ap2, subst_pairT, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero,
-        LeanProofs.IPRA.PTm.subst_pred, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := (Qt (var 0) (pairT one (Syn.shift K)) ≐
+    · let Δ : List (Fm PTm (n + 1)) := (Qt (var 0) (pairT one (Syn.shift K)) ≐
         succ (pred (Qt (var 0) (pairT one (Syn.shift K))))) :: Γ.map Fm.shift
       have h0 : Δ ⊢[PRAAx] Qt (succ (var 0)) (pairT one (Syn.shift K)) ≐
           Qt (var 0) (pairT one (Syn.shift K)) * dd (one + var 0) (Syn.shift K) :=
@@ -132,15 +126,11 @@ abbrev HF (t i K : PTm n) : Fm PTm n := le (ghiN (t + i) K * ghiD t K) (ghiN t K
 /-- `γ_hi(t + i, K') ≤ γ_hi(t, K')` for `K' ≥ 2`. -/
 theorem ghi_mono (t i j : PTm n) : Γ ⊢[PRAAx] HF t i (succ (succ j)) := by
   have hall : Γ ⊢[PRAAx] Fm.all (HF (Syn.shift t) (var 0) (succ (succ (Syn.shift j)))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have e : Γ ⊢[PRAAx] t + zero ≐ t := add_zero _
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2, subst_pairT]
+    · have e : Γ ⊢[PRAAx] t + zero ≐ t := add_zero _
       exact le_congr (congrMul (ghiN_congr _ e).eqSymm (.eqRefl _)) (congrMul (.eqRefl _) (ghiD_congr _ e).eqSymm)
         (le_refl _)
-    · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
-        ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := HF (Syn.shift t) (var 0) (succ (succ (Syn.shift j))) :: Γ.map Fm.shift
+    · let Δ : List (Fm PTm (n + 1)) := HF (Syn.shift t) (var 0) (succ (succ (Syn.shift j))) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] HF (Syn.shift t) (var 0) (succ (succ (Syn.shift j))) := Prf.hyp0
       have st' := ghi_step (Γ := Δ) (Syn.shift t + var 0) (Syn.shift j)
       have u := frac_trans (ghiD_pos _ _) st' ih

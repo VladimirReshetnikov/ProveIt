@@ -52,15 +52,9 @@ theorem telescope (a b v : PTm 2) (N x : PTm n)
     Γ ⊢[PRAAx] Inv a b v N x := by
   have hall : Γ ⊢[PRAAx] Fm.all
       (le (var 0) (Syn.shift N) ⟶ Inv a b v (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Inv, prod, Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2,
-        PTm.subst_mul, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        LeanProofs.ConciseIPRA.PTm.subst_zero]
-      exact .impI (origin a b v x)
-    · simp only [Inv, prod, Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2,
-        PTm.subst_mul, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        LeanProofs.ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
+    ipra_qfind (⟨le_QF _ _, trivial⟩) [Inv, prod, subst_le, subst_ap2, subst_inst2]
+    · exact .impI (origin a b v x)
+    · refine .impI ?_
       have hle : (le (succ (var 0)) (Syn.shift N) ::
           (le (var 0) (Syn.shift N) ⟶ Inv a b v (var 0) (Syn.shift x)) ::
           Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=

@@ -91,11 +91,9 @@ theorem nested_interval (B : BallCodes) (N r z x : PTm n)
   have all : Γ ⊢[PRAAx] .all
       (ball B (Syn.shift N + var 0) (Syn.shift z) (Syn.shift x) ⟶
         ball B (Syn.shift N) (Syn.shift z) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨ball_QF _ _ _ _, ball_QF _ _ _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_ball, PTm.subst_add, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .impI (ball_congr_index B (add_zero N) Prf.hyp0)
-    · simp only [Fm.subst_imp, subst_ball, PTm.subst_add, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      apply Prf.impI
+    ipra_qfind (⟨ball_QF _ _ _ _, ball_QF _ _ _ _⟩) [subst_ball]
+    · exact .impI (ball_congr_index B (add_zero N) Prf.hyp0)
+    · apply Prf.impI
       have shifted : Γ.map Fm.shift ⊢[PRAAx] nesting B (Syn.shift x) := by
         simpa only [Fm.shift, subst_nesting, Syn.shift] using h.shift
       exact .impE Prf.hyp1 (.impE

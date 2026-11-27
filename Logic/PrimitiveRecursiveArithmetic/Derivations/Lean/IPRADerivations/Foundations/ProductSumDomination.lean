@@ -86,14 +86,12 @@ theorem sum_trunc (f : PTm 2) {M N x : PTm n} (h : Γ ⊢[PRAAx] le M N)
       (le (Syn.shift M) (var 0) ⟶ (inst2 f (var 0) (Syn.shift x) ≐ zero)))) :
     Γ ⊢[PRAAx] ap2 (sumF f) N x ≐ ap2 (sumF f) M x := by
   have hall : Γ ⊢[PRAAx] Fm.all (truncF f M N x) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI (.impI ?_)
+    ipra_qfind (⟨le_QF _ _, le_QF _ _, trivial⟩) [subst_le, subst_ap2]
+    · refine .impI (.impI ?_)
       have m0 : (le zero N :: le M zero :: Γ) ⊢[PRAAx] M ≐ zero :=
         le_antisymm (Prf.hyp1 (Γ := Γ) (φ := le M zero) (ψ := le zero N)) (zero_le M)
       exact congrAp2 _ m0.eqSymm (.eqRefl _)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI (.impI ?_)
+    · refine .impI (.impI ?_)
       exact trunc_step f (N := Syn.shift N) (.hyp (by simp)) hz.allOpen.wk.wk.wk
         (.hyp (by simp)) Prf.hyp0
   have h2 := Prf.allE N hall

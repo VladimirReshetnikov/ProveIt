@@ -224,19 +224,15 @@ theorem sigma_pow {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a : PTm n) :
     Γ ⊢[PRAAx] pred p * sig (pw p a) + one ≐ pw p (succ a) := by
   have hall : Γ ⊢[PRAAx] Fm.all (pred (Syn.shift p) * sig (pw (Syn.shift p) (var 0)) + one ≐
       pw (Syn.shift p) (succ (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, LeanProofs.IPRA.PTm.subst_pred,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have hp1 := prime_eq_succ_pred hp
+    ipra_qfind (trivial) [subst_ap2]
+    · have hp1 := prime_eq_succ_pred hp
       have s1 : Γ ⊢[PRAAx] sig (pw p zero) ≐ one := (sig_congr (pw_zero p)).eqTrans sig_one
       have e1 := natEq s1
       have e2 := natEq hp1
       have e3 := natEq ((pw_succ (Γ := Γ) p zero).eqTrans ((congrMul (pw_zero p) (.eqRefl _)).eqTrans (one_mul _)))
       refine withEq s1 fun _ => ?_
       apply deriveNat; ipra_simps; rw [e1, e3]; linear_combination -e2
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_mul, LeanProofs.IPRA.PTm.subst_pred,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := (pred (Syn.shift p) * sig (pw (Syn.shift p) (var 0)) + one ≐
+    · let Δ : List (Fm PTm (n + 1)) := (pred (Syn.shift p) * sig (pw (Syn.shift p) (var 0)) + one ≐
         pw (Syn.shift p) (succ (var 0))) :: Γ.map Fm.shift
       have hpr : Δ ⊢[PRAAx] prime (Syn.shift p) := (prime_shift hp).wk
       have hp1 := prime_eq_succ_pred hpr

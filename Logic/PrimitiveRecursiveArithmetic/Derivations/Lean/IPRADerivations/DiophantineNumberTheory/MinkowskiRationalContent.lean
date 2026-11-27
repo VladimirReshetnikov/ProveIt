@@ -191,13 +191,9 @@ theorem prefix_integer_count_sum (N B r : PTm n) :
   have all : Γ ⊢[PRAAx] .all
       (MinkowskiBoxes.prefixCount (Syn.shift N) (integerBoxes (Syn.shift N) (Syn.shift B)) (var 0) ≐
         integerCountSum (Syn.shift N) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, MinkowskiBoxes.subst_prefixCount, subst_integerBoxes,
-        subst_integerCountSum, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (MinkowskiBoxes.prefixCount_zero _ _).eqTrans (integerCountSum_zero N B).eqSymm
-    · simp only [Fm.subst_eq, MinkowskiBoxes.subst_prefixCount, subst_integerBoxes,
-        subst_integerCountSum, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact (MinkowskiBoxes.prefixCount_succ _ _ _).eqTrans
+    ipra_qfind (trivial) [MinkowskiBoxes.subst_prefixCount, subst_integerBoxes, subst_integerCountSum]
+    · exact (MinkowskiBoxes.prefixCount_zero _ _).eqTrans (integerCountSum_zero N B).eqSymm
+    · exact (MinkowskiBoxes.prefixCount_succ _ _ _).eqTrans
         ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (integerCountSum_succ _ _ _).eqSymm)
   simpa only [Fm.subst_eq, MinkowskiBoxes.subst_prefixCount, subst_integerBoxes,
     subst_integerCountSum, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE r all

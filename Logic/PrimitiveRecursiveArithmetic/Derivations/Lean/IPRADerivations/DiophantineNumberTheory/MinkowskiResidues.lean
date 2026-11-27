@@ -77,11 +77,9 @@ theorem range_step {m C P r : PTm n} (hC : Γ ⊢[PRAAx] lt C P) (hr : Γ ⊢[PR
 theorem color_range (N m a : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] lt (color N m a) (pw m N) := by
   have all : Γ ⊢[PRAAx] .all (lt (color (var 0) (Syn.shift m) (Syn.shift a)) (pw (Syn.shift m) (var 0))) := by
-    refine PRA.qfInd _ (lt_QF _ _) ?_ ?_
-    · simp only [subst_lt, subst_color, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact lt_congr (color_zero m a).eqSymm (pw_zero m).eqSymm (zero_lt_succ zero)
-    · simp only [subst_lt, subst_color, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
+    ipra_qfind (lt_QF _ _) [subst_lt, subst_color, subst_ap2]
+    · exact lt_congr (color_zero m a).eqSymm (pw_zero m).eqSymm (zero_lt_succ zero)
+    · have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
         simpa only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift] using hm.shift
       exact lt_congr (color_succ _ _ _).eqSymm (pw_succ _ _).eqSymm
         (range_step Prf.hyp0 (digit_bound _ _ _ positive.wk))
@@ -127,13 +125,9 @@ theorem coordinate_injective (N m a b k : PTm n) (hm : Γ ⊢[PRAAx] le one m)
   have all : Γ ⊢[PRAAx] .all (lt (Syn.shift k) (var 0) ⟶
       (color (var 0) (Syn.shift m) (Syn.shift a) ≐ color (var 0) (Syn.shift m) (Syn.shift b)) ⟶
         (digit (Syn.shift a) (Syn.shift k) (Syn.shift m) ≐ digit (Syn.shift b) (Syn.shift k) (Syn.shift m))) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _, ⟨trivial,trivial⟩⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_color, subst_digit, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      exact .impI (lt_zero_absurd _ Prf.hyp0)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_lt, subst_color, subst_digit, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
+    ipra_qfind (⟨lt_QF _ _, ⟨trivial,trivial⟩⟩) [subst_lt, subst_color, subst_digit]
+    · exact .impI (lt_zero_absurd _ Prf.hyp0)
+    · have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
         simpa only [Fm.shift, subst_le, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.shift] using hm.shift
       exact coordinate_step _ _ _ _ _ positive.wk Prf.hyp0
   have contract : Γ ⊢[PRAAx] lt k N ⟶ (color N m a ≐ color N m b) ⟶ (digit a k m ≐ digit b k m) := by
@@ -164,13 +158,9 @@ theorem collision_coordinate_difference (N m a b k : PTm n) (hm : Γ ⊢[PRAAx] 
 /-- The degenerate modulus is handled by the same actual fold. -/
 theorem color_one (N a : PTm n) : Γ ⊢[PRAAx] color N one a ≐ zero := by
   have all : Γ ⊢[PRAAx] .all (color (var 0) one (Syn.shift a) ≐ zero) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_color, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact color_zero _ _
-    · simp only [Fm.subst_eq, subst_color, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      exact (color_succ _ _ _).eqTrans ((congrAdd ((one_mul _).eqTrans Prf.hyp0) (digit_one _ _)).eqTrans (add_zero zero))
+    ipra_qfind (trivial) [subst_color]
+    · exact color_zero _ _
+    · exact (color_succ _ _ _).eqTrans ((congrAdd ((one_mul _).eqTrans Prf.hyp0) (digit_one _ _)).eqTrans (add_zero zero))
   simpa only [Fm.subst_eq, subst_color, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] using Prf.allE N all
 

@@ -32,16 +32,12 @@ theorem S_double (K F : PTm n) : Γ ⊢[PRAAx] le (S (K + K) F) (S K F + F) := b
 theorem S_pow2 (M F m : PTm n) : Γ ⊢[PRAAx] le (S (M * pw two m) F) (S M F + m * F) := by
   have hall : Γ ⊢[PRAAx] Fm.all (le (S (Syn.shift M * pw two (var 0)) (Syn.shift F))
       (S (Syn.shift M) (Syn.shift F) + var 0 * Syn.shift F)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have e0 : Γ ⊢[PRAAx] M * pw two zero ≐ M := by
+    ipra_qfind (le_QF _ _) [subst_le, subst_ap2]
+    · have e0 : Γ ⊢[PRAAx] M * pw two zero ≐ M := by
         ipra_lc 𝔞 M * natEq (pw_zero (two : PTm n))
       have e := natEq (congrAp2 (Γ := Γ) (sumF hB) e0 (.eqRefl F))
       ipra_le 0 with e
-    · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      let Δ : List (Fm PTm (n + 1)) := le (S (Syn.shift M * pw two (var 0)) (Syn.shift F))
+    · let Δ : List (Fm PTm (n + 1)) := le (S (Syn.shift M * pw two (var 0)) (Syn.shift F))
           (S (Syn.shift M) (Syn.shift F) + var 0 * Syn.shift F) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le (S (Syn.shift M * pw two (var 0)) (Syn.shift F))
           (S (Syn.shift M) (Syn.shift F) + var 0 * Syn.shift F) := Prf.hyp0

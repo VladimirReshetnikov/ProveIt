@@ -129,21 +129,17 @@ theorem inversion_bit_bound (m w i j : PTm n) : Γ ⊢[PRAAx] le (RuntimePermuta
   · exact le_congr Prf.hyp0.eqSymm (.eqRefl _) (le_refl _)
 theorem inversion_row_bound (m w i t : PTm n) : Γ ⊢[PRAAx] le (RuntimePermutationWords.rowPrefix m w i t) t := by
   have all : Γ ⊢[PRAAx] .all (le (RuntimePermutationWords.rowPrefix (Syn.shift m) (Syn.shift w) (Syn.shift i) (var 0)) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,RuntimePermutationWords.subst_rowPrefix,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (RuntimePermutationWords.row_zero _ _ _).eqSymm (.eqRefl _) (le_refl _)
-    · simp only [subst_le,RuntimePermutationWords.subst_rowPrefix,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have hb := inversion_bit_bound (Γ := le (RuntimePermutationWords.rowPrefix (Syn.shift m) (Syn.shift w) (Syn.shift i) (var 0)) (var 0) :: Γ.map Fm.shift)
+    ipra_qfind (le_QF _ _) [subst_le, RuntimePermutationWords.subst_rowPrefix]
+    · exact le_congr (RuntimePermutationWords.row_zero _ _ _).eqSymm (.eqRefl _) (le_refl _)
+    · have hb := inversion_bit_bound (Γ := le (RuntimePermutationWords.rowPrefix (Syn.shift m) (Syn.shift w) (Syn.shift i) (var 0)) (var 0) :: Γ.map Fm.shift)
         (Syn.shift m) (Syn.shift w) (Syn.shift i) (var 0)
       exact le_congr (RuntimePermutationWords.row_succ _ _ _ _).eqSymm (.eqRefl _) (by ipra_le sl Prf.hyp0 + sl hb)
   simpa only [subst_le,RuntimePermutationWords.subst_rowPrefix,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
 theorem inversion_prefix_bound (m w t : PTm n) : Γ ⊢[PRAAx] le (RuntimePermutationWords.inversionPrefix m w t) (t*m) := by
   have all : Γ ⊢[PRAAx] .all (le (RuntimePermutationWords.inversionPrefix (Syn.shift m) (Syn.shift w) (var 0)) (var 0*Syn.shift m)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le,RuntimePermutationWords.subst_inversionPrefix,PTm.subst_mul,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact le_congr (RuntimePermutationWords.inversion_prefix_zero _ _).eqSymm (zero_mul _).eqSymm (le_refl _)
-    · simp only [subst_le,RuntimePermutationWords.subst_inversionPrefix,PTm.subst_mul,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have hb := inversion_row_bound (Γ := le (RuntimePermutationWords.inversionPrefix (Syn.shift m) (Syn.shift w) (var 0)) (var 0*Syn.shift m) :: Γ.map Fm.shift)
+    ipra_qfind (le_QF _ _) [subst_le, RuntimePermutationWords.subst_inversionPrefix]
+    · exact le_congr (RuntimePermutationWords.inversion_prefix_zero _ _).eqSymm (zero_mul _).eqSymm (le_refl _)
+    · have hb := inversion_row_bound (Γ := le (RuntimePermutationWords.inversionPrefix (Syn.shift m) (Syn.shift w) (var 0)) (var 0*Syn.shift m) :: Γ.map Fm.shift)
         (Syn.shift m) (Syn.shift w) (var 0) (Syn.shift m)
       exact le_congr (RuntimePermutationWords.inversion_prefix_succ _ _ _).eqSymm (.eqRefl _) (by ipra_le sl Prf.hyp0 + sl hb)
   simpa only [subst_le,RuntimePermutationWords.subst_inversionPrefix,PTm.subst_mul,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
@@ -307,14 +303,10 @@ theorem strict_gap (m w i d : PTm n) (h : Γ ⊢[PRAAx] strictSorted m w)
   have all : Γ ⊢[PRAAx] .all (lt (Syn.shift i+var 0) (Syn.shift m) ⟶
       le (RuntimePermutationWords.digit (Syn.shift m) (Syn.shift w) (Syn.shift i)+var 0)
         (RuntimePermutationWords.digit (Syn.shift m) (Syn.shift w) (Syn.shift i+var 0))) := by
-    refine PRA.qfInd _ ⟨lt_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp,subst_lt,subst_le,PTm.subst_add,RuntimePermutationWords.subst_digit,
-        Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI ?_
+    ipra_qfind (⟨lt_QF _ _,le_QF _ _⟩) [subst_lt, subst_le, RuntimePermutationWords.subst_digit]
+    · refine .impI ?_
       exact le_congr (add_zero _).eqSymm (RuntimeAdjacentPermutationSwap.digit_congr (.eqRefl _) (.eqRefl _) (add_zero i)).eqSymm (le_refl _)
-    · simp only [Fm.subst_imp,subst_lt,subst_le,PTm.subst_add,RuntimePermutationWords.subst_digit,
-        Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
+    · refine .impI ?_
       let Δ := lt (Syn.shift i+succ (var 0)) (Syn.shift m) ::
         (lt (Syn.shift i+var 0) (Syn.shift m) ⟶
           le (RuntimePermutationWords.digit (Syn.shift m) (Syn.shift w) (Syn.shift i)+var 0)

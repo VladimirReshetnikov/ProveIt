@@ -51,15 +51,11 @@ theorem fermat_pow {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (x k : PTm n) :
     Γ ⊢[PRAAx] rem (pw x (succ (k * pred p))) p ≐ rem x p := by
   have hall : Γ ⊢[PRAAx] Fm.all (rem (pw (Syn.shift x) (succ (var 0 * pred (Syn.shift p)))) (Syn.shift p) ≐
       rem (Syn.shift x) (Syn.shift p)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
-      have e : Γ ⊢[PRAAx] pw x (succ (zero * pred p)) ≐ x :=
+    ipra_qfind (trivial) [subst_ap2]
+    · have e : Γ ⊢[PRAAx] pw x (succ (zero * pred p)) ≐ x :=
         (congrPw (.eqRefl _) (congrSucc (zero_mul _))).eqTrans (pw_one _)
       exact congrAp2 remF e (.eqRefl _)
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ]
-      exact fermat_step (prime_shift hp).wk Prf.hyp0
+    · exact fermat_step (prime_shift hp).wk Prf.hyp0
   have h := Prf.allE k hall
   simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, PTm.subst_pred, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ] at h
