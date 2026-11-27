@@ -66,13 +66,9 @@ private theorem reciprocal_read (i x : PTm n) : inst2 reciprocalBody i x = recip
 
 private theorem reciprocal_sum (N : PTm n) : Γ ⊢[PRAAx] rsum reciprocalBody N zero ≐ harmonicPoint N := by
   have all : Γ ⊢[PRAAx] .all (rsum reciprocalBody (var 0) zero ≐ harmonicPoint (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,GaussianRationalFiniteSum.subst_sum,GaussianGammaCanonicalExponent.subst_harmonicPoint,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero]
-      exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans GaussianGammaEulerHeadQuadratic.harmonic_zero.eqSymm
-    · simp only [Fm.subst_eq,GaussianRationalFiniteSum.subst_sum,GaussianGammaCanonicalExponent.subst_harmonicPoint,
-        ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.repl_zero]
-      have e := GaussianRationalFiniteSum.sum_succ
+    ipra_qfind [GaussianRationalFiniteSum.subst_sum, GaussianGammaCanonicalExponent.subst_harmonicPoint]
+    · exact (GaussianRationalFiniteSum.sum_zero _ _).eqTrans GaussianGammaEulerHeadQuadratic.harmonic_zero.eqSymm
+    · have e := GaussianRationalFiniteSum.sum_succ
         (Γ := (rsum reciprocalBody (var 0) zero ≐ harmonicPoint (var 0)) :: Γ.map Fm.shift)
         reciprocalBody (var 0) zero
       rw [reciprocal_read] at e

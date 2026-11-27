@@ -87,10 +87,8 @@ theorem weighted_affine (U k : PTm n) : Γ ⊢[PRAAx]
     weighted U (succ k) ≐ U*weighted U k+geometric U (succ k) := by
   have all : Γ ⊢[PRAAx] .all (weighted (Syn.shift U) (succ (var 0)) ≐
       Syn.shift U*weighted (Syn.shift U) (var 0)+geometric (Syn.shift U) (succ (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_weighted,subst_geometric,ConciseIPRA.PTm.subst_succ,
-        PTm.subst_mul,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      have w0 := natEq (weighted_zero (Γ := Γ) U)
+    ipra_qfind [subst_weighted, subst_geometric]
+    · have w0 := natEq (weighted_zero (Γ := Γ) U)
       have w1 := natEq (weighted_succ (Γ := Γ) U zero)
       have g0 := natEq (geometric_zero (Γ := Γ) U)
       have g1 := natEq (geometric_succ (Γ := Γ) U zero)
@@ -99,9 +97,7 @@ theorem weighted_affine (U k : PTm n) : Γ ⊢[PRAAx]
       ipra_simps
       rw [w1,w0,g1,g0,p]
       ring
-    · simp only [Fm.subst_eq,subst_weighted,subst_geometric,ConciseIPRA.PTm.subst_succ,
-        PTm.subst_mul,PTm.subst_add,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact weighted_affine_step _ _ Prf.hyp0
+    · exact weighted_affine_step _ _ Prf.hyp0
   simpa only [Fm.subst_eq,subst_weighted,subst_geometric,ConciseIPRA.PTm.subst_succ,
     PTm.subst_mul,PTm.subst_add,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
 
