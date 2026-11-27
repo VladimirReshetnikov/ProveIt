@@ -35,17 +35,8 @@ local notation "G" => GaussianGammaReciprocalInverse.gammaF
 
 theorem difference_add_recover (F H : PR 2) (x y : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x)
     (hh : Γ ⊢[PRAAx] pointCN H y) :
-    Γ ⊢[PRAAx] crossEquivalent (addF (nameF F H) H) F (addData (data x y) y) x := by
-  let N := negativeF H
-  let z := negativeData y
-  have hz := negative_fast H y hh
-  have a := add_associative F N H x z y hf hz hh
-  have b := add_commutative N H z y hz hh
-  have n := add_negative H y hh
-  have inner := cross_trans _ _ _ _ _ _ b (cross_trans _ _ _ _ _ _ n (GaussianNameRingLaws.zero_name_cross y x))
-  have c := add_cross F F (addF N H) zeroF x x (addData z y) x hf hf
-    (add_fast _ _ _ _ hz hh) (zero_fast _) (cross_refl _ _ hf) inner
-  exact cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ c (GaussianNameRingLaws.add_zero F x hf))
+    Γ ⊢[PRAAx] crossEquivalent (addF (nameF F H) H) F (addData (data x y) y) x :=
+  GaussianNamedDifference.sub_add_cancel F H x y hf hh
 
 theorem ratio_balance (a b r : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] crossEquivalent (multiplyF (E ratioExponentF) G) G

@@ -51,17 +51,8 @@ theorem subtract_zero (F : PR 2) (x y : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x) 
 
 theorem subtract_add (F G : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y) : Γ ⊢[PRAAx]
-    crossEquivalent (addF (nameF F G) G) F (addData (data x y) y) x := by
-  let N := negativeF G
-  let z := negativeData y
-  have hz := negative_fast G y hg
-  have a := add_associative F N G x z y hf hz hg
-  have b := cross_trans _ _ _ _ _ _ (add_commutative N G z y hz hg)
-    (cross_trans _ _ _ _ _ _ (add_negative G y hg)
-      (GaussianGammaRationalWendelBoundary.zero_data_cross y x))
-  have c := add_cross F F (addF N G) zeroF x x (addData z y) x hf hf
-    (add_fast _ _ _ _ hz hg) (zero_fast _) (cross_refl _ _ hf) b
-  exact cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ c (GaussianNameRingLaws.add_zero F x hf))
+    crossEquivalent (addF (nameF F G) G) F (addData (data x y) y) x :=
+  GaussianNamedDifference.sub_add_cancel F G x y hf hg
 
 theorem order_of_difference_nonpositive (F G : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y)
