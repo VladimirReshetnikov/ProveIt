@@ -52,19 +52,9 @@ abbrev actE (Q' M α γ β k : PTm n) : PTm n := actv (rem k M) (qE Q' M k) α �
 /-- `q ≤ Q` for `k < (Q − Q')M`. -/
 theorem q_le {M Q Q' k : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : Γ ⊢[PRAAx] le Q' Q)
     (hk : Γ ⊢[PRAAx] lt k (monus Q Q' * M)) : Γ ⊢[PRAAx] le (qE Q' M k) Q := by
-  have dm := Prf.andE₁ (div_mod_at (Γ := Γ) (x := k) hM)
-  have hQe := eq_add_of_le hQ'
-  refine .orE (lt_or_le (quo k M) (monus Q Q')) ?_ ?_
-  · let Θ : List (Fm PTm n) := lt (quo k M) (monus Q Q') :: Γ
-    have h : Θ ⊢[PRAAx] lt (quo k M) (monus Q Q') := Prf.hyp0
-    have eQ := natEq (hQe.wk : Θ ⊢[PRAAx] Q ≐ Q' + monus Q Q')
-    ipra_le sl h with eQ
-  · let Θ : List (Fm PTm n) := le (monus Q Q') (quo k M) :: Γ
-    have h : Θ ⊢[PRAAx] le (monus Q Q') (quo k M) := Prf.hyp0
-    have hk' : Θ ⊢[PRAAx] lt k (monus Q Q' * M) := hk.wk
-    have e := natEq (dm.wk : Θ ⊢[PRAAx] k ≐ M * quo k M + rem k M)
-    have hz : Θ ⊢[PRAAx] le one zero := by ipra_le sl hk' + 𝔞 M * sl h + 𝔞 (rem k M) with e
-    exact absurd_one_zero' ((monus_zero _).eqSymm.eqTrans hz)
+  have e := natEq (eq_add_of_le hQ')
+  have upper := Division.quo_lt_of_lt_mul hM (lt_congr (.eqRefl _) (mul_comm _ _) hk)
+  ipra_le sl upper with e
 
 /-- The grid equation `qA_k = Tp` on `T = R! G`, `Q ≤ R`. -/
 theorem grid_eq {M Q Q' R G k : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hQ' : Γ ⊢[PRAAx] le Q' Q)

@@ -44,15 +44,9 @@ theorem window_of_nonrise {e' slo shi su sv : PTm n}
     (hnr : Γ ⊢[PRAAx] le (quo shi (succ e')) (quo slo (succ e')))
     (h₁ : Γ ⊢[PRAAx] le slo su) (h₂ : Γ ⊢[PRAAx] le sv shi) :
     Γ ⊢[PRAAx] lt sv (su + succ e') := by
-  have d₁ := div_mod (Γ := Γ) slo e'
-  have d₂ := div_mod (Γ := Γ) shi e'
-  have k₁ := natEq (Prf.andE₁ d₁)
-  have k₂ := natEq (Prf.andE₁ d₂)
-  have hr : Γ ⊢[PRAAx] le (succ (rem shi (succ e'))) (succ e') := Prf.andE₂ d₂
-  have g : Γ ⊢[PRAAx] le (succ sv) (su + succ e') := by
-    ipra_le sl h₁ + sl h₂ + (𝔟 e' + 1) * sl hnr + 𝔟 (rem slo (succ e')) + sl hr using
-      linear_combination k₁ - k₂
-  exact g
+  have lower := Division.mul_quo_le (Γ := Γ) (x := slo) (.eqRefl (succ e'))
+  have upper := Division.lt_mul_of_quo_lt (.eqRefl (succ e')) (Order.lt_succ_of_le hnr)
+  ipra_le sl h₁ + sl h₂ + sl lower + sl upper
 
 /-! ## A lower bound for a sum -/
 

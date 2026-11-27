@@ -55,13 +55,12 @@ theorem rem_small {k a : PTm n} (h : Γ ⊢[PRAAx] lt k a) : Γ ⊢[PRAAx] rem k
 /-- `⌊⌊m/d⌋/e⌋ = ⌊m/(de)⌋` for `d, e ≥ 1`. -/
 theorem quo_quo {m d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) :
     Γ ⊢[PRAAx] quo (quo m d) e ≐ quo m (d * e) := by
-  have d1 := div_mod_at (Γ := Γ) (x := m) hd
-  have d2 := div_mod_at (Γ := Γ) (x := quo m d) he
-  have r1 : Γ ⊢[PRAAx] lt (rem m d) d := Prf.andE₂ d1
-  have r2 : Γ ⊢[PRAAx] lt (rem (quo m d) e) e := Prf.andE₂ d2
-  refine (quo_eq (pos_mul' hd he) (r := d * rem (quo m d) e + rem m d) ?_ ?_).eqSymm
-  · ipra_lc natEq (Prf.andE₁ d1) + 𝔞 d * natEq (Prf.andE₁ d2)
-  · ipra_le 𝔞 d * sl r2 + sl r1
+  have hde := pos_mul' hd he
+  have lower := Division.mul_le_of_le_quo hd (Division.mul_quo_le (x := quo m d) he)
+  have upper := Division.lt_mul_of_quo_lt hd (Division.lt_mul_succ_quo (x := quo m d) he)
+  exact le_antisymm
+    (Division.le_quo_of_mul_le hde (le_congr (mul_assoc _ _ _).eqSymm (.eqRefl _) lower))
+    (Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hde (lt_congr (.eqRefl _) (mul_assoc _ _ _).eqSymm upper)))
 
 /-- `Q + 1 + (d − 1) = d (⌊Q/d⌋ + 1) + (Q mod d)`, with atoms. -/
 theorem quo_add_aux {Q d u r e : PTm n} (h1 : Γ ⊢[PRAAx] Q ≐ d * u + r) (h2 : Γ ⊢[PRAAx] d ≐ succ e) :

@@ -25,37 +25,17 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 /-- `⌊⌊cY/q⌋/c⌋ = ⌊Y/q⌋` for `c = c' + 1`, `q = q' + 1`. -/
 theorem floor_comp (c' Y q' : PTm k) :
     Γ ⊢[PRAAx] quo (quo (succ c' * Y) (succ q')) (succ c') ≐ quo Y (succ q') := by
-  have d1 := div_mod (Γ := Γ) (succ c' * Y) q'
-  have d2 := div_mod (Γ := Γ) (quo (succ c' * Y) (succ q')) c'
-  have e1 := natEq (Prf.andE₁ d1)
-  have e2 := natEq (Prf.andE₁ d2)
-  have hr : Γ ⊢[PRAAx] le (succ (rem (succ c' * Y) (succ q'))) (succ q') := Prf.andE₂ d1
-  have hs : Γ ⊢[PRAAx] le (succ (rem (quo (succ c' * Y) (succ q')) (succ c'))) (succ c') := Prf.andE₂ d2
-  -- abbreviations for the certificate atoms
-  -- `q A ≤ Y`
-  have hqA : Γ ⊢[PRAAx] le (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c')) Y := by
-    refine mul_le_cancel (d' := c') ?_
-    ipra_le (𝔞 q' + 1) * 𝔞 (rem (quo (succ c' * Y) (succ q')) (succ c')) + 𝔞 (rem (succ c' * Y) (succ q')) using
-      linear_combination e1 + (𝔞 q' + 1) * e2
-  -- `t < q`
-  have ht : Γ ⊢[PRAAx] lt (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))) (succ q') := by
-    refine .orE (lt_or_le (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))) (succ q'))
-      Prf.hyp0 ?_
-    have hge : (le (succ q') (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))) :: Γ) ⊢[PRAAx]
-        le (succ q') (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))) := Prf.hyp0
-    have hr' := hr.wk (ψ := le (succ q') (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))))
-    have hs' := hs.wk (ψ := le (succ q') (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))))
-    have e1' := natEq ((Prf.andE₁ d1).wk (ψ := le (succ q') (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c')))))
-    have e2' := natEq ((Prf.andE₁ d2).wk (ψ := le (succ q') (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c')))))
-    have et' := natEq ((eq_add_of_le hqA).wk (ψ := le (succ q') (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c')))))
-    have c : (le (succ q') (monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))) :: Γ) ⊢[PRAAx]
-        le (succ zero) zero := by
-      ipra_le (𝔞 c' + 1) * sl hge + sl hr' + (𝔞 q' + 1) * sl hs' using
-        linear_combination -e1' - (𝔞 q' + 1) * e2' + (𝔞 c' + 1) * et'
-    exact not_succ_le_self zero _ c
-  exact (Prf.andE₁ (div_mod_unique (Γ := Γ) (z := Y)
-    (q := quo (quo (succ c' * Y) (succ q')) (succ c'))
-    (r := monus Y (succ q' * quo (quo (succ c' * Y) (succ q')) (succ c'))) (K' := q') (eq_add_of_le hqA) ht)).eqSymm
+  let c := succ c'
+  let q := succ q'
+  have hc : Γ ⊢[PRAAx] c ≐ succ c' := .eqRefl _
+  have hq : Γ ⊢[PRAAx] q ≐ succ q' := .eqRefl _
+  have lower : Γ ⊢[PRAAx] le (c * quo Y q) (quo (c * Y) q) :=
+    Division.le_quo_of_mul_le hq
+      (le_congr (by ipra_ring) (.eqRefl _) (mul_le_mul_left c (Division.mul_quo_le hq)))
+  have upper : Γ ⊢[PRAAx] lt (quo (c * Y) q) (c * succ (quo Y q)) :=
+    Division.quo_lt_of_lt_mul hq (lt_congr (.eqRefl _) (by ipra_ring)
+      (Order.mul_lt_mul_left (zero_lt_succ c') (Division.lt_mul_succ_quo hq)))
+  exact le_antisymm (Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hc upper)) (Division.le_quo_of_mul_le hc lower)
 
 /-- `⌊⌊X/q⌋/c⌋ = ⌊Y/q⌋` when `X = cY`. -/
 theorem comp42 (c' : PTm k) {Y X q' : PTm k} (hX : Γ ⊢[PRAAx] X ≐ succ c' * Y) :
@@ -91,18 +71,10 @@ theorem terms_lt {m q' : PTm k} (hm : Γ ⊢[PRAAx] lt m (succ q'))
   have c42 := comp42 (Γ := Γ) (num 41) (Y := m) (X := num 42 * m) (q' := q')
     (by ipra_ring)
   -- `J ≤ 41`
-  have h41 : Γ ⊢[PRAAx] le (quo (num 42 * m) (succ q')) (num 41) := by
-    have d := div_mod (Γ := Γ) (num 42 * m) q'
-    refine .orE (lt_or_le (num 41) (quo (num 42 * m) (succ q'))) ?_ ?_
-    · have hbig : (lt (num 41) (quo (num 42 * m) (succ q')) :: Γ) ⊢[PRAAx]
-          le (num 42) (quo (num 42 * m) (succ q')) := Prf.hyp0
-      have e := natEq ((Prf.andE₁ d).wk (ψ := lt (num 41) (quo (num 42 * m) (succ q'))))
-      have hm' : (lt (num 41) (quo (num 42 * m) (succ q')) :: Γ) ⊢[PRAAx] le (succ m) (succ q') := hm.wk
-      have c : (lt (num 41) (quo (num 42 * m) (succ q')) :: Γ) ⊢[PRAAx] le (succ zero) zero := by
-        ipra_le (𝔞 q' + 1) * sl hbig + 42 * sl hm' + 41 + 𝔞 (rem (num 42 * m) (succ q')) using
-          linear_combination e
-      exact not_succ_le_self zero _ c
-    · exact Prf.hyp0
+  have hsmall : Γ ⊢[PRAAx] lt (num 42 * m) (succ q' * num 42) :=
+    lt_congr (.eqRefl _) (mul_comm _ _)
+      (Order.mul_lt_mul_left (by ipra_le 41 : Γ ⊢[PRAAx] le one (num 42)) hm)
+  have h41 := Order.le_of_lt_succ (Division.quo_lt_of_lt_mul (.eqRefl (succ q')) hsmall)
   exact lt_congr (congrAdd (congrAdd (congrAdd c2 c3) c7) c42) (.eqRefl _)
     (floor_sum_lt hJ h41)
 
