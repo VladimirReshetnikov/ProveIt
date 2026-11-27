@@ -106,18 +106,7 @@ theorem budget_succ (R A k : PTm n) : Γ ⊢[PRAAx] budget R A (succ k) ≐ succ
   congrMul (congrMul (.eqRefl _) (congrAp2 powF (pred_succ k) (.eqRefl _))) (.eqRefl _)
 
 theorem weighted_power (R k : PTm n) : Γ ⊢[PRAAx] k*pw R (PTm.pred k)*R ≐ k*pw R k := by
-  refine .orE (zero_or_succ k) ?_ ?_
-  · have e := natEq (Prf.hyp0 : ((k ≐ zero) :: Γ) ⊢[PRAAx] k ≐ zero)
-    apply deriveNat
-    ipra_simps
-    rw [e]
-    ring
-  · have e := natEq (((congrAp2 powF (Prf.hyp0 : ((k ≐ succ (PTm.pred k)) :: Γ) ⊢[PRAAx] k ≐ succ (PTm.pred k))
-      (.eqRefl _)).eqTrans (pw_succ R (PTm.pred k))))
-    apply deriveNat
-    ipra_simps
-    rw [e]
-    ring
+  exact GaussianPolynomialPerturbation.weighted_power R k
 
 /-- The geometric growth budget retains precisely k R^(k-1) delta,
 including the zero prefix and the first lower coefficient. -/
@@ -126,15 +115,9 @@ theorem budget_step (R A k : PTm n) (hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx
   have power := GaussianPolynomialPerturbation.power_positive (Γ := Γ) R k hR
   have last : Γ ⊢[PRAAx] le A (pw R k*A) := le_congr (one_mul A) (.eqRefl _)
     (le_mul_mono power (le_refl A))
-  have old : Γ ⊢[PRAAx] budget R A k*R+A ≐ k*pw R k*A+A := by
-    have e := natEq (weighted_power (Γ := Γ) R k)
-    apply deriveNat
-    unfold budget
-    ipra_simps
-    linear_combination Groth.ι (IPRA.Q.mk Γ A)*e
-  have next : Γ ⊢[PRAAx] k*pw R k*A+pw R k*A ≐ budget R A (succ k) :=
-    (by ipra_ring : Γ ⊢[PRAAx] k*pw R k*A+pw R k*A ≐ succ k*pw R k*A).eqTrans (budget_succ R A k).eqSymm
-  exact le_congr old.eqSymm next (add_le_add₂ (le_refl _) last)
+  exact le_congr (.eqRefl _)
+    ((GaussianPolynomialPerturbation.unscaled_budget_affine R A k).eqTrans (budget_succ R A k).eqSymm)
+    (add_le_add_left (budget R A k*R) last)
 
 /-- The two summands keep their actual common radius denominator. -/
 theorem bounded_sum_same_den (u v a b B : PTm n) (hB : Γ ⊢[PRAAx] le one B)

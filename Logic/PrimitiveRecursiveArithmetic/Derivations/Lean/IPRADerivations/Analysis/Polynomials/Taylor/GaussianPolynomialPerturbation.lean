@@ -51,45 +51,47 @@ theorem budget_succ (D R δ k : PTm n) : Γ ⊢[PRAAx]
   unfold budget
   exact congrMul (congrMul (.eqRefl _) (congrAp2 powF (pred_succ k) (.eqRefl _))) (.eqRefl _)
 
+/-- The leading index cancels the exceptional predecessor at zero. -/
+theorem weighted_power (R k : PTm n) : Γ ⊢[PRAAx] k*pw R (pred k)*R ≐ k*pw R k := by
+  refine .orE (zero_or_succ k) ?_ ?_
+  · have e := natEq (Prf.hyp0 : (k ≐ zero) :: Γ ⊢[PRAAx] k ≐ zero)
+    apply deriveNat
+    ipra_simps
+    rw [e]
+    ring
+  · have positive := Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := k ≐ succ (pred k))
+    have e := natEq ((congrAp2 powF positive (.eqRefl R)).eqTrans (pw_succ R (pred k)))
+    apply deriveNat
+    ipra_simps
+    rw [e]
+    ring
+
+/-- The affine step of the unscaled error budget, including zero index and radius. -/
+theorem unscaled_budget_affine (R δ k : PTm n) : Γ ⊢[PRAAx]
+    (k*pw R (pred k)*δ)*R + pw R k*δ ≐ succ k*pw R k*δ := by
+  have e := natEq (weighted_power (Γ := Γ) R k)
+  apply deriveNat
+  ipra_simps
+  linear_combination 𝔞 δ * e
+
+/-- The affine step with coefficient denominators cleared by D. -/
+theorem budget_affine (D R δ k : PTm n) : Γ ⊢[PRAAx]
+    budget D R δ k*R + D*pw R k*δ ≐ budget D R δ (succ k) := by
+  refine Prf.eqTrans ?_ (budget_succ D R δ k).eqSymm
+  have e := natEq (unscaled_budget_affine (Γ := Γ) R δ k)
+  apply deriveNat
+  unfold budget
+  ipra_simps
+  linear_combination 𝔞 D * e
+
 /-- The exact one-step domination, including prefix zero and zero error. -/
 theorem budget_step (D R δ k : PTm n) (hDR : Γ ⊢[PRAAx] le D R)
     (_hR : Γ ⊢[PRAAx] le one R) : Γ ⊢[PRAAx]
     le (budget D R δ k*R+pw D (succ k)*δ) (budget D R δ (succ k)) := by
-  refine .orE (zero_or_succ k) ?_ ?_
-  · have hk := Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := k ≐ zero)
-    have kb : (k ≐ zero) :: Γ ⊢[PRAAx] budget D R δ k ≐ zero := by
-      apply deriveNat
-      unfold budget
-      ipra_simps
-      rw [natEq hk]
-      ipra_simps
-      ring
-    have p : (k ≐ zero) :: Γ ⊢[PRAAx] pw D (succ k) ≐ D :=
-      (congrAp2 powF (congrSucc hk) (.eqRefl _)).eqTrans (pw_one D)
-    have q : (k ≐ zero) :: Γ ⊢[PRAAx] budget D R δ (succ k) ≐ D*δ :=
-      (budget_succ D R δ k).eqTrans (by
-        have a := natEq hk
-        have b := natEq ((congrAp2 powF hk (.eqRefl R)).eqTrans (pw_zero R))
-        apply deriveNat; ipra_simps; rw [a,b]; ring)
-    exact le_congr ((congrAdd (congrMul kb (.eqRefl _)) (congrMul p (.eqRefl _))).eqTrans
-      ((congrAdd (zero_mul _) (.eqRefl _)).eqTrans (zero_add _))).eqSymm q.eqSymm (le_refl _)
-  · have hk := Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := k ≐ succ (pred k))
-    have kp : (k ≐ succ (pred k)) :: Γ ⊢[PRAAx] pw R k ≐ pw R (pred k)*R :=
-      (congrAp2 powF hk (.eqRefl _)).eqTrans (pw_succ _ _)
-    have dp : (k ≐ succ (pred k)) :: Γ ⊢[PRAAx] le (pw D (succ k)) (D*pw R k) :=
-      le_congr (pw_succ D k).eqSymm (mul_comm _ _)
-        (mul_le_mul_right D (pw_le_pw k hDR.wk))
-    have term := mul_le_mul_right δ dp
-    have add := add_le_add_right (budget D R δ k*R) term
-    have add' := le_congr (add_comm _ _) (add_comm _ _) add
-    have endEq : (k ≐ succ (pred k)) :: Γ ⊢[PRAAx]
-        budget D R δ k*R+(D*pw R k)*δ ≐ budget D R δ (succ k) := by
-      have p := natEq kp
-      have q := natEq (budget_succ (Γ := (k ≐ succ (pred k)) :: Γ) D R δ k)
-      apply deriveNat; unfold budget at *; ipra_simps
-      rw [p] at q ⊢
-      linear_combination -q
-    exact le_congr (.eqRefl _) endEq add'
+  have power : Γ ⊢[PRAAx] le (pw D (succ k)) (D*pw R k) :=
+    le_congr (pw_succ D k).eqSymm (mul_comm _ _) (mul_le_mul_right D (pw_le_pw k hDR))
+  exact le_congr (.eqRefl _) (budget_affine D R δ k)
+    (add_le_add_left (budget D R δ k*R) (mul_le_mul_right δ power))
 
 theorem residual_succ (F G z k : PTm n) : Γ ⊢[PRAAx]
     equal (residual F G z (succ k))
@@ -165,44 +167,39 @@ theorem weighted_horner_bound (F G z N D R δ k : PTm n)
     (hLead : Γ ⊢[PRAAx] equal (entry G zero) (entry F zero))
     (hz : Γ ⊢[PRAAx] bounded z R) (hDR : Γ ⊢[PRAAx] le D R) (hR : Γ ⊢[PRAAx] le one R)
     (hErrors : Γ ⊢[PRAAx] weightedErrors F G N D δ) : Γ ⊢[PRAAx] prefixBound F G z N D R δ k := by
-  have all : Γ ⊢[PRAAx] .all (prefixBound (Syn.shift F) (Syn.shift G) (Syn.shift z)
-      (Syn.shift N) (Syn.shift D) (Syn.shift R) (Syn.shift δ) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixBound]
-    · refine .impI ?_
-      have lead := residual_one (Γ := le zero N :: Γ) F G z
-        (le_trans (zero_lt_succ N) hF.wk) (le_trans (zero_lt_succ N) hG.wk) hLead.wk
+  let sh (t : PTm n) := Syn.shift t
+  let invariant := bounded (residual (sh F) (sh G) (sh z) (succ (var 0))) (budget (sh D) (sh R) (sh δ) (var 0))
+  have all : Γ ⊢[PRAAx] .all (le (var 0) (sh N) ⟶ invariant) := by
+    refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
+    · simp only [invariant, sh, ComplexLogarithmRemainder.subst_bounded, subst_residual, subst_budget,
+        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
+      have lead := residual_one (Γ := Γ) F G z
+        (le_trans (zero_lt_succ N) hF) (le_trans (zero_lt_succ N) hG) hLead
       have l := (normSq_equal lead).eqTrans ComplexLogarithmRemainder.normSq_zero
-      have r := (congrMul (budget_zero (Γ := le zero N :: Γ) D R δ) (budget_zero D R δ)).eqTrans (zero_mul zero)
+      have r := (congrMul (budget_zero (Γ := Γ) D R δ) (budget_zero D R δ)).eqTrans (zero_mul zero)
       exact le_congr l.eqSymm r.eqSymm (le_refl zero)
-    · refine .impI ?_
-      let I := prefixBound (Syn.shift F) (Syn.shift G) (Syn.shift z) (Syn.shift N)
-        (Syn.shift D) (Syn.shift R) (Syn.shift δ) (var 0)
-      let Δ := le (succ (var 0)) (Syn.shift N) :: I :: Γ.map Fm.shift
-      have bound : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Δ ⊢[PRAAx] bounded
-          (residual (Syn.shift F) (Syn.shift G) (Syn.shift z) (succ (var 0)))
-          (budget (Syn.shift D) (Syn.shift R) (Syn.shift δ) (var 0)) := .impE Prf.hyp1 bound
-      have shapeF : Δ ⊢[PRAAx] le (succ (Syn.shift N)) (length (Syn.shift F)) := by
-        simpa only [Δ,I,Fm.shift,subst_le,subst_length,ConciseIPRA.PTm.subst_succ,Syn.shift] using hF.shift.wk.wk
-      have shapeG : Δ ⊢[PRAAx] le (succ (Syn.shift N)) (length (Syn.shift G)) := by
-        simpa only [Δ,I,Fm.shift,subst_le,subst_length,ConciseIPRA.PTm.subst_succ,Syn.shift] using hG.shift.wk.wk
-      have errors : Δ ⊢[PRAAx] weightedErrors (Syn.shift F) (Syn.shift G) (Syn.shift N)
-          (Syn.shift D) (Syn.shift δ) := by
-        simpa only [Δ,I,Fm.shift,subst_weightedErrors,Syn.shift] using hErrors.shift.wk.wk
-      have point : Δ ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift R) := by
-        simpa only [Δ,I,Fm.shift,ComplexLogarithmRemainder.subst_bounded,Syn.shift] using hz.shift.wk.wk
-      have dr : Δ ⊢[PRAAx] le (Syn.shift D) (Syn.shift R) := by
-        simpa only [Δ,I,Fm.shift,subst_le,Syn.shift] using hDR.shift.wk.wk
-      have radius : Δ ⊢[PRAAx] le one (Syn.shift R) := by
-        simpa only [Δ,I,Fm.shift,subst_le,Syn.shift,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using hR.shift.wk.wk
+    · simp only [invariant, sh, ComplexLogarithmRemainder.subst_bounded, subst_residual, subst_budget,
+        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ]
+      refine .impI ?_
+      let Δ := lt (var 0) (sh N) :: invariant :: Γ.map Fm.shift
+      have shapeF : Δ ⊢[PRAAx] le (succ (sh N)) (length (sh F)) := by
+        simpa only [sh, Syn.shift, subst_length, ConciseIPRA.PTm.subst_succ] using (Order.shift_le hF).wk.wk
+      have shapeG : Δ ⊢[PRAAx] le (succ (sh N)) (length (sh G)) := by
+        simpa only [sh, Syn.shift, subst_length, ConciseIPRA.PTm.subst_succ] using (Order.shift_le hG).wk.wk
+      have errors : Δ ⊢[PRAAx] weightedErrors (sh F) (sh G) (sh N) (sh D) (sh δ) := by
+        simpa only [sh, Fm.shift, subst_weightedErrors, Syn.shift] using hErrors.shift.wk.wk
+      have point : Δ ⊢[PRAAx] bounded (sh z) (sh R) := by
+        simpa only [sh, Fm.shift, ComplexLogarithmRemainder.subst_bounded, Syn.shift] using hz.shift.wk.wk
       have coeff := weighted_error_at _ _ _ _ _ (var 0) errors Prf.hyp0
       have same := sub_equal
-        (padded_inside (Syn.shift G) (succ (var 0)) (lt_of_le_of_lt Prf.hyp0 shapeG))
-        (padded_inside (Syn.shift F) (succ (var 0)) (lt_of_le_of_lt Prf.hyp0 shapeF))
-      have sum := bounded_add (bounded_mul ih point) (bounded_of_equal same coeff)
+        (padded_inside (sh G) (succ (var 0)) (lt_of_le_of_lt Prf.hyp0 shapeG))
+        (padded_inside (sh F) (succ (var 0)) (lt_of_le_of_lt Prf.hyp0 shapeF))
+      have sum := bounded_add (bounded_mul Prf.hyp1 point) (bounded_of_equal same coeff)
       exact bounded_of_equal (residual_succ _ _ _ _)
-        (bounded_mono sum (budget_step _ _ _ _ dr radius))
-  simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE k all
+        (bounded_mono sum (budget_step _ _ _ _ (Order.shift_le hDR).wk.wk (Order.shift_one_le hR).wk.wk))
+  simpa only [prefixBound, invariant, sh, Fm.subst_imp, subst_le, ComplexLogarithmRemainder.subst_bounded,
+    subst_residual, subst_budget, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ]
+    using all.allE k
 
 /-! The actual common-point-denominator coefficient transformation. -/
 

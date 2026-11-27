@@ -80,22 +80,7 @@ theorem budget_succ (R A j : PTm n) : Γ ⊢[PRAAx] budget R A (succ j) ≐ succ
 R=0. No positivity or division by R is used. -/
 theorem budget_step (R A j : PTm n) : Γ ⊢[PRAAx]
     budget R A j*R+pw R j*A ≐ budget R A (succ j) := by
-  have first : Γ ⊢[PRAAx] budget R A j*R+pw R j*A ≐ succ j*pw R j*A := by
-    refine .orE (zero_or_succ j) ?_ ?_
-    · have e := natEq (Prf.hyp0 : (j ≐ zero)::Γ ⊢[PRAAx] j ≐ zero)
-      apply deriveNat
-      unfold budget
-      ipra_simps
-      rw [e,natEq ((congrAp2 powF (Prf.hyp0 : (j ≐ zero)::Γ ⊢[PRAAx] j ≐ zero) (.eqRefl R)).eqTrans (pw_zero R))]
-      ring
-    · have positive := Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := j ≐ succ (pred j))
-      have p := natEq ((congrAp2 powF positive (.eqRefl R)).eqTrans (pw_succ R (pred j)))
-      apply deriveNat
-      unfold budget
-      ipra_simps
-      rw [p]
-      ring
-  exact first.eqTrans (budget_succ R A j).eqSymm
+  exact (GaussianPolynomialPerturbation.unscaled_budget_affine R A j).eqTrans (budget_succ R A j).eqSymm
 
 theorem bounded_sum_same (q r A C B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hq : Γ ⊢[PRAAx] bounded q A B) (hr : Γ ⊢[PRAAx] bounded r C B) : Γ ⊢[PRAAx]
@@ -139,20 +124,14 @@ theorem power_distance_bound (u v R A B j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hu : Γ ⊢[PRAAx] bounded u R one) (hv : Γ ⊢[PRAAx] bounded v R one)
     (hd : Γ ⊢[PRAAx] distanceBounded u v A B) : Γ ⊢[PRAAx]
     distanceBounded (power u j) (power v j) (budget R A j) B := by
-  have bShift : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hB.shift
-  have uShift : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift u) (Syn.shift R) one := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hu.shift
-  have vShift : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift v) (Syn.shift R) one := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hv.shift
-  have dShift : Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift u) (Syn.shift v) (Syn.shift A) (Syn.shift B) := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_distanceBounded,Syn.shift] using hd.shift
   have all : Γ ⊢[PRAAx] .all (distanceLaw (Syn.shift u) (Syn.shift v) (Syn.shift R) (Syn.shift A) (Syn.shift B) (var 0)) := by
     ipra_qfind (le_QF _ _) [subst_distanceLaw]
     · exact difference_zero_bound u v R A B hB
-    · exact difference_step_bound _ _ _ _ _ _ bShift.wk uShift.wk vShift.wk dShift.wk Prf.hyp0
+    · exact difference_step_bound _ _ _ _ _ _ (Order.shift_one_le hB).wk
+        (GaussianRationalMetric.shift_bounded_one hu).wk (GaussianRationalMetric.shift_bounded_one hv).wk
+        (GaussianRationalMetric.shift_distanceBounded hd).wk Prf.hyp0
   change Γ ⊢[PRAAx] distanceLaw u v R A B j
-  simpa only [subst_distanceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  simpa only [subst_distanceLaw, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using all.allE j
 
 theorem unit_disk_power_difference (u v A B j : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hu : Γ ⊢[PRAAx] bounded u one one) (hv : Γ ⊢[PRAAx] bounded v one one)
