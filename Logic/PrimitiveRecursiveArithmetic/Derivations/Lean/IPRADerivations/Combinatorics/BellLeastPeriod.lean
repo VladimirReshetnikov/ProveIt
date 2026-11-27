@@ -141,7 +141,7 @@ theorem propagate_all {t p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hT : Γ ⊢[PR
     refine PRA.qfInd _ trivial ?_ ?_
     · simpa using allB_zero (Γ := Γ) eB (pairT t p)
     · have hT' : (Γ.map Fm.shift) ⊢[PRAAx] Test (Syn.shift t) (Syn.shift p) ≐ one := by
-        simpa [Fm.shift, Syn.shift] using hT.shift
+        simpa [Syn.shift] using Order.shift_eq hT
       have st : (propF t p :: Γ.map Fm.shift) ⊢[PRAAx]
           allB eB (succ (var 0)) (pairT (Syn.shift t) (Syn.shift p)) ≐ one :=
         propagate_step (prime_shift hp).wk hT'.wk Prf.hyp0
@@ -168,7 +168,7 @@ theorem period_mul {t p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hT : Γ ⊢[PRAAx
         cong_of_eq (congrBell (by ipra_ring))
       simpa using b
     · have hT' : (Γ.map Fm.shift) ⊢[PRAAx] Test (Syn.shift t) (Syn.shift p) ≐ one := by
-        simpa [Fm.shift, Syn.shift] using hT.shift
+        simpa [Syn.shift] using Order.shift_eq hT
       have st : (mulF t p N :: Γ.map Fm.shift) ⊢[PRAAx]
           rem (bell (succ (var 0) * Syn.shift t + Syn.shift N)) (Syn.shift p) ≐
             rem (bell (Syn.shift N)) (Syn.shift p) :=

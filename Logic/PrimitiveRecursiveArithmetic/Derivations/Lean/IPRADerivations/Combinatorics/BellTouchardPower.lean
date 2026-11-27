@@ -314,8 +314,7 @@ theorem tele_step {p ρ q c j : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
         rem (bell (succ (Syn.shift c + var 0)) + Syn.shift ρ * bell (Syn.shift c + var 0))
           (Syn.shift p)))) :
     Γ ⊢[PRAAx] rem (U j ρ (c + q)) p ≐ rem (U (succ j) ρ c) p := by
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-    simpa [Fm.shift, Syn.shift] using hq.shift
+  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := Common.pos_shift hq
   refine (cong_sum_lin (bgB wB) (bgB wB) (bgB wB) (ρ := ρ) (x := pairT j (par j ρ (c + q)))
     (y := pairT j (par j ρ (succ c))) (z := pairT j (par j ρ c)) hq (.allI (.impI ?_))).eqTrans
     (cong_of_eq ?_)
@@ -419,14 +418,13 @@ theorem tele_link {p r T m J j : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
   simp only [shift_add, shift_mul, shift_monus, shift_succ, shift_pw]
   have hQ' : (Γ.map Fm.shift) ⊢[PRAAx]
       allB lvB (succ (Syn.shift T)) (lvP (Syn.shift r) (Syn.shift T) (Syn.shift p)) ≐ one := by
-    simpa [Fm.shift, Syn.shift] using hQ.shift
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-    simpa [Fm.shift, Syn.shift] using hq.shift
+    simpa [Syn.shift] using Order.shift_eq hQ
+  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := Common.pos_shift hq
   have hjJ' : (Γ.map Fm.shift) ⊢[PRAAx] le (succ (Syn.shift j)) (Syn.shift J) := by
-    simpa [Fm.shift, Syn.shift] using hjJ.shift
+    simpa [Syn.shift] using Order.shift_le hjJ
   have hm' : (Γ.map Fm.shift) ⊢[PRAAx]
       le (Syn.shift m + Syn.shift J * pw (Syn.shift p) (Syn.shift r)) (Syn.shift T) := by
-    simpa [Fm.shift, Syn.shift] using hm.shift
+    simpa [Syn.shift] using Order.shift_le hm
   exact level_at hQ'.wk (tele_bound (pw_pos' hq'.wk _) hjJ'.wk Prf.hyp0 hm'.wk)
 
 /-- The induction formula of the chain; variable `0` is the number of links. -/
@@ -453,7 +451,7 @@ theorem tele {p r T m J : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p))
     · simp [I, subst_repl_shift]
       have hQ' : (Γ.map Fm.shift) ⊢[PRAAx]
           allB lvB (succ (Syn.shift T)) (lvP (Syn.shift r) (Syn.shift T) (Syn.shift p)) ≐ one := by
-        simpa [Fm.shift, Syn.shift] using hQ.shift
+        simpa [Syn.shift] using Order.shift_eq hQ
       have hm' : (Γ.map Fm.shift) ⊢[PRAAx]
           le (Syn.shift m + Syn.shift J * pw (Syn.shift p) (Syn.shift r)) (Syn.shift T) := by
         simpa [Syn.shift] using LeanProofs.IPRA.Order.shift_le hm
@@ -493,7 +491,7 @@ theorem level_succ {p r T : PTm n} (hp : Γ ⊢[PRAAx] prime p)
   rw [e]
   have hQ' : (Γ.map Fm.shift) ⊢[PRAAx]
       allB lvB (succ (Syn.shift T)) (lvP (Syn.shift r) (Syn.shift T) (Syn.shift p)) ≐ one := by
-    simpa [Fm.shift, Syn.shift] using hQ.shift
+    simpa [Syn.shift] using Order.shift_eq hQ
   exact lv_ne (.impI (power_step (prime_shift hp).wk.wk hQ'.wk.wk Prf.hyp0))
 
 /-- The induction formula on `r`: the level bit below `T`. -/

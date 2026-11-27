@@ -90,8 +90,7 @@ theorem G_prime {p : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (N : PTm n)
   have hd : Γ ⊢[PRAAx] dvd p (ap2 (sumF gB) N (pairT N p)) := by
     refine dvd_congr_left hq.eqSymm (dvd_sum _ (.allI (.impI ?_)))
     rw [shift_pair]
-    have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-      simpa [Fm.shift, Syn.shift] using hq.shift
+    have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := Common.pos_shift hq
     have e : Syn.shift (pred p) = pred (Syn.shift p) := by simp [Syn.shift]
     have hq2 := hq'.wk (ψ := lt (var 0) (Syn.shift N))
     rw [← e] at hq2
@@ -194,10 +193,8 @@ theorem link2 {p t m : PTm n} (hq : Γ ⊢[PRAAx] p ≐ succ (pred p)) (hlt : Γ
       rem (Act gyB (succ t) m (monus p (succ t))) p := by
   refine act_cong gyB gyB hq (.allI (.impI ?_))
   simp only [inst2_gyB, shift_monus, shift_succ]
-  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := by
-    simpa [Fm.shift, Syn.shift] using hq.shift
-  have hlt' : (Γ.map Fm.shift) ⊢[PRAAx] lt (Syn.shift t) (Syn.shift p) := by
-    simpa [Fm.shift, Syn.shift] using hlt.shift
+  have hq' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift p ≐ succ (pred (Syn.shift p)) := Common.pos_shift hq
+  have hlt' : (Γ.map Fm.shift) ⊢[PRAAx] lt (Syn.shift t) (Syn.shift p) := Order.shift_lt hlt
   exact G_cong hq'.wk hlt'.wk
 
 /-- The last chain entry is the product applied to the Bell numbers. -/

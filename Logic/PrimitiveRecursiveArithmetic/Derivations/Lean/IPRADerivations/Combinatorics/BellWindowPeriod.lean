@@ -89,13 +89,11 @@ theorem window_case {t m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
   have c0 := e_elim (all_elim eB hQ lt0)
   have r1 := recurrence_split hm (t + monus N m)
   have r0 := recurrence_split hm (monus N m)
-  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-    simpa [Fm.shift, Syn.shift] using hm.shift
+  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := Common.pos_shift hm
   have hQ' : (Γ.map Fm.shift) ⊢[PRAAx]
       allB eB (Syn.shift N) (pairT (Syn.shift t) (Syn.shift m)) ≐ one := by
-    simpa [Fm.shift, Syn.shift] using hQ.shift
-  have hle' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift m) (Syn.shift N) := by
-    simpa [Fm.shift, Syn.shift] using hle.shift
+    simpa [Syn.shift] using Order.shift_eq hQ
+  have hle' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift m) (Syn.shift N) := Order.shift_le hle
   have e : Syn.shift (pred m) = pred (Syn.shift m) := by simp [Syn.shift]
   have mid : Γ ⊢[PRAAx] rem (MidB m (t + monus N m)) m ≐ rem (MidB m (monus N m)) m :=
     cong_sum (shiftBody (actB bellB)) (shiftBody (actB bellB)) hm (.allI (.impI (by
@@ -136,9 +134,8 @@ theorem window_all {t m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     refine PRA.qfInd _ trivial ?_ ?_
     · simpa using allB_zero (Γ := Γ) eB (pairT t m)
     · have hT' : (Γ.map Fm.shift) ⊢[PRAAx] Test (Syn.shift t) (Syn.shift m) ≐ one := by
-        simpa [Fm.shift, Syn.shift] using hT.shift
-      have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-        simpa [Fm.shift, Syn.shift] using hm.shift
+        simpa [Syn.shift] using Order.shift_eq hT
+      have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := Common.pos_shift hm
       have st : (propF t m :: Γ.map Fm.shift) ⊢[PRAAx]
           allB eB (succ (var 0)) (pairT (Syn.shift t) (Syn.shift m)) ≐ one :=
         window_step hm'.wk hT'.wk Prf.hyp0
@@ -168,9 +165,8 @@ theorem window_mul {t m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
         cong_of_eq (congrBell (by ipra_ring))
       simpa using b
     · have hT' : (Γ.map Fm.shift) ⊢[PRAAx] Test (Syn.shift t) (Syn.shift m) ≐ one := by
-        simpa [Fm.shift, Syn.shift] using hT.shift
-      have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-        simpa [Fm.shift, Syn.shift] using hm.shift
+        simpa [Syn.shift] using Order.shift_eq hT
+      have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := Common.pos_shift hm
       have st : (mulF t m N :: Γ.map Fm.shift) ⊢[PRAAx]
           rem (bell (succ (var 0) * Syn.shift t + Syn.shift N)) (Syn.shift m) ≐
             rem (bell (Syn.shift N)) (Syn.shift m) :=

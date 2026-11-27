@@ -86,8 +86,7 @@ theorem dig_all {i m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (N : PTm 
       lt (inst2 dS (var 0) (Syn.shift (pairT i m))) (inst2 rS (var 0) (Syn.shift (pairT i m)))) := by
   refine .allI (.impI ?_)
   rw [shift_pair]
-  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-    simpa [Fm.shift, Syn.shift] using hm.shift
+  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := Common.pos_shift hm
   exact dig_lt hm'.wk
 
 /-- The state `v_i` as a base-`m` number. -/
@@ -131,8 +130,7 @@ theorem collision_window {a b m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)
     (hc : Γ ⊢[PRAAx] code a m ≐ code b m) : Γ ⊢[PRAAx] W a b m ≐ one := by
   refine all_intro wB (.allI (.impI ?_))
   rw [shift_wpar]
-  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-    simpa [Fm.shift, Syn.shift] using hm.shift
+  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := Common.pos_shift hm
   have hc' : (Γ.map Fm.shift) ⊢[PRAAx]
       code (Syn.shift a) (Syn.shift m) ≐ code (Syn.shift b) (Syn.shift m) := by
     have h := hc.shift
@@ -160,8 +158,7 @@ theorem f_range {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (d : PTm n)
     Γ ⊢[PRAAx] rangeBelow fS d (pw m m) m := by
   refine .allI (.impI ?_)
   rw [shift_pw]
-  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-    simpa [Fm.shift, Syn.shift] using hm.shift
+  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := Common.pos_shift hm
   exact lt_congr (f_at _ _).eqSymm (.eqRefl _) (code_bound hm'.wk)
 
 /-- The first colliding pair of indices `a < b ≤ m^m`. -/

@@ -120,11 +120,10 @@ theorem back_zero {a b m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
       apply deriveNat; ipra_simps
       linear_combination -x
     exact (cong_of_eq (congrBell ea)).eqTrans (h0.eqTrans (cong_of_eq (congrBell eb)))
-  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-    simpa [Fm.shift, Syn.shift] using hm.shift
+  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := Common.pos_shift hm
   have hW' : (Γ.map Fm.shift) ⊢[PRAAx]
       W (succ (Syn.shift a)) (succ (Syn.shift b)) (Syn.shift m) ≐ one := by
-    simpa [Fm.shift, Syn.shift] using hW.shift
+    simpa [Syn.shift] using Order.shift_eq hW
   have e : Syn.shift (pred m) = pred (Syn.shift m) := by simp [Syn.shift]
   have mid : Γ ⊢[PRAAx] rem (MidB m a) m ≐ rem (MidB m b) m :=
     cong_sum (shiftBody (actB bellB)) (shiftBody (actB bellB)) hm (.allI (.impI (by
@@ -159,11 +158,10 @@ theorem back_step {a b m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     (hW : Γ ⊢[PRAAx] W (succ a) (succ b) m ≐ one) : Γ ⊢[PRAAx] W a b m ≐ one := by
   refine all_intro wB (.allI (.impI ?_))
   rw [shift_wpar]
-  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
-    simpa [Fm.shift, Syn.shift] using hm.shift
+  have hm' : (Γ.map Fm.shift) ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := Common.pos_shift hm
   have hW' : (Γ.map Fm.shift) ⊢[PRAAx]
       W (succ (Syn.shift a)) (succ (Syn.shift b)) (Syn.shift m) ≐ one := by
-    simpa [Fm.shift, Syn.shift] using hW.shift
+    simpa [Syn.shift] using Order.shift_eq hW
   exact back_pt hm'.wk hW'.wk Prf.hyp0
 
 /-! ## `a` backward steps -/
@@ -212,7 +210,7 @@ theorem window_back {a T m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
   rw [shift_pair]
   have h0 := back_all hm hW
   have h0' : (Γ.map Fm.shift) ⊢[PRAAx] W zero (Syn.shift T) (Syn.shift m) ≐ one := by
-    simpa [Fm.shift, Syn.shift] using h0.shift
+    simpa [Syn.shift] using Order.shift_eq h0
   exact e_of_w h0'.wk Prf.hyp0
 
 end LeanProofs.IPRA.Combinatorics.BellWindowBackward
