@@ -1,0 +1,172 @@
+\section{Exact finite-jet surgery with a prescribed multiple zero}
+\label{sec:surgery}
+
+Finite moment information can certify useful local statements, but it cannot
+by itself force global simplicity. The following theorem gives a precise
+obstruction while preserving reality of all zeros and even the eventual
+zero-counting function. Its algebraic ingredient is the classical inversion
+of consecutive power sums~\cite{powersums}.
+
+\begin{theorem}[Finite-jet surgery]
+\label{thm:surgery}
+Let
+\[
+ F(z)=F(0)\prod_{n\ge1}(1-a_nz^2),\qquad
+ F(0)\in\mathbb R\setminus\{0\},\quad a_n>0,\quad\sum_n a_n<\infty,
+\]
+with infinitely many distinct nodes \(a_n\); factors are listed with
+multiplicity. Fix integers \(d,r\ge1\), choose \(d\) distinct anchor nodes
+\(a_1,\ldots,a_d\), and let \(\epsilon>0\).
+There exists \(L>0\) such that, for any \(r\) other factor occurrences with
+positive zero ordinates \(\beta_1,\ldots,\beta_r\ge L\), and any
+\(T\ge L\) with \(F(T)\ne0\), there are positive distinct nodes \(u_i\)
+satisfying \(|u_i-a_i|<\epsilon\) for which
+\begin{equation}
+ G(z)=F(z)
+ \frac{\prod_{i=1}^d(1-u_i z^2)(1-z^2/T^2)^r}
+ {\prod_{i=1}^d(1-a_i z^2)\prod_{j=1}^r(1-z^2/\beta_j^2)}
+ \label{eq:surgery-function}
+\end{equation}
+has the following properties:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item \(G\) is even and entire, is real on the real axis, and has only real
+zeros. Its zeros at \(T\) and \(-T\) have multiplicity exactly \(r\).
+\item \(G(0)=F(0)\) and \(G-F=O(z^{2d+2})\). The first \(d\)
+nonconstant logarithmic Taylor coefficients agree exactly.
+\item If \(N_H(Y)\) counts positive zeros of \(H\) up to \(Y\), with
+multiplicity, then \(|N_G(Y)-N_F(Y)|\le d+r\) for every \(Y\ge0\), and
+\(N_G(Y)=N_F(Y)\) for all sufficiently large \(Y\).
+\item With \(M_H(R)=\max_{|z|=R}|H(z)|\), one has
+\(\log M_G(R)-\log M_F(R)=O(1)\). In particular order and growth type
+are preserved.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Write \(b_j=\beta_j^{-2}\), \(c=T^{-2}\), and consider the power-sum map
+\[
+ \Phi(u)=\left(\sum_{i=1}^d u_i^k\right)_{k=1}^d.
+ \qquad
+ \det D\Phi(a)=d!\prod_{i<j}(a_j-a_i)\ne0.
+\]
+The real inverse function theorem gives a neighborhood of \(\Phi(a)\)
+whose points have preimages in arbitrarily small disjoint positive intervals
+about the anchors. We seek
+\begin{equation}
+ \sum_i u_i^k=\sum_i a_i^k+\sum_j b_j^k-r c^k,
+ \qquad 1\le k\le d.
+ \label{eq:surgery-moments}
+\end{equation}
+If \(b_j,c\le\eta\le1\), each perturbation on the right has absolute
+value at most \(r\eta^k\le r\eta\). Choosing \(\eta\) small enough and
+\(L\ge\eta^{-1/2}\) therefore solves every such system. Increase \(L\)
+to exceed the anchor ordinates and all their permitted perturbations.
+
+The denominator factors in \eqref{eq:surgery-function} are factors of
+\(F\), so the quotient is entire. The new positive node sequence still
+has finite sum; its product converges locally uniformly and has precisely
+the stated real zeros. Since \(F(T)\ne0\), the new multiplicity is exactly
+\(r\). Near zero, absolute convergence gives
+\[
+ \log\frac{F(z)}{F(0)}
+   =-\sum_{k\ge1}\frac{z^{2k}}k\sum_n a_n^k.
+\]
+Equation \eqref{eq:surgery-moments} cancels the first \(d\) terms of
+\(\log(G/F)\). Exponentiating proves \(G-F=O(z^{2d+2})\), hence equality
+of derivatives through order \(2d+1\).
+
+Exactly \(d+r\) positive zero occurrences were deleted and the same number
+inserted. Their finite cumulative counts differ by at most \(d+r\), and
+agree beyond the largest changed ordinate. Finally,
+\[
+ \frac{G(z)}{F(z)}\longrightarrow
+ \frac{c^r\prod_i u_i}{\prod_i a_i\prod_j b_j}>0
+ \qquad(|z|\to\infty).
+\]
+Outside a sufficiently large disk this rational quotient is bounded above
+and below in modulus by positive constants. The same bounds hold for the
+ratio of maximum moduli, proving \textup{(iv)}.
+\end{proof}
+
+\paragraph{A finite constructive certificate.}
+The inverse function theorem can be replaced by Newton's identities and
+endpoint signs. Set
+\[
+ q_k=\sum_i a_i^k+\sum_jb_j^k-r c^k,\qquad
+ e_0=1,\qquad e_k=\frac1k\sum_{j=1}^k(-1)^{j-1}e_{k-j}q_j,
+\]
+and form
+\[
+ P_q(X)=X^d-e_1X^{d-1}+\cdots+(-1)^d e_d.
+\]
+At \(b_j=c=0\), this is \(P_0(X)=\prod_i(X-a_i)\). Choose disjoint
+positive intervals \([\ell_i,h_i]\) around the anchors. Their endpoint
+signs are opposite. For small enough \(b_j,c\), coefficient continuity
+preserves every endpoint sign. The intermediate value theorem gives a root
+in each interval; degree \(d\) forces all these roots to be simple and to
+exhaust the roots of \(P_q\). Newton's identities then give
+\eqref{eq:surgery-moments} exactly. In particular, the sufficient check
+\[
+ \sum_{j=1}^d|e_j(q)-e_j(\Phi(a))|B^{d-j}<m,
+ \quad
+ B=\max_i(1,|\ell_i|,|h_i|),\quad
+ m=\min_i\bigl(|P_0(\ell_i)|,|P_0(h_i)|\bigr)
+\]
+certifies the construction by finite arithmetic. Rational input and rational
+endpoints give an exact rational certificate.
+
+\paragraph{Protected zeros and compact approximation.}
+The anchors can be chosen above any fixed height \(H\), with perturbation
+intervals staying above \(H\); the zero multiset in \([-H,H]\) is then
+unchanged. One can also require \(\sup_{|z|\le R}|G(z)-F(z)|<\delta\) for
+any fixed \(R,\delta>0\). Indeed, write
+\(F=H_a\prod_i(1-a_i z^2)\) with \(H_a\) entire. As the high nodes
+\(b_j,c\) tend to zero, \(u_i\to a_i\) and
+\((1-cz^2)^r/\prod_j(1-b_jz^2)\to1\) uniformly on the disk. This
+factorization also handles disks containing the moved anchor zeros.
+The same argument plants any fixed finite multiplicity pattern at
+sufficiently high targets.
+
+\paragraph{An explicit example.}
+Let \(F(t)=\sin(\pi t)/(\pi t)\). Use the zeros \(1,2\) as anchors,
+delete \(10,11\), and plant a double zero at \(T=25/2\). Put
+\[
+ q_1=\frac{189889}{151250},\qquad
+ e_2=\frac{194206753}{756250000},\qquad
+ P(X)=X^2-q_1X+e_2.
+\]
+Its discriminant is \(3139703802/5719140625>0\). Opposite endpoint signs
+locate its roots in \((99/100,101/100)\) and \((6/25,27/100)\), respectively.
+Thus
+\begin{equation}
+ G(t)=\frac{\sin(\pi t)}{\pi t}
+ \frac{(1-q_1t^2+e_2t^4)(1-4t^2/625)^2}
+ {(1-t^2)(1-t^2/4)(1-t^2/100)(1-t^2/121)}
+ \label{eq:surgery-example}
+\end{equation}
+is entire with only real zeros. The relocated positive anchors are
+approximately \(1.0009018469\) and \(1.9715556473\). The target pair is
+exactly double, and every other zero is simple. Derivatives through order
+five agree with those of \(F\), while
+\(N_G(Y)=\lfloor Y\rfloor\) for every \(Y\ge25/2\).
+The accompanying rational-arithmetic certificate verifies the root brackets
+and equality of the numerator and denominator coefficients through degree
+two in \(t^2\).
+
+\paragraph{Interpretation for \(\Xi\) and priority boundaries.}
+Under RH, the paired product for \(\Xi(t)=\xi(1/2+it)\) meets the theorem's
+hypotheses. Thus any finite central jet and any finite window of exact zeros
+are compatible, within this class, with an arbitrarily high multiple zero,
+all zeros real, and the same eventual counting function. The resulting
+\(G\) is an entire function; no arithmetic \(L\)-function structure is
+asserted. In particular the construction preserves no Euler product or
+arithmetic explicit formula. It does not decide the multiplicities of
+\(\Xi\) itself or preclude a proof using additional global arithmetic
+information.
+
+Finite-jet nonrigidity by Hermite interpolation has been recorded
+previously~\cite{eberwein}. The content of Theorem~\ref{thm:surgery} is the
+simultaneous preservation of real zeros, normalization, finite jets, a
+protected zero window, growth, and an eventually identical zero count,
+using only finitely many factor replacements. No priority claim is made
+for the general finite-jet nonrigidity principle.

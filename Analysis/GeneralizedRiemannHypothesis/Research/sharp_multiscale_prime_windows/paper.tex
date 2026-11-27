@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\G}{\mathcal G}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ph}{\varphi}
+\newcommand{\R}{\mathbb R}
+\DeclareMathOperator{\Ree}{Re}
+\title{Sharp, self-calibrating multiscale inequalities\\ for primes in arithmetic progressions}
+\author{Research note}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Using Dirichlet GRH, we construct a positive-definite kernel on the product of a finite residue-class group and the real logarithmic scale. Every sufficiently separated kernel entry is a finite sum over prime powers in a compact multiplicative window, with explicit elementary and archimedean corrections. The kernel supplies joint Gram inequalities and a sharp bound for arbitrary translated quadratic contrasts of such windows. The best constant is itself computed from finitely many prime sums and explicit integrals; no zero ordinates are needed. Sharpness follows from simultaneous recurrence, not a linear-independence hypothesis. The proof is motivated by the ramp statistic in the formal GRH proof and uses the classical Weil explicit formula. The exact multiscale formulation is proposed as a candidate new consequence; priority is not claimed.
+\end{abstract}
+
+\section{Source analysis and scope}
+The repository \cite{repo} is a rewriting of the Alp\"oge--Claude formal proof. Its root README reports a readable edition of about 300,000 lines and a compact edition of about 76,000 lines. The inspected readable edition's \texttt{src/Statements.lean} defines Dirichlet nonvanishing in $\Ree s>1/2$ (except the principal pole) and critical-strip zero location. Its \texttt{src/Main.lean} derives five results, including \texttt{riemannHypothesis} and \texttt{LFunction\_eq\_zero\_re}. The project reports Lean and independent checker acceptance using the usual three axioms; this note does not repeat the build or audit every dependency. The linked Wikipedia article records the November 2026 announcement and the endorsement by the Lean FRO and Mathlib Initiative, while noting that human understanding of the proof remains incomplete \cite{wiki}.
+
+More specifically, \texttt{grh/GUIDE.md} describes a comparison of the size and divisibility of theta lifts with the index and covolume of a twisted lattice. In \texttt{New/Reduction/MainInequality.lean}, the comparison gives
+\[
+ D.m\,D.\mathrm{totalRemainder}\le D.f\,D.a\,D.\mathrm{logB}^{5}.
+\]
+The subsequent \texttt{OneSidedBound.lean} bounds a centered statistic of the form
+\[
+ R_q(x)=\sum_{n\le x}\lambda(n)(1/n-1/x)-\frac{\log x}{\ph(q)}-c_q,
+\]
+where $\lambda(n)$ is supported on $n\equiv1\pmod q$ and equals $\Lambda(n)(1-\chi_K(n))$ there. A one-sided analytic criterion then yields zero location. The ramp $ (x/n-1)_+$ has Mellin denominator $s(s-1)$. On the critical line, $-s(s-1)=1/4+\gamma^2$ is positive. That denominator suggests a compact autocorrelation with a strictly positive spectral weight.
+
+The Wikipedia article emphasizes the explicit formula's relation between zeros and prime-counting oscillations and surveys equivalent analytic criteria. We use the resulting zero-location theorem as input, not the deep theta-lift construction itself. Our additional step is to retain the full character and scale dependence of the explicit formula, then use positivity and recurrence to calibrate multivariate bounds. Classical Weil positivity and screw-function criteria are important precedents \cite{cohen,suzuki,dfm}; the particular sharp finite-window contrast below is the candidate contribution, not the underlying explicit formula or positivity principle.
+
+\section{Compact ramp windows}
+Fix an odd prime $q$, write $d=q-1$, and put $G=(\mathbb Z/q\mathbb Z)^\times$. Fix $0<h<\log 2$. Define
+\begin{align*}
+ g_h(u)&=\begin{cases}e^{h-|u|/2}-e^{|u|/2},&|u|\le h,\\0,&|u|>h,\end{cases}\\
+ H&=e^h-1,\qquad B=hH,\qquad
+ b_j(u)=\frac{e^{-(j+1/2)u}}{1-e^{-2u}}\quad (u>0,\ j=0,1).
+\end{align*}
+The von Mangoldt function is $\Lambda(p^k)=\log p$ and vanishes otherwise. For $a\in G$ and $t>h$, set
+\begin{align}
+ P(a,t)&=\sum_{n\equiv a\ (q)}\frac{\Lambda(n)}{\sqrt n}g_h(\log n-t)
+ +\frac1d\sum_{k\ge1}\frac{\log q}{q^{k/2}}g_h(k\log q-t),\label{P}\\
+ A(a,t)&=\frac12\int_{t-h}^{t+h}g_h(u-t)\left[\one_{a=1}(b_0(u)+b_1(u))\right.\notag\\
+ &\hspace{42mm}\left.+\one_{a=-1}(b_0(u)-b_1(u))\right]\dd u,\\
+ C(t)&=\frac Bd(e^{t/2}+e^{-t/2}),\qquad E(a,t)=C(t)-P(a,t)-A(a,t).\label{E}
+\end{align}
+The prime sum samples $e^{t-h}\le n\le e^{t+h}$. The second term in \eqref{P} accounts for the primitive character inducing the principal character, whose $L$-function is $\zeta$; it is not optional. The correction $A$ is nonnegative, and vanishes unless $a=\pm1$.
+
+Define explicit constants using the digamma function $\psi=\Gamma'/\Gamma$:
+\begin{align*}
+ J_j&=2\int_0^\infty(H-g_h(u))b_j(u)\dd u,\\
+ D(f,j,\delta)&=H\bigl(\log(f/\pi)+\psi(1/4+j/2)\bigr)+J_j+2\delta B,\\
+ M&=\frac{D(1,0,1)+\frac{q-3}{2}D(q,0,0)+\frac{q-1}{2}D(q,1,0)}{d}.
+\end{align*}
+The integral converges: $H-g_h(u)=O(u)$ at zero and $b_j$ decays exponentially at infinity. These constants involve no primes or zeros, thanks to $h<\log 2$.
+
+\section{Main theorem}
+\begin{theorem}[Sharp multiscale contrast]\label{main}
+Assume Dirichlet GRH. The function $E$ in \eqref{E} extends to a continuous real positive-definite function $K$ on $G\times\R$ with $K(1,0)=M>0$ and $K(a^{-1},-t)=K(a,t)$. Its extension is specified in \eqref{kernel} below. In particular,
+\[
+ |E(a,t)|\le M\quad(t>h),\qquad \limsup_{t\to\infty} E(1,t)=M.
+\]
+For any finite family $(a_i,t_i)\in G\times\R$ and complex coefficients $c_i$, define
+\[
+ Q=\sum_{i,j}c_i\overline{c_j}K(a_i a_j^{-1},t_i-t_j).
+\]
+Then $Q\ge0$, and for $T>h+\max_{i,j}|t_i-t_j|$,
+\begin{equation}\label{bound}
+ \left|\sum_{i,j}c_i\overline{c_j}E(a_i a_j^{-1},T+t_i-t_j)\right|\le Q.
+\end{equation}
+Moreover the limsup of the modulus on the left as $T\to\infty$ equals $Q$. Thus $Q$ is the exact best eventual uniform bound. If all distinct-index scale differences have modulus $>h$, its value uses only the displayed finite prime sums, archimedean integrals and the constant $M$.
+\end{theorem}
+\begin{corollary}[Two-window contrast]\label{contrast}
+For $u>h$, $a\in G$ and $T>u+h$,
+\begin{equation}\label{two}
+ |2E(1,T)-E(a,T+u)-E(a^{-1},T-u)|\le 2(M-E(a,u)).
+\end{equation}
+The bound is exact in the limsup as $T\to\infty$. This replaces the naive triangle bound $4M$ by a constant determined by one reference window. In particular whenever $E(a,u)>-M$, the new bound is strictly better.
+\end{corollary}
+\begin{corollary}[Joint three-window constraint]\label{three}
+For $g_1=(a_1,t_1)$, $g_2=(a_2,t_2)$, write $X=K(g_1)$, $Y=K(g_2)$, $Z=K(g_1g_2^{-1})$. Then
+\[
+ M^3+2XYZ-M(X^2+Y^2+Z^2)\ge0.
+\]
+If $|Z|<M$, equivalently
+\[
+ \frac{(X+Y)^2}{2M(M+Z)}+\frac{(X-Y)^2}{2M(M-Z)}\le1.
+\]
+When the three scales $t_1,t_2,t_1-t_2$ have absolute values greater than $h$, every off-diagonal entry is directly computed by \eqref{E} and inversion. The polynomial inequality also applies in degenerate cases $Z=\pm M$.
+\end{corollary}
+
+\section{Proof}
+\subsection{Positive spectral weight}
+Let $k(v)=e^{v/2}\one_{[0,h]}(v)$. Its autocorrelation satisfies
+\[
+ g_h(u)=\int_{\R}k(v)k(v+u)\dd v.
+\]
+Indeed for $0\le u\le h$, the integral is $e^{u/2}\int_0^{h-u}e^v\dd v$, and evenness gives the rest. With convention $\widehat g(y)=\int g(u)e^{iyu}\dd u$, Fubini gives
+\begin{equation}\label{weight}
+ w_h(y)=\widehat g_h(y)=\left|\frac{e^{(1/2+iy)h}-1}{1/2+iy}\right|^2
+ =\frac{e^h+1-2e^{h/2}\cos(hy)}{1/4+y^2}>0.
+\end{equation}
+This is the ramp denominator multiplied by a positive factor; $w_h(y)=O_h((1+y^2)^{-1})$. Also
+\[
+ \int_{\R}g_h(u)e^{\pm u/2}\dd u
+ =\left(\int_0^h e^v\dd v\right)\left(\int_0^h1\dd v\right)=B.
+\]
+
+\subsection{Explicit formula including corrections}
+Let $\chi$ run over characters modulo $q$. Write $\chi^*$ for its primitive inducing character, $f$ for the conductor, $j$ for its parity ($\chi(-1)=(-1)^j$), and $\delta=1$ for the primitive trivial character and zero otherwise. Its nontrivial zeros under GRH are $1/2+i\gamma$; all sums count multiplicities. For a real compactly supported piecewise smooth Lipschitz function $F$ with piecewise smooth derivative (as for the translates below), the Weil explicit formula reads
+\begin{align}
+ \sum_{\gamma}\widehat F(\gamma)
+ &=\delta\int_{\R}F(u)(e^{u/2}+e^{-u/2})\dd u\notag\\
+ &\quad+F(0)\bigl(\log(f/\pi)+\psi(1/4+j/2)\bigr)\notag\\
+ &\quad+\int_0^\infty(2F(0)-F(u)-F(-u))b_j(u)\dd u\notag\\
+ &\quad-\sum_{n\ge2}\frac{\Lambda(n)}{\sqrt n}
+ [\chi^*(n)F(\log n)+\overline{\chi^*(n)}F(-\log n)].\label{weil}
+\end{align}
+For completeness, this standard normalization follows by applying the residue theorem to the logarithmic derivative of $(f/\pi)^{(s+j)/2}\Gamma((s+j)/2)L(s,\chi^*)$ against $\int F(u)e^{(s-1/2)u}\dd u$, shifting the left vertical integral using the functional equation. The two Euler products give the two prime sums; poles at $0,1$ occur only for the primitive trivial character. The gamma terms are the Fourier pairing of $\Ree\psi((1/2+j+iy)/2)$ with $\widehat F(y)/(2\pi)$. Subtracting $\psi(1/4+j/2)$ and applying the usual integral representation of the digamma function gives the integral in \eqref{weil} (substitute $v=2u$ in that representation). See \cite{cohen,dfm,kouk} for the classical formula and zero count. For the piecewise smooth functions here, smooth compact mollification justifies the formula: the Fourier transform is $O((1+y^2)^{-1})$, the standard bound $N_\chi(U)=O(U\log(f(U+2)))$ ensures absolute summability, and uniformly Lipschitz approximants control the integrand at zero. Compact supports and exponential decay give the remaining dominated limits. Thus no formal exchange of a nonabsolutely convergent zero sum is required.
+
+Define on the whole group
+\begin{equation}\label{kernel}
+ K(a,t)=\frac1d\sum_{\chi\bmod q}\overline{\chi(a)}\sum_{\gamma_{\chi^*}}w_h(\gamma_{\chi^*})e^{i\gamma_{\chi^*}t}.
+\end{equation}
+The zero count and \eqref{weight} imply absolute uniform convergence for all real $t$. Conjugate characters have negated ordinates, so $K$ is real; inversion also conjugates $K$, hence preserves it.
+
+Use \eqref{weil} with $F(u)=g_h(u-t)$. For $t>h$, $F(0)=F(-\log n)=0$. The pole contribution after averaging is exactly $C(t)$. For $(n,q)=1$, orthogonality gives
+\[
+ \frac1d\sum_\chi\overline{\chi(a)}\chi^*(n)=\one_{n\equiv a\ (q)}.
+\]
+For $n=q^k$, only the principal character's primitive inducing character contributes, giving $1/d$. All other multiples of $q$ have zero von Mangoldt weight. This yields \eqref{P}. To check the archimedean term, write $b_j=(b_0+b_1)/2+\chi(-1)(b_0-b_1)/2$. Orthogonality gives the two indicators in $A$, and the negative sign follows from $F(0)=0$. This proves $K=E$ for $t>h$. For arbitrary scales including $|t|\le h$, the finite formula \eqref{weil} with $F=g_h(\cdot-t)$ and character averaging provides an alternative zero-free evaluation of \eqref{kernel}.
+
+At $(1,0)$ the prime term vanishes since $h<\log2$. Formula \eqref{weil} gives $D(f,j,\delta)$ for each character. The even characters number $d/2$ including the principal, the odd characters number $d/2$, and all nonprincipal characters have conductor $q$. Consequently $K(1,0)=M$. The spectral weights are strictly positive and the zeta function has nontrivial zeros, so $M>0$.
+
+\subsection{Positive definiteness and sharpness}
+Write $z_{\chi,\gamma}(a,t)=\overline{\chi(a)}e^{i\gamma t}$. Each is a unit-modulus group character. Formula \eqref{kernel} represents $K$ as a finite positive measure on the dual group (with countably many atoms). Hence
+\begin{align*}
+ Q&=\frac1d\sum_{\chi,\gamma}w_h(\gamma)
+ \left|\sum_i c_i z_{\chi,\gamma}(a_i,t_i)\right|^2\ge0,\\
+ S(T)&=\sum_{i,j}c_i\overline{c_j}K(a_i a_j^{-1},T+t_i-t_j)\\
+ &=\frac1d\sum_{\chi,\gamma}w_h(\gamma)e^{i\gamma T}
+ \left|\sum_i c_i z_{\chi,\gamma}(a_i,t_i)\right|^2.
+\end{align*}
+In particular $|S(T)|\le Q$ by the triangle inequality. When $T$ exceeds the stated threshold, $K=E$ at every translated entry. The special case of one coefficient gives $|K(a,t)|\le M$ directly from \eqref{kernel} (or a two-by-two Gram determinant).
+
+We prove sharpness without a hypothesis about rational relations between zeros. For a finite list $\gamma_1,\ldots,\gamma_r$, there exist arbitrarily large positive integers $T$ for which all $e^{i\gamma_j T}$ are arbitrarily close to $1$. Indeed partition the $r$-torus into $m^r$ equal boxes and compare $m^r+1$ multiples of $(\gamma_1/(2\pi),\ldots,\gamma_r/(2\pi))$ modulo one. A positive difference has all phases within $2\pi/m$ of zero. If the differences remain bounded along a subsequence as $m\to\infty$, some fixed positive integer is an exact common period, whose multiples suffice. Otherwise an unbounded subsequence gives the claimed recurrence. Taking finite truncations of the absolutely summable nonnegative coefficients of $S$, and using $|e^{i\theta}-1|\le2$ on the tails, gives arbitrarily large $T$ with $|S(T)-Q|$ arbitrarily small. Thus $\limsup|S(T)|=Q$, including the case $Q=0$. With one coefficient $S(T)=K(1,T)$ is real, giving $\limsup E(1,T)=M$. This proves Theorem~\ref{main}.
+
+For Corollary~\ref{contrast}, choose $(a_1,t_1)=(1,0)$, $(a_2,t_2)=(a,u)$ and $(c_1,c_2)=(1,-1)$. Then $Q=2(M-K(a,u))$ and the translated sum is the contrast in \eqref{two}. For Corollary~\ref{three}, the three group elements $(1,0),g_1,g_2$ have positive semidefinite real Gram matrix with diagonal $M$ and off-diagonal entries $X,Y,Z$. Its determinant is the stated polynomial. Rearrangement (or diagonalization of the lower $2\times2$ block) gives the ellipse whenever $|Z|<M$. \qed
+
+\section{Worked example and interpretation}
+For $q=5$, $h=0.4$, let $a=2$, $u=\log 10$ and $T=\log 1000$. The following values are computed by the accompanying Python script from prime powers and quadrature, without evaluating a single $L$-function zero. They are illustrations, not interval-certified bounds.
+\begin{center}
+\begin{tabular}{lr}\toprule
+Quantity & Approximation\\\midrule
+$M$ & $0.4499785542$\\
+$E(2,\log 10)$ & $0.1321585370$\\
+$E(1,\log 1000)$ & $-0.1031215492$\\
+$E(2,\log 10000)$ & $0.0660734110$\\
+$E(3,\log 100)$ & $-0.0608415114$\\\midrule
+Translated contrast & $-0.2114749979$\\
+Exact sharp bound, numerically evaluated & $0.6356400345$\\
+Naive bound $4M$ & $1.7999142170$\\\bottomrule
+\end{tabular}
+\end{center}
+The sharp reference-window bound is about 35.3\% of the naive bound. The example also produces a three-point Gram determinant of approximately $0.07846026835$. The contrast theorem does not say every translation attains the bound; it says that for any smaller constant some arbitrarily large translations violate it. The reference window need not be large. This is a calibration of joint prime errors, not a probabilistic independence model.
+
+\section{Limitations and further research}
+\begin{itemize}
+\item The theorem is a rigorous mathematical consequence of Dirichlet GRH and the classical explicit formula. It can be read unconditionally if the repository's formal theorem is accepted. We did not re-run that large proof or formalize the new analytic argument in Lean. No other open conjecture is claimed solved.
+\item Positivity of explicit-formula quadratic forms is classical, as is simultaneous recurrence. The compact ramp kernel, residue-dependent corrections, and exact self-calibrated translated contrast are the proposed specific contribution. A targeted literature search found related work on Weil and screw-function positivity and averaged Dirichlet zero statistics; it cannot establish publication priority.
+\item Odd prime moduli make the bad-prime and conductor terms transparent. General moduli require averaging induced primitive characters at every prime dividing the modulus. The spectral proof itself is unchanged.
+\item Optimize $k$ over positive compactly supported test functions to minimize the exact reference-window constant for selected contrasts, or impose linear constraints on the coefficients to cancel the pole terms in translated contrasts. For example $\sum_i c_i e^{t_i/2}=0$ or $\sum_i c_i e^{-t_i/2}=0$ with real coefficients cancels both exponential contributions to $S$'s pole part, by factorization. This may give inequalities entirely between prime sums and small archimedean corrections.
+\item Investigate whether the family of finite Gram conditions, restricted to prime moduli and separated windows, has a converse that forces GRH without invoking the full explicit-formula positivity criterion. Extend to other $L$-functions only with their corresponding zero-location hypotheses and archimedean factors.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{repo} L. Sernau et al., \emph{GRH for Dirichlet L-functions, in Lean 4}. \url{https://github.com/lsernau/grh-lean}. Inspected root README, readable README, GUIDE, Statements, Main, MainInequality and OneSidedBound on 26 Nov. 2026; blob identifiers are in SOURCES.md.
+\bibitem{wiki} Wikipedia contributors, \emph{Riemann hypothesis}. \url{https://en.wikipedia.org/wiki/Riemann_hypothesis}, accessed 26 Nov. 2026.
+\bibitem{cohen} H. Cohen, \emph{Computing L-functions: a survey}, J. Th\'eor. Nombres Bordeaux 27 (2015), 699--726, Theorem 7.1. \url{https://jtnb.centre-mersenne.org/item/10.5802/jtnb.920.pdf}.
+\bibitem{dfm} Dirichlet zero-statistics manuscript, explicit formula (3.2) in \url{https://web.williams.edu/Mathematics/sjmiller/public_html/math/papers/DirichletZeros_DFandSJM_240arxiv.pdf}. See SOURCES.md for the role of this source.
+\bibitem{kouk} D. Koukoulopoulos, \emph{The Distribution of Prime Numbers}, AMS, 2019, Chapter 11. \url{https://dms.umontreal.ca/~koukoulo/documents/publications/primes.pdf}.
+\bibitem{suzuki} M. Suzuki, \emph{Aspects of the screw function corresponding to the Riemann zeta-function}, J. London Math. Soc. 108 (2023), 1448--1487. \href{https://doi.org/10.1112/jlms.12785}{doi:10.1112/jlms.12785}.
+\end{thebibliography}
+\end{document}

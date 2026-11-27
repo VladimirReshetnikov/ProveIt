@@ -1,0 +1,214 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[left=.93in,right=.93in,top=.88in,bottom=.90in,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,microtype,xcolor,fancyhdr}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{183F4C}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink,pdftitle={The probability of a large principal kernel}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily The probability of a large principal kernel}\fancyhead[R]{\small\sffamily Finite fields}\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.25pt}
+\setlength{\emergencystretch}{1.5em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\F}{\mathbb F_2}\newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}
+\newcommand{\GL}{\mathrm{GL}}\newcommand{\nul}{\operatorname{null}}
+\newcommand{\ga}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{\!2}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\rgp}{\mathcal O}
+\begin{document}
+\thispagestyle{plain}
+{\small\sffamily\color{ink} RESEARCH NOTE \hfill 26 November 2026}\par\vspace{.6em}
+{\noindent\fontsize{21}{25}\selectfont\bfseries The probability of a large \mbox{principal kernel}\par}
+\vspace{.35em}{\large Rare events for uniform binary orthogonal matrices}\par\vspace{.7em}
+\noindent\textbf{Abstract.}
+For a uniform binary dot-product isometry, we determine the asymptotic probability that some principal submatrix has nullity at least $r$, when $r/\sqrt n\to\infty$ and $n-2r\to\infty$. The probability is the number of feasible complementary pairs of index sets divided by $|\GL_r(\F)|$, up to relative error tending to zero. Conditional on the event, a unique complementary pair realizes it with probability tending to one. For $r=\lfloor\alpha n\rfloor$, $0<\alpha<1/2$, this identifies both the order-$n$ correction and the constant in the logarithm of the probability. At saturation we obtain separate constants in even and odd dimension. The proof embeds the orthogonal group in the ensemble of binary self-dual codes and controls a second exceptional index set given the first.
+
+\section{The rare-event law}
+Write $\rgp_n=\{Q\in\GL_n(\F): Q^{\mathsf T}Q=I\}$. Each $Q$ is sampled uniformly from this finite group. For $S\subseteq[n]$, let $b_S=\nul Q[S,S]$, and set
+\[
+ \nu=\max_{S\subseteq[n]}b_S,\quad
+ B_{n,r}=\sum_{s=r}^{n-r}\binom ns,\quad
+ \gamma=\prod_{j\ge1}(1-2^{-j})=0.288788095\ldots .
+\]
+Complementary sets always have the same nullity. Hence $b_S\ge r$ requires $r\le |S|\le n-r$. In particular $B_{n,r}/2$ counts the feasible complementary pairs.
+
+\begin{theorem}\label{thm:main}
+Let $r=r(n)\le\lfloor n/2\rfloor$ be a positive integer with $r/\sqrt n\to\infty$.
+If also $n-2r\to\infty$, then
+\begin{equation}\label{eq:main}
+ \PP(\nu\ge r)\sim\frac{B_{n,r}}{2|\GL_r(\F)|}
+             \sim\frac{B_{n,r}}{2\gamma}\,2^{-r^2}.
+\end{equation}
+Conditional on $\nu\ge r$, with probability tending to one precisely one complementary pair has nullity at least $r$, and its nullity is exactly $r$. This uniqueness assertion also holds for bounded $n-2r$. When $n-2r\to\infty$, choosing a side of the exceptional pair with a fair coin gives, in total variation, the uniform distribution on the $B_{n,r}$ feasible sets. A tie-breaking convention on the vanishing exceptional event is immaterial.
+\end{theorem}
+For fixed $0<\alpha<1/2$ and $r=\lfloor\alpha n\rfloor$, the feasible sets have proportion tending to one. Consequently
+\begin{equation}\label{eq:linear}
+ \log_2\PP(\nu\ge r)=-r^2+n-1-\log_2\gamma+o(1).
+\end{equation}
+Keeping the integer $r$ inside the square matters at the precision of this formula.
+
+\section{Source of the question and the upper boundary}
+Vaas asked for the typical size of $\nu$ and for upper and lower tails~\cite{vaas}. A finite-field lemma in the shorter Lean proof of Dirichlet GRH estimates the mass of singular matrices $A_1^{\mathsf T}\pi(g)A_0$ by counting kernel vectors. ProveIt's orthogonal-kernel report took this construction to a binary isometry group and obtained $\PP(\nu\ge r)\le6\,2^{n-r(r-1)/2}$~\cite{up,prior}. The subsequent paper \emph{The largest principal kernel of a random binary orthogonal matrix} established the typical threshold $r\simeq\sqrt n$, the rare-tail constant near that threshold, and the fixed-fraction rate $-\alpha^2$ after division by $n^2$~\cite{previous}. Its final question asks for the next term at a fixed linear fraction. Equation~\eqref{eq:linear} answers that question.
+
+For the original analytic theorem, the readable Lean edition exports Mathlib's RH and the critical-strip result for all Dirichlet characters. Its proof obtains a one-sided estimate on a centered, quadratically twisted von Mangoldt sum in an arithmetic progression. The finite-field compression estimate occurs in its spanning argument. The Lean community's verification statement concerns Alp\"oge's original library~\cite{verification}. The repository index describes 61 ProveIt research packets deposited without independent validation there~\cite{prior}. The RH article explains the link between critical zeros and prime-counting errors~\cite{wiki}. The companion paper studies the residues of progression series at those zeros. The matrix theorem here follows from finite geometry alone. We inspected the source declarations and give ordinary mathematical proofs of the new results.
+
+There is a transition as the maximum feasible nullity approaches $n/2$. Write $g=n-2r$. The ratio $B_{n,r}/2^n$ is exactly $\PP(|2X-n|\le g)$ for $X\sim\operatorname{Bin}(n,1/2)$. Thus it tends to $2\Phi(t)-1$ when $g/\sqrt n\to t\in(0,\infty)$, where $\Phi$ is the standard normal distribution function. When $1\ll g\ll\sqrt n$, the central binomial estimate gives
+\[
+ B_{n,r}\sim (g+1)2^n\sqrt{2/(\pi n)} .
+\]
+The shortening of the feasible interval changes the prefactor even though the leading exponent stays $-r^2$.
+
+\begin{theorem}[Saturation]\label{thm:end}
+Put $a=\prod_{j\ge1}(1-2^{-2j})$. As $m\to\infty$, the probabilities at the maximum feasible nullity satisfy
+\begin{align}
+ n=2m:\quad &\PP(\nu=m)\sim\tfrac a2\binom{2m}{m}2^{-m^2},\label{eq:even}\\
+ n=2m+1:\quad &\PP(\nu=m)\sim a\binom{2m+1}{m}2^{-m^2}.\label{eq:odd}
+\end{align}
+\end{theorem}
+
+\section{Frame and subspace counts}
+Write $c_d=(1,\ldots,1)\in\F^d$. Every isometry fixes $c_d$ since $x\cdot x=x\cdot c_d$. A $d\times j$ matrix is \emph{regular} if its columns, together with $c_d$, are independent. The image of a regular frame under a uniform isometry is uniform on regular frames with its Gram matrix. For clarity, in odd dimension project along $c_d$ to the nondegenerate alternating space $c_d^\perp$. The induced pairing is $x\cdot y+(x\cdot c_d)(y\cdot c_d)$ and the projection is injective on each regular span. Equal Grams preserve the pairings and the parities. The symplectic extension lemma extends the resulting subspace isometry to $c_d^\perp$; fix $c_d$ to lift it. In even dimension the same modified pairing is nondegenerate alternating on the whole space: if $x$ is in its radical, then $x=(x\cdot c_d)c_d$, forcing $x=0$ since $c_d\cdot c_d=0$. Its isometries fixing $c_d$ preserve the original dot product. Apply symplectic extension to the frames augmented by $c_d$~\cite{witt}.
+
+In particular all vectors of a specified parity other than $0,c_d$ form one orbit when present. Counting the orbit of a coordinate unit vector and then its pointwise stabilizer, with $|\rgp_0|=|\rgp_1|=1$, gives
+\begin{equation}\label{eq:order}
+ |\rgp_d|=2^{d(d-1)/2}a_d,\qquad
+ a_d=\prod_{1\le i\le\lfloor(d-1)/2\rfloor}(1-2^{-2i}).
+\end{equation}
+Indeed in dimension $d\ge2$ the orbit has $2^{d-1}-\ind_{d\,\mathrm{odd}}$ elements and the stabilizer has size $|\rgp_{d-1}|$.
+
+The Gaussian coefficient $\ga{v}{j}$ counts the $j$-planes of $\F^v$ and is zero for $j>v$. Its product formula gives
+\[
+ 2^{j(v-j)}\le\ga vj\le\gamma^{-1}2^{j(v-j)}\quad(0\le j\le v).
+\]
+Call a plane \emph{standard} in this proof if it lies in the isometry orbit of a coordinate plane. Its stabilizer is $\rgp_j\times\rgp_{v-j}$. By~\eqref{eq:order}, its orbit occupies at least an absolute positive fraction of the full Grassmannian, uniformly in $v,j$. Thus probabilities for a uniform standard plane are bounded above by an absolute constant times those for an unrestricted uniform plane.
+
+\begin{lemma}[One principal submatrix]\label{lem:one}
+Let $s=|S|$ and $W_j(S)=\ga{b_S}{j}$. Uniformly for $j\le\min(s,n-s)$,
+\[
+ \E W_j(S)\asymp 2^{-j^2}.
+\]
+If $j\to\infty$ and $\min(s-j,n-s-j)\to\infty$, then
+$\E W_j(S)\sim |\GL_j(\F)|^{-1}$. The same equivalents and comparisons hold, as $j\to\infty$, for $\PP(b_S\ge j)$ and $\PP(b_S=j)$.
+\end{lemma}
+\begin{proof}
+Write $E_S$ for the coordinate $s$-plane. Mapping by $Q$ identifies the kernel with $QE_S\cap E_{S^c}$. For a uniform unrestricted $s$-plane the expected witness count is $\ga{n-s}j\ga sj/\ga nj$, by summing over $j$-planes in $E_{S^c}$. Domination by a constant proves the upper estimate. For the lower estimate restrict attention to standard $j$-planes in $E_S$. There are $|\rgp_s|/(|\rgp_j||\rgp_{s-j}|)$ of them. For each, fix an orthonormal basis and require its image to be a standard orthonormal frame in $E_{S^c}$, meaning a frame extendible to an orthonormal basis there. Its probability is at least
+\[
+ \frac{|\rgp_{n-s}|/|\rgp_{n-s-j}|}{|\rgp_n|/|\rgp_{n-j}|}.
+\]
+All these target frames extend globally. Substitution of~\eqref{eq:order} gives the desired lower bound, also if a complement is zero-dimensional.
+
+For the constant, put $D=j(j+1)/2$. For every fixed symmetric $j$-by-$j$ Gram matrix the number of regular $n$-by-$j$ frames with that Gram is $2^{nj-D}(1+O(2^{2j-n}))$ as $n-2j\to\infty$. Indeed the next column after $i$ regular columns has $i+1$ independent pairing and parity constraints; at most $2^{i+1}$ of the $2^{n-i-1}$ solutions spoil regularity. Multiply these bounds and use $\sum_{i<j}2^{2i+2-n}<\tfrac43 2^{2j-n}$. Allowing independent frames that contain $c_n$ in their span adds at most $(2^j-1)2^{n(j-1)-j(j-1)/2}$ solutions. For each possible coefficient vector representing $c_n$, change the column basis to make it the last column, and count the remaining regular columns. In particular for the zero Gram, the upper bound $2\,2^{nj-D}$ holds for \emph{all} $2j\le n$.
+
+An ordered kernel witness together with its image is a pair of rank-$j$ frames $X,Y$, supported in $S,S^c$ respectively, with $X^{\mathsf T}X=Y^{\mathsf T}Y$ and $QX=Y$. Combine their nonzero rows into one $n$-by-$j$ matrix $Z$. The Gram equality becomes $Z^{\mathsf T}Z=0$. In a uniformly chosen regular such $Z$, each nonzero column combination is uniform on the even vectors other than $0,c_n$, by the orbit argument. A union bound shows that the probability of failure of either restricted rank is $O(2^{j-s}+2^{j-(n-s)})$. Thus the number of eligible pairs is $(1+o(1))2^{nj-D}$. Each $X,Y$ is regular globally because its rows outside its own proper support vanish. By the uniform Gram count, $\PP(QX=Y)=(1+o(1))2^{-nj+D}$. Divide by the number $|\GL_j(\F)|$ of ordered bases to obtain the equivalent.
+
+Finally $0\le W_j-\ind_{b_S\ge j}\le(2^{j+1}-1)W_{j+1}$ by counting flags (or by the product formula). The upper estimate bounds the expected excess by $O(2^{-j^2-j})$. The event $b_S\ge j+1$ is even smaller. This proves the probability assertions.
+\end{proof}
+
+\section{Why a second exceptional pair is unlikely}
+A self-dual binary code is an $n$-plane $L=L^\perp$ in $\F^{2n}$ with the dot product. Such a code contains $c_{2n}$ and is even. The quotient $c_{2n}^\perp/\langle c_{2n}\rangle$ is symplectic of dimension $2(n-1)$. Self-dual codes correspond to its Lagrangians (maximal totally isotropic subspaces). In symplectic dimension $2b$, the number of Lagrangians is $\prod_{i=1}^b(2^i+1)$: double count a nonzero vector in a Lagrangian, then pass to its symplectic quotient. Thus a uniform self-dual code is the graph of a linear map on the first $n$ coordinates with probability
+\[
+ p_n=\frac{|\rgp_n|}{\prod_{i=1}^{n-1}(2^i+1)}\gg1.
+\]
+Indeed those maps are exactly the dot-product isometries, and~\eqref{eq:order} bounds the ratio below. Conditioning on the graph event therefore costs only a constant in any upper bound.
+
+For a set $S$, take $X=D_S=E_S\oplus E_{S^c}$, first summand in the input, second in the output; put $Y=D_{S^c}=X^\perp$. Write $d_S=\dim(L\cap D_S)$. For a graph $d_S=b_S$. For every self-dual code, $(\operatorname{proj}_X L)^{\perp_X}=L\cap X$, so $d_S=d_{S^c}$. For a fixed $S$ we also have
+\begin{equation}\label{eq:sdone}
+ \PP_{\rm sd}(d_S\ge r)\ll 2^{-r^2}.
+\end{equation}
+In fact an isotropic $r$-plane in $X$ omits $c_{2n}$ and lies in a random self-dual code with probability $\prod_{i=n-r}^{n-1}(2^i+1)^{-1}\le2^{-nr+r(r+1)/2}$. This follows by passing to the quotient by its isotropic image in symplectic dimension $2(n-1)$. The zero-Gram count in Lemma~\ref{lem:one} bounds the number of these planes by $2\cdot2^{nr-r(r+1)/2}/|\GL_r(\F)|$.
+
+\begin{lemma}[Two complementary pairs]\label{lem:pair}
+Take distinct pairs represented by $S,T$ and put $e=\min(|S\mathbin\triangle T|,n-|S\mathbin\triangle T|)$. Conditional on $d_S=r$ in the self-dual ensemble, the following upper bounds hold with absolute constants for all sufficiently large $r$:
+\[
+ \PP_{\rm sd}(d_T\ge r\mid d_S=r)\le
+ \begin{cases}
+ C2^{-e(r-e)/2},&1\le e\le r/2,\\
+ C2^{-c r^2},&r/2\le e\le n/2.
+ \end{cases}
+\]
+Only conditioning events of positive probability are needed.
+\end{lemma}
+\begin{proof}
+Replace $T$ by its complement if needed so the actual difference has size $e$. The space $D_T$ is the direct sum of an $(n-e)$-plane in $X$ and an $e$-plane in $Y$. Conditional on $d_S=r$, the law of $L$ is invariant under $\rgp(X)\times\rgp(Y)$. We may therefore fix $L$ and randomize those two planes independently over their standard orbits, then average over $L$. The upper bound for standard planes reduces the problem, up to an absolute constant, to independent unrestricted uniform planes $P\subset X$, $P'\subset Y$ of dimensions $n-e,e$.
+
+Set $W=L\cap X$, $U=\operatorname{proj}_X L$, and define $W',U'$ in $Y$ likewise. Their dimensions are $r,n-r,r,n-r$. The relation $(x,y)\in L$ induces an isomorphism $f:U/W\to U'/W'$ of spaces of dimension $m=n-2r$. Put
+\[
+ a=\dim(W\cap P),\quad g=\dim(U\cap P),\qquad
+ a'=\dim(W'\cap P'),\quad g'=\dim(U'\cap P').
+\]
+Write $J,J'$ for the images of $U\cap P,U'\cap P'$ in the two quotients. Then
+\begin{equation}\label{eq:residual}
+ d:=\dim(L\cap (P\oplus P'))=a+a'+\dim(fJ\cap J').
+\end{equation}
+The map sending a pair in the intersection to its common quotient coordinate is onto this last intersection, with kernel $(W\cap P)\oplus(W'\cap P')$. Conditional on the four dimensions, $J,J'$ are independent uniform planes of dimensions $g-a,g'-a'$. Indeed any automorphism of either quotient lifts to an automorphism of the ambient space preserving its flag $W\subset U$.
+
+For a uniform $p$-plane and fixed $v$-plane in dimension $N$, their intersection dimension exceeds its minimum $b=(p+v-N)_+$ by at least $t\ge1$ with probability at most
+\begin{equation}\label{eq:tail}
+ C2^{-t(t+|N-p-v|)} .
+\end{equation}
+When $p+v\le N$, count the $t$-planes in the intersection to bound the probability by $\ga vt\ga pt/\ga Nt$. Otherwise use the annihilators, whose intersection dimension is the excess. The minima for $a,a',g,g'$ are
+\[
+ a_0=(r-e)_+,\quad a'_0=0,\quad g_0=n-r-e,\quad g'_0=(e-r)_+ .
+\]
+If $e\le r/2$, projection to $Y$ gives $d\le a+g'$. To reach $r$, either $a-a_0$ or $g'$ must reach $\lceil e/2\rceil$. In each case $|N-p-v|=r-e$ in~\eqref{eq:tail}. This yields the first bound.
+
+For $e\ge r/2$, apply~\eqref{eq:tail} to all four dimensions and conditionally to the residual intersection in~\eqref{eq:residual}. Outside an event of probability $O(2^{-t^2})$, all five excesses are less than $t$. Hence
+\[
+ d\le\max(a+a',g+g'-m)+t\le (r-e)_++3t.
+\]
+Here $\max(a_0+a'_0,g_0+g'_0-m)=(r-e)_+$. Taking $t=\lfloor r/8\rfloor$ gives $d<r$ and proves the second bound.
+\end{proof}
+
+\section{Summation, the unique pair, and saturation}
+For fixed $S$ there are at most $2\binom ne$ oriented sets at folded distance $e$. Sum Lemma~\ref{lem:pair} for $e\le r/2$ using $\binom ne\le n^e$ and $r-e\ge r/2$; sum the second bound over at most $2^n$ sets. This gives
+\[
+ \PP_{\rm sd}(\exists\ T\notin\{S,S^c\}:d_T\ge r\mid d_S=r)
+ \ll n2^{-r/4}+2^{n-cr^2}=o(1)
+\]
+under the hypothesis $r/\sqrt n\to\infty$. Multiply by~\eqref{eq:sdone} and divide by $p_n$ to return to graphs. It follows uniformly in feasible $S$ that
+\[
+ \PP_Q(b_S=r,\ \exists\ T\notin\{S,S^c\}:b_T\ge r)=o(2^{-r^2}).
+\]
+Lemma~\ref{lem:one} bounds $\PP_Q(b_S>r)$ by $O(2^{-(r+1)^2})$. Thus summing over feasible complementary pairs yields
+\begin{equation}\label{eq:sum}
+ \PP_Q(\nu\ge r)=(1+o(1))\frac12\sum_{r\le |S|\le n-r}\PP_Q(b_S=r)
+             \asymp B_{n,r}2^{-r^2}.
+\end{equation}
+The lower bound sums disjoint events where the indicated pair is unique and has nullity $r$; the upper bound sums single-pair events. This proves conditional uniqueness even if $n-2r$ stays bounded.
+
+If $g=n-2r\to\infty$, almost every feasible set has $\min(|S|-r,n-r-|S|)\to\infty$ in probability. More explicitly, remove the $L$ layers nearest either endpoint, where $L\to\infty$ and $L=o(\min(g,\sqrt n))$. The removed fraction is $O(L/\min(g,\sqrt n))$. To see this, each layer has size at most the central binomial coefficient, and the middle $\asymp\min(g,\sqrt n)$ layers each have at least a constant times that size by Stirling's formula. Lemma~\ref{lem:one} gives a uniform equivalent on the retained layers and a constant upper bound in the same units elsewhere. Equation~\eqref{eq:sum} establishes~\eqref{eq:main}. The same estimates bound the sum of absolute discrepancies of the conditional set probabilities from $1/B_{n,r}$ by $o(1)$, proving the total-variation claim.
+
+For $n=2m$, $b_S=m$ for $|S|=m$ precisely when $Q$ sends $E_S$ onto $E_{S^c}$. Its probability is $|\rgp_m|^2/|\rgp_{2m}|$. Take the $\binom{2m}m/2$ complementary pairs in~\eqref{eq:sum} and use~\eqref{eq:order}. For $n=2m+1$, choose the unique side of size $m$. The image of $E_S$ must be a standard $m$-plane inside $E_{S^c}$ of dimension $m+1$. Its nondegenerate orthogonal complement there is generated by a norm-one vector $v$. There are $2^m-\ind_{m\,\mathrm{even}}$ admissible choices: excise $c_{m+1}$ if it is odd, since its orthogonal hyperplane is alternating. All other odd $v$ are in the unit-coordinate orbit; thus both the hyperplane and its global complement are standard. For $m\ge2$ this counts exactly the targets. The single probability is
+\[
+ (2^m-\ind_{m\,\mathrm{even}})
+       \frac{|\rgp_m|\,|\rgp_{m+1}|}{|\rgp_{2m+1}|}.
+\]
+Multiply by $\binom{2m+1}m$ in~\eqref{eq:sum}. This proves Theorem~\ref{thm:end}.
+
+\section{An exact count in every even dimension}
+There is also a finite formula at saturation. Let $o_j=|\rgp_j|$ with $o_0=1$, and let $N_{2m}$ count the matrices in $\rgp_{2m}$ with $\nu=m$. Then
+\begin{equation}\label{eq:egf}
+ N_{2m}=(2m)!\,[z^m]\sqrt{\sum_{j\ge0}\left(\frac{o_j}{j!}\right)^2z^j}.
+\end{equation}
+The square root denotes the formal power series with constant coefficient one.
+
+To prove this, associate to $Q$ the undirected graph on the coordinate labels, with an edge $ij$ whenever $Q_{ij}$ or $Q_{ji}$ is nonzero, including loops. Saturation means there is a partition into two color classes with zero diagonal blocks. Conversely any proper two-coloring gives such blocks. On each connected component the two color classes have equal size: the corresponding diagonal component of $Q$ is an invertible square matrix interchanging the two coordinate spaces. A properly colored matrix on $2j$ labels therefore has $\binom{2j}j o_j^2$ possibilities, because the two off-diagonal blocks are arbitrary independent orthogonal matrices.
+
+Each uncolored bipartite component has precisely two choices of coloring. In a labeled configuration an ordered pair of uncolored configurations can be formed by giving each connected component one of two labels. Equivalently these labels choose between the two proper colorings (fix one by putting the least vertex in its first class). Consequently the exponential generating series for colored configurations is the square of the one for uncolored configurations. With $z=x^2$ this gives~\eqref{eq:egf}. The first four positive-dimensional counts are $1,9,225,71505$, in dimensions $2,4,6,8$ respectively.
+
+\section{Checks and further questions}
+The supplied exact program enumerates every binary dot-product isometry through dimension six. In dimension six, 225 of the 23,040 matrices attain the feasible maximum three. This finite probability includes collisions between distinct complementary pairs, which the theorem bounds as dimension grows. The script also checks the quotient-intersection calculation that drives the joint estimate. The asymptotic statements are proved above.
+
+Two problems survive these estimates. What is the limiting distribution of the number of exceptional pairs along $n=k^2+t$ for fixed integer $t$? A second moment alone cannot identify that law. For a fixed gap $g=n-2r\ge2$, can the remaining multiplicative constant in~\eqref{eq:sum} be given by a closed product for each parity? Theorems~\ref{thm:main} and~\ref{thm:end} treat diverging gaps and gaps zero and one.
+
+\begin{thebibliography}{9}\small\raggedright\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}
+\bibitem{vaas} Vaas, \href{https://math.stackexchange.com/questions/5119604/principal-submatrices-of-random-binary-orthogonal-matrices}{Principal submatrices of random binary orthogonal matrices}, Mathematics Stack Exchange, question 5119604.
+\bibitem{up} L. Sernau et al., \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{GRH for Dirichlet $L$-functions in Lean 4}, revision \texttt{72fead10}. See \href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}{the exports} and \href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Spanning/SecondMoment/PositiveType.lean}{the positive-type singular compression bound}.
+\bibitem{prior} V. Reshetnikov, ProveIt, \href{https://github.com/VladimirReshetnikov/ProveIt/blob/4d7990202f9f106b2ffe8c209f073ad01d5e1987/Analysis/GeneralizedRiemannHypothesis/README.md}{GRH archive index}; see \href{https://github.com/VladimirReshetnikov/ProveIt/tree/4d7990202f9f106b2ffe8c209f073ad01d5e1987/Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_orthogonal_jets_2026-11-26}{the orthogonal-kernel report}, 26 November 2026.
+\bibitem{previous} \emph{The largest principal kernel of a random binary orthogonal matrix}, 26 November 2026, \texttt{principal\_nullity.tex} in the earlier research archive \texttt{orthogonal\_nullity\_and\_prime\_products.zip}; see its linear-deviation corollary and final research questions.
+\bibitem{verification} Lean FRO and Mathlib Initiative, \href{https://leanprover-community.github.io/blog/posts/riemann-hypothesis/}{Lean verification of the Riemann Hypothesis}, 21 November 2026.
+\bibitem{wiki} Wikipedia, \href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{Riemann hypothesis}, consulted 26 November 2026.
+\bibitem{witt} D. Sprehn and N. Wahl, \href{https://web.math.ku.dk/~wahl/Forms.pdf}{Forms over fields and Witt's lemma}, Theorem 3.4, applied to a nondegenerate alternating form.
+\end{thebibliography}
+\end{document}

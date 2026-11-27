@@ -169,3 +169,63 @@ The table is in arrival order. Members = placed + omitted for every row.
 | [grh_transfer_extensions_2026-11-26](Research/grh_transfer_extensions_2026-11-26/README.md) | `grh_transfer_extensions_2026-11-26.zip` | `de7b92e9c3` | `grh_transfer_extensions_2026-11-26` | 61 | 35 | 26 | Beyond Dirichlet GRH |
 | [grh_transfers_lubin_tate_and_graph_towers](Research/grh_transfers_lubin_tate_and_graph_towers/README.md) | `grh_transfers_lubin_tate_and_graph_towers.zip` | `de7b92e9c3` | `grh_transfers` | 20 | 19 | 1 | Sharp local bounds from methods in the Lean proof of Dirichlet GRH |
 | Total | 61 archives | | | 2250 | 1795 | 455 | |
+
+## Second batch: archives from `docs/incoming`
+
+42 further archives arrived in this project's own drop directory,
+`Analysis/GeneralizedRiemannHypothesis/docs/incoming`, on 26 November 2026, in 16 arrival
+commits from `0b4d634fdb` to `2c45d19807`. They are placed in the same way, one directory per archive
+under `Research/`, and retired from the drop directory. Of their 587 members, 501 are placed
+and 86 are listed in [`Research/OMITTED.tsv`](Research/OMITTED.tsv): 27 matched by
+`.gitignore`, 4 checksum manifests of the packet's own files (three `MANIFEST.sha256` and
+`sources/snapshot_sha256.json` of `rh_sampling_and_small_deviations_2026-11-26`), and 55
+files byte-identical to a file of an earlier packet, 53 of them to a file of the first batch.
+Three `lean-toolchain` files of under 64 bytes that equal earlier ones are kept. An archive
+`black_hole_singularity_analysis_2611_34924.zip`, added to the drop directory at 15:18 and
+removed again by the uploader, was not part of this batch.
+
+| Directory | Archive | Arrival | Wrapper | Members | Placed | Omitted | Title in the delivery README |
+|---|---|---|---|---:|---:|---:|---|
+| [cubic_mesh_sampling_2026-11-26](Research/cubic_mesh_sampling_2026-11-26/README.txt) | `cubic_mesh_sampling_2026-11-26.zip` | `0b4d634fdb` | `cubic_mesh_research` | 18 | 17 | 1 | CUBIC MESH BUDGETS FOR ONE-SIDED MELLIN CRITERIA |
+| [dirichlet_li_rigidity](Research/dirichlet_li_rigidity/README.txt) | `dirichlet_li_rigidity.zip` | `0b4d634fdb` | none | 6 | 6 | 0 | Identifying a Dirichlet character from filtered Li coefficients |
+| [dyadic_pole_detection_2026-11-26](Research/dyadic_pole_detection_2026-11-26/README.md) | `dyadic_pole_detection_2026-11-26.zip` | `0b4d634fdb` | `dyadic_pole_detection` | 16 | 15 | 1 | Sharp constants for dyadic pole detection |
+| [grh_binomial_filter](Research/grh_binomial_filter/README.md) | `grh_binomial_filter.zip` | `0b4d634fdb` | none | 9 | 7 | 2 | A constant-free binomial filter for prime discrepancies |
+| [grh_filtered_prime_races](Research/grh_filtered_prime_races/README.md) | `grh_filtered_prime_races.zip` | `0b4d634fdb` | `grh_filtered_prime_races` | 11 | 10 | 1 | Filtered prime races after GRH |
+| [grh_zero_count_certificate](Research/grh_zero_count_certificate/README.md) | `grh_zero_count_certificate.zip` | `0b4d634fdb` | `grh_zero_count_certificate` | 13 | 12 | 1 | Certified zero counts from real prime data |
+| [li_ritz_zero_recovery](Research/li_ritz_zero_recovery/README.txt) | `li_ritz_zero_recovery.zip` | `0b4d634fdb` | none | 11 | 11 | 0 | Recovering individual zeta zeros from Li coefficients |
+| [li_zero_separation](Research/li_zero_separation/README.txt) | `li_zero_separation.zip` | `0b4d634fdb` | `li_zero_separation` | 8 | 8 | 0 | Detecting prescribed gaps between Dirichlet L-function zeros from finite Li data |
+| [multiscale_prime_fluctuations](Research/multiscale_prime_fluctuations/README.md) | `multiscale_prime_fluctuations.zip` | `0b4d634fdb` | none | 11 | 10 | 1 | Spectral coercivity of multiscale smoothed prime-counting errors |
+| [prime_peak_rigidity](Research/prime_peak_rigidity/README.md) | `prime_peak_rigidity.zip` | `0b4d634fdb` | none | 9 | 9 | 0 | Peak rigidity and simultaneous recurrence of smoothed prime-counting errors |
+| [prime_zero_reconstruction](Research/prime_zero_reconstruction/README.md) | `prime_zero_reconstruction.zip` | `0b4d634fdb` | none | 7 | 6 | 1 | One Prime Signal for All Dirichlet Zeros |
+| [rh_li_universality_2026-11-26](Research/rh_li_universality_2026-11-26/README.md) | `rh_li_universality_2026-11-26.zip` | `0b4d634fdb` | `rh_li_universality_2026-11-26` | 40 | 24 | 16 | Li coefficients and a universal small-time Cauchy law |
+| [sharp_multiscale_prime_windows](Research/sharp_multiscale_prime_windows/README.md) | `sharp_multiscale_prime_windows.zip` | `0b4d634fdb` | none | 6 | 6 | 0 | Sharp multiscale prime-window inequalities |
+| [sparse_grh_balanced_windows](Research/sparse_grh_balanced_windows/README.md) | `sparse_grh_balanced_windows.zip` | `0b4d634fdb` | none | 7 | 6 | 1 | Sparse detection of Dirichlet zeros and a sharp balanced prime-window law |
+| [three_scale_reconstruction](Research/three_scale_reconstruction/README.md) | `three_scale_reconstruction.zip` | `0b4d634fdb` | `three_scale_reconstruction` | 5 | 5 | 0 | Three-scale extremal reconstruction of Dirichlet L-function zeros |
+| [finite_scale_prime_products_research](Research/finite_scale_prime_products_research/README.md) | `finite_scale_prime_products_research.zip` | `6f87f99289` | none | 7 | 7 | 0 | Finite-scale prime-product inequalities |
+| [grh_local_spectral_detection](Research/grh_local_spectral_detection/README.md) | `grh_local_spectral_detection.zip` | `6f87f99289` | none | 8 | 7 | 1 | Local prime-power spectral detection |
+| [grh_multiscale_covariance](Research/grh_multiscale_covariance/README.md) | `grh_multiscale_covariance.zip` | `6f87f99289` | none | 10 | 9 | 1 | Strict multiscale covariance of smoothed prime errors |
+| [grh_multiscale_prime_fluctuations](Research/grh_multiscale_prime_fluctuations/README.md) | `grh_multiscale_prime_fluctuations.zip` | `6f87f99289` | none | 7 | 7 | 0 | One-sided multiscale prime fluctuations |
+| [grh_prime_error_balancing](Research/grh_prime_error_balancing/README.md) | `grh_prime_error_balancing.zip` | `6f87f99289` | none | 9 | 8 | 1 | Simultaneous balancing of prime errors after Dirichlet GRH |
+| [grh_spectral_rigidity](Research/grh_spectral_rigidity/README.md) | `grh_spectral_rigidity.zip` | `6f87f99289` | none | 8 | 7 | 1 | Spectral rigidity of smoothed prime races |
+| [dirichlet_inverse_problems](Research/dirichlet_inverse_problems/README.md) | `dirichlet_inverse_problems.zip` | `f3a8c38c6c` | none | 14 | 13 | 1 | Three inverse problems for Dirichlet L-functions |
+| [prime_power_rigidity](Research/prime_power_rigidity/README.md) | `prime_power_rigidity.zip` | `b9a7c196e4` | `prime_power_rigidity` | 7 | 7 | 0 | Recovering prime powers and the modulus from three large prime sums |
+| [quadratic_spectra](Research/quadratic_spectra/README.md) | `quadratic_spectra.zip` | `61e72d75af` | `quadratic_spectra` | 12 | 12 | 0 | Quadratic characters from finitely many zeros |
+| [grh_periods_sampling_and_zeros](Research/grh_periods_sampling_and_zeros/README.md) | `grh_periods_sampling_and_zeros.zip` | `02dbe7d575` | `grh_periods_sampling_and_zeros` | 19 | 18 | 1 | Three results from the Dirichlet GRH development |
+| [odd_dyadic_dirichlet](Research/odd_dyadic_dirichlet/README.md) | `odd_dyadic_dirichlet.zip` | `02dbe7d575` | `odd_dyadic` | 8 | 8 | 0 | Odd dyadic filters at zeros of Dirichlet L-functions |
+| [grh_new_results_2026-11-26](Research/grh_new_results_2026-11-26/README.txt) | `grh_new_results_2026-11-26.zip` | `244c77760d` | `grh_new_results_2026-11-26` | 27 | 26 | 1 | FINITE SPECTRAL CERTIFICATES AND ARITHMETIC DETERMINANT BOUNDS |
+| [grh_zero_certificates_2026-11-26](Research/grh_zero_certificates_2026-11-26/README.txt) | `grh_zero_certificates_2026-11-26.zip` | `244c77760d` | `grh_zero_certificates` | 40 | 35 | 5 | SHARP POWER LAWS FOR ALMOST POSITIVE HERMITE MATRICES |
+| [prime_pole_windows](Research/prime_pole_windows/README.md) | `prime_pole_windows.zip` | `2ccd1e24d0` | `prime_pole_windows` | 7 | 7 | 0 | Reading arithmetic weights from poles of a prime series |
+| [rh_sampling_and_small_deviations_2026-11-26](Research/rh_sampling_and_small_deviations_2026-11-26/README.md) | `rh_sampling_and_small_deviations_2026-11-26.zip` | `cd035d8c0f` | `rh_research_2026-11-26` | 36 | 18 | 18 | RH research: irregular sampling and small deviations |
+| [zeta_zero_moment_bounds](Research/zeta_zero_moment_bounds/README.md) | `zeta_zero_moment_bounds.zip` | `7f98954ead` | `zeta_zero_moment_bounds` | 18 | 15 | 3 | Sharp moment bounds for the first zero and the zeros encoded in their errors |
+| [dirichlet_zero_recovery](Research/dirichlet_zero_recovery/README.md) | `dirichlet_zero_recovery.zip` | `9693778c62` | none | 14 | 13 | 1 | Two inverse theorems for Dirichlet zeros |
+| [orthogonal_nullity_and_prime_products](Research/orthogonal_nullity_and_prime_products/README.md) | `orthogonal_nullity_and_prime_products.zip` | `a9ae674322` | `orthogonal_nullity_and_prime_products` | 10 | 9 | 1 | Maximum principal nullity and squarefree prime products |
+| [dirichlet_zero_packet_homometry](Research/dirichlet_zero_packet_homometry/README.md) | `dirichlet_zero_packet_homometry.zip` | `97bf1e67b9` | `dirichlet_zero_packets` | 7 | 7 | 0 | What zero differences forget about Dirichlet characters |
+| [grh_prime_resonance_2026-11-26](Research/grh_prime_resonance_2026-11-26/README.txt) | `grh_prime_resonance_2026-11-26.zip` | `d0dd72f7e5` | `grh_prime_resonance` | 19 | 18 | 1 | PRIME-POWER RESONANCE AND CHARACTER-INDEPENDENT DETERMINANT LAWS |
+| [one_gap_dirichlet_zeros](Research/one_gap_dirichlet_zeros/README.md) | `one_gap_dirichlet_zeros.zip` | `d0dd72f7e5` | `one_gap_dirichlet_zeros` | 11 | 10 | 1 | Recovering all Dirichlet zeros from one zero-free interval |
+| [sparse_dirichlet_zero_tests](Research/sparse_dirichlet_zero_tests/README.md) | `sparse_dirichlet_zero_tests.zip` | `d0dd72f7e5` | `sparse_zeros` | 11 | 10 | 1 | Detecting nonreal zeros from sparse logarithmic derivatives |
+| [symplectic_rank_blindness_2026-11-26](Research/symplectic_rank_blindness_2026-11-26/README.md) | `symplectic_rank_blindness_2026-11-26.zip` | `d0dd72f7e5` | `symplectic_rank_blindness` | 43 | 24 | 19 | Rank tests miss a persistent symplectic obstruction |
+| [prime_scale_coalescence_2026-11-26](Research/prime_scale_coalescence_2026-11-26/README.txt) | `prime_scale_coalescence_2026-11-26.zip` | `4d7990202f` | `prime_scale_coalescence` | 18 | 17 | 1 | A CUBIC LOGARITHMIC LAW FOR MERGING PRIME-COUNTING SCALES |
+| [large_kernels_and_dirichlet_zeros](Research/large_kernels_and_dirichlet_zeros/README.txt) | `large_kernels_and_dirichlet_zeros.zip` | `2c45d19807` | none | 10 | 9 | 1 | LARGE PRINCIPAL KERNELS AND DIRICHLET ZERO MULTIPLICITIES |
+| [li_sampling_and_curvature](Research/li_sampling_and_curvature/README.md) | `li_sampling_and_curvature.zip` | `2c45d19807` | `li_sampling_and_curvature` | 24 | 23 | 1 | Which samples of Li coefficients detect off-line zeros? |
+| [squarefree_prime_products](Research/squarefree_prime_products/README.md) | `squarefree_prime_products.zip` | `2c45d19807` | `squarefree_prime_products` | 6 | 5 | 1 | Squarefree products of small primes after arbitrary deletions |
+| Total | 42 archives | | | 587 | 501 | 86 | |

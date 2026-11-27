@@ -1,0 +1,107 @@
+\section{Sources and relation to earlier results}
+
+Li proved the full-sequence criterion for Dedekind zeta functions.
+Bombieri and Lagarias formulated a criterion for multisets of complex numbers
+and used simultaneous phase approximation for the converse. Voros described
+the exponentially oscillating contribution to the zeta coefficients when a
+zero lies off the line. Lagarias developed the coefficients for automorphic
+$L$-functions, including the real-part criterion used for complex characters.
+These works supply the analytic setting and the mechanism by which an outer
+Cayley radius affects the coefficients \cite{li,bl,voros,lag}.
+
+The closest result in ProveIt takes dilated blocks
+$\{M_j,2M_j,\ldots,jM_j\}$ for Dedekind zeta functions. It proves a positive
+proportion of negative samples in each sufficiently late block if RH fails.
+It also obtains the limiting normalized minimum $-m$, with $m$ the total
+multiplicity on the outermost circle. The same packet uses second differences
+of Li coefficients to distinguish arithmetically inequivalent fields.
+Two later packets concern identification of a primitive character from
+filtered fixed-stride Li samples, and simultaneous recurrence of translated
+smoothed prime errors \cite{prior}.
+The present classification gives a necessary and sufficient condition on an
+arbitrary sampling set and realizes failure of that condition by a finite
+zero multiset. For synchronized polynomial schedules the obstruction becomes
+a congruence condition, with a unit constraint for prime parameters.
+
+Bohr neighborhoods and their description by trigonometric polynomials are
+classical \cite{bfw}. Weyl's theorem and Rhin's prime analogue supply the
+equidistribution inputs \cite{weyl,rhin}. Bergelson, Leibman and Lesigne
+proved multiple recurrence for jointly intersective polynomials.
+L\^e and Spencer studied quantitative simultaneous Diophantine approximation
+for intersective systems and prime analogues \cite{bll,ls}. The contribution
+claimed here is the characterization for Li sums, including its converse
+within the class of zero multisets. The comparison covered the 61 historical
+packet READMEs and 408 TeX files in the research directories, together with
+55 TeX files in 39 incoming archives at the pinned ProveIt revision.
+A targeted literature search located the preceding analytic and recurrence
+results. Priority for the combined theorem remains open to further comparison.
+
+Johansson had already computed rigorous Keiper coefficients through index
+100,000 \cite{joh}. For a positive index $n$, multiplying his coefficient by $n$
+gives the Li normalization used here. Second differencing the published
+decimals gives $d_{117}\approx0.000200147$ and
+$d_{118}\approx-0.000271044$, independently confirming the initial
+change of sign. Our contribution concerning this finite sign pattern is its
+simultaneous recurrence at polynomially separated indices and a certificate
+using forty conjugate pairs and residual moments. The computations at the
+four squared indices in Table~\ref{tab:seeds} extend far beyond this table.
+
+The survey article connects the critical-line formulation with Li
+positivity \cite{wiki}. In the compact Lean edition, \texttt{src/Statements.lean}
+specifies the Dirichlet zero theorem and \texttt{src/Main.lean} exports
+\texttt{LFunction\_eq\_zero\_re}. The proof obtains a one-sided bound for a
+weighted prime sum and passes to nonvanishing in the right half-plane.
+Here its critical-line conclusion places the Cayley transforms of the
+Dirichlet zeros on the unit circle. Sutherland records kernel replay and
+independent checks of the exported statements for both editions \cite{lean}.
+Those checks concern the upstream theorems. The sampling results above have
+the mathematical proofs given in this paper.
+
+\begin{thebibliography}{99}
+\setlength{\itemsep}{2pt}
+\bibitem{li} X.-J. Li, The positivity of a sequence of numbers and the
+Riemann hypothesis, \emph{J. Number Theory} 65 (1997), 325--333.
+\href{https://doi.org/10.1006/jnth.1997.2137}{Publisher}.
+\bibitem{bl} E. Bombieri and J. C. Lagarias, Complements to Li's criterion
+for the Riemann hypothesis, \emph{J. Number Theory} 77 (1999), 274--287.
+\href{https://websites.umich.edu/~lagarias/doc/bombieri.pdf}{Author's copy}.
+\bibitem{voros} A. Voros, Sharpenings of Li's criterion for the Riemann
+hypothesis, \emph{Math. Phys. Anal. Geom.} 9 (2006), 53--63.
+\href{https://doi.org/10.1007/s11040-005-9002-8}{Publisher}.
+\bibitem{lag} J. C. Lagarias, Li coefficients for automorphic $L$-functions,
+\emph{Ann. Inst. Fourier} 57 (2007), 1689--1740.
+\href{https://doi.org/10.5802/aif.2311}{Publisher}.
+\bibitem{bfw} V. Bergelson, H. Furstenberg and B. Weiss, Piecewise-Bohr sets
+of integers and combinatorial number theory, Definition~1.1.
+\href{https://people.math.osu.edu/bergelson.1/BFW_Bohr.pdf}{Author's copy}.
+\bibitem{weyl} H. Weyl, \"Uber die Gleichverteilung von Zahlen mod. Eins,
+\emph{Math. Ann.} 77 (1916), 313--352.
+\href{https://doi.org/10.1007/BF01475864}{Publisher}.
+\bibitem{rhin} G. Rhin, Sur la r\'epartition modulo $1$ des suites $f(p)$,
+\emph{Acta Arith.} 23 (1973), 217--248.
+\href{https://doi.org/10.4064/aa-23-3-217-248}{Publisher}.
+\bibitem{bll} V. Bergelson, A. Leibman and E. Lesigne, Intersective
+polynomials and the polynomial Szemer\'edi theorem,
+\emph{Adv. Math.} 219 (2008), 369--388.
+\href{https://arxiv.org/abs/0710.4862}{Preprint}.
+\bibitem{ls} T. H. L\^e and C. V. Spencer, Intersective polynomials and
+Diophantine approximation, \emph{Int. Math. Res. Not.} 2014 (2014), 1153--1173.
+\href{https://doi.org/10.1093/imrn/rns242}{Publisher}.
+\bibitem{joh} F. Johansson, Rigorous high-precision computation of the Hurwitz
+zeta function and its derivatives, \emph{Numer. Algorithms} 69 (2015), 253--270.
+\href{https://fredrikj.net/math/hurwitz_zeta.html}{Paper and coefficient data}.
+\bibitem{prior} V. Reshetnikov, \emph{ProveIt}, Generalized Riemann Hypothesis
+research collection, revision \texttt{4d7990202f9f}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/4d7990202f9f106b2ffe8c209f073ad01d5e1987/Analysis/GeneralizedRiemannHypothesis}{Collection}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4d7990202f9f106b2ffe8c209f073ad01d5e1987/Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_research/li.tex}{Sparse dilation-block criterion}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4d7990202f9f106b2ffe8c209f073ad01d5e1987/Analysis/GeneralizedRiemannHypothesis/Research/grh_method_transfers_research/rigidity.tex}{Arithmetic equivalence}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4d7990202f9f106b2ffe8c209f073ad01d5e1987/Analysis/GeneralizedRiemannHypothesis/docs/incoming/dirichlet_li_rigidity.zip}{Filtered Li samples}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4d7990202f9f106b2ffe8c209f073ad01d5e1987/Analysis/GeneralizedRiemannHypothesis/docs/incoming/prime_peak_rigidity.zip}{Smoothed prime errors}.
+\bibitem{lean} L. Sernau and collaborators, shorter editions of the
+Alp\"oge--Claude proof of RH and GRH for Dirichlet $L$-functions,
+revision \texttt{72fead102f66} (2026).
+\href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{Source}.
+A. V. Sutherland, \href{https://math.mit.edu/~drew/shortgrh/}{independent verification records}.
+\bibitem{wiki} Wikipedia contributors, \emph{Riemann hypothesis}, consulted
+26 November 2026. \href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{Article}.
+\end{thebibliography}

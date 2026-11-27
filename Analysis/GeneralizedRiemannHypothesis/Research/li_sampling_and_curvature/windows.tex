@@ -1,0 +1,120 @@
+\section{Convexity intervals from two Li coefficients}
+\label{sec:windows}
+
+Let $\lambda_n$ be the Li coefficients of the completed Riemann zeta
+function, with $\lambda_0=0$ and $\lambda_{-n}=\lambda_n$. Write
+\[
+ d_n=\lambda_{n+1}-2\lambda_n+\lambda_{n-1},\qquad
+ C=d_0=2\lambda_1,\qquad \tau=C-d_1=4\lambda_1-\lambda_2 .
+\]
+The critical-line theorem gives a concrete pattern in this sequence.
+A set of integers $k$ of positive lower Banach density satisfies
+\begin{align}
+ d_{k^2+j},\ d_{k^3+j}&>0.00034 && (|j|\le39),\label{eq:79window}\\
+ d_{k^2+j},\ d_{k^3+j}&>0.00070 && (|j|\le35).\label{eq:71window}
+\end{align}
+Thus 79 consecutive strictly positive second differences recur
+simultaneously around a square and a cube. Both bounds use only the
+first two Li coefficients to establish the starting interval. The
+recurrence then uses the full spectrum. Every finite jointly
+intersective family tending to $+\infty$ can replace the square and
+cube in these conclusions by Theorem~\ref{thm:curv}. The prime-index version applies, for instance, to \((p-1)^2,p^2-1\).
+
+\paragraph{A bound from two moments.}
+For a nontrivial zero $\rho$, let $u_\rho=1-1/\rho$,
+$w_\rho=|1-u_\rho|^2$ and $x_\rho=\operatorname{Re}u_\rho$.
+Under RH, $|u_\rho|=1$. The Fourier series for $d_n$ gives a
+probability measure $\mu=C^{-1}\sum_\rho w_\rho\delta_{x_\rho}$ on
+$[-1,1]$. If $T_j(\cos\theta)=\cos(j\theta)$ is the Chebyshev
+polynomial, then
+\[
+ \frac{d_j}{C}=\int T_{|j|}(x)\,d\mu(x),\qquad
+ a=\int x\,d\mu(x)=\frac{d_1}{C}=1-\frac{\tau}{C}.
+\]
+For $j\ge2$ put $b_j=\cos(\pi/j)$. The function equal to $-1$ on
+$[-1,b_j]$ and to $T_j$ on $[b_j,1]$ is a convex minorant of $T_j$.
+Indeed, for $0<\theta<\pi/j$,
+\[
+ T'_j(\cos\theta)
+   =j\,\frac{\sin(j\theta)}{\sin\theta}
+   =j\sum_{r=0}^{j-1}\cos\big((j-1-2r)\theta\big).
+\]
+Each summand is nonincreasing in $\theta$, since its argument in
+absolute value lies in $[0,\pi)$. Thus $T'_j$ is nondecreasing on
+$[b_j,1]$ and its value at $b_j$ is zero. Jensen's inequality gives
+\[
+ a\ge b_j\quad\Longrightarrow\quad d_j\ge C T_j(a).
+\]
+For the normalized problem with the first moment $a$ prescribed, this
+bound on $[b_j,1]$ is attained by $\mu=\delta_a$. For
+$-1<a<1$ the corresponding normalized sequence is realized by one
+conjugate pair of critical-line zeros with Cayley phases
+$\pm\arccos(a)$.
+
+An estimate with a larger margin on a shorter interval follows from
+$|1-u^j|\le |j|\,|1-u|$ for $|u|=1$. Summing gives
+\[
+ C-d_j=\tfrac12\sum_\rho w_\rho |1-u_\rho^j|^2
+       \le j^2\tau .
+\]
+
+\paragraph{Exact arithmetic for the bounds.}
+Use $\gamma$ for Euler's constant and the sign convention
+$\zeta(1+x)=x^{-1}+\gamma-\gamma_1 x+O(x^2)$. Put
+$L(s)=\log\xi(s)$ near $s=1$. Li's derivative formula gives
+$\lambda_1=L'(1)$ and $\lambda_2=2L'(1)+L''(1)$. In the logarithm
+of $\xi(s)=s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)/2$, expand
+$(s-1)\zeta(s)$ at $s=1$ and use
+$\psi(1/2)=-\gamma-2\log 2$ and $\psi'(1/2)=\pi^2/2$. This yields
+\[
+ \lambda_1=1+\frac{\gamma-\log(4\pi)}{2},\qquad
+ \lambda_2=2\lambda_1-1+\frac{\pi^2}{8}-\gamma^2-2\gamma_1.
+\]
+The accompanying \texttt{constants\_verify.py} certifies
+\begin{align*}
+ 0.0007430 &< C-35^2\tau < 0.0007433,\\
+ 0.0003500 &< C T_{39}(a) < 0.0003504,\\
+ -0.0015012 &< C T_{40}(a) < -0.0015008 .
+\end{align*}
+It verifies $a>1-2/40^2\ge\cos(\pi/40)$, where the latter inequality
+comes from $\sin t\ge2t/\pi$ on $[0,\pi/2]$. Consequently
+$0\le j\arccos a<\pi$ for $0\le j\le40$. On $0\le j\le39$ the
+least of the $T_j(a)$ occurs at $j=39$. This proves the bounds on the
+starting intervals. The value at $j=40$ shows where this two-moment
+bound ceases to certify positivity.
+
+The certificate encloses logarithms by the positive arctanh series
+after reducing the argument to $[1,2]$, and encloses $\pi$ by the
+alternating arctangent series in Machin's identity. For $f(x)=1/x$
+and $f(x)=\log(x)/x$ it applies Euler--Maclaurin at $N=256$ to the
+defining sums of $\gamma$ and $\gamma_1$. Here $f^{(4)}(x)\ge0$ on
+$[N,\infty)$ and the absolute remainder after the $B_4$ term is at
+most $-f'''(N)/720$, since $\max_{[0,1]}|B_4|=1/30$. Every
+comparison above uses rational endpoints. Applying
+Theorem~\ref{thm:curv} with a uniform error below $10^{-5}$ proves
+\eqref{eq:79window} and \eqref{eq:71window}.
+
+\paragraph{Negative second differences.}
+There are also negative excursions of a definite size. Grouping
+equal phases $u$ in the Fourier series gives coefficients
+$c_u=m_u |1-u|^2$, where $m_u$ is the multiplicity. The sequence
+is real because the zeros of $\xi$ occur in conjugate pairs. No phase
+is $1$, so the Cesàro mean of $d_n$ is zero. The Cesàro mean $V$
+of $d_n^2$ satisfies
+\[
+ V=\sum_u c_u^2 \ge \sum_\rho w_\rho^2=2\tau .
+\]
+Finite geometric sums prove the two mean identities for finite
+partial sums, and absolute convergence passes them to the full
+series. Let $B=-\liminf_{n\to\infty}d_n$. For each $\varepsilon>0$
+and all sufficiently large $n$, $(C-d_n)(d_n+B+\varepsilon)\ge0$.
+Taking the mean and then $\varepsilon\downarrow0$ gives $V\le CB$.
+Thus
+\[
+ \liminf_{n\to\infty}d_n\le-\frac{\tau}{\lambda_1}<-0.00160638 .
+\]
+The last strict inequality is verified by the same certificate. Fix
+$t$ with $d_t<-0.00160638$ and take the uniform recurrence error below
+$10^{-6}$. The parameters in a set of positive lower Banach density
+then satisfy both positive-window estimates and
+$d_{k^2+t},d_{k^3+t}<-0.00160$.

@@ -1,0 +1,14 @@
+# Lean development plan (not compiled)
+
+The upstream compact edition uses Lean v4.35.0 and Mathlib commit `56a005855ea17e0b0958f73ec801ae140b0a1679`. Its `src/Main.lean` exports `LFunction_ne_zero_of_half_lt_re` and `LFunction_eq_zero_re` with the types defined in `src/Statements.lean`. Import `Main` in a separate extension file only when consuming the GRH result; the rigidity theorem should not depend on `New.Main` or GRH.
+
+Suggested modules and interfaces (mathematical pseudocode, not Lean syntax):
+
+1. **CompletedDivisor**: a finite family of primitive Dirichlet characters, each with a conductor, parity, completed entire function, zero multiplicity function, nonzero-at-zero property, and locally normally convergent canonical logarithmic derivative expansion. Obtain these analytic facts from the library or develop them separately; do not introduce them as unproved axioms in a final implementation.
+2. **PolynomialRigidity**: assume a tuple of complex polynomials of degree at most `d` whose weighted zero multiplicities vanish outside a finite set. Prove the weighted log derivative rational via finite truncation and a Vandermonde evaluation argument. Define `forwardDiff2 f s := f (s + 2) - f s`; show its `(d+1)`-fold iterate kills polynomial coefficients of the digamma function. Rational exponential decay implies zero. Prove the discrete Newton expansion and uniqueness of polynomial-coefficient Dirichlet series. Use primitive induction and finite character orthogonality to conclude every polynomial is zero.
+3. **TailSpan**: use the upstream zero-on-line theorem, completed functional equation, and the boundary/nonzero-at-zero facts; translate the polynomial relation to a linear functional on `Fin r × Fin (d+1)`. Establish that the tail spans the whole finite-dimensional complex vector space.
+4. **SmoothedFormula**: define Riesz sums using positive part `(t - log n)₊^k`, finite support for fixed `t`, and derivative recursion for `k ≥ 2`. Prove canonical term Laplace inversion, termwise integration and uniqueness; derive the absolutely summable Fourier coefficient series for derivatives.
+5. **Covariance**: for a summable vector series with distinct real frequencies, prove uniform Cesàro mean and Gram convergence using the finite exponential integral bound, finite truncation, and `L¹` remainder. Strict positivity uses TailSpan, not a zero-independence hypothesis.
+6. **ResidueOscillation**: Fourier transform on units; bound the finite Euler factors and apply the mean/variance elementary inequality and compact convex separation.
+
+Formalization risk: the required completed-L Hadamard expansion and general Laplace-transform uniqueness may need substantial development beyond the inspected upstream source. No statement has been added to the repository; no Lean environment was available in this execution. The provided Python tests check finite algebraic identities only.

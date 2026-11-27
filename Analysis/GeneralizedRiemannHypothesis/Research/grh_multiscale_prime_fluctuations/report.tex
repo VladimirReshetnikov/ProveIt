@@ -1,0 +1,246 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{lmodern}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\pp}[1]{[#1]_+}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\GRH}{\mathrm{GRH}}
+\title{One-sided multiscale prime fluctuations\\\large Exact moment abscissae and a sharp logarithmic threshold for Dirichlet GRH}
+\author{Research note prepared with ChatGPT}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For each modulus $q$, take the first Riesz mean of the von Mangoldt sum in the residue class $1\pmod q$, and apply an odd number of dilated differences that annihilate its linear main term. We prove unconditionally that the convergence abscissa of every positive moment of the positive part is exactly the supremum of the real parts of the nontrivial zeros of the Dirichlet $L$-functions modulo $q$ (after normalizing the exponent by the moment order). Under Dirichlet GRH, the square-root-normalized positive moments have a strictly positive, uniform logarithmic mean. Consequently their integrals at the critical exponent converge precisely with a logarithmic denominator of power greater than one. Integer dilations yield an exact series criterion involving rational ratios of products of prime powers; for $q=1$ these are products of least common multiples. Neither simple zeros nor rational independence of zero ordinates is assumed. The analytic ingredients are classical; the particular joint extension is an independently derived candidate for novelty, with a closely related recent RH-only preprint explicitly acknowledged.
+\end{abstract}
+
+\section{Source audit and the research question}
+The repository \texttt{lsernau/grh-lean} was inspected through its GitHub API on 26 November 2026. The tree identifier returned for \texttt{main} was \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. Its root README describes a readable and compact edition of the Alp\"oge--Claude proof, the latter roughly 76,000 lines of code. It reports machine checks, while explicitly noting that a full human reading has not been completed. The Wikipedia RH article \cite{wiki} reports the endorsement by the Lean FRO and Mathlib Initiative and discusses the explicit formula and the relation between prime error exponents and zero locations. We use the exact Dirichlet scope, not a blanket RH for arbitrary automorphic or Dedekind $L$-functions.
+
+The following is the relevant transfer, not a reconstruction of the deep geometric proof. Paths are relative to \texttt{grh-compact/}.
+\begin{center}\small
+\begin{tabular}{p{.43\linewidth}p{.48\linewidth}}
+\toprule
+Inspected source & Mathematical role\\\midrule
+\texttt{src/Statements.lean}, \texttt{src/Main.lean} & Types of the five exported theorems, including right-half-plane nonvanishing and zeros on the line.\\
+\texttt{src/New/Main.lean} & Bounds a shared covolume from both sides; cancellation produces a one-sided prime error bound.\\
+\texttt{src/Lib/Analytic/Landau/}\\\texttt{PolarLandau.lean} & \texttt{IsPolar.landau}: nonnegative real pole residues and an upper bound exclude poles farther right.\\
+\texttt{src/New/Endgame/}\\\texttt{OneSidedCriterion.lean} & Uses twists to prevent cancellations and a second scale to eliminate an uncontrolled error.\\\bottomrule
+\end{tabular}
+\end{center}
+Our question is whether one can design a prime statistic with no externally supplied main term, no twist search, and no cancellation at any nontrivial zero, and quantify its \emph{one-sided} oscillations with a sharp boundary law. The identity residue class makes all character weights positive. An odd product of dilation factors reverses the residues at real zeros while preserving all nonreal poles. This is the sign condition required by Landau's method.
+
+\paragraph{Scope and prior art.} The one-sided analytic principle is classical (Landau; Montgomery--Vaughan \cite{mv}). Suzuki \cite{suzuki} studies related sign criteria for RH and GRH. Dumas \cite{dumas}, dated 23 November 2026, already considers the product of lcms, the dyadic ramp difference, and exact one-sided growth for RH; in particular the $q=1$, single dyadic filter is not claimed here as a new statistic. The proposed contribution is the combination of arbitrary fixed moduli, odd multiscale filters, exact abscissae for \emph{all} positive moment orders, and the critical logarithmic law with a uniform mean and explicit positive lower bound. Limiting distributions of classical prime errors have an extensive literature \cite{akbary}. A targeted search found these close precedents, not a proof of priority for our joint statement. The proofs below stand independently of the repository's deep argument; the critical conclusions are implications of the exported Dirichlet GRH theorem. No Lean kernel replay was performed for this note.
+
+\section{Definitions and main results}
+Let $q\ge 1$ be an integer and $\Lambda(n)$ the von Mangoldt function: $\Lambda(p^j)=\log p$ for primes $p$ and $j\ge1$, and zero otherwise. All logarithms are natural. Set
+\begin{equation}\label{eq:A}
+ A_q(x)=\sum_{\substack{n\le x\\n\equiv1\ (q)}}\Lambda(n)(1-n/x),\qquad x>0.
+\end{equation}
+In particular $A_q(x)=0$ for $0<x\le1$. The congruence for $q=1$ is vacuous. Choose a positive odd integer $k$ and real scales $b_1,\ldots,b_k>1$. Define
+\begin{align}
+ D_q(x)&=\prod_{j=1}^k(I-b_j S_{b_j})A_q(x),& S_b f(x)&=f(x/b),\label{eq:D}\\
+ P(s)&=\prod_{j=1}^k(1-b_j^{1-s}).\label{eq:P}
+\end{align}
+The operators commute. Dependence on the scale tuple is suppressed. For a subset $J\subseteq\{1,\ldots,k\}$ write $b_J=\prod_{j\in J}b_j$ (empty product one); thus $D_q(x)=\sum_J(-1)^{|J|}b_J A_q(x/b_J)$. Each factor annihilates the function $x\mapsto x$.
+
+Let $\mathcal Z_q$ be the multiset of nontrivial zeros of all $L(s,\chi)$ for characters modulo $q$, counted with multiplicity, in $0<\Rea s<1$. Equivalently use their primitive inducing characters, counting each modulo-$q$ character once; missing Euler factors have zeros only on $\Rea s=0$. Put $\Theta_q=\sup_{\rho\in\mathcal Z_q}\Rea\rho\in[1/2,1]$ and let $m_q(\rho)$ denote the multiplicity in that multiset. The principal character contributes the zeta zeros. The functional equations for primitive characters, whose conjugates also occur, give $\Theta_q=1/2$ if and only if $\GRH(q)$ holds, where $\GRH(q)$ means GRH for every character modulo $q$.
+
+\begin{theorem}[Exact one-sided moment abscissa]\label{thm:main}
+For every $r>0$, define the extended nonnegative integral
+\[
+ I_r(\sigma)=\int_1^\infty \pp{D_q(x)}^r x^{-r\sigma}\,\frac{\dd x}{x},\qquad \sigma\in\R.
+\]
+Then, without RH or GRH assumptions,
+\begin{equation}\label{eq:absc}
+ \inf\{\sigma\in\R:I_r(\sigma)<\infty\}=\Theta_q.
+\end{equation}
+In particular $I_r(\sigma)$ converges for $\sigma>\Theta_q$ and diverges for $\sigma<\Theta_q$. This remains true even when the supremum defining $\Theta_q$ is not attained.
+\end{theorem}
+
+\begin{theorem}[Critical law and uniform mean]\label{thm:critical}
+Assume $\GRH(q)$. For each $r>0$ there exists a finite $M_r>0$ such that
+\begin{equation}\label{eq:mean}
+ \lim_{T\to\infty}\sup_{u\ge0}\left|\frac1T\int_u^{u+T}\pp{e^{-t/2}D_q(e^t)}^r\dd t-M_r\right|=0.
+\end{equation}
+For $r=1$, every positive ordinate $\gamma$ of a zero $\rho=1/2+i\gamma$ of any of the $L$-functions gives
+\begin{equation}\label{eq:lower}
+ M_1\ \ge\ \frac{m_q(\rho)|P(\rho)|}{2\varphi(q)|\rho(\rho+1)|}\ \ge\ \frac{\prod_j(\sqrt{b_j}-1)}{2\varphi(q)|\rho(\rho+1)|}>0.
+\end{equation}
+In particular one can always take a nonreal zeta zero. For any real $p$,
+\begin{equation}\label{eq:logcrit}
+ \int_e^\infty \frac{\pp{D_q(x)}^r}{x^{r/2}(\log x)^p}\,\frac{\dd x}{x}<\infty
+ \quad\Longleftrightarrow\quad p>1.
+\end{equation}
+More precisely, at $p=1$ the integral cut off at $X$ is $M_r\log\log X+o(\log\log X)$; at $p=0$ it is $M_r\log X+o(\log X)$.
+\end{theorem}
+
+\begin{corollary}[A single critical convergence test]\label{cor:test}
+Fix any $q$, admissible scale tuple, $r>0$, and $p>1$. Convergence in \eqref{eq:logcrit} is equivalent to $\GRH(q)$, unconditionally as an equivalence. If $p\le1$, the integral diverges unconditionally. Thus no subcritical behavior of the unobserved negative part needs to be tested.
+\end{corollary}
+
+\section{Analytic identities and explicit formula}
+\begin{lemma}[Pole-preserving filter]\label{lem:transform}
+For $\Rea s>1$,
+\begin{equation}\label{eq:transform}
+ F(s):=\int_1^\infty D_q(x)x^{-s}\frac{\dd x}{x}
+ =-\frac{P(s)}{\varphi(q)s(s+1)}\sum_{\chi\bmod q}\frac{L'}{L}(s,\chi).
+\end{equation}
+The right side is meromorphic in $\Rea s>0$, is holomorphic at $1$ and on $\Rea s\ge1$, and has a genuine simple pole at every distinct $\rho\in\mathcal Z_q$, with residue
+\begin{equation}\label{eq:res}
+ c(\rho)=-\frac{m_q(\rho)P(\rho)}{\varphi(q)\rho(\rho+1)}.
+\end{equation}
+At every real pole in $0<s<1$ this residue is strictly positive.
+\end{lemma}
+\begin{proof}
+Character orthogonality on the unit group gives $\mathbf 1_{n\equiv1(q)}=\varphi(q)^{-1}\sum_\chi\chi(n)$, including nonunits (both sides zero). The Euler products give $-L'/L(s,\chi)=\sum_n\Lambda(n)\chi(n)n^{-s}$ for $\Rea s>1$. Absolute convergence permits integration term by term, using
+\[
+ \int_n^\infty (1-n/x)x^{-s-1}\dd x=\frac{n^{-s}}{s(s+1)}.
+\]
+Substituting $y=x/b$ gives $\int_1^\infty b A_q(x/b)x^{-s-1}\dd x=b^{1-s}\int_1^\infty A_q(y)y^{-s-1}\dd y$, since $A_q=0$ below 1. This proves \eqref{eq:transform}.
+
+The standard zero-free line $\Rea s=1$ for Dirichlet $L$-functions and the Euler product exclude zeros in $\Rea s\ge1$. The unique principal pole at 1 is canceled by $P(1)=0$. The logarithmic derivative at each zero has residue its positive multiplicity, and all characters have identical positive weights, so no cancellation is possible. Every factor of $P(\rho)$ is nonzero because $|b_j^{1-\rho}|>1$. On the real interval $(0,1)$ each factor is strictly negative; odd $k$ gives $P(s)<0$, proving the real residue sign. No assertion about poles on the excluded boundary $\Rea s=0$ is needed.
+\end{proof}
+
+\begin{lemma}[Absolutely convergent explicit formula]\label{lem:explicit}
+With constants depending on the fixed modulus, for $x\ge2$,
+\begin{equation}\label{eq:explicit}
+ A_q(x)=\frac{x}{2\varphi(q)}-\frac1{\varphi(q)}\sum_{\rho\in\mathcal Z_q}\frac{x^\rho}{\rho(\rho+1)}+O_q(1+\log x).
+\end{equation}
+The series is absolutely and locally uniformly convergent. Consequently, as $x\to\infty$,
+\begin{equation}\label{eq:Dexplicit}
+ D_q(x)=\sum_{\rho\ \mathrm{distinct}}c(\rho)x^\rho+O_{q,\mathbf b}(1+\log x),\qquad |D_q(x)|\ll_{q,\mathbf b} x^{\Theta_q}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+We give the contour argument to specify the error and zero multiplicities. For a primitive character $\chi$, the Mellin inversion of the ramp yields
+\[
+ \sum_{n\le x}\Lambda(n)\chi(n)(1-n/x)
+ =\frac{1}{2\pi i}\int_{2-i\infty}^{2+i\infty}-\frac{L'}{L}(s,\chi)\frac{x^s}{s(s+1)}\dd s.
+\]
+Indeed the inverse Mellin integral of $y^s/[s(s+1)]$ is $(1-y^{-1})_+$, by closing the contour to the left for $y>1$ (residues at $0,-1$), and to the right for $y<1$; at $y=1$ continuity follows by dominated convergence on the original line. The Dirichlet series on $\Rea s=2$ can be interchanged with this absolutely convergent integral.
+
+Use the classical Dirichlet $L$-function zero-counting bound $O_q(\log(2+T))$ in each unit-height interval, and the logarithmic derivative bound $O_q(\log^2(2+T))$ on a sequence of horizontal lines at heights $\pm T$ in $-1/2\le\Rea s\le2$. These follow from the standard local partial-fraction expansion of $L'/L$ and choosing each height at distance $\gg_q 1/\log(2+T)$ from the ordinates in its neighboring unit intervals (one can avoid both signs and the finite family of characters). These are the standard analytic facts in \cite{mv,davenport}. On $\Rea s=-1/2$, the functional equation and absolute convergence of $L'/L$ at $\Rea(1-s)=3/2$, with Stirling's estimate for the gamma derivative, give $O_q(\log(2+|\Im s|))$; this line contains no trivial zeros. Shift the contour there. Horizontal integrals tend to zero for each fixed $x$ by the $|s(s+1)|^{-1}$ decay. The remaining line integral is $O_q(x^{-1/2})$ because $\int_\R \log(2+|t|)/(1+t^2)\dd t<\infty$.
+
+A principal primitive character ($\zeta$) gives the pole contribution $x/2$. Each nontrivial zero contributes $-x^\rho/[\rho(\rho+1)]$ times its multiplicity. At $0$ the logarithmic derivative has at worst a simple pole, so its product with the kernel has at worst a double pole. Its residue after multiplication by $x^s$ is $O_q(1+\log x)$. No other trivial zero or kernel pole is crossed. The sum over zeros is absolutely convergent since there are $O_q(\log(2+T))$ zeros per unit-height band and $|\rho(\rho+1)|^{-1}=O(T^{-2})$ there; the bounded-height zeros form a finite multiset and none equals 0 or $-1$. The same bound gives local uniformity. For a character induced from a primitive one, the difference in the prime sums is at most $\sum_{p\mid q}\sum_{p^j\le x}\log p=O_q(\log x)$; its nontrivial zeros are precisely those of the primitive $L$-function. Average over characters to obtain \eqref{eq:explicit}.
+
+The main term is canceled by any factor of \eqref{eq:D}, and each zero contribution is multiplied by $P(\rho)$. Applying the finite sum of dilations to the error preserves its order (for $x\ge2\prod_j b_j$). Because $|P(\rho)|\le\prod_j(1+b_j)$ and $x^{\Rea\rho}\le x^{\Theta_q}$, the series bound holds even if $\Theta_q$ is a supremum only. Since $\Theta_q\ge1/2$, the logarithmic error is absorbed. This proves \eqref{eq:Dexplicit}.
+\end{proof}
+
+\section{One-sided growth: the Landau argument}
+\begin{lemma}[Landau for a positive Laplace transform]\label{lem:landau}
+Suppose $h(t)\ge0$ is locally integrable on $[0,\infty)$ and $\int_0^\infty h(t)e^{-st}\dd t$ has a finite real convergence abscissa $a$. Then its holomorphic transform on $\Rea s>a$ cannot extend holomorphically across the real point $a$.
+\end{lemma}
+\begin{proof}
+Suppose it extended to a disk of radius $R>0$ centered at $a$. Choose $0<\delta<R/3$ and expand at $s_0=a+\delta$. The Taylor series converges at $a-\delta$ because the disk of radius $2\delta$ about $s_0$ lies in the extension disk, with room to spare. Differentiation under the integral at $s_0$ is justified by the slack to the abscissa. The series at $s_0-2\delta$ is the sum of the nonnegative terms $\int h(t)e^{-s_0t}(2\delta t)^j/j!\dd t$. Monotone convergence makes its sum $\int h(t)e^{-(a-\delta)t}\dd t$, which is finite by Taylor convergence, contradicting the abscissa.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:main} for $r=1$]
+Write $H_+(s)=\int_1^\infty\pp{D_q(x)}x^{-s}\dd x/x$, and $H_-(s)$ for the same transform of $\pp{-D_q(x)}$. Let their real convergence abscissae be $a_+,a_-$ (possibly $-\infty$). They are at most $\Theta_q$ by Lemma \ref{lem:explicit}; each transform is holomorphic to the right of its abscissa by dominated convergence locally with a real slack exponent. For $\Rea s>1$, and hence by meromorphic continuation on their common domain, $F=H_+-H_-$.
+
+Assume $a_+<\Theta_q$. Choose a real $\eta$ satisfying $\max(0,a_+)<\eta<\Theta_q$. If $a_->\eta$, it is finite and $H_+-F$ is a meromorphic continuation of $H_-$ near the real point $a_-$. Lemma \ref{lem:transform} says either that $F$ is holomorphic there (including when $a_-=1$), or that $F$ has a simple pole with positive real residue. In the first case $H_-$ extends holomorphically, contradicting Lemma \ref{lem:landau} with $h(t)=\pp{-D_q(e^t)}$. In the second case, along real $s\downarrow a_-$ the continuation $H_+-F$ tends to $-\infty$, contradicting $H_-(s)\ge0$. Therefore $a_-\le\eta$.
+
+Both transforms are now holomorphic in $\Rea s>\eta$. Their difference must equal $F$ there by the meromorphic identity theorem. But some zero has real part greater than $\eta$ by the definition of supremum, and Lemma \ref{lem:transform} forces a pole there. Contradiction. Thus $a_+=\Theta_q$.
+\end{proof}
+
+\begin{proof}[Extension to every $r>0$]
+The upper bound $D_q(x)=O(x^{\Theta_q})$ gives convergence for $\sigma>\Theta_q$. Suppose $I_r(\sigma)<\infty$ for some $\sigma<\Theta_q$, and write $f=\pp{D_q}$. For $r>1$, choose $\sigma<\tau<\Theta_q$ and apply H\"older on $[1,\infty)$ with measure $\dd x/x$:
+\[
+ \int_1^\infty f(x)x^{-\tau}\frac{\dd x}{x}
+ \le I_r(\sigma)^{1/r}\left(\int_1^\infty x^{-(\tau-\sigma)r/(r-1)}\frac{\dd x}{x}\right)^{1-1/r}<\infty.
+\]
+For $0<r<1$ use $f(x)\le Cx^{\Theta_q}$ (enlarge $C$ on compact intervals), hence
+\[
+ f(x)x^{-\tau}\le C^{1-r} f(x)^r x^{-r\sigma}
+ \quad\text{when }\quad \tau\ge r\sigma+(1-r)\Theta_q.
+\]
+Choose $\tau$ between the right-hand threshold and $\Theta_q$. Both cases contradict the already proved $r=1$ assertion. The proof never assumes a rightmost zero exists.
+\end{proof}
+
+\section{Critical behavior under GRH}
+\begin{proof}[Proof of Theorem \ref{thm:critical}]
+Assume $\GRH(q)$. Let $\Gamma$ be the set of distinct ordinates of zeros, including 0 if present. Put $c_\gamma=c(1/2+i\gamma)$ when present and $c_0=0$ when absent. Lemma \ref{lem:explicit} gives
+\[
+ e^{-t/2}D_q(e^t)=U(t)+O_{q,\mathbf b}((1+t)e^{-t/2}),\qquad
+ U(t)=\sum_{\gamma\in\Gamma}c_\gamma e^{i\gamma t},\quad \sum_{\gamma}|c_\gamma|<\infty.
+\]
+The error estimate is asymptotic; it can be enlarged on $t\ge0$. The series converges uniformly on $\R$. Conjugation of characters and of $P$ gives $c_{-\gamma}=\overline{c_\gamma}$, so $U$ is real. The oddness condition gives $c_0\ge0$.
+
+A finite exponential sum has a mean over $[u,u+T]$ as $T\to\infty$, uniformly in $u\in\R$: its nonconstant term $e^{i\omega t}$ has averaged absolute value of the integral at most $2/(T|\omega|)$. Uniform limits inherit this mean property. For a bounded real uniformly convergent trigonometric series, any continuous function of its values likewise has the property: approximate the series uniformly by real trigonometric polynomials, then approximate the continuous function uniformly on a common compact interval by ordinary polynomials (Weierstrass). Products of finitely many exponentials remain finite exponential sums, with coincident frequencies grouped. This argument requires no independence of frequencies. Apply it to $|U|$ and $\pp{U}^r$; denote the latter mean by $M_r$. The bounded decaying error between $U$ and the normalized prime statistic has mean absolute effect tending to zero uniformly in $u\ge0$, by uniform continuity on a bounded range and splitting off a fixed initial interval of length $O(1)$. This proves \eqref{eq:mean} except positivity.
+
+Let $\mathcal M$ denote the uniform mean. Termwise integration (justified by uniform convergence) gives $\mathcal M(U)=c_0$ and $\mathcal M(Ue^{-i\gamma t})=c_\gamma$. The latter is nonzero for every ordinate in $\Gamma$ by Lemma \ref{lem:transform}. Thus
+\[
+ 2M_1=\mathcal M(|U|)+c_0\ \ge\ |c_\gamma|+c_0\ \ge\ |c_\gamma|.
+\]
+Since $|1-b_j^{1-\rho}|\ge\sqrt{b_j}-1$, this proves \eqref{eq:lower}. There are nonreal zeta zeros, and the principal character supplies them for every $q$. Let $K=\sum_{\gamma}|c_\gamma|>0$. For $r\ge1$, Jensen's inequality for the normalized interval measure gives $M_r\ge M_1^r$. For $0<r<1$, $y^r\ge K^{r-1}y$ on $[0,K]$, giving $M_r\ge K^{r-1}M_1$. All means are finite and positive.
+
+Finally write $v(t)=\pp{e^{-t/2}D_q(e^t)}^r$ and $V(T)=\int_1^T v(t)\dd t=M_rT+o(T)$. Substitution $t=\log x$ reduces \eqref{eq:logcrit} to $\int_1^\infty v(t)t^{-p}\dd t$. Boundedness proves convergence for $p>1$. Integration by parts at $p=1$ gives $V(T)/T+\int_1^T V(t)t^{-2}\dd t=M_r\log T+o(\log T)$, proving divergence and the claimed asymptotic. For $p<1$, the integrand dominates that for $p=1$. For $p=0$ the result is the definition of the mean. Substitution yields both asymptotic laws.
+\end{proof}
+
+\begin{proof}[Proof of Corollary \ref{cor:test}]
+If the critical integral is finite for any real $p$, then $I_r(\sigma)<\infty$ for every $\sigma>1/2$, since $x^{-r(\sigma-1/2)}(\log x)^p$ is bounded for $x\ge e$. Theorem \ref{thm:main} implies $\Theta_q\le1/2$; reflection gives $\GRH(q)$. Theorem \ref{thm:critical} then forces $p>1$. The converse for $p>1$ was proved there.
+\end{proof}
+
+\begin{corollary}[No long multiplicative windows without surpluses]\label{cor:window}
+Under $\GRH(q)$ there exist $T_0>0$ and $\eta>0$ such that for every $X\ge1$, the interval $[X,e^{T_0}X]$ contains an $x$ with $D_q(x)>\eta\sqrt{x}$. In fact the logarithmic measure of such $x$ is bounded below by a fixed positive fraction of $T$ on every $[X,e^T X]$ for all sufficiently large $T$, uniformly in $X\ge1$.
+\end{corollary}
+\begin{proof}
+Take $\eta=M_1/4$ and $B=\sup_{t\ge0}\pp{e^{-t/2}D_q(e^t)}<\infty$. Uniformity in \eqref{eq:mean} makes the average at least $M_1/2$ for every interval of sufficiently large length $T$. If $\lambda$ is the fraction where the statistic exceeds $\eta$, the average is at most $\eta+B\lambda$. Hence $\lambda\ge M_1/(4B)>0$. The logarithmic change of variables proves the assertion.
+\end{proof}
+
+\section{A purely arithmetic series}
+For integer $N\ge1$ define the positive integer
+\begin{equation}\label{eq:B}
+ B_q(N)=\prod_{\substack{p^a\le N,\ p\text{ prime},\ a\ge1\\p^a\equiv1\ (q)}}p^{N-p^a}.
+\end{equation}
+Then $\log B_q(N)=N A_q(N)$. For $q=1$, this is exactly $\prod_{j=1}^{N-1}\operatorname{lcm}(1,\ldots,j)$: each prime power $p^a$ contributes one factor $p$ in each lcm with $j\ge p^a$. Let the scales now be integers $b_j\ge2$, and $B=\prod_j b_j$. For $N$ a positive multiple of $B$ define the positive rational number
+\begin{equation}\label{eq:R}
+ R_q(N)=\prod_{J\subseteq\{1,\ldots,k\}}B_q(N/b_J)^{(-1)^{|J|}b_J^2}.
+\end{equation}
+Exactly, $\log R_q(N)=N D_q(N)$. In particular for one scale 2, $R_q(2n)=B_q(2n)/B_q(n)^4$.
+
+\begin{theorem}[Sharp arithmetic threshold]\label{thm:arith}
+For any such integer tuple, fixed $q$ and real $p$, the series
+\begin{equation}\label{eq:series}
+ \sum_{\substack{N\ge3\\B\mid N}}\frac{\pp{\log R_q(N)}}{N^{5/2}(\log N)^p}
+\end{equation}
+converges if and only if $\GRH(q)$ holds and $p>1$. If $\GRH(q)$ holds, then at $p=1$ its partial sum through $X$ equals $(M_1/B)\log\log X+o(\log\log X)$.
+\end{theorem}
+\begin{proof}
+For $x\ge2$ away from integers, $A_q'(x)=x^{-2}\sum_{n\le x,n\equiv1(q)}n\Lambda(n)$, of size $O(\log x)$ by $\Lambda(n)\le\log n$; $A_q$ is continuous at integers. Thus $D_q$ is locally Lipschitz with derivative $O_{\mathbf b}(\log x)$ almost everywhere for $x\ge2B$, and $|D_q(x)|\ll_{\mathbf b}x\log x$ by the trivial sum bound. The positive part is Lipschitz as a function of its argument. For $w(x)=x^{-3/2}(\log x)^{-p}$, on $[N,N+B]$ one has $w(x)\asymp w(N)$ and $|w'(x)|\ll_p w(N)/N$ for large $N$. It follows that
+\[
+ \int_N^{N+B}\pp{D_q(x)}w(x)\dd x
+ =B\pp{D_q(N)}w(N)+O_{\mathbf b,p}(w(N)\log N).
+\]
+The errors are absolutely summable since $\sum_N N^{-3/2}(\log N)^{1-p}<\infty$. The final partial interval has contribution $O_{\mathbf b,p}(X^{-1/2}(\log X)^{1-p})=o(1)$ by the trivial bound. Hence the integral and $B$ times the partial sum in \eqref{eq:series} differ by $O(1)$, uniformly in the upper cutoff (the identity \eqref{eq:R} supplies the extra $N^{-1}$). Corollary \ref{cor:test} and the asymptotic in Theorem \ref{thm:critical} finish the proof.
+\end{proof}
+
+\paragraph{A concrete consequence of RH.} Write $L_n=\prod_{j=1}^{n-1}\operatorname{lcm}(1,\ldots,j)$. For $q=1$, $k=1$, $b_1=2$, Theorem \ref{thm:arith} says that RH is equivalent to convergence of
+\[
+ \sum_{n=2}^{\infty}\frac{\max\{0,\log(L_{2n}/L_n^4)\}}{(2n)^{5/2}(\log(2n))^2}.
+\]
+Changing the logarithm power 2 to 1 makes the series divergent even if RH holds, and indeed unconditionally. The ratio itself is a rational number computed entirely using integer arithmetic. The extension to every modulus uses only prime powers in class 1 and requires no character evaluation in the arithmetic test. The underlying dyadic ratio is present in Dumas \cite{dumas}; the stated series boundary is the extension investigated here.
+
+\section{Limitations, tests, and formalization plan}
+The role of oddness is precise: it guarantees positive residues at all possible real zeros; for even $k$ the residue sign reverses and the one-sided Landau argument cannot be used as written. Testing a general residue class other than 1 would introduce complex character weights and could cancel poles. We establish no uniformity in $q$ or the scales, no theorem for all automorphic $L$-functions, and no linear independence or simplicity of zeros. The value $M_r$ is a mean of a uniformly convergent zero series, not a claimed closed form. The appendix script checks the arithmetic identity with exact integer products on small examples, then uses floating point prefix sums to sample normalized fluctuations for larger $x$. These experiments do not prove any statement about the zeros.
+
+A Lean implementation could be divided into: (i) arithmetic and Mellin dilation identities; (ii) character orthogonality and logarithmic derivative residue signs; (iii) a nonnegative-transform abscissa lemma by Taylor expansion and monotone convergence, reusing the idea in \texttt{PolarLandau.lean}; (iv) the smoothed explicit formula and zero-count bounds; (v) uniform trigonometric mean and the integral comparison. The only repository theorem needed for the critical law would be \texttt{LFunction\_eq\_zero\_re} in \texttt{src/Main.lean}. No formal proof of the new theorem is claimed. The paper's analytic proof uses standard complex analysis and ordinary classical Dirichlet $L$-function facts (rather than the massive geometric development). See the accompanying source audit for exact paths and blob identifiers.
+
+\begin{thebibliography}{9}\small
+\bibitem{repo} L. Sernau and collaborators, \emph{GRH for Dirichlet L-functions, in Lean 4}, compact edition, 25 November 2026. \url{https://github.com/lsernau/grh-lean}.
+\bibitem{wiki} Wikipedia contributors, \emph{Riemann hypothesis}, accessed 26 November 2026. \url{https://en.wikipedia.org/wiki/Riemann_hypothesis}.
+\bibitem{mv} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge University Press, 2007. In particular the Dirichlet $L$-function and explicit formula theory and \S15.1--15.2 (Landau and oscillation).
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000. Classical zero counts, logarithmic derivatives, and Dirichlet explicit formulas.
+\bibitem{suzuki} M. Suzuki, On variants of Chebyshev's conjecture, \emph{Ramanujan Journal} 68, 95 (2025), \url{https://doi.org/10.1007/s11139-025-01238-9}; correction (2026), \url{https://doi.org/10.1007/s11139-025-01289-y}.
+\bibitem{dumas} A. Dumas, \emph{The Riemann Hypothesis in One Inequality for Least Common Multiples}, preprint dated 23 November 2026. \url{https://doi.org/10.5281/ZENODO.24447004}. Accessed via its public Academia.edu text rendering. Close precedent, not independently audited here.
+\bibitem{akbary} A. Akbary, N. Ng and M. Shahabi, Limiting distributions of the classical error terms of prime number theory, \emph{Quarterly Journal of Mathematics} 65 (2014), 743--780. \url{https://www.cs.uleth.ca/~akbary/limitingdistributionFINALQJM.pdf}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,240 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,microtype,booktabs}
+\usepackage[letterpaper,left=1.05in,right=1.05in,top=.9in,bottom=.94in,headheight=14pt,headsep=.25in]{geometry}
+\usepackage{fancyhdr,xcolor}
+\definecolor{ink}{HTML}{183C51}
+\definecolor{accent}{HTML}{12655F}
+\usepackage[colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,pdftitle={Which samples of Li coefficients detect off-line zeros?}]{hyperref}
+\usepackage{enumitem,graphicx,needspace}
+\setlist{nosep,leftmargin=*}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\textcolor{ink}{Sampling Li coefficients}}\rhead{\small\textcolor{ink}{November 2026}}\cfoot{\thepage}
+\renewcommand{\headrulewidth}{.25pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Rea}{\operatorname{Re}}
+\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\dist}[1]{\lVert #1\rVert_{\T}}
+\newcommand{\dc}{\underline d_{\mathrm B}}
+\newcommand{\smalltitle}[1]{\par\medskip\noindent{\color{ink}\textbf{#1}}\enspace}
+\setlength{\emergencystretch}{1.8em}
+\raggedbottom
+\begin{document}
+\thispagestyle{plain}
+{\small\sffamily\bfseries\color{accent} ANALYTIC NUMBER THEORY \hfill 26 NOVEMBER 2026}
+\par\vspace{1.15em}
+{\huge\bfseries\color{ink} Which samples of Li coefficients\\[2pt] detect off-line zeros?\par}
+\vspace{.65em}
+{\large Joint tests at polynomial indices and sign patterns for Riemann's \(\xi\)\par}
+\vspace{.85em}\noindent\rule{\textwidth}{.7pt}
+\begin{abstract}\noindent
+We characterize the schedules on which every symmetric strip spectrum with an off-line zero has simultaneously negative Li coefficients. The exact condition is recurrence to the identity in every finite torus. A missed neighborhood yields a real polynomial whose zeros lie in the strip and whose Li coefficients defeat the proposed test. For polynomial schedules the criterion is a common root modulo every integer. When the parameter is prime, the root must be a unit. For the Riemann zeta function itself, let \(d_n\) be the centered second difference of its Li coefficients. Each of the four sign pairs of \((d_k,d_{k^2})\) occurs on a set of positive lower Banach density with both magnitudes greater than \(0.011\). The first negative second difference is \(d_{118}\). The initial signs imply maximal runs of exactly 235 positive second differences recurring simultaneously around \(k^2\) and \(k^3\), with a negative value immediately before and after each run. The sign thresholds follow from rigorous interval estimates and the recurrence theorem.
+\end{abstract}
+\section{The sampling question}
+Write \(u_\rho=1-1/\rho\). The critical line \(\Rea\rho=1/2\) maps to \(|u_\rho|=1\).
+Li's coefficients sum the real parts of \(1-u_\rho^n\) over zeros. On the line every summand is nonnegative. An off-line zero introduces exponentially large oscillations. Which indices guarantee seeing the negative sign? If several measurements are made at once, when must all of them be negative?
+\par\smallskip
+For any symmetric spectrum as in \eqref{eq:spectrum} that has an off-line zero, \(L_{k^2}\) and \(L_{k^3}\) are both negative for a positive lower density of \(k\). The indices \((p-1)^2,p^2-1\) have the same property for a positive fraction of primes. The pair \(k,k+1\) behaves differently. Each coordinate separately detects every defect, yet a polynomial of degree two defeats simultaneous detection at every \(k\).
+\par\smallskip
+For actual Riemann zeros the unit-circle geometry instead gives a positive measure of finite mass. Its Fourier coefficients are the second differences \(d_n\). This turns sufficiently accurate measurements at a handful of indices into conclusions about infinitely many sign patterns. The proofs of the sampling criterion and of its arithmetic application use the two sides of this same geometry.
+
+\section{Spectra and dominant terms}
+A \emph{symmetric strip spectrum} is a locally finite multiset \(\mathcal Z\) in the open critical strip, with finite multiplicities, invariant under conjugation and \(\rho\mapsto1-\rho\), such that
+\begin{equation}
+ 0<\Rea\rho<1,\qquad W=\sum_{\rho\in\mathcal Z} |\rho|^{-2}<\infty .
+ \label{eq:spectrum}
+\end{equation}
+Sums over zeros count multiplicity. Write \(\N=\{1,2,\ldots\}\). Define
+\begin{equation}
+ L_0=0,\qquad L_n=\sum_{\rho\in\mathcal Z}\bigl(1-\Rea u_\rho^n\bigr)\quad(n\ge1),
+ \qquad L_{-n}=L_n . \label{eq:li}
+\end{equation}
+For Riemann's \(\xi\), these are the classical real Li coefficients. For a nonreal primitive Dirichlet character the union of the nontrivial zero multisets of \(L(s,\chi)\) and \(L(s,\bar\chi)\) has both symmetries. The usual \(O(T\log(T+2))\) zero count for a fixed completed zeta or Dirichlet \(L\)-function gives \eqref{eq:spectrum} by partial summation \cite{lag}.
+\begin{lemma}[Dominant phases]\label{lem:dom}
+On the critical line \(L_n\ge0\). In every other case there is a largest radius \(R>1\) of the \(u_\rho\). List the arguments on this circle, with multiplicity, as \(2\pi\alpha_1,\ldots,2\pi\alpha_m\). There is \(1<r<R\) for which
+\[
+ R^{-n}L_n=-\sum_{j=1}^m\cos(2\pi n\alpha_j)
+         +O_{\mathcal Z}\bigl(n^2(r/R)^n\bigr).
+\]
+\end{lemma}
+\begin{proof}
+The identity \(|u_\rho|^2=1+(1-2\Rea\rho)/|\rho|^2\) and reflection give an outer point. Only finitely many \(u_\rho\) lie outside any fixed neighborhood of \(1\), by \eqref{eq:spectrum}. This gives a finite dominant circle and a strict gap to the remaining radii. For the remaining points the segment from \(1\) to \(u_\rho\) lies in \(|z|\le r\). Taylor's integral remainder gives
+\[
+ \bigl|u_\rho^n-1+n/\rho\bigr|\le \tfrac12 n(n-1)r^{n-2}|\rho|^{-2}\quad(n\ge2).
+\]
+Also \(0<\Rea(1/\rho)<|\rho|^{-2}\). Thus \eqref{eq:li} converges absolutely in the real-part convention. Summation on the complement gives the stated error. On the line each summand in \eqref{eq:li} is nonnegative.
+\end{proof}
+\smalltitle{Schedules.}
+Fix \(s\ge1\) and positive indices \(n_1(k),\ldots,n_s(k)\), with \(\min_i n_i(k)\to\infty\). Dropping finitely many parameters gives the same eventual test. Write \(\T=\R/\Z\), \(\dist{x}=\min_{j\in\Z}|x-j|\). The schedule has \emph{simultaneous Bohr recurrence} if for every \(d\ge1\), \(\alpha\in\T^d\), and \(\delta>0\), there are arbitrarily large \(k\) such that
+\begin{equation}
+ \max_{i\le s,\,j\le d}\dist{n_i(k)\alpha_j}<\delta . \label{eq:return}
+\end{equation}
+
+\section{An exact criterion for arbitrary schedules}
+\begin{theorem}[Universal Li sampling]\label{thm:general}
+For any schedule as above the following conditions are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The schedule has simultaneous Bohr recurrence.
+\item For every symmetric strip spectrum with an off-line zero,
+\(\max_i L_{n_i(k)}<0\) for arbitrarily large \(k\).
+\item For every such spectrum, with \(R,m\) as in Lemma~\ref{lem:dom},
+\[
+ \liminf_{k\to\infty}\ \max_{1\le i\le s} R^{-n_i(k)} L_{n_i(k)}=-m .
+\]
+\end{enumerate}
+When \textup{(i)} fails there is a single finite off-line spectrum for which at least one sampled coefficient is strictly positive at \emph{every} parameter. Its zeros may be arbitrarily close to the critical line.
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:return} to the dominant phases in Lemma~\ref{lem:dom} with tolerances tending to zero. All the cosines approach one at every coordinate of the schedule. Their sum is at most \(m\), giving (iii). Since \(m\ge1\), (iii) implies (ii).
+
+Suppose (i) fails. Choose phases \(\alpha_1,\ldots,\alpha_d\) and \(0<\delta<1/2\) for which \eqref{eq:return} eventually fails. If necessary append one irrational phase and shrink \(\delta\) to exclude the finitely many exceptional parameters: all their indices are positive, so none of their multiples of that phase is zero. For every \(k\) some \(n=n_i(k)\) now has \(n\alpha\) outside the open \(\delta\)-cube about zero.
+Consider
+\[
+ K_b(x)=\prod_{j=1}^{d}\left(\frac{1+\cos(2\pi x_j)}2\right)^b
+       =\sum_h a_h\,e^{2\pi i h\cdot x}\qquad (b\in\N).
+\]
+All \(a_h\) are nonnegative dyadic rationals and \(a_{-h}=a_h\).
+In one coordinate the constant coefficient \(4^{-b}\binom{2b}{b}\) is the largest by the binomial theorem. There are \(2b+1\) coefficients with total mass one. Hence \(a_0\ge(2b+1)^{-d}\).
+Outside the cube \(K_b(x)\le\cos^{2b}(\pi\delta)\).
+Choose \(b\) so this is strictly below \(a_0\).
+Put \(c=\sum_{h:\,h\cdot\alpha\in\Z}a_h\ge a_0\). Clearing a common denominator \(D_0\) and collecting equal phases gives
+\[
+ T(n)=D_0\bigl(K_b(n\alpha)-c\bigr)
+     =\sum_{v\in V} b_v v^n,\qquad |v|=1,\quad v\ne1,\quad b_v=b_{\bar v}\in\N .
+\]
+The finite set \(V\) is nonempty, since \(T(n)<0\) at every missed index just described.
+
+Take Cayley points \(Rv,R^{-1}v\), each with multiplicity \(b_v\), where \(R>1\) is sufficiently close to one. At \(R=1\) each inverse image \(1/(1-v)\) has real part \(1/2\). Continuity and finiteness put all the perturbed inverse images inside the strip, as close to the line as desired. Conjugation and inversion preserve the Cayley multiset, hence both zero symmetries hold. If \(B=\sum_v b_v\), direct substitution yields
+\begin{equation}
+ L_n=2B-(R^n+R^{-n})T(n) . \label{eq:counter}
+\end{equation}
+At each \(k\) at least one such value exceeds \(2B\). This contradicts (ii).
+\end{proof}
+
+\begin{corollary}[Finite perturbations of Riemann's \(\xi\)]\label{cor:xi}
+In the failure case a counterexample can also be an entire function of order one, real on the real axis and invariant under \(z\mapsto1-z\). Its zeros agree with those of \(\xi\), with multiplicities, above some finite absolute height. Its total number of zeros in \(|\Ima z|\le T\) agrees exactly with that of \(\xi\) for every sufficiently large \(T\).
+\end{corollary}
+\begin{proof}
+Let \(A\) be the monic polynomial with the \(2B\) zeros in \eqref{eq:counter}. Choose \(B\) conjugate pairs of nonreal zeros of \(\xi\) on the critical line, respecting their multiplicities, and form their monic polynomial \(H\). Both polynomials are real, monic of degree \(2B\), and even about \(1/2\). The function \(F=\xi A/H\) is entire with the stated symmetry and zero counts. At infinity \(A/H=1+O(|z|^{-2})\), since the leading terms and sums of roots agree, so the order is preserved. The retained zeros of \(\xi\) lie on the line by RH and give nonnegative contributions at every index. The strict positive witness survives. The construction uses the functional equation and the zeros; an Euler product would be an additional arithmetic constraint.
+\end{proof}
+\section{Polynomial indices over integers and primes}
+For \(E\subset\N\), its lower Banach density is
+\[
+ \dc(E)=\liminf_{H\to\infty}\inf_{a\in\Z_{\ge0}}
+       \frac{\#(E\cap(a,a+H])}{H}.
+\]
+For primes use lower relative density
+\(\liminf_{X\to\infty}\#\{p\in E:p\le X\}/\pi(X)\).
+These measure the abundance of successful parameters. A set of sampled coefficient indices such as the squares can itself have density zero.
+\Needspace{9\baselineskip}
+\begin{theorem}[The common-root criterion]\label{thm:poly}
+Let \(P_1,\ldots,P_s\in\Z[x]\) be nonconstant with positive leading coefficients. Ignore parameters at which some index is nonpositive.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Over integers \(k\ge1\), the universal tests of Theorem~\ref{thm:general} hold for \(n_i(k)=P_i(k)\) if and only if every modulus \(q\ge1\) admits a common root of the \(P_i\).
+\item Over primes \(p\), the tests hold if and only if every modulus admits a common root coprime to \(q\).
+\end{enumerate}
+Under the corresponding condition, for every off-line spectrum and \(0<\eta<1\), the set where
+\[
+ \max_i R^{-P_i(k)} L_{P_i(k)}<-(1-\eta)m
+\]
+has positive lower Banach density in \textup{(a)} and positive lower relative prime density in \textup{(b)}. One set of good parameters works for any finite family of off-line spectra, using its own \(R,m\) for each.
+\end{theorem}
+\begin{proof}
+For necessity take the phase \(1/q\) in \eqref{eq:return} with tolerance \(1/(2q)\). A prime larger than \(q\) is a unit modulo \(q\). Theorem~\ref{thm:general} supplies a strip counterexample if the test fails.
+
+For sufficiency, fix \(\alpha\in\T^d\). Choose real representatives and a rational basis \(1,\beta_1,\ldots,\beta_t\) for their rational span together with \(1\). Write \(D\alpha_j=b_j+\sum_\ell a_{j\ell}\beta_\ell\), with all coefficients integral and \(D\ge1\). Choose a common root \(u\bmod D\), a unit in the prime case. In that class consider
+\(X(k)=(P_i(k)\alpha_j)_{ij}\). For a character \(h=(h_{ij})\in\Z^{sd}\), put
+\[
+ C_\ell(x)=\sum_{i,j}h_{ij}a_{j\ell}P_i(x).
+\]
+If \(C_\ell\) is constant, evaluating at a common root modulo each \(q\) shows that constant is zero. Set
+\(\Lambda=\{h:C_\ell\equiv0\ \text{for all }\ell\}\), and
+\(H=\{x\in\T^{sd}:h\cdot x=0\bmod1\ \text{for all }h\in\Lambda\}\).
+On \(k\equiv u\bmod D\) the rational term
+\(D^{-1}\sum h_{ij}b_jP_i(k)\) is integral. If \(h\notin\Lambda\), the polynomial \(D^{-1}\sum_\ell \beta_\ell C_\ell(x)\) has an irrational leading coefficient in positive degree, by rational independence.
+Along \(k=u+Dt'\) the corresponding character has mean zero by Weyl's theorem \cite{weyl}. This convergence is uniform over the starting integer of a long interval in \(t'\). In degree one the geometric sum is bounded uniformly. Induction by the van der Corput difference inequality applies in higher degree: for each fixed nonzero step the difference has irrational leading coefficient independent of the starting point. Taking the interval length to infinity first, then the number of differences to infinity, gives uniform convergence.
+
+For primes in the same reduced class, expand the indicator of \(p\equiv u\bmod D\) as a sum of additive characters in \(p\). Each added term \(ap/D\) preserves irrationality of a nonconstant coefficient. Rhin's polynomial equidistribution theorem \cite{rhin} gives mean zero over primes for each resulting exponential. The prime number theorem in fixed arithmetic progressions gives relative mass \(1/\varphi(D)\) for the class. Characters in \(\Lambda\) are identically one in that class.
+
+In both settings the limiting probability measure on the progression is Haar probability on \(H\). Indeed, its Fourier transform is one on \(\Lambda\) and zero off \(\Lambda\), by the annihilator identity for subgroups of \(\Z^{sd}\). Approximation by trigonometric polynomials gives convergence for continuous functions, uniform over starting points in the integer case. The argument includes \(t=0\), when all phases are rational.
+
+Every relative neighborhood of zero in \(H\) has positive measure. Test against a continuous nonnegative function supported in the chosen cube and positive at zero. This gives positive lower density of returns on the progression, and hence in the full parameter set. Concatenate all dominant angles for the last assertion and apply Lemma~\ref{lem:dom}.
+\end{proof}
+
+\section{Examples and explicit obstructions}
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Indices at parameter \(x\) & Integer parameters & Prime parameters\\
+\midrule
+\(x^2,\ x^3\) & Detect & Fail modulo \(2\) eventually\\
+\((x-1)^2,\ x^2-1\) & Detect & Detect\\
+\(x,\ x+1\) & Fail modulo \(2\) & Fail modulo \(2\)\\
+\(J(x),\ (x+2)J(x)\) below & Detect & Detect\\
+\bottomrule
+\end{tabular}
+\end{center}
+Detection means simultaneous negative values for every admissible off-line spectrum. A prime can use the residue class \(0\bmod 2\) only once.
+\smalltitle{A polynomial with no integer root.}
+Let \(J(x)=(x^2-13)(x^2-17)(x^2-221)\).
+At an odd prime \(\ell\nmid221\), one of \(13,17,221\) is a nonzero square modulo \(\ell\): if the first two are nonsquares their product is a square. A root of the relevant quadratic is simple and lifts to every power of \(\ell\). At \(13\) use \(17\equiv4\), and at \(17\) use \(13\equiv 8^2\). At \(2\) use \(17\equiv1\bmod8\), so \(17\) is a square in \(\Z_2^\times\). These roots are units. The Chinese remainder theorem supplies a unit root modulo every \(q\), although none of the three constants is a square integer.
+\smalltitle{A rational polynomial for a failed modulus.}
+For \(q\ge2\), take both radii \(R,R^{-1}\) above all nonidentity \(q\)-th roots of unity, with \(R>1\) rational sufficiently close to one. The phase sum is \(q-1\) at a multiple of \(q\) and \(-1\) elsewhere, giving
+\begin{equation}
+ L_n=
+ \begin{cases}
+   (q-1)(2-R^n-R^{-n})<0,&q\mid n,\\[2pt]
+   2(q-1)+R^n+R^{-n}>0,&q\nmid n .
+ \end{cases} \label{eq:cyclo}
+\end{equation}
+The zeros are roots of a rational-coefficient polynomial proportional to
+\[
+ \prod_{t\in\{R,R^{-1}\}}
+ \frac{(z-1)^q-t^q z^q}{(z-1)-tz}.
+\]
+For \(q=2,R=2\) take \(9z^2-9z+2\). Its zeros are \(1/3,2/3\), its Cayley points are \(-2,-1/2\), and its Li coefficients are negative precisely at positive even indices. No two consecutive coefficients are both negative.
+\smalltitle{An obstruction invisible to divisibility.}
+Put \(v=(3+4i)/5=e^{2\pi i\theta}\). It has infinite order since \(v+\bar v=6/5\) is rational and fails to be an algebraic integer. The set \(S=\{n:\Rea(v^n)\le-1/2\}\) meets every \(q\N\) infinitely often by irrational rotation. Yet \(R^{\pm1}v,R^{\pm1}\bar v\) with \(R=6/5\) give \(L_n=4-2(R^n+R^{-n})\Rea(v^n)>0\) on \(S\). The four zeros form the rectangle
+\(\{7/25,18/25\}+\{24i/25,-24i/25\}\).
+Thus the congruence criterion for polynomial schedules would be false for arbitrary sets of indices.
+
+\Needspace{11\baselineskip}
+\section{A measurement that controls every shift}
+For a nonempty symmetric on-line spectrum write
+\[
+ d_n=L_{n+1}-2L_n+L_{n-1},\qquad C=d_0=2L_1,\qquad n\in\Z .
+\]
+\begin{theorem}[Uniform recurrence of Li second differences]\label{thm:curv}
+For every \(h\in\Z\),
+\begin{equation}
+ C-d_h\ \le\ \sup_{n\in\Z}|d_{n+h}-d_n|
+ \ \le\ \sqrt{2C(C-d_h)} . \label{eq:cert}
+\end{equation}
+The upper bound is sharp on symmetric on-line spectra. For polynomial schedules satisfying Theorem~\ref{thm:poly}\textup{(a)} or \textup{(b)}, and any \(\epsilon>0\),
+\[
+ \max_i\sup_{n\in\Z}|d_{n+P_i(k)}-d_n|<\epsilon
+\]
+on a set of positive lower Banach or lower relative prime density, respectively. The same parameters work for any prescribed finite family of such spectra. In particular \(\limsup_k\min_i d_{P_i(k)}=C\).
+\end{theorem}
+\begin{proof}
+Set \(a_\rho=|1-u_\rho|^2=|\rho|^{-2}\). Centered second differences in \eqref{eq:li} give the absolutely and uniformly convergent Fourier series
+\begin{equation}
+ d_n=\sum_\rho a_\rho u_\rho^n,\qquad C=\sum_\rho a_\rho. \label{eq:fourier}
+\end{equation}
+Conjugation makes this real. Taking \(n=0\) in the supremum gives the lower bound. For the upper bound apply Cauchy--Schwarz to \(\sum a_\rho|u_\rho^h-1|\), using \(\sum a_\rho|u_\rho^h-1|^2=2(C-d_h)\). A conjugate pair \(u_\rho=e^{\pm2\pi i\theta}\) with \(\theta\) irrational has \(d_n=C\cos(2\pi n\theta)\). Density of irrational rotations gives a supremum of \(2C|\sin(\pi h\theta)|\), which attains the bound. For recurrence truncate \eqref{eq:fourier} to leave omitted mass below \(\epsilon/4\). Simultaneous returns make \(\sum_{\mathrm{retained}}a_\rho|u_\rho^{P_i(k)}-1|<\epsilon/2\) for every \(i\). The tail costs at most twice its mass, uniformly in \(n\). Apply the density argument in Theorem~\ref{thm:poly} to the retained phases. Use their union for finitely many spectra.
+\end{proof}
+Dirichlet GRH makes this conclusion applicable to the paired primitive characters described after \eqref{eq:li}, or to a single real primitive character. For \(\xi\), the ceiling \(C=2+\gamma-\log(4\pi)\) is approached arbitrarily closely. For each nonzero \(h\) one has \(d_h<C\), since equality would require every Cayley point to be an \(h\)-th root of unity, whereas \(\xi\) has infinitely many distinct zeros.
+\input{signs}
+\input{windows}
+\input{first_change}
+\section{Further research questions}
+Can a universal test requiring weaker recurrence be proved for a class restricted by an Euler product? The finite perturbations in Corollary~\ref{cor:xi} preserve the functional equation and the high zeros, while the Euler product imposes conditions on all Dirichlet coefficients. For the actual zeta sequence, what are the limiting frequencies of the four sign regions away from their boundaries? A quantitative first-return bound for the certified signs would also give a search length for further examples.
+\input{sources}
+\end{document}

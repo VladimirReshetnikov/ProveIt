@@ -1,0 +1,283 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[margin=1.05in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\pos}[1]{\left[#1\right]_+}
+\newcommand{\B}{\mathcal B}\newcommand{\W}{\mathcal W}
+\hypersetup{pdftitle={Sparse detection of Dirichlet zeros and a sharp balanced prime-window law},pdfsubject={Analytic number theory; sparse one-sided criteria; RH and Dirichlet GRH}}
+\title{Sparse detection of Dirichlet zeros and a sharp balanced prime-window law}
+\author{Research note}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A one-sided, constant-free statistic of prime powers recovers the supremum of the real parts of the zeros of any positively weighted family of Dirichlet $L$-functions, even when evaluated only at the points $n^k$ for an arbitrarily large fixed $k$. More generally, any mesh with a power-saving relative gap suffices. The proof uses the same residue-sign mechanism as the analytic endgame of the Alp\"oge--Claude proof of Dirichlet GRH, together with a spectral-abscissa interpolation argument. A specially balanced three-cutoff filter cancels the unknown prime-remainder constant, cannot cancel a zero in the open strip, and has strictly positive spectral coefficients on the critical line. Under Dirichlet GRH its normalized limsup is exactly an absolutely convergent zero sum, on every mesh whose consecutive ratios tend to one. For the ordinary zeta function and window ratio $2$, this limsup is approximately $0.0625323180$, with an expression involving only elementary constants and a finite prime sum. No simplicity or linear independence of ordinates is required.
+\end{abstract}
+
+\section{Source analysis and scope}
+The compact \texttt{grh-lean} repository \cite{repo}, at tree identifier \texttt{72fead1} (full identifier in the accompanying README), states its five end results in \nolinkurl{src/Main.lean}. Its statements use only Mathlib, as seen in \nolinkurl{src/Statements.lean}. The right-half-plane theorem \nolinkurl{LFunction_ne_zero_of_half_lt_re} is \texttt{New.grh}; reflection by the functional equation yields the critical-line statements. This covers Dirichlet $L$-functions, not general nonabelian automorphic $L$-functions. The repository reports its standard-axiom audit and machine checks; independent verification of the compact edition, including statement comparison and six kernels, is reported by Rubinstein on 26 November \cite{rubinstein}. A full independent build or line-by-line audit was not performed for this note.
+
+In \nolinkurl{grh-compact/src/New/Main.lean}, the geometric input combines short theta lifts, sufficient spanning forms, and lower bounds for integral forms. Comparison of covolumes and heights cancels a common main term and gives \texttt{star\_inequality}. Scale selection and averaging produce \nolinkurl{eventually_primeError_le_rpow}, a one-sided estimate with exponent $-1/2+8\varepsilon$. The readable edition's \nolinkurl{New/Reduction/Zeros/PrimeError.lean} computes the Mellin/Laplace transform of the centered sum with weight
+\[
+\Lambda(n)\mathbf1_{n\equiv1\pmod q}\bigl(1-(n/d)\bigr)
+\]
+and ramp $(1/n-1/x)_+$. Its residues at zeros are differences of multiplicity sums divided by $\varphi(q)s(1-s)$. In \nolinkurl{New/Reduction/Zeros/Criterion.lean}, auxiliary quadratic twists remove possible cancellation in the finite region needed for Landau's argument. Nonnegative residues at real zeros make an eventual upper bound sufficient to exclude zeros.
+
+The Wikipedia survey \cite{wiki} emphasizes explicit-formula error estimates and positivity criteria such as Weil's and Li's. Here the original geometric step is not extended. Instead we exploit the analytic endgame: use positive spectral weights to remove cancellation directly, then infer a sharp global exponent from discrete data. A second idea is a balanced filter whose spectral multiplier is positive on the critical line. The following proofs are classical, and their logical dependence on the now machine-verified Dirichlet GRH is explicitly separated from the unconditional equivalence.
+
+\section{The statistic and main theorem}
+Fix an integer $q\ge1$. Write $X_q$ for the Dirichlet characters modulo $q$, including the principal character $\chi_0$. Let $b_\chi\ge0$ be real, not all zero, with $b_{\bar\chi}=b_\chi$. Set
+\[
+ w(n)=\sum_{\chi\in X_q}b_\chi\chi(n),\quad \mu=b_{\chi_0},\quad
+ \Psi_w(x)=\sum_{n\le x}\Lambda(n)w(n).
+\]
+The function $w$ is real, but need not be nonnegative. Define for $x\ge1$
+\begin{align*}
+ S_w(x)&=\sum_{n\le x}\Lambda(n)w(n)\left(\frac1n-\frac1x\right)
+       =\int_1^x\frac{\Psi_w(u)}{u^2}\,du,\\
+ E_w(x)&=S_w(x)-\mu\log x.
+\end{align*}
+The equality follows by integrating the contribution of each $n$ from $n$ to $x$; the $n=1$ term vanishes. Fix $c>1$ and put $a=c/(c+1)$, $b=1/(c+1)$ (the scalar $b$ is distinct from the weights $b_\chi$). Our balanced statistic, for $x\ge c$, is
+\begin{equation}\label{eq:W}
+\boxed{\W_w(x;c)=S_w(x)-aS_w(cx)-bS_w(x/c)+\mu(a-b)\log c.}
+\end{equation}
+Equivalently it is $E_w(x)-aE_w(cx)-bE_w(x/c)$. Thus no constant term of the prime harmonic sum is required. Let
+\[
+ \B_w=\sup\{\Rea\rho: L(\rho,\chi)=0,\ 0<\Rea\rho<1,\ b_\chi>0\}.
+\]
+Zeros are counted with multiplicity whenever summed. Classical zero counts ensure that the set is nonempty, and functional-equation symmetry gives $1/2\le \B_w\le1$. For imprimitive characters the finite Euler factors have no zeros in the open right half-plane, so only primitive inducing zeros are relevant.
+
+\begin{theorem}[Sparse one-sided spectral abscissa]\label{th:abscissa}
+Let $x_j\to\infty$ be strictly increasing and suppose that, for some $\delta>0$,
+\begin{equation}\label{eq:mesh}
+ x_{j+1}-x_j=O(x_j^{1-\delta}).
+\end{equation}
+Then, unconditionally,
+\begin{equation}\label{eq:abscissa}
+\boxed{\displaystyle
+ \B_w=\limsup_{j\to\infty}
+ \frac{\log\bigl(1+x_j\pos{\W_w(x_j;c)}\bigr)}{\log x_j}.}
+\end{equation}
+In particular, for every fixed $1/2\le\theta<1$, absence of active zeros to the right of $\theta$ is equivalent to the following one-sided statement: for each $\varepsilon>0$,
+\begin{equation}\label{eq:sparsebound}
+ \W_w(x_j;c)\le C_\varepsilon x_j^{\theta-1+\varepsilon}
+ \quad(j\text{ sufficiently large}).
+\end{equation}
+\end{theorem}
+
+\begin{corollary}[Arbitrarily sparse GRH criterion]\label{cor:sparse}
+Take $w(n)=\mathbf1_{n\equiv1\pmod q}$, so $b_\chi=1/\varphi(q)$ for all $\chi$ and $\mu=1/\varphi(q)$. For every fixed positive integer $k$ and every $c>1$, GRH for all characters modulo $q$ is equivalent to \eqref{eq:sparsebound} with $x_j=j^k$ and $\theta=1/2$. The number of sampled centers up to $X$ is $\lfloor X^{1/k}\rfloor$. Under Dirichlet GRH the right side of \eqref{eq:abscissa} is exactly $1/2$ for every such $q,k,c$.
+\end{corollary}
+\begin{proof}
+Character orthogonality gives the stated weights. The binomial theorem gives $(j+1)^k-j^k=O_k((j^k)^{1-1/k})$, so Theorem~\ref{th:abscissa} applies. Absence of zeros to the right of $1/2$ implies the line statement by reflection and the absence of Euler-factor zeros in the open strip. Conversely the line statement gives $\B_w=1/2$.
+\end{proof}
+The criterion also isolates individual real characters ($w=\chi$) or a conjugate pair ($w=\Rea\chi$). For the full Dirichlet GRH it suffices to check a divisibility-cofinal family of moduli, e.g. $q=m!$: any primitive character is induced to some member and retains all its open-strip zeros. The constants need not be uniform in $q$. None of these are finite-time tests: the asymptotic quantifiers remain essential.
+
+\section{Analytic proof of the abscissa theorem}
+\subsection{Classical estimates}
+We use the usual Euler product, analytic continuation, nonvanishing on $\Rea s=1$ (apart from the principal pole), functional equation, zero-counting estimate $N_\chi(T)=O_q(T\log(T+2))$, and the classical truncated explicit formula \cite{davenport,mv,lee}. We recall the exact consequence required, including its justification.
+\begin{lemma}\label{lem:psi}
+For fixed weights and modulus,
+\begin{equation}\label{eq:psi}
+ \Psi_w(x)=\mu x+O_w\bigl(x^{\B_w}\log^2(2x)\bigr) \qquad (x\ge2).
+\end{equation}
+Also $\sum_{\rho}(1+|\Ima\rho|)^{-2}<\infty$ for each character.
+\end{lemma}
+\begin{proof}
+For a primitive character the truncated explicit formula for the half-weighted $\psi_0(x,\chi)$ is the principal main term, minus $\sum_{|\Ima\rho|<T}x^\rho/\rho$, plus an error bounded by
+\[
+ O_q\left(\log(2x)+\frac{x}{T}\log^2(2qxT)
+ +\log(2x)\min\left(1,\frac{x}{T\langle x\rangle}\right)\right),
+\]
+where $\langle x\rangle$ is the distance to the nearest prime power other than $x$ itself. This is the standard truncated formula (Davenport, sections on the explicit formula for $\psi(x)$ and $\psi(x,\chi)$); the constant terms and trivial zeros are absorbed for $x\ge2$. One may choose a height $T\asymp x$ avoiding zero ordinates using the standard local zero count. Replacing half weights by full weights changes the sum by $O(\log x)$. Partial summation of the zero count gives $\sum_{|\Ima\rho|<T}|\rho|^{-1}=O_q(\log^2(2T))$; the finitely many low zeros contribute a finite constant (no uniformity in $q$ is asserted). For imprimitive characters the difference from the inducing primitive prime-power sum is $O_q(\log x)$ from the finitely many omitted primes. All zeros in the sums for active characters have real part at most $\B_w$, whether or not the supremum is attained. Summing with the weights proves \eqref{eq:psi}. The second assertion follows from the same zero count by dyadic summation.
+\end{proof}
+Since $E_w$ is locally absolutely continuous, its derivative almost everywhere is $(\Psi_w(x)-\mu x)/x^2$. It follows from \eqref{eq:psi} and the identity $a+b=1$ that
+\begin{align}
+ |\W_w(x;c)|&\ll_{w,c}x^{\B_w-1}\log^2(2x),\label{eq:Wbound}\\
+ |\W_w'(x;c)|&\ll_{w,c}x^{\B_w-2}\log^2(2x),\label{eq:Wderiv}
+\end{align}
+for $x\ge2c$, the second bound holding almost everywhere. For the first, write $\W=a(E(x)-E(cx))+b(E(x)-E(x/c))$ and integrate $E'$ over the two finite multiplicative intervals. For the second, differentiate the three terms; $c$ is fixed. These estimates do not assume GRH.
+
+\subsection{Mellin transform and the noncancellation filter}
+For $\Rea s>1$ put
+\[
+ F_w(s)=\sum_{n\ge1}\frac{\Lambda(n)w(n)}{n^s}
+       =-\sum_\chi b_\chi\frac{L'}{L}(s,\chi).
+\]
+It is meromorphic in $\Rea s>0$ with principal residue $\mu$ at $1$ and residue $-m_w(\rho)$ at an active zero $\rho$, where $m_w(\rho)=\sum_\chi b_\chi\operatorname{ord}_\rho L(s,\chi)>0$. There are no other poles in that half-plane. For $\Rea s>1$, Fubini (absolute convergence) gives
+\begin{equation}\label{eq:M}
+ M(s):=\int_1^\infty E_w(x)x^{-s}\,dx
+  =\frac{1}{s-1}\left(\frac{F_w(s)}s-\frac{\mu}{s-1}\right).
+\end{equation}
+The expression has at most a simple pole at $1$, since $F_w(s)/s$ and $\mu/(s-1)$ have the same residue. The residue at an active zero in the strip is $m_w(\rho)/(\rho(1-\rho))$.
+
+For the transform only, extend $E_w$ by zero on $(0,1)$, and define $\W$ by its three-$E$ expression also for $1\le x<c$. This changes no asymptotic statement. Change variables in the two shifted integrals to get
+\begin{equation}\label{eq:H}
+ H(s):=\int_1^\infty\W_w(x;c)x^{-s}\,dx
+ =P_c(s)M(s)+a c^{s-1}\int_1^c E_w(t)t^{-s}\,dt,
+\end{equation}
+where
+\begin{equation}\label{eq:P}
+ P_c(s)=1-\frac{c}{c+1}c^{s-1}-\frac{1}{c+1}c^{1-s}.
+\end{equation}
+The finite integral is entire. Since $P_c(1)=0$, $H$ has no pole at $1$. With $u=c^{s-1}$, one has
+\[
+ P_c(s)=\frac{(1-u)(cu-1)}{(c+1)u}.
+\]
+Thus its only zeros have $\Rea s=0$ or $1$; it is strictly positive at every real $s\in(0,1)$. Consequently $H$ has a simple pole at every active zero $\rho$ and nowhere else in $\Rea s>0$, with residue
+\begin{equation}\label{eq:res}
+ r_w(\rho)=\frac{m_w(\rho)P_c(\rho)}{\rho(1-\rho)}.
+\end{equation}
+At real active zeros the residue is strictly positive. This is the key sign and noncancellation property, including possible real exceptional zeros, shared zeros and multiple zeros. In contrast to the twisted differences in the repository, no choice of an auxiliary prime is necessary for these deliberately chosen positive spectral weights.
+
+\subsection{The one-sided Landau argument}
+\begin{lemma}[Continuous upper bound excludes zeros]\label{lem:landau}
+If $0<\eta<1$ and $\W_w(x;c)\le C x^{\eta-1}$ for all sufficiently large $x$, then $\B_w\le\eta$.
+\end{lemma}
+\begin{proof}
+Increase $C$ to make $g(x)=Cx^{\eta-1}-\W_w(x;c)$ nonnegative for every $x\ge1$; the extension on the compact initial interval is continuous and bounded. Its Mellin transform for $\Rea s>1$ is
+\[
+ G(s)=\int_1^\infty g(x)x^{-s}\,dx=\frac C{s-\eta}-H(s).
+\]
+It converges there by \eqref{eq:Wbound} and $\B_w\le1$. Let $\sigma_*$ be its real abscissa of convergence, allowing $-\infty$. For a nonnegative locally integrable function, if $\sigma_*$ is finite then $G$ has a singularity at the real point $\sigma_*$. To recall the argument: if analytic there, choose a real $s_0>\sigma_*$ sufficiently close that a Taylor disk around $s_0$ extends to $s_0-r<\sigma_*$. All terms of the Taylor expansion at $s_0-r$ are nonnegative, because $(-1)^jG^{(j)}(s_0)=\int_1^\infty g(x)x^{-s_0}(\log x)^j\,dx$. Differentiation is justified by convergence at a smaller real argument still above $\sigma_*$. Monotone convergence of the Taylor series then gives a finite integral at $s_0-r$, contradiction. The disk is available by analytic continuation across the real point, taking $s_0$ close enough.
+
+If $\sigma_*>\eta$, this singularity must be a simple pole, by the meromorphic expression and \eqref{eq:res}. Its residue must be strictly negative, since the first term of $G$ has no pole there and real residues of $H$ are positive. But $G(s)\ge0$ for real $s>\sigma_*$, ruling out a negative residue as $s\downarrow\sigma_*$. Therefore $\sigma_*\le\eta$, and $G$ is holomorphic in $\Rea s>\eta$ (absolute convergence and local domination). Hence $H$ is holomorphic there as well, and its nonzero residues force the desired exclusion. This proof also handles the case $\sigma_*=-\infty$.
+\end{proof}
+
+\subsection{Interpolation with the unknown exponent}
+\begin{proof}[Proof of Theorem~\ref{th:abscissa}]
+Write $B=\B_w$ and denote the limsup in \eqref{eq:abscissa} by $A$. By \eqref{eq:Wbound}, $0\le A\le B$. Suppose that $A<B$. Choose a real $\eta$ with
+\[
+ \max\{A,B-\delta,0\}<\eta<B.
+\]
+This is possible even when $B=1$ and even when $B$ is not attained. By the definition of the limsup, for all sufficiently large $j$,
+$\W_w(x_j;c)\le x_j^{\eta-1}$ (negative values satisfy the inequality automatically). For arbitrary large $x$, choose $j$ with $x_j\le x<x_{j+1}$. The mesh condition implies $x/x_j\to1$. Local absolute continuity and \eqref{eq:Wderiv} give
+\begin{align*}
+ \W_w(x;c)&\le \W_w(x_j;c)+\int_{x_j}^x|\W_w'(u;c)|\,du\\
+ &\ll x^{\eta-1}+x^{B-1-\delta}\log^2(2x)
+ \ll x^{\eta-1}.
+\end{align*}
+The last estimate uses $\eta>B-\delta$. Lemma~\ref{lem:landau} yields $B\le\eta$, contradiction. Thus $A=B$. The equivalence with \eqref{eq:sparsebound} follows by taking logarithms and then $\varepsilon\downarrow0$, or directly from the definition of $A$.
+\end{proof}
+The circular-looking interpolation is not circular: $B$ is the actual supremum, not an assumed bound, and the explicit formula supplies a derivative estimate in terms of that unknown number. The hypothetical strict inequality $A<B$ supplies a contradiction. In particular, no fixed upper bound on the polynomial degree is necessary.
+
+\section{An exact limsup on the critical line}
+A second consequence is sharper than a square-root exponent. Let $h=\log c$, $\kappa=2\sqrt c/(c+1)$, so $0<\kappa<1$. On the critical line,
+\[
+ P_c(1/2+i\gamma)=1-\kappa\cos(\gamma h)>0,
+ \qquad (1/2+i\gamma)(1/2-i\gamma)=1/4+\gamma^2.
+\]
+\begin{theorem}[Sharp normalized balanced-window law]\label{th:limsup}
+Assume that all active zeros lie on the critical line. Define the finite positive constant
+\begin{equation}\label{eq:L}
+ L_w(c)=\sum_{\chi}b_\chi\sum_{\rho=1/2+i\gamma\;\text{of }L(s,\chi)}
+ \frac{1-\kappa\cos(\gamma\log c)}{1/4+\gamma^2}.
+\end{equation}
+Both signs of the ordinates and all multiplicities are included, and central zeros are included with $\gamma=0$. If $x_j\to\infty$ is strictly increasing and $x_{j+1}/x_j\to1$, then
+\begin{equation}\label{eq:limsup}
+ \boxed{\displaystyle\limsup_{j\to\infty}\sqrt{x_j}\,\W_w(x_j;c)=L_w(c).}
+\end{equation}
+The same value is the limsup over all real $x\to\infty$. Moreover,
+$\limsup_{j\to\infty}\sqrt{x_j}|\W_w(x_j;c)|=L_w(c)$.
+\end{theorem}
+\begin{proof}
+Write $D(x)=E_w(x)-E_w(cx)$, so $\W=aD(x)-bD(x/c)$. Integrate the truncated explicit formula on $[x/c,cx]$, taking a common admissible truncation height $T\asymp x$. For fixed modulus and weights the error in $\Psi_w(t)$ after subtracting the main and truncated zero terms is $O_w(\log^2(2x))$ uniformly on the interval: the error estimate in Lemma~\ref{lem:psi} before summing the zeros gives this, and the prime-power endpoint convention does not affect the integral. Thus
+\[
+ D(x)=\sum_\chi b_\chi\sum_{|\gamma|<T}
+ \frac{(1-c^{\rho-1})x^{\rho-1}}{\rho(1-\rho)}
+ +O_{w,c}(x^{-1}\log^2(2x)).
+\]
+Under the line hypothesis the series after integration is absolutely convergent; extending it to all zeros costs $O_{w,c}(x^{-1/2}\log(2T)/T)$ by the zero count. Combining the two intervals and multiplying by $\sqrt x$ gives
+\begin{equation}\label{eq:ap}
+ \sqrt x\,\W_w(x;c)=f(\log x)+O_{w,c}(x^{-1/2}\log^2(2x)),
+\end{equation}
+where
+\[
+ f(t)=\sum_\chi b_\chi\sum_{\rho=1/2+i\gamma}
+ \frac{1-\kappa\cos(\gamma h)}{1/4+\gamma^2}e^{i\gamma t}.
+\]
+It is real by conjugate symmetry, bounded, and uniformly continuous as a uniform limit of finite trigonometric sums (absolute summability). Every coefficient is nonnegative. Hence $|f(t)|\le f(0)=L_w(c)$, and $L_w(c)>0$.
+
+For any finite list of real frequencies $\gamma_1,\ldots,\gamma_M$ and any $\epsilon>0$, there are arbitrarily large $t$ for which $|e^{i\gamma_r t}-1|<\epsilon$ simultaneously. For example, the sequence of vectors $(e^{in\gamma_r})_{r=1}^M$ in the compact torus has a convergent subsequence with integer indices tending to infinity. Differences between a sufficiently late fixed member and arbitrarily late members have the required approximation and are arbitrarily large. Choose a finite part of $f$ with tail of arbitrarily small total coefficient and use this recurrence to obtain $f(t)$ arbitrarily close to $f(0)$ at arbitrarily large $t$. This proves the continuous limsup. Since the consecutive gaps of $\log x_j$ tend to zero, each sufficiently large such $t$ can be approximated by a sample with arbitrarily small error; uniform continuity transfers the same limsup to the sampled values. Equation~\eqref{eq:ap} transfers it to the prime statistic. The absolute-value claim follows from the upper bound and the positive limsup.
+\end{proof}
+\begin{corollary}[Sharp constant is itself a criterion]
+On a mesh satisfying \eqref{eq:mesh}, $\B_w=1/2$ if and only if $\limsup_j\sqrt{x_j}\,\W_w(x_j;c)<\infty$. In that case the limsup is $L_w(c)>0$. If $\B_w>1/2$, the limsup is $+\infty$.
+\end{corollary}
+\begin{proof}
+The forward implication is Theorem~\ref{th:limsup}; the reverse and the last assertion follow from \eqref{eq:abscissa}. More explicitly, for any $\eta\in(1/2,\B_w)$ there are arbitrarily large samples with $1+x_j[\W_w]_+>x_j^\eta$.
+\end{proof}
+The use of positive coefficients is crucial to the exact value. Neither a claim about simplicity of zeros nor rational independence of the ordinates is needed: recurrence to the identity of the compact torus suffices.
+
+\section{A prime-only evaluation for the zeta function}
+Take $q=1$, $w=1$, $\mu=1$, and let $S=S_1$. Write $\gamma_E$ for Euler's constant (not a zero ordinate). Under RH define
+\[
+ Z(t)=\sum_{\rho=1/2+i\gamma}\frac{e^{i\gamma t}}{1/4+\gamma^2},\qquad
+ T(x)=\sum_{m=1}^\infty\frac{x^{-2m-1}}{2m(2m+1)}\quad(x\ge1).
+\]
+The exact integrated zeta explicit formula is
+\begin{equation}\label{eq:R}
+ S(x)-\log x+1+\gamma_E=x^{-1/2}Z(\log x)+\frac{\log(2\pi)}x-T(x).
+\end{equation}
+Here is a derivation with the normalization checked. The ordinary explicit formula for $\psi_0(u)$ reads
+\[
+ u-\sum_\rho \frac{u^\rho}{\rho}-\log(2\pi)
+ +\sum_{m\ge1}\frac{u^{-2m}}{2m}\qquad(u>1).
+\]
+Integrate $(\psi_0(u)-u)/u^2$ over $[x,y]$. For $x>1$ the truncated explicit formula and dominated convergence on the finite interval justify integration of the symmetric zero sum: its errors tend to zero away from prime-power points, and are uniformly bounded for large truncation on the compact interval. After integrating, the zero terms are absolutely summable by the zero count. Let $y\to\infty$ using RH and \eqref{eq:psi}; the derivative of each term on the right of \eqref{eq:R} in the integrated sense is the corresponding explicit-formula term. The additive constant is obtained from \eqref{eq:M}: $F(s)=-\zeta'/\zeta(s)=1/(s-1)-\gamma_E+O(s-1)$, so $(s-1)M(s)\to-1-\gamma_E$ as $s\downarrow1$. Since $S(x)-\log x$ tends to a constant by \eqref{eq:psi}, this Abelian limit equals that constant (split the integral at a large fixed $x$ and bound the remaining error). The equality extends to $x=1$ by continuity and absolute convergence. In particular $T(1)=1-\log2$ by the alternating harmonic series, giving
+\[
+ Z(0)=2+\gamma_E-\log(4\pi).
+\]
+For $c>1$, put $y=1/c$. Then
+\[
+ T(c)=y\left(1-\tfrac12\log(1-y^2)-\frac{\operatorname{arctanh}(y)}y\right),
+\]
+by separating $1/(2m(2m+1))=1/(2m)-1/(2m+1)$. Combining \eqref{eq:L} and \eqref{eq:R}, we obtain the explicit finite-prime formula
+\begin{align}
+ L_1(c)&=Z(0)-\kappa Z(\log c)\notag\\
+ &=2+\gamma_E-\log(4\pi)\notag\\
+ &\quad-\frac{2c}{c+1}\left(S(c)-\log c+1+\gamma_E
+ -\frac{\log(2\pi)}c+T(c)\right).\label{eq:primeonly}
+\end{align}
+For $c=2$, $S(2)=0$ (the endpoint weight vanishes). Substitution gives the exact constant in elementary constants and Euler's constant,
+\begin{equation}\label{eq:constant}
+ \boxed{ L_1(2)=0.0625323180445\ldots }
+\end{equation}
+where the decimal is a numerical evaluation, not a rounded exact identity. Consequently, for \emph{every} fixed integer $k\ge1$,
+\[
+ \limsup_{n\to\infty} n^{k/2}\left(S(n^k)-\tfrac23 S(2n^k)
+ -\tfrac13 S(n^k/2)+\tfrac13\log2\right)=L_1(2).
+\]
+The classical constant $Z(0)$ is well known; the balanced filter produces the new $c$-dependent sampled law. Also $P_c(0)=0$, so the $\log(2\pi)/x$ term in \eqref{eq:R} cancels exactly. For all $x\ge c$, the corrected quantity
+\begin{equation}\label{eq:corrected}
+ \sqrt x\left(\W_1(x;c)+T(x)-aT(cx)-bT(x/c)\right)
+\end{equation}
+is exactly $f(\log x)$ and its absolute value is at most $L_1(c)$ under RH. This gives a finite-$x$ inequality with explicit correction $O_c(x^{-5/2})$ in the normalized statistic; the constant is optimal on all the meshes in Theorem~\ref{th:limsup}.
+
+\section{Reproducibility, relation to literature, and limits}
+The companion Python script sieves prime powers, builds the two prefix sums needed for $S$, computes \eqref{eq:W} and \eqref{eq:corrected} at integer-power centers, and evaluates \eqref{eq:primeonly}. It checks identities on small cutoffs against direct summation and checks the numerical bound with a floating-point tolerance. These are illustrations, not certificates of the asymptotic theorem or interval-arithmetic proofs. The supplied run tested 823 centers across degrees $2,3,4,5,10$, with $x\le500000$ and $c=2$. The largest corrected value was about $0.0307143$ (at $x=162409$), below the limiting supremum; the finite experiment neither establishes nor contradicts the recurrence assertion. The results do not require numerical zero finding. The proof is supplied in conventional mathematical form, not as a Lean extension; the analytic background is the classical explicit formula and zero count. The arithmetic interpolation, Mellin calculation and recurrence arguments are all proved above.
+
+\paragraph{Novelty assessment.} One-sided sign criteria for weighted prime sums are not new (Landau; Suzuki \cite{suzuki}; the cited Lean development). A related November 2026 preprint \cite{polak} also studies prime-power cone determinants and sparse samples, in particular fourth-power related cutoffs; and reciprocal-zero sums have been investigated independently, e.g. \cite{reciprocal}. The contribution claimed here, as a candidate for publication, is the exact spectral-abscissa recovery on \emph{any} power-saving mesh via the derivative estimate in terms of the unknown abscissa, and the balanced constant-free filter with a sharp sampled limsup on \emph{any} ratio-one mesh. The result is independently derived; a targeted literature search did not establish prior occurrence of these exact statements. This is not an exhaustive priority search, nor a claim to have resolved another named open conjecture. It is also not a computational shortcut for checking all primes below the largest cutoff: the sparse count concerns evaluation centers, not input prime powers.
+
+\paragraph{Further research questions.} Can exact abscissa recovery hold without a power-saving mesh, perhaps under a quantitative condition on the distribution of zero ordinates? Does a higher-order constant-free filter yield better effective rates of recurrence to the sharp constant? Can similar positive spectral weights and an explicit formula establish sharp laws for Dedekind zeta functions (conditional on their own GRH) and for suitable self-dual automorphic families? Can the analytic interpolation and filter lemmas be formalized in Mathlib and linked to the repository's headline theorem? Uniformity as $q$ and $c$ vary is not treated here.
+
+\begin{thebibliography}{99}
+\bibitem{repo} L. Sernau et al., \emph{GRH for Dirichlet L-functions, in Lean 4}, 25 November 2026, \url{https://github.com/lsernau/grh-lean}. In particular: \href{https://github.com/lsernau/grh-lean/blob/main/grh-compact/src/New/Main.lean}{compact analytic endgame}, \href{https://github.com/lsernau/grh-lean/blob/main/grh/src/New/Reduction/Zeros/Criterion.lean}{readable one-sided criterion}, \href{https://github.com/lsernau/grh-lean/blob/main/grh/src/New/Reduction/Zeros/PrimeError.lean}{prime remainder transform}, and \href{https://github.com/lsernau/grh-lean/blob/main/grh-compact/src/Statements.lean}{statements}.
+\bibitem{rubinstein} M. Rubinstein, \emph{Alp\"oge/Claude proof of the Generalized Riemann Hypothesis}, verification notes, 26 November 2026, \url{https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/}.
+\bibitem{wiki} Wikipedia, \emph{Riemann hypothesis}, accessed 26 November 2026, \url{https://en.wikipedia.org/wiki/Riemann_hypothesis}.
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 2nd ed., Springer, 1980, chapters on explicit formulae for $\psi(x)$ and $\psi(x,\chi)$ (the latter, pp.~115--118).
+\bibitem{mv} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge, 2007, Chapters 10--12, 15 (explicit formulae and Landau's oscillation method).
+\bibitem{lee} E. S. Lee, The prime number theorem for primes in arithmetic progressions at large values, \emph{Q. J. Math.} 74 (2023), 1505--1533. \url{https://doi.org/10.1093/qjmath/haad031}.
+\bibitem{suzuki} M. Suzuki, On variants of Chebyshev's conjecture, \emph{Ramanujan J.} 68 (2025), article 95. \url{https://doi.org/10.1007/s11139-025-01238-9}; arXiv:2411.07436.
+\bibitem{polak} R. Polak, \emph{An Explicit Prime-Power Cone Criterion for the Riemann Hypothesis}, and \emph{Importing arithmetic windows into the prime-power cone}, November 2026, \url{https://github.com/robopol/Riemann-hypothesis}. Related preprints, not used as proof inputs.
+\bibitem{reciprocal} \emph{A New Identity Relating Weighted Sums of Primes and Sums of Reciprocals of Riemann Zeros}, Mathematics 14 (2026), 1962, \url{https://doi.org/10.3390/math14111962}. Related work, not used as a proof input.
+\end{thebibliography}
+\end{document}

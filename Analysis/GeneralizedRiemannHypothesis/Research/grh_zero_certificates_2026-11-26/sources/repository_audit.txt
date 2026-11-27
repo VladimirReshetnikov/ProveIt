@@ -1,0 +1,108 @@
+SOURCE AUDIT: lsernau/grh-lean
+Inspected on 26 November 2026. Read-only source investigation.
+
+SNAPSHOT
+Repository: https://github.com/lsernau/grh-lean
+Default branch: main
+Observed branch commit: 72fead102f663d5c7a407964a13dc0cf9d977207
+Commit author timestamp: 2026-11-25T20:38:07Z
+Commit message: Lean proof of GRH
+Pinned Lean: leanprover/lean4:v4.35.0
+Pinned Mathlib: 56a005855ea17e0b0958f73ec801ae140b0a1679
+The source files inspected below were fetched at the commit above. Copies are in sources/grh_snapshot.
+
+WHAT THE PUBLIC THEOREMS ACTUALLY SAY
+1. grh/src/Statements.lean imports only Mathlib. Its four definitions use Mathlib's riemannZeta, DirichletCharacter, and DirichletCharacter.LFunction.
+2. grh/src/Main.lean proves `riemannHypothesis : RiemannHypothesis` by `New.zeta_zeros_on_line New.grh`.
+3. `riemannZeta_eq_zero_re` says that every zero of zeta, excluding its negative-even trivial zeros and the point 1, has real part 1/2.
+4. `LFunction_ne_zero_of_half_lt_re` quantifies over every natural modulus N with [NeZero N] and every complex Dirichlet character modulo N. It excludes zeros in Re s > 1/2, provided chi != 1 or s != 1. This is the necessary principal-character pole exception.
+5. `LFunction_eq_zero_re` says every zero of every such character with 0 < Re s < 1 has real part 1/2. Primitivity is not required.
+6. `LFunction_eq_zero_re_of_isPrimitive` is the corresponding special case.
+7. These are unconditional propositions at the public API: no `Data`/`Parameters` instance or unproved analytic estimate is a hypothesis of the exported result. The quantified [NeZero N] excludes N=0 only.
+8. Scope is Dirichlet L-functions. The exported statements are not assertions about all automorphic or Artin L-functions, nor a direct theorem about every Dedekind zeta function.
+
+MACHINE-CHECK STATUS: EXACTLY WHAT WAS AND WAS NOT VERIFIED HERE
+The source README reports successful Lean compilation, an axiom set consisting only of propext, Classical.choice and Quot.sound, and independent replay of the exported theorem dependency closure by nanoda, con-leche and con-ron. It also reports a Comparator run. The checked-in scripts/PrintAxioms.lean really contains #print axioms commands for all five exported theorems.
+We inspected source statements and selected proof chains. We did not rerun a complete build, the axiom printer or any independent kernel. Thus the check results remain repository-reported evidence, not new checks performed in this task. The readable development is reported to contain about 300,000 code lines and 477,000 total lines, making this an architectural/source audit rather than complete human proof verification.
+README also says the proof has passed machine checks only, that no mathematician has read it through, and that there is no accompanying mathematical paper. Those qualifications describe the repository's own statement of status and should be preserved if its checks are discussed.
+
+NONVACUITY AND HIDDEN-HYPOTHESIS SPOT CHECKS
+The main arithmetic estimate is first proved for P : Parameters and D : Data P. These structures are not merely assumed to have inhabitants forever:
+- grh/src/New/Reduction/Data/Existence.lean, theorem eventually_exists_data, constructs D for every sufficiently large integer x for every Parameters P and 0 < epsilon < 1/100.
+- It fixes m as the least power of 2 at least sqrt(x), r as the least power of 3 at least x^5, x1=floor exp(x^(epsilon/6)), and b as the least suitable multiple above exp(x^epsilon). It proves x^epsilon <= log b <= x^epsilon+1.
+- grh/src/New/Reduction/ShortAndEnough.lean has targetDim_pos and enough_forms, explicitly establishing positive dimension and a family spanning at least (1-4/b^2) of the target. The proof does not divide by an unproved positive target dimension.
+- OneSidedBound.lean constructs Parameters from q0 divisible by 18480 and a prime d congruent to q0/2-1 mod q0, then later induces an arbitrary character modulo q to q0=18480*q.
+No sorry/admit or axiom declaration was found in the selected source files. This is a selected-file observation, not a claim to have scanned the whole transitive import closure. Challenge.lean is deliberately described by the README as a separate comparison target containing sorry, not a build dependency.
+
+THE ACTUAL MATHEMATICAL MECHANISM
+Write chi_d for the real quadratic character of Q(sqrt(-d)). For suitable q,d, the remainder is
+
+ R_{d,q}(x) = sum_{1<=n<=x, n=1 mod q} Lambda(n)(1-chi_d(n))(1/n-1/x)
+              - log(x)/phi(q) - c_{d,q}.
+
+The normalizing constant is the real part at 1 of a mean of logarithmic derivative differences. It is chosen so that the remainder tends to zero. See New/Reduction/Zeros/PrimeError.lean and the PNT companion file.
+
+The proof proceeds through three substantial inputs about forms and twisted lattices:
+A. There are spanning integral source forms whose suitably normalized Poincare images have short untwisted lifts and controlled index.
+B. A relatively small collection of translates of the Poincare map spans almost all of a positive-dimensional target.
+C. Independent nearly spanning integral target forms must have index-corrected logarithmic covolume at least a specified main term, up to errors.
+
+The logarithmic covolume c and index cost delta satisfy a lower bound roughly
+ d_T*mainAmount <= c+2*delta,
+while A and B bound the same quantity above by roughly
+ d_T*mainAmount - n*m*totalRemainder.
+The common main amount cancels. Error bookkeeping proves the exact `star_inequality`
+
+ m*totalRemainder <= f*a*(log b)^5.
+
+Using the sizes above and PNT at the much larger cutoff x1 gives, for each epsilon>0,
+
+ R_{d,q0}(x) <= x^(-1/2+epsilon)
+
+for all sufficiently large real x, where q0 is a positive multiple of 18480 and d is a prime congruent to q0/2-1 mod q0. The scale m~sqrt(x) produces the square-root exponent.
+
+ONE-SIDED BOUNDS AND ZERO RESIDUES
+New/Reduction/Zeros/PrimeError.lean expresses the transform
+
+ Phi(s)= integral_0^infinity R_{d,q}(exp v)*exp((1-s)*v) dv
+
+as a meromorphic function. Its residue away from 0 and 1 is
+
+ [sum_{psi mod q} (ord_s E_psi - ord_s E_{psi*chi_d})] / [phi(q)*s*(1-s)],
+
+where E_chi is the pole-removed entire Dirichlet L-function. It has no pole at 1.
+The Landau lemma in Lib/Analytic/Landau.lean is a useful independent analytic abstraction: if E is real, measurable, O(exp v), has such a meromorphic transform with at most simple poles in Re s>0, if E(v)<=exp((beta-1)v) eventually, and all residues at real x>beta have nonnegative real parts, then every residue in Re s>beta vanishes.
+
+The one-sided criterion is not simply a citation of a criterion requiring no real zeros. It chooses an auxiliary quadratic twist d for which the finitely many twisted L-functions have no zeros in the relevant finite-height rectangle. In that rectangle the negative multiplicities disappear from the residue formula. The remaining real residues have the required nonnegative sign, so Landau kills the putative zero residue. The positive untwisted multiplicities then force each untwisted L-value to be nonzero. This avoids an assumed absence of exceptional real zeros.
+
+The resulting half-plane theorem is converted to the critical-line statements by the functional equation and its symmetry s -> 1-s. For imprimitive characters, extra Euler factors cause no trouble in the open critical strip. The source API makes the limitation to 0<Re s<1 explicit.
+
+PARTICULARLY TRANSFERABLE IDEA: A DIFFERENT TWIST AT EACH PRIME
+New/Reduction/Lattices/TwistedLattice.lean proves `covolume_add_index_nonneg`. In its notation, y and z together form a basis, each lift is injective, and for each prime-adic embedding iota one may choose a different allowed twist theta(iota). Provided the required integrality and height controls hold, it concludes
+
+ 0 <= c + 2*delta + n'*(b_short+b_denom) + b_volume.
+
+Here c bounds the untwisted Gram determinant, delta bounds the local index losses, n' is the number of auxiliary basis vectors, b_short and b_denom control their analytic size and denominators, and b_volume bounds the height of the determinant ratio Z(1)/Z(theta(iota)). A factorization of the untwisted Gram determinant into twisted integral Gram determinants, denominators, and determinant ratios allows the product formula to combine choices that need not be globally the same twist. Applications must prove the determinant/height hypotheses; the result does not make such choices free.
+
+WHAT SHOULD NOT BE CLAIMED AS NEW
+The functional-equation step is explicitly classed as known. Landau's abscissa argument and basic prime error/zero transforms are classical. Rephrasing these as a new theorem without a substantive new quantitative estimate or new family of examples would be unjustified. The repository's New namespace is explicitly not a novelty claim. It distinguishes background and construction only.
+
+USEFUL PINNED URLS
+https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/README.md
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/README.md
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Statements.lean
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Data/Existence.lean
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/MainInequality.lean
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/OneSidedBound.lean
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Zeros/Criterion.lean
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Zeros/PrimeError.lean
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Lib/Analytic/Landau.lean
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Reduction/Lattices/TwistedLattice.lean
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/New/Determinant/Twist/LongForms.lean
+https://alpo.ge/remark.pdf
+
+
+LICENSING
+Upstream source excerpts remain Copyright 2026 Anthropic, PBC, Apache-2.0. LICENSE, NOTICE and ATTRIBUTION.md are retained in the snapshot.

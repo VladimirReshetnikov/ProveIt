@@ -1,0 +1,403 @@
+\section{Complete cluster counts from a finite moment window}
+\label{sec:spectral}
+
+The first result isolates a useful form of discrete rigidity. A missed spectral
+point contributes a definite positive amount to a carefully chosen residual.
+Once the entire residual is smaller than that amount, the missed count must
+be zero. A related interpolation construction recovers the integer count in
+each proposed interval. The underlying spectrum may be infinite.
+
+\subsection{Setup and the finite data}
+
+Let $(x_n)$ be a finite or countably infinite multiset of positive real numbers,
+with repeated values listed according to their positive integer multiplicities,
+such that
+\begin{equation}\label{eq:summability}
+ p_1:=\sum_n x_n<\infty,
+ \qquad p_j:=\sum_n x_n^j\quad(j\ge1).
+\end{equation}
+Every $x_n\le p_1$, so every $p_j$ is finite. There are only finitely many
+occurrences above any positive threshold.
+
+Choose $m\ge1$ distinct positive candidate centers $a_1,\ldots,a_m$, positive
+radii $r_i<a_i$, and pairwise disjoint open intervals
+\[
+ I_i=(a_i-r_i,a_i+r_i).
+\]
+Fix an integer $K\ge1$. Define
+\begin{align}
+ P(x)&=\prod_{i=1}^m(x-a_i),
+ &D_i&=\prod_{j\ne i}(a_i-a_j),\label{eq:P}\\
+ L_i(x)&=\frac{\prod_{j\ne i}(x-a_j)}{D_i},
+ &d_i&=\frac K{a_i}+2\sum_{j\ne i}\frac1{a_i-a_j},\label{eq:L}\\
+ Q_i(x)&=\left(\frac x{a_i}\right)^K
+       \bigl[1-d_i(x-a_i)\bigr]L_i(x)^2.\label{eq:Q}
+\end{align}
+Here and below empty products equal one and empty sums equal zero.
+The residual and count estimates are
+\begin{equation}\label{eq:RS}
+ R_K=\sum_n x_n^K P(x_n)^2\ge0,
+ \qquad S_i=\sum_n Q_i(x_n).
+\end{equation}
+They are absolutely convergent: each summand is a polynomial in $x_n$ with
+no constant term, evaluated on a bounded summable spectrum.
+
+The construction has three relevant properties:
+\[
+ Q_i(a_j)=\begin{cases}1,&j=i,\\0,&j\ne i,\end{cases}
+ \qquad Q_i'(a_j)=0,
+ \qquad x^K\mid Q_i(x).
+\]
+At $a_i$, the chosen linear factor cancels the logarithmic derivative
+$K/a_i+2L_i'(a_i)$; at other centers, the squared factors give double zeros.
+Moreover $\deg Q_i\le K+2m-1$ and $\deg(x^KP^2)=K+2m$. Thus all the
+quantities in \eqref{eq:RS} use only the $2m+1$ moments
+\begin{equation}\label{eq:window}
+ p_K,p_{K+1},\ldots,p_{K+2m}.
+\end{equation}
+The number of entries in this window is fixed when $m$ is fixed. The starting
+order $K$ and the required accuracy need not be small.
+
+\subsection{Explicit count bounds}
+
+For each $i$ set
+\begin{align}
+ b_i&=a_i-r_i,&g_{ij}&=|a_i-a_j|-r_i\quad(j\ne i),\\
+ A_i&=\prod_{j\ne i}g_{ij}^{-2},
+ &T_i&=\frac K{b_i}+2\sum_{j\ne i}g_{ij}^{-1},\\
+ U_i&=\frac K{b_i^2}+2\sum_{j\ne i}g_{ij}^{-2}.&&
+\end{align}
+All $b_i,g_{ij}$ are positive by the interval assumptions. Put
+\begin{equation}\label{eq:Ci}
+ C_i=\max\left\{
+ \frac{b_i^{-K}A_i}{2}(T_i^2+U_i),\quad
+ \frac{a_i^{-K}}{D_i^2}\left(r_i^{-2}+|d_i|r_i^{-1}\right)
+ \right\}.
+\end{equation}
+
+\begin{theorem}[Residual certificate]\label{thm:residual}
+Under \eqref{eq:summability}, let $N_i$ count all occurrences in $I_i$,
+with multiplicity. Then
+\begin{equation}\label{eq:countbound}
+ |N_i-S_i|\le C_iR_K.
+\end{equation}
+For any $\tau>0$, let $N_{\rm miss}$ count occurrences with $x_n\ge\tau$
+outside $\bigcup_i I_i$. Then
+\begin{equation}\label{eq:missing}
+ N_{\rm miss}\le\frac{R_K}{\tau^K\prod_i r_i^2}.
+\end{equation}
+Consequently $R_K<\tau^K\prod_i r_i^2$ excludes every such missed point.
+If, in addition to this strict no-missing inequality, the intervals lie
+above $\tau$ and each interval
+$[S_i-C_iR_K,S_i+C_iR_K]$ contains exactly one nonnegative integer $n_i$,
+then the complete spectrum at or above $\tau$ is contained in these intervals
+and has the exact cluster counts $(n_1,\ldots,n_m)$.
+\end{theorem}
+
+\begin{proof}
+We first prove the pointwise estimate
+\begin{equation}\label{eq:pointwise}
+ |\ind_{I_i}(x)-Q_i(x)|\le C_i x^K P(x)^2\qquad(x>0).
+\end{equation}
+Outside $I_i$, write $u=x-a_i$, so $|u|\ge r_i$. Away from the other
+candidate centers, cancellation gives
+\[
+ \frac{|Q_i(x)|}{x^KP(x)^2}
+ =\frac{a_i^{-K}}{D_i^2}\frac{|1-d_iu|}{u^2}
+ \le\frac{a_i^{-K}}{D_i^2}\left(r_i^{-2}+|d_i|r_i^{-1}\right).
+\]
+At another candidate center both sides of \eqref{eq:pointwise} are zero,
+so the same inequality holds there by direct evaluation.
+
+Inside $I_i$, there are no other candidate centers. Define the positive
+smooth function $h_i(x)=x^{-K}L_i(x)^{-2}$. At the center,
+\[
+ h_i(a_i)=a_i^{-K},\qquad h_i'(a_i)=-d_i a_i^{-K}.
+\]
+Hence $Q_i(x)$ is $x^KL_i(x)^2$ times the first-degree Taylor polynomial
+of $h_i$ at $a_i$, while $1=x^KL_i(x)^2h_i(x)$. Since
+$P(x)=(x-a_i)D_iL_i(x)$, Taylor's theorem with integral remainder gives
+\[
+ \frac{|1-Q_i(x)|}{x^KP(x)^2}
+ \le\frac1{2D_i^2}\sup_{t\in I_i}|h_i''(t)|
+ \quad(x\ne a_i).
+\]
+Logarithmic differentiation yields the exact expression
+\begin{align*}
+ \frac{h_i''(t)}{D_i^2}
+ &=t^{-K}\prod_{j\ne i}(t-a_j)^{-2}\times{}\\[-2pt]
+ &\quad\left\{
+ \left(\frac Kt+2\sum_{j\ne i}\frac1{t-a_j}\right)^2
+ +\frac K{t^2}+2\sum_{j\ne i}\frac1{(t-a_j)^2}\right\}.
+\end{align*}
+It is nonnegative and at most $b_i^{-K}A_i(T_i^2+U_i)$, using
+$t\ge b_i$ and $|t-a_j|\ge g_{ij}$. At $x=a_i$, both sides of
+\eqref{eq:pointwise} vanish. This proves the pointwise bound everywhere.
+
+Absolute convergence permits summation of \eqref{eq:pointwise}, proving
+\eqref{eq:countbound}. Every missed occurrence has $x_n\ge\tau$ and
+$|x_n-a_i|\ge r_i$ for all $i$, and therefore contributes at least
+$\tau^K\prod_i r_i^2$ to $R_K$. Summing gives \eqref{eq:missing}.
+A nonnegative integer smaller than one is zero. Finally the true integer
+$N_i$ must lie in its certified interval, giving the exact counts.
+\end{proof}
+
+\begin{remark}[What a cluster count means]
+A count of one proves that the interval contains one simple spectral
+occurrence. A count greater than one may represent a repeated value or
+several distinct nearby values. No assumption of simple zeros is used.
+The no-missing conclusion also excludes spectral points at the interval
+endpoints, because the intervals are open.
+\end{remark}
+
+\subsection{Certified errors in the input moments}
+
+Write
+\[
+ x^KP(x)^2=\sum_{j=K}^{K+2m}u_jx^j,
+ \qquad Q_i(x)=\sum_{j=K}^{K+2m}v_{ij}x^j,
+\]
+where the final coefficient of $Q_i$ is zero. Suppose the input satisfies
+$|p_j-\widehat p_j|\le\epsilon_j$. Compute
+\begin{align}
+ \widehat R&=\sum_j u_j\widehat p_j,
+ &R^+&=\widehat R+\sum_j|u_j|\epsilon_j,\\
+ \widehat S_i&=\sum_jv_{ij}\widehat p_j,
+ &E_i&=\sum_j|v_{ij}|\epsilon_j.
+\end{align}
+
+\begin{corollary}[Robust finite verification]\label{cor:noise}
+Valid input enclosures imply $0\le R_K\le R^+$ and
+\[
+ |N_i-\widehat S_i|\le E_i+C_iR^+,
+ \qquad N_{\rm miss}\le\frac{R^+}{\tau^K\prod_i r_i^2}.
+\]
+Thus the no-missing test with $R^+$ and a unique integer in each enlarged
+count interval constitute a rigorous certificate. One sufficient rounding
+test, for a proposed integer $n_i\ge0$, is
+\[
+ |\widehat S_i-n_i|+E_i+C_iR^+<\frac12.
+\]
+All verification operations are rational when the centers, radii, threshold,
+moment midpoints and error bounds are rational.
+\end{corollary}
+\begin{proof}
+The triangle inequality bounds the errors in both linear moment functionals.
+Substitute these bounds into Theorem~\ref{thm:residual}.
+\end{proof}
+
+If $R^+<0$, the supplied enclosures contradict the nonnegative residual and
+must be rejected. A verifier must not silently replace a negative upper
+bound by zero. The input enclosures themselves remain a mathematical
+premise: passing this verifier cannot validate arbitrary untrusted moment
+data.
+
+\subsection{Why a fixed-width certificate eventually exists}
+
+\begin{theorem}[Eventual certificates]\label{thm:eventual}
+Let $\tau>0$ be outside the spectrum. Let $m$ be the number of distinct
+spectral values above $\tau$. There is a certificate of the preceding form
+using $2m+1$ consecutive moments, with rational candidate centers and radii
+in arbitrarily narrow disjoint intervals about those values. If $\tau$ is
+rational and the moments can be approximated with certified errors to any
+requested precision, an exhaustive rational search eventually finds a
+complete correct certificate above $\tau$.
+\end{theorem}
+
+\begin{proof}
+First let $m\ge1$ and take the candidate centers to be the actual distinct
+spectral values above $\tau$. Choose narrow disjoint intervals with
+$b_i=a_i-r_i>\tau$. Summability implies that every compact subinterval of
+$(0,\infty)$ contains only finitely many spectral occurrences. Since $\tau$
+is not a spectral value, all remaining occurrences lie in $(0,\sigma]$ for
+some $0<\sigma<\tau$. Write $S_{\rm tail}$ for their first moment.
+
+At the leading spectral values $P$ vanishes exactly. For $0\le x\le\sigma$,
+each $a_i>\sigma$, so $P(x)^2\le\prod_i a_i^2$. Therefore
+\begin{equation}\label{eq:taildecay}
+ R_K\le S_{\rm tail}\,\sigma^{K-1}\prod_i a_i^2.
+\end{equation}
+For fixed centers and radii, \eqref{eq:Ci} gives
+$C_i=O((K+1)^2b_i^{-K})$. Because $\sigma<\tau<b_i$,
+\[
+ \frac{R_K}{\tau^K\prod_i r_i^2}\longrightarrow0,
+ \qquad C_iR_K\longrightarrow0.
+\]
+The exact integer counts then satisfy the sufficient rounding inequality for
+all sufficiently large $K$: indeed
+$|S_i-N_i|+C_iR_K\le2C_iR_K\to0$.
+
+Fix one such $K$ with strict slack. The finite formulas are continuous in
+the distinct centers, positive admissible radii, and moments. Choose
+rational centers and radii sufficiently close to the original ones; their
+intervals still enclose the same spectral values. Then choose sufficiently
+accurate rational moment enclosures. All strict certificate inequalities
+persist. The interval widths may have been arbitrarily small from the start.
+
+When $m=0$, choose $\sigma<\tau$ bounding the entire spectrum. The simple
+test $p_K<\tau^K$ eventually holds, since
+$p_K\le p_1\sigma^{K-1}$. It certifies that the count above $\tau$ is zero.
+
+Finally enumerate finite rational configurations, positive integers $K$,
+and requested moment precisions. For each configuration, the tests of
+Corollary~\ref{cor:noise} terminate using rational arithmetic. Dovetailing
+this enumeration eventually reaches one of the certificates just proved
+to exist. This is an existence and termination argument, not an efficiency
+bound.
+\end{proof}
+
+\begin{remark}[Conditioning is visible in the theorem]
+The proof does not say that fixed approximate centers improve indefinitely
+as $K$ grows. Suppose actual leading values $\lambda_i\le B$ have total
+multiplicity $M$, $|a_i-\lambda_i|\le\eta$, and the tail is bounded by
+$\sigma<\min_i a_i$. A direct product estimate gives
+\[
+ R_K\le MB^K\eta^2(2B+\eta)^{2m-2}
+       +S_{\rm tail}\sigma^{K-1}\prod_i a_i^2.
+\]
+The first term can require increasingly accurate centers at larger $K$.
+Small separation between different centers also enlarges $D_i^{-2}$ and
+the $g_{ij}^{-1}$ factors. The explicit constants record this cost.
+\end{remark}
+
+\section{The zeta and Dirichlet applications}\label{sec:zeta}
+
+Define
+\[
+ \xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),
+ \qquad \Xi(t)=\xi(\tfrac12+it).
+\]
+The standard completion satisfies $\xi(s)=\xi(1-s)$ and is entire
+\cite{dlmf,cardon}. Use RH, as provided by the inspected development, and list
+positive zero ordinates $\gamma_n$ with multiplicity. Set
+\begin{equation}\label{eq:zetanodes}
+ x_n=\frac1{\tfrac14+\gamma_n^2}.
+\end{equation}
+This is precisely the positive denominator arising from
+$\rho(1-\rho)$ in the repository's transform reduction.
+
+\begin{proposition}[Moment coordinate]\label{prop:xi}
+The symmetry quotient
+\begin{equation}\label{eq:H}
+ H(z)=2\xi\!\left(\frac{1+\sqrt{1+4z}}2\right)
+\end{equation}
+is a single-valued entire function, despite the square-root notation. It has
+the locally uniformly convergent product
+\begin{equation}\label{eq:Hproduct}
+ H(z)=\prod_n(1+x_nz),\qquad H(0)=1.
+\end{equation}
+Consequently, for the analytic logarithm at zero,
+\begin{equation}\label{eq:logmoments}
+ p_j=(-1)^{j-1}j[z^j]\log H(z)
+     =\frac{(-1)^{j-1}}{(j-1)!}(\log H)^{(j)}(0),
+\end{equation}
+and
+\begin{equation}\label{eq:p1}
+ p_1=1+\frac{\gamma_{\!E}}2-\frac12\log(4\pi).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The entire function $w\mapsto\xi(\tfrac12+w)$ is even. Its power series
+is therefore an entire power series in $w^2$. Substituting $w^2=z+\tfrac14$
+proves that \eqref{eq:H} is entire and independent of the square-root choice.
+The paired Hadamard product under RH is
+\[
+ \xi(\tfrac12+w)=\xi(\tfrac12)
+       \prod_{\gamma_n>0}\left(1+\frac{w^2}{\gamma_n^2}\right).
+\]
+Pairing the genus-one factors removes their exponential factors, while
+evenness removes the possible linear exponential prefactor. The usual
+order-one factorization gives $\sum_n\gamma_n^{-2}<\infty$. There is no
+central zeta zero; for example the alternating eta series at $1/2$ is
+positive while $1-\sqrt2<0$, so $\zeta(1/2)\ne0$.
+
+Divide the paired product at $w^2=z+\tfrac14$ by its value at
+$w^2=\tfrac14$. Since $\xi(1)=\tfrac12$, this gives
+\[
+ 2\xi(\tfrac12+w)
+ =\prod_n\frac{\gamma_n^2+w^2}{\gamma_n^2+\tfrac14},
+\]
+which is \eqref{eq:Hproduct}. Summability justifies taking the logarithmic
+power series near zero, proving \eqref{eq:logmoments}. Finally
+$H'(0)/H(0)=\xi'(1)/\xi(1)$. Substitute the Laurent expansion
+$\zeta(1+u)=u^{-1}+\gamma_E+O(u)$ into the defining completion, together
+with $\Gamma'(1/2)/\Gamma(1/2)=-\gamma_E-2\log2$, to obtain
+\eqref{eq:p1}.
+\end{proof}
+
+\begin{corollary}[Complete zeta-zero cluster certificates]\label{cor:zeta}
+Use certified moment enclosures from \eqref{eq:logmoments}. Suppose
+$0<\tau<a_i-r_i<a_i+r_i<4$, and the tests of
+Corollary~\ref{cor:noise} succeed. Then every positive-ordinate nontrivial
+zeta zero with
+\[
+ \gamma\le T:=\sqrt{\tau^{-1}-\tfrac14}
+\]
+lies in one of the disjoint intervals
+\begin{equation}\label{eq:gammawindows}
+ J_i=\left(
+ \sqrt{(a_i+r_i)^{-1}-\tfrac14},\quad
+ \sqrt{(a_i-r_i)^{-1}-\tfrac14}\right).
+\end{equation}
+The certified integer $n_i$ is the number of zeros in $J_i$, counting
+multiplicity, and the total count is $\sum_i n_i$. If the threshold is not
+a spectral value, arbitrarily narrow such certificates exist.
+\end{corollary}
+\begin{proof}
+The map $x\mapsto\sqrt{x^{-1}-1/4}$ is decreasing on $(0,4)$ and carries
+\eqref{eq:zetanodes} back to the positive ordinates. Apply the preceding
+theorems. The threshold and boundary exclusions are supplied by the
+no-missing certificate.
+\end{proof}
+
+For numerical conditioning it is convenient to use $y_n=cx_n$ for a
+positive scale $c$. Replace $H(z)$ by $H(cz)$ and replace $x^{-1}$ in
+\eqref{eq:gammawindows} by $c/y$. All abstract formulas are unchanged.
+
+\subsection{Scope of the Dirichlet extension}
+
+The abstract theorem applies to any positive trace-class spectrum with
+integer multiplicities, using $p_j=\tr(T^j)$. Its Dirichlet application is
+also straightforward once the spectral count convention is fixed.
+For a primitive nonprincipal character $\chi$, form the product of the
+completed $L$-functions for $\chi$ and $\overline\chi$. Their functional
+equations make the product even about $s=1/2$. Under Dirichlet GRH its
+noncentral zeros lie on that line. Remove its central factor first, and
+apply the even paired canonical product as above. The resulting positive
+moments certify combined noncentral zero counts for the pair.
+
+For a real character, using the character twice doubles those counts; one
+can instead use the appropriately normalized single completion after
+removing its central zero. The zeta completion handles the primitive
+principal character. Imprimitive characters should be reduced to their
+primitive inducing characters, treating their additional Euler factors
+separately. Central vanishing is not excluded by Dirichlet GRH and must
+not be silently discarded. We do not claim that the inspected repository
+proves GRH for all automorphic or Artin $L$-functions.
+
+\subsection{Relation to earlier reconstruction results}
+
+Finite moment reconstruction and polynomial dual certificates are
+established methods. De Castro and Gamboa prove recovery of a nonnegative
+measure on $s$ points from $2s+1$ generalized moments \cite{decg}.
+Batenkov and Yomdin quantify the conditioning of finite Prony systems
+\cite{prony}; Cand\`es and Fernandez-Granda give stable recovery results
+from noisy bandlimited data under separation hypotheses \cite{superres}.
+Cardon and de Gaston connect orthogonal polynomials to RH with simple
+zeros \cite{cardon}.
+
+A particularly close recent comparison is \emph{A finite arithmetic test
+for simplicity of the Riemann zeros, after Suzuki} \cite{ald}. It compares
+multiplicity-weighted Taylor moments with finite operator-compression
+traces to detect excess multiplicity. The present certificate uses direct
+positive moments, a candidate polynomial, and scalar Hermite bounds to
+certify complete cluster counts. It makes no distinction between a repeated
+root and multiple roots within a cluster of count greater than one.
+
+The specific contribution proposed here is the combination of an infinite
+summable integer spectrum, an explicit residual and count constant, a
+fixed-width shifted moment window, rigorous input-error propagation, and
+eventual rational certificates. None of the cited classical ingredients is
+claimed as new, and the literature search does not establish priority for
+the combined formulation.

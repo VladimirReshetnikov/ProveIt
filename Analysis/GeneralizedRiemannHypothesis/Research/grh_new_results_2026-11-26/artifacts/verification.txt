@@ -1,0 +1,42 @@
+VERIFICATION RECORD — 26 NOVEMBER 2026
+
+Mathematical review:
+- Residual/Hermite count theorem independently checked, including exact
+  constants, infinite summability, interval endpoints, integer rounding,
+  the empty-spectrum case, and the adaptive certificate argument.
+- Algorithmic threshold explicitly restricted to rational input.
+- The determinant proof independently checked: local bounds 9,24,12,
+  zero-minor penalty, incidence multiplicities, complementary-minor boundary
+  case, equality examples, and the norm consequence.
+- Zeta symmetry quotient, paired product, p1 normalization, scaling, and
+  Dirichlet count conventions independently checked.
+- Finite-factor surgery verified through the power-sum Jacobian and the
+  constructive Newton/endpoint-sign alternative.
+
+Executable exact arithmetic:
+- certify.py: exact infinite-tail model passes at K=25; rounded valid moment
+  enclosures and slightly perturbed centers pass. The omitted-cluster and
+  coarse-precision negative controls fail as expected.
+- Hermite values and first derivatives checked exactly at all centers.
+- Non-integer K input is rejected rather than silently truncated.
+- determinant_verify.py: four rank-two equality cases and one rank-three
+  complementary case checked exactly. Optional bounded enumeration is only
+  supplementary evidence, not the proof of the theorem.
+- surgery_verify.py: rational Newton identities, disjoint positive root
+  brackets, and coefficient cancellation through t^4 checked exactly.
+
+Numerical illustration:
+- zeta_demo.py: 100 decimal digits, 96 and 128 contour samples. Agreement is
+  a consistency check; mpmath evaluations are not rigorous enclosures.
+- The analytic Cauchy-alias bound is proved in the report, but displayed
+  numerical evaluations of that bound are not outward-rounded intervals.
+- No certified actual-zeta count is claimed from this run.
+
+Document:
+- Complete LaTeX compilation, resolved references, and page rendering checked.
+- Figures use exact theorem formulas or exact-checker output.
+
+Formal status:
+- No complete Lean formalization of the new theorems was run.
+- No independent compilation/kernel replay of grh-lean was performed.
+- Historical novelty is not certified and external peer review has not occurred.

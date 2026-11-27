@@ -1,0 +1,88 @@
+Repository source review
+Date: 2026-11-26
+
+Repository:
+  https://github.com/lsernau/grh-lean
+Pinned commit:
+  72fead102f663d5c7a407964a13dc0cf9d977207
+Commit date reported by GitHub:
+  2026-11-25T20:38:07Z
+
+Purpose and limits
+This is a focused source review supporting the mathematical report. The
+repository's full proof was not rebuilt or replayed in this session. The
+new sampling theorems were checked through their written arguments by
+assistant agents; they have not been independently certified or formally
+verified in Lean. The formalization file is explicitly an uncompiled
+architecture outline.
+
+What was directly inspected
+Read-only GitHub access was used to inspect the root README, readable-edition
+README and GUIDE, public Statements/Main files, the main inequality and
+one-sided reduction, prime-error transform, Landau lemmas, quadratic-twist
+zero-density argument, toolchain, Lake configuration, manifest and
+PrintAxioms script. Exact source paths, URLs and Git blob SHAs for the fetched
+code/configuration files appear in upstream_source_manifest.json. That
+manifest identifies inspected upstream material; it is not a record of
+local compilation or a proof certificate.
+
+Public theorem scope
+The five public theorems state:
+1. Mathlib's RiemannHypothesis;
+2. nontrivial zeta zeros have real part 1/2;
+3. Dirichlet L-functions do not vanish to the right of 1/2, with the
+   principal-character pole at s=1 excepted;
+4. zeros of Dirichlet L-functions in 0<Re(s)<1 have real part 1/2;
+5. the preceding assertion for primitive characters.
+All positive moduli and primitive or imprimitive Dirichlet characters are
+included. The repository does not claim general automorphic or Artin GRH.
+
+Verification reported by the repository
+The readable-edition README reports compilation without errors or sorry in
+src/, the axiom set propext/Classical.choice/Quot.sound, and acceptance of
+exports of the five theorems by nanoda, con-leche and con-ron. It also reports
+Comparator acceptance. These are upstream reports, not checks reproduced
+here. Challenge.lean deliberately has statement placeholders; the README
+says it is not imported or part of the default build. The development pins
+Lean v4.35.0 and Mathlib
+56a005855ea17e0b0958f73ec801ae140b0a1679.
+
+Mathematical interface checked
+The upstream arithmetic argument compares upper and lower bounds for a
+corrected lattice covolume and obtains a one-sided smoothed prime error.
+The prime-error coefficients are
+  1_(n=1 mod q) Lambda(n) (1-(n/d)),
+which are nonnegative.
+
+The report's normalization E(x)=xR(x) turns this sum into nonnegative
+convex ramps minus (a*x*log(x)+c*x). Here a=1/phi(q), and the entire centered
+term is subtracted. If
+  W(s)=a/(s-1)+b+O(s-1),
+the centering constant is c=b-a. This agrees with the upstream identity
+  W(s)=a*s/(s-1)+logDerivMean(s).
+Direct Mellin integration gives
+  M[E](s)=W(s)/(s(s-1))-a/(s-1)^2-c/(s-1).
+The Laurent coefficients at s=1 cancel.
+
+Away from s=0,1 the residue is
+  (sum untwisted zero orders - sum twisted zero orders)
+  /(phi(q)*s*(1-s)).
+The upstream twist-avoidance theorem supplies an auxiliary prime for which
+the twisted orders vanish in a prescribed right-half-plane rectangle.
+That rectangle includes every real point above its threshold. These are
+the exact sign and zero-multiplicity inputs used by the report.
+
+The existing IsPolar.landau is a classical pointwise one-sided Landau
+criterion. The report proves its required positive-part-integrability
+version in ordinary mathematical language. The sampling refinement and
+sharp convex interpolation costs are proved separately from the arithmetic
+GRH construction.
+
+The source's bad-twist count has exponent
+  1-(beta-1/2)/18.
+The optional sparse-auxiliary-prime corollary uses a strict growth
+advantage over that bound. It does not assert an unsupported equality case.
+
+No full upstream source is redistributed in this package. Pinned source
+references and the manifest permit retrieval of the exact inspected files.
+

@@ -1,0 +1,143 @@
+UPSTREAM SOURCE AUDIT
+Date: 2026-11-26
+Repository: https://github.com/lsernau/grh-lean
+Commit: 72fead102f663d5c7a407964a13dc0cf9d977207
+Tree: 5eb1240f03e791edd3fc7aa84a3a7d8dc3997b7f
+
+Scope and status
+The inspected Statements.lean imports Mathlib and states RH, Dirichlet
+nonvanishing for Re(s)>1/2 except principal-character s=1, and zeros on the
+critical line for 0<Re(s)<1, for all moduli N>=1 and all characters.
+This is Dirichlet GRH, not a blanket theorem for all automorphic or Artin
+L-functions. Main.lean exports riemannHypothesis,
+riemannZeta_eq_zero_re, LFunction_ne_zero_of_half_lt_re,
+LFunction_eq_zero_re, and LFunction_eq_zero_re_of_isPrimitive.
+
+The README reports kernel compilation with only propext, Classical.choice,
+Quot.sound and independent acceptance by nanoda, con-leche and con-ron.
+This audit inspects source and declarations; it does not independently
+rebuild the approximately 300,000-code-line readable development.
+Pinned Lean: v4.35.0.
+Pinned Mathlib: 56a005855ea17e0b0958f73ec801ae140b0a1679.
+The top README calls the project machine-checked and says no mathematician
+has read the complete proof. Challenge.lean's documented sorry placeholders
+are outside the build/import graph; no inference should be made from their
+presence about the exported theorem axioms.
+
+Main proof architecture
+1. Theorem A: span_short_integralRamified_eq_top and
+   indexLe_normalizedPoincare supply short integral source forms and an index.
+2. Theorem B: enough_forms supplies sufficiently many independent translates.
+3. Theorem C: integral_forms_long supplies a lower bound on the same corrected
+   covolume via twists, determinant ratios and product-formula heights.
+4. star_inequality cancels the common main term to give
+   D.m * D.totalRemainder <= D.f * D.a * D.logB^5.
+5. eventually_primeRemainder_le_rpow gives the one-sided bound
+   R(y)<=y^(-1/2+epsilon) eventually for a specially arranged modulus/twist.
+6. LFunction_ne_zero_of_primeRemainder_le uses a polar Landau criterion and
+   selection of a quadratic twist with no interfering zeros, converting
+   that bound into zero-free half-planes.
+7. New.zeros_on_line and New.zeta_zeros_on_line use the functional equation.
+
+Portable finite-field ingredient
+File grh/src/New/Spanning/SecondMoment/PositiveType.lean.
+Nonnegative real Theta on finite G is of positive type if
+Theta(a^-1 b)=<u_a,u_b> for complex Hilbert-space vectors u_a.
+For pi:G->GL_n(F_q), A0,A1 in Mat_{n,m}(F_q), and uniform bound Y on the
+Theta-mass of the pi stabilizer of A0*v and contragredient-pi stabilizer of
+A1*v for every v!=0, card_mul_sum_det_eq_zero_le gives
+  q * sum_{det(A1^T pi(g) A0)=0} Theta(g)
+  <= 2*sum_g Theta(g) + q^m*q^(n/2)*Y.
+The intermediate re_sum_addChar_dotProduct_mul_le proves a Fourier estimate
+by tensoring finite Fourier/delta basis vectors with u_a and applying
+Cauchy-Schwarz. This supplies a concrete bridge from the GRH proof to
+random compressed matrices over finite fields.
+
+Source links are formed by prefixing each local grh/... path with
+https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/
+LICENSE and grh/NOTICE are included for the copied Apache-2.0 source files.
+
+PRIOR-ART CHECK FOR THE SYMPLECTIC PROJECTION EXTENSION
+Classical counting of symplectic subspaces by dimension and radical is
+well-established and should not be claimed as new here. Relevant sources:
+* Z.-X. Wan, Anzahl theorems in finite singular symplectic, unitary and
+  orthogonal geometries (1993), DOI 10.1016/0012-365X(93)90013-J.
+* J. Guo, F. Li, K. Wang, Anzahl formulas of subspaces in symplectic spaces
+  and their applications, Linear Algebra Appl. 438(8), 3321-3335 (2013),
+  DOI 10.1016/j.laa.2012.12.008.
+* K. Ishizuka, Uniform Sampling of Linear Codes with Prescribed Hull
+  Dimension, arXiv:2611.03578v2 (2026-11-25).
+  https://arxiv.org/html/2611.03578v2
+
+Ishizuka Sections 3.2 and 4 were read. The paper treats exact uniform
+sampling of form-prescribed code subspaces by the isometry group,
+early stopping of sequential group sampling, classical symplectic orbit
+counts, and uniform symplectic bases. It does not state the half-projection
+matrix likelihood ratio or its total-variation limit in those sections.
+The title/abstract and relevant sections of these sources support a scoped
+claim of a newly derived projection-distribution theorem; this is not an
+exhaustive priority certification.
+
+Additional related rank-moment literature (for distinguishing old tools):
+* P. Delsarte, Bilinear forms over a finite field, with applications to
+  coding theory, J. Combin. Theory A 25(3), 226-241 (1978),
+  DOI 10.1016/0097-3165(78)90015-8.
+* I. Blanco-Chacon, E. Byrne, I. Duursma, J. Sheekey, Rank-Metric Codes
+  and Zeta Functions, arXiv:1705.08397 (2017).
+* E. Byrne, G. Cotardo, A. Ravagnani, Rank-Metric Codes, Generalized
+  Binomial Moments and their Zeta Functions, arXiv:1912.01928 (2019).
+* S. Gurevich, R. Howe, Ranks for Representations of GL(n) Over Finite
+  Fields, their Agreement, and Positivity of Fourier Transform,
+  arXiv:2107.02240 (2021).
+
+INDEPENDENT VERIFICATION OF THE NEW FIXED-PROJECTION COUNT
+The block-count derivation was checked independently, including q even.
+For A of nullity k, K=ker A, t=dim(K intersect rad H), the necessary
+condition is H|K=0. Then full B extensions number
+q^{n(n+1)/2+k(k-1)/2} product_{j=k-t+1}^k(1-q^-j).
+The reason is B11 has a prescribed alternating difference, B12 is fixed
+of rank k-t, B21 is free, and B22 must be injective on ker B12.
+The normalization from symplectic frame orbits is
+q^{n(3n+1)/2} product_{i=s+1}^n(1-q^-2i), where rank H=2s.
+The script symplectic_count_check.py directly enumerates all A,B at
+(q,n)=(2,2),(3,2),(2,3), computing full rank and Gram matrices separately.
+It verifies 4371 exact (A,H) counts across 268961 pairs. All pass.
+The enumeration is evidence for small cases, not a substitute for proof.
+
+INDEPENDENT REVIEW OF THE NONDEGENERATE-H MAIN THEOREM
+Let n>=2 be even and H nondegenerate alternating of size n. Then t=0,
+s=n/2, and C=product_{j=n/2+1}^n(1-q^-2j). The likelihood ratio is
+  1_{ker A H-isotropic} q^{k(k-1)/2}/C,
+which is at least 1 on its support. Therefore the full matrix-law total
+variation distance from uniform is exactly the uniform probability that
+ker A is not H-isotropic. No approximation is used in this identity.
+
+The conditional probability that a uniform k-subspace is H-isotropic is
+  a_n(k)=q^{-k(k-1)/2} product_{i=0}^{k-1}
+           (1-q^{2i-n})/(1-q^{i-n})
+for k<=n/2, and 0 otherwise. This follows by dividing the counts of ordered
+isotropic and unrestricted independent k-tuples. The rank-law likelihood
+is q^{k(k-1)/2}a_n(k)/C; it is 1/C at k=0,1 and below 1 at every k>=2.
+For the latter assertion, the product decreases with k and its k=2 value
+A2 satisfies
+  1-A2=(q^2-q)q^-n/(1-q^{1-n}),
+  1-C<q^-n/(q^2-1).
+Thus A2<C. When k exceeds n/2 the likelihood is simply zero.
+
+Writing u_n(k) for the uniform square-matrix corank law, exact rank TV is
+  (u_n(0)+u_n(1))(C^-1-1).
+Since C^-1-1~q^-n/(q^2-1), its first-order asymptotic is
+  [(p_q(0)+p_q(1))/(q^2-1)] q^-n,
+where p_q(k)=q^-k^2 P_infinity/P_k^2 and P_k=product_{j=1}^k(1-q^-j).
+Meanwhile full matrix TV tends to
+  delta_q=sum_{k>=2}p_q(k)(1-q^{-k(k-1)/2})>0.
+Dominated convergence is justified, for example, by
+u_n(k)<=q^-k^2/P_infinity^2, a summable majorant independent of n.
+
+Targeted exact-phrase web searches on random symplectic submatrices,
+symplectic block rank distributions, isotropic kernels, and total variation
+found no matching rank-versus-full-matrix-law separation theorem. The
+nearest primary sources were the classical counts above, Ishizuka's
+samplers, and Fulman--Goldstein's rank distributions for independent or
+symmetry-constrained matrices (arXiv:1211.0504). This supports only a
+scoped novelty claim; it is not an exhaustive literature certificate.

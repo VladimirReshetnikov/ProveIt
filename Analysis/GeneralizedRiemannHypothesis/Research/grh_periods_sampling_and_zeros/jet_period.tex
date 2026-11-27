@@ -1,0 +1,170 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1.02in]{geometry}
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{163F57}
+\usepackage[colorlinks=true,allcolors=ink]{hyperref}
+\usepackage{enumitem}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\DeclareMathOperator{\rad}{rad}
+\newcommand{\ordp}{v_p}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\pinned}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b9a7c196e4aed3d93d4f222efef677a50efe912b/Analysis/GeneralizedRiemannHypothesis/#1}{#2}}
+\newcommand{\upstream}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/#1}{#2}}
+\setlength{\emergencystretch}{1.5em}
+\title{The least period of a Lubin--Tate\texorpdfstring{\\}{ } jet-recovery threshold}
+\author{}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+\begin{abstract}
+When several formal branches meet, each additional digit of coefficient precision changes the number of Taylor coefficients needed to distinguish them. For contacts of depths zero and one, we determine the least period of the correction to this linear growth. A finite maximum involving valuations of the integers $1$ through $m-1$ gives the period for every residue characteristic, ramification index and contact multiplicity. The worst loss occurs precisely at multiples of the period. In an unramified field, $m=p^a$ contacts of depth one produce period $p^{m-1}$, although the loss, measured in units of the growth slope, never exceeds $m-1$. For arbitrary depths we bound the eventual period and its starting index independently of the maximum contact depth. An exact example shows that adding shallower contacts can double the least period. The arguments concern local formal power series and require no hypothesis on zeros of $L$-functions.
+\end{abstract}
+
+\section{A periodicity question from branch interpolation}
+Work over a finite extension $K$ of $\QQ_p$ with integer ring $\OO$, uniformizer $\pi$, ramification index $e=v_\pi(p)$ and residue field of size $q$. Fix distinct directions $S\subset\OO$ with $|S|=d$. In a Lubin--Tate formal $\OO$-module, each direction $c$ supplies a formal branch $Y=[c](X)$. One samples an unknown bivariate series along the branches to recover its jet, the coefficients of total degree less than $d$. All observations and outputs here are taken over $A_r=\OO/\pi^r$.
+
+For example, take $K=\QQ_2$ and sample at $b=0$ together with eight distinct directions congruent to $2$ modulo $4$. The number of coefficients required at $b$ has a linear upper bound $16+r$. Its exact shortfall from that bound is at most seven. The first shortfall of seven occurs at precision $r=128$, and it occurs again precisely at the multiples of $128$. Replacing eight by sixteen moves the first worst case to $r=32768$. The size of the worst shortfall and the waiting time for it therefore obey very different growth laws.
+
+\paragraph{Relation to the three requested sources.}
+The RH article \cite{wiki} locates the nontrivial zeta zeros on the critical line and discusses Alp\"oge's formal proof. The inspected Lean repository exports Mathlib's RH and corresponding assertions for Dirichlet $L$-functions at the commit in \cite{lean}. The connection with interpolation comes from a different part of that development. Its lemma \texttt{New.exists\_monomial\_max\_norm\_coeff} bounds a chosen coefficient in integral formal substitutions by a monomial attaining the maximum norm. This suggests looking for a coefficient witnessing the sharpness of each precision estimate. Below the witnesses come from a negative binomial series.
+
+The ProveIt directory catalogs 61 research packets and describes their placement as archival \cite{catalog}. A packet building on Berger and Sprang's interpolation problem \cite{bs} identifies the exact depth-one threshold \cite{jets}. Two others prove eventual periodicity, supply a finite-ring recursion or ask for the least period directly from the contact multiplicities \cite{pattern,graph}. Our depth-one formula evaluates that least period in terms of $m,p,e$ and identifies every occurrence of the maximum shortfall. Kwong's classical theorem determines the period of binomial coefficients at a fixed modulus \cite{kwong}. Our sequence takes the last surviving coefficient at a precision that changes with its index. Priority beyond the sources examined remains open. The new arguments are mathematical proofs accompanied by exact computations.
+
+\section{Sharp recovery at one contact depth}
+For a fixed branch $b$ write $u_c=[c](X)\bmod\pi^r$ and $\Delta_b=\prod_{c\ne b}(u_b-u_c)$. Put
+\[
+ t_b(r)=\min\{t\ge0:X^t/\Delta_b\in A_r[[X]]\}.
+\]
+The reciprocal is taken in $A_r((X))$. Observing $n$ coefficients means retaining the terms of degrees $0$ through $n-1$.
+
+\begin{lemma}[Branch interpolation, after the ProveIt packets]\label{lem:interp}
+The exact componentwise sampling requirements are $n_b\ge 1+t_b(r)$ for every $b$.
+If $v_\pi(c-b)\in\{0,1\}$ for every $c\ne b$, let $m$ count those contacts of depth one, set $D=q-1$, and write $W=d-1+Dm$. For $m\ge1$ one has
+\begin{equation}
+ t_b(r)=W+D K(r-1),\qquad
+ K(n)=\max\left\{0\le k\le n:\ k+e\ordp\binom{k+m-1}{m-1}\le n\right\}.
+ \label{eq:survive}
+\end{equation}
+With $m=0$, the threshold $t_b(r)=d-1$ is constant.
+\end{lemma}
+\begin{proof}
+Use the Lubin--Tate coordinate $[\pi](X)=\pi X+X^q$ \cite{lt}. The formal group identity $F(U,V)-U=V$ times a unit shows that $[b]-[c]$ is associated to $[b-c]$. Multiplication by a unit of $\OO$ gives an endomorphism with unit linear coefficient. Hence a depth-$j$ difference is associated to the $j$-fold iterate of $[\pi]$, with $X$ as the zeroth iterate. Each iterate is monic and reduces to a power of $X$ modulo $\pi$, so it becomes a unit after inverting $X$ modulo $\pi^r$. Changes of Lubin--Tate coordinate preserve the threshold by substituting $X$ times an integral unit and multiplying branch differences by units.
+
+Put $P(Y)=\prod_{c\in S}(Y-u_c)$ and $P_b(Y)=P(Y)/(Y-u_b)$. Division by the distinguished monic polynomial $P$ over $A_r[[X]]$ preserves the total-degree jet, as $P\in(X,Y)^d$. The remainder of any $H$ is $\sum_b H(X,u_b)P_b/\Delta_b$ by Lagrange interpolation after inverting $X$. If all observations vanish to order $1+t_b(r)$, each quotient $H(X,u_b)/\Delta_b$ lies in $X A_r[[X]]$. Each $P_b$ lies in $(X,Y)^{d-1}$, proving sufficiency. For necessity use $(X^{t_b(r)}/\Delta_b)P_b$. Its $Y^{d-1}$ coefficient has nonzero constant term by minimality of $t_b(r)$, and its only nonzero branch evaluation is $X^{t_b(r)}$. The case $d=1$ follows directly.
+
+In the depth-one setting the denominator is associated to
+$X^{d-1}(\pi+X^D)^m=X^W(1+\pi X^{-D})^m$. On inversion, the term indexed by $k$ has exponent $-W-Dk$ and coefficient $(-\pi)^k\binom{k+m-1}{m-1}$. Distinct indices have distinct exponents. Precisely the indices in \eqref{eq:survive} survive at level $r$. The case $m=0$ follows from the pure power of $X$.
+\end{proof}
+
+\section{The least period and the first worst precision}
+Define $\delta(n)=n-K(n)$. The loss in $t_b(r)$ relative to its linear upper bound $W+D(r-1)$ is $D\delta(r-1)$. Its period also equals that of $t_b(r)-Dr$. With one depth-one contact the loss vanishes identically. Every higher multiplicity occurs: fix $b$ and choose $m$ distinct directions in $b+\pi+\pi^2\OO$.
+
+\begin{theorem}\label{thm:period}
+Suppose $m\ge2$ and set $h=m-1$. Define
+\begin{equation}
+ L=\max_{1\le j\le h}\left(\left\lceil j/e\right\rceil+v_p(j)\right),
+ \qquad T=p^L.\label{eq:period}
+\end{equation}
+The defect $\delta(n)$ is periodic from $n=0$ with least period $T$. At every precision $0\le\delta(r-1)\le h$ and
+\[
+                   \delta(r-1)=h\quad\Longleftrightarrow\quad T\mid r .
+\]
+In particular $T$ is the first precision attaining the maximum loss. Its multiples have density $1/T$.
+\end{theorem}
+
+The proof identifies the first worst precision with an integer matrix divisibility threshold. That threshold also translates all subsequent precisions by the same amount.
+
+\begin{lemma}[A Jordan block realizes the threshold]\label{lem:jordan}
+Let $N$ be the nilpotent $m\times m$ Jordan block with ones just above the diagonal, and put $J=\pi I+N$. Write $\nu_r$ for the least $s\ge1$ such that $J^s\in\pi^r M_m(\OO)$. Then
+\[
+ \nu_r=m+K(r-1),\qquad r\le\nu_r\le r+h,
+ \qquad \delta(r-1)=r+h-\nu_r.
+\]
+\end{lemma}
+\begin{proof}
+Over $A_r$, the action of $J$ on its cyclic module is multiplication by $X$ in $A_r[X]/(X-\pi)^m$. Indeed the last standard basis vector and its images under successive powers of $J-\pi I$ give a basis. Since powers of $\pi$ vanish in $A_r$, the inverse of $(X-\pi)^m$ in $A_r((X))$ is the Laurent polynomial
+\[
+ X^{-m}\sum_{k=0}^{r-1}\pi^k\binom{k+h}{h}X^{-k}.
+\]
+A power $X^s$ belongs to the polynomial ideal $((X-\pi)^m)$ exactly when this inverse times $X^s$ has no negative exponent. Its least such $s$ is $m+K(r-1)$. The diagonal of $J^s$ equals $\pi^s$, giving $\nu_r\ge r$. The upper bound follows from $K(r-1)\le r-1$, and the equality for $\delta$ follows by substitution.
+\end{proof}
+
+\begin{lemma}[Return of a unipotent matrix to the integral lattice]\label{lem:return}
+For every positive integer $s$,
+\[
+ (I+\pi^{-1}N)^s\in M_m(\OO)\quad\Longleftrightarrow\quad T\mid s.
+\]
+Whenever the power is integral, it belongs to $\mathrm{GL}_m(\OO)$.
+\end{lemma}
+\begin{proof}
+The $j$th superdiagonal entry of this matrix is $\pi^{-j}\binom{s}{j}$ for $1\le j\le h$, with $\binom{s}{j}=0$ for $j>s$. Let $a$ satisfy $p^{a-1}\le h<p^a$. Set $u=v_p(s)$. From $j=p^{a-1}$ in \eqref{eq:period} we have $L\ge a$.
+
+If $u<a$, take $j=p^u\le h$. In $\mathbb F_p[z]$, the coefficient of $z^{p^u}$ in $(1+z)^s=(1+z^{p^u})^{s/p^u}$ is nonzero. Thus the corresponding superdiagonal entry fails integrality. If $u\ge a$, every $j\le h$ is less than $p^u$. The identity
+\[
+ \binom{s}{j}=\frac{s}{j}\binom{s-1}{j-1}
+\]
+shows that $v_p\binom{s}{j}=u-v_p(j)$. Indeed $s-1$ ends in $u$ digits $p-1$ in base $p$, and $j-1<p^u$. Equivalently the coefficients of $(1+z)^{s-1}$ through degree $p^u-1$ equal those of $(1+z)^{-1}$ modulo $p$. Therefore the $j$th superdiagonal entry is integral precisely when $e(u-v_p(j))\ge j$. All entries are integral exactly when $u\ge L$. The power has determinant one, so its inverse is integral whenever its entries are.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:period}]
+Put $U=(I+\pi^{-1}N)^T\in\mathrm{GL}_m(\OO)$. For any $s\ge0$ the identity $J^{s+T}=\pi^T J^sU$ implies
+\[
+ J^{s+T}\in\pi^{r+T}M_m(\OO)
+ \quad\Longleftrightarrow\quad J^s\in\pi^rM_m(\OO).
+\]
+At $s=\nu_r$ this gives vanishing, and at $s=\nu_r-1$ it gives nonvanishing. Hence $\nu_{r+T}=\nu_r+T$ and $\delta(r-1)$ is periodic as asserted. Its maximum possible value $h$ is attained exactly when $\nu_r=r$, equivalently when $\pi^{-r}J^r$ is integral. Lemma~\ref{lem:return} gives $T\mid r$. Every eventual period must preserve the set of positive multiples of $T$ at arbitrarily large indices, forcing it to be a multiple of $T$.
+\end{proof}
+
+\paragraph{Computing the exponent.}
+It takes at most $1+\lfloor\log_p h\rfloor$ candidate indices to evaluate \eqref{eq:period}. For $0\le i\le\lfloor\log_p h\rfloor$ set $j_i=p^i\lfloor h/p^i\rfloor$. Then
+\[
+   L=\max_{i}\bigl(i+\lceil j_i/e\rceil\bigr).
+\]
+The right side is at most \eqref{eq:period} since $p^i\mid j_i$. Conversely any $j$ with $v_p(j)=i$ lies at most at $j_i$. This also shows that increasing the contact multiplicity can only increase the least period weakly.
+
+\begin{corollary}[Exponential periods in an unramified field]\label{cor:power}
+If $e=1$ and $m=p^a$ with $a\ge1$, the least period is $p^{m-1}$.
+\end{corollary}
+\begin{proof}
+Here $j_i=m-p^i$ for $0\le i<a$, giving $L=\max_i(m-p^i+i)=m-1$ since $p^i\ge i+1$, with equality at $i=0$.
+\end{proof}
+
+\paragraph{Ramification can shorten the period.}
+For fixed $p,m$, formula \eqref{eq:period} decreases weakly as $e$ grows. When $e\ge h$, it gives $T=p^{1+\lfloor\log_p h\rfloor}$, the least power of $p$ greater than $h$. For $p=2$, $m=4$, the complete defect words as $r$ runs from one through one period are
+\[
+\begin{array}{ccl}
+e&T&\delta(r-1)\\ \hline
+1&8&(0,1,2,1,0,1,2,3)\\
+2&4&(0,1,2,3).
+\end{array}
+\]
+At $p=2$, $e=1$, $m=10$, the term $j=8$ gives $L=8+v_2(8)=11$ and $T=2048$. Here the maximum is attained strictly before the endpoint $j=m-1$. Lemma~\ref{lem:jordan} also interprets every example as a statement about a concrete nilpotent matrix over $\OO/\pi^r$.
+
+\input{mixed_period.tex}
+
+\section{Verification and further questions}
+The script \texttt{checks/jet\_period.py} evaluates the depth-one defect directly from the surviving integer coefficients. On 280 parameter triples it finds the shortest repeating word in two complete periods. It tests periodicity and a shorter-period obstruction on a further 80 triples with larger periods. Independently, 288 computations of powers of $X$ in polynomial quotient rings reproduce the cutoffs for $K=\QQ_p$. Direct evaluation of Jordan powers supplies 1,881 further checks, including ramified fields and small precisions $r<m$. The proofs establish the assertions for all parameters.
+
+For greater contact depths, can the least period and the set of worst precisions be described by a digit formula of comparable size to \eqref{eq:period}? For which mixed contact profiles is the largest possible loss attained on a single residue class?
+
+\begin{thebibliography}{9}\small
+\bibitem{wiki} Wikipedia contributors, \href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{\emph{Riemann hypothesis}}, sections on the formulation, formal proof, and Dirichlet $L$-series. Consulted 26 November 2026.
+\bibitem{lean} L. Sernau and contributors, \emph{GRH for Dirichlet $L$-functions in Lean 4}, commit \texttt{72fead102f66}. \upstream{src/Statements.lean}{Public predicates}, \upstream{src/Main.lean}{exported theorems}, and \upstream{src/New/Derivatives/Sharpness/OneCurve.lean}{coefficient extremality in formal substitutions}.
+\bibitem{catalog} V. Reshetnikov, ProveIt, commit \texttt{b9a7c196e4ae}, \pinned{README.md}{Generalized Riemann Hypothesis research catalog}. The three following ProveIt sources use the same snapshot.
+\bibitem{bs} L. Berger and J. Sprang, \href{https://arxiv.org/abs/2502.18053v2}{\emph{Integer-valued polynomials and $p$-adic Fourier theory}}, 2025, Lemma 4.2 and Proposition 4.4.
+\bibitem{jets} ProveIt, \pinned{Research/grh_method_transfers_orthogonal_jets_2026-11-26/sections/jets.tex}{\emph{Sharp finite-precision recovery along Lubin--Tate branches}}, especially the all-precision depth-one formula.
+\bibitem{pattern} ProveIt, \pinned{Research/grh_prime_patterns_and_branch_precision/periodicity.tex}{\emph{The exact defect at every level}}, finite-ring computation and period bound.
+\bibitem{graph} ProveIt, \pinned{Research/grh_transfers_lubin_tate_and_graph_towers/branches.tex}{\emph{How much of each formal branch must one observe?}}, and its \pinned{Research/grh_transfers_lubin_tate_and_graph_towers/discussion.tex}{further question on the least period}.
+\bibitem{kwong} Y. H. Harris Kwong, \href{https://doi.org/10.1080/00150517.1989.12429549}{\emph{Minimum periods of binomial coefficients modulo $M$}}, Fibonacci Quarterly 27 (1989), 348--351.
+\bibitem{lt} J. Lubin and J. Tate, \href{https://doi.org/10.2307/1970622}{\emph{Formal complex multiplication in local fields}}, Ann. of Math. 81 (1965), 380--387.
+\end{thebibliography}
+\end{document}

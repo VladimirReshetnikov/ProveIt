@@ -1,0 +1,264 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=0.95in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\Z}{\mathbb Z}
+\newcommand{\ord}{\operatorname{ord}}\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\supp}{\operatorname{supp}}\newcommand{\dd}{\,\mathrm d}
+\newcommand{\LL}{\mathcal L}\newcommand{\e}{\mathrm e}
+\title{Simultaneous balancing of prime errors in bounded logarithmic windows\\[3pt]\large Spectral rank and positive zero-annihilating kernels after GRH}
+\author{Research note and reproducibility package}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The one-sided prime-error argument in the Alp\"oge--Claude proof of the generalized Riemann hypothesis uses a weighted ramp sum and selects a second scale in a long window. Taking the proved Dirichlet GRH as input, we establish a different, simultaneous balancing principle for these ramp sums. For every fixed modulus $q$, the convex hull of the vector of normalized prime errors in a bounded logarithmic window contains a fixed ball about the central-zero bias, uniformly for all sufficiently large centers. Thus at most $\varphi(q)+1$ scales suffice for exact simultaneous balancing. The key spectral rank lemma is unconditional: the noncentral zero-multiplicity vectors of distinct primitive Dirichlet $L$-functions span the full character space. Its proof uses Hadamard factorization, the gamma recurrence, and character orthogonality, not simplicity or independence of zero ordinates. A complementary positive convolution kernel annihilates the low critical zeros and attenuates the rest exponentially in their number; this gives a center-independent averaging rule of support $O_q((\log\log x)^2)$ in log-scale and error $O_{q,\epsilon}(x^{-1+\epsilon})$ when translated back to the ramp sum with its normalized weighting. All new claims are proved mathematically here; the novelty of the exact formulation is proposed rather than certified by an exhaustive literature search.
+\end{abstract}
+
+\section{Source, scope, and the new theorem}
+The repository \cite{repo}, at commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, is a compact and a readable rewriting of the November 2026 formal proof announced by Alp\"oge \cite{alpoge}. The compact statement file imports Mathlib alone. Its exported theorems assert ordinary RH, nonvanishing of Dirichlet $L$-functions to the right of $1/2$ (except the principal pole), and critical-strip zero location for all characters. The repository reports kernel and Comparator checks using only the usual three Lean axioms. Independent checks of the original development are reported by Rubinstein \cite{rubinstein}. We do not replay these builds or claim a human audit of the full source. Our new theorems are implications of Dirichlet GRH, so their mathematical dependency is transparent regardless of the status of any particular formal artifact. No GRH for arbitrary automorphic or Artin $L$-functions is used.
+
+The key bridge to the new results is the error function in \texttt{New/Endgame/PrimeError.lean}. It subtracts a main term and a constant from a ramp-weighted prime-power sum. \texttt{New/Main.lean} combines short forms, enough forms, and lower bounds for integral forms by comparing the same covolume; its \texttt{star\_inequality} bounds $m$ times a remainder. Its analytic reduction uses \texttt{IsPolar.exists\_window\_sub\_mul\_le}, then Landau's lemma with quadratic twists to exclude right-half-plane zeros. The window in that lemma is $[t,t^2]$ on log-scale. We reuse the ramp and the idea of using positive averaging to select scales, but after GRH we replace the moment argument by a critical-line Fourier expansion, spectral rank, and a compact convolution. This is not a claim to extend the geometric covolume construction itself.
+
+The Wikipedia overview \cite{wiki} supplies context for the critical line, prime-distribution consequences, and the distinction between RH and its generalizations. Standard analytic ingredients are described in \cite{dav,ik,dlmf}. Prime races and limiting distributions have extensive precedents \cite{rubinsarnak,martinng}; the statement below concerns a convex hull of \emph{smoothed} prime errors in every bounded log-window, not the occurrence of all orderings at a single scale.
+
+\subsection{Definitions and statement}
+Fix an integer $q\ge1$, write $A=(\Z/q\Z)^\times$ and $d=\varphi(q)$ (for $q=1$ use the one-element group). For $a\in A$ and $x\ge1$ define
+\begin{align*}
+ S_a(x)&=\sum_{\substack{n\le x\\n\equiv a\pmod q}}\Lambda(n)\left(\frac1n-\frac1x\right),\\
+ D_a(s)&=\sum_{n\equiv a\pmod q}\frac{\Lambda(n)}{n^s}
+ =-\frac1d\sum_{\chi\bmod q}\overline{\chi(a)}\frac{L'}{L}(s,\chi)\quad(\Re s>1),\\
+ B_a&=\lim_{s\to1}\left(D_a(s)-\frac{1}{d(s-1)}\right),\\
+ R_a(x)&=S_a(x)-\frac{\log x}{d}-B_a+\frac1d,\qquad F_a(v)=\e^{v/2}R_a(\e^v).
+\end{align*}
+Here $\Lambda$ is the von Mangoldt function; all constants and functions indexed by $a$ are real. The limit defining $B_a$ exists by classical nonvanishing on $\Re s=1$. Let $m_\chi(\gamma)$ be the multiplicity of the zero at $1/2+i\gamma$ of $L(s,\chi)$, with value zero if it is not a zero. Put
+\[
+ b_a=\frac4d\sum_{\chi\bmod q}\overline{\chi(a)}m_\chi(0),\qquad
+ F(v)=(F_a(v))_{a\in A},\qquad b=(b_a)_{a\in A}.
+\]
+Conjugation of characters ensures that $b$ is real. No assertion of central nonvanishing is needed.
+
+\begin{theorem}[Uniform exact simultaneous balancing]\label{thm:balance}
+Assume Dirichlet GRH. For each $q$ there exist $H>0$, $r>0$, and $T_0\ge H$ such that, for every real $T\ge T_0$,
+\[
+ b+\{y\in\R^d:\|y\|_2\le r\}\ \subseteq\
+ \conv\{F(v):T-H\le v\le T+H\}.
+\]
+Consequently, for any such $T$ and any $y$ in that ball, there exist $k\le d+1$, log-scales $v_j\in[T-H,T+H]$, and nonnegative real weights $w_j$ with $\sum_jw_j=1$ and
+\[
+ \sum_{j=1}^k w_j\sqrt{x_j}\,R_a(x_j)=y_a\quad(a\in A),\qquad x_j=\e^{v_j}.
+\]
+In particular $y=b$ is attainable. The prime scales lie in $[X\e^{-H},X\e^H]$, where $X=\e^T$.
+\end{theorem}
+In this theorem the ball is centered at $b$; equivalently its targets $y$ satisfy $\|y-b\|\le r$. The conclusion permits the scales and weights to depend on the center and the target. It does not assert that a single scale balances every class. For $q=1$ the intermediate value theorem gives one scale for any target in the ball. For general $q$, the dimension bound $d+1$ is independent of $X$.
+
+\section{The ramp explicit formula}
+We give details of the analytic reduction to avoid relying on an unproved inversion of the formal source. All constants below may depend on the fixed modulus.
+
+\begin{lemma}[Absolute critical-line expansion]\label{lem:expansion}
+Assume Dirichlet GRH. For every fixed $0<\delta<1/2$, uniformly for $v\ge0$,
+\[
+ F_a(v)=b_a+\sum_{\gamma\ne0} c_a(\gamma)\e^{i\gamma v}
+       +O_{q,\delta}(\e^{-(1/2-\delta)v}),\quad
+ c_a(\gamma)=\frac{\sum_\chi\overline{\chi(a)}m_\chi(\gamma)}{d(1/4+\gamma^2)}.
+\]
+The sum runs over distinct signed nonzero ordinates of zeros of characters modulo $q$. With $c(\gamma)=(c_a(\gamma))_a$, it satisfies $\sum_\gamma\|c(\gamma)\|_2<\infty$ and $c(-\gamma)=\overline{c(\gamma)}$.
+\end{lemma}
+\begin{proof}
+The elementary inverse Mellin identity, valid for $c>0$, is
+\[
+ (1-y^{-1})_+=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+                       \frac{y^z}{z(z+1)}\dd z\quad (y>0).
+\]
+For $y>1$ shift left and take residues at $0,-1$; for $y<1$ shift right; at $y=1$ use continuity by dominated convergence. Apply it with $z=s-1$ and $y=x/n$. Absolute convergence for $\Re s=c+1>1$ permits termwise integration, giving
+\[
+ S_a(x)=\frac1{2\pi i}\int_{2-i\infty}^{2+i\infty}\frac{D_a(s)x^{s-1}}{s(s-1)}\dd s.
+\]
+The finite Euler factors of imprimitive characters have their zeros on $\Re s=0$ and are nonzero on $\Re s\ge\delta$. The usual completed-function local partial fraction estimate, uniformly in $\delta\le\sigma\le2$ and $|t|\ge2$, is
+\[
+ \frac{L'}{L}(\sigma+it,\chi)=\sum_{|\gamma-t|\le1}\frac{m_\chi(\gamma)}{\sigma+it-\rho_\gamma}
+ +O_{q,\delta}(\log(|t|+2)),
+\]
+away from zeros, where $\rho_\gamma=1/2+i\gamma$. For completeness, the estimate follows by subtracting the Hadamard logarithmic derivative at $2+it$, where the Euler series is bounded: terms with $|\gamma-t|>1$ differ by $O((\gamma-t)^{-2})$, and each unit interval has $O_q(\log(|t|+2))$ zeros by the classical local zero count. Stirling's formula bounds the gamma terms, and the finite Euler factors are bounded on $\Re s\ge\delta$. In particular on the line $\sigma=\delta$, the logarithmic derivative is $O_{q,\delta}(\log(|t|+2))$; on a bounded part of the line it is bounded by compactness. Choose heights $t=\pm T_j$ tending to infinity (separate sequences for the two signs are also fine) that are at distance $\gg_q1/\log T_j$ from every nearby zero of the finite family: exclude intervals of this radius about the $O_q(\log T_j)$ ordinates in each enlarged unit interval, with a sufficiently small implied constant. Along these horizontal sides the logarithmic derivatives are $O_{q,\delta}(\log^2 T_j)$. The horizontal integrals tend to zero for each $x$ because of the $s(s-1)$ denominator. The vertical integral at $\delta$ converges absolutely and is $O_{q,\delta}(x^{\delta-1})$, uniformly in $x\ge1$.
+
+The pole at 1 is double in the integrand. Expanding $x^{s-1}/s=1+(s-1)(\log x-1)+\cdots$ gives residue $d^{-1}\log x+B_a-d^{-1}$. At any critical zero $\rho$ the residue is
+\[
+ -\frac{1}{d}\sum_\chi\overline{\chi(a)}m_\chi(\gamma)
+              \frac{x^{\rho-1}}{\rho(\rho-1)}.
+\]
+Since $\rho(\rho-1)=-(1/4+\gamma^2)$, multiplication by $\sqrt x$ gives the asserted coefficients, including the constant at $\gamma=0$. The standard zero count $N_\chi(U)=O_q(U\log(U+2))$ (multiplicity and both signs) proves absolute summability by dyadic subdivision. Conjugation gives the stated symmetry. This establishes the expansion with the claimed uniform error.
+\end{proof}
+
+\section{A spectral-rank lemma for Dirichlet zeros}
+The following argument is independent of GRH. In particular, coincident zeros of different functions are harmless. For a primitive character $\psi$, denote by $m_\psi(\rho)$ the multiplicity at a nontrivial zero $\rho$, and zero otherwise.
+\begin{lemma}[Noncentral zero-multiplicity independence]\label{lem:rank}
+Let $\psi_1,\ldots,\psi_h$ be distinct primitive Dirichlet characters, allowing the primitive trivial character of conductor 1. Suppose complex numbers $z_j$ satisfy
+\[
+ \sum_{j=1}^h z_j m_{\psi_j}(\rho)=0
+\]
+for every nontrivial zero $\rho\ne1/2$ of any of the functions. Then all $z_j=0$.
+\end{lemma}
+\begin{proof}
+Write $Q_j$ for the conductor, $\epsilon_j\in\{0,1\}$ for parity, and $\eta_j=1$ for the conductor-one character and 0 otherwise. The completed entire order-one function is
+\[
+ \Xi_j(s)=[s(s-1)]^{\eta_j}(Q_j/\pi)^{(s+\epsilon_j)/2}
+      \Gamma((s+\epsilon_j)/2)L(s,\psi_j).
+\]
+Its zeros are exactly the nontrivial zeros, including multiplicity, with no zero at 0 or 1. These facts follow from the classical functional equation, Euler product and nonvanishing at 1. The Hadamard logarithmic derivative is
+\[
+ \frac{\Xi_j'}{\Xi_j}(s)=C_j+\sum_\rho m_{\psi_j}(\rho)
+       \left(\frac1{s-\rho}+\frac1\rho\right),
+\]
+where each $\rho$ in the sum is distinct; convergence is normal away from poles since the summands are $O_s(|\rho|^{-2})$. Consequently the assumed cancellation gives
+\begin{equation}\label{eq:hadamard}
+ \sum_j z_j\frac{\Xi_j'}{\Xi_j}(s)=C+\frac{M}{s-1/2},\qquad
+ M=\sum_j z_j m_{\psi_j}(1/2).
+\end{equation}
+Set $J(s)=\sum_j z_j L'(s,\psi_j)/L(s,\psi_j)$. Take the difference of \eqref{eq:hadamard} at $s+2$ and $s$. The gamma recurrence $\Gamma(w+1)=w\Gamma(w)$ implies that the difference of the gamma logarithmic derivatives in $s$ is $1/(s+\epsilon_j)$. The conductor terms cancel. Thus
+\begin{align*}
+ J(s+2)-J(s)={}&M\left(\frac1{s+3/2}-\frac1{s-1/2}\right)
+  -\sum_j\frac{z_j}{s+\epsilon_j}\\
+ &-\sum_jz_j\eta_j\left(\frac1{s+2}+\frac1{s+1}-\frac1s-\frac1{s-1}\right).
+\end{align*}
+The right side is rational in $s$. On the positive real axis, $J(s)=O(2^{-s})$ as $s\to\infty$ by the absolutely convergent Euler series (bound the summands for $s\ge2$ by $2^{2-s}\Lambda(n)n^{-2}$). A nonzero rational function cannot decay exponentially there. The right side is therefore identically zero. Iteration and the same exponential estimate give $J(s)=0$ for real $s>1$. Uniqueness of the absolutely convergent Dirichlet series yields
+\[
+ \Lambda(n)\sum_j z_j\psi_j(n)=0\quad(n\ge1).
+\]
+For clarity, uniqueness follows by taking the least nonzero coefficient, multiplying by its index to the power $s$, and letting $s\to+\infty$ using dominated convergence. At primes outside $Q=\operatorname{lcm}(Q_1,\ldots,Q_h)$ this says $\sum_j z_j\psi_j(p)=0$. Dirichlet's theorem supplies a prime in every reduced class mod $Q$. The characters induced by the $\psi_j$ on $(\Z/Q\Z)^\times$ are distinct by uniqueness of primitive induction; their orthogonality forces $z_j=0$ for all $j$. This proves the lemma without any zero simplicity or separation assumption.
+\end{proof}
+
+\begin{corollary}[Full real spectral rank]\label{cor:rank}
+Under GRH, for every $u\in\R^d\setminus\{0\}$ there exists $\gamma\ne0$ with $u\cdot c(\gamma)\ne0$.
+\end{corollary}
+\begin{proof}
+If all these dot products vanish, put $z_\chi=d^{-1}\sum_{a\in A}u_a\overline{\chi(a)}$. Then $\sum_\chi z_\chi m_\chi(\gamma)=0$ for every nonzero ordinate. Under GRH this covers every noncentral nontrivial zero. The imprimitive Euler factors have no zeros in the critical strip, so each $m_\chi$ there is that of its primitive inducing character. Distinct characters modulo a fixed $q$ have distinct primitive inducing characters. Lemma~\ref{lem:rank} gives $z_\chi=0$ for all $\chi$; Fourier inversion gives $u=0$, a contradiction.
+\end{proof}
+
+\section{Uniform convex balancing: proof and effective criteria}
+Set $G(v)=\sum_{\gamma\ne0}c(\gamma)\e^{i\gamma v}$ and $K=\sum_{\gamma\ne0}\|c(\gamma)\|_2$. By Lemma~\ref{lem:expansion}, $G$ is continuous and real, $K<\infty$, and $\|G\|_2\le K$. By Corollary~\ref{cor:rank}, $K>0$ and the positive quadratic form
+\[
+ Q(u)=\sum_{\gamma\ne0}|u\cdot c(\gamma)|^2,
+ \qquad \lambda=\min_{\|u\|_2=1} Q(u)>0
+\]
+is strictly positive definite on real vectors. Continuity and compactness justify the strict positive minimum; absolute convergence follows from $\sum\|c\|<\infty$. The variance matrix is real because the signed ordinates occur in conjugate pairs.
+
+\begin{proof}[Proof of Theorem~\ref{thm:balance}]
+For $H>0$ let $\mathbb E_{T,H}$ mean integration against the uniform probability distribution on $[T-H,T+H]$. For every real $\omega\ne0$,
+\[
+ |\mathbb E_{T,H}\e^{i\omega v}|=|\sin(\omega H)/(\omega H)|\le (H|\omega|)^{-1}.
+\]
+This bound is independent of $T$. By truncating the absolutely convergent Fourier series, and its absolutely convergent product with itself, we obtain uniformly in $T$ and in $\|u\|=1$ as $H\to\infty$
+\begin{equation}\label{eq:moments}
+ \mathbb E_{T,H}(u\cdot G)\longrightarrow 0,\qquad
+ \mathbb E_{T,H}(u\cdot G)^2\longrightarrow Q(u).
+\end{equation}
+Indeed, in the second product the constant terms are precisely pairs $\gamma+\gamma'=0$, whose contributions are $|u\cdot c(\gamma)|^2$. Repeated ordinates have already been grouped; no hypothesis on other additive relations is necessary.
+
+Choose $H$ so the mean in \eqref{eq:moments} has modulus at most $\lambda/(4K)$ and the second moment is at least $\lambda/2$. Fix a unit vector $u$ and put $f=u\cdot G$. Let $P=\max(0,\max_{v\in[T-H,T+H]}f(v))$. Since $|f|\le K$ and $|f|=2f_+-f$,
+\[
+ \lambda/2\le\mathbb E f^2\le K\mathbb E|f|
+             \le 2KP+\lambda/4.
+\]
+Hence $P\ge\lambda/(8K)>0$. The maximum of $f$ itself is at least this amount. The same applies to $-u$. By the uniform remainder in Lemma~\ref{lem:expansion}, choose $T_0\ge H$ so that $\|F(v)-b-G(v)\|\le\lambda/(16K)$ whenever $v\ge T_0-H$. Then for every unit $u$,
+\[
+ \max_{v\in[T-H,T+H]}u\cdot(F(v)-b)\ge r,\qquad r=\lambda/(16K).
+\]
+The set of vectors $F(v)-b$ in that interval is compact (each ramp sum is continuous even at integer $x$). Its convex hull is compact in finite dimension. If any vector of norm at most $r$ lay outside the hull, strict separation would give a unit $u$ for which the maximum on the hull is strictly less than the dot product with that vector, at most $r$, contradicting the last inequality. This proves the inclusion. Carath\'eodory's theorem represents each point in a convex hull in $\R^d$ using at most $d+1$ points (remove affine dependencies among any larger set of points and their weights). Substituting $x_j=\e^{v_j}$ proves the formula.
+\end{proof}
+
+\subsection{Finite-data sufficient bounds}
+The existence of $H,r$ can be turned into explicit sufficient inequalities. Let $E$ be a finite symmetric set of nonzero ordinates with $\tau=\sum_{\gamma\notin E}\|c(\gamma)\|$, and put $G_E=\sum_{\gamma\in E}c(\gamma)\e^{i\gamma v}$. Define
+\begin{align*}
+ M_1(E)&=\sum_{\gamma\in E}\|c(\gamma)\|/|\gamma|,\\
+ M_2(E)&=\sum_{\substack{\gamma,\eta\in E\\\gamma+\eta\ne0}}
+     \frac{\|c(\gamma)\|\,\|c(\eta)\|}{|\gamma+\eta|}.
+\end{align*}
+Then the uniform mean error is at most $\tau+M_1/H$, and the uniform second-moment error relative to $Q$ is at most $3K\tau+M_2/H$: the square differs pointwise from its truncation by at most $2K\tau$, and the omitted diagonal sum is at most $K\tau$. One can use any certified upper bound for $K$ and any positive lower bound $\lambda_*$ for $\lambda$ in these inequalities. For example, a finite subset of exact multiplicity vectors with full real rank gives $\lambda_*$ via its least eigenvalue. The standard zero count bounds the coefficient tail by $O_q(\log B/B)$ for truncation height $B$. These are sufficient criteria, not a claim that numerical values of $H_q,r_q$ have been rigorously computed for arbitrary $q$. Exact grouping of coincident frequencies matters in numerical certification.
+
+\section{Positive zero-annihilating kernels}
+The exact balance theorem selects nodes depending on the target and center. The next result supplies a different, center-independent probability rule for approximate balance and quantifies its support.
+\begin{theorem}[Common compact kernel]\label{thm:kernel}
+Assume GRH and fix $q$. For $B\ge2$, list the multiset $\mathcal Z_B$ of positive absolute ordinates $0<|\gamma|\le B$ of zeros of all primitive inducing characters modulo $q$, with multiplicity (counting both signs is allowed and used here). Let $N_B=|\mathcal Z_B|$ and
+\[
+ H_B=\pi\sum_{g\in\mathcal Z_B}\frac1g,\qquad
+ \mu_B=*_{g\in\mathcal Z_B}\operatorname{Unif}[-\pi/g,\pi/g].
+\]
+Empty convolution means the unit mass at zero. Then $\mu_B$ is a probability measure supported on $[-H_B,H_B]$, and for $T\ge H_B$,
+\[
+ \left\|\int F(T+w)\dd\mu_B(w)-b\right\|_2
+ \le K\pi^{-N_B}+C_{q,\delta}\e^{-(1/2-\delta)(T-H_B)}.
+\]
+Moreover $H_B=O_q(1+\log^2 B)$ and $N_B\gg B\log B$ for all sufficiently large $B$. In particular with $B=T$ and $T\to\infty$, for every fixed $0<\epsilon<1/2$,
+\[
+ \left\|\int F(T+w)\dd\mu_T(w)-b\right\|_2
+   =O_{q,\epsilon}(\e^{-(1/2-\epsilon)T}),\qquad
+ H_T=O_q(\log^2 T).
+\]
+\end{theorem}
+\begin{proof}
+Convolution adds support radii and preserves probability. Its Fourier transform is
+\[
+ \widehat\mu_B(\omega)=\prod_{g\in\mathcal Z_B}
+       \frac{\sin(\pi\omega/g)}{\pi\omega/g}.
+\]
+It vanishes at each nonzero zero ordinate with magnitude at most $B$ (at least one factor vanishes). If $|\omega|>B$, each factor has modulus at most $g/(\pi|\omega|)\le1/\pi$. Absolute convergence of $G$ permits integration termwise. The high-frequency terms have total norm at most $K\pi^{-N_B}$. The remainder has its stated bound throughout the support, proving the inequality.
+
+The zero-count upper bound $O_q(B\log(B+2))$ implies $\sum_{g\le B}1/g=O_q(1+\log^2 B)$ by partial summation, with a fixed positive minimum among the finitely many small nonzero ordinates. The primitive trivial character always occurs, and the Riemann--von Mangoldt formula for $\zeta$ gives the lower bound for $N_B$. Thus for $B=T$, the first term decays like $\exp(-cT\log T)$ and the support radius is $o(T)$. Choose $\delta=\epsilon/2$ and absorb the support loss $\exp((1/2-\delta)H_T)$ into $\exp(\epsilon T/2)$ for large $T$. This proves the last assertion.
+\end{proof}
+
+\begin{corollary}[Near-$x^{-1}$ normalized-weight average]
+Writing $X=\e^T$, the same common kernel gives
+\[
+ \left\|\int \sqrt{\frac{X\e^w}{X}}R(X\e^w)\dd\mu_T(w)-X^{-1/2}b\right\|_2
+ =O_{q,\epsilon}(X^{-1+\epsilon}).
+\]
+Its scales lie in $[X\exp(-O_q((\log\log X)^2)),X\exp(O_q((\log\log X)^2))]$.
+\end{corollary}
+The weight $\sqrt{\e^w}$ here is important; this is not an unweighted average of $R$. The kernel uses the same list of zeros for all coordinates and all centers, for a given cutoff. For a target spectral accuracy $\varepsilon$ (ignoring the exponentially decaying remainder), $B\asymp\log(1/\varepsilon)$ suffices for large $1/\varepsilon$, with log-support radius $O_q((\log\log(1/\varepsilon))^2)$. This is a positive averaging result, not a pointwise bound of order $X^{-1+\epsilon}$ on every error.
+
+\section{Application to the repository's non-split prime sums}
+Let $p\equiv7\pmod8$ be prime and $M$ be coprime to $p$. The compact repository uses
+\[
+ \lambda_{p,M}(n)=\Lambda(n)\mathbf1_{n\equiv1\ (M)}(1-(n/p)),
+\]
+where $(n/p)$ is the Legendre symbol. Set $q=pM$ and define $h_M(a)=\mathbf1_{a\equiv1\ (M)}(1-(a/p))$ for $a\in(\Z/q\Z)^\times$. Away from $p$, all nonzero terms with $n\equiv1\pmod M$ are counted by $\sum_a h_M(a) S_a(x)$. At $p^j$ there is an extra sum
+\[
+ V_M(x)=\sum_{\substack{p^j\le x,\ j\ge1\\p^j\equiv1\ (M)}}\log p\left(p^{-j}-x^{-1}\right)
+       =V_M(\infty)+O_{p,M}((1+\log x)/x).
+\]
+Here the constant $V_M(\infty)$ is obtained by omitting the cutoff and the $x^{-1}$ term. The mean of $h_M$ on $A$ is $1/\varphi(M)$ by the Chinese remainder theorem and the mean zero of the Legendre symbol. Thus if $R_{p,M}$ is the repository's \texttt{primeError} (main log term and Laurent constant subtracted),
+\begin{equation}\label{eq:transfer}
+ \sqrt x R_{p,M}(x)=\sum_a h_M(a)F_a(\log x)+O_{p,M}((1+\log x)/\sqrt x).
+\end{equation}
+To check the constant: the Dirichlet series of the extra powers is $\sum_{p^j\equiv1(M)}(\log p)p^{-js}$, analytic at 1 with value $V_M(\infty)$. The residue computation in Lemma~\ref{lem:expansion} gives the weighted constants precisely as in the repository's $\operatorname{Re}\texttt{logDerivMean}(1)$ (Laurent regular part minus pole coefficient). This identifies the error, not just the leading asymptotic.
+
+For $R_{p,1}$ use $h_1(a)=1-(a/p)$ on the same modulus, and add powers of primes dividing $M$ with their original weights if needed. There are finitely many such primes; their ramp sums have constants and $O_{p,M}((1+\log x)/x)$ errors by the identical geometric-tail argument. Thus \eqref{eq:transfer} also holds for $h_1$ with the appropriate regular constant. If $\varphi(M)>1$, $h_M,h_1$ are linearly independent over $\R$: there are reduced classes nontrivial mod $M$ with Legendre symbol $-1$, and classes trivial mod $M$ with that symbol. Hence their two-dimensional coefficient map has full rank. Repeating the uniform moment proof for the image of $G$ and the exponentially small remainder proves a ball about the two central biases for $(\sqrt{x}R_{p,M},\sqrt{x}R_{p,1})$ in every sufficiently large bounded log-window. In particular both biases are attained by a common convex average of at most three scales. If $\varphi(M)=1$, use the single independent coordinate, not a claim of two-dimensional rank. The positive kernel theorem also transfers directly, with the extra remainder absorbed for $\epsilon>0$.
+
+\section{Example and reproducibility}
+For $q=4$ there are two classes $1,3$ and two characters, the principal and the nonprincipal real character $\chi_4$. Neither inducing function has a central zero: $\zeta(1/2)<0$ from its alternating eta series and $L(1/2,\chi_4)>0$ from the alternating beta series. Thus $b=(0,0)$. Theorem~\ref{thm:balance} states that for every sufficiently large $X$, one can find at most three scales in a fixed multiplicative neighborhood of $X$ such that both centered prime-power sums balance exactly after the $\sqrt{x}$ weighting. No value of $H$ is asserted by this example.
+
+The accompanying Python program computes the exact finite ramp expression in floating-point arithmetic for $q=4$, estimates the constants from Euler's constant and $-L'(1,\chi_4)/L(1,\chi_4)$, and searches sampled convex hulls for a numerical triangle containing the origin with positive barycentric weights. At log-half-width $H=1.5$ and $X=10^6$, it finds weights approximately $(0.2297646,0.4146056,0.3556298)$, an interior margin $0.0024206$, and a computed residual below $2\cdot10^{-18}$ in both coordinates. For the same sampling at $X=10^3,10^4,10^5$, the sampled hull does not contain the origin; the theorem only promises success for sufficiently large centers, and the sampling itself is not exhaustive. It also checks the abstract kernel attenuation on a few known zeta ordinates. These are illustrative numerical checks, not interval-certified values, not a verification of GRH, and not a proof of the asymptotic theorem.
+
+\section{Novelty, limitations, and formalization route}
+The weighted explicit formula, Hadamard products, Dirichlet orthogonality, almost periodic Fourier series, and positive averaging are classical. The proposed contribution is their particular combination: unconditional noncentral multiplicity rank, its use to obtain a full-dimensional ball in \emph{every} bounded logarithmic window under GRH, and the positive kernel with a reciprocal-ordinate support budget. A targeted literature search found related prime-race work \cite{rubinsarnak,martinng}, work on unshared Dirichlet zeros \cite{banks}, and classical explicit formulas. The rank lemma is weaker than a claim of unshared zeros, and is different from linear independence of the ordinates themselves. We cannot certify historical novelty; the exact theorem and proof are supplied for comparison and expert review. We do not claim to resolve a previously named open conjecture, all single-scale prime races, or any result for non-Dirichlet $L$-functions.
+
+For Lean, one can import the compact project's \texttt{Main.lean} and use \texttt{LFunction\_eq\_zero\_re} as the sole new analytic hypothesis. The new work requires a ramp explicit formula via a Mellin shift; a normally convergent logarithmic derivative of completed functions; the gamma shift and Dirichlet-series uniqueness lemma; real character Fourier inversion; and compact convex separation and Carath\'eodory. The repository already contains the precise ramp and its Mellin transform and much of the analytic background. See the accompanying formalization plan. No Lean proof of this note has been built, and no code has been pushed to either repository.
+
+\begin{thebibliography}{99}\small
+\bibitem{repo} L. Sernau et al., \emph{GRH for Dirichlet L-functions, in Lean 4}, 25 Nov. 2026. \url{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}.
+\bibitem{alpoge} L. Alp\"oge, announcement and remarks, 20 Nov. 2026. \url{https://alpo.ge/remark.pdf}.
+\bibitem{rubinstein} M. Rubinstein, \emph{Alp\"oge/Claude proof of the Generalized Riemann Hypothesis}, 20--26 Nov. 2026. \url{https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/}.
+\bibitem{wiki} Wikipedia, \emph{Riemann hypothesis}, accessed 26 Nov. 2026. \url{https://en.wikipedia.org/wiki/Riemann_hypothesis}.
+\bibitem{dav} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., Springer, 2000. Chapters on Dirichlet $L$-functions and explicit formulas.
+\bibitem{ik} H. Iwaniec and E. Kowalski, \emph{Analytic Number Theory}, AMS Colloquium Publications 53, 2004, Ch. 5.
+\bibitem{dlmf} NIST DLMF, \S25.15, Dirichlet $L$-functions. \url{https://dlmf.nist.gov/25.15}.
+\bibitem{rubinsarnak} M. Rubinstein and P. Sarnak, Chebyshev's bias, \emph{Experimental Mathematics} 3 (1994), 173--197.
+\bibitem{martinng} G. Martin and N. Ng, Inclusive prime number races, \url{https://arxiv.org/abs/1710.00088}.
+\bibitem{banks} W. Banks and K. Loftus, Unshared zeros of Dirichlet $L$-functions, \url{https://arxiv.org/abs/2607.22930} (2026).
+\end{thebibliography}
+\end{document}

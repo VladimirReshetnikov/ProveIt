@@ -1,0 +1,185 @@
+Formalization architecture: cubic mesh energy and one-sided zero detection
+Status: UNCOMPILED DESIGN OUTLINE, not a completed Lean proof.
+Date: 2026-11-26
+
+No new Lean theorem in this package has been kernel-checked. This file does not
+contain placeholder code presented as a proof. The mathematical proofs are in
+report.tex/report.pdf; the following is an implementation plan.
+
+Suggested environment
+  Lean: leanprover/lean4:v4.35.0
+  Mathlib: 56a005855ea17e0b0958f73ec801ae140b0a1679
+  Optional integration source: lsernau/grh-lean at
+    72fead102f663d5c7a407964a13dc0cf9d977207, readable grh/ edition.
+
+There are two separable formalization targets:
+  A. A generic real-analysis theorem, independent of the GRH repository.
+  B. The arithmetic specialization, importing the repository's prime-error
+     transform and quadratic-twist zero-density lemmas.
+
+1. Data and definitions (proposed; names are not existing declarations)
+
+Use real variable x>=1, parameter beta>0, a>=0, and E:R->R.
+Set M(x)=a*x*Real.log x+c*x.
+Assume ConvexOn R (Set.Ici 1) (fun x => E x+M x).
+
+A mesh should be represented by:
+  x : N -> R
+  1<=x 0
+  StrictMono x
+  Tendsto x atTop atTop.
+
+Endpoint bounds:
+  F : N -> R
+  forall j, 0<=F j
+  forall j, E(x j)<=F j.
+
+Define delta j=x(j+1)-x j and intervalEnergy:
+  (F j+F(j+1))*delta j/(2*(x j)^(beta+1))
+  + a*(delta j)^3/(12*(x j)^(beta+2)),
+where real powers are Real.rpow and all bases are positive.
+
+Define finite cumulative energy either with a Finset initial segment bounded
+by x j<=X, or as a nonnegative discrete measure on left endpoints.
+The left-endpoint convention handles the final straddling interval cleanly.
+
+2. Convex interpolation and defect bounds
+
+Prove generic chord notation and its affine properties on [A,B], A<B.
+
+Main local lemmas:
+  convex_upper_chord:
+    ConvexOn R [A,B] (E+M) -> E(x)<=chord E(x)+chord M(x)-M(x).
+
+  log_center_second_derivative:
+    M''(x)=a/x for x>0.
+
+  chord_defect_upper:
+    0<=a -> 1<=A -> A<=x -> x<=B ->
+    chord M(x)-M(x)<=a*(x-A)*(B-x)/(2*A).
+
+  chord_defect_lower:
+    ... >=a*(x-A)*(B-x)/(2*B).
+
+One route avoids a specialized Green kernel: subtract the upper quadratic
+a*(x-A)*(B-x)/(2A) from the defect, compute its second derivative, apply
+convexity/concavity from second-derivative sign, and use zero boundary values.
+This uses standard real differentiability and convexity infrastructure.
+
+Then show:
+  max(E(x),0)<=chord F(x)+defect(x),
+since the right side is nonnegative.
+
+Integrate against x^(-beta-1). Explicitly prove:
+  integral_A^B (x-A)*(B-x) dx=(B-A)^3/6;
+  integral_A^B (B-x)/(B-A) dx=(B-A)/2,
+and the symmetric affine coefficient identity.
+Use monotonicity of the weight for beta>-1 to derive intervalEnergy.
+
+3. Subpolynomial budget and positive-part integrability
+
+Assume:
+  for every eps>0 there exist C,X0 such that for X>=X0,
+  cumulativeEnergy(X)<=C*X^eps.
+
+For sigma>beta, put delta=sigma-beta>0 and choose eps=delta/2.
+Partition the left endpoints into dyadic blocks [2^k,2^(k+1)).
+The energy after multiplication by (x j)^(-delta) is bounded by a convergent
+geometric series O(2^(-k*delta/2)).
+
+Conclude:
+  IntegrableOn (fun x => max(E x,0)*x^(-sigma-1)) (Set.Ici 1).
+
+Implementation choices:
+- nonnegative Bochner integrals can be handled through ENNReal lintegrals;
+- prove disjoint interval decomposition up to endpoint null sets;
+- obtain complex-parameter analyticity by domination on compact substrips,
+  always selecting a smaller real exponent still above beta.
+
+4. Weighted-positive-part version of Landau's theorem
+
+Work with Phi(s)=integral_1^infinity E(x)*x^(-s-1)dx.
+Assume an initial half-plane of absolute convergence, meromorphic continuation,
+at most simple poles in Re(s)>beta, and nonnegative real residues.
+
+Set P(s)=Mellin(max E 0) and N(s)=Mellin(max(-E)0).
+The positive-part integrability makes P holomorphic on Re(s)>beta.
+Initially N=P-Phi. N is a positive transform.
+
+Prove a reusable positive-transform singularity lemma:
+  a finite real abscissa of convergence cannot be a regular point.
+Use Taylor expansion at a real point to the right, nonnegative moments,
+and monotone convergence/Tonelli to extend convergence to the left.
+
+At a putative convergence abscissa alpha>beta for N, the meromorphic function
+P-Phi has residue -Res Phi(alpha)<=0. Positivity rules out a negative residue;
+zero residue plus the simple-pole hypothesis makes the singularity removable.
+Contradict the singularity lemma. Conclude N is holomorphic on Re(s)>beta,
+hence Phi=P-N has no poles there.
+
+Existing repository declarations worth reusing:
+  grh/src/Lib/Analytic/Landau.lean
+    New.mem_integrableExpSet_of_summable_taylor
+    New.exists_Ioi_subset_integrableExpSet_of_analyticAt
+    New.exists_Ioi_subset_integrableExpSet
+    New.eventuallyEq_of_eq_far_right
+
+The existing New.IsPolar.landau assumes an eventual pointwise bound. The new
+weighted-integrability theorem must be proved; merely invoking that declaration
+does not justify the stronger hypothesis used here.
+
+5. Arithmetic specialization
+
+Existing repository declarations:
+  grh/src/New/Reduction/Zeros/PrimeError.lean
+    New.lambdaKResidueClass
+    New.lambdaKResidueClass_nonneg
+    New.primeRemainder
+    New.isPolar_primeRemainder
+
+Prove the normalization identity E(x)=x*primeRemainder(d,q,x), and its expression
+as a locally finite sum of convex hinges minus a*x*log x+c*x, with a=1/phi(q).
+The sign convention for c must match the report: E=C-a*x*log x-c*x.
+
+The repository's IsPolar uses logarithmic variable v=log x:
+  Phi(s)=integral_0^infinity R(exp v)*exp((1-s)v)dv.
+Substitution x=exp v identifies this with integral_1^infinity R(x)x^(-s)dx,
+and with integral_1^infinity E(x)x^(-s-1)dx. Check this shift explicitly.
+
+For a candidate zero rho, use:
+  grh/src/Lib/Analytic/QuadraticTwist.lean
+    New.exists_entireL_quadTwist_ne_zero
+to choose a d whose twisted L-functions have no zeros in
+  beta<=Re(s), |Im(s)|<=|Im(rho)|.
+
+Use the generalized Landau theorem, with the repository's residue formula:
+  (sum untwisted orders-sum twisted orders)/(phi(q)*rho*(1-rho)).
+The twisted orders vanish. The real residues above beta are nonnegative because
+t*(1-t)>0 for beta<t<1; at t>=1 the normalized L-functions have no zeros.
+Handle s=1 by removability, not substitution into the displayed fraction.
+The residue at rho must vanish, so each untwisted nonnegative order is zero.
+
+6. Sparse auxiliary-prime and sampling corollaries
+
+Sparse d corollary:
+  Use New.zero_density_quadTwist with delta=(beta-1/2)/9.
+  The bad count is O(X^(1-(beta-1/2)/18)).
+  A set S whose ratio to this power has unbounded limsup contains a good d.
+  No uniformity in the endpoint-energy constants across d is required.
+  Preserve the strict exponent inequality; the boundary case is unsupported.
+
+Mesh scale corollaries:
+  regular gaps O(x^theta) give subpolynomial cubic energy for
+    theta<=(beta+1)/2;
+  geometrically separated gaps O(x^eta) give it for
+    eta<=(beta+2)/3.
+  At beta=1/2 these exponents are 3/4 and 5/6.
+
+Formalization completion criteria:
+- all modules compile in a pinned environment;
+- no sorry, admit, or new mathematical axiom;
+- inspect #print axioms for the new endpoint theorem;
+- separate generic analysis dependencies from the full GRH proof;
+- report actual successful kernel checking, rather than inferring it from this
+  architecture or from numerical checks.
+

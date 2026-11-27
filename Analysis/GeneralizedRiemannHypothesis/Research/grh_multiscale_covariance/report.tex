@@ -1,0 +1,330 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[margin=1.02in]{geometry}
+\usepackage[hidelinks,pdftitle={Strict multiscale covariance of smoothed prime errors},pdfauthor={Research note}]{hyperref}
+\usepackage{microtype}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\G}{\mathcal G}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ph}{\varphi(q)}
+\newcommand{\ind}{\mathbf 1}
+\title{Strict multiscale covariance of smoothed prime errors\\[3pt]\large A consequence of Dirichlet GRH without zero independence}
+\author{Research note}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove a strict positivity theorem for the joint covariance of normalized, centered smoothed prime-power counts in all reduced residue classes modulo a fixed integer, observed at arbitrary finitely many distinct multiplicative scales. The covariance remains positive definite after deleting any finite set of critical-zero frequencies. The key is to differentiate the completed logarithmic derivative, use its distributional explicit formula, and isolate prime atoms after translations in logarithmic time. No hypothesis about simplicity, disjointness, or rational linear independence of zeros is required. Consequences include uniform two-sided excursions in moving logarithmic windows, a ball in the convex hull of the cluster set, and strictly positive residual variance for every nontrivial finite-scale linear prediction. The smoothing is exactly the kernel in the endgame of the condensed Alp\"oge--Claude GRH proof; a specialization returns to its weighted non-split-prime remainder. We give a quantitative test-function certificate and a reproducible prime-side numerical illustration. The mathematical proof is classical, not a new Lean verification; its only conjectural-style input is the Dirichlet GRH statement supplied by the verified upstream development.
+\end{abstract}
+
+\section{Source analysis and scope}
+The reference repository \cite{repo}, inspected at commit
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, contains a readable and a compact rewriting of the Alp\"oge--Claude proof. The compact edition's \path{src/Statements.lean} fixes the five statements in Mathlib's language; \path{src/Main.lean} derives them from \texttt{New.grh}. In particular, \texttt{DirichletLZerosOnLine} asserts that for every positive modulus, every Dirichlet character, and every zero in the open critical strip, the real part is $1/2$. The companion nonvanishing theorem excludes zeros strictly to the right of $1/2$, with the principal pole convention. The assertion is about Dirichlet $L$-functions, not arbitrary automorphic $L$-functions. Independent verification reported on 26 November includes a successful rebuild, an axiom audit, kernel replay, and statement comparison with six kernel checks \cite{rubinstein}. We use these theorem statements, not an unverified extrapolation of their proofs. Neither a local rebuild of the repository nor a complete human audit was performed for this note.
+
+In \path{src/New/Main.lean}, the result \texttt{star\_inequality} is proved first. The lemma \path{eventually_primeError_le_rpow} then yields \texttt{New.grh}. Its main mechanism compares upper and lower bounds for normalized lattice covolume and index, leaving a one-sided estimate of a weighted prime sum. In \path{src/New/Endgame/PrimeError.lean} the prime sum has kernel $(1/n-1/x)_+$, and \path{isPolar_primeError} identifies poles of the transform through zero multiplicities. \path{OneSidedCriterion.lean} uses a Landau-type argument to exclude right-half-strip zeros. These are the concrete ideas reused here: the same smoothing, transforms, and spectral information from zero multiplicities. Our extension instead uses GRH to put the poles on a vertical line, and examines translated distributions simultaneously. Wikipedia's discussion of prime distribution, analytic criteria, and zero statistics \cite{wiki} suggests this reverse direction.
+
+Classical prime-race work (Rubinstein--Sarnak \cite{RS}, Martin--Ng \cite{MN}, Devin \cite{Devin}) studies limiting distributions and stronger support or inclusivity questions, often with additional zero-independence hypotheses. Absolute convergence for this particular smoother and the explicit formula are classical ingredients. The candidate contribution here is strict \emph{all-lag} covariance, including arbitrary finite frequency deletion and a local prime-atom proof. A targeted literature search did not locate the combined theorem in this form. This is not a claim of exhaustive novelty or of resolving ordinary prime-race inclusivity. For provenance, see the included \texttt{sources.md}.
+
+\section{The multiscale theorem}
+Let $q\ge1$, $A=(\Z/q\Z)^\times$ (for $q=1$ the one-element group), and let $\widehat A$ denote its characters, extended by zero on nonunits. Write $\chi^*$ for the inducing primitive character. Let $\Lambda(n)$ be the von Mangoldt function and define, for $x\ge1$,
+\begin{equation}\label{eq:sum}
+ S_a(x)=\sum_{\substack{n\le x\\n\equiv a\ (q)}}\Lambda(n)\left(\frac1n-\frac1x\right),\qquad a\in A.
+\end{equation}
+Use $F_\chi(s)=-L'(s,\chi)/L(s,\chi)$, and let $\delta_\chi=1$ for the principal character and $0$ otherwise. Set
+\begin{align}
+ b_\chi&=\lim_{s\to1}\left(F_\chi(s)-\frac{\delta_\chi}{s-1}\right)-\delta_\chi,&
+ C_a&=\frac1{\ph}\sum_\chi\overline{\chi(a)}b_\chi.\label{eq:constants}
+\end{align}
+Nonvanishing at $1$ for nonprincipal characters makes these finite. Under GRH let $m_\chi(\gamma)$ be the multiplicity of $1/2+i\gamma$ as a zero of $L(s,\chi^*)$, zero if absent. Put
+\begin{align}
+ M_a&=\frac4{\ph}\sum_\chi\overline{\chi(a)}m_\chi(0),\\
+ E_a(t)&=\e^{t/2}\left(S_a(\e^t)-\frac{t}{\ph}-C_a\right)-M_a,\qquad t\ge0.\label{eq:normalized}
+\end{align}
+Both constants are real by conjugation. Central zeros, if any, must be subtracted: we do not assume their absence.
+
+Choose $r\ge1$ distinct real numbers $h_1,\ldots,h_r$, and write $D=r\ph$. The observed scale factors are $\e^{h_j}$. For sufficiently large $t$, define the real vector
+\[
+ X(t)=(E_a(t+h_j))_{(j,a)\in\{1,\ldots,r\}\times A}\in\R^D.
+\]
+Let $\Gamma$ be the union of the distinct nonzero ordinates of all the $L(s,\chi^*)$. For $\gamma\in\Gamma$ set
+\begin{equation}\label{eq:coeff}
+ z_{\gamma,j,a}=\frac{\e^{i\gamma h_j}}{\ph(1/4+\gamma^2)}\sum_\chi\overline{\chi(a)}m_\chi(\gamma).
+\end{equation}
+The star denotes conjugate transpose. All sums over ordinates group coincident frequencies \emph{before} taking squares or products.
+
+\begin{theorem}[All-lag strict positivity]\label{thm:main}
+Assume Dirichlet GRH for the characters modulo $q$. Then $\sum_{\gamma\in\Gamma}\|z_\gamma\|_2<\infty$ and
+\begin{equation}\label{eq:mainexp}
+ X(t)=P(t)+O_{q,h}(\e^{-t/4}),\qquad P(t)=\sum_{\gamma\in\Gamma}z_\gamma\e^{i\gamma t}.
+\end{equation}
+The series converges uniformly on $\R$ and is real. Its logarithmic-time mean is zero. The limiting covariance is
+\begin{equation}\label{eq:gram}
+ G=\lim_{T\to\infty}\frac1T\int_u^{u+T}X(t)X(t)^{\mathsf T}\dd t
+ =\sum_{\gamma\in\Gamma}z_\gamma z_\gamma^*.
+\end{equation}
+Convergence is uniform over $u\ge u_0$, for any fixed $u_0$ at which every coordinate is defined; the mean of $X$ tends to zero in the same sense. More strongly, for \emph{every finite} $H\subset\Gamma$ the Hermitian matrix
+\[
+ G_H=\sum_{\gamma\in\Gamma\setminus H}z_\gamma z_\gamma^*
+\]
+is positive definite. In particular $G$ is real symmetric positive definite.
+\end{theorem}
+This is not an assertion that the individual ordinates are distinct across $L$-functions; common ordinates contribute to the same vector in \eqref{eq:coeff}. The finite-deletion statement implies that the spectral vectors outside any bounded height already span $\C^D$.
+
+\section{The smoothed explicit formula}
+We use classical Dirichlet $L$-function theory (Euler products, completion, Hadamard factorization, the local zero count, and logarithmic-derivative estimates; see \cite{MV,Kou}). We spell out the needed contour and distributional steps, since sign, smoothing, and central zeros matter here. In particular, for a fixed primitive character, the number of zeros with ordinates in $[y-1,y+1]$, with multiplicity, is $O_q(\log(2+|y|))$; the same holds for the finitely many characters considered together. Consequently $\sum_\gamma m_\chi(\gamma)/(1/4+\gamma^2)<\infty$.
+
+\begin{lemma}[Exact leading spectral expansion]\label{lem:exp}
+For any $\chi\bmod q$ and $x\ge1$, under GRH,
+\begin{align}\label{eq:char}
+ \sum_{n\le x}\Lambda(n)\chi(n)\left(\frac1n-\frac1x\right)
+ &=\delta_\chi\log x+b_\chi\\[-2pt]
+ &\quad+x^{-1/2}\sum_{\gamma}\frac{m_\chi(\gamma)x^{i\gamma}}{1/4+\gamma^2}
+ +O_q(x^{-3/4}).\notag
+\end{align}
+Here the sum includes $\gamma=0$ and is absolutely convergent.
+\end{lemma}
+\begin{proof}
+For $c>1$, absolute convergence and elementary Mellin inversion for the continuous function $(y-1)_+$ give the left side as
+\[
+ \frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ \frac{F_\chi(s)x^{s-1}}{s(s-1)}\dd s.
+\]
+Indeed the inverse Mellin kernel $1/[s(s-1)]$ on $\Re s>1$ yields $y-1$ for $y>1$ and zero for $0<y\le1$; multiplying by $x^{-1}$ with $y=x/n$ gives \eqref{eq:sum}. The weight vanishes at $n=x$, so no endpoint convention is needed.
+
+Move the contour to $\Re s=1/4$. For the inducing primitive character the standard local partial-fraction estimate for $L'/L$, together with GRH, gives $F_\chi(1/4+iy)=O_q(\log(2+|y|))$; on compact parts of this line use analyticity. For an imprimitive character use
+\[
+ L(s,\chi)=L(s,\chi^*)\prod_{\substack{p\mid q\\p\nmid\operatorname{cond}(\chi^*)}}(1-\chi^*(p)p^{-s}).
+\]
+These Euler factors and their logarithmic derivatives are harmless on $\Re s\ge1/4$ (their zeros are on $\Re s=0$). To justify horizontal edges, choose sequences of positive and negative heights tending to infinity at distance $\gg_q1/\log(2+|y|)$ from every ordinate in the finite union, by deleting short intervals around the $O_q(\log |y|)$ local zeros in each unit window. On the chosen horizontal segments the local logarithmic-derivative bound is $O_q(\log^2(2+|y|))$ in the bounded strip. Thus the horizontal integrals tend to zero for fixed $x$. The integral on $1/4$ is absolutely convergent and is $O_q(x^{-3/4})$, uniformly for $x\ge1$.
+
+At $s=1$ the residue is $\delta_\chi\log x+b_\chi$, by expanding $x^{s-1}/s$ at $1$. At a zero $\rho=1/2+i\gamma$ the residue equals
+\[
+ -\frac{m_\chi(\gamma)x^{\rho-1}}{\rho(\rho-1)}
+ =\frac{m_\chi(\gamma)x^{-1/2+i\gamma}}{1/4+\gamma^2}.
+\]
+There are no other poles between the two vertical lines. The sum of residues converges absolutely by the local zero count, completing the proof.
+\end{proof}
+
+Character orthogonality now proves \eqref{eq:mainexp}; the central-frequency term is exactly $M_a$. Conjugation gives $z_{-\gamma}=\overline{z_\gamma}$, so $P$ is real. In a finite exponential sum the mean of a nonzero frequency over $[u,u+T]$ has absolute value at most $2/(T|\gamma|)$, uniformly in $u$. Absolute uniform convergence permits passage to infinite sums, including products (the product series is absolutely convergent). Only opposite frequencies survive in the mean of $P P^{\mathsf T}$. The remainder in \eqref{eq:mainexp} contributes $O_{q,h,u_0}(1/T)$ to both means, since $P$ is bounded and the error is exponentially integrable on $[u_0,\infty)$. This proves all of Theorem~\ref{thm:main} except strict positivity.
+
+\section{The new step: translated prime atoms}
+\subsection{A one-sided distributional formula}
+For a primitive character $\eta$ of conductor $Q$, let $\kappa\in\{0,1\}$ satisfy $\eta(-1)=(-1)^\kappa$, and let $\delta=1$ for the trivial conductor-one character and zero otherwise. Complete it as the entire order-one function
+\[
+ \Xi_\eta(s)=[s(s-1)]^\delta (Q/\pi)^{(s+\kappa)/2}
+ \Gamma\left(\frac{s+\kappa}{2}\right)L(s,\eta).
+\]
+Its zeros are precisely the nontrivial zeros (the gamma poles cancel the trivial zeros, and the polynomial removes the zeta poles). Under GRH let
+\[
+ U_\eta(t)=\sum_{\gamma}m_\eta(\gamma)\e^{i\gamma t}
+\]
+be a distribution, not an ordinary convergent series. Pairing with a compactly supported smooth test function is absolutely convergent by rapid decay of its Fourier transform and the zero count. It defines a tempered distribution on $\R$.
+
+\begin{lemma}[Prime atoms on the positive half-axis]\label{lem:atoms}
+In the space of distributions on $(0,\infty)$,
+\begin{equation}\label{eq:atoms}
+ U_\eta(t)=-\sum_{n\ge2}\frac{\Lambda(n)\eta(n)}{\sqrt n}\,\delta_{\log n}(t)+g_\eta(t),
+\end{equation}
+where $\delta_b$ is a unit point mass at $b$, and
+\[
+ g_\eta(t)=-\frac{\e^{-(\kappa+1/2)t}}{1-\e^{-2t}}
+ +\delta\bigl(\e^{-t/2}+\e^{t/2}\bigr)
+\]
+is smooth on $t>0$. In particular the sign and character in each positive prime atom are as displayed; no conjugation of $\eta$ is needed.
+\end{lemma}
+\begin{proof}
+Twice logarithmically differentiating the genus-one Hadamard product gives, away from zeros,
+\begin{align}
+ -\left(\frac{\Xi_\eta'}{\Xi_\eta}\right)'(s)
+ &=\sum_{\gamma}\frac{m_\eta(\gamma)}{(s-1/2-i\gamma)^2}\notag\\
+ &=-\sum_{n\ge2}\Lambda(n)\eta(n)\log n\, n^{-s}
+ -\sum_{k\ge0}\frac1{(s+\kappa+2k)^2}
+ +\delta\left(\frac1{s^2}+\frac1{(s-1)^2}\right),\label{eq:logder}
+\end{align}
+where the last line holds for $\Re s>1$. The linear exponential factor disappears, the gamma term comes from the trigamma series, and the last two pole terms come from $s(s-1)$.
+
+Fix $c>1/2$ and substitute $s=1/2+c+iy$. Use the convention $\widehat f(y)=\int_\R f(t)\e^{-iyt}\dd t$. The inverse transform of $(c+i(y-\gamma))^{-2}$ is $\ind_{t>0}t\e^{-ct}\e^{i\gamma t}$. To avoid any issue at $t=0$, test the inverse identity against $\e^{ct}\phi(t)/t$ for arbitrary $\phi\in C_c^\infty(0,\infty)$. This is smooth with compact support. The exchange of the zero sum and inverse integral is justified by
+\[
+ \sum_\gamma\frac{m_\eta(\gamma)}{c^2+(y-\gamma)^2}=O_{q,c}(\log(2+|y|)),
+\]
+which follows by splitting ordinates into unit intervals and summing the local zero count against $1/(c^2+k^2)$. The Fourier transform of the test decays faster than any power. The prime sum on the right of \eqref{eq:logder} is absolutely convergent for $\Re s>1$; its inverse term is an atom at $\log n$ of weight $-\Lambda(n)\eta(n)\log n\,n^{-1/2-c}$. Dividing by $t\e^{-ct}$ cancels $\log n$ and the extra exponential. Each gamma term inverts in the same way to $-\e^{-(\kappa+1/2+2k)t}$, and the series converges smoothly on compact subintervals of $(0,\infty)$. The two rational terms yield the displayed pole contribution. This proves \eqref{eq:atoms} without a formal exchange of divergent exponential sums. It is the positive-axis form of the classical explicit formula.
+\end{proof}
+
+\subsection{Isolation of prime atoms after arbitrary translations}
+\begin{lemma}[Collision lemma]\label{lem:collision}
+For any fixed real $R>0$ with $R\ne1$, only finitely many primes $p$ have $Rp$ equal to a positive integral prime power. More precisely, for irrational $R$ there are none; for $R=u/v$ in lowest positive integer terms with $v>1$, the denominator must divide $p$, so there is at most one possible prime; and for integer $u\ge2$, a collision requires $p\mid u$.
+\end{lemma}
+\begin{proof}
+If $Rp$ is an integer, $R$ is rational. If $v>1$ then $v\mid p$ by coprimality. If $v=1$, $up$ is divisible by $p$, so if it is a prime power then $u$ must itself be a positive power of $p$. All three claims follow.
+\end{proof}
+
+\begin{proof}[Proof of strict positivity in Theorem~\ref{thm:main}]
+Fix a finite set $H\subset\Gamma$. Suppose $G_H$ has a null vector. Since it is a sum of positive semidefinite Hermitian outer products, there is a nonzero complex coefficient array $v=(v_{j,a})$ such that
+\[
+ \sum_{j,a}v_{j,a}z_{\gamma,j,a}=0\quad(\gamma\in\Gamma\setminus H).
+\]
+(Use the conjugate of a null vector for this bilinear notation.) Define the Fourier coefficients on $A$ by
+\[
+ c_{j,\chi}=\frac1{\ph}\sum_{a\in A}v_{j,a}\overline{\chi(a)},\qquad
+ \sum_\chi c_{j,\chi}\chi(a)=v_{j,a}.
+\]
+Multiplying the zero relation by $1/4+\gamma^2$ gives
+\[
+ \sum_{j,\chi}c_{j,\chi}m_\chi(\gamma)\e^{i\gamma h_j}=0
+ \quad(\gamma\notin H\cup\{0\}).
+\]
+The distribution
+\[
+ V(t)=\sum_{j,\chi}c_{j,\chi}U_{\chi^*}(t+h_j)
+\]
+therefore equals a finite trigonometric polynomial on all of $\R$, with frequencies in $H\cup\{0\}$. In particular it is smooth. On the open interval $t>\max_j(-h_j)$, Lemma~\ref{lem:atoms} instead expresses it as a locally finite sum of point masses plus a smooth function. The atoms contributed by scale $j$ occur at $t=\log n-h_j$.
+
+Fix any $j$ and $a\in A$. Dirichlet's theorem provides arbitrarily large primes $p\equiv a\pmod q$. Choose one so large that $t_0=\log p-h_j>\max_k(-h_k)$ and that $p\e^{h_k-h_j}$ is not a prime power for any $k\ne j$. Such a prime exists by Lemma~\ref{lem:collision}, because there are only finitely many ratios. No other prime-power atom from scale $k\ne j$ lies at $t_0$, and at scale $j$ only $n=p$ does. The union of the atom sets is locally finite, so $t_0$ is isolated. Since $p\nmid q$, all inducing primitive values agree with their induced values at $p$. The coefficient of the atom at $t_0$ is consequently
+\begin{equation}\label{eq:isolated}
+ -\frac{\log p}{\sqrt p}\sum_\chi c_{j,\chi}\chi^*(p)
+ =-\frac{\log p}{\sqrt p}\,v_{j,a}.
+\end{equation}
+A smooth function has no nonzero isolated point mass; for example test with shrinking bounded bumps equal to one at $t_0$ and supported away from the other atoms. Thus $v_{j,a}=0$. As $j,a$ were arbitrary, $v=0$, contradicting the choice of a null vector. This proves strict positivity, even after any finite deletion.
+\end{proof}
+
+\begin{remark}
+Neither the prime isolation nor the Fourier inversion uses any independence among the ordinates. The finite-dimensional null relation is ruled out by the arithmetic distinction between scaled prime powers, not by trying to find a zero unique to one character. This is also why the theorem holds for arbitrary real shifts, including logarithms of rational ratios and ratios arbitrarily close to one.
+\end{remark}
+
+\section{Quantitative consequences}
+Write $\lambda=\lambda_{\min}(G)>0$ and $B=\sum_{\gamma\in\Gamma}\|z_\gamma\|_2>0$. Then $\|P(t)\|_2\le B$ and $\lambda\le B^2$. Neither constant depends on a chosen linear contrast.
+
+\begin{corollary}[Uniform excursions]\label{cor:excursions}
+Put $a_0=\lambda/(8B)$ and $d_0=\lambda/(4B^2)$. For either sign $\sigma\in\{-1,1\}$, every unit $v\in\R^D$ satisfies
+\[
+ \liminf_{T\to\infty}\ \inf_{\substack{u\ge u_1\\\|v\|_2=1}}
+ \frac{1}{T}\,\bigl|\{t\in[u,u+T]:\sigma v^{\mathsf T}X(t)>a_0\}\bigr|\ \ge d_0,
+\]
+for a sufficiently large fixed $u_1$, where $|\cdot|$ denotes Lebesgue measure. In multiplicative coordinates the measure is $\dd x/x$. In particular all directions have positive lower logarithmic density of excursions of both signs, and sufficiently long logarithmic windows contain both signs.
+\end{corollary}
+\begin{proof}
+Set $Y=\sigma v^{\mathsf T}P$. Uniformly in $u$ and $v$, its window mean tends to zero and its second moment tends to $v^{\mathsf T}Gv\ge\lambda$. The uniformity in $v$ follows from convergence of the finitely many matrix entries and vector coordinates. Since $|Y|\le B$, we have $Y^2\le B|Y|$ and $Y_+=(|Y|+Y)/2$. Hence the liminf of its positive-part average is at least $\lambda/(2B)$, uniformly. For $b=\lambda/(4B)$,
+\[
+ Y_+\le b+B\ind_{Y>b}.
+\]
+This gives a lower proportion $d_0$ for $Y>b$. Take $u_1$ so large that $\|X(t)-P(t)\|<b/2$ for all $t\ge u_1$. Then $Y>b$ implies $\sigma v^{\mathsf T}X(t)>b/2=a_0$. The same reasoning holds for either sign.
+\end{proof}
+
+\begin{corollary}[Convex-hull interior and prediction]\label{cor:prediction}
+The compact cluster set $K$ of $X(t)$ as $t\to\infty$ has a convex hull containing the closed Euclidean ball about $0$ of radius $a_0$. Moreover, for any one scale $j$, any nonzero $w\in\R^{\ph}$, and every choice of linear predictor coefficients $b_{k,a}$ at the other scales,
+\begin{align*}
+ \lim_{T\to\infty}\frac1T\int_{u}^{u+T}
+ \left(\sum_a w_a E_a(t+h_j)-\sum_{k\ne j,a}b_{k,a}E_a(t+h_k)\right)^2\dd t
+ \ \ge\lambda\|w\|_2^2>0.
+\end{align*}
+Even allowing a constant intercept cannot reduce the limiting squared error below that bound.
+\end{corollary}
+\begin{proof}
+Boundedness and finite dimension give compactness of the cluster set. By Corollary~\ref{cor:excursions} each unit direction has arbitrarily late values of $v^{\mathsf T}X>a_0$. Taking a convergent subsequence gives a cluster point with value at least $a_0$. The support function of the closed convex hull dominates that of the ball; the separation theorem proves inclusion. The convex hull of a compact set in finite dimension is compact. For prediction, collect the coefficients into $v$, whose scale-$j$ block is $w$. The limiting squared error equals $v^{\mathsf T}Gv\ge\lambda\|v\|^2\ge\lambda\|w\|^2$. The mean is zero, so adding an intercept adds its square to the limit.
+\end{proof}
+
+\begin{remark}[What the theorem does not say]
+The cluster set itself need not contain a ball merely because its convex hull does. The proof does not show every ordering of three or more uncentered residue-class errors, an exact positive logarithmic density for arbitrary inequalities, simple zeros, or full support of a limiting distribution. Nonlinear or infinite-memory prediction is not addressed. The absolute convergence here depends on smoothing; no direct transfer to ordinary $\pi(x;q,a)$ is claimed.
+\end{remark}
+
+\subsection{A test-function certificate for a spectral gap}
+The atom proof also gives a quantitative witness that does not depend on identifying a zero belonging to only one character. Fix finite $H\subset\Gamma$. For each coordinate $l=(j,a)$ choose an isolated prime $p_l$ as in the proof and a bounded interval $I_l$ around $t_l=\log p_l-h_j$ containing no other distinct atom locations and with $t+h_k>0$ throughout. Consider the finite-dimensional span on $I_l$ of the smooth functions $g_{\chi^*}(t+h_k)$ and the functions $\e^{i\gamma t}$ for $\gamma\in H\cup\{0\}$. Choose a complex-valued $\phi_l\in C_c^\infty(I_l)$ satisfying
+\begin{equation}\label{eq:tests}
+ \phi_l(t_l)=1,\qquad \int_{I_l}\phi_l(t)f(t)\dd t=0\quad\text{for all } f\text{ in that span}.
+\end{equation}
+Such a test exists: if point evaluation vanished on the common kernel of the finitely many integral functionals, it would be their linear combination by finite-dimensional linear algebra, making a point mass a smooth distribution on $I_l$, impossible. Normalize any test with nonzero point value. This gives an existence recipe; no assertion of uniform computability for arbitrary real shifts is made.
+
+\begin{proposition}[Finite atom certificates]\label{prop:certificate}
+For any choices satisfying \eqref{eq:tests}, define
+\[
+ K_l=\frac{p_l}{(\log p_l)^2}\sum_{\gamma\in\Gamma\setminus H}(1/4+\gamma^2)^2
+ \left|\int\phi_l(t)\e^{i\gamma t}\dd t\right|^2.
+\]
+Each $K_l$ is finite, and
+\begin{equation}\label{eq:certificate}
+ \lambda_{\min}(G_H)\ \ge\ \left(\sum_l K_l\right)^{-1}>0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $v\in\C^D$ define $d_\gamma=\sum_l v_l z_{\gamma,l}$. The distribution $V$ in the strict-positivity proof has spectral coefficients $(1/4+\gamma^2)d_\gamma$ for $\gamma\ne0$. Pairing it with $\phi_l$ removes the central and $H$ frequencies, and removes every smooth term from \eqref{eq:atoms}. The only remaining atom is \eqref{eq:isolated}; thus
+\[
+ -\frac{\log p_l}{\sqrt{p_l}}v_l
+ =\sum_{\gamma\in\Gamma\setminus H}(1/4+\gamma^2)d_\gamma
+ \int\phi_l(t)\e^{i\gamma t}\dd t.
+\]
+Cauchy--Schwarz implies $|v_l|^2\le K_l\sum_{\gamma\notin H}|d_\gamma|^2$. The series defining $K_l$ converges by the zero count and rapid decay of the test transform. Sum over $l$ and minimize the resulting Rayleigh quotient (conjugating $v$ if necessary). Positivity and finiteness of the denominator follow, for instance by taking any nonzero $v$ in the preceding inequality.
+\end{proof}
+The constants can be bounded without enumerating coincidences: a local zero-count upper bound bounds the number of distinct ordinates per unit interval, and repeated integration by parts bounds the test transform there. This certificate can be very small; it is not advertised as a sharp numerical estimate.
+
+\section{Returning to the repository's weighted prime error}
+The upstream \texttt{primeError d M x} counts prime powers in the class $1\bmod M$ weighted by $1-\chi_d(n)$, where $d\equiv7\pmod8$ is prime, $(M,d)=1$, and $\chi_d$ is the quadratic character modulo $d$. Its main term is $\log x/\varphi(M)$ plus a constant. This is exactly a contrast of the preceding smoothed sums, up to the powers of $d$.
+
+Take $q=Md$ and let
+\[
+ w(a)=\ind_{a\equiv1\ (M)}(1-\chi_d(a)),\qquad a\in(\Z/q\Z)^\times.
+\]
+By the Chinese remainder theorem, $\sum_a w(a)=d-1$ and $w\ne0$. Thus $\sum_a w(a)/\varphi(q)=1/\varphi(M)$. The weighted sum $W(x)$ from the repository equals
+\[
+ \sum_a w(a)S_a(x)+D_d(x),\quad
+ D_d(x)=\log d\sum_{\substack{d^k\le x,\ k\ge1\\d^k\equiv1\ (M)}}(d^{-k}-x^{-1}).
+\]
+The correction converges to $D_\infty=\log d\sum_{k\ge1,\ d^k\equiv1\ (M)}d^{-k}$ with error $O_d((1+\log x)/x)$ by a geometric tail and counting $k$. The repo constant is $\sum_a w(a)C_a+D_\infty$: equivalently, write the weighted Dirichlet series as $\varphi(M)^{-1}$ times the difference of $F_\xi$ and its quadratic twist, and take the finite part at $1$ minus the pole residue $1/\varphi(M)$. This is its \texttt{logDerivMean} evaluated at $1$ (the pole is removed by \texttt{entireL}). Consequently if $R(x)$ is the repository remainder, the centered normalization
+\[
+ Z(t)=\e^{t/2}R(\e^t)-\sum_a w(a)M_a
+ =\sum_a w(a)E_a(t)+O_d((1+t)\e^{-t/2})
+\]
+has the following property.
+\begin{corollary}
+For any finitely many distinct logarithmic shifts $h_j$, the joint limiting covariance of $(Z(t+h_j))_{j=1}^r$ is positive definite. All nonzero real combinations have positive lower logarithmic density of positive and negative excursions. In particular the normalized, centered remainder of the upstream one-sided bound has infinitely many nontrivial spectral frequencies and cannot be exactly linearly predicted from finitely many other scales.
+\end{corollary}
+\begin{proof}
+The block-linear projection from $X$ to these $r$ coordinates has transpose injective because $w\ne0$, so its limiting covariance is positive definite. The decaying correction does not affect the covariance or spectral polynomial. The excursion argument of Corollary~\ref{cor:excursions} applies to this projected vector, with its own positive constants.
+\end{proof}
+
+\section{Numerical illustration and research directions}
+The accompanying \texttt{numerical\_check.py} computes the prime-power counts directly for $q=3$, the two reduced classes, and scales $1,2,3/2$. For the principal character, $b_0=-\gamma_E-1-\tfrac12\log3$, where $\gamma_E$ is Euler's constant. For the other character, $b_1=-L'(1,\chi_3)/L(1,\chi_3)$. There are no central zeros in this example: the alternating eta series is strictly positive at $1/2$, and the series $\sum_{k\ge0}[(3k+1)^{-1/2}-(3k+2)^{-1/2}]$ is also positive. The code uses these constants rather than fitting the centering from data. A floating-point sieve computation (maximum argument below $885{,}000$) gives the following eigenvalues of the empirical covariance, with the sample mean subtracted.
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Log window & Samples & Smallest eigenvalue & Largest eigenvalue\\
+\midrule
+$[4,13]$ & 4500 & $2.2462\cdot10^{-5}$ & $6.1087\cdot10^{-2}$\\
+$[6,13]$ & 3500 & $1.9436\cdot10^{-5}$ & $1.3520\cdot10^{-2}$\\
+$[8,13]$ & 2500 & $1.8434\cdot10^{-5}$ & $2.5256\cdot10^{-3}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The results are finite-window illustrations, not certified bounds on the limiting eigenvalues. In particular the large change of the largest eigenvalue is a reminder that the initial transient and finite-window bias can be substantial. The exact rational collision checks in the script exhibit $p=7$ for class $1$ and $p=5$ for class $2$ at each scale. Every other scale argument is either nonintegral or has two distinct prime factors; these six atom witnesses require no knowledge of zeros.
+
+Further research questions:
+\begin{enumerate}
+\item Can explicit zero-count constants, local test functions, and optimally chosen isolated primes give useful lower bounds on $\lambda_{\min}(G)$ in terms of $q$, $r$, and scale separation? What is the sharp decay as two scales merge?
+\item Can strict positivity survive less smoothing, where only a Besicovitch mean-square expansion is available, and transfer to unsmoothed prime races after removing prime-square biases?
+\item Can the atom argument be generalized to Frobenius-class functions for Artin $L$-functions when a suitable explicit formula and GRH hold? One would need an independent hypothesis or theorem for those $L$-functions; Dirichlet GRH alone does not provide it.
+\item Which nonlinear constraints, if any, hold on the cluster set itself? The positive covariance proved here only excludes affine hyperplanes, not more general lower-dimensional sets.
+\item Can the distributional explicit formula and finite-atom isolation be formalized in Lean, importing the exact upstream GRH theorem? A natural sequence is local zero counts and Hadamard products, the smoothed contour identity, distributional inversion, then finite-dimensional linear algebra and mean-square convergence. The current note is not kernel-checked.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{repo} L. Sernau et al., \emph{GRH for Dirichlet L-functions, in Lean 4}, 25 Nov. 2026. \url{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}.
+\bibitem{rubinstein} M. Rubinstein, \emph{Alp\"oge/Claude proof of the Generalized Riemann Hypothesis}, verification status accessed 26 Nov. 2026. \url{https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/}.
+\bibitem{wiki} Wikipedia contributors, \emph{Riemann hypothesis}, accessed 26 Nov. 2026. \url{https://en.wikipedia.org/wiki/Riemann_hypothesis}.
+\bibitem{MV} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge University Press, 2007.
+\bibitem{Kou} D. Koukoulopoulos, \emph{The Distribution of Prime Numbers}, Graduate Studies in Mathematics 203, AMS, 2019, ch. 11. \url{https://dms.umontreal.ca/~koukoulo/documents/publications/primes.pdf}.
+\bibitem{RS} M. Rubinstein and P. Sarnak, Chebyshev's bias, \emph{Experimental Mathematics} \textbf{3} (1994), 173--197.
+\bibitem{MN} G. Martin and N. Ng, Inclusive prime number races, \emph{Trans. Amer. Math. Soc.} \textbf{373} (2020), 3561--3607. \url{https://arxiv.org/abs/1710.00088}.
+\bibitem{Devin} L. Devin, Limiting properties of the distribution of primes in an arbitrarily large number of residue classes, \emph{Canadian Math. Bull.} (2020 online). \url{https://doi.org/10.4153/S0008439520000089a}.
+\end{thebibliography}
+\end{document}

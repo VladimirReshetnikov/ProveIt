@@ -1,0 +1,375 @@
+{
+  "title": "Dyadic pole detection: exact identities and numerical checks",
+  "as_of": "2026-11-26",
+  "verification_status": "all implemented checks passed",
+  "environment": {
+    "python": "3.12.14",
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0",
+    "mpmath_decimal_precision": 100
+  },
+  "scope": {
+    "exact": "Polynomial identities, quartic root isolation, Hessian positivity decomposition, and concavity derivative.",
+    "numerical": "Defining roots, extremizer substitution, and a finite grid.",
+    "not_done": "Full Lean formalization, rebuilding the upstream RH proof, or a machine-checked proof of the analytic Landau theorem."
+  },
+  "exact_certificates": {
+    "all_checks_passed": true,
+    "checks": [
+      {
+        "name": "triple_C_in_terms_of_B",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "first_constraint_at_B_equals_M",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "fourth_power_constraint_at_B_equals_M",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "difference_of_two_feasibility_quadratics",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_A_equals_M0_mod_quartic",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_B_equals_M0_mod_quartic",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_C_equals_M0_mod_quartic",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_imaginary_part_squared",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_quartic_from_interval_contact",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_quartic_derivative_negative_on_0_1",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "weighted_triple_x_stationary_mod_quartic",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "weighted_triple_u_stationary_mod_quartic",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "weighted_triple_value_mod_quartic",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_Hessian_entry_0_0",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_Hessian_entry_0_1",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_Hessian_entry_1_0",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_Hessian_entry_1_1",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_Hessian_minus_2I_determinant_certificate",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_Hessian_minus_2I_first_diagonal_certificate",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "triple_quartic_exact_root_isolation",
+        "interval": [
+          "1/2",
+          "13/25"
+        ],
+        "count_roots": 1,
+        "left_value": "1/16",
+        "right_value": "-10814/390625",
+        "uniqueness_on_0_1": "q'(t)=-3-4t(1-t^2)<0 for 0<t<1"
+      },
+      {
+        "name": "angular_recurrence_centered_at_pi_over_3",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "even_length_endpoint_angle_identity",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "weighted_Jensen_barycenter",
+        "result": "exactly_zero"
+      },
+      {
+        "name": "logarithmic_angle_second_derivative",
+        "result": "exactly_zero",
+        "derivative": "-sqrt(d)*(1-d)*cosh(w)/(1-d*cosh(w)^2)^(3/2)",
+        "sign_hypotheses": "0<d<1 and d*cosh(w)^2<1"
+      },
+      {
+        "name": "old_two_filter_Bezout_identity",
+        "result": "exactly_zero"
+      }
+    ],
+    "triple_strong_convexity_domain": "D={(x,u):u>=0 and 2x+u<=0}; on D, x^2-u^2/4>=0.",
+    "triple_certificate_conclusion": "Hessian(P)-2I is positive definite on D by the two displayed nonnegative decompositions with strictly positive constants. Taylor integration gives P-P(x0,t)>=(x-x0)^2+(u-t)^2.",
+    "analytic_scope": "The branch condition for the angle recurrence, Jensen's inequality, and the Landau transfer are human-readable proofs in the paper, not assertions certified solely by symbolic computation."
+  },
+  "numerical_constants": [
+    {
+      "family": "even_dyadic",
+      "N": 2,
+      "last_exponent": 2,
+      "r": "0.61803398874989484820458683436563811772030917980576286213544862271",
+      "c": "0.8740320488976421415986024101115102275749416319741343768404125574",
+      "c_squared": "0.76393202250021030359082633126872376455938164038847427572910275459",
+      "endpoint_equation_residual": "0.0",
+      "extremizer_moduli": [
+        "0.8740320488976421415986024101115102275749416319741343768404125574",
+        "0.8740320488976421415986024101115102275749416319741343768404125574"
+      ],
+      "peak_minus_constant": "7.1436711955142186388486471769083809965744374676424916325945365202e-102",
+      "active_filter_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "family": "even_dyadic",
+      "N": 4,
+      "last_exponent": 8,
+      "r": "0.81165232002780264839341885890345670417191829342453770724477451955",
+      "c": "0.92039511546873819757776746218783646284854078988458111497351928173",
+      "c_squared": "0.84712716857871191974867950747571795200555137399195776880606972431",
+      "endpoint_equation_residual": "0.0",
+      "extremizer_moduli": [
+        "0.92039511546873819757776746218783646284854078988458111497351928173",
+        "0.88046063285200110618361015836375536102662500592583859715096269836",
+        "0.86853742887888055247741427678987950017862932675808724132435641407",
+        "0.92039511546873819757776746218783646284854078988458111497351928173"
+      ],
+      "peak_minus_constant": "1.428734239102843727769729435381676199314887493528498326518907304e-101",
+      "active_filter_indices": [
+        0,
+        3
+      ]
+    },
+    {
+      "family": "even_dyadic",
+      "N": 6,
+      "last_exponent": 32,
+      "r": "0.92300175350448511287560203585871519812159601469343534293203965898",
+      "c": "0.9638103980907599564327552127211248871431561010999852394849183788",
+      "c_squared": "0.92893048346786918347207029331031970528825767374715170114634770783",
+      "endpoint_equation_residual": "0.0",
+      "extremizer_moduli": [
+        "0.9638103980907599564327552127211248871431561010999852394849183788",
+        "0.93480281312176491563805986072969064657395959638773676839242311611",
+        "0.89497511874150248904308024778640129164044394204759745057877217722",
+        "0.86643902228454274109228560037469921181176024435204141850466034953",
+        "0.89415472240492831718511138823033418182580700778243401314690568901",
+        "0.9638103980907599564327552127211248871431561010999852394849183788"
+      ],
+      "peak_minus_constant": "1.428734239102843727769729435381676199314887493528498326518907304e-101",
+      "active_filter_indices": [
+        0,
+        5
+      ]
+    },
+    {
+      "family": "even_dyadic",
+      "N": 8,
+      "last_exponent": 128,
+      "r": "0.97235548806472079323920711824294477035637977602269505831111825638",
+      "c": "0.98646830010135682400662095956162140338240324765451067391029913994",
+      "c_squared": "0.97311970710486058775269433921895195694254775583649139087344089969",
+      "endpoint_equation_residual": "-2.1431013586542655916545941530725142989723312402927474897783609561e-101",
+      "extremizer_moduli": [
+        "0.98646830010135682400662095956162140338240324765451067391029913994",
+        "0.97388302660605838415799859630070271516872244654988845919851485882",
+        "0.95140716913665982961006451760889468612797644706620645751598004434",
+        "0.91622059548853572586748339900113527932230955047535980456674748702",
+        "0.87703969769457709110691214227918359573386457093701322651471636792",
+        "0.87092401010427815092624092556165120045164788772850669169348864185",
+        "0.92810458649012686775246673157366948239085776121522956307853908987",
+        "0.98646830010135682400662095956162140338240324765451067391029913994"
+      ],
+      "peak_minus_constant": "4.2862027173085311833091883061450285979446624805854949795567219121e-101",
+      "active_filter_indices": [
+        0,
+        7
+      ]
+    },
+    {
+      "family": "even_dyadic",
+      "N": 10,
+      "last_exponent": 512,
+      "r": "0.99086974540894148572014895712565720620276715205606017688568458915",
+      "c": "0.99546627615295890082698192444511242955324638307884600384580874782",
+      "c_squared": "0.99095310695783903079797445863557736494727915990846225099581700443",
+      "endpoint_equation_residual": "0.0",
+      "extremizer_moduli": [
+        "0.99546627615295890082698192444511242955324638307884600384580874782",
+        "0.99103645798873634232535557488703882365377035264796060892779515624",
+        "0.98248350308454288527680834414530451220798739953468895023452756207",
+        "0.96656894075136516524580801989935413355524290910698618049176087901",
+        "0.93922107233213871948340727007952649547395642865085552495842747666",
+        "0.90018877936291083033941905907876543063220694152613913976799243268",
+        "0.86783289360266603832356969726372387086951637395675203342430339711",
+        "0.88681278113842971712691595199924302412479958632138604015741205094",
+        "0.95581268504349425473274309490567085069175980232547072638499791264",
+        "0.99546627615295890082698192444511242955324638307884600384580874782"
+      ],
+      "peak_minus_constant": "2.1431013586542655916545941530725142989723312402927474897783609561e-101",
+      "active_filter_indices": [
+        0,
+        9
+      ]
+    },
+    {
+      "family": "even_dyadic",
+      "N": 12,
+      "last_exponent": 2048,
+      "r": "0.99714363527229259144674195991776816628724808878318897501594908306",
+      "c": "0.99857488156459767945343456392914525022382314331686406907372596193",
+      "c_squared": "0.99715179409175028246494966907786946729908679863147063144415568961",
+      "endpoint_equation_residual": "1.428734239102843727769729435381676199314887493528498326518907304e-101",
+      "extremizer_moduli": [
+        "0.99857488156459767945343456392914525022382314331686406907372596193",
+        "0.99715995281107408610801844789196947827921120685224135381763624125",
+        "0.99436051201883011488329406688087363268074606391663845840997032468",
+        "0.98888222946095104026925177632075258040072777015662661155706343968",
+        "0.97839949713259795833922709154671746424815829435070054280489156363",
+        "0.95926059669049764721573280806018354951792852037503140351194555787",
+        "0.92773727442658976290970792620112271020998211155179982512822608109",
+        "0.88735919972338983165649672247987679759728684815333606040248131484",
+        "0.86623791158112388166386326904206012414244278075833333767760762683",
+        "0.9067873450733932543173148202372396674215608922878755889033825199",
+        "0.97437743999707184190116216803746947393797782195616456711035910409",
+        "0.99857488156459767945343456392914525022382314331686406907372596193"
+      ],
+      "peak_minus_constant": "2.8574684782056874555394588707633523986297749870569966530378146081e-101",
+      "active_filter_indices": [
+        0,
+        11
+      ]
+    },
+    {
+      "family": "triple",
+      "N": 3,
+      "last_exponent": 4,
+      "u": "0.51386871143659334812972947423700406659870625319249839102171325418",
+      "z_real": "-0.36796947370324757837009477847955943429533644423548233046245308094",
+      "z_imag": "0.61519686106087077224921594458934917964726266798618459183836933579",
+      "c": "0.88200326758470582855996326560425996923491498508124899521796964372",
+      "c_squared": "0.77792976403009819138953991727788519800803336472153373009680709229",
+      "quartic_residual": "0.0",
+      "extremizer_moduli": [
+        "0.88200326758470582855996326560425996923491498508124899521796964372",
+        "0.88200326758470582855996326560425996923491498508124899521796964372",
+        "0.88200326758470582855996326560425996923491498508124899521796964372"
+      ],
+      "peak_minus_constant": "-7.1436711955142186388486471769083809965744374676424916325945365202e-102",
+      "active_filter_indices": [
+        0,
+        1,
+        2
+      ]
+    }
+  ],
+  "deterministic_grid_sanity_checks": [
+    {
+      "family": "even_dyadic",
+      "N": 2,
+      "points": 14640,
+      "grid": "61 radii in [0,1.5] x 240 angles",
+      "grid_minimum": 0.8749999999999997,
+      "grid_minimum_minus_exact_constant": 0.0009679511023574783,
+      "grid_argmin_real": -0.3125000000000003,
+      "grid_argmin_imag": -0.541265877365274,
+      "interpretation": "Finite deterministic sanity check; not a global proof."
+    },
+    {
+      "family": "even_dyadic",
+      "N": 4,
+      "points": 14640,
+      "grid": "61 radii in [0,1.5] x 240 angles",
+      "grid_minimum": 0.9249999999999996,
+      "grid_minimum_minus_exact_constant": 0.0046048845312613995,
+      "grid_argmin_real": -0.41250000000000037,
+      "grid_argmin_imag": -0.7144709581221617,
+      "interpretation": "Finite deterministic sanity check; not a global proof."
+    },
+    {
+      "family": "even_dyadic",
+      "N": 6,
+      "points": 14640,
+      "grid": "61 radii in [0,1.5] x 240 angles",
+      "grid_minimum": 0.9646890690787365,
+      "grid_minimum_minus_exact_constant": 0.0008786709879765597,
+      "grid_argmin_real": -0.4625000000000004,
+      "grid_argmin_imag": -0.8010734985006055,
+      "interpretation": "Finite deterministic sanity check; not a global proof."
+    },
+    {
+      "family": "even_dyadic",
+      "N": 8,
+      "points": 14640,
+      "grid": "61 radii in [0,1.5] x 240 angles",
+      "grid_minimum": 0.98773731325692,
+      "grid_minimum_minus_exact_constant": 0.00126901315556327,
+      "grid_argmin_real": -0.48750000000000043,
+      "grid_argmin_imag": -0.8443747686898274,
+      "interpretation": "Finite deterministic sanity check; not a global proof."
+    },
+    {
+      "family": "even_dyadic",
+      "N": 10,
+      "points": 14640,
+      "grid": "61 radii in [0,1.5] x 240 angles",
+      "grid_minimum": 0.9999988269069069,
+      "grid_minimum_minus_exact_constant": 0.004532550753947984,
+      "grid_argmin_real": -0.48749999999999977,
+      "grid_argmin_imag": 0.8443747686898277,
+      "interpretation": "Finite deterministic sanity check; not a global proof."
+    },
+    {
+      "family": "even_dyadic",
+      "N": 12,
+      "points": 14640,
+      "grid": "61 radii in [0,1.5] x 240 angles",
+      "grid_minimum": 1.0,
+      "grid_minimum_minus_exact_constant": 0.0014251184354022728,
+      "grid_argmin_real": 0.0,
+      "grid_argmin_imag": 0.0,
+      "interpretation": "Finite deterministic sanity check; not a global proof."
+    },
+    {
+      "family": "triple",
+      "N": 3,
+      "points": 14640,
+      "grid": "61 radii in [0,1.5] x 240 angles",
+      "grid_minimum": 0.8917338786068654,
+      "grid_minimum_minus_exact_constant": 0.009730611022159552,
+      "grid_argmin_real": -0.365748995301164,
+      "grid_argmin_imag": -0.5968481150478646,
+      "interpretation": "Finite deterministic sanity check; not a global proof."
+    }
+  ],
+  "proof_vs_computation": "The mathematical proofs are in the paper. Passing a grid check is not evidence sufficient to establish a global extremal claim."
+}
