@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianFiniteExponentialWeightedNorm
 
 /-!
 # Rational weighted coefficient bounds for the actual polynomial powers

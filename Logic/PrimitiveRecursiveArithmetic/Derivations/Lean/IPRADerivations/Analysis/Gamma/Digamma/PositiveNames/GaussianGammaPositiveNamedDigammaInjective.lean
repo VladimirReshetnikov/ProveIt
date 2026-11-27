@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaCompactInverseSlope
+import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Slopes.GaussianGammaDigammaCompactInverseSlope
 import IPRADerivations.Analysis.Gamma.Digamma.PositiveNames.GaussianGammaPositiveNamedDigammaFrozen
 
 /-!

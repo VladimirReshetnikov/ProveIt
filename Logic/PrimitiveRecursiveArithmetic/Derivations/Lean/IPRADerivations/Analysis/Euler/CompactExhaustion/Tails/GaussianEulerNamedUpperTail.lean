@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperTailNameBudget
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffSplit
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffSplit
 
 /-!
 # Exact original named Euler upper-tail bound

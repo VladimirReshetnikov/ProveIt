@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaPowerHorizonCoherence
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialCoefficients
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianRationalPolynomialExponentialCoefficients
 
 /-!
 # Original Gamma exponential coefficients at a fixed finite horizon

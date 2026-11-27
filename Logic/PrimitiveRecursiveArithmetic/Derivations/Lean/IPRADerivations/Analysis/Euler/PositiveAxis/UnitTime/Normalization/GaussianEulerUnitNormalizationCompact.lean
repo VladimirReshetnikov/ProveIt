@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Normalization.Gaussi
 import IPRADerivations.Analysis.Euler.Integration.Decay.CompactBounds.GaussianEulerDecayCompactAntiderivative
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 import IPRADerivations.Analysis.Exponential.Names.LocalEstimates.GaussianExponentialSmallPerturbation
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaEulerCompactQuadrature
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaEulerCompactQuadrature
 
 /-!
 # Original unit-input Euler compact observations and the decay endpoints

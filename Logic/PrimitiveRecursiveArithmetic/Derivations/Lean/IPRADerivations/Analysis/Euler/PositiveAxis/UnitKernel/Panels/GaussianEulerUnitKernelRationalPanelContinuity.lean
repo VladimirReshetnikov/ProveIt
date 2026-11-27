@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Panels.GaussianEulerUnitKernelPanelNameContinuity
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Panels.GaussianEulerUnitKernelPanelRescaling
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffAlignment
 import IPRADerivations.Analysis.RationalArithmetic.Distances.RationalNativeFractionDisplacement
 import IPRADerivations.AnalyticNumberTheory.PowerTransfer
 

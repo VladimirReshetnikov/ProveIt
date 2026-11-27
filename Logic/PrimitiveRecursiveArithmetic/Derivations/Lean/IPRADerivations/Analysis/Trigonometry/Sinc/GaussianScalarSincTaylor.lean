@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Sine.GaussianScalarSineTaylor
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianPolynomialExponentialLinear
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianPolynomialExponentialLinear
 
 /-!
 # The literal sinc factorial sum

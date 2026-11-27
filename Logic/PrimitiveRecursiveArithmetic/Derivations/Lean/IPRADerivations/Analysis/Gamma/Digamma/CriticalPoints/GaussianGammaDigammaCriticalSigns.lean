@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDiga
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaElementaryOriginalLog
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaRecurrence
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsCaps
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsCaps
 
 /-!
 # Strict digamma margins at the integers one and two

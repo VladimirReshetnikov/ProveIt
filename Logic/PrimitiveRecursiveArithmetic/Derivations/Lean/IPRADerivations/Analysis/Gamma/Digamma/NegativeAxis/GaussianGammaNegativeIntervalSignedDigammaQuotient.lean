@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.NegativeAxis.GaussianGammaNegativeIntervalDigammaRate
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalGammaSign
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedSign
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Signs.GaussianGammaNegativeIntervalGammaSign
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Signs.GaussianGammaNegativeIntervalNamedSign
 import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianNamedConstantCoefficientDifferenceProduct
 
 /-!

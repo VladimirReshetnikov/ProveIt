@@ -1,9 +1,9 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerTaylorUniform
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerStepReciprocal
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.Taylor.GaussianLogGammaEulerTaylorUniform
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.ReciprocalSlopes.GaussianLogGammaEulerStepReciprocal
 import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantRationalRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateRadius
-import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaPoleDifferenceQuotient
+import IPRADerivations.Analysis.Gamma.Poles.Limits.GaussianGammaPoleDifferenceQuotient
 
 /-!
 # Actual punctured cofinal log-Gamma difference quotient

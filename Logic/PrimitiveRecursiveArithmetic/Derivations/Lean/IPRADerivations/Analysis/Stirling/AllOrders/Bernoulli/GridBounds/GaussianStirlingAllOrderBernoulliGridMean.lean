@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.GridSums.RationalPolynomialGridSum
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelDerivative
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.DiscreteIdentities.GaussianStirlingAllOrderPanelDerivative
 
 /-!
 # Readback of the literal centered Bernoulli samples

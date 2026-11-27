@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentNamedPhase
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentNamedSine
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentNamedPhase
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentNamedSine
 import IPRADerivations.Analysis.Gamma.Names.GaussianNamedGammaSineModulation
 import IPRADerivations.Analysis.Gamma.EulerProducts.Factorials.GaussianNamedGammaFactorial
 

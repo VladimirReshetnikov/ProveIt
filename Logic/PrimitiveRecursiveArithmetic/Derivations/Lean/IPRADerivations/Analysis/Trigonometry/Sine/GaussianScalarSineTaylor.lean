@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.FiniteSeries.GaussianScalarExponentialOddTaylor
 import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentExponentialPeriod
 
 /-!
 # Exact signed sine Taylor polynomial

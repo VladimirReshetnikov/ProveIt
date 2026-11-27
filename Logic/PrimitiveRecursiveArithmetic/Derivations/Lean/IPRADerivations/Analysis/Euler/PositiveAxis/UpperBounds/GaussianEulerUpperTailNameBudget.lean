@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerCompactUpperTail
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffGeometry
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffGeometry
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactModulus
 import IPRADerivations.Analysis.Euler.Integration.Decay.CompactBounds.GaussianEulerDecayCompactAntiderivative
 

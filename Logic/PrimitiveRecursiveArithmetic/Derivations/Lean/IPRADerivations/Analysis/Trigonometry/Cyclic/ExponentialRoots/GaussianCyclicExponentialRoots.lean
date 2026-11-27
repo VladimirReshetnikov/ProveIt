@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentOriginalExponential
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentOriginalExponential
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianBoundedConstantProductName
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponentialSample
 import IPRADerivations.Analysis.Trigonometry.Sinc.GaussianNamedSincSamples

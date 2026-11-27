@@ -1,8 +1,8 @@
-import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaCompactLipschitz
+import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Slopes.GaussianGammaDigammaCompactLipschitz
 import IPRADerivations.Analysis.Gamma.Digamma.PositiveNames.GaussianGammaPositiveNamedDigammaInjective
 import IPRADerivations.Analysis.Gamma.Digamma.PositiveNames.GaussianNamedPositiveDigammaReal
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsStrictOrder
 
 /-!
 # Monotonicity of the original named positive digamma

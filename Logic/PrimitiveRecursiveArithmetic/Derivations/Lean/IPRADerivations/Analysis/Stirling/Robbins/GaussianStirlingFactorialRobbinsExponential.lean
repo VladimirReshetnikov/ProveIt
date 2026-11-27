@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Robbins.GaussianStirlingFactorialRobbins
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsStrictOrder
 
 /-!
 # The strict exponential forms of the Robbins and Stirling bounds

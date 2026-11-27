@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicTrapezoid
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsOrder
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsOrder
 
 /-!
 # Right and trapezoid rectangles for one harmonic cell

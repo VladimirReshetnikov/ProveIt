@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyRefinement
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialQuadrature
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentOriginalExponential
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentOriginalExponential
 
 /-!
 # The exact arctangent exponential at rational arguments

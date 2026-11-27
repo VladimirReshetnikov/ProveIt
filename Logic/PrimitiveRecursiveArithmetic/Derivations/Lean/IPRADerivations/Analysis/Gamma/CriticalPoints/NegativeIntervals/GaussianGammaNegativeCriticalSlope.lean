@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalCorrectionSlope
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalEndpoints
-import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaLipschitz
+import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Slopes.GaussianGammaDigammaLipschitz
 
 /-!
 # Upper slope of the shifted digamma on the truncated negative interval

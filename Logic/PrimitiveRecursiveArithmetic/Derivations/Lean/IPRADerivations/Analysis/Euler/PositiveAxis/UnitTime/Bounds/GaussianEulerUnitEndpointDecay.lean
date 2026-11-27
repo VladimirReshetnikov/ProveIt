@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 import IPRADerivations.Analysis.Euler.Integration.Decay.Quadrature.GaussianEulerDecayQuadraturePrecision
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactQuadratureBoundary
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactQuadratureBoundary
 
 /-!
 # Decay endpoint convergence at the original Euler cutoffs

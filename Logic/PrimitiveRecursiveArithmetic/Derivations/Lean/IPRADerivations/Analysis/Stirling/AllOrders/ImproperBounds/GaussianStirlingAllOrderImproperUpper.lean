@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Logarithms.GaussianStirlingAllOrderNamedUpperGap
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsCaps
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsCaps
 
 /-!
 # The sharp upper bound for the original fixed-order improper integral

@@ -4,7 +4,7 @@ The kept base powers use Mercator on their relative displacement. The
 prefactor, finite correction and cofinal tail use their original exponents.
 -/
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.RelativeLogarithms.GaussianBarnesCanonicalHeadRelativeLog
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadExponentialFactors
+import IPRADerivations.Analysis.Barnes.HeadProducts.ExponentialCorrections.GaussianBarnesCanonicalHeadExponentialFactors
 import IPRADerivations.Analysis.Barnes.Taylor.FirstDerivative.Prefactors.GaussianBarnesCanonicalPrefactorExponentDerivative
 import IPRADerivations.Analysis.Barnes.CanonicalProducts.GaussianBarnesCanonicalValue
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalRatioBinding

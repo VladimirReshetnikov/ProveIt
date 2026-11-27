@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PairedPanels.GaussianStirlingAllOrderPairedReadback
 import IPRADerivations.Analysis.Stirling.AllOrders.Covariance.GaussianStirlingAllOrderCrossedRectangles
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelTail
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.OuterSums.GaussianStirlingAllOrderPanelTail
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumMirror
 
 /-!

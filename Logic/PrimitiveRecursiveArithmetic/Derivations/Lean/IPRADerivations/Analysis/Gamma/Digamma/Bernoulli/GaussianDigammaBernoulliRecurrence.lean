@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelPartsBinding
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.Cofinal.GaussianStirlingAllOrderPanelPartsBinding
 
 /-!
 # The actual digamma weighted-prefix recurrence

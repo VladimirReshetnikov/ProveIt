@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerPositiveScalingGamma
+import IPRADerivations.Analysis.Gamma.Integrals.Substitutions.GaussianEulerPositiveScalingGamma
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyCongruence
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamilyMultiply
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicative
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicative
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianStirlingWallisGammaRatio
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogShift
 

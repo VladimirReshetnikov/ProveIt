@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelDerivative
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.DiscreteIdentities.GaussianStirlingAllOrderPanelDerivative
 
 /-!
 # Exact central Taylor expansion of the cleared Bernoulli polynomial

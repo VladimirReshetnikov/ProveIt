@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Scaling.GaussianSineProductScaledArguments
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentSlope
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentSlope
 import IPRADerivations.Analysis.Gamma.Names.PositiveAxis.GaussianNamedGammaFirstCrossing
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameConjugation
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.FirstPanel.GaussianStirlingAllOrderFirstPanelFiniteSum
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBoundsTranslatedRate
+import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBoundsTranslatedRate
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrement
 
 /-!

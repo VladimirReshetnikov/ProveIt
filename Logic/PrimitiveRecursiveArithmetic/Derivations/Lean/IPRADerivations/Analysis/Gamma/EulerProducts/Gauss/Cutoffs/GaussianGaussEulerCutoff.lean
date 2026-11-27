@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Heads.GaussianGammaGaussEulerHeads
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGammaGaussDomain
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ShiftedProducts.GaussianGammaGaussDomain
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaEulerInverseApproximationName
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationLogarithm
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Hyperfactorial.GaussianBarnesCanonicalHyperfactorial
-import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalShiftChart
+import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.FiniteProducts.GaussianBarnesCanonicalShiftChart
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Recurrence.GaussianLogGammaEulerRecurrence
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.GaussianNamedGammaHalfShift
 

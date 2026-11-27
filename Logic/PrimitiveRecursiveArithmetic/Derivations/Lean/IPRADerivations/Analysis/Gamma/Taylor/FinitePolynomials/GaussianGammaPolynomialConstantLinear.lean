@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianPolynomialFirstCoefficients
 import IPRADerivations.Analysis.Gamma.Taylor.NamedCoefficients.GaussianGammaCofinalCoefficientName
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialStability
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianRationalPolynomialExponentialStability
 
 /-!
 # Actual zero constant and unit linear coefficients of Gamma polynomials

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianPolynomialLowPrefix
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianShrinkingPolynomialTail
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianFiniteExponentialWeightedNorm
 
 /-!
 # The stored low-degree prefix of the original Gaussian polynomial product

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Scaling.GaussianRationalNaturalScaleOrder
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementObservations
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsStrictOrder
 
 /-!
 # Positive natural scaling of real order on actual Gaussian names

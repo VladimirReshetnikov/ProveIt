@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.ComplexLogarithmCauchy
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Remainders.ComplexLogarithmCauchy
 import IPRADerivations.Foundations.GapDecision
 
 /-!

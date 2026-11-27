@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorApartness
+import IPRADerivations.Analysis.Barnes.HeadProducts.Factors.GaussianBarnesCanonicalFactorApartness
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedSize
 

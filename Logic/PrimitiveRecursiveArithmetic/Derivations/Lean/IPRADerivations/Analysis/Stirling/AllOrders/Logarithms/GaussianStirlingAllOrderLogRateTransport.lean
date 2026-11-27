@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Truncation.GaussianStirlingAllOrderTruncationHorner
 import IPRADerivations.Analysis.Stirling.Expansions.ExpansionErrors.GaussianStirlingExpansionConditionalError
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBounds
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBounds
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.NamedExtrema.GaussianGammaNegativeIntervalNamedMinimum
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedApartness
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Apartness.GaussianGammaNegativeIntervalNamedApartness
 
 /-!
 # Strict log magnitude minimum on negative Gamma intervals

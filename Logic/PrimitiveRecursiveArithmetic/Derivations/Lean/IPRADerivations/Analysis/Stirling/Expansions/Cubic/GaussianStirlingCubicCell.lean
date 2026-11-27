@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Telescoping.GaussianStirlingDifferenceBounds
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBoundsFinite
+import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBoundsFinite
 
 /-!
 # The strict cubic correction on a single Stirling cell

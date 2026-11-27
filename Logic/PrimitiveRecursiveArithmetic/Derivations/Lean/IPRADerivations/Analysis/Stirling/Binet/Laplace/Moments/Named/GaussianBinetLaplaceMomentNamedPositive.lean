@@ -2,8 +2,8 @@ import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Named.GaussianBin
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Moments.Positivity.GaussianBinetLaplaceMomentPositive
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsCaps
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsLog
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsCaps
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsLog
 
 /-!
 # Strict positivity of the actual improper Binet moments on positive names

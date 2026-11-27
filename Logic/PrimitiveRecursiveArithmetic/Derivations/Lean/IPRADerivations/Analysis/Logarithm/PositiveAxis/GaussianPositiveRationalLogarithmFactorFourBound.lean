@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Logarithm.PositiveAxis.GaussianPositiveRationalLogarithmProperness
 import IPRADerivations.Analysis.Series.Harmonic.RationalHarmonicIntervalVariation
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmDyadicTail
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmDyadicTail
 
 /-!
 # A late bound for the original logarithm between one quarter and four

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.FirstTerm.GaussianDigammaFirstBernoulliPrefix
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaElementaryBounds
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBounds
+import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBounds
 
 /-!
 # The first improper Bernoulli remainder for the original digamma

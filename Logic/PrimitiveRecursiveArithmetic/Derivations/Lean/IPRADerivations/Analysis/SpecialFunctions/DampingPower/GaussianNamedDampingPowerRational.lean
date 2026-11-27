@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerChart
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffAlignment
 
 /-!
 # The named power chart specializes to the original rational chart

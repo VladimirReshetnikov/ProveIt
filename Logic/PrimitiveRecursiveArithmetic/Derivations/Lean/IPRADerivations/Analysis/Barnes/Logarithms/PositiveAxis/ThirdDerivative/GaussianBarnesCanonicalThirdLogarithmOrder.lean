@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdLogarithmCofinal
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderEnvelope
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsCaps
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsLog
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsCaps
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsLog
 
 /-!
 # Named strict positivity and far-axis decay of the original cubic series

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsCaps
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsCaps
 import IPRADerivations.Analysis.Stirling.Robbins.GaussianStirlingFactorialRobbinsQuotient
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.FrozenInputs.GaussianGammaMinimumFreeze
 import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveLogarithmExponential
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsStrictOrder
 
 /-!
 # Transfer order on the named log Gamma back to the original Gamma

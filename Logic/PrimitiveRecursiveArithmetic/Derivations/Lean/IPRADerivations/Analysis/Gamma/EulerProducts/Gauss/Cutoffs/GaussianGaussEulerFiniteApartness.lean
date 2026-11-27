@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussMultiplicationFixedProducts
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ShiftedProducts.GaussianGaussMultiplicationFixedProducts
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedFiniteProductApartness
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Families.GaussianNamedFiniteProductFamily
 

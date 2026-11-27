@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.FirstTerm.GaussianDigammaFirstBernoulliPanel
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelPartsRecurrence
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.FinitePanels.GaussianStirlingAllOrderPanelPartsRecurrence
 
 /-!
 # Exact finite readback of the first digamma panel

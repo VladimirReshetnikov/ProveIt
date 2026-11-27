@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGammaGaussDomain
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ShiftedProducts.GaussianGammaGaussDomain
 
 /-!
 # The reference arguments in Gauss multiplication

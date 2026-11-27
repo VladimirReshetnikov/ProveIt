@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeWeightedLogGap
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsCaps
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsCaps
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitTime.Logarithms.GaussianEulerUnitLogarithmicMargin
 
 /-!

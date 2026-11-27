@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalWeightedTaylorRecomposition
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.ProductCoefficients.GaussianBarnesCanonicalTaylorProduct
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialWeightedProductTruncation
+import IPRADerivations.Analysis.Exponential.Polynomials.Recomposition.GaussianRationalPolynomialExponentialWeightedProductTruncation
 
 /-!
 # Weighted Taylor product for the original Barnes name

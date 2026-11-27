@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.RiemannSums.GaussianRationalRiemannRefinement
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmDyadicTail
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmDyadicTail
 
 /-!
 # Actual compact-interval Gaussian quadrature

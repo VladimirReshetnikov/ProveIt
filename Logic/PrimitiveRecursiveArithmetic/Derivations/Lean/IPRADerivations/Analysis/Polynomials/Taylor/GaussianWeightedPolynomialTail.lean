@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianRationalUnitDiskHornerNorm
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCompositionTail
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmCompositionTail
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianRationalPolynomialDilation
 
 /-!

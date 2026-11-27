@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBoundsShiftArguments
+import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBoundsShiftArguments
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentedUpper
 
 /-!

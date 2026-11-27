@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentNamedChord
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentNamedChord
 
 /-!
 # A regular real name for the imaginary coordinate

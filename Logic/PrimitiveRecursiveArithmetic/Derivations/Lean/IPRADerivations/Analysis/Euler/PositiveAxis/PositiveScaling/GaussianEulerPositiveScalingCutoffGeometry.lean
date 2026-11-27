@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaEulerCompactQuadrature
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaEulerCompactQuadrature
 
 /-!
 # Inverse dilation of the original Euler cutoff interval

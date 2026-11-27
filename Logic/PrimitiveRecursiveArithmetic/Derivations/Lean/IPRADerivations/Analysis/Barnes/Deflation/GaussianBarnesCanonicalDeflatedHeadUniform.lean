@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalDeflatedHead
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorApartness
+import IPRADerivations.Analysis.Barnes.HeadProducts.Factors.GaussianBarnesCanonicalFactorApartness
 
 /-!
 # Denominator-independent separation of the deflated Barnes head

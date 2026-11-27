@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderPanelPositive
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelPartsOuterFold
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.OuterSums.GaussianStirlingAllOrderPanelPartsOuterFold
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumReversal
 
 /-!

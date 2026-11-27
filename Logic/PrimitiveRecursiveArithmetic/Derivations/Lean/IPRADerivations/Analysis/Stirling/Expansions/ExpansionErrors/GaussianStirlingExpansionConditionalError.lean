@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Expansions.ExpansionErrors.GaussianStirlingExpansionExponentialError
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicative
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicative
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!

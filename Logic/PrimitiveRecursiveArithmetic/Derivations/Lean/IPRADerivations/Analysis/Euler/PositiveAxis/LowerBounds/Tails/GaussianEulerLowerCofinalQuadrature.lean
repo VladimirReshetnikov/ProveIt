@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactIntervalRescaling
 import IPRADerivations.Analysis.Integration.CompactGrids.GaussianCompactMeshIndependence
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffSplit
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffSplit
 
 /-!
 # Cofinal transformed meshes for the unchanged lower compact name

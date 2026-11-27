@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.GaussianEulerCompactExhaustion
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerPositiveScalingGamma
+import IPRADerivations.Analysis.Gamma.Integrals.Substitutions.GaussianEulerPositiveScalingGamma
 
 /-!
 # A damped Mellin row on an enclosing compact window

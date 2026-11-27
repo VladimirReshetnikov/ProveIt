@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.PairedPanels.GaussianStirlingAllOrderPairedWeightFold
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelPartsRecurrence
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.FinitePanels.GaussianStirlingAllOrderPanelPartsRecurrence
 
 /-!
 # The paired-weight and integration-by-parts mass use the same samples

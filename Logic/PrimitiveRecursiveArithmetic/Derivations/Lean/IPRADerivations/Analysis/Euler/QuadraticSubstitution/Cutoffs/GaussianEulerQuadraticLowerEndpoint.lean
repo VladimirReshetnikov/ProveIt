@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.Incomplete.Endpoints.GaussianEulerIncompleteSmallRationalEndpoint
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffGeometry
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffGeometry
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
 
 /-!

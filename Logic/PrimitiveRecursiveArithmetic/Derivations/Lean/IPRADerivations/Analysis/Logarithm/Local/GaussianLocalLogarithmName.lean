@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianUnitDiskExponentialName
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCompositionName
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmCompositionName
 
 /-!
 # The ORIGINAL local logarithm observations as a Gaussian unit-disk name

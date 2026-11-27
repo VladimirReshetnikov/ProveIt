@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianRationalLowCoefficientConvolution
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmPolynomial
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmPolynomial
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 
 /-!

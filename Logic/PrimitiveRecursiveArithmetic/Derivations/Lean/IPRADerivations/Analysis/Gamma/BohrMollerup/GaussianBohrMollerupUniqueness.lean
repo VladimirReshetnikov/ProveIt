@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.GaussianBohrMollerupComparison
 import IPRADerivations.Analysis.Gamma.BohrMollerup.Named.GaussianBohrMollerupNativeNormalization
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsStrictOrder
 
 /-!
 # Effective Bohr–Mollerup uniqueness on positive rationals

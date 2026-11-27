@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedInverseFactor
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.NamedValues.GaussianGammaNegativeIntervalNamedInverseFactor
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.NamedIncrements.GaussianGammaNegativeIntervalNamedInverseIncrementInput
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 

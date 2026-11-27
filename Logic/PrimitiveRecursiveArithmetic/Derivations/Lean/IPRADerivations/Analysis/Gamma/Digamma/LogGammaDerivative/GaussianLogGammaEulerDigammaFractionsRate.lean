@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.LogGammaDerivative.GaussianLogGammaEulerDigammaFractions
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerReciprocalSlopeCofinal
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.ReciprocalSlopes.GaussianLogGammaEulerReciprocalSlopeCofinal
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaEulerDerivative
 import IPRADerivations.Analysis.Beta.Endpoints.Upper.GaussianBetaUpperPowerCancellation
 

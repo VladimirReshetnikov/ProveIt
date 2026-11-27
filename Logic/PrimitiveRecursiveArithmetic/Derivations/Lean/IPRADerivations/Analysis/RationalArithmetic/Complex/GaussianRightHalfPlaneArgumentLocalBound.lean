@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgument
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentSlope
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentSlope
 
 /-!
 # Quantitative bound for the original small-chart argument

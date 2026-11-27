@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialStability
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianRationalPolynomialExponentialStability
 
 /-!
 # Actual finite geometric coefficient cancellation

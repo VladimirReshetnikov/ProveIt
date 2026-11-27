@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadPolynomial
+import IPRADerivations.Analysis.Barnes.HeadProducts.BasePowers.GaussianBarnesCanonicalHeadPolynomial
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianRationalUniformFirstOrderPolynomial
 
 /-!

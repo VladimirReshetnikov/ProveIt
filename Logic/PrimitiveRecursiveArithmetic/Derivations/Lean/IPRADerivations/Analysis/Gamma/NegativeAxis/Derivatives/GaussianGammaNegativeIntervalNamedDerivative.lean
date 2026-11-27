@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedGamma
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.NamedValues.GaussianGammaNegativeIntervalNamedGamma
 import IPRADerivations.Analysis.Gamma.Digamma.NegativeAxis.GaussianGammaNegativeIntervalNamedDigamma
 import IPRADerivations.Analysis.Gamma.Digamma.NegativeAxis.GaussianGammaNegativeIntervalDigammaRate
 

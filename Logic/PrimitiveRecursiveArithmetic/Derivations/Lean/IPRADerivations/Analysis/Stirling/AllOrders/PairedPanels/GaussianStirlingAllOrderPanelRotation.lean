@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelTail
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.OuterSums.GaussianStirlingAllOrderPanelTail
 
 /-!
 # Exact left and right endpoint rotation of the periodic kernel

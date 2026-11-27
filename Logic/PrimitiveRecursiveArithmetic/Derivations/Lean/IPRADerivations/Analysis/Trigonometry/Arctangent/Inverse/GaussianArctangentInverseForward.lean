@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseSampler
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentNamedChord
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentNamedChord
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialUnitEndpoint
 
 /-!

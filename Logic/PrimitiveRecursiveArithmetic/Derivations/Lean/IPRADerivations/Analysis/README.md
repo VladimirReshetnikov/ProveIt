@@ -103,6 +103,20 @@ The Lean modules in this directory construct derivations in the object theory. T
 | Real exponential on the positive axis | [Finite-series order and term estimates](Exponential/PositiveAxis/FiniteEstimates/) and [regular values, order, and injectivity](Exponential/PositiveAxis/NamedValues/) |
 | Beta integral partitions | [Shared meshes and finite-name alignment](Beta/Partitions/Alignment/), [Dyadic budgets and cutoff schedules](Beta/Partitions/Schedules/), and [Endpoint telescopes and interval splits](Beta/Partitions/Splits/) |
 | Damping-power estimates | [Compact sums and additivity](SpecialFunctions/DampingPower/Compact/) and [Lower cutoffs and positivity](SpecialFunctions/DampingPower/LowerBounds/) |
+| [Barnes unit shift](Barnes/FunctionalEquations/UnitShift/) | [exponent normalization](Barnes/FunctionalEquations/UnitShift/ExponentNormalization/), [finite product shifts](Barnes/FunctionalEquations/UnitShift/FiniteProducts/), [Gauss recurrence](Barnes/FunctionalEquations/UnitShift/GaussRecurrence/) |
+| [Barnes head products](Barnes/HeadProducts/) | [base powers](Barnes/HeadProducts/BasePowers/), [exponential corrections](Barnes/HeadProducts/ExponentialCorrections/), [factors](Barnes/HeadProducts/Factors/) |
+| [Barnes Taylor derivatives](Barnes/Taylor/Grids/Differentiation/) | [cofinal identities](Barnes/Taylor/Grids/Differentiation/CofinalIdentities/), [fixed cutoffs](Barnes/Taylor/Grids/Differentiation/FixedCutoff/), [local estimates](Barnes/Taylor/Grids/Differentiation/LocalEstimates/) |
+| [Polynomial exponentials](Exponential/Polynomials/) | [coefficients](Exponential/Polynomials/Coefficients/), [recomposition](Exponential/Polynomials/Recomposition/) |
+| [Digamma comparison](Gamma/Digamma/Comparison/) | [convexity](Gamma/Digamma/Comparison/Convexity/), [slopes](Gamma/Digamma/Comparison/Slopes/) |
+| [Euler log-Gamma derivatives](Gamma/EulerProducts/LogGamma/Derivatives/) | [reciprocal slopes](Gamma/EulerProducts/LogGamma/Derivatives/ReciprocalSlopes/), [Taylor estimates](Gamma/EulerProducts/LogGamma/Derivatives/Taylor/) |
+| [Gauss multiplication](Gamma/FunctionalEquations/Multiplication/) | [duplication and triplication](Gamma/FunctionalEquations/Multiplication/IntegerCases/), [limits](Gamma/FunctionalEquations/Multiplication/Limits/), [shifted products](Gamma/FunctionalEquations/Multiplication/ShiftedProducts/) |
+| [Euler integral for Gamma](Gamma/Integrals/) | [compact quadrature](Gamma/Integrals/CompactQuadrature/), [substitutions](Gamma/Integrals/Substitutions/) |
+| [Gamma values between negative poles](Gamma/NegativeAxis/Values/) | [apartness](Gamma/NegativeAxis/Values/Apartness/), [named values](Gamma/NegativeAxis/Values/NamedValues/), [signs](Gamma/NegativeAxis/Values/Signs/) |
+| [Gamma poles](Gamma/Poles/) | [limits](Gamma/Poles/Limits/), [local factors](Gamma/Poles/LocalFactors/) |
+| [Finite logarithm series](Logarithm/FiniteSeries/) | [exponential composition](Logarithm/FiniteSeries/Composition/), [remainders](Logarithm/FiniteSeries/Remainders/) |
+| [Stirling integration by parts](Stirling/AllOrders/PanelParts/) | [cofinal estimates](Stirling/AllOrders/PanelParts/Cofinal/), [discrete identities](Stirling/AllOrders/PanelParts/DiscreteIdentities/), [finite panels](Stirling/AllOrders/PanelParts/FinitePanels/), [outer sums](Stirling/AllOrders/PanelParts/OuterSums/) |
+| [Global Stirling bounds](Stirling/Bounds/) | [logarithmic](Stirling/Bounds/Logarithmic/), [multiplicative](Stirling/Bounds/Multiplicative/) |
+| [Arctangent](Trigonometry/Arctangent/) | [chord and slope comparisons](Trigonometry/Arctangent/Comparisons/), [angle turns](Trigonometry/Arctangent/Turns/) |
 
 Import a file using its path within the Lean library. For example, `IPRADerivations.Analysis.Gamma.BohrMollerup.Named.GaussianBohrMollerupNamedGamma` contains `LeanProofs.IPRA.Analysis.GaussianBohrMollerupNamedGamma.actual_named_Bohr_Mollerup_Gamma_closed`.
 

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadQuadratic
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianPolynomialExponentialLinear
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianPolynomialExponentialLinear
 
 /-!
 # The actual second Gamma coefficient is the original Euler constant

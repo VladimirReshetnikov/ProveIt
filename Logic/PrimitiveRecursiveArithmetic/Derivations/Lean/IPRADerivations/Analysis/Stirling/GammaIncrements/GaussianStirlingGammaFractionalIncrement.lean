@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementObservations
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementLogGap
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBoundsTranslatedRate
+import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBoundsTranslatedRate
 
 /-!
 # The native log-gamma fractional increment estimate

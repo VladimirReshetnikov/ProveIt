@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.Binet.StirlingBounds.Vertical.GaussianBinetStirlingVerticalAlgebra
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerTaylorCofinal
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.Taylor.GaussianLogGammaEulerTaylorCofinal
 
 /-!
 # Vertical log-Gamma increment with the literal C27 linear term

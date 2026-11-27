@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Expansions.Cubic.GaussianStirlingCubicFinite
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrement
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeStrictLogConvexity
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsStrictOrder
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsStrictOrder
 
 /-!
 # The signed cubic log-Stirling bound on the original rational name

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeStrongLogConvexity
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsLog
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsLog
 
 /-!
 # A strong Gamma chord with one small weight

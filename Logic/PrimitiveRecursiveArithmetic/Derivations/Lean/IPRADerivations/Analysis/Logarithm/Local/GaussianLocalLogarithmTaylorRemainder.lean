@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmTaylorRemainder
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Remainders.GaussianFiniteLogarithmTaylorRemainder
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmName
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent

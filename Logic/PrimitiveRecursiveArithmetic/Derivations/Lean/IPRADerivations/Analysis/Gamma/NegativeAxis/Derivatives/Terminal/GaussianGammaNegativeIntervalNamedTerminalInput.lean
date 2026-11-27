@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedGammaSmallI
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianEulerNamedShiftInput
 import IPRADerivations.Analysis.RationalArithmetic.Intervals.RationalCompactObservationTightening
 import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialTangent
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsLog
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsLog
 
 /-!
 # Real terminal inputs and pole margins for a named increment

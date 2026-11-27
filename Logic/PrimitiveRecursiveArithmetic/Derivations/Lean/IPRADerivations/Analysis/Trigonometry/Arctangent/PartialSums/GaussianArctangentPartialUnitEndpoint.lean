@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialQuadrature
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentQuarterExponential
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentQuarterExponential
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Cayley.GaussianArctangentCayleyBudget
 
 /-!

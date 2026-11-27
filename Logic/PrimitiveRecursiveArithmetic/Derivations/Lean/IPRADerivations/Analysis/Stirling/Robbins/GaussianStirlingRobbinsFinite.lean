@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBoundsFinite
+import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBoundsFinite
 
 /-!
 # The finite Robbins lower bound for the original Stirling endpoints

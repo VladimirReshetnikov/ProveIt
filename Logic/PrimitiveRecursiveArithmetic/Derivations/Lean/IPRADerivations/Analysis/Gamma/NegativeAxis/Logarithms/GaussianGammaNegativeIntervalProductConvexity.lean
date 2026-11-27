@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalProductSign
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Signs.GaussianGammaNegativeIntervalProductSign
 import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEulerRationalHeadConvexity
 import IPRADerivations.Analysis.Euler.Integration.Decay.GaussianEulerDecayFactorBounds
 

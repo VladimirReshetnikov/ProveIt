@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaDerivativeProductOrder
+import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Convexity.GaussianGammaDigammaDerivativeProductOrder
 import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.GaussianEulerPositivePowerChartOrder
 
 /-!

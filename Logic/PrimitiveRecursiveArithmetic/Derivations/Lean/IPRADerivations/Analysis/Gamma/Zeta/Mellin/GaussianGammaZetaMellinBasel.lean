@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.GaussianGammaZetaMellinTwoDirichlet
 import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.Square.GaussianGammaZetaDirichletSquareCofinal
 import IPRADerivations.Analysis.Euler.Integration.Decay.Damping.GaussianEulerWeightedHalfDecay
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentExponentialPeriod
 
 /-!
 # The Basel value of the original Mellin integral

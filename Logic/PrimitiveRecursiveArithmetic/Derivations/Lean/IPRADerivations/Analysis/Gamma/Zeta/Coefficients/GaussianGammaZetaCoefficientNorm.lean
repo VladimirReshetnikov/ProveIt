@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Coefficients.GaussianGammaZetaCoefficientPolynomial
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianFiniteExponentialWeightedNorm
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianPositiveRealArithmetic
 
 /-!

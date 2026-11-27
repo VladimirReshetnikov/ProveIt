@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReference
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGammaGaussShiftedApartness
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ShiftedProducts.GaussianGammaGaussShiftedApartness
 
 /-!
 # The positive reference Gamma product in Gauss multiplication

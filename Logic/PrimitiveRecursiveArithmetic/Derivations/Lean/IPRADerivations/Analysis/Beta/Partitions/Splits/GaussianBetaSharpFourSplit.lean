@@ -1,8 +1,8 @@
 import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannFourSplit
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpPartition
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactAdditivity
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactQuadratureBoundary
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaEulerCompactQuadrature
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactQuadratureBoundary
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaEulerCompactQuadrature
 
 /-!
 # The actual original eta-to-top grid split at one, N/2 and N

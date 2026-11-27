@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialQuadrature
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentClampedTarget
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentNamedChord
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentNamedChord
 
 /-!
 # Refinement at the actual arctangent grid width

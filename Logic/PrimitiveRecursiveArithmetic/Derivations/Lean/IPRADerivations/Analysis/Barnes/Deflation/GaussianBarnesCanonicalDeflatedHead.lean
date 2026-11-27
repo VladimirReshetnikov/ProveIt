@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadApartness
-import IPRADerivations.Analysis.Gamma.Poles.GaussianGammaLocalPoleGuards
+import IPRADerivations.Analysis.Gamma.Poles.LocalFactors.GaussianGammaLocalPoleGuards
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedProductApartness
 
 /-!

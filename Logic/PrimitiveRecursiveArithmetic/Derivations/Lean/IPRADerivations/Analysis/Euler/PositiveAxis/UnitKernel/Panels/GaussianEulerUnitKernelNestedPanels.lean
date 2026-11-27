@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Panels.GaussianEul
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.GaussianEulerUnitKernelMarginIndependence
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitKernel.Panels.GaussianEulerUnitKernelNativePanel
 import IPRADerivations.Analysis.Integration.Partitions.RationalNestedPanelGeometry
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffAlignment
 
 /-!
 # Exact nested unit-quadrature splitting across rational denominators

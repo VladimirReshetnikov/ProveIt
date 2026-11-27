@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaConvexComparison
+import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Convexity.GaussianGammaDigammaConvexComparison
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.GaussianGammaDigammaTwoShiftBinding
 import IPRADerivations.Analysis.Stirling.GammaIncrements.GaussianStirlingGammaFractionalIncrementAffine
 

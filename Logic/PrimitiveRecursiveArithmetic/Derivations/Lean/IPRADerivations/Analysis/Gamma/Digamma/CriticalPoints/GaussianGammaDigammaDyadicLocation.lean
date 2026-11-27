@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaDyadicEndpoints
-import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaSlopeLowerRational
+import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Slopes.GaussianGammaDigammaSlopeLowerRational
 import IPRADerivations.Analysis.Stirling.Wallis.GaussianGammaHalfWallisRate
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalUpperRepresentation
 

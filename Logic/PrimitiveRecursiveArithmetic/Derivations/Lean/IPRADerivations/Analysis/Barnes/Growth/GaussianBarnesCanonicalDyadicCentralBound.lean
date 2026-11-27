@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalDyadicHeadCorrection
+import IPRADerivations.Analysis.Barnes.HeadProducts.ExponentialCorrections.GaussianBarnesCanonicalDyadicHeadCorrection
 import IPRADerivations.Analysis.Barnes.Taylor.CenteredCharts.GaussianBarnesCanonicalCentralUniformBound
 import IPRADerivations.Analysis.Exponential.Names.Derivatives.GaussianNamedExponentialTaylorTransport
 

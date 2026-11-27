@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalGammaSign
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Signs.GaussianGammaNegativeIntervalGammaSign
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication
 
 /-!

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Recurrence.GaussianGammaNegativeIntervalNamedInverseRecurrence
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.Terminal.GaussianGammaNegativeIntervalNamedTerminalFrozenRate
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Derivatives.GaussianGammaNegativeIntervalNamedDerivative
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedCorrectionFactor
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.NamedValues.GaussianGammaNegativeIntervalNamedCorrectionFactor
 
 /-!
 # The named derivative form of the inverse Gamma recurrence

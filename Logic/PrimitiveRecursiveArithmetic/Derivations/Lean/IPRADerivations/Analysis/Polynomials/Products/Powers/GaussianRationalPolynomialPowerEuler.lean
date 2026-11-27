@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.Operations.GaussianRationalEulerCoefficients
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialStability
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianRationalPolynomialExponentialStability
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 
 /-!

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.Cyclic.Chords.GaussianCyclicFullHalfAngle
 import IPRADerivations.Analysis.Trigonometry.Cyclic.SineProducts.GaussianCyclicHalfSineMargin
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentOriginalExponential
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentOriginalExponential
 
 /-!
 # Alignment of the two native half-angle names

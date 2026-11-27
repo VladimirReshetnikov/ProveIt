@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentClippedParameter
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentForwardLipschitz
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentForwardLipschitz
 import IPRADerivations.Analysis.Trigonometry.Arctangent.PartialSums.GaussianArctangentPartialRepresentation
 
 /-!

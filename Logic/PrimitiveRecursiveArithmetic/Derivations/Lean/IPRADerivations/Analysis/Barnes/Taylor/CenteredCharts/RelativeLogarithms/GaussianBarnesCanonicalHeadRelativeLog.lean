@@ -2,7 +2,7 @@
 The logarithm of the relative shift of the literal kept Barnes base powers.
 The certified half disk controls the Mercator argument.
 -/
-import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.GaussianBarnesCanonicalBaseProductShift
+import IPRADerivations.Analysis.Barnes.FunctionalEquations.UnitShift.FiniteProducts.GaussianBarnesCanonicalBaseProductShift
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmMultiplicativeIncrement
 import IPRADerivations.Analysis.Gamma.EulerProducts.GaussianGammaWeierstrassApproximant
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalInverseQuadraticAlgebra

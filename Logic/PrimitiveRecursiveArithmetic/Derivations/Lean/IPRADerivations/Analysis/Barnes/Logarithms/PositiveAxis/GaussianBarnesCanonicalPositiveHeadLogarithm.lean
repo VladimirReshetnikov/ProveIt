@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.PositiveAxis.ThirdDerivative.GaussianBarnesCanonicalThirdLogarithmRows
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHeadExponentialFactors
+import IPRADerivations.Analysis.Barnes.HeadProducts.ExponentialCorrections.GaussianBarnesCanonicalHeadExponentialFactors
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicIntegerExponential
 
 /-!

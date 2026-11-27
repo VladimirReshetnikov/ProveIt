@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.DivisionAngles.GaussianArctangentDivisionAngles
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentSlope
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentSlope
 
 /-!
 # Exact gaps of the original divided-angle observations

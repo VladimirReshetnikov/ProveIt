@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Convexity.GaussianGammaNativeLogConvexity
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingGammaLogRescale
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBoundsShiftArguments
+import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBoundsShiftArguments
 
 /-!
 # The two neighboring-integer log-gamma convexity inequalities

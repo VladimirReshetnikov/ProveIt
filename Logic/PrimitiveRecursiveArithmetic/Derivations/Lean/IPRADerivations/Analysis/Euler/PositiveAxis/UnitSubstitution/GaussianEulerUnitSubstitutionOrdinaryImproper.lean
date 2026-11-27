@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.Panels.GaussianEulerUnitSubstitutionPanelComparison
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerUnitSubstitutionGamma
+import IPRADerivations.Analysis.Gamma.Integrals.Substitutions.GaussianEulerUnitSubstitutionGamma
 
 /-!
 # Cofinal ordinary quadrature for the unit-interval Gamma integral

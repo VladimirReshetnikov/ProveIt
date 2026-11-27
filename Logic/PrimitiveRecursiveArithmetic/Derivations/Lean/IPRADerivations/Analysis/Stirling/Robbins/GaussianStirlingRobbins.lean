@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBounds
+import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBounds
 import IPRADerivations.Analysis.Stirling.Robbins.GaussianStirlingRobbinsFinite
 import IPRADerivations.Analysis.Stirling.Constants.GaussianStirlingConstantIdentification
 

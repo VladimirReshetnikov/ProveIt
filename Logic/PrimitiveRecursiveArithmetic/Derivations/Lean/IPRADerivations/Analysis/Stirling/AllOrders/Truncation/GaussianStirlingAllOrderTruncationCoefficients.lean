@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelPartsNames
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.Cofinal.GaussianStirlingAllOrderPanelPartsNames
 import IPRADerivations.Analysis.Stirling.Expansions.GaussianStirlingExpansionCoefficients
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorConjugation
+import IPRADerivations.Analysis.Barnes.HeadProducts.Factors.GaussianBarnesCanonicalFactorConjugation
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Identities.GaussianNamedFiniteProductConjugation
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Families.GaussianNamedFiniteProductFamilyCongruence
 

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffSplit
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffSplit
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
 
 /-!

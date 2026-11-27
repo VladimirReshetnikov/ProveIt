@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Logarithm.RightHalfPlane.GaussianRightHalfPlaneLogarithmLocalBound
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerHead
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmName
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCompositionTail
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmCompositionTail
 
 /-!
 # Native one-eighth offsets for the canonical logarithm

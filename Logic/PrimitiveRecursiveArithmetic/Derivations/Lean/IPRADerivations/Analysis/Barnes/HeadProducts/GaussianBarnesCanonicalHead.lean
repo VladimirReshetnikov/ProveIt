@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactor
+import IPRADerivations.Analysis.Barnes.HeadProducts.Factors.GaussianBarnesCanonicalFactor
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Families.GaussianNamedFiniteProductFamilyAppend
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffAlignment
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffSplit
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffAlignment
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffSplit
 
 /-!
 # Actual finite Barnes canonical products

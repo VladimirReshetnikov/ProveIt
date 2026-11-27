@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.Grids.GaussianEulerIntegrationByPartsGrid
 import IPRADerivations.Analysis.Beta.Partitions.Alignment.GaussianBetaRefinedFixedCompactComparison
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffGeometry
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffGeometry
 
 /-!
 # An actual cofinal refinement for the original Euler IBP grid

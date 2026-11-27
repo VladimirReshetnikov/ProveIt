@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussMultiplicationLimitMajorant
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.Limits.GaussianGaussMultiplicationLimitMajorant
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationPowerPerturbation
 
 /-!

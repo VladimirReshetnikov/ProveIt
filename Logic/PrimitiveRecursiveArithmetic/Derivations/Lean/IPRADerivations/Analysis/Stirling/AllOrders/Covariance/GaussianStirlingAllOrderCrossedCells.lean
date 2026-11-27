@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Covariance.GaussianStirlingAllOrderBoxProductGap
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelTail
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.OuterSums.GaussianStirlingAllOrderPanelTail
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalCrossedProductSums
 
 /-!

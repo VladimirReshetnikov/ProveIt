@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderPanelPartsBinding
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.Cofinal.GaussianStirlingAllOrderPanelPartsBinding
 
 /-!
 # Original primitive-recursive names for the full Bernoulli kernels

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianLagrangeInterpolation
 import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianInitialCoefficientBound
 import IPRADerivations.Analysis.FiniteOperations.FiniteSums.GaussianFiniteSumL1Variation
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianFiniteExponentialWeightedNorm
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianFiniteExponentialWeightedNorm
 
 /-!
 # A computed finite-grid gain for original polynomial coefficients

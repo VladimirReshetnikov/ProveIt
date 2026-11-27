@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalHead
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactorLipschitz
+import IPRADerivations.Analysis.Barnes.HeadProducts.Factors.GaussianBarnesCanonicalFactorLipschitz
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!

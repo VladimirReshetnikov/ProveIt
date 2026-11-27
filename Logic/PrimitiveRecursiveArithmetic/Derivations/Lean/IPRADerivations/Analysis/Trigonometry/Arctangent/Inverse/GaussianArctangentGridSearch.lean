@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentSlope
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentSlope
 
 /-!
 # Exact finite crossing of an arctangent grid target

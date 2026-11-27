@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCompositionName
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmCompositionName
 
 /-!
 # The finite polynomial head in the Euler and Gamma products

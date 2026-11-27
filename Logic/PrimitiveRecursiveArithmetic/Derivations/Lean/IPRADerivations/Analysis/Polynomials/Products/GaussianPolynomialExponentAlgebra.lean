@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianPolynomialLowJetProduct
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmCoefficientRecursion
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmCoefficientRecursion
 
 /-!
 # Original polynomial product algebra through actual exponent readers

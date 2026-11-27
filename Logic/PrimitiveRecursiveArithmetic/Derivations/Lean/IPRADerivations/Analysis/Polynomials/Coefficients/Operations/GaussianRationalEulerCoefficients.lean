@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianRationalWeightedCoefficientConvolution
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmPolynomial
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmPolynomial
 
 /-!
 # Actual Euler-weighted coefficient buffers

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerFiniteIdentity
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.Normalization.GaussianGaussMultiplicationNormalization
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussMultiplicationQuotient
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.Limits.GaussianGaussMultiplicationQuotient
 
 /-!
 # Gauss multiplication for the original Gamma name

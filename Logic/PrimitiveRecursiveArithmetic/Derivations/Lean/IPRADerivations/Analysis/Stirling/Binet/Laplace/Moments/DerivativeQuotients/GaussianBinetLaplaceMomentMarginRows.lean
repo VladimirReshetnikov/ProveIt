@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTranspor
 import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianPositiveScalarProductBound
 import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexEndpointBudget
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Convergence.GaussianLogGammaEulerResidualRadius
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsOrder
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsOrder
 
 /-!
 # Uniform positive-margin domination of the Binet moment rows

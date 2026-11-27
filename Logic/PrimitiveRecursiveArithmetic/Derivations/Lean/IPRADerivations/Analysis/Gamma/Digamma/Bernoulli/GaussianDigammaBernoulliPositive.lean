@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.GaussianDigammaBernoulliBaseAgreement
 import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderPanelPositivePrefix
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsCaps
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsCaps
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedStrictOrderDifference
 
 /-!

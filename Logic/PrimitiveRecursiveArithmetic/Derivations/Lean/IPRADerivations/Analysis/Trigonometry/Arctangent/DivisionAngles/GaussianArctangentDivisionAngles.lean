@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianArctangentInverseForward
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentOriginalExponential
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentOriginalExponential
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianBoundedConstantProductName
 import IPRADerivations.Analysis.Names.ImaginaryParts.GaussianImaginaryNameConjugation
 

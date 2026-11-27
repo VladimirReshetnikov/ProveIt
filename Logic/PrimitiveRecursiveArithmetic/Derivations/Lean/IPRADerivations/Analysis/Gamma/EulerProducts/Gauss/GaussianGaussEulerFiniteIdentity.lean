@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Factors.GaussianGaussEulerFixedFamilyFactors
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Factors.GaussianGaussEulerPositiveFamily
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.GaussianGaussEulerProductAlgebra
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussMultiplicationM2Transport
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.Limits.GaussianGaussMultiplicationM2Transport
 
 /-!
 # Exact finite Euler identity and cleared Gauss multiplication

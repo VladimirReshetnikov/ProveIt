@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedGamma
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.NamedValues.GaussianGammaNegativeIntervalNamedGamma
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Input.GaussianGammaNegativeIntervalNamedInputRetiming
 import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.NamedExtrema.GaussianGammaNegativeIntervalNamedStrictMinimum
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalNamedApartnessTransport
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Apartness.GaussianGammaNegativeIntervalNamedApartnessTransport
 
 /-!
 # Extrema of the original Gamma on negative pole intervals

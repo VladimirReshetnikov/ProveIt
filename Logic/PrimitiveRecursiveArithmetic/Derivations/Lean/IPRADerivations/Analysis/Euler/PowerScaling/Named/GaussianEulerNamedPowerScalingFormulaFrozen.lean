@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.Named.GaussianEulerNamedPowerScalingPowerFrozen
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianEulerNamedPowerScalingGammaFrozen
+import IPRADerivations.Analysis.Gamma.Integrals.Substitutions.GaussianEulerNamedPowerScalingGammaFrozen
 import IPRADerivations.Analysis.Euler.PowerScaling.Exhaustion.GaussianEulerPowerScalingImproper
 
 /-!

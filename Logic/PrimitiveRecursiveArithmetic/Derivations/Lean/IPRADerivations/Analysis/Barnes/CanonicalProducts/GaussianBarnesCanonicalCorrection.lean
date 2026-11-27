@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.CofinalTails.GaussianBarnesCanonicalCubicName
-import IPRADerivations.Analysis.Barnes.HeadProducts.GaussianBarnesCanonicalFactor
+import IPRADerivations.Analysis.Barnes.HeadProducts.Factors.GaussianBarnesCanonicalFactor
 
 /-!
 # Exact cancellation in the Barnes factor exponent

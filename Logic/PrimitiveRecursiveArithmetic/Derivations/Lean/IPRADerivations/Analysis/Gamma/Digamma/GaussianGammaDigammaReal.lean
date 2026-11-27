@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaDerivativeProductOrder
+import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Convexity.GaussianGammaDigammaDerivativeProductOrder
 
 /-!
 # Real representatives of the original positive rational digamma

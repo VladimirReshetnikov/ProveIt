@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Raabe.Origin.GaussianRaabeOriginLogStrip
 import IPRADerivations.Analysis.Stirling.Raabe.UnitPanels.GaussianRaabeCofinalSchedule
-import IPRADerivations.Analysis.Logarithm.FiniteSeries.GaussianFiniteLogarithmDyadicTail
+import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmDyadicTail
 
 /-!
 # A common budget for the original dyadic Raabe truncation

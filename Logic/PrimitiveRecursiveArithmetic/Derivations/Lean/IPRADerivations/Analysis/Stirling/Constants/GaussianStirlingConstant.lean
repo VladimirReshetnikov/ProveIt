@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.GammaLogarithm.GaussianStirlingNames
-import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.GaussianGaussTriplicationPi
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentPiMargins
+import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.IntegerCases.GaussianGaussTriplicationPi
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentPiMargins
 
 /-!
 # The literal Stirling constant

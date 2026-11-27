@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.GaussianStirlingAllOrderDiscreteParts
+import IPRADerivations.Analysis.Stirling.AllOrders.PanelParts.DiscreteIdentities.GaussianStirlingAllOrderDiscreteParts
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumAdditivity
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSumLinearity
 

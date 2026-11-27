@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderSignedLowerAlgebra
 import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderImproperPositive
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScaleOrder
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentExponentialPeriod
 
 /-!
 # Strict sign of the original log-Stirling truncation error

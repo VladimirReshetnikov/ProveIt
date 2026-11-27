@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalSquareCancellation
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentExponentialPeriod
 
 /-!
 # A quantitative fourth-root branch at one

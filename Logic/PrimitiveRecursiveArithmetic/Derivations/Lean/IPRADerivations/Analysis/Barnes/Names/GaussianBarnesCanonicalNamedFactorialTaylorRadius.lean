@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedFactorialTaylor
 import IPRADerivations.Analysis.Barnes.Names.GaussianBarnesCanonicalNamedFrozen
-import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.GaussianBarnesCanonicalTaylorAllOrderRadius
+import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.LocalEstimates.GaussianBarnesCanonicalTaylorAllOrderRadius
 
 /-!
 # Disk independence of the named Barnes factorial Taylor evaluator

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderImproperName
 import IPRADerivations.Analysis.Stirling.AllOrders.Covariance.GaussianStirlingAllOrderOuterCovarianceStrict
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingMultiplicativeBoundsOrder
+import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsOrder
 
 /-!
 # A positive rational floor for the named Stirling upper gap

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Trigonometry.Arctangent.DivisionAngles.GaussianArctangentDivisionAngleGaps
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentAngleChord
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentAngleChord
 import IPRADerivations.Analysis.Names.Rates.Order.GaussianNamedRealOrderTransport
 
 /-!

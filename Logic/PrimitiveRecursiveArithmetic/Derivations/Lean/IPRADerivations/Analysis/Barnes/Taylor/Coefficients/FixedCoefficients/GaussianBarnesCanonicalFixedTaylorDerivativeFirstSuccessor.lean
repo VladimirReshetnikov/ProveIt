@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.GaussianBarnesCanonicalFiniteTaylorFirstDerivative
+import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.FixedCutoff.GaussianBarnesCanonicalFiniteTaylorFirstDerivative
 
 /-!
 # The first transition of the fixed Barnes factorial names

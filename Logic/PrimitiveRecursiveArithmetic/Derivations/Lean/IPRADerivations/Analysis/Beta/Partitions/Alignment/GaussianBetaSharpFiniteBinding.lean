@@ -5,7 +5,7 @@ import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactA
 import IPRADerivations.Analysis.Beta.Partitions.GaussianBetaSharpPartition
 import IPRADerivations.Analysis.Beta.Partitions.Alignment.GaussianBetaRefinedFixedCompactComparison
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Names.GaussianEulerImproperName
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffGeometry
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffGeometry
 
 /-!
 # Binding the shared grid to the original finite and improper Euler names

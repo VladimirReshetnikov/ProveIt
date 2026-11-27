@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedInc
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotientProperness
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianBoundedInverseApartness
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedSize
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentExponentialPeriod
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Turns.GaussianArctangentExponentialPeriod
 
 /-!
 # The original named Barnes quotient at rational endpoints

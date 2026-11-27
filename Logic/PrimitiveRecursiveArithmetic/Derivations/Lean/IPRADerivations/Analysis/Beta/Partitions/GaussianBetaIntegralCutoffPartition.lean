@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactCutoffGeometry
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactCutoffGeometry
 
 /-!
 # Exact common-step partition from the original deep eta to N

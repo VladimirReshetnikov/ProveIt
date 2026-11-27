@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Trigonometry.Arctangent.GaussianArctangentNamedSlope
+import IPRADerivations.Analysis.Trigonometry.Arctangent.Comparisons.GaussianArctangentNamedSlope
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumIntervals
 
 /-!

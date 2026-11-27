@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerLinearSlope
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.GaussianLogGammaEulerTaylorMajorant
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Derivatives.Taylor.GaussianLogGammaEulerTaylorMajorant
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureDifference
 

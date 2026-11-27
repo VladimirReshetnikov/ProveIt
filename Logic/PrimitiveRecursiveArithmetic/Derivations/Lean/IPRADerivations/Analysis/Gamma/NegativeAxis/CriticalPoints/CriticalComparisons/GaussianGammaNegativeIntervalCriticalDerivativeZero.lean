@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.CriticalPoints.CriticalComparisons.GaussianGammaNegativeIntervalCriticalQuotientZero
-import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.GaussianGammaNegativeIntervalUniformBounds
+import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Apartness.GaussianGammaNegativeIntervalUniformBounds
 import IPRADerivations.Analysis.RationalArithmetic.Representations.GaussianRationalReconstruction
 
 /-!

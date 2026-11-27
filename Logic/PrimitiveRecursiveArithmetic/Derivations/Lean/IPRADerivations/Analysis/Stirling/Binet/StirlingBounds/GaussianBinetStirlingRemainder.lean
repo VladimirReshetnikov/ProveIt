@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRepresentation
-import IPRADerivations.Analysis.Stirling.Bounds.GaussianStirlingGlobalBounds
+import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBounds
 
 /-!
 # The actual complex Stirling remainder and its positive-axis restriction

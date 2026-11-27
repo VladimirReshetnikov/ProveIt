@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.Integration.Parts.Endpoints.GaussianEulerIntegrationByPartsEndpoints
 import IPRADerivations.Analysis.Euler.Integration.Parameters.GaussianEulerPowerInputProperness
-import IPRADerivations.Analysis.Gamma.Integrals.GaussianGammaCompactQuadratureBoundary
+import IPRADerivations.Analysis.Gamma.Integrals.CompactQuadrature.GaussianGammaCompactQuadratureBoundary
 
 /-!
 # The literal affine-grid endpoint observations

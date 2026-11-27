@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaDyadicCrossing
-import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaLipschitz
+import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Slopes.GaussianGammaDigammaLipschitz
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpScheduledApproximation
 
 /-!

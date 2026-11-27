@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Products.Powers.GaussianRationalPolynomialPowerEuler
-import IPRADerivations.Analysis.Exponential.Polynomials.GaussianRationalPolynomialExponentialCoefficients
+import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianRationalPolynomialExponentialCoefficients
 
 /-!
 # Actual factorial-weighted Euler sums

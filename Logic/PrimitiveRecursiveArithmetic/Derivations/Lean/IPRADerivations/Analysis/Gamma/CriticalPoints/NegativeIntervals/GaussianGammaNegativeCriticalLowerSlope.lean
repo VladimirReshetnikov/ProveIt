@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalSlope
-import IPRADerivations.Analysis.Gamma.Digamma.Comparison.GaussianGammaDigammaSlopeLower
+import IPRADerivations.Analysis.Gamma.Digamma.Comparison.Slopes.GaussianGammaDigammaSlopeLower
 import IPRADerivations.Analysis.Gamma.EulerProducts.Convexity.GaussianGammaEulerRationalLogOrder
 
 /-!
