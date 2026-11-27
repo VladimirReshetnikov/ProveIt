@@ -118,7 +118,7 @@ theorem original_independent_coefficient_error (q r R L K w a b : PTm n)
       ipra_simps
       rw [e]
       ring)) hquad
-  exact distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ hD first last)
+  exact distance_triangle_same _ _ _ _ _ _ hD first last
 
 theorem actual_original_Gamma_finite_cubic_expansion_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7
     ((le one (var 1) ⋏ (le one (var 3) ⋏ (le one (var 6) ⋏ (le (var 5) (var 6) ⋏

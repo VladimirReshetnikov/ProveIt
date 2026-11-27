@@ -67,11 +67,10 @@ theorem harmonic_uniform_bound (p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hb
 theorem original_harmonic_power_distance (p q j a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hba : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]
     distanceBounded (rawPower p j a b) (power (GaussianHarmonicLogarithmName.sample q a b) j)
       (gain j a*(unit p+unit q)) (unit p*unit q) :=
-  distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    (GaussianRationalPowerDifference.power_distance_bound _ _ (a+one) _ _ j
-      (positive_product _ _ (unit_positive p) (unit_positive q))
-      (original_uniform_bound p a b hs hba) (harmonic_uniform_bound q a b hs.andE₂ hba)
-      (GaussianHarmonicLogarithmName.independent_original p q a b hs))
+  GaussianRationalPowerDifference.power_distance_bound _ _ (a+one) _ _ j
+    (positive_product _ _ (unit_positive p) (unit_positive q))
+    (original_uniform_bound p a b hs hba) (harmonic_uniform_bound q a b hs.andE₂ hba)
+    (GaussianHarmonicLogarithmName.independent_original p q a b hs)
 
 theorem original_power_slack (p q j a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hba : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (rawPower p j a b)
@@ -92,11 +91,10 @@ theorem original_power_bound (p j a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (
 
 theorem original_power_regularity (p q j a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hba : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]
     distanceBounded (rawPower p j a b) (rawPower q j a b) (gain j a*(unit p+unit q)) (unit p*unit q) :=
-  distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    (GaussianRationalPowerDifference.power_distance_bound _ _ (a+one) _ _ j
-      (positive_product _ _ (unit_positive p) (unit_positive q))
-      (original_uniform_bound p a b hs hba) (original_uniform_bound q a b hs hba)
-      (GaussianNameEquivalence.point_at logF (GaussianPositiveRationalLogarithm.data a b) p q (name_regular a b hs)))
+  GaussianRationalPowerDifference.power_distance_bound _ _ (a+one) _ _ j
+    (positive_product _ _ (unit_positive p) (unit_positive q))
+    (original_uniform_bound p a b hs hba) (original_uniform_bound q a b hs hba)
+    (GaussianNameEquivalence.point_at logF (GaussianPositiveRationalLogarithm.data a b) p q (name_regular a b hs))
 
 theorem raw_regular (j a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) (hba : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]
     GaussianFastValueCut.regular rawF (gain j a) (inputData j a b) := by

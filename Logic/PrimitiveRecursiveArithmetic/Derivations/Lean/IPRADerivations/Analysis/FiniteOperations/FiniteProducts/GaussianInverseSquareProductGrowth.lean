@@ -99,7 +99,7 @@ private theorem bernoulli (A C : PTm n) :
     have e := natEq (Prf.hyp0 : Δ ⊢[PRAAx] C ≐ succ (pred C))
     have u := natEq ((congrAp2 powF Prf.hyp0 (.eqRefl A)).eqTrans (pw_succ A (pred C)) :
       Δ ⊢[PRAAx] pw A C ≐ pw A (pred C)*A)
-    have v := natEq ((congrAp2 powF Prf.hyp0 (succ_eq_add_one A)).eqTrans (.eqRefl _) :
+    have v := natEq (congrAp2 powF Prf.hyp0 (succ_eq_add_one A) :
       Δ ⊢[PRAAx] pw (succ A) C ≐ pw (A+one) (succ (pred C)))
     have a := natEq (pw_succ (Γ := Δ) A (pred C))
     exact le_congr (by apply deriveNat; ipra_simps; rw [a,u,e]; ring)

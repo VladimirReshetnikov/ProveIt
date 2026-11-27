@@ -49,7 +49,7 @@ ipra_subst squareData
 theorem euler_source (N : PTm n) (hN : Γ ⊢[PRAAx] le two N) :
     Γ ⊢[PRAAx] GaussianGammaEulerReciprocalInverse.source oneCode one two one two N :=
   .andI (GaussianGammaDensityDomain.base_gamma_source oneCode one two two GaussianGammaHalfIntegerDomain.half_source)
-    (le_congr (.eqRefl _) (.eqRefl _) (le_congr (by ipra_ring : Γ ⊢[PRAAx] two ≐ two*one) (.eqRefl _) hN))
+    (le_congr (Common.mul_one_right two).eqSymm (.eqRefl _) hN)
 
 theorem square_positive (N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx] le one (squareNum N) := by
   have he : Γ ⊢[PRAAx] le one (WallisFinite.db N) :=

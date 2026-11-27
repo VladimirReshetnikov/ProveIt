@@ -162,7 +162,7 @@ theorem zero_entries (q N L R : PTm n) : Γ ⊢[PRAAx]
       qL1 (entry (buffer q N L R) (degree L)) ≐ GaussianRationalSyntheticBounds.natCode zero := by
   have linearShape : Γ ⊢[PRAAx] monus (degree L) (succ L) ≐ one :=
     (GaussianRationalPowerExpansion.remaining_before (succ L) (succ L) (le_refl _)).eqTrans
-      ((congrSucc (monus_self (succ L))).eqTrans (.eqRefl _))
+      (congrSucc (monus_self (succ L)))
   have constantShape := monus_self (Γ := Γ) (degree L)
   have linearRange : Γ ⊢[PRAAx] le (succ L) (degree L) := le_succ_self (succ L)
   have lin := (entry_at q N L R (succ L) linearRange).eqTrans
