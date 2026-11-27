@@ -9,8 +9,10 @@ import GRHArticle.ProgressionFree.ExplicitWeightCast
 import GRHArticle.ProgressionFree.FourMarkerDensity
 import GRHArticle.ProgressionFree.FourMarkerExchange
 import GRHArticle.ProgressionFree.FourMarkerMass
+import GRHArticle.ProgressionFree.GreedyBlockWitnesses
 import GRHArticle.ProgressionFree.GreedyLengthDensityGain
 import GRHArticle.ProgressionFree.GreedyLengthExponents
+import GRHArticle.ProgressionFree.IndependentPrimeRuleDensity
 import GRHArticle.ProgressionFree.IntegerBlockGluing
 import GRHArticle.ProgressionFree.IntegerBoundaryDensityBridge
 import GRHArticle.ProgressionFree.IntegerBoundaryExchangeMargin
@@ -43,6 +45,8 @@ import GRHArticle.ProgressionFree.IntegerPrefix
 import GRHArticle.ProgressionFree.IntegerPrefixEighty
 import GRHArticle.ProgressionFree.IntegerPrefixEightyExact
 import GRHArticle.ProgressionFree.IntegerPrefixTransfer
+import GRHArticle.ProgressionFree.IntegerPrimeBlockFreeness
+import GRHArticle.ProgressionFree.IntegerPrimeBlockPartitions
 import GRHArticle.ProgressionFree.IntegerPrimeGapCertificate
 import GRHArticle.ProgressionFree.IntegerPrimeSquareTail
 import GRHArticle.ProgressionFree.IntegerRationalDensityGap
@@ -63,6 +67,7 @@ import GRHArticle.ProgressionFree.IntegerUpperDensityComputability
 import GRHArticle.ProgressionFree.IntegerUpperDensityLowerBound
 import GRHArticle.ProgressionFree.IntegerUpperDensityUpperBound
 import GRHArticle.ProgressionFree.IntegerWheelTail
+import GRHArticle.ProgressionFree.LightPrimeBlocks
 import GRHArticle.ProgressionFree.NumberFieldIdeals.Density
 import GRHArticle.ProgressionFree.NumberFieldIdeals.DisjointProducts
 import GRHArticle.ProgressionFree.NumberFieldIdeals.FiniteExponentProducts
@@ -118,6 +123,7 @@ import GRHArticle.ProgressionFree.RankinTruncation
 import GRHArticle.ProgressionFree.SatelliteProfiles
 import GRHArticle.ProgressionFree.SharedDeletionMass
 import GRHArticle.ProgressionFree.SharedDeletionProgressions
+import GRHArticle.ProgressionFree.SingletonPrimeBlocks
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
 import GRHArticle.SingularModuli.CMHeckeDiagonal
