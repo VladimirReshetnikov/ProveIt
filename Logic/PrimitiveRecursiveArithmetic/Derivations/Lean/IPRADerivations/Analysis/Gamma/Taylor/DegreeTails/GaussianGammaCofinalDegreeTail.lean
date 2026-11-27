@@ -24,7 +24,7 @@ open GaussianGammaFixedDegreeHorizon (observation)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_through_auxiliary)
 open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate denominator_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -63,24 +63,12 @@ theorem auxiliary_slack (p q u z R B N L : PTm n)
     (h : Γ ⊢[PRAAx] source z R B N) (hL : Γ ⊢[PRAAx] le L (GammaCanonicalNames.degree u R)) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (point p z R B N) (observation q z R B N L))
       (rateNumerator (R*R) (rateDen N L) p q) (rateDenominator (rateDen N L) p q) (two*two) u := by
-  let V := rateDen N L
-  let Z := rateDenominator V p q*unit u
-  have vp := rate_den_positive N L h.andE₂.andE₁
-  have zp : Γ ⊢[PRAAx] le one Z := positive_product _ _ (denominator_positive V p q vp) (unit_positive u)
-  have first := distance_radius_mono _ _ (unit p+unit u) (unit p*unit u) ((unit p+unit u)*(V*unit q)) Z
-    (positive_product _ _ (unit_positive p) (unit_positive u)) zp
-    (le_of_eq_add (d := zero) (by dsimp only [Z,rateDenominator]; ipra_ring))
-    (GaussianGammaCanonicalTailName.point_regularity p u z R B N h)
-  have middle := distance_radius_mono _ _ ((R*R)*unit u+two*V) (V*unit u) (((R*R)*unit u+two*V)*(unit p*unit q)) Z
-    (positive_product _ _ vp (unit_positive u)) zp
-    (le_of_eq_add (d := zero) (by dsimp only [Z,rateDenominator]; ipra_ring))
-    (original_joint_to_fixed_degree u z R B N L h hL)
-  have last := distance_radius_mono _ _ (unit u+unit q) (unit u*unit q) ((unit u+unit q)*(V*unit p)) Z
-    (positive_product _ _ (unit_positive u) (unit_positive q)) zp
-    (le_of_eq_add (d := zero) (by dsimp only [Z,rateDenominator]; ipra_ring))
-    (GaussianGammaFixedDegreeHorizon.observation_regularity u q z R B N L h)
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [rateNumerator,rateDenominator,unit]; ipra_ring)
-    (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ zp (distance_triangle_same _ _ _ _ _ _ zp first middle) last)
+  have den := rate_den_positive N L h.andE₂.andE₁
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [rateNumerator,rateDenominator,unit]; ipra_ring) (.eqRefl _)
+    (distance_through_auxiliary p q u (R*R) (rateDen N L) two den
+      (GaussianGammaCanonicalTailName.point_regularity p u z R B N h)
+      (original_joint_to_fixed_degree u z R B N L h hL)
+      (GaussianGammaFixedDegreeHorizon.observation_regularity u q z R B N L h))
 
 theorem earlier_auxiliary_slack (z A B C s t : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hp : Γ ⊢[PRAAx] le (unit s) (unit t)) (h : Γ ⊢[PRAAx] GaussianRationalSlackRemoval.slack z A B C t) : Γ ⊢[PRAAx]

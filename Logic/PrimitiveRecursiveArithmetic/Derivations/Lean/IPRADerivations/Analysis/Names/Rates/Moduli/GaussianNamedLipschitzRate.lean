@@ -16,7 +16,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedLipschitzRate
 open_ipra
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_through_auxiliary)
 open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate denominator_positive rate_at diagonal_of_later_rate)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
@@ -71,20 +71,9 @@ theorem independent_slack (F G : PR 2) (x y A N C p q t : PTm n)
     (h : Γ ⊢[PRAAx] diagonalEnvelope F G x y A N C) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (ap2 F p x) (ap2 G q y))
       (rateNumerator A N p q) (rateDenominator N p q) (C+two) t := by
-  let Z := rateDenominator N p q*unit t
-  have z : Γ ⊢[PRAAx] le one Z := positive_product _ _ (denominator_positive N p q hN) (unit_positive t)
-  have left := distance_radius_mono _ _ _ _ ((unit p+unit t)*(N*unit q)) Z
-    (positive_product _ _ (unit_positive p) (unit_positive t)) z
-    (le_of_eq_add (d := zero) (by dsimp [Z,rateDenominator]; ipra_ring)) (GaussianNameEquivalence.point_at F x p t hf)
-  have middle := distance_radius_mono _ _ _ _ ((A*unit t+C*N)*(unit p*unit q)) Z
-    (positive_product _ _ hN (unit_positive t)) z
-    (le_of_eq_add (d := zero) (by dsimp [Z,rateDenominator,diagonalNumerator,diagonalDenominator]; ipra_ring))
-    (envelope_at F G x y A N C t h)
-  have right := distance_radius_mono _ _ _ _ ((unit t+unit q)*(N*unit p)) Z
-    (positive_product _ _ (unit_positive t) (unit_positive q)) z
-    (le_of_eq_add (d := zero) (by dsimp [Z,rateDenominator]; ipra_ring)) (GaussianNameEquivalence.point_at G y t q hg)
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp [rateNumerator,rateDenominator,unit]; ipra_ring)
-    (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ z (distance_triangle_same _ _ _ _ _ _ z left middle) right)
+  exact distance_through_auxiliary p q t A N C hN
+    (GaussianNameEquivalence.point_at F x p t hf) (envelope_at F G x y A N C t h)
+    (GaussianNameEquivalence.point_at G y t q hg)
 
 /-- The original independent observations satisfy the sharp rate. The
 existing finite integer-gap precision removes all auxiliary dyadic slack. -/

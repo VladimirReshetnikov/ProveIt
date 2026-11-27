@@ -30,7 +30,7 @@ open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent cross_refl)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
 open GaussianNamedSmallAddendRate (tailSamples)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_through_auxiliary)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -155,28 +155,17 @@ private theorem observation_slack (p q t X Y D sign K T U : PTm n)
       (GaussianRationalMetric.qsub (ap2 P p (origin X Y D sign T)) (ap2 P q (origin X Y D sign U)))
       (rateNumerator (two*K) T p q) (rateDenominator T p q) (two*two) t := by
   let L := schedule p D+schedule q D
-  let Z := rateDenominator T p q*unit t
-  have z : Γ ⊢[PRAAx] le one Z := positive_product _ _ (denominator_positive T p q ht) (unit_positive t)
-  have leftRaw := late_observations p t X Y D sign T L (.andI hz ht) (le_add_right _ _)
-  have rightRaw := late_observations q t X Y D sign U L (.andI hz (le_trans ht hu)) (le_add_left _ _)
-  have left := distance_radius_mono _ _ _ _ ((unit p+unit t)*(T*unit q)) Z
-    (positive_product _ _ (unit_positive p) (unit_positive t)) z
-    (le_of_eq_add (d := zero) (by dsimp only [Z,rateDenominator]; ipra_ring)) leftRaw
-  have middle := distance_radius_mono _ _ _ _ ((two*K*unit t+two*T)*(unit p*unit q)) Z
-    (positive_product _ _ ht (unit_positive t)) z
-    (le_of_eq_add (d := zero) (by dsimp only [Z,rateDenominator]; ipra_ring))
-    (GaussianNamedInverseRate.diagonal_rate F F (cutData X Y D sign T L) (cutData X Y D sign U L)
-      (two*K) T t ht (compact_ordered_rate X Y D sign K T U L hz hk ht hu))
+  have left := late_observations p t X Y D sign T L (.andI hz ht) (le_add_right _ _)
+  have right := late_observations q t X Y D sign U L (.andI hz (le_trans ht hu)) (le_add_left _ _)
   have rightReversed : Γ ⊢[PRAAx] distanceBounded (ap2 F t (cutData X Y D sign U L))
       (ap2 P q (origin X Y D sign U)) (unit t+unit q) (unit t*unit q) :=
     distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive t)) rightRaw)
-  have right := distance_radius_mono _ _ _ _ ((unit t+unit q)*(T*unit p)) Z
-    (positive_product _ _ (unit_positive t) (unit_positive q)) z
-    (le_of_eq_add (d := zero) (by dsimp only [Z,rateDenominator]; ipra_ring))
-    rightReversed
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [rateNumerator,rateDenominator,unit]; ipra_ring)
-    (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ z (distance_triangle_same _ _ _ _ _ _ z left middle) right)
+      (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive q) (unit_positive t)) right)
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [rateNumerator,rateDenominator,unit]; ipra_ring) (.eqRefl _)
+    (distance_through_auxiliary p q t (two*K) T two ht left
+      (GaussianNamedInverseRate.diagonal_rate F F (cutData X Y D sign T L) (cutData X Y D sign U L)
+        (two*K) T t ht (compact_ordered_rate X Y D sign K T U L hz hk ht hu))
+      rightReversed)
 
 theorem observations (p q X Y D sign K T U : PTm n)
     (hz : Γ ⊢[PRAAx] GaussianRightHalfPlaneLogarithm.source X D sign)

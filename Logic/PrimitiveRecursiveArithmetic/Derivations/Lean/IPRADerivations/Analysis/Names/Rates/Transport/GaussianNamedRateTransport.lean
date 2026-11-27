@@ -19,10 +19,9 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedRateTransport
 open_ipra
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator denominator_positive shift_independent_rate)
 open GaussianRationalMetric (distanceBounded qsub)
-open GaussianRationalHorner (positive_product)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 open GaussianNameEquivalence (crossEquivalent)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_through_auxiliary)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -32,22 +31,11 @@ theorem observation_slack (F G H K : PR 2) (x y u v D N p q t : PTm n)
     (hr : Γ ⊢[PRAAx] crossEquivalent K G v y) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (ap2 H p u) (ap2 K q v))
       (rateNumerator D N p q) (rateDenominator N p q) (two*two) t := by
-  let Z := rateDenominator N p q*unit t
-  have z : Γ ⊢[PRAAx] le one Z := positive_product _ _ (denominator_positive N p q hN) (unit_positive t)
-  have left := distance_radius_mono _ _ _ _ ((unit p+unit t)*(N*unit q)) Z
-    (positive_product _ _ (unit_positive p) (unit_positive t)) z
-    (le_of_eq_add (d := zero) (by dsimp only [Z,rateDenominator]; ipra_ring))
-    (GaussianNameEquivalence.cross_at H F u x p t hl)
-  have middle := distance_radius_mono _ _ _ _ ((D*unit t+two*N)*(unit p*unit q)) Z
-    (positive_product _ _ hN (unit_positive t)) z
-    (le_of_eq_add (d := zero) (by dsimp only [Z,rateDenominator]; ipra_ring))
-    (GaussianNamedInverseRate.diagonal_rate F G x y D N t hN h)
-  have right := distance_radius_mono _ _ _ _ ((unit t+unit q)*(N*unit p)) Z
-    (positive_product _ _ (unit_positive t) (unit_positive q)) z
-    (le_of_eq_add (d := zero) (by dsimp only [Z,rateDenominator]; ipra_ring))
-    (GaussianNameEquivalence.cross_at G K y v t q (GaussianNameEquivalence.cross_symm _ _ _ _ hr))
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [rateNumerator,rateDenominator,unit]; ipra_ring)
-    (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ z (distance_triangle_same _ _ _ _ _ _ z left middle) right)
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [rateNumerator,rateDenominator,unit]; ipra_ring) (.eqRefl _)
+    (distance_through_auxiliary p q t D N two hN
+      (GaussianNameEquivalence.cross_at H F u x p t hl)
+      (GaussianNamedInverseRate.diagonal_rate F G x y D N t hN h)
+      (GaussianNameEquivalence.cross_at G K y v t q (GaussianNameEquivalence.cross_symm _ _ _ _ hr)))
 
 theorem observation_error (F G H K : PR 2) (x y u v D N p q : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (h : Γ ⊢[PRAAx] independentRate F G x y D N)

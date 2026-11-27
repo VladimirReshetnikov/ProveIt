@@ -29,7 +29,7 @@ open GaussianRationalSyntheticDivision (qone)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric distance_through_auxiliary)
 open GaussianExponentialSmallPerturbation (smallSamples small_samples_at)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -136,26 +136,12 @@ theorem independent_inverse_slack (P Q I J : PR 2) (x y u v A B D N p q t : PTm 
     GaussianRationalSlackRemoval.slack (qsub (ap2 I p u) (ap2 J q v))
       (rateNumerator (A*A*D) (B*B*N) p q) (rateDenominator (B*B*N) p q)
       (auxiliaryCost P Q I J x y u v A+two) t := by
-  let V := B*B*N
-  let Z := rateDenominator V p q*unit t
-  have n : Γ ⊢[PRAAx] le one V := positive_product _ _ (positive_product _ _ h.andE₁ h.andE₁) h.andE₂.andE₁
-  have z : Γ ⊢[PRAAx] le one Z := positive_product _ _ (denominator_positive V p q n) (unit_positive t)
+  have den := positive_product _ _ (positive_product _ _ h.andE₁ h.andE₁) h.andE₂.andE₁
   have reg := h.andE₂.andE₂.andE₂.andE₁
-  have left := distance_radius_mono _ _ _ _ ((unit p+unit t)*(V*unit q)) Z
-    (positive_product _ _ (unit_positive p) (unit_positive t)) z
-    (le_of_eq_add (d := zero) (by dsimp only [Z,V,rateDenominator]; ipra_ring))
+  exact distance_through_auxiliary p q t (A*A*D) (B*B*N) (auxiliaryCost P Q I J x y u v A) den
     (GaussianNameEquivalence.point_at I u p t reg.andE₁)
-  have middle := distance_radius_mono _ _ _ _
-    (((A*A*D)*unit t+auxiliaryCost P Q I J x y u v A*V)*(unit p*unit q)) Z
-    (positive_product _ _ n (unit_positive t)) z
-    (le_of_eq_add (d := zero) (by dsimp only [Z,V,rateDenominator]; ipra_ring))
     (diagonal_inverse_slack P Q I J x y u v A B D N t h)
-  have right := distance_radius_mono _ _ _ _ ((unit t+unit q)*(V*unit p)) Z
-    (positive_product _ _ (unit_positive t) (unit_positive q)) z
-    (le_of_eq_add (d := zero) (by dsimp only [Z,V,rateDenominator]; ipra_ring))
     (GaussianNameEquivalence.point_at J v t q reg.andE₂)
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [V,rateNumerator,rateDenominator,unit]; ipra_ring)
-    (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ z (distance_triangle_same _ _ _ _ _ _ z left middle) right)
 
 theorem inverse_error_at (P Q I J : PR 2) (x y u v A B D N p q : PTm n)
     (h : Γ ⊢[PRAAx] input P Q I J x y u v A B D N) : Γ ⊢[PRAAx]
