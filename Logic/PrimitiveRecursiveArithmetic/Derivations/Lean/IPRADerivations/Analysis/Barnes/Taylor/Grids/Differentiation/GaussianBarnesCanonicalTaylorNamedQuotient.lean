@@ -119,20 +119,56 @@ theorem compare_via_grid (x grid y A C B p u : PTm n) (hB : Γ ⊢[PRAAx] le one
   exact distance_radius_mono _ _ D (two*Q) S Q (positive_product two Q (le_succ_self one) hQ)
     hQ (le_congr (.eqRefl _) (by ipra_ring) (mul_le_mul_right Q pay)) (halve_distance x y D Q hQ both)
 
-private theorem doubled_readback (p k x y h B : PTm n)
-    (hi : Γ ⊢[PRAAx] input F F x y h B) : Γ ⊢[PRAAx] distanceBounded
-    (natScale two (ap2 nameF p (GaussianNamedDifferenceQuotient.data F F x y h B)))
-    (qmul (inverse h B) (qsub (natScale two (ap2 F k x)) (natScale two (ap2 F k y))))
+private theorem doubled_readback (f g : PR 2) (p k x y h B : PTm n)
+    (hi : Γ ⊢[PRAAx] input f g x y h B) : Γ ⊢[PRAAx] distanceBounded
+    (natScale two (ap2 (GaussianNamedDifferenceQuotient.nameF f g) p (GaussianNamedDifferenceQuotient.data f g x y h B)))
+    (qmul (inverse h B) (qsub (natScale two (ap2 f k x)) (natScale two (ap2 g k y))))
     (two*GaussianNamedDifferenceQuotient.numerator B p k k) (GaussianNamedDifferenceQuotient.denominator p k k) := by
-  let d := ap2 nameF p (GaussianNamedDifferenceQuotient.data F F x y h B)
-  let r := raw F F k k x y h B
+  let d := ap2 (GaussianNamedDifferenceQuotient.nameF f g) p (GaussianNamedDifferenceQuotient.data f g x y h B)
+  let r := raw f g k k x y h B
   let s : PTm n := naturalPoint two
   have dec := scale_distance s d r two _ _ (GaussianNamedDifferenceQuotient.denominator_positive p k k)
-    (GaussianNamedNaturalScale.natural_point_bound two) (independent_readback F F p k k x y h B hi)
-  have bind := (qmul_congr (.eqRefl (inverse h B)) (scale_difference (Γ := Γ) two (ap2 F k x) (ap2 F k y))).eqTrans
-    (natScale_product two (inverse h B) (qsub (ap2 F k x) (ap2 F k y)))
+    (GaussianNamedNaturalScale.natural_point_bound two) (independent_readback f g p k k x y h B hi)
+  have bind := (qmul_congr (.eqRefl (inverse h B)) (scale_difference (Γ := Γ) two (ap2 f k x) (ap2 g k y))).eqTrans
+    (natScale_product two (inverse h B) (qsub (ap2 f k x) (ap2 g k y)))
   exact distance_congr (natScale_as_product two d).eqSymm
     ((natScale_as_product two r).eqSymm.eqTrans bind.eqSymm) (.eqRefl _) (.eqRefl _) dec
+
+/-- Transfer an exact doubled grid bound to the actual named quotient. -/
+theorem rate_of_grid_bound (f g : PR 2) (p x y h B grid A : PTm n)
+    (hi : Γ ⊢[PRAAx] input f g x y h B)
+    (bound :
+      let k := endpointClock B
+      Γ ⊢[PRAAx] distanceBounded
+        (qmul (inverse h B) (qsub (natScale two (ap2 f k x)) (natScale two (ap2 g k y)))) grid A B) :
+    Γ ⊢[PRAAx] distanceBounded
+      (natScale two (ap2 (GaussianNamedDifferenceQuotient.nameF f g) p (GaussianNamedDifferenceQuotient.data f g x y h B)))
+      grid ((A+norm1 h)*unit p+two*B) (B*unit p) := by
+  let k := endpointClock B
+  let j := exponent (num 4*(B*B)) zero
+  let P := unit p
+  let K := unit k
+  let H := norm1 h
+  let q := natScale two (ap2 (GaussianNamedDifferenceQuotient.nameF f g) p (GaussianNamedDifferenceQuotient.data f g x y h B))
+  let v := qmul (inverse h B) (qsub (natScale two (ap2 f k x)) (natScale two (ap2 g k y)))
+  have hB := hi.andE₂.andE₂.andE₁
+  have hH := GaussianNativeDerivativeQuotientRate.norm1_positive h hi.andE₂.andE₂.andE₂
+  have hd := positive_product B P hB (unit_positive p)
+  have fit : Γ ⊢[PRAAx] le (num 4*(B*B)) K :=
+    le_trans (le_congr ((congrMul (.eqRefl (num 4*(B*B))) (pw_zero two)).eqTrans (by ipra_ring))
+      (.eqRefl _) (query_budget (num 4*(B*B)) zero)) (unit_monotone (le_add_left j (quadraticClock B)))
+  have budget : Γ ⊢[PRAAx]
+      le ((two*GaussianNamedDifferenceQuotient.numerator B p k k)*(B*P))
+        ((H*P+two*B)*GaussianNamedDifferenceQuotient.denominator p k k) := by
+    change Γ ⊢[PRAAx] le ((two*(K*K+B*P*(K+K)))*(B*P)) ((H*P+two*B)*(P*K*K))
+    ipra_le 𝔞(P)*𝔞(P)*𝔞(K)*sl fit+𝔞(P)*𝔞(P)*𝔞(K)*𝔞(K)*sl hH
+  have first : Γ ⊢[PRAAx] distanceBounded q v (H*P+two*B) (B*P) :=
+    distance_radius_mono _ _ _ _ _ _ (GaussianNamedDifferenceQuotient.denominator_positive p k k) hd budget
+      (doubled_readback f g p k x y h B hi)
+  have second : Γ ⊢[PRAAx] distanceBounded v grid (A*P) (B*P) :=
+    distance_radius_mono _ _ _ _ _ _ hB hd (le_of_eq_add (d := zero) (by ipra_ring)) bound
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [H,P]; ipra_ring) (.eqRefl _)
+    (distance_triangle_same _ _ _ _ _ _ hd first second)
 
 theorem rate (p z h R B M J e t : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hw : Γ ⊢[PRAAx] source (add z h) R B) (hn : Γ ⊢[PRAAx] le one (normSq h))
@@ -142,36 +178,13 @@ theorem rate (p z h R B M J e t : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     distanceBounded (natScale two (ap2 nameF p (data z h R B J e))) (mixedGrid t z h R B e)
       (leadingNumerator R M e h*unit p+two*B) (B*unit p) := by
   let k := endpointClock B
-  let j := exponent (num 4*(B*B)) zero
-  let P := unit p
-  let K := unit k
-  let H := norm1 h
   let x := fd (add z h) (R+one) B J e
   let y := fd z (R+one) B J e
-  let q := natScale two (ap2 nameF p (data z h R B J e))
-  let r := qmul (inverse h B) (qsub (natScale two (ap2 F k x)) (natScale two (ap2 F k y)))
-  let m := mixedGrid t z h R B e
-  let A := numerator R M e h
-  have hB := hz.andE₁
-  have hH := GaussianNativeDerivativeQuotientRate.norm1_positive h hn
-  have hd := positive_product B P hB (unit_positive p)
   have forward : Γ ⊢[PRAAx] le (quadraticClock B) k := le_add_right _ _
-  have fit : Γ ⊢[PRAAx] le (num 4*(B*B)) K :=
-    le_trans (le_congr ((congrMul (.eqRefl (num 4*(B*B))) (pw_zero two)).eqTrans (by ipra_ring))
-      (.eqRefl _) (query_budget (num 4*(B*B)) zero)) (unit_monotone (le_add_left j (quadraticClock B)))
-  have budget : Γ ⊢[PRAAx]
-      le ((two*GaussianNamedDifferenceQuotient.numerator B p k k)*(B*P))
-        ((H*P+two*B)*GaussianNamedDifferenceQuotient.denominator p k k) := by
-    change Γ ⊢[PRAAx] le ((two*(K*K+B*P*(K+K)))*(B*P)) ((H*P+two*B)*(P*K*K))
-    ipra_le 𝔞(P)*𝔞(P)*𝔞(K)*sl fit+𝔞(P)*𝔞(P)*𝔞(K)*𝔞(K)*sl hH
-  have first : Γ ⊢[PRAAx] distanceBounded q r (H*P+two*B) (B*P) :=
-    distance_radius_mono _ _ _ _ _ _ (GaussianNamedDifferenceQuotient.denominator_positive p k k) hd budget
-      (doubled_readback p k x y h B (quotient_input z h R B J e hz hw hn hJ))
-  have second : Γ ⊢[PRAAx] distanceBounded r m (A*P) (B*P) :=
-    distance_radius_mono _ _ _ _ _ _ hB hd (le_of_eq_add (d := zero) (by ipra_ring))
-      (GaussianBarnesCanonicalCofinalTaylorGridIncrementRate.rate z h R B M J e t k k hz hw hn hsmall hdeg hJ ht forward forward)
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [leadingNumerator,A,H,P]; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hd first second)
+  exact rate_of_grid_bound F F p x y h B (mixedGrid t z h R B e) (numerator R M e h)
+    (quotient_input z h R B J e hz hw hn hJ)
+    (GaussianBarnesCanonicalCofinalTaylorGridIncrementRate.rate z h R B M J e t k k
+      hz hw hn hsmall hdeg hJ ht forward forward)
 
 theorem actual_Barnes_named_factorial_quotient_grid_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9
     (let z := var 0
