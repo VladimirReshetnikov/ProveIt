@@ -133,7 +133,7 @@ private theorem reverse_cover_forward (S T d A B : PTm n)
     (h : Γ ⊢[PRAAx] originalCover .right .left S T d A B) :
     Γ ⊢[PRAAx] originalCover .left .right T S d A B := h
 
-private theorem reverse_cover_backward (S T d A B : PTm n)
+theorem reverse_cover_backward (S T d A B : PTm n)
     (h : Γ ⊢[PRAAx] originalCover .left .right T S d A B) :
     Γ ⊢[PRAAx] originalCover .right .left S T d A B := h
 

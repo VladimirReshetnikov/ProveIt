@@ -68,10 +68,7 @@ theorem tc4 {Δ : List (Fm PTm n)} (hUa : Δ ⊢[PRAAx] le U a) (hUb : Δ ⊢[PR
   ipra_le sl h + (𝔟 (monus a b) + 𝔟 (monus b a))
 
 /-- Truncation is `1`-Lipschitz: `|min(U, a) − min(U, b)| ≤ |a − b|`. -/
-theorem trunc_lip (U a b : PTm n) : Γ ⊢[PRAAx] le (ad (meet U a) (meet U b)) (ad a b) :=
-  .orE (le_total a U)
-    (.orE (le_total b U).wk (tc1 Prf.hyp1 Prf.hyp0) (tc2 Prf.hyp1 Prf.hyp0))
-    (.orE (le_total b U).wk (tc3 Prf.hyp1 Prf.hyp0) (tc4 Prf.hyp1 Prf.hyp0))
+alias trunc_lip := LeanProofs.IPRA.Probability.ClipLaws.clip_lipschitz
 
 /-! ## The embedding -/
 

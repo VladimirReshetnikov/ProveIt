@@ -32,6 +32,7 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
+open GaussianGammaInverseConjugation renaming subst_original_gamma_data → subst_gammaData
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -44,11 +45,6 @@ def commonRadius (f : PR 2) (z R B x E : PTm n) : PTm n :=
 def frozenClock (f : PR 2) (s z R B A x E T : PTm n) : PTm n :=
   GaussianFastValueCut.exponent (two*(R*(E*E)))
     (modulus (succ s) (commonRadius f z R B x E) (two*(T*A)))
-
-@[simp] private theorem subst_gammaData {m : ℕ} (σ : Fin n → PTm m) (z R B A : PTm n) :
-    Syn.subst σ (gammaData z R B A) =
-      gammaData (Syn.subst σ z) (Syn.subst σ R) (Syn.subst σ B) (Syn.subst σ A) := by
-  simp [gammaData,GaussianGammaReciprocalInverse.gammaHeight]
 
 ipra_subst frozenClock [commonRadius]
 

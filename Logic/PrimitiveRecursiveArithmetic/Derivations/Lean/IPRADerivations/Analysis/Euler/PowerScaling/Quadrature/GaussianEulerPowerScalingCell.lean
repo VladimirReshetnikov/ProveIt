@@ -37,6 +37,7 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianEuclideanDistanceName (pointCN)
+open GaussianRationalPowerAlgebra renaming swap_last → weighted_form
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -89,11 +90,6 @@ private theorem fixed_product_distance (x y u A B C E : PTm n)
     Γ ⊢[PRAAx] distanceBounded (qmul u x) (qmul u y) (C*A) (E*B) :=
   bound_congr (GaussianRationalRoundedPower.multiplication_difference u x y).eqSymm (.eqRefl _) (.eqRefl _)
     (bounded_product _ _ _ _ _ _ hE hB hu hxy)
-
-private theorem weighted_form (c x w : PTm n) :
-    Γ ⊢[PRAAx] qmul (qmul c x) w ≐ qmul (qmul c w) x :=
-  (qmul_associative c x w).eqTrans
-    ((qmul_congr (.eqRefl _) (qmul_commutative x w)).eqTrans (qmul_associative c w x).eqSymm)
 
 private theorem later_sample_distance (F : PR 2) (p j x : PTm n)
     (hj : Γ ⊢[PRAAx] le p j) (hf : Γ ⊢[PRAAx] pointCN F x) :
