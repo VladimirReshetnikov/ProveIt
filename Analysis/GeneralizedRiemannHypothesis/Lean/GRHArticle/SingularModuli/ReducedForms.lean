@@ -32,19 +32,28 @@ instance (D : ℕ+) (f : FormCoefficients) : Decidable (IsPrimitiveReducedForm D
   unfold IsPrimitiveReducedForm
   infer_instance
 
+private def formAt (D : ℕ+) (k j : ℕ) : FormCoefficients :=
+  let b : ℤ := (j : ℤ) - ((k : ℤ) + 1)
+  ⟨k.succPNat, b, (b ^ 2 + D) / (4 * (k + 1))⟩
+
 private def candidateForms (D : ℕ+) (k : ℕ) : Finset FormCoefficients :=
-  (Finset.range (2 * (k + 1) + 1)).image fun j : ℕ =>
-    let b : ℤ := (j : ℤ) - ((k : ℤ) + 1)
-    ⟨k.succPNat, b, (b ^ 2 + D) / (4 * (k + 1))⟩
+  ((Finset.range (2 * (k + 1) + 1)).filter fun j => IsPrimitiveReducedForm D (formAt D k j)).image
+    (formAt D k)
 
 /-- An executable enumeration over the possible leading and middle coefficients. -/
 def reducedForms (D : ℕ+) : Finset FormCoefficients :=
-  ((Finset.range ((D : ℕ) / 3).sqrt).biUnion (candidateForms D)).filter (IsPrimitiveReducedForm D)
+  (Finset.range ((D : ℕ) / 3).sqrt).biUnion (candidateForms D)
 
 theorem mem_reducedForms_iff (D : ℕ+) (f : FormCoefficients) :
     f ∈ reducedForms D ↔ IsPrimitiveReducedForm D f := by
-  rw [reducedForms, Finset.mem_filter, and_iff_right_iff_imp]
+  rw [reducedForms]
+  constructor
+  · intro hf
+    obtain ⟨k, _, hk⟩ := Finset.mem_biUnion.mp hf
+    obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hk
+    exact (Finset.mem_filter.mp hj).2
   intro h
+  have hf := h
   rcases f with ⟨a, b, c⟩
   obtain ⟨hdisc, hb, hc, _⟩ := h
   have h := three_mul_sq_le_of_reduced D a b c hdisc hb hc
@@ -59,10 +68,10 @@ theorem mem_reducedForms_iff (D : ℕ+) (f : FormCoefficients) :
   have hb' := abs_le.mp hb
   let j := (b + (k + 1 : ℤ)).toNat
   have hj : (j : ℤ) = b + (k + 1 : ℤ) := Int.toNat_of_nonneg (by omega)
-  refine ⟨k, Finset.mem_range.mpr (by simpa using hs), Finset.mem_image.mpr ⟨j, ?_, ?_⟩⟩
-  · apply Finset.mem_range.mpr
-    omega
-  · simp [hj, he, show (4 * (k + 1) : ℤ) ≠ 0 by positivity]
+  have hform : formAt D k j = ⟨k.succPNat, b, c⟩ := by
+    simp [formAt, hj, he, show (4 * (k + 1) : ℤ) ≠ 0 by positivity]
+  refine ⟨k, Finset.mem_range.mpr (by simpa using hs), Finset.mem_image.mpr ⟨j, ?_, hform⟩⟩
+  exact Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hform ▸ hf⟩
 
 theorem reducedForms_three :
     reducedForms 3 = {⟨1, 1, 1⟩} := by decide +kernel

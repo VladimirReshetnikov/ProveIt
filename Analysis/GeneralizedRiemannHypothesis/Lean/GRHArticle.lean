@@ -6,8 +6,10 @@ import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinApproximation
 import GRHArticle.ProgressionFree.RankinTruncation
 import GRHArticle.SingularModuli.BaseChange
+import GRHArticle.SingularModuli.Binomial
 import GRHArticle.SingularModuli.CMPoints
 import GRHArticle.SingularModuli.ClassPolynomialTruncation
+import GRHArticle.SingularModuli.ConductorBound
 import GRHArticle.SingularModuli.ConjugateDisks
 import GRHArticle.SingularModuli.CuspSeparation
 import GRHArticle.SingularModuli.DepthOne
@@ -24,5 +26,6 @@ import GRHArticle.SingularModuli.ReducedForms
 import GRHArticle.SingularModuli.RootCertificates
 import GRHArticle.SingularModuli.Separated
 import GRHArticle.SingularModuli.SevenAdicCutoff
+import GRHArticle.SingularModuli.SmallOrderLists
 import GRHArticle.SingularModuli.Strassmann
 import GRHArticle.SingularModuli.ThresholdDiskRoots
