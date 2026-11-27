@@ -55,30 +55,10 @@ ipra_subst symmetricGrid
 
 theorem evaluator_at (side : Bool) (p t N c d : PTm n) : Γ ⊢[PRAAx]
     ap3 (evaluatorF side) p t (momentData N c d) ≐ literal side p N (fstT t) (sndT t) c d := by
-  let x := momentData N c d
-  have term : Γ ⊢[PRAAx] ap3 (evaluatorF side) p t x ≐ evaluatorTerm side p t x := by
-    simpa only [evaluatorF,ap3,subst_evaluatorTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons]
-      using toPR_eq (Γ := Γ) (evaluatorTerm side (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  have l : Γ ⊢[PRAAx] fstT x ≐ N := fst_pair N (pairT c d)
-  have r : Γ ⊢[PRAAx] sndT x ≐ pairT c d := snd_pair N (pairT c d)
-  let tmpl : PTm 6 := literal side (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)
-  let L : Fin 6 → PTm n := ![p,fstT x,fstT t,sndT t,fstT (sndT x),sndT (sndT x)]
-  let R : Fin 6 → PTm n := ![p,N,fstT t,sndT t,c,d]
-  have inst (σ : Fin 6 → PTm n) :
-      Syn.subst σ tmpl = literal side (σ 0) (σ 1) (σ 2) (σ 3) (σ 4) (σ 5) := by
-    simp only [tmpl,subst_literal,Syn.subst_var]
-  have e : Γ ⊢[PRAAx] Syn.subst L tmpl ≐ Syn.subst R tmpl :=
-    Prf.eqCongr tmpl (σ := L) (σ' := R) (fun i => by
-      fin_cases i
-      · exact .eqRefl p
-      · exact l
-      · exact .eqRefl (fstT t)
-      · exact .eqRefl (sndT t)
-      · exact (congrFst r).eqTrans (fst_pair c d)
-      · exact (congrSnd r).eqTrans (snd_pair c d))
-  rw [inst L, inst R] at e
-  exact term.eqTrans e
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 2)
+    (literal side (var 0) (var 2) (fstT (var 1)) (sndT (var 1)) (var 3) (var 4)) p t ![N, c, d]
+  simp only [subst_literal, subst_fstT, subst_sndT, Syn.subst_var] at read
+  exact read
 
 theorem reflected_row (p t N c d : PTm n) : Γ ⊢[PRAAx]
     ap3 (evaluatorF true) p t (momentData N c d) ≐ ap3 (evaluatorF false) p t (momentData N c d) :=

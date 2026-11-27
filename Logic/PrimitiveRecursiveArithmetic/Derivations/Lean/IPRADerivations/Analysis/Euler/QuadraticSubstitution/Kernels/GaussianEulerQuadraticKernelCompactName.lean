@@ -23,8 +23,6 @@ open GaussianNamedInverseRate (independentRate)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-private theorem val_five {α : Type*} (a b c d e f : α) : ![a,b,c,d,e,f] (5 : Fin 6) = f := rfl
-
 def lipschitz (R E T c d : PTm n) : PTm n := GaussianEulerQuadraticKernelTimeRate.lipschitz (two*R) E T c d
 def evaluatorTerm (p t x : PTm n) : PTm n := ap2 kernelF p
   (kernelData (doubled (fstT (fstT x)) (sndT (fstT x))) (sndT (fstT x))
@@ -45,27 +43,14 @@ ipra_subst data
 
 theorem evaluator_at (p t z B c d : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData z B c d) ≐ ap2 kernelF p (kernelData (doubled z B) B (fstT t) (sndT t) c d) := by
-  have term : Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData z B c d) ≐ evaluatorTerm p t (fixedData z B c d) := by
-    simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,fixedData z B c d]
-  have left := fst_pair (Γ := Γ) (pairT z B) (pairT c d)
-  have right := snd_pair (Γ := Γ) (pairT z B) (pairT c d)
-  have hz := (congrFst left).eqTrans (fst_pair z B)
-  have hB := (congrSnd left).eqTrans (snd_pair z B)
-  have hc := (congrFst right).eqTrans (fst_pair c d)
-  have hd := (congrSnd right).eqTrans (snd_pair c d)
-  have dw : Γ ⊢[PRAAx] doubled (fstT (fstT (fixedData z B c d))) (sndT (fstT (fixedData z B c d))) ≐ doubled z B := by
-    ipra_congr (doubled (var 0) (var 1) : PTm 2) with
-      [(show _ ⊢[PRAAx] fstT (fstT (fixedData z B c d)) ≐ z from hz),
-        (show _ ⊢[PRAAx] sndT (fstT (fixedData z B c d)) ≐ B from hB)]
-  have fields : Γ ⊢[PRAAx] kernelData (doubled (fstT (fstT (fixedData z B c d))) (sndT (fstT (fixedData z B c d))))
-      (sndT (fstT (fixedData z B c d))) (fstT t) (sndT t) (fstT (sndT (fixedData z B c d))) (sndT (sndT (fixedData z B c d))) ≐
-      kernelData (doubled z B) B (fstT t) (sndT t) c d := by
-    ipra_congr (kernelData (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
-      [(show _ ⊢[PRAAx] doubled (fstT (fstT (fixedData z B c d))) (sndT (fstT (fixedData z B c d))) ≐ doubled z B from dw),
-        (show _ ⊢[PRAAx] sndT (fstT (fixedData z B c d)) ≐ B from hB), .eqRefl (fstT t), .eqRefl (sndT t),
-        (show _ ⊢[PRAAx] fstT (sndT (fixedData z B c d)) ≐ c from hc),
-        (show _ ⊢[PRAAx] sndT (sndT (fixedData z B c d)) ≐ d from hd)] using [val_five]
-  exact term.eqTrans (congrAp2 kernelF (.eqRefl _) fields)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 1)
+    (ap2 kernelF (var 0) (kernelData (doubled (fstT (var 2)) (sndT (var 2))) (sndT (var 2))
+        (fstT (var 1)) (sndT (var 1)) (fstT (var 3)) (sndT (var 3)))) p t ![pairT z B, pairT c d]
+  simp only [subst_ap2, subst_kernelData, subst_doubled, subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans (congrAp2 kernelF (.eqRefl p) ?_)
+  ipra_congr (kernelData (doubled (var 0) (var 1)) (var 1) (fstT (var 2)) (sndT (var 2))
+    (var 3) (var 4) : PTm 5) with
+    [fst_pair z B, snd_pair z B, .eqRefl t, fst_pair c d, snd_pair c d]
 
 theorem wrapped_at (p t z B c d : PTm n) : Γ ⊢[PRAAx]
     ap2 (GaussianCompactRiemannName.evaluatorName evaluatorF) p (GaussianCompactRiemannName.nameData t (fixedData z B c d)) ≐

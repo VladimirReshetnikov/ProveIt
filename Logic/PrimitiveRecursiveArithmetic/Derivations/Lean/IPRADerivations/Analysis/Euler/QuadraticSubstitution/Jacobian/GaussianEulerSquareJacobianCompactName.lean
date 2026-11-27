@@ -40,14 +40,12 @@ ipra_subst data
 
 theorem evaluator_at (p t z B c d T : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData z B c d T) ≐ ap3 rawF (query p T c) t (rawData z B c d) := by
-  have term : Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData z B c d T) ≐ evaluatorTerm p t (fixedData z B c d T) := by
-    simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,fixedData z B c d T]
-  have tail := snd_pair (Γ := Γ) T (rawData z B c d)
-  have qc : Γ ⊢[PRAAx] query p (fstT (fixedData z B c d T)) (fstT (sndT (fixedData z B c d T))) ≐ query p T c := by
-    ipra_congr (query (var 0) (var 1) (var 2) : PTm 3) with
-      [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData z B c d T) ≐ T from fst_pair _ _),
-        (show _ ⊢[PRAAx] fstT (sndT (fixedData z B c d T)) ≐ c from tail.fstE)]
-  exact term.eqTrans (congrAp3 rawF qc (.eqRefl _) tail)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 1)
+    (ap3 rawF (query (var 0) (var 2) (fstT (var 3))) (var 1) (var 3)) p t ![T, rawData z B c d]
+  simp only [subst_ap3, GaussianEulerSquareJacobianRate.subst_query, subst_fstT, Syn.subst_var] at read
+  refine read.eqTrans (congrAp3 rawF ?_ (.eqRefl t) (.eqRefl _))
+  ipra_congr (query (var 0) (var 1) (var 2) : PTm 3) with
+    [.eqRefl p, .eqRefl T, fst_pair c _] using [rawData, GaussianRationalQuadratureDilation.pullData]
 
 theorem evaluator_decoded_at (p t z B c d T : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData z B c d T) ≐ rawSample (query p T c) z B c d (fstT t) (sndT t) :=

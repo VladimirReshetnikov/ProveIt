@@ -42,14 +42,12 @@ ipra_subst data
 theorem evaluator_at (p t z B : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData z B) ≐ ap2 GaussianEulerUnitSubstitutionKernel.nameF p
       (GaussianEulerUnitSubstitutionKernel.data z B (fstT t) (sndT t)) := by
-  have term : Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData z B) ≐ evaluatorTerm p t (fixedData z B) := by
-    simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,fixedData z B]
-  have fields : Γ ⊢[PRAAx] GaussianEulerUnitSubstitutionKernel.data (fstT (fixedData z B)) (sndT (fixedData z B)) (fstT t) (sndT t) ≐
-      GaussianEulerUnitSubstitutionKernel.data z B (fstT t) (sndT t) := by
-    ipra_congr (GaussianEulerUnitSubstitutionKernel.data (var 0) (var 1) (var 2) (var 3) : PTm 4) with
-      [(show _ ⊢[PRAAx] fstT (fixedData z B) ≐ z from fst_pair _ _),
-        (show _ ⊢[PRAAx] sndT (fixedData z B) ≐ B from snd_pair _ _), .eqRefl (fstT t), .eqRefl (sndT t)]
-  exact term.eqTrans (congrAp2 GaussianEulerUnitSubstitutionKernel.nameF (.eqRefl _) fields)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 1)
+    (ap2 GaussianEulerUnitSubstitutionKernel.nameF (var 0)
+        (GaussianEulerUnitSubstitutionKernel.data (var 2) (var 3) (fstT (var 1)) (sndT (var 1)))) p t ![z, B]
+  simp only [subst_ap2, GaussianEulerUnitSubstitutionKernel.subst_data,
+    subst_fstT, subst_sndT, Syn.subst_var] at read
+  exact read
 
 theorem sample_at (p z B a b : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p (pairT a b) (fixedData z B) ≐ ap2 GaussianEulerUnitSubstitutionKernel.nameF p

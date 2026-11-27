@@ -74,22 +74,10 @@ theorem raw_term_at (j p t z B : PTm n) :
 
 theorem evaluator_at (p t z B N Q : PTm n) :
     Γ ⊢[PRAAx] ap3 evaluatorF p t (data z B N Q) ≐ raw (exponent Q p) t z B N := by
-  let x := data z B N Q
-  have read : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ evaluatorTerm p t x := by
-    simpa [evaluatorF,evaluatorTerm,ap3] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  have first := snd_pair (Γ := Γ) Q (pairT N (pairT z B))
-  have last := (congrSnd first).eqTrans (snd_pair N (pairT z B))
-  have eq := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (raw (exponent (var 0) (var 1)) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![fstT x,p,t,fstT (sndT (sndT x)),sndT (sndT (sndT x)),fstT (sndT x)])
-    (σ' := ![Q,p,t,z,B,N])
-    (fun i => by fin_cases i
-                 · exact fst_pair Q _
-                 · exact .eqRefl p
-                 · exact .eqRefl t
-                 · exact (congrFst last).eqTrans (fst_pair z B)
-                 · exact (congrSnd last).eqTrans (snd_pair z B)
-                 · exact (congrFst first).eqTrans (fst_pair N _))
-  exact read.eqTrans (by simpa only [evaluatorTerm,subst_raw,GaussianFastValueCut.subst_exponent,Syn.subst_var,Matrix.cons_val] using eq)
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 3)
+    (raw (exponent (var 2) (var 0)) (var 1) (var 4) (var 5) (var 3)) p t ![Q, N, z, B]
+  simp only [subst_raw, GaussianFastValueCut.subst_exponent, Syn.subst_var] at read
+  exact read
 
 theorem raw_native_term_at (j q z B a b : PTm n) :
     Γ ⊢[PRAAx] inst2 rawBody j (rawData q (pairT a b) z B) ≐

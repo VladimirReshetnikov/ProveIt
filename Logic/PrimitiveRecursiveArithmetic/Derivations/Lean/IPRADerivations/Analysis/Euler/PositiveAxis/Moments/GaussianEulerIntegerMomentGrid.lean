@@ -41,35 +41,18 @@ ipra_subst source
 ipra_subst fixedData
 ipra_subst evaluatorTerm
 
-private theorem row_data_congr (z B N a b T z' B' N' T' : PTm n)
-    (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B')
-    (hN : Γ ⊢[PRAAx] N ≐ N') (hT : Γ ⊢[PRAAx] T ≐ T') : Γ ⊢[PRAAx]
-    GaussianEulerIntegerMomentUniform.nameData z B N a b T ≐ GaussianEulerIntegerMomentUniform.nameData z' B' N' a b T' := by
-  have e1 : Γ ⊢[PRAAx] GaussianEulerIntegerMomentUniform.nameData z B N a b T ≐ GaussianEulerIntegerMomentUniform.nameData z' B N a b T := by
-    simpa only [GaussianEulerIntegerMomentUniform.subst_nameData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (GaussianEulerIntegerMomentUniform.nameData (var 0) (Syn.shift B) (Syn.shift N) (Syn.shift a) (Syn.shift b) (Syn.shift T)) hz
-  have e2 : Γ ⊢[PRAAx] GaussianEulerIntegerMomentUniform.nameData z' B N a b T ≐ GaussianEulerIntegerMomentUniform.nameData z' B' N a b T := by
-    simpa only [GaussianEulerIntegerMomentUniform.subst_nameData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (GaussianEulerIntegerMomentUniform.nameData (Syn.shift z') (var 0) (Syn.shift N) (Syn.shift a) (Syn.shift b) (Syn.shift T)) hB
-  have e3 : Γ ⊢[PRAAx] GaussianEulerIntegerMomentUniform.nameData z' B' N a b T ≐ GaussianEulerIntegerMomentUniform.nameData z' B' N' a b T := by
-    simpa only [GaussianEulerIntegerMomentUniform.subst_nameData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (GaussianEulerIntegerMomentUniform.nameData (Syn.shift z') (Syn.shift B') (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift T)) hN
-  have e4 : Γ ⊢[PRAAx] GaussianEulerIntegerMomentUniform.nameData z' B' N' a b T ≐ GaussianEulerIntegerMomentUniform.nameData z' B' N' a b T' := by
-    simpa only [GaussianEulerIntegerMomentUniform.subst_nameData,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
-      Prf.eqCongr1 (GaussianEulerIntegerMomentUniform.nameData (Syn.shift z') (Syn.shift B') (Syn.shift N') (Syn.shift a) (Syn.shift b) (var 0)) hT
-  exact e1.eqTrans (e2.eqTrans (e3.eqTrans e4))
-
 theorem evaluator_at (p t z B N T : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (fixedData z B N T) ≐ ap2 U p
       (GaussianEulerIntegerMomentUniform.nameData z B N (fstT t) (sndT t) T) := by
-  have raw : Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData z B N T) ≐ evaluatorTerm p t (fixedData z B N T) := by
-    simpa only [evaluatorF,ap3,subst_evaluatorTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using toPR_eq (Γ := Γ) (evaluatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,fixedData z B N T]
-  have l := fst_pair (Γ := Γ) (pairT z B) (pairT N T)
-  have r := snd_pair (Γ := Γ) (pairT z B) (pairT N T)
-  exact raw.eqTrans (congrAp2 U (.eqRefl _) (row_data_congr _ _ _ _ _ _ _ _ _ _
-    l.fstE l.sndE
-    r.fstE r.sndE))
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 1)
+    (ap2 U (var 0) (GaussianEulerIntegerMomentUniform.nameData (fstT (var 2)) (sndT (var 2))
+        (fstT (var 3)) (fstT (var 1)) (sndT (var 1)) (sndT (var 3)))) p t ![pairT z B, pairT N T]
+  simp only [subst_ap2, GaussianEulerIntegerMomentUniform.subst_nameData,
+    subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans (congrAp2 U (.eqRefl p) ?_)
+  ipra_congr (GaussianEulerIntegerMomentUniform.nameData (var 0) (var 1) (var 2)
+    (fstT (var 3)) (sndT (var 3)) (var 4) : PTm 5) with
+    [fst_pair z B, snd_pair z B, fst_pair N T, .eqRefl t, snd_pair N T]
 
 theorem wrapped_at (p t z B N T : PTm n) : Γ ⊢[PRAAx]
     ap2 (evaluatorName evaluatorF) p (nameData t (fixedData z B N T)) ≐ ap2 U p

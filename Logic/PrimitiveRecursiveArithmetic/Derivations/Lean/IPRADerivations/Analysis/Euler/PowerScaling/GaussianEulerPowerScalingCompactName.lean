@@ -44,42 +44,13 @@ ipra_subst fixedData
 ipra_subst body [GaussianCompactRiemannName.field0, GaussianCompactRiemannName.field1, GaussianCompactRiemannName.field2, GaussianCompactRiemannName.field3, GaussianCompactRiemannName.field4, GaussianCompactRiemannName.field5]
 ipra_subst source
 
-private theorem sample_data_congr {z z' B B' e e' f f' d d' h h' S S' a b : PTm n}
-    (hz : Γ ⊢[PRAAx] z ≐ z') (hB : Γ ⊢[PRAAx] B ≐ B') (he : Γ ⊢[PRAAx] e ≐ e')
-    (hf : Γ ⊢[PRAAx] f ≐ f') (hd : Γ ⊢[PRAAx] d ≐ d') (hh : Γ ⊢[PRAAx] h ≐ h') (hS : Γ ⊢[PRAAx] S ≐ S') :
-    Γ ⊢[PRAAx] X z B e f d h S a b ≐ X z' B' e' f' d' h' S' a b := by
-  let term : PTm 9 := X (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8)
-  have left : Syn.subst ![z,B,e,f,d,h,S,a,b] term = X z B e f d h S a b := by
-    simp only [term,GaussianEulerPowerScalingCompactRate.subst_data,Syn.subst_var]
-    rfl
-  have right : Syn.subst ![z',B',e',f',d',h',S',a,b] term = X z' B' e' f' d' h' S' a b := by
-    simp only [term,GaussianEulerPowerScalingCompactRate.subst_data,Syn.subst_var]
-    rfl
-  have eq := Prf.eqCongr term
-      (σ := ![z,B,e,f,d,h,S,a,b]) (σ' := ![z',B',e',f',d',h',S',a,b]) (fun i => by
-        fin_cases i
-        exact hz
-        exact hB
-        exact he
-        exact hf
-        exact hd
-        exact hh
-        exact hS
-        exact .eqRefl _
-        exact .eqRefl _)
-  rw [left,right] at eq
-  exact eq
-
 theorem evaluator_at (p t z B e f d h S : PTm n) :
     Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData z B e f d h S) ≐ ap2 F p (X z B e f d h S (fstT t) (sndT t)) := by
-  have raw : Γ ⊢[PRAAx] ap3 evaluatorF p t (fixedData z B e f d h S) ≐ body p t (fixedData z B e f d h S) := by
-    simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (body (var 0) (var 1) (var 2) : PTm 3) ![p,t,fixedData z B e f d h S]
-  have tail := GaussianCompactRiemannName.field5_at (Γ := Γ) z B e f d (pairT h S)
-  exact raw.eqTrans (congrAp2 F (.eqRefl _) (sample_data_congr
-    (GaussianCompactRiemannName.field0_at _ _ _ _ _ _) (GaussianCompactRiemannName.field1_at _ _ _ _ _ _)
-    (GaussianCompactRiemannName.field2_at _ _ _ _ _ _) (GaussianCompactRiemannName.field3_at _ _ _ _ _ _)
-    (GaussianCompactRiemannName.field4_at _ _ _ _ _ _)
-    ((congrFst tail).eqTrans (fst_pair h S)) ((congrSnd tail).eqTrans (snd_pair h S))))
+  have read := toPR_pairVector3_eq (Γ := Γ) (k := 6)
+    (ap2 F (var 0)
+        (X (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) (fstT (var 1)) (sndT (var 1)))) p t ![z, B, e, f, d, h, S]
+  simp only [subst_ap2, GaussianEulerPowerScalingCompactRate.subst_data, subst_fstT, subst_sndT, Syn.subst_var] at read
+  exact read
 
 theorem wrapped_at (p t z B e f d h S : PTm n) :
     Γ ⊢[PRAAx] ap2 (evaluatorName evaluatorF) p (nameData t (fixedData z B e f d h S)) ≐
