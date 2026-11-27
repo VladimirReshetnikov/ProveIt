@@ -74,16 +74,12 @@ ipra_subst clInv [subst_ap2]
 /-- `T_j + 1 ≤ 3 F^j`. -/
 theorem T_closed (j p : PTm n) : Γ ⊢[PRAAx] le (succ (Tt j p)) (num 3 * pw (Fq p) j) := by
   have hall : Γ ⊢[PRAAx] Fm.all (clInv (var 0) (Syn.shift p)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · rw [subst_clInv]
-      simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      have e1 := natEq (T_zero (Γ := Γ) p)
+    ipra_qfind (le_QF _ _) [subst_clInv]
+    · have e1 := natEq (T_zero (Γ := Γ) p)
       have e2 := natEq (pw_zero (Γ := Γ) (Fq p))
       show Γ ⊢[PRAAx] le (succ (Tt zero p)) (num 3 * pw (Fq p) zero)
       ipra_le 0 with 3 * e2 - e1
-    · rw [subst_clInv]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ : List (Fm PTm (n + 1)) := clInv (var 0) (Syn.shift p) :: Γ.map Fm.shift
+    · let Δ : List (Fm PTm (n + 1)) := clInv (var 0) (Syn.shift p) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le (succ (Tt (var 0) (Syn.shift p))) (num 3 * pw (Fq (Syn.shift p)) (var 0)) :=
         Prf.hyp0
       have st := T_step (Γ := Δ) (var 0) (Syn.shift p)

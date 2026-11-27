@@ -68,10 +68,8 @@ theorem sq_step {Γ : List (Fm PTm n)} {N F Tn Tn1 q : PTm n} (ts : Γ ⊢[PRAAx
 /-- `4N T(N, F) + 4F ≤ 7NF` for `N = M + 2`. -/
 theorem square_bound {Γ : List (Fm PTm n)} (M F : PTm n) : Γ ⊢[PRAAx] sqInv M F := by
   have hall : Γ ⊢[PRAAx] Fm.all (sqInv (var 0) (Syn.shift F)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
+    ipra_qfind (le_QF _ _) [subst_sqInv]
     · -- `N = 2`: `8(F + ⌊F/4⌋) + 4F ≤ 14F`
-      rw [subst_sqInv]
-      simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have t1 := T_succ (Γ := Γ) (succ zero) F
       have t0 := T_succ (Γ := Γ) zero F
       have q1 : Γ ⊢[PRAAx] quo F (succ zero * succ zero) ≐ F :=
@@ -81,9 +79,7 @@ theorem square_bound {Γ : List (Fm PTm n)} (M F : PTm n) : Γ ⊢[PRAAx] sqInv 
       refine le_of_eq_add (d := two * monus F (succ (succ zero) * succ (succ zero) * quo F (succ (succ zero) * succ (succ zero)))) ?_
       ipra_lc 2 * natEq (eq_add_of_le (sq_quo_le (Γ := Γ) (succ zero) F)) - 8 * e1 - 8 * e0 -
         8 * natEq (sum_zero sqB F) - 8 * eq1
-    · rw [subst_sqInv]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ := sqInv (var 0) (Syn.shift F) :: Γ.map Fm.shift
+    · let Δ := sqInv (var 0) (Syn.shift F) :: Γ.map Fm.shift
       let N : PTm (n + 1) := succ (succ (var 0))
       let F' : PTm (n + 1) := Syn.shift F
       have ih : Δ ⊢[PRAAx] sqInv (var 0) F' := Prf.hyp0

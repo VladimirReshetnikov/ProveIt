@@ -51,10 +51,8 @@ ipra_subst thInv [subst_ap2]
 theorem theta_sum (k : PTm n) :
     Γ ⊢[PRAAx] le (pw two k * Sk k + pw two (num 3 * (k * k))) (pw two (num 3 * (k * k)) * pw two k) := by
   have hall : Γ ⊢[PRAAx] Fm.all (thInv (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · rw [subst_thInv]
-      simp only [Syn.subst_var, Syn.inst_zero]
-      have e0 := natEq (S_zero (Γ := Γ) (n := n))
+    ipra_qfind (le_QF _ _) [subst_thInv]
+    · have e0 := natEq (S_zero (Γ := Γ) (n := n))
       have z : Γ ⊢[PRAAx] pw two (num 3 * (zero * zero)) ≐ one :=
         (congrPw2 (show Γ ⊢[PRAAx] num 3 * (zero * zero) ≐ (zero : PTm n) by ipra_ring)).eqTrans
           (pw_zero _)
@@ -63,9 +61,7 @@ theorem theta_sum (k : PTm n) :
       show Γ ⊢[PRAAx] le (pw two zero * Sk zero + pw two (num 3 * (zero * zero)))
         (pw two (num 3 * (zero * zero)) * pw two zero)
       ipra_le 0 with 𝔞 (pw two zero) * e1 - 𝔞 (pw two zero) * e0 + e2 - e1
-    · rw [subst_thInv]
-      simp only [Syn.subst_var, Syn.repl_zero]
-      let Δ : List (Fm PTm (n + 1)) := thInv (var 0) :: Γ.map Fm.shift
+    · let Δ : List (Fm PTm (n + 1)) := thInv (var 0) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] le (pw two (var 0) * Sk (var 0) + pw two (num 3 * (var 0 * var 0)))
           (pw two (num 3 * (var 0 * var 0)) * pw two (var 0)) := Prf.hyp0
       have th := theta_term (Γ := Δ) (var 0)

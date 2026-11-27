@@ -278,14 +278,10 @@ theorem val_PE {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (E : PTm 2) (M x : PTm n
     Γ ⊢[PRAAx] val q (ap2 (prodF (PE E)) M x) ≐ inst2 (XE E) q x * sg (monus M q) := by
   have hq' : (Γ.map Fm.shift) ⊢[PRAAx] prime (Syn.shift q) := by simpa [Fm.shift, Syn.shift] using hq.shift
   have hall : Γ ⊢[PRAAx] Fm.all (vpF E (Syn.shift q) (Syn.shift x) (var 0)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · rw [subst_vpF]
-      simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine ((congrVal (.eqRefl _) (prod_zero _ _)).eqTrans (ValuationMul.val_one (prime_two hq))).eqTrans ?_
+    ipra_qfind [subst_ap2, subst_inst2, subst_pairT]
+    · refine ((congrVal (.eqRefl _) (prod_zero _ _)).eqTrans (ValuationMul.val_one (prime_two hq))).eqTrans ?_
       exact ((congrMul (.eqRefl _) ((congrSg (zero_monus _)).eqTrans sg_zero)).eqTrans (mul_zero _)).eqSymm
-    · rw [subst_vpF]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift, vpF]
-      let D : List (Fm PTm (n + 1)) := (val (Syn.shift q) (ap2 (prodF (PE E)) (var 0) (Syn.shift x)) ≐
+    · let D : List (Fm PTm (n + 1)) := (val (Syn.shift q) (ap2 (prodF (PE E)) (var 0) (Syn.shift x)) ≐
         inst2 (XE E) (Syn.shift q) (Syn.shift x) * sg (monus (var 0) (Syn.shift q))) :: Γ.map Fm.shift
       have hqD : D ⊢[PRAAx] prime (Syn.shift q) := hq'.wk
       have pv := Probability.ProductReplacement.prod_succ' (Γ := D) (PE E) (var 0) (Syn.shift x)

@@ -150,13 +150,9 @@ theorem up_step {t c₁ K F : PTm n} (ih : Γ ⊢[PRAAx] upInv t c₁ K F) : Γ 
 
 theorem up_all (t c₁ K F : PTm n) : Γ ⊢[PRAAx] upInv t c₁ K F := by
   have hall : Γ ⊢[PRAAx] Fm.all (upInv (var 0) (Syn.shift c₁) (Syn.shift K) (Syn.shift F)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · rw [subst_upInv]
-      simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact up_base _ _ _
-    · rw [subst_upInv]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact up_step Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_upInv]
+    · exact up_base _ _ _
+    · exact up_step Prf.hyp0
   have a := Prf.allE t hall
   rw [subst_upInv] at a
   simpa [Syn.subst_inst_shift] using a
@@ -208,13 +204,9 @@ theorem lo_step {t T c₀ K L : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) 
 theorem lo_all {T c₀ K L : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (hL : Γ ⊢[PRAAx] le (K * (c₀ + T)) L)
     (t : PTm n) : Γ ⊢[PRAAx] loInv t T c₀ K L := by
   have hall : Γ ⊢[PRAAx] Fm.all (loInv (var 0) (Syn.shift T) (Syn.shift c₀) (Syn.shift K) (Syn.shift L)) := by
-    refine PRA.qfInd _ (loInv_QF _ _ _ _ _) ?_ ?_
-    · rw [subst_loInv]
-      simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact lo_base _ _ _ _
-    · rw [subst_loInv]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have sK := hK.shift
+    ipra_qfind (loInv_QF _ _ _ _ _) [subst_loInv]
+    · exact lo_base _ _ _ _
+    · have sK := hK.shift
       simp only [Fm.shift, Fm.subst_eq, ConciseIPRA.PTm.subst_succ, PTm.subst_pred] at sK
       have sL := hL.shift
       simp only [Fm.shift, subst_le, PTm.subst_mul, PTm.subst_add] at sL

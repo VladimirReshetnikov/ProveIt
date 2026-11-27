@@ -39,14 +39,10 @@ ipra_subst blockInv [subst_ap2]
 
 theorem block_up {Γ : List (Fm PTm n)} (d F M : PTm n) : Γ ⊢[PRAAx] blockInv d F M := by
   have hall : Γ ⊢[PRAAx] Fm.all (blockInv (var 0) (Syn.shift F) (Syn.shift M)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · rw [subst_blockInv]
-      simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      refine le_congr (congrAp2 (sumF hB) (add_zero _) (.eqRefl _)).eqSymm ?_ (le_refl _)
+    ipra_qfind (le_QF _ _) [subst_blockInv]
+    · refine le_congr (congrAp2 (sumF hB) (add_zero _) (.eqRefl _)).eqSymm ?_ (le_refl _)
       ipra_ring
-    · rw [subst_blockInv]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ := blockInv (var 0) (Syn.shift F) (Syn.shift M) :: Γ.map Fm.shift
+    · let Δ := blockInv (var 0) (Syn.shift F) (Syn.shift M) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] blockInv (var 0) (Syn.shift F) (Syn.shift M) := Prf.hyp0
       -- `S(M + d + 1) = S(M + d) + ⌊F/(M + d + 1)⌋`
       have es : Δ ⊢[PRAAx] S (Syn.shift M + succ (var 0)) (Syn.shift F) ≐
@@ -77,13 +73,9 @@ theorem block_le {Γ : List (Fm PTm n)} (K F : PTm n) : Γ ⊢[PRAAx] le (K * qu
 /-- `S(2^k, F) ≤ (k + 1) F`. -/
 theorem harmonic_upper {Γ : List (Fm PTm n)} (k F : PTm n) : Γ ⊢[PRAAx] dyInv k F := by
   have hall : Γ ⊢[PRAAx] Fm.all (dyInv (var 0) (Syn.shift F)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · rw [subst_dyInv]
-      simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact le_congr (S_one _).eqSymm (one_mul _).eqSymm (le_refl _)
-    · rw [subst_dyInv]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      let Δ := dyInv (var 0) (Syn.shift F) :: Γ.map Fm.shift
+    ipra_qfind (le_QF _ _) [subst_dyInv]
+    · exact le_congr (S_one _).eqSymm (one_mul _).eqSymm (le_refl _)
+    · let Δ := dyInv (var 0) (Syn.shift F) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] dyInv (var 0) (Syn.shift F) := Prf.hyp0
       have ep : Δ ⊢[PRAAx] pw two (succ (var 0)) ≐ pw two (var 0) + pw two (var 0) := by
         ipra_lc natEq (pw_succ (Γ := Δ) two (var 0))
