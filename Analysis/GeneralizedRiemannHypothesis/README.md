@@ -62,3 +62,34 @@ settles elsewhere and which methods inside its proof carry over to other problem
 packets contained excerpts of that development, under the Apache-2.0 licence. The excerpts
 left with the packets; the whole `grh` directory, at the commit the reports pin, is in
 [`vendor/grh-lean`](vendor/grh-lean/README.md).
+
+## Reports placed and not yet merged
+
+15 further archives arrived in `Analysis/GeneralizedRiemannHypothesis/docs/incoming` on
+27 November 2026, in 4 arrival commits from `29ef78b839` to `f9f1016ec7`. They are placed as before, one
+directory per archive under `Research/`, and retired from the drop directory. Of their 261
+members, 243 are placed and 18 are listed in [`Research/OMITTED.tsv`](Research/OMITTED.tsv):
+17 matched by `.gitignore` and 1 checksum manifest of its own packet. No member is a copy of a
+file of an earlier packet. The archive `grh_extensions_2026-11-27(2).zip` differs from both
+earlier archives of that name, and since the sixth batch already has a packet
+`grh_extensions_2026-11-27_2`, it is placed as `grh_extensions_2026-11-27_3`. Their content is
+merged into the article next, after which these directories are removed like the earlier ones.
+
+| Directory | Archive | Arrival | Wrapper | Members | Placed | Omitted | Title in the delivery README |
+|---|---|---|---|---:|---:|---:|---|
+| [dirichlet-sharp-window-transport](Research/dirichlet-sharp-window-transport/README.md) | `dirichlet-sharp-window-transport.zip` | `29ef78b839` | `sharp-window-transport` | 9 | 9 | 0 | Sharp-window transport of Dirichlet zeros |
+| [euler_agreement_2026-11-27](Research/euler_agreement_2026-11-27/README.md) | `euler_agreement_2026-11-27.zip` | `29ef78b839` | `euler_agreement_2026-11-27` | 18 | 17 | 1 | Sharp Euler-factor agreement beyond prime exponent |
+| [grh_extensions_2026-11-27_3](Research/grh_extensions_2026-11-27_3/README.md) | `grh_extensions_2026-11-27(2).zip` | `29ef78b839` | `grh_extensions` | 20 | 19 | 1 | Two extensions of the ProveIt GRH transfer program |
+| [residue87_2026-11-27](Research/residue87_2026-11-27/README.md) | `residue87_2026-11-27.zip` | `29ef78b839` | none | 8 | 7 | 1 | Six-term exclusions at discriminant -87 |
+| [sparse-padic-roots-and-graph-towers](Research/sparse-padic-roots-and-graph-towers/README.md) | `sparse-padic-roots-and-graph-towers.zip` | `29ef78b839` | none | 10 | 9 | 1 | Sparse p-adic polynomials and four-step graph towers |
+| [symplectic_joint_observations_2026-11-27](Research/symplectic_joint_observations_2026-11-27/README.md) | `symplectic_joint_observations_2026-11-27.zip` | `29ef78b839` | `symplectic_joint_observations` | 23 | 22 | 1 | Hidden higher-order dependence in symplectic observations |
+| [coupled-dirichlet-inverse-spectrum](Research/coupled-dirichlet-inverse-spectrum/README.md) | `coupled-dirichlet-inverse-spectrum.zip` | `556edb6bb4` | `coupled-dirichlet-inverse-spectrum` | 15 | 14 | 1 | Recovering the characters and the graph from a coupled Dirichlet spectrum |
+| [dirichlet-coupled-zeros-and-prime-variances](Research/dirichlet-coupled-zeros-and-prime-variances/README.md) | `dirichlet-coupled-zeros-and-prime-variances.zip` | `556edb6bb4` | none | 13 | 13 | 0 | Inverse problems for Dirichlet zeros and prime variances |
+| [grh_cayley_and_filters](Research/grh_cayley_and_filters/README.txt) | `grh_cayley_and_filters.zip` | `556edb6bb4` | none | 10 | 9 | 1 | TWO RESULTS FROM THE PROVEIT DIRICHLET GRH PROJECT |
+| [padic-support-rank](Research/padic-support-rank/README.txt) | `padic-support-rank.zip` | `556edb6bb4` | none | 6 | 5 | 1 | Exact rank rule for sparse roots in closed p-adic disks. |
+| [five_step_refinement_2026-11-27](Research/five_step_refinement_2026-11-27/README.md) | `five_step_refinement_2026-11-27.zip` | `7908088f6c` | none | 10 | 9 | 1 | A sharper five-step graph-tower bound |
+| [grh_hidden_forms_and_filters_2026-11-27](Research/grh_hidden_forms_and_filters_2026-11-27/README.md) | `grh_hidden_forms_and_filters_2026-11-27.zip` | `7908088f6c` | `grh_hidden_forms_and_filters` | 33 | 26 | 7 | Two research extensions of the ProveIt GRH program |
+| [spectral_extremes_2026-11-27](Research/spectral_extremes_2026-11-27/README.txt) | `spectral_extremes_2026-11-27.zip` | `7908088f6c` | `spectral_extremes_2026-11-27` | 29 | 28 | 1 | CONDITIONAL SPECTRAL EXTREMES AND A FUNCTIONAL BRIDGE |
+| [symplectic_dependence_research_2026-11-27](Research/symplectic_dependence_research_2026-11-27/README.txt) | `symplectic_dependence_research_2026-11-27.zip` | `7908088f6c` | `symplectic_cycle_dependence_2026-11-27` | 39 | 38 | 1 | SYMPLECTIC DEPENDENCE: RESEARCH PAPERS AND REPRODUCIBLE ARTIFACTS |
+| [gram-euler-and-zero-filters](Research/gram-euler-and-zero-filters/README.md) | `gram-euler-and-zero-filters.zip` | `f9f1016ec7` | none | 18 | 18 | 0 | Three extremal problems from the ProveIt Dirichlet GRH program |
+| Total | 15 archives | | | 261 | 243 | 18 | |

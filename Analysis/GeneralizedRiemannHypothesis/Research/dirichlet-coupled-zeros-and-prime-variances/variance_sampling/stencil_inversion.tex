@@ -1,0 +1,151 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\definecolor{deepblue}{HTML}{17536B}
+\usepackage[colorlinks=true,allcolors=deepblue]{hyperref}
+\hypersetup{pdftitle={Sampling prime variances and recovering squared zero multiplicities}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\BB}{\mathcal B}
+\newcommand{\sym}{\mathcal D}
+\setlength{\emergencystretch}{2em}
+\title{Sampling prime variances and recovering\\squared zero multiplicities}
+\author{}
+\date{November 27, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+How accurately, and at which scales, can the variance of a smoothed prime-counting error reveal the multiplicities of zeta zeros? We give a quantitative inverse theorem for three-point differences and prove that their known relative-mesh condition is necessary for universal recovery. Even isolated gaps of fixed logarithmic length permit an oscillating normalized count with convergent measured variances. A single spectrum with simple and double ordinates defeats every member of a finite collection of filters sampled on finitely many geometric grids, including grids with incommensurable ratios. The inverse and sampling results concern positive measures. The prime interpretation uses the repository's zeta explicit formula.
+\end{abstract}
+\section{The measurements and the source problem}
+Let $u_0<\cdots<u_m$ be real nodes and $c_j$ real weights, not all zero, with
+$\sum c_j=\sum c_ju_j=0$. Put
+\[
+ p_c(x)=\sum_jc_j\ee^{\ii u_jx},\quad K_c(x)=|p_c(x)|^2/x^4,\quad
+ \BB_c=\pi^{-1}\int_0^\infty K_c(x)\dd x,\quad \tau(h)=h^3\log(1/h).
+\]
+Give $K_c(0)$ its continuous value. For positive locally finite $A$ on $[0,\infty)$ with $\int_1^\infty x^{-4}\dd A(x)<\infty$, set
+\[
+ U_c(h)=h^4\int K_c(hx)\dd A(x),\qquad a(T)=\frac{\pi A([0,T])}{T\log T}.
+\]
+The article \cite{article} studies $S(x)=\sum_{n\le x}\Lambda(n)(1/n-1/x)$ and the centered error $E(y)=\ee^{y/2}(S(\ee^y)-y+\gamma_E+1)$, where $\gamma_E$ is Euler's constant. Under its RH input, its explicit formula gives the following long-time variance for a contrast of observations:
+\[
+ V_c(h)=\lim_{Y\to\infty}\frac1Y\int_0^Y\Big|\sum_jc_jE(y+hu_j)\Big|^2\dd y
+ =2\sum_{\gamma>0}\frac{m_\gamma^2|p_c(h\gamma)|^2}{(1/4+\gamma^2)^2}.
+\]
+Here $\gamma$ lists distinct positive ordinates and $m_\gamma$ their multiplicities. Thus $A=2\sum_{\gamma>0}m_\gamma^2\delta_\gamma$ gives $a(T)=2\pi M_2(T)/(T\log T)$. The article's estimate $M_2(T)\ll T\log(2+T)$ and $|p_c(hx)|\ll h^2x^2$ give $|U_c(h)-V_c(h)|\ll h^4\int(1+x^2)^{-1}\dd A(x)=O(h^4)$.
+
+For $r_{ij}=u_j-u_i>0$ define the finite exponential sum
+\[
+ \sym_c(\xi)=\sum_{i<j}c_ic_j r_{ij}^{3+\ii\xi}.
+\]
+The four-node paper in the repository \cite{four} proves that a family of filters determines the normalized counting limit for every positive spectrum precisely when their symbols have no common real zero, using observations on a mesh $h_{n+1}/h_n\to1$. That paper also classifies the shapes on four equally spaced nodes, gives an integer countermodel for a blind shape, and bounds the possible oscillation of the arithmetic count. Here we use its symbol and take up the rate of inversion and the necessity of the sampling hypothesis. Multiplicative cancellation for regularly varying measures has a general theory \cite{JMRS}. Greenhall studied a related ambiguity for the Allan variance \cite{Greenhall}. Here the logarithmic kernel can be inverted on compactly supported smooth target responses. This lets us hide a counting perturbation even in a sequence of isolated sampling gaps.
+
+\input{variance_rate}
+
+\section{A sharp condition on the observation scales}
+Call a filter \emph{elliptic} here if $\inf_{\xi\in\R}|\sym_c(\xi)|>0$. Every three-node filter is elliptic. Indeed, for nodes $0,r,r+s$ its weights are proportional to $(s,-r-s,r)$, and the symbol's longest-lag term exceeds the sum of the magnitudes of its other terms by $rs(r+s)((r+s)^2-r^2-s^2)>0$ for this normalization.
+\begin{theorem}[Exact mesh condition]\label{thm:mesh}
+Let $h_n\downarrow0$ and let $c$ be elliptic. For every admissible positive measure $A$ and every finite $d\ge0$, the equivalence
+\[
+ U_c(h_n)/\tau(h_n)\longrightarrow d\BB_c
+ \quad\Longleftrightarrow\quad a(T)\longrightarrow d
+\]
+holds universally if and only if $\log(h_n/h_{n+1})\to0$.
+If the mesh condition fails, there is even a discrete counterexample $A=2\sum m_x^2\delta_x$ with $m_x\in\{1,2\}$, with the two Riemann--von Mangoldt main terms for the ordinary count, for which the sampled variances converge and $a(T)$ fails to converge.
+\end{theorem}
+The conclusion remains valid under the weaker assumption $|\sym_c(\xi)|\ge c_0(1+|\xi|)^{-N}$ for constants $c_0>0$, $N\ge0$. This also separates the universal sampling question from the arithmetic question about one particular spectrum.
+
+\paragraph{The kernel in logarithmic coordinates.}
+Set $F(x)=\cos x-1+x^2/2$,
+$k(s)=\ee^{-3s}F(\ee^s)$, and $g_c(s)=\ee^s K_c(\ee^s)$.
+The two moment cancellations give
+\[
+ g_c(s)=2\sum_{i<j}c_ic_jr_{ij}^3 k(s+\log r_{ij}).
+ \tag{1}\label{eq:trans}
+\]
+Both kernels have exponentially decreasing absolute envelopes at both ends. Write $\check g(s)=g(-s)$ and $(g*f)(t)=\int g(s)f(t-s)\dd s$.
+With $\widehat f(\xi)=\int f(s)\ee^{-\ii s\xi}\dd s$, one has
+\[
+ \widehat{\check k}(\xi)=\int_0^\infty F(x)x^{-4+\ii\xi}\dd x
+ =\frac{\pi}{2\Gamma(4-\ii\xi)\cosh(\pi\xi/2)},\quad
+ \widehat{\check g_c}(\xi)=2\sym_c(-\xi)\widehat{\check k}(\xi).
+ \tag{2}\label{eq:gamma}
+\]
+For the first integral, two integrations by parts reduce it to
+$(s(s-1))^{-1}\int_0^\infty(1-\cos x)x^{1-s}\dd x$ at $s=3-\ii\xi$.
+For $0<\Re v<2$, integrating $x^{-1-v}$ against $1-\cos x$ via its Laplace representation gives $\pi/(2\Gamma(1+v)\sin(\pi v/2))$: the remaining integral is $\int_0^\infty t^{v-1}/(1+t^2)\dd t$. Take $v=s-2$ to obtain (2).
+In particular $\BB_c=\sym_c(0)/6$.
+
+\begin{lemma}[Prescribing a localized response]\label{lem:invert}
+For every real $\phi\in C_c^\infty(\R)$ there is a real Schwartz function $f$ with $\check k*f=\phi$. For $c$ satisfying the polynomial lower bound above, there is also a real Schwartz $f$ with $\check g_c*f=\phi$.
+\end{lemma}
+\begin{proof}
+Divide $\widehat\phi$ by the appropriate multiplier in (2). Stirling's formula in a fixed horizontal strip gives
+$|\Gamma(4-\ii\xi)\cosh(\pi\xi/2)|\ll(1+|\xi|)^{7/2}$ on the real axis and a polynomial bound throughout a narrower strip away from its finitely many possible nearby poles. Cauchy's estimate gives polynomial bounds for each derivative there. The exponential sum has bounded derivatives of every order on the real axis, so the polynomial lower bound gives polynomial bounds for the derivatives of its reciprocal there. The quotient is Schwartz, and its Hermitian symmetry gives a real inverse Fourier transform.
+\end{proof}
+\begin{lemma}[Local perturbations and their counting responses]\label{lem:pulse}
+Let $x_j\to\infty$ be separated by at least one, with $x_{j+1}-x_j\to\infty$. For real $f$ in the Schwartz class put $b(t)=\sum_j f(t-x_j)$. This is bounded. Fix $0<q_0<1$ and take $\epsilon>0$ so small that $q(t)=q_0+\epsilon b(t)$ lies strictly between zero and one. On $x\ge10$ set $\lambda(x)=(2\pi)^{-1}\log(x/(2\pi))$ and $\dd A(x)=2(1+q(\log x))\lambda(x)\dd x$, with zero mass below $10$. Then as $t\to\infty$
+\begin{align*}
+ U_c(\ee^{-t})/\tau(\ee^{-t})
+ &= (1+q_0)\BB_c +\epsilon\pi^{-1}(\check g_c*b)(t)+O_c((1+\|b\|_\infty)/t),\\
+ a(\ee^t)&=1+q_0+\epsilon (H*b)(t)+O((1+\|b\|_\infty)/t),
+ \quad H(s)=\ee^{-s}\mathbf 1_{s\ge0}.
+\end{align*}
+For $f\ne0$ the second expression has at least two distinct subsequential limits.
+\end{lemma}
+\begin{proof}
+The separation bounds translates of $(1+|t|)^{-2}$ uniformly in sum. For the first formula substitute $x=\ee^{t+s}$ and use the finite first absolute moments of $g_c$; the missing lower tail is exponentially small. For the second substitute $x=\ee^{t-s}$ and use $\int H=1$ and $\int sH(s)\dd s=1$. Convolution by $H$ takes Schwartz functions to Schwartz functions, since its Fourier multiplier is $(1+\ii\xi)^{-1}$; it is injective. Choose $v$ with $(H*f)(v)\ne0$. At $x_j+v$ all other translates contribute $o(1)$ by separation, rapid decay and increasing nearest-neighbor distances. At $(x_j+x_{j+1})/2$ their total is $o(1)$ by the same bound. The two limits differ.
+\end{proof}
+\begin{proof}[Proof of Theorem~\ref{thm:mesh}]
+When the log gaps tend to zero, the finite-family theorem in \cite{four} gives the equivalence. If they fail to tend to zero, there is $\delta>0$ and a sequence of centers $x_j$ of intervals of length $2\delta$ missed by all $-\log h_n$, with center spacings tending to infinity. Choose a nonzero real smooth $\phi$ supported in $(-\delta,\delta)$. Apply Lemma~\ref{lem:invert} with $g_c$ and sum translates. Fubini's theorem is justified by $g_c\in L^1$ and the uniform bound on the sum of $|f|$ translates. Thus $\check g_c*b=\sum_j\phi(\cdot-x_j)$ vanishes at every sample. Lemma~\ref{lem:pulse} gives the two asserted behaviors. The integer construction below applies to this same $q$.
+\end{proof}
+
+\begin{theorem}[Several filters and grids]\label{thm:bankmesh}
+For each of finitely many filters $c$ let $S_c\subset[0,\infty)$ denote its observed log-times $t=\log(1/h)$. Form
+\[
+ \mathcal E=\bigcup_c\ \bigcup_{i<j\, :\,c_ic_j\ne0}
+ (S_c-\log r_{ij}).
+\]
+If $\mathcal E$ misses intervals of some fixed positive length at arbitrarily large heights, there is a single positive measure, also realizable with integer multiplicities, such that every filter along its own observations has normalized variance tending to $(1+q_0)\BB_c$, while $a(T)$ has no limit. This holds whenever each $S_c$ is locally finite with $\limsup_{T\to\infty}\#(S_c\cap[0,T])/T<\infty$. In particular the ratios and offsets of a finite set of geometric grids may be chosen independently.
+\end{theorem}
+\begin{proof}
+Choose the centers and $\phi$ as before, now inside gaps of $\mathcal E$. Use Lemma~\ref{lem:invert} with the common kernel $k$. By (1),
+$\check g_c*b(t)=2\sum_{i<j}c_ic_jr_{ij}^3\sum_m\phi(t-\log r_{ij}-x_m)$,
+which vanishes for $t\in S_c$. Lemma~\ref{lem:pulse} applies. For the density statement the finite union of translated sets has bounded asymptotic average count per unit length. If its late gaps all had length less than every fixed $\delta>0$, its lower average count would exceed $1/(2\delta)$ for every $\delta$, a contradiction.
+\end{proof}
+
+\paragraph{Integer multiplicities in both sampling theorems.}
+Define $F_1(T)=\int_{10}^T(1-q(\log x))\lambda(x)\dd x$ and $F_2(T)=\tfrac12\int_{10}^T q(\log x)\lambda(x)\dd x$. By taking $\epsilon$ smaller if needed, $q$ is bounded away from $0,1$. Both functions increase strictly to infinity. Put simple points at positive integer crossings of $F_1$ and double points at crossings of positive levels in $\Z+\theta$ by $F_2$. Choose $0<\theta<1$ outside the countably many offsets giving coincident points. As in \cite{four}, the two crossing counts differ from $F_1,F_2$ by $O(1)$, so
+\[
+ \sum_{x\le T}m_x=\frac{T}{2\pi}\log\frac{T}{2\pi}-\frac{T}{2\pi}+O(1).
+\]
+The cumulative function of $2\sum m_x^2\delta_x$ differs from $A([0,T])$ by $O(1)$. Integration by parts gives an error $O(h^4\int|K_c'|)=O(h^4)$ in $U_c(h)$; the derivative is bounded near zero and $O(x^{-4})$ at infinity. Replacing the ideal denominator by the zeta variance denominator has the same cost. Thus the two normalized statistics have precisely the asserted limiting behavior. These spectra preserve the classical two counting terms; realizing the ordinates as zeros of an Euler product would require additional arithmetic input.
+
+
+\section*{Further questions}
+Can arithmetic information on multiple zeros exclude the pulses of Theorem~\ref{thm:mesh} for the actual zeta spectrum? For general determining symbols with arbitrarily small values, what small-divisor conditions suffice for the exact mesh characterization? For asynchronously sampled families with gaps in the individual meshes but no gaps in $\mathcal E$, the translated measurement equations can constrain a common perturbation. A necessary and sufficient condition for such families would extend Theorem~\ref{thm:bankmesh}.
+
+\begin{thebibliography}{9}
+\bibitem{article} ProveIt Contributors. \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, section on merging scales, especially the local squared-multiplicities lemma and inverse theorem. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis/Article/sections/zer.tex}{Article source}.
+\bibitem{four} ProveIt Contributors. \emph{Which four-point prime variances determine the multiplicities of zeta zeros?} Research note, November 27, 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis/Research/grh-two-open-questions/zero-stencils}{Five-point question, four-point classification, and integer countermodel}.
+\bibitem{JMRS} M. Jacobsen, T. Mikosch, J. Rosi\'nski and G. Samorodnitsky. Inverse problems for regular variation of linear filters, a cancellation property for $\sigma$-finite measures and identification of stable laws. \emph{Ann. Appl. Probab.} \textbf{19} (2009), 210--242. \href{https://doi.org/10.1214/08-AAP540}{Published paper}.
+\bibitem{Greenhall} C. A. Greenhall. Spectral ambiguity of Allan variance. \emph{IEEE Trans. Instrum. Meas.} \textbf{47} (1998), 623--627. \href{https://doi.org/10.1109/19.744312}{Published paper}.
+\end{thebibliography}
+\end{document}

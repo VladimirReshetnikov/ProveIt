@@ -1,0 +1,495 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype,xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=teal!60!black,citecolor=teal!60!black,urlcolor=teal!60!black]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\qbinom}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_q}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Universal critical profiles}
+\fancyhead[R]{\small Many prescribed symplectic frames}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}\setlength{\emergencystretch}{2em}
+\raggedbottom
+\hypersetup{pdftitle={Universal critical profiles for many prescribed symplectic frames},pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\title{\textbf{Universal critical profiles\\for many prescribed symplectic frames}\\[6pt]
+\large A continuation of the finite-field spanning and frame method}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Consider many independently placed ordered frames in a finite symplectic
+space. Prescribe every frame's internal alternating form, including
+arbitrary degeneracy, and observe all pairings between different frames.
+We prove that their total variation distance from independent uniform
+cross-pairings has a universal limiting profile when the total frame
+dimension differs from the ambient dimension by a fixed integer. The
+profile is independent of the number, sizes, and internal forms of the
+frames, provided the largest frame has size negligible compared with the
+total. It includes both parities of the total dimension and every finite
+field. Global nullity or rank tests attain the limiting distance. A
+quantitative proof combines a bordering coupling for block-constrained
+alternating matrices, exact Gram counts, and a bounded-likelihood transfer
+that handles conditioning on degenerate forms. The scalar even profile
+was previously known in the source for two nondegenerate frames; the
+extension is the full experiment for many arbitrary small frames. All
+results are unconditional finite algebra and probability.
+\end{abstract}
+
+\section*{Source, contribution, and verification status}
+The starting point is the finite-field frame method in the ProveIt GRH
+research collection, inspected at commit
+\texttt{00cadb961bbe77c74e5d082c4948f8884d58a970} \cite{SourceArticle}.
+This proof has no dependence on a statement about zeros of $L$-functions.
+The source already supplies exact two-frame symplectic laws and an even
+critical profile for two nondegenerate frames \cite{SourceProfile}.
+Here the collection can contain arbitrarily many prescribed frames, and
+every frame can have an arbitrary radical. The output concerns their
+entire joint cross-pairing law, not merely a rank marginal.
+
+Finite-field rank universality with some deterministic entries has substantial
+antecedents. In particular, Koenig and Nguyen allow a small linear number
+of arbitrary entries per column; their stated alternating theorem assumes
+odd $q$ \cite{KoenigNguyen}. We give a direct, explicit argument for the
+block setting in every characteristic, then transfer it to the conditioned
+Gram experiment. No priority claim is made for rank universality itself,
+for standard alternating rank counts, or for the even two-frame scalar
+profile. The many-frame experiment and its uniform arbitrary-form critical
+profile are the extension relative to the inspected repository. The
+bibliographical comparison does not establish worldwide priority.
+
+The manuscript contains a complete mathematical proof. The accompanying
+program uses exact rational arithmetic and actual finite-field enumeration
+to check its finite ingredients. A separate mathematical review checked
+the conditioning and coupling arguments. The new theorem is not
+Lean-formalized or externally peer-reviewed.
+
+\section{Model and main theorem}
+
+Fix a prime power $q$. Set
+\[
+ \eta_j=\prod_{i=1}^j(1-q^{-2i}),\qquad
+ \gamma_j=\prod_{i=1}^j(1-q^{-i}),\qquad
+ \theta_\infty=\gamma_\infty/\eta_\infty.
+\]
+Let $V_n$ be a symplectic space of dimension $2n$ over $\mathbb F_q$.
+For each $n$, let $E_i$ have dimension $d_i\ge1$ and prescribed alternating
+Gram matrix $H_i$, possibly degenerate. Independently choose uniform
+isometric injections $X_i:E_i\to V_n$. Put $D=\sum_i d_i$ and
+$b=\max_i d_i$. The observation consists of every cross-pairing matrix
+$X_i^{\mathsf T}JX_j$, $i<j$. Its law is $P$. Let $Q$ be the law in which
+all these entries are independent and uniform. In both experiments form
+the complete alternating $D\times D$ matrix $\Gamma$ by inserting the
+fixed diagonal blocks $H_i$.
+
+\begin{theorem}[Universal critical profile]\label{thm:main}
+If $D=2n+c$ for a fixed integer $c$ and $b=o(D)$, then, uniformly over all
+partitions and all prescribed forms,
+\[
+ d_{\rm TV}(P,Q)\longrightarrow\delta_q(c).
+\]
+Writing $\varepsilon\in\{0,1\}$ for the parity of $c$,
+\[
+ \delta_q(c)=
+ \begin{cases}
+ \displaystyle\frac{\theta_\infty}{\gamma_\varepsilon}
+     \left(1-\frac{\eta_\infty}{\eta_{(\varepsilon-c)/2}}\right),
+       &c\le1,\\[6pt]
+ \displaystyle\sum_{\substack{0\le k<c\\k\equiv c\pmod2}}
+       \frac{\theta_\infty q^{-k(k-1)/2}}{\gamma_k},&c\ge2.
+ \end{cases}
+\]
+For $c\le1$ the test that selects $P$ when $\dim\ker\Gamma>\varepsilon$
+is asymptotically optimal. For $c\ge2$, the test that selects $P$ when
+$\operatorname{rank}\Gamma\le2n$ is asymptotically optimal.
+No hypothesis on the ranks or radicals of the individual $H_i$ is needed.
+Since $b=o(D)$, all embeddings exist once $n$ is large.
+\end{theorem}
+
+
+\begin{corollary}[Dependence invisible to bounded collections]\label{cor:local}
+Under Theorem~\ref{thm:main}, fix any positive integer $\ell$. The joint
+cross-pairings of any chosen collection of at most $\ell$ frames converge
+in total variation to independent uniform entries, uniformly over the
+chosen collection and prescribed forms. The distance for the complete
+collection instead tends to the strictly positive constant $\delta_q(c)$.
+\end{corollary}
+
+Thus any bounded collection can look independent while the full collection
+retains a fixed statistical signal. The optimal global test only needs the
+rank or nullity of the assembled Gram matrix.
+
+The even part of the scalar profile is already present for two
+nondegenerate frames in the inspected source \cite{SourceProfile}.
+The extension here is its universality for arbitrarily many small frames
+with arbitrary prescribed alternating forms, including degenerate ones;
+the odd total-dimension profile is also included. This is not a novelty
+claim for the even scalar profile itself.
+
+\section{A block-nullity universality lemma}
+
+Let $A_D$ be uniform over alternating matrices with arbitrary prescribed
+diagonal blocks of sizes at most $b$, and let $T_D$ be an unrestricted
+uniform alternating matrix. If $D\ge8$, then
+\begin{equation}\label{cw:eq:nullity-bound}
+ d_{\rm TV}(\dim\ker A_D,\dim\ker T_D)
+ \le \frac{q^{2b-\lfloor D/4\rfloor}}{1-q^{-1}}+\beta^D,
+ \qquad
+ \beta=\left(\frac{151959}{160000}\right)^{1/4}<1.
+\end{equation}
+The right side is permitted to exceed one. In particular this bound tends
+to zero exponentially for $b=o(D)$, or for $b\le\rho D$ with any fixed
+$\rho<1/8$.
+
+\paragraph{Proof.}
+Expose the rows and columns in any fixed order. At size $m$, let $S$ be
+the previously exposed coordinates belonging to the same prescribed block
+as the next coordinate. Put $s=|S|\le b$. Conditional on the exposed
+matrix $A_m$, the new column is fixed on $S$ and independent uniform on
+its complement. If
+\[
+ \ker A_m\cap\mathbb F_q^S=0,
+\]
+restriction of this random column to $(\ker A_m)^*$ is uniform. Indeed
+the annihilator of the image of the random coordinate subspace in this
+dual space is precisely the displayed intersection. Thus, writing
+$k=\dim\ker A_m$, alternating bordering changes nullity to $k+1$ with
+probability $q^{-k}$ and to $k-1$ with probability $1-q^{-k}$.
+This statement uses no division by two.
+
+For each nonzero $v$ supported on $S$, the equations $A_m v=0$ on the
+$m-s$ coordinates outside its block are independent uniform equations.
+Consequently
+\[
+ \Pr(\ker A_m\cap\mathbb F_q^S\ne0)
+ \le(q^s-1)q^{-(m-s)}\le q^{2b-m}.
+\]
+Coupling from a starting size $m_0$ onwards with the standard alternating
+nullity chain therefore costs at most
+$q^{2b-m_0}/(1-q^{-1})$.
+
+For completeness, the standard chain can be mixed from every initial
+nullity at most $m_0$ with the correct parity. Couple all such chains with
+one sequence of independent uniform variables. The upward probability
+$q^{-k}$ decreases in $k$, so the coupling preserves order; two states
+of equal parity can never cross. All chains coalesce by the first time
+the upper chain, started at $m_0$, reaches 1 (or 0 if initially at 0).
+Let $\tau$ be this time. Until $\tau$, the state is at least 2, so for
+$r=6/5$,
+\[
+ \mathbb E[r^{Z_{t+1}}\mid Z_t=k]
+ =r^k\{q^{-k}r+(1-q^{-k})r^{-1}\}
+ \le r^k\frac{37}{40}.
+\]
+Applying this to the chain killed on reaching 1 gives
+\[
+ \Pr(\tau>L)\le r^{m_0-2}(37/40)^L.
+\]
+Couple with the standard nullity process of an unrestricted uniform
+alternating matrix, whose size-$m_0$ nullity is at most $m_0$ and has
+the same parity. Take $m_0=\lfloor D/4\rfloor$ and $L=D-m_0$.
+The last bound is at most $\beta^D$, since
+$(6/5)(37/40)^3=151959/160000$. This proves
+\eqref{cw:eq:nullity-bound}.
+
+\section{Unrestricted Gram laws and the scalar profile}
+
+Let $X$ be a uniform $2n\times D$ matrix and let
+$G=X^{\mathsf T}JX$. Its density relative to $T_D$ depends only on
+$k=\dim\ker G$. Put $c=D-2n$. For $k\equiv c\pmod2$,
+\begin{equation}\label{cw:eq:likelihood}
+ f_{n,D}(k)=\eta_n
+  \sum_{t=\max(0,(c+k)/2)}^k
+    \qbinom{k}{t}
+    \frac{q^{ct-t(t+1)/2}}{\eta_{t-(c+k)/2}}.
+\end{equation}
+An empty sum means zero. To prove it, choose the kernel $K$ of the map
+$X$. It is a $t$-subspace of the radical of $G$. The quotient has
+dimension $D-t$ and rank $D-k$, and its number of isometric injections
+into $V_n$ is
+\[
+ q^{2n(D-t)-\binom{D-t}{2}}
+ \frac{\eta_n}{\eta_{t-(c+k)/2}}.
+\]
+The quotient embeds precisely when $t\ge(c+k)/2$. Multiply by the
+number $\qbinom{k}{t}$ of kernels and divide by $q^{2nD-\binom D2}$.
+
+The following sign fact works for even and odd $D$:
+every feasible $k\ge2$ satisfies $f_{n,D}(k)>1$.
+Here feasibility means $k\ge c$ and the correct parity.
+Write $F=f_{n,D}/\eta_n$. If $(c+k)/2\ge2$, its first summand is at least
+$q^{t(t-1)/2}\ge q$, using $\qbinom{k}{t}\ge q^{t(k-t)}$.
+If $(c+k)/2=1$, that summand is
+$\qbinom{k}{1} q^{1-k}\ge1+q^{-1}$.
+Both exceed $\eta_\infty^{-1}$, since
+$q\eta_\infty>1$ and $(1+q^{-1})\eta_\infty>1$.
+For the latter inequalities one can use
+$\eta_\infty>1-(q^2-1)^{-1}$; at $q=2$ the strictness of the product
+bound supplies the strict inequality.
+
+In the remaining case write $h=-(c+k)/2\ge0$ and $Q=q^{-2h-2}$.
+The terms $t=0,1$ give
+\[
+ F\ge\frac{1+aQ}{\eta_{h+1}},\qquad
+ a=\frac{1-q^{1-k}}{q-1}\ge q^{-1}.
+\]
+Because $\eta_\infty/\eta_{h+1}\ge1-Q/(q^2-1)$,
+\[
+ \eta_\infty F
+ \ge(1+aQ)(1-Q/(q^2-1))>1.
+\]
+Indeed $a(q^2-1-Q)>1$ follows from $a\ge q^{-1}$,
+$Q\le q^{-2}$, and $q\ge2$.
+
+Write $D=2d+\varepsilon$, $\varepsilon\in\{0,1\}$.
+If $d\le n$, the only likelihood deficit is at the minimum possible
+nullity $\varepsilon$, where
+\[
+ f_{n,D}(\varepsilon)=\eta_n/\eta_{n-d}.
+\]
+For $\varepsilon=1$ the last identity follows either by choosing the
+radical vector after the nondegenerate part, or from the two terms in
+\eqref{cw:eq:likelihood}. Therefore
+\[
+ d_{\rm TV}(G,T_D)
+  =\Pr(\dim\ker T_D=\varepsilon)
+      (1-\eta_n/\eta_{n-d}).
+\]
+For $D\ge2n+2$ the likelihood is zero off its rank-$\le2n$ support
+and greater than one everywhere on it. Hence
+\[
+ d_{\rm TV}(G,T_D)=\Pr(\operatorname{rank}T_D>2n).
+\]
+
+Choosing the radical and a nonsingular form on the quotient gives
+\[
+ \Pr(\dim\ker T_D=k)
+ =q^{-k(k-1)/2}\frac{\gamma_D}
+  {\gamma_k\eta_{(D-k)/2}},\qquad k\equiv D\pmod2.
+\]
+These classical rank laws are also treated in \cite{FulmanGoldstein}.
+For each fixed parity this tends to
+$\lambda_\varepsilon(k)=\theta_\infty q^{-k(k-1)/2}/\gamma_k$.
+The tails are bounded by a constant times $q^{-k(k-1)/2}$, so these
+limits sum to one. For fixed $c=D-2n$, the displayed exact total
+variation formulas converge to $\delta_q(c)$, with error
+$O_{q,c}(q^{-2n})$.
+
+\section{Conditioning on arbitrary prescribed blocks}
+
+For a uniform $2n\times d$ matrix, let $F_{n,d}(H)$ be its Gram density
+at the alternating form $H$. If $d\le n$, finite Fourier inversion gives
+\begin{equation}\label{cw:eq:small-block}
+ |F_{n,d}(H)-1|\le C_1(q)q^{2d-2n},\qquad
+ C_1(q)=\frac{q^{-3}}{\eta_\infty(1-q^{-3})}.
+\end{equation}
+Indeed a Fourier character indexed by an alternating matrix of rank $2t$
+has coefficient $q^{-2nt}$, and the number of such matrices is
+\[
+ q^{t(2d-2t-1)}\frac{\gamma_d}{\gamma_{d-2t}\eta_t}
+ \le\eta_\infty^{-1}q^{t(2d-2t-1)}.
+\]
+Sum the resulting geometric majorant. The character calculation uses
+independent row pairs and $\mathbb E\psi(u^{\mathsf T}Wv)=q^{-\operatorname{rank}W}$,
+so it is valid in characteristic two.
+
+If $\operatorname{rank}H=2s$, the density contributed by injective maps
+alone is
+\[
+ \Phi_{n,d,s}=\frac{\eta_n}{\eta_{n-d+s}},\qquad
+ 1-\Phi_{n,d,s}\le\frac{q^{2d-2n}}{q^2-1}.
+\]
+Since $F_{n,d}(H)\ge\Phi_{n,d,s}\ge\eta_\infty$, the conditional
+probability that a map with Gram $H$ is not injective is at most
+\begin{equation}\label{cw:eq:inj-cost}
+ C_2(q)q^{2d-2n},\qquad
+ C_2(q)=\eta_\infty^{-1}\{C_1(q)+(q^2-1)^{-1}\}.
+\end{equation}
+
+Now condition $X$ only on its diagonal-block Grams $H_i$, and call the
+cross-block law $P'$. Its density relative to $Q$ is exactly
+\[
+ \frac{dP'}{dQ}(\Gamma)=\frac{f_{n,D}(\dim\ker\Gamma)}{Z},
+ \qquad Z=\prod_i F_{n,d_i}(H_i).
+\]
+Independence of the matrix blocks proves the product normalizer. Write
+$S=\sum_i q^{2d_i-2n}\le Dq^{2b-2n}$. The bounds above imply
+\[
+ |Z-1|\le e^{C_1(q)S}-1,\qquad
+ d_{\rm TV}(P,P')\le C_2(q)S.
+\]
+The latter is simply conditioning the independent blocks further on
+injectivity, then applying the observation map.
+
+There is no need to control an unbounded likelihood by a nullity-TV
+estimate. Let $g(k)=(1-f_{n,D}(k))_+\in[0,1]$. Since
+$\mathbb E_Q f_{n,D}=Z$, the Lipschitz property of $x\mapsto(1-x)_+$
+gives
+\[
+ \left|d_{\rm TV}(P',Q)-\mathbb E_Q g(\dim\ker\Gamma)\right|
+ \le |Z-1|.
+\]
+Changing the nullity law from $Q$ to $T_D$ costs at most
+\eqref{cw:eq:nullity-bound}, and
+$\mathbb E g(\dim\ker T_D)=d_{\rm TV}(G,T_D)$.
+Thus, whenever $D\ge8$ and $b\le n$, the fully quantitative comparison is
+\[
+ \boxed{\quad
+ |d_{\rm TV}(P,Q)-d_{\rm TV}(G,T_D)|
+ \le \frac{q^{2b-\lfloor D/4\rfloor}}{1-q^{-1}}+\beta^D
+       +e^{C_1(q)S}-1+C_2(q)S .\quad}
+\]
+This proves the main limit, uniformly over the forms and partitions.
+
+For the testing assertion when $c\le1$, the likelihood is constant at
+nullity $\varepsilon$, so
+\[
+ P'(\dim\ker\Gamma>\varepsilon)-Q(\dim\ker\Gamma>\varepsilon)
+ =Q(\dim\ker\Gamma=\varepsilon)
+   \left(1-\frac{f_{n,D}(\varepsilon)}Z\right)
+ \longrightarrow\delta_q(c).
+\]
+Replacing $P'$ by $P$ costs $o(1)$. For $c\ge2$, every true Gram matrix
+has rank at most $2n$, and the uniform model's probability of violating
+this bound tends to $\delta_q(c)$. In both cases the test attains the
+limiting total variation distance.
+
+
+\paragraph{Proof of Corollary~\ref{cor:local}.}
+For a collection of at most $\ell$ frames, its total dimension $D'$ is at
+most $\ell b=o(n)$ and eventually is at most $n$. Apply
+\eqref{cw:eq:small-block} to the entire $D'$-column Gram matrix, as well
+as to its prescribed blocks. Its unnormalized density differs uniformly
+from one by $O_q(q^{2D'-2n})$. The product normalizer differs from one by
+$O_{q,\ell}(q^{2b-2n})$, and the further conditioning on injectivity costs
+$O_{q,\ell}(q^{2b-2n})$. These bounds tend to zero uniformly over the
+chosen collection. The full-collection assertion is Theorem~\ref{thm:main}.
+
+\paragraph{Tail behavior of the profile.}
+As $c\to-\infty$ along parity $\varepsilon$,
+\[
+ \delta_q(c)\sim
+ \frac{\theta_\infty}{\gamma_\varepsilon(q^2-1)}q^{c-\varepsilon}.
+\]
+As $c\to+\infty$,
+\[
+ 1-\delta_q(c)\sim\eta_\infty^{-1}q^{-c(c-1)/2}.
+\]
+These statements concern the explicit limiting profile. Passing to offsets
+$c=c_n$ growing with $n$ needs checking the quantitative error against the
+profile tail; no relative-error assertion for arbitrary growing offsets
+is implicit in the fixed-$c$ theorem.
+
+
+
+\begin{center}
+\small
+\begin{tabular}{r rrrrrrr}
+\toprule
+$q$ & $c=-2$ & $c=-1$ & $c=0$ & $c=1$ & $c=2$ & $c=3$ & $c=4$\\
+\midrule
+2 & 0.034372 & 0.068743 & 0.130634 & 0.261269 & 0.419422 & 0.838845 & 0.978652 \\
+3 & 0.008863 & 0.013294 & 0.078878 & 0.118318 & 0.639005 & 0.958507 & 0.998445 \\
+4 & 0.003072 & 0.004096 & 0.048975 & 0.065300 & 0.737512 & 0.983350 & 0.999739 \\
+5 & 0.001322 & 0.001653 & 0.033003 & 0.041253 & 0.793335 & 0.991669 & 0.999933 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The table gives the limiting distance, rounded to six decimals. In
+particular, over $\mathbb F_2$ the ambient-equality limit is approximately
+$0.130634$, and adding one to the total frame dimension changes it to
+approximately $0.261269$. These are distances for the entire observation.
+
+\section{Exact verification and reproduction}
+The program \texttt{code/verify.py} uses only Python's standard library.
+It generates actual vectors and alternating matrices independently of the
+formulas used for comparison. Arithmetic over $\mathbb F_4$ is implemented
+as $\mathbb F_2[x]/(x^2+x+1)$, with no integer arithmetic modulo four.
+
+The first check enumerates 1,607,096 vector arrays in 16 cases over
+$\mathbb F_2$, $\mathbb F_3$, $\mathbb F_4$, and $\mathbb F_5$. For all
+55,631 possible Gram fibers in these cases, it compares the exact count
+with \eqref{cw:eq:likelihood}. It also checks the alternating nullity
+formula, every relevant likelihood sign, and the exact total variation
+identity. Both parities and all three regimes (below, at, and above
+ambient dimension) occur.
+
+The second check addresses the new block argument directly. Eight
+prescribed-block configurations include isotropic, nondegenerate, and
+mixed forms. The program enumerates 473 prefixes satisfying the required
+kernel condition and all 16,274 random bordering columns for those
+prefixes. In every case the upward nullity probability is exactly
+$q^{-k}$. It separately checks the bad-kernel union bound. A further 5,612
+exact rational comparisons verify the killed-chain bound across four
+field sizes and a range of starting states and times.
+
+Finally, four small conditioned-frame experiments enumerate another
+262,144 arrays and 53,550 actual frame tuples to check the product
+normalizer $Z$, the density $f/Z$, and the injectivity-conditioning
+comparison by direct enumeration. These distinguish the law conditioned
+only on Gram matrices from the law of actual frames, a distinction needed
+for degenerate forms. All checks pass. Their exact counts and rational
+probabilities are in \texttt{results/verification.json}; a compact count
+summary is in \texttt{results/summary.json}. The finite checks support the
+formulas but do not replace the proof of the asymptotic statement.
+
+To reproduce the tests and rebuild the document, run from this directory:
+\begin{verbatim}
+python3 code/verify.py
+pdflatex critical_profile.tex
+pdflatex critical_profile.tex
+\end{verbatim}
+The script writes the exact results to \texttt{results/verification.json}
+and \texttt{results/summary.json}. The delivered PDF was compiled with pdfLaTeX.
+
+\section{Scope}
+The theorem fixes the finite field and the offset $c$. The largest frame
+must have dimension $o(D)$; the quantitative bound also covers a sufficiently
+small fixed proportion of $D$. It does not cover an unrestricted collection
+containing a frame of size comparable with the entire ambient space.
+The quantitative comparison assumes $D\ge8$ and $\max_i d_i\le n$;
+both conditions hold eventually under the theorem's assumptions.
+The asymptotic optimality is for one complete observation of all
+cross-pairings. No assertion of exact optimality for finite degenerate
+frame experiments is made.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{SourceArticle}
+Vladimir Reshetnikov and ProveIt contributors,
+\emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions:
+consequences, transfers and limits}, section on spanning, frames, and
+matrix statistics. Inspected commit
+\texttt{00cadb961bbe77c74e5d082c4948f8884d58a970}, 27 November 2026.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis/Article/sections/spn.tex}
+
+\bibitem{SourceProfile}
+ProveIt research collection,
+\emph{Optimal tests for nondegenerate symplectic compressions},
+27 November 2026. Theorem 2 gives the even critical profile for two
+nondegenerate frames. Same inspected commit as above.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis/Research/grh-two-open-questions/symplectic/symplectic.tex}
+
+\bibitem{KoenigNguyen}
+Jake Koenig and Hoi H. Nguyen,
+\emph{Rank of Near Uniform Matrices},
+Journal of Combinatorics \textbf{13} (2022), no. 3, 397--436.
+Preprint arXiv:2101.00107v2 (2021), especially Theorem 1.12 and its
+explicit odd-characteristic assumption.\newline
+\url{https://arxiv.org/abs/2101.00107};
+\url{https://people.math.osu.edu/nguyen.1261/cikk/nearuniform-arxiv.pdf}
+
+\bibitem{FulmanGoldstein}
+Jason Fulman and Larry Goldstein,
+\emph{Stein's method and the rank distribution of random matrices over
+finite fields}, Annals of Probability \textbf{43} (2015), 1274--1314.\newline
+\url{https://doi.org/10.1214/13-AOP889};
+\url{https://arxiv.org/abs/1211.0504}
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,174 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,array,graphicx,enumitem,xcolor}
+\usepackage{fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\DeclareMathOperator{\Alt}{Alt}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F_q}
+\newcommand{\Pbb}{\mathbb P}
+\setlist{itemsep=3pt,topsep=6pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Hidden symplectic forms}
+\fancyhead[R]{\small Sharp detection and recovery}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\hypersetup{pdftitle={Recovering a Hidden Symplectic Form},pdfauthor={Research collaboration for Vladimir Reshetnikov},pdfsubject={Sharp additive detection and recovery threshold from random isotropic planes}}
+\title{\textbf{Recovering a Hidden Symplectic Form}\\[5pt]
+\large A sharp additive threshold for isotropic-plane observations}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+An unknown nondegenerate alternating form on $\mathbb F_q^n$ is shared by a collection of random two-dimensional subspaces, each isotropic for that form. After averaging over the hidden form, one observation is exactly uniform on all two-planes. We prove that the collective observations undergo a sharp statistical and algorithmic transition at $d=\binom n2-1$. For fixed $q$ and even $n\to\infty$, $d-\omega(1)$ observations are asymptotically indistinguishable from independent uniform two-planes, and every estimator has vanishing probability of recovering the form. At $d+\omega(1)$ observations, Gaussian elimination recovers it up to scalar with probability tending to one. We give explicit finite-dimensional bounds and the exact critical-window second moment $\chi^2\to q^a/c_q$ at $t=d+a$, where $c_q=\prod_{j\ge2}(1-q^{-(2j-1)})$. The experiment is exactly equivalent to full-row-rank wide symplectic compression with a shared unknown source form. This answers a specified case of an open question in the ProveIt GRH article. All proofs are unconditional and include characteristic two. Exact enumeration accompanies the arguments.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Origin, contribution, and interpretation}
+
+The ProveIt project studies both consequences of Dirichlet GRH and transfers of the mechanisms appearing in its source proof. Its current article includes exact laws for symplectic matrix compressions, and asks about observations with a shared unknown source form \cite[\texttt{spn:q:symplectic}]{proveit}. The present paper develops that question into a statistical recovery problem and proves a matching lower and upper sample threshold.
+
+The source revision used throughout is
+\begin{center}\small
+\nolinkurl{00cadb961bbe77c74e5d082c4948f8884d58a970}.
+\end{center}
+At this revision the article consolidates 184 reports, while ten further packets remain under \texttt{Research/}. We inspected the article's source and the additional symplectic packets before selecting this problem. Their results concern specified source forms, individual block distributions, rank blindness, and joint rank--defect laws. The hidden common-form experiment studied here is different: averaging hides all evidence in a single retained observation, but repeated observations constrain the same unknown form.
+
+An alternating form is an array of pairwise interaction coefficients $H_{ij}$ with $H_{ii}=0$ and $H_{ji}=-H_{ij}$. It assigns an area-like quantity $H(u,v)$ to two vectors. The observed plane $\langle u,v\rangle$ tells us that this quantity vanishes. It supplies one linear equation in the $\binom n2$ coefficients. Rescaling all coefficients is unobservable, so $d=\binom n2-1$ is the natural parameter count. Parameter counting alone does not prove the theorem: the equations come from decomposable exterior products and are highly structured. A proof must control exceptional competing forms and must show that the hidden mixture is statistically invisible below the threshold.
+
+The principal contributions are the additive threshold, its information-theoretic lower bound, recovery by Gaussian elimination at the same scale, and an exact limiting second moment in the bounded window. The incidence geometry and the Pl\"ucker description of symplectic Grassmannians are classical; related point counts occur in the work of Blok and of Cardinali--Giuzzi \cite{blok,cardinali}. Our proofs reproduce the counts needed here. A targeted literature search did not identify the exact shared-form threshold, but this is a research contribution relative to the inspected sources, not a claim of an exhaustive priority search.
+
+The new results do not use RH or GRH. The connection with that research program is through the article's symplectic compression mechanism and its explicit open question. The upstream Lean development is not rebuilt in this work, and the present proof is a mathematical proof with exact computational checks, not a completed Lean formalization.
+
+\input{sections/hidden_form_body}
+
+\section{A concrete recovery algorithm}
+
+Represent each observed plane by any ordered basis $(u_i,v_i)$. Form the row
+\[
+ z_i=\bigl(u_{i,r}v_{i,s}-u_{i,s}v_{i,r}\bigr)_{1\le r<s\le n}\in\F^D
+\]
+and stack these rows into a $t\times D$ matrix $Z_{\rm lin}$. Replacing a plane basis multiplies its row by a nonzero scalar, so the nullspace is intrinsic. It consists precisely of the coefficient vectors of $\mathcal N$ in \eqref{hidden:eq:solution}.
+
+The following procedure is exact over the finite field.
+\begin{enumerate}
+\item Compute the nullspace of $Z_{\rm lin}$ by row reduction.
+\item If it is one-dimensional, take a nonzero generator, put its entries above the diagonal of a matrix, negate them below the diagonal, and put zero on the diagonal.
+\item Check that this alternating matrix is nonsingular. If it is, return its projective class; otherwise report that the certificate for unique recovery has not occurred.
+\end{enumerate}
+The work is $O(tD^2+D^3)$ field operations by elementary elimination, hence $O(n^6)$ at the threshold. The algorithm needs no search through forms. Under the planted law, a one-dimensional nullspace automatically has a nonsingular generator. Under the null, an output implies $Z>0$, whose probability is bounded by \eqref{hidden:eq:null-union}. Thus the same procedure gives a polynomial-time test above the threshold as well as a recovery algorithm.
+
+The implementation in \texttt{code/recovery\_demo.py} demonstrates this construction over prime fields. The theorem covers prime powers as well; its implementation over an extension field only requires replacing arithmetic modulo a prime by arithmetic in that field.
+
+\section{Exact computational verification}
+
+\subsection{Independent incidence and probability calculations}
+
+The program \texttt{code/independent\_hidden\_forms.py} uses only the Python standard library. It constructs two-planes as actual reduced row spaces, forms their exterior coordinates, enumerates alternating forms, and checks nonsingularity by matrix elimination. Thus the incidence data are obtained independently of the formula in \cref{hidden:lem:pair}.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Quantity, with $n=4$ & $q=2$ & $q=3$\\
+\midrule
+All two-planes & 35 & 130\\
+Projective nondegenerate forms & 28 & 234\\
+Isotropic two-planes per form & 15 & 40\\
+All projective alternating competitors, plus zero & 64 & 365\\
+Largest nonproportional conditional overlap & $3/5$ & $2/5$\\
+Bound $\rho_q$ used in the proof & $3/4$ & $5/9$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For a fixed nondegenerate form, the common-plane counts with all nondegenerate projective partners have the following histograms:
+\[
+\begin{array}{c|ccc}
+q=2:\ \text{common planes} &5&7&15\\
+\text{number of partners}&12&15&1
+\end{array}
+\qquad
+\begin{array}{c|rrrr}
+q=3:\ \text{common planes}&10&13&16&40\\
+\text{number of partners}&108&80&45&1.
+\end{array}
+\]
+The pencil-kernel identity is checked for every partner. The checks also include singular and zero competitors, since the recovery proof must exclude all competing alternating forms, not only nondegenerate ones.
+
+For $(q,n)=(2,4)$, the program additionally enumerates the complete process of spans of observed exterior coordinates. There are 2356 reachable spans. Integer transition counts compute the two experiment laws exactly for every $0\le t\le24$. Fractions are retained as rational numbers; displayed decimals are rounded. Each computed chi-square value is checked independently against the two-form overlap moment in \eqref{hidden:eq:secondmoment}.
+
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+Observations $t$ & Exact total variation, rounded & Gaussian recovery probability\\
+\midrule
+1 & 0.000000 & 0.000000\\
+2 & 0.114286 & 0.000000\\
+4 & 0.372805 & 0.000000\\
+5 & 0.663084 & 0.238933\\
+6 & 0.840363 & 0.495565\\
+8 & 0.968686 & 0.811233\\
+10 & 0.994169 & 0.933615\\
+12 & 0.998926 & 0.976790\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite example has $d=5$. Its values are not asserted to equal the large-$n$ critical-window limits. In particular statistical distinction and uniqueness among nonsingular forms can occur before the linear equations determine a unique alternating form. The theorem deliberately distinguishes those notions.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{../figures/hidden_form_transition.pdf}
+\caption{Left: exact finite probabilities for $q=2,n=4$, computed by integer state transitions. Right: explicit finite-dimensional inequalities for $q=2,n=200$, evaluated near $d=19899$. The right panel displays bounds, not simulations or limiting probability curves.}
+\label{fig:transition}
+\end{figure}
+
+\subsection{What the checks establish}
+
+The exact computations validate the combinatorial inputs, likelihood normalization, characteristic-two conventions, small-dimensional second moments, and the implemented recovery operation. They do not replace the asymptotic proof. That proof rests on the explicit bounds in \cref{hidden:prop:finite} and the separate treatment of proportional, near, and far competitors.
+
+The right panel also has a directly certified finite interpretation. For $q=2,n=200$, there are $d=19899$ projective parameters. At $t=19889$, the finite inequalities certify total variation below $0.0171$ and optimal exact recovery probability below $0.001165$. At $t=19909$, they certify Gaussian recovery failure below $0.000977$, while its null-model false-positive probability is below $0.00082$. These rounded bounds are verified by exact rational comparisons in \texttt{code/make\_hidden\_figure.py}; it uses finite-product lower bounds, Bernoulli's inequality, and $e^x\le(1-x)^{-1}$ for $0\le x<1$. The curves in the figure are supplementary; all inequalities used for the theorem are proved symbolically.
+
+\section{Scope and further questions}
+
+The threshold theorem applies to a uniformly hidden nondegenerate form shared across conditionally independent isotropic-plane observations. Its recovery guarantee is uniform in the fixed hidden form. Its indistinguishability statement is a mixture statement with the specified uniform prior. The exact equivalence with matrix compressions includes full-row-rank conditioning. It therefore resolves a concrete case of the repository's unknown-source question, while the model with unconditioned blocks, arbitrary growing kernel dimensions, or noisy observations remains open.
+
+The exact limit in \cref{hidden:thm:window} is a second-moment limit. It does not identify the limiting total variation or the full distribution of the compatible-form count $Z$ for $t=d+a$. Determining that law would give a more detailed transition profile. Another natural extension replaces two-planes by larger isotropic subspaces, which each impose several mutually dependent linear constraints.
+
+The accompanying \texttt{FORMALIZATION.md} separates a possible Lean development into finite-field linear algebra, subspace counting, exact probability identities, and asymptotic estimates. No unproved formal statement is presented as a checked theorem.
+
+\begin{thebibliography}{9}
+\small\raggedright
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt: Generalized Riemann Hypothesis}, revision
+\texttt{00cadb961bbe77c74e5d082c4948f8884d58a970}, 27 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis}.
+In particular \texttt{Article/sections/spn.tex}, labels \texttt{spn:thm:wide}, \texttt{spn:thm:wide-sample}, and \texttt{spn:q:symplectic}; and the three current packets \texttt{rectangular\_symplectic\_blocks}, \texttt{uniform\_symplectic\_blocks}, and \texttt{grh\_uniform\_extensions\_2026-11-27}.
+\bibitem{cardinali}
+I. Cardinali and L. Giuzzi, \emph{Minimum distance of symplectic Grassmann codes}, Linear Algebra and its Applications \textbf{488} (2016), 124--134.
+\url{https://doi.org/10.1016/j.laa.2015.09.031}; \url{https://arxiv.org/abs/1503.05456}.
+\bibitem{blok}
+R. J. Blok, \emph{The generating rank of the symplectic line-Grassmannian}, Beitr\"age zur Algebra und Geometrie \textbf{44} (2003), 575--580.
+\url{https://www.maths.tcd.ie/EMIS/journals/BAG/vol.44/no.2/26.html}.
+\end{thebibliography}
+\end{document}

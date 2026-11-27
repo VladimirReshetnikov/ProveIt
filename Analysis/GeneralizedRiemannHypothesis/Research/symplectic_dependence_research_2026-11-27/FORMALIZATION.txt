@@ -1,0 +1,141 @@
+FORMALIZATION STATUS AND PROPOSED LEAN DEVELOPMENT
+
+Status
+------
+This archive supplies complete written proofs and exact computational
+checks. The finite identities were also checked by independent vector
+enumeration, including characteristic two and a nonprime field. These
+checks are evidence about the formulas, not a formal proof of the general
+theorems. No compiled Lean formalization of the new results is included,
+and external peer review has not been completed. Parallel mathematical
+review during preparation was an internal check. Nothing here asserts a
+new audit of the repository's complete RH/GRH formalization.
+
+The proposed interface names below describe future contracts. They are
+not claims that declarations with these names already exist in Mathlib.
+No placeholder Lean file, admitted theorem, or untested proof script is
+being presented as a completed formalization. The new finite-field
+results are unconditional and require no RH or GRH theorem as an axiom.
+
+1. Common finite foundation
+---------------------------
+Use a finite field F with cardinality q, and a finite-dimensional
+F-vector space V of dimension 2*n equipped with a nondegenerate
+alternating bilinear form. Keep the cardinality M=q^(2*n) distinct from
+the ambient dimension. Assume n>=1. Define the subtype of nonzero vectors,
+its uniform probability mass function, and independent vertex sampling
+on a finite simple graph with a chosen orientation for every edge.
+
+Proposed interfaces: nonzeroUniform, edgeObservation, graphObservationLaw,
+edgeMarginal, independentEdgeLaw, finiteTV, finiteChiSquare.
+
+First prove the one-edge counts and strict positivity of the comparison
+law. Use finite sums for exact probability identities; convert to real
+probability measures only when needed for the limiting results. Separate
+the characteristic-free alternating-form arguments from coordinates.
+
+2. Exact cycle laws
+------------------
+Dependencies: additive-character orthogonality, matrix multiplication and
+trace, the constant subspace and its complement, and multiplicative
+characters of F's nonzero elements.
+
+Proposed interfaces: characterMatrix, characterMatrix_rowSum,
+characterMatrix_mul, cycleCharacteristicFunction, evenCycleResonance,
+cyclePointMass, cycleGroupedLaw, cycleTV_closed, cycleChiSquare_closed.
+
+Prove F_s F_t = M*P_(s/t)-J on nonzero vectors. Derive the cyclic trace
+formulas before Fourier inversion. Establish the elementary Gauss-sum
+identity and the even-cycle resonance sign (-1)^(length/2) in every
+characteristic. Prove the grouped multiplicities, normalization,
+nonnegativity, and divergence formulas by finite sums. The sufficient
+statistic records the number of zero labels, plus the resonance bit for
+an even cycle without zero labels. It is sufficient; minimality is not
+claimed. Cycle lengths are at least three and orientations are cyclic.
+
+3. Forests and cactus factorization
+----------------------------------
+Dependencies: the symplectic group's transitivity on nonzero vectors,
+finite product measures, leaf removal, and a block decomposition of a
+finite cactus graph.
+
+Proposed interfaces: forestEdgeIndependence, blockLaw_givenArticulation,
+cactusBlockFactorization, graphEdgesIndependent_iff_forest,
+cactusLikelihoodFactorization, cactusChiSquare_product.
+
+Prove first that a block's conditional law does not depend on its shared
+nonzero articulation vector. Induct over leaf blocks to obtain exact
+independence of whole cycle blocks and bridges. Do not replace the cactus
+hypothesis by an assumption about merely counting cycles: overlapping
+cycles generally do not provide independent information.
+
+4. A reusable product-experiment limit theorem
+---------------------------------------------
+Formulate this independently of finite fields. Let independent factors
+have likelihoods 1+u, each with reference mean zero, maximum absolute
+increment tending to zero, and total variance I equal to the sum of
+their chi-square divergences.
+
+Proposed interfaces: productLogLikelihood_normalLimit,
+productExperimentTV_profile, productExperiment_smallInformation,
+productExperiment_largeInformation.
+
+Formalize explicit Taylor remainder bounds, a triangular-array central
+limit argument, and the bounded continuous function (1-exp(x))_+.
+Use the exact chi-square product identity when I tends to zero and
+Hellinger affinity when I tends to infinity. This isolates the analytic
+work from the exact finite computations. Apply it to cacti with fixed q,
+n tending to infinity, and uniformly bounded cycle lengths. The number
+of cycles may grow arbitrarily. The profile is
+2*Phi(sqrt(tau)/2)-1 when I tends to tau, including the endpoints.
+
+5. Fixed anchors and overlapping-cycle examples
+-----------------------------------------------
+Proposed interfaces: independentAnchorProbability,
+anchorConditionalColumnLaw, anchorMixtureTV_bound,
+anchorColumnChiSquare_closed, anchorCriticalProfile,
+overlappingCyclesCounterexample, rareAnchorChiSquare_lowerBound.
+
+For finite statements require 2<=a<=2*n. Count independent nonzero
+anchors, prove surjectivity of their pairing map, and count its fibres.
+Conditional on anchor independence, all observed columns have the same
+explicit law and are independent. Prove the total-variation mixture
+error uniformly in the number of columns. Distinguish the original
+mixture from this conditional product experiment: their chi-square
+divergences can behave very differently. For the limiting profile fix
+q and a, let n grow, and apply the product-experiment theorem. Derive
+the K_(2,m) overlapping-cycle and rare-event bounds separately.
+
+6. Companion: many prescribed small frames
+-----------------------------------------
+Proposed interfaces: alternatingBorderNullity,
+prescribedBlockKernelBadEvent_bound, nullityChain_orderedCoupling,
+nullityChain_hittingBound, prescribedBlockNullityTV_bound,
+unrestrictedGramLikelihood, conditionalBlockInjection_bound,
+smallFrameCriticalProfile.
+
+Start with exact alternating-form embedding counts, Gaussian binomial
+coefficients, and the unrestricted Gram likelihood by radical dimension.
+Next formalize the nullity chain with transition probabilities q^(-k)
+and 1-q^(-k). The prescribed-block coupling uses an unconditional bad-
+event bound, same-parity order preservation, and a killed exponential
+moment; it does not require a uniformly small conditional bad-event
+probability for every history. Establish the quantitative estimate for
+D>=8 and maximum block size b<=n.
+
+Condition independent matrix blocks on their prescribed Grams and then
+on injectivity. Transfer nullity universality through the bounded
+function (1-f)_+, not through an unbounded likelihood. Finally prove
+convergence of the finite products and nullity masses. The companion
+limit assumes fixed q, fixed integer c, D=2*n+c, and b=o(D). Prescribed
+alternating forms may have arbitrary radicals. Any extension to growing
+c or growing field order needs a separately checked error estimate.
+
+Completion criterion
+--------------------
+A future formalization should pin Lean and Mathlib versions, compile
+all declarations without sorry or new mathematical axioms, and record
+the actual dependency and axiom reports. Small finite examples should
+then be connected to the definitions as regression checks. The present
+Python outputs remain reproducible verification artifacts, not substitutes
+for these future kernel-checked proofs.

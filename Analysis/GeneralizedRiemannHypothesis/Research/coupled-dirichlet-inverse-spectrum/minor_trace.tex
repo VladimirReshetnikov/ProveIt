@@ -1,0 +1,66 @@
+\section{The matrix in lower-order positive-ordinate traces}
+\label{sec:minor-trace}
+
+The prime-power main term can agree for every frequency because the two character lists coincide. At a lower logarithmic order, a suitable frequency distinguishes every pair of distinct grouped determinant polynomials. This gives recovery from the positive half of the spectrum with a growing erasure budget.
+
+\begin{theorem}\label{thm:minortrace}
+Assume the critical-line input. Suppose $A,B$ have the same character multiset of size $n$, with $D_A\ne D_B$ after matching labels. There exist an integer $m\ge2$, an integer $1\le k\le n+1$, and $c_m\in\C\setminus\{0\}$ such that
+\[
+ \sum_{0<\gamma\le T}\bigl(\nu_A(\gamma)-\nu_B(\gamma)\bigr)m^{i\gamma}
+ =c_m\frac{T}{(\log T)^k}
+   +O\!\left(\frac{T}{(\log T)^{k+1}}\right).
+\]
+The implied constant may depend on both matrices, their labels, and $m$. Each of $\Delta_{(0,T]}(P_A,P_B)$ and $\Delta_{(0,T]}(P_B,P_A)$ is $\gg T/(\log T)^k$ for all sufficiently large $T$.
+\end{theorem}
+
+\begin{proof}
+Let $w=(w_1,\ldots,w_h)$ have one indeterminate per distinct label, and let $\mathbf1$ be the all-ones vector. The two polynomials $D_A(U\mathbf1+w),D_B(U\mathbf1+w)$ are monic of degree $n$ in $U$. Expand formally at infinity, choosing the logarithm with constant term zero,
+\[
+ \log\frac{D_A(U\mathbf1+w)}{D_B(U\mathbf1+w)}
+ =\sum_{r\ge1} h_r(w)U^{-r} .
+\]
+The $h_r$ are polynomials. The first nonzero $h_j$ has $j\le n$ since the two monic degree-$n$ polynomials differ (evaluate at $U=0$) and their difference has degree at most $n-1$. If $h_j$ is nonconstant, set $k=j$. Otherwise $h_j=c\ne0$, and translation of all the variables by $v$ replaces $U$ by $U+v$. Comparison at order $j+1$ gives $h_{j+1}(w+v\mathbf1)=h_{j+1}(w)-jc v$. In this case set $k=j+1$. Thus $k\le n+1$, $h_k$ is nonconstant, and all $h_r$ with $r<k$ are constant.
+
+For $s=2+it$ put $u(s)=\tfrac i2\log(s/2)$ and let $w_j(s)=c_j-i\sum_{l\ge2}\Lambda(l)\psi_j(l)l^{-s}$ as in Lemma~\ref{lem:ap}. In particular $w,w'$ are bounded. The vector of actual logarithmic derivatives is $u\mathbf1+w+\epsilon$, with $\epsilon=O(t^{-1})$ and $\epsilon'=O(t^{-1})$, primes denoting $s$-derivatives. The first estimate holds uniformly in a fixed small disk about each $s=2+it$ by Stirling, which gives the second estimate by Cauchy's formula. The same estimates include the conductor-one correction. For bounded $w$ the formal logarithm above is an analytic power series in $U^{-1}$ on a disk of positive radius independent of $w$. Indeed the two monic polynomials divided by $U^n$ are uniformly close to $1$ there. This also holds on an enlarged bounded set of $w$, so the degree-$k$ truncation has remainder $O(|U|^{-k-1})$, with the same bound for its $w$-derivatives and $O(|U|^{-k-2})$ for its $U$-derivative. Substitute $U=u$, $w+\epsilon$ for $w$, and differentiate. Since all lower $h_r$ are constant, $u'=O(t^{-1})$, and the completion products cancel, the result is
+\[
+ \frac{C'_A}{C_A}(s)-\frac{C'_B}{C_B}(s)
+ = u(s)^{-k}L_0(s)+O((\log t)^{-k-1}),\qquad
+ L_0(s)=\frac{d}{ds}h_k(w(s)).
+\]
+No choice of logarithm of either coupled function away from this half-plane enters the formula.
+
+The series $L_0(s)=\sum_{l\ge2} a_l l^{-s}$ converges absolutely at $\Re s=2$. Polynomial products of the $w_j$ converge absolutely at every real part greater than one, and inserting a factor $\log l$ in differentiating preserves convergence at $2$. At least one $a_m$ is nonzero. Otherwise $h_k(w(s))$ is constant, contrary to the squarefree-prime coefficient argument in Lemma~\ref{lem:ap}: subtract the putative constant and apply that argument directly to the nonconstant polynomial evaluated at $c_j-i\sum\Lambda(l)\psi_j(l)l^{-s}$. Fix such an $m$. For $t\ge3$ write $v(t)=(\log t)^{-k}$. Then $u^{-k}=(2/i)^k v(t)+O((\log t)^{-k-1})$. In the real part of $(2/i)^k L_0(2+it)$ the coefficient at frequency $-\log m$ is $(2/i)^k a_m m^{-2}/2$. The conjugate series has only positive frequencies. Each nonresonant integral $\int_3^T v(t)e^{i\lambda t}\,dt$ is $O_k(1/|\lambda|)$ by integration by parts; all nonzero frequency gaps for fixed $m$ are bounded below. The resonant integral is $T/(\log T)^k+O_k(T/(\log T)^{k+1})$ by integration by parts. Absolute summability and the preceding differential estimate now give
+\[
+ \int_0^T e^{it\log m}\Re\left(\frac{C'_A}{C_A}-\frac{C'_B}{C_B}\right)(2+it)\,dt
+ =\frac{(2/i)^k a_m}{2m^2}\frac{T}{(\log T)^k}
+   +O\!\left(\frac{T}{(\log T)^{k+1}}\right).
+\]
+Use \eqref{eq:poisson-trace} twice. Its $O(\log^2(2T))$ error is absorbed, and $c_m=(2/i)^k a_m/(2\pi\sqrt m)\ne0$. By the triangle inequality the sum of the two one-sided discrepancies is at least the modulus of the trace difference. Their difference is bounded: subtract the two coupled count comparisons with the same input counts, moving endpoints slightly if they are zeros so as to count exactly $(0,T]$. This proves the separate lower bounds.
+\end{proof}
+
+\begin{corollary}[Blind recovery from positive ordinates]\label{cor:blind-positive}
+Suppose a positive-ordinate multiset is obtained from a coupling with $n$ primitive labels by insertions and deletions whose total through height $T$ is $o(T/(\log T)^{n+1})$. Among couplings satisfying this observation rule with their own vertex count, its character multiset and grouped determinant polynomial are unique. In particular, when all labels are distinct, the positive ordinates with these errors determine the unknown labelled graph Laplacian.
+\end{corollary}
+\begin{proof}
+Two candidates first have symmetric discrepancy $o(T)$, so Corollary~\ref{cor:sublinear} identifies their labels and hence their common $n$. Their mutual discrepancy is then $o(T/(\log T)^{n+1})$. Theorem~\ref{thm:minortrace} forces equality of the grouped polynomials.
+\end{proof}
+For a known list the same reasoning gives a one-sided statement: $o(T/(\log T)^{n+1})$ missing multiplicities in $(0,T]$ force equality of the grouped polynomials even with unrestricted excess multiplicities. The exponent here comes from a fixed-frequency trace. The best possible discrepancy lower bound for the zero sets remains open.
+
+\paragraph{Why order $n+1$ occurs.}
+For $n\ge3$ give an $n$-cycle edge signs $+1$ and zero diagonal, and reverse just one edge sign for the second matrix. Write $A,B$ for the two signed adjacency matrices, with the same vertex labels. Every proper induced subgraph is a forest, on which a diagonal vertex sign change removes any prescribed edge signs. Its two principal minors therefore agree. In the full determinant, the only permutations affected are the two orientations of the cycle: traversing an edge as a transposition uses its sign twice. Hence
+\[
+ D_A(X)-D_B(X)=C,\qquad C=4(-1)^{n-1}.
+\]
+Writing $w_{j(i)}$ for the offset of vertex $i$, the coefficient of $U^{n-1}$ in $D_B(U\mathbf1+w)$ is $\sum_i w_{j(i)}$ since the diagonal of $B$ vanishes. Thus the first two nonzero orders of the formal logarithm are
+\[
+ CU^{-n}-C\left(\sum_i w_{j(i)}\right)U^{-(n+1)} .
+\]
+The constant coefficient at order $n$ contributes through $u'$ only, which is $O(1/t)$. The first nonconstant coefficient occurs at exactly $n+1$, even with distinct labels. This attains the last possible order of the frequency test in Theorem~\ref{thm:minortrace}. The number of individual zeros that differ could still be larger than the lower bound supplied by that test. The archive verifies the principal-minor identity in exact arithmetic for $3\le n\le8$.
+
+For the triangle, attach the quadratic characters of fundamental discriminants $-3,-4,5$ in that order. At $p=2$ their values are $-1,0,-1$. Here $C=4$, $h_4=-4(w_1+w_2+w_3)$, and differentiation gives the Dirichlet coefficient $a_2=8i(\log 2)^2$. Thus the sign of a single cycle is visible in the explicit asymptotic
+\[
+ \sum_{0<\gamma\le T}(\nu_A(\gamma)-\nu_B(\gamma))\,2^{i\gamma}
+ =\frac{64i(\log 2)^2}{\pi\sqrt2}\frac{T}{(\log T)^4}
+   +O\!\left(\frac{T}{(\log T)^5}\right).
+\]
+The leading prime trace and the effects of every proper principal minor agree in this pair.

@@ -1,0 +1,224 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1.02in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype,xcolor,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!38!black,urlcolor=blue!48!black,citecolor=blue!38!black,pdftitle={Recovering Dirichlet characters and Hermitian couplings from positive zeros}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\cX}{\mathcal X}
+\newcommand{\cY}{\mathcal Y}
+\newcommand{\PP}{\mathcal P}
+\newcommand{\dD}{\mathrm d}
+\title{Recovering Dirichlet characters and Hermitian couplings from positive zeros}
+\author{Research note for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We recover the unknown Dirichlet characters and Hermitian coupling data from the positive zeros of a determinant of completed functions and their derivatives. For models of equal size, having smaller multiplicity at only $o(T)$ distinct ordinates up to height $T$ in just one direction suffices. With distinct characters the recoverable matrix data are all principal minors, which determine every edge weight of a graph Laplacian. Repeated characters give an explicit polynomial of aggregate minors. A Landau formula shows that every prime frequency retains the sum of the underlying character values. When the data differ, Gaussian smoothing and a sign-change bound yield $\gg H$ distinct discrepancies in each direction in every window of radius $H\ge C\sqrt{\log\log T}$, $H\le T/2$. Each direction occurs even in windows of radius $(1/\pi+\epsilon)\log\log\log T$. The zero results use Dirichlet GRH. The algebraic independence of the completed logarithmic derivatives over $\CC(s)$ is unconditional.
+\end{abstract}
+
+\section{The inverse problem}
+Let $\cX=(\chi_1,\ldots,\chi_n)$ be a nonempty list of primitive Dirichlet characters. A nonprincipal character of conductor $q$ and parity $a$ has completed function
+\[
+ \Lambda_\chi(s)=(q/\pi)^{(s+a)/2}\Gamma((s+a)/2)L(s,\chi).
+\]
+For the primitive character of conductor one we take $\Lambda_1(s)=\xi(s)=\frac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)$ and root number one. Write $s=1/2+iz$. Choose a square root $\eta_\chi$ of the root number and put $F_j(z)=\eta_{\chi_j}^{-1}\Lambda_{\chi_j}(s)$, $g_j(z)=F'_j(z)/F_j(z)$. The functional equation makes $F_j$ real entire of order at most one. For Hermitian $A$ of size $n$ define
+\begin{align}
+ \PP_{\cX,A}(z)
+ &=\det\bigl(\diag(F'_j(z))+A\diag(F_j(z))\bigr) \label{defP}\\
+ &=\Bigl(\prod_jF_j(z)\Bigr)\det\bigl(A+\diag(g_j(z))\bigr). \nonumber
+\end{align}
+The second expression is interpreted by continuation. Changes of square roots affect only an overall sign. Assume Dirichlet GRH whenever zeros are used as real ordinates. Let $Z_{\cX,A}$ denote the multiset of zeros of \eqref{defP} in the $z$ coordinate. Write $Q_{\cX}=\prod_jq_j$, $S_{\cX}(m)=\sum_j\chi_j(m)$, and let $M_{X\to Y}(T)$ count the zeros of $X=Z_{\cX,A}$ missing from $Y=Z_{\cY,B}$ on $(0,T]$, with multiplicity:
+\[
+ M_{X\to Y}(T)=\sum_{0<\gamma\le T}
+    \bigl(\operatorname{mult}_X(\gamma)-\operatorname{mult}_Y(\gamma)\bigr)_+ .
+\]
+The sum is over distinct ordinates. An unattached additional zero of $Y$ costs nothing.
+
+\begin{theorem}[Unknown character lists]\label{main}
+Suppose $\cY$ has at most as many entries as $\cX$.
+If $\liminf_{T\to\infty}M_{X\to Y}(T)/T=0$, the lists have the same entries with the same multiplicities, up to permutation. For equal list lengths, any finite set $S$ of primes gives the explicit bound
+\begin{equation}\label{witness}
+ \liminf_{T\to\infty}\frac{M_{X\to Y}(T)}{T}\ \ge \frac{\displaystyle\sum_{p\in S}|S_{\cY}(p)-S_{\cX}(p)|
+                    \frac{\log p}{\sqrt p}-\log(Q_{\cY}/Q_{\cX})}
+      {2\pi\,2^{|S|}} .
+\end{equation}
+For unequal lists of equal length the right side is strictly positive for some $S$, in either comparison direction. No conductor bound or list of candidate characters is required.
+\end{theorem}
+
+A model with more channels can contain every observed zero. Appending a new character and a scalar uncoupled block gives this example by determinant multiplication. If the symmetric difference on $(0,T]$ has size $o(T)$, the list length is recovered as well, by the counting formula below. For known labels, Section~\ref{sec:graph} gives a uniform finite-window theorem on the whole real line. Theorem~\ref{thm:localcoupled} gives the stronger positive-axis separation: if either the equal-sized label lists or the corresponding principal minors differ (with distinct labels for the matrix claim), then each direction of multiplicity excess occurs at $\gg T$ distinct ordinates below $T$. Corollary~\ref{cor:blindall} consequently recovers the weighted graph on its character-labelled vertices under the weaker hypothesis that the number of distinct positive ordinates having a missing occurrence has lower limit zero after division by $T$.
+
+The starting point is the Hermitian coupling and real-zero theorem of the ProveIt article, which proves recovery of the principal minors for a known list of distinct characters of one parity and asks how to recover unknown labels and treat mixed parity \cite{repo}. The new ingredients here are an exponential sum for the coupled zeros, a positive test that converts its prime coefficients into one-sided discrepancy, and an independence argument that treats both gamma factors at once. For ordinary $L$-functions, directional counts of zeros with differing multiplicities have a separate history, including Fujii and Bombieri--Perelli \cite{fujii,bp}. Classical Landau formulas for $L$-function zeros motivate the exponential sum \cite{landau,landau2,hyder}. Malik and Roy give a related scalar explicit formula for the zeros of derivatives of the completed zeta function \cite{mr}. The determinant generally has no known Euler product.
+
+\section{The prime frequencies of the coupled divisor}
+
+\begin{theorem}[Landau formula for the determinant]\label{land}
+For fixed $x>1$ and $T\to\infty$,
+\begin{equation}\label{lf}
+ \frac1T\sum_{\substack{\gamma\in Z_{\cX,A}\\0<\gamma\le T}}x^{i\gamma}
+ =-\frac{\Lambda(x)}{2\pi\sqrt x}S_{\cX}(x)
+       +O_{\cX,A,x}\bigl((\log T)^{-1}\bigr).
+\end{equation}
+The main term is zero unless $x=p^k$ with $p$ prime and $k\ge1$; there $\Lambda(x)=\log p$.
+If $N_X(T)=\#(X\cap(0,T])$, then
+\begin{equation}\label{count}
+ N_X(T)=\frac{nT}{2\pi}\left(\log\frac{T}{2\pi}-1\right)
+     +\frac{T}{2\pi}\log Q_{\cX}+O_{\cX,A}(T/\log T).
+\end{equation}
+Both sums count multiplicities.
+\end{theorem}
+\begin{proof}
+Under GRH the zeros of $F_j$ are real. In the upper half-plane $\Im g_j(z)<0$ by its real Hadamard product. Indeed,
+\[
+ g_j(z)=b_j+\frac{m_j}{z}+\sum_{\gamma\ne0}
+     \left(\frac1{z-\gamma}+\frac1\gamma\right),\qquad b_j\in\RR ,
+\]
+with the zeros repeated. Each $F_j$ has zeros, as follows also from Stirling growth of $\Lambda_{\chi_j}$ on the positive real ray. Hence $v^*(A+\diag g_j)v$ has strictly negative imaginary part for $v\ne0$ in that half-plane. The principal-minor expansion of \eqref{defP} has real coefficients and real entire factors, so conjugation rules out lower-half-plane zeros as well. The determinant is entire of order at most one, being a finite sum of products of functions of that order and their derivatives.
+
+Set $P(s)=\PP_{\cX,A}(-i(s-1/2))$. Its real Hadamard product in the $z$ variable, differentiated on $s=2+it$, gives
+\begin{equation}\label{poiss}
+ H(t):=\Re \frac{P'(2+it)}{P(2+it)}
+       =\sum_{\gamma\in X}\frac{b}{b^2+(t-\gamma)^2},\qquad b=3/2 .
+\end{equation}
+The real exponential slope and each genus-one correction become purely imaginary under differentiation with respect to $s$. The zero at $z=0$, if present, contributes the same Poisson term per copy.
+
+To evaluate the left side, take $s=2+it$ and use Stirling's formula for the digamma function. Set $U=(i/2)\log(s/2)$ with the principal logarithm. Uniformly as $|t|\to\infty$,
+\[
+ g_j(-i(s-1/2))=U+\tfrac i2\log(q_j/\pi)+i L'_j(s)/L_j(s)+O(1/|t|).
+\]
+Here $L_j=L(s,\chi_j)$; for the conductor-one input the extra term $i(1/s+1/(s-1))$ belongs to the displayed error and its derivative is $O(|t|^{-2})$. These logarithmic derivatives and their first derivatives are bounded on $\Re s=2$ by absolute convergence of their Euler series, and the differentiated gamma term is $O(1/|t|)$. The matrix in \eqref{defP} equals $UI+O(1)$, so its inverse has norm $O(1/\log |t|)$. Jacobi's determinant identity now bounds the $s$ logarithmic derivative of the determinant factor by $O(1/\log |t|)$. Thus, with $D_{\cX}=\sum_j L'_j/L_j$, one has
+\begin{equation}\label{cline}
+ H(t)=\frac n2\log\frac{|t|}{2\pi}+\frac12\log Q_{\cX}
+                 +\Re D_{\cX}(2+it)+O(1/\log |t|).
+\end{equation}
+In particular \eqref{poiss} and positivity imply $\#(X\cap[u,u+1])\ll\log(2+|u|)$ uniformly on the whole real line.
+
+We record the truncation estimate that passes from the Poisson-smoothed to the ordinary zero sum. For fixed real $\omega$, using the Fourier transform of $b/(b^2+t^2)$,
+\begin{equation}\label{unsm}
+ \int_0^T H(t)e^{i\omega t}\,\dD t
+ =\pi e^{-b|\omega|}\sum_{\substack{\gamma\in X\\0<\gamma\le T}}e^{i\omega\gamma}
+                   +O\bigl(\log^2(2+T)\bigr).
+\end{equation}
+For $-T\le\gamma\le2T$, replacing the integral for each zero by its full-line value times $\boldsymbol{1}_{(0,T]}(\gamma)$ costs
+$O((1+|\gamma|)^{-1}+(1+|T-\gamma|)^{-1})$ by absolute integration of the two tails. Summing this over unit intervals costs $O(\log^2(2+T))$. For $\gamma$ outside this range the cost is $O(T/\gamma^2)$ and the local count makes the tail $O(\log(2+T))$. This also justifies all exchanges in \eqref{unsm}.
+
+At $\omega=\log x>0$ the log-growth and constant terms of \eqref{cline} integrate to $O_x(\log(2+T))$ by integration by parts, with any fixed bounded initial interval treated separately. In the absolutely convergent series
+\[
+ D_{\cX}(s)=-\sum_{m\ge2}\Lambda(m)S_{\cX}(m)m^{-s},
+\]
+the frequency $-\log x$ has coefficient $-\Lambda(x)S_{\cX}(x)x^{-2}$ if $x$ is a prime power. Taking the real part halves this coefficient. Every other frequency contributes $O_x(1)$ in total after integration, since the nonzero numbers $|\log(x/m)|$ for integer $m\ne x$ are bounded away from zero at fixed $x$, and the conjugate frequencies have the same property. The integrated remainder is $O(T/\log T)$. Dividing \eqref{unsm} by $\pi Tx^{-b}$ proves \eqref{lf}. At $\omega=0$ the series has zero mean with integrated error $O(1)$, and integration of the logarithm gives \eqref{count}.
+\end{proof}
+
+\section{A positive test for the missing zeros}
+\begin{proof}[Proof of Theorem~\ref{main}]
+If $\cY$ has fewer characters, $M_{X\to Y}(T)\ge N_X(T)-N_Y(T)\gg T\log T$ by \eqref{count}. Now take equal lengths. Write $\delta(p)=S_{\cY}(p)-S_{\cX}(p)$ and $\theta_p=\arg\delta(p)$ when nonzero, with arbitrary phase otherwise. Form the nonnegative trigonometric polynomial
+\[
+ W(t)=\prod_{p\in S}\bigl(1+\cos(t\log p-\theta_p)\bigr),\qquad
+                        0\le W(t)\le 2^{|S|}.
+\]
+Unique factorization shows that its constant coefficient is $1$. All its other frequencies are $\log r$ for rationals $r=\prod_{p\in S}p^{\varepsilon_p}$ with $\varepsilon_p\in\{-1,0,1\}$. Only $r=p$ or $1/p$ can be a prime power or its reciprocal. For $r=p$ the coefficient is $e^{-i\theta_p}/2$. The $r=1/p$ Fourier sum of a real measure is the conjugate of the one at $p$. Hence \eqref{lf} and \eqref{count} give
+\begin{align*}
+ &\lim_{T\to\infty}\frac1T\left(\sum_{\gamma\in Y\cap(0,T]}W(\gamma)
+                        -\sum_{\gamma\in X\cap(0,T]}W(\gamma)\right)\\
+ &\hspace{2cm}=\frac1{2\pi}\left(\log\frac{Q_{\cY}}{Q_{\cX}}
+               -\sum_{p\in S}|\delta(p)|\frac{\log p}{\sqrt p}\right).
+\end{align*}
+The expression before taking the limit is bounded below by $-2^{|S|} M_{X\to Y}(T)/T$, yielding \eqref{witness}.
+
+Take a common modulus divisible by all conductors. Distinct primitive characters induce distinct characters on its unit group. Orthogonality shows that unequal multisets give $\delta\ne0$ on some reduced residue class, where $|\delta|$ is constant. The reciprocal primes in that class have divergent sum by Dirichlet's theorem in its harmonic form. Since $(\log p)/\sqrt p\ge1/p$ for $p\ge2$, the prime sum in \eqref{witness} can exceed any prescribed real number. Interchanging the lists proves the assertion in the other direction.
+\end{proof}
+
+\paragraph{A numerical certificate independent of both matrices.}
+Let $\chi_D$ denote the real primitive character of fundamental discriminant $D$. The two lists $\cX=(\chi_{-4},\chi_5)$ and $\cY=(\chi_{-3},\chi_5)$ share their even character. At $7$ the odd characters have values $-1$ and $1$. Taking $S=\{7\}$ in \eqref{witness} gives
+\begin{align*}
+ \liminf\frac{M_{X\to Y}(T)}T\ge
+ &\frac{2\log 7/\sqrt7+\log(4/3)}{4\pi}>0.1399,\\
+ \liminf\frac{M_{Y\to X}(T)}T\ge
+ &\frac{2\log 7/\sqrt7-\log(4/3)}{4\pi}>0.0941 .
+\end{align*}
+These inequalities apply to every pair of Hermitian $2\times2$ couplings. The bounds count lost multiplicities per unit height. Ordinary zero counts have the larger scale $T\log T$.
+
+\paragraph{Recovery from symmetric noise.}
+Arbitrary insertions and deletions of total size $o(T)$ on $(0,T]$ preserve each limit in \eqref{lf}, since every summand has modulus one. The leading coefficient in \eqref{count} determines $n$. Thus the noisy positive ordinates determine $S_{\cX}(p)$ for every prime and thereby determine $\cX$ uniquely by character orthogonality. Exact ordinate positions of the entries retained are assumed. For one-sided contamination the separate prime means can change; the positivity argument bounds that case directly.
+
+\section{Mixed parity and principal minors}\label{sec:graph}
+For the rest of the paper assume the labels within a list are distinct. They may have different parities. For known labels expand in squarefree monomials,
+\[
+ E_S=\prod_{j\in S} F'_j\prod_{j\notin S} F_j,\qquad
+ \PP_{\cX,A}=\sum_{S\subseteq[n]}\det A[S^c]E_S .
+\]
+Here $A[J]$ is a principal submatrix and $\det A[\varnothing]=1$. The challenge in comparing two such expansions is that the two digamma functions for even and odd characters differ as meromorphic functions.
+
+\begin{lemma}[Independence on a vertical line]\label{indep}
+The functions $L'_j/L_j$ are algebraically independent over $\CC$. The completed logarithmic derivatives $g_j(-i(s-1/2))$ are algebraically independent over $\CC(s)$.
+\end{lemma}
+\begin{proof}
+For the first assertion suppose there is a polynomial relation of degree $d$. A nonzero constant cannot give one. Polarize the homogeneous part of degree $d$ to a symmetric $d$-linear form $B$. Inserting the absolutely convergent Dirichlet series for the logarithmic derivatives, uniqueness of coefficients makes the coefficient at $p_1\cdots p_d$ zero for any distinct primes. Each series is supported on prime powers, so this coefficient equals
+\[
+ d!(-1)^d\prod_{k=1}^d\log p_k\; B(v(p_1),\ldots,v(p_d)),\qquad
+ v(a)=(\chi_1(a),\ldots,\chi_n(a)).
+\]
+Modulo a common multiple of the conductors, the vectors $v(a)$ on reduced classes span $\CC^n$ by orthogonality. Each tuple of reduced classes can be realized by distinct primes by Dirichlet's theorem. Thus $B=0$, contrary to the degree hypothesis.
+
+For the second assertion, multiply a proposed relation by a common denominator and write it as $\sum_{k=0}^K s^kP_k(g)=0$, $P_K\ne0$. On $s=2+it$, $t\to+\infty$, write $g_j=U+v_j(t)+O(1/t)$, where
+\[
+ v_j(t)=\tfrac i2\log(q_j/\pi)+i L'_j(2+it)/L_j(2+it),\qquad
+ U=\tfrac i2\log(s/2).
+\]
+Dividing by $s^K$ gives
+\[
+ \sum_{r=0}^d U^r h_r(t)=P_K(U+v_1,\ldots,U+v_n)
+       =O\bigl((1+\log t)^d/t\bigr)
+\]
+for $d=\max_k\deg P_k$. Each $h_r$ is uniformly almost periodic, being a polynomial in absolutely convergent trigonometric series. A uniformly almost-periodic function tending to zero at $+\infty$ vanishes identically: for each tolerance it has arbitrarily large uniform approximate periods, by finite trigonometric approximation and compactness of a torus. Dividing by $U^d$ shows $h_d$ tends to zero, so it vanishes. Repeating in descending order gives $h_0=P_K(v_1,\ldots,v_n)\equiv0$. The first assertion, applied after affine changes of variables and analytic continuation from the vertical line, contradicts $P_K\ne0$.
+\end{proof}
+
+The argument here concerns the logarithmic derivatives of the completed functions. Kaczorowski, Molteni and Perelli prove independence results for $L$-functions and their derivatives in a broad arithmetic class \cite{kmp}. We use the explicit prime-power support and the common leading vertical asymptotic of the gamma factors.
+
+\begin{theorem}[Uniform finite window for fixed mixed-parity labels]\label{finite}
+Fix $\cX$, an operator norm bound $M$ and a nonnegative integer $K$. Some finite $T=T(\cX,M,K)$ has the following property: if $\|A\|\le M$ and $Z_{\cX,B}$ misses at most $K$ multiplicities of $Z_{\cX,A}$ in $[-T,T]$, then $A$ and $B$ have equal corresponding principal minors. No norm bound on $B$ is needed. For an unknown equal-sized list and finitely many missing multiplicities on $\RR$, the labels are recovered first by Theorem~\ref{main}, and the same conclusion follows after common relabelling.
+\end{theorem}
+\begin{proof}
+Let $V$ be the span of $E_S$, $S\subsetneq[n]$. These functions, together with $E_{[n]}$, are linearly independent by Lemma~\ref{indep}, after division by $\prod F_i$. For nonzero $H\in V$, let $h=H/\PP_{\cX,A}$. Then $h$ cannot be rational: a rational identity would give
+$P(g)=r(s)\det(A+\diag g)$ for a polynomial $P$ of total degree $\le n-1$, contradicting Lemma~\ref{indep} by the degree-$n$ term on the right.
+
+For completeness, finite missing multiplicity would force this quotient to be rational by the strip argument used in \cite{repo}. In $\Im z\le-3/2$ we have $\Re s\ge2$ and, uniformly as $|s|\to\infty$, $g_j=\frac i2\log(s/2)+O(1)$ by Stirling and the Euler series. Comparing degrees gives $h=O(1/\log |z|)$. In the other exterior half-plane, apply this estimate to $\overline{H(\overline z)}\in V$ and use the realness of $\PP_{\cX,A}$. If $h$ has finitely many poles, take a monic polynomial $W$ clearing them. Hadamard factorization of $WH$ and $\PP_{\cX,A}$, followed by cancellation of common zeros, makes $J=Wh$ entire of order at most one: the residual canonical product runs over a submultiset of zeros of the order-at-most-one numerator, has genus at most one and exponent of convergence at most one. Outside the strip, $J=O((1+|z|)^m)$, $m=\deg W$. Inside, divide by $(z-2i)^m$ and multiply by $\exp(-\epsilon\cosh(z/2))$. This factor has modulus bounded by $1$ throughout the closed strip, decays faster than any finite-order growth as $|\Re z|\to\infty$, and tends pointwise to $1$ as $\epsilon\downarrow0$. The rectangle maximum principle gives the same polynomial bound inside the strip. Cauchy's estimates make $J$ a polynomial, proving rationality. Consequently every $0\ne H\in V$ misses infinitely many multiplicities of $\PP_{\cX,A}$.
+
+If no uniform window worked for the pair $(A,H)$, choose $A_j$ in the compact norm ball and $0\ne H_j\in V$ missing at most $K$ in $[-j,j]$. Normalize the coefficient vector of $H_j$ to norm one. A subsequence converges to $A_*$ and to $H_*\ne0$ locally uniformly in the corresponding functions. Take a finite set of zeros of $\PP_{\cX,A_*}$ witnessing more than $K$ missing multiplicities for $H_*$. Isolate each in a disk with no further zeros of either limiting function (allowing a shared zero at the center). Rouch\'e's theorem preserves their respective counts. All the determinant zeros are real, and the disks lie over $[-j,j]$ for large $j$. The sum of the positive local count differences is therefore a lower bound on the omissions of $H_j$, a contradiction. Finally take $H=\PP_{\cX,B}-\PP_{\cX,A}$. If nonzero, zeros shared by the two determinants contribute their common multiplicity to $H$, so $H$ misses at most the same number. Thus $H=0$, and basis independence gives equality of all minors.
+\end{proof}
+
+For weighted graph Laplacians with nonnegative weights the first and second principal minors give every entry. In fact they determine the diagonal and each $|A_{ij}|$, and the sign of an off-diagonal entry is fixed. An arbitrary Hermitian coupling is identified only up to its principal minors: diagonal unitary conjugation already preserves them. Distinct labels are necessary for this way of separating the polynomial coefficients. When labels coincide, their variables in the determinant coincide as well.
+\input{coupling_gap}
+\input{local_windows}
+\paragraph{What survives repeated labels.}
+Let the recovered multiset have $h$ distinct characters, and let $\pi(i)\in[h]$ give the character at vertex $i$. Put
+\[
+ p_A^\pi(y)=\det\bigl(A+\diag(y_{\pi(1)},\ldots,y_{\pi(n)})\bigr).
+\]
+Two matrices have the same coupled divisor, with phases fixed, if and only if their polynomials $p_A^\pi$ agree. More generally, $\liminf d_+((0,T])/T=0$ already forces this equality for the same list. To see the converse direction of the divisor criterion and the stronger statement together, suppose $p_A^\pi\ne p_B^\pi$. Expand the log ratio at $y+u\boldsymbol 1$ as in Section~\ref{sec:couplinggap}. Its first nonzero coefficient has index at most $n$ by monicity and degree $n$; translation $y\mapsto y+v\boldsymbol 1$ makes either that coefficient or the next one nonconstant. Lemma~\ref{indep} applies to the $h$ distinct variables. The logarithmic derivative thus has the nonzero almost-periodic leading term of \eqref{eq:gapsig}. The Gaussian and sign-change proof of Theorem~\ref{thm:localcoupled} now applies without alteration. If the two reduced polynomials agree, \eqref{defP} gives equality of the entire determinants directly. More explicitly, the coefficient of $\prod_{\ell=1}^h y_\ell^{k_\ell}$ is the sum of $\det A[S^c]$ over subsets $S$ with $|S\cap\pi^{-1}(\ell)|=k_\ell$ for every $\ell$. These sums are exactly the matrix data recoverable for this repeated list. With one repeated label, $p_A^\pi(y)=\det(yI+A)$, and the recoverable coupling data are its eigenvalues with multiplicities.
+
+\input{cycle_example}
+\section{Questions left by the bounds}
+The finite-prime witness \eqref{witness} can be optimized over the primes and over nonnegative trigonometric polynomials. What is the strongest discrepancy constant obtainable from the Landau coefficients and number counts alone? Can one determine it uniformly for conductors up to a prescribed bound? For graph reconstruction it would also be valuable to bound the height and the precision needed when every reported ordinate is rounded. The discrepancy estimates here compare multisets at exact locations.
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt, Analysis/GeneralizedRiemannHypothesis}, Article, section on zeros, Euler products and prime races under Dirichlet GRH, particularly the Hermitian-coupling and inverse-problem subsections and the final open question. Snapshot \texttt{00cadb961bbe}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis/Article/sections/zer.tex}{Pinned source}.
+\bibitem{landau} E. Landau, \emph{\"Uber die Nullstellen der Zetafunktion}, Math. Ann. \textbf{71}, 548--564.
+\bibitem{landau2} J. Kaczorowski, A. Languasco and A. Perelli, \emph{A note on Landau's formula}, Funct. Approx. Comment. Math. \textbf{28} (2000), 173--186. \href{https://doi.org/10.7169/facm/1538186693}{Article}.
+\bibitem{hyder} S. M. Hyder, \emph{An explicit formula for Dirichlet's $L$-function}, University of Tennessee at Chattanooga. \href{https://scholar.utc.edu/honors-theses/157/}{University record}.
+\bibitem{fujii} A. Fujii, \emph{On the zeros of Dirichlet $L$-functions (V)}, Acta Arith. \textbf{28} (1976), 395--403. \href{https://matwbn.icm.edu.pl/ksiazki/aa/aa28/aa2847.pdf}{Article}.
+\bibitem{bp} E. Bombieri and A. Perelli, \emph{Distinct zeros of $L$-functions}, Acta Arith. \textbf{83} (1998), 271--281. \href{https://matwbn.icm.edu.pl/ksiazki/aa/aa83/aa8336.pdf}{Article}.
+\bibitem{mr} A. Malik and A. Roy, \emph{On the distribution of zeros of derivatives of the Riemann $\xi$-function}, Theorem 1.3. \href{https://webpages.uncc.edu/aroy15/image/mr01.pdf}{Authors' manuscript}.
+\bibitem{kmp} J. Kaczorowski, G. Molteni and A. Perelli, \emph{Linear independence of $L$-functions}, Forum Math. \textbf{18} (2006), 1--7. \href{https://sites.unimi.it/molteni/research/papers-pdf/14-molteni-Linear_independence_of_L-functions.pdf}{Authors' manuscript}.
+\bibitem{dlmf} NIST Digital Library of Mathematical Functions, \href{https://dlmf.nist.gov/25.15}{\S25.15} and \href{https://dlmf.nist.gov/5.11}{\S5.11}. Dirichlet functions and gamma asymptotics.
+\end{thebibliography}
+\end{document}

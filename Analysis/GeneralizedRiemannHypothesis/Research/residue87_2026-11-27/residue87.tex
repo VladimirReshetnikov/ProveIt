@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+\usepackage[top=.78in,bottom=.76in,left=.85in,right=.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,microtype,xcolor}
+\usepackage[colorlinks=true,urlcolor=blue!45!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\begin{document}
+\begin{center}
+{\LARGE Six-term exclusions for the $-87$ singular modulus}\\[5pt]
+{\large A stronger uniform residue certificate}\\[6pt]
+{\small 27 November 2026}
+\end{center}
+\begin{abstract}
+For discriminant $-87$, the ProveIt article certifies linear independence
+for $3{,}892{,}897$ of the $9{,}657{,}648$ anchored six-exponent residue
+multisets modulo $63$. By retaining column-specific 2-adic precision
+and testing the resulting lattice modulo $16$, we certify
+$8{,}574{,}847$ multisets. Every lift in each certified multiset is covered.
+The remaining $1{,}082{,}801$ multisets are not decided here.
+\end{abstract}
+\begin{theorem}
+Let $\alpha$ be a singular modulus of discriminant $-87$. Of the
+$9{,}657{,}648$ weakly increasing lists of six integers in $[0,62]$
+with smallest entry $0$, at least $8{,}574{,}847$ have the following property:
+if six distinct nonnegative exponents have that residue multiset,
+their powers of $\alpha$ are linearly independent over $\Q$.
+The certificate covers $88.788\%$ of these residue multisets.
+\end{theorem}
+
+\paragraph{Setup.}
+Use the ring-class polynomial $H=H_{-87}$ of degree six, as in
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/f6b5955e13bcefb2760480e7b823eba55ed2383e/Analysis/GeneralizedRiemannHypothesis/Article/sections/smd.tex}{the merged ProveIt article}
+(theorems and questions tagged \texttt{smd}). Let
+$A=\Z_{(2)}[X]/(H)$, with $x$ the class of $X$ and basis
+$1,x,\ldots,x^5$. Exact reduction of $x^{63}$ modulo $256$ gives
+\[
+ x^{63}=1+16D,\qquad D\equiv6+9x+3x^2+7x^3+8x^4\pmod {16A}.
+\]
+For reference, the coefficients of $H$ in ascending order modulo
+$16$ are $(1,9,5,8,14,3,1)$. The full input polynomial and
+modular reduction are in \texttt{input.py}. An arbitrary six-term
+relation can be shifted by its smallest exponent because $\alpha\ne0$,
+so it suffices to consider residue multisets containing $0$.
+
+\paragraph{Column precision from Newton divided differences.}
+Inside one residue block $a$, write the exponents as $a+63q_i$
+with distinct integers $q_i\ge0$. For $0\le j<n_a$, replace the
+corresponding powers by the order-$j$ divided difference at the first
+$j+1$ of these nodes, multiplied by $j!/16^j$. This is an invertible
+triangular column transformation over $\Q$. By the finite binomial
+expansion, the new column of order $j$ is
+\[
+ x^a D^j+
+ x^a\sum_{h>j} \frac{j!\,16^{h-j}}{h!}\,
+        [q_0,\ldots,q_j]\bigl(T(T-1)\cdots(T-h+1)\bigr)\,D^h .
+\]
+Divided differences of integer polynomials at integer nodes are
+integers, as follows by expressing the divided differences of a monomial
+as complete homogeneous symmetric polynomials in the nodes.
+Thus a summand has valuation at least $4(h-j)-v_2(h!/j!)$.
+For $h=j+1$ this is $4-v_2(j+1)$. For $h-j\ge2$, Legendre's
+formula gives a lower bound $3(h-j)-1\ge5$, since the binary digit
+sum of $j\le5$ is at most two and that of $h>j$ is positive.
+The resulting column is congruent to $x^aD^j$ modulo $2^{s_j}A$,
+where
+\[
+             (s_0,s_1,s_2,s_3,s_4,s_5)=(4,3,4,2,4,3).
+\]
+In particular, these precisions hold uniformly in all quotient nodes.
+
+\paragraph{A lattice test valid for every lift.}
+Multiply column $j$ within each block by $2^{4-s_j}$. The transformed
+matrix is now congruent modulo $16$ to the matrix with corresponding
+column $2^{4-s_j} x^aD^j$ in the power basis. Over $\Z/16\Z$ use
+complete pivoting: at each stage choose an entry of minimum
+2-adic valuation in the remaining block, permute it into the pivot
+position, and clear entries below it by row operations.
+A zero remaining block before the last pivot is inconclusive.
+If every pivot is nonzero modulo $16$, the test certifies
+that \emph{every lift} of this matrix to $\Z_{(2)}$ is nonsingular:
+perform the same operations on a lift. If pivot $i$ has valuation
+$r_i<4$, the entries on and to its right in that row are divisible
+by $2^{r_i}$ by the pivot rule. Those to the left are multiples of
+$16$. Dividing each row by $2^{r_i}$ gives an upper triangular
+matrix with unit diagonal modulo $2$. Thus its determinant is
+nonzero over $\Q$. The column scalings and divided differences
+preserve rational independence, giving the assertion for the
+original powers.
+
+\paragraph{Exhaustive finite count.}
+Enumerate $0=a_1\le a_2\le\cdots\le a_6<63$ lexicographically.
+For any residue of multiplicity $n_a$, append its columns of
+orders $0,\ldots,n_a-1$. The checker replays the original
+modulo-two test on the same input and verifies that every formerly
+certified multiset still passes. A second modulo-sixteen checker
+uses odd pivots only, dividing the remaining block by two and
+lowering the modulus whenever the block becomes even.
+The two stronger tests agree on every multiset.
+\begin{center}
+\begin{tabular}{rrr}
+\toprule
+Distinct residues & Certified & Total\\
+\midrule
+1 & 1 & 1\\
+2 & 234 & 310\\
+3 & 14,880 & 18,910\\
+4 & 313,800 & 378,200\\
+5 & 2,379,690 & 2,789,225\\
+6 & 5,866,242 & 6,471,002\\
+\midrule
+All & 8,574,847 & 9,657,648\\
+\bottomrule
+\end{tabular}
+\end{center}
+The predecessor's $3{,}892{,}897$ exclusions and this additional
+$4{,}681{,}950$ refer to residue multisets, not a proportion of
+integer tuples with respect to a natural-density measure.
+
+\paragraph{Boundary.}
+This is an unconditional partial answer to \texttt{smd:q:six},
+not a proof that $s(-87)=7$. Failure of the test is inconclusive:
+it allows a singular matrix among arbitrary congruent matrices, which
+need not be realized by any choice of quotient nodes. The next
+question is whether higher precision with those nodes constrained,
+or supplementary local tests at other primes, can remove the
+remaining multisets.
+\end{document}

@@ -1,0 +1,174 @@
+\section{Local separation at distinct ordinates}\label{sec:localwindows}
+
+The leading oscillation in \eqref{eq:gapsig} is small. Its sign nevertheless
+changes frequently. A Gaussian turns that sign information into a lower bound
+on the number of \emph{distinct} ordinates. For multisets $X,Y$ write
+\[
+ d_+(I)=\#\{\gamma\in I:m_X(\gamma)>m_Y(\gamma)\},\qquad
+ d_-(I)=\#\{\gamma\in I:m_X(\gamma)<m_Y(\gamma)\}.
+\]
+Thus a shared ordinate can contribute one discrepancy if its multiplicities
+differ. Throughout this section GRH for the input characters is assumed.
+
+\begin{theorem}[Distinct discrepancies in short windows]\label{thm:localcoupled}
+Compare two models of the same size. Suppose either their character multisets
+differ, or their aligned labels are distinct and their principal minors differ.
+There exist $c_0,C,T_0>0$ depending on the models such that for every
+$T\ge T_0$ and $C\sqrt{\log\log T}\le H\le T/2$,
+\[
+ \min\{d_+([T-H,T+H]),d_-([T-H,T+H])\}\ \ge\ c_0 H .
+\]
+The interval even contains a sequence of $\gg H$ distinct ordinates, in increasing order, on which the direction of excess alternates.
+For every $b_0>1/\pi$ each direction occurs at least once in
+$[T-b_0\log\log\log T,T+b_0\log\log\log T]$ for all sufficiently large $T$.
+\end{theorem}
+
+\begin{proof}
+Let $\nu=Z_{\cX,A}-Z_{\cY,B}$ as a signed point measure, and choose
+$\sigma>1$, $b=\sigma-1/2$, $K_b(t)=b/(b^2+t^2)$. Write $H_b=K_b*\nu$.
+The Hadamard identity \eqref{poiss} is valid on this line.
+The calculation of \eqref{eq:gapsig} also holds for any fixed $\sigma>1$:
+all Euler series and their derivatives converge absolutely there. In the
+same-label case it gives
+\begin{equation}\label{loc-asymp}
+ H_b(t)=(\log t)^{-j}f_\sigma(t)+O((\log t)^{-j-1}),\qquad t\to+\infty ,
+\end{equation}
+with $f_\sigma$ real uniformly almost periodic, nonzero, and of mean zero.
+The nonzero Dirichlet coefficient used there remains nonzero on every such
+line. For unequal character multisets set $j=0$ and subtract \eqref{cline}
+on the line $\Re s=\sigma$. Now
+\[
+ f_\sigma(t)=\tfrac12\log(Q_{\cX}/Q_{\cY})
+ +\Re\!\sum_{m\ge2}\Lambda(m)(S_{\cY}(m)-S_{\cX}(m))m^{-\sigma-it}.
+\]
+In both cases $H_b(t)=O(\log(2+|t|))$ globally.
+
+We first transfer \eqref{loc-asymp} to a positive test $w$. Use the transform
+$\widehat w(\xi)=\int w(t)e^{-i\xi t}\,dt$. We shall use two even,
+unit-mass densities: a Gaussian $w(t)=(\lambda/\pi)^{1/2}e^{-\lambda t^2}$,
+and later a normalized $e^{-L\cosh(kt)}$. For the latter take
+$k<\pi/(2b)$. For either choice, define an integrable real kernel $h$ by
+\[
+ \widehat h(\xi)=\pi^{-1}e^{b|\xi|}\widehat w(\xi).
+\]
+Indeed for the Gaussian its transform and all derivatives have Gaussian decay.
+In the second case choose $b<\beta<\pi/(2k)$ and shift the Fourier contour for
+$w(t)$, $tw(t)$ and $t^2w(t)$ to imaginary height $\pm\beta$. There their
+absolute values decay doubly exponentially since $\cos(k\beta)>0$.
+Thus the multiplier and its first two derivatives are exponentially bounded
+at both infinities. It is continuous and piecewise smooth at zero.
+Twice integrating its inverse Fourier integral by parts on the two half-lines
+gives $h(v)=O((1+|v|)^{-2})$, allowing the jump of the first derivative.
+As $\widehat K_b=\pi e^{-b|\xi|}$, we have $h*K_b=w$.
+
+The unit-interval zero bound permits absolute convolution with $|h|*K_b$:
+$K_b*|\nu|(u)\ll\log(2+|u|)$ by \eqref{poiss} for the two positive measures.
+Consequently $w*\nu=h*H_b$. In the integral over $|v|\le\sqrt{t}$, replace
+$\log(t-v)$ by $\log t+O(t^{-1/2})$; the discarded tails are
+$O(t^{-1/2}\log(2+t))$ using the bound on $h$ and the global logarithmic
+growth. We obtain
+\begin{equation}\label{loc-smoothed}
+ (w*\nu)(t)=(\log t)^{-j}G_w(t)+O((\log t)^{-j-1}),\qquad
+ G_w=h*f_\sigma .
+\end{equation}
+The function $G_w$ is real uniformly almost periodic. For common labels its
+mean is zero. The Gaussian multiplier never vanishes, so $G_w$ has a nonzero
+Bohr coefficient. For the second family the normalized densities concentrate
+at zero as $L\to\infty$, whence $\widehat w(\xi)\to1$ for each fixed $\xi$.
+Taking $L$ sufficiently large preserves any one nonzero coefficient.
+
+For different label multisets there can be a constant term. We verify both
+signs explicitly. Let $\delta(p)=S_{\cY}(p)-S_{\cX}(p)$.
+The mean of $G_w$ is $\log(Q_{\cX}/Q_{\cY})/(2\pi)$, and its coefficient
+at $-\log p$ is $\delta(p)(\log p)\widehat w(\log p)/(2\pi\sqrt p)$.
+The other nonconstant frequencies are signed logarithms of prime powers.
+By the Riesz product in the proof of Theorem~\ref{main}, the means of $G_w$
+times two nonnegative trigonometric polynomials (phases chosen in the two
+opposite directions) are
+\[
+ \frac1{2\pi}\left(\log(Q_{\cX}/Q_{\cY})\ \pm
+ \sum_{p\in S}\frac{\log p}{\sqrt p}
+       |\delta(p)\widehat w(\log p)|\right).
+\]
+To check the factor, the coefficients at frequencies $\pm\log p$ in a Riesz
+product each have modulus $1/2$ and the two conjugate terms add.
+Choose the finite prime set to exceed the absolute conductor term by a
+strict margin when $\widehat w=1$. Then choose the Gaussian parameter
+$\lambda$ (or the parameter $L$) sufficiently large to preserve the margin.
+This gives a positive and a negative value of $G_w$. In the common-label
+case the same conclusion follows from nonzero, zero-mean almost periodicity:
+a nonzero nonnegative uniformly almost-periodic function has positive mean
+by uniform continuity and relatively dense approximate periods.
+
+There are therefore numbers $a_0>0$ and $D<\infty$ such that every interval
+of length $D$ contains points with $G_w>2a_0$ and with $G_w<-2a_0$.
+Indeed, translate one point of each sign by relatively dense uniform
+approximate periods. In successive blocks of length $D$ we may select samples
+of alternating sign. Their values in \eqref{loc-smoothed} have magnitude at
+least $a_0(\log t)^{-j}$ at large heights.
+
+Take first the Gaussian and $I=[T-H,T+H]$. At $t$ in its middle half the
+contribution to $w*\nu$ from $\gamma\notin I$ is
+$O(\log(2+T)e^{-c_1H^2})$ for some $c_1>0$.
+This follows by the unit-interval bound, summing
+$(\log(2+T)+\log(2+m))e^{-\lambda m^2}$ at distances
+$m\ge H/2-1$. For $H\ge C\sqrt{\log\log T}$ with $C$ large, the error is
+$o((\log T)^{-j})$. Hence the Gaussian sum with just the atoms in $I$ has
+$\gg H$ alternating samples and thus $\gg H$ distinct real zeros between them.
+
+Here is the elementary form of Gaussian variation diminution that we need.
+Multiplying this finite sum by the positive $e^{\lambda t^2}$ gives a
+constant times $E(t)=\sum_\gamma b_\gamma e^{2\lambda\gamma t}$ with
+$\operatorname{sign} b_\gamma=\operatorname{sign}\nu(\{\gamma\})$ at
+each discrepancy. In an exponential sum with increasing real exponents,
+the number of distinct real zeros is at most the number of sign changes of
+the ordered nonzero coefficients. To prove this by induction, the case of
+no sign change is immediate. Otherwise take a real $q$ between two
+successive exponents at a change of sign. The operation
+$E\mapsto e^{qt}(e^{-qt}E)'$ multiplies each coefficient by its exponent
+minus $q$, reversing the entire initial block and removing exactly one
+sign change. Rolle's theorem gives at least one fewer zero than before,
+which proves the claim. Applied here it forces $\gg H$ sign changes among
+the ordered atoms of $I$, hence that many alternating discrepancies and
+the asserted bound in both directions. This finite argument is an
+instance of \href{https://doi.org/10.1073/pnas.34.4.164}{Schoenberg's
+variation-diminishing property}.
+
+For the shorter window choose $\sigma>1$ sufficiently close to $1$ and
+$k<\pi/(2b)$ sufficiently close to its upper endpoint that $kb_0>1$.
+Use the second positive density above. The positive and negative sample
+points can both be taken within $D$ of $T$. For either point the mass
+contributed by ordinates outside the proposed window is
+\[
+ O\left(\log(2+T)\exp\{-c_2\exp(k b_0\log\log\log T)\}\right)
+       =o((\log T)^{-j}).
+\]
+Here $D$ is absorbed in $c_2>0$ and the same unit-interval sum is used.
+The signs therefore persist after truncation. Since $w$ is positive, there
+must be an atom of each sign inside this window. This proves the theorem.
+\end{proof}
+
+\begin{corollary}[Blind recovery from positive ordinates]\label{cor:blindall}
+Let the input list consist of $n$ distinct primitive characters.
+Allow arbitrary parities and conductors, and any competing list of size at most
+$n$. If
+$\liminf_{T\to\infty}d_+((0,T])/T=0$, then the lists coincide up to
+permutation and their corresponding principal minors agree. For weighted
+graph Laplacians with nonnegative weights this identifies every edge and weight.
+\end{corollary}
+\begin{proof}
+For fewer competing labels, \eqref{count} gives $\gg T\log T$ missing multiplicities. The unit-interval bound gives at most $O(\log(2+T))$ at each ordinate, forcing $d_+((0,T])\gg T$. At equal size, if the multisets of labels differ, or if an aligned minor differs after the labels agree, apply Theorem~\ref{thm:localcoupled} with center
+$2T/3$ and radius $T/3$. Its interval lies in $(0,T]$ and contains
+$\gg T$ distinct positive discrepancies. This contradicts the hypothesis.
+Finally the one- and two-vertex minors determine $A_{ii}$ and $|A_{ij}|$,
+and the off-diagonal signs of a graph Laplacian are fixed.
+\end{proof}
+
+The article obtains triple-logarithmic windows for zeros of products of
+ordinary Dirichlet functions (\texttt{rec:thm:bothsigns}). Its result for
+two distinct differential operators on one completed input has radius
+$O(\log\log T)$ (\texttt{rec:cor:operatorlocal}). Here the unknown is a
+Hermitian determinant coupling; the informative prime oscillation can first
+appear in a negative power of $\log T$. Gaussian variation diminution
+converts these shrinking oscillations into a linear number of distinct
+multiplicity discrepancies.

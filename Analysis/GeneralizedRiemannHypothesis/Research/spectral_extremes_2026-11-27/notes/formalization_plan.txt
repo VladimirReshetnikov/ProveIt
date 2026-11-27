@@ -1,0 +1,53 @@
+FORMALIZATION DEPENDENCY PLAN
+
+Status: no Lean source or kernel certificate for the new results is included.
+This is an implementation plan, not a claim of completed formalization.
+
+1. Spectral model and summability
+   Define a locally finite positive multiset, its counting function, and
+   regular variation with index alpha. Prove p>alpha implies summability
+   of gamma_j^(-p). Construct the independent gamma product measure and X.
+
+2. Exact exponential tilt
+   Prove the Laplace product and normalized measure change. Identify all
+   finite marginals under the tilt, then the infinite product law. Prove
+   the saddle exists uniquely for 0<x<E[X].
+
+3. Spectral summation
+   Establish weak convergence of counting measures and dyadic tail
+   bounds. Derive C_r and uniform convergence of the variance clock.
+
+4. Fourier local limits
+   Prove the characteristic-function expansion, the retained-band
+   integrable envelope, Fourier inversion, and uniform singleton deletion.
+   This is the main analytic infrastructure requirement.
+
+5. Exact conditional density ratios
+   Derive the block/slack likelihood; prove submacroscopic-block TV
+   equivalence and uniform single-coordinate domination. Reuse these
+   lemmas for both the extreme and bulk results.
+
+6. Marked extreme process
+   Define exact b by exceedance mass one; prove existence and growth;
+   establish marked intensity convergence with both mark tails controlled.
+   Prove independent rare-event convergence via Laplace functionals and
+   transfer the result through the block/slack lemma. Formalize top-k
+   extraction only after its upper/lower height and mark tightness bounds.
+
+7. Conditional functional bridge
+   Group equal ordinates. Use gamma fourth moments and the deterministic
+   variance clock to prove tilted C-tightness. Transfer prefix bounds
+   through bounded conditional likelihoods; use the reverse finite-tail
+   maximal inequality for the endpoint. Identify the joint limit from
+   the finite-dimensional normal density factorization.
+
+8. Dirichlet interface
+   Supply a fixed even completed product with central zeros removed, its
+   paired Hadamard product, and zero-counting asymptotic. Import the
+   appropriate Dirichlet zero-location theorem only at this final stage.
+
+The existing article target and vendored GRH project pin different Lean
+versions (4.32.0 and 4.35.0 in the inspected README). A real formalization
+must choose and build an explicit common dependency graph. No import
+connection or transitive kernel check is inferred from the present notes.
+

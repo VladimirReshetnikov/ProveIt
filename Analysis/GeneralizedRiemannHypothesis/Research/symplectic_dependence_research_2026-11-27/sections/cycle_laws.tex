@@ -1,0 +1,274 @@
+\section{Exact cycle laws for symplectic edge observations}\label{sec:cycles}
+
+Let $n\ge1$ and let $V=\mathbb F_q^{2n}$ carry a nondegenerate alternating bilinear form
+$\langle\ ,\ \rangle$, put $N=q^{2n}$, and let $X_v$ be independent uniform
+vectors in $V\setminus\{0\}$. An oriented edge $u\to v$ records
+$Y_{uv}=\langle X_u,X_v\rangle$. Its law is
+\[
+ p_N(a)=\begin{cases}(N-q)/(q(N-1)),&a=0,\\
+ N/(q(N-1)),&a\ne0.\end{cases}
+\]
+All coordinates of this law are positive since $N\ge q^2$.
+Reversing an edge negates its label. This coordinatewise bijection preserves
+$p_N$ and the product reference law, so it preserves total variation and
+chi-square divergence. Thus any fixed cycle orientation can be converted
+to the cyclic orientation used below.
+For a cyclically oriented cycle of length $\ell\ge3$, write $\mu_{\ell,N}$
+for the edge-vector law and $\pi_{\ell,N}=p_N^{\otimes\ell}$.
+Put $\kappa(0)=q-1$ and $\kappa(a)=-1$ for $a\ne0$.
+
+\subsection{The Fourier law}\label{sec:fourier}
+\begin{theorem}[Complete cycle Fourier law]\label{thm:fourier}
+Fix any nontrivial additive character $\psi$ of $\mathbb F_q$ and use
+$\widehat\mu(t)=\mathbb E\psi(\sum_i t_iY_i)$.
+If at least one $t_i$ is zero, then
+\[
+ \widehat\mu_{\ell,N}(t)=\left(-\frac1{N-1}\right)^{\#\{i:t_i\ne0\}}
+ =\widehat\pi_{\ell,N}(t).
+\]
+If all $t_i\ne0$, then
+\[
+ \widehat\mu_{2k+1,N}(t)=\frac{N^{k+1}-1}{(N-1)^{2k+1}},
+\]
+and
+\[
+ \widehat\mu_{2k,N}(t)=
+ \frac{1+N^k\bigl((N-1){\bf1}_{t_1t_3\cdots t_{2k-1}=t_2t_4\cdots t_{2k}}-1\bigr)}
+ {(N-1)^{2k}}.
+\]
+
+\end{theorem}
+\begin{proof}
+Forests have independent edge labels: condition on all vertices except a
+leaf; its label has the same law $p_N$ for every value of its nonzero
+neighbor, and remove leaves inductively. Zero Fourier coordinates remove
+edges and leave a forest.
+For the full cycle define matrices indexed by $V\setminus\{0\}$,
+\[
+ F_t(x,y)=\psi(t\langle x,y\rangle),\qquad
+ P_c(x,z)={\bf1}_{z=cx},\qquad J(x,z)=1.
+\]
+For $t\ne0$, additive orthogonality gives $F_t\mathbf1=-\mathbf1$, and
+\[
+ F_sF_t=NP_{s/t}-J.
+\]
+The constant subspace and its orthogonal complement $H$ are invariant.
+On $H$, pair the factors in the cycle trace. For an even cycle their
+product is $N^kP_c$ with
+$c=t_1t_3\cdots t_{2k-1}/(t_2t_4\cdots t_{2k})$.
+The trace of $P_c$ on $H$ is $(N-1){\bf1}_{c=1}-1$.
+For an odd cycle the product is $N^kP_cF_t$ on $H$.
+Every diagonal entry of $P_cF_t$ is $1$, because the form is alternating,
+so its full trace is $N-1$; its constant eigenvalue is $-1$, and hence
+its trace on $H$ is $N$.
+Adding the constant eigenvalue $(-1)^\ell$ and dividing by
+$(N-1)^\ell$ proves the formulas. No division by $2$ occurs, so the proof
+includes characteristic $2$.
+\end{proof}
+
+\subsection{Pointwise inversion and the even-cycle resonance}
+\begin{theorem}[Exact pointwise cycle law]\label{thm:pmf}
+For odd $\ell=2k+1$,
+\[
+ \mu_{\ell,N}(a)-\pi_{\ell,N}(a)
+ =\frac{N^{k+1}}{q^\ell(N-1)^\ell}\prod_{i=1}^\ell\kappa(a_i).
+\tag{O}\label{eq:odd-pmf}
+\]
+For even $\ell=2k$, define the integer-valued function
+\[
+ K_\ell(a)=
+ \sum_{\substack{t_i\in\mathbb F_q^\times\\
+ t_1t_3\cdots t_{\ell-1}=t_2t_4\cdots t_\ell}}
+ \psi\left(-\sum_i t_ia_i\right).
+\]
+Then
+\[
+ \mu_{\ell,N}(a)-\pi_{\ell,N}(a)
+ =\frac{N^k}{q^\ell(N-1)^\ell}
+ \left((N-1)K_\ell(a)-\prod_i\kappa(a_i)\right).
+\tag{E}\label{eq:even-pmf}
+\]
+The sum defining $K_\ell$ has the explicit real evaluation
+\[
+ K_\ell(a)=\begin{cases}
+ \displaystyle\frac{\prod_i\kappa(a_i)}{q-1},
+     &\text{some }a_i=0,\\[6pt]
+ \displaystyle\frac{1+q^k((q-1){\bf1}_{\mathcal R(a)}-1)}{q-1},
+     &\text{all }a_i\ne0,
+ \end{cases}
+\]
+where
+\[
+ \mathcal R(a):\quad
+ a_1a_3\cdots a_{2k-1}=(-1)^k a_2a_4\cdots a_{2k}.
+\]
+This is a multiplicative resonance condition on the observed edge labels.
+
+\end{theorem}
+\begin{proof}
+Additive Fourier inversion gives
+\[
+ \mu_{\ell,N}(a)-\pi_{\ell,N}(a)
+ =q^{-\ell}\sum_{t\in\mathbb F_q^\ell}
+ \bigl(\widehat\mu_{\ell,N}(t)-\widehat\pi_{\ell,N}(t)\bigr)
+ \psi\left(-\sum_i t_i a_i\right).
+\]
+By \cref{thm:fourier}, the summand vanishes whenever any $t_i=0$.
+For odd $\ell$, the remaining Fourier difference is constant, and
+$\sum_{t\ne0}\psi(-ta)=\kappa(a)$ gives (O).
+For even $\ell$, separating the balanced-frequency indicator from the
+constant term gives (E). It remains to evaluate $K_\ell$.
+Insert multiplicative-character orthogonality for the constraint on $t$.
+The trivial character contributes $\prod_i\kappa(a_i)/(q-1)$.
+If some $a_i=0$, every nontrivial-character term vanishes.
+If all $a_i\ne0$, let $G(\chi)=\sum_{x\ne0}\chi(x)\psi(x)$.
+The nontrivial-character contribution factors into $k$ copies of each
+Gauss sum, with
+$G(\chi)G(\chi^{-1})=\chi(-1)q$.
+It is therefore
+\[
+ \frac{q^k}{q-1}\sum_{\chi\ne1}
+ \chi\left((-1)^k\frac{a_2a_4\cdots a_{2k}}{a_1a_3\cdots a_{2k-1}}\right).
+\]
+The last character sum is $q-2$ on $\mathcal R(a)$ and $-1$ elsewhere.
+The Gauss identity follows directly by setting $x=uy$ in
+$G(\chi)G(\chi^{-1})$ and summing over $y$; thus this inversion needs no
+external theorem beyond finite-field character orthogonality.
+\end{proof}
+
+\subsection{Exact total variation and chi-square divergences}
+\begin{theorem}[Exact one-cycle distances]\label{thm:distances}
+Use
+$d_{\rm TV}(\mu,\pi)=\frac12\sum_a|\mu(a)-\pi(a)|$ and
+$\chi^2(\mu\Vert\pi)=\sum_a(\mu(a)-\pi(a))^2/\pi(a)$.
+For odd $\ell=2k+1$,
+\[
+ d_{\rm TV}(\mu_{\ell,N},\pi_{\ell,N})=
+ 2^{\ell-1}(1-q^{-1})^\ell\frac{N^{k+1}}{(N-1)^\ell},
+\tag{TV-O}
+\]
+\[
+ \chi^2(\mu_{\ell,N}\Vert\pi_{\ell,N})
+ =(q-1)^\ell\frac{N}{(N-q)^\ell}.
+\tag{CS-O}
+\]
+For even $\ell=2k$,
+\begin{align*}
+ d_{\rm TV}(\mu_{\ell,N},\pi_{\ell,N})
+ ={}&\frac{N^k(q-1)^{\ell-2}}{q^\ell(N-1)^\ell}\\
+ &\quad\times\left[
+ (N-q)\bigl((q-1)2^{\ell-1}-(q-2)\bigr)
+ +(N-1)(q-2)q^k\right],
+\tag{TV-E}
+\end{align*}
+\[
+ \chi^2(\mu_{\ell,N}\Vert\pi_{\ell,N})
+ =(q-1)^{\ell-2}
+ \left((N-q)^{2-\ell}+(q-2)(N-1)^{2-\ell}\right).
+\tag{CS-E}
+\]
+
+\end{theorem}
+\begin{proof}
+\textit{Odd computation.}
+Equation (O) and $\sum_a|\kappa(a)|=2(q-1)$ give (TV-O).
+For (CS-O), put
+\[
+ b_N(0)=\frac{(q-1)N}{N-q},\qquad b_N(a)=-1\ (a\ne0).
+\]
+Then $\mathbb E_{p_N}b_N=0$,
+$\mathbb E_{p_N}b_N^2=(q-1)N/(N-q)$, and
+\[
+ \frac{\mu_{2k+1,N}(a)}{\pi_{2k+1,N}(a)}-1
+ =N^{-k}\prod_i b_N(a_i).
+\]
+Squaring and factoring the expectation proves (CS-O).
+
+\textit{Even computation.}
+Write $A=N-q$, $C=(N-1)q^k$ and
+$B(a)=(N-1)K_\ell(a)-\prod_i\kappa(a_i)$.
+If $z\ge1$ coordinates of $a$ vanish, then
+$B(a)=A\prod_i\kappa(a_i)/(q-1)$, so its sign is
+$(-1)^z$ (as $\ell$ is even).
+If all coordinates are nonzero, then
+\[
+ B(a)=\begin{cases}(A+(q-2)C)/(q-1),&\mathcal R(a),\\
+ (A-C)/(q-1),&\neg\mathcal R(a).
+ \end{cases}
+\]
+The first expression is positive and the second negative whenever its
+class is nonempty. There are $(q-1)^{\ell-1}$ resonant vectors and
+$(q-2)(q-1)^{\ell-1}$ nonresonant vectors.
+For vectors having at least one zero coordinate, the sum of $|B|$ is
+\[
+ A(q-1)^{\ell-1}(2^\ell-1).
+\]
+The sum over vectors without zeros is
+\[
+ (q-1)^{\ell-2}\bigl((3-q)A+2(q-2)C\bigr).
+\]
+Adding these terms and multiplying by
+$N^k/[2q^\ell(N-1)^\ell]$ gives (TV-E).
+For chi-square, (E) gives
+\[
+ \chi^2=\frac1{q^\ell(N-1)^\ell}
+ \sum_a\left(\frac N{N-q}\right)^zB(a)^2.
+\]
+The terms with $z\ge1$ sum to
+\[
+ (q-1)^{\ell-2}A^2
+ \left[\left(\frac{q(N-1)}A\right)^\ell-1\right].
+\]
+The $z=0$ terms sum to
+$(q-1)^{\ell-2}(A^2+(q-2)C^2)$.
+The cancellation of the $A^2$ terms and $q^{2k}=q^\ell$ give (CS-E).
+\end{proof}
+
+\section{Cactus factorization and independence}\label{sec:cactus}
+\begin{theorem}[Exact block independence]\label{thm:cactus}
+A cactus graph is a finite simple graph whose distinct cycles have at
+most one common vertex. Its blocks containing edges are bridges and simple
+cycles; isolated vertices carry no observations.
+Under the symplectic model, the edge vectors associated with all these
+blocks are mutually independent. Each bridge has law $p_N$, and each
+cyclically oriented cycle of length $\ell$ has law $\mu_{\ell,N}$.
+
+\end{theorem}
+\begin{proof}
+For a block sharing an articulation vertex $v$ with the remainder,
+condition on all vectors outside the block except $X_v$.
+The remaining random vectors in the block are independent and uniform.
+The conditional law of its edge labels given $X_v=x$ is independent of
+the chosen nonzero $x$: the symplectic group acts transitively on
+$V\setminus\{0\}$ and preserves all labels, while carrying uniform
+vectors to uniform vectors. Hence the block labels are independent of
+everything in the remaining graph. Remove leaf blocks in the block-cut
+tree and iterate. The same argument works componentwise.
+\end{proof}
+
+\begin{corollary}[Independence characterizes forests]\label{cor:forest}
+For any finite simple graph $G$, its edge labels are independent if and
+only if $G$ is a forest.
+\end{corollary}
+\begin{proof}
+Sufficiency was proved above. If $G$ has a cycle,
+retain its cycle-edge marginal; it has one of the strictly positive TV
+distances (TV-O) or (TV-E), so the complete family cannot be independent.
+\end{proof}
+
+\subsection{Paired cycle lengths}
+\begin{corollary}[Equal leading information]\label{cor:paired}
+For each fixed $q$ and $r\ge1$, both lengths
+$\ell=2r+1$ and $\ell=2r+2$ satisfy
+\[
+ \chi^2(\mu_{\ell,N}\Vert\pi_{\ell,N})
+ =(q-1)^{2r+1}N^{-2r}(1+O_{q,r}(N^{-1})).
+\]
+Moreover, uniformly in $a$,
+$\mu_{\ell,N}(a)/\pi_{\ell,N}(a)-1=O_{q,\ell}(N^{-r})$.
+\end{corollary}
+\begin{proof}
+The information asymptotics follow by expanding (CS-O) and (CS-E). In the even case the leading factor is $(q-1)^{2r}(1+q-2)=(q-1)^{2r+1}$.
+The uniform likelihood bound follows at once from (O), (E), and $p_N(a)\to1/q$.
+\end{proof}
+

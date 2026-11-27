@@ -1,0 +1,451 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[letterpaper,margin=0.95in]{geometry}
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{164F5A}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,pdfauthor={OpenAI},pdftitle={Two elliptic traces determine the four-step tower distribution}]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\itshape Four-step Cayley towers}\fancyhead[R]{\small Arithmetic of the moment curve}\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\F}{\mathbb F}\newcommand{\Q}{\mathbb Q}\newcommand{\PP}{\mathbb P}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Jac}{\operatorname{Jac}}
+\newcommand{\sq}{\operatorname{Pairs}}
+\newcommand{\gh}{https://github.com/VladimirReshetnikov/ProveIt/blob/6d284fcf75bc3a91bb2e79ba7636f94724bff62c/Analysis/GeneralizedRiemannHypothesis}
+\setlength{\parskip}{2pt}
+\title{\vspace*{-0.45in}Two elliptic traces determine the distribution of spanning-tree valuations in four-step towers}
+\author{Research note for the ProveIt project}
+\date{27 November 2026\vspace{-0.13in}}
+\begin{document}
+\maketitle
+\begin{abstract}
+For every prime $p>8$ we compute the full frequency distribution of the
+$p$-adic spanning-tree valuation of a rank-two abelian Cayley tower with
+four ordered steps, simultaneously at every level. The arithmetic inputs
+are the Frobenius traces of two fixed elliptic curves over $\Q$. We give
+explicit quotient maps from the genus-nine moment curve, identify both
+rational elliptic factors and their diagonal twists, and count all row
+planes by secants, tangents and lines on a split quadric. Among the
+$2(p+1)$ totally isotropic planes, the count in the middle valuation
+class fluctuates around $(p+1)/2$ on the scale $\sqrt p$. Its exact
+limiting law is a weighted sum of two independent semicircle variables.
+\end{abstract}
+
+\section{From tower valuations to an arithmetic curve}
+A spanning list of four column vectors $s_i\in\Z^2$ means that their
+reductions span $\F_p^2$. On $(\Z/p^n\Z)^2$, insert the undirected
+edge $\{v,v+s_i\}$ for each pair $(v,i)$, retaining multiplicities.
+Write $\kappa_n$ for the number of spanning trees. We count the
+two-dimensional row spaces $W\subset\F_p^4$ of the step matrices.
+Every such space has exactly $|\mathrm{GL}_2(\F_p)|$ ordered row bases,
+so this census also gives the probability law for a uniformly random
+spanning residue matrix. Lists can have zero or repeated columns.
+The count is before quotienting by column permutations or signs.
+
+For $P=[x_1:x_2:x_3:x_4]$ define the directional depth
+$r(P)=\min\{j\ge1:\sum_i x_i^{2j}\ne0\}$. It is at most four by
+Newton's identities applied to the four squares. The repository's
+moment formula for $p>8$ is
+\begin{equation}\label{eq:tower}
+ A(W)=2\sum_{P\in\PP(W)}r(P),\qquad
+ v_p(\kappa_n)= A(W)\frac{p^n-1}{p-1}-2n .
+\end{equation}
+It results from comparing the first nonzero terms of the Laplacian
+eigenvalues at prime-power roots of unity \cite{article}. Thus a
+single census of $A$ determines every level. Set
+\[
+ Q:\ \sum_i x_i^2=0,\qquad C:\ \sum_i x_i^2=\sum_i x_i^4=0
+ \quad\text{in }\PP^3.
+\]
+Our first result evaluates the curve count in the repository's
+four-step calculation. The second (Theorem~\ref{th:all}) computes
+the census, including the row spaces on which the quadratic moment
+is nonzero.
+
+\begin{theorem}\label{th:curves}
+Put $E_1:y^2=x(x+2)(x-1)$ and $E_2:y^2=x(x-1)(x-4)$. Then
+\[
+ \Jac(C)\ \sim_{\Q}\ E_1^6\times E_2^3 .
+\]
+For every $p\ge5$, with $a_p=p+1-\#E_1(\F_p)$ and
+$b_p=p+1-\#E_2(\F_p)$, the zeta function of $C/\F_p$ has numerator
+\[
+ (1-a_pT+pT^2)^6(1-b_pT+pT^2)^3 .
+\]
+In particular $c_p:=\#C(\F_p)=p+1-6a_p-3b_p$.
+\end{theorem}
+
+\paragraph{Relation to earlier work.}
+ProveIt's merged article computes the four-step maximum and identifies
+the genus-nine curve that controls it \cite{article}. Its subsequent
+four-step report computes the three frequencies on totally isotropic
+planes in terms of $c_p$ \cite{short}. Paulhus had already obtained
+the geometric multiplicity pattern $3+6$ for a genus-nine curve
+with automorphism group of order $192$, as well as the octahedral
+genus-three elliptic cube \cite[\S\S3.2.4, 4.2]{paulhus}.
+Arora et al. analyzed rational twists of that genus-three curve
+\cite{arora}. The specific rational quotient maps, the resulting
+tower frequencies for all row planes, and their fluctuations are
+the contributions developed here. The argument is unconditional.
+It uses the article's cyclotomic valuation method through
+\eqref{eq:tower}.
+
+\section{Explicit maps to two elliptic curves}
+The following proof keeps track of the ground field, which is essential
+for point counts. A geometric decomposition alone leaves the signs of
+rational twists undetermined. The complete intersection $C$ is smooth
+in characteristic zero and at $p\ge5$. Indeed, dependent gradients
+would force all nonzero $x_i^2$ to equal some $c\ne0$ and $mc=0$ for
+$1\le m\le4$. Over an algebraic closure it is a connected divisor of
+bidegree $(4,4)$ on a smooth quadric (two disjoint effective parts
+cannot sum to $(4,4)$ by the intersection pairing). Adjunction gives
+genus nine.
+
+Put $y_i=x_i^2$. The image is the conic
+$B:\sum y_i=\sum y_i^2=0$. The cover has group
+$G=\{\pm1\}^4/\{\pm(1,1,1,1)\}$ of order eight, as is seen on the
+open set with no coordinate zero. Its seven nontrivial characters
+are indexed by the six pairs and the full set of four indices. For
+an even subset $S$ the corresponding quotient double cover has
+equation $t^2=\prod_{i\in S}y_i$ over $B$, interpreted homogeneously
+with $t$ of weight $|S|/2$. Each coordinate line meets $B$ in two
+simple points, and the four pairs are disjoint. Indeed, with one
+coordinate zero, the other three are proportional to the three cube
+roots of unity in some order. Two zero coordinates are impossible.
+Riemann--Hurwitz gives genus one for each pair cover and genus three
+for the full cover $H$.
+
+Here and below, quotient differentials pull back to the subspace
+invariant under the quotient subgroup. This follows by descent for
+regular differentials on smooth curves in characteristic zero. Since
+the invariant part for $G$ itself is zero, the pair and full-cover
+subspaces occupy distinct character spaces. Their dimensions add to
+nine. The sum of the seven pullbacks on Jacobians is therefore an
+isogeny, defined over $\Q$. Permutations over $\Q$ identify all six
+pair covers.
+
+Use the chart $y_1+y_2=1$ and let $v=y_1-y_2$, $w=y_3-y_4$.
+Then $y_3+y_4=-1$ and $v^2+w^2=-2$. On the pair cover for
+$\{1,2\}$ take $h=2t$ so $h^2=1-v^2$. The map
+\[
+ (v,w,h)\longmapsto (v^2,vwh)
+\]
+takes values on $E_1$ and is nonconstant. A rational map between
+smooth projective curves extends to a morphism. The induced map
+on genus-one Jacobians is a rational isogeny, even when the source
+curve has no rational base point.
+
+On $H$ take $h=4t$ so $h^2=(1-v^2)(v^2+3)$. The double
+transposition $\sigma=(12)(34)$ negates both $v,w$ and fixes $h$.
+With $s=v^2+1$ we get
+\[
+ (vwh)^2=(s^2-1)(s^2-4),\qquad
+ (v,w,h)\longmapsto(s^2,s vwh)\in E_2 .
+\]
+This nonconstant map factors through $H/\langle\sigma\rangle$.
+For completeness, $\sigma$ has exactly four geometric fixed points
+on $H$. On the conic with homogeneous coordinates
+$(u,v,w)=(y_1+y_2,y_1-y_2,y_3-y_4)$ it fixes exactly the two
+points with $u=0$. Both lie off the branch divisor, and the lift
+fixes both points above each because $t$ has even weight.
+Riemann--Hurwitz gives genus one for the quotient. The three
+nonidentity elements of the double-transposition Klein four group
+$V$ are conjugate by rational permutations. Their quotient genera
+are all one. If $m_0$ is the dimension of the $V$-invariant
+differentials, and $m_i$ the three other character dimensions, then
+$m_0+m_i=1$ and $m_0+\sum_i m_i=3$. Thus $m_0=0$ and $m_i=1$.
+The three pullbacks give $\Jac(H)\sim_{\Q} E_2^3$, proving the
+rational decomposition. Good reduction of all three curves and
+invariance of the Frobenius polynomial under isogeny give the
+remaining assertions of Theorem~\ref{th:curves}.
+
+\paragraph{Which rational form occurs?}
+On writing $(y_i)=(l+m+n,l-m-n,-l+m-n,-l-m+n)$, the conic
+becomes $l^2+m^2+n^2=0$. On it $\prod y_i=2(l^4+m^4+n^4)$.
+This identifies $H$ as the central quadratic twist by $-1$ of
+the model in \cite[Eq.~(1.4.1)]{arora}, after rescaling the
+coordinate of weight two. The explicit map above fixes the twist
+of $E_2$ in the trace formula.
+
+\begin{corollary}[All diagonal twists]\label{cor:twist}
+For nonzero $d_i\in\Q$, define $C_{\boldsymbol d}$ by
+$\sum d_i x_i^2=\sum d_i^2 x_i^4=0$. Write $E^{(u)}$ for a
+quadratic twist by $u$. Then
+\[
+ \Jac(C_{\boldsymbol d})\ \sim_{\Q} \prod_{i<j} E_1^{(d_i d_j)}
+ \ \times\big(E_2^{(d_1d_2d_3d_4)}\big)^3 .
+\]
+\end{corollary}
+\begin{proof}
+Over the field generated by the square roots of the $d_i$, the
+substitution $x_i\mapsto\sqrt{d_i}x_i$ identifies the curves.
+Its descent action is a coordinate sign change. On the factor for
+$S$ this acts by the product of the signs indexed by $S$, since the
+deck involution acts by $-1$ on its differentials, and hence on its
+Jacobian (the quotient is the conic). This is exactly twisting by
+$\prod_{i\in S}d_i$. The same sign acts on all three elliptic factors
+of $\Jac(H)$.
+\end{proof}
+For $p\ge5$ with all $d_i$ units, write $k$ for the number of
+nonsquare $d_i$ modulo $p$. The Frobenius trace on the twisted
+Jacobian is respectively $6a_p+3b_p$, $-3b_p$, or $-2a_p+3b_p$
+as $\min(k,4-k)=0,1,2$. In the middle case the entire sixfold
+contribution disappears from the trace.
+
+\section{The complete tower census}
+Set $s=p+1$, $I=\mathbf1_{p\equiv1\bmod8}$, $c=c_p$ and $d=48I$.
+The quadric $Q$ is split over $\F_p$. For example choose $u^2+v^2=-1$,
+possible since two sets of $(p+1)/2$ shifted square values intersect.
+The vectors $(1,0,u,v)$ and $(0,1,-v,u)$ span a totally isotropic
+plane. Consequently $Q$ has $s^2$ rational points in an $s$ by $s$
+grid, with $2s$ generator lines, two through each point. Let
+$D=\{P:r(P)=4\}$. The types $Q\setminus C$, $C\setminus D$, $D$
+have weights $r-1=1,2,3$, respectively. Encode them by the polynomial
+\[
+ F(z)=(s^2-c)z+(c-d)z^2+d z^3,\qquad
+ \sq(f)(z)=\frac{f(z)^2-f(z^2)}{2}.
+\]
+Here $\sq$ counts unordered pairs of distinct weighted points.
+For the four types of generator line, let $f_j$ record its points,
+$n_j$ its multiplicity and $e_j$ its sum of weights.
+\begin{center}
+\begin{tabular}{@{}llrr@{}}\toprule
+Type $j$ & $f_j(z)$ & $n_j$ & $e_j$\\\midrule
+$0$ & $sz$ & $2s-12I-c/2$ & $s$\\
+$B$ & $(s-4)z+4z^2$ & $(c-d)/2$ & $s+4$\\
+$D_2$ & $(s-2)z+2z^3$ & $24I$ & $s+4$\\
+$D_4$ & $(s-4)z+4z^3$ & $12I$ & $s+8$\\\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{theorem}[Distribution for every row plane]\label{th:all}
+For $p>8$ let $G_p(z)=\sum_{\dim W=2}z^{A(W)/2-s}$. Then
+\begin{equation}\label{eq:census}
+ G_p(z)=\frac{p^2(p-1)^2}{2}+(p-1)F(z)+\sq(F)(z)
+       +\sum_j n_j\big(z^{e_j}-\sq(f_j)(z)\big).
+\end{equation}
+In particular $[z^m]G_p$ is the number of row planes with
+$A(W)=2(s+m)$. The only curve counts required to evaluate the
+formula are those of $E_1$ and $E_2$.
+\end{theorem}
+\begin{proof}
+We first recover the generator table, as in \cite{short}. At a
+depth-four point the four squared coordinates are the roots of
+$T^4-\lambda$ for some $\lambda\ne0$. Such points exist precisely
+when $8\mid p-1$. In that case, if $g$ has order eight, they
+are signed permutations and projective rescalings of
+$a=(1,g,g^2,g^3)$. Normalizing the first coordinate gives
+$3!\,2^3=48$ points. The two generators through $[a]$ are spanned
+by $a$ and, respectively,
+\[
+ b=(-g,1,-g^3,g^2),\qquad b'=(-g,1,g^3,-g^2).
+\]
+Indeed the vectors in each pair are mutually orthogonal and isotropic,
+and $b\cdot b'=2(1+g^2)\ne0$. On the first plane the coordinates
+have the form $(U,V,g^2U,g^2V)$ for independent $U,V$. The quartic
+is $2(U^4+V^4)$ with four rational roots, and the sextic vanishes.
+On $Xa+Yb'$ the quartic is $24g^2X^2Y^2$ and both its roots
+have depth four. Each $D$ point therefore lies on exactly one
+generator of each of the last two types. Incidence counting gives
+$n_{D_4}=d/4$ and $n_{D_2}=d/2$.
+
+On a generator avoiding $D$, the quartic has zero or four rational
+roots. To see this, take independent columns of a row-basis matrix
+as the identity and write $[I_2\mid M]$ with $MM^{\mathsf T}=-I_2$.
+By a column sign change arrange
+$M=\left(\begin{smallmatrix}u&v\\v&-u\end{smallmatrix}\right)$.
+The matrices $M$ and
+$J=\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)$
+permute the columns up to signs. Projectively they generate a Klein
+four group, since they anticommute and $J^2=M^2=(JM)^2=-I_2$.
+Every even moment is invariant under the transpose actions on
+covectors. A quartic zero fixed by a nonidentity element would have
+eigenvalue $\lambda$ with $\lambda^2=-1$. Its sextic must vanish
+because $\lambda^6=-1$, giving a point of $D$. Thus every rational
+quartic zero on such a line has an orbit of four. The quartic does
+not vanish identically there since $C$ is geometrically irreducible
+of genus nine. Each point of $C\setminus D$ is on two generators
+avoiding $D$ and each contributing generator has four such points.
+This gives $n_B$ and the rest of the table.
+
+Each row plane corresponds to a projective line. Its exponent in
+$G_p$ is the sum of $r(P)-1$ over its rational points. On a
+non-generator this sum comes only from its intersection with $Q$.
+Every pair of distinct $Q$-points determines one secant unless its
+line is a generator. No pair belongs to two distinct generators.
+This gives $\sq(F)-\sum_jn_j\sq(f_j)$. At any $Q$-point its tangent
+plane contains $p+1$ lines through the point. Removing its two
+generators leaves $p-1$ tangents, giving $(p-1)F$.
+Each $Q$-point is joined to $p^2$ other $Q$-points outside its two
+generators, so the number of secants is $s^2p^2/2$. Subtract these,
+$s^2(p-1)$ tangents and $2s$ generators from the total number
+$(p^2+1)(p^2+p+1)$ of projective lines. This leaves $p^2(p-1)^2/2$
+external lines. Adding the generators themselves proves
+\eqref{eq:census}.
+\end{proof}
+
+\paragraph{Two different generator distributions.}
+At $p=17$, $a_p=-6$, $b_p=2$, giving $c=d=48$.
+There are $36$ generators, of which $24$ have $A=80$ and $12$ have
+$A=88$. Every generator at this prime passes through $D$. The
+$A=88$ planes give $v_{17}(\kappa_n)=88(17^n-1)/16-2n$ at all levels.
+For comparison, $p=13$ gives $c=32$ and $d=0$, so $16$ of its $28$
+generators have $A=64$ and $12$ have $A=56$.
+For a random spanning residue matrix as $p\to\infty$, the external
+lines alone account for a proportion tending to $1/2$, all at
+$A=2s$. Ordinary secants through two points of $Q\setminus C$
+account for another proportion tending to $1/2$, all at $A=2s+4$.
+Indeed the other secants involve at least one of $c=O(p)$ points,
+so are $O(p^3)$ among a total of order $p^4$.
+
+\subsection*{Signed permutation orbits and a congruence modulo 192}
+The two elliptic traces satisfy a joint congruence much finer than
+parity. Define $J_p=1$ when $-2$ is a quadratic residue and both
+$-1+\sqrt{-2}$ and $-1-\sqrt{-2}$ are squares in $\F_p$; set
+$J_p=0$ otherwise.
+\begin{theorem}\label{th:192}
+For $p\ge5$,
+\[
+ c_p\equiv 32\,\mathbf1_{p\equiv1\bmod3}
+       +48\,\mathbf1_{p\equiv1\bmod8}+96J_p\pmod{192}.
+\]
+For every modulus $M$, even among primes $p\equiv1\pmod{24M}$,
+the two possible values $80,176\pmod{192}$ each have relative
+density $1/2$.
+\end{theorem}
+\begin{proof}
+Act on $C(\F_p)$ by projective signed permutations, a group of
+order $8\cdot24=192$. For $y_i=x_i^2$ the polynomial with these
+four roots is $T^4-e_3T+e_4$, by the two moment equations and
+Newton's identities. If $e_3e_4\ne0$ a rescaling that preserves
+the multiset of $y_i$ must have both its cube and its fourth power
+equal to one. Thus it is the identity scalar on the squares.
+When all four squares are distinct and nonzero this leaves a
+trivial projective stabilizer, so such orbits contribute multiples
+of $192$.
+
+There are three disjoint exceptions. When $e_4=0$, the squares
+are projectively $0,1,\omega,\omega^2$ with $\omega$ a primitive
+cube root. There are four choices for the zero, two orderings
+after scaling a specified nonzero coordinate to one, and four
+remaining sign choices, giving $32$ points if $3\mid p-1$.
+When $e_3=0$ there are the $48I$ points of depth four computed
+above (the same roots-of-unity count works at $5,7$).
+In the remaining repeated-root case the squares scale to
+$1,1,-1+\sqrt{-2},-1-\sqrt{-2}$. Indeed the sum and sum of squares
+force the last two values to be roots of $T^2+2T+3$. They are
+distinct and different from $0,1$ for $p\ge5$. There are six
+choices for the equal pair, two orders for the remaining values
+and eight sign choices after normalization. This gives $96J_p$.
+
+For the density, let $A=\Q(\sqrt{-2})$ and
+$\alpha=-1+\sqrt{-2}$, $\beta=-1-\sqrt{-2}$. The splitting field
+$K=A(\sqrt\alpha,\sqrt\beta)$ of $T^4+2T^2+3$ has Galois group
+the dihedral group of order eight. In fact $\alpha,\beta$ are
+independent square classes in $A$: their norms are $3$, and
+$\alpha\beta=3$ is also a nonsquare in $A$. Conjugation exchanges
+the two square roots and the two independent sign changes.
+The commutator changes both signs, so its fixed field is
+$L=\Q(\sqrt{-2},\sqrt3)$. This is the largest abelian subfield and
+lies in $\Q(\zeta_{24})$. For $p\ge5$, $J_p=1$ exactly when $p$
+splits completely in $K$, by reduction of the four roots. With
+$F=\Q(\zeta_{24M})$ one has $K\cap F=L$. In the compositum $KF$
+the subgroup fixing $F$ has order two and is central (restriction
+to $K$ identifies it with the central commutator). Chebotarev's
+density theorem gives equal relative densities for the two elements
+among primes splitting in $F$. The congruence gives the stated
+residues.
+\end{proof}
+
+\section{Fluctuations over the primes}
+The three generator valuation coefficients are $4s$, $4s+8$,
+$4s+16$. Write $N_p$ for the number in the middle class. Its
+value is $n_B+n_{D_2}=c_p/2$.
+
+\begin{corollary}\label{cor:st}
+As $p>8$ ranges over primes, the values
+\[
+ T_p=\frac{N_p-(p+1)/2}{\sqrt p}
+\]
+have limiting distribution $-3X-\tfrac32Y$, where $X,Y$ are independent
+with density $\sqrt{4-x^2}/(2\pi)$ on $[-2,2]$. Their prime-average
+limit is zero and their limiting variance is $45/4$. Furthermore
+\[
+ \liminf_{p\to\infty}T_p=-9,\qquad \limsup_{p\to\infty}T_p=9 .
+\]
+The proportion of isotropic row planes in this class tends to $1/4$.
+It is above $1/4$ on a set of primes of density $1/2$ and below it
+on a set of the same density.
+\end{corollary}
+\begin{proof}
+The two elliptic $j$-invariants are $21952/9$ and $35152/9$.
+They are nonintegral, so neither curve has complex multiplication.
+At $p=7$ the traces are $-4$ and $0$, obtained by evaluating the
+two cubics at the seven residues. The first reduction is ordinary,
+the second supersingular, ruling out even a geometric isogeny
+since isogenies specialize at good primes and preserve this
+distinction. Thus the associated non-CM weight-two newforms are
+twist-inequivalent. Joint Sato--Tate \cite[Thm.~1.2]{thorner}
+gives independent semicircle limits for $a_p/\sqrt p,b_p/\sqrt p$.
+Now $T_p=-(6a_p+3b_p)/(2\sqrt p)$ exactly. Each variable in the
+limit has mean zero and variance one. Their product measure gives
+positive mass arbitrarily near each corner of its square, and the
+Hasse bounds give $|T_p|\le9$. Symmetry and continuity of the limit
+give the two density statements.
+\end{proof}
+
+\subsection*{Mean and variance at every rank}
+There is also a consequence for the article's higher-rank question.
+For $1\le k\le4$ take a uniformly random $k$-dimensional row space
+of four step columns. Define $A=2\sum_{P\in\PP(W)}r(P)$,
+$u_j=(p^j-1)/(p-1)$ for $j\ge0$, and
+\[
+ \rho=\frac{u_k}{u_4},\qquad
+ \tau=\frac{u_k u_{k-1}}{u_4 u_3},\qquad
+ U=s^2+c+d,\qquad V=s^2+3c+5d.
+\]
+Then, with $s=p+1,c=c_p,d=48I$ as above,
+\[
+ \mathbb E[A]=2u_k+2\rho U,\qquad
+ \mathrm{Var}(A)=4\big[(\rho-\tau)V+(\tau-\rho^2)U^2\big].
+\]
+Indeed each fixed point occurs with probability $\rho$, and each
+fixed ordered pair of distinct points with probability $\tau$, by
+double counting and transitivity. The sums of the point weights and
+of their squares are respectively $U$ and $V$ by the three types
+on $Q$. Expanding the first and second moments yields the formulas.
+This computes both statistics in particular for rank three, where
+the entire distribution remains to be determined.
+
+\paragraph{Verification and further questions.}
+The accompanying Python program compares the census with direct
+row-space enumeration and the two elliptic character sums with
+point counts from the defining equations. These checks sample the
+proof and allow its sign conventions and exceptional classes to be
+reproduced. A next question is to determine the rank-three
+four-step distribution. Each row space then cuts out a plane
+section of $C$; the incidence of several special points on the
+same plane becomes relevant. A second question is to determine
+which higher moment curves permit equally explicit rational
+elliptic factors.
+
+\begin{thebibliography}{9}
+\bibitem{article} ProveIt contributors. \emph{Beyond the Riemann
+hypothesis for Dirichlet $L$-functions}, section on
+\href{\gh/Article/sections/gra.tex}{graph towers and spanning-tree
+valuations}. Repository snapshot \texttt{6d284fcf75bc}, 2026.
+\bibitem{short} ProveIt research packet.
+\href{\gh/Research/short_tower_distributions_2026-11-27/short_tower_distributions.tex}{\emph{Three- and four-step graph towers. Distributions and extremizer orbits}},
+27 November 2026. See the four-step distribution and orbit theorem.
+\bibitem{paulhus} J. Paulhus. \href{https://doi.org/10.4064/aa132-3-3}{Decomposing Jacobians of curves with extra automorphisms}.
+\emph{Acta Arith.} \textbf{132} (2008), 231--244.
+\bibitem{arora} S. Arora, V. Cantoral-Farf\'an, A. Landesman,
+D. Lombardo and J. S. Morrow.
+\href{https://arxiv.org/abs/1608.06784}{The twisting Sato--Tate group of the curve $y^2=x^8-14x^4+1$}.
+\bibitem{thorner} J. Thorner.
+\href{https://arxiv.org/abs/2002.10450}{Effective forms of the Sato--Tate conjecture}.
+\emph{Res. Math. Sci.} \textbf{8} (2021), article 4.
+\end{thebibliography}
+\end{document}
