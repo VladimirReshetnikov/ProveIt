@@ -3,6 +3,7 @@ import GRHArticle.ProgressionFree.RankinTruncation
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.ConjugateDisks
 import GRHArticle.SingularModuli.DiskRootTransfer
+import GRHArticle.SingularModuli.HasseCoefficients
 import GRHArticle.SingularModuli.PadicCutoff
 import GRHArticle.SingularModuli.PadicDiskRoots
 import GRHArticle.SingularModuli.PadicExpSubstitution
