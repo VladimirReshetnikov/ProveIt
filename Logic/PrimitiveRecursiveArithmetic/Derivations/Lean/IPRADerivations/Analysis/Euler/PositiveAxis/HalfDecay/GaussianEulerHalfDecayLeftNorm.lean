@@ -47,9 +47,7 @@ theorem error_denominator_positive (p q M E : PTm n) (hM : Γ ⊢[PRAAx] le one 
   positive_product _ _ (positive_product _ _ (positive_product _ _
     (positive_product _ _ (positive_product _ _ (le_succ_self one) hE) hE) hM) (unit_positive p)) (unit_positive q)
 
-theorem natural_bound (K : PTm n) : Γ ⊢[PRAAx] bounded (naturalPoint K) K one :=
-  bound_congr (GaussianEulerDecayFactorBounds.fraction_is_radius_point K one (le_refl one)).eqSymm (.eqRefl _) (.eqRefl _)
-    (GaussianDominantPairAlgebra.radius_bounded K one (le_refl one))
+alias natural_bound := GaussianNamedNaturalScale.natural_point_bound
 
 /-- Exact bound 2A/B+3C²/(2E²M)+C/(E·2^p)+16/2^q.
 The supplied bound concerns the SAME original left observation at q. -/

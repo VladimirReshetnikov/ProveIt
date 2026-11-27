@@ -27,15 +27,7 @@ open GaussianRationalReciprocal (bound_congr)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
-theorem linear_prefix (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q) : Γ ⊢[PRAAx]
-    scalarPrefix q two ≐ qadd qone q := by
-  have f : Γ ⊢[PRAAx] Products.fact (one : PTm n) ≐ one :=
-    (fact_succ zero zero).eqTrans ((congrMul (fact_zero zero) (.eqRefl _)).eqTrans (one_mul _))
-  have inv : Γ ⊢[PRAAx] inverseFactorial (one : PTm n) ≐ qone :=
-    GaussianIntegerFractionPowers.fraction_congr (.eqRefl _) f
-  exact (scalar_sum_succ q zero).eqTrans (qadd_congr (scalar_sum_zero q)
-    ((GaussianRationalSyntheticDivision.qmul_congr inv (GaussianRationalPowerAlgebra.power_one q hq)).eqTrans
-      (GaussianPolynomialDeterminantTerms.one_mul_canonical q hq)))
+alias linear_prefix := GaussianExponentialLinearRemainder.scalar_linear_prefix
 
 theorem difference_decomposition (q K : PTm n) (hq : Γ ⊢[PRAAx] canonical q)
     (hK : Γ ⊢[PRAAx] le one K) : Γ ⊢[PRAAx]

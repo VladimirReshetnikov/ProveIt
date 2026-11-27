@@ -33,7 +33,7 @@ open GaussianRationalL1 (rawDen rawGaussian raw_represents)
 open GaussianRationalMetric (distanceBounded comparison_of_cleared)
 open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
 open GaussianRootAlgebra (equal equal_refl re_one re_scale)
-open RationalIntegerNormalization (normalize normalize_integer)
+open RationalIntegerNormalization (normalize normalize_integer normalize_unit_denominator)
 open RationalSupMetric (denominatorOf)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -61,12 +61,6 @@ theorem positive_integer_source (E : PTm n) :
     GaussianNamedRightHalfPlane.subst_marginPoint,GaussianRationalNaturalScale.subst_naturalPoint,
     ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift,t] using
     RationalValueBounds.upper_of_order _ _ _ _ actual
-
-private theorem normalize_unit_denominator (a : ZT n) : Γ ⊢[PRAAx] denominatorOf (normalize a one) ≐ one := by
-  have e := normalize_integer (Γ := Γ) a a one (le_refl one)
-    (ZT.derive (by simp only [ZT.toZ_mul,ZT.toZ_ofNat]; ipra_simps; ring))
-  exact (congrSucc (congrSnd e)).eqTrans (congrSucc (snd_pair (pairT
-    (RationalIntegerNormalization.positivePart a) (RationalIntegerNormalization.negativePart a)) zero))
 
 private theorem natural_denominator (t : PTm n) : Γ ⊢[PRAAx] rawDen (naturalPoint t) ≐ one := by
   change Γ ⊢[PRAAx] rawDen (ofGaussian (ComplexLogarithmRemainder.scale t oneCode) one) ≐ one

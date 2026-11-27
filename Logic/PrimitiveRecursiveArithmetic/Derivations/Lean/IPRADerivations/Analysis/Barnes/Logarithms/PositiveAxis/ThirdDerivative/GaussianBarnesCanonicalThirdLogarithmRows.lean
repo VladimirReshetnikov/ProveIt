@@ -34,6 +34,7 @@ open GaussianRationalReciprocal (power power_succ reciprocal reciprocal_canonica
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRootAlgebra (equal equal_of_values)
 open LeanProofs.IPRA.Analysis.Products (fact)
+open GaussianRationalPowerAlgebra renaming power_two → square_value
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -104,14 +105,6 @@ private theorem reciprocal_radius (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (h
     (reciprocal_canonical _) (ofGaussian_canonical _ _ ha)
     (reciprocal_identity _ nonzero)
     ((GaussianRationalPowerAlgebra.qmul_commutative _ _).eqTrans (GaussianRationalTravelScaling.inverse_radius a b ha hb))
-
-private theorem square_value (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q) :
-    Γ ⊢[PRAAx] power q two ≐ qmul q q := by
-  have first : Γ ⊢[PRAAx] power q one ≐ q :=
-    (power_succ q zero).eqTrans
-      ((qmul_congr (GaussianRationalReciprocal.power_zero q) (.eqRefl q)).eqTrans
-        ((GaussianRationalPowerAlgebra.qmul_commutative _ _).eqTrans (GaussianReciprocalHorner.qmul_one_right q hq)))
-  exact (power_succ q one).eqTrans (qmul_congr first (.eqRefl q))
 
 private theorem signed_cube (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q) :
     Γ ⊢[PRAAx] qnegative (power (qnegative q) (succ two)) ≐ power q (succ two) := by

@@ -142,7 +142,7 @@ theorem actual_quadratic_tail (q A B k : PTm n) (hb : Γ ⊢[PRAAx] le one B)
   exact bounded_radius_mono _ _ _ _ _ d b
     (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right (A*A*(B*B)) c)) raw
 
-private theorem scalar_linear_prefix (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q) :
+theorem scalar_linear_prefix (q : PTm n) (hq : Γ ⊢[PRAAx] canonical q) :
     Γ ⊢[PRAAx] scalarPrefix q two ≐ qadd qone q := by
   have inv : Γ ⊢[PRAAx] inverseFactorial (one : PTm n) ≐ qone :=
     GaussianIntegerFractionPowers.fraction_congr (.eqRefl _) factorial_one
