@@ -180,6 +180,23 @@ theorem snd_pair (a b : PTm n) : Γ ⊢[PRAAx] sndT (pairT a b) ≐ b := by
   unfold sndT
   exact (congrMonus (isqrt_pair a b) (fst_pair a b)).eqTrans (add_monus' b a)
 
+/-- Read a term of three variables after packing the last two arguments into a pair. -/
+theorem toPR_pair_eq (body : PTm 3) (p x y : PTm n) :
+    Γ ⊢[PRAAx] ap2 (PTm.toPR (Syn.subst ![var 0, fstT (var 1), sndT (var 1)] body)) p (pairT x y) ≐
+      Syn.subst ![p, x, y] body := by
+  refine (toPR_eq _ ![p, pairT x y]).eqTrans ?_
+  rw [Syn.subst_subst]
+  refine Prf.eqCongr body ?_
+  intro i
+  fin_cases i
+  · exact .eqRefl _
+  · change Γ ⊢[PRAAx] Syn.subst ![p, pairT x y] (fstT (var 1)) ≐ x
+    rw [subst_fstT, Syn.subst_var]
+    exact fst_pair x y
+  · change Γ ⊢[PRAAx] Syn.subst ![p, pairT x y] (sndT (var 1)) ≐ y
+    rw [subst_sndT, Syn.subst_var]
+    exact snd_pair x y
+
 theorem congrFst {z z' : PTm n} (h : Γ ⊢[PRAAx] z ≐ z') : Γ ⊢[PRAAx] fstT z ≐ fstT z' := by
   unfold fstT
   have e := congrAp1 isqrtF h

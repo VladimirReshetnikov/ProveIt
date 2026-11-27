@@ -49,18 +49,9 @@ ipra_subst data
 
 theorem sample_at (f : PR 2) (p x E : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data x E) ≐ observation f p x E := by
-  have raw : Γ ⊢[PRAAx] ap2 (nameF f) p (data x E) ≐
-      observation f p (fstT (data x E)) (sndT (data x E)) := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ)
-      (observation f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,data x E]
-  have fields := Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-    (observation f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![p,fstT (data x E),sndT (data x E)]) (σ' := ![p,x,E]) (fun i => by
-      fin_cases i
-      exact .eqRefl _
-      exact fst_pair _ _
-      exact snd_pair _ _)
-  exact raw.eqTrans (by simpa using fields)
+  simpa only [nameF, data, subst_observation, Syn.subst_var,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] using
+    (toPR_pair_eq (Γ := Γ) (observation f (var 0) (var 1) (var 2)) p x E)
 
 theorem source_at (f : PR 2) (r x E : PTm n) (h : Γ ⊢[PRAAx] source f x E) : Γ ⊢[PRAAx]
     GaussianUnitIntervalInputDecoding.source (ap2 f r x) E := by

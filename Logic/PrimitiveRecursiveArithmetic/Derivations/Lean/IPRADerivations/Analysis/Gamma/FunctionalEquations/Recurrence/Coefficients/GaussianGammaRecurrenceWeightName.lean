@@ -97,11 +97,9 @@ def nameF : PR 2 := PTm.toPR (weight (var 0) (fstT (var 1)) (sndT (var 1)))
 ipra_subst data
 
 theorem name_at (p N m : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data N m) ≐ weight p N m := by
-  have h := toPR_eq (Γ := Γ) (weight (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,data N m]
-  have first : Γ ⊢[PRAAx] ap2 nameF p (data N m) ≐ weight p (fstT (data N m)) (sndT (data N m)) := by
-    simpa only [nameF,ap2,GaussianGammaRecurrenceWeights.subst_weight,subst_fstT,subst_sndT,
-      Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using h
-  exact first.eqTrans (weight_congr (.eqRefl _) (fst_pair _ _) (snd_pair _ _))
+  simpa only [nameF, data, GaussianGammaRecurrenceWeights.subst_weight, Syn.subst_var,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] using
+    (toPR_pair_eq (Γ := Γ) (weight (var 0) (var 1) (var 2)) p N m)
 
 theorem name_regular (N m : PTm n) : Γ ⊢[PRAAx] GaussianEuclideanDistanceName.pointCN nameF (data N m) := by
   refine .allI (.allI ?_)

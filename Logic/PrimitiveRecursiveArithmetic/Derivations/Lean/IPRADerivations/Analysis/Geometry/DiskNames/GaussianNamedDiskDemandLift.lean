@@ -63,15 +63,9 @@ def nameF (map : RationalMap) (f : PR 2) : PR 2 :=
 
 theorem sample_at (map : RationalMap) (f : PR 2) (p x R : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF map f) p (data x R) ≐ sample map f p x R := by
-  let X := data x R
-  have raw : Γ ⊢[PRAAx] ap2 (nameF map f) p X ≐ sample map f p (fstT X) (sndT X) := by
-    simpa [nameF,ap2] using
-      toPR_eq (Γ := Γ) (sample map f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,X]
-  have first : Γ ⊢[PRAAx] fstT X ≐ x := fst_pair x R
-  have second : Γ ⊢[PRAAx] sndT X ≐ R := snd_pair x R
-  refine raw.eqTrans ?_
-  ipra_congr (sample map f (var 0) (var 1) (var 2) : PTm 3) with
-    [.eqRefl p, first, second]
+  simpa only [nameF, data, subst_sample, Syn.subst_var,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] using
+    (toPR_pair_eq (Γ := Γ) (sample map f (var 0) (var 1) (var 2)) p x R)
 
 theorem clock_demand (map : RationalMap) (p R s : PTm n) (hs : Γ ⊢[PRAAx] le s (succ p)) :
     Γ ⊢[PRAAx] le (succ (ap2 map.inputClockF R s)) (clock map p R) := by

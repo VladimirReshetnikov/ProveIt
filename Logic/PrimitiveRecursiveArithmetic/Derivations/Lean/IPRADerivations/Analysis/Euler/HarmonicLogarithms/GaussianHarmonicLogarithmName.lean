@@ -44,16 +44,9 @@ ipra_subst data
 ipra_subst sample
 
 theorem sample_at (p a b : PTm n) : Γ ⊢[PRAAx] sample p a b ≐ observation p a b := by
-  have first : Γ ⊢[PRAAx] sample p a b ≐ observation p (fstT (data a b)) (sndT (data a b)) := by
-    simpa [sample,nameF,ap2] using toPR_eq (Γ := Γ)
-      (observation (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,data a b]
-  have second := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (observation (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![p,fstT (data a b),sndT (data a b)]) (σ' := ![p,a,b]) (fun i => by
-      fin_cases i <;> simp only [Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons]
-      exact .eqRefl _
-      exact fst_pair _ _
-      exact snd_pair _ _)
-  exact first.eqTrans (by simpa using second)
+  simpa only [sample, nameF, data, subst_observation, Syn.subst_var,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] using
+    (toPR_pair_eq (Γ := Γ) (observation (var 0) (var 1) (var 2)) p a b)
 
 theorem clock_unit (p : PTm n) : Γ ⊢[PRAAx] unit (clock p) ≐ unit p*scale := pw_add two p (num 9)
 theorem scale_nine : Γ ⊢[PRAAx] le (num 9) (scale : PTm n) :=

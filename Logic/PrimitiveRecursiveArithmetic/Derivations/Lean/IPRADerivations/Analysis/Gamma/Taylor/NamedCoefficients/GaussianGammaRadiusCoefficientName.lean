@@ -47,10 +47,9 @@ theorem raw_congr {p R e p' R' e' : PTm n} (hp : Γ ⊢[PRAAx] p ≐ p') (hR : �
     (he : Γ ⊢[PRAAx] e ≐ e') : Γ ⊢[PRAAx] rawValue p R e ≐ rawValue p' R' e' := by
   ipra_congr (rawValue (var 0) (var 1) (var 2) : PTm 3) with [hp, hR, he]
 theorem raw_at (p R e : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData R e) ≐ rawValue p R e := by
-  have actual : Γ ⊢[PRAAx] ap2 rawF p (rawData R e) ≐ rawValue p (fstT (rawData R e)) (sndT (rawData R e)) := by
-    simpa only [rawF,ap2,subst_rawValue,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-      toPR_eq (Γ := Γ) (rawValue (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,rawData R e]
-  exact actual.eqTrans (raw_congr (.eqRefl _) (fst_pair _ _) (snd_pair _ _))
+  simpa only [rawF, rawData, subst_rawValue, Syn.subst_var,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] using
+    (toPR_pair_eq (Γ := Γ) (rawValue (var 0) (var 1) (var 2)) p R e)
 
 theorem raw_regularity (p q R e : PTm n) (h : Γ ⊢[PRAAx] admissible R e) : Γ ⊢[PRAAx]
     distanceBounded (rawValue p R e) (rawValue q R e) (modulus R e*(unit p+unit q)) (unit p*unit q) := by
