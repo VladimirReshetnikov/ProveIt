@@ -32,8 +32,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
 theorem fraction_congr {a b A B : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b)
-    (hA : Γ ⊢[PRAAx] A ≐ B) : Γ ⊢[PRAAx] ofGaussian a A ≐ ofGaussian b B := by
-  ipra_congr (ofGaussian (var 0) (var 1) : PTm 2) with [ha, hA]
+    (hA : Γ ⊢[PRAAx] A ≐ B) : Γ ⊢[PRAAx] ofGaussian a A ≐ ofGaussian b B :=
+  GaussianRationalHorner.ofGaussian_congr ha hA
 
 theorem fraction_multiply (a b A B : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]

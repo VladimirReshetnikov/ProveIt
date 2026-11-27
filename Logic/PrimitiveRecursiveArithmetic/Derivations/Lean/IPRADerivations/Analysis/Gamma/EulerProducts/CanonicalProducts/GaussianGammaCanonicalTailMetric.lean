@@ -26,8 +26,8 @@ open DyadicComplexLogarithm (unit crossDifference rounded)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem ofGaussian_congr {a b D E : PTm n} (ha : Γ ⊢[PRAAx] a ≐ b)
-    (hD : Γ ⊢[PRAAx] D ≐ E) : Γ ⊢[PRAAx] ofGaussian a D ≐ ofGaussian b E := by
-  ipra_congr (ofGaussian (var 0) (var 1) : PTm 2) with [ha, hD]
+    (hD : Γ ⊢[PRAAx] D ≐ E) : Γ ⊢[PRAAx] ofGaussian a D ≐ ofGaussian b E :=
+  GaussianRationalHorner.ofGaussian_congr ha hD
 
 /-- The original native cross difference, with both original denominators. -/
 theorem distance_of_cross (a b D E A B : PTm n)

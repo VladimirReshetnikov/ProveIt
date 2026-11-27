@@ -34,13 +34,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 theorem inverse_factorial_one : Γ ⊢[PRAAx] inverseFactorial (one : PTm n) ≐ qone := by
   have f : Γ ⊢[PRAAx] fact (one : PTm n) ≐ one :=
     (fact_succ zero zero).eqTrans ((congrMul (fact_zero zero) (.eqRefl one)).eqTrans (by ipra_ring))
-  simpa only [inverseFactorial,GaussianRationalHorner.subst_ofGaussian,
-    ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,Matrix.head_cons,GaussianRationalSyntheticDivision.qone] using
-    (Prf.eqCongr (Γ := Γ) (ofGaussian (var 0) (var 1) : PTm 2)
-      (σ := ![ComplexLogarithmRemainder.oneCode,fact one])
-      (σ' := ![ComplexLogarithmRemainder.oneCode,one])
-      (fun i => by fin_cases i; exact .eqRefl _; exact f))
+  exact GaussianRationalHorner.ofGaussian_congr (.eqRefl _) f
 
 theorem first_power_linear (C N K : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hK : Γ ⊢[PRAAx] le one K)

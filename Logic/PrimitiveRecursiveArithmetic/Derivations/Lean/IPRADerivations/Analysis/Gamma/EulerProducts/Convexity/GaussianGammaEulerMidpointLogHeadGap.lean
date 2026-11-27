@@ -47,10 +47,8 @@ theorem data_congr {a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[P
       (σ := ![a,b]) (σ' := ![c,d]) (fun i => by fin_cases i; exact ha; exact hb)
 
 theorem fraction_congr {a b c d : PTm n} (ha : Γ ⊢[PRAAx] a ≐ c) (hb : Γ ⊢[PRAAx] b ≐ d) :
-    Γ ⊢[PRAAx] fraction a b ≐ fraction c d := by
-  simpa only [GaussianPositiveRationalLogarithm.subst_fraction,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (fraction (var 0) (var 1) : PTm 2)
-      (σ := ![a,b]) (σ' := ![c,d]) (fun i => by fin_cases i; exact ha; exact hb)
+    Γ ⊢[PRAAx] fraction a b ≐ fraction c d :=
+  GaussianRationalHorner.real_fraction_congr ha hb
 
 theorem margin_source (a d : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hd : Γ ⊢[PRAAx] le one d) :
     Γ ⊢[PRAAx] source (large a d) (small a d) := by

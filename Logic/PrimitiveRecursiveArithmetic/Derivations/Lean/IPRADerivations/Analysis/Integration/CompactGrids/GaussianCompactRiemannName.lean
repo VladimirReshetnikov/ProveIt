@@ -125,8 +125,8 @@ theorem grid_inside (i N a C E : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hE : Γ �
 
 
 theorem fraction_congr (a a' b b' : PTm n) (ha : Γ ⊢[PRAAx] a ≐ a') (hb : Γ ⊢[PRAAx] b ≐ b') : Γ ⊢[PRAAx]
-    ofGaussian (scale a oneCode) b ≐ ofGaussian (scale a' oneCode) b' := by
-  ipra_congr (ofGaussian (scale (var 0) oneCode) (var 1) : PTm 2) with [ha, hb]
+    ofGaussian (scale a oneCode) b ≐ ofGaussian (scale a' oneCode) b' :=
+  GaussianRationalHorner.real_fraction_congr ha hb
 
 theorem value_grid (i N a C E : PTm n) : Γ ⊢[PRAAx]
     value (grid i N a C E) ≐ ofGaussian (scale (a*N+C*i) oneCode) (E*N) :=

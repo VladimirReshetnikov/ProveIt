@@ -71,9 +71,8 @@ theorem factor_scaled (z B i : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRA
     (canonical_unique _ _ _ _ (natScale_canonical _ _) (ofGaussian_canonical _ _ hB) hD left right)
 
 theorem natural_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
-    Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b := by
-  simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (naturalPoint (var 0) : PTm 1)
-    (σ := ![a]) (σ' := ![b]) (fun i => by fin_cases i; exact h)
+    Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b :=
+  GaussianRationalHorner.real_fraction_congr h (.eqRefl _)
 
 def normalization (z B N : PTm n) : Fm PTm n :=
   denominator z B (succ N) ≐ qmul (naturalPoint (fact N)) (head z B N)

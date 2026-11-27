@@ -105,11 +105,8 @@ theorem first_approximation (a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) :
     polynomial_evaluation _ _ _ _ (log_table_length 1)
   have factOne : Γ ⊢[PRAAx] fact one ≐ one :=
     (fact_succ zero zero).eqTrans ((congrMul (fact_zero zero) (.eqRefl one)).eqTrans (one_mul one))
-  have inv : Γ ⊢[PRAAx] inverseFactorial one ≐ qone := by
-    simpa only [inverseFactorial,GaussianRationalSyntheticDivision.qone,GaussianRationalHorner.subst_ofGaussian,
-      ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var] using
-      (Prf.eqCongr (Γ := Γ) (ofGaussian oneCode (var 0) : PTm 1)
-        (σ := fun _ => fact one) (σ' := fun _ => one) (fun _ => factOne))
+  have inv : Γ ⊢[PRAAx] inverseFactorial one ≐ qone :=
+    GaussianRationalHorner.ofGaussian_congr (.eqRefl _) factOne
   let q := logPolynomial 1 a b
   have qc : Γ ⊢[PRAAx] canonical q := GaussianRationalHorner.horner_canonical _ _ _
   have term := (qmul_congr inv (GaussianRationalPowerAlgebra.power_one q qc)).eqTrans

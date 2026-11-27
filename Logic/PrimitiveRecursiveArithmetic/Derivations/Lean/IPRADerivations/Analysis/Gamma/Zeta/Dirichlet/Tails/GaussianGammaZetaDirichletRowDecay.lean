@@ -56,10 +56,8 @@ private theorem exact_reference (A h : PTm n) (hA : Γ ⊢[PRAAx] le one A) :
   have exact := GaussianEulerPowerChartRationalPowers.original_power two A one U hA src
   have twoStep : Γ ⊢[PRAAx] pw U two ≐ U*U :=
     (pw_succ U one).eqTrans (congrMul (pw_one U) (.eqRefl U))
-  have endCode : Γ ⊢[PRAAx] fraction (pw one two) (pw U two) ≐ fraction one (U*U) := by
-    simpa only [GaussianPositiveRationalLogarithm.subst_fraction,Syn.subst_var,Matrix.cons_val] using
-      Prf.eqCongr (fraction (var 0) (var 1) : PTm 2) (σ := ![pw one two,pw U two]) (σ' := ![one,U*U])
-        (fun i => by fin_cases i; exact AnalyticNumberTheory.Order.pw_one_base _; exact twoStep)
+  have endCode : Γ ⊢[PRAAx] fraction (pw one two) (pw U two) ≐ fraction one (U*U) :=
+    GaussianRationalHorner.real_fraction_congr (AnalyticNumberTheory.Order.pw_one_base _) twoStep
   exact GaussianNameEquivalence.cross_trans _ _ _ _ _ _ sd
     (GaussianNameEquivalence.cross_trans _ _ _ _ _ _ exact
       (GaussianSignedNameExponentialOrder.constant_equal_cross _ _ endCode))

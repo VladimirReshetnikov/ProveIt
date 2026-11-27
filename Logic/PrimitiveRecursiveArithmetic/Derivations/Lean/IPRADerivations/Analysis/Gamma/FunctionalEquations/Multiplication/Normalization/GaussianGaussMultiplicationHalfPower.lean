@@ -107,26 +107,14 @@ private theorem double_reciprocal (D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ
 
 private theorem double_quarter : Γ ⊢[PRAAx] qadd (quarterCoefficient : PTm n) quarterCoefficient ≐ halfCoefficient := by
   have e : Γ ⊢[PRAAx] ((two : PTm n)*two) ≐ num 4 := by ipra_ring
-  have c : Γ ⊢[PRAAx] ofGaussian oneCode (two*two) ≐ (quarterCoefficient : PTm n) := by
-    have raw := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (ofGaussian oneCode (var 0) : PTm 1)
-      (σ := ![two*two]) (σ' := ![num 4]) (fun i => by fin_cases i; exact e)
-    simpa [quarterCoefficient] using raw
+  have c : Γ ⊢[PRAAx] ofGaussian oneCode (two*two) ≐ (quarterCoefficient : PTm n) :=
+    GaussianRationalHorner.ofGaussian_congr (.eqRefl _) e
   exact (qadd_congr c.eqSymm c.eqSymm).eqTrans (double_reciprocal two RationalAlgebra.two_positive)
 
 private theorem double_half : Γ ⊢[PRAAx] qadd (halfCoefficient : PTm n) halfCoefficient ≐ qone := by
-  have c : Γ ⊢[PRAAx] ofGaussian oneCode (one*two) ≐ (halfCoefficient : PTm n) := by
-    have raw := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (ofGaussian oneCode (var 0) : PTm 1)
-      (σ := ![one*two]) (σ' := ![two]) (fun i => by fin_cases i; exact one_mul two)
-    simpa [halfCoefficient] using raw
-  have o : Γ ⊢[PRAAx] (ofGaussian oneCode one : PTm n) ≐ qone := by
-    exact canonical_unique _ _ oneCode one (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl one)) qone_canonical
-      (le_refl one) (GaussianRationalHorner.ofGaussian_represents _ _ (le_refl one))
-      (represents_congr (.eqRefl _) (by
-        apply GaussianRootAlgebra.equal_of_values <;>
-          simp only [GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale,GaussianRootAlgebra.re_one,
-            GaussianRootAlgebra.im_one] <;> ipra_simps <;> ring)
-        (.eqRefl _) (GaussianRationalReciprocal.qone_represents_scaled one))
-  exact (qadd_congr c.eqSymm c.eqSymm).eqTrans ((double_reciprocal one (le_refl one)).eqTrans o)
+  have c : Γ ⊢[PRAAx] ofGaussian oneCode (one*two) ≐ (halfCoefficient : PTm n) :=
+    GaussianRationalHorner.ofGaussian_congr (.eqRefl _) (one_mul two)
+  exact (qadd_congr c.eqSymm c.eqSymm).eqTrans (double_reciprocal one (le_refl one))
 
 private theorem power_one (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) : Γ ⊢[PRAAx]
     crossEquivalent ratioPowerF GaussianPositiveRationalLogarithm.expF (ratioPowerData qone m)

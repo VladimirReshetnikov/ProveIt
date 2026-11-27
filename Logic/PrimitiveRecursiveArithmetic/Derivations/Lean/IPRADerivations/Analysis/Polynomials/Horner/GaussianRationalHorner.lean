@@ -107,6 +107,20 @@ theorem represents_congr {q r a b A B : PTm n}
   .andI (scalar_congr (congrFst hqr) (Prf.andE₁ hab) hAB (Prf.andE₁ h))
     (scalar_congr (congrSnd hqr) (Prf.andE₂ hab) hAB (Prf.andE₂ h))
 
+/-- Transport the Gaussian numerator and denominator through construction. -/
+theorem ofGaussian_congr {a b D E : PTm n}
+    (ha : Γ ⊢[PRAAx] a ≐ b) (hD : Γ ⊢[PRAAx] D ≐ E) :
+    Γ ⊢[PRAAx] ofGaussian a D ≐ ofGaussian b E := by
+  ipra_congr (ofGaussian (var 0) (var 1) : PTm 2) with [ha, hD]
+
+/-- Transport a real fraction written as a Gaussian rational. -/
+theorem real_fraction_congr {a b D E : PTm n}
+    (ha : Γ ⊢[PRAAx] a ≐ b) (hD : Γ ⊢[PRAAx] D ≐ E) :
+    Γ ⊢[PRAAx] ofGaussian (scale a ComplexLogarithmRemainder.oneCode) D ≐
+      ofGaussian (scale b ComplexLogarithmRemainder.oneCode) E := by
+  ipra_congr
+    (ofGaussian (scale (var 0) ComplexLogarithmRemainder.oneCode) (var 1) : PTm 2) with [ha, hD]
+
 theorem ofGaussian_represents (a D : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] represents (ofGaussian a D) a D :=
   .andI (scalar_congr (fst_pair _ _).eqSymm (.eqRefl _) (.eqRefl _) (normalize_preserves_value _ _ hD))

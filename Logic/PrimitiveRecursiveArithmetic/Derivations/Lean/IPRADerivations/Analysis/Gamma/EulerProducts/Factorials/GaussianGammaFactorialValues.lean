@@ -135,8 +135,8 @@ theorem error_succ (i : PTm n) : Γ ⊢[PRAAx] error (succ i) ≐ succ i*error i
     one,two,ConciseIPRA.PTm.subst_zero] at h
   exact h
 
-theorem natural_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b := by
-  ipra_congr (naturalPoint (var 0) : PTm 1) with [h] using [naturalPoint]
+theorem natural_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b :=
+  GaussianRationalHorner.real_fraction_congr h (.eqRefl _)
 
 theorem natural_one : Γ ⊢[PRAAx] naturalPoint (one : PTm n) ≐ GaussianRationalSyntheticDivision.qone := by
   apply canonical_unique _ _ _ one (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _))

@@ -42,14 +42,8 @@ theorem inverse_factorial_represents (j : PTm n) : Γ ⊢[PRAAx]
   GaussianRationalHorner.ofGaussian_represents _ _ (factorial_positive j)
 theorem inverse_factorial_canonical (j : PTm n) : Γ ⊢[PRAAx] canonical (inverseFactorial j) :=
   GaussianRationalHorner.ofGaussian_canonical _ _ (factorial_positive j)
-theorem inverse_factorial_zero : Γ ⊢[PRAAx] inverseFactorial (zero : PTm n) ≐ qone := by
-  simpa only [inverseFactorial,GaussianRationalHorner.subst_ofGaussian,
-    ComplexLogarithmRemainder.subst_oneCode,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,Matrix.head_cons,GaussianRationalSyntheticDivision.qone] using
-    (Prf.eqCongr (Γ := Γ) (ofGaussian (var 0) (var 1) : PTm 2)
-      (σ := ![ComplexLogarithmRemainder.oneCode,fact zero])
-      (σ' := ![ComplexLogarithmRemainder.oneCode,one])
-      (fun i => by fin_cases i; exact .eqRefl _; exact fact_zero zero))
+theorem inverse_factorial_zero : Γ ⊢[PRAAx] inverseFactorial (zero : PTm n) ≐ qone :=
+  GaussianRationalHorner.ofGaussian_congr (.eqRefl _) (fact_zero zero)
 
 def scalarBody : PTm 2 := qmul (inverseFactorial (var 0)) (GaussianRationalReciprocal.power (var 1) (var 0))
 def scalarSum (q j : PTm n) : PTm n := GaussianRationalFiniteSum.sum scalarBody (succ j) q
