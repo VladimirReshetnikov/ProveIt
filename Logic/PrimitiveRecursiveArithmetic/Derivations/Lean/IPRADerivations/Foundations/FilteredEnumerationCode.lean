@@ -122,17 +122,15 @@ theorem stack_bound_step (K : PTm 2) (P p r : PTm n)
     (CodedViableChain.pair_mono (le_of_lt (Prf.andE₁ (sel_spec K hr))) ih)
 
 theorem size_bound (K : PTm 2) (P p : PTm n) : Γ ⊢[PRAAx] lt (list K P p) (codeBound K P p) := by
-  have all : Γ ⊢[PRAAx] .all (sizeLaw K (Syn.shift P) (Syn.shift p) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (le_congr (stack_zero _ _).eqSymm (bound_zero P).eqSymm (le_refl zero))
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (stack_bound_step K _ _ _ Prf.hyp0
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
-  have final : Γ ⊢[PRAAx] sizeLaw K P p (count K P p) := by
-    simpa only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE (count K P p)
+  let inv := le (stack (values K) (var 0) (data (Syn.shift P) (Syn.shift p))) (boundStack (Syn.shift P) (var 0))
+  have result : Γ ⊢[PRAAx] inv.subst (Syn.inst (count K P p)) := by
+    refine qfIndUpTo (count K P p) (le_QF _ _) ?_ ?_
+    · simpa [inv] using le_congr (stack_zero (Γ := Γ) (values K) _).eqSymm (bound_zero P).eqSymm (le_refl zero)
+    · have shiftBound : Syn.shift (count K P p) = count K (Syn.shift P) (Syn.shift p) := by simp [Syn.shift]
+      simp [inv, shiftBound]
+      exact .impI (stack_bound_step K _ _ _ Prf.hyp0 Prf.hyp1)
   exact (succ_monus_succ _ _).eqTrans
-    (CodedViableChain.pair_mono (le_refl _) (.impE final (le_refl _)))
+    (CodedViableChain.pair_mono (le_refl _) (by simpa [inv] using result))
 
 theorem output_at (K : PTm 2) (P p : PTm n) : Γ ⊢[PRAAx] run K P p ≐ list K P p := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (list K (var 0) (var 1) : PTm 2) ![P,p]

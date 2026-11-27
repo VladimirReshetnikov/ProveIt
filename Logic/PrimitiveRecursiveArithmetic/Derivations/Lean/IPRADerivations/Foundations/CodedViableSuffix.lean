@@ -160,23 +160,25 @@ theorem suffix_invariant (I : Instance) (i a p t : PTm n)
     (ht : Γ ⊢[PRAAx] le t (remaining I i p)) : Γ ⊢[PRAAx]
     lt (suffixChain I t i a p) (I.bd (i+t) p) ⋏
       I.V (monus (I.h p) (i+t)) (suffixChain I t i a p) p ≐ one := by
+  let j : PTm (n + 1) := var 0
+  let P := lt (suffixChain I j (Syn.shift i) (Syn.shift a) (Syn.shift p))
+      (I.bd (Syn.shift i + j) (Syn.shift p)) ⋏
+    I.V (monus (I.h (Syn.shift p)) (Syn.shift i + j))
+      (suffixChain I j (Syn.shift i) (Syn.shift a) (Syn.shift p)) (Syn.shift p) ≐ one
   have hs : Γ.map Fm.shift ⊢[PRAAx] viableSuffixStart I (Syn.shift i) (Syn.shift a) (Syn.shift p) := by
-    simpa only [Fm.shift,subst_viableSuffixStart,Syn.shift] using h.shift
-  have his : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift i) (I.h (Syn.shift p)) := by simpa only [Fm.shift,subst_le,Instance.subst_h,Syn.shift] using hi.shift
-  have all : Γ ⊢[PRAAx] .all (invariant I (Syn.shift i) (Syn.shift a) (Syn.shift p) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial,trivial⟩ ?_ ?_
-    · simp only [subst_invariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      refine .impI (.andI ?_ ?_)
-      · exact lt_congr (suffix_zero I i a p).eqSymm (bd_congr I (add_zero i).eqSymm) (Prf.andE₁ h).wk
-      · exact (V_congr I (congrMonus (.eqRefl _) (add_zero i)) (suffix_zero I i a p)).eqTrans (Prf.andE₂ h).wk
-    · simp only [subst_invariant,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
-      refine Prf.andE₂ (Prf.andE₂ (suffix_step I his.wk.wk Prf.hyp0 ?_ ?_))
-      · exact Prf.andE₁ (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-      · exact Prf.andE₂ (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] invariant I i a p t := by
-    simpa only [subst_invariant,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE t
-  exact .impE rule ht
+    simpa only [Fm.shift, subst_viableSuffixStart, Syn.shift] using h.shift
+  have his : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift i) (I.h (Syn.shift p)) := by
+    simpa only [Fm.shift, subst_le, Instance.subst_h, Syn.shift] using hi.shift
+  have result : Γ ⊢[PRAAx] P.subst (Syn.inst t) := by
+    refine qfIndAtMost ht ⟨lt_QF _ _, trivial⟩ ?_ ?_
+    · simp [P, j]
+      exact .andI (lt_congr (suffix_zero I i a p).eqSymm (bd_congr I (add_zero i).eqSymm) (Prf.andE₁ h))
+        ((V_congr I (congrMonus (.eqRefl _) (add_zero i)) (suffix_zero I i a p)).eqTrans (Prf.andE₂ h))
+    · have shiftBound : Syn.shift (remaining I i p) = remaining I (Syn.shift i) (Syn.shift p) := by simp [Syn.shift]
+      simp [P, j, shiftBound]
+      exact .impI (Prf.andE₂ (Prf.andE₂
+        (suffix_step I his.wk.wk Prf.hyp0 (Prf.andE₁ Prf.hyp1) (Prf.andE₂ Prf.hyp1))))
+  simpa [P, j] using result
 
 theorem suffix_local (I : Instance) (i a p t : PTm n)
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (h : Γ ⊢[PRAAx] viableSuffixStart I i a p)
@@ -283,20 +285,19 @@ theorem coded_viable (I : Instance) (S i p j : PTm n)
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (h : Γ ⊢[PRAAx] admissibleSuffix I S i p)
     (hj : Γ ⊢[PRAAx] le j (remaining I i p)) : Γ ⊢[PRAAx]
     I.V j (entry S (monus (remaining I i p) j)) p ≐ one := by
+  let P := I.V (var 0)
+      (entry (Syn.shift S) (monus (remaining I (Syn.shift i) (Syn.shift p)) (var 0))) (Syn.shift p) ≐ one
   have hs : Γ.map Fm.shift ⊢[PRAAx] admissibleSuffix I (Syn.shift S) (Syn.shift i) (Syn.shift p) := by
-    simpa only [Fm.shift,subst_admissibleSuffix,Syn.shift] using h.shift
+    simpa only [Fm.shift, subst_admissibleSuffix, Syn.shift] using h.shift
   have his : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift i) (I.h (Syn.shift p)) := by
-    simpa only [Fm.shift,subst_le,Instance.subst_h,Syn.shift] using hi.shift
-  have all : Γ ⊢[PRAAx] .all (reverseLaw I (Syn.shift S) (Syn.shift i) (Syn.shift p) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_reverseLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (coded_viable_zero I S i p hi.wk h.wk)
-    · simp only [subst_reverseLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact .impI (coded_viable_step I _ _ _ _ his.wk.wk hs.wk.wk Prf.hyp0
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
-  have rule : Γ ⊢[PRAAx] reverseLaw I S i p j := by
-    simpa only [subst_reverseLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
-  exact .impE rule hj
+    simpa only [Fm.shift, subst_le, Instance.subst_h, Syn.shift] using hi.shift
+  have result : Γ ⊢[PRAAx] P.subst (Syn.inst j) := by
+    refine qfIndAtMost hj trivial ?_ ?_
+    · simpa [P] using coded_viable_zero I S i p hi h
+    · have shiftBound : Syn.shift (remaining I i p) = remaining I (Syn.shift i) (Syn.shift p) := by simp [Syn.shift]
+      simp [P, shiftBound]
+      exact .impI (coded_viable_step I _ _ _ _ his.wk.wk hs.wk.wk Prf.hyp0 Prf.hyp1)
+  simpa [P] using result
 
 theorem coded_start_viable (I : Instance) (S i p : PTm n)
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (h : Γ ⊢[PRAAx] admissibleSuffix I S i p) : Γ ⊢[PRAAx]
@@ -333,24 +334,21 @@ theorem stack_bound_step (I : Instance) (i a p r : PTm n)
 theorem produced_size_bound (I : Instance) (i a p : PTm n)
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (h : Γ ⊢[PRAAx] viableSuffixStart I i a p) : Γ ⊢[PRAAx]
     lt (suffixCode I i a p) (codeBound I i p) := by
+  let P := le (stack (suffixBody I) (var 0) (data (Syn.shift i) (Syn.shift a) (Syn.shift p)))
+    (boundStack I (var 0) (Syn.shift i) (Syn.shift p))
   have hs : Γ.map Fm.shift ⊢[PRAAx] viableSuffixStart I (Syn.shift i) (Syn.shift a) (Syn.shift p) := by
-    simpa only [Fm.shift,subst_viableSuffixStart,Syn.shift] using h.shift
+    simpa only [Fm.shift, subst_viableSuffixStart, Syn.shift] using h.shift
   have his : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift i) (I.h (Syn.shift p)) := by
-    simpa only [Fm.shift,subst_le,Instance.subst_h,Syn.shift] using hi.shift
-  have all : Γ ⊢[PRAAx] .all (sizeLaw I (Syn.shift i) (Syn.shift a) (Syn.shift p) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (le_congr (stack_zero _ _).eqSymm (boundStack_zero I i p).eqSymm (le_refl zero))
-    · simp only [subst_sizeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI (stack_bound_step I _ _ _ _ his.wk.wk hs.wk.wk ?_
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
-      exact (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
-  have final : Γ ⊢[PRAAx] sizeLaw I i a p (succ (remaining I i p)) := by
-    simpa only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE (succ (remaining I i p))
-  have bound : Γ ⊢[PRAAx] le (suffixCode I i a p)
-      (pairT (succ (remaining I i p)) (boundStack I (succ (remaining I i p)) i p)) :=
-    pair_mono (le_refl _) (.impE final (le_refl _))
-  exact (succ_monus_succ _ _).eqTrans bound
+    simpa only [Fm.shift, subst_le, Instance.subst_h, Syn.shift] using hi.shift
+  have result : Γ ⊢[PRAAx] P.subst (Syn.inst (succ (remaining I i p))) := by
+    refine qfIndUpTo (succ (remaining I i p)) (le_QF _ _) ?_ ?_
+    · simpa [P] using le_congr (stack_zero (Γ := Γ) (suffixBody I) _).eqSymm
+        (boundStack_zero I i p).eqSymm (le_refl zero)
+    · have shiftBound : Syn.shift (succ (remaining I i p)) = succ (remaining I (Syn.shift i) (Syn.shift p)) := by simp [Syn.shift]
+      simp [P, shiftBound]
+      exact .impI (stack_bound_step I _ _ _ _ his.wk.wk hs.wk.wk
+        ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) Prf.hyp1)
+  exact (succ_monus_succ _ _).eqTrans (pair_mono (le_refl _) (by simpa [P] using result))
 
 theorem suffix_exists (I : Instance) (i a p : PTm n)
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (h : Γ ⊢[PRAAx] viableSuffixStart I i a p) : Γ ⊢[PRAAx]

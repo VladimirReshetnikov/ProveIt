@@ -50,16 +50,8 @@ alias pair_congr := Common.congrPairT
 
 /-- Monotonicity of the actual quadratic pairing code. -/
 theorem pair_mono {a b A B : PTm n} (ha : Γ ⊢[PRAAx] le a A) (hb : Γ ⊢[PRAAx] le b B) :
-    Γ ⊢[PRAAx] le (pairT a b) (pairT A B) := by
-  have ea := natEq (eq_add_of_le ha)
-  have eb := natEq (eq_add_of_le hb)
-  refine le_of_eq_add (d := (monus A a + monus B b) *
-      (a + b + a + b + monus A a + monus B b) + monus A a) ?_
-  unfold pairT
-  apply deriveNat
-  ipra_simps
-  rw [ea, eb]
-  ring
+    Γ ⊢[PRAAx] le (pairT a b) (pairT A B) :=
+  pairT_mono ha hb
 
 /-- Pointwise caps bound the canonical reverse stack, with a QF induction
 invariant even when the external contract contains a bounded quantifier. -/

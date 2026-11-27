@@ -39,28 +39,15 @@ variable {n : ℕ}
 theorem guarded_loop_all {Γ : List (Fm PTm n)} (I : Fm PTm (n + 1)) (hI : I.QF) (T : PTm n)
     (h0 : Γ ⊢[PRAAx] I.subst (Syn.inst zero))
     (hS : (lt (var 0) (Syn.shift T) :: I :: Γ.map Fm.shift) ⊢[PRAAx] I.subst (Syn.repl (succ (var 0)))) :
-    Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift T) ⟶ I) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, hI⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-    exact .impI h0.wk
-  · simp only [Fm.subst_imp, subst_le, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-    refine .impI ?_
-    have hk : (le (succ (var 0)) (Syn.shift T) :: (le (var 0) (Syn.shift T) ⟶ I) :: Γ.map Fm.shift)
-        ⊢[PRAAx] le (succ (var 0)) (Syn.shift T) := Prf.hyp0
-    have hJ : (le (succ (var 0)) (Syn.shift T) :: (le (var 0) (Syn.shift T) ⟶ I) :: Γ.map Fm.shift)
-        ⊢[PRAAx] (le (var 0) (Syn.shift T) ⟶ I) := Prf.hyp1
-    have hi := Prf.impE hJ (le_trans (le_succ_self _) hk)
-    exact Prf.impE (Prf.impE (Prf.impI (Prf.impI hS)).wk.wk hi) hk
+    Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift T) ⟶ I) :=
+  qfIndAllUpTo T hI h0 (.impI hS)
 
 /-- A loop rule whose step is assumed only below the bound `T`. -/
 theorem guarded_loop {Γ : List (Fm PTm n)} (I : Fm PTm (n + 1)) (hI : I.QF) (T : PTm n)
     (h0 : Γ ⊢[PRAAx] I.subst (Syn.inst zero))
     (hS : (lt (var 0) (Syn.shift T) :: I :: Γ.map Fm.shift) ⊢[PRAAx] I.subst (Syn.repl (succ (var 0)))) :
-    Γ ⊢[PRAAx] I.subst (Syn.inst T) := by
-  have hall := guarded_loop_all I hI T h0 hS
-  have a := Prf.allE T hall
-  simp only [Fm.subst_imp, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at a
-  exact .impE a (le_refl T)
+    Γ ⊢[PRAAx] I.subst (Syn.inst T) :=
+  qfIndUpTo T hI h0 (.impI hS)
 
 theorem shift_at (β : PTm 1) (b : PTm n) : Syn.shift (inst1 β b) = inst1 β (Syn.shift b) := by
   simp [Syn.shift]
@@ -78,30 +65,6 @@ theorem run_step
     Θ ⊢[PRAAx] I3 Inv (succ t) (Run init step (succ t) v) v :=
   I3_congr (run_succ t v).eqSymm (hstep t _ v hg hi)
 
-/-- Trace reflection with the step assumed only for `t < fuel(v)`. -/
-theorem guarded_trace (hqf : Inv.QF)
-    (hstep : ∀ {k : ℕ} {Θ : List (Fm PTm k)} (t s v : PTm k), (Θ ⊢[PRAAx] lt t (inst1 fuel v)) →
-      (Θ ⊢[PRAAx] I3 Inv t s v) → (Θ ⊢[PRAAx] I3 Inv (succ t) (Syn.subst ![t, s, v] step) v))
-    {Δ : List (Fm PTm n)} (u : PTm n) (hbase : Δ ⊢[PRAAx] I3 Inv zero (Syn.subst ![u] init) u) :
-    Δ ⊢[PRAAx] I3 Inv (inst1 fuel u) (Run init step (inst1 fuel u) u) u := by
-  have h0 : Δ ⊢[PRAAx]
-      (I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u)).subst (Syn.inst zero) := by
-    simp only [subst_I3, Syn.subst_var, Syn.inst_zero, subst_Run, Syn.subst_shift, Syn.inst, Fin.cases_succ,
-      Syn.subst_id, ConciseIPRA.PTm.subst_zero, Fin.cases_zero]
-    exact I3_congr (run_zero u).eqSymm hbase
-  have hS : (lt (var 0) (Syn.shift (inst1 fuel u)) ::
-        I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u) :: Δ.map Fm.shift) ⊢[PRAAx]
-      (I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u)).subst
-        (Syn.repl (succ (var 0))) := by
-    rw [shift_at]
-    simp only [subst_I3, Syn.subst_var, Syn.repl_zero, subst_Run, Syn.subst_shift, Syn.repl, Fin.cases_succ,
-      Syn.subst_id, ConciseIPRA.PTm.subst_succ, Fin.cases_zero]
-    exact run_step hstep Prf.hyp0 Prf.hyp1
-  have g := guarded_loop (I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u))
-    (subst_QF' hqf _) (inst1 fuel u) h0 hS
-  simpa only [subst_I3, Syn.subst_var, Syn.inst_zero, subst_Run, Syn.subst_shift, Syn.inst, Fin.cases_succ,
-    Syn.subst_id, Fin.cases_zero] using g
-
 /-- Trace reflection at every stage up to the fuel: `∀ t ≤ fuel(u). Inv(t, Run(t, u), u)`
 (`foundations/ipra_finite_observation`, `thm:safety`, "Finite safety compilation"). -/
 theorem guarded_trace_all (hqf : Inv.QF)
@@ -112,19 +75,29 @@ theorem guarded_trace_all (hqf : Inv.QF)
       I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u)) := by
   have h0 : Δ ⊢[PRAAx]
       (I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u)).subst (Syn.inst zero) := by
-    simp only [subst_I3, Syn.subst_var, Syn.inst_zero, subst_Run, Syn.subst_shift, Syn.inst, Fin.cases_succ,
-      Syn.subst_id, ConciseIPRA.PTm.subst_zero, Fin.cases_zero]
+    simp only [subst_I3, Syn.subst_var, subst_Run, Syn.subst_shift, Syn.inst, Fin.cases_succ,
+      Syn.subst_id, Fin.cases_zero]
     exact I3_congr (run_zero u).eqSymm hbase
   have hS : (lt (var 0) (Syn.shift (inst1 fuel u)) ::
         I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u) :: Δ.map Fm.shift) ⊢[PRAAx]
       (I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u)).subst
         (Syn.repl (succ (var 0))) := by
     rw [shift_at]
-    simp only [subst_I3, Syn.subst_var, Syn.repl_zero, subst_Run, Syn.subst_shift, Syn.repl, Fin.cases_succ,
-      Syn.subst_id, ConciseIPRA.PTm.subst_succ, Fin.cases_zero]
+    simp only [subst_I3, Syn.subst_var, subst_Run, Syn.subst_shift, Syn.repl, Fin.cases_succ, Fin.cases_zero]
     exact run_step hstep Prf.hyp0 Prf.hyp1
   exact guarded_loop_all (I3 Inv (var 0) (Run init step (var 0) (Syn.shift u)) (Syn.shift u))
     (subst_QF' hqf _) (inst1 fuel u) h0 hS
+
+/-- Trace reflection with the step assumed only for `t < fuel(v)`. -/
+theorem guarded_trace (hqf : Inv.QF)
+    (hstep : ∀ {k : ℕ} {Θ : List (Fm PTm k)} (t s v : PTm k), (Θ ⊢[PRAAx] lt t (inst1 fuel v)) →
+      (Θ ⊢[PRAAx] I3 Inv t s v) → (Θ ⊢[PRAAx] I3 Inv (succ t) (Syn.subst ![t, s, v] step) v))
+    {Δ : List (Fm PTm n)} (u : PTm n) (hbase : Δ ⊢[PRAAx] I3 Inv zero (Syn.subst ![u] init) u) :
+    Δ ⊢[PRAAx] I3 Inv (inst1 fuel u) (Run init step (inst1 fuel u) u) u := by
+  have atFuel := (guarded_trace_all hqf hstep u hbase).allE (inst1 fuel u)
+  simp only [Fm.subst_imp, subst_le, subst_I3, Syn.subst_var, Syn.inst_zero, subst_Run,
+    Syn.subst_inst_shift] at atFuel
+  exact .impE atFuel (le_refl _)
 
 end Trace
 

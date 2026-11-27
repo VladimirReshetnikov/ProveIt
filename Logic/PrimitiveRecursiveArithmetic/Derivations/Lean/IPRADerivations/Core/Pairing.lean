@@ -164,6 +164,12 @@ ipra_subst pairT
 ipra_subst fstT
 ipra_subst sndT
 
+/-- The quadratic pairing code is monotone in both entries. -/
+theorem pairT_mono {a b A B : PTm n} (ha : Γ ⊢[PRAAx] le a A) (hb : Γ ⊢[PRAAx] le b B) :
+    Γ ⊢[PRAAx] le (pairT a b) (pairT A B) := by
+  have sum := le_trans (add_le_add_right b ha) (add_le_add_left A hb)
+  exact le_trans (add_le_add_right a (sq_le_sq sum)) (add_le_add_left ((A + B) * (A + B)) ha)
+
 theorem isqrt_pair (a b : PTm n) : Γ ⊢[PRAAx] isqrt (pairT a b) ≐ a + b := by
   refine isqrt_unique (le_add_right _ _) ?_
   refine le_of_eq_add (d := a + succ (succ zero) * b) ?_
