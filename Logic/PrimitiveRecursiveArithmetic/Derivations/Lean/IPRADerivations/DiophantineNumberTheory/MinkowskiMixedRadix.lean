@@ -63,8 +63,7 @@ theorem positive_at (N W k : PTm n) (h : Γ ⊢[PRAAx] positive N W)
 theorem positive_prefix (N W k : PTm n) (h : Γ ⊢[PRAAx] positive N W)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx] positive k W := by
   refine .allI (.impI ?_)
-  have bounded : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift k) (Syn.shift N) := by
-    simpa only [Fm.shift, subst_le, Syn.shift] using hk.shift
+  have bounded := LeanProofs.IPRA.Order.shift_le hk
   have pos : Γ.map Fm.shift ⊢[PRAAx] positive (Syn.shift N) (Syn.shift W) := by
     simpa only [Fm.shift, subst_positive, Syn.shift] using h.shift
   exact positive_at _ _ _ pos.wk (lt_of_lt_of_le Prf.hyp0 bounded.wk)

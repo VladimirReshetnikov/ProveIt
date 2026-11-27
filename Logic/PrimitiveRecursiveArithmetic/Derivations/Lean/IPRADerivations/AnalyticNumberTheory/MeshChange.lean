@@ -42,8 +42,7 @@ theorem quo_scale {m M0 L : PTm n} (h1 : Γ ⊢[PRAAx] le (succ m) M0) (h2 : Γ 
 /-- `M₀! S(m, L!) = L! S(m, M₀!)` for `m ≤ M₀ ≤ L`. -/
 theorem S_denom {m M0 L : PTm n} (hm : Γ ⊢[PRAAx] le m M0) (h2 : Γ ⊢[PRAAx] le M0 L) :
     Γ ⊢[PRAAx] fact M0 * S m (fact L) ≐ fact L * S m (fact M0) := by
-  have h2' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift M0) (Syn.shift L) := by
-    simpa [Fm.shift, Syn.shift] using h2.shift
+  have h2' := LeanProofs.IPRA.Order.shift_le h2
   let P : Fm PTm (n + 1) :=
     fact (Syn.shift M0) * S (var 0) (fact (Syn.shift L)) ≐ fact (Syn.shift L) * S (var 0) (fact (Syn.shift M0))
   have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst m) := by

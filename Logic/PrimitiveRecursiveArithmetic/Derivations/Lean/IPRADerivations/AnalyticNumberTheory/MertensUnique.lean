@@ -259,8 +259,7 @@ theorem point (gP gN : PTm 2) {X y t : PTm n}
       simpa [Fm.shift, Syn.shift] using hW.shift
     have ht' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift t ≐ succ (pred (Syn.shift t)) := by
       simpa [Fm.shift, Syn.shift] using ht.shift
-    have htX' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift t) (Syn.shift X) := by
-      simpa [Fm.shift, Syn.shift] using htX.shift
+    have htX' := LeanProofs.IPRA.Order.shift_le htX
     have s1 : Syn.shift (pairT two (pairT t y)) = pairT two (pairT (Syn.shift t) (Syn.shift y)) := by
       simp [Syn.shift]
     have s2 : Syn.shift (pairT two t) = pairT two (Syn.shift t) := by simp [Syn.shift]

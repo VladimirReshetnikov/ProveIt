@@ -92,9 +92,8 @@ theorem none_of_least {x : PTm m} (h : Δ ⊢[PRAAx] bfWit B P x ≐ at1 B x) :
     Δ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift (at1 B x)) ⟶ neg (fmAt P (m + 1) (pairT (var 0) (Syn.shift x)))) := by
   refine .allI (.impI ?_)
   have h' : (Δ.map Fm.shift) ⊢[PRAAx] bfWit B P (Syn.shift x) ≐ Syn.shift (at1 B x) := by
-    have := h.shift
-    simp only [Fm.shift, Fm.subst_eq] at this
-    rw [← shift_bfWit]; exact this
+    rw [← shift_bfWit]
+    exact LeanProofs.IPRA.Order.shift_eq h
   exact bf_least B P (Syn.shift x) (var 0) (lt_congr (.eqRefl _) h'.wk.eqSymm Prf.hyp0)
 
 end Least

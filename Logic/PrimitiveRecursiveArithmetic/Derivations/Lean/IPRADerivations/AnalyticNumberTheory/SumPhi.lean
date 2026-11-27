@@ -136,10 +136,8 @@ theorem inst2_q (k N : PTm n) : inst2 qB k N = quo N (gcd k N) := by
   simp only [inst2, subst_ap2, subst_ex2, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
 
-theorem shift_eq' {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ.map Fm.shift ⊢[PRAAx] Syn.shift a ≐ Syn.shift b := by
-  have e := h.shift
-  simp only [Fm.shift, Fm.subst_eq] at e
-  exact e
+theorem shift_eq' {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ.map Fm.shift ⊢[PRAAx] Syn.shift a ≐ Syn.shift b :=
+  LeanProofs.IPRA.Order.shift_eq h
 
 theorem shift_mul' (a b : PTm n) : Syn.shift (a * b) = Syn.shift a * Syn.shift b := by simp [Syn.shift]
 

@@ -63,8 +63,7 @@ theorem rough_of_prime {Z m : PTm n} (hP : Γ ⊢[PRAAx] isP m ≐ one) (hZm : �
     simp only [Fm.shift, Fm.subst_eq, FactorVector.subst_isP, ConciseIPRA.PTm.subst_succ,
       ConciseIPRA.PTm.subst_zero] at h
     exact h
-  have hZ' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift Z) (Syn.shift m) := by
-    simpa [Fm.shift, Syn.shift] using hZm.shift
+  have hZ' := LeanProofs.IPRA.Order.shift_le hZm
   exact rB_zero hP'.wk hZ'.wk Prf.hyp0
 
 /-! ## At most `Z` numbers below `Z` -/

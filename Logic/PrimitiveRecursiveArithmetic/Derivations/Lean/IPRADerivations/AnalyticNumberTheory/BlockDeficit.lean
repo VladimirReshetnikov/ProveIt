@@ -177,8 +177,7 @@ theorem case_lo_sum (h12 : Γ ⊢[PRAAx] le D₁ D₂)
       le (two * (Syn.shift Ds * monus (Pm x K L) (Qm x L))) (Syn.shift A * Qm x L))) :
     Γ ⊢[PRAAx] le (A * Bs' fzB x D₁ D₂ A Ds K L + Ds * Bs' pzB x D₁ D₂ A Ds K L)
       (num 3 * Bs' gzB x D₁ D₂ A Ds K L + Ds * Bs' fzB x D₁ D₂ A Ds K L) := by
-  have h12' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift D₁) (Syn.shift D₂) := by
-    simpa [Fm.shift, Syn.shift] using h12.shift
+  have h12' := LeanProofs.IPRA.Order.shift_le h12
   refine sum_le_two _ _ _ _ _ _ _ _ _ _ (.allI (.impI ?_))
   simp only [shift_pairT, shift_fact', show Syn.shift (num 3 : PTm n) = num 3 by simp [Syn.shift, PTm.subst_num]]
   refine tw_cases (d := var 0) h12'.wk _ ?_ ?_
@@ -209,8 +208,7 @@ theorem case_hi_sum (h12 : Γ ⊢[PRAAx] le D₁ D₂)
       le (two * (Syn.shift Ds * monus (Qm x L) (Pm x K L))) (Syn.shift A * Qm x L))) :
     Γ ⊢[PRAAx] le (A * Bs' fzB x D₁ D₂ A Ds K L + Ds * Bs' fzB x D₁ D₂ A Ds K L)
       (num 3 * Bs' gzB x D₁ D₂ A Ds K L + Ds * Bs' pzB x D₁ D₂ A Ds K L) := by
-  have h12' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift D₁) (Syn.shift D₂) := by
-    simpa [Fm.shift, Syn.shift] using h12.shift
+  have h12' := LeanProofs.IPRA.Order.shift_le h12
   refine sum_le_two _ _ _ _ _ _ _ _ _ _ (.allI (.impI ?_))
   simp only [shift_pairT, shift_fact', show Syn.shift (num 3 : PTm n) = num 3 by simp [Syn.shift, PTm.subst_num]]
   refine tw_cases (d := var 0) h12'.wk _ ?_ ?_
@@ -239,8 +237,7 @@ theorem case_hi_sum (h12 : Γ ⊢[PRAAx] le D₁ D₂)
 theorem case_mid_sum (h12 : Γ ⊢[PRAAx] le D₁ D₂)
     (hb : Γ ⊢[PRAAx] OnBlock x D₁ D₂ (le (two * (Syn.shift Ds * absd (Pm x K L) (Qm x L))) (Syn.shift A * Qm x L))) :
     Γ ⊢[PRAAx] le (A * Bs' fzB x D₁ D₂ A Ds K L) (two * Bs' gzB x D₁ D₂ A Ds K L) := by
-  have h12' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift D₁) (Syn.shift D₂) := by
-    simpa [Fm.shift, Syn.shift] using h12.shift
+  have h12' := LeanProofs.IPRA.Order.shift_le h12
   refine sum_le_lin1 _ _ _ _ _ _ _ (.allI (.impI ?_))
   simp only [shift_pairT, shift_fact', show Syn.shift (two : PTm n) = two by simp [Syn.shift]]
   refine tw_cases (d := var 0) h12'.wk _ ?_ ?_

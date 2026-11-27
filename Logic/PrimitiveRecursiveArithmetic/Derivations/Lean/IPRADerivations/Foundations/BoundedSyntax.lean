@@ -217,9 +217,7 @@ theorem compile_correct (A : BFm n) : ∀ {m : ℕ} {Γ : List (Fm PTm m)}
     intro m Γ ρ y σ h
     have he := extend_correct ρ y σ h
     have body := ih (extend ρ) (pairT (var 0) (Syn.shift y)) (Syn.up σ) he
-    have hb := Prf.eqCongr b h
-    have hb' := hb.shift
-    simp only [Fm.shift, Fm.subst_eq] at hb'
+    have hb' := LeanProofs.IPRA.Order.shift_eq (Prf.eqCongr b h)
     have hbound : Γ.map Fm.shift ⊢[PRAAx]
         Syn.shift (BoundedFormulas.at1 (Syn.subst ρ b) y) ≐ Syn.shift (Syn.subst σ b) := by
       simpa only [at_subst, Syn.shift] using hb'
@@ -234,9 +232,7 @@ theorem compile_correct (A : BFm n) : ∀ {m : ℕ} {Γ : List (Fm PTm m)}
     intro m Γ ρ y σ h
     have he := extend_correct ρ y σ h
     have body := ih (extend ρ) (pairT (var 0) (Syn.shift y)) (Syn.up σ) he
-    have hb := Prf.eqCongr b h
-    have hb' := hb.shift
-    simp only [Fm.shift, Fm.subst_eq] at hb'
+    have hb' := LeanProofs.IPRA.Order.shift_eq (Prf.eqCongr b h)
     have hbound : Γ.map Fm.shift ⊢[PRAAx]
         Syn.shift (BoundedFormulas.at1 (Syn.subst ρ b) y) ≐ Syn.shift (Syn.subst σ b) := by
       simpa only [at_subst, Syn.shift] using hb'

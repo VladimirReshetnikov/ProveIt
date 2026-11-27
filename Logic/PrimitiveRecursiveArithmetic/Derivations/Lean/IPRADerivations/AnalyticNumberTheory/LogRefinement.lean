@@ -60,10 +60,8 @@ theorem const_le_sum (f : PTm 2) {N L x : PTm n}
   uniform_bound_le_sum f h
 
 theorem shift_eq {a b N : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
-    (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift a ≐ Syn.shift b := by
-  have s := h.shift
-  simp only [Fm.shift, Fm.subst_eq] at s
-  exact s.wk
+    (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift a ≐ Syn.shift b :=
+  (LeanProofs.IPRA.Order.shift_eq h).wk
 
 /-! ## Blocks -/
 

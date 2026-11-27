@@ -235,8 +235,7 @@ theorem scale_measure {M Q Q' R G w α γ β : PTm n} (hM : Γ ⊢[PRAAx] M ≐ 
   have hw1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Q * Syn.shift Q * Syn.shift w)
       (fact (Syn.shift R) * Syn.shift G) := by
     simpa [Fm.shift, Syn.shift] using hw.shift
-  have hQR1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Q) (Syn.shift R) := by
-    simpa [Fm.shift, Syn.shift] using hQR.shift
+  have hQR1 := LeanProofs.IPRA.Order.shift_le hQR
   refine packing_pt AK actK ?_ ?_
   · intro Δ a hs ha
     rw [show Syn.shift (tup M Q' (fact R * G) α γ β) = tup (Syn.shift M) (Syn.shift Q')

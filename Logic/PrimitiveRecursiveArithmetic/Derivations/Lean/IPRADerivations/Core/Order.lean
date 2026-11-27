@@ -53,6 +53,11 @@ theorem shift_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) :
     Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) := by
   simpa only [Fm.shift, subst_lt, Syn.shift] using h.shift
 
+/-- Shift a derived equality into the context with one fresh variable. -/
+theorem shift_eq {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
+    Γ.map Fm.shift ⊢[PRAAx] Syn.shift a ≐ Syn.shift b := by
+  simpa only [Fm.shift, Fm.subst_eq, Syn.shift] using h.shift
+
 theorem shift_one_le {a : PTm n} (h : Γ ⊢[PRAAx] le (succ zero) a) :
     Γ.map Fm.shift ⊢[PRAAx] le (succ zero) (Syn.shift a) := by
   simpa only [Syn.shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] using shift_le h

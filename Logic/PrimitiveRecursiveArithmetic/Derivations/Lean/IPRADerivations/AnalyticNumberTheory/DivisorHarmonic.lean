@@ -78,8 +78,7 @@ theorem sumC (m F y : PTm n) : Γ ⊢[PRAAx] ap2 (sumF Cb) m (pairT F y) ≐ F *
 theorem floor_sum {m y L : PTm n} (hmL : Γ ⊢[PRAAx] le m L) :
     Γ ⊢[PRAAx] le (fact L * S m y) (y * S m (fact L)) ⋏
       le (y * S m (fact L)) (fact L * S m y + fact L * m) := by
-  have hmL' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift m) (Syn.shift L) := by
-    simpa [Fm.shift, Syn.shift] using hmL.shift
+  have hmL' := LeanProofs.IPRA.Order.shift_le hmL
   have ptw : ∀ (_ : Unit), (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift) ⊢[PRAAx]
       le (fact (Syn.shift L) * quo (Syn.shift y) (succ (var 0))) (Syn.shift y * quo (fact (Syn.shift L)) (succ (var 0))) ⋏
       le (Syn.shift y * quo (fact (Syn.shift L)) (succ (var 0)))

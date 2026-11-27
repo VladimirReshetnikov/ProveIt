@@ -98,10 +98,8 @@ theorem shift_le {a b N : PTm n} (h : Γ ⊢[PRAAx] le a b) :
   exact s.wk
 
 theorem shift_eq {a b N : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
-    (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift a ≐ Syn.shift b := by
-  have s := h.shift
-  simp only [Fm.shift, Fm.subst_eq] at s
-  exact s.wk
+    (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift a ≐ Syn.shift b :=
+  (LeanProofs.IPRA.Order.shift_eq h).wk
 
 theorem shift_fst_eq {z Q N : PTm n} (h : Γ ⊢[PRAAx] fstT z ≐ Q) :
     (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] fstT (Syn.shift z) ≐ Syn.shift Q := by

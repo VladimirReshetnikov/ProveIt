@@ -119,8 +119,8 @@ theorem G_split {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hc : Γ ⊢[PRAAx] g
 /-! ## The scaling -/
 
 theorem shift_le' {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
-    Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) := by
-  simpa [Fm.shift, Syn.shift] using h.shift
+    Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift a) (Syn.shift b) :=
+  LeanProofs.IPRA.Order.shift_le h
 
 /-- **The scaling**: `G_a(⌊t/p⌋ + 1) = (p − 1) W(t)` for `t ≤ z`. -/
 theorem W_scale {p a z t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hc : Γ ⊢[PRAAx] gcd p a ≐ one)
