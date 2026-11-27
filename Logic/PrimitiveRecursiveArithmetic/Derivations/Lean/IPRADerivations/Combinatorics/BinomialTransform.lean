@@ -26,8 +26,7 @@ namespace LeanProofs.IPRA.Combinatorics.BinomialTransform
 
 open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial
-open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero' binom_self' pascal_at)
-open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrBinom)
+open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero')
 open LeanProofs.IPRA.Combinatorics.Fibonacci
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
@@ -42,12 +41,8 @@ abbrev bgB (g : PTm 2) : PTm 2 :=
   binom (fstT (var 1)) (var 0) * Syn.subst ![var 0, sndT (var 1)] g
 
 theorem inst2_bg (g : PTm 2) (k y : PTm n) :
-    inst2 (bgB g) k y = binom (fstT y) k * inst2 g k (sndT y) := by
-  have h : Syn.subst ![k, y] (Syn.subst ![var 0, sndT (var 1)] g) = inst2 g k (sndT y) := by
-    simp only [inst2, Syn.subst_subst]
-    congr 1; funext j; fin_cases j <;> simp
-  simp only [inst2, PTm.subst_mul, h]
-  simp [inst2]
+    inst2 (bgB g) k y = binom (fstT y) k * inst2 g k (sndT y) :=
+  BinomialTheorem.inst2_weighted g k y
 
 theorem inst2_sbg (g : PTm 2) (k y : PTm n) :
     inst2 (shiftBody (bgB g)) k y = binom (fstT y) (succ k) * inst2 g (succ k) (sndT y) := by
@@ -59,50 +54,14 @@ theorem inst2_bgs (g : PTm 2) (k y : PTm n) :
 
 theorem pas_pt (g : PTm 2) {k m x : PTm n} (h : Γ ⊢[PRAAx] lt k m) :
     Γ ⊢[PRAAx] inst2 (shiftBody (bgB g)) k (pairT (succ m) x) ≐
-      inst2 (addBody (shiftBody (bgB g)) (bgB (shiftBody g))) k (pairT m x) := by
-  rw [inst2_addBody, inst2_sbg, inst2_sbg, inst2_bgs]
-  have c₁ : Γ ⊢[PRAAx] binom (fstT (pairT (succ m) x)) (succ k) * inst2 g (succ k) (sndT (pairT (succ m) x)) ≐
-      binom (succ m) (succ k) * inst2 g (succ k) x :=
-    congrMul (congrBinom (fst_pair _ _) (.eqRefl _)) (congrInst2 g (.eqRefl _) (snd_pair _ _))
-  have c₂ : Γ ⊢[PRAAx] binom (fstT (pairT m x)) (succ k) * inst2 g (succ k) (sndT (pairT m x)) +
-      binom (fstT (pairT m x)) k * inst2 g (succ k) (sndT (pairT m x)) ≐
-      binom m (succ k) * inst2 g (succ k) x + binom m k * inst2 g (succ k) x :=
-    congrAdd (congrMul (congrBinom (fst_pair _ _) (.eqRefl _)) (congrInst2 g (.eqRefl _) (snd_pair _ _)))
-      (congrMul (congrBinom (fst_pair _ _) (.eqRefl _)) (congrInst2 g (.eqRefl _) (snd_pair _ _)))
-  refine c₁.eqTrans (.eqTrans ?_ c₂.eqSymm)
-  ipra_lc 𝔞(inst2 g (succ k) x) * natEq (pascal_at h)
+      inst2 (addBody (shiftBody (bgB g)) (bgB (shiftBody g))) k (pairT m x) :=
+  BinomialTheorem.weighted_pascal_at g h
 
 /-- `B_{m+1}[g] = B_m[g] + B_m[g(· + 1)]`. -/
 theorem pascal_sum (g : PTm 2) (m x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF (bgB g)) (succ (succ m)) (pairT (succ m) x) ≐
-      ap2 (sumF (bgB g)) (succ m) (pairT m x) + ap2 (sumF (bgB (shiftBody g))) (succ m) (pairT m x) := by
-  have E0 := natEq (sum_shift (Γ := Γ) (bgB g) (succ m) (pairT (succ m) x))
-  have E1 := natEq (sum_succ' (Γ := Γ) (shiftBody (bgB g)) m (pairT (succ m) x))
-  have E2' : Γ ⊢[PRAAx] ap2 (sumF (shiftBody (bgB g))) m (pairT (succ m) x) ≐
-      ap2 (sumF (addBody (shiftBody (bgB g)) (bgB (shiftBody g)))) m (pairT m x) := by
-    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
-    simp only [Syn.shift, subst_pairT, ConciseIPRA.PTm.subst_succ]
-    exact pas_pt g Prf.hyp0
-  have E2 := natEq E2'
-  have E3 := natEq (sum_add (Γ := Γ) (shiftBody (bgB g)) (bgB (shiftBody g)) m (pairT m x))
-  have E4 := natEq (sum_shift (Γ := Γ) (bgB g) m (pairT m x))
-  have E5 := natEq (sum_succ' (Γ := Γ) (bgB (shiftBody g)) m (pairT m x))
-  -- The bottom terms: `C(m + 1, 0) g(0) = C(m, 0) g(0)`.
-  have T0' : Γ ⊢[PRAAx] inst2 (bgB g) zero (pairT (succ m) x) ≐ inst2 (bgB g) zero (pairT m x) := by
-    rw [inst2_bg, inst2_bg]
-    exact (congrMul (binom_zero' _) (congrInst2 g (.eqRefl _) (snd_pair _ _))).eqTrans
-      (congrMul (binom_zero' _) (congrInst2 g (.eqRefl _) (snd_pair _ _))).eqSymm
-  -- The top terms: `C(m + 1, m + 1) g(m + 1) = C(m, m) g(m + 1)`.
-  have T1' : Γ ⊢[PRAAx] inst2 (shiftBody (bgB g)) m (pairT (succ m) x) ≐
-      inst2 (bgB (shiftBody g)) m (pairT m x) := by
-    rw [inst2_sbg, inst2_bgs]
-    exact (congrMul ((congrBinom (fst_pair _ _) (.eqRefl _)).eqTrans (binom_self' _))
-        (congrInst2 g (.eqRefl _) (snd_pair _ _))).eqTrans
-      (congrMul ((congrBinom (fst_pair _ _) (.eqRefl _)).eqTrans (binom_self' _))
-        (congrInst2 g (.eqRefl _) (snd_pair _ _))).eqSymm
-  have T0 := natEq T0'; have T1 := natEq T1'
-  apply deriveNat; ipra_simps
-  linear_combination E0 + T0 + E1 + E2 + E3 + T1 - E4 - E5
+      ap2 (sumF (bgB g)) (succ m) (pairT m x) + ap2 (sumF (bgB (shiftBody g))) (succ m) (pairT m x) :=
+  BinomialTheorem.weighted_pascal_sum g m x
 
 /-! ## The Fibonacci convolution -/
 

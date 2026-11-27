@@ -6,9 +6,9 @@ import IPRADerivations.Combinatorics.BinomialIdentities
 `∑_{k ≤ m} C(m, k) aᵏ = (a + 1)ᵐ`.
 
 Bounded sums take one parameter, so the body reads `m` and `a` from the pair
-`x = ⟨m, a⟩`: the summand is `C(fst x, k) · (snd x)ᵏ`. The induction on `m` follows
-`binom_sum_open`: shift the index, apply Pascal's rule below the top term, and split the
-sum, with one new step that pulls the factor `snd x = a` out of a sum.
+`x = ⟨m, a⟩`: the summand is `C(fst x, k) · (snd x)ᵏ`. The weighted Pascal
+sum splits each successor row. For the power weight, shifting the index
+multiplies the sum by `a`.
 -/
 
 set_option linter.unusedSimpArgs false
@@ -29,6 +29,67 @@ theorem congrBinom {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : �
 
 theorem congrPw {a a' b b' : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
     Γ ⊢[PRAAx] pw a b ≐ pw a' b' := congrAp2 powF h₂ h₁
+
+/-! ## Pascal's rule for weighted sums -/
+
+/-- The binomial weight at index `k`, with the upper index and the weight's
+parameter stored as a pair. -/
+abbrev weightedBody (g : PTm 2) : PTm 2 :=
+  binom (fstT (var 1)) (var 0) * Syn.subst ![var 0, sndT (var 1)] g
+
+theorem inst2_weighted (g : PTm 2) (k y : PTm n) :
+    inst2 (weightedBody g) k y = binom (fstT y) k * inst2 g k (sndT y) := by
+  have h : Syn.subst ![k, y] (Syn.subst ![var 0, sndT (var 1)] g) = inst2 g k (sndT y) := by
+    simp only [inst2, Syn.subst_subst]
+    congr 1
+    funext j
+    fin_cases j <;> simp
+  simp only [weightedBody, inst2, PTm.subst_mul, h]
+  simp [inst2]
+
+theorem weighted_at (g : PTm 2) (k m x : PTm n) :
+    Γ ⊢[PRAAx] inst2 (weightedBody g) k (pairT m x) ≐ binom m k * inst2 g k x := by
+  rw [inst2_weighted]
+  exact congrMul (congrBinom (fst_pair _ _) (.eqRefl _)) (congrInst2 g (.eqRefl _) (snd_pair _ _))
+
+theorem weighted_pascal_at (g : PTm 2) {k m x : PTm n} (h : Γ ⊢[PRAAx] lt k m) :
+    Γ ⊢[PRAAx] inst2 (shiftBody (weightedBody g)) k (pairT (succ m) x) ≐
+      inst2 (addBody (shiftBody (weightedBody g)) (weightedBody (shiftBody g))) k (pairT m x) := by
+  rw [inst2_addBody, inst2_shiftBody, inst2_shiftBody]
+  have right := weighted_at (Γ := Γ) (shiftBody g) k m x
+  rw [inst2_shiftBody] at right
+  refine (weighted_at g (succ k) (succ m) x).eqTrans
+    (.eqTrans ?_ (congrAdd (weighted_at g (succ k) m x) right).eqSymm)
+  ipra_lc Groth.ι (IPRA.Q.mk Γ (inst2 g (succ k) x)) * natEq (pascal_at h)
+
+/-- The binomial transform at `m+1` splits into the transforms at `m` of
+the weight and its successor shift. -/
+theorem weighted_pascal_sum (g : PTm 2) (m x : PTm n) :
+    Γ ⊢[PRAAx] ap2 (sumF (weightedBody g)) (succ (succ m)) (pairT (succ m) x) ≐
+      ap2 (sumF (weightedBody g)) (succ m) (pairT m x) +
+        ap2 (sumF (weightedBody (shiftBody g))) (succ m) (pairT m x) := by
+  have interior : Γ ⊢[PRAAx] ap2 (sumF (shiftBody (weightedBody g))) m (pairT (succ m) x) ≐
+      ap2 (sumF (addBody (shiftBody (weightedBody g)) (weightedBody (shiftBody g)))) m (pairT m x) := by
+    refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
+    simp only [Syn.shift, subst_pairT, ConciseIPRA.PTm.subst_succ]
+    exact weighted_pascal_at g Prf.hyp0
+  have bottom : Γ ⊢[PRAAx] inst2 (weightedBody g) zero (pairT (succ m) x) ≐
+      inst2 (weightedBody g) zero (pairT m x) :=
+    (weighted_at g zero (succ m) x).eqTrans
+      ((congrMul ((binom_zero' _).eqTrans (binom_zero' _).eqSymm) (.eqRefl _)).eqTrans
+        (weighted_at g zero m x).eqSymm)
+  have top : Γ ⊢[PRAAx] inst2 (shiftBody (weightedBody g)) m (pairT (succ m) x) ≐
+      inst2 (weightedBody (shiftBody g)) m (pairT m x) := by
+    rw [inst2_shiftBody]
+    have right := weighted_at (Γ := Γ) (shiftBody g) m m x
+    rw [inst2_shiftBody] at right
+    exact (weighted_at g (succ m) (succ m) x).eqTrans
+      ((congrMul ((binom_self' _).eqTrans (binom_self' _).eqSymm) (.eqRefl _)).eqTrans right.eqSymm)
+  ipra_lc natEq (sum_shift (Γ := Γ) (weightedBody g) (succ m) (pairT (succ m) x)) +
+    natEq (sum_succ' (Γ := Γ) (shiftBody (weightedBody g)) m (pairT (succ m) x)) + natEq interior +
+    natEq (sum_add (Γ := Γ) (shiftBody (weightedBody g)) (weightedBody (shiftBody g)) m (pairT m x)) -
+    natEq (sum_shift (Γ := Γ) (weightedBody g) m (pairT m x)) -
+    natEq (sum_succ' (Γ := Γ) (weightedBody (shiftBody g)) m (pairT m x)) + natEq bottom + natEq top
 
 /-! ## Bodies; variables `0 = k`, `1 = x` -/
 
@@ -70,6 +131,22 @@ theorem sum_mul_snd (f : PTm 2) (N x : PTm n) :
   have h := inst (Γ := Γ) (sum_mul_snd₀ f) (![N, x] : Fin 2 → PTm n)
   simpa using h
 
+private abbrev powerWeight : PTm 2 := pw (var 1) (var 0)
+
+private theorem weighted_power_body : weightedBody powerWeight = tBody := by
+  simp [weightedBody, powerWeight, tBody]
+
+private theorem shifted_power_weight_sum (N x : PTm n) :
+    Γ ⊢[PRAAx] ap2 (sumF (weightedBody (shiftBody powerWeight))) N x ≐ sndT x * ap2 (sumF tBody) N x := by
+  refine (sum_congr_bounded (weightedBody (shiftBody powerWeight)) aBody x x N (.allI (.impI ?_))).eqTrans
+    (sum_mul_snd tBody N x)
+  rw [inst2_weighted, inst2_shiftBody, inst2_a]
+  have read : inst2 powerWeight (succ (var 0)) (sndT (Syn.shift x)) =
+      pw (sndT (Syn.shift x)) (succ (var 0)) := by simp [inst2]
+  rw [read]
+  ipra_lc Groth.ι (IPRA.Q.mk _ (binom (fstT (Syn.shift x)) (var 0))) *
+    natEq (pw_succ (sndT (Syn.shift x)) (var 0))
+
 /-! ## The theorem -/
 
 /-- `∑_{k ≤ m} C(m, k) aᵏ = (a + 1)ᵐ`, with the summand reading `m, a` from `⟨m, a⟩`;
@@ -86,61 +163,17 @@ theorem binomial_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] binomThmFormula := by
       withEq (pw_zero (Γ := []) (sndT (pairT (zero : PTm 1) (var 0)))) fun e₃ =>
       withEq (pw_zero (Γ := []) (succ (var 0) : PTm 1)) fun e₄ => ?_
     apply deriveNat; ipra_simps; rw [e₁, e₂, e₃, e₄]; ring
-  · -- `X = ⟨m, a⟩`, `X' = ⟨m + 1, a⟩`.
-    generalize hΓ : ([binomThmFormula] : List (Fm PTm 2)) = Γ₀
+  · generalize hΓ : ([binomThmFormula] : List (Fm PTm 2)) = Γ₀
     have ih : Γ₀ ⊢[PRAAx] binomThmFormula := hΓ ▸ Prf.hyp0
-    have fX := fst_pair (Γ := Γ₀) (var 0 : PTm 2) (var 1)
-    have sX := snd_pair (Γ := Γ₀) (var 0 : PTm 2) (var 1)
-    have fX' := fst_pair (Γ := Γ₀) (succ (var 0) : PTm 2) (var 1)
-    have sX' := snd_pair (Γ := Γ₀) (succ (var 0) : PTm 2) (var 1)
-    -- E0: the shifted sum.
-    have E0 := sum_shift (Γ := Γ₀) tBody (succ (var 0)) (pairT (succ (var 0)) (var 1))
-    rw [inst2_t] at E0
-    have T0 := (congrMul (binom_zero' (Γ := Γ₀) (fstT (pairT (succ (var 0)) (var 1))))
-      (pw_zero (Γ := Γ₀) (sndT (pairT (succ (var 0)) (var 1)))))
-    -- E1: the top term of the shifted sum.
-    have E1 := sum_succ' (Γ := Γ₀) (shiftBody tBody) (var 0) (pairT (succ (var 0)) (var 1))
-    rw [inst2_s] at E1
-    have T1 := congrMul ((congrBinom fX' (.eqRefl _)).eqTrans (binom_self' _))
-      (congrPw sX' (.eqRefl (succ (var 0) : PTm 2)))
-    -- E2: Pascal's rule below the top.
-    have E2 : Γ₀ ⊢[PRAAx] ap2 (sumF (shiftBody tBody)) (var 0) (pairT (succ (var 0)) (var 1)) ≐
-        ap2 (sumF hBody) (var 0) (pairT (var 0) (var 1)) := by
-      refine sum_congr_bounded _ _ _ _ _ (.allI ?_)
-      simp only [inst2_s, inst2_h, Syn.shift, subst_pairT, ConciseIPRA.PTm.subst_succ, Syn.subst_var]
-      refine .impI ?_
-      have p := pascal_at (Prf.hyp0 : (lt (var 0) (var (Fin.succ 0)) :: Γ₀.map Fm.shift) ⊢[PRAAx] _)
-      have f₁ := fst_pair (Γ := lt (var 0) (var (Fin.succ 0)) :: Γ₀.map Fm.shift)
-        (succ (var (Fin.succ 0)) : PTm 3) (var (Fin.succ 1))
-      have f₂ := fst_pair (Γ := lt (var 0) (var (Fin.succ 0)) :: Γ₀.map Fm.shift)
-        (var (Fin.succ 0) : PTm 3) (var (Fin.succ 1))
-      have s₁ := snd_pair (Γ := lt (var 0) (var (Fin.succ 0)) :: Γ₀.map Fm.shift)
-        (succ (var (Fin.succ 0)) : PTm 3) (var (Fin.succ 1))
-      have s₂ := snd_pair (Γ := lt (var 0) (var (Fin.succ 0)) :: Γ₀.map Fm.shift)
-        (var (Fin.succ 0) : PTm 3) (var (Fin.succ 1))
-      refine (congrMul ((congrBinom f₁ (.eqRefl _)).eqTrans p) (congrPw s₁ (.eqRefl _))).eqTrans ?_
-      refine .eqTrans ?_ (congrAdd (congrMul s₂ (congrMul (congrBinom f₂ (.eqRefl _))
-        (congrPw s₂ (.eqRefl _)))) (congrMul (congrBinom f₂ (.eqRefl _)) (congrPw s₂ (.eqRefl _)))).eqSymm
-      refine withEq (pw_succ (Γ := lt (var 0) (var (Fin.succ 0)) :: Γ₀.map Fm.shift)
-        (var (Fin.succ 1) : PTm 3) (var 0)) fun e => ?_
-      apply deriveNat; ipra_simps; rw [e]; ring
-    -- E3, E4: split the sum and pull out `a`.
-    have E3 := sum_add (Γ := Γ₀) aBody (shiftBody tBody) (var 0) (pairT (var 0) (var 1))
-    have E4 := (sum_mul_snd (Γ := Γ₀) tBody (var 0) (pairT (var 0) (var 1))).eqTrans
-      (congrMul sX (.eqRefl _))
-    -- E5, E6: the unshifted sum, by its top term and by its bottom term.
-    have E5 := sum_succ' (Γ := Γ₀) tBody (var 0) (pairT (var 0) (var 1))
-    rw [inst2_t] at E5
-    have T5 := congrMul ((congrBinom fX (.eqRefl _)).eqTrans (binom_self' _))
-      (congrPw sX (.eqRefl (var 0 : PTm 2)))
-    have E6 := sum_shift (Γ := Γ₀) tBody (var 0) (pairT (var 0) (var 1))
-    rw [inst2_t] at E6
-    have T6 := congrMul (binom_zero' (Γ := Γ₀) (fstT (pairT (var 0) (var 1))))
-      (pw_zero (Γ := Γ₀) (sndT (pairT (var 0) (var 1))))
-    have P1 := pw_succ (Γ := Γ₀) (var 1 : PTm 2) (var 0)
-    have P2 := pw_succ (Γ := Γ₀) (succ (var 1) : PTm 2) (var 0)
-    ipra_lc natEq E0 + natEq T0 + natEq E1 + natEq T1 + natEq E2 + natEq E3 + natEq E4 + natEq P1 - natEq E6 -
-      natEq T6 - (V Γ₀ 1) * (natEq E5 + natEq T5) + (1 + V Γ₀ 1) * natEq ih - natEq P2
+    let m : PTm 2 := var 0
+    let a : PTm 2 := var 1
+    have step : Γ₀ ⊢[PRAAx] ap2 (sumF tBody) (succ (succ m)) (pairT (succ m) a) ≐
+        ap2 (sumF tBody) (succ m) (pairT m a) +
+          ap2 (sumF (weightedBody (shiftBody powerWeight))) (succ m) (pairT m a) := by
+      simpa only [weighted_power_body] using weighted_pascal_sum (Γ := Γ₀) powerWeight m a
+    have scale := (shifted_power_weight_sum (Γ := Γ₀) (succ m) (pairT m a)).eqTrans
+      (congrMul (snd_pair m a) (.eqRefl _))
+    ipra_lc natEq step + natEq scale + (1 + V Γ₀ 1) * natEq ih - natEq (pw_succ (Γ := Γ₀) (succ a) m)
 
 theorem binomial : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 binomThmFormula := closeUniv 2 binomial_open
 
