@@ -1,0 +1,329 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1.05in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{xcolor}
+\hypersetup{pdftitle={A sharp typical-residue threshold for squarefree products of small primes},pdfauthor={Research note for the ProveIt project}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Pp}{\mathbb P}\newcommand{\Z}{\mathbb Z}
+\newcommand{\TV}{\operatorname{TV}}\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\norm}[1]{\lVert#1\rVert}\newcommand{\floor}[1]{\lfloor#1\rfloor}\newcommand{\ceil}[1]{\lceil#1\rceil}
+\newcommand{\G}{\mathcal G}\newcommand{\PP}{\mathcal P}\newcommand{\HH}{\mathcal H}
+\title{A sharp typical-residue threshold for squarefree products of small primes after adversarial deletion\\[4pt]\large Quotient laws and disjoint multi-product representations}
+\author{Research note for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove a uniform mean-square quotient law for fixed-cardinality products of distinct primes, after retaining an arbitrary positive fraction of the prime pool. Put $L=\log q$ and take primes at most $L^A$, $A>2$. Under Dirichlet GRH the law holds for $\min(k,m-k)>(c_G+\epsilon)L/\log L$, where $m$ is the retained size and $c_G=(A-1)/(A(A-2))$. Unconditionally, for all but a power-saving number of prime moduli in a dyadic interval, the threshold improves to $c_*=1/(A-1)$, which is sharp to first order for typical residues. The only macroscopic obstruction is a quotient of order at most the reciprocal of the retained density. For a retained majority, the law gives near-uniform counts on almost all units. It also gives asymptotic independence of a growing number of products with pairwise disjoint prime factors, even when their union consumes any fixed fraction less than one of the retained pool. The proof upgrades the Fourier-moment approach in the merged ProveIt article from an absolute Fourier sum to a quadratic error, and uses a random-remainder argument for the joint theorem. All results are proved here in ordinary classical mathematics, with the Dirichlet-GRH input isolated explicitly.
+\end{abstract}
+\section{Input, scope, and comparison with the source}
+The specified vendor directory contains the readable edition of \texttt{lsernau/grh-lean}, pinned, according to its README, to upstream commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207} (25 November 2026). The two relevant files are \texttt{src/Statements.lean} and \texttt{src/Main.lean} \cite{vendor}. In particular, the former defines \texttt{DirichletLNonvanishingRightOfHalf} using Mathlib's Dirichlet $L$-function, and the latter exports \texttt{LFunction\_ne\_zero\_of\_half\_lt\_re} of that type, via \texttt{New.grh}. The export covers every modulus $N\ge1$, primitive and imprimitive characters, excluding the principal-character pole at $s=1$. The critical-strip formulation is also exported as \texttt{LFunction\_eq\_zero\_re}. In \texttt{New/Main.lean}, symmetry supplies the left-half-plane implication; \texttt{New/Reduction/OneSidedBound.lean} supplies the half-plane assertion from a one-sided prime remainder estimate.
+
+The upstream README reports successful builds, kernel replay by external checkers, and the three standard axioms \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}. These are reported claims, not checks performed for this note. The vendor is a separate Lean 4.35.0 package; a root ProveIt build does not verify it. We did not replay the proof or inspect all its dependencies. The conditional theorem below is a deduction from the precise classical Dirichlet GRH statement, regardless of the eventual verification status of the vendor. The unconditional theorem needs no zero hypothesis.
+
+The companion article \cite{merged} explicitly takes the input theorem as given; its README describes a merge of 131 reports, not an independent verification. The closest predecessor is \texttt{sections/dir.tex}, subsection \texttt{dir:sec:products}. In particular \texttt{dir:thm:quotient} establishes a bounded quotient for fixed-density deletions, \texttt{dir:thm:short} uses a threshold $2(A-1)/(A(A-2))$ for a pointwise quotient law, and \texttt{dir:cor:almostshort} improves the pointwise threshold to $2/(A-1)$ for almost all prime moduli. The present note does not claim a lower threshold for that same pointwise conclusion. It proves the corresponding \emph{typical-residue} theorem with half the leading constants, proves the unconditional threshold optimal for this objective, and establishes joint laws for disjoint blocks. We give proofs of the finite-group lemmas rather than assuming the article's results correct.
+
+\section{Main statements}
+\label{sec:main}
+We formulate both analytic regimes using a common scale $X\to\infty$. Set
+\[
+ L=\log X,\qquad \ell=\log L,\qquad y=L^A,\qquad
+ G_q=(\Z/q\Z)^\times,\quad n_q=\varphi(q),
+\]
+where $X\le q\le2X$, $q$ is an integer, and $\PP_q=\{p\le y:p\text{ prime},\ p\nmid q\}$ has size $N$. Distinct primes are distinct labels, even if their residues coincide. For $S\subseteq\PP_q$ of size $m\ge aN$, with fixed $0<a\le1$, let $T$ be a uniformly random $k$-subset of $S$ and let
+\[
+ \mu_{S,k}(g)=\Pp\left(\prod_{p\in T}p=g\text{ in }G_q\right),\qquad h=\min(k,m-k).
+\]
+Write $b_\chi(S)=|m^{-1}\sum_{p\in S}\chi(p)|$ for a character of $G_q$. For a small fixed $\tau>0$, define
+\[
+ H=\langle\chi\in\widehat G_q:b_\chi(S)>1-\tau\rangle,
+ \quad K=\bigcap_{\chi\in H}\ker\chi,
+ \quad \pi:G_q\to G_q/K,\quad d=|H|.
+\]
+The finite quotient distribution is $\lambda_{S,k}(v)=\sum_{\pi(g)=v}\mu_{S,k}(g)$. Put $F_{S,k}(g)=d\lambda_{S,k}(\pi(g))$, the density of the distribution obtained by making each quotient fibre uniform without changing its mass.
+
+\begin{theorem}[Robust quadratic quotient law]\label{thm:main}
+Fix $A>2$, $a>0$ with $a\le1$, and $c>0$. Assume one of the following regimes.
+\begin{enumerate}
+\item Dirichlet GRH, and $c>c_G=(A-1)/(A(A-2))$. Every integer $q\in[X,2X]$ is allowed.
+\item No zero hypothesis, and $c>c_*=1/(A-1)$. There is $\eta>0$ such that all but $O(X^{1-\eta})$ primes $q\in[X,2X]$ are allowed. The exceptional set depends on $A,c,X$, not on $S,k$.
+\end{enumerate}
+There exist $\tau>0$ and $\gamma>0$, depending only on the fixed parameters, such that for all sufficiently large $X$, all allowed $q$, all $S\subseteq\PP_q$ with $m\ge aN$, and all $1\le k<m$ with $h\ge c L/\ell$, the quotient above has $d\le\floor{1/a}$ and
+\begin{equation}\label{eq:main}
+ \frac1{n_q}\sum_{g\in G_q}\left|n_q\mu_{S,k}(g)-F_{S,k}(g)\right|^2\le e^{-\gamma h}.
+\end{equation}
+In particular the total variation distance from the quotient-lifted law is at most $\tfrac12 e^{-\gamma h/2}$. The quotient is independent of $k$. Every unreachable quotient fibre has zero mass exactly; in every reachable fibre, all but at most $e^{-\gamma h/4}$ of its elements, as a fraction of the fibre, satisfy
+\begin{equation}\label{eq:relative}
+ \mu_{S,k}(g)=\frac{d\lambda_{S,k}(\pi(g))}{n_q}(1+\theta_g),\qquad
+ |\theta_g|\le e^{-\gamma h/4}.
+\end{equation}
+The last conclusion holds after increasing the sufficiently-large threshold if necessary.
+\end{theorem}
+
+\begin{corollary}[Majority and small representatives]\label{cor:majority}
+If $a>1/2$, then $d=1$. Hence, in the regimes of Theorem~\ref{thm:main}, for $k=\ceil{cL/\ell}$ all but a fraction $e^{-\gamma k/4}$ of units have
+\[
+ \#\{T\subseteq S: |T|=k,\ \prod_{p\in T}p\equiv g\pmod q\}
+ =\frac{\binom{m}{k}}{\varphi(q)}(1+O(e^{-\gamma k/4})).
+\]
+In particular almost every unit has a squarefree representative of size at most $X^{Ac+o(1)}$, with all its prime factors in $S$. For every fixed $\epsilon>0$ the size exponents may be chosen as
+\[
+ \frac{A-1}{A-2}+\epsilon\quad\text{(GRH, all moduli)},\qquad
+ \frac A{A-1}+\epsilon\quad\text{(unconditional, almost all prime moduli)}.
+\]
+\end{corollary}
+\begin{proof}
+A quotient of order at most $\floor{1/a}=1$ is trivial. Also $k=o(m)$, so $h=k$ for large $X$. The product is at most $y^k=\exp(Ak\ell)=X^{Ac+o(1)}$; choose $c$ strictly above the indicated threshold and sufficiently close to it.
+\end{proof}
+
+\begin{theorem}[Sharpness at the entropy threshold]\label{thm:sharp}
+Let $0<c<c_*$ and let $q\in[X,2X]$ be prime. For every $S\subseteq\PP_q$ and every $k$ with $0\le h=\min(k,m-k)\le c L/\ell$, the fraction of attainable units tends to zero, uniformly in $q,S,k$. Its total variation distance from \emph{any} distribution uniform within the fibres of a quotient of bounded order tends to one. Thus $c_*$ is the optimal first-order threshold for typical-residue mixing in the unconditional almost-all-prime-moduli regime, even without deletions.
+\end{theorem}
+\begin{proof}
+Complementation of subsets bijectively transforms support by inversion and translation. Thus support has size at most $\binom{m}{h}\le\binom{N}{h}$. For $h_0=\floor{cL/\ell}$, $h_0<N/2$ eventually; the latter is bounded by $\binom{N}{h_0}$ (including $h=0$). Since $N\sim L^A/(A\ell)$, the standard inequality $\binom{N}{h_0}\le(eN/h_0)^{h_0}$ gives $\binom{N}{h_0}\le X^{c(A-1)+o(1)}=o(X)$. For prime $q$, $n_q=q-1\asymp X$. A distribution uniform within fibres of a quotient of order $d=O(1)$ assigns each unit mass at most $d/n_q$. Its mass on the attainable set is $o(1)$, proving the variation lower bound $1-o(1)$.
+\end{proof}
+
+\section{Analytic moment input}
+\label{sec:analytic}
+The following lemma supplies both the small individual character biases and a moment bound for the whole prime pool. The cutoff scale $y$ is the same in both regimes.
+\begin{lemma}[Prime-pool moment]\label{lem:analytic}
+In either regime of Theorem~\ref{thm:main}, choose $c'$ strictly between the corresponding threshold and $c$; in the unconditional regime require additionally $c'<2/A$, possible because $A>2$. Set $t=\ceil{c'L/\ell}$. There is $\eta>0$ such that, uniformly in all allowed $q$,
+\begin{equation}\label{eq:moment}
+ N\sim \frac{L^A}{A\ell},\qquad
+ \sum_{\chi\ne1} b_\chi(\PP_q)^{2t}\le X^{-\eta},\qquad
+ \rho:=\max_{\chi\ne1} b_\chi(\PP_q)=o(1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The prime number theorem gives the first estimate since at most $\log(2X)/\log2$ primes divide $q$. This also shows uniformity in $q$.
+
+\emph{GRH regime.} The classical explicit-formula estimate, in the form obtained by partial summation from \cite[Eq.~(2.6)]{jmv}, is
+\[
+ \left|\sum_{p\le u}\chi(p)\right|\ll \sqrt u\,\log(2qu) \quad (u\ge2,\ \chi\ne1).
+\]
+Only Dirichlet $L$-functions are used here (the degree-one specialization of the cited estimate). Passing from a primitive inducing character to an imprimitive character removes at most $O(\log q)$ prime terms, absorbed by the bound. With $u=y$ and $q\asymp X$, this gives $\rho\le L^{1-A/2+o(1)}$.
+
+Let $j=\floor{\log(q-1)/\log y}$. Products of $j$ pool primes, with repetitions allowed, are at most $q-1$, so two such products are congruent precisely when equal. By unique factorization an ordered $j$-tuple has at most $j!$ equal-product partners. Character orthogonality, applied to the squared $j$th power of the character sum, gives
+\begin{equation}\label{eq:collision}
+ \sum_{\chi} b_\chi(\PP_q)^{2j}\le \frac{n_q j!}{N^j}\le X^{1/A+o(1)}.
+\end{equation}
+The final inequality uses $n_q\le2X$; no lower bound on $n_q$ is needed. Indeed $j=(1/A+o(1))L/\ell$, and Stirling's formula gives $\log(j!/N^j)=-(A-1)L/A+o(L)$. Since $c_G>1/A$, $t>j$ eventually. Consequently
+\[
+ \sum_{\chi\ne1}b_\chi(\PP_q)^{2t}
+ \le \rho^{2(t-j)}\frac{n_qj!}{N^j}
+ \le X^{(A-1)/A-(A-2)c'+o(1)}.
+\]
+The exponent is negative by choice of $c'$, proving the desired bound.
+
+\emph{Unconditional regime.} For prime $q\in[X,2X]$, $q>y$ eventually, so the pool $\PP$ is common to all such $q$. Let $a_v$ be the number of ordered $t$-tuples of primes in $\PP$ of product $v$. Then $a_v\le t!$, $\sum_v a_v=N^t$, $\sum_v a_v^2\le t!N^t$, and $v\le y^t=X^{Ac'+o(1)}<X^2$. By the multiplicative large sieve \cite[Thm.~25.15]{kouk},
+\[
+ \sum_{d\le2X}\frac d{\varphi(d)}\sum_{\chi\bmod d}^{*}
+ \left|\sum_{v\le y^t} a_v\chi(v)\right|^2
+ \ll (X^2+y^t)\sum_v a_v^2,
+\]
+where the star restricts to primitive characters. Every nonprincipal character modulo a prime is primitive. Dividing by $N^{2t}$ and retaining only prime moduli therefore yields
+\begin{equation}\label{eq:sieve}
+ \sum_{\substack{X\le q\le 2X\\q\text{ prime}}}\sum_{\chi\ne1}b_\chi(\PP)^{2t}
+ \ll X^2\frac{t!}{N^t}=X^{2-c'(A-1)+o(1)}.
+\end{equation}
+Choose $\eta>0$ with $2\eta<c'(A-1)-1$. The sum is $O(X^{1-2\eta})$. At most $O(X^{1-\eta})$ prime moduli have inner sum exceeding $X^{-\eta}$. For every other prime, $\rho\le X^{-\eta/(2t)}=L^{-\eta/(2c')+o(1)}=o(1)$. The exceptional set is chosen before any deletions or cardinalities.
+\end{proof}
+
+\section{Finite-group estimates}
+\label{sec:finite}
+In this section let $P$ be a finite labelled multiset in a finite abelian group $G$; $N=|P|$, and $S\subseteq P$ is a retained set of labels, $m=|S|\ge aN$. Character sums and subset products respect labels. Put $\rho=\max_{\chi\ne1}b_\chi(P)$. The results in this section do not require arithmetic input.
+\begin{lemma}[Coherence and the exceptional subgroup]\label{lem:gram}
+For $u>0$ with $au^2>\rho$, the number of characters with $b_\chi(S)\ge u$ is at most
+\[
+ \frac{1-\rho}{au^2-\rho}.
+\]
+Given $a$, if $\rho$ is sufficiently small there is $\tau>0$ depending only on $a$ such that the subgroup $H$ generated by $\{\chi:b_\chi(S)>1-\tau\}$ has order at most $D=\floor{1/a}$. In particular $b_\chi(S)\le1-\tau$ for all $\chi\notin H$.
+\end{lemma}
+\begin{proof}
+Use the probability inner product on $P$. Any $r$ distinct characters have a Gram matrix with diagonal 1 and off-diagonal moduli at most $\rho$, hence largest eigenvalue at most $1+(r-1)\rho$ (e.g. by the triangle inequality in the quadratic form). For $f=1_S$ and $\alpha=m/N$, the vector of its inner products with these characters has squared norm at most $(1+(r-1)\rho)\norm{f}^2=(1+(r-1)\rho)\alpha$. If all the biases are at least $u$, the same squared norm is at least $r\alpha^2u^2$. Rearranging proves the first assertion.
+
+For each generator of $H$, choose a unit complex constant $z$ in the direction of its mean on $S$. Its normalized $L^2(S)$ distance from $z$ is less than $\sqrt{2\tau}$. The inverse character has the same property. A product of at most $D$ generators or their inverses has distance at most $D\sqrt{2\tau}$ from the product constant, by telescoping and the triangle inequality, hence bias at least $1-D^2\tau$. Because $D+1>1/a$, choose $0<\tau<1/D^2$ and then a tolerance for $\rho$ such that
+\[
+ \frac{1-\rho}{a(1-D^2\tau)^2-\rho}<D+1,
+\]
+with positive denominator. The word ball of radius $D$ in $H$ thus has at most $D$ elements. If $|H|\ge D+1$, the word balls strictly increase until they exhaust $H$, starting with one element at radius zero, so the radius-$D$ ball would contain at least $D+1$ elements. This contradiction proves the result. The duality assertion $|G/K|=|H|$ follows from finite abelian character duality.
+\end{proof}
+
+\begin{lemma}[Positive moment transfer]\label{lem:transfer}
+For every positive integer $t$,
+\[
+ \sum_\chi b_\chi(S)^{2t}\le (N/m)^{2t}\sum_\chi b_\chi(P)^{2t}.
+\]
+\end{lemma}
+\begin{proof}
+Multiplying the left sum by $m^{2t}/|G|$ gives the number of pairs of ordered $t$-tuples from $S$ with equal products in $G$, by orthogonality. The analogous count for $P$ contains all those pairs. In particular this bound is valid even when $S$ is chosen in response to the modulus and the entire character table. The principal term must be included on both sides; subtracting it prior to transfer would not be justified.
+\end{proof}
+
+\begin{lemma}[Two coefficient bounds]\label{lem:coeff}
+Let $z_1,\ldots,z_m$ have modulus one, set $b=|m^{-1}\sum_j z_j|$, and define $E_h=\binom mh^{-1}[w^h]\prod_j(1+wz_j)$, $1\le h\le m/2$. Then
+\begin{align}
+ |E_h|&\le (m+1)e^{-(1-b)h/2},\label{eq:circle}\\
+ |E_h|&\le e^{3h/2}u^h\quad\text{if }u\ge\max(b,\sqrt{h/m}).\label{eq:small}
+\end{align}
+\end{lemma}
+\begin{proof}
+For the first inequality put $r=h/(m-h)$. For $|w|=r$,
+\[
+ \frac{|1+wz_j|^2}{(1+r)^2}
+ =1-\frac{2r(1-\Re(wz_j/r))}{(1+r)^2}.
+\]
+Use $1-v\le e^{-v}$, multiply, and take square roots. This bounds the product by $(1+r)^m\exp(-mr(1-b)/(1+r)^2)$. Cauchy's coefficient inequality incurs the factor $(1+r)^m/(r^h\binom mh)$, the reciprocal of the binomial $(m,h/m)$ mass at $h$. The latter is a mode and has mass at least $1/(m+1)$. Also $mr/(1+r)^2=h(m-h)/m\ge h/2$.
+
+For the second inequality use $r=h/(mu)>0$. Since $|1+wz_j|^2=1+2\Re(wz_j)+r^2$, applying $1+v\le e^v$ and multiplying gives the product bound $\exp(mrb+mr^2/2)$. With $b\le u$ and $u^2\ge h/m$, this is at most $e^{3h/2}$. Cauchy and $\binom mh\ge(m/h)^h$ give $r^{-h}/\binom mh\le u^h$, as required. No bound on the order of a character is needed.
+\end{proof}
+
+\begin{lemma}[Positive quotient masses]\label{lem:mass}
+For any quotient of $G$ of order $d$, any reachable value $v$ of the product of a uniform $k$-subset has probability at least $(d m^{2(d-1)})^{-1}$.
+\end{lemma}
+\begin{proof}
+Fix a $k$-subset $T$ attaining $v$. For any $k$-subset $U$, pair the labels in $U\setminus T$ with those in $T\setminus U$. The ratios corresponding to these disjoint swaps multiply to the correction from the product of $U$ to $v$ in the quotient. If at least $d$ ratios remain, their partial products (including the empty one) contain a repeated value, so a nonempty consecutive block with product one can be discarded. Repeat to retain at most $d-1$ swaps, still effecting the correction. Thus every $U$ lies within $d-1$ swaps of some attaining subset. A ball of this radius has size at most $\sum_{i=0}^{d-1}\binom ki\binom{m-k}i\le d m^{2(d-1)}$, with out-of-range binomials zero. Cover all $\binom mk$ subsets by these balls, one per attaining subset, and divide.
+\end{proof}
+
+\section{Proof of the quadratic law}
+\label{sec:proof}
+We isolate the precise finite criterion needed both for the main result and for the joint theorem.
+\begin{proposition}[Uniform quadratic Fourier estimate]\label{prop:quad}
+Suppose $|G|\le2X$, $N\sim L^A/(A\ell)$, $A>2$, $t=\ceil{c'L/\ell}$ with $0<c'<c$, $c(A-1)>1$, $\rho=o(1)$, and $\sum_\chi b_\chi(P)^{2t}\le2$. Fix $a>0$, $a\le1$, and $\tau>0$. For any $S$ of size $m\ge aN$ and any family $J\subseteq\widehat G$ with $b_\chi(S)\le1-\tau$ for every $\chi\in J$, write
+\[
+ E_k(\chi)=\frac{[w^k]\prod_{p\in S}(1+w\chi(p))}{\binom mk}.
+\]
+Then for some fixed $\gamma>0$, for every $k$ with $h=\min(k,m-k)\ge cL/\ell$ and sufficiently large $X$,
+\begin{equation}\label{eq:quad}
+ \sum_{\chi\in J}|E_k(\chi)|^2\le e^{-\gamma h}.
+\end{equation}
+The constants and sufficiently-large threshold are uniform in $S,k,J$ when the pool hypotheses are uniform.
+\end{proposition}
+\begin{proof}
+Complementation gives $|E_k(\chi)|=|E_h(\chi)|$: a $k$-product is the whole-set product times the inverse of its complement product. We work with $h\le m/2$. If $h\ge BL$ with $B=4/\tau$, then \eqref{eq:circle} bounds the sum by $2X(m+1)^2e^{-\tau h}\le e^{-\tau h/2}$ eventually, using $\log m=O(\ell)$.
+
+Otherwise $c L/\ell\le h<BL$. Put $u_0=\sqrt{h/m}$. Uniformly in this range,
+\[
+ \log(h/m)=-(A-1)\ell+O(\log\ell),\qquad t/h\le1-\delta
+\]
+for some fixed $\delta>0$ and sufficiently large $X$. Choose $0<z<1$ fixed, small enough that $z<1-\tau$ if $\tau<1$ (the case $\tau\ge1$ is immediate from the small-bias range or emptiness). Split $J$ into three parts.
+
+\paragraph{Low bias: $b_\chi(S)\le u_0$.} By \eqref{eq:small}, its contribution is at most
+\[
+ 2X e^{3h}(h/m)^h
+ =\exp\{L-(A-1+o(1))h\ell\}.
+\]
+Since $c(A-1)>1$, this is $\le e^{-\delta_1 L}$ for a fixed $\delta_1>0$, uniformly, and thus $\le e^{-\delta_1 h/B}$.
+
+\paragraph{Intermediate bias: $u_0<b_\chi(S)\le z$.} By \eqref{eq:small} and Lemma~\ref{lem:transfer}, this contribution is bounded by
+\[
+ e^{3h} z^{2(h-t)} \sum_\chi b_\chi(S)^{2t}
+ \le 2e^{3h}z^{2(h-t)}a^{-2t}.
+\]
+Choose $z$ so small that $3+2\log(1/a)+2\delta\log z<-2$. This gives $\le2e^{-2h}$. The positive moment bound is used before removing the principal or exceptional characters.
+
+\paragraph{High bias: $b_\chi(S)>z$.} Lemma~\ref{lem:gram} with $u=z$ shows that there are $O_{a,z}(1)$ such characters, since $\rho=o(1)$. For those in $J$ the gap $1-b_\chi(S)\ge\tau$ holds, and \eqref{eq:circle} bounds their contribution by $O_{a,z}((m+1)^2e^{-\tau h})$. Because $h\gg L/\ell\gg\ell$, this is at most $e^{-\tau h/2}$ for large $X$.
+
+Combining the three parts and decreasing a positive exponential constant absorbs the sum of the bounds. The proof handles all admissible $S,k$ simultaneously, without any union bound over deletions.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Lemma~\ref{lem:analytic} supplies the hypotheses of Proposition~\ref{prop:quad}, including the principal term, in either regime. Note $c_G-c_*=1/(A(A-2)(A-1))>0$, so $c(A-1)>1$ in both. Choose $\tau$ by Lemma~\ref{lem:gram}, take $J=\widehat G_q\setminus H$, and apply the proposition. Fourier inversion in the finite group, with normalized counting measure on $G_q$, gives the exact identity
+\begin{equation}\label{eq:parseval}
+ \frac1{n_q}\sum_g|n_q\mu_{S,k}(g)-d\lambda_{S,k}(\pi(g))|^2
+ =\sum_{\chi\notin H}|E_k(\chi)|^2.
+\end{equation}
+Indeed $n_q\mu(g)=\sum_\chi E_k(\chi)\overline{\chi(g)}$, and precisely the $H$-terms are the inverse transform of the quotient law, lifted to $G_q$. This proves \eqref{eq:main}. Cauchy--Schwarz gives the stated variation bound. On a reachable fibre, $F=d\lambda(v)\ge m^{-2(d-1)}$ by Lemma~\ref{lem:mass}. Since the fibre has $n_q/d$ elements, its conditional mean-square error is at most $de^{-\gamma h}$. Markov's inequality with relative tolerance $e^{-\gamma h/4}$ shows that the exceptional fraction in that fibre is at most
+\[
+ d\,m^{4(d-1)}e^{-\gamma h/2}\le e^{-\gamma h/4}
+\]
+for large $X$, as $d\le D$ is bounded and $h/\log m\to\infty$. Zero mass on an unreachable fibre is exact by nonnegativity. This proves every assertion.
+\end{proof}
+
+\section{Joint representations with disjoint prime factors}
+\label{sec:joint}
+An individual product law need not imply a joint law: sampling without replacement introduces dependence, and the residual pool can cease to be a majority. The next theorem controls this using concentration for the \emph{random} residual pool rather than a worst-case deletion at each step.
+\begin{theorem}[Disjoint-block mixing]\label{thm:joint}
+Fix the parameters of Theorem~\ref{thm:main}, with $a>1/2$, and a reserve fraction $0<\beta<1$. Uniformly for all allowed moduli and initial sets $S$ of size $m\ge aN$, let $r\ge1$ and $k_1,\ldots,k_r$ be positive integers with
+\[
+ k_i\ge cL/\ell,\qquad \sum_{i=1}^r k_i\le (1-\beta)m.
+\]
+Choose uniformly an ordered family of pairwise disjoint labelled subsets $T_1,\ldots,T_r\subset S$ with $|T_i|=k_i$. Let $Y_i=\prod_{p\in T_i}p\pmod q$. There is $\nu>0$ depending only on the fixed parameters such that
+\begin{equation}\label{eq:joint}
+ \TV\bigl(\mathcal L(Y_1,\ldots,Y_r),\operatorname{Unif}(G_q^r)\bigr)
+ \le e^{-\nu L/\ell}.
+\end{equation}
+In particular all but a fraction $e^{-\nu L/(3\ell)}$ of target tuples have, up to relative error $e^{-\nu L/(3\ell)}$, the expected number
+\begin{equation}\label{eq:jointcount}
+ \frac{1}{\varphi(q)^r}\prod_{i=1}^r\binom{m-\sum_{j<i}k_j}{k_i}
+\end{equation}
+of representations by pairwise disjoint prime sets. For equal $k_i=k=\ceil{cL/\ell}$, the number of blocks may be as large as $\floor{(1-\beta)m/k}$, of order $L^{A-1}$. This uses any fixed fraction less than one of the surviving primes, without needing to keep a majority in reserve.
+\end{theorem}
+\begin{proof}
+Generate the family sequentially by choosing a uniform $k_i$-subset of the remaining pool $S_i$, of deterministic size $m_i=m-\sum_{j<i}k_j$. This gives precisely the stated uniform distribution on ordered families. Unconditionally over the previous choices, $S_i$ is a uniformly random $m_i$-subset of $S$, by permutation symmetry. Also $m_i-k_i\ge\beta m$ and $m_i\ge\beta m\ge\beta aN$.
+
+For every nonprincipal character, deletion from the full pool yields
+\[
+ b_\chi(S)\le\frac{1-a+\rho}{a}\le1-\kappa,
+ \qquad \kappa=\frac{2a-1}{2a}>0,
+\]
+for sufficiently large $X$. (For a set of density $\alpha\ge a$, the exact bound is $(1-\alpha+\rho)/\alpha$.) Apply Hoeffding's sampling-without-replacement inequality \cite[Sec.~6]{hoeffding} to the real and imaginary parts, each in $[-1,1]$. For a fixed character, the probability that the sample mean on $S_i$ differs from the mean on $S$ by more than $\kappa/2$ is at most $4\exp(-m_i\kappa^2/16)$, since a complex deviation exceeding $\kappa/2$ forces a real or imaginary deviation exceeding $\kappa/(2\sqrt2)$. A union bound over at most $2X$ characters shows that, except on an event of probability at most
+\[
+ 8X\exp(-\beta aN\kappa^2/16),
+\]
+all nonprincipal biases on $S_i$ are at most $1-\kappa/2$. Call such a remaining pool good.
+
+Apply Proposition~\ref{prop:quad} with retained fraction $\beta a$, gap $\kappa/2$, and $J$ all nonprincipal characters, for every good pool. The analytic moment input is still that of the original full prime pool. Here $\min(k_i,m_i-k_i)\ge cL/\ell$ for large $X$ because $\beta m\gg L/\ell$. Parseval and Cauchy--Schwarz show that the conditional law of $Y_i$ given the full history of chosen sets is within $\tfrac12e^{-\gamma' cL/(2\ell)}$ of uniform for good pools. For a bad pool we use the bound 1. Thus its expected conditional distance is bounded by the sum of these two error bounds.
+
+For completeness, compare hybrid laws on $G_q^r$: the first $i$ coordinates are the actual products, and the remaining coordinates are independent uniforms, independent also of the actual prefix. The total variation between hybrids $i-1$ and $i$ is at most the expected conditional distance just bounded: augment the two laws by the actual set-history through step $i-1$, use the common law of that history, and then project to the output coordinates. The triangle inequality over $i$ gives
+\[
+ \TV(\mathcal L(Y),\operatorname{Unif}(G_q^r))\le
+ r\left(\tfrac12e^{-\gamma' c L/(2\ell)}+8X e^{-\beta aN\kappa^2/16}\right).
+\]
+Because $r\le m\ell/(cL)=O(L^{A-1})$ and $N\asymp L^A/\ell$, the right side is at most $e^{-\nu L/\ell}$ for some $\nu>0$. This argument averages over actual histories; it does not assume their conditional distribution remains uniform after fixing output products.
+
+Finally, with $D(g)=\varphi(q)^r\Pp(Y=g)$ and uniform $g\in G_q^r$, $\E|D(g)-1|=2\TV\le2e^{-\nu L/\ell}$. Markov's inequality with tolerance $e^{-\nu L/(3\ell)}$ bounds the exceptional fraction by $2e^{-2\nu L/(3\ell)}\le e^{-\nu L/(3\ell)}$ for large $X$. Multiply the probabilities by the total number of ordered disjoint families, the product of binomials in \eqref{eq:jointcount}. When $k$ is equal for all blocks the claimed scale follows from $m\asymp L^A/\ell$. The proof is uniform over the initial adversarial deletion.
+\end{proof}
+\begin{remark}
+For equal block lengths below $c_* L/\ell$ with fixed $c<c_*$, the support of even the first coordinate occupies $o(1)$ of the group for prime moduli. Thus joint uniformity on $G_q^r$ is impossible for every $r\ge1$. This proves first-order sharpness of the block-length threshold for typical tuples in the unconditional regime. It does not claim optimality of the reserve fraction or a joint quotient law for arbitrary retained minorities.
+\end{remark}
+
+\section{Magnitude, novelty, and limitations}
+The table compares the limiting leading constants; strict inequalities above these constants are required. The source article's pointwise conclusions are stronger in the type of norm, so the comparison is a tradeoff, not a contradiction or a pointwise improvement.
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+$A$ & $c_*$ typical & $c_G$ typical & source pointwise, GRH & GRH size exponent\\
+\midrule
+3 & $1/2$ & $2/3$ & $4/3$ & $2$\\
+4 & $1/3$ & $3/8$ & $3/4$ & $3/2$\\
+5 & $1/4$ & $4/15$ & $8/15$ & $4/3$\\
+10 & $1/9$ & $9/80$ & $9/40$ & $9/8$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For instance, primes below $(\log q)^4$ suffice under Dirichlet GRH to represent almost all units, robustly after any fixed less-than-half deletion, by squarefree integers $\le q^{3/2+\epsilon}$ with precisely $\ceil{c\log q/\log\log q}$ prime factors for an appropriate $c>3/8$. For almost all prime moduli the exponent is $4/3+\epsilon$ unconditionally. The numbers of representations are asymptotically uniform outside a small exceptional fraction of residues. A growing number of such representatives can be obtained with no prime repeated across the representatives, for almost all tuples of target classes.
+
+The new deductions relative to the inspected article are the mean-square quotient law at the shorter scale, the corresponding sharp typical-residue threshold for almost all prime moduli, and the disjoint-block theorem with random remainder concentration. The finite moment transfer, bounded exceptional quotient, coefficient bounds and swap lower bound are closely adapted from the existing article; their proofs are included to make the extension self-contained. The novel step is not a new zero-free region or proof of GRH. It is the change of norm, which halves the sufficient scale for typical-residue statistics, and its combination with the sampling argument to prove joint laws.
+
+Related literature includes Booker--Pomerance \cite{bp}, Munsch--Shparlinski \cite{ms}, Klurman, Shparlinski and Ter\"av\"ainen \cite{kst}, and Hughes \cite{hughes}. The latter two consider the size of common lists of primes allowing unrestricted subset products. Our objective is different: prescribed short cardinalities, arbitrary fixed-density erasures, typical relative counts, and disjoint families. These references and a targeted search establish context, not a guarantee of worldwide priority. We found no statement of the particular combination in the inspected material; the results should be treated as candidate research contributions until more exhaustive literature and expert review. In particular, the optimal pointwise threshold and the gap between $c_G$ and $c_*$ for individual moduli remain open here.
+
+The included Python checks illustrate exact finite identities and the joint hybrid bound on small examples. They cannot verify the asymptotic analytic input. The included Lean audit imports the exact vendor interface and requests its axiom list; it does not formalize the new analytic or combinatorial theorems and has not been run locally. No new Lean proof or independent kernel replay is claimed.
+
+\begin{thebibliography}{99}
+\bibitem{vendor} L. Alp\"oge et al., \emph{The Generalized Riemann Hypothesis for Dirichlet L-functions, in Lean 4}, readable edition, vendored in ProveIt; upstream commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{Vendor directory}.
+\bibitem{merged} ProveIt Contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, 26 November 2026. Section \texttt{dir:sec:products}, in \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{merged article}. Source identifiers in \texttt{SOURCE\_AUDIT.md}.
+\bibitem{jmv} D. Jao, S. D. Miller, R. Venkatesan, Expander graphs based on GRH with an application to elliptic curve cryptography, \emph{J. Number Theory} 129 (2009), 1491--1504; \href{https://arxiv.org/abs/0811.0647}{arXiv:0811.0647}.
+\bibitem{kouk} D. Koukoulopoulos, \emph{The Distribution of Prime Numbers}, Graduate Studies in Mathematics 203, AMS, 2019, Theorem 25.15 (multiplicative large sieve).
+\bibitem{hoeffding} W. Hoeffding, Probability inequalities for sums of bounded random variables, \emph{J. Amer. Statist. Assoc.} 58 (1963), 13--30, Section 6.
+\bibitem{bp} A. R. Booker, C. Pomerance, Squarefree smooth numbers and Euclidean prime generators, \emph{Proc. Amer. Math. Soc.} 145 (2017), 5035--5042.
+\bibitem{ms} M. Munsch, I. E. Shparlinski, On smooth square-free numbers in arithmetic progressions, \emph{J. London Math. Soc.} 101 (2020), 1041--1067, \href{https://doi.org/10.1112/jlms.12297}{doi:10.1112/jlms.12297}.
+\bibitem{kst} O. Klurman, I. E. Shparlinski, J. Ter\"av\"ainen, On the generation of multiplicative groups by small primes, \href{https://arxiv.org/abs/2609.25393}{arXiv:2609.25393}, 2026.
+\bibitem{hughes} S. D. Hughes, Few small primes suffice to cover unit groups, \href{https://arxiv.org/abs/2610.04678}{arXiv:2610.04678}, 2026.
+\end{thebibliography}
+\end{document}

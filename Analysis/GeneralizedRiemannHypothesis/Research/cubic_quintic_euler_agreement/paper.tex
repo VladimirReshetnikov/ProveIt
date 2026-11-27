@@ -1,0 +1,272 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype,needspace}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,citecolor=blue!50!black]{hyperref}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\mass}{\operatorname{mass}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\dd}{\,\mathrm d}
+\title{How many Euler factors can two different\texorpdfstring{\\}{ }products of Dirichlet $L$-functions share?\\[5pt]
+\large Sharp cubic and quintic agreement bounds from cyclotomic divisibility}
+\author{Research note prepared for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $X$ be a rank-$r$ elementary abelian group of Dirichlet characters of odd prime exponent $p$, and compare two different multisets of $k$ characters in $X$ by their Euler factors at unramified primes. Write $s=\lfloor\log_p k\rfloor$ and $b=\lfloor k/p^s\rfloor$. We prove a universal lower bound for the disagreement density: $(p-1)(p-b+1)/p^{s+2}$ when $s<r-1$, and $(p-1)/p^r$ otherwise. It is attained whenever $b=1$, $b=p-1$, or $b$ divides $p-1$ or $p+1$ (with the latter constructions in a two-dimensional quotient), and always in the saturated rank range. In particular, it is exact for \emph{every} packet size and rank at $p=3$ and $p=5$. In the cubic case, all unsaturated extremizers have precisely $bp^s$ distinct uncancelled factors on each side. The key bridge is from cyclotomic valuation to a homogeneous polynomial over $\F_p$, whose support is controlled by the projective Reed--Muller minimum-distance theorem. These density results are unconditional. Using the Dirichlet GRH supplied by the vendored Lean development, we also prove a uniform finite detection theorem in dyadic prime intervals and a bounded Fourier-norm estimate for cubic extremal disagreement sets. The result answers the minimum-density part of an explicit open question in the ProveIt merged article.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{Source analysis and the new question}
+The two requested directories were inspected through the GitHub repository interface \cite{vendor,article}. The vendored readable edition of \texttt{grh-lean} identifies upstream commit \texttt{72fead102f66} (full hash in the references) of 25 November 2026. The statement-only file imports Mathlib and defines the Dirichlet zero and nonvanishing assertions. In \texttt{src/Main.lean}, the half-plane theorem\footnote{\texttt{LFunction\_ne\_zero\_of\_half\_lt\_re}.} is obtained as \texttt{New.grh}, and \texttt{LFunction\_eq\_zero\_re} from \texttt{New.zeros\_on\_line New.grh}. These statements cover every positive modulus and every character, not just primitive characters. They do not assert GRH for arbitrary automorphic or Artin $L$-functions.
+
+Two files show the main architecture: \texttt{MainInequality.lean} compares upper and lower bounds on a covolume, canceling a common main amount; \texttt{OneSidedBound.lean} passes from that comparison to the upper bound $R_{q_0}(x)\ll x^{-1/2+\varepsilon}$ (after renaming $\varepsilon$), then applies a zero-detection criterion. Here the prime remainder comes from a smoothed sum with a congruence condition and a quadratic twist. This research note does not rerun that substantial proof. It uses the exported Dirichlet GRH only for the analytic assertion in Section~\ref{sec:grh}.
+
+The merged article has 723 pages and reports 914 results from 131 packets. We screened its table of contents and theorem headings in the analytic, zero-recovery, spectral, graph, and local sections, and concentrated on \texttt{sections/rec.tex}. Its theorem \texttt{rec:thm:qmatch} gives the sharp disagreement density for products of quadratic characters, exploiting 2-adic divisibility and binary Reed--Muller weights. Its open questions explicitly ask whether products of characters of odd prime order have comparably explicit matching densities. Its theorem \texttt{rec:thm:qmatchfinite} and lemma \texttt{rec:lem:gram} give a second ingredient: prime equidistribution with an error controlled by a Fourier algebra norm under Dirichlet GRH. We generalize the former's minimum-density assertion and transfer the latter's finite detection argument. The new ingredient is the \emph{projective}, rather than affine, code forced by cyclotomic Galois conjugation. No claim is made to classify the complete spectrum of densities, or to prove any additional Riemann hypothesis.
+
+\section{Statement of the main theorem}
+Let $Q\ge2$ and let $X$ be a subgroup of the Dirichlet characters modulo $Q$ of order dividing an odd prime $p$, with $|X|=p^r$, $r\ge1$. Include the trivial character. Put $V=\widehat X\simeq\F_p^r$ and identify $X$ with the dual vector space. Fix $\zeta=e^{2\pi i/p}$ and a pairing $a\cdot v$ such that $a(v)=\zeta^{a\cdot v}$. For a packet (multiset) $A$ of size $k$ define its product $L_A(z)=\prod_{a\in A}L(z,a)$ and the inverse local factor at a prime $\ell\nmid Q$ by
+\[
+ P_{A,\ell}(T)=\prod_{a\in A}(1-a(\ell)T).
+\]
+Define $\delta(A,C)$ as the natural density within primes of $\ell\nmid Q$ at which $P_{A,\ell}\ne P_{C,\ell}$.
+
+\Needspace{15\baselineskip}
+\begin{theorem}[Universal bound and sharp tiers]\label{thm:main}
+Let $A\ne C$ be packets of equal size $k\ge1$ and write uniquely
+\[
+ p^s\le k<p^{s+1},\qquad b=\lfloor k/p^s\rfloor\in\{1,\ldots,p-1\}.
+\]
+Then
+\begin{equation}\label{eq:delta}
+ \delta(A,C)\ge D_p(r,k):=
+ \begin{cases}
+ \dfrac{(p-1)(p-b+1)}{p^{s+2}},&s<r-1,\\[5pt]
+ \dfrac{p-1}{p^r},&s\ge r-1.
+ \end{cases}
+\end{equation}
+Equality is achievable in every group $X$ when $s\ge r-1$, or in the unsaturated range when $b=1$, $b=p-1$, $b\mid p-1$, or $b\mid p+1$. In the unsaturated cases the construction needs just $bp^s$ factors on each side before padding by common factors. All assertions of this theorem are unconditional.
+\end{theorem}
+
+\begin{corollary}[Exact cubic and quintic minima]\label{cor:exact}
+For $p=3$ and $p=5$, the minimum positive disagreement density is exactly $D_p(r,k)$. Thus $1-D_p(r,k)$ is the largest possible agreement density of distinct equal-size products. In particular, for $p=3$ and $s<r-1$ the two successive tiers are
+\[
+ \delta_{\min}=\begin{cases}
+ 2/3^{s+1},&3^s\le k<2\cdot3^s,\\
+ 4/3^{s+2},&2\cdot3^s\le k<3^{s+1}.
+ \end{cases}
+\]
+\end{corollary}
+For $p=5$, the four numerators in the unsaturated case are $20,16,12,8$, all over $5^{s+2}$. The formula is not just a bound in terms of the dimension of the character group: it quantifies exactly how many factors are necessary to hide a discrepancy on most primes.
+
+\section{Fourier reduction and the valuation budget}
+Write $c_a=\operatorname{mult}_A(a)-\operatorname{mult}_C(a)$ and $B=\sum_a |c_a|$. Then $\sum c_a=0$, $0<B\le2k$, and $B/2$ is the uncancelled size of each packet. Set
+\[
+ H(v)=\sum_{a\in X}c_a\zeta^{a\cdot v},\qquad
+ d_j(v)=\sum_{a:a\cdot v=j}c_a\quad(j\in\F_p).
+\]
+\begin{lemma}[A trace detects the whole Euler factor]\label{lem:trace}
+For every $v$, $H(v)=0$ if and only if $d_j(v)=0$ for all $j$. Consequently
+\[\delta(A,C)=p^{-r}|\supp H|.\]
+Moreover $H(0)=0$, $H\not\equiv0$, and $\supp H$ is invariant under multiplication by $\F_p^\times$.
+\end{lemma}
+\begin{proof}
+The factor multiset is equal exactly when all the differences $d_j$ vanish. A rational polynomial $\sum_{j=0}^{p-1}d_jZ^j$ vanishing at $\zeta$ is a multiple of $1+Z+\cdots+Z^{p-1}$; evaluating at 1 gives zero, so the multiple is zero. The converse is immediate. Evaluation of residue classes on $X$ maps $(\Z/Q\Z)^\times$ surjectively onto $V$: the image has trivial annihilator in $X$ and is thus all of $V$. The prime number theorem in progressions gives equal density $p^{-r}$ to each fiber. Fourier inversion proves $H\not\equiv0$; conjugation by $\zeta\mapsto\zeta^u$ proves invariance under each $u\ne0$.
+\end{proof}
+
+Let $\pi=1-\zeta$ in $\mathcal O=\Z[\zeta]$, and normalize the valuation at $(\pi)$ by $v_\pi(\pi)=1$. We use $p=\text{unit}\cdot\pi^{p-1}$, $\mathcal O/(\pi)=\F_p$, and the integral basis $1,\zeta,\dots,\zeta^{p-2}$. These follow from the cyclotomic polynomial (the conjugates of $1-\zeta$ have unit ratios). Define $t=\min_{H(v)\ne0}v_\pi(H(v))$. Since $\sum c_a=0$ we have $t\ge1$.
+
+\begin{lemma}[Budget for a high cyclotomic valuation]\label{lem:budget}
+For $d=(d_0,\dots,d_{p-1})\in\Z^p$ nonzero with $\sum_j d_j=0$, put $M(d)=\sum_{d_j>0}d_j$. Suppose $v_\pi(\sum_jd_j\zeta^j)\ge (p-1)h+e$, where $h\ge0$, $0\le e\le p-2$ and the right side is positive. Then
+\begin{equation}\label{eq:budget}
+ M(d)\ge\begin{cases}
+ (p-1)p^{h-1},&e=0,\\
+ e p^h,&e\ge1.
+ \end{cases}
+\end{equation}
+In the second case every $d_j$ is divisible by $p^h$.
+\end{lemma}
+\begin{proof}
+Divisibility by $p^h$ in $\mathcal O$ is equivalent, in the displayed basis, to $d_j-d_{p-1}\equiv0\pmod{p^h}$ for every $j$. Write $d_j=d_{p-1}+p^h f_j$, $f_{p-1}=0$. If $h\ge1$, summing gives $d_{p-1}=-p^{h-1}\sum f_j$. If $e=0$ and all $d_j$ are divisible by $p^h$, the mass is at least $p^h$. Otherwise the integers $d_j/p^{h-1}$ share a nonzero residue $u\in\{1,\ldots,p-1\}$ modulo $p$. If $l$ of them are positive, their positive mass is at least $lu$ and their negative mass is at least $(p-l)(p-u)$. These masses agree. If $l\ge p-u$, the first bound is $u(p-u)$ or larger; if $l\le p-u$, the second is at least that large. Since $u(p-u)\ge p-1$, the first case follows.
+
+If $e\ge1$ and $h\ge1$, reducing $p^{-h}\sum d_j\zeta^j=\sum f_j\zeta^j$ modulo $\pi$ shows $\sum f_j\equiv0\pmod p$. Thus every $d_j$ is divisible by $p^h$; this is automatic for $h=0$. Write $g_j=d_j/p^h$. Expand
+\[
+ \sum_jg_j\zeta^j=\sum_{m=0}^{p-1}(-\pi)^m\sum_jg_j\binom jm.
+\]
+For each $m<e$, the coefficient $\sum_jg_j\binom jm$ must be divisible by $p$: if the first failure were at $m<e$, its term would have valuation $m$, earlier terms valuation at least $p-1>m$, and later terms larger valuation. Hence the power sums of the positive and negative residue multisets of $g$ agree through degree $e-1$ in $\F_p$. If their common size $m_0$ were less than $e$, Newton's identities through degree $m_0<p$ would make their monic root polynomials equal, hence the multisets equal. This contradicts $g\ne0$ since they have disjoint supports. Therefore $M(g)\ge e$.
+\end{proof}
+
+For any $v$ with $H(v)\ne0$, the mass of its projection satisfies $M(d(v))\le B/2\le k$. Lemma~\ref{lem:budget} applied to a point attaining $t$ yields
+\begin{equation}\label{eq:tmax}
+ t\le t_*=(p-1)s+b.
+\end{equation}
+Indeed the thresholds for degrees $(p-1)h+1,\ldots,(p-1)h+p-1$ are respectively $p^h,2p^h,\ldots,(p-1)p^h$, followed by $p^{h+1}$ at the next degree. This is the key improvement over a bound based only on $|H|\le2k$.
+
+\section{The projective polynomial bridge}
+\begin{lemma}[Leading valuation is a projective codeword]\label{lem:poly}
+The function $F(v)=\pi^{-t}H(v)\pmod\pi$ on $\F_p^r$ is nonzero and has a homogeneous polynomial representative of degree exactly $t$. Its support is contained in $\supp H$.
+\end{lemma}
+\begin{proof}
+Represent coordinates of $a$ and $v$ by integers in $\{0,\ldots,p-1\}$. Expand each $\zeta^{a_i v_i}$ in the binomial basis. The coefficient of $\prod_i\binom{v_i}{j_i}$ in $H$ equals
+\[
+ C_j=\sum_a c_a\prod_{i=1}^r(\zeta^{a_i}-1)^{j_i}.
+\]
+It is divisible by $\pi^{|j|}$, and also by $\pi^t$ since it is an integral iterated forward difference of values of $H$. After division by $\pi^t$ and reduction only $|j|\le t$ contribute. Since $j_i<p$, the binomial basis reduces to polynomials of the same degrees over $\F_p$. This proves that $F$ has reduced polynomial degree at most $t$. It is nonzero by definition of $t$, and $F(0)=0$.
+
+For $u\in\F_p^\times$, the automorphism $\sigma_u(\zeta)=\zeta^u$ satisfies $\sigma_u(\pi)/\pi\equiv u\pmod\pi$ and acts trivially on the residue field. As $H(uv)=\sigma_u(H(v))$, we obtain $F(uv)=u^t F(v)$. Uniqueness of the reduced polynomial representation (degrees in each variable at most $p-1$) shows every nonzero monomial has total degree $d\equiv t\pmod{p-1}$. There is no constant term. Multiply each monomial by the $(t-d)$th power of one variable already occurring in that monomial. This does not change its function on $\F_p^r$, including where that variable is zero, and gives a homogeneous representative of degree $t$. The support containment follows directly from reduction.
+\end{proof}
+
+We use the classical minimum-distance theorem of S\o rensen for projective Reed--Muller codes \cite{Sorensen,Ghorpade}. In the notation here, if $F$ is a homogeneous degree-$d$ polynomial nonzero as a function on projective $\F_p$-points in $r$ variables, and
+\[
+ d-1=(p-1)a+u,\quad 0\le u<p-1,\quad 1\le d\le (p-1)(r-1)+1,
+\]
+then the number of projective points with $F\ne0$ is at least
+\begin{equation}\label{eq:prm}
+ (p-u)p^{r-a-2}.
+\end{equation}
+At the last degree this expression means 1. This standard coding-theoretic theorem is the only non-elementary finite-algebra input of our argument; it does not use RH or GRH. Each nonzero projective point represents $p-1$ nonzero vectors. The bound decreases with $d$ (and the trivial bound 1 applies at higher degrees). Apply it to Lemma~\ref{lem:poly} with \eqref{eq:tmax}. If $s<r-1$, substituting $t_*-1=(p-1)s+(b-1)$ gives $|\supp H|\ge(p-1)(p-b+1)p^{r-s-2}$. In the saturated range use $|\supp H|\ge p-1$ directly from Lemma~\ref{lem:trace}. Dividing by $p^r$ proves the lower bound of Theorem~\ref{thm:main}.
+
+\section{Constructions attaining the bound}
+We first work in a two-dimensional character space $Y=\F_p^2$, and construct disjoint packets of size $b$ with agreement along exactly $b$ projective directions, i.e. disagreement along $p+1-b$ directions. All examples use ordinary characters in $X$; no formal virtual factors are required.
+
+\subsection{The first and last tiers}
+For $b=1$, take $\{0\}$ and $\{e_1\}$. The projections agree exactly when $v\cdot e_1=0$, a single direction. For $b=p-1$, take all nonzero members of two distinct lines $U_1,U_2$ in $Y$. Their difference of Fourier transforms is
+\[
+ p(\mathbf1_{U_1^\perp}-\mathbf1_{U_2^\perp}).
+\]
+This is nonzero on exactly two projective directions, as desired. These two constructions also show that the extremal density need not reflect the independence or distinctness of individual prime values.
+
+\subsection{Split multiplicative polygons: \texorpdfstring{$b\mid p-1$}{b divides p-1}}
+For $1\le b<p-1$ dividing $p-1$, let $G$ be the subgroup of order $b$ in $\F_p^\times$ and choose $a\notin G$. Take
+\[
+ A_0=\{(z,z^{-1}):z\in G\},\quad C_0=\{(z,z^{-1}):z\in aG\}.
+\]
+For the linear functional $(u,v)$ with $u,v\ne0$, the involution $z\mapsto v/(uz)$ preserves $uz+vz^{-1}$. If $v/u\in aG$, it bijects $G$ onto $aG$. Thus the projection histograms agree along $b$ distinct directions. The lower bound already proved for rank two and size $b$ excludes agreement on any additional directions. (At $b=p-1$ use the preceding line construction.)
+
+\subsection{Nonsplit multiplicative polygons: \texorpdfstring{$b\mid p+1$}{b divides p+1}}
+Let $K=\F_{p^2}$ with conjugation $\bar z=z^p$. The group of norm-one elements has order $p+1$. If $b\mid p+1$ and $1\le b\le p-1$, choose its subgroup $G$ of order $b$ and a norm-one element $a\notin G$. View $K$ as the additive plane and use $A_0=G$, $C_0=aG$. Every nonzero linear functional has the form $z\mapsto\Tr(wz)$, $w\ne0$. The map
+\[
+ z\longmapsto (\bar w/w)\bar z
+\]
+preserves that trace, and on norm-one elements it is $z\mapsto(\bar w/w)/z$. If $\bar w/w\in aG$ it bijects the packets. The map $[w]\mapsto\bar w/w$ from projective directions to norm-one elements is bijective: it has kernel $\F_p^\times$ on $K^\times$ and image of order $p+1$. We obtain $b$ agreeing directions and, by the lower bound, exactly $b$.
+
+\subsection{Lifting, padding, and saturation}
+In the unsaturated range, $r\ge s+2$. Decompose $X=U\oplus Y\oplus W$, with $\dim U=s$, $\dim Y=2$. Set $A=U+A_0$ and $C=U+C_0$, as disjoint sets of size $bp^s$. Their difference of transforms is $p^s\mathbf1_{U^\perp}H_0(v|_Y)$. Its support proportion is $p^{-s}$ times the two-dimensional disagreement proportion $(p-1)(p+1-b)/p^2$. Padding both packets by the same multiset reaches any $k$ in the tier. If $s\ge r-1$, take $U$ a hyperplane of $X$ and compare the two cosets $U$ and $a+U$ for $a\notin U$. Their Fourier difference is supported on the nonzero points of the line $U^\perp$, and padding is possible since $k\ge p^{r-1}$. This proves sharpness in Theorem~\ref{thm:main}. For $p=3$ all tiers are first or last; for $p=5$ the intermediate tiers 2 and 3 divide 4 and 6 respectively. Corollary~\ref{cor:exact} follows.
+
+\section{Rigidity of cubic extremizers}
+\begin{theorem}[Exact uncancelled size and saturated structure]\label{thm:rigidity}
+Let $p=3$ and suppose $\delta(A,C)=D_3(r,k)$. If $s<r-1$, then each nonzero $c_a$ is $1$ or $-1$, and
+\[ B/2=b3^s. \]
+If $s\ge r-1$, then extremizers are exactly the pairs whose signed multiplicity difference is constant on cosets of a hyperplane $U\subset X$, with three integer values $j_0,j_1,j_2$, not all zero, and $j_0+j_1+j_2=0$. The mass constraint is $3^{r-1}\sum_{j_i>0}j_i\le k$.
+\end{theorem}
+\begin{proof}
+In the unsaturated range, the projective distance bound strictly decreases at each integer degree up to $t_*$. Consequently equality requires $t=t_*$, and every nonzero projection has valuation at least $t_*$. If $b=1$, then $t_*=2s+1$. Lemma~\ref{lem:budget} shows the projection vector $d$ is divisible by $3^s$, and its rescaled positive mass is 1 because $k<2\cdot3^s$. Thus $d/3^s$ is a permutation of $(1,-1,0)$, and $|H|=\sqrt3\,3^s$ wherever $H\ne0$.
+
+If $b=2$, then $t_*=2s+2$. The proof of the budget lemma shows $d/3^s$ is integral and has all entries congruent modulo 3. They cannot all be divisible by 3, since $M(d)<3^{s+1}$. Its positive mass is at most 2, so it is a permutation of $(1,1,-2)$ or its negative. Consequently $|H|=3^{s+1}$ wherever nonzero.
+
+In either case Fourier inversion gives $|c_a|\le \E|H|=\delta|H|_{\supp H}<2$: the two values of this upper bound are $2/\sqrt3$ and $4/3$. All nonzero $c_a$ are therefore signed units. Parseval gives
+\[
+ B=\sum_a c_a^2=\E|H|^2=\begin{cases}2\cdot3^s,&b=1,\\4\cdot3^s,&b=2.\end{cases}
+\]
+This proves the unsaturated assertion. At saturation equality means that $H$ is supported on exactly the pair $\{v,-v\}$ with $v\ne0$. Fourier inversion makes $c_a$ depend only on $a\cdot v$, so the three constant values have zero sum. Conversely a nonzero triple with zero sum gives a transform supported exactly on those two points, by Lemma~\ref{lem:trace}. Its mass is as stated.
+\end{proof}
+
+\paragraph{Example.} In a cubic group of rank at least 3, packets of six factors can agree on $23/27$ of the primes, and never on a larger proportion unless identical. In rank at least 5, packets of 54 factors can agree on $239/243$; if they do, after cancellation each side has exactly 54 distinct characters. In rank 3, nine factors suffice to reach the absolute group-theoretic maximum $25/27$. Such groups exist as Dirichlet character groups: choose $r$ distinct primes congruent to 1 modulo $p$, take one order-$p$ character from each, and combine via the Chinese remainder theorem.
+
+\section{Finite detection from Dirichlet GRH}\label{sec:grh}
+The following part uses the exact theorem exported by the vendor, rather than a Riemann hypothesis for any nonabelian family. Fix $w\in C_c^\infty((1/2,1))$, $w\ge0$, $\int w=1$. For a function $f:V\to\C$, write $f=\sum_{a\in X}\widehat f(a)a$ and define $\|f\|_A=\sum_a|\widehat f(a)|$. Let
+\[
+ M_x(f)=\sum_{\ell\nmid Q}(\log\ell)w(\ell/x)f([\ell]),
+\]
+where the sum is over primes and $[\ell]$ denotes the evaluation image in $V$.
+\begin{lemma}[Uniform prime estimate under Dirichlet GRH]\label{lem:prime}
+For $x\ge2$,
+\[|M_x(f)-x\E f|\le C_w\|f\|_A\sqrt{x}\log(2Q),\]
+where $C_w$ depends only on the fixed weight.
+\end{lemma}
+\begin{proof}
+For one character use the primitive character inducing it, of conductor at most $Q$. Mellin inversion of $-L'/L$ against $x^z\widetilde w(z)$, with $\widetilde w(z)=\int w(y)y^{z-1}\dd y$, gives the main term $x$ only for the principal character, and the zero contribution $-\sum_\rho x^\rho\widetilde w(\rho)$. Moving the line to $\Re z=-1/4$ is justified by the standard zero-avoiding horizontal contours and functional equation; see the proof of \texttt{rec:lem:gram} in \cite{article} and the explicit-formula treatment in \cite{Davenport}. The vertical integral and possible zero at 0 are $O_w(\log(2Q))$. The unit-interval zero bound $O(\log(2Q(2+|\Im\rho|)))$ and rapid decay of $\widetilde w$ on the critical line, together with Dirichlet GRH, bound the zero contribution by $O_w(\sqrt{x}\log(2Q))$. Prime powers with exponent at least 2 cost $O_w(\sqrt{x})$ by Chebyshev's bound. Omitting the primes dividing $Q$ costs $O_w(\log(2Q))$. Summing over Fourier coefficients proves the lemma. The implied constant is uniform, not numerically evaluated in this note.
+\end{proof}
+\begin{theorem}[Finite distinguishing-prime bound]\label{thm:detect}
+Assume Dirichlet GRH. For any distinct equal-size packets as above there is a distinguishing prime in $(x/2,x)$ for every
+\[
+ x>\max\{2,\ C_w^2 B^2\log^2(2Q)\}.
+\]
+In particular $x\gg_w k^2\log^2(2Q)$ suffices, independently of the rank and exponent.
+\end{theorem}
+\begin{proof}
+The Fourier norm is submultiplicative and invariant under complex conjugation, so $\||H|^2\|_A\le B^2$. Parseval and integrality give $\E|H|^2=\sum c_a^2\ge B$. The estimate of Lemma~\ref{lem:prime} therefore gives $M_x(|H|^2)\ge xB-C_w B^2\sqrt{x}\log(2Q)>0$ at the indicated scale. At least one prime with nonzero weight then has $H([\ell])\ne0$.
+\end{proof}
+
+\begin{theorem}[Uniform density estimation for cubic extremizers]\label{thm:density}
+Suppose $p=3$ and $S=\supp H$ is an extremal disagreement set as in Theorem~\ref{thm:rigidity}. Then
+\[
+ \|\mathbf1_S\|_A\le\begin{cases}4/3,&s<r-1,\ b=1,\\16/9,&s<r-1,\ b=2,\\2,&s\ge r-1.\end{cases}
+\]
+In particular, under Dirichlet GRH,
+\[M_x(\mathbf1_S)=x\delta(A,C)+O_w(\sqrt x\log(2Q)),\]
+uniformly in $k$ and $r$.
+\end{theorem}
+\begin{proof}
+In the two unsaturated tiers, $\mathbf1_S=|H|^2/M^2$ with $M^2=3^{2s+1}$ or $3^{2s+2}$ by the rigidity proof. Use $B=2b3^s$ and $\||H|^2\|_A\le B^2$. In the saturated case $S=U^\perp\setminus\{0\}$; each subgroup indicator has Fourier norm 1, so the difference has norm at most 2. Apply Lemma~\ref{lem:prime}.
+\end{proof}
+
+\section{Examples, verification, and significance}
+\begin{center}
+\begin{tabular}{@{}rrrrll@{}}
+\toprule
+$p$&$r$&$k$&$b$&minimum disagreement&maximum agreement\\
+\midrule
+3&3&1&1&$2/3$&$1/3$\\
+3&3&2&2&$4/9$&$5/9$\\
+3&3&3&1&$2/9$&$7/9$\\
+3&3&6&2&$4/27$&$23/27$\\
+3&3&9&1&$2/27$&$25/27$\\
+3&5&54&2&$4/243$&$239/243$\\
+5&2&3&3&$12/25$&$13/25$\\
+5&2&4&4&$8/25$&$17/25$\\
+7&2&4&4&$24/49$&$25/49$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $p=7,k=4$, the sharp construction uses the norm-one group of order 8. In comparison with the quadratic formula in the merged article, an odd prime exponent has multiple intermediate tiers, with projective symmetry changing the distance bound. Unlike a triangle-inequality or generic uncertainty-principle estimate, the new bound is attained for two full infinite families of ranks and packet sizes, and many additional prime-order families.
+
+The accompanying \texttt{verify.py} checks exact finite projection histograms. It encodes each histogram as a base-$(k+1)$ integer and enumerates translated representatives of ordered packet pairs, with one member of the first packet translated to zero. Translation preserves equality of projections; every pair has a representative of this form. The program also builds the split/nonsplit and line constructions for primes through 31, including lifted cases. The run in \texttt{verification.txt} checks 15 exhaustive parameter triples and 95 extremal constructions. These are independent finite checks, not substitutes for the proof.
+
+\paragraph{Novelty and scope.} The projective Reed--Muller distance theorem and the GRH prime estimate are established tools. The valuation budget, the conversion to homogeneous projective codewords, the combination with split/nonsplit polygon constructions, and the cubic rigidity theorem are the contributions of this note. A targeted public search for Euler-factor matching of cubic character packets and matching-density/finite-code connections did not identify this exact theorem. This is evidence of novelty, not a certification of priority; a wider search of the discrete tomography, finite geometry and multiplicity-one literature is appropriate before publication. The minimum-density part of the article's question is completely resolved for exponents 3 and 5, not for all odd primes, and the full set of achievable densities remains unclassified. The theorem is not a resolution of Artin's primitive-root conjecture or any new generalized Riemann hypothesis.
+
+\paragraph{Formalization plan.} The density proof can be separated into finite statements about $\F_p^r$: projection equality, cyclotomic integral-basis divisibility, Newton identities, finite differences, the projective distance theorem, and the explicit constructions. The analytic portion then imports the precise statement \texttt{DirichletLZerosOnLine} exported by the vendored theorem and a smoothed explicit-formula lemma. No new Lean code is claimed to compile; the current environment does not contain the pinned Lean toolchain, and the source proof was not independently rebuilt. The supplied Python verification checks only the listed finite cases.
+
+\section{Further research questions}
+\begin{enumerate}
+\item Determine whether \eqref{eq:delta} is sharp in the missing tiers, starting with $p=7,b=5$. In particular, for the two-dimensional construction ask for two $b$-point multisets having equal projected histograms in $b$ projective directions. Prove an obstruction or construct such a pair. The lower bound applies even if this particular construction fails.
+\item Classify the entire high-agreement spectrum in the cubic and quintic cases. Projective code second weights are natural candidates, but one must check liftability to integral Fourier transforms with the required packet budget.
+\item Classify all cubic extremizers geometrically, beyond the signed-unit and saturated classification in Theorem~\ref{thm:rigidity}. Minimum-weight projective codewords constrain the support; recovering the admissible Fourier phases is the remaining problem.
+\item Determine effective numerical values of $C_w$, optimize the smooth weight, and seek a smaller dependence on packet size in the worst-case distinguishing-prime problem. No assertion of a sharper $k$-dependence follows merely from the density calculation.
+\item Extend the valuation argument to character groups of composite exponent, where several cyclotomic primes interact, and compare with simultaneous local-factor matching of abelian field zeta functions.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{vendor} L. Sernau, \emph{The generalized Riemann hypothesis for Dirichlet $L$-functions, in Lean 4}, readable edition, upstream commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207} (25 November 2026). Vendored in ProveIt, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{repository directory}. Proof credited there to Levent Alp\"oge with Claude.
+\bibitem{article} ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, 26 November 2026, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{merged article}; specifically \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/Article/sections/rec.tex}{\texttt{sections/rec.tex}}, labels \texttt{rec:thm:qmatch}, \texttt{rec:thm:qmatchfinite}, \texttt{rec:lem:gram}, and Open questions.
+\bibitem{Sorensen} A. B. S\o rensen, Projective Reed--Muller codes, \emph{IEEE Transactions on Information Theory} \textbf{37} (1991), 1567--1576.
+\bibitem{Ghorpade} S. R. Ghorpade and R. Ludhani, On the minimum distance, minimum weight codewords, and the dimension of projective Reed--Muller codes, \emph{Advances in Mathematics of Communications} \textbf{18} (2024), 360--382, Corollary 3.3. \href{https://doi.org/10.3934/amc.2023035}{doi:10.3934/amc.2023035}.
+\bibitem{Davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+\usepackage[margin=.85in]{geometry}
+\usepackage{amsmath,amssymb,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\up}{\operatorname{unit}_p}
+\title{\vspace{-1.8em}Sharp stabilization of the prime-to-\(p\) part\\ of spanning-tree counts}
+\author{Research supplement}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let a connected regular graph tower have compact \(p\)-adic analytic
+pro-\(p\) deck group \(\Gamma\), with levels defined by the subgroups
+\(W^{p^n}\) of an open normal uniform subgroup. Strip all factors of
+\(p\) from the spanning-tree count at level \(n\) to obtain \(U_n\).
+Then \(U_n\equiv U_{n-1}\pmod{p^n}\), with \(2^{n+1}\) replacing \(2^n\)
+for \(p=2,\ n\ge2\). These moduli are sharp at every level, even for
+simple graph towers. Independent exact checks include nonabelian cases.
+\end{abstract}
+
+\section{Finite-step reduction}
+For a nonzero rational \(z\), put \(\up(z)=z/p^{v_p(z)}\).
+Let \(G=\Gamma/W^{p^n}\) and \(K=W^{p^{n-1}}/W^{p^n}\).
+The cover \(X_n\to X_{n-1}\) arises from quotienting by \(K\).
+The kernel \(K\) is elementary abelian and is central in \(W/W^{p^n}\).
+Every element of \(K\) is the \(p^{n-1}\)-st power of an element of
+\(W/W^{p^n}\), a standard property of uniform pro-\(p\) groups.
+These kernel properties alone suffice for the proof: for each nontrivial
+character of \(K\), it is enough to have one such power it detects,
+with the root centralizing \(K\) and of order dividing \(p^n\).
+
+Choose the splitting field \(L=\Q(\zeta_{p^M})\) where \(p^M\) is
+a multiple of the exponent of \(G\) and \(M\ge n\). Let \(A\) be its
+Galois group over \(\Q\), identified also with the local Galois group
+at \(p\). Decompose the lifted graph Laplacian into its blocks, using
+the regular representation of \(G\) on each fiber over the base.
+For each irreducible representation \(\rho\), the block \(D_\rho\)
+appears \(d_\rho=\dim\rho\) times. It is invertible for nontrivial
+\(\rho\) because connectivity makes the constants the whole kernel.
+The matrix-tree theorem cancels the factors from representations
+trivial on \(K\) and gives
+\[
+ \frac{\kappa_n}{\kappa_{n-1}}=
+ \frac{1}{|K|}\prod_{\rho:\,K\not\subseteq\ker\rho}(\det D_\rho)^{d_\rho}.
+\]
+All blocks are Hermitian in unitary bases; their determinants here
+are real and positive. The Galois action on these determinants agrees
+with its action on the representations, since the voltage Laplacian
+has rational group-ring coefficients.
+\newpage
+\section{The stabilizer and the orbit norm}
+Fix an irreducible \(\rho\) in this product, with stabilizer \(H\le A\)
+of its character and dimension \(d_\rho=p^k\).
+Restrict it to \(K\). Its character eigenspaces are permuted transitively
+by \(G\), by irreducibility and normality, and only nontrivial
+characters of \(K\) occur.
+
+Write \(\bar H_n\) for the image of \(H\) modulo \(p^n\).
+Every \(\sigma\in H\) acts trivially on the \(p\)-th roots of unity:
+if \(\sigma\) sends a constituent \(\chi\) of \(\rho|_K\) to \(\chi^a\),
+then \(\chi^a=g\chi\) for some \(g\in G\).
+Iterating gives \(g^j\chi=\chi^{a^j}\); the order of \(g\) is
+a power of \(p\), whereas \(a\in\F_p^\times\) has order dividing \(p-1\).
+This forces \(a=1\). (For \(p=2\) this is automatic.)
+
+Choose \(w\in W/W^{p^n}\) with \(\chi(w^{p^{n-1}})\ne1\).
+It preserves the \(\chi\)-space and all its eigenvalues there are
+primitive \(p^n\)-th roots. The multiset is \(H\)-invariant:
+Galois conjugation preserves \(\chi\) and the isomorphism type of
+\(\rho\), hence preserves the restricted multiset for \(w\).
+The action of \(\bar H_n\) on the primitive roots is free. So
+\(|\bar H_n|\) divides each such eigenspace dimension (choosing \(w\)
+for that constituent), and divides \(d_\rho\). Write
+\(|\bar H_n|=p^s\), so \(s\le k\).
+
+Let \(\alpha=\det D_\rho\).
+For odd \(p\), the orbit contribution is \(N_{L^H/\Q}(\alpha)^{d_\rho}\).
+We use cyclotomic local reciprocity: for \(B\le A\), the unit part \(u\)
+of a norm from \(L^B\otimes\Q_p\) belongs to \(B\) modulo \(p^M\).
+Indeed the cyclotomic reciprocity map sends \(p\) to the identity
+and units to their residue (or its inverse, with the opposite
+convention), and norms from the fixed field map to \(B\).
+Thus \(u\bmod p^n\in\bar H_n\subseteq 1+p\Z/p^n\Z\).
+This cyclic group has a unique subgroup of order \(p^s\), so
+\(u\equiv1\bmod p^{n-s}\); raising \(u\) to \(p^k\) gives
+\(1\bmod p^{n-s+k}\), in particular \(1\bmod p^n\).
+
+For \(p=2,\ n\ge2\), realness puts \(\alpha\) in \(L^J\), where
+\(J=\langle H,-1\rangle\). Now the orbit contribution is
+\(N_{L^J/\Q}(\alpha)^{2^k[J:H]}\).
+Normalize this norm to its unit part \(u\), and write \(u=\pm v\) with
+\(v\in1+4\Z_2\). The image of \(J\) contains \(-1\), so \(v\bmod2^n\)
+is in its principal-unit subgroup, whose order is half the order of
+the image. If \(J=H\), this subgroup has order \(2^{s-1}\).
+Then \(k\ge s\ge1\), so the sign vanishes under the exponent and
+\[
+ v^{2^k}\equiv1\pmod{2^{\,n+1-s+k}}.
+\]
+If \(J\ne H\), the subgroup has order at most \(2^s\).
+The exponent \(2^{k+1}\) removes the sign and gives the same
+precision. These follow from the cyclic structure of
+\((1+4\Z_2)/(1+2^n\Z_2)\) and the gain of one bit per squaring on
+\(1+4\Z_2\).
+At \(p=2,\ n=1\) the asserted congruence just says the units are odd.
+Multiplying the orbit contributions proves the claimed congruences
+for \(U_n/U_{n-1}\), hence for \(U_n-U_{n-1}\).
+
+Consequently \(U_n\) converges in \(\Z_p^\times\).
+The residue at level \(N\ge1\) gives the limit modulo \(p^{N+1}\)
+at odd \(p\), and modulo \(2^{N+2}\) at \(p=2\).
+\newpage
+\section{Sharpness at every level}
+Use the additive \(\Z_p\)-tower with \((r-1)^2\) voltage loops of step
+\(1\) and \(r\) loops of step \(2\). Its nontrivial Laplacian factor,
+with \(z\) a character value, is
+\[
+ (2-z-z^{-1})(r+z)(r+z^{-1}).
+\]
+For primitive roots of order \(p^n\) with even totient, the product
+over the layer is \(p^2\Phi_{p^n}(-r)^2\). After the matrix-tree
+division by \(p\) between successive levels, the unit ratio is
+\(\up(\Phi_{p^n}(-r))^2\). The same square formula holds at order
+2 by direct evaluation.
+
+For odd \(p\), take \(r=p-1\) except \(r=5\) at \(p=3\).
+Write \((-r)^{p^{n-1}}=1+x\); the lifting-the-exponent formula gives
+\(v_p(x)=n\). The geometric sum yields
+\[
+ \frac{\Phi_{p^n}(-r)}p
+   =1+\frac{p-1}{2}x+
+        \sum_{j=2}^{p-1}\frac1p\binom{p}{j+1}x^j .
+\]
+Every term in the displayed sum has valuation at least \(n+1\):
+the last has valuation \((p-1)n-1\), and the other terms have
+valuation at least \(2n\). The one exception to this estimate is
+\(p=3,n=1\), where \(\Phi_3(-5)/3=7\) and \(v_3(7^2-1)=1\).
+In all cases \(\Phi_{p^n}(-r)/p\) is a unit and squaring gives
+a unit ratio different from 1 by exactly valuation \(n\).
+
+For \(p=2,\ r=3,\ n\ge2\), the cyclotomic unit is
+\((3^{2^{n-1}}+1)/2\). Its difference from 1 has valuation \(n\)
+and its sum with 1 has valuation 1. Its square differs from 1
+by valuation \(n+1\).
+For \(p=2,\ n=1\), three step-1 loops give unit ratio 3, sharp
+modulo 2. Later levels are more divisible, so these examples also
+show the stated error bounds for the limit are optimal.
+
+To obtain \emph{simple} graphs at all levels, subdivide each edge
+into a path of length \(p^2\), with separate internal vertices for
+each edge, doing so equivariantly. This includes base loops, for which
+the replacement is a cycle of length at least four. Replacing every
+edge by length \(\ell\) multiplies the tree count by
+\(\ell^{|E|-|V|+1}\): edges in a spanning tree of the original graph
+use a full path, and every other path has exactly one of its \(\ell\)
+edges deleted. Thus the subdivision does not change the unit parts.
+
+\section*{Sources, comparisons, and checks}
+The abelian context includes
+\href{https://arxiv.org/abs/2210.06182}{Ueki--Yoshizaki on cyclic resultants},
+\href{https://arxiv.org/abs/2503.06194}{Yoshizaki on iterated multivariable resultants},
+and \href{https://imath.kyiv.ua/~topology/conf/agma2025/abstracts/texts/kobayashi/kobayashi.pdf}{Kobayashi's graph class-number program},
+including the Fibonacci tower (the same step pattern at \(r=2\)).
+This continues the \href{https://chatgpt.com/c/6b07d086-1ef0-83e8-9354-9bbcf6afcaf3?messageId=88092bdb-6383-595f-a45a-d402786a8c09}{earlier cyclotomic transfer},
+but uses Galois stabilizers and norm groups instead of individual
+cyclotomic valuations. In particular, the representation argument
+replaces the scalar characters of the abelian resultant setting. No hypothesis about zeta zeros is needed.
+The proof is not Lean-formalized; publication priority is not claimed.
+The Python replay computes independent exact integer Laplacian
+cofactors. At \(n=2\) a nonabelian 81-vertex example gives
+\((U_2,U_1)\equiv(1,10)\bmod27\); a nonabelian 64-vertex example
+gives \((13,5)\bmod16\). The decks and steps are specified in the code.
+\end{document}

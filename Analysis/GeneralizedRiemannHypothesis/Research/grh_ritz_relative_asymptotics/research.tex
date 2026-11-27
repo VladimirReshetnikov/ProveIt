@@ -1,0 +1,371 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype,xcolor,hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\hypersetup{pdftitle={Exact relative error laws for Li moment pencils},pdfauthor={Research note for ProveIt},colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,citecolor=blue!50!black}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\art}{\texttt{Article/sections/li.tex}}
+\title{Exact relative error laws for Li moment pencils\\\large A common determinant scale, asymptotically sharp residuals, and Dirichlet zero recovery}
+\author{Research note for ProveIt}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The merged ProveIt article obtains the two leading logarithmic terms in the convergence of Hankel moment pencils to the distinct zeta zeros under RH, leaving a rank-dependent $O(N)$ term. We prove an exact multiplicative asymptotic in terms of a single Hankel determinant quotient. For a summable positive discrete spectrum $x_1>x_2>\cdots\downarrow0$ with masses $w_j$, the error at fixed rank $j$ is asymptotic to $h_N/(w_j x_j^{2N-1} C_j^2)$, where $h_N$ is the squared monic orthogonal-polynomial norm and $C_j=\prod_{k\ne j}(1-x_k/x_j)$. In particular all fixed-rank error ratios have explicit asymptotic constants. An exact residual identity yields a finite-data estimator with summable relative errors, a hierarchy of higher-residual-moment corrections, and finite enclosures conditional on certified isolation. Consecutive errors have an exact asymptotic quotient determined by the next orthogonal-polynomial norm, so an additional pencil asymptotically removes the entire previous error. We transfer these results to the Riemann zeta function and arbitrary fixed primitive Dirichlet distance spectra using the supplied Lean RH/Dirichlet GRH theorem. No simplicity, spacing or linear-independence conjecture is required. For the arithmetic spectra the higher corrections form a strict asymptotic hierarchy, with the next omitted term asymptotic to the remaining error. The common absolute $O(N)$ coefficient is not determined here.
+\end{abstract}
+
+\section{Input, scope, and the research gap}
+The requested source is the vendored readable edition of \texttt{lsernau/grh-lean} \cite{vendor}, at upstream commit
+\begin{center}\small\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.\end{center}
+We inspected its README, \texttt{src/Statements.lean}, and \texttt{src/Main.lean} \cite{statements,main}, and the source, analytic, Li, zero-recovery and prime-statistic sections of the merged article \cite{article,source,li}. The interface states, in particular, \texttt{riemannHypothesis : RiemannHypothesis}, and \texttt{LFunction\_eq\_zero\_re : DirichletLZerosOnLine}. The latter quantifies over all positive moduli and Dirichlet characters and places every zero in the open critical strip on $\Re s=1/2$. We use these assertions as the input theorem. The README reports independent kernel checks and dependence on only \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; we have not rerun that build or those checks. This note is a mathematical proof downstream of the given input, not a Lean proof or an independent verification of the source. Dirichlet GRH here is not an assertion about general nonabelian or automorphic $L$-functions.
+
+The source mechanism described in the article is a one-sided bound for a ramp-smoothed prime sum, followed by an analytic zero exclusion. Its Mellin denominator $s(s-1)$ makes $x=1/(\rho(1-\rho))$ positive at a critical-line zero; this is the article's coordinate in \texttt{li:prop:moments}. We exploit the resulting positive compact spectral operator rather than the one-sided arithmetic inequality itself.
+
+For zeta, let $\gamma_j$ be the distinct positive zero ordinates in increasing order, and $m_j$ their multiplicities. Put
+\begin{equation}\label{eq:zeta-atoms}
+ x_j=(1/4+\gamma_j^2)^{-1},\qquad p_k=\sum_{j\ge1}m_jx_j^k,
+ \qquad \mu=\sum_{j\ge1}m_jx_j\delta_{x_j}.
+\end{equation}
+The article's theorem \texttt{li:thm:ritz} proves, at every fixed rank $j$,
+\begin{equation}\label{eq:old}
+ \log(x_j-r_{j,N})=-4N\log N+4N\log\log N+O_j(N).
+\end{equation}
+The question \texttt{li:q:ritz} asks about the finer $O_j(N)$ term. The article also defines a residual variance $v_j$ in \texttt{li:thm:ritzcert}, using it for a finite simplicity/enclosure test. Our results identify the relative remainder at every pair of ranks exactly, and establish the asymptotic sharpness and higher-order refinement of that residual. The unresolved absolute error scale is a single scalar sequence $h_N$. This is a partial answer to the finer-Ritz-asymptotics question, not a proof of the existence of its absolute limit.
+
+\section{An abstract positive discrete spectrum}
+Assume throughout Sections 2--4 that
+\begin{equation}\label{eq:assumptions}
+ x_1>x_2>\cdots>0,\qquad \sum_{i\ge1}x_i<\infty,
+ \qquad \mu=\sum_{i\ge1}w_i\delta_{x_i},\quad w_i>0,\quad \sum_iw_i<\infty.
+\end{equation}
+No condition is imposed on the separation of small atoms or on the decay of their weights. Write $M_k=\int t^k\dd\mu(t)$ for $k\ge0$. Let $V_N$ be the polynomials of degree $<N$ with the $L^2(\mu)$ norm. Set
+\[
+ H_N=(M_{a+b})_{0\le a,b<N},\qquad K_N=(M_{a+b+1})_{0\le a,b<N},\quad D_N=\det H_N,\quad D_0=1.
+\]
+The monic orthogonal polynomial $Q_N$ is the degree-$N$ monic polynomial of least squared norm $h_N=\int Q_N^2\dd\mu$. Gram determinants give $h_N=D_{N+1}/D_N$; put $q_N=Q_N/\sqrt{h_N}$. For $N\ge j$, write $r_{j,N}$ for the $j$th largest generalized eigenvalue of $(K_N,H_N)$, and define
+\begin{align}\label{eq:resid}
+ S_{j,N}(t)&=\frac{Q_N(t)}{t-r_{j,N}}, &
+ v_{j,N}&=\frac{h_N}{\int S_{j,N}^2\dd\mu},\\
+ \nu_N&=q_N^2\mu, & \tau_{\ell,N}&=\int t^\ell\dd\nu_N(t),\qquad \tau_{0,N}=1.\notag
+\end{align}
+The quotient defining $S_{j,N}$ is a polynomial, and $\nu_N$ is a probability measure. The numbers $r_{j,N},v_{j,N},\tau_{\ell,N}$ are computed from finitely many moments: $M_0,\dots,M_{2N+\ell}$ suffice for $\ell\ge0$ (and in the zeta notation $M_k=p_{k+1}$).
+
+\begin{lemma}[Elementary spectral facts]\label{lem:spectral}
+All $H_N,K_N$ are positive definite. The $r_{j,N}$ are the simple roots of $Q_N$; they satisfy $0<r_{j,N}<x_j$ and increase to $x_j$ for each fixed $j$. Moreover $\nu_N$ converges weakly to $\delta_0$ on $[0,x_1]$, and $h_{N+1}/h_N\to0$.
+\end{lemma}
+\begin{proof}
+A nonzero polynomial cannot vanish on the infinitely many atoms, proving positivity. Multiplication $T:f(t)\mapsto tf(t)$ on $L^2(\mu)$ is compact, positive, with nonzero eigenvalues $x_i$ and normalized eigenvectors $w_i^{-1/2}\mathbf1_{\{x_i\}}$. Its compression to $V_N$ is represented by the pencil. For a Ritz vector $P$, $(t-r)P$ is orthogonal to $V_N$ and has degree at most $N$, so is a nonzero multiple of $Q_N$. Thus each eigenspace has dimension one, and its eigenvalue is a root of $Q_N$. The compression is self-adjoint, so its $N$ eigenvalues are simple and exhaust the roots.
+
+Min--max and nesting give monotonicity and $r_{j,N}\le x_j$. In fact on the subspace of $V_N$ vanishing at $x_1,\ldots,x_{j-1}$, of codimension at most $j-1$, every nonzero polynomial has positive squared norm on atoms strictly below $x_j$. Its Rayleigh quotient is strictly less than $x_j$; the maximum on its compact unit sphere is also strictly less. The codimension min--max bound yields strict inequality. Polynomials are dense in $L^2(\mu)$ by approximation of continuous functions on $[0,x_1]$, followed by Weierstrass. Approximating the first $j$ eigenvectors in $V_N$ and applying min--max gives $r_{j,N}\to x_j$.
+
+For every fixed $i$, Bessel's inequality for the orthonormal sequence $(q_N)$ gives $w_i q_N(x_i)^2\to0$. Only finitely many atoms lie above any $\epsilon>0$, so $\nu_N([\epsilon,x_1])\to0$, proving weak convergence. Finally $tQ_N$ is monic of degree $N+1$. By the minimizing property of $Q_{N+1}$,
+\[
+ 0<\frac{h_{N+1}}{h_N}\le \int t^2\dd\nu_N(t)=\tau_{2,N}\to0.\qedhere
+\]
+\end{proof}
+
+\section{Residual identity, error laws and enclosures}
+Fix $j$ and abbreviate $r=r_{j,N}$, $x=x_j$, $\delta=x-r>0$, $S=S_{j,N}$, $v=v_{j,N}$, and $\tau_\ell=\tau_{\ell,N}$. Define the normalized mass of the $j$th atom in the Ritz vector by
+\[
+ A=\frac{w_jS(x)^2}{\int S^2\dd\mu},\qquad
+ I=\sum_{i\ne j}\frac{\nu_N(\{x_i\})}{r-x_i}.
+\]
+When $r$ is isolated from the other atoms, $I$ is absolutely convergent. By Lemma~\ref{lem:spectral}, for all sufficiently large $N$ there is a fixed $g>0$ with $|r-x_i|\ge g$ for every $i\ne j$. This requires only that the fixed atom $x_j$ is isolated, not any uniform gap property of the spectrum.
+
+\begin{theorem}[Exact identity and finite enclosure]\label{thm:residual}
+Suppose $|r-x_i|\ge g>0$ for every $i\ne j$, and let $\eta=v/g^2<1$. Then
+\begin{equation}\label{eq:id}
+ \boxed{\delta A=vI,\qquad 1-\eta\le A\le1,\qquad
+ \nu_N(\{x\})=\frac{\delta^2 A}{v}.}
+\end{equation}
+In particular,
+\begin{equation}\label{eq:interval}
+ \frac vr\max\left\{0,1-\tau_1\left(\frac1g+\frac1r\right)\right\}
+ \le \delta\le
+ \frac vr\frac{1+\tau_1/g}{1-v/g^2}.
+\end{equation}
+For $j=1$, the lower bound $\delta\ge v/r$ holds without any isolation hypothesis.
+\end{theorem}
+\begin{proof}
+Orthogonality gives $\int Q_NS\dd\mu=0$, equivalently $\int(t-r)S^2\dd\mu=0$. Thus the probability measure $S^2\mu/\int S^2\dd\mu$ has mean $r$ and variance $v$. Separating its atom at $x$ and using $Q_N(t)=(t-r)S(t)$ yields
+\[
+ \delta w_j S(x)^2=\sum_{i\ne j}\frac{w_iQ_N(x_i)^2}{r-x_i}=h_N I.
+\]
+Dividing by $\int S^2\dd\mu$ gives the identity. The variance bounds the mass off the selected atom by $v/g^2$, and the third assertion follows by evaluating $Q_N$ there.
+
+Next,
+\[
+ rI=1-\nu_N(\{x\})+\sum_{i\ne j}\frac{x_i\nu_N(\{x_i\})}{r-x_i}.
+\]
+The sum has absolute value at most $\tau_1/g$, and $\nu_N(\{x\})\le\tau_1/x\le\tau_1/r$. Hence $1-\tau_1/g-\tau_1/r\le rI\le1+\tau_1/g$. Since $I\ge0$ by \eqref{eq:id}, dividing by $A$ and using its bounds gives \eqref{eq:interval}. For $j=1$ the support lies in $[0,x_1]$, so $\int t(x_1-t)S^2\dd\mu\ge0$. Dividing by the norm gives $x_1r\ge r^2+v$, as claimed.
+\end{proof}
+
+\begin{theorem}[Asymptotically sharp computable residual]\label{thm:sharp}
+For each fixed $j$,
+\begin{equation}\label{eq:sharp}
+ \boxed{x_j-r_{j,N}\sim \frac{v_{j,N}}{r_{j,N}}.}
+\end{equation}
+In fact the relative discrepancy is summable:
+\[
+ \sum_{N\ge j}\left|\frac{r_{j,N}(x_j-r_{j,N})}{v_{j,N}}-1\right|<\infty.
+\]
+\end{theorem}
+\begin{proof}
+The normalized Ritz vector $u=S/\norm{S}$ has degree at most $N-1$, and $(T-r)u$ is a multiple of $q_N$ of squared norm $v$. The three-term recurrence (or orthogonality by degree) gives
+\[
+ v=\left|\langle q_N,Tu\rangle\right|^2
+ =\frac{h_N}{h_{N-1}}\left|\langle q_{N-1},u\rangle\right|^2
+ \le \frac{h_N}{h_{N-1}}\to0.
+\]
+Indeed $\langle q_N,Tq_{N-1}\rangle=\sqrt{h_N/h_{N-1}}$ by leading coefficients, and the lower degrees give zero. Also $\tau_{1,N}\to0$ by Lemma~\ref{lem:spectral}. For large $N$ take fixed $g>0$ in Theorem~\ref{thm:residual}; $r\to x_j>0$. Then \eqref{eq:interval} implies $|r\delta/v-1|=O_j(\tau_{1,N}+v_{j,N})$.
+
+The trace-class condition $\sum_i x_i<\infty$ gives
+\[
+ \sum_{N\ge0}\tau_{1,N}=\sum_{N\ge0}\langle q_N,Tq_N\rangle=\sum_i x_i
+\]
+by Tonelli and completeness of the polynomials. Also $\sum_{N\ge1}v_{j,N}$ (starting at $N=j$) is bounded by $\sum_{N\ge1}|\langle q_N,Tq_{N-1}\rangle|^2\le \sum_i x_i^2$, by the Hilbert--Schmidt norm of $T$. The finitely many earlier terms are finite, proving summability.
+\end{proof}
+
+\begin{theorem}[Higher residual-moment corrections]\label{thm:high}
+For each fixed integer $k\ge0$ and fixed rank $j$,
+\begin{equation}\label{eq:expansion}
+ \frac{r\delta}{v}=\sum_{\ell=0}^{k}\frac{\tau_\ell}{r^\ell}
+ +O_{j,k}(\tau_{k+1}+v)\qquad(N\to\infty).
+\end{equation}
+There is also a completely explicit version. Under the isolation hypothesis of Theorem~\ref{thm:residual}, take any $B\ge x_1$, and set
+\begin{align*}
+ P_k&=\sum_{\ell=0}^k\frac{\tau_\ell}{r^\ell},\qquad
+ E_k=\frac{\tau_{k+1}}{r^kg}
+ +\min\left\{\frac{\tau_1}{r},\frac{\eta}{1-\eta}\right\}
+ \sum_{\ell=0}^k(B/r)^\ell .
+\end{align*}
+Then the following interval encloses the true error:
+\begin{equation}\label{eq:highinterval}
+ \frac vr\max\{0,P_k-E_k\}\le\delta\le
+ \frac vr\frac{P_k+E_k}{1-\eta}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+From $\abs I\le1/g$ and \eqref{eq:id},
+$\nu_N(\{x\})=vI^2/A\le\eta/(1-\eta)$, in addition to $\nu_N(\{x\})\le\tau_1/r$. For every $t\ne r$ the finite algebraic identity
+\[
+ \frac r{r-t}=\sum_{\ell=0}^k(t/r)^\ell+\frac{t^{k+1}}{r^k(r-t)}
+\]
+holds even for $t>r$. Sum over all atoms except $x$. The last term is bounded in absolute value by $\tau_{k+1}/(r^kg)$. The omitted atom in the finite sum is bounded by the other term of $E_k$. Hence $|rI-P_k|\le E_k$. Dividing by $A\in[1-\eta,1]$ yields \eqref{eq:highinterval}. For large $N$, $g,r$ stay bounded away from zero and $B$ is fixed, so $E_k=O_{j,k}(\tau_{k+1}+v)$. Also $P_k$ is bounded, and $A=1+O_j(v)$; this proves \eqref{eq:expansion}.
+\end{proof}
+
+For example the first corrected approximation is $r+(v/r)(1+\tau_1/r)$; its absolute error is $O_j(v\tau_2+v^2)$, without using any zero spacing estimates. This is a bound in terms of additional observable moments. The next lemma sharpens the hierarchy, and the arithmetic applications below establish that the $v$ term is negligible compared with any fixed residual moment. If isolation is certified, \eqref{eq:highinterval} is an actual two-sided interval and its width is $O_{j,k}(v(\tau_{k+1}+v))$ for fixed $k$ and large $N$. In the absence of a gap certificate the asymptotic estimates are still valid, but the finite interval is not certified.
+
+
+\begin{lemma}[Strict hierarchy of residual moments]\label{lem:hierarchy}
+For every fixed $k\ge0$, $\tau_{k+1,N}=o(\tau_{k,N})$ as $N\to\infty$.
+\end{lemma}
+\begin{proof}
+In the complete orthonormal polynomial basis $(q_n)_{n\ge0}$, $T$ has a real tridiagonal matrix: $\langle q_i,Tq_l\rangle=0$ for $|i-l|>1$ by orthogonality and degree. For fixed $k$ and $N>k+1$, let $J_{N,k}$ be its compression to the span of $q_{N-k-1},\dots,q_{N+k+1}$. By induction on $l\le k+1$, applying $T$ at most $l$ times to $q_N$ stays in this subspace, and the compressed powers agree with the full powers on that vector. In particular $\tau_{l,N}=\langle q_N,J_{N,k}^{l}q_N\rangle$. The positive finite matrix $J_{N,k}$ satisfies $0\le J_{N,k}^{k+1}\le\norm{J_{N,k}}J_{N,k}^k$ by diagonalization. Its norm tends to zero: it is bounded by the norm of $T$ compressed to the orthogonal complement of $V_{N-k-1}$, which tends to zero by compactness of $T$ and strong convergence of the projections onto $V_n$ to the identity. Alternatively it is bounded by the trace $\sum_{l=N-k-1}^{N+k+1}\tau_{1,l}\to0$. Thus $0<\tau_{k+1,N}/\tau_{k,N}\le\norm{J_{N,k}}\to0$.
+\end{proof}
+
+\section{The common determinant scale}
+For each $j$, define the convergent nonzero product
+\begin{equation}\label{eq:C}
+ C_j=\prod_{i\ne j}(1-x_i/x_j).
+\end{equation}
+The finitely many factors with $i<j$ may be negative; all factors with $i>j$ are positive, and the tail converges because $\sum_i x_i<\infty$. Only the distinct sites occur in this product.
+
+\begin{theorem}[Exact relative asymptotics]\label{thm:main}
+For any spectrum satisfying \eqref{eq:assumptions}, and each fixed $j$,
+\begin{equation}\label{eq:main}
+ \boxed{x_j-r_{j,N}\sim\frac{h_N}{w_j x_j^{2N-1}C_j^2},\qquad
+ h_N=\frac{\det H_{N+1}}{\det H_N}.}
+\end{equation}
+In particular for fixed $j,k$,
+\begin{equation}\label{eq:ratio}
+ \lim_{N\to\infty}\left(\frac{x_j}{x_k}\right)^{2N-1}
+ \frac{x_j-r_{j,N}}{x_k-r_{k,N}}=\frac{w_k C_k^2}{w_j C_j^2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact identity \eqref{eq:id}, before normalization by the norm of $S$, says $\delta w_jS(x_j)^2=h_N I$. The bounds in Theorem~\ref{thm:residual}, or weak concentration of $\nu_N$ at zero, give $I\to1/x_j$. Now
+\[
+ S_{j,N}(x_j)=x_j^{N-1}\prod_{1\le i\le N,\ i\ne j}(1-r_{i,N}/x_j).
+\]
+For every fixed index $i\ne j$, $r_{i,N}\to x_i$; the finitely many leading factors converge to nonzero factors. For $i$ sufficiently large $0<r_{i,N}\le x_i\le x_j/2$. Thus $|\log(1-r_{i,N}/x_j)|\le2x_i/x_j$, a summable bound independent of $N$. Extend the factors to $1$ for $i>N$ and apply dominated convergence to the tail logarithms. This gives $S_{j,N}(x_j)/x_j^{N-1}\to C_j$. Substitute into the identity to prove \eqref{eq:main}; division gives \eqref{eq:ratio}. No asymptotic formula for $h_N$ is used.
+\end{proof}
+
+\begin{corollary}[Superlinear one-step convergence]\label{cor:step}
+At any fixed rank $j$,
+\begin{equation}\label{eq:step}
+ \frac{x_j-r_{j,N+1}}{x_j-r_{j,N}}\sim\frac{h_{N+1}}{x_j^2h_N}\to0.
+\end{equation}
+Hence $r_{j,N+1}-r_{j,N}\sim x_j-r_{j,N}$. In particular $N^d(x_j-r_{j,N})\to0$ for every fixed $d>0$.
+\end{corollary}
+\begin{proof}
+Divide the two asymptotics \eqref{eq:main} at $N+1$ and $N$. The ratio of monic norms tends to zero by Lemma~\ref{lem:spectral}. The increment identity and faster-than-geometric decay follow immediately.
+\end{proof}
+
+
+\begin{theorem}[Exact next correction under a logarithmic norm law]\label{thm:next}
+Suppose in addition that $\log h_N=-cN\log N+o(N\log N)$ for some $c>0$. Then, for every fixed rank $j$ and integer $k\ge0$,
+\begin{equation}\label{eq:next}
+ \boxed{\delta-\frac vr\sum_{\ell=0}^{k}\frac{\tau_\ell}{r^\ell}
+ \sim \frac{v\tau_{k+1}}{r^{k+2}}.}
+\end{equation}
+Thus each corrected approximation is eventually strictly below the true atom, and the next omitted correction is asymptotically equal to its remaining error. This is a fixed-order asymptotic hierarchy, not an assertion of convergence of an infinite series at fixed $N$.
+\end{theorem}
+\begin{proof}
+The norm law implies $\log(h_{N+1}/h_N)=o(N\log N)$ by subtracting at adjacent indices. Lemma~\ref{lem:spectral} yields $h_{N+1}/h_N\le\tau_{2,N}\le x_1\tau_{1,N}$. Hence $\log\tau_{1,N}=o(N\log N)$; the upper bound follows also from $\tau_{1,N}\le x_1$. For any fixed $l\ge1$, Jensen's inequality gives $\tau_{l,N}\ge\tau_{1,N}^l$, so $\log\tau_{l,N}=o(N\log N)$. By Theorems~\ref{thm:main} and \ref{thm:sharp}, $\log v=-cN\log N+o(N\log N)$. Consequently $v=o(\tau_{l,N})$ for every fixed $l\ge1$. Apply \eqref{eq:expansion} at order $k+1$ and use Lemma~\ref{lem:hierarchy}: the remainder $O_{j,k}(\tau_{k+2,N}+v)$ is $o(\tau_{k+1,N})$. Since $r\to x_j>0$, subtracting the order-$k$ approximation proves \eqref{eq:next}.
+\end{proof}
+
+\begin{proposition}[Recovering the distinct-site product and masses]\label{prop:product}
+The polynomials $F_N(z)=\prod_{i=1}^N(1-r_{i,N}z)$ converge locally uniformly on $\C$ to $F(z)=\prod_i(1-x_iz)$. Hence $C_j=-F'(1/x_j)/x_j$. Moreover
+\[
+ a_{j,N}:=\frac{\int S_{j,N}^2\dd\mu}{S_{j,N}(r_{j,N})^2}\longrightarrow w_j.
+\]
+\end{proposition}
+\begin{proof}
+Extend $r_{i,N}=0$ for $i>N$ in the product. By dominated convergence $\sum_i(x_i-r_{i,N})\to0$. The telescoping product identity, with $|1-az|\le e^{a|z|}$, gives uniform convergence on $|z|\le R$ with difference at most $R e^{2R\sum_i x_i}\sum_i(x_i-r_{i,N})$. The derivative identity follows from the convergent product.
+
+For fixed $j$ and large $N$, all other Ritz values are bounded away from $r_{j,N}$ and $x_j$: use convergence for the finitely many ranks $<j$ and $r_{i,N}\le x_{j+1}$ for $i>j$. The logarithm of the absolute ratio of $S_{j,N}(x_j)$ to $S_{j,N}(r_{j,N})$ is then $O_j(N\delta)$, which tends to zero by Corollary~\ref{cor:step}. From \eqref{eq:id}, $A\to1$, so $a_{j,N}=w_j[S(x_j)/S(r)]^2/A\to w_j$.
+\end{proof}
+
+This proposition identifies the constants using only moment data in the limit, including when the multiplicities of the underlying analytic zeros are not all one. It does not guarantee finite determination of distinct sites within an unresolved cluster.
+
+\section{Consequences for zeta and Dirichlet zeros}
+\subsection{Riemann zeta function}
+Assume the supplied RH theorem. The completed $\xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)$ is even around $1/2$ and has no central zero (the eta series at $1/2$ is positive and $1-\sqrt2<0$). Its zeros occur at $1/2\pm i\gamma_j$ with equal multiplicity. The paired Hadamard product and the Riemann--von Mangoldt count give
+\[
+ E(z)=2\xi\left(\tfrac12+\sqrt{\tfrac14-z}\right)=\prod_{j\ge1}(1-x_jz)^{m_j},\qquad
+ p_k=-k[z^k]\log E(z).
+\]
+Here evenness makes the square-root choice irrelevant; the product has no exponential factor because the entire function in $z$ has order at most $1/2$ (or directly by pairing the genus-one factors in $s$). The zero count ensures $\sum m_jx_j<\infty$. The article and Voros give the equivalent inverse Li formula \cite{li,voros}
+\[
+ p_k=\sum_{n=1}^k(-1)^{n+1}\binom{2k}{k-n}\lambda_n,
+\]
+where $\lambda_n$ denotes the usual Li coefficient. For completeness, the paired contribution is $2m_j(1-\cos(n\theta_j))$, with $2-2\cos\theta_j=x_j$, and the binomial expansion gives the displayed inversion. The sum converges absolutely at each fixed $k$ by $\sum m_jx_j<\infty$. Thus \eqref{eq:assumptions} holds with $w_j=m_jx_j$ and $H_N=(p_{a+b+1})$ as in the article.
+
+\begin{corollary}[Relative zeta-zero error law]\label{cor:zeta}
+In the notation \eqref{eq:zeta-atoms}, for each fixed $j$,
+\begin{equation}\label{eq:zeta-main}
+ x_j-r_{j,N}\sim\frac{h_N}{m_j x_j^{2N}C_j^2}.
+\end{equation}
+For any fixed $j,k$, the exact limit of the difference of the logarithmic remainders is
+\begin{equation}\label{eq:logratio}
+ \log\frac{x_j-r_{j,N}}{x_k-r_{k,N}}-2N\log\frac{x_k}{x_j}
+ \longrightarrow\log\frac{m_kC_k^2}{m_jC_j^2}.
+\end{equation}
+The approximation $\widehat\gamma_{j,N}=\sqrt{1/r_{j,N}-1/4}$ is from above and obeys
+\begin{equation}\label{eq:gamma}
+ \widehat\gamma_{j,N}-\gamma_j\sim
+ \frac{h_N}{2\gamma_jm_j x_j^{2N+2}C_j^2}
+ \sim\frac{v_{j,N}}{2\gamma_j x_j^3}.
+\end{equation}
+Also $a_{j,N}/r_{j,N}\to m_j$, so rounding eventually recovers the multiplicity (an asymptotic statement, not a finite certificate).
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:main} with $w_j=m_jx_j$. The derivative of $f(t)=\sqrt{1/t-1/4}$ at $x_j$ is $-1/(2\gamma_jx_j^2)$; Taylor's theorem and \eqref{eq:sharp} give \eqref{eq:gamma}. The mass claim is Proposition~\ref{prop:product}.
+\end{proof}
+
+The article's bound \eqref{eq:old}, combined with \eqref{eq:zeta-main}, implies $\log h_N=-4N\log N+4N\log\log N+O(N)$. Theorem~\ref{thm:next} therefore applies with $c=4$. In particular each corrected atom estimate is eventually from below, and its remaining error is asymptotically the next computable positive term. For the associated zero ordinate, applying the smooth decreasing map $f$ to the corrected atom gives an eventual upper estimate, with remaining error asymptotic to $v\tau_{k+1}/(2\gamma_j x_j^{k+4})$ by the mean value theorem.
+
+In particular the unknown absolute coefficient in \eqref{eq:old} is common after the explicit rank term is removed. If for any fixed $k$ the limit
+\[
+ L_k=\lim_{N\to\infty}\frac{\log(x_k-r_{k,N})+4N\log N-4N\log\log N}{N}
+\]
+exists, then it exists for every fixed $j$ and equals $L_k+2\log(x_k/x_j)$. Equation~\eqref{eq:logratio} is stronger than this implication, since it gives an $o(1)$ remainder after subtracting the explicit constant and linear term from the difference. The existence or evaluation of any $L_k$ remains open in this note.
+
+\subsection{Fully moment-based finite enclosures when isolation is certified}
+Here is one way to obtain the gap input for Theorems~\ref{thm:residual} and \ref{thm:high} without using actual zero ordinates. Following the article's integrality test, form
+\[
+ b_{j,N}=\min_{1\le k\le 2N}\left(\frac{p_k-\sum_{i<j}r_{i,N}^{k}}{2}\right)^{1/k}.
+\]
+Each numerator is at least $2x_{j+1}^k$, because after subtracting one smaller value for each earlier site, both sites $j,j+1$ still contribute. Thus $b_{j,N}\ge x_{j+1}$. If an earlier or the $j$th site has multiplicity at least two, the same numerator is at least $2x_j^k$, so $b_{j,N}\ge x_j$. Consequently $b_{j,N}<r_{j,N}$ certifies that the first $j$ sites are simple, and we may take
+\[
+ g=\begin{cases}r_{1,N}-b_{1,N},&j=1,\\
+ \min\{r_{j,N}-b_{j,N},r_{j-1,N}-r_{j,N}\},&j>1.\end{cases}
+\]
+Indeed the atoms above $x_j$ are at least $r_{j-1,N}$, and those below are at most $b_{j,N}$. Use $B=p_1\ge x_1$ and compute $v,\tau_1,\ldots$ from the moments. If $\eta<1$, \eqref{eq:interval} and \eqref{eq:highinterval} are certified error intervals; map the resulting interval for $x_j$ through the decreasing function $f$ to enclose $\gamma_j$. If the first $j$ sites are simple, a fixed sufficiently large $k$ satisfies $\sum_{i>j}m_i(x_i/x_j)^k<1$ by dominated convergence; this candidate in the minimum is eventually bounded below $x_j$ by a fixed margin. Thus the gap test eventually succeeds and the improved residual enclosures have relative width tending to zero. Otherwise this particular gap test cannot certify simplicity; the abstract results still hold and independently established isolation can be used instead. With inexact moments one must propagate rigorous intervals and check strict inequalities before calling a result certified.
+
+\subsection{Arbitrary primitive Dirichlet distance spectra}
+Fix a primitive nonprincipal character $\chi$, a real height $t_0$, and $a>1/2$. Write $\Lambda_\chi(s)$ for its completed entire $L$-function. By Dirichlet GRH, its nontrivial zeros lie at $1/2+i\gamma$; count multiplicities. Group all ordinates by equal distance $d=|\gamma-t_0|$, assigning total multiplicity $m_j$ to the $j$th distinct distance in increasing order. Set $x_j=(a^2+d_j^2)^{-1}$. A possible zero at $d_1=0$ is allowed. The zero count for fixed conductor is $O(T\log(T+2))$, so $\sum m_jx_j<\infty$. The function
+\[
+ G(w)=\Lambda_\chi(1/2+it_0+w)\Lambda_{\bar\chi}(1/2-it_0+w)
+\]
+is entire, even by the functional equations and the product of the two root numbers being one. Its zeros in the $w$ coordinate are paired at $\pm id_j$, with multiplicity $m_j$ at each nonzero pair; at $w=0$ the multiplicity is twice the central distance multiplicity. Therefore
+\[
+ \frac{G(\sqrt{a^2-z})}{G(a)}=\prod_j(1-x_jz)^{m_j},
+\]
+by the genus-zero product for the entire function of $z$ of order at most $1/2$. Its value at $z=0$ is one, and $G(a)\ne0$ since $1/2+a>1$. The power sums are the logarithmic Taylor coefficients exactly as before, accessible from local Taylor data at $1/2+a\pm it_0$ in the half-plane of absolute convergence.
+
+All the abstract results apply with $w_j=m_jx_j$, including \eqref{eq:zeta-main} and \eqref{eq:logratio}. For $d_j>0$ the distance error of $\sqrt{1/r_{j,N}-a^2}$ is asymptotic to $h_N/(2d_j m_jx_j^{2N+2}C_j^2)$. For $d_j=0$, the derivative argument is replaced by
+\[
+ \sqrt{1/r_{j,N}-a^2}=\sqrt{\frac{x_j-r_{j,N}}{x_jr_{j,N}}}\sim
+ \frac{\sqrt{h_N}}{\sqrt{m_j}\,x_j^{N+1}|C_j|}.
+\]
+The article's \texttt{li:cor:ritzdir} proves $\log(x_j-r_{j,N})/(N\log N)\to-4$ for this fixed-character distance spectrum. By \eqref{eq:zeta-main} this implies the norm law in Theorem~\ref{thm:next} with $c=4$, and hence the full next-correction asymptotic also holds for these Dirichlet atoms. Finite products of such normalized even completions satisfy all the abstract results in Sections 2--4, with masses added at coincident distance sites, because a finite union still satisfies the summability assumption; the extra norm-law hypothesis for Theorem~\ref{thm:next} must be checked if that theorem is used on other spectra. These are fixed-family results, not uniform estimates as conductor, rank, or centre varies.
+
+\section{Reproducible numerical illustrations}
+The companion \texttt{experiment.py} computes moments from the analytic Taylor coefficients of $\log E(200z)$ by discrete Cauchy integration on $|z|=1/5$, then uses the monic three-term recurrence and symmetric tridiagonal diagonalization. The scale $200$ makes the largest atom near one and does not change any dimensionless error ratios. The first three reference ordinates are obtained separately by \texttt{mpmath.zetazero}; they are never supplied to the moment or Ritz calculation. The code was run at 110 digits/320 samples and 140 digits/512 samples, both through $N=14$. The two CSV files agree in every printed entry; this is a numerical stability check, not an interval certificate.
+
+\begin{center}
+\small
+\begin{tabular}{rrr r r}
+\toprule
+$N$ & $j$ & $\delta/(v/r)$ & first relative error & corrected relative error\\
+\midrule
+4 & 1 & 1.321605 & 0.243344 & 0.080947\\
+4 & 2 & 2.521309 & 0.603381 & 0.405667\\
+4 & 3 & 3.364492 & 0.702778 & 0.341867\\
+8 & 1 & 1.137034 & 0.120519 & 0.020318\\
+8 & 2 & 1.408073 & 0.289810 & 0.110956\\
+8 & 3 & 1.803935 & 0.445656 & 0.248048\\
+12 & 1 & 1.066666 & 0.062500 & 0.005884\\
+12 & 2 & 1.169381 & 0.144847 & 0.030695\\
+12 & 3 & 1.271778 & 0.213699 & 0.065152\\
+14 & 1 & 1.057499 & 0.054373 & 0.004473\\
+14 & 2 & 1.143078 & 0.125169 & 0.023128\\
+14 & 3 & 1.224664 & 0.183450 & 0.048655\\
+\bottomrule
+\end{tabular}
+\end{center}
+The relative errors compare $v/r$ and $(v/r)(1+\tau_1/r)$ with the reference $\delta$. The asymptotic ratio in Theorem~\ref{thm:sharp} tends to one, and the correction improves all displayed cases. The CSV also records the normalized one-step ratio in \eqref{eq:step} the normalized cross-rank ratio, and the ratio of the remaining order-one corrected error to its predicted next term in \eqref{eq:next}. At these small dimensions the latter has not stabilized, so we do not infer its limiting constant from the experiment. All figures in the table are rounded numerical results; no assertion about a new individual zero's location or simplicity rests on them.
+
+An independent \texttt{exact\_checks.py} constructs a rational three-atom measure whose degree-two orthogonal polynomial has roots $99/100$ and $33/100$. It checks the exact identity and finite enclosures through $k=3$ for both ranks using Python's \texttt{Fraction}, with no floating-point arithmetic. These tests illustrate the algebraic bounds; the general proof is in Sections 2--4.
+
+\section{Significance, relation to prior work, and limitations}
+Hankel pencils and support bounds are classical (see Lasserre \cite{lasserre}), as are Lanczos residuals and orthogonal polynomial recurrence theory (see Zemke \cite{zemke}). Voros \cite{voros} studies the superzeta moments and their Li relationships. These are ingredients, not claims of novelty. Related asymptotics for finite sections of Jacobi matrices include Malejki \cite{malejki} (in an unbounded setting). The specific contribution here is the combination of an exact common determinant scale, fixed-rank ratio constants, a summably sharp observable residual, an exact next-correction hierarchy, and explicit higher-residual-moment error intervals for the summable discrete spectra of the merged article. The reviewed Li section contains neither \eqref{eq:main} nor \eqref{eq:expansion}; it provides \eqref{eq:old} and a simpler variance enclosure. The present proof is independent of the article's Montgomery-based packing lemma and does not need it. A targeted literature search did not establish that the exact formulas were already published; worldwide priority is not established. The theorem may be of interest also as a compact positive-operator result, even without any number theory.
+
+The mathematical result for abstract measures is unconditional. Its zeta and Dirichlet applications take the supplied RH/GRH interfaces as input; they do not prove zero simplicity, pair correlation, nonabelian GRH or a new named conjecture. Numerical convergence tests are not formal verification. The key improvement to the article is that errors at different ranks now have known relative constants and finite-data error estimates, even when no quantitative lower bound on small zero gaps is known.
+
+\paragraph{Further research questions.}
+\begin{enumerate}
+\item Determine the absolute asymptotic of $h_N$ beyond the two leading terms of $\log h_N$. By \eqref{eq:zeta-main}, this single problem controls every fixed rank. What information on distinct ordinates, their local packing and weights is sufficient to fix the next coefficient?
+\item Develop explicit conductor- and rank-uniform bounds for $\tau_{k,N}$ and the separation inputs in \eqref{eq:highinterval}. Can the corrected estimates remain sharp when $j=j(N)$ grows?
+\item Construct rigorous interval moment evaluation at larger $N$ and compare the new residual intervals with the prior simplicity test. Multiple or unresolved sites need cluster certificates rather than unjustified individual labels.
+\item Formalize the compact discrete multiplication operator, orthogonal-polynomial residual identities, and finite inequalities in Mathlib, then connect the measure's positivity to the vendored source. A dependency map is included in the archive; no Lean build has been performed.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\bibitem{vendor} ProveIt, \emph{Vendored grh-lean (readable edition)}, imported upstream commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, 27 Nov. 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{Repository directory}.
+\bibitem{statements} L. Sernau et al., \emph{grh-lean}, \href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Statements.lean}{Statements.lean}, same pinned revision.
+\bibitem{main} L. Sernau et al., \emph{grh-lean}, \href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}{Main.lean}, same pinned revision. README attributes the proof to L. Alp\"oge with Claude.
+\bibitem{article} ProveIt Contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, 26 Nov. 2026, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{Article directory}. The repository describes this as a merge, not an independent mathematical review.
+\bibitem{source} Ibid., \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/Article/sections/src.tex}{The source theorem and its transferable mechanism}.
+\bibitem{li} Ibid., \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/Article/sections/li.tex}{Li coefficients, moment pencils and positivity certificates}; especially \texttt{li:thm:ritz}, \texttt{li:thm:ritzcert}, \texttt{li:cor:ritzdir}, \texttt{li:q:ritz}. Blob hashes for the inspected revision are listed in the archive.
+\bibitem{voros} A. Voros, \emph{Sharpenings of Li's criterion for the Riemann hypothesis}, Math. Phys. Anal. Geom. 9 (2006), 53--63; and \emph{Zeta functions over zeros of zeta functions and an exponential-asymptotic view of the Riemann hypothesis}, \href{https://arxiv.org/abs/1403.4558}{arXiv:1403.4558} (2014).
+\bibitem{lasserre} J. B. Lasserre, \emph{Bounding the support of a measure from its marginal moments}, Proc. Amer. Math. Soc. 139 (2011), 3375--3382, \href{https://doi.org/10.1090/S0002-9939-2011-10865-7}{doi:10.1090/S0002-9939-2011-10865-7}.
+\bibitem{zemke} J.-P. M. Zemke, dissertation (2003), \emph{Krylov methods in infinite precision}, Chapter 3, \href{https://webdoc.sub.gwdg.de/ebook/dissts/Hamburg/Zemke2003.pdf}{online text}, especially Theorem 3.35.
+\bibitem{malejki} M. Malejki, \emph{Approximation of eigenvalues of some unbounded self-adjoint discrete Jacobi matrices by eigenvalues of finite submatrices}, Opuscula Math. 27 (2007), 37--49, \href{https://www.opuscula.agh.edu.pl/om-vol27iss1art4}{article page}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,310 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black,citecolor=blue!55!black]{hyperref}
+\hypersetup{pdftitle={Sharp error correction for sparse Dirichlet spectra from small primes},pdfauthor={Research note for the ProveIt GRH project}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\E}{\mathbb E}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\code}[1]{\texttt{#1}}
+\title{Sharp error correction for sparse Dirichlet spectra\\from small primes}
+\author{Research note for the ProveIt GRH project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Under Dirichlet GRH we construct prime evaluation systems that simultaneously recover every complex $k$-sparse linear combination of characters modulo $q$, with no knowledge of the support and with arbitrary adversarial corruption of nearly $1/(4k)$ of the samples. For $0<\varepsilon<1$, a deterministic weighted window uses primes of size $O(k^2\varepsilon^{-2}\log^2(2q))$. A deterministic thinning construction yields an unweighted set of $O(k^2\varepsilon^{-2}\log(2q))$ distinct primes, all of size $O(k^2\varepsilon^{-2}\log(2q)\log(2qk/\varepsilon))$. A single calibrated convex objective recovers the coefficients stably, including compressible signals and dense noise. Its finite-bias threshold is sharp over small-bias sampling designs, and the limiting threshold cannot be improved by any fixed residue sampling design whenever $2k\mid\varphi(q)$. The prime construction uses only the Dirichlet GRH theorem exported by the specified Lean development and classical explicit-formula estimates. The algebraic recovery and obstruction results are unconditional. We supply exact finite certificates and a numerical linear-programming demonstration.
+\end{abstract}
+
+\section{Main result and significance}
+Let $q\ge2$, $G=(\Z/q\Z)^\times$, $n=\varphi(q)$, and $\widehat G$ be its character group. For a coefficient vector $c\in\C^{\widehat G}$ define
+\[
+ f_c(g)=\sum_{\chi\in\widehat G}c_\chi\chi(g).
+\]
+All characters are extended by zero off the units. The sample coordinates are distinct primes not dividing $q$, even when their residues coincide. The measurement matrix is $A_{p,\chi}=\chi(p)$. A positive probability weight $\mu_p$ on the sample set defines $\norm{v}_{1,\mu}=\sum_p\mu_p\abs{v_p}$ and $\mu(E)=\sum_{p\in E}\mu_p$. For ordinary unweighted sampling, $\mu_p=1/|P|$. Our corruption model is
+\begin{equation}\label{eq:observation}
+ y=Ac+e+\nu,\qquad \mu(\supp e)\le\alpha,\qquad \norm{\nu}_{1,\mu}\le\eta.
+\end{equation}
+The entries and support of $e$ may be chosen after observing the entire sampling system and $c$. There is no bound on their magnitudes. Let $\sigma_k(c)_1=\min_{|S|\le k}\sum_{\chi\notin S}|c_\chi|$.
+
+\begin{theorem}[Prime error-correcting interpolation]\label{thm:main}
+Assume Dirichlet GRH in the sense of \cite{sernau,article}. Let $1\le k\le n$ and $0<\varepsilon<1$. There are absolute constants in the following bounds, uniform in all three parameters.
+\begin{enumerate}
+\item A weighted sample system, using all primes $p\nmid q$ in an integer window $X<p<2X$, exists with
+\[
+ X\ll k^2\varepsilon^{-2}\log^2(2q).
+\]
+Its weights are proportional to $(p-X)^3(2X-p)^3$.
+\item An unweighted sample system of distinct primes exists with
+\[
+ |P|\ll k^2\varepsilon^{-2}\log(2q),\qquad
+ \max P\ll k^2\varepsilon^{-2}\log(2q)\log(2qk/\varepsilon).
+\]
+It can be selected deterministically by a finite conditional-expectation algorithm.
+\item In either system put $\delta=\varepsilon/(4k)$. For any data \eqref{eq:observation} with $\alpha\le(1-\varepsilon)/(4k)$, every minimizer $\widehat c$ of
+\begin{equation}\label{eq:decoder}
+ \min_{z\in\C^{\widehat G}}\left\{\norm{z}_1+\frac{2k}{1+\delta}\norm{Az-y}_{1,\mu}\right\}
+\end{equation}
+satisfies
+\begin{equation}\label{eq:stability-main}
+ \norm{\widehat c-c}_1\le \frac{4(1+\delta)}{\varepsilon}\sigma_k(c)_1+
+ \frac{8k}{\varepsilon}\eta.
+\end{equation}
+In particular $k$-sparse noiseless signals are uniquely recovered despite the stated adversarial corruptions.
+\item If $2k\mid n$, no fixed unweighted sampling system of $M$ units (including repeated residues) can guarantee recovery of every $k$-sparse signal from all patterns of $\lceil\lfloor M/(2k)\rfloor/2\rceil$ corrupted coordinates. For weighted sampling there is an ambiguity at corruption mass at most $1/(4k)+\frac12\max_p\mu_p$. Thus the leading constant $1/4$ in the admissible error fraction is optimal, apart from finite-atom effects, for these groups.
+\end{enumerate}
+\end{theorem}
+
+This combines three issues that are usually separate: explicit small prime locations, stable sparse interpolation without knowing the spectrum, and worst-case error correction with a matching obstruction. In particular the number of samples depends logarithmically on $q$ rather than on $\varphi(q)$, for fixed sparsity and accuracy. There is no claim that the dependence on $k$ is optimal for sample count, that the algorithm runs in time polynomial in $\log q$, or that it recovers arbitrary dense coefficient vectors exactly.
+
+\section{The input proof and the point of departure}
+\paragraph{Source inspection.} The vendored README pins the upstream readable edition of \cite{sernau} at commit
+\begin{center}\small\code{72fead102f663d5c7a407964a13dc0cf9d977207}.\end{center}
+Its own Lake project uses Lean 4.35.0 and Mathlib revision \code{56a00585}. The statements and exported proofs, in \path{src/Statements.lean} and \path{src/Main.lean}, were inspected directly. They give five theorems. The inputs needed here are
+\begin{quote}\small
+\code{LFunction\_ne\_zero\_of\_half\_lt\_re} : \code{DirichletLNonvanishingRightOfHalf},\\
+\code{LFunction\_eq\_zero\_re} : \code{DirichletLZerosOnLine},\\
+\code{riemannHypothesis} : \code{RiemannHypothesis}.
+\end{quote}
+The second says that all zeros in $0<\Re s<1$ of every Dirichlet $L$-function have real part $1/2$, and the first excludes zeros to the right, apart from the principal pole convention. The ordinary functional equation and Euler factors supply the usual remaining facts. The scope is Dirichlet $L$-functions over $\mathbb Q$, not arbitrary Hecke, Artin or automorphic $L$-functions. Neither simplicity nor independence of zero ordinates is assumed.
+
+The code in \code{New/Reduction/MainInequality.lean} compares an upper and a lower bound on a corrected logarithmic covolume of a family of automorphic forms; the shared main amount cancels. The spanning estimate ensures that the rank deficit does not absorb the saving. The file \code{New/Reduction/OneSidedBound.lean} turns this into the one-sided estimate for a prime-power remainder with a quadratic-twist weight. In \code{New/Reduction/Zeros/Criterion.lean}, a twist excluding unwanted zeros in a compact rectangle and a Landau argument turn the estimate into nonvanishing. This is an important distinction: the present note uses the \emph{conclusion} of that analytic engine, not an unproved extension of its automorphic or lattice arguments.
+
+\paragraph{Article comparison.} The merged article \cite{article} reports 131 earlier packets and 914 mathematical results; its README explicitly distinguishes unconditional arguments, GRH-dependent consequences and reductions. Section \code{src.tex} explains the above source mechanism. Section \code{dir.tex}, especially the subsection ``Squarefree products of small primes after deletions'' (labels \code{dir:lem:bias}, \code{dir:thm:quotient}), uses small-bias prime pools and Gram estimates to control products. Section \code{rec.tex} addresses reconstruction of zeros, individual characters, multiplicity vectors and spectra, including stability and separation of finite data. Here we instead treat arbitrary \emph{complex sparse sums} and adversarial errors on prime measurements, with an explicit convex decoder and an information-theoretic obstruction. The smoothed prime estimate below is a refined use of the same absolutely convergent explicit-formula technique used in the article's small-bias lemma; it is not offered as a new zero estimate.
+
+\paragraph{Verification and originality status.} The source README reports builds and independent kernel checks with only \code{propext}, \code{Classical.choice}, and \code{Quot.sound}; Sutherland's and Rubinstein's logs \cite{suth,rubin} report independent verification of the shorter proof. We did not rebuild the vendored development or independently audit all its dependencies. We use its stated theorem as an input. The finite-group results in Sections~\ref{sec:algebra} and~\ref{sec:sharp} are independent of that input. Sparse recovery with corrupted measurements and coherence bounds are established subjects \cite{studer}; the proposed contribution is the specific arithmetic construction, calibrated sharp bound, and their combination. A targeted inspection of relevant article sections and a literature search did not establish an identical result; neither exhaustive literature novelty nor priority is claimed. This report is a human-readable proof, not a kernel-checked formalization of the new theorems.
+
+\section{A log-squared prime window}\label{sec:window}
+For $1\le t\le2$ set $w(t)=(t-1)^3(2-t)^3$, and set it to zero elsewhere. The function is $C^2$ on the real line, $\int_1^2w(t)dt=1/140$, and $\max w=1/64$. All logs in this note are natural.
+\begin{lemma}[Smooth, unlogged character sum]\label{lem:prime}
+Under Dirichlet GRH, uniformly for $q\ge2$, $X\ge2$, and every character $\chi\bmod q$,
+\begin{equation}\label{eq:prime}
+ \sum_{p\nmid q} w(p/X)\chi(p)
+ =\mathbf1_{\chi=1}X\int_1^2\frac{w(t)}{\log(Xt)}\,dt
+ +O\left(\frac{\sqrt X\log(2q)}{\log X}\right).
+\end{equation}
+The implied constant is absolute.
+\end{lemma}
+\begin{proof}
+We give details to distinguish the log-squared scale from the ordinary unsmoothed estimate. Write
+\[
+ g_X(t)=w(t)\frac{\log X}{\log(Xt)}\quad(1\le t\le2),\qquad
+ H_X(s)=\int_1^2 g_X(t)t^{s-1}\,dt,
+\]
+with $g_X=0$ off the interval. Its $C^2$ norm is bounded absolutely for $X\ge2$, since $\log(Xt)\ge\log X\ge\log 2$ and the denominator has bounded derivatives on $[1,2]$. With $t=e^u$, two integrations by parts in $u$, using the vanishing of $g_X$ and its first derivative at the endpoints, give
+\begin{equation}\label{eq:mellin}
+ |H_X(1/2+i\gamma)|\ll (1+|\gamma|)^{-2}.
+\end{equation}
+Also $|H_X(\sigma)|\ll1$ for $\sigma\le0$.
+
+Let $\chi^*$ be the primitive character inducing $\chi$, of conductor $d\mid q$ (for the principal character take $d=1$ and $L=\zeta$). The standard smoothed explicit formula (Mellin inversion of $-L'/L$ and a contour shift; see \cite[Chs.~12--13]{mv}) yields
+\begin{equation}\label{eq:exp-formula}
+ \sum_{m\ge1}\Lambda(m)\chi^*(m)g_X(m/X)
+ =\mathbf1_{d=1}XH_X(1)-\sum_{\rho}X^\rho H_X(\rho)
+ -\sum_{r\in\mathcal T}X^r H_X(r).
+\end{equation}
+Here $\rho$ ranges over nontrivial zeros, with multiplicities, and $\mathcal T$ over trivial zeros (including the zero at $0$ for a primitive even nonprincipal character). The formula follows initially on $\Re s=2$ by absolute convergence; the residue at the pole of $\zeta$ has sign $+$, and each zero has residue minus its order. For the contour shift one may take heights away from zero ordinates using the usual zero-counting and logarithmic-derivative estimates; the compact support away from zero and two integrations by parts ensure convergence on each fixed vertical line. On the far left the functional equation bounds the logarithmic derivative on lines between trivial zeros, and the factor $X^{\Re s}$, with $X\ge2$, lets that integral tend to zero. This is the classical explicit formula, not an additional hypothesis. Equivalently it follows by integrating the once-smoothed formula against a second derivative.
+
+By Dirichlet GRH and the classical zero count
+\[
+ N_{\chi^*}(T)\ll (T+1)\log(2d(T+2))\quad(T\ge0)
+\]
+(counting both signs), the sum over $\rho$ is bounded by $C\sqrt X\log(2d)$: the zeros with $|\gamma|\le1$ and the dyadic bands $2^j<|\gamma|\le2^{j+1}$ contribute at most a constant times $\log(2d)$ and $2^{-j}(\log(2d)+j+1)$, respectively, after division by $\sqrt X$. The trivial-zero sum is bounded absolutely by a geometric series because its real parts are nonpositive and separated by 2.
+
+Removing powers $p^j$ with $j\ge2$ costs $O(\sqrt X)$, since $g_X$ is uniformly bounded and the elementary Chebyshev estimate $\vartheta(v)\ll v$ gives
+\[
+ \sum_{2\le j\le\log_2(2X)}\vartheta((2X)^{1/j})
+ \ll\sqrt X+X^{1/3}\log(2X)\ll\sqrt X.
+\]
+Removing primes dividing $q$ costs $O(\log q)$ in the log-weighted sum, because $\sum_{p\mid q}\log p\le\log q$. On the remaining primes $\chi^*(p)=\chi(p)$ and $\log p\,g_X(p/X)=\log X\,w(p/X)$. Dividing \eqref{eq:exp-formula} by $\log X$ proves \eqref{eq:prime}. All bounds include the primitive principal case.
+\end{proof}
+
+\begin{corollary}[Uniform small bias]\label{cor:bias}
+There are absolute constants $C_0,C_1,c_1>0$ such that for $X\ge C_0\log^2(2q)$,
+\begin{align*}
+ W&:=\sum_{p\nmid q}w(p/X)\ge c_1 X/\log X,\\
+ \Delta(\mu)&:=\max_{\chi\ne1}\left|\sum_p\mu_p\chi(p)\right|\le C_1\log(2q)/\sqrt X,
+ \qquad \mu_p=w(p/X)/W.
+\end{align*}
+The maximum over an empty set is defined as zero. Moreover $\max_p\mu_p\ll\log X/X$.
+\end{corollary}
+\begin{proof}
+The main term for the principal character is between $X/(140\log(2X))$ and $X/(140\log X)$. Choose $C_0$ so that the error is at most half the lower bound. Apply \eqref{eq:prime} to each nonprincipal character and divide by $W$. The atom bound follows from $\max w=1/64$.
+\end{proof}
+For target bias $0<\delta<1/2$ it is enough to take integer $X\ge C\delta^{-2}\log^2(2q)$. The weights are rational, since their common $X^{-6}$ cancels. This proves the weighted sampling part of Theorem~\ref{thm:main} after setting $\delta=\varepsilon/(4k)$. The constants are effective through the classical estimates but not numerically optimized or evaluated here; in a specific instance the bias can instead be certified directly by a finite character sum.
+
+\section{Thinning to a distinct, unweighted prime set}\label{sec:thin}
+\begin{theorem}[Deterministic small-bias thinning]\label{thm:thin}
+Assume Dirichlet GRH. For $0<\delta<1/2$ there exists a set $S$ of distinct primes not dividing $q$ such that
+\begin{align*}
+ |S|&\ll\delta^{-2}\log(2q),\\
+ \max S&\ll\delta^{-2}\log(2q)\log(2q/\delta),\\
+ \max_{\chi\ne1}\left|\frac{1}{|S|}\sum_{p\in S}\chi(p)\right|&\le\delta.
+\end{align*}
+For rational $\delta$ the set can be found by deterministic finite computations on the prime pool, using certified real approximations if desired.
+\end{theorem}
+\begin{proof}
+Write $L=\log(2q)$, $T=\log(2q/\delta)$, and take integer $X=\lceil B\delta^{-2}LT\rceil$ with a sufficiently large absolute $B$. Corollary~\ref{cor:bias} ensures that the weighted prime window has bias at most $\delta/4$. Take
+\[
+ m=\left\lceil256\delta^{-2}\log(16n)\right\rceil.
+\]
+We may use an integer slightly larger than this if evaluating the ceiling is inconvenient. The window also satisfies $W/\max w\ge m$: indeed $W\gg X/\log X$, $m\ll\delta^{-2}L$, and $\log X\le C+\log B+4T$, so $B$ can be increased to make the required ratio arbitrarily large, uniformly in $q,\delta$.
+
+Independently retain each prime $p$ with probability $\pi_p=mw(p/X)/W\in[0,1]$, and let $B_p\in\{0,1\}$ be the retention indicator. Thus $\sum_p\pi_p=m$. Denote by $a_p$ any one of the real or imaginary parts of a character at $p$, including the principal character. Put $S_a=\sum_pa_pB_p$ and $s_a=\E S_a$. We have $|a_p|\le1$. Set $t=\delta m/8$, $\lambda=\delta/16$. For $Y=a_p(B_p-\pi_p)$, $\E Y=0$, $|Y|\le1$, and $\E Y^2\le\pi_p$. Since $e^u\le1+u+u^2$ for $|u|\le1$, for either sign $\sigma=\pm1$,
+\[
+ \E e^{\lambda\sigma Y}\le e^{\lambda^2\pi_p}.
+\]
+Independence gives
+\[
+ \E e^{\lambda(\sigma(S_a-s_a)-t)}
+ \le e^{-\lambda t+\lambda^2m}=e^{-\delta^2m/256}.
+\]
+Sum these exponentials over $2n$ real coordinates $a$ and both signs. The resulting nonnegative potential $\Phi$ has $\E\Phi\le4n\exp(-\delta^2m/256)\le1/4$. Thus a choice exists with $\Phi<1$, which implies $|S_a-s_a|<t$ simultaneously for all coordinates.
+
+There is also a deterministic algorithm: reveal retention decisions one at a time; conditional expectations of $\Phi$ are explicit sums of products of the Bernoulli exponential factors. At each step at least one feasible decision does not increase the conditional expectation. Even approximate decisions suffice: if there are $N$ candidate primes, evaluate each feasible conditional expectation within $1/(8N)$ and take the smaller approximation. The true expectation increases by at most $1/(4N)$, so the final potential is at most $1/2$. Zero-probability branches are skipped. Character values are roots of unity and the input weights and probabilities can be rational, so the required finite-precision computations are possible. No complexity assertion about enumerating all characters is needed.
+
+For the principal real coordinate, $M:=\sum_pB_p$ satisfies $|M-m|<t$, hence $m/2<M<2m$. For each nonprincipal character the two real-coordinate deviations imply
+\[
+ \left|\sum_pB_p\chi(p)-\sum_p\pi_p\chi(p)\right|
+ <\sqrt2t<\delta m/4.
+\]
+The second sum has modulus at most $m\delta/4$, by the weighted bias bound. Dividing by $M>m/2$ yields the desired bias. The retained primes are distinct by construction; their maximum is less than $2X$. This proves all assertions.
+\end{proof}
+A finite certificate needs only the selected primes, their character values, and the bias inequality; it does not require reproducing the thinning trajectory. Since character values are algebraic, for rational $\delta$ that comparison is decidable exactly by real-algebraic arithmetic on squared moduli. The analytic estimate proves termination of a deterministic search even if its implied constants are not supplied: increase $X$ until the window is nonempty and the weighted bias and $W/\max w$ checks pass, then thin.
+
+\section{Sharp convex recovery from a small-bias design}\label{sec:algebra}
+The following finite-dimensional theorem is unconditional. It applies to any finite abelian group and any weighted multiset of its elements, not only prime residues. The matrix $A$ is as above. Let $D_\mu$ be the diagonal matrix with entries $\mu_p$. Orthogonality of distinct characters against the uniform measure is replaced by approximate orthogonality against $\mu$:
+\begin{equation}\label{eq:gram}
+ (A^*D_\mu A)_{\chi,\chi}=1,\qquad
+ |(A^*D_\mu A)_{\chi,\psi}|\le\delta\quad(\chi\ne\psi).
+\end{equation}
+Indeed the off-diagonal entry is the $\mu$-mean of the nonprincipal character $\bar\chi\psi$.
+
+\begin{theorem}[Calibrated robust decoder]\label{thm:convex}
+Suppose $\Delta(\mu)\le\delta$, $1\le k\le n$ and
+\[
+ \Gamma:=1-(2k-1)\delta-4k\alpha>0.
+\]
+For observations \eqref{eq:observation}, any minimizer of \eqref{eq:decoder} obeys
+\begin{equation}\label{eq:stable}
+ \norm{\widehat c-c}_1\le
+ \frac{2(1+\delta)\sigma_k(c)_1+4k\eta}{\Gamma}.
+\end{equation}
+If $c$ is $k$-sparse and $\eta=0$, the unique minimizer is $c$.
+\end{theorem}
+\begin{proof}
+Let $h=z-c$, and choose $S$ to contain the $k$ largest coordinates of $c$ in modulus, with arbitrary tie breaking. For every coordinate $\chi$, equation \eqref{eq:gram} gives
+\begin{align*}
+ |h_\chi|&\le |(A^*D_\mu Ah)_\chi|+\delta\sum_{\psi\ne\chi}|h_\psi|\\
+ &\le\norm{Ah}_{1,\mu}+\delta(\norm h_1-|h_\chi|).
+\end{align*}
+Summing over $S$ yields the crucial calibrated estimate
+\begin{equation}\label{eq:calibrated}
+ (1+\delta)\norm{h_S}_1\le k\norm{Ah}_{1,\mu}+k\delta\norm h_1.
+\end{equation}
+The triangle inequality on $S$ and its complement gives
+\begin{equation}\label{eq:coeff}
+ \norm{c+h}_1-\norm c_1\ge\norm h_1-2\norm{h_S}_1-2\sigma_k(c)_1.
+\end{equation}
+Let $E=\supp e$. On $E$, the residual increase is at least $-|Ah|$ coordinatewise; on its complement, the increase is at least $|Ah|-2|\nu|$. Since $|Ah(p)|\le\norm h_1$ and $\mu(E)\le\alpha$,
+\begin{equation}\label{eq:resid}
+ \norm{A(c+h)-y}_{1,\mu}-\norm{Ac-y}_{1,\mu}
+ \ge\norm{Ah}_{1,\mu}-2\alpha\norm h_1-2\eta.
+\end{equation}
+Let $J$ be the objective in \eqref{eq:decoder}. Combining \eqref{eq:calibrated}, \eqref{eq:coeff} and \eqref{eq:resid}, the $\norm{Ah}_{1,\mu}$ terms cancel exactly because of the choice $2k/(1+\delta)$:
+\[
+ J(c+h)-J(c)\ge \frac{\Gamma}{1+\delta}\norm h_1
+ -2\sigma_k(c)_1-\frac{4k}{1+\delta}\eta.
+\]
+A minimizer exists because $J$ is continuous and coercive (it dominates $\norm z_1$). Insert $h=\widehat c-c$ and use $J(\widehat c)\le J(c)$. This proves \eqref{eq:stable}; in the sparse, noiseless case every minimizer equals $c$.
+\end{proof}
+The problem is a second-order cone program over real and imaginary parts of complex variables (each modulus is a Euclidean norm in two real dimensions), and a linear program for real-valued matrices and real variables. The result does not require a particular optimization implementation. A simpler, slightly weaker calibration uses coefficient $2k$ in place of $2k/(1+\delta)$, with margin $1-2k\delta-4k\alpha$ and numerator $2\sigma_k(c)_1+4k\eta$. Both follow from the same proof, the latter by dropping $\delta\norm{h_S}_1$ from the left side of \eqref{eq:calibrated}.
+
+With $\delta=\varepsilon/(4k)$ and $\alpha\le(1-\varepsilon)/(4k)$, we have $\Gamma\ge\varepsilon/2$. This proves \eqref{eq:stability-main}, and completes the analytic and recovery parts of Theorem~\ref{thm:main}.
+
+\section{Two matching sharpness theorems}\label{sec:sharp}
+\begin{proposition}[Uncertainty and distance of the sparse code]\label{prop:dist}
+For every nonzero vector $h$ supported on at most $r$ characters,
+\begin{equation}\label{eq:dist}
+ \mu\{p:(Ah)_p\ne0\}\ge\frac{1-(r-1)\delta}{r}.
+\end{equation}
+In particular the minimum weighted Hamming distance between two different $k$-sparse signals is at least $[1-(2k-1)\delta]/(2k)$ whenever the latter is positive.
+\end{proposition}
+\begin{proof}
+Equation \eqref{eq:gram} and Cauchy--Schwarz give
+\[
+ \norm{Ah}_{2,\mu}^2\ge \norm h_2^2-\delta\sum_{\chi\ne\psi}|h_\chi||h_\psi|
+ \ge[1-(r-1)\delta]\norm h_2^2.
+\]
+On each sample $|Ah(p)|^2\le r\norm h_2^2$. Summing only on the nonzero set proves \eqref{eq:dist}. For a difference of two $k$-sparse vectors one may use $r=2k$ as an upper bound, even if $2k>n$.
+\end{proof}
+By the triangle inequality for weighted Hamming distance, arbitrary errors of total mass less than half this distance have a unique $k$-sparse explanation. The calibrated convex decoder reaches this very bound, without solving a combinatorial $\ell_0$ problem. In the following sense it cannot be improved as a function of $\delta$.
+
+\begin{theorem}[Sharpness at prescribed bias]\label{thm:sharpbias}
+Suppose $\widehat G$ contains a subgroup $H$ of order $r=2k$. For every $0\le\delta<1/(r-1)$ there exists a weighted sampling design with bias exactly $\delta$ for which the lower bound \eqref{eq:dist}, with $r=2k$, is attained by the difference of two $k$-sparse signals. A single observation is compatible with both signals at corruption mass exactly $[1-(2k-1)\delta]/(4k)$ each.
+\end{theorem}
+\begin{proof}
+Let $K=H^\perp=\{g:\chi(g)=1\text{ for all }\chi\in H\}$, of index $r$. Give each $g\in K$ weight $(1-(r-1)\delta)/n$ and each $g\notin K$ weight $(1+\delta)/n$. These positive weights sum to one. For each nonprincipal character $\psi$, the uniform group sum vanishes; the new mean is $-r\delta n^{-1}\sum_{g\in K}\psi(g)$, equal to $-\delta$ for $\psi\in H\setminus\{1\}$ and zero otherwise. Thus the bias is $\delta$.
+
+Split $H$ into two $k$-element subsets $H_1,H_2$. Take $c^{(1)}=\mathbf1_{H_1}$ and $c^{(2)}=-\mathbf1_{H_2}$. Their difference has evaluation
+\[
+ f_{c^{(1)}}(g)-f_{c^{(2)}}(g)=\sum_{\chi\in H}\chi(g)=r\mathbf1_K(g).
+\]
+The disagreement mass is exactly $(1-(r-1)\delta)/r$, proving attainment. For each residue use two separate sample coordinates of half its mass. On the first copy of each disagreeing residue set the observation equal to $f_{c^{(1)}}$ and on the second copy set it equal to $f_{c^{(2)}}$. Both hypotheses then require exactly half the disagreement mass in errors. These repeated residues can also be represented by distinct primes using Dirichlet's theorem; their sizes need not obey the window bound. This establishes sharpness across all weighted small-bias sampling systems, not necessarily the particular polynomial-weight window of Section~\ref{sec:window}.
+\end{proof}
+
+\begin{theorem}[Universal obstruction for fixed sampling]\label{thm:obstruct}
+Suppose $\widehat G$ has a subgroup of order $2k$. For any fixed sample design of $M$ units with positive probability weights, there are two different $k$-sparse signals and a common observation such that each explanation needs corruption mass at most
+\begin{equation}\label{eq:obstruct}
+ \frac1{4k}+\frac12\max_p\mu_p.
+\end{equation}
+For an unweighted system at most $\lceil\lfloor M/(2k)\rfloor/2\rceil$ corruptions suffice for each explanation.
+\end{theorem}
+\begin{proof}
+Among the $2k$ cosets of $K=H^\perp$ choose one, $aK$, whose sample mass is at most $1/(2k)$. Define $c^{(1)}$ on $H_1$ by $\bar\chi(a)$ and $c^{(2)}$ on $H_2$ by $-\bar\chi(a)$, zero elsewhere. Their difference evaluates to $2k\,\mathbf1_{aK}$. Partition the disagreeing sample coordinates into two sets by successively assigning each coordinate to the side of smaller accumulated weight. The discrepancy of their masses stays at most $\max_p\mu_p$ (by induction). Hence each side has mass at most half the total disagreement mass plus half the largest atom. Construct the common observation by using the first signal on one side and the second on the other, and their common value elsewhere. In the unweighted case the lightest coset has at most $\lfloor M/(2k)\rfloor$ coordinates, which may be divided into two subsets of nearly equal size. If the coset is empty there is already ambiguity without corruption. This proves both claims.
+\end{proof}
+A finite abelian group has a subgroup of every order dividing its cardinality, by the decomposition into cyclic prime-power factors. Therefore the hypothesis is guaranteed when $2k\mid\varphi(q)$. In particular this holds for any prime $q\equiv1\pmod{2k}$. Theorems~\ref{thm:sharpbias} and~\ref{thm:obstruct} distinguish two forms of optimality: the first is exact in finite bias over all designs; the second holds for \emph{every} fixed design, whether small-bias or not, up to rounding and maximum-atom terms. Neither claims an optimal threshold for groups without such a subgroup. For the weighted GRH window the atom bound tends to zero as $X$ grows; for unweighted systems the rounding effect is $O(1/M)$. The proof of Theorem~\ref{thm:main} is complete.
+
+\section{Finite certificates and reproducibility}
+The supplied script \code{check\_examples.py} works with $q=24$, whose unit group is $C_2^3$. Independent generators are $5,7,13$; all eight characters take signs, so the finite bias and obstruction checks are exact integer or rational calculations. The prime window $4096<p<8192$ has 464 primes. A fixed-seed independent thinning experiment retains 202. The table records the slightly more conservative decoder with penalty $2k=4$, $k=2$, to illustrate a direct finite certificate without needing the asymptotic constants.
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Quantity & Weighted & Unweighted\\
+\midrule
+Samples &464&202\\
+Measured bias $\Delta$ &0.0360834780&0.0693069307\\
+Corrupted samples &25&18\\
+Corruption mass $\alpha$&0.0899999945&0.0891089109\\
+Margin $1-4\Delta-8\alpha$&0.1356661316&0.0099009901\\
+Constructed ambiguity radius&0.1239611252&0.1188118812\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the weighted instance, the numerical LP with $c_0=2$, $c_3=-3$ and all other coefficients zero recovers the coefficient vector exactly to the reported numerical precision after adding alternating corruptions of magnitude at least 10,000. Both calibrated and uncalibrated LPs returned the same vector. The bias, error mass, positive margin and ambiguity are verified using exact fractions; the LP result is only a numerical demonstration, not a proof. The general proof already gives unique exact recovery. The thinning example is a finite illustration with certified measured bias, not a run using the conservative theoretical sample-size constants. The attached CSV gives the primes, residues, unnormalized integer weights, and subset membership. The script requires Python 3 plus NumPy and SciPy for the LP. Neither the finite certificates nor the example solver assumes GRH.
+
+\paragraph{Possible formalization.} Formalize the unconditional core first: (i) finite character values of norm 1; (ii) the Gram identity \eqref{eq:gram}; (iii) inequalities \eqref{eq:calibrated}--\eqref{eq:resid}; (iv) the subgroup orthogonality obstruction. Then isolate the classical smoothed explicit formula and uniform zero-counting bound in a separate analytic interface, instantiating Dirichlet GRH from \code{Main.lean}. A detailed dependency outline is included in the archive; no new Lean file has been kernel checked here.
+
+\paragraph{Remaining questions.} Can the number of distinct small primes be reduced from quadratic to nearly linear in $k$ while preserving the sharp corruption fraction? For groups without a subgroup of order $2k$, the exact sparse minimum distance may exceed the coherence-based guarantee; can a tractable decoder exploit that? Can one efficiently compute numerical absolute constants in the window size? These are not asserted as solved.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{sernau} L. Sernau and collaborators, \emph{The generalized Riemann hypothesis for Dirichlet $L$-functions, in Lean 4}, 25 Nov. 2026. Commit \code{72fead102f663d5c7a407964a13dc0cf9d977207}. \url{https://github.com/lsernau/grh-lean}. Vendored copy in ProveIt, \path{Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}.
+\bibitem{article} ProveIt Contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, merged article, 26 Nov. 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{Repository article directory}; especially \code{sections/src.tex}, \code{sections/dir.tex}, and \code{sections/rec.tex}.
+\bibitem{suth} A. Sutherland, \emph{Verification files for the shorter Lean proof of RH and GRH}, 26 Nov. 2026. \url{https://math.mit.edu/~drew/shortgrh/}.
+\bibitem{rubin} M. Rubinstein, \emph{Alp\"oge/Claude proof of the generalized Riemann hypothesis}, verification reports, Nov. 2026. \url{https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/}.
+\bibitem{mv} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge University Press, 2007, Chapters 12--13 (explicit formula, zero counts and smoothed character estimates).
+\bibitem{studer} C. Studer, P. Kuppinger, G. Pope and H. B\"olcskei, \emph{Recovery of sparsely corrupted signals}, IEEE Trans. Inform. Theory \textbf{58} (2012), 3115--3130. \url{https://arxiv.org/abs/1102.1621}.
+\end{thebibliography}
+\end{document}

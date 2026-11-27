@@ -1,0 +1,232 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}
+\newcommand{\ii}{\mathrm i}\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\ord}{\operatorname{ord}}\newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\D}{\mathcal D}\newcommand{\Pcal}{\mathcal P}\newcommand{\V}{\mathcal V}
+\newcommand{\abs}[1]{\left|#1\right|}\newcommand{\norm}[1]{\left\|#1\right\|}
+\title{\bfseries Recovering a Weighted Graph from a Corrupted Spectrum of Dirichlet $L$-Functions\\[4pt]\large Tail rigidity and uniform finite-window error correction}
+\author{Research note for ProveIt}
+\date{27 November 2026}
+\begin{document}
+\setlength{\emergencystretch}{3em}
+\maketitle
+\begin{abstract}
+The merged ProveIt article proves a forward theorem: a Hermitian coupling of completed Dirichlet $L$-functions has real zeros under Dirichlet GRH. We prove a converse of a different kind. Attach pairwise distinct primitive nonprincipal Dirichlet characters of one parity to labelled vertices. The real zero multiset of the coupled entire function determines every principal minor of the coupling matrix, even when arbitrarily many (but finitely many) zeros have been corrupted. More strongly, for each bound on the true coupling and each prescribed erasure budget, a single bounded observation window suffices uniformly against all competing Hermitian matrices, including unbounded ones. For real symmetric matrices the remaining ambiguity is exactly diagonal sign switching; for graph Laplacians it vanishes. The key new ingredient is a divisor rigidity theorem for a finite-dimensional space of products of logarithmic derivatives, proved using squarefree Euler coefficients, the common archimedean factor, and growth in a horizontal strip. No zero simplicity, disjointness or linear independence of zero ordinates is assumed. The input GRH theorem is taken from the specified Lean development; this note does not independently replay that development.
+\end{abstract}
+
+\section{Source analysis and scope}
+The relevant source files were retrieved through GitHub from the paths supplied by the requester. The vendoring README \cite{vendor} identifies upstream commit \texttt{72fead102f66} (full hash in the source manifest), imported on 27 November 2026. The vendored package is separate from the ProveIt root Lake build; the README specifies Lean 4.35.0 and Mathlib commit \texttt{56a005855ea1} (full hash in the manifest). The upstream README reports compilation, a three-axiom audit and independent checker acceptance. A separate verification page \cite{verification} describes the elaborated statements and comparison with the original development. These are reported checks, not a fresh kernel replay in this research session.
+
+The short file \texttt{src/Statements.lean} imports only Mathlib and defines the precise half-plane and strip statements. In \texttt{src/Main.lean}, \texttt{LFunction\_ne\_zero\_of\_half\_lt\_re} has type\par\noindent\texttt{DirichletLNonvanishingRightOfHalf}; it is obtained from \texttt{New.grh}. It states nonvanishing for every modulus and every Dirichlet character when $\Rea s>1/2$, except the principal character at $s=1$. The theorem\par\noindent\texttt{LFunction\_eq\_zero\_re\_of\_isPrimitive} is the primitive strip specialization. This is exactly Dirichlet GRH, not an assertion about arbitrary Artin or automorphic $L$-functions.
+
+The import chain is \texttt{Main} $\to$ \texttt{New.Main} $\to$ \texttt{New.Reduction.}\allowbreak\texttt{OneSidedBound}; the last file proves \texttt{grh} using the one-sided bound and criterion. The proof architecture is relevant: the file \texttt{Criterion.lean} in \texttt{src/New/Reduction/}\allowbreak\texttt{Zeros} contains the theorem\par\noindent\texttt{New.LFunction\_ne\_zero\_of\_primeRemainder\_le}, which passes from an eventual upper bound for a smoothed quadratic-twisted prime remainder to nonvanishing in a half-plane. It selects a twist avoiding zeros in a bounded rectangle, expresses a transform residue as a nonnegative zero multiplicity divided by $\varphi(q)s(1-s)$, and uses Landau's lemma. The merged article, \texttt{sections/src.tex}, explains the preceding determinant comparison, spanning and arithmetic twisting. We use the output half-plane theorem, not a claim that these geometric/arithmetic steps already generalize to nonabelian $L$-functions. Our new argument also exploits the converse direction from zero data to arithmetic data, but via an ordinary Dirichlet series and not the source's Landau criterion.
+
+The article README \cite{article} describes 131 reports merged into 723 pages, and explicitly says the merger is not an independent review. The directly relevant subsection is \texttt{zer:sec:graph} in \texttt{sections/zer.tex}: \texttt{zer:thm:hermitian} and \texttt{zer:cor:graphdirichlet} establish real zeros, collision multiplicities and a zero-count discrepancy bound. The following subsection treats transport. The recovery section \texttt{rec.tex} studies recovery of characters, zero multiplicities and other arithmetic information. A targeted review of these sections and theorem headings found no inverse theorem for an unknown coupling matrix with corrupted zero data. The new result is not a restatement of their forward theorem. The matrix-theoretic last step is classical \cite{engel}; we provide its proof. The literature search was targeted, not exhaustive, so priority for the combined inverse theorem is not certified.
+
+\section{Setup and statements}
+Fix $n\ge1$ and distinct primitive nonprincipal Dirichlet characters $\chi_1,\ldots,\chi_n$ with conductors $q_i$ and common parity $a\in\{0,1\}$, meaning $\chi_i(-1)=(-1)^a$. Complex characters are allowed. Put
+\begin{align*}
+ \Lambda_i(s)&=(q_i/\pi)^{(s+a)/2}\Gamma((s+a)/2)L(s,\chi_i),\\
+ F_i(z)&=\eta_i^{-1}\Lambda_i(1/2+\ii z),\qquad \eta_i^2=\varepsilon_i,\quad |\eta_i|=1,
+\end{align*}
+where $\Lambda_i(s)=\varepsilon_i\Lambda_{\bar\chi_i}(1-s)$ is the functional equation. The phases are arbitrary square roots of the root numbers. Write $[n]=\{1,\dots,n\}$, $g_i=F_i'/F_i$, and
+\begin{equation}\label{eq:basis}
+ E_S(z)=\prod_{i\in S}F_i'(z)\prod_{i\notin S}F_i(z),\qquad S\subseteq[n].
+\end{equation}
+For a Hermitian $n\times n$ matrix $A$, define
+\begin{align}
+ \Pcal_A(z)&=\det\bigl(\diag(F_i(z))A+\diag(F_i'(z))\bigr)\notag\\
+ &=\sum_{S\subseteq[n]}\det A[S^c]\,E_S(z),\label{eq:det}\qquad \det A[\varnothing]=1.
+\end{align}
+Here $A[J]$ means the principal submatrix indexed by $J$. On the complement of the input zeros, $\Pcal_A=(\prod_iF_i)\det(A+\diag(g_i))$. The determinant identity follows by multilinearity in the rows. The coefficient of $E_{[n]}$ is always one. In particular set
+\[
+ \V=\operatorname{span}_{\C}\{E_S:S\subsetneq[n]\}.
+\]
+Changing a phase sign multiplies every $E_S$, and hence every $\Pcal_A$, by the same nonzero sign. The labelled character list is fixed and known.
+
+For a nonzero entire function $f$, let $m_f(x)=\ord_x f\in\N\cup\{0\}$. Given two such functions, define the one-sided deletion discrepancy on a bounded interval $I$ by
+\[
+ \Delta_I(f,h)=\sum_{x\in I}\max\{m_f(x)-m_h(x),0\}.
+\]
+The sum is over real zeros of $f$, including multiplicity. The same definition on $\R$ allows the value $+\infty$. It counts missing multiplicities and does not penalize additional zeros of $h$. A competitor therefore need not have the same number of observed zeros.
+
+\begin{theorem}[Tail divisor rigidity]\label{thm:tail}
+Under the input Dirichlet GRH, for every Hermitian $A$ and every nonzero $H\in\V$,
+\[
+                 \Delta_{\R}(\Pcal_A,H)=+\infty.
+\]
+Consequently, for Hermitian $A,B$, if $\Delta_{\R}(\Pcal_A,\Pcal_B)<\infty$, then $\Pcal_A=\Pcal_B$ and $\det A[J]=\det B[J]$ for every $J\subseteq[n]$. The converse holds with discrepancy zero.
+\end{theorem}
+
+\begin{theorem}[Uniform finite-window erasure correction]\label{thm:finite}
+Under the same input, for every $M\ge0$ and every integer $K\ge0$, there exists a finite $T=T(\chi_1,\ldots,\chi_n;M,K)>0$ such that, simultaneously for all Hermitian $A$ of operator norm at most $M$ and all nonzero $H\in\V$,
+\[
+                       \Delta_{[-T,T]}(\Pcal_A,H)>K.
+\]
+In particular, if $B$ is any Hermitian matrix (with \emph{no} bound on its norm) and $\Delta_{[-T,T]}(\Pcal_A,\Pcal_B)\le K$, then all their corresponding principal minors agree. The existence of $T$ is uniform but the argument does not give an explicit numerical bound.
+\end{theorem}
+
+\begin{corollary}[Graph recovery]\label{cor:graph}
+For real symmetric $A,B$, either conclusion about principal minors is equivalent to $B=DAD$ for some diagonal $D$ with diagonal entries in $\{1,-1\}$. If $A,B$ are Laplacians of labelled undirected graphs with nonnegative edge weights, then $A=B$. In particular, the true weighted graph can be determined from any cofinite submultiset of its zeros, or from a sufficiently large finite observation window after at most $K$ missing multiplicities. No bound on the competitor's weights is needed.
+\end{corollary}
+For signed symmetric matrices the ambiguity in the corollary is unavoidable; indeed $D$ commutes with both diagonal matrices in \eqref{eq:det}. For complex Hermitian matrices we claim exactly principal-minor recovery, not uniqueness modulo unitary diagonal similarity. Theorems \ref{thm:tail} and \ref{thm:finite} assert a stronger one-sided property than equality of spectra up to finitely many differences.
+
+\section{Arithmetic independence of the logarithmic derivatives}
+The following step is unconditional. We include it in full because ordinary linear independence of the $g_i$ is insufficient to recover determinants.
+
+\begin{lemma}[Polynomial independence]\label{lem:indep}
+For the fixed list of characters, the meromorphic functions $g_1,\ldots,g_n$ are algebraically independent over $\C$: if $P\in\C[X_1,\ldots,X_n]$ and $P(g_1,\ldots,g_n)\equiv0$, then $P=0$. In particular the $2^n$ entire functions $E_S$ are linearly independent.
+\end{lemma}
+\begin{proof}
+Write $s=1/2+\ii z$ and let $\psi=\Gamma'/\Gamma$ denote the digamma function. The Euler product in $\Rea s>1$ gives
+\begin{align}
+ g_j(-\ii(s-1/2))&=u(s)+c_j+D_j(s),\label{eq:g}\quad
+ u(s)=\tfrac{\ii}{2}\psi((s+a)/2),\quad c_j=\tfrac{\ii}{2}\log(q_j/\pi),\notag\\
+ D_j(s)&=-\ii\sum_{m\ge2}\Lambda(m)\chi_j(m)m^{-s},\notag
+\end{align}
+where $\Lambda(m)$ is the von Mangoldt function. Common parity is used in the common function $u$. All these series converge absolutely for $\Rea s>1$. Along the positive real axis $u(s)\sim(\ii/2)\log(s/2)$ by the digamma asymptotic \cite{dlmf}. Suppose $P$ is a polynomial of total degree $d$. Inserting an independent variable $U$ in place of $u(s)$ gives the expansion
+\begin{equation}\label{eq:dir}
+ P(U+c_1+D_1(s),\ldots,U+c_n+D_n(s))=\sum_{m\ge1}b_m(U)m^{-s},
+\end{equation}
+where each $b_m\in\C[U]$ has degree at most $d$. If $\norm{b_m}_1$ is the sum of absolute values of its coefficients, then
+$\sum_m\norm{b_m}_1m^{-2}<\infty$: expand the finitely many monomials in $P$ and use the absolutely convergent Dirichlet convolution product.
+
+If the relation $P(g_1,\ldots,g_n)=0$ holds, suppose some $b_m\ne0$ and take the least such index $m_0$. Multiply \eqref{eq:dir} at $U=u(s)$ by $m_0^s$ for real $s\ge2$. The tail is bounded by
+\[
+ (1+|u(s)|)^d m_0^2\left(\frac{m_0}{m_0+1}\right)^{s-2}
+       \sum_{m>m_0}\norm{b_m}_1m^{-2},
+\]
+which tends to zero. A nonzero polynomial $b_{m_0}$ cannot tend to zero along $u(s)$ as $|u(s)|\to\infty$, a contradiction. Thus all $b_m$ are identically zero. This argument is a uniqueness theorem for a Dirichlet expansion with polynomial coefficients in the shared archimedean factor.
+
+Assume now that $P\ne0$. If $d=0$, the coefficient $b_1$ contradicts the preceding conclusion. Otherwise let $P_d$ be the homogeneous part of highest degree and let $\mathcal B$ be its symmetric $d$-linear polarization, normalized by $\mathcal B(v,\ldots,v)=P_d(v)$. For $d$ distinct primes $p_1,\ldots,p_d$ put $m=p_1\cdots p_d$. Every nonzero term of the coefficient of $m^{-s}$ in \eqref{eq:dir} must use exactly $d$ of the $D_j$ factors: each factor is supported on prime powers and a squarefree $m$ with $d$ factors cannot be built from fewer. The only contributions are from $P_d$ and assign each distinct prime to one of its $d$ slots. Thus
+\[
+ b_m(U)=d!(-\ii)^d\Bigl(\prod_{k=1}^d\log p_k\Bigr)
+    \mathcal B(v(p_1),\ldots,v(p_d)),\quad
+ v(p)=(\chi_1(p),\ldots,\chi_n(p)).
+\]
+The expression is independent of $U$. Take $Q=\operatorname{lcm}(q_1,\ldots,q_n)$. The induced characters on $(\mathbb Z/Q\mathbb Z)^\times$ are distinct by uniqueness of their primitive conductors and inducing characters. Character orthogonality says that the vectors $v(b)$ for reduced classes $b\bmod Q$ span $\C^n$: any linear relation orthogonal in the algebraic dual to these columns gives an identically zero combination of distinct characters. Dirichlet's theorem supplies arbitrarily many primes in each class, so any ordered tuple of $d$ such vectors can be represented by distinct primes, even for repeated classes. Since $b_m=0$, multilinearity implies $\mathcal B=0$ on $(\C^n)^d$. This contradicts $P_d\ne0$.
+
+Finally divide a linear relation among the $E_S$ by $\prod_i F_i$ off their zeros. It is a polynomial relation among the $g_i$ consisting of distinct squarefree monomials, so all coefficients vanish.
+\end{proof}
+
+\section{Real zeros and a rationality obstruction}
+\begin{lemma}[Analytic properties]\label{lem:real}
+Under the source half-plane theorem, every $F_i$ is real entire of order at most one and has only real zeros, at least one of them. Every Hermitian coupling $\Pcal_A$ is real entire of order at most one, nonzero, and all its zeros are real. All $E_S$ have order at most one.
+\end{lemma}
+\begin{proof}
+The standard completion of a primitive nonprincipal Dirichlet $L$-function is entire of order one, with the stated functional equation (see \cite{davenport,dlmf}). The input half-plane nonvanishing, the functional equation, and the fact that the gamma function has no zeros imply that all zeros of the completion have real part $1/2$: for $\Rea s>1/2$ there are no gamma poles and the nonprincipal $L$-function is nonvanishing; for $\Rea s<1/2$ apply the functional equation to $1-s$ and the conjugate character. This also handles trivial-zero cancellation and boundary points. Complex conjugation gives $\overline{\Lambda_i(1/2+\ii\bar z)}=\Lambda_{\bar\chi_i}(1/2-\ii z)=\varepsilon_i^{-1}\Lambda_i(1/2+\ii z)$. Since $\overline{\eta_i^{-1}}=\eta_i$, $F_i$ is real on the real axis. It has a zero: otherwise order-one Hadamard factorization gives $F_i=e^{b+cz}$, which contradicts $\log|\Lambda_i(s)|=(s/2)\log s+O(s)$ for real $s\to+\infty$ by Stirling and the Euler product.
+
+Hadamard factorization of each $F_i$ yields a real logarithmic derivative constant and, for $y=\Ima z\ne0$,
+\[
+ \Ima g_i(z)=-y\sum_{r\in\R}\frac{m_{F_i}(r)}{|z-r|^2}.
+\]
+The sum converges and is strictly positive before multiplication by $-y$ because the zeros are nonempty. If $(A+\diag(g_i(z)))v=0$ for a nonzero complex vector $v$, taking the imaginary part of the Hermitian scalar pairing gives $0=\sum_i|v_i|^2\Ima g_i(z)$, impossible. Thus $\Pcal_A$ has no nonreal zeros and is not identically zero. The coefficients in \eqref{eq:det} are real because principal minors of a Hermitian matrix are real. Products, sums and derivatives preserve the bound on order. This is the forward part of the article's graph theorem, re-proved here so the inverse argument does not depend on the correctness of the article's additional claims.
+\end{proof}
+
+\begin{lemma}[Growth outside a strip]\label{lem:outside}
+Fix a Hermitian $A$ and $H\in\V$. Uniformly for $|\Ima z|\ge3/2$ and $|z|\to\infty$,
+\begin{equation}\label{eq:outside}
+              \frac{H(z)}{\Pcal_A(z)}=O(1/\log |z|).
+\end{equation}
+If $H\ne0$, this quotient cannot be a rational function.
+\end{lemma}
+\begin{proof}
+Write $H=(\prod_i F_i)P(g_1,\ldots,g_n)$ where $P$ is multiaffine of total degree at most $n-1$. Off the real line no input zero occurs. On $\Ima z\le-3/2$, we have $\Rea s\ge2$, where the $D_i(s)$ are uniformly bounded by the absolutely convergent series at $2$. The digamma asymptotic gives $u(s)=(\ii/2)\log((s+a)/2)+O(1/|s|)$ uniformly in this half-plane as $|s|\to\infty$, and $|u(s)|\asymp\log |s|$. Hence $g_i=u+O(1)$ and
+\[
+ \det(A+\diag(g_i))=u^n(1+O(1/|u|)),\qquad P(g)=O((1+|u|)^{n-1}).
+\]
+Realness of the $F_i$ gives the analogous estimates for $\Ima z\ge3/2$ by reflection, even when the coefficients of $P$ are complex. This proves \eqref{eq:outside}.
+
+For real $s\to+\infty$, $D_i(s)=O(2^{-s})$ by absolute convergence at $2$. Define the one-variable polynomial $p_0(U)=P(U+c_1,\ldots,U+c_n)$ of degree at most $n-1$. There are exactly two possibilities:
+\begin{itemize}
+ \item If $p_0$ is nonzero of degree $k$, then $H/\Pcal_A$ along $z=-\ii(s-1/2)$ is asymptotic to a nonzero constant times $(\log s)^{k-n}$.
+ \item If $p_0=0$, then $H/\Pcal_A=O(2^{-s}(1+\log s)^{n-1}/(\log s)^n)$ on this ray, by expanding $P$ at $(u+c_i)_i$.
+\end{itemize}
+A nonzero rational function tending to zero on this ray must instead be asymptotic to $c s^{-j}$ for an integer $j\ge1$ and $c\ne0$. Neither case permits that behavior. The quotient is not identically zero since $H\ne0$.
+\end{proof}
+
+\begin{lemma}[Finite poles force rationality]\label{lem:rational}
+If $H\in\V$ is nonzero and $H/\Pcal_A$ has only finitely many poles, the quotient is rational.
+\end{lemma}
+\begin{proof}
+Let $W(z)$ be the monic polynomial cancelling all the poles, including their orders, and set $m=\deg W$. The function $J=W H/\Pcal_A$ is entire of order at most one. To justify the order assertion, apply the genus-at-most-one Hadamard factorization \cite{boas} to $WH$ and $\Pcal_A$: the zero divisor of the latter is contained in the former, so the quotient is a linear exponential times the genus-one canonical product over the remaining zeros, with the appropriate factor at zero. The zeros of $WH$ have counting function $O_\epsilon(r^{1+\epsilon})$ for every $\epsilon>0$ by Jensen. The same holds for any submultiset; the canonical product order bound is at most one (split the logarithmic product estimate at $2r$ and use the counting bound). This also covers a finite remaining multiset.
+
+By \eqref{eq:outside}, $J(z)=O((1+|z|)^m)$ outside the strip $|\Ima z|<3/2$; compact portions are bounded because $J$ is entire. To extend this inside, choose a real $b>3/2$ and put $U(z)=J(z)/(z-\ii b)^m$ on the closed strip. It is analytic there, bounded on the two horizontal boundaries, and of finite order growth on the strip. For completeness, fix $0<\kappa<\pi/3$ and $\delta>0$. Multiply $U$ by $\exp(-\delta\cosh(\kappa z))$. The real part of $\cosh(\kappa z)$ is at least $\cos(3\kappa/2)\cosh(\kappa\Rea z)>0$ throughout the strip. The multiplier bounds the horizontal boundary values by their original bound, and makes the vertical sides of expanding rectangles tend uniformly to zero, since finite-order growth is dominated by this double exponential damping. The maximum modulus principle and then $\delta\downarrow0$ give the same bound on the whole strip. Thus $J(z)=O((1+|z|)^m)$ on $\C$. Cauchy's estimates show that $J$ is a polynomial of degree at most $m$. Therefore $H/\Pcal_A=J/W$ is rational.
+\end{proof}
+
+\section{Proofs of tail and finite-window rigidity}
+\begin{proof}[Proof of Theorem \ref{thm:tail}]
+By Lemma \ref{lem:real}, every zero of $\Pcal_A$ is real. If $\Delta_\R(\Pcal_A,H)$ were finite, $H/\Pcal_A$ would have only finitely many poles. Lemma \ref{lem:rational} would make the quotient rational, in contradiction to Lemma \ref{lem:outside}. Now suppose $A,B$ satisfy the one-sided tail inclusion up to finitely many multiplicities. Set $H=\Pcal_B-\Pcal_A\in\V$. At each $x$, $m_H(x)\ge\min(m_{\Pcal_A}(x),m_{\Pcal_B}(x))$ unless $H\equiv0$. If $H\ne0$, the assumed discrepancy bounds $\Delta_\R(\Pcal_A,H)$, a contradiction. Thus the entire functions agree, and Lemma \ref{lem:indep} applied to \eqref{eq:det} recovers all principal minors. The converse is immediate from the same formula.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:finite}]
+If no such $T$ exists, then for each positive integer $j$ choose Hermitian $A_j$ with $\norm{A_j}\le M$ and nonzero $H_j\in\V$ for which $\Delta_{[-j,j]}(\Pcal_{A_j},H_j)\le K$. Normalize the coefficient vector of $H_j$ in the independent basis $(E_S)_{S\subsetneq[n]}$ to Euclidean norm one. This does not change its zero divisor. Compactness of the matrix norm ball and of the unit coefficient sphere supplies a common subsequence with $A_j\to A_*$ and $H_j\to H_*$ locally uniformly, where $\norm{A_*}\le M$ and $H_*\ne0$ by independence. Also $\Pcal_{A_j}\to\Pcal_{A_*}$ locally uniformly, and $\Pcal_{A_*}\not\equiv0$ by Lemma \ref{lem:real}.
+
+Fix an arbitrary finite set $X$ of distinct zeros of $\Pcal_{A_*}$. Take disjoint closed disks about them, with boundaries avoiding zeros of both $\Pcal_{A_*}$ and $H_*$, small enough that each disk contains no zero of either limit except possibly its center. By Rouch\'e's theorem, for sufficiently large subsequence indices the zero counts of $\Pcal_{A_j}$ and $H_j$ in each disk equal those of their limits, with multiplicities. All the zeros of $\Pcal_{A_j}$ are real, and the real parts of the disks lie inside $[-j,j]$ eventually. In a disk centered at $x$ the number of missing multiplicities is therefore at least $\max(m_{\Pcal_{A_*}}(x)-m_{H_*}(x),0)$: even all the zeros of $H_j$ in the disk might not coincide with those of $\Pcal_{A_j}$. Sum over these disjoint disks. The discrepancy bound gives
+\[
+ \sum_{x\in X}\max(m_{\Pcal_{A_*}}(x)-m_{H_*}(x),0)\le K.
+\]
+Since $X$ was arbitrary, the full discrepancy is at most $K$, contradicting Theorem \ref{thm:tail}. This proves uniformity over the whole norm ball and the whole punctured vector space $\V$, not merely over differences of bounded couplings. Applying the result to $H=\Pcal_B-\Pcal_A$ proves the final assertion exactly as in the tail proof.
+\end{proof}
+
+\section{Matrix reconstruction and error correction}
+\begin{proof}[Proof of Corollary \ref{cor:graph}]
+The singleton principal minors give $a_{ii}=b_{ii}$. The two-element minors then give $a_{ij}^2=b_{ij}^2$. In particular both matrices have the same support graph $G$ of nonzero off-diagonal entries. On each edge define $r_{ij}=b_{ij}/a_{ij}\in\{\pm1\}$. On any chordless cycle $C$ of length $\ell\ge3$ the equality of the principal minor on its vertex set implies
+\[
+                       \prod_{ij\in C}a_{ij}=\prod_{ij\in C}b_{ij}.
+\]
+Indeed the determinant permutation terms on that induced graph consist of fixed points, transpositions on disjoint edges, and the two orientations of the full cycle. The fixed-point and transposition contributions agree because the diagonal entries and squares agree. The two cycle contributions are $2(-1)^{\ell-1}$ times the edge product. This reasoning includes triangles and disconnected support away from the cycle. Hence $\prod_{ij\in C}r_{ij}=1$ on chordless cycles, and on all simple cycles by induction splitting at a chord (the chord ratio occurs twice and squares to one).
+
+Choose a spanning tree in each connected component, assign a root sign $1$, and propagate $d_j=d_i r_{ij}$ down the tree. Every remaining edge closes a simple cycle and has $r_{ij}=d_i d_j$. Thus $B=DAD$, $D=\diag(d_i)$; isolated vertices receive sign $1$. Conversely such a switch preserves every principal minor. For nonnegative graph weights the off-diagonal entries of a Laplacian are nonpositive, and their magnitudes determine them individually; the diagonals already agree. This proves exact labelled graph recovery. The symmetric-matrix assertion is also a special case of the classical theorem of Engel and Schneider \cite{engel}.
+\end{proof}
+
+\subsection{Linear decoding from exact observations}
+Index the unknowns $c_S=\det A[S^c]$ by $S\subsetneq[n]$. If a zero $x$ is observed with multiplicity $m$ (possibly reduced by erasure), impose the $m$ linear equations
+\begin{equation}\label{eq:jets}
+             \sum_{S\subsetneq[n]}c_S E_S^{(r)}(x)=-E_{[n]}^{(r)}(x),
+             \quad 0\le r<m.
+\end{equation}
+Assume $T$ is as in Theorem \ref{thm:finite}, and the observed multiset is a submultiset of the zeros in $[-T,T]$, missing at most $K$ multiplicities. The linear system is consistent (the true minors solve it) and its homogeneous kernel is zero: any nonzero solution would give a nonzero $H\in\V$ vanishing at all observed zeros to the recorded orders. This would contradict the discrepancy bound. In particular the observation matrix has full column rank $2^n-1$, even after arbitrary permitted erasures. This is a stronger conclusion than uniqueness just on the nonlinear set of realizable principal minors. It gives an exact linear decoder, followed by graph reconstruction using the two-element minors.
+
+If observations also contain false zeros, let $d_I$ denote the sum of absolute differences of multiplicity functions (the multiset symmetric-difference distance). Suppose a received finite multiset $O$ is at distance at most $k$ from the true window multiset, and at distance at most $k$ from a competing window multiset. By the triangle inequality their mutual distance is at most $2k$, hence their one-sided discrepancy is at most $2k$. Choose the uniform window for $K=2k$: the competitor must have the same principal minors. One possible exact decoder tries all submultisets obtained by removing at most $k$ multiplicities of $O$, solves \eqref{eq:jets}, and retains realizable candidates with the stated distance bound. For uniqueness one only needs the triangle inequality; no efficient algorithm or numerical conditioning claim is made. Approximate coordinates rather than exact multiset substitutions are a different noise model and are not addressed.
+
+\subsection{Right-half-plane interpolation (unconditional)}
+By Lemma \ref{lem:indep}, the functions $\prod_{i\in S}g_i$ for $S\subsetneq[n]$ are independent, including the constant. Their evaluation vectors along $z=-\ii(s-1/2)$, $s>1$, span $\C^{2^n-1}$; otherwise a nonzero linear functional would annihilate an interval, contrary to the identity theorem. Consequently $2^n-1$ suitable evaluations of $\Pcal_A/\prod_iF_i$ suffice to recover its principal minors by ordinary linear algebra, if values rather than zeros are available. This is a useful numerical cross-check, not a replacement for the real-zero decoding theorem. The companion script demonstrates this interpolation for three even quadratic characters. Using 100 decimal digits at $s=2,3,\ldots,8$ for the path of weights $2,3$, it recovered the seven coefficients with maximum absolute error about $5.52\times10^{-95}$ and estimated infinity-norm condition number $4.93\times10^6$. These are numerical observations, not interval-certified bounds. The script also checks character orthogonality exactly and exhausts all 729 zero-diagonal symmetric four-vertex matrices with edge weights in $\{-1,0,1\}$, obtaining 108 identical switching and principal-minor classes.
+
+\section{Examples, limits, and proof dependencies}
+Use $\chi_5,\chi_8,\chi_{12}$, the quadratic characters of positive fundamental discriminants $5,8,12$. They are primitive, distinct and even. For the path with edge weights $a,b>0$ on edges $12,23$, respectively,
+\[
+ L(a,b)=\begin{pmatrix}a&-a&0\\-a&a+b&-b\\0&-b&b\end{pmatrix}.
+\]
+The determinant polynomial in independent variables $X_i$ is
+\begin{align*}
+ \det(L(a,b)+\diag(X_i))={}&X_1X_2X_3+aX_2X_3+(a+b)X_1X_3+bX_1X_2\\
+ &+ab(X_1+X_2+X_3).
+\end{align*}
+The unlabelled ordinary Laplacian spectra of $L(2,3)$ and $L(3,2)$ agree (reverse vertex order), yet the character-labelled coupled spectra have infinitely many missing multiplicities in each direction. Otherwise Theorem \ref{thm:tail} and Corollary \ref{cor:graph} would force equality of these different labelled Laplacians. This is an explicit example of information not present in the usual graph spectrum. The statement is about known character labels, not an inverse theorem where the character list is unknown.
+
+For signed matrices, $A$ and $DAD$ cannot be distinguished by any zeros. Already a signed triangle with zero diagonal and unit edge magnitudes has determinant polynomial $X_1X_2X_3-X_1-X_2-X_3+2\sigma$, where $\sigma$ is its cycle sign. Thus the arithmetic spectrum distinguishes positive and negative cycle products, while a vertex sign switch is invisible.
+
+\paragraph{Limitations and novelty.} The common parity condition is essential to the proof of Lemma \ref{lem:indep} and the rationality obstruction as written; mixed parities introduce a second gamma logarithmic derivative, whose algebraic/asymptotic relations have not been treated. Repeated characters can destroy independence and enable permutation symmetries. The result is not a new RH for an $L$-function: $\Pcal_A$ need not be an Euler product. The finite observation height is non-effective here, and numerical stability, algorithms polynomial in the observation size, and robustness under small coordinate perturbations remain open. For complex Hermitian couplings principal-minor recovery is the exact assertion; no classification of all Hermitian principal-minor fibers is attempted. The new mathematical contribution claimed is the combination of polynomial independence, tail divisor rigidity, and uniform finite-window erasure correction for these determinants. The classical component results are not claimed as novel, and neither an exhaustive literature search nor a new Lean formalization was completed.
+
+\paragraph{Dependency chain.} The only nonclassical input needed for the inverse spectral theorems is the vendored half-plane theorem in \texttt{src/Main.lean}. Standard primitive completion, Euler products, Dirichlet's theorem, character orthogonality, Stirling/digamma asymptotics and Hadamard factorization yield Lemmas \ref{lem:indep}--\ref{lem:outside}. The strip maximum-modulus argument and compactness yield Theorems \ref{thm:tail}--\ref{thm:finite}. The finite matrix step is elementary and unconditional. This note gives a human-readable proof with an audit and reproducible computational checks, not a kernel-checked extension. The source development and the original article were read selectively, using their LaTeX source rather than their compiled PDFs.
+
+\begin{thebibliography}{9}\small
+\bibitem{vendor} ProveIt, \emph{Vendored grh-lean}, README and files \texttt{grh/src/Statements.lean}, \texttt{grh/src/Main.lean}, \texttt{grh/src/New/Reduction/\allowbreak Zeros/Criterion.lean}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{Repository directory}. Upstream pinned commit 72fead102f663d5c7a407964a13dc0cf9d977207.
+\bibitem{article} ProveIt Contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, 26 November 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{Merged article source}, especially sections \texttt{src.tex}, \texttt{zer.tex}, \texttt{rec.tex}.
+\bibitem{verification} \emph{Shorter Lean proof of RH and GRH for Dirichlet L-functions: verification files}, \url{https://klein.mit.edu/~drew/shortgrh/}, accessed 27 November 2026.
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000. Classical Dirichlet characters, $L$-functions and prime distribution.
+\bibitem{dlmf} NIST Digital Library of Mathematical Functions, \href{https://dlmf.nist.gov/25.15}{\S25.15 (Dirichlet $L$-functions)}, \href{https://dlmf.nist.gov/5.11}{\S5.11 (gamma and digamma asymptotics)}.
+\bibitem{boas} R. P. Boas, Jr., \emph{Entire Functions}, Academic Press, 1954. Finite order and Hadamard products.
+\bibitem{engel} G. M. Engel and H. Schneider, Matrices diagonally similar to a symmetric matrix, \emph{Linear Algebra Appl.} 29 (1980), 131--138, \href{https://doi.org/10.1016/0024-3795(80)90234-7}{doi:10.1016/0024-3795(80)90234-7}.
+\end{thebibliography}
+\end{document}

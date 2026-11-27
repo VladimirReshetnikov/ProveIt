@@ -1,0 +1,353 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,hyperref,microtype}
+\usepackage[T1]{fontenc}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!50!black,citecolor=blue!40!black,pdftitle={Entropy-optimal simultaneous factorizations into distinct small primes},pdfauthor={Research note for the ProveIt project}}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\G}{\mathcal U}
+\newcommand{\Pset}{\mathcal P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\HH}{\mathsf H}
+\newcommand{\comp}{\mathcal C}
+\newcommand{\mult}[2]{\binom{#1}{#2}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\dd}{\mathrm d}
+\title{Entropy-optimal simultaneous factorizations\texorpdfstring{\\}{ }into distinct small primes\\[4pt]\large A sharp leading constant from Dirichlet GRH}
+\author{Research note for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Given $r$ moduli and positive prescribed proportions of prime factors, we ask how few distinct small primes suffice so that their ordered partitions realize every compatible vector of residues. For fixed $r$, we identify the exact asymptotic leading constant. Every set partition of the $r$ labels imposes a multinomial counting obstruction; the maximum of the resulting entropy ratios is sufficient as well as necessary. Under Dirichlet GRH, primes in a common interval of height $(\log M)^2 B$, where $M$ is the least common multiple and $B$ tends arbitrarily slowly to infinity (at most a fixed power of $\log M$), attain that constant with additive error $O(\log M/\log B)$. At height $C_\epsilon(\log M)^2$ the leading constant is attainable within any fixed relative tolerance. The upper bound is obtained by a Fourier collision estimate stratified by equality of inflated characters, followed by simultaneous support repair using fresh prime pairs. The repair preserves exact quotas and works even when moduli overlap. The analytic input is the integrated prime character estimate furnished by the Dirichlet GRH statement exported by the vendored Lean development. The counting lower bound and the finite-group argument are unconditional.
+\end{abstract}
+
+\section{Statement and significance}\label{sec:statement}
+Write $\G(q)=(\mathbb Z/q\mathbb Z)^\times$, with $\G(1)$ the trivial group, and $\varphi(1)=1$. Fix an integer $r\ge2$ and positive real numbers $\alpha_1,\dots,\alpha_r$ with sum one. All logarithms are natural. Let $q_1,\dots,q_r$ be positive integers, and set
+\[
+ M=\lcm(q_1,\dots,q_r),\qquad g=\gcd(q_1,\dots,q_r),\qquad L=\log(2M).
+\]
+For a set partition $\pi$ of $[r]=\{1,\dots,r\}$ into $h\ge2$ nonempty blocks, define
+\begin{equation}\label{eq:def}
+ g_J=\gcd_{j\in J}q_j,\quad \alpha_J=\sum_{j\in J}\alpha_j,\quad
+ N_\pi=\frac{\prod_{J\in\pi}\varphi(g_J)}{\varphi(g)},\quad
+ H_\pi(\alpha)=-\sum_{J\in\pi}\alpha_J\log\alpha_J .
+\end{equation}
+Define the entropy threshold
+\begin{equation}\label{eq:threshold}
+ T(\mathbf q,\alpha)=\max_{\pi:\,|\pi|\ge2}\frac{\log N_\pi}{H_\pi(\alpha)}.
+\end{equation}
+For a set $S$ of $n$ distinct primes coprime to $M$, let $P_S=\prod_{p\in S}p$. For an integer quota vector $k=(k_1,\dots,k_r)$ summing to $n$, an ordered partition $S=S_1\sqcup\cdots\sqcup S_r$, $|S_j|=k_j$, realizes the residues $u_j=\prod_{p\in S_j}p\pmod{q_j}$. Necessarily
+\begin{equation}\label{eq:compat}
+ u_j\in\G(q_j),\qquad \prod_{j=1}^r u_j\equiv P_S\pmod g .
+\end{equation}
+Call $S$ universal at quota $k$ if every vector in \eqref{eq:compat} is realized. Empty blocks will not be needed in the asymptotic statement.
+
+\begin{theorem}[Sharp entropy threshold; uses Dirichlet GRH]\label{thm:main}
+Fix $r,\alpha$ as above and $A>0$. There are constants $B_0>1$, $C>0$ and $M_0$, depending only on $r,\alpha,A$, with the following property. For every $M\ge M_0$ and every real $B\in[B_0,L^A]$, there is a set $S$ of
+\begin{equation}\label{eq:n}
+ n=\left\lceil T(\mathbf q,\alpha)+C\frac{L}{\log B}\right\rceil
+\end{equation}
+distinct primes coprime to $M$, all in $[B L^2,2B L^2]$, universal simultaneously at every integer quota vector $k$ satisfying $\sum_j k_j=n$ and $|k_j-n\alpha_j|\le1$.
+
+Conversely, if any set of $n$ distinct primes coprime to $M$ is universal at one such quota vector, with no restriction on prime size, then
+\begin{equation}\label{eq:lower}
+ n\ge \max_{\pi:\,|\pi|\ge2}\frac{\log N_\pi+\tfrac{|\pi|-1}{2}\log n}{H_\pi(\alpha)}-O_{r,\alpha}(1).
+\end{equation}
+In particular $T\asymp_{r,\alpha} L$. If $B=B(M)\to\infty$ with $B\le L^A$, the least possible universal pool size at these rounded proportions is $(1+o(1))T$. For each $\epsilon>0$ one may instead fix $B=B_{r,\alpha,\epsilon}$ and obtain $n\le(1+\epsilon)T+1$ at prime height $O_{r,\alpha,\epsilon}(L^2)$.
+\end{theorem}
+
+The lower bound is a statement about universality, not about approximately uniform multiplicities. We do not claim the upper bound gives comparable numbers of representations for all targets, nor that the same pool works for different modulus tuples. Theorem~\ref{thm:uniform} below gives the stronger simultaneous assertion for many quota profiles of the \emph{same} tuple of moduli.
+
+\begin{corollary}[Equal moduli and balanced factors]\label{cor:equal}
+If every $q_j=q$ and every $\alpha_j=1/r$, the leading term is
+\[
+ T=\frac{(r-1)\log\varphi(q)}{\log r}.
+\]
+For $r=2$ this gives a single pool of $(1+o(1))\log_2\varphi(q)$ primes whose subsets of exactly half the pool size (rounded either way) represent every unit modulo $q$. All primes can lie in a dyadic interval at height $(\log q)^2 B$ for any slowly diverging $B$ in the range above, with harmless changes of the factor $B$ from using $\log(2q)$.
+\end{corollary}
+\begin{proof}
+Here $N_\pi=\varphi(q)^{h-1}$. Among partitions into $h$ blocks, the minimum entropy is attained at block sizes $r-h+1,1,\dots,1$: the function $t\mapsto t\log t$ is convex, so moving an element from a smaller block of size at least two to a largest block increases the sum of these functions. Thus the minimum is $f(h-1)$, with
+\[
+ f(t)=\log r-\frac{r-t}{r}\log(r-t),\qquad 0\le t\le r-1.
+\]
+The function $f$ is concave, $f(0)=0$, $f(r-1)=\log r$, and hence $f(t)\ge t\log r/(r-1)$. The discrete partition attains equality in the ratio defining $T$.
+\end{proof}
+
+\paragraph{Why every grouping matters.}
+Take $r=3$, $q_1=q_2=q_3=101$, and quotas $(6,6,1)$. There are $13!/(6!6!)=12012$ ordered assignments for only $10000$ compatible targets. Nevertheless universality is impossible: the third factor has only $13$ possible prime choices but must attain $100$ units. The partition $\{\{1,2\},\{3\}\}$ detects this failure, which the total counting bound misses. At the asymptotic level, for $\alpha=(0.49,0.49,0.02)$ and common modulus $q$, separating the third label gives $T\ge \log\varphi(q)/H(0.02,0.98)$, which is strictly larger than $2\log\varphi(q)/H(0.49,0.49,0.02)$.
+
+\section{Source audit and dependency boundary}\label{sec:source}
+The two requested GitHub directories were accessed through the GitHub connector on 27 November 2026. The vendoring README \cite{Vendored} identifies upstream \texttt{lsernau/grh-lean} revision
+\begin{center}\small\texttt{72fead102f663d5c7a407964a13dc0cf9d977207}.\end{center}
+The vendored readable edition is a separate Lake project (Lean 4.35.0), with Mathlib revision
+\begin{center}\small\texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}.\end{center}
+Its \texttt{src/Statements.lean} specifies the assertions using Mathlib's functions, while \texttt{src/Main.lean} exports, in particular,
+\begin{itemize}
+\item \texttt{LFunction\_ne\_zero\_of\_half\_lt\_re}: the right half-plane zero-free theorem for all Dirichlet characters, except the principal pole;
+\item \texttt{LFunction\_eq\_zero\_re}: every Dirichlet $L$-zero in the open critical strip is on the critical line;
+\item \texttt{riemannHypothesis}: Mathlib's RH.
+\end{itemize}
+The upstream README reports a build and independent checker acceptance, with only the usual axioms \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}. This note does not independently rebuild or kernel-replay the development. We take its exported Dirichlet GRH as the mathematical input, as does the merged article. No RH for nonabelian or general automorphic $L$-functions is assumed. The new proof is a conventional mathematical proof, not a Lean-checked formalization.
+
+The key analytic shape in \texttt{src/New/Reduction/OneSidedBound.lean} is a one-sided bound on a ramp-smoothed prime remainder, followed by an implication to nonvanishing. The present argument uses the exported nonvanishing in the reverse direction through the classical integrated explicit formula, with a compact triangular window. The connection is methodological as well as logical, but the new finite-group proof does not reuse the source's arithmetic covolume or Selmer arguments.
+
+The article README describes 131 merged reports, with 914 stated results. Its introduction, source section, and the relevant direct-arithmetic section were inspected; theorem headings in the analytic, Li, zero, recovery and spanning sections were also reviewed for overlap. The most closely related results in \texttt{Article/sections/dir.tex} are:
+\begin{itemize}
+\item \texttt{dir:lem:bias}: small prime character bias by smoothing;
+\item \texttt{dir:thm:quotient} and \texttt{dir:thm:short}: exact support modulo a bounded quotient and short products from dense retained subsets of a large prime pool;
+\item \texttt{dir:thm:factorization}: a single pool of $O(R\log Q)$ primes for simultaneous mixed moduli and all sufficiently large quotas, including deletion robustness and near-uniform relative counts;
+\item \texttt{dir:thm:minority} and \texttt{dir:thm:factorlower}: quotient laws at positive retained density and logarithmic lower bounds for high-accuracy robust quotas.
+\end{itemize}
+The present result replaces the unspecified constant in the $O(\log M)$ \emph{existential, fixed-modulus, support-only} problem with the exact leading constant, including every coarsening obstruction, and permits near-optimal quotas. It is not a uniform improvement of the stronger deletion and relative-error conclusions in the article. The source of the new upper bound is not the pointwise Fourier inversion used there: it is the expected squared Fourier coefficient of an assignment law, followed by support repair. File paths, blob SHAs, and reference links are recorded in \texttt{source\_audit.md}.
+
+\section{Compatibility, characters and lower bounds}\label{sec:lower}
+Let $H=\prod_j\G(q_j)$. The surjective homomorphism $\Pi:H\to\G(g)$ multiplies reductions modulo $g$. Let $D=\ker\Pi$, so that
+\begin{equation}\label{eq:D}
+ d=|D|=\frac{\prod_j\varphi(q_j)}{\varphi(g)}.
+\end{equation}
+For any list $S$ of units in $\G(M)$, the compatible targets form a coset $\comp_S$ of $D$. This observation also applies to lists with repeated elements; labels may be distinct even when their residues coincide. Each reduction map between unit groups for divisible moduli is surjective, by the Chinese remainder theorem applied prime power by prime power.
+
+\begin{lemma}[Character intersections]\label{lem:intersection}
+Regard $\widehat{\G(q_j)}$ as a subgroup of $\widehat{\G(M)}$ by inflation. For every nonempty block $J\subseteq[r]$ their intersection over $j\in J$ is the inflated group $\widehat{\G(g_J)}$. The character group of $D$ is the quotient of $\widehat H$ by the diagonal group $\Delta$ of common characters inflated from $\G(g)$, with $|\Delta|=\varphi(g)$.
+\end{lemma}
+\begin{proof}
+For divisors $a,b$ of $M$, the kernels of the reductions from $\G(M)$ to $\G(a)$ and $\G(b)$ generate the kernel of reduction to $\G(\gcd(a,b))$. On each prime-power component this follows because the two kernels are nested, and globally it follows by the Chinese remainder theorem. Intersecting their annihilators proves the first assertion, by iteration. The dual of $H/D\cong\G(g)$ consists precisely of tuples of common inflated characters. Restriction $\widehat H\to\widehat D$ is surjective (equivalently, characters of finite abelian subgroups extend), with this kernel. For completeness, surjectivity follows by adjoining one generator at a time: if $x$ has order $m$ modulo the subgroup on which a character is defined, choose an $m$th root of the character's value at $x^m$ to extend it to the larger subgroup.
+\end{proof}
+
+\begin{proposition}[Every partition imposes a counting bound]\label{prop:count}
+If $S$ is universal at $k$, then for every $\pi$ with $h\ge2$,
+\begin{equation}\label{eq:count}
+ \binom{n}{(k_J)_{J\in\pi}}\ge N_\pi,\qquad k_J=\sum_{j\in J}k_j.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Coarsen the $r$ factors by multiplying together those in each block $J$ and reducing modulo $g_J$. The map from compatible fine targets to compatible coarse targets is onto. Indeed, given coarse units $v_J$ with total product $P_S\pmod g$, choose one label in each block, lift $v_J$ to a unit at its modulus using surjectivity, and set the other fine targets in that block equal to one. The resulting fine target is compatible. The coarse target set is a coset of the kernel of the product map to $\G(g)$ and has size $N_\pi$. Each coarse assignment of the $n$ primes with quotas $k_J$ gives only one coarse target. There are precisely the multinomial number in \eqref{eq:count}.
+\end{proof}
+
+Under the rounding assumption $k_j=n\alpha_j+O(1)$, Stirling's formula gives uniformly over the finitely many partitions
+\[
+ \log\binom n{(k_J)}=n H_\pi(\alpha)-\frac{h-1}{2}\log n+O_{r,\alpha}(1).
+\]
+This proves \eqref{eq:lower}, including its logarithmic correction. For the scale comparison, the discrete partition has $N_\pi=d\ge\max_j\varphi(q_j)$. Since $M\le\prod_j q_j$, $\max_j\log q_j\ge (\log M)/r$. The elementary inequality $\varphi(q)\ge\sqrt{q/2}$ follows by multiplying the prime-power factors $p^{e/2-1}(p-1)$ of $\varphi(q)/\sqrt q$; only $p=2,e=1$ gives a factor below one. Hence $\log d\gg_r L$, whereas $\log d\le r L$. Every $H_\pi(\alpha)>0$, and $\log N_\pi\le r L$, which proves $T\asymp L$. In particular \eqref{eq:lower} implies an additive lower bound of order $\log L$ above $T$ (use a partition attaining $T$).
+
+\section{A finite Fourier collision estimate}\label{sec:collision}
+Let $\mu$ be a probability measure on a finite labelled pool of elements of $\G(M)$. A label may carry the same group element as another label. Define its maximal nonprincipal bias and largest label weight by
+\begin{equation}\label{eq:bias}
+ b=\max_{\chi\ne1}\abs{\E_{x\sim\mu}\chi(x)},\qquad \omega=\max_x\mu(x),
+\end{equation}
+where the maximum in $\omega$ is over labels. Let $X=(X_1,\dots,X_m)$ be independent draws from the pool. For a positive quota vector $\ell$ summing to $m$, use a uniform ordered partition of the $m$ \emph{positions} into $r$ bins of these sizes. Let $\nu_{X,\ell}$ be the resulting distribution on the compatible coset $\comp_X$, and write
+\[
+ \delta(X,\ell)=1-\frac{|\operatorname{supp}\nu_{X,\ell}|}{d} .
+\]
+This is the missing fraction, and is defined even when labels repeat.
+
+\begin{lemma}[Collision bound stratified by coarsenings]\label{lem:collision}
+For every quota vector $\ell$,
+\begin{equation}\label{eq:collision}
+ \E_X\delta(X,\ell)\le\sum_{\pi:\,h=|\pi|\ge2} N_\pi\,
+ \frac{(1+(h-1)b)^m}{\binom{m}{(\ell_J)_{J\in\pi}}} .
+\end{equation}
+\end{lemma}
+\begin{proof}
+On a coset of $D$ identify the distribution with a probability law on $D$ by translation. For $f=d\nu$, normalized Parseval gives
+\[
+ \delta(X,\ell)\le\frac1d\sum_{z\in D}|f(z)-1|^2
+ =\sum_{\eta\in\widehat D\setminus\{1\}}|\widehat\nu(\eta)|^2 .
+\]
+The first inequality holds since a missing element contributes $1$ to the squared sum. Choose for each $\eta$ a lift $(\chi_1,\dots,\chi_r)\in\widehat H$; the absolute value of the Fourier coefficient is independent of this choice and of the coset origin. Let $\widetilde\chi_j$ be its inflation to $\G(M)$. The partition $\pi$ into equality classes of the $\widetilde\chi_j$ is invariant under multiplication by a common character. By Lemma~\ref{lem:intersection}, nontrivial $\eta$ has $h\ge2$, and for each fixed partition $\pi$ there are at most $N_\pi$ characters $\eta$ with this equality pattern: before dividing by $\Delta$ there are at most $\prod_{J\in\pi}\varphi(g_J)$ choices, since each common character of a block descends to its gcd. The action of $\Delta$ on lifts is free.
+
+Let $A$ and $A'$ be independent uniform assignments with quotas $\ell$. Up to a factor of modulus one from the coset origin, the Fourier coefficient is
+\[
+ \E_A\prod_{i=1}^m\widetilde\chi_{A(i)}(X_i).
+\]
+Expanding its squared modulus and averaging over $X$, each position at which the two inflated characters agree contributes one; each position at which they differ contributes a factor of modulus at most $b$ by \eqref{eq:bias}. On merging the labels into blocks of $\pi$, both assignments become independent uniform assignments of block quotas $(\ell_J)$: the number of refinements of each such assignment is the same. Fix the first merged assignment. The sum of $b^{\text{number of differing positions}}$ over all unrestricted second assignments to the $h$ blocks is $(1+(h-1)b)^m$. Restricting to the prescribed quotas can only decrease this sum. Dividing by the multinomial number of second assignments and summing over all nontrivial characters proves \eqref{eq:collision}. This argument uses absolute values before summing; no zero independence or independence of the assignment coordinates is presumed.
+\end{proof}
+
+\begin{lemma}[Conditioning on distinct labels]\label{lem:distinct}
+If $m\omega\le1/2$, the probability that $m$ independent draws have distinct labels is at least $\exp(-m^2\omega)$. For any finite family $\mathcal L$ of quotas, the expected sum of missing fractions conditional on distinct labels is at most
+\begin{equation}\label{eq:distinct}
+ e^{m^2\omega}\sum_{\ell\in\mathcal L}\sum_{\pi:\,|\pi|\ge2}
+ N_\pi\frac{(1+(|\pi|-1)b)^m}{\binom m{(\ell_J)}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Given $i$ previously drawn distinct labels, their total weight is at most $i\omega$. Multiply the conditional lower bounds $1-i\omega$ for $0\le i<m$, and use $\log(1-u)\ge-2u$ for $0\le u\le1/2$. For a nonnegative random variable, conditioning on an event of probability $p>0$ increases its expectation by at most the factor $1/p$. Apply Lemma~\ref{lem:collision} and sum.
+\end{proof}
+
+\section{Repairing all supports with fresh pairs}\label{sec:repair}
+A nearly full support need not be full. Direct Fourier inversion would demand substantially more primes. We give an iterative repair mechanism that only adds a lower-order number of primes and preserves the quotas exactly.
+
+Fix a total budget $n$, and suppose $n\omega<1$. At any stage remove all used labels and renormalize $\mu$ on the remaining pool. The bias and maximum weight of the remaining law satisfy
+\begin{equation}\label{eq:residual}
+ b_R\le\frac{b+n\omega}{1-n\omega},\qquad \omega_R\le\frac{\omega}{1-n\omega}.
+\end{equation}
+Indeed the removed mass is at most $n\omega$; its contribution to the character expectation has modulus at most that mass.
+
+Put $s=2(r-1)$ and $a=(1,\ldots,1,r-1)\in\mathbb Z^r$. A repair block consists of pairs $(A_j,B_j)$ of fresh labels, $1\le j<r$. For the baseline allocation place $A_j$ in factor $j$ and all $B_j$ in factor $r$; for the alternative allocation swap all pairs. Both use exactly the increment $a$. Their target vectors differ by multiplication by $V\in D$, given coordinatewise by
+\begin{equation}\label{eq:shift}
+ V_j=B_j/A_j\pmod{q_j}\ (j<r),\qquad
+ V_r=\prod_{j<r} A_j/B_j\pmod{q_r}.
+\end{equation}
+The product reduces to one modulo $g$, as required.
+
+\begin{lemma}[A common repair step]\label{lem:repair}
+Suppose at some stage there are finitely many quota profiles, each with its own attainable subset of the same compatible coset. Write their missing fractions as $\delta_\ell$ and their sum as $\Delta$. If $b_R\le\beta$, $\binom{s}{2}\omega_R\le1/2$, and $\Delta\le\beta^2$, then there exists a block of $s$ distinct fresh labels which, added to the old pool, makes the sum of missing fractions at the incremented quotas at most $4\beta^2\Delta$.
+\end{lemma}
+\begin{proof}
+For independent draws $A_j,B_j$ from the residual measure (before conditioning on distinctness), a character $\eta\in\widehat D$ with lift $(\chi_1,\dots,\chi_r)$ satisfies
+\begin{equation}\label{eq:ratio}
+ \E\eta(V)=\prod_{j<r}\abs{\E_{x\sim\mu_R}(\widetilde\chi_j\overline{\widetilde\chi_r})(x)}^2 .
+\end{equation}
+If $\eta\ne1$, at least one ratio character is nonprincipal, by Lemma~\ref{lem:intersection}. Thus \eqref{eq:ratio} is real and between zero and $\beta^2$. For a missing subset $U$ of the old coset, translate it to $D$ and let $f=1_U$, $\delta=|U|/d$. Normalized character orthogonality gives the correlation identity
+\begin{align*}
+ \E\frac{|U\cap VU|}{d}
+ &=\sum_{\eta\in\widehat D}|\widehat f(\eta)|^2\E\eta(V)\\
+ &\le\delta^2+\beta^2(\delta-\delta^2).
+\end{align*}
+The new attainable set contains the union of the two baseline/alternative translates of the old attainable set. It follows that, after baseline translation, the new missing set is contained in $U\cap VU$. This is a deterministic inclusion, not a statement about only its expectation.
+
+By a union bound for repeated labels, the $s$ independent draws are distinct with probability at least $1-\binom{s}{2}\omega_R\ge1/2$. Conditioning on this event costs at most a factor two in the expectation of the sum of the nonnegative intersection sizes. Therefore some distinct block satisfies
+\[
+ \Delta_{\mathrm{new}}\le 2\sum_\ell(\delta_\ell^2+\beta^2\delta_\ell)
+ \le2(\Delta^2+\beta^2\Delta)\le4\beta^2\Delta.
+\]
+The same block works for the whole family since we minimized a single sum of missing fractions.
+\end{proof}
+
+\begin{proposition}[Finite completion criterion]\label{prop:completion}
+Let $n=m+st$, with $m,t$ positive integers and $0<\beta\le1/4$. Assume the right side of \eqref{eq:residual} for $b_R$ is at most $\beta$, $n\omega\le1/2$, and $\binom{s}{2}\omega/(1-n\omega)\le1/2$. If the right side of \eqref{eq:distinct} is at most $\beta^2$ and
+\begin{equation}\label{eq:t}
+ t\ge\frac{\log d+1}{\log(1/(4\beta^2))},
+\end{equation}
+then there is an $n$-element pool of distinct labels universal simultaneously at all quotas $\ell+t a$, $\ell\in\mathcal L$.
+\end{proposition}
+\begin{proof}
+Choose the $m$ distinct labels with total missing fraction at most $\beta^2$ by Lemma~\ref{lem:distinct}. Apply Lemma~\ref{lem:repair} $t$ times, always drawing only fresh labels. Its hypotheses persist because $4\beta^2<1$ and the cumulative number of used labels is at most $n$. The final total missing fraction is at most $\beta^2(4\beta^2)^t<1/d$ by \eqref{eq:t}. Each individual fraction is an integer multiple of $1/d$, so all are zero. The total size is $n$ and each quota was incremented by $a$ at every step.
+\end{proof}
+
+\section{Dirichlet GRH supplies the labelled pool}\label{sec:prime}
+The only nontrivial analytic input is the integrated character estimate, a standard consequence of Dirichlet GRH; see Montgomery--Vaughan \cite[Eq.~(13.28), Thm.~13.11]{MV}, also \texttt{dir:lem:bias} in the merged article \cite{Article}. For every nonprincipal character $\chi$ modulo $M$ and real $u\ge2$,
+\begin{equation}\label{eq:MV}
+ \left|\sum_{v\le u}\Lambda(v)\chi(v)(u-v)\right|\ll u^{3/2}\log(2M).
+\end{equation}
+Here $\Lambda$ is the von Mangoldt function. The constant is absolute, including imprimitive characters. The cited proof shifts the integrated Mellin transform with kernel $u^{s+1}/(s(s+1))$ to $\Re s=1/4$. Nontrivial zeros on $\Re s=1/2$ contribute an absolutely summable weighted zero sum of size $O(u^{3/2}\log(2M))$ by the standard zero-count bound in unit intervals; the remaining vertical integral is $O(u^{5/4}\log(2M))$. The pole at one is absent for the nonprincipal character. Equivalently, one may first use the primitive version and bound removed Euler-factor terms by $O(u\log u\log(2M))$, which is absorbed by \eqref{eq:MV}. This is why the precise exported GRH, with all Dirichlet characters and the half-plane restriction, is sufficient.
+
+\begin{lemma}[A small-bias dyadic prime measure]\label{lem:prime}
+Fix $A>0$ and $y=B L^2$ with $1\le B\le L^A$. For large $M$, the primes in $[y,2y]$ coprime to $M$ carry a probability measure with
+\begin{equation}\label{eq:primebounds}
+ b\le K B^{-1/2},\qquad \omega\le K_A\frac{\log L}{B L^2},
+\end{equation}
+where $K$ can be absolute and $K_A$ depends only on $A$ (the sufficiently large threshold may depend on $A$).
+\end{lemma}
+\begin{proof}
+Use the triangular weight
+\[
+ w_y(v)=\frac{2}{y}\big((2y-v)_+-2(3y/2-v)_++(y-v)_+\big),
+ \qquad z_+=\max(z,0).
+\]
+It is nonnegative, bounded by one, supported in $[y,2y]$, and its integral is $y/2$. Assign mass proportional to $w_y(p)\log p$ to each prime $p$ in that interval not dividing $M$. By the prime number theorem and partial summation, the normalizing constant $Z$ is $y/2+o(y)$, because removal of prime divisors of $M$ costs at most $\log M\le L$ and $y\ge L^2$. This is uniform throughout the given interval of possible $y$. In particular $Z\ge y/3$ for large $M$. The finite difference of \eqref{eq:MV} at $2y,3y/2,y$ gives
+\[
+ \left|\sum_v w_y(v)\Lambda(v)\chi(v)\right|\ll \sqrt y L.
+\]
+The removal of higher prime powers costs $O(\sqrt y\log^2(2y))$, by bounding the number of integers that are prime powers of exponent at least two and weighting each by at most $\log(2y)$. This is absorbed since $\log^2(2y)=o(L)$ uniformly for $B\le L^A$. Nonunits already have $\chi(p)=0$. Divide by $Z$ to get the bias bound; each individual mass is at most $3\log(2y)/y$, giving the weight bound.
+\end{proof}
+
+\section{Uniform sufficiency and optimality}\label{sec:asymptotic}
+We prove a single-pool statement uniform over all sufficiently interior quotas. This is useful because the target quota can be chosen after the pool is fixed.
+
+\begin{theorem}[Uniform entropy sufficiency; uses Dirichlet GRH]\label{thm:uniform}
+Fix $r\ge2$, $A>0$, $0<a_0<1/r$, and constants $0<c_0<c_1$. There exist $C_2>0$, $B_0>1$ and $M_0$ depending only on these fixed parameters such that the following holds for $M\ge M_0$, $B_0\le B\le L^A$, and any integer $c_0 L\le n\le c_1 L$. A single set $S$ of $n$ distinct primes coprime to $M$ in $[BL^2,2BL^2]$ is universal at every quota vector $k$ of nonnegative integers with $\sum k_j=n$, $k_j\ge a_0 n$, satisfying, for every partition $\pi$ into at least two blocks,
+\begin{equation}\label{eq:slack}
+ nH_\pi(k/n)\ge\log N_\pi+C_2\frac{L}{\log B}.
+\end{equation}
+Here $H_\pi(k/n)=-\sum_J(k_J/n)\log(k_J/n)$.
+\end{theorem}
+\begin{proof}
+Use the measure in Lemma~\ref{lem:prime}. Set $\beta=4K'/\sqrt B$ with $K'=\max(1,K)$, and $s=2(r-1)$ as before. Increase $B_0$ so that $\beta\le1/4$ and
+\[
+ \lambda=\log(1/(4\beta^2))=\log(B/(64K'^2))\ge\tfrac12\log B.
+\]
+Choose $t=\lceil(\log d+1)/\lambda\rceil$ and $m=n-st$. Since $\log d\le rL$,
+\begin{equation}\label{eq:tbound}
+ t\le 2(rL+1)/\log B+1=O_r(L/\log B).
+\end{equation}
+The last uniform estimate uses $\log B\le A\log L=o(L)$; the implied constant may be chosen for all sufficiently large $M$. Increase $B_0$ further so that $st\le a_0 n/2$ (since $n\ge c_0 L$); then $m\ge n/2$. For every eligible final $k$ use base quota $\ell=k-ta$. It is positive, and along the segment from $k$ to $\ell$ every component remains at least $a_0n/2$.
+
+To estimate the entropy loss from these deletions define for any positive vector $u$ of total $U$ the homogeneous entropy function
+\[
+ F_\pi(u)=U\log U-\sum_{J\in\pi}u_J\log u_J.
+\]
+Its partial derivative at coordinate $j\in J$ is $\log(U/u_J)$. Along the segment just considered this is bounded by $\log(2/a_0)$. Therefore
+\begin{equation}\label{eq:loss}
+ F_\pi(\ell)\ge F_\pi(k)-st\log(2/a_0).
+\end{equation}
+Uniform Stirling bounds, or the usual multinomial type-count estimate, yield
+\[
+ \log\binom m{(\ell_J)}\ge F_\pi(\ell)-O_r(\log(n+1)).
+\]
+Combining with \eqref{eq:slack} and \eqref{eq:tbound}, choose $C_2$ large enough (independent of $B$) so that for all eligible $k$ and partitions $\pi$,
+\begin{equation}\label{eq:gap}
+ \log\binom m{(\ell_J)}-\log N_\pi\ge 3L/\log B
+\end{equation}
+for large $M$. Explicitly the entropy-loss term is bounded by a fixed constant times $L/\log B$, and $\log(n+1)=o(L/\log B)$ uniformly in the range $B\le L^A$.
+
+Let $\mathcal L$ be the family of all base quotas obtained in this way. There are at most $(n+1)^r$ of them; if it is empty, any $n$ primes from the pool suffice. The latter exist because the maximal atom bound implies that the pool has at least $1/\omega\gg L$ labels. Otherwise \eqref{eq:primebounds} shows that $n\omega=o(1)$ and
+\[
+ \frac{b+n\omega}{1-n\omega}\le\beta,
+ \qquad \binom{s}{2}\frac{\omega}{1-n\omega}\le1/2,
+\]
+for large $M$, uniformly: $n\omega\sqrt B=O_{A,c_1}(\log L/(\sqrt B L))=o(1)$. Also $m^2\omega=O_{A,c_1}(\log L/B)$. By increasing $B_0$ one may ensure $(r-1)c_1 K/\sqrt B\le1/\log B$ for every $B\ge B_0$. Thus $m\log(1+(h-1)b)\le L/\log B$. Equation \eqref{eq:gap} bounds the right side of \eqref{eq:distinct} by
+\[
+ \exp\left(-2L/\log B+O_{r,A,c_1}(\log L)\right)\le\beta^2
+\]
+for sufficiently large $M$, since $L/\log B\ge L/(A\log L)$ and $\log(1/\beta^2)=O(\log L)$. The finite completion criterion, Proposition~\ref{prop:completion}, gives exactly $n$ primes and all the desired quota profiles. No limiting probability or numerical computation is needed for the existence conclusion.
+\end{proof}
+
+\begin{proof}[Proof of the upper bound in Theorem~\ref{thm:main}]
+For the fixed proportion vector $\alpha$, choose $a_0<\min_j\alpha_j/2$ and fixed $c_0,c_1$ so that $2c_0L\le T\le(c_1/2)L$ for all large $M$; this is possible by Section~\ref{sec:lower}. Apply Theorem~\ref{thm:uniform} with these parameters. Let $h_* =\min_\pi H_\pi(\alpha)>0$ and choose $C>(C_2+1)/h_*$. Increase $B_0$ so that $C/\log B_0<c_1/4$. For $n$ in \eqref{eq:n} the required bounds on $n$ hold. Every rounded profile has $k_j\ge a_0 n$ and, by bounded derivatives of the entropy on this interior region,
+\begin{align*}
+ n H_\pi(k/n)&=n H_\pi(\alpha)+O_{r,\alpha}(1)\\
+ &\ge\log N_\pi+C h_* L/\log B-O_{r,\alpha}(1) .
+\end{align*}
+The last quantity satisfies \eqref{eq:slack} for large $M$. The uniform theorem applies to all these profiles. Rounded profiles always exist: take the floors and distribute the remaining units among labels with nonzero fractional parts. The asymptotic and fixed-$B$ assertions follow because $T\gg L$ and $B_0$ may be increased by any fixed amount. The lower bound was proved in Section~\ref{sec:lower}.
+\end{proof}
+
+\section{Consequences, checks and limitations}
+\paragraph{One common height.} For $B=L^\delta$ with any fixed $\delta>0$, the theorem gives an additive upper error $O_{r,\alpha,\delta}(L/\log L)$ using primes of size $O(L^{2+\delta})$. For $B=\log L$ it gives $O(L/\log\log L)$ at height $O(L^2\log L)$. These errors are smaller than $T$ by a factor tending to zero. The unconditional lower error of order $\log L$ leaves a second-order gap.
+
+\paragraph{Mixed moduli.} With coprime moduli the compatibility condition is vacuous and the discrete partition count is $\prod_j\varphi(q_j)$. Other partitions still constrain the result, according to their gcds. For $r=2$ the only partition has $N_\pi=\varphi(\lcm(q_1,q_2))$ by the prime-power formula for $\varphi$; the constant is $\log\varphi(M)/H(\alpha_1,\alpha_2)$. For general $r$ the formula retains all overlapping information rather than replacing every modulus with $M$.
+
+\paragraph{Constructivity.} The proof is existential, with an exhaustive finite procedure: enumerate $m$-element prime sets in the given interval until the initial missing-fraction test succeeds, then for each repair step enumerate ordered $s$-tuples of unused primes and select one with the claimed contraction. One may compute support by dynamic programming on quota counts and residue vectors. There is no claim of polynomial runtime in $\log M$; explicit numerical cutoff constants were not optimized or extracted from the classical analytic estimate.
+
+\paragraph{Finite reproducibility.} The accompanying \texttt{experiment.py} uses only Python's standard library, and computes reachable targets exactly by a dynamic program, rather than sampling target vectors. Its recorded certificates are:
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}\toprule
+Moduli & Quotas & Attained & Compatible\\\midrule
+$(13,13,13)$ & $(3,3,3)$ & 144 & 144\\
+$(12,18,30)$ & $(3,3,3)$ & 96 & 96\\
+$(15,21,35)$ & $(4,4,4)$ & 2304 & 2304\\\bottomrule
+\end{tabular}
+\end{center}
+It also checks the $(101,101,101)$ counting obstruction and the deterministic pair-repair inclusion for two distinct quota profiles using a shared block. All prime lists and the exact counts are in \texttt{experiment\_results.json}. These checks illustrate the statement and its mechanism; none is a premise of the proof and none is evidence for a quantitative asymptotic cutoff at small $M$.
+
+\paragraph{Relation to the literature.} Booker and Pomerance \cite{BP} asked about small squarefree smooth representatives; Munsch and Shparlinski \cite{MS} studied size and smoothness bounds for individual representatives. Erd\H{o}s and R\'enyi \cite{ER} established near-entropy covering for random unrestricted subset sums in finite abelian groups, and Ma and Tang \cite{MT} study the random-subset threshold at second order. Their settings differ from the present constrained prime pools, prescribed ordered quotas, and mixed moduli. The merged article provides a more direct predecessor: uniform mixed-modulus factorizations with robust deletions, but not the exact leading support threshold \eqref{eq:threshold} in this fixed-tuple problem. The coarsening-indexed collision/repair theorem and its asymptotically matching prime-pool bound are the proposed new contribution. The literature search and repository audit were targeted, not exhaustive; priority is not certified. The theorem is submitted as a candidate research result with a complete argument relative to the stated analytic input.
+
+\paragraph{Remaining problems.} Determine the true second-order term above $T$; obtain a fixed absolute dyadic multiplier $B$ giving the exact leading constant without allowing it to depend on tolerance; analyze erasure-robust versions and the tradeoff between pool size and pointwise multiplicity accuracy; and extend the entropy law to a growing number of factors. None of these is asserted here.
+
+\begin{thebibliography}{9}\small
+\bibitem{Vendored} ProveIt contributors. \emph{Vendored grh-lean (readable edition)}. Upstream revision \texttt{72fead10} (full SHA in Section~\ref{sec:source}). \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean}{Repository directory}.
+\bibitem{Article} ProveIt contributors. \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}. 26 November 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Article}{Repository directory}, in particular \texttt{sections/dir.tex}.
+\bibitem{MV} H. L. Montgomery and R. C. Vaughan. \emph{Multiplicative Number Theory I: Classical Theory}. Cambridge University Press, 2007. Theorem 13.11 and (13.28), p.~428.
+\bibitem{BP} A. R. Booker and C. Pomerance. Squarefree smooth numbers and Euclidean prime generators. \emph{Proc. Amer. Math. Soc.} \textbf{145} (2017), 5035--5042. \href{https://doi.org/10.1090/proc/13576}{doi:10.1090/proc/13576}.
+\bibitem{MS} M. Munsch and I. E. Shparlinski. On smooth square-free numbers in arithmetic progressions. \emph{J. London Math. Soc.} \textbf{101} (2020), 1041--1067. \href{https://doi.org/10.1112/jlms.12297}{doi:10.1112/jlms.12297}.
+\bibitem{ER} P. Erd\H{o}s and A. R\'enyi. Probabilistic methods in group theory. \emph{J. Analyse Math.} \textbf{14} (1965), 127--138.
+\bibitem{MT} J. Ma and Q. Tang. An Erd\H{o}s problem on random subset sums in finite abelian groups. \href{https://arxiv.org/abs/2602.05768}{arXiv:2602.05768} (2026).
+\end{thebibliography}
+\end{document}

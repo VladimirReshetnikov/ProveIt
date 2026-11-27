@@ -1,0 +1,325 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[letterpaper,margin=1.05in,headheight=14pt]{geometry}
+\usepackage{microtype,xcolor,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{17344A}
+\definecolor{link}{HTML}{126963}
+\hypersetup{colorlinks=true,linkcolor=link,citecolor=link,urlcolor=link,pdftitle={Optimal logarithmic support for positive Dirichlet zero filters}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\sffamily\color{ink} Positive spectral filters}\fancyhead[R]{\small\sffamily Research note / 27 Nov 2026}\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt plus 1pt}\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\F}{\mathcal F}\newcommand{\sinc}{\operatorname{sinc}}\newcommand{\arcosh}{\operatorname{arcosh}}\newcommand{\sech}{\operatorname{sech}}\newcommand{\ord}{\operatorname{ord}}\newcommand{\supp}{\operatorname{supp}}\newcommand{\dd}{\,\mathrm d}\newcommand{\vnorm}[1]{\lVert #1\rVert}
+\newcommand{\repobase}{https://github.com/VladimirReshetnikov/ProveIt/blob/ec99bc9e223fd8ca520792464033914ede28abec/Analysis/GeneralizedRiemannHypothesis}
+\title{\textbf{Optimal logarithmic support for\\positive Dirichlet zero filters}\\[4pt]\large Sharp leading constants, stopband tradeoff, and prime-error averaging}
+\author{Research extension of the ProveIt GRH article}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a fixed conjugation-closed family $\F$ of $d$ primitive Dirichlet characters, let $H_{\F}(B,L)$ be the least half-width of a positive probability kernel whose Fourier transform cancels every noncentral zero ordinate of height at most $B$ with its aggregate multiplicity and is bounded by $e^{-L}$ at every real frequency of absolute value at least $B$. We prove, uniformly for $L\ge0$,
+\[
+ H_{\F}(B,L)=\frac{L}{B}+\frac d2\log B+O_{\F}(1+\log\log B).
+\]
+This settles the leading-constant question in the ProveIt article's section on shortest positive averages, including the additional cost of a prescribed exponential stopband. The lower bound uses the Green function of a slit plane, rather than the circular Jensen estimate; the construction partitions ordinates into phase bins, interpolates with positive near-lattice kernels, and recursively treats low ordinates. A positive continuous-time Chebyshev-type factor gives optimal pure stopband suppression. The kernels can simultaneously have bounded exponential moments in the relevant regime. The spectral results need no GRH; the vendored Dirichlet GRH theorem makes them applicable to actual smoothed prime errors. In particular, all reduced residue-class ramp errors can be averaged at a near-optimal logarithmic scale range with an $O_q((1+\log X)/X)$ remainder. No simplicity or independence of zero ordinates is assumed.
+\end{abstract}
+
+\section{Statement and relation to the source}
+The input Lean project is the readable edition of \texttt{lsernau/grh-lean}, vendored at upstream commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207} \cite{lean}. Its \texttt{src/Statements.lean} imports Mathlib and defines the usual half-plane nonvanishing and critical-line assertions for Dirichlet $L$-functions; \texttt{src/Main.lean} exports them as \texttt{LFunction\_ne\_zero\_of\_half\_lt\_re} and \texttt{LFunction\_eq\_zero\_re}. The principal-character pole is excluded from the former. The scope is Dirichlet $L$-functions over $\mathbb Q$, not arbitrary Artin or automorphic functions. The vendored README reports compilation and independent kernel checks with only the standard three Lean axioms; independent checks of the upstream proof and shortened editions are also documented by Rubinstein \cite{verification}. We inspected the declarations, not a fresh build of the approximately 300,000-line development.
+
+The source's \texttt{New/Reduction/MainInequality.lean} and \texttt{OneSidedBound.lean} compare corrected covolumes to bound a nonnegative prime statistic, with the smoothing factor $(1/n-1/x)_+$. The analytic endpoint is a one-sided bound implying zero-free right half-planes. The merged article \cite{article}, at ProveIt commit \texttt{ec99bc9e223fd8ca520792464033914ede28abec}, develops the complementary operation: positive logarithmic averaging preserves inequalities and kills selected frequencies in the normalized ramp explicit formula. In \texttt{sections/rec.tex}, \texttt{rec:thm:logfilter} gives an $O_{\F}(\log B)$ support construction and \texttt{rec:lem:jensensupport} gives a lower bound of $(d/2)\log B-O_{\F}(1)$ for cancellation alone. Its open questions explicitly ask for the optimal leading coefficient (\href{\repobase/Article/sections/rec.tex\#L4696-L4698}{lines 4696--4698}). The upper bound below settles that coefficient; for the stronger simultaneous tail requirement in the article, the leading coefficient has an additional, necessary term.
+
+\begin{definition}[Positive zero filter]\label{def:filter}
+Let $\Lambda$ be a locally finite symmetric multiset of nonzero real numbers with positive integer multiplicities, with finitely many elements in every bounded interval. Write $N(T)$ for its positive counting function, counting multiplicity. Suppose that for $T\ge2$
+\begin{equation}\label{eq:count}
+ N(T)=aT\log T+bT+O(\log(T+2)),\qquad a>0,
+\end{equation}
+where $a,b$ are fixed. For $B\ge2$ and $L\ge0$, define $H_\Lambda(B,L)$ as the infimum of $H\ge0$ such that there is a probability measure $\mu$ on $[-H,H]$ with
+\begin{equation}\label{eq:constraints}
+ F(z)=\int e^{izt}\dd\mu(t),\quad \ord_\lambda F\ge m_\Lambda(\lambda)\ (0<|\lambda|\le B),\qquad \sup_{|x|\ge B}|F(x)|\le e^{-L}.
+\end{equation}
+The measure is nonnegative; the support condition refers to the logarithmic scale. By translation, the same infimum is half the minimum support diameter. Whenever the feasible set is nonempty, weak compactness on a fixed enclosing interval shows that the infimum is attained: along a minimizing sequence, the support bound passes to the limit, and all Fourier values and finite derivative constraints pass by continuity of their integrands. Reflection and averaging allow $\mu$ to be taken even: the Fourier transforms of both reflected measures vanish with the required multiplicities and have the same tail bounds.
+\end{definition}
+
+\begin{theorem}[Optimal leading constant and attenuation]\label{thm:main}
+Under \eqref{eq:count}, uniformly for all $L\ge0$ as $B\to\infty$,
+\begin{align}
+ H_\Lambda(B,L)&\ge \frac{L}{B}+\pi a\log B+\pi(b-a\log2)-O_\Lambda\!\left(\frac{\log^2 B}{B}\right),\label{eq:lb}\\
+ H_\Lambda(B,L)&\le \frac{\arcosh(e^L)}{B}+\pi a\log B+O_\Lambda(1+\log\log B).\label{eq:ub}
+\end{align}
+In particular $H_\Lambda(B,L)=L/B+\pi a\log B+O_\Lambda(1+\log\log B)$, with constants independent of $L$. The upper bound is realized by an even probability measure satisfying, for every real $r$,
+\begin{equation}\label{eq:mgf}
+ \int e^{ru}\dd\mu(u)\le\exp\!\left(\frac{r^2}{2}\left(C_\Lambda+\frac{\arcosh(e^L)}{B^2}\right)\right).
+\end{equation}
+An absolutely continuous measure is also possible at an additional half-width $B^{-1}$ and variance proxy $B^{-2}$.
+\end{theorem}
+
+\begin{corollary}[Dirichlet spectra]\label{cor:dir}
+For a fixed finite nonempty family $\F$ of primitive Dirichlet characters closed under conjugation, take $\Lambda$ to be the aggregate nonzero ordinates of their nontrivial zeros, with multiplicities, and put $d=|\F|$ and $f_\chi=\operatorname{cond}(\chi)$. The modulus-one character includes $\zeta$. Then
+\begin{align*}
+ H_{\F}(B,L)&\ge \frac{L}{B}+\frac d2\log B+\frac12\sum_{\chi\in\F}\log\frac{f_\chi}{4\pi e}-O_{\F}(\log^2 B/B),\\
+ H_{\F}(B,L)&=\frac{L}{B}+\frac d2\log B+O_{\F}(1+\log\log B).
+\end{align*}
+In particular, for every fixed $c\ge0$,
+\[
+ \lim_{B\to\infty}\frac{H_{\F}(B,cB\log B)}{\log B}=\frac d2+c.
+\]
+For the article's attenuation $c_0=-\log(\sin1)$, the exact leading half-width constant is $d/2+c_0$; for mere zero cancellation it is $d/2$. These are half-widths, not diameters.
+\end{corollary}
+\begin{proof}
+The Riemann--von Mangoldt formula for the combined family gives
+\[
+ a=\frac d{2\pi},\qquad b=\frac{1}{2\pi}\sum_{\chi\in\F}\log\frac{f_\chi}{2\pi e}.
+\]
+Indeed the usual two-sided count for each primitive character is $T\log(f_\chi T/(2\pi e))/\pi+O_{\chi}(\log(T+2))$; the conjugate family is symmetric in ordinate, and the omitted central zeros contribute a fixed error. This count is unconditional (see, e.g., \cite{davenport,mv}). Apply Theorem~\ref{thm:main} and use $L\le\arcosh(e^L)\le L+\log2$. The identities concern ordinates whether or not the zeros lie on the critical line.
+\end{proof}
+
+\section{A lower bound combining zeros and suppression}
+The article's disk Jensen argument gives a bound solely from the prescribed real zeros. The next inequality charges for the cancellation and the attenuation \emph{additively}.
+
+\begin{theorem}[Slit-plane logarithmic attenuation inequality]\label{thm:slit}
+Let $\mu$ be any probability measure on $[-H,H]$ with transform $F$. Let $\Lambda_0$ be a finite symmetric multiset in $(-B,B)\setminus\{0\}$ with $\ord_\lambda F\ge m_{\Lambda_0}(\lambda)$. Then
+\begin{equation}\label{eq:slit}
+ HB\ge \sum_{\lambda\in\Lambda_0}\arcosh\frac{B}{|\lambda|}
+ +\frac{2B}{\pi}\int_B^\infty\frac{\log(1/|F(x)|)}{x\sqrt{x^2-B^2}}\dd x.
+\end{equation}
+The sum includes multiplicity. Thus if $|F(x)|\le e^{-L}$ for $|x|\ge B$, then
+\begin{equation}\label{eq:additive}
+ H\ge\frac{L}{B}+\frac{2}{B}\sum_{0<\lambda\le B}m_{\Lambda_0}(\lambda)\arcosh(B/\lambda),
+\end{equation}
+where zeros at the endpoints may also be counted with zero weight.
+\end{theorem}
+\begin{proof}
+Use the slit domain $D=\C\setminus(({-\infty},-B]\cup[B,\infty))$. The branch $Q(z)=\sqrt{B^2-z^2}$ positive at zero has positive real part throughout $D$. The map
+\[
+ w=\frac{z}{B+Q(z)},\qquad z=\frac{2Bw}{1+w^2},\qquad Q(z)=B\frac{1-w^2}{1+w^2}
+\]
+is a conformal bijection to the open unit disk. For example the inverse has $\Re Q>0$ when $|w|<1$; the two roots for $w$ at fixed $z\ne0$ are reciprocal, and the one continuous from zero lies inside the disk. If $z=x+iy$ then
+\[
+ (\Re Q)^2=\tfrac12\bigl(|B^2-z^2|+B^2-x^2+y^2\bigr)\ge y^2,
+\]
+because $|B^2-z^2|\ge|z|^2-B^2$ by the reverse triangle inequality. Since $|F(x+iy)|\le e^{H|y|}$, the holomorphic function $G(w)=F(z(w))e^{-H Q(z(w))}$ is bounded by one in the disk. At its center $G(0)=e^{-HB}$. Each prescribed interior zero $\lambda$ becomes a zero of the same order at $w(\lambda)$.
+
+Jensen's formula for $G$ at radii $r<1$, retaining the specified zeros, and reverse Fatou applied to $\log|G|\le0$ give
+\[
+ -HB+\sum_{\lambda\in\Lambda_0}\log\frac{1}{|w(\lambda)|}
+ \le \frac1{2\pi}\int_0^{2\pi}\log|F(B/\cos\theta)|\dd\theta.
+\]
+Indeed the boundary values away from $w=\pm i$ correspond to $z=B/\cos\theta$ and $\Re Q=0$. The exceptional two points have measure zero. If a boundary value is zero the logarithm is interpreted as $-\infty$; the inequality in particular gives integrability of the negative logarithm in this weighted sense. The left summands equal $\arcosh(B/|\lambda|)$ by the real formula for $w$. For real $x$, $|F(-x)|=|F(x)|$. Changing variables on each of the four quadrants yields the weight in \eqref{eq:slit}. The weight has total mass one, since $\int_B^\infty\dd x/(x\sqrt{x^2-B^2})=\pi/(2B)$. This proves both statements.
+\end{proof}
+
+\begin{proof}[Derivation of \eqref{eq:lb}]
+Partial summation, with the endpoint weight zero, yields
+\[
+ \frac{2}{B}\sum_{0<\lambda\le B}m_\Lambda(\lambda)\arcosh(B/\lambda)
+ =2\int_0^B\frac{N(t)}{t\sqrt{B^2-t^2}}\dd t.
+\]
+Since $N(t)=0$ below the least positive ordinate, the part from $t<2$ is harmless: the error after inserting the main terms is $O_\Lambda(B^{-1})$ for $B\ge4$. For $2\le t\le B/2$, the error from \eqref{eq:count} is $O(\log^2 B/B)$, and for $B/2\le t\le B$ it is $O(\log B/B)$. With $t=B\sin\theta$, the main terms give
+\[
+ 2\int_0^{\pi/2}\bigl(a\log B+a\log\sin\theta+b\bigr)\dd\theta
+ =\pi a\log B+\pi(b-a\log2).
+\]
+Here $\int_0^{\pi/2}\log\sin\theta\dd\theta=-(\pi/2)\log2$, by the double-angle identity and reflection. Equation \eqref{eq:additive} gives \eqref{eq:lb}.
+\end{proof}
+
+For comparison, the circular Jensen bound at $L=0$ is $H\ge\pi a\log B+\pi(b-a)+O_\Lambda(\log^2 B/B)$, so the new bound even gains the constant $\pi a(1-\log2)>0$ before adding the attenuation term.
+
+\section{Nearly lattice-spaced positive interpolation}
+The critical improvement over the separated-set argument in the article is to sort by the \emph{phase within a long frequency cell}, not merely by mutual separation. Each color class is nearly a translate of a lattice. A rectangle convolved with a very short rectangle produces a near-orthogonal interpolation matrix on such a class. This permits half-width near $\pi/\delta$, where $\delta$ is the cell width; the older triangular kernel takes $4\pi/\delta$.
+
+\begin{lemma}[Near-lattice interpolation]\label{lem:phase}
+Let $0<\eta\le1$, $M=\lceil100/\eta\rceil$, $C=M+1$, and $\delta>0$. Fix $j\in\{0,\dots,M-1\}$. Let $\Gamma_+$ be a finite set of positive frequencies such that for each integer $k\ge C$ it contains at most one point in
+\begin{equation}\label{eq:bin}
+ [\delta(k+j/M),\delta(k+(j+1)/M)),
+\end{equation}
+and has no other points. Set $\Gamma=\Gamma_+\cup(-\Gamma_+)$. There is an even probability density $w$ supported on $[-A,A]$, $A=(\pi+\eta)/\delta$, whose transform vanishes at every point of $\Gamma$. It can be chosen in the form
+\[
+ w(t)=Z^{-1}g(t)\Big(1+\sum_{\lambda\in\Gamma}a_\lambda e^{-i\lambda t}\Big),\qquad \sum_{\lambda}|a_\lambda|\le1/3,
+\]
+where $g$ is the convolution of the two uniform probability densities on $[-\pi/\delta,\pi/\delta]$ and $[-\eta/\delta,\eta/\delta]$.
+\end{lemma}
+\begin{proof}
+Write $\sinc x=\sin(x)/x$ at nonzero $x$ and $\sinc0=1$. The Fourier transform of $g$ is
+\[
+ f(x)=\sinc(\pi x/\delta)\sinc(\eta x/\delta).
+\]
+Let $D_{\lambda\kappa}=f(\lambda-\kappa)$ and $b_\lambda=f(\lambda)$ for $\lambda,\kappa\in\Gamma$. We show $\vnorm{D-I}_1\le1/4$ and $\vnorm b_1\le1/4$ in the induced column-sum and vector $\ell^1$ norms. For two positive points in cells $k,\ell$, or two negative reflected points, their normalized difference $y=(\lambda-\kappa)/\delta$ satisfies $|y-(k-\ell)|\le1/M$ up to sign. For $m=|k-\ell|\ge1$ we have $|y|\ge m/2$ and $|\sin(\pi y)|\le\pi/M$, so
+\[
+ |f(\lambda-\kappa)|\le\frac{1}{M\eta |y|^2}\le\frac{4}{M\eta m^2}.
+\]
+At most two cells occur at each distance $m$. The same-sign off-diagonal column sum is at most $16/(M\eta)\le0.16$, using $\sum_{m\ge1}m^{-2}<2$. For opposite signs the magnitude of the normalized difference is at least $C+k$ for a point in cell $k\ge C$, so the opposite-sign sum is at most
+\[
+ \frac{1}{\pi\eta}\sum_{k\ge C}(C+k)^{-2}\le\frac{1}{\pi\eta(2C-1)}.
+\]
+This is smaller than $0.01$ by our choices. Finally
+\[
+ \vnorm b_1\le\frac{2}{\pi\eta}\sum_{k\ge C}k^{-2}\le\frac{2}{\pi\eta(C-1)}<0.01.
+\]
+All estimates hold even when there are missing cells. Thus $D$ is invertible by the Neumann series and $a=-D^{-1}b$ has $\vnorm a_1\le(1/4)/(1-1/4)=1/3$. The matrix and vector are real, and invariant under sign reversal of the indices; uniqueness implies $a_\lambda=a_{-\lambda}\in\R$. The expression $1+\sum a_\lambda e^{-i\lambda t}$ is real, even, and in $[2/3,4/3]$. Its $g$-weighted integral $Z$ is in that interval. Hence $w$ is an even probability density, and
+\[
+ \widehat w(\kappa)=Z^{-1}\left(f(\kappa)+\sum_{\lambda}a_\lambda f(\kappa-\lambda)\right)=0
+\]
+at each specified frequency. An empty class needs no factor.
+\end{proof}
+
+\section{Optimal cancellation width and exponential moments}
+\begin{theorem}[Multiplicity-preserving positive kernels]\label{thm:cancel}
+For any spectrum satisfying \eqref{eq:count}, there are even probability measures $\nu_B$ with Fourier zeros of at least the prescribed multiplicities at all $0<|\lambda|\le B$, with support half-width at most
+\[
+ H_0(B)\le\pi a\log B+O_\Lambda(1+\log\log B),
+\]
+and with a fixed constant $C_\Lambda$ such that $\int e^{ru}\dd\nu_B(u)\le e^{C_\Lambda r^2/2}$ for all $r\in\R$, uniformly in $B$.
+\end{theorem}
+\begin{proof}
+We give an explicit recursive construction. Put $D_B=\log B$, and for large $B$ set
+\begin{equation}\label{eq:parameters}
+ \eta=D_B^{-1},\quad M=\lceil100D_B\rceil,\quad C=M+1,\quad \delta=D_B^2,\quad B'=C\delta.
+\end{equation}
+Choose a fixed $B_0>e$ so large that for every $B>B_0$, $2\le B'\le\sqrt B$. Such a choice exists because $B'=O((\log B)^3)$. For $2\le B\le B_0$, convolve one symmetric two-point probability measure
+\[
+ \tfrac12(\delta_{-\pi/(2\lambda)}+\delta_{\pi/(2\lambda)})
+\]
+for every positive occurrence $\lambda\le B$. Its transform is $\cos(\pi x/(2\lambda))$, so repeated occurrences give the required powers; an empty convolution is the unit mass at zero. The base half-width is bounded by a constant depending on the spectrum and $B_0$.
+
+For $B>B_0$, use the already constructed $\nu_{B'}$ for ordinates up to $B'$. Partition the remaining positive occurrences $B'<\lambda\le B$ into bins \eqref{eq:bin}, for $0\le j<M$ and $k\ge C$. For each fixed $j$, let $K_j$ be the maximum occupancy of any such bin, including multiplicities. In each bin enumerate its occurrences, giving each occurrence its own color index in $\{1,\dots,K_j\}$. Use the same color index across different cells $k$. Each $(j,\text{color})$ forms a class satisfying Lemma~\ref{lem:phase}; repeated ordinates are in separate classes. Convolve all the class measures with $\nu_{B'}$. Reflection accounts for the negative ordinates because the original multiset is symmetric. Products of transforms add zero orders; accidental additional zeros are harmless.
+
+\textbf{Count of classes.} For any interval of length $h$ contained in $[0,B]$, the count with endpoints included is bounded by
+\begin{equation}\label{eq:local}
+ a h\log B+O_\Lambda(h+\log(B+2)).
+\end{equation}
+To see this, subtract the two main terms in \eqref{eq:count} (whose derivative for $t\ge2$ is at most $a\log B+O_\Lambda(1)$), and bound the two errors. Endpoint multiplicities are $O_\Lambda(\log(B+2))$, by the same estimate on unit intervals; the compact range below two only changes constants. Clipping a bin to $[B',B]$ does not increase its length. With $h=\delta/M$, summation over $j$ gives
+\[
+ K:=\sum_{j=0}^{M-1}K_j\le a\delta\log B+O_\Lambda(\delta+M\log B)
+ =aD_B^3+O_\Lambda(D_B^2).
+\]
+The entire high-frequency part therefore has half-width at most
+\begin{equation}\label{eq:highwidth}
+ K A\le\left(aD_B^3+O_\Lambda(D_B^2)\right)\frac{\pi+1/D_B}{D_B^2}
+ =\pi a\log B+O_\Lambda(1).
+\end{equation}
+Notice that the small phase bins have length $\delta/M\asymp\log B$: the unconditional $O(\log B)$ error in zero counting is negligible in the total width. No short-interval zero asymptotic and no lower bound on zero spacing are needed.
+
+\textbf{Recursion.} The half-width satisfies $H_0(B)\le\pi a\log B+O_\Lambda(1)+H_0(B')$. Since $\log B'\le\tfrac12\log B$ above the base threshold, iteration first gives $H_0(B)=O_\Lambda(1+\log B)$ by a geometric sum (the number of nonbase steps is at most a constant times $1+\log\log B$). Using this rough bound just on $B'$ in the first recurrence, and $\log B'=O(1+\log\log B)$, proves the sharper bound.
+
+\textbf{Exponential moments.} Every even probability measure supported in $[-A,A]$ has $\int e^{ru}\dd\mu=\int\cosh(ru)\dd\mu\le\cosh(rA)\le e^{r^2A^2/2}$. The last inequality follows by comparing the series coefficients, or integrating $\tanh x\le x$ for $x\ge0$. Convolution multiplies these moment generating functions. The high-frequency factors at one recursion level have total proxy $K A^2=O_\Lambda(1/\log B)$. If $B_0<B_j$ are successive nonbase cutoffs, then $\log B_{j+1}\le(\log B_j)/2$, so $\sum_j1/\log B_j\le2/\log B_0$. The base factors have bounded sum of squared half-widths (indeed $\sum_{\lambda>0}m_\Lambda(\lambda)/\lambda^2<\infty$ by \eqref{eq:count}). These estimates supply the fixed proxy $C_\Lambda$. This completes the construction and proves the theorem.
+\end{proof}
+
+\section{Optimal positive stopband factor}
+The next kernel is useful independently of number theory. Its multiplier has the continuous analogue of the equiripple Chebyshev shape familiar from classical filter theory \cite{cheb}. We provide a positivity proof, since an arbitrary entire bandlimited function is not a characteristic function.
+
+\begin{proposition}[Positive pure stopband optimum]\label{prop:cheb}
+For $B>0$ and $s\ge0$ there exists an even probability measure $\sigma_{B,s}$ on $[-s,s]$ with entire transform
+\begin{equation}\label{eq:cheb}
+ P_{B,s}(z)=\frac{\cos(s\sqrt{z^2-B^2})}{\cosh(sB)}.
+\end{equation}
+The numerator is understood by its entire power series in $z^2-B^2$. The minimum possible uniform bound on $|F(x)|$ for $|x|\ge B$ among probabilities on $[-s,s]$ equals $\sech(sB)$, attained by $\sigma_{B,s}$. Also
+\[
+ \int e^{ru}\dd\sigma_{B,s}(u)\le\exp\left(\frac{sr^2}{2B}\right)\qquad(r\in\R).
+\]
+\end{proposition}
+\begin{proof}
+\emph{Existence and positivity.} Consider the family $C_t(z)=\cos(t\sqrt{z^2-B^2})$ for $t\ge0$. It satisfies the Volterra equation
+\begin{equation}\label{eq:volterra}
+ C_t(z)=\cos(tz)+B^2\int_0^t\frac{\sin((t-v)z)}{z}C_v(z)\dd v,
+\end{equation}
+by the differential equation $C_t''+z^2 C_t=B^2 C_t$ with initial data $(1,0)$; the quotient is defined at $z=0$ by continuity. Start with the positive measure $\alpha_{0,t}=(\delta_{-t}+\delta_t)/2$ and put
+\[
+ \alpha_{n+1,t}=B^2\int_0^t U_{t-v}*\alpha_{n,v}\dd v,\qquad U_w(\dd u)=\tfrac12\mathbf1_{[-w,w]}(u)\dd u.
+\]
+Here $U_w$ is an unnormalized positive measure of mass $w$, whose Fourier transform is $\sin(wz)/z$. Every $\alpha_{n,t}$ is even and supported on $[-t,t]$. Induction on $n$ using $\int_0^t(t-v)v^{2n}\dd v=t^{2n+2}/((2n+1)(2n+2))$ gives mass $(Bt)^{2n}/(2n)!$. Thus $\sum_n\alpha_{n,t}$ converges in total mass to a positive measure of mass $\cosh(Bt)$. Its transform solves \eqref{eq:volterra} by absolute convergence locally uniformly in $z,t$. Uniqueness follows by iteration of the Volterra equation on each compact time interval (or the equivalent ODE). Normalize at $t=s$ to obtain \eqref{eq:cheb}.
+
+For real $|x|\ge B$, the numerator is a cosine of a real number, hence bounded by one; equality holds at $x=B$. For the moment bound, insert $z=-ir$ and use
+\begin{align*}
+ \log\frac{\cosh(s\sqrt{B^2+r^2})}{\cosh(sB)}
+ &\le s(\sqrt{B^2+r^2}-B)\le\frac{sr^2}{2B},
+\end{align*}
+by the derivative bound for $\log\cosh$ and concavity of the square root.
+
+\emph{Optimality.} Let any probability on $[-s,s]$ have tail bound $\varepsilon$. Symmetrizing cannot increase that bound. Its even entire transform $F$ has $F(0)=1$, so the function $G(w)=F(\sqrt{w^2+B^2})$ is even entire (expand $F$ in even powers). Since $|\Im\sqrt{w^2+B^2}|\le|\Im w|$ by the triangle inequality applied to $|w^2+B^2|$, $G$ has exponential type at most $s$. Its bound on the real line is $\varepsilon$. Bernstein's inequality for bounded entire functions of exponential type \cite{bernstein} iterated gives $|G^{(k)}(0)|\le\varepsilon s^k$. Odd derivatives vanish. Evaluating the Taylor series at $iB$ gives
+\[
+ 1=|G(iB)|\le\varepsilon\sum_{n\ge0}\frac{(sB)^{2n}}{(2n)!}=\varepsilon\cosh(sB).
+\]
+This proves the sharp lower bound (including $s=0$).
+\end{proof}
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+Take the cancellation kernel $\nu_B$ of Theorem~\ref{thm:cancel}, and convolve it with $\sigma_{B,s}$ for $s=\arcosh(e^L)/B$. Its transform is the product. The prescribed zeros persist, and $|\widehat\nu_B(x)|\le1$ on the real axis, so the tail bound is $e^{-L}$. Adding the half-widths gives \eqref{eq:ub}; multiplying the moment bounds gives \eqref{eq:mgf}. A further convolution with a uniform probability on $[-B^{-1},B^{-1}]$ gives a density without worsening any zero or real-axis attenuation condition. The lower bound was established in Section 2.
+\end{proof}
+
+\begin{corollary}[Optimal support when the cutoff is free]\label{cor:free}
+For $L\to\infty$, if one may choose the cutoff $B\ge2$ subject to \eqref{eq:constraints}, then
+\[
+ \inf_{B\ge2}H_\Lambda(B,L)=\pi a\log L+O_\Lambda(1+\log\log L).
+\]
+\end{corollary}
+\begin{proof}
+The lower bound is $L/B+\pi a\log B-O_\Lambda(1)$ uniformly for $B\ge2$, by \eqref{eq:lb} and the slit bound for bounded $B$. The minimum over $B>0$ occurs at $B=L/(\pi a)$ and is $\pi a\log L+O_\Lambda(1)$. Choosing that $B$ for large $L$ in the upper bound gives the result.
+\end{proof}
+
+\section{Application to the GRH prime remainder}
+This is where the vendored Lean theorem enters. It puts every nontrivial Dirichlet zero on $\Re s=1/2$. For a fixed $q\ge1$ let $G=(\mathbb Z/q\mathbb Z)^\times$, $d=\varphi(q)$, and let the $d$ primitive inducers of characters modulo $q$ be the family $\F_q$. Distinct characters modulo $q$ have distinct primitive inducers (including their conductors). The family is conjugation-closed. Use the article's notation \texttt{zer:lem:ramp}:
+\begin{align*}
+ S_a(x)&=\sum_{\substack{n\le x\\n\equiv a\bmod q}}\Lambda(n)(1/n-1/x),&
+ R_a(x)&=S_a(x)-\frac{\log x}{d}-c_a,\\
+ v_a(\gamma)&=\frac1d\sum_{\chi\bmod q}\overline{\chi(a)}m_{\chi^*}(\gamma),& \beta_a&=4v_a(0),
+\end{align*}
+where $m_{\chi^*}(\gamma)$ is the zero order at $1/2+i\gamma$, and $c_a$ is the Fourier combination of $c_\chi=\lim_{s\to1}(-L'/L(s,\chi)-\mathbf1_{\chi=1}/(s-1))-\mathbf1_{\chi=1}$. The ramp explicit formula is
+\begin{equation}\label{eq:ramp}
+ e^{t/2}R_a(e^t)=\beta_a+\sum_{\gamma\ne0}\frac{v_a(\gamma)}{1/4+\gamma^2}e^{i\gamma t}+O_q((1+t)e^{-t/2}),\qquad t\ge\log2.
+\end{equation}
+The series converges absolutely and uniformly, because the zero count on unit intervals is $O_q(\log(2+|t|))$. For completeness, the Mellin transform of the ramp is $x^{s-1}/(s(s-1))$; applying it to $-L'/L$ and moving from $\Re s>1$ to $\Re s=-1/2$ gives the residues at 1 (main term), nontrivial zeros (the displayed series under GRH), and 0 (at most a linear polynomial in $\log x$ divided by $x$). Functional equation estimates bound the new vertical integral. Finite Euler factors of imprimitive characters change the constant and contribute $O_q((1+\log x)/x)$ by a geometric-tail bound. This is precisely the article's proved ramp formula \cite{article}; we use it without re-formalizing the classical contour argument.
+
+\begin{theorem}[Common sharp-scale prime averaging]\label{thm:prime}
+Using the Dirichlet GRH input, for every fixed $q$ and sufficiently large $X$ there is a single even probability measure $\mu_X$, independent of $a\in G$, with
+\begin{align*}
+ \supp\mu_X &\subset [-H_X,H_X],\\
+ H_X&\le\frac{\varphi(q)}2\log\log X+O_q(1+\log\log\log X),\\
+ \int e^{u/2}R_a(Xe^u)\dd\mu_X(u)&=\frac{\beta_a}{\sqrt X}+O_q\left(\frac{1+\log X}{X}\right).
+\end{align*}
+The averaging scales are thus within a factor $(\log X)^{\varphi(q)/2}(\log\log X)^{O_q(1)}$ of $X$. The kernel may be a density. Central zeros are retained as the term $\beta_a$; no nonvanishing at $1/2$ is asserted. At a fixed center $X$, the same simultaneous averages can also be represented by at most $\varphi(q)+1$ scales with nonnegative weights, though this representation need not retain spectral cancellation away from that center.
+\end{theorem}
+\begin{proof}
+Put $T=\log X$, $B=T$ and $L=T/2$ in Theorem~\ref{thm:main} for $\F_q$. Then $H_X\le(d/2)\log T+O_q(1+\log\log T)$. Since $H_X=o(T)$, \eqref{eq:ramp} holds throughout $t=T+u$. By absolute convergence, integrating the noncentral series against $\mu_X$ multiplies each mode by its Fourier transform. The modes with $|\gamma|\le B$ disappear exactly; the others contribute $O_q(e^{-L})=O_q(e^{-T/2})$. To integrate the remainder, use $1+T+u\le1+T+H_X=O_q(1+T)$ and \eqref{eq:mgf} at $r=-1/2$. The proxy is bounded, since $\arcosh(e^{T/2})/T^2=O(1/T)$. Therefore the averaged remainder is $O_q((1+T)e^{-T/2})$, not $O_q((1+T)e^{-(T-H_X)/2})$ from a worst-endpoint estimate. Multiply by $X^{-1/2}$ to obtain the result. For the final statement, $u\mapsto(e^{u/2}R_a(Xe^u))_{a\in G}$ is continuous (the ramp vanishes at $n=x$), and its integral lies in the convex hull of its compact image. Carath\'eodory's theorem in $\R^d$ gives $d+1$ points.
+\end{proof}
+
+The half-width coefficient $d/2$ is sharp within the stated frequency-filtering model: for $L=T/2$ and arbitrary $B$ Corollary~\ref{cor:free} implies at least $(d/2)\log T-O_q(1)$. This is not a lower bound for every conceivable method of prime balancing. For example, a measure selected separately at each $X$ to exploit a finite vector of actual errors need not impose the stopband and multiplicity constraints. Likewise the result does not decide whether a uniformly shorter filter is possible if only distinct ordinates, rather than aggregate multiplicities, must be annihilated.
+
+\section{Significance, verification and further research}
+\begin{center}
+\begin{tabular}{@{}lll@{}}\toprule
+Problem & Earlier article & This note\\\midrule
+Exact cancellation half-width & $O_{\F}(\log B)$ & $(d/2)\log B+O_{\F}(\log\log B)$\\
+With tail $e^{-c B\log B}$ & $O_{\F}(\log B)$ & $(d/2+c)\log B+O_{\F}(\log\log B)$\\
+Pure stopband factor & $\sinc$ convolution & exact $\sech(sB)$ optimum\\
+Prime averaging remainder & $O_q((\log X)^{1+C_q/2}/X)$ & $O_q((1+\log X)/X)$\\\bottomrule
+\end{tabular}
+\end{center}
+The first two statements answer the explicit optimal-leading-constant question in \texttt{rec:sec:open}. The key new ingredient is the near-lattice coloring, rather than simply optimizing the numerical constant in a separated-set argument. The slit bound proves that attenuation has an irreducible additive cost; the positive Chebyshev-type factor achieves that marginal cost to within $\log2/B$. The fixed exponential-moment control yields a second, independent refinement of the application to primes. The source theorem is used only for this application; the filter theorem is unconditional. This extends the article's own methodology, not its automorphic or nonabelian GRH conclusions.
+
+\textbf{Novelty scope.} The article itself asks this precise constant question and its cited filter construction has only order-level optimality. The proof here resolves the leading constant in that formulation and gives the two-parameter tradeoff and moment bound. The constituent tools (Jensen, Fourier interpolation, Bernstein, Chebyshev-type stopbands, zero counting) are classical; the claim of contribution concerns the combined theorem and the phase-bin construction. A targeted literature search for positive filters, entire functions of exponential type and Chebyshev windows did not establish an earlier identical theorem. It does not establish worldwide publication priority. No further named classical conjecture is claimed resolved. The new analysis is a classical proof, not Lean-checked; only the upstream Dirichlet input has reported machine verification.
+
+\textbf{Reproducibility.} The companion \texttt{check\_filters.py} verifies finite near-lattice interpolation examples, including repeated ordinates handled by distinct colors, evaluates the Chebyshev factor and the slit lower bound for sample zeta ordinates. Its JSON output is exploratory floating-point evidence; all statements in the proof are analytic and do not rely on numerics, zero certification or software. \texttt{SOURCE\_AUDIT.md} records the exact inspected files, the dependency boundaries, and the correspondence to article labels.
+
+\textbf{Further research questions.}
+\begin{enumerate}
+\item Can the $O_{\F}(\log\log B)$ excess width be replaced by $O_{\F}(1)$, and what is the exact second-order term? The slit-plane constant gives a concrete lower target.
+\item If only distinct ordinates are prescribed, does the leading constant reflect their actual density? Can one derive a sharp result without a full asymptotic for that density or assumptions on simplicity?
+\item Can one optimize the support, variance proxy, and number of kernel atoms jointly, rather than just the first two? What is the minimum number of fixed scales for exact cancellation of multiplicities and small attenuation on a finite frequency band?
+\item Can the positive-kernel construction be made uniform as the conductor or number of functions grows? The proof isolates the only arithmetic input as a count with uniform errors; local phase-bin occupancies and small ordinates then govern the quantitative constants.
+\item Can explicit finite Euler-factor terms and the residue at zero be removed to sharpen the $O_q((1+\log X)/X)$ prime error further? For nonabelian $L$-functions, the same spectral theorem applies if a corresponding count is known, but the prime application still needs their critical-line theorem or another control of real parts.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{article} ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, 26--27 November 2026. \href{\repobase/Article/README.md}{Article README}; \href{\repobase/Article/sections/rec.tex\#L4489-L4616}{rec.tex, logarithmic zero filters}; \href{\repobase/Article/sections/zer.tex\#L1101-L1187}{zer.tex, ramp explicit formula}; \href{\repobase/Article/sections/rec.tex\#L4696-L4698}{open leading-constant question}.
+\bibitem{lean} L. Alp\"oge and Claude; readable rewriting by L. Sernau and collaborators, \emph{The generalized Riemann hypothesis for Dirichlet L-functions, in Lean 4}, upstream commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, 25 November 2026. \href{\repobase/vendor/grh-lean/grh/src/Main.lean}{Vendored Main.lean}; \href{\repobase/vendor/grh-lean/grh/src/Statements.lean}{Statements.lean}; \href{\repobase/vendor/grh-lean/grh/README.md}{README}.
+\bibitem{verification} M. Rubinstein, \emph{Alp\"oge/Claude proof of the generalized Riemann hypothesis}, verification overview, November 2026, \url{https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/}. See also A. Sutherland's verification records, \url{https://math.mit.edu/~drew/grh/}.
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000. Standard Dirichlet zero counting and explicit formulas.
+\bibitem{mv} H. L. Montgomery and R. C. Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge University Press, 2007.
+\bibitem{bernstein} Q. I. Rahman and Q. M. Tariq, On Bernstein's inequality for entire functions of exponential type, \emph{J. Math. Anal. Appl.} 359 (2009), 168--180. \href{https://doi.org/10.1016/j.jmaa.2009.05.035}{DOI}.
+\bibitem{cheb} C. L. Dolph, A current distribution for broadside arrays which optimizes the relationship between beam width and side-lobe level, \emph{Proc. IRE} 34 (1946), 335--348. Classical discrete equiripple window; the continuous positive construction in Proposition~\ref{prop:cheb} is proved directly.
+\end{thebibliography}
+\end{document}

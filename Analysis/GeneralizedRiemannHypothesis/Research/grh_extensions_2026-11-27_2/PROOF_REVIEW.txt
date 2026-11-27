@@ -1,0 +1,133 @@
+MATHEMATICAL REVIEW RECORD
+
+An independent reasoning agent checked both arguments. This is neither an
+external referee report nor formal verification. Editorial corrections noted
+below have been incorporated. Literature and priority are assessed separately
+in the final paper. Reviews are consolidated here for reproducibility.
+
+# Independent mathematical review of unequal branch records
+
+Reviewed `notes/unequal_jets.tex` independently, focusing on the product-domination lemma, exact distance formula, tree recursion, componentwise saturation and non-enumerative decoder. No mathematical gap found. The review does not certify global novelty or a machine-checked formalization.
+
+## Polynomial product domination
+
+For P in F[[X]][Y], its order at (X,Y) is the weight-one Gauss valuation: G_1(P)=min_i(v(a_i)+i). Substituting Y=XZ reduces multiplicativity to the ordinary Gauss valuation. Over a finite valued splitting extension, this gives G_1(P)=v(a)+sum min(1,v(alpha_j)), with multiplicity; inseparability is harmless.
+
+The delicate point is that roots may have negative or fractional valuations. If m roots have valuation at least one, the residual quantity k=G_1(P)−m is nevertheless a nonnegative integer. Integrality follows from G_1(P) and m; nonnegativity follows from
+
+k=G_0(P)+sum_{0<v(alpha_j)<1}v(alpha_j)≥0.
+
+Every low-valuation root contributes exactly its own valuation at every branch because branch valuations are at least one. For each high root alpha, choose a branch maximizing v(u_b−alpha); the ultrametric inequality then proves v(u_b−u_c)≥v(u_b−alpha) simultaneously for every b. This remains valid when alpha equals an observed branch: that branch's distance is infinite, and equality of branches handles the infinite case.
+
+Thus X^k times m chosen branch factors dominates all evaluations. Replacing each X by any branch factor cannot decrease valuations since all contacts are at least one. The final number of branch factors is exactly the total order of P. This argument does not assume a monic original P, separability, characteristic zero, or a Puiseux expansion.
+
+Truncating an arbitrary formal series at total degree L≥max n_b and L>ord(H) preserves both its order and every finite record, so the polynomial lemma genuinely covers arbitrary unrestricted higher coefficients. Padding branch factors to d−1 preserves zero records and keeps the ambiguity outside m^d by its monic Y^(d−1) coefficient.
+
+## Distance, boundary cases, and tree recursion
+
+The maximum over branch multiplicities is exact in both directions: every candidate product is an allowed ambiguity, and every ambiguity can be dominated by a candidate. For d=1 the empty product gives exactly the number of nonempty records as distance; for d>N all branches can be included, yielding distance zero. A known erasure set deleting every branch is simply unrecoverable and can be treated separately from the nonempty-tree notation.
+
+The tree recursion correctly includes cross-child contributions. All j marks under node v share its incoming segment with every leaf below v, contributing j*ell_v. After that contribution, marks in different children share no further segments, so the child optimizations separate. Repeated marks are necessary and are handled by unlimited nonnegative allocations; the leaf self-value is infinity once it receives any mark. Capping inherited valuation at nmax is exact. Computing max-convolutions for each common child-input value first avoids an accidental extra factor d in the operation count.
+
+The weighted formulation is valid because the root replacement enlarges zero sets and all weights are nonnegative. The draft correctly limits the weighted 2w+z criterion to sufficiency in the absence of an actual partition of indivisible weights.
+
+## Componentwise saturation
+
+Necessity of n_b≥1+sum of the d−1 largest contacts follows from the product of those d−1 neighboring branch equations: it already vanishes at those neighbors and also becomes invisible at b if the threshold is lowered. This proves the claimed componentwise necessity, not merely a sufficient allocation.
+
+For sufficiency, interpolation on any d zero records gives each Lagrange scalar valuation at least one and each numerator product total order d−1. The remainder therefore belongs to m^d, and the discarded branch product does too. The identity is valid in F((X))[Y], while the valuation estimates restore integrality. Formal division can be replaced by finite total-degree truncation followed by monic polynomial division.
+
+The asymmetric example checks algebraically: contacts for (0,X^3,X,2X) over F_3 are 3 within the first pair and 1 otherwise, giving the unique vector (4,4,2,2), total cost 12, and distance 3 for d=2. The general close-pair construction has cost 2L+Nd−2 and common-precision cost N(L+d−1), yielding the stated limiting ratio N/2.
+
+## Two-linear-system decoder
+
+The condition D_{d+w}>w implies nmax≥d+w because X^nmax would otherwise have nonzero target and all-zero records. An actual error locator is a product over erroneous branches, padded to w factors. Truncating the locator coefficients at total degree nmax is safe; this should be stated explicitly, since an actual branch product may have infinite coefficient series. Its product with each known received record is unchanged modulo all X^n_b.
+
+For any solution (E,Q) of the first linear system, not necessarily the actual error locator, Q−EH has at most w nonzero records. The distance hypothesis forces Q−EH into m^(d+w). The prescribed monic shape and divisibilities give ord_m E=w exactly. Since the associated graded ring F[X,Y] is a domain, ord_m(EF)=w+ord_m F for every nonzero F. Therefore multiplication by E is injective from F[[X,Y]]/m^d to m^w/m^(d+w), and the second linear system has the unique answer J_d(H). No factorization or error-set enumeration is needed.
+
+One useful direct comparison is D_{d+w}≤max(D_d−w,0): start with a minimum-distance witness at order d and append factors at up to w of its nonzero records. Thus D_{d+w}>w implies D_d>2w, consistently with the sharp uniqueness criterion. The converse need not hold, as the draft's minimum-cost example correctly illustrates.
+
+## Minor editorial points sent to the author
+
+Fix the missing backslash before `quad` in the first-system congruence. Make finite truncation of E explicit in the consistency proof. Resolve bibliography placeholders and avoid claiming that the higher uniformizer-power part of the source question is settled. No new mathematical assumption was needed for these corrections.
+
+## Final targeted review: weighted jets
+
+Independently checked the appended weight-(1,kappa) corollary. It is correct under its stated hypothesis that every branch lies in X^kappa F[[X]], with integer kappa≥1. Write d−1=a+kappa*k, 0≤a<kappa.
+
+The weighted Gauss argument remains valid: substituting Y=X^kappa Z gives G_kappa(P)=v(leading coefficient)+sum min(kappa,v(alpha)). If m roots have valuation at least kappa, the residual exponent R=G_kappa(P)−kappa*m is a nonnegative integer, since R=G_0(P)+sum_{0<v(alpha)<kappa}v(alpha). Replacing the m high roots by nearest branches preserves domination. Multiplication by X^(d−1−G_kappa(P)) leaves residual exponent d−1−kappa*m=a+kappa*(k−m); thus m≤k, and replacing each group of kappa factors X by one branch factor gives exactly X^a times k branch factors. All evaluation valuations weakly increase because each contact is at least kappa.
+
+Truncation in sufficiently high weighted degree preserves finite records because substitution of a branch of order at least kappa sends a monomial of weighted degree L to X-adic order at least L. Consequently the exact distance formula with thresholds n_b−a, equivalently inherited tree value a, follows without additional assumptions.
+
+For k<N, the claimed maximum N−k and exact threshold vector are valid. Necessity uses X^a times the k nearest distinct neighbors. For sufficiency, interpolate on k+1 zero records: the discarded branch product has weighted order kappa*(k+1)≥d, every denominator has valuation at most the sum of the k largest contacts from its branch, and every Lagrange scalar has valuation at least a+1. Thus each interpolation term has weighted order at least a+1+kappa*k=d. Boundary cases k=0 and k≥N also check: the former gives threshold a+1=d on every branch, while the latter permits an ambiguity containing every branch factor.
+
+Also confirmed D_(d+w)≤max(D_d−w,0) for the ordinary jets: append branch factors at up to w distinct changed records of a minimum-distance witness, pad remaining factors arbitrarily, and note that the product has order exactly d+w−1. This includes D_d≤w, in which case all changed records can be killed.
+
+
+# Independent review of the two-frequency filter theorem
+
+Reviewed formulas supplied by analytic_extension, with frequencies normalized to 1 and r>1. The problem is probability measures on an interval whose Fourier transform vanishes at both frequencies, minimizing interval length. No flaw found in the supplied theorem, including nonsymmetric uniqueness and one-sided resonance asymptotics. This is a mathematical review, not an assertion of literature novelty.
+
+## Global maximum and sign of the dual certificate
+
+For 2k−1<r<2k+1 and s=(−1)^k, set g(t)=−s cos(rt)/cos t on 0≤t<π/2. Every earlier positive lobe can be shifted by an integer multiple of 2π/r into the last positive lobe, preserving its numerator while decreasing its positive denominator. Thus the last lobe dominates. Its left half is strictly increasing. On the right half, write u=rt−(k−1)π∈(0,π/2). The critical equation is F(t)=r tan u−tan t=0. F is negative at the left endpoint and positive near the right endpoint; at any root F'=r²−1>0, so there can be only one root. For k=1 the maximum is at a=0, with M=1.
+
+For t=π/2+δ, the ratio R(t)=s cos(rt)/(−cos t) decreases from infinity to zero before the next zero of cos(rt). After rt≥kπ its derivative is visibly negative. Before that point, put u=kπ−rt; then u<π/2−rδ and therefore
+
+r tanδ tan u < r tanδ cot(rδ) ≤ 1,
+
+because tan(rδ)≥r tanδ for 0<rδ<π/2. This is exactly the negative-derivative condition. Thus the endpoint H solving R(H)=M is unique, q=s cos(rt)+M cos t is nonnegative throughout [−H,H], and q'(H)<0. The zeros are precisely ±a and ±H (with a=0 counted once).
+
+The dual proof works for arbitrary measures, not merely symmetric ones: translation preserves vanishing of the Fourier transform, and any measure supported in an interval of the claimed length can be recentered. Integrating q forces support onto its zero set. On a shorter interval only the inner zero(s) remain, where cos t>0, which cannot satisfy the first cosine constraint.
+
+## Nonsymmetric uniqueness
+
+For a>0, the two sine constraints on the differences of masses at opposite atoms have determinant
+
+D=sin(a)sin(rH)−sin(H)sin(ra)=−s sin(a)q'(H)/r.
+
+This identity follows from q'(a)=0 and is nonzero because sin(a)>0 and q'(H)<0. Thus the two pairwise mass differences vanish. When a=0, the first sine equation alone forces equal endpoint masses since 0<H<π. The cosine and mass equations then give the supplied unique weights. Odd integer r has H=π/2: cos t≥0 on the critical interval forces endpoint support, and the first sine equation forces equal masses.
+
+## Right-hand cubic cusp
+
+Let m≥3 be odd, r=m+ε, c=πε/2, a=π/2−u, H=π/2+v, and A=m(m²−1). The tangency equations become
+
+tan(ru−c)=r tan u,   M=sin(ru−c)/sin u.
+
+Taylor expansion gives c=A u³/3+o(u³), hence u∼[3πε/(2m(m²−1))]^(1/3), and M=m−A u²/2+o(u²). The endpoint equation is sin(rv+c)=M sin v. After substituting v=zu and dividing by A u³, it reduces to z³−3z−2=0. Its unique positive root is z=2; thus v∼2u. The mass limits are inner total 2/3 and outer total 1/3.
+
+For full rigor, the expansion must be preceded by compactness proving u,v→0 and a scale comparison proving v/u stays bounded above and away from zero. The limit equation at ε=0 gives sin(mv)/sin v<m for 0<v<π/m, which proves v→0; the Taylor equation gives v³=O(u²v+u³) and also excludes v/u→0, supplying the scale comparison.
+
+## Left-hand expansion and the ratio-one discontinuity
+
+For r=m−ε, M converges to M_m^−=max_{0<δ≤π/2}(−sin(mδ)/sinδ), which is positive and strictly below m. The endpoint equation is sin(c−rv)=M sin v, yielding v∼πε/[2(m+M_m^−)]. At m=3, M_3^−=1, so v∼πε/8, exactly matching H=2π/(1+r).
+
+For 1<r<3, the exact formula H=2π/(1+r) gives H→π as r→1+, while the coincident-frequency problem r=1 has H=π/2. The discontinuity is real, since two distinct constraints coalesce into a stronger limiting multiple-zero condition.
+
+## Final review: exact residual cost of shortening
+
+Checked the appended shortening theorem for D_r(delta), the infimum of max(|mu-hat(1)|,|mu-hat(r)|) over measures supported in [−H+delta,H−delta]. Delta is the inward motion of each endpoint, so the total support diameter is shortened by 2*delta.
+
+For nonodd r, K=−beta*q'(H)>0 and the proposed dual perturbation
+
+q_delta(t)=q(t)+delta*(K/cos a)*cos t
+
+has value K*delta at the old interior contact and K*delta+O(delta²) at the shortened endpoint. Its interior minimum moves only O(delta), because q''(a)=(r²−1)M*cos(a)>0; its value is therefore at least K*delta−O(delta²). The endpoint remains a decreasing-boundary minimum. Away from these contact neighborhoods positivity is uniform. Dividing by the coefficient l1 norm M+1+O(delta) proves the lower slope K/(M+1). Adjusting the two masses by O(delta) while fixing the inner node and moving the outer node balances the transformed cosine moments, providing the matching upper slope and O(delta²) error.
+
+For odd m≥3, the preceding-interval certificate q=M_m^− cos t+sin(m*pi/2)cos(mt) is nonnegative on [−pi/2,pi/2], has the same nondegenerate inner zero(s), and derivative −(m+M_m^−) at the endpoint. Its perturbed dual gives the slope lower bound (m+M_m^−)/(1+M_m^−). The proposed added inner mass
+
+alpha_delta=(m−1)*delta/((M_m^−+1)*cos(a_*))
+
+is positive and small; with the remaining mass at the inward-shifted endpoints it makes both transformed cosine moments equal to the claimed slope times delta, up to O(delta²). Thus the odd-resonance slope also checks. The special coincident-frequency case m=1 is outside this odd-m statement and must remain separate.
+
+Finally, from the right-resonance expansions, q'(H)∼−(3/2)m(m²−1)u² and beta→1/3. Hence the shortening slope is asymptotic to m(m−1)u²/2, or m(m−1)C_m²*epsilon^(2/3)/2. From the left it tends to the positive resonance slope. This establishes the claimed noncommuting limits. All O(delta²) statements are for each fixed ratio; uniformity as the ratio approaches an odd resonance has not been asserted or proved.
+
+
+FINAL ASSEMBLED SCOPE CHECK
+Pins, Lean exports, article labels, ramp formula, and check counts agree with
+the inspected evidence. Clarifications to positive distinct frequencies, odd
+ratios m>=3, and the scope of the unconditional branch theorem were applied.
+
+The final detuning proposition explicitly requires 0<tau<sigma, so its
+four interpolation nodes are distinct. This excludes the degenerate
+negative-frequency duplication that would not imply a double zero.
