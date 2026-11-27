@@ -55,8 +55,8 @@ theorem argument_step (a b c N : PTm n) (hb : Γ ⊢[PRAAx] le one b)
       (ComplexLogarithmRemainder.add (scale a oneCode) (scale c oneCode)) (scale (a+c) oneCode) := by
     apply equal_of_values
     all_goals simp only [re_add,im_add,re_scale,im_scale,re_one,im_one]; ipra_simps; ring
-  exact canonical_unique _ _ _ D (qadd_canonical _ _) (ofGaussian_canonical _ _ hd) hd
-    (represents_congr (.eqRefl _) eq (.eqRefl _) add) (ofGaussian_represents _ _ hd)
+  exact GaussianRationalHorner.cleared_input_exact _ _ D (qadd_canonical _ _) hd
+    (represents_congr (.eqRefl _) eq (.eqRefl _) add)
 
 theorem argument_ratio_step (a b c N : PTm n) (ha : Γ ⊢[PRAAx] le one a)
     (hb : Γ ⊢[PRAAx] le one b) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]

@@ -43,9 +43,8 @@ theorem fraction_native (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
       simp only [native,RationalGaussianEmbedding.native,ComplexLogarithmRemainder.eval_re_code,
         ComplexLogarithmRemainder.eval_im_code,re_scale,im_scale,re_one,im_one,ZT.toZ_ofNat] <;>
       (try ipra_simps) <;> ring
-  exact canonical_unique _ _ _ _ (RationalGaussianEmbedding.embed_canonical _)
-    (ofGaussian_canonical _ _ hb) hb (represents_congr (.eqRefl _) he (.eqRefl _) hp)
-    (ofGaussian_represents _ _ hb)
+  exact GaussianRationalHorner.cleared_input_exact _ _ _ (RationalGaussianEmbedding.embed_canonical _) hb
+    (represents_congr (.eqRefl _) he (.eqRefl _) hp)
 
 theorem original_lower_decomposition (a b K : PTm n)
     (hb : Γ ⊢[PRAAx] le one b) (ha : Γ ⊢[PRAAx] le b a) : Γ ⊢[PRAAx]
@@ -77,9 +76,8 @@ theorem original_lower_decomposition (a b K : PTm n)
     apply equal_of_values <;>
       simp only [native,re_scale,im_scale,re_one,im_one,re_add,im_add,loN,e,c,d,u,v] <;>
       (try ipra_simps) <;> ring
-  have r := canonical_unique (ofGaussian (native (loN a b K)) E) (qadd f g)
-    (native (loN a b K)) E (ofGaussian_canonical _ _ hE) (qadd_canonical _ _) hE
-    (ofGaussian_represents _ _ hE) (represents_congr (.eqRefl _) nativeSum (.eqRefl _) outer)
+  have r := (GaussianRationalHorner.cleared_input_exact (qadd f g) (native (loN a b K)) E (qadd_canonical _ _) hE
+    (represents_congr (.eqRefl _) nativeSum (.eqRefl _) outer)).eqSymm
   exact (fraction_native (loN a b K) E hE).eqTrans
     (r.eqTrans (qadd_congr (qmul_congr (.eqRefl _) (fraction_native c d hd).eqSymm)
       (fraction_native u v hv).eqSymm))

@@ -72,10 +72,8 @@ theorem linear_point (A B D neg k : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hk : �
   let w := rowOffset A B D neg k
   let d := D*k
   have hd := positive_product D k hD hk
-  exact canonical_unique (ofGaussian w d) (ofGaussian z d) z d (ofGaussian_canonical w d hd)
-    (ofGaussian_canonical z d hd) hd
+  exact GaussianRationalHorner.cleared_input_exact (ofGaussian w d) z d (ofGaussian_canonical w d hd) hd
     (represents_congr (.eqRefl _) (centered_native A B D neg k) (.eqRefl _) (ofGaussian_represents w d hd))
-    (ofGaussian_represents z d hd)
 
 theorem linear_product (A B D neg k : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] qmul (GaussianLogGammaEulerHead.argument A B D neg) (fraction one k) ≐ linearTerm A B D neg k := by
@@ -90,9 +88,8 @@ theorem linear_product (A B D neg k : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hk :
       ipra_simps <;> ring
   have product := qmul_represents q (fraction one k) z u D k hD hk
     (ofGaussian_represents z D hD) (ofGaussian_represents u k hk)
-  exact canonical_unique (qmul q (fraction one k)) (ofGaussian z d) z d
-    (qmul_canonical _ _) (ofGaussian_canonical z d hd) hd
-    (represents_congr (.eqRefl _) unit (.eqRefl _) product) (ofGaussian_represents z d hd)
+  exact GaussianRationalHorner.cleared_input_exact (qmul q (fraction one k)) z d (qmul_canonical _ _) hd
+    (represents_congr (.eqRefl _) unit (.eqRefl _) product)
 
 theorem linear_bound (A B D neg R k : PTm n) (h : Γ ⊢[PRAAx] source A B D neg R)
     (hk : Γ ⊢[PRAAx] le one k) : Γ ⊢[PRAAx] bounded (linearTerm A B D neg k) R k := by

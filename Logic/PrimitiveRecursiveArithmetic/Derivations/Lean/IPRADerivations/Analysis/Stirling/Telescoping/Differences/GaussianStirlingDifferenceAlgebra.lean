@@ -50,9 +50,8 @@ theorem shifted_offset (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
   have rep := offset_rep (a+b) b hb
   have nEq : Γ ⊢[PRAAx] equal (sub (scale two (arg (a+b))) (scale b (arg one))) (arg (two*a+b)) := by
     apply equal_of_values <;> simp only [arg,re_sub,im_sub,re_scale,im_scale,re_one,im_one] <;> ipra_simps <;> ring
-  exact canonical_unique _ _ _ _ (qsub_canonical _ _)
-    (GaussianRationalHorner.ofGaussian_canonical (arg (two*a+b)) (two*b) hB) hB
-    (represents_congr (.eqRefl _) nEq (.eqRefl _) rep) (ofGaussian_represents _ _ hB)
+  exact GaussianRationalHorner.cleared_input_exact _ _ _ (qsub_canonical _ _) hB
+    (represents_congr (.eqRefl _) nEq (.eqRefl _) rep)
 
 set_option maxHeartbeats 1800000 in
 theorem difference_value (a b g l t : PTm n) (hb : Γ ⊢[PRAAx] le one b) :

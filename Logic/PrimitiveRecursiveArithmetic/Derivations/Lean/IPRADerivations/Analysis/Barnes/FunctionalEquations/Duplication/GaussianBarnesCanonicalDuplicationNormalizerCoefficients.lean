@@ -53,8 +53,8 @@ theorem quadratic_weight_step (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     apply equal_of_values <;>
       simp only [u,v,w,t,E,quadraticNumerator,quadraticDenominator,arg,re_add,im_add,
         re_sub,im_sub,re_scale,im_scale,re_one,im_one] <;> ipra_simps <;> ring
-  exact canonical_unique _ _ v E (qadd_canonical _ _) (ofGaussian_canonical _ _ hE) hE
-    (represents_congr (.eqRefl _) nativeEq (.eqRefl _) sum) (ofGaussian_represents _ _ hE)
+  exact GaussianRationalHorner.cleared_input_exact _ v E (qadd_canonical _ _) hE
+    (represents_congr (.eqRefl _) nativeEq (.eqRefl _) sum)
 
 theorem linear_weight_step (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] qadd (linearWeight (A+B) B) qone ≐ linearWeight A B := by
@@ -67,8 +67,8 @@ theorem linear_weight_step (A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     apply equal_of_values <;>
       simp only [u,v,t,linearNumerator,re_add,im_add,re_neg,im_neg,re_scale,im_scale,re_one,im_one] <;>
       ipra_simps <;> ring
-  exact canonical_unique _ _ v B (qadd_canonical _ _) (ofGaussian_canonical _ _ hB) hB
-    (represents_congr (.eqRefl _) nativeEq (.eqRefl _) sum) (ofGaussian_represents _ _ hB)
+  exact GaussianRationalHorner.cleared_input_exact _ v B (qadd_canonical _ _) hB
+    (represents_congr (.eqRefl _) nativeEq (.eqRefl _) sum)
 
 theorem actual_Barnes_duplication_normalizer_coefficients_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2

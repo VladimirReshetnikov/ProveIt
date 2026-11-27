@@ -47,9 +47,8 @@ theorem rational_coefficient (s : Bool) (i A B : PTm n) (hB : Γ ⊢[PRAAx] le o
     cases s <;> apply equal_of_values <;>
       simp only [a,b,native,Bool.false_eq_true,if_true,if_false,re_scale,im_scale,re_neg,im_neg,
         realNumerator,eval_re_code,eval_im_code,ZT.toZ_ofNat] <;> ipra_simps <;> ring
-  exact canonical_unique _ _ b B (GaussianRationalNaturalScale.natScale_canonical _ _)
-    (ofGaussian_canonical b B hB) hB (represents_congr (.eqRefl _) e (.eqRefl _) old)
-    (ofGaussian_represents b B hB)
+  exact GaussianRationalHorner.cleared_input_exact _ b B (GaussianRationalNaturalScale.natScale_canonical _ _) hB
+    (represents_congr (.eqRefl _) e (.eqRefl _) old)
 
 theorem stage_at (s : Bool) (p E i A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] ap2 SF p (sd E i (scaleData s A B)) ≐

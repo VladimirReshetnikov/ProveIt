@@ -79,8 +79,8 @@ private theorem real_times_imaginary (r A m : PTm n) (hm : Γ ⊢[PRAAx] le one 
   have e : Γ ⊢[PRAAx] GaussianRootAlgebra.equal (mul a b) (scale (r*A) imaginaryCode) := by
     dsimp only [a,b]
     apply equal_of_values <;> simp only [re_mul,im_mul,re_scale,im_scale,re_one,im_one] <;> ipra_simps <;> ring
-  exact canonical_unique _ _ _ m (qmul_canonical _ _) (ofGaussian_canonical _ _ hm) hm
-    (represents_congr (.eqRefl _) e (by ipra_ring) hr) (ofGaussian_represents _ _ hm)
+  exact GaussianRationalHorner.cleared_input_exact _ _ m (qmul_canonical _ _) hm
+    (represents_congr (.eqRefl _) e (by ipra_ring) hr)
 
 private theorem phase_as_divided (d m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] qmul (GaussianArctangentDivisionAngles.coefficient d m) imaginaryPoint ≐ phase d m := by
@@ -89,8 +89,8 @@ private theorem phase_as_divided (d m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     m one hm (le_refl one) (ofGaussian_represents _ _ hm) (ofGaussian_represents _ _ (le_refl one))
   have e : Γ ⊢[PRAAx] GaussianRootAlgebra.equal (mul a imaginaryCode) (scale (two*d) imaginaryCode) :=
     GaussianRationalNaturalScale.natural_product_value _ _
-  exact canonical_unique _ _ _ m (qmul_canonical _ _) (ofGaussian_canonical _ _ hm) hm
-    (represents_congr (.eqRefl _) e (by ipra_ring) hr) (ofGaussian_represents _ _ hm)
+  exact GaussianRationalHorner.cleared_input_exact _ _ m (qmul_canonical _ _) hm
+    (represents_congr (.eqRefl _) e (by ipra_ring) hr)
 
 private theorem phase_as_full (d m : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] qmul (GaussianCyclicExponentialRoots.coefficient d m) twiceImaginary ≐ phase d m := by
