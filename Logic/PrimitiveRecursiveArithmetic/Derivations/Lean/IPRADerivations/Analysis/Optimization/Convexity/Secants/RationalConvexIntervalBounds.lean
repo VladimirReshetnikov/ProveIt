@@ -25,6 +25,7 @@ open RationalConvexEndpointBudget (order_of_upper)
 open RationalCubeMidpoint (fraction fraction_represents)
 open GaussianRationalSyntheticBounds (natCode natCode_represents natCode_add add_monotone)
 open RationalAlgebra (add_associative add_commutative add_congr multiply_commutative multiply_congr multiply_add)
+open RationalAlgebra (add_shuffle)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -73,12 +74,6 @@ theorem half_width_twice (p : PTm n) : Γ ⊢[PRAAx] add (halfWidth p) (halfWidt
     (RationalRepresentations.represents_add _ _ _ _ _ _ r r) (fraction_represents one _ e)
     (RationalAlgebra.positive_product h h) e
   ipra_lc
-
-private theorem add_shuffle (a b c d : PTm n) : Γ ⊢[PRAAx] add (add a b) (add c d) ≐ add (add a c) (add b d) :=
-  (add_associative a b (add c d)).eqTrans
-    ((add_congr (.eqRefl a) (add_associative b c d).eqSymm).eqTrans
-      ((add_congr (.eqRefl a) (add_congr (add_commutative b c) (.eqRefl d))).eqTrans
-        ((add_congr (.eqRefl a) (add_associative c b d)).eqTrans (add_associative a c (add b d)).eqSymm)))
 
 theorem affine_half_width (a b X Y p : PTm n) : Γ ⊢[PRAAx]
     add (RationalMultiplicativeConvexity.weighted a b (add X (halfWidth p)) (add Y (halfWidth p)))

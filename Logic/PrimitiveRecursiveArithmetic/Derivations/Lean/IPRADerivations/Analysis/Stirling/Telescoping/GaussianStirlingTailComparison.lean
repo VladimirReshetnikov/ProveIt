@@ -25,6 +25,7 @@ open GaussianStirlingRationalTelescopers
    small_numeral_positive)
 open RationalArgmin (rationalLE rationalLE_congr)
 open RationalValueBounds (upper upper_congr upper_order_right upper_of_order)
+open GaussianStirlingFiniteSeries renaming twice_power → square_power
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -32,9 +33,6 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 def sharpUpperValue (a b : PTm n) : PTm n := qsub (geometricMain a b) (upperMargin a b)
 
 ipra_subst sharpUpperValue
-
-private theorem square_power (x K : PTm n) : Γ ⊢[PRAAx] pw x (two*K) ≐ pw (x*x) K :=
-  (congrAp2 powF (by ipra_ring) (.eqRefl _)).eqTrans (AnalyticNumberTheory.EnergyWitness.pw_sq x K).eqSymm
 
 theorem tail_value (a b K : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
     tail a b K ≐ fraction (pw (numeratorSquare b) (succ K))

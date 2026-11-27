@@ -74,7 +74,7 @@ private theorem same_precision (a b p : PTm n)
   upper_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p)) h
     (le_congr (by ipra_ring) (.eqRefl _) (le_refl (two*(unit p*unit p))))
 
-private theorem upper_sum_same (a b c A C B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
+theorem upper_sum_same (a b c A C B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (ha : Γ ⊢[PRAAx] upper a b A B) (hb : Γ ⊢[PRAAx] upper b c C B) :
     Γ ⊢[PRAAx] upper a c (A+C) B :=
   upper_mono _ _ _ _ _ _ (positive_product _ _ hB hB) (upper_triangle _ _ _ _ _ _ _ ha hb)

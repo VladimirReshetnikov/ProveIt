@@ -48,7 +48,7 @@ theorem denominator_step (a b L K : PTm n) :
   unfold denominator
   exact (congrMul (pw_succ _ _) (.eqRefl _)).eqTrans (by ipra_ring)
 
-private theorem twice_power (q j : PTm n) : Γ ⊢[PRAAx] pw q (two*j) ≐ pw (q*q) j :=
+theorem twice_power (q j : PTm n) : Γ ⊢[PRAAx] pw q (two*j) ≐ pw (q*q) j :=
   (congrAp2 powF (by ipra_ring) (.eqRefl _)).eqTrans (AnalyticNumberTheory.EnergyWitness.pw_sq q j).eqSymm
 
 theorem term_squared (a b j : PTm n) : Γ ⊢[PRAAx]

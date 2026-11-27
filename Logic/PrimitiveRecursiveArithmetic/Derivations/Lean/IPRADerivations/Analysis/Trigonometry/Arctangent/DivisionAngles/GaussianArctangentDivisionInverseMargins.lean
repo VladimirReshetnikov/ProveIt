@@ -44,6 +44,7 @@ open RationalSupMetric (numeratorOf denominatorOf)
 open RationalValueBounds (upper radius radius_symmetric radius_congr radius_triangle radius_mono radius_diagonal upper_of_radius upper_of_order
   upper_triangle upper_mono upper_congr upper_order_right positive_cancel)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
+open GaussianArctangentInverseForward renaming upper_sum_same → sum_upper
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -121,12 +122,6 @@ private theorem cancel_addition (a N m C M : PTm n) (hm : Γ ⊢[PRAAx] le one m
   apply deriveNat
   simp only [l,r,left,right,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat,Q.mk_add,Q.mk_mul,map_add,map_mul] at eq ⊢
   linear_combination -eq
-
-private theorem sum_upper (a b c A C M : PTm n) (hM : Γ ⊢[PRAAx] le one M)
-    (ha : Γ ⊢[PRAAx] upper a b A M) (hb : Γ ⊢[PRAAx] upper b c C M) :
-    Γ ⊢[PRAAx] upper a c (A+C) M :=
-  upper_mono _ _ _ _ _ _ (positive_product _ _ hM hM) (upper_triangle _ _ _ _ _ _ _ ha hb)
-    (le_of_eq_add (d := zero) (by ipra_ring))
 
 private theorem mesh_error (a b E p : PTm n) (h : Γ ⊢[PRAAx] radius a b E (unit p)) :
     Γ ⊢[PRAAx] upper a b (num 4*E) (mesh p) :=

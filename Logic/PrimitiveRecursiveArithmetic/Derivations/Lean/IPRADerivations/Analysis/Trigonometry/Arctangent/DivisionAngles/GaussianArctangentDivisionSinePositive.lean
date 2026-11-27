@@ -41,6 +41,7 @@ open GaussianApproximateInverseDistance (multiply_distance)
 open RationalRepresentedUpper (left right to_signed from_signed)
 open RationalValueBounds (upper upper_congr upper_mono upper_triangle upper_of_radius upper_order_left)
 open PolynomialBisection (zle_scale_cancel slack)
+open GaussianArctangentInverseForward renaming upper_sum_same → add_upper_same
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -85,12 +86,6 @@ private theorem cancel_quarter (a b C D p z : PTm n)
   simp only [IPRA.Q.mk_add,map_add] at budget
   simp only [l,r,left,right,ZT.toZ_mul,ZT.toZ_add,ZT.toZ_ofNat,IPRA.Q.mk_mul,IPRA.Q.mk_add,map_add,map_mul] at eq ⊢
   linear_combination eq - (𝔞 C*𝔞 E*𝔞 H*𝔞 F)*budget
-
-private theorem add_upper_same (a b c A C B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
-    (ha : Γ ⊢[PRAAx] upper a b A B) (hb : Γ ⊢[PRAAx] upper b c C B) :
-    Γ ⊢[PRAAx] upper a c (A+C) B :=
-  upper_mono _ _ _ _ _ _ (positive_product _ _ hB hB) (upper_triangle _ _ _ _ _ _ _ ha hb)
-    (le_congr (by ipra_ring) (.eqRefl _) (le_refl ((A+C)*(B*B))))
 
 def chordSineData (k m z : PTm n) : PTm n := sineData nameF (GaussianNameBounds.U nameF (data k m z)) (data k m z)
 def exactSineData (k m z : PTm n) : PTm n := sineData nameF two (data k m z)
