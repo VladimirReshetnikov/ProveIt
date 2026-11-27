@@ -1,7 +1,7 @@
 # Merged article
 
-[`article.pdf`](article.pdf) merges the 131 research reports under
-[`../Research`](../Research/) into one article of 723 pages, *Beyond the Riemann hypothesis
+[`article.pdf`](article.pdf) merges 131 delivered research reports into one article of
+723 pages, *Beyond the Riemann hypothesis
 for Dirichlet L-functions: consequences, transfers and limits*. Each result is stated once,
 in the strongest form the reports prove. A result that follows from a stronger or more
 general result of the collection, with hypotheses no stronger, is left out, and so is
@@ -14,6 +14,11 @@ theorem, RH and GRH for Dirichlet L-functions as stated in the external Lean dev
 `lsernau/grh-lean`, is taken as given. Every result carries one of three marks:
 *unconditional*, *uses Dirichlet GRH*, or *reduction; the target estimate is open*. No
 result of the last kind proves a new Riemann hypothesis or any named conjecture.
+
+The reports were removed from the working tree once merged. They are in the history under
+`Analysis/GeneralizedRiemannHypothesis/Research/`: the first 103 at commit `10802a6b36`, the next 17 at commit `f2f9fd7531` and the last 11 at commit `64f3896557`.
+Packet names are unique, so the article's citations of delivered files, and the packet
+and file columns of the provenance tables, each refer to exactly one of these commits.
 
 ## Files
 

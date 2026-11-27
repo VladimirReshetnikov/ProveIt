@@ -14,6 +14,9 @@ report (or one result in it) and says what happened to it:
 | `other-unit` | It belongs to another section; `target` is that section's key. |
 | `non-mathematical` | Audits, inventories of earlier reports, reproduction and formalization plans, and similar material, which the article leaves out. |
 
+The `packet` and `file` columns name files under `Analysis/GeneralizedRiemannHypothesis/Research/`
+in the history (the first 103 at commit `10802a6b36`, the next 17 at commit `f2f9fd7531` and the last 11 at commit `64f3896557`); the packets are no longer in the working tree.
+
 Labels have the form `<key>:<kind>:<name>`, and `<key>` names the section file. The
 `conflict` rows mostly concern how the reports describe the upstream proof; the article
 uses the latest, corrected description.
