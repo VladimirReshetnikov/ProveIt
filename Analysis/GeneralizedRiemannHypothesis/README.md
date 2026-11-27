@@ -8,10 +8,10 @@ strongest form they prove. Repeated material and results implied by stronger or 
 ones are left out, and the reports' many accounts of the upstream proof are replaced by one
 section. The input theorem, RH and GRH for Dirichlet L-functions as stated in the external
 Lean development [`lsernau/grh-lean`](https://github.com/lsernau/grh-lean) at commit
-`72fead102f663d5c7a407964a13dc0cf9d977207`, is taken as given. The article is a merge, not a
-review: its mathematics is that of the reports, nothing was recomputed, and nothing is
-formalized here. The `grh` directory of that Lean development is vendored, unmodified and
-unbuilt, in [`vendor/grh-lean`](vendor/grh-lean/README.md). Every result is marked as unconditional, as using Dirichlet GRH, or as a
+`72fead102f663d5c7a407964a13dc0cf9d977207`, is taken as given. The article reproduces the
+reports' mathematics without recomputing it. The [Lean formalization](Lean/README.md)
+tracks checked results against the article. The `grh` directory of the upstream
+development is vendored, unmodified and unbuilt, in [`vendor/grh-lean`](vendor/grh-lean/README.md). Every result is marked as unconditional, as using Dirichlet GRH, or as a
 reduction whose target estimate is open. The [article README](Article/README.md) lists its
 sections.
 
