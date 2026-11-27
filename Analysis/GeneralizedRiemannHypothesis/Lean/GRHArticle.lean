@@ -10,6 +10,8 @@ import GRHArticle.ProgressionFree.FourMarkerDensity
 import GRHArticle.ProgressionFree.FourMarkerExchange
 import GRHArticle.ProgressionFree.FourMarkerMass
 import GRHArticle.ProgressionFree.IntegerBlockGluing
+import GRHArticle.ProgressionFree.IntegerBoundaryExchangePacking
+import GRHArticle.ProgressionFree.IntegerBoundaryExchangeReplacement
 import GRHArticle.ProgressionFree.IntegerDensityExtrema
 import GRHArticle.ProgressionFree.IntegerFordBlocks
 import GRHArticle.ProgressionFree.IntegerFordDensity
