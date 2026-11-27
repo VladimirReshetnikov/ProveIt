@@ -102,42 +102,44 @@ private theorem debitTriple_le_sub (cap : ℕ → ℕ) (used : CapacityTable)
     rw [available_debit, if_pos rfl]
     exact Nat.sub_le_sub_right ((available_debit_le ..).trans (available_debit_le ..)) _
 
-private def verifiedPackingMass (cap : ℕ → ℕ) (table : Array IntegerPrefixTriple)
-    (removed : List ℕ) : CapacityTable → List ℕ → Option ℕ
+private def inspectedPackingMass {ι : Type*} (cap : ℕ → ℕ) (resolve : ι → Option IntegerPrefixTriple) :
+    CapacityTable → List ι → Option ℕ
   | _, [] => some 0
   | used, i::is =>
-    if integerBoundaryFresh table removed i then
-      let e := integerBoundaryEdgeAt table i
+    match resolve i with
+    | none => none
+    | some e =>
       let m := packingClaim cap used e
-      (verifiedPackingMass cap table removed (debitTriple cap used e m) is).map (m+·)
-    else none
+      (inspectedPackingMass cap resolve (debitTriple cap used e m) is).map (m+·)
 
 def IntegerBoundaryCover (table : Array IntegerPrefixTriple) (removed : List ℕ) (C : Finset ℕ) : Prop :=
   ∀ i, integerBoundaryFresh table removed i = true →
     ∃ x ∈ (integerBoundaryEdgeAt table i).vertices, x ∈ C
 
-private theorem verifiedPackingMass_sound (cap : ℕ → ℕ) (table : Array IntegerPrefixTriple)
-    (removed : List ℕ) {C : Finset ℕ} (hc : IntegerBoundaryCover table removed C)
-    (used : CapacityTable) {is : List ℕ} {total : ℕ}
-    (h : verifiedPackingMass cap table removed used is = some total) :
+private theorem inspectedPackingMass_sound {ι : Type*} (cap : ℕ → ℕ)
+    (resolve : ι → Option IntegerPrefixTriple) {C : Finset ℕ}
+    (hc : ∀ i e, resolve i = some e → ∃ x ∈ e.vertices, x ∈ C)
+    (used : CapacityTable) {is : List ι} {total : ℕ}
+    (h : inspectedPackingMass cap resolve used is = some total) :
     total ≤ ∑ x ∈ C, available cap used x := by
   induction is generalizing used total with
   | nil =>
     change some 0 = some total at h
     exact (Option.some.inj h) ▸ Nat.zero_le _
   | cons i is ih =>
-    by_cases hi : integerBoundaryFresh table removed i = true
-    · let e := integerBoundaryEdgeAt table i
+    cases hi : resolve i with
+    | none => simp [inspectedPackingMass, hi] at h
+    | some e =>
       let m := packingClaim cap used e
       let next := debitTriple cap used e m
-      simp only [verifiedPackingMass, hi, if_true] at h
-      change (verifiedPackingMass cap table removed next is).map (m+·) = some total at h
-      cases hrest : verifiedPackingMass cap table removed next is with
+      simp only [inspectedPackingMass, hi] at h
+      change (inspectedPackingMass cap resolve next is).map (m+·) = some total at h
+      cases hrest : inspectedPackingMass cap resolve next is with
       | none => simp [hrest] at h
       | some rest =>
         have heq : total = m + rest := (Option.some.inj (by simpa only [hrest, Option.map_some] using h)).symm
         have htail := ih next hrest
-        obtain ⟨x,hx,hxC⟩ := hc i hi
+        obtain ⟨x,hx,hxC⟩ := hc i e hi
         have hm : m ≤ available cap used x := packingClaim_le cap used e hx
         have hpay : available cap next x + m ≤ available cap used x := by
           have hxwithdraw := debitTriple_le_sub cap used e m hx
@@ -155,7 +157,23 @@ private theorem verifiedPackingMass_sound (cap : ℕ → ℕ) (table : Array Int
           _ ≤ (∑ z ∈ C.erase x, available cap used z) + available cap used x :=
             Nat.add_le_add hrestcost hpay
           _ = _ := sum_erase_add C (available cap used) hxC
-    · simp [verifiedPackingMass, hi] at h
+
+private def verifiedPackingMass (cap : ℕ → ℕ) (table : Array IntegerPrefixTriple)
+    (removed : List ℕ) (used : CapacityTable) (is : List ℕ) : Option ℕ :=
+  inspectedPackingMass cap
+    (fun i ↦ if integerBoundaryFresh table removed i then some (integerBoundaryEdgeAt table i) else none)
+    used is
+
+private theorem verifiedPackingMass_sound (cap : ℕ → ℕ) (table : Array IntegerPrefixTriple)
+    (removed : List ℕ) {C : Finset ℕ} (hc : IntegerBoundaryCover table removed C)
+    (used : CapacityTable) {is : List ℕ} {total : ℕ}
+    (h : verifiedPackingMass cap table removed used is = some total) :
+    total ≤ ∑ x ∈ C, available cap used x := by
+  apply inspectedPackingMass_sound _ _ ?_ _ h
+  intro i e hi
+  split at hi
+  · next hf => exact (Option.some.inj hi) ▸ hc i hf
+  · simp at hi
 
 private theorem integerBoundaryCover_erase {table : Array IntegerPrefixTriple}
     {removed : List ℕ} {C : Finset ℕ} (hc : IntegerBoundaryCover table removed C) (x : ℕ) :
@@ -225,5 +243,96 @@ theorem checkIntegerBoundaryCertificate_sound {cap : ℕ → ℕ} {table : Array
       · exact ihLast hlast hrest
     have hsum := sum_erase_add C cap hxC
     omega
+
+def integerBoundaryDirectFresh (valid : IntegerPrefixTriple → Bool) (removed : List ℕ)
+    (e : IntegerPrefixTriple) : Bool :=
+  valid e && !e.vertices.any removed.contains
+
+theorem integerBoundaryDirectFresh_iff {valid : IntegerPrefixTriple → Bool} {removed : List ℕ}
+    {e : IntegerPrefixTriple} :
+    integerBoundaryDirectFresh valid removed e = true ↔
+      valid e = true ∧ ∀ x ∈ e.vertices, x ∉ removed := by
+  simp only [integerBoundaryDirectFresh, Bool.and_eq_true]
+  constructor
+  · rintro ⟨he, hdis⟩
+    refine ⟨he, ?_⟩
+    intro x hx hrem
+    have h := List.any_eq_true.mpr ⟨x, hx, List.contains_iff_mem.mpr hrem⟩
+    simp [h] at hdis
+  · rintro ⟨he, hrem⟩
+    refine ⟨he, ?_⟩
+    cases h : e.vertices.any removed.contains with
+    | false => rfl
+    | true =>
+      obtain ⟨x,hx,hX⟩ := List.any_eq_true.mp h
+      exact (hrem x hx (List.contains_iff_mem.mp hX)).elim
+
+/-- A cover for the allowed triples that avoid previously charged vertices. -/
+def IntegerBoundaryDirectCover (valid : IntegerPrefixTriple → Bool) (removed : List ℕ)
+    (C : Finset ℕ) : Prop :=
+  ∀ e, integerBoundaryDirectFresh valid removed e = true → ∃ x ∈ e.vertices, x ∈ C
+
+/-- Check a greedy packing directly in terms of triples, without array lookup. -/
+def checkIntegerBoundaryDirectPacking (cap : ℕ → ℕ) (valid : IntegerPrefixTriple → Bool)
+    (removed : List ℕ) (budget : ℕ) (edges : List IntegerPrefixTriple) : Bool :=
+  match inspectedPackingMass cap
+    (fun e ↦ if integerBoundaryDirectFresh valid removed e then some e else none) ∅ edges with
+  | some mass => decide (budget ≤ mass)
+  | none => false
+
+theorem checkIntegerBoundaryDirectPacking_sound {cap : ℕ → ℕ} {valid : IntegerPrefixTriple → Bool}
+    {removed : List ℕ} {budget : ℕ} {edges : List IntegerPrefixTriple} {C : Finset ℕ}
+    (h : checkIntegerBoundaryDirectPacking cap valid removed budget edges = true)
+    (hc : IntegerBoundaryDirectCover valid removed C) :
+    budget ≤ ∑ x ∈ C, cap x := by
+  let resolve := fun e ↦ if integerBoundaryDirectFresh valid removed e then some e else none
+  change (match inspectedPackingMass cap resolve ∅ edges with
+    | some mass => decide (budget ≤ mass)
+    | none => false) = true at h
+  cases hp : inspectedPackingMass cap resolve ∅ edges with
+  | none => simp [hp] at h
+  | some mass =>
+    have hm := inspectedPackingMass_sound cap resolve (C := C) (fun i e hi ↦ by
+      unfold resolve at hi
+      split at hi
+      · next h => exact (Option.some.inj hi) ▸ hc i h
+      · simp at hi) ∅ hp
+    simp only [available, Std.TreeMap.getD_emptyc] at hm
+    rw [hp, decide_eq_true_eq] at h
+    exact h.trans hm
+
+private theorem integerBoundaryDirectCover_erase {valid : IntegerPrefixTriple → Bool}
+    {removed : List ℕ} {C : Finset ℕ} (hc : IntegerBoundaryDirectCover valid removed C) (x : ℕ) :
+    IntegerBoundaryDirectCover valid (x::removed) (C.erase x) := by
+  intro e he
+  obtain ⟨hvalid, hrem⟩ := integerBoundaryDirectFresh_iff.mp he
+  obtain ⟨v,hv,hvC⟩ := hc e (integerBoundaryDirectFresh_iff.mpr
+    ⟨hvalid, fun y hy hyr ↦ hrem y hy (List.mem_cons_of_mem _ hyr)⟩)
+  refine ⟨v,hv, mem_erase.mpr ⟨?_,hvC⟩⟩
+  intro h
+  exact hrem v hv (h ▸ List.mem_cons_self)
+
+/-- Join bounds from the three ways of hitting the chosen triple. -/
+theorem integerBoundaryDirect_branch_bound {cap : ℕ → ℕ} {valid : IntegerPrefixTriple → Bool}
+    {removed : List ℕ} {budget : ℕ} {e : IntegerPrefixTriple}
+    (he : integerBoundaryDirectFresh valid removed e = true)
+    (hfirst : ∀ C, IntegerBoundaryDirectCover valid (e.first::removed) C →
+      budget-cap e.first ≤ ∑ x ∈ C, cap x)
+    (hmiddle : ∀ C, IntegerBoundaryDirectCover valid (e.middle::removed) C →
+      budget-cap e.middle ≤ ∑ x ∈ C, cap x)
+    (hlast : ∀ C, IntegerBoundaryDirectCover valid (e.last::removed) C →
+      budget-cap e.last ≤ ∑ x ∈ C, cap x)
+    (C : Finset ℕ) (hc : IntegerBoundaryDirectCover valid removed C) :
+    budget ≤ ∑ x ∈ C, cap x := by
+  obtain ⟨x,hx,hxC⟩ := hc e he
+  have hr := integerBoundaryDirectCover_erase hc x
+  have hcost : budget-cap x ≤ ∑ y ∈ C.erase x, cap y := by
+    simp only [IntegerPrefixTriple.vertices, List.mem_cons, List.not_mem_nil, or_false] at hx
+    rcases hx with rfl | rfl | rfl
+    · exact hfirst _ hr
+    · exact hmiddle _ hr
+    · exact hlast _ hr
+  have hsum := sum_erase_add C cap hxC
+  omega
 
 end GRHArticle.ProgressionFree
