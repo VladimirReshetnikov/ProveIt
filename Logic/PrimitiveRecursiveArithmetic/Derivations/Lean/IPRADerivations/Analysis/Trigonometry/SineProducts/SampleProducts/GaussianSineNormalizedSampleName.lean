@@ -61,32 +61,13 @@ ipra_subst polynomialSample [fromSine]
 
 theorem raw_product_at (f : PR 2) (p J x z : PTm n) :
     Γ ⊢[PRAAx] ap2 (rawProductF f) p (rawData J x z) ≐ productSample f p J x z := by
-  have h : Γ ⊢[PRAAx] ap2 (rawProductF f) p (rawData J x z) ≐
-      productSample f p (fstT (rawData J x z)) (fstT (sndT (rawData J x z))) (sndT (sndT (rawData J x z))) := by
-    simpa [rawProductF,productBody,ap2] using toPR_eq (Γ := Γ) (productBody f) ![p,rawData J x z]
-  have eq := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (productSample f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p,fstT (rawData J x z),fstT (sndT (rawData J x z)),sndT (sndT (rawData J x z))])
-    (σ' := ![p,J,x,z]) (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact (snd_pair _ _).fstE
-      · exact (snd_pair _ _).sndE)
-  exact h.eqTrans (by simpa using eq)
+  simpa [rawProductF, productBody, rawData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (productSample f (var 0) (var 1) (var 2) (var 3)) p ![J, x, z])
 
 theorem raw_polynomial_at (f : PR 2) (p J x z : PTm n) :
     Γ ⊢[PRAAx] ap2 (rawPolynomialF f) p (rawData J x z) ≐ polynomialSample f p J x := by
-  have h : Γ ⊢[PRAAx] ap2 (rawPolynomialF f) p (rawData J x z) ≐
-      polynomialSample f p (fstT (rawData J x z)) (fstT (sndT (rawData J x z))) := by
-    simpa [rawPolynomialF,polynomialBody,ap2] using toPR_eq (Γ := Γ) (polynomialBody f) ![p,rawData J x z]
-  have eq := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (polynomialSample f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![p,fstT (rawData J x z),fstT (sndT (rawData J x z))])
-    (σ' := ![p,J,x]) (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact (snd_pair _ _).fstE)
-  exact h.eqTrans (by simpa using eq)
+  simpa [rawPolynomialF, polynomialBody, rawData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (polynomialSample f (var 0) (var 1) (var 2)) p ![J, x, z])
 
 private theorem readback (g : PR 2) (p L x s : PTm n)
     (hs : Γ ⊢[PRAAx] ap2 g (GaussianFastValueCut.exponent L p) x ≐ s) (hc : Γ ⊢[PRAAx] canonical s) :

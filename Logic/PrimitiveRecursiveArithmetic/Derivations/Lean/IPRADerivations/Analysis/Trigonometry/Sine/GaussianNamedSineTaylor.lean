@@ -154,17 +154,8 @@ ipra_subst rawData
 
 theorem raw_at (f : PR 2) (R x p : PTm n) :
     Γ ⊢[PRAAx] ap2 (rawF f) p (rawData R x) ≐ taylorValue f R x p := by
-  have e : Γ ⊢[PRAAx] ap2 (rawF f) p (rawData R x) ≐ taylorValue f (fstT (rawData R x)) (sndT (rawData R x)) p := by
-    change Γ ⊢[PRAAx] PTm.app (rawF f) ![p,rawData R x] ≐ taylorValue f (fstT (rawData R x)) (sndT (rawData R x)) p
-    simpa only [rawF, subst_taylorValue, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero,
-      Matrix.cons_val_one] using toPR_eq (Γ := Γ) (taylorValue f (fstT (var 1)) (sndT (var 1)) (var 0) : PTm 2) ![p,rawData R x]
-  have r : Γ ⊢[PRAAx] taylorValue f (fstT (rawData R x)) (sndT (rawData R x)) p ≐ taylorValue f R x p := by
-    simpa only [subst_taylorValue, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-      Matrix.head_cons, Matrix.tail_cons] using
-      Prf.eqCongr (Γ := Γ) (taylorValue f (var 0) (var 1) (var 2) : PTm 3)
-        (σ := ![fstT (rawData R x),sndT (rawData R x),p]) (σ' := ![R,x,p])
-        (fun j => by fin_cases j; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl p)
-  exact e.eqTrans r
+  simpa [rawF, rawData] using
+    (toPR_pair_eq (Γ := Γ) (taylorValue f (var 1) (var 2) (var 0)) p R x)
 
 private theorem raw_regular_at (f : PR 2) (R x p q : PTm n) (hf : Γ ⊢[PRAAx] input f R x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (rawF f) p (rawData R x)) (ap2 (rawF f) q (rawData R x))

@@ -166,23 +166,8 @@ ipra_subst sampled [cutoff, two, one]
 ipra_subst data
 
 theorem sample_at (A B R p : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data A B R) ≐ sampled A B R p := by
-  let d := data A B R
-  have body : Γ ⊢[PRAAx] ap2 nameF p d ≐ sampled (fstT d) (fstT (sndT d)) (sndT (sndT d)) p := by
-    simpa only [ap2,nameF,subst_sampled,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one] using toPR_eq (Γ := Γ)
-      (sampled (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0) : PTm 2) ![p,d]
-  have second := snd_pair (Γ := Γ) A (pairT B R)
-  refine body.eqTrans ?_
-  simpa only [subst_sampled,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sampled (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![fstT d,fstT (sndT d),sndT (sndT d),p]) (σ' := ![A,B,R,p])
-      (fun i => by
-        fin_cases i
-        · exact fst_pair _ _
-        · exact (congrFst second).eqTrans (fst_pair _ _)
-        · exact (congrSnd second).eqTrans (snd_pair _ _)
-        · exact .eqRefl _)
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sampled (var 1) (var 2) (var 3) (var 0)) p ![A, B, R])
 
 theorem cofinal_error (A B R p N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hA : Γ ⊢[PRAAx] le A (R*B)) (hN : Γ ⊢[PRAAx] le (cutoff R p) N) :

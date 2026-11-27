@@ -50,17 +50,8 @@ ipra_subst productData
 
 theorem name_at (p N C x : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data N C x) ≐ observation p N C x := by
-  let d := data N C x
-  have first : Γ ⊢[PRAAx] ap2 nameF p d ≐ observation p (fstT d) (fstT (sndT d)) (sndT (sndT d)) := by
-    simpa [nameF,body,ap2] using toPR_eq (Γ := Γ) body ![p,d]
-  have next := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (observation (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p,fstT d,fstT (sndT d),sndT (sndT d)]) (σ' := ![p,N,C,x]) (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact (snd_pair _ _).fstE
-      · exact (snd_pair _ _).sndE)
-  exact first.eqTrans (by simpa using next)
+  simpa [nameF, body, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (observation (var 0) (var 1) (var 2) (var 3)) p ![N, C, x])
 
 private theorem absorb (p N : PTm n) :
     Γ ⊢[PRAAx] le (budget N*unit p) (unit (clock (p+budget N) (succ N))) := by

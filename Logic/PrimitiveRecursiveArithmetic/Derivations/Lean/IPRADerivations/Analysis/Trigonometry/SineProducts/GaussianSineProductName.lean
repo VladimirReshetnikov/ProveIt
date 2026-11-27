@@ -128,22 +128,8 @@ def nameF : PR 2 := PTm.toPR
 ipra_subst sampled [sineProduct]
 
 theorem sample_at (z R B p : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B) ≐ sampled z R B p := by
-  let d := data z R B
-  have e : Γ ⊢[PRAAx] ap2 nameF p d ≐ sampled (fstT d) (fstT (sndT d)) (sndT (sndT d)) p := by
-    simpa only [ap2,nameF,subst_sampled,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one] using toPR_eq (Γ := Γ)
-      (sampled (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) (var 0) : PTm 2) ![p,d]
-  have second := snd_pair (Γ := Γ) z (pairT R B)
-  refine e.eqTrans ?_
-  simpa only [subst_sampled,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-    Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sampled (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![fstT d,fstT (sndT d),sndT (sndT d),p]) (σ' := ![z,R,B,p])
-      (fun i => by fin_cases i
-                   exact fst_pair _ _
-                   exact second.fstE
-                   exact second.sndE
-                   exact .eqRefl _)
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sampled (var 1) (var 2) (var 3) (var 0)) p ![z, R, B])
 
 theorem cofinal_error (z R B p M : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) (hM : Γ ⊢[PRAAx] le (cutoff R p) M) :
