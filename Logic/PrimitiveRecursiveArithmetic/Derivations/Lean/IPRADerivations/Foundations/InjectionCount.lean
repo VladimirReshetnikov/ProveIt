@@ -29,7 +29,6 @@ namespace LeanProofs.IPRA.Foundations.InjectionCount
 open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit shift_inst2')
-open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb congrEqb')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
@@ -271,9 +270,9 @@ theorem injection_count {N R x : PTm n} (hK : Γ ⊢[PRAAx] coll c g N x ≐ zer
         (congrMonus (.eqRefl _) (congrMonus (fst_pair _ _) (congrInst2 g (.eqRefl _) (snd_pair _ _))))).eqSymm.eqTrans tz
     exact (row_val c g hv).eqSymm
   have fb := fubini (Γ := Γ) (eB c g) N R x
-  have cols : Γ ⊢[PRAAx] le (ap2 (sumF (pB (eB c g))) R (pairT N x)) (ap2 (sumF (one : PTm 2)) R (pairT N x)) := by
-    refine sum_le_params _ _ _ _ _ (.allI (.impI ?_))
-    rw [inst2_pB, show inst2 (one : PTm 2) (var 0 : PTm (n + 1)) (Syn.shift (pairT N x)) = one by simp [inst2],
+  have cols : Γ ⊢[PRAAx] le (ap2 (sumF (pB (eB c g))) R (pairT N x)) (R * one) := by
+    refine sum_le_uniform_bound (pB (eB c g)) (.allI (.impI ?_))
+    rw [inst2_pB, show Syn.shift (one : PTm n) = one by simp [Syn.shift],
       show Syn.shift (pairT N x) = pairT (Syn.shift N) (Syn.shift x) by simp [Syn.shift]]
     refine le_congr (congrAp2 (sumF (colB (eB c g))) (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqSymm
       (.eqRefl _) ?_
@@ -282,7 +281,7 @@ theorem injection_count {N R x : PTm n} (hK : Γ ⊢[PRAAx] coll c g N x ≐ zer
         simpa [Fm.shift, Syn.shift, subst_ap2] using hK.shift
       exact s0.wk
     exact col_le c g hK'
-  exact le_congr rows.eqSymm (sum_ones R _) (le_congr fb.eqSymm (.eqRefl _) cols)
+  exact le_congr (rows.eqTrans fb).eqSymm (Common.mul_one_right R) cols
 
 end Inj
 

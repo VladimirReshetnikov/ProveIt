@@ -61,6 +61,28 @@ theorem sum_le_uniform_bound (f : PTm 2) {N L x : PTm n}
   refine le_congr (.eqRefl _) (sum_const_param N L) (sum_le_params f (var 1) x L N ?_)
   simpa [inst2] using h
 
+/-- A sum of `N` terms bounded below by `L` is at least `N * L`. -/
+theorem uniform_bound_le_sum (f : PTm 2) {N L x : PTm n}
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
+      le (Syn.shift L) (inst2 f (var 0) (Syn.shift x)))) :
+    Γ ⊢[PRAAx] le (N * L) (ap2 (sumF f) N x) := by
+  refine le_congr (sum_const_param N L) (.eqRefl _) (sum_le_params (var 1) f L x N ?_)
+  simpa [inst2] using h
+
+/-- Each summand at least one gives a lower bound by the number of terms. -/
+theorem le_sum_of_one_le (f : PTm 2) {N x : PTm n}
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le one (inst2 f (var 0) (Syn.shift x)))) :
+    Γ ⊢[PRAAx] le N (ap2 (sumF f) N x) :=
+  le_congr (by ipra_ring) (.eqRefl _)
+    (uniform_bound_le_sum (L := one) f (by simpa [Syn.shift] using h))
+
+/-- The sum of a body that always returns one is its length. -/
+theorem sum_one_body (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N x ≐ N := by
+  refine (sum_congr_bounded (one : PTm 2) (var 1) x one N (.allI (.impI ?_))).eqTrans
+    ((sum_const_param N one).eqTrans (by ipra_ring))
+  simp [inst2, Syn.shift]
+  exact .eqRefl _
+
 private theorem weighted_sum_pair_zero (f g : PTm 2) (a b x y : PTm n) :
     Γ ⊢[PRAAx] a * ap2 (sumF f) zero x + b * ap2 (sumF g) zero y ≐ zero :=
   (congrAdd ((congrMul (.eqRefl _) (sum_zero f x)).eqTrans (mul_zero a))

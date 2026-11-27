@@ -30,7 +30,7 @@ namespace LeanProofs.IPRA.Probability.Variance
 
 open_ipra
 open LeanProofs.IPRA.Probability.Expectation (Ew Wt inst2_mul' inst2_add' mul_one' exp_add)
-open LeanProofs.IPRA.Probability.Independence (sum_scale dsum)
+open LeanProofs.IPRA.Probability.Independence (dsum)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -171,13 +171,8 @@ theorem second_moment_add (w X Y : PTm 2) (N x : PTm n) :
 /-- Variables: `0 = N`, `1 = x`. -/
 private abbrev oneF : Fm PTm 2 := ap2 (sumF (one : PTm 2)) (var 0) (var 1) ≐ var 0
 
-private theorem sum_one₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] oneF := by
-  ipra_ind [subst_ap2]
-  · exact sum_zero _ _
-  · refine (sum_succ' _ _ _).eqTrans ((congrAdd Prf.hyp0 ?_).eqTrans (succ_eq_add_one _).eqSymm)
-    have e : inst2 (one : PTm 2) (var 0 : PTm 2) (var 1) = one := by simp [inst2]
-    rw [e]
-    exact .eqRefl _
+private theorem sum_one₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] oneF :=
+  sum_one_body (var 0) (var 1)
 
 /-- `∑_{j<N} 1 = N`. -/
 theorem sum_one (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N x ≐ N := by

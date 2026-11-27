@@ -38,7 +38,6 @@ namespace LeanProofs.IPRA.Foundations.FiniteAvoidance
 open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none
   zero_of_compl_ne)
-open LeanProofs.IPRA.Probability.Variance (sum_one)
 open LeanProofs.IPRA.Signum (sg sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -78,11 +77,8 @@ abbrev rowCount (P t x : PTm n) : PTm n := ap2 (sumF (rowB (aB bad))) P (pairT t
 /-- If no candidate is good, every candidate contributes at least one violation. -/
 theorem rows_ge {T P x : PTm n} (hz : Γ ⊢[PRAAx] exB (gB bad) T (pairT P x) ≐ zero) :
     Γ ⊢[PRAAx] le T (ap2 (sumF (oB (aB bad))) T (pairT P x)) := by
-  refine le_congr (sum_one T zero) (.eqRefl _)
-    (sum_le_params (one : PTm 2) (oB (aB bad)) zero (pairT P x) T (.allI (.impI ?_)))
-  have e1 : inst2 (one : PTm 2) (var 0 : PTm (n + 1)) (Syn.shift (zero : PTm n)) = one := by
-    simp [inst2]
-  rw [e1, shift_pair]
+  refine le_sum_of_one_le (oB (aB bad)) (.allI (.impI ?_))
+  rw [shift_pair]
   have hz' : (Γ.map Fm.shift) ⊢[PRAAx]
       exB (gB bad) (Syn.shift T) (pairT (Syn.shift P) (Syn.shift x)) ≐ zero := by
     simpa [Fm.shift, Syn.shift] using hz.shift
@@ -96,7 +92,7 @@ theorem cols_le {T P L x : PTm n}
     (hcol : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift P) ⟶
       le (colCount bad (Syn.shift T) (var 0) (Syn.shift x)) (Syn.shift L))) :
     Γ ⊢[PRAAx] le (ap2 (sumF (pB (aB bad))) P (pairT T x)) (P * L) := by
-  refine sum_le_const (pB (aB bad)) (.allI (.impI ?_))
+  refine sum_le_uniform_bound (pB (aB bad)) (.allI (.impI ?_))
   rw [shift_pair, inst2_pB]
   exact le_congr (congrAp2 _ (fst_pair _ _) (congrPairT (.eqRefl _) (snd_pair _ _))).eqSymm
     (.eqRefl _) (.impE hcol.allOpen.wk Prf.hyp0)

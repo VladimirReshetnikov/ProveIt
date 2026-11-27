@@ -92,13 +92,8 @@ theorem sum2_zero_of_bounded (f : PTm 3) {N p q : PTm n}
 /-- Variables: `0 = N`, `1 = x`. -/
 private abbrev onesF : Fm PTm 2 := ap2 (sumF one) (var 0) (var 1) ≐ var 0
 
-private theorem sum_ones₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] onesF := by
-  ipra_ind [subst_ap2]
-  · exact sum_zero _ _
-  · refine (sum_succ' _ _ _).eqTrans ?_
-    have e : inst2 (one : PTm 2) (var 0 : PTm 2) (var 1) = one := by simp [inst2]
-    rw [e]
-    exact (congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (by ipra_ring)
+private theorem sum_ones₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] onesF :=
+  sum_one_body (var 0) (var 1)
 
 theorem sum_ones (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF one) N x ≐ N := by
   have h := inst (Γ := Γ) sum_ones₀ (![N, x] : Fin 2 → PTm n)

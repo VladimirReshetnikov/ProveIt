@@ -33,10 +33,9 @@ open LeanProofs.IPRA.Algebra.CubeRootTwo (sg)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
 open LeanProofs.IPRA.Probability.Expectation (le_zero_of)
-open LeanProofs.IPRA.Probability.Variance (sum_one)
 open LeanProofs.IPRA.Probability.MedianCounts (belowB aboveB Bc Ac below_pt above_pt isMed congrSg subst_data)
 open LeanProofs.IPRA.Probability.MedianSorted (geB inst2_geB count_ge le_shift)
-open LeanProofs.IPRA.Combinatorics.LegendreFact (ltB inst2_ltB inst2_one2 count_lt)
+open LeanProofs.IPRA.Combinatorics.LegendreFact (ltB inst2_ltB count_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 
@@ -213,9 +212,8 @@ theorem bounded {N t q p r m M : PTm n} (hD : Γ ⊢[PRAAx] le (Dc X Z N q p) r)
     let C := lt t m :: Γ
     have ht : C ⊢[PRAAx] lt t m := Prf.hyp0
     have all : C ⊢[PRAAx] le N (Ac X N t p) := by
-      refine le_congr (sum_one N (pairT t p)) (.eqRefl _)
-        (sum_le_params (one : PTm 2) (aboveB X) (pairT t p) (pairT t p) N (.allI (.impI ?_)))
-      rw [inst2_one2, shift_pairT]
+      refine le_sum_of_one_le (aboveB X) (.allI (.impI ?_))
+      rw [shift_pairT]
       have ht' := lt_shift ht
       exact le_congr (.eqRefl _) (above_pt X _ _ _).eqSymm
         (le_congr (.eqRefl _) (sg_lt (lt_of_lt_of_le ht'.wk (Prf.impE hm.wk.allOpen.wk Prf.hyp0))).eqSymm (le_refl _))
@@ -224,9 +222,8 @@ theorem bounded {N t q p r m M : PTm n} (hD : Γ ⊢[PRAAx] le (Dc X Z N q p) r)
     let C := lt M t :: Γ
     have ht : C ⊢[PRAAx] lt M t := Prf.hyp0
     have all : C ⊢[PRAAx] le N (Bc X N t p) := by
-      refine le_congr (sum_one N (pairT t p)) (.eqRefl _)
-        (sum_le_params (one : PTm 2) (belowB X) (pairT t p) (pairT t p) N (.allI (.impI ?_)))
-      rw [inst2_one2, shift_pairT]
+      refine le_sum_of_one_le (belowB X) (.allI (.impI ?_))
+      rw [shift_pairT]
       have ht' := lt_shift ht
       exact le_congr (.eqRefl _) (below_pt X _ _ _).eqSymm
         (le_congr (.eqRefl _) (sg_lt (lt_of_le_of_lt (Prf.impE hM.wk.allOpen.wk Prf.hyp0) ht'.wk)).eqSymm (le_refl _))

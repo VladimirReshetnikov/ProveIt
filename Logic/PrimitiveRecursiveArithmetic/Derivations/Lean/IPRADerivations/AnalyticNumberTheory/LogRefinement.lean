@@ -34,8 +34,6 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement
 open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
 set_option autoImplicit false
 
@@ -58,19 +56,8 @@ abbrev cstB : PTm 2 := fstT (var 1)
 /-- `N L ≤ Σ_{i<N} f(i, x)` when every term is at least `L`. -/
 theorem const_le_sum (f : PTm 2) {N L x : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le (Syn.shift L) (inst2 f (var 0) (Syn.shift x)))) :
-    Γ ⊢[PRAAx] le (N * L) (ap2 (sumF f) N x) := by
-  have e : Γ ⊢[PRAAx] ap2 (sumF cstB) N (pairT L x) ≐ L * ap2 (sumF (one : PTm 2)) N x := by
-    refine sum_scale cstB one N L x (pairT L x) (.allI (.impI ?_))
-    rw [show inst2 cstB (var 0 : PTm (n + 1)) (Syn.shift (pairT L x)) = fstT (pairT (Syn.shift L) (Syn.shift x)) by
-        simp [inst2, Syn.shift],
-      show inst2 (one : PTm 2) (var 0 : PTm (n + 1)) (Syn.shift x) = one by simp [inst2]]
-    exact (fst_pair _ _).eqTrans ((mul_comm _ _).eqTrans (one_mul _)).eqSymm
-  have e' : Γ ⊢[PRAAx] ap2 (sumF cstB) N (pairT L x) ≐ N * L :=
-    e.eqTrans ((congrMul (.eqRefl _) (sum_ones N x)).eqTrans (mul_comm _ _))
-  refine le_congr e' (.eqRefl _) (sum_le_params cstB f (pairT L x) x N (.allI (.impI ?_)))
-  rw [show inst2 cstB (var 0 : PTm (n + 1)) (Syn.shift (pairT L x)) = fstT (pairT (Syn.shift L) (Syn.shift x)) by
-      simp [inst2, Syn.shift]]
-  exact le_congr (fst_pair _ _).eqSymm (.eqRefl _) (Prf.impE h.allOpen.wk Prf.hyp0)
+    Γ ⊢[PRAAx] le (N * L) (ap2 (sumF f) N x) :=
+  uniform_bound_le_sum f h
 
 theorem shift_eq {a b N : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     (lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) ⊢[PRAAx] Syn.shift a ≐ Syn.shift b := by

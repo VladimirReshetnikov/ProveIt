@@ -285,18 +285,8 @@ theorem fiberCount_congr (f : PR 2) {L L' p p' g g' : PTm n}
 theorem size_at (f : PR 2) (L p g : PTm n) : Γ ⊢[PRAAx]
     inst2 (sizeBody f) g (data L p) ≐ fiberCount f L p g := by
   simpa [sizeBody,inst2,data] using fiberCount_congr f (fst_pair L p) (snd_pair L p) (.eqRefl g)
-theorem sum_units (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N x ≐ N := by
-  have all : Γ ⊢[PRAAx] .all (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift x) ≐ var 0) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact sum_zero _ _
-    · simp only [Fm.subst_eq,subst_ap2,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have s := sum_succ' (Γ := (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift x) ≐ var 0) :: Γ.map Fm.shift)
-        (one : PTm 2) (var 0) (Syn.shift x)
-      have e := (congrAdd (Prf.hyp0 : (ap2 (sumF (one : PTm 2)) (var 0) (Syn.shift x) ≐ var 0) :: Γ.map Fm.shift ⊢[PRAAx] _)
-        (.eqRefl one)).eqTrans (succ_eq_add_one (var 0)).eqSymm
-      exact s.eqTrans (by simpa [inst2] using e)
-  simpa only [Fm.subst_eq,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+theorem sum_units (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N x ≐ N :=
+  sum_one_body N x
 
 /-- This is equality for the computed sum, not an output field set equal to
 the original length. Both Fubini bounds are numerical runtime terms. -/
