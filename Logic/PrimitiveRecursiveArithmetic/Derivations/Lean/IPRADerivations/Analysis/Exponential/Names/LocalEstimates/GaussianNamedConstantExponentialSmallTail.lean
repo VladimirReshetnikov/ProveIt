@@ -18,7 +18,7 @@ open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianRadiusExponentialName (sample sample_at sample_regularity index)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_two_errors)
 open GaussianRationalExponentialTail (scalarPrefix prefix_difference)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded bounded)
@@ -62,8 +62,8 @@ theorem constant_error (q m p A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have sPos := unit_positive (Γ := Γ) s
   have increase : Γ ⊢[PRAAx] le U V := GaussianBalancedRadiusArithmetic.unit_monotone p s (le_add_right p m)
   have near : Γ ⊢[PRAAx] distanceBounded (sample constantF one p q) (sample constantF one s q) two U :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ pPos sPos) pPos
-      (by ipra_le 𝔞 U*sl increase) (sample_regularity constantF one q p s inp)
+    distance_two_errors _ _ U V U pPos sPos pPos (le_refl _) increase
+      (sample_regularity constantF one q p s inp)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp [errorNumerator,U,D,N]; ipra_ring)
     (mul_comm U D) (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ pPos ds near finite)
 

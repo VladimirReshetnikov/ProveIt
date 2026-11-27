@@ -191,12 +191,10 @@ theorem original_cofinal_error (p X Y D sign R T N : PTm n)
     dsimp only [C,numerator]
     ipra_le 10*𝔞(N)*sl hsz + 2*𝔞((R*T)*(R*T))*𝔞(U)*sl hpN
   have later : Γ ⊢[PRAAx] le p s := le_add_right p N
-  have hpu := GaussianExponentialReference.unit_monotone later
   have regular := GaussianBinetLaplaceExponential.regular X Y D sign R T T one hz (le_refl one)
     (le_of_eq_add (d := zero) (by ipra_ring))
   have endpoint : Γ ⊢[PRAAx] distanceBounded (ap2 F s x) (ap2 F p x) two P :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hs hp) hp
-      (by ipra_le 𝔞(P)*sl hpu) (point_at _ _ s p regular)
+    GaussianNameEquivalence.point_at_later F x p s regular later
   have diff : Γ ⊢[PRAAx] distanceBounded (qsub (ap2 F s x) qone) (qsub (ap2 F p x) qone) two P :=
     distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
       (GaussianNamedDifference.difference_distance _ _ _ _ _ _ _ hp endpoint

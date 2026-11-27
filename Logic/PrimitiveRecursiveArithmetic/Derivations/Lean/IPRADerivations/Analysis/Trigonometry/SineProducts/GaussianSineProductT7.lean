@@ -25,7 +25,7 @@ open GaussianGammaReflectionSineTransfer
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_two_errors distance_triangle_same)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (distanceBounded)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -84,10 +84,7 @@ theorem prefix_at (F : PR 2) (z R B x p q y A : PTm n)
   have hp := unit_positive (Γ := Γ) p
   have hq := unit_positive (Γ := Γ) q
   have hUV : Γ ⊢[PRAAx] le U V := GaussianExponentialReference.unit_monotone hpq
-  have compare : Γ ⊢[PRAAx] le ((U+V)*U) (two*(U*V)) :=
-    le_congr (by ipra_ring) (by ipra_ring)
-      (add_le_add₂ (le_refl (U*V)) (le_mul_mono (le_refl U) hUV))
-  have h := distance_radius_mono _ _ _ _ two U (positive_product _ _ hp hq) hp compare (cross_at _ _ _ _ p q hf)
+  have h := distance_two_errors _ _ U V U hp hq hp (le_refl _) hUV (cross_at _ _ _ _ p q hf)
   exact distance_triangle_same _ _ _ _ _ _ hp h ht
 
 theorem prefix_of_finite_t4_at (F : PR 2) (row : PTm 2) (z R B x p y d s A : PTm n)

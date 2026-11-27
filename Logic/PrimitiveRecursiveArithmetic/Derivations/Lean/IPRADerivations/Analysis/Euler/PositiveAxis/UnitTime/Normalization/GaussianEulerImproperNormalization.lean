@@ -34,7 +34,7 @@ open GaussianGammaCompactQuadratureBoundary (width width_bound)
 open GaussianGammaEulerCompactQuadrature (localFactor)
 open GaussianCompactRiemannName (mesh precision)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_radius_mono_den)
+open GaussianRationalDistanceOrder (distance_congr distance_two_errors distance_triangle_same distance_radius_mono_den)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
@@ -82,9 +82,8 @@ theorem diagonal_at_one (p z R B A : PTm n) (ha : Γ ⊢[PRAAx] le one A)
   let V := unit (p+num 4)
   have hu : Γ ⊢[PRAAx] le one U := unit_positive p
   have hv : Γ ⊢[PRAAx] le one V := unit_positive _
-  have compare : Γ ⊢[PRAAx] le ((V+U)*U) (two*(V*U)) :=
-    le_congr (by ipra_ring) (by ipra_ring)
-      (add_le_add_right (V*U) (mul_le_mul_right U (GaussianExponentialReference.unit_monotone (le_add_right p (num 4)))))
+  have later : Γ ⊢[PRAAx] le U V :=
+    GaussianExponentialReference.unit_monotone (le_add_right p (num 4))
   have bound := compact_observations (Γ := Γ) (p+num 4) p one C E L T (fixedData z B) (le_refl _)
     (GaussianGammaCompactCutoffGeometry.width_positive p A R) (GaussianGammaIntegralCutoffs.eta_den_positive p A R)
     (local_factor_positive p A R) (width_bound p A R)
@@ -94,7 +93,7 @@ theorem diagonal_at_one (p z R B A : PTm n) (ha : Γ ⊢[PRAAx] le one A)
     (GaussianEulerImproperName.original_observation p z R B A).eqTrans
       (compact_decay_sample p (p+num 4) z R B A hcoef)
   have first : Γ ⊢[PRAAx] distanceBounded X W two U :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hv hu) hu compare
+    distance_two_errors _ _ V U U hv hu hu later (le_refl _)
       (distance_congr equal.eqSymm (.eqRefl W) (.eqRefl _) (.eqRefl _) bound)
   have endpoints := GaussianEulerUnitEndpointDecay.cutoff_endpoint_difference p (p+one) A R ha (le_refl _)
   have second : Γ ⊢[PRAAx] distanceBounded W qone (num 7) U :=

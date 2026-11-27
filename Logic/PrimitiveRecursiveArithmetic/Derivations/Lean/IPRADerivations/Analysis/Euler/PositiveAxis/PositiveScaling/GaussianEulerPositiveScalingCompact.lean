@@ -69,11 +69,8 @@ private theorem factor_drift (s t z B c d : PTm n) (h : Γ ⊢[PRAAx] GaussianEu
   let a := fraction c d
   let x := powerData z B c d
   let P := unit t
-  have hu : Γ ⊢[PRAAx] le P (unit s) := unit_monotone hl
   have hp := power_regular z B c d h
-  have canonical := GaussianNameEquivalence.point_at powerF x s t hp
-  have near := distance_radius_mono _ _ _ _ two P (positive_product _ _ (unit_positive s) (unit_positive t)) (unit_positive t)
-    (by ipra_le 𝔞 P*sl hu) canonical
+  have near := GaussianNameEquivalence.point_at_later powerF x t s hp hl
   have first := GaussianNamedDifferenceQuotient.scale_distance a _ _ c two P (unit_positive t)
     (scale_value_bound c d h.andE₂.andE₂) near
   have second := distance_congr (.eqRefl _)

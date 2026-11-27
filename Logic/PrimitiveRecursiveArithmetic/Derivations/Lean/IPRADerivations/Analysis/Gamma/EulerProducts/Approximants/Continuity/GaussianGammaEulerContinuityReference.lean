@@ -97,11 +97,7 @@ theorem uniform_sample_reference (r z R B N : PTm n) (h : Γ ⊢[PRAAx] input z 
   let e := uniformExpData z R B N
   have ep := uniform_exp_regular z R B N h
   have later : Γ ⊢[PRAAx] le r t := le_add_right _ _
-  have gt := GaussianExponentialReference.unit_monotone later
-  have raw := GaussianNameEquivalence.point_at Exp e t r ep
-  have dist : Γ ⊢[PRAAx] distanceBounded (ap2 Exp t e) (ap2 Exp r e) two (unit r) :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive t) (unit_positive r)) (unit_positive r)
-      (le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ (le_refl (unit t*unit r)) (mul_le_mul_right (unit r) gt))) raw
+  have dist := GaussianNameEquivalence.point_at_later Exp e r t ep later
   have left := GaussianNameRingLaws.product_right_error H (ap2 Exp t e) (ap2 Exp r e) two (unit r)
     (GaussianNameBounds.U Exp e) (headBound R N) (unit_positive r) dist (GaussianNameBounds.sample_bound Exp e t ep) (head_bound z R B N h)
   have common := GaussianExponentialReference.finite_reference logExponentF (exponentRadius R N) (logExponentData z B N)

@@ -23,7 +23,7 @@ open GaussianNameRingLaws (add_sample_error three)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
 open GaussianPositiveRationalLogarithm (fraction sample)
 open GaussianRaabeStirlingCell (elementary elementary_at half)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors distance_triangle_same)
 open GaussianRationalHorner (qadd qadd_canonical qmul qmul_canonical qzero positive_product)
 open GaussianRationalMetric (bounded distanceBounded qnegative qsub)
 open GaussianRationalPowerDifference (distance_refl_zero)
@@ -83,8 +83,7 @@ private theorem product_error (p A D : PTm n) (hs : Γ ⊢[PRAAx] GaussianStirli
   have raw := cross_at logXF GaussianPositiveRationalLogarithm.logF y
     (GaussianPositiveRationalLogarithm.data A D) k p (cross_symm _ _ _ _ e)
   have rel : Γ ⊢[PRAAx] distanceBounded h l two U :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hv hp) hp
-      (by change Γ ⊢[PRAAx] le ((V+U)*U) (two*(V*U)); ipra_le 𝔞(U)*sl grow) raw
+    distance_two_errors _ _ V U U hv hp hp grow (le_refl _) raw
   have read : Γ ⊢[PRAAx] ap2 productF p (productData A D) ≐ qmul z h :=
     (multiply_at constantF logXF z y p).eqTrans
       ((GaussianNameArithmetic.recode_congr (qmul_congr (constant_at k z) (.eqRefl h))).eqTrans

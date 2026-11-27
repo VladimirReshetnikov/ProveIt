@@ -23,7 +23,7 @@ open GaussianHarmonicLogarithmName (nameF data sample sample_at)
 open GaussianHarmonicLogarithmProduct (mesh mesh_later)
 open GaussianRationalNaturalScale (natScale)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_radius_mono_den)
+open GaussianRationalDistanceOrder (distance_congr distance_two_errors distance_triangle_same distance_radius_mono_den)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_trans)
@@ -66,9 +66,7 @@ theorem actual_scale_clock_error (p a b m : PTm n) (h : Γ ⊢[PRAAx] GaussianPo
   have grow := GaussianExponentialReference.unit_monotone (Γ := Γ) (GaussianNamedNaturalScale.clock_later p m)
   have metric := GaussianNameEquivalence.point_at nameF (data a b) p s hf.andE₁
   have weakened : Γ ⊢[PRAAx] distanceBounded (sample p a b) (sample s a b) two (unit p) :=
-    distance_radius_mono _ _ _ _ _ _ (GaussianRationalHorner.positive_product _ _ (unit_positive p) (unit_positive s)) (unit_positive p)
-      (le_congr (by ipra_ring) (by ipra_ring)
-        (add_le_add_right (unit p*unit s) (mul_le_mul_right (unit p) grow))) metric
+    distance_two_errors _ _ _ _ _ (unit_positive p) (unit_positive s) (unit_positive p) (le_refl _) grow metric
   have raw := GaussianNamedNaturalScale.scaled_distance m _ _ two (unit p) (radius a b) (unit_positive p) weakened
     (GaussianRadiusExponentialName.bounded_samples_at nameF (radius a b) (data a b) s hf.andE₂)
   exact distance_congr (.eqRefl _) (GaussianNamedNaturalScale.sample_at nameF p m m (data a b)).eqSymm (mul_comm _ _) (.eqRefl _) raw

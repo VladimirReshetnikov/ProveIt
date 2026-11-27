@@ -26,7 +26,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalMetric (distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors distance_triangle_same)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 
@@ -119,8 +119,7 @@ theorem integral_dyadic (k : PTm n) : Γ ⊢[PRAAx] distanceBounded (integral k)
   have hk : Γ ⊢[PRAAx] le k r := le_add_right _ _
   have later := GaussianExponentialReference.unit_monotone hk
   have raw := compact_endpoint (Γ := Γ) r r k
-  have first := distance_radius_mono _ _ _ _ two (unit k) (positive_product _ _ (unit_positive r) (unit_positive r)) (unit_positive k)
-    (le_congr (by ipra_ring) (by ipra_ring) (add_le_add₂ (mul_le_mul_right (unit r) later) (mul_le_mul_right (unit r) later))) raw
+  have first := distance_two_errors _ _ _ _ _ (unit_positive r) (unit_positive r) (unit_positive k) later later raw
   have joined := distance_triangle_same _ _ _ _ _ _ (unit_positive k) first (endpoint_dyadic (r+one) k (le_trans hk (le_add_right r one)))
   exact distance_congr (GaussianEulerImproperName.original_observation k oneCode one one one).eqSymm (.eqRefl _)
     (by ipra_ring) (.eqRefl _) joined

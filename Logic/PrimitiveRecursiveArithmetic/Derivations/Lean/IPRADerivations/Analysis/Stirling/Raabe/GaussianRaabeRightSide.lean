@@ -20,7 +20,7 @@ open GaussianNameRingLaws (add_sample_error three)
 open GaussianNamedDifference (difference_distance)
 open GaussianPositiveRationalLogarithm (fraction sample)
 open GaussianRaabeLogPrimitiveCell (primitive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianRationalHorner (qadd qmul qmul_canonical positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalPowerDifference (distance_refl_zero)
@@ -61,18 +61,14 @@ private theorem product_error (p A D : PTm n) (h : Γ ⊢[PRAAx] GaussianPositiv
   let t := fraction A D
   let k := GaussianFastValueCut.exponent (multiplyModulus constantF L t (ld A D)) p
   let U := unit p
-  let V := unit k
   let u := sample k A D
   let v := sample p A D
   have hU := unit_positive (Γ := Γ) p
-  have hV := unit_positive (Γ := Γ) k
-  have grow : Γ ⊢[PRAAx] le U V := GaussianExponentialReference.unit_monotone (le_add_right _ _)
   have time : Γ ⊢[PRAAx] le A (A*D) :=
     le_congr (one_mul A) (mul_comm D A) (mul_le_mul_right A h.andE₂)
   have held : Γ ⊢[PRAAx] distanceBounded u v two U :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hV hU) hU
-      (by change Γ ⊢[PRAAx] le ((V+U)*U) (two*(V*U)); ipra_le 𝔞(U)*sl grow)
-      (GaussianNameEquivalence.point_at L (ld A D) k p (GaussianPositiveRationalLogarithm.name_regular A D h))
+    GaussianNameEquivalence.point_at_later L (ld A D) p k
+      (GaussianPositiveRationalLogarithm.name_regular A D h) (le_add_right _ _)
   have read : Γ ⊢[PRAAx] ap2 productF p (productData A D) ≐ qmul t u :=
     (multiply_at constantF L t (ld A D) p).eqTrans
       ((GaussianNameArithmetic.recode_congr (qmul_congr (constant_at k t) (.eqRefl u))).eqTrans

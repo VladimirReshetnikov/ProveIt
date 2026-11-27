@@ -26,7 +26,7 @@ open GaussianGammaCanonicalExponent (constant_at)
 open GaussianNameEquivalence (crossEquivalent cross_to_diagonal diagonal_at point_at)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianRationalDistanceOrder
-  (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_through_product_denominator)
+  (distance_congr distance_two_errors distance_symmetric distance_triangle_same distance_through_product_denominator)
 open GaussianRationalHorner (canonical ofGaussian_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum)
@@ -152,8 +152,8 @@ private theorem normalized_distance (f : PR 2) (p x : PTm n) (hf : Γ ⊢[PRAAx]
   have ht : Γ ⊢[PRAAx] le p t := le_add_right _ _
   have grow := GaussianExponentialReference.unit_monotone ht
   have reg := point_at _ _ p t (exp_regular f x hf)
-  have first := distance_radius_mono _ _ _ _ two P (positive_product _ _ (unit_positive p) (unit_positive t))
-    (unit_positive p) (by change Γ ⊢[PRAAx] le ((P+T)*P) (two*(P*T)); ipra_le 𝔟 P*sl grow) reg
+  have first := distance_two_errors _ _ P T P (unit_positive p) (unit_positive t) (unit_positive p)
+    (le_refl _) grow reg
   have last := GaussianExponentialReference.dyadic_weaken _ _ _ p t ht (raw_distance f t x)
   exact distance_congr (.eqRefl _) (sample_at f p x).eqSymm (.eqRefl _) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) first last)

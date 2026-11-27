@@ -20,7 +20,7 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianPositiveRationalLogarithm (fraction sample)
 open GaussianRaabeStirlingCell (elementary)
 open GaussianRaabeStirlingRemainder (model constantSample)
-open GaussianRationalDistanceOrder (distance_radius_mono norm_from_distance_same)
+open GaussianRationalDistanceOrder (distance_radius_mono distance_two_errors norm_from_distance_same)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalReciprocal (bounded_product bounded_difference bound_congr)
@@ -82,8 +82,7 @@ theorem sample_bound (p A D w : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (le_congr (one_mul L) (mul_comm (unit zero) L) (mul_le_mul_right L (unit_positive zero)))
     (GaussianFastValueCut.query_budget L zero)
   have first : Γ ⊢[PRAAx] distanceBounded (ap2 logGammaF p x) (ap2 logGammaF q x) two one :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hU hV) (le_refl one)
-      (by ipra_le 𝔞(U)*sl hV+𝔞(V)*sl hU)
+    distance_two_errors _ _ U V one hU hV (le_refl one) hU hV
       (GaussianNameEquivalence.point_at _ _ p q (log_gamma_regular A D (.andI hA hD)))
   have second : Γ ⊢[PRAAx] distanceBounded (ap2 logGammaF q x) (model q A D w) (num 3) one :=
     distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hA hV) (le_refl one)

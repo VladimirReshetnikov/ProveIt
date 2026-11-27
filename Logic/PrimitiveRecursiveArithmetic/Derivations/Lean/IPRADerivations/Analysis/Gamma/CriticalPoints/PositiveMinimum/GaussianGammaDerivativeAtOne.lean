@@ -119,8 +119,7 @@ private theorem negative_observation_error (s t : PTm n) (h : Γ ⊢[PRAAx] le s
     distance_radius_mono _ _ _ _ _ _ hT hU (by dsimp only [U,T,GaussianNameRingLaws.three]; ipra_le 3*sl grow)
       (distance_symmetric _ _ _ _ hT (negative_sample_error eulerF zero t GaussianGammaCanonicalExponent.gamma_regular))
   have last : Γ ⊢[PRAAx] distanceBounded point (ap2 negativeGammaF s negativeGammaData) two U :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hT hU) hU
-      (by dsimp only [U,T]; ipra_le 𝔞 (unit s)*sl grow) (point_at _ _ t s negativeGamma_regular)
+    GaussianNameEquivalence.point_at_later negativeGammaF negativeGammaData s t negativeGamma_regular h
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hU first last)
 

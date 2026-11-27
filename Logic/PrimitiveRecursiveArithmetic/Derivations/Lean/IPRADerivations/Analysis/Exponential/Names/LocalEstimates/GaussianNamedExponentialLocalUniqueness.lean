@@ -30,7 +30,7 @@ open GaussianNameRingLaws (oneF one_at)
 open GaussianRadiusExponentialName (input sample_at data nameF inputPrecision index value)
 open GaussianRationalHorner (canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors distance_symmetric distance_triangle_same)
 open GaussianRationalSyntheticDivision (qone)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -83,8 +83,8 @@ theorem sample_zero (f : PR 2) (R x C anchor p : PTm n)
   have bound : Γ ⊢[PRAAx] bounded q one U := contraction q (index R r) p ht.andE₁ (GaussianRadiusExponentialName.index_positive R r) ht.andE₂ smaller
   have lateT : Γ ⊢[PRAAx] le U T := unit_monotone (le_trans hp (le_trans late rt))
   have dist : Γ ⊢[PRAAx] distanceBounded (ap2 f p x) q two U :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive t)) (unit_positive p)
-      (by ipra_le 𝔞 U*sl lateT) (point_at f x p t hf.andE₁)
+    distance_two_errors _ _ U T U (unit_positive p) (unit_positive t) (unit_positive p)
+      (le_refl _) lateT (point_at f x p t hf.andE₁)
   have qZero := (GaussianReconstructionRoots.distance_zero_iff q one U (unit_positive p)).iffMpr bound
   have joined := distance_triangle_same _ _ _ _ _ _ (unit_positive p) dist qZero
   exact (GaussianReconstructionRoots.distance_zero_iff _ _ _ (unit_positive p)).iffMp

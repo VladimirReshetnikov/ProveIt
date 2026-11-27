@@ -23,7 +23,7 @@ open GaussianGammaNegativeIntervalNamedInput (sampleNumerator sampleDenominator)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm)
 open GaussianNamedEulerUnitTime (source source_at)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same norm_from_distance_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors distance_symmetric distance_triangle_same norm_from_distance_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianUnitIntervalInputDecoding (fraction_recode)
@@ -69,8 +69,7 @@ theorem approx_increment (f g K : PR 2) (q r x y z E : PTm n)
   have hr := unit_positive (Γ := Γ) r
   have late := unit_monotone hqr
   have diff := cross_at K (D g f) z (dd y x) q r (cross_symm _ _ _ _ he)
-  have near := distance_radius_mono _ _ _ _ two (unit q) (positive_product _ _ hq hr) hq
-    (by ipra_le 𝔞(unit q)*sl late) diff
+  have near := distance_two_errors _ _ _ _ _ hq hr hq (le_refl _) late diff
   have freeze := distance_radius_mono _ _ (num 6) (unit r) (num 6) (unit q) hr hq
     (by ipra_le 6*sl late) (frozen_sample_error f g r x y E hf hg)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
