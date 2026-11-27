@@ -1,0 +1,79 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,graphicx,xcolor,enumitem}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{Symplectic cycle dependence}\fancyhead[R]{Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\one}{\mathbf1}
+\newcommand{\Sp}{\operatorname{Sp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\pair}[2]{\langle#1,#2\rangle}
+\title{\textbf{Exact cycle dependence and sharp detection\\in finite symplectic observations}\\[5pt]
+\large An extension of the finite-field methods in the ProveIt GRH program}
+\author{Prepared for Vladimir Reshetnikov}
+\date{27 November 2026}
+\hypersetup{pdftitle={Exact cycle dependence and sharp detection in finite symplectic observations},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Finite fields, exact cycle laws, cactus testing profiles, and overlapping-cycle counterexamples}}
+\begin{document}
+\maketitle
+\begin{abstract}
+Choose independent nonzero vectors in a finite symplectic space and reveal their
+pairings along the edges of a graph. We determine the complete joint law on every
+cycle, in every characteristic. On forests the edge observations are exactly
+independent, and independence holds only on forests. For cactus graphs, even cycles
+sharing vertices contribute independent blocks. Exact total variation and
+chi-square formulas reveal a parity phenomenon: cycles of lengths $2r+1$ and
+$2r+2$ carry the same leading information,
+$(q-1)^{2r+1}q^{-4nr}$, in ambient dimension $2n$.
+
+For arbitrary growing cactus graphs with bounded cycle lengths, we prove a sharp
+testing theorem. If the sum of the cycle chi-square divergences tends to
+$\tau\in[0,\infty)$, the total variation distance from independent edges tends to
+$2\Phi(\sqrt{\tau}/2)-1$; if that sum diverges, the distance tends to one.
+This determines the critical window, the optimal testing error, and simple
+asymptotically optimal statistics. Over $\F_2$, cycle parities suffice. A
+complete-bipartite contrast shows why adding the signals of overlapping cycles
+can predict the wrong threshold by an exponential factor.
+
+The results are unconditional. Their connection with the supplied repository is
+the finite-field Fourier and symplectic counting mechanism. We give complete
+proofs and reproducible exact-arithmetic checks. Novelty is assessed against a
+pinned repository snapshot and specified related literature; worldwide priority
+and Lean formalization are not asserted.
+\end{abstract}
+\tableofcontents
+\input{sections/introduction.tex}
+\input{sections/cycle_laws.tex}
+\input{sections/testing.tex}
+\IfFileExists{sections/overlap.tex}{\input{sections/overlap.tex}}{}
+\input{sections/verification.tex}
+\appendix
+\input{sections/appendix.tex}
+\input{references.tex}
+\end{document}
+

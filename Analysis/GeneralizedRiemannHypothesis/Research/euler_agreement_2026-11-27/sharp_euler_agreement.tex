@@ -1,0 +1,670 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[letterpaper,margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem,xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=teal!60!black,citecolor=teal!60!black,urlcolor=teal!60!black]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Sharp Euler-factor agreement beyond prime exponent},pdfauthor={Research note for the ProveIt project}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\one}{\mathbf1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt}
+\newcommand{\pin}{6b034b74a8224c893e7e83127f33cd1a6958785d}
+\newcommand{\sourcebase}{\repo/blob/\pin/Analysis/GeneralizedRiemannHypothesis}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Sharp Euler-factor agreement}
+\fancyhead[R]{\small 27 November 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\title{\textbf{Sharp Euler-factor agreement\\beyond prime exponent}\\[5pt]
+\large Cyclic character groups, arbitrary abelian prime-power groups,\\and quantitative prime observations}
+\author{Research note for the ProveIt project}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For two distinct multisets of $k$ Dirichlet characters in a finite group $X$, how often can the complete local Euler factors agree? The ProveIt article gives detailed answers at prime exponent and asks what happens at composite exponent. We prove two complementary extensions. If $X$ is cyclic of order $E$ and $\ell_1<\cdots<\ell_s$ are the distinct prime divisors of $E$, the exact minimum disagreement density is
+\[
+ \prod_{i=1}^{\min(s,\lfloor\log_2(2k)\rfloor)}(1-\ell_i^{-1}).
+\]
+For an arbitrary nontrivial abelian $\ell$-group $X=\bigoplus_i C_{\ell^{a_i}}$, put $M=|X|/\ell^{\min_i a_i}$. A pair with mass $m$ after cancellation has disagreement at least $(\ell-1)/(\ell m)$; we classify every equality case, including a necessary torsion-lifting condition. The unrestricted minimum is $(\ell-1)/(\ell M)$, first attained at $k=M$, and the exact minimum at each $k=\ell^u$ is $(\ell-1)/(\ell\min(k,M))$. These finite and density theorems are unconditional. Using the article's Dirichlet-GRH character estimate, we obtain a density-sensitive certificate in every sufficiently large prime window. Full proofs, explicit extremizers, exact computational checks and a formalization plan are supplied. Novelty is asserted relative to the inspected repository statements; worldwide priority is not certified.
+\end{abstract}
+\tableofcontents
+
+\section{Origin, contribution and status}
+The starting point is the directory \texttt{Analysis/GeneralizedRiemannHypothesis} in ProveIt, reviewed at the fixed commit
+\begin{center}\small\texttt{6b034b74a8224c893e7e83127f33cd1a6958785d}.\end{center}
+Its README describes an article consolidating 142 reports, with 42 further research packets awaiting merger. The article's recovery section contains exact quadratic and odd-prime-exponent Euler agreement results and explicitly asks what replaces trace equality at composite exponent \cite{proveit,rec}.
+
+The present note answers that question in two substantial families. The cyclic theorem covers \emph{every exponent and every packet size}. Optimizing over all cyclic families gives a universal minimum asymptotic to $e^{-\gamma}/\log\log k$, even when all factors must be primitive of one prime conductor. The prime-primary theorem covers \emph{every finite abelian $\ell$-group}, with arbitrary rank and unequal cyclic factors; it gives exact minima at all prime-power packet sizes and a complete classification both at the sharp mass bound and at the saturation bound. Neither theorem is obtained by assuming that equality of a trace determines an Euler polynomial at composite exponent. That implication is false.
+
+The cyclic proof connects Euler polynomials with integral arrays whose coordinate marginals vanish. Its small-marginal lemma is a version of the classical minimum-volume trade principle \cite{trades}; the application to exact cyclic Euler agreement is the contribution here. The prime-primary proof replaces the article's anchored projection by a corrected projection whose expectation is zero at \emph{every} nonidentity group element, regardless of its order. Equality in this estimate forces coset packets separated by an actual element of order $\ell$.
+
+The prime-window estimate is a transfer of the smoothed Dirichlet-GRH estimate already available in the article. In particular, the order $k^2\log^2 Q$ for finding some distinguishing prime is not presented as a new general multiplicity-one bound. The additional quantitative information is the sharp cyclic density certificate and its small Fourier norm. The finite classification, the density statements for fixed modulus, and the examples require no RH assumption.
+
+The upstream RH/Dirichlet-GRH statements are used exactly as the source directory uses them. Sutherland's public verification record reports kernel, axiom and statement checks at the vendored upstream revision \cite{sutherland}. Those builds were not rerun for this note. Our new results have human-readable proofs and exact finite checks, but no completed Lean formalization is claimed. Section~\ref{sec:validation} states the verification scope precisely.
+
+\section{Finite formulation and the composite-exponent obstruction}
+Let $X$ be a nontrivial finite abelian group, written additively, and let
+\[
+ V=\widehat X=\operatorname{Hom}(X,\C^\times).
+\]
+Its characters take values in roots of unity. A packet $A$ of size $k$ is a function $A:X\to\Z_{\ge0}$ with $\sum_x A(x)=k$; repetitions are allowed. Define
+\[
+ E_A(v,T)=\prod_{x\in X}(1-v(x)T)^{A(x)}.
+\]
+For two distinct packets of equal size put
+\[
+ \begin{gathered}c=A-B,\qquad m=\sum_x c(x)^+=\sum_x c(x)^->0,\\
+\mathcal D(c)=\{v:E_A(v,T)\ne E_B(v,T)\}.\end{gathered}
+\]
+where $c^+=\max(c,0)$ and $c^-=\max(-c,0)$. Thus $m\le k$ is the mass left after removing common characters. We write
+\[
+ \delta(c)=\frac{|\mathcal D(c)|}{|X|},\qquad
+ d_X(k)=\min_{A\ne B,\ |A|=|B|=k}\delta(A-B).
+\]
+The trivial group admits no distinct equal-size packets and is excluded. All groups and minima below are finite.
+
+\begin{lemma}[Histograms, powers and prime density]\label{lem:histograms}
+The following statements hold.
+\begin{enumerate}
+\item $v\notin\mathcal D(c)$ if and only if $\sum_{x:v(x)=z}c(x)=0$ for every root of unity $z$.
+\item Agreement at $v$ implies agreement at $v^j$ for every integer $j$, where $v^j(x)=v(x)^j$. If $j$ is relatively prime to the exponent of $X$, agreement is equivalent at $v$ and $v^j$.
+\item If $X$ is a subgroup of the Dirichlet characters modulo $Q$, the relative natural density among primes $p\nmid Q$ where the local polynomials differ exists and is $\delta(c)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Distinct values $z$ give distinct linear factors $1-zT$; unique factorization over $\C[T]$ proves (1). Pushing equal value multisets through $z\mapsto z^j$ proves (2), including the converse when this map is a permutation of the relevant roots of unity.
+
+For (3), the evaluation map from $(\Z/Q\Z)^\times$ to $\widehat X$ is onto. Indeed, a proper image would have a nontrivial annihilating character, hence a nontrivial member of $X$ equal to one at every unit, a contradiction. Every fibre has the same size. The prime number theorem in arithmetic progressions assigns the same density to every reduced residue class \cite{davenport}, giving the claim. Primes dividing $Q$ are a finite excluded set.
+\end{proof}
+
+Define the ordinary Fourier trace $H_c(v)=\sum_x c(x)v(x)$. An exact replacement for the prime-exponent trace criterion is as follows.
+
+\begin{proposition}[Divisor-indexed traces]\label{prop:divisor-traces}
+If $E$ is the exponent of $X$, then
+\[
+ v\notin\mathcal D(c)
+ \quad\Longleftrightarrow\quad
+ H_c(v^d)=0\quad\text{for every positive proper divisor }d\mid E.
+\]
+\end{proposition}
+\begin{proof}
+Fourier inversion of the signed histogram on the cyclic group of $E$th roots says that it vanishes exactly when all $H_c(v^j)$ vanish, $0\le j<E$. The $j=0$ value is zero because the packets have equal size. For $1\le j<E$, write $d=\gcd(j,E)$ and $j=du$. The automorphism of $\Q(\zeta_{E/d})$ taking $\zeta_{E/d}$ to $\zeta_{E/d}^{u}$ carries $H_c(v^d)$ to $H_c(v^j)$, because $c$ is integral and $\gcd(u,E/d)=1$. This proves the stated equivalence.
+\end{proof}
+
+At order four the distinction is already essential. If $\chi(p)=i$, the packets $\{1,\chi^2\}$ and $\{\chi,\chi^3\}$ both have trace zero, whereas their Euler polynomials are $1-T^2$ and $1+T^2$. The proofs below work with histograms throughout.
+
+\section{Exact matching densities for a cyclic character group}
+
+Let $Q\ge 1$ and let $X=\langle\chi\rangle$ be a cyclic subgroup of the
+Dirichlet characters modulo $Q$, of order $E\ge2$.  A packet is a multiset
+of $k\ge1$ elements of $X$.  Its unramified Euler polynomial at a prime
+$p\nmid Q$ is
+\[
+ P_{A,p}(T)=\prod_{\psi\in A}(1-\psi(p)T).
+\]
+For distinct packets $A,C$ of equal size, write $\delta(A,C)$ for the
+natural density of primes $p\nmid Q$ for which $P_{A,p}\ne P_{C,p}$.
+This density exists by the prime number theorem in arithmetic progressions.
+Write the distinct prime divisors of $E$ as
+$\ell_1<\cdots<\ell_s$, and set
+\[
+ t=t(E,k)=\min\{s,\lfloor\log_2(2k)\rfloor\},\qquad
+ D(E,k)=\prod_{i=1}^{t}\left(1-\frac1{\ell_i}\right).
+\]
+
+\begin{theorem}[Cyclic Euler matching]\label{thm:cyclic-euler}
+For every cyclic character group $X$ of order $E\ge2$ and every packet
+size $k\ge1$,
+\[
+ \min_{A\ne C,\,|A|=|C|=k}\delta(A,C)=D(E,k).
+\]
+The minimum depends on the distinct prime divisors of $E$ and on $k$;
+the powers to which these primes divide $E$ do not affect it.  Every
+dyadic plateau of this formula is attained inside every such $X$.
+In particular the unrestricted minimum $\varphi(E)/E$ is first attained
+at $k=2^{s-1}$.
+\end{theorem}
+
+The main finite ingredient is a signed-array version of the classical minimum-volume trade principle \cite{trades}. We include a proof; this cancellation lemma itself is background.
+
+\begin{lemma}[A small nonzero marginal]\label{lem:small-marginal}
+Let $B_1,\ldots,B_s$ be finite nonempty sets and let
+$c:B_1\times\cdots\times B_s\to\mathbb Z$ be nonzero.  For
+$I\subseteq\{1,\ldots,s\}$, define its marginal
+\[
+ c_I(x_I)=\sum_{x_{I^c}}c(x_I,x_{I^c}),
+\]
+where $c_\varnothing=\sum_xc(x)$.  If
+$r=\min\{|I|:c_I\ne0\}$, then
+\[
+ \|c\|_1\ge2^r.
+\]
+Consequently, if $c_\varnothing=0$ and $\|c\|_1=2m$, some nonempty
+$I$ with $|I|\le\lfloor\log_2(2m)\rfloor$ has $c_I\ne0$.
+\end{lemma}
+
+\begin{proof}
+Induct on the number $s$ of coordinates.  If $r=0$, integrality gives
+$\|c\|_1\ge|\sum c|\ge1$.  Suppose $r\ge1$.  Since $c$ is nonzero
+and has total sum zero, its support has at least two points.  Choose a
+coordinate $i$ in which two support points differ.  There are at least
+two nonzero slices $c^{(z)}$, obtained by fixing $x_i=z$.  Every marginal
+of such a slice on fewer than $r-1$ of the remaining coordinates is
+zero: it is the corresponding entry of a marginal $c_{I\cup\{i\}}$
+on fewer than $r$ coordinates.  The induction hypothesis therefore
+gives $\|c^{(z)}\|_1\ge2^{r-1}$ for each nonzero slice.  Summing the
+norms of the disjoint slices proves $\|c\|_1\ge2^r$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:cyclic-euler}]
+Identify $X$ with $\mathbb Z/E\mathbb Z$, and write
+$c_x=\operatorname{mult}_A(x)-\operatorname{mult}_C(x)$.
+After cancelling common entries, its positive and negative parts both
+have mass $m\le k$, so $c\ne0$, $\sum_xc_x=0$ and $\|c\|_1=2m$.
+For an evaluation $v\in\widehat X\cong\mathbb Z/E\mathbb Z$,
+the two local polynomials agree precisely when the signed histogram
+\[
+ (v_*c)(z)=\sum_{vx=z}c_x\qquad(z\in\mathbb Z/E\mathbb Z)
+\]
+is zero.  Indeed, the distinct roots of unity label the roots of the
+local polynomial, and equal polynomials have identical root
+multiplicities.  Since $\chi$ has order $E$, the evaluation homomorphism
+$(\mathbb Z/Q\mathbb Z)^\times\to\widehat X$ is onto, with equal
+fibres.  Thus $\delta(A,C)$ is the fraction of $v$ with $v_*c\ne0$.
+
+Write $E=\prod_i\ell_i^{a_i}$ and use the Chinese remainder coordinates
+$X\cong\prod_i\mathbb Z/\ell_i^{a_i}\mathbb Z$.  By
+Lemma~\ref{lem:small-marginal}, some nonzero marginal $c_I$ uses
+$r=|I|\le\min\{s,\lfloor\log_2(2m)\rfloor\}\le t$ coordinates.
+If $\ell_i\nmid v_i$ for every $i\in I$, multiplication by $v_i$ is
+bijective on these coordinates.  Taking the $I$-marginal of $v_*c$
+therefore gives an invertible relabelling of $c_I$, which is nonzero.
+Consequently the disagreement set contains the cylinder
+\[
+ C_I=\{v:\ell_i\nmid v_i\text{ for all }i\in I\}.
+\]
+It has density
+\[
+ d_I=\prod_{i\in I}(1-\ell_i^{-1})
+ \ge\prod_{i=1}^{r}(1-\ell_i^{-1})
+ \ge\prod_{i=1}^{t}(1-\ell_i^{-1})=D(E,k).
+\]
+
+For equality, set $h_i=E/\ell_i\in\mathbb Z/E\mathbb Z$ for
+$1\le i\le t$ and take the signed measure
+\[
+ c=\mathop{*}_{i=1}^{t}(\delta_0-\delta_{h_i}),
+\]
+where $*$ denotes convolution in the cyclic group.  Equivalently,
+$A$ consists of the sums $\sum_{i\in J}h_i$ over even $|J|$, and
+$C$ of the sums over odd $|J|$.  These $2^t$ sums are distinct, since
+their projections to the different prime-primary components distinguish
+the choices independently.  Both packets have size $2^{t-1}\le k$.
+Under multiplication by $v$, a factor becomes zero exactly when
+$\ell_i\mid v$; if no factor becomes zero, the same primary-component
+argument shows that the $2^t$ signed atoms remain distinct.  Thus
+$v_*c\ne0$ exactly on $C_{\{1,\ldots,t\}}$, of density $D(E,k)$.
+Pad both packets with the same $k-2^{t-1}$ characters to obtain size $k$.
+
+Finally the products $\prod_{i\le j}(1-\ell_i^{-1})$ decrease strictly
+with $j$.  The full product $\varphi(E)/E$ is therefore reached exactly
+when $t=s$, equivalently $k\ge2^{s-1}$.
+\end{proof}
+
+\subsection{The optimal bound over all cyclic families}
+
+Let $p_j$ be the $j$th prime, starting with $p_1=2$, and put
+$d(k)=\lfloor\log_2(2k)\rfloor$.  Theorem~\ref{thm:cyclic-euler}
+has the following consequence, where the infimum ranges over all
+cyclic Dirichlet-character groups and all distinct equal-size packets.
+
+\begin{corollary}[The global cyclic profile]\label{cor:global-cyclic}
+For every $k\ge1$,
+\[
+ \inf_{X\text{ cyclic}}\ \min_{|A|=|C|=k,\ A\ne C}\delta(A,C)
+ =\prod_{j=1}^{d(k)}(1-p_j^{-1}).
+\]
+This infimum is a minimum, even if all the factors are required to
+be primitive Dirichlet characters of one prime conductor.  As
+$k\to\infty$, its value is
+\[
+ \frac{e^{-\gamma}+o(1)}{\log\log k},
+\]
+where $\gamma$ is Euler's constant.
+\end{corollary}
+
+\begin{proof}
+Replacing the distinct prime factors of an arbitrary exponent $E$
+by smaller primes can only decrease the product in
+Theorem~\ref{thm:cyclic-euler}, as can adding factors until there are
+$d(k)$ of them.  This proves the displayed lower bound.  For
+attainment with primitive factors, set
+$E_0=\prod_{j\le d(k)}p_j$ and $E=2E_0$.
+Choose a prime $Q\equiv1\pmod E$ and a character $\chi$ of order $E$
+modulo $Q$.  The parity-box construction has $2^{d(k)}<E$ distinct
+exponents in its two supports.  A common additive shift of those
+exponents can avoid zero modulo $E$, because fewer than $E$ shifts
+are forbidden.  Every resulting character is nonprincipal and hence
+primitive of conductor $Q$.  Pad with any common primitive character
+if necessary.  Common twisting and padding preserve local agreement.
+Finally Mertens' product theorem \cite[Eq.~(3)]{mertensmodern} gives
+$\prod_{p\le p_d}(1-p^{-1})\sim e^{-\gamma}/\log p_d$,
+and the prime number theorem gives $p_d\sim d\log d$.
+Since $d(k)\sim\log k/\log2$, we have
+$\log p_{d(k)}\sim\log\log k$, proving the asymptotic.
+\end{proof}
+
+\paragraph{A structural contrast.} The global cyclic minimum tends to zero only on the scale $1/\log\log k$. In elementary $2$-groups, the prime-primary theorem below allows disagreement $1/(2k)$ at every power-of-two degree $k$, when the rank is large enough. Thus packet size alone does not describe the possible ambiguity: the character group matters decisively.
+
+
+\section{Arbitrary finite abelian groups of prime-power order}
+\label{sec:primary}
+
+We now allow a finite abelian $\ell$-group, so the character
+orders may be arbitrarily large powers of the prime $\ell$. We write the dual group additively in this section, so $(\ell v)(x)=v(x)^\ell$. The cyclic factors below are nontrivial, with $a_i\ge1$. Let
+\[
+ X\simeq\bigoplus_{i=1}^{r}\mathbf Z/\ell^{a_i}\mathbf Z,
+ \qquad b=\min_i a_i,\quad N=|X|,\quad M=N/\ell^b,
+ \qquad V=\widehat X.
+\]
+Let $A,B$ be distinct equal-size character multisets, put $c=A-B$, and
+let $m=\sum_x c(x)^+=\sum_x c(x)^-$ be the mass after cancellation.
+For $v\in V$ write
+\[
+ E_A(v,T)=\prod_{x\in X}(1-v(x)T)^{A(x)},\qquad
+ S=\{v:E_A(v,T)\ne E_B(v,T)\},\qquad \delta=|S|/N.
+\]
+Thus $v\notin S$ means that every fibre of $x\mapsto v(x)$ has zero
+$c$-mass.  This uses the whole Euler polynomial; equality of the first
+traces alone does not suffice at composite exponent.
+
+\begin{theorem}[Sharp mass bound and all its equality cases]
+\label{thm:primary-mass}
+For every nonzero balanced integral $c$ as above,
+\[
+ \delta\ge \frac{\ell-1}{\ell m}\|c\|_\infty
+ \ge\frac{\ell-1}{\ell m}.
+\]
+Equality $\delta=(\ell-1)/(\ell m)$ holds if and only if there are $P\le X$,
+$a\in X$, and $t\in X[\ell]\setminus P$ such that
+\[
+ c=\mathbf1_{a+P}-\mathbf1_{a+t+P},\qquad m=|P|,
+ \qquad X[\ell]=\{x:\ell x=0\}.
+\]
+In particular, the translate must admit an actual order-$\ell$
+representative, not merely have order $\ell$ in $X/P$.
+\end{theorem}
+
+The crucial device is a corrected anchored projection:
+\[
+ K_y(v)=\mathbf1_{v(y)=1}
+       -\frac1\ell\mathbf1_{v(\ell y)=1},
+ \qquad J_a(v)=\sum_xc(x)K_{x-a}(v).
+\]
+For nonzero $y$ of order $\ell^j$, character orthogonality gives
+\[
+ \mathbb E K_y=\ell^{-j}-\ell^{-1}\ell^{-(j-1)}=0,
+ \qquad
+ K_y(v)=\ell^{-j}\!\sum_{\substack{0\le u<\ell^j\\\ell\nmid u}}v(uy).
+\]
+For $y=0$ the function is the constant $1-1/\ell$.  Consequently
+\begin{equation}\label{eq:primary-detector}
+ \mathbb EJ_a=(1-1/\ell)c(a),\qquad
+ |J_a|\le m\mathbf1_S,\qquad
+ \|J_a\|_{\mathcal A}\le2(1-1/\ell)m.
+\end{equation}
+Here the Fourier algebra norm is the sum of the absolute values of the
+Fourier coefficients.  For the pointwise bound, the possible values of
+$K_y$ are $1-1/\ell,-1/\ell,0$; their range has length one.  The two
+parts of $c$ each have mass $m$, and both projection sums vanish off
+$S$.  For the norm bound, the displayed Fourier coefficients are
+nonnegative and sum to $1-1/\ell$, including when $y=0$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:primary-mass}]
+Average \eqref{eq:primary-detector} at an anchor where $|c(a)|$ is
+largest.  For equality in the mass bound, this first forces every
+nonzero coefficient to equal $1$ or $-1$.  Let $A_0,B_0$ be the disjoint
+positive and negative supports, each of cardinality $m$.
+
+At each positive anchor, equality of the averages in
+$J_a\le m\mathbf1_S$ forces pointwise equality on $S$.  Thus, for each
+$v\in S$, all elements of $A_0$ have one value under $v$, while the ratio between the value of every
+element of $B_0$ and that common value is a nontrivial $\ell$-th root of unity.  The same
+argument with a negative anchor shows that all elements of $B_0$ also
+have one value.  Their ratio has exact order $\ell$.
+
+Let $P$ be generated by $A_0-A_0$ and $B_0-B_0$.  Then $S\subset P^\perp$.
+The trace $H(v)=\sum_xc(x)v(x)$ vanishes outside $S$, and on $S$ it equals
+$m(v(a)-v(b))\ne0$.  Its support is therefore exactly $S$.
+Fourier inversion makes $c$ invariant under $P$.  Since, by definition,
+$A_0\subset a+P$ and $B_0\subset b+P$, invariance forces
+$A_0=a+P$ and $B_0=b+P$.
+
+We claim $b-a\in P+X[\ell]$.  Otherwise finite duality provides
+$v\in(P+X[\ell])^\perp$ with $v(b-a)\ne1$.  The identity
+$X[\ell]^\perp=\ell V$ lets us write $v=\ell w$.  The two coset
+histograms disagree at $v$, so $v\in S$.  Equality at $w$ would persist
+after raising all values to the $\ell$-th power, hence $w\in S$ too.
+But the equality description above makes $w(b-a)$ an $\ell$-th root of
+unity, contradicting $v(b-a)\ne1$.  We can thus write $b-a=h+t$ with
+$h\in P$ and $t\in X[\ell]\setminus P$.
+
+Conversely, consider the claimed coset pair.  For any $v$, the image
+$v(P)$ is a cyclic $\ell$-group and the multiset image of $P$ is uniform
+on it.  If $v(P)$ is nontrivial, it contains all $\ell$-th roots of unity,
+so multiplication by $v(t)$ preserves that multiset.  If $v(P)$ is
+trivial, disagreement is equivalent to $v(t)\ne1$.  Consequently
+\[
+ S=P^\perp\setminus\langle P,t\rangle^\perp,
+ \qquad |S|=(1-1/\ell)N/|P|,
+\]
+which gives equality.
+\end{proof}
+
+\begin{theorem}[Saturation and all prime-power packet sizes]
+\label{thm:primary-saturation}
+For every distinct equal-size pair,
+\[
+ \delta\ge\frac{\varphi(\ell^b)}N
+            =\frac{\ell-1}{\ell M}.
+\]
+The lower bound is attained at packet size $k$ exactly when $k\ge M$.
+For every $k=\ell^s$, the exact minimum is
+\[
+ \boxed{\displaystyle d_X(k)=
+       \frac{\ell-1}{\ell\min(k,M)}.}
+\]
+For $k=\ell^s\le M$, all minimizers are those in
+Theorem~\ref{thm:primary-mass}, with $|P|=k$.
+\end{theorem}
+
+\begin{proof}
+The set $S$ is invariant under multiplication by every integer prime to
+$\ell$.  It also has the property $\ell v\in S\Rightarrow v\in S$,
+since equality of the two value multisets persists under taking powers.
+The set is nonempty, as otherwise all Fourier traces vanish and $c=0$.
+Starting from an element of $S$, repeatedly take an $\ell$-th root for
+as long as possible.  This ends at $v_0\in S\setminus\ell V$.  Such a
+primitive element has a coordinate not divisible by $\ell$ in some
+cyclic factor; hence its order is at least $\ell^b$.  Its unit orbit
+has at least $\varphi(\ell^b)$ elements, proving the lower bound.
+
+At equality, $S$ must be precisely the generator set of
+$\langle v_0\rangle$, where $v_0\notin\ell V$ has order $\ell^b$.
+The Fourier transform of $c$ is supported there, so $c$ is invariant
+under $\ker v_0$, a group of size $M$.  Its nonzero integral positive
+mass is therefore at least $M$, proving necessity of $k\ge M$.
+
+For attainability split $X=C_{\ell^b}\oplus X'$, where $|X'|=M$.
+Take $P=X'$ and an element $t$ of exact order $\ell$ in the first factor.
+The coset construction attains the saturation bound, and common
+entries pad it to every $k\ge M$.  When $k=\ell^s\le M$, choose instead
+a subgroup $P\le X'$ of order $k$.  Every such prime-power order occurs
+among the subgroups of a finite abelian $\ell$-group.  The same coset
+construction attains $(\ell-1)/(\ell k)$, the lower bound of
+Theorem~\ref{thm:primary-mass}.  Equality leaves no room for cancellation,
+and the equality classification follows.
+\end{proof}
+
+\begin{proposition}[Complete saturated equality characterization]
+\label{prop:primary-saturated-equality}
+Equality in the saturation bound holds exactly for the following
+nonzero balanced integral functions $c$.  Choose
+$v_0\in V\setminus\ell V$ of order $\ell^b$.  The function $c$ is
+constant on fibres of $v_0:X\to\mu_{\ell^b}$, with induced integral
+function $g$ on $C_{\ell^b}$ satisfying
+\[
+ \sum_{j=0}^{\ell-1}g(u+j\ell^{b-1})=0
+ \quad\text{for every }u\pmod{\ell^{b-1}}.
+\]
+\end{proposition}
+
+\begin{proof}
+Necessity follows from the preceding proof: the Fourier transform of
+$c$ is supported on the generator orbit of $v_0$.  Fourier inversion
+on $C_{\ell^{b-1}}$ says exactly that its nonprimitive Fourier
+coefficients vanish if and only if the displayed fibre sums vanish.
+Conversely, for such a nonzero integral $g$, its primitive Fourier
+coefficients cannot vanish: Galois conjugacy would make all of them
+zero, and then every Fourier coefficient would be zero.  Thus the
+trace support is exactly the generator orbit.  No additional Euler
+polynomial disagreement can be hidden at another $v$: if some multiple
+$dv$ lies in that generator orbit, primitivity of $v_0$ forces
+$\ell\nmid d$, so multiplication by $d$ is an automorphism and $v$
+lies in the same orbit.  All power traces vanish elsewhere, and hence
+all value histograms vanish there by Fourier inversion on the root
+of unity group.  The full disagreement set is the claimed orbit.
+\end{proof}
+
+
+
+\section{Quantitative prime observations under Dirichlet GRH}\label{sec:prime-windows}
+Fix a nonnegative $w\in C_c^\infty((1,2))$ with $\int w=1$. All constants in this section depend only on this chosen weight. For $f:V\to\C$ write
+\[
+ f(v)=\sum_{x\in X}\widehat f(x)v(x),\qquad
+ \|f\|_{\mathcal A}=\sum_x|\widehat f(x)|,
+\]
+using normalized Fourier coefficients, and put
+\[
+ \mathcal M_Y(f)=\sum_{\substack{p\text{ prime}\\p\nmid Q}}(\log p)w(p/Y)f(v_p).
+\]
+Here $v_p(x)=x(p)$ for a Dirichlet character $x\in X$. The weights are supported on the prime interval $(Y,2Y)$.
+
+\begin{lemma}[The inherited smoothed estimate]\label{lem:smoothed}
+Assume Dirichlet GRH. There is a constant $C_w$ such that, for $Y\ge2$ and any finite subgroup $X$ of the characters modulo $Q$,
+\[
+ \left|\mathcal M_Y(f)-Y\E f\right|
+ \le C_w\|f\|_{\mathcal A}\sqrt Y\log(2Q).
+\]
+\end{lemma}
+\begin{proof}
+This is the prime character estimate in the source article, label \texttt{rec:lem:gram} \cite{rec}, followed by Fourier expansion. To recall its analytic content, for a primitive character $\psi$ of conductor dividing $Q$, Mellin inversion expresses the smoothed von Mangoldt sum through $-L'/L$. Moving the line past the nontrivial zeros gives the principal term $Y\int w$ and a zero sum
+\[
+ -\sum_\rho Y^\rho\widetilde w(\rho).
+\]
+GRH makes $|Y^\rho|=\sqrt Y$. Rapid decay of the Mellin transform and the standard unit-interval zero count bound the sum by $O_w(\sqrt Y\log(2Q))$. The remaining contour and trivial-zero terms are no larger. Prime powers of exponent at least two contribute $O_w(\sqrt Y)$ by Chebyshev's bound. Passing to a character modulo $Q$ and omitting primes dividing $Q$ costs $O_w(\log(2Q))$. Thus the claimed estimate holds for each Fourier character; summing absolute coefficient weights proves it for $f$. This recalls an existing analytic input, rather than claiming a new explicit-formula estimate. No numerical value of $C_w$ is computed in this note.
+\end{proof}
+
+\subsection{Cyclic groups: a certificate at the sharp density}
+Let $C_I$ be the faithful-coordinate cylinder in the proof of Theorem~\ref{thm:cyclic-euler}, with $r=|I|$ and density $d_I$. For one primary coordinate of order $\ell^a$, choose an element $h$ of order $\ell$. The indicator of faithful evaluation is
+\[
+ \one_{v(h)\ne1}
+  =1-\frac1\ell\sum_{j=0}^{\ell-1}v(jh).
+\]
+Its Fourier norm is $2(1-1/\ell)$. Different primary coordinates have independent Fourier supports, so
+\begin{equation}\label{eq:cyclic-norm}
+ \|\one_{C_I}\|_{\mathcal A}=2^r d_I.
+\end{equation}
+This identity holds for arbitrary primary exponents $a$, not just for squarefree $E$. Pullback to the reduced residue group preserves the norm because distinct members of $X$ remain distinct Dirichlet characters.
+
+\begin{theorem}[Sharp-density cyclic window certificate]\label{thm:cyclic-window}
+Assume Dirichlet GRH. Let $t=\min(s,\lfloor\log_2(2k)\rfloor)$ and $D=D(E,k)$ as in Theorem~\ref{thm:cyclic-euler}. For every pair of distinct packets of size $k$ and every $Y\ge2$,
+\[
+ \mathcal M_Y(\one_{\mathcal D(c)})
+ \ge D Y\left(1-C_w2^t\frac{\log(2Q)}{\sqrt Y}\right).
+\]
+For the displayed extremal packets in that theorem,
+\[
+ \left|\mathcal M_Y(\one_{\mathcal D(c)})-DY\right|
+ \le C_w2^tD\sqrt Y\log(2Q).
+\]
+Consequently, every interval $(Y,2Y)$ contains a distinguishing prime when
+\[
+ Y\ge C'_w4^t\log^2(2Q),
+\]
+with $C'_w$ sufficiently large. Since $2^t\le2k$, this is at most a constant times $k^2\log^2(2Q)$; when $E$ has few distinct prime factors it stops growing with $k$ at $t=s$.
+\end{theorem}
+\begin{proof}
+The proof of the cyclic theorem supplies $C_I\subseteq\mathcal D(c)$, $r\le t$ and $d_I\ge D$. Positivity of the prime weights and Lemma~\ref{lem:smoothed} give
+\[
+ \mathcal M_Y(\one_{\mathcal D(c)})
+ \ge d_IY\left(1-C_w2^r\frac{\log(2Q)}{\sqrt Y}\right).
+\]
+If the bracket with $2^t$ is nonnegative, replace $r$ by $t$ and $d_I$ by $D$. If that bracket is negative, the claimed lower bound is nonpositive and follows directly from positivity. For the extremizers, $\mathcal D(c)$ is exactly the cylinder using the first $t$ primary coordinates, so the two-sided estimate follows from \eqref{eq:cyclic-norm}. Taking $C'_w$ large enough makes the lower bound strictly positive.
+\end{proof}
+
+\subsection{Prime-primary groups: retaining the sharp mass bound}
+Set $\alpha=1-1/\ell$. The detector in \eqref{eq:primary-detector}, at a positive anchor with $c(a)\ge1$, satisfies $J_a/m\le\one_{\mathcal D(c)}$. It can take negative values; positivity is used for the prime weights, not assumed for the detector. Lemma~\ref{lem:smoothed} therefore gives
+\begin{equation}\label{eq:primary-window}
+ \mathcal M_Y(\one_{\mathcal D(c)})
+ \ge\frac{\alpha}{m}\left(Y-2C_wm\sqrt Y\log(2Q)\right).
+\end{equation}
+If the chosen coefficient exceeds one, the $Y$ term improves to $c(a)Y$. Thus the sharp lower density $\alpha/m$ is recovered with a relative error controlled at the scale $m^2\log^2(2Q)$, uniformly in the prime, rank and exponent.
+
+For both equality families in Section~\ref{sec:primary}, the disagreement set is a subgroup minus an index-$\ell$ subgroup of $V$. Its exact Fourier norm is
+\[
+ \|\one_{\mathcal D(c)}\|_{\mathcal A}=2(1-1/\ell)=2\alpha.
+\]
+Indeed, if $K\le H\le V$ and $[H:K]=\ell$, the Fourier coefficients of $\one_H-\one_K$ are positive on $H^\perp$, negative on $K^\perp\setminus H^\perp$, and zero elsewhere; the positive and negative coefficient masses both equal $\alpha$. Hence every extremal density satisfies the two-sided estimate
+\[
+ \left|\mathcal M_Y(\one_{\mathcal D(c)})-\delta(c)Y\right|
+ \le2C_w\alpha\sqrt Y\log(2Q).
+\]
+
+\begin{remark}[What the prime scale does and does not add]\label{rem:standard-scale}
+For any finite abelian $X$, regardless of its exponent, the ordinary anchored trace
+\[
+ f_a(v)=\operatorname{Re}\left(\overline{v(a)}H_c(v)\right)
+\]
+has mean $c(a)$, Fourier norm at most $2m$, and vanishes wherever the Euler factors agree. Applying Lemma~\ref{lem:smoothed} at a positive anchor already gives a distinguishing prime at the scale $m^2\log^2(2Q)$. The new finite results identify the best possible density and the exact configurations that attain it; the cyclic cylinder also yields a relative certificate at the possibly smaller scale $4^t\log^2(2Q)$.
+\end{remark}
+
+\subsection{A sharp error-correction interpretation}
+Observe the whole local Euler polynomial at each unramified prime. A packet is then a codeword with a polynomial-valued alphabet. For cyclic $X$, Theorem~\ref{thm:cyclic-euler} says that the smallest limiting relative Hamming distance between distinct size-$k$ codewords is exactly $D(E,k)$.
+
+\begin{corollary}[Asymptotic correction threshold]\label{cor:correction}
+For a cyclic group $X$ of order $E$, fewer than $D(E,k)/2$ corrupted prime coordinates in upper relative density permit at most one size-$k$ packet consistent with the data. This threshold is sharp. Under Dirichlet GRH, for any fixed $0<\eta<1$, the normalized weights on $(Y,2Y)$ give pairwise distance at least $(1-\eta)D(E,k)$ whenever
+\[
+ Y\ge C''_w\eta^{-2}4^t\log^2(2Q).
+\]
+Thus fewer than $(1-\eta)D(E,k)/2$ weighted errors guarantee uniqueness in that finite window.
+\end{corollary}
+\begin{proof}
+If a received word differs from each of two packets on error sets of upper density less than $D/2$, the disagreement set of those packets lies in the union of the two error sets and would have density less than $D$, a contradiction. For sharpness use an extremal pair and divide its distinguishing primes, in increasing order, into two alternating subsequences. Both have relative density $D/2$; choosing the received value from one packet on the first half and from the other packet on the second half produces ambiguity exactly at the threshold.
+
+For a finite window normalize by $\mathcal M_Y(1)=Y+O_w(\sqrt Y\log(2Q))$. Theorem~\ref{thm:cyclic-window}, with constants enlarged to include the denominator, gives distance at least $(1-\eta)D$ at the displayed scale. The triangle inequality proves the correction guarantee. This is a uniqueness statement, not a claim of an efficient decoding algorithm.
+\end{proof}
+
+\section{Explicit families and arithmetic examples}\label{sec:examples}
+\subsection{The cyclic phase transitions}
+The exact minimum is constant between successive powers of two in $k$ until all distinct prime factors of $E$ have been used. Some values are:
+\begin{center}
+\begin{tabular}{@{}lccccc@{}}\toprule
+$E$ & $k=1$ & $k=2,3$ & $k=4,\ldots,7$ & $k\ge8$ & First saturation\\\midrule
+$30$ & $1/2$ & $1/3$ & $4/15$ & $4/15$ & $4$\\
+$210$ & $1/2$ & $1/3$ & $4/15$ & $8/35$ & $8$\\
+$45$ & $2/3$ & $8/15$ & $8/15$ & $8/15$ & $2$\\
+$72$ & $1/2$ & $1/3$ & $1/3$ & $1/3$ & $2$\\\bottomrule
+\end{tabular}
+\end{center}
+The powers in $E$ do not appear in the answer: orders $6$, $12$, $72$ and $2^{100}3^{100}$ have the same cyclic matching function. The number of distinct primary components determines how many rounds of binary cancellation can occur, while the smallest prime factors determine the cheapest components to use.
+
+\subsection{Two products of four primitive $L$-functions modulo 31}
+The integer $3$ is a primitive root modulo $31$. Choose the order-$30$ character $\chi$ with $\chi(3)=e^{2\pi i/30}$. The parity construction on the steps $15,10,6$ gives exponent packets
+\[
+ A=\{0,16,21,25\},\qquad B=\{1,6,10,15\}.
+\]
+Twisting both by $\chi^2$ preserves every local equality and removes the principal character, giving
+\[
+ A'=\{\chi^2,\chi^{18},\chi^{23},\chi^{27}\},\qquad
+ B'=\{\chi^3,\chi^8,\chi^{12},\chi^{17}\}.
+\]
+Every displayed character is nonprincipal modulo the prime $31$, hence primitive of conductor $31$. Let $F_A$ and $F_B$ be the corresponding products of four Dirichlet $L$-functions. Their local Euler factors disagree precisely at primes which are primitive roots modulo $31$, a set of relative density
+\[
+ \frac{\varphi(30)}{30}=\frac4{15}.
+\]
+They agree at density $11/15$. The cyclic theorem proves that this is the maximum possible agreement among all distinct degree-four packets in the same cyclic character group. The two global products are different: the coefficient traces cannot agree at every evaluation unless the signed packet is zero. The example therefore exhibits genuine local ambiguity across most primes.
+
+\subsection{Quartic characters and the torsion-lifting condition}
+For $X=(C_{\ell^a})^r$, Theorem~\ref{thm:primary-saturation} becomes
+\[
+ d_X(\ell^u)=\frac{\ell-1}{\ell^{1+\min(u,a(r-1))}}.
+\]
+For $X=C_4\times C_4$ the exact minima at degrees $1,2,4,8,\ldots$ are $1/2,1/4,1/8,1/8,\ldots$. Let $\alpha$ have order four modulo $5$, let $\beta$ have order four modulo $13$, and view both as characters modulo $65$. The packets
+\[
+ \{1,\alpha,\alpha^2,\alpha^3\},\qquad
+ \{\beta^2,\beta^2\alpha,\beta^2\alpha^2,\beta^2\alpha^3\}
+\]
+have different Euler factors exactly when $\alpha(p)=1$ and $\beta^2(p)=-1$. Among the $48$ units modulo $65$, these are exactly
+\[
+ 6,\ 11,\ 21,\ 31,\ 41,\ 46.
+\]
+Thus the disagreement density is $1/8$, and the agreement density is $7/8$. The theorem proves optimality in this group for every degree at least four, allowing common padding. The prime $11$ already distinguishes the displayed packets: their polynomials there are $(1-T)^4$ and $(1+T)^4$.
+
+The actual order-$\ell$ condition in the equality classification is necessary. In $X=C_{\ell^2}$, take $P=\ell X$ and $t$ a generator. Although $t+P$ has order $\ell$ in $X/P$, it has no representative of order $\ell$ in $X$. The packets $P$ and $t+P$ disagree at \emph{every nonidentity evaluation}, giving
+\[
+ \delta=1-\ell^{-2},
+\]
+not $(\ell-1)/\ell^2$. A unit evaluation takes the two cosets to disjoint cosets of $\mu_\ell$ inside $\mu_{\ell^2}$; a nonzero evaluation divisible by $\ell$ makes each packet constant with distinct constants. This accounts for every nonidentity evaluation and explains why quotient order alone is insufficient.
+
+\section{Source comparison, verification and remaining questions}\label{sec:validation}
+\subsection{What is new relative to the inspected directory}
+The comparison is pinned to a fixed source revision. The relevant inputs and distinctions are summarized below; the archive's source audit records exact paths and hashes.
+\begin{center}\small
+\begin{tabular}{@{}p{.28\linewidth}p{.31\linewidth}p{.33\linewidth}@{}}\toprule
+Source statement or topic & Existing scope & Contribution of this note\\\midrule
+\texttt{rec:lem:otrace} & Prime exponent: one trace decides the local polynomial & Full histograms and divisor-indexed power traces at arbitrary exponent\\[3pt]
+\texttt{rec:lem:oradon} & Anchored projection in an elementary abelian group & Corrected projection at every prime-power order, with exact equality cases\\[3pt]
+\texttt{rec:thm:qmatch}, \texttt{rec:thm:odigit} and related results & Quadratic and odd-prime-exponent packet extrema & Every cyclic exponent and packet size; arbitrary abelian prime-primary groups at prime-power sizes\\[3pt]
+\texttt{rec:thm:ofinite}, \texttt{rec:lem:gram} & GRH transfer via Fourier character estimates & Sharp cyclic density certificate with exact norm $2^tD(E,k)$\\[3pt]
+Minimum-volume trade principle & Classical cancellation bound $2^r$ & Its application to prime-primary marginals of cyclic Euler packets\\\bottomrule
+\end{tabular}
+\end{center}
+The new Research packets on Euler agreement were checked for their exponent assumptions. The inspected papers continue to treat prime exponent. This note does not assert that the broader composite-exponent problem has been solved: a general finite abelian group with several noncyclic primary components is outside the exact formulas here. At arbitrary non-prime-power packet sizes in a noncyclic $\ell$-group, the sharp mass and saturation bounds still apply, but an exact minimum is not claimed.
+
+Related literature includes finite-group Fourier uncertainty \cite{meshulam}, finite-group character agreement \cite{martinwalji}, and minimum-volume trades \cite{trades}. These are relevant antecedents, not evidence that a short literature search can establish worldwide priority. The most defensible novelty statement is that the two classification theorems extend the inspected repository results and answer substantial cases of its explicit composite-exponent question. The finite proofs are self-contained apart from elementary finite duality and the structure theorem for finite abelian groups.
+
+\subsection{Exact computational checks}
+The archive supplies two independent programs using Python's standard library. They compare full value histograms by integer modular arithmetic, never by floating-point roots of unity. The prime-primary checker also verifies the equality characterizations and explicit subgroup constructions; the cyclic checker enumerates small packet families and verifies the parity constructions, cylinder norms and the modulus-$31$ example. The results and exact counts are recorded in the accompanying JSON and text files.
+
+These computations are corroboration of the proofs, not a replacement for them. In particular, finite enumeration cannot establish a statement for arbitrary group order. The analytic estimate is inherited as a proved input under Dirichlet GRH; the programs do not purport to verify GRH, the explicit formula, or an unspecified absolute constant. A separate mathematical review checked the principal proof steps, including the minimal-marginal induction, the corrected-projection equality argument, the torsion lift and the saturation orbit argument.
+
+The completed runs checked \textbf{10,417,835 unordered packet pairs}: 2,453,747 across 53 cyclic cases and 7,964,088 across nine prime-primary cases. Additional checks covered 2,940 balanced signed arrays, 49 cyclic extremal constructions, 38 exact cylinder Fourier transforms, 24 prime-primary subgroup constructions, and the two arithmetic examples. In the first quartic saturation case, $X=C_4^2$ and $k=4$, all 7,509,750 packet pairs were enumerated; the minimum was $1/8$, and exactly 12 unordered pairs attained saturation. The exact equality predicates were checked as equivalences on the enumerated prime-primary pairs.
+
+\subsection{Directions left open}
+\begin{enumerate}
+\item Determine $d_X(k)$ for arbitrary finite abelian $X$ and all $k$. The cyclic theorem shows a binary trade threshold; the prime-primary theorem shows subgroup-size thresholds. Their interaction when several primary factors have rank greater than one is not resolved here.
+\item Classify every extremizer for cyclic groups at every plateau. We give an attaining family for every parameter, but do not claim that every extremizer is a parity box.
+\item Determine the intermediate-degree spectrum for general abelian $\ell$-groups. Equality in the sharp mass bound forces the cancelled mass to be a subgroup order, but this does not alone identify the next attainable level.
+\item Convert the exact uniqueness thresholds into efficient recovery algorithms from corrupted local polynomials. The finite-window theorem supplies separation, not a complexity bound for decoding.
+\item Complete the Lean formalization described in the archive. The new finite results do not require importing an RH proof; only the analytic transfer needs the source Dirichlet-GRH bridge.
+\end{enumerate}
+
+\appendix
+\section{Formalization structure}
+A practical formalization can keep the finite classification separate from analytic number theory. Represent a packet by a finitely supported function $X\to\mathbb N$, its difference by $X\to\mathbb Z$, and an evaluation histogram by pushforward along a homomorphism. First prove that histogram equality is preserved by postcomposition. For cyclic groups, formalize finite product marginals and the integral $\ell^1$ induction, then use the Chinese remainder decomposition. The parity construction is a finite convolution identity whose pushforward is zero exactly when one order-prime step is killed.
+
+For the prime-primary theorem, the central reusable lemma is the expectation identity for $K_y$ and its oscillation-one bound. Equality should be formalized by summing nonnegative finite deficits: if their sum is zero, every deficit vanishes. Finite Fourier inversion then gives subgroup invariance. The remaining group-theoretic interface consists of $X[\ell]^\perp=\ell\widehat X$, finite dual separation, and the cyclic-factor description of primitive dual elements. The saturation characterization reduces to Fourier inversion on $C_{\ell^{b-1}}$ and cyclotomic Galois conjugacy.
+
+Finally state the prime character estimate as a separate theorem with an explicit Dirichlet-GRH hypothesis. All finite-group conclusions should compile without it. The archive's \texttt{formalization.md} gives a more detailed list of declarations and dependencies; it is a roadmap, not an unchecked file presented as a completed proof.
+
+\begin{thebibliography}{9}
+\bibitem{proveit} ProveIt contributors, \emph{Generalized Riemann Hypothesis directory and merged article}, repository revision \texttt{6b034b74a8}, consulted 27 November 2026. \href{\sourcebase/README.md}{Pinned directory README}; \href{\sourcebase/Article/README.md}{pinned article inventory}.
+\bibitem{rec} ProveIt contributors, \emph{Recovering zeros and characters from prime data}, in the same article, \texttt{Article/sections/rec.tex}; especially labels \texttt{rec:lem:gram}, \texttt{rec:sec:qmatch}, \texttt{rec:sec:omatch}, and \texttt{rec:sec:open}. \href{\sourcebase/Article/sections/rec.tex}{Pinned source}.
+\bibitem{sutherland} A. Sutherland, \emph{Verification files for the shorter Lean proof of RH and of GRH for Dirichlet $L$-functions}, upstream commit \texttt{72fead10}, page consulted 27 November 2026. \url{https://math.mit.edu/~drew/shortgrh/}.
+\bibitem{trades} E. Ghorbani, S. Kamali, G. B. Khosrovshahi and D. S. Krotov, \emph{On the volumes and affine types of trades}, Electronic Journal of Combinatorics \textbf{27}(1) (2020), P1.29. \url{https://doi.org/10.37236/8367}; \url{https://arxiv.org/abs/1810.02296}.
+\bibitem{meshulam} R. Meshulam, \emph{An uncertainty inequality for finite abelian groups}, European Journal of Combinatorics \textbf{27} (2006), 63--67. \url{https://arxiv.org/abs/math/0312407}.
+\bibitem{martinwalji} K. Martin and N. Walji, \emph{Distinguishing finite group characters and refined local-global phenomena}, Acta Arithmetica \textbf{179}(3) (2017), 277--300. \url{https://doi.org/10.4064/aa170120-1-5}.
+\bibitem{mertensmodern} D. Keliher and E. S. Lee, \emph{On the constants in Mertens' theorems for primes in arithmetic progressions}, Integers \textbf{24A} (2024), A12, Eq.~(3). \url{https://math.colgate.edu/~integers/a12Proc23/a12Proc23.pdf}.
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Graduate Texts in Mathematics 74, Springer, 2000. Standard reference for prime distribution in progressions and the Dirichlet explicit formula; also the analytic reference used by the source article.
+\end{thebibliography}
+\end{document}

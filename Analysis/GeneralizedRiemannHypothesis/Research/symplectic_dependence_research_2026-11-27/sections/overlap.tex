@@ -1,0 +1,217 @@
+\section{A contrasting critical law for overlapping cycles}\label{sec:overlap}
+
+Keep $V=\mathbb F_q^{2n}$, $N=q^{2n}$ and the nonzero-vector sampling model.
+Let $2\le a\le2n$. Assign independent uniform nonzero vectors
+$X_1,\ldots,X_a$ to the left part of $K_{a,m}$ and
+$Z_1,\ldots,Z_m$ to the right part. Orient all edges from left to right and
+observe the columns
+\[
+ Y_j=(\langle X_1,Z_j\rangle,\ldots,
+       \langle X_a,Z_j\rangle)\in\mathbb F_q^a.
+\]
+Let $P_{a,m,N}$ be the actual law and let
+$Q_{a,m,N}=(p_N^{\otimes a})^{\otimes m}$ be the law with independent
+edges and the same one-edge marginal.
+
+Define a probability measure on $\mathbb F_q^a$ by
+\[
+ \rho_{a,N}(y)=
+ \begin{cases}
+ (N-q^a)/(q^a(N-1)),&y=0,\\
+ N/(q^a(N-1)),&y\ne0.
+ \end{cases}
+\]
+Its zero mass is allowed to vanish at the finite endpoint $a=2n$.
+Put
+\[
+ \alpha_{a,N}=\prod_{i=0}^{a-1}\frac{N-q^i}{N-1},\qquad
+ \delta_{a,N}=1-\alpha_{a,N}.
+\]
+
+\begin{proposition}[Exact independent-anchor reduction]\label{prop:anchors}
+The event $\mathcal E$ that the $a$ anchor vectors are linearly independent
+has probability $\alpha_{a,N}$. Conditional on $\mathcal E$, the columns
+$Y_1,\ldots,Y_m$ are independent with common law $\rho_{a,N}$.
+Consequently,
+\[
+ d_{\mathrm{TV}}(P_{a,m,N},\rho_{a,N}^{\otimes m})
+ \le\delta_{a,N}
+ \le\frac{(q^a-1)/(q-1)-a}{N-1}.
+\tag{A1}
+\]
+Both inequalities hold for every $m$.
+
+\end{proposition}
+\begin{proof}
+After $i$ independent nonzero anchors, the span contains $q^i-1$ of the
+$N-1$ possible next vectors. Multiplying the successive probabilities
+proves the formula for $\alpha_{a,N}$. The elementary product inequality
+$1-\prod_i(1-b_i)\le\sum_i b_i$ with
+$b_i=(q^i-1)/(N-1)$ gives the second bound.
+
+For each fixed independent anchor tuple, nondegeneracy of the alternating
+form makes the linear map
+\[
+ T_X:V\longrightarrow\mathbb F_q^a,
+ \qquad z\longmapsto(\langle X_i,z\rangle)_{i=1}^a
+\]
+surjective. Every fibre has $N/q^a$ elements. Removing the zero vector
+removes one point from the zero fibre only, giving $\rho_{a,N}$.
+The $Z_j$ are independent, and this conditional column law does not depend
+on the particular independent anchor tuple. Integrating over all such
+tuples therefore preserves the product law. The mixture decomposition
+\[
+ P_{a,m,N}=\alpha_{a,N}\rho_{a,N}^{\otimes m}
+             +\delta_{a,N}\mathcal D_{a,m,N}
+\]
+for a probability measure $\mathcal D_{a,m,N}$ proves the first bound.
+\end{proof}
+
+\begin{lemma}[Conditional column information]\label{lem:anchor-info}
+For fixed $a,q$ and $n\to\infty$, uniformly on $y\in\mathbb F_q^a$,
+\[
+ \frac{\rho_{a,N}(y)}{p_N^{\otimes a}(y)}
+ =1+\frac{h_a(y)}N+O_{a,q}(N^{-2}),
+ \qquad
+ h_a(y)=\sum_{i=1}^a\kappa(y_i)-\bigl(q^a\mathbf1_{y=0}-1\bigr).
+\tag{A2}
+\]
+Under independent uniform coordinates, this score has mean zero and
+\[
+ \mathbb E h_a^2=J_{a,q}:=q^a-1-a(q-1)>0.
+\tag{A3}
+\]
+In particular,
+\[
+ \chi^2(\rho_{a,N}\Vert p_N^{\otimes a})
+ =J_{a,q}N^{-2}+O_{a,q}(N^{-3}).
+\tag{A4}
+\]
+
+\end{lemma}
+\begin{proof}
+For $z=\#\{i:y_i=0\}$ and $y\ne0$, the likelihood is exactly
+\[
+ (1-N^{-1})^{a-1}(1-q/N)^{-z}.
+\]
+For $y=0$ it is
+\[
+ (1-q^a/N)(1-N^{-1})^{a-1}(1-q/N)^{-a}.
+\]
+Expanding these finite rational functions proves (A2).
+Under uniform coordinates, the variables $\kappa(y_i)$ are independent,
+have mean zero, and have second moment $q-1$. Moreover,
+\[
+ q^a\mathbf1_{y=0}=\prod_{i=1}^a(1+\kappa(y_i)),
+ \qquad
+ h_a(y)=-\sum_{\substack{S\subseteq\{1,\ldots,a\}\\|S|\ge2}}
+               \prod_{i\in S}\kappa(y_i).
+\]
+The summands are pairwise orthogonal in $L^2$ of uniform product measure.
+Their squared norms sum to
+$\sum_{s=2}^a\binom as(q-1)^s=q^a-1-a(q-1)$, proving (A3).
+The actual reference measure $p_N^{\otimes a}$ differs pointwise from the
+uniform measure by $O_{a,q}(N^{-1})$, and (A2) then proves (A4).
+
+For finite calculations there is also the exact identity
+\[
+ 1+\chi^2(\rho_{a,N}\Vert p_N^{\otimes a})
+ =\frac{(N-1)^{a-2}}{(N-q)^a}
+   \left[N^{2-a}(N-q+1)^a+q^a-2N\right].
+\tag{A5}
+\]
+To verify it, write
+$\rho_{a,N}(y)=c(1-q^aN^{-1}\mathbf1_{y=0})$ with
+$c=N/[q^a(N-1)]$, and sum its squared density over the product reference.
+The two necessary sums are
+\[
+ \sum_{b\in\mathbb F_q}\frac1{p_N(b)}
+ =\frac{q^2(N-1)(N-q+1)}{N(N-q)},\qquad
+ \frac1{p_N(0)^a}=\left(\frac{q(N-1)}{N-q}\right)^a.
+\]
+Substitution and cancellation give (A5).
+\end{proof}
+
+\begin{theorem}[The fixed-anchor critical profile]\label{thm:anchors}
+Fix $q$ and $a\ge2$. Let $n\to\infty$ and let $m=m_n$ be arbitrary
+positive integers. If
+\[
+ \frac{mJ_{a,q}}{N^2}\longrightarrow\tau\in[0,\infty],
+\]
+then
+\[
+ d_{\mathrm{TV}}(P_{a,m,N},Q_{a,m,N})
+ \longrightarrow 2\Phi(\sqrt\tau/2)-1,
+\tag{A6}
+\]
+with value $1$ at $\tau=\infty$.
+\end{theorem}
+\begin{proof}
+Indeed, apply \cref{lem:lan} to
+$\rho_{a,N}^{\otimes m}$ and $(p_N^{\otimes a})^{\otimes m}$, using
+(A2)--(A4). The difference between their distance and the actual distance
+is at most $\delta_{a,N}=O_{a,q}(N^{-1})$ by (A1) and the triangle
+inequality. This error is uniform in $m$.
+\end{proof}
+
+\subsection{Many overlapping four-cycles with vanishing total variation}
+Set $a=2$. Now
+\[
+ \delta_{2,N}=\frac{q-1}{N-1},\qquad
+ \chi^2(\rho_{2,N}\Vert p_N^{\otimes2})
+      =\frac{(q-1)^2}{(N-q)^2}.
+\]
+The exact product chi-square identity and Cauchy--Schwarz give
+\[
+ d_{\mathrm{TV}}(P_{2,m,N},Q_{2,m,N})
+ \le\frac{q-1}{N-1}
+ +\frac12\sqrt{\left(1+\frac{(q-1)^2}{(N-q)^2}\right)^m-1}.
+\tag{A7}
+\]
+The graph $K_{2,m}$ has exactly $\binom m2$ simple four-cycles.
+Each four-cycle marginal has chi-square divergence
+\[
+ v_{4,N}=(q-1)^2\left((N-q)^{-2}+(q-2)(N-1)^{-2}\right)
+       \sim(q-1)^3N^{-2}.
+\]
+Choose any fixed $1<\beta<2$ and $m=\lfloor N^\beta\rfloor$.
+Then (A7) tends to zero, while
+\[
+ \binom m2 v_{4,N}\sim\frac{(q-1)^3}{2}N^{2\beta-2}
+ \longrightarrow\infty.
+\tag{A8}
+\]
+Thus summing the information of overlapping cycle marginals does not give
+the information of the whole observation. The exact cactus factorization
+is an essential hypothesis of the cycle-count criterion.
+
+\subsection{The full chi-square divergence can diverge exponentially too}
+Fix $c\in\mathbb F_q^\times$, and let $E_c$ be the data event
+$Y_{2j}=cY_{1j}$ for every $1\le j\le m$.
+The latent event $X_2=cX_1$ has probability $1/(N-1)$ and forces $E_c$,
+so $P_{2,m,N}(E_c)\ge1/(N-1)$.
+Under the independent-edge law,
+\[
+ Q_{2,m,N}(E_c)=s_N^m,\qquad
+ s_N=p_N(0)^2+(q-1)p_N(1)^2
+    =\frac1q+\frac{q-1}{q(N-1)^2}.
+\]
+Since $1+\chi^2(P\Vert Q)=\sum_y P(y)^2/Q(y)$, applying
+Cauchy--Schwarz on $E_c$ gives the exact lower bound
+\[
+ 1+\chi^2(P_{2,m,N}\Vert Q_{2,m,N})
+ \ge\frac1{(N-1)^2s_N^m}.
+\tag{A9}
+\]
+For the same $m=\lfloor N^\beta\rfloor$, $1<\beta<2$,
+\[
+ \log(1+\chi^2(P_{2,m,N}\Vert Q_{2,m,N}))
+ \ge m\log q-2\log(N-1)-O_q(m/N^2)
+ \longrightarrow\infty,
+\]
+even though the total variation distance tends to zero.
+The rare dependent-anchor configurations therefore have negligible total
+probability and arbitrarily large likelihood ratios. This explicitly
+explains why a direct second-moment bound for the original mixture may be
+very poor, whereas conditioning on anchor independence identifies its
+correct testing profile.

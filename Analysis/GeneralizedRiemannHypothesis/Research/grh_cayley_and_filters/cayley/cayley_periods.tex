@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,booktabs,microtype,enumitem,xcolor}
+\usepackage[margin=0.97in]{geometry}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!55!black]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}
+\newcommand{\ord}{\operatorname{ord}}\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\cy}[1]{C_{#1}}\newcommand{\wh}{\widehat}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt/blob/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis}
+\hypersetup{pdftitle={The fastest periodic oriented Cayley walks on a finite abelian group},pdfauthor={Research note for Vladimir Reshetnikov}}
+\title{The fastest periodic oriented Cayley walks\\on a finite abelian group}
+\author{Research note for Vladimir Reshetnikov}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Fix a finite abelian group $G$ of order $N$ and exponent $n$. Every least positive period of a nonempty simple oriented Cayley graph on $G$ is of the form $2\pi/(a\sqrt f)$, where $-f$ is a negative fundamental discriminant, $f\mid n$, and $af\mid N$. Every such period occurs, with least possible outdegree $a\varphi(f)/2$. If the list is nonempty, its minimum is $2\pi\sqrt{f_0}/N$, where $f_0$ is the least admissible conductor. We classify and count every orientation attaining this fastest return. The proof transfers a quadratic character projection from ProveIt's work on one-time Li heat observations to the Fourier transform on $G$. Applying integrality a second time, on the dual group, gives the divisibility by $af$ and an involution between extremal graphs. The results are unconditional.
+\end{abstract}
+
+\section{The period problem}
+A walk with evolution matrix $U(t)=\exp(tS)$ returns exactly when $U(t)=I$. Here $S$ is the skew adjacency matrix of a nonempty simple oriented Cayley graph on an abelian group $G$, written additively. A set $P\subset G$ with $P\cap(-P)=\varnothing$ defines the arrows $x\to x+p$ for $p\in P$. Set $b=1_P-1_{-P}$, so $S_{x,y}=b(y-x)$. Every vertex has outdegree $k=|P|$. The entries $0,1,-1$ fix the time scale. The constant vector is fixed throughout the walk, so a scalar return matrix equals the identity. A return at one vertex up to phase also gives a scalar return by translation invariance.
+
+We optimize over all connection sets $P$, allowing disconnected graphs. Every fastest graph will be connected. Let $n$ be the exponent of $G$ (the least common multiple of its element orders), and let $N=|G|$. For an imaginary quadratic field of discriminant $d=-f$, write $\chi=\chi_d$ for its primitive quadratic Dirichlet character of conductor $f$, extended by zero on nonunits. Set $\sqrt d=i\sqrt f$. Write $C_m=\Z/m\Z$.
+
+\begin{theorem}[Period list and least outdegree]\label{thm:main}
+The full set of least positive periods on $G$ is
+\[
+ \left\{\frac{2\pi}{a\sqrt f}\ \middle|\ -f\text{ is a negative fundamental discriminant},\
+      f\mid n,\quad a\in\Z_{\ge1},\quad af\mid N\right\}.
+\]
+At each listed period the minimum outdegree is $a\varphi(f)/2$. This is also the minimum under the weaker requirement that all skew eigenvalues belong to $a\sqrt d\,\Z$. Every connected component under that requirement has order divisible by $af$.
+\end{theorem}
+
+\begin{theorem}[Fastest return and all attaining orientations]\label{thm:fast}
+Form the set consisting of $4$ if $4\mid n$ and all prime divisors $p\mid n$ with $p\equiv3\pmod4$. If this set is empty, no nonempty simple oriented Cayley graph on $G$ is periodic. Otherwise let $f_0$ be its smallest member and $\chi=\chi_{-f_0}$. The fastest return is
+\[
+                T_*(G)=\frac{2\pi\sqrt{f_0}}{N}.
+\]
+All attaining symbols $b$, up to reversing every arrow, have one of the following forms.
+\begin{enumerate}[label=\textup{(\roman*)},itemsep=1pt]
+\item $b(x)=\chi(j(x))$ for a surjective homomorphism $j:G\to C_{f_0}$.
+\item When $f_0$ is odd, $b(x)=(-1)^{j(x)}\chi(j(x))$ for a surjective homomorphism $j:G\to C_{2f_0}$.
+\end{enumerate}
+If $c_m$ is the number of cyclic subgroups of order $m$ in the dual group $\wh G$, the number of distinct attaining symbols on the labelled group, counting reversals separately, is
+\[
+             2c_{f_0}+2\,\mathbf{1}_{f_0\text{ odd}}c_{2f_0}.
+\]
+Every attaining graph has outdegree $N\varphi(f_0)/(2f_0)$.
+\end{theorem}
+
+\paragraph{A nine-vertex example.} On $C_3\times C_3$ the fastest return is $2\pi\sqrt3/9$. Choose any one of the four subgroups of order three. Join every vertex of the first coset to every vertex of the second, the second to the third, and the third to the first. The four kernels and two cyclic orientations give all eight fastest walks. Here a spectral spacing of $3\sqrt3$ occurs although every group element has order at most three.
+
+\paragraph{Source and related work.} At snapshot \texttt{00cadb961bbe}, the ProveIt article takes a pinned Dirichlet GRH statement as input and collects 184 reports. Its Li section uses the points $1-1/\rho$ from critical-line zeros, their integer multiplicities, and exponentiated Fourier data observed at a single time \cite{project}. A further report in the same snapshot, awaiting merger, already proves the cyclic ambiguity lattice, minimum discrepancy $a\varphi(f)$, and equality cases \cite{heat}. Its character projection is Lemma~\ref{lem:projection} below. Our questions ask which spectral spacings a prescribed abelian host allows and which of its walks return fastest.
+
+Godsil and Zhang characterize the oriented abelian Cayley graphs with quadratic-lattice spectrum through Galois orbits \cite[Theorem 8.1]{gz}. Kadyan and Bhattacharjya treat integral mixed circulants \cite{kb}. Song gives cyclic eigenvalue formulas and period and transfer criteria for a given circulant \cite{song}. Here we optimize the spectral divisor over the graphs on each host. The proof starts from finite Fourier inversion and quadratic Gauss sums. The upstream Lean theorem is relevant to the origin of the circle problem. The graph theorem itself uses no hypothesis on zeros of $L$-functions.
+
+\section{Quadratic character projections across finite abelian groups}
+Let $X$ be a finite abelian group, $J$ a common multiple of its exponent and $f$, $U_m=(\Z/m\Z)^\times$, and $\zeta_m=e^{2\pi i/m}$. Write
+\[
+       \tau=\sum_{u\bmod f}\chi(u)\zeta_f^u=\sqrt d.
+\]
+We use the primitive Gauss sum identities $\sum_u\chi(u)\zeta_f^{ju}=\chi(j)\tau$ and $\sigma_v(\tau)=\chi(v)\tau$, where $\sigma_v(\zeta_J)=\zeta_J^v$ for $v\in U_J$ \cite{davenport}. The reduction $U_J\to U_m$ is onto for $m\mid J$. By primitivity, $\chi$ on $U_J$ factors through $U_m$ exactly when $f\mid m$.
+
+\begin{lemma}[Character projection, after ProveIt]\label{lem:projection}
+For a root of unity $w$ of order $m\mid J$ put
+\[
+ P_\chi(w)=\frac{1}{\varphi(J)}\sum_{v\in U_J}\chi(v)w^v .
+\]
+This vanishes unless $f\mid m$. If $m=fh$ and $w=\zeta_m^u$ with $u\in U_m$, then
+\begin{equation}
+ P_\chi(w)=\frac{\chi(u)\mu(h)\chi(h)}{\varphi(m)}\,\tau .
+ \label{eq:projection}
+\end{equation}
+Consequently $|P_\chi(w)|\le\sqrt f/\varphi(f)$. Equality occurs precisely at order $f$ and, when $f$ is odd, also at order $2f$.
+\end{lemma}
+\begin{proof}
+If the kernel of $U_J\to U_m$ carries a nontrivial character, averaging on its cosets gives zero. Otherwise average on $U_m$ and change variables to extract $\chi(u)$. Expand the unit condition by M\"obius inversion. In the term indexed by $e\mid m$ with $v=e\ell$, a common prime with $f$ kills $\chi(e)$, so only $e\mid h$ coprime to $f$ can survive. The sum over $\ell\bmod m/e$ splits into lifts modulo $f$ and vanishes by a geometric sum unless $m/e=f$. This gives \eqref{eq:projection}, including zero for $(h,f)>1$. Equality in the bound requires $(h,f)=1$ and $\varphi(fh)=\varphi(f)$, hence $\varphi(h)=1$. Both listed orders attain it.
+\end{proof}
+
+For $c:X\to\C$ write $\wh c(\psi)=\sum_xc(x)\psi(x)$ for $\psi\in\wh X$. With the canonical identification $X\simeq\wh{\wh X}$ the double transform is $\wh{\wh c}(x)=|X|c(-x)$. Say $c$ transforms by $\chi$ if $c(vx)=\chi(v)c(x)$ for every $v\in U_J$.
+
+\begin{lemma}[Integrality on the group and its dual]\label{lem:dual}
+If an integer-valued $c$ on $X$ transforms by $\chi$, then
+\begin{equation}
+ \wh c(\psi)\in\tau\Z,\qquad
+ |\wh c(\psi)|\le \frac{\sqrt f}{\varphi(f)}\sum_{x\in X}|c(x)|.
+ \label{eq:dual}
+\end{equation}
+The transform $\wh c/\tau$ also transforms by $\chi$. Conversely, if the transform of integral $c$ takes values in $\tau\Q$, then $c$ transforms by $\chi$. Every orbit in the support of such a $c$ consists of the $\varphi(m)$ generators of one cyclic subgroup of order $m$, with $f\mid m$.
+\end{lemma}
+\begin{proof}
+At an element $x$ of order $m$ with $c(x)\ne0$, $\chi$ must be trivial on its stabilizer, the kernel of $U_J\to U_m$. Thus $f\mid m$. For $w=\psi(x)$ with order $l\mid m$, the orbit contributes $c(x)\varphi(m)P_\chi(w)$ to $\wh c(\psi)$. This belongs to $\tau\Z$ by \eqref{eq:projection} since $\varphi(l)\mid\varphi(m)$. The bound in Lemma~\ref{lem:projection}, summed over orbits, gives \eqref{eq:dual}. Changing variables gives $\wh c(\psi^v)=\chi(v)\wh c(\psi)$. Conversely if $\wh c$ takes values in $\tau\Q$, integrality of $c$ gives $\wh c(\psi^v)=\sigma_v(\wh c(\psi))=\chi(v)\wh c(\psi)$. Inversion gives the claimed equivariance on $X$. Equality in \eqref{eq:dual} at a nonzero Fourier value forces $|P_\chi(\psi(x))|=\sqrt f/\varphi(f)$ for every occupied $x$.
+\end{proof}
+
+\section{The two divisibilities and the extremal construction}
+Characters diagonalize $S$ with eigenvalues $\lambda_\psi=\wh b(\psi)$. Suppose they all belong to $a\tau\Z$. Lemma~\ref{lem:dual} gives $f\mid n$ because $b\ne0$. The normalized spectrum $v(\psi)=\lambda_\psi/(a\tau)$ is integer-valued and transforms by $\chi$ on $\wh G$. Apply the lemma again to obtain
+\begin{equation}
+             \wh v(x)=\frac{N}{a\tau}\,b(-x)\ \in\ \tau\Z .
+             \label{eq:bidual}
+\end{equation}
+At a point with $b(-x)=1$, division by $\tau$ gives $-N/(af)\in\Z$. Meanwhile some $|\lambda_\psi|\ge a\sqrt f$. Equation \eqref{eq:dual} and $\sum|b|=2k$ give $2k\ge a\varphi(f)$. The graph is a disjoint union of translates of the connected graph on the subgroup generated by $P$. Its spectrum is the same set on each component, so the component order is divisible by $af$.
+
+Conversely suppose $f\mid n$ and $af\mid N$. Choose an element of order $f$. The quotient by its cyclic subgroup has a subgroup of order $a$ by the structure theorem for finite abelian groups. The inverse image is a subgroup $H$ of order $af$ and exponent divisible by $f$. Its largest invariant factor supplies a surjection $j:H\to C_f$. Define
+\begin{equation}
+ b(x)=\begin{cases}\chi(j(x)),&x\in H,\\0,&x\notin H.\end{cases}
+ \label{eq:construct}
+\end{equation}
+This is a simple oriented symbol since $\chi(-1)=-1$, and $k=a\varphi(f)/2$. On $H$ a character nontrivial on $\ker j$ has eigenvalue zero. A character trivial there has the form $\zeta_f^{u j(\cdot)}$ and eigenvalue $a\chi(u)\tau$. Hence the additive span of the eigenvalues is exactly $a\tau\Z$. The support generates $H$ since it contains $j^{-1}(1)$.
+
+To exhaust the periods, suppose $\exp(TS)=I$. The eigenvalues lie in $(2\pi i/T)\Z$. Their integral span has a nonzero generator $\beta$ on the positive imaginary axis. This generator lies in $\Q(\zeta_n)$ by B\'ezout's identity. Galois permutes the character-indexed eigenvalues, hence acts on $\beta$ by signs. Complex conjugation reverses its sign, so $\Q(\beta)$ is imaginary quadratic. If $d=-f$ is its discriminant, $\beta$ is a positive rational multiple of $\tau$. Lemma~\ref{lem:dual} puts every eigenvalue in $\tau\Z$, hence $\beta=a\tau$ for some integer $a\ge1$. The least period is $2\pi/(a\sqrt f)$ since the normalized eigenvalues have gcd one. The imaginary quadratic field and positive generator recover $f$ and $a$ uniquely. This completes Theorem~\ref{thm:main}.
+
+\begin{corollary}[Duality of minimum-outdegree graphs]\label{cor:rank}
+Let $M=N/(af)$. The map $b\mapsto v=\wh b/(a\tau)$ is a bijection between the minimum-outdegree symbols for $(G,f,a)$ and those for $(\wh G,f,M)$. Applying it twice recovers $b$. At equality,
+\[
+       \operatorname{spec} S=\{0,\pm a\sqrt d\},\qquad
+       S^3=-a^2fS,\qquad \rk S=M\varphi(f).
+\]
+\end{corollary}
+\begin{proof}
+At the minimum, the upper and lower bounds on each nonzero $|\lambda_\psi|$ coincide. Thus $v$ has entries $0,\pm1$ and is odd by conjugation. Parseval gives $\sum|\lambda_\psi|^2=Na\varphi(f)$, hence $v$ is nonzero at $M\varphi(f)$ characters. Equation \eqref{eq:bidual} reads $\wh v=M\tau b$ because $b$ is odd and $\tau^2=-f$. Thus $v$ attains the dual minimum, and the reverse normalized transform is $b$. Diagonalization gives the asserted cubic equation and rank.
+\end{proof}
+
+\section{Fastest return and its equality cases}
+At conductor $f$ the largest spacing is $(N/f)\sqrt f=N/\sqrt f$. Its maximum uses the smallest $f$. Every even negative fundamental discriminant has absolute value divisible by four. Every odd one has squarefree absolute value congruent to three modulo four, so it is divisible by a prime $p\equiv3\pmod4$. Conversely $-4$ and each such $-p$ are fundamental. This proves the formula for $f_0$ in Theorem~\ref{thm:fast} and forces $a=N/f$ and $f=f_0$ at the fastest return.
+
+We have yet to show that every fastest graph attains the least outdegree. With $v$ as in \eqref{eq:bidual}, Parseval and $b(0)=0$ give
+\[
+       0<\sum_{\psi\in\wh G}v(\psi)^2
+         =\frac{N\sum_x b(x)^2}{a^2 f}=\frac{2k}{a}<f.
+\]
+Here $f$ is prime or four, so $f\le2\varphi(f)$. Each nonzero orbit contributes $c^2\varphi(m)$ with $c\in\Z\setminus\{0\}$ and $f\mid m$. Since $\varphi(m)$ is a multiple of $\varphi(f)$, only one orbit occurs. Its size is $\varphi(f)$ and its amplitude is $\pm1$. To have $\varphi(fh)=\varphi(f)$ one needs $h=1$, or $h=2$ and $f$ odd. Indeed $\varphi(fh)/\varphi(f)=h_1\varphi(h_2)$, with $h=h_1h_2$, $h_1$ supported on primes of $f$, and $(h_2,f)=1$.
+
+Choose a generator $\psi_0$ of this cyclic dual subgroup of order $m$. Write $\psi_0(x)=\zeta_m^{j(x)}$ for a surjection $j:G\to C_m$. Then $v(\psi_0^u)=\pm\chi(u)$ on the orbit. Inverting gives, up to one overall sign,
+\[
+       b(x)=\frac{a\tau}{N}\sum_{u\in U_m}\chi(u)\zeta_m^{-u j(x)} .
+\]
+For $m=f$ this is $\chi(j(x))$ up to sign. For $m=2f$ with $f$ odd, every $u\in U_{2f}$ is odd and $\zeta_{2f}^u=-\zeta_f^{2^{-1}u}$, with $2^{-1}$ computed modulo $f$. Reduction identifies $U_{2f}$ with $U_f$. The Gauss sum thus gives $(-1)^{j(x)}\chi(j(x))$ up to sign. Conversely this inversion constructs a simple oriented symbol in each case with normalized eigenvalues $\pm1$ on the chosen orbit and zero elsewhere. Distinct orbits give distinct symbols by inversion. On each orbit precisely two signs occur. Connectivity follows from the component divisibility and $af=N$. This completes Theorem~\ref{thm:fast}.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Group & $f_0$ & Fastest return & Outdegree & Labelled symbols\\
+\midrule
+$C_3\times C_3$ & 3 & $2\pi\sqrt3/9$ & 3 & 8\\
+$C_{12}$ & 3 & $\pi\sqrt3/6$ & 4 & 4\\
+$C_4\times C_4$ & 4 & $\pi/4$ & 4 & 12\\
+$C_7\times C_7$ & 7 & $2\pi\sqrt7/49$ & 21 & 16\\
+$C_5\times C_5$ & --- & none & --- & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $c_m$ is the number of elements of exact order $m$ in $\wh G$ divided by $\varphi(m)$. On $C_{12}$ the four fastest symbols come from two different character orders and their reversals.
+
+\section{Minimum degree at conductors three and four}
+\begin{proposition}\label{prop:coset}
+For $d=-4$ on any finite abelian host, and $d=-3$ on an odd-order host, all symbols attaining the minimum outdegree at spacing $a\sqrt d$ have
+\[
+                P=x+K,\qquad |K|=a,\qquad \ord_{G/K}(x+K)=f .
+\]
+Conversely every such coset attains equality. Each connected component is obtained from a directed $f$-cycle by replacing its vertices with $a$ independent vertices and its arrows with all directed edges between consecutive parts.
+\end{proposition}
+\begin{proof}
+Here $\varphi(f)=2$ and $|P|=a$. For $f=4$, every active character (one with $\lambda_\psi\ne0$) satisfies
+\[
+           2a=|\lambda_\psi|=2\left|\sum_{p\in P}\Im\psi(p)\right|.
+\]
+It is therefore constant on $P$, with value $i$ or $-i$. For $f=3$ every active character attains equality in \eqref{eq:dual}. Lemmas~\ref{lem:projection} and \ref{lem:dual} force $\psi(p)$ to have order three or six. Odd group order excludes six. Each imaginary part is $\pm\sqrt3/2$, and $|\lambda_\psi|=a\sqrt3$ forces agreement of all signs. Again $\psi$ is constant on $P$.
+
+Set $K=\langle P-P\rangle$. All active characters are trivial on $K$. Inversion makes $b$ and its positive set invariant under translation by $K$. Since $P$ lies in one coset of $K$, $P=x+K$. For characters of $G/K$ the eigenvalues are $a(z-\bar z)$ with $z=\psi(x+K)$. Restriction of characters to a subgroup is onto, so these $z$ range through all roots of unity of order dividing $o=\ord_{G/K}(x+K)$. For $f=4$ the allowed imaginary parts are $0,\pm1$, so $o=4$ as some eigenvalue is nonzero. For $f=3$ on an odd host the only allowed roots are the cube roots of unity, hence $o=3$. Conversely summing over the coset gives exactly the required spacing. The cosets of $K$ in $\langle K,x\rangle$ give the directed cycle in the assertion.
+\end{proof}
+
+
+\section{Uniform mixing and perfect transfer at the fastest period}
+For a walk on $N$ vertices, instantaneous uniform mixing at time $t$ means that every entry of $U(t)$ has modulus $N^{-1/2}$. Perfect transfer from $x$ to a different $y$ means $U(t)e_x$ is a scalar of modulus one times $e_y$. Translation invariance and the fixed constant vector force the entire matrix at such a time to be a translation, with scalar one.
+
+\begin{corollary}
+Among all fastest walks of Theorem~\ref{thm:fast}, only a directed four-cycle admits uniform mixing. Its mixing times modulo its period $T$ are $T/4$ and $3T/4$. Perfect transfer between distinct vertices occurs precisely for the directed three-cycle and four-cycle. Their first transfer times are $T/3$ and $T/2$, respectively.
+\end{corollary}
+\begin{proof}
+Each fastest symbol is a pullback from a cyclic quotient of order $q=f_0$ or $2f_0$. Order the vertices by the fibers, each of size $m=N/q$. If $V(s)$ denotes the quotient evolution, the full evolution is
+\[
+ U(t)=I+\bigl(V(mt)-I_q\bigr)\otimes J_m/m,
+\]
+where $J_m$ is the all-ones matrix. This follows by exponentiating $S_q\otimes J_m$ on the fiber-constant subspace and its orthogonal complement.
+
+If $m>1$, a diagonal entry and a distinct entry within its own fiber differ by one. Uniform mixing would force both real entries to have absolute value $1/\sqrt N$, hence $N=4$. The order-four hosts have no fastest graph with $m>1$. Transfer between different fibers is impossible since the entry has absolute value at most $1/m$. In the same fiber, absolute value one off the diagonal would require $m=2$ and a diagonal entry of $V$ equal to $-1$. An orthogonal matrix fixing the all-ones vector cannot have such a diagonal entry, since the remainder of that row would vanish.
+
+Now $m=1$. If $q$ is an odd prime or twice an odd prime, uniform mixing would yield a real Hadamard matrix of order $q$. A real Hadamard matrix of order greater than two has order divisible by four: normalize its first row to all ones, split its columns by the two signs of the second row, and use orthogonality of any third row to see that each half has even size. On the directed four-cycle the four entries in a row, up to signs and order, are $(1+\cos(2t))/2$, $(1-\cos(2t))/2$, and two copies of $\sin(2t)/2$. These give precisely the mixing times stated, as $T=\pi$.
+
+For transfer on $C_p$ with $p$ odd prime, any nonidentity translation has $p$ distinct eigenvalues. The fastest walk has at most three by Corollary~\ref{cor:rank}, forcing $p=3$. On $C_3$ the two nontrivial Fourier phases are $\exp(\pm i\sqrt3\,t)$. The first nonidentity translation is at $T/3$. On $C_4$ the Fourier mode of order two stays fixed, so only translation by two is possible, and its first time is $T/2$. Finally on the parity-twisted $C_{2p}$ with $p$ odd, only primitive frequencies can be active. A translation fixing frequencies $2$ and $p$ would have displacement divisible by both $p$ and $2$, hence would be the identity. This covers all fastest walks.
+\end{proof}
+
+\paragraph{Further questions.} For prescribed conductor and spacing, what is the least outdegree when the graph must be connected on the whole host? Proposition~\ref{prop:coset} explains why this requirement can change the answer. For larger conductors, which connection sets attain the degree bound on hosts of order strictly greater than $af$? Corollary~\ref{cor:rank} gives a duality, spectrum and rank constraint. Nonabelian groups additionally require control over higher-dimensional irreducible representations.
+
+\paragraph{Verification and scope.} The accompanying program exhausts 334,780 connection sets on 24 finite abelian groups using cyclotomic integer arithmetic. A separate rational-rank computation detects 8,820 nonempty periodic sets. The observed spacings, least outdegrees and fastest symbols agree with the formulas on these hosts. The general assertions follow from the proofs above. They have not been formalized in Lean. The host-wise period list, outdegree optimum and fastest orientations extend the results we located in the pinned project and the cited primary sources. Their broader bibliographic priority remains open.
+
+\begin{thebibliography}{9}
+\bibitem{project} V. Reshetnikov and ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions}, snapshot \texttt{00cadb961bbe}. \href{\repo/Article/sections/li.tex}{Li kernels and determining times}. \href{\repo/README.md}{Project index and unmerged packets}.
+\bibitem{heat} ProveIt research packet, \emph{Finite Li measurements and two further transfers}, main paper, especially the norm of a character projection, exact distance and equality cases. \href{\repo/Research/dirichlet_li_recovery/heat.tex}{Pinned source}.
+\bibitem{gz} C. Godsil and X. Zhang, \emph{Oriented or signed Cayley graphs with all eigenvalues integer multiples of $\sqrt\Delta$}, 2024. \href{https://arxiv.org/abs/2405.14140}{arXiv:2405.14140}.
+\bibitem{kb} M. Kadyan and B. Bhattacharjya, Integral mixed circulant graphs, \emph{Discrete Mathematics} \textbf{346} (2023), 113142. \href{https://doi.org/10.1016/j.disc.2022.113142}{doi:10.1016/j.disc.2022.113142}.
+\bibitem{song} X. Song, \emph{Perfect state transfer on oriented circulant graphs: a complete classification}, 2026. \href{https://arxiv.org/abs/2608.11992}{arXiv:2608.11992}.
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000.
+\end{thebibliography}
+\end{document}

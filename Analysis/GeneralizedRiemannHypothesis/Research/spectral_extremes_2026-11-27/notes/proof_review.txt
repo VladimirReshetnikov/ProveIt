@@ -1,0 +1,160 @@
+Independent mathematical review of the final extreme and bridge proofs
+Reviewer: arithmetic-direction agent; 2026-11-27
+
+Scope
+-----
+All draft units mentioned below are assembled into the archive's complete
+standalone spectral_extremes.tex. No separate draft files are needed to
+read or compile the proofs.
+
+Read the entire self-contained theorem/proof file notes/extreme_theorem.tex,
+the final full-functional proof notes/functional_bridge.tex, and the
+refined-center proposition in notes/refined_center.tex. This
+review supersedes the earlier comments on the preliminary scratch note
+notes/functional_bridge_review.md. This is a mathematical audit, not a
+formal proof-assistant verification and not certification of literature
+novelty.
+
+Main result: no substantive mathematical gap found
+-------------------------------------------------
+1. General regularly varying counting functions are treated at the correct
+   moving scale. The proof first shows b~log N(u), and only then evaluates
+   counting measures at v=u/b^(1/p), which tends to infinity. It never
+   silently replaces N(v) by N(u)b^(-alpha/p). The reduced-count center
+   m=N(u/(log N(u))^(1/p)) is valid under the stated assumptions: the
+   arguments v and u/(log N(u))^(1/p) have ratio tending to one, so the
+   uniform convergence theorem applies. Also log m/log N(u)->1. Thus
+   log b may be replaced by log log m with additive error o(1).
+
+2. The local limit proof supports uniform singleton deletion. Every
+   singleton removes at most theta/sigma^2 of the normalized variance;
+   the retained [u,2u] band still supplies a uniform Fourier envelope.
+   The small-s expansion and integrable envelope are uniform in the
+   deleted index. Consequently sup_{j,z}|g_{u,j}(z)-phi(z)|->0.
+   In the exact marginal density, integration over the Exp(1) variable
+   leaves an upper bound sup_z g_{u,j}(z)/(sigma D). This is 1+o(1)
+   uniformly in j and the observed singleton value. It is a legitimate
+   upper bound even for very rare individual exceedance events.
+
+3. The gamma-tail asymptotic has a usable global envelope for every
+   theta>0. If theta<1, the power factor stays bounded because the tail
+   argument divided by b is bounded below by 1/2. If theta>=1, a
+   polynomial times exp(-y^p/2) suffices. Normalized counting-measure
+   convergence at v, dyadic regular-variation bounds at infinity, and
+   N(epsilon v)/N(v)->epsilon^alpha at zero justify the integral limit.
+
+4. The marked rare-event argument first works under the independent
+   tilted law, then transfers each mark-truncated point process using
+   the entire gamma<=R v block. This block is o(u), so its TV transfer
+   is justified. The singleton upper bound controls the complement:
+   probability of any exceedance above z0 with a mark outside [eps,R]
+   is bounded by a constant times the corresponding tilted expected
+   count. These tails vanish as eps decreases to zero and R increases.
+   Upper-height tightness and lower-height Poisson counts justify the
+   stated top-k ordering and the Gumbel limit.
+
+5. The strengthened finite-band density formula is correct. In the
+   final band, the random block shift cancels once w1 is defined as
+   the full first macroscopic increment. Uniform convergence of the
+   final density, L1 convergence of the other densities, translation
+   continuity for the small block shift, and the Exp(1) integrability
+   of the slack give the claimed TV factorization. Its Gaussian
+   factor is exactly a Brownian bridge at the prescribed variance
+   times. This finite-dimensional statement also supplies the joint
+   distributions used by the separate functional theorem.
+
+6. Constants in the Dirichlet specialization check out:
+   C1=pi/2, C2=pi/4, N(u)~d*u*log(u)/(2*pi),
+   b=log(u)+(theta-1/2)log log(u)+log[d/(4*sqrt(pi)*Gamma(theta))]+o(1),
+   x~theta*d*log(u)/(4*u), and maximum/total~4/(theta*d*u).
+   Multiplicity is allowed throughout, and the result concerns random
+   gamma weights on a deterministic spectrum, not random zero locations.
+
+Final functional bridge: previous concerns resolved
+--------------------------------------------------
+The final notes/functional_bridge.tex resolves both issues in the earlier
+scratch route. No substantive mathematical gap was found in this version.
+
+7. Equal ordinates are grouped explicitly. Uniform convergence of the
+   variance clocks gives max_g q_g->0 for aggregate jump variances.
+   Gamma fourth cumulants give the correct identity and bound
+
+      sum_g E[J_g^4] <= 3*max_g q_g + 6/sigma^2 -> 0.
+
+   This supplies Lindeberg for the actual simultaneous jumps, not
+   merely for a finer ordering of individual equal-height coordinates.
+
+8. The direct L4 modulus argument is valid. On a partition into m
+   intervals, the increment variances q_i have sum one and maximum
+   at most 1/m+2*eta_u. Therefore sum_i q_i^2 is bounded by that same
+   maximum. The fourth cumulants sum to at most 6/sigma^2. Doob's L4
+   inequality inside each interval, a union bound, and a fixed factor
+   for two adjacent intervals yield the stated ordinary-modulus bound.
+   Truncating the infinite tail and passing in L4 is legitimate since
+   its variance and fourth cumulant both tend to zero as the truncation
+   increases. Together with the independent-band central limits, this
+   directly proves the tilted Brownian-motion limit; no unproved
+   within-multiplicity-group interpolation step remains.
+
+9. Conditional domination for every fixed prefix follows by retaining
+   a positive-length band in its complement. For tails starting at
+   r>=1/2, the complementary prefix contains one common fixed band,
+   so the density-supremum bound is uniform in r. The finite reverse
+   ordering used solely for Doob's L2 maximal inequality is valid and
+   makes no assertion that a strict-inequality reversed process is
+   cadlag. L2 truncation yields the infinite-tail supremum bound.
+   Thus the earlier right-continuity concern is absent in this proof.
+
+10. Prefix modulus control and the uniform endpoint estimate give
+    C-tightness on the full interval. The endpoint is -Y_x/sigma and
+    tends to zero. The already proved joint finite-dimensional laws,
+    continuity of every subsequential limit, and marginal tightness
+    identify the full bridge jointly and independently of the marked
+    point process and exponential slack. The existing point-process
+    tail estimates continue to justify the top-k mapping jointly.
+
+Refined heat-trace center: no substantive gap found
+-------------------------------------------------
+11. For N0(T)=c*T*(log T+A-1), differentiation gives
+    dN0=c*(log T+A)dT. Integration against exp(-(T/v)^2) therefore
+    gives K*v*(log v+kappa), with K=c*sqrt(pi)/2 and
+    kappa=A-EulerGamma/2-log 2. Stieltjes integration of the remainder
+    has the stated positive-sign integral. Boundary terms vanish.
+
+12. The finite remainder bound is correct. The density 2*y*exp(-y^2)
+    integrates to one and has mean sqrt(pi)/2. The inequality
+    log(v*y+2)<=log(v+2)+y yields the logarithmic-error bound; a global
+    bounded remainder gives |R_heat(v)|<=C0 directly. At B, the exact
+    intensity differs from one by at most epsilon. Its logarithmic
+    derivative is at most -1, so the claimed enclosure follows in
+    both cases Lambda(B)>=1 and Lambda(B)<=1. A negative lower endpoint
+    causes no problem: it is simply a weaker lower bound on b>0.
+
+13. The conductor constants are consistent with summing the standard
+    two-term counts, with conjugate factors counted separately:
+    c=d/(2*pi), A=(log Q)/d-log(2*pi), K=d/(4*sqrt(pi)), and
+    kappa=(log Q)/d-log(4*pi)-EulerGamma/2. Finite central-zero removal
+    changes only the bounded part of the count. The fixed-product
+    restriction appropriately avoids a claim of conductor uniformity.
+
+14. Taking logarithms in the root equation and setting L=log u gives
+    B=L+(log L)/2+log K+d_L/L+O((log L)^2/L^2), where
+    d_L=kappa-(3/4)*log L-(1/2)*log K. The stated second-order
+    coefficient and remainder are correct. The implicit root should
+    indeed be retained when claiming the sharper power-scale error;
+    a finite logarithmic expansion has a much larger truncation error.
+
+15. For the synthetic inverse-count spectrum in the diagnostics,
+    |N-N0|<=1 holds globally, including the initial interval where
+    N0 is negative. Below 2*pi*e, N=0 and -1<=N0<=0; above it,
+    N=floor(N0). Hence the analytic finite bracket uses exp(-B).
+    The separate refined_center.py reads existing theta=1 numerical
+    roots and evaluates this bracket without rerunning simulations
+    or spectral sums. All four stored roots lie inside the numerical
+    brackets. This is floating-point consistency, not interval
+    certification of the endpoints or the stored roots.
+
+Overall verdict: no substantive gap found in the final main theorem,
+its centering and Dirichlet corollaries, the full functional bridge
+extension, or the refined heat-trace center, under their explicitly
+stated assumptions.

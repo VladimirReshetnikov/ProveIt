@@ -1,0 +1,65 @@
+SOURCE ANALYSIS AND NONDUPLICATION RECORD
+Date: 27 November 2026
+
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Pinned head: 00cadb961bbe77c74e5d082c4948f8884d58a970
+Path: Analysis/GeneralizedRiemannHypothesis/
+
+The top-level README and Article README describe an 851-page merged
+article from 184 reports, plus ten additional Research packets. The
+article is explicitly a merge rather than an independent verification.
+The source theorem and implementation status were read in src.tex,
+Lean/README.md, vendor/grh-lean/README.md, and the vendored Main.lean.
+
+The article's sections and bibliography files were retrieved through
+the GitHub connector at the pinned commit; their Git blob identities
+are included in results/source_manifest.json. We searched the collection
+for extreme-value/Gumbel/marked-Poisson statements, mapped the recent
+packets from their descriptions, and read the relevant conditional-law
+section in detail. This is not an independent verification of all 1131
+results listed by the merged article.
+
+Reusable mechanism
+------------------
+ana.tex already defines the regularly varying gamma-sum model, the exact
+exponential saddle, the tilted local Gaussian limit, finite-dimensional
+conditional Brownian-bridge laws, independent exponential slack, and
+total-variation equivalence on every lower block of height h=o(u).
+It also computes a macroscopic independence obstruction and the height
+carrying half the mass. Those results were not presented as new here.
+
+New contribution relative to the inspected text
+-----------------------------------------------
+The new observable is the largest INDIVIDUAL spectral contribution and
+its moving spectral location. The proof derives an exact exceedance
+center, a marked Poisson process, the Gamma(alpha/p,1) location mark,
+the smaller height scale u/(log N(u))^(1/p), top-k limits, and localization
+in a vanishing-mass band. Uniform singleton domination is supplied to
+control the infinite tail after rare conditioning.
+
+The source explicitly does not assert a functional bulk limit. The
+present proof supplies C-tightness, including repeated-ordinate groups
+and the endpoint at infinity, and proves full Brownian-bridge convergence
+jointly independent of the extreme process and slack.
+
+Arithmetic input
+----------------
+The vendor pins lsernau/grh-lean commit
+72fead102f663d5c7a407964a13dc0cf9d977207. Main.lean exports RH and four
+Dirichlet zero statements. Andrew Sutherland's public verification page
+reports successful builds, axiom checks and kernel comparisons for that
+revision. Those builds were not repeated during this task.
+https://math.mit.edu/~drew/shortgrh/
+
+The new probability theorem is unconditional. Dirichlet GRH identifies
+its Laplace product with the reciprocal even completed L-function.
+No statement about general Artin or automorphic GRH is made.
+
+Additional deterministic refinement
+-----------------------------------
+For exponential weights, integration of a two-term counting law against
+a Gaussian heat kernel gives a sharper implicit center, including
+conductor dependence. The exact intensity's logarithmic slope is at most
+minus one, converting the heat-trace error into a finite root enclosure.
+The synthetic inverse-count diagnostics validate this formula using the
+proved global counting-error bound of one.

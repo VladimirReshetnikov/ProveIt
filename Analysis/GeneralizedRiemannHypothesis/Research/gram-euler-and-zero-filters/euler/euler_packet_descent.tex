@@ -1,0 +1,167 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1.03in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,xcolor,hyperref}
+\definecolor{deep}{RGB}{27,73,96}
+\hypersetup{colorlinks=true,linkcolor=deep,urlcolor=deep,pdftitle={Exact descent for matching Euler factors},pdfauthor={Research note}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\articlepath}{https://github.com/VladimirReshetnikov/ProveIt/blob/4f99495218d1a19087deabd8fb5bbb8f5df72a46/Analysis/GeneralizedRiemannHypothesis/Article/sections/rec.tex}
+\newcommand{\reporef}[2]{\href{\articlepath\#L#1}{#2}}
+\setlength{\emergencystretch}{2em}
+\title{Exact descent for matching Euler factors\\[4pt]\large Complete disagreement densities at character exponents seven and eleven}
+\author{Research note on the ProveIt Dirichlet GRH program}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Two products of $k$ Dirichlet $L$-functions can have identical Euler factors at many primes despite having different character multisets. For characters in a group of prime exponent $p$, we prove that their smallest possible disagreement density at rank $r$ and size $k$ is exactly $p^{-a}$ times the corresponding density at rank $r-a$ and size $b$, where $b$ is the leading base-$p$ digit of $k$ and $a=\lfloor\log_p k\rfloor\le r-2$. Every lower digit can be discarded. A Cayley--Bacharach argument determines a range of small-packet minima for all odd primes. At exponent eleven we also treat the boundary case of eighteen points on a cubic. Together these results determine every rank and size at exponents seven and eleven, including both examples posed in the source article. These density statements are unconditional.
+\end{abstract}
+\section{From local factors to finite projections}
+Fix a group $X$ of Dirichlet characters modulo $Q$ isomorphic to $\mathbb F_p^r$. We write the group operation additively. A packet $A$ is a multiset of $k$ elements of $X$, representing $\prod_{\chi\in A}L(s,\chi)$. At a rational prime $q\nmid Q$ its local denominator is $\prod_{\chi\in A}(1-\chi(q)T)$. With $\zeta=e^{2\pi i/p}$, write $\chi(q)=\zeta^{v_q(\chi)}$, so $v_q\in X^*$. For two packets write $c(\chi)$ for the difference of their multiplicities. Equal local polynomials mean exactly that for each $j\in\mathbb F_p$ the signed fibre sum $\sum_{v_q(\chi)=j}c(\chi)$ vanishes. Equivalently $H(v_q)=\sum_\chi c(\chi)\zeta^{v_q(\chi)}=0$: a polynomial of degree at most $p-1$ vanishing at $\zeta$ is a multiple of $1+T+\cdots+T^{p-1}$, and balance forces that multiple to vanish. Raising $\zeta$ to a nonzero power preserves vanishing. The disagreement set is therefore a union of punctured lines in $X^*$.
+
+The evaluation map $(\mathbb Z/Q\mathbb Z)^\times\to X^*$ is onto: otherwise a nonzero character in $X$ would be trivial on every unit, by the annihilator of the image. Its fibres have the same size. The prime number theorem in arithmetic progressions identifies the natural density of disagreeing primes with the fraction of disagreeing vectors in $X^*$. Omitting the finitely many ramified primes leaves this density unchanged. Every rank can occur, by taking independent order-$p$ characters at different primes congruent to one modulo $p$.
+
+\paragraph{What the repository supplies.}
+The ProveIt article gives the \reporef{4675}{trace criterion}, the \reporef{4785}{planar classification at equality}, the \reporef{4854}{small-packet bound}, the \reporef{4913}{order-seven size-five value}, and the \reporef{4926}{lower bound from the leading digit}. Its \reporef{4967}{bounds for inadmissible digits} leave a gap. Its \reporef{5321}{open questions} single out $p=7,b=5$ in larger ranks and $p=11,b=8$ in the smallest unsaturated rank. The article's \reporef{5197}{finite prime-window estimates} invoke Dirichlet GRH. Here the analytic input ends with equidistribution for a fixed modulus. The new steps are a Fourier restriction preserving a nonzero coefficient on every coset, a conic restriction at small mass, and a cubic analysis at $(p,k)=(11,9)$.
+
+\paragraph{Related results.}
+Lev's \href{https://math.haifa.ac.il/seva/Papers/UDinFp2.pdf}{perfect-directions theorem} gives the general planar bound of half the support size for balanced signed weights. Blokhuis, Korchm\'aros and Mazzocca study the \href{https://doi.org/10.1016/j.jcta.2010.11.007}{geometry of embedded 3-nets}; their setting concerns exact nets. We use Couvreur's \href{https://arxiv.org/abs/0905.2345}{small dependent point configurations} and Hasse's \href{https://geodesic.mathdoc.fr/item/JRAM_1936__175_149968/}{elliptic curve point bound}. The current incoming \href{https://github.com/VladimirReshetnikov/ProveIt/blob/4f99495218d1a19087deabd8fb5bbb8f5df72a46/Analysis/GeneralizedRiemannHypothesis/docs/incoming/euler_agreement_2026-11-27.zip}{composite-exponent report} determines cyclic-group minima and general abelian $p$-group minima at prime-power sizes. The comparisons above establish novelty relative to the cited repository statements; independent publication priority remains unverified.
+\section{Exact descent in the size and rank}
+Let $p$ be an odd prime, $X=\mathbb F_p^r$, $V=X^*$, and $\zeta=\exp(2\pi i/p)$. For an integral function $c$ on $X$ of sum zero, set $m(c)=\sum_x\max(c(x),0)$ and
+\[
+ H(v)=\sum_{x\in X}c(x)\zeta^{v(x)}.
+\]
+Write $t(c)$ for the number of projective lines on which $H$ is nonzero away from the origin. This is well-defined by Galois conjugacy. A pair of packets of size $k$ is equivalent, after cancellation, to such a nonzero $c$ with $m(c)\le k$. We can pad both signed parts with the same elements. Let $T(r,k)$ be the least possible $t(c)$. Then the minimum disagreement density is $d_p(r,k)=(p-1)T(r,k)/p^r$.
+
+\begin{lemma}[A balanced slice retaining a Fourier direction]
+Let $2\le s\le r$. Suppose $c\ne0$ and $t(c)\le p^{s-1}$. There is an $s$-dimensional subspace $U\subset X$ such that, on every coset $x+U$, the integer function $c_x(u)=c(x+u)$ is nonzero, has sum zero and satisfies $t(c_x)\le t(c)$. Consequently some coset satisfies
+\[
+             1\le m(c_x)\le \lfloor m(c)/p^{r-s}\rfloor .
+\]
+\end{lemma}
+\begin{proof}
+Choose representatives $v_1,\ldots,v_t$ of the supported directions, and draw $s-1$ vectors independently and uniformly from $\ker v_1$. For $j>1$ the restriction of $v_j$ to $\ker v_1$ is a nonzero functional. The probability that all chosen vectors lie in its kernel is $p^{-(s-1)}$. The union of these events has probability at most $(t-1)/p^{s-1}<1$. Pick a successful tuple, extend its span to an $(s-1)$-plane $W\subset\ker v_1$, and adjoin any $y$ with $v_1(y)\ne0$ to obtain $U$. Every supported line restricts nontrivially to $U$. Moreover, $v_1|_U$ vanishes on $W$, while no other supported direction does. Thus $v_1|_U$ has a unique preimage among all the supported frequencies, namely $v_1$.
+
+Indeed Fourier inversion on $X$ and orthogonality on $U$ yield, for $\lambda\in U^*$,
+\[
+ \widehat{c_x}(\lambda)=p^{s-r}
+       \sum_{v|_U=\lambda}H(v)\zeta^{-v(x)} .
+\]
+The coefficient at zero vanishes, whereas the coefficient at $v_1|_U$ is a single nonzero term, for every coset. All its other supported frequencies occur among the restrictions of the original supported directions. Finally the positive masses of the restrictions sum to $m(c)$, proving the assertion.
+\end{proof}
+
+\begin{theorem}[Exact leading-digit descent]
+For $a=\lfloor\log_p k\rfloor$, $b=\lfloor k/p^a\rfloor$, and $r\ge a+2$, one has
+\[
+ T(r,k)=T(r-a,b),\qquad
+ d_p(r,k)=p^{-a}d_p(r-a,b).
+\]
+\end{theorem}
+\begin{proof}
+Put $s=r-a$. The function $\mathbf1_{\{0\}}-\mathbf1_{\{e_1\}}$ on $\mathbb F_p^s$ has precisely $p^{s-1}$ supported projective directions, since a frequency distinguishes the points exactly when its first coordinate is nonzero. Pulling a coefficient function back under a quotient map from $X$ onto $\mathbb F_p^s$ multiplies its mass by $p^a$ and preserves the number of supported directions. In particular $T(r,k)\le T(s,b)\le p^{s-1}$. Apply the lemma to a minimizer on $X$. A slice with positive mass at most $\lfloor k/p^a\rfloor=b$ has at least $T(s,b)$ directions and at most $T(r,k)$. This proves equality.
+\end{proof}
+
+For example the ProveIt result $d_7(s,5)=24/49$ for $s\ge2$ now gives, for every $a\ge0$, $5\cdot7^a\le k<6\cdot7^a$ and $r\ge a+2$,
+\[
+                        d_7(r,k)=24/7^{a+2}.
+\]
+This resolves the all-ranks persistence question posed in \texttt{rec:sec:open}. The other leading digits at $p=7$ divide $6$ or $8$. With the article's saturated-rank theorem, the minimum is therefore determined for every rank and size at exponent seven.
+\section{A rigidity range for small packets}
+For $k<p$, let $B$ be the largest integer at most $k$ that divides $p-1$ or $p+1$.
+\begin{theorem}[The conic range]
+If $B\ge3$ and $2k<3B$, then for every $r\ge2$,
+\[
+ d_p(r,k)=\frac{(p-1)(p+1-B)}{p^2}.
+\]
+\end{theorem}
+\begin{proof}
+Let $c$ be a nonzero signed packet difference, and let $Z$ be its support. The weights $c(x)$ on $Z$ are nonzero modulo $p$, because $|c(x)|\le k<p$. For $1\le j\le B$ put $P_j(v)=\sum_x c(x)v(x)^j$, homogeneous of degree $j$ over $\mathbb F_p$. At a matching frequency all projection fibres have signed sum zero, so all $P_j$ vanish. The projective hypersurface bound shows that a nonzero $P_j$ has at least $(p+1-j)p^{r-2}$ nonzero projective values. This is precisely the degree-$j<p$ case of the projective polynomial bound \texttt{rec:lem:oproj} of the source article, equivalently Serre's projective hypersurface bound. In this case at least $(p+1-B)p^{r-2}$ directions disagree, as required.
+
+Suppose all the $P_j$ are the zero polynomial. Comparing monomial coefficients gives $\sum_x c(x)f(x)=0$ over $\mathbb F_p$ for every polynomial $f$ of total degree at most $B$. Indeed the relevant multinomial coefficients in degrees $j<p$ are units, and the constant term follows from balance. This identity persists over the algebraic closure. In particular $Z$ has the Cayley--Bacharach property in degree $B$: no polynomial of degree at most $B$ can separate a point from the others. Moreover, $|Z|\le2k<3B$.
+
+We record precisely the small-support geometry needed here. Couvreur, \emph{The dual minimum distance of arbitrary-dimensional algebraic--geometric codes}, J. Algebra 350 (2012), 84--107, Theorem 3.8 (equivalently Proposition 8.2), shows that a dependent set of fewer than $3B$ points contains $B+2$ collinear points or $2B+2$ points on a plane conic. Apply this after homogenizing in the standard affine chart. In the conic alternative all of $Z$ lies on the conic: to isolate a point outside it, choose a form of degree at most two vanishing on the conic but nonzero at that point, then one linear factor for each other point outside. There are at most $3B-1-(2B+2)=B-3$ outside points, and this contradicts the separation property. A point outside the plane can be isolated from the plane by a linear form, and inside the plane its conic equation suffices.
+
+In the line alternative choose a hyperplane over the algebraic closure containing the line but missing every point of $Z$ off it (a finite union of proper linear conditions is avoidable). Multiplication by its equation gives a full-support relation of degree $B-1$ on the residual set $R$ off the line, with $|R|\le 2B-3$. If $R\ne\varnothing$, Couvreur's Proposition 7.3, applied with degree $B-1$, shows that $R$ contains $B+1$ collinear points. In fact all of $R$ is on this second line: to isolate a point off it, take a hyperplane through the line and avoiding the point, followed by a linear factor for each remaining off-line point. This has degree at most $B-1$. Thus $Z$ lies on a line, on a plane conic, or on two skew lines. All lines spanning at least two rational points are rational. In the conic case with no $B+2$ collinear points, its plane is rational. A smooth conic is defined over $\mathbb F_p$ since its Frobenius conjugate contains the same more than four rational points, so B\'ezout forces equality. In the reducible case each component contains at least two rational points, since the other contains at most $B+1$, so both components are rational.
+
+Translation and affine changes preserve all matching proportions, and restriction of a uniformly sampled functional to the span of the translated support is uniform. If $Z$ is collinear, only the zero functional on its direction can match, giving agreement $1/p$. For two skew lines choose coordinates $(t,0,0),(0,t,1)$ and call the respective signed arrays $f,g$. Both lines here carry at least two support points. Both arrays are nonconstant: a nonzero constant on all $p$ elements alone uses at least $p$ mass of one sign. For a functional $(u,v,h)$ with $uv\ne0$, the projected arrays are a dilation of $f$ and a shift by $h$ of a dilation of $g$. At most one shift can cancel them, since a nonconstant array on the additive group of prime order has no nonzero period. If exactly one of $u,v$ vanishes, one array collapses to a single bin and the other occupies at least two. If both vanish, allow all $p$ shifts. Hence agreement is at most $((p-1)^2+p)/p^3<1/p$, which is below $(1+(p-1)B)/p^2$.
+
+It remains to bound the number of matching projective directions of a noncollinear signed array on a plane conic by $B$. This is an assertion over the integers about vanishing line sums. Write $m=m(c)\le k$. According to its intersection with the line at infinity, a smooth affine conic in odd characteristic with a rational point is carried by an affine change to a parabola $(t,t^2)$, the split torus $(t,t^{-1})$, or the nonsplit norm-one torus $U=\{t\in\mathbb F_{p^2}^\times:t^{p+1}=1\}$. To see the last two forms, center the nondegenerate quadratic part and write it as a split product or a quadratic norm; in the nonsplit case rescale by a point on the nonzero norm level. If the quadratic part has rank one, smoothness forces a nonzero transverse linear term, giving the parabola.
+
+On $(t,t^2)$, a projection $ut+vt^2$ with $v\ne0$ has fibres the orbits of the reflection $t\mapsto -u/v-t$; $v=0$ gives an injection. Matching means that the signed weight changes sign under this involution, with zero at fixed points. Two distinct matching reflections would generate a nonzero translation period, impossible for a nonzero balanced array on $\mathbb F_p$. There is at most one matching direction.
+
+On the split torus a functional $ut+v/t$ for $uv\ne0$ has fibres the orbits of $t\mapsto h/t$ with $h=v/u$; either axis functional is injective. On the nonsplit torus every nonzero functional has form $t\mapsto\operatorname{Tr}(zt)$ and its fibres are the orbits of $t\mapsto z^{p-1}/t$, since equality of the trace and the shared norm of $zt$ determines the unordered pair $\{zt,(zt)^p\}$. The map $[z]\mapsto z^{p-1}$ bijects projective directions with $U$. In either case the parameters for which the signed weight changes sign under $t\mapsto h/t$ form a coset of its multiplicative translation stabilizer, or the empty set, by composing two such involutions. The stabilizer acts freely on the parameter group and preserves the signed weight; its order therefore divides the positive mass $m$ as well as the group order $p-1$ or $p+1$. The number of matching directions is at most $B$.
+
+For two intersecting component lines use the axes. A matching direction must have both coefficients nonzero because each component supports an off-origin point. It then forces the weight at the origin to vanish. If $f,g$ denote the two signed arrays on $\mathbb F_p^\times$, matching means that one array is minus a multiplicative translate of the other. The number of translates working is zero or the order of a subgroup of $\mathbb F_p^\times$. The subgroup acts freely preserving both weights, so its order divides $m$ and this number is at most $B$. For two parallel lines $(t,0),(t,1)$ all directions with nonzero first coordinate give translated arrays up to a common dilation. At most one translation works by the absence of nonzero additive periods. Allow the direction with zero first coordinate as well, giving at most two. A double line falls under the collinear case. This completes the bound in all cases.
+
+In the plane $B$ matching directions contribute $1+B(p-1)$ matching vectors including zero. For attainment when $B\mid p-1$ use the two coordinate-axis copies of the subgroup of order $B$ of $\mathbb F_p^\times$ with opposite signs. When $B\mid p+1$ use two distinct cosets of its order-$B$ subgroup on the norm-one torus. The ratio criterion on the axes, or the involution on the torus, gives exactly $B$ matching directions. Embed in arbitrary rank and pad to $k$. This proves equality.
+\end{proof}
+
+In particular, for primes $p\ge7$ and $(p+1)/2\le k\le \lfloor(3p+2)/4\rfloor$, the maximum agreement is $(p^2+1)/(2p^2)$ throughout: here $B=(p+1)/2$, as no proper divisor of either $p-1$ or $p+1$ is larger and $k<p-1$. With the descent theorem all these small-packet answers extend to every unsaturated rank and size with the same leading digit. For $p=11$, $8\cdot11^a\le k<9\cdot11^a$, and $r\ge a+2$, this gives $d_{11}(r,k)=60/11^{a+2}$. At $a=0$ one witness is supported on $x^2+y^2=1$ modulo 11. The positive positions are $(\pm1,0),(\pm5,\pm3)$, the negative ones $(0,\pm1),(\pm3,\pm5)$; the two signs in each parenthesized pair vary independently. The matching functionals are the six $(1,v)$ with $v\in\{1,3,4,7,8,10\}$ up to scalars. Add two common factors on each side for size eight.
+\section{The last leading digit at exponent eleven}
+\begin{theorem}
+For every $r\ge2$, $d_{11}(r,9)=60/121$.
+\end{theorem}
+\begin{proof}
+A padded six-point torus construction attains this density. Set $B=6$. Unless the degree-one through degree-six moment forms in the preceding proof all vanish, the projective bound gives at least $6\cdot11^{r-2}$ disagreeing directions, as required. Otherwise $Z$ has a full-support sextic evaluation relation. With fewer than 18 support points the previous geometry applies verbatim. If $|Z|=18$, the two reduced packets are disjoint nine-element sets and $c(x)=\pm1$ at every support point. All the conic and line configurations in the preceding proof still give at most six matching planar directions, since no divisor of $10$ or $12$ between seven and nine exists. If eight points are collinear, the residual set has at most ten points and is Cayley--Bacharach of degree five. By Couvreur's Proposition 7.3 it contains seven collinear points if nonempty, and the linear-factor separator again forces the residual set onto that line. If fourteen points lie on a plane conic, at most four points are outside; a quadratic times at most three linear factors separates any outside point. These cases are therefore covered as well.
+
+It suffices to treat the case $|Z|=18$ with no eight collinear and no fourteen on a plane conic. Couvreur's Theorem 3.8(iii), with its geometric formulation in Proposition 9.1, gives a plane cubic $F$ and a sextic $G$ with no common component whose complete intersection consists of the eighteen points. Indeed the full set is linked, and every proper subset is independent by Proposition 8.2. Its plane is defined over $\mathbb F_{11}$. The cubic is also defined over $\mathbb F_{11}$. Here are details avoiding any field-of-definition assumption on the complete intersection. The saturated ideal of a transverse plane complete intersection of type $(3,6)$ is generated by its two defining forms. In particular its degree-three part is one-dimensional, spanned by $F$. This fact also follows directly by restricting a cubic through the eighteen points to each irreducible component $D$ of $F$: B\'ezout gives $6\deg D$ distinct points on $D$ and no point lies on two components, since all eighteen intersections are simple. A cubic not containing $D$ could meet it at at most $3\deg D$ points. Thus any cubic through $Z$ contains $F$, and Frobenius preserves its equation up to scalar. Normalizing a nonzero coefficient to one gives the desired rational equation. The same count shows that $F$ is reduced.
+
+A geometrically irreducible singular plane cubic has a unique singular point; two such points would force their joining line to be a component by B\'ezout. This point is therefore rational. Each of the twelve rational lines through it contains at most one further rational point, so such a cubic cannot contain eighteen rational points. If $F$ is smooth, it is an elliptic curve after choosing any point in $Z$ as origin. Hasse's bound gives $\#F(\mathbb F_{11})\le\lfloor12+2\sqrt{11}\rfloor=18$. Hence all rational points are precisely the eighteen affine points of $Z$. At a matching direction the occupied parallel lines carry equal numbers of each sign, and each contains at most three support points, so there must be nine occupied lines each carrying two. Its third cubic intersection, with multiplicity, is rational. It must coincide with one of the two points, since a third distinct point would belong to $Z$ on the same line. Therefore all nine lines are tangent to $F$. Their common point $P$ at infinity is outside $F$, and their nine contact points are distinct. All contact points lie on the polar conic $\sum_i P_i \partial_iF=0$. This polar is nonzero: in characteristic eleven a zero directional derivative would make the cubic independent of one coordinate after a linear change and hence geometrically reducible. B\'ezout bounds the number of contact points by six. Thus the smooth cubic case gives zero matching planar directions.
+
+Suppose $F$ is geometrically reducible. If it has no rational line component, Frobenius must cycle three distinct lines, since a line plus an irreducible conic has components of distinct degrees. Every rational point would then lie on all three conjugates, giving at most one. We may therefore choose a rational line component $L$. It contains exactly six of the eighteen affine points and its residual quadratic contains the other twelve, with all six points of $L$ off the quadratic, by the componentwise B\'ezout count. Use an affine parameter $t$ on $L$. Write $S\subset\mathbb F_{11}$ for its six point parameters, $P_S(T)=\prod_{x\in S}(T-x)$, and $Q(t)$ for the residual quadratic restricted to the line. Then $\deg Q\le2$, and $Q$ is nonvanishing on $S$. Multiplication by the residual quadratic extends each polynomial in $t$ of degree at most four to a sextic that vanishes on the other twelve points. Thus
+\[
+    \sum_{t\in S}c(t)Q(t)t^j=0\quad(0\le j\le4).
+\]
+The evaluation matrix here has rank five. Its kernel is spanned by $(1/P_S'(t))_{t\in S}$, by Lagrange interpolation on six nodes. As $c(t)^2=1$, it follows that $(Q(t)P_S'(t))^2$ has a single nonzero value on $S$.
+
+The ensuing finite test is short enough to reproduce in full. Affine changes of $t$ and a nonzero scalar multiple of $Q$ preserve the condition, since $P_S'$ changes by a common nonzero factor. Completing the square gives the five representatives in the table, since $2$ is a nonsquare modulo eleven. For each representative, the test enumerates all six-element subsets of its nonroots. All products and squares are reduced modulo eleven.
+\[
+\begin{array}{c|rrrrr}
+ Q(t)&1&t&t^2&t^2-1&t^2-2\\\hline
+ \text{sets tested}&462&210&210&84&462\\
+ \text{sets passing}&0&0&0&0&0
+\end{array}
+\]
+\begin{verbatim}
+from itertools import combinations
+from math import prod
+for Q in (lambda t:1, lambda t:t, lambda t:t*t,
+          lambda t:t*t-1, lambda t:t*t-2):
+    nonroots = [t for t in range(11) if Q(t) % 11]
+    for S in combinations(nonroots, 6):
+        squares = {(Q(t)*prod(t-u for u in S if u!=t))**2 % 11
+                   for t in S}
+        assert len(squares) > 1
+\end{verbatim}
+These cases exhaust the cubic configurations. This proves the asserted minimum.
+\end{proof}
+
+\begin{corollary}[All packet sizes at exponents seven and eleven]
+For $p=7$ or $11$, let $B_p(b)$ be the largest divisor of $p-1$ or $p+1$ which is at most $b$. If $r\ge a+2$ then
+\[
+         d_p(r,k)=\frac{(p-1)(p+1-B_p(b))}{p^{a+2}}.
+\]
+If $r\le a+1$ the saturation value is $(p-1)/p^r$.
+\end{corollary}
+\begin{proof}
+For $p=7$, the only inadmissible digit is five, already handled by the order-seven theorem and descent. For $p=11$ the inadmissible digits are seven, eight and nine. The conic theorem covers seven and eight with $B=6$, and the preceding theorem settles nine. Admissible digits and saturated ranks follow from the article's \texttt{rec:thm:odigit}. Alternatively at saturation a single supported direction gives the lower bound, attained by differences of two hyperplane cosets of size $p^{r-1}\le k$.
+\end{proof}
+\section{Reading the exact answers}
+In unsaturated rank, multiply each entry in the following table by $p^{-a-2}$ to obtain the minimum disagreement density. Its complement is the largest possible agreement density. Padding with shared factors realizes every size in the indicated digit interval.
+\[
+\begin{array}{c|rrrrrrrrrr}
+ & \multicolumn{10}{c}{\text{leading digit }b}\\
+ p &1&2&3&4&5&6&7&8&9&10\\\hline
+ 7&42&36&30&24&24&12&-&-&-&-\\
+ 11&110&100&90&80&70&60&60&60&60&20
+\end{array}
+\]
+For example, at exponent eleven and size nine the maximal agreement is $61/121$ in every rank at least two. For sizes $88$ through $98$ it is $1-60/1331$ in every rank at least three. Both examples concern the whole local polynomial at a prime.
+
+\paragraph{Reproducibility.}
+\texttt{check\_euler.py} uses the Python standard library. It enumerates all 6,674,031 unordered pairs of size-three packets at $(p,r)=(3,3)$, obtaining the minimum of three differing projective directions. It also tests the full finite quadratic obstruction in the cubic proof and explicit conic witnesses at eight primes, including three lifted examples. Its exact output is supplied in \texttt{check\_euler.json}. The general descent and the conic theorem have mathematical proofs independent of these numerical checks. The last exponent-eleven digit uses the displayed finite enumeration as part of its proof. No new result in this note has been checked in a proof assistant.
+
+\paragraph{Further questions.}
+The remaining density problem at general odd exponent reduces exactly to $k<p$. For $2k\ge3B$ a weight can reach the third configuration in Couvreur's hierarchy. It would be valuable to classify the complete intersections that can realize a balanced integer relation with unit coefficients and many matching directions. Even where the minimum is known, descent gives a minimizing slice and leaves open the classification of all minimizing packets. Determining when a minimizer must be a pullback would complement the explicit extremizer constructions.
+\end{document}

@@ -1,0 +1,29 @@
+\section{Two labelled cycles with the same ordinary spectrum}
+Attach, in cyclic order, the four distinct quadratic characters of
+fundamental discriminants $-3,-4,5,8$ to four vertices. The first two
+characters are odd and the last two even. Start with conductances
+$1,2,1,2$ around the cycle and then interchange $1$ and $2$ on every
+edge. The two Laplacians $A,B$ are conjugate by a cyclic permutation, so
+their ordinary eigenvalues agree with multiplicities. Their labelled
+determinant polynomials satisfy the identity
+\begin{equation}\label{eq:cycleexample}
+ p_A(y)-p_B(y)=3(y_1-y_3)(y_2-y_4).
+\end{equation}
+Indeed all four diagonal entries equal $3$. For each edge, the complementary
+quadratic coefficient is $9-w^2$, and for each nonedge it is $9$. All
+one-variable coefficients agree because the four three-vertex principal
+minors are equal for a Laplacian of a connected graph (or by direct
+evaluation); both full determinants vanish. This proves
+\eqref{eq:cycleexample}. The file \texttt{verify\_cycle.py} independently
+checks all sixteen coefficients with integer arithmetic.
+
+A common scalar translation of the four $y_i$ leaves the difference in
+\eqref{eq:cycleexample} unchanged. As $p_B(u\mathbf1+y)$ is monic of degree
+four in $u$, the first nonzero term of the log quotient has order $u^{-4}$
+and coefficient $3(y_1-y_3)(y_2-y_4)$. Thus the fourth-order case of
+Theorem~\ref{thm:couplinggap} actually occurs for connected graphs with
+strictly positive edge weights. Theorem~\ref{thm:localcoupled} gives a
+linearly long alternating sequence of excess multiplicities in each
+eligible window, even in this fourth-order case. If the character labels
+are rotated together with the graph, the inputs instead represent the
+same labelled object up to simultaneous permutation.

@@ -1,0 +1,204 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amsthm,amssymb,mathtools,booktabs,microtype}
+\usepackage[margin=1.03in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,urlcolor=MidnightBlue,linkcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\lcm}{lcm}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\repo}{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis}{ProveIt, pinned revision}}
+\hypersetup{pdftitle={Recovering the characters and the graph from a coupled Dirichlet spectrum},pdfsubject={Inverse spectral theory for coupled Dirichlet L-functions}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\itshape Coupled Dirichlet spectra}\fancyhead[R]{\small Inverse problems}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+\setlength{\emergencystretch}{2em}
+\title{Recovering the characters and the graph\\from a coupled Dirichlet spectrum}
+\author{Research note for Vladimir Reshetnikov}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A Hermitian matrix couples a list of completed Dirichlet functions through a determinant of their logarithmic derivatives. We prove that its real zero multiset determines the unknown primitive character multiset and, for distinct characters, every principal minor of the matrix. The data may lose finitely many multiplicities, and the competitor may have arbitrary conductor and no more vertices than the source. The vertex bound is sharp. With finitely many insertions as well as deletions in the full spectrum, even the vertex count can be unknown. On the positive half-line alone, $o(T)$ edits through height $T$ preserve the labels. Even the coupling polynomial is identifiable after $o(T/(\log T)^{n+1})$ edits. For a fixed list we give a uniform finite observation window, a terminating procedure to certify a window, a linear-algebra decoder for false observations, and Lipschitz stability under perturbation of the surviving ordinates. The real-spectrum assertions use the Dirichlet GRH input of the ProveIt project. The arithmetic separation and polynomial independence arguments are unconditional.
+\end{abstract}
+
+\section{The inverse question}
+A weighted graph usually has many isospectral competitors. In this problem each vertex carries an arithmetic label, and an observer sees the zeros of one entire function built from the labels and the graph Laplacian. The question is which features of an unknown graph and its labels the observer can distinguish. Ordinates are signed real numbers and multiplicities count.
+
+The article in \repo\ combines 184 reports. Its section on zeros, Euler products and prime races constructs the coupled function, proves its real-root property under the stated input, and recovers all principal minors for a known list of distinct nonprincipal characters of a common parity. Its final inverse problem asks about mixed parity, unknown labels, effective observation windows, decoding in polynomial time, and perturbed ordinates. We address those questions in the observation models specified below. We use the upstream Dirichlet theorem at the level it is used in the article. This is a human-readable proof. The upstream Lean proof has not been rerun here.
+
+\paragraph{Definition.}
+For a primitive character $\chi$ of conductor $q>1$, put $a_\chi=(1-\chi(-1))/2\in\{0,1\}$ and
+\[
+ \Lambda_\chi(s)=(q/\pi)^{(s+a_\chi)/2}
+       \Gamma((s+a_\chi)/2)L(s,\chi),\qquad
+ F_\chi(z)=\eta_\chi^{-1}\Lambda_\chi(1/2+iz),
+\]
+where $\eta_\chi$ is a square root of its unit-modulus root number. For the primitive character of conductor one put $F_1(z)=\xi(1/2+iz)$, with $\xi(s)=s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)/2$. The functional equation makes these functions real entire of order at most one. Write $g_\chi=F'_\chi/F_\chi$ with derivative in $z$. For an ordered list $\boldsymbol\chi$ of length $n\ge1$, set $F_i=F_{\chi_i}$ and, for Hermitian $A$, define
+\begin{align}
+ P_A(z)&=\left(\prod_{i=1}^n F_i(z)\right)
+ \det\bigl(A+\diag(g_{\chi_1}(z),\ldots,g_{\chi_n}(z))\bigr). \label{eq:model}
+\end{align}
+Expansion by principal minors removes the apparent poles. Choosing the opposite square root can only change an overall sign. Write $\Delta_I(f,h)=\sum_{x\in I}(\ord_x f-\ord_x h)_+$ for nonzero entire functions, and $\ord_x f=0$ when $f(x)\ne0$. A finite one-sided discrepancy puts no upper bound on the number of extra zeros of $h$.
+
+\begin{theorem}[Recovery with unknown character labels]\label{thm:overview}
+Use the Dirichlet GRH input. Let $A,B$ be Hermitian couplings on two lists of primitive Dirichlet characters, of lengths $n_A,n_B$. If $n_B\le n_A$ and $\Delta_\R(P_A,P_B)<\infty$, their character multisets are equal. For distinct labels, after identifying vertices by character, all corresponding principal minors are equal. In particular a nonnegatively weighted labelled graph is determined by these data, up to simultaneous relabelling. For repeated labels the exact invariant is the polynomial in \eqref{eq:group}. With finite discrepancy in both directions the size bound can be dropped.
+\end{theorem}
+
+\begin{theorem}[Recovery from positive ordinates alone]\label{thm:onehalf}
+Under the same input, the positive zero multiset of an $n$-vertex coupling determines its primitive character multiset and its grouped determinant polynomial even after insertions and deletions whose total up to height $T$ is
+\[
+ o\!\left(\frac{T}{(\log T)^{n+1}}\right).
+\]
+The list length and the conductors can be unknown. In this statement each candidate must explain the data within the stated error rate for its own size. The labels alone are identifiable under the larger budget $o(T)$. Furthermore, if a competing list has size at most $n$, it suffices to bound the number of missing true positive ordinates by $o(T/(\log T)^{n+1})$; extra ordinates of the competitor can be unrestricted.
+\end{theorem}
+Theorem~\ref{thm:onehalf} follows from two different orders in the same spectral measurement. The leading average at a prime frequency gives the sum of character values at that prime. Once the labels agree, two different coupling polynomials have a first distinguishing frequency at a logarithmic order no greater than $n+1$. The proofs use prime-frequency traces and a positive trigonometric polynomial to count the two directions of discrepancy separately.
+
+Here and throughout, graph weights refer to the off-diagonal weighted adjacency of an undirected loopless graph. Parallel edges, when allowed, contribute their total weight. Signed ordinates and exact complex characters matter; identifying the two ends of the real axis would change the observation model.
+
+For instance the odd quadratic characters of conductors $3$ and $4$ and the even quadratic character of conductor $5$ can label a path with positive edge weights $a,b$. With these labels in path order its determinant polynomial is
+\[
+ X_1X_2X_3+aX_2X_3+(a+b)X_1X_3+bX_1X_2+ab(X_1+X_2+X_3).
+\]
+Theorem~\ref{thm:overview} identifies all three characters even against competing triples drawn from unbounded conductors. It identifies the middle character and both incident weights. The article already uses this particular list as a forward example. The inverse assertion for unknown inputs is the addition here.
+
+\paragraph{Inputs and prior results.}
+The project states its arithmetic input in \texttt{src:thm:dgrh}. Its forward result, \texttt{zer:cor:graphdirichlet}, bounds the difference between the output zero count and the sum of the input counts on any interval with regular endpoints by $n$. All zeros of the output are real under Dirichlet GRH. Indeed the genus-one factorization gives $\Im g_i(z)<0$ in the upper half-plane, since each $F_i$ has real zeros and at least one zero. The imaginary part of the diagonal matrix then rules out a null vector in \eqref{eq:model}, and conjugation handles the lower half-plane. Multiplicity and the count comparison are supplied by the article. The article's inverse argument is in \texttt{zer:thm:tailrigid} and \texttt{zer:thm:window}. Its prime-frequency reconstruction for one differentiated input is in \texttt{rec:thm:operatorinverse}. Background for the individual functions is in \cite{dlmf}.
+Independence results for ordinary $L$-functions and derivatives, and uniqueness from arithmetic or zero data for $L$-functions themselves, have a substantial literature \cite{kmp,booker,nagoshi}. The determinant in \eqref{eq:model} generally has no given Euler product. Our use of an error locator is in the tradition of algebraic decoding \cite{pellikaan}. The contribution claimed here concerns these coupled spectra and the stated observation models. Historical priority has not been established exhaustively.
+
+\section{Polynomial independence on a vertical line}
+Let $\psi_1,\ldots,\psi_h$ be distinct primitive characters, including the conductor-one character if present. To avoid confusion with the digamma function, write $g_j=g_{\psi_j}$ and denote the digamma by $\Psi$. We first strengthen the analytic lemma underlying the article's fixed-list proof.
+\begin{lemma}\label{lem:ap}
+On $s=2+it$, $z=(s-1/2)/i$, a polynomial $P\in\C[X_1,\ldots,X_h]$ satisfying $P(g_1(z),\ldots,g_h(z))\to0$ as $t\to+\infty$ is zero. In particular the $g_j$ are algebraically independent over $\C(z)$.
+\end{lemma}
+\begin{proof}
+The Euler product and the uniform digamma asymptotic give
+\[
+ g_j(z)=u(t)+c_j+D_j(t)+O((1+t)^{-1}),\quad
+ u(t)=\tfrac i2\log((2+it)/2),\quad c_j=\tfrac i2\log(q_j/\pi),
+\]
+for $t\ge1$, with $D_j(t)=-i\sum_{m\ge2}\Lambda(m)\psi_j(m)m^{-2-it}$. Here $\Lambda(m)$ is the von Mangoldt function. The difference between $\Psi((s+a_j)/2)$ and $\log(s/2)$ is $O(1/t)$ for either parity. For $q_j=1$ the two extra logarithmic derivatives of $s(s-1)$ also have that size. Each $D_j$ is a uniform limit of trigonometric polynomials by absolute convergence.
+
+For $d=\deg P$, replacing the $g_j$ by $u+c_j+D_j$ changes $P(g)$ by $o(1)$ since $|u|=O(\log(2+t))$. Expanding in $u$ gives $\sum_{k=0}^d u^k f_k(t)=o(1)$, where the $f_k$ are bounded uniform limits of trigonometric polynomials. Such a function with limit zero at $+\infty$ vanishes identically: simultaneous recurrence of the finitely many phases of a uniform approximant gives arbitrarily large translations arbitrarily close to periods. Equivalently one may take a sequence of translations approaching periods for successively finer approximants. Since $|u|\to\infty$, division by $u^d$ forces $f_d(t)\to0$, hence $f_d=0$. Descending induction gives $f_0=P(c_1+D_1,\ldots,c_h+D_h)=0$.
+
+For $d>0$, let $\mathcal B$ polarize the top homogeneous term of $P$, with $\mathcal B(x,\ldots,x)=P_d(x)$. Extract the Fourier coefficient at $-\log m$ for $m=p_1\cdots p_d$ a product of distinct primes. Uniform absolute convergence permits termwise means. Only products from $P_d$ choosing one prime per factor can contribute, so the coefficient is
+\[
+ m^{-2}d!(-i)^d\prod_{k=1}^d\log p_k\,
+ \mathcal B(v(p_1),\ldots,v(p_d)),\qquad v(p)=(\psi_j(p))_{j=1}^h.
+\]
+The distinct primitive characters induce distinct characters on the units modulo $Q=\lcm(q_1,\dots,q_h)$. Orthogonality shows that the corresponding vectors of character values span $\C^h$. Dirichlet's theorem on primes in progressions supplies distinct primes realizing any prescribed tuple of unit classes, including repeated classes. Multilinearity gives $\mathcal B=0$, a contradiction. A constant polynomial tending to zero is zero.
+
+Finally, clear denominators of a putative rational-coefficient relation and write it as $\sum_{j=0}^b z^j P_j(g)=0$ with $P_b\ne0$. On our line $z=t-3i/2$ and every lower term after division by $z^b$ is $O(t^{-1}(1+\log t)^D)$ for some fixed $D$. Thus $P_b(g)\to0$, which is impossible.
+\end{proof}
+
+\section{Fixed labels, including repetitions}
+If $m_j$ vertices carry label $\psi_j$, put $m=(m_1,\ldots,m_h)$ and define
+\begin{equation}\label{eq:group}
+ D_A(X)=\det\bigl(A+\diag(X_{j(i)})_{i=1}^{n}\bigr)
+ =\sum_{0\le\alpha\le m} c_\alpha X^\alpha,\qquad c_m=1 .
+\end{equation}
+Here $j(i)$ identifies the character at vertex $i$ and inequalities on indices are componentwise. Each coefficient is the sum of the principal minors having that exponent pattern in the determinant expansion. Write
+\[
+ E_\alpha=\prod_{j=1}^h(F'_{\psi_j})^{\alpha_j}F_{\psi_j}^{m_j-\alpha_j},
+ \qquad P_A=\sum_\alpha c_\alpha E_\alpha,\qquad
+ V_\ell=\left\{\sum_{\alpha\ne m} q_\alpha(z)E_\alpha(z):\deg q_\alpha\le\ell\right\}.
+\]
+Lemma~\ref{lem:ap} makes this representation unique, also when polynomial multiples of $E_m$ are included. If all labels coincide, $D_A(X)=\det(A+XI)$, so even an exact full spectrum retains just the ordinary eigenvalue multiset of $A$.
+
+\begin{theorem}[Polynomially weighted separation]\label{thm:window}
+Under Dirichlet GRH, for every Hermitian $A$ and $0\ne H\in V_\ell$ one has $\Delta_\R(P_A,H)=\infty$. For a fixed list, $M\ge0$ and integers $K,\ell\ge0$, a finite $T_0$ works simultaneously for $\|A\|\le M$ and $0\ne H\in V_\ell$:
+\[
+ \Delta_{[-T_0,T_0]}(P_A,H)>K .
+\]
+In particular, for the same character list, $\Delta_\R(P_A,P_B)<\infty$ is equivalent to $D_A=D_B$. The forward implication also follows from discrepancy at most $K$ in the stated window for $\ell=0$, without a norm bound on $B$.
+\end{theorem}
+\begin{proof}
+For $\Im z\le-3/2$ one has $\Re s\ge2$. Uniform Stirling asymptotics and bounded logarithmic derivative series there give $g_j(z)=\tfrac i2\log(s/2)+O(1)$ for $|s|\to\infty$. All terms in $D_A$ below $X^m$ have total degree at most $n-1$. Thus its leading value is $(\tfrac i2\log(s/2))^n(1+O(1/\log |s|))$. The quotient $H/P_A$ is $O((1+|z|)^\ell/\log |z|)$ there. Conjugation gives the same bound on $\Im z\ge3/2$, by conjugating the coefficients of $H$ when necessary.
+
+Suppose there are finitely many poles. After multiplying by a polynomial $W$ cancelling their orders, $J=WH/P_A$ is entire of order at most one. Indeed the numerator and denominator are entire of order at most one, and their genus-at-most-one Hadamard products cancel, leaving a subproduct of the numerator times a linear exponential and a possible power of $z$. Equivalently the standard characteristic inequality for a quotient gives the same finite-order bound. Outside the strip, $J=O((1+|z|)^b)$ with $b=\deg W+\ell$. To propagate the estimate across the strip divide by $(z-2i)^b$ there and multiply by $\exp(-\delta\cosh(\kappa z))$ for $0<\kappa<\pi/3$, $\delta>0$. On long vertical sides this factor dominates finite-order growth, and its modulus is at most one on the horizontal boundaries. The maximum principle followed by $\delta\downarrow0$ proves the global polynomial bound. Cauchy estimates give that $J$ is a polynomial. Hence $H/P_A$ is rational. Dividing the identity $H=(H/P_A)P_A$ by $\prod_i F_i$ contradicts Lemma~\ref{lem:ap}: the coefficient of $X^m$ on the left is zero, and on the right it is the nonzero rational quotient. All zeros of $P_A$ are real, so the infinitely many poles prove the first claim.
+
+If no finite window worked, take $A_j$ with $\|A_j\|\le M$ and $H_j\in V_\ell$ with unit coefficient vector, with discrepancy at most $K$ on $[-j,j]$. By finite-dimensional compactness pass to $A_j\to A$, $H_j\to H$ locally uniformly. Independence gives $H\ne0$ and $P_A\ne0$. By the first assertion, finitely many zeros of $P_A$ carry excess over $H$ exceeding $K$. Take disjoint small discs about them, enclosing no other zero of either limit, with boundaries free of zeros. Rouch\'e's theorem fixes the counts for $P_{A_j}$ and $H_j$ on these discs for all large $j$. Every zero of $P_{A_j}$ there is real, and the sum of positive differences of the disc counts is a lower bound for the discrepancy on $[-j,j]$. This contradicts the choice. Finally $P_B-P_A\in V_0$ vanishes to at least the common multiplicity at every zero. Applying separation to this difference, if nonzero, proves the last assertion.
+\end{proof}
+\input{blind}
+
+\paragraph{An unconditional complex-divisor version.}
+For lists of the same specified size, Theorem~\ref{thm:blind} holds without Dirichlet GRH if the hypothesis counts missing zeros throughout $\C$. Indeed that hypothesis directly supplies the pole-clearing polynomial $W$. From that point on the proof uses the functional equation, bounds in the right half-plane, and the Euler coefficients of the primitive inputs. In the fixed-list proof the only use of the critical-line input in the infinite-divisor argument was to infer poles from missing real zeros. This locates precisely where the change from complex zero data to signed real ordinates uses GRH.
+
+\paragraph{Reading a graph from the recovered coefficients.}
+For distinct labels, the monomial supported on the complement of $J$ in \eqref{eq:group} has coefficient $\det A[J]$. In a loopless weighted Laplacian $L$ the one-vertex minors give the weighted degrees $L_{ii}$. For $i\ne j$ the edge weight, with zero for an absent edge, is
+\[
+ w_{ij}=\sqrt{L_{ii}L_{jj}-\det L[\{i,j\}]} .
+\]
+This proves the graph assertion in Theorem~\ref{thm:overview}. For a general Hermitian matrix, diagonal unitary conjugation and entrywise conjugation already preserve all principal minors. Our invariant is their full vector.
+
+\input{prime_trace}
+\input{minor_trace}
+\input{one_sided}
+\section{Finite corrupted data and an exact decoder}
+Assume the character multiset is known. Let $K$ bound deleted multiplicities and $\ell$ bound inserted multiplicities in the observation window. A spurious extra copy at a genuine zero counts as one insertion. For the window of Theorem~\ref{thm:window}, write the received multiset as $Y=Z+J$ where $Z$ consists of the true zeros after at most $K$ deletions and $|J|\le\ell$. The algorithm receives only $Y$. Denote the number of free determinant coefficients by $d=\prod_j(m_j+1)-1$.
+
+\begin{theorem}[Exact decoding by linear equations]\label{thm:decode}
+Seek a monic polynomial $W$ of degree $\ell$ and polynomials $Q_\alpha$ of degree at most $\ell$ such that
+\[
+ \left(W E_m+\sum_{\alpha\ne m} Q_\alpha E_\alpha\right)^{(r)}(y)=0
+ \qquad (y\in\operatorname{supp}Y,\quad 0\le r<\operatorname{mult}_Y(y)).
+\]
+The system is consistent. In every solution $Q_\alpha=c_\alpha(A)W$, so the coefficient of $z^\ell$ in each $Q_\alpha$ gives the corresponding coefficient of $D_A$. No search over corrupted positions is required.
+\end{theorem}
+\begin{proof}
+The choice $W=z^{\ell-|J|}\prod_{y\in J}(z-y)$, with multiplicities, and $Q_\alpha=c_\alpha W$ is feasible. In any solution subtract $WP_A$ from the fitted entire function. The difference is in $V_\ell$ and vanishes to the full retained orders along $Z$, since both terms do. Its missing multiplicity relative to $P_A$ is at most $K$ on the window. Hence Theorem~\ref{thm:window} forces the difference to vanish identically. Independence gives the polynomial identities coefficient by coefficient.
+\end{proof}
+There are $b=|Y|$ rows and $v=\ell+d(\ell+1)$ unknowns. Once exact jet values are available, matrix assembly by the product rule and Gaussian elimination take polynomially many arithmetic operations in $b,v$ (elimination alone takes $O((b+v)^3)$). The model allows exact real or complex arithmetic and zero tests. It makes no polynomial-bit-time assertion about computing or comparing transcendental ordinates. With distinct labels, $d=2^n-1$, the size of the requested vector of all minors. Extra capacity in the error budget may leave $W$ nonunique.
+
+\paragraph{Checking a particular observation.}
+The affine solution set is obtained by linear algebra. Take any solution, extract a candidate vector $c$ from the leading coefficients, and test the identities $Q_\alpha=c_\alpha W$ on the solution and the corresponding homogeneous identities on a basis of directions. If all pass, the candidate is certified under the given corruption model even in a shorter window, because the true parameters have at least one feasible lift. Enlarging the window with fresh complete observations subject to the same budgets eventually makes this test succeed.
+
+\subsection*{A terminating search for a sufficient window}
+There is also a uniform, computable height for a given fixed list, integer budgets and rational matrix bound $M$. The following construction gives an algorithm, potentially very slow. Its certificates use argument-principle counts on rational rectangles off the zeros. It does not need an oracle for exact real zero locations.
+
+Parametrize Hermitian matrices by real coordinates and enclose their norm ball in a rational box of Hermitian matrices. Theorem~\ref{thm:window} applies on this enlarged compact set as well. For the coefficients of $H\in V_\ell$, normalize a nonzero coefficient of greatest modulus to one and take each remaining real and imaginary coordinate in $[-1,1]$. These finitely many compact rational boxes cover all scalar classes, and every point of every box gives a nonzero $H$. For each parameter pair $(A,H)$ there are finitely many disjoint rational rectangles whose two separate zero counts give
+\[
+ \sum_D \max\{N_D(P_A)-N_D(H),0\}>K .
+\]
+Indeed choose rectangles isolating the finite witnessing centers used in the compactness proof. Choose all boundaries free of zeros. The same counts persist in a parameter neighbourhood.
+
+Here is explicit search logic.
+\begin{enumerate}
+\item Enumerate rational closed parameter boxes in the charts, finite disjoint rational rectangles in the complex plane, and rational boundary meshes and precision levels. Allow boxes to meet or extend across chart boundaries.
+\item On rectangle boundaries use convergent complex interval enclosures of $P_A,H$ to certify, uniformly for a box, that each oriented mesh segment has image in an open disc excluding zero. At a rational representative parameter, compute the winding by a closed rational polygon: enclose its vertex values with sufficient precision that both endpoints of each interpolating segment belong to the same certified disc as the corresponding image arc. The polygon and image have the same winding by homotopy. Boundary nonvanishing throughout the box keeps it constant. Retain boxes for which the displayed inequality holds.
+\item Dovetail these tests until the interiors of retained boxes cover each prescribed compact parameter chart. Coverage of rational boxes is decided by subdividing at their finitely many endpoints. Output any integer $T_0$ strictly greater than all absolute real parts of vertices of the rectangles used in this finite cover.
+\end{enumerate}
+The needed evaluations on compact sets are effective. For example one may use the standard rapidly convergent completed theta integrals split at $1$ via the functional equation, or the finite Hurwitz-zeta expression for $L$ with Euler--Maclaurin remainder bounds, together with analytic continuation across removable singularities by contour integration. Derivatives may likewise be enclosed by Cauchy's formula on a slightly larger disc. In enumerating rectangles one may avoid the discrete gamma poles on the boundaries. Equivalently interval evaluation on the edges may first subdivide into pole-free charts. The singular point of $\zeta$ can be avoided there as well. Absolute convergence with effective tail bounds gives arbitrarily fine enclosures on every such edge. Finite lists and arithmetic coefficients are effective inputs. At a witnessing parameter there is positive distance of the compact boundary images from zero. Sufficiently fine meshes and sufficiently small parameter boxes around that point therefore pass the tests. Compactness ensures termination. Reality of the zeros of $P_A$ converts the certified rectangle discrepancies into the required real-window bound. The same box search on pairs of bounded matrices for each pair of different multisets in a finite catalogue handles Corollary~\ref{cor:blind-finite}. A practical analytic bound on $T_0$ in terms of the conductors remains open.
+
+\input{stability}
+
+\section{Checks and remaining questions}
+\paragraph{A mixed-parity example.}
+The included computation uses the primitive quadratic character modulo $3$ (odd), the primitive quadratic character modulo $5$ (even), and the matrix
+\[
+ A=\begin{pmatrix}2&1\\1&3\end{pmatrix},\qquad
+ D_A(X_1,X_2)=X_1X_2+3X_1+2X_2+5.
+\]
+At 45 decimal digits, the script evaluates the completions and their derivatives and refines nine sample zeros. It deletes the sample near $10.50530281214$ and inserts $4.25$. The linear system recovers the extra location $4.25$ and coefficients $3,2,5$. The normalized-row residual is about $2.4\times10^{-45}$. This experiment uses selected roots and numerical sign-change brackets. It does not certify completeness of an interval or a uniform window length. A separate exact rational polynomial experiment implements the jet conditions by polynomial divisibility. One copy is deleted, three are inserted, one genuine root is assigned excess multiplicity, and the resulting affine system has rank $15$. Its monic locator is $z(z+1)(z-87)$. It returns the same coefficient vector, with zero polynomial remainder. The polynomial example checks the decoder algebra in a finite model.
+
+\paragraph{What remains open.}
+Three questions are immediate. Can one bound the first sufficient uniform window explicitly by a useful function of the conductors, matrix norm and corruption budgets? Can one bound the stability constant at the same time? Can the graph be recovered in time polynomial in its vertex count when only the edge weights, rather than every principal minor, are wanted? For equal-size competitors the one-sided lower bound for different coupling polynomials is of order at least $T/(\log T)^{n+1}$. Do their actual positive zero multisets always differ on a larger scale, even for the signed cycles? The block-diagonal example describes a genuine obstruction when a larger competitor is admitted with unrestricted extra observations.
+
+\begin{thebibliography}{9}
+\bibitem{repo} ProveIt contributors, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, \repo, especially
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis/Article/sections/zer.tex}{the section on zeros and prime races}. Upstream input: \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{\texttt{lsernau/grh-lean}, pinned revision}.
+\bibitem{dlmf} NIST, \emph{Digital Library of Mathematical Functions}, \href{https://dlmf.nist.gov/25.15}{\S25.15} and \href{https://dlmf.nist.gov/5.11}{\S5.11}.
+\bibitem{kmp} J. Kaczorowski, G. Molteni and A. Perelli, \emph{Linear independence of $L$-functions}, Forum Math. 18 (2006), 1--7. \href{https://sites.unimi.it/molteni/research/papers-pdf/14-molteni-Linear_independence_of_L-functions.pdf}{Author version}.
+\bibitem{gonek} S. M. Gonek, \emph{A formula of Landau and mean values of $\zeta(s)$}, in \emph{Topics in Analytic Number Theory}, 92--97, 1985. \href{https://www.sas.rochester.edu/mth/people/faculty/gonek-steve/assets/pdf/8-landau-form.pdf}{Author version}.
+\bibitem{booker} A. R. Booker, \emph{$L$-functions as distributions}, Math. Ann. 363 (2015), 423--454. \href{https://doi.org/10.1007/s00208-015-1178-z}{DOI}.
+\bibitem{nagoshi} H. Nagoshi, \emph{Independence of $L$-functions}, \href{https://www.math.kobe-u.ac.jp/prob/nagoshi_1.pdf}{research abstract}. See also B. Bagchi, \emph{A joint universality theorem for Dirichlet $L$-functions}, Math. Z. 181 (1982), 319--334, \href{https://doi.org/10.1007/BF01161980}{DOI}.
+\bibitem{pellikaan} R. Pellikaan, \emph{On decoding by error location and dependent sets of error positions}, Discrete Math. 106/107 (1992), 369--381. \href{https://doi.org/10.1016/0012-365X(92)90567-Y}{DOI}.
+\end{thebibliography}
+\end{document}

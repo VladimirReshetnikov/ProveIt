@@ -1,0 +1,147 @@
+LITERATURE COMPARISON FOR CONDITIONAL SPECTRAL EXTREMES
+Checked 27 November 2026. This is a targeted comparison, not a priority certificate.
+
+Proposed theorem examined
+------------------------
+Let N(T) be regularly varying with positive index alpha<p and let G_j be
+independent Gamma(theta,1) variables. Condition X=sum G_j/gamma_j^p on
+X<=x as x decreases to zero. With exact saddle t=u^p and exact threshold
+b_u determined by the tilted exceedance mass 1, the marked extremes
+(t G_j/gamma_j^p-b_u, b_u(gamma_j/u)^p) converge to a Poisson process
+with product intensity e^{-z} dz times Gamma(alpha/p,1). The conditioning
+slack t(x-X) tends to an independent Exp(1) variable. The winner's spectral
+height is u/b_u^(1/p), smaller than the bulk scale u.
+
+1. Direct repository predecessors
+---------------------------------
+Pinned ProveIt commit: 00cadb961bbe77c74e5d082c4948f8884d58a970.
+https://github.com/VladimirReshetnikov/ProveIt/blob/00cadb961bbe77c74e5d082c4948f8884d58a970/Analysis/GeneralizedRiemannHypothesis/Article/sections/ana.tex
+
+The source contains the same spectral gamma-sum model and its saddle
+analysis. In particular ana:thm:condlaw gives finite-coordinate and
+macroscopic bridge limits; ana:thm:block gives total-variation equivalence
+of every submacroscopic block h=o(u) to independent tilted gamma
+coordinates, jointly with the exponential slack; ana:thm:macro identifies
+the macroscopic independence obstruction; ana:cor:fourfifths gives the
+untilted-rate transition; ana:thm:medianheight treats the height carrying
+half the mass.
+
+The proposed theorem uses those tools to determine extreme individual
+contributions and their spectral locations. Their threshold is logarithmic,
+their height scale is u/(log N(u))^(1/p), and their limiting location mark
+is Gamma(alpha/p,1), independent of gamma shape theta. Those are different
+observables and scales from the source's mass quantile and bulk bridge.
+Text searches across all current Article sections returned no occurrence
+of Gumbel, marked Poisson, Poisson point process, or the tested phrases
+for largest contribution / winning spectral height. This supports a
+repository-level distinction, but search alone is not an exhaustive
+mathematical nonduplication argument. The relevant conditional-law section
+was also read directly.
+
+2. Gamma and Dirichlet maxima
+-----------------------------
+Arup Bose, Amites Dasgupta and Krishanu Maulik,
+Maxima of Dirichlet and triangular arrays of gamma variables,
+Statistics & Probability Letters 78(16) (2008), 2811-2820.
+DOI: https://doi.org/10.1016/j.spl.2008.03.032
+Primary preprint: https://arxiv.org/abs/0803.3518
+Full primary PDF read: https://arxiv.org/pdf/0803.3518
+
+Section 1 explicitly defines rows of iid Gamma(alpha_n,1) variables and
+exchangeable Dirichlet vectors. Section 2 derives gamma maxima under
+different shape regimes; Section 3 transfers to Dirichlet maxima through
+the gamma representation. The fixed-shape centering is the familiar
+log n+(theta-1)log log n-log Gamma(theta).
+
+Distinction: the proposed model has infinitely many nonidentical spectral
+rates after tilting, a rare small weighted-sum constraint, and a marked
+limit describing where the largest contribution occurs. In the Dirichlet
+zero case its centering has (theta-3/2)log log N(u), reflecting loss of a
+factor sqrt(log N(u)) in the effective population. One should not describe
+the Gumbel law for gamma maxima by itself as new.
+
+3. Small Gaussian ellipsoids and conditional moments
+----------------------------------------------------
+Eddy Mayer-Wolf and Ofer Zeitouni,
+The Probability of Small Gaussian Ellipsoids and Associated Conditional Moments,
+Annals of Probability 21(1) (1993), 14-24.
+DOI: https://doi.org/10.1214/aop/1176989391
+Primary author PDF: https://www.wisdom.weizmann.ac.il/~zeitouni/pdf/eddyelip.pdf
+Author publication listing:
+https://www.ee.technion.ac.il/~zeitouni/reprints1990-1994.html
+
+The abstract and opening discussion concern the lower tail of a Gaussian
+norm and conditional exponential moments, with Onsager-Machlup applications.
+This is a direct antecedent for the conditioning framework. The accessible
+PDF's text encoding is defective; the usable comparison here is limited
+to the primary title, abstract and bibliographic record. Do not make a
+claim about every technical theorem in that article solely from the abstract.
+
+Distinction established at the level of stated scope: small-norm tail and
+conditional moment bounds versus a marked maximum process and moving
+spectral location. This comparison does not prove no implication of an
+older general theorem covers the new statement.
+
+4. Gibbs conditioning under extreme deviations
+-----------------------------------------------
+Zhansheng Cao, An Abelian theorem with application to the conditional Gibbs principle
+(2013), https://arxiv.org/abs/1302.1337
+
+The primary abstract concerns iid light-tailed variables, a tilted density,
+Edgeworth expansions, and a local limit under a large-sum constraint with
+sample mean tending to infinity. It is a methodological antecedent for
+tilting and local limits. The proposed theorem concerns an infinite
+weighted sum tending to zero and a location-marked extreme process.
+
+5. Unconditioned maxima of spectral intensities
+-----------------------------------------------
+Geza Gyorgyi, Peter C. W. Holdsworth, Baptiste Portelli and Zoltan Racz,
+Statistics of extremal intensities for Gaussian interfaces,
+Physical Review E 68 (2003), 056116.
+Primary preprint: https://arxiv.org/abs/cond-mat/0307645
+Full primary PDF: https://arxiv.org/pdf/cond-mat/0307645
+DOI: https://doi.org/10.1103/PhysRevE.68.056116
+
+This is a close antecedent for spectral maxima: independent exponential
+Fourier intensities have power-law rates. The paper studies their
+unconditioned maximum and compares it with the roughness (their sum).
+It obtains Gumbel limits in white-noise, high-dimensional and
+short-wavelength regimes. It does not formulate the small-total
+conditioned, location-marked point process proved in this manuscript.
+The new statement should therefore be described as a conditional marked
+spectral theorem, not as the first study of nonidentical spectral maxima.
+
+6. Small deviations of a weighted maximum
+-----------------------------------------
+L. V. Rozovsky, Small deviations of the maximal element of a sequence
+of independent variables with smooth weights, Zap. Nauchn. Sem. POMI 368
+(2009), 190-200; English translation J. Math. Sci. 167(4) (2010), 543-549.
+Official record: https://www.mathnet.ru/php/archive.phtml?jrnid=znsl&option_lang=eng&paperid=3513&wshow=paper
+DOI: https://doi.org/10.1007/s10958-010-9942-9
+
+The official abstract studies the logarithmic probability that a weighted
+maximum is small, for independent identically distributed nonnegative
+variables and regular weights. This differs from the distribution of
+the maximum conditioned on a small weighted sum. Only the primary abstract
+and bibliographic record were audited for this item, not its full text.
+
+Recommended novelty wording
+-----------------------------
+"We prove a new extension of the conditional spectral laws in the inspected
+ProveIt snapshot: a marked extreme-value limit and a separate spectral
+scale for the largest contribution. Classical gamma maxima, exponential
+tilting, small-ball asymptotics and Gibbs conditioning are antecedents.
+A targeted literature comparison did not locate this precise marked
+spectral statement; historical priority is not established by this search."
+
+Proof-review note
+------------------
+The source's growing-block theorem supplies a clean transfer route. Choose
+h=u/b_u^(1/(2p)), so h=o(u) but h/(u/b_u^(1/p)) tends to infinity. Prove
+the independent tilted point-process limit on this block, and transfer it
+jointly with the slack in total variation. To exclude maxima outside the
+block under the conditioned law, a uniform one-coordinate marginal
+density-ratio bound suffices; deleting any one coordinate leaves a fixed
+spectral band with order N(u) terms and hence a uniform Fourier density
+bound. This extra argument is needed: a tilted-measure union bound alone
+does not automatically survive rare-event conditioning.
