@@ -30,7 +30,7 @@ open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product r
 open GaussianRationalMetric (bounded bounded_iff)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianCoefficientNameBounds (bounded_radius_mono)
-open GaussianNamedSincQuadraticBounds (observationBound)
+open GaussianNamedSincQuadraticBounds (observationBound bounded_samples_of_observation_bound)
 open GaussianRadiusExponentialName (input)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRootAlgebra (re_mul im_mul re_neg im_neg re_scale im_scale equal_of_values)
@@ -128,23 +128,10 @@ theorem observation_bound (z R B m x : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hm 
 
 theorem unit_disk_input (z R B m x : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hm : Γ ⊢[PRAAx] le one m)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) (hR : Γ ⊢[PRAAx] le (num 4*R) m) :
-    Γ ⊢[PRAAx] input nameF one (data z R B m x) := by
-  refine .andI (name_regular z R B m x hB hm hz) (.allI ?_)
-  let Δ := Γ.map Fm.shift
-  let z' := Syn.shift z
-  let R' := Syn.shift R
-  let B' := Syn.shift B
-  let m' := Syn.shift m
-  let x' := Syn.shift x
-  have hB' : Δ ⊢[PRAAx] le one B' := by simpa [Fm.shift,Syn.shift,Δ,B',one] using hB.shift
-  have hm' : Δ ⊢[PRAAx] le one m' := by simpa [Fm.shift,Syn.shift,Δ,m',one] using hm.shift
-  have hz' : Δ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z' (R'*B') := by
-    simpa [Fm.shift,Syn.shift,Δ,z',R',B'] using hz.shift
-  have hR' : Δ ⊢[PRAAx] le (num 4*R') m' := by simpa [Fm.shift,Syn.shift,Δ,R',m'] using hR.shift
-  have b := observation_bound_at z' R' B' m' x' (var 0) hB' hm' hz'
-  have res := bounded_radius_mono _ _ _ one one hm' (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) hR') b
-  simpa [GaussianRadiusExponentialName.boundedSamples,Syn.shift,Δ,z',R',B',m',x',one] using res
+    Γ ⊢[PRAAx] input nameF one (data z R B m x) :=
+  .andI (name_regular z R B m x hB hm hz)
+    (bounded_samples_of_observation_bound _ _ _ _ _ hm
+      (le_congr (.eqRefl _) (one_mul m).eqSymm hR) (observation_bound z R B m x hB hm hz))
 
 theorem natural_code_bound (k : PTm n) : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded (scale k oneCode) (k*one) :=
   le_congr ((normSq_scale k oneCode).eqTrans

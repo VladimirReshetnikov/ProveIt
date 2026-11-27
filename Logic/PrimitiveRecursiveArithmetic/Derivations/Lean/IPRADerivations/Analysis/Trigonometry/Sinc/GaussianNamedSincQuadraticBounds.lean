@@ -42,6 +42,18 @@ theorem observation_bound_at (f : PR 2) (x A B p : PTm n)
     (h : Γ ⊢[PRAAx] observationBound f x A B) :
     Γ ⊢[PRAAx] bounded (ap2 f p x) A B := by simpa [observationBound] using h.allE p
 
+theorem bounded_samples_of_observation_bound (f : PR 2) (x A B R : PTm n)
+    (hB : Γ ⊢[PRAAx] le one B) (hR : Γ ⊢[PRAAx] le A (R*B))
+    (h : Γ ⊢[PRAAx] observationBound f x A B) :
+    Γ ⊢[PRAAx] GaussianRadiusExponentialName.boundedSamples f R x := by
+  refine .allI ?_
+  have hs : Γ.map Fm.shift ⊢[PRAAx] observationBound f (Syn.shift x) (Syn.shift A) (Syn.shift B) := by
+    simpa [Fm.shift,Syn.shift] using h.shift
+  have hr : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift A) (Syn.shift R*Syn.shift B) := by
+    simpa [Fm.shift,Syn.shift] using hR.shift
+  exact bounded_radius_mono _ _ _ _ _ (Order.shift_one_le hB) (le_refl one)
+    (le_congr (by ipra_ring) (.eqRefl _) hr) (observation_bound_at _ _ _ _ (var 0) hs)
+
 theorem exact_sample (f : PR 2) (R x p : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data f R x) ≐ value f R x (query f R x p) :=
   (GaussianFastValueCut.name_at (rawF f) (modulus f R x) (rawData R x) p).eqTrans

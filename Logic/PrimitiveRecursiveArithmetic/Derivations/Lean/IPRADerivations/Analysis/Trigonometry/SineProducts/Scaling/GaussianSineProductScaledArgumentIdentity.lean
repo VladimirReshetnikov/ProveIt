@@ -17,7 +17,8 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianSineProductScaledArgumentIdentity
 
 open_ipra
-open GaussianSineProductScaledArguments (coefficient nameF data name_regular observation_bound_at natural_code_bound)
+open GaussianSineProductScaledArguments (coefficient nameF data name_regular observation_bound natural_code_bound)
+open GaussianNamedSincQuadraticBounds (bounded_samples_of_observation_bound)
 open GaussianArctangentQuarterExponential (quarterF quarter_regular)
 open GaussianBoundedConstantProductName (clock)
 open ComplexLogarithmRemainder (scale mul oneCode eval_re_code eval_im_code)
@@ -30,7 +31,7 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianNamedSincSamples (common_late_distance)
@@ -45,23 +46,11 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 theorem wide_input (z R B m x : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hm : Γ ⊢[PRAAx] le one m)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :
-    Γ ⊢[PRAAx] input nameF (num 4*R) (data z R B m x) := by
-  refine .andI (name_regular z R B m x hB hm hz) (.allI ?_)
-  let Δ := Γ.map Fm.shift
-  let z' := Syn.shift z
-  let R' := Syn.shift R
-  let B' := Syn.shift B
-  let m' := Syn.shift m
-  let x' := Syn.shift x
-  have hB' : Δ ⊢[PRAAx] le one B' := by simpa [Fm.shift,Syn.shift,Δ,B',one] using hB.shift
-  have hm' : Δ ⊢[PRAAx] le one m' := by simpa [Fm.shift,Syn.shift,Δ,m',one] using hm.shift
-  have hz' : Δ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z' (R'*B') := by
-    simpa [Fm.shift,Syn.shift,Δ,z',R',B'] using hz.shift
-  have b := observation_bound_at z' R' B' m' x' (var 0) hB' hm' hz'
-  have res := bounded_radius_mono _ _ _ (num 4*R') one hm' (le_refl one)
-    (le_mul_mono (le_refl (num 4*R')) hm') b
-  simpa only [GaussianRadiusExponentialName.boundedSamples,Syn.shift,GaussianSineProductScaledArguments.subst_data,
-    PTm.subst_mul,PTm.subst_num,Δ,z',R',B',m',x'] using res
+    Γ ⊢[PRAAx] input nameF (num 4*R) (data z R B m x) :=
+  .andI (name_regular z R B m x hB hm hz)
+    (bounded_samples_of_observation_bound _ _ _ _ _ hm
+      (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl _) hm))
+      (observation_bound z R B m x hB hm hz))
 
 theorem coefficient_multiple (z B m : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] natScale m (coefficient z B m) ≐ coefficient z B one := by
