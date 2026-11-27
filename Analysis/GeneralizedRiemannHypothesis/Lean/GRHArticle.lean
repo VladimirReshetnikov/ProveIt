@@ -2,11 +2,13 @@ import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinTruncation
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.ConjugateDisks
+import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.HasseCoefficients
 import GRHArticle.SingularModuli.PadicCutoff
 import GRHArticle.SingularModuli.PadicDiskRoots
 import GRHArticle.SingularModuli.PadicExpSubstitution
+import GRHArticle.SingularModuli.RootCertificates
 import GRHArticle.SingularModuli.Separated
 import GRHArticle.SingularModuli.SevenAdicCutoff
 import GRHArticle.SingularModuli.Strassmann
