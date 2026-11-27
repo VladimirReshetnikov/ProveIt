@@ -27,6 +27,7 @@ open GaussianReciprocalHorner (qadd_zero_right qadd_commutative)
 open GaussianSineProductImaginaryLogDerivative
   (axisNumerator realNumerator rationalReal squareDenominator logarithmRow logarithmSum logarithm_sum_succ)
 open GaussianReconstructionRoots (distance_triangle norm_from_distance)
+open GaussianInverseSquareProductTail renaming denominator_positive → tail_den_positive
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -81,10 +82,6 @@ def tail (A B R N r : PTm n) : Fm PTm n :=
   distanceBounded (logarithmSum A B (N+r)) (logarithmSum A B N) (two*R*r) (N*(N+r))
 
 ipra_subst tail [two]
-
-private theorem tail_den_positive (N r : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
-    Γ ⊢[PRAAx] le one (N*(N+r)) :=
-  positive_product _ _ hN (le_trans hN (le_add_right _ _))
 
 private theorem tail_zero (A B R N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] tail A B R N zero :=

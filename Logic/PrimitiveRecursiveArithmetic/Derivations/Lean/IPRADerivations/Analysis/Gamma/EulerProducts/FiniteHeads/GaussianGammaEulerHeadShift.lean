@@ -96,4 +96,10 @@ theorem original_finite_Euler_returned_head_shift_closed : ([] : List (Fm PTm 0)
       qmul (run (var 0) (var 1) (var 2)) (linear (var 0) (var 1) (succ (var 2)))) :=
   closeUniv 3 (.impI (returned_shift_identity _ _ _ Prf.hyp0))
 
+theorem linear_zero (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] linear z B zero ≐ ofGaussian z B :=
+  GaussianRationalHorner.canonical_unique _ _ _ _ (GaussianRationalHorner.ofGaussian_canonical _ _ hB)
+    (GaussianRationalHorner.ofGaussian_canonical _ _ hB) hB
+    (GaussianRationalHorner.represents_congr (.eqRefl _) (GaussianGammaEulerHeadLower.translated_zero z B) (.eqRefl _)
+      (GaussianRationalHorner.ofGaussian_represents _ _ hB)) (GaussianRationalHorner.ofGaussian_represents _ _ hB)
+
 end LeanProofs.IPRA.Analysis.GaussianGammaEulerHeadShift

@@ -35,6 +35,7 @@ open GaussianSineProductImaginaryFirstOrder
 open GaussianSineProductImaginaryLogDerivative
   (axisNumerator derivative factor factorDerivative finite_logarithmic_derivative product squareDenominator)
 open GaussianSineProductImaginaryLogDerivativeTail (axis_norm rational_real_bound)
+open GaussianSineProductImaginaryLogDerivative (denom_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -74,10 +75,6 @@ theorem derivative_bound (A B R N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hA : �
 
 private theorem square_positive (i : PTm n) : Γ ⊢[PRAAx] le one (succ i*succ i) :=
   positive_product _ _ (zero_lt_succ _) (zero_lt_succ _)
-
-private theorem denom_positive (i B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
-    Γ ⊢[PRAAx] le one (squareDenominator i B) :=
-  positive_product _ _ (positive_product _ _ hB (zero_lt_succ _)) (positive_product _ _ hB (zero_lt_succ _))
 
 private theorem quadratic_bound (i B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] bounded (quadraticRow i B) one (succ i*succ i) :=

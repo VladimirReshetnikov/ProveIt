@@ -27,6 +27,7 @@ open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianRootAlgebra (equal_of_values re_scale im_scale)
 open Products (fact)
+export GaussianGammaEulerHeadShift (linear_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,12 +69,6 @@ theorem factor_scaled (z B i : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRA
   have right := represents_rescale (linear z B t) a B t (ofGaussian_represents a B hB)
   exact (natScale_as_product t (factor i z B)).eqSymm.eqTrans
     (canonical_unique _ _ _ _ (natScale_canonical _ _) (ofGaussian_canonical _ _ hB) hD left right)
-
-theorem linear_zero (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
-    Γ ⊢[PRAAx] linear z B zero ≐ ofGaussian z B :=
-  canonical_unique _ _ _ _ (ofGaussian_canonical _ _ hB) (ofGaussian_canonical _ _ hB) hB
-    (represents_congr (.eqRefl _) (translated_zero z B) (.eqRefl _) (ofGaussian_represents _ _ hB))
-    (ofGaussian_represents _ _ hB)
 
 theorem natural_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
     Γ ⊢[PRAAx] naturalPoint a ≐ naturalPoint b := by

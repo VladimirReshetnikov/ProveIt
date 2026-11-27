@@ -206,4 +206,8 @@ theorem actual_finite_imaginary_sine_product_logarithmic_derivative_closed :
           qmul (product (var 0) (var 1) (var 2)) (logarithmSum (var 0) (var 1) (var 2))) :=
   closeUniv 3 (.impI (finite_logarithmic_derivative _ _ _ Prf.hyp0))
 
+theorem denom_positive (i B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
+    Γ ⊢[PRAAx] le one (squareDenominator i B) :=
+  positive_product _ _ (positive_product _ _ hB (zero_lt_succ _)) (positive_product _ _ hB (zero_lt_succ _))
+
 end LeanProofs.IPRA.Analysis.GaussianSineProductImaginaryLogDerivative
