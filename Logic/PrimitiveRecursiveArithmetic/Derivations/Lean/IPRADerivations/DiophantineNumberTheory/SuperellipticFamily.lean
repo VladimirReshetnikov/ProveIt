@@ -42,19 +42,8 @@ theorem congrPwBase {a a' : PTm k} (e : PTm k) (h : Γ ⊢[PRAAx] a ≐ a') : Γ
   congrAp2 _ (.eqRefl _) h
 
 /-- `1^e = 1`. -/
-theorem one_pw (e : PTm k) : Γ ⊢[PRAAx] pw one e ≐ one := by
-  have hall : Γ ⊢[PRAAx] Fm.all (pw one (Syn.var 0) ≐ one) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      exact pw_zero _
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      have ih : ((pw one (Syn.var 0) ≐ one) :: Γ.map Fm.shift) ⊢[PRAAx] pw one (Syn.var 0) ≐ one := Prf.hyp0
-      exact (pw_succ _ _).eqTrans ((congrMul ih (.eqRefl _)).eqTrans (one_mul _))
-  have h2 := Prf.allE e hall
-  simpa only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, ConciseIPRA.PTm.subst_zero,
-    ConciseIPRA.PTm.subst_succ] using h2
+theorem one_pw (e : PTm k) : Γ ⊢[PRAAx] pw one e ≐ one :=
+  pw_base_one e
 
 /-- `0^{e+1} = 0`. -/
 theorem zero_pw (e : PTm k) : Γ ⊢[PRAAx] pw zero (succ e) ≐ zero := by

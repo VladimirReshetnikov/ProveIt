@@ -57,30 +57,23 @@ theorem prod_congr_bounded (f g : PTm 2) (x y N : PTm n)
 
 /-! ## Constant products -/
 
+/-- If `h(i, y) = C` for `i < N`, then `∏_{i<N} h(i, y) = C^N`. -/
+theorem prod_const_of (h : PTm 2) (N C y : PTm n)
+    (hp : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ (inst2 h (var 0) (Syn.shift y) ≐ Syn.shift C))) :
+    Γ ⊢[PRAAx] ap2 (prodF h) N y ≐ pw C N :=
+  prod_congr_bounded h (var 1) y C N (by simpa [inst2] using hp)
+
 /-- Variables: `0 = N`, `1 = x`. -/
 private abbrev prodOneF : Fm PTm 2 := ap2 (prodF (one : PTm 2)) (var 0) (var 1) ≐ one
 
 private theorem prod_one₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] prodOneF := by
-  ipra_ind [subst_ap2]
-  · exact prod_zero _ _
-  · refine (prod_succ _ _ _).eqTrans ?_
-    have e : Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) (one : PTm 2) = one := by simp
-    rw [e]
-    exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _)
+  refine (prod_const_of one (var 0) one (var 1) ?_).eqTrans (pw_base_one _)
+  simp [inst2, Syn.shift]
+  exact .allI (.impI (.eqRefl _))
 
 /-- `∏_{i<N} 1 = 1`. -/
 theorem prod_one (N x : PTm n) : Γ ⊢[PRAAx] ap2 (prodF (one : PTm 2)) N x ≐ one := by
-  have h := inst (Γ := Γ) prod_one₀ (![N, x] : Fin 2 → PTm n)
-  simpa using h
-
-/-- If `h(i, y) = C` for `i < N`, then `∏_{i<N} h(i, y) = C^N`. -/
-theorem prod_const_of (h : PTm 2) (N C y : PTm n)
-    (hp : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ (inst2 h (var 0) (Syn.shift y) ≐ Syn.shift C))) :
-    Γ ⊢[PRAAx] ap2 (prodF h) N y ≐ pw C N := by
-  refine prod_congr_bounded h (var 1) y C N (.allI (.impI ?_))
-  have e : inst2 (var 1 : PTm 2) (var 0 : PTm (n + 1)) (Syn.shift C) = Syn.shift C := by simp [inst2]
-  rw [e]
-  exact Prf.impE hp.allOpen.wk Prf.hyp0
+  simpa using inst (Γ := Γ) prod_one₀ (![N, x] : Fin 2 → PTm n)
 
 /-! ## Positivity -/
 

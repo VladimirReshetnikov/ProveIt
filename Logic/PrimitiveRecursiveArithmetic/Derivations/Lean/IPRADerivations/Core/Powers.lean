@@ -39,6 +39,15 @@ macro "pw_subst" : tactic =>
       Syn.inst_succ, Syn.repl_zero, Syn.repl_succ, ConciseIPRA.PTm.subst_zero,
       ConciseIPRA.PTm.subst_succ, inst_two, inst_three, repl_one, repl_two, repl_three])
 
+/-- Every power of one is one. -/
+theorem pw_base_one (e : PTm n) : Γ ⊢[PRAAx] pw one e ≐ one := by
+  have all : Γ ⊢[PRAAx] Fm.all (pw one (var 0) ≐ one) := by
+    refine PRA.qfInd _ trivial ?_ ?_
+    · simpa using pw_zero (Γ := Γ) (one : PTm n)
+    · pw_subst
+      exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))
+  simpa using all.allE e
+
 /-- Variables: `0 = k` (induction), `1 = m`, `2 = a`. -/
 private abbrev pwAddF : Fm PTm 3 := pw (var 2) (var 1 + var 0) ≐ pw (var 2) (var 1) * pw (var 2) (var 0)
 

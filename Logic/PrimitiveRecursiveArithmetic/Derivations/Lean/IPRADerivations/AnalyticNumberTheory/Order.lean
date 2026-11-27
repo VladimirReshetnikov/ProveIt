@@ -60,14 +60,11 @@ theorem pw_rem_congr {x y N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h
     (q : PTm n) : Γ ⊢[PRAAx] rem (pw x q) N ≐ rem (pw y q) N :=
   Foundations.ChineseRemainder.rem_pow_congr hN h q
 
-private theorem pw_one₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pw one (var 0) ≐ one := by
-  ipra_ind [subst_ap2]
-  · exact pw_zero _
-  · exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))
+private theorem pw_one₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pw one (var 0) ≐ one :=
+  pw_base_one (var 0)
 
 theorem pw_one_base (q : PTm n) : Γ ⊢[PRAAx] pw one q ≐ one := by
-  have h := inst (Γ := Γ) pw_one₀ (![q] : Fin 1 → PTm n)
-  simpa using h
+  simpa using inst (Γ := Γ) pw_one₀ (![q] : Fin 1 → PTm n)
 
 /-- `gcd(a, b) ≥ 1` for `b ≥ 1`. -/
 theorem gcd_pos_right {a b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :

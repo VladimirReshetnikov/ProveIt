@@ -114,6 +114,28 @@ theorem sum2_congr_bounded (f g : PTm 3) (p q p' q' N : PTm n)
       exact congrAdd Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)
   simpa [P] using atBound
 
+/-- Evaluate a lifted body that ignores the middle parameter. -/
+theorem inst3_ignore_parameter (F : PTm 2) (i p x : PTm n) :
+    inst3 (Syn.subst ![var 0, var 2] F) i p x = inst2 F i x := by
+  simp only [inst3, inst2, Syn.subst_subst]
+  congr 1
+  funext j
+  fin_cases j <;> rfl
+
+/-- A factor body that ignores the middle parameter computes the same product without it. -/
+theorem prod2_eq_prod_ignore_parameter (F : PTm 2) (N p x : PTm n) :
+    Γ ⊢[PRAAx] ap3 (prod2F (Syn.subst ![var 0, var 2] F)) N p x ≐ ap2 (prodF F) N x := by
+  have all : Γ ⊢[PRAAx] Fm.all
+      (ap3 (prod2F (Syn.subst ![var 0, var 2] F)) (var 0) (Syn.shift p) (Syn.shift x) ≐
+        ap2 (prodF F) (var 0) (Syn.shift x)) := by
+    refine PRA.qfInd _ trivial ?_ ?_
+    · simpa using (prod2_zero (Γ := Γ) _ p x).eqTrans (prod_zero F x).eqSymm
+    · simp only [Fm.subst_eq, subst_ap3, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      refine (prod2_succ _ _ _ _).eqTrans (.eqTrans ?_ (prod_succ _ _ _).eqSymm)
+      rw [inst3_ignore_parameter]
+      exact congrMul Prf.hyp0 (.eqRefl _)
+  simpa using all.allE N
+
 /-! ## Products of products and of ones -/
 
 /-- Variables: `0 = N`, `1 = p`, `2 = q`. -/
@@ -143,22 +165,18 @@ theorem prod2_mul (f g : PTm 3) (N p q : PTm n) :
 private abbrev prodOneF : Fm PTm 3 := ap3 (prod2F one) (var 0) (var 1) (var 2) ≐ one
 
 private theorem prod2_const_one₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] prodOneF := by
-  ipra_ind [subst_ap3]
-  · exact prod2_zero _ _ _
-  · refine (prod2_succ _ (var 0) _ _).eqTrans ?_
-    have e : inst3 (one : PTm 3) (var 0 : PTm 3) (var 1) (var 2) = one := by simp [inst3]
-    rw [e]
-    exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _)
+  have drop := prod2_eq_prod_ignore_parameter (Γ := []) (var 1 : PTm 2) (var 0 : PTm 3) (var 1) one
+  refine .eqTrans ?_ (drop.eqTrans (pw_base_one _))
+  refine prod2_congr_bounded _ _ _ _ _ _ _ ?_
+  simp [inst3, Syn.shift]
+  exact .allI (.impI (.eqRefl _))
 
 /-- A product of ones below the bound is one. -/
 theorem prod2_one (f : PTm 3) (p q N : PTm n)
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ (inst3 f (var 0) (Syn.shift p) (Syn.shift q) ≐ one))) :
     Γ ⊢[PRAAx] ap3 (prod2F f) N p q ≐ one := by
-  refine (prod2_congr_bounded f one p q p q N ?_).eqTrans ?_
-  · have e : inst3 (one : PTm 3) (var 0 : PTm (n + 1)) (Syn.shift p) (Syn.shift q) = one := by simp [inst3]
-    rw [e]; exact h
-  · have i := inst (Γ := Γ) prod2_const_one₀ (![N, p, q] : Fin 3 → PTm n)
-    simpa using i
+  refine (prod2_congr_bounded f one p q p q N (by simpa [inst3] using h)).eqTrans ?_
+  simpa using inst (Γ := Γ) prod2_const_one₀ (![N, p, q] : Fin 3 → PTm n)
 
 /-! ## Delta products and sums -/
 

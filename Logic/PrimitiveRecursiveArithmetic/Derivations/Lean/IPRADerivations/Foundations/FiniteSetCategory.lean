@@ -260,15 +260,12 @@ theorem finSet_inverse_unique :
 
 /-! ## The terminal object `[1]` -/
 
-private theorem one_pw₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pw (one : PTm 1) (var 0) ≐ one := by
-  ipra_ind [subst_ap2]
-  · exact pw_zero _
-  · exact (pw_succ _ _).eqTrans ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))
+private theorem one_pw₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pw (one : PTm 1) (var 0) ≐ one :=
+  pw_base_one (var 0)
 
 /-- `1^x = 1`. -/
 theorem one_pw (x : PTm k) : Γ ⊢[PRAAx] pw one x ≐ one := by
-  have i := inst (Γ := Γ) one_pw₀ (![x] : Fin 1 → PTm k)
-  simpa using i
+  simpa using inst (Γ := Γ) one_pw₀ (![x] : Fin 1 → PTm k)
 
 /-- The terminal object `[1]` (no parameter is used). -/
 def termT : PTm 1 := one

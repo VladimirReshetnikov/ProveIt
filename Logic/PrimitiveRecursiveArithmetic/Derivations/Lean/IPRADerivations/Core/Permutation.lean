@@ -180,20 +180,12 @@ theorem mult_one {τ : PTm 2} {N x j : PTm n} (hj : Γ ⊢[PRAAx] lt j N) (hinv 
 private abbrev prodEqF (F : PTm 2) : Fm PTm 3 :=
   ap3 (prod2F (Syn.subst ![var 0, var 2] F)) (var 0) (var 1) (var 2) ≐ ap2 (prodF F) (var 0) (var 2)
 
-private theorem prod2_eq_prod₀ (F : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] prodEqF F := by
-  ipra_ind [subst_ap2, subst_ap3]
-  · exact (prod2_zero _ _ _).eqTrans (prod_zero _ _).eqSymm
-  · refine (prod2_succ _ _ _ _).eqTrans (.eqTrans ?_ (prod_succ _ _ _).eqSymm)
-    have e : inst3 (Syn.subst ![var 0, var 2] F) (var 0 : PTm 3) (var 1) (var 2) = Syn.subst ![var 0, var 2] F := by
-      simp only [inst3, Syn.subst_subst]
-      congr 1; funext k; fin_cases k <;> rfl
-    rw [e]
-    exact congrMul Prf.hyp0 (.eqRefl _)
+private theorem prod2_eq_prod₀ (F : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] prodEqF F :=
+  prod2_eq_prod_ignore_parameter F (var 0) (var 1) (var 2)
 
 theorem prod2_eq_prod (F : PTm 2) (N p x : PTm n) :
     Γ ⊢[PRAAx] ap3 (prod2F (Syn.subst ![var 0, var 2] F)) N p x ≐ ap2 (prodF F) N x := by
-  have h := inst (Γ := Γ) (prod2_eq_prod₀ F) (![N, p, x] : Fin 3 → PTm n)
-  simpa using h
+  simpa using inst (Γ := Γ) (prod2_eq_prod₀ F) (![N, p, x] : Fin 3 → PTm n)
 
 /-! ## The permutation theorem -/
 
@@ -203,12 +195,7 @@ theorem prod_perm {τ : PTm 2} {N x : PTm n} (hr : Γ ⊢[PRAAx] rangeAll S N x)
     Γ ⊢[PRAAx] ap2 (prodF (FS F S)) N x ≐ ap2 (prodF F) N x := by
   refine (fiber hr N).eqTrans (.eqTrans ?_ (prod2_eq_prod F N N x))
   refine prod2_congr_bounded _ _ _ _ _ _ _ (.allI (.impI ?_))
-  rw [inst3_fB]
-  have e : inst3 (Syn.subst ![var 0, var 2] F) (var 0 : PTm (n + 1)) (Syn.shift N) (Syn.shift x) =
-      inst2 F (var 0) (Syn.shift x) := by
-    simp only [inst3, inst2, Syn.subst_subst]
-    congr 1; funext k; fin_cases k <;> rfl
-  rw [e]
+  rw [inst3_fB, inst3_ignore_parameter]
   have m := mult_one (j := var 0) Prf.hyp0 (shift_invAll hinv).wk (shift_retAll hret).wk
   exact (congrAp2 powF m (.eqRefl _)).eqTrans (pw_one _)
 
