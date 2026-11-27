@@ -22,7 +22,7 @@ open GaussianGammaFiniteCoefficientStability (fixedCoefficient)
 open GaussianRationalLowCoefficientConvolution (exponentCoefficient)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalHorner (positive_product)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -58,22 +58,13 @@ theorem reader_to_radius (p t R d e : PTm n) (hR : Γ ⊢[PRAAx] le one R) (he :
 theorem comparison_slack (p q t R d e : PTm n) (hR : Γ ⊢[PRAAx] le one R) (he : Γ ⊢[PRAAx] le e d) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (reader p R d e) (GaussianGammaHigherCoefficientName.sample q e))
       (cap R d*unit q+unit p) (unit p*unit q) (cap R d+one) t := by
-  let Z := unit p*unit q*unit t
-  have hZ : Γ ⊢[PRAAx] le one Z := positive_product _ _ (positive_product _ _ (unit_positive p) (unit_positive q)) (unit_positive t)
-  have first : Γ ⊢[PRAAx] distanceBounded (reader p R d e) (GaussianGammaRadiusCoefficientName.sample t (two*R) e)
-      (cap R d*(unit p+unit t)*unit q) Z :=
-    distance_radius_mono _ _ _ _ _ _ (denominator_positive p t) hZ
-      (le_of_eq_add (d := zero) (by dsimp only [Z]; unfold radiusNumerator radiusDenominator; ipra_ring))
-      (reader_to_radius p t R d e hR he)
-  have second : Γ ⊢[PRAAx] distanceBounded (GaussianGammaRadiusCoefficientName.sample t (two*R) e)
-      (GaussianGammaHigherCoefficientName.sample q e) ((unit t+unit q)*unit p) Z :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive t) (unit_positive q)) hZ
-      (le_of_eq_add (d := zero) (by dsimp only [Z]; ipra_ring))
-      (GaussianNameEquivalence.cross_at _ _ _ _ t q
-        (GaussianGammaCoefficientRadiusIndependence.original_canonical_identity (two*R) e
-          (GaussianGammaExponentCoefficientPolynomial.original_cutoff_positive R hR)))
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold unit; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hZ first second)
+  have second := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm (unit t) (unit q))
+    (GaussianNameEquivalence.cross_at _ _ _ _ t q
+      (GaussianGammaCoefficientRadiusIndependence.original_canonical_identity (two*R) e
+        (GaussianGammaExponentCoefficientPolynomial.original_cutoff_positive R hR)))
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold radiusNumerator unit; ipra_ring) (.eqRefl _)
+    (GaussianRationalDistanceOrder.distance_triangle_common_factor _ _ _ _ (unit p) _ (unit q) (unit t)
+      (unit_positive p) (unit_positive q) (unit_positive t) (reader_to_radius p t R d e hR he) second)
 
 theorem original_reader_to_canonical (p q R d e : PTm n) (hR : Γ ⊢[PRAAx] le one R) (he : Γ ⊢[PRAAx] le e d) : Γ ⊢[PRAAx]
     distanceBounded (reader p R d e) (GaussianGammaHigherCoefficientName.sample q e)

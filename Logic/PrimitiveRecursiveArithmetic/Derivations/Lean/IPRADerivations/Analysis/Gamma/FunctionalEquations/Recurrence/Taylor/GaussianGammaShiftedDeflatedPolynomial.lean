@@ -103,22 +103,17 @@ theorem raw_error (s q z R B d : PTm n) (h : Γ ⊢[PRAAx] input z R B) : Γ ⊢
 theorem original_auxiliary_error (p q s z R B d : PTm n) (h : Γ ⊢[PRAAx] input z R B) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (shiftedSample p z R B) (rawValue q z R B d))
       (numerator p q B) (denominator p q) (auxiliaryCost R B) s := by
-  let D := denominator p q*unit s
-  have hp := unit_positive (Γ := Γ) p
-  have hq := unit_positive (Γ := Γ) q
-  have hs := unit_positive (Γ := Γ) s
-  have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ (positive_product _ _ hp hq) hs
   have near := GaussianNameEquivalence.point_at GaussianGammaC7Name.nameF (GaussianGammaRepeatedShift.stageData z R B one) p s
     (GaussianGammaRepeatedShift.stage_regular z R B one h.andE₁)
-  have first := distance_radius_mono _ _ _ _ ((unit p+unit s)*unit q) D (positive_product _ _ hp hs) hD
-    (le_of_eq_add (d := zero) (by dsimp only [D,denominator]; ipra_ring)) near
-  have last := distance_radius_mono _ _ _ _ (B*(unit s+(recurrenceCost R+one)*unit q)*unit p) D
-    (positive_product _ _ hs hq) hD (le_of_eq_add (d := zero) (by dsimp only [D,denominator]; ipra_ring)) (raw_error s q z R B d h)
+  have last := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm (unit s) (unit q))
+    (raw_error s q z R B d h)
+  have joined := GaussianRationalDistanceOrder.distance_triangle_common_factor _ _ _ _ (unit p) _ (unit q) (unit s)
+    (unit_positive p) (unit_positive q) (unit_positive s) near last
   have arithmetic : Γ ⊢[PRAAx] (unit p+unit s)*unit q+B*(unit s+(recurrenceCost R+one)*unit q)*unit p ≐
       numerator p q B*unit s+auxiliaryCost R B*denominator p q := by unfold numerator auxiliaryCost denominator; ipra_ring
-  have actual := distance_congr (.eqRefl _) (.eqRefl _) arithmetic (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hD first last)
-  simpa only [GaussianRationalSlackRemoval.slack,GaussianRationalMetric.distanceBounded,unit,D,shiftedSample,GaussianGammaRepeatedShift.stage] using actual
+  have actual := distance_congr (.eqRefl _) (.eqRefl _) arithmetic (.eqRefl _) joined
+  simpa only [GaussianRationalSlackRemoval.slack,GaussianRationalMetric.distanceBounded,unit,denominator,shiftedSample,
+    GaussianGammaRepeatedShift.stage] using actual
 
 def gapQuery (p q z R B d : PTm n) : PTm n := GaussianRationalSlackRemoval.precision
   (qsub (shiftedSample p z R B) (rawValue q z R B d)) (numerator p q B) (denominator p q) (auxiliaryCost R B)

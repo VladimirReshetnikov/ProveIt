@@ -20,7 +20,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaCanonicalRecurrenceObservations
 
 open_ipra
 open GaussianRationalMetric (distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalNaturalScale (natScale)
 open GaussianGammaHigherCoefficientName (sample)
 open GaussianGammaRecurrenceSourceObservations (cap denominator_positive sourceSum)
@@ -37,23 +37,14 @@ ipra_subst slackCost
 theorem original_source_slack (p q t s : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (natScale s (sample p (succ s))) (canonicalSum q (succ s)))
       (numerator p q s) (unit p*unit q) (slackCost s) t := by
-  let Z := (unit p*unit q)*unit t
-  have positive : Γ ⊢[PRAAx] le one Z := GaussianRationalHorner.positive_product _ _
-    (denominator_positive p q) (unit_positive t)
-  have first : Γ ⊢[PRAAx] distanceBounded (natScale s (sample p (succ s))) (sourceSum t (succ s))
-      (s*(cap (succ s)*unit p+unit t)*unit q) Z :=
-    distance_radius_mono _ _ _ _ _ _ (denominator_positive t p) positive
-      (le_of_eq_add (d := zero) (by dsimp only [Z]; ipra_ring))
-      (GaussianGammaRecurrenceSourceObservations.original_canonical_recurrence_source_error p t s)
-  have second : Γ ⊢[PRAAx] distanceBounded (sourceSum t (succ s)) (canonicalSum q (succ s))
-      (succ s*termNumerator t q (succ s)*unit p) Z :=
-    distance_radius_mono _ _ _ _ _ _ (denominator_positive t q) positive
-      (le_of_eq_add (d := zero) (by dsimp only [Z]; ipra_ring))
-      (GaussianGammaCanonicalRecurrenceTerms.original_sum_error t q (succ s))
+  have first := distance_congr (Γ := Γ) (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm (unit t) (unit p))
+    (GaussianGammaRecurrenceSourceObservations.original_canonical_recurrence_source_error p t s)
+  have second := distance_congr (Γ := Γ) (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm (unit t) (unit q))
+    (GaussianGammaCanonicalRecurrenceTerms.original_sum_error t q (succ s))
   exact GaussianRationalReciprocal.bound_congr (.eqRefl _)
-    (by unfold numerator slackCost termNumerator unit; ipra_ring)
-    (.eqRefl _)
-      (distance_triangle_same _ _ _ _ _ _ positive first second)
+    (by unfold numerator slackCost termNumerator unit; ipra_ring) (.eqRefl _)
+    (GaussianRationalDistanceOrder.distance_triangle_common_factor _ _ _ _ (unit p) _ (unit q) (unit t)
+      (unit_positive p) (unit_positive q) (unit_positive t) first second)
 
 theorem original_canonical_coefficient_recurrence_error (p q s : PTm n) : Γ ⊢[PRAAx]
     distanceBounded (natScale s (sample p (succ s))) (canonicalSum q (succ s))

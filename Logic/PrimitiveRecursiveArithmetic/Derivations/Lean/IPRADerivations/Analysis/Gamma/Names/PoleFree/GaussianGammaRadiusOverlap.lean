@@ -23,7 +23,7 @@ open GaussianGammaCanonicalExponent (source)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -49,21 +49,15 @@ theorem original_P_overlap_slack (p q t z R S B : PTm n)
     GaussianRationalSlackRemoval.slack (qsub (GaussianGammaC7Name.sample p z R B) (GaussianGammaC7Name.sample q z S B))
       (unit p+unit q) (unit p*unit q) two t := by
   let N := commonCutoff t R S
-  let Z := unit p*unit q*unit t
-  have zpos : Γ ⊢[PRAAx] le one Z := positive_product _ _
-    (positive_product _ _ (unit_positive p) (unit_positive q)) (unit_positive t)
   have hb := common_cutoff_bounds (Γ := Γ) t R S
-  have left := distance_radius_mono _ _ _ _ ((unit t+unit p)*unit q) Z
-    (positive_product _ _ (unit_positive t) (unit_positive p)) zpos
-    (le_of_eq_add (d := zero) (by dsimp only [Z]; ipra_ring))
+  have left := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm (unit t) (unit p))
     (distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive t) (unit_positive p))
       (finite_cutoff_error t p z R B N hR hb.andE₁))
-  have right := distance_radius_mono _ _ _ _ ((unit t+unit q)*unit p) Z
-    (positive_product _ _ (unit_positive t) (unit_positive q)) zpos
-    (le_of_eq_add (d := zero) (by dsimp only [Z]; ipra_ring))
+  have right := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm (unit t) (unit q))
     (finite_cutoff_error t q z S B N hS hb.andE₂.andE₁)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold unit; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ zpos left right)
+    (GaussianRationalDistanceOrder.distance_triangle_common_factor _ _ _ _ (unit p) _ (unit q) (unit t)
+      (unit_positive p) (unit_positive q) (unit_positive t) left right)
 
 theorem original_P_observation_overlap (p q z R S B : PTm n)
     (hR : Γ ⊢[PRAAx] source z R B) (hS : Γ ⊢[PRAAx] source z S B) : Γ ⊢[PRAAx]

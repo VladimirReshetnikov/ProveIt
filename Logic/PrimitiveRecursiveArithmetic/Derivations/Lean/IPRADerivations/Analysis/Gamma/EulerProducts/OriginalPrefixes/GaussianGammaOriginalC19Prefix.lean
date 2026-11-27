@@ -27,7 +27,7 @@ open GaussianDominantPairAlgebra (radiusPoint)
 open GaussianGammaCanonicalExponent (source)
 open GaussianGammaC9Bound (majorant)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianNameEquivalence (cross_trans cross_symm cross_at)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
 
@@ -119,16 +119,11 @@ independent observation precisions, with the exact original C19 constant. -/
 theorem original_C19_observation_bound (p q z R B d : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     distanceBounded (GaussianGammaC7Name.sample p z R B) (prefixValue q z R B d)
       (rateNumerator (majorant (two*R)) (denominator d) p q) (rateDenominator (denominator d) p q) := by
-  let Z := rateDenominator (denominator d) p q
   have hD : Γ ⊢[PRAAx] le one (denominator d) := unit_positive (succ d)
   have hU := GaussianRationalHorner.positive_product (Γ := Γ) _ _ (unit_positive p) (unit_positive q)
-  have hZ := GaussianNamedInverseRate.denominator_positive (Γ := Γ) (denominator d) p q hD
-  have before := distance_radius_mono _ _ _ _ ((denominator d)*(unit p+unit q)) Z hU hZ
-    (le_of_eq_add (d := zero) (by dsimp only [Z]; unfold rateDenominator; ipra_ring)) (original_to_polynomial p q z R B d h)
-  have after := distance_radius_mono _ _ _ _ (majorant (two*R)*unit p*unit q) Z hD hZ
-    (le_of_eq_add (d := zero) (by dsimp only [Z]; unfold rateDenominator; ipra_ring)) (finite_prefix_tail q z R B d h)
-  exact bound_congr (.eqRefl _) (by unfold rateNumerator; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hZ before after)
+  exact bound_congr (.eqRefl _) (by unfold rateNumerator; ipra_ring) (by unfold rateDenominator; ipra_ring)
+    (GaussianReconstructionRoots.distance_triangle _ _ _ _ (unit p*unit q) _ (denominator d) hU hD
+      (original_to_polynomial p q z R B d h) (finite_prefix_tail q z R B d h))
 
 def prefixF : PR 5 := PTm.toPR (prefixValue (var 0) (var 1) (var 2) (var 3) (var 4))
 theorem prefix_program (q z R B d : PTm n) : Γ ⊢[PRAAx] PTm.app prefixF ![q,z,R,B,d] ≐ prefixValue q z R B d := by
