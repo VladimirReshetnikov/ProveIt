@@ -1,0 +1,230 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.04in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[hidelinks,pdftitle={Spectral rigidity of smoothed prime races},pdfauthor={Research note}]{hyperref}
+\setlength{\emergencystretch}{1.5em}
+\usepackage{lmodern}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}\newcommand{\dd}{\mathrm d}\newcommand{\Rea}{\operatorname{Re}}\newcommand{\ord}{\operatorname{ord}}\newcommand{\diag}{\operatorname{diag}}\newcommand{\Span}{\operatorname{span}}
+\title{\textbf{Spectral rigidity of smoothed prime races}\\[3pt]\large Polynomial zero-divisor independence and high-pass jet covariance under Dirichlet GRH}
+\author{Research note}\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Assuming Dirichlet GRH, we prove that the joint logarithmic-time fluctuations of any finite family of distinct primitive Dirichlet characters, together with arbitrarily many of their smoothed prime-error derivatives, have strictly positive definite covariance after deletion of any finite band of zero ordinates. No simplicity, disjointness, or rational linear independence of zeros is needed. The main algebraic-analytic step is an unconditional polynomial rigidity theorem for completed Dirichlet zero divisors modulo finite support: polynomially weighted combinations cannot cancel at all but finitely many zeros. Its proof uses Hadamard factorization, finite differences eliminating archimedean factors, and uniqueness of Dirichlet series with polynomial coefficients. We obtain a residue-class version, uniform moving-window covariance, and uniform two-sided oscillation for every real linear projection. The result is an independently derived candidate contribution, not a claim of established bibliographic priority or of a new Lean-verified theorem.
+\end{abstract}
+\section{Source analysis and scope}
+The compact edition of \texttt{lsernau/grh-lean} \cite{grh} is a rewrite of the Alp\"oge--Claude proof. The repository tree retrieved on 26 November 2026 had SHA \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. We inspected its README, compact guide, theorem statements, top-level proof and the first 160 lines of the endgame. The source identifies a chain of implications:
+\begin{center}
+\begin{tabular}{p{.39\linewidth}p{.51\linewidth}}
+\toprule
+Declaration or component & Mathematical role\\ \midrule
+\texttt{short\_forms}, \texttt{enough\_forms} & Control short vectors and the dimension of the available family.\\
+\texttt{integral\_forms\_long} & Lower bound on covolume/height via integrality.\\
+\texttt{star\_inequality} & $m\,\mathrm{remainder}\le (\log b)^2\,\mathrm{budget}$.\\
+\texttt{eventually\_primeError\_le\_rpow} & A one-sided normalized weighted prime-error bound $x^{-1/2+8\varepsilon}$.\\
+\texttt{New.grh} & Right-half-plane nonvanishing via a Landau-type criterion.\\
+\texttt{LFunction\_eq\_zero\_re} & Critical-strip zeros on the critical line, for all Dirichlet characters.\\ \bottomrule
+\end{tabular}
+\end{center}
+Here $m$ is the number of theta lifts, of order $\sqrt{x}$; the common main height cancels in the covolume comparison. The compact guide and the comments in \texttt{src/New/Main.lean} explain this cancellation and the window selection. The top-level Lean statements quantify over every positive modulus, including imprimitive characters, with the principal pole excluded from right-half-plane nonvanishing. They do not establish GRH for arbitrary automorphic or Dedekind $L$-functions.
+
+The relevant Wikipedia survey \cite{wiki} emphasizes prime-distribution errors, analytic positivity criteria, and the separate question of correlations between zeros. Our construction combines these perspectives: rather than use weighted prime sums to exclude off-line zeros as in the upstream argument, we use critical-line nonvanishing to represent smoothed prime sums by a discrete frequency spectrum and prove strict positivity of an entire family of covariance matrices. The algebraic step below does not require GRH. The spectral step does.
+
+The repository reports builds, kernel replay and axiom checks. The listed axioms are \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}. Rubinstein independently reports successful checks of the original proof \cite{rub}. The compact repository explicitly states that a complete human reading has not been done. We did not rebuild it or independently audit all of its lemmas. Accordingly every GRH-dependent claim in this note is an implication from the stated upstream theorem, not a separate proof of GRH. The mathematical proofs below are ordinary classical proofs.
+
+\section{Polynomial rigidity of zero divisors}
+Let $\chi_1,\dots,\chi_r$ be distinct primitive Dirichlet characters (possibly of different conductors $q_j$), including the conductor-one trivial character if desired. Write $a_j\in\{0,1\}$ for the parity, $\chi_j(-1)=(-1)^{a_j}$, and $\delta_j=1$ for the conductor-one character, $0$ otherwise. Define the entire completed functions
+\[
+ X_j(s)=[s(s-1)]^{\delta_j}(q_j/\pi)^{(s+a_j)/2}
+ \Gamma((s+a_j)/2)L(s,\chi_j).
+\]
+The standard analytic theory of primitive Dirichlet $L$-functions \cite{dav,ik} supplies their functional equation, entire completion of order one, nonvanishing of the completion at $0$ and $1$, and nontrivial zeros precisely the zeros of $X_j$. We use the classical zero-free line $\Rea s=1$ (and its reflection), which is unconditional. For $\rho\in\C$, put $m_j(\rho)=\ord_{s=\rho}X_j(s)$, with zero multiplicity at nonzeros. By Hadamard factorization,
+\begin{equation}\label{had}
+ \frac{X_j'}{X_j}(s)=B_j+\sum_{\rho\ne0} m_j(\rho)\left(\frac1{s-\rho}+\frac1\rho\right),\qquad
+ \sum_{\rho\ne0}\frac{m_j(\rho)}{|\rho|^2}<\infty.
+\end{equation}
+The sum is locally normally convergent away from poles, with no assumption of simple zeros.
+
+\begin{theorem}[Polynomial zero-divisor rigidity]\label{rigidity}
+If polynomials $P_j\in\C[s]$ satisfy
+\[
+ \sum_{j=1}^r P_j(\rho)m_j(\rho)=0
+\]
+at every point $\rho$ in the union of the completed zero sets except a finite set, then all $P_j=0$. This theorem is unconditional.
+\end{theorem}
+\begin{proof}
+Suppose the polynomials have degree at most $d\ge0$. Set
+\[
+ F(s)=\sum_j P_j(s)\frac{X_j'}{X_j}(s),\qquad
+ A(s)=\sum_j P_j(s)\frac{L'}{L}(s,\chi_j).
+\]
+First, $F$ is rational. Indeed, truncate the sums in \eqref{had} to the common disk $|\rho|\le R$. For each $\rho$ the identity
+\[
+ \frac{P_j(s)}{s-\rho}=\frac{P_j(\rho)}{s-\rho}+
+ \frac{P_j(s)-P_j(\rho)}{s-\rho}
+\]
+splits a simple pole and a polynomial of degree at most $d-1$ (zero if $d=0$). The extra $P_j(s)/\rho$ and $B_jP_j(s)$ have degree at most $d$. Once $R$ contains all exceptional points, the pole part of the truncated $F$ is fixed, by hypothesis. Its remaining polynomial has degree at most $d$. Local convergence at any $d+1$ distinct regular points implies convergence of all polynomial coefficients by invertibility of the evaluation Vandermonde matrix. Therefore $F$ is a fixed rational pole sum plus a polynomial, as claimed.
+
+Second, write $g_a(s)=\tfrac12\Gamma'((s+a)/2)/\Gamma((s+a)/2)$. Logarithmic differentiation gives
+\begin{equation}\label{arch}
+ F(s)=A(s)+\sum_j P_j(s)\left[\tfrac12\log(q_j/\pi)+g_{a_j}(s)+\delta_j\left(\tfrac1s+\tfrac1{s-1}\right)\right].
+\end{equation}
+Use the forward difference $\Delta f(s)=f(s+2)-f(s)$. The gamma recurrence gives $g_a(s+2)-g_a(s)=1/(s+a)$. Consequently for integers $k\ge0$,
+\[
+ g_a(s+2k)=g_a(s)+\sum_{h=0}^{k-1}\frac1{s+a+2h}.
+\]
+In $\Delta^{d+1}(P_jg_{a_j})$ the coefficient of $g_{a_j}(s)$ is $\Delta^{d+1}P_j=0$; every other term is rational. Applying $\Delta^{d+1}$ to \eqref{arch} shows $\Delta^{d+1} A$ is rational.
+
+For real $\sigma\to+\infty$, the Euler product gives the absolutely convergent series
+\begin{equation}\label{dirseries}
+ A(\sigma)=-\sum_{n\ge2}\Lambda(n)n^{-\sigma}\sum_j P_j(\sigma)\chi_j(n)
+ = O((1+\sigma)^d 2^{-\sigma}).
+\end{equation}
+For example, $\sum_{n\ge2}(\log n)n^{-\sigma}\le 2^{2-\sigma}\sum_{n\ge2}(\log n)n^{-2}$ for $\sigma\ge2$. The same exponential bound holds for its fixed finite difference. A nonzero rational function cannot decay exponentially along the positive real axis (its leading numerator and denominator terms give a nonzero power-law asymptotic). Thus $\Delta^{d+1} A=0$ on $\Rea s>1$.
+
+For each real $\sigma>1$, the sequence $u_n=A(\sigma+2n)$ has vanishing forward difference of order $d+1$, hence $u_n=\sum_{k=0}^d\binom nk\Delta_n^k u_0$ is polynomial in $n$. Since $u_n\to0$ by \eqref{dirseries}, this polynomial is identically zero. In particular $A(\sigma)=0$.
+
+Third, all the polynomial Dirichlet coefficients $C_n(s)=\Lambda(n)\sum_j P_j(s)\chi_j(n)$ must vanish identically. If $n_0$ were the smallest index with $C_{n_0}\ne0$, multiplying \eqref{dirseries} by $n_0^\sigma$ would give
+\[
+ |C_{n_0}(\sigma)|\le O\left((1+\sigma)^d
+ \left(\frac{n_0}{n_0+1}\right)^{\sigma-2}\right),
+\]
+using $\sum_{n>n_0}(\log n)n^{-2}<\infty$. This contradicts polynomial growth or a nonzero constant. Finally, take $Q=\operatorname{lcm}(q_1,\dots,q_r)$. Dirichlet's theorem supplies a prime $p\equiv b\pmod Q$ for each unit $b$. Since $\Lambda(p)>0$, we have $\sum_jP_j(s)\chi_j(b)=0$ for each such $b$. The induced characters on $(\mathbb Z/Q\mathbb Z)^\times$ are distinct by uniqueness of primitive induction. Character orthogonality forces each $P_j=0$.
+\end{proof}
+
+\begin{corollary}[Tail spanning]\label{tail}
+Assume Dirichlet GRH and use $m_j(\gamma)=m_j(1/2+i\gamma)$. For every $H\ge0$ and $d\ge0$, the vectors
+\[
+ v(\gamma)=\big(m_j(\gamma)(i\gamma)^\ell\big)_{1\le j\le r,\,0\le\ell\le d},
+ \qquad |\gamma|>H,
+\]
+span $\C^{r(d+1)}$.
+\end{corollary}
+\begin{proof}
+Any linear functional annihilating these vectors has coefficients $c_{j\ell}$. Set $P_j(s)=\sum_{\ell=0}^dc_{j\ell}(s-1/2)^\ell$. Under GRH all zeros of the completions lie on the critical line, and only finitely many distinct ordinates lie in $[-H,H]$. Theorem~\ref{rigidity} gives $P_j=0$ for all $j$, so the functional is zero.
+\end{proof}
+This is stronger than merely proving that two $L$-functions have different zero sets. It allows common zeros, arbitrary multiplicities, and polynomial weights at each zero. Both positive and negative ordinates are included: they need not be symmetric for a nonreal character.
+
+\section{An absolutely convergent smoothed explicit formula}
+For $t\ge0$ and integer $k\ge1$ define the logarithmic Riesz means and their normalized errors
+\begin{align}
+ S_{j,k}(t)&=\frac1{k!}\sum_{n\le e^t}\Lambda(n)\chi_j(n)(t-\log n)^k,\\
+ E_{j,k}(t)&=e^{-t/2}\big(S_{j,k}(t)-\delta_j e^t\big).
+\end{align}
+For GRH-dependent results choose $k\ge d+1$. Let $\mathcal G$ be the set of distinct real ordinates of the completed zeros of the family. We prove the expansion
+\begin{equation}\label{fourier}
+ E_{j,k}^{(\ell)}(t)=-\sum_{\gamma\in\mathcal G}
+ \frac{m_j(\gamma)(i\gamma)^\ell}{(1/2+i\gamma)^{k+1}}e^{i\gamma t}
+ + R_{j,k,\ell}(t),\quad 0\le\ell\le d,
+\end{equation}
+where $R_{j,k,\ell}(t)=O_{j,k,d}((1+t)^{k+1}e^{-t/2})$. All series here are absolutely and uniformly convergent on $\R$; $0^0$ means $1$.
+
+\begin{lemma}[Canonical-factor inversion]\label{explicit}
+For $k\ge1$, $S_{j,k}(t)=\delta_j e^t-\sum_\rho m_j(\rho)e^{\rho t}/\rho^{k+1}+O_{j,k}((1+t)^{k+1})$ for $t\ge0$ under GRH.
+\end{lemma}
+\begin{proof}
+Suppress $j$. For real $s>1$ (or complex $\Rea s>1$), the Laplace transform of $S_k$ is $-L'(s,\chi)/(s^{k+1}L(s,\chi))$, by absolute convergence and integrating $(t-\log n)^k/k!$ on $t\ge\log n$. Write $b_n=a+2n$ for $n\ge0$. Using the digamma expansion
+\[
+ g_a(s)=-\tfrac12\gamma_{\rm E}+\sum_{n\ge0}\left(\frac{1}{2(n+1)}-\frac{1}{s+b_n}\right)
+\]
+and \eqref{had}, the log derivative takes the form
+\begin{align*}
+ -\frac{L'}{L}(s,\chi)={}&C+\frac{\delta}{s-1}+\frac{\delta-\mathbf 1_{a=0}}s\\
+ &-\sum_\rho m(\rho)\left(\frac1{s-\rho}+\frac1\rho\right)
+ -\sum_{b_n>0}\left(\frac1{s+b_n}-\frac1{b_n}\right).
+\end{align*}
+Here $C$ absorbs the absolutely summable differences $1/[2(n+1)]-1/b_n$ for $b_n>0$, and the constant from the isolated $b_n=0$ term if present. For $z\ne0$, the inverse Laplace transform of $(1/(s-z)+1/z)/s^{k+1}$ is
+\[
+ U_k(z,t)=\frac{e^{zt}-\sum_{h=0}^{k-1}(zt)^h/h!}{z^{k+1}}.
+\]
+This follows by transforming each displayed summand or by convolution. For both sets $z=\rho$ and $z=-b_n$ the sums of $|z|^{-2}$ with multiplicities converge. On GRH the former have real part $1/2$, the latter negative real part. Thus the sums of $U_k$ converge uniformly on compact $t$-intervals and absolutely under Laplace integration for real $s>1$: each term is bounded in total by a summable coefficient times $e^{t/2}+(1+t)^{k-1}$ (constants for finitely many small $|z|$ are harmless). Hence termwise inversion is justified by uniqueness of the Laplace transform of continuous functions of exponential order. The term $\delta/((s-1)s^{k+1})$ inverts to $\delta(e^t-\sum_{h=0}^{k}t^h/h!)$, the $1/s$ term produces a degree $k+1$ polynomial, and $C$ a degree $k$ polynomial. The polynomial pieces of $U_k$ contribute $O((1+t)^{k-1})$ and the trivial-zero exponentials are bounded. The nontrivial-zero exponentials give the claimed formula.
+\end{proof}
+Since $S_{j,k}'=S_{j,k-1}$ for $k\ge2$ (also at a summation threshold), for $0\le\ell\le d$ the exact differentiation identity is
+\[
+ E_{j,k}^{(\ell)}=\sum_{h=0}^{\ell}\binom{\ell}{h}(-1/2)^{\ell-h}E_{j,k-h}.
+\]
+Apply Lemma~\ref{explicit} at each $k-h\ge1$. The binomial sum turns the zero numerator into $(\rho-1/2)^\ell=(i\gamma)^\ell$, yielding \eqref{fourier}. The summability of $m_j(\rho)/|\rho|^2$ suffices because $k+1-\ell\ge2$.
+
+\section{High-pass covariance and finite certificates}
+For a finite cut $H\ge0$ remove the complete contribution of the low frequencies:
+\begin{equation}\label{filtered}
+ Y_{j\ell,H}(t)=E_{j,k}^{(\ell)}(t)+\sum_{|\gamma|\le H}
+ \frac{m_j(\gamma)(i\gamma)^\ell}{(1/2+i\gamma)^{k+1}}e^{i\gamma t}.
+\end{equation}
+In particular the central zero contribution (if any) is removed. Stack these coordinates in a column $Y_H(t)\in\C^N$, $N=r(d+1)$.
+\begin{theorem}[High-pass jet covariance]\label{cov}
+Assume Dirichlet GRH. For every finite family as above, $d\ge0$, $k\ge d+1$, and $H\ge0$, the following limit exists uniformly in $u\ge0$:
+\begin{equation}\label{gram}
+ \lim_{T\to\infty}\frac1T\int_u^{u+T}Y_H(t)Y_H(t)^*\,\dd t
+ =G_H:=\sum_{|\gamma|>H}\frac{v(\gamma)v(\gamma)^*}{|1/2+i\gamma|^{2k+2}}\succ0.
+\end{equation}
+The mean of $Y_H$ tends to zero, also uniformly in $u\ge0$. The same conclusions hold if any finite set of distinct ordinates, including zero, is removed instead of a full band.
+\end{theorem}
+\begin{proof}
+By \eqref{fourier}, $Y_H=F_H+R$, where $F_H=-\sum_{|\gamma|>H}v(\gamma)e^{i\gamma t}/(1/2+i\gamma)^{k+1}$ is a uniformly absolutely convergent series and $R$ is bounded and integrable on $[0,\infty)$. The mixed and remainder quadratic terms in \eqref{gram} are $O(1/T)$ uniformly in $u$ because the sup norms and $L^1$ norms are finite. The average of $e^{i(\gamma-\eta)t}$ over $[u,u+T]$ is $1$ for $\gamma=\eta$ and has modulus at most $2/(T|\gamma-\eta|)$ otherwise. For any finite frequency truncation the covariance therefore tends uniformly to its diagonal sum. Absolute summability implies a uniform bound on the difference between the full and truncated quadratic forms, tending to zero as the truncation grows. This proves \eqref{gram} and likewise the zero mean, since all remaining frequencies are nonzero. For any $c\ne0$,
+\[
+ c^*G_Hc=\sum_{|\gamma|>H}\frac{|c^*v(\gamma)|^2}{|1/2+i\gamma|^{2k+2}}>0
+\]
+by Corollary~\ref{tail}. The proof applies verbatim to a finite deletion: all sufficiently high frequencies remain.
+\end{proof}
+\begin{corollary}[No finite-frequency differential approximation]\label{approx}
+For any coefficients $c_{j\ell}$ not all zero and any finite trigonometric polynomial $B(t)=\sum_{h=1}^M b_h e^{i\omega_h t}$ with real frequencies, the mean square of $\sum c_{j\ell}E_{j,k}^{(\ell)}(t)-B(t)$ has a strictly positive limit. In particular it cannot be $o(1)$ as $t\to\infty$.
+\end{corollary}
+\begin{proof}
+Choose $H\ge\max_h|\omega_h|$ (or $0$ for an empty sum). The difference has all its original frequencies above $H$ unchanged. Averaging the absolutely convergent Fourier expansion gives a nonnegative contribution at each frequency, at least the strictly positive quadratic form on the right of \eqref{gram} with coefficient vector $\overline c$.
+\end{proof}
+
+\paragraph{Finite lower bound.} Choose $N$ distinct tail ordinates $\gamma_1,\ldots,\gamma_N$ whose vectors form a basis, which exists by Corollary~\ref{tail}. Let $W$ be the matrix with columns $v(\gamma_h)/(1/2+i\gamma_h)^{k+1}$. Then
+\begin{equation}\label{cert}
+ \lambda_{\min}(G_H)\ge \lambda_{\min}(WW^*)\ge
+ \frac{|\det W|^2}{(\operatorname{tr}(WW^*))^{N-1}}>0.
+\end{equation}
+Indeed $G_H-WW^*\succeq0$, and the product of the $N-1$ largest eigenvalues of $WW^*$ is no greater than its trace to power $N-1$. For $N=1$ use exponent zero. This certificate is existential, not a numerical bound on the height needed to find such a basis. Computing it rigorously requires certified zero multiplicities and a nonzero determinant, not simply approximate zero locations.
+
+\section{Prime counts in residue classes and simultaneous real oscillation}
+Fix $q\ge1$, $U=(\mathbb Z/q\mathbb Z)^\times$, $h=|U|$. Use all characters modulo $q$, writing $\chi^*$ for their distinct primitive inducing characters. For $b\in U$ define the real error
+\[
+ E_{b,k}^{[q]}(t)=e^{-t/2}\left(\frac1{k!}\sum_{\substack{n\le e^t\\n\equiv b\bmod q}}\Lambda(n)(t-\log n)^k-\frac{e^t}{h}\right).
+\]
+Character orthogonality gives the exact transform of the sums by imprimitive characters. Passing to primitive characters changes only prime powers with prime dividing $q$, and hence changes each $S_k$ by at most $O_q((1+t)^{k+1})$. In fact for each such prime, there are at most $t/\log p$ powers and each has weight at most $\log p\,t^k/k!$. The same argument at lower smoothing orders and the derivative identity prove a decaying, integrable error for all $\ell\le d$. Thus, in the notation of \eqref{filtered}, define the real vector $Z_H$ of filtered residue errors by adding to the derivatives of $E_{b,k}^{[q]}$ the transformed low-frequency terms. Explicitly,
+\begin{align*}
+ Z_{b\ell,H}(t)={}&(E_{b,k}^{[q]})^{(\ell)}(t)\\
+ &+\frac1h\sum_{\chi\bmod q}\overline{\chi(b)}\sum_{|\gamma|\le H}
+ \frac{m_{\chi^*}(\gamma)(i\gamma)^\ell}{(1/2+i\gamma)^{k+1}}e^{i\gamma t}.
+\end{align*}
+It equals $h^{-1}\sum_{\chi\bmod q}\overline{\chi(b)}Y_{\chi^*\ell,H}(t)$ up to the decaying finite Euler-factor error. This definition preserves reality: conjugate characters have reflected conjugate zero terms, and the cut $|\gamma|\le H$ is symmetric. The character transform $M=(\overline{\chi(b)}/h)_{b,\chi}\otimes I_{d+1}$ is invertible; $MM^*=I/h$. Consequently the covariance $K_H=MG_HM^*$ is real symmetric and positive definite, and the mean is zero in the same uniform moving-window sense.
+\begin{theorem}[Uniform directional oscillation]\label{osc}
+For fixed $q,k,d,H$ satisfying the conditions above, there exist constants $\eta>0$ and $T_0<\infty$ such that for every $u\ge0$, $T\ge T_0$, and every real unit vector $c\in\R^{h(d+1)}$, there are $t_+,t_-\in[u,u+T]$ with
+\[
+ c^{\mathsf T}Z_H(t_+)\ge\eta,\qquad c^{\mathsf T}Z_H(t_-)\le-\eta.
+\]
+Equivalently, the convex hull of $\{Z_H(t):u\le t\le u+T\}$ contains the closed ball of radius $\eta$ about zero.
+\end{theorem}
+\begin{proof}
+Let $\lambda=\lambda_{\min}(K_H)>0$ and $B=\max(1,\sup_{t\ge0}\|Z_H(t)\|)$, finite by the uniform expansion. By uniform convergence of the mean and covariance in finite dimension, take $T_0$ so large that for every such window and unit vector $c$, writing $f=c^{\mathsf T}Z_H$ and $\langle\cdot\rangle$ for the window average,
+\[
+ \langle f^2\rangle\ge \lambda/2,\qquad |\langle f\rangle|\le\lambda/(4B).
+\]
+Since $|f|\le B$, $\langle|f|\rangle\ge\lambda/(2B)$. Thus the averages of both $f_+=\max(f,0)$ and $f_-=\max(-f,0)$ are at least $\lambda/(8B)$. Continuity gives maxima at least this large on the compact window. Take $\eta=\lambda/(8B)$. The convex hull is compact in finite dimension; the support inequality in every unit direction gives the ball containment by the separating hyperplane theorem. The converse follows by maximizing a linear functional over the hull.
+\end{proof}
+For $d=0$ and $H=0$ this gives two-sided logarithmic-time oscillation of every nonzero real contrast of centered smoothed residue counts, with bounded waiting time in logarithmic scale. If one projects to contrasts with coefficients summing to zero, the projected covariance is positive definite on that subspace. The center subtraction matters when there are central zeros. The convex hull conclusion is not a claim that every ordering of the original unsmoothed prime counts occurs, or that the limiting law has a density or full support. A distribution on a curve can have positive covariance while missing open sets.
+
+\section{Novelty, limitations, and further research}
+The familiar explicit formula, character orthogonality, and mean-square identities are classical. The proposed contribution is the polynomial rigidity argument (Theorem~\ref{rigidity}) and its use to prove positive definiteness for every high-pass jet and uniform directional oscillation without any linear-independence-of-ordinates conjecture. A targeted literature search located Banks--Loftus on unshared zeros \cite{banks} and Martin--Ng on inclusive races under weakened independence hypotheses \cite{martin}; these are related but address different statements. The search does not certify priority. In particular, zero-divisor rigidity may also be obtainable using variants of Landau's formula or multiplicity-one arguments. We make no claim of resolving an independently named open conjecture.
+
+\paragraph{Further research questions.} (1) Make the finite certificate \eqref{cert} effective in $q,d,H$ by controlling rank in finite zero windows. (2) Extend the polynomial rigidity lemma to families with more general gamma factors and distinct Euler coefficients, taking care with nonintegral shift parameters and distinctness of local data. (3) Obtain an analogue for unsmoothed prime-counting functions, where the Fourier expansion is generally not absolutely convergent. (4) Determine how far covariance nondegeneracy can be upgraded to support or inclusivity without assuming independence of ordinates. (5) Formalize the Hadamard cancellation and finite-difference proof in Lean, then add the smoothed explicit formula and moving-window mean-square limit. The upstream theorem can supply exactly the GRH hypothesis. No new Lean compilation is claimed here.
+
+\begin{thebibliography}{9}\small
+\bibitem{grh} L. Sernau and collaborators, \emph{GRH for Dirichlet L-functions, in Lean 4}, compact edition, 25 Nov. 2026. \url{https://github.com/lsernau/grh-lean}. Inspected files listed in accompanying \texttt{SOURCES.md}.
+\bibitem{wiki} Wikipedia, \emph{Riemann hypothesis}, accessed 26 Nov. 2026. \url{https://en.wikipedia.org/wiki/Riemann_hypothesis}.
+\bibitem{rub} M. Rubinstein, \emph{Alp\"oge/Claude proof of the Generalized Riemann Hypothesis}, independent verification reports, Nov. 2026. \url{https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/}.
+\bibitem{dav} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000 (Dirichlet $L$-functions, functional equation and Hadamard product).
+\bibitem{ik} H. Iwaniec and E. Kowalski, \emph{Analytic Number Theory}, AMS Colloquium Publications 53, 2004, especially Chapter 5.
+\bibitem{banks} W. Banks and K. Loftus, \emph{Unshared zeros of Dirichlet $L$-functions}, 2026, \url{https://arxiv.org/abs/2607.22930}.
+\bibitem{martin} G. Martin and N. Ng, \emph{Inclusive prime number races}, \url{https://arxiv.org/abs/1710.00088}.
+\end{thebibliography}
+\end{document}

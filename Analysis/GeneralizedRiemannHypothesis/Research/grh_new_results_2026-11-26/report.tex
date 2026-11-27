@@ -1,0 +1,83 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{graphicx,xcolor,enumitem,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\definecolor{navy}{HTML}{17334B}
+\definecolor{teal}{HTML}{087F8C}
+\hypersetup{colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,
+ pdftitle={Finite spectral certificates and arithmetic determinant bounds},
+ pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ind}{\mathbf 1}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\ord}{ord}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Finite certificates and arithmetic determinants}
+\fancyhead[R]{\small 26 November 2026}
+\fancyfoot[C]{\thepage}
+\title{\color{navy}\LARGE Finite spectral certificates and\par arithmetic determinant bounds\vspace{0.4em}\\
+\large Results inspired by the \texttt{grh-lean} proof}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We inspect the stated scope and two mechanisms of the current \texttt{grh-lean}
+development: its smoothed prime-sum transform and its comparison of short
+integral forms with determinant lower bounds. We derive and prove two
+independent results inspired by these mechanisms.
+First, a positive summable spectrum with integer multiplicities admits
+finite certificates for complete cluster counts. A nonnegative polynomial
+residual and weighted Hermite interpolation use only $2m+1$ consecutive
+power moments for $m$ proposed clusters. We give explicit error constants,
+rigorous propagation of approximate moment data, and eventual success of an
+adaptive rational search at every threshold outside the spectrum. Under RH,
+the spectrum $(\tfrac14+\gamma^2)^{-1}$ gives a zeta-zero application.
+Second, for an integer $r\times n$ matrix, the Gram determinant divided by
+the squared gcd of its maximal minors is at least
+$\max\{N-z,\frac85N-4z,\frac{12}5N-12z\}$, where $N=\binom nr$ and $z$
+counts vanishing maximal minors. The constants have exact equality examples.
+An additional finite-factor surgery theorem explains why finite analytic
+data cannot determine global simplicity in the larger class of real-zero
+entire functions. Complete human-readable proofs and exact arithmetic
+verification programs accompany this note. The formulations are derived
+here; historical priority remains unestablished after a targeted literature
+comparison. No full Lean formalization or independent rebuild of the RH
+development is claimed.
+\end{abstract}
+\vspace{0.5em}
+\noindent\textbf{Reading map.} Section~\ref{sec:spectral} contains the main
+certificate theorem; Section~\ref{sec:zeta} explains its precise zeta
+specialization. The determinant theorem is independent of RH.
+The computational examples distinguish exact certificates from numerical
+illustration.
+\tableofcontents
+\clearpage
+\input{sections/sources}
+\input{sections/moments}
+\input{sections/determinants}
+\input{sections/surgery}
+\input{sections/implementation}
+\input{sections/bibliography}
+\end{document}

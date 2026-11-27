@@ -1,0 +1,19 @@
+Dyadic interval certificates for odd n from 5 through 19
+Working precision: 256 binary fractional bits.
+For each row, s is bracketed by [k, k+1]/2^24.
+s=|z|^(2^(n-2)); d_j=1-|1+z^(2^j)|^2.
+Each bracket also satisfies 2*s<1 and 2*|z|^2>1.
+The last four columns give exponents e of certified lower bounds 2^e.
+left: d_0-d_last at k; right: d_last-d_0 at k+1.
+det: minimum of three negated oriented gradient determinants.
+slack: minimum d_j-d_last over all inactive indices.
+
+ n         k  left  right  det  slack
+ 5   5445039   -25    -26   -2    -12
+ 7   3191391   -27    -25   -2    -10
+ 9   1803402   -26    -30   -2    -10
+11    996494   -27    -28   -2    -10
+13    541603   -28    -28   -2    -12
+15    290764   -30    -29   -2    -13
+17    154678   -29    -34   -2    -14
+19     81717   -31    -31   -2    -16

@@ -1,0 +1,339 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\pagestyle{fancy}\fancyhf{}\lhead{Factorial samples of prime-power sums}\rhead{Research note}\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\mathrm d}
+\DeclareMathOperator{\Rea}{Re}
+\title{Factorial samples of prime-power sums\\[2pt]\large An oscillating autocorrelation determines a primitive Dirichlet character}
+\author{}
+\date{26 November 2026}
+\begin{document}
+\maketitle\thispagestyle{plain}
+\begin{abstract}
+At the factorial endpoints we sample a smoothed, centered sum of prime
+powers twisted by a primitive Dirichlet character. Assuming its
+critical-line zero theorem, we prove that its mean autocorrelation at
+every positive integer lag oscillates indefinitely. We identify the
+entire oscillating term. Its logarithmic Fourier coefficients recover
+every zero multiplicity, and hence determine the character. We also
+obtain an exact distance formula for pairs of characters and transfer
+the joint laws at fixed multiplicative shifts to factorial samples.
+The proof allows multiple zeros and arbitrary rational relations among
+their ordinates.
+\end{abstract}
+
+\section{The arithmetic measurements}
+Write $\Lambda(p^k)=\log p$ for primes $p$ and $k\ge1$, and
+$\Lambda(n)=0$ otherwise. All logarithms are natural. For a primitive
+Dirichlet character $\chi$ of conductor $q$, set $d_\chi=1$ when $q=1$
+(the zeta function), and $d_\chi=0$ otherwise. For $x>0$ put
+\begin{equation}\label{eq:B}
+ B_\chi(x)=\frac{1}{\sqrt x}
+ \left(\sum_{n\le x}\Lambda(n)\chi(n)(1-n/x)-d_\chi x/2\right).
+\end{equation}
+The arithmetic weights vanish at the endpoint. Let
+$m_\chi(t)$ be the multiplicity of $1/2+it$ as a zero, with value
+zero elsewhere, and set
+\[
+ c_\chi(t)=-\frac{m_\chi(t)}{(1/2+it)(3/2+it)}.
+\]
+Sums over $t$ run over distinct real ordinates with nonzero summands.
+For $h\in\mathbb Z_{\ge1}$, define the running lag-$h$ autocorrelation
+\[
+ C_{\chi,h}(N)=\frac1N\sum_{n=1}^{N}B_\chi((n+h)!)\overline{B_\chi(n!)}.
+\]
+
+\begin{theorem}\label{th:lag}
+Suppose every nontrivial zero of $L(s,\chi)$ has real part $1/2$. Then
+\begin{equation}\label{eq:lag}
+ C_{\chi,h}(N)=
+ \sum_t\frac{|c_\chi(t)|^2}{1+iht}\,\e^{iht\log N}+o(1).
+\end{equation}
+The series converges absolutely and uniformly as a function of $\log N$.
+The sequence $C_{\chi,h}(N)$ has no limit. For every real $v$,
+\begin{equation}\label{eq:outer}
+ \lim_{X\to\infty}\frac{1}{\log X}\sum_{N\le X}
+ \frac{C_{\chi,h}(N)}{N^{1+ihv}}
+ =\frac{|c_\chi(v)|^2}{1+ihv}.
+\end{equation}
+In particular, the running averages at $h=1$ determine $\chi$.
+\end{theorem}
+
+\newpage
+\section{Two analytic ingredients}
+\begin{lemma}[Smoothed explicit formula]\label{lem:explicit}
+Under the hypothesis of Theorem~\ref{th:lag}, for $x\ge2$,
+\begin{equation}\label{eq:explicit}
+ B_\chi(x)=\sum_t c_\chi(t)\e^{it\log x}
+ +O_\chi\big((1+\log x)/\sqrt x\big),
+ \qquad \sum_t |c_\chi(t)|<\infty .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Mellin inversion of $(1-u)_+$, whose transform for $\Rea s>0$
+is $1/[s(s+1)]$, gives the exact unnormalized prime sum as
+\[
+ \frac1{2\pi i}\int_{2-i\infty}^{2+i\infty}
+ -\frac{L'}{L}(s,\chi)\frac{x^s}{s(s+1)}\,\dd s .
+\]
+The series for $-L'/L$ converges absolutely on this line and the kernel
+is integrable. Shift to $\Rea s=-1/4$. We give the needed estimates to
+specify the treatment of the infinite contour. On the new line the
+functional equation, Stirling's formula and the absolutely convergent
+logarithmic derivative at $1-s$ give
+$L'/L\ll_\chi\log(2+|\Im s|)$. Thus its integral is $O_\chi(x^{-1/4})$.
+On the horizontal edges one may choose positive and negative heights
+tending to infinity with $L'/L\ll_\chi\log^2(2+|\Im s|)$ throughout
+the strip. Indeed the classical local logarithmic derivative formula
+on this fixed strip subtracts the simple fractions $1/(s-\rho)$ for
+$|\Im\rho-\Im s|\le1$ with an $O_\chi(\log(2+|\Im s|))$ error.
+Each unit interval contains $O_\chi(\log(2+|\Im s|))$ ordinates
+counted with multiplicity. Removing intervals of radius
+$\varepsilon_\chi/\log(2+|\Im s|)$ around the nearby ordinates
+therefore leaves an admissible height for sufficiently small
+$\varepsilon_\chi>0$. These standard fixed-conductor estimates follow
+from the completed Hadamard product and Stirling's formula
+\cite{davenport,bennett}. The quadratic kernel makes both horizontal
+integrals tend to zero for fixed $x$.
+
+The pole of $L$ at $1$, when present, contributes $+x/2$.
+A nontrivial zero $\rho$ of multiplicity $m$ contributes
+$-m x^\rho/[\rho(\rho+1)]$. At $s=0$, if
+$-L'/L=-r/s+b+O(s)$ with $r=\operatorname{ord}_0 L$, the residue is
+$b-r(\log x-1)$. There are no other poles between the two lines.
+Division by $\sqrt x$ gives~\eqref{eq:explicit}. The zero count up to
+height $T$ is $O_\chi(T\log(2+T))$; partial summation against
+$(1+|t|)^{-2}$ gives the required absolute convergence.
+\end{proof}
+
+\begin{lemma}[Factorial phases]\label{lem:phase}
+For any real $u\ne0$ and $N\ge2$,
+\[
+ \left|\sum_{n=1}^{N}\e^{iu\log(n!)}\right|
+ \ll \sqrt N\,\big(\sqrt{|u|}+1/\sqrt{|u|}\big).
+\]
+For each fixed $v\in\R$, insertion of the additional weight $n^{iv}$
+leaves this bound valid with a constant depending on $v$.
+\end{lemma}
+\begin{proof}
+On $M\le x\le2M$ the second derivative of
+$f(x)=u\log\Gamma(x+1)/(2\pi)$ has constant sign and absolute size
+$\asymp |u|/M$, by
+$(\log\Gamma)''(x+1)=\sum_{j\ge0}(x+1+j)^{-2}$.
+Van der Corput's second-derivative estimate bounds the exponential sum
+on any subinterval by $O(M\sqrt{|u|/M}+\sqrt{M/|u|})$.
+Summing dyadic blocks proves the first statement. Partial summation
+and $|(x^{iv})'|=|v|/x$ prove the second. Factorial equidistribution
+also appears in Diaconis's work on leading digits \cite{diaconis}.
+\end{proof}
+
+\newpage
+\section{What the lag averages remember}
+\begin{proof}[Proof of Theorem~\ref{th:lag}, except character determination]
+By Lemma~\ref{lem:explicit} we can replace each $B$ by its uniformly
+convergent trigonometric series. The replacement error vanishes in the
+mean because both factors are bounded and their errors tend to zero.
+First truncate both series to finite frequency sets. For fixed
+$t,u\in\R$, the mean of the corresponding pair of modes involves
+\begin{align*}
+ \e^{it\log((n+h)!)-iu\log(n!)}
+ &=\e^{i(t-u)\log(n!)}\,
+   \exp\!\left(it\sum_{j=1}^h\log(n+j)\right)\\
+ &=\e^{i(t-u)\log(n!)}\,n^{iht}(1+O_{h,t}(1/n)).
+\end{align*}
+When $t\ne u$ the mean tends to zero by the weighted version of
+Lemma~\ref{lem:phase}. For $t=u$, integral comparison gives
+\[
+ \frac1N\sum_{n=1}^N n^{iht}=\frac{N^{iht}}{1+iht}
+ + O_{h,t}\big((1+\log N)/N\big).
+\]
+In fact the sum differs from $\int_1^N x^{iht}\,\dd x$ by
+$O(1+|ht|\log N)$. This proves~\eqref{eq:lag} for finite
+truncations. The double-series tail is uniformly small by
+$\sum_t |c_\chi(t)|<\infty$, and the limiting diagonal series
+also converges absolutely. Taking the truncations to infinity proves
+the asserted $o(1)$.
+
+For real $w$ the logarithmic mean of $N^{iw}$ equals $1$ for $w=0$
+and $0$ otherwise. Indeed the difference between
+$\sum_{N\le X}N^{-1+iw}$ and $\int_1^X x^{-1+iw}\,\dd x$ is
+$O_w(1)$, by integrability of the derivative. Insert~\eqref{eq:lag}
+in the left side of~\eqref{eq:outer}. The error has logarithmic mean
+zero, and absolute convergence permits termwise passage to the limit.
+This gives~\eqref{eq:outer}, including at $v=0$.
+
+Every primitive Dirichlet $L$-function has nontrivial zeros of
+arbitrarily large height by its standard zero-counting asymptotic
+\cite{bennett,davenport}. Choose a nonzero ordinate $v$. If
+$C_{\chi,h}(N)$ tended to a constant, its logarithmic coefficient at
+$hv$ would be zero by the preceding elementary mean formula. Equation
+\eqref{eq:outer} gives a nonzero coefficient there. Finally,
+multiplication of~\eqref{eq:outer} by $1+ihv$ yields $|c_\chi(v)|^2$.
+The formula
+\[
+ m_\chi(v)=\sqrt{(1/4+v^2)(9/4+v^2)}\,|c_\chi(v)|
+\]
+therefore recovers every multiplicity, including zero for an absent
+ordinate. Character determination follows from the next lemma.
+\end{proof}
+
+\begin{lemma}[Determination by the zero divisor]\label{lem:id}
+Two primitive Dirichlet characters with the same multiset of nontrivial
+zeros are equal.
+\end{lemma}
+\begin{proof}
+Set $a_\chi\in\{0,1\}$ by $\chi(-1)=(-1)^{a_\chi}$ and put
+\[
+ F_\chi(s)=[s(s-1)]^{d_\chi}
+ (q_\chi/\pi)^{(s+a_\chi)/2}
+ \Gamma\big((s+a_\chi)/2\big)L(s,\chi).
+\]
+This is entire of order one with exactly the stated zeros, including
+for $q_\chi=1$. Hadamard factorization gives
+$F_\chi/F_\psi=\e^{A+Bs}$ when the multisets coincide.
+Along $s=\sigma\to+\infty$, the Dirichlet series both tend to $1$.
+Stirling's ratio formula yields
+\[
+ \log|F_\chi/F_\psi|(\sigma)
+ =\tfrac12\sigma\log(q_\chi/q_\psi)
+ +\big(2(d_\chi-d_\psi)+(a_\chi-a_\psi)/2\big)\log\sigma+O(1).
+\]
+The exact affine dependence on $\sigma$ forces the logarithmic
+coefficient to vanish. Since $a_\chi,a_\psi,d_\chi,d_\psi\in\{0,1\}$,
+both differences vanish. Removing the common polynomial and gamma
+factors leaves $L(s,\chi)/L(s,\psi)$ exponential in an affine
+function of $s$. Along the positive real axis it tends to one,
+so it is identically one. Uniqueness of coefficients of an absolutely
+convergent Dirichlet series gives $\chi(n)=\psi(n)$ for every $n$.
+Their common arithmetic function has a unique primitive conductor.
+\end{proof}
+
+\section{Direct recovery and joint laws}
+\begin{corollary}\label{cor:distance}
+Assume the critical-line zero theorem for the primitive characters
+under consideration. For every $v\in\R$,
+\begin{equation}\label{eq:direct}
+ \lim_{N\to\infty}\frac1N\sum_{n\le N} B_\chi(n!)\,(n!)^{-iv}=c_\chi(v).
+\end{equation}
+For two primitive characters $\chi,\psi$,
+\begin{equation}\label{eq:metric}
+ \lim_{N\to\infty}\frac1N\sum_{n\le N}|B_\chi(n!)-B_\psi(n!)|^2
+ =\sum_t\frac{|m_\chi(t)-m_\psi(t)|^2}{(1/4+t^2)(9/4+t^2)}.
+\end{equation}
+The square root is a metric on primitive characters.
+\end{corollary}
+\begin{proof}
+Insert~\eqref{eq:explicit} in~\eqref{eq:direct}. Every frequency except
+$v$ vanishes in the mean by Lemma~\ref{lem:phase}. For~\eqref{eq:metric}
+expand the squared absolute value using frequencies from both
+characters. Absolute convergence justifies termwise means, and the
+distinct-frequency terms vanish. The right side is a squared weighted
+$\ell^2$ distance. Zero distance gives equal zero multisets under
+the critical-line hypotheses, so Lemma~\ref{lem:id} gives equality.
+\end{proof}
+
+\begin{corollary}[Fixed multiplicative shifts]\label{cor:joint}
+Fix finitely many primitive characters $\chi_j$ satisfying the
+critical-line statement and $b_j\in\R$, $1\le j\le r$.
+Set $V(y)=(B_{\chi_j}(\e^{y+b_j}))_{j=1}^r$. For every continuous
+$H:\C^r\to\C$, both limits exist and satisfy
+\[
+ \lim_{N\to\infty}\frac1N\sum_{n\le N}H(V(\log(n!)))
+ =\lim_{Y\to\infty}\frac1Y\int_0^Y H(V(y))\,\dd y.
+\]
+\end{corollary}
+\begin{proof}
+The inputs stay in a compact box for $y\ge0$. Replacing each
+coordinate by the bounded trigonometric series
+$\sum_t c_{\chi_j}(t)\e^{it(y+b_j)}$ introduces a difference tending
+to zero, also after composition with $H$ by uniform continuity on
+a common compact box. Approximate the new $H$ of the vector
+uniformly by finite trigonometric polynomials: first approximate $H$
+on the box by a polynomial in the coordinates and their conjugates
+(Stone--Weierstrass), then truncate each coordinate series. Each
+trigonometric polynomial has the same mean by both procedures,
+because a nonzero-frequency mode has continuous mean zero and
+Lemma~\ref{lem:phase} gives factorial mean zero. Uniform
+approximation transfers existence and equality of limits.
+\end{proof}
+
+\paragraph{The role of primitivity.}
+Suppose a character modulo $Q$ is induced by a primitive character
+$\chi^*$. Use the same definition~\eqref{eq:B}, taking the main term
+from $\chi^*$. Only powers of primes dividing $Q$ can give discrepancies
+between the two weighted sums. Each such prime contributes at most
+$\log x$ in absolute value for $x\ge2$. Consequently
+\[
+ |B_\chi(x)-B_{\chi^*}(x)|\le
+ \omega(Q)\log(x)/\sqrt x,
+\]
+where $\omega(Q)$ counts distinct prime divisors. Thus the experiments
+recover precisely the inducing primitive character if imprimitive
+inputs are admitted. For example all principal characters have the
+same limiting measurements as the zeta function.
+
+\newpage
+\section{Interpretation and provenance}
+At two fixed multiplicative shifts the logarithmic time separation is
+constant. Between two factorial endpoints $h$ sample indices apart,
+this separation instead equals $h\log n+O_h(1/n)$. On the diagonal
+of the double zero sum this produces $n^{iht}$. Its arithmetic mean
+retains the oscillation at the upper endpoint. This accounts for the
+different conclusions of Theorem~\ref{th:lag} and
+Corollary~\ref{cor:joint}.
+
+The input on zero locations is the statement about primitive
+Dirichlet characters in the linked Lean development~\cite{lean}.
+Its conductor-one case is RH. The linked overview~\cite{wiki} also
+describes the explicit-formula connection between zeta zeros and
+prime counts. Here the triangular weight in~\eqref{eq:B} adds a
+second denominator to the Mellin kernel. That extra decay is what
+permits uniform control on a set of scales with very large gaps.
+
+Factorial phase cancellation, explicit formulae and determination by
+a completed zero divisor are classical. For related continuous
+limiting-distribution theorems, see Akbary, Ng and Shahabi
+\cite{akbary}. The contribution proposed here is the factorial
+lag asymptotic~\eqref{eq:lag}, its second-stage inversion
+\eqref{eq:outer}, and their arithmetic application. No independent
+priority determination is claimed. These are exact infinite-data
+identities. The bounds in Lemma~\ref{lem:phase} deteriorate when
+two frequencies approach one another. An effective sample size for
+separating characters of bounded conductor would require quantitative
+control of spectral tails and of the low-lying distinguishing ordinates.
+
+\begin{thebibliography}{9}\small
+\bibitem{lean} L.~Sernau et al., \emph{GRH for Dirichlet $L$-functions, in
+Lean 4}, source repository, accessed 26 November 2026.
+\url{https://github.com/lsernau/grh-lean}.
+\bibitem{wiki} Wikipedia contributors, \emph{Riemann hypothesis}, especially
+the discussion of prime distribution. Accessed 26 November 2026.
+\url{https://en.wikipedia.org/wiki/Riemann_hypothesis}.
+\bibitem{davenport} H.~Davenport, \emph{Multiplicative Number Theory},
+3rd ed., revised by H.~L.~Montgomery, Springer, 2000.
+\href{https://doi.org/10.1007/978-1-4757-5927-3}{doi:10.1007/978-1-4757-5927-3}.
+\bibitem{bennett} M.~A.~Bennett, G.~Martin, K.~O'Bryant and A.~Rechnitzer,
+Counting zeros of Dirichlet $L$-functions,
+\emph{Math. Comp.} \textbf{90} (2021), 1455--1482.
+\href{https://doi.org/10.1090/mcom/3599}{doi:10.1090/mcom/3599}.
+\bibitem{diaconis} P.~Diaconis, The distribution of leading digits and
+uniform distribution mod 1, \emph{Ann. Probab.} \textbf{5} (1977), 72--81.
+\href{https://doi.org/10.1214/aop/1176995891}{doi:10.1214/aop/1176995891}.
+\bibitem{akbary} A.~Akbary, N.~Ng and M.~Shahabi,
+Limiting distributions of the classical error terms of prime number theory,
+\emph{Q. J. Math.} \textbf{65} (2014), 743--780.
+\href{https://www.cs.uleth.ca/~akbary/limitingdistributionFINALQJM.pdf}{Authors' paper}.
+\end{thebibliography}
+\end{document}

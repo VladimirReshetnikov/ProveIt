@@ -1,0 +1,536 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.94in,top=0.88in,bottom=0.87in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,xcolor,fancyhdr}
+\usepackage[colorlinks=true,urlcolor=teal,linkcolor=teal,citecolor=teal]{hyperref}
+\definecolor{ink}{RGB}{22,53,72}
+\definecolor{teal}{RGB}{5,94,98}
+\hypersetup{pdftitle={Recovering all Dirichlet zeros from one zero-free interval},pdfauthor={OpenAI}}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small\color{ink}One-interval recovery of Dirichlet zeros}
+\rhead{\small\color{ink}November 2026}
+\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\atanh}{\operatorname{artanh}}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\ord}{\operatorname{ord}}
+\setlength{\parindent}{1.15em}
+\setlength{\parskip}{0.17em}
+\setlength{\emergencystretch}{1em}
+\numberwithin{equation}{section}
+\begin{document}
+\thispagestyle{plain}
+\noindent{\sffamily\small\bfseries\color{teal} RESEARCH NOTE\hfill 26 NOVEMBER 2026}
+\bigskip
+
+\noindent{\LARGE\bfseries\color{ink} Recovering all Dirichlet zeros\\[3pt]from one zero-free interval\par}
+\medskip
+\noindent{\large An inverse theorem for the zeros of high logarithmic derivatives}
+\bigskip
+
+\noindent\textbf{Abstract.}
+Choose a closed real interval containing no zero of a completed Dirichlet
+$L$-function in the ordinate variable. Insert a double zero at its left
+endpoint and a simple zero at its right endpoint. Each odd derivative of
+order at least three of the logarithm of the absolute value then vanishes
+at exactly one interior point. The locations of these points, even along
+any unbounded subsequence of odd orders, determine every nontrivial zero
+with multiplicity and determine the primitive character. For Riemann's
+$\Xi$, one may use the fixed interval $[-1,1]$ without knowing any zero
+in advance. A finite-order inequality bounds the next positive ordinate.
+The proof also gives the exact exponential scale at which a changed
+distant zero affects an observation.
+
+\section{The observable}
+Let $F(t)$ be the completed function on the critical line, for example
+$F(t)=\Xi(t)=\xi(\tfrac12+it)$. Select $a<b$ with $F$ zero-free on
+$[a,b]$. Form the entire function
+\[
+       G(t)=(t-a)^2(t-b)F(t).
+\]
+For every odd integer $p\ge3$, record the single real number $x_p\in(a,b)$
+at which
+\begin{equation}\label{obs}
+       \frac{\dd^p}{\dd t^p}\log|G(t)|\bigg|_{t=x_p}=0.
+\end{equation}
+The data are the interval and the indexed point locations. They can be
+obtained by differentiating the completed function within the interval.
+
+\begin{theorem}[One-interval determination]\label{main}
+Let $F$ be the entire completion of a primitive Dirichlet $L$-function in
+the ordinate variable, including the Riemann completion in conductor one.
+The point in \eqref{obs} exists and is unique. Given $a,b$ and the indexed
+values $x_p$ for any unbounded set of odd $p\ge3$, the full multiset of
+nontrivial zeros and the primitive character are uniquely determined.
+\end{theorem}
+
+The analytic input from Dirichlet GRH is that the zero ordinates are real.
+The remaining argument concerns positive masses on a line. Two unequal
+endpoint multiplicities break reflection symmetry. With equal endpoint
+multiplicities, every spectrum symmetric about the midpoint would give
+exactly the same midpoint at every order.
+
+\begin{center}
+\setlength{\unitlength}{0.93pt}
+\begin{picture}(410,58)
+\put(8,26){\vector(1,0){393}}
+\color{teal}\linethickness{1.1pt}
+\put(145,26){\line(1,0){120}}
+\color{black}
+\put(47,26){\circle*{5}}\put(47,12){\makebox(0,0){$c-R$}}
+\put(145,26){\circle{10}}\put(145,26){\circle*{5}}
+\put(145,10){\makebox(0,0){$a$}}
+\put(205,23){\line(0,1){6}}\put(205,10){\makebox(0,0){$c$}}
+\color{teal}\put(220,26){\circle*{5}}
+\put(220,41){\makebox(0,0){$x_p$}}
+\color{black}\put(265,26){\circle*{5}}\put(265,10){\makebox(0,0){$b$}}
+\put(363,26){\circle*{5}}\put(363,12){\makebox(0,0){$c+R$}}
+\put(47,42){\makebox(0,0){$L$}}\put(363,42){\makebox(0,0){$U$}}
+\end{picture}\\[-1pt]
+\small One observed position inside $(a,b)$ per order encodes the weights\\
+at both exterior positions $c-R$ and $c+R$.
+\end{center}
+\newpage
+\section{The real-variable inverse problem}
+Write $a=c-d$, $b=c+d$, $d>0$. Let $\mu$ be a locally finite discrete
+multiset of real locations $\gamma$ outside $[a,b]$, with positive weights
+$m_\gamma$ and
+\begin{equation}\label{sum}
+            \sum_\gamma\frac{m_\gamma}{1+\gamma^2}<\infty.
+\end{equation}
+Here locally finite means finitely many distinct locations in each bounded
+interval. Put known endpoint weights $A,B>0$ at $a,b$, and assume $A\ne B$.
+For odd $p\ge3$ define
+\begin{equation}\label{field}
+ F_p(x)=\frac{A}{(x-a)^p}+\frac{B}{(x-b)^p}
+                       +\sum_\gamma\frac{m_\gamma}{(x-\gamma)^p}.
+\end{equation}
+The sums and differentiated sums converge locally uniformly in $(a,b)$
+by \eqref{sum}. Every term has negative derivative and the endpoint
+limits are $+\infty$ and $-\infty$. Thus $F_p$ has exactly one zero $x_p$.
+The zero with only the two endpoints present is
+\begin{equation}\label{yp}
+ y_p=c+d\tanh(h/p),\qquad h=\tfrac12\log(A/B).
+\end{equation}
+Indeed the ratio of the two endpoint distances at $y_p$ is $(A/B)^{1/p}$.
+
+\begin{lemma}[Endpoint approximation]\label{endpoint}
+If there is exterior mass and $R_0=\min_\gamma|\gamma-c|$, then
+\[
+        x_p=y_p+O\!\left(\frac{d}{p}(d/R_0)^p\right).
+\]
+If there is no exterior mass, $x_p=y_p$ for all $p$.
+\end{lemma}
+\begin{proof}
+For any fixed $C$ and $S>d$, uniformly on $|x-c|\le C/p$,
+\begin{equation}\label{tail}
+ \sum_{|\gamma-c|\ge S}\frac{m_\gamma}{|x-\gamma|^p}=O(S^{-p}).
+\end{equation}
+For large $p$, replacing $|x-\gamma|^{-p}$ by $|c-\gamma|^{-p}$
+costs at most $(1-C/(pS))^{-p}\le e^{2C/S}$. After extracting $S^{-p}$,
+the remaining sum is bounded by $\sum m_\gamma(S/|c-\gamma|)^2$ over
+the indicated locations. This is finite by \eqref{sum}. Apply \eqref{tail}
+at $y_p$ with $S=R_0$. Throughout the gap, the nearer endpoint gives
+$|F_p'(x)|\ge p\min(A,B)d^{-p-1}$. The mean value theorem proves the bound.
+\end{proof}
+
+The dimensionless displacement $u_p=(x_p-c)/d$ therefore agrees with
+$\tanh(h/p)$ to exponentially small error. Its term of order $p^{-3}$
+will distinguish a left-hand mass from a right-hand mass even when the
+two contributions cancel to leading order. The requirement $h\ne0$
+enters precisely at this step.
+\newpage
+\section{Recovering a radius and its two weights}
+Suppose the locations at smaller radii are already known. Evaluate their
+contribution and both endpoint terms at the observed $x_p$, and let $E_p$
+be the negative of this known sum. Since $F_p(x_p)=0$, $E_p$ equals the
+unknown exterior contribution. Let $R>d$ be its first occupied radius.
+Write $L,U$ for the weights at $c-R,c+R$, assigning zero to an empty side.
+If $S>R$ is the next occupied radius, put $\eta=R/S<1$. For a last radius
+the tail terms below vanish. Define
+\begin{equation}\label{polar}
+ k=d/R,\qquad \theta_p=p\atanh(ku_p),\qquad
+ G_p=(1-k^2u_p^2)^{-p/2},\qquad \theta_0=kh.
+\end{equation}
+Pairing the two locations at $R$ and applying \eqref{tail} gives
+\begin{equation}\label{shell}
+        \frac{R^pE_p}{G_p}
+          =L e^{-\theta_p}-Ue^{\theta_p}+O(\eta^p).
+\end{equation}
+Indeed $(1+ku_p)^{-p}=G_p e^{-\theta_p}$ and $(1-ku_p)^{-p}=G_p e^{\theta_p}$.
+Taylor expansion using Lemma~\ref{endpoint} yields
+\begin{equation}\label{theta}
+ \theta_p=kh+\frac{v}{p^2}+O(p^{-4}),\qquad
+ v=\frac{(k^3-k)h^3}{3}\ne0,\qquad G_p=1+O(p^{-1}).
+\end{equation}
+
+\begin{theorem}[Explicit inversion]\label{inverse}
+Every occupied radius and both of its weights are recovered by the following
+successive limits. All limits may use any one unbounded subsequence of odd orders:
+\begin{align}
+ R&=\lim |E_p|^{-1/p},\qquad H=\lim Z_p,\qquad Z_p=R^p E_p/G_p,\label{root}\\
+ J&=\lim\frac{Z_p-H}{\theta_p-\theta_0},\label{slope}\\
+ L&=\tfrac12 e^{\theta_0}(H-J),\qquad
+ U=-\tfrac12 e^{-\theta_0}(H+J).\label{masses}
+\end{align}
+\end{theorem}
+\begin{proof}
+Set $f(t)=L e^{-t}-Ue^t$. At $\theta_0$, $f=H$ and
+$f'=-(L e^{-\theta_0}+Ue^{\theta_0})<0$. If $H\ne0$, the normalized
+right side of \eqref{shell} tends to $H$. If $H=0$, it is
+$f'(\theta_0)v/p^2+O(p^{-4})+O(\eta^p)$, with nonzero coefficient.
+In either case $E_p$ is eventually nonzero and \eqref{root} recovers $R$.
+Then \eqref{shell}--\eqref{theta} give $J=f'(\theta_0)$ and solving two
+linear equations yields \eqref{masses}. Remove these weights and repeat.
+Local finiteness puts only finitely many radii before any specified
+location. An identically vanishing residual on the observed subsequence
+characterizes an empty remainder by the same argument.
+\end{proof}
+
+These limits are statements about exact real observations. They impose no
+lower density requirement on the orders. For example, retaining only
+$p=2^n+1$, $n\ge1$, gives the same uniqueness conclusion. The next theorem
+quantifies how close two observations can be even when the two spectra
+are different.
+\newpage
+\section{How much a changed zero moves the observation}
+Two measures $\mu,\widetilde\mu$ satisfying \eqref{sum} use the same
+interval and the same unequal endpoint weights. Let $R$ be the nearest
+radius at which they differ. Write $\Delta L,\Delta U$ for the weights of
+$\mu-\widetilde\mu$ there, and use $k,\theta_0,v$ of
+\eqref{polar}--\eqref{theta}. Set
+\[
+ H=\Delta L e^{-\theta_0}-\Delta U e^{\theta_0},\qquad
+ J=-\Delta L e^{-\theta_0}-\Delta U e^{\theta_0}.
+\]
+\begin{theorem}[Resolution of the first discrepancy]\label{rate}
+For the respective point sequences $x_p,\widetilde x_p$,
+\[
+ x_p-\widetilde x_p\sim
+ \frac{d}{2\sqrt{AB}}\left(\frac dR\right)^p
+ \begin{cases}
+ H/p,&H\ne0,\\
+ Jv/p^3,&H=0.
+ \end{cases}
+\]
+In particular $\lim|x_p-\widetilde x_p|^{1/p}=d/R$.
+\end{theorem}
+\begin{proof}
+Evaluate $F_p-\widetilde F_p$ at $\widetilde x_p$. Formula
+\eqref{shell} applies to the signed difference by \eqref{tail}, with the
+expansion for $\widetilde x_p$. If $H=0$ then $J\ne0$ since the two weight
+differences are not both zero. The field difference is asymptotic to
+$R^{-p}H$ or $R^{-p}Jv/p^2$. For any $w$ between the two observed points,
+$p(w-c)/d\to h$ by Lemma~\ref{endpoint}, uniformly on this segment.
+The two endpoint terms of $-d^{p+1} F'_p(w)/p$ tend respectively to
+$Ae^{-h}$ and $Be^h$, whose sum is $2\sqrt{AB}$. All remaining terms tend
+to zero by \eqref{tail} with exponent $p+1$. Apply the mean value theorem to
+$F_p(x_p)-F_p(\widetilde x_p)$.
+\end{proof}
+
+\paragraph{An example where the leading contributions cancel.}
+Use $(a,b)=(-1,1)$ and $(A,B)=(4,1)$. One measure has additional weights
+$2,1$ at $-2,2$, the other has none. Then $H=0$, $J=-2\sqrt2$ and
+$v=-(\log 2)^3/8$. With $y_p=\tanh((\log 2)/p)$,
+\[
+             p^3 2^p (x_p-y_p)\longrightarrow
+             \frac{\sqrt2(\log 2)^3}{16}=0.02943549871\ldots .
+\]
+The included integer-arithmetic check clears positive denominators and
+bisects both roots at dyadic rationals. Its certified enclosures are
+\[
+\begin{array}{c@{\qquad}l}
+p&\text{enclosure of }p^3 2^p(x_p-y_p)\\ \hline
+15 &[0.02900627349,\ 0.02900627350]\\
+63 &[0.02934699772,\ 0.02934699773]\\
+127 &[0.02939267493,\ 0.02939267494].
+\end{array}
+\]
+The exponential factor quantifies the precision required for distant
+zeros. The two different powers of $p$ quantify the additional loss caused
+by cancellation within a pair.
+\newpage
+\section{Dirichlet zeros determine the character}
+For a primitive character $\chi$ of conductor $q$, put
+$e=\mathbf 1_{\{q=1\}}$ and $\epsilon=(1-\chi(-1))/2$. In the conductor-one
+case $L=\zeta$ and $\epsilon=0$. Up to a constant, the entire completion is
+\[
+ C_\chi(s)=[s(s-1)]^e(q/\pi)^{(s+\epsilon)/2}
+            \Gamma((s+\epsilon)/2)L(s,\chi).
+\]
+Its zeros, counted with multiplicity, are the nontrivial zeros. It has
+order one. These classical properties follow from the theta integral and
+functional equation; see Davenport \cite{davenport} and the DLMF
+\cite{dlmf}. Dirichlet GRH places the zeros at
+$\rho=\tfrac12+i\gamma$, $\gamma\in\R$. Order one implies
+\eqref{sum}. Take $F(t)=C_\chi(\tfrac12+it)$. In its genus-at-most-one
+Hadamard product the exponential factors have affine real logarithms on
+the real line. Consequently, on the gap, for every odd $p\ge3$,
+\[
+ \frac{1}{(p-1)!}\frac{\dd^p}{\dd t^p}\log|G(t)|=F_p(t)
+       \quad (A=2,\ B=1).
+\]
+This follows termwise by local uniform convergence after two
+differentiations. A zero at $t=0$, when present, contributes its usual
+power factor and the same formula. Theorem~\ref{inverse} recovers every
+$\rho$, including multiplicity.
+
+There is also a direct way to read the arithmetic data out of the recovered
+zeros. For real $\sigma>1$, Hadamard factorization gives the absolutely
+convergent sum
+\[
+ J_\chi(\sigma)=-\sum_\rho(\sigma-\rho)^{-2}
+            =(\log C_\chi)''(\sigma).
+\]
+The derivatives here are with respect to $s$ and may be complex. Write
+$\psi_1$ for the trigamma function. The Euler product gives
+\[
+ J_\chi(\sigma)=-e\big(\sigma^{-2}+(\sigma-1)^{-2}\big)
+   +\tfrac14\psi_1((\sigma+\epsilon)/2)
+   +\sum_{n\ge2} b_n n^{-\sigma},
+ \qquad b_n=\Lambda(n)\chi(n)\log n ,
+\]
+where $\Lambda(n)$ is the von Mangoldt function. The series decays
+exponentially as $\sigma\to+\infty$. From
+$\psi_1(z)=z^{-1}+(2z^2)^{-1}+O(z^{-3})$ we obtain
+\[
+ \lim_{\sigma\to\infty}\sigma^2\left(J_\chi(\sigma)-\frac1{2\sigma}\right)
+        =\frac{1-\epsilon}{2}-2e .
+\]
+The possible values $-3/2,1/2,0$ distinguish zeta, even nonprincipal,
+and odd characters, respectively. Subtract the now known rational and
+trigamma terms from $J_\chi$ to obtain $D(\sigma)=\sum b_n n^{-\sigma}$.
+In increasing order of $n$ recover
+\[
+ b_n=\lim_{\sigma\to\infty} n^\sigma
+       \left(D(\sigma)-\sum_{2\le j<n} b_j j^{-\sigma}\right).
+\]
+Absolute convergence at $\sigma=2$ justifies the limit by domination.
+At a prime $\ell$, division by $(\log\ell)^2$ gives $\chi(\ell)$,
+including zero values. Complete multiplicativity recovers $\chi$ on all
+integers, and its unique primitive conductor follows. This proves
+Theorem~\ref{main}.
+\newpage
+\section{Riemann's function on a fixed interval}
+One can choose the two artificial zeros $-1,1$ before computing
+any Riemann zero. To see the interval is zero-free, put
+$P(v)=\sum_{n\ge1}e^{-\pi n^2v}$. The classical theta integral yields
+\[
+ \Xi(t)=\tfrac12-(t^2+\tfrac14)
+      \int_1^\infty P(v)v^{-3/4}\cos((t/2)\log v)\,\dd v .
+\]
+For $v\ge1$, $P(v)\le e^{-\pi v}/(1-e^{-3\pi})$ since successive
+squares differ by at least three. Hence on $[-1,1]$ the integral term
+including its prefactor has absolute value at most
+$5e^{-\pi}/[4\pi(1-e^{-3\pi})]<1/2$. In particular $\Xi(t)>0$ there.
+Its zeros occur in pairs $\pm r$ of equal multiplicity $m_r$.
+
+Let $h=(\log2)/2$. The field at zero equals $1$, and the sum from every
+exterior pair is negative at $y_p=\tanh(h/p)$. Thus $0<x_p<y_p<h/p$.
+After any number of the nearest pairs have been recovered, let $K_p$ be
+the signed contribution of the two markers and the recovered pairs at
+$x_p$. If $R$ is the next positive ordinate, then
+\begin{equation}\label{positive}
+ K_p=\sum_{r\ge R}m_r\big[(r-x_p)^{-p}-(r+x_p)^{-p}\big]>0.
+\end{equation}
+Every pair contributes positively to this readout.
+Equations \eqref{shell}--\eqref{theta} simplify to
+\begin{equation}\label{zetaform}
+ R=\lim K_p^{-1/p},\qquad
+ m_R=\frac{\lim R^pK_p}{2\sinh(h/R)} .
+\end{equation}
+For the first pair, $K_p=2/(1+x_p)^p-1/(1-x_p)^p$ uses only the
+observed point. Each application of \eqref{zetaform} supplies the pair
+required for the next application.
+
+\subsection*{A finite two-order bound}
+Define the positive decreasing kernel, for $r>z>0$,
+\[
+ A_j(r,z)=\frac{(r-z)^{-j}-(r+z)^{-j}}{2jz}
+         =\tfrac12\int_{-1}^1(r+vz)^{-j-1}\,\dd v .
+\]
+Set $x=x_p$, $y=x_{p+2}$ and $D_j=K_j/(2j x_j)$, using the same recovered
+pairs at both orders. Thus $D_j=\sum_{r\ge R}m_r A_j(r,x_j)$.
+\begin{theorem}[Finite bounds]\label{bounds}
+Let $\ell_p>x$ and $u_p^*\ge1$ solve the scalar equations
+\[
+ A_p(\ell_p,x)=D_p,\qquad
+ Q_p(u_p^*)=D_{p+2}/D_p,\quad
+ Q_p(r)=\frac{A_{p+2}(r,y)}{A_p(r,x)} .
+\]
+Both solutions exist and are unique in the stated domains. They satisfy
+\[
+     \ell_p\le R\le u_p^*,\qquad
+           m_R\le D_p/A_p(u_p^*,x).
+\]
+\end{theorem}
+\newpage
+\begin{proof}
+$A_p(r,x)$ decreases continuously from infinity to zero.
+Since $m_R\ge1$, $D_p\ge A_p(R,x)$ and the first bound follows. From
+the integral formula the logarithmic derivative of $A_j$ in $r$ lies
+between $-(j+1)/(r-z)$ and $-(j+1)/(r+z)$. Hence
+\[
+ \frac{\dd}{\dd r}\log Q_p(r)
+ \le-\frac{p+3}{r+y}+\frac{p+1}{r-x}<0\qquad(r\ge1).
+\]
+Indeed $(p+3)x+(p+1)y<3h<2\le2r$.
+Now $D_{p+2}/D_p$ is a weighted average of $Q_p(r)$ over $r\ge R$
+with positive weights $m_r A_p(r,x)$. It is at most $Q_p(R)$ and
+strictly positive, while $Q_p(r)\to0$ at infinity. This proves existence,
+uniqueness and the upper bound. Finally,
+$D_p\ge m_R A_p(R,x)\ge m_R A_p(u_p^*,x)$.
+\end{proof}
+
+If $S>R$ is the next distinct positive ordinate, the upper bound satisfies
+$u_p^*-R=O((R/S)^p)$. Indeed
+\[
+ D_j=m_R A_j(R,x_j)\{1+O((R/S)^j)\}
+\]
+by \eqref{tail} and \eqref{positive}, since $jx_j\to h$ and
+$R^j A_j(R,x_j)\to\sinh(h/R)/h>0$. On $[R,R+1]$ the proof of
+Theorem~\ref{bounds} bounds $-(\log Q_p)'$ below by a positive constant
+uniformly in $p$. The log of the observed ratio thus differs from
+$\log Q_p(R)$ by $O((R/S)^p)$, forcing the stated bound. If $m_R=1$,
+the lower endpoint also satisfies $R-\ell_p=O((R/S)^p/p)$ using
+$-\partial_r\log A_p\ge(p+1)/(r+x)$ between $\ell_p$ and $R$.
+For a last pair both ratio measurements contain only that pair.
+A multiplicity upper bound strictly below $2$ certifies that the first
+remaining pair is simple.
+
+\subsection*{Numerical illustration}
+The program \texttt{xi\_demo.py} computes Taylor coefficients from complex
+values of $\Xi$ by Cauchy's integral formula. No ordinates enter the
+first experiment. All three quantities below use only the measurements
+at orders $p,p+2$. The figures are rounded high-precision approximations.
+\begin{center}\small
+\begin{tabular}{rrrr}
+\toprule
+$p$ & $\ell_p$ & $u_p^*$ & upper bound on $m_R$\\ \midrule
+ 9 & 14.10262813980 & 14.22711060164 & 1.0918615321\\
+17 & 14.13407780661 & 14.13795180923 & 1.0049451876\\
+33 & 14.13472456790 & 14.13473049025 & 1.0000142459\\
+65 & 14.1347251417338 & 14.1347251417509 & 1.00000000008\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last interval has width $1.71\cdot10^{-11}$.
+Its comparison value is $14.13472514173469\ldots$.
+In a second experiment the known first pair is removed and its original
+locations are used as the two endpoints. Orders 127 and 129 give the
+numerical bounds $21.02203963874$ and $21.02203963945$ for the second
+positive ordinate. The comparison value is $21.02203963877155\ldots$.
+\newpage
+\section{A reproducible interval certificate}
+For orders 9 and 11 a separate program evaluates the observations by
+interval arithmetic. It proves the following comparisons, with every
+displayed endpoint rounded outwards:
+\begin{align*}
+0.038489153650346548707320 &\le x_9\le 0.038489153650346548707321,\\
+0.031496268898746725992754 &\le x_{11}\le 0.031496268898746725992756,\\
+1.09408109 &\le D_9/A_9(14.23,x_9)\le 1.09408110 .
+\end{align*}
+The program checks $D_9<A_9(14.10,x_9)$ and
+$Q_9(14.23)<D_{11}/D_9$. Theorem~\ref{bounds} and the integrality of
+multiplicity give the certificate
+\[
+          \boxed{14.10<\gamma_1<14.23,\qquad m_{\gamma_1}=1.}
+\]
+At orders 65 and 67 the same method gives the sharper certified result
+\[
+ \boxed{14.1347251417337<\gamma_1<14.1347251417510.}
+\]
+Here $x_{65}=0.0053318508623\ldots$ and $x_{67}=0.0051726940178\ldots$.
+The computed upper bound on multiplicity is $1.000000000080332$.
+The first zero and its simplicity are classical. The width
+$1.73\cdot10^{-11}$ follows from two local measurements and the
+proved bounds, with no zero ordinate supplied to the measurement routine.
+
+\paragraph{How the certificate is checked.}
+The substitution $v=\log u$ in the theta integral gives the kernel
+$e^{v/4}P(e^v)\cos(tv/2)$. The program integrates its coefficients through
+degree 44 on $0\le v\le5$, retaining $1\le n\le5$ in the theta sum.
+It integrates the degree-19 Lagrange interpolant on panels of width $1/32$
+using exact rational quadrature weights. On unit complex disks centered in
+$[0,5]$, $\Re(e^v)>1/6$, so the analytic integrand for each coefficient,
+including its factorial divisor, is bounded in modulus by $210$. Cauchy's
+estimate and the interpolation remainder give an integrated error at most
+$5\cdot210/32^{20}<10^{-27}$. The sum and integral truncations are also
+bounded in the program. Its $10^{-26}$ enclosure for each coefficient
+covers these three analytic errors. Integer arithmetic encloses all
+algebraic operations, and the correctly rounded decimal exponential is
+widened outwards.
+
+On $|t|\le2$ the same integral gives $|\Xi(t)|<1$. This bounds the
+discarded Taylor coefficients by $2^{-k}$ in degree $k$. The checker
+shifts the enclosed series to each rational trial point, divides Taylor
+series to evaluate the required coefficient of $\Xi'/\Xi$, and bisects
+using signs certified by intervals. The resulting $x_9,x_{11}$
+enclosures enter three rational comparisons. For orders 65 and 67 the program uses Taylor degree 182, 80 nodes per
+panel, ten theta terms and 170 decimal places for interval endpoints.
+The combined quadrature and truncation errors for each integrated
+coefficient are below $10^{-116}$. The program checks signs of the full
+field at both ends of each proposed bracket. Both modes are available in
+\texttt{examples/xi\_certificate.py} with their recorded outputs.
+
+\subsection*{Further research questions}
+How should the marker weights and interval be chosen with prescribed
+absolute observation errors? Can one obtain analogous finite bounds for
+a complex character, whose positive and negative ordinates can carry
+different masses? For zeta, reflection symmetry gives a positive
+weighted average. For a general character, Theorem~\ref{inverse}
+extracts the slope of a signed expression over an order-$p^{-2}$ change
+in its argument.
+\newpage
+\section{Sources and prior work}
+Sernau's Lean edition \cite{sernau} uses short forms, a spanning theorem
+and a determinant bound to control a weighted prime-power remainder from
+one side. A quadratic twist and Mellin residues connect that bound to
+zero multiplicities. Its exported critical-strip theorem covers all
+Dirichlet characters. We inspected its statements and reading guide.
+Rubinstein independently reports a rebuild, kernel replay and comparison
+of the compact edition against the five target statements \cite{rubinstein}.
+The new inverse theorems have the written proofs above.
+
+ProveIt's GRH index \cite{proveit} records 61 packets placed without an
+independent mathematical review. The signed-zero-data packet recovers a
+modulus and auxiliary prime from weighted ordinates. The prime-sampling
+packet extracts multiplicity from weighted prime sums. The requested
+encyclopedia article \cite{wiki} distinguishes Dirichlet GRH from other
+critical-line conjectures. Only the Dirichlet statement enters here.
+
+P\'olya, Shaw--Prather and B\o gvad--H\"agg \cite{polya,shaw,bogvad}
+study where zeros of high derivatives accumulate for a given singularity
+configuration. Abel--Goncharov interpolation \cite{popov} studies
+uniqueness from derivative data for entire functions. Kawalec
+\cite{kawalec} recovers zeta ordinates recursively from secondary zeta
+values, and Matiyasevich \cite{mati} studies recovery from local derivative
+values. The proposed contribution here is recovery from point locations
+at arbitrarily sparse odd orders, including the cancellation law and
+finite two-order bounds. A targeted search and the inspected packets did
+not identify these statements. Historical priority remains open.
+
+\small
+\begin{thebibliography}{10}\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}\setlength{\parskip}{0pt}
+\bibitem{sernau} L. Sernau et al., \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207}{\emph{GRH for Dirichlet $L$-functions, in Lean 4}},
+commit \texttt{72fead1}. See \texttt{grh/GUIDE.md}, \texttt{grh/src/Statements.lean}, \texttt{grh/src/Main.lean} and \texttt{New/Reduction/Zeros/Criterion.lean} under \texttt{grh/src/}.
+\bibitem{rubinstein} M. Rubinstein, \href{https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/}{\emph{Alp\"oge/Claude proof of the Generalized Riemann Hypothesis}}, verification report, 26 Nov. 2026.
+\bibitem{proveit} V. Reshetnikov, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/a9ae674322c8c4cce1bb2262e577733d3959d741/Analysis/GeneralizedRiemannHypothesis}{\emph{ProveIt, Analysis/GeneralizedRiemannHypothesis}}, commit \texttt{a9ae674}. See \href{https://github.com/VladimirReshetnikov/ProveIt/blob/a9ae674322c8c4cce1bb2262e577733d3959d741/Analysis/GeneralizedRiemannHypothesis/Research/grh-torsion-and-zero-data/recovery.tex}{the signed-zero reconstruction} and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/a9ae674322c8c4cce1bb2262e577733d3959d741/Analysis/GeneralizedRiemannHypothesis/Research/grh-torsion-and-prime-sampling/prime-sampling.tex}{the prime-sampling packet}.
+\bibitem{wiki} Wikipedia contributors, \href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{\emph{Riemann hypothesis}}, consulted 26 Nov. 2026.
+\bibitem{davenport} H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H. L. Montgomery, Springer, 2000, chs. 9--12.
+\bibitem{dlmf} NIST, \emph{Digital Library of Mathematical Functions}, \href{https://dlmf.nist.gov/25.4}{\S25.4} and \href{https://dlmf.nist.gov/25.15}{\S25.15}.
+\bibitem{polya} G. P\'olya, \href{https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-49/issue-3.P1/On-the-zeros-of-the-derivatives-of-a-function-and/bams/1183505036.full}{On the zeros of the derivatives of a function and its analytic character}, \emph{Bull. Amer. Math. Soc.} 49 (1943), 178--191.
+\bibitem{shaw} J. K. Shaw and C. L. Prather, \href{https://doi.org/10.1155/S0161171282000635}{A P\'olya shire theorem for functions with algebraic singularities}, \emph{Int. J. Math. Math. Sci.} 5 (1982), 691--706.
+\bibitem{bogvad} R. B\o gvad and C. H\"agg, \href{https://arxiv.org/abs/1610.00921}{A refinement for rational functions of P\'olya's method to construct Voronoi diagrams}, \emph{J. Math. Anal. Appl.} 452 (2017), 312--334.
+\bibitem{kawalec} A. Kawalec, \href{https://arxiv.org/abs/2012.06581}{Analytical recurrence formulas for non-trivial zeros of the Riemann zeta function}, arXiv:2012.06581v5 (2022).
+\bibitem{mati} Yu. Matiyasevich, \href{https://doi.org/10.1016/j.ic.2023.105130}{Towards non-iterative calculation of the zeros of the Riemann zeta function}, \emph{Information and Computation} 296 (2024), 105130.
+\bibitem{popov} A. Yu. Popov, \href{https://geodesic.mathdoc.fr/item/SM_2002_193_2_a4/}{Bounds for convergence and uniqueness in Abel--Goncharov interpolation}, \emph{Sb. Math.} 193 (2002), 247--277.
+\end{thebibliography}
+\end{document}

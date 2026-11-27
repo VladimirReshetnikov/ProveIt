@@ -1,0 +1,427 @@
+% Self-contained mathematical fragment; requires amsmath, amssymb, amsthm.
+% Suggested bibliography keys: Lagarias2007, BMOR2021, NakamuraSuzuki2023.
+
+\section{A universal process built from zero ordinates}
+
+This section separates two facts. The probabilistic theorem below follows
+from the classical zero-counting law alone. RH or Dirichlet GRH identifies
+the resulting circle generator with the usual Li coefficients. The repository supplies the established zero-line theorem needed for
+that identification.
+
+Let $\mathcal Z$ be a locally finite multiset of real numbers, with
+multiplicities, and put
+\[
+ N(T)=\#\{\gamma\in\mathcal Z:|\gamma|\leq T\}.
+\]
+Assume that, for constants $d>0$ and $B\in\mathbb R$,
+\begin{equation}\label{eq:generic-zero-count}
+ N(T)=\frac{d}{\pi}T\log T+\frac{B}{\pi}T+O(\log(T+2))
+ \qquad(T\longrightarrow\infty).
+\end{equation}
+Define
+\[
+ \theta(\gamma)=
+ \begin{cases}2\arctan(1/(2\gamma)),&\gamma\ne0,\\
+ \pi,&\gamma=0,
+ \end{cases}
+ \qquad
+ \nu=\frac12\sum_{\gamma\in\mathcal Z}
+       (\delta_{\theta(\gamma)}+\delta_{-\theta(\gamma)}).
+\]
+In particular, $m$ occurrences of $\gamma=0$ contribute mass $m/2$ at
+each of $\pi$ and $-\pi$. Write
+\begin{equation}\label{eq:jump-symbol}
+ \Psi(u)=\int_{\mathbb R}(1-\cos(uy))\,\nu(dy)
+       =\sum_{\gamma\in\mathcal Z}(1-\cos(u\theta(\gamma))).
+\end{equation}
+
+\begin{lemma}[Existence and elementary properties]\label{lem:jump-exists}
+The measure $\nu$ is a symmetric L\'evy measure supported in $[-\pi,\pi]$.
+It satisfies
+\[
+ \nu(\mathbb R)=\infty,\qquad
+ \int |y|\,\nu(dy)=\infty,\qquad
+ 0<V:=\int y^2\,\nu(dy)<\infty.
+\]
+There is a symmetric L\'evy process $(X_t)_{t\geq0}$ with
+\[
+ \mathbb E e^{iuX_t}=e^{-t\Psi(u)}.
+\]
+Its Gaussian component is zero, it has infinitely many jumps and infinite
+variation, and $\mathbb E X_t^2=tV$.
+\end{lemma}
+
+\begin{proof}
+The counting law and partial summation show that
+$\sum_{|\gamma|>1}|\gamma|^{-2}<\infty$ whereas
+$\sum_{|\gamma|>1}|\gamma|^{-1}=\infty$.
+Since $|\theta(\gamma)|\sim |\gamma|^{-1}$, all assertions about the
+measure follow. L\'evy--Khintchine gives the process, with zero Gaussian
+coefficient and zero symmetric drift. The standard variation criterion
+for a pure-jump process gives infinite variation. Differentiating the
+characteristic function twice at zero gives the variance identity.
+\end{proof}
+
+The construction can also be understood by retaining finitely many
+ordinates, allowing independent Poisson jumps of each indicated size,
+and taking the symmetric limit. The finite second-moment tail makes this
+limit well defined; infinitely many small jumps remain in the limit.
+
+\begin{lemma}[The symbol at large frequency]\label{lem:continuous-symbol}
+Put $A=d/2$ and $\kappa=\gamma_{\!E}+B/d$, where $\gamma_{\!E}$ is
+Euler's constant. Then
+\begin{equation}\label{eq:symbol-asymptotic}
+ \Psi(u)=A|u|(\log|u|+\kappa)
+          +O(\sqrt{|u|}\log(|u|+2))
+ \qquad(|u|\longrightarrow\infty).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+By evenness take $u\geq2$ and set $T=\sqrt u$. The contribution of
+$|\gamma|\leq T$ is $O(T\log(T+2))$. On the remaining ordinates,
+\[
+ \theta(\gamma)=\gamma^{-1}+O(|\gamma|^{-3}),
+\]
+so the Lipschitz bound for cosine makes the replacement by
+$1-\cos(u/\gamma)$ cost at most
+\[
+ O\left(u\int_T^\infty v^{-3}\,dN(v)\right)=O(\log u).
+\]
+Let $M(v)=(d v\log v+Bv)/\pi$ and $R(v)=N(v)-M(v)$.
+For $g(v)=1-\cos(u/v)$, integration by parts gives
+\[
+ \int_T^\infty g(v)\,dR(v)
+ =-g(T)R(T)-\int_T^\infty R(v)g'(v)\,dv.
+\]
+The boundary term at infinity vanishes since $g(v)=O(u^2/v^2)$.
+As $|g'(v)|\leq u/v^2$, the displayed expression is
+\[
+ O\left(\log(T+2)+u\int_T^\infty
+              \frac{\log(v+2)}{v^2}\,dv\right)
+ =O(\sqrt u\log u).
+\]
+Extending the main integral from $T$ down to zero costs
+$O(T\log(T+2))$. Consequently,
+\begin{align*}
+ \Psi(u)
+ &=\frac1\pi\int_0^\infty
+     (1-\cos(u/v))(d\log v+d+B)\,dv+O(\sqrt u\log u)\\
+ &=\frac u\pi\left[(d\log u+d+B)I_0-dI_1\right]
+        +O(\sqrt u\log u),
+\end{align*}
+where
+\[
+ I_0=\int_0^\infty\frac{1-\cos y}{y^2}\,dy=\frac\pi2,
+ \qquad
+ I_1=\int_0^\infty\frac{(1-\cos y)\log y}{y^2}\,dy
+     =\frac\pi2(1-\gamma_{\!E}).
+\]
+For completeness these evaluations follow by differentiating, at
+$\alpha=1$, the absolutely convergent identity
+\[
+ \int_0^\infty(1-\cos y)y^{-1-\alpha}\,dy
+ =\frac{\pi}{2\Gamma(1+\alpha)\sin(\pi\alpha/2)},
+ \qquad 0<\alpha<2.
+\]
+One proof of the identity inserts the Laplace representation of
+$y^{-1-\alpha}$ and uses Tonelli's theorem and
+$\int_0^\infty e^{-ty}(1-\cos y)\,dy=1/[t(1+t^2)]$.
+Substitution gives \eqref{eq:symbol-asymptotic}.
+\end{proof}
+
+\section{The all-order density expansion}
+
+Let $W_0$ denote the positive real branch of Lambert's function,
+characterized by $W_0(z)e^{W_0(z)}=z$ for $z>0$. Define
+\begin{equation}\label{eq:generic-scale}
+ w(t)=W_0\left(\frac{e^\kappa}{At}\right),\qquad
+ a(t)=Atw(t).
+\end{equation}
+The exact identities
+\begin{equation}\label{eq:scale-identities}
+ a=e^{\kappa-w},\qquad \log(1/a)+\kappa=w,
+ \qquad t=\frac{a}{Aw}
+\end{equation}
+are the reason to use Lambert $W$ instead of truncating the scale itself.
+
+For $k\geq0$ set
+\begin{equation}\label{eq:universal-profiles}
+ Q_k(x)=\frac{(-1)^k}{\pi k!}\operatorname{Re}
+ \left.
+ \frac{\partial^k}{\partial z^k}
+       \bigl[\Gamma(z)(1-ix)^{-z}\bigr]
+ \right|_{z=k+1}.
+\end{equation}
+The logarithm implicit in the complex power is the principal logarithm;
+its argument always has positive real part.
+
+\begin{theorem}[Universal expansion at every logarithmic order]
+\label{thm:all-orders}
+For every $t>0$, $X_t$ has a density $f_t$ which extends to an entire
+function of its spatial variable. For every pair of fixed integers
+$K,r\geq0$,
+\begin{equation}\label{eq:all-order-bound}
+ \sup_{x\in\mathbb R}
+ \left|
+ \frac{d^r}{dx^r}
+ \left[a(t)f_t(a(t)x)-\sum_{k=0}^K\frac{Q_k(x)}{w(t)^k}\right]
+ \right|
+ =O_{K,r}\bigl(w(t)^{-K-1}+\sqrt{a(t)}\bigr)
+\end{equation}
+as $t\downarrow0$. In particular the error is $O_{K,r}(w^{-K-1})$.
+The constants may depend on the multiset and its counting estimate.
+\end{theorem}
+
+\begin{proof}
+The large-frequency estimate makes
+$\exp(-t\Psi(u)+c|u|)$ integrable for every $t>0$ and $c>0$.
+Fourier inversion therefore gives an entire density.
+Put $a=a(t)$, $w=w(t)$, and for $s>0$ define
+\[
+ F_w(s)=s+\frac{s\log s}{w}.
+\]
+The scale identities yield
+\[
+ tA\frac{s}{a}\left(\log\frac{s}{a}+\kappa\right)=F_w(s).
+\]
+We first establish, for each fixed $r\geq0$,
+\begin{equation}\label{eq:fourier-comparison}
+ \int_0^\infty s^r
+  \left|e^{-t\Psi(s/a)}-e^{-F_w(s)}\right|\,ds
+ =O_r(\sqrt a).
+\end{equation}
+On $0<s<\sqrt a$, the first exponential is at most one. The negative
+part of $F_w$ is at most $e^{-w-1}/w$, so the second exponential is
+uniformly bounded as well. This interval contributes $O_r(\sqrt a)$.
+On $s\geq\sqrt a$, both exponents are at least $cs$ for some fixed
+$c>0$, once $t$ is small enough. Indeed
+$F_w(s)/s\geq 1/2+\kappa/(2w)$, and the remainder in
+\eqref{eq:symbol-asymptotic} is smaller than a fixed fraction of its
+main term on $s/a\geq a^{-1/2}$. The exponential mean-value bound now gives
+\[
+ \left|e^{-t\Psi(s/a)}-e^{-F_w(s)}\right|
+ \leq C t\sqrt{s/a}\log(2+s/a)e^{-cs}.
+\]
+Since $t=a/(Aw)$ and
+$\log(2+s/a)\leq w+C_\kappa+\log(2+s)$, its integral against $s^r$
+is $O_r(\sqrt a)$, proving \eqref{eq:fourier-comparison}.
+
+Expand $e^{-s\log s/w}$ through degree $K$. For $s\geq1$, Taylor's
+integral remainder for $e^{-z}$, $z\geq0$, is bounded by
+$z^{K+1}/(K+1)!$. For $0<s<1$, use $|s\log s|\leq1/e$ and the
+same estimate with the harmless factor $e^{1/(ew)}$. Multiplication by
+$e^{-s}s^r$ and integration show that
+\begin{equation}\label{eq:taylor-comparison}
+ \int_0^\infty s^r e^{-s}
+ \left|e^{-s\log s/w}
+  -\sum_{k=0}^K\frac{(-s\log s)^k}{k!w^k}\right|\,ds
+ =O_{K,r}(w^{-K-1}).
+\end{equation}
+The sum of \eqref{eq:fourier-comparison} and
+\eqref{eq:taylor-comparison} is an $L^1$ bound for the Fourier
+transforms, with every fixed polynomial weight. Fourier inversion and
+differentiation prove the uniform claim. Finally,
+\[
+ \int_0^\infty s^k(\log s)^k e^{-(1-ix)s}\,ds
+ =\left.\partial_z^k
+       [\Gamma(z)(1-ix)^{-z}]\right|_{z=k+1},
+\]
+which identifies the profiles. As $a=e^{\kappa-w}$, $\sqrt a$ is
+smaller than every fixed inverse power of $w$.
+\end{proof}
+
+The first three terms have the explicit form
+\begin{align}
+ Q_0(x)&=\frac1{\pi(1+x^2)},\label{eq:profile-zero}\\
+ Q_1(x)&=-\frac1\pi\operatorname{Re}
+       \frac{1-\gamma_{\!E}-\log(1-ix)}{(1-ix)^2},
+       \label{eq:profile-one}\\
+ Q_2(x)&=\frac1\pi\operatorname{Re}
+       \frac{(\frac32-\gamma_{\!E}-\log(1-ix))^2+\frac{\pi^2}6-\frac54}
+            {(1-ix)^3}.
+       \label{eq:profile-two}
+\end{align}
+Thus the leading shape is the standard Cauchy density, and the theorem
+provides every successive correction rather than only convergence in law.
+
+\begin{corollary}[Universality beyond every logarithmic order]
+If two multisets satisfy \eqref{eq:generic-zero-count} with the same
+$d,B$, their scaled densities differ by $O_r(\sqrt a)$ in
+$C_b^r(\mathbb R)$. In particular they have the same expansion to every
+fixed order in $1/\log(1/t)$.
+\end{corollary}
+
+\begin{proof}
+Both scaled characteristic functions differ from the same model
+$e^{-F_w(|s|)}$ by $O_r(\sqrt a)$ in the weighted $L^1$ norm
+\eqref{eq:fourier-comparison}. Apply Fourier inversion directly; this
+is stronger than subtracting two fixed-order asymptotic expansions.
+\end{proof}
+
+\section{Dirichlet characters and Li coefficients}
+
+For zeta, use the normalization
+\[\xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s),\qquad
+\lambda_n=\frac1{(n-1)!}\left.\frac{d^n}{ds^n}
+[s^{n-1}\log\xi(s)]\right|_{s=1}.\]
+The equivalent zero-sum formula and its Dirichlet generalization
+are used below~\cite{Li1997,BombieriLagarias,Lagarias2007}.
+
+Take $\mathcal Z$ to be the ordinates of all nontrivial zeros of a fixed
+primitive Dirichlet $L$-function of conductor $q>1$, counted with
+multiplicity and both signs. The classical counting law, in the explicit
+form of Bennett--Martin--O'Bryant--Rechnitzer~\cite{BMOR2021}, gives
+\[
+ N_\chi(T)=\frac T\pi\log\frac{qT}{2\pi e}
+              +O_\chi(\log(T+2)).
+\]
+The zeta function is included by taking $q=1$ and its usual
+Riemann--von Mangoldt formula. Thus $d=1$,
+$B=\log(q/(2\pi))-1$, and the scale is
+\begin{equation}\label{eq:dirichlet-scale}
+ w_q(t)=W_0\left(\frac{q e^{\gamma_{\!E}-1}}{\pi t}\right),
+ \qquad a_q(t)=\frac t2 w_q(t).
+\end{equation}
+All preceding density statements are unconditional for these ordinate
+processes. All primitive characters of a fixed conductor have the same
+expansion to every logarithmic order. Constants are for fixed characters;
+no uniformity in $q\to\infty$ is asserted.
+
+Under the relevant RH, each zero $\rho=1/2+i\gamma$ satisfies
+$1-1/\rho=e^{i\theta(\gamma)}$ (with $e^{i\pi}=-1$ at a central
+zero). Hence the usual zero-sum Li coefficient obeys
+\begin{equation}\label{eq:li-identification}
+ \operatorname{Re}\lambda_\chi(n)
+ =\sum_\rho\operatorname{Re}
+       \left[1-\left(1-\frac1\rho\right)^n\right]
+ =\Psi_\chi(n).
+\end{equation}
+The real-part sum is absolutely convergent. For real characters the Li
+coefficients themselves are real; for nonreal characters the real part
+in \eqref{eq:li-identification} is essential.
+
+The link with Li coefficients and positivity has substantial precedent~\cite{Lagarias2007,NakamuraSuzuki2023}.
+The all-order normalized density expansion, rather than the existence
+of positive kernels alone, is the proposed contribution here.
+
+\section{The circle kernel and its trace}
+
+Reduce $X_t$ modulo $2\pi$ and let $p_t$ be its density with respect to
+ordinary Lebesgue measure on $[-\pi,\pi]$. Its Fourier series is
+\begin{equation}\label{eq:circle-kernel}
+ p_t(y)=\frac1{2\pi}\sum_{n\in\mathbb Z}e^{-t\Psi(n)}e^{iny}.
+\end{equation}
+The series converges locally uniformly for complex $y$, so the density
+is entire and periodic. Under RH or GRH the associated nonnegative generator has eigenvalues
+$\operatorname{Re}\lambda_\chi(|n|)$, with $\lambda_\chi(0)=0$.
+
+\begin{proposition}[Local circle expansion and heat trace]
+For every fixed $R>0$ and integers $K,r\geq0$,
+\[
+ \sup_{|x|\leq R}\left|
+ \frac{d^r}{dx^r}
+ \left[ap_t(ax)-\sum_{k=0}^K\frac{Q_k(x)}{w^k}\right]
+ \right|=O_{R,K,r}(w^{-K-1}+\sqrt a).
+\]
+If $\mathcal A$ is the circle generator, then
+\begin{align*}
+ \operatorname{Tr}(e^{-t\mathcal A})
+ &=2\pi p_t(0)\\
+ &=\frac2a\left[
+ 1-\frac{1-\gamma_{\!E}}w
+ +\frac{(\frac32-\gamma_{\!E})^2+\frac{\pi^2}6-\frac54}{w^2}
+ +O(w^{-3})\right].
+\end{align*}
+For a primitive Dirichlet character the leading trace is
+$4/(t w_q(t))$.
+\end{proposition}
+
+\begin{proof}
+The scaled sum \eqref{eq:circle-kernel} has mesh $a$ in frequency.
+Splitting at $an=\sqrt a$ and applying the same mean-value estimates
+as in \eqref{eq:fourier-comparison} bounds its difference from the
+model Riemann sum by $O_r(\sqrt a)$. The model function
+$s^r e^{-F_w(s)}e^{ixs}$ has uniformly integrable first derivative for
+$|x|\leq R$; the only possible singularity is an integrable logarithm
+at zero. The Riemann-sum error is consequently $O_{R,r}(a)$.
+The Taylor calculation is unchanged. Setting $x=0$ gives the trace.
+\end{proof}
+
+Uniformity over all real $x$ in the circle assertion would be false:
+periodicity produces returning peaks at distances $2\pi/a$. The
+whole-line theorem has no such restriction.
+
+\section{A moment transition and two different time scales}
+
+The Cauchy limit does not contradict the finite variance of $X_t$.
+The family loses uniform integrability after the short-time
+normalization. The following formulas quantify the change.
+
+\begin{theorem}[Moment transition]\label{thm:moment-transition}
+Let $L=\log(1/t)$ and retain $A=d/2$. As $t\downarrow0$,
+\begin{align*}
+ \mathbb E|X_t|^p
+ &\sim \frac{a(t)^p}{\cos(\pi p/2)},&&0<p<1,\\
+ \mathbb E|X_t|
+ &\sim \frac A\pi tL^2
+       =\frac d{2\pi}tL^2,&&p=1,\\
+ \mathbb E|X_t|^p
+ &\sim t\int |y|^p\nu(dy),&&1<p<2,\\
+ \mathbb E X_t^2&=tV.&&
+\end{align*}
+Moreover
+\[
+ \frac{X_t}{a(t)}\ \Longrightarrow\ \mathrm{Cauchy}(0,1)
+ \quad(t\downarrow0),\qquad
+ \frac{X_t}{\sqrt{tV}}\ \Longrightarrow\ N(0,1)
+ \quad(t\longrightarrow\infty).
+\]
+\end{theorem}
+
+\begin{proof}
+For $0<p<2$ the fractional-moment identity is
+\[
+ \mathbb E|X_t|^p
+ =c_p\int_0^\infty(1-e^{-t\Psi(u)})u^{-p-1}\,du,
+ \qquad c_p=\frac{2\Gamma(1+p)\sin(\pi p/2)}\pi.
+\]
+It follows by Tonelli from the cosine integral evaluated in
+Lemma~\ref{lem:continuous-symbol}. For $0<p<1$ put $u=s/a$.
+For a sufficiently large fixed $U_0$, the interval $s\leq aU_0$
+contributes $O(t a^{-p})=o(1)$ to the normalized moment, using
+$\Psi(u)\leq Vu^2/2$. On $aU_0\leq s\leq1$, the symbol bound gives
+$t\Psi(s/a)\leq Cs$; on $s\geq1$ use $1-e^{-t\Psi}\leq1$.
+Dominated convergence then gives
+\[
+ \lim_{t\downarrow0}\frac{\mathbb E|X_t|^p}{a^p}
+ =c_p\int_0^\infty(1-e^{-s})s^{-p-1}\,ds
+ =\frac1{\cos(\pi p/2)}.
+\]
+For $1<p<2$, divide the unscaled identity by $t$ and use
+$(1-e^{-t\Psi})/t\leq\Psi$. The bound
+$\Psi(u)=O(u^2)$ at zero and \eqref{eq:symbol-asymptotic} at infinity
+provide an integrable majorant. Tonelli identifies the limit with
+$\int|y|^p\nu(dy)$.
+
+At $p=1$, the part $0<u<1$ is $O(t)$. For an upper bound split at
+$U=1/t$, use $1-e^{-z}\leq\min(z,1)$, and obtain
+\[
+ \mathbb E|X_t|
+ \leq \frac{2t}\pi\int_1^{1/t}\frac{\Psi(u)}{u^2}\,du+O(t)
+ =\frac A\pi tL^2+O(tL).
+\]
+For a lower bound retain only $1\leq u\leq1/(tL^2)$ and use
+$1-e^{-z}\geq z-z^2/2$. The main term is
+$\frac A\pi t(L-2\log L)^2+O(tL)$; the quadratic error is $O(t)$,
+since $t^2\int_1^{1/(tL^2)}\Psi(u)^2u^{-2}\,du=O(t)$.
+These two bounds give the claimed equivalent. The variance identity
+was proved earlier.
+
+The short-time weak limit follows from
+$t\Psi(s/a)\to|s|$. For long times, dominated convergence in the
+L\'evy integral gives $\Psi(u)=Vu^2/2+o(u^2)$ as $u\to0$.
+Consequently $t\Psi(s/\sqrt{tV})\to s^2/2$, which proves the
+Gaussian limit by the continuity theorem.
+\end{proof}
+

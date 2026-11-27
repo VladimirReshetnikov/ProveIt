@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{xcolor}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\tr}{^{\mathsf T}}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\title{Counting zeros inside a disk and recovering its boundary zeros from a single Taylor expansion}
+\author{}
+\hypersetup{pdftitle={Counting zeros inside a disk and recovering its boundary zeros from a single Taylor expansion}}
+\date{November 26, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a real analytic germ extending holomorphically past a specified closed disk, we recover the numbers of distinct real zeros and conjugate pairs inside the disk from the eigenvalues of a sequence of real symmetric Hankel matrices. Each matrix uses a finite block of high Taylor coefficients of the logarithmic derivative at the center. Interior zeros generate exponentially large eigenvalues. Boundary zeros generate a second scale whose signed eigenvalue limits give their multiplicities, including at simultaneous crossings of the same circle. A vanishing weight on the adjacent Taylor coefficient further recovers the location of every boundary zero. The prescribed scales are independent of the function. Applications include the Riemann $\Xi$-function and primitive Dirichlet completions.
+\end{abstract}
+
+\section{The two counts}
+Write $D(c,R)=\{z:|z-c|<R\}$, with $c\in\mathbb R$, $R>0$.
+Let $F$ be holomorphic on a neighborhood of $\overline D(c,R)$, respect complex conjugation there, and satisfy $F(c)\ne0$.
+After writing $f(z)=F(c+Rz)/F(c)$, form the real coefficients
+\begin{equation}
+ -z\frac{f'(z)}{f(z)}=\sum_{n\ge1} b_n z^n,\qquad
+ b_n=-\frac{R^n}{(n-1)!}(\log F)^{(n)}(c).
+ \label{eq:b}
+\end{equation}
+Take any local branch of the logarithm. For integers $k\ge1$ set
+\begin{equation}
+ d=\lceil\sqrt{k}\rceil,\qquad H_k=(b_{2k+i+j})_{0\le i,j<d}.
+ \label{eq:h}
+\end{equation}
+For $t>0$, let $P_k(t)$ count the eigenvalues strictly greater than $t$, and let $N_k(t)$ count those strictly less than $-t$, each with algebraic multiplicity.
+
+\begin{theorem}[Interior zeros and boundary multiplicities]\label{thm:main}
+Suppose the open disk contains $r$ distinct real zeros and $s$ distinct conjugate pairs of nonreal zeros. For all sufficiently large $k$,
+\[
+ (P_k(k),N_k(k))=(r+s,s).
+\]
+Let $a_j$ count the real boundary zeros of multiplicity exactly $j$ and $c_j$ the nonreal boundary conjugate pairs whose two members each have multiplicity $j$. For every positive integer $j$, eventually
+\begin{align}
+ P_k((j-\tfrac12)d)-P_k((j+\tfrac12)d)&=a_j+c_j,\label{eq:p}\\
+ N_k((j-\tfrac12)d)-N_k((j+\tfrac12)d)&=c_j.\label{eq:n}
+\end{align}
+Here eventuality in the last two identities is for each fixed $j$.
+\end{theorem}
+Thus $P_k(k)-N_k(k)$ gives the real interior count. Replacing $k$ by $d/2$ gives the corresponding count for the closed disk. A real boundary zero of multiplicity $j$ contributes one eigenvalue $jd+o(d)$. A nonreal conjugate pair of multiplicity $j$ contributes one eigenvalue near each of $jd$ and $-jd$. The counts give the multiset of multiplicities separately for real zeros and conjugate pairs. Positions of boundary zeros with the same multiplicity do not appear in these counts.
+
+The logarithmic derivative amplifies interior zeros because their normalized reciprocals have modulus greater than one. On the circle their reciprocals have modulus one. The growing dimension $d$ makes different boundary points asymptotically orthogonal and allows the second scale to appear.
+
+\section{Proof of Theorem \ref{thm:main}}
+\paragraph{Taylor coefficients.}
+List the distinct zeros $z_\ell$ of $f$ in the closed unit disk, and write $u_\ell=1/z_\ell$, $m_\ell=\operatorname{ord}_{z_\ell}(f)$. The set is finite by compactness and isolatedness. Division by $\prod_\ell (1-u_\ell z)^{m_\ell}$ gives a holomorphic, zero-free function $g$ on a disk of radius strictly greater than one. Choose $h>1$ so that $g$ is holomorphic and nonvanishing on a neighborhood of $|z|\le h$. The Cauchy estimate for $-zg'/g$ gives
+\begin{equation}
+ b_n=\sum_\ell m_\ell u_\ell^n + e_n,\qquad
+ |e_n|\le C h^{-n},\quad C=\max_{|z|=h}|zg'(z)/g(z)|.
+ \label{eq:moment}
+\end{equation}
+Put $v_d(u)=(1,u,\ldots,u^{d-1})\tr$. The rank-one terms here use the transpose, with no conjugation. In the real symmetric sum
+\begin{equation}
+ H_k=A_k+B_k+E_k,\quad
+ A_k=\sum_{|u_\ell|>1} m_\ell u_\ell^{2k}v_d(u_\ell)v_d(u_\ell)\tr,
+ \label{eq:decomp}
+\end{equation}
+$B_k$ has the same formula over $|u_\ell|=1$, and $\norm{E_k}\le Cd h^{-2k}$ in operator norm. In particular $\norm{B_k}\le d\sum_{|u_\ell|=1} m_\ell$.
+
+\paragraph{Interior spectrum.}
+Write $A_k=W D_k W\tr$ over the reals. For a real node, use the column $v_d(u)$ and the scalar $mu^{2k}>0$. For a conjugate pair, write $v_d(u)=x+iy$ and $m u^{2k}=a+ib$. Use columns $\sqrt2 x,\sqrt2 y$ with block
+\[
+  \begin{pmatrix}a&-b\\-b&-a\end{pmatrix},
+  \qquad \text{with eigenvalues }\quad \pm m|u|^{2k}.
+\]
+Let $p=r+2s$. If $d\ge p$, the first $p$ rows of $W$ give an invertible real matrix. This follows from the Vandermonde determinant for the $p$ distinct nodes and the invertible change of columns used for each complex pair. Thus $\sigma_{\min}(W)\ge\delta>0$ uniformly in $d$. On its range, $A_k$ is orthogonally equivalent to $(W\tr W)^{1/2}D_k(W\tr W)^{1/2}$. Congruence gives inertia $(r+s,s)$ there. Bounding the norm of its inverse shows that every nonzero eigenvalue satisfies
+\begin{equation}
+ |\lambda(A_k)|\ge \delta^2 \min_{|u_\ell|>1}m_\ell |u_\ell|^{2k}.
+ \label{eq:lower}
+\end{equation}
+If $p=0$ the interior term is zero. Otherwise the right-hand side grows exponentially. The perturbation $B_k+E_k$ has norm $O(d)=o(k)$. Weyl's eigenvalue inequalities therefore give the first assertion. For the open-disk count alone one may fix any dimension $d\ge p$ and let $k$ increase, using the same cutoff $k$. The growing dimension in \eqref{eq:h} removes the need to know $p$ in advance.
+
+\paragraph{Separating the boundary subspace.}
+Let $U$ be the real column space of $W$, with orthogonal projections $P$ onto $U$ and $Q=I-P$. We claim that for every boundary node $w$,
+\begin{equation}
+ \norm{P v_d(w)}=O(1) \quad(d\to\infty),
+ \label{eq:proj}
+\end{equation}
+using complexifications for complex vectors. Indeed, the complex span of $W$ is spanned by the interior columns $u^{1-d}v_d(u)$, whose entries in reverse order are $1,u^{-1},\ldots,u^{1-d}$. The first $p$ entries in this reverse ordering give a fixed invertible Vandermonde matrix. Thus the matrix $T$ of these columns has smallest singular value bounded below. The components of $T^*v_d(w)$ are uniformly bounded by the geometric sums $\sum_{j\ge0}|u|^{-j}$. In a singular value decomposition of $T$, the orthogonal projection onto its range consequently satisfies $\norm{Pv_d(w)}\le \norm{T^*v_d(w)}/\sigma_{\min}(T)$. This proves \eqref{eq:proj}, including the vacuous case $U=0$.
+
+\paragraph{Boundary eigenvalues.}
+Form $L$ from the boundary vectors using the same real columns and $2$-by-$2$ blocks as above, so $B_k=L J_k L\tr$. For a real boundary node, the block is $m$ because $u^{2k}=1$. For a nonreal conjugate pair the block has eigenvalues $+m,-m$. Its entries can oscillate with $k$ but its eigenvalues are constant. For distinct unit complex numbers $w,w'$,
+\[
+ |v_d(w)^*v_d(w')|=\left|\sum_{j=0}^{d-1}(\bar w w')^j\right|
+ \le 2/|1-\bar w w'|,\qquad \norm{v_d(w)}^2=d.
+\]
+The realification by $\sqrt2\operatorname{Re}$ and $\sqrt2\operatorname{Im}$ is a unitary change of the two conjugate columns. It follows from the last display and \eqref{eq:proj} that
+\[
+ L\tr L=dI+O(1),\qquad (QL)\tr(QL)=dI+O(1),\qquad \norm{PL}=O(1).
+\]
+All constants may depend on the fixed finite set of nodes. With $G=(QL)\tr(QL)$, the nonzero spectrum of $QB_kQ$ is the spectrum of $G^{1/2}J_kG^{1/2}$ for large $d$. Since $G^{1/2}=\sqrt d I+O(d^{-1/2})$ and $\norm{J_k}$ stays bounded, this last matrix is $d J_k+O(1)$.
+
+Finally $A_k$ and $QB_kQ$ act on orthogonal subspaces. Expanding $B_k-QB_kQ$ using $L=PL+QL$ gives norm $O(\sqrt d)$ because $\norm{QL}=O(\sqrt d)$. Hence
+\[
+ H_k=A_k+QB_kQ+O(\sqrt d)+E_k.
+\]
+Weyl's inequalities give the claimed boundary eigenvalues to error $O(\sqrt d)$. Every remaining eigenvalue outside the exponential and linear groups has absolute value $O(\sqrt d)$. This suffices at each of the half-integer cutoffs in \eqref{eq:p}--\eqref{eq:n}. \hfill$\square$
+
+\section{Recovering every boundary zero}
+For a whole conjugate pair on the circle, the real part of its normalized reciprocal $u$ determines the pair. We can obtain that real part from the same Taylor expansion with a one-term modification.
+
+\begin{corollary}[Positions and multiplicities from adjacent coefficients]\label{cor:angle}
+In \eqref{eq:h} replace each entry $b_n$ by $b_n+q_d b_{n+1}$, where $q_d=d^{-1/4}$. The interior counts at threshold $k$ still hold. For each boundary conjugation orbit, let $u$ be the normalized reciprocal of either member, $m$ its multiplicity, and $x=\operatorname{Re}u$. The positive eigenvalues on the linear scale, one per orbit, can be labeled so that
+\begin{equation}
+ \lambda_k=md + m d^{3/4}x+O(\sqrt d).
+ \label{eq:angle}
+\end{equation}
+Hence $m$ is eventually the nearest integer to $\lambda_k/d$, and
+\[
+ x=\lim_{k\to\infty} \frac{\lambda_k-md}{m d^{3/4}}.
+\]
+The boundary orbit in the original disk is $c+R(x\pm i\sqrt{1-x^2})$ with repeated entries identified. Ordering the positive boundary eigenvalues increasingly identifies orbits first by $m$ and then by $x$.
+\end{corollary}
+
+\begin{proof}
+Each node weight $m u^{2k}$ in \eqref{eq:moment}--\eqref{eq:decomp} is multiplied by $1+q_d u$. The fixed set of interior nodes is finite and $q_d\to0$, so each interior multiplier has modulus at least $1/2$ eventually, and every real interior multiplier is then positive. The Cauchy remainder still decays exponentially. The real boundary blocks now have eigenvalues $m(1+q_d u)$ for $u=\pm1$; each conjugate block has eigenvalues $\pm m|1+q_d u|$. The projection estimates apply as before, since the modified boundary blocks are uniformly bounded. The positive linear-scale eigenvalues differ from the ordered numbers $md|1+q_d u|$ by $O(\sqrt d)$. On the unit circle,
+\[
+ |1+q_d u|=\sqrt{1+2q_dx+q_d^2}=1+q_dx+O(q_d^2).
+\]
+As $dq_d^2=\sqrt d$, this proves \eqref{eq:angle}. Distinct orbits of the same multiplicity have distinct $x$, and hence separate at order $d^{3/4}$, which dominates the error. Finally $1/u=\bar u$ on the circle, giving the asserted original coordinates.
+\end{proof}
+
+The modification requires just one additional Taylor coefficient per matrix. In particular, simultaneous zeros at several angles with equal multiplicities can all be distinguished, with no advance knowledge of the largest multiplicity.
+\section{Consequences for the critical line}
+Take $F(t)=\Xi(t)=\xi(1/2+it)$, where
+\[
+ \xi(s)=\tfrac12s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s).
+\]
+The functional equation and Schwarz symmetry give $\Xi(\bar t)=\overline{\Xi(t)}$. A real zero gives a zero of $\xi$ on $\operatorname{Re}s=1/2$. A nonreal conjugate pair gives a pair related by reflection across the critical line. For $c\in\mathbb R$, $P_k(k)-N_k(k)$ therefore eventually counts the distinct critical-line ordinates in $(c-R,c+R)$. The boundary multiplicity bands in \eqref{eq:p}--\eqref{eq:n} simultaneously describe ordinates at $c-R$ and $c+R$ and any off-line pairs on the circle. If $F(c)=0$, divide by $(t-c)^{\operatorname{ord}_c F}$ and add one to the distinct real interior count. The order at the center is the index of the first nonzero Taylor coefficient.
+
+For a primitive nonprincipal Dirichlet character $\chi$ let $\Lambda(s,\chi)$ be its entire completion. If the root number is $e^{i\theta}$, the functional equation combined with Schwarz conjugation gives the real entire normalization
+\[
+ F_\chi(t)=e^{-i\theta/2}\Lambda(1/2+it,\chi),\qquad
+ F_\chi(\bar t)=\overline{F_\chi(t)}.
+\]
+Either choice of the phase square root gives the same logarithmic derivative. Thus Theorem~\ref{thm:main} applies to one individual complex character as well. These local formulas require no hypothesis on zero locations outside the disk. Under the critical-line conclusion proved in the cited Lean project \cite{lean}, all the nonreal-pair terms for these functions vanish. In particular, if exactly one endpoint of a fixed real interval is a zero of multiplicity $m$ and the other endpoint is regular, the sole eigenvalue on the boundary scale satisfies $\lambda_k/d\to m$. If both endpoints are zeros, this scale returns the unordered pair of their multiplicities. Corollary~\ref{cor:angle} assigns each multiplicity to its endpoint.
+
+\paragraph{Finite information.}
+A threshold count at a prescribed order is a finite calculation. The theorem proves eventual agreement for a fixed input. A finite stopping certificate requires independent analytic bounds, for example the constants in \eqref{eq:moment}, a lower bound in \eqref{eq:lower}, and bounds for boundary projections. There is a simple obstruction to a rule valid at a universal finite order. For any $M$ and $0<a<1$, the two functions $1$ and $1-(z/a)^{M+1}$ agree to order $M$ at $0$, yet their open-unit-disk counts differ. High derivatives can also be ill-conditioned in finite precision. The exact arithmetic example below separates the asymptotic counting statement from numerical conditioning.
+
+\section{An exact finite example}
+Set $c=0$, $R=1$, and take
+\[
+ f(z)=(1-2z)^2(1+4z^2)(1-z)^3(1+z^2)^2(1-z/2).
+\]
+The interior zeros are $1/2$ (double) and $\pm i/2$ (simple). The boundary zeros are $1$ (triple) and $\pm i$ (double); the zero at $2$ is exterior.
+Table~\ref{tab:fixture} reports the pair $(P_k(t),N_k(t))$ at each threshold. At $k=1024$, subtracting the $5d/2$ column from the $3d/2$ column gives $(1,1)$, detecting the double conjugate pair. Subtracting the $7d/2$ column from the $5d/2$ column gives $(1,0)$, detecting the triple real zero.
+\begin{table}[ht]
+\centering
+\caption{Threshold counts from exact rational arithmetic.}\label{tab:fixture}
+\begin{tabular}{rrrrrrr}
+\toprule
+$k$&$d$&$k$&$d/2$&$3d/2$&$5d/2$&$7d/2$\\
+\midrule
+16&4&$(2,1)$&$(3,1)$&$(2,1)$&$(2,1)$&$(2,1)$\\
+64&8&$(2,1)$&$(4,2)$&$(3,1)$&$(2,1)$&$(2,1)$\\
+256&16&$(2,1)$&$(4,2)$&$(4,1)$&$(2,1)$&$(2,1)$\\
+1024&32&$(2,1)$&$(4,2)$&$(4,2)$&$(3,1)$&$(2,1)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The accompanying Python script expands $f$, computes the $b_n$ by formal division, and finds shifted inertia by rational congruence elimination. For large dimensions it uses the square-free part of the input polynomial to compress this exact calculation. In detail, if the recurrence matrix $W$ extends the first $p$ samples of each column by the linear recurrence for the $p$ distinct reciprocal nodes, then $H_k=W H_k^{[p]}W\tr$, where $H_k^{[p]}$ is the leading $p$-by-$p$ block. With $G=W\tr W$, the restriction of $H_k$ to the column space of $W$ is orthogonally equivalent to $G^{1/2} H_k^{[p]}G^{1/2}$. Congruence after subtracting $tI$ then reduces the positive threshold count to the positive inertia of $H_k^{[p]}-tG^{-1}$. The negative count uses $H_k^{[p]}+tG^{-1}$. The script checks the compression against the full matrix at $k=64$.
+
+\paragraph{A boundary example with equal multiplicities.}
+For $f(z)=[(1-z)(1+z)(1+z^2)(1-z+z^2)]^3$, the four orbits have the same $m=3$ and real parts $-1,0,1/2,1$. If $d$ is divisible by $12$, distinct reciprocal columns are exactly orthogonal. The four positive eigenvalues of the modified matrix, divided by $3d$, are exactly
+\[
+ 1-q_d,\quad \sqrt{1+q_d^2},\quad \sqrt{1+q_d+q_d^2},\quad 1+q_d.
+\]
+All four eigenvalues of the unmodified positive boundary spectrum are $3d$. The script checks the separate angular bands at $d=12^4$ by exact rational inertia and uses the twelve-periodic coefficient sequence to avoid constructing the full matrix.
+
+\paragraph{A numerical illustration for $\Xi$.}
+The accompanying \texttt{xi\_example.py} uses Cauchy quadrature on $|t|=10$ to compute Taylor data at $c=0$, with no zero ordinates supplied. At each of $k=16,25,36,49$, the unmodified interior counts $(P_k(k),N_k(k))$ for radii $R=12,18,24$ were respectively $(0,0),(2,0),(4,0)$. The check uses 75 decimal digits and compares 256- and 384-node grids. This agreement illustrates the formulas; it does not supply error bounds for a certified zero count.
+
+\section{Relation to earlier methods}
+Kytmanov and Khodos \cite[Secs.~3--4]{kk} express reciprocal power sums through Taylor data and use Hankel matrices for global rank and real-zero criteria. Deng, Yang and L\"u \cite[Thm.~3.4]{dyl} obtain the Hermite inertia of an enclosed finite set for $\Xi$ from moments integrated along the contour, and analyze changes as the contour moves across zeros. Their finite-set inertia and the Vandermonde argument underpin the interior count here. The additional assertions in Theorem~\ref{thm:main} concern a fixed disk observed only from its center, two prescribed spectral cutoffs, and simultaneous recovery of multiplicity bands for zeros lying exactly on that disk's boundary. Corollary~\ref{cor:angle} recovers the boundary coordinates themselves from a vanishing adjacent-coefficient perturbation.
+
+Li's criterion tests positivity of a sequence of global coefficients \cite{li}. A standard Ritz approximation to reciprocal zeros takes generalized eigenvalues of a pair of adjacent moment matrices for a positive measure. Our test uses ordinary signed eigenvalues of one high-shift matrix, allows complex zeros from the outset, and yields integer multiplicities from the linear boundary scale. We have not established bibliographic priority for the exact two-scale statement.
+
+\paragraph{Further question.}
+For $\Xi$ or $F_\chi$, can explicit derivative and zero-separation estimates bound the first working order for a disk specified by rational center and radius? The proof isolates two conditioning parameters relevant to such a bound: the smallest singular value of an interior Vandermonde matrix, and the minimum angular separation among boundary nodes.
+
+\begin{thebibliography}{9}\small
+\bibitem{kk} A.~M. Kytmanov and O.~V. Khodos, On localization of zeros of an entire function of finite order of growth, \emph{Complex Anal. Oper. Theory} \textbf{11} (2017), 393--416. \href{https://doi.org/10.1007/s11785-016-0606-8}{doi:10.1007/s11785-016-0606-8}.
+\bibitem{dyl} Z. Deng, X. Yang and H. L\"u, Contour Hankel dynamics and indicator fields for the Riemann $\Xi$-function, preprint (2026). \href{https://arxiv.org/abs/2608.11520}{arXiv:2608.11520}.
+\bibitem{li} X.-J. Li, The positivity of a sequence of numbers and the Riemann hypothesis, \emph{J. Number Theory} \textbf{65} (1997), 325--333. \href{https://doi.org/10.1006/jnth.1997.2137}{doi:10.1006/jnth.1997.2137}.
+\bibitem{lean} L.~Sernau and contributors, GRH for Dirichlet $L$-functions, in Lean~4. \url{https://github.com/lsernau/grh-lean}.
+\end{thebibliography}
+\end{document}

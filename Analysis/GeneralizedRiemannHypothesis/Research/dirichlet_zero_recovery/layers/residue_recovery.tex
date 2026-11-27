@@ -1,0 +1,318 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in,top=.88in,bottom=.9in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,microtype,fancyhdr,xcolor,hyperref}
+\definecolor{ink}{HTML}{203D56}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,pdftitle={Recovering prime weights from damaged residue data}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\textsc{Dirichlet zero multiplicities}}\fancyhead[R]{\small\textsc{Residue recovery}}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Res}{\operatorname*{Res}}
+\setlength{\emergencystretch}{2em}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Recovering prime weights from damaged residue data\par}
+\vspace{5pt}
+{\large Distinct zeros, bounded multiplicities and stable inversion}\par
+\vspace{5pt}
+26 November 2026
+\end{center}
+\begin{abstract}
+Let $f$ assign a complex weight to each reduced residue class modulo $q$.
+On the line $\Re s=1/(2m)$, the derivative of its prime Dirichlet series encodes the restriction of $f$ to the $m$-th powers when $m$ is squarefree.
+We prove that a positive fraction of the observations in every sufficiently high dyadic block can be arbitrarily corrupted while this restriction remains recoverable. Bounded errors at the other observations give bounded reconstruction error, uniformly in height.
+The arithmetic input is a density theorem: every nonzero complex combination of Dirichlet zero multiplicities has size comparable to its coefficient norm at $\gg_q T\log T$ distinct ordinates in $(T,2T)$ of bounded total multiplicity. A single integer matrix suffices for recovery. Each of its rows recurs at a positive fraction of all candidate ordinates.
+\end{abstract}
+
+\section{What the observations measure}
+Put $G=(\Z/q\Z)^\times$ for a fixed positive integer $q$, and write $d=|G|$. For a function $f:G\to\C$ define
+\begin{equation}\label{eq:prime}
+ P_f(s)=\sum_{p\nmid q}f(p\bmod q)p^{-s},
+ \qquad \Re s>1,
+\end{equation}
+where $p$ runs over primes. The observation at a point is the residue of $P_f'$ there, with value zero if the singularity is removable. We assume that observation positions can be matched to the distinct zero ordinates of the known Dirichlet family for $q$, and that its multiplicities at these positions are given. This calibration is independent of $f$.
+
+For $m\ge1$ write $G^m=\{a^m:a\in G\}$, $g(a)=f(a^m)$, and
+\[
+ \widehat g(\psi)=d^{-1}\sum_{a\in G}g(a)\overline{\psi(a)},\qquad
+ g(a)=\sum_{\psi\in\widehat G}\widehat g(\psi)\psi(a).
+\]
+Let $\nu_\psi(\gamma)$ be the order of vanishing of the primitive $L$-function belonging to the inducer of $\psi$ at $1/2+i\gamma$. A nonzero value has order zero. The principal character contributes the Riemann zeta function. Define
+\[
+ \mathcal Z_T=\{\gamma:T<\gamma<2T,\quad \nu(\gamma)\ne0\},
+ \qquad \nu(\gamma)=(\nu_\psi(\gamma))_{\psi\in\widehat G}.
+\]
+Each height is listed once, even if several functions vanish there.
+Write $v\cdot b=\sum_j v_j b_j$ for the bilinear pairing.
+The ordinate on the $m$-th line is $\gamma/m$.
+
+\begin{proposition}[Residues on a power line]\label{prop:layer}
+The derivative $P_f'$ extends meromorphically to $\Re s>0$.
+At a nonreal point $s_0=(1/2+i\gamma)/m$ its residue is
+\begin{equation}\label{eq:res}
+ R_m(\gamma)=\frac{\mu(m)}{m}\,\nu(\gamma)\cdot\widehat g .
+\end{equation}
+All its nonreal poles in this half-plane have this form and are simple as poles of the derivative.
+\end{proposition}
+
+\begin{proof}
+Expand $f$ in characters and expand each Euler product in its domain of absolute convergence. M\"obius inversion gives
+\[
+ P_f(s)=\sum_{k\ge1}\frac{\mu(k)}k
+       \sum_{\chi\in\widehat G}\widehat f(\chi)\log L(ks,\chi^k).
+\]
+The character $\chi^k$ is taken modulo $q$, so its Euler product omits all $p\mid q$. For each $p\nmid q$ the coefficient of $p^{-rs}$ is $f(p^r)r^{-1}\sum_{k\mid r}\mu(k)$, which proves the identity and fixes its normalization. Differentiation cancels the factor $1/k$. On $\Re s\ge\delta>0$ the differentiated tail converges normally, since for $k\delta\ge3$ the absolute Dirichlet series for $L'/L$ is bounded by $2^{2-k\delta}\sum_{n\ge2}\log(n)/n^2$. The finite initial sum is meromorphic.
+
+Euler factors removed on inducing a character have zeros on $\Re s=0$. The principal pole and a possible central zero contribute only on the real axis. By Dirichlet GRH and nonvanishing at $\Re s=1$ away from the pole, a nonreal singularity in the $k$-th term can occur only on $\Re s=1/(2k)$. Thus only $k=m$ contributes at $s_0$. The residue of $(L'/L)(ms,\chi^m)$ is the zero multiplicity divided by $m$. Grouping $\chi$ with a common $m$-th power gives the coefficients $\widehat g(\psi)$ by Fourier inversion.
+\end{proof}
+
+For nonsquarefree $m$ all nonreal observations on this line vanish. For squarefree $m$ put
+\begin{equation}\label{eq:X}
+ X_{m,f}(\gamma)=\frac{m}{\mu(m)}R_m(\gamma)
+       =\nu(\gamma)\cdot b,\qquad b=\widehat g .
+\end{equation}
+Hence only $f|_{G^m}$ can enter. The number of ways to measure $b$ independently will determine how many erroneous observations the inverse can tolerate.
+
+\section{A positive proportion of distinct pole ordinates}
+\label{sec:positive-proportion}
+
+Let $\mathcal Z$ be the union of all real ordinates of nontrivial zeros of the primitive inducing functions, with each ordinate listed once.
+
+\begin{theorem}\label{thm:distinct-ordinates}
+Under Dirichlet GRH there are constants \(c_q>0\) and \(T_q\) such that
+for every \(T\ge T_q\) and every nonzero
+\(b=(b_\psi)_{\psi\in\widehat G}\in\mathbb C^{\widehat G}\),
+\[
+ c_q T\log T\ \le\ \#\left\{\gamma\in\mathcal Z:\ T<\gamma<2T,
+      \sum_{\psi\in\widehat G}b_\psi\nu_\psi(\gamma)\ne0\right\}
+ \ \ll_q T\log T .
+\]
+The lower bound counts distinct locations, including a shared zero
+whenever its weighted multiplicities have nonzero sum.
+\end{theorem}
+
+\begin{proof}
+Use the joint short-interval limit theorem of Bombieri and Perelli
+\cite[Theorem~2, pp.~274--275]{BP}. We check its hypotheses for this
+family. Distinct characters modulo \(q\) have distinct primitive
+inducers. Their Euler factors have degree one and coefficients at
+primes of absolute value at most one. Their primitive completions have
+the usual functional equation and finite order, with the only possible
+pole of the uncompleted function at \(1\). These facts give
+Hypothesis~B(I)--(III). For B(IV), character orthogonality and the
+prime number theorem with its fixed-modulus error term give by partial summation
+\[
+ \sum_{p\le x}\frac{\psi^*(p)\overline{\eta^*(p)}}p
+ =\mathbf1_{\psi=\eta}\log\log x+C_{\psi,\eta}
+   +O_q(1/\log x),
+\]
+where stars denote primitive inducers. The finitely many Euler factors
+at primes dividing \(q\) only change the constant for large \(x\).
+In Hypothesis~D the zero count to the right of any
+\(\sigma>1/2\) vanishes by GRH. At \(\sigma=1/2\) the required
+\(O_q(T\log T)\) bound follows from the Riemann--von Mangoldt formula.
+If the family has only one member, adjoin any distinct primitive
+Dirichlet character, apply the theorem at a common modulus and take the
+one-dimensional marginal.
+
+Write \(N_\psi(t)\) for the positive-ordinate zero count up to \(t\),
+with multiplicities, and \(S_\psi(t)=\pi^{-1}\arg L_\psi(1/2+it)\)
+with the usual horizontal continuation from the right. Take \(t\)
+uniformly distributed on \([T,2T]\). Allow any \(M=M(T)\to\infty\)
+with \(M\le\log T/\log\log T\), and set \(h=M/\log T\). Write
+\(\Delta_h F(t)=F(t+h)-F(t)\). The imaginary parts in Theorem~2
+of \cite{BP}, equivalently its formula~(15), imply
+\[
+  Y_T=\bigl(\Delta_h S_\psi(t)/\sqrt{\log M}\bigr)_{\psi\in\widehat G}
+   \ \Longrightarrow\ Y ,
+\]
+where \(Y\) is a centered real Gaussian vector with independent
+coordinates of positive variances. The degree-one zero-counting
+formula \cite[(1), p.~272]{BP} also yields
+\[
+  \Delta_hN_\psi(t)=\frac{M}{2\pi}
+        +\Delta_hS_\psi(t)+O_q(1+h).
+\]
+Indeed, the smooth part of the count is
+\(t\log t/(2\pi)+C_\psi t+O_q(1)\), and
+\(\log t=\log T+O(1)\) throughout this interval. Endpoint ordinates
+form a null set for the choice of \(t\).
+
+Suppose the uniform lower bound fails. On a sequence \(T\to\infty\)
+there are nonzero complex vectors \(b=b(T)\) whose displayed supports
+have sizes \(K=o(T\log T)\). Select a nonzero real or imaginary part
+of \(b\), and normalize it to a unit real vector \(d_T\). Its support
+on the multiplicity vectors is contained in the support counted by
+\(K\), since those multiplicities are real. Along a subsequence
+\(d_T\to d\) with \(\|d\|_2=1\). Choose
+\[
+ M=\min\left\{\frac{\log T}{\log\log T},
+                 \sqrt{\frac{T\log T}{1+K}}\right\}.
+\]
+Then \(M\to\infty\) and \(hK/T\to0\). Each supported ordinate
+rules out at most \(h\) units of possible starting points \(t\) for a
+window \((t,t+h]\). Discard also the rightmost \(h\) units of
+\([T,2T]\). Outside a set of probability at most
+\((K+1)h/T=o(1)\), GRH therefore gives
+\(\sum_\psi d_{T,\psi}\Delta_hN_\psi(t)=0\).
+On that event the zero-counting formula gives
+\[
+  d_T\cdot Y_T
+    =-\frac{M\sum_\psi d_{T,\psi}}{2\pi\sqrt{\log M}}
+      +O_q\!\left(\frac{1+h}{\sqrt{\log M}}\right).
+\]
+The error tends to zero. Yet \(d_T\cdot Y_T\) converges in law to
+the nondegenerate normal variable \(d\cdot Y\), by joint convergence
+and \(d_T\to d\). It cannot concentrate within a vanishing distance
+of deterministic centers. Tightness excludes unbounded centers along
+a subsequence, while a convergent subsequence of bounded centers
+would give a point mass as the limit. This contradiction proves the
+uniform lower bound. Summing the ordinary zero counts of the finite
+family gives the upper bound.
+\end{proof}
+
+For a squarefree $m$ with $f|_{G^m}\ne0$, insert the Fourier coefficients of
+\(g\mapsto f(g^m)\) for \(b\). The nonzero factor \(\mu(m)/m\) leaves
+the support unchanged. Thus the derivative has order \(T\log T\)
+distinct poles on this layer at heights between \(T/m\) and
+\(2T/m\), uniformly in the active layer and its nonzero weight.
+Bombieri and Perelli's Theorem~1 addresses a pair of functions and
+counts excess multiplicities. Here their joint limit theorem gives a distinct-location estimate for every complex linear combination. The same argument works independently of GRH for the vector obtained by summing multiplicities over all real parts at each height. Indeed, the increments of $N_\psi$ count precisely those projected rows, and the classical Dirichlet zero-density estimate gives Hypothesis D \cite[p.~273]{BP}. Dirichlet GRH identifies these rows with the residues in \eqref{eq:res}.
+
+
+\section{Repeated multiplicity vectors}
+Write $L_T=T\log T$. By the ordinary zero-counting formula, for $T$ sufficiently large there is a constant $C_q$ such that
+\begin{equation}\label{eq:budget}
+ \#\mathcal Z_T\ \le\ \sum_{\gamma\in\mathcal Z_T}\|\nu(\gamma)\|_1\ \le\ C_q L_T.
+\end{equation}
+For an integer row vector $v$, write $n_T(v)=\#\{\gamma\in\mathcal Z_T:\nu(\gamma)=v\}$.
+
+\begin{theorem}[Frequent independent multiplicity vectors]\label{thm:bases}
+For each fixed $q$ there are $\delta_q>0$ and $B_q<\infty$ such that every sufficiently large dyadic block contains $d$ linearly independent integer vectors $v_1,\dots,v_d$ satisfying
+\[
+ n_T(v_j)\ge\delta_q L_T,\qquad \|v_j\|_1\le B_q\quad (1\le j\le d).
+\]
+One can select the vectors using only the frequencies observed in that block. Neither the constants nor the unknown residue weights are needed to select them.
+\end{theorem}
+\begin{proof}
+Let $c=c_q$ be the lower bound from Theorem~\ref{thm:distinct-ordinates}. Choose an integer $B$ with $C_q/B<c/4$. By \eqref{eq:budget}, at most $cL_T/4$ ordinates have row sum greater than $B$. There are at most $K=(B+1)^d$ row types of sum at most $B$. Discard types among these having fewer than $\delta_q L_T$ occurrences, where $\delta_q=c/(4K)$. This discards at most $cL_T/4$ further ordinates. The remaining rows span $\C^d$: a nonzero vector annihilating them could have support only among the at most $cL_T/2$ discarded ordinates, contradicting Theorem~\ref{thm:distinct-ordinates}.
+
+For the stated selection rule, sort all observed types by decreasing frequency and retain a type exactly when it increases the rank of the previously retained rows. Stop at rank $d$. Since the types occurring at least $\delta_q L_T$ times already span, each selected row has this frequency. Moreover $n_T(v)\|v\|_1\le C_q L_T$, so the selected row sums are bounded by $B_q=\lceil C_q/\delta_q\rceil$. Ties may be broken in any order.
+\end{proof}
+
+Put $A=(v_j)_{j=1}^d$ and $D_q=d! B_q^{d-1}$. Since $\det A$ is a nonzero integer, the cofactor formula gives
+\begin{equation}\label{eq:inverse}
+ \|A^{-1}\|_{\infty\to\infty}\le D_q .
+\end{equation}
+Indeed, each cofactor has absolute value at most $(d-1)!B_q^{d-1}$. For $d=1$ the empty cofactor is one. The repeated rows give at least $\lfloor\delta_q L_T\rfloor$ disjoint copies of the same matrix, all attached to distinct ordinates.
+
+\begin{corollary}[A uniform lower bound on the signal]\label{cor:large}
+For every $b\in\C^d$, there are at least $\delta_q L_T$ distinct ordinates $\gamma\in\mathcal Z_T$ with $\|\nu(\gamma)\|_1\le B_q$ and
+\[
+ |\nu(\gamma)\cdot b|\ge D_q^{-1}\|b\|_\infty.
+\]
+On a squarefree line with $f|_{G^m}\ne0$, at every one of these locations for $b=\widehat g$,
+\begin{equation}\label{eq:size}
+ |R_m(\gamma)|\ge \frac{\|f|_{G^m}\|_\infty}{m d D_q}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Some entry of $Ab$ has magnitude at least $\|b\|_\infty/D_q$. Its row recurs at least $\delta_q L_T$ times. Fourier inversion gives $\|f|_{G^m}\|_\infty=\|g\|_\infty\le d\|\widehat g\|_\infty$; apply \eqref{eq:res}.
+\end{proof}
+
+A quadratic estimate follows even after erasures. For every $E\subseteq\mathcal Z_T$ with $|E|\le\delta_q L_T/2$ and every $b\in\C^d$,
+\begin{equation}\label{eq:frame}
+ c'_q L_T\|b\|_2^2\ \le\
+ \sum_{\substack{\gamma\in\mathcal Z_T\setminus E\\ \|\nu(\gamma)\|_1\le B_q}}
+ |\nu(\gamma)\cdot b|^2\ \le\ C'_q L_T\|b\|_2^2 .
+\end{equation}
+At least $\delta_qL_T/2$ of the rows in Corollary~\ref{cor:large} survive, and $\|b\|_\infty^2\ge\|b\|_2^2/d$. For the upper bound apply Cauchy--Schwarz and \eqref{eq:budget}.
+
+\subsection*{Both signs for a balanced comparison}
+There is a further consequence when the coefficients are real and sum to zero. For fixed $q$ with $d\ge2$, there exist $a_q,\tau_q>0$ and an integer $B'_q$ with the following property. For every sufficiently large $T$ and every real $b$ with $\sum_\psi b_\psi=0$ and $\|b\|_2=1$, at least $a_qL_T$ distinct ordinates satisfy
+\[
+ \|\nu(\gamma)\|_1\le B'_q,\qquad \nu(\gamma)\cdot b\ge\tau_q ,
+\]
+and at least $a_qL_T$ satisfy the opposite inequality $\nu(\gamma)\cdot b\le-\tau_q$ with the same multiplicity bound. For example, in each direction two distinct characters have $\gg_q T\log T$ distinct ordinates where one vanishes to higher order than the other.
+
+To prove this, first count only the locations where $\nu(\gamma)\cdot b>0$. If no uniform positive lower bound held, the contradiction argument of Theorem~\ref{thm:distinct-ordinates} would supply unit balanced vectors $b_T\to b$ and a choice of $M$ for which almost every moving interval avoids their positive support. On those intervals $b_T\cdot\Delta_hN\le0$. Because $\sum b_{T,\psi}=0$, the deterministic $M/(2\pi)$ drift disappears exactly. Consequently $b_T\cdot Y_T\le o(1)$ with probability tending to one. Its nondegenerate centered Gaussian limit has positive probability on $(1,\infty)$, a contradiction. Write $c_+L_T$ for the resulting uniform lower bound. Exclude rows with sum exceeding a fixed $B'_q>2C_q/c_+$ using \eqref{eq:budget}.
+
+A uniform margin follows by compactness. For each fixed balanced unit $b$, the finite set of integer types with sum at most $B'_q$ and with $v\cdot b>0$ has a strictly positive minimum projection. In a neighborhood of $b$ all these projections stay at least half that minimum. At least $c_+L_T/2$ locations have one of these types, for every sufficiently large $T$. Finitely many such neighborhoods cover the balanced unit sphere. Take the smallest of their margins, and apply the result also to $-b$. This sign conclusion permits the functions to share zeros.
+
+
+\section{Reconstruction with corrupted observations}
+Erasures have known positions and missing values. Corruptions may occur at unknown positions and may have arbitrary complex values. Both count against the same budget.
+
+\begin{theorem}[Stable recovery]\label{thm:decode}
+For each fixed $q$ there are constants $\alpha_q,K_q>0$ such that the following holds for every sufficiently large $T$, every squarefree $m$, and every $f:G\to\C$. Among the $\#\mathcal Z_T$ normalized residues \eqref{eq:X}, at most $\alpha_q\#\mathcal Z_T$ may be erased or arbitrarily corrupted. Suppose the error in each remaining observation has absolute value at most $\epsilon$. From these data and the calibrated multiplicities one can recover $f|_{G^m}$ with supremum error at most $K_q\epsilon$. Recovery is exact for $\epsilon=0$. The observations are independent of the values of $f$ outside $G^m$.
+\end{theorem}
+\begin{proof}
+Select the rows in Theorem~\ref{thm:bases} and fill erasures with arbitrary values. Put $\alpha_q=\delta_q/(4C_q)$. Even if all bad observations concentrate on one selected type, at least three quarters of the observations of that type are good. For each $v_j$, take the median of the real parts of its observations, and separately take the median of their imaginary parts. If the resulting estimate is $y_j$, then
+\[
+ |y_j-v_j\cdot b|\le\sqrt{2}\epsilon.
+\]
+Indeed, strictly more than half of the values of each real coordinate lie in the closed interval of radius $\epsilon$ about its correct value.
+
+Solve the single system $A b^{\rm rec}=y$. Equation~\eqref{eq:inverse} gives $\|b^{\rm rec}-b\|_\infty\le\sqrt{2}D_q\epsilon$. For $u\in G^m$ choose any $a_u$ with $a_u^m=u$ and output $\sum_\psi b^{\rm rec}_\psi\psi(a_u)$. Fourier inversion bounds its error by $K_q\epsilon$ with $K_q=d\sqrt2 D_q$. The final assertion follows from \eqref{eq:res}.
+\end{proof}
+
+Equivalently, one may solve separately on the disjoint copies of the matrix and then take coordinate medians. Each bad ordinate spoils at most one of those systems. The repeated-type algorithm takes medians first and uses only one matrix inversion.
+
+The theorem concerns errors in values at matched locations. A bound $\eta$ on raw residue errors gives $\epsilon=m\eta$. No numerical value for the admissible fraction or the starting height is asserted. The procedure itself can be run on any calibrated block: the observed frequencies, matrix inverse and a supplied error budget give an a posteriori guarantee whenever fewer than half of the observations of each selected type could be bad.
+
+\section{Examples}
+Take $q=13$. Its group of units is cyclic of order twelve. The power map determines which weights enter the residues. Theorem~\ref{thm:decode} determines what happens when the observations are damaged.
+\begin{center}
+\begin{tabular}{@{}cccl@{}}
+\toprule
+$m$ & $\Re s$ & Recoverable dimension & Recoverable residue classes\\
+\midrule
+1 & $1/2$ & 12 & all twelve classes\\
+2 & $1/4$ & 6 & $1,3,4,9,10,12$\\
+3 & $1/6$ & 4 & $1,5,8,12$\\
+4 & $1/8$ & 0 & none\\
+6 & $1/12$ & 2 & $1,12$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $m=6$, let two weights differ by one at class $12$ and agree at $1$. They may differ arbitrarily at the other ten classes. Their residues differ by at least $1/(72D_{13})$ in absolute value at $\gg_{13}T\log T$ distinct locations, by \eqref{eq:size}. If they agree at both $1$ and $12$, every nonreal residue on the line agrees.
+
+For a numerical illustration take $q=4$, $m=1$, $f(1)=2+3i$ and $f(3)=-1+i$. The two primitive functions are $\zeta$ and the Dirichlet beta function. A simple zero belonging only to the first carries the residue $(f(1)+f(3))/2$, and one belonging only to the second carries $(f(1)-f(3))/2$. We sampled five positive ordinates of each type between $40$ and $80$. We computed residues from the singular logarithmic derivatives by a symmetric probe, then altered two of the five pairs arbitrarily and allowed noise of size $10^{-6}$ on the others. Inverting each pair and taking coordinate medians across the five estimates gave
+\[
+ f(1)\simeq 2.0000003+3.0000005i,\qquad
+ f(3)\simeq-1.0000005+0.9999995i.
+\]
+Here $A$ is the two-dimensional identity, so the noise bound in the recovered weights is $2\sqrt2\,\epsilon$. The largest observed error was about $7.07\cdot10^{-7}$. The script locates sign changes of Hardy functions and checks cross-values and derivatives numerically. These are floating-point observations; the sample carries no certification of completeness or simplicity.
+
+The exact-arithmetic programs check the Fourier and M\"obius identities on all indicator weights modulo $13$, $15$ and $16$, and exercise the median procedures on synthetic nonnegative integer multiplicities. The positive-density assertion follows from the analysis in Section~\ref{sec:positive-proportion}.
+
+\section{Sources and further questions}
+The Lean endpoint we use is \texttt{LFunction\_eq\_zero\_re}, together with its right-half-plane nonvanishing companion. The readable development derives the zero theorem from a one-sided estimate on a smoothed sum of von Mangoldt weights twisted by a quadratic character. Its guide describes how bounds for short forms, spanning, and the height of integral forms yield the main inequality. Sutherland records independent checks of the five exported statements \cite{lean,replay}. The RH overview's account of prime-power inversion motivates \eqref{eq:prime} \cite{wiki}. Our arguments use the published zero-location theorem as an input.
+
+ProveIt's GRH collection includes a finite inverse problem for a signed zero list associated with a modulus and an auxiliary quadratic twist. A second note recovers zero multiplicities from sparsely sampled prime sums \cite{proveit}. The earlier working paper \emph{Reading arithmetic weights from poles of a prime series} \cite{previous} already identifies the recoverable subspace from intact data in short windows. We address the distinct-location density, magnitude of surviving observations, and tolerance of falsified data in dyadic blocks.
+
+M\"obius inversion for prime sums with characters appears in Mathar \cite{mathar}. Kaczorowski and Perelli studied independence of singularities, and Banks compared zero multisets in short intervals \cite{kp,Banks}. Our density argument adapts the contradiction in Section~3 of Bombieri and Perelli \cite{BP}. Its use of the full joint limit theorem treats varying complex hyperplanes, counts each location once, and produces a basis of bounded multiplicity vectors each occurring with positive frequency. A targeted literature comparison did not locate the resulting uniform recovery theorem. Historical priority remains unverified.
+
+Can an explicit admissible corruption fraction be computed already for $q=4$? Does positive-fraction recovery hold in every window of length $T^\theta$ for some fixed $\theta<1$? How much precision in the positions suffices when close but distinct ordinates may be merged by the observer?
+
+\begin{thebibliography}{9}\small
+\bibitem{lean} L. Sernau and collaborators, \emph{GRH for Dirichlet $L$-functions, in Lean 4}, commit \texttt{72fead1}.
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}{Theorem declarations} and
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/GUIDE.md}{reading guide}.
+\bibitem{replay} A. V. Sutherland, \href{https://math.mit.edu/~drew/shortgrh/}{Verification files for the shorter Lean proof of RH and GRH} (2026).
+\bibitem{proveit} V. Reshetnikov, \emph{ProveIt}, commit \texttt{1f20b04}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1f20b04e3f8d78f16d1a873547d90554e46e40bf/Analysis/GeneralizedRiemannHypothesis}{GRH collection},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1f20b04e3f8d78f16d1a873547d90554e46e40bf/Analysis/GeneralizedRiemannHypothesis/Research/grh-torsion-and-zero-data/recovery.tex}{signed-zero recovery}, and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1f20b04e3f8d78f16d1a873547d90554e46e40bf/Analysis/GeneralizedRiemannHypothesis/Research/grh-torsion-and-prime-sampling/prime-sampling.tex}{sparse samples}.
+\bibitem{wiki} Wikipedia contributors, \href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{Riemann hypothesis}, section on the explicit formula, consulted 26 November 2026.
+\bibitem{previous} \emph{Reading arithmetic weights from poles of a prime series}, earlier research note in \texttt{prime\_pole\_windows.zip}, 26 November 2026, Theorems 1 and 2.
+\bibitem{mathar} R. J. Mathar, \emph{Table of Dirichlet $L$-series and prime zeta modulo functions for small moduli}, Section 3. \href{https://arxiv.org/abs/1008.2547}{arXiv:1008.2547}.
+\bibitem{kp} J. Kaczorowski and A. Perelli, \emph{Functional independence of the singularities of a class of Dirichlet series}, Amer. J. Math. 120 (1998), 289--303. \href{https://doi.org/10.1353/ajm.1998.0012}{doi:10.1353/ajm.1998.0012}.
+\bibitem{Banks} W. D. Banks, \emph{Comparing zeros of distinct Dirichlet $L$-functions}, Publ. Math. Debrecen 106 (2025), 327--335. \href{https://arxiv.org/abs/2302.07073}{arXiv:2302.07073}.
+\bibitem{BP} E. Bombieri and A. Perelli, \emph{Distinct zeros of $L$-functions}, Acta Arith. 83 (1998), 271--281. \href{https://doi.org/10.4064/aa-83-3-271-281}{doi:10.4064/aa-83-3-271-281}.
+\end{thebibliography}
+\end{document}

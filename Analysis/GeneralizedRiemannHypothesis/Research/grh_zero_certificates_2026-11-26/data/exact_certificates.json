@@ -1,0 +1,815 @@
+{
+  "title": "Exact finite Hankel root-detection certificates",
+  "status": "All asserted exact identities and certificate checks passed.",
+  "scope": "Supporting computations; not a proof-assistant formalization.",
+  "versions": {
+    "python": "3.12.14",
+    "sympy": "1.14.0",
+    "mpmath": "1.3.0",
+    "eigenvalue_decimal_precision": 80
+  },
+  "theorem_normalization": {
+    "root_radius_upper_bound": "1",
+    "n": "degree counting multiplicity",
+    "b": "maximum absolute imaginary part",
+    "D": "max(0, -minimum eigenvalue of H)",
+    "lower": "2*(b/(4*floor(n/2)))**(2*n-2)",
+    "upper": "n**2*(n-1)*(7*n-11)*b**2/6",
+    "inverse": "b <= 4*floor(n/2)*(D/2)**(1/(2*n-2))"
+  },
+  "primary_example": {
+    "parameter_range": "0 < t <= 1",
+    "roots": [
+      "t",
+      "I*t/2",
+      "-I*t/2"
+    ],
+    "b": "t/2",
+    "hankel": [
+      [
+        "3",
+        "t",
+        "t**2/2"
+      ],
+      [
+        "t",
+        "t**2/2",
+        "t**3"
+      ],
+      [
+        "t**2/2",
+        "t**3",
+        "9*t**4/8"
+      ]
+    ],
+    "leading_2_by_2_first_pivot": "3",
+    "leading_2_by_2_determinant": "t**2/2",
+    "schur_complement": "-25*t**4/8",
+    "witness_coefficients_low_to_high": [
+      "3*t**2/2",
+      "-5*t",
+      "1"
+    ],
+    "witness_squared_norm": "9*t**4/4 + 25*t**2 + 1",
+    "quadratic_value": "-25*t**4/8",
+    "LDL_lower": [
+      [
+        "1",
+        "0",
+        "0"
+      ],
+      [
+        "t/3",
+        "1",
+        "0"
+      ],
+      [
+        "t**2/6",
+        "5*t",
+        "1"
+      ]
+    ],
+    "LDL_diagonal": [
+      "3",
+      "t**2/6",
+      "-25*t**4/8"
+    ],
+    "final_moment_correction": "25*t**4/8",
+    "repaired_hankel": [
+      [
+        "3",
+        "t",
+        "t**2/2"
+      ],
+      [
+        "t",
+        "t**2/2",
+        "t**3"
+      ],
+      [
+        "t**2/2",
+        "t**3",
+        "17*t**4/4"
+      ]
+    ],
+    "repaired_LDL_diagonal": [
+      "3",
+      "t**2/6",
+      "0"
+    ],
+    "exact_squeeze_for_D_over_t4": {
+      "lower": "(25/8)/(1 + 25*t**2 + 9*t**4/4)",
+      "upper": "25/8"
+    },
+    "limit_D_over_t4": "25/8",
+    "note": "The limit follows from the exact squeeze; numerical values are illustrative."
+  },
+  "cluster_witnesses": [
+    {
+      "name": "three_distinct_nodes",
+      "n_counting_multiplicity": 3,
+      "distinct_nodes": 3,
+      "roots": [
+        "1/2",
+        "I/4",
+        "-I/4"
+      ],
+      "b": "1/4",
+      "largest_gap": "1/4",
+      "gap_lower_endpoint": "0",
+      "gap_upper_endpoint": "1/4",
+      "ordered_nodes": [
+        "-I/4",
+        "1/2",
+        "I/4"
+      ],
+      "prescribed_values": [
+        "-I",
+        "0",
+        "I"
+      ],
+      "divided_differences": [
+        [
+          "-I",
+          "0",
+          "I"
+        ],
+        [
+          "4/5 + 8*I/5",
+          "4/5 - 8*I/5"
+        ],
+        [
+          "-32/5"
+        ]
+      ],
+      "polynomial": "-32*x**2/5 + 4*x - 2/5",
+      "coefficients_low_to_high_padded_to_n": [
+        "-2/5",
+        "4",
+        "-32/5"
+      ],
+      "coefficient_l1": "54/5",
+      "coefficient_bound_distinct": "256",
+      "coefficient_bound_n": "256",
+      "moments": [
+        "3",
+        "1/2",
+        "1/8",
+        "1/8",
+        "9/128"
+      ],
+      "hankel": [
+        [
+          "3",
+          "1/2",
+          "1/8"
+        ],
+        [
+          "1/2",
+          "1/8",
+          "1/8"
+        ],
+        [
+          "1/8",
+          "1/8",
+          "9/128"
+        ]
+      ],
+      "outer_root_count_with_multiplicity": 2,
+      "quadratic_value": "-2",
+      "squared_coefficient_l2": "1428/25",
+      "certified_D_lower_from_witness": "25/714",
+      "theorem_D_lower": "1/32768",
+      "rational_indefiniteness_certificate": {
+        "is_psd": false,
+        "reason": "negative Schur pivot",
+        "pivot_index": 2,
+        "pivot": "-25/128",
+        "steps": [
+          {
+            "index": 0,
+            "pivot": "3",
+            "action": "positive Schur pivot"
+          },
+          {
+            "index": 1,
+            "pivot": "1/24",
+            "action": "positive Schur pivot"
+          }
+        ],
+        "witness": [
+          "3/8",
+          "-5/2",
+          "1"
+        ],
+        "quadratic_value": "-25/128"
+      }
+    },
+    {
+      "name": "separated_imaginary_levels",
+      "n_counting_multiplicity": 5,
+      "distinct_nodes": 5,
+      "roots": [
+        "-1/3",
+        "1/5 + I/5",
+        "1/5 - I/5",
+        "-1/4 + 3*I/4",
+        "-1/4 - 3*I/4"
+      ],
+      "b": "3/4",
+      "largest_gap": "11/20",
+      "gap_lower_endpoint": "1/5",
+      "gap_upper_endpoint": "3/4",
+      "ordered_nodes": [
+        "-1/4 - 3*I/4",
+        "1/5 - I/5",
+        "-1/3",
+        "1/5 + I/5",
+        "-1/4 + 3*I/4"
+      ],
+      "prescribed_values": [
+        "-I",
+        "0",
+        "0",
+        "0",
+        "I"
+      ],
+      "divided_differences": [
+        [
+          "-I",
+          "0",
+          "0",
+          "0",
+          "I"
+        ],
+        [
+          "110/101 + 90*I/101",
+          "0",
+          "0",
+          "110/101 - 90*I/101"
+        ],
+        [
+          "-4200/4141 + 6480*I/4141",
+          "0",
+          "-4200/4141 - 6480*I/4141"
+        ],
+        [
+          "-853200/915161 - 1381200*I/915161",
+          "-853200/915161 + 1381200*I/915161"
+        ],
+        [
+          "1841600/915161"
+        ]
+      ],
+      "polynomial": "1841600*x**4/915161 - 1546720*x**3/2745483 - 72032*x**2/915161 + 210176*x/2745483 - 31424/2745483",
+      "coefficients_low_to_high_padded_to_n": [
+        "-31424/2745483",
+        "210176/2745483",
+        "-72032/915161",
+        "-1546720/2745483",
+        "1841600/915161"
+      ],
+      "coefficient_l1": "7529216/2745483",
+      "coefficient_bound_distinct": "40960000/14641",
+      "coefficient_bound_n": "1048576/81",
+      "moments": [
+        "5",
+        "-13/30",
+        "-8/9",
+        "40147/54000",
+        "353639/1620000",
+        "-60639457/97200000",
+        "8083/46656",
+        "52409659933/174960000000",
+        "-1349413377679/5248800000000"
+      ],
+      "hankel": [
+        [
+          "5",
+          "-13/30",
+          "-8/9",
+          "40147/54000",
+          "353639/1620000"
+        ],
+        [
+          "-13/30",
+          "-8/9",
+          "40147/54000",
+          "353639/1620000",
+          "-60639457/97200000"
+        ],
+        [
+          "-8/9",
+          "40147/54000",
+          "353639/1620000",
+          "-60639457/97200000",
+          "8083/46656"
+        ],
+        [
+          "40147/54000",
+          "353639/1620000",
+          "-60639457/97200000",
+          "8083/46656",
+          "52409659933/174960000000"
+        ],
+        [
+          "353639/1620000",
+          "-60639457/97200000",
+          "8083/46656",
+          "52409659933/174960000000",
+          "-1349413377679/5248800000000"
+        ]
+      ],
+      "outer_root_count_with_multiplicity": 2,
+      "quadratic_value": "-2",
+      "squared_coefficient_l2": "846349146112/193273766751",
+      "certified_D_lower_from_witness": "193273766751/423174573056",
+      "theorem_D_lower": "6561/549755813888",
+      "rational_indefiniteness_certificate": {
+        "is_psd": false,
+        "reason": "negative Schur pivot",
+        "pivot_index": 1,
+        "pivot": "-4169/4500",
+        "steps": [
+          {
+            "index": 0,
+            "pivot": "5",
+            "action": "positive Schur pivot"
+          }
+        ],
+        "witness": [
+          "13/150",
+          "1",
+          "0",
+          "0",
+          "0"
+        ],
+        "quadratic_value": "-4169/4500"
+      }
+    },
+    {
+      "name": "nearby_nodes_in_same_cluster",
+      "n_counting_multiplicity": 5,
+      "distinct_nodes": 5,
+      "roots": [
+        "0",
+        "I/2",
+        "-I/2",
+        "1/1000 + I/2",
+        "1/1000 - I/2"
+      ],
+      "b": "1/2",
+      "largest_gap": "1/2",
+      "gap_lower_endpoint": "0",
+      "gap_upper_endpoint": "1/2",
+      "ordered_nodes": [
+        "-I/2",
+        "1/1000 - I/2",
+        "0",
+        "I/2",
+        "1/1000 + I/2"
+      ],
+      "prescribed_values": [
+        "-I",
+        "-I",
+        "0",
+        "I",
+        "I"
+      ],
+      "divided_differences": [
+        [
+          "-I",
+          "-I",
+          "0",
+          "I",
+          "I"
+        ],
+        [
+          "0",
+          "500000/250001 - 1000*I/250001",
+          "2",
+          "0"
+        ],
+        [
+          "-2000/250001 - 1000000*I/250001",
+          "999998000/250001250001 - 3000000*I/250001250001",
+          "-2000/250001 + 1000000*I/250001"
+        ],
+        [
+          "999998000000/250001250001 - 3000000000*I/250001250001",
+          "4000000/1000001 + 3000000000*I/250001250001"
+        ],
+        [
+          "6000000000/250001250001"
+        ]
+      ],
+      "polynomial": "6000000000*x**4/250001250001 + 999992000000*x**3/250001250001 + 1500000000*x**2/250001250001 + 750000500002*x/250001250001",
+      "coefficients_low_to_high_padded_to_n": [
+        "0",
+        "750000500002/250001250001",
+        "1500000000/250001250001",
+        "999992000000/250001250001",
+        "6000000000/250001250001"
+      ],
+      "coefficient_l1": "1757492500002/250001250001",
+      "coefficient_bound_distinct": "4096",
+      "coefficient_bound_n": "65536",
+      "moments": [
+        "5",
+        "1/500",
+        "-499999/500000",
+        "-749999/500000000",
+        "124998500001/500000000000",
+        "312497500001/500000000000000",
+        "-31249062503749999/500000000000000000",
+        "-109372812505249999/500000000000000000000",
+        "7812062504374993000001/500000000000000000000000"
+      ],
+      "hankel": [
+        [
+          "5",
+          "1/500",
+          "-499999/500000",
+          "-749999/500000000",
+          "124998500001/500000000000"
+        ],
+        [
+          "1/500",
+          "-499999/500000",
+          "-749999/500000000",
+          "124998500001/500000000000",
+          "312497500001/500000000000000"
+        ],
+        [
+          "-499999/500000",
+          "-749999/500000000",
+          "124998500001/500000000000",
+          "312497500001/500000000000000",
+          "-31249062503749999/500000000000000000"
+        ],
+        [
+          "-749999/500000000",
+          "124998500001/500000000000",
+          "312497500001/500000000000000",
+          "-31249062503749999/500000000000000000",
+          "-109372812505249999/500000000000000000000"
+        ],
+        [
+          "124998500001/500000000000",
+          "312497500001/500000000000000",
+          "-31249062503749999/500000000000000000",
+          "-109372812505249999/500000000000000000000",
+          "7812062504374993000001/500000000000000000000000"
+        ]
+      ],
+      "outer_root_count_with_multiplicity": 4,
+      "quadratic_value": "-4",
+      "squared_coefficient_l2": "6250067000001000004/250001500002250001",
+      "certified_D_lower_from_witness": "250001500002250001/1562516750000250001",
+      "theorem_D_lower": "1/2147483648",
+      "rational_indefiniteness_certificate": {
+        "is_psd": false,
+        "reason": "negative Schur pivot",
+        "pivot_index": 1,
+        "pivot": "-2499997/2500000",
+        "steps": [
+          {
+            "index": 0,
+            "pivot": "5",
+            "action": "positive Schur pivot"
+          }
+        ],
+        "witness": [
+          "-1/2500",
+          "1",
+          "0",
+          "0",
+          "0"
+        ],
+        "quadratic_value": "-2499997/2500000"
+      }
+    },
+    {
+      "name": "repeated_roots_counted_with_multiplicity",
+      "n_counting_multiplicity": 6,
+      "distinct_nodes": 3,
+      "roots": [
+        "0",
+        "0",
+        "I/2",
+        "I/2",
+        "-I/2",
+        "-I/2"
+      ],
+      "b": "1/2",
+      "largest_gap": "1/2",
+      "gap_lower_endpoint": "0",
+      "gap_upper_endpoint": "1/2",
+      "ordered_nodes": [
+        "-I/2",
+        "0",
+        "I/2"
+      ],
+      "prescribed_values": [
+        "-I",
+        "0",
+        "I"
+      ],
+      "divided_differences": [
+        [
+          "-I",
+          "0",
+          "I"
+        ],
+        [
+          "2",
+          "2"
+        ],
+        [
+          "0"
+        ]
+      ],
+      "polynomial": "2*x",
+      "coefficients_low_to_high_padded_to_n": [
+        "0",
+        "2",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "coefficient_l1": "2",
+      "coefficient_bound_distinct": "64",
+      "coefficient_bound_n": "7962624",
+      "moments": [
+        "6",
+        "0",
+        "-1",
+        "0",
+        "1/4",
+        "0",
+        "-1/16",
+        "0",
+        "1/64",
+        "0",
+        "-1/256"
+      ],
+      "hankel": [
+        [
+          "6",
+          "0",
+          "-1",
+          "0",
+          "1/4",
+          "0"
+        ],
+        [
+          "0",
+          "-1",
+          "0",
+          "1/4",
+          "0",
+          "-1/16"
+        ],
+        [
+          "-1",
+          "0",
+          "1/4",
+          "0",
+          "-1/16",
+          "0"
+        ],
+        [
+          "0",
+          "1/4",
+          "0",
+          "-1/16",
+          "0",
+          "1/64"
+        ],
+        [
+          "1/4",
+          "0",
+          "-1/16",
+          "0",
+          "1/64",
+          "0"
+        ],
+        [
+          "0",
+          "-1/16",
+          "0",
+          "1/64",
+          "0",
+          "-1/256"
+        ]
+      ],
+      "outer_root_count_with_multiplicity": 4,
+      "quadratic_value": "-4",
+      "squared_coefficient_l2": "4",
+      "certified_D_lower_from_witness": "1",
+      "theorem_D_lower": "1/31701690482688",
+      "rational_indefiniteness_certificate": {
+        "is_psd": false,
+        "reason": "negative Schur pivot",
+        "pivot_index": 1,
+        "pivot": "-1",
+        "steps": [
+          {
+            "index": 0,
+            "pivot": "6",
+            "action": "positive Schur pivot"
+          }
+        ],
+        "witness": [
+          "0",
+          "1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "quadratic_value": "-1"
+      }
+    }
+  ],
+  "PSD_and_error_examples": {
+    "real_roots": [
+      "-1/2",
+      "0",
+      "1/2"
+    ],
+    "moments": [
+      "3",
+      "0",
+      "1/2",
+      "0",
+      "1/8"
+    ],
+    "hankel": [
+      [
+        "3",
+        "0",
+        "1/2"
+      ],
+      [
+        "0",
+        "1/2",
+        "0"
+      ],
+      [
+        "1/2",
+        "0",
+        "1/8"
+      ]
+    ],
+    "PSD_certificate": {
+      "is_psd": true,
+      "steps": [
+        {
+          "index": 0,
+          "pivot": "3",
+          "action": "positive Schur pivot"
+        },
+        {
+          "index": 1,
+          "pivot": "1/2",
+          "action": "positive Schur pivot"
+        },
+        {
+          "index": 2,
+          "pivot": "1/24",
+          "action": "positive Schur pivot"
+        }
+      ],
+      "congruence_transform": [
+        [
+          "1",
+          "0",
+          "-1/6"
+        ],
+        [
+          "0",
+          "1",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "1"
+        ]
+      ],
+      "diagonal": [
+        "3",
+        "1/2",
+        "1/24"
+      ],
+      "transform_determinant": "1"
+    },
+    "conditional_interval_example": {
+      "assumption": "Unknown true moments differ from these central moments by at most epsilon_k; true roots satisfy the theorem's hypotheses.",
+      "epsilon_by_moment": [
+        "0",
+        "1/1000000000000",
+        "1/500000000000",
+        "3/1000000000000",
+        "1/250000000000"
+      ],
+      "matrix_error_row_sums": [
+        "3/1000000000000",
+        "3/500000000000",
+        "9/1000000000000"
+      ],
+      "spectral_error_bound_eta": "9/1000000000000",
+      "certified_D_upper": "9/1000000000000",
+      "certified_b_upper_formula": "4*(eta/2)**(1/4)",
+      "certified_b_upper_approx": "0.00582590126048788104340464752989300974855907829413898252436755"
+    },
+    "zero_pivot_handling": {
+      "singular_PSD": {
+        "is_psd": true,
+        "steps": [
+          {
+            "index": 0,
+            "pivot": "3",
+            "action": "positive Schur pivot"
+          },
+          {
+            "index": 1,
+            "pivot": "0",
+            "action": "zero row"
+          },
+          {
+            "index": 2,
+            "pivot": "0",
+            "action": "zero row"
+          }
+        ],
+        "congruence_transform": [
+          [
+            "1",
+            "0",
+            "0"
+          ],
+          [
+            "0",
+            "1",
+            "0"
+          ],
+          [
+            "0",
+            "0",
+            "1"
+          ]
+        ],
+        "diagonal": [
+          "3",
+          "0",
+          "0"
+        ],
+        "transform_determinant": "1"
+      },
+      "zero_pivot_nonzero_row": {
+        "is_psd": false,
+        "reason": "zero diagonal with nonzero remaining row",
+        "pivot_index": 0,
+        "off_diagonal_index": 1,
+        "steps": [],
+        "witness": [
+          "1",
+          "-1"
+        ],
+        "quadratic_value": "-2"
+      },
+      "negative_Schur_pivot": {
+        "is_psd": false,
+        "reason": "negative Schur pivot",
+        "pivot_index": 1,
+        "pivot": "-3",
+        "steps": [
+          {
+            "index": 0,
+            "pivot": "1",
+            "action": "positive Schur pivot"
+          }
+        ],
+        "witness": [
+          "-2",
+          "1"
+        ],
+        "quadratic_value": "-3"
+      }
+    }
+  },
+  "upper_constant": {
+    "row_sum_times_n": "n**2*(n - 1)*(7*n - 11)/6",
+    "C_n": "n**2*(n - 1)*(7*n - 11)/6",
+    "C_3": "30",
+    "identity_checked_symbolically": true
+  },
+  "scaling_table": {
+    "file": "scaling_eigenvalues.csv",
+    "rows": 11,
+    "last_D_over_t4": "3.124925497296099448776089466643101931156039318146350193205"
+  }
+}

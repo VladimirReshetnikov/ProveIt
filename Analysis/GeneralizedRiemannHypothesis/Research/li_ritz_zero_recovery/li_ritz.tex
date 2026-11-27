@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\itshape Recovering zeta zeros from Li coefficients}\fancyhead[R]{\small Research note}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\xd}{x_j}
+\newcommand{\g}{\gamma}
+\newcommand{\rj}{r_{j,N}}
+\newcommand{\F}{\mathcal F}
+\DeclareMathOperator{\supp}{supp}
+\title{Recovering individual zeta zeros from Li coefficients\\[4pt]
+\large A sharp convergence law and finite certificates of simplicity}
+\author{}
+\date{November 26, 2026}
+\begin{document}
+\maketitle\vspace{-1.8em}
+\begin{abstract}
+The first $2N$ Li coefficients determine an $N$-dimensional symmetric moment pencil. We prove that its $j$th largest eigenvalue increases to $x_j=(\tfrac14+\gamma_j^2)^{-1}$, where $\gamma_j$ is the $j$th distinct positive zeta ordinate. At each fixed rank the logarithm of the error is $-4N\log N+4N\log\log N+O_j(N)$. The upper estimate comes from polynomial interpolation at the leading atoms. The matching lower estimate uses the bounded-frequency part of Montgomery's pair-correlation theorem to find sufficiently many separated tail atoms. Integer multiplicities give a second result. A finite strict inequality in the moments eventually succeeds exactly when the first $j$ ordinates are simple. When it succeeds, one additional moment supplies a two-sided enclosure. We also give a version centered at an arbitrary height for primitive Dirichlet characters.
+\end{abstract}
+
+\section{From the two sources to a finite inverse problem}
+The readable edition of \texttt{lsernau/grh-lean} at commit \texttt{72fead102f66} proves the Mathlib proposition \texttt{RiemannHypothesis}. Its other public statements cover the half-plane of nonvanishing and the critical-strip zeros of Dirichlet $L$-functions, including imprimitive characters. The reading guide describes how short integral forms, a spanning result obtained using a second moment, and a determinant lower bound yield a one-sided estimate for a smoothed prime sum. The reduction then excludes zeros to the right of the critical line. For our argument the imported information is the resulting location of the zeros. We inspected the statements, proof entry points, and guide. The upstream project documents the kernel and independent checker runs \cite{repo}.
+
+The linked survey discusses both Li's positivity criterion and the spacing of the ordinates \cite{wiki}. These suggest a different question. Given finitely many Li coefficients, how accurately does a moment pencil recover a particular zero? The distinction between a one-sided convergence estimate and a matching lower bound matters here. A matrix might in principle recover a low zero much faster than a polynomial approximation argument predicts. Theorem~\ref{th:rate} rules that out and identifies both leading terms of the logarithmic error.
+
+Let $0<\g_1<\g_2<\cdots$ be the distinct positive ordinates, and let $m_i$ be the multiplicity at $\tfrac12+i\g_i$. The zeta function has no real zero in $(0,1)$, as follows from the alternating eta series there. Set
+\begin{equation}
+ x_i=(\tfrac14+\g_i^2)^{-1},\qquad p_k=\sum_{i\ge1}m_i x_i^k\quad(k\ge1),\qquad
+ \mu=\sum_{i\ge1}m_i x_i\,\delta_{x_i}.
+ \label{eq:mu}
+\end{equation}
+The Riemann--von Mangoldt count gives $p_1<\infty$. In Li's normalization,
+$\log[\xi(1/(1-z))/\xi(1)]=\sum_{n\ge1}\lambda_n z^n/n$, where $\xi(s)=s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)/2$. Voros's inverse formula \cite[eq.~(11)]{voros} reads
+\begin{equation}
+ p_k=\sum_{n=1}^k(-1)^{n+1}\binom{2k}{k-n}\lambda_n .
+ \label{eq:voros}
+\end{equation}
+For an explanation, write $1-1/(1/2+i\g_i)=e^{i\theta_i}$. Then $2-2\cos\theta_i=x_i$, and the conjugate pair contributes $2m_i(1-\cos(n\theta_i))$ to $\lambda_n$. The finite binomial expansion of $(2-2\cos\theta)^k$ gives \eqref{eq:voros} after summation. For fixed $n$ pairing is absolutely convergent since $1-\cos(n\theta)\le n^2(1-\cos\theta)$.
+
+For $0\le a,b<N$ define $H_N=(p_{a+b+1})$, $K_N=(p_{a+b+2})$. Write $r_{1,N}>\cdots>r_{N,N}$ for the roots of $\det(K_N-rH_N)=0$ in decreasing order.
+\begin{theorem}[Sharp error at every fixed rank]\label{th:rate}
+For $N\ge j$, $0<\rj<x_j$, and $\rj$ increases to $x_j$. For every fixed $j$,
+\begin{equation}
+ \log(x_j-\rj)=-4N\log N+4N\log\log N+O_j(N).
+ \label{eq:main}
+\end{equation}
+The same expansion holds for the logarithm of
+$\sqrt{1/\rj-1/4}-\g_j$. The assertion allows arbitrary finite zero multiplicities.
+\end{theorem}
+Thus each pencil approximates several zeros simultaneously. Earlier zeros are not supplied as inputs. The error is for exact moments. The alternating sum \eqref{eq:voros} and monomial moment matrices can both amplify input roundoff.
+
+\section{The upper estimate}
+On the polynomials $V_N$ of degree $<N$, with the $L^2(\mu)$ inner product, consider the Rayleigh quotient
+\[
+ R(P)=\frac{\int t|P(t)|^2\dd\mu(t)}{\int|P(t)|^2\dd\mu(t)}.
+\]
+The pencil represents the compression of multiplication by $t$ to $V_N$. Both Gram forms are positive definite since a nonzero polynomial cannot vanish on an infinite set. The full multiplication operator is diagonal on the atoms with distinct eigenvalues $x_i$ and limit point zero. Min--max therefore gives $r_{j,N}\le x_j$ and $r_{j,N}\le r_{j,N+1}$. The monic orthogonal polynomial $Q_N$ of degree $N$ has these Ritz values for its roots. Indeed $(t-r)P(t)$ for a Ritz vector is orthogonal to $V_N$ and is a multiple of $Q_N$. This also gives a one-dimensional eigenspace for each $r$, hence simplicity by self-adjointness. The standard three-term recurrence has nonzero subdiagonal coefficients (the squared norms are positive), giving strict interlacing for consecutive $N$.
+
+Write $w_i=m_i x_i$. For $1\le i\le j$ let
+\[
+ P_{i,N}(t)=\prod_{\substack{k\le N\\ k\ne i}}\frac{t-x_k}{x_i-x_k}.
+\]
+For $0\le t\le x_{N+1}$, each numerator is bounded by $x_k$. For fixed $i$ each denominator is bounded below by a positive constant depending on $i$, since $x_i$ is isolated. The zero count gives $x_k\ll (\log(k+1)/k)^2$ even when distinct ordinates are indexed without repetition. Thus, uniformly for $i\le j$ on this tail,
+\begin{equation}
+ |P_{i,N}(t)|\le B_{j,N},\qquad
+ \log B_{j,N}\le -2N\log N+2N\log\log N+O_j(N).
+ \label{eq:B}
+\end{equation}
+Here $\sum_{k\le N}\log k= N\log N+O(N)$ and $\sum_{k\le N}\log\log(k+1)\le N\log\log(N+1)$.
+
+For $P=\sum_{i\le j} a_i P_{i,N}$ the squared norm on the first $N$ atoms is $\sum_{i\le j}w_i |a_i|^2$. Its squared norm on the tail is at most $p_1 j B_{j,N}^2\sum_{i\le j}|a_i|^2$. On the leading atoms with $P\ne0$ we have $t\ge x_j$. Hence $x_j-R(P)\le C_j B_{j,N}^2$. This $j$-dimensional trial space gives the upper bound for $x_j-r_{j,N}$ in \eqref{eq:main}.
+
+\section{Why the pencil cannot converge faster}
+The lower bound uses the existence of many distinct tail atoms at a controlled separation. Merely counting zeros with multiplicity would not give this at the needed scale.
+
+\begin{lemma}\label{lem:packing}
+For all large $T$, the interval $[T,2T]$ contains $\gg T\log T$ ordinates with consecutive selected ordinates at least $1/\log(2T)$ apart.
+\end{lemma}
+\begin{proof}
+Montgomery's proved Corollary~1, formula~(6) \cite{mont}, at height $U=2T$ and parameter $1/2$, bounds by $O(U\log U)$ the sum over ordered pairs $0<\gamma,\gamma'\le U$, with multiplicity, of
+\[
+ \left(\frac{\sin((\gamma-\gamma')\log U/4)}{(\gamma-\gamma')\log U/4}\right)^2
+ \frac{4}{4+(\gamma-\gamma')^2}.
+\]
+The summand is nonnegative and bounded below by a positive constant when $|\gamma-\gamma'|\le1/\log U$. Partition $[T,2T]$ into bins of that length, with a final shorter bin. If the occupancies are $n_b$, then $\sum_b n_b^2\ll T\log T$. The Riemann--von Mangoldt formula gives $\sum_b n_b\asymp T\log T$, so Cauchy--Schwarz gives $\gg T\log T$ occupied bins. Keep the more numerous parity of their original bin indices and one ordinate per retained bin. This proves the separation. The pair-correlation input here is a theorem with restricted Fourier support.
+\end{proof}
+
+Choose $T=D N/\log N$ with $D$ a sufficiently large fixed constant. Take $N$ of the ordinates in Lemma~\ref{lem:packing}. Their images $y_1,\ldots,y_N$ under $t\mapsto(1/4+t^2)^{-1}$, in monotone order, all lie below $x_{j+1}$ for large $N$ and satisfy
+\begin{equation}
+ y_i\gg (\log N/N)^2,\qquad |y_i-y_k|\ge c|i-k|\frac{(\log N)^2}{N^3}.
+ \label{eq:sep}
+\end{equation}
+This follows from the mean value theorem since the absolute derivative is comparable to $T^{-3}$ throughout $[T,2T]$. Denote the separation factor on the right, excluding $|i-k|$, by $d_N$.
+
+For any $P\in V_N$, interpolation at these $N$ nodes gives
+\begin{align}
+ |P(x_j)|&\le \max_i|P(y_i)|
+   \sum_{i=1}^N\frac{(x_j/d_N)^{N-1}}{(i-1)!(N-i)!}
+   = A_{j,N}\max_i|P(y_i)|,\label{eq:interp}\\
+ \log A_{j,N}&\le 2N\log N-2N\log\log N+O_j(N).\notag
+\end{align}
+The factorials are essential. Their sum contributes the factor $2^{N-1}/(N-1)!$. Every $y_i$ has mass at least $y_i$. Consequently the squared tail norm $S=\sum_{k>j}w_k|P(x_k)|^2$ satisfies $S\ge (\min_i y_i) A_{j,N}^{-2}|P(x_j)|^2$.
+
+Impose $P(x_1)=\cdots=P(x_{j-1})=0$. This subspace has codimension $j-1$ in $V_N$. On it the Rayleigh deficit satisfies
+\[
+ x_j-R(P)\ge (x_j-x_{j+1})\frac{S}{w_j|P(x_j)|^2+S}.
+\]
+When $P(x_j)=0$ the fraction is one. Otherwise the preceding interpolation inequality lower-bounds it by $c_N/(w_j+c_N)$ with $c_N=(\min_i y_i)A_{j,N}^{-2}$. By the codimension form of min--max, $r_{j,N}$ is at most the maximum Rayleigh quotient on this subspace. Equations \eqref{eq:sep}--\eqref{eq:interp} now give the lower bound in \eqref{eq:main}. At any finite $N$ the maximum on that subspace is strictly less than $x_j$, since $S>0$ for every nonzero polynomial and the unit sphere is compact. Finally $x\mapsto\sqrt{1/x-1/4}$ has finite nonzero derivative at $x_j$, proving the ordinate assertion. This completes Theorem~\ref{th:rate}.
+
+\section{Certifying a finite prefix}
+For fixed $N\ge j$, abbreviate $r_i=r_{i,N}$ and put
+\begin{equation}
+ b=b_{j,N}=\min_{1\le k\le 2N}
+ \left(\frac{p_k-\sum_{i<j}r_i^k}{2}\right)^{1/k}.
+ \label{eq:sep-test}
+\end{equation}
+Form $S_j(t)=Q_N(t)/(t-r_j)$ and $v_j=\int Q_N^2\dd\mu/\int S_j^2\dd\mu$. These are exact quantities computed from $p_1,\ldots,p_{2N+1}$. For example, $\int Q_N^2\dd\mu=\det H_{N+1}/\det H_N$ by successive Gram orthogonalization.
+\begin{theorem}[Finite simplicity and enclosure test]\label{th:cert}
+If $b<r_j$, then $m_1=\cdots=m_j=1$ and
+\begin{equation}
+ r_j\le x_j\le r_j+\frac{v_j}{r_j-b}.
+ \label{eq:cert}
+\end{equation}
+For a fixed $j$, a passing test exists if and only if the first $j$ distinct ordinates are simple. In that case it passes for all sufficiently large $N$. The logarithm of the width in \eqref{eq:cert} has the same two leading terms and the same $O_j(N)$ precision as \eqref{eq:main}.
+\end{theorem}
+\begin{proof}
+In $p_k$ the first $j-1$ distinct sites account for at least $\sum_{i<j}r_i^k$, and the next two sites contribute at least $2x_{j+1}^k$. Thus $b\ge x_{j+1}$. If any of the top $j$ multiplicities exceeds one, after taking one copy at each site $i<j$, the remainder contains at least two copies at sites $\ge x_j$. This gives $b\ge x_j$, which prevents the test from passing.
+
+Under the probability measure $S_j(t)^2\dd\mu/\int S_j^2\dd\mu$, the mean of $t$ is $r_j$ by orthogonality of $Q_N$ to $S_j$, and the variance is $v_j$. The support avoids $(b,x_j)$ when $b<r_j$. Therefore $(t-b)(t-x_j)\ge0$ on the support. Taking expectations gives $v_j\ge(r_j-b)(x_j-r_j)$, proving \eqref{eq:cert}.
+
+If the first $j$ sites are simple, $\sum_{i>j}m_i(x_i/x_j)^k\to0$ by dominated convergence. Choose a fixed $k$ so this sum is strictly below one. As $N\to\infty$, the $k$th candidate for $b$ tends to a value strictly below $x_j$. Hence $r_j-b$ stays bounded away from zero for all large $N$.
+
+The monic norm of $Q_N$ is minimal. Testing $\prod_{i\le N}(t-x_i)$, which vanishes at the first $N$ sites, gives
+\[
+ \int Q_N^2\dd\mu\le p_1\prod_{i\le N}x_i^2.
+\]
+Also $\int S_j^2\dd\mu\ge w_j\prod_{i\ne j,\,i\le N}|x_j-r_i|^2\ge w_j c_j^{2(N-1)}$ eventually. Indeed the first $j-1$ Ritz roots converge to points larger than $x_j$, and all remaining factors have $r_i\le x_{j+1}$ for $i>j$. These inequalities give the upper rate for the width. Its lower rate follows from $x_j-r_j$ and Theorem~\ref{th:rate}.
+\end{proof}
+
+The certificate exploits the lower bound of one unit on a zero's multiplicity. An arbitrary positive measure can hide an arbitrarily small additional atom above the proposed cutoff. This explains why an ordinary moment support bound alone does not supply the simplicity conclusion.
+
+\begin{corollary}[Size of the Li moment determinant]
+\[
+ \log\det H_N=-2N^2\log N+2N^2\log\log N+O(N^2).
+\]
+\end{corollary}
+\begin{proof}
+Let $h_n=\int Q_n^2\dd\mu$, with $Q_0=1$. The trial polynomial in the last proof bounds $h_n$ from above. For the reverse bound use $n+1$ separated tail nodes from \eqref{eq:sep}, with $N=n+1$. Comparison of the leading coefficients in the interpolation identity for the monic $Q_n$ gives
+\[
+ 1=\sum_{i=1}^{n+1}\frac{Q_n(y_i)}{\prod_{k\ne i}(y_i-y_k)},\qquad
+ \max_i|Q_n(y_i)|\ge \frac{n!\,d_{n+1}^n}{2^n}.
+\]
+Each of these atoms has mass at least $\min_i y_i$. Using \eqref{eq:sep} in the last inequality and combining with the upper bound yields $\log h_n=-4n\log n+4n\log\log n+O(n)$. Multiply the Gram norms, $\det H_N=\prod_{n=0}^{N-1}h_n$, and sum the logarithms.
+\end{proof}
+
+\section{A local version for Dirichlet zeros}
+Fix a primitive nonprincipal character $\chi$ of conductor $q$, a real target height $t_0$, and $a>1/2$. Write $\Lambda_\chi$ for the entire completed $L$-function and let $\gamma$ range over all its ordinates with multiplicity. Dirichlet GRH in the source repository places them on one line. Set $d=|\gamma-t_0|$ and group equal distances, assigning each distinct $x=(a^2+d^2)^{-1}$ the total multiplicity of its distance. This construction allows a zero exactly at $t_0$ and two zeros equidistant on opposite sides.
+\begin{corollary}\label{cor:dir}
+The moments of this local distance spectrum are determined by Taylor data in $\Re s>1$. The $j$th Ritz value recovers its $j$th largest atom with
+\[
+ \lim_{N\to\infty}\frac{\log(x_j-r_{j,N})}{N\log N}=-4 .
+\]
+The finite simplicity criterion and enclosure \eqref{eq:cert} apply, with simplicity interpreted as total multiplicity one at a distance. All assertions fix $q,t_0,a,j$ before taking the limit.
+\end{corollary}
+\begin{proof}
+Write $G(w)=\Lambda_\chi(1/2+it_0+w)\Lambda_{\bar\chi}(1/2-it_0+w)$. The functional equation, with the two root numbers multiplying to one, makes $G$ even. Define $E(z)=G(\sqrt{a^2-z})/G(a)$. It is an entire function of order at most $1/2$, since the completed factors have order one. Its zeros are $z=a^2+(\gamma-t_0)^2$. The two factors supply the two symmetric $w$-roots for each original zero. A root at $w=0$ has twice the original multiplicity in $G$ and recovers that original multiplicity in $E$. The genus-zero product and $E(0)=1$ give
+\[
+ p_k=-k[z^k]\log E(z).
+\]
+The local expansion uses the completed functions at $1/2+a\pm it_0$, where the $L$-series and its differentiated series converge absolutely.
+
+For the rate, the count of distances $\le T$ has main term $(T/\pi)\log(qT/(2\pi e))$ with error $O_{q,t_0}(\log T)$, by sandwiching between the centered counts at $T\pm|t_0|$ \cite{bennett}. This proves the same upper bound as \eqref{eq:B}. It also ensures a distance in each interval of fixed sufficiently large length $L$ above a threshold: the main term increment exceeds the two endpoint errors. Taking every other interval in a block of $2N$ such intervals starting at $N$ gives $N$ distinct distances of size $\asymp N$ with separation at least $L$. Their images have mass at least $c/N^2$ and separation at least $c/N^3$. Interpolation as in \eqref{eq:interp} now gives $\log A_{j,N}\le 2N\log N+O_j(N)$. The resulting lower bound $-4N\log N-O_j(N)$ and the preceding upper bound give the limit. The proof of the finite test is unchanged.
+\end{proof}
+
+\section{Numerical reconstruction}
+For the zeta example the symmetric entire function
+$E(z)=2\xi(\tfrac12+\sqrt{\tfrac14-z})$ has the genus-zero factorization
+$E(z)=\prod_i(1-x_i z)^{m_i}$. Its Taylor coefficients give the $p_k$ by Newton's identities. This implements exactly the same moment inputs as \eqref{eq:voros} without a subtraction of separately rounded Li coefficients. The numerical script computes the coefficients by circular quadrature and scales the variables to $200x_i$ before forming the matrices. The first three positive ordinates estimated from the upper side are shown below.
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$N$ & First ordinate & Second ordinate & Third ordinate\\
+\midrule
+2 & 14.6083519261 & 48.6691746740 & ---\\
+4 & 14.1350986523 & 21.5498355784 & 33.6389057177\\
+6 & 14.1347251826 & 21.0273179504 & 25.2913133826\\
+8 & 14.1347251417354 & 21.0220441166 & 25.0128271323\\
+\midrule
+Reference & 14.1347251417347 & 21.0220396388 & 25.0108575801\\
+\bottomrule
+\end{tabular}
+\end{center}
+The reference calculation calls \texttt{mpmath.zetazero} after constructing the pencil. The printed Ritz values are rounded to nearest. The two runs use different precision and quadrature sizes. The largest change among the comparisons reported by the script is about $4.1\times10^{-56}$.
+
+\subsection*{A checked calculation with 17 moments}
+A separate computation proves the following rational bounds. Each row certifies one distinct positive ordinate and multiplicity one. The column $k$ is the power used to separate that atom from the next.
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$j$ & Lower endpoint & Upper endpoint & $k$\\
+\midrule
+1 & 14.13472514173191 & 14.13472514173536 & 3\\
+2 & 21.02201044341552 & 21.02204411662634 & 5\\
+3 & 25.00089451502082 & 25.01282713231148 & 5\\
+4 & 26.62873848826057 & 30.86048319178881 & 7\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the input intervals the script expands $Z(u)=u\zeta(1+u)$ at zero using Euler--Maclaurin with cutoff $n=256$ and last Bernoulli index $2p=192$. On $|u|=1/2$, the periodic Bernoulli remainder has absolute value at most
+\[
+ E=\frac{4(2p+1)!\,n}{(6n)^{2p}}.
+\]
+Indeed, the Fourier bound for the normalized periodic Bernoulli polynomial is $2\zeta(2p)/(2\pi)^{2p}<4/6^{2p}$, the rising factorial $|(1+u)_{2p}|$ is at most $(2p+1)!$, and the remaining integral is at most $n^{1-2p}$. The error of coefficient $k$ is therefore at most $2^kE$. The code combines this expansion with those of $\log(1+u)$ and $\log\Gamma((1+u)/2)$. The latter uses integer zeta values enclosed by rational Euler--Maclaurin bounds. It then uses
+\[
+ \log(2\xi(1+u))=\sum_{k\ge1}(-1)^{k-1}\frac{p_k}{k}(u+u^2)^k.
+\]
+All 17 resulting intervals for $200^k p_k$ have width below $10^{-130}$.
+
+For the output proof, the separate checker reads rational trial polynomials suggested by a floating-point calculation. For each $j$ it verifies positive definiteness of the restricted form $\int(t-c_j)PQ\dd\mu$ on a $j$-dimensional trial space by strict diagonal dominance with positive diagonal, now in the scaled variable $t$. This proves that the $j$th scaled atom exceeds $c_j$. The power test uses these proved lower bounds in place of exact Ritz values. The last step bounds the variance about the true mean by the mean square deviation about a rational trial center. The same product inequality as in Theorem~\ref{th:cert} then gives the upper bound. Only the rational checks determine whether a witness passes. The archive contains the moment generator, the witnesses, the checker, and their outputs.
+
+\section{Relation to earlier work and further questions}
+Voros derived \eqref{eq:voros} and studied the associated secondary zeta functions \cite{voros}. Pavesi treats the same symmetric coordinate, Li transforms, and Hankel inertia \cite{pavesi}. Lasserre derives monotone support estimates from generalized eigenvalues of moment matrices \cite{lasserre}. Kawalec recovers individual ordinates by limits of recursively deflated power sums \cite{kawalec}. The contribution proposed here is the matching two-term logarithmic error law for a fixed individual Ritz value of the zeta measure and the finite simplicity test with an enclosure of matching order. A targeted literature search did not locate either statement in this form. Historical priority remains open to further comparison.
+
+Two questions concern the precision of the result. Does the $O_j(N)$ remainder in \eqref{eq:main}, divided by $N$, have a limit? How does the estimate change when $j$ grows with $N$? The present proof uses isolation of each of the first $j$ atoms. Uniform control would require quantitative information about their spacings as well as the distribution of the tail.
+
+\begin{thebibliography}{9}\small
+\bibitem{repo} L. Sernau et al., \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{\emph{GRH for Dirichlet $L$-functions, in Lean 4}}, readable edition. See \texttt{src/Statements.lean}, \texttt{src/Main.lean}, \texttt{GUIDE.md} and \texttt{README.md}. Source inspection, 26 November 2026.
+\bibitem{wiki} Wikipedia contributors, \href{https://en.wikipedia.org/wiki/Riemann_hypothesis}{\emph{Riemann hypothesis}}, sections on analytic criteria, pair correlation and the formal proof, accessed 26 November 2026.
+\bibitem{voros} A. Voros, \href{https://arxiv.org/abs/math/0506326}{Sharpenings of Li's criterion for the Riemann Hypothesis}, \emph{Math. Phys. Anal. Geom.} 9 (2006), 53--63.
+\bibitem{mont} H. L. Montgomery, \href{https://www-personal.umich.edu/~hlm/paircor1.pdf}{The pair correlation of zeros of the zeta function}, \emph{Proc. Sympos. Pure Math.} 24 (1973), 181--193, especially Corollary~1, equation~(6).
+\bibitem{bennett} M. A. Bennett, G. Martin, K. O'Bryant and A. Rechnitzer, \href{https://doi.org/10.1090/mcom/3599}{Counting zeros of Dirichlet $L$-functions}, \emph{Math. Comp.} 90 (2021), 1455--1482.
+\bibitem{pavesi} L. E. Pavesi, \href{https://doi.org/10.5281/zenodo.22944511}{The Klein orbit of the Riemann zeros and Dirichlet $L$-functions}, preprint, v2 (2026).
+\bibitem{lasserre} J. B. Lasserre, \href{https://arxiv.org/abs/1011.0138}{Bounding the support of a measure from its marginal moments}, \emph{Proc. Amer. Math. Soc.} 139 (2011), 3375--3382.
+\bibitem{kawalec} A. Kawalec, \href{https://arxiv.org/abs/2012.06581}{Analytical recurrence formulas for non-trivial zeros of the Riemann zeta function}, arXiv:2012.06581, v5 (2022).
+\end{thebibliography}
+\end{document}
