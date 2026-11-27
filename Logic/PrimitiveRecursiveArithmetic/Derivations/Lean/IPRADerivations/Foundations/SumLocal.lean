@@ -28,13 +28,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- A sum of vanishing terms vanishes. -/
 theorem sum_zero_of (f : PTm 2) {N x : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ inst2 f (var 0) (Syn.shift x) ≐ zero)) :
-    Γ ⊢[PRAAx] ap2 (sumF f) N x ≐ zero := by
-  have s : Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (N * zero) := by
-    refine sum_le_const f (.allI (.impI ?_))
-    rw [show Syn.shift (zero : PTm n) = zero by simp [Syn.shift]]
-    exact (monus_zero _).eqTrans (Prf.impE (h.allOpen.wk (ψ := lt (var 0) (Syn.shift N))) Prf.hyp0)
-  have h0 : Γ ⊢[PRAAx] le (N * zero) zero := by ipra_le 0
-  exact (monus_zero _).eqSymm.eqTrans (le_trans s h0)
+    Γ ⊢[PRAAx] ap2 (sumF f) N x ≐ zero :=
+  sum_zero_of_bounded f x N h
 
 /-- Support localization: `f` vanishing below `L` and on `[H, N)` gives `Σ_{c<N} f = Σ_{k<H−L} f(L + k)`. -/
 theorem sum_local (f : PTm 2) {L H N x : PTm n} (hLH : Γ ⊢[PRAAx] le L H) (hHN : Γ ⊢[PRAAx] le H N)

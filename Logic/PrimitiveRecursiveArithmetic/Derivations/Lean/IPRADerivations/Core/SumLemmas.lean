@@ -89,25 +89,8 @@ theorem sum_congr_bounded (f g : PTm 2) (x y N : PTm n)
       exact congrAdd Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)
   simpa [P] using atBound
 
-/-- Variables: `0 = M`, `1 = i`, `2 = x`. -/
-private abbrev termLeF (f : PTm 2) : Fm PTm 3 :=
-  lt (var 1) (var 0) ⟶ le (inst2 f (var 1) (var 2)) (ap2 (sumF f) (var 0) (var 2))
-
-private theorem term_le_sum₀ (f : PTm 2) : ([] : List (Fm PTm 3)) ⊢[PRAAx] termLeF f := by
-  ipra_ind (⟨lt_QF _ _, le_QF _ _⟩) [subst_le, subst_lt, subst_ap2, subst_inst2]
-  · exact .impI (lt_zero_absurd _ Prf.hyp0)
-  · refine .impI ?_
-    refine le_congr (.eqRefl _) (sum_succ' f (var 0) (var 2)).eqSymm ?_
-    refine .orE (lt_succ_cases Prf.hyp0) ?_ ?_
-    · exact le_trans (.impE hyp2 Prf.hyp0) (le_add_right _ _)
-    · exact le_congr (congrInst2 f Prf.hyp0.eqSymm (.eqRefl _)) (.eqRefl _) (le_add_left _ _)
-
 theorem term_le_sum (f : PTm 2) {i M x : PTm n} (h : Γ ⊢[PRAAx] lt i M) :
-    Γ ⊢[PRAAx] le (inst2 f i x) (ap2 (sumF f) M x) := by
-  have t := inst (Γ := Γ) (term_le_sum₀ f) (![M, i, x] : Fin 3 → PTm n)
-  simp only [Fm.subst_imp, subst_le, subst_lt, subst_ap2, subst_inst2, Syn.subst_var,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
-    Matrix.tail_cons, ConciseIPRA.PTm.subst_zero] at t
-  exact .impE t h
+    Γ ⊢[PRAAx] le (inst2 f i x) (ap2 (sumF f) M x) :=
+  sum_term_le f h
 
 end LeanProofs.IPRA
