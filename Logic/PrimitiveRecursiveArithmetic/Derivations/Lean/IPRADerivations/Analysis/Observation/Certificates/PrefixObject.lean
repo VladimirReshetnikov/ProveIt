@@ -43,14 +43,9 @@ theorem prefix_zero (raw : PTm 2) (x : PTm n) :
 theorem prefix_step (raw : PTm 2) (i x : PTm n) :
     Γ ⊢[PRAAx] ap2 (prefixCode raw) (succ i) x ≐
       larger (ap2 (prefixCode raw) i x) (inst2 raw i x) := by
-  have h := rec2_succ (Γ := Γ) zero (larger (var 1) (bodyStep raw)) i x
-  have e : Syn.subst ![i, ap2 (prefixCode raw) i x, x] (bodyStep raw) = inst2 raw i x := by
-    rw [bodyStep, Syn.subst_subst]
-    exact congrArg (fun σ => Syn.subst σ raw) (by funext j; fin_cases j <;> rfl)
-  change Γ ⊢[PRAAx] ap2 (prefixCode raw) (succ i) x ≐
-    Syn.subst ![i, ap2 (prefixCode raw) i x, x] (larger (var 1) (bodyStep raw)) at h
-  simpa only [larger, LeanProofs.IPRA.PTm.subst_add, LeanProofs.IPRA.PTm.subst_monus,
-    Syn.subst_var, e, Matrix.cons_val_one, Matrix.cons_val_zero] using h
+  simpa only [prefixCode, larger, inst2, LeanProofs.IPRA.PTm.subst_add, LeanProofs.IPRA.PTm.subst_monus,
+    Syn.subst_var, subst_bodyStep, Matrix.cons_val_one, Matrix.cons_val_zero]
+    using rec2_succ (Γ := Γ) zero (larger (var 1) (bodyStep raw)) i x
 
 theorem covers_latest (raw : PTm 2) (i x : PTm n) :
     Γ ⊢[PRAAx] le (inst2 raw i x) (ap2 (prefixCode raw) (succ i) x) :=

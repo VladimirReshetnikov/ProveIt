@@ -81,15 +81,9 @@ theorem mx_zero (body : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] mx body zero x ≐ ze
 
 theorem mx_succ (body : PTm 2) (y x : PTm n) :
     Γ ⊢[PRAAx] mx body (succ y) x ≐ maxT (mx body y x) (inst2 body y x) := by
-  have h := rec2_succ (Γ := Γ) zero (maxT (var 1) (bodyStep body)) y x
-  have e : Syn.subst ![y, ap2 (mxF body) y x, x] (maxT (var 1) (bodyStep body))
-      = maxT (ap2 (mxF body) y x) (inst2 body y x) := by
-    have hb : Syn.subst ![y, ap2 (mxF body) y x, x] (bodyStep body) = inst2 body y x := by
-      rw [bodyStep, Syn.subst_subst]
-      exact congrArg (fun σ => Syn.subst σ body) (by funext i; fin_cases i <;> rfl)
-    simp only [maxT, PTm.subst_add, PTm.subst_monus, hb]
-    rfl
-  exact e ▸ h
+  simpa only [mx, mxF, maxT, inst2, PTm.subst_add, PTm.subst_monus, subst_bodyStep, Syn.subst_var,
+    Matrix.cons_val_one, Matrix.cons_val_zero]
+    using rec2_succ (Γ := Γ) zero (maxT (var 1) (bodyStep body)) y x
 
 /-- Every term below `N` is at most the maximum. -/
 theorem le_mx (body : PTm 2) {i N x : PTm n} (h : Γ ⊢[PRAAx] lt i N) :

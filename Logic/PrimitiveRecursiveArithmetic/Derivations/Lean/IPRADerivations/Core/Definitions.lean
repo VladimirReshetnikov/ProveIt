@@ -138,6 +138,12 @@ theorem rec2_succ_app {k : ℕ} (base : PTm 1) (f : PR k) (args : Fin k → PTm 
 variable and the accumulator: `0 ↦ 0`, `1 ↦ 2`. -/
 def bodyStep (body : PTm 2) : PTm 3 := Syn.subst ![var 0, var 2] body
 
+/-- The summand or factor instantiated at a recursion step does not use the accumulator. -/
+theorem subst_bodyStep (body : PTm 2) (i acc x : PTm n) :
+    Syn.subst ![i, acc, x] (bodyStep body) = Syn.subst ![i, x] body := by
+  simp only [bodyStep, Syn.subst_subst, subst_vecCons, subst_vecEmpty, Syn.subst_var,
+    Matrix.cons_val_zero, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+
 /-- `S(y, x) = ∑_{i<y} body(i, x)`. -/
 def sumF (body : PTm 2) : PR 2 := rec2 zero (var 1 + bodyStep body)
 
@@ -151,12 +157,8 @@ theorem sum_zero (body : PTm 2) (x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF body) zero
 
 theorem sum_succ (body : PTm 2) (y x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF body) (succ y) x ≐ ap2 (sumF body) y x + Syn.subst ![y, x] body := by
-  have h := rec2_succ (Γ := Γ) zero (var 1 + bodyStep body) y x
-  have e : Syn.subst ![y, ap2 (sumF body) y x, x] (var 1 + bodyStep body)
-      = ap2 (sumF body) y x + Syn.subst ![y, x] body := by
-    rw [PTm.subst_add, bodyStep, Syn.subst_subst]
-    exact congrArg₂ (· + ·) rfl (congrArg (fun σ => Syn.subst σ body) (by funext i; fin_cases i <;> rfl))
-  exact e ▸ h
+  simpa only [sumF, PTm.subst_add, Syn.subst_var, Matrix.cons_val_one, Matrix.cons_val_zero, subst_bodyStep]
+    using rec2_succ (Γ := Γ) zero (var 1 + bodyStep body) y x
 
 theorem prod_zero (body : PTm 2) (x : PTm n) :
     Γ ⊢[PRAAx] ap2 (prodF body) zero x ≐ succ zero := by
@@ -166,12 +168,8 @@ theorem prod_zero (body : PTm 2) (x : PTm n) :
 
 theorem prod_succ (body : PTm 2) (y x : PTm n) :
     Γ ⊢[PRAAx] ap2 (prodF body) (succ y) x ≐ ap2 (prodF body) y x * Syn.subst ![y, x] body := by
-  have h := rec2_succ (Γ := Γ) (succ zero) (var 1 * bodyStep body) y x
-  have e : Syn.subst ![y, ap2 (prodF body) y x, x] (var 1 * bodyStep body)
-      = ap2 (prodF body) y x * Syn.subst ![y, x] body := by
-    rw [PTm.subst_mul, bodyStep, Syn.subst_subst]
-    exact congrArg₂ (· * ·) rfl (congrArg (fun σ => Syn.subst σ body) (by funext i; fin_cases i <;> rfl))
-  exact e ▸ h
+  simpa only [prodF, PTm.subst_mul, Syn.subst_var, Matrix.cons_val_one, Matrix.cons_val_zero, subst_bodyStep]
+    using rec2_succ (Γ := Γ) (succ zero) (var 1 * bodyStep body) y x
 
 /-- `pow(y, x) = xʸ`. -/
 def powF : PR 2 := prodF (var 1)
