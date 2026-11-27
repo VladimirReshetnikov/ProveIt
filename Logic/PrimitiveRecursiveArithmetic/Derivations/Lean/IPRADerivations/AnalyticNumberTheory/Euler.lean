@@ -95,17 +95,13 @@ theorem cop_of_mul {a i : PTm n} (h : Γ ⊢[PRAAx] gcd (a * i) N ≐ one) : Γ 
   exact eq_one_of_dvd_one hd (dvd_congr (cop_comm hN h) (gcd_greatest' hd (Prf.andE₁ hdd) dai))
 
 /-- `rem (rem y N) N = rem y N`. -/
-theorem rem_rem (y : PTm n) : Γ ⊢[PRAAx] rem (rem y N) N ≐ rem y N :=
-  rem_eq_of_eq (N_pos hN) (k₁ := quo y N) (k₂ := zero) (by
-    refine withEq (rem_decomp hN y) fun e => ?_
-    ipra_lc -e)
+theorem rem_rem (y : PTm n) : Γ ⊢[PRAAx] rem (rem y N) N ≐ rem y N := by
+  have hPos := N_pos hN
+  exact Prf.andE₂ (Division.div_mod_of_lt hPos (Prf.andE₂ (div_mod_at (x := y) hPos)))
 
 /-- `rem j N = j` for `j < N`. -/
-theorem rem_small {j : PTm n} (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] rem j N ≐ j := by
-  have hp := N_pos hN
-  exact (congrAp2 remF (.eqRefl _) hp).eqTrans (Prf.andE₂ (div_mod_unique (q := zero)
-    ((by ipra_ring) : Γ ⊢[PRAAx] j ≐ succ (pred N) * zero + j)
-    (lt_congr (.eqRefl _) hp hj)))
+theorem rem_small {j : PTm n} (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] rem j N ≐ j :=
+  Prf.andE₂ (Division.div_mod_of_lt (N_pos hN) hj)
 
 theorem rem_lt (y : PTm n) : Γ ⊢[PRAAx] lt (rem y N) N := by
   have hp := N_pos hN

@@ -259,6 +259,12 @@ theorem div_mod_add_mul {x d c k : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c) :
   refine div_mod_unique_at hd ?_ (Prf.andE₂ div)
   exact (congrAdd (Prf.andE₁ div) (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
 
+/-- A dividend below a positive divisor has quotient zero and is its own remainder. -/
+theorem div_mod_of_lt {x d c : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
+    (h : Γ ⊢[PRAAx] lt x d) : Γ ⊢[PRAAx] (quo x d ≐ zero) ⋏ (rem x d ≐ x) :=
+  div_mod_unique_at hd
+    ((zero_add x).eqSymm.eqTrans (congrAdd (mul_zero d).eqSymm (.eqRefl x))) h
+
 end Division
 
 end LeanProofs.IPRA

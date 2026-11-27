@@ -46,11 +46,8 @@ theorem pos_of_eq {t e : PTm n} (h : Γ ⊢[PRAAx] t ≐ succ e) : Γ ⊢[PRAAx]
 
 /-- `k mod a = k` for `k < a`. -/
 theorem rem_small {k a : PTm n} (h : Γ ⊢[PRAAx] lt k a) : Γ ⊢[PRAAx] rem k a ≐ k := by
-  have e := natEq (eq_add_of_le h)
-  have ha : Γ ⊢[PRAAx] a ≐ succ (pred a) :=
-    pos_of_eq (e := k + monus a (succ k)) (by ipra_lc e)
-  refine (congrAp2 remF (.eqRefl _) ha).eqTrans (Prf.andE₂ (div_mod_unique (q := zero) ?_ (lt_congr (.eqRefl _) ha h)))
-  ipra_ring
+  have ha := Common.pos_of_one_le (le_trans (Common.one_le_succ k) h)
+  exact Prf.andE₂ (Division.div_mod_of_lt ha h)
 
 /-- `⌊⌊m/d⌋/e⌋ = ⌊m/(de)⌋` for `d, e ≥ 1`. -/
 theorem quo_quo {m d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : Γ ⊢[PRAAx] e ≐ succ (pred e)) :

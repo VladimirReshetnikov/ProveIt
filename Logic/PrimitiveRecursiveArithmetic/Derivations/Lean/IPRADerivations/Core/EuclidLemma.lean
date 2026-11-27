@@ -69,8 +69,7 @@ theorem bezout_at (a b : PTm n) :
 
 /-- `a mod (a + 1) = a`. -/
 theorem rem_self_succ (a : PTm n) : Γ ⊢[PRAAx] rem a (succ a) ≐ a :=
-  Prf.andE₂ (div_mod_unique (q := zero) (r := a)
-    ((zero_add _).eqSymm.eqTrans (congrAdd (mul_zero _).eqSymm (.eqRefl _))) (le_refl _))
+  Prf.andE₂ (Division.div_mod_of_lt (.eqRefl (succ a)) (le_refl _))
 
 /-- `gcd(a, b) = 0 → a = 0`. -/
 theorem gcd_eq_zero {a b : PTm n} (h : Γ ⊢[PRAAx] gcd a b ≐ zero) : Γ ⊢[PRAAx] a ≐ zero := by

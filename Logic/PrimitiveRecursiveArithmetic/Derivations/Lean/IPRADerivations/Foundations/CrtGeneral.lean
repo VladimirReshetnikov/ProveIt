@@ -31,7 +31,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcm_pos)
 open LeanProofs.IPRA.Foundations.CrtCoprime (mS m_pos fB rem_down left_zero right_zero)
 open LeanProofs.IPRA.Foundations.CrtLcm (Lc Lc_zero Lc_succ Lc_pos m_dvd_Lc Lc_cong lcm_mono dist_dvd
   dvd_lcm_left dvd_lcm_right lcm_dvd_of)
-open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -273,8 +272,8 @@ theorem crt_unique {x x' K y : PTm n} (hx : Γ ⊢[PRAAx] CrtCoprime.V mB aB x K
     have h2 : Γ.map Fm.shift ⊢[PRAAx] CrtCoprime.V mB aB (Syn.shift x') (Syn.shift K) (Syn.shift y) ≐ zero := by
       simpa [Fm.shift, Syn.shift] using hx'.shift
     exact (sol_at mB aB h1.wk Prf.hyp0).eqTrans (sol_at mB aB h2.wk Prf.hyp0).eqSymm
-  have r1 := Prf.andE₂ (dmu (z := x) (q := zero) (r := x) Lp (by ipra_ring) lx)
-  have r2 := Prf.andE₂ (dmu (z := x') (q := zero) (r := x') Lp (by ipra_ring) lx')
+  have r1 := Prf.andE₂ (Division.div_mod_of_lt Lp lx)
+  have r2 := Prf.andE₂ (Division.div_mod_of_lt Lp lx')
   exact r1.eqSymm.eqTrans (hc.eqTrans r2)
 
 end System

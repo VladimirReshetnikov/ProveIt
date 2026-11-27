@@ -82,10 +82,8 @@ theorem count_positive (N W : PTm n) (h : Γ ⊢[PRAAx] positive N W) :
 
 /-- Division below a positive divisor returns the original remainder. -/
 theorem rem_small (i P : PTm n) (hP : Γ ⊢[PRAAx] le one P)
-    (hi : Γ ⊢[PRAAx] lt i P) : Γ ⊢[PRAAx] rem i P ≐ i := by
-  have split := natural_divmod i P hP
-  exact Prf.andE₂ (euclid_unique ((Prf.andE₁ split).eqSymm.eqTrans
-    (by ipra_ring : Γ ⊢[PRAAx] i ≐ P*zero+i)) (Prf.andE₂ split) hi)
+    (hi : Γ ⊢[PRAAx] lt i P) : Γ ⊢[PRAAx] rem i P ≐ i :=
+  Prf.andE₂ (Division.div_mod_of_lt (Common.pos_of_one_le hP) hi)
 
 /-- Exact prefix decomposition; the arithmetic is proved from two actual
 natural divmods and uniqueness, including either radix equal to one. -/

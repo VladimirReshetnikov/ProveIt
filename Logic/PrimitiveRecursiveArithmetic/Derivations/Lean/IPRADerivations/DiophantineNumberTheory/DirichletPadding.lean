@@ -43,8 +43,7 @@ theorem v_sq_le {B q₀' : PTm k} (hN : Γ ⊢[PRAAx] le (succ q₀') (cube B)) 
   have d := div_mod (Γ := Γ) B q₀'
   refine .orE (lt_or_le B (succ q₀')) ?_ ?_
   · have hlt : (lt B (succ q₀') :: Γ) ⊢[PRAAx] lt B (succ q₀') := Prf.hyp0
-    have u := div_mod_unique (Γ := lt B (succ q₀') :: Γ) (z := B) (q := zero) (r := B) (K' := q₀')
-      (by ipra_ring) hlt
+    have u := Division.div_mod_of_lt (.eqRefl (succ q₀')) hlt
     have eQ := natEq (Prf.andE₁ u)
     have hN' : (lt B (succ q₀') :: Γ) ⊢[PRAAx] le (succ q₀') (cube B) := hN.wk
     ipra_le sl hN' using

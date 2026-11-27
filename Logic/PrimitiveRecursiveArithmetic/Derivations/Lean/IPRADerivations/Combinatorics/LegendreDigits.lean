@@ -51,7 +51,7 @@ theorem quo_quo {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb : Γ 
 /-- `⌊z/K⌋ = 0` for `z < K`. -/
 theorem quo_small {K z : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (h : Γ ⊢[PRAAx] lt z K) :
     Γ ⊢[PRAAx] quo z K ≐ zero :=
-  Prf.andE₁ (dmu hK (by ipra_ring) h)
+  Prf.andE₁ (Division.div_mod_of_lt hK h)
 
 /-! ## Digits -/
 

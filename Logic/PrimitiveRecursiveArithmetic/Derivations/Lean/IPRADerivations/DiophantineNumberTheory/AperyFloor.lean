@@ -52,10 +52,7 @@ theorem floor_sum_lt {j : PTm k} (h1 : Γ ⊢[PRAAx] le one j) (h41 : Γ ⊢[PRA
   have d2 := div_mod (Γ := Γ) j (num 1)
   have d3 := div_mod (Γ := Γ) j (num 2)
   have d7 := div_mod (Γ := Γ) j (num 6)
-  have u := div_mod_unique (Γ := Γ) (z := j) (q := zero) (r := j) (K' := num 41)
-    (by ipra_ring) (by
-      show Γ ⊢[PRAAx] le (succ j) (succ (num 41))
-      ipra_le sl h41)
+  have u := Division.div_mod_of_lt (.eqRefl (succ (num 41))) (Order.lt_succ_of_le h41)
   have e2 := natEq (Prf.andE₁ d2)
   have e3 := natEq (Prf.andE₁ d3)
   have e7 := natEq (Prf.andE₁ d7)
