@@ -71,9 +71,8 @@ private theorem frozen_linear (p j X D H Q A B : PTm n)
   have factor : Γ ⊢[PRAAx] GaussianPositiveRationalLogarithm.fraction (H*A) (Q*B) ≐ qmul h t :=
     (GaussianEulerDecayFactorBounds.fraction_is_radius_point _ _ hB').eqTrans (radius_multiply H Q A B hQ hB).eqSymm
   have rotate : Γ ⊢[PRAAx] qmul z (qmul h t) ≐ qmul h (frozen p (succ j) X D A B) :=
-    (qmul_associative z h t).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative z h) (.eqRefl t)).eqTrans
-        ((qmul_associative h z t).eqTrans (qmul_congr (.eqRefl h) (frozen_succ p j X D A B hB).eqSymm)))
+    (GaussianRationalPowerAlgebra.commute_nested z h t).eqTrans
+      (qmul_congr (.eqRefl h) (frozen_succ p j X D A B hB).eqSymm)
   have neg : Γ ⊢[PRAAx] qmul z (decayPoint (H*A) (Q*B)) ≐
       GaussianRationalMetric.qnegative (qmul h (frozen p (succ j) X D A B)) :=
     (GaussianGammaDigammaTwoShiftSecants.negative_mul z _).eqSymm.eqTrans

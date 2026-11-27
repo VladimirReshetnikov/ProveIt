@@ -172,9 +172,9 @@ theorem readback (p X D A B R U L N : PTm n) : Γ ⊢[PRAAx]
   let b := panelData false (p+N) X D A B R U T N
   let s := sum (differenceBody f f) N (pairT a b)
   exact (qmul_congr (.eqRefl w) (sum_multiply (differenceBody f f) c N (pairT a b))).eqTrans
-    ((qmul_associative w c s).eqSymm.eqTrans ((qmul_congr (qmul_commutative w c) (.eqRefl s)).eqTrans
-      ((qmul_associative c w s).eqTrans ((qmul_congr (.eqRefl c) (weighted_difference f f N a b T one).eqSymm).eqTrans
-        (qmul_associative _ _ _)))))
+    ((GaussianRationalPowerAlgebra.commute_nested w c s).eqTrans
+       ((qmul_congr (.eqRefl c) (weighted_difference f f N a b T one).eqSymm).eqTrans
+        (qmul_associative _ _ _)))
 
 def frozenValue (p k i A B U L N : PTm n) : PTm n :=
   qmul (fraction two one) (value (p+N) (realNumerator k i) (realDenominator k) A B U (realDenominator k*L) N)

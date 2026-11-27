@@ -137,8 +137,7 @@ private theorem scalar_weight (k : PTm n) (hk : Γ ⊢[PRAAx] le one k) :
 
 private theorem middle_swap (x y z : PTm n) :
     Γ ⊢[PRAAx] qmul x (qmul y z) ≐ qmul y (qmul x z) :=
-  (qmul_associative x y z).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative x y) (.eqRefl _)).eqTrans (qmul_associative y x z))
+  GaussianRationalPowerAlgebra.commute_nested x y z
 
 theorem linear_expansion (z h B k : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k) :
     let i := reciprocal (base z B k)

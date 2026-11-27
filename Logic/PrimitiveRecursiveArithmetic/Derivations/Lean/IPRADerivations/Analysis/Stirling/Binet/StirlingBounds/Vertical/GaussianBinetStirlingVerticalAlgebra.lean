@@ -125,8 +125,8 @@ theorem linear_expression (A B D sign H g l : PTm n) (h : Γ ⊢[PRAAx] source A
     (qmul_commutative u w).eqTrans ((mul_sub w z b).eqTrans
       (qsub_congr ((qmul_commutative w z).eqTrans inv) (qmul_commutative w b)))
   have inner : Γ ⊢[PRAAx] qmul u (qmul e w) ≐ qmul e (qsub qone (qmul b w)) :=
-    (qmul_associative _ _ _).eqSymm.eqTrans ((qmul_congr (qmul_commutative u e) (.eqRefl w)).eqTrans
-      ((qmul_associative _ _ _).eqTrans (qmul_congr (.eqRefl _) o)))
+    (GaussianRationalPowerAlgebra.commute_nested u e w).eqTrans
+      (qmul_congr (.eqRefl _) o)
   have ecanon : Γ ⊢[PRAAx] GaussianRationalHorner.canonical e := ofGaussian_canonical _ _ h.andE₂
   exact (qadd_congr (qsub_congr (.eqRefl _) ((qadd_congr (.eqRefl _) inner).eqTrans (qmul_add _ _ _).eqSymm))
       (qmul_one_right e ecanon).eqSymm).eqTrans

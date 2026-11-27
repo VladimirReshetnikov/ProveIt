@@ -102,8 +102,7 @@ theorem affine_mean (N D K C : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hD : Γ ⊢
       ((qmul_congr (unit_mass N D hN hD) (.eqRefl K)).eqTrans
         ((qmul_commutative qone K).eqTrans (qmul_one_right K hK)))
   have commute : Γ ⊢[PRAAx] qmul w (qmul C b) ≐ qmul C (qmul w b) :=
-    (qmul_associative w C b).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative w C) (.eqRefl b)).eqTrans (qmul_associative C w b))
+    GaussianRationalPowerAlgebra.commute_nested w C b
   have slope : Γ ⊢[PRAAx] qmul w (qmul C b) ≐ qnegative (qmul v C) :=
     commute.eqTrans ((qmul_congr (.eqRefl C) (centered_mean N D hN hD)).eqTrans
       ((GaussianRationalFiberRightInverse.multiply_negative_right C v).eqTrans

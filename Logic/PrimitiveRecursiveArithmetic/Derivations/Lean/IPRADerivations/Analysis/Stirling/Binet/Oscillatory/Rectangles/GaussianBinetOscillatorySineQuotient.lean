@@ -97,8 +97,7 @@ theorem quotient_error (j p M X Y D sign A B R U L N : PTm n)
   have exact_angle : Γ ⊢[PRAAx] qmul k w ≐ c :=
     (exponent_scale true S N A B hN hB).eqTrans (coefficient_congr true (mul_comm _ _) (mul_comm _ _))
   have kx : Γ ⊢[PRAAx] qmul k x ≐ qmul e (qmul c u) :=
-    ((qmul_associative k e (qmul w u)).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative k e) (.eqRefl _)).eqTrans (qmul_associative e k (qmul w u)))).eqTrans
+    (GaussianRationalPowerAlgebra.commute_nested k e (qmul w u)).eqTrans
       (qmul_congr (.eqRefl _) ((qmul_associative k w u).eqSymm.eqTrans (qmul_congr exact_angle (.eqRefl _))))
   have admit := imaginary_lower S N hN
   have nonzero := GaussianNameReciprocal.lower_norm_positive k N hN (name_lower k S N hS hN admit)
@@ -115,8 +114,7 @@ theorem quotient_error (j p M X Y D sign A B R U L N : PTm n)
       ((qmul_congr ((qmul_commutative _ _).eqTrans (reciprocal_identity k nonzero)) (.eqRefl _)).eqTrans
         ((qmul_commutative _ _).eqTrans (qmul_one_right x (qmul_canonical _ _))))
   have last : Γ ⊢[PRAAx] qmul (reciprocal k) (qmul e v) ≐ qmul e (qmul (reciprocal k) v) :=
-    (qmul_associative _ _ _).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative _ _) (.eqRefl _)).eqTrans (qmul_associative _ _ _))
+    GaussianRationalPowerAlgebra.commute_nested (reciprocal k) e v
   exact distance_congr first last (.eqRefl _) (.eqRefl _)
     (GaussianApproximateInverseDistance.multiply_distance (reciprocal k) _ _ N (two*F) H hH inv with_k)
 

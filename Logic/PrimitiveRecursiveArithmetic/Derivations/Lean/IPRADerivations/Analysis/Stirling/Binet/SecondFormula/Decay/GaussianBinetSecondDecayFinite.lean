@@ -162,10 +162,8 @@ private theorem envelope_grid_distance (p N T H J m K : PTm n)
   let z := sum f N y
   have e : Γ ⊢[PRAAx] leftSum (multiplyBody f) N (pairT c y) T one ≐ qmul c (physicalValue p N T H J) :=
     (qmul_congr (.eqRefl _) (sum_multiply f c N y)).eqTrans
-      ((qmul_associative (weight T one N) c z).eqSymm.eqTrans
-        ((qmul_congr (qmul_commutative (weight T one N) c) (.eqRefl _)).eqTrans
-          ((qmul_associative c (weight T one N) z).eqTrans
-            (qmul_congr (.eqRefl _) ((qmul_congr ew (.eqRefl _)).eqTrans (physical_at p N T H J hN hH hJ).eqSymm)))))
+      ((GaussianRationalPowerAlgebra.commute_nested (weight T one N) c z).eqTrans
+         (qmul_congr (.eqRefl _) ((qmul_congr ew (.eqRefl _)).eqTrans (physical_at p N T H J hN hH hJ).eqSymm)))
   exact distance_congr (scalar_left_embedding envelopeBody N x T one (le_refl one) hN).eqSymm
     e (.eqRefl _) (one_mul U) d
 

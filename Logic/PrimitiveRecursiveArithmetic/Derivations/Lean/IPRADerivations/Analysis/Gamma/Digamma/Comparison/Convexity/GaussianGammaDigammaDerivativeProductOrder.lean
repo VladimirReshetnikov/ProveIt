@@ -122,8 +122,7 @@ theorem raw_slope_order (t a c b D : PTm n) (ha : Γ ⊢[PRAAx] source a b) (hc 
   have ev : Γ ⊢[PRAAx] natScale D (qsub (qmul x Y) v) ≐ qmul x (rawSlope t c b D) := by
     refine (natScale_as_product _ _).eqTrans ((qmul_congr (natural_inverse D hD).eqSymm
       (GaussianRationalRoundedPower.multiplication_difference x Y y)).eqTrans ?_)
-    exact (qmul_associative k x (qsub Y y)).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative k x) (.eqRefl _)).eqTrans (qmul_associative x k (qsub Y y)))
+    exact GaussianRationalPowerAlgebra.commute_nested k x (qsub Y y)
   exact upper_congr (congrFst eu) (congrFst ev) (by ipra_ring) (.eqRefl _)
     (GaussianRationalNaturalScaleOrder.scale_upper D _ _ _ _ diff)
 

@@ -221,8 +221,7 @@ theorem local_step (j p a b N : PTm n) (ha : Γ ⊢[PRAAx] le one a)
   have diff := GaussianNamedDifference.difference_distance _ _ _ _ _ _ _ hW first
     (GaussianRationalPowerDifference.distance_refl_zero (qmul c x) W hW)
   have convert (u v : PTm n) : Γ ⊢[PRAAx] qmul u (qmul x v) ≐ qmul x (qmul u v) :=
-    ((qmul_associative u x v).eqSymm.eqTrans (qmul_congr (qmul_commutative u x) (.eqRefl _))).eqTrans
-      (qmul_associative x u v)
+    GaussianRationalPowerAlgebra.commute_nested u x v
   have model : Γ ⊢[PRAAx] qsub (qmul d (qmul x s)) (qmul c x) ≐ qmul x (qsub t corr) := (qsub_congr (convert d s) (qmul_commutative c x)).eqTrans
     ((GaussianRationalRoundedPower.multiplication_difference x (qmul d s) c).eqTrans
       (qmul_congr (.eqRefl x) (GaussianBinetWeightedExponentialAlgebra.local_coefficient a b j N hb hN)))

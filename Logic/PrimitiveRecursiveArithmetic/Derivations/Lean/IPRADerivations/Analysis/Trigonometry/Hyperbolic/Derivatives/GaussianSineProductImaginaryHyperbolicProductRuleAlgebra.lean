@@ -49,11 +49,9 @@ private theorem rotate_product (a b c : PTm n) : Γ ⊢[PRAAx] qmul (qmul a b) c
 private theorem weighted_inner (pi a h p d : PTm n) : Γ ⊢[PRAAx]
     qmul h (qmul pi (qadd p (qmul a d))) ≐ qmul pi (qadd (qmul (qmul h d) a) (qmul p h)) := by
   let w := qadd p (qmul a d)
-  have swapped := ((qmul_associative (Γ := Γ) h pi w).eqSymm.eqTrans
-    (qmul_congr (qmul_commutative h pi) (.eqRefl w))).eqTrans (qmul_associative pi h w)
-  have last := ((qmul_associative (Γ := Γ) h a d).eqSymm.eqTrans
-    (qmul_congr (qmul_commutative h a) (.eqRefl d))).eqTrans
-      ((qmul_associative a h d).eqTrans (qmul_commutative a (qmul h d)))
+  have swapped := GaussianRationalPowerAlgebra.commute_nested (Γ := Γ) h pi w
+  have last := (GaussianRationalPowerAlgebra.commute_nested (Γ := Γ) h a d).eqTrans
+                 (qmul_commutative a (qmul h d))
   exact swapped.eqTrans (qmul_congr (.eqRefl pi)
     ((GaussianRationalCoefficientScaling.qmul_add h p (qmul a d)).eqTrans
       ((qadd_congr (qmul_commutative h p) last).eqTrans (GaussianRationalLinearProduct.qadd_commutative _ _))))

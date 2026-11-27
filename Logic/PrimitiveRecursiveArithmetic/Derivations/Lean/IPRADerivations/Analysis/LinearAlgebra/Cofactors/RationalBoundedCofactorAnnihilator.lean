@@ -77,8 +77,7 @@ private theorem clearing_term (P d i j : PTm n) (hi : Γ ⊢[PRAAx] lt i (length
   let b := embed (cell P i j)
   let D := scale P d
   have rearrange : Γ ⊢[PRAAx] qmul a (qmul D b) ≐ qmul D (qmul a b) :=
-    (qmul_associative a D b).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative a D) (.eqRefl b)).eqTrans (qmul_associative D a b))
+    GaussianRationalPowerAlgebra.commute_nested a D b
   exact (cleared_body_at P d i j).eqTrans
     ((qmul_congr (.eqRefl a) (cleared_cell_scale P d i j hi hj)).eqTrans
       (rearrange.eqTrans ((multiply_body_at _ _ _ _).eqTrans

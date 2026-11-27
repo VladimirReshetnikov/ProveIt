@@ -105,8 +105,7 @@ theorem finite_error (p X Y D sign R K L N M : PTm n)
       (.eqRefl _) (.eqRefl _) (bounded_product _ _ one M (M*B) U hM hU hw summed)
   have again : Γ ⊢[PRAAx] rectangle (p+N) X Y D sign R T N M ≐ qmul w (qmul c (columnFirst matrix N M d)) :=
     (swap_weighted_grid (p+N) z (R*T) T N M).eqTrans
-      ((qmul_associative _ _ _).eqSymm.eqTrans
-        ((qmul_congr (qmul_commutative c w) (.eqRefl _)).eqTrans (qmul_associative _ _ _)))
+      (GaussianRationalPowerAlgebra.commute_nested c w (columnFirst matrix N M d))
   have ew : Γ ⊢[PRAAx] w ≐ GaussianRationalNormalizedTelescope.weight M := by
     apply GaussianGammaFiniteValueProperness.fraction_equal _ _ M hM
     apply equal_of_values <;> simp only [re_scale,im_scale,re_one,im_one] <;> ipra_simps <;> ring

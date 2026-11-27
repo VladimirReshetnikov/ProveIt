@@ -73,8 +73,7 @@ theorem mean_sum (f g : PTm 2) (N x y : PTm n) : Γ ⊢[PRAAx]
 
 theorem mean_product (w x y : PTm n) : Γ ⊢[PRAAx] mean (qmul w x) (qmul w y) ≐ qmul w (mean x y) :=
   (qmul_congr (.eqRefl _) (qmul_add w x y).eqSymm).eqTrans
-    ((qmul_associative _ _ _).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative _ _) (.eqRefl _)).eqTrans (qmul_associative _ _ _)))
+    (GaussianRationalPowerAlgebra.commute_nested _ w _)
 
 theorem left_mean (f g : PTm 2) (N x y C E : PTm n) : Γ ⊢[PRAAx]
     mean (leftSum f N x C E) (leftSum g N y C E) ≐ leftSum (body f g) N (data x y) C E :=

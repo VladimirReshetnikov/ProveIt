@@ -135,8 +135,7 @@ private theorem average_cleared (p m h : PTm n) (hp : Γ ⊢[PRAAx] qmul p (reci
     qmul (qmul p m) (qmul h (qadd (reciprocal p) (reciprocal m))) ≐ qmul h (qadd p m) := by
   let W := qmul p m
   let v := qadd (reciprocal p) (reciprocal m)
-  have commute := (qmul_associative (Γ := Γ) W h v).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative W h) (.eqRefl _)).eqTrans (qmul_associative h W v))
+  have commute := GaussianRationalPowerAlgebra.commute_nested (Γ := Γ) W h v
   have left := (qmul_congr (qmul_commutative p m) (.eqRefl (reciprocal p))).eqTrans
     ((qmul_associative m p (reciprocal p)).eqTrans
       ((qmul_congr (.eqRefl _) hp).eqTrans (qmul_one_right m mc)))

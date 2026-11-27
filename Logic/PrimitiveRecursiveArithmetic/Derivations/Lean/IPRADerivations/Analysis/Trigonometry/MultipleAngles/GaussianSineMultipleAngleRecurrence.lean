@@ -137,8 +137,7 @@ private theorem invariant_succ (A B k : PTm n) (hAB : Γ ⊢[PRAAx] qmul A B ≐
   let u := value S k
   let v := previous S k
   have middle : Γ ⊢[PRAAx] qmul d (qmul S u) ≐ qmul S (qmul d u) :=
-    (qmul_associative d S u).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative d S) (.eqRefl u)).eqTrans (qmul_associative S d u))
+    GaussianRationalPowerAlgebra.commute_nested d S u
   have expand := (multiplication_difference (Γ := Γ) d (qmul S u) v).eqSymm.eqTrans
     (qsub_congr middle (.eqRefl _))
   exact .andI ((qmul_congr (.eqRefl _) (previous_succ S k)).eqTrans h.andE₂)

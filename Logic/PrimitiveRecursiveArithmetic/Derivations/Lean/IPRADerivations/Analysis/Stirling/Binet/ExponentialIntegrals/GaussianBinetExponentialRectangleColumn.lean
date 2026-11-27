@@ -73,8 +73,7 @@ theorem weighted_entry (i j p X Y D sign R T N M : PTm n)
     original_product p X Y D sign R T (T*i) N M j hz hN hT hM hj
   have eq : Γ ⊢[PRAAx] inst3 matrix i j (data p q (R*T) T N M) ≐ qmul w (qmul za de) :=
     (entry_at i j p q (R*T) T N M).eqTrans
-      ((qmul_associative za w de).eqSymm.eqTrans
-        ((qmul_congr (qmul_commutative za w) (.eqRefl _)).eqTrans (qmul_associative w za de)))
+      (GaussianRationalPowerAlgebra.commute_nested za w de)
   exact distance_congr eq.eqSymm (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (GaussianApproximateInverseDistance.multiply_distance w _ _ two (num 10) (unit p) hp
       (weight_bound j M hM hj) (distance_symmetric _ _ _ _ hp base))
@@ -143,9 +142,8 @@ theorem column_error (j p X Y D sign R T N M : PTm n)
   have ew : Γ ⊢[PRAAx] c ≐ GaussianRationalRiemannRefinement.weight T one N :=
     GaussianCompactRiemannName.fraction_congr _ _ _ _ (.eqRefl _) (one_mul _).eqSymm
   have target : Γ ⊢[PRAAx] qmul c (qmul w (sum f N x)) ≐ qmul w (LV p q S T N) :=
-    ((qmul_associative c w _).eqSymm.eqTrans
-      (qmul_congr (qmul_commutative c w) (.eqRefl _))).eqTrans
-        ((qmul_associative _ _ _).eqTrans (qmul_congr (.eqRefl _) (qmul_congr ew (.eqRefl _))))
+    (GaussianRationalPowerAlgebra.commute_nested c w (sum f N x)).eqTrans
+      (qmul_congr (.eqRefl _) (qmul_congr ew (.eqRefl _)))
   exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hN hv) hv
     (le_of_eq_add (d := zero) (by ipra_ring))
     (distance_congr (.eqRefl _) target (.eqRefl _) (.eqRefl _) scale)

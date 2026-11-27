@@ -35,9 +35,8 @@ theorem rational_commutes (m q : PTm n) :
   let M := naturalPoint m
   let I : PTm n := imaginaryPoint
   exact (natScale_as_product m (imaginaryArgument q)).eqTrans
-    ((qmul_associative M I q).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative M I) (.eqRefl q)).eqTrans
-        ((qmul_associative I M q).eqTrans (qmul_congr (.eqRefl I) (natScale_as_product m q).eqSymm))))
+    ((GaussianRationalPowerAlgebra.commute_nested M I q).eqTrans
+       (qmul_congr (.eqRefl I) (natScale_as_product m q).eqSymm))
 
 theorem sample_commutes (f : PR 2) (p E m x : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF (imaginaryF f)) p (data E m x) ≐

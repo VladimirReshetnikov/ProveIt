@@ -183,8 +183,7 @@ theorem finite_identity (A B D sign M : PTm n) (h : Γ ⊢[PRAAx] source A D sig
           ((natScale_as_product M w).eqSymm.eqTrans (weight_sum_one M hM))) (.eqRefl v)).eqTrans
           ((qmul_commutative qone v).eqTrans (qmul_one_right v (qnegative_canonical _)))))
   have mainScaled : Γ ⊢[PRAAx] qmul w (qmul c u) ≐ qmul c (qmul w u) :=
-    (qmul_associative w c u).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative w c) (.eqRefl u)).eqTrans (qmul_associative c w u))
+    GaussianRationalPowerAlgebra.commute_nested w c u
   exact (qmul_congr (.eqRefl w) sum_read).eqTrans
     ((GaussianRationalCoefficientScaling.qmul_add w (qmul c u) (natScale M v)).eqTrans
       (qadd_congr mainScaled constantScaled))

@@ -100,7 +100,7 @@ theorem panel_error (p X Y D sign A B a b R U T : PTm n)
   have d := GaussianNamedDifference.difference_distance _ _ _ _ (num 10) (num 10) (unit p) h plus minus
   have factored : Γ ⊢[PRAAx] qmul k (qsub (qmul e x) (qmul e y)) ≐ qmul e (qmul k z) :=
     (qmul_congr (.eqRefl _) (GaussianRationalRoundedPower.multiplication_difference e x y)).eqTrans
-      ((qmul_associative k e z).eqSymm.eqTrans ((qmul_congr (qmul_commutative k e) (.eqRefl _)).eqTrans (qmul_associative e k z)))
+      (GaussianRationalPowerAlgebra.commute_nested k e z)
   have regularized : Γ ⊢[PRAAx] qmul k z ≐ quotient p a b (U*T) A B :=
     quotient_at p A B a b (U*T) hB hb
   exact distance_congr (.eqRefl _) (factored.eqTrans (qmul_congr (.eqRefl _) regularized)) (by ipra_ring) (.eqRefl _)

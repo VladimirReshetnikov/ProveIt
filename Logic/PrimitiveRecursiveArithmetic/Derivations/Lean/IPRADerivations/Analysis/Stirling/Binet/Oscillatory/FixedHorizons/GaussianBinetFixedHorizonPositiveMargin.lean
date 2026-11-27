@@ -80,8 +80,8 @@ private theorem readback (p X D A B R U T N : PTm n) : Γ ⊢[PRAAx]
   let b := panelData false (p+N) X D A B R U T N
   let s := sum (differenceBody f f) N (pairT a b)
   exact (qmul_congr (.eqRefl w) (sum_multiply (differenceBody f f) c N (pairT a b))).eqTrans
-    ((qmul_associative w c s).eqSymm.eqTrans ((qmul_congr (qmul_commutative w c) (.eqRefl s)).eqTrans
-      ((qmul_associative c w s).eqTrans (qmul_congr (.eqRefl c) (weighted_difference f f N a b T one).eqSymm))))
+    ((GaussianRationalPowerAlgebra.commute_nested w c s).eqTrans
+       (qmul_congr (.eqRefl c) (weighted_difference f f N a b T one).eqSymm))
 
 theorem common_horizon_kernel_error (p k i I A B G U T N : PTm n)
     (hi : Γ ⊢[PRAAx] le one i) (hI : Γ ⊢[PRAAx] le i I) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B)

@@ -75,10 +75,9 @@ theorem root_factor_normalization (s r D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
   have inv : Γ ⊢[PRAAx] qmul U V ≐ qone :=
     reciprocal_identity _ (GaussianNameReciprocal.lower_norm_positive _ _ hD2 margin)
   have cross : Γ ⊢[PRAAx] qmul U (qmul X V) ≐ X :=
-    (qmul_associative U X V).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative U X) (.eqRefl _)).eqTrans
-        ((qmul_associative X U V).eqTrans ((qmul_congr (.eqRefl _) inv).eqTrans
-          (qmul_one_right X (qmul_canonical _ _)))))
+    (GaussianRationalPowerAlgebra.commute_nested U X V).eqTrans
+      ((qmul_congr (.eqRefl _) inv).eqTrans
+          (qmul_one_right X (qmul_canonical _ _)))
   have inner : Γ ⊢[PRAAx] qmul U (normalizedFactor s r) ≐ qsub U X :=
     (GaussianRationalRoundedPower.multiplication_difference U qone (qmul X V)).eqSymm.eqTrans
       (qsub_congr (qmul_one_right U (qmul_canonical _ _)) cross)

@@ -221,8 +221,8 @@ theorem original_cell (p k i z R B e f d h Q S E T a C N : PTm n)
   have third : Γ ⊢[PRAAx] distanceBounded (qmul α (qmul w y)) (qmul α' (qmul w y'))
       (clockNumerator k z R B e f d h Q S E T C N) (clockDenominator p k h Q E T N) :=
     distance_congr
-      ((qmul_associative w α y).eqSymm.eqTrans ((qmul_congr (qmul_commutative w α) (.eqRefl _)).eqTrans (qmul_associative α w y)))
-      ((qmul_associative w α' y').eqSymm.eqTrans ((qmul_congr (qmul_commutative w α') (.eqRefl _)).eqTrans (qmul_associative α' w y')))
+      (GaussianRationalPowerAlgebra.commute_nested w α y)
+      (GaussianRationalPowerAlgebra.commute_nested w α' y')
       (.eqRefl _) (.eqRefl _) scaledDifference
   have hf : Γ ⊢[PRAAx] le one (frozenDenominator p k E N) := positive_product _ _ hb hd1
   exact GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ (positive_product _ _ hf hdj)

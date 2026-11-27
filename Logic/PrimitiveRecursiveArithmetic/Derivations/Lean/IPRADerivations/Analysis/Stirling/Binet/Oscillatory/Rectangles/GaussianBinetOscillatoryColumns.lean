@@ -172,7 +172,7 @@ theorem column_error (j p M X Y D sign A B R U L N : PTm n)
     bound_congr (GaussianRationalRoundedPower.multiplication_difference w u v).eqSymm (.eqRefl _) (.eqRefl _) prod
   have reduce : Γ ⊢[PRAAx] qmul w v ≐ qmul e (qmul w m) :=
     (qmul_congr (.eqRefl _) (sum_multiply mF e M (dM a b))).eqTrans
-      ((qmul_associative w e m).eqSymm.eqTrans ((qmul_congr (qmul_commutative w e) (.eqRefl _)).eqTrans (qmul_associative e w m)))
+      (GaussianRationalPowerAlgebra.commute_nested w e m)
   have read : Γ ⊢[PRAAx] qmul w m ≐ qmul (fraction A B) (cosineValue (p+N) (A*(T*j)) (B*N) (U*T) one M) :=
     (qmul_congr (outer_weight A B M hB hM) (.eqRefl _)).eqTrans
       ((qmul_associative _ _ _).eqTrans (qmul_congr (.eqRefl _) (GaussianRationalQuadratureMean.left_mean f f M a b one one).eqSymm))

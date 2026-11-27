@@ -99,8 +99,7 @@ theorem raw_product_rule (a b D g h : PTm n) (hb : Γ ⊢[PRAAx] le one b)
       ((GaussianRationalPowerDifference.product_difference g h u v).eqTrans
         (qadd_congr (qmul_commutative _ _) ((qmul_commutative _ _).eqTrans
           (qmul_congr (GaussianGammaDigammaStep.coefficient_difference a b D hb hD) (.eqRefl _)))))
-  have first := (qmul_associative (Γ := Γ) k u (qsub g h)).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative k u) (.eqRefl _)).eqTrans (qmul_associative u k (qsub g h)))
+  have first := GaussianRationalPowerAlgebra.commute_nested (Γ := Γ) k u (qsub g h)
   have second := GaussianRationalInverseQuadraticAlgebra.cancel_nested_product k δ h hh
     (GaussianNamedDifferenceQuotient.actual_inverse oneCode D (GaussianGammaUnitInverseSamples.actual_step_separated D hD))
   exact (qmul_congr (.eqRefl _) hd).eqTrans

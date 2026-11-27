@@ -141,8 +141,7 @@ theorem factor_sample (s : Bool) (p X Y D sign A B a b R U T : PTm n)
 private theorem mean_factor (w a b : PTm n) : Γ ⊢[PRAAx]
     mean (qmul w a) (qmul w b) ≐ qmul w (mean a b) :=
   (qmul_congr (.eqRefl _) (qmul_add w a b).eqSymm).eqTrans
-    ((qmul_associative _ _ _).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative _ _) (.eqRefl _)).eqTrans (qmul_associative _ _ _)))
+    (GaussianRationalPowerAlgebra.commute_nested _ w _)
 
 theorem cosine_factor_sample (p X Y D sign A B a b R U T : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R) (hB : Γ ⊢[PRAAx] le one B) (hb : Γ ⊢[PRAAx] le one b)

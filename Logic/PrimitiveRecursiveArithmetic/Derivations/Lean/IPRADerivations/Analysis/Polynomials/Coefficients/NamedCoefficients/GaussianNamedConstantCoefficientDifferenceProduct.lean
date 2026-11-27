@@ -80,8 +80,7 @@ theorem raw_product_rule (c1 c0 cDelta u v h D : PTm n) (hs : Γ ⊢[PRAAx] qs h
     (qsub_congr (qmul_commutative c1 u) (qmul_commutative c0 v)).eqTrans
       ((GaussianRationalPowerDifference.product_difference u v c1 c0).eqTrans
         (qadd_congr (qmul_commutative _ _) coefficient))
-  have swap := (qmul_associative (Γ := Γ) inverse c1 (qsub u v)).eqSymm.eqTrans
-    ((qmul_congr (qmul_commutative _ _) (.eqRefl _)).eqTrans (qmul_associative c1 inverse (qsub u v)))
+  have swap := GaussianRationalPowerAlgebra.commute_nested (Γ := Γ) inverse c1 (qsub u v)
   have cancel := GaussianRationalInverseQuadraticAlgebra.cancel_nested_product inverse delta (qmul cDelta v)
     (qmul_canonical cDelta v) (GaussianNamedDifferenceQuotient.actual_inverse h D hs)
   exact (qmul_congr (.eqRefl _) split).eqTrans

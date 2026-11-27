@@ -52,8 +52,7 @@ private theorem real_argument (X D : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ �
 private theorem square_shuffle (x y : PTm n) : Γ ⊢[PRAAx]
     qmul (qmul x y) (qmul x y) ≐ qmul (qmul y y) (qmul x x) := by
   have inner : Γ ⊢[PRAAx] qmul y (qmul x y) ≐ qmul x (qmul y y) :=
-    (qmul_associative _ _ _).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative y x) (.eqRefl _)).eqTrans (qmul_associative _ _ _))
+    GaussianRationalPowerAlgebra.commute_nested y x y
   exact (qmul_associative _ _ _).eqTrans ((qmul_congr (.eqRefl _) inner).eqTrans
     ((qmul_associative _ _ _).eqSymm.eqTrans (qmul_commutative _ _)))
 
