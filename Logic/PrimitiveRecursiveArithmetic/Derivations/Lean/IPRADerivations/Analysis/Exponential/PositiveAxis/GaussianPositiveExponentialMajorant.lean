@@ -22,7 +22,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianPositiveExponentialMajorant
 open_ipra
 open GaussianPositiveRealArithmetic (positive sign)
 open GaussianPositiveExponentialProduct (positive_scalar_sum scalar_sum_submultiplicative)
-open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
+open GaussianRationalNaturalScale (naturalPoint natural_point_add)
 open GaussianRationalPolynomialExponential (scalarSum factorial_positive)
 open GaussianRationalHorner (qadd)
 open GaussianRationalSyntheticBounds (natCode natCode_represents natCode_nonnegative)
@@ -42,14 +42,8 @@ theorem natCode_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] 
 
 theorem natural_successor_sum (R : PTm n) : Γ ⊢[PRAAx]
     qadd (naturalPoint R) (naturalPoint one) ≐ naturalPoint (succ R) := by
-  have a := GaussianRationalHorner.qadd_represents _ _ _ _ one (le_refl one)
-    (natural_point_represents (Γ := Γ) R) (natural_point_represents one)
-  apply GaussianRationalHorner.canonical_unique _ _ _ one (GaussianRationalHorner.qadd_canonical _ _)
-    (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl one)) (le_refl one) a
-  apply GaussianRationalHorner.represents_congr (.eqRefl _) _ (.eqRefl _) (natural_point_represents (succ R))
-  apply GaussianRootAlgebra.equal_of_values <;>
-    simp only [GaussianRootAlgebra.re_scale,GaussianRootAlgebra.im_scale,GaussianRootAlgebra.re_one,
-      GaussianRootAlgebra.im_one,GaussianRootAlgebra.re_add,GaussianRootAlgebra.im_add] <;> ipra_simps <;> ring
+  refine (natural_point_add R one).eqTrans ?_
+  ipra_congr (naturalPoint (var 0) : PTm 1) with [(succ_eq_add_one R).eqSymm]
 
 theorem value_successor_product (R K : PTm n) : Γ ⊢[PRAAx]
     rationalLE (value (succ R) K) (RationalArithmetic.multiply (value R K) (value one K)) := by
