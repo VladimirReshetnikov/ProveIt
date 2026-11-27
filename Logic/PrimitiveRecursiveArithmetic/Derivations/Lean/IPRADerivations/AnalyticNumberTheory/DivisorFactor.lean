@@ -323,9 +323,9 @@ theorem col_none {d m N y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hm 
     have cn := cnt_pt hd2 hm2 hN2 hc2 (var 1) (var 0)
     have z : Δ ⊢[PRAAx] cval g (var 1) (var 0) (Syn.shift (Syn.shift d)) (Syn.shift (Syn.shift m))
         (Syn.shift (Syn.shift N)) (Syn.shift (Syn.shift y)) ≐ zero :=
-      (congrMul (cn.eqTrans ((congrMul h02 (.eqRefl _)).eqTrans (zero_mul _))) (.eqRefl _)).eqTrans (zero_mul _)
+      mul_eq_zero_of_left (cn.eqTrans (mul_eq_zero_of_left h02))
     exact z.eqTrans (by ipra_ring)
-  · exact ((lB_at g _ _ _ _).eqTrans ((congrMul h0 (.eqRefl _)).eqTrans (zero_mul _))).eqSymm
+  · exact ((lB_at g _ _ _ _).eqTrans (mul_eq_zero_of_left h0)).eqSymm
 
 /-- A column `d ≥ 1` with `d ∣ mN` is `g(d)`. -/
 theorem col_some {d m N y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
@@ -374,7 +374,7 @@ theorem col_zero {d m N y : PTm n} (hz : Γ ⊢[PRAAx] d ≐ zero) (hm : Γ ⊢[
       refine .orE (tri (eqb_cases (rem (Syn.shift (Syn.shift m)) (var 1)) zero)
         (eqb_cases (rem (Syn.shift (Syn.shift N)) (var 0)) zero)
         (eqb_cases (var 1 * var 0) (Syn.shift (Syn.shift d)))) ?_ ?_
-      · exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _)
+      · exact mul_eq_zero_of_left Prf.hyp0
       · let P : Fm PTm (n + 2) := (eqb (rem (Syn.shift (Syn.shift m)) (var 1)) zero ≐ one) ⋏
           ((eqb (rem (Syn.shift (Syn.shift N)) (var 0)) zero ≐ one) ⋏ (eqb (var 1 * var 0) (Syn.shift (Syn.shift d)) ≐ one))
         have hp : (P :: Δ) ⊢[PRAAx] P := Prf.hyp0
@@ -389,7 +389,7 @@ theorem col_zero {d m N y : PTm n} (hz : Γ ⊢[PRAAx] d ≐ zero) (hm : Γ ⊢[
     have r : Γ ⊢[PRAAx] rem (m * N) d ≐ m * N := (congrAp2 remF (.eqRefl _) hz).eqTrans (rem_by_zero _)
     have e0 : Γ ⊢[PRAAx] eqb (rem (m * N) d) zero ≐ zero :=
       (congrEqb' r (.eqRefl _)).eqTrans (eqb_zero_of_gt (one_le_of_pos pmN))
-    exact (congrMul e0 (.eqRefl _)).eqTrans (zero_mul _)
+    exact mul_eq_zero_of_left e0
 
 theorem col_d {d m N y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
     (hc : Γ ⊢[PRAAx] gcd m N ≐ one) :

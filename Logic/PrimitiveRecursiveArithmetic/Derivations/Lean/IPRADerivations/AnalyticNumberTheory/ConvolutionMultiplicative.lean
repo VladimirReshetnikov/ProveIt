@@ -46,7 +46,7 @@ private theorem inner_point (f g : PTm 2) {m N y a b : PTm n}
       (one_mul _)
   · have hb : (neg (dvd b N) :: Γ) ⊢[PRAAx] neg (dvd b N) := Prf.hyp0
     exact (zero_mul_l (eqb_of_ne hb) _).eqTrans
-      (((congrMul (.eqRefl _) (weight_false f g hb)).eqTrans (mul_zero _)).eqSymm)
+      ((mul_eq_zero_of_right (weight_false f g hb)).eqSymm)
 
 private theorem inner_sum (f g : PTm 2) {m N y a : PTm n}
     (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
@@ -72,7 +72,7 @@ private theorem outer_point (f g : PTm 2) {m N y a : PTm n}
     exact (one_mul _).eqTrans (mul_comm _ _)
   · have ha : (neg (dvd a m) :: Γ) ⊢[PRAAx] neg (dvd a m) := Prf.hyp0
     exact (zero_mul_l (eqb_of_ne ha) _).eqTrans
-      (((congrMul (.eqRefl _) (weight_false f g ha)).eqTrans (mul_zero _)).eqSymm)
+      ((mul_eq_zero_of_right (weight_false f g ha)).eqSymm)
 
 /-- The actual convolution product law under the bounded divisor tests. -/
 theorem conv_product (f g : PTm 2) {m N y : PTm n}

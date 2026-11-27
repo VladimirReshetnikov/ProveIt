@@ -125,8 +125,8 @@ theorem row_pt {e d m y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
   refine .orE (zero_or_succ e) ?_ ?_
   · let Δ : List (Fm PTm n) := (e ≐ zero) :: Γ
     have s0 : Δ ⊢[PRAAx] sg e ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
-    refine (zero_mul_l (zero_mul_l ((congrMul (.eqRefl _) s0).eqTrans (mul_zero _)) _) _).eqTrans ?_
-    exact ((congrMul (.eqRefl _) (zero_mul_l (zero_mul_l s0 _) _)).eqTrans (mul_zero _)).eqSymm
+    refine (zero_mul_l (zero_mul_l (mul_eq_zero_of_right s0) _) _).eqTrans ?_
+    exact (mul_eq_zero_of_right (zero_mul_l (zero_mul_l s0 _) _)).eqSymm
   · let Δ : List (Fm PTm n) := (e ≐ succ (pred e)) :: Γ
     have he : Δ ⊢[PRAAx] e ≐ succ (pred e) := Prf.hyp0
     have dp := dv_prod (N := m) hd.wk he
@@ -177,8 +177,8 @@ theorem rhs_row {k m y : PTm n} (hk : Γ ⊢[PRAAx] lt k (succ m)) :
         rw [shift_pairT]
         refine (cv_at f g a _ _).eqTrans (zero_mul_l ?_ _)
         have hk' := (shift_pos hk1).weaken hs
-        refine (congrMul (.eqRefl _) ((congrEqb' ((rem_small hl).eqTrans hk') (.eqRefl _)).eqTrans
-          (eqb_succ_zero _))).eqTrans (mul_zero _)
+        refine mul_eq_zero_of_right ((congrEqb' ((rem_small hl).eqTrans hk') (.eqRefl _)).eqTrans
+          (eqb_succ_zero _))
       refine (congrMul (.eqRefl _) (congrMul ext.eqSymm (.eqRefl _))).eqTrans ?_
       ipra_ring
   · simp only [shift_pairT]
@@ -226,11 +226,11 @@ theorem col_pt {k d m y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
     · let Δ' : List (Fm PTm n) := (quo k d ≐ zero) :: Δ
       have q0 : Δ' ⊢[PRAAx] quo k d ≐ zero := Prf.hyp0
       have k0 : Δ' ⊢[PRAAx] sg k ≐ zero :=
-        (congrSg (kq.wk.eqTrans ((congrMul (.eqRefl _) q0).eqTrans (mul_zero _)))).eqTrans sg_zero
+        (congrSg (kq.wk.eqTrans (mul_eq_zero_of_right q0))).eqTrans sg_zero
       have sq0 : Δ' ⊢[PRAAx] sg (quo k d) ≐ zero := (congrSg q0).eqTrans sg_zero
       refine (zero_mul_l (zero_mul_l (zero_mul_l k0 _) _) _).eqTrans ?_
-      exact ((congrMul (.eqRefl _) (zero_mul_l (zero_mul_l
-        ((congrMul (.eqRefl _) sq0).eqTrans (mul_zero _)) _) _)).eqTrans (mul_zero _)).eqSymm
+      exact (mul_eq_zero_of_right (zero_mul_l (zero_mul_l
+        (mul_eq_zero_of_right sq0) _) _)).eqSymm
     · let Δ' : List (Fm PTm n) := (quo k d ≐ succ (pred (quo k d))) :: Δ
       have hq : Δ' ⊢[PRAAx] quo k d ≐ succ (pred (quo k d)) := Prf.hyp0
       have kq' : Δ' ⊢[PRAAx] k ≐ d * quo k d := kq.wk
@@ -244,8 +244,7 @@ theorem col_pt {k d m y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
       ipra_ring
   · let Δ : List (Fm PTm n) := neg (rem k d ≐ zero) :: Γ
     have e0 : Δ ⊢[PRAAx] eqb (rem k d) zero ≐ zero := eqb_of_ne Prf.hyp0
-    refine (zero_mul_l ((congrMul (.eqRefl _) (zero_mul_l ((congrMul (.eqRefl _) e0).eqTrans (mul_zero _)) _)).eqTrans
-      (mul_zero _)) _).eqTrans ?_
+    refine (zero_mul_l (mul_eq_zero_of_right (zero_mul_l (mul_eq_zero_of_right e0) _)) _).eqTrans ?_
     exact (zero_mul_l e0 _).eqSymm
 
 /-- Column `d ≥ 1`: `Σ_{k ≤ m} [k ∣ m][d ∣ k] f(d) g(k/d) h(m/k) = Σ_{e ≤ m/d} H(e)`. -/
@@ -277,8 +276,7 @@ theorem col_row (d m y : PTm n) :
         have a := (Prf.hyp0 : Δ ⊢[PRAAx] d ≐ zero).shift
         simp only [Fm.shift, Fm.subst_eq, ConciseIPRA.PTm.subst_zero] at a
         exact (congrSg (a.wk : (lt (var 0) (Syn.shift (succ m)) :: Δ.map Fm.shift) ⊢[PRAAx] Syn.shift d ≐ zero)).eqTrans sg_zero
-      refine zero_mul_l ((congrMul (.eqRefl _) ((cv_at f g _ _ _).eqTrans (zero_mul_l (zero_mul_l s0' _) _))).eqTrans
-        (mul_zero _)) _
+      refine zero_mul_l (mul_eq_zero_of_right ((cv_at f g _ _ _).eqTrans (zero_mul_l (zero_mul_l s0' _) _))) _
     exact hz.eqTrans ((cv_at f (cvF g h) d m y).eqTrans (zero_mul_l (zero_mul_l s0 _) _)).eqSymm
   · let Δ : List (Fm PTm n) := (d ≐ succ (pred d)) :: Γ
     have hd : Δ ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp0
@@ -331,12 +329,12 @@ theorem lamL_pt {d m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
         refine .orE (zero_or_succ (quo m d)) ?_ Prf.hyp0
         refine .botE _ (succ_ne_zero (a := pred m) ?_)
         have q0 : ((quo m d ≐ zero) :: Δ') ⊢[PRAAx] quo m d ≐ zero := Prf.hyp0
-        exact (hm.wk.wk.wk.eqSymm.eqTrans (mq.wk.eqTrans ((congrMul (.eqRefl _) q0).eqTrans (mul_zero _))))
+        exact (hm.wk.wk.wk.eqSymm.eqTrans (mq.wk.eqTrans (mul_eq_zero_of_right q0)))
       refine congrMul (.eqRefl _) (congrMul (.eqRefl _) ?_)
       exact ((mul_comm _ _).eqTrans (one_mul _)).eqTrans (lam_conv_one w hq).eqSymm
     · let Δ' : List (Fm PTm n) := neg (rem m d ≐ zero) :: Δ
       have e0 : Δ' ⊢[PRAAx] sg d * eqb (rem m d) zero ≐ zero :=
-        (congrMul (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (mul_zero _)
+        mul_eq_zero_of_right (eqb_of_ne Prf.hyp0)
       exact (zero_mul_l e0 _).eqTrans (zero_mul_l e0 _).eqSymm
 
 /-- `(Λ_w * L_w)(m) = ((Λ_w * Λ_w) * 𝟏)(m)` for `m ≥ 1`. -/

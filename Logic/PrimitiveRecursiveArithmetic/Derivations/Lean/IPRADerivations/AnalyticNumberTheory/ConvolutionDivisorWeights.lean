@@ -61,7 +61,7 @@ theorem weight_true (f g : PTm 2) {d M y : PTm n}
 theorem weight_false (f g : PTm 2) {d M y : PTm n} (h : Γ ⊢[PRAAx] neg (dvd d M)) :
     Γ ⊢[PRAAx] inst2 (cvB f g) d (pairT M y) ≐ zero := by
   have hm := (congrMul (.eqRefl (sg d)) (eqb_of_ne h)).eqTrans (mul_zero _)
-  exact (cv_at f g d M y).eqTrans ((congrMul hm (.eqRefl _)).eqTrans (zero_mul _))
+  exact (cv_at f g d M y).eqTrans (mul_eq_zero_of_left hm)
 
 theorem weight_absorb (f g : PTm 2) (d M y : PTm n) :
     Γ ⊢[PRAAx] eqb (rem M d) zero * inst2 (cvB f g) d (pairT M y) ≐
@@ -69,8 +69,8 @@ theorem weight_absorb (f g : PTm 2) (d M y : PTm n) :
   refine .orE (eqb_cases (rem M d) zero) ?_ ?_
   · have hz : ((eqb (rem M d) zero ≐ zero) :: Γ) ⊢[PRAAx] eqb (rem M d) zero ≐ zero := Prf.hyp0
     have w := (cv_at (Γ := (eqb (rem M d) zero ≐ zero) :: Γ) f g d M y).eqTrans
-      ((congrMul ((congrMul (.eqRefl (sg d)) hz).eqTrans (mul_zero _)) (.eqRefl _)).eqTrans (zero_mul _))
-    exact ((congrMul hz (.eqRefl _)).eqTrans (zero_mul _)).eqTrans w.eqSymm
+      (mul_eq_zero_of_left ((congrMul (.eqRefl (sg d)) hz).eqTrans (mul_zero _)))
+    exact (mul_eq_zero_of_left hz).eqTrans w.eqSymm
   · exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _)
 
 private theorem complementary_divisor {d M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))

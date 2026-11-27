@@ -193,7 +193,7 @@ theorem multiples_g {d N h y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
   have s3 : Γ ⊢[PRAAx] ap2 (sumF (hBg G)) (succ N) (pairT d (Zp N h y)) ≐
       ap2 (sumF (shiftBody (hBg G))) N (pairT d (Zp N h y)) := by
     refine (sum_shift _ _ _).eqTrans ((congrAdd ?_ (.eqRefl _)).eqTrans (zero_add _))
-    exact (hBg_at G _ _ _).eqTrans ((congrMul sg_zero (.eqRefl _)).eqTrans (zero_mul _))
+    exact (hBg_at G _ _ _).eqTrans (mul_eq_zero_of_left sg_zero)
   -- reindex the multiples of `d` up to `Nd`
   have cm : Γ ⊢[PRAAx] cM (succ (N * d)) d ≐ succ N :=
     (multiples_upto (Q := N * d) hd).eqTrans (congrSucc (quo_mul hd (mul_comm _ _)))
@@ -239,7 +239,7 @@ theorem multiples_g {d N h y : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
         simp [Syn.shift],
       show Syn.shift (succ N) = succ (Syn.shift N) by simp [Syn.shift], inst2_dmBg]
     have z := hz (Γ.map Fm.shift) (succ (Syn.shift N) + var 0) (List.Subset.refl _) (by ipra_le 𝔞 (var 0))
-    exact (congrMul (.eqRefl _) ((congrInst2 G (.eqRefl _) (snd_pair _ _)).eqTrans z)).eqTrans (mul_zero _)
+    exact mul_eq_zero_of_right ((congrInst2 G (.eqRefl _) (snd_pair _ _)).eqTrans z)
   exact s3.eqSymm.eqTrans (s4.eqSymm.eqTrans (s5.eqTrans s6))
 
 /-! ## Rows -/
@@ -287,7 +287,7 @@ theorem row_pt_g {N h y : PTm n} (hrow : RowHyp G R Γ N h y) (d : PTm n) :
     have hd : C ⊢[PRAAx] d ≐ zero := (monus_zero d).eqSymm.eqTrans Prf.hyp0
     have s0 : C ⊢[PRAAx] sg d ≐ zero := (congrSg hd).eqTrans sg_zero
     refine ((congrMul (congrMul s0 (.eqRefl _)) (.eqRefl _)).eqTrans
-      ((congrMul (zero_mul _) (.eqRefl _)).eqTrans (zero_mul _))).eqTrans ?_
+      (mul_eq_zero_of_left (zero_mul _))).eqTrans ?_
     refine (sum_zero_of_all _ _ (.allI ?_) _).eqSymm
     rw [show Syn.shift (pairT d (Zp N h y)) = pairT (Syn.shift d) (Zp (Syn.shift N) (Syn.shift h) (Syn.shift y)) by
         simp [Syn.shift], inst2_rowB, inst3_a3g]
@@ -295,7 +295,7 @@ theorem row_pt_g {N h y : PTm n} (hrow : RowHyp G R Γ N h y) (d : PTm n) :
         zero := by
       have b : (C.map Fm.shift) ⊢[PRAAx] sg (Syn.shift d) ≐ zero := by simpa [Fm.shift, Syn.shift] using s0.shift
       exact (congrSg (fst_pair _ _)).eqTrans b
-    exact (congrMul ((congrMul s0' (.eqRefl _)).eqTrans (zero_mul _)) (.eqRefl _)).eqTrans (zero_mul _)
+    exact mul_eq_zero_of_left (mul_eq_zero_of_left s0')
 
 /-! ## Columns -/
 
@@ -380,10 +380,10 @@ theorem col_cancel_g {m N h y : PTm n} (hm : Γ ⊢[PRAAx] lt m (succ N)) :
   · let C : List (Fm PTm n) := le m zero :: Γ
     have hz : C ⊢[PRAAx] m ≐ zero := (monus_zero m).eqSymm.eqTrans Prf.hyp0
     have hX : C ⊢[PRAAx] sg m * inst2 G m (Zp N h y) ≐ zero :=
-      (congrMul ((congrSg hz).eqTrans sg_zero) (.eqRefl _)).eqTrans (zero_mul _)
-    refine ((congrMul hX (.eqRefl _)).eqTrans (zero_mul _)).eqTrans ?_
-    refine (Prf.eqTrans ?_ (congrAdd ((congrMul hX (.eqRefl _)).eqTrans (zero_mul _))
-      ((congrMul (.eqRefl _) hX).eqTrans (mul_zero _))).eqSymm)
+      mul_eq_zero_of_left ((congrSg hz).eqTrans sg_zero)
+    refine (mul_eq_zero_of_left hX).eqTrans ?_
+    refine (Prf.eqTrans ?_ (congrAdd (mul_eq_zero_of_left hX)
+      (mul_eq_zero_of_right hX)).eqSymm)
     exact (add_zero _).eqSymm
 
 /-- Abstract finite inversion: `Σ_{d≤N} μ⁺(d) R(d) = Σ_{d≤N} μ⁻(d) R(d) + T` from the row identity, `G(1) = T` and
@@ -422,7 +422,7 @@ theorem inversion_g {N h y T : PTm n}
       have e : C ⊢[PRAAx] eqb (fstT (pairT one (Zp N h y))) zero ≐ zero :=
         (congrEqb' (fst_pair _ _) (.eqRefl _)).eqTrans
           (LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc.eqb_succ_zero zero)
-      exact (congrMul e (.eqRefl _)).eqTrans (zero_mul _)
+      exact mul_eq_zero_of_left e
     exact d0.eqTrans hT0.eqSymm
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PowerAbstractInversion

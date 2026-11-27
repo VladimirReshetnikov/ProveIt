@@ -54,7 +54,7 @@ theorem peelE (q : PTm n) : Γ ⊢[PRAAx] inst2 eB q (pw p a * m) ≐ inst2 eB q
       refine eqb_of_ne (.impI (succ_ne_zero' _ (a := zero) ?_))
       exact (isP_of_prime hp.wk.wk).eqSymm.eqTrans ((isP_congr Prf.hyp0).eqSymm.eqTrans hI.wk)
     refine (congrMul hI (.eqRefl _)).eqTrans ((zero_mul _).eqTrans ?_)
-    refine .eqTrans ?_ (congrAdd ((congrMul hI (.eqRefl _)).eqTrans (zero_mul _)) hE).eqSymm
+    refine .eqTrans ?_ (congrAdd (mul_eq_zero_of_left hI) hE).eqSymm
     exact (add_zero _).eqSymm
   · have hI : ((isP q ≐ one) :: Γ) ⊢[PRAAx] isP q ≐ one := Prf.hyp0
     refine .orE (eq_or_ne q p) ?_ ?_
@@ -99,7 +99,7 @@ theorem e_far {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (k : PTm n) :
     (le_of_eq_add (d := k) (by apply deriveNat; ipra_simps))
   have he : Γ ⊢[PRAAx] eqb (rem m (succ m + k)) zero ≐ zero :=
     (congrEqb hr (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ (hm.wk.eqSymm.eqTrans Prf.hyp0))))
-  exact (congrMul (.eqRefl _) he).eqTrans (mul_zero _)
+  exact mul_eq_zero_of_right he
 
 theorem prod_extend (F : PTm 2) {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (k : PTm n) :
     Γ ⊢[PRAAx] ap2 (prodF (pB F)) (succ m + k) m ≐ ap2 (prodF (pB F)) (succ m) m := by
@@ -169,22 +169,21 @@ theorem inst2_F₂ (q x : PTm n) : inst2 F₂ q x = monus q one := by simp [inst
 /-! ## Small cases -/
 
 theorem isP_zero : Γ ⊢[PRAAx] isP (zero : PTm n) ≐ zero :=
-  (congrMul ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) (zero_monus _))).eqTrans sg_zero) (.eqRefl _)).eqTrans
-    (zero_mul _)
+  mul_eq_zero_of_left ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) (zero_monus _))).eqTrans sg_zero)
 
 theorem isP_one : Γ ⊢[PRAAx] isP (one : PTm n) ≐ zero :=
-  (congrMul ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _)
-    ((succ_monus_succ _ _).eqTrans (monus_zero _)))).eqTrans sg_zero) (.eqRefl _)).eqTrans (zero_mul _)
+  mul_eq_zero_of_left ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _)
+    ((succ_monus_succ _ _).eqTrans (monus_zero _)))).eqTrans sg_zero)
 
 theorem pp_one (F : PTm 2) : Γ ⊢[PRAAx] PP F (one : PTm n) ≐ one := by
   refine (prod_succ _ _ _).eqTrans ?_
   refine (congrMul ((prod_succ _ _ _).eqTrans (congrMul (prod_zero _ _) (.eqRefl _))) (.eqRefl _)).eqTrans ?_
   have t₀ : Γ ⊢[PRAAx] inst2 (pB F) zero one ≐ one := by
     rw [inst2_pB, inst2_e]
-    exact (congrAp2 powF ((congrMul isP_zero (.eqRefl _)).eqTrans (zero_mul _)) (.eqRefl _)).eqTrans (pw_zero _)
+    exact (congrAp2 powF (mul_eq_zero_of_left isP_zero) (.eqRefl _)).eqTrans (pw_zero _)
   have t₁ : Γ ⊢[PRAAx] inst2 (pB F) one one ≐ one := by
     rw [inst2_pB, inst2_e]
-    exact (congrAp2 powF ((congrMul isP_one (.eqRefl _)).eqTrans (zero_mul _)) (.eqRefl _)).eqTrans (pw_zero _)
+    exact (congrAp2 powF (mul_eq_zero_of_left isP_one) (.eqRefl _)).eqTrans (pw_zero _)
   refine (congrMul (congrMul (.eqRefl _) t₀) t₁).eqTrans ?_
   ipra_ring
 
@@ -254,8 +253,8 @@ theorem eu_step {N x : PTm n} (hV : Γ ⊢[PRAAx] ap2 (sumF euB) N x ≐ zero) :
   refine .orE (zero_or_succ N) ?_ ?_
   · have hz : ((N ≐ zero) :: Γ) ⊢[PRAAx] N ≐ zero := Prf.hyp0
     have h0 : ((N ≐ zero) :: Γ) ⊢[PRAAx] phi N ≐ zero := (congrAp2 (sumF totBody) hz hz).eqTrans (sum_zero _ _)
-    exact ((congrMul h0 (.eqRefl _)).eqTrans (zero_mul _)).eqTrans
-      ((congrMul hz (.eqRefl _)).eqTrans (zero_mul _)).eqSymm
+    exact (mul_eq_zero_of_left h0).eqTrans
+      (mul_eq_zero_of_left hz).eqSymm
   · refine .orE (zero_or_succ (pred N)) ?_ ?_
     · have e : ((pred N ≐ zero) :: (N ≐ succ (pred N)) :: Γ) ⊢[PRAAx] N ≐ one :=
         Prf.hyp1.eqTrans (congrSucc Prf.hyp0)

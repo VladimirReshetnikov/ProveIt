@@ -50,11 +50,11 @@ theorem congrTerm {a a' L L' F F' m m' : PTm n} (ha : Γ ⊢[PRAAx] a ≐ a') (h
   congrMul (congrSg hm) (congrMul (congrEqb (congrAp2 remF (congrPw ha hL) hm) (.eqRefl _)) (congrAp2 quoF hF hm))
 
 theorem term_zero {a L F m : PTm n} (h : Γ ⊢[PRAAx] m ≐ zero) : Γ ⊢[PRAAx] term a L F m ≐ zero :=
-  (congrMul ((congrSg h).eqTrans sg_zero) (.eqRefl _)).eqTrans (zero_mul _)
+  mul_eq_zero_of_left ((congrSg h).eqTrans sg_zero)
 
 theorem term_ndvd {a L F m : PTm n} (h : Γ ⊢[PRAAx] eqb (rem (pw a L) m) zero ≐ zero) :
     Γ ⊢[PRAAx] term a L F m ≐ zero :=
-  (congrMul (.eqRefl _) ((congrMul h (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (mul_zero _)
+  mul_eq_zero_of_right (mul_eq_zero_of_left h)
 
 theorem term_pos {a L F m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hd : Γ ⊢[PRAAx] dvd m (pw a L)) :
     Γ ⊢[PRAAx] term a L F m ≐ quo F m :=
@@ -120,12 +120,12 @@ theorem ptB_dvd {p a L F m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ p * quo m p) (mpos
 theorem ptB_pos {p a L F m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ p * quo m p) (mpos : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] le (p * term (a * p) L F m) (term (a * p) L F (quo m p)) :=
   .orE (zo_eqb (rem (pw (a * p) L) m) zero)
-    (le_zero_of ((congrMul (.eqRefl _) (term_ndvd Prf.hyp0)).eqTrans (mul_zero _)))
+    (le_zero_of (mul_eq_zero_of_right (term_ndvd Prf.hyp0)))
     (ptB_dvd hm.wk mpos.wk (eq_of_eqb Prf.hyp0))
 
 theorem ptB_core {p a L F m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ p * quo m p) :
     Γ ⊢[PRAAx] le (p * term (a * p) L F m) (term (a * p) L F (quo m p)) :=
-  .orE (zero_or_succ m) (le_zero_of ((congrMul (.eqRefl _) (term_zero Prf.hyp0)).eqTrans (mul_zero _)))
+  .orE (zero_or_succ m) (le_zero_of (mul_eq_zero_of_right (term_zero Prf.hyp0)))
     (ptB_pos hm.wk Prf.hyp0)
 
 /-- `p · [p ∣ m] t(m) ≤ [p ∣ m] t(m/p)`: the multiple `m = kp` is charged to `k`. -/
@@ -133,7 +133,7 @@ theorem ptB {p a L F m : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] le (p * (eqb (rem m p) zero * term (a * p) L F m))
       (eqb (rem m p) zero * term (a * p) L F (quo m p)) :=
   .orE (zo_eqb (rem m p) zero)
-    (le_zero_of ((congrMul (.eqRefl _) ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (mul_zero _)))
+    (le_zero_of (mul_eq_zero_of_right (mul_eq_zero_of_left Prf.hyp0)))
     (le_congr (congrMul (.eqRefl p) ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))).eqSymm
       ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _)).eqSymm
       (ptB_core (eq_of_dvd' hp.wk (eq_of_eqb Prf.hyp0))))
@@ -190,16 +190,15 @@ include ih
 theorem base_zero (h0 : Γ ⊢[PRAAx] N ≐ zero) :
     Γ ⊢[PRAAx] le (Sm one L F (succ N)) (sg (monus (succ N) one) * F) := by
   have r0 : Γ ⊢[PRAAx] sg (monus N one) * F ≐ zero :=
-    (congrMul ((congrSg ((congrMonus h0 (.eqRefl _)).eqTrans (zero_monus _))).eqTrans sg_zero) (.eqRefl _)).eqTrans
-      (zero_mul _)
+    mul_eq_zero_of_left ((congrSg ((congrMonus h0 (.eqRefl _)).eqTrans (zero_monus _))).eqTrans sg_zero)
   have S0 := eq_zero_of_le_zero (le_congr (.eqRefl _) r0 ih)
   exact le_zero_of ((Sm_succ _ _ _ _).eqTrans ((congrAdd S0 (term_zero h0)).eqTrans (add_zero _)))
 
 theorem base_one (h1 : Γ ⊢[PRAAx] N ≐ one) :
     Γ ⊢[PRAAx] le (Sm one L F (succ N)) (sg (monus (succ N) one) * F) := by
   have r0 : Γ ⊢[PRAAx] sg (monus N one) * F ≐ zero :=
-    (congrMul ((congrSg ((congrMonus h1 (.eqRefl _)).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _)))).eqTrans
-      sg_zero) (.eqRefl _)).eqTrans (zero_mul _)
+    mul_eq_zero_of_left ((congrSg ((congrMonus h1 (.eqRefl _)).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _)))).eqTrans
+      sg_zero)
   have S0 := eq_zero_of_le_zero (le_congr (.eqRefl _) r0 ih)
   have t : Γ ⊢[PRAAx] le (term one L F N) F :=
     le_congr (.eqRefl _) ((congrAp2 quoF (.eqRefl _) h1).eqTrans (quo_one F)) (term_le_quo _ _ _ _)
