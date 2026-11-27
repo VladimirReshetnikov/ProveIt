@@ -21,6 +21,16 @@ substitution and a scaling element of the specified rational depth. The five-ter
 classification also needs the CM reduction, conjugate
 estimates, and finite certificates in the [singular-moduli section](../Article/sections/smd.tex).
 
+## Integer geometric progressions
+
+[Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's
+valuation rule excludes all nonconstant three-term geometric progressions
+with rational ratios. It uses the equivalence between `a * c = b * b` and the
+arithmetic midpoint relation at every prime exponent. It also proves
+progression-freeness for the positive-integer instance of the one-digit
+exchange in `gpi:thm:onedigit`. The remaining parts are the natural-density
+comparison and the specific 225-prime exchange. [Article section](../Article/sections/gpi.tex)
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
