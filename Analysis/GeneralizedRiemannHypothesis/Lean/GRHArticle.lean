@@ -12,6 +12,7 @@ import GRHArticle.SingularModuli.PadicCutoff
 import GRHArticle.SingularModuli.PadicDiskRoots
 import GRHArticle.SingularModuli.PadicExpSubstitution
 import GRHArticle.SingularModuli.QuarticDiskCertificates
+import GRHArticle.SingularModuli.QuarticSupport
 import GRHArticle.SingularModuli.RootCertificates
 import GRHArticle.SingularModuli.Separated
 import GRHArticle.SingularModuli.SevenAdicCutoff
