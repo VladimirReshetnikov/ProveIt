@@ -18,6 +18,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianGammaFixedEulerExponent
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianRationalHorner (positive_product ofGaussian)
 open GaussianRationalMetric (bounded qnegative)
 open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product bounded_negative)
@@ -68,13 +69,13 @@ theorem exponent_regular (z R B N : PTm n) (h : Γ ⊢[PRAAx] input z R B N) :
 
 theorem difference_sample_bound (p K N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] bounded (ap2 differenceF p (differenceData K N)) (one+K) one := by
-  have first := bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one)
+  have first := bounded_sum_one
     (fixed_sample_bound (addPrecision p) N hN) (bounded_negative _ _ _ (le_refl one) (harmonic_point_bound K))
   exact bound_congr (GaussianNameArithmetic.add_at fixedF constantF N (qnegative (harmonicPoint K)) p).eqSymm
     (.eqRefl _) (.eqRefl _)
     ((GaussianFastValueCut.recode_bound_iff _ _ _ (le_refl one)).iffMpr
       (bound_congr (GaussianRationalSyntheticDivision.qadd_congr (.eqRefl _) (constant_at _ _).eqSymm)
-        (by ipra_ring) (by ipra_ring) first))
+        (.eqRefl _) (.eqRefl _) first))
 
 theorem product_sample_bound (p z R B K N : PTm n) (h : Γ ⊢[PRAAx] source z R B)
     (hN : Γ ⊢[PRAAx] le one N) :

@@ -16,6 +16,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicParameterTaylor
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianEulerParameterExponentialIncrement (shifted)
 open GaussianEulerLogarithmicParameterIncrement (source curvature)
 open GaussianEulerLogarithmicParameterRemainder (actualLinear numerator denominator)
@@ -42,9 +43,9 @@ theorem shifted_disk (z R B E T a b h D X Y : PTm n)
   have bd := positive_product _ _ hB hD
   have left := GaussianGammaEulerHead.fraction_disk z R B hB hs.andE₁.andE₁.andE₂.andE₂
   have right := GaussianEulerParameterIncrementObservation.parameter_unit_bound z R B E T a b h D X Y hs
-  have both := GaussianRationalReciprocal.bounded_sum _ _ R one one one (le_refl one) (le_refl one) left right
   have actual : Γ ⊢[PRAAx] bounded (ofGaussian (shifted z B h D) (B*D)) (R+one) one :=
-    GaussianRationalReciprocal.bound_congr (encoded_sum z B h D hB hD).eqSymm (by ipra_ring) (by ipra_ring) both
+    GaussianRationalReciprocal.bound_congr (encoded_sum z B h D hB hD).eqSymm (.eqRefl _) (.eqRefl _)
+      (bounded_sum_one left right)
   have clear := GaussianRationalMetric.bounded_to_cleared _ _ (B*D) (R+one) one bd (le_refl one)
     (GaussianRationalHorner.ofGaussian_represents _ _ bd) actual
   exact le_congr (by ipra_ring) (by ipra_ring) clear

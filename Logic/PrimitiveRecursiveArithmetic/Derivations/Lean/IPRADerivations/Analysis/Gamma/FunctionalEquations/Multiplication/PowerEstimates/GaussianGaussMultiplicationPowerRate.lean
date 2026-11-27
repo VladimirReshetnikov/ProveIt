@@ -17,6 +17,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianGaussMultiplicationPowerRate
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianGaussMultiplicationLogarithm (top top_positive)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
@@ -68,12 +69,8 @@ theorem multiplier_bound (z R B m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
       (GaussianRationalHorner.ofGaussian_represents u B hB)
       (le_congr (by ipra_ring) (by ipra_ring) scaled)
   have neg := GaussianRationalReciprocal.bounded_negative (Γ := Γ) qone one one (le_refl one) qone_bounded
-  have joint := GaussianRationalReciprocal.bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) hu neg
-  have simple : Γ ⊢[PRAAx] bounded (multiplier z B m) (m*R+one) one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (one_mul one) joint
-  apply bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one) _ simple
-  dsimp [amplification]
-  ipra_le sl hm
+  exact bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
+    (by dsimp [amplification]; ipra_le sl hm) (bounded_sum_one hu neg)
 
 theorem limit_log_regular (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) : Γ ⊢[PRAAx] pointCN logF (limitLogData m) :=
   GaussianPositiveRationalLogarithm.name_regular one m (.andI (le_refl one) hm)

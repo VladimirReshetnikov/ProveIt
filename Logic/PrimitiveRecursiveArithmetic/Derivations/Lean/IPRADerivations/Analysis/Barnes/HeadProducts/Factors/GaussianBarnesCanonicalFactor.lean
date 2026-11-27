@@ -17,6 +17,7 @@ set_option maxHeartbeats 850000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFactor
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_at multiply_fast)
@@ -98,8 +99,8 @@ private theorem denominator_growth (B k : PTm n) (hk : Γ ⊢[PRAAx] le one k) :
 theorem base_bound (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
     Γ ⊢[PRAAx] bounded (base z B k) (R+one) one := by
   have r := fraction_bound z R B (B*k) h.andE₁ (denominator_growth B k h.andE₂.andE₁) h.andE₂.andE₂
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (bounded_sum qone (ofGaussian z (B*k)) one one R one (le_refl one) (le_refl one) qone_bounded r)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (bounded_sum_one qone_bounded r)
 
 theorem correction_bound (z R B k : PTm n) (h : Γ ⊢[PRAAx] source z R B k) :
     Γ ⊢[PRAAx] bounded (correction z B k) (exponentRadius R) one := by

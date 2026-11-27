@@ -87,6 +87,12 @@ theorem bounded_sum_same (q r A C B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     bounded (qadd q r) (A+C) B :=
   GaussianRationalRelativeTriangle.relative_triangle q r A C (B*B) (positive_product B B hB hB) hq hr
 
+/-- Sum bounds at unit denominator without rescaling either radius. -/
+theorem bounded_sum_one {q r A C : PTm n}
+    (hq : Γ ⊢[PRAAx] bounded q A one) (hr : Γ ⊢[PRAAx] bounded r C one) :
+    Γ ⊢[PRAAx] bounded (qadd q r) (A+C) one :=
+  bounded_sum_same q r A C one (le_refl one) hq hr
+
 theorem bounded_power_integer (q R j : PTm n) (hq : Γ ⊢[PRAAx] bounded q R one) : Γ ⊢[PRAAx]
     bounded (power q j) (pw R j) one :=
   bound_congr (.eqRefl _) (.eqRefl _) (GaussianPolynomialPerturbation.one_power j)

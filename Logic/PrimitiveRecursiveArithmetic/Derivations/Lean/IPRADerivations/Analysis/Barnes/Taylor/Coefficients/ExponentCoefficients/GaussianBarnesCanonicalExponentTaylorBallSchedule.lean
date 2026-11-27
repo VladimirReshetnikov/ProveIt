@@ -17,6 +17,7 @@ set_option maxHeartbeats 950000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalExponentTaylorBallSchedule
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
@@ -112,8 +113,8 @@ private theorem polynomial_sample_bound (p a b A B : PTm n)
       (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) hb' hQ)
   have ha' : Γ ⊢[PRAAx] bounded (ap2 C k a) A one :=
     bound_congr (constant_at k a).eqSymm (.eqRefl _) (.eqRefl _) ha
-  exact bound_congr (GaussianExponentialReference.add_sample C quadraticF a (quadraticOf b) p).eqSymm (by ipra_ring) (one_mul _)
-    (GaussianRationalReciprocal.bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) ha' mult)
+  exact bound_congr (GaussianExponentialReference.add_sample C quadraticF a (quadraticOf b) p).eqSymm (.eqRefl _) (.eqRefl _)
+    (bounded_sum_one ha' mult)
 
 private theorem cost_formula (z h R B v : PTm n) :
     let a := ofGaussian h B

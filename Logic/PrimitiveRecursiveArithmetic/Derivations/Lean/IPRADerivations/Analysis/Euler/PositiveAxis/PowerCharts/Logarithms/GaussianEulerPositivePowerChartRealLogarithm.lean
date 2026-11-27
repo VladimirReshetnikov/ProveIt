@@ -15,6 +15,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianEulerPositivePowerChartRealLogarithm
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianEulerPositivePowerChart (argument source)
 open GaussianEulerPositivePowerChartLogarithm (logarithmF logarithmData logarithm_regular)
 open GaussianEulerIntegrandName (powerExponentF powerExponentData power_exponent_at powerClock)
@@ -74,8 +75,8 @@ theorem sample_bound (p e f d h Q S E T a b : PTm n)
       (Q*GaussianCompactLogarithmBounds.radius E T) one :=
     bound_congr (power_exponent_at_ratio k e f a b hs.andE₁.andE₁.andE₂).eqSymm (.eqRefl _) (by ipra_ring)
     (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) rr right)
-  exact bound_congr (sample_at p e f d h a b).eqSymm (by unfold disk; ipra_ring) (by ipra_ring)
-    (bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) left prod)
+  exact bound_congr (sample_at p e f d h a b).eqSymm (.eqRefl _) (.eqRefl _)
+    (bounded_sum_one left prod)
 
 theorem real_samples (e f d h a b : PTm n) (hf : Γ ⊢[PRAAx] le one f) :
     Γ ⊢[PRAAx] axisSamples logarithmF (logarithmData e f d h a b) := by

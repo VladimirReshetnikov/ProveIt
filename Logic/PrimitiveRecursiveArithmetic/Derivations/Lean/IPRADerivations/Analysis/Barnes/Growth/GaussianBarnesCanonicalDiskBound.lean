@@ -13,6 +13,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalDiskBound
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalLogSchedule (initial)
@@ -37,10 +38,9 @@ private theorem add_bound (f g : PR 2) (x y p A B : PTm n)
     (hg : ∀ s : PTm n, Γ ⊢[PRAAx] bounded (ap2 g s y) B one) :
     Γ ⊢[PRAAx] bounded (ap2 (addF f g) p (addData x y)) (A+B) one := by
   let s := GaussianFastValueCut.exponent two p
-  have raw := bounded_sum _ _ A one B one (le_refl one) (le_refl one) (hf s) (hg s)
   exact bound_congr (add_at f g x y p).eqSymm (.eqRefl _) (.eqRefl _)
     ((GaussianFastValueCut.recode_bound_iff _ _ one (le_refl one)).iffMpr
-      (bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring) raw))
+      (bounded_sum_one (hf s) (hg s)))
 
 private theorem multiply_bound (f g : PR 2) (x y p A B : PTm n)
     (hf : ∀ s : PTm n, Γ ⊢[PRAAx] bounded (ap2 f s x) A one)

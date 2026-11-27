@@ -19,6 +19,7 @@ set_option maxHeartbeats 600000
 namespace LeanProofs.IPRA.Analysis.GaussianLocalLogarithmMultiplicativeIncrement
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianFiniteLogarithmCompositionTail (linearValue)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianLocalLogarithmName (source point pointF data point_unit_disk name_regular original_exponential_input)
@@ -90,14 +91,14 @@ private theorem difference_bound_at (p a A I b B J c C K : PTm n)
   let u := GaussianFastValueCut.exponent (one+one) s
   have addRead := GaussianExponentialReference.add_sample (Γ := Γ) L L x y s
   have addBound : Γ ⊢[PRAAx] bounded (ap2 S s xy) two one :=
-    bound_congr addRead.eqSymm (by ipra_ring) (by ipra_ring)
-      (bounded_sum _ _ one one one one (le_refl one) (le_refl one) (point_unit_disk t a A I ha) (point_unit_disk t b B J hb))
+    bound_congr addRead.eqSymm (by ipra_ring) (.eqRefl _)
+      (bounded_sum_one (point_unit_disk t a A I ha) (point_unit_disk t b B J hb))
   have negRead := GaussianRealNameExponentialUnitReflection.negative_sample_at (Γ := Γ) L s z
   have negBound : Γ ⊢[PRAAx] bounded (ap2 (negativeF L) s (negativeData z)) one one :=
     bound_congr negRead.eqSymm (.eqRefl _) (.eqRefl _) (bounded_negative _ _ _ (le_refl one) (point_unit_disk u c C K hc))
   have observed := GaussianExponentialReference.add_sample (Γ := Γ) S (negativeF L) xy (negativeData z) p
-  exact bound_congr observed.eqSymm (by ipra_ring) (by ipra_ring)
-    (bounded_sum _ _ two one one one (le_refl one) (le_refl one) addBound negBound)
+  exact bound_congr observed.eqSymm (by ipra_ring) (.eqRefl _)
+    (bounded_sum_one addBound negBound)
 
 private theorem difference_late (a A I b B J c C K : PTm n)
     (ha : Γ ⊢[PRAAx] source a A I) (hb : Γ ⊢[PRAAx] source b B J) (hc : Γ ⊢[PRAAx] source c C K) :

@@ -19,6 +19,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianEulerExponentialNamedKernelRate
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianEulerExponentialSubstitutionNamedKernel
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianRationalHorner (ofGaussian qadd qmul qzero positive_product)
@@ -83,8 +84,8 @@ theorem exponent_observation_bound (f : PR 2) (p z R B S x : PTm n)
       (inner_observation_bound f (GaussianFastValueCut.exponent (one+one) q) S x h))
   have eq := (exponent_at (Γ := Γ) f p z B x).eqTrans
     (GaussianExponentialReference.recode_fixed _ (GaussianRationalHorner.qadd_canonical _ _))
-  exact bound_congr eq.eqSymm (by unfold exponentRadius; ipra_ring) (by ipra_ring)
-    (bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) pos neg)
+  exact bound_congr eq.eqSymm (.eqRefl _) (.eqRefl _)
+    (bounded_sum_one pos neg)
 
 theorem common_exponent_input (f : PR 2) (z R B S x : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B))

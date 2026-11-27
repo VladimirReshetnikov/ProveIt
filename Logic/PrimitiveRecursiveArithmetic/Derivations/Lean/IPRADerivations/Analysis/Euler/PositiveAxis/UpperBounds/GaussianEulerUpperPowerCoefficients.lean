@@ -19,6 +19,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianEulerUpperPowerCoefficients
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open ComplexLogarithmRemainder (re im normSq)
 open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_sq)
 open GaussianEulerIntegrandName (coefficient)
@@ -97,8 +98,8 @@ theorem real_multiplier_bound (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     bounded (realMultiplier z B) (amplification R) one := by
   have c := GaussianEulerIntegrandName.coefficient_bound z R B h.andE₁ h.andE₂
   have cc := GaussianRationalConjugation.point_bound _ _ one (le_refl one) c
-  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by unfold amplification; ipra_ring) (one_mul _)
-    (GaussianRationalReciprocal.bounded_sum _ _ _ one _ one (le_refl one) (le_refl one) c cc)
+  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by unfold amplification; ipra_ring) (.eqRefl _)
+    (bounded_sum_one c cc)
 
 theorem upper_multiplier_bound (R : PTm n) : Γ ⊢[PRAAx] bounded (upperMultiplier R) (amplification R) one :=
   GaussianCoefficientNameBounds.bounded_radius_mono _ (two*R) one (amplification R) one (le_refl one) (le_refl one)

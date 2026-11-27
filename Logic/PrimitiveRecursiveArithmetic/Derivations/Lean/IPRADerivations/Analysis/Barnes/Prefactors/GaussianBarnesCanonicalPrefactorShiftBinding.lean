@@ -15,6 +15,7 @@ set_option maxHeartbeats 1300000
 namespace LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalPrefactorShiftBinding
 
 open_ipra
+open GaussianRationalPowerDifference (bounded_sum_one)
 open GaussianBarnesCanonicalPrefactor (negativeHalf quadraticCoefficientF quadraticCoefficientData quadratic_coefficient_regular)
 open GaussianBarnesCanonicalPrefactorShift (differenceF differenceData difference_regular)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -99,8 +100,7 @@ def sum (a b : Observation Γ) : Observation Γ where
   close p := distance_triangle_same _ _ _ _ _ _ (unit_positive p)
     (GaussianNameRingLaws.add_sample_error _ _ _ _ p a.reg b.reg)
     (sum_distance _ _ _ _ _ _ _ (unit_positive p) (a.close p) (b.close p))
-  bound p := bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) (a.bound p) (b.bound p))
+  bound p := bounded_sum_one (a.bound p) (b.bound p)
 
 def product (a b : Observation Γ) : Observation Γ where
   f := multiplyF a.f b.f
