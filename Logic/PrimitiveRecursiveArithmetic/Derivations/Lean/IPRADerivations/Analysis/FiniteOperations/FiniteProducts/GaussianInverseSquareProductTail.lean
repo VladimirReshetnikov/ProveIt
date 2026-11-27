@@ -20,12 +20,11 @@ open GaussianRationalFiniteProduct (qprod product_zero product_succ offset_at pr
 open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr qadd_sub_cancel)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qmul)
 open GaussianRationalMetric (qnegative qnegative_canonical qsub bounded bounded_iff distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product bounded_negative qone_bounded)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono norm_from_distance_same)
+open GaussianRationalReciprocal (bound_congr bounded_product bounded_negative qone_bounded)
 open GaussianGammaEulerReflectionHead (body squareFactor square_factor_at)
 open GaussianReciprocalHorner (qmul_one_right)
 open GaussianRationalPowerDifference (distance_refl_zero)
-open GaussianRationalLinearProduct (add_sub_right)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -73,8 +72,8 @@ theorem partial_product_bound (f : PTm 2) (x C K r : PTm n)
     le_congr (by ipra_ring) (by ipra_ring) (le_trans (mul_le_mul_right r hC) mid)
   have close := distance_radius_mono P qone (two*C*r) (K*(K+r)) one one
     (denominator_positive K r hK) (le_refl one) compare h
-  have near := bounded_sum qone (qsub P qone) one one one one (le_refl one) (le_refl one) qone_bounded close
-  exact bound_congr (add_sub_right qone P (product_canonical _ _ _)) (by ipra_ring) (by ipra_ring) near
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) close qone_bounded)
 
 theorem tail_succ (f : PTm 2) (x C K r : PTm n)
     (hK : Γ ⊢[PRAAx] le one K) (hC : Γ ⊢[PRAAx] le (two*C) K)

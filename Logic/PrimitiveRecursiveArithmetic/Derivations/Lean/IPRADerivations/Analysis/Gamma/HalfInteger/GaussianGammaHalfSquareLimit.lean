@@ -27,9 +27,9 @@ open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at point_at)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same norm_from_distance_same)
 open GaussianRationalHorner (positive_product)
-open GaussianRationalReciprocal (bounded_sum bound_congr)
+open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
 open GaussianNamedMultiplyRate (sampleBound leadingNumerator leadingDenominator)
@@ -108,10 +108,8 @@ theorem finite_uniform_bound_at (p N : PTm n)
     distance_radius_mono _ _ _ _ _ _ (denominator_positive D p zero hd) (le_refl one) cmp e
   have hy : Γ ⊢[PRAAx] bounded Y gammaBound one :=
     GaussianNameBounds.sample_bound gammaF gammaHalf zero gamma_regular
-  have xc : Γ ⊢[PRAAx] GaussianRationalHorner.canonical X :=
-    GaussianNameReciprocal.name_canonical _ _ _ _
-  exact bound_congr (GaussianRationalLinearProduct.add_sub_right Y X xc) (by unfold eulerBound; ipra_ring)
-    (by ipra_ring) (bounded_sum _ _ _ _ _ _ (le_refl one) (le_refl one) hy close)
+  exact bound_congr (.eqRefl _) (by unfold eulerBound; ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) close hy)
 
 theorem finite_uniform_bound (N : PTm n)
     (h : Γ ⊢[PRAAx] GaussianGammaEulerInverseConvergence.source oneCode one two one two N) :

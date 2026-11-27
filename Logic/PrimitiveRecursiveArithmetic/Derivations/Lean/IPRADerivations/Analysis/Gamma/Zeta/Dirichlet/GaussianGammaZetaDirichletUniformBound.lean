@@ -25,9 +25,8 @@ open GaussianGammaZetaMellinDampedImproper (dirichletF dirichletBody parameters 
 open GaussianNamedFiniteSumFamily (body term_at)
 open GaussianNamedInverseRate (rate_at rateNumerator rateDenominator denominator_positive)
 open GaussianNamedMultiplyRate (sampleBound)
-open GaussianRationalHorner (canonical canonical_congr)
-open GaussianRationalMetric (bounded qsub)
-open GaussianRationalReciprocal (bounded_sum bound_congr)
+open GaussianRationalMetric (bounded distanceBounded)
+open GaussianRationalReciprocal (bound_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => GaussianGammaZetaDirichletCofinal.nameF
@@ -52,15 +51,6 @@ private theorem prefix_at_one (p z R B A : PTm n) :
     (GaussianRationalFiniteSum.sum_singleton t (pairT k x) read
       (GaussianRadiusExponentialName.sample_canonical _ _ _ _))
 
-private theorem canonical_at (p z R B A : PTm n) : Γ ⊢[PRAAx] canonical (ap2 C p (cd z R B A)) := by
-  let N := GaussianGammaZetaDirichletCofinal.cutoff A p
-  let q := succ p
-  let x := parameters (shifted z B) (R+one) B A
-  let k := GaussianFastValueCut.exponent N q
-  have e := (GaussianGammaZetaDirichletCofinal.sample_at (Γ := Γ) p z R B A).eqTrans
-    (GaussianNamedFiniteSumFamily.sample_at inverseF dirichletBody q N x)
-  exact canonical_congr e (GaussianRationalFiniteSum.sum_canonical (body inverseF dirichletBody) N (pairT k x))
-
 theorem original_bound (p z R B A : PTm n) (hz : Γ ⊢[PRAAx] source z R B A) :
     Γ ⊢[PRAAx] bounded (ap2 C p (cd z R B A)) (cap A) one := by
   let k := GaussianFastValueCut.exponent one (zero : PTm n)
@@ -84,16 +74,15 @@ theorem original_bound (p z R B A : PTm n) (hz : Γ ⊢[PRAAx] source z R B A) :
   have raw := rate_at dirichletF C (prefixData one z R B A) (cd z R B A) (budget A) (unit zero) zero p h
   have hp := unit_positive (Γ := Γ) p
   have hD := denominator_positive (unit zero) zero p (unit_positive (Γ := Γ) (zero : PTm n))
-  have near : Γ ⊢[PRAAx] bounded (qsub c x) (budget A+two) one := by
-    apply bounded_radius_mono _ _ _ _ _ hD (le_refl one) ?_
+  have near : Γ ⊢[PRAAx] distanceBounded c x (budget A+two) one := by
+    apply GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ _ _ hD (le_refl one) ?_
       (GaussianRationalDistanceOrder.distance_symmetric _ _ _ _ hD raw)
     dsimp only [rateNumerator,rateDenominator]
     ipra_le sl hp using
       rw [e]
       ring
-  exact bound_congr (GaussianRationalLinearProduct.add_sub_right x c (canonical_at p z R B A))
-    (by unfold cap; ipra_ring) (by ipra_ring)
-    (bounded_sum x (qsub c x) (num 4) one (budget A+two) one (le_refl one) (le_refl one) first near)
+  exact bound_congr (.eqRefl _) (by unfold cap; ipra_ring) (.eqRefl _)
+    (GaussianRationalDistanceOrder.norm_from_distance_same (le_refl one) near first)
 
 theorem samples (z R B A : PTm n) (hz : Γ ⊢[PRAAx] source z R B A) :
     Γ ⊢[PRAAx] sampleBound C (cd z R B A) (cap A) := by
