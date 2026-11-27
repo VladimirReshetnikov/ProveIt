@@ -1,3 +1,4 @@
+import GRHArticle.ProgressionFree.BoundedPrimeBlockStrictGap
 import GRHArticle.ProgressionFree.EulerLowerBound
 import GRHArticle.ProgressionFree.ExactPatternDensity
 import GRHArticle.ProgressionFree.ExactRuleApproximation
@@ -6,12 +7,16 @@ import GRHArticle.ProgressionFree.ExplicitArithmetic
 import GRHArticle.ProgressionFree.ExplicitExchange
 import GRHArticle.ProgressionFree.ExplicitExponentBound
 import GRHArticle.ProgressionFree.ExplicitWeightCast
+import GRHArticle.ProgressionFree.ExteriorPrimeBlockDensity
+import GRHArticle.ProgressionFree.FinitePrimeBlockDensity
 import GRHArticle.ProgressionFree.FourMarkerDensity
 import GRHArticle.ProgressionFree.FourMarkerExchange
 import GRHArticle.ProgressionFree.FourMarkerMass
 import GRHArticle.ProgressionFree.GreedyBlockWitnesses
 import GRHArticle.ProgressionFree.GreedyLengthDensityGain
 import GRHArticle.ProgressionFree.GreedyLengthExponents
+import GRHArticle.ProgressionFree.HeavyPrimeBlocks
+import GRHArticle.ProgressionFree.ImprovingPrimeBlocks
 import GRHArticle.ProgressionFree.IndependentPrimeRuleDensity
 import GRHArticle.ProgressionFree.IntegerBlockGluing
 import GRHArticle.ProgressionFree.IntegerBoundaryDensityBridge
@@ -126,6 +131,8 @@ import GRHArticle.ProgressionFree.PolynomialSmoothSeries
 import GRHArticle.ProgressionFree.PolynomialSmoothUpperBound
 import GRHArticle.ProgressionFree.PolynomialSquarefreeOptimalBall
 import GRHArticle.ProgressionFree.PolynomialSupremum
+import GRHArticle.ProgressionFree.PrimeBlockDensityUpgrade
+import GRHArticle.ProgressionFree.PrimeBlockReduction
 import GRHArticle.ProgressionFree.PrimeBlockRuleDensity
 import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinApproximation
