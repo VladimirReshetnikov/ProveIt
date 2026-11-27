@@ -26,6 +26,7 @@ import GRHArticle.ProgressionFree.PolynomialRoughParts
 import GRHArticle.ProgressionFree.PolynomialRoughReplacement
 import GRHArticle.ProgressionFree.PolynomialSmoothCount
 import GRHArticle.ProgressionFree.PolynomialSmoothSeries
+import GRHArticle.ProgressionFree.PolynomialSupremum
 import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinApproximation
 import GRHArticle.ProgressionFree.RankinTruncation
