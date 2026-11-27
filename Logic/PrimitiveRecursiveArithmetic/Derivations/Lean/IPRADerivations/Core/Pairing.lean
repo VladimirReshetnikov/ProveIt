@@ -279,6 +279,13 @@ theorem subst_pairVector_eq {k : ℕ} (body : PTm (k + 2)) (p : PTm n)
     simp only [Matrix.cons_val_succ, subst_pairVectorField, Syn.subst_var, Matrix.cons_val_one]
     exact pairVectorField_eq k entries (.eqRefl _) j
 
+/-- Read a term after packing its arguments following the precision into right-nested pairs. -/
+theorem toPR_pairVector_eq {k : ℕ} (body : PTm (k + 2)) (p : PTm n)
+    (entries : Fin (k + 1) → PTm n) :
+    Γ ⊢[PRAAx] ap2 (PTm.toPR (Syn.subst (Matrix.vecCons (var 0) (pairVectorField k (var 1))) body))
+        p (pairVector k entries) ≐ Syn.subst (Matrix.vecCons p entries) body :=
+  (toPR_eq _ ![p, pairVector k entries]).eqTrans (subst_pairVector_eq body p entries)
+
 /-! ## Simultaneous recursion -/
 
 section Simultaneous

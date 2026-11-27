@@ -64,16 +64,8 @@ ipra_subst sample
 
 theorem sample_at (map : RationalMap) (f : PR 2) (p x M R : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF map f) p (data x M R) ≐ sample map f p x M R := by
-  let X := data x M R
-  have raw : Γ ⊢[PRAAx] ap2 (nameF map f) p X ≐ sample map f p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
-    simpa [nameF,ap2] using
-      toPR_eq (Γ := Γ)
-        (sample map f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
-  have e1 : Γ ⊢[PRAAx] fstT X ≐ x := fst_pair _ _
-  have e2 : Γ ⊢[PRAAx] fstT (sndT X) ≐ M := (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  have e3 : Γ ⊢[PRAAx] sndT (sndT X) ≐ R := (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
-  refine raw.eqTrans ?_
-  ipra_congr (sample map f (var 0) (var 1) (var 2) (var 3) : PTm 4) with [Prf.eqRefl p,e1,e2,e3]
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sample map f (var 0) (var 1) (var 2) (var 3)) p ![x, M, R])
 
 private theorem demand_at (map : RationalMap) (s R K : PTm n) :
     Γ ⊢[PRAAx] inst2 (demandBody map) s (pairT R K) ≐ ap3 map.demand s R K := by

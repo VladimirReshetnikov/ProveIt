@@ -45,19 +45,8 @@ def nameF : PR 2 := PTm.toPR (roundedCubic (var 0) (fstT (var 1))
     Syn.subst σ (base z N) = base (Syn.subst σ z) (Syn.subst σ N) := by simp [base]
 
 theorem sample_at (p z R N : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R N) ≐ roundedCubic p z R N := by
-  let X := data z R N
-  have raw : Γ ⊢[PRAAx] ap2 nameF p X ≐ roundedCubic p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
-    simpa [nameF,ap2] using
-      toPR_eq (Γ := Γ) (roundedCubic (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
-  have fields := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (roundedCubic (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p,fstT X,fstT (sndT X),sndT (sndT X)]) (σ' := ![p,z,R,N])
-    (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
-  exact raw.eqTrans (by simpa using fields)
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (roundedCubic (var 0) (var 1) (var 2) (var 3)) p ![z, R, N])
 
 private theorem guard_bits (p C : PTm n) (hC : Γ ⊢[PRAAx] le C (num 16)) :
     Γ ⊢[PRAAx] le (C*dyadic p) (one*unit p) :=

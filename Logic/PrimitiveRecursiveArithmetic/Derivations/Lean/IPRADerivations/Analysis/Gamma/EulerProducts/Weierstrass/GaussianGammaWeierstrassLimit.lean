@@ -81,13 +81,8 @@ theorem observation_congr {p p' z z' R R' B B' : PTm n}
   ipra_congr (observation (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hp, hz, hR, hB]
 
 theorem sample_at (p z R B : PTm n) : Γ ⊢[PRAAx] sample p z R B ≐ observation p z R B := by
-  let x := data z R B
-  have e : Γ ⊢[PRAAx] sample p z R B ≐ observation p (fstT x) (fstT (sndT x)) (sndT (sndT x)) := by
-    simpa [sample,nameF,ap2] using toPR_eq (Γ := Γ)
-      (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,x]
-  have tail : Γ ⊢[PRAAx] sndT x ≐ pairT R B := snd_pair _ _
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) tail.fstE
-    tail.sndE)
+  simpa [sample, nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (observation (var 0) (var 1) (var 2) (var 3)) p ![z, R, B])
 
 theorem cofinal_observation_rate (p q z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) :
     Γ ⊢[PRAAx] distanceBounded (sample p z R B) (GaussianGammaC7Name.sample q z R B)

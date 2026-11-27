@@ -53,19 +53,8 @@ def nameF : PR 2 := PTm.toPR
   simp [sample]
 
 theorem sample_at (p z R B : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B) ≐ sample p z R B := by
-  let X := data z R B
-  have raw : Γ ⊢[PRAAx] ap2 nameF p X ≐ sample p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
-    simpa [nameF,ap2] using
-      toPR_eq (Γ := Γ) (sample (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
-  have fields := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sample (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p,fstT X,fstT (sndT X),sndT (sndT X)]) (σ' := ![p,z,R,B])
-    (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-      · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _))
-  exact raw.eqTrans (by simpa using fields)
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sample (var 0) (var 1) (var 2) (var 3)) p ![z, R, B])
 
 private theorem initial_source (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] tailSource z R B (initial R) :=

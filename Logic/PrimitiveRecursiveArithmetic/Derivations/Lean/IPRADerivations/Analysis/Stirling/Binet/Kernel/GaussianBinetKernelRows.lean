@@ -197,21 +197,8 @@ theorem row_at (i A B : PTm n) : Γ ⊢[PRAAx] inst2 rowBody i (inputData A B) �
   simpa [rowBody, rowData, inst2] using (Prf.eqRefl (rowData i A B) : Γ ⊢[PRAAx] _)
 
 theorem row_sample (p i A B : PTm n) : Γ ⊢[PRAAx] ap2 rowF p (rowData i A B) ≐ value p (succ i) A B := by
-  let d := rowData i A B
-  have evaluated : Γ ⊢[PRAAx] ap2 rowF p d ≐ value p (fstT d) (fstT (sndT d)) (sndT (sndT d)) := by
-    simpa only [rowF, ap2, subst_value, subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero,
-      Matrix.cons_val_one] using toPR_eq (Γ := Γ)
-        (value (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,d]
-  have fields := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (value (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p, fstT d, fstT (sndT d), sndT (sndT d)]) (σ' := ![p, succ i, A, B]) (fun j => by
-      fin_cases j
-      exact .eqRefl _
-      exact fst_pair _ _
-      exact (congrFst (snd_pair _ _)).eqTrans (fst_pair A B)
-      exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair A B))
-  exact evaluated.eqTrans (by
-    simpa only [subst_value, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-      Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons] using fields)
+  simpa [rowF, rowData, inputData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (value (var 0) (var 1) (var 2) (var 3)) p ![succ i, A, B])
 
 theorem row_regular (i A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx] pointCN rowF (rowData i A B) := by
   refine .allI (.allI ?_)

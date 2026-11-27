@@ -65,15 +65,8 @@ theorem observation_congr {p p' z z' R R' B B' : PTm n}
   ipra_congr (observation (var 0) (var 1) (var 2) (var 3) : PTm 4) with [hp, hz, hR, hB]
 
 theorem sample_at (p z R B : PTm n) : Γ ⊢[PRAAx] sample p z R B ≐ observation p z R B := by
-  have raw := toPR_eq (Γ := Γ)
-    (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,data z R B]
-  have e : Γ ⊢[PRAAx] sample p z R B ≐
-      observation p (fstT (data z R B)) (fstT (sndT (data z R B))) (sndT (sndT (data z R B))) := by
-    simpa only [sample, nameF, ap2, subst_observation, subst_fstT, subst_sndT, Syn.subst_var,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] using raw
-  have tail := snd_pair (Γ := Γ) z (pairT R B)
-  exact e.eqTrans (observation_congr (.eqRefl _) (fst_pair _ _) tail.fstE
-    tail.sndE)
+  simpa [sample, nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (observation (var 0) (var 1) (var 2) (var 3)) p ![z, R, B])
 
 theorem named_equivalence (z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) :
     Γ ⊢[PRAAx] crossEquivalent nameF GaussianGammaC7Name.nameF (data z R B) (GaussianGammaC7Name.data z R B) := by
