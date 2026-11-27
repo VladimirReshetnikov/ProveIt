@@ -106,18 +106,7 @@ def bd (X : PTm 4) : PTm 2 :=
 
 theorem bd_at (X : PTm 4) (j L m d : PTm k) :
     Γ ⊢[PRAAx] inst2 (bd X) j (pairT L (pairT m d)) ≐ Syn.subst ![j, L, m, d] X := by
-  have e₁ : inst2 (bd X) j (pairT L (pairT m d)) =
-      Syn.subst ![j, fstT (pairT L (pairT m d)), fstT (sndT (pairT L (pairT m d))),
-        sndT (sndT (pairT L (pairT m d)))] X := by
-    simp only [inst2, bd, Syn.subst_subst]
-    congr 1; funext l; fin_cases l <;> simp
-  rw [e₁]
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT L (pairT m d)) ≐ pairT m d := snd_pair _ _
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact (congrFst s₁).eqTrans (fst_pair _ _)
-    · exact (congrSnd s₁).eqTrans (snd_pair _ _)
+  simpa [inst2, bd, pairVector, pairVectorField] using
+    (subst_pairVector_eq (Γ := Γ) X j ![L, m, d])
 
 end LeanProofs.IPRA.Foundations.SumLinear

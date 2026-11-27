@@ -102,21 +102,11 @@ def relT : PTm 2 :=
 
 theorem relT_at (u i N Λ : PTm k) :
     Γ ⊢[PRAAx] inst2 (relT f g) u (pairT i (pairT N Λ)) ≐ rho f g i N Λ (dg N u Λ) := by
-  have e₁ : inst2 (relT f g) u (pairT i (pairT N Λ)) =
-      Syn.subst ![u, fstT (pairT i (pairT N Λ)), fstT (sndT (pairT i (pairT N Λ))),
-        sndT (sndT (pairT i (pairT N Λ)))] (relG f g) := by
-    simp only [inst2, relT, Syn.subst_subst]
-    congr 1; funext j; fin_cases j <;> simp
-  have e₂ : rho f g i N Λ (dg N u Λ) = Syn.subst ![u, i, N, Λ] (relG f g) := by
+  have value : rho f g i N Λ (dg N u Λ) = Syn.subst ![u, i, N, Λ] (relG f g) := by
     simp [relG]
-  rw [e₁, e₂]
-  have s₁ : Γ ⊢[PRAAx] sndT (pairT i (pairT N Λ)) ≐ pairT N Λ := snd_pair _ _
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact (congrFst s₁).eqTrans (fst_pair _ _)
-    · exact (congrSnd s₁).eqTrans (snd_pair _ _)
+  rw [value]
+  simpa [inst2, relT, pairVector, pairVectorField] using
+    (subst_pairVector_eq (Γ := Γ) (relG f g) u ![i, N, Λ])
 
 /-! ## The label tables -/
 
@@ -260,18 +250,11 @@ def kT : PTm 2 := Syn.subst ![var 0, fstT (var 1), sndT (var 1)] (kG f g t)
 
 theorem kT_at (u i N : PTm k) :
     Γ ⊢[PRAAx] inst2 (kT f g t) u (pairT i N) ≐ eqb (inst1 t (lab f g i N u)) (inst1 t u) := by
-  have e₁ : inst2 (kT f g t) u (pairT i N) =
-      Syn.subst ![u, fstT (pairT i N), sndT (pairT i N)] (kG f g t) := by
-    simp only [inst2, kT, Syn.subst_subst]
-    congr 1; funext j; fin_cases j <;> simp
-  have e₂ : eqb (inst1 t (lab f g i N u)) (inst1 t u) = Syn.subst ![u, i, N] (kG f g t) := by
+  have value : eqb (inst1 t (lab f g i N u)) (inst1 t u) = Syn.subst ![u, i, N] (kG f g t) := by
     simp [kG]
-  rw [e₁, e₂]
-  exact Prf.eqCongr _ fun l => by
-    fin_cases l
-    · exact .eqRefl _
-    · exact fst_pair _ _
-    · exact snd_pair _ _
+  rw [value]
+  simpa [inst2, kT, pairVector, pairVectorField] using
+    (subst_pairVector_eq (Γ := Γ) (kG f g t) u ![i, N])
 
 /-- The invariant `∀ u < N, t(Λ_i(u)) = t(u)` as a bit equation. -/
 abbrev Inv (i N : PTm k) : Fm PTm k := allB (kT f g t) N (pairT i N) ≐ one
