@@ -59,7 +59,8 @@ theorem outer_regular (a c b D : PTm n) (ha : Γ ⊢[PRAAx] source a b)
     Γ ⊢[PRAAx] GaussianEuclideanDistanceName.pointCN sumF (outerData a c b D) :=
   GaussianNameArithmetic.add_fast _ _ _ _ (log_gamma_regular a b ha) (log_gamma_regular _ _ (neighbor_source c b D hc hD))
 
-private theorem barycenter_order (u v z B r s : PTm n) (hu : Γ ⊢[PRAAx] source u B)
+/-- Weighted log-Gamma convexity at a positive rational center on the common denominator. -/
+theorem barycenter_order (u v z B r s : PTm n) (hu : Γ ⊢[PRAAx] source u B)
     (hv : Γ ⊢[PRAAx] source v B) (hz : Γ ⊢[PRAAx] source z B) (hr : Γ ⊢[PRAAx] le one r)
     (e : Γ ⊢[PRAAx] r*u+s*v ≐ (r+s)*z) : Γ ⊢[PRAAx]
     realOrder G (addF G G) (gd (r+s) (lg z B))

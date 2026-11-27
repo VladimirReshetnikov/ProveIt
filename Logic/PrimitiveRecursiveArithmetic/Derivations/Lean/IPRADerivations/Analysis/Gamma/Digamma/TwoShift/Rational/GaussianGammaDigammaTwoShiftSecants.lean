@@ -17,21 +17,14 @@ set_option maxHeartbeats 2000000
 namespace LeanProofs.IPRA.Analysis.GaussianGammaDigammaTwoShiftSecants
 
 open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianGammaEulerRationalHeadConvexity (weight barycenter)
-open GaussianNameArithmetic (addF addData)
-open GaussianNameEquivalence (cross_refl cross_symm)
-open GaussianNamedGammaHalfShift (add_cross)
-open GaussianNamedPositiveExponentialOrder (realOrder)
-open GaussianNaturalScaleProductName (productF productData)
+open GaussianGammaDigammaConvexComparison (barycenter_order)
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qadd qmul positive_product)
 open GaussianRationalL1 (rawGaussian rawDen raw_represents raw_den_positive)
 open GaussianRationalMetric (qsub qnegative)
 open GaussianRationalNaturalScale (natScale)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr)
-open GaussianStirlingGammaFractionalIncrementConvexity (gamma_rescale_from scaled_regular scale_cross)
 open GaussianStirlingGammaFractionalIncrementObservations (weighted_at weightedCost)
 open GaussianStirlingGammaLogarithm (source logGammaF logGammaData log_gamma_regular)
 open RationalRepresentedUpper (left right to_signed from_signed)
@@ -39,41 +32,7 @@ open RationalValueBounds (upper upper_congr upper_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
-local notation "G" => productF logGammaF
-local notation "gd" => productData logGammaF
 local notation "lg" => logGammaData
-
-private theorem weighted_chord (u v z B r s : PTm n) (hu : Γ ⊢[PRAAx] source u B)
-    (hv : Γ ⊢[PRAAx] source v B) (hz : Γ ⊢[PRAAx] source z B) (hr : Γ ⊢[PRAAx] le one r)
-    (e : Γ ⊢[PRAAx] r*u+s*v ≐ (r+s)*z) : Γ ⊢[PRAAx]
-    realOrder G (addF G G) (gd (r+s) (lg z B))
-      (addData (gd r (lg u B)) (gd s (lg v B))) := by
-  let k := pred r
-  let w := weight k s
-  let m := barycenter u v k s
-  have ek : Γ ⊢[PRAAx] succ k ≐ r := (pos_of_one_le hr).eqSymm
-  have ew : Γ ⊢[PRAAx] w ≐ r+s := by
-    unfold w weight
-    exact (succ_eq_add_one _).eqTrans
-      ((by ipra_ring : Γ ⊢[PRAAx] k+s+one ≐ (k+one)+s).eqTrans
-        (congrAdd ((succ_eq_add_one k).eqSymm.eqTrans ek) (.eqRefl _)))
-  have ez : Γ ⊢[PRAAx] m ≐ (r+s)*z :=
-    (congrAdd (congrMul ek (.eqRefl _)) (.eqRefl _)).eqTrans e
-  have hw : Γ ⊢[PRAAx] le one w := zero_lt_succ _
-  have hwr : Γ ⊢[PRAAx] le one (r+s) := le_trans hr (le_add_right _ _)
-  have hs : Γ ⊢[PRAAx] source m (w*B) :=
-    .andI (le_trans (positive_product _ _ (zero_lt_succ k) hu.andE₁) (le_add_right _ _))
-      (positive_product _ _ hw hu.andE₂)
-  have ec := gamma_rescale_from m (w*B) z B (r+s) hz hwr ez (congrMul ew (.eqRefl _))
-  have center := scale_cross w (r+s) (lg m (w*B)) (lg z B) ew
-    (log_gamma_regular _ _ hs) (log_gamma_regular _ _ hz) ec
-  have uh := log_gamma_regular _ _ hu
-  have vr := scaled_regular s (lg v B) (log_gamma_regular _ _ hv)
-  have first := scale_cross (succ k) r (lg u B) (lg u B) ek uh uh (cross_refl _ _ uh)
-  have pair := add_cross G G G G (gd (succ k) (lg u B)) (gd r (lg u B)) (gd s (lg v B)) (gd s (lg v B))
-    (scaled_regular _ _ uh) (scaled_regular _ _ uh) vr vr first (cross_refl _ _ vr)
-  exact GaussianNamedRealOrderTransport.transport _ _ _ _ _ _ _ _ (cross_symm _ _ _ _ center) pair
-    (GaussianGammaNativeLogConvexity.weighted_convexity u v B k s hu.andE₁ hv.andE₁ hu.andE₂)
 
 theorem upper_negative (x y K P : PTm n) (h : Γ ⊢[PRAAx] upper (fstT x) (fstT y) K P) :
     Γ ⊢[PRAAx] upper (fstT (qnegative y)) (fstT (qnegative x)) K P := by
@@ -141,7 +100,7 @@ theorem lower_secant (p u b r : PTm n) (hs : Γ ⊢[PRAAx] source u b) (hr : Γ 
   let c := d+r
   have hD := GaussianStirlingGammaLogarithm.source_shift u b hs
   have hC : Γ ⊢[PRAAx] source c b := .andI (le_trans hD.andE₁ (le_add_right _ _)) hs.andE₂
-  have h := weighted_chord u c d b r b hs hC hD hr (by unfold c d; ipra_ring)
+  have h := barycenter_order u c d b r b hs hC hD hr (by unfold c d; ipra_ring)
   have raw := weighted_at p _ _ _ _ _ _ (log_gamma_regular d b hD) (log_gamma_regular u b hs)
     (log_gamma_regular c b hC) h
   have eq := GaussianStirlingGammaFractionalIncrementAffine.lower_increment (logSample p c b) (logSample p u b)
@@ -162,7 +121,7 @@ theorem upper_secant (p u b r : PTm n) (hs : Γ ⊢[PRAAx] source u b) (hr : Γ 
   have hD := GaussianStirlingGammaLogarithm.source_shift u b hs
   have hC : Γ ⊢[PRAAx] source c b := .andI (le_trans hD.andE₁ (le_add_right _ _)) hs.andE₂
   have hF := GaussianStirlingGammaLogarithm.source_shift c b hC
-  have h := weighted_chord f d c b r b hF hD hC hr (by unfold f c d; ipra_ring)
+  have h := barycenter_order f d c b r b hF hD hC hr (by unfold f c d; ipra_ring)
   have raw := weighted_at p _ _ _ _ _ _ (log_gamma_regular c b hC) (log_gamma_regular f b hF)
     (log_gamma_regular d b hD) h
   have eq := GaussianStirlingGammaFractionalIncrementAffine.lower_increment D F C b r (rightCost u b r)
