@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaRecurrence
-import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadQuadratic
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.Coefficients.GaussianGammaEulerHeadQuadratic
 
 /-!
 # Digamma at positive integers

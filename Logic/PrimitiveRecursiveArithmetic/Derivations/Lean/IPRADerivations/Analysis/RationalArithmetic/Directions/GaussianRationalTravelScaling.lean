@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantPairAlgebra
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalRoundedPower
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalRelativeTwoTerm
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalInvertibleNorm
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianBudgets.GaussianRationalRelativeTwoTerm
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalInvertibleNorm
 
 /-!
 # Actual rational rescaling for the finite translation travel bound

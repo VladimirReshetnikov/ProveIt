@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.PolynomialBisection
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.RationalClosure
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.RationalIdentities.RationalSummableTails
 
 /-!

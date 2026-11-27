@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Tails.GaussianBetaKernelTailDifference
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianScalarRadiusProductBound
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianScalarRadiusProductBound
 
 /-!
 # One half-decay majorant for the original beta--Euler row difference

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianNamedPositiveExponentialOrder
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GapRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GapRemoval
 
 /-!
 # Finite transport of real order between actual Gaussian names

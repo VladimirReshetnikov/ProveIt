@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalNormSquareTransport
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalNormSquareTransport
 import IPRADerivations.Analysis.Trigonometry.Sine.GaussianNamedSineFromExponential
 
 /-!

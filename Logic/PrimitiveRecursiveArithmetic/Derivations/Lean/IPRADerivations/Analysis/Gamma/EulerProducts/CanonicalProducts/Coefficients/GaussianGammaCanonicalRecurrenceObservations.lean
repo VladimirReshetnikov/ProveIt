@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.Coefficients.GaussianGammaCanonicalRecurrenceTerms
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GaussianRationalSlackRemoval
 
 /-!
 # Original Gamma coefficient recurrence at independent named observations

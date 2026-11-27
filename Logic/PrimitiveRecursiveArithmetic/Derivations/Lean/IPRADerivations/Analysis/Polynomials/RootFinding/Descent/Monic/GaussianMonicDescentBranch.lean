@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Inequalities.Contraction.GaussianZeroResidualContraction
 import IPRADerivations.Analysis.Polynomials.RootFinding.Deflation.FactorTransport.GaussianFactorParameters
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.Estimates.GaussianRationalProductWitness
 import IPRADerivations.Combinatorics.FiniteBijection
 
 /-!

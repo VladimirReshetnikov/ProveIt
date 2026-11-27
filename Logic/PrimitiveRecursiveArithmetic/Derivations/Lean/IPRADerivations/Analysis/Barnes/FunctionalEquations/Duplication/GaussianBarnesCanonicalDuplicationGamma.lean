@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Duplication.GaussianBarnesCanonicalDuplicationShift
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.NamedValues.GaussianLogGammaEulerPositiveAxis
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingNativeDuplication
 
 /-! # The Barnes half-step multiplier is the original Gamma duplication factor -/

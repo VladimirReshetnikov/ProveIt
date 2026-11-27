@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Recurrence.Taylor.GaussianGammaShiftedDeflatedPolynomial
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaEncodingRescaling
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaInputProperness
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianProductNorm
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianProductNorm
 
 /-!
 # Exact zero-input behavior of the original deflated full polynomials

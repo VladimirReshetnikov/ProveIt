@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaCombinedEulerKernelPolynomial
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.HarmonicTerms.GaussianGammaCombinedEulerKernelPolynomial
 
 /-!
 # Literal original Gamma recurrence weights independent of the horizon

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadQuadratic
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.Coefficients.GaussianGammaEulerHeadQuadratic
 import IPRADerivations.Analysis.Exponential.Polynomials.Coefficients.GaussianPolynomialExponentialLinear
 
 /-!

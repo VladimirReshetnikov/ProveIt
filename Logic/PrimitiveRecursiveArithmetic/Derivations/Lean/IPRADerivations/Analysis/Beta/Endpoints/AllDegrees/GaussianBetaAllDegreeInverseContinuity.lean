@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Beta.Endpoints.GaussianBetaUniformEndpointBound
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 import IPRADerivations.Analysis.Names.Rates.Transport.GaussianNamedRateTransport
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteInputContinuity
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.Continuity.GaussianGammaFiniteInputContinuity
 
 /-!
 # Input continuity of the actual all-degree finite Euler reciprocal

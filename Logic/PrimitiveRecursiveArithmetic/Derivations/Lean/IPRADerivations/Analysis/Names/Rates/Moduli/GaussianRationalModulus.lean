@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Geometry.Distances.GaussianEuclideanDistanceName
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalRelativeTwoTerm
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianBudgets.GaussianRationalRelativeTwoTerm
 import IPRADerivations.Analysis.Polynomials.RootFinding.Reconstruction.GaussianRationalMonicReduction
 
 /-!

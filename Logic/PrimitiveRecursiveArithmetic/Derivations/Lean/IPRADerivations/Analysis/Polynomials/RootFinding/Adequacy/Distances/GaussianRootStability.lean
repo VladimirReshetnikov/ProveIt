@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalHornerPerturbation
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.Estimates.GaussianRationalProductWitness
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalDistanceOrder
 import IPRADerivations.Analysis.RationalArithmetic.Distances.GaussianRationalStability
 

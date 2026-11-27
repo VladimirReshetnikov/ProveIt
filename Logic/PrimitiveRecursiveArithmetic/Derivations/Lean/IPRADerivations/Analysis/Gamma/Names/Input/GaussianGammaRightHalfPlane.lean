@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerInverseConvergence
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.Inverse.GaussianGammaEulerInverseConvergence
 
 /-!
 # The positive real-part margin supplies the original Gamma guards

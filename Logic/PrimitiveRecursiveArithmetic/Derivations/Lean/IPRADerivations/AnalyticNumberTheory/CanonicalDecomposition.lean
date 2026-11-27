@@ -1,7 +1,7 @@
 import IPRADerivations.AnalyticNumberTheory.CanonicalPowers
 import IPRADerivations.Probability.Variance
 import IPRADerivations.Combinatorics.CatalanConvolution
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.RationalClosure
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.Header

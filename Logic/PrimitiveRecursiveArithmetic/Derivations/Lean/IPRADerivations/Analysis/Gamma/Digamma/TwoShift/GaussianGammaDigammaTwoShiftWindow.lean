@@ -1,5 +1,5 @@
-import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftFiniteRate
-import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftTrapezoidGap
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.Rates.GaussianGammaDigammaTwoShiftFiniteRate
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.LogDifferences.GaussianGammaDigammaTwoShiftTrapezoidGap
 
 /-!
 # Arithmetic of the two-shift window

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadLower
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.Denominators.GaussianGammaEulerHeadLower
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameArithmetic
 
 /-!

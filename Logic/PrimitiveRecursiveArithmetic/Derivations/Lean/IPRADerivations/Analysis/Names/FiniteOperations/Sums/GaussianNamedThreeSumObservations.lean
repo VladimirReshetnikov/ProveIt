@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponentialReference
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GaussianRationalSlackRemoval
 
 /-!
 # Independent raw observations of an actual nested three-name sum

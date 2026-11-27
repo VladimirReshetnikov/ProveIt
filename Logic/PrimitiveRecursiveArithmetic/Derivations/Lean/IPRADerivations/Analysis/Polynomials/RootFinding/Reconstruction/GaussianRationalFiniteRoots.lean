@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticCoefficientValues
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianProductNorm
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianProductNorm
 import IPRADerivations.Foundations.BoundedSyntaxInduction
 
 /-!

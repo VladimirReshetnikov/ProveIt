@@ -1,5 +1,5 @@
 import IPRADerivations.Probability.GeometricTail
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.RationalClosure
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
 

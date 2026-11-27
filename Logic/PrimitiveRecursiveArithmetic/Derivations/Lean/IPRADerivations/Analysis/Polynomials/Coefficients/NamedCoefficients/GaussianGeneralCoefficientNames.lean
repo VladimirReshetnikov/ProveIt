@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianCoefficientNameBounds
 import IPRADerivations.Analysis.Polynomials.RootFinding.BalancedRadius.GaussianBalancedRadiusArithmetic
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.Estimates.GaussianRationalProductWitness
 
 /-!
 # General Gaussian coefficient names and their actual apart tail

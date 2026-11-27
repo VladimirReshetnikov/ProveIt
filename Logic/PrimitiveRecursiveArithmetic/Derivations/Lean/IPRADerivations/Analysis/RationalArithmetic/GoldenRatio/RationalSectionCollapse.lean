@@ -4,7 +4,7 @@ import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.Gaussia
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalScalarPowerGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Representation.GaussianEmbedding.RationalPolynomialGaussianEmbedding
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianNormFiberDivisibility
+import IPRADerivations.Analysis.RationalArithmetic.Norms.PolynomialNorms.GaussianNormFiberDivisibility
 
 /-!
 # The collapse polynomial of the original rational section equation

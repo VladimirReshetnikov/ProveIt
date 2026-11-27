@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.FiniteSums.GaussianRationalFiniteSum
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.PolynomialFactors.GaussianRationalLinearProduct
 
 /-!
 # Actual zero buffers, padding and addition for rational polynomials

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Named.GaussianGammaZetaNamedMellin
-import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaNamedDirichletOverlap
+import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.ParameterContinuity.GaussianGammaZetaNamedDirichletOverlap
 
 /-!
 # Named Mellin values on independently certified domains

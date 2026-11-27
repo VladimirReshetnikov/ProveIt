@@ -1,7 +1,7 @@
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.RationalClosure
 import IPRADerivations.Core.Header
 
 /-!

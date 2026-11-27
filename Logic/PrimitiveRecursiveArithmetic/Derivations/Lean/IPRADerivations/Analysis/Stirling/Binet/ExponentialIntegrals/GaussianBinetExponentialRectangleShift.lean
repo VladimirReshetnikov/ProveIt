@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialIntegralGrid
 import IPRADerivations.Analysis.Stirling.Binet.WeightedIntegrals.Resolvent.GaussianBinetWeightedResolventGrid
 import IPRADerivations.Analysis.Stirling.Binet.Laplace.Integrands.GaussianBinetLaplaceScalarMajorant
-import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftSecants
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.LogDifferences.GaussianGammaDigammaTwoShiftSecants
 
 /-!
 # The exact shifted right-half-plane charts in the Binet rectangle

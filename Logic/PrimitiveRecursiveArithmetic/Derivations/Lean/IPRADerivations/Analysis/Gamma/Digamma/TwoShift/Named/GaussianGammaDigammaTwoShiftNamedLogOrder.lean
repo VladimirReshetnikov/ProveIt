@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Named.GaussianGammaDigammaTwoShiftNamedRepairedChart
-import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftRationalRate
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.Rates.GaussianGammaDigammaTwoShiftRationalRate
 import IPRADerivations.Analysis.Names.Order.GaussianNamedCofinalOrder
 import IPRADerivations.Analysis.Names.Order.GaussianNamedRealOrderLinear
 import IPRADerivations.Analysis.Euler.PowerScaling.GaussianEulerPowerScalingCompactRate

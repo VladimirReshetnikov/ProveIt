@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Optimization.Convexity.Moduli.RationalConvexFiniteModulus
 import IPRADerivations.Analysis.Optimization.CubeInfimum.RationalCubeInfimumName
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GapRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GapRemoval
 
 /-!
 # The nested rational interval presentation of the convexity packet

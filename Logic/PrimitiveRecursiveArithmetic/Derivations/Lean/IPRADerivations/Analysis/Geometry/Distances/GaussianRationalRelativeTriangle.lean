@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalNormClearing
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalNormClearing
 import IPRADerivations.Analysis.Polynomials.Division.GaussianRationalSyntheticDivision
 
 /-!

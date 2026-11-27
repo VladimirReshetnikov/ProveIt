@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.Powers.GaussianEulerLowerRationalPowerReference
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianSquaredNormUpper
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianSquaredNormUpper
 
 /-!
 # Sharp original lower-time power bound at t=(a/b)^A

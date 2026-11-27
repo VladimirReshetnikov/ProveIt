@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ShiftedProducts.GaussianGammaGaussShiftedProduct
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Cutoffs.GaussianGaussEulerCutoff
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.PolynomialFactors.GaussianRationalLinearProduct
 
 /-!
 # Cofinal Euler products for the shifted Gamma name

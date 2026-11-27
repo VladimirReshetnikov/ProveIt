@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Elimination.Superelliptic.Matrices.GaussianSuperellipticMatrixCoefficients
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalPaddedProductDegree
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.PolynomialFactors.GaussianRationalPaddedProductDegree
 import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFiniteProduct
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.FrozenInputs.GaussianGammaMinimumFreezeRational
-import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaLocationInput
+import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.Location.GaussianGammaDigammaLocationInput
 import IPRADerivations.Analysis.Names.Differences.GaussianNamedDifference
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalLowerBounds
 

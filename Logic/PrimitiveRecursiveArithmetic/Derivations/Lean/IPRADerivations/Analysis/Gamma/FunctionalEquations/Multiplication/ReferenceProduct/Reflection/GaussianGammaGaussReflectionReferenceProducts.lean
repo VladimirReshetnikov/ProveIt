@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.Reflection.GaussianGammaGaussReflectionFamily
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReferencePrefix
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductReverse
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.FactorOperations.GaussianRationalProductReverse
 
 /-!
 # The two Gamma factors of the reflection-family product

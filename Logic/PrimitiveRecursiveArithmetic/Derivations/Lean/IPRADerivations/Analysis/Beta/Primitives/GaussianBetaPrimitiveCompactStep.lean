@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveLinearStep
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFirstOrderProductError
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.Estimates.GaussianRationalFirstOrderProductError
 
 /-!
 # A compact cell estimate for the actual beta quadrature row

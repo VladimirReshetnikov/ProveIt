@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientUniformNorm
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaPowerHorizonCoherence
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.HorizonCoherence.GaussianGammaPowerHorizonCoherence
 import IPRADerivations.Analysis.Gamma.EulerProducts.Weierstrass.GaussianGammaWeierstrassFactors
 
 /-!

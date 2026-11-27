@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ShiftedProducts.GaussianGammaGaussShiftedProduct
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedFiniteProductApartness
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaC9Bound
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.FiniteAlgebra.GaussianGammaC9Bound
 
 /-!
 # Uniform separation for the shifted Gamma product

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Trigonometry.SineProducts.Bounds.GaussianSineReflectionLower
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantPairAlgebra
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalInvertibleNorm
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalInvertibleNorm
 
 /-!
 # Pole-separated inverse powers in the polygamma tail

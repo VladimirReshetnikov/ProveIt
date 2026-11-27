@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianEulerNamedShiftInput
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneLift
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteValueProperness
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.Continuity.GaussianGammaFiniteValueProperness
 
 /-!
 # Exact signed charts for the original named unit shift

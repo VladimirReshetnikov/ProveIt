@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerNamed
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.NamedValues.GaussianLogGammaEulerNamed
 import IPRADerivations.Analysis.Gamma.Names.Derivatives.GaussianNamedLogGammaTaylorFrozen
 
 /-!

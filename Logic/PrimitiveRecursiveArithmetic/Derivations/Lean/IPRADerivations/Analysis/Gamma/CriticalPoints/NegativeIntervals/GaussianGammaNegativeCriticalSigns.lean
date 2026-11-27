@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalPositiveWindow
-import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaDyadicMesh
-import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaGridSign
+import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.DyadicGrid.GaussianGammaDigammaDyadicMesh
+import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.DyadicGrid.GaussianGammaDigammaGridSign
 
 /-!
 # Opposite endpoint signs for the shifted digamma on every negative interval

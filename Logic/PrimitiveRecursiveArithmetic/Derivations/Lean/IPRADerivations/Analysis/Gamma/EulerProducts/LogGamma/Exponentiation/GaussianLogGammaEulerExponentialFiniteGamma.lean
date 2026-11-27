@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Exponentiation.GaussianLogGammaEulerExponentialHead
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerReciprocalInverse
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.Inverse.GaussianGammaEulerReciprocalInverse
 
 /-!
 # The positive exponential of an actual finite log-Gamma head

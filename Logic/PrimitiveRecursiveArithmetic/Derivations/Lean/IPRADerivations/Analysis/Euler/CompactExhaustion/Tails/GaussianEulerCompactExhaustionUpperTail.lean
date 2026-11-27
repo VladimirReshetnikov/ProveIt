@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Tails.GaussianEulerNamedUpperTail
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartImageCompactModulus
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.Quadrature.GaussianEulerPositivePowerChartImageCompactModulus
 
 /-!
 # Euler upper tails with arbitrary rational right endpoints

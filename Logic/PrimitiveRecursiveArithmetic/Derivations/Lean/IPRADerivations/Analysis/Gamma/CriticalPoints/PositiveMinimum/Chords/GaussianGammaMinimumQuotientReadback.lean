@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Rates.DifferenceQuotients.GaussianNamedDifferenceQuotient
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalInvertibleNorm
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalInvertibleNorm
 
 /-!
 # Recovering a small difference from its divided-difference bound

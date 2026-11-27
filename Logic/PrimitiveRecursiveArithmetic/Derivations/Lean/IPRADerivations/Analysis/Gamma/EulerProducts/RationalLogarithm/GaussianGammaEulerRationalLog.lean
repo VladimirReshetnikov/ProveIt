@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerRationalHead
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.Denominators.GaussianGammaEulerRationalHead
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfEulerSquare
 import IPRADerivations.Analysis.SpecialFunctions.DampingPower.GaussianNamedDampingPowerRealSamples
 import IPRADerivations.Analysis.Stirling.Duplication.GaussianStirlingLogDuplication

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadRescaling
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.Denominators.GaussianGammaEulerHeadRescaling
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Heads.GaussianGaussEulerHeadCancellation
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.ReferenceProduct.GaussianGammaGaussReferenceProduct
 

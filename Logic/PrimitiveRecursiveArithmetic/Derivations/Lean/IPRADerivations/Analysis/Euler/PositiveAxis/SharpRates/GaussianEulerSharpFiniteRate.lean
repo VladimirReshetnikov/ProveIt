@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.SharpRates.GaussianEulerSharpGridRate
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GaussianRationalSlackRemoval
 
 /-!
 # Sharp finite Euler estimate for the original samplers

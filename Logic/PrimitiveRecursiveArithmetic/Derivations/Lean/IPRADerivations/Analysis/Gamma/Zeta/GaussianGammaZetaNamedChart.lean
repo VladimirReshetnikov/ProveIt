@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletProductParameterRate
+import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.ParameterContinuity.GaussianGammaZetaDirichletProductParameterRate
 import IPRADerivations.Analysis.Names.RightHalfPlane.GaussianNamedRightHalfPlaneDemandLift
 
 /-!

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.UpperBounds.GaussianEulerUpperPowerCompatibility
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianSquaredNormUpper
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianSquaredNormUpper
 
 /-!
 # The actual upper-time Euler power has the paper norm majorant

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Deflation.GaussianBarnesCanonicalValueZeros
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerCofinal
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.NamedValues.GaussianLogGammaEulerCofinal
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaAdjacentCutoff
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianRadiusExponentialName
 

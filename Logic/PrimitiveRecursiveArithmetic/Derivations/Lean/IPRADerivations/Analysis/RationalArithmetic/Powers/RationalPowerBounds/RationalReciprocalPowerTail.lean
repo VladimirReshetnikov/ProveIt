@@ -1,7 +1,7 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 import IPRADerivations.Analysis.Inequalities.NonnegativeArithmetic.RationalNonnegativePowers
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSyntheticBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianBudgets.GaussianRationalSyntheticBounds
 
 /-!
 # Sharp finite reciprocal-power tails

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Polynomials.CompanionMatrices.RationalPolynomial
 import IPRADerivations.Analysis.Polynomials.Determinants.RationalEmbedding.RationalPolynomialDeterminantTransport
 import IPRADerivations.Analysis.RationalArithmetic.Fibers.RationalCurvePointsGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Evaluation.RationalPolynomialNonvanishing
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianNormFiniteZeroBound
+import IPRADerivations.Analysis.RationalArithmetic.Norms.PolynomialNorms.GaussianNormFiniteZeroBound
 
 /-!
 # The actual rational norm and its sharp finite point bound

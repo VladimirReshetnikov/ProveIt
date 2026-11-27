@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedMajorantExponent
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaLogHarmonicName
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.HarmonicTerms.GaussianGammaLogHarmonicName
 
 /-!
 # The sharp folded Euler exponent with the original fixed Euler name

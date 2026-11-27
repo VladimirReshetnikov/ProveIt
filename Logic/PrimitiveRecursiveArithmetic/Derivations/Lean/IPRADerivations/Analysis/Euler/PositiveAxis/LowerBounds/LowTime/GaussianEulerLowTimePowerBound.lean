@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PositiveAxis.LowerBounds.LowTime.GaussianEulerLowTimeReciprocalReference
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianSquaredNormUpper
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianSquaredNormUpper
 
 /-!
 # Every original lower-time power observation has radius 1/t

@@ -135,6 +135,18 @@ The Lean modules in this directory construct derivations in the object theory. T
 | Binet weighted integrals | [Weighted exponential integrals](Stirling/Binet/WeightedIntegrals/Exponential/), [reciprocal quadratures](Stirling/Binet/WeightedIntegrals/Reciprocal/), and [resolvent integrals](Stirling/Binet/WeightedIntegrals/Resolvent/) |
 | Euler logarithmic integrals | [Compact quadrature](Euler/Logarithms/Compact/) and [improper integrals and names](Euler/Logarithms/Improper/) |
 | Euler logarithmic parameter estimates | [Pointwise increments and remainders](Euler/Logarithms/ParameterRates/Pointwise/), [compact rates and Taylor estimates](Euler/Logarithms/ParameterRates/Compact/), and [rates for regular names](Euler/Logarithms/ParameterRates/Named/) |
+| Gamma Euler product heads | [Polynomial coefficients and recurrences](Gamma/EulerProducts/FiniteHeads/Coefficients/), [Denominators, rescaling, and inverses](Gamma/EulerProducts/FiniteHeads/Denominators/) |
+| Gamma Euler approximants | [Finite identities and bounds](Gamma/EulerProducts/Approximants/FiniteAlgebra/), [Continuity and conjugation](Gamma/EulerProducts/Approximants/Continuity/), [Inverses](Gamma/EulerProducts/Approximants/Inverse/) |
+| Gamma Euler exponents | [Harmonic contributions and combined kernels](Gamma/EulerProducts/Exponents/HarmonicTerms/), [Coherence across coefficient horizons](Gamma/EulerProducts/Exponents/HorizonCoherence/) |
+| Euler log-Gamma | [Finite heads](Gamma/EulerProducts/LogGamma/FiniteHeads/), [Cofinal and named values](Gamma/EulerProducts/LogGamma/NamedValues/), [Rational charts and presentation independence](Gamma/EulerProducts/LogGamma/RationalCharts/) |
+| Positive critical point of Gamma | [Dyadic digamma sign crossing](Gamma/Digamma/CriticalPoints/DyadicGrid/), [Location and Gamma stationarity](Gamma/Digamma/CriticalPoints/Location/) |
+| Two-shift digamma estimates | [Finite and cofinal rates](Gamma/Digamma/TwoShift/Rational/Rates/), [Rational windows and caps](Gamma/Digamma/TwoShift/Rational/Windows/), [Logarithmic differences and secants](Gamma/Digamma/TwoShift/Rational/LogDifferences/) |
+| Dirichlet series | [Finite row and tail bounds](Gamma/Zeta/Dirichlet/Tails/), [Parameter continuity and chart agreement](Gamma/Zeta/Dirichlet/ParameterContinuity/) |
+| Euler positive-axis power charts | [Image nodes, panels, and lattices](Euler/PositiveAxis/PowerCharts/ImageGrids/Lattice/), [Quadrature and error schedules](Euler/PositiveAxis/PowerCharts/ImageGrids/Quadrature/) |
+| Rational finite products | [Factor operations](RationalArithmetic/FiniteProducts/FactorOperations/), [Polynomial factors](RationalArithmetic/FiniteProducts/PolynomialFactors/), [Error bounds and witnesses](RationalArithmetic/FiniteProducts/Estimates/) |
+| Rational and Gaussian norms | [Polynomial norm and fiber divisibility](RationalArithmetic/Norms/PolynomialNorms/), [Gaussian-rational norm estimates](RationalArithmetic/Norms/GaussianBounds/) |
+| Rational order bounds | [Removal of auxiliary errors](RationalArithmetic/OrderBounds/SlackRemoval/), [Gaussian term and division budgets](RationalArithmetic/OrderBounds/GaussianBudgets/) |
+| Fundamental theorem of algebra | [Root-finding trajectory and rates](Polynomials/RootFinding/FundamentalTheorem/Trajectory/), [Root names and vanishing polynomial values](Polynomials/RootFinding/FundamentalTheorem/RootNames/) |
 
 Import a file using its path within the Lean library. For example, `IPRADerivations.Analysis.Gamma.BohrMollerup.Named.GaussianBohrMollerupNamedGamma` contains `LeanProofs.IPRA.Analysis.GaussianBohrMollerupNamedGamma.actual_named_Bohr_Mollerup_Gamma_closed`.
 

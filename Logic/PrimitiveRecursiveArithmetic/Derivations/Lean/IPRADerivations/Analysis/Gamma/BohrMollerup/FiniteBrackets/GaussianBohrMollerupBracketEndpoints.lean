@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.BohrMollerup.FiniteBrackets.GaussianBohrMollerupBlockChord
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalWendelBoundary
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedFiniteSumFamily
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaFactorialLogSum
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.FiniteHeads.GaussianLogGammaFactorialLogSum
 
 /-!
 # The literal finite Bohr–Mollerup brackets

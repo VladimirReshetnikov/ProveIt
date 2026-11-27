@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalConvolutionNorm
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalConvolutionNorm
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerDifference
 

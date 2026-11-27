@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Geometry.Distances.RationalHausdorffTriangle
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GapRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GapRemoval
 
 /-!
 # Equality of regular rational aggregate names

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Barnes.Taylor.Grids.Differentiation.CofinalIdentities.GaussianBarnesCanonicalTaylorAllOrderDerivative
 import IPRADerivations.Analysis.Barnes.Taylor.Coefficients.FixedCoefficients.GaussianBarnesCanonicalFixedTaylorDerivativeUniformConvergence
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedBoundedProductObservation
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.PolynomialFactors.GaussianRationalLinearProduct
 
 /-!
 # A local modulus for the original cofinal Barnes factorial names

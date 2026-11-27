@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.RationalArithmetic.Directions.GaussianRationalDirectionConstruction
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DirectionSelection.GaussianDominantAlpha
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalRelativeNormAlgebra
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalRelativeNormAlgebra
 
 /-!
 # Actual Gaussian algebra for the dominant constant/coefficient pair

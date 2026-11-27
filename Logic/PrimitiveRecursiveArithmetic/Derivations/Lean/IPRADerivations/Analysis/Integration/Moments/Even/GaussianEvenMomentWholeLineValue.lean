@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Integration.Moments.Even.GaussianEvenMomentWholeLine
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartCorrectedImage
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.Lattice.GaussianEulerPositivePowerChartCorrectedImage
 
 /-!
 # Explicit unhalved coefficient of the whole-line Gaussian moments

@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.GaussianConstantCoefficientNames
-import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAValueZero
+import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.RootNames.GaussianGeneralFTAValueZero
 
 /-!
 # The constant-name FTA program evaluates the original numerical polynomial

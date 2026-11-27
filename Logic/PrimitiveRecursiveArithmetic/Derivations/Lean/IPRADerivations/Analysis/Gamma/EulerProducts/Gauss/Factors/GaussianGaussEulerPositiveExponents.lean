@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerFullHeadInverse
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.Denominators.GaussianGammaEulerFullHeadInverse
 import IPRADerivations.Analysis.Gamma.EulerProducts.Gauss.Factors.GaussianGaussEulerPowerRatio
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedBoundedProductObservation
 

@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.Ratios.GaussianGammaRationalLogWendel
 import IPRADerivations.Analysis.Stirling.Bounds.Multiplicative.GaussianStirlingMultiplicativeBoundsLog
 import IPRADerivations.Analysis.Names.Scaling.GaussianNamedNaturalScaleOrder
-import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerDenominator
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.Denominators.GaussianGammaEulerDenominator
 
 /-!
 # Width of a positive rational logarithmic window

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.PositiveMinimum.FrozenInputs.GaussianGammaMinimumFreeze
 import IPRADerivations.Analysis.Gamma.Names.Input.GaussianGammaPositiveRationalProperness
-import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaLocationInput
+import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.Location.GaussianGammaDigammaLocationInput
 
 /-!
 # Freeze log Gamma at the original dyadic critical location

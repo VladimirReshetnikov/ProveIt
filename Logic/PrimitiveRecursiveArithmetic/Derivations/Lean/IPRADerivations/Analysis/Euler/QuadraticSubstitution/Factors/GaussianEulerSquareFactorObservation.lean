@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.Kernels.GaussianEulerSquareIntegrand
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.Kernels.GaussianEulerQuadraticKernelCompactName
 import IPRADerivations.Analysis.Euler.QuadraticSubstitution.Jacobian.GaussianEulerSquareJacobianCompactName
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GaussianRationalSlackRemoval
 
 /-!
 # Independent original observations in quadratic Euler factorization

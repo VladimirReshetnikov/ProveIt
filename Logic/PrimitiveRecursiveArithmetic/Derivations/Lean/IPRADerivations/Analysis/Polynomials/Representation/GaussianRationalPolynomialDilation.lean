@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Polynomials.Products.Convolution.GaussianRationalLowCoefficientConvolution
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerExpansion
 import IPRADerivations.Analysis.Polynomials.Interpolation.GaussianRationalGridCoefficientEquality
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalConvolutionNorm
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalConvolutionNorm
 
 /-!
 # Actual variable dilation and its finite coefficient norm

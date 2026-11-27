@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteEulerFactorization
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.FiniteAlgebra.GaussianGammaFiniteEulerFactorization
 
 /-!
 # The actual finite sampled Gamma coefficient recurrence

@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.NegativeAxis.GaussianGammaNegativeInterval
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaHarmonicCells
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Signs.GaussianGammaNegativeIntervalProductSign
 import IPRADerivations.Analysis.Beta.EulerProducts.GaussianEulerBetaProductPascal
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalRelativeTwoTerm
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianBudgets.GaussianRationalRelativeTwoTerm
 
 /-!
 # Uniform bounds on the literal C24 pole multiplier

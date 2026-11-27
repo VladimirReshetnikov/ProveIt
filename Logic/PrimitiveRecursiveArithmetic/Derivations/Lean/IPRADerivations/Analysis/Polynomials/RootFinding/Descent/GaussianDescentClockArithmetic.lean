@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.GaussianProductStability
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.RationalClosure
 
 /-!
 # Exact finite arithmetic of the rational-descent clock

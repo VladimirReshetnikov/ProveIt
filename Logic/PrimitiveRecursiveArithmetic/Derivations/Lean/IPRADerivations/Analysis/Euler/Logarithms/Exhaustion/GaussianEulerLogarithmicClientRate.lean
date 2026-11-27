@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Logarithms.Compact.GaussianEulerLogarithmicCompactName
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSlackRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GaussianRationalSlackRemoval
 
 /-!
 # Original logarithmic observations across independent compact clients

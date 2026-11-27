@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.CriticalPoints.NegativeIntervals.GaussianGammaNegativeCriticalCorrection
 import IPRADerivations.Analysis.Gamma.Digamma.GaussianGammaDigammaNative
-import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaCriticalSigns
+import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.DyadicGrid.GaussianGammaDigammaCriticalSigns
 
 /-!
 # Uniform reciprocal endpoint margins on the negative Gamma intervals

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.OffDominantTerms.GaussianOffDominantWeights
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianHornerCommonDenominator
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalNormClearing
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalNormClearing
 import IPRADerivations.Analysis.RationalArithmetic.Covers.GaussianRationalCover
 
 /-!

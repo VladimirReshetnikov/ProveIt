@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Euler.CompactExhaustion.Grids.GaussianEulerCompactExhaustionScaled
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartImageName
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartImagePanelAlignment
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.Quadrature.GaussianEulerPositivePowerChartImageName
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.Lattice.GaussianEulerPositivePowerChartImagePanelAlignment
 
 /-!
 # Euler exhaustion on the exact rational panel of the ordinary image name

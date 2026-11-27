@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianPolynomialPerturbation
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianProductNorm
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianProductNorm
 
 /-!
 # Finite root-product stability for Gaussian integer presentations

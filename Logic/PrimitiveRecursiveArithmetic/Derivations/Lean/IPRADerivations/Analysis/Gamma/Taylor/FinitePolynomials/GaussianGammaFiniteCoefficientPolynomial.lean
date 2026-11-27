@@ -1,7 +1,7 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.GaussianGammaEulerHeadPolynomial
+import IPRADerivations.Analysis.Gamma.EulerProducts.FiniteHeads.Coefficients.GaussianGammaEulerHeadPolynomial
 import IPRADerivations.Analysis.Gamma.Taylor.ExponentCoefficients.GaussianGammaExponentCoefficientPolynomial
 import IPRADerivations.Analysis.Polynomials.Taylor.GaussianWeightedPolynomialTail
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaC9Bound
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.FiniteAlgebra.GaussianGammaC9Bound
 
 /-!
 # The original finite Gamma coefficient construction and C19 majorant

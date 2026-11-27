@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Names.Order.GaussianFastValueCut
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianRationalSyntheticBounds
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GaussianBudgets.GaussianRationalSyntheticBounds
 
 /-!
 # Scalar radius cuts and actual two-name Gaussian order

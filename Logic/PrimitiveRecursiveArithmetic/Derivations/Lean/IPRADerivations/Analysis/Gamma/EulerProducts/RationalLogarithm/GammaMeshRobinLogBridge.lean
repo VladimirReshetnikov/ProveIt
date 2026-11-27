@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.GammaEulerConstantName
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMidpoint
-import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.GapRemoval
+import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.SlackRemoval.GapRemoval
 import IPRADerivations.Analysis.RationalArithmetic.Representations.RationalRepresentations
 import IPRADerivations.AnalyticNumberTheory.RobinLipSum
 import IPRADerivations.AnalyticNumberTheory.LogElementary

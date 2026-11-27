@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMellinIntegrand
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartCorrectedImage
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.Lattice.GaussianEulerPositivePowerChartCorrectedImage
 import IPRADerivations.Analysis.Geometry.GeometricBounds.GaussianRationalGeometricPowerTail
 import IPRADerivations.Analysis.Geometry.GeometricBounds.GaussianRationalInverseGeometric
 

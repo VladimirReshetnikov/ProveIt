@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.Names.Identities.GaussianExponentialRealPart
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianSquaredNormUpper
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianSquaredNormUpper
 import IPRADerivations.Analysis.Gamma.Names.Symmetry.GaussianGammaRealValues
 
 /-!

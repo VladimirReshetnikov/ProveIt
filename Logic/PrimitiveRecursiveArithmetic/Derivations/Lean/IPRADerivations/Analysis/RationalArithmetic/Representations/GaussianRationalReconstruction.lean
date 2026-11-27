@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.PolynomialFactors.GaussianRationalLinearProduct
 import IPRADerivations.Analysis.Polynomials.Horner.GaussianReciprocalHorner
 
 /-!

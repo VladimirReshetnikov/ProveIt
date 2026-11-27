@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Recurrence.GaussianGammaNegativeIntervalInverseRecurrence
 import IPRADerivations.Analysis.Gamma.NegativeAxis.Values.Apartness.GaussianGammaNegativeIntervalInverseBound
 import IPRADerivations.Analysis.Gamma.CriticalPoints.GaussianGammaNegativeCriticalLocation
-import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.GaussianGammaDigammaLocationProduct
+import IPRADerivations.Analysis.Gamma.Digamma.CriticalPoints.Location.GaussianGammaDigammaLocationProduct
 
 /-!
 # Uniform bounds for the original negative Gamma observations

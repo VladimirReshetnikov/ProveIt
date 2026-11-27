@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.ExponentialIntegrals.GaussianBinetExponentialIntegralGrid
 import IPRADerivations.Analysis.Series.Telescoping.GaussianRationalParameterTelescope
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerRepresentation
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.RationalCharts.GaussianLogGammaEulerRepresentation
 
 /-!
 # Compact antiderivative of the actual complex Laplace exponential

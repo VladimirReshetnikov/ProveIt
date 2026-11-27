@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.RightHalfPlane.GaussianRightHalfPlaneExponentialSmall
 import IPRADerivations.Analysis.Exponential.RightHalfPlane.GaussianRightHalfPlaneExponentialCharts
-import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerHead
+import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.FiniteHeads.GaussianLogGammaEulerHead
 
 /-!
 # The exponential of the original canonical logarithm

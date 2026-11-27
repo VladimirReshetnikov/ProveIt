@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaLogHarmonicName
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.HarmonicTerms.GaussianGammaLogHarmonicName
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaExponentStep
 
 /-!

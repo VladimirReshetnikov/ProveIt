@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalLinearProduct
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.PolynomialFactors.GaussianRationalLinearProduct
 
 /-!
 # Nonnegative coefficient norms and actual self-differences

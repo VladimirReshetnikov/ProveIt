@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Endpoints.AllDegrees.GaussianBetaAllDegreeInverseContinuity
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaFiniteMixedInputContinuity
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.Continuity.GaussianGammaFiniteMixedInputContinuity
 
 /-!
 # Different native encodings for the all-degree finite Euler input rate

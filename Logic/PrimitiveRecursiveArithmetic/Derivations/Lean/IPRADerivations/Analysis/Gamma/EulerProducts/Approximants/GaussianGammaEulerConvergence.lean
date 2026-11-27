@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaPerturbationExponent
 import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.Folded.GaussianGammaFoldedApproximantBalance
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaCutoffIndependence
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaC9Bound
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.FiniteAlgebra.GaussianGammaC9Bound
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedSmallPerturbationTransport
 
 /-!

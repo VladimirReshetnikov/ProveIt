@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Stirling.Binet.Oscillatory.GaussianBinetImaginaryExponentialScale
 import IPRADerivations.Analysis.Integration.Quadrature.GaussianRationalQuadratureMean
-import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.GaussianGammaDigammaTwoShiftSecants
+import IPRADerivations.Analysis.Gamma.Digamma.TwoShift.Rational.LogDifferences.GaussianGammaDigammaTwoShiftSecants
 
 /-!
 # Cleared finite cosine primitive for the oscillatory rectangle

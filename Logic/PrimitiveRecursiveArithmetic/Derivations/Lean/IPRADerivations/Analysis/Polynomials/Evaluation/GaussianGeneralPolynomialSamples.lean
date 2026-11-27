@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Polynomials.Coefficients.NamedCoefficients.Gauss
 import IPRADerivations.Analysis.Polynomials.RootFinding.Descent.Nonmonic.GaussianNonmonicStepBound
 import IPRADerivations.Foundations.BoundedSyntaxBackwardInduction
 import IPRADerivations.Analysis.Polynomials.Horner.Perturbation.GaussianRationalAllCoefficientPerturbation
-import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.GaussianGeneralFTAConstants
+import IPRADerivations.Analysis.Polynomials.RootFinding.FundamentalTheorem.Trajectory.GaussianGeneralFTAConstants
 
 /-!
 # Actual general descending polynomial samples

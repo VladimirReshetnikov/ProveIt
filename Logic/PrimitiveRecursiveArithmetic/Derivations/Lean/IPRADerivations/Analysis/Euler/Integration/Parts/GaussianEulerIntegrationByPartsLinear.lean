@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Beta.Primitives.GaussianBetaPrimitiveLinearStep
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalFirstOrderProductError
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.Estimates.GaussianRationalFirstOrderProductError
 import IPRADerivations.Analysis.Euler.Integration.Decay.Increments.GaussianEulerDecayIncrement
 
 /-!

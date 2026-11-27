@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerContinuityReference
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.Continuity.GaussianGammaEulerContinuityReference
 import IPRADerivations.Analysis.Logarithm.FiniteSeries.Composition.GaussianFiniteLogarithmDyadicTail
 import IPRADerivations.Analysis.Names.Rates.Reciprocals.GaussianNamedInverseRate
 

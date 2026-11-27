@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.RootFinding.DominantTerms.DominantBounds.GaussianDominantScoreWeights
-import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.GaussianRationalProductWitness
+import IPRADerivations.Analysis.RationalArithmetic.FiniteProducts.Estimates.GaussianRationalProductWitness
 import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRationalReciprocal
 
 /-!

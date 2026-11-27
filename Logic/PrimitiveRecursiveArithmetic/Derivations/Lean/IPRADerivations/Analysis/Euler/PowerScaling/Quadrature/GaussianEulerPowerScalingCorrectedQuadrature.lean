@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.PowerScaling.Quadrature.GaussianEulerPowerScalingImageQuadrature
-import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.GaussianEulerPositivePowerChartCorrectedImage
+import IPRADerivations.Analysis.Euler.PositiveAxis.PowerCharts.ImageGrids.Lattice.GaussianEulerPositivePowerChartCorrectedImage
 
 /-!
 # The weighted Euler sum at the literal corrected chart nodes

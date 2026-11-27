@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Series.GaussianGammaDigammaPositiveTerms
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaLogHarmonicName
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.HarmonicTerms.GaussianGammaLogHarmonicName
 
 /-!
 # Finite Euler reciprocal-sum slopes and the native digamma

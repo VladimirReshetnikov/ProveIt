@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfEulerSquare
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
-import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerInverseConvergence
+import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.Inverse.GaussianGammaEulerInverseConvergence
 import IPRADerivations.Foundations.CubicBisection
 
 /-!

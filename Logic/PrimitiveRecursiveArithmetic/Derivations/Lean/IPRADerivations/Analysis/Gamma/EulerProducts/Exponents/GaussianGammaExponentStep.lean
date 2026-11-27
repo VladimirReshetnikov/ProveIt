@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.ReciprocalGamma.GaussianGammaCutoffName
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.Tails.GaussianGammaCanonicalTailShift
-import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.GaussianGammaHarmonicIncrement
+import IPRADerivations.Analysis.Gamma.EulerProducts.Exponents.HarmonicTerms.GaussianGammaHarmonicIncrement
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameRingLaws
 
 /-!

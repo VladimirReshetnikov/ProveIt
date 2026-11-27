@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Determinants.GaussianPolynomialDeterminantTerms
-import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianRationalConvolutionNorm
+import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianBounds.GaussianRationalConvolutionNorm
 import IPRADerivations.Analysis.Polynomials.Coefficients.Norms.GaussianCoefficientNormOrder
 
 /-!

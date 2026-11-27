@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.GaussianGammaZetaDirichletFiniteRate
+import IPRADerivations.Analysis.Gamma.Zeta.Dirichlet.Tails.GaussianGammaZetaDirichletFiniteRate
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!
