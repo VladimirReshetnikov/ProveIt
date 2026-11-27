@@ -73,10 +73,8 @@ theorem val_double {q k : PTm n} (hq : Γ ⊢[PRAAx] prime q) :
   have sE : C ⊢[PRAAx] sg (val q (lcmu (two * k))) ≐ one := (congrSg Ep).eqTrans (sg_succ _)
   have pE : C ⊢[PRAAx] le (pw q (val q (lcmu (two * k)))) (two * k) :=
     le_congr ((congrMul sE (.eqRefl _)).eqTrans (one_mul _)) (.eqRefl _) A1.wk
-  have l1E : C ⊢[PRAAx] le one (val q (lcmu (two * k))) :=
-    le_of_eq_add (d := pred (val q (lcmu (two * k)))) (Ep.eqTrans (by ipra_ring))
   have qE : C ⊢[PRAAx] le q (pw q (val q (lcmu (two * k)))) :=
-    le_congr (pw_one q) (.eqRefl _) (PowerCleared.pw_le_exp qpos.wk l1E)
+    le_base_pw (Order.zero_lt_of_eq_succ Ep)
   have s1 : C ⊢[PRAAx] sg (monus (succ (two * k)) q) ≐ one :=
     sg_lt ((succ_monus_succ _ _).eqTrans (le_trans qE pE))
   have rhs : C ⊢[PRAAx] val q (lcmu k) + (isP q * sg (monus (pw q (val q (lcmu (two * k)))) k)) *

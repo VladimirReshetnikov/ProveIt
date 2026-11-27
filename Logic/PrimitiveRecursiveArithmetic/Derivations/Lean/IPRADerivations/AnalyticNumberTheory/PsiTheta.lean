@@ -42,14 +42,10 @@ theorem pe_le {p N : PTm n} (hp : Γ ⊢[PRAAx] prime p)
 
 theorem v_tail {p N : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hNp : Γ ⊢[PRAAx] lt N p) :
     Γ ⊢[PRAAx] val p (lcmu N) ≐ zero := by
-  have hp0 : Γ ⊢[PRAAx] p ≐ succ (pred p) := pos_of_one_le (le_trans (le_succ_self one) (prime_two hp))
   refine .orE (zero_or_succ (val p (lcmu N))) Prf.hyp0 ?_
   have hs : ((val p (lcmu N) ≐ succ (pred (val p (lcmu N)))) :: Γ) ⊢[PRAAx]
       val p (lcmu N) ≐ succ (pred (val p (lcmu N))) := Prf.hyp0
-  have hp1 := hp0.wk (ψ := val p (lcmu N) ≐ succ (pred (val p (lcmu N))))
-  have he1 : ((val p (lcmu N) ≐ succ (pred (val p (lcmu N)))) :: Γ) ⊢[PRAAx] le one (val p (lcmu N)) :=
-    le_congr (.eqRefl _) hs.eqSymm ((succ_monus_succ _ _).eqTrans (zero_le _))
-  have a := le_trans (le_congr (pw_one p) (.eqRefl _) (pw_le_exp hp1 he1)) (pe_le hp.wk hs)
+  have a := le_trans (le_base_pw (Order.zero_lt_of_eq_succ hs)) (pe_le hp.wk hs)
   exact lt_irrefl _ _ (lt_of_lt_of_le hNp.wk a)
 
 theorem v_mid {p N r : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hrp : Γ ⊢[PRAAx] le (succ r) p)

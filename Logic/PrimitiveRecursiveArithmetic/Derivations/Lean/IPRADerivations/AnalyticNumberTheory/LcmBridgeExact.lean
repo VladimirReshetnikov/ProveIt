@@ -67,7 +67,7 @@ theorem e_high {i P : PTm n} (hi : Γ ⊢[PRAAx] prime i) (hPi : Γ ⊢[PRAAx] l
   have a : C ⊢[PRAAx] le (pw i (val i (lcmu P))) P :=
     le_congr ((congrMul s1 (.eqRefl _)).eqTrans (one_mul _)) (.eqRefl _) I1
   have b : C ⊢[PRAAx] le i (pw i (val i (lcmu P))) :=
-    le_congr (pw_one i) (.eqRefl _) (PowerCleared.pw_le_exp (p_pos hp2) l1)
+    le_base_pw l1
   exact le_lt_absurd _ (le_trans b a) hPi.wk
 
 /-! ## Exactness -/

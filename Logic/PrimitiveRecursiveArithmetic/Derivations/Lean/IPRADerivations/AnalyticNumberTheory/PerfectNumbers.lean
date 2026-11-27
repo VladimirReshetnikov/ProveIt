@@ -59,7 +59,7 @@ theorem coprime {a q : PTm n} (ha : Γ ⊢[PRAAx] le one a) (hq : Γ ⊢[PRAAx] 
     (hM : Γ ⊢[PRAAx] succ q ≐ pw two (succ a)) : Γ ⊢[PRAAx] gcd (pw two a) q ≐ one := by
   have hq1 := p_pos (prime_two hq)
   have Tpos := pos_pw (Γ := Γ) two_pos a
-  have T2 : Γ ⊢[PRAAx] le two (pw two a) := le_congr (pw_one two) (.eqRefl _) (PowerCleared.pw_le_exp two_pos ha)
+  have T2 : Γ ⊢[PRAAx] le two (pw two a) := le_base_pw ha
   have hlt := lt_alg T2 hM (pw_succ two a)
   have hnd : Γ ⊢[PRAAx] neg (dvd q (pw two a)) := by
     refine .impI ?_

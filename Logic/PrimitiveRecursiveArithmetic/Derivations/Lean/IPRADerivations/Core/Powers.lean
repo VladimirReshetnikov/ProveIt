@@ -145,10 +145,14 @@ theorem pw_le_pw_exp {a m k : PTm n} (ha : Γ ⊢[PRAAx] le one a) (hmk : Γ ⊢
   exact le_congr ((mul_comm _ _).eqTrans (one_mul _)) expansion.eqSymm
     (mul_le_mul_left (pw a m) (pw_one_le ha (monus k m)))
 
+/-- Every positive power is at least its base. -/
+theorem le_base_pw {a e : PTm n} (he : Γ ⊢[PRAAx] le one e) :
+    Γ ⊢[PRAAx] le a (pw a e) := by
+  refine .orE (zero_or_succ a) (le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le _)) ?_
+  exact le_congr (pw_one a) (.eqRefl _) (pw_le_pw_exp (Order.zero_lt_of_eq_succ Prf.hyp0) he.wk)
+
 theorem le_self_pw (a m : PTm n) : Γ ⊢[PRAAx] le (succ a) (pw (succ a) (succ m)) :=
-  le_congr (pw_one _) (.eqRefl _)
-    (pw_le_pw_exp ((succ_monus_succ zero a).eqTrans (zero_le a))
-      ((succ_monus_succ zero m).eqTrans (zero_le m)))
+  le_base_pw (Order.lt_succ_of_le (zero_le m))
 
 /-! ## Homogeneous Bernoulli inequality -/
 

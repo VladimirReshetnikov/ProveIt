@@ -144,7 +144,7 @@ theorem growth_absurd {x s m d : PTm n}
   have h14 : Γ ⊢[PRAAx] le (one : PTm n) (two * two) :=
     le_of_eq_add (d := succ two) (by ipra_ring)
   have hP : Γ ⊢[PRAAx] le two (pw two (two * two)) :=
-    le_congr (pw_one two) (.eqRefl _) (pw_le_exp two_pos' h14)
+    le_base_pw h14
   exact mul_absurd fin (one_le_pos (pw_pos' two_pos' _)) hP
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BertrandGrowth
