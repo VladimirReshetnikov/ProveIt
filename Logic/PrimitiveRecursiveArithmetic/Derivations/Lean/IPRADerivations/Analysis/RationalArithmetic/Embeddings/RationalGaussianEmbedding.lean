@@ -318,4 +318,7 @@ theorem native_conjugate_product (a : PTm n) :
       ComplexLogarithmRemainder.eval_im_code,ZT.toZ_ofNat,ComplexLogarithmRemainder.normSq_eval] <;>
     (try ipra_simps) <;> ring
 
+theorem embed_congr {x y : PTm n} (e : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx] embed x ≐ embed y :=
+  (embed_at x).eqSymm.eqTrans ((congrAp1 embedF e).eqTrans (embed_at y))
+
 end LeanProofs.IPRA.Analysis.RationalGaussianEmbedding

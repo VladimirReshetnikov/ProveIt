@@ -317,4 +317,8 @@ theorem exact_finite_complex_taylor_evaluator :
 #print axioms finite_complex_canonical_factor_bound
 #print axioms exact_finite_complex_taylor_evaluator
 
+theorem integer_disk (B : PTm n) : Γ ⊢[PRAAx] bounded (scale B oneCode) B :=
+  le_congr ((normSq_scale B oneCode).eqTrans ((congrMul (.eqRefl _) normSq_one).eqTrans (by ipra_ring))).eqSymm
+    (.eqRefl _) (le_refl (B*B))
+
 end LeanProofs.IPRA.Analysis.ComplexLogarithmRemainder

@@ -218,4 +218,17 @@ theorem actual_Beta_primitive_program_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx]
     (run (var 0) (var 1) (var 2) (var 3) ≐ output (var 0) (var 1) (var 2) (var 3)) :=
   closeUniv 4 (program_at _ _ _ _)
 
+theorem base_constant : Γ ⊢[PRAAx] entry (base : PTm n) one ≐ qone :=
+  (GaussianRationalPolynomialBuffers.added_lookup _ _ _ _ (le_refl two)).eqTrans
+    ((qadd_congr (GaussianGammaLinearCoefficient.monomial_constant _)
+      ((entry_congr (.eqRefl _) (by ipra_ring : Γ ⊢[PRAAx] one ≐ one+zero)).eqTrans
+        ((GaussianRationalPolynomialBuffers.pad_tail _ one zero (lt_congr (.eqRefl _) (GaussianRationalMonicReduction.singleton_length qone).eqSymm (zero_lt_succ zero))).eqTrans
+          (GaussianRationalMonicReduction.singleton_lookup qone)))).eqTrans
+      (GaussianRationalSyntheticDivision.qzero_add _ GaussianRationalSyntheticDivision.qone_canonical))
+
+theorem base_leading : Γ ⊢[PRAAx] entry (base : PTm n) zero ≐ qnegative qone :=
+  (GaussianRationalPolynomialBuffers.added_lookup _ _ _ _ (zero_lt_succ one)).eqTrans
+    ((qadd_congr (GaussianGammaLinearCoefficient.monomial_leading _) (GaussianRationalPolynomialBuffers.pad_leading _ one zero (le_refl one))).eqTrans
+      (GaussianReciprocalHorner.qadd_zero_right _ (GaussianRationalMetric.qnegative_canonical _)))
+
 end LeanProofs.IPRA.Analysis.GaussianEulerBetaPolynomialPrimitive

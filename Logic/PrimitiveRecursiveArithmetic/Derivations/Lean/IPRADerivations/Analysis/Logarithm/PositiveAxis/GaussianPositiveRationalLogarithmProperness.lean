@@ -22,7 +22,7 @@ open RationalHarmonicInterval (horizon interval)
 open GammaEulerMesh (factorial_positive)
 open GaussianRationalHorner (canonical_unique represents_congr)
 open GaussianRationalMetric (qsub distanceBounded)
-open RationalGaussianEmbedding (embed)
+open RationalGaussianEmbedding (embed embed_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -48,10 +48,6 @@ theorem log_at_common (a Q L : PTm n) (ha : Γ ⊢[PRAAx] le one a)
   simp only [logNumerator,GammaMeshRobinLogBridge.harmonicNumerator,ZT.toZ]
   ipra_simps
   linear_combination left-right
-
-private theorem embed_congr {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) : Γ ⊢[PRAAx] embed a ≐ embed b :=
-  (RationalGaussianEmbedding.embed_at a).eqSymm.eqTrans
-    ((congrAp1 RationalGaussianEmbedding.embedF h).eqTrans (RationalGaussianEmbedding.embed_at b))
 
 theorem common_difference (a b Q L : PTm n) : Γ ⊢[PRAAx]
     qsub (embed (commonLog a Q L)) (embed (commonLog b Q L)) ≐ embed (RationalHarmonicInterval.common a b Q L) := by

@@ -39,9 +39,7 @@ def factorialLaw (z B N : PTm n) : Fm PTm n := natScale (fact N) (head z B N) �
 ipra_subst value
 ipra_subst factorialLaw [fact]
 
-theorem scaled_left_product (t a b : PTm n) : Γ ⊢[PRAAx] natScale t (qmul a b) ≐ qmul (natScale t a) b :=
-  (natScale_congr (.eqRefl _) (qmul_commutative a b)).eqTrans
-    ((natScale_product t b a).eqSymm.eqTrans (qmul_commutative _ _))
+alias scaled_left_product := GaussianRationalWeightedCoefficientConvolution.left_scale_product
 
 theorem factor_clearing (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     natScale (succ N) (factor N z B) ≐ linear z B (succ N) := by

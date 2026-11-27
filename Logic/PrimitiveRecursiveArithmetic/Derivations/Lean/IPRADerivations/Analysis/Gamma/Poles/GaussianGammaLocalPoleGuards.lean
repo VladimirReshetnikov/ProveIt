@@ -22,6 +22,7 @@ open GaussianRootAlgebra
   (equal equal_of_values equal_trans normSq_equal re_add im_add re_scale im_scale re_neg im_neg re_one im_one)
 open GaussianGammaEulerHeadLower (translated poleAt poleGuard)
 open GaussianGammaPoleZeros (poleNumerator)
+open ComplexLogarithmRemainder renaming integer_disk → integer_axis_disk
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -211,11 +212,6 @@ theorem local_step_disk (h B S D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
   have e : Γ ⊢[PRAAx] le (D*D*normSq h) (D*D*(B*B)) :=
     le_congr (.eqRefl _) (by ipra_ring) (le_trans scaled (le_mul_mono step step))
   exact RationalValueBounds.positive_cancel hdd e
-
-private theorem integer_axis_disk (b : PTm n) : Γ ⊢[PRAAx] bounded (scale b oneCode) b := by
-  have eq : Γ ⊢[PRAAx] normSq (scale b oneCode) ≐ b*b := (normSq_scale (Γ := Γ) b oneCode).eqTrans
-    ((congrMul (.eqRefl _) (ComplexLogarithmRemainder.normSq_one (Γ := Γ))).eqTrans (by ipra_ring))
-  exact le_congr eq.eqSymm (.eqRefl _) (le_refl _)
 
 theorem center_source_disk (h B j : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hh : Γ ⊢[PRAAx] bounded h B) :
     Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source (center h B j) (succ j) B :=

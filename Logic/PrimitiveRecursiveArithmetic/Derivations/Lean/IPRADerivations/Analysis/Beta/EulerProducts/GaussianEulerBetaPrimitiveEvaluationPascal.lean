@@ -111,8 +111,7 @@ theorem horner_prefix (z B N t i : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hi : Γ
 
 theorem negative_zero : Γ ⊢[PRAAx] qnegative (qzero : PTm n) ≐ qzero :=
   (GaussianRationalSyntheticDivision.qzero_add _ (GaussianRationalMetric.qnegative_canonical _)).eqSymm.eqTrans (GaussianCoefficientNormOrder.qsub_self qzero)
-theorem sub_zero (a : PTm n) (ha : Γ ⊢[PRAAx] canonical a) : Γ ⊢[PRAAx] qsub a qzero ≐ a :=
-  (qadd_congr (.eqRefl _) negative_zero).eqTrans (GaussianReciprocalHorner.qadd_zero_right a ha)
+alias sub_zero := GaussianRationalReconstruction.qsub_zero_right
 
 def value (z B N : PTm n) : PTm n := evaluate (primitive z B N) qone
 ipra_subst value
