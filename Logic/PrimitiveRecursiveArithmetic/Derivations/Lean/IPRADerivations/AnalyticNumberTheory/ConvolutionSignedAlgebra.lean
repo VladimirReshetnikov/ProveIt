@@ -16,12 +16,11 @@ open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionSigned
   (weight convolution productLaw convolution_product convolution_at_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv inst2_cvB)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor (pos_sh gcd_sh)
+open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor (on_coprime_divisor_pairs)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (conv_comm0)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionReverse (conv_add_l conv_add_r conv_unit)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (coprime_dvd_left gcd_comm_one one_le_of_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -157,22 +156,8 @@ private theorem on_divisor_rectangle {f : ZB} {m N y : PTm n} (hf : Γ ⊢[PRAAx
     (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
     (hc : Γ ⊢[PRAAx] gcd m N ≐ one) : Γ ⊢[PRAAx] productLaw f m N y := by
   unfold productLaw
-  refine .allI (.allI (.impI (.impI ?_)))
-  let a : PTm (n + 2) := var 1
-  let b : PTm (n + 2) := var 0
-  let m' := Syn.shift (Syn.shift m)
-  let N' := Syn.shift (Syn.shift N)
-  let Δ := dvd b N' :: dvd a m' :: (Γ.map Fm.shift).map Fm.shift
-  have hm' : Δ ⊢[PRAAx] m' ≐ succ (pred m') := (pos_sh (pos_sh hm)).wk.wk
-  have hN' : Δ ⊢[PRAAx] N' ≐ succ (pred N') := (pos_sh (pos_sh hN)).wk.wk
-  have hc' : Δ ⊢[PRAAx] gcd m' N' ≐ one := (gcd_sh (gcd_sh hc)).wk.wk
-  have ha : Δ ⊢[PRAAx] dvd a m' := Prf.hyp1
-  have hb : Δ ⊢[PRAAx] dvd b N' := Prf.hyp0
-  have pa := pos_of_dvd hm' ha
-  have pb := pos_of_dvd hN' hb
-  have hba := coprime_dvd_left pb hb (gcd_comm_one hN' (coprime_dvd_left pa ha hc'))
-  exact multiplicative_at (multiplicative_shift (multiplicative_shift hf)).wk.wk
-    (one_le_of_pos pa) (one_le_of_pos pb) (gcd_comm_one pa hba)
+  exact on_coprime_divisor_pairs hm hN hc fun ha hb hab =>
+    multiplicative_at (multiplicative_shift (multiplicative_shift hf)).wk.wk ha hb hab
 
 theorem convolution_multiplicative (f g : ZB) {y : PTm n}
     (hf : Γ ⊢[PRAAx] multiplicative f y) (hg : Γ ⊢[PRAAx] multiplicative g y) :

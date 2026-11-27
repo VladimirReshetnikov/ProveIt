@@ -20,7 +20,7 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor
 
 open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le' one_le_of_pos)
+open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le' one_le_of_pos coprime_dvd_left gcd_comm_one)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
@@ -177,6 +177,26 @@ theorem gcd_sh {m N : PTm n} (h : Γ ⊢[PRAAx] gcd m N ≐ one) :
   have e := h.shift
   simp only [Fm.shift, Fm.subst_eq, subst_ex2, subst_ap2, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at e
   exact e
+
+/-- To prove a law on divisors of positive coprime inputs, use positivity and coprimality of each pair. -/
+theorem on_coprime_divisor_pairs {m N : PTm n} {P : Fm PTm (n + 2)}
+    (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
+    (hc : Γ ⊢[PRAAx] gcd m N ≐ one)
+    (atPair : let a : PTm (n + 2) := var 1; let b : PTm (n + 2) := var 0
+      let Δ := dvd b (Syn.shift (Syn.shift N)) :: dvd a (Syn.shift (Syn.shift m)) :: (Γ.map Fm.shift).map Fm.shift
+      (Δ ⊢[PRAAx] le one a) → (Δ ⊢[PRAAx] le one b) → (Δ ⊢[PRAAx] gcd a b ≐ one) → (Δ ⊢[PRAAx] P)) :
+    Γ ⊢[PRAAx] Fm.all (Fm.all (dvd (var 1) (Syn.shift (Syn.shift m)) ⟶
+      dvd (var 0) (Syn.shift (Syn.shift N)) ⟶ P)) := by
+  refine .allI (.allI (.impI (.impI ?_)))
+  let m' := Syn.shift (Syn.shift m)
+  let N' := Syn.shift (Syn.shift N)
+  let Δ := dvd (var 0) N' :: dvd (var 1) m' :: (Γ.map Fm.shift).map Fm.shift
+  have hN' : Δ ⊢[PRAAx] N' ≐ succ (pred N') := (pos_sh (pos_sh hN)).wk.wk
+  have hc' : Δ ⊢[PRAAx] gcd m' N' ≐ one := (gcd_sh (gcd_sh hc)).wk.wk
+  have pa : Δ ⊢[PRAAx] var 1 ≐ succ (pred (var 1)) := pos_of_dvd (pos_sh (pos_sh hm)).wk.wk Prf.hyp1
+  have pb : Δ ⊢[PRAAx] var 0 ≐ succ (pred (var 0)) := pos_of_dvd hN' Prf.hyp0
+  have hba := coprime_dvd_left pb Prf.hyp0 (gcd_comm_one hN' (coprime_dvd_left pa Prf.hyp1 hc'))
+  exact atPair (one_le_of_pos pa) (one_le_of_pos pb) (gcd_comm_one pa hba)
 
 theorem lt_sh {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ.map Fm.shift ⊢[PRAAx] lt (Syn.shift a) (Syn.shift b) := by
   have e := h.shift

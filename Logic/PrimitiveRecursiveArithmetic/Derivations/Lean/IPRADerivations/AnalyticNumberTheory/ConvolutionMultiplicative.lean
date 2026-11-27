@@ -24,10 +24,9 @@ open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionDivisorWeights
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor
-  (Xp lB riB rB lB_at riB_at rB_at divisor_factor pos_sh gcd_sh shift_succ_mul)
+  (Xp lB riB rB lB_at riB_at rB_at divisor_factor pos_sh on_coprime_divisor_pairs shift_succ_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (coprime_dvd_left gcd_comm_one one_le_of_pos)
 open LeanProofs.IPRA.Probability.Independence (sum_scale shift_inst2)
 open LeanProofs.IPRA.Signum (sg sg_zero)
 
@@ -159,22 +158,8 @@ private theorem product_law_of_multiplicative {f : PTm 2} {m N y : PTm n}
     (hc : Γ ⊢[PRAAx] gcd m N ≐ one) :
     Γ ⊢[PRAAx] productLaw f m N y := by
   unfold productLaw
-  refine .allI (.allI (.impI (.impI ?_)))
-  let a : PTm (n + 2) := var 1
-  let b : PTm (n + 2) := var 0
-  let m' := Syn.shift (Syn.shift m)
-  let N' := Syn.shift (Syn.shift N)
-  let Δ := dvd b N' :: dvd a m' :: (Γ.map Fm.shift).map Fm.shift
-  have hm' : Δ ⊢[PRAAx] m' ≐ succ (pred m') := (pos_sh (pos_sh hm)).wk.wk
-  have hN' : Δ ⊢[PRAAx] N' ≐ succ (pred N') := (pos_sh (pos_sh hN)).wk.wk
-  have hc' : Δ ⊢[PRAAx] gcd m' N' ≐ one := (gcd_sh (gcd_sh hc)).wk.wk
-  have ha : Δ ⊢[PRAAx] dvd a m' := Prf.hyp1
-  have hb : Δ ⊢[PRAAx] dvd b N' := Prf.hyp0
-  have pa := pos_of_dvd hm' ha
-  have pb := pos_of_dvd hN' hb
-  have hba := coprime_dvd_left pb hb (gcd_comm_one hN' (coprime_dvd_left pa ha hc'))
-  exact multiplicative_at (multiplicative_shift (multiplicative_shift hf)).wk.wk
-    (one_le_of_pos pa) (one_le_of_pos pb) (gcd_comm_one pa hba)
+  exact on_coprime_divisor_pairs hm hN hc fun ha hb hab =>
+    multiplicative_at (multiplicative_shift (multiplicative_shift hf)).wk.wk ha hb hab
 
 theorem conv_multiplicative (f g : PTm 2) {y : PTm n}
     (hf : Γ ⊢[PRAAx] multiplicative f y) (hg : Γ ⊢[PRAAx] multiplicative g y) :
