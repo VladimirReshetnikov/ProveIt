@@ -32,7 +32,7 @@ namespace LeanProofs.IPRA.Combinatorics.BellPascalInversion
 
 open_ipra
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le)
-open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_above gb_pascal zB zsum inst2_z)
+open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb gb_zero gb_above gb_pascal)
 open LeanProofs.IPRA.Combinatorics.StirlingBinomial (shift_y)
 open LeanProofs.IPRA.Combinatorics.CatalanNarayana (le_of_lt_succ)
 open LeanProofs.IPRA.Combinatorics.Bell (bell BL bell_succ recB inst2_rec)
@@ -337,6 +337,38 @@ theorem claim_step {N R : PTm n} (h₀ : Γ ⊢[PRAAx] F N R + Gm N R ≐ Gp N R
   ipra_lc natEq (Gm_pascal (Γ := Γ) N R) - natEq (Gp_pascal (Γ := Γ) N R) - natEq (F_pascal (Γ := Γ) N R) + natEq h₁ -
     natEq h₀
 
+/-- At level `r`, the sum over indices below `M − r`. -/
+abbrev zeroWindowSum (body : PTm 2) (M r : PTm n) : PTm n :=
+  ap2 (sumF body) (monus M r) r
+
+/-- A pointwise successor proof makes the smaller window sum zero. -/
+theorem zero_window_step (body : PTm 2) {M R : PTm n}
+    (ih : Γ ⊢[PRAAx] zeroWindowSum body M R ≐ zero)
+    (step : lt (var 0) (monus (Syn.shift M) (succ (Syn.shift R))) :: Γ.map Fm.shift ⊢[PRAAx]
+      (zeroWindowSum body (Syn.shift M) (Syn.shift R) ≐ zero) ⟶
+        (inst2 body (var 0) (succ (Syn.shift R)) ≐ zero)) :
+    Γ ⊢[PRAAx] zeroWindowSum body M (succ R) ≐ zero := by
+  refine sum_zero_of_bounded body _ _ (.allI (.impI ?_))
+  have shifted : Γ.map Fm.shift ⊢[PRAAx] zeroWindowSum body (Syn.shift M) (Syn.shift R) ≐ zero := by
+    simpa [Fm.shift, Syn.shift, zeroWindowSum] using ih.shift
+  simpa [Syn.shift] using Prf.impE step shifted.wk
+
+/-- Induction on the level and a window of size `N + R + 1` give the entry at `(N, R)`. -/
+theorem zero_window_entry (body : PTm 2) (N R : PTm n)
+    (base : ([] : List (Fm PTm 1)) ⊢[PRAAx] zeroWindowSum body (var 0) zero ≐ zero)
+    (step : [zeroWindowSum body (var 1 : PTm 2) (var 0) ≐ zero] ⊢[PRAAx]
+      zeroWindowSum body (var 1) (succ (var 0)) ≐ zero) :
+    Γ ⊢[PRAAx] inst2 body N R ≐ zero := by
+  have all : ([] : List (Fm PTm 2)) ⊢[PRAAx] zeroWindowSum body (var 1) (var 0) ≐ zero := by
+    ipra_ind [zeroWindowSum, subst_ap2]
+    · exact base
+    · exact step
+  have h : Γ ⊢[PRAAx] zeroWindowSum body (succ (N + R)) R ≐ zero := by
+    simpa [zeroWindowSum] using inst (Γ := Γ) all (![R, succ (N + R)] : Fin 2 → PTm n)
+  have size : Γ ⊢[PRAAx] monus (succ (N + R)) R ≐ succ N :=
+    (congrMonus (by ipra_ring : Γ ⊢[PRAAx] succ (N + R) ≐ succ N + R) (.eqRefl _)).eqTrans (add_monus _ _)
+  exact sum_zero_elim body h (le_congr (.eqRefl _) size.eqSymm (le_refl (succ N)))
+
 /-- `1 ∸ [F(n, r) + G⁻(n, r) = G⁺(n, r)]`, over `0 = n`, `1 = r`. -/
 abbrev vB : PTm 2 := monus one (eqb (F (var 0) (var 1) + Gm (var 0) (var 1)) (Gp (var 0) (var 1)))
 
@@ -344,19 +376,15 @@ theorem inst2_v (N R : PTm n) : inst2 vB N R = monus one (eqb (F N R + Gm N R) (
 
 theorem psi_base (M : PTm n) : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M zero) zero ≐ zero := by
   refine sum_zero_of_all vB zero (.allI ?_) _
-  have ez : Syn.shift (zero : PTm n) = zero := by simp [Syn.shift]
-  rw [ez, inst2_v]
-  exact viol_of_eq (claim_zero _)
+  simpa only [Syn.shift, ConciseIPRA.PTm.subst_zero, inst2_v] using
+    viol_of_eq (claim_zero (Γ := Γ.map Fm.shift) (var 0))
 
 /-- `j < M − (r + 1)` gives `j + 1 < M − r`. -/
 theorem lt_shift {j M R : PTm n} (h : Γ ⊢[PRAAx] lt j (monus M (succ R))) : Γ ⊢[PRAAx] lt (succ j) (monus M R) := by
-  have h' : Γ ⊢[PRAAx] le (succ j) (pred (monus M R)) := le_congr (.eqRefl _) (monus_succ _ _) h
-  refine .orE (zero_or_succ (monus M R)) ?_ ?_
-  · have z : ((monus M R ≐ zero) :: Γ) ⊢[PRAAx] lt j zero :=
-      le_congr (.eqRefl _) ((congrPred Prf.hyp0).eqTrans pred_zero) h'.wk
-    exact lt_zero_absurd _ z
-  · have e : ((monus M R ≐ succ (pred (monus M R))) :: Γ) ⊢[PRAAx] monus M R ≐ succ (pred (monus M R)) := Prf.hyp0
-    exact le_congr (.eqRefl _) e.eqSymm ((succ_monus_succ _ _).eqTrans h'.wk)
+  refine .orE (lt_or_le R M) ?_ ?_
+  · exact le_congr (.eqRefl _) (Common.monus_succ_of_lt Prf.hyp0).eqSymm
+      ((succ_monus_succ _ _).eqTrans h.wk)
+  · exact lt_zero_absurd _ (lt_congr (.eqRefl _) (le_trans Prf.hyp0 (le_succ_self R)) h.wk)
 
 theorem step_pt {M R j : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M R) R ≐ zero)
     (hj : Γ ⊢[PRAAx] lt j (monus M (succ R))) :
@@ -369,30 +397,14 @@ theorem step_pt {M R j : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M R) R 
 
 theorem psi_step {M R : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M R) R ≐ zero) :
     Γ ⊢[PRAAx] ap2 (sumF vB) (monus M (succ R)) (succ R) ≐ zero := by
-  refine (sum_congr_bounded vB zB (succ R) (succ R) (monus M (succ R)) (.allI (.impI ?_))).eqTrans (zsum _ _)
-  have e₃ : Syn.shift (monus M (succ R)) = monus (Syn.shift M) (succ (Syn.shift R)) := by simp [Syn.shift]
-  rw [inst2_z, inst2_v, shift_succ, e₃]
-  have ih' : Γ.map Fm.shift ⊢[PRAAx] ap2 (sumF vB) (monus (Syn.shift M) (Syn.shift R)) (Syn.shift R) ≐ zero := by
-    simpa [Fm.shift, Syn.shift] using ih.shift
-  exact step_pt ih'.wk Prf.hyp0
-
-/-- Variables: `0 = r`, `1 = M`. -/
-private abbrev psiF : Fm PTm 2 := ap2 (sumF vB) (monus (var 1) (var 0)) (var 0) ≐ zero
-
-private theorem psi₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] psiF := by
-  ipra_ind [subst_ap2]
-  · exact psi_base _
-  · exact psi_step Prf.hyp0
+  refine zero_window_step vB ih (.impI ?_)
+  rw [inst2_v]
+  exact step_pt Prf.hyp0 Prf.hyp1
 
 /-- `eq:general-pascal-inversion`: `∑_{j ≤ n} C(n, j) B_{r+j} + ∑_{r − i odd} C(r, i) B_{n+i+1}
 = ∑_{r − i even} C(r, i) B_{n+i+1}`. -/
 theorem pascal_inversion (N R : PTm n) : Γ ⊢[PRAAx] F N R + Gm N R ≐ Gp N R := by
-  have h := inst (Γ := Γ) psi₀ (![R, succ (N + R)] : Fin 2 → PTm n)
-  simp only [Fm.subst_eq, subst_ap2, PTm.subst_monus, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, ConciseIPRA.PTm.subst_zero] at h
-  have e : Γ ⊢[PRAAx] monus (succ (N + R)) R ≐ succ N :=
-    (congrMonus (by ipra_ring : Γ ⊢[PRAAx] succ (N + R) ≐ succ N + R) (.eqRefl _)).eqTrans (add_monus _ _)
-  have v := sum_zero_elim vB h (le_congr (.eqRefl _) e.eqSymm (le_refl (succ N)))
+  have v := zero_window_entry (Γ := Γ) vB N R (psi_base _) (psi_step Prf.hyp0)
   rw [inst2_v] at v
   exact eq_of_viol v
 

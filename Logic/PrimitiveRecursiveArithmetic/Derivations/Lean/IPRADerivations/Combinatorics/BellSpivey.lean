@@ -47,7 +47,7 @@ open LeanProofs.IPRA.Combinatorics.BinomialTwo (bt S binomial_two bt_at fM fX fY
 open LeanProofs.IPRA.Combinatorics.StirlingBinomial (shift_y)
 open LeanProofs.IPRA.Combinatorics.CatalanNarayana (le_of_lt_succ)
 open LeanProofs.IPRA.Combinatorics.Bell (bell bell_succ recB inst2_rec bell_zero)
-open LeanProofs.IPRA.Combinatorics.BellPascalInversion (congrBell lt_shift)
+open LeanProofs.IPRA.Combinatorics.BellPascalInversion (congrBell lt_shift zero_window_step zero_window_entry)
 open LeanProofs.IPRA.Combinatorics.Stirling (stir stir_zero stir_above stir_succ_zero)
 open LeanProofs.IPRA.Combinatorics.StirlingPowers (congrStir)
 open LeanProofs.IPRA.Combinatorics.StirlingBinomial (stir_rec)
@@ -473,9 +473,8 @@ theorem inst2_v (N m : PTm n) : inst2 vB N m = monus one (eqb (F N m) (bell (N +
 
 theorem psi_base (M : PTm n) : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M zero) zero ≐ zero := by
   refine sum_zero_of_all vB zero (.allI ?_) _
-  have ez : Syn.shift (zero : PTm n) = zero := by simp [Syn.shift]
-  rw [ez, inst2_v]
-  exact viol_of_eq (F_zero _)
+  simpa only [Syn.shift, ConciseIPRA.PTm.subst_zero, inst2_v] using
+    viol_of_eq (F_zero (Γ := Γ.map Fm.shift) (var 0))
 
 theorem step_pt {M m j : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M m) m ≐ zero)
     (hj : Γ ⊢[PRAAx] lt j (monus M (succ m))) :
@@ -486,29 +485,13 @@ theorem step_pt {M m j : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M m) m 
 
 theorem psi_step {M m : PTm n} (ih : Γ ⊢[PRAAx] ap2 (sumF vB) (monus M m) m ≐ zero) :
     Γ ⊢[PRAAx] ap2 (sumF vB) (monus M (succ m)) (succ m) ≐ zero := by
-  refine (sum_congr_bounded vB zB (succ m) (succ m) (monus M (succ m)) (.allI (.impI ?_))).eqTrans (zsum _ _)
-  have e₃ : Syn.shift (monus M (succ m)) = monus (Syn.shift M) (succ (Syn.shift m)) := by simp [Syn.shift]
-  rw [inst2_z, inst2_v, shift_succ, e₃]
-  have ih' : Γ.map Fm.shift ⊢[PRAAx] ap2 (sumF vB) (monus (Syn.shift M) (Syn.shift m)) (Syn.shift m) ≐ zero := by
-    simpa [Fm.shift, Syn.shift] using ih.shift
-  exact step_pt ih'.wk Prf.hyp0
-
-/-- Variables: `0 = m`, `1 = M`. -/
-private abbrev psiF : Fm PTm 2 := ap2 (sumF vB) (monus (var 1) (var 0)) (var 0) ≐ zero
-
-private theorem psi₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] psiF := by
-  ipra_ind [subst_ap2]
-  · exact psi_base _
-  · exact psi_step Prf.hyp0
+  refine zero_window_step vB ih (.impI ?_)
+  rw [inst2_v]
+  exact step_pt Prf.hyp0 Prf.hyp1
 
 /-- `eq:spivey`: `B_{n+m} = ∑_{j ≤ m} S(m, j) ∑_{k ≤ n} C(n, k) j^{n−k} B_k`. -/
 theorem spivey (N m : PTm n) : Γ ⊢[PRAAx] F N m ≐ bell (N + m) := by
-  have h := inst (Γ := Γ) psi₀ (![m, succ (N + m)] : Fin 2 → PTm n)
-  simp only [Fm.subst_eq, subst_ap2, PTm.subst_monus, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, ConciseIPRA.PTm.subst_zero] at h
-  have e : Γ ⊢[PRAAx] monus (succ (N + m)) m ≐ succ N :=
-    (congrMonus (by ipra_ring : Γ ⊢[PRAAx] succ (N + m) ≐ succ N + m) (.eqRefl _)).eqTrans (add_monus _ _)
-  have v := sum_zero_elim vB h (le_congr (.eqRefl _) e.eqSymm (le_refl (succ N)))
+  have v := zero_window_entry (Γ := Γ) vB N m (psi_base _) (psi_step Prf.hyp0)
   rw [inst2_v] at v
   exact eq_of_viol v
 
