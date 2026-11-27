@@ -356,13 +356,10 @@ theorem forward_zero (H B D : PTm n) : Γ ⊢[PRAAx] forwardLaw H B D zero :=
 
 theorem forward_step (H B D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B D t) : Γ ⊢[PRAAx]
     forwardLaw H B D (succ t) := by
-  refine .impI ?_
-  let Δ := le (succ t) H :: Γ
-  have ht : Δ ⊢[PRAAx] lt t H := Prf.hyp0
+  refine QuadraticTowerMultiplicationHeight.forward_step_of_local localLaw H B D t local_congr ih ?_
+  intro Δ ht adjusted
   have tle : Δ ⊢[PRAAx] le t H := le_trans (le_succ_self t) ht
   have link := QuadraticTowerMultiplicationHeight.cap_link H B t D ht
-  have previous : Δ ⊢[PRAAx] localLaw t (cap H B t D) D (state H B t D) := .impE ih.wk tle
-  have adjusted := local_congr (.eqRefl _) link (.eqRefl _) (.eqRefl _) previous
   have commGate : Δ ⊢[PRAAx] QuadraticTowerMultiplicationCommutativity.forwardLaw H B D t := by
     simpa only [QuadraticTowerMultiplicationCommutativity.forward_formula,QuadraticTowerMultiplicationCommutativity.subst_forwardLaw,
       Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
@@ -375,9 +372,7 @@ theorem forward_step (H B D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B D t) :
         (QuadraticTowerMultiplicationHeight.forward_all (Γ := Δ) H B D).allE t
   have heightPrevious : Δ ⊢[PRAAx] QuadraticTowerMultiplicationHeight.localLaw t (cap H B t D) D (state H B t D) := .impE heightGate tle
   have heightAdjusted := QuadraticTowerMultiplicationHeight.local_congr (.eqRefl _) link (.eqRefl _) (.eqRefl _) heightPrevious
-  have next := local_step t (cap H B (succ t) D) D (state H B t D) adjusted commAdjusted heightAdjusted
-  exact local_congr (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    (QuadraticTowerMultiplicationHeight.state_succ H B t D).eqSymm next
+  exact local_step t (cap H B (succ t) D) D (state H B t D) adjusted commAdjusted heightAdjusted
 
 /-- The full bounded triple-word predicate, not a host-degree induction. -/
 theorem forward_all (H B D : PTm n) : Γ ⊢[PRAAx] .all

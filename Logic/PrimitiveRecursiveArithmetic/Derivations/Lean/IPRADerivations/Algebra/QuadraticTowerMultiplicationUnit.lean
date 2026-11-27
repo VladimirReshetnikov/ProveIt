@@ -321,13 +321,9 @@ theorem forward_zero (H B D : PTm n) : Γ ⊢[PRAAx] forwardLaw H B D zero :=
 
 theorem forward_step (H B D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B D t) : Γ ⊢[PRAAx]
     forwardLaw H B D (succ t) := by
-  refine .impI ?_
-  let Δ := le (succ t) H :: Γ
-  have ht : Δ ⊢[PRAAx] lt t H := Prf.hyp0
+  refine QuadraticTowerMultiplicationHeight.forward_step_of_local localLaw H B D t local_congr ih ?_
+  intro Δ ht adjusted
   have tle : Δ ⊢[PRAAx] le t H := le_trans (le_succ_self t) ht
-  have previous : Δ ⊢[PRAAx] localLaw t (cap H B t D) D (state H B t D) := .impE ih.wk tle
-  have adjusted : Δ ⊢[PRAAx] localLaw t (budget t (cap H B (succ t) D) D) D (state H B t D) :=
-    local_congr (.eqRefl _) (QuadraticTowerMultiplicationHeight.cap_link H B t D ht) (.eqRefl _) (.eqRefl _) previous
   have zeroGate : Δ ⊢[PRAAx] QuadraticTowerMultiplicationZero.forwardLaw H B D t := by
     simpa only [QuadraticTowerMultiplicationZero.forward_formula,QuadraticTowerMultiplicationZero.subst_forwardLaw,
       Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
@@ -336,9 +332,7 @@ theorem forward_step (H B D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B D t) :
     .impE zeroGate tle
   have zeroAdjusted := QuadraticTowerMultiplicationZero.local_congr (.eqRefl _)
     (QuadraticTowerMultiplicationHeight.cap_link H B t D ht) (.eqRefl _) (.eqRefl _) zeroPrevious
-  have next := local_step t (cap H B (succ t) D) D (state H B t D) adjusted zeroAdjusted
-  exact local_congr (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    (QuadraticTowerMultiplicationHeight.state_succ H B t D).eqSymm next
+  exact local_step t (cap H B (succ t) D) D (state H B t D) adjusted zeroAdjusted
 
 /-- Actual fixed-depth/budget finite syntax, with one forward counter. -/
 theorem forward_all (H B D : PTm n) : Γ ⊢[PRAAx] .all

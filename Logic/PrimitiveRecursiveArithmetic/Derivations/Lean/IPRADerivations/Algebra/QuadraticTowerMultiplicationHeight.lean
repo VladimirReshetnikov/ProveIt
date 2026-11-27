@@ -447,17 +447,31 @@ theorem cap_link (H B t D : PTm n) (ht : Γ ⊢[PRAAx] lt t H) :
   BackwardDemand.horizon_step demandF H B t D ht
 theorem forward_zero (H B D : PTm n) : Γ ⊢[PRAAx] forwardLaw H B D zero :=
   .impI (local_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (state_zero H B D).wk.eqSymm (local_base _ D))
-theorem forward_step (H B D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B D t) :
-    Γ ⊢[PRAAx] forwardLaw H B D (succ t) := by
+/-- Transport a local multiplication law across one stage of the table recursion. -/
+theorem forward_step_of_local
+    (law : PTm n → PTm n → PTm n → PTm n → Fm PTm n) (H B D t : PTm n)
+    (congrLaw : ∀ {Δ : List (Fm PTm n)} {h h' b b' d d' s s' : PTm n},
+      (Δ ⊢[PRAAx] h ≐ h') → (Δ ⊢[PRAAx] b ≐ b') →
+      (Δ ⊢[PRAAx] d ≐ d') → (Δ ⊢[PRAAx] s ≐ s') →
+      (Δ ⊢[PRAAx] law h b d s) → (Δ ⊢[PRAAx] law h' b' d' s'))
+    (ih : Γ ⊢[PRAAx] le t H ⟶ law t (cap H B t D) D (state H B t D))
+    (next :
+      let Δ := le (succ t) H :: Γ
+      (Δ ⊢[PRAAx] lt t H) →
+      (Δ ⊢[PRAAx] law t (budget t (cap H B (succ t) D) D) D (state H B t D)) →
+      (Δ ⊢[PRAAx] law (succ t) (cap H B (succ t) D) D
+        (QuadraticTowerMultiplicationTable.step t (cap H B (succ t) D) (state H B t D) D))) :
+    Γ ⊢[PRAAx] le (succ t) H ⟶ law (succ t) (cap H B (succ t) D) D (state H B (succ t) D) := by
   refine .impI ?_
-  let Δ := le (succ t) H :: Γ
-  have ht : Δ ⊢[PRAAx] lt t H := Prf.hyp0
-  have previous : Δ ⊢[PRAAx] localLaw t (cap H B t D) D (state H B t D) :=
-    .impE ih.wk (le_trans (le_succ_self t) ht)
-  have adjusted : Δ ⊢[PRAAx] localLaw t (budget t (cap H B (succ t) D) D) D (state H B t D) :=
-    local_congr (.eqRefl _) (cap_link H B t D ht) (.eqRefl _) (.eqRefl _) previous
-  have next := local_step t (cap H B (succ t) D) D (state H B t D) adjusted
-  exact local_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (state_succ H B t D).eqSymm next
+  have ht : le (succ t) H :: Γ ⊢[PRAAx] lt t H := Prf.hyp0
+  have previous := Prf.impE ih.wk (le_trans (le_succ_self t) ht)
+  have adjusted := congrLaw (.eqRefl _) (cap_link H B t D ht) (.eqRefl _) (.eqRefl _) previous
+  exact congrLaw (.eqRefl _) (.eqRefl _) (.eqRefl _) (state_succ H B t D).eqSymm (next ht adjusted)
+
+theorem forward_step (H B D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B D t) :
+    Γ ⊢[PRAAx] forwardLaw H B D (succ t) :=
+  forward_step_of_local localLaw H B D t local_congr ih (fun _ adjusted =>
+    local_step t (cap H B (succ t) D) D (state H B t D) adjusted)
 
 /-- Every loop invariant is the reflection of one fixed bounded syntax.
 Only the forward counter is used for ordinary QF induction. -/
