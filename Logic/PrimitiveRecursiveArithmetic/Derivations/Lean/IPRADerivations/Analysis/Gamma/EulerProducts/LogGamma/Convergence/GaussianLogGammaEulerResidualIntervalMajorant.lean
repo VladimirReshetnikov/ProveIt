@@ -40,7 +40,7 @@ def denominator (U N : PTm n) : PTm n := N * U
 
 ipra_subst budgetData [one, two]
 
-private theorem fraction_add (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hd : Γ ⊢[PRAAx] le one d) :
+theorem fraction_add (a b c d : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hd : Γ ⊢[PRAAx] le one d) :
     Γ ⊢[PRAAx] add (fraction a b) (fraction c d) ≐ fraction (a * d + c * b) (b * d) := by
   have hbd := positive_product _ _ hb hd
   have rep := RationalRepresentations.represents_add _ _ _ _ _ _

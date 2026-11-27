@@ -45,6 +45,8 @@ open RationalGaussianRealPart (embed_congr)
 open RationalArgmin (reflexive)
 open RationalFiniteSum (term)
 open RationalReciprocalPowerTail (add_zero_right)
+open GaussianRationalInvertibleNorm renaming commute_multiplier → commute_scale
+open RationalAlgebra renaming swap_tail → shuffle
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "rsum" => RationalFiniteSum.sum
@@ -87,9 +89,6 @@ private theorem join_zero_prefix (f : PTm 2) (x M : PTm n) (hM : Γ ⊢[PRAAx] l
     Γ ⊢[PRAAx] rsum f M x ≐ rsum (nextBody f) (interior M) x :=
   (join_full_prefix f x M hM).eqTrans ((add_congr hz (.eqRefl _)).eqTrans
     ((add_commutative _ _).eqTrans (add_zero_right _ (RationalFiniteSum.sum_well_formed _ _ _))))
-
-private theorem shuffle (a b c : PTm n) : Γ ⊢[PRAAx] add (add a b) c ≐ add (add a c) b :=
-  (add_associative _ _ _).eqTrans ((add_congr (.eqRefl _) (add_commutative _ _)).eqTrans (add_associative _ _ _).eqSymm)
 
 private theorem restore_endpoint (m e : ℕ) (hm : 0<m) (he : 2≤e) (U B M : PTm n)
     (hU : Γ ⊢[PRAAx] le one U) (hM : Γ ⊢[PRAAx] le one M) :
@@ -146,14 +145,9 @@ private theorem raw_error (m e : ℕ) (hm : 0<m) (he : 2≤e) (U B M : PTm n)
   have ef := (embed_congr (restore_endpoint m e hm he U B M hU hM)).eqTrans (embed_add _ _)
   exact bound_congr ef.eqSymm (.eqRefl _) (.eqRefl _) (bounded_sum_same _ _ _ _ _ (le_refl one) hr hP)
 
-private theorem multiply_sub (w a b : PTm n) :
+theorem multiply_sub (w a b : PTm n) :
     Γ ⊢[PRAAx] multiply w (sub a b) ≐ sub (multiply w a) (multiply w b) :=
   (multiply_add _ _ _).eqTrans (add_congr (.eqRefl _) (multiply_negative _ _))
-
-private theorem commute_scale (w a b : PTm n) :
-    Γ ⊢[PRAAx] multiply w (multiply a b) ≐ multiply a (multiply w b) :=
-  (multiply_associative _ _ _).eqSymm.eqTrans
-    ((multiply_congr (multiply_commutative _ _) (.eqRefl _)).eqTrans (multiply_associative _ _ _))
 
 theorem normalize_residual (m e : ℕ) (U B M : PTm n) :
     Γ ⊢[PRAAx] multiply (fraction one M) (rawResidual m e U B M) ≐ residual m e U B M := by

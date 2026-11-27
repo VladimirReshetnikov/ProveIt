@@ -30,7 +30,7 @@ open GaussianStirlingAllOrderPanelPartsRecurrence (panelMass)
 open GaussianStirlingAllOrderPanelPartsOuter (data)
 open GaussianStirlingAllOrderPanelPartsOuterFold (massPrefix mass_succ panelPrefix panel_succ)
 open GaussianStirlingAllOrderPanelTail (panel)
-open RationalAlgebra (add_associative add_commutative add_congr multiply_add multiply_congr)
+open RationalAlgebra (add_associative add_commutative add_congr multiply_add multiply_congr add_shuffle)
 open RationalArgmin (rationalLE rationalLE_congr reflexive transitive)
 open RationalArithmetic (add multiply add_guard multiply_guard)
 open RationalFiniteSum (sum term sum_zero sum_succ)
@@ -147,12 +147,6 @@ private theorem prefix_base (m e : ℕ) (he : 1≤e) (A B S : PTm n)
   exact rationalLE_congr (add_congr (multiply_congr (.eqRefl _) hP.eqSymm) (.eqRefl _))
     (add_congr (multiply_congr (.eqRefl _) (multiply_congr (.eqRefl _) hW.eqSymm)) hT.eqSymm)
     (panel_comparison m e he A B S zero hA hB hS)
-
-private theorem add_shuffle (a b c d : PTm n) : Γ ⊢[PRAAx] add (add a b) (add c d) ≐ add (add a c) (add b d) := by
-  exact (add_associative _ _ _).eqTrans
-    ((add_congr (.eqRefl _) ((add_associative _ _ _).eqSymm.eqTrans
-      ((add_congr (add_commutative b c) (.eqRefl _)).eqTrans (add_associative _ _ _)))).eqTrans
-      (add_associative _ _ _).eqSymm)
 
 private theorem prefix_step (m e : ℕ) (he : 1≤e) (A B S L : PTm n)
     (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B) (hS : Γ ⊢[PRAAx] le one S)

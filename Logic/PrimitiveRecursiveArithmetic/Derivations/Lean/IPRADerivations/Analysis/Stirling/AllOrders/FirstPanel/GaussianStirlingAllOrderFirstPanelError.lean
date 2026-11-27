@@ -28,6 +28,7 @@ open RationalArgmin (rationalLE rationalLE_congr reflexive)
 open GaussianRationalSyntheticBounds (add_monotone)
 open RationalHalfNinthProductLower (add_negative_cancel)
 open RationalReciprocalPowerTail (tail)
+open RationalAlgebra (negative_add)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -83,10 +84,6 @@ theorem normalized_panel (U B Q : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hQ : Γ 
   exact (multiply_add _ _ _).eqTrans
     ((add_congr e₀ ((multiply_add _ _ _).eqTrans (add_congr e₁ e₂))).eqTrans
       (add_associative _ _ _).eqSymm)
-
-private theorem negative_add (a b : PTm n) : Γ ⊢[PRAAx] negative (add a b) ≐ add (negative a) (negative b) :=
-  (negative_minus_multiply _).eqTrans ((multiply_add _ _ _).eqTrans
-    (add_congr (negative_minus_multiply _).eqSymm (negative_minus_multiply _).eqSymm))
 
 theorem panel_error (A B Q k : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hB : Γ ⊢[PRAAx] le one B) (hQ : Γ ⊢[PRAAx] le one Q) :
