@@ -97,6 +97,8 @@ import GRHArticle.SingularModuli.PadicCutoff
 import GRHArticle.SingularModuli.PadicDiskRoots
 import GRHArticle.SingularModuli.PadicExpSubstitution
 import GRHArticle.SingularModuli.PermutationTest
+import GRHArticle.SingularModuli.QuarticAnalyticEnclosure
+import GRHArticle.SingularModuli.QuarticAnalyticNumeric
 import GRHArticle.SingularModuli.QuarticDiskCertificates
 import GRHArticle.SingularModuli.QuarticSupport
 import GRHArticle.SingularModuli.RationalComplexEnclosure
