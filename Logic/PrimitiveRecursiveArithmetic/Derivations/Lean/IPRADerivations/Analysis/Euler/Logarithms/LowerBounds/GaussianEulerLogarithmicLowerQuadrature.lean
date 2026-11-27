@@ -27,16 +27,11 @@ open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianEulerCompactLowerTail (subst_rootDenominator subst_rootNumerator)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
 
-private theorem subst_rootDenominator {m : ℕ} (σ : Fin n → PTm m) (H q A R : PTm n) :
-    Syn.subst σ (rootDenominator H q A R) = rootDenominator (Syn.subst σ H) (Syn.subst σ q) (Syn.subst σ A) (Syn.subst σ R) :=
-  by simp [rootDenominator,GaussianGammaIntegralCutoffs.height,GaussianGammaIntegralCutoffs.tailCoefficient]
-private theorem subst_rootNumerator {m : ℕ} (σ : Fin n → PTm m) (i H p q : PTm n) :
-    Syn.subst σ (rootNumerator i H p q) = rootNumerator (Syn.subst σ i) (Syn.subst σ H) (Syn.subst σ p) (Syn.subst σ q) :=
-  by simp [rootNumerator,GaussianEulerLowerTailRootGrid.rootRatio]
 attribute [local simp] subst_rootDenominator subst_rootNumerator
 
 def originalQuadrature (s j z R B H p q A : PTm n) : PTm n :=

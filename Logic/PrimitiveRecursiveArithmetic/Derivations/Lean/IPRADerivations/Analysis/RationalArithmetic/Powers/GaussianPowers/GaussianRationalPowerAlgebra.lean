@@ -209,4 +209,7 @@ open GaussianReciprocalHorner (qmul_associative)
 theorem commute_nested (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
   (qmul_associative a b c).eqSymm.eqTrans ((qmul_congr (qmul_commutative a b) (.eqRefl c)).eqTrans (qmul_associative b a c))
 
+theorem swap_last (a b c : PTm n) : Γ ⊢[PRAAx] qmul (qmul a b) c ≐ qmul (qmul a c) b :=
+  (qmul_associative a b c).eqTrans ((qmul_congr (.eqRefl _) (qmul_commutative b c)).eqTrans (qmul_associative a c b).eqSymm)
+
 end LeanProofs.IPRA.Analysis.GaussianRationalPowerAlgebra

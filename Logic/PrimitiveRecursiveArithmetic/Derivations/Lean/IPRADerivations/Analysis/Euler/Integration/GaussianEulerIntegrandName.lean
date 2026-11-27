@@ -227,4 +227,8 @@ theorem actual_Euler_integrand_computed_bound_closed : ([] : List (Fm PTm 0)) �
       (pw (LeanProofs.IPRA.PTm.num 3) (radius (var 1) (var 2) (var 3) (var 4))) one) :=
   closeUniv 5 (.impI (sample_bound _ _ _ _ _ Prf.hyp0))
 
+@[simp] theorem subst_originalDecayData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
+    Syn.subst σ (decayData a b) = decayData (Syn.subst σ a) (Syn.subst σ b) := by
+  simp [decayData,GaussianGammaFiniteApproximantName.exponentialInputData]
+
 end LeanProofs.IPRA.Analysis.GaussianEulerIntegrandName

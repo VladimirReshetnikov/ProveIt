@@ -27,6 +27,7 @@ open LeanProofs.IPRA.Foundations.SequenceComposition
   (length subst_length entry_congr append subst_append append_length append_left append_right_at)
 open LeanProofs.IPRA.Foundations.FiniteHausdorffConcat (suffix_range)
 open LeanProofs.IPRA.Foundations.FiniteHausdorffProduct (pairIndex pair_index_range pair_index_decode)
+open RationalHausdorffConcat renaming reverse_cover_backward → reverse_cover
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -225,10 +226,6 @@ private theorem reverse_close (S T d A B : PTm n) (h : Γ ⊢[PRAAx] originalClo
   have first : Γ ⊢[PRAAx] originalCover .left .right T S d A B := .andE₂ h
   have second : Γ ⊢[PRAAx] originalCover .right .left T S d A B := .andE₁ h
   exact .andI first second
-
-private theorem reverse_cover (S T d A B : PTm n)
-    (h : Γ ⊢[PRAAx] originalCover .left .right T S d A B) :
-    Γ ⊢[PRAAx] originalCover .right .left S T d A B := h
 
 theorem originalClose_product (S S' T T' d d' A B : PTm n)
     (hS : Γ ⊢[PRAAx] pairGuard S S' d d') (hT : Γ ⊢[PRAAx] pairGuard T T' d d')

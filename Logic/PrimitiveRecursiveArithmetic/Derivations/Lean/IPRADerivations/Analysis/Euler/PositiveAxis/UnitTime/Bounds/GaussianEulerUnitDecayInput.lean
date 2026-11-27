@@ -28,6 +28,7 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
+export GaussianEulerIntegrandName (subst_originalDecayData)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk Γ t)
@@ -38,10 +39,6 @@ abbrev nameF : PR 2 := GaussianFastValueCut.nameF decayF
 def data (a b E T : PTm n) : PTm n := GaussianFastValueCut.nameData (compactDenominator E T) (decayData a b)
 def source (a b E T : PTm n) : Fm PTm n := le one b ⋏
   (le one E ⋏ (le one T ⋏ (le b (E*a) ⋏ le a (T*b))))
-
-@[simp] theorem subst_originalDecayData {m : ℕ} (σ : Fin n → PTm m) (a b : PTm n) :
-    Syn.subst σ (decayData a b) = decayData (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [decayData,GaussianGammaFiniteApproximantName.exponentialInputData]
 
 ipra_subst compactDenominator
 ipra_subst clock
