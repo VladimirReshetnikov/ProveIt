@@ -38,10 +38,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## The values of `μ^±` -/
 
-theorem eqb_idem (a b : PTm n) : Γ ⊢[PRAAx] eqb a b * eqb a b ≐ eqb a b := by
-  refine .orE (eqb_cases a b) ?_ ?_
-  · exact (zero_mul_l Prf.hyp0 _).eqTrans Prf.hyp0.eqSymm
-  · exact (congrMul Prf.hyp0 Prf.hyp0).eqTrans ((one_mul one).eqTrans Prf.hyp0.eqSymm)
+theorem eqb_idem (a b : PTm n) : Γ ⊢[PRAAx] eqb a b * eqb a b ≐ eqb a b :=
+  Common.mul_self_eq_of_zero_or_one (Common.eqb_zero_or_one a b)
 
 theorem prod_idem {x y : PTm n} (hx : Γ ⊢[PRAAx] x * x ≐ x) (hy : Γ ⊢[PRAAx] y * y ≐ y) :
     Γ ⊢[PRAAx] (x * y) * (x * y) ≐ x * y := by

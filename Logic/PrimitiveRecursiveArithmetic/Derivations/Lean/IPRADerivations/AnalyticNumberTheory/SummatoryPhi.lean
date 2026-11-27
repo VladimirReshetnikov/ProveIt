@@ -45,21 +45,8 @@ theorem quo_succ {N d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
       ((succ_eq_add_one _).eqTrans (congrAdd (.eqRefl _) (eqb_of_eq (Prf.andE₂ qr)).eqSymm))
 
 /-- `e · e = e` for an equality indicator. -/
-theorem eqb_sq (a b : PTm n) : Γ ⊢[PRAAx] eqb a b * eqb a b ≐ eqb a b := by
-  refine .orE (zero_or_succ (eqb a b)) ?_ ?_
-  · have h : ((eqb a b ≐ zero) :: Γ) ⊢[PRAAx] eqb a b ≐ zero := Prf.hyp0
-    exact (congrMul h h).eqTrans ((by ipra_ring : ((eqb a b ≐ zero) :: Γ) ⊢[PRAAx]
-      zero * zero ≐ zero).eqTrans h.eqSymm)
-  · let C : List (Fm PTm n) := (eqb a b ≐ succ (pred (eqb a b))) :: Γ
-    have h : C ⊢[PRAAx] eqb a b ≐ succ (pred (eqb a b)) := Prf.hyp0
-    have h' := natEq h
-    have z : C ⊢[PRAAx] monus one (eqb a b) + pred (eqb a b) ≐ zero := by
-      have e : C ⊢[PRAAx] succ (monus one (eqb a b) + pred (eqb a b)) ≐ succ zero := by
-        ipra_lc natEq (eqb_split a b) - h'
-      exact (pred_succ _).eqSymm.eqTrans ((congrPred e).eqTrans (pred_succ _))
-    have p0 := add_eq_zero_right z
-    have e1 : C ⊢[PRAAx] eqb a b ≐ one := h.eqTrans (congrSucc p0)
-    exact (congrMul e1 e1).eqTrans ((by ipra_ring : C ⊢[PRAAx] one * one ≐ one).eqTrans e1.eqSymm)
+theorem eqb_sq (a b : PTm n) : Γ ⊢[PRAAx] eqb a b * eqb a b ≐ eqb a b :=
+  Common.mul_self_eq_of_zero_or_one (Common.eqb_zero_or_one a b)
 
 /-- `[N + 1 = 1] + sg N = 1`. -/
 theorem eqb_sg (N : PTm n) : Γ ⊢[PRAAx] eqb (succ N) one + sg N ≐ one := by

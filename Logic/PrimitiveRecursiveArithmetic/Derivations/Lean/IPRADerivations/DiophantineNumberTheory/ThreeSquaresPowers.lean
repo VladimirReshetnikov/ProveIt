@@ -99,10 +99,8 @@ theorem sq_par_alg {x h r : PTm k} (e : Γ ⊢[PRAAx] x ≐ two * h + r) (hr : �
     Γ ⊢[PRAAx] x * x ≐ (two * two) * (h * h + h * r) + r := by
   ipra_lc (𝔞 x + 2 * 𝔞 h + 𝔞 r) * natEq e + natEq hr
 
-theorem par_idem (x : PTm k) : Γ ⊢[PRAAx] par x * par x ≐ par x := by
-  refine .orE (par_cases x) ?_ ?_
-  · exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans ((zero_mul _).eqTrans Prf.hyp0.eqSymm)
-  · exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _)
+theorem par_idem (x : PTm k) : Γ ⊢[PRAAx] par x * par x ≐ par x :=
+  Common.mul_self_eq_of_zero_or_one (par_cases x)
 
 /-- `x² = 4 (h² + h r) + r` with `h = ⌊x/2⌋`, `r = par x`. -/
 theorem sq_par (x : PTm k) :

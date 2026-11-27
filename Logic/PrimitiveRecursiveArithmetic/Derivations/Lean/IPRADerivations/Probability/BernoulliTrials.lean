@@ -64,9 +64,7 @@ theorem bX_idem (x : PTm n) :
       (inst2 bX (var 0) (Syn.shift x) * inst2 bX (var 0) (Syn.shift x) ≐ inst2 bX (var 0) (Syn.shift x))) := by
   refine .allI (.impI ?_)
   rw [inst2_bX]
-  refine .orE (LeanProofs.IPRA.Foundations.BoundedReflection.eqb_cases (var 0) one) ?_ ?_
-  · exact (congrMul Prf.hyp0 (.eqRefl _)).eqTrans ((zero_mul _).eqTrans Prf.hyp0.eqSymm)
-  · exact (congrMul Prf.hyp0 Prf.hyp0).eqTrans ((one_mul _).eqTrans Prf.hyp0.eqSymm)
+  exact Common.mul_self_eq_of_zero_or_one (Common.eqb_zero_or_one _ _)
 
 alias two_pos := Common.two_pos
 

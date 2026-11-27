@@ -204,6 +204,13 @@ theorem sg_zero_or_one (a : PTm n) : Γ ⊢[PRAAx] (sg a ≐ zero) ⋎ (sg a ≐
   .orE (zero_or_succ a) (.orI₁ ((congrSg Prf.hyp0).eqTrans sg_zero))
     (.orI₂ ((congrSg Prf.hyp0).eqTrans (sg_succ _)))
 
+/-- A zero-or-one value is unchanged by squaring. -/
+theorem mul_self_eq_of_zero_or_one {a : PTm n} (h : Γ ⊢[PRAAx] (a ≐ zero) ⋎ (a ≐ one)) :
+    Γ ⊢[PRAAx] a * a ≐ a :=
+  .orE h
+    ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans ((zero_mul _).eqTrans Prf.hyp0.eqSymm))
+    ((congrMul Prf.hyp0 (.eqRefl _)).eqTrans (one_mul _))
+
 theorem sg_of_one_le {a : PTm n} (h : Γ ⊢[PRAAx] le one a) : Γ ⊢[PRAAx] sg a ≐ one :=
   (congrMonus (.eqRefl _) h).eqTrans (monus_zero _)
 

@@ -82,11 +82,11 @@ theorem res_eq {m : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (x : PTm k) 
   · have hl := res_low (Γ := le (rem x m) (half m) :: Γ) (x := x) (m := m) Prf.hyp0
     exact r1_low (Prf.andE₁ d).wk (Prf.andE₁ hl) (Prf.andE₂ hl)
 
-theorem idem0 {S : PTm k} (s0 : Γ ⊢[PRAAx] S ≐ zero) : Γ ⊢[PRAAx] S * S ≐ S := by
-  ipra_lc (𝔞 S - 1) * natEq s0
+theorem idem0 {S : PTm k} (s0 : Γ ⊢[PRAAx] S ≐ zero) : Γ ⊢[PRAAx] S * S ≐ S :=
+  Common.mul_self_eq_of_zero_or_one (.orI₁ s0)
 
-theorem idem1 {S : PTm k} (s1 : Γ ⊢[PRAAx] S ≐ one) : Γ ⊢[PRAAx] S * S ≐ S := by
-  ipra_lc 𝔞 S * natEq s1
+theorem idem1 {S : PTm k} (s1 : Γ ⊢[PRAAx] S ≐ one) : Γ ⊢[PRAAx] S * S ≐ S :=
+  Common.mul_self_eq_of_zero_or_one (.orI₂ s1)
 
 /-- `s² = s`. -/
 theorem sgn_idem (x m : PTm k) : Γ ⊢[PRAAx] sgn x m * sgn x m ≐ sgn x m := by

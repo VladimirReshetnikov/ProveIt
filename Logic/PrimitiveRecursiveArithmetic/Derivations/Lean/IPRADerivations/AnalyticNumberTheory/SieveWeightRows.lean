@@ -43,12 +43,8 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## Algebra over opaque terms -/
 
-theorem sg_idem (d : PTm n) : Γ ⊢[PRAAx] sg d * sg d ≐ sg d := by
-  refine .orE (zero_or_succ d) ?_ ?_
-  · have s0 : ((d ≐ zero) :: Γ) ⊢[PRAAx] sg d ≐ zero := (congrSg Prf.hyp0).eqTrans sg_zero
-    exact (zero_mul_l s0 _).eqTrans s0.eqSymm
-  · have s1 : ((d ≐ succ (pred d)) :: Γ) ⊢[PRAAx] sg d ≐ one := sg_pos Prf.hyp0
-    exact (congrMul s1 s1).eqTrans ((one_mul one).eqTrans s1.eqSymm)
+theorem sg_idem (d : PTm n) : Γ ⊢[PRAAx] sg d * sg d ≐ sg d :=
+  Common.mul_self_eq_of_zero_or_one (Common.sg_zero_or_one d)
 
 theorem r1_alg {SE H H1 A A' K : PTm n} (h1 : Γ ⊢[PRAAx] H1 ≐ one) (hA : Γ ⊢[PRAAx] A ≐ A') :
     Γ ⊢[PRAAx] (SE * (H * A)) * K ≐ H * ((SE * (H1 * A')) * K) := by
