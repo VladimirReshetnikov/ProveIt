@@ -1,3 +1,4 @@
+import IPRADerivations.Analysis.Gamma.Digamma.Derivative.GaussianGammaDigammaEulerDerivative
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.FirstTerm.GaussianDigammaFirstBernoulliPrefix
 import IPRADerivations.Analysis.Gamma.Digamma.ElementaryBounds.GaussianGammaDigammaElementaryBounds
 import IPRADerivations.Analysis.Stirling.Bounds.Logarithmic.GaussianStirlingGlobalBounds
@@ -22,10 +23,11 @@ open GaussianDigammaFirstBernoulliReference (harmonicPrefix)
 open GaussianDigammaFirstBernoulliTelescope (meshTarget)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
+open GaussianGammaDigammaEulerDerivative (cutoff_distance)
 open GaussianGammaDigammaFiniteSum (index row_source reciprocalSum reciprocalBody)
 open GaussianGammaDigammaHarmonicCells (halfReciprocal)
 open GaussianGammaDigammaHarmonicPrefix (endpointPair)
-open GaussianGammaFiniteApproximantName (logF log_regular)
+open GaussianGammaFiniteApproximantName (logF)
 open GaussianHarmonicLogarithmName (sample sample_at)
 open GaussianHarmonicLogarithmProduct (mesh mesh_later)
 open GaussianNamedDifference (difference_distance sample_error)
@@ -51,8 +53,6 @@ local notation "DF" => GaussianGammaDigammaNative.nameF
 local notation "dd" => GaussianGammaDigammaNative.data
 local notation "UF" => GaussianGammaDigammaElementaryBounds.nameF
 local notation "ud" => GaussianGammaDigammaElementaryBounds.upperData
-local notation "EF" => GaussianGammaDigammaEulerDerivative.nameF
-local notation "ed" => GaussianGammaDigammaEulerDerivative.data
 
 def baseF : PR 2 := GaussianNamedDifference.nameF UF DF
 def baseData (a b : PTm n) : PTm n := GaussianNamedDifference.data (ud a b) (dd a b)
@@ -70,25 +70,6 @@ theorem base_regular (a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
 
 theorem steps_later (p : PTm n) : Γ ⊢[PRAAx] le (unit p) (steps p) :=
   le_trans (GaussianStirlingIntegerLimit.index_dominates_unit p) (le_succ_self _)
-
-private theorem cutoff_distance (p a b N : PTm n) (hs : Γ ⊢[PRAAx] source a b)
-    (hLater : Γ ⊢[PRAAx] le (unit p) N) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 DF p (dd a b)) (qsub (ap2 logF p N) (reciprocalSum a b (succ N)))
-      (a+num 10) (unit p) := by
-  let U := unit p
-  let R := reciprocalSum a b (succ N)
-  have hp := unit_positive (Γ := Γ) p
-  have hN := le_trans hp hLater
-  have actual := GaussianGammaDigammaEulerDerivative.original_rate a b N hs hN
-  have diag := GaussianNamedInverseRate.diagonal_rate DF EF _ _ _ N p hN actual
-  have smaller := distance_radius_mono _ _ _ _ (a+num 4) U (positive_product _ _ hN hp) hp
-    (by
-      unfold U GaussianGammaDigammaEulerDerivative.rateCoefficient
-      ipra_le (𝔞 a+2)*𝔞 (unit p)*sl hLater) diag
-  have raw := distance_congr (.eqRefl _) (qsub_congr (.eqRefl _) (constant_at p R)) (.eqRefl _) (.eqRefl _)
-    (sample_error logF constantF N R p (log_regular N hN) (constant_regular R))
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ U hp smaller raw)
 
 private theorem harmonic_balance (p a b N Q : PTm n) (hs : Γ ⊢[PRAAx] source a b)
     (hN : Γ ⊢[PRAAx] le (unit p) N) (hQ : Γ ⊢[PRAAx] le (unit p) Q) :
