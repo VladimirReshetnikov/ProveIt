@@ -42,13 +42,12 @@ noncomputable def iterP (Φ : R[X]) : ℕ → R[X]
   | 0 => 0
   | r + 1 => X * Φ.comp (iterP Φ r)
 
-theorem comp_sub_dvd (p a b : R[X]) : a - b ∣ p.comp a - p.comp b := by
-  simpa [Polynomial.comp, eval₂_eq_eval_map] using sub_dvd_eval_sub a b (p.map C)
+theorem comp_sub_dvd (p a b : R[X]) : a - b ∣ p.comp a - p.comp b :=
+  TruncatedSeries.comp_sub_dvd p a b
 
 theorem improve_dvd {m : ℕ} (p a b : R[X]) (h : (X : R[X]) ^ m ∣ a - b) :
-    (X : R[X]) ^ (m + 1) ∣ X * p.comp a - X * p.comp b := by
-  rw [← _root_.mul_sub, _root_.pow_succ']
-  exact mul_dvd_mul_left X (h.trans (comp_sub_dvd p a b))
+    (X : R[X]) ^ (m + 1) ∣ X * p.comp a - X * p.comp b :=
+  TruncatedSeries.improve_dvd p a b h
 
 theorem iterP_step (Φ : R[X]) (r : ℕ) : (X : R[X]) ^ r ∣ iterP Φ r - iterP Φ (r + 1) := by
   induction r with
@@ -67,18 +66,8 @@ theorem iterP_map {S : Type*} [CommRing S] (f : R →+* S) (Φ : R[X]) (r : ℕ)
 
 theorem unique_dvd (p g g' : R[X]) (N : ℕ)
     (hg : (X : R[X]) ^ (N + 1) ∣ g - X * p.comp g) (hg' : (X : R[X]) ^ (N + 1) ∣ g' - X * p.comp g') :
-    ∀ m ≤ N + 1, (X : R[X]) ^ m ∣ g - g' := by
-  intro m
-  induction m with
-  | zero => intro _; simp
-  | succ m ih =>
-    intro hm
-    have h1 : (X : R[X]) ^ (m + 1) ∣ g - X * p.comp g := (pow_dvd_pow X hm).trans hg
-    have h2 : (X : R[X]) ^ (m + 1) ∣ g' - X * p.comp g' := (pow_dvd_pow X hm).trans hg'
-    have h3 := improve_dvd p g g' (ih (by omega))
-    have e : g - g' = (g - X * p.comp g) - (g' - X * p.comp g') + (X * p.comp g - X * p.comp g') := by ring
-    rw [e]
-    exact dvd_add (dvd_sub h1 h2) h3
+    ∀ m ≤ N + 1, (X : R[X]) ^ m ∣ g - g' :=
+  TruncatedSeries.unique_dvd p g g' N hg hg'
 
 theorem coeff_eq_of_dvd {N : ℕ} {a b : R[X]} (h : (X : R[X]) ^ (N + 1) ∣ a - b) {i : ℕ} (hi : i ≤ N) :
     a.coeff i = b.coeff i := by

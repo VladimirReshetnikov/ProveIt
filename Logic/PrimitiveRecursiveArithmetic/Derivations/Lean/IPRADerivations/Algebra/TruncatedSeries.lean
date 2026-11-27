@@ -115,10 +115,10 @@ theorem dvd_of_cong {m : ℕ} {A B : ZPoly n} (h : Γ ⊢[PRAAx] cong m A B) :
   refine X_pow_dvd_iff.mpr fun d hd => ?_
   rw [coeff_sub, coeff_toP, coeff_toP, ZT.toZ_eq (conjFin_elim h ⟨d, hd⟩), sub_self]
 
-private theorem comp_sub_dvd {R : Type*} [CommRing R] (p a b : R[X]) : a - b ∣ p.comp a - p.comp b := by
+theorem comp_sub_dvd {R : Type*} [CommRing R] (p a b : R[X]) : a - b ∣ p.comp a - p.comp b := by
   simpa [Polynomial.comp, eval₂_eq_eval_map] using sub_dvd_eval_sub a b (p.map C)
 
-private theorem improve_dvd {R : Type*} [CommRing R] {m : ℕ} (p a b : R[X]) (h : (X : R[X]) ^ m ∣ a - b) :
+theorem improve_dvd {R : Type*} [CommRing R] {m : ℕ} (p a b : R[X]) (h : (X : R[X]) ^ m ∣ a - b) :
     (X : R[X]) ^ (m + 1) ∣ X * p.comp a - X * p.comp b := by
   rw [← _root_.mul_sub, _root_.pow_succ']
   exact mul_dvd_mul_left X (h.trans (comp_sub_dvd p a b))
@@ -146,7 +146,7 @@ theorem fixed (Φ : ZPoly n) (N : ℕ) :
     Γ ⊢[PRAAx] cong (N + 1) (iter Φ (N + 1)) (shiftX (comp Φ (iter Φ (N + 1)))) :=
   iter_step Φ (N + 1)
 
-private theorem unique_dvd {R : Type*} [CommRing R] (p g g' : R[X]) (N : ℕ)
+theorem unique_dvd {R : Type*} [CommRing R] (p g g' : R[X]) (N : ℕ)
     (hg : (X : R[X]) ^ (N + 1) ∣ g - X * p.comp g) (hg' : (X : R[X]) ^ (N + 1) ∣ g' - X * p.comp g') :
     ∀ m ≤ N + 1, (X : R[X]) ^ m ∣ g - g' := by
   intro m
