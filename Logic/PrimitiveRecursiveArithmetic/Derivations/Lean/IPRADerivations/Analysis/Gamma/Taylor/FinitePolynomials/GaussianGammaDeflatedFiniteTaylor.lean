@@ -19,11 +19,12 @@ open GaussianGammaOriginalC19Prefix (buffer totalDegree stage degree_dominates)
 open GaussianGammaOriginalPrefixCoefficientNames (reader original_reader_to_canonical)
 open GaussianGammaOriginalPrefixCoefficientVariation (cap)
 open GaussianGammaDeflatedPrefixTaylor (prefixValue deflatedTaylor)
-open GaussianRationalPowerExpansion (partialSum prefix_zero prefix_succ)
+open GaussianRationalPowerExpansion (partialSum prefix_succ)
 open GaussianOffDominantTerms (term)
-open GaussianRationalHorner (horner qzero positive_product)
+open GaussianRationalHorner (horner positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr)
+
 open GaussianCoefficientNameBounds (unit unit_positive)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
 
@@ -104,17 +105,15 @@ theorem original_prefix_error (q r R d w : PTm n) (hR : Γ ⊢[PRAAx] le one R)
       (succ d*rowNumerator q r R d) (rowDenominator q r) := by
   have rs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift R) := by simpa [Fm.shift,Syn.shift] using hR.shift
   have ws : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) one one := by simpa [Fm.shift,Syn.shift] using hw.shift
-  have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift q) (Syn.shift r) (Syn.shift R) (Syn.shift d) (Syn.shift w) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
-    · exact .impI (distance_congr (prefix_zero _ _ _).eqSymm (GaussianGammaDeflatedPrefixTaylor.prefix_zero r w).eqSymm
-        (zero_mul _).eqSymm (.eqRefl _) (GaussianRationalPowerDifference.distance_refl_zero qzero _
-          (positive_product _ _ (unit_positive q) (unit_positive r))))
-    · refine .impI ?_
-      exact prefix_step _ _ _ _ _ _ rs.wk.wk ws.wk.wk ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have done : Γ ⊢[PRAAx] prefixLaw q r R d w (succ d) := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE (succ d)
-  exact .impE done (le_refl _)
+  refine GaussianGammaCanonicalPrefixTaylor.power_prefix_distance GaussianGammaDeflatedPrefixTaylor.body (coefficients q R d) (degree q R d) w (succ d) (GaussianGammaDeflatedPrefixTaylor.data r w)
+    (rowNumerator q r R d) (rowDenominator q r) ((succ_monus_succ _ _).eqTrans (degree_guard q R d))
+    (positive_product _ _ (unit_positive q) (unit_positive r)) ?_
+  let Δ := lt (var 0) (succ (Syn.shift d)) :: Γ.map Fm.shift
+  have row := original_term_error (Γ := Δ) (Syn.shift q) (Syn.shift r) (Syn.shift R) (Syn.shift d)
+    (Syn.shift w) (var 0) rs.wk ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) ws.wk
+  simpa only [Δ, Syn.shift, ConciseIPRA.PTm.subst_succ, subst_coefficients, subst_degree,
+    GaussianGammaDeflatedPrefixTaylor.subst_data, subst_rowNumerator, subst_rowDenominator] using
+    distance_congr (.eqRefl _) (GaussianGammaDeflatedPrefixTaylor.body_at (Γ := Δ) _ _ _).eqSymm (.eqRefl _) (.eqRefl _) row
 
 /-- Full original coefficient mass, with no native inverse factor in the tail. -/
 theorem original_finite_taylor (q r R d w a b : PTm n) (hR : Γ ⊢[PRAAx] le one R)
@@ -135,13 +134,10 @@ theorem original_finite_taylor (q r R d w a b : PTm n) (hR : Γ ⊢[PRAAx] le on
   have lastBound := original_prefix_error q r R d w hR (GaussianShrinkingPolynomialTail.shrinking_disk_unit w a b hb hab hw)
   have hd := positive_product (Γ := Γ) _ _ (unit_positive q) (unit_positive r)
   have hp := GaussianFactorBudget.power_positive b (succ d) hb
-  have hD := positive_product _ _ hp hd
-  have first := distance_radius_mono _ _ _ _
-    (GaussianGammaUnitCoefficientMass.budget (two*R)*pw a (succ d)*unit q*unit r) (denominator q r d b)
-    (positive_product _ _ (le_refl one) hp) hD (le_of_eq_add (d := zero) (by unfold denominator; ipra_ring)) actual
-  have last := distance_radius_mono _ _ _ _ (pw b (succ d)*(succ d*rowNumerator q r R d)) (denominator q r d b)
-    hd hD (le_of_eq_add (d := zero) (by dsimp only [denominator,rowDenominator]; ipra_ring)) lastBound
-  exact distance_triangle_same _ _ _ _ _ _ hD first last
+  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _
+    (positive_product _ _ (le_refl one) hp) hd actual lastBound
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold numerator; ipra_ring)
+    (congrMul (one_mul _) (.eqRefl _)) joined
 
 theorem actual_original_deflated_polynomial_shrinking_taylor_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7
     ((le one (var 2) ⋏ (le one (var 6) ⋏ (le (var 5) (var 6) ⋏ bounded (var 4) (var 5) (var 6)))) ⟶

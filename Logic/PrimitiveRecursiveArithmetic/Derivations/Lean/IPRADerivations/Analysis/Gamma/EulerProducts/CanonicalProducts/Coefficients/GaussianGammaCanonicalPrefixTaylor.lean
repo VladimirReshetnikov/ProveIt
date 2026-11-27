@@ -22,13 +22,14 @@ open GaussianGammaOriginalC19Prefix (buffer totalDegree degree_dominates)
 open GaussianGammaOriginalPrefixCoefficientNames (reader original_reader_to_canonical)
 open GaussianGammaOriginalPrefixCoefficientVariation (cap)
 open GaussianGammaHigherCoefficientName (sample)
-open GaussianRationalPowerExpansion (partialSum prefix_zero prefix_succ)
+open GaussianRationalPowerExpansion (partialSum prefix_succ termBody term_body_at)
 open GaussianOffDominantTerms (term)
-open GaussianRationalFiniteSum (sum sum_zero sum_succ)
+open GaussianRationalFiniteSum (sum)
 open GaussianRationalReciprocal (power bounded_power bound_congr)
-open GaussianRationalHorner (qmul qzero positive_product evaluate)
+open GaussianRationalHorner (qmul positive_product evaluate)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr)
+open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -100,24 +101,37 @@ theorem prefix_step (q r R d w k : PTm n) (hR : Γ ⊢[PRAAx] le one R)
     ((GaussianRationalFiniteSum.sum_succ body k (data r w)).eqTrans (GaussianRationalSyntheticDivision.qadd_congr (.eqRefl _) (body_at r w k))).eqSymm
     (succ_mul _ _).eqSymm (.eqRefl _) combined
 
-/-- All numerical orders are internal to the original guarded QF induction. -/
+/-- A uniform row error bounds the distance from a stored power prefix to a finite sum. -/
+theorem power_prefix_distance (g : PTm 2) (C N w k y A D : PTm n)
+    (hk : Γ ⊢[PRAAx] le k (succ N)) (hD : Γ ⊢[PRAAx] le one D)
+    (h : (lt (var 0) (Syn.shift k) :: Γ.map Fm.shift) ⊢[PRAAx]
+      distanceBounded (term (Syn.shift C) (Syn.shift N) (Syn.shift w) (var 0))
+        (inst2 g (var 0) (Syn.shift y)) (Syn.shift A) (Syn.shift D)) :
+    Γ ⊢[PRAAx] distanceBounded (partialSum C N w k) (sum g k y) (k*A) D := by
+  have rows : Γ ⊢[PRAAx] termsDistance termBody g k (GaussianRationalPowerExpansion.data C N w) y A D := by
+    refine .allI (.impI ?_)
+    simpa only [Syn.shift, GaussianRationalPowerExpansion.subst_data] using
+      distance_congr (term_body_at _ _ _ _).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) h
+  exact distance_congr (GaussianRationalFiniteSum.generated_prefix_congr termBody k (succ N)
+    (GaussianRationalPowerExpansion.data C N w) k (le_refl _) hk) (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    (sum_distance termBody g k _ y A D hD rows)
+
+/-- Uniform row errors bound the actual stored prefix. -/
 theorem original_prefix_error (q r R d w : PTm n) (hR : Γ ⊢[PRAAx] le one R)
     (hw : Γ ⊢[PRAAx] bounded w one one) : Γ ⊢[PRAAx]
     distanceBounded (partialSum (buffer q R d) (totalDegree q R d) w (succ d)) (taylor r d w)
       (succ d*rowNumerator q r R d) (rowDenominator q r) := by
   have rs : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift R) := by simpa [Fm.shift,Syn.shift] using hR.shift
   have ws : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) one one := by simpa [Fm.shift,Syn.shift] using hw.shift
-  have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift q) (Syn.shift r) (Syn.shift R) (Syn.shift d) (Syn.shift w) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
-    · exact .impI (distance_congr (prefix_zero _ _ _).eqSymm (GaussianRationalFiniteSum.sum_zero body (data r w)).eqSymm
-        (zero_mul _).eqSymm (.eqRefl _) (GaussianRationalPowerDifference.distance_refl_zero qzero _
-          (positive_product _ _ (unit_positive q) (unit_positive r))))
-    · refine .impI ?_
-      exact prefix_step _ _ _ _ _ _ rs.wk.wk ws.wk.wk ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have done : Γ ⊢[PRAAx] prefixLaw q r R d w (succ d) := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE (succ d)
-  exact .impE done (le_refl _)
+  refine power_prefix_distance body (buffer q R d) (totalDegree q R d) w (succ d) (data r w)
+    (rowNumerator q r R d) (rowDenominator q r) ((succ_monus_succ _ _).eqTrans (degree_dominates q R d))
+    (positive_product _ _ (unit_positive q) (unit_positive r)) ?_
+  let Δ := lt (var 0) (succ (Syn.shift d)) :: Γ.map Fm.shift
+  have row := original_term_error (Γ := Δ) (Syn.shift q) (Syn.shift r) (Syn.shift R) (Syn.shift d)
+    (Syn.shift w) (var 0) rs.wk ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) ws.wk
+  simpa only [Δ, Syn.shift, ConciseIPRA.PTm.subst_succ, subst_buffer, subst_totalDegree,
+    subst_data, subst_rowNumerator, subst_rowDenominator] using
+    distance_congr (.eqRefl _) (body_at (Γ := Δ) _ _ _).eqSymm (.eqRefl _) (.eqRefl _) row
 
 /-- The entire physical shrinking factor survives all coefficient transport. -/
 theorem original_finite_taylor (q r R d w a b : PTm n) (hR : Γ ⊢[PRAAx] le one R)
@@ -136,15 +150,10 @@ theorem original_finite_taylor (q r R d w a b : PTm n) (hR : Γ ⊢[PRAAx] le on
   have prefixError := original_prefix_error q r R d w hR (GaussianShrinkingPolynomialTail.shrinking_disk_unit w a b hb hab hw)
   have hd := positive_product (Γ := Γ) _ _ (unit_positive q) (unit_positive r)
   have hp := GaussianFactorBudget.power_positive b (succ d) hb
-  have hD := positive_product _ _ hp hd
-  have first := distance_radius_mono _ _ _ _
-    (GaussianGammaUnitCoefficientMass.budget (two*R)*pw a (succ d)*unit q*unit r) (denominator q r d b)
-    (positive_product _ _ (le_refl one) hp) hD (le_of_eq_add (d := zero) (by unfold denominator; ipra_ring)) tail
-  have last := distance_radius_mono _ _ _ _
-    (pw b (succ d)*(succ d*rowNumerator q r R d)) (denominator q r d b)
-    hd hD (le_of_eq_add (d := zero) (by dsimp only [denominator,rowDenominator]; ipra_ring)) prefixError
-  exact distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hD first last)
+  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _
+    (positive_product _ _ (le_refl one) hp) hd tail prefixError
+  exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold numerator; ipra_ring)
+    (congrMul (one_mul _) (.eqRefl _)) joined
 
 def taylorF : PR 3 := PTm.toPR (taylor (var 0) (var 1) (var 2))
 theorem original_taylor_program (r d w : PTm n) : Γ ⊢[PRAAx]
