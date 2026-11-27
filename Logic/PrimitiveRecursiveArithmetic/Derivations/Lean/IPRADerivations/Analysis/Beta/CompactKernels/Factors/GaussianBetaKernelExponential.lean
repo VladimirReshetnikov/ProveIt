@@ -101,8 +101,7 @@ theorem decay_input (a b N T : PTm n) (h : Γ ⊢[PRAAx] source a b N) (ht : Γ 
   have targetBound := GaussianRationalReciprocal.bound_congr
     (GaussianBetaKernelLogarithm.target_is_original_decay a b h.andE₁) (.eqRefl _) (.eqRefl _)
     (GaussianBetaKernelLogarithm.target_bound a b T h.andE₁ ht)
-  exact constant_input _ _ (GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) (le_of_eq_add (d := T+one) (by unfold radius; ipra_ring))) targetBound)
+  exact constant_input _ _ (GaussianCoefficientNameBounds.bounded_radius_mono_one (le_of_eq_add (d := T+one) (by unfold radius; ipra_ring)) targetBound)
 
 theorem logarithm_rate (a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ ⊢[PRAAx]
     GaussianNamedInverseRate.independentRate GaussianBetaKernelLogarithm.nameF constantF

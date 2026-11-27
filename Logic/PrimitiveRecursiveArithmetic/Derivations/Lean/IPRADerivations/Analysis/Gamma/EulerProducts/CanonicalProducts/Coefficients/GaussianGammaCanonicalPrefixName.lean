@@ -57,8 +57,7 @@ theorem term_at (p w e : PTm n) : Γ ⊢[PRAAx] inst2 termBody e (termData p w) 
 
 theorem power_bound (R d w e : PTm n) (hR : Γ ⊢[PRAAx] le one R) (hw : Γ ⊢[PRAAx] bounded w R one)
     (he : Γ ⊢[PRAAx] le e d) : Γ ⊢[PRAAx] bounded (power w e) (pw R d) one :=
-  GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) (GaussianFactorBudget.power_monotone_length R e d hR he))
+  GaussianCoefficientNameBounds.bounded_radius_mono_one (GaussianFactorBudget.power_monotone_length R e d hR he)
     (GaussianRationalReciprocal.bound_congr (.eqRefl _) (.eqRefl _) (GaussianPolynomialPerturbation.one_power e)
       (GaussianRationalReciprocal.bounded_power _ R one e (le_refl one) hw))
 

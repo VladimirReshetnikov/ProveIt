@@ -69,8 +69,7 @@ theorem factor_bound (z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B) (hi : 
   have native := GaussianGammaFunctionalEquation.input_point_bound (point z B i) (R+i) B here
   have grow : Γ ⊢[PRAAx] le (R+i) (factorBound R E) :=
     le_trans (add_le_add₂ (le_refl R) hi) (le_add_right _ one)
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) grow)
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_one grow
     (GaussianRationalReciprocal.bound_congr (point_linear z B i h.andE₂.andE₁) (.eqRefl _) (.eqRefl _) native)
 
 theorem prefix_bound_step (z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B)
@@ -101,9 +100,7 @@ theorem factor_bound_positive (R E : PTm n) : Γ ⊢[PRAAx] le one (factorBound 
   le_congr (.eqRefl _) (by unfold factorBound; ipra_ring) (le_add_right one (R+E))
 theorem prefix_uniform_bound (z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B) (hi : Γ ⊢[PRAAx] le i E) : Γ ⊢[PRAAx]
     bounded (risingProduct z B i) (pw (factorBound R E) E) one :=
-  GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring)
-      (GaussianFactorBudget.power_monotone_length _ _ _ (factor_bound_positive R E) hi))
+  GaussianCoefficientNameBounds.bounded_radius_mono_one (GaussianFactorBudget.power_monotone_length _ _ _ (factor_bound_positive R E) hi)
     (prefix_bound z R B E i h hi)
 
 theorem stage_regular (z R B i : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]

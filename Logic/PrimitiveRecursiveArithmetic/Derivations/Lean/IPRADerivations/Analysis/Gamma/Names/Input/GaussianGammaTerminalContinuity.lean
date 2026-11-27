@@ -86,9 +86,7 @@ private theorem one_samples : Γ ⊢[PRAAx] smallSamples oneF (zero : PTm n) inv
   refine .allI ?_
   have hb := (GaussianGammaReciprocalInverse.lambda_positive two one two
     (le_refl one) (two_positive (Γ := Γ.map Fm.shift))).andE₂
-  have b := GaussianCoefficientNameBounds.bounded_radius_mono qone one one
-    (inverseBound : PTm (n+1)) one (le_refl one) (le_refl one)
-    (mul_le_mul_right one hb) qone_bounded
+  have b := GaussianCoefficientNameBounds.bounded_radius_mono_one hb qone_bounded
   simpa [smallSamples, inverseBound, Syn.shift, one, two] using
     bound_congr (one_at (var 0) zero).eqSymm (.eqRefl _) (.eqRefl _) b
 

@@ -24,7 +24,7 @@ open GaussianBarnesCanonicalCentralUniformBound (centralCap central_samples)
 open GaussianBarnesCanonicalFixedTaylorDerivativeUniformConvergence (factorialCap factorial_samples)
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_same)
 open GaussianGammaCanonicalExponent (constantF)
 open GaussianL1 (norm1 normSq_le_norm1_square)
 open GaussianNameArithmetic (multiply_canonical)
@@ -155,8 +155,7 @@ private theorem multiply_back_at (f g : PR 2) (x y h B C t : PTm n)
       (bounded_product w v H B (C*U+A) U hB hU (step_bound h B hB) vb)
   have fit : Γ ⊢[PRAAx] le (H*(C*U+A)) ((H*C)*U+(H*A)*B) := by
     ipra_le 𝔞 H*𝔞 A*sl hB
-  exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ hB hU) (positive_product _ _ hB hU)
-    (mul_le_mul_right (B*U) fit) base
+  exact bounded_radius_mono_same (positive_product _ _ hB hU) fit base
 
 private theorem multiply_back (f g : PR 2) (x y h B C : PTm n)
     (hi : Γ ⊢[PRAAx] GaussianNamedDifferenceQuotient.input f g x y h B)

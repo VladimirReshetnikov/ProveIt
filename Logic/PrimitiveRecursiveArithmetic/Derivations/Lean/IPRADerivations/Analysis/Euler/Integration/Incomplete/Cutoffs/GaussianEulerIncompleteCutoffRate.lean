@@ -19,7 +19,7 @@ open GaussianEulerIncompleteCutoffParts (lowerData upperData piece_sources)
 open GaussianEulerCompactAdditivity (nameF)
 open GaussianEulerCutoffCauchyComparison (combined)
 open GaussianGammaIntegralCutoffs (height)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_same)
 open GaussianNameArithmetic (addData)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_trans point_at)
 open GaussianRationalHorner (positive_product qzero qadd)
@@ -97,11 +97,8 @@ theorem original_cutoff_piece_observations (p q s k j z R B A a b : PTm n)
   have low := GaussianEulerNamedLowerTail.lower_observation_bound q z R B k j A (.andI hD h.andE₁) hj'
   have high := GaussianEulerNamedUpperTail.original_named_upper_tail q z R B k j A split
   have eqCoeff := GaussianEulerUpperTailCauchyBudget.exact_tail_coefficient (Γ := Γ) R
-  have low' := bounded_radius_mono _ _ _ (K*Q+H) (H*Q) den den
-    (mul_le_mul_right (H*Q) (add_le_add_right H (mul_le_mul_right Q (le_add_right A (GaussianGammaIntegralCutoffs.tailCoefficient R))))) low
-  have high' := bounded_radius_mono _ _ _ (K*Q+H) (H*Q) den den
-    (mul_le_mul_right (H*Q) (add_le_add_right H (mul_le_mul_right Q
-      (le_congr eqCoeff (.eqRefl _) (le_add_left (GaussianGammaIntegralCutoffs.tailCoefficient R) A))))) high
+  have low' := bounded_radius_mono_same den (add_le_add_right H (mul_le_mul_right Q (le_add_right A (GaussianGammaIntegralCutoffs.tailCoefficient R)))) low
+  have high' := bounded_radius_mono_same den (add_le_add_right H (mul_le_mul_right Q (le_congr eqCoeff (.eqRefl _) (le_add_left (GaussianGammaIntegralCutoffs.tailCoefficient R) A)))) high
   exact .andI
     (from_added_tail p q _ _ _ K H hH lower' lreg ltreg
       (GaussianCompactRiemannName.name_canonical GaussianEulerIntegrandName.evaluatorF q _ _ _ _ _ _) low')

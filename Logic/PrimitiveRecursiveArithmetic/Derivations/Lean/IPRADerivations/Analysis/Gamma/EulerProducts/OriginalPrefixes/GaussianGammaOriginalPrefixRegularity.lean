@@ -57,8 +57,7 @@ theorem query_power_bound (z R B d e : PTm n) (h : Γ ⊢[PRAAx] source z R B) (
   have original : Γ ⊢[PRAAx] bounded (power (ofGaussian z B) e) (pw R e) one :=
     GaussianRationalReciprocal.bound_congr (.eqRefl _) (.eqRefl _) (GaussianPolynomialPerturbation.one_power e)
       (GaussianRationalReciprocal.bounded_power _ R one e (le_refl one) (GaussianGammaSynchronousExponentName.query_bound z R B h))
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) (GaussianFactorBudget.power_monotone_length R e d h.andE₁ he)) original
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_one (GaussianFactorBudget.power_monotone_length R e d h.andE₁ he) original
 
 theorem term_error (p q z R B d e : PTm n) (h : Γ ⊢[PRAAx] source z R B) (he : Γ ⊢[PRAAx] le e d) : Γ ⊢[PRAAx]
     rationalLE (qL1 (qsub (sourceTerm p z R B d e) (sourceTerm q z R B d e)))

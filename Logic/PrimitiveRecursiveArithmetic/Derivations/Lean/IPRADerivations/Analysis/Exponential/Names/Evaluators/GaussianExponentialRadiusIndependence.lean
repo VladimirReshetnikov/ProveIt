@@ -24,7 +24,7 @@ open GaussianRadiusExponentialName (input nameF data sample index inputPrecision
   query query_bound value sample_at name_regular)
 open GaussianExponentialReference (finite_reference)
 open GaussianNameEquivalence (diagonalEquivalent crossEquivalent)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
@@ -36,9 +36,7 @@ theorem input_widen (f : PR 2) (R S x : PTm n) (h : Γ ⊢[PRAAx] input f R x)
     simpa only [Fm.shift, Syn.shift, GaussianRadiusExponentialName.subst_boundedSamples] using h.andE₂.shift
   have hr : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift R) (Syn.shift S) := by
     simpa only [Fm.shift, Syn.shift, subst_le] using hrs.shift
-  exact bounded_radius_mono _ _ _ _ _ (le_refl _) (le_refl _)
-    (le_congr (by ipra_ring) (by ipra_ring) hr)
-    (bounded_samples_at f (Syn.shift R) (Syn.shift x) (var 0) hb)
+  exact bounded_radius_mono_one hr (bounded_samples_at f (Syn.shift R) (Syn.shift x) (var 0) hb)
 
 theorem same_input_precision (f : PR 2) (R S x p : PTm n)
     (hR : Γ ⊢[PRAAx] input f R x) (hS : Γ ⊢[PRAAx] input f S x) :

@@ -13,7 +13,7 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianGammaMinimumLogProperness
 
 open_ipra
-open GaussianCoefficientNameBounds (bounded_radius_mono)
+open GaussianCoefficientNameBounds (bounded_radius_mono_one)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans)
 open GaussianNamedPositiveLogarithm (admissible admissible_at)
 open GaussianPositiveRationalLogarithm (fraction)
@@ -35,8 +35,7 @@ private theorem log_source_enlarge (f : PR 2) (x E T U : PTm n)
     simpa [Δ,Fm.shift,Syn.shift,s] using hu.shift
   have hobs := admissible_at f (var 0) (s x) (s E) (s T) h'
   have bounds := hobs.andE₂
-  have widened := bounded_radius_mono z (s T) one (s U) one (le_refl _) (le_refl _)
-    (le_congr (by ipra_ring) (by ipra_ring) hu') bounds.andE₂.andE₂.andE₂
+  have widened := bounded_radius_mono_one hu' bounds.andE₂.andE₂.andE₂
   refine .andI h.andE₁ (.andI h.andE₂.andE₁ (.allI ?_))
   exact .andI hobs.andE₁ (.andI bounds.andE₁ (.andI bounds.andE₂.andE₁
     (.andI bounds.andE₂.andE₂.andE₁ widened)))

@@ -34,8 +34,7 @@ def retimedData (x : PTm n) : PTm n := GaussianBoundedConstantProductName.data t
 ipra_subst retimedData
 
 theorem unit_bound : Γ ⊢[PRAAx] GaussianRationalMetric.bounded (qone : PTm n) two one :=
-  GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) (le_succ_self one)) GaussianRationalReciprocal.qone_bounded
+  GaussianCoefficientNameBounds.bounded_radius_mono_one (le_succ_self one) GaussianRationalReciprocal.qone_bounded
 
 theorem retimed_regular (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx]
     pointCN (retimedF f) (retimedData x) :=

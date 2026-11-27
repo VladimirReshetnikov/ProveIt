@@ -95,8 +95,7 @@ theorem power_value_code (i : PTm n) : Γ ⊢[PRAAx]
     (GaussianRationalNaturalScale.natural_point_represents (unit i))
 theorem power_bound (E i : PTm n) (hi : Γ ⊢[PRAAx] le i E) : Γ ⊢[PRAAx] bounded (powerValue i) (unit E) one := by
   have grow : Γ ⊢[PRAAx] le (unit i) (unit E) := GaussianFactorBudget.power_monotone_length two i E (le_succ_self one) hi
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) grow)
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_one grow
     (GaussianRationalReciprocal.bound_congr (power_value_code i).eqSymm (.eqRefl _) (.eqRefl _)
       (GaussianNamedNaturalScale.natural_point_bound (unit i)))
 

@@ -110,8 +110,7 @@ theorem source_widen (f : PR 2) (x R S : PTm n)
   have b := GaussianRootApproximationWitness.point_at f (sh R) (sh x) (var 0) r.andE₂
   simpa only [GaussianRootApproximationWitness.pointBounds,Syn.shift,sh,Δ,one,ConciseIPRA.PTm.subst_zero,
     ConciseIPRA.PTm.subst_succ] using
-      GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-        (mul_le_mul_right one order) b
+      GaussianCoefficientNameBounds.bounded_radius_mono_one order b
 
 theorem proper (f g : PR 2) (x y R S : PTm n)
     (hf : Γ ⊢[PRAAx] source f x R) (hg : Γ ⊢[PRAAx] source g y S)
