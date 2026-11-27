@@ -23,12 +23,12 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianBoundedIntegerExponentialStages
 
 open_ipra
-open GaussianRationalHorner (canonical positive_product qmul)
+open GaussianRationalHorner (canonical qmul)
 open GaussianRationalReciprocal (power)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
-open GaussianNameEquivalence (crossEquivalent cross_trans cross_at)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
+open GaussianNameEquivalence (crossEquivalent cross_trans cross_diagonal_at)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianGammaCanonicalExponent (constantF)
 
@@ -134,11 +134,8 @@ theorem successor_product_error (f : PR 2) (p E i R x c A : PTm n) (h : Γ ⊢[P
     (hi : Γ ⊢[PRAAx] le (succ i) E) : Γ ⊢[PRAAx]
     distanceBounded (point f p E (succ i) R x) (qmul (point f p E i R x) (point f p E one R x))
       (two+num 4*majorant E R) (unit p) := by
-  have first := distance_symmetric _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p))
-    (cross_at _ _ _ _ p p (successor_exponential f E i R x c A h hi))
-  have closer := distance_radius_mono _ _ _ _ two (unit p)
-    (positive_product _ _ (unit_positive p) (unit_positive p)) (unit_positive p)
-    (le_of_eq_add (d := zero) (by ipra_ring)) first
+  have closer := distance_symmetric _ _ _ _ (unit_positive p)
+    (cross_diagonal_at p (successor_exponential f E i R x c A h hi))
   exact distance_triangle_same _ _ _ _ _ _ (unit_positive p) closer
     (product_same_precision f p E i R x c A h (le_trans (le_succ_self i) hi) (le_trans (zero_lt_succ i) hi))
 

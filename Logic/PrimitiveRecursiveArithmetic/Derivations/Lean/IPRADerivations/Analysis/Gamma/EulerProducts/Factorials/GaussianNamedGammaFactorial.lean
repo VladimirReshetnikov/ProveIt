@@ -25,10 +25,10 @@ open GaussianGammaFactorialValues (argument factorialValue error)
 open GaussianGammaReciprocalInverse (gammaF gammaData)
 open GaussianNamedGamma (nameF clock data)
 open GaussianNamedRightHalfPlane (marginPoint numerator denominator radius)
-open GaussianNameEquivalence (crossEquivalent cross_at cross_trans)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at cross_trans)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
-open GaussianRationalHorner (ofGaussian ofGaussian_represents represents represents_congr scalar_congr positive_product)
+open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
+open GaussianRationalHorner (ofGaussian ofGaussian_represents represents represents_congr scalar_congr)
 open GaussianRationalL1 (rawDen rawGaussian raw_represents)
 open GaussianRationalMetric (distanceBounded comparison_of_cleared)
 open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
@@ -131,10 +131,7 @@ theorem named_factorial_sample (p E : PTm n) :
     (GaussianGammaFactorialValues.radius E) one one A one one source_argument
     (GaussianGammaFactorialValues.integer_source E)
   have equivalent := cross_trans _ _ _ _ _ _ proper overlap
-  have between := cross_at _ _ _ _ q q equivalent
-  have common := distance_radius_mono _ _ _ _ two (unit q)
-    (positive_product _ _ (unit_positive q) (unit_positive q)) (unit_positive q)
-    (le_congr (by ipra_ring) (.eqRefl _) (le_refl _)) between
+  have common := cross_diagonal_at q equivalent
   have finite := distance_triangle_same _ _ _ _ _ _ (unit_positive q) common
     (GaussianGammaFactorialValues.prefix_error q E)
   have sampleEq : Γ ⊢[PRAAx] ap2 (nameF constantF) p (data x one) ≐ ap2 gammaF q (gammaData z R one A) :=

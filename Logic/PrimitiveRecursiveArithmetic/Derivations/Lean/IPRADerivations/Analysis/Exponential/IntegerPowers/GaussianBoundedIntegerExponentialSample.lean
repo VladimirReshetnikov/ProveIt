@@ -20,8 +20,8 @@ open GaussianBoundedIntegerExponential (error error_zero error_growth)
 open GaussianBoundedIntegerExponentialStages (scaledF stageData radius expF expData point majorant
   powerBudget productF productData power_bound)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNameEquivalence (crossEquivalent cross_at cross_trans point_at_later)
-open GaussianRationalHorner (qmul positive_product)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at cross_trans point_at_later)
+open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (power power_succ bound_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
@@ -86,10 +86,8 @@ theorem successor_sample (f : PR 2) (p E i R x : PTm n)
       (qmul (point f p E i R x) (point f p E one R x)) (num 4*majorant E R) (unit p) := distance_congr
     (GaussianNamedSmallPerturbationTransport.product_at (expF f) (expF f) _ _ p).eqSymm
     (.eqRefl _) (by ipra_ring) (.eqRefl _) raw
-  have den := positive_product _ _ (unit_positive (Γ := Γ) p) (unit_positive p)
-  have first := distance_symmetric _ _ _ _ den (cross_at _ _ _ _ p p (successor_cross f E i R x h hi))
-  have closer := distance_radius_mono _ _ _ _ two (unit p) den (unit_positive p)
-    (le_of_eq_add (d := zero) (by ipra_ring)) first
+  have closer := distance_symmetric _ _ _ _ (unit_positive p)
+    (cross_diagonal_at p (successor_cross f E i R x h hi))
   exact distance_triangle_same _ _ _ _ _ _ (unit_positive p) closer same
 
 def sampleBudget (E i R A H : PTm n) : PTm n := (H+one)*error E i R A

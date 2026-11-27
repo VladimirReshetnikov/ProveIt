@@ -22,7 +22,7 @@ open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance)
 open GaussianRationalHorner (positive_product)
-open GaussianNameEquivalence (cross_at)
+open GaussianNameEquivalence (cross_diagonal_at)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianStirlingAllOrderFirstPanelCommonMesh (original_difference_at)
 open GaussianStirlingAllOrderFirstPanelReadback (halfPanel)
@@ -109,10 +109,6 @@ theorem cutoff_distance (A B Q p x : PTm n) (hs : Γ ⊢[PRAAx] source A B)
   let L := steps p
   let t := rowClock A B L p
   let s := exponent L p
-  let SA := GaussianStirlingTelescopeName.nameF
-  let SB := GaussianStirlingAllOrderFirstPanelFiniteSum.nameF
-  let d := GaussianStirlingTelescopeName.data L A B
-  let e := GaussianStirlingAllOrderFirstPanelFiniteSum.data L A B
   have hu := unit_positive (Γ := Γ) p
   have hs' := unit_positive (Γ := Γ) s
   have ht' := unit_positive (Γ := Γ) t
@@ -127,9 +123,8 @@ theorem cutoff_distance (A B Q p x : PTm n) (hs : Γ ⊢[PRAAx] source A B)
     (.eqRefl _) (.eqRefl _)
     (distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ ht' hs') hu hp
       (GaussianStirlingTelescopeName.raw_distance t s L A B hs))
-  have third := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hu hu) hu (by ipra_le 0)
-    (distance_symmetric _ _ _ _ (positive_product _ _ hu hu)
-      (cross_at SB SA e d p p (GaussianStirlingAllOrderFirstPanelFiniteSum.telescope_cross L A B hs)))
+  have third := distance_symmetric _ _ _ _ hu
+    (cross_diagonal_at p (GaussianStirlingAllOrderFirstPanelFiniteSum.telescope_cross L A B hs))
   have fourth := GaussianStirlingAllOrderFirstPanelImproper.cutoff_error p A B x hs
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hu

@@ -117,9 +117,7 @@ private theorem replace_left_log (p a c b D : PTm n)
   let V := lg c b
   let W := lg (D*c) B
   have exactLog := gamma_rescale_from (D*c) B c b D hc hD (.eqRefl _) (by unfold B neighborDenominator; ipra_ring)
-  have pair := GaussianNameEquivalence.cross_at _ _ _ _ p p (cross_symm _ _ _ _ exactLog)
-  have small := GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring)) pair
+  have small := GaussianNameEquivalence.cross_diagonal_at p (cross_symm _ _ _ _ exactLog)
   have orig := GaussianNameRingLaws.add_sample_error logGammaF logGammaF U V p (log_gamma_regular _ _ (neighbor_source a b D ha hD))
     (log_gamma_regular _ _ hc)
   exact GaussianRationalDistanceOrder.distance_congr (.eqRefl _) (.eqRefl _)
@@ -138,9 +136,7 @@ private theorem replace_right_log (p a c b D : PTm n)
   let V := lg (neighborNumerator c b D) B
   let W := lg (D*a) B
   have exactLog := gamma_rescale_from (D*a) B a b D ha hD (.eqRefl _) (by unfold B neighborDenominator; ipra_ring)
-  have pair := GaussianNameEquivalence.cross_at _ _ _ _ p p (cross_symm _ _ _ _ exactLog)
-  have small := GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring)) pair
+  have small := GaussianNameEquivalence.cross_diagonal_at p (cross_symm _ _ _ _ exactLog)
   have orig := GaussianNameRingLaws.add_sample_error logGammaF logGammaF U V p (log_gamma_regular _ _ ha)
     (log_gamma_regular _ _ (neighbor_source c b D hc hD))
   exact GaussianRationalDistanceOrder.distance_congr (.eqRefl _) (.eqRefl _)

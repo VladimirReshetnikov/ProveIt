@@ -25,9 +25,8 @@ open GaussianStirlingGlobalBoundsTranslatedRate (translated_rate)
 open GaussianStirlingGammaFractionalIncrement (increment_rate)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder
-  (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_through_product_denominator)
-open GaussianRationalHorner (positive_product)
-open GaussianNameEquivalence (crossEquivalent cross_at point_at)
+  (distance_congr distance_symmetric distance_triangle_same distance_through_product_denominator)
+open GaussianNameEquivalence (crossEquivalent cross_diagonal_at point_at)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianValueNormalizerExtensionality (rawDiagonal)
 
@@ -61,21 +60,12 @@ theorem raw_at (p A B : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData A B) ≐ raw 
 theorem cutoff_error (p A B x : PTm n) (h : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] distanceBounded (raw p A B) (ap2 remainderF p (remainderData A B x)) (num 46) (unit p) := by
   let N := steps p
-  let u := unit p
-  let panelInput := panelsData N A B
-  let endpointInput := GaussianStirlingTelescopeName.endpointData N A B
-  let r := limitRemainderData A B x
-  let s := remainderData A B x
   have hu := unit_positive (Γ := Γ) p
-  have den := positive_product u u hu hu
-  have panelCross := GaussianStirlingAllOrderFirstPanelFiniteSum.endpoint_cross N A B h
-  have a := distance_radius_mono _ _ _ _ two u den hu (by unfold u; ipra_le 0)
-    (cross_at panelsF endpointF panelInput endpointInput p p panelCross)
+  have a := cross_diagonal_at p (GaussianStirlingAllOrderFirstPanelFiniteSum.endpoint_cross N A B h)
   have rate := translated_rate A B x h increment_rate
   have b := endpoint_close A B x (num 30) p h (rate_at A B x (num 30) p rate)
   have hc := remainder_cross A B x h (GaussianStirlingConstantIdentification.identification x x)
-  have c := distance_radius_mono _ _ _ _ two u den hu (by unfold u; ipra_le 0)
-    (cross_at limitRemainderF remainderF r s p p hc)
+  have c := cross_diagonal_at p hc
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hu (distance_triangle_same _ _ _ _ _ _ hu a b) c)
 

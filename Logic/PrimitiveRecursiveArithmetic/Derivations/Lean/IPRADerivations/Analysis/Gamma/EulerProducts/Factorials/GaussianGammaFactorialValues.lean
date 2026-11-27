@@ -20,10 +20,10 @@ open_ipra
 open GaussianGammaReciprocalInverse (gammaF gammaData gammaHeight gamma_regular)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaEulerHeadShift (shifted)
-open GaussianRationalHorner (ofGaussian positive_product canonical_unique represents_congr)
+open GaussianRationalHorner (ofGaussian canonical_unique represents_congr)
 open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
 open GaussianRationalMetric (distanceBounded bounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent)
 open ComplexLogarithmRemainder (oneCode scale normSq)
@@ -178,14 +178,11 @@ theorem successor_product_error (p i : PTm n) : Γ ⊢[PRAAx]
       (two+(modulus i+one)) (unit p) := by
   let X := GaussianGammaShift.shiftData (argument i) (radius i) one one
   have hshift := GaussianGammaShift.C21_Gamma_shift (Γ := Γ) (argument i) (radius i) one one one one one (integer_shift_input i)
-  have hcross := GaussianNameEquivalence.cross_at _ _ _ _ p p hshift
+  have hcross := GaussianNameEquivalence.cross_diagonal_at p hshift
   have left : Γ ⊢[PRAAx] value p (succ i) ≐ ap2 gammaF p (gammaData (shifted (argument i) one) (radius i+one) one one) :=
     congrAp2 gammaF (.eqRefl _) (data_succ i)
-  have aligned := distance_congr left.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) hcross
   have first : Γ ⊢[PRAAx] distanceBounded (value p (succ i)) (ap2 GaussianGammaShift.shiftF p X) two (unit p) :=
-    distance_radius_mono _ _ (unit p+unit p) (unit p*unit p) two (unit p)
-      (positive_product _ _ (unit_positive p) (unit_positive p)) (unit_positive p)
-      (le_of_eq_add (d := zero) (by ipra_ring)) aligned
+    distance_congr left.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) hcross
   have raw := GaussianNameRingLaws.multiply_sample_error (Γ := Γ) constantF gammaF (scalarArgument i) (data i) p
     (constant_regular _) (value_regular i)
   have second : Γ ⊢[PRAAx] distanceBounded (ap2 GaussianGammaShift.shiftF p X)
@@ -195,16 +192,11 @@ theorem successor_product_error (p i : PTm n) : Γ ⊢[PRAAx]
   exact distance_triangle_same _ _ _ _ _ _ (unit_positive p) first second
 
 theorem error_base (p : PTm n) : Γ ⊢[PRAAx] errorLaw p zero := by
-  have original := GaussianNameEquivalence.cross_at (Γ := Γ) _ _ _ _ p p GaussianRobinMeshExponential.C21_Gamma_one
+  have original := GaussianNameEquivalence.cross_diagonal_at (Γ := Γ) p GaussianRobinMeshExponential.C21_Gamma_one
   have left : Γ ⊢[PRAAx] value p zero ≐ ap2 gammaF p (gammaData oneCode one one one) := congrAp2 gammaF (.eqRefl _) data_zero
   have right : Γ ⊢[PRAAx] ap2 GaussianNameRingLaws.oneF p zero ≐ factorialValue zero :=
     (GaussianNameRingLaws.one_at p zero).eqTrans factorial_zero.eqSymm
-  have mapped := distance_congr left.eqSymm right (.eqRefl _) (.eqRefl _) original
-  have small : Γ ⊢[PRAAx] distanceBounded (value p zero) (factorialValue zero) two (unit p) :=
-    distance_radius_mono _ _ (unit p+unit p) (unit p*unit p) two (unit p)
-      (positive_product _ _ (unit_positive p) (unit_positive p)) (unit_positive p)
-      (le_of_eq_add (d := zero) (by ipra_ring)) mapped
-  exact distance_congr (.eqRefl _) (.eqRefl _) error_zero.eqSymm (.eqRefl _) small
+  exact distance_congr left.eqSymm right error_zero.eqSymm (.eqRefl _) original
 
 theorem error_step (p i : PTm n) (ih : Γ ⊢[PRAAx] errorLaw p i) : Γ ⊢[PRAAx] errorLaw p (succ i) := by
   have raw := GaussianNameRingLaws.product_right_error (scalarArgument i) (value p i) (factorialValue i)

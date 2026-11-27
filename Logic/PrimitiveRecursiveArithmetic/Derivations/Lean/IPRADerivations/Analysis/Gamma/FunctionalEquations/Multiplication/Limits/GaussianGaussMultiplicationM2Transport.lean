@@ -153,11 +153,8 @@ theorem fixed_right_error (p z R B m a d : PTm n) (h : Γ ⊢[PRAAx] source z R 
 theorem m2_error (p z R B m a d : PTm n) (hs : Γ ⊢[PRAAx] source z R B m a d)
     (hm : Γ ⊢[PRAAx] m2At (cutoff p R m a d) z R B m d) : Γ ⊢[PRAAx]
     distanceBounded (leftRaw p z R B m a d) (rightRaw p z R B m a d) (m2Budget z R B m d) (unit p) := by
-  let N := cutoff p R m a d
   have U := unit_positive (Γ := Γ) p
-  have main := GaussianNameEquivalence.cross_at fixedLeftF fixedRightF (fixedLeftData z R B m d N) (fixedRightData z R B m d N) p p hm
-  have paid := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ U U) U
-    (le_of_eq_add (d := zero) (by ipra_ring)) main
+  have paid := GaussianNameEquivalence.cross_diagonal_at p hm
   exact distance_triangle_same _ _ _ _ _ _ U
     (distance_triangle_same _ _ _ _ _ _ U (fixed_left_error p z R B m a d hs) paid)
     (distance_symmetric _ _ _ _ U (fixed_right_error p z R B m a d hs))
