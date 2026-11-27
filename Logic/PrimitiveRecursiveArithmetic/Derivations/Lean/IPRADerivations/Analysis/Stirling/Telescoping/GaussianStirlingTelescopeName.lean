@@ -48,19 +48,8 @@ ipra_subst data
 ipra_subst endpointData
 
 theorem raw_at (p N a b : PTm n) : Γ ⊢[PRAAx] ap2 rawF p (rawData N a b) ≐ rawSum p N a b := by
-  let x := rawData N a b
-  have read : Γ ⊢[PRAAx] ap2 rawF p x ≐ rawSum p (fstT x) (fstT (sndT x)) (sndT (sndT x)) := by
-    simpa [rawF,rawBody,ap2] using toPR_eq (Γ := Γ) rawBody ![p,x]
-  have p₂ : Γ ⊢[PRAAx] sndT x ≐ pairT a b := snd_pair _ _
-  have bind : Γ ⊢[PRAAx] rawSum p (fstT x) (fstT (sndT x)) (sndT (sndT x)) ≐ rawSum p N a b := by
-    simpa using Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (rawSum (var 0) (var 1) (var 2) (var 3) : PTm 4)
-      (σ := ![p,fstT x,fstT (sndT x),sndT (sndT x)]) (σ' := ![p,N,a,b]) (fun j => by
-        fin_cases j
-        · exact .eqRefl _
-        · exact fst_pair _ _
-        · exact p₂.fstE
-        · exact p₂.sndE)
-  exact read.eqTrans bind
+  simpa [rawF, rawBody, rawData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (rawSum (var 0) (var 1) (var 2) (var 3)) p ![N, a, b])
 
 private theorem raw_rows (p q N a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] termsDistance dBody dBody N (sampleData p a b) (sampleData q a b) (unit p+unit q) (unit p*unit q) := by

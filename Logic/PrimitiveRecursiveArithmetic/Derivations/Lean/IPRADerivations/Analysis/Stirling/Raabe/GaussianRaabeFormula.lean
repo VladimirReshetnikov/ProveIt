@@ -37,36 +37,10 @@ ipra_subst data
 
 theorem sample_at (p A D : PTm n) :
     Γ ⊢[PRAAx] ap2 nameF p (data A D) ≐ value (p+num 4) A D := by
-  let h := p+num 4
-  let x := data A D
-  have raw : Γ ⊢[PRAAx] ap2 nameF p x ≐ value h (fstT x) (sndT x) := by
-    let body : PTm 2 := value (var 0+num 4) (fstT (var 1)) (sndT (var 1))
-    have body_eq : Syn.subst ![p,x] body = value h (fstT x) (sndT x) := by
-      dsimp only [body]
-      rw [GaussianRaabePositiveComparison.subst_value, PTm.subst_add, PTm.subst_num,
-        subst_fstT, subst_sndT]
-      rfl
-    change Γ ⊢[PRAAx] ap2 (PTm.toPR body) p x ≐ value h (fstT x) (sndT x)
-    rw [← body_eq]
-    exact toPR_eq (Γ := Γ) body ![p,x]
-  let body : PTm 3 := value (var 0) (var 1) (var 2)
-  let u : Fin 3 → PTm n := ![h,fstT x,sndT x]
-  let v : Fin 3 → PTm n := ![h,A,D]
-  have eq := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) body (σ := u) (σ' := v) (fun i => by
-    fin_cases i
-    · exact .eqRefl h
-    · exact fst_pair A D
-    · exact snd_pair A D)
-  have left : Syn.subst u body = value h (fstT x) (sndT x) := by
-    dsimp only [body]
-    rw [GaussianRaabePositiveComparison.subst_value]
-    rfl
-  have right : Syn.subst v body = value h A D := by
-    dsimp only [body]
-    rw [GaussianRaabePositiveComparison.subst_value]
-    rfl
-  rw [left,right] at eq
-  exact raw.eqTrans eq
+  have read := toPR_pair_eq (Γ := Γ) (value (var 0 + num 4) (var 1) (var 2)) p A D
+  simp only [GaussianRaabePositiveComparison.subst_value, PTm.subst_add, PTm.subst_num,
+    Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two] at read
+  exact read
 
 theorem independent_observations (p s A D w : PTm n) (hs : Γ ⊢[PRAAx] source A D) :
     Γ ⊢[PRAAx] distanceBounded (ap2 nameF p (data A D)) (ap2 F s (fd A D w))

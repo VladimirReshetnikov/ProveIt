@@ -51,11 +51,8 @@ theorem data_A (z R B A : PTm n) : Γ ⊢[PRAAx] sndT (sndT (sndT (data z R B A)
   (congrSnd (congrSnd (snd_pair _ _))).eqTrans (snd_pair _ _).sndE
 
 theorem name_at (p z R B A : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data z R B A) ≐ sample p z R B A := by
-  have prog : Γ ⊢[PRAAx] ap2 nameF p (data z R B A) ≐ reader p (data z R B A) := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ) (reader (var 0) (var 1) : PTm 2) ![p,data z R B A]
-  refine prog.eqTrans ?_
-  ipra_congr (sample (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
-    [.eqRefl p, data_z _ _ _ _, data_R _ _ _ _, data_B _ _ _ _, data_A _ _ _ _] using [reader]
+  simpa [nameF, reader, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 3) (sample (var 0) (var 1) (var 2) (var 3) (var 4)) p ![z, R, B, A])
 
 theorem sample_canonical (p z R B A : PTm n) : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (sample p z R B A) :=
   GaussianEulerCutoffCauchyComparison.observation_canonical _ _ _ _ _ _

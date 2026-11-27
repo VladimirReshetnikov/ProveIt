@@ -91,34 +91,9 @@ theorem base_at (f : PR 2) (p x M : PTm n) (hs : Γ ⊢[PRAAx] source f x M) :
 
 theorem sample_at (f : PR 2) (p x M : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f) p (data x M) ≐ gridValue f p x M := by
-  let y := data x M
-  let body : PTm 2 := gridValue f (var 0) (fstT (var 1)) (sndT (var 1))
-  have read : Γ ⊢[PRAAx] ap2 (nameF f) p y ≐ gridValue f p (fstT y) (sndT y) := by
-    have eq : Syn.subst ![p,y] body = gridValue f p (fstT y) (sndT y) := by
-      dsimp only [body]
-      rw [subst_gridValue, subst_fstT, subst_sndT]
-      rfl
-    change Γ ⊢[PRAAx] ap2 (PTm.toPR body) p y ≐ _
-    rw [← eq]
-    exact toPR_eq (Γ := Γ) body ![p,y]
-  let term : PTm 3 := gridValue f (var 0) (var 1) (var 2)
-  let a : Fin 3 → PTm n := ![p, fstT y, sndT y]
-  let b : Fin 3 → PTm n := ![p, x, M]
-  have eq := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) term (σ := a) (σ' := b) (fun i => by
-    fin_cases i
-    · exact .eqRefl p
-    · exact fst_pair x M
-    · exact snd_pair x M)
-  have left : Syn.subst a term = gridValue f p (fstT y) (sndT y) := by
-    dsimp only [term]
-    rw [subst_gridValue]
-    rfl
-  have right : Syn.subst b term = gridValue f p x M := by
-    dsimp only [term]
-    rw [subst_gridValue]
-    rfl
-  rw [left,right] at eq
-  exact read.eqTrans eq
+  have read := toPR_pair_eq (Γ := Γ) (gridValue f (var 0) (var 1) (var 2)) p x M
+  rw [subst_gridValue, subst_gridValue] at read
+  exact read
 
 theorem frozen_grid_error (f : PR 2) (p s k x M w N : PTm n)
     (hs : Γ ⊢[PRAAx] source f x M) (hk : Γ ⊢[PRAAx] le (freezeClock f p x M) k)

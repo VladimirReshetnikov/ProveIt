@@ -116,20 +116,8 @@ theorem original_observations (f : PR 2) (p q j x A : PTm n) (h : Γ ⊢[PRAAx] 
     (observations_of_le f q p j x A h.wk Prf.hyp0)
 
 theorem name_at (f : PR 2) (p j x A : PTm n) : Γ ⊢[PRAAx] ap2 (nameF f) p (data j x A) ≐ sample f p j x A := by
-  let d := data j x A
-  have eval : Γ ⊢[PRAAx] ap2 (nameF f) p d ≐ sample f p (fstT d) (fstT (sndT d)) (sndT (sndT d)) := by
-    simpa only [nameF,body,ap2,subst_sample,Syn.subst_var,subst_fstT,subst_sndT,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using toPR_eq (Γ := Γ) (body f) ![p,d]
-  have last := snd_pair (Γ := Γ) j (pairT x A)
-  have code := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (sample f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p,fstT d,fstT (sndT d),sndT (sndT d)]) (σ' := ![p,j,x,A]) (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact last.fstE
-      · exact last.sndE)
-  exact eval.eqTrans (by simpa only [subst_sample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons] using code)
+  simpa [nameF, body, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (sample f (var 0) (var 1) (var 2) (var 3)) p ![j, x, A])
 
 theorem name_regular (f : PR 2) (j x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) :
     Γ ⊢[PRAAx] pointCN (nameF f) (data j x A) := by

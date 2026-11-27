@@ -35,22 +35,8 @@ ipra_subst data
 ipra_subst sample
 
 theorem name_at (p j z R B A : PTm n) : Γ ⊢[PRAAx] ap2 nameF p (data j z R B A) ≐ sample p j z R B A := by
-  let x := data j z R B A
-  have program : Γ ⊢[PRAAx] ap2 nameF p x ≐ reader p x := by
-    simpa [nameF,ap2,reader] using toPR_eq (Γ := Γ) (reader (var 0) (var 1) : PTm 2) ![p,x]
-  have tail : Γ ⊢[PRAAx] sndT x ≐ GaussianEulerVaryingCutoffName.data z R B A := snd_pair _ _
-  refine program.eqTrans ?_
-  simpa [reader] using Prf.eqCongr
-    (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-    (σ := ![p,fstT x,fstT (sndT x),fstT (sndT (sndT x)),fstT (sndT (sndT (sndT x))),sndT (sndT (sndT (sndT x)))])
-    (σ' := ![p,j,z,R,B,A]) (fun i => by
-      fin_cases i
-      · exact .eqRefl _
-      · exact fst_pair _ _
-      · exact (congrFst tail).eqTrans (GaussianEulerVaryingCutoffName.data_z _ _ _ _)
-      · exact (congrFst (congrSnd tail)).eqTrans (GaussianEulerVaryingCutoffName.data_R _ _ _ _)
-      · exact (congrFst (congrSnd (congrSnd tail))).eqTrans (GaussianEulerVaryingCutoffName.data_B _ _ _ _)
-      · exact (congrSnd (congrSnd (congrSnd tail))).eqTrans (GaussianEulerVaryingCutoffName.data_A _ _ _ _))
+  simpa [nameF, reader, data, GaussianEulerVaryingCutoffName.data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 4) (sample (var 0) (var 1) (var 2) (var 3) (var 4) (var 5)) p ![j, z, R, B, A])
 
 theorem name_canonical (p j z R B A : PTm n) : Γ ⊢[PRAAx] canonical (ap2 nameF p (data j z R B A)) :=
   GaussianRationalHorner.canonical_congr (name_at p j z R B A)

@@ -37,15 +37,15 @@ ipra_subst endpointSample [endpointDifference]
 
 theorem endpoint_at (p a C E : PTm n) : Γ ⊢[PRAAx]
     ap2 endpointF p (endpointData a C E) ≐ endpointDifference a C E (p+one) := by
-  let x := endpointData a C E
-  have pg : Γ ⊢[PRAAx] ap2 endpointF p x ≐ endpointSample p x := by
-    simpa [endpointF,ap2] using toPR_eq (Γ := Γ) (endpointSample (var 0) (var 1) : PTm 2) ![p,x]
-  have aa : Γ ⊢[PRAAx] fstT x ≐ a := fst_pair _ _
-  have cc : Γ ⊢[PRAAx] fstT (sndT x) ≐ C := (snd_pair _ _).fstE
-  have ee : Γ ⊢[PRAAx] sndT (sndT x) ≐ E := (snd_pair _ _).sndE
-  refine pg.eqTrans ?_
-  ipra_congr (endpointDifference (var 0) (var 1) (var 2) (var 3) : PTm 4) with
-    [aa, cc, ee, .eqRefl (p+one)] using [endpointSample, endpointDifference]
+  let body : PTm 4 := endpointDifference (var 1) (var 2) (var 3) (var 0 + one)
+  have decode {m : ℕ} (σ : Fin 4 → PTm m) : Syn.subst σ body =
+      endpointDifference (σ 1) (σ 2) (σ 3) (σ 0 + one) := by
+    simp only [body, endpointDifference, GaussianRationalMetric.subst_qsub,
+      GaussianEulerDecayMesh.subst_observation, PTm.subst_add, Syn.subst_var,
+      one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+  have read := toPR_pairVector_eq (Γ := Γ) (k := 2) body p ![a, C, E]
+  rw [decode, decode] at read
+  exact read
 
 private theorem precision_boost (p : PTm n) : Γ ⊢[PRAAx] le (num 6*unit p) (unit (p+num 6)) := by
   have h : Γ ⊢[PRAAx] le (num 6 : PTm n) (unit (num 6)) :=

@@ -267,16 +267,8 @@ ipra_subst retimed
 
 theorem name_at (f : PR 2) (p x A : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f) p (GaussianNamedGamma.data x A) ≐ original f (retimed p) x A := by
-  let a := GaussianNamedGamma.data x A
-  have step : Γ ⊢[PRAAx] ap2 (nameF f) p a ≐ original f (retimed p) (fstT a) (sndT a) := by
-    simpa only [nameF,body,ap2,subst_original,subst_retimed,Syn.subst_var,subst_fstT,subst_sndT,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons] using
-      toPR_eq (Γ := Γ) (body f) ![p,a]
-  have eq := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (original f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![retimed p,fstT a,sndT a]) (σ' := ![retimed p,x,A])
-    (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _)
-  exact step.eqTrans (by simpa only [subst_original,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using eq)
+  simpa [nameF, body, GaussianNamedGamma.data] using
+    (toPR_pair_eq (Γ := Γ) (original f (retimed (var 0)) (var 1) (var 2)) p x A)
 
 theorem independent_observations (f : PR 2) (p q x A : PTm n) (h : Γ ⊢[PRAAx] source f x A) :
     Γ ⊢[PRAAx] distanceBounded (ap2 (nameF f) p (GaussianNamedGamma.data x A))
