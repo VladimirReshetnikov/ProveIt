@@ -16,11 +16,10 @@ namespace LeanProofs.IPRA.Analysis.GaussianEulerLogarithmicOrderZero
 open_ipra
 open GaussianEulerCompactAdditivity (intervalSource)
 open GaussianCompactRiemannName (inside nameData evaluatorName)
-open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalHorner (positive_product)
+open GaussianCoefficientNameBounds (unit)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_at_earlier_precisions)
 open GaussianEulerLogarithmicCompactName (query)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -45,12 +44,8 @@ theorem original_sample_comparison (p q z R B E T a b : PTm n)
       (GaussianEulerIntegrandName.sample q z B a b) (unit p+unit q) (unit p*unit q) := by
   let k := query p zero R E T
   have later : Γ ⊢[PRAAx] le p k := le_add_right _ _
-  have hu := GaussianExponentialReference.unit_monotone later
-  have uq := unit_positive (Γ := Γ) q
-  have d := GaussianEulerIntegrandName.sample_regularity k q z B a b h
-  have comparison := distance_radius_mono _ _ _ _ (unit p+unit q) (unit p*unit q)
-    (positive_product _ _ (unit_positive k) uq) (positive_product _ _ (unit_positive p) uq)
-    (by dsimp only [k]; ipra_le (𝔞(unit q)*𝔞(unit q))*sl hu) d
+  have comparison := distance_at_earlier_precisions p q k q later (le_refl q)
+    (GaussianEulerIntegrandName.sample_regularity k q z B a b h)
   exact distance_congr (raw_order_zero p z R B E T a b).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) comparison
 
 private theorem original_raw_plain_at (q t z B : PTm n) : Γ ⊢[PRAAx]

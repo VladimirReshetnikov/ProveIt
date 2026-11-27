@@ -20,7 +20,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianSignedRealExponentialOrder
 open_ipra
 open GaussianRealExponentialPositiveRepresentative (positiveF positiveData originalData positive_regular sample_nonnegative sample_canonical)
 open GaussianNamedPositiveExponentialOrder (realOrder scalar_coordinate_distance)
-open GaussianRationalHorner (qadd qmul represents represents_congr canonical_unique positive_product)
+open GaussianRationalHorner (qadd qmul represents_congr canonical_unique positive_product)
 open GaussianDominantPairAlgebra (radiusPoint radiusNumerator radius_represents)
 open RationalGaussianEmbedding (embed native)
 open RationalSupMetric (numeratorOf denominatorOf)
@@ -117,11 +117,7 @@ theorem positive_product_observations (c d p q : PTm n) : Γ ⊢[PRAAx]
   have rhs := (GaussianPositiveExponentialProduct.real_product (Γ := Γ) a b (delta_sample_positive c d s).andE₁).eqSymm
   have middle : Γ ⊢[PRAAx] rationalLE (fstT a) (fstT (qmul a b)) := RationalArgmin.rationalLE_congr lhs rhs mono
   have near := GaussianNameEquivalence.point_at (Γ := Γ) positiveF X p s (positive_regular c)
-  have grow : Γ ⊢[PRAAx] le (unit q) (unit s) := GaussianExponentialReference.unit_monotone (le_add_right _ _)
-  have small := GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ (unit p+unit q) (unit p*unit q)
-    (positive_product _ _ (unit_positive p) (unit_positive s))
-    (positive_product _ _ (unit_positive p) (unit_positive q))
-    (by ipra_le (𝔞(unit p)*𝔞(unit p))*sl grow) near
+  have small := GaussianRationalDistanceOrder.distance_at_earlier_precisions p q p s (le_refl p) (le_add_right _ _) near
   have upper := RationalValueBounds.upper_order_right _ _ _ _ _
     (RationalValueBounds.upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _
       (positive_product _ _ (unit_positive p) (unit_positive q)) small)) middle

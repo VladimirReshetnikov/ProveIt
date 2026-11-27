@@ -16,13 +16,12 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedPositiveLateLogSource
 
 open_ipra
 open ComplexLogarithmRemainder (re)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN fraction fraction_represents)
-open GaussianExponentialReference (unit_monotone)
 open GaussianNameBounds (U sample_bound)
 open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans point_at)
 open GaussianNamedRightHalfPlane (source threshold actual_late_margin)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_at_earlier_precisions)
 open GaussianRationalHorner (canonical canonical_congr positive_product)
 open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalMetric (distanceBounded)
@@ -55,12 +54,8 @@ private theorem original_observations (f : PR 2) (p q x A : PTm n) (hf : Γ ⊢[
     Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 (retimedF f) q (retimedData x A))
       (unit p+unit q) (unit p*unit q) := by
   let r := q+threshold A
-  have grow : Γ ⊢[PRAAx] le (unit q) (unit r) := unit_monotone (le_add_right q (threshold A))
-  have comparison := point_at f x p r hf
-  refine distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive r))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) ?_
-    (distance_congr (.eqRefl _) (sample_at f q x A).eqSymm (.eqRefl _) (.eqRefl _) comparison)
-  ipra_le 𝔞(unit p*unit p)*sl grow
+  exact distance_congr (.eqRefl _) (sample_at f q x A).eqSymm (.eqRefl _) (.eqRefl _)
+    (distance_at_earlier_precisions p q p r (le_refl p) (le_add_right q (threshold A)) (point_at f x p r hf))
 
 theorem original_cross (f : PR 2) (x A : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] crossEquivalent f (retimedF f) x (retimedData x A) := by

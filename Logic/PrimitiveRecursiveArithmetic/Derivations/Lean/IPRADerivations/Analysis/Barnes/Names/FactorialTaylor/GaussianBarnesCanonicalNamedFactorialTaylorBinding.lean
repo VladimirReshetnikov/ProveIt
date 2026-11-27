@@ -20,13 +20,13 @@ open ComplexLogarithmRemainder (bounded_mono)
 open GaussianBarnesCanonicalHigherRows (previous)
 open GaussianBarnesCanonicalLogCofinal (source)
 open GaussianBarnesCanonicalNamedFactorialTaylor (clock data frozenData nameF proper retains sample_at)
-open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianExponentialReference (recode_fixed unit_monotone)
+open GaussianCoefficientNameBounds (unit)
+open GaussianExponentialReference (recode_fixed)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNameArithmetic (recode_congr)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_trans)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open GaussianRationalHorner (ofGaussian ofGaussian_canonical positive_product)
+open GaussianRationalDistanceOrder (distance_congr distance_at_earlier_precisions)
+open GaussianRationalHorner (ofGaussian ofGaussian_canonical)
 open GaussianRationalL1 (rawDen rawGaussian)
 open GaussianRationalMetric (distanceBounded)
 
@@ -53,13 +53,7 @@ private theorem constant_observations (p q z R B e : PTm n) (hz : Γ ⊢[PRAAx] 
   have near := GaussianBarnesCanonicalTaylorDerivativeChart.cofinal_cross (rawGaussian y) z (R+one) (rawDen y) B e e
     (widen _ _ _ hy) (widen _ _ _ hz) (retains e) same
   have obs := cross_at F F (frozenData constantF k x R e) (fd z (R+one) B e e) (succ p) q near
-  have grow := unit_monotone (Γ := Γ) (le_succ_self p)
-  have fit : Γ ⊢[PRAAx] le ((unit (succ p)+unit q)*(unit p*unit q)) ((unit p+unit q)*(unit (succ p)*unit q)) :=
-    le_congr (by ipra_ring) (by ipra_ring)
-      (add_le_add₂ (le_refl (unit p*unit (succ p)*unit q)) (mul_le_mul_right (unit q*unit q) grow))
-  have widened := distance_radius_mono _ _ _ _ (unit p+unit q) (unit p*unit q)
-    (positive_product _ _ (unit_positive (succ p)) (unit_positive q))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) fit obs
+  have widened := distance_at_earlier_precisions p q (succ p) q (le_succ_self p) (le_refl q) obs
   exact distance_congr (sample_at constantF p x R e).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) widened
 
 theorem constant_cross (z R B J e : PTm n) (hz : Γ ⊢[PRAAx] source z R B) (he : Γ ⊢[PRAAx] le e (previous J)) :

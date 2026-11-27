@@ -15,12 +15,12 @@ set_option maxHeartbeats 1000000
 namespace LeanProofs.IPRA.Analysis.GaussianGammaC7NamedRationalBinding
 
 open_ipra
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 open GaussianGammaC7Named (source nameF data clock sample_at proper)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_trans)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
-open GaussianRationalHorner (ofGaussian ofGaussian_canonical positive_product)
+open GaussianRationalDistanceOrder (distance_congr distance_at_earlier_precisions)
+open GaussianRationalHorner (ofGaussian ofGaussian_canonical)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded)
 
@@ -47,10 +47,7 @@ private theorem constant_observations (p q z R B : PTm n) (h : Γ ⊢[PRAAx] dis
       (GaussianExponentialReference.recode_fixed x (ofGaussian_canonical z B h.andE₂.andE₁))
   have sameC := GaussianGammaC7NamedFrozen.chart_cross (rawGaussian y) z R (rawDen y) B admitted h same
   have qNear := cross_at _ _ _ _ (succ p) q sameC
-  have grow := GaussianExponentialReference.unit_monotone (Γ := Γ) (le_succ_self p)
-  have widened := distance_radius_mono _ _ _ _ (unit p+unit q) (unit p*unit q)
-    (positive_product _ _ (unit_positive (succ p)) (unit_positive q))
-    (positive_product _ _ (unit_positive p) (unit_positive q)) (by ipra_le 𝔞(unit q*unit q)*sl grow) qNear
+  have widened := distance_at_earlier_precisions p q (succ p) q (le_succ_self p) (le_refl q) qNear
   exact distance_congr (sample_at constantF p x R).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) widened
 
 theorem constant_cross (z R B : PTm n) (h : Γ ⊢[PRAAx] disk z R B) :

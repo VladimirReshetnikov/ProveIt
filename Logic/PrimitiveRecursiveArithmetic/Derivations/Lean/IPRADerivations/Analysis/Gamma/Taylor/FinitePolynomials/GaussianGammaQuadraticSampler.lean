@@ -20,7 +20,7 @@ open GaussianGammaUnitCoefficientMass (budget)
 open GaussianGammaCofinalCoefficientName (coefficientPrecision degreeCutoff exponentialCutoff)
 open GaussianRationalHorner (ofGaussian positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_at_earlier_precisions)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -66,9 +66,7 @@ private theorem original_cofinal_distance (p s z R B : PTm n)
       (unit p+unit s) (unit p*unit s) := by
   have raw := GaussianNameEquivalence.cross_at _ _ _ _ p (succ s)
     (GaussianNameEquivalence.cross_symm _ _ _ _ (GaussianGammaCofinalCoefficientName.original_C7_identity z R B h))
-  have grow := GaussianExponentialReference.unit_monotone (Γ := Γ) (le_succ_self s)
-  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive (succ s)))
-    (positive_product _ _ (unit_positive p) (unit_positive s)) (by ipra_le (𝔞(unit p)^2)*sl grow) raw
+  exact distance_at_earlier_precisions p s p (succ s) (le_refl p) (le_succ_self s) raw
 
 theorem original_auxiliary_error (p r s z R B a b : PTm n) (h : Γ ⊢[PRAAx] source z R B a b) : Γ ⊢[PRAAx]
     GaussianRationalSlackRemoval.slack (qsub (GaussianGammaC7Name.sample p z R B) (quadratic r (ofGaussian z B)))

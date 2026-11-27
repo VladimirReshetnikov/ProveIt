@@ -21,9 +21,9 @@ open GaussianSignedNameExponentialOrder (realSamples real_sample_at)
 open GaussianNamedPositiveExponentialOrder (positiveSamples positive_at sampleOrder realOrder)
 open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent)
-open GaussianRationalHorner (qadd qmul)
+open GaussianRationalHorner (qadd)
 open GaussianRationalSyntheticDivision (qone)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -56,12 +56,8 @@ theorem retimed_cross (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x)
   let p : PTm (n+2) := var 1
   let q : PTm (n+2) := var 0
   let t := GaussianFastValueCut.exponent two q
-  have grow : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le (unit q) (unit t) :=
-    GaussianExponentialReference.unit_monotone (le_add_right _ _)
-  have near := GaussianNameEquivalence.point_at f (sh x) p t fs
-  have coarse := GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ (unit p+unit q) (unit p*unit q)
-    (GaussianRationalHorner.positive_product _ _ (unit_positive p) (unit_positive t))
-    (GaussianRationalHorner.positive_product _ _ (unit_positive p) (unit_positive q)) (by ipra_le (Groth.ι (Q.mk _ (unit p)))^2*sl grow) near
+  have coarse := GaussianRationalDistanceOrder.distance_at_earlier_precisions p q p t (le_refl p) (le_add_right _ _)
+    (GaussianNameEquivalence.point_at f (sh x) p t fs)
   simpa only [crossEquivalent,subst_retimedData,Syn.shift,sh,p,q] using
     GaussianRationalDistanceOrder.distance_congr (.eqRefl _) (retimed_at f q (sh x) rs).eqSymm (.eqRefl _) (.eqRefl _) coarse
 

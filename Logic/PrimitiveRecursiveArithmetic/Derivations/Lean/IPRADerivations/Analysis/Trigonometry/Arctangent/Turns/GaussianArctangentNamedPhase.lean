@@ -18,12 +18,12 @@ open_ipra
 open ComplexLogarithmRemainder (oneCode add mul scale)
 open GaussianArctangentQuarterExponential (quarterF quarter_regular)
 open GaussianArctangentExponentialPeriod (twiceF twiceData fullTurnF fullTurnData fullTurnRadius original_full_turn_input)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (addF addData add_at multiplyF multiplyData multiplyModulus multiply_at multiply_fast recode_congr)
 open GaussianNameEquivalence (crossEquivalent cross_symm point_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_at_earlier_precisions)
 open GaussianRationalHorner (qadd qmul positive_product canonical canonical_unique qadd_represents qmul_represents
   qadd_canonical ofGaussian_represents represents_congr represents_rescale)
 open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
@@ -110,12 +110,8 @@ private theorem quarter_angle_distance (p q z : PTm n) :
   let k := quarterClock p z
   have hk : Γ ⊢[PRAAx] le p k := le_trans (le_add_right _ _)
     (le_trans (le_add_right _ _) (le_add_right _ _))
-  have hg : Γ ⊢[PRAAx] le (unit p) (unit k) := GaussianBalancedRadiusArithmetic.unit_monotone p k hk
-  have d := point_at (Γ := Γ) quarterF z k q (quarter_regular z)
-  have bound := distance_radius_mono _ _ (unit k+unit q) (unit k*unit q) (unit p+unit q) (unit p*unit q)
-    (positive_product _ _ (unit_positive k) (unit_positive q))
-    (positive_product _ _ (unit_positive p) (unit_positive q))
-    (by ipra_le 𝔞 (unit q)*𝔞 (unit q)*sl hg) d
+  have bound := distance_at_earlier_precisions p q k q hk (le_refl q)
+    (point_at quarterF z k q (quarter_regular z))
   exact distance_congr (quarter_angle_at p z).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) bound
 
 theorem quarter_angle_cross (z : PTm n) :

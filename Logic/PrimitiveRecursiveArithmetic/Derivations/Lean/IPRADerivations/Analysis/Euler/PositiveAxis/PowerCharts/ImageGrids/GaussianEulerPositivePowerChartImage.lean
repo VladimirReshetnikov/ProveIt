@@ -79,10 +79,7 @@ theorem original_observations (p q e f d h Q S E T a b : PTm n)
   let t := query p h Q E T
   have near := GaussianNameEquivalence.point_at nameF (data e f d h S a b) t q
     (GaussianEulerPositivePowerChart.name_regular e f d h Q S E T a b hs)
-  have grow := GaussianExponentialReference.unit_monotone (Γ := Γ) (query_later p h Q E T)
-  have coarse := GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ (unit p+unit q) (unit p*unit q)
-    (positive_product _ _ (unit_positive t) (unit_positive q)) (positive_product _ _ (unit_positive p) (unit_positive q))
-    (by ipra_le (𝔞 (unit q))^2*sl grow) near
+  have coarse := GaussianRationalDistanceOrder.distance_at_earlier_precisions p q t q (query_later p h Q E T) (le_refl q) near
   exact GaussianRationalDistanceOrder.distance_congr (fraction_exact p e f d h Q S E T a b hs).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) coarse
 
 /-- One actual PR program returns the literal positive rational image node. -/
