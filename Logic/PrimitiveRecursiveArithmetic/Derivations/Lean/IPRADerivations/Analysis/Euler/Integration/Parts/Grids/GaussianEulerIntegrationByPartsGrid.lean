@@ -52,25 +52,23 @@ ipra_subst source
 
 theorem operator_at (p z B a b : PTm n) : Γ ⊢[PRAAx]
     ap3 operatorF p (pairT a b) (fixedData z B) ≐ operator p z B a b := by
-  have program : Γ ⊢[PRAAx] ap3 operatorF p (pairT a b) (fixedData z B) ≐ operatorTerm p (pairT a b) (fixedData z B) :=
-    by simpa [operatorF,ap3] using toPR_eq (Γ := Γ) (operatorTerm (var 0) (var 1) (var 2) : PTm 3) ![p,pairT a b,fixedData z B]
-  apply program.eqTrans
+  have read := toPR_pairVector3_eq (Γ := Γ)
+    (operator (var 0) (var 2) (var 3) (fstT (var 1)) (sndT (var 1)) : PTm 4) p (pairT a b) ![z, B]
+  simp only [subst_operator,
+    subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans ?_
   ipra_congr (operator (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
-    [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData z B) ≐ z from fst_pair _ _),
-      (show _ ⊢[PRAAx] sndT (fixedData z B) ≐ B from snd_pair _ _),
-      (show _ ⊢[PRAAx] fstT (pairT a b) ≐ a from fst_pair _ _),
-      (show _ ⊢[PRAAx] sndT (pairT a b) ≐ b from snd_pair _ _)] using [operatorTerm]
+    [.eqRefl p, .eqRefl z, .eqRefl B, fst_pair a b, snd_pair a b]
 
 theorem endpoint_at (p z B a b : PTm n) : Γ ⊢[PRAAx]
     ap3 endpointF p (pairT a b) (fixedData z B) ≐ primitive p z B a b := by
-  have program : Γ ⊢[PRAAx] ap3 endpointF p (pairT a b) (fixedData z B) ≐ endpointTerm p (pairT a b) (fixedData z B) :=
-    by simpa [endpointF,ap3] using toPR_eq (Γ := Γ) (endpointTerm (var 0) (var 1) (var 2) : PTm 3) ![p,pairT a b,fixedData z B]
-  apply program.eqTrans
+  have read := toPR_pairVector3_eq (Γ := Γ)
+    (primitive (var 0) (var 2) (var 3) (fstT (var 1)) (sndT (var 1)) : PTm 4) p (pairT a b) ![z, B]
+  simp only [GaussianEulerIntegrationByPartsLinear.subst_primitive,
+    subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans ?_
   ipra_congr (primitive (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
-    [.eqRefl p, (show _ ⊢[PRAAx] fstT (fixedData z B) ≐ z from fst_pair _ _),
-      (show _ ⊢[PRAAx] sndT (fixedData z B) ≐ B from snd_pair _ _),
-      (show _ ⊢[PRAAx] fstT (pairT a b) ≐ a from fst_pair _ _),
-      (show _ ⊢[PRAAx] sndT (pairT a b) ≐ b from snd_pair _ _)] using [endpointTerm]
+    [.eqRefl p, .eqRefl z, .eqRefl B, fst_pair a b, snd_pair a b]
 
 theorem endpoint_grid_at (i p z B a C E N : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody endpointF) i (sampleData p N a C E (fixedData z B)) ≐ endpoint i p z B a C E N :=

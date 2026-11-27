@@ -89,20 +89,13 @@ theorem row_distance (p q z R B E T a b c d N A D : PTm n)
 actual raw time fields, while only its constructed fixed data are decoded. -/
 theorem evaluator_raw_at (p t z B N : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p t (sampleDataBeta z B N) ≐ row p z B (fstT t) (sndT t) N := by
-  let x := sampleDataBeta z B N
-  have program : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ GaussianBetaKernelGridComparison.betaTerm p t x := by
-    simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (GaussianBetaKernelGridComparison.betaTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  have zarg : Γ ⊢[PRAAx] fstT (fstT x) ≐ z := (congrFst (fst_pair (GaussianEulerIntegrandName.fixedData z B) N)).eqTrans (fst_pair z B)
-  have barg : Γ ⊢[PRAAx] sndT (fstT x) ≐ B := (congrSnd (fst_pair (GaussianEulerIntegrandName.fixedData z B) N)).eqTrans (snd_pair z B)
-  have lastInput : ![p,fstT (fstT x),sndT (fstT x),fstT t,sndT t,sndT x] (5 : Fin 6) = sndT x := rfl
-  have lastOutput : ![p,z,B,fstT t,sndT t,N] (5 : Fin 6) = N := rfl
-  apply program.eqTrans
-  change Γ ⊢[PRAAx] row p (fstT (fstT x)) (sndT (fstT x)) (fstT t) (sndT t) (sndT x) ≐ row p z B (fstT t) (sndT t) N
+  have read := toPR_pairVector3_eq (Γ := Γ)
+    (row (var 0) (fstT (var 2)) (sndT (var 2)) (fstT (var 1)) (sndT (var 1)) (var 3) : PTm 4) p t ![pairT z B, N]
+  simp only [GaussianBetaKernelGridComparison.subst_row,
+    subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans ?_
   ipra_congr (row (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
-    [.eqRefl p, (show _ ⊢[PRAAx] fstT (fstT x) ≐ z from zarg), (show _ ⊢[PRAAx] sndT (fstT x) ≐ B from barg),
-      .eqRefl (fstT t), .eqRefl (sndT t),
-      (show _ ⊢[PRAAx] sndT x ≐ N from snd_pair (GaussianEulerIntegrandName.fixedData z B) N)] using [lastInput,
-      lastOutput]
+    [.eqRefl p, fst_pair z B, snd_pair z B, .eqRefl (fstT t), .eqRefl (sndT t), .eqRefl N] using [GaussianBetaKernelGridComparison.subst_row]
 
 theorem wrapped_at (p t z B N : PTm n) : Γ ⊢[PRAAx]
     ap2 (GaussianCompactRiemannName.evaluatorName evaluatorF) p (GaussianCompactRiemannName.nameData t (sampleDataBeta z B N)) ≐

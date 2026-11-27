@@ -58,17 +58,13 @@ ipra_subst errorDen
 
 theorem power_evaluator_at (p a b z B : PTm n) : Γ ⊢[PRAAx]
     ap3 powerEvaluatorF p (pairT a b) (fixedData z B) ≐ point p z B a b := by
-  have program : Γ ⊢[PRAAx] ap3 powerEvaluatorF p (pairT a b) (fixedData z B) ≐
-      powerTerm p (pairT a b) (fixedData z B) := by
-    simpa only [powerEvaluatorF,ap3,subst_powerTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-      Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using
-      toPR_eq (Γ := Γ) (powerTerm (var 0) (var 1) (var 2) : PTm 3) ![p,pairT a b,fixedData z B]
-  have value := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (point (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![p,fstT (fixedData z B),sndT (fixedData z B),fstT (pairT a b),sndT (pairT a b)]) (σ' := ![p,z,B,a,b])
-    (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _; exact fst_pair _ _; exact snd_pair _ _)
-  exact program.eqTrans (by simpa only [powerTerm,point,GaussianEulerIntegrandName.subst_powerData,subst_ap2,
-    Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-    Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using value)
+  have read := toPR_pairVector3_eq (Γ := Γ)
+    (point (var 0) (var 2) (var 3) (fstT (var 1)) (sndT (var 1)) : PTm 4) p (pairT a b) ![z, B]
+  simp only [point, GaussianEulerIntegrandName.subst_powerData, subst_ap2,
+    subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans ?_
+  ipra_congr (point (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl p, .eqRefl z, .eqRefl B, fst_pair a b, snd_pair a b] using [point, GaussianEulerIntegrandName.subst_powerData]
 
 theorem power_grid_at (i p N z B a C E : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody powerEvaluatorF) i (sampleData p N a C E (fixedData z B)) ≐

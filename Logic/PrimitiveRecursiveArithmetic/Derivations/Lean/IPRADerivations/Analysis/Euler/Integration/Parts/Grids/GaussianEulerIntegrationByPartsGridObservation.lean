@@ -37,15 +37,13 @@ ipra_subst rowCost [GaussianEulerIntegrationByPartsObservation.factor, GaussianE
 
 theorem raw_evaluator_at (p a b z B : PTm n) : Γ ⊢[PRAAx]
     ap3 rawF p (pairT a b) (fixedData z B) ≐ originalProduct p z B a b := by
-  have read : Γ ⊢[PRAAx] ap3 rawF p (pairT a b) (fixedData z B) ≐ rawTerm p (pairT a b) (fixedData z B) :=
-    by simpa only [rawF,ap3,subst_rawTerm,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,
-      Matrix.head_cons,Matrix.tail_cons] using toPR_eq (Γ := Γ) (rawTerm (var 0) (var 1) (var 2) : PTm 3) ![p,pairT a b,fixedData z B]
-  have value := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (originalProduct (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5)
-    (σ := ![p,fstT (fixedData z B),sndT (fixedData z B),fstT (pairT a b),sndT (pairT a b)]) (σ' := ![p,z,B,a,b])
-    (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _; exact fst_pair _ _; exact snd_pair _ _)
-  exact read.eqTrans (by simpa only [rawTerm,GaussianEulerIntegrationByPartsLinear.subst_originalProduct,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,
-    Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons] using value)
+  have read := toPR_pairVector3_eq (Γ := Γ)
+    (originalProduct (var 0) (var 2) (var 3) (fstT (var 1)) (sndT (var 1)) : PTm 4) p (pairT a b) ![z, B]
+  simp only [GaussianEulerIntegrationByPartsLinear.subst_originalProduct,
+    subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans ?_
+  ipra_congr (originalProduct (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) with
+    [.eqRefl p, .eqRefl z, .eqRefl B, fst_pair a b, snd_pair a b]
 
 theorem raw_grid_at (i p N z B a C E : PTm n) : Γ ⊢[PRAAx]
     inst2 (sampleBody rawF) i (sampleData p N a C E (fixedData z B)) ≐ originalProduct p z B (a*N+C*i) (E*N) :=

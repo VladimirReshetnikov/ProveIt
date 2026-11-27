@@ -51,31 +51,13 @@ ipra_subst betaTerm [kernel, GaussianBetaKernelExponential.base]
 
 theorem row_at (p z B a b N : PTm n) : Γ ⊢[PRAAx]
     ap3 evaluatorF p (pairT a b) (sampleDataBeta z B N) ≐ row p z B a b N := by
-  let x := sampleDataBeta z B N
-  let t := pairT a b
-  have program : Γ ⊢[PRAAx] ap3 evaluatorF p t x ≐ betaTerm p t x := by
-    simpa [evaluatorF,ap3] using toPR_eq (Γ := Γ) (betaTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  have zarg : Γ ⊢[PRAAx] fstT (fstT x) ≐ z :=
-    (congrFst (fst_pair (fixedData z B) N)).eqTrans (fst_pair z B)
-  have barg : Γ ⊢[PRAAx] sndT (fstT x) ≐ B :=
-    (congrSnd (fst_pair (fixedData z B) N)).eqTrans (snd_pair z B)
-  have lastInput : ![p,fstT (fstT x),sndT (fstT x),fstT t,sndT t,sndT x] (5 : Fin 6) = sndT x := rfl
-  have lastOutput : ![p,z,B,a,b,N] (5 : Fin 6) = N := rfl
-  apply program.eqTrans
-  change Γ ⊢[PRAAx] row p (fstT (fstT x)) (sndT (fstT x)) (fstT t) (sndT t) (sndT x) ≐ row p z B a b N
-  simpa only [subst_row,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,
-    Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,lastInput,lastOutput] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (row (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,fstT (fstT x),sndT (fstT x),fstT t,sndT t,sndT x])
-      (σ' := ![p,z,B,a,b,N]) (fun i => by
-        fin_cases i
-        · exact .eqRefl p
-        · exact zarg
-        · exact barg
-        · exact fst_pair a b
-        · exact snd_pair a b
-        · exact snd_pair (fixedData z B) N)
+  have read := toPR_pairVector3_eq (Γ := Γ)
+    (row (var 0) (fstT (var 2)) (sndT (var 2)) (fstT (var 1)) (sndT (var 1)) (var 3) : PTm 4) p (pairT a b) ![pairT z B, N]
+  simp only [subst_row,
+    subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans ?_
+  ipra_congr (row (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl p, fst_pair z B, snd_pair z B, fst_pair a b, snd_pair a b, .eqRefl N]
 
 theorem grid_domain (i M C E T : PTm n) (hM : Γ ⊢[PRAAx] le one M) (hE : Γ ⊢[PRAAx] le one E)
     (hi : Γ ⊢[PRAAx] le i M) (hT : Γ ⊢[PRAAx] le (one+C) (E*T)) :

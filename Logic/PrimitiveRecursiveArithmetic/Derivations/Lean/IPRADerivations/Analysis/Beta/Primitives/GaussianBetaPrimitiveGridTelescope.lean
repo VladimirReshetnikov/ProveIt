@@ -40,29 +40,13 @@ def endpointF : PR 3 := PTm.toPR (endpointTerm (var 0) (var 1) (var 2))
 
 theorem endpoint_at (p z B a b N : PTm n) : Γ ⊢[PRAAx]
     ap3 endpointF p (pairT a b) (sampleDataBeta z B N) ≐ endpoint p z B a b N := by
-  let x := sampleDataBeta z B N
-  let t := pairT a b
-  have program : Γ ⊢[PRAAx] ap3 endpointF p t x ≐ endpointTerm p t x := by
-    simpa [endpointF,endpointTerm,ap3] using toPR_eq (Γ := Γ) (endpointTerm (var 0) (var 1) (var 2) : PTm 3) ![p,t,x]
-  have zarg : Γ ⊢[PRAAx] fstT (fstT x) ≐ z :=
-    (congrFst (fst_pair (GaussianEulerIntegrandName.fixedData z B) N)).eqTrans (fst_pair z B)
-  have barg : Γ ⊢[PRAAx] sndT (fstT x) ≐ B :=
-    (congrSnd (fst_pair (GaussianEulerIntegrandName.fixedData z B) N)).eqTrans (snd_pair z B)
-  have lastInput : ![p,fstT (fstT x),sndT (fstT x),fstT t,sndT t,sndT x] (5 : Fin 6) = sndT x := rfl
-  have lastOutput : ![p,z,B,a,b,N] (5 : Fin 6) = N := rfl
-  apply program.eqTrans
-  change Γ ⊢[PRAAx] endpoint p (fstT (fstT x)) (sndT (fstT x)) (fstT t) (sndT t) (sndT x) ≐ endpoint p z B a b N
-  simpa only [subst_endpoint,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.cons_val_succ,Matrix.head_cons,Matrix.tail_cons,lastInput,lastOutput] using
-    Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (endpoint (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6)
-      (σ := ![p,fstT (fstT x),sndT (fstT x),fstT t,sndT t,sndT x]) (σ' := ![p,z,B,a,b,N]) (fun i => by
-        fin_cases i
-        · exact .eqRefl p
-        · exact zarg
-        · exact barg
-        · exact fst_pair a b
-        · exact snd_pair a b
-        · exact snd_pair (GaussianEulerIntegrandName.fixedData z B) N)
+  have read := toPR_pairVector3_eq (Γ := Γ)
+    (endpoint (var 0) (fstT (var 2)) (sndT (var 2)) (fstT (var 1)) (sndT (var 1)) (var 3) : PTm 4) p (pairT a b) ![pairT z B, N]
+  simp only [subst_endpoint,
+    subst_fstT, subst_sndT, Syn.subst_var] at read
+  refine read.eqTrans ?_
+  ipra_congr (endpoint (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with
+    [.eqRefl p, fst_pair z B, snd_pair z B, fst_pair a b, snd_pair a b, .eqRefl N]
 
 def gridEndpoint (i p z B a C E M N : PTm n) : PTm n := endpoint p z B (a*M+C*i) (E*M) N
 def gridRow (i p z B a C E M N : PTm n) : PTm n := row p z B (a*M+C*i) (E*M) N
