@@ -84,16 +84,10 @@ theorem rem_small {b z : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : Γ
 /-- Adding a multiple of `b^{j+1}` does not change the `j`-th digit. -/
 theorem digit_shift {b z c j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :
     Γ ⊢[PRAAx] rem (quo (z + c * (pw b j * b)) (pw b j)) b ≐ rem (quo z (pw b j)) b := by
-  have hq := pw_pos' hb j
-  have d1 := dm hq z
-  have e1 := natEq (Prf.andE₁ d1)
-  have u1 := dmu (z := z + c * (pw b j * b)) (q := quo z (pw b j) + c * b) (r := rem z (pw b j)) hq
-    (by ipra_lc e1) (Prf.andE₂ d1)
-  have d2 := dm hb (quo z (pw b j))
-  have e2 := natEq (Prf.andE₁ d2)
-  have u2 := dmu (z := quo z (pw b j) + c * b) (q := quo (quo z (pw b j)) b + c) (r := rem (quo z (pw b j)) b) hb
-    (by ipra_lc e2) (Prf.andE₂ d2)
-  exact (congrAp2 remF (Prf.andE₁ u1) (.eqRefl _)).eqTrans (Prf.andE₂ u2)
+  have e : Γ ⊢[PRAAx] z + c * (pw b j * b) ≐ z + pw b j * (b * c) := by ipra_ring
+  have q := (congrAp2 quoF e (.eqRefl (pw b j))).eqTrans
+    (Prf.andE₁ (Division.div_mod_add_mul (pw_pos' hb j)))
+  exact (congrAp2 remF q (.eqRefl _)).eqTrans (Prf.andE₂ (Division.div_mod_add_mul hb))
 
 /-- `code_digit`: the `j`-th digit of `E(N)` is `v_j` for `j < N`. -/
 theorem code_digit {V : PTm 2} {b x N j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b))

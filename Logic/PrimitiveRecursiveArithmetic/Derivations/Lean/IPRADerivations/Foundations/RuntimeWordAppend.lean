@@ -67,23 +67,11 @@ theorem digit_before (m d w v i : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     RuntimePermutationWords.digit m (append m d w v) i ≐ RuntimePermutationWords.digit m w i := by
   let P := pw m i
   let T := pw m (monus d (succ i))
-  have ws := divide_spec P w (power_positive m i hm)
-  have place := higher_place m d i hi
-  have e : Γ ⊢[PRAAx] append m d w v ≐ P*(quo w P+m*(v*T))+rem w P := by
-    have we := natEq (Prf.andE₁ ws)
-    have pe := natEq place
-    unfold append
-    apply deriveNat
-    ipra_simps
-    dsimp only [P,T] at we ⊢
-    rw [pe]
-    linear_combination we
-  have q := Prf.andE₁ (divide_unique P (append m d w v) (quo w P+m*(v*T)) (rem w P) (power_positive m i hm) e (.andE₂ ws))
-  have qs := divide_spec m (quo w P) hm
-  have qe : Γ ⊢[PRAAx] quo w P+m*(v*T) ≐ m*(quo (quo w P) m+v*T)+rem (quo w P) m := by
-    ipra_lc natEq (Prf.andE₁ qs)
-  exact (congrAp2 remF q (.eqRefl _)).eqTrans
-    (.andE₂ (divide_unique m _ (quo (quo w P) m+v*T) (rem (quo w P) m) hm qe (.andE₂ qs)))
+  have e : Γ ⊢[PRAAx] append m d w v ≐ w + P * (m * (v * T)) :=
+    (congrAdd (.eqRefl w) (congrMul (.eqRefl v) (higher_place m d i hi))).eqTrans (by ipra_ring)
+  have hP := positive_form P (power_positive m i hm)
+  have q := (congrAp2 quoF e (.eqRefl P)).eqTrans (Prf.andE₁ (Division.div_mod_add_mul hP))
+  exact (congrAp2 remF q (.eqRefl _)).eqTrans (Prf.andE₂ (Division.div_mod_add_mul (positive_form m hm)))
 
 def appendF : PR 4 := PTm.toPR (append (var 0) (var 1) (var 2) (var 3))
 def run (m d w v : PTm n) : PTm n := app appendF ![m,d,w,v]

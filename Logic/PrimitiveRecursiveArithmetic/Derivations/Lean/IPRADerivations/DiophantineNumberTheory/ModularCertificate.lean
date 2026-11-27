@@ -53,11 +53,8 @@ theorem unimodular {V : PTm 2} {N x m d : PTm k} (hg : Γ ⊢[PRAAx] gv V N x �
 
 /-- `(M q + z) mod M = z mod M`. -/
 theorem rem_add_mul {M : PTm k} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (q z : PTm k) :
-    Γ ⊢[PRAAx] rem (M * q + z) M ≐ rem z M := by
-  have d := dm hM z
-  have e := natEq (Prf.andE₁ d)
-  exact Prf.andE₂ (dmu hM (q := q + quo z M) (r := rem z M) (by apply deriveNat; ipra_simps; linear_combination e)
-    (Prf.andE₂ d))
+    Γ ⊢[PRAAx] rem (M * q + z) M ≐ rem z M :=
+  (congrAp2 remF (add_comm _ _) (.eqRefl _)).eqTrans (Prf.andE₂ (Division.div_mod_add_mul hM))
 
 /-- Replace both summands by their remainders before taking the remainder of their sum. -/
 private theorem rem_add_reduce {M : PTm k} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (x y : PTm k) :

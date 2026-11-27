@@ -252,6 +252,13 @@ theorem quo_mul_mul {x d k c f : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c)
       ((mul_add _ _ _).eqTrans (congrAdd (mul_assoc _ _ _).eqSymm (.eqRefl _)))
   · exact Order.mul_lt_mul_left (Order.zero_lt_of_eq_succ hk) (Prf.andE₂ div)
 
+/-- Adding a multiple of a positive divisor translates the quotient and preserves the remainder. -/
+theorem div_mod_add_mul {x d c k : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ c) :
+    Γ ⊢[PRAAx] (quo (x + d * k) d ≐ quo x d + k) ⋏ (rem (x + d * k) d ≐ rem x d) := by
+  have div := div_mod_at (x := x) hd
+  refine div_mod_unique_at hd ?_ (Prf.andE₂ div)
+  exact (congrAdd (Prf.andE₁ div) (.eqRefl _)).eqTrans (by apply deriveNat; ipra_simps; ring)
+
 end Division
 
 end LeanProofs.IPRA

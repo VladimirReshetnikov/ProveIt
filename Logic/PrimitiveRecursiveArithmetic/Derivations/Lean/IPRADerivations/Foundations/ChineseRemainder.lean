@@ -30,28 +30,16 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-! ## Residues -/
 
-/-- `x + M k₁ = y + M k₂` gives `x ≡ y (mod M)`. -/
-theorem rem_eq_of_eq' {M' x y k₁ k₂ : PTm n} (h : Γ ⊢[PRAAx] x + succ M' * k₁ ≐ y + succ M' * k₂) :
-    Γ ⊢[PRAAx] rem x (succ M') ≐ rem y (succ M') := by
-  have dx := div_mod (Γ := Γ) x M'
-  have dy := div_mod (Γ := Γ) y M'
-  have u₁ := div_mod_unique (z := x + succ M' * k₁) (q := quo x (succ M') + k₁)
-    (by refine withEq (Prf.andE₁ dx) fun e => ?_; ipra_lc e)
-    (Prf.andE₂ dx)
-  have u₂ := div_mod_unique (z := x + succ M' * k₁) (q := quo y (succ M') + k₂)
-    (by
-      refine withEq (Prf.andE₁ dy) fun e => withEq h fun e' => ?_
-      ipra_lc e' + e)
-    (Prf.andE₂ dy)
-  exact (Prf.andE₂ u₁).eqSymm.eqTrans (Prf.andE₂ u₂)
-
 theorem rem_eq_of_eq {M x y k₁ k₂ : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     (h : Γ ⊢[PRAAx] x + M * k₁ ≐ y + M * k₂) : Γ ⊢[PRAAx] rem x M ≐ rem y M := by
-  have h' : Γ ⊢[PRAAx] x + succ (pred M) * k₁ ≐ y + succ (pred M) * k₂ :=
-    (congrAdd (.eqRefl _) (congrMul hM.eqSymm (.eqRefl _))).eqTrans
-      (h.eqTrans (congrAdd (.eqRefl _) (congrMul hM (.eqRefl _))))
-  exact (congrAp2 remF (.eqRefl _) hM).eqTrans ((rem_eq_of_eq' h').eqTrans
-    (congrAp2 remF (.eqRefl _) hM.eqSymm))
+  have rx := Prf.andE₂ (Division.div_mod_add_mul (x := x) (k := k₁) hM)
+  have ry := Prf.andE₂ (Division.div_mod_add_mul (x := y) (k := k₂) hM)
+  exact rx.eqSymm.eqTrans ((congrAp2 remF h (.eqRefl M)).eqTrans ry)
+
+/-- `x + M k₁ = y + M k₂` gives `x ≡ y (mod M)`. -/
+theorem rem_eq_of_eq' {M' x y k₁ k₂ : PTm n} (h : Γ ⊢[PRAAx] x + succ M' * k₁ ≐ y + succ M' * k₂) :
+    Γ ⊢[PRAAx] rem x (succ M') ≐ rem y (succ M') :=
+  rem_eq_of_eq (congrSucc (pred_succ _).eqSymm) h
 
 /-- Equal remainders give the equality obtained by exchanging the two quotients. -/
 theorem eq_add_quo_of_rem_eq {M x y : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
