@@ -170,8 +170,7 @@ theorem observation_inverse_square_bound (p j X D R T A B : PTm n)
   have b := weighted_reciprocal_bound s j X D A B h.andE₁.andE₁.andE₁.andE₁ h.andE₁.andE₁.andE₂ hA hB
   have hAA := positive_product _ _ hA hA
   have ek : Γ ⊢[PRAAx] qmul (qmul y w) k ≐ z' :=
-    (qmul_associative y w k).eqTrans ((qmul_congr (.eqRefl _) (qmul_commutative w k)).eqTrans
-      (qmul_associative y k w).eqSymm)
+    GaussianRationalPowerAlgebra.swap_last y w k
   have ref : Γ ⊢[PRAAx] bounded z' (tailScale j D*(B*B)) (A*A) :=
     bound_congr ek (by ipra_ring) (by ipra_ring)
       (bounded_product _ _ _ _ _ _ hAA (le_refl one) b kBound)

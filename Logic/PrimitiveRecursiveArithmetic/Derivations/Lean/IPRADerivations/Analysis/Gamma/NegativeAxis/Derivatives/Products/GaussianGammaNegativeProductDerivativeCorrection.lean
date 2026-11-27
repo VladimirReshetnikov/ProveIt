@@ -32,7 +32,6 @@ open GaussianRationalDistanceOrder (reversed_difference)
 open GaussianRationalHorner
   (canonical canonical_unique ofGaussian ofGaussian_canonical ofGaussian_represents qadd qmul qzero represents_congr)
 open GaussianRationalMetric (qnegative qnegative_canonical qnegative_represents qsub)
-open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qsub_congr qzero_add qzero_canonical qone qmul_zero_right)
 open GaussianReciprocalHorner (qadd_commutative qmul_associative qmul_one_right)
 open GaussianStirlingGammaLogarithm (arg)
@@ -86,8 +85,7 @@ private theorem append_log_derivative (P f u v : PTm n)
     Γ ⊢[PRAAx] qadd (qmul (qmul P u) f) P ≐ qmul (qmul P f) (qadd u v) := by
   let A := qmul P f
   have reorder : Γ ⊢[PRAAx] qmul (qmul P u) f ≐ qmul A u :=
-    (qmul_associative P u f).eqTrans
-      ((qmul_congr (.eqRefl _) (qmul_commutative u f)).eqTrans (qmul_associative P f u).eqSymm)
+    GaussianRationalPowerAlgebra.swap_last P u f
   have recover : Γ ⊢[PRAAx] qmul A v ≐ P :=
     (qmul_associative P f v).eqTrans ((qmul_congr (.eqRefl _) inverse).eqTrans (qmul_one_right P hp))
   exact (qadd_congr reorder recover.eqSymm).eqTrans (qmul_add A u v).eqSymm

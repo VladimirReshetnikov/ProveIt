@@ -50,13 +50,10 @@ ipra_subst productLinear [slopeTerm, point]
 ipra_subst linear
 ipra_subst cell
 
-private theorem exchange (x y a : PTm n) : Γ ⊢[PRAAx] qmul (qmul x a) y ≐ qmul (qmul x y) a :=
-  (qmul_associative x a y).eqTrans ((qmul_congr (.eqRefl x) (qmul_commutative a y)).eqTrans (qmul_associative x y a).eqSymm)
-
 theorem original_product_linear (p z B a b c : PTm n) : Γ ⊢[PRAAx]
     productLinear p z B a b c ≐ qmul (originalProduct p z B a b)
       (qsub (qmul (coefficient z B) (fraction c a)) (fraction c b)) :=
-  (qadd_congr (exchange _ _ _) (qmul_associative _ _ _).eqSymm).eqTrans
+  (qadd_congr (GaussianRationalPowerAlgebra.swap_last _ _ _) (qmul_associative _ _ _).eqSymm).eqTrans
     (qmul_add (originalProduct p z B a b) (qmul (coefficient z B) (fraction c a)) (qnegative (fraction c b))).eqSymm
 
 theorem original_ratio_time (a b c : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
@@ -102,8 +99,7 @@ theorem original_linear_is_cell (p z B a b c : PTm n) (hB : Γ ⊢[PRAAx] le one
     (qadd_congr (.eqRefl _) second).eqTrans (qmul_add J H (qmul U (qsub (qmul K F) H))).eqSymm
   have inner := inner_linear K V U F H (ofGaussian_canonical _ _ hb) (original_ratio_time a b c ha hb) (coefficient_plus_one z B hB)
   exact shaped.eqTrans ((qmul_congr (.eqRefl _) inner).eqTrans
-    ((qmul_associative J H (qsub V U)).eqSymm.eqTrans
-      ((qmul_congr (qmul_commutative J H) (.eqRefl _)).eqTrans (qmul_associative H J (qsub V U)))))
+    (GaussianRationalPowerAlgebra.commute_nested J H (qsub V U)))
 
 theorem original_Euler_integration_by_parts_linear_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     ((le one (var 2) ⋏ (le one (var 3) ⋏ le one (var 4))) ⟶

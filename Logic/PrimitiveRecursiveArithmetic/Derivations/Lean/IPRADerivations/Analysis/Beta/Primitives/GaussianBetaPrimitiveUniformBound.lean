@@ -60,10 +60,8 @@ theorem weighted_coefficient (z B N u i : PTm n) (hi : Γ ⊢[PRAAx] le i N) : �
       qmul (entry (dilated (kernel N) N u) i) (reciprocal (linear z B (monus N i))) :=
   (dilated_lookup _ N u i hi).eqTrans
     ((qmul_congr (primitive_lookup z B N i hi) (.eqRefl _)).eqTrans
-      ((GaussianReciprocalHorner.qmul_associative _ _ _).eqTrans
-        ((qmul_congr (.eqRefl _) (GaussianRationalPowerAlgebra.qmul_commutative _ _)).eqTrans
-          ((GaussianReciprocalHorner.qmul_associative _ _ _).eqSymm.eqTrans
-            (qmul_congr (dilated_lookup (kernel N) N u i hi).eqSymm (.eqRefl _))))))
+      ((GaussianRationalPowerAlgebra.swap_last _ _ _).eqTrans
+        (qmul_congr (dilated_lookup (kernel N) N u i hi).eqSymm (.eqRefl _))))
 
 theorem weighted_cell_majorized (z B A N u i : PTm n) (h : Γ ⊢[PRAAx] source z B A)
     (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx]

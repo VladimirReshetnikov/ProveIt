@@ -174,8 +174,7 @@ private theorem identity_succ (A B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   let S := logarithmSum A B N
   let W := logarithmRow N A B
   have commute : Γ ⊢[PRAAx] qmul (qmul P S) F ≐ qmul (qmul P F) S :=
-    (qmul_associative P S F).eqTrans ((qmul_congr (.eqRefl _) (GaussianRationalPowerAlgebra.qmul_commutative S F)).eqTrans
-      (qmul_associative P F S).eqSymm)
+    GaussianRationalPowerAlgebra.swap_last P S F
   have d := derivative_succ (Γ := Γ) A B N
   refine d.eqTrans ((qadd_congr ((qmul_congr ih (.eqRefl _)).eqTrans commute)
     ((qmul_congr (.eqRefl _) (factor_derivative N A B hB).eqSymm).eqTrans

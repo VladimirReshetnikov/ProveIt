@@ -31,11 +31,9 @@ private theorem undo_factorial (q L : PTm n) (hq : Γ ⊢[PRAAx] canonical q) :
     Γ ⊢[PRAAx] qmul (qmul (naturalPoint (fact L)) q) (factorialInverse L) ≐ q := by
   let d := naturalPoint (fact L)
   let v := factorialInverse L
-  exact (qmul_associative d q v).eqTrans
-    ((qmul_congr (.eqRefl _) (qmul_commutative q v)).eqTrans
-      ((qmul_associative d v q).eqSymm.eqTrans
-        ((qmul_congr (factorial_inverse_unit L) (.eqRefl _)).eqTrans
-          ((qmul_commutative _ _).eqTrans (qmul_one_right q hq)))))
+  exact (GaussianRationalPowerAlgebra.swap_last d q v).eqTrans
+    ((qmul_congr (factorial_inverse_unit L) (.eqRefl _)).eqTrans
+      ((qmul_commutative _ _).eqTrans (qmul_one_right q hq)))
 
 theorem relative_head_grouping (z w B D m N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hD : Γ ⊢[PRAAx] le one D) (hm : Γ ⊢[PRAAx] le one m) :
@@ -52,10 +50,8 @@ theorem relative_head_grouping (z w B D m N : PTm n) (hB : Γ ⊢[PRAAx] le one 
   have common : Γ ⊢[PRAAx] qmul d (qmul u b) ≐ qmul d (qmul v a) :=
     (qmul_associative _ _ _).eqSymm.eqTrans
       ((qmul_congr h₁ (.eqRefl _)).eqTrans
-        ((qmul_associative _ _ _).eqTrans
-          ((qmul_congr (.eqRefl _) (qmul_commutative a b)).eqTrans
-            ((qmul_associative _ _ _).eqSymm.eqTrans
-              ((qmul_congr h₂.eqSymm (.eqRefl _)).eqTrans (qmul_associative _ _ _))))))
+        ((GaussianRationalPowerAlgebra.swap_last _ a b).eqTrans
+          ((qmul_congr h₂.eqSymm (.eqRefl _)).eqTrans (qmul_associative _ _ _))))
   exact (undo_factorial (qmul u b) L (qmul_canonical _ _)).eqSymm.eqTrans
     ((qmul_congr common (.eqRefl _)).eqTrans (undo_factorial (qmul v a) L (qmul_canonical _ _)))
 

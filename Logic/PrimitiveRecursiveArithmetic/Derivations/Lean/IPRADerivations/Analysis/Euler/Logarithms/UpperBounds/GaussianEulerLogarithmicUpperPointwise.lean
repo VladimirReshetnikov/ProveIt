@@ -56,10 +56,6 @@ theorem upper_source (z R B E T a b : PTm n) (h : Γ ⊢[PRAAx] source z R B E T
   .andI (.andI h.andE₁.andE₁.andE₁ h.andE₁.andE₁.andE₂.andE₂)
     (.andI h.andE₁.andE₂.andE₁ h.andE₂)
 
-private theorem exchange (x y z : PTm n) : Γ ⊢[PRAAx] qmul (qmul x y) z ≐ qmul (qmul x z) y :=
-  (qmul_associative x y z).eqTrans
-    ((qmul_congr (.eqRefl _) (qmul_commutative y z)).eqTrans (qmul_associative x z y).eqSymm)
-
 theorem half_square_error (p a b : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] distanceBounded (ap2 decayF p (decayData a b))
       (qmul (halfSample p a b) (halfSample p a b)) (num 14) (unit p) :=
@@ -95,7 +91,7 @@ theorem original_split_error (p j z R B E T a b : PTm n)
     (qmul P D) J (M+num 4) (unit p) up lb euler
   have first' : Γ ⊢[PRAAx] distanceBounded (GaussianEulerLogarithmicMultiplier.sample p j z B a b)
       (qmul (qmul P L) D) (J*(M+num 4)) (unit p) :=
-    distance_congr (qmul_commutative _ _) ((qmul_commutative L _).eqTrans (exchange P D L))
+    distance_congr (qmul_commutative _ _) ((qmul_commutative L _).eqTrans (GaussianRationalPowerAlgebra.swap_last P D L))
       (.eqRefl _) (.eqRefl _) first
   have coeff : Γ ⊢[PRAAx] bounded (qmul P L) (M*J) one :=
     bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)

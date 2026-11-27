@@ -22,11 +22,9 @@ open GaussianBarnesWeightedProductShift (weighted)
 open GaussianGammaEulerHeadLower (translated)
 open GaussianRationalFiniteProduct (qprod product_congr_bounded)
 open GaussianRationalHorner (qmul)
-open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalProductAlgebra (multiplyBody multiply_body_at product_multiply)
 open GaussianRationalReciprocal (power powerF)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open GaussianReciprocalHorner (qmul_associative)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -81,9 +79,6 @@ private theorem factorized (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ �
   exact (product_congr_bounded powerBody (multiplyBody polyBody inverseBody) N x x rows).eqTrans
     ((product_multiply polyBody inverseBody N x).eqTrans (qmul_congr (.eqRefl _) common))
 
-private theorem swap_last (a b c : PTm n) : Γ ⊢[PRAAx] qmul (qmul a b) c ≐ qmul (qmul a c) b :=
-  (qmul_associative a b c).eqTrans ((qmul_congr (.eqRefl _) (qmul_commutative b c)).eqTrans (qmul_associative a c b).eqSymm)
-
 theorem power_shift (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     qmul (powerProduct (translated z B one) B N) (plain z B N) ≐
       qmul (powerProduct z B N) (terminal z B N) := by
@@ -94,9 +89,9 @@ theorem power_shift (z B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx
   let A := plain z B N
   let T := terminal z B N
   have left : Γ ⊢[PRAAx] qmul (powerProduct z' B N) A ≐ qmul (qmul Q A) I :=
-    (qmul_congr (factorized z' B N hB) (.eqRefl A)).eqTrans (swap_last Q I A)
+    (qmul_congr (factorized z' B N hB) (.eqRefl A)).eqTrans (GaussianRationalPowerAlgebra.swap_last Q I A)
   have right : Γ ⊢[PRAAx] qmul (powerProduct z B N) T ≐ qmul (qmul P T) I :=
-    (qmul_congr (factorized z B N hB) (.eqRefl T)).eqTrans (swap_last P I T)
+    (qmul_congr (factorized z B N hB) (.eqRefl T)).eqTrans (GaussianRationalPowerAlgebra.swap_last P I T)
   exact left.eqTrans ((qmul_congr (polynomial_shift z B N hB) (.eqRefl I)).eqTrans right.eqSymm)
 
 theorem actual_Barnes_base_power_product_shift_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3
