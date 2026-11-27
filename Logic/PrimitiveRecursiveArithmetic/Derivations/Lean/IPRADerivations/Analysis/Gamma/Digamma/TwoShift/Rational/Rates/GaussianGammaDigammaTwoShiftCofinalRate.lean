@@ -254,11 +254,10 @@ private theorem diagonal (p a b c d K T B : PTm n) (ha : Γ ⊢[PRAAx] source a 
   have eR := scalar_upper r q C U hp (distance_symmetric _ _ _ _ hp e)
   refine .andI ?_ ?_
   · apply upper_congr (congrFst (constant_at p L).eqSymm) (.eqRefl _) (.eqRefl _) (.eqRefl _)
-    exact upper_mono _ _ _ _ _ _ (positive_product _ _ hp hp) (upper_triangle _ _ _ _ _ _ _ lo eR)
-      (le_of_eq_add (d := zero) (by ipra_ring))
+    exact RationalValueBounds.upper_triangle_same hp lo eR
   · apply upper_congr (.eqRefl _) (congrFst (constant_at p R).eqSymm) (.eqRefl _) (.eqRefl _)
-    exact upper_mono _ _ _ _ _ _ (positive_product _ _ hp hp) (upper_triangle _ _ _ _ _ _ _ eF hi)
-      (le_of_eq_add (d := zero) (by ipra_ring))
+    exact upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+      (RationalValueBounds.upper_triangle_same hp eF hi)
 
 /-- The limiting radius may have a denominator independent of the Gamma input. -/
 theorem cofinal_rate_with_denominator (a b c d K T B : PTm n) (ha : Γ ⊢[PRAAx] source a b)

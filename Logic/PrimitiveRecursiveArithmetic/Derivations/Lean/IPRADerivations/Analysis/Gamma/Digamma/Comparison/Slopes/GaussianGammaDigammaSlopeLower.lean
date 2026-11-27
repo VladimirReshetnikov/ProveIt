@@ -65,9 +65,9 @@ theorem sample_envelope (p a c b : PTm n) (h : Γ ⊢[PRAAx] domain a c b) :
   have left := upper_order_right _ _ _ _ _
     (upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hp first)) (cutoff_order a c b N T h)
   have right := upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hp (distance_symmetric _ _ _ _ hp hC))
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ hp hp)
-    (upper_triangle _ _ _ _ _ _ _ left right)
-    (le_of_eq_add (d := zero) (by unfold GaussianNameRingLaws.three; ipra_ring))
+  exact RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _)
+    (by unfold GaussianNameRingLaws.three; ipra_ring) (.eqRefl _)
+    (RationalValueBounds.upper_triangle_same hp left right)
 
 /-- The lower slope compares the original digamma names using regular
 normalized addition with the exact rational margin. -/

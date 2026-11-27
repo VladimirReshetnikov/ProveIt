@@ -177,6 +177,20 @@ theorem radius_cancel (a b A B c : PTm n) (hc : Γ ⊢[PRAAx] le one c)
     (h : Γ ⊢[PRAAx] radius a b (c*A) (c*B)) : Γ ⊢[PRAAx] radius a b A B :=
   positive_cancel hc (le_congr (by ipra_ring) (by ipra_ring) h)
 
+/-- Add two successive one-sided bounds at a common positive denominator. -/
+theorem upper_triangle_same {a b c A C B : PTm n} (hB : Γ ⊢[PRAAx] le one B)
+    (hab : Γ ⊢[PRAAx] upper a b A B) (hbc : Γ ⊢[PRAAx] upper b c C B) :
+    Γ ⊢[PRAAx] upper a c (A+C) B :=
+  upper_cancel a c (A+C) B B hB (upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (upper_triangle a b c A B C B hab hbc))
+
+/-- Add two successive radii at a common positive denominator. -/
+theorem radius_triangle_same {a b c A C B : PTm n} (hB : Γ ⊢[PRAAx] le one B)
+    (hab : Γ ⊢[PRAAx] radius a b A B) (hbc : Γ ⊢[PRAAx] radius b c C B) :
+    Γ ⊢[PRAAx] radius a c (A+C) B :=
+  radius_cancel a c (A+C) B B hB (radius_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (radius_triangle a b c A B C B hab hbc))
+
 /-- Actual signed numerator swap, preserving predecessor-denominator storage. -/
 def negate (a : PTm n) : PTm n :=
   pairT (pairT (numeratorOf a).neg (numeratorOf a).pos) (sndT a)

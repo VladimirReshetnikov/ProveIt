@@ -113,11 +113,6 @@ private theorem grid_upper (p i j : PTm n) (h : Γ ⊢[PRAAx] le i j) : Γ ⊢[P
     ((two*monus j i+two)*(N*N*N))
   ipra_le 0 with (-2*𝔞(N)^3)*e
 
-private theorem triangle_grid (a b c A C N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
-    (h : Γ ⊢[PRAAx] upper a b A N) (j : Γ ⊢[PRAAx] upper b c C N) :
-    Γ ⊢[PRAAx] upper a c (A+C) N :=
-  upper_mono _ _ _ _ _ _ (positive_product _ _ hN hN) (upper_triangle _ _ _ _ _ _ _ h j) (by ipra_le 0)
-
 private theorem negative_quarter_cost (A N : PTm n)
     (h : Γ ⊢[PRAAx] upper scalarZero (fstT negativeQuarter) A N) :
     Γ ⊢[PRAAx] le N (num 4*A) := by
@@ -151,11 +146,9 @@ private theorem quarter_cost (A N : PTm n)
 private theorem left_cell_cost (p : PTm n) : Γ ⊢[PRAAx] le (grid p) (num 8*index p+num 24) := by
   let i := index p
   let N := grid p
-  let t := clock p
   have upperGrid := grid_upper (Γ := Γ) p zero (succ i) (zero_le (succ i))
   have sign := zero_le_of_sign _ (selected_cell (Γ := Γ) p).andE₂.andE₂
-  have total := triangle_grid (sample t N (succ i)) (sample t N zero) (fstT negativeQuarter) _ _ N (grid_positive p)
-    upperGrid (endpoint_left_upper p)
+  have total := RationalValueBounds.upper_triangle_same (grid_positive p) upperGrid (endpoint_left_upper p)
   have h := negative_quarter_cost _ N (upper_order_left _ _ _ _ _ sign total)
   have e := natEq (monus_zero (Γ := Γ) (succ i))
   ipra_le sl h with -8*e
@@ -163,12 +156,10 @@ private theorem left_cell_cost (p : PTm n) : Γ ⊢[PRAAx] le (grid p) (num 8*in
 private theorem right_cell_cost (p : PTm n) : Γ ⊢[PRAAx] le (grid p) (num 8*monus (grid p) (index p)+num 16) := by
   let i := index p
   let N := grid p
-  let t := clock p
   have cell := selected_cell (Γ := Γ) p
   have upperGrid := grid_upper p i N (le_of_lt cell.andE₁)
   have sign := le_zero_of_negative _ cell.andE₂.andE₁
-  have total := triangle_grid (fstT quarter) (sample t N N) (sample t N i) _ _ N (grid_positive p)
-    (endpoint_right_lower p) upperGrid
+  have total := RationalValueBounds.upper_triangle_same (grid_positive p) (endpoint_right_lower p) upperGrid
   have h := quarter_cost _ N (upper_order_right _ _ _ _ _ total sign)
   ipra_le sl h
 

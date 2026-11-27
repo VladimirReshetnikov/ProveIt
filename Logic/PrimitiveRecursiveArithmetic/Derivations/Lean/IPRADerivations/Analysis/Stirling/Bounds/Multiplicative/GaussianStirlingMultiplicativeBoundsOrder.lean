@@ -121,9 +121,8 @@ private theorem observation (f g : PR 2) (V x y p : PTm n)
     (upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hw actual))
     (by unfold GaussianRadiusExponentialLipschitzRate.factor; ipra_le (2*𝔞 (pw (num 3) R))*sl htw)
   have first' := upper_congr (congrFst (constant_query f R p x).eqSymm) (.eqRefl _) (.eqRefl _) (.eqRefl _) first
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ hp hp)
-    (upper_triangle _ _ _ _ _ _ _ first' last)
-    (le_of_eq_add (d := zero) (by ipra_ring))
+  exact upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (RationalValueBounds.upper_triangle_same hp first' last)
 
 set_option maxHeartbeats 1200000 in
 theorem exponential_order (f g : PR 2) (x y : PTm n)

@@ -65,12 +65,6 @@ private theorem from_order_error (a b c d K U : PTm n)
     (RationalGaussianNameEmbedding.distance_from_radius x y K U hU
       (RationalValueBounds.radius_congr e1 e2 (.eqRefl _) (.eqRefl _) rd))
 
-private theorem scalar_step (u v w A C U : PTm n) (hp : Γ ⊢[PRAAx] le one U)
-    (h : Γ ⊢[PRAAx] upper u v A U) (k : Γ ⊢[PRAAx] upper v w C U) :
-    Γ ⊢[PRAAx] upper u w (A+C) U :=
-  upper_mono _ _ _ _ _ _ (positive_product _ _ hp hp) (upper_triangle _ _ _ _ _ _ _ h k)
-    (le_of_eq_add (d := zero) (by ipra_ring))
-
 private theorem native_observation (a b c d p k K : PTm n)
     (ha : Γ ⊢[PRAAx] GaussianGammaDigammaCompactLipschitz.window a b K)
     (hc : Γ ⊢[PRAAx] GaussianGammaDigammaCompactLipschitz.window c d K)
@@ -135,7 +129,7 @@ theorem original_diagonal (f g : PR 2) (p x y A B : PTm n) (hf : Γ ⊢[PRAAx] s
   have right := GaussianGammaPositiveNamedDigammaInjective.frozen_observation g p k y B hg hr
   have le1 := upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hp left)
   have le2 := upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hp (distance_symmetric _ _ _ _ hp right))
-  exact scalar_step _ _ _ _ _ _ hp (scalar_step _ _ _ _ _ _ hp le1 mid) le2
+  exact RationalValueBounds.upper_triangle_same hp (RationalValueBounds.upper_triangle_same hp le1 mid) le2
 
 theorem monotone (f g : PR 2) (x y A B : PTm n) (hf : Γ ⊢[PRAAx] source f x A)
     (hg : Γ ⊢[PRAAx] source g y B) (ho : Γ ⊢[PRAAx] realOrder f g x y) :

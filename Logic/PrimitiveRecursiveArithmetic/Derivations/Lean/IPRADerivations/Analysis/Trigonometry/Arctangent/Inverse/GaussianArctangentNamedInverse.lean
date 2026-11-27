@@ -49,9 +49,8 @@ theorem forward_sample_error (f : PR 2) (r p x z : PTm n) (h : Γ ⊢[PRAAx] inp
       (le_congr (.eqRefl _) (by change Γ ⊢[PRAAx] num 4*U ≐ one*(num 4*U); ipra_ring) (le_refl _))
   have rest := forward_at f p x z h
   have hp := unit_positive (Γ := Γ) p
-  exact radius_mono a (ordinate f p x) (one*U+num 7*U) (U*U) (num 8) U
-    (positive_product _ _ hp hp) (radius_triangle a b (ordinate f p x) one U (num 7) U first rest)
-    (le_congr (by ipra_ring) (.eqRefl _) (le_refl _))
+  exact RationalValueBounds.radius_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (RationalValueBounds.radius_triangle_same hp first rest)
 
 theorem forward_sample_later (f : PR 2) (r t p x z : PTm n) (h : Γ ⊢[PRAAx] input f x z)
     (ht : Γ ⊢[PRAAx] le p t) :

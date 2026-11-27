@@ -50,12 +50,6 @@ private theorem selected_phase_radius (f a b : PR 2) (p x : PTm n)
   exact imaginary_coordinate_radius _ _ _ _ (unit_positive p)
     (dyadic_weaken _ _ _ p (clock p) (clock_later p) d)
 
-private theorem same_denominator_radius_sum (a b c A C U : PTm n) (hU : Γ ⊢[PRAAx] le one U)
-    (ha : Γ ⊢[PRAAx] radius a b A U) (hb : Γ ⊢[PRAAx] radius b c C U) :
-    Γ ⊢[PRAAx] radius a c (A+C) U :=
-  radius_mono _ _ _ _ _ _ (positive_product _ _ hU hU) (radius_triangle a b c A U C U ha hb)
-    (le_of_eq_add (d := zero) (by ipra_ring))
-
 private theorem injectivity_bound (f g a b c d : PR 2) (p x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)
     (hF : Γ ⊢[PRAAx] selected f a b x) (hG : Γ ⊢[PRAAx] selected g c d y)
@@ -81,8 +75,7 @@ private theorem injectivity_bound (f g a b c d : PR 2) (p x y : PTm n)
   have ru := radius_symmetric i u two U (selected_phase_radius f a b p x hF)
   have rv := selected_phase_radius g c d p y hG
   have ruv : Γ ⊢[PRAAx] radius u v (num 6) U := by
-    have h := same_denominator_radius_sum _ _ _ _ _ _ hU
-      (same_denominator_radius_sum u i j two two U hU ru mid) rv
+    have h := RationalValueBounds.radius_triangle_same hU (RationalValueBounds.radius_triangle_same hU ru mid) rv
     exact RationalValueBounds.radius_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _) h
   have slide := retimed_parameter_distance p r A B C D (num 6) (clock_later p)
     s.andE₁ t.andE₁ s.andE₂.andE₁ t.andE₂.andE₁ ruv
@@ -122,13 +115,12 @@ private theorem raw_left_inverse_error (f a b : PR 2) (p x z : PTm n)
   let D := ap2 b r x
   let u := ordinate r A B
   let v := ordinate r C D
-  let m := GaussianArctangentInverseSampler.ordinate F p x
   have s := selected_at f a b r x hs
   have first := forward_sample_error F r p x z hi
   have second := selected_phase_radius f a b p x hs
   have summed : Γ ⊢[PRAAx] radius u v (num 10) U :=
     RationalValueBounds.radius_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-      (same_denominator_radius_sum u m v (num 8) two U (unit_positive p) first second)
+      (RationalValueBounds.radius_triangle_same (unit_positive p) first second)
   have d := retimed_parameter_distance p r A B C D (num 10) (clock_later p)
     (mesh_positive p) s.andE₁ (index_le F p x) s.andE₂.andE₁ summed
   exact distance_congr (.eqRefl _) s.andE₂.andE₂.eqSymm (by ipra_ring) (.eqRefl _) d

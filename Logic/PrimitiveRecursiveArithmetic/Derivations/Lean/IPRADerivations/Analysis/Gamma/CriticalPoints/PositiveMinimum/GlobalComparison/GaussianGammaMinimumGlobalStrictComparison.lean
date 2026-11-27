@@ -110,8 +110,8 @@ theorem strict_log_order_at (f : PR 2) (p x y A C E : PTm n) (hs : Γ ⊢[PRAAx]
       (le_of_eq_add (d := zero) (by dsimp only [U]; ipra_ring))
   have forward := margin_observation (Γ := Δ) f p x y A C E hs.wk hn.wk
   have joined : Δ ⊢[PRAAx] upper (add (fraction one E) a) a (C+num 80) U :=
-    upper_mono _ _ _ _ _ _ (positive_product _ _ hU hU) (upper_triangle _ _ _ _ _ _ _ forward h)
-      (le_of_eq_add (d := zero) (by dsimp only [U]; ipra_ring))
+    RationalValueBounds.upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+      (RationalValueBounds.upper_triangle_same hU forward h)
   exact lt_irrefl _ _ (lt_of_lt_of_le hp.wk (constant_margin_paid a E (C+num 80) U he.wk joined))
 
 theorem strict_minimum_at (f : PR 2) (p x y A C E : PTm n) (hs : Γ ⊢[PRAAx] source f y A)

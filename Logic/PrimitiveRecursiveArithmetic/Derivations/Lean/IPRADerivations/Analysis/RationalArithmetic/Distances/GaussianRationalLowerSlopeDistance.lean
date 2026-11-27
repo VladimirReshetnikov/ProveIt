@@ -55,8 +55,7 @@ theorem input_distance (a b c d M u v H A D : PTm n)
   have den := positive_product _ _ hb hd
   have he := positive_product _ _ (positive_product _ _ hM hb) hd
   have back := upper_of_radius _ _ _ _ (scalar_coordinate_distance v u H D hD (distance_symmetric _ _ _ _ hD hobs))
-  have amount := upper_mono _ _ _ _ (A+H) D (positive_product _ _ hD hD)
-    (upper_triangle _ _ _ _ _ _ _ hgap back) (le_of_eq_add (d := zero) (by ipra_ring))
+  have amount := RationalValueBounds.upper_triangle_same hD hgap back
   have gap0 : Γ ⊢[PRAAx] upper (fstT (fraction w e)) scalarZero (A+H) D :=
     upper_congr (.eqRefl _) RationalGaussianRealPart.real_zero (.eqRefl _) (.eqRefl _)
       (GaussianRationalSignedPanelTailDistance.real_add_cancel u (margin a b c d M) _ _ amount)

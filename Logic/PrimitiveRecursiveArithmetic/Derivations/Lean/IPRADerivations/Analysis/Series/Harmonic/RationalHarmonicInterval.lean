@@ -187,9 +187,8 @@ theorem equal_ratio_finite (a b c d Q : PTm n)
   have left := RationalValueBounds.radius_symmetric _ _ _ _ (refinement a b Q d ha hb hQ hd)
   have right := RationalValueBounds.radius_congr (equal_ratio_refined a b c d Q h).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (refinement c d Q b hc hd hQ hb)
-  have total := RationalValueBounds.radius_triangle _ _ _ one Q one Q left right
-  exact RationalValueBounds.radius_mono _ _ _ _ two Q (RationalAlgebra.positive_product hQ hQ) total
-    (le_of_eq_add (d := zero) (by ipra_ring))
+  exact RationalValueBounds.radius_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (RationalValueBounds.radius_triangle_same hQ left right)
 
 def input (a b Q E : PTm n) : Fm PTm n := le one a ⋏ (le one b ⋏ (le one Q ⋏ le one E))
 def output (a b Q E : PTm n) : PTm n := pairT (interval a b (E*Q)) (pairT (interval a b Q) Q)

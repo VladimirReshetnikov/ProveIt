@@ -64,9 +64,8 @@ theorem ordinate_error (f : PR 2) (p x z : PTm n) (h : Γ ⊢[PRAAx] input f x z
     radius_mono _ _ _ _ _ _ (unit_positive c) raw
       (le_mul_mono (le_refl two) (GaussianGammaHalfPiName.unit_mono p c hc))
   have next := forward_sample_later f c t p x z h ht
-  exact radius_mono _ _ _ _ _ _ (positive_product _ _ hU hU)
-    (radius_triangle left right (ordinate f p x) two U modulus U first next)
-    (le_congr (by unfold modulus; ipra_ring) (.eqRefl _) (le_refl _))
+  exact RationalValueBounds.radius_congr (.eqRefl _) (.eqRefl _) (by unfold modulus; ipra_ring) (.eqRefl _)
+    (RationalValueBounds.radius_triangle_same hU first next)
 
 theorem right_inverse (f : PR 2) (x z : PTm n) (h : Γ ⊢[PRAAx] input f x z) :
     Γ ⊢[PRAAx] crossEquivalent (GaussianImaginaryCoordinateName.nameF (roundTripF f))

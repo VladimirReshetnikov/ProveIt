@@ -200,8 +200,8 @@ private theorem endpoint_error (p z : PTm n) :
   have last : Γ ⊢[PRAAx] radius B C (num 5) U :=
     radius_symmetric _ _ _ _ (radius_congr (congrSnd endpoint) (.eqRefl _) (.eqRefl _) (.eqRefl _)
       (imaginary_coordinate_radius _ _ _ _ hU (GaussianArctangentPartialUnitEndpoint.unit_endpoint_distance p z)))
-  exact radius_mono _ _ _ _ _ _ (positive_product _ _ hU hU) (radius_triangle _ _ _ _ _ _ _ step last)
-    (le_of_eq_add (d := zero) (by ipra_ring))
+  exact radius_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (RationalValueBounds.radius_triangle_same hU step last)
 
 theorem inverse_start (k J z p : PTm n) (hk : Γ ⊢[PRAAx] le one k) (hJ : Γ ⊢[PRAAx] le k J)
     (hfine : Γ ⊢[PRAAx] le (num 14*modulus J) (unit p)) :

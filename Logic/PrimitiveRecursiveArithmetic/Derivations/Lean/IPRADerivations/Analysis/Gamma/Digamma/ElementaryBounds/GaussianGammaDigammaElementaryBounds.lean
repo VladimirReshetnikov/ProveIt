@@ -130,8 +130,7 @@ private theorem order_with_errors (x x' y y' A B N : PTm n) (hN : Γ ⊢[PRAAx] 
     Γ ⊢[PRAAx] upper (fstT x) (fstT y) (A+B) N := by
   have left := upper_order_right _ _ _ _ _ (upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hN hx)) h
   have right := upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hN (distance_symmetric _ _ _ _ hN hy))
-  exact upper_mono _ _ _ _ _ _ (positive_product _ _ hN hN)
-    (upper_triangle _ _ _ _ _ _ _ left right) (le_of_eq_add (d := zero) (by ipra_ring))
+  exact RationalValueBounds.upper_triangle_same hN left right
 
 theorem sample_envelope (p a b : PTm n) (hs : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx]

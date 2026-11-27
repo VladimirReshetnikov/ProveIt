@@ -112,12 +112,6 @@ theorem numerator_bound (z R B K x p : PTm n)
     le_trans budget (le_congr (one_mul U) (.eqRefl _) (le_mul_mono hR (le_refl U)))
   exact bounded_radius_mono _ _ _ _ _ (positive_product _ _ hu hm) hm (by ipra_le 𝔞 m*sl spend) analytic
 
-private theorem same_denominator_upper (a b c A C B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
-    (ha : Γ ⊢[PRAAx] upper a b A B) (hb : Γ ⊢[PRAAx] upper b c C B) :
-    Γ ⊢[PRAAx] upper a c (A+C) B :=
-  upper_mono _ _ _ _ _ _ (positive_product _ _ hB hB) (upper_triangle _ _ _ _ _ _ _ ha hb)
-    (le_congr (by ipra_ring) (.eqRefl _) (le_refl ((A+C)*(B*B))))
-
 private theorem sampled_root_upper (p k J x : PTm n) (hk : Γ ⊢[PRAAx] le k J) :
     Γ ⊢[PRAAx] upper (fstT (coefficient k (modulus J)))
       (fstT (sineSample (GaussianSineSampleRootGuards.clock p J) k J x)) (num 11) (unit p) := by
@@ -140,7 +134,7 @@ private theorem sampled_root_upper (p k J x : PTm n) (hk : Γ ⊢[PRAAx] le k J)
   have right : Γ ⊢[PRAAx] upper (fstT u) (fstT v) (num 9) U :=
     upper_of_radius _ _ _ _ (scalar_coordinate_distance _ _ _ _ hU raw)
   exact upper_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (same_denominator_upper _ _ _ _ _ _ hU left right)
+    (RationalValueBounds.upper_triangle_same hU left right)
 
 theorem denominator_bound (p k J x : PTm n) (hk : Γ ⊢[PRAAx] le one k) (hJ : Γ ⊢[PRAAx] le k J)
     (hp : Γ ⊢[PRAAx] le (num 22*modulus J) (unit p)) :
