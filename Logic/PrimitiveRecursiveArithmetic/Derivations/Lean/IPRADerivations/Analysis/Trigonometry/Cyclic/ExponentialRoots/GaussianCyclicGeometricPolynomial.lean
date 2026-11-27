@@ -153,10 +153,9 @@ private theorem counting_step (m j : PTm n) (ih : Γ ⊢[PRAAx] countingLaw m j)
 theorem evaluation_at_one (m : PTm n) :
     Γ ⊢[PRAAx] evaluate (coefficients m) qone ≐ naturalPoint m := by
   have h : Γ ⊢[PRAAx] .all (countingLaw (Syn.shift m) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,trivial⟩ ?_ ?_
-    · simp only [subst_countingLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI ((horner_zero _ _).eqTrans natural_point_zero.eqSymm).wk
-    · simpa only [subst_countingLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
+    ipra_qfind (⟨le_QF _ _,trivial⟩) [subst_countingLaw]
+    · exact .impI ((horner_zero _ _).eqTrans natural_point_zero.eqSymm).wk
+    · exact
         counting_step (Γ := countingLaw (Syn.shift m) (var 0) :: Γ.map Fm.shift)
           (Syn.shift m) (var 0) Prf.hyp0
   have rule : Γ ⊢[PRAAx] countingLaw m m := by

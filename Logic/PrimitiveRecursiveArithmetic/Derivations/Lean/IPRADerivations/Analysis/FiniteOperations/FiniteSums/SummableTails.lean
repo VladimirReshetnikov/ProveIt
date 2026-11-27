@@ -100,14 +100,12 @@ theorem discrepancy (p q e : PR 2) (N r x : PTm n) (h : Γ ⊢[PRAAx] motion p q
   have all : Γ ⊢[PRAAx] .all
       (le (zabs (difference p q (Syn.shift N) (var 0) (Syn.shift x)))
         (intervalSum e (Syn.shift N) (var 0) (Syn.shift x))) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simp only [subst_le, subst_zabs, subst_difference, subst_intervalSum,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact le_congr (difference_zero p q N x).eqSymm
+    refine PRA.qfInd _ (le_QF _ _) ?_ ?_ <;>
+      simp only [subst_le, subst_zabs, subst_difference, subst_intervalSum, Syn.subst_var,
+        Syn.inst_zero, Syn.repl_zero, Syn.subst_inst_shift, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    · exact le_congr (difference_zero p q N x).eqSymm
         (intervalSum_zero e N x).eqSymm (le_refl zero)
-    · simp only [subst_le, subst_zabs, subst_difference, subst_intervalSum,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      apply discrepancy_step p q e (Syn.shift x) Prf.hyp0
+    · apply discrepancy_step p q e (Syn.shift x) Prf.hyp0
       have shifted : Γ.map Fm.shift ⊢[PRAAx] (motion p q e (Syn.shift x) : Fm PTm (n + 1)) := by
         simpa only [shift_motion] using h.shift
       have pair := Prf.allE (Syn.shift N + var 0) shifted

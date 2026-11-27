@@ -111,10 +111,9 @@ theorem actual_prefix (A B Q k L : PTm n)
     (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B) (hQ : Γ ⊢[PRAAx] le one Q) :
     Γ ⊢[PRAAx] prefixLaw A B Q k L := by
   have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift A) (Syn.shift B) (Syn.shift Q) (Syn.shift k) (var 0)) := by
-    refine PRA.qfInd _ ⟨trivial,trivial⟩ ?_ ?_
-    · simpa only [subst_prefixLaw,Syn.subst_var,Syn.subst_inst_shift,Syn.inst_zero] using prefix_zero (Γ := Γ) A B Q k
-    · simp only [subst_prefixLaw,subst_repl_shift]
-      have ha : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift A) := by simpa [Fm.shift,Syn.shift] using hA.shift
+    ipra_qfind (⟨trivial,trivial⟩) [subst_prefixLaw]
+    · exact prefix_zero (Γ := Γ) A B Q k
+    · have ha : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift A) := by simpa [Fm.shift,Syn.shift] using hA.shift
       have hb : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hB.shift
       have hq : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift Q) := by simpa [Fm.shift,Syn.shift] using hQ.shift
       exact prefix_succ (Syn.shift A) (Syn.shift B) (Syn.shift Q) (Syn.shift k) (var 0) ha.wk hb.wk hq.wk Prf.hyp0

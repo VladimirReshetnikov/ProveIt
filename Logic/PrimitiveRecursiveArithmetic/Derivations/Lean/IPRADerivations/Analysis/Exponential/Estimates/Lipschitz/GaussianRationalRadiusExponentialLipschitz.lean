@@ -43,10 +43,9 @@ theorem derivative_step (R j : PTm n) (ih : Γ ⊢[PRAAx] derivativeLaw R j) : �
 
 theorem derivative_power_bound (R j : PTm n) : Γ ⊢[PRAAx] derivativeLaw R j := by
   have all : Γ ⊢[PRAAx] .all (derivativeLaw (Syn.shift R) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_derivativeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using derivative_zero (Γ := Γ) R
-    · simp only [subst_derivativeLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact derivative_step _ _ Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_derivativeLaw]
+    · exact derivative_zero (Γ := Γ) R
+    · exact derivative_step _ _ Prf.hyp0
   simpa only [subst_derivativeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
 
 def factor (R K : PTm n) : PTm n := pw (R+two) K
@@ -103,10 +102,9 @@ theorem scalar_sum_lipschitz (u v R A B K : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have vs : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift v) (Syn.shift R) one := by simpa [Fm.shift,Syn.shift] using hv.shift
   have ds : Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift u) (Syn.shift v) (Syn.shift A) (Syn.shift B) := by simpa [Fm.shift,Syn.shift] using hd.shift
   have all : Γ ⊢[PRAAx] .all (boundLaw (Syn.shift u) (Syn.shift v) (Syn.shift R) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using bound_zero u v R A B hB
-    · simp only [subst_boundLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact bound_step _ _ _ _ _ _ bs.wk us.wk vs.wk ds.wk Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_boundLaw]
+    · exact bound_zero u v R A B hB
+    · exact bound_step _ _ _ _ _ _ bs.wk us.wk vs.wk ds.wk Prf.hyp0
   simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
 
 def clockLaw (R K : PTm n) : Fm PTm n := le (factor R K) (pw two ((R+two)*K))
@@ -120,10 +118,9 @@ theorem clock_step (R K : PTm n) (ih : Γ ⊢[PRAAx] clockLaw R K) : Γ ⊢[PRAA
       (pw_add two ((R+two)*K) (R+two))).eqSymm (le_mul_mono ih base)
 theorem factor_binary_bound (R K : PTm n) : Γ ⊢[PRAAx] clockLaw R K := by
   have all : Γ ⊢[PRAAx] .all (clockLaw (Syn.shift R) (var 0)) := by
-    refine PRA.qfInd _ (le_QF _ _) ?_ ?_
-    · simpa only [subst_clockLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using clock_zero (Γ := Γ) R
-    · simp only [subst_clockLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      exact clock_step _ _ Prf.hyp0
+    ipra_qfind (le_QF _ _) [subst_clockLaw]
+    · exact clock_zero (Γ := Γ) R
+    · exact clock_step _ _ Prf.hyp0
   simpa only [subst_clockLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
 
 def factorF : PR 2 := PTm.toPR (factor (var 0) (var 1))
