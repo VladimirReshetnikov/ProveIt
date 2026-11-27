@@ -25,6 +25,7 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb')
+open LeanProofs.IPRA.Foundations.IntervalPacking (sum_zero_of_ordered_pairs)
 open LeanProofs.IPRA.Foundations.InjectionCount (clB inst2_clB rowCB inst2_rowCB coll vB inst2_vB viol sgB
   inst2_sgB injection_count)
 
@@ -164,36 +165,19 @@ theorem sep_count {N a s lam y : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s))
     rw [inst2_sgB, inst2_sgB, inst2_cK, hX1]
     exact congrSg (congrInst2 act (.eqRefl _) (projX _ _ _).2.2)
   · -- no collisions
-    refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
-    rw [inst2_rowCB, hX1]
-    let Θ₁ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift
-    have hK1 : Θ₁ ⊢[PRAAx] lt (var 0) (Syn.shift N) := Prf.hyp0
-    refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
-    rw [inst2_clB, show Syn.shift (pairT (var 0 : PTm (n + 1)) (pairT (Syn.shift a) (pairT (Syn.shift s) (Syn.shift y)))) =
-      pairT (var 1) (pairT (Syn.shift (Syn.shift a)) (pairT (Syn.shift (Syn.shift s)) (Syn.shift (Syn.shift y)))) by
-        simp [Syn.shift]]
-    let Θ₂ : List (Fm PTm (n + 1 + 1)) := lt (var 0) (Syn.shift (var 0)) :: Θ₁.map Fm.shift
-    have hab : Θ₂ ⊢[PRAAx] lt (var 0) (var 1) := Prf.hyp0
-    have hbK : Θ₂ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift N)) := by
-      have s0 : Θ₁.map Fm.shift ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift N)) := by
-        simpa [Fm.shift, Syn.shift] using hK1.shift
-      exact s0.wk
-    have hsub : (Γ.map Fm.shift).map Fm.shift ⊆ Θ₂ :=
-      List.subset_cons_of_subset _ (List.subset_cons_of_subset _ (List.Subset.refl _))
-    have hcore := coll_pt (hs2.weaken hsub) (hsep Θ₂ (var 0) (var 1) hsub hab hbK)
-    refine .eqTrans ?_ hcore
-    have hz := (fst_pair (Γ := Θ₂) (var 1) (pairT (Syn.shift (Syn.shift a)) (pairT (Syn.shift (Syn.shift s))
-      (Syn.shift (Syn.shift y)))))
-    have hX := snd_pair (Γ := Θ₂) (var 1) (pairT (Syn.shift (Syn.shift a)) (pairT (Syn.shift (Syn.shift s))
-      (Syn.shift (Syn.shift y))))
-    obtain ⟨pa, ps, py⟩ := projX (Γ := Θ₂) (Syn.shift (Syn.shift a)) (Syn.shift (Syn.shift s)) (Syn.shift (Syn.shift y))
-    rw [inst2_cK, inst2_cK, inst2_gK, inst2_gK]
-    have ey := (congrSnd (congrSnd hX)).eqTrans py
-    have ea := (congrFst hX).eqTrans pa
-    have es := (congrFst (congrSnd hX)).eqTrans ps
-    exact congrMul (congrMul (congrSg (congrInst2 act (.eqRefl _) ey)) (congrSg (congrInst2 act hz ey)))
-      (congrEqb' (congrAp2 quoF (congrMonus (congrInst2 A (.eqRefl _) ey) ea) es)
-        (congrAp2 quoF (congrMonus (congrInst2 A hz ey) ea) es))
+    refine sum_zero_of_ordered_pairs (clB (cK act) (gK A)) N (pairT a (pairT s y)) ?_
+    intro Δ i j hsub hi hj
+    simp only [shift_pairT, inst2_clB, inst2_cK, inst2_gK]
+    have packed := Prf.eqRefl (Ax := PRAAx) (Γ := Δ)
+      (pairT j (pairT (Syn.shift (Syn.shift a)) (pairT (Syn.shift (Syn.shift s)) (Syn.shift (Syn.shift y)))))
+    have fj := packed.fstE
+    have fa := packed.sndE.fstE
+    have fs := packed.sndE.sndE.fstE
+    have fy := packed.sndE.sndE.sndE
+    refine .eqTrans ?_ (coll_pt (hs2.weaken hsub) (hsep Δ i j hsub hi hj))
+    exact congrMul (congrMul (congrSg (congrInst2 act (.eqRefl _) fy)) (congrSg (congrInst2 act fj fy)))
+      (congrEqb' (congrAp2 quoF (congrMonus (congrInst2 A (.eqRefl _) fy) fa) fs)
+        (congrAp2 quoF (congrMonus (congrInst2 A fj fy) fa) fs))
   · -- every active cell is in range
     refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
     rw [inst2_vB, show Syn.shift (pairT (succ (quo lam s)) (pairT a (pairT s y))) =
@@ -203,17 +187,14 @@ theorem sep_count {N a s lam y : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s))
     have hsub : Γ.map Fm.shift ⊆ Θ := List.subset_cons_of_subset _ (List.Subset.refl _)
     have hcore := viol_pt (hs1.weaken hsub) (hwin Θ (var 0) hsub Prf.hyp0)
     refine .eqTrans ?_ hcore
-    have hR := fst_pair (Γ := Θ) (succ (quo (Syn.shift lam) (Syn.shift s)))
-      (pairT (Syn.shift a) (pairT (Syn.shift s) (Syn.shift y)))
-    have hX := snd_pair (Γ := Θ) (succ (quo (Syn.shift lam) (Syn.shift s)))
-      (pairT (Syn.shift a) (pairT (Syn.shift s) (Syn.shift y)))
-    obtain ⟨pa, ps, py⟩ := projX (Γ := Θ) (Syn.shift a) (Syn.shift s) (Syn.shift y)
     rw [inst2_cK, inst2_gK]
-    have ey := (congrSnd (congrSnd hX)).eqTrans py
-    have ea := (congrFst hX).eqTrans pa
-    have es := (congrFst (congrSnd hX)).eqTrans ps
-    exact congrMul (congrSg (congrInst2 act (.eqRefl _) ey))
-      (congrMonus (.eqRefl _) (congrMonus hR (congrAp2 quoF (congrMonus (congrInst2 A (.eqRefl _) ey) ea) es)))
+    have packed := Prf.eqRefl (Ax := PRAAx) (Γ := Θ) (pairT (succ (quo (Syn.shift lam) (Syn.shift s)))
+      (pairT (Syn.shift a) (pairT (Syn.shift s) (Syn.shift y))))
+    have fy := packed.sndE.sndE.sndE
+    exact congrMul (congrSg (congrInst2 act (.eqRefl _) fy))
+      (congrMonus (.eqRefl _) (congrMonus packed.fstE
+        (congrAp2 quoF (congrMonus (congrInst2 A (.eqRefl _) fy) packed.sndE.fstE) packed.sndE.sndE.fstE)))
+
 
 end Count
 

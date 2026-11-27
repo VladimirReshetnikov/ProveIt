@@ -21,7 +21,7 @@ open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt measure lenB)
 open LeanProofs.IPRA.Foundations.IntervalAdditive (outB inst2_outB)
-open LeanProofs.IPRA.Foundations.IntervalPacking (loB hiB inst2_hiB spB inst2_spB srB inst2_srB acB packing)
+open LeanProofs.IPRA.Foundations.IntervalPacking (loB hiB inst2_hiB spB inst2_spB srB acB packing sum_zero_of_ordered_pairs)
 
 set_option autoImplicit false
 
@@ -38,19 +38,13 @@ theorem out_zero {T K w y : PTm n}
       (Δ ⊢[PRAAx] le (inst2 A a (Syn.shift y) + sg (inst2 act a (Syn.shift y)) * Syn.shift w) (Syn.shift T))) :
     Γ ⊢[PRAAx] ap2 (sumF (outB (hiB A act))) K (pairT T (pairT w y)) ≐ zero := by
   refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
-  rw [inst2_outB, inst2_hiB, show Syn.shift (pairT T (pairT w y)) =
-    pairT (Syn.shift T) (pairT (Syn.shift w) (Syn.shift y)) by simp [Syn.shift]]
+  simp only [inst2_outB, inst2_hiB, shift_pairT]
   let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift K) :: Γ.map Fm.shift
   have h := hT Θ (var 0) (List.subset_cons_of_subset _ (List.Subset.refl _)) Prf.hyp0
-  have s1 : Θ ⊢[PRAAx] sndT (pairT (Syn.shift T) (pairT (Syn.shift w) (Syn.shift y))) ≐
-      pairT (Syn.shift w) (Syn.shift y) := snd_pair _ _
-  have yy : Θ ⊢[PRAAx] sndT (sndT (pairT (Syn.shift T) (pairT (Syn.shift w) (Syn.shift y)))) ≐ Syn.shift y :=
-    (congrSnd s1).eqTrans (snd_pair _ _)
-  have ww : Θ ⊢[PRAAx] fstT (sndT (pairT (Syn.shift T) (pairT (Syn.shift w) (Syn.shift y)))) ≐ Syn.shift w :=
-    (congrFst s1).eqTrans (fst_pair _ _)
-  have tt : Θ ⊢[PRAAx] fstT (pairT (Syn.shift T) (pairT (Syn.shift w) (Syn.shift y))) ≐ Syn.shift T := fst_pair _ _
-  exact (congrMonus (congrAdd (congrInst2 A (.eqRefl _) yy)
-    (congrMul (congrSg (congrInst2 act (.eqRefl _) yy)) ww)) tt).eqTrans h
+  have packed := Prf.eqRefl (Ax := PRAAx) (Γ := Θ) (pairT (Syn.shift T) (pairT (Syn.shift w) (Syn.shift y)))
+  have fy := packed.sndE.sndE
+  exact (congrMonus (congrAdd (congrInst2 A (.eqRefl _) fy)
+    (congrMul (congrSg (congrInst2 act (.eqRefl _) fy)) packed.sndE.fstE)) packed.fstE).eqTrans h
 
 /-- The separation hypothesis of `packing`, from the pairs. -/
 theorem sep_zero {K w y : PTm n}
@@ -61,34 +55,17 @@ theorem sep_zero {K w y : PTm n}
         sg (monus (inst2 A a (Syn.shift (Syn.shift y)) + Syn.shift (Syn.shift w)) (inst2 A b (Syn.shift (Syn.shift y))))
         ≐ zero)) :
     Γ ⊢[PRAAx] ap2 (sumF (srB A act)) K (pairT w y) ≐ zero := by
-  refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
-  rw [inst2_srB, show Syn.shift (pairT w y) = pairT (Syn.shift w) (Syn.shift y) by simp [Syn.shift]]
-  let Θ₁ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift K) :: Γ.map Fm.shift
-  have hK1 : Θ₁ ⊢[PRAAx] lt (var 0) (Syn.shift K) := Prf.hyp0
-  refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
-  rw [inst2_spB, show Syn.shift (pairT (var 0 : PTm (n + 1)) (pairT (Syn.shift w) (Syn.shift y))) =
-    pairT (var 1) (pairT (Syn.shift (Syn.shift w)) (Syn.shift (Syn.shift y))) by simp [Syn.shift]]
-  let Θ₂ : List (Fm PTm (n + 1 + 1)) := lt (var 0) (Syn.shift (var 0)) :: Θ₁.map Fm.shift
-  have hab : Θ₂ ⊢[PRAAx] lt (var 0) (var 1) := Prf.hyp0
-  have hbK : Θ₂ ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift K)) := by
-    have s0 : Θ₁.map Fm.shift ⊢[PRAAx] lt (var 1) (Syn.shift (Syn.shift K)) := by
-      simpa [Fm.shift, Syn.shift] using hK1.shift
-    exact s0.wk
-  have hs : (Γ.map Fm.shift).map Fm.shift ⊆ Θ₂ :=
-    List.subset_cons_of_subset _ (List.subset_cons_of_subset _ (List.Subset.refl _))
-  have h := hS Θ₂ (var 0) (var 1) hs hab hbK
-  have s1 : Θ₂ ⊢[PRAAx] sndT (pairT (var 1) (pairT (Syn.shift (Syn.shift w)) (Syn.shift (Syn.shift y)))) ≐
-      pairT (Syn.shift (Syn.shift w)) (Syn.shift (Syn.shift y)) := snd_pair _ _
-  have fj : Θ₂ ⊢[PRAAx] fstT (pairT (var 1) (pairT (Syn.shift (Syn.shift w)) (Syn.shift (Syn.shift y)))) ≐ var 1 :=
-    fst_pair _ _
-  have sw : Θ₂ ⊢[PRAAx] fstT (sndT (pairT (var 1) (pairT (Syn.shift (Syn.shift w)) (Syn.shift (Syn.shift y))))) ≐
-      Syn.shift (Syn.shift w) := (congrFst s1).eqTrans (fst_pair _ _)
-  have sy : Θ₂ ⊢[PRAAx] sndT (sndT (pairT (var 1) (pairT (Syn.shift (Syn.shift w)) (Syn.shift (Syn.shift y))))) ≐
-      Syn.shift (Syn.shift y) := (congrSnd s1).eqTrans (snd_pair _ _)
-  refine .eqTrans ?_ h
-  exact congrMul (congrMul (congrMul (congrSg (congrInst2 act (.eqRefl _) sy)) (congrSg (congrInst2 act fj sy)))
-      (congrSg (congrMonus (congrAdd (congrInst2 A fj sy) sw) (congrInst2 A (.eqRefl _) sy))))
-    (congrSg (congrMonus (congrAdd (congrInst2 A (.eqRefl _) sy) sw) (congrInst2 A fj sy)))
+  refine sum_zero_of_ordered_pairs (spB A act) K (pairT w y) ?_
+  intro Δ i j hsub hi hj
+  simp only [shift_pairT, inst2_spB]
+  have packed := Prf.eqRefl (Ax := PRAAx) (Γ := Δ) (pairT j (pairT (Syn.shift (Syn.shift w)) (Syn.shift (Syn.shift y))))
+  have fj := packed.fstE
+  have fw := packed.sndE.fstE
+  have fy := packed.sndE.sndE
+  refine .eqTrans ?_ (hS Δ i j hsub hi hj)
+  exact congrMul (congrMul (congrMul (congrSg (congrInst2 act (.eqRefl _) fy)) (congrSg (congrInst2 act fj fy)))
+    (congrSg (congrMonus (congrAdd (congrInst2 A fj fy) fw) (congrInst2 A (.eqRefl _) fy))))
+    (congrSg (congrMonus (congrAdd (congrInst2 A (.eqRefl _) fy) fw) (congrInst2 A fj fy)))
 
 /-- Packing from pointwise hypotheses: members inside the grid, active pairs `w`-separated. -/
 theorem packing_pt {T K w y : PTm n}

@@ -129,6 +129,22 @@ theorem pt_zero {c A' A act' act w : PTm n}
 
 /-! ## Bodies -/
 
+/-- A sum over ordered pairs vanishes if each term vanishes under the two index bounds. -/
+theorem sum_zero_of_ordered_pairs (f : PTm 2) (K x : PTm n)
+    (pointwise : ∀ (Δ : List (Fm PTm (n + 1 + 1))) (i j : PTm (n + 1 + 1)),
+      (Γ.map Fm.shift).map Fm.shift ⊆ Δ → (Δ ⊢[PRAAx] lt i j) →
+        (Δ ⊢[PRAAx] lt j (Syn.shift (Syn.shift K))) →
+        (Δ ⊢[PRAAx] inst2 f i (pairT j (Syn.shift (Syn.shift x))) ≐ zero)) :
+    Γ ⊢[PRAAx] ap2 (sumF (ap2 (sumF f) (var 0) (pairT (var 0) (var 1)))) K x ≐ zero := by
+  refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
+  have hj : (lt (var 0) (Syn.shift K) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift K) := Prf.hyp0
+  simp only [inst2, subst_ap2, subst_pairT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one]
+  refine sum_zero_of_bounded _ _ _ (.allI (.impI ?_))
+  rw [shift_pairT]
+  exact pointwise _ (var 0) (var 1)
+    (List.subset_cons_of_subset _ (List.subset_cons_of_subset _ (List.Subset.refl _)))
+    Prf.hyp0 (Order.shift_lt hj).wk
+
 section Pack
 
 variable (A act : PTm 2)
