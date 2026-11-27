@@ -80,14 +80,12 @@ theorem original_auxiliary_error (p r s z R B a b : PTm n) (h : Γ ⊢[PRAAx] so
   have hb := h.andE₂.andE₁
   have hd := denominator_positive p r b hb
   have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ hd hs
-  have first := distance_radius_mono _ _ _ _ ((unit p+unit s)*(pw b (num 3)*unit r)) D
-    (positive_product _ _ hp hs) hD (le_of_eq_add (d := zero) (by dsimp only [D,denominator]; ipra_ring))
-    (original_cofinal_distance p s z R B h.andE₁)
-  have last := distance_radius_mono _ _ _ _ (GaussianGammaFiniteQuadraticExpansion.numerator s r R a b*unit p) D
-    (denominator_positive s r b hb) hD (le_of_eq_add (d := zero) (by
-      dsimp only [D,denominator,GaussianGammaFiniteQuadraticExpansion.denominator]
-      ipra_ring)) (cofinal_expansion s r z R B a b h)
-  have joined := distance_triangle_same _ _ _ _ _ _ hD first last
+  have finite := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    (show Γ ⊢[PRAAx] GaussianGammaFiniteQuadraticExpansion.denominator s r b ≐ (pw b (num 3)*unit r)*unit s by
+      unfold GaussianGammaFiniteQuadraticExpansion.denominator; ipra_ring) (cofinal_expansion s r z R B a b h)
+  have joined := GaussianRationalDistanceOrder.distance_triangle_common_factor _ _ _ _ _ _ _ _
+    hp (positive_product _ _ (GaussianFactorBudget.power_positive b (num 3) hb) hr) hs
+    (original_cofinal_distance p s z R B h.andE₁) finite
   have cube : Γ ⊢[PRAAx] pw b (num 3) ≐ pw b two*b := by
     simpa only [show (num 3 : PTm n) = succ two from rfl] using pw_succ (Γ := Γ) b two
   have small : Γ ⊢[PRAAx] le (pw a two*b) (pw b (num 3)) :=
@@ -96,7 +94,8 @@ theorem original_auxiliary_error (p r s z R B a b : PTm n) (h : Γ ⊢[PRAAx] so
       (numerator p r R a b*unit s+two*denominator p r b) D :=
     distance_radius_mono _ _ _ _ _ _ hD hD (by
       dsimp only [D,numerator,denominator,GaussianGammaFiniteQuadraticExpansion.numerator]
-      ipra_le (𝔞(pw b (num 3))*𝔞(unit p)^2*𝔞(unit r)^2*𝔞(unit s))*sl small) joined
+      ipra_le (𝔞(pw b (num 3))*𝔞(unit p)^2*𝔞(unit r)^2*𝔞(unit s))*sl small)
+      (distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (by dsimp only [D,denominator]; ipra_ring) joined)
   simpa only [GaussianRationalSlackRemoval.slack,GaussianRationalMetric.distanceBounded,unit,D] using coarsened
 
 def gapQuery (p r z R B a b : PTm n) : PTm n := GaussianRationalSlackRemoval.precision

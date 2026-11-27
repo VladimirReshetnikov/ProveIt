@@ -74,13 +74,10 @@ private theorem cofinal_prefix_error (p R A N : PTm n) (hz : Γ ⊢[PRAAx] S one
   have rows : Γ ⊢[PRAAx] crossEquivalent dirichletF constantF x y :=
     original_finite_square N (R+one) A
   have finite := cross_at dirichletF constantF x y p p rows
-  have first := distance_radius_mono _ _ _ _ two u hD hu
-    (le_of_eq_add (d := zero) (by dsimp only [u]; ipra_ring)) initial
-  have second := distance_radius_mono _ _ _ _ two u hD hu
-    (le_of_eq_add (d := zero) (by dsimp only [u]; ipra_ring))
+  have joined := distance_triangle_same _ _ _ _ _ _ hD initial
     (distance_congr (.eqRefl _) (constant_at p y) (.eqRefl _) (.eqRefl _) finite)
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hu first second)
+  exact distance_radius_mono _ _ _ _ (num 4) u hD hu
+    (le_of_eq_add (d := zero) (by dsimp only [u]; ipra_ring)) joined
 
 theorem original_square_observations (p R A : PTm n) (hz : Γ ⊢[PRAAx] S oneCode R one A) :
     Γ ⊢[PRAAx] distanceBounded (ap2 C p (D oneCode R one A)) (ap2 Z p two) (num 5) (unit p) := by

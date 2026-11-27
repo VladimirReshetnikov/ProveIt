@@ -70,22 +70,20 @@ theorem original_auxiliary_error (p r q z R B d a b : PTm n) (h : Γ ⊢[PRAAx] 
   have hr := unit_positive (Γ := Γ) r
   have hq := unit_positive (Γ := Γ) q
   have hb := h.andE₂.andE₁
-  have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ (denominator_positive p r d b hb) hq
-  have first := distance_radius_mono _ _ _ _ (pw b (succ d)*unit r*(unit p+unit q)) D
-    (positive_product _ _ hp hq) hD (le_of_eq_add (d := zero) (by dsimp only [D,denominator]; ipra_ring))
-    (GaussianGammaShiftedDeflatedIdentification.original_observations p q z R B d h.andE₁)
-  have last := distance_radius_mono _ _ _ _ (GaussianGammaDeflatedFiniteTaylor.numerator q r R d a b*unit p) D
-    (positive_product _ _ (GaussianFactorBudget.power_positive b (succ d) hb) (positive_product _ _ hq hr)) hD
-    (le_of_eq_add (d := zero) (by dsimp only [D,denominator,GaussianGammaDeflatedFiniteTaylor.denominator]; ipra_ring))
-    (deflated_name_error q r z R B d a b h)
+  have reordered := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    (show Γ ⊢[PRAAx] GaussianGammaDeflatedFiniteTaylor.denominator q r d b ≐ (pw b (succ d)*unit r)*unit q by
+      unfold GaussianGammaDeflatedFiniteTaylor.denominator; ipra_ring) (deflated_name_error q r z R B d a b h)
+  have joined := GaussianRationalDistanceOrder.distance_triangle_common_factor _ _ _ _ _ _ _ _
+    hp (positive_product _ _ (GaussianFactorBudget.power_positive b (succ d) hb) hr) hq (GaussianGammaShiftedDeflatedIdentification.original_observations p q z R B d h.andE₁) reordered
   have arithmetic : Γ ⊢[PRAAx]
-      pw b (succ d)*unit r*(unit p+unit q)+GaussianGammaDeflatedFiniteTaylor.numerator q r R d a b*unit p ≐
+      (unit p+unit q)*(pw b (succ d)*unit r)+GaussianGammaDeflatedFiniteTaylor.numerator q r R d a b*unit p ≐
         numerator p r R d a b*unit q+auxiliaryCost R d*denominator p r d b := by
     dsimp only [numerator,auxiliaryCost,denominator,GaussianGammaDeflatedFiniteTaylor.numerator,
       GaussianGammaDeflatedFiniteTaylor.rowNumerator]
     ipra_ring
-  have actual := distance_congr (.eqRefl _) (.eqRefl _) arithmetic (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hD first last)
+  have actual : Γ ⊢[PRAAx] distanceBounded _ _
+      (numerator p r R d a b*unit q+auxiliaryCost R d*denominator p r d b) D :=
+    distance_congr (.eqRefl _) (.eqRefl _) arithmetic (by dsimp only [D,denominator]; ipra_ring) joined
   simpa only [GaussianRationalSlackRemoval.slack,GaussianRationalMetric.distanceBounded,unit,D] using actual
 
 def gapQuery (p r z R B d a b : PTm n) : PTm n := GaussianRationalSlackRemoval.precision

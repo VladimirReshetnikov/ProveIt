@@ -42,11 +42,9 @@ theorem original_joint_to_fixed_degree (u z R B N L : PTm n)
     (h : Γ ⊢[PRAAx] source z R B N) (hL : Γ ⊢[PRAAx] le L (GammaCanonicalNames.degree u R)) : Γ ⊢[PRAAx]
     distanceBounded (point u z R B N) (observation u z R B N L)
       ((R*R)*unit u+two*rateDen N L) (rateDen N L*unit u) := by
-  let V := rateDen N L
   let K := GammaCanonicalNames.degree u R
   let r := GammaCanonicalNames.count u R
   have vp := rate_den_positive N L h.andE₂.andE₁
-  have den := positive_product _ _ vp (unit_positive u)
   have rounding := distance_congr (.eqRefl _)
     (GaussianGammaFiniteDegreeRearrangement.original_finite_rearrangement z B N r K h.andE₁)
     (.eqRefl _) (.eqRefl _) (GaussianGammaCanonicalTailMetric.tail_rounding_distance u z R B N h.andE₁)
@@ -58,12 +56,8 @@ theorem original_joint_to_fixed_degree (u z R B N L : PTm n)
   have coarse := distance_radius_mono _ _ two (DyadicComplexLogarithm.unit u) two (unit u)
     (GaussianFactorBudget.power_positive _ _ (le_succ_self one)) (unit_positive u)
     (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl two) grow) rounding
-  have first := distance_radius_mono _ _ two (unit u) (two*V) (V*unit u) (unit_positive u) den
-    (le_of_eq_add (d := zero) (by ipra_ring)) coarse
-  have last := distance_radius_mono _ _ (R*R) V ((R*R)*unit u) (V*unit u) vp den
-    (le_of_eq_add (d := zero) (by ipra_ring)) finite
-  exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ den first last)
+  have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ (unit_positive u) vp coarse finite
+  exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _) joined
 
 theorem auxiliary_slack (p q u z R B N L : PTm n)
     (h : Γ ⊢[PRAAx] source z R B N) (hL : Γ ⊢[PRAAx] le L (GammaCanonicalNames.degree u R)) : Γ ⊢[PRAAx]

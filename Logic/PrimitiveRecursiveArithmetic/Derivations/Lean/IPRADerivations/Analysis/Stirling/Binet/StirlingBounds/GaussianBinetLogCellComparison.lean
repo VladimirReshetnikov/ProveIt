@@ -136,11 +136,8 @@ private theorem diagonal (p A B D neg k : PTm n) (h : Γ ⊢[PRAAx] source A D n
   have scaled := scaled_endpoint_error p t A B D neg k M h hm
   have grid : Γ ⊢[PRAAx] distanceBounded b c (num 4*D*D*V+num 9*(M*M)*(X*X)) (W*V) :=
     finite_grid t A B D neg k M h hm (le_add_right _ _)
-  have first := distance_radius_mono a b _ (U*V) ((V+num 11*U)*W) D₀ (positive_product _ _ hu hv) hD₀
-    (by dsimp only [D₀]; ipra_le 0) scaled
-  have second := distance_radius_mono b c _ (W*V) ((num 4*D*D*V+num 9*(M*M)*(X*X))*U) D₀
-    (positive_product _ _ hW hv) hD₀ (by dsimp only [D₀,W]; ipra_le 0) grid
-  have sum := distance_triangle_same a b c _ _ D₀ hD₀ first second
+  have sum := GaussianRationalDistanceOrder.distance_triangle_common_factor a b c _ U _ W V
+    hu hW hv scaled grid
   have small := distance_radius_mono a c _ D₀ (precisionCost D) U hD₀ hu (by
     dsimp only [D₀,precisionCost]
     have coef : Γ ⊢[PRAAx] le ((num 4*D*D*V+num 9*(M*M)*(X*X))*U+(V+num 11*U)*W)

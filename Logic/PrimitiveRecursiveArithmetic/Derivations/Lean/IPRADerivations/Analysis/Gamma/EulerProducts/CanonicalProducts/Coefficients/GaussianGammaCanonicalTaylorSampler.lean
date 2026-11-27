@@ -55,27 +55,24 @@ theorem original_auxiliary_error (p r q z R B d a b : PTm n) (h : Γ ⊢[PRAAx] 
   have hr := unit_positive (Γ := Γ) r
   have hq := unit_positive (Γ := Γ) q
   have hb := h.andE₂.andE₁
-  have hd := denominator_positive p r d b hb
-  have hD : Γ ⊢[PRAAx] le one D := positive_product _ _ hd hq
   have old := distance_congr (.eqRefl _) (original_buffer_value q z R B d h.andE₁.andE₂.andE₁).eqSymm (.eqRefl _) (.eqRefl _)
     (GaussianGammaOriginalC19Prefix.original_to_polynomial p q z R B d h.andE₁)
   have finite := GaussianGammaCanonicalPrefixTaylor.original_finite_taylor q r R d (ofGaussian z B) a b
     h.andE₁.andE₁ hb h.andE₂.andE₂.andE₁ h.andE₂.andE₂.andE₂
-  have first := distance_radius_mono _ _ _ _ (pw b (succ d)*unit r*(unit p+unit q)) D
-    (positive_product _ _ hp hq) hD (le_of_eq_add (d := zero) (by dsimp only [D,denominator]; ipra_ring)) old
-  have last := distance_radius_mono _ _ _ _ (GaussianGammaCanonicalPrefixTaylor.numerator q r R d a b*unit p) D
-    (positive_product _ _ (GaussianFactorBudget.power_positive b (succ d) hb) (positive_product _ _ hq hr)) hD
-    (le_of_eq_add (d := zero) (by dsimp only [D,denominator,GaussianGammaCanonicalPrefixTaylor.denominator]; ipra_ring)) finite
-  have joined := distance_triangle_same _ _ _ _ _ _ hD first last
+  have reordered := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _)
+    (show Γ ⊢[PRAAx] GaussianGammaCanonicalPrefixTaylor.denominator q r d b ≐ (pw b (succ d)*unit r)*unit q by
+      unfold GaussianGammaCanonicalPrefixTaylor.denominator; ipra_ring) finite
+  have joined := GaussianRationalDistanceOrder.distance_triangle_common_factor _ _ _ _ _ _ _ _
+    hp (positive_product _ _ (GaussianFactorBudget.power_positive b (succ d) hb) hr) hq old reordered
   have arithmetic : Γ ⊢[PRAAx]
-      pw b (succ d)*unit r*(unit p+unit q)+GaussianGammaCanonicalPrefixTaylor.numerator q r R d a b*unit p ≐
+      (unit p+unit q)*(pw b (succ d)*unit r)+GaussianGammaCanonicalPrefixTaylor.numerator q r R d a b*unit p ≐
         numerator p r R d a b*unit q+auxiliaryCost R d*denominator p r d b := by
     dsimp only [numerator,auxiliaryCost,denominator,GaussianGammaCanonicalPrefixTaylor.numerator,
       GaussianGammaCanonicalPrefixTaylor.rowNumerator]
     ipra_ring
   have actual : Γ ⊢[PRAAx] distanceBounded (GaussianGammaC7Name.sample p z R B) (taylor r d (ofGaussian z B))
       (numerator p r R d a b*unit q+auxiliaryCost R d*denominator p r d b) D :=
-    distance_congr (.eqRefl _) (.eqRefl _) arithmetic (.eqRefl _) joined
+    distance_congr (.eqRefl _) (.eqRefl _) arithmetic (by dsimp only [D,denominator]; ipra_ring) joined
   simpa only [GaussianRationalSlackRemoval.slack,GaussianRationalMetric.distanceBounded,unit,D] using actual
 
 def gapQuery (p r z R B d a b : PTm n) : PTm n := GaussianRationalSlackRemoval.precision

@@ -131,6 +131,19 @@ theorem scaled_distance_at_earlier_precisions {z w : PTm n} (s t a b K : PTm n)
     (positive_product _ _ (unit_positive s) (unit_positive t))
     (le_congr (by ipra_ring) (by ipra_ring) (mul_le_mul_right K (earlier_precision_radius s t a b ha hb))) h
 
+/-- Add two error radii with a shared positive denominator factor. -/
+theorem distance_triangle_common_factor (z y w A B C D S : PTm n)
+    (hB : Γ ⊢[PRAAx] le one B) (hD : Γ ⊢[PRAAx] le one D) (hS : Γ ⊢[PRAAx] le one S)
+    (hzy : Γ ⊢[PRAAx] distanceBounded z y A (B*S))
+    (hyw : Γ ⊢[PRAAx] distanceBounded y w C (D*S)) :
+    Γ ⊢[PRAAx] distanceBounded z w (A*D+C*B) (B*D*S) := by
+  have hb := positive_product _ _ hB hS
+  have hd := positive_product _ _ hD hS
+  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hb hd)
+    (positive_product _ _ (positive_product _ _ hB hD) hS)
+    (le_of_eq_add (d := zero) (by ipra_ring))
+    (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hb hd hzy hyw)
+
 theorem distance_triangle_same (z y w A C B : PTm n)
     (hB : Γ ⊢[PRAAx] le one B)
     (hzy : Γ ⊢[PRAAx] distanceBounded z y A B)
