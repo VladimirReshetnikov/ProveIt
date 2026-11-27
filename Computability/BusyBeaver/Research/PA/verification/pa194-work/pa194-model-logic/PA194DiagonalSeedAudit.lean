@@ -1,0 +1,5 @@
+import PA194ModelDiagonalFresh
+#print axioms PA194ModelLogic.simRuleAllFresh_allEqualityDiagonal
+#print axioms PA194ModelLogic.simRuleAllFresh_exEqualityDiagonal
+#print axioms PA194ModelLogic.simRuleAllFresh_allNegativeEqualityDiagonal
+#print axioms PA194ModelLogic.simRuleAllFresh_exNegativeEqualityDiagonal
