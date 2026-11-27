@@ -555,7 +555,7 @@ theorem iterate_ordered {F : PTm 2} {k l r x : PTm n} (hkl : Γ ⊢[PRAAx] le k 
       have hs : Δ ⊢[PRAAx] le (Syn.shift k) (succ (var 0)) := Prf.hyp0
       refine .orE (lt_or_eq_of_le hs) ?_ ?_
       · have hsmall : (lt (Syn.shift k) (succ (var 0)) :: Δ) ⊢[PRAAx] le (Syn.shift k) (var 0) :=
-          (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
+          Order.le_of_lt_succ Prf.hyp0
         exact ordered_trans (Prf.impE Prf.hyp1.wk hsmall) (iterate_increasing F _ _ _)
       · exact ordered_congr (.eqRefl _) (iterate_congr Prf.hyp0).eqSymm (.eqRefl _)
           (ordered_refl _ _)
@@ -607,11 +607,11 @@ theorem nonprefixed_growth {F : PTm 2} {r caps x L : PTm n}
         (prefixed F (Syn.shift r) (iterate F (Syn.shift L) (Syn.shift r) (Syn.shift x)) (Syn.shift x)) := by
       simpa only [Δ, Fm.shift, subst_neg, subst_prefixed, subst_iterate, Syn.shift] using hNot.shift.wk.wk
     have hindex : Δ ⊢[PRAAx] le (var 0) (Syn.shift L) :=
-      (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
+      Order.le_of_lt_succ Prf.hyp0
     have ih : Δ ⊢[PRAAx] le (var 0) (rank (Syn.shift r) (iterate F (var 0) (Syn.shift r) (Syn.shift x))) :=
       Prf.hyp1
     refine .orE (rank_step_or_prefixed F (var 0) (Syn.shift r) (Syn.shift x)) ?_ ?_
-    · exact le_trans ((succ_monus_succ _ _).eqTrans ih.wk) Prf.hyp0
+    · exact le_trans (Order.succ_le_succ ih.wk) Prf.hyp0
     · exact .botE _ (.impE hno.wk (prefixed_later hm.wk hn.wk hindex.wk Prf.hyp0))
 
 /-- Stabilization occurs by the sum of all coordinate caps. -/

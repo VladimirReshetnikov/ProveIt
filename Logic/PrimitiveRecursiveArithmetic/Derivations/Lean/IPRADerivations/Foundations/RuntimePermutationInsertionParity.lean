@@ -64,7 +64,7 @@ theorem appended_last_column (m d i : PTm n) (hi : Γ ⊢[PRAAx] lt i m) : Γ �
 
 theorem appended_last_row_bit (m d j : PTm n) (hj : Γ ⊢[PRAAx] lt j (succ m)) : Γ ⊢[PRAAx]
     inversionBit (succ m) (insertedWord m m d) m j ≐ zero :=
-  RuntimeAdjacentPermutationSwap.inversion_zero_position _ _ _ _ ((succ_monus_succ j m).eqSymm.eqTrans hj)
+  RuntimeAdjacentPermutationSwap.inversion_zero_position _ _ _ _ (Order.le_of_lt_succ hj)
 
 theorem appended_row (m d i : PTm n) (hi : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx]
     rowPrefix (succ m) (insertedWord m m d) i (succ m) ≐ rowPrefix m d i m := by
@@ -114,7 +114,7 @@ theorem inserted_here (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) : Γ �
 theorem inserted_before (m p d i : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) (hi : Γ ⊢[PRAAx] lt i p) : Γ ⊢[PRAAx]
     digit (succ m) (insertedWord m p d) i ≐ digit m d i :=
   (digit_congr (.eqRefl _) (.eqRefl _) (slot_before p i hi).eqSymm).eqTrans
-    (inserted_skip_digit m p d i hp (lt_of_lt_of_le hi ((succ_monus_succ p m).eqSymm.eqTrans hp)))
+    (inserted_skip_digit m p d i hp (lt_of_lt_of_le hi (Order.le_of_lt_succ hp)))
 theorem inserted_after (m p d i : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) (hi : Γ ⊢[PRAAx] le p i)
     (him : Γ ⊢[PRAAx] lt i m) : Γ ⊢[PRAAx] digit (succ m) (insertedWord m p d) (succ i) ≐ digit m d i :=
   (digit_congr (.eqRefl _) (.eqRefl _) (slot_after p i hi).eqSymm).eqTrans (inserted_skip_digit m p d i hp him)
@@ -135,7 +135,7 @@ theorem moving_digit (m p d k : PTm n) (hp : Γ ⊢[PRAAx] lt p m) (hk : Γ ⊢[
     digit (succ m) (RuntimeAdjacentPermutationSwap.swapWord (succ m) (insertedWord m p d) p) k ≐
       digit (succ m) (insertedWord m (succ p) d) k := by
   have oldP : Γ ⊢[PRAAx] lt p (succ m) := lt_of_lt_of_le hp (le_succ_self m)
-  have nextP : Γ ⊢[PRAAx] lt (succ p) (succ m) := (succ_monus_succ (succ p) m).eqTrans hp
+  have nextP : Γ ⊢[PRAAx] lt (succ p) (succ m) := Order.lt_succ_of_le hp
   have vals := RuntimeAdjacentPermutationSwap.new_pair_values (Γ := Γ) (succ m) (insertedWord m p d) p nextP
   refine .orE (eq_or_ne k p) ?_ ?_
   · exact (digit_congr (.eqRefl _) (.eqRefl _) Prf.hyp0).eqTrans
@@ -159,7 +159,7 @@ theorem moving_digit (m p d k : PTm n) (hp : Γ ⊢[PRAAx] lt p m) (hk : Γ ⊢[
 external permutation interpretation. The original codec guards are derived. -/
 theorem moving_word (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p m) : Γ ⊢[PRAAx]
     RuntimeAdjacentPermutationSwap.swapWord (succ m) (insertedWord m p d) p ≐ insertedWord m (succ p) d := by
-  have nextP : Γ ⊢[PRAAx] lt (succ p) (succ m) := (succ_monus_succ (succ p) m).eqTrans hp
+  have nextP : Γ ⊢[PRAAx] lt (succ p) (succ m) := Order.lt_succ_of_le hp
   apply RuntimePermutationWords.word_unique (succ m) _ _ (RuntimeAdjacentPermutationSwap.swapped_bound _ _ _ nextP)
     (RuntimePermutationInsertion.inserted_word_bound _ _ _ nextP)
   refine .allI (.impI ?_)
@@ -174,7 +174,7 @@ theorem moving_word (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p m) : Γ ⊢[PRAAx]
 theorem moving_inversions (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p m) : Γ ⊢[PRAAx]
     inversions (succ m) (insertedWord m p d) ≐ inversions (succ m) (insertedWord m (succ p) d)+one := by
   have oldP : Γ ⊢[PRAAx] lt p (succ m) := lt_of_lt_of_le hp (le_succ_self m)
-  have nextP : Γ ⊢[PRAAx] lt (succ p) (succ m) := (succ_monus_succ (succ p) m).eqTrans hp
+  have nextP : Γ ⊢[PRAAx] lt (succ p) (succ m) := Order.lt_succ_of_le hp
   have down : Γ ⊢[PRAAx] lt (digit (succ m) (insertedWord m p d) (succ p)) (digit (succ m) (insertedWord m p d) p) :=
     lt_congr (inserted_after m p d p oldP (le_refl _) hp).eqSymm (inserted_here m p d oldP).eqSymm (RuntimePermutationWords.digit_bound m d p hp)
   have oldOne := RuntimeAdjacentPermutationSwap.old_pair_one (Γ := Γ) _ _ _ down
@@ -213,7 +213,7 @@ theorem all_count_balances (m p d : PTm n) (hp : Γ ⊢[PRAAx] le p m) : Γ ⊢[
 digits: all decoded smaller labels are strictly below the inserted maximum. -/
 theorem inserted_inversions (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) : Γ ⊢[PRAAx]
     inversions (succ m) (insertedWord m p d) ≐ inversions m d+monus m p := by
-  have pm : Γ ⊢[PRAAx] le p m := (succ_monus_succ p m).eqSymm.eqTrans hp
+  have pm : Γ ⊢[PRAAx] le p m := Order.le_of_lt_succ hp
   ipra_lc natEq (all_count_balances m p d pm)+natEq (eq_add_of_le pm)
 
 theorem inserted_parity (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) : Γ ⊢[PRAAx]
@@ -225,7 +225,7 @@ theorem inserted_parity_add (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) :
 /-- The literal last-row cofactor exponent m+p has the same parity. -/
 theorem inserted_parity_plus (m p d : PTm n) (hp : Γ ⊢[PRAAx] lt p (succ m)) : Γ ⊢[PRAAx]
     parity (succ m) (insertedWord m p d) ≐ par (inversions m d+(m+p)) := by
-  have pm : Γ ⊢[PRAAx] le p m := (succ_monus_succ p m).eqSymm.eqTrans hp
+  have pm : Γ ⊢[PRAAx] le p m := Order.le_of_lt_succ hp
   have exponent : Γ ⊢[PRAAx] inversions m d+(m+p) ≐ (inversions m d+monus m p)+two*p := by
     ipra_lc natEq (eq_add_of_le pm)
   exact (inserted_parity m p d hp).eqTrans ((congrAp1 parF exponent).eqTrans (par_add_two _ _)).eqSymm

@@ -33,7 +33,7 @@ variable {n : ℕ}
 /-- `c < j + 1` gives `c ≤ j`. -/
 theorem le_of_lt_succ {Γ : List (Fm PTm n)} {i j : PTm n} (h : Γ ⊢[PRAAx] lt i (succ j)) :
     Γ ⊢[PRAAx] le i j :=
-  (succ_monus_succ i j).eqSymm.eqTrans h
+  Order.le_of_lt_succ h
 
 /-- The bounded case split: from `c ≤ B` and `c = j ⟶ φ` for every `j ≤ B`, derive `φ`. -/
 theorem cases_num (B : ℕ) {Γ : List (Fm PTm n)} {c : PTm n} {φ : Fm PTm n}

@@ -79,12 +79,7 @@ theorem finiteMaximum_at (body : PTm 2) {N i x : PTm n}
     · simp only [Fm.subst_imp, subst_lt, subst_le, subst_inst2, subst_finiteMaximum,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      have small : (lt (Syn.shift i) (succ (var 0)) ::
-          (lt (Syn.shift i) (var 0) ⟶
-            le (inst2 body (Syn.shift i) (Syn.shift x)) (finiteMaximum body (var 0) (Syn.shift x))) ::
-              Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift i) (var 0) :=
-        (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
-      refine .orE (lt_or_eq_of_le small) ?_ ?_
+      refine .orE (Order.lt_succ_cases Prf.hyp0) ?_ ?_
       · exact le_trans (Prf.impE Prf.hyp1.wk Prf.hyp0) (finiteMaximum_increasing body _ _)
       · exact le_congr (congrInst2 body Prf.hyp0 (.eqRefl _)).eqSymm
           (finiteMaximum_succ body _ _).eqSymm (maximum_right _ _)
@@ -100,12 +95,11 @@ theorem finiteMaximum_succ_bound (body : PTm 2) {H i x value : PTm n}
     (hi : Γ ⊢[PRAAx] le i H) (readback : Γ ⊢[PRAAx] inst2 body i x ≐ value) :
     Γ ⊢[PRAAx] le (succ value) (succ (finiteMaximum body (succ H) x)) :=
   Common.succ_le_succ
-    (le_congr readback (.eqRefl _) (finiteMaximum_at body ((succ_monus_succ _ _).eqTrans hi)))
+    (le_congr readback (.eqRefl _) (finiteMaximum_at body (Order.lt_succ_of_le hi)))
 
 private theorem le_iff_lt_succ {i H : PTm n} :
     Γ ⊢[PRAAx] Fm.iff (le i H) (lt i (succ H)) :=
-  .iffI (.impI ((succ_monus_succ _ _).eqTrans Prf.hyp0))
-    (.impI ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0))
+  .iffI (.impI (Order.lt_succ_of_le Prf.hyp0)) (.impI (Order.le_of_lt_succ Prf.hyp0))
 
 /-- Body of the inner query maximum; its data are packed `(stage,index,x)`. -/
 def queryBody (q : PR 4) : PTm 2 :=

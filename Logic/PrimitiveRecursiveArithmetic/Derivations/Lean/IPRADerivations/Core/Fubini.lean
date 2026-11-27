@@ -178,7 +178,7 @@ theorem dstep (ihA : Γ ⊢[PRAAx] lt c N ⟶ (dS G N c x ≐ inst2 G c x))
     (ihB : Γ ⊢[PRAAx] le N c ⟶ (dS G N c x ≐ zero)) :
     Γ ⊢[PRAAx] (lt c (succ N) ⟶ (dS G (succ N) c x ≐ inst2 G c x)) ⋏
       (le (succ N) c ⟶ (dS G (succ N) c x ≐ zero)) :=
-  .andI (.impI (.orE (lt_or_eq_of_le ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0))
+  .andI (.impI (.orE (Order.lt_succ_cases Prf.hyp0)
       (dstep_lt G ihA.wk.wk Prf.hyp0) (dstep_eq G ihB.wk.wk Prf.hyp0)))
     (.impI (dstep_above G ihB.wk Prf.hyp0))
 

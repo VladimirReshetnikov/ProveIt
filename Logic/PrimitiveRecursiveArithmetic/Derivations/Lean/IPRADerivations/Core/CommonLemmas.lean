@@ -81,13 +81,13 @@ theorem le_of_eq_zero {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ zero) : Γ ⊢[PRAA
   le_congr h.eqSymm (.eqRefl _) (zero_le _)
 
 theorem succ_le_succ {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (succ a) (succ b) :=
-  le_congr (succ_eq_add_one _).eqSymm (succ_eq_add_one _).eqSymm (add_le_add_right one h)
+  Order.succ_le_succ h
 
 theorem le_of_lt_succ {a b : PTm n} (h : Γ ⊢[PRAAx] lt a (succ b)) : Γ ⊢[PRAAx] le a b :=
-  (succ_monus_succ _ _).eqSymm.eqTrans h
+  Order.le_of_lt_succ h
 
 theorem lt_succ_of_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] lt a (succ b) :=
-  (succ_monus_succ a b).eqTrans h
+  Order.lt_succ_of_le h
 
 theorem ne_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] neg (a ≐ b) :=
   .impI (lt_irrefl _ _ (lt_congr Prf.hyp0 (.eqRefl _) h.wk))

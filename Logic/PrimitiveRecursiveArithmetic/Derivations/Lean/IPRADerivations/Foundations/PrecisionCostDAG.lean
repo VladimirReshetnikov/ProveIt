@@ -176,7 +176,7 @@ theorem row_lookup (G Eta r w : PTm n) (hw : Γ ⊢[PRAAx] lt w r) : Γ ⊢[PRAA
       exact .impI (.botE _ (succ_ne_zero' _ ((monus_zero _).eqSymm.eqTrans Prf.hyp0)))
     · simp only [subst_lookupLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
       refine .impI ?_
-      refine .orE (lt_or_eq_of_le ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0)) ?_ ?_
+      refine .orE (Order.lt_succ_cases Prf.hyp0) ?_ ?_
       · exact (row_old (Syn.shift G) (Syn.shift Eta) (var 0) (Syn.shift w) Prf.hyp0).eqTrans
           (.impE Prf.hyp1.wk Prf.hyp0)
       · exact (entry_congr (.eqRefl _) Prf.hyp0).eqTrans
@@ -371,7 +371,7 @@ theorem next_nonnegative (G Eta v R : PTm n) (hRows : Γ ⊢[PRAAx] rowsNonnegat
 theorem new_entry_nonnegative (G Eta r w : PTm n)
     (hRows : Γ ⊢[PRAAx] rowsNonnegative r (row G Eta r)) (hw : Γ ⊢[PRAAx] lt w (succ r)) : Γ ⊢[PRAAx]
     rationalLE zeroCode (entry (row G Eta (succ r)) w) := by
-  refine .orE (lt_or_eq_of_le ((succ_monus_succ _ _).eqSymm.eqTrans hw)) ?_ ?_
+  refine .orE (Order.lt_succ_cases hw) ?_ ?_
   · exact Analysis.RationalArgmin.rationalLE_congr (.eqRefl _) (row_old G Eta r w Prf.hyp0).eqSymm
       (rows_nonnegative_at _ _ _ hRows.wk Prf.hyp0)
   · have e : ((w ≐ r) :: Γ) ⊢[PRAAx] entry (row G Eta (succ r)) w ≐ node G Eta r :=

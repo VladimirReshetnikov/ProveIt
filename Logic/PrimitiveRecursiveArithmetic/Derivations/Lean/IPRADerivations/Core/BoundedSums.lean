@@ -92,7 +92,7 @@ theorem lt_zero_absurd {i : PTm n} (φ : Fm PTm n) (h : Γ ⊢[PRAAx] lt i zero)
 
 theorem lt_succ_cases {i N : PTm n} (h : Γ ⊢[PRAAx] lt i (succ N)) :
     Γ ⊢[PRAAx] lt i N ⋎ (i ≐ N) :=
-  lt_or_eq_of_le ((succ_monus_succ i N).eqSymm.eqTrans h)
+  Order.lt_succ_cases h
 
 theorem add_eq_zero_right {x y : PTm n} (h : Γ ⊢[PRAAx] x + y ≐ zero) : Γ ⊢[PRAAx] y ≐ zero :=
   add_eq_zero_left ((add_comm y x).eqTrans h)

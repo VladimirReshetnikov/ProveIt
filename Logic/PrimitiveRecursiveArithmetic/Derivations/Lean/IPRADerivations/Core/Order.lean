@@ -62,6 +62,17 @@ theorem shift_one_le {a : PTm n} (h : Γ ⊢[PRAAx] le (succ zero) a) :
     Γ.map Fm.shift ⊢[PRAAx] le (succ zero) (Syn.shift a) := by
   simpa only [Syn.shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] using shift_le h
 
+theorem succ_le_succ {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) :
+    Γ ⊢[PRAAx] le (succ a) (succ b) :=
+  (succ_monus_succ a b).eqTrans h
+
+/-- A bound below a successor gives a weak bound at its predecessor. -/
+theorem le_of_lt_succ {a b : PTm n} (h : Γ ⊢[PRAAx] lt a (succ b)) : Γ ⊢[PRAAx] le a b :=
+  (succ_monus_succ a b).eqSymm.eqTrans h
+
+theorem lt_succ_of_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] lt a (succ b) :=
+  succ_le_succ h
+
 end Order
 
 /-! ## Witnesses -/
@@ -161,6 +172,10 @@ theorem lt_or_eq_of_le {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] 
     refine e.wk.eqTrans ?_
     exact (congrAdd (.eqRefl a) Prf.hyp0).eqTrans ((add_succ _ _).eqTrans (succ_add _ _).eqSymm)
 
+theorem Order.lt_succ_cases {a b : PTm n} (h : Γ ⊢[PRAAx] lt a (succ b)) :
+    Γ ⊢[PRAAx] lt a b ⋎ (a ≐ b) :=
+  lt_or_eq_of_le (Order.le_of_lt_succ h)
+
 theorem le_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] le a b :=
   le_trans (le_succ_self a) h
 
@@ -168,10 +183,8 @@ theorem lt_of_lt_of_le {a b c : PTm n} (h₁ : Γ ⊢[PRAAx] lt a b) (h₂ : Γ 
     Γ ⊢[PRAAx] lt a c := le_trans h₁ h₂
 
 theorem lt_of_le_of_lt {a b c : PTm n} (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] lt b c) :
-    Γ ⊢[PRAAx] lt a c := by
-  refine le_trans ?_ h₂
-  have e := eq_add_of_le h₁
-  exact le_of_eq_add ((congrSucc e).eqTrans (succ_add _ _).eqSymm)
+    Γ ⊢[PRAAx] lt a c :=
+  le_trans (Order.succ_le_succ h₁) h₂
 
 /-- `a ≤ b` and `b < a` are incompatible. -/
 theorem le_lt_absurd {a b : PTm n} (φ : Fm PTm n) (h₁ : Γ ⊢[PRAAx] le a b) (h₂ : Γ ⊢[PRAAx] lt b a) :

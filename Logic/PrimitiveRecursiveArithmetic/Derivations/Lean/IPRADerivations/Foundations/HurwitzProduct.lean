@@ -106,7 +106,7 @@ theorem hw_zero (x : PTm k) :
 theorem first_pt {j n x : PTm k} (h : Γ ⊢[PRAAx] lt j (succ n)) :
     Γ ⊢[PRAAx] inst2 (bgB (cv a b)) j (pairT n (pairT (succ n) x)) ≐
       inst2 (bgB (cv a (shiftBody b))) j (pairT n (pairT n x)) := by
-  have hle : Γ ⊢[PRAAx] le j n := (succ_monus_succ j n).eqSymm.eqTrans h
+  have hle : Γ ⊢[PRAAx] le j n := Order.le_of_lt_succ h
   have r := term_at (Γ := Γ) a (shiftBody b) j n n x
   rw [inst2_shiftBody] at r
   refine (term_at a b j n (succ n) x).eqTrans (.eqTrans ?_ r.eqSymm)
@@ -178,7 +178,7 @@ variable (a b : PTm 2)
 theorem comm_pt {j n x : PTm k} (h : Γ ⊢[PRAAx] lt j (succ n)) :
     Γ ⊢[PRAAx] inst2 (rflBody (bgB (cv a b))) j (pairT (succ n) (pairT n (pairT n x))) ≐
       inst2 (bgB (cv b a)) j (pairT n (pairT n x)) := by
-  have hle : Γ ⊢[PRAAx] le j n := (succ_monus_succ j n).eqSymm.eqTrans h
+  have hle : Γ ⊢[PRAAx] le j n := Order.le_of_lt_succ h
   rw [inst2_rflBody]
   -- the reflected index is `n ∸ j`
   have i₁ : Γ ⊢[PRAAx]
@@ -221,7 +221,7 @@ theorem inst2_factB (j x : PTm k) : inst2 factB j x = fact j := by simp [inst2, 
 /-- Every summand of `(Y ⋆ Y)_n` for `Y_j = j!` is `n!`: `C(n, j) j! (n − j)! = n!`. -/
 theorem fact_pt {j n x : PTm k} (h : Γ ⊢[PRAAx] lt j (succ n)) :
     Γ ⊢[PRAAx] inst2 (bgB (cv factB factB)) j (pairT n (pairT n x)) ≐ fact n := by
-  have hle : Γ ⊢[PRAAx] le j n := (succ_monus_succ j n).eqSymm.eqTrans h
+  have hle : Γ ⊢[PRAAx] le j n := Order.le_of_lt_succ h
   have t := term_at (Γ := Γ) factB factB j n n x
   rw [inst2_factB, inst2_factB] at t
   exact t.eqTrans ((mul_comm _ _).eqTrans (binom_eq hle).eqSymm)

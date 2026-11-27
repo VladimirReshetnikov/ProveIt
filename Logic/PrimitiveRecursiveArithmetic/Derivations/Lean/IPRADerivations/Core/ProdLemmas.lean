@@ -107,7 +107,7 @@ theorem prod_one_le_bounded (f : PTm 2) (x N : PTm n)
 theorem zero_step (f : PTm 2) {N i x : PTm n}
     (ih : Γ ⊢[PRAAx] lt i N ⟶ ((inst2 f i x ≐ zero) ⟶ (ap2 (prodF f) N x ≐ zero))) :
     Γ ⊢[PRAAx] lt i (succ N) ⟶ ((inst2 f i x ≐ zero) ⟶ (ap2 (prodF f) (succ N) x ≐ zero)) := by
-  refine .impI (.impI (.orE (lt_or_eq_of_le ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp1)) ?_ ?_))
+  refine .impI (.impI (.orE (Order.lt_succ_cases Prf.hyp1) ?_ ?_))
   · exact (prod_succ f N x).eqTrans
       ((congrMul (Prf.impE (Prf.impE ih.wk.wk.wk Prf.hyp0) Prf.hyp1) (.eqRefl _)).eqTrans (zero_mul _))
   · exact (prod_succ f N x).eqTrans

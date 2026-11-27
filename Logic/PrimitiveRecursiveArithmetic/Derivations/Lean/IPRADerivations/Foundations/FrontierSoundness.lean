@@ -49,13 +49,11 @@ theorem up_shift {m : ℕ} (σ : Fin n → PTm m) (t : PTm n) :
 
 theorem shift_succ' (t : PTm n) : Syn.shift (succ t) = succ (Syn.shift t) := by simp [Syn.shift]
 
-theorem le_of_lt_succ' {a b : PTm n} (h : Γ ⊢[PRAAx] lt a (succ b)) : Γ ⊢[PRAAx] le a b := by
-  have h' : Γ ⊢[PRAAx] le (succ a) (succ b) := h
-  ipra_le sl h'
+theorem le_of_lt_succ' {a b : PTm n} (h : Γ ⊢[PRAAx] lt a (succ b)) : Γ ⊢[PRAAx] le a b :=
+  Order.le_of_lt_succ h
 
-theorem lt_succ_of_le' {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] lt a (succ b) := by
-  have g : Γ ⊢[PRAAx] le (succ a) (succ b) := by ipra_le sl h
-  exact g
+theorem lt_succ_of_le' {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] lt a (succ b) :=
+  Order.lt_succ_of_le h
 
 /-- Every state `t ≤ S` of rank below `b` satisfies `P`. -/
 def Low (ρ p : PTm 2) (S x b : PTm n) : Fm PTm n :=
