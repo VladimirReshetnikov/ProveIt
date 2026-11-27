@@ -1,0 +1,264 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[top=.91in,bottom=.91in,left=1in,right=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,microtype}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\T}{\mathbb T}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\setlength{\emergencystretch}{1.5em}
+\allowdisplaybreaks[2]
+\title{Recovering zero spectra and Dirichlet products\\from Li coefficients}
+\author{}\date{November 27, 2026}
+\begin{document}\maketitle
+\begin{abstract}
+Exponentiating a critical-line spectrum's complex Li coefficients at one positive time can erase integer multiplicities. We classify every invisible change and prove that each changes an ordinate of absolute value at most $\sqrt3/2$. The constant is sharp even for two singletons. At each exceptional time we determine the optimal central band, exactly which sparse probes suffice, the minimum number of altered atoms, and every equality case. For bounded complex weights on a fixed finite family of primitive Dirichlet characters we also establish uniform Lipschitz separation on every sufficiently long block of any fixed arithmetic progression after polynomial recalibration of bounded degree. For zeta and Dirichlet beta, 255 modes of stride 20 suffice to recover all integral multiplicities at time one with uniform log-magnitude error below $1/12$. The circle results hold for arbitrary admissible multisets. The arithmetic application uses the repository's critical-line input for Dirichlet zeros.
+\end{abstract}
+
+\section{What one time slice remembers}
+
+For $\rho=\tfrac12+i\gamma$, the coordinate
+\[
+ z=1-\frac1\rho\in\T\setminus\{1\},\qquad
+ \rho=\frac{1}{1-z},\qquad
+ \gamma=\tfrac12\cot(\theta/2)\quad(z=e^{i\theta})
+\]
+identifies the critical line with the punctured circle. Multiplicity and the sign of $\gamma$ both matter. For a circle multiset $E$, write $m_E(z)$ for its nonnegative integer multiplicities. As in ProveIt \cite{repo}, call it \emph{admissible} when
+\[
+ \sum_zm_E(z)|1-z|^2<\infty,\qquad
+ \lim_{\varepsilon\downarrow0}\sum_{|1-z|\ge\varepsilon}m_E(z)\Im z
+ \quad\hbox{exists}.
+\]
+For $n\in\Z$ and $t>0$ define
+\begin{equation}\label{eq:obs}
+ \lambda_E(n)=\lim_{\varepsilon\downarrow0}
+ \sum_{|1-z|\ge\varepsilon}m_E(z)(1-z^n),
+ \qquad H_{E,t}(n)=\exp(-t\lambda_E(n)).
+\end{equation}
+The error in replacing $1-z^n$ by $-in\Im z$ is $O_n(|1-z|^2)$, which proves convergence. The time slice consists of all the modes $H_{E,t}(n)$, or equivalently of the probability measure with these Fourier coefficients obtained as the limit of the finite compound Poisson laws. Positive modes determine the negative ones by conjugation, and $H_{E,t}(0)=1$.
+
+\begin{theorem}[Universal central band]\label{thm:central}
+At any $t>0$, two admissible critical-line spectra with equal time slices and equal multiplicities at every signed ordinate $|\gamma|\le\sqrt3/2$ coincide at every height. The constant is sharp over all times. At $t=2\pi/\sqrt3$ the single zeros $\tfrac12+i\sqrt3/2$ and $\tfrac12-i\sqrt3/2$ have the same time slice.
+\end{theorem}
+The last pair corresponds to $e^{\pm i\pi/3}$, and its exponent differences lie in $i\sqrt3\,\Z$ for every mode. The upper bound, the optimal radius at each fixed $t$, and sparse alternatives to the interval follow in Section~\ref{sec:band}.
+
+\paragraph{Relation to the repository.}
+The merged article takes the upstream theorem for $\zeta$ and Dirichlet $L$-functions at the cited Lean revision as input. It derives admissibility of their Cayley multisets from the critical-line statement and convergence of the starred Li sums. The complex Li coefficients and their convergence are treated by Lagarias \cite{LagariasLi}. The repository's theorem \emph{Determining times} proves injectivity on admissible multisets exactly when $(\pi/t)^2\notin\Q$, and constructs a quadratic Gauss-sum collision at each remaining time. Its theorem \emph{Every time determines a primitive product} gives injectivity within the family of finite products of primitive Dirichlet $L$-functions using arithmetic rigidity. In the central-band theorem the competing spectrum may be any admissible multiset. We classify the full group of differences, determine all minimum collisions and characterize the local observations restoring injectivity. The proofs of these circle statements use no zero-location hypothesis.
+
+\paragraph{Related work.}
+Hasebe and Hotta study additive processes on the unit circle and discuss nonuniqueness of a marginal law's L\'evy measure \cite{hh}. Cyclotomic orbits also occur in Kadyan and Bhattacharjya's classification of integral mixed circulant graphs \cite{kb}, including the splitting of primitive shells into two character classes at conductor four. An additional condition here requires every Fourier coefficient to belong to the \emph{prescribed} lattice $2\pi i\Z/t$. Its spacing determines the least mass of an invisible change. The refinements here are relative to these results. Global bibliographic priority remains open.
+
+\section{The integral kernel of the observation}
+
+Write $\zeta_k=e^{2\pi i/k}$, $\mu_k=\{z:z^k=1\}$, $U_k=(\Z/k\Z)^\times$ and $\varphi(k)=|U_k|$. A collision consists of two distinct multisets with the same time slice. Set $b_z=m_E(z)-m_F(z)$. For a finite difference $b=\sum_z b_z\delta_z$, write $\widehat b(n)=\sum_z b_zz^n$. Its positive and negative parts are admissible multisets.
+
+\begin{lemma}[Finite torsion reduction, after ProveIt]\label{lem:torsion}
+Let $\beta=2\pi i/t$. Every collision difference is supported on some $\mu_q$, has mass zero, and satisfies $\widehat b(n)\in\beta\Z$ for every $n$. Moreover $\beta^2\in\Q$.
+\end{lemma}
+\begin{proof}
+For $D=\lambda_E-\lambda_F$, equality of the time slices gives $D(n)\in\beta\Z$. Its central second difference is
+\[
+ u(n)=D(n+1)-2D(n)+D(n-1)=\sum_z b_z|1-z|^2z^n.
+\]
+The coefficients are absolutely summable. Approximate $u$ uniformly by a sum over finitely many $z$. Simultaneous recurrence of powers on a finite torus gives a positive $q$ for which those $z^q$ are all arbitrarily close to $1$: place sufficiently many successive powers in finitely many small boxes and subtract two indices landing in the same box. The uniform tail bound then gives $\sup_n|u(n+q)-u(n)|<|\beta|$. Since the values lie in $\beta\Z$, $u$ is $q$-periodic. Uniqueness of Fourier coefficients of finite measures, by density of trigonometric polynomials, gives $(z^q-1)|1-z|^2b_z=0$ for each $z$. This proves finite support.
+
+Writing $s=\sum_z b_z$ gives $D(n)=s-\widehat b(n)$. Its real part vanishes, so Fourier inversion gives $b_z+b_{\bar z}=2s\one_{z=1}$. As $b_1=0$, $s=0$ and $D=-\widehat b$. Some $D(n_0)$ is a nonzero multiple of $\beta$, hence $\beta\in\Q(\zeta_q)$. The automorphism $\sigma_a:\zeta_q\mapsto\zeta_q^a$ for $a\in U_q$ sends $D(n_0)$ to $D(an_0)$, another nonzero integer multiple of $\beta$. Thus $\sigma_a(\beta)/\beta\in\Q^\times$ is a character of a finite group and takes values in $\{\pm1\}$. Every automorphism fixes $\beta^2$.
+\end{proof}
+
+At an exceptional time $\beta^2\in\Q_{<0}$, let $d<0$ be the fundamental discriminant of $\Q(\beta)$, set $f=|d|$, and let $\chi=(d/\cdot)$ be the primitive odd quadratic character of conductor $f$, extended by zero to nonunits. Its Gauss sum satisfies
+\[
+ G=\sum_{j\bmod f}\chi(j)\zeta_f^j,\qquad
+ G^2=d,\qquad \sum_{j\bmod f}\chi(j)\zeta_f^{jn}=G\chi(n).
+\]
+These are the classical primitive Gauss sum identities, including the zero at nonunits \cite{davenport}. Since $\beta/G\in\Q^\times$, define coprime positive $A,B$ by $|\beta/G|=A/B$. In particular $|G|=\sqrt f$.
+
+\begin{theorem}[All invisible changes]\label{thm:lattice}
+Put $B_m=\sum_{j\bmod fm}\chi(j)\delta_{\zeta_{fm}^j}$ for $m\ge1$. At an exceptional time the complete group of differences having equal time slices is
+\begin{equation}\label{eq:lattice}
+ \mathcal K_t=\bigoplus_{m\ge1}\Z\,\frac{A}{\gcd(A,m)} B_m .
+\end{equation}
+For differences supported on $\mu_q$, retain precisely the generators with $fm\mid q$. The resulting rank is zero if $f\nmid q$, and the number of divisors of $q/f$ otherwise. At every other time the kernel is zero.
+\end{theorem}
+\begin{proof}
+Take $Q=\operatorname{lcm}(q,f)$. For $a\in U_Q$ we have $\sigma_a(G)=\chi(a)G$. Hence $\widehat b(an)=\sigma_a(\widehat b(n))=\chi(a)\widehat b(n)$. Fourier inversion gives $b_{z^a}=\chi(a)b_z$. On the shell of primitive $k$th roots, $k\mid Q$, the power action of $U_Q$ is transitive. A nonzero coefficient there forces $\chi$ to be trivial on the kernel of $U_Q\to U_k$, equivalently $f\mid k$ by the definition of the conductor. The coefficients on such a shell have the form $v_k\chi(j)$ at $\zeta_k^j$ for $j\in U_k$, with $v_k\in\Z$.
+
+Each $B_m$ is equivariant under this character. On its highest shell $k=fm$ the coefficient at $\zeta_{fm}$ is $1$, and its other shells have orders properly dividing $fm$. Successively removing shell coefficients in decreasing order gives a unique integral expansion $b=\sum_{fm\mid q}c_mB_m$. The argument applies to every integral array with this equivariance.
+
+Write $j=u+f\ell$ and sum first over $\ell$ to obtain
+\begin{equation}\label{eq:DFT}
+ \widehat B_m(n)=
+ \begin{cases}mG\chi(n/m),&m\mid n,\\0,&m\nmid n.\end{cases}
+\end{equation}
+Each $B_m$ has mass zero. Equality of time slices now requires $\widehat b(n)\in\beta\Z$. For $n\ge1$, the integer $\widehat b(n)/G=\sum_{m\mid n}mc_m\chi(n/m)$ lies in $(A/B)\Z$ exactly when $A$ divides it. At $n=m$ the new term is $mc_m\chi(1)=mc_m$. Induction gives $A\mid mc_m$ for all $m$. The same formula proves sufficiency, including negative modes by conjugation. Since $A\mid mc_m$ exactly when $A/\gcd(A,m)\mid c_m$, this proves the basis formula. Lemma~\ref{lem:torsion} handles the other times.
+\end{proof}
+
+The denominator $B$ drops out. Thus exceptional times with the same field and numerator $A$ have identical invisible changes. At $t=\pi$, $f=4$ and $A=1$, giving $B_1=\delta_i-\delta_{-i}$. At $t=\pi/3$ in the same field $A=3$, so the first two generators are $3B_1$ and $3B_2$, whereas $B_3$ itself is invisible.
+
+\section{Low-ordinate probes and the sharp band}\label{sec:band}
+
+For $k\ge3$ define the primitive ordinate set and its smallest absolute height by
+\[
+ \Gamma_k=\left\{\tfrac12\cot(\pi j/k):j\in U_k\right\},\qquad
+ h_k=\min_{\gamma\in\Gamma_k}|\gamma|.
+\]
+These are potential zero locations available to a competing admissible spectrum.
+
+\begin{theorem}[Exact supplementary data]\label{thm:probe}
+At an exceptional time a time slice together with the multiplicities at all ordinates in $W\subseteq\mathbb R$ determines every admissible spectrum exactly when
+\begin{equation}\label{eq:hit}
+ W\cap\Gamma_k\ne\varnothing\qquad\text{for every positive multiple }k\text{ of } f.
+\end{equation}
+For $W=[-r,r]$ the exact threshold, including the endpoint, is $r_f=\tfrac12\tan(\pi/f)$. The positive ordinates $h_k$, one for each multiple of $f$, suffice. They accumulate only at zero.
+\end{theorem}
+\begin{proof}
+A difference has shell coefficients $v_k\chi(j)$ as in Theorem~\ref{thm:lattice}. If it vanishes at one primitive $k$th root it vanishes on that entire shell. Conversely suppose $W$ misses the shell of order $k$. Assign $\chi(j)$ on that shell and zero elsewhere. This integral equivariant array is an integral combination of the $B_m$. Multiplication by $A$ makes it invisible by~\eqref{eq:lattice}. Its positive and negative parts give a collision agreeing on $W$.
+
+A unit $j$ nearest to $k/2$ minimizes the absolute height. This yields
+\begin{equation}\label{eq:heights}
+ h_k=\begin{cases}
+ \tfrac12\tan(\pi/(2k)),& k\text{ odd},\\
+ \tfrac12\tan(\pi/k),&4\mid k,\\
+ \tfrac12\tan(2\pi/k),&k\equiv2\pmod4,\quad k\ge6 .
+ \end{cases}
+\end{equation}
+For odd $k$, choose $j=(k-1)/2$. If $4\mid k$, $k/2-1$ is odd and its common divisors with $k$ divide $2$. For $k\equiv2\pmod4$ the neighbors of $k/2$ are even, while $k/2-2$ is odd with common divisors dividing $4$. Each choice gives the positive height $h_k$.
+
+If $f$ is even, $4\mid f$ by the fundamental discriminant classification, and the largest $h_k$ occurs at $k=f$. If $f$ is odd, the largest occurs at $k=2f$. Indeed the odd multiples have tangent argument at most $\pi/(2f)$, the multiples divisible by four have argument at most $\pi/(4f)$, and the remaining multiples have argument at most $\pi/f$. Both parity cases give the maximum $r_f$. Formula~\eqref{eq:heights} also gives $h_k\to0$. Finally $f\ge3$ and $r_f$ decreases with $f$. The pair in Theorem~\ref{thm:central} realizes $r_3=\sqrt3/2$, proving that theorem as well.
+\end{proof}
+
+\begin{corollary}[Ambiguity below the threshold]\label{cor:rank}
+For $r>0$ the remaining group of invisible changes agreeing on $[-r,r]$ has finite rank
+\[
+ R_f(r)=\#\{k\in f\Z_{>0}:h_k>r\}
+       =\frac{\pi}{2fr}+O(1)\qquad(r\downarrow0).
+\]
+\end{corollary}
+\begin{proof}
+Each missed shell allows one integral amplitude, and $A$ times each individual shell is in the kernel. Put $u=\arctan(2r)$. For even $f$, $k=fm$ is missed precisely when $m<\pi/(fu)$. For odd $f$, the tests on $m$ are $m<\pi/(2fu)$ for odd $m$, $m<\pi/(fu)$ for $4\mid m$, and $m<2\pi/(fu)$ for $m\equiv2\pmod4$. Their residue-class densities are $1/2$, $1/4$, $1/4$. Counting each class gives $\pi/(fu)+O(1)$ in either parity. Use $u=2r+O(r^3)$.
+\end{proof}
+
+Every admissible spectrum has finitely many atoms in a bounded interval of ordinates because $|1-z|$ is bounded away from zero there. The data in the universal band can therefore be supplied as a finite list of signed ordinates with multiplicities and the information that the list is complete.
+
+\section{Minimum number of altered atoms}
+
+The total variation $\|b\|_1=\sum_z|b_z|$ counts the atoms left on both sides after common multiplicities are cancelled. The positive and negative parts each contain $\|b\|_1/2$ atoms by Lemma~\ref{lem:torsion}.
+
+\begin{lemma}[Norm of a character projection]\label{lem:norm}
+Take $f\mid Q$ and $w\in\mu_Q$ of order $k$. The normalized average
+\[
+ P(w)=\frac{1}{\varphi(Q)}\sum_{a\in U_Q}\chi(a)w^a
+\]
+vanishes unless $f\mid k$. For $k=fh$ and $w=\zeta_k^v$, $v\in U_k$, it satisfies
+\begin{equation}\label{eq:projection}
+ P(w)=\frac{\chi(v)\mu(h)\chi(h)G}{\varphi(k)},\qquad
+ |P(w)|\le\frac{\sqrt f}{\varphi(f)} ,
+\end{equation}
+where $\mu$ is the M\"obius function. Equality in the absolute bound occurs precisely at order $k=f$, or at $k=2f$ when $f$ is odd.
+\end{lemma}
+\begin{proof}
+If $\chi$ is nontrivial on the kernel of $U_Q\to U_k$, the sum over that kernel vanishes. Otherwise $f\mid k$ and equal fibers reduce the average to $U_k$. Changing variables by $v$ extracts $\chi(v)$. Insert $\one_{(a,k)=1}=\sum_{e\mid(a,k)}\mu(e)$ in the numerator. Terms with $(e,f)>1$ vanish. For $e\mid k$ coprime to $f$, the inner sum is
+\[
+ \chi(e)\sum_{b\bmod k/e}\chi(b)e^{2\pi i b/(k/e)} .
+\]
+Then $e\mid h$. Summing over lifts modulo $f$ gives zero unless $k/e=f$, by a geometric series. The surviving term is $\mu(h)\chi(h)G$, interpreted as zero also when $(h,f)>1$. Since $\varphi(k)\ge\varphi(f)$, the bound follows. Equality requires $(h,f)=1$ and $\varphi(k)=\varphi(f)$, hence $\varphi(h)=1$. Precisely $h=1$ and, for odd $f$, $h=2$ qualify.
+\end{proof}
+
+\begin{theorem}[Exact distance]\label{thm:dist}
+At an exceptional time the least total variation of a nonzero invisible difference is $A\varphi(f)$. Both $AB_1$ and $B_A$ attain it. The latter has no repeated atoms on either side. For packets of at most $M$ extra atoms over any fixed background, the observation is injective exactly when $M<A\varphi(f)/2$.
+\end{theorem}
+\begin{proof}
+Choose $n$ with $\widehat b(n)\ne0$. Equation~\eqref{eq:DFT} and Theorem~\ref{thm:lattice} give $|\widehat b(n)|\ge A\sqrt f$. Since $\widehat b(an)=\chi(a)\widehat b(n)$, averaging over $a\in U_Q$ gives
+\[
+ |\widehat b(n)|=\abs{\sum_z b_zP(z^n)}
+       \le \|b\|_1\,\sqrt f/\varphi(f).
+\]
+Each $B_m$ has $m\varphi(f)$ coefficients of modulus one, so the examples attain equality. Differences of bounded packets have norm at most $2M$. At the threshold take the positive and negative parts of a minimizing difference; the common background multiplies both time slices by the same nonzero sequence.
+\end{proof}
+
+\section{All collisions at the minimum distance}
+
+Let $q$ be the least positive integer for which $\supp b\subseteq\mu_q$, and write $q=fm$. In particular the support generates $\mu_q$.
+
+\begin{theorem}[Equality cases]\label{thm:eq}
+If $f$ is even or $m$ is odd, the complete list at $q$ is
+\[
+            b=\pm(A/m)B_m,\qquad m\mid A.
+\]
+If $f$ is odd and $m$ even, set $s=\chi(2)$. Choose $X,Y\in\{-A,0,A\}$, not both zero, and retain the pairs for which
+\[
+ c=(Y-sX)/m\in\Z\setminus\{0\},\qquad e=2X/m\in\Z .
+\]
+The complete list at $q$ is then $b=cB_m+eB_{m/2}$. All minimizing differences are supported on $\mu_{fA}$ for even $f$ and on $\mu_{2fA}$ for odd $f$.
+\end{theorem}
+\begin{proof}
+Suppose $\|b\|_1=A\varphi(f)$. Every nonzero $\widehat b(n)$ has modulus $A\sqrt f$ by the two bounds in the preceding proof. Equality there also forces $|P(z^n)|=\sqrt f/\varphi(f)$ at every $z\in\supp b$. Thus each $z^n$ has order $f$, or possibly $2f$ for odd $f$. The support generates $\mu_q$, so its image under the $n$th power map generates a group of order either $f$ or $2f$. That order is $q/\gcd(q,n)$. On the frequency side only the shell of order $f$ and, when $f$ is odd and $2f\mid q$, the shell of order $2f$ can occur.
+
+On each frequency shell $\widehat b/G$ transforms by $\chi$ under multiplication of the index by units modulo $q$, and is thus determined by its value at a representative. The order-$f$ representative is $n=m$. By~\eqref{eq:DFT}, $\widehat B_m/G$ has value $m$ there and vanishes off that shell. When this is the only shell, inversion gives $b=\pm(A/m)B_m$, and integrality forces $m\mid A$.
+
+In the second case put $X=\widehat b(m/2)/G$, $Y=\widehat b(m)/G$. The representatives of orders $2f$ and $f$ are $m/2$ and $m$. Formula~\eqref{eq:DFT} gives
+\[
+ \begin{array}{c|cc}
+                 &m/2&m\\ \hline
+ \widehat B_m/G  &0&m\\
+ \widehat B_{m/2}/G &m/2&s\,m/2
+ \end{array}
+\]
+and both transforms vanish off these shells. Solving at the two representatives and applying Fourier inversion yields the stated $c,e$. The integral triangular basis in Theorem~\ref{thm:lattice} gives their integrality; $c\ne0$ follows from minimality of $q$. Conversely the conditions give the Fourier lattice since $X,Y$ are multiples of $A$. On even exponents $j=2\ell$ at $\zeta_q^j$, the coefficient of $b$ equals $(sc+e)\chi(\ell)$. At odd exponents it equals $c\chi(j)$. Each parity accounts for $(m/2)\varphi(f)$ positions coprime to $f$. Hence
+\[
+ \|b\|_1=\tfrac12m\varphi(f)(|c|+|sc+e|)
+ =\tfrac12\varphi(f)(|Y-sX|+|Y+sX|)
+ =\varphi(f)\max(|X|,|Y|).
+\]
+The coefficient at $\zeta_q$ is $c\ne0$, so the least exponent is $q$. Finally $mc=Y-sX$ is a nonzero element of $\{\pm A,\pm2A\}$, implying $m\mid2A$.
+\end{proof}
+
+\paragraph{An odd-conductor example.}
+At $t=2\pi/\sqrt3$, one has $f=3$, $A=1$, $s=-1$. At $q=3$ the minimum pair consists of the singleton multisets at $\zeta_3^{\pm1}$. At $q=6$ take $X=Y=1$; then $c=e=1$. The measure $B_2+B_1$ cancels on the primitive third roots and has coefficients $+1,-1$ at $\zeta_6,\bar\zeta_6$. This realizes the band endpoint. The equality classification gives no further minimum pairs at this time up to exchanging the sides and adding a common background.
+
+\subsection*{Positivity and the number of possible spectra}
+\input{fibers}
+
+For example, the first ordinates of both zeta and Dirichlet beta have
+absolute value greater than $6$. Every finite product of these functions
+therefore has a unique admissible spectrum at each positive time, even
+when the competing spectrum is not assumed to come from an $L$-function.
+
+\input{progressions}
+
+\paragraph{Further questions.}
+For competitors on specified primitive shells with bounded total mass, how many Fourier modes suffice to distinguish different observations at a prescribed error level? Can the constants in the arithmetic separation theorem be computed uniformly from the maximum conductor, stride and allowed recalibration degree? Both questions ask how accurately a finite experiment can approximate the identifiability proved here.
+
+\begingroup\small
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt: Generalized Riemann Hypothesis}, merged article, especially the subsections on Li heat kernels and determining times. Repository snapshot \texttt{4ccd0fdeda0b}, November 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/4ccd0fdeda0b1cc316d2dfdccfdbcfea9d4b77fb/Analysis/GeneralizedRiemannHypothesis}{Pinned project} and
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4ccd0fdeda0b1cc316d2dfdccfdbcfea9d4b77fb/Analysis/GeneralizedRiemannHypothesis/Article/sections/li.tex}{Li section}.
+The named upstream revision is \texttt{72fead102f66}.
+\bibitem{LagariasLi}
+J. C. Lagarias, Li coefficients for automorphic $L$-functions,
+\emph{Ann. Inst. Fourier} \textbf{57} (2007), 1689--1740.
+\href{https://doi.org/10.5802/aif.2311}{doi:10.5802/aif.2311}.
+\bibitem{hh}
+T. Hasebe and I. Hotta, Additive processes on the unit circle and Loewner chains,
+\emph{Int. Math. Res. Not.} 2022, 17797--17848.
+\href{https://doi.org/10.1093/imrn/rnab157}{doi:10.1093/imrn/rnab157}.
+\bibitem{kb}
+M. Kadyan and B. Bhattacharjya, Integral mixed circulant graphs,
+\emph{Discrete Math.} \textbf{346} (2023), 113142.
+\href{https://doi.org/10.1016/j.disc.2022.113142}{doi:10.1016/j.disc.2022.113142}.
+\bibitem{davenport}
+H. Davenport, \emph{Multiplicative Number Theory}, 3rd ed.,
+revised by H. L. Montgomery, Springer, 2000.
+\href{https://link.springer.com/book/9780387950976}{Publisher edition}.
+\end{thebibliography}
+\endgroup
+\end{document}

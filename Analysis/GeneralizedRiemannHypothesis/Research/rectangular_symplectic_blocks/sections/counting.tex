@@ -1,0 +1,227 @@
+\section{Exact finite counts}\label{sec:counting}
+
+The exact formulas in this section are finite identities. They provide
+both the starting point for the asymptotic proof and a direct method for
+evaluating the distributions.
+
+\subsection{Isometric embeddings and subspaces}
+
+Let \(E_D(j,s)\) be the number of isometric injections of a fixed
+\(j\)-dimensional alternating space of rank \(2s\) into a nondegenerate
+alternating space of even dimension \(D\). Set
+\begin{equation}\label{eq:Phi}
+ \Phi_D(j,s)=
+ \begin{cases}
+ \displaystyle\prod_{r=D/2-j+s+1}^{D/2}(1-q^{-2r}),
+                 &j-s\le D/2,\\
+ 0,              &j-s>D/2.
+ \end{cases}
+\end{equation}
+
+\begin{lemma}[Prescribed-Gram embeddings]\label{lem:embeddings}
+For \(0\le2s\le j\),
+\begin{equation}\label{eq:embedding}
+ E_D(j,s)=q^{Dj-\binom j2}\Phi_D(j,s).
+\end{equation}
+The number \(N_D(j,s)\) of \(j\)-subspaces of a symplectic \(D\)-space
+with restricted rank \(2s\) is
+\begin{equation}\label{eq:types}
+ N_D(j,s)=
+ \frac{E_D(j,s)}
+ {|\Sp_{2s}(\F)|\,|\GL_{j-2s}(\F)|\,q^{2s(j-2s)}}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Choose a symplectic basis of the nondegenerate part and then a basis of
+its radical. Embedding the \(s\) ordered hyperbolic pairs gives
+\[
+ \prod_{i=0}^{s-1}(q^{D-2i}-1)q^{D-2i-1}
+\]
+choices. In the remaining nondegenerate space of dimension \(D-2s\),
+an ordered isotropic radical frame of size \(j-2s\) has
+\[
+ \prod_{i=0}^{j-2s-1}(q^{D-2s-i}-q^i)
+\]
+choices. Such a frame exists precisely when \(j-s\le D/2\).
+Collecting the powers of \(q\) gives \eqref{eq:embedding}.
+
+The automorphisms of a form with nondegenerate part of dimension \(2s\)
+and radical dimension \(r=j-2s\) have order
+\(|\Sp_{2s}(\F)|\,|\GL_r(\F)|q^{2sr}\).
+Dividing the number of injective realizations by this order gives
+\eqref{eq:types}. Symplectic Gram--Schmidt also extends every isometry
+between these subspaces to an ambient isometry: extend a radical basis
+by dual partners, then complete a symplectic basis. This argument
+requires no division by two.
+\end{proof}
+
+\subsection{Likelihood and optimal event}
+
+For \(k\ge0\), define
+\begin{equation}\label{eq:F}
+ F_q(k)=\sum_{r=k}^{2k}\qbin{2k}{r}
+                 \frac{q^{-r(r+1)/2}}{\eta_{r-k}}.
+\end{equation}
+
+\begin{proposition}[Exact residual likelihood]\label{prop:likelihood}
+For any \(M\in\Mat_{a,b}(\F)\), if \(\nul D(M)=2k\), then
+\begin{equation}\label{eq:likelihood}
+ q^{ab}\Pbb(A=M)=\alpha_{a,b}F_q(k).
+\end{equation}
+This likelihood is smaller than one for \(k=0\), and larger than one
+for every \(k\ge1\).
+\end{proposition}
+
+\begin{proof}
+A prescribed \(M\) is completed by the square matrices \(B\) satisfying
+\(B^{\trans}J_bB=D(M)\).
+Their kernels lie in the \(2k\)-dimensional radical of \(D(M)\).
+If such a kernel has dimension \(r\), the quotient has dimension \(b-r\)
+and rank \(b-2k\), so it embeds in dimension \(b\) if and only if
+\(k\le r\le2k\). There are \(\qbin{2k}{r}\) kernels and
+\[
+ E_b(b-r,b/2-k)
+   =q^{b(b+1)/2-r(r+1)/2}\frac{\eta_{b/2}}{\eta_{r-k}}
+\]
+isometric embeddings for each quotient.
+The total number of frames satisfying \eqref{eq:gram-condition} is
+\[
+ E_{a+b}(b,b/2)
+ =q^{(a+b)b-\binom b2}\frac{\eta_{(a+b)/2}}{\eta_{a/2}}.
+\]
+Every such frame is injective because its Gram matrix \(J_b\) is
+nonsingular, and the symplectic group is transitive on these frames.
+Dividing the completion count by this frame count and multiplying by
+\(q^{ab}\) gives \eqref{eq:likelihood}.
+
+For \(k=0\), \(F_q(0)=1\), and \(\alpha_{a,b}<1\):
+the \(b/2\) factors of
+\(\eta_{(a+b)/2}/\eta_{a/2}\) have strictly larger indices than those of
+\(\eta_{b/2}\).
+Also
+\[
+ \alpha_{a,b}\ge\eta_\infty
+       >1-\sum_{r\ge1}q^{-2r}
+       =\frac{q^2-2}{q^2-1}.
+\]
+For \(k=1\), direct summation gives
+\(F_q(1)=1+q/(q^2-1)\), and
+\[
+ \frac{q^2-2}{q^2-1}
+      \left(1+\frac q{q^2-1}\right)-1
+   =\frac{q^3-q^2-2q+1}{(q^2-1)^2}>0
+       \qquad(q\ge2).
+\]
+For \(k\ge2\), the term \(r=k\) alone yields
+\[
+ \alpha_{a,b}F_q(k)
+ \ge\eta_\infty\qbin{2k}{k}q^{-k(k+1)/2}
+ \ge\eta_\infty q^{k(k-1)/2}>1.
+\]
+All excess mass is therefore on singular residuals. On nonsingular
+residuals the deficit is the constant \(1-\alpha_{a,b}\), proving
+\eqref{eq:full-exact}.
+\end{proof}
+
+\subsection{Exact marginal moments}
+
+Gaussian binomial coefficients count subspaces:
+\(\qbin{n}{j}\) is the number of \(j\)-subspaces of \(\F^n\).
+For \(0\le j\le b\), define
+\[
+ \mu_j=\E\qbin{K_A}{j},\quad
+ \mu_j^0=\E\qbin{K_U}{j},\quad
+ \nu_j=\E\qbin{L_U}{j},\quad
+ \nu_j^0=\E\qbin{\nul T_b}{j}.
+\]
+
+\begin{lemma}[Kernel and defect moments]\label{lem:moments}
+One has
+\begin{align}
+ \mu_j
+ &=\sum_s N_b(j,s)\frac{E_b(j,s)}{E_{a+b}(j,s)},
+ & \mu_j^0&=\qbin b j q^{-aj},\label{eq:rank-moments-raw}\\
+ \nu_j
+ &=q^{-(a+b)j+j^2}\sum_sN_b(j,s)E_a(j,s),
+ & \nu_j^0&=\qbin b j q^{-bj+j(j+1)/2}.
+ \label{eq:defect-moments-raw}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+For the first formula, sum over \(j\)-subspaces \(W\) of the source.
+If \(W\) has restricted rank \(2s\), its image under the random frame
+is uniform among \(E_{a+b}(j,s)\) isometric injections.
+The condition \(AW=0\) says that this image lies in the hidden
+\(b\)-dimensional summand, allowing \(E_b(j,s)\) injections.
+For the independent matrix \(U\), killing \(W\) imposes \(aj\)
+independent scalar conditions.
+
+For the defect, suppose \(W\subseteq\ker D(U)\). If \(x\in W\) and
+\(Ux=0\), then for every \(y\in\F^b\),
+\[
+ x^{\trans}J_by=(Ux)^{\trans}J_a(Uy)=0,
+\]
+so \(x=0\). Thus \(U|_W\) is an isometric injection, with \(E_a(j,s)\)
+choices. After fixing it, each of the \(b-j\) remaining basis vectors
+has \(j\) independent prescribed pairings, and hence \(q^{a-j}\)
+possible images. Divide by \(q^{ab}\) and sum over \(W\).
+Finally, an alternating \(b\times b\) matrix that kills a given
+\(j\)-space has \(bj-j(j+1)/2\) independent entries prescribed to zero.
+\end{proof}
+
+Let \(H\) be uniform in \(\Alt_j(\F)\), and write \(\rank H=2s\).
+Define
+\[
+ m_{j,d}=\frac{q^{-j(j+d)}}{\gamma_j},\qquad
+ m'_j=\frac{q^{-j(j-1)/2}}{\gamma_j}.
+\]
+The probability that \(H\) has rank \(2s\) is
+\[
+ \frac{|\GL_j(\F)|}
+ {q^{\binom j2}|\Sp_{2s}(\F)|
+       |\GL_{j-2s}(\F)|q^{2s(j-2s)}}.
+\]
+Substituting Lemma~\ref{lem:embeddings} into the moment formulas gives the
+useful common normalization
+\begin{equation}\label{eq:unified}
+ \begin{aligned}
+ \mu_j&=m_{j,d}\E_H\frac{\Phi_b(j,s)^2}{\Phi_{a+b}(j,s)},
+ &\quad \mu_j^0&=m_{j,d}\E_H\Phi_b(j,s),\\
+ \nu_j&=m'_j\E_H\{\Phi_b(j,s)\Phi_a(j,s)\},
+ &\quad \nu_j^0&=m'_j\E_H\Phi_b(j,s).
+ \end{aligned}
+\end{equation}
+Every denominator in this formula is nonzero: \(j\le b\le a\)
+implies \(j-s\le(a+b)/2\).
+
+\subsection{The reference distributions}
+
+Counting maps by their kernels gives
+\begin{equation}\label{eq:finite-iid}
+ \Pbb(K_U=k)
+ =q^{-k(k+d)}
+       \frac{\gamma_a\gamma_b}
+       {\gamma_k\gamma_{d+k}\gamma_{b-k}}
+       \quad(0\le k\le b).
+\end{equation}
+Similarly, choose the radical of an alternating form and then a
+nondegenerate form on its quotient:
+\begin{equation}\label{eq:finite-alt}
+ \Pbb(\nul T_b=2k)
+   =q^{-k(2k-1)}
+       \frac{\gamma_b}{\gamma_{2k}\eta_{b/2-k}}
+       \quad(0\le k\le b/2).
+\end{equation}
+Odd nullities have probability zero. These formulas imply
+\eqref{eq:pi} and \eqref{eq:lambda}; the quadratic tails justify passage to each
+fixed Gaussian moment. Therefore
+\begin{equation}\label{eq:limit-moments}
+ \sum_k\qbin k j\pi_d(k)=m_{j,d},
+ \qquad
+ \sum_k\qbin k j\lambda(k)=m'_j.
+\end{equation}
+They also prove that both limiting sequences have total mass one.
+No convergence of a moment series is being used without a tail bound.
+

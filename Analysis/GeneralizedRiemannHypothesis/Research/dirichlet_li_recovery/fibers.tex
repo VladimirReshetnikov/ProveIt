@@ -1,0 +1,27 @@
+\begin{theorem}[Every time slice has a finite fiber]\label{thm:finitefiber}
+At an exceptional time let $S_k$ be the total multiplicity at $+h_k$ and $-h_k$, for each $k$ divisible by $f$. These integers are determined by the sequence of moduli $|H_{E,t}(n)|$. Only finitely many $S_k$ are nonzero, and the number of admissible spectra giving this time slice satisfies
+\[
+ \#\{F:H_{F,t}=H_{E,t}\}\ \le\prod_{f\mid k}(1+S_k)<\infty.
+\]
+When $A=1$ equality can be realized for every prescribed finite list of positive $S_k$ with all other $S_k=0$. In particular, an admissible spectrum having a gap $|\gamma|\le r_f$ is determined by its time slice alone among all admissible competitors. The radius $r_f$ is sharp for this gap guarantee.
+\end{theorem}
+\begin{proof}
+The modulus gives $\Re\lambda_E(n)=-t^{-1}\log |H_{E,t}(n)|$. Its central second differences are the Fourier coefficients of the finite measure
+\[
+ \tfrac12\sum_z |1-z|^2\bigl(m_E(z)+m_E(\bar z)\bigr)\delta_z.
+\]
+Fourier uniqueness recovers every total on a conjugate pair. The pairs at $\pm h_k$ are distinct for different $k$ since they belong to distinct primitive shells. They lie in $[-r_f,r_f]$, where admissibility permits only finitely many atoms. The multiplicity at $+h_k$ has at most $1+S_k$ choices. Once those choices are given, Theorem~\ref{thm:probe} determines the entire spectrum. When all $S_k=0$ this proves uniqueness without supplementary data.
+
+For sharpness when $A=1$, on each prescribed shell put multiplicity $S_k$ at every point with $\chi(j)=+1$ and zero at the points with $\chi(j)=-1$. The two members of a conjugate pair have opposite character signs. The signed array $\chi(j)$ confined to each shell is invisible by Theorem~\ref{thm:lattice}. Independently transferring $0,1,\ldots,S_k$ units from the positive half to the negative half produces the stated product of distinct spectra. For any $A$, the pure-shell construction in the proof of Theorem~\ref{thm:probe} at a shell with $h_k=r_f$ gives two indistinguishable spectra both avoiding every smaller closed band.
+\end{proof}
+
+In fact, at every exceptional time every positive integer occurs as a fiber
+size. Take $m=A^2$, $k=fm$. The array $V_k$ equal to $\chi(j)$ on the
+primitive $k$th roots and zero elsewhere satisfies
+\[
+ V_k=\sum_{e\mid m,\ (e,f)=1}\mu(e)\chi(e) B_{m/e}.
+\]
+This is inclusion--exclusion on the exponents divisible by primes of $m$
+outside $f$. For each squarefree $e\mid A^2$ one has $A\mid m/e$,
+so every term belongs to the kernel. The single-shell construction in the
+preceding proof now gives exactly $S_k+1$ spectra for any $S_k\ge0$.

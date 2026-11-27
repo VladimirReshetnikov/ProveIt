@@ -1,0 +1,344 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
+  pdftitle={Uniform rank and joint-defect laws for rectangular symplectic blocks},
+  pdfauthor={Research note extending the ProveIt development}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Rectangular symplectic blocks}
+\fancyhead[R]{\small 27 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_q}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\Alt}{\operatorname{Alt}}
+\newcommand{\Sp}{\operatorname{Sp}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\nul}{\operatorname{null}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\qbin}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_q}
+\newcommand{\normone}[1]{\left\|#1\right\|_1}
+\newcommand{\trans}{\mathsf T}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\gitsha}{\texttt{497c1844e71393df41914f5b783d5dc9a618eb61}}
+\newcommand{\srcid}[1]{{\footnotesize\ttfamily #1}}
+\title{\vspace{-1em}\textbf{Uniform rank and joint-defect laws\\for rectangular symplectic blocks}\\[0.5em]
+\large Persistent matrix dependence, vanishing rank information,\\and a sharp independence theorem}
+\author{Research note extending the ProveIt development}
+\date{27 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let \(A\) be an \(a\times b\) block of a uniform symplectic transformation,
+where source and target are complementary nondegenerate spaces over \(\F\).
+For all positive even \(a\ge b\), we obtain signed first-order expansions for
+the nullity law of \(A\), the nullity of the translated Gram form
+\(D(U)=J_b-U^{\trans}J_aU\) of an independent-entry matrix \(U\), and the
+centered joint law of the nullities of \(U\) and \(D(U)\).
+These signed-law remainders are \(O_q(q^{-a-b})\), uniformly in the
+gap \(a-b\). In particular, the rank testing distance is
+\[
+ \TV(\rank A,\rank U)
+ =\frac{\gamma_\infty}{(q-1)\gamma_{a-b}}\,q^{-a}
+   +O_q(q^{-a-b}),\qquad
+ \gamma_r=\prod_{i=1}^r(1-q^{-i}).
+\]
+The rank of \(U\) and the rank of \(D(U)\) are asymptotically independent with
+an explicit signed correction and sharp constant. Their two full-rank
+indicators retain the entire first-order dependence.
+Meanwhile, the full matrix laws stay a positive distance apart, with a
+limit independent of the aspect ratio and an explicit symmetric correction.
+This resolves the fixed-positive-gap case singled out in the
+ProveIt GRH transfer article. Exact likelihoods and classical complement
+counts are credited as inputs; the principal extension is the uniform
+signed-law analysis, especially the joint theorem.
+All proofs are unconditional and valid in characteristic two.
+\end{abstract}
+
+\section{Source, question, and contribution}\label{sec:source}
+
+The starting point is the directory
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/497c1844e71393df41914f5b783d5dc9a618eb61/Analysis/GeneralizedRiemannHypothesis}{\texttt{Analysis/GeneralizedRiemannHypothesis}}
+at revision \gitsha.
+Its article collects consequences of Dirichlet GRH and transfers of methods
+from its proof \cite{ProveIt}. The source development contains finite-group
+compression and kernel-counting arguments; for example,
+\srcid{New/Spanning/SecondMoment/PositiveType.lean} bounds singular
+compressions using additive characters and a second moment \cite{GRHSource}.
+The article subsequently studies uniform symplectic compressions by exact
+orbit counts. The present paper extends that finite-field branch of the
+research. Its proof uses neither a zero hypothesis nor an unverified
+arithmetic estimate.
+
+The specific starting question is \srcid{spn:q:symplectic},
+\emph{Growing symplectic compressions}, in \texttt{Article/sections/spn.tex}.
+It explicitly leaves the fixed positive difference \(a-b\) unresolved for
+complementary nondegenerate frames. The article already contains the exact
+likelihood, the square case, and a limiting result when the rectangle
+becomes increasingly tall. These facts are the baseline, not claims of this paper.
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.59\linewidth}}
+\toprule
+Existing result & Extension proved here\\
+\midrule
+Exact likelihood and residual-singularity test,
+\srcid{spn:thm:balanced}
+& Reproved for completeness; combined with uniform expansions.\\[3pt]
+Square signed rank and defect laws,
+\srcid{spn:thm:square-block} and
+\srcid{spn:thm:defect-universality}
+& Signed laws for every even rectangular gap, with a remainder
+\(O_q(q^{-a-b})\) that stays smaller than the main term uniformly.\\[3pt]
+Increasingly tall blocks,
+\srcid{spn:thm:nondeg-blind}
+& Sharp rank asymptotics in every aspect ratio, including a fixed positive gap.\\[3pt]
+Exact moments and a route to joint counts in the square case
+& A centered joint-law expansion, a sharp independence distance,
+and an asymptotically optimal two-bit test.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The classical independent-entry rectangular and alternating rank laws are
+treated by Fulman and Goldstein \cite{FG}. De Boeck and Van de Voorde give
+exact complementary-subspace counts \cite{DBV}; those counts supply an
+independent short route to our full-matrix companion asymptotic.
+Pott, Schmidt and Zhou study exact rank intersections for pairs of
+alternating forms \cite{PSZ}. The bounded literature search for this note
+did not locate the uniform signed rank, translated-defect, or centered
+joint expansions stated below. This supports novelty relative to the
+inspected sources; it does not certify global priority.
+
+\section{Model and main theorems}\label{sec:main}
+
+Fix a prime power \(q\). An alternating matrix means a matrix \(H\) with
+\(H^{\trans}=-H\) and zero diagonal; the diagonal condition is retained in
+characteristic two. For every even \(D\), fix a nonsingular alternating
+matrix \(J_D\) of size \(D\). Let \(a\ge b\ge2\) be even and let \(g\) be
+uniform in the symplectic group of
+\[
+ V=(\F^a,J_a)\perp(\F^b,J_b).
+\]
+Apply \(g\) to the coordinate frame of the second summand and write its
+image as \(\binom A B\). Thus \(A\in\Mat_{a,b}(\F)\),
+\(B\in\Mat_b(\F)\), and
+\begin{equation}\label{eq:gram-condition}
+ A^{\trans}J_aA+B^{\trans}J_bB=J_b.
+\end{equation}
+The frame is uniform among all solutions of \eqref{eq:gram-condition}.
+Let \(U\) be uniform in \(\Mat_{a,b}(\F)\), with independent entries, and
+let \(T_b\) be uniform in \(\Alt_b(\F)\). Put
+\[
+\begin{gathered}
+ D(M)=J_b-M^{\trans}J_aM,\quad
+ K_M=b-\rank M,\quad L_M=\nul D(M),\\
+ d=a-b,\quad u=q^{-a},\quad v=q^{-b}.
+\end{gathered}
+\]
+For the joint theorem \(K=K_U\) and \(L=L_U\).
+
+For a signed measure \(\rho\) on a countable set,
+\(\normone{\rho}=\sum_x|\rho(x)|\). Total variation between probability
+laws is \(\TV(P,Q)=\tfrac12\normone{P-Q}\), equivalently the largest
+difference in probabilities of an event.
+
+Define
+\begin{equation}\label{eq:products}
+ \gamma_r=\prod_{i=1}^r(1-q^{-i}),\qquad
+ \eta_r=\prod_{i=1}^r(1-q^{-2i}),\qquad
+ \theta_r=\prod_{i=1}^r(1-q^{-(2i-1)}).
+\end{equation}
+Empty products are one. Their positive infinite limits satisfy
+\(\gamma_\infty=\eta_\infty\theta_\infty\).
+The classical limiting nullity laws are
+\begin{align}
+ \pi_d(k)&=\frac{\gamma_\infty q^{-k(k+d)}}{\gamma_k\gamma_{k+d}}
+       &&(k\ge0),\label{eq:pi}\\
+ \lambda(2k)&=\frac{\theta_\infty q^{-k(2k-1)}}{\gamma_{2k}},
+ &\lambda(2k+1)&=0.\label{eq:lambda}
+\end{align}
+We use the explicit signed sequences
+\begin{equation}\label{eq:signed}
+ \xi_d(k)=\frac{1+q^{-d}-q^k}{q-1}\,\pi_d(k),
+ \qquad
+ \zeta(k)=\frac{q+1-q^k}{q^2-1}\,\lambda(k).
+\end{equation}
+They both have total mass zero. Each has its only strictly positive mass
+at zero; some other coefficients may vanish.
+
+\begin{theorem}[Uniform signed marginal laws]\label{thm:marginals}
+For each \(q\) there is \(C_q<\infty\) such that, for every positive even
+\(a\ge b\),
+\begin{align}
+ \normone{\Law(K_A)-\Law(K_U)-q^{-b}\xi_d}
+       &\le C_q q^{-a-b},\label{eq:rank-expansion}\\
+ \normone{\Law(L_U)-\Law(\nul T_b)-q^{-a}\zeta}
+       &\le C_q q^{-a-b}.\label{eq:defect-expansion}
+\end{align}
+In particular,
+\begin{align}
+ \TV(\rank A,\rank U)
+   &=\frac{\gamma_\infty}{(q-1)\gamma_d}\,q^{-a}
+      +O_q(q^{-a-b}),\label{eq:rank-tv}\\
+ \TV(L_U,\nul T_b)
+   &=\frac{q\theta_\infty}{q^2-1}\,q^{-a}
+      +O_q(q^{-a-b}).\label{eq:defect-tv}
+\end{align}
+All error constants depend only on \(q\), not on \(a,b\), or \(d\).
+\end{theorem}
+
+The coefficient in \eqref{eq:rank-tv} is bounded between
+\(\gamma_\infty/(q-1)\) and \(1/(q-1)\). Thus its relative error is
+\(O_q(q^{-b})\), even if \(d\) grows arbitrarily quickly with \(b\).
+A bound \(O_q(q^{-2b})\) in place of the stated remainder would not have
+this property.
+
+\begin{theorem}[Sharp joint asymptotic independence]\label{thm:joint}
+Let \(P_{a,b}=\Law(K,L)\), and let \(P_K,P_L\) denote its actual finite
+marginal laws. Uniformly for all positive even \(a\ge b\),
+\begin{equation}\label{eq:joint-expansion}
+ \normone{P_{a,b}-P_K\otimes P_L
+            +q^{-b}(q^2-1)\xi_d\otimes\zeta}
+     \le C_q q^{-a-b}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:joint-tv}
+ \TV(P_{a,b},P_K\otimes P_L)
+   =\frac{2q\theta_\infty\gamma_\infty}{(q-1)\gamma_d}\,q^{-a}
+      +O_q(q^{-a-b}).
+\end{equation}
+\end{theorem}
+
+The centering in this theorem uses the true finite marginals. It
+therefore measures dependence itself, rather than a combination of
+dependence and the convergence of the two marginal distributions.
+
+\begin{corollary}[Two Boolean observations retain the leading dependence]
+\label{cor:xor}
+Let \(E=\{K=0\}\), \(F=\{L=0\}\), and
+\(X=(E\cap F^c)\cup(E^c\cap F)\). Then
+\begin{align}
+ \Cov(\ind_E,\ind_F)
+   &=-\frac{q\theta_\infty\gamma_\infty}{(q-1)\gamma_d}\,q^{-a}
+       +O_q(q^{-a-b}),\label{eq:covariance}\\
+ P_{a,b}(X)-(P_K\otimes P_L)(X)
+   &=\TV(P_{a,b},P_K\otimes P_L)+O_q(q^{-a-b}).\label{eq:xor}
+\end{align}
+Thus the test that exactly one of \(U\) and \(D(U)\) has full rank is
+asymptotically optimal for detecting their dependence. Exact optimality
+at every finite size is not asserted.
+\end{corollary}
+
+\begin{theorem}[Persistent full-matrix discrepancy]\label{thm:full}
+Put
+\[
+ \alpha_{a,b}=\frac{\eta_{a/2}\eta_{b/2}}{\eta_{(a+b)/2}},\qquad
+ \Delta_q=\theta_\infty(1-\eta_\infty),\qquad
+ c_q=\frac{\theta_\infty\{q-(q+1)\eta_\infty\}}{q^2-1}<0.
+\]
+At every finite size, the event \(D(M)\) singular is an optimal test
+between \(A\) and \(U\), and
+\begin{equation}\label{eq:full-exact}
+ \TV(A,U)=(1-\alpha_{a,b})\,\Pbb(D(U)\text{ nonsingular}).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:full-asymp}
+ \TV(A,U)=\Delta_q+c_q(q^{-a}+q^{-b})
+                  +O_q((q^{-a}+q^{-b})^2).
+\end{equation}
+Hence \(\TV(A,U)\to\Delta_q>0\) whenever both dimensions tend to
+infinity, in every aspect ratio.
+\end{theorem}
+
+The exact test in \cref{thm:full} is inherited from the article. The
+new uniform analysis gives a common treatment of the dimensional
+regimes and combines it with \cref{thm:marginals,thm:joint}.
+For \(q=2\),
+\[
+ \Delta_2=0.1306343467085051764310563857\ldots.
+\]
+In an equal-prior decision problem, observing the whole matrix therefore
+has limiting optimal success probability
+\((1+\Delta_2)/2=0.565317173354252588\ldots\).
+Any rank-only procedure has success tending to \(1/2\), at the sharp
+rate \eqref{eq:rank-tv}.
+
+Our orientation \(a\ge b\) loses no full-matrix or rank generality.
+Inversion in the symplectic group sends an off-diagonal block to its
+transpose multiplied on both sides by fixed invertible matrices.
+After exchanging the two summands, this identifies the opposite
+rectangular model. Both rank and total variation are unchanged.
+The statements concerning \(D(U)\) use the displayed orientation.
+
+\input{sections/counting}
+\input{sections/proof}
+\input{sections/joint}
+\input{sections/comparison}
+\input{sections/computation}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{ProveIt}
+ProveIt Contributors, \emph{ProveIt: Beyond the Riemann hypothesis for Dirichlet
+\(L\)-functions: consequences, transfers and limits}, repository article,
+revision \gitsha, inspected 27 November 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/497c1844e71393df41914f5b783d5dc9a618eb61/Analysis/GeneralizedRiemannHypothesis/Article/sections/spn.tex}{Pinned spanning and matrix-statistics section}.
+
+\bibitem{GRHSource}
+\emph{lsernau/grh-lean}, revision
+\texttt{72fead102f663d5c7a407964a13dc0cf9d977207},
+as vendored in \cite{ProveIt}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/497c1844e71393df41914f5b783d5dc9a618eb61/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/grh/src/New/Spanning/SecondMoment/PositiveType.lean}{Positive-type functions and singular compressions}.
+The present finite-field theorem does not use the analytic GRH statement.
+
+\bibitem{FG}
+J. Fulman and L. Goldstein,
+\emph{Stein's method and the rank distribution of random matrices over finite fields},
+Annals of Probability \textbf{43} (2015), no.~3, 1274--1314.
+\href{https://doi.org/10.1214/13-AOP889}{doi:10.1214/13-AOP889};
+\href{https://arxiv.org/abs/1211.0504}{arXiv:1211.0504}.
+
+\bibitem{DBV}
+M. De Boeck and G. Van de Voorde,
+\emph{Anzahl theorems for trivially intersecting subspaces generating a
+non-singular subspace I: symplectic and hermitian forms},
+Linear Algebra and its Applications \textbf{699} (2024), 367--402.
+\href{https://doi.org/10.1016/j.laa.2024.07.004}{doi:10.1016/j.laa.2024.07.004};
+\href{https://arxiv.org/html/2407.07486v3}{arXiv:2407.07486v3}, Theorem~4.9.
+
+\bibitem{PSZ}
+A. Pott, K.-U. Schmidt and Y. Zhou,
+\emph{Pairs of quadratic forms over finite fields},
+Electronic Journal of Combinatorics \textbf{23} (2016), no.~2, P2.8.
+\href{https://doi.org/10.37236/4072}{doi:10.37236/4072}.
+\end{thebibliography}
+\end{document}
+
