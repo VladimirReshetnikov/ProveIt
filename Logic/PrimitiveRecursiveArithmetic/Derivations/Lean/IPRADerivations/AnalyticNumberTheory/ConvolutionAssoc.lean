@@ -65,16 +65,13 @@ theorem quo_quo {m d e : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (he : �
 
 /-- `Q + 1 + (d − 1) = d (⌊Q/d⌋ + 1) + (Q mod d)`, with atoms. -/
 theorem quo_add_aux {Q d u r e : PTm n} (h1 : Γ ⊢[PRAAx] Q ≐ d * u + r) (h2 : Γ ⊢[PRAAx] d ≐ succ e) :
-    Γ ⊢[PRAAx] succ Q + e ≐ d * succ u + r := by
-  refine (congrAdd (congrSucc (h1.eqTrans (congrAdd (congrMul h2 (.eqRefl _)) (.eqRefl _)))) (.eqRefl _)).eqTrans ?_
-  refine .eqTrans ?_ (congrAdd (congrMul h2.eqSymm (.eqRefl _)) (.eqRefl _))
-  ipra_ring
+    Γ ⊢[PRAAx] succ Q + e ≐ d * succ u + r :=
+  Totient.succ_add_of_div_eq h1 h2
 
 /-- `#{k ≤ m : d ∣ k} = ⌊m/d⌋ + 1` for `d ≥ 1`. -/
 theorem multiples_upto {Q d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) :
-    Γ ⊢[PRAAx] ap2 (sumF Totient.mulBody) (succ Q) d ≐ succ (quo Q d) := by
-  have dm := div_mod_at (Γ := Γ) (x := Q) hd
-  exact (count_multiples hd).eqTrans (quo_eq hd (quo_add_aux (Prf.andE₁ dm) hd) (Prf.andE₂ dm))
+    Γ ⊢[PRAAx] ap2 (sumF Totient.mulBody) (succ Q) d ≐ succ (quo Q d) :=
+  Totient.count_multiples_succ hd
 
 theorem sg_pos {a : PTm n} (h : Γ ⊢[PRAAx] a ≐ succ (pred a)) : Γ ⊢[PRAAx] sg a ≐ one :=
   (congrSg h).eqTrans (sg_succ _)

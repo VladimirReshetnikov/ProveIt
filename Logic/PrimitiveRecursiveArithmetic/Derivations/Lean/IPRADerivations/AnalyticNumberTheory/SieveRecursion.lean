@@ -134,13 +134,13 @@ theorem pt {m p P : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hP : Γ ⊢[PRAAx] P �
 /-! ## The sum -/
 
 theorem cm_alg {x p Q R : PTm n} (d : Γ ⊢[PRAAx] x ≐ p * Q + R) (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
-    Γ ⊢[PRAAx] succ x + pred p ≐ p * succ Q + R := by
-  ipra_lc natEq d - natEq hp1
+    Γ ⊢[PRAAx] succ x + pred p ≐ p * succ Q + R :=
+  Totient.succ_add_of_div_eq d hp1
 
 /-- There are `⌊x/p⌋ + 1` multiples of `p` in `[0, x]`. -/
 theorem cM_succ {x p : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] cM (succ x) p ≐ succ (quo x p) :=
-  (count_multiples (j := succ x) hp1).eqTrans (quo_eq hp1 (cm_alg (div_eq (j := x) hp1) hp1) (rem_lt' hp1 x))
+  Totient.count_multiples_succ hp1
 
 theorem shift_isP_eq {p : PTm n} (h : Γ ⊢[PRAAx] isP p ≐ one) :
     Γ.map Fm.shift ⊢[PRAAx] isP (Syn.shift p) ≐ one := by

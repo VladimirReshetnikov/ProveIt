@@ -102,38 +102,39 @@ theorem quo_eq {z q r M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hz : 
 
 alias pred_lt := Common.pred_lt
 
+/-- Adding the positive divisor to a dividend increases the quotient in its decomposition by one. -/
+theorem succ_add_of_div_eq {x p q r e : PTm n} (hx : Γ ⊢[PRAAx] x ≐ p * q + r)
+    (hp : Γ ⊢[PRAAx] p ≐ succ e) :
+    Γ ⊢[PRAAx] succ x + e ≐ p * succ q + r := by
+  ipra_lc natEq hx - natEq hp
+
+private theorem quo_succ_add_pred {x p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
+    Γ ⊢[PRAAx] quo (succ x + pred p) p ≐ succ (quo x p) := by
+  have d := div_mod_at (x := x) hp
+  exact quo_eq hp (succ_add_of_div_eq (Prf.andE₁ d) hp) (Prf.andE₂ d)
+
 /-- `⌈(j+1)/p⌉ = ⌈j/p⌉ + [p ∣ j]`. -/
 theorem quo_step {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
-    Γ ⊢[PRAAx] quo (succ j + pred p) p ≐ quo (j + pred p) p + eqb (rem j p) zero := by
+    Γ ⊢[PRAAx] quo (succ j + pred p) p ≐ quo (j + pred p) p + eqb (rem j p) zero :=
+by
   have d := div_mod_at (x := j) hp
   have ej := Prf.andE₁ d
   have hr := Prf.andE₂ d
   refine .orE (zero_or_succ (rem j p)) ?_ ?_
-  · -- `p ∣ j`.
-    have q₁ := quo_eq (Γ := (rem j p ≐ zero) :: Γ) (z := j + pred p) (q := quo j p) (r := pred p) hp.wk (by
-      refine withEq ej.wk fun e₁ => withEq Prf.hyp0 fun e₂ => ?_
-      apply deriveNat; ipra_simps; rw [e₁, e₂]; ring) (pred_lt hp.wk)
-    have q₂ := quo_eq (Γ := (rem j p ≐ zero) :: Γ) (z := succ j + pred p) (q := quo j p + one) (r := zero) hp.wk (by
-      have h₁ := natEq (ej.wk (ψ := rem j p ≐ zero))
-      have h₂ := natEq (Prf.hyp0 : ((rem j p ≐ zero) :: Γ) ⊢[PRAAx] _)
-      ipra_lc h₁ + h₂ - natEq (hp.wk (ψ := rem j p ≐ zero)))
-      (le_congr (.eqRefl _) hp.wk.eqSymm (le_of_eq_add (d := pred p) (by ipra_ring)))
-    exact q₂.eqTrans (congrAdd q₁.eqSymm (eqb_of_eq Prf.hyp0).eqSymm)
-  · -- `p ∤ j`: both quotients are `quo j p + 1`.
-    have hne : ((rem j p ≐ succ (pred (rem j p))) :: Γ) ⊢[PRAAx] neg (rem j p ≐ zero) :=
+  · let Δ : List (Fm PTm n) := (rem j p ≐ zero) :: Γ
+    have hR : Δ ⊢[PRAAx] rem j p ≐ zero := Prf.hyp0
+    have q : Δ ⊢[PRAAx] quo (j + pred p) p ≐ quo j p :=
+      quo_eq hp.wk (r := pred p) (by ipra_lc natEq ej.wk + natEq hR) (pred_lt hp.wk)
+    exact (quo_succ_add_pred hp.wk).eqTrans (by ipra_lc -natEq q - natEq (eqb_of_eq hR))
+  · let Δ : List (Fm PTm n) := (rem j p ≐ succ (pred (rem j p))) :: Γ
+    have hR : Δ ⊢[PRAAx] rem j p ≐ succ (pred (rem j p)) := Prf.hyp0
+    have hne : Δ ⊢[PRAAx] neg (rem j p ≐ zero) :=
       .impI (succ_ne_zero' _ (Prf.hyp1.eqSymm.eqTrans Prf.hyp0))
-    have q₁ := quo_eq (Γ := (rem j p ≐ succ (pred (rem j p))) :: Γ) (z := j + pred p) (q := quo j p + one)
-      (r := pred (rem j p)) hp.wk (by
-      have h₁ := natEq (ej.wk (ψ := rem j p ≐ succ (pred (rem j p))))
-      have h₂ := natEq (Prf.hyp0 : ((rem j p ≐ succ (pred (rem j p))) :: Γ) ⊢[PRAAx] _)
-      ipra_lc h₁ + h₂ - natEq (hp.wk (ψ := rem j p ≐ succ (pred (rem j p)))))
-      (lt_of_le_of_lt (le_congr (.eqRefl _) Prf.hyp0.eqSymm (le_succ_self _)) hr.wk)
-    have q₂ := quo_eq (Γ := (rem j p ≐ succ (pred (rem j p))) :: Γ) (z := succ j + pred p) (q := quo j p + one)
-      (r := rem j p) hp.wk (by
-      have h₁ := natEq (ej.wk (ψ := rem j p ≐ succ (pred (rem j p))))
-      ipra_lc h₁ - natEq (hp.wk (ψ := rem j p ≐ succ (pred (rem j p))))) hr.wk
-    exact q₂.eqTrans (q₁.eqSymm.eqTrans ((add_zero _).eqSymm.eqTrans
-      (congrAdd (.eqRefl _) (eqb_of_ne hne).eqSymm)))
+    have q : Δ ⊢[PRAAx] quo (j + pred p) p ≐ succ (quo j p) :=
+      quo_eq hp.wk (r := pred (rem j p))
+        (by ipra_lc natEq ej.wk + natEq hR - natEq hp.wk)
+        (lt_of_le_of_lt (le_congr (.eqRefl _) hR.eqSymm (le_succ_self _)) hr.wk)
+    exact (quo_succ_add_pred hp.wk).eqTrans (by ipra_lc -natEq q - natEq (eqb_of_ne hne))
 
 /-- Variables: `0 = j`, `1 = p`. -/
 private abbrev countF : Fm PTm 2 :=
@@ -154,6 +155,11 @@ theorem count_multiples {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
   simp only [Fm.subst_imp, Fm.subst_eq, subst_ap2, PTm.subst_add, PTm.subst_pred, Syn.subst_var,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ConciseIPRA.PTm.subst_succ] at h
   exact .impE h hp
+
+/-- The count of multiples of positive `p` in `[0, x]` is `⌊x/p⌋ + 1`. -/
+theorem count_multiples_succ {x p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
+    Γ ⊢[PRAAx] ap2 (sumF mulBody) (succ x) p ≐ succ (quo x p) :=
+  (count_multiples (j := succ x) hp).eqTrans (quo_succ_add_pred hp)
 
 /-! ## The theorem -/
 
