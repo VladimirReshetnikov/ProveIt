@@ -10,7 +10,9 @@ such specialization on a prescribed set of primitive shells. The answer depends 
 choices: whether one polynomial is compared with one fixed Gauss valuation or several
 polynomials are compared individually; whether a positive tolerance is allowed; and which
 coefficient field is admitted. Each case is settled by an exact formula or by an exact finite
-computation. All results are local statements about $p$-adic polynomials. None of them uses a
+computation; for packets with a prescribed number of members, which interpolate between the
+first two cases, the cost is also determined asymptotically (\cref{cost:sec:cardinality}).
+All results are local statements about $p$-adic polynomials. None of them uses a
 Riemann hypothesis.
 
 \subsection{Setting, root accounting and the two loss conventions}\label{cost:sec:setting}
@@ -1125,6 +1127,402 @@ digit. The recorded outputs are:
 \item \artifact{grh-torsion-and-prime-sampling/verification.txt}}
 \end{example}
 
+\subsection{Packets of fixed cardinality}\label{cost:sec:cardinality}
+{\raggedright\sources{grh_fixed_cardinality_torsion}}
+
+Theorems~\ref{cost:thm:minimax} and~\ref{cost:thm:packet} are the two extremes of the packet
+problem in setting (C). A packet with one member $(g,t)$ blocks only if $g$ blocks in the
+aggregate sense, since $t\ge G_\rho(g)$, and the extremal polynomial of
+Theorem~\ref{cost:thm:minimax} with threshold $G_\rho$ is such a packet; at the other end,
+$H-h_0+1$ members suffice for Theorem~\ref{cost:thm:packet}. Between them the cost grows
+like an iterated logarithm whose height is the number of members.
+
+We stay in setting (C), with packets over $\OO$ as in Definition~\ref{cost:def:packet}, a
+fixed $h_0\ge1$ and $\rho\ge r_{h_0}$, and we write $s_{h_0}=p^{1-h_0}$ as in
+Theorem~\ref{cost:thm:transition}. For $n\ge1$, $H\ge h_0$ and $\delta\ge0$ let
+$C_n(H,\delta)$ be the infimum of the costs of packets over $\OO$ with at most $n$ members
+that block the shells $h_0,\dots,H$ at tolerance $\delta$. Let $H_n(B,\delta)$ be the least
+integer $H\ge h_0$ such that every packet over $\OO$ with at most $n$ members and cost at
+most $B$ has a point $z\in Z_{h_0}\cup\dots\cup Z_H$ with $\mathcal L(z)\le\delta$, and put
+$H_n(B)=H_n(B,0)$. At tolerance zero such a point satisfies $v(g_i(z))\le t_i$ for every
+member simultaneously. Unused members may be padded with the constant $1$ at threshold zero.
+We write $\log_p^{\circ j}$ for the $j$-fold iterate of $\log_p$, the zeroth iterate being the
+identity.
+
+\begin{theorem}[Fixed-cardinality tower law; \stU]\label{cost:thm:cardinality}
+For fixed $p$, $h_0$, $n$ and every $B\ge0$, $H_n(B)$ is finite, uniformly in
+$\rho\ge r_{h_0}$. For $n=1$,
+\[
+ H_1(B)=h_0+\floor{B/s_{h_0}} .
+\]
+For fixed $n\ge2$, as $B\to\infty$,
+\begin{equation}\label{cost:eq:tower}
+ \frac B{s_{h_0}}-O_{p,h_0,n}(1)\ \le\ \log_p^{\circ(n-1)}H_n(B)\ \le\
+ \frac B{s_{h_0}}+O_{p,h_0,n}\bigl(\log(2+B)\bigr).
+\end{equation}
+Equivalently, with $X_H=\log_p^{\circ(n-1)}(H+1)$, as $H\to\infty$,
+\begin{equation}\label{cost:eq:towerinverse}
+ s_{h_0}X_H-O_{p,h_0,n}\bigl(\log(2+X_H)\bigr)\le C_n(H,0)\le s_{h_0}X_H+O_{p,h_0,n}(1).
+\end{equation}
+The bounds are independent of the degrees of the polynomials, of the ramification of their
+coefficients and of $\rho\ge r_{h_0}$.
+\end{theorem}
+
+For $p=2$ and $h_0=1$, one member requires budget $H$ to block the orders
+$2,4,\dots,2^H$, two members require $\log_2H+O(\log\log H)$, and three require
+$\log_2\log_2H+O(\log\log\log H)$, while with unrestricted cardinality the budget
+$\sum_{h=h_0}^Hp^{1-h}$ of \eqref{cost:eq:zerotol} stays bounded. These statements concern
+the order exponent $h$; the order of the torsion point is $p^h$.
+
+\begin{theorem}[Exact finite optimization; \stU]\label{cost:thm:cardfinite}
+For all $n\ge1$, $H\ge h_0$ and $\delta\ge0$ the infimum $C_n(H,\delta)$ is a minimum,
+independent of $\rho\ge r_{h_0}$. It is attained by monic polynomials whose roots are torsion
+points $\xi_h^b-1$ on the shells $h_0,\dots,H$, with at most $e_h$ roots of each member on
+shell $h$, counted with multiplicity, and with thresholds $t_i=G_\rho(g_i)=v(g_i(0))$. It is
+computed by the finite integer-state recurrence \eqref{cost:eq:cardstep} below, and
+\[
+ C_n(H,\delta)=C_n(H,0)\qquad(0\le\delta<r_H).
+\]
+\end{theorem}
+
+For $n\ge H-h_0+1$ the minimum is the cost $\sum_{h=h_0}^Hc_h(\delta)$ of
+Theorem~\ref{cost:thm:packet}, and for $n=1$ at tolerance zero it is the cost
+$(H-h_0+1)s_{h_0}$ of Theorem~\ref{cost:thm:minimax}.
+
+\paragraph{Root accounting for a packet.}
+For a packet $(g_i,t_i)_i$ over $\OO$ and $h_0\le h\le H$, let $m_{i,h}$ be the number of
+roots of $g_i$ of valuation $r_h$, counted with multiplicity, and put
+\[
+ w_{i,h}=m_{i,h}r_h,\qquad W_i(h)=\sum_{k=h_0}^hw_{i,k},\qquad
+ S_i(h)=\sum_{h_0\le k<h}m_{i,k}(r_k-r_h)=\sum_{h_0\le k<h}w_{i,k}\bigl(1-p^{k-h}\bigr).
+\]
+For $z\in Z_h$ let $E_{i,h}(z)=\sum_\alpha(v(z-\alpha)-r_h)$, the sum over the roots of $g_i$
+of valuation $r_h$. The \emph{activation level} of a member with $W_i(H)>0$ is the least $h$
+with $m_{i,h}>0$.
+
+\begin{lemma}[Packet root model]\label{cost:lem:cardmodel}
+\leavevmode
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $W_i(H)\le\Delta_\rho(g_i)\le t_i$, and $S_i(h)\le W_i(h-1)$.
+\item For $z\in Z_h$, $v(g_i(z))-t_i\le E_{i,h}(z)-S_i(h)$, with equality when
+$t_i=G_\rho(g_i)$ and every root of $g_i$ has one of the valuations
+$r_{h_0},\dots,r_H$.
+\item A member without roots of valuation $r_h$ has no loss on $Z_h$. In particular a
+blocked shell carries a root of some member.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) is \eqref{cost:eq:budget} together with $G_0(g_i)\ge0$. For (ii), Lemma~\ref{cost:lem:roots}(ii)
+gives $v(g_i(z))-G_{r_h}(g_i)=E_{i,h}(z)$, and $G_\rho(g_i)-G_{r_h}(g_i)\ge S_i(h)$ by the
+argument for \eqref{cost:eq:slack}: by \eqref{cost:eq:gauss} every root contributes a
+nonnegative amount, a root of valuation $r_k$, $k<h$, contributes $r_k-r_h$, and a root of
+valuation $r_k$, $k\ge h$, contributes zero. Finally $t_i\ge G_\rho(g_i)$. Part (iii)
+follows, since then $E_{i,h}=0$ and $S_i(h)\ge0$.
+\end{proof}
+
+\begin{proof}[Reduction in Theorem~\ref{cost:thm:cardfinite}]
+Given a blocking packet, replace each root $\alpha$ of valuation $r_h$, $h_0\le h\le H$, by a
+point $\beta$ of $Z_h$ maximizing $v(\alpha-\beta)$; as in the proof of
+Lemma~\ref{cost:lem:shell}(i), $v(z-\alpha)\le v(z-\beta)$ for every $z\in Z_h$, so the
+on-shell excess can only increase, and the contributions on other shells depend only on the
+valuation. Remove all other roots and the leading coefficient, and reset each threshold to
+the Gauss valuation of the new monic polynomial. By \eqref{cost:eq:gauss}, a removed root of
+valuation different from all $r_h$ contributed $\min\set{r_h,v(\alpha)}-\min\set{\rho,v(\alpha)}\le0$
+to $v(g_i(z))-G_\rho(g_i)$ at $z\in Z_h$, so no positive part decreases. The new threshold
+is $\sum_hm_{i,h}r_h=W_i(H)\le t_i$ by Lemma~\ref{cost:lem:cardmodel}(i), and it equals
+$v(g_i(0))$ because all roots have valuation at most $r_{h_0}\le\rho$. If a member has more
+than $e_h$ roots on shell $h$, replace them by the $e_h$ points of $Z_h$, once each: its loss
+on $Z_h$ becomes infinite, on other shells each removed root had a nonpositive contribution,
+and the cost decreases. The reduced packets form a finite set, independent of $\rho$, and no
+reduction increases the cost or destroys blocking. This proves the attainment and the
+independence of $\rho$.
+\end{proof}
+
+\paragraph{The finite recurrence.}
+Identify $Z_h$ with the unit residues $a$ modulo $p^h$ through $a\mapsto\xi_h^a-1$. In a
+reduced packet, member $i$ places on shell $h$ a multiset of $m_i\le e_h$ marks $b$, and by
+\eqref{cost:eq:distance} its on-shell excess at the leaf $a$, in units of $r_h$, is
+\[
+ V_i(a)=\sum_{b\ \mathrm{marked}}\bigl(p^{v_p(a-b)}-1\bigr),
+\]
+interpreted as $+\infty$ when $a$ is marked; for $m_i=e_h$ the whole shell may be used. The
+state after shell $h-1$ is the list of pairs $(M_i,K_i)$, where $M_i$ is the number of
+earlier roots of member $i$ and $K_i$ their total valuation in units of $r_{h-1}$; before
+the first shell both are zero. Since $r_{h-1}=pr_h$, the slack $S_i(h)$ is $pK_i-M_i$ in
+units of $r_h$, and no later root changes it. By Lemma~\ref{cost:lem:cardmodel}(ii), with
+equality for reduced packets, a choice of layouts on shell $h$ is feasible exactly when
+\begin{equation}\label{cost:eq:cardstep}
+ \sum_i\max\set{0,\,V_i(a)-(pK_i-M_i)}>\delta e_h\qquad\text{for every unit }a\bmod p^h,
+\end{equation}
+and the state then passes to $(M_i+m_i,\ pK_i+m_i)$.
+All finite terms are integers, so the terms may be clipped at $\floor{\delta e_h}+1$. The
+recurrence keeps all reachable states, which may be identified up to permutation of the
+members, and $C_n(H,\delta)$ is the minimum of $r_H\sum_iK_i$ over the final states. Every
+feasible path is realized by the products of its torsion linear factors, so the recurrence
+neither relaxes nor tightens the problem.
+
+\begin{proof}[Stabilization in Theorem~\ref{cost:thm:cardfinite}]
+In a reduced packet every finite loss on $Z_h$ is an integer multiple of $r_h$, by
+\eqref{cost:eq:cardstep}. Hence a reduced packet blocking at tolerance zero has loss at
+least $r_h\ge r_H$, or infinite loss, at every point of every shell $h\le H$, and it blocks
+at every tolerance $\delta<r_H$. Monotonicity in $\delta$ gives the equality.
+\end{proof}
+
+\begin{corollary}[No inverse-tolerance singularity; \stU]\label{cost:cor:cardtol}
+For fixed $p$, $h_0$, $n$ and $B$, $H_n(B,\delta)=H_n(B)$ for every
+$0\le\delta<r_{H_n(B)}$. In particular the least guaranteed exponent stays bounded as
+$\delta\downarrow0$, in contrast with Theorem~\ref{cost:thm:transition}\textup{(ii),(iii)} for
+unrestricted packets.
+\end{corollary}
+
+\begin{proof}
+Write $J=H_n(B)$, which is finite by Theorem~\ref{cost:thm:cardinality}. If $J=h_0$ the claim
+is immediate. Otherwise a packet of cost at most $B$ blocks the shells through $J-1$ at
+tolerance zero, and by attainment and stabilization it also blocks them at every tolerance
+$\delta<r_J<r_{J-1}$. Thus $H_n(B,\delta)\ge J$, and the reverse inequality is monotonicity.
+\end{proof}
+
+\paragraph{A capped root average.}
+For the upper bound put $B'=B+1$ and assume $B\ge2$; a smaller budget may be replaced by
+$2$.
+
+\begin{lemma}[Capped average over a shell]\label{cost:lem:cardcap}
+If $v(\alpha)=r_h$, then
+\[
+ \frac1{e_h}\sum_{z\in Z_h}\min\set{v(z-\alpha)-r_h,\ B'}\le(h+B')\,r_h .
+\]
+\end{lemma}
+
+\begin{proof}
+Let $\beta\in Z_h$ be a nearest point to $\alpha$, so that $v(z-\alpha)\le v(z-\beta)$ on
+$Z_h$. The monic polynomial $P_h(T)=\Phi_{p^h}(1+T)$ has the simple roots $Z_h$, and
+differentiating $(X^{p^h}-1)/(X^{p^{h-1}}-1)$ at $X=1+\beta$ shows
+$v(P_h'(\beta))=h-1/(p-1)$. Hence
+$\sum_{z\ne\beta}(v(z-\beta)-r_h)=h-1/(p-1)-(e_h-1)r_h\le h$. The term at $\beta$ is at
+most $B'$. Divide by $e_h$.
+\end{proof}
+
+\begin{lemma}[Forced growth on a blocked shell]\label{cost:lem:cardforced}
+Let a packet of cost at most $B$ block shell $h$ at tolerance zero, and suppose that every
+member with a root of valuation $r_h$ has $W_i(h-1)>0$. Then, summing over the members with
+$W_i(h-1)>0$,
+\begin{equation}\label{cost:eq:forced}
+ \sum_i\frac{w_{i,h}}{S_i(h)}>\frac1{h+B'} .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For these members $0<S_i(h)\le W_i(h-1)\le B$. At $z\in Z_h$ some member has
+$v(g_i(z))>t_i$, so $E_{i,h}(z)>S_i(h)$ by Lemma~\ref{cost:lem:cardmodel}(ii), and this member
+has a root of valuation $r_h$. Capping each root excess at $B'>B$ keeps this strict
+inequality: either no term changes, or one capped term alone exceeds $S_i(h)$. Hence the sum
+over the members with $W_i(h-1)>0$ of the capped excess divided by $S_i(h)$ exceeds one at
+every point of $Z_h$. Average over $Z_h$ and apply Lemma~\ref{cost:lem:cardcap} to each root.
+\end{proof}
+
+\begin{lemma}[Delayed product potential]\label{cost:lem:cardinterval}
+Let a packet of cost at most $B$ block every shell $a,a+1,\dots,b$ at tolerance zero, where
+$h_0\le a\le b\le H$, and suppose the members with $W_i(b)>0$ are exactly the $k$ members with
+$W_i(a)>0$, with activation levels $a_i\le a$. For an integer $d\ge1$ and a real $K>1$ put
+\[
+ \lambda=\frac{1-p^{-d}}K,\qquad L=\sum_{i=1}^k\log\bigl(Be_{a_i}\bigr),\qquad
+ D=d+\ceil*{\frac{dL}{\log K}} .
+\]
+Then
+\begin{equation}\label{cost:eq:interval}
+ b+B'+1\le(a+B'+1+D)\exp(L/\lambda).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Logarithms are natural. For $h\ge a$ let $P_h=\prod_{i=1}^kW_i(h)>0$ and, for $h>a$,
+$R_h=P_h/P_{h-1}\ge1$. Since $W_i(a)\ge r_{a_i}$ and $W_i(b)\le B$,
+$\sum_{h=a+1}^b\log R_h=\log(P_b/P_a)\le L$.
+
+Discard the first $d$ shells after $a$. Call a later shell $h\le b$ irregular if
+$P_{h-1}/P_{h-d}>K$. Each increment $\log R_j$ occurs in at most $d$ of the quotients
+$\log(P_{h-1}/P_{h-d})$, so there are at most $\ceil{dL/\log K}$ irregular shells. On a
+regular shell each ratio $W_i(h-1)/W_i(h-d)\ge1$ is at most $K$, because their product is,
+and retaining only the roots of levels at most $h-d$ gives
+\[
+ S_i(h)\ge(1-p^{-d})\,W_i(h-d)\ge\lambda\,W_i(h-1).
+\]
+Every member with a root on shell $h$ is one of the $k$ members, so
+Lemma~\ref{cost:lem:cardforced} applies, and
+\[
+ R_h=\prod_i\Bigl(1+\frac{w_{i,h}}{W_i(h-1)}\Bigr)\ge1+\lambda\sum_i\frac{w_{i,h}}{S_i(h)}
+ >1+\frac\lambda{h+B'} .
+\]
+Since $0<\lambda<1$, concavity gives $\log(1+\lambda/x)\ge\lambda\log(1+1/x)$ for $x>0$.
+The summands $\log(1+1/(h+B'))$ decrease in $h$, and at most $D$ of the shells
+$a+1,\dots,b$ are not regular, so
+\[
+ L\ge\lambda\sum_{h\ \mathrm{regular}}\log\Bigl(1+\frac1{h+B'}\Bigr)
+ \ge\lambda\log\frac{b+B'+1}{a+B'+1+D};
+\]
+if $D>b-a$ the right side is not positive. Exponentiate.
+\end{proof}
+
+The delay $d$ is essential to the leading constant: the elementary bound
+$S_i(h)\ge(1-1/p)W_i(h-1)$ alone would put a factor $p/(p-1)$ into the exponent at each
+activation.
+
+\begin{proof}[Proof of the upper bound in Theorem~\ref{cost:thm:cardinality}]
+Let a packet with at most $n$ members and cost at most $B$ block $h_0,\dots,H$ at tolerance
+zero. Let $a_1\le\dots\le a_m$, $m\le n$, be the activation levels of the members with
+$W_i(H)>0$, and put $a_{m+1}=H+1$. By Lemma~\ref{cost:lem:cardmodel}(iii), $a_1=h_0$, and the
+shells before $a_2$ are blocked by the first member alone, which therefore blocks them in
+the aggregate sense. Theorem~\ref{cost:thm:minimax}(i) and $\Delta_\rho(g_1)\le B$ give
+\begin{equation}\label{cost:eq:a2}
+ a_2\le h_0+B/s_{h_0},
+\end{equation}
+and if $m=1$ the same bound holds for $H+1$. For $k\ge2$, on a nonempty interval
+$[a_k,a_{k+1}-1]$ exactly the first $k$ members are active, and Lemma~\ref{cost:lem:cardinterval}
+applies. Put
+\[
+ d=\ceil{\log_pB},\quad K=1+B^{-1},\quad\lambda=\frac{1-p^{-d}}K,\qquad U_1=h_0,\quad
+ U_2=h_0+\frac B{s_{h_0}},
+\]
+and for $k=2,\dots,n$
+\[
+ L_k=k\log\bigl(B(p-1)\bigr)+\log p\sum_{i=1}^k(U_i-1),\qquad
+ U_{k+1}=\Bigl(U_k+B'+1+d+\ceil*{\frac{dL_k}{\log K}}\Bigr)\exp(L_k/\lambda)+1 .
+\]
+The sequence $U_k$ increases, and induction using \eqref{cost:eq:interval} and
+\eqref{cost:eq:a2} gives $a_i\le U_i$ for $i\le m+1$, since $\log(Be_{a_i})=\log(B(p-1))+(a_i-1)\log p$.
+Hence $H+1\le U_{n+1}$ for every blocker, and $H_n(B)\le\ceil{U_{n+1}}$. This proves
+finiteness at tolerance zero, uniformly in $\rho$, without compactness or a limit in the
+tolerance.
+
+As $B\to\infty$, $d=O_p(\log B)$, $\lambda^{-1}=1+O(B^{-1})$ and $(\log K)^{-1}=O(B)$. For
+$k=2$, $L_2/\log p=(U_2-1)+(h_0-1)+2\log_p(B(p-1))=B/s_{h_0}+O_{p,h_0}(\log B)$, and the
+logarithm of the prefactor of $\exp(L_2/\lambda)$ is $O_{p,h_0}(\log B)$, so
+$\log_pU_3=B/s_{h_0}+O_{p,h_0}(\log B)$. For fixed $k\ge3$, $L_k=O_{p,h_0,n}(U_k)$ and
+$U_k\ge B$, and the logarithm of the prefactor is $O_{p,h_0,n}(\log U_k)$; thus
+$\log_pU_{k+1}\le c_1U_k$ for a constant $c_1\ge1$. Since
+$\log_p^{\circ j}(c_1x)\le\log_p^{\circ j}(x)+O(1)$ for $j\ge1$ and large $x$, iteration
+gives $\log_p^{\circ(n-1)}U_{n+1}\le B/s_{h_0}+O_{p,h_0,n}(\log B)$, and the same bound holds
+for $H_n(B)$. For $n=1$, \eqref{cost:eq:a2} with $H+1$ in place of $a_2$ gives
+$H_1(B)\le h_0+\floor{B/s_{h_0}}$, and equality is Corollary~\ref{cost:cor:endpoint}.
+\end{proof}
+
+\begin{proof}[Proof of the lower bound and of \eqref{cost:eq:towerinverse}]
+For large $B$ put $a_1=h_0$, $\ell_1=\floor{(B-(n-1))/s_{h_0}}$, $a_2=h_0+\ell_1$, and for
+$2\le i\le n$ let $\ell_i=p^{a_i-1}$ and $a_{i+1}=a_i+\ell_i$. On the block of shells
+$a_i,\dots,a_{i+1}-1$ use the extremal polynomial of Theorem~\ref{cost:thm:minimax}(i)
+with $a_i$ in place of $h_0$, with threshold its Gauss valuation; its cost is $s_{h_0}\ell_1$
+for $i=1$ and $\ell_ip^{1-a_i}=1$ for $i\ge2$. Each member blocks its own block whatever the
+others do, and the total cost is at most $B$. Hence $H_n(B)\ge a_{n+1}$. Since
+$\log_p(a_i+p^{a_i-1})=a_i-1+o(1)$ as $a_i\to\infty$, $n-1$ iterated logarithms of
+$a_{n+1}$ give $a_2+O_{p,n}(1)=B/s_{h_0}+O_{p,h_0,n}(1)$. The construction uses
+coefficients in one cyclotomic field, depending on $H$, and the common witness $0$.
+
+By attainment, $C_n(H,0)\le B$ holds exactly when $H_n(B)>H$. Choosing
+$B=s_{h_0}(X_H+c)$ with $c$ large, the lower bound in \eqref{cost:eq:tower} gives
+$H_n(B)>H$, so $C_n(H,0)\le s_{h_0}X_H+O(1)$. Substituting $B=C_n(H,0)=O(X_H)$ into the
+upper bound of \eqref{cost:eq:tower} gives the other inequality.
+\end{proof}
+
+\begin{example}[Small exact values]\label{cost:ex:cardinality}
+The recurrence \eqref{cost:eq:cardstep}, run exactly, gives the following costs.
+\begin{center}
+\begin{tabular}{rrrrrrl}
+\toprule
+$p$ & $h_0$ & $H$ & $n$ & $\delta$ & $C_n(H,\delta)$ & \\
+\midrule
+2&1&3&1&0&3&one member\\
+2&1&3&2&0&2&\\
+2&1&3&3&0&$7/4$&unrestricted optimum\\
+3&1&2&2&0&$4/3$&\\
+2&2&3&1&0&1&\\
+2&2&3&2&0&$3/4$&\\
+2&1&3&1&$1/4$&3&\\
+2&1&3&2&$1/4$&2&\\
+2&1&3&3&$1/4$&2&\\
+\bottomrule
+\end{tabular}
+\end{center}
+The one-member values agree with Theorem~\ref{cost:thm:minimax}, and for $n\ge H-h_0+1$ the
+values are those of Theorem~\ref{cost:thm:packet}. The small zero-tolerance optima agree
+with the best partition into consecutive blocks with one member each; the recurrence
+also allows mixed assignments within a shell, and it is not known whether consecutive
+blocks are always optimal. The same script checks the capacity formula of
+Lemma~\ref{cost:lem:shell} for $27$ pairs of shell and root count.
+\costfiles{
+\item \artifact{grh_fixed_cardinality_torsion/packet_exact.py}
+\item \artifact{grh_fixed_cardinality_torsion/verification.txt}}
+\end{example}
+
+\paragraph{Exact selection in any dimension.}
+For a nonzero integral power series $F=\sum_\nu c_\nu T^\nu\in\OO[[T_1,\dots,T_d]]$ put
+$G_\rho(F)=\min_\nu\bigl(v(c_\nu)+\rho\abs\nu\bigr)$.
+
+\begin{theorem}[Common tuple at exact Gauss values; \stU]\label{cost:thm:cardmulti}
+Let $F_1,\dots,F_n\in\OO[[T_1,\dots,T_d]]$ be nonzero, $d\ge1$, put $A_i=G_\rho(F_i)$ and
+suppose $\sum_iA_i\le B$. Then there are $z_1,\dots,z_d\in Z_{h_0}\cup\dots\cup Z_{H_n(B)}$
+with
+\[
+ v\bigl(F_i(z_1,\dots,z_d)\bigr)\le A_i\qquad(1\le i\le n).
+\]
+The least endpoint with this property is $H_n(B)$, for every $d$. If instead witnesses
+$x_i\in\Cp^d$ with coordinates of valuation at least $\rho$ satisfy
+$\sum_iv(F_i(x_i))\le B$, the same endpoint works with $v(F_i(x_i))$ in place of $A_i$.
+\end{theorem}
+
+\begin{proof}
+First let the $F_i$ be polynomials. Regard $F_i$ as a polynomial in $T_2,\dots,T_d$ with
+coefficients $g_{i,\beta}(T_1)$, and choose $\beta_i$ with
+$G_\rho(g_{i,\beta_i})+\rho\abs{\beta_i}=A_i$. The polynomials $g_{i,\beta_i}$ are integral
+and nonzero, and their Gauss valuations add up to at most $B$. By the definition of
+$H_n(B)$, some $z_1$ in the shells $h_0,\dots,H_n(B)$ satisfies
+$v(g_{i,\beta_i}(z_1))\le G_\rho(g_{i,\beta_i})$ for every $i$. Then $F_i(z_1,\cdot)$ is
+nonzero and integral, and its Gauss valuation is at most $A_i$, since its coefficient at
+$\beta_i$ already gives this bound. Iterate through the remaining coordinates; the choice of
+$\beta_i$ may change from step to step, and no loss accumulates with the dimension.
+
+For power series, $\rho>0$ and the integrality of the coefficients imply that $G_\rho(F_i)$
+is attained in finite total degree. Truncate at a total degree $D$ with
+$Dr_{H_n(B)}>\max_iA_i$. The truncations have the same $A_i$, and the omitted terms have
+valuation greater than $A_i$ at every tuple of the tested shells, so the ultrametric
+inequality transfers the conclusion. Convergent witness evaluations satisfy
+$v(F_i(x_i))\ge A_i$, which gives the last assertion. Sharpness follows from an extremal
+one-variable packet for the shells $h_0,\dots,H_n(B)-1$, with thresholds equal to the Gauss
+valuations and witness $0$ (Theorem~\ref{cost:thm:cardfinite}), independent of the other
+coordinates.
+\end{proof}
+
+With $n$ fixed this is a zero-tolerance counterpart of \cref{tors:thm:packet}: the endpoint
+does not depend on the dimension, the degrees or the coefficient field.
+
+\begin{corollary}[Characters of prime conductor; \stG]\label{cost:cor:cardchar}
+Under the hypotheses of Theorem~\ref{cost:thm:cardmulti} write $H=H_n(B)$. There are a
+prime
+\[
+ q\equiv1\pmod{p^H},\qquad q<2\bigl(p^HH\log p\bigr)^2,
+\]
+a generator $u$ of $(\Z/q\Z)^\times$, and nonprincipal Dirichlet characters
+$\chi_1,\dots,\chi_d$ modulo $q$ with values in $\Cp$, of $p$-power orders between
+$p^{h_0}$ and $p^H$ and of conductor $q$, such that
+\[
+ v\bigl(F_i(\chi_1(u)-1,\dots,\chi_d(u)-1)\bigr)\le A_i\qquad(1\le i\le n),
+\]
+and likewise with separate witnesses as in Theorem~\ref{cost:thm:cardmulti}.
+\end{corollary}
+
+\begin{proof}
+Under the Riemann hypothesis for Dirichlet $L$-functions, supplied by \cref{src:thm:dgrh},
+Bach and Sorenson's bound \cite{Bach1996Explicit} gives a prime $q\equiv1$ modulo $p^H$
+below $2(\varphi(p^H)\log p^H)^2\le2(p^HH\log p)^2$. The group $(\Z/q\Z)^\times$ is cyclic,
+and $p^H\mid q-1$, so $\chi_j(u)=1+z_j$, with $z_j$ from Theorem~\ref{cost:thm:cardmulti},
+defines a character of order between $p^{h_0}$ and $p^H$. It is nonprincipal because
+$h_0\ge1$, so its conductor is the prime $q$.
+\end{proof}
+
+The conductor bound is not claimed to be sharp, whereas the local exponent is. The
+corollary realizes the zero-tolerance specialization by Dirichlet characters but imposes no
+further Frobenius, ramification or Selmer conditions.
+
 \subsection{Packets over a fixed coefficient field: reduction and zero tolerance}\label{cost:sec:fields}
 {\raggedright\sources{grh_fixed_field_transfer_2026-11-25; grh_sharp_torsion_and_symplectic_blocks; grh-torsion-and-prime-sampling; grh-torsion-and-zero-data; grh_method_transfers_sharp_torsion}}
 
@@ -1833,13 +2231,27 @@ $\Phi_{p^H}(1+T)$, which vanishes at every root of prescribed exact order $p^H$ 
 witness valuation at $0$ is $1$ (\cref{tors:rem:hypotheses}).
 
 \subsection{Open questions}\label{cost:sec:open}
-{\raggedright\sources{grh-torsion-and-prime-sampling; grh-torsion-and-zero-data; grh_method_transfers_sharp_torsion; grh_sharp_torsion_and_symplectic_blocks; grh_fixed_field_transfer_2026-11-25; grh_method_transfers_research}}
+{\raggedright\sources{grh-torsion-and-prime-sampling; grh-torsion-and-zero-data; grh_method_transfers_sharp_torsion; grh_sharp_torsion_and_symplectic_blocks; grh_fixed_field_transfer_2026-11-25; grh_method_transfers_research; grh_fixed_cardinality_torsion}}
 
 \begin{question}[Fixed packet cardinality]\label{cost:q:cardinality}
-Determine the least blocking cost for packets with a prescribed number of members. The two
-extremes are known: one polynomial compared with its fixed Gauss valuation
-(Theorem~\ref{cost:thm:minimax} and Corollary~\ref{cost:cor:shells}) and packets of unrestricted size
-(Theorem~\ref{cost:thm:packet}).
+At tolerance zero the cost of blocking with $n$ members is $s_{h_0}\log_p^{\circ(n-1)}H$
+up to the error terms of Theorem~\ref{cost:thm:cardinality}, and every finite instance is
+computed by Theorem~\ref{cost:thm:cardfinite}.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Can the upper error $O(\log B)$ in \eqref{cost:eq:tower} be reduced to $O(1)$, or the
+next term be determined for $n=2$? Is the optimum always attained by consecutive blocks with
+one member each, or do mixed assignments within a shell do better?
+\item At a fixed positive tolerance $\delta$, what is the asymptotic of $H_n(B,\delta)$ as
+$B\to\infty$, and what is the joint transition when $\delta$ decreases with $B$? The tower
+law at tolerance zero does not determine it.
+\item Over a fixed finite coefficient field, where the root multisets must be Galois
+stable, how do ramification and cyclotomic intersections constrain the activations and
+change the height of the tower?
+\item Does the delayed product potential extend to the settings \textup{(LT)} and
+\textup{(H)}, and to formal groups over ramified bases with overlapping torsion valuations
+(\cref{cost:sec:ramified})? The cyclotomic proof uses the equal spacing ratios
+$r_{h-1}=pr_h$ and the exact geometry of the shells.
+\end{enumerate}
 \end{question}
 
 \begin{question}[Positive tolerance over a general coefficient field]\label{cost:q:field}

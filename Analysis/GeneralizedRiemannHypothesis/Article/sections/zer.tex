@@ -2050,16 +2050,17 @@ Riemann--von Mangoldt formula give $N_B\gg B\log B$.
 \end{proof}
 
 The kernel is an explicit product of sinc factors, with the explicit high-frequency bound
-$K\pi^{-N_B}$; its support $O_q(\log^2B)$ is not optimal. The filters of \cref{rec:thm:logfilter} have
-support $O_q(\log B)$, which is the optimal order, and high-frequency tail $e^{-c_0B\log B}$; with
-$B=\log X$ they give \cref{rec:thm:polylogavg}, one probability measure on
+$K\pi^{-N_B}$; its support $O_q(\log^2B)$ is not optimal. For a family of $d$ characters the filters of
+\cref{rec:thm:logfilter} cancel all ordinates up to $B$ with half-width $\frac d2\log B+O(\log\log B)$,
+which is sharp to leading order, and $(\frac d2+c_0)\log B+O(\log\log B)$ with high-frequency tail
+$e^{-c_0B\log B}$. With $B=\log X$ and attenuation $e^{-(\log X)/2}$ they give \cref{rec:thm:polylogavg},
+one probability measure for all classes, supported in
 \[
- [-C_q\log\log X,\;C_q\log\log X]
+ \Bigl[-H_X,H_X\Bigr],\qquad H_X\le\frac{\varphi(q)}2\log\log X+O_q(1+\log\log\log X),
 \]
-for all classes, with remainder $O_q((\log X)^{1+C_q/2}/X)$ after the weight $e^{u/2}$. This
-supersedes the
-consequence of \cref{zer:thm:kernel} with $B=\log X$, which has remainder $O_{q,\eps}(X^{-1+\eps})$ on
-the scales $X\exp(\pm O_q((\log\log X)^2))$.
+with remainder $O_q((1+\log X)/X)$ after the weight $e^{u/2}$. This supersedes the consequence of
+\cref{zer:thm:kernel} with $B=\log X$, which has remainder $O_{q,\eps}(X^{-1+\eps})$ on the scales
+$X\exp(\pm O_q((\log\log X)^2))$.
 
 \begin{remark}[The remainder of the source proof]\label{zer:rem:sourceremainder}
 Let $d\equiv7\pmod8$ be prime, $(M,d)=1$, and let $R_{d,M}$ be the centred remainder of
@@ -4519,7 +4520,7 @@ and $(s-1)\zeta(s)$.
 \end{example}
 
 \subsection{Graph-coupled real-rooted functions}\label{zer:sec:graph}
-\sources{graph_coupled_zeros_2026-11-26; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27}
+\sources{graph_coupled_zeros_2026-11-26; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; grh_inverse_spectral_2026-11-27}
 
 This subsection is a statement about real-rooted polynomials and real canonical products; the
 only arithmetic input is that \cref{src:thm:dgrh} makes the phase-normalized completed Dirichlet
@@ -4531,7 +4532,9 @@ electrical invariant of the graph independent of the input zeros. The ingredient
 the matrix-forest identity \cite{ChebotarevShamis2023Forest}, compressions representing critical
 points \cite{Pereira2003Differentiators}, preservation of real zeros \cite{BorceaBranden2009LeeYang},
 matrix-valued Herglotz theory \cite{Reiffenstein2022Interlacing} and rank-one inverse identities
-\cite{SimonovWoracek2024Local}.
+\cite{SimonovWoracek2024Local}. Conversely, for distinct characters of one parity the zeros of the
+coupled function determine all principal minors of the coupling, uniformly from a finite window and
+after finitely many erasures (\cref{zer:thm:tailrigid,zer:thm:window,zer:cor:graphrecover}).
 
 \paragraph{The polynomial construction.}
 Let $G$ be a connected undirected graph on $n\ge2$ labelled vertices with positive edge
@@ -4991,6 +4994,190 @@ complementary matrix at $0$ is the path Laplacian of nullity one, and $0$ is a s
 $\mathcal H_{a,b}$ by \eqref{zer:eq:collision}; directly,
 $\mathcal H_{a,b}'(0)=abF_3(0)F_4(0)F_5(0)\sum_q(F_q'/F_q)'(0)<0$.
 
+\paragraph{The inverse problem: the coupling from a corrupted zero set.}
+\Cref{zer:cor:graphdirichlet} is a forward statement. Conversely, for distinct characters of one
+parity the zeros of $\mathcal P_A$ determine every principal minor of $A$, even after finitely many
+of them are corrupted, and a bounded window of zeros suffices uniformly. Fix $n\ge1$ and pairwise
+distinct primitive nonprincipal characters $\chi_1,\dots,\chi_n$ of conductors $q_i$ and common
+parity $a$, complex characters allowed, let $F_i=F_{\chi_i}$ be as in \eqref{zer:eq:phasereal} with
+arbitrary phases $\eta_i$, $g_i=F_i'/F_i$, and
+\[
+ E_S=\prod_{i\in S}F_i'\prod_{i\notin S}F_i\quad(S\subseteq[n]),\qquad
+ \mathcal P_A=\sum_{S\subseteq[n]}\det A[S^c]\,E_S,\qquad
+ \mathcal V=\operatorname{span}_\C\set{E_S:S\subsetneq[n]},
+\]
+as in \eqref{zer:eq:PA}; the coefficient of $E_{[n]}$ is $1$, and changing a phase multiplies every
+$E_S$ by the same sign. The labelled list of characters is known. For nonzero entire $f,h$ and an
+interval $I$ let
+\[
+ \Delta_I(f,h)=\sum_{x\in I}\max\set{\ord_xf-\ord_xh,0},
+\]
+the one-sided count of multiplicities of real zeros of $f$ missing from $h$, possibly $+\infty$ for
+$I=\R$; additional zeros of $h$ are not penalized.
+
+\begin{lemma}[Algebraic independence of the logarithmic derivatives; \stU]\label{zer:lem:algindep}
+The functions $g_1,\dots,g_n$ are algebraically independent over $\C$. In particular the $2^n$
+functions $E_S$ are linearly independent.
+\end{lemma}
+
+\begin{proof}
+Write $s=\frac12+iz$ and $\psi=\Gamma'/\Gamma$. In $\Re s>1$ the Euler product gives
+\[
+ g_j=u(s)+c_j+D_j(s),\qquad u(s)=\tfrac i2\psi\bigl(\tfrac{s+a}2\bigr),\quad
+ c_j=\tfrac i2\log(q_j/\pi),\quad D_j(s)=-i\sum_{m\ge2}\Lambda(m)\chi_j(m)m^{-s},
+\]
+with the same $u$ for all $j$ by the common parity; along the positive real axis
+$u(s)\sim\frac i2\log(s/2)$. Let $P$ have total degree $d$, and replace $u(s)$ by an independent
+variable $U$:
+\begin{equation}\label{zer:eq:polydirgraph}
+ P\bigl(U+c_1+D_1(s),\dots,U+c_n+D_n(s)\bigr)=\sum_{m\ge1}b_m(U)m^{-s},\qquad\deg b_m\le d,
+\end{equation}
+with $\sum_m\norm{b_m}_1m^{-2}<\infty$ for the coefficient sum $\norm{\cdot}_1$, by expanding the
+monomials and convolving absolutely convergent series. If $P(g_1,\dots,g_n)=0$ and some $b_m\ne0$, take
+the least such $m_0$ and multiply \eqref{zer:eq:polydirgraph} at $U=u(s)$ by $m_0^s$ for real $s\ge2$. The
+tail is at most $(1+\abs{u(s)})^dm_0^2(m_0/(m_0+1))^{s-2}\sum_{m>m_0}\norm{b_m}_1m^{-2}\to0$, while a
+nonzero polynomial $b_{m_0}$ does not tend to zero along $u(s)$ as $\abs{u(s)}\to\infty$; so every $b_m$
+vanishes. If $P\ne0$ and $d=0$, this contradicts $b_1\ne0$. Otherwise let $P_d$ be the top homogeneous
+part and $\mathcal B$ its symmetric $d$-linear polarization, $\mathcal B(v,\dots,v)=P_d(v)$. For
+distinct primes $p_1,\dots,p_d$ and $m=p_1\cdots p_d$, each $D_j$ is supported on prime powers, so only
+terms using $d$ factors $D_j$, all from $P_d$, contribute to $m^{-s}$:
+\[
+ b_m=d!\,(-i)^d\Bigl(\prod_k\log p_k\Bigr)\mathcal B(v(p_1),\dots,v(p_d)),\qquad
+ v(p)=(\chi_1(p),\dots,\chi_n(p)).
+\]
+With $Q=\lcm(q_1,\dots,q_n)$ the induced characters modulo $Q$ are distinct, so by orthogonality the
+vectors $v(b)$, $b\in(\Z/Q\Z)^\times$, span $\C^n$, and Dirichlet's theorem realizes any ordered $d$-tuple
+of them by distinct primes. Multilinearity gives $\mathcal B=0$, contradicting $P_d\ne0$. Finally, a
+linear relation among the $E_S$, divided by $\prod_iF_i$, is a relation among distinct squarefree
+monomials in the $g_i$.
+\end{proof}
+
+Ordinary linear independence of the $g_i$ would not suffice to recover determinants.
+
+\begin{lemma}[Growth outside a strip; \stU]\label{zer:lem:outside}
+Fix a Hermitian $A$ and $H\in\mathcal V$. Uniformly for $\abs{\Im z}\ge3/2$ and $\abs z\to\infty$,
+$H(z)/\mathcal P_A(z)=O(1/\log\abs z)$. If $H\ne0$, the quotient $H/\mathcal P_A$ is not a rational
+function.
+\end{lemma}
+
+\begin{proof}
+Write $H=(\prod_iF_i)P(g_1,\dots,g_n)$ with $P$ multiaffine of total degree at most $n-1$. On
+$\Im z\le-3/2$ one has $\Re s\ge2$, the $F_i$ do not vanish, the $D_i(s)$ are uniformly bounded, and
+$u(s)=\frac i2\log((s+a)/2)+O(1/\abs s)$ with $\abs{u(s)}\asymp\log\abs s$. Hence $g_i=u+O(1)$,
+$\det(A+\zerdiag(g_i))=u^n(1+O(1/\abs u))$ and $P(g)=O((1+\abs u)^{n-1})$; realness of the $F_i$ gives the
+same on $\Im z\ge3/2$. On the ray $z=-i(s-\frac12)$, $s\to+\infty$, $D_i(s)=O(2^{-s})$. With
+$p_0(U)=P(U+c_1,\dots,U+c_n)$, either $p_0\ne0$ has degree $k\le n-1$ and $H/\mathcal P_A$ is asymptotic to a
+nonzero constant times $(\log s)^{k-n}$, or $p_0=0$ and $H/\mathcal P_A=O(2^{-s}(1+\log s)^{n-1}/(\log s)^n)$.
+A nonzero rational function tending to zero on the ray is asymptotic to $cs^{-j}$ with $j\ge1$, $c\ne0$,
+which neither case allows, and $H/\mathcal P_A\not\equiv0$.
+\end{proof}
+
+\begin{lemma}[Finitely many poles force rationality; \stU]\label{zer:lem:invrational}
+If $0\ne H\in\mathcal V$ and $H/\mathcal P_A$ has only finitely many poles, then $H/\mathcal P_A$ is
+rational.
+\end{lemma}
+
+\begin{proof}
+Let $W$ be the monic polynomial of degree $m$ cancelling the poles with their orders, and $J=WH/\mathcal P_A$.
+The zero divisor of $\mathcal P_A$ is contained in that of $WH$, so by Hadamard factorization
+\cite{Boas1954Entire} $J$ is a linear exponential times a canonical product of genus at most one over a
+submultiset of the zeros of $WH$, whose counting function is $O_\eps(r^{1+\eps})$ by Jensen; thus $J$ is
+entire of order at most one. By \cref{zer:lem:outside}, $J=O((1+\abs z)^m)$ outside the strip
+$\abs{\Im z}<3/2$. Inside, for real $b>3/2$ the function $U=J/(z-ib)^m$ is bounded on the boundary lines
+and of finite order on the strip; for $0<\kappa<\pi/3$ and $\delta>0$ the factor
+$\exp(-\delta\cosh(\kappa z))$, whose exponent has real part at least $\cos(3\kappa/2)\cosh(\kappa\Re z)>0$
+there, does not increase the boundary bound and makes the vertical sides of long rectangles tend to zero.
+The maximum principle and $\delta\downarrow0$ give $J=O((1+\abs z)^m)$ on $\C$, so $J$ is a polynomial by
+Cauchy's estimates.
+\end{proof}
+
+\begin{theorem}[Tail divisor rigidity; \stG]\label{zer:thm:tailrigid}
+For every Hermitian $A$ and every nonzero $H\in\mathcal V$, $\Delta_\R(\mathcal P_A,H)=+\infty$. Hence, for
+Hermitian $A,B$, $\Delta_\R(\mathcal P_A,\mathcal P_B)<\infty$ implies $\mathcal P_A=\mathcal P_B$ and
+$\det A[J]=\det B[J]$ for every $J\subseteq[n]$; conversely equal principal minors give discrepancy zero.
+\end{theorem}
+
+\begin{proof}
+By \cref{zer:cor:graphdirichlet} every zero of $\mathcal P_A$ is real. If $\Delta_\R(\mathcal P_A,H)<\infty$,
+then $H/\mathcal P_A$ has finitely many poles and is rational by \cref{zer:lem:invrational}, contrary to
+\cref{zer:lem:outside}. For $A,B$ put $H=\mathcal P_B-\mathcal P_A\in\mathcal V$; if $H\ne0$ then
+$\ord_xH\ge\min(\ord_x\mathcal P_A,\ord_x\mathcal P_B)$, so $\Delta_\R(\mathcal P_A,H)\le\Delta_\R(\mathcal P_A,\mathcal P_B)<\infty$,
+a contradiction. So $\mathcal P_A=\mathcal P_B$, and \cref{zer:lem:algindep} applied to the expansion in the
+$E_S$ gives the minors.
+\end{proof}
+
+\begin{theorem}[Uniform finite-window erasure correction; \stG]\label{zer:thm:window}
+For every $M\ge0$ and integer $K\ge0$ there is a finite $T=T(\chi_1,\dots,\chi_n;M,K)$ such that
+$\Delta_{[-T,T]}(\mathcal P_A,H)>K$ for all Hermitian $A$ with $\norm A\le M$ and all nonzero
+$H\in\mathcal V$. In particular, if $B$ is any Hermitian matrix, with no bound on its norm, and
+$\Delta_{[-T,T]}(\mathcal P_A,\mathcal P_B)\le K$, then $A$ and $B$ have the same principal minors. The
+argument does not give a numerical value of $T$.
+\end{theorem}
+
+\begin{proof}
+Otherwise, for every $j$ there are a Hermitian matrix $A_j$ with $\norm{A_j}\le M$ and a nonzero
+$H_j\in\mathcal V$ with $\Delta_{[-j,j]}(\mathcal P_{A_j},H_j)\le K$. Normalize the coefficient vector of $H_j$ in the independent
+basis $(E_S)_{S\subsetneq[n]}$; along a subsequence $A_j\to A_*$ and $H_j\to H_*\ne0$ locally uniformly,
+and $\mathcal P_{A_j}\to\mathcal P_{A_*}\not\equiv0$. For any finite set $X$ of distinct zeros of
+$\mathcal P_{A_*}$ take small disjoint discs about them whose boundaries avoid the zeros of both limits. By
+Rouch\'e's theorem, for large $j$ the zero counts of $\mathcal P_{A_j}$ and $H_j$ in each disc equal those of
+the limits; the zeros of $\mathcal P_{A_j}$ are real and eventually in $[-j,j]$, so the disc about $x$
+contributes at least $\max(\ord_x\mathcal P_{A_*}-\ord_xH_*,0)$ missing multiplicities. Summing,
+\[
+ \sum_{x\in X}\max(\ord_x\mathcal P_{A_*}-\ord_xH_*,0)\le K
+\]
+for every $X$, contradicting
+\cref{zer:thm:tailrigid}. The last assertion follows with $H=\mathcal P_B-\mathcal P_A$ as before.
+\end{proof}
+
+\begin{corollary}[Recovery of a labelled weighted graph; \stG]\label{zer:cor:graphrecover}
+For real symmetric $A,B$ the conclusions of \cref{zer:thm:tailrigid,zer:thm:window} hold if and only if
+$B=DAD$ for a diagonal $D$ with entries $\pm1$. If $A,B$ are Laplacians of labelled graphs with
+nonnegative weights, then $A=B$. Thus the weighted graph is determined by any cofinite submultiset of
+the zeros of $\mathcal P_{L_G}$, or by a sufficiently long window after at most $K$ missing
+multiplicities, with no bound on the competitor's weights.
+\end{corollary}
+
+\begin{proof}
+Equal principal minors of order one and two give $a_{ii}=b_{ii}$ and $a_{ij}^2=b_{ij}^2$, so both
+matrices have the same support graph, and $r_{ij}=b_{ij}/a_{ij}\in\set{\pm1}$ on its edges. On a chordless
+cycle of length $\ell\ge3$ the principal minor on its vertex set is a sum over fixed points, disjoint edge
+transpositions and the two orientations of the cycle; the first two kinds agree, and the cycle
+contributes $2(-1)^{\ell-1}$ times the edge product, so $\prod_Cr_{ij}=1$, and by splitting at chords the
+same holds on every simple cycle. Propagating signs $d_j=d_ir_{ij}$ along a spanning tree of each component
+gives $B=DAD$; conversely a diagonal sign switch preserves all minors. Off-diagonal Laplacian entries are
+nonpositive, so their magnitudes determine them. This is a case of the theorem of Engel and Schneider
+\cite{EngelSchneider1980Matrices}.
+\end{proof}
+
+For signed symmetric matrices the switching ambiguity is unavoidable, since $D$ commutes with both
+diagonal matrices in \eqref{zer:eq:PA}; a signed triangle with zero diagonal and unit edge magnitudes
+has $\det(A+\zerdiag(X_i))=X_1X_2X_3-X_1-X_2-X_3+2\sigma$ with $\sigma$ the cycle sign, so the zeros detect
+cycle signs but not vertex switches. For complex Hermitian matrices the assertion is exactly
+principal-minor recovery. For the even quadratic characters $\chi_5,\chi_8,\chi_{12}$ and the path
+Laplacian $L(a,b)$ with weights $a,b$ on the edges $12,23$,
+$\det(L(a,b)+\zerdiag(X_i))=X_1X_2X_3+aX_2X_3+(a+b)X_1X_3+bX_1X_2+ab(X_1+X_2+X_3)$; the Laplacians
+$L(2,3)$ and $L(3,2)$ have the same ordinary spectrum, but by \cref{zer:cor:graphrecover} their
+character-labelled coupled zero sets differ in infinitely many multiplicities in each direction.
+
+\begin{remark}[Decoding]\label{zer:rem:decode}
+With unknowns $c_S=\det A[S^c]$, $S\subsetneq[n]$, a zero $x$ observed with multiplicity $m$ gives the
+linear equations $\sum_Sc_SE_S^{(r)}(x)=-E_{[n]}^{(r)}(x)$, $0\le r<m$. If the observations are a
+submultiset of the zeros in the window $[-T,T]$ of \cref{zer:thm:window} missing at most $K$
+multiplicities, the system is consistent and has trivial kernel, since a kernel vector would be a
+nonzero $H\in\mathcal V$ vanishing to the observed orders; so the observation matrix has full column rank
+$2^n-1$ after any permitted erasures, and the two-element minors then give the graph. If the
+observations also contain false zeros, and the received multiset is within symmetric-difference
+distance $k$ of the true window multiset and of a competitor's, the two are within $2k$, so the window
+for $K=2k$ forces equal principal minors; trying all removals of at most $k$ multiplicities is an exact,
+not an efficient, decoder. Unconditionally, by \cref{zer:lem:algindep} the values of
+$\mathcal P_A/\prod_iF_i$ at $2^n-1$ suitable points $z=-i(s-\frac12)$, $s>1$, determine the minors by linear
+algebra; for $\chi_5,\chi_8,\chi_{12}$ and the path with weights $2,3$, $100$-digit evaluation at
+$s=2,\dots,8$ recovered the seven coefficients to about $5.5\cdot10^{-95}$, and an exhaustive check of the
+$729$ zero-diagonal symmetric four-vertex matrices with entries in $\set{-1,0,1}$ found $108$ classes, the
+same for switching and for principal minors (\artifact{grh_inverse_spectral_2026-11-27/checks.txt}).
+\end{remark}
+
 \subsection{Transport of infinitely many zeros and local Cauchy laws}\label{zer:sec:transport}
 \sources{dirichlet_zero_transport_2026-11-26; graph_coupled_zeros_2026-11-26}
 
@@ -5245,7 +5432,7 @@ for a length $e^{-T}$; the statement concerns a continuous sampling variable and
 what a discrete grid resolves.
 
 \subsection{Open questions}\label{zer:sec:open}
-{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; Gaussian_prime_races; prime_endpoints_and_symplectic_compressions; graph_coupled_zeros_2026-11-26; grh_extensions_2026-11-27; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction}}
+{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; Gaussian_prime_races; prime_endpoints_and_symplectic_compressions; graph_coupled_zeros_2026-11-26; grh_extensions_2026-11-27; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; grh_inverse_spectral_2026-11-27}}
 
 \begin{enumerate}
 \item \emph{Fixed-height Euler products.} Can $F_0(v)/v$ in \eqref{zer:eq:single} be
@@ -5336,4 +5523,9 @@ graph is prescribed, for instance a path or a tree, or with edge caps or integra
 lower bounds of \cref{zer:thm:minimax} remain valid, but equality needs the displayed optimizer), and
 which graph is optimal for a particular
 arithmetic packet of zeros rather than for the worst case given the degrees?
+\item \emph{The inverse problem beyond one parity.} Do \cref{zer:thm:tailrigid,zer:thm:window} hold for
+characters of mixed parity, where a second digamma function enters \cref{zer:lem:algindep}, or when the
+labelled list of characters is unknown? Give an effective window length $T$ in \cref{zer:thm:window},
+a decoder polynomial in the observation size, and robustness under small perturbations of the observed
+ordinates; classify the Hermitian matrices with equal principal minors that the zeros cannot separate.
 \end{enumerate}

@@ -37,7 +37,10 @@ $s(\Delta)$ has the order of magnitude of the class number up to a power of
 $\log D$ when Dirichlet GRH is used (\cref{smd:thm:growth}), with weaker unconditional
 bounds (\cref{smd:thm:uncond,smd:thm:nearfull}); and it exhibits infinite families of orders
 for which the trivial bound \eqref{smd:eq:trivial} is an equality
-(\cref{smd:thm:dyadic,smd:thm:gaussian}).
+(\cref{smd:thm:dyadic,smd:thm:gaussian}), among them fourteen orders of degrees six and seven
+(\cref{smd:thm:seven}). It also determines the exact number of roots that a polynomial with
+at most six terms can have in a deep multiplicative $p$-adic disk
+(\cref{smd:thm:rootcount,smd:thm:sixroot}).
 
 \subsection{Coefficients in the CM field}
 {\raggedright\sources{grh_cm_prime_applications; grh_cm_four_terms_and_prime_bias; grh_sparse_singular_moduli}}
@@ -203,6 +206,301 @@ about $2^6\cdot3$. For $i\le3$ the maximum of $w_{2,5/2}(i)=5i/2-v_2(i!)$ is $13
 $n=4$ the weight is $7$, and for $n\ge5$ it is at least $3n/2+1$. Hence
 $B_2(4,5/2)=3$ and $s(-68)=5$.
 \end{example}
+
+\subsection{Exact root counts for at most six terms}\label{smd:sec:exact}
+{\raggedright\sources{padic-fewnomial-root-count; padic-six-term}}
+
+When $t\le p$ the factorial bound $B_p(t,r)$ of \cref{smd:lem:disk} can be far from the
+truth at shallow depths. For a prime $p$, an integer $t\ge2$ and a real $r>1/(p-1)$, let
+$N_p(t,r)$ be the largest number of distinct roots that a nonzero polynomial with at most
+$t$ terms can have in a closed multiplicative disk $v_p(x/a-1)\ge r$ about a nonzero centre
+$a$, the roots being allowed in any finite extension of $\Qp$.
+
+\begin{theorem}[Two to five terms; \stU]\label{smd:thm:rootcount}
+Let $2\le t\le\min\set{5,p}$ and $r>1/(p-1)$. Then $N_p(2,r)=1$,
+\[
+ N_p(t,r)=\begin{cases}p,& r\le1/(p-t+1),\\ t-1,& r>1/(p-t+1),\end{cases}\qquad(t=3,4),
+\]
+and
+\[
+ N_p(5,r)=\begin{cases}p+1,& r\le1/(p-3),\\ p,& 1/(p-3)<r\le1/(p-4),\\ 4,& r>1/(p-4).\end{cases}
+\]
+The upper bounds hold for roots counted with multiplicity, about every centre. In every
+range the maximum is attained, about the centre $1$, by a polynomial with integer
+coefficients that is irreducible over $\Q$. Moreover, for all $2\le t\le p$ and all
+$r>1/(p-1)$,
+\begin{equation}\label{smd:eq:uniform}
+ N_p(t,r)\le\max\set{t-1,\ p(t-2)} .
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Six terms; \stU]\label{smd:thm:sixroot}
+Let $p\ge7$ and $r>1/(p-1)$. Then
+\[
+ N_p(6,r)=\begin{cases}
+ 2p,& r\le1/(p-2),\\
+ p+1,& 1/(p-2)<r\le1/(p-4),\\
+ p,& 1/(p-4)<r\le1/(p-5),\\
+ 5,& r>1/(p-5),
+ \end{cases}
+\]
+with the same statements on multiplicity and on rational irreducible witnesses about $1$
+as in \cref{smd:thm:rootcount}. At $p=7$ the four values are $14,8,7,5$.
+\end{theorem}
+
+\begin{example}[Comparison with the factorial bound]\label[example]{smd:ex:factorial}
+Let $p=t=5$ and $r=1/4+10^{-9}$. Then $\max_{i<5}w_{5,r}(i)=w_{5,r}(4)=1+4\cdot10^{-9}$,
+while $k=2\cdot5^{12}=488{,}281{,}250$ has
+$w_{5,r}(k)=(r-1/4)k+S_5(k)/4=0.48828125+0.5<w_{5,r}(4)$. Hence
+$B_5(5,r)\ge488{,}281{,}250$, whereas $N_5(5,r)=6$ by \cref{smd:thm:rootcount}.
+\end{example}
+
+The general estimate $(n-2)p$ of order $n$ over $\Qp$, for $p>n\ge3$, is classical
+\cite{vanderPoortenRumely1987Zeros}, and \cite{Avendano2011Sharp} bounds the roots
+in a fixed local field; \eqref{smd:eq:uniform} has the same shape, while the two theorems give
+the exact dependence on the depth, with roots in arbitrary finite extensions. The proofs
+refine the moment argument of \cref{smd:lem:disk} by reducing the moment recurrence modulo
+$p$.
+
+\paragraph{The residue algebra.}
+Let $2\le t\le p$, let $P=\sum_{j=1}^tc_jX^{n_j}$ be nonzero with $t$ distinct nonnegative
+exponents (zero coefficients are allowed, which covers polynomials with fewer terms), and
+let $a\ne0$ and $r>1/(p-1)$ be rational. As in the proof of \cref{smd:lem:disk}, the
+coefficient of $Y^k$ in $P(a\exp(bY))$, $v_p(b)=r$, is $M_kb^k/k!$ with
+$M_k=\sum_jc_ja^{n_j}n_j^k$, and its valuation is $v_p(M_k)+w(k)$, where
+\[
+ w(k)=w_{p,r}(k)=\Bigl(r-\frac1{p-1}\Bigr)k+\frac{S_p(k)}{p-1}.
+\]
+By the Weierstrass preparation theorem the number of roots in the disk, counted with
+multiplicity, is the largest index $k$ at which the coefficient valuation attains its
+minimum $\mu$; the substitution is an analytic bijection with nonvanishing derivative. Call
+an index \emph{excluded} if it does not attain $\mu$. Divide all moments by one of least
+valuation among $M_0,\dots,M_{t-1}$, and write $m_k$ for the quotients; by the integral
+recurrence all $m_k$ are integral and some $m_{i_0}$ with $i_0<t$ is a unit. Thus
+$m_k=L(T^k)$ for the functional $L(f)=\sum_jc_ja^{n_j}f(n_j)/M_{i_0}$ on
+$\Lambda=\Z[T]/\prod_j(T-n_j)$, which is integral. Put
+\[
+ \mathcal R=\Lambda/p\Lambda=\F_p[T]\Big/\prod_j(T-\bar n_j),\qquad U=T^p,\qquad V=T-U .
+\]
+On the factor of $\mathcal R$ at a residue $c$, of multiplicity at most $t\le p$, one has
+$U=c^p+(T-c)^p=c$ and $V=T-c$; hence $T^{p^j}=U$ for all $j\ge1$. The \emph{profile} is the
+multiset of multiplicities of the residues $\bar n_j$.
+
+\begin{lemma}[Excluded indices]\label[lemma]{smd:lem:excluded}
+In this situation:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item an index $k\ge t$ with $w(k)>w(t-1)$ is excluded; in particular every $k\ge t$ with
+$S_p(k)\ge t-1$ is excluded, and if $r>1/(p-t+1)$ every $k\ge t$ is excluded;
+\item an index $k\ge t$ is excluded if the class of $T^k$ in $\mathcal R$ lies in the
+$\F_p$-span of classes $T^\ell$ with $w(\ell)<w(k)$, for instance with $\ell<k$ and
+$S_p(\ell)\le S_p(k)$;
+\item if $k=\sum_ja_jp^j\ge t$ in base $p$ is not excluded, then $k=a_0+pa_1$ with
+$a_0+a_1\le t-2$.
+\end{enumerate}
+Consequently $N_p(t,r)\le\max\set{t-1,p(t-2)}$.
+\end{lemma}
+
+\begin{proof}
+For $i<t\le p$ one has $v_p(i!)=0$, so $w(i)=ri$ increases on $\set{0,\dots,t-1}$ and
+$\mu\le w(i_0)\le w(t-1)$, after the normalization. This proves the first claim of (a). If
+$k\ge t$ and $S_p(k)\ge t-1$, then $w(k)-w(t-1)\ge(r-1/(p-1))(k-t+1)>0$. If
+$r>1/(p-t+1)$ and $t\le k<p$, then $w(k)=rk>w(t-1)$; for $k\ge p$, Legendre's formula gives
+$v_p(k!)\le(k-1)/(p-1)\le(k-t+1)/(p-t+1)<r(k-t+1)$, the middle inequality being equivalent
+to $(k-p)(t-2)\ge0$, and again $w(k)>w(t-1)$.
+
+(b) For $i<t\le k$, $w(k)-w(i)>(S_p(k)-i)/(p-1)\ge(1-(p-1))/(p-1)>-1$, so $w(i)-w(k)<1$.
+If $v_p(m_k)\ge1$, the coefficient of index $k$ has valuation at least
+$1+w(k)>w(i_0)\ge\mu$ in normalized units, and $k$ is excluded. If $v_p(m_k)<1$, lift the
+relation $T^k\equiv\sum_\ell\lambda_\ell T^\ell$ to integers; since $\Lambda$ is a free
+$\Z$-module the difference lies in $p\Lambda$, so $m_k-\sum_\ell\lambda_\ell m_\ell\in p\OO$
+by integrality of $L$. Some $\ell$ then has $v_p(m_\ell)\le v_p(m_k)$, and its coefficient
+has strictly smaller valuation because $w(\ell)<w(k)$. The parenthetical case follows from
+$w(k)-w(\ell)=(r-1/(p-1))(k-\ell)+(S_p(k)-S_p(\ell))/(p-1)$. This argument is valid in
+ramified extensions, because reduction is modulo the ideal $p\OO$.
+
+(c) By (a), $S_p(k)\le t-2\le p-2$. Put $k'=a_0+p\sum_{j\ge1}a_j$. Then $T^k$ and $T^{k'}$
+have the same class $T^{a_0}U^{\sum_{j\ge1}a_j}$ in $\mathcal R$, $k'\le k$, and
+$S_p(k')=S_p(k)$ since $\sum_{j\ge1}a_j<p$. If $k'<k$, part (b) excludes $k$.
+
+Finally the largest non-excluded index is either at most $t-1$ or of the form $a_0+pa_1$
+with $a_0+a_1\le t-2$, hence at most $(t-2-a_1)+pa_1\le p(t-2)$. For an irrational depth
+apply the bound at a slightly smaller rational depth; the disk only grows.
+\end{proof}
+
+Write $T^iU^j$ for the class of $T^{i+pj}$. By \cref{smd:lem:excluded}(c) the indices $k\ge t$
+that remain are those of the classes $T^iU^j$ with $j\ge1$ and $i+j\le t-2$, and the index of
+$T^iU^j$ is $i+pj$. In the span arguments below every class is expressed through classes of
+smaller index and of digit sum at most its own, so \cref{smd:lem:excluded}(b) applies. We use
+three identities in $\mathcal R$: $(U-c)(U-c')=0$ if there are at most two residues $c,c'$;
+$V^2=0$ if all multiplicities are at most two; and $(U-c)V=0$ if $c$ is the only repeated
+residue. Note that $(U-c)V=0$ gives $U^2=TU-cT+cU$.
+
+\begin{proof}[Proof of the upper bounds in \cref{smd:thm:rootcount}]
+By \cref{smd:lem:excluded}(a) all bounds equal $t-1$ when $r>1/(p-t+1)$; this gives $t=2$
+and the last range in each case. For $t=3$ the only remaining class is $U$, of index $p$.
+
+For $t=4$ the remaining classes are $U$, $TU$ and $U^2$; we show that $TU$ and $U^2$ lie in
+the span of $1,T,T^2,U$. If all multiplicities are at most two, $V^2=0$ gives
+$2TU=T^2+U^2$, and $U^2$ is affine in $U$ when there are at most two residues; with at least
+three residues there is at most one repeat $c$, and combining $(U-c)V=0$ with $V^2=0$ gives
+$U^2=T^2+2cU-2cT$ (if there is no repeat, $U=T$). In profile $(3,1)$, with $c$ repeated and
+$c'$ simple, $TU=cT+c'(U-c)$, as one checks on both factors, and $U^2$ is affine in $U$. In
+profile $(4)$ the class $U$ is constant. Hence $N_p(4,r)\le p$.
+
+For $t=5$ the remaining classes are $U,TU,T^2U,U^2,TU^2,U^3$. First, $U^2$ lies in the span
+of $1,T,T^2,U,TU$: use $U^2=2TU-T^2$ if $V^2=0$, the two-residue relation, or, in the only
+other profile $(3,1,1)$, the relation $(U-c)V=0$. Next, $T^2U$, $TU^2$ and $U^3$ lie in the
+span of $1,T,T^2,T^3,U,TU$. If $V^2=0$ and there are at most three residues, $U^3$ is
+reduced to degree two in $U$, and $T^3-U^3=3U^2V$ (with $3$ a unit) eliminates both mixed
+classes, since $T^2U=U^3+2U^2V$ and $TU^2=U^3+U^2V$. If $c$ is the only repeated residue (or
+there is none, so that $V=0$), then
+\[
+ T^2U=cT^2+U^3-cU^2,\qquad TU^2=c^2T+U^3-c^2U,
+\]
+and $U^3$ is reduced by the residue polynomial when there are at most three residues, and
+otherwise by $T^3-U^3=3c^2V$, which holds because then $V^2=0$ and $U^2V=c^2V$. The only
+profile left is $(3,2)$, with triple residue $c$ and double residue $c'$. There $U^2$ and
+$U^3$ are affine in $U$, so $TU^2$ is in the span of $T$ and $TU$. For $T^2U$, choose a
+cubic $\gamma(T)$ whose derivative is the quadratic Hermite interpolant with
+$\gamma'(c)=2c^2$, $\gamma''(c)=2c$ and $\gamma'(c')=2c'^2$; integration is possible since
+$2$ and $3$ are units. Then $\gamma(T)-T^2U$, which equals $\gamma(T)-cT^2$ on the factor at
+$c$ and $\gamma(T)-c'T^2$ on the factor at $c'$, is constant on each factor, and an affine
+function of $U$ corrects these two constants. Every identity used involves only earlier
+indices of no greater digit sum. Hence the largest remaining index is $p+1$ and
+$N_p(5,r)\le p+1$. If $r>1/(p-3)$, then $w(p+1)-w(4)=(p-3)r-1>0$ and the index $p+1$ is
+excluded by \cref{smd:lem:excluded}(a), so $N_p(5,r)\le p$.
+\end{proof}
+
+\begin{proof}[Proof of the upper bounds in \cref{smd:thm:sixroot}]
+Here $p\ge7$ and the remaining classes are $T^iU^j$ with $j\ge1$, $i+j\le4$. We show that
+all of them except $U$ and $TU$, and except $T^2U$ and $U^2$ in profile $(3,2,1)$, are
+excluded by \cref{smd:lem:excluded}(b).
+
+\emph{At most two residues $c,c'$.} Every $U^j$ is affine in $U$, so it suffices to treat
+$T^2U$ and $T^3U$. If $c'$ has multiplicity at most two, $(U-c)(T-c')^2=0$ expresses
+$T^2U$ through $T^2,TU,U,T,1$. In profile $(3,3)$ the class
+$T^2U-T^3/3-(c+c')TU+cc'T$ has vanishing first and second derivatives at both residues, so it
+is affine in $U$. For $T^3U$ use $(U-c)(T-c')^3=0$ with $c'$ of multiplicity at most three.
+With a single residue $U$ is constant.
+
+\emph{Exactly one repeated residue $c$, at least three residues.} Then $U^2=TU-cT+cU$, and
+for $i,j\ge1$, checking on each factor,
+\[
+ T^iU^j=U^{i+j}+c^j\bigl(T^i-U^i\bigr).
+\]
+For $d=3,4$ the class $U^d$ is reduced by the residue polynomial if there are at most $d$
+residues; otherwise the multiplicity of $c$ is at most $d$, and $(T-c)^d=(U-c)^d$ reduces
+$U^d$ to $T^d$ and lower powers of $U$. If no residue is repeated, $U=T$.
+
+\emph{Other profiles with $V^2=0$}, namely $(2,2,2)$ and $(2,2,1,1)$. Then $U^2=2TU-T^2$ and
+$T^iU^j=U^{i+j}+iU^{i+j-1}V$, while $T^d=U^d+dU^{d-1}V$; so the mixed classes of total degree
+$d$ reduce to $T^d$ and $U^d$. The class $U^d$, $d=3,4$, is reduced by the residue polynomial
+when there are at most $d$ residues. In the remaining case $d=3$, profile $(2,2,1,1)$ with
+double residues $c,c'$, the class $V$ is supported on two residues, so
+$U^2V=(c+c')UV-cc'V$, and $T^3=U^3+3U^2V$ reduces $U^3$.
+
+\emph{Profile $(3,2,1)$.} Let $c_3$, $c_2$ and $c_1$ be the triple, the double and the
+simple residue. The six classes $1,T,T^2,U,TU,U^2$ span the same space as $1,U,U^2,V,UV,V^2$, and these are
+independent: in
+\[
+ \mathcal R\cong\F_p[T]/(T-c_3)^3\times\F_p[T]/(T-c_2)^2\times\F_p
+\]
+a class $g(U)+h(U)V+k(U)V^2$ with $\deg g\le2$, $\deg h\le1$, $\deg k=0$ is determined by its values
+at the three residues, its first jets at two of them and its second jet at one. So they form a
+basis, which expresses $TU^2$, $U^3$, $T^2U^2$, $TU^3$ and $U^4$ through earlier indices of
+digit sum at most two. Let $J$ be the functional vanishing on $1,T,T^2,U,TU$ with
+$J(U^2)=1$. From $J(V)=0$, $J(UV)=-1$, $J(V^2)=1$ and the relations
+$(U-c_3)(U-c_2)(U-c_1)=0$, $(U-c_3)(U-c_2)V=0$, $(U-c_3)V^2=0$, $V^3=0$ one finds
+\[
+ J(U^3)=c_1+c_2+c_3,\quad J(U^2V)=-(c_3+c_2),\quad J(UV^2)=c_3,\quad
+ J(T^3)=c_3+c_1-2c_2 .
+\]
+If $c_3+c_1=2c_2$, an affine change of variable, which acts affinely on $U$ as well, gives
+$(c_3,c_2,c_1)=(0,1,2)$, where $V^3=0$ and $U^2V^2=c_3^2V^2=0$ give
+$J(T^4)=J(U^4)+4J(U^3V)=7-4=3$. Thus $U^2$ may be replaced by
+$T^3$ or by $T^4$ in the basis, and the modified basis, of indices $0,1,2,3\text{ or }4,p,p+1$
+and digit sums at most four, expresses $T^3U$.
+
+Hence the largest remaining index is $2p$, which gives $N_p(6,r)\le2p$. If $r>1/(p-2)$, every
+weight of the modified basis is smaller than $w(p+2)$ and $w(2p)$, because
+$w(p+2)-w(4)=(p-2)r-1>0$, $w(2p)-w(4)=2((p-2)r-1)$ and $w(2p)-w(p+1)=(p-1)r-1>0$; by
+\cref{smd:lem:excluded}(b) the indices $p+2$ and $2p$ are excluded and $N_p(6,r)\le p+1$. If
+$r>1/(p-4)$ then $w(p+1)-w(5)=(p-4)r-1>0$, and if $r>1/(p-5)$ then
+$w(p)-w(5)=(p-5)r-1>0$; \cref{smd:lem:excluded}(a) gives the bounds $p$ and $5$.
+\end{proof}
+
+\paragraph{Witnesses.}
+For $3\le t\le6$ and $p\ge t$ put $d=p-t+1$ and
+\[
+ f_t(X)=X^p-\sum_{j=0}^{t-2}\binom pj(X-1)^j+p^{2t-1},
+\]
+a polynomial with at most $t$ terms. In $Z=X-1$ it equals
+$\sum_{j=t-1}^p\binom pjZ^j+p^{2t-1}$, whose Newton polygon has vertices $(0,2t-1)$,
+$(t-1,1)$, $(p,0)$ and slopes $-2$ and $-1/d$. The normalized reductions are a binomial with
+$t-1$ simple nonzero roots and $Y^{t-1}(c+Y^d)$, $c\ne0$, with $d$ simple nonzero roots, as
+$p\nmid(t-1)d$. Hensel's lemma gives $p$ distinct roots in the disk of depth $1/d$ about $1$.
+This attains $N_p(t,r)\ge p$ for $t=3,4$ and $r\le1/(p-t+1)$, for $t=5$ and
+$r\le1/(p-4)$, and for $t=6$ and $r\le1/(p-5)$. For the deepest range in each case a
+monic polynomial with $t-1$ distinct integer roots $p$-adically close to $1$ suffices.
+
+For five terms and $r\le1/(p-3)$ take
+\[
+ F(X)=X^{2p}+1-p^2\bigl(X^{p+1}+X^{p-1}\bigr)+\bigl(2(p^2-1)+p^5\bigr)X^p .
+\]
+After division by $X^p$ and the substitution $X=\exp(bY)$ the constant coefficient is $p^5$,
+the odd coefficients and the quadratic one vanish, and for even $k\ge4$ the coefficient is
+$2(p^k-p^2)b^k/k!$, of valuation $2+w(k)$. At $r=1/(p-3)$ the only minimal indices are $4$
+and $p+1$: for even $4<k<p$ the weights increase, and for even $k>p+1$ the digit sum is even
+and at least two, so $w(k)>w(p+1)$. The normalized reduction $Y^4(c+c'Y^{p-3})$,
+$cc'\ne0$, gives $p-3$ simple roots of depth exactly $1/(p-3)$. At depth $3/4$ the only
+minimal indices are $0$ and $4$, since $2+w(4)=5$ and
+$w(k)\ge(3/4-1/(p-1))k+2/(p-1)>3$ for even $k\ge6$; this gives four further simple roots of
+depth $3/4$. The two sets are disjoint, so $F$ has $p+1$ distinct roots in the disk of depth
+$1/(p-3)$.
+
+For six terms and $r=1/(p-2)$ use the exponents $0,p,2p,1,p+1,2$, of profile $(3,2,1)$ with
+residues $(0,1,2)$. By the proof above the classes $1,T,T^2,T^p,T^{p+1},T^{2p}$ form a basis
+of $\Z_{(p)}[T]/\prod_j(T-n_j)$. Let $L$ be the functional with values $0,0,0,0,0,1$ on this
+basis; over $\Q$ the evaluations at the six exponents span the dual space, so
+$L(f)=\sum_jc_jf(n_j)$ with rational $c_j$, and $P=\sum_jc_jX^{n_j}$ has moments $M_k=L(T^k)$
+about the centre $1$. Then $M_0=M_1=M_2=M_p=M_{p+1}=0$, $M_{2p}=1$, and modulo $p$ the
+moments $M_3,M_4,M_{p+2}$ are $J(T^3)=0$, $J(T^4)=3$ and
+$J(T^2U)=J(U^3)+2J(U^2V)+J(UV^2)=1$. At $r=1/(p-2)$ the minimum coefficient valuation is
+$4r$, attained exactly at $4$, $p+2$ and $2p$: the index $3$ has valuation at least
+$1+3r>4r$, the index $5$ has weight $5r$, and all other indices are excluded by the proof
+above. Weierstrass preparation gives $2p$ roots in the closed disk, counted with
+multiplicity.
+
+For six terms and $r=1/(p-4)$ use the exponents $0,p,2p,1,2,c$, where $c$ is the least
+positive residue of $-2/3$ modulo $p$ (so $c\notin\set{0,1,2}$), and let $L$ extract the
+coefficient of $T^5$ in $\Q[T]/\prod_j(T-n_j)$. In the residue algebra
+\[
+ U=\beta T^4-\beta(3+c)T^3,\qquad \beta=(2c)^{-1},
+\]
+because the right side minus $T$ is $\beta T(T-1)(T-2)(T-c)$, so the two sides agree on all
+four factors. Hence $p\mid M_p$, while $M_5=1$ and $M_{p+1}\equiv\beta$ are units, and
+$M_0=\dots=M_4=0$. The profile $(3,1,1,1)$ leaves only the classes $U$ and $TU$, and
+$1+w(p)>w(5)$. So the minimizing indices are $5$ and $p+1$, and preparation gives $p+1$
+roots.
+
+\paragraph{Irreducible witnesses.}
+In the last two constructions clear denominators. In each construction keep the leading
+monomial and perturb the other coefficients, within their support, by multiples of a high
+power of $p$, imposing the Eisenstein congruences at a prime different from $p$ that does not
+divide the leading coefficient, by the Chinese remainder theorem. A sufficiently small
+perturbation changes the analytic coefficients by terms of valuation at least the chosen
+precision plus $w(k)\ge0$, so the minimizing indices at the endpoint are preserved (for
+$f_t$ use its Newton polygon). The perturbed polynomial is irreducible over $\Q$, hence
+separable, so its roots are distinct. For the products of linear factors the same
+perturbation is applied in disjoint small disks about the original roots. Each endpoint
+witness also serves at every shallower depth of its range, and a general centre is reached by
+scaling the variable. This completes the proofs of \cref{smd:thm:rootcount,smd:thm:sixroot}.
+\qed
+
+The residue spans and Newton profiles are checked by exact scripts:
+\smdcert{\artifact{padic-fewnomial-root-count/verify.py} with output
+\artifact{padic-fewnomial-root-count/verification.txt};
+\artifact{padic-six-term/verify.py} with output \artifact{padic-six-term/verification.txt}.}
 
 \subsection{Separated complex conjugates}\label{smd:sec:arch}
 {\raggedright\sources{grh_cm_prime_applications; grh_cm_four_terms_and_prime_bias; grh_sparse_singular_moduli}}
@@ -885,12 +1183,98 @@ the order listed.
 \smdcert{\artifact{grh_cm_sparse_equations/certificates/cm_disk_limit.py}.}
 \end{remark}
 
+\subsection{Residual orders of degrees six and seven with full support}\label{smd:sec:seven}
+{\raggedright\sources{singular-modulus-support; singular_moduli_seven_terms_2026-11-26; grh_cm_sparse_equations; grh_cm_prime_applications}}
+
+For fourteen of the residual discriminants of \cref{smd:prop:global} a single disk holds all
+conjugates, deep enough to exclude relations with as many terms as the degree.
+
+\begin{theorem}[Full support for fourteen residual orders; \stU]\label{smd:thm:seven}
+One has $s(\Delta)=h(\Delta)+1$ for $\Delta=-D$ in each of the following cases:
+\[
+\begin{aligned}
+ h&=6,\ s=7: && D\in\set{152,244,300,451,472,588,628,867,1083,1147},\\
+ h&=7,\ s=8: && D\in\set{859,1483,2467,2707}.
+\end{aligned}
+\]
+In particular any six distinct integer powers of a singular modulus of discriminant $-152$
+are linearly independent over $\Q$; negative exponents are allowed, after multiplication by a
+common power.
+\end{theorem}
+
+\begin{proof}
+For each row of the following table put $A=p^vu$ and $B=p^{v+m}$, with $p\nmid u$ and
+$h=h(-D)$, and expand $p^{-vh}H_{-D}\bigl(p^v(u+Z)\bigr)=\sum_{i=0}^h\beta_iZ^i$. The last
+column lists $v_p(\beta_0),\dots,v_p(\beta_h)$; in every row $\beta_h=1$ and
+$v_p(\beta_i)\ge m(h-i)$.
+\begin{center}
+\small
+\begin{tabular}{rrrrrrl}
+\toprule
+$D$ & $h$ & $p$ & $v$ & $u$ & $m$ & $v_p(\beta_0),\dots,v_p(\beta_h)$\\
+\midrule
+152  &6&2&6&1&2&12, 11, 8, 8, 4, 3, 0\\
+244  &6&2&6&3&2&12, 13, 8, 10, 4, 5, 0\\
+300  &6&2&4&3&2&12, 11, 8, 8, 4, 3, 0\\
+451  &6&3&3&1&2&12, 12, 9, 6, 8, 3, 0\\
+472  &6&2&6&1&2&12, 11, 8, 8, 4, 3, 0\\
+588  &6&2&4&3&2&12, 11, 8, 9, 4, 3, 0\\
+628  &6&2&6&3&2&12, 13, 8, 10, 4, 5, 0\\
+867  &6&3&3&2&2&14, 12, 9, 7, 4, 5, 0\\
+1083 &6&17&0&8&1&6, 5, 4, 4, 2, 1, 0\\
+1147 &6&3&3&1&2&12, 11, 9, 6, 5, 3, 0\\
+859  &7&3&3&1&1&14, 12, 11, 8, 6, 5, 2, 0\\
+1483 &7&3&3&1&1&14, 12, 11, 8, 6, 5, 2, 0\\
+2467 &7&3&3&1&1&14, 12, 11, 8, 6, 5, 2, 0\\
+2707 &7&3&3&1&1&14, 12, 11, 8, 6, 5, 2, 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+Hence $H_{-D}(A+BY)/B^h$ is monic with integral coefficients, and all its roots are
+integral: if $v_p(Y)<0$, the leading monomial has strictly smaller valuation than every
+other term. Thus every conjugate $\alpha$ satisfies $v_p(\alpha/A-1)\ge m$. For $D=152$ the
+transformed polynomial is
+\[
+\begin{aligned}
+ \frac{H_{-152}(64+256Y)}{256^6}={}&Y^6-258774476247186Y^5+259766390712739705665Y^4\\
+ &+408822444341150448859180Y^3+648287850356451166578247815Y^2\\
+ &-931493942482171555920209906Y+1404883983219431921036769431 .
+\end{aligned}
+\]
+
+Apply \cref{smd:lem:disk} with $r=m>1/(p-1)$ and $t=h$. For $(p,m)=(2,2)$ one has
+$w(k)=2k-v_2(k!)=k+S_2(k)$, whose maximum for $k<6$ is $w(5)=7$, while $w(6)=8$ and
+$w(k)\ge k+1\ge8$ for $k\ge7$. For $(p,m)=(3,2)$, $w(k)=(3k+S_3(k))/2$ has maximum $9$ for
+$k<6$ and exceeds $9$ for $k\ge6$. For $(p,m)=(17,1)$ the maximum for $k<6$ is $5$, and
+$w(k)\ge k-(k-1)/16>5$ for $k\ge6$. For $(p,m)=(3,1)$ and $h=7$, $w(k)=(k+S_3(k))/2$ has
+maximum $4$ for $k<7$, $w(7)=5$, and $w(k)\ge(k+1)/2>4$ for $k\ge8$. In every row
+$B_p(h,m)<h$, so a nonzero polynomial with at most $h$ terms has fewer than $h$ roots in the
+disk. A rational relation with at most $h$ terms at one conjugate vanishes at all $h$
+conjugates, because $H_{-D}$ is the minimal polynomial; this is impossible. The class
+polynomial gives the opposite inequality \eqref{smd:eq:trivial}.
+\end{proof}
+
+\smdcert{class polynomials from
+\artifact{grh_sparse_singular_moduli/checks/five_small_witnesses.json}, reproduced in
+\artifact{singular-modulus-support/polynomials.json} and recomputed from the
+$q$-expansion of $j$ with interval arithmetic by
+\artifact{singular-modulus-support/regenerate.py} (output
+\artifact{singular-modulus-support/regeneration.txt}); the table is checked by binomial expansion and
+by Horner substitution in \artifact{singular-modulus-support/verify.py} (output
+\artifact{singular-modulus-support/verification.txt}) and, for the ten sextic rows, in
+\artifact{singular_moduli_seven_terms_2026-11-26/verify.py} with
+\artifact{singular_moduli_seven_terms_2026-11-26/certificates.json}.}
+
 \begin{example}[A sextic order requiring seven terms]\label[example]{smd:ex:4075}
 For $\Delta=-4075=-5^2\cdot163$ the class number is six, and $7$ is inert in $K$ and
 prime to the conductor. By \cref{smd:lem:reduction} all six conjugates lie in one
 multiplicative disk of relative depth at least $1$, which exceeds
 $\kappa(7,6)=1/2$. Hence $s(-4075)=7$ by \cref{smd:cor:threshold}.
 \end{example}
+
+For $p\ge7$, \cref{smd:thm:sixroot} shows that the depth of a disk alone excludes six-term
+relations at six of its points exactly when the depth exceeds $1/(p-5)$; the rows of the
+table use $p\le17$ and the factorial weights directly.
 
 \subsection{Explicit lower bounds from real and from separated conjugates}\label{smd:sec:explicit}
 {\raggedright\sources{grh_cm_prime_applications}}
@@ -1478,88 +1862,97 @@ not determined.
 \smdcert{\artifact{grh_transfers_singular_moduli_and_symmetric_powers/checks/conductors.txt}.}
 \end{remark}
 
-\subsection{Powers of singular moduli with exact support seven}\label{smd:sec:powered}
-{\raggedright\sources{grh_transfer_bridges_2026-11-25}}
+\subsection{The discriminant \texorpdfstring{$-87$}{-87}: powers and residue patterns}\label{smd:sec:powered}
+{\raggedright\sources{grh_transfer_bridges_2026-11-25; padic-six-term; singular-modulus-support}}
 
 For an algebraic number $\gamma$ write $s(\gamma)$ for the least number of nonzero terms
-of a nonzero rational polynomial vanishing at $\gamma$. The higher-depth case of
-\cref{smd:thm:confluent} gives exact values beyond the range of \cref{smd:thm:five}.
+of a nonzero rational polynomial vanishing at $\gamma$. At discriminant $-87$ one knows
+$6\le s(-87)\le7$ (\cref{smd:prop:sextics}), and no five of its conjugates lie in a disk deep enough for a
+disk certificate (\cref{smd:rem:disklimit}). The higher-depth case of
+\cref{smd:thm:confluent} settles the relations in one residue class of exponents, and more
+generally every relation whose pattern of residues passes a finite rank test.
 
-\begin{theorem}[Powered singular moduli; \stU]\label{smd:thm:powered}
-Let $\alpha$ be any singular modulus of discriminant $-87$ and $\beta$ any singular modulus
-of discriminant $-152$. Then, for every integer $t\ge1$,
-\[
- s(\alpha^{63t})=7,\qquad s(\beta^{182t})=7 .
-\]
-The exponents and rational coefficients of the annihilating polynomials are unrestricted.
+\begin{theorem}[A powered singular modulus; \stU]\label{smd:thm:powered}
+Let $\alpha$ be any singular modulus of discriminant $-87$. Then $s(\alpha^{63t})=7$ for
+every integer $t\ge1$. The exponents and rational coefficients of the annihilating
+polynomials are unrestricted.
 \end{theorem}
 
 \begin{proof}
-Both ring class polynomials have degree six; they are the certified polynomials of
-\cref{smd:sec:sextics}.
-
-In $A=\Z_{(2)}[X]/(H_{-87})$, exact reduction gives
+The ring class polynomial $H_{-87}$ has degree six; it is the certified polynomial of
+\cref{smd:sec:sextics}. In $A=\Z_{(2)}[X]/(H_{-87})$, with $x$ the class of $X$, exact
+reduction gives
 \[
  x^{63}\equiv1+16(x+x^2+x^3)\pmod{32A}.
 \]
-Thus $x^{63}=1+16D_0$ with $D_0\bmod2=x+x^2+x^3$. The six columns
-$1,D_0,\dots,D_0^5$, represented with entries $0,1$ in the power basis, have integer
-determinant $-1$. They are independent modulo $2$, and $6<2^4$. By
-\cref{smd:thm:confluent} with $p=2$, $\sigma=4$ and $m=63$, any six distinct powers of $x$
-with exponents divisible by $63$ are linearly independent.
-
-Likewise, in $\Z_{(3)}[X]/(H_{-152})$,
-\[
- x^{182}\equiv26+9(2x^2+x^3+2x^5)\pmod{27A}.
-\]
-For $D_0=(x^{182}-26)/9$ the six columns $1,D_0,\dots,D_0^5$ have the following
-representative matrix modulo $3$:
-\[
- \begin{pmatrix}
- 1&0&2&2&0&0\\
- 0&0&2&0&2&2\\
- 0&2&2&1&1&2\\
- 0&1&0&0&0&0\\
- 0&0&0&0&2&1\\
- 0&2&1&2&0&1
- \end{pmatrix}.
-\]
-Its integer determinant is $-2$, which is nonzero modulo $3$, and $6<3^2$.
-
-For either powered number, a rational relation with at most six terms would select at
+Thus $x^{63}=1+16D_0$ with $D_0\bmod2=x+x^2+x^3$. The six columns $1,D_0,\dots,D_0^5$,
+represented with entries $0,1$ in the power basis, have integer determinant $-1$. They are
+independent modulo $2$, and $6<2^4$. By \cref{smd:thm:confluent} with $p=2$, $\sigma=4$ and
+$m=63$, any six distinct powers of $x$ with exponents divisible by $63$ are linearly
+independent. A rational relation for $\alpha^{63t}$ with at most six terms would select at
 most six such powers, and a smaller dependent set could be enlarged to six distinct
-exponents, contradicting the independence just established. On the other hand the number
-lies in a six-dimensional $\Q$-algebra, so seven of its powers are dependent. This gives
-support exactly seven. Replacing $63$ or $182$ by a positive multiple retains the
-argument, since the exponents remain divisible by $63$, respectively $182$. The modular
-powers were verified both by polynomial multiplication and by an independently written
-basis-shift recurrence, and the determinants with integer arithmetic.
+exponents, a contradiction. On the other hand $\alpha^{63t}$ lies in a six-dimensional
+$\Q$-algebra, so seven of its powers are dependent. The modular power was verified both by
+polynomial multiplication and by an independently written basis-shift recurrence, and the
+determinant with integer arithmetic.
 \end{proof}
 
-\smdcert{coefficients and certificates
-\artifact{grh_transfer_bridges_2026-11-25/checks/confluent_certificates.json}, where the
+The companion statement $s(\beta^{182t})=7$ for a singular modulus $\beta$ of discriminant
+$-152$, originally proved by the same method with the congruence
+$x^{182}\equiv26+9(2x^2+x^3+2x^5)\pmod{27}$ in $\Z_{(3)}[X]/(H_{-152})$, now follows from
+\cref{smd:thm:seven}: a relation for $\beta^{182t}$ with at most six terms is a relation for
+$\beta$ with at most six terms, and $\beta^{182t}$ lies in a six-dimensional algebra.
+
+\begin{proposition}[Residue-pattern certificate at $-87$; \stU]\label[proposition]{smd:prop:eightyseven}
+Let $\F_2[X]/(X^6+X^5+X^2+X+1)$ be the reduction of $\Z_{(2)}[X]/(H_{-87})$, in which the
+class of $X$ has order $63$, and put $\ell=X+X^2+X^3$. Let $e_1<\dots<e_6$ be integers, write
+$e_i-e_1=a_i+63q_i$ with $0\le a_i<63$, and let $\mu_a$ be the number of $i$ with $a_i=a$.
+If the six columns
+\[
+ X^a\ell^{\,j},\qquad 0\le a<63,\quad 0\le j<\mu_a,
+\]
+are linearly independent over $\F_2$, then the powers $\alpha^{e_1},\dots,\alpha^{e_6}$ of a
+singular modulus $\alpha$ of discriminant $-87$ are linearly independent over $\Q$. The test
+depends only on the multiset of residues $a_i$; among the $\binom{67}5=9{,}657{,}648$
+multisets of six residues modulo $63$ containing $0$, exactly $3{,}892{,}897$ pass it.
+\end{proposition}
+
+\begin{proof}
+Multiplication by $\alpha^{-e_1}$ reduces to nonnegative exponents with $e_1=0$. In the
+notation of the proof of \cref{smd:thm:powered}, $x^{63}=1+16D_0$ with $D_0\equiv\ell$
+modulo $2$, each residue block has at most six elements and $6<2^4$, so
+\cref{smd:thm:confluent} with $p=2$, $\sigma=4$, $m=63$ and $a=1$ applies; its columns
+$x^aD_0^{\,j}$ reduce to $X^a\ell^{\,j}$. A full-rank residue matrix therefore certifies all
+lifts of that residue multiset at once. For a single residue the six powers of $\ell$ have
+bit masks $1,14,51,7,42,48$ and are independent, which recovers \cref{smd:thm:powered}. The
+count is an exhaustive enumeration of the weakly increasing residue multisets with smallest
+entry $0$, to which every pattern can be translated by a common exponent shift.
+\end{proof}
+
+A failed rank test is inconclusive, and the remaining $5{,}764{,}751$ residue multisets are
+not covered by this certificate.
+\smdcert{\artifact{grh_transfer_bridges_2026-11-25/checks/confluent_certificates.json}, where the
 polynomials coincide with those of
 \artifact{grh_sparse_singular_moduli/checks/five_small_witnesses.json}; checker
 \artifact{grh_transfer_bridges_2026-11-25/checks/check_confluent_refinement.py}, with
-output \artifact{grh_transfer_bridges_2026-11-25/evidence/confluent_replay.txt}.}
-
-The theorem does not give $s(-87)=7$ or $s(-152)=7$: a six-term relation for the original
-singular modulus could involve several different residue classes of exponents, and
-excluding it requires an exhaustive finite cover of all residue patterns, including
-repeated residues, as in \cref{smd:sec:sextics}.
+output \artifact{grh_transfer_bridges_2026-11-25/evidence/confluent_replay.txt}; congruence
+modulo $32$ and the multiset count \artifact{padic-six-term/verify_87.py}, with output
+\artifact{padic-six-term/verification_87.txt}.}
 
 \subsection{Open questions}\label{smd:sec:open}
-{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfer_bridges_2026-11-25}}
+{\raggedright\sources{grh_sparse_singular_moduli; grh_cm_sparse_equations; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfer_bridges_2026-11-25; singular-modulus-support; singular_moduli_seven_terms_2026-11-26; padic-six-term}}
 
 \begin{question}[Six terms]\label{smd:q:six}
 Does every singular modulus of degree $h\ge6$ require at least seven terms, that is, does
-$h(\Delta)\ge6$ imply $s(\Delta)\ge7$? In particular, are $s(-87)$ and $s(-152)$ equal to
-seven? \Cref{smd:thm:powered} settles the relations whose exponents lie in one residue
-class modulo $63$, respectively $182$, and \cref{smd:ex:4075} gives $s=7$ for one sextic
-order. A global statement would need, in addition to a
-finite residue cover for the low-degree orders, a large-discriminant reduction of the
-kind supplied by \cref{smd:prop:global} for five terms. More generally, is there a uniform
-larger threshold?
+$h(\Delta)\ge6$ imply $s(\Delta)\ge7$? In particular, is $s(-87)=7$? For $-152$ and nine
+further sextic orders, and for $-4075$, the answer is yes
+(\cref{smd:thm:seven,smd:ex:4075}), and four orders of degree seven have $s=8$. At $-87$,
+\cref{smd:thm:powered,smd:prop:eightyseven} exclude six-term relations for $3{,}892{,}897$
+of the $9{,}657{,}648$ anchored residue patterns modulo $63$, including the relations whose
+exponents lie in one residue class. A global statement would need, in addition to a finite
+residue cover for the low-degree orders, a large-discriminant reduction of the kind supplied
+by \cref{smd:prop:global} for five terms. More generally, is there a uniform larger
+threshold?
 \end{question}
 
 \begin{question}[A fixed fraction of the class number]\label{smd:q:fraction}

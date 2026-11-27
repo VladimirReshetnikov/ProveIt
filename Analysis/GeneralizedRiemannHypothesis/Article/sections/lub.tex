@@ -11,9 +11,10 @@ deepest contact, up to a bounded, eventually periodic defect that vanishes exact
 base-$p$ carry condition. The defect has an eventual period that depends only on $p$, $e$ and
 the multiplicity of the deepest contact, and for contacts of depth at most one its least period
 is an explicit power of $p$. The optimal choice of directions is the same at every precision.
-Over a field, observations of more branches than the jet requires tolerate erased and
-corrupted branch records; the exact tolerance is a block distance computed by a recursion on
-the contact tree. Specialized to the multiplicative group, the pole computation becomes a simultaneous
+Over a field, observations of more branches than the jet requires, each at its own precision,
+tolerate erased and corrupted branch records; the exact tolerance is a block distance computed by a
+recursion on the contact tree, every extremal ambiguity is a product of branch equations, and the
+cheapest precision vectors are determined componentwise. Specialized to the multiplicative group, the pole computation becomes a simultaneous
 congruence for weighted Fleck sums. The last subsection treats a related invariant of
 \cite[Definition~5.1]{BergerSprang2025Integer}, the coefficient depth $s_0(n)$, through an
 exact valuation formula for powers of the Lubin--Tate logarithm.
@@ -844,26 +845,30 @@ for the full jet used by this procedure. A single prescribed product can require
 coefficients.
 
 \subsection{Redundant branches, erasures and corruptions}\label{lub:ssec:redundant}
-\begingroup\raggedright\sources{ramified_branch_recovery}\endgroup
+\begingroup\raggedright\sources{ramified_branch_recovery; grh_cubic_matching_and_precision_2026-11-27; grh_extensions_2026-11-27_2}\endgroup
 
 The preceding subsections observe exactly $d$ branches without errors. Over a field, more
-branches than the jet requires can be observed, and some entire branch records may be lost
-or falsified. The answer is governed by a greedy valuation sequence of the contact orders,
-and the worst surviving configuration is computed by a recursion on the contact tree. The
-notation of this subsection is independent of \cref{lub:thm:defect}.
+branches than the jet requires can be observed, each at its own precision, and some entire branch
+records may be lost or falsified. The exact answer is governed by a weighted greedy ordering of the
+branches, every extremal ambiguity is a product of branch equations, the worst surviving
+configuration is computed by a recursion on the contact tree, and the cheapest precision vectors
+are determined componentwise. The notation of this subsection is independent of
+\cref{lub:thm:defect}.
 
 Let $F$ be any field, $\mathfrak m=(X,Y)\subset F[[X,Y]]$, and $v=\ord_X$ on $F[[X]]$, with
 $v(0)=+\infty$. Fix $N$ distinct branches $B=\set{u_b:b\in I}\subset XF[[X]]$, $\abs I=N$,
 with contacts $s_{bc}=v(u_b-u_c)\ge1$ for $b\ne c$; they satisfy
-$s_{bc}\ge\min(s_{ba},s_{ac})$. The observation map at precision $n\ge0$ is
+$s_{bc}\ge\min(s_{ba},s_{ac})$. For a precision vector $\mathbf n=(n_b)_{b\in I}$ of nonnegative
+integers the observation map is
 \[
- \Omega_n\colon F[[X,Y]]\to\bigl(F[[X]]/X^n\bigr)^I,\qquad
- \Omega_n(H)_b=H(X,u_b(X))\bmod X^n ;
+ \Omega_{\mathbf n}\colon F[[X,Y]]\to\prod_{b\in I}F[[X]]/X^{n_b},\qquad
+ \Omega_{\mathbf n}(H)_b=H(X,u_b(X))\bmod X^{n_b} ;
 \]
-its $b$th coordinate is one \emph{block} of $n$ coefficients. The target is the jet
-$J_d(H)=H\bmod\mathfrak m^d$ for $1\le d\le N$, which has $d(d+1)/2$ coefficients, and
-recovery means that any two series consistent with the permitted observations have the
-same target jet; the higher coefficients are unrestricted.
+its $b$th coordinate is one \emph{block} of $n_b$ coefficients (empty if $n_b=0$), and the
+\emph{recording cost} is $\sum_bn_b$. A common precision $n_b=n$ is written $\Omega_n$. The target
+is the jet $J_d(H)=H\bmod\mathfrak m^d$ for $1\le d\le N$, which has $d(d+1)/2$ coefficients, and
+recovery means that any two series consistent with the permitted observations have the same
+target jet; the higher coefficients are unrestricted. No hypothesis on zeros is used.
 
 \begin{definition}[Greedy valuation sequence]\label{lub:def:greedy}
 Order the branches $u_0,\dots,u_{N-1}$ greedily: after $u_0,\dots,u_{j-1}$, choose an
@@ -892,9 +897,9 @@ at least $\lambda_j$ at step $j$ and acquires a further contact of at least one 
 \end{proof}
 
 \begin{lemma}[Division and the total-degree filtration; \stU]\label{lub:lem:division}
-Every $H\in F[[X,Y]]$ has a unique expansion
-$H=\Pi_NQ+\sum_{j<N}c_j(X)\Pi_j(Y)$ with $Q\in F[[X,Y]]$ and $c_j\in F[[X]]$, and a
-nonzero remainder satisfies
+Let $u_0,\dots,u_{N-1}$ be any ordering of $B$, and $\Pi_j=\prod_{i<j}(Y-u_i)$. Every
+$H\in F[[X,Y]]$ has a unique expansion $H=\Pi_NQ+\sum_{j<N}c_j(X)\Pi_j(Y)$ with $Q\in F[[X,Y]]$
+and $c_j\in F[[X]]$, and a nonzero remainder satisfies
 \[
  \ord_{\mathfrak m}\Bigl(\sum_{j<N}c_j\Pi_j\Bigr)=\min_{j<N}\bigl(v(c_j)+j\bigr).
 \]
@@ -905,45 +910,60 @@ Since $\Pi_N\in\mathfrak m^N$, $H$ and its remainder have the same jet $J_d$ for
 For $u\in XF[[X]]$, $H(X,Y)-H(X,u)$ is divisible by $Y-u$, term by term from
 $Y^a-u^a=(Y-u)\sum_hY^{a-1-h}u^h$, the series converging $\mathfrak m$-adically. Dividing
 successively at $u_0,\dots,u_{N-1}$ gives the expansion, and evaluating a zero remainder at
-the same branches forces every $c_j=0$ since $\alpha_j\ne0$. The coefficient of $Y^i$ in
+the same branches forces every $c_j=0$, since the products of distinct branch differences are
+nonzero. The coefficient of $Y^i$ in
 $\Pi_j$, $i<j$, is divisible by $X^{j-i}$, and $\Pi_j$ is monic of $Y$-degree $j$, so each
 summand has total order $v(c_j)+j$. Among the summands of least order take the one with the
 largest $j$: its leading form has a nonzero coefficient at $X^{v(c_j)}Y^j$ that no term of
 smaller $Y$-degree can cancel, and summands with larger $j$ have larger order.
 \end{proof}
 
-\begin{theorem}[Exact observation kernel; \stU]\label{lub:thm:kernel}
-With respect to the expansion of \cref{lub:lem:division}, the kernel of $\Omega_n$ is
-\[
- \Pi_N\,F[[X,Y]]\oplus\bigoplus_{j=0}^{N-1}X^{\max(0,n-\lambda_j(B))}F[[X]]\,\Pi_j .
-\]
-Consequently the clean observations determine $J_d(H)$ for every $H$ if and only if
-\begin{equation}\label{lub:eq:clean}
- n\ge\lambda_{d-1}(B)+1 ;
+For unequal precisions the greedy rule is weighted by the precisions. Having chosen
+$b_0,\dots,b_{j-1}$, choose an unused $b_j$ maximizing
+\begin{equation}\label{lub:eq:scores}
+ \mu_j=n_{b_j}-\sum_{i<j}s_{b_jb_i},\qquad\Pi_j(Y)=\prod_{i<j}\bigl(Y-u_{b_i}(X)\bigr),
 \end{equation}
-the largest completely recoverable jet order is $\rho_n(B)=\#\set{j<N:\lambda_j(B)<n}$; and
-for $d\le N$ the unresolved part of the target has dimension
+with arbitrary ties, and put $\mu_j^+=\max(0,\mu_j)$. Every unused score drops by at least one at the
+next step, so $\mu_{j+1}\le\mu_j-1$. For a common precision this is the order of
+\cref{lub:def:greedy} and $\mu_j=n-\lambda_j(B)$. For a subset $S\subseteq I$ write $\mu_j(S)$ for the
+scores of $S$ with its inherited precisions, and $\mu_j(S)=-\infty$ for $j\ge\abs S$.
+
+\begin{theorem}[Exact observation kernel; \stU]\label{lub:thm:kernel}
+With respect to the expansion of \cref{lub:lem:division} in the order \eqref{lub:eq:scores},
 \[
- \dim_F\frac{\ker\Omega_n+\mathfrak m^d}{\mathfrak m^d}
- =\sum_{j=0}^{d-1}\max\bigl(0,\,d-j-\max(0,n-\lambda_j(B))\bigr).
+ \ker\Omega_{\mathbf n}=\Pi_N\,F[[X,Y]]\oplus\bigoplus_{j=0}^{N-1}X^{\mu_j^+}F[[X]]\,\Pi_j .
 \]
+Consequently the clean observations determine $J_d(H)$ for every $H$ if and only if $\mu_{d-1}>0$;
+the largest completely recoverable jet order is the number of positive scores; for $d\le N$ the
+unresolved part of the target has dimension
+\[
+ \dim_F\frac{\ker\Omega_{\mathbf n}+\mathfrak m^d}{\mathfrak m^d}
+ =\sum_{j=0}^{d-1}\max\bigl(0,\,d-j-\mu_j^+\bigr);
+\]
+and the capped scores $\mu_j^+$ do not depend on the tie choices. For a common precision $n$ the
+condition is
+\begin{equation}\label{lub:eq:clean}
+ n\ge\lambda_{d-1}(B)+1 ,
+\end{equation}
+the largest recoverable order is $\rho_n(B)=\#\set{j<N:\lambda_j(B)<n}$, and the kernel
+components are $X^{\max(0,n-\lambda_j(B))}F[[X]]\Pi_j$.
 \end{theorem}
 
 \begin{proof}
-The multiple of $\Pi_N$ vanishes on every branch. The remainder $\sum c_j\Pi_j$ has
-vanishing observations modulo $X^n$ exactly when $X^{-n}\sum c_j\Pi_j$ is integral valued
-on $B$, that is, by \cref{lub:lem:newton}, when $v(c_j)\ge n-\lambda_j$ for every $j$.
-
-If $n\ge\lambda_{d-1}+1$ and $j<d$, the growth bound gives
-$n-\lambda_j+j\ge\lambda_{d-1}+1-\lambda_j+j\ge d$, and the kernel terms with $j\ge d$
-already lie in $\mathfrak m^d$; so the kernel lies in $\mathfrak m^d$. Conversely $\Pi_{d-1}$
-has total order $d-1$ and values of order at least $\lambda_{d-1}$ on every branch, so for
-$n\le\lambda_{d-1}$ the series $0$ and $\Pi_{d-1}$ are indistinguishable; beyond order $N$
-the kernel element $\Pi_N$ prevents recovery. Finally the classes of $X^i\Pi_j$ with
-$i+j<d$ form a basis of $F[[X,Y]]/\mathfrak m^d$ by the triangular filtration, and in the
-$j$th component the kernel contains exactly those with $i\ge\max(0,n-\lambda_j)$.
+Each $X^{\mu_j^+}\Pi_j$ lies in the kernel: it vanishes on $b_0,\dots,b_{j-1}$, and at a remaining
+branch $b$ the maximality in \eqref{lub:eq:scores} gives $\mu_j^++\sum_{i<j}s_{bb_i}\ge n_b$. Conversely,
+if the remainder $\sum c_j\Pi_j$ is in the kernel, evaluation at $b_0$ forces $v(c_0)\ge n_{b_0}=\mu_0$;
+subtract that term, which is in the kernel, and at step $j$ the later Newton factors vanish at $b_j$,
+so $v(c_j)+\sum_{i<j}s_{b_jb_i}\ge n_{b_j}$, that is $v(c_j)\ge\mu_j^+$. If $\mu_{d-1}\ge1$, then
+$\mu_j+j\ge\mu_{d-1}+d-1\ge d$ for $j<d$, and with \cref{lub:lem:division} the kernel lies in
+$\mathfrak m^d$; if $\mu_{d-1}\le0$, the kernel contains $\Pi_{d-1}$, of total order $d-1$. The classes of
+$X^i\Pi_j$ with $i+j<d$ form a basis of $F[[X,Y]]/\mathfrak m^d$, which gives the dimension. Within the
+kernel polynomials of $Y$-degree at most $j$ the possible leading coefficients form the ideal
+$X^{\mu_j^+}F[[X]]$, which does not depend on the ordering. For a common precision substitute
+$\mu_j=n-\lambda_j(B)$.
 \end{proof}
 
+The weights $n_b$ cannot be replaced by their minimum or their average without losing information.
 If fewer than $d$ branches are available, no precision recovers $J_d$: their branch product
 has total order below $d$ and vanishes on all of them. For a $d$-element set $S$, Lagrange
 interpolation over $F((X))$ shows that the leading coefficients of the polynomials of degree
@@ -953,75 +973,195 @@ points may be prescribed arbitrarily. Comparison with \cref{lub:lem:newton} give
 \begin{equation}\label{lub:eq:lastfactorial}
  \lambda_{d-1}(S)=\max_{b\in S}\sum_{c\in S\setminus\set b}s_{bc}.
 \end{equation}
-For the reductions of Lubin--Tate branches modulo $\pi$ one has
-$s_{bc}=q^{v(b-c)}$ by \cref{lub:lem:contact}, so for $N=d$ the right side of
-\eqref{lub:eq:lastfactorial} is $\max_b\omega_b$ and \eqref{lub:eq:clean} is the common
-precision of \cref{lub:cor:unique}(a); the componentwise thresholds of that corollary and
-the precisions $r>1$ are not covered by the present field-valued theory.
+
+\begin{corollary}[A certificate of $d$ clean branches; \stU]\label{lub:cor:certificate}
+The observations $\Omega_{\mathbf n}$ recover $J_d$ if and only if some $d$-element $S\subseteq I$
+satisfies
+\begin{equation}\label{lub:eq:certificate}
+ n_b\ge1+\sum_{c\in S\setminus\set b}s_{bc}\qquad(b\in S);
+\end{equation}
+when recovery holds, the first $d$ branches of \eqref{lub:eq:scores} form such a set.
+\end{corollary}
+
+\begin{proof}
+The first $d$ choices remain a greedy order for the restriction to that set, with the same scores,
+so by \cref{lub:thm:kernel} its observations recover $J_d$ when those of $I$ do. For exactly $d$
+branches put $\sigma_b=v(\Delta_b)$. Lagrange interpolation of the remainder modulo
+$\prod_{b\in S}(Y-u_b)$ gives $R_H=\sum_{b\in S}H(X,u_b)\Delta_b^{-1}\prod_{c\ne b}(Y-u_c)$; if all
+records vanish and $n_b\ge\sigma_b+1$, every summand lies in $\mathfrak m^d$. If $n_b\le\sigma_b$ for
+some $b$, the integral series $X^{\sigma_b}\Delta_b^{-1}\prod_{c\in S\setminus\set b}(Y-u_c)$ has nonzero jet
+of order $d$, vanishes on the other branches and has value $X^{\sigma_b}$ on $b$.
+\end{proof}
+
+For reductions of Lubin--Tate branches modulo $\pi$ one has $s_{bc}=q^{v(b-c)}$ by
+\cref{lub:lem:contact}, so for $N=d$ \eqref{lub:eq:certificate} is the componentwise threshold of
+\cref{lub:cor:unique}(a), and the right side of \eqref{lub:eq:lastfactorial} is $\max_b\omega_b$;
+precisions $r>1$ are not covered by the present field-valued theory.
+
+\begin{theorem}[Minimum cost of clean recovery; \stU]\label{lub:thm:budget}
+For $1\le d\le N$ the least recording cost $\sum_bn_b$ of a precision vector that recovers $J_d$ is
+\[
+ B_d=d+2\min_{S\subseteq I,\ \abs S=d}\ \sum_{\set{b,c}\subseteq S}s_{bc}
+ =d+2\sum_{j=0}^{d-1}\lambda_j(B).
+\]
+It is attained by the first $d$ branches of an ordinary greedy order, each with the precision on the
+right of \eqref{lub:eq:certificate}, and precision zero elsewhere.
+\end{theorem}
+
+\begin{proof}
+\Cref{lub:cor:certificate} supplies a set $S$ for every successful vector, and summing its bounds gives
+$\sum_bn_b\ge d+2\sum_{\set{b,c}\subseteq S}s_{bc}$; the vector built from a minimizing $S$ succeeds
+at exactly that cost. For the second form, $P_j=\Pi_j/\alpha_j$ is integral valued on every branch
+(\cref{lub:lem:newton}), so for any $d$-set $S$ the evaluation matrix of $P_0,\dots,P_{d-1}$ on $S$ is
+integral; its determinant is a Vandermonde determinant divided by $\prod_{j<d}\alpha_j$, so
+$\sum_{\set{b,c}\subseteq S}s_{bc}\ge\sum_{j<d}\lambda_j$, with equality for the first $d$ greedy
+branches, where the matrix is triangular with unit diagonal.
+\end{proof}
 
 \paragraph{Block errors.}
 Define the distance between target jets
 \[
- \delta_d(n;B)=\min_{H\notin\mathfrak m^d}\#\set{b:\Omega_n(H)_b\ne0},
+ \delta_d(\mathbf n;B)=\min_{H\notin\mathfrak m^d}\#\set{b:\Omega_{\mathbf n}(H)_b\ne0},
 \]
-counting a block as different if any of its $n$ coefficients differs; it may be zero, and
+counting a block as different if any of its coefficients differs; it may be zero, and
 it need not be the minimum distance of the whole image, since words from $H\in\mathfrak m^d$
-do not change the output. For $j\ge0$ and an integer $T$ define the \emph{retention
+do not change the output. For a common precision and $j\ge0$, $T\in\Z$, define the \emph{retention
 capacity}
 \[
  \mathcal C_B(j,T)=\max\set{\abs S:\ S\subseteq B,\ \lambda_j(S)\ge T},
 \]
-the empty set being allowed.
+the empty set being allowed; since $\mu_j(S)=n-\lambda_j(S)$, $\mu_{d-1}(S)\le0$ means
+$\lambda_{d-1}(S)\ge n$.
 
 \begin{theorem}[Distance and correction criterion; \stU]\label{lub:thm:distance}
-For $1\le d\le N$ and $n\ge0$,
+For $1\le d\le N$ and every precision vector,
 \[
- \delta_d(n;B)=N-\mathcal C_B(d-1,n).
+ \delta_d(\mathbf n;B)=N-\max\set{\abs S:S\subseteq I,\ \mu_{d-1}(S)\le0},
 \]
-For integers $w,z\ge0$, the jet $J_d(H)$ can be recovered for every $H$ despite at most $w$
-arbitrarily corrupted blocks and at most $z$ flagged erased blocks if and only if
+which is $N-\mathcal C_B(d-1,n)$ for a common precision $n$. For integers $w,z\ge0$, the jet
+$J_d(H)$ can be recovered for every $H$ despite at most $w$ arbitrarily corrupted blocks and at most
+$z$ flagged erased blocks if and only if
 \begin{equation}\label{lub:eq:correct}
- 2w+z<\delta_d(n;B).
+ 2w+z<\delta_d(\mathbf n;B).
 \end{equation}
-Every failure has an explicit witness built from branch products.
+Every failure has an explicit witness of $Y$-degree and total order at most $d-1$, built from branch
+products, and a polynomial witness is obtained by truncating its $X$-coefficients at
+$\max(d,\max_bn_b)$.
 \end{theorem}
 
 \begin{proof}
-For $\abs S\ge d$, \cref{lub:thm:kernel} applied to $S$ shows that some $H\notin\mathfrak m^d$
-vanishes modulo $X^n$ on all of $S$ exactly when $\lambda_{d-1}(S)\ge n$; for $\abs S<d$ the
-branch product of $S$ is such an $H$ at every precision. So the largest zero set of a series
-with nonzero target is $\mathcal C_B(d-1,n)$, attained by $\Pi_{d-1}$ for a maximizing $S$
-of size at least $d$ and by the full branch product otherwise; by maximality it has no
-further zero blocks. If \eqref{lub:eq:correct} holds, two explanations of the same received
-word differ only on the union of their error sets and the erasures, at most $2w+z$ blocks,
-so they have the same target. Conversely take two words with different targets at distance
-$\delta_d$. If $\delta_d=0$ they already coincide; otherwise erase up to $z$ differing
-blocks, split the remaining at most $2w$ differences into two groups of size at most $w$,
-and let the received word follow the first word on one group and the second on the other.
+For $\abs S\ge d$, \cref{lub:thm:kernel} applied to $S$ shows that some $H\notin\mathfrak m^d$ has zero
+records on all of $S$ exactly when $\mu_{d-1}(S)\le0$, with witness $\Pi_{d-1}$ for the order of $S$;
+for $\abs S<d$ the branch product of $S$ is such an $H$ at every precision. So the largest zero set of
+a series with nonzero target is the stated maximum. If \eqref{lub:eq:correct} holds, two
+explanations of the same received word differ only on the union of their error sets and the
+erasures, at most $2w+z$ blocks, so they have the same target. Conversely take two words with
+different targets at distance $\delta_d$. If $\delta_d=0$ they already coincide; otherwise erase up to
+$z$ differing blocks, split the remaining at most $2w$ differences into two groups of size at most $w$,
+and let the received word follow the first word on one group and the second on the other. Terms in
+$X^MF[[X,Y]]$ with $M=\max(d,\max_bn_b)$ affect neither the target nor any record.
 \end{proof}
 
 For a fixed known erasure set $E$ one applies the theorem to $B\setminus E$; the condition
 with $z$ is the uniform guarantee over all erasure sets of size at most $z$, and no
-precision gives it when $N-z-2w<d$. Whenever recovery is possible $n\ge d$, and terms of
-total degree at least $n$ do not affect the observations, so a decoder may enumerate the
-candidate error sets, discard those blocks and solve the finite linear systems in the
-$n(n+1)/2$ coefficients of degree below $n$; under \eqref{lub:eq:correct} all consistent
-solutions have the same jet. This is constructive over an effective field but is not a
-fast error-location algorithm. The distance check before decoding is necessary: setting free
-variables to zero without checking uniqueness can hide an unresolved jet.
+precision gives it when $N-z-2w<d$. Terms of total degree at least $\max(d,\max_bn_b)$ do not affect
+the observations or the target, so a decoder may enumerate the candidate error sets, discard those
+blocks and solve finite linear systems; under \eqref{lub:eq:correct} all consistent solutions have the
+same jet. This is constructive over an effective field but is not a fast error-location algorithm
+(\cref{lub:thm:decode} gives a linear-algebra decoder under a stronger condition). The distance check
+before decoding is necessary: setting free variables to zero without checking uniqueness can hide an
+unresolved jet.
 
-\paragraph{The capacity recursion.}
-The contacts define a rooted tree whose leaves are the branches. For $N\ge2$ the root has an
+\paragraph{Branch products.}
+Every extremal ambiguity can be replaced by a product of branch equations, which removes the unknown
+coefficients from the distance problem.
+
+\begin{lemma}[Product domination; \stU]\label{lub:lem:domination}
+Let $0\ne P\in F[[X]][Y]$ and $r=\ord_{\mathfrak m}P$. There are $c_1,\dots,c_r\in I$, repetitions
+allowed, such that $Q=\prod_{j=1}^r(Y-u_{c_j})$ satisfies $v(Q(X,u_b))\ge v(P(X,u_b))$ for every $b\in I$.
+Consequently, if $H\notin\mathfrak m^d$, a product of exactly $d-1$ branch factors vanishes on every
+record on which $H$ vanishes, for any precision vector.
+\end{lemma}
+
+\begin{proof}
+Factor $P=a(X)\prod_{j=1}^D(Y-\alpha_j)$ in a valued algebraic extension of $F((X))$ extending $v$. The
+Gauss valuation is multiplicative (divide each factor by a coefficient of least valuation; the
+reductions have nonzero product over the residue field), and the substitution $Y=XZ$ gives the
+weighted version, so $r=v(a)+\sum_j\min(1,v(\alpha_j))$; no separability or Puiseux expansion is
+needed. Let $A$ be the multiset of roots with $v(\alpha)\ge1$, $m=\abs A$, and $k=r-m=v(a)+
+\sum_{v(\alpha_j)<1}v(\alpha_j)$, an integer, and nonnegative because it equals the Gauss valuation of
+$P$ plus $\sum_{0<v(\alpha_j)<1}v(\alpha_j)$. For $\alpha\in A$ choose $u_{c(\alpha)}$ maximizing
+$v(u_b-\alpha)$; the ultrametric inequality gives $v(u_b-u_{c(\alpha)})\ge v(u_b-\alpha)$ for every $b$,
+while a root of valuation below one contributes its own valuation at every branch, since
+$v(u_b)\ge1$. Hence $X^k\prod_{\alpha\in A}(Y-u_{c(\alpha)})$ dominates $P$ on all branches; replacing each
+factor $X$ by $Y-u_{c_0}$ does not decrease an evaluation valuation, as all contacts are at least one.
+For a series $H$ with $r=\ord_{\mathfrak m}H<d$, discard the terms of total degree at least
+$L>\max(r,\max_bn_b)$, which changes no record, apply the first part, and append $d-1-r$ further branch
+factors.
+\end{proof}
+
+For a vector $\mathbf m=(m_c)_{c\in I}$ of nonnegative integers put $V_b(\mathbf m)=+\infty$ if $m_b>0$
+and $V_b(\mathbf m)=\sum_{c\ne b}m_cs_{bc}$ if $m_b=0$.
+
+\begin{theorem}[Distance by branch products; \stU]\label{lub:thm:products}
+For every $d\ge1$, every precision vector and nonnegative record weights $a_b$,
+\[
+ \delta^{(a)}_d(\mathbf n;B)=\sum_ba_b-\max_{\substack{m_c\ge0\\\sum_cm_c=d-1}}\ \sum_{b:\,V_b(\mathbf m)\ge n_b}a_b,
+\]
+where $\delta^{(a)}_d$ is the least weight of the nonzero records of a series with nonzero target; for
+$a_b=1$ this is $\delta_d(\mathbf n;B)$. Every maximum gives a minimum-distance witness
+$\prod_c(Y-u_c)^{m_c}$, so the distance depends only on the contacts and the precisions. If $d>N$ the
+distance is zero at every precision.
+\end{theorem}
+
+\begin{proof}
+Each displayed product has total order $d-1$, and its zero records are exactly those with
+$V_b(\mathbf m)\ge n_b$; conversely \cref{lub:lem:domination} replaces any series with nonzero target by
+such a product without shrinking its zero set. If $d>N$, mark every branch and pad with repeated
+factors.
+\end{proof}
+
+With weights, $2w+z<\delta_d^{(a)}$ is sufficient for correction, but its necessity needs a partition of
+the differing weights into the permitted budgets and is not asserted.
+
+Represent the contacts by the rooted tree whose leaves are the branches: for $N\ge2$ the root has an
 incoming stem of length $\min_{b\ne c}s_{bc}$; the children of a cluster are the classes of
 its leaves under $s_{bc}$ exceeding the cluster's minimum contact; the incoming length
 $\ell_v$ of a node is its contact level minus that of its parent, leaf edges may have length
-zero, and two distinct leaves share a path of length equal to their contact. For a node $v$
-with leaf set $B_v$, $N_v=\abs{B_v}$, and $S\subseteq B_v$, let $\lambda_j^v(S)$ be the
+zero, and two distinct leaves share a path of length equal to their contact. Compressing nodes with
+one child leaves $O(N)$ nodes. For a node $v$ with leaf set $B_v$ let $A_v(j,t)$ be the largest total
+weight of leaves of $B_v$ whose precision is met when exactly $j$ marks are placed in $B_v$, repeats
+allowed, and the contributions from outside $B_v$ and from higher segments already equal $t$ at every
+leaf below $v$.
+
+\begin{theorem}[Tree recursion at unequal precisions; \stU]\label{lub:thm:marks}
+At a leaf $b$, $A_b(j,t)=a_b$ if $j>0$ or $t\ge n_b$, and $A_b(j,t)=0$ otherwise. At an internal node,
+\[
+ A_v(j,t)=\max_{\substack{j_c\ge0,\ \sum_cj_c=j}}\ \sum_cA_c(j_c,t+j\ell_v),
+\]
+over the children $c$ of $v$, and $\delta_d^{(a)}(\mathbf n;B)=\sum_ba_b-A_{\mathrm{root}}(d-1,0)$. For
+integer data the tables through $j=d-1$ cost $O(Nd^2(n_{\max}+1))$ arithmetic operations,
+$n_{\max}=\max_bn_b$, and backtracking gives the mark multiplicities of a witness.
+\end{theorem}
+
+\begin{proof}
+All $j$ marks below $v$ share its incoming segment with every leaf below $v$, adding $j\ell_v$; once
+the marks are split among the children no further contribution passes between distinct children. A
+mark at a leaf makes the product vanish there identically, and an unmarked leaf has exactly its
+inherited valuation; this gives the recursion and, by \cref{lub:thm:products}, the distance. Cap the
+state $t$ at $n_{\max}$. For each child input $t'$ compute the max-convolution over $j\le d-1$ once, at
+cost $O(\deg(v)d^2)$, and read $A_v(j,t)$ at $t'=\min(n_{\max},t+j\ell_v)$; the degrees sum to $O(N)$.
+\end{proof}
+
+The operation count is polynomial in the amount of observed data, and pseudopolynomial if the
+precisions are given in binary. For a common precision the same capacities are also computed on
+greedy sequences, as follows.
+
+\begin{lemma}[Fixed-tree merge; \stU]\label{lub:lem:merge}
+For a node $v$ with leaf set $B_v$, $N_v=\abs{B_v}$, and $S\subseteq B_v$, let $\lambda_j^v(S)$ be the
 greedy sequence computed with the residual path lengths below the parent of $v$ (and
 $+\infty$ beyond $\abs S$), so that $\lambda_j^{\mathrm{root}}=\lambda_j$, and put
 $\mathcal C_v(j,T)=\max\set{\abs S:S\subseteq B_v,\ \lambda_j^v(S)\ge T}$.
-
-\begin{lemma}[Fixed-tree merge; \stU]\label{lub:lem:merge}
 Let $v$ be an internal node and let $z_0\le z_1\le\cdots$ be the sorted union of the finite
 sequences $\lambda_i^c(S\cap B_c)$ over the children $c$ of $v$. Then
 $\lambda_j^v(S)=j\ell_v+z_j$ for $0\le j<\abs S$; all these sequences are nondecreasing and
@@ -1058,27 +1198,40 @@ sum. The base cases follow from nonnegativity of the costs and the sequence $(0)
 
 The outer maximization changes the retained set of leaves, and \cref{lub:lem:merge} alone,
 which works on a fixed set, does not solve it; the binary example below shows that a single
-most clustered survivor set need not be worst. For ranks up to $d-1$ and thresholds up to
-$T_{\max}$, combining child tables is a max-convolution in the rank budget, and a compact
-tree with $O(N)$ nodes costs $O(Nd^2T_{\max})$ arithmetic operations; this is
-pseudopolynomial in the contact orders. Since $\lambda_{d-1}(S)\le(d-1)\max s_{bc}$,
-$T_{\max}=1+(d-1)\max_{b\ne c}s_{bc}$ suffices, and the exact saturation point is as
-follows.
+most clustered survivor set need not be worst.
 
-\begin{theorem}[Exact saturation precision; \stU]\label{lub:thm:saturation}
-Always $\delta_d(n;B)\le N-d+1$, and the least precision at which equality holds is
-\[
- n_{\mathrm{sat}}=1+\max_{b\in B}\bigl(\text{sum of the $d-1$ largest contacts $s_{bc}$, $c\ne b$}\bigr),
-\]
-the empty sum for $d=1$ being zero.
+\paragraph{Saturation.}
+For $1\le d\le N$ let $S_b(d-1)$ be the sum of the $d-1$ largest contacts $s_{bc}$, $c\ne b$
+($S_b(0)=0$), and $n_b^*=1+S_b(d-1)$.
+
+\begin{theorem}[Componentwise saturation and its cost; \stU]\label{lub:thm:compsat}
+Always $\delta_d(\mathbf n;B)\le N-d+1$, with equality if and only if $n_b\ge n_b^*$ for every $b$. Thus
+$\mathbf n^*$ is the unique componentwise least precision vector of maximal distance, the least
+recording cost at maximal distance is $\sum_bn_b^*=N+\sum_bS_b(d-1)$, and unequal precisions save exactly
+$N\max_bn_b^*-\sum_bn_b^*$ coefficients against the best common precision. If $N=d+2w+z$, this is the
+least cost of correcting $w$ corrupted and $z$ erased blocks.
 \end{theorem}
 
 \begin{proof}
-The product of the equations of any $d-1$ branches has total order $d-1$ and vanishes on
-them, which gives the bound. Equality holds exactly when no series with nonzero target
-vanishes modulo $X^n$ on any $d$-element subset, that is, by \eqref{lub:eq:clean}, when $n$
-exceeds $\lambda_{d-1}(S)$ for every $d$-subset $S$. By \eqref{lub:eq:lastfactorial} this
-maximum is obtained by retaining, for some $b$, its $d-1$ highest-contact neighbours.
+A product of $d-1$ distinct branch equations has total order $d-1$ and vanishes on those branches. If
+$n_b\le S_b(d-1)$, the product of the equations of the $d-1$ closest neighbours of $b$ vanishes on them
+and has valuation $S_b(d-1)$ at $b$, so it has $d$ zero records; this includes $d=1$, where an empty
+record hides the constant $1$. Conversely, equality means clean recovery from every $d$-element subset;
+by \cref{lub:cor:certificate} this is \eqref{lub:eq:certificate} for every $S$ of size $d$, and
+maximizing the contact sum at each fixed $b$ gives $n_b\ge n_b^*$. When $N=d+2w+z$,
+\eqref{lub:eq:correct} requires the maximal distance.
+\end{proof}
+
+\begin{corollary}[Exact saturation precision; \stU]\label{lub:thm:saturation}
+For a common precision the least $n$ with $\delta_d(n;B)=N-d+1$ is
+\[
+ n_{\mathrm{sat}}=\max_bn_b^*=1+\max_{b\in B}\bigl(\text{sum of the $d-1$ largest contacts $s_{bc}$, $c\ne b$}\bigr),
+\]
+the empty sum for $d=1$ being zero.
+\end{corollary}
+
+\begin{proof}
+A common $n$ satisfies $n\ge n_b^*$ for every $b$ exactly when $n\ge\max_bn_b^*$; apply \cref{lub:thm:compsat}.
 \end{proof}
 
 For an intermediate error budget the full recursion is generally needed. For reduced
@@ -1101,6 +1254,96 @@ $q^{L-h}-1$ other grid points are congruent to a given one modulo $\pi^h$, and s
 balls are nested the $d-1$ closest neighbours include $\min(d-1,q^{L-h}-1)$ of them, each
 adding $q^h-q^{h-1}$. Apply \cref{lub:thm:saturation}.
 \end{proof}
+
+
+\begin{example}[Unequal precisions]\label{lub:ex:unequal}
+(i) Over $\F_3$ take the branches $(0,X^3,X,2X)$ and $d=2$; only the first two have contact $3$. The
+unique least saturating vector is $\mathbf n^*=(4,4,2,2)$, recording $12$ coefficients against $16$ for
+the least common precision; its distance is $3$, so $J_2$ survives one corrupted record, and lowering
+any component destroys this. More generally, over a field with at least $N-1$ elements the branches
+$0,X^L$ and $N-2$ distinct nonzero multiples of $X$, $L>1$, $2\le d\le N$, have $n^*=L+d-1$ on the close
+pair and $d$ elsewhere, total $2L+Nd-2$ against $N(L+d-1)$, a ratio tending to $N/2$ as $L\to\infty$; for
+$(N,d,L)=(10,3,20)$ and $(20,4,100)$ the costs are $68$ against $220$ and $278$ against $2060$.
+
+(ii) Over $\F_2$ take $u_b=(1+X)^b-1$, $0\le b\le7$, so $s_{bc}=2^{v_2(b-c)}$, with precisions
+$(6,4,9,5,8,3,7,4)$. With ties broken by the least index, the order \eqref{lub:eq:scores} is
+$(2,4,3,1,6,0,7,5)$ with scores $(9,6,3,0,-1,-4,-6,-9)$. So the $46$ recorded coefficients recover the
+six coefficients of $J_3$ but not $J_4$; the order-three distance is $4$, so one corrupted and one
+erased record are tolerated but two corruptions are not, as the series $Y(Y+X+X^2+X^3)$, whose records
+vanish exactly on the branches $0,3,5,7$, shows.
+
+(iii) Over $\F_5$ with the branches $0,X^5,X,2X,3X$ (contact $5$ for the first pair, $1$ otherwise) and
+$d=3$, the least saturating vector is $(7,7,3,3,3)$, of cost $23$; it corrects one corrupted branch, every
+vector doing so costs at least $23$, and a common precision costs $35$.
+
+These and exhaustive checks over all $625$ vectors in $\set{0,\dots,4}^4$ on four binary branches and
+$120$ further configurations, comparing the kernel dimension, the tree recursion and the saturation
+criterion with direct rank computations, and a second independent set of $2067$ comparisons, are in
+\begin{center}
+\artifact{grh_cubic_matching_and_precision_2026-11-27/results/unequal_branches.json},\\
+\artifact{grh_extensions_2026-11-27_2/evidence/unequal_jets_checks.json}.
+\end{center}
+\end{example}
+
+\paragraph{Weighted jets and a linear-algebra decoder.}
+Suppose all $u_b\in X^\kappa F[[X]]$ for an integer $\kappa\ge1$, give $X$ weight one and $Y$ weight
+$\kappa$, let $J_{d,\kappa}(H)$ be the coefficients $[X^iY^j]H$ with $i+\kappa j<d$, and write
+$d-1=\kappa k+a$ with $0\le a<\kappa$.
+
+\begin{corollary}[Weighted jets; \stU]\label{lub:cor:weighted}
+Every ambiguity with nonzero $J_{d,\kappa}$ can be replaced, without losing a zero record, by
+$X^a\prod_c(Y-u_c)^{m_c}$ with $\sum_cm_c=k$, so
+\[
+ \delta_{d,\kappa}(\mathbf n;B)=N-\max_{\sum_cm_c=k}\#\set{b:a+V_b(\mathbf m)\ge n_b},
+\]
+and the tree recursion starts with $k$ marks and inherited value $a$. If $k<N$ the maximal distance is
+$N-k$, attained exactly when $n_b\ge a+1+{}$the sum of the $k$ largest contacts of $b$, for every $b$; if
+$k\ge N$ the distance is zero.
+\end{corollary}
+
+\begin{proof}
+In the proof of \cref{lub:lem:domination} use $\ord_\kappa P=v(a_P)+\sum_\alpha\min(\kappa,v(\alpha))$: roots
+of valuation below $\kappa$ contribute equally at every branch, and the others may be replaced by their
+closest branches. Multiply by $X^{d-1-r}$ and replace each group of $\kappa$ factors $X$ by a branch
+factor, which cannot decrease an evaluation valuation since $v(u_b-u_c)\ge\kappa$. For the maximal
+distance, $k$ distinct branch factors give the bound $N-k$, the $k$ closest neighbours of $b$ and $X^a$
+give necessity, and interpolation on any $k+1$ branches gives sufficiency: the full branch product has
+weighted order $\kappa(k+1)\ge d$ and every Lagrange term has weighted order at least $(a+1)+\kappa k=d$.
+\end{proof}
+
+\begin{theorem}[A decoder from two linear systems; \stU]\label{lub:thm:decode}
+Let arithmetic over $F$ be effective, delete a known erasure set, and suppose that at most $w$ of the
+remaining records are corrupted and $\delta_{d+w}(\mathbf n;B)>w$. Then $J_d(H)$ is computed by two finite
+linear systems, with no enumeration of error sets and no factorization of a locator, in a number of
+field operations polynomial in $N,n_{\max},d,w$.
+\end{theorem}
+
+\begin{proof}
+The hypothesis forces $n_{\max}\ge d+w$, since otherwise $X^{n_{\max}}$ has zero records at target order
+$d+w$. Let $y_b$ be the received records. Solve for
+\[
+ E=Y^w+\sum_{i<w}e_i(X)Y^i,\quad e_i\in X^{w-i}F[X],\qquad Q\in F[X,Y],\ \deg Q<n_{\max},
+\]
+with $Q(X,u_b)\equiv E(X,u_b)y_b\pmod{X^{n_b}}$ for every $b$, the $e_i$ truncated at
+$\deg_Xe_i+i<n_{\max}$. A solution exists: the product of $Y-u_b$ over the corrupted set, padded by
+branch factors to degree $w$ and truncated, with $Q$ the truncation of $EH$ below total degree
+$n_{\max}$. For any solution, $Q-EH$ has zero records on all uncorrupted branches, so at most $w$ nonzero
+records, and $Q-EH\in\mathfrak m^{d+w}$ by hypothesis. Since $E$ has total order exactly $w$,
+multiplication by $E$ is injective from $F[[X,Y]]/\mathfrak m^d$ to $\mathfrak m^w/\mathfrak m^{d+w}$, so
+$Eh\equiv Q\pmod{\mathfrak m^{d+w}}$, $\deg h<d$, has the unique solution $h=J_d(H)$. The systems have at
+most $\binom{n_{\max}+1}2+wn_{\max}$ and $\binom{d+1}2$ unknowns.
+\end{proof}
+
+The condition $\delta_{d+w}>w$ implies the sharp uniqueness condition $\delta_d>2w$, since appending $w$
+branch factors to a minimum-distance witness gives $\delta_{d+w}\le\max(\delta_d-w,0)$, and it is in
+general stronger: at $\mathbf n^*=(4,4,2,2)$ in \cref{lub:ex:unequal}(i), one error is uniquely
+correctable for $J_2$ but $\delta_3=0$, while at $(5,5,3,3)$, $\delta_3=2>1$ and the decoder applies with
+$16$ coefficients against $20$ for the least common precision; $2685$ received words for this case are
+checked in \artifact{grh_extensions_2026-11-27_2/evidence/decoder_checks.json}. No claim is made that the
+extra precision is necessary for polynomial-time decoding. Weighted greedy selection on an ultrametric
+with element weights is studied by Grinberg and Petrov \cite{GrinbergPetrov2021Greedoid}; the order
+\eqref{lub:eq:scores} is their greedy rule with weights $n_b$ and pair contributions $-s_{bc}$, and the
+decoder adapts interpolation-based error location \cite{GaoNewAlgorithm}.
 
 These statements concern coefficients in a field, in particular the residue field. Over
 $\OO/\pi^r$ with $r>1$ further cancellation occurs (\cref{lub:thm:pole}), and the
@@ -1582,7 +1825,7 @@ not affected.
 \end{remark}
 
 \subsection{Open questions}\label{lub:ssec:open}
-\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision; grh_method_transfers_orthogonal_jets_2026-11-26; grh_transfer_advances_2026-11-26; grh_periods_sampling_and_zeros; ramified_branch_recovery}\endgroup
+\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision; grh_method_transfers_orthogonal_jets_2026-11-26; grh_transfer_advances_2026-11-26; grh_periods_sampling_and_zeros; ramified_branch_recovery; grh_cubic_matching_and_precision_2026-11-27; grh_extensions_2026-11-27_2}\endgroup
 
 \begin{question}\label{lub:q:closed}
 When the carry criterion \eqref{lub:eq:carry} fails and $h_*\ge2$, the defect $\eta_r$ of
@@ -1601,11 +1844,12 @@ class of precisions?
 \end{question}
 
 \begin{question}\label{lub:q:adversarial}
-\Cref{lub:thm:distance,lub:thm:dp} determine the tolerance to erased and corrupted branch
-records over a field with one common truncation length. Extend them to unequal truncation
-lengths and to coefficients in $\OO/\pi^r$ with $r>1$, where the cancellations of
-\cref{lub:thm:pole} occur, and find error-location algorithms faster than enumeration of the
-candidate error sets.
+\Cref{lub:thm:distance,lub:thm:products,lub:thm:compsat} determine the tolerance to erased and
+corrupted branch records over a field at arbitrary unequal truncation lengths. Extend them to
+coefficients in $\OO/\pi^r$ with $r>1$, where the cancellations of \cref{lub:thm:pole} occur. Is there
+a polynomial-time decoder at the full radius $2w+z<\delta_d$, without the stronger hypothesis
+$\delta_{d+w}>w$ of \cref{lub:thm:decode}, and is the extra precision that hypothesis needs necessary?
+For weighted records, when is $2w+z<\delta_d^{(a)}$ also necessary?
 \end{question}
 
 \begin{question}\label{lub:q:growth}
