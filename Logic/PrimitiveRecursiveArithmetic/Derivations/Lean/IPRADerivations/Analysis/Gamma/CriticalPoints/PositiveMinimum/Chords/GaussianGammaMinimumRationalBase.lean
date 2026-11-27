@@ -62,7 +62,6 @@ theorem chord_domain (k c d M : PTm n) (hc : Γ ⊢[PRAAx] le one c) (hd : Γ �
   have low := upper_bound (Γ := Γ) k
   have aBound : Γ ⊢[PRAAx] le (baseNumerator k d) (M*denominator k d) := by
     unfold baseNumerator denominator
-    let 𝔞 := fun t : PTm n => Groth.ι (IPRA.Q.mk Γ t)
     ipra_le 𝔞 d*sl low+𝔞 d*𝔞 (grid k)*sl hM
   have cBound : Γ ⊢[PRAAx] le (targetNumerator k c) (M*denominator k d) := by
     unfold targetNumerator denominator

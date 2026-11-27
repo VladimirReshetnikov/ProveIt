@@ -59,7 +59,6 @@ theorem add_order_at (f g h k : PR 2) (x y u v p q : PTm n)
   have e := point_add_upper_same (ap2 f s x) (ap2 g t y) (ap2 h s u) (ap2 k t v)
     (S+T) (S+T) (S*T) pos (real_order_at f g x y s t left) (real_order_at h k u v s t right)
   have comparison : Γ ⊢[PRAAx] le (((S+T)+(S+T))*(U*V)) ((U+V)*(S*T)) := by
-    let 𝔞 := fun z : PTm n => Groth.ι (IPRA.Q.mk Γ z)
     ipra_le 𝔞 U*𝔞 S*sl leT+𝔞 V*𝔞 T*sl leS
   have first := (GaussianNameArithmetic.add_at (Γ := Γ) f h x u p).eqTrans
     (GaussianExponentialReference.recode_fixed (qadd (ap2 f s x) (ap2 h s u)) (qadd_canonical _ _))
