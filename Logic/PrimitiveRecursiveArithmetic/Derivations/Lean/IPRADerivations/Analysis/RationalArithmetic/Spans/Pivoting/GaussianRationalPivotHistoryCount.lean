@@ -198,23 +198,11 @@ ipra_subst run
 theorem program_at (H N : PTm n) : Γ ⊢[PRAAx] run H N ≐ output H N := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![H,N]
 theorem output_fields (H N : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
-    outputField (output H N) i ≐ ![count H N,free H N,entry H (free H N),zeroCount H N] i := by
-  have a := snd_pair (Γ := Γ) (count H N) (pairT (free H N) (pairT (entry H (free H N)) (zeroCount H N)))
-  have b := (congrSnd a).eqTrans (snd_pair (free H N) (pairT (entry H (free H N)) (zeroCount H N)))
-  fin_cases i
-  · exact fst_pair _ _
-  · exact a.fstE
-  · exact b.fstE
-  · exact b.sndE
+    outputField (output H N) i ≐ ![count H N,free H N,entry H (free H N),zeroCount H N] i :=
+  pairVectorField_eq 3 ![count H N,free H N,entry H (free H N),zeroCount H N] (.eqRefl _) i
 theorem returned_fields (H N : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
-    outputField (run H N) i ≐ ![count H N,free H N,entry H (free H N),zeroCount H N] i := by
-  have e : Γ ⊢[PRAAx] outputField (run H N) i ≐ outputField (output H N) i := by
-    fin_cases i
-    · exact congrFst (program_at H N)
-    · exact congrFst (congrSnd (program_at H N))
-    · exact congrFst (congrSnd (congrSnd (program_at H N)))
-    · exact congrSnd (congrSnd (congrSnd (program_at H N)))
-  exact e.eqTrans (output_fields H N i)
+    outputField (run H N) i ≐ ![count H N,free H N,entry H (free H N),zeroCount H N] i :=
+  pairVectorField_eq 3 _ (program_at H N) i
 theorem returned_count_bound (H N : PTm n) : Γ ⊢[PRAAx] le (outputField (run H N) 0) N :=
   le_congr (returned_fields H N 0).eqSymm (.eqRefl _) (count_bound H N)
 theorem returned_free_bound (H N : PTm n) : Γ ⊢[PRAAx] le (outputField (run H N) 1) N :=

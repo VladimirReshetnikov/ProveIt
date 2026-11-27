@@ -338,17 +338,8 @@ theorem program_at (C Q J T D E t x r : PTm n) : Γ ⊢[PRAAx] run C Q J T D E t
     (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) : PTm 9) ![C,Q,J,T,D,E,t,x,r]
 theorem returned_fields (C Q J T D E t x r : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     fields (run C Q J T D E t x r) i ≐ ![block Q D x r,leftBuffer C Q T D E t x r,
-      rightBuffer J T D E t x r,width T D E t,remaining t r] i := by
-  have e0 := program_at (Γ := Γ) C Q J T D E t x r
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e3.sndE
+      rightBuffer J T D E t x r,width T D E t,remaining t r] i :=
+  pairVectorField_eq 4 _ (program_at C Q J T D E t x r) i
 theorem returned_transfer (C Q J T D E t x r : PTm n) (h : Γ ⊢[PRAAx] input C Q J T D E t x)
     (hr : Γ ⊢[PRAAx] le r t) : Γ ⊢[PRAAx]
     coefficientsEqual (fields (run C Q J T D E t x r) 1) (fields (run C Q J T D E t x r) 2) (width T D E t) :=

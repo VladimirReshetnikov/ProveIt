@@ -298,16 +298,8 @@ ipra_subst run
 theorem program_at (m d L x y : PTm n) : Γ ⊢[PRAAx] run m d L x y ≐ output m d L x y := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![m,d,L,x,y]
 theorem returned_fields (m d L x y : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
-    fields (run m d L x y) i ≐ ![basis m d L,evaluationVector m d L x y,count m d L,labels m d L] i := by
-  have e0 := program_at (Γ := Γ) m d L x y
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3
+    fields (run m d L x y) i ≐ ![basis m d L,evaluationVector m d L x y,count m d L,labels m d L] i :=
+  pairVectorField_eq 3 _ (program_at m d L x y) i
 theorem returned_lengths (m d L x y : PTm n) : Γ ⊢[PRAAx]
     (length (fields (run m d L x y) 0) ≐ fields (run m d L x y) 2) ⋏
       (length (fields (run m d L x y) 1) ≐ fields (run m d L x y) 2) :=

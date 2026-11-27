@@ -273,17 +273,8 @@ ipra_subst run
 theorem program_at (m w : PTm n) : Γ ⊢[PRAAx] run m w ≐ output m w := by
   simpa [run,outputF,ap2] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![m,w]
 theorem returned_fields (m w : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (run m w) i ≐
-    ![maximumPosition m w,deleted m w,deletedWord m w,deletedRank m w,packed m w] i := by
-  have e0 := program_at (Γ := Γ) m w
-  have e1 := (congrSnd e0).eqTrans (snd_pair _ _)
-  have e2 := (congrSnd e1).eqTrans (snd_pair _ _)
-  have e3 := (congrSnd e2).eqTrans (snd_pair _ _)
-  fin_cases i
-  · exact (congrFst e0).eqTrans (fst_pair _ _)
-  · exact (congrFst e1).eqTrans (fst_pair _ _)
-  · exact (congrFst e2).eqTrans (fst_pair _ _)
-  · exact (congrFst e3).eqTrans (fst_pair _ _)
-  · exact (congrSnd e3).eqTrans (snd_pair _ _)
+    ![maximumPosition m w,deleted m w,deletedWord m w,deletedRank m w,packed m w] i :=
+  pairVectorField_eq 4 _ (program_at m w) i
 theorem returned_packed_bound (m w : PTm n) (hw : Γ ⊢[PRAAx] lt w (horizon (succ m)))
     (hp : Γ ⊢[PRAAx] permutationBit (succ m) w ≐ one) : Γ ⊢[PRAAx]
     lt (fields (run m w) 4) (RuntimePermutationWords.count m*succ m) :=

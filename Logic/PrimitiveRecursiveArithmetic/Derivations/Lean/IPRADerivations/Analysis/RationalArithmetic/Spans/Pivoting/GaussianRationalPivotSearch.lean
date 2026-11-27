@@ -83,14 +83,8 @@ theorem unmarked_available (H c r : PTm n) (h : Γ ⊢[PRAAx] unmarked H c r) : 
     ((congrMonus (.eqRefl _) (eqb_of_ne neq)).eqTrans (monus_zero _))
   exact .impI (succ_ne_zero (actual.wk.eqSymm.eqTrans Prf.hyp0))
 
-theorem fields_at (A H c p : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data A H c p) i ≐ ![A,H,c,p] i := by
-  have e0 := snd_pair (Γ := Γ) A (pairT H (pairT c p))
-  have e1 := (congrSnd e0).eqTrans (snd_pair H (pairT c p))
-  fin_cases i
-  · exact fst_pair _ _
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e1.sndE
+theorem fields_at (A H c p : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data A H c p) i ≐ ![A,H,c,p] i :=
+  pairVectorField_eq 3 ![A,H,c,p] (.eqRefl _) i
 theorem candidate_body_at (A H c p r : PTm n) : Γ ⊢[PRAAx]
     inst2 candidateBody r (data A H c p) ≐ candidate A H c p r := by
   simp only [candidateBody,inst2,subst_candidate,subst_fields,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
@@ -218,15 +212,8 @@ ipra_subst run
 theorem program_at (A R N H c p : PTm n) : Γ ⊢[PRAAx] run A R N H c p ≐ output A R N H c p := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![A,R,N,H,c,p]
 theorem returned_fields (A R N H c p : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
-    fields (run A R N H c p) i ≐ ![next A R N H c p,tag A R H c p,flag A R H c p,selected A R H c p] i := by
-  have e0 := program_at (Γ := Γ) A R N H c p
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e2.sndE
+    fields (run A R N H c p) i ≐ ![next A R N H c p,tag A R H c p,flag A R H c p,selected A R H c p] i :=
+  pairVectorField_eq 3 _ (program_at A R N H c p) i
 theorem returned_shape (A R N H c p : PTm n) (hA : Γ ⊢[PRAAx] shape A R N) : Γ ⊢[PRAAx]
     shape (fields (run A R N H c p) 0) R N := shape_congr (returned_fields _ _ _ _ _ _ 0).eqSymm (next_shape _ _ _ _ _ _ hA)
 theorem returned_null_equivalence (A R N H c p l : PTm n) (hA : Γ ⊢[PRAAx] shape A R N)

@@ -250,20 +250,8 @@ theorem returned_fields (f G m a c w : PTm n) (i : Fin 6) : Γ ⊢[PRAAx]
       ![matrix f G m a c,GaussianPolynomialDeterminantTerms.stage (matrix f G m a c) m (width m a c) w m,
         GaussianPolynomialDeterminantTerms.term (matrix f G m a c) m (width m a c) w,
           GaussianSuperellipticWordWeights.candidatePrefix G m a (degree f c) w m,
-            weightedDegree G m a (degree f c),cyclicWord f G m a c] i := by
-  have e0 := program_at (Γ := Γ) f G m a c w
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  have e4 := e3.sndE
-  have e5 := e4.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e4.fstE
-  · exact e5
+            weightedDegree G m a (degree f c),cyclicWord f G m a c] i :=
+  pairVectorField_eq 5 _ (program_at f G m a c w) i
 theorem returned_rotation_degree (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) : Γ ⊢[PRAAx]
     degree (fields (run f G m a c (cyclicWord f G m a c)) 1) (m*width m a c) ≐
       fields (run f G m a c (cyclicWord f G m a c)) 4 :=

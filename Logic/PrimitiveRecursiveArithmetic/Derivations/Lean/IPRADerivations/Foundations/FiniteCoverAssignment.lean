@@ -71,11 +71,8 @@ ipra_subst hasCover [Syn.subst_shift, Syn.shift_subst]
 ipra_subst cover [Syn.subst_shift, Syn.shift_subst]
 ipra_subst groupBounds [Syn.subst_shift, Syn.shift_subst]
 
-theorem fields_at (P M p : PTm n) (j : Fin 3) : Γ ⊢[PRAAx] fields (data P M p) j ≐ ![P,M,p] j := by
-  fin_cases j
-  · exact fst_pair _ _
-  · exact (congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)
-  · exact (congrSnd (snd_pair _ _)).eqTrans (snd_pair _ _)
+theorem fields_at (P M p : PTm n) (j : Fin 3) : Γ ⊢[PRAAx] fields (data P M p) j ≐ ![P,M,p] j :=
+  pairVectorField_eq 2 ![P,M,p] (.eqRefl _) j
 theorem label_congr (f : PTm 3) {P P' M M' p p' i i' : PTm n} (hP : Γ ⊢[PRAAx] P ≐ P')
     (hM : Γ ⊢[PRAAx] M ≐ M') (hp : Γ ⊢[PRAAx] p ≐ p') (hi : Γ ⊢[PRAAx] i ≐ i') :
     Γ ⊢[PRAAx] label f P M p i ≐ label f P' M' p' i' := by

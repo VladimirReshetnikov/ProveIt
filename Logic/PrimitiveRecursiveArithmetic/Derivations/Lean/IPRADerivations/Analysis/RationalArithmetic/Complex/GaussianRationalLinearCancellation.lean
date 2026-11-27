@@ -175,20 +175,8 @@ theorem program_at (C D x B i : PTm n) : Γ ⊢[PRAAx] run C D x B i ≐ output 
     (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![C,D,x,B,i]
 theorem returned_fields (C D x B i : PTm n) (j : Fin 6) : Γ ⊢[PRAAx]
     fields (run C D x B i) j ≐ ![linear C x (succ B),linear D x (succ B),
-      quotient (linear C x (succ B)) x (succ B),quotient (linear D x (succ B)) x (succ B),entry C i,entry D i] j := by
-  have e0 := program_at (Γ := Γ) C D x B i
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  have e4 := e3.sndE
-  have e5 := e4.sndE
-  fin_cases j
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e4.fstE
-  · exact e5
+      quotient (linear C x (succ B)) x (succ B),quotient (linear D x (succ B)) x (succ B),entry C i,entry D i] j :=
+  pairVectorField_eq 5 _ (program_at C D x B i) j
 theorem returned_equal (C D x B i : PTm n) (h : Γ ⊢[PRAAx] input C D x B)
     (hi : Γ ⊢[PRAAx] le i B) : Γ ⊢[PRAAx] fields (run C D x B i) 4 ≐ fields (run C D x B i) 5 :=
   (returned_fields _ _ _ _ _ 4).eqTrans ((coefficient_from_input _ _ _ _ _ h hi).eqTrans (returned_fields _ _ _ _ _ 5).eqSymm)

@@ -168,13 +168,8 @@ ipra_subst run
 theorem program_at (A R N c : PTm n) : Γ ⊢[PRAAx] run A R N c ≐ output A R N c := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![A,R,N,c]
 theorem returned_fields (A R N c : PTm n) (i : Fin 3) : Γ ⊢[PRAAx]
-    fields (run A R N c) i ≐ ![matrix A R N c,history A R N c,c] i := by
-  have e0 := program_at (Γ := Γ) A R N c
-  have e1 := e0.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e1.sndE
+    fields (run A R N c) i ≐ ![matrix A R N c,history A R N c,c] i :=
+  pairVectorField_eq 2 _ (program_at A R N c) i
 theorem returned_history_length (A R N c : PTm n) : Γ ⊢[PRAAx]
     length (fields (run A R N c) 1) ≐ fields (run A R N c) 2 :=
   (congrFst (returned_fields _ _ _ _ 1)).eqTrans ((history_length _ _ _ _).eqTrans (returned_fields _ _ _ _ 2).eqSymm)

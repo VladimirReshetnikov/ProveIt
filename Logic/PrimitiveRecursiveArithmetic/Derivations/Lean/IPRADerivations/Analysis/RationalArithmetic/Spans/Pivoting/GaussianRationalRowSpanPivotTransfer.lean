@@ -98,16 +98,8 @@ theorem sum_decompose (f : PTm 2) (R i x : PTm n) (hi : Γ ⊢[PRAAx] lt i R) : 
         (qadd_congr (.eqRefl _) (GaussianRationalPermutationSum.delta_selected f R i x hi))))
 
 theorem fields_at (A R u i p : PTm n) (j : Fin 5) : Γ ⊢[PRAAx]
-    fields (data A R u i p) j ≐ ![A,R,u,i,p] j := by
-  have a := snd_pair (Γ := Γ) A (pairT R (pairT u (pairT i p)))
-  have b := (congrSnd a).eqTrans (snd_pair R (pairT u (pairT i p)))
-  have c := (congrSnd b).eqTrans (snd_pair u (pairT i p))
-  fin_cases j
-  · exact fst_pair _ _
-  · exact a.fstE
-  · exact b.fstE
-  · exact c.fstE
-  · exact c.sndE
+    fields (data A R u i p) j ≐ ![A,R,u,i,p] j :=
+  pairVectorField_eq 4 ![A,R,u,i,p] (.eqRefl _) j
 theorem body_at (A R u i p r : PTm n) : Γ ⊢[PRAAx]
     inst2 body r (data A R u i p) ≐ value A R u i p r := by
   have last1 : ![fields (data A R u i p) 0,fields (data A R u i p) 1,fields (data A R u i p) 2,

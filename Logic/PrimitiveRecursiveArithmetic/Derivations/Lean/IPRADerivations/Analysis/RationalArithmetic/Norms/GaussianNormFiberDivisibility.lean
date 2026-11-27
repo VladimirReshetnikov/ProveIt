@@ -292,20 +292,8 @@ theorem returned_fields (F G m a c P p g : PTm n) (i : Fin 6) : Γ ⊢[PRAAx]
     fields (run F G m a c P p g) i ≐
       ![GaussianRationalFiberVandermonde.run F G m a c P p g,GaussianPolynomialMonicNorm.run F G m a c,
         sourceQuotient F G m a c P p g,H (GaussianRationalCurveFibers.selectedX P p g) (GaussianRationalFiberGrouping.fiberCount P p g),
-        sourcePadded F G m a c P p g,sourceFactor F G m a c P p g] i := by
-  have e0 := program_at (Γ := Γ) F G m a c P p g
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  have e4 := e3.sndE
-  have e5 := e4.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e4.fstE
-  · exact e5
+        sourcePadded F G m a c P p g,sourceFactor F G m a c P p g] i :=
+  pairVectorField_eq 5 _ (program_at F G m a c P p g) i
 
 theorem returned_original (F G m a c P p g : PTm n) : Γ ⊢[PRAAx]
     fstT (fields (run F G m a c P p g) 1) ≐ sourceOriginal F G m a c :=

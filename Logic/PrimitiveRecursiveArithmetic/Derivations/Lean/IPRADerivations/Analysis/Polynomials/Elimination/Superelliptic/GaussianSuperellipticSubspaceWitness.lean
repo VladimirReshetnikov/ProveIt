@@ -134,17 +134,8 @@ theorem program_at (f a m c L P : PTm n) : Γ ⊢[PRAAx] run f a m c L P ≐ out
 theorem returned_fields (f a m c L P : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     outputField (run f a m c L P) i ≐ ![polynomial f a m c L,
       GaussianSuperellipticNormDegree.originalNorm f (polynomial f a m c L) m L c,
-      weight f a m c L,basisCount f m c L,length P] i := by
-  have e0 := program_at (Γ := Γ) f a m c L P
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e3.sndE
+      weight f a m c L,basisCount f m c L,length P] i :=
+  pairVectorField_eq 4 _ (program_at f a m c L P) i
 
 theorem returned_weight_bound (f a m c L P : PTm n) (h : Γ ⊢[PRAAx] input f a m c L) :
     Γ ⊢[PRAAx] le (outputField (run f a m c L P) 2) L :=

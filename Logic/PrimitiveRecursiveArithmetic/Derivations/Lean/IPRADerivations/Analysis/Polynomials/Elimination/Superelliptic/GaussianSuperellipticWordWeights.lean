@@ -579,17 +579,8 @@ theorem program_at (G m a d w : PTm n) : Γ ⊢[PRAAx] run G m a d w ≐ output 
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![G,m,a,d,w]
 theorem returned_fields (G m a d w : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     outputField (run G m a d w) i ≐ ![candidatePrefix G m a d w m,weightPrefix G m a d w m,
-      GaussianPolynomialWeightedDegree.index G m a d,GaussianPolynomialWeightedDegree.weightedDegree G m a d,wrapPrefix m w m] i := by
-  have e0 := program_at (Γ := Γ) G m a d w
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e3.sndE
+      GaussianPolynomialWeightedDegree.index G m a d,GaussianPolynomialWeightedDegree.weightedDegree G m a d,wrapPrefix m w m] i :=
+  pairVectorField_eq 4 _ (program_at G m a d w) i
 theorem returned_weak_bound (G m a d w : PTm n) (h : Γ ⊢[PRAAx] wordInput G m a d w) : Γ ⊢[PRAAx]
     le (outputField (run G m a d w) 0) (outputField (run G m a d w) 3) :=
   le_congr (returned_fields _ _ _ _ _ 0).eqSymm (returned_fields _ _ _ _ _ 3).eqSymm (weak_from_input _ _ _ _ _ h)

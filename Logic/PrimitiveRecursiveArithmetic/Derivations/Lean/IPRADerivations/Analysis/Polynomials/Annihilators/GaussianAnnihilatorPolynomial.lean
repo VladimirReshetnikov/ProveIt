@@ -252,15 +252,8 @@ theorem program_at (a m d L : PTm n) : Γ ⊢[PRAAx] run a m d L ≐ output a m 
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![a,m,d,L]
 theorem returned_fields (a m d L : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
     outputField (run a m d L) i ≐ ![polynomial a m d L,count m d L,labels m d L,
-      GaussianPolynomialWeightedDegree.weightedDegree (polynomial a m d L) m L d] i := by
-  have e0 := program_at (Γ := Γ) a m d L
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e2.sndE
+      GaussianPolynomialWeightedDegree.weightedDegree (polynomial a m d L) m L d] i :=
+  pairVectorField_eq 3 _ (program_at a m d L) i
 theorem returned_length (a m d L : PTm n) : Γ ⊢[PRAAx] length (outputField (run a m d L) 0) ≐ m :=
   (congrFst (returned_fields _ _ _ _ 0)).eqTrans (polynomial_length _ _ _ _)
 theorem returned_weight (a m d L : PTm n) (h : Γ ⊢[PRAAx] input a m d L) : Γ ⊢[PRAAx]

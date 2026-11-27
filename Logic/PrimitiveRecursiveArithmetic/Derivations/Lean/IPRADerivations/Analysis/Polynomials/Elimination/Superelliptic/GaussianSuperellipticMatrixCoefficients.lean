@@ -241,20 +241,8 @@ theorem program_at (f G m a c r j s : PTm n) : Γ ⊢[PRAAx] run f G m a c r j s
 theorem returned_fields (f G m a c r j s : PTm n) (i : Fin 6) : Γ ⊢[PRAAx]
     fields (run f G m a c r j s) i ≐
       ![entryPolynomial f G m a c r j,witness f G m a c r j,inverseIndex m j r,width m a c,
-        entry (entryPolynomial f G m a c r j) s,entry (witness f G m a c r j) s] i := by
-  have e0 := program_at (Γ := Γ) f G m a c r j s
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  have e4 := e3.sndE
-  have e5 := e4.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e4.fstE
-  · exact e5
+        entry (entryPolynomial f G m a c r j) s,entry (witness f G m a c r j) s] i :=
+  pairVectorField_eq 5 _ (program_at f G m a c r j s) i
 theorem returned_equality (f G m a c r j s : PTm n) (h : Γ ⊢[PRAAx] input f G m a c r j)
     (hs : Γ ⊢[PRAAx] le s (width m a c)) : Γ ⊢[PRAAx]
     fields (run f G m a c r j s) 4 ≐ fields (run f G m a c r j s) 5 :=
