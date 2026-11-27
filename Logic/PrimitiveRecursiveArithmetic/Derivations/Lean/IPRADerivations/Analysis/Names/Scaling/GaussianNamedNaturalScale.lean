@@ -124,8 +124,7 @@ theorem sample_bound (f : PR 2) (p E i R x : PTm n) (hf : Γ ⊢[PRAAx] Gaussian
   have bound := scaled_bound i _ R (GaussianRadiusExponentialName.bounded_samples_at f R x (clock p E) hf.andE₂)
   have grown : Γ ⊢[PRAAx] le (i*R) (radius E R) :=
     le_trans (AnalyticNumberTheory.PhiLower.le_mul_mono hi (le_refl R)) (le_add_right (E*R) one)
-  exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ (le_refl one) (le_refl one)
-    (le_congr (by ipra_ring) (by ipra_ring) grown)
+  exact GaussianCoefficientNameBounds.bounded_radius_mono_one grown
     (GaussianRationalReciprocal.bound_congr (sample_at f p E i x).eqSymm (.eqRefl _) (.eqRefl _) bound)
 
 theorem exponential_input (f : PR 2) (E i R x : PTm n) (hf : Γ ⊢[PRAAx] GaussianRadiusExponentialName.input f R x)

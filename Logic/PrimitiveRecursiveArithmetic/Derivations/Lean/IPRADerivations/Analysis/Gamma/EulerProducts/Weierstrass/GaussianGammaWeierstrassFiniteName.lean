@@ -88,8 +88,7 @@ theorem exponent_input (z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B) :
   let w := harmonicArgument z B N
   have hn : Γ ⊢[PRAAx] le (N*R) (width R N) :=
     le_congr (.eqRefl _) (add_comm _ _) (le_add_right _ _)
-  have disk := GaussianCoefficientNameBounds.bounded_radius_mono w (N*R) one (width R N) one
-    (le_refl _) (le_refl _) (le_congr (by ipra_ring) (by ipra_ring) hn)
+  have disk := GaussianCoefficientNameBounds.bounded_radius_mono_one (z := w) hn
     (harmonic_argument_bound z R B N h.andE₂.andE₁ h.andE₂.andE₂)
   apply Prf.andI (constant_regular w)
   apply Prf.allI
