@@ -39,8 +39,8 @@ theorem divided_point_proper (z w B D k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have h : Γ ⊢[PRAAx] succ i ≐ k := (Common.pos_of_one_le hk).eqSymm
   have code (x b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]
       qmul (GaussianGammaHarmonicIncrement.reciprocalPoint i) (ofGaussian x b) ≐ ofGaussian x (b*k) :=
-    (GaussianGammaExponentStep.reciprocal_times_point x b i hb).eqTrans (by
-      ipra_congr (ofGaussian (var 0) ((var 1)*(var 2)) : PTm 3) with [.eqRefl x, .eqRefl b, h])
+    (GaussianGammaExponentStep.reciprocal_times_point x b i hb).eqTrans
+      (GaussianRationalHorner.ofGaussian_congr (.eqRefl _) (congrMul (.eqRefl b) h))
   exact (code z B hB).eqSymm.eqTrans ((qmul_congr (.eqRefl _) he).eqTrans (code w D hD))
 
 theorem row_proper (z w B D k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
@@ -48,8 +48,8 @@ theorem row_proper (z w B D k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (he : Γ ⊢[PRAAx] ofGaussian z B ≐ ofGaussian w D) :
     Γ ⊢[PRAAx] correction z B k ≐ correction w D k := by
   have denom (b : PTm n) : Γ ⊢[PRAAx] two*(b*k) ≐ b*(two*k) := by ipra_ring
-  have rebase (x b : PTm n) : Γ ⊢[PRAAx] ofGaussian x (two*(b*k)) ≐ ofGaussian x (b*(two*k)) := by
-    ipra_congr (ofGaussian (var 0) (var 1) : PTm 2) with [.eqRefl x, denom b]
+  have rebase (x b : PTm n) : Γ ⊢[PRAAx] ofGaussian x (two*(b*k)) ≐ ofGaussian x (b*(two*k)) :=
+    GaussianRationalHorner.ofGaussian_congr (.eqRefl _) (denom b)
   have h := divided_point_proper z w B D (two*k) hB hD (positive_product _ _ (le_succ_self one) hk) he
   exact qsub_congr (qmul_congr he ((rebase z B).eqTrans (h.eqTrans (rebase w D).eqSymm))) he
 

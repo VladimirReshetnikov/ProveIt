@@ -44,10 +44,6 @@ ipra_subst literalSum [two, one]
 private theorem embed_congr {x y : PTm n} (e : Γ ⊢[PRAAx] x ≐ y) : Γ ⊢[PRAAx] embed x ≐ embed y :=
   (embed_at x).eqSymm.eqTrans ((congrAp1 embedF e).eqTrans (embed_at y))
 
-private theorem fraction_congr {A B C D : PTm n} (e : Γ ⊢[PRAAx] A ≐ C) (d : Γ ⊢[PRAAx] B ≐ D) :
-    Γ ⊢[PRAAx] fraction A B ≐ fraction C D :=
-  GaussianCompactRiemannName.fraction_congr A C B D e d
-
 theorem reciprocal_square_cleared (m L : PTm n) (h : Γ ⊢[PRAAx] le (succ m) L) : Γ ⊢[PRAAx]
     embed (reciprocalPower two (succ m)) ≐ fraction (qq (succ m) L) (fact L*fact L) := by
   let j := succ m
@@ -80,7 +76,7 @@ private theorem cleared_zero (L : PTm n) : Γ ⊢[PRAAx] literalSum zero ≐ fra
   have e : Γ ⊢[PRAAx] S zero L ≐ zero := sum_zero sB L
   exact (embed_congr (tail_zero two zero)).eqTrans ((fraction_embed zero one (le_refl one)).eqTrans
     ((fraction_equal zero one zero (fact L*fact L) (le_refl one) hD (by ipra_ring)).eqTrans
-      (fraction_congr e.eqSymm (.eqRefl _))))
+      (GaussianRationalHorner.real_fraction_congr e.eqSymm (.eqRefl _))))
 
 private theorem cleared_succ (m L : PTm n) (ih : Γ ⊢[PRAAx] clearingLaw m L)
     (h : Γ ⊢[PRAAx] le (succ m) L) : Γ ⊢[PRAAx]
@@ -94,7 +90,7 @@ private theorem cleared_succ (m L : PTm n) (ih : Γ ⊢[PRAAx] clearingLaw m L)
   have read := (embed_congr ((tail_succ two zero m).eqTrans (RationalAlgebra.add_congr (.eqRefl _) step))).eqTrans
     (embed_add (tail two zero m) (reciprocalPower two (succ m)))
   exact read.eqTrans ((qadd_congr previous (reciprocal_square_cleared m L h)).eqTrans
-    ((fraction_add_same (S m L) (qq (succ m) L) D hD).eqTrans (fraction_congr (S_succ m L).eqSymm (.eqRefl _))))
+    ((fraction_add_same (S m L) (qq (succ m) L) D hD).eqTrans (GaussianRationalHorner.real_fraction_congr (S_succ m L).eqSymm (.eqRefl _))))
 
 theorem literal_sum_cleared (m L : PTm n) (h : Γ ⊢[PRAAx] le m L) : Γ ⊢[PRAAx]
     literalSum m ≐ fraction (S m L) (fact L*fact L) := by
@@ -139,9 +135,9 @@ theorem finite_Basel_distance (p m L : PTm n) (hm : Γ ⊢[PRAAx] le (cut p) m)
     raw.andE₁ raw.andE₂
   have lhs : Γ ⊢[PRAAx] qmul (fraction (num 6) one) (literalSum m) ≐ fraction (num 6*S m L) (F*F) :=
     (qmul_congr (.eqRefl _) (literal_sum_cleared m L hmL)).eqTrans
-      ((fraction_product (num 6) one (S m L) (F*F) (le_refl one) hD).eqTrans (fraction_congr (.eqRefl _) (one_mul _)))
+      ((fraction_product (num 6) one (S m L) (F*F) (le_refl one) hD).eqTrans (GaussianRationalHorner.real_fraction_congr (.eqRefl _) (one_mul _)))
   have rhs : Γ ⊢[PRAAx] qmul (piGrid M L) (piGrid M L) ≐ fraction (num 16*(Q*Q)) (F*F) :=
-    (fraction_product (num 4*Q) F (num 4*Q) F hF hF).eqTrans (fraction_congr (by ipra_ring) (.eqRefl _))
+    (fraction_product (num 4*Q) F (num 4*Q) F hF hF).eqTrans (GaussianRationalHorner.real_fraction_congr (by ipra_ring) (.eqRefl _))
   exact distance_congr lhs.eqSymm rhs.eqSymm (.eqRefl _) (.eqRefl _) base
 
 end LeanProofs.IPRA.Analysis.GaussianBinetBaselBinding

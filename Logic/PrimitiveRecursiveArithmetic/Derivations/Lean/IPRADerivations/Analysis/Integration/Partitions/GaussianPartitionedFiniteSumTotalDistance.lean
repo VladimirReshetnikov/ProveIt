@@ -95,16 +95,8 @@ theorem weighted_total_comparison (cut : PR 2) (f g : PTm 2) (K d x y A B w H D 
     (original_comparison cut f g K d x y A B hB hm h0 hr)
 
 theorem unit_weight_bound (M : PTm n) (hM : Γ ⊢[PRAAx] le one M) : Γ ⊢[PRAAx] bounded (unitWeight M) one M := by
-  have eq := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (GaussianRationalHorner.ofGaussian (var 0) (var 1) : PTm 2)
-    (σ := ![ComplexLogarithmRemainder.scale one ComplexLogarithmRemainder.oneCode,M*one])
-    (σ' := ![ComplexLogarithmRemainder.scale one ComplexLogarithmRemainder.oneCode,M]) (fun i => by
-      fin_cases i
-      exact .eqRefl _
-      exact by
-        change Γ ⊢[PRAAx] M*one ≐ M
-        ipra_ring)
-  have actual : Γ ⊢[PRAAx] GaussianRationalRiemannRefinement.weight one M one ≐ unitWeight M := by
-    simpa [GaussianRationalRiemannRefinement.weight,unitWeight] using eq
+  have actual : Γ ⊢[PRAAx] GaussianRationalRiemannRefinement.weight one M one ≐ unitWeight M :=
+    GaussianRationalHorner.ofGaussian_congr (.eqRefl _) (Common.mul_one_right M)
   exact GaussianRationalReciprocal.bound_congr actual (.eqRefl _) (by ipra_ring)
     (GaussianRationalRiemannRefinement.weight_bound one M one hM (le_refl one))
 
