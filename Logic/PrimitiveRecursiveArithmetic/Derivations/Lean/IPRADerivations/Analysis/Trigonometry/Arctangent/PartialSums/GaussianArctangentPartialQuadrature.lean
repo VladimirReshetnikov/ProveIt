@@ -24,7 +24,7 @@ open GaussianArctangentCayleyStep (increment incrementCode)
 open GaussianArctangentExponentialPrefix (prefixValue source)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalFiniteSum (sum sum_index_congr multiplyBody multiply_body_at sum_multiply termsEqual)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represents qmul qmul_canonical qmul_represents
   positive_product canonical_unique represents_congr represents_rescale)
@@ -239,8 +239,7 @@ theorem finite_refinement (A B N R : PTm n)
     (hN : Γ ⊢[PRAAx] le one N) (hR : Γ ⊢[PRAAx] le one R) :
     Γ ⊢[PRAAx] distanceBounded (observation A B (R*N)) (observation A B N) (num 4) N := by
   have hnM := le_congr (one_mul N) (.eqRefl _) (le_mul_mono hB (le_refl N))
-  exact distance_radius_mono _ _ _ _ _ _ (positive_product B N hB hN) hN
-    (le_mul_mono (le_refl (num 4)) hnM) (physical_refinement A B N R hB hA hN hR)
+  exact distance_radius_mono_den hN hnM (physical_refinement A B N R hB hA hN hR)
 
 theorem finite_comparison (A B N K : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le A B)

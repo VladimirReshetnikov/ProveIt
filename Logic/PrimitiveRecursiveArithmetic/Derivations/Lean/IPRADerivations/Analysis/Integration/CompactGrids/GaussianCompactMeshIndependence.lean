@@ -20,7 +20,7 @@ open_ipra
 open GaussianCompactRiemannName (sample quadrature mesh precision)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (positive_product)
 open GaussianNameEquivalence (crossEquivalent)
 
@@ -82,9 +82,9 @@ theorem sample_distance (F : PR 3) (p a C E L T M S x : PTm n) (h : Γ ⊢[PRAAx
 
 theorem diagonal_distance (F : PR 3) (p a C E L T M S x : PTm n) (h : Γ ⊢[PRAAx] input F a C E L T M S x) : Γ ⊢[PRAAx]
     distanceBounded (sample F p a C E L T x) (sample F p a C E M S x) (num 6) (unit p) :=
-  distance_radius_mono _ _ _ _ _ _ (unit_positive _) (unit_positive _)
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl (num 6)) (GaussianFactorBudget.power_monotone_length two p (p+num 6)
-      (le_succ_self one) (le_add_right _ _))) (sample_distance F p a C E L T M S x h)
+  distance_radius_mono_den (unit_positive _)
+    (GaussianFactorBudget.power_monotone_length two p (p+num 6) (le_succ_self one) (le_add_right _ _))
+    (sample_distance F p a C E L T M S x h)
 
 /-- Exact budget independence of the actual unchanged original compact
 names. Both legitimate original inputs are explicit and sufficient. -/

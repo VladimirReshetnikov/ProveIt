@@ -18,7 +18,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianCompactNamedAdditivity
 open_ipra
 open GaussianRationalHorner (qadd positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianCompactRiemannName (sampledModulus localBody inside evaluatorName nameData sample quadrature mesh precision
   sampled_modulus_rate shift_sampled_modulus)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -154,8 +154,7 @@ theorem normalized_sample_additivity (F : PR 3) (p a C1 C2 E L T x : PTm n)
     distanceBounded (sample F p a (C1+C2) E L T x) (addedSample F p a C1 C2 E L T x) (num 14) (unit p) := by
   have old := sample_additivity F p a C1 C2 E L T x h
   have mono := GaussianFactorBudget.power_monotone_length (Γ := Γ) two p (p+num 6) (le_succ_self one) (le_add_right _ _)
-  have widened := distance_radius_mono _ _ _ _ (num 11) (unit p) (unit_positive _) (unit_positive _)
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl (num 11)) mono) old
+  have widened := distance_radius_mono_den (unit_positive _) mono old
   have correction := GaussianNameRingLaws.add_sample_error (GaussianCompactRiemannName.nameF F) (GaussianCompactRiemannName.nameF F)
     (GaussianCompactRiemannName.data a C1 E L T x) (GaussianCompactRiemannName.data (a+C1) C2 E L T x) p
     (GaussianCompactRiemannName.name_regular F a C1 E L T x (left_input F a C1 C2 E L T x h))

@@ -82,10 +82,8 @@ theorem finite_inverse_error (p q i j A B D N U K L : PTm n)
     distanceBounded i j ((A*A*D)*U+errorCost A K L*(B*B*N)) ((B*B*N)*U) := by
   let Z := (B*B*N)*U
   have nz : Γ ⊢[PRAAx] le one Z := positive_product _ _ (positive_product _ _ (positive_product _ _ hB hB) hN) hU
-  have ia := GaussianCoefficientNameBounds.bounded_radius_mono i A B A one hB (le_refl one)
-    (le_mul_mono (le_refl A) hB) hi
-  have ja := GaussianCoefficientNameBounds.bounded_radius_mono j A B A one hB (le_refl one)
-    (le_mul_mono (le_refl A) hB) hj
+  have ia := GaussianCoefficientNameBounds.bounded_radius_mono_den (le_refl one) hB hi
+  have ja := GaussianCoefficientNameBounds.bounded_radius_mono_den (le_refl one) hB hj
   have left := distance_radius_mono _ _ _ _ (A*L*(B*B*N)) Z hU nz
     (le_of_eq_add (d := zero) (by dsimp only [Z]; ipra_ring))
     (multiply_distance i qone (qmul q j) A L U hU ia (distance_symmetric _ _ _ _ hU hqj))

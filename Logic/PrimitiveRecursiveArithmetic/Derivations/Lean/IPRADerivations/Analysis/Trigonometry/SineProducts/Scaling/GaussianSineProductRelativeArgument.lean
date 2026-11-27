@@ -81,8 +81,7 @@ theorem relative_sample_error (z R B m k x p : PTm n) (hB : Γ ⊢[PRAAx] le one
   have gap := common_late_distance (Γ := Γ) quarterF x p a b (quarter_regular x)
     (le_add_right _ _) (le_add_right _ _)
   have c := GaussianSineProductScaledArguments.coefficient_bound z R B m hB hm hz
-  have c' := GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ (two*R) one hm (le_refl one)
-    (LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl (two*R)) hm) c
+  have c' := GaussianCoefficientNameBounds.bounded_radius_mono_den (le_refl one) hm c
   exact distance_congr (GaussianSineProductScaledArguments.sample_at z R B m x p).eqSymm
     (relative_root_sample_at z B m k x p hB hm hk).eqSymm (.eqRefl _) (.eqRefl _)
     (multiply_distance _ _ _ _ _ _ (unit_positive p) c' gap)

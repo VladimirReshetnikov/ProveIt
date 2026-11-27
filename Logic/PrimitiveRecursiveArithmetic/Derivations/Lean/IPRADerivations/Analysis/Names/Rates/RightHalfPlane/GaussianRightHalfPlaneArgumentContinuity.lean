@@ -16,7 +16,7 @@ set_option maxHeartbeats 1150000
 namespace LeanProofs.IPRA.Analysis.GaussianRightHalfPlaneArgumentContinuity
 
 open_ipra
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono_den)
 open GaussianRightHalfPlaneArgument (nameF data source unsignedF unsignedData smallF smallData largeF largeData
   wide wide_zero wide_one)
 open GaussianRightHalfPlaneArgumentChartContinuity (small_distance large_distance mixed_distance)
@@ -122,8 +122,8 @@ private theorem across_axis (p A B neg a b sign H M : PTm n)
     (le_trans left (le_trans hSmall hMA)) h.andE₂
   have oldY := GaussianRightHalfPlaneArgumentLocalBound.sample_bound p a b sign g.andE₁
     (le_trans right (le_trans hSmall hMa)) g.andE₂
-  have bx := bounded_radius_mono x B A B M h.andE₁ hM (LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl B) hMA) oldX
-  have by' := bounded_radius_mono y b a b M g.andE₁ hM (LeanProofs.IPRA.AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl b) hMa) oldY
+  have bx := bounded_radius_mono_den hM hMA oldX
+  have by' := bounded_radius_mono_den hM hMa oldY
   have joined := distance_triangle_same x qzero y B b M hM
     ((GaussianReconstructionRoots.distance_zero_iff x B M hM).iffMpr bx)
     (distance_symmetric _ _ _ _ hM ((GaussianReconstructionRoots.distance_zero_iff y b M hM).iffMpr by'))

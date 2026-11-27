@@ -45,7 +45,7 @@ open GaussianRationalLowerBounds (lower)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
 open GaussianReciprocalHorner (qmul_associative)
-open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
+open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono bounded_radius_mono_den)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_symmetric)
 open GaussianApproximateInverseDistance (multiply_distance)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -179,8 +179,7 @@ theorem transport (z R B K i x p : PTm n)
     (GaussianSineProductT4Budget.root_disk R K k hR hK hi)
   have hs : Γ ⊢[PRAAx] bounded s two one := unit_disk_bound nameF one a _ m p hm bu hu.andE₂
   have ht : Γ ⊢[PRAAx] bounded t two one := unit_disk_bound nameF one d _ m p hm bv hv.andE₂
-  have hb : Γ ⊢[PRAAx] bounded b R one := bounded_radius_mono _ _ _ _ _ hk (le_refl one)
-    (le_mul_mono (le_refl R) hk) (relative_bound z R B k hB hk hz)
+  have hb : Γ ⊢[PRAAx] bounded b R one := bounded_radius_mono_den (le_refl one) hk (relative_bound z R B k hB hk hz)
   have hP : Γ ⊢[PRAAx] bounded P (two*R) one :=
     bound_congr (.eqRefl _) (mul_comm _ _) (one_mul one) (bounded_product _ _ _ _ _ _ (le_refl _) (le_refl _) hb hs)
   have uBound : Γ ⊢[PRAAx] bounded u N one :=

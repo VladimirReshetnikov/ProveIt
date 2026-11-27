@@ -173,8 +173,7 @@ theorem local_exponential_step (M j s P : PTm n) (hM : Γ ⊢[PRAAx] le two M)
   have hD := conjugate_unit_bound M (succ j) hp
   have hA := sample_bound P s hP
   have hSmall : Γ ⊢[PRAAx] bounded I two one :=
-    GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ hp (le_refl one)
-      (le_mul_mono (le_refl two) hp) hi
+    GaussianCoefficientNameBounds.bounded_radius_mono_den (le_refl one) hp hi
   have hProduct := distance_symmetric _ _ _ _ hs (actual_scalar_product_dyadic P I two s oneTwo hP hSmall)
   have hStart : Γ ⊢[PRAAx] distanceBounded (row M (succ j) s (qadd P I))
       (qmul A (qmul U D)) one (pw two s) :=

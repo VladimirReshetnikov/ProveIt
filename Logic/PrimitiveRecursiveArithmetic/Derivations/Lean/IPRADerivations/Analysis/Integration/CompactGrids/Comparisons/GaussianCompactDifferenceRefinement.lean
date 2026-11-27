@@ -17,7 +17,7 @@ open_ipra
 open GaussianCompactRiemannName (data input mesh name_at name_regular precision quadrature quadrature_index_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedDifference (difference_distance sample_error)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono_den distance_triangle_same distance_symmetric)
 open GaussianRationalMetric (distanceBounded qsub)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -34,8 +34,7 @@ theorem at_refined_grid (F : PR 3) (p q N R a C E L T x : PTm n)
   have converted := distance_congr (quadrature_index_congr F q _ _ a C E x hN)
     (name_at F p a C E L T x).eqSymm (.eqRefl _) (.eqRefl _) refined
   have mono := GaussianCompactRiemannName.dyadic_monotone (Γ := Γ) p (p+num 6) (le_add_right _ _)
-  exact distance_radius_mono _ _ _ _ _ _ (unit_positive _) (unit_positive p)
-    (mul_le_mul_left (num 3) mono)
+  exact distance_radius_mono_den (unit_positive p) mono
     (distance_symmetric _ _ _ _ (unit_positive _) converted)
 
 theorem difference_at_refined_grid (F G : PR 3) (p q N R S a C E L M T x y : PTm n)

@@ -20,7 +20,7 @@ open GaussianCompactRiemannName (inside sampledModulus localBody grid value samp
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_mono_den)
 open GaussianRationalRiemannRefinement (termsDistance sum_distance weight)
 open GaussianRationalFiniteSum (sum)
 open GaussianNameEquivalence (crossEquivalent)
@@ -125,9 +125,9 @@ theorem sample_distance (F : PR 3) (p k a C E L T x : PTm n) (h : Γ ⊢[PRAAx] 
 
 theorem diagonal_distance (F : PR 3) (p k a C E L T x : PTm n) (h : Γ ⊢[PRAAx] input F k a C E L T x) : Γ ⊢[PRAAx]
     distanceBounded (sample F p a C E L T x) (sample F p (k*a) (k*C) (k*E) L T x) two (unit p) :=
-  distance_radius_mono _ _ _ _ _ _ (unit_positive _) (unit_positive _)
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl two) (GaussianFactorBudget.power_monotone_length two p (p+num 6)
-      (le_succ_self one) (le_add_right _ _))) (sample_distance F p k a C E L T x h)
+  distance_radius_mono_den (unit_positive _)
+    (GaussianFactorBudget.power_monotone_length two p (p+num 6) (le_succ_self one) (le_add_right _ _))
+    (sample_distance F p k a C E L T x h)
 
 theorem name_rescaling (F : PR 3) (k a C E L T x : PTm n) (h : Γ ⊢[PRAAx] input F k a C E L T x) : Γ ⊢[PRAAx]
     crossEquivalent (GaussianCompactRiemannName.nameF F) (GaussianCompactRiemannName.nameF F)
