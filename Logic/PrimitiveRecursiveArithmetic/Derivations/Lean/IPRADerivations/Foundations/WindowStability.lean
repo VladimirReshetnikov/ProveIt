@@ -74,16 +74,7 @@ theorem lower_guard {f : PTm 2} {k x m N : PTm n} (hkN : Γ ⊢[PRAAx] le (succ 
 theorem sum_lower {f : PTm 2} {N x m : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le (Syn.shift m) (inst2 f (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] le (N * m) (ap2 (sumF f) N x) := by
-  let P : Fm PTm (n + 1) := le (var 0 * Syn.shift m) (ap2 (sumF f) (var 0) (Syn.shift x))
-  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
-    refine qfIndUpTo N (le_QF _ _) ?_ ?_
-    · simp only [P, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      have z := natEq (sum_zero (Γ := Γ) f x)
-      ipra_le 0 using rw [z]; ring
-    · simp only [P, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact .impI (lower_step (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
-  simpa [P] using atBound
+  exact uniform_bound_le_sum f h
 
 /-! ## Telescoping shifted increments -/
 

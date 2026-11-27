@@ -25,14 +25,12 @@ namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSmooth
 
 open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_of_prime pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd (dvd_of_le_val)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg congrEqb' zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (PE XE inst2_XE val_PE)
 open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (dvd_mul_mul pw_dvd_base pw_dvd_exp K_eq lpf_two K_split
   cof_pos cof_lt)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (fB sB inst2_fB inst2_sB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveSurvivors (sz_alg)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (Sm gB par g_at term term_pos le_zero_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs)
@@ -182,18 +180,7 @@ theorem sum_le2 (f g : PTm 2) (x y N : PTm n)
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       le (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift y)))) :
     Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (ap2 (sumF g) N y) := by
-  have c1 : Γ ⊢[PRAAx] ap2 (sumF (fB f)) N (pairT x y) ≐ ap2 (sumF f) N x := by
-    refine sum_congr_bounded (fB f) f (pairT x y) x N (.allI (.impI ?_))
-    rw [shift_pairT, inst2_fB]
-    exact congrInst2 f (.eqRefl _) (fst_pair _ _)
-  have c2 : Γ ⊢[PRAAx] ap2 (sumF (sB g)) N (pairT x y) ≐ ap2 (sumF g) N y := by
-    refine sum_congr_bounded (sB g) g (pairT x y) y N (.allI (.impI ?_))
-    rw [shift_pairT, inst2_sB]
-    exact congrInst2 g (.eqRefl _) (snd_pair _ _)
-  refine le_congr c1 c2 (sum_le (fB f) (sB g) (pairT x y) N (.allI (.impI ?_)))
-  rw [shift_pairT, inst2_fB, inst2_sB]
-  exact le_congr (congrInst2 f (.eqRefl _) (fst_pair _ _)).eqSymm (congrInst2 g (.eqRefl _) (snd_pair _ _)).eqSymm
-    (.impE h.allOpen.wk Prf.hyp0)
+  exact sum_le_params f g x y N h
 
 /-- `[m ≥ 1][gcd(m, q) = 1] ⌊F/m⌋`, over `0 = m`, `1 = ⟨q, F⟩`. -/
 abbrev hqB : PTm 2 := sg (var 0) * (eqb (gcd (var 0) (fstT (var 1))) one * quo (sndT (var 1)) (var 0))

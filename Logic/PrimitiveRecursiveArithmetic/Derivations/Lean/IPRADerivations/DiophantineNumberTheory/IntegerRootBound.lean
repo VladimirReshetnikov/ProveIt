@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.SumOrder
 
 /-!
 # An integer root bound
@@ -75,36 +76,18 @@ theorem w_guard {r' J x : PTm n} (ht : Γ ⊢[PRAAx] le one (fstT x)) (hJ : Γ �
 /-- `∑_{i<J} a_i t^i ≤ t^{r′} ∑_{i<J} a_i` for `J ≤ r′ + 1`. -/
 theorem weighted_le {r' x : PTm n} (ht : Γ ⊢[PRAAx] le one (fstT x)) :
     Γ ⊢[PRAAx] WInv a r' (succ r') x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift (succ r')) ⟶
-      WInv a (Syn.shift r') (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · have e : (le (var 0) (Syn.shift (succ r')) ⟶ WInv a (Syn.shift r') (var 0) (Syn.shift x)).subst
-            (Syn.inst zero) = (le zero (succ r') ⟶ WInv a r' zero x) := by
-        simp
-      rw [e]
-      refine .impI ?_
-      have z₁ := natEq (sum_zero (Γ := le zero (succ r') :: Γ) (tB a) x)
-      have z₂ := natEq (sum_zero (Γ := le zero (succ r') :: Γ) a x)
-      ipra_le 0 using linear_combination 𝔟(pw (fstT x) r') * z₂ - z₁
-    · have e : (le (var 0) (Syn.shift (succ r')) ⟶ WInv a (Syn.shift r') (var 0) (Syn.shift x)).subst
-            (Syn.repl (succ (var 0))) =
-          (le (succ (var 0)) (Syn.shift (succ r')) ⟶
-            WInv a (Syn.shift r') (succ (var 0)) (Syn.shift x)) := by
-        simp
-      rw [e]
-      have ht' := ht.shift
-      have e₁ : Fm.shift (le one (fstT x)) = le one (fstT (Syn.shift x)) := by
-        simp [Fm.shift, Syn.shift]
-      have e₂ : Syn.shift (succ r') = succ (Syn.shift r') := by simp [Syn.shift]
-      rw [e₁] at ht'
-      rw [e₂]
-      exact .impI (w_guard a ht'.wk.wk Prf.hyp0 Prf.hyp1)
-  have h := Prf.allE (succ r') hall
-  have e : (le (var 0) (Syn.shift (succ r')) ⟶ WInv a (Syn.shift r') (var 0) (Syn.shift x)).subst
-        (Syn.inst (succ r')) = (le (succ r') (succ r') ⟶ WInv a r' (succ r') x) := by
-    simp
-  rw [e] at h
-  exact Prf.impE h (le_refl _)
+  have shifted : Γ.map Fm.shift ⊢[PRAAx] le one (fstT (Syn.shift x)) := by
+    simpa [Fm.shift, Syn.shift] using ht.shift
+  refine le_congr (one_mul _) ((congrAdd (.eqRefl _) (zero_mul _)).eqTrans (add_zero _))
+    (sum_scaled_le_weighted_pair (tB a) a a one (pw (fstT x) r') zero x x x (succ r') (.allI (.impI ?_)))
+  simp only [Syn.shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, subst_ap2, subst_fstT]
+  rw [inst2_tB]
+  have exponent : (lt (var 0) (succ (Syn.shift r')) :: Γ.map Fm.shift) ⊢[PRAAx]
+      le (pw (fstT (Syn.shift x)) (var 0)) (pw (fstT (Syn.shift x)) (Syn.shift r')) :=
+    pw_exp_mono shifted.wk (Order.le_of_lt_succ Prf.hyp0)
+  exact le_congr (one_mul _).eqSymm
+    ((mul_comm _ _).eqTrans ((congrAdd (.eqRefl _) (zero_mul _)).eqTrans (add_zero _)).eqSymm)
+    (mul_le_mul_left _ exponent)
 
 /-- `lem:runge-root-bound`: `t ≤ ∑_{i ≤ r′} |g_i|` for a nonzero integer root of absolute value `t`. -/
 theorem integer_root_bound {r' g x : PTm n} (ht : Γ ⊢[PRAAx] le one (fstT x)) (hg : Γ ⊢[PRAAx] le one g)

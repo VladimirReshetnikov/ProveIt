@@ -41,11 +41,10 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_mul')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiPower (pow_point phi_mul_pow_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (lpf_two K_split cof_pos cof_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_le le_quo_of_mul_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (fB sB inst2_fB inst2_sB sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (le_zero_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.FiniteSieve (finite_sieve)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorRange (P3 P3_L P3_z)
-open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSmooth (sum_le2 two_alg hqB hq_at Hq)
+open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSmooth (two_alg hqB hq_at Hq)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSquarefree (Hq_le_Asum)
 open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
@@ -62,16 +61,11 @@ theorem sum_le3 (f g h : PTm 2) (x y w N : PTm n)
     (hp : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       le (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift y) + inst2 h (var 0) (Syn.shift w)))) :
     Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (ap2 (sumF g) N y + ap2 (sumF h) N w) := by
-  have pt : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
-      (inst2 (addBody (fB g) (sB h)) (var 0) (Syn.shift (pairT y w)) ≐
-        inst2 g (var 0) (Syn.shift y) + inst2 h (var 0) (Syn.shift w))) := by
-    refine .allI (.impI ?_)
-    rw [inst2_addBody, inst2_fB, inst2_sB, shift_pairT]
-    exact congrAdd (congrInst2 g (.eqRefl _) (fst_pair _ _)) (congrInst2 h (.eqRefl _) (snd_pair _ _))
-  refine le_congr (.eqRefl _)
-    (sum_add2 g h (addBody (fB g) (sB h)) (K := N) (x := y) (x' := w) (z := pairT y w) pt) ?_
-  refine sum_le2 f (addBody (fB g) (sB h)) x (pairT y w) N (.allI (.impI ?_))
-  exact le_congr (.eqRefl _) (Prf.impE pt.allOpen.wk Prf.hyp0).eqSymm (.impE hp.allOpen.wk Prf.hyp0)
+  refine le_congr (one_mul _) (congrAdd (one_mul _) (one_mul _))
+    (sum_scaled_le_weighted_pair f g h one one one x y w N (.allI (.impI ?_)))
+  rw [show Syn.shift (one : PTm n) = one by simp [Syn.shift]]
+  exact le_congr (one_mul _).eqSymm (congrAdd (one_mul _) (one_mul _)).eqSymm
+    (.impE hp.allOpen.wk Prf.hyp0)
 
 /-! ## The term at a multiple of `p` -/
 
