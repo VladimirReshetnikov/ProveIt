@@ -133,7 +133,7 @@ private def rowAxes (t : PTm 2) (x : PTm n) : Fm PTm n :=
 
 private theorem axis_row_at (t : PTm 2) (x i : PTm n) (h : Γ ⊢[PRAAx] rowAxes t x) :
     Γ ⊢[PRAAx] axis (inst2 t i x) := by
-  simpa only [rowAxes,subst_axis,subst_inst2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+  ipra_simpa_inst [rowAxes,subst_axis,subst_inst2] using h.allE i
 
 private theorem sum_axis (t : PTm 2) (m x : PTm n) (h : Γ ⊢[PRAAx] rowAxes t x) :
     Γ ⊢[PRAAx] axis (GaussianRationalFiniteSum.sum t m x) := by
@@ -147,7 +147,7 @@ private theorem sum_axis (t : PTm 2) (m x : PTm n) (h : Γ ⊢[PRAAx] rowAxes t 
         (axis_congr (GaussianRationalFiniteSum.sum_zero (Γ := Γ) t x).eqSymm axis_zero)
     · exact axis_congr (GaussianRationalFiniteSum.sum_succ t (var 0) y).eqSymm
         (axis_add _ _ Prf.hyp0 (axis_row_at t y (var 0) hs.wk))
-  simpa only [motive,y,subst_axis,GaussianRationalFiniteSum.subst_sum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE m
+  ipra_simpa_inst [motive,y,subst_axis,GaussianRationalFiniteSum.subst_sum] using all.allE m
 
 private theorem finite_residual_axis (k A D neg N : PTm n) (h : Γ ⊢[PRAAx] source A D neg) :
     Γ ⊢[PRAAx] axis (GaussianNamedFiniteSumFamily.finite G residualBody k N (rowData A zero D neg)) := by

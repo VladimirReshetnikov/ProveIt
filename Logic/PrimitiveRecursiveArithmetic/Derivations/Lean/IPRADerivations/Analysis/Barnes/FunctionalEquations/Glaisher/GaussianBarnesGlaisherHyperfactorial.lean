@@ -156,7 +156,7 @@ theorem finite_estimate (p N : PTm n) : Γ ⊢[PRAAx] estimate p N := by
     ipra_qfind (by simp [estimate,distanceBounded,GaussianRationalMetric.bounded,RationalArgmin.rationalLE,le_QF]) [subst_estimate]
     · exact estimate_zero (Γ := Γ) p
     · exact estimate_succ (Syn.shift p) (var 0) Prf.hyp0
-  simpa only [subst_estimate,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+  ipra_simpa_inst [subst_estimate] using all.allE N
 
 theorem prefix_hyperfactorial_logarithm (N : PTm n) :
     Γ ⊢[PRAAx] crossEquivalent S baseF (sumData N) (hyp N) := by

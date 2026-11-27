@@ -53,7 +53,7 @@ theorem power_monotone (u v k : PTm n) (hu : Γ ⊢[PRAAx] positive u)
     ipra_qfind (le_QF _ _) [subst_powerOrder]
     · exact power_order_zero u v
     · exact power_order_step _ _ _ us.wk vs.wk hs.wk Prf.hyp0
-  simpa only [subst_powerOrder,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  ipra_simpa_inst [subst_powerOrder] using all.allE k
 
 theorem coefficient_monotone (u v k : PTm n) (hu : Γ ⊢[PRAAx] positive u)
     (hv : Γ ⊢[PRAAx] positive v) (huv : Γ ⊢[PRAAx] rationalLE (fstT u) (fstT v)) : Γ ⊢[PRAAx]
@@ -88,7 +88,7 @@ theorem prefix_monotone (u v k : PTm n) (hu : Γ ⊢[PRAAx] positive u)
     ipra_qfind (le_QF _ _) [subst_prefixOrder]
     · exact prefix_order_zero u v
     · exact prefix_order_step _ _ _ us.wk vs.wk hs.wk Prf.hyp0
-  simpa only [subst_prefixOrder,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  ipra_simpa_inst [subst_prefixOrder] using all.allE k
 
 theorem scalar_sum_monotone (u v K : PTm n) (hu : Γ ⊢[PRAAx] positive u)
     (hv : Γ ⊢[PRAAx] positive v) (huv : Γ ⊢[PRAAx] rationalLE (fstT u) (fstT v)) : Γ ⊢[PRAAx]

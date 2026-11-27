@@ -141,7 +141,7 @@ theorem prefix_upper (a b K N : PTm n) (h : Γ ⊢[PRAAx] lt a b)
     · simpa only [subst_prefixUpper,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using upper_zero (Γ := Γ) a b K
     · simpa only [subst_prefixUpper,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
         upper_step (Syn.shift a) (Syn.shift b) (Syn.shift K) (var 0) h'.wk hK'.wk Prf.hyp0
-  simpa only [subst_prefixUpper,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+  ipra_simpa_inst [subst_prefixUpper] using all.allE N
 
 def firstLower (a b N : PTm n) : Fm PTm n :=
   rationalLE (fstT (row a b zero)) (fstT (positiveSum a b (succ N)))
@@ -169,6 +169,6 @@ theorem first_lower (a b N : PTm n) (h : Γ ⊢[PRAAx] lt a b) :
         (congrFst (prefix_succ A B J)).eqSymm
         (point_add_order (row A B zero) (positiveSum A B J) qzero (row A B J) Prf.hyp0
           (row_nonnegative A B J h'.wk))
-  simpa only [subst_firstLower,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+  ipra_simpa_inst [subst_firstLower] using all.allE N
 
 end LeanProofs.IPRA.Analysis.GaussianGammaNegativeCriticalCorrection

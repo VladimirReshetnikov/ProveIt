@@ -77,8 +77,7 @@ theorem denominator_positive (C K j : PTm n) (hK : Γ ⊢[PRAAx] le one K) : Γ 
     · exact le_congr (.eqRefl _) (denominator_zero C K).eqSymm (le_refl one)
     · exact le_congr (.eqRefl _) (denominator_succ _ _ _).eqSymm
         (positive_product _ _ Prf.hyp0 (RationalNonnegativePowers.denominator_positive _ _ hK'.wk))
-  simpa only [subst_le,subst_denominator,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [subst_le,subst_denominator,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using all.allE j
 
 /-- This native comparison includes the total K=0 program. -/
 theorem denominator_le_numerator (C K j : PTm n) : Γ ⊢[PRAAx]
@@ -89,7 +88,7 @@ theorem denominator_le_numerator (C K j : PTm n) : Γ ⊢[PRAAx]
     · exact le_congr (denominator_zero C K).eqSymm (numerator_zero C K).eqSymm (le_refl one)
     · exact le_congr (denominator_succ _ _ _).eqSymm (numerator_succ _ _ _).eqSymm
         (le_mul_mono Prf.hyp0 (factor_lower _ _ _))
-  simpa only [subst_le,subst_denominator,subst_numerator,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [subst_le,subst_denominator,subst_numerator] using all.allE j
 
 theorem numerator_positive (C K j : PTm n) (hK : Γ ⊢[PRAAx] le one K) : Γ ⊢[PRAAx]
     le one (numerator C K j) := le_trans (denominator_positive C K j hK) (denominator_le_numerator C K j)
@@ -116,8 +115,8 @@ theorem prefix_bound (C K j : PTm n) : Γ ⊢[PRAAx]
       ipra_simps
       rw [ds,ps]
       ring
-  simpa only [subst_le,subst_numerator,subst_denominator,subst_ap2,PTm.subst_add,PTm.subst_mul,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [subst_le,subst_numerator,subst_denominator,subst_ap2,PTm.subst_add,PTm.subst_mul,
+    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using all.allE j
 
 theorem value_zero (C K : PTm n) : Γ ⊢[PRAAx] value C K zero ≐ fraction one one :=
   RationalNonnegativePowers.fraction_congr (numerator_zero C K) (denominator_zero C K)

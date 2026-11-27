@@ -56,9 +56,8 @@ theorem input_row_at (P d H j : PTm n) (h : Γ ⊢[PRAAx] inputMatrix P d H) (hj
 theorem input_coordinate_at (v d H i : PTm n) (h : Γ ⊢[PRAAx] inputRow v d H) (hi : Γ ⊢[PRAAx] lt i d) :
     Γ ⊢[PRAAx] le (zabs (rationalNumerator v i)) H ⋏ le (rationalDenominator v i) H := by
   have all : Γ ⊢[PRAAx] lt i d ⟶ le (zabs (rationalNumerator v i)) H ⋏ le (rationalDenominator v i) H := by
-    simpa only [inputRow,Fm.subst_imp,Fm.subst_and,subst_lt,subst_le,Foundations.GapDecision.subst_zabs,
-      RationalSupMetric.subst_rationalNumerator,RationalSupMetric.subst_rationalDenominator,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [inputRow,Fm.subst_imp,Fm.subst_and,subst_lt,subst_le,Foundations.GapDecision.subst_zabs,
+      RationalSupMetric.subst_rationalNumerator,RationalSupMetric.subst_rationalDenominator] using h.allE i
   exact .impE all hi
 
 private theorem product_bound (f : PTm 2) (x N H : PTm n)
@@ -78,7 +77,7 @@ private theorem product_bound (f : PTm 2) (x N H : PTm n)
       exact le_congr (Probability.ProductReplacement.prod_succ' _ _ _).eqSymm (pw_succ _ _).eqSymm
         (le_mul_mono previous next)
   have atN : Γ ⊢[PRAAx] le N N ⟶ le (ap2 (prodF f) N x) (pw H N) := by
-    simpa only [Fm.subst_imp,subst_le,subst_ap2,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+    ipra_simpa_inst [Fm.subst_imp,subst_le,subst_ap2] using all.allE N
   exact .impE atN (le_refl N)
 
 theorem row_denominator_bound (v d H : PTm n) (h : Γ ⊢[PRAAx] inputRow v d H) :

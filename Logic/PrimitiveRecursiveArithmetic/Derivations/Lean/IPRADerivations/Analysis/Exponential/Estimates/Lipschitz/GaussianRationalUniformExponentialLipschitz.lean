@@ -107,7 +107,7 @@ theorem prefix_bound (u v R A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     ipra_qfind (le_QF _ _) [subst_prefixLaw]
     · exact prefix_zero u v R A B hB hu hv hd
     · exact prefix_step _ _ _ _ _ _ bs.wk us.wk vs.wk ds.wk Prf.hyp0
-  simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  ipra_simpa_inst [subst_prefixLaw] using all.allE k
 
 /-- Uniform in every numerical cutoff, including K=0 and radius R=0. -/
 theorem scalar_sum_lipschitz (u v R A B K : PTm n) (hB : Γ ⊢[PRAAx] le one B)

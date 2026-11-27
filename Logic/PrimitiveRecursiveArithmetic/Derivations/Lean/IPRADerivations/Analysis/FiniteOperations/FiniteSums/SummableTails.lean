@@ -111,8 +111,7 @@ theorem discrepancy (p q e : PR 2) (N r x : PTm n) (h : Γ ⊢[PRAAx] motion p q
       have pair := Prf.allE (Syn.shift N + var 0) shifted
       simpa only [motion, subst_le, subst_zabs, subst_adjacent, subst_ap2,
         Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using pair.wk
-  simpa only [subst_le, subst_zabs, subst_difference, subst_intervalSum,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE r all
+  ipra_simpa_inst [subst_le, subst_zabs, subst_difference, subst_intervalSum] using Prf.allE r all
 
 /-- A finite-sum tail certificate, uniform in the starting index and length,
 with the runtime parameter kept fixed beneath both binders. -/

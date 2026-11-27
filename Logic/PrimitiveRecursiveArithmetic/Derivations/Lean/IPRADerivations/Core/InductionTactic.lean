@@ -84,3 +84,12 @@ macro_rules
   | `(tactic| ipra_qfind ($qf) [$ls,*]) =>
     `(tactic| (refine LeanProofs.ConciseIPRA.PRA.qfInd _ $qf ?_ ?_ <;>
         ipra_ind_simp [$ls,*, LeanProofs.ConciseIPRA.Syn.subst_inst_shift, LeanProofs.IPRA.subst_repl_shift]))
+
+/-- Simplify the standard substitutions after instantiating a quantified proof.
+List the substitution rules specific to the predicate being instantiated. -/
+syntax "ipra_simpa_inst" " [" Lean.Parser.Tactic.simpLemma,* "]" " using " term : tactic
+
+macro_rules
+  | `(tactic| ipra_simpa_inst [$rules,*] using $proof) =>
+    `(tactic| simpa only [$rules,*, LeanProofs.ConciseIPRA.Syn.subst_var,
+      LeanProofs.ConciseIPRA.Syn.inst_zero, LeanProofs.ConciseIPRA.Syn.subst_inst_shift] using $proof)

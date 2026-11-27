@@ -136,7 +136,7 @@ theorem residual_bound (b g : ZB) (x L i D E M : PTm n)
         law_zero (Γ := Γ) b g x L i D E
     · exact law_succ b g _ _ _ _ _ _ h'.wk Prf.hyp0
   have atM : Γ ⊢[PRAAx] law b g x L i D E M := by
-    simpa only [subst_law,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using universal.allE M
+    ipra_simpa_inst [subst_law,sh] using universal.allE M
   exact .impE atM hm
 
 theorem actual_signed_discrete_derivative_block_closed (b g : ZB) :

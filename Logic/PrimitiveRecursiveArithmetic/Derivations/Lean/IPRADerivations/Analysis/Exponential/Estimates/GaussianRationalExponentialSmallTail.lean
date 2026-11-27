@@ -113,7 +113,7 @@ theorem small_tail (q N A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     · exact start q N A B hB
     · exact advance _ _ _ _ _ ds.wk qs.wk hs.wk Prf.hyp0
   have tailBound : Γ ⊢[PRAAx] budgetedTail q N A B k := by
-    simpa only [sh,subst_budgetedTail,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+    ipra_simpa_inst [sh,subst_budgetedTail] using all.allE k
   have pos := GaussianFactorBudget.power_positive B N hB
   exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _
     (positive_product _ _ pos (unit_positive k)) pos (by

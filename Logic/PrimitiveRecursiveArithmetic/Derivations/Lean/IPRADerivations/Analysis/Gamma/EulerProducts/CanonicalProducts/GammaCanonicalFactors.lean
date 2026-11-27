@@ -280,9 +280,8 @@ theorem sum_domination (z R B N r L D : PTm n) (hz : Γ ⊢[PRAAx] bounded z R) 
       exact le_congr (ComplexLogarithmRemainder.congr_normSq (sum_succ _ _ _ _ _ _)).eqSymm
         (congrMul (ReciprocalSquareTail.tailSum_succ _ _ _ _)
           (ReciprocalSquareTail.tailSum_succ _ _ _ _)).eqSymm joined
-  simpa only [ComplexLogarithmRemainder.subst_bounded, subst_finiteSum,
-    ReciprocalSquareTail.subst_tailSum, subst_radiusData, Syn.subst_var,
-    Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE r all
+  ipra_simpa_inst [ComplexLogarithmRemainder.subst_bounded, subst_finiteSum,
+    ReciprocalSquareTail.subst_tailSum, subst_radiusData] using Prf.allE r all
 
 /-- Finite (C6) for the computed scaled sum, with no supplied pointwise majorant. -/
 theorem finite_sum_bound (z R B N r L D : PTm n) (hz : Γ ⊢[PRAAx] bounded z R)

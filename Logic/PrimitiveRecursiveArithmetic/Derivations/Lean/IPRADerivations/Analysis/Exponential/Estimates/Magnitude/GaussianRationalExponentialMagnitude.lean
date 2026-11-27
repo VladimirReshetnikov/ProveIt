@@ -154,7 +154,7 @@ theorem power_majorized (q r K : PTm n) (hr : Γ ⊢[PRAAx] positive r) (h : Γ 
         congr (GaussianRationalReciprocal.power_zero q).eqSymm (GaussianRationalReciprocal.power_zero r).eqSymm one_majorized
     · exact congr (GaussianRationalReciprocal.power_succ _ _).eqSymm (GaussianRationalReciprocal.power_succ _ _).eqSymm
         (multiply _ _ _ _ (GaussianPositiveRealArithmetic.positive_power _ _ hs.wk) hs.wk Prf.hyp0 hm.wk)
-  simpa only [subst_majorized,GaussianRationalReciprocal.subst_power,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
+  ipra_simpa_inst [subst_majorized,GaussianRationalReciprocal.subst_power] using all.allE K
 
 theorem inverse_factorial_majorized (j : PTm n) : Γ ⊢[PRAAx] majorized (inverseFactorial j) (inverseFactorial j) := by
   have hj := factorial_positive (Γ := Γ) j
@@ -192,6 +192,6 @@ theorem scalar_sum_majorized (q r K : PTm n) (hr : Γ ⊢[PRAAx] positive r)
       exact congr (GaussianRationalPolynomialExponential.scalar_sum_succ u j).eqSymm
         (GaussianRationalPolynomialExponential.scalar_sum_succ v j).eqSymm
         (add _ _ _ _ p (GaussianPositiveRealArithmetic.positive_multiply _ _ inv pow) Prf.hyp0 mon)
-  simpa only [subst_majorized,GaussianRationalPolynomialExponential.subst_scalarSum,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
+  ipra_simpa_inst [subst_majorized,GaussianRationalPolynomialExponential.subst_scalarSum] using all.allE K
 
 end LeanProofs.IPRA.Analysis.GaussianRationalExponentialMagnitude

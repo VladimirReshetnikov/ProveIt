@@ -113,8 +113,7 @@ ipra_subst pointsBounded [Syn.subst_shift, Syn.shift_subst]
 theorem point_bound (S N R j : PTm n) (h : Γ ⊢[PRAAx] pointsBounded S N R) (hj : Γ ⊢[PRAAx] lt j N) :
     Γ ⊢[PRAAx] bounded (entry S j) R := by
   have rule : Γ ⊢[PRAAx] lt j N ⟶ bounded (entry S j) R := by
-    simpa only [pointsBounded,Fm.subst_imp,subst_lt,ComplexLogarithmRemainder.subst_bounded,subst_entry,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using Prf.allE j h
+    ipra_simpa_inst [pointsBounded,Fm.subst_imp,subst_lt,ComplexLogarithmRemainder.subst_bounded,subst_entry] using Prf.allE j h
   exact .impE rule hj
 
 /-- The actual finite metric score is the denominator-cleared squared

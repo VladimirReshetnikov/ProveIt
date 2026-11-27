@@ -116,7 +116,7 @@ theorem tangents (j v u M L : PTm n) (hM : Γ ⊢[PRAAx] le u M) (hL : Γ ⊢[PR
       exact .andI (upper_step _ _ _ _ _ hM'.wk.wk hL'.wk.wk Prf.hyp0 ih.andE₁)
         (lower_step _ _ _ _ _ hM'.wk.wk hL'.wk.wk Prf.hyp0 ih.andE₂)
   have that : Γ ⊢[PRAAx] law j v u M L := by
-    simpa only [subst_law,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+    ipra_simpa_inst [subst_law,sh] using all.allE j
   exact that.impE hj
 
 end LeanProofs.IPRA.Analysis.GaussianHarmonicQuadraticTangent

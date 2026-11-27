@@ -111,7 +111,7 @@ theorem prefix_bound (z R B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     ipra_qfind (le_QF _ _) [subst_prefixBound]
     · exact prefix_bound_zero z R B hB hz
     · exact prefix_bound_succ _ _ _ _ hB'.wk hz'.wk Prf.hyp0
-  simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using law.allE N
+  ipra_simpa_inst [subst_prefixBound] using law.allE N
 
 theorem factor_is_local_constant (p i z B : PTm n) : Γ ⊢[PRAAx]
     GaussianFiniteLogarithmCompositionName.constant p (ofGaussian z (B*succ i)) ≐ factor i z B :=

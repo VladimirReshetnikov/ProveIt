@@ -106,7 +106,7 @@ theorem prefix_bound (u v A B k : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     ipra_qfind (le_QF _ _) [subst_boundLaw]
     · exact bound_zero u v A B hB hu hv hd
     · exact bound_step _ _ _ _ _ bs.wk us.wk vs.wk ds.wk Prf.hyp0
-  simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  ipra_simpa_inst [subst_boundLaw] using all.allE k
 
 theorem en_bound_succ (k : PTm n) : Γ ⊢[PRAAx] le (en (succ k)) (num 3*fact (succ k)) := by
   apply mul_le_cancel (d' := k)

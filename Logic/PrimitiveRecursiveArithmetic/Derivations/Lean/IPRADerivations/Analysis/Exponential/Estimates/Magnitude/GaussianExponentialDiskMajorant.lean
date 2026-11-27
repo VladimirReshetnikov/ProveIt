@@ -122,7 +122,7 @@ theorem majorant_represents (R K : PTm n) : Γ ⊢[PRAAx] majorantLaw R K := by
     ipra_qfind (⟨trivial,trivial⟩) [subst_majorantLaw]
     · exact majorant_zero R
     · exact majorant_step _ _ Prf.hyp0
-  simpa only [subst_majorantLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
+  ipra_simpa_inst [subst_majorantLaw] using all.allE K
 
 theorem real_majorant_represents (R K : PTm n) : Γ ⊢[PRAAx]
     RationalArithmetic.represents (fstT (scalarSum (naturalPoint R) K))

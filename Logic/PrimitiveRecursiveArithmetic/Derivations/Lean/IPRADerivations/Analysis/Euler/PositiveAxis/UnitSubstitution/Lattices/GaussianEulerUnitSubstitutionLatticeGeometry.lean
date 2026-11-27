@@ -63,7 +63,7 @@ private theorem from_zero (F : PR 2) (x i : PTm n) (h : Γ ⊢[PRAAx] GaussianPa
     · exact
         le_refl (Γ := Γ) (ap2 F zero x)
     · exact le_trans Prf.hyp0 (GaussianPartitionedFiniteSum.cut_step (Γ := _ :: Γ.map Fm.shift) F (Syn.shift x) (var 0) hs.wk)
-  simpa only [subst_le,subst_ap2,ConciseIPRA.PTm.subst_zero,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using steps.allE i
+  ipra_simpa_inst [subst_le,subst_ap2,ConciseIPRA.PTm.subst_zero] using steps.allE i
 
 theorem start_le_cut (i k N a C E T M : PTm n) (hs : Γ ⊢[PRAAx] GaussianEulerUnitSubstitutionFloorCuts.source k N a C E T M) :
     Γ ⊢[PRAAx] le (start k N a C E T M) (cut i k N a C E T M) :=

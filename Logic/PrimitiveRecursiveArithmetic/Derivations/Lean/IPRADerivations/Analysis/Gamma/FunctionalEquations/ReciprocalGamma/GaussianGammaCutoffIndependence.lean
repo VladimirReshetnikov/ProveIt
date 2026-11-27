@@ -61,7 +61,7 @@ theorem prefix_distance (p z R B N D : PTm n) (h : Γ ⊢[PRAAx] source z R B N)
     ipra_qfind (by unfold prefixLaw GaussianRationalMetric.distanceBounded GaussianRationalMetric.bounded RationalArgmin.rationalLE; exact le_QF _ _) [subst_prefixLaw]
     · exact prefix_zero (Γ := Γ) p z R B N
     · exact prefix_step _ _ _ _ _ _ hs.wk Prf.hyp0
-  simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE D
+  ipra_simpa_inst [subst_prefixLaw] using all.allE D
 
 theorem cutoff_envelope (z R B N D : PTm n) (h : Γ ⊢[PRAAx] source z R B N) : Γ ⊢[PRAAx]
     GaussianValueNormalizerExtensionality.rawDiagonal nameF nameF (data z R B N) (data z R B (N+D)) (two*D) := by
