@@ -29,7 +29,7 @@ open GaussianRationalLowerBounds (lower)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone dyadic_weaken)
 open GaussianApproximateInverseDistance (multiply_distance)
-open GaussianNameEquivalence (crossEquivalent cross_at diagonal_at cross_to_diagonal)
+open GaussianNameEquivalence (crossEquivalent cross_at cross_diagonal_at)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianNameRingLaws (normalized_to_sample)
 open GaussianRadiusExponentialName (input)
@@ -78,7 +78,7 @@ private theorem sine_value_error (f g : PR 2) (R S x y p : PTm n)
   have hp := unit_positive (Γ := Γ) t
   have e := sine_proper (imaginaryF f) (imaginaryF g) R S x y
     (imaginary_input f R x hf) (imaginary_input g S y hg) (imaginary_cross f g x y h)
-  have mid := diagonal_at F G a b t (cross_to_diagonal _ _ _ _ e)
+  have mid := cross_diagonal_at t e
   exact distance_triangle_same _ _ _ _ _ _ hp
     (distance_triangle_same _ _ _ _ _ _ hp (distance_symmetric _ _ _ _ hp (sine_sample_error f R x p hf)) mid)
     (sine_sample_error g S y p hg)
