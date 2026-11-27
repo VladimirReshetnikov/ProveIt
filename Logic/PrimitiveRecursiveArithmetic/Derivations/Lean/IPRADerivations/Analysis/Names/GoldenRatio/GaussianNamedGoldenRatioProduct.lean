@@ -48,15 +48,8 @@ private theorem one_eq : Γ ⊢[PRAAx] (onePoint : PTm n) ≐ qone := by
 private theorem undo_add (f k : PR 2) (x z : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hk : Γ ⊢[PRAAx] pointCN k z) :
     Γ ⊢[PRAAx] crossEquivalent (addF (addF f k) (negativeF k)) f
-      (addData (addData x z) (negativeData z)) x := by
-  let T := addF k (negativeF k)
-  let t := addData z (negativeData z)
-  let Z := zeroF
-  have neg := negative_fast k z hk
-  have assoc := GaussianNameRingLaws.add_associative f k (negativeF k) x z (negativeData z) hf hk neg
-  have undo := cross_trans T Z Z t z x (GaussianNameRingLaws.add_negative k z hk) (GaussianNameRingLaws.zero_name_cross z x)
-  have lift := add_cross f f T Z x x t x hf hf (add_fast _ _ _ _ hk neg) (zero_fast _) (cross_refl _ _ hf) undo
-  exact cross_trans _ _ _ _ _ _ assoc (cross_trans _ _ _ _ _ _ lift (GaussianNameRingLaws.add_zero f x hf))
+      (addData (addData x z) (negativeData z)) x :=
+  GaussianNamedDifference.add_sub_cancel_right f k x z hf hk
 
 private theorem cancel_add (f g k : PR 2) (x y z : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) (hk : Γ ⊢[PRAAx] pointCN k z)

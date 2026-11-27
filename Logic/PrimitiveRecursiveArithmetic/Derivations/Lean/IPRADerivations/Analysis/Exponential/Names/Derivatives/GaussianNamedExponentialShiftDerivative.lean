@@ -61,19 +61,8 @@ private theorem add_cross (f g h k : PR 2) (x y u v : PTm n)
 
 private theorem cancel_left (F G : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y) :
-    Γ ⊢[PRAAx] crossEquivalent (diffF (addF F G) F) G (diffData (addData x y) x) y := by
-  let N := negativeF F
-  let n := negativeData x
-  have hn := negative_fast F x hf
-  have p := add_cross (addF F G) (addF G F) N N (addData x y) (addData y x) n n
-    (add_fast _ _ _ _ hf hg) (add_fast _ _ _ _ hg hf) hn hn
-    (add_commutative F G x y hf hg) (cross_refl _ _ hn)
-  have q := add_associative G F N y x n hg hf hn
-  have r := add_cross G G (addF F N) zeroF y y (addData x n) y hg hg
-    (add_fast _ _ _ _ hf hn) (zero_fast y) (cross_refl _ _ hg)
-    (cross_trans _ _ _ _ _ _ (add_negative F x hf) (GaussianNameRingLaws.zero_name_cross x y))
-  exact cross_trans _ _ _ _ _ _ p
-    (cross_trans _ _ _ _ _ _ q (cross_trans _ _ _ _ _ _ r (GaussianNameRingLaws.add_zero G y hg)))
+    Γ ⊢[PRAAx] crossEquivalent (diffF (addF F G) F) G (diffData (addData x y) x) y :=
+  GaussianNamedDifference.add_sub_cancel_left F G x y hf hg
 
 private theorem weighted_cancel (E g : PR 2) (d y : PTm n)
     (he : Γ ⊢[PRAAx] pointCN E d) (hg : Γ ⊢[PRAAx] pointCN g y) :

@@ -78,45 +78,10 @@ theorem interleave (f g h k : PR 2) (x y u v : PTm n)
   simpa only [Δ,sh,p,Syn.shift,GaussianNamedDifference.subst_data,GaussianNameArithmetic.subst_addData,PTm.subst_num] using
     distance_congr (.eqRefl _) (.eqRefl _) (show Δ ⊢[PRAAx] num 12+num 15 ≐ num 27 by ipra_ring) (.eqRefl _) both
 
-private theorem cancel_added_at (f g : PR 2) (p x y : PTm n)
-    (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) :
-    Γ ⊢[PRAAx] distanceBounded (ap2 (Diff (addF f g) f) p (dd (addData x y) x))
-      (ap2 g p y) (num 9) (unit p) := by
-  let a := ap2 f p x
-  let b := ap2 g p y
-  have hu := unit_positive (Γ := Γ) p
-  have far := sample_error (addF f g) f (addData x y) x p (add_fast _ _ _ _ hf hg) hf
-  have near := difference_distance _ _ _ _ _ _ _ hu (add_sample_error f g x y p hf hg)
-    (GaussianRationalPowerDifference.distance_refl_zero a (unit p) hu)
-  have recode : Γ ⊢[PRAAx] GaussianTranslatedNonconstant.recode b ≐ GaussianFastValueCut.recode b :=
-    GaussianRationalHorner.canonical_unique _ _ _ _ (GaussianTranslatedNonconstant.recode_canonical b)
-      (GaussianFastValueCut.recode_canonical b) (GaussianRationalL1.raw_den_positive b)
-      (GaussianTranslatedNonconstant.recode_represents b) (GaussianFastValueCut.recode_represents b)
-  have e := (GaussianRationalSyntheticCoefficientValues.qadd_sub_recode (Γ := Γ) a b).eqTrans recode
-  have first : Γ ⊢[PRAAx] distanceBounded (ap2 (Diff (addF f g) f) p (dd (addData x y) x))
-      (GaussianFastValueCut.recode b) (num 6+(GaussianNameRingLaws.three+zero)) (unit p) :=
-    distance_congr (.eqRefl _) e (.eqRefl _) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hu far near)
-  have last : Γ ⊢[PRAAx] distanceBounded (GaussianFastValueCut.recode b) b zero (unit p) :=
-    distance_radius_mono _ _ zero one zero (unit p) (le_refl one) hu
-    (le_of_eq_add (d := zero) (by ipra_ring)) (GaussianFastValueCut.recode_distance b)
-  have radius : Γ ⊢[PRAAx] num 6+(GaussianNameRingLaws.three+zero)+zero ≐ num 9 := by
-    unfold GaussianNameRingLaws.three
-    ipra_ring
-  exact distance_congr (.eqRefl _) (.eqRefl _) radius (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ hu first last)
-
 theorem cancel_added (f g : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) :
-    Γ ⊢[PRAAx] crossEquivalent (Diff (addF f g) f) g (dd (addData x y) x) y := by
-  apply equivalent_of_envelope _ _ _ _ (num 9) (name_regular _ _ _ _ (add_fast _ _ _ _ hf hg) hf) hg
-  refine .allI ?_
-  let Δ := Γ.map Fm.shift
-  let sh (t : PTm n) := Syn.shift t
-  have fs : Δ ⊢[PRAAx] pointCN f (sh x) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hf.shift
-  have gs : Δ ⊢[PRAAx] pointCN g (sh y) := by simpa [Δ,sh,Fm.shift,Syn.shift] using hg.shift
-  simpa only [Δ,sh,Syn.shift,GaussianNamedDifference.subst_data,GaussianNameArithmetic.subst_addData,PTm.subst_num] using
-    cancel_added_at f g (var 0) (sh x) (sh y) fs gs
+    Γ ⊢[PRAAx] crossEquivalent (Diff (addF f g) f) g (dd (addData x y) x) y :=
+  GaussianNamedDifference.add_sub_cancel_left f g x y hf hg
 
 theorem constant_difference (a b c : PTm n) (hc : Γ ⊢[PRAAx] qsub a b ≐ c) :
     Γ ⊢[PRAAx] crossEquivalent (Diff constantF constantF) constantF (dd a b) c := by

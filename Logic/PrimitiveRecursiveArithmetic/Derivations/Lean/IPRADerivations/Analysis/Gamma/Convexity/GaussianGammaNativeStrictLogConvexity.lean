@@ -65,11 +65,7 @@ theorem cancel_order (F : PR 2) (c x : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x)
   have hc := constant_regular (Γ := Γ) c
   have hn := negative_fast F x hf
   have comb := add_order (addF C F) F N N (addData c x) x v v h (order_refl _ _ hn)
-  have a := add_associative C F N c x v hc hf hn
-  have b := add_cross C C (addF F N) zeroF c c (addData x v) c hc hc
-    (add_fast _ _ _ _ hf hn) (zero_fast _)
-    (cross_refl _ _ hc) (cross_trans _ _ _ _ _ _ (add_negative F x hf) (GaussianNameRingLaws.zero_name_cross x c))
-  have left := cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ b (GaussianNameRingLaws.add_zero C c hc))
+  have left := GaussianNamedDifference.add_sub_cancel_right C F c x hc hf
   have right := cross_trans _ _ _ _ _ _ (add_negative F x hf) (zero_constant x)
   exact GaussianNamedRealOrderTransport.transport _ _ _ _ _ _ _ _ (cross_symm _ _ _ _ left) right comb
 
