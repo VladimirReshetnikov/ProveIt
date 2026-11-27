@@ -91,10 +91,8 @@ private theorem imag_one_sign (B neg : PTm n) (h : Γ ⊢[PRAAx] neg ≐ one) :
 private theorem opposite_imaginaries (B b D d : PTm n)
     (hD : Γ ⊢[PRAAx] le one D) (hd : Γ ⊢[PRAAx] le one d) (e : Γ ⊢[PRAAx] B*d+b*D ≐ zero) :
     Γ ⊢[PRAAx] (B*d ≐ b*D) ⋏ ((B ≐ zero) ⋏ (b ≐ zero)) := by
-  have zB : Γ ⊢[PRAAx] B*d ≐ zero :=
-    le_antisymm (le_congr (.eqRefl _) e (le_add_right (B*d) (b*D))) (zero_le _)
-  have zb : Γ ⊢[PRAAx] b*D ≐ zero :=
-    le_antisymm (le_congr (.eqRefl _) e (le_add_left (b*D) (B*d))) (zero_le _)
+  have zB := add_eq_zero_left e
+  have zb := add_eq_zero_right e
   have eB : Γ ⊢[PRAAx] B ≐ zero := le_antisymm
     (le_congr (one_mul B) ((mul_comm d B).eqTrans zB) (mul_le_mul_right B hd)) (zero_le _)
   have eb : Γ ⊢[PRAAx] b ≐ zero := le_antisymm

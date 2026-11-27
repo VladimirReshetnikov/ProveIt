@@ -50,16 +50,13 @@ theorem sq_of_zero {W P Q : PTm k} (e : Γ ⊢[PRAAx] W * W + two * (P * Q) ≐ 
 
 theorem sq_zero_alg {a p X : PTm k} (ha : Γ ⊢[PRAAx] a ≐ succ p) (h : Γ ⊢[PRAAx] a * a + X ≐ zero) :
     Γ ⊢[PRAAx] Fm.bot := by
-  have a1 := natEq ha; have h1 := natEq h
-  refine succ_ne_zero' _ (a := p * p + two * p + X) ?_
-  ipra_lc h1 - (𝔞 a + 𝔞 p + 1) * a1
+  have product := (congrMul ha (.eqRefl a)).eqSymm.eqTrans (add_eq_zero_left h)
+  exact succ_ne_zero (ha.eqSymm.eqTrans (eq_zero_of_succ_mul product))
 
 /-- `|P − Q| = 0` when `P = Q = 0`. -/
 theorem ad_zero {P Q : PTm k} (hP : Γ ⊢[PRAAx] P ≐ zero) (hQ : Γ ⊢[PRAAx] Q ≐ zero) :
-    Γ ⊢[PRAAx] ad P Q ≐ zero := by
-  have s := sq_of_zero (ad_sq (Γ := Γ) P Q) hP hQ
-  refine .orE (zero_or_succ (ad P Q)) Prf.hyp0 ?_
-  exact .botE _ (sq_zero_alg (Prf.hyp0 (Γ := Γ) (φ := ad P Q ≐ succ (pred (ad P Q)))) s.wk)
+    Γ ⊢[PRAAx] ad P Q ≐ zero :=
+  .orE (zero_or_zero_of_mul (add_eq_zero_left (sq_of_zero (ad_sq P Q) hP hQ))) Prf.hyp0 Prf.hyp0
 
 section Zeros
 

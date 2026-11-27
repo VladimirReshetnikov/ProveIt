@@ -80,10 +80,8 @@ theorem ae_congr (w X Y : PTm 2) {N x : PTm n}
 
 /-! ## Zero absolute expectation and zero variance -/
 
-theorem ad_zero {a b : PTm n} (h : Γ ⊢[PRAAx] ad a b ≐ zero) : Γ ⊢[PRAAx] a ≐ b := by
-  have l1 : Γ ⊢[PRAAx] le (monus a b) zero := le_congr (.eqRefl _) h (le_add_right _ _)
-  have l2 : Γ ⊢[PRAAx] le (monus b a) zero := le_congr (.eqRefl _) h (le_add_left _ _)
-  exact le_antisymm (le_antisymm l1 (zero_le _)) (le_antisymm l2 (zero_le _))
+theorem ad_zero {a b : PTm n} (h : Γ ⊢[PRAAx] ad a b ≐ zero) : Γ ⊢[PRAAx] a ≐ b :=
+  le_antisymm (add_eq_zero_left h) (add_eq_zero_right h)
 
 theorem w_cancel {w a b : PTm n} (h : Γ ⊢[PRAAx] w * ad a b ≐ zero) : Γ ⊢[PRAAx] w * a ≐ w * b := by
   refine .orE (zero_or_zero_of_mul h) ?_ ?_

@@ -120,21 +120,17 @@ theorem no_norm_three (a b : PTm n) : Γ ⊢[PRAAx] neg (N5 a b ≐ succ two) :=
 
 theorem sq_zero_alg {a p X : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ p) (h : Γ ⊢[PRAAx] a * a + X ≐ zero) :
     Γ ⊢[PRAAx] Fm.bot := by
-  have a1 := natEq ha; have h1 := natEq h
-  refine succ_ne_zero' _ (a := p * p + two * p + X) ?_
-  ipra_lc h1 - (𝔞 a + 𝔞 p + 1) * a1
+  have product := (congrMul ha (.eqRefl a)).eqSymm.eqTrans (add_eq_zero_left h)
+  exact succ_ne_zero (ha.eqSymm.eqTrans (eq_zero_of_succ_mul product))
 
 theorem swap_alg {a b : PTm n} (h : Γ ⊢[PRAAx] N5 a b ≐ zero) :
     Γ ⊢[PRAAx] b * b + (a * a + num 4 * (b * b)) ≐ zero := by
   ipra_lc natEq h
 
 /-- **The norm vanishes only at zero**. -/
-theorem norm_zero {a b : PTm n} (h : Γ ⊢[PRAAx] N5 a b ≐ zero) : Γ ⊢[PRAAx] (a ≐ zero) ⋏ (b ≐ zero) := by
-  refine .andI ?_ ?_
-  · refine .orE (zero_or_succ a) Prf.hyp0 ?_
-    exact .botE _ (sq_zero_alg (Prf.hyp0 (Γ := Γ) (φ := a ≐ succ (pred a))) h.wk)
-  · refine .orE (zero_or_succ b) Prf.hyp0 ?_
-    exact .botE _ (sq_zero_alg (Prf.hyp0 (Γ := Γ) (φ := b ≐ succ (pred b))) (swap_alg h).wk)
+theorem norm_zero {a b : PTm n} (h : Γ ⊢[PRAAx] N5 a b ≐ zero) : Γ ⊢[PRAAx] (a ≐ zero) ⋏ (b ≐ zero) :=
+  .andI (.orE (zero_or_zero_of_mul (add_eq_zero_left h)) Prf.hyp0 Prf.hyp0)
+    (.orE (zero_or_zero_of_mul (add_eq_zero_left (swap_alg h))) Prf.hyp0 Prf.hyp0)
 
 theorem one5 : Γ ⊢[PRAAx] (one : PTm n) + succ (succ two) ≐ num 5 := by
   ipra_lc

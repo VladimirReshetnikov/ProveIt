@@ -78,7 +78,7 @@ def collWit (g : ℕ) (a : PTm n) : Fm PTm n :=
           (succ (kOf d' a)) a ≐ zero)))
 
 theorem add_zero_right {Γ : List (Fm PTm n)} {x y : PTm n} (h : Γ ⊢[PRAAx] x + y ≐ zero) : Γ ⊢[PRAAx] y ≐ zero :=
-  add_eq_zero_left ((add_comm _ _).eqTrans h)
+  add_eq_zero_right h
 
 /-- A passed check of `searchI g` means an `h`-close pair on the `g`-faces, and the `h`-closeness is
 the collision bound. -/

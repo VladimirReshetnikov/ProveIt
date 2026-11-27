@@ -309,8 +309,8 @@ theorem nonnegative_pair_zero (x : PTm n) (ha : Γ ⊢[PRAAx] zle (ZT.ofNat zero
     ipra_simps
     rw [← ea,← eb]
     exact h
-  have az : Γ ⊢[PRAAx] a ≐ zero := le_antisymm (le_congr (.eqRefl _) sum (le_add_right _ _)) (zero_le _)
-  have bz : Γ ⊢[PRAAx] b ≐ zero := le_antisymm (le_congr (.eqRefl _) sum (le_add_left _ _)) (zero_le _)
+  have az : Γ ⊢[PRAAx] a ≐ zero := add_eq_zero_left sum
+  have bz : Γ ⊢[PRAAx] b ≐ zero := add_eq_zero_right sum
   refine .andI (ZT.derive ?_) (ZT.derive ?_)
   · rw [zeroCode,first_value,ZT.toZ_ofNat,ea,natEq az]
   · rw [zeroCode,second_value,ZT.toZ_ofNat,eb,natEq bz]
@@ -328,8 +328,8 @@ theorem nonpositive_pair_zero (x : PTm n) (ha : Γ ⊢[PRAAx] zle (first x) (ZT.
     ipra_simps
     rw [← ea,← eb]
     linear_combination -h
-  have az : Γ ⊢[PRAAx] a ≐ zero := le_antisymm (le_congr (.eqRefl _) sum (le_add_right _ _)) (zero_le _)
-  have bz : Γ ⊢[PRAAx] b ≐ zero := le_antisymm (le_congr (.eqRefl _) sum (le_add_left _ _)) (zero_le _)
+  have az : Γ ⊢[PRAAx] a ≐ zero := add_eq_zero_left sum
+  have bz : Γ ⊢[PRAAx] b ≐ zero := add_eq_zero_right sum
   refine .andI (ZT.derive ?_) (ZT.derive ?_)
   · rw [zeroCode,first_value,ZT.toZ_ofNat]
     have h := ea.trans (natEq az)

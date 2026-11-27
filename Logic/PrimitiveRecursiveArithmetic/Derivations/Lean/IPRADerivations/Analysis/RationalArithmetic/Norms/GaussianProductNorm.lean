@@ -153,13 +153,8 @@ private theorem square_zero {a : PTm n} (h : Γ ⊢[PRAAx] a*a ≐ zero) : Γ �
 
 theorem norm_zero_values (c : PTm n) (h : Γ ⊢[PRAAx] normSq c ≐ zero) :
     ZT.toZ Γ (re c) = 0 ∧ ZT.toZ Γ (im c) = 0 := by
-  have hr : Γ ⊢[PRAAx] Probability.Variance.ad (re c).pos (re c).neg *
-      Probability.Variance.ad (re c).pos (re c).neg ≐ zero :=
-    le_antisymm (le_congr (.eqRefl _) h (le_add_right _ _)) (zero_le _)
-  have hi : Γ ⊢[PRAAx] Probability.Variance.ad (im c).pos (im c).neg *
-      Probability.Variance.ad (im c).pos (im c).neg ≐ zero :=
-    le_antisymm (le_congr (.eqRefl _) h (le_add_left _ _)) (zero_le _)
-  exact ⟨value_zero_of_abs (re c) (square_zero hr),value_zero_of_abs (im c) (square_zero hi)⟩
+  exact ⟨value_zero_of_abs (re c) (square_zero (add_eq_zero_left h)),
+    value_zero_of_abs (im c) (square_zero (add_eq_zero_right h))⟩
 
 theorem equal_of_difference_norm_zero (z r : PTm n)
     (h : Γ ⊢[PRAAx] normSq (sub z r) ≐ zero) : Γ ⊢[PRAAx] equal z r := by

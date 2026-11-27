@@ -231,8 +231,8 @@ theorem eqb_split2 {s₁ s₂ y z i k : PTm n} (h : Γ ⊢[PRAAx] le (y + z) one
     have l0 : C ⊢[PRAAx] le (pred y + z) zero :=
       (succ_monus_succ _ _).eqSymm.eqTrans ((congrMonus (by have x := natEq hy; apply deriveNat; ipra_simps; linear_combination -x) (.eqRefl _)).eqTrans h.wk)
     have s0 : C ⊢[PRAAx] pred y + z ≐ zero := le_antisymm l0 (zero_le _)
-    have p0 : C ⊢[PRAAx] pred y ≐ zero := le_antisymm (le_trans (le_add_right _ _) (le_congr (.eqRefl _) s0 (le_refl _))) (zero_le _)
-    have z0 : C ⊢[PRAAx] z ≐ zero := le_antisymm (le_trans (le_add_left _ _) (le_congr (.eqRefl _) s0 (le_refl _))) (zero_le _)
+    have p0 : C ⊢[PRAAx] pred y ≐ zero := add_eq_zero_left s0
+    have z0 : C ⊢[PRAAx] z ≐ zero := add_eq_zero_right s0
     have y1 : C ⊢[PRAAx] y ≐ one := hy.eqTrans (congrSucc p0)
     have e1 : C ⊢[PRAAx] eqb (s₁ + y) i ≐ eqb (succ s₁) i :=
       congrEqb ((congrAdd (.eqRefl _) y1).eqTrans (succ_eq_add_one _).eqSymm) (.eqRefl _)
