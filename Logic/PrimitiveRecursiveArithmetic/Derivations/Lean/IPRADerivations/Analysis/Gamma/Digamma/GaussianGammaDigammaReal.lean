@@ -26,7 +26,7 @@ open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_symm)
 open GaussianNamedDifference (difference_distance)
 open GaussianNamedDifferenceQuotient (inverse scale_distance)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (qmul positive_product canonical)
 open GaussianRationalMetric (qsub distanceBounded)
 open GaussianRationalNaturalScale (naturalPoint)
@@ -65,11 +65,9 @@ private theorem real_slope_error (t a b D : PTm n) (hs : Γ ⊢[PRAAx] source a 
   have hp := unit_positive (Γ := Γ) t
   have ha := cross_at _ _ _ _ t t (gamma_retimed_cross _ _ (neighbor_source a b D hs hD))
   have hb := cross_at _ _ _ _ t t (gamma_retimed_cross a b hs)
-  have convert := fun (x y : PTm n) (h : Γ ⊢[PRAAx] distanceBounded x y (unit t+unit t) (unit t*unit t)) =>
-    distance_radius_mono x y _ _ two (unit t) (positive_product _ _ hp hp) hp
-      (le_of_eq_add (d := zero) (by ipra_ring)) h
   have diff := difference_distance (ap2 gammaF t (neighborData a b D)) (ap2 GF t (gg e d))
-    (ap2 gammaF t (gammaData a b)) (ap2 GF t (gg a b)) two two (unit t) hp (convert _ _ ha) (convert _ _ hb)
+    (ap2 gammaF t (gammaData a b)) (ap2 GF t (gg a b)) two two (unit t) hp
+    (distance_two_errors_same hp ha) (distance_two_errors_same hp hb)
   have inv := GaussianNamedDifferenceQuotient.inverse_bound oneCode D
     (GaussianGammaUnitInverseSamples.actual_step_separated D hD)
   exact distance_congr (.eqRefl _) (GaussianRationalSyntheticDivision.qmul_congr (natural_inverse D hD) (.eqRefl _))

@@ -22,7 +22,7 @@ open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianNameRingLaws (equivalent_of_envelope additive_inverse_value)
 open GaussianNamedDifference (name_regular sample_error difference_distance)
 open GaussianPositiveRationalLogarithm (logF)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same reversed_difference)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric distance_triangle_same reversed_difference)
 open GaussianRationalHorner (qadd qzero canonical positive_product)
 open GaussianRationalMetric (qnegative qsub distanceBounded)
 open GaussianRationalPowerDifference (distance_refl_zero)
@@ -133,8 +133,7 @@ private theorem recurrence_at (p A B D neg : PTm n) (h : Γ ⊢[PRAAx] source A 
     distance_symmetric _ _ _ _ hU (sample_error H H x' y' p
       (GaussianLogGammaEulerHead.regular (A+D) B D neg N hs hN) (GaussianLogGammaEulerHead.regular A B D neg N h hN))
   have e₄ : Γ ⊢[PRAAx] distanceBounded f d two U :=
-    distance_radius_mono f d (U+U) (U*U) two U (positive_product _ _ hU hU) hU
-      (le_of_eq_add (d := zero) (by ipra_ring))
+    distance_two_errors_same hU
       (cross_at (F H H) correctedF (X x' y') (correctedData A B D neg N) p p
         (GaussianLogGammaEulerRecurrenceFinite.difference A B D neg N h hN))
   have e₅ := GaussianLogGammaEulerTerminalShiftError.terminal_sample_error p A B D neg N h hlarge

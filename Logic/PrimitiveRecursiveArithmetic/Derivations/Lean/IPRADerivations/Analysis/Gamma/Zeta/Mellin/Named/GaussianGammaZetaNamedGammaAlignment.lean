@@ -28,7 +28,7 @@ open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm cro
 open GaussianNamedInverseRate (independentRate rate_at rateNumerator rateDenominator denominator_positive)
 open GaussianNamedRightHalfPlaneLift (source data)
 open GaussianNamedRightHalfPlaneSigned (certificate native_value)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (ofGaussian canonical_unique ofGaussian_canonical ofGaussian_represents represents_congr positive_product)
 open GaussianRationalL1 (rawGaussian rawDen)
 open GaussianRationalMetric (distanceBounded)
@@ -101,8 +101,7 @@ theorem original_observations (f : PR 2) (p x M R : PTm n) (hf : Γ ⊢[PRAAx] s
   have boundL := at_same_clock _ _ p (data x M R) X hx
   have hp := unit_positive (Γ := Γ) p
   have boundR := distance_symmetric _ _ _ _ hp (at_same_clock _ _ p (GaussianNamedGamma.data (shiftData x) M) Y hy)
-  have middle := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring))
+  have middle := distance_two_errors_same hp
     (cross_at gammaF gammaF X Y p p (frozen_cross f p t x M R hq hG))
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hp boundL (distance_triangle_same _ _ _ _ _ _ hp middle boundR))

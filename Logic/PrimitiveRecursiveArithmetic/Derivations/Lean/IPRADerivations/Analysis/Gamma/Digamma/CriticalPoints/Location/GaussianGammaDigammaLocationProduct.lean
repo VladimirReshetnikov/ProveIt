@@ -28,7 +28,7 @@ open GaussianGammaDigammaNative (derivativeData gamma_times_digamma)
 open GaussianGammaReciprocalInverse (gammaF)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiplyRaw multiply_at)
 open GaussianNameEquivalence (cross_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr bounded_product)
@@ -115,9 +115,7 @@ theorem native_derivative_residual_at (k : PTm n) : Γ ⊢[PRAAx]
   let b := grid k
   have hK := unit_positive (Γ := Γ) k
   have link := cross_at _ _ _ _ k k (gamma_times_digamma a b (rational_source (Γ := Γ) k))
-  have reversed := distance_symmetric _ _ _ _ (positive_product _ _ hK hK) link
-  have same := distance_radius_mono _ _ _ _ two (unit k) (positive_product _ _ hK hK) hK
-    (le_congr (by ipra_ring) (.eqRefl _) (le_refl _)) reversed
+  have same := distance_symmetric _ _ _ _ hK (distance_two_errors_same hK link)
   exact distance_triangle_same _ _ _ _ _ _ hK same (original_product_residual k)
 
 theorem original_location_logarithmic_integral_residual_closed :

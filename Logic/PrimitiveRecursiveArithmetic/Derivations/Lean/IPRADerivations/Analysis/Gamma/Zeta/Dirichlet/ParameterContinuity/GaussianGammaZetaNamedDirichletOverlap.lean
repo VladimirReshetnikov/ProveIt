@@ -31,7 +31,7 @@ open GaussianNamedRightHalfPlaneDemandLift (clock frozenData clock_margin name_r
 open GaussianNamedRightHalfPlaneDemandComparison (frozen_observations)
 open GaussianNamedRightHalfPlaneLift (source data late_certificate)
 open GaussianNamedRightHalfPlaneSigned (certificate)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (ofGaussian_represents positive_product qzero)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalSyntheticDivision (qone)
@@ -96,8 +96,7 @@ theorem overlap_observations (f : PR 2) (p x M N R S : PTm n)
   have right := frozen_envelope (nameF f) Z p (data x N S) x₂
     (frozen_observations dirichletMap f p p p k x N S hb hl)
   have hp := unit_positive (Γ := Γ) p
-  have mid := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring))
+  have mid := distance_two_errors_same hp
     (cross_at Z Z x₁ x₂ p p (chart_overlap (ap2 f k x) R S (two*M) (two*N) qa qb))
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hp left

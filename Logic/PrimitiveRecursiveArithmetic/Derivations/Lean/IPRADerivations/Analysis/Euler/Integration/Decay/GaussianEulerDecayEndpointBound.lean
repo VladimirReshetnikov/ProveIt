@@ -23,7 +23,7 @@ open GaussianRealExponentialPositiveRepresentative (positiveF positiveData sampl
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric norm_from_distance_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric norm_from_distance_same)
 open GaussianRationalReciprocal (bound_congr bounded_negative)
 open GaussianReconstructionRoots (distance_zero_iff norm_from_distance)
 open RationalGaussianEmbedding (scalarZero scalar_zero_represents canonical_axis_roundtrip embed_zero)
@@ -63,8 +63,7 @@ private theorem representative_error (a E p : PTm n) (hE : Γ ⊢[PRAAx] le one 
     Γ ⊢[PRAAx] distanceBounded (representative a E p) (observation a E p) two (unit p) := by
   have h := GaussianNameEquivalence.cross_at positiveF decayF
     (positiveData (signedTime a E)) (decayData a E) p p (original_decay_nonnegative_representative a E hE)
-  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive p) (unit_positive p))
-    (unit_positive p) (le_of_eq_add (d := zero) (by ipra_ring)) h
+  exact distance_two_errors_same (unit_positive p) h
 
 private theorem representative_order (a C E p : PTm n) (hE : Γ ⊢[PRAAx] le one E) :
     Γ ⊢[PRAAx] upper (fstT (representative (a+C) E p)) (fstT (representative a E p))

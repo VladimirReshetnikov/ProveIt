@@ -20,7 +20,7 @@ open GaussianCompactRiemannName (nameF data name_regular name_canonical)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (canonical positive_product qadd)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric distance_triangle_same)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianRationalSyntheticDivision (qadd_sub_cancel)
 open GaussianNameEquivalence (cross_at)
@@ -37,8 +37,7 @@ theorem observation_additivity (F : PR 3) (p a C1 C2 E L T x : PTm n)
       (qadd (observation F p a C1 E L T x) (observation F p (a+C1) C2 E L T x)) (num 5) (unit p) := by
   have hp := unit_positive (Γ := Γ) p
   have cross := cross_at _ _ _ _ p p (name_additivity F a C1 C2 E L T x h)
-  have near := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring)) cross
+  have near := distance_two_errors_same hp cross
   have rounded := GaussianNameRingLaws.add_sample_error (nameF F) (nameF F)
     (data a C1 E L T x) (data (a+C1) C2 E L T x) p
     (name_regular F a C1 E L T x (left_input F a C1 C2 E L T x h))

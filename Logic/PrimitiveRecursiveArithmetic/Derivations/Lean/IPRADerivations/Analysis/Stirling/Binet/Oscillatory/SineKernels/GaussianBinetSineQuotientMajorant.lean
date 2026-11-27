@@ -30,7 +30,7 @@ open GaussianGammaCanonicalExponent (constantF)
 open GaussianLogGammaEulerHead (argument)
 open GaussianLogGammaEulerResidualDomain (native)
 open GaussianNameEquivalence (cross_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (positive_product qadd qmul ofGaussian_represents)
 open GaussianRationalLowerBounds (inverse_bound)
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub qnegative qnegative_canonical qnegative_represents)
@@ -89,8 +89,7 @@ private theorem linear_sample_bound (s : Bool) (p A B C : PTm n) (hB : Γ ⊢[PR
     (bounded_radius_mono _ _ _ _ _ hB (le_refl one) (le_congr (by ipra_ring) (by ipra_ring) ha) hc)
   have equal := GaussianExponentialRadiusIndependence.same_input_cross constantF (C*one) one c (unit_input s A B C hB hC) in₁
   have step₀ : Γ ⊢[PRAAx] distanceBounded w v two P :=
-    distance_radius_mono _ _ (P+P) (P*P) two P (positive_product _ _ hP hP) hP
-      (le_of_eq_add (d := zero) (by ipra_ring))
+    distance_two_errors_same hP
       (distance_congr (direct_sample s p A B C).eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _) (cross_at _ _ _ _ p p equal))
   have hB₂ := positive_product _ _ hB hB
   have step₁ : Γ ⊢[PRAAx] distanceBounded v g A B :=

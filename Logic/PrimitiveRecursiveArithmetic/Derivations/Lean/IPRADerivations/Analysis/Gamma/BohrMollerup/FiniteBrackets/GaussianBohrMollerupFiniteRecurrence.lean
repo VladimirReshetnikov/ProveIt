@@ -27,7 +27,7 @@ open GaussianNameArithmetic (addF addData add_fast sum_distance)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_at)
 open GaussianNameRingLaws (add_sample_error three)
 open GaussianNamedFiniteSumFamily (finite body term_at sample_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (qadd qzero positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianStirlingGammaLogarithm (source)
@@ -54,13 +54,11 @@ private theorem step_error (P : Presentation) (p a b : PTm n)
   let x := argument P a b
   let y := logData a b
   let d := argument P (a+b) b
-  let U := unit p
   have hU := unit_positive (Γ := Γ) p
   have hy := GaussianHarmonicLogarithmName.name_regular a b hs
   have hx := (observe_value P a b hv hs).andE₁
   have hr := cross_at f (addF H f) d (addData y x) p p (observe_recurrence P a b hr hs)
-  have first := distance_radius_mono _ _ (U+U) (U*U) two U (positive_product _ _ hU hU) hU
-    (le_of_eq_add (d := zero) (by ipra_ring)) hr
+  have first := distance_two_errors_same hU hr
   have last := add_sample_error H f y x p hy hx
   exact distance_congr (.eqRefl _) (.eqRefl _) (by unfold three; ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hU first last)

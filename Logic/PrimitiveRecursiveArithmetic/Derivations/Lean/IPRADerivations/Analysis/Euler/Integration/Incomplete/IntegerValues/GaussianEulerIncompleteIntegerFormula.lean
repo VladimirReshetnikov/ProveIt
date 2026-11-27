@@ -28,7 +28,7 @@ open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_fas
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianRationalHorner (positive_product qadd qmul)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_two_errors_same distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 
@@ -78,8 +78,7 @@ theorem error_base (p a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx
   have hcan : Γ ⊢[PRAAx] GaussianRationalHorner.canonical (decay p a b) :=
     GaussianRadiusExponentialName.sample_canonical constantF _ _ _
   have right := GaussianEulerIncompleteFactorialCombination.base (GaussianPositiveRationalLogarithm.fraction a b) (decay p a b) hcan
-  have diag := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hu hu) hu
-    (le_of_eq_add (d := zero) (by ipra_ring)) old
+  have diag := distance_two_errors_same hu old
   exact distance_congr left.eqSymm right.eqSymm (error_zero a b).eqSymm (.eqRefl _) diag
 
 theorem error_step (p i a b : PTm n) (h : Γ ⊢[PRAAx] source a b) (ih : Γ ⊢[PRAAx] errorLaw p i a b) :

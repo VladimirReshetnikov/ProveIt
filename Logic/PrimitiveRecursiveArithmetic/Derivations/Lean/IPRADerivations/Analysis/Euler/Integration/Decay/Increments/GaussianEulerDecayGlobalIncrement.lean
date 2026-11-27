@@ -25,7 +25,7 @@ open GaussianEulerIntegrandName (decayF decayData decayPoint)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyModulus multiply_at product_distance)
 open GaussianNameEquivalence (cross_at point_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_symmetric distance_triangle_same)
 open GaussianRationalHorner (qmul positive_product qmul_canonical)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -42,9 +42,7 @@ theorem observation_bound (p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
 
 theorem positive_observation_distance (p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] distanceBounded (realDecay p a b) (observation a b p) two (unit p) := by
-  have hU := unit_positive (Γ := Γ) p
-  exact distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hU hU) hU
-    (le_of_eq_add (d := zero) (by ipra_ring))
+  exact distance_two_errors_same (unit_positive p)
     (cross_at positiveF decayF (positiveData (signedTime a b)) (decayData a b) p p
       (original_decay_nonnegative_representative a b hb))
 

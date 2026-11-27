@@ -24,7 +24,7 @@ open GaussianRationalHorner (qadd)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_two_errors_same distance_triangle_same distance_symmetric)
 open GaussianNamedInverseRate (rate_at rateNumerator rateDenominator)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
@@ -123,8 +123,7 @@ theorem later_additivity (t z R B A a C E T : PTm ℓ) (h : Γ ⊢[PRAAx] source
 
 private theorem cross_diagonal (F G : PR 2) (x y t : PTm ℓ) (he : Γ ⊢[PRAAx] crossEquivalent F G x y) : Γ ⊢[PRAAx]
     distanceBounded (ap2 F t x) (ap2 G t y) two (unit t) :=
-  distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive t) (unit_positive t)) (unit_positive t)
-    (le_of_eq_add (d := zero) (by ipra_ring)) (cross_at _ _ _ _ t t he)
+  distance_two_errors_same (unit_positive t) (cross_at _ _ _ _ t t he)
 
 private theorem cutoff_budget (t a C E T A R : PTm ℓ) : Γ ⊢[PRAAx]
     le (GaussianEulerCutoffCauchyComparison.combined A R*unit t) (unit (height (cutoff t a C E T) A R)) := by

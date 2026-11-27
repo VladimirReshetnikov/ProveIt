@@ -25,7 +25,7 @@ open GaussianGammaDigammaHarmonicCells (halfReciprocal)
 open GaussianNameEquivalence (cross_at crossEquivalent cross_refl)
 open GaussianNameRingLaws (negativeF negativeData)
 open GaussianNamedDampingPowerRealSamples (negative_real)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_two_errors_same distance_triangle_same)
 open GaussianRationalHorner (ofGaussian_canonical positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianSignedNameExponentialOrder (realSamples)
@@ -77,8 +77,7 @@ theorem real_base_rate (p a b Q : PTm n) (hs : Γ ⊢[PRAAx] source a b)
       (ap2 realF p (realData a b)) (two*a+num 38) (unit p) := by
   have hp := unit_positive (Γ := Γ) p
   have cross := cross_at baseF realF (baseData a b) (realData a b) p p (original_cross a b hs)
-  have e := distance_radius_mono _ _ _ _ two (unit p) (positive_product _ _ hp hp) hp
-    (le_of_eq_add (d := zero) (by ipra_ring)) cross
+  have e := distance_two_errors_same hp cross
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hp (original_base_rate p a b Q hs hQ) e)
 

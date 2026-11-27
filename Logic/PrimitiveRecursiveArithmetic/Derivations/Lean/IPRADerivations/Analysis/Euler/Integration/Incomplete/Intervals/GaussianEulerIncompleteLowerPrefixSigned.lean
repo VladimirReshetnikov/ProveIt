@@ -18,7 +18,7 @@ open_ipra
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianRationalHorner (canonical positive_product qadd qzero)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_two_errors_same distance_symmetric distance_triangle_same)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (addF addData)
 open GaussianNameEquivalence (crossEquivalent cross_at)
@@ -70,8 +70,7 @@ theorem prefix_bound (F : PR 2) (t x y w A H : PTm n)
   have hU := unit_positive (Γ := Γ) t
   have hD : Γ ⊢[PRAAx] le one (H*U) := positive_product _ _ hH hU
   have step : Γ ⊢[PRAAx] distanceBounded S W two U :=
-    distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hU hU) hU
-      (le_congr (.eqRefl _) (by dsimp only [U]; ipra_ring) (le_refl _)) (cross_at _ _ _ _ t t hadd)
+    distance_two_errors_same hU (cross_at _ _ _ _ t t hadd)
   have via := distance_triangle_same Z S W (num 3) two U hU (rounded_sum_distance F t x y hx hy) step
   have via' : Γ ⊢[PRAAx] distanceBounded Z W (num 5) U :=
     distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _) via

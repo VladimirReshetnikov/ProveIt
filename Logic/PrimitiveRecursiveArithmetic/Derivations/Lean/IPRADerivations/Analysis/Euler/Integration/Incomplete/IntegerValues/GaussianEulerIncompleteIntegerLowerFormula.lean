@@ -25,7 +25,7 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianRationalHorner (qadd canonical positive_product)
 open GaussianRationalMetric (qsub distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_two_errors_same distance_triangle_same distance_symmetric)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -49,8 +49,7 @@ theorem original_lower_canonical (p i a b : PTm n) : Γ ⊢[PRAAx]
 private theorem pair_to_diagonal (t x y : PTm n)
     (h : Γ ⊢[PRAAx] distanceBounded x y (unit t+unit t) (unit t*unit t)) : Γ ⊢[PRAAx]
     distanceBounded x y two (unit t) :=
-  distance_radius_mono _ _ _ _ _ _ (positive_product _ _ (unit_positive t) (unit_positive t)) (unit_positive t)
-    (le_of_eq_add (d := ConciseIPRA.PTm.zero) (by ipra_ring)) h
+  distance_two_errors_same (unit_positive t) h
 
 theorem original_diagonal (t i a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx]
     distanceBounded (ap2 lowerF t (data i a b)) (ap2 formulaF t (formulaData i a b)) (num 15) (unit t) := by
