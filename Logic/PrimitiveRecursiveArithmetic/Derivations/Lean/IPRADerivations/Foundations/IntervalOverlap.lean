@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.IntervalIntersection
-import IPRADerivations.Core.Header
 
 /-!
 # Overlaps of two finite unions of grid intervals
@@ -22,19 +21,16 @@ other factor through the sum (`Probability/Independence.sum_scale`), exchange th
 
 namespace LeanProofs.IPRA.Foundations.IntervalOverlap
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt indB inst3_indB covB sg_le_self)
 open LeanProofs.IPRA.Foundations.IntervalIntersection (meet congrCnt ccB quad cc_at inter_cells)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (shift_inst2')
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## One interval against a family -/
 

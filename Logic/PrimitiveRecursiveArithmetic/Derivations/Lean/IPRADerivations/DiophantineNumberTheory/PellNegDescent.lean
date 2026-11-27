@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.PellDescent
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Negative descent for Pell's equation
@@ -17,11 +15,9 @@ The strict inequalities come from the square identities of the paper:
 `(Bx)² − ((A − 1)y)² = 2(A − 1)y² − B²`, each written with an explicit nonnegative surplus.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellNegDescent
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (lt_of_sq_lt A_pos rr tt residual_norm_balance positive_residual)

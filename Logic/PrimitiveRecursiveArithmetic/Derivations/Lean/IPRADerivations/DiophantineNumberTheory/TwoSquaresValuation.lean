@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresObstruction
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The valuation of a sum of two squares at a prime `q ≡ 3 (mod 4)`
@@ -21,20 +18,14 @@ The proof of the packet: let `t` be the smaller of the valuations of the nonzero
 * **`two_squares_val_even`**: `par (v_q(n)) = 0`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresValuation
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val cof_eq cof_not_dvd)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_unique val_mul val_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresObstruction (two_obstruction)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The decomposition -/
 

@@ -1,11 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusBounds
-import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
 import IPRADerivations.AnalyticNumberTheory.DivisorCases
 import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # Möbius inversion and the Möbius formula for `φ`
@@ -29,14 +24,9 @@ with a parameter).
   `φ(N) = ∑_{d ∣ N} μ(d) N/d`.
 -/
 
-set_option linter.unusedSimpArgs false
-
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' zero_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' pos_of_eq_mul)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
@@ -169,9 +159,9 @@ theorem a_pt (d e Z : PTm n) :
   have g := G_at (Γ := Γ) d (succ (fstT Z)) (quo (fstT Z) e)
   have g₁ := natEq (Prf.andE₁ g); have g₂ := natEq (Prf.andE₂ g)
   refine .andI ?_ ?_
-  · ipra_lc 𝔞 (eqb (sq (succ (fstT Z)) d) zero) * 𝔞 (eqb (rem (om (succ (fstT Z)) d) two) zero) * 𝔞 (inst2 f e Z) * natEq (dv_symm (Γ := Γ) (fstT Z) d e) -
+  · ipra_lc 𝔞 (eqb (sq (succ (fstT Z)) d) zero) * 𝔞 (eqb (rem (om (succ (fstT Z)) d) two) zero) * 𝔞 (inst2 f e Z) * natEq (dv_symm (fstT Z) d e) -
       𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * g₁
-  · ipra_lc 𝔞 (eqb (sq (succ (fstT Z)) d) zero) * 𝔞 (eqb (rem (om (succ (fstT Z)) d) two) one) * 𝔞 (inst2 f e Z) * natEq (dv_symm (Γ := Γ) (fstT Z) d e) -
+  · ipra_lc 𝔞 (eqb (sq (succ (fstT Z)) d) zero) * 𝔞 (eqb (rem (om (succ (fstT Z)) d) two) one) * 𝔞 (inst2 f e Z) * natEq (dv_symm (fstT Z) d e) -
       𝔞 (sg e) * 𝔞 (eqb (rem (fstT Z) e) zero) * 𝔞 (inst2 f e Z) * g₂
 
 theorem col_scale (e Z : PTm n) :
@@ -268,9 +258,9 @@ theorem mobius_inversion_p {Z : PTm n} (hN : Γ ⊢[PRAAx] fstT Z ≐ succ (pred
     rw [inst2_dlt, inst2_dB, shift_pairT, shift_pairT, hs, show Syn.shift (fstT Z) = fstT (Syn.shift Z) by simp [Syn.shift]]
     exact congrMul (congrEqb' ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _).eqSymm) (.eqRefl _))
       (congrInst2 f (.eqRefl _) ((snd_pair _ _).eqTrans (snd_pair _ _).eqSymm))
-  ipra_lc natEq (fubini (Γ := Γ) (aP f) (succ (fstT Z)) (succ (fstT Z)) Z) + natEq cs +
-    natEq (sum_add (Γ := Γ) (pB (aN f)) (dltB f) (succ (fstT Z)) (pairT (succ (fstT Z)) Z)) + natEq dl -
-    natEq (fubini (Γ := Γ) (aN f) (succ (fstT Z)) (succ (fstT Z)) Z)
+  ipra_lc natEq (fubini (aP f) (succ (fstT Z)) (succ (fstT Z)) Z) + natEq cs +
+    natEq (sum_add (pB (aN f)) (dltB f) (succ (fstT Z)) (pairT (succ (fstT Z)) Z)) + natEq dl -
+    natEq (fubini (aN f) (succ (fstT Z)) (succ (fstT Z)) Z)
 
 /-- A row of the double sum in closed form, with a parameter: if `I(e, P)` is the summand
 `[e ≥ 1][e ∣ N/d] f(e, Z)` of the inner sum (`hI`) and that sum is `F` whenever `1 ≤ N/d ≤ N` (`hF`), `N = fst Z`,
@@ -511,7 +501,7 @@ theorem eqb_rem_big {k a : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (h : 
   have w := natEq (eq_add_of_le h)
   have ha : Γ ⊢[PRAAx] a ≐ succ (pred a) :=
     LeanProofs.IPRA.AnalyticNumberTheory.Primes.eq_succ_pred (y := k + monus a (succ k))
-      (by apply deriveNat; ipra_simps; linear_combination w)
+      (by ipra_lc w)
   have r : Γ ⊢[PRAAx] rem k a ≐ k := rem_eq' ha (q := zero) (by ipra_ring) h
   exact (congrEqb' r (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ (hk.wk.eqSymm.eqTrans Prf.hyp0))))
 
@@ -556,3 +546,5 @@ theorem phi_mobius {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
   rwa [inst2_phiB] at h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion
+
+export_ipra AnalyticNumberTheory.MobiusInversion (eqb_rem_big mobius_inversion)

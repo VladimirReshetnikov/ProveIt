@@ -1,14 +1,8 @@
 import IPRADerivations.Foundations.InvolutionPairing
 import IPRADerivations.Foundations.ProductPowers
-import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.DiophantineNumberTheory.UnitInvolution
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.AnalyticNumberTheory.DivisorSplit
-import IPRADerivations.Core.ParityArith
 import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The pair product modulo a prime
@@ -33,29 +27,20 @@ For a prime `p`, `gcd(a, p) = 1`, the involution `σ` of `UnitInvolution` on the
 Wilson's product `(p − 1)! ≡ p − 1`, which turns the last statement into `a^h ≡ −1`, is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PairProduct
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne ne_of_eqb_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
+open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (ne_of_eqb_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two one_inst inst2_mulB congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (shift_cop)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_rem_congr)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2 prod_congr_mod)
 open LeanProofs.IPRA.DiophantineNumberTheory.UnitInvolution (sB s_at unit_perm pair_mul fixed_sq succ_lt_of)
 open LeanProofs.IPRA.Foundations.InvolutionPairing (LB EB inst2_LB inst2_EB inst2_pw pair_count pair_prod)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_elim ex_none)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Bodies, over `0 = i`, `1 = ⟨p, a⟩` -/
 
@@ -185,3 +170,5 @@ theorem euler_nonresidue {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ �
   exact .botE _ (.impE (sq_search_no_root hnr'.wk.wk (succ_lt_of hp1'.wk.wk hi)) fs)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.PairProduct
+
+export_ipra DiophantineNumberTheory.PairProduct (sq_at)

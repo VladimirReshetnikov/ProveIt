@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightRows
 import IPRADerivations.AnalyticNumberTheory.SieveWeightValues
-import IPRADerivations.Foundations.SignedSums
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The quadratic form at the explicit sieve weights
@@ -33,18 +30,13 @@ for `q ≥ 1`: the signed quadratic form is `z! · A` with `A = Σ_{r ≤ z} μ(
 * `form_value`: the sum over `r`, through `SieveDiagonal.diag`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (phi_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveInversion (wB dual_inversion)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal (Ab Ab_at Bb Bb_at a2 Lb diag diag_term)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms (gU inst2_gU sgV inst2_sgV)
@@ -54,8 +46,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (y0P y0N YP YN YP_at
 open LeanProofs.IPRA.Probability.Independence (dsum)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Algebra over opaque terms -/
 
@@ -262,3 +252,5 @@ theorem form_value {X P : PTm n} (hq : Γ ⊢[PRAAx] le one (fstT P)) :
   exact (congrAdd (d UPw UPw) (d UNw UNw)).eqTrans (s.eqTrans (congrAdd (congrAdd (d UPw UNw) (d UNw UPw)) (.eqRefl _)).eqSymm)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm
+
+export_ipra AnalyticNumberTheory.SieveWeightForm (UNw UPw)

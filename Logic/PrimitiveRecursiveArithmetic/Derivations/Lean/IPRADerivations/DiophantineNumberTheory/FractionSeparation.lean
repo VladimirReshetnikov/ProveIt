@@ -1,10 +1,6 @@
-import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Separation of reduced fractions (`hurwitz_khinchin_ipra`, (K3), (K9))
@@ -24,16 +20,11 @@ over a denominator at most `Q²`."
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FractionSeparation
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' gauss gcd_comm_one dvd_le')
-open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `N A = N B`, `N ≥ 1` give `A = B`. -/
 alias cancel_eq := Common.mul_cancel_eq

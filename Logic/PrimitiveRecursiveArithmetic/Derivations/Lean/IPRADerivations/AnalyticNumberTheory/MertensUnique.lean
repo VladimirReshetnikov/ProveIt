@@ -1,15 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
-import IPRADerivations.AnalyticNumberTheory.FactorialLambda
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
-import IPRADerivations.AnalyticNumberTheory.GcdFiber
-import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Combinatorics.Stirling
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The floor recurrence determines the Mertens function
@@ -38,25 +27,16 @@ The entry at `0` does not occur in any recurrence (`⌊s/a⌋ ≥ 1` for `1 ≤ 
 fixes that entry and is not needed for `t ≥ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensUnique
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (Bs bS)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (MP MN GPB GNB inst2_GPB inst2_GNB mertens_floor)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (fB sB inst2_fB inst2_sB sum_add2)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.Combinatorics.Stirling (gle gle_of_le gle_above)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Rows of a table -/
 

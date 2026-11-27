@@ -1,13 +1,7 @@
-import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.AnalyticNumberTheory.PhiLower
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
 import IPRADerivations.Foundations.NumeralPrimes
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the integer inequality
@@ -29,25 +23,16 @@ With `u = 2x + 1`, `s = ⌊√(2x)⌋ ≥ 38` and `3m ≤ 2x`, the inequality `4
 Powers of four are written `2^{2x}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandGrowth
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (pw_two)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Foundations.NumeralPrimes (subst_num num_le)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Sixth powers -/
 
@@ -75,7 +60,7 @@ theorem two_step (d : PTm n) : Γ ⊢[PRAAx] pw two (succ d + num 36) ≐ two * 
 theorem base_six : Γ ⊢[PRAAx] le (pw ((zero : PTm n) + num 39) (num 6)) (pw two (zero + num 36)) := by
   have h : Γ ⊢[PRAAx] le ((zero : PTm n) + num 39) (num 64) := by ipra_le 25 using (push_cast; ring)
   have b2 : Γ ⊢[PRAAx] (num 64 : PTm n) ≐ pw two (num 6) := by
-    ipra_lc -natEq (pw_six (Γ := Γ) two)
+    ipra_lc -natEq (pw_six two)
   have ex : Γ ⊢[PRAAx] (num 6 : PTm n) * num 6 ≐ zero + num 36 := by
     ipra_lc
   have b3 : Γ ⊢[PRAAx] pw (num 64 : PTm n) (num 6) ≐ pw two (zero + num 36) :=

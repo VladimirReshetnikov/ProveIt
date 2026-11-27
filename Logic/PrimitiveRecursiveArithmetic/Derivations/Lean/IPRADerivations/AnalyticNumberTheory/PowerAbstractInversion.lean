@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorRow
-import IPRADerivations.AnalyticNumberTheory.MobiusBounds
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
-import IPRADerivations.Core.Reindex
 
 /-!
 # Möbius inversion from an abstract row identity (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -28,8 +25,6 @@ the namespace `PowerDivisorInversion`:
 The progression rows (`PowerResidueInversion`) instantiate `R(d) = [gcd(d^h, q) = 1] B_{h;q,b_{d^h}}(⌊N/d^h⌋)` and
 `G(m) = [gcd(m^h, q) = 1] A_{q,b_{m^h}}(⌊N/m^h⌋)`.
 -/
-
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion
 

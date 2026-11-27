@@ -1,7 +1,4 @@
 import IPRADerivations.Core.IntCertificates
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.SumReflect
-import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 
 /-!
 # Bounded sums of signed bodies
@@ -25,8 +22,6 @@ commutative-ring computation followed by `ZT.derive` or an order certificate of 
 * `ZB3.toZ_fubini`: exchange of a signed double sum.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA
 
 open LeanProofs.ConciseIPRA
@@ -34,7 +29,6 @@ open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

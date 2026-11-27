@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.LexPotential
 import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Header
 import IPRADerivations.Core.BoundedSums
 
 /-!
@@ -34,11 +33,9 @@ The empty chain (`L = 0`) is `s ≤ F_d(x, s)`, which is `fuel_grow`. Not derive
 at time `B(x)`), and the exactness of the bound.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.LexChain
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.LexFuelMonotone (itStep itP F)
 open LeanProofs.IPRA.Foundations.LexPotential (G lexgt G_lower G_upper G_descent)
 

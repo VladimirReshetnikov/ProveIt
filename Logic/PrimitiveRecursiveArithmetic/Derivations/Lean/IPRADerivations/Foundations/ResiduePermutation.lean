@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.WeightedDimension
-import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The residues are a permutation (`ipra_coherent_methods_2026-11-15`, `prop:weighted-dimension`)
@@ -28,20 +25,15 @@ The Bezout coefficients are a hypothesis (they exist for coprime `m`, `d`; their
 by the extended Euclidean algorithm is not derived here).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ResiduePermutation
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.ProductPower (div_eq' rem_lt'')
-open LeanProofs.IPRA.Foundations.FiniteSetExponential (pair_snd)
 open LeanProofs.IPRA.Foundations.SumLinear
 open LeanProofs.IPRA.Foundations.WeightedDimension
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sum_perm)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Two decompositions with remainders below `m` have the same remainder. -/
 theorem rem_unique {a b ρ j m : PTm k} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
@@ -164,7 +156,6 @@ theorem shift_bez {m' d u v : PTm k} (hBz : Γ ⊢[PRAAx] u * d ≐ v * succ m' 
 theorem residue_sum {L m' d u v : PTm k} (hBz : Γ ⊢[PRAAx] u * d ≐ v * succ m' + one) :
     Γ ⊢[PRAAx] ap2 (sumF (bd RG)) (succ m') (pairT L (pairT (succ m') d)) ≐
       ap2 (sumF idB) (succ m') (pairT L (pairT (succ m') d)) := by
-  have hm : Γ ⊢[PRAAx] succ m' ≐ succ (pred (succ m')) := pos_of_eq_succ (c := m') (.eqRefl _)
   have hB' := shift_bez hBz
   have hr : Γ ⊢[PRAAx] Permutation.rangeAll (bd4 SG) (succ m')
       (pairT L (pairT (succ m') (pairT d u))) := by

@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorPrefix
-import IPRADerivations.Core.Header
 
 /-!
 # The prefix identity for divisor-twisted bodies (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -17,23 +16,17 @@ divisor index `j` (`d = j + 1`) in its parameter:
   (`PowerDivisorPrefix.step_pt` at the parameter `⟨j, y⟩`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerTwistPrefix
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix (Apre step_pt)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (quo_small)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (a : PTm 2)
 
@@ -153,3 +146,5 @@ theorem twist_prefix {h : PTm n} (hh : Γ ⊢[PRAAx] le one h) (N y : PTm n) :
   simpa [Syn.subst_inst_shift] using r
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PowerTwistPrefix
+
+export_ipra AnalyticNumberTheory.PowerTwistPrefix (tBt)

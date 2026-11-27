@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PiModulus
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The arithmetic prime number theorem in iPRA (`pnt_ipra_constructive_2026-11-14`, Theorem `thm:main`)
@@ -22,14 +20,10 @@ change of mesh `K → n` (`MeshChange.mesh_change`, error `π(n)⌊F/n⌋ ≤ 2F
 (`MeshChange.S_denom`, exact); `final_alg` is the closing slack certificate.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FinalPNT
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB quo_anti)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
 open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell clog_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.StageAdvance (clog_ge)
@@ -39,19 +33,13 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PiTheta (Pi piB inst2_piB pi_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.MeshChange (S_denom mesh_change)
 open LeanProofs.IPRA.AnalyticNumberTheory.PiModulus (pi_modulus)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockInstance (quo_le_x)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (quo_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds (Dq Q3)
-open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (clog le_pow_self)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le scale_absd)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le cancel_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The packet's terms -/
 

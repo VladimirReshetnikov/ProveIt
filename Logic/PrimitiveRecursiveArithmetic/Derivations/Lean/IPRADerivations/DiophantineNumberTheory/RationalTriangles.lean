@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.FermatQuarticPoints
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Rational right triangles with square area
@@ -24,18 +22,14 @@ Corollaries `cor:quartic-obstruction`, `cor:square-progression`. The integer cor
   clearing a common denominator): `(T − R, T + R; 2S)` is a right triangle of area `D²`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.RationalTriangles
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatQuarticPoints (no_square_area fourth_difference)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (q4)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `thm:fermat-area`, rational form, with the denominators cleared. -/
 theorem rational_square_area {a₁ a₂ b₁ b₂ c₁ c₂ q₁ q₂ : PTm n}

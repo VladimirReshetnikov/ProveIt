@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.PresentedCategory
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The table category of nonempty finite sets (`ipra_categorical_methods`, Section 4)
@@ -35,11 +33,9 @@ Consequently every theorem about presented categories applies to finite sets; fo
 one closed sentence about codes.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteSetCategory
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.ProductPower (dg)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential

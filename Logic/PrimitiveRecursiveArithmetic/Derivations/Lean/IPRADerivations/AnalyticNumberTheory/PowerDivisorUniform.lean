@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorGrowth
-import IPRADerivations.Core.Header
 
 /-!
 # One witness for every exponent (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -22,14 +21,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorUniform
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem upf_three {a b : ℕ} (σ : Fin (a + 3) → PTm b) : (up σ : Fin (a + 4) → PTm (b + 1)) 3 = Syn.shift (σ 2) := rfl
 
@@ -57,23 +54,11 @@ theorem forward_allU (aP aN : PTm 2) {y k c : PTm n} {K C : PTm (n + 1)} {X K' C
 /-- `A ⇒ uniform B`. -/
 theorem growth_forwardU (aP aN : PTm 2) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (AB aP) (AB aN) y ⟶ GrowthU aP aN y := by
-  refine .impI (.allI ?_)
-  have hG : ((GrowthS (AB aP) (AB aN) y :: Γ).map Fm.shift) ⊢[PRAAx] Fm.shift (GrowthS (AB aP) (AB aN) y) :=
-    (Prf.hyp0 : (GrowthS (AB aP) (AB aN) y :: Γ) ⊢[PRAAx] _).shift
-  have hk := Prf.allE (succ (two * var 0)) hG
+  refine all_ex_imp_at (succ (two * var 0)) (Cout (var 1) (var 0)) ?_
   simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
     up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three] at hk
-  refine .exE hk ?_
-  simp only [GrowthU, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three, subst_pairT,
-    ConciseIPRA.PTm.subst_succ]
-  refine .exI (Cout (var 1) (var 0)) ?_
-  simp only [Fm.subst_all, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three, subst_pairT,
-    ConciseIPRA.PTm.subst_succ]
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three, GrowthU,
+    subst_pairT, ConciseIPRA.PTm.subst_succ]
   exact forward_allU aP aN (y := Syn.shift (Syn.shift y)) (k := var 1) (c := var 0)
     (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1]) (by simp [Syn.shift, upf_one, upf_two, upf_three, inst_v0, inst_v1])
     Prf.hyp0
@@ -95,14 +80,8 @@ theorem spec_all (aP aN : PTm 2) {Y K0 C0 : PTm n} {X0 K0' C0' : PTm (n + 2)} {X
 /-- `uniform B ⇒ B_2`. -/
 theorem uniform_spec (aP aN : PTm 2) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthU aP aN y ⟶ GrowthS (BB aP) (BB aN) (pairT two y) := by
-  refine .impI (.allI ?_)
-  have hk := (Prf.hyp0 : (GrowthU aP aN y :: Γ) ⊢[PRAAx] GrowthU aP aN y).allOpen
-  refine .exE hk ?_
+  refine all_ex_imp (var 0) ?_
   simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
-    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
-    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three]
-  refine .exI (var 0) ?_
-  simp only [Fm.subst_all, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
     up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
     Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ, upf_three]
   exact spec_all aP aN (Y := Syn.shift (Syn.shift y)) (K0 := var 1) (C0 := var 0)

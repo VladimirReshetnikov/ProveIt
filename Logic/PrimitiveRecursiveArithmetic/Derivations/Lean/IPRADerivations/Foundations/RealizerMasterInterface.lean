@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.RealizerGraph
 import IPRADerivations.Foundations.BoundedSyntax
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # A derived interface for an actual finite list of input certificates
@@ -15,11 +13,10 @@ No global soundness or stability contract is an input to the constructor.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RealizerMasterInterface
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RealizerComposition
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)

@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeLoss
 import IPRADerivations.AnalyticNumberTheory.SigmaProduct
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The exact finite identity of the lcm bridge, pointwise
@@ -21,19 +19,14 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeExact
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP pw_pos' cof_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos lcm_valuation pdvd_of_val_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeLoss (LD)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Signum (sg sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `q^{v_q(L)+1}`, as in `LcmBridgeLoss.ex` (a local name: `LeanProofs.IPRA.ex` is the existential). -/
 abbrev ex (i P : PTm n) : PTm n := pw i (succ (val i (lcmu P)))
@@ -49,9 +42,7 @@ theorem prod_mul (f g : PTm 2) (N x : PTm n) :
         ConciseIPRA.PTm.subst_zero]
       have a := natEq (prod_zero (Γ := Γ) (f * g) x)
       have b := natEq (prod_zero (Γ := Γ) f x)
-      have c := natEq (prod_zero (Γ := Γ) g x)
-      apply deriveNat; ipra_simps
-      linear_combination a - (𝔞 (ap2 (prodF g) zero x)) * b - c
+      ipra_lc a - (𝔞 (ap2 (prodF g) zero x)) * b - natEq (prod_zero g x)
     · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
         ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let D : List (Fm PTm (n + 1)) := (ap2 (prodF (f * g)) (var 0) (Syn.shift x) ≐
@@ -121,7 +112,7 @@ theorem exact {i P : PTm n} (hi : Γ ⊢[PRAAx] prime i) (hiP : Γ ⊢[PRAAx] le
       (quo (lcmu P) (pw i (val i (lcmu P))) * quo (lcmu P) (pw i (val i (lcmu P))))) + zero := by
     ipra_lc (𝔞 (lcmu P) + 𝔞 (pw i (val i (lcmu P))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P))))) * natEq (cof_eq (m := lcmu P) hp2) +
       (𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (pw i (val i (lcmu P)))) * natEq ((congrAp2 (Γ := Γ) powF vp (.eqRefl i)).eqTrans (pw_succ i (pred (val i (lcmu P))))) -
-      (𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (pw i (pred (val i (lcmu P))))) * natEq (pw_succ (Γ := Γ) i (val i (lcmu P)))
+      (𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (quo (lcmu P) (pw i (val i (lcmu P)))) * 𝔞 (pw i (pred (val i (lcmu P))))) * natEq (pw_succ i (val i (lcmu P)))
   have q := Totient.quo_eq expos hL (LcmUpto.lt_zero_of_pos expos)
   exact (congrMul (.eqRefl _) q).eqTrans ((hL.eqTrans (add_zero _)).eqSymm)
 
@@ -165,3 +156,5 @@ theorem factor_id (i P : PTm n) :
     (𝔞 (lcmu P) * 𝔞 (lcmu P)) * natEq (eq_add_of_le (FactorVector.one_le_pos expos)) - natEq hx
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeExact
+
+export_ipra AnalyticNumberTheory.LcmBridgeExact (prod_mul)

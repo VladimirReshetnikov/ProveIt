@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquaresSeed
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The square residues modulo an odd prime
@@ -18,20 +16,12 @@ Distinctness is `FourSquaresSeed.sq_inj`. Here:
   residue is one of `1², …, h²`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SquareResidues
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (rem_cancel)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The two roots -/
 

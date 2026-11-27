@@ -1,8 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The continued fraction of `√D` and its integer invariants
@@ -23,16 +19,12 @@ the states `S_k = (m_k, d_k, p_{k−1}, p_{k−2}, q_{k−1}, q_{k−2})` are co
   `p_{k−1}² + [k odd] d_k = D q_{k−1}² + [k even] d_k`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellCF
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.PellCFStep
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## States -/
 
@@ -282,8 +274,7 @@ theorem inv_step {k : PTm n} (h : Γ ⊢[PRAAx] InvF k D a) : Γ ⊢[PRAAx] InvF
       (𝔞 D * 𝔞 (Q k D a) - 𝔞 (M (succ k) D a) * 𝔞 (P k D a)) * e1 - 𝔞 D * i1 + 𝔞 (M (succ k) D a) * i2 +
       𝔞 (P k D a) * e2 - 𝔞 (Dd k D a) * 𝔞 (Dd (succ k) D a) * sP'
   · ipra_lc 𝔞 (P (succ k) D a) * sQ' + 𝔞 (Q k D a) * sP - 𝔞 (P' (succ k) D a) * sQ -
-      (𝔞 (C k D a) * 𝔞 (Q k D a) + 𝔞 (Q' k D a)) * sP' + natEq (par_succ (Γ := Γ) k) - natEq (par_flip (Γ := Γ) k) -
-      dt
+      (𝔞 (C k D a) * 𝔞 (Q k D a) + 𝔞 (Q' k D a)) * sP' + natEq (par_succ k) - natEq (par_flip k) - dt
 
 /-- `lem:cfinvariants`: `p_{k−1} = m_k q_{k−1} + d_k q_{k−2}`, `D q_{k−1} = m_k p_{k−1} + d_k p_{k−2}`, and
 `p_{k−1} q_{k−2} − p_{k−2} q_{k−1} = (−1)^k`, for every `k`. -/

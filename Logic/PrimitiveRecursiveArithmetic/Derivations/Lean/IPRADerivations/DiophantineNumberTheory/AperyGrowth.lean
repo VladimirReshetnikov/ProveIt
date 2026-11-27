@@ -1,8 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.AperyRecurrence
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Growth of the Apéry numbers
@@ -23,19 +21,15 @@ corresponding factors in `a_n` ... Since `a_{n−1} ≤ a_n`, the recurrence giv
 * `grow_pow`: `32^u ≤ a_{48+u}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyGrowth
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Vandermonde (gb congrGb)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers (apery apery_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyRecurrence (gl cf bb bbB inst2_bb apery_bb apery_rec cube Pn)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias monus_le_self := Common.monus_le_self
 

@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.HerbrandCapsule
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # An actual bounded observation-image interface
@@ -14,15 +12,13 @@ totality, and no global quotient or unbounded interface is asserted.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RealizerObservationExport
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RealizerComposition
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at subst_finiteMaximum)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

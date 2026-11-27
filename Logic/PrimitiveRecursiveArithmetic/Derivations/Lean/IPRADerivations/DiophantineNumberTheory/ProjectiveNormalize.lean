@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Primitive representatives on the projective line
@@ -24,20 +22,13 @@ then automatic):
 * `norm_class`: two proportional vectors `a d = b c` (`a, c ≥ 1`) have the same normalization.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' dvd_le' gcd_dvd' gauss
-  coprime_quotients pos_of_eq_mul)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The normalized coordinates `a/g`, `b/g`, `g = gcd(a, b)`. -/
 abbrev nA (a b : PTm k) : PTm k := quo a (gcd a b)
@@ -69,14 +60,12 @@ theorem norm_unique {a b c d : PTm k} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (
   have d1 : Γ ⊢[PRAAx] dvd a (b * c) := dvd_of_eq' ha (w := d) h.eqSymm
   have ac : Γ ⊢[PRAAx] dvd a c := gauss ha hab d1
   have d2 : Γ ⊢[PRAAx] dvd c (d * a) := dvd_of_eq' hc (w := b) (by
-    have e := natEq h
-    apply deriveNat; ipra_simps; linear_combination e)
+    ipra_lc natEq h)
   have ca : Γ ⊢[PRAAx] dvd c a := gauss hc hcd d2
   have eac : Γ ⊢[PRAAx] a ≐ c := le_antisymm (dvd_le' ha ac hc) (dvd_le' hc ca ha)
   refine Prf.andI eac ?_
   refine (mul_cancel ha ?_).eqSymm
-  have e := natEq h; have e' := natEq eac
-  apply deriveNat; ipra_simps; linear_combination e - 𝔞 b * e'
+  ipra_lc natEq h - 𝔞 b * natEq eac
 
 /-- Proportional vectors have the same normalization. -/
 theorem norm_class {a b c d : PTm k} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hc : Γ ⊢[PRAAx] c ≐ succ (pred c))

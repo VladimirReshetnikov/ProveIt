@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.IterationFusion
-import IPRADerivations.Core.Header
 
 /-!
 # Proof-producing composition of local operations
@@ -24,12 +23,9 @@ The finite maximum of several demands is `ModulusNormalization.modulus_le` (it d
 index); it may replace the demands only together with a restriction proof, which is a separate hypothesis.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.OperationComposition
 
-open_ipra
-open LeanProofs.IPRA.Foundations.IterationFusion (app1)
+open_ipra exports
 
 /-- `V(d, z)` at given terms. -/
 def at2 {m : ℕ} (V : Fm PTm 2) (a b : PTm m) : Fm PTm m := V.subst ![a, b]

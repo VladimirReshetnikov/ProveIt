@@ -20,11 +20,9 @@ recursive function of the parameter, in common integer units. The witness is the
 * `energy_window_closed`: the same as one closed sentence over `N, x, B`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.EnergyWindow
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Search (mu search_spec search_minimal)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.LinearDiophantine
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Linear congruences: solvability
@@ -21,20 +19,13 @@ The count of the solutions (`g` representatives in `[0, m)`) is not derived; the
 uniqueness is `PowerResidue.res_spec`, `res_unique`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.LinearCongruence
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_mul' dvd_add' dvd_sub')
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.LinearDiophantine (linear_solution)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Necessity -/
 

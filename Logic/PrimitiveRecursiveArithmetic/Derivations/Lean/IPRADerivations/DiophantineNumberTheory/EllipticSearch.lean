@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ConicNonzero
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
-import IPRADerivations.Core.Header
 
 /-!
 # The bounded search for rational points of small height on an elliptic curve
@@ -19,16 +18,12 @@ Packet: `diophantine-number-theory/diophantine_geometry_ipra`, Theorem `thm:elli
 * `es_infinity`: "At infinity, `Z = 0` forces `X = 0`": `Y²Z = X³ + AXZ² + BZ³` with `Z = 0` gives `X = 0`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.EllipticSearch
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
   (coprime_dvd_left coprime_mul eq_one_of_coprime_dvd dvd_add' dvd_sub' dvd_mul' le_of_sq_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicNonzero (zt_dec zt_sq_zero)
-open LeanProofs.IPRA.DiophantineNumberTheory.ZTCancel (zt_no_zero_div)
-open LeanProofs.IPRA.DiophantineNumberTheory.DirichletReal (abs_nat)
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_add abs_mul abs_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

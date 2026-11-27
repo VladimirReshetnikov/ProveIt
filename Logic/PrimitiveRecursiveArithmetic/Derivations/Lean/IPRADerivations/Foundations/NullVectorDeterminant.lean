@@ -29,7 +29,7 @@ Not derived: the construction of `M_G(a)` from the monic reduction identities, a
 
 namespace LeanProofs.IPRA.Foundations.NullVectorDeterminant
 
-open_ipra
+open_ipra exports
 open Matrix
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

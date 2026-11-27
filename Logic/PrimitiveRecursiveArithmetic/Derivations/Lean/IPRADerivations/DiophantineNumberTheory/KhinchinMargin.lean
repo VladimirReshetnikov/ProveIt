@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.Foundations.CoverLocal
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The scale intervals stay inside their gap (`hurwitz_khinchin_ipra`, (K8))
@@ -22,21 +19,17 @@ On the grid `T`, the fraction `p/q ∈ J^* = (α/β, γ/β)` (`qα < pβ < qγ`)
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
-
 /-- `⌊x/q⌋ q ≤ x` for `q ≥ 1`. -/
 theorem quo_mul_le {x q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) : Γ ⊢[PRAAx] le (quo x q * q) x := by
   have d := div_mod_at (Γ := Γ) (x := x) hq
-  have e := natEq (Prf.andE₁ d)
-  exact le_of_eq_add (d := rem x q) (by apply deriveNat; ipra_simps; linear_combination e)
+  exact le_of_eq_add (d := rem x q) (by ipra_lc natEq (Prf.andE₁ d))
 
 /-- Cancel a factor `b = succ (pred b)`. -/
 theorem cancel {b u v : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : Γ ⊢[PRAAx] le (b * u) (b * v)) :
@@ -77,3 +70,5 @@ theorem member_in {A act w L H : PTm n} (h : Γ ⊢[PRAAx] (sg act ≐ zero) ⋎
     exact .orI₂ (.andI (Prf.andE₁ Prf.hyp0) (by ipra_le sl hH + 𝔞 w * sl s))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin
+
+export_ipra DiophantineNumberTheory.KhinchinMargin (cancel)

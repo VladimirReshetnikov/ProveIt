@@ -1,8 +1,5 @@
-import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
 import IPRADerivations.AnalyticNumberTheory.PrimePowerMangoldt
 import IPRADerivations.AnalyticNumberTheory.MuLambda
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The initial lcm `lcm(1, …, N)` and its valuations
@@ -24,21 +21,14 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (ppI)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (lcm lcm_eq)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul dvd_le' gcd_greatest' gcd_dvd'
-  coprime_quotients eq_one_of_dvd_one)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The valuation of an lcm -/
 
@@ -284,7 +274,6 @@ section Psi
 variable (w : PTm 2)
 
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (lamB ellB Lam Lw inst2_lam inst2_ell congrPpI)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2 congrLw lam_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos val_big)
 
 /-- `thm:lcm-quotient`, `L_w` form: `L_w(lcm(1, …, N+1)) = L_w(lcm(1, …, N)) + Λ_w(N + 1)`. -/
@@ -363,3 +352,6 @@ theorem psi_lcm (N y : PTm n) : Γ ⊢[PRAAx] Psi w N y ≐ Lw w (lcmu N) y := b
 end Psi
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto
+
+export_ipra AnalyticNumberTheory.LcmUpto (LamB Psi inst2_LamB lcm_valuation lcmu lcmu_pos lt_zero_of_pos
+  pos_of_lt_zero psi_lcm)

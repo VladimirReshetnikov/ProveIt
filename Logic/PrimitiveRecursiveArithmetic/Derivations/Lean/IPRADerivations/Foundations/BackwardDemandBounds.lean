@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BackwardDemand
-import IPRADerivations.Core.Header
 
 /-!
 # The explicit constant-loss observation budget
@@ -17,7 +16,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.BackwardDemandBounds
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BackwardDemand
 open LeanProofs.IPRA.Foundations.BoundedFormulas (BF)
 

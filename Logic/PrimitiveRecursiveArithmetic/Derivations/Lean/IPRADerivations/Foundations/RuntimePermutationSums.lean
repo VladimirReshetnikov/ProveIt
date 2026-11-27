@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.RuntimePermutationDigitSum
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual natural finite sums reindexed by numerical permutation words
@@ -13,11 +11,10 @@ original word codes, persistent data and trace counters are numerical.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationSums
 
-open_ipra
+open_ipra exports
 open RuntimePermutationWords (digit horizon permutationBit)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -3,8 +3,6 @@ import IPRADerivations.DiophantineNumberTheory.IrrationalSqrt
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Smooth
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded norm with a prescribed lower denominator
@@ -26,21 +24,15 @@ The pair is the one of the finite Dirichlet construction `PellDirichlet.dirichle
 * **`pell_approx`**: all the assertions together.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellApprox
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDirichlet (dirichlet dp dq)
 open LeanProofs.IPRA.DiophantineNumberTheory.IrrationalSqrt (square_of_rational_root)
-open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (one_le_of_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `Q = 4(D + 1)(Y + 1)`. -/
 abbrev Qv (D Y : PTm n) : PTm n := num 4 * (succ D * succ Y)

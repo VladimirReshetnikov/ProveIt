@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveFinite
 import IPRADerivations.AnalyticNumberTheory.SieveWeightBound
-import IPRADerivations.Core.Header
 
 /-!
 # The finite sieve inequality
@@ -37,10 +36,8 @@ assembled in `SieveFinite.finite_sieve_of_bound`.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FiniteSieve
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes (piB)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne (Asum)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveFinite (finite_sieve_of_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightBound (weight_bound)
 

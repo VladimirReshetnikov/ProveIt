@@ -1,12 +1,8 @@
 import IPRADerivations.AnalyticNumberTheory.Harmonic
-import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Foundations.LatticeCount
 import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The Dirichlet hyperbola identity (`pnt_ipra_constructive_2026-11-14`)
@@ -28,10 +24,9 @@ in the square `a < m` (`col_split`).
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open LeanProofs.IPRA.Foundations.LatticeCount (icB icS exact_count)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
@@ -39,8 +34,6 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Indicators -/
 
@@ -61,7 +54,6 @@ alias sg_one := Common.sg_of_one_le
 theorem ind_eq (a b F : PTm n) :
     Γ ⊢[PRAAx] leI (succ a * succ b) F ≐ cnt zero (quo F (succ a)) b := by
   have dm := div_mod_at (Γ := Γ) (x := F) (y := succ a) (c := a) (.eqRefl _)
-  have e := natEq (Prf.andE₁ dm)
   have hr : Γ ⊢[PRAAx] lt (rem F (succ a)) (succ a) := Prf.andE₂ dm
   have c1 : Γ ⊢[PRAAx] cnt zero (quo F (succ a)) b ≐ sg (monus (quo F (succ a)) b) :=
     (congrMul ((congrMonus (.eqRefl _) (zero_monus _)).eqTrans (monus_zero _)) (.eqRefl _)).eqTrans (one_mul _)
@@ -261,8 +253,8 @@ theorem hyperbola {y m : PTm n} (h1 : Γ ⊢[PRAAx] le (m * m) y) (h2 : Γ ⊢[P
       show Syn.shift (pairT (monus y m) (pairT m y)) =
         pairT (Syn.shift (monus y m)) (pairT (Syn.shift m) (Syn.shift y)) by simp [Syn.shift]]
     exact ((congrFst (snd_pair _ _)).eqTrans (fst_pair _ _)).eqTrans ((mul_comm _ _).eqTrans (one_mul _)).eqSymm
-  have a := natEq sA; have b := natEq fb; have c := natEq (sB.eqTrans sC)
-  apply deriveNat; ipra_simps
-  linear_combination a + b - c
+  ipra_lc natEq sA + natEq fb - natEq (sB.eqTrans sC)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola
+
+export_ipra AnalyticNumberTheory.DivisorHyperbola (quo_le_self)

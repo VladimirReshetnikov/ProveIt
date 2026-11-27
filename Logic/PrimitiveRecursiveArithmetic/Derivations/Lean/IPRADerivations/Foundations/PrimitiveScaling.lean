@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Primitive scaling: the gcd of a list (`ipra_presentations_to_witnesses`, `lem:primitive-scaling`)
@@ -32,18 +30,13 @@ along the scaling, and the Bezout coefficients `∑ e_i w_i = 1` by the extended
 (`Foundations/EigenvalueIntegral` takes them as a hypothesis).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.PrimitiveScaling
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
   (gcd_dvd' gcd_greatest' dvd_trans' dvd_self' dvd_le' one_le_of_pos)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem gcd_congr' {a a' b b' : PTm k} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
     Γ ⊢[PRAAx] gcd a b ≐ gcd a' b' := by
@@ -202,7 +195,7 @@ theorem primitive {d s x N : PTm k} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s))
   have l₁ : Γ ⊢[PRAAx] le d one :=
     mul_le_cancel (d' := pred (G ω N s x))
       (le_congr (by apply deriveNat; ipra_simps; linear_combination 𝔞 d * e)
-        (by apply deriveNat; ipra_simps; linear_combination e) l)
+        (by ipra_lc e) l)
   exact le_antisymm l₁ (one_le_of_pos hd)
 
 end LeanProofs.IPRA.Foundations.PrimitiveScaling

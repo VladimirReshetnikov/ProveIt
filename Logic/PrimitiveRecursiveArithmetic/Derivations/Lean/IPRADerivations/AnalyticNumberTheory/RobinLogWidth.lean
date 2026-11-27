@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinThreePos
-import IPRADerivations.Core.Header
 
 /-!
 # The width of `LogI(q, k)` (`robin_ipra_research_2026-11-19`, §"A logarithm enclosure from a finite geometric identity")
@@ -15,27 +14,21 @@ fixed primitive-recursive rational interval `LogI(q, k)` of width at most `2^{-k
 * `logI_width`: `hi(q, K) − lo(q, K) ≤ 2^{-k}` at the precision `K = k + e + 4` of `LogI(q, k)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogWidth
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Un Ud Lz uniform_tail Dz_pos Ud_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
   (eb loN loD hiN hiD Kp dt st Wt c3 c8 c3_sq c3_pos c8_pos st_sq st_pos Wt_pos z_third loD_pos hiD_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos (pw_lit)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos (one_le_of_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `U_K − S_K ≤ 9/(4(2K+1)3^{2K+1})` for `z = p/s ≤ 1/3`, cleared over `Ud·Dz`. -/
 theorem name_tail {K p s W : PTm n} (hW : Γ ⊢[PRAAx] s * s ≐ W + p * p) (h3 : Γ ⊢[PRAAx] le (c3 * p) s) :

@@ -29,21 +29,14 @@ inequality `(m + 1)^{m+1} S^m y ≤ m^m (S + y)^{m+1}` (`Analysis/WeightedAMGM.o
 `m^m`. The equality case is not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteAMGM
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.WeightedAMGM (one_step)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_lt_pw)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Family
 
@@ -76,7 +69,7 @@ theorem amgm_step {N x : PTm n}
           pw (ap2 (sumF y) (succ (succ N)) x) (succ (succ N))) := by
     refine le_congr ?_ (congrMul hpos (congrPw (sum_succ' y (succ N) x).eqSymm (.eqRefl _))) tot
     ipra_lc (𝔞 (pw (succ (succ N)) (succ (succ N))) * 𝔞 (ap2 (prodF y) (succ N) x) * 𝔞 (inst2 y (succ N) x)) * natEq hpos -
-      ((𝔞 (pred (pw (succ N) (succ N))) + 1) * 𝔞 (pw (succ (succ N)) (succ (succ N)))) * natEq (prod_succ'' (Γ := Γ) y (succ N) x)
+      ((𝔞 (pred (pw (succ N) (succ N))) + 1) * 𝔞 (pw (succ (succ N)) (succ (succ N)))) * natEq (prod_succ'' y (succ N) x)
   exact mul_le_cancel big
 
 /-- The induction formula of `finite_amgm`; variable `0 = N`. -/
@@ -97,7 +90,7 @@ theorem finite_amgm (N x : PTm n) :
         have e₃ := natEq ((pw_one (Γ := Γ) (ap2 (sumF y) (succ zero) x)).eqTrans
           (sum_singleton y x))
         refine le_of_eq_add (d := zero) ?_
-        ipra_lc e₃ - 𝔞 (ap2 (prodF y) (succ zero) x) * natEq (pw_one (Γ := Γ) (succ zero)) - e₂
+        ipra_lc e₃ - 𝔞 (ap2 (prodF y) (succ zero) x) * natEq (pw_one (succ zero)) - e₂
       simpa using b
     · have st : (amgmF y x :: Γ.map Fm.shift) ⊢[PRAAx]
           le (pw (succ (succ (var 0))) (succ (succ (var 0))) *

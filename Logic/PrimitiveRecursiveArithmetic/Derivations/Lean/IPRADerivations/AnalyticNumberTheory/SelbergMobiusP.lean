@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SelbergMobius
-import IPRADerivations.AnalyticNumberTheory.MobiusInversion
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.AnalyticNumberTheory.DivisorCases
-import IPRADerivations.Core.Header
 
 /-!
 # Selberg's exact symmetry identity with a weight parameter (`pnt_ipra_constructive_2026-11-14`, `sb:exact-symmetry`)
@@ -20,28 +16,21 @@ The divisor-form identity `L_w(k, y)² = Σ_{e ∣ k} G(e, y)` is `ConvolutionAs
 carries the parameter (`inner_sq_p`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobiusP
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (eqb_rem_big)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionP (aP aN inst3_aP inst3_aN mobius_inversion_p)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv DwB inst2_DwB cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz (lamF inst2_lamF)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF selberg_divisor)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
-open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Selberg
 

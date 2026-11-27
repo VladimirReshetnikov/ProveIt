@@ -1,4 +1,5 @@
 import IPRADerivations.Algebra.AdjugateInverse
+import IPRADerivations.Core.Header
 
 /-!
 # The integer identities of a pointed conic
@@ -142,3 +143,4 @@ theorem param_tangent (p0 p1 p2 : ZT n) :
 end Form
 
 end LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities
+

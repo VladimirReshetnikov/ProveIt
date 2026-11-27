@@ -1,13 +1,7 @@
-import IPRADerivations.AnalyticNumberTheory.Harmonic
-import IPRADerivations.AnalyticNumberTheory.Primes
 import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Probability.Independence
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Refinement of the rational logarithm intervals (`pnt_ipra_constructive_2026-11-14`)
@@ -37,21 +31,15 @@ bound uses that `K(c+1)` divides `F` (`Primes.dvd_fact`); the upper one holds fo
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Small tools -/
 
@@ -275,3 +263,5 @@ theorem refine_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 refineFormula :
   closeUniv 4 (.impI (log_refine (congrSucc (pred_succ _).eqSymm) Prf.hyp0))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement
+
+export_ipra AnalyticNumberTheory.LogRefinement (log_refine quo_mul)

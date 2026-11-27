@@ -1,7 +1,5 @@
-import IPRADerivations.DiophantineNumberTheory.GaussLemma
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.FourSquares
-import IPRADerivations.Core.Header
 
 /-!
 # Multiplicativity of the quadratic residue symbol, and four rational squares
@@ -26,21 +24,13 @@ With `rb p a` the bit of "some `x < p` has `x² ≡ a (mod p)`" (`GaussLemma.rb`
 The zero residue (`p ∣ a`) is not included in `rb_mul`: there `χ_p = 0`, while `rb p a = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ResidueCharacter
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (coprime_mul gcd_comm_one)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2)
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB)
-open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (pred_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (neg_sq)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb euler_nr euler_res pred_ne_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra (N4)

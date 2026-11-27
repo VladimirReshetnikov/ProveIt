@@ -1,8 +1,4 @@
 import IPRADerivations.Foundations.LatticeCount
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Lattice points under a line (`hurwitz_khinchin_ipra`, (K5))
@@ -24,14 +20,12 @@ that is `λX(X+1)/2 − X ≤ A(X) ≤ λX(X+1)/2 + X`, which gives both bounds 
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinLattice
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.LatticeCount
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The parameters `z = ⟨M, ⟨α, ⟨γ, β⟩⟩⟩`. -/
 abbrev zM (z : PTm n) : PTm n := fstT z
@@ -90,16 +84,16 @@ theorem lat_step {X M α γ β b0 : PTm n} (hβ : Γ ⊢[PRAAx] β ≐ succ b0) 
   have hB : Δ ⊢[PRAAx] le (quo (succ X * γ + b0) β) M := le_trans (ceil_le_q hβ.wk hγ.wk) Prf.hyp0
   have huv : Δ ⊢[PRAAx] le (succ X * α) (succ X * γ) := by
     refine le_of_eq_add (d := succ X * monus γ α) ?_
-    ipra_lc (𝔞 X + 1) * natEq (eq_add_of_le (Γ := Δ) hαγ.wk)
+    ipra_lc (𝔞 X + 1) * natEq (eq_add_of_le hαγ.wk)
   have db := dilated_bounds M hβ.wk hB huv
   refine .andI (le_of_eq_add (d := monus (γ * (X * succ X) + two * β * X) (two * β * latticeA X M α γ β + α * (X * succ X)) +
       two * monus (succ X * γ + β) (β * Foundations.LatticeCount.dS M (succ X * α) (succ X * γ) β + succ X * α)) ?_)
     (le_of_eq_add (d := monus (two * β * latticeA X M α γ β + α * (X * succ X) + two * β * X) (γ * (X * succ X)) +
       two * monus (β * Foundations.LatticeCount.dS M (succ X * α) (succ X * γ) β + succ X * α + β) (succ X * γ)) ?_)
   · ipra_lc natEq (eq_add_of_le (Prf.andE₁ hI)) + 2 * natEq (eq_add_of_le (Prf.andE₁ db)) -
-      2 * 𝔞 β * natEq (latticeA_succ (Γ := Δ) X M α γ β)
+      2 * 𝔞 β * natEq (latticeA_succ X M α γ β)
   · ipra_lc natEq (eq_add_of_le (Prf.andE₂ hI)) + 2 * natEq (eq_add_of_le (Prf.andE₂ db)) +
-      2 * 𝔞 β * natEq (latticeA_succ (Γ := Δ) X M α γ β)
+      2 * 𝔞 β * natEq (latticeA_succ X M α γ β)
 
 /-- (K5) for given `α ≤ γ ≤ β = b0 + 1` and `X ≤ M`. -/
 theorem lattice_core {X M α γ b0 : PTm n} (hαγ : Γ ⊢[PRAAx] le α γ) (hγ : Γ ⊢[PRAAx] le γ (succ b0))
@@ -112,11 +106,9 @@ theorem lattice_core {X M α γ b0 : PTm n} (hαγ : Γ ⊢[PRAAx] le α γ) (h�
       simp only [Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       refine .impI (.andI ?_ ?_)
       · refine le_of_eq_add (d := zero) ?_
-        have e := natEq (sum_zero (Γ := le zero M :: Γ) aK (pairT M (pairT α (pairT γ (succ b0)))))
-        apply deriveNat; ipra_simps; linear_combination -2 * (𝔞 b0 + 1) * e
+        ipra_lc -2 * (𝔞 b0 + 1) * natEq (sum_zero aK (pairT M (pairT α (pairT γ (succ b0)))))
       · refine le_of_eq_add (d := zero) ?_
-        have e := natEq (sum_zero (Γ := le zero M :: Γ) aK (pairT M (pairT α (pairT γ (succ b0)))))
-        apply deriveNat; ipra_simps; linear_combination 2 * (𝔞 b0 + 1) * e
+        ipra_lc 2 * (𝔞 b0 + 1) * natEq (sum_zero aK (pairT M (pairT α (pairT γ (succ b0)))))
     · rw [subst_latInv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have hβ : (latInv (var 0) (Syn.shift M) (Syn.shift α) (Syn.shift γ) (Syn.shift (succ b0)) :: Γ.map Fm.shift) ⊢[PRAAx]

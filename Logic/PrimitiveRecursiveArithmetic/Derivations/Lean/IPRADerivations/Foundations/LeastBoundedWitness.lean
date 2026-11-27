@@ -1,5 +1,4 @@
 import IPRADerivations.Core.Search
-import IPRADerivations.Core.Signum
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
 
@@ -61,11 +60,9 @@ Further forms, for packets whose statement is one of these:
   `Foundations/BoundedEnumeration`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.LeastBoundedWitness
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Search (mu search_spec search_minimal search_found)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
@@ -255,3 +252,5 @@ theorem decide_of_bound {N x : PTm n}
     exact Prf.impE (Prf.impE hN.allOpen.wk (Prf.impE hb.allOpen.wk.wk Prf.hyp0)) Prf.hyp0
 
 end LeanProofs.IPRA.Foundations.LeastBoundedWitness
+
+export_ipra Foundations.LeastBoundedWitness (ExW NoW lt_of_exists)

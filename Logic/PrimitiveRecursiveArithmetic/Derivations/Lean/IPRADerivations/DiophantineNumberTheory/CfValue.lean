@@ -1,8 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.CfReal
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The value identity `[a_0; a_1, …, a_m] = p_m/q_m`
@@ -21,19 +17,15 @@ The nested fraction is evaluated from the inside out, as a pair `(numerator, den
 * **`nest_value`**: `nest m = (p_m, q_m)` exactly.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CfValue
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (sP sQ sP' sQ' st)
+open_ipra exports
+open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop (sP sQ st)
 open LeanProofs.IPRA.DiophantineNumberTheory.CfReal (nx proj_matrix proj_nx co cv uv cv_zero cv_succ uv_zero uv_succ lin_origin Lin4
   subst_cv subst_uv)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias congrSg' := Common.congrSg
 
@@ -143,10 +135,7 @@ variable {a'}
   simp [bk]
 
 theorem bk_zero (m : PTm n) : Γ ⊢[PRAAx] bk a' zero m ≐ pairT (Av a' m) one := by
-  have h := rec2_zero (Γ := Γ) (bkInit a') (bkStep a') m
-  first
-  | simpa using h
-  | exact h
+  simpa using rec2_zero (Γ := Γ) (bkInit a') (bkStep a') m
 
 theorem bk_succ (j m : PTm n) : Γ ⊢[PRAAx] bk a' (succ j) m ≐
     pairT (Av a' (monus m (succ j)) * fstT (bk a' j m) + sndT (bk a' j m)) (fstT (bk a' j m)) := by

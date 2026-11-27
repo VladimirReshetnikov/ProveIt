@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Foundations.StrongConvexity
-import IPRADerivations.Core.Header
 
 /-!
 # Rational stability of actual finite-net minimizers
@@ -18,11 +17,9 @@ gap is an explicit adapter obligation. The midpoint certificate states strong
 convexity of this same residual and is retained as an object-theory premise.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.StrongMinimizer
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}

@@ -1,9 +1,6 @@
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Foundations.FiniteQueryDemand
 import IPRADerivations.Foundations.SequenceComposition
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual finite nearest-neighbor and Hausdorff scans
@@ -20,12 +17,10 @@ Nonempty-list guards are retained wherever a minimum needs an entry.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FiniteHausdorff
 
-open_ipra
-open LeanProofs.IPRA.Foundations.ApproximateWitness (argmin argmin_spec)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteQueryDemand
   (finiteMaximum finiteMaximum_zero finiteMaximum_succ finiteMaximum_at)
 open LeanProofs.IPRA.Foundations.DemandClosure
@@ -409,3 +404,5 @@ theorem triangle_closed (d : PR 3) :
 #print axioms triangle_closed
 
 end LeanProofs.IPRA.Foundations.FiniteHausdorff
+
+export_ipra Foundations.FiniteHausdorff (sum_mono)

@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBadSum
-import IPRADerivations.AnalyticNumberTheory.HarmonicUpper
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
@@ -33,22 +32,17 @@ arithmetic has room for it.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBadBound
 
-open_ipra
-open LeanProofs.IPRA.Signum (sg)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBadSum (LB inst2_LB gate_zero bqB bad_total)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinLattice (aK latticeA lattice_core)
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper (harmonic_upper)
 open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (sqB T inst2_sq square_bound cancel_le)
-open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin (le_mul_mono sq_le_sq add_le_add')
+open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin (sq_le_sq add_le_add')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Summing a linear inequality -/
 

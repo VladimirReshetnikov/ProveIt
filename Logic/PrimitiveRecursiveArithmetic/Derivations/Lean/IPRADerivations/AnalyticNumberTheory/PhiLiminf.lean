@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.EulerDomination
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Finite witnesses for `liminf φ(n)/n = 0`
@@ -18,25 +15,16 @@ As in the paper, `n/φ(n) = ∏_{p ≤ B} p/(p − 1) = E_B ≥ H_B ≥ 1 + K`:
   `Harmonic.harmonic_dyadic`, hence `K φ(ProdP_B) < ProdP_B`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiLiminf
 
-open_ipra
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime fact_pos)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_eq_one_of_dvd)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (gcd_distinct_primes)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (phi_mul_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.Radical (phi_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (A Dn pB pBt dBt A_succ Dn_succ A_pos pBt_zero pBt_one
   dBt_zero dBt_one ProdP DenE)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (euler_domination Dn_pos mul_one')
@@ -133,7 +121,7 @@ theorem liminf_at (K : PTm n) :
     ipra_ring
   have c' := mul_le_cancel (le_congr (congrMul hF (.eqRefl _)) (congrMul hF (.eqRefl _)) c)
   refine le_trans (le_of_eq_add (d := pred (DenE (pw two (two * K)))) ?_) c'
-  ipra_lc -Groth.ι (IPRA.Q.mk Γ K) * natEq (phi_A (Γ := Γ) (succ (pw two (two * K)))) + natEq hD
+  ipra_lc -Groth.ι (IPRA.Q.mk Γ K) * natEq (phi_A (succ (pw two (two * K)))) + natEq hD
 
 /-- `thm:liminf-phi`, variable `0 = K`. -/
 abbrev liminfFormula : Fm PTm 1 :=

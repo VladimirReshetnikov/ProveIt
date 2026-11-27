@@ -1,9 +1,5 @@
-import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.GoldbachGeometric
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The numerical part of the multinomial bound
@@ -27,14 +23,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.GoldbachGeometric (one_le_pw)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `A = 2^22 3^15 7^7`. -/
 def Aval : ℕ := 2 ^ 22 * 3 ^ 15 * 7 ^ 7
@@ -135,3 +127,5 @@ where
     ipra_lc
 
 end LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound
+
+export_ipra DiophantineNumberTheory.AperyMultibound (mul_pw pw_num)

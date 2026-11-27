@@ -1,8 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
-import IPRADerivations.Combinatorics.BinomialTheorem
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The multinomial-term bound of the Apéry lcm estimate
@@ -24,19 +21,14 @@ Here `M_m` is taken in its binomial-product form; its agreement with `(42m)!/((2
 standard factorial identity and is not restated.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (Aval mul_pw multibound_of_term)
-open LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily (one_pw)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (tBody inst2_t binomial_at congrBinom congrPw)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- One binomial term: `C(n, j) x^j ≤ (x + 1)^n` for `j ≤ n`. -/
 theorem binom_term {n j x : PTm k} (hj : Γ ⊢[PRAAx] le j n) :

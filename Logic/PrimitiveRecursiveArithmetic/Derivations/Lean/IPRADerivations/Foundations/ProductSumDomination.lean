@@ -1,6 +1,4 @@
 import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
 
 /-!
@@ -35,11 +33,9 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.ProductSumDomination
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## A linear inequality between four sums -/
 
@@ -149,3 +145,5 @@ theorem dom_step (p q r s : PTm 2) {L w : PTm n}
     (congrMul (sum_succ' p L w).eqSymm (sum_succ' q L w).eqSymm) (dom_alg ih hd hc)
 
 end LeanProofs.IPRA.Foundations.ProductSumDomination
+
+export_ipra Foundations.ProductSumDomination (sum_trunc)

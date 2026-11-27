@@ -1,10 +1,6 @@
 import IPRADerivations.Foundations.RiseAlternative
 import IPRADerivations.Foundations.WindowStability
-import IPRADerivations.Foundations.FrontierSoundness
 import IPRADerivations.Foundations.CoherentTower
-import IPRADerivations.Core.Division
-import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.Header
 
 /-!
 # The rational finite window: a nonrise of the floors
@@ -25,15 +21,10 @@ between the two endpoint values, which is the conclusion of the theorem for a mo
 is the least one (bounded search); the candidate starts `n_i` are data of the application.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RationalWindow
 
-open_ipra
-open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RiseAlternative (riseB nxB inst2_riseB inst2_nxB nonrise_of_bound)
-open LeanProofs.IPRA.Foundations.FrontierSoundness (rdB inst2_rdB)
-open LeanProofs.IPRA.Foundations.CoherentTower (ex_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,7 +1,4 @@
 import IPRADerivations.Topology.DimensionUnits
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Floors of rationals with different denominators
@@ -35,15 +32,13 @@ naturals:
 
 namespace LeanProofs.IPRA.Foundations.RationalFloors
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Topology.StaggeredCells (near dist)
 open LeanProofs.IPRA.Topology.DimensionUnits (dist_of_add dist_comm dist_le_one_of_near)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Two quotients -/
 

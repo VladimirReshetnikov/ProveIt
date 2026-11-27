@@ -1,8 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BertrandSearch
 import IPRADerivations.AnalyticNumberTheory.BertrandMiddle
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
-import IPRADerivations.AnalyticNumberTheory.PhiUpper
-import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the bound on the central coefficient after a failed search
@@ -30,14 +28,10 @@ Then `gap` (the estimate (8)): the first factor is at most `P^s` (`PrimorialLowe
 `4^m` (`PrimorialUpper.pri_le`), the third at most `P`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandFactor
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP prime_of_isP isP_of_prime lpf_of_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (dvd_of_val_le PE XE val_PE inst2_XE PE_pos binom_val_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower (Sm vB inst2_vB small_le)
@@ -49,10 +43,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.BertrandMiddle (val_middle)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrVal)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_mul val_unique not_dvd_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper (lpf_min)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
 open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.CentralBinomial (central_pos)
@@ -60,8 +50,6 @@ open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 open LeanProofs.IPRA.Signum (sg)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Small facts -/
 

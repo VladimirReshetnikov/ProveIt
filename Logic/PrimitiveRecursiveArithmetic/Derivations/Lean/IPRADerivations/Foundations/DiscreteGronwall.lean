@@ -1,10 +1,5 @@
-import IPRADerivations.Analysis.RationalArithmetic.Powers.PowerSums
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The discrete Gronwall estimate with a rational growth bound
@@ -29,14 +24,9 @@ With `r = p/q` (`q ≤ p`) and samples `e(j, x)`, `δ(j, x)`:
   `e(N) ≤ 3^A (e(0) + ∑_{i<N} δ(i))`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.DiscreteGronwall
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

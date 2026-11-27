@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryPointwise
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The symmetry bound (`pnt_ipra_constructive_2026-11-14`, `sb:symmetry-bound`)
@@ -26,14 +24,11 @@ Hypotheses: `x ≥ 1`, `K ≥ 1`, `(x+1)⁴ ≤ K`, `K (x+1)⁴ ≤ L`. The pass
 `HarmonicLogSum` with `WeightBridge`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetryBound
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel (CT c_nonneg)
 open LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope (le_mul2 harm_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (qr Q4 WB inst2_WB fourth_root_sum)
@@ -44,17 +39,13 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (tau_bs eps_bs tw_bs
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (Hyp W point_upper point_lower le_Q4)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (DwB)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb' zero_ne_one' zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `μ⁺ + μ⁻ ≤ 1` and `⌊x/d⌋ ≥ 1` -/
 
@@ -86,7 +77,7 @@ theorem quo_pos {x q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) (h : Γ �
   refine .orE (zero_or_succ (quo x q)) ?_ Prf.hyp0
   let C : List (Fm PTm n) := (quo x q ≐ zero) :: Γ
   have e := natEq ((Prf.andE₁ dm).wk (ψ := quo x q ≐ zero)); have z := natEq (Prf.hyp0 : C ⊢[PRAAx] quo x q ≐ zero)
-  have er : C ⊢[PRAAx] rem x q ≐ x := by apply deriveNat; ipra_simps; linear_combination -e - 𝔞 q * z
+  have er : C ⊢[PRAAx] rem x q ≐ x := by ipra_lc -e - 𝔞 q * z
   have hl : C ⊢[PRAAx] lt x x := le_trans (le_congr (congrSucc er) (.eqRefl _) ((Prf.andE₂ dm).wk (ψ := quo x q ≐ zero))) (h.wk (ψ := quo x q ≐ zero))
   exact lt_irrefl x _ hl
 

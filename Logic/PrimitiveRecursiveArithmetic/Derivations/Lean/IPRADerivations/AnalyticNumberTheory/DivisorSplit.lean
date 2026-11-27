@@ -1,8 +1,5 @@
-import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.DiophantineNumberTheory.GcdList
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Divisors of a coprime product (`robin_ipra_research_2026-11-19`, multiplicativity of `σ`)
@@ -19,23 +16,15 @@ factorization of the divisors of a coprime product, proved here for `m, N ≥ 1`
   `a₀ = gcd(d, m)`, `b₀ = d / a₀`: each divisor of `mN` has exactly one factorization, and other `d` have none.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_le' gcd_dvd' gauss coprime_dvd_left
   gcd_comm_one coprime_quotients pos_of_eq_mul one_le_of_pos dvd_mul')
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (rem_by_zero)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Cancellation and positivity -/
 
@@ -194,3 +183,5 @@ theorem cnt_pt {d m N : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (hm : Γ
         apply deriveNat; ipra_simps; try ring
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit
+
+export_ipra AnalyticNumberTheory.DivisorSplit (pos_of_dvd)

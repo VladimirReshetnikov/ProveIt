@@ -1,11 +1,5 @@
-import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.AnalyticNumberTheory.PhiUpper
-import IPRADerivations.AnalyticNumberTheory.EulerDomination
 import IPRADerivations.Probability.ProductReplacement
 import IPRADerivations.Combinatorics.LegendreFact
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Finite factor vectors
@@ -32,20 +26,14 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FactorVector
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val val_dvd cof_eq cof_not_dvd pw_pos' isP isP_01
   prime_of_isP isP_of_prime lpf_congr prime_congr two_le_lpf lt_pw)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf lpf_dvd lpf_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_unique not_dvd_one val_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper (lpf_min)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_le' dvd_trans')
 open LeanProofs.IPRA.Combinatorics.Binomial (quo_of_eq)
-open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Probability.ProductReplacement (prod_succ')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Small tools -/
 
@@ -198,9 +186,7 @@ theorem inv_case_one {N m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (h1 
     (R_succ N m).eqTrans (congrMul (.eqRefl _) ((f_one h1).eqTrans (congrAp2 powF vm (.eqRefl _))))
   have R'p := R_pos (Γ := Γ) (succ N) m
   have meq : Γ ⊢[PRAAx] m ≐ R (succ N) m * quo (quo m (R N m)) (pw N (val N (quo m (R N m)))) := by
-    have me' := natEq me; have ce' := natEq ce; have r' := natEq eR
-    apply deriveNat; ipra_simps
-    linear_combination me' + 𝔞 (R N m) * ce' - 𝔞 (quo (quo m (R N m)) (pw N (val N (quo m (R N m))))) * r'
+    ipra_lc natEq me + 𝔞 (R N m) * natEq ce - 𝔞 (quo (quo m (R N m)) (pw N (val N (quo m (R N m))))) * natEq eR
   refine .andI (dvd_of_eq' R'p meq) ?_
   exact good_congr (quo_of_eq R'p meq).eqSymm (one_good hp cp (Prf.andE₂ ih) ce nd'')
 
@@ -365,3 +351,5 @@ theorem divergence_rational {a b : PTm n} (hb : Γ ⊢[PRAAx] le one b) :
   ipra_lc 𝔞 (NumP (Wit a)) * natEq (eq_add_of_le hb)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.FactorVector
+
+export_ipra AnalyticNumberTheory.FactorVector (f_one f_pos f_zero lpf_dvd' lpf_prime' reconstruct subst_dvd subst_isP)

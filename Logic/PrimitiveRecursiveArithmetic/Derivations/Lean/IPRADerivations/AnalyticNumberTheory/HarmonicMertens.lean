@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicChebyshev
 import IPRADerivations.AnalyticNumberTheory.HarmonicLambda
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Subadditivity of the harmonic logarithm and Mertens' upper bound (`pnt_ipra_constructive_2026-11-14`)
@@ -21,26 +18,17 @@ hence the contraction hypothesis `con:signed`. Everything is stated for the pack
   `HarmonicChebyshev.harmonic_lw`, `N! ≤ N^N`, `pow_sub` and `HarmonicChebyshev.psi_le`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (log_refine)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt harmonic_lw psi_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda (Sw harmonic_sandwich fact_le_pow)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi pos_of_lt_zero lt_zero_of_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `a ≤ b → c a ≤ c b`. -/
 theorem le_scale (c : PTm n) {a b : PTm n} (h : Γ ⊢[PRAAx] le a b) : Γ ⊢[PRAAx] le (c * a) (c * b) := by
@@ -92,7 +80,7 @@ abbrev Hp (k a M L K : PTm n) : Fm PTm n :=
 
 theorem p_zero (a M L : PTm n) : Γ ⊢[PRAAx] P zero a M L := by
   have q : Γ ⊢[PRAAx] M * pw a zero ≐ M := by
-    ipra_lc 𝔞 M * natEq (pw_zero (Γ := Γ) a)
+    ipra_lc 𝔞 M * natEq (pw_zero a)
   have e0 := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))
   ipra_le 0 with e0
 
@@ -104,7 +92,7 @@ theorem p_step {k a M L K : PTm n} (h : Γ ⊢[PRAAx] Hp (succ k) a M L K) (ih :
   have hk := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ h))
   have mono := le_scale M (pw_le_exp ha hk)
   have q : Γ ⊢[PRAAx] M * pw a (succ k) ≐ M * (pw a k * a) := by
-    ipra_lc 𝔞 M * natEq (pw_succ (Γ := Γ) a k)
+    ipra_lc 𝔞 M * natEq (pw_succ a k)
   have hL : Γ ⊢[PRAAx] le (M * (pw a k * a)) L := le_trans (le_congr q (.eqRefl _) mono) hK
   have sub := subadd hM (pw_pos' ha k) ha hL
   have e := natEq (congrAp2 (Γ := Γ) (sumF hB) q (.eqRefl (fact L)))
@@ -156,3 +144,5 @@ theorem mertens_upper {N M L : PTm n} (hN : Γ ⊢[PRAAx] le one N) (hM : Γ ⊢
   exact le_congr (congrMul hNp (.eqRefl _)) (congrMul hNp (.eqRefl _)) c
 
 end LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens
+
+export_ipra AnalyticNumberTheory.HarmonicMertens (le_scale subadd)

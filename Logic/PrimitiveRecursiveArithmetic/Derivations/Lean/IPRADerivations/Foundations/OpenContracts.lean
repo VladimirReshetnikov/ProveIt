@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Basic
 import IPRADerivations.Core.Header
 
 /-!
@@ -41,7 +40,7 @@ weakening and substitution of the deduction kernel.
 
 namespace LeanProofs.IPRA.Foundations.OpenContracts
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ}
 

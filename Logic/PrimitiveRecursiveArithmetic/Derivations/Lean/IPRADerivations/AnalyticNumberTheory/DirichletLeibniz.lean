@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # The Leibniz rule for the weighted derivation of Dirichlet convolution
@@ -18,22 +15,16 @@ Each divisor term splits by complete additivity `L_w(m) = L_w(d) + L_w(m/d)` (`l
 applying the theorem to each of the four sign combinations.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (congrLw lw_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Leibniz
 
@@ -107,3 +98,5 @@ theorem dirichlet_leibniz (f g : PTm 2) {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ 
 end Leibniz
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz
+
+export_ipra AnalyticNumberTheory.DirichletLeibniz (cvB cv_at inst2_DwB inst2_cvB)

@@ -162,3 +162,5 @@ theorem elim_root {d e : ℕ} {f g : ℕ → ZT n} {v : ZT n} (h0 : 0 < e + d)
   exact sylvester_root d e _ _ _ h0 eF eG
 
 end LeanProofs.IPRA.Foundations.EliminationRoot
+
+export_ipra Foundations.EliminationRoot (vpow)

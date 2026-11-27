@@ -1,7 +1,4 @@
-import IPRADerivations.DiophantineNumberTheory.WilsonProduct
 import IPRADerivations.DiophantineNumberTheory.FermatTwoSquares
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # Wilson's theorem for every prime, and its converse
@@ -19,25 +16,17 @@ The congruence is written as `(n − 1)! mod n = n − 1`.
 * **`wilson_converse`**: `n ≥ 2` and `(n − 1)! mod n = n − 1` give `prime n`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.WilsonConverse
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime dvd_fact not_dvd_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (two_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_trans' dvd_sub')
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_add_congr)
-open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (wilson pred_lt)
-open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (odd_of_prime_ne_two)
+open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (wilson)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Every prime -/
 

@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.SquareArea
-import IPRADerivations.Core.Header
 
 /-!
 # The rational points of `y² = x³ − x`
@@ -21,18 +20,14 @@ a right triangle with square area (`thm:no-square-area`).
 * `e1_no_point`: no point with `y ≠ 0`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.EllipticE1
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (two_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (tri mk_tri chiF chi_of_tri hyps)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `thm:no-square-area` in any context. -/
 theorem no_tri {A B C S : PTm n} (ht : Γ ⊢[PRAAx] tri A B C S) : Γ ⊢[PRAAx] Fm.bot := by
@@ -51,14 +46,11 @@ theorem e1_tri {a b c e D : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hb 
   refine mk_tri (pos_mul hD he) (pos_mul (pos_mul (pos_mul two_pos ha) hb) he) (pos_mul (pos_mul hb hb) hc) ?_ ?_
   · refine .orE hab ?_ ?_
     · have f := natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := a * a + D ≐ b * b))
-      apply deriveNat; ipra_simps
-      linear_combination (𝔞 e) ^ 2 * (𝔞 D + 𝔞 b ^ 2 - 𝔞 a ^ 2) * f
+      ipra_lc (𝔞 e) ^ 2 * (𝔞 D + 𝔞 b ^ 2 - 𝔞 a ^ 2) * f
     · have f := natEq (Prf.hyp0 (Ax := PRAAx) (Γ := Γ) (φ := b * b + D ≐ a * a))
-      apply deriveNat; ipra_simps
-      linear_combination (𝔞 e) ^ 2 * (𝔞 D + 𝔞 a ^ 2 - 𝔞 b ^ 2) * f
+      ipra_lc (𝔞 e) ^ 2 * (𝔞 D + 𝔞 a ^ 2 - 𝔞 b ^ 2) * f
   · have f := natEq hE
-    apply deriveNat; ipra_simps
-    linear_combination 2 * 𝔞 b * f
+    ipra_lc 2 * 𝔞 b * f
 
 /-- `thm:e1`: no rational point of `y² = x³ − x` has `y ≠ 0`. With `x = ±a/b`, `y = ±c/e`,
 `D = |a² − b²|`, all at least `1`, the curve equation `a D e² = c² b³` is impossible. -/

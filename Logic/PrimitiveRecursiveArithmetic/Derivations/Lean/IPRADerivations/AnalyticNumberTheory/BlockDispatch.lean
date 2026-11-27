@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.BlockCross
-import IPRADerivations.Core.Header
 
 /-!
 # The finite block deficit (`pnt_ipra_constructive_2026-11-14`, Lemma `con:deficit`)
@@ -21,14 +20,10 @@ sample on the lower half (`case_B`), or a crossing (`CrossingSearch.crossing`, `
   inequality.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockDispatch
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockTests (four hiB loB hi_at lo_at test_zero test_one half_of_lt
   mid_of_neither)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -36,8 +31,6 @@ open LeanProofs.IPRA.Analysis.Products (fact)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem off_at (g : PTm 2) (i b P : PTm n) : Γ ⊢[PRAAx] inst2 (offB g) i (pairT b P) ≐ inst2 g (b + i) P := by
   rw [inst2_offB]; exact congrInst2 g (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)
@@ -77,9 +70,7 @@ end Tests
 
 /-! ## The half-block hypotheses from a failed search -/
 
-open LeanProofs.IPRA.Foundations.BoundedReflection (exB ex_none)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (OnBlock stg Pm Qm)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 
 section Halves
 

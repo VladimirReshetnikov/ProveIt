@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the bounded search and the valuation bounds
@@ -24,13 +22,9 @@ The failure obligation itself (the central binomial lower bound against the prod
 primorial bound, the growth inequality and the finite base certificate of the packet) is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandSearch
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_least ex_none)
 
@@ -89,7 +83,7 @@ scan returns this bound. The theorem applies for x ≥ 4.
 abbrev body : PTm 2 := monus (var 0) (var 1) * isP (var 0)
 
 theorem inst_body (i x : PTm k) :
-    inst2 body i x = monus i x * isP i := by simp [body, inst2, FactorVector.subst_isP]
+    inst2 body i x = monus i x * isP i := by simp [body, inst2]
 
 abbrev limit (x : PTm k) : PTm k := monus (two * x) two
 
@@ -155,3 +149,5 @@ theorem bertrand_of_failure_refuted (h : failureObligation) :
   exact .botE _ h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BertrandSearch
+
+export_ipra AnalyticNumberTheory.BertrandSearch (found)

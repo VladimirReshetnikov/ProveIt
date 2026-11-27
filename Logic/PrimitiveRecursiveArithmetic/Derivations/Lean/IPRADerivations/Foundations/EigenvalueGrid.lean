@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.RationalRootConstant
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # A rational eigenvalue lies on a finite grid (`ipra_presentations_to_witnesses`, `cor:eigenvalue-grid`)
@@ -26,17 +24,12 @@ finite grid of the packet. The case `z = 0` needs no separate treatment (`La ≤
 `La = 0`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.EigenvalueGrid
 
-open_ipra
-open LeanProofs.IPRA.Foundations.RationalRootDegree (Bez euclid)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RationalRootConstant (dvd_le)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The reduced denominator divides `Δ`. -/
 theorem grid_den_dvd {q' Δ' La Z u v : PTm k} (hB : Γ ⊢[PRAAx] Bez q' La u v)
@@ -62,14 +55,12 @@ theorem grid_num_le {q' Δ' La Z u v : PTm k} (hB : Γ ⊢[PRAAx] Bez q' La u v)
   have hz : Γ ⊢[PRAAx] Z ≐ quo (succ Δ') (succ q') * La := by
     refine mul_cancel (d' := q') ?_
     have e₁ := natEq hE
-    have e₂ := natEq hd
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + 𝔞 La * e₂
+    ipra_lc e₁ + 𝔞 La * natEq hd
   refine .orE (zero_or_succ (quo (succ Δ') (succ q'))) ?_ ?_
   · -- `t = 0` would make `Δ` zero
     have e₂ := natEq (hd.wk (ψ := quo (succ Δ') (succ q') ≐ zero))
     have c0 : ((quo (succ Δ') (succ q') ≐ zero) :: Γ) ⊢[PRAAx] succ Δ' ≐ zero := by
-      ipra_lc e₂ + (𝔞 q' + 1) * natEq (Prf.hyp0 (Γ := Γ) (φ := quo (succ Δ') (succ q') ≐ zero))
+      ipra_lc e₂ + (𝔞 q' + 1) * natEq (Prf.hyp0 (φ := quo (succ Δ') (succ q') ≐ zero))
     exact succ_ne_zero' _ c0
   · have s := natEq (Prf.hyp0 (Γ := Γ)
       (φ := quo (succ Δ') (succ q') ≐ succ (pred (quo (succ Δ') (succ q')))))

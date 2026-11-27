@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.CanonicalPowers
-import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.Core.Search
 import IPRADerivations.Probability.Variance
-import IPRADerivations.Core.Fubini
 import IPRADerivations.Combinatorics.CatalanConvolution
 import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 import IPRADerivations.Core.LinearCombination
@@ -37,24 +34,17 @@ Derived, for `N ≥ 2`:
   perfect power `N = w^d` with `w, d ≥ 2` has `eT N ≥ d ≥ 2`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CanonicalDecomposition
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.CatalanConvolution (monus_monus)
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
 open LeanProofs.IPRA.Probability.Variance (ad)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The searches -/
 

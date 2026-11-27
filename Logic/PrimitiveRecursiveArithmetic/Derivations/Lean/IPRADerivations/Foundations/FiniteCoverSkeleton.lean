@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.Descent
-import IPRADerivations.Core.Order
-import IPRADerivations.Core.Header
 
 /-!
 # A supplied finite cover gives an explicit skeleton (`ipra_categorical_methods`, Section 7)
@@ -38,11 +36,9 @@ initial segment `[ℓ]` is `rank`/`sel` of `Foundations/FilteredEnumeration` and
 here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteCoverSkeleton
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Search (mu search_spec search_minimal search_found)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
 

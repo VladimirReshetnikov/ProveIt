@@ -1,10 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.WilsonConverse
-import IPRADerivations.AnalyticNumberTheory.FactorVector
-import IPRADerivations.AnalyticNumberTheory.Euler
-import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The half-factorial is a root of `−1`
@@ -29,29 +23,18 @@ and `p − 1 − k ≡ −(k + 1) (mod p)` with `k + 1` invertible, so `W(k + 1)
 * **`root_residue`** (`lem:root`): `t = h! mod p` has `0 < t < p` and `p ∣ t² + 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HalfFactorialRoot
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime fact_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP prime_of_isP isP_of_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos not_dvd_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' zero_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_le' dvd_sub')
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.WilsonConverse (wilson_prime succ_dvd)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The step as polynomial identities -/
 

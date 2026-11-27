@@ -1,6 +1,5 @@
 import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Dual-horizon composition
@@ -27,11 +26,9 @@ Horizons are bodies `r_F(q, x)`, `j_F(q, x)`, `r_G(d, x)`, `j_G(d, x)`; the pref
   `UnionUtility.ag_attains`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.DualHorizon
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.UnionUtility (Mx Ag mx_upper ag_attains)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

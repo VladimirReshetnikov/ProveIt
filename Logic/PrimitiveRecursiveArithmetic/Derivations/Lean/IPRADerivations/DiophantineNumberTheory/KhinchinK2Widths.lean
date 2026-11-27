@@ -1,13 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinWidths
 import IPRADerivations.DiophantineNumberTheory.KhinchinTailMass
 import IPRADerivations.DiophantineNumberTheory.KhinchinCellParams
-import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Core.SumPalindrome
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The block hypotheses from `ψ` and the divergence modulus (`hurwitz_khinchin_ipra`, (K2))
@@ -36,12 +29,9 @@ The function is `ψ(q) = Ψ(q, x)/C` with a natural-valued numerator body `Ψ` (
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2Widths
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (pos_of_eq)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (shift_inst2')
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt Qk uB u_at pw_mono2 bB)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (block_cover)
@@ -54,8 +44,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellParams (αc γc b0c cel
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `1 ≤ t` gives `t = succ (pred t)`. -/
 alias pos_of_one := Common.pos_of_one_le
@@ -235,9 +223,9 @@ theorem hex_pt (Ψ : PTm 2) {k K0 C x Q R G α γ b0 : PTm n} (hC : Γ ⊢[PRAAx
     (hR : Γ ⊢[PRAAx] le (num 4 * (Qk K0 k * Qk K0 k) * C) R) :
     Γ ⊢[PRAAx] num 4 * C * inst2 (uB (wbK Ψ)) k (Xt K0 (pairT (pairT C x) Q) R G α γ b0) ≐
       fact R * G * inst2 (MB (dyB Ψ)) k (pairT C (pairT K0 x)) := by
-  ipra_lc 4 * 𝔞 C * natEq (u_at (Γ := Γ) (wbK Ψ) k K0 (pairT (pairT C x) Q) R G α γ b0) +
-    4 * 𝔞 C * 𝔞 (Qk K0 k) * 𝔞 (Qk K0 k) * natEq (w_at (Γ := Γ) Ψ k K0 C x Q R G α γ b0) +
-    natEq (w_exact (G := G) (x := x) Ψ hC hR) - 𝔞 (fact R) * 𝔞 G * natEq (mb_at (Γ := Γ) Ψ k K0 C x)
+  ipra_lc 4 * 𝔞 C * natEq (u_at (wbK Ψ) k K0 (pairT (pairT C x) Q) R G α γ b0) +
+    4 * 𝔞 C * 𝔞 (Qk K0 k) * 𝔞 (Qk K0 k) * natEq (w_at Ψ k K0 C x Q R G α γ b0) +
+    natEq (w_exact (G := G) (x := x) Ψ hC hR) - 𝔞 (fact R) * 𝔞 G * natEq (mb_at Ψ k K0 C x)
 
 /-- Shifting a closed hypothesis under one binder. -/
 theorem sh {φ : Fm PTm n} (ψ : Fm PTm (n + 1)) (h : Γ ⊢[PRAAx] φ) : (ψ :: Γ.map Fm.shift) ⊢[PRAAx] Fm.shift φ :=

@@ -1,8 +1,4 @@
 import IPRADerivations.Foundations.ModulusNormalization
-import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Probability.Ninther
-import IPRADerivations.Core.Header
 
 /-!
 # Coherent extraction from approximate minima
@@ -33,13 +29,10 @@ Derived:
 The canonical evaluation `f(X) = V` and the uniqueness of the point name are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CoherentMinimizer
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.ModulusNormalization (mhat index_le modulus_le mhat_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Probability.Ninther (mn mn_le mn_ge)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 

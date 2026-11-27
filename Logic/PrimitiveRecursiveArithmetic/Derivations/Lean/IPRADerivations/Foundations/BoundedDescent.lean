@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded descent with a rank (`ipra_coherent_methods_2026-11-15`, `thm:rank`)
@@ -32,17 +29,13 @@ Instance with every hypothesis discharged: counting down by the predecessor,
 `pred^{s₀}(s₀) = 0` (`countdown_closed`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BoundedDescent
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.IterationFusion
 open LeanProofs.IPRA.Foundations.BoundedReflection (eq_of_eqb one_ne_zero)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The hypotheses of `thm:rank`. -/
 structure Descent (T r D V : PTm 1) : Prop where

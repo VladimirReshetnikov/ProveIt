@@ -16,7 +16,7 @@ import IPRADerivations.Core.Header
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Identities
 
-open_ipra
+open_ipra exports
 
 /-- `u⁴`, `u⁵` as products. -/
 def pow4 {m : ℕ} (u : ZT m) : ZT m := ZT.sq (ZT.sq u)

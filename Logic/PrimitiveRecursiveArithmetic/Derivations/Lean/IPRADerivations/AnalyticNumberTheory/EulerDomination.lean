@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Smooth
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The Euler product dominates the harmonic sum
@@ -24,11 +20,9 @@ For a modulus `a`, an exponent `L` and a numerator `F` put
   `(∑_{m=1}^{n} ⌊F/m⌋) · DenE_n ≤ F · ProdP_n` for every `F`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
@@ -36,16 +30,7 @@ open LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic (congrSg zo_eqb zo_sg
 open LeanProofs.IPRA.DiophantineNumberTheory.Hurwitz (add_le_add)
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq coprime_pow)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq')
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime eq_succ_pred)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_le le_quo_of_mul_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (A Dn pB dB pBt dBt A_succ Dn_succ A_pos pBt_zero pBt_one
   dBt_zero dBt_one ProdP DenE NumP sum_bounds_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (smooth_all)

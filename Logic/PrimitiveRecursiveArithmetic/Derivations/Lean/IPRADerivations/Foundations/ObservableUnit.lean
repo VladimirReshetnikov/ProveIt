@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.EigenvalueBound
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The unit identity gives a nonzero coordinate (`ipra_presentations_to_witnesses`, `thm:finite-observable-image`)
@@ -26,17 +24,13 @@ The remaining steps of the theorem are applications of `Foundations/EigenvaluePr
 of the coordinate grids and its cardinality `∏_k (2 R_k + 1)` are not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ObservableUnit
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_elim ex_none)
 open LeanProofs.IPRA.Foundations.EigenvalueBound (wB inst2_wB)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (c β : PTm 2)
 

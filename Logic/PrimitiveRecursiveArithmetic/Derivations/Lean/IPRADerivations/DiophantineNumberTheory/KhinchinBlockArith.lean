@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.FractionCount
-import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
-import IPRADerivations.Core.Header
 
 /-!
 # The arithmetic of the Khinchin block (`hurwitz_khinchin_ipra`, (K10)–(K11))
@@ -29,15 +27,11 @@ cancellations (by `βD(ΣU)²`, then by `3`).
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
-open LeanProofs.IPRA.DiophantineNumberTheory.FractionCount (pos_of_le_one)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The second moment against the first: `3βT(ΣE + 2ΣL) ≤ 76 D (ΣU)²`. -/
 theorem moment_le {SE SL SU SC T D β : PTm n}

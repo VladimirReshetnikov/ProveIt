@@ -1,8 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.RobinGammaWidth
 import IPRADerivations.AnalyticNumberTheory.RobinExpWidth
 import IPRADerivations.AnalyticNumberTheory.LcmBridgeDPsi
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The numerical side of `(n + 12)2^{−r} ≤ 2^{−k}` (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm")
@@ -17,27 +15,19 @@ exponential precision `K_e = 32 + 2r` and the Euler-constant parameters `t = 2^{
 * `num_alg`: these give `n(2/(K_e+1)! + 3(9t/Z + 1/(12(1+t)²)))·R·P + 15P ≤ R`, the budget of `RobinWidthCompose`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinWidthNum
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName (Fv F_zero F_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaWidth (Zg)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (eb eb_spec c3)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos (rr tg Kg)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeDPsi (pw_mono_exp four pw2_4 pw_two_eight)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Factorials -/
 
@@ -99,7 +89,7 @@ theorem tg_le (N k : PTm n) : Γ ⊢[PRAAx] le (tg N k) (pw two (num 4 + rr N k)
   ipra_le 1 with p
 
 theorem one_tg (N k : PTm n) : Γ ⊢[PRAAx] one + tg N k ≐ pw two (num 4 + rr N k) := by
-  ipra_lc -natEq (pw_pos' (Γ := Γ) two_pos' (num 4 + rr N k))
+  ipra_lc -natEq (pw_pos' two_pos' (num 4 + rr N k))
 
 /-- `216 t n 2^k ≤ Z_{K_γ}`. -/
 theorem n_two {N : PTm n} (hN1 : Γ ⊢[PRAAx] le one N) (k : PTm n) :

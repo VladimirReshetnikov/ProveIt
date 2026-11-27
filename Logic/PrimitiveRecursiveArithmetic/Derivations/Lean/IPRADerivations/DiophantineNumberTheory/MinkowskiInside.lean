@@ -1,9 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiWellFormed
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalBoxes
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The original guarded Inside scheme at canonical half-cell centers
@@ -16,11 +12,9 @@ sequence equality. Arbitrary membership formulas are transported only by
 that literal code equality. Numerical membership parameters remain internal.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiInside
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (normalize normalize_preserves_value)
 open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed normalize_well_formed well_formed_unique denominator_positive)
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf)
@@ -34,11 +28,8 @@ open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiWellFormed
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalBoxes (lowerRow upperRow)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
-open LeanProofs.IPRA.Foundations.SequenceEquality (sequence_equal)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def halfCenter (a : ZT n) (m : PTm n) : PTm n := center a (two*m)
 def double (c : PTm n) : PTm n := normalize (ZT.ofNat two*numeratorOf c) (denominatorOf c)
@@ -74,7 +65,7 @@ theorem double_half_center (a : ZT n) (m : PTm n) (hm : Γ ⊢[PRAAx] le one m) 
   have positive : Γ ⊢[PRAAx] le one (m*denominatorOf (halfCenter a m)) :=
     le_congr (one_mul one) (.eqRefl _) (le_mul_mono hm (denominator_positive _))
   apply integer_cancel (m*denominatorOf (halfCenter a m)) _ _ positive
-  ipra_lc [centerNumerator] -𝔞(m)*𝔞(denominatorOf (center a m))*ZT.toZ_eq (double_value (Γ := Γ) (halfCenter a m))- 𝔞(denominatorOf (center a m))*𝔞(denominatorOf (double (halfCenter a m)))*ZT.toZ_eq (half_value (Γ := Γ) a m hm)+ 𝔞(denominatorOf (halfCenter a m))*𝔞(denominatorOf (double (halfCenter a m)))*ZT.toZ_eq (center_value (Γ := Γ) a m hm)
+  ipra_lc [centerNumerator] -𝔞(m)*𝔞(denominatorOf (center a m))*ZT.toZ_eq (double_value (halfCenter a m))- 𝔞(denominatorOf (center a m))*𝔞(denominatorOf (double (halfCenter a m)))*ZT.toZ_eq (half_value a m hm)+ 𝔞(denominatorOf (halfCenter a m))*𝔞(denominatorOf (double (halfCenter a m)))*ZT.toZ_eq (center_value a m hm)
 
 theorem double_congr {c d : PTm n} (h : Γ ⊢[PRAAx] c ≐ d) : Γ ⊢[PRAAx] double c ≐ double d := by
   ipra_congr (double (var 0) : PTm 1) with [h]

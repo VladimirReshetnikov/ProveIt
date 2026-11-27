@@ -35,7 +35,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedReflection
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Search (mu mu_zero mu_succ search_spec search_minimal search_found)
 
@@ -326,3 +326,6 @@ theorem least_positive_witness (f : PTm 2) (test : PTm n → PTm n) {N x seed ne
     (ex_least f lower.andE₂.andE₂))
 
 end LeanProofs.IPRA.Foundations.BoundedReflection
+
+export_ipra Foundations.BoundedReflection (allB allB_zero all_cases all_elim all_intro eq_of_eqb eqb_cases exB
+  ex_cases ex_elim ex_intro ex_least ex_none inst2_sgB sgB sg_cases zero_of_compl_ne)

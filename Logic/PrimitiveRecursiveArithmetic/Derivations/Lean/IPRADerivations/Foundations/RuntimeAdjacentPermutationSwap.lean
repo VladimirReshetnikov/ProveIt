@@ -1,13 +1,6 @@
 import IPRADerivations.Foundations.RuntimePermutationWords
 import IPRADerivations.Foundations.GuardedTotalization
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.ParityArith
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual adjacent position swaps of numeric permutation words
@@ -19,14 +12,12 @@ no incoming sign, swapped-permutation or global reindexing law is assumed.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RuntimeAdjacentPermutationSwap
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_length sequence_decode subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Foundations.GuardedTotalization (sel sel_zero sel_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -965,3 +956,5 @@ theorem actual_returned_retained_parity_closed : ([] : List (Fm PTm 0)) ⊢[PRAA
   closeUniv 3 (.impI (.impI (returned_rank_parity_flip _ _ _ Prf.hyp1 Prf.hyp0)))
 
 end LeanProofs.IPRA.Foundations.RuntimeAdjacentPermutationSwap
+
+export_ipra Foundations.RuntimeAdjacentPermutationSwap (different_of_lt)

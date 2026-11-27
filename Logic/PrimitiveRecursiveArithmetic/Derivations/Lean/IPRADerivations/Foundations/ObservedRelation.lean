@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Basic
 import IPRADerivations.Core.Header
 
 /-!
@@ -21,11 +20,9 @@ parameter substitution `ρ` (for the `n` context variables) and a term `a` use `
   coherence identifies their observations.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ObservedRelation
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ}
 

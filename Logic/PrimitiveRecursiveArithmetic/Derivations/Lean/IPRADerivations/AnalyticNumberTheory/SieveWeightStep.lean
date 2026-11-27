@@ -1,12 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightPrime
-import IPRADerivations.AnalyticNumberTheory.SieveDiagonal
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Foundations.SignedSums
-import IPRADerivations.Probability.Lotus
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # One prime step of the weight bound
@@ -34,28 +26,18 @@ the second sum is at most `Σ_k [p ∤ k] [D ∣ k] |Y_k|` by the reindexing of 
 * `pt_le`, `split_pt`: the summand inequality and the split by `[p ∣ r]`, for the bodies.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightStep
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg zero_mul_l congrEqb' inst2_mulB eqb_split shift_mul')
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' zero_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal (Ab Ab_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightPrime (Y_kill abs_step)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The summand -/
 

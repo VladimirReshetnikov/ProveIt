@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Harmonic
-import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The local Euler-factor bound `p^p ≤ 4 (p − 1)^p`
@@ -20,15 +16,11 @@ Instead of the paper's detour through `(1 + 1/a)^a ≤ 3`, we show that `(1 + 1/
 * `local_factor`: induction on `p`, cancelling the positive factor `(p−1)^p`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -57,7 +49,7 @@ theorem bern_step {X m : PTm n}
   have h := le_mul_mono ih (le_refl (succ X))
   refine le_trans ?_ (le_congr (.eqRefl _) (pw_succ _ _).eqSymm h)
   refine le_of_eq_add (d := succ m * pw X m) ?_
-  ipra_lc -natEq (pw_succ (Γ := Γ) X (succ m)) - (Groth.ι (IPRA.Q.mk Γ m) + 1) * natEq (pw_succ (Γ := Γ) X m)
+  ipra_lc -natEq (pw_succ X (succ m)) - (Groth.ι (IPRA.Q.mk Γ m) + 1) * natEq (pw_succ X m)
 
 /-- Variables: `0 = m`, `1 = X`. -/
 private abbrev bernF : Fm PTm 2 :=
@@ -88,11 +80,10 @@ theorem decr (m : PTm n) :
     (pw_mul_base (succ m) (succ m) (succ m)))
   refine le_of_eq_add (d := pw (m * succ (succ m)) m + succ m * monus (pw (succ (m * succ (succ m))) (succ m))
     (pw (m * succ (succ m)) (succ m) + succ m * pw (m * succ (succ m)) m)) ?_
-  ipra_lc (Groth.ι (IPRA.Q.mk Γ m) + 1) * natEq (eq_add_of_le hb) - natEq (pw_succ (Γ := Γ) (m * succ (succ m)) m) -
-    (Groth.ι (IPRA.Q.mk Γ m) + 1) * eR₂ +
-    Groth.ι (IPRA.Q.mk Γ (pw (succ m) (succ m))) * natEq (pw_succ (Γ := Γ) (succ m) (succ m)) +
-    (Groth.ι (IPRA.Q.mk Γ m) + 2) * natEq (pw_mul_base (Γ := Γ) m (succ (succ m)) (succ m)) -
-    Groth.ι (IPRA.Q.mk Γ (pw m (succ m))) * natEq (pw_succ (Γ := Γ) (succ (succ m)) (succ m))
+  ipra_lc (Groth.ι (IPRA.Q.mk Γ m) + 1) * natEq (eq_add_of_le hb) - natEq (pw_succ (m * succ (succ m)) m) -
+    (Groth.ι (IPRA.Q.mk Γ m) + 1) * eR₂ + Groth.ι (IPRA.Q.mk Γ (pw (succ m) (succ m))) *
+    natEq (pw_succ (succ m) (succ m)) + (Groth.ι (IPRA.Q.mk Γ m) + 2) * natEq (pw_mul_base m (succ (succ m)) (succ m)) -
+    Groth.ι (IPRA.Q.mk Γ (pw m (succ m))) * natEq (pw_succ (succ (succ m)) (succ m))
 
 /-! ## The bound -/
 
@@ -135,3 +126,5 @@ theorem local_factor_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 localF :=
   closeUniv 1 (local_factor _)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor
+
+export_ipra AnalyticNumberTheory.LocalFactor (pw_mul_base)

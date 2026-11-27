@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.BlockSigned
-import IPRADerivations.Core.Header
 
 /-!
 # The signed block mean over divisors (`pnt_ipra_constructive_2026-11-14`, `con:signed`)
@@ -15,11 +14,9 @@ written with the prefix sums `T_b(D) = Σ_{1≤d≤x} [d ≤ D] B(⌊x/d⌋)` of
 independent of `D`: `g_indep`), and `BlockSigned.excess_upper` at `D₁`, `excess_lower` at `D₂`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockMean
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBlock (iB eB gB gB_at block_id)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockFloor (lB fB lB_at fB_at)
@@ -29,8 +26,6 @@ open LeanProofs.IPRA.Analysis.Products (fact)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `T_b(D) = Σ_{1≤d≤x} [d ≤ D] B(⌊x/d⌋)`. -/
 abbrev T (b : PTm 2) (x D z : PTm n) : PTm n := ap2 (sumF (RB iB b)) (succ x) (pairT x (pairT D z))

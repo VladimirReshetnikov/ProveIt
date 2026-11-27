@@ -1,6 +1,4 @@
-import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.Core.Header
 
 /-!
 # The gcd of a vector
@@ -23,10 +21,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GcdList
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_trans')
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 
@@ -171,3 +166,5 @@ theorem gv_eq_zero (f : PTm 2) {i N x : PTm k} (h0 : Γ ⊢[PRAAx] gv f N x ≐ 
   zero_dvd (dvd_congr_left h0 (gv_dvd f h))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.GcdList
+
+export_ipra DiophantineNumberTheory.GcdList (gv_greatest gv_succ gv_zero rem_by_zero)

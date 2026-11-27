@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.HenselUniqueness
-import IPRADerivations.Core.Header
 
 /-!
 # Filtered lifting for polynomial systems over `ℤ`
@@ -26,11 +25,9 @@ The system is `P : Fin m → PE m` (polynomial expressions of `Analysis/Polynomi
 Derivative inverses are not recomputed; the only data are `a`, `U`, and the witnesses `E`, `w₀` of (H).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.HenselSystem
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (PE ev dv)
 open LeanProofs.IPRA.Foundations.FilteredTaylor (pd tq ls taylor_exact diff_exact dv_eq zsum toZ_zsum toZ_zero)
 

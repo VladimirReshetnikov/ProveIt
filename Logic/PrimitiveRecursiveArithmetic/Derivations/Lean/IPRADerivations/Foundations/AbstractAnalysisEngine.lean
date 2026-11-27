@@ -4,8 +4,6 @@ import IPRADerivations.Analysis.RationalArithmetic.OrderBounds.RationalClosure
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The elementary quantitative engine of abstract analysis
@@ -28,14 +26,10 @@ Packet: `foundations/ipra_abstract_analysis_2026-11-20`, `sections/foundations.t
   `gap_square`: `4(M⁴ − m²M²) ≤ (2M² − m²)²`, i.e. `1 − 2δ ≤ (1 − δ)²`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.AbstractAnalysisEngine
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (cancel_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

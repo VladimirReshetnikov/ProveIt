@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogDiff
-import IPRADerivations.Core.Header
 
 /-!
 # Lipschitz bounds for the artanh truncations (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -25,19 +24,15 @@ The upper names `U_K = S_K + 2z^{2K+1}/((2K+1)(1−z²))` do **not** satisfy the
 comparisons of `RobinLipLog` therefore use `S_K` for both directions and reach the upper names through the widths.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv L_zero L_succ Pv P_succ P_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Nz_zero Nz_succ Dz Lz)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Power differences -/
 

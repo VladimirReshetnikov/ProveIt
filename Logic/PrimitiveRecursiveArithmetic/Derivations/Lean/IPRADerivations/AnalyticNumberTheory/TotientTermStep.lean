@@ -1,10 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightFacts
 import IPRADerivations.AnalyticNumberTheory.GoldbachPhi
-import IPRADerivations.AnalyticNumberTheory.Multiplicative
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The prime step for the terms `[d ∣ a] z!/φ(d)`
@@ -26,28 +21,18 @@ For a prime `p ∤ a`, pointwise:
 These are the terms of `G_{ap}(t) = G_a(t) + (p − 1)^{−1} G_a(⌊t/p⌋)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.TotientTermStep
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (phi_mul_at zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.GoldbachPhi (phi_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightFacts (phi_quo)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss dvd_mul' dvd_trans' dvd_of_eq' eq_of_dvd'
-  gcd_comm_one)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `g_a(d) = [d ≥ 1][d ∣ a] ⌊F/φ(d)⌋`. -/
 abbrev gt (a F d : PTm n) : PTm n := sg d * (eqb (rem a d) zero * quo F (phi d))

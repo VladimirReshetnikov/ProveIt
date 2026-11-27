@@ -37,7 +37,7 @@ normalization) and the reduction of a general polynomial.
 
 namespace LeanProofs.IPRA.Foundations.LinearCertificates
 
-open_ipra
+open_ipra exports
 
 /-! ## The identities over a commutative ring -/
 

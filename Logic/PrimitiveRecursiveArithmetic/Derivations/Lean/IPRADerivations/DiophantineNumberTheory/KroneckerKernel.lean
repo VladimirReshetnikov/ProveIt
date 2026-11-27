@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
-import IPRADerivations.Core.Header
 
 /-!
 # The kernel-tail constant of the quantitative Kronecker theorem
@@ -12,13 +11,9 @@ Packet: `diophantine-number-theory/dirichlet_kronecker_ipra`, Theorem `thm:krone
 * `kernel_tail`: `4 (2r+1)^d (k t²)^k ≤ r^k` (since `2r + 1 ≤ 3r` for `r ≥ 1`), i.e. `(k t²/r)^k ≤ 1/(4A)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerKernel
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
-open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (one_le_pw_of)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

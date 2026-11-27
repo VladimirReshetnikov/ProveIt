@@ -1,10 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PowerBudget
 import IPRADerivations.AnalyticNumberTheory.StepParams
-import IPRADerivations.AnalyticNumberTheory.AbsDiff
-import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The witness transfer along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -29,23 +24,15 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerBudget (BudgetBelow budget_below log_absorb mul_one')
 open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell clog_bracket)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd adB inst2_adB absd_sum)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp pw_le_cancel)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The bounded maximum -/
 
@@ -276,3 +263,5 @@ theorem transfer {N y r c : PTm n} (hr : Γ ⊢[PRAAx] le one r)
 end Transfer
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer
+
+export_ipra AnalyticNumberTheory.PowerTransfer (TermBound)

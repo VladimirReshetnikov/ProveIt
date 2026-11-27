@@ -1,13 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SquareReciprocal
-import IPRADerivations.AnalyticNumberTheory.Smooth
-import IPRADerivations.AnalyticNumberTheory.PhiDivides
-import IPRADerivations.AnalyticNumberTheory.GcdFiber
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The rational tail estimate for `∑ 1/n^s`, every `s ≥ 2`
@@ -32,34 +25,23 @@ difference of powers. Here `s = t + 1` with `t = u + 1 ≥ 1`, and the rationals
   `F`. The lower bound `0 ≤ Z_s(M) − Z_s(N)` holds because the left sum has natural terms.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ZetaTail
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos dvd_fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (pw_dvd_base pw_dvd_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides (sg_zero_inv)
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_trans')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The difference of powers -/
 
 theorem key_base (m : PTm n) :
     Γ ⊢[PRAAx] le (pw m one * succ (succ m)) (pw (succ m) (succ one)) := by
   refine le_of_eq_add (d := one) ?_
-  ipra_lc natEq (pw_succ (Γ := Γ) (succ m) one) + (𝔞 m + 1) * natEq (pw_one (Γ := Γ) (succ m)) -
-    (𝔞 m + 2) * natEq (pw_one (Γ := Γ) m)
+  ipra_lc natEq (pw_succ (succ m) one) + (𝔞 m + 1) * natEq (pw_one (succ m)) - (𝔞 m + 2) * natEq (pw_one m)
 
 theorem key_step {m u : PTm n}
     (ih : Γ ⊢[PRAAx] le (pw m (succ u) * succ (succ m)) (pw (succ m) (succ (succ u)))) :
@@ -102,7 +84,7 @@ theorem conv_alg {X Y Q Gn Gm F : PTm n} (e1 : Γ ⊢[PRAAx] F ≐ X * Gn) (e2 :
     (Γ ⊢[PRAAx] X * Y * Q + Y * F ≐ (X * Y) * (Q + Gn)) ∧ (Γ ⊢[PRAAx] X * F ≐ (X * Y) * Gm) := by
   have a := natEq e1; have b := natEq e2
   exact ⟨by apply deriveNat; ipra_simps; linear_combination 𝔞 Y * a,
-    by apply deriveNat; ipra_simps; linear_combination 𝔞 X * b⟩
+    by ipra_lc 𝔞 X * b⟩
 
 /-- **The pointwise inequality**: for `m ≥ 1`, `n = m + 1`, `t = u + 1`, `n^t ∣ F` and `m^t ∣ F`,
 `⌊F/n^{t+1}⌋ + F/n^t ≤ F/m^t`. -/

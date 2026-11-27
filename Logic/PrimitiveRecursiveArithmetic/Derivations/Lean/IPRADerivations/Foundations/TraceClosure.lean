@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.TraceComposition
-import IPRADerivations.Core.Header
 
 /-!
 # Closure of certified trace systems under products, branches and loops
@@ -23,11 +22,9 @@ A certified trace system is a step `f` with a quantifier-free invariant `R(s, y)
   `TraceComposition.run_invariant`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.TraceClosure
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter rel rel_congr congrApp1)
 open LeanProofs.IPRA.Foundations.TraceComposition (Preserved run_invariant)
 

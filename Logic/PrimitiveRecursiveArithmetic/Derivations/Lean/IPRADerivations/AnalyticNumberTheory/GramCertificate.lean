@@ -1,5 +1,4 @@
 import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The finite steps of the rational Gram certificate
@@ -26,11 +25,9 @@ The assembly of the proposition (dividing by `k_rs`, the zero test for `k_rs = 0
 derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GramCertificate
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

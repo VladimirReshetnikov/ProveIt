@@ -1,8 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ThreeSquares
 import IPRADerivations.DiophantineNumberTheory.FourSquares
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The three-square obstruction for `4^a (8b + 7)`
@@ -24,15 +21,12 @@ equation between terms: `R3 n` is the bit of the bounded search for a triple `x,
   `∀ a b x y z. x² + y² + z² = 4^a (8b + 7) → ⊥`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquaresPowers
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (four_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra (le_sq_part)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquares (D0 D1 D2 code4 digs code_lt bd lt_succ_of_le)
@@ -42,8 +36,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex
   one_ne_zero)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The search for three squares -/
 
@@ -212,7 +204,7 @@ theorem r3_base (b : PTm k) : Γ ⊢[PRAAx] R3 (pw (two * two) zero * (num 8 * b
 
 theorem step_alg (a c : PTm k) :
     Γ ⊢[PRAAx] pw (two * two) (succ a) * c ≐ (two * two) * (pw (two * two) a * c) := by
-  ipra_lc 𝔞 c * natEq (pw_succ (Γ := Γ) (two * two) a)
+  ipra_lc 𝔞 c * natEq (pw_succ (two * two) a)
 
 theorem r3_step {a c : PTm k} (ih : Γ ⊢[PRAAx] R3 (pw (two * two) a * c) ≐ zero) :
     Γ ⊢[PRAAx] R3 (pw (two * two) (succ a) * c) ≐ zero := by

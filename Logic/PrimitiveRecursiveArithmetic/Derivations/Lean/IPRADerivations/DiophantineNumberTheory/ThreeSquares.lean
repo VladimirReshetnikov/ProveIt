@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.NumeralPrimes
-import IPRADerivations.Combinatorics.LegendreDigits
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The three-square obstruction
@@ -22,17 +19,13 @@ With `FourSquares.lagrange` this is the optimality of four squares: every number
 the numbers `8k + 7` are not sums of three.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ThreeSquares
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
 open LeanProofs.IPRA.Foundations.NumeralPrimes (num_lt num_pos)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Squares modulo `8` -/
 

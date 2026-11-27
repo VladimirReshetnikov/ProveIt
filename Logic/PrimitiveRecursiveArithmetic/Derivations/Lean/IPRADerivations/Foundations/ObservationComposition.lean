@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.FiniteQueryTable
 import IPRADerivations.Foundations.ReverseDemand
 import IPRADerivations.Probability.UnionUtility
-import IPRADerivations.Probability.Ninther
-import IPRADerivations.Core.Header
 
 /-!
 # Composition of finite observation contracts
@@ -29,13 +27,10 @@ first contract `V(u(j)) = 1 → W(j) = 1`.
   `∏_{i<L} W(J(i)) = 1 → V(v) = 1 → Out` gives `V(U) = 1 → Out`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ObservationComposition
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteQueryTable (table_good)
-open LeanProofs.IPRA.Foundations.ReverseDemand (le_mx_left le_mx_right)
 open LeanProofs.IPRA.Probability.UnionUtility (Mx mx_upper)
 open LeanProofs.IPRA.Probability.Ninther (mx)
 

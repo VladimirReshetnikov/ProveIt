@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Foundations.ChineseRemainder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Linear Diophantine equations: the solvability criterion
@@ -23,17 +20,11 @@ natural-number equations `a x + b y = c`, `a x = c + b y`, `b y = c + a x` (the 
 The description of all solutions and the bound on the coefficients are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.LinearDiophantine
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_mul' dvd_add' dvd_sub' eq_of_dvd')
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Necessity -/
 

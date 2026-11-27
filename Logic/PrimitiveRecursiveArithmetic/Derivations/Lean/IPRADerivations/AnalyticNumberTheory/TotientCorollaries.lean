@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.GeneralMul
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Corollaries: gcd–lcm identity, odd nontotients, `φ(n) < n`
@@ -17,19 +14,14 @@ Packet: `analytic-number-theory/von_mangoldt_totient_ipra_2026-11-15`:
   vanishes.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot quo_eq pred_lt)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (phi_two two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (phi_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -73,9 +65,7 @@ theorem gcd_lcm_at : Γ ⊢[PRAAx] phi (gcd m N) * phi (lcm m N) ≐ phi m * phi
   have hφ := (congrAp2 (sumF totBody) hmn hmn).eqTrans (PhiPower.phi_mul_pow_at hLp hd hdL)
   have hg := GeneralMul.general_mul_at hm hN
   refine mul_cancel hd ?_
-  have h₁ := natEq hφ; have h₂ := natEq hg
-  apply deriveNat; ipra_simps
-  linear_combination -Groth.ι (Q.mk _ (phi (gcd m N))) * h₁ + h₂
+  ipra_lc -Groth.ι (Q.mk _ (phi (gcd m N))) * natEq hφ + natEq hg
 
 end GL
 
@@ -155,3 +145,5 @@ theorem phi_lt_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 phiLtFormula :=
   closeUniv 1 (phi_lt (le_of_eq_add (d := var 0) (by ipra_ring)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries
+
+export_ipra AnalyticNumberTheory.TotientCorollaries (eqb_le_one lcm lcm_eq)

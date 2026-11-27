@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PhiLimsup
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Prime powers whose totient is a power of two
@@ -13,15 +11,11 @@ if `φ(p^a) = 2^m` then `a = 1` and `p − 1 = 2^m`.
 `gcd(p, 2) = 1` (as `p` is odd) gives `gcd(p, 2^m) = 1` (`Totient.coprime_pow`), so `p = 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiPowTwo
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi coprime_pow)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (phi_ppow)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
 

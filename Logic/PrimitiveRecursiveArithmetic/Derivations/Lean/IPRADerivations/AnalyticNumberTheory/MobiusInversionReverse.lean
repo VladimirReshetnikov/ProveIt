@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The reverse direction of Möbius inversion
@@ -25,26 +23,19 @@ The Möbius function is the pair `μ = μ⁺ − μ⁻` (`SymmetrySum.aPB`, `aNB
   `N ≥ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionReverse
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN congrSg zero_mul_l congrEqb' one_inst PB NB inst2_PB
   inst2_NB mobius_cancel mobius_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext mu_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at inst2_cvB)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF conv_assoc)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB inst2_aP inst2_aN)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (epsB inst2_eps conv_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (conv_congr_m conv_comm0)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (mul_one1)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Congruence and distributivity -/
 

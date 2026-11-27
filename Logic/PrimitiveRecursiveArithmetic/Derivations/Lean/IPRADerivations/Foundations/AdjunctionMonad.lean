@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.Adjunction
-import IPRADerivations.Core.Header
 
 /-!
 # Every displayed adjunction induces a monad
@@ -21,7 +20,7 @@ Each is an iPRA derivation at arbitrary object terms and hypotheses.
 
 namespace LeanProofs.IPRA.Foundations.AdjunctionMonad
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Adjunction
 

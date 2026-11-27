@@ -1,7 +1,5 @@
-import IPRADerivations.AnalyticNumberTheory.ConvolutionDivisorWeights
 import IPRADerivations.AnalyticNumberTheory.ConvolutionMultiplicative
 import IPRADerivations.Foundations.SignedSumScale
-import IPRADerivations.Core.Header
 
 /-!
 # The coprime product law for integer-valued Dirichlet convolution
@@ -16,21 +14,17 @@ including complementary divisors of the same positive inputs.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionSigned
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionDivisorWeights (quotient_product)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionMultiplicative (conv_at_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor
   (Xp lB riB rB lB_at riB_at rB_at divisor_factor pos_sh gcd_sh)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit (pos_of_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' pos_of_eq_mul)
 open LeanProofs.IPRA.Foundations.SignedSumScale (sum_scale)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The signed summand, using the original four natural-weight bodies. -/
 def weight (f g : ZB) : ZB :=
@@ -111,19 +105,17 @@ private def both (transform : PTm 2 → PTm 2) (w : ZB) : ZB := ⟨transform w.p
 
 private theorem left_val (w : ZB) (d m N Y : PTm n) :
     ZT.toZ Γ ((both lB w).val d (Xp m N Y)) = 𝔞 (eqb (rem (m * N) d) zero) * ZT.toZ Γ (w.val d Y) := by
-  ipra_lc [both, ZB.toZ_val] natEq (lB_at (Γ := Γ) w.pos d m N Y) - natEq (lB_at (Γ := Γ) w.neg d m N Y)
+  ipra_lc [both, ZB.toZ_val] natEq (lB_at w.pos d m N Y) - natEq (lB_at w.neg d m N Y)
 
 private theorem inner_val (w : ZB) (a b m N Y : PTm n) :
     ZT.toZ Γ ((both riB w).val b (pairT a (Xp m N Y))) =
       𝔞 (eqb (rem N b) zero) * ZT.toZ Γ (w.val (a * b) Y) := by
-  ipra_lc [both, ZB.toZ_val] natEq (riB_at (Γ := Γ) w.pos b a m N Y) -
-    natEq (riB_at (Γ := Γ) w.neg b a m N Y)
+  ipra_lc [both, ZB.toZ_val] natEq (riB_at w.pos b a m N Y) - natEq (riB_at w.neg b a m N Y)
 
 private theorem outer_val (w : ZB) (a m N Y : PTm n) :
     ZT.toZ Γ ((both rB w).val a (Xp m N Y)) =
       𝔞 (eqb (rem m a) zero) * ZT.toZ Γ ((both riB w).sum (succ N) (pairT a (Xp m N Y))) := by
-  ipra_lc [both, ZB.toZ_val, ZB.toZ_sum] natEq (rB_at (Γ := Γ) w.pos a m N Y) -
-    natEq (rB_at (Γ := Γ) w.neg a m N Y)
+  ipra_lc [both, ZB.toZ_val, ZB.toZ_sum] natEq (rB_at w.pos a m N Y) - natEq (rB_at w.neg a m N Y)
 
 private theorem right_point (f g : ZB) {a b m N y : PTm n}
     (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))

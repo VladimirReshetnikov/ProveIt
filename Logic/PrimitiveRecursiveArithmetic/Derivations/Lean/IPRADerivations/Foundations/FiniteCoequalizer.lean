@@ -1,9 +1,5 @@
 import IPRADerivations.Foundations.FiniteSetCategory
 import IPRADerivations.Foundations.FiniteQuotient
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Coequalizers of finite sets by sequential merging (`ipra_categorical_methods`, Section 4)
@@ -40,13 +36,10 @@ fibres of `q` as the classes of the generated equivalence, the compaction of the
 this case by the coproduct of `Foundations/FiniteSetCoproducts`; that reduction is not stated).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteCoequalizer
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.ProductPower (dg rem_lt'')
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.Foundations.BoundedReflection
   (allB all_elim all_intro eqb_cases eq_of_eqb one_ne_zero)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential
@@ -54,8 +47,6 @@ open LeanProofs.IPRA.Foundations.FiniteSetCategory
 open LeanProofs.IPRA.Foundations.FiniteQuotient (congrInst1)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Congruence of the equality bit. -/
 alias eqb_congr' := Common.congrEqb

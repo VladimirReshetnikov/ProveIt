@@ -1,12 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.DenominatorModulus
-import IPRADerivations.AnalyticNumberTheory.Smooth
-import IPRADerivations.AnalyticNumberTheory.SieveSurvivors
-import IPRADerivations.AnalyticNumberTheory.PhiDivides
-import IPRADerivations.Foundations.StrongInduction
-import IPRADerivations.DiophantineNumberTheory.QuarticStep
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The left endpoint of the denominator bound: `H_q(z) ≤ S_{A_q(z)}(z)`
@@ -29,20 +21,15 @@ With `DenominatorModulus.smooth_le_totient` (at `L = z`, `F = z!`) this gives
 `H_q(z) ≤ ∑_{d ≤ z} [d ∣ A_q(z)] ⌊z!/φ(d)⌋` (**`Hq_le_G`**).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSmooth
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf eq_succ_pred)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (totBody inst2_tot)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_of_prime pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd (dvd_of_le_val)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg congrEqb' zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (PE XE inst2_XE val_PE)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiDivides (sg_zero_inv)
 open LeanProofs.IPRA.AnalyticNumberTheory.Smooth (dvd_mul_mul pw_dvd_base pw_dvd_exp K_eq lpf_two K_split
   cof_pos cof_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (fB sB inst2_fB inst2_sB)
@@ -50,15 +37,9 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SieveSurvivors (sz_alg)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (Sm gB par g_at term term_pos le_zero_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorModulus (Aq Aq_pos Aq_succ smooth_le_totient)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_mul' dvd_trans' dvd_of_eq' dvd_le' dvd_self'
-  coprime_dvd_left)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Divisibility in the modulus -/
 

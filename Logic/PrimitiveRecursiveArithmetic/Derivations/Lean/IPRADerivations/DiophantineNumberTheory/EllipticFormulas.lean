@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.Integers
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Exact formulas of the elliptic descent
@@ -30,11 +28,9 @@ With signed integer terms (`Core/Integers`):
 The group law, the heights and the enumeration itself are not formalized here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.EllipticFormulas
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (le_of_sq_le)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

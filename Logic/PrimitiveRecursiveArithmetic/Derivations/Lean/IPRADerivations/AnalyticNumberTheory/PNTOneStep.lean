@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PNTThresholds
-import IPRADerivations.Core.Header
 
 /-!
 # The arithmetic of one finite contraction (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -19,14 +18,12 @@ Packet: `analytic-number-theory/pnt_ipra_constructive_2026-11-14`, `contraction.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PNTOneStep
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds (Dq Tt T_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `s ≤ 2T_j` gives `8(s + H̄) + 1 ≤ T_{j+1}`. -/
 theorem threshold_hbar {j p s : PTm n} (hs : Γ ⊢[PRAAx] le s (num 2 * Tt j p)) :

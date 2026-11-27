@@ -1,8 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.BertrandFactor
 import IPRADerivations.AnalyticNumberTheory.BertrandGrowth
 import IPRADerivations.AnalyticNumberTheory.BertrandCertificate
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate as a closed sentence of iPRA
@@ -24,25 +22,19 @@ to the open sequent `found x = 0, 4 ≤ x ⊢ ⊥` (`BertrandSearch.failureOblig
 * `failure_refuted : failureObligation`, and **`bertrand`**: the closed sentence.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandPostulate
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandSearch (found failureObligation sentence
   bertrand_of_failure_refuted)
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandFactor (sq md gap)
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandGrowth (growth_absurd)
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandCertificate (small)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.Combinatorics.CentralBinomial (central_lower)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (pw_two)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `y² ≤ N` gives `y ≤ ⌊√N⌋`. -/
 theorem le_isqrt {y N : PTm n} (h : Γ ⊢[PRAAx] le (y * y) N) : Γ ⊢[PRAAx] le y (isqrt N) := by

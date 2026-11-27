@@ -1,7 +1,5 @@
 import IPRADerivations.Topology.KuhnSimplices
 import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Digit codes for packed lists
@@ -21,15 +19,13 @@ number `Σ_q x_q P^q` and decoded by its base-`P` digits, so a least-witness sea
 
 namespace LeanProofs.IPRA.Foundations.DigitCodes
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.GridSums
 open LeanProofs.IPRA.Topology.KuhnSimplices
 
 set_option autoImplicit false
 
 variable {n : ℕ}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `P^k` as a product. -/
 def pwr : ℕ → PTm n → PTm n

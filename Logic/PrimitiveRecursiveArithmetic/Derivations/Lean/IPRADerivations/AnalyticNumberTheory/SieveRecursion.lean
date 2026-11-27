@@ -1,10 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveSurvivors
-import IPRADerivations.AnalyticNumberTheory.SumReindex
 import IPRADerivations.AnalyticNumberTheory.SievePairSum
-import IPRADerivations.DiophantineNumberTheory.QuarticStep
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The recursion of Legendre's sieve
@@ -28,37 +23,21 @@ The packet's proof: "the integers lost at step `a` are exactly `p_a u` with `1 �
   `Φ(x; P(r)) = Φ(x; P(r + 1)) + [r + 1 prime] Φ(⌊x/(r + 1)⌋; P(r))`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveRecursion
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_isP f_one f_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' zero_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (count_multiples quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq cM)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum (subst_gcd')
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (pri pri_pos pri_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.LegendreSieve (coB inst2_coB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveSurvivors (not_coprime le_of_dvd_pri)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (quo_small)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' gcd_comm_one pos_of_eq_mul
-  coprime_dvd_left coprime_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb one_ne_zero)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The term at `m` -/
 

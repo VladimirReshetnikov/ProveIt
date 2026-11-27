@@ -25,15 +25,11 @@ The checked transition fields are the bits `[s(i + 1) = T(s(i))]` (`chkB`), and
   `last = Run(u, L)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.TraceCertificate
 
-open_ipra
-open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter iter_zero iter_succ congrApp1 subst_app1)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteQueryTable (table_entry)
 open LeanProofs.IPRA.Foundations.StriveCompilation (bits_one)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

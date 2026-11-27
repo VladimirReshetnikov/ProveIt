@@ -1,8 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightOne
 import IPRADerivations.AnalyticNumberTheory.SievePrimes
 import IPRADerivations.Foundations.SumPositive
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.Header
 
 /-!
 # The sum of the absolute values of the explicit sieve weights
@@ -34,28 +32,20 @@ of `weights_le` and is not derived here.
 * `pair_bound`: `Σ_r [d ∣ r] (μ⁺ + μ⁻)(r/d) [r ≥ 1] y_r ≤ Σ_r [r ≥ 1] [d ∣ r] y_r`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightAbs
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN)
-open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB inst2_aP inst2_aN)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveInversion (hS inst2_hS wB wB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveDiagonal (Ab Ab_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (lB inst2_lB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes (sg_le_one eqb_le1)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightRows (uB inst2_uB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN eqb_zero_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm (UPw UNw)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne (Asum)
 open LeanProofs.IPRA.Probability.Independence (row_pt)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Certificates over opaque terms -/
 

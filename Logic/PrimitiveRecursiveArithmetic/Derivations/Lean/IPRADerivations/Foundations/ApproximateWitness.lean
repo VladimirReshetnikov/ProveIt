@@ -1,7 +1,5 @@
 import IPRADerivations.Probability.FiniteLaws
 import IPRADerivations.Core.SearchParameters
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Finite argmin and approximate witnesses
@@ -17,14 +15,11 @@ Residuals and errors are natural numerators over a common positive rational
 denominator, supplied by the application.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ApproximateWitness
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.FiniteLaws (Mn mnF mn_zero mn_succ mn_le)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (monus_succ_of_lt)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -436,3 +431,5 @@ theorem approximate_witness_exists_closed (net score residual : PTm 2) (domain :
     (Prf.hyp (by simp)) (Prf.hyp (by simp)) (Prf.hyp (by simp))
 
 end LeanProofs.IPRA.Foundations.ApproximateWitness
+
+export_ipra Foundations.ApproximateWitness (argmin argmin_spec)

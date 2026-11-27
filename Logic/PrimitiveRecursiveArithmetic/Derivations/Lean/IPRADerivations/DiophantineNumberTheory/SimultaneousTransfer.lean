@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.DirichletReal
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Transfer of the simultaneous approximation to the named inputs
@@ -21,18 +19,12 @@ requested approximation with `|α_j − r_j| ≤ 1/(NH)` and `a = A/D` any furth
 * `zero_of_abs_lt_one`: "If `q = 0`, every integer `p_j` has absolute value below one, hence all `p_j = 0`".
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousTransfer
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_of abs_add abs_mul abs_congr abs_hi abs_lo)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.DiophantineNumberTheory.DirichletReal (abs_nat)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `thm:simultaneous`, the transfer: `|qA − pD| ≤ b₁ + q b₂` and `H (b₁ + q b₂) < (k + 1) D`. -/
 theorem transfer {R A p : ZT n} {q D N H k b₁ b₂ : PTm n}

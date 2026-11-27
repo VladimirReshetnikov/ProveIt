@@ -23,11 +23,9 @@ pair `(i, c)` with `i < N`, `c < B_i` is encoded as `S_i + c < S_N`. The owner o
   and `z = S_o + (z ∸ S_o)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.DisjointSums
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Search (mu search_minimal search_found)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

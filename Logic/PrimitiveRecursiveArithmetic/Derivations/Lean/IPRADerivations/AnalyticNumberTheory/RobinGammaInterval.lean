@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogName
-import IPRADerivations.Core.Header
 
 /-!
 # The lower Euler-constant name (`robin_ipra_research_2026-11-19`, `lem:gamma`)
@@ -23,22 +22,17 @@ The lower name telescopes from `a_1 = 1/2` with the *upper* logarithm names `U_K
   increments `δU_2(1) ≥ 0.056790`, `δU_2(2) ≥ 0.011200`, `δU_2(3) ≥ 0.003984`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lf Lv L_zero L_succ Pv P_succ P_zero sv Wv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
   (Nz Nz_zero Nz_succ Dz Un Ud Lz log_name L_eq N_bridge Un_congr Ud_congr Ud_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The names at `K = 2` -/
 

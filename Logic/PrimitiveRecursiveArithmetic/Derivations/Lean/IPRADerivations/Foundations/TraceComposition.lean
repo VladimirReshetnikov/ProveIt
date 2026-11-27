@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.FiniteStabilization
-import IPRADerivations.Core.Header
 
 /-!
 # Sequential composition of deterministic trace systems
@@ -26,11 +25,9 @@ The encoding as a single trace with a phase bit is not formalized: the composite
 composition of the two iterations.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.TraceComposition
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter rel)
 open LeanProofs.IPRA.Foundations.FiniteStabilization (invariant)
 

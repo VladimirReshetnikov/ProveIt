@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.GridSumsContext
-import IPRADerivations.Core.Header
 
 /-!
 # Grid sums dominate their summands at the points of the grid
@@ -16,7 +15,7 @@ A reusable piece of the embedding framework, extending `Foundations/GridSums`:
 
 namespace LeanProofs.IPRA.Foundations.GridSumsPoints
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.GridSums
 
 set_option autoImplicit false

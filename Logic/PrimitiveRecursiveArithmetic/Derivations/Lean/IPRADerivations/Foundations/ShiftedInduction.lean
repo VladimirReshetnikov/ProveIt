@@ -1,9 +1,5 @@
 import IPRADerivations.Foundations.BoundedReflection
 import IPRADerivations.Probability.PoissonShift
-import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.MultiSums
-import IPRADerivations.Core.Header
 import IPRADerivations.Core.BoundedSums
 
 /-!
@@ -38,13 +34,10 @@ The base and the step are given as derivations of open formulas in the empty con
 further parameters are carried inside `x`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ShiftedInduction
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB all_elim all_intro one_ne_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.Probability.PoissonShift (monus_pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

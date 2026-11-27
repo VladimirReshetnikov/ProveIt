@@ -1,10 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.GcdPhiSum
 import IPRADerivations.AnalyticNumberTheory.MobiusInversionReverse
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
-import IPRADerivations.AnalyticNumberTheory.FactorialLambda
-import IPRADerivations.AnalyticNumberTheory.DivisorFactor
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Legendre's sieve formula
@@ -39,29 +35,17 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LegendreSieve
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (eqb_rem_big)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (conv_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (conv_congr_m)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (inst2_oneB)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversionReverse (unit_pt)
-open LeanProofs.IPRA.AnalyticNumberTheory.MertensTotient (floor_summatory floor_term)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdPhiSum (div_gcd)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor (shift_gcd)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' dvd_le')
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The restricted weight -/
 
@@ -162,3 +146,5 @@ theorem sieve_term (f : PTm 2) (d x P : PTm n) :
   exact h
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LegendreSieve
+
+export_ipra AnalyticNumberTheory.LegendreSieve (coB inst2_coB)

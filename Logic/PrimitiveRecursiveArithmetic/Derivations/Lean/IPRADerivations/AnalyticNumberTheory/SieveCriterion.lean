@@ -1,8 +1,4 @@
-import IPRADerivations.AnalyticNumberTheory.PhiUpper
-import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The least factor of a composite number, and trial division up to the square root
@@ -25,23 +21,12 @@ The primitive recursive array of the theorem that marks exactly the primes is th
 The marking loop of the sieve itself (the array with its crossing-off invariant) is not formalized.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveCriterion
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (prime_congr)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (lpf_prime' lpf_dvd')
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper (lpf_min)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem zero_cof {m l c : PTm n} (e : Γ ⊢[PRAAx] m ≐ l * c) (hc : Γ ⊢[PRAAx] c ≐ zero) :
     Γ ⊢[PRAAx] m ≐ zero := by

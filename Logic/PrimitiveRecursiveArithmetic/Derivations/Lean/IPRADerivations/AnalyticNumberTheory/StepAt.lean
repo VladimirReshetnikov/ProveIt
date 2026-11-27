@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.StepParams
-import IPRADerivations.Core.Header
 
 /-!
 # One contraction step at a point (`pnt_ipra_constructive_2026-11-14`, Lemma `con:one-step`)
@@ -18,36 +17,23 @@ every parameter a primitive-recursive function of `x` and of the stage data `(D,
 The auxiliary `stage_mono` (a stage bound from `Y` holds from any `Y' ≥ Y`) and `ux_pos` (`u_x ≥ 1`) are used.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.StepAt
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.Doubling (S_pow2_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw' u_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockTests (one_le_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit (Stage)
 open LeanProofs.IPRA.AnalyticNumberTheory.OneStepDecrement (one_step_decrement)
 open LeanProofs.IPRA.AnalyticNumberTheory.StepCondition (DecLin DecCst decc_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell muP BP sgP clog_pos clog_bracket params_spec)
-open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (clog clog_spec)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Parameters -/
 
@@ -129,9 +115,7 @@ theorem step_at {x s0 D A K L : PTm n} (h2x : Γ ⊢[PRAAx] le two x) (hs0 : Γ 
       pw two (succ (sgP x s0 (Pq D A))) ≐ pw two (succ (ell x)) := by
     have a := natEq (pw_succ (Γ := Γ) two (sgP x s0 (Pq D A)))
     have b := natEq (pw_succ (Γ := Γ) two (ell x))
-    have c := natEq eEY
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (pw two (muP x)) * 𝔞 (pw (pw two (hq D A + hq D A)) (BP x s0 (Pq D A))) * a - b + 2 * c
+    ipra_lc 𝔞 (pw two (muP x)) * 𝔞 (pw (pw two (hq D A + hq D A)) (BP x s0 (Pq D A))) * a - b + 2 * natEq eEY
   have hE1 : Γ ⊢[PRAAx] le one (pw two (muP x) * pw (pw two (hq D A + hq D A)) (BP x s0 (Pq D A))) :=
     one_le_mul (one_le_pw' h12 _) (one_le_pw' (one_le_pw' h12 _) _)
   have pE := pos_of_one_le hE1

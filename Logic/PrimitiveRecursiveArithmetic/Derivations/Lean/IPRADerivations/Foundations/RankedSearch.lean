@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded search driven by a decreasing rank
@@ -24,11 +23,9 @@ The window iteration `n_t` and the instability certificate of the packet are dat
 enter through the bodies `b` and `ρ`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RankedSearch
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Search (mu search_found)
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (accepted_of_lt)
 

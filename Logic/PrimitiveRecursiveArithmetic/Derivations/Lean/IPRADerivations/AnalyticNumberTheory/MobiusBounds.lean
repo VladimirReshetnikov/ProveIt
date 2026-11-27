@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.Core.Header
 
 /-!
 # Möbius sums with arbitrary bounds
@@ -16,22 +15,15 @@ Infrastructure for Möbius inversion (`analytic-number-theory/von_mangoldt_totie
   i.e. `∑_{d ∣ k} μ(d) = [k = 1]`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_unique)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq')
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le' one_le_of_pos)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Cutting a sum -/
 
@@ -122,7 +114,7 @@ theorem G_tail {d N k : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (h : Γ 
     Γ ⊢[PRAAx] (inst2 GP d (pairT N k) ≐ zero) ⋏ (inst2 GN d (pairT N k) ≐ zero) := by
   have w := natEq (eq_add_of_le h)
   have hd : Γ ⊢[PRAAx] d ≐ succ (pred d) :=
-    eq_succ_pred (y := k + monus d (succ k)) (by apply deriveNat; ipra_simps; linear_combination w)
+    eq_succ_pred (y := k + monus d (succ k)) (by ipra_lc w)
   have r : Γ ⊢[PRAAx] rem k d ≐ k := rem_eq' hd (q := zero) (by ipra_ring) h
   have z : Γ ⊢[PRAAx] eqb (rem k d) zero ≐ zero :=
     (congrEqb' r (.eqRefl _)).eqTrans (eqb_of_ne (.impI (succ_ne_zero' _ (hk.wk.eqSymm.eqTrans Prf.hyp0))))
@@ -190,3 +182,5 @@ theorem cancel_gen {k N K : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (hN 
   exact cP.eqTrans (fP.eqTrans (core.eqTrans (congrAdd (fN.eqSymm.eqTrans cN.eqSymm) (.eqRefl _))))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds
+
+export_ipra AnalyticNumberTheory.MobiusBounds (congrMu mu_bound val_big)

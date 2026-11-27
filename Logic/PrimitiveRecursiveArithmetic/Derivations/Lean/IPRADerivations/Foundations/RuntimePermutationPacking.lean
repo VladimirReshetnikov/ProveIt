@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.RuntimePermutationInsertion
 import IPRADerivations.Foundations.RuntimePermutationFactorialBound
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Exact rectangular indexing of the actual retained permutation list
@@ -18,14 +15,12 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationPacking
 
-open_ipra
+open_ipra exports
 open RuntimePermutationWords (count words position horizon permutationBit)
 open RuntimePermutationDeletion (packed maximumPosition deletedWord deletedRank deleted_rank_correct)
 open RuntimePermutationInsertion (inserted insertedWord inserted_tuple inserted_word_bound inserted_word_valid inserted_maximum deleted_inserted_word)
 open RuntimePermutationFactorialBound (packingF packing_at packing_bound packing_unique successor_count_bound factorial factorial_zero factorial_succ)
-open RuntimeAdjacentPermutationSwap (different_of_lt)
 open MasterCertificate (entry)
-open SequenceComposition (entry_congr)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

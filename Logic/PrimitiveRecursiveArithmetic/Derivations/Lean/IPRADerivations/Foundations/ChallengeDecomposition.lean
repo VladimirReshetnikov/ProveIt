@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedCover
-import IPRADerivations.Core.Header
 
 /-!
 # Finite challenge decomposition
@@ -20,11 +19,9 @@ two certificates is produced by primitive-recursive constructors:
 All selections are bounded least-success searches; the case split is on the contract's bit.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ChallengeDecomposition
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedFormulas
 open LeanProofs.IPRA.Foundations.BoundedReflection (all_fail)
 

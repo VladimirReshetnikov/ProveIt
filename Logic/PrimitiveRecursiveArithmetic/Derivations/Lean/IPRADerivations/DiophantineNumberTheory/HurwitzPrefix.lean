@@ -1,8 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzLoop
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Precision independence of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -25,7 +21,7 @@ Two approximations `Y/W` and `Z/V` run the loop of `HurwitzLoop` from the same s
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzPrefix
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction (adist digit_from_name digit_stable₂
   close_from_cauchy sep_transfer)
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop
@@ -33,8 +29,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- At a common state, equal digits give equal next states. -/
 theorem nxt_of_dig {s Y W Z V : PTm n} (h : Γ ⊢[PRAAx] dig s Y W ≐ dig s Z V) :

@@ -1,9 +1,7 @@
 import IPRADerivations.Core.Fubini
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Totient
-import IPRADerivations.Core.Header
 
 /-!
 # Flattening a double sum
@@ -24,19 +22,17 @@ packet, `hurwitz_khinchin_ipra`) must be handed to a single-index lemma such as
 
 namespace LeanProofs.IPRA.Foundations.SumFlatten
 
-open_ipra
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
-
 /-- `⌊(AM + j)/M⌋ = A` and `(AM + j) mod M = j` for `j < M`. -/
 theorem decode {A M j : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hj : Γ ⊢[PRAAx] lt j M) :
     Γ ⊢[PRAAx] (quo (A * M + j) M ≐ A) ⋏ (rem (A * M + j) M ≐ j) := by
   have u := div_mod_unique (Γ := Γ) (z := A * M + j) (q := A) (r := j) (K' := pred M)
-    (by have e := natEq hM; apply deriveNat; ipra_simps; linear_combination 𝔞 A * e)
+    (by ipra_lc 𝔞 A * natEq hM)
     (lt_congr (.eqRefl _) hM hj)
   exact .andI ((congrAp2 quoF (.eqRefl _) hM).eqTrans (Prf.andE₁ u))
     ((congrAp2 remF (.eqRefl _) hM).eqTrans (Prf.andE₂ u))

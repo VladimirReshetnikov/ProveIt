@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinGammaUpper
 import IPRADerivations.AnalyticNumberTheory.RobinLogWidth
-import IPRADerivations.Core.Header
 
 /-!
 # The width of the Euler-constant enclosure (`robin_ipra_research_2026-11-19`, `lem:gamma`)
@@ -17,11 +16,9 @@ logarithm names) of `RobinGammaUpper`:
 * `gamma_width`: `γ_hi(t, K) − γ_lo(t, K) ≤ 9t/Z_K + 1/(12(1 + t)²)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaWidth
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma
   (Lf Lv Pv sv Wv Nv nn dd n_eq Pt Qt Pf dB nB P_succ' P_zero' Q_succ dB_at nB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Un Ud Lz L_eq N_bridge)
@@ -33,8 +30,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (c3)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `Z_K = 4(2K+1)3^{2K+1}`. -/
 abbrev Zg (K : PTm n) : PTm n := two * two * succ (two * K) * Pv K c3

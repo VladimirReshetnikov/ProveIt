@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaPrecision
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The theta majorant sums to at most one (`zeta_functional_equation_ipra`)
@@ -22,15 +19,12 @@ The majorant partial sums `Σ_{n=1}^{k} 4n² 2^{−3n²}` are kept over their co
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ZetaThetaSum
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (theta_term)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The step over `0 = k`, `1 = S_k`: `2^{6k+3} S_k + 4(k+1)²`. -/
 def stepS : PTm 3 := var 1 * pw two (num 6 * var 0 + num 3) + num 4 * (succ (var 0) * succ (var 0))

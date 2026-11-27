@@ -31,14 +31,12 @@ the union `V = |⋃_k E_k|` (in cells) satisfies `D T ≤ 8192 β V`, i.e. `|⋃
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (shift_inst2')
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open LeanProofs.IPRA.Foundations.IntervalCover (covB measure)
 open LeanProofs.IPRA.Foundations.IntervalPacking (loB hiB acB)
-open LeanProofs.IPRA.Foundations.IntervalOverlap (inter)
 open LeanProofs.IPRA.Foundations.SecondMoment (ppB lowB inst2_lowB cs_moment ord_moment)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScale (tup AK actK)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinScaleCount (scale_count k8_bounds)
@@ -52,8 +50,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockArith (block_arith)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Summing scaled pointwise inequalities -/
 
@@ -294,3 +290,5 @@ theorem block_cover (wb : PTm 2) {B K0 M R G α γ b0 : PTm n}
   exact block_arith hD hβ hT1 h1 h2 h3' h4 hcs hS
 
 end LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock
+
+export_ipra DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)

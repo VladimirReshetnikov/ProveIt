@@ -1,9 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.FoldedResidues
 import IPRADerivations.DiophantineNumberTheory.EisensteinParity
-import IPRADerivations.AnalyticNumberTheory.Totatives
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The folded residues form a permutation
@@ -26,23 +23,16 @@ Not derived: the multiplicative half of `eq:perm`, Gauss's lemma `eq:gauss` (`si
 criterion, and therefore Eisenstein's lemma `eq:eisenstein` and the reciprocity law.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FoldedPermutation
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' zero_lt')
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (lift3 at_pair shift_cop)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sum_perm)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (inv inv_spec inv_cop)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (floorSum)
 open LeanProofs.IPRA.DiophantineNumberTheory.FoldedResidues (fold fold_le fold_spec rem_pos comp)
 open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (bB idB eB inst2_bB inst2_idB floor_parity)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The folded residue as a term and as bodies -/
 

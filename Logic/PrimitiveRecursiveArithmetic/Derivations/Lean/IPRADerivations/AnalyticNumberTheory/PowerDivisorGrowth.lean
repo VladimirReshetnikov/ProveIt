@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorInversion
-import IPRADerivations.AnalyticNumberTheory.SymmetryPointwise
-import IPRADerivations.Core.Header
 
 /-!
 # The growth transfer `A ⇒ B_h` (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -20,31 +18,20 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorRow (pw_pos1)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion (Zp)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerTransfer (transfer ArgBound TermBound k4 r8)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (quo_mul_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion (RS rB rB_at wP wN inversion)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN congrEqb' om sq)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (congrMu)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd_le le_absd_l le_absd_r)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `m_d = ⌊N/(i+1)^h⌋` over `0 = i`, `1 = ⟨⟨N, h⟩, y⟩`. -/
 def mqB : PTm 2 := quo (fstT (fstT (var 1))) (pw (succ (var 0)) (sndT (fstT (var 1))))
@@ -137,7 +124,6 @@ theorem mu_sum_le (N d : PTm n) : Γ ⊢[PRAAx] le (muP N d + muN N d) one := by
   have b1 := eqb_le_one (Γ := Γ) (sq N d) zero
   refine .orE (eqb_cases (Γ := Γ) (rem (om N d) two) zero) ?_ ?_
   · let C : List (Fm PTm n) := (eqb (rem (om N d) two) zero ≐ zero) :: Γ
-    have z := natEq (Prf.hyp0 : C ⊢[PRAAx] eqb (rem (om N d) two) zero ≐ zero)
     have b2 := eqb_le_one (Γ := C) (rem (om N d) two) one
     have m := le_mul_mono b1.wk b2
     have zz := natEq ((congrMul (.eqRefl (eqb (sq N d) zero)) (Prf.hyp0 : C ⊢[PRAAx] eqb (rem (om N d) two) zero ≐ zero)).eqTrans (mul_zero _))
@@ -400,6 +386,22 @@ theorem forward_mat (aP aN : PTm 2) {h k c : PTm n} (hh : Γ ⊢[PRAAx] le two h
   simp only [Mat, inst2_BB]
   exact f
 
+/-- `∀k ∃c φ(k, c) ⟶ ∀k ∃c ψ(k, c)`: for a fresh `k` the hypothesis is used at `E(k)`, and its witness `c` gives
+the witness `C(k, c)`. -/
+theorem all_ex_imp_at {φ ψ : Fm PTm (n + 2)} (E : PTm (n + 1)) (C : PTm (n + 2))
+    (H : ((φ.subst (up (up fun i => var i.succ))).subst (up (Syn.inst E)) :: (Γ.map Fm.shift).map Fm.shift) ⊢[PRAAx]
+      (ψ.subst (up fun i => var i.succ)).subst (Syn.inst C)) :
+    Γ ⊢[PRAAx] Fm.all (Fm.ex φ) ⟶ Fm.all (Fm.ex ψ) :=
+  .impI (.allI (.exE (Prf.allE E (Prf.hyp0 (Γ := Γ) (φ := Fm.all (Fm.ex φ))).shift)
+    (.exI C (H.weaken (List.cons_subset_cons _ (List.subset_cons_self _ _))))))
+
+/-- `all_ex_imp_at` with the hypothesis used at the same `k`. -/
+theorem all_ex_imp {φ ψ : Fm PTm (n + 2)} (C : PTm (n + 2))
+    (H : (φ :: (Γ.map Fm.shift).map Fm.shift) ⊢[PRAAx] (ψ.subst (up fun i => var i.succ)).subst (Syn.inst C)) :
+    Γ ⊢[PRAAx] Fm.all (Fm.ex φ) ⟶ Fm.all (Fm.ex ψ) :=
+  .impI (.allI (.exE (Prf.hyp0 (Γ := Γ) (φ := Fm.all (Fm.ex φ))).allOpen
+    (.exI C (H.weaken (List.cons_subset_cons _ (List.subset_cons_self _ _))))))
+
 /-- One `∀N` of the forward direction, with the binder forms as equations. -/
 theorem forward_all (aP aN : PTm 2) {y h k c : PTm n} {K C X K' C' : PTm (n + 1)}
     (hK : K = Syn.shift (succ (two * k))) (hC : C = Syn.shift c) (hX : X = Syn.shift (pairT h y))
@@ -422,18 +424,13 @@ theorem forward_all (aP aN : PTm 2) {y h k c : PTm n} {K C X K' C' : PTm (n + 1)
 /-- `thm:powerdivisor`, `A ⇒ B_h`: the growth statement of `A` gives that of `B_h` (`h ≥ 2`). -/
 theorem growth_forward (aP aN : PTm 2) {h : PTm n} (hh : Γ ⊢[PRAAx] le two h) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (AB aP) (AB aN) y ⟶ GrowthS (BB aP) (BB aN) (pairT h y) := by
-  refine .impI (.allI ?_)
-  have hG : ((GrowthS (AB aP) (AB aN) y :: Γ).map Fm.shift) ⊢[PRAAx] Fm.shift (GrowthS (AB aP) (AB aN) y) :=
-    (Prf.hyp0 : (GrowthS (AB aP) (AB aN) y :: Γ) ⊢[PRAAx] _).shift
-  have hk := Prf.allE (succ (two * var 0)) hG
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ] at hk
-  refine .exE hk ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
-  refine .exI (Cout (var 1) (var 0)) ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
+  refine all_ex_imp_at (succ (two * var 0)) (Cout (var 1) (var 0)) ?_
+  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
+    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
   exact forward_all aP aN (y := Syn.shift (Syn.shift y)) (h := Syn.shift (Syn.shift h)) (k := var 1) (c := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
-    (two_le_shift (two_le_shift hh)).wk.wk Prf.hyp0
+    (two_le_shift (two_le_shift hh)).wk Prf.hyp0
 
 /-- The backward core in the matrix form of the sentences. -/
 theorem backward_mat (aP aN : PTm 2) {h k c : PTm n} (hh : Γ ⊢[PRAAx] le two h) (y : PTm n)
@@ -476,19 +473,13 @@ theorem backward_all (aP aN : PTm 2) {y h k c : PTm n} {X K C X' K' C' : PTm (n 
 /-- `thm:powerdivisor`, `B_h ⇒ A`: the growth statement of `B_h` gives that of `A` (`h ≥ 2`). -/
 theorem growth_backward (aP aN : PTm 2) {h : PTm n} (hh : Γ ⊢[PRAAx] le two h) (y : PTm n) :
     Γ ⊢[PRAAx] GrowthS (BB aP) (BB aN) (pairT h y) ⟶ GrowthS (AB aP) (AB aN) y := by
-  refine .impI (.allI ?_)
-  have hG : ((GrowthS (BB aP) (BB aN) (pairT h y) :: Γ).map Fm.shift) ⊢[PRAAx]
-      Fm.shift (GrowthS (BB aP) (BB aN) (pairT h y)) :=
-    (Prf.hyp0 : (GrowthS (BB aP) (BB aN) (pairT h y) :: Γ) ⊢[PRAAx] _).shift
-  have hk := Prf.allE (succ (two * var 0)) hG
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ] at hk
-  refine .exE hk ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
-  refine .exI (Cout (var 1) (var 0)) ?_
-  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2, up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two, Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
+  refine all_ex_imp_at (succ (two * var 0)) (Cout (var 1) (var 0)) ?_
+  simp only [GrowthS, Fm.shift, Fm.subst_all, Fm.subst_ex, subst_Mat, up3_v0, up3_v1, up3_v2, up2_v0, up2_v1, up2_v2,
+    up1_v0, up1_v1, up1_v2, inst_v0, inst_v1, subst_up_shift_pal, Syn.subst_inst_shift, Syn.up_zero, upf_one, upf_two,
+    Syn.subst_var, subst_sh, Fin.succ_zero_eq_one, Syn.shift_var, Syn.up_succ, Syn.inst_succ]
   exact backward_all aP aN (y := Syn.shift (Syn.shift y)) (h := Syn.shift (Syn.shift h)) (k := var 1) (c := var 0)
     (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift]) (by simp [Syn.shift])
-    (by simp [Syn.shift]) (two_le_shift (two_le_shift hh)).wk.wk Prf.hyp0
+    (by simp [Syn.shift]) (two_le_shift (two_le_shift hh)).wk Prf.hyp0
 
 /-- `thm:powerdivisor` (one exponent `h ≥ 2`, arbitrary signed coefficients `a = a⁺ − a⁻`): in iPRA,
 `(∀k ∃c ∀N |A(N)|^{2(k+1)} ≤ c N^{k+2}) ↔ (∀k ∃c ∀N |B_h(N)|^{2(k+1)} ≤ c N^{k+2})`, with the explicit witness
@@ -498,3 +489,5 @@ theorem growth_iff (aP aN : PTm 2) {h : PTm n} (hh : Γ ⊢[PRAAx] le two h) (y 
   .andI (growth_forward aP aN hh y) (growth_backward aP aN hh y)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorGrowth
+
+export_ipra AnalyticNumberTheory.PowerDivisorGrowth (InA)

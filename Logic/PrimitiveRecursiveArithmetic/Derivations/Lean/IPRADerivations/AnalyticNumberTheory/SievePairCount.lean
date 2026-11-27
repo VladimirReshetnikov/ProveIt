@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SieveCount
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Counting a progression inside the common multiples of `d` and `e`
@@ -22,23 +20,15 @@ With `lc d e = d · (e / gcd(d, e))` for `d, e ≥ 1`:
   multiplied by `gcd(d, e)`. Divided by `q d e` they read `|K(X) − X / (q [d, e])| ≤ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting (gB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveCount (fB cnt cnt_pt count_le count_ge pos_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus (cop_mul cop_of_mul pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos crt_unique_at)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' gcd_dvd' dvd_trans' pos_of_eq_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `lcm(d, e)` in the form `d · (e / gcd(d, e))`. -/
 abbrev lc (d e : PTm n) : PTm n := d * quo e (gcd d e)

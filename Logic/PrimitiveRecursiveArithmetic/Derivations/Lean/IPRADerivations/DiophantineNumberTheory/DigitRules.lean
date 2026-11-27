@@ -1,8 +1,5 @@
-import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Base-expansion divisibility rules
@@ -22,20 +19,12 @@ The digits are `d_i = ⌊n/b^i⌋ mod b` and the digit sum is `s_b(n) = ∑_{i<n
 The alternating rule modulo `b + 1` is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DigitRules
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm qB' legendre_digits)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The digit sum modulo `b − 1` -/
 

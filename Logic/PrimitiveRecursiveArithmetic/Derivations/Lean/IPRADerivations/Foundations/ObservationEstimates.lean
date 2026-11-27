@@ -1,9 +1,5 @@
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Powers
-import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.TelescopingNames
 import IPRADerivations.Analysis.Integration.RiemannSums.RiemannSumRules
-import IPRADerivations.Core.Header
 
 /-!
 # Estimates of the finite-observation framework
@@ -31,12 +27,9 @@ Statements of the packet derived elsewhere: `lem:vanishing-error` is `vanishing_
 there, and the sum is `sum_modulus`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ObservationEstimates
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.TelescopingNames (regular_of_budget)
 open LeanProofs.IPRA.Analysis.RiemannSumRules (rs_bound)
 

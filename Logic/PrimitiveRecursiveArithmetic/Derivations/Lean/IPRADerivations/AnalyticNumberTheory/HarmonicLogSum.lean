@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicMertensLower
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The logarithmic sum for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `sb:log-sum`)
@@ -21,25 +18,16 @@ Since `H_N ≤ λ_K(N) + 1 + 1/K`-type bounds hold (`HarmonicLogPow2`, `LogRefin
 `|P_1(y) − (y log y − y)| ≤ log y + 1` at integer `y`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (delta_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `(N + 1) ⌊F/(N+1)⌋ = F` for `F = L!`, `N + 1 ≤ L`. -/
 theorem fact_quo {N L : PTm n} (h : Γ ⊢[PRAAx] le (succ N) L) :
@@ -138,3 +126,5 @@ theorem log_sum {N K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx
   exact Prf.impE i (.andI hK (.andI hL (le_refl N)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum
+
+export_ipra AnalyticNumberTheory.HarmonicLogSum (fact_quo inc_lower)

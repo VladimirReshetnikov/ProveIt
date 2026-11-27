@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.GuardedTrace
-import IPRADerivations.Core.Header
 
 /-!
 # Finite replay
@@ -23,11 +22,9 @@ induction is the guarded loop of `Foundations/GuardedTrace`. The agreement hypot
 states that the first run actually visits.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteReplay
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.TraceReflection (Run subst_Run run_zero run_succ)
 open LeanProofs.IPRA.Foundations.GuardedTrace (guarded_loop_all)
 

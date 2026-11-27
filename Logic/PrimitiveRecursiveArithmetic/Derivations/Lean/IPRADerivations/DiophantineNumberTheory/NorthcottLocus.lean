@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.NorthcottNatural
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded-height enumeration on a decidable locus
@@ -21,16 +20,13 @@ its digit vector is `1` and `T(e, q) = 0`.
   `cor:heightbound`, so the list is then complete for the locus.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.NorthcottLocus
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv)
 open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (code entriesLt code_lt digits_of_code)
 open LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural (digB gv_congr congrEqb)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

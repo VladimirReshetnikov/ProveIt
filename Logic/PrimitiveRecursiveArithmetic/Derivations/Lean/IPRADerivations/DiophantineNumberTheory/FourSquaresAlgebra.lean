@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.ThueGrid
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Four squares: Euler's identity and the algebra of one descent step
@@ -28,17 +25,13 @@ a certificate in the ring of differences.
     tuple of the paper is written down directly.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (ad)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `a² + b² + c² + d²`. -/
 abbrev N4 (a b c d : PTm k) : PTm k := a * a + b * b + (c * c + d * d)
@@ -68,8 +61,8 @@ theorem euler4 (a b c d e f g h : PTm k) : Γ ⊢[PRAAx]
     N4 (a * e + b * f + (c * g + d * h)) (ad (b * e + d * g) (a * f + c * h))
       (ad (b * h + c * e) (a * g + d * f)) (ad (c * f + d * e) (a * h + b * g)) ≐
     N4 a b c d * N4 e f g h := by
-  ipra_lc natEq (ad_sq (Γ := Γ) (b * e + d * g) (a * f + c * h)) +
-    natEq (ad_sq (Γ := Γ) (b * h + c * e) (a * g + d * f)) + natEq (ad_sq (Γ := Γ) (c * f + d * e) (a * h + b * g))
+  ipra_lc natEq (ad_sq (b * e + d * g) (a * f + c * h)) +
+    natEq (ad_sq (b * h + c * e) (a * g + d * f)) + natEq (ad_sq (c * f + d * e) (a * h + b * g))
 
 /-! ## Entries are bounded by the norm -/
 
@@ -81,20 +74,16 @@ theorem le_sq_part {a R n : PTm k} (e : Γ ⊢[PRAAx] a * a + R ≐ n) : Γ ⊢[
     ipra_le 𝔞 (pred a) * 𝔞 (pred a) + 𝔞 (pred a) + 𝔞 R with (𝔞 a + 𝔞 (pred a)) * ea - en
 
 theorem le_N4_1 {a b c d n : PTm k} (e : Γ ⊢[PRAAx] N4 a b c d ≐ n) : Γ ⊢[PRAAx] le a n := by
-  have en := natEq e
-  exact le_sq_part (R := b * b + (c * c + d * d)) (by apply deriveNat; ipra_simps; linear_combination en)
+  exact le_sq_part (R := b * b + (c * c + d * d)) (by ipra_lc natEq e)
 
 theorem le_N4_2 {a b c d n : PTm k} (e : Γ ⊢[PRAAx] N4 a b c d ≐ n) : Γ ⊢[PRAAx] le b n := by
-  have en := natEq e
-  exact le_sq_part (R := a * a + (c * c + d * d)) (by apply deriveNat; ipra_simps; linear_combination en)
+  exact le_sq_part (R := a * a + (c * c + d * d)) (by ipra_lc natEq e)
 
 theorem le_N4_3 {a b c d n : PTm k} (e : Γ ⊢[PRAAx] N4 a b c d ≐ n) : Γ ⊢[PRAAx] le c n := by
-  have en := natEq e
-  exact le_sq_part (R := a * a + b * b + d * d) (by apply deriveNat; ipra_simps; linear_combination en)
+  exact le_sq_part (R := a * a + b * b + d * d) (by ipra_lc natEq e)
 
 theorem le_N4_4 {a b c d n : PTm k} (e : Γ ⊢[PRAAx] N4 a b c d ≐ n) : Γ ⊢[PRAAx] le d n := by
-  have en := natEq e
-  exact le_sq_part (R := a * a + b * b + c * c) (by apply deriveNat; ipra_simps; linear_combination en)
+  exact le_sq_part (R := a * a + b * b + c * c) (by ipra_lc natEq e)
 
 /-! ## The descent step -/
 
@@ -152,10 +141,10 @@ theorem descent_alg (ht : ∀ i, Γ ⊢[PRAAx] s i * s i ≐ s i)
     (hs : Γ ⊢[PRAAx] mp + two * dotUA A U + m * N4 (U 0) (U 1) (U 2) (U 3) ≐
       p + (two * two) * dotUSA A s U) :
     Γ ⊢[PRAAx] N4 (w1 A s U mp) (w2 A s U) (w3 A s U) (w4 A s U) ≐ mp * p := by
-  ipra_lc natEq (ad_sq (Γ := Γ) (mp + dotUA A U) (two * dotUSA A s U)) +
-    natEq (ad_sq (Γ := Γ) (A 0 * U 1 + two * (A 1 * U 0 * s 1) + (A 2 * U 3 + two * (A 3 * U 2 * s 3))) (two * (A 0 * U 1 * s 0) + A 1 * U 0 + (two * (A 2 * U 3 * s 2) + A 3 * U 2))) +
-    natEq (ad_sq (Γ := Γ) (A 0 * U 2 + two * (A 1 * U 3 * s 1) + (two * (A 2 * U 0 * s 2) + A 3 * U 1)) (two * (A 0 * U 2 * s 0) + A 1 * U 3 + (A 2 * U 0 + two * (A 3 * U 1 * s 3)))) +
-    natEq (ad_sq (Γ := Γ) (A 0 * U 3 + A 1 * U 2 + (two * (A 2 * U 1 * s 2) + two * (A 3 * U 0 * s 3))) (two * (A 0 * U 3 * s 0) + two * (A 1 * U 2 * s 1) + (A 2 * U 1 + A 3 * U 0))) +
+  ipra_lc natEq (ad_sq (mp + dotUA A U) (two * dotUSA A s U)) +
+    natEq (ad_sq (A 0 * U 1 + two * (A 1 * U 0 * s 1) + (A 2 * U 3 + two * (A 3 * U 2 * s 3))) (two * (A 0 * U 1 * s 0) + A 1 * U 0 + (two * (A 2 * U 3 * s 2) + A 3 * U 2))) +
+    natEq (ad_sq (A 0 * U 2 + two * (A 1 * U 3 * s 1) + (two * (A 2 * U 0 * s 2) + A 3 * U 1)) (two * (A 0 * U 2 * s 0) + A 1 * U 3 + (A 2 * U 0 + two * (A 3 * U 1 * s 3)))) +
+    natEq (ad_sq (A 0 * U 3 + A 1 * U 2 + (two * (A 2 * U 1 * s 2) + two * (A 3 * U 0 * s 3))) (two * (A 0 * U 3 * s 0) + two * (A 1 * U 2 * s 1) + (A 2 * U 1 + A 3 * U 0))) +
     𝔞 mp * natEq hs +
     (𝔞 (U 0) * 𝔞 (U 0) + 𝔞 (U 1) * 𝔞 (U 1) + (𝔞 (U 2) * 𝔞 (U 2) + 𝔞 (U 3) * 𝔞 (U 3))) * (natEq n2 + 4 * (𝔞 (A 0) * 𝔞 (A 0) * natEq (ht 0) + 𝔞 (A 1) * 𝔞 (A 1) * natEq (ht 1) + 𝔞 (A 2) * 𝔞 (A 2) * natEq (ht 2) + 𝔞 (A 3) * 𝔞 (A 3) * natEq (ht 3)))
 

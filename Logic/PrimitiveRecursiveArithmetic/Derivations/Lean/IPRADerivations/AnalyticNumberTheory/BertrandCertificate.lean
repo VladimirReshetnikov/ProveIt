@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BertrandSearch
 import IPRADerivations.Foundations.NumeralPrimes
-import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the finite certificate
@@ -21,18 +20,13 @@ The paper stops the table at `n < 722`, where the integer inequality takes over;
 up to `882`, and the split here is made at `882`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandCertificate
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandSearch (found limit exclude_interval_prime)
 open LeanProofs.IPRA.Foundations.NumeralPrimes (prime_num num_le num_lt)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The ten primes -/
 

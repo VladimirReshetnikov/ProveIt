@@ -20,7 +20,7 @@ on the number of blocks, splitting the cell range at each endpoint (`Core.SumSpl
 
 namespace LeanProofs.IPRA.Foundations.BlockPartitionSum
 
-open_ipra
+open_ipra exports
 
 set_option autoImplicit false
 

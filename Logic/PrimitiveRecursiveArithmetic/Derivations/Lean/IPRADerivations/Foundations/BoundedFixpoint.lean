@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.BoundedDescent
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Fixed points of an ascending bounded operator (`ipra_categorical_methods`, Section 4)
@@ -41,20 +39,15 @@ Not derived: the instantiation to the transitive closure of a coded relation on 
 packet's Warshall recurrence), which additionally needs the closure invariants.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BoundedFixpoint
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.IterationFusion
 open LeanProofs.IPRA.Foundations.BoundedDescent
 open LeanProofs.IPRA.Foundations.BoundedReflection (eq_of_eqb one_ne_zero sg_cases)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The hypotheses: a bounded measure that strictly increases whenever the operator moves. -/
 structure Ascent (T m b V : PTm 1) : Prop where

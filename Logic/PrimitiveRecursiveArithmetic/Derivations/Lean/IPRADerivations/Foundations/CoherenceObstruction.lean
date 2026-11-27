@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.BackwardViability
-import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Finite solvability without a coherent branch (`ipra_categorical_methods`, `thm:tree`)
@@ -37,13 +34,10 @@ Instance: the constant observation `1` is persistent (`allHalt_persist`), and it
 words have all bits equal to `1` (`allHalt_bit`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CoherenceObstruction
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.ProductPower (dg dg_low rem_lt'')
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases one_ne_zero)
 open LeanProofs.IPRA.Foundations.BackwardViability (lt_two_of_bit bit_of_lt_two)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential

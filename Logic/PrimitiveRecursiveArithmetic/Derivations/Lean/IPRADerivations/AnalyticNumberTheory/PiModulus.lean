@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PiAlg
-import IPRADerivations.Core.Header
 
 /-!
 # Prime counting with an explicit modulus (`pnt_ipra_constructive_2026-11-14`, eq:pi-error)
@@ -17,15 +16,11 @@ summation by parts), and the conditions `C1–C3` of `PiAlg` follow from `512 q�
 (`PiAlg.pow_growth`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PiModulus
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt psi_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw' u_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.OneStepDecrement (u_pow u_shift u_low monus_le_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell muP clog_pos clog_bracket)
 open LeanProofs.IPRA.AnalyticNumberTheory.StageAdvance (p4_mono)
@@ -35,18 +30,13 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PiTheta (Pi Theta theta_le_psi theta_l
 open LeanProofs.IPRA.AnalyticNumberTheory.PsiTheta (psi_theta)
 open LeanProofs.IPRA.AnalyticNumberTheory.PiAlg (pi_lower_alg pi_cheb_alg pi_tail_alg pi_upper_alg pow_growth)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds (Dq Q3)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd le_absd_l le_absd_r)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le cancel_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The cut exponents -/
 
@@ -117,9 +107,7 @@ theorem pi_modulus {p x : PTm n} (hx : Γ ⊢[PRAAx] le (pw two (sT (Jst p) (Dq 
   have eY1 : Γ ⊢[PRAAx] pw two (monus (ell x) (sgm p x)) * pw two (succ (sgm p x)) ≐ pw two (succ (ell x)) := by
     have a := natEq (pw_succ (Γ := Γ) two (sgm p x))
     have b := natEq (pw_succ (Γ := Γ) two (ell x))
-    have c := natEq eY
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (pw two (monus (ell x) (sgm p x))) * a - b + 2 * c
+    ipra_lc 𝔞 (pw two (monus (ell x) (sgm p x))) * a - b + 2 * natEq eY
   have hY1 : Γ ⊢[PRAAx] le one (pw two (monus (ell x) (sgm p x))) := one_le_pw' (le_succ_self one) _
   have hYl : Γ ⊢[PRAAx] le (pw two (monus (ell x) (sgm p x))) (pw two (ell x)) := by
     have q := le_scale (pw two (monus (ell x) (sgm p x))) (one_le_pw' (Γ := Γ) (le_succ_self one) (sgm p x))
@@ -182,7 +170,7 @@ theorem pi_modulus {p x : PTm n} (hx : Γ ⊢[PRAAx] le (pw two (sT (Jst p) (Dq 
     have c := natEq (pw_succ (Γ := Γ) two (monus (ell x) (muP x)))
     have d0 : Γ ⊢[PRAAx] pw two (muP x) * pw two (monus (ell x) (muP x)) ≐ pw two (ell x) :=
       (pw_add (Γ := Γ) two (muP x) (monus (ell x) (muP x))).eqSymm.eqTrans
-        (congrAp2 powF (by apply deriveNat; ipra_simps; linear_combination -em) (.eqRefl two))
+        (congrAp2 powF (by ipra_lc -em) (.eqRefl two))
     have d := natEq d0
     ipra_le sl a + sl b + sl hlx with 4 * (𝔞 p + 1) * (𝔞 (ell x) + 1) * c + d
   have lower := pi_lower_alg hP hT hTr (theta_le_pi _ _ _) hqA hC1 hD1

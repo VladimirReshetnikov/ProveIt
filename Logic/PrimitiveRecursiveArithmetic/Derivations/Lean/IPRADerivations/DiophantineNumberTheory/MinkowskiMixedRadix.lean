@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiResidues
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Actual runtime mixed-radix digits for finite boxes
@@ -20,14 +18,12 @@ The total entry decoder is used literally, without a zero-padding promise.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiMixedRadix
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean (natural_divmod positive_form)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

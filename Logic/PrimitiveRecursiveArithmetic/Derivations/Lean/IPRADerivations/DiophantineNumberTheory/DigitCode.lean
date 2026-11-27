@@ -1,6 +1,5 @@
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Base-`b` codes of vectors
@@ -14,18 +13,13 @@ with entries `v_i < b` is coded by `E = ∑_{i<N} v_i b^i`, and its digits `⌊E
 * `code_digit`: the `j`-th digit of `E(N)` is `v_j` for `j < N`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DigitCode
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dB dB_at dm dmu)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `v_i b^i`, over `0 = i`, `1 = ⟨b, x⟩`. -/
 abbrev cB (V : PTm 2) : PTm 2 := inst2 V (var 0) (sndT (var 1)) * pw (fstT (var 1)) (var 0)
@@ -104,11 +98,11 @@ theorem digit_shift {b z c j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) :
   have d1 := dm hq z
   have e1 := natEq (Prf.andE₁ d1)
   have u1 := dmu (z := z + c * (pw b j * b)) (q := quo z (pw b j) + c * b) (r := rem z (pw b j)) hq
-    (by apply deriveNat; ipra_simps; linear_combination e1) (Prf.andE₂ d1)
+    (by ipra_lc e1) (Prf.andE₂ d1)
   have d2 := dm hb (quo z (pw b j))
   have e2 := natEq (Prf.andE₁ d2)
   have u2 := dmu (z := quo z (pw b j) + c * b) (q := quo (quo z (pw b j)) b + c) (r := rem (quo z (pw b j)) b) hb
-    (by apply deriveNat; ipra_simps; linear_combination e2) (Prf.andE₂ d2)
+    (by ipra_lc e2) (Prf.andE₂ d2)
   exact (congrAp2 remF (Prf.andE₁ u1) (.eqRefl _)).eqTrans (Prf.andE₂ u2)
 
 /-- `code_digit`: the `j`-th digit of `E(N)` is `v_j` for `j < N`. -/
@@ -130,7 +124,7 @@ theorem code_digit {V : PTm 2} {b x N j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ 
       have vj := entry_lt hV.wk hjN'
       have c := natEq ((congrCode (Γ := Δ) V (b := b) (x := x) (add_zero (succ j))).eqTrans (code_succ V b x j))
       have u := dmu (pw_pos' hb.wk j) (z := code V b x (succ j + zero)) (q := inst2 V j x) (r := code V b x j)
-        (by apply deriveNat; ipra_simps; linear_combination c) bl
+        (by ipra_lc c) bl
       exact (congrAp2 remF (Prf.andE₁ u) (.eqRefl _)).eqTrans (rem_small hb.wk vj)
     · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, PTm.subst_add, subst_pairT,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
@@ -154,14 +148,12 @@ theorem code_digit {V : PTm 2} {b x N j : PTm k} (hb : Γ ⊢[PRAAx] b ≐ succ 
         have s := natEq (pw_succ (Γ := Δ) (Syn.shift b) (var 0))
         have q : Δ ⊢[PRAAx] pw (Syn.shift b) (succ (Syn.shift j) + var 0) ≐
             pw (Syn.shift b) (Syn.shift j + succ (var 0)) := congrPw (.eqRefl _) (by ipra_ring)
-        have q' := natEq q
-        apply deriveNat; ipra_simps; linear_combination q' + a + 𝔞 (pw (Syn.shift b) (Syn.shift j)) * s
+        ipra_lc natEq q + a + 𝔞 (pw (Syn.shift b) (Syn.shift j)) * s
       have ec : Δ ⊢[PRAAx] code V (Syn.shift b) (Syn.shift x) (succ (Syn.shift j) + succ (var 0)) ≐
           code V (Syn.shift b) (Syn.shift x) (succ (Syn.shift j) + var 0) +
             (inst2 V (succ (Syn.shift j) + var 0) (Syn.shift x) * pw (Syn.shift b) (var 0)) *
               (pw (Syn.shift b) (Syn.shift j) * Syn.shift b) := by
-        have c' := natEq c; have ep' := natEq ep
-        apply deriveNat; ipra_simps; linear_combination c' + 𝔞 (inst2 V (succ (Syn.shift j) + var 0) (Syn.shift x)) * ep'
+        ipra_lc natEq c + 𝔞 (inst2 V (succ (Syn.shift j) + var 0) (Syn.shift x)) * natEq ep
       exact (congrAp2 remF (congrAp2 quoF ec (.eqRefl _)) (.eqRefl _)).eqTrans ((digit_shift hb').eqTrans ih)
   have h2 := Prf.allE (monus N (succ j)) hall
   simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, PTm.subst_add, subst_pairT,
@@ -188,3 +180,5 @@ theorem digits_of_code {V : PTm 2} {b x N : PTm k}
   exact (dB_at _ _ _).eqTrans c
 
 end LeanProofs.IPRA.DiophantineNumberTheory.DigitCode
+
+export_ipra DiophantineNumberTheory.DigitCode (code_digit code_lt entriesLt)

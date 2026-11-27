@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.BlockInstance
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The one-step contraction, raw form (`pnt_ipra_constructive_2026-11-14`, Lemma `con:one-step`)
@@ -26,14 +24,10 @@ The left term `3A²F²xB u_{E₀}` is the deficit gain of the `B` blocks; the re
 harmonic logarithms.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OneStepRaw
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (OnBlock stg)
 open LeanProofs.IPRA.AnalyticNumberTheory.HeadDeficit (hgB head_deficit)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockFamily (Lay hg_split)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockInstance (chain_deficit)
@@ -41,14 +35,11 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit (wbB Stage tail_bound
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedAbel (weighted_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound (psiB qB)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Head and tail baselines, keeping the weighted deficit of one sub-block `E₀ < d ≤ E₁` of `(0, M + 1]`. -/
 theorem deficit_growth {M x K L Ds A Y E0 E1 : PTm n} (hK : Γ ⊢[PRAAx] le one K)

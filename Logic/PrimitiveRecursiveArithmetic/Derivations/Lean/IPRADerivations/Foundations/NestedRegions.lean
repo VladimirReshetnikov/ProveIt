@@ -1,5 +1,4 @@
 import IPRADerivations.Core.MultiSums
-import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Gcd
 import IPRADerivations.Core.Header
 
@@ -18,11 +17,9 @@ membership in every isolating ball. This is the region-membership hypothesis
 needed by the source's uniqueness argument.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.NestedRegions
 
-open_ipra
+open_ipra exports
 
 variable {n m : ℕ} {Γ : List (Fm PTm n)}
 

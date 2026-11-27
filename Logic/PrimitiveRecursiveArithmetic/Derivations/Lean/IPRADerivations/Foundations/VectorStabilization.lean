@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.VectorRank
 import IPRADerivations.Foundations.FiniteStabilization
-import IPRADerivations.Core.Header
 
 /-!
 # Finite stabilization for vector-valued states
@@ -29,12 +28,9 @@ Then:
 No particular coding of vectors is fixed; the three rules are what a coding has to provide.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.VectorStabilization
 
-open_ipra
-open LeanProofs.IPRA.Foundations.IterationFusion (app1 subst_app1 iter iter_succ)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteStabilization (Stab stab stable_at)
 open LeanProofs.IPRA.Foundations.VectorRank (rank_dichotomy)
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.TraceReflection
-import IPRADerivations.Core.Header
 
 /-!
 # Trace reflection with a guarded step
@@ -28,11 +27,9 @@ obligation is unguarded.
   `∀ t ≤ fuel(u). Inv(t, Run(t, u), u)` (the form of `thm:safety`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.GuardedTrace
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
 open LeanProofs.IPRA.Foundations.TraceReflection (Run I3 subst_I3 subst_Run run_zero run_succ I3_congr)
 

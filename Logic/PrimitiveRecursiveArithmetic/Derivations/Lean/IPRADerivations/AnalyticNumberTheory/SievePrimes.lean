@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SieveMajorant
-import IPRADerivations.AnalyticNumberTheory.FactorVector
-import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # From the sifted count to the count of primes in the progression
@@ -21,16 +17,11 @@ With `S = Σ_{m<X} [m ≡ a (mod q)] ρ(m)`, where `ρ(m) = rgh Z m` is the indi
 * `primes_le`: `Σ_{m<X} [m ≡ a (mod q)] [m prime] ≤ S + Z`, i.e. `π(X; q, a) ≤ S + Z`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (cB inst2_cB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveRough (rB inst2_rB rgh)
@@ -193,3 +184,5 @@ theorem primes_le (X Z P : PTm n) :
   exact le_trans (le_congr (.eqRefl _) s m) (add_le_add₂ (le_refl _) c)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes
+
+export_ipra AnalyticNumberTheory.SievePrimes (eqb_le1 piB)

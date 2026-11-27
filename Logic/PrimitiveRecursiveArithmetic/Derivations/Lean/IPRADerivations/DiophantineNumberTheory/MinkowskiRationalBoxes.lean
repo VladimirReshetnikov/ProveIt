@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalScaling
 import IPRADerivations.DiophantineNumberTheory.MinkowskiBoxUnion
-import IPRADerivations.Core.Header
 
 /-!
 # Actual common-denominator conversion of rational box endpoints
@@ -20,11 +19,10 @@ membership are distinct subsequent adapters.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalBoxes
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)

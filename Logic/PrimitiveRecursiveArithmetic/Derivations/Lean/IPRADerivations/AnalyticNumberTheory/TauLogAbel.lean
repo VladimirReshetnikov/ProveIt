@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorBound
 import IPRADerivations.AnalyticNumberTheory.HarmonicLogSquareSum
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The divisor–logarithm sum by finite partial summation (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-approx`)
@@ -28,27 +25,17 @@ where `Φ(N) = F[N u_N − N F + (2C − F) N]` and `m_N = ⌊√N⌋`. The step
 re-checked by the kernel.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (delta_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum (inc_lower fact_quo)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (S_succ U delta_paired)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorBound (eta_bounds divisor_upper divisor_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The Abel sum -/
 
@@ -82,7 +69,6 @@ theorem c_nonneg {K X L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hX : Γ ⊢[PRAA
   have eK1 := natEq (congrAp2 (Γ := Γ) (sumF hB) q1 (.eqRefl (fact L)))
   have eSs := natEq (S_succ (Γ := Γ) zero (fact L))
   have eS0 := natEq (sum_zero (Γ := Γ) hB (fact L))
-  have eq1 := natEq (quo_one' (Γ := Γ) (fact L))
   ipra_le sl c2 with eK1 - eSs - eS0
 
 /-! ## The invariants -/
@@ -263,3 +249,5 @@ theorem tau_abel {k K L X : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PR
   exact Prf.impE i (.andI hK (.andI hL (.andI hX (.andI hKk (le_refl _)))))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.TauLogAbel
+
+export_ipra AnalyticNumberTheory.TauLogAbel (c_nonneg)

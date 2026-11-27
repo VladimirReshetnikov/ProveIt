@@ -1,7 +1,4 @@
-import IPRADerivations.AnalyticNumberTheory.FactorialLambda
-import IPRADerivations.AnalyticNumberTheory.FactorVector
 import IPRADerivations.AnalyticNumberTheory.DirichletLeibniz
-import IPRADerivations.Core.Header
 
 /-!
 # The weighted von Mangoldt function at prime powers
@@ -22,17 +19,13 @@ Theorem `thm:twist`, in coefficient form: for a completely multiplicative `f`,
 product `F = f`, so the weighted logarithmic derivative of `F` has coefficients `f(n) Λ_w(n)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimePowerMangoldt
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul dvd_le')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 

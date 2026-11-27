@@ -1,8 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.PellAll
 import IPRADerivations.DiophantineNumberTheory.PellGenDescent
 import IPRADerivations.DiophantineNumberTheory.PellCFStep
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Finite seeds and uniform decision for `x² − D y² = N`
@@ -26,24 +24,17 @@ So solvability is equivalent to nonemptiness of the finite seed box, which is de
 Integer solutions are obtained by independent sign changes, since `(±x)² − D(±y)² = x² − D y²`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellGeneral
 
-open_ipra
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PellDescent (rr tt)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellGenDescent (gen_descent_pos gen_descent_neg)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellAll
   (reconstruct_zero reconstruct_succ descent_index terminal_residual_zero)
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.DiophantineNumberTheory.SquareArea (le_add_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 @[simp] theorem finCases_six {α : Sort _} (a : α) (f : Fin (n + 6) → α) :
     (Fin.cases a f : Fin (n + 7) → α) 6 = f 5 := rfl

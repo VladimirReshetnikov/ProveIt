@@ -1,11 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SelbergLeibniz
-import IPRADerivations.AnalyticNumberTheory.MobiusInversion
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # Associativity of the finite Dirichlet convolution
@@ -30,14 +24,13 @@ in the packet's `L² = 𝟏 * (Λ * Λ + 𝒟Λ)` (`lam_conv_L`, `selberg_diviso
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv DwB inst2_cvB inst2_DwB cv_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz (lamF lam_conv_one selberg_leibniz)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (dv_prod shift_inst2)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (count_multiples quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l congrEqb' congrSg)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
@@ -45,8 +38,6 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Arithmetic of quotients -/
 
@@ -57,7 +48,7 @@ theorem pos_of_eq {t e : PTm n} (h : Γ ⊢[PRAAx] t ≐ succ e) : Γ ⊢[PRAAx]
 theorem rem_small {k a : PTm n} (h : Γ ⊢[PRAAx] lt k a) : Γ ⊢[PRAAx] rem k a ≐ k := by
   have e := natEq (eq_add_of_le h)
   have ha : Γ ⊢[PRAAx] a ≐ succ (pred a) :=
-    pos_of_eq (e := k + monus a (succ k)) (by apply deriveNat; ipra_simps; linear_combination e)
+    pos_of_eq (e := k + monus a (succ k)) (by ipra_lc e)
   refine (congrAp2 remF (.eqRefl _) ha).eqTrans (Prf.andE₂ (div_mod_unique (q := zero) ?_ (lt_congr (.eqRefl _) ha h)))
   ipra_ring
 
@@ -380,3 +371,5 @@ theorem selberg_divisor {m y : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
 end SelbergDivisor
 
 end LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc
+
+export_ipra AnalyticNumberTheory.ConvolutionAssoc (conv_assoc cvF inst2_cvF multiples_upto quo_quo sg_pos)

@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Recurrences
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Strong divisibility of the Pell sequence
@@ -18,11 +16,9 @@ Packet: `diophantine-number-theory/pell_ipra_2026-11-15`, Theorem `thm:gcd`:
   `X_{Vn}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellGcd
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -110,11 +106,7 @@ end Add
 
 /-! ## Norm, positivity, coprimality -/
 
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
 
 section Norm
 

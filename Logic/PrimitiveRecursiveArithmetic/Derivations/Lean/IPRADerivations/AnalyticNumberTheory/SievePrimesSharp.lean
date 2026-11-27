@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SievePrimeInequality
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # At most `Z − 1` primes below `Z`
@@ -24,17 +20,11 @@ this is the paper's "at most `z` other primes".
 * `prime_pt'`: `c · [m prime] ≤ c · ρ(m) + [1 ≤ m < Z]` for `c ≤ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePrimesSharp
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrIsP isP_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (cB inst2_cB lB)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveRough (rgh)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms (gU sgV)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveMajorant (S0 S0_at amgm)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveInequality (sieve_ineq)
@@ -45,8 +35,6 @@ open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 open LeanProofs.IPRA.Probability.Independence (dsum)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The count of the `m` with `1 ≤ m < Z` -/
 

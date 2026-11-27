@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightOne
 import IPRADerivations.AnalyticNumberTheory.SievePrimesSharp
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.Header
 
 /-!
 # The finite sieve inequality from a bound on the sum of the weights
@@ -28,21 +26,16 @@ It combines `SievePrimesSharp.prime_sieve_ineq_sharp` at the weights `UPw`, `UNw
 The hypothesis `L ≤ c · A` is not discharged here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveFinite
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (lB)
-open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimes (piB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePrimesSharp (prime_sieve_ineq_sharp)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightForm (UPw UNw form_value)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne (Asum lam_P lam_N ky_sum)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The assembly over opaque terms, before the cancellation of `A`: from the sieve inequality for the primes,
 `a = A`, `b = 0`, `G_diag = G_off + B A` and `L ≤ c A`. -/

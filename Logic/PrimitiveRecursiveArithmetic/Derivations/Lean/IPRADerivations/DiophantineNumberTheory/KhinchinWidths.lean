@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlock
 import IPRADerivations.DiophantineNumberTheory.KhinchinMargin
-import IPRADerivations.Core.Header
 
 /-!
 # Scale widths from the capped masses (`hurwitz_khinchin_ipra`, (K8)–(K11) hypotheses)
@@ -21,15 +20,11 @@ The exactness is a divisibility condition on the grid (`4 Q_k² C` divides `T t_
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinWidths
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin (cancel)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- An exact width fits the grid: `4Q²Cw = Tt` and `t ≤ C` give `4Q²w ≤ T`. -/
 theorem hW_of_exact {Q C w T t : PTm n} (hC : Γ ⊢[PRAAx] C ≐ succ (pred C))

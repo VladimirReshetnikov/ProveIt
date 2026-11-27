@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.KleisliIdentity
-import IPRADerivations.Core.Header
 
 /-!
 # The Kleisli category of the monad of an adjunction
@@ -23,7 +22,7 @@ Each statement is an iPRA derivation at arbitrary object terms and hypotheses.
 
 namespace LeanProofs.IPRA.Foundations.KleisliCategory
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Adjunction
 open LeanProofs.IPRA.Foundations.AdjunctionMonad

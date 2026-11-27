@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Totatives
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Gcd fibers
@@ -21,12 +17,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot quo_eq pred_lt quo_step)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -206,3 +201,5 @@ theorem gcd_fiber : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 gcdFiberFormula :=
   closeUniv 2 (gcd_fiber_at (congrSucc (pred_succ _).eqSymm) (congrSucc (pred_succ _).eqSymm))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber
+
+export_ipra AnalyticNumberTheory.GcdFiber (div_eq eqb_iff)

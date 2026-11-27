@@ -29,11 +29,9 @@ Instances with the local derivation supplied: `double_iter` (`h(x) = 2x`, `f = +
 and `square_squaring` (`h(a) = a²` between two copies of multiplication).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.IterationFusion
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
@@ -236,3 +234,5 @@ theorem square_squaring : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2
     ipra_ring) _ _)
 
 end LeanProofs.IPRA.Foundations.IterationFusion
+
+export_ipra Foundations.IterationFusion (app1 congrApp1 iter iter_succ iter_zero subst_app1)

@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetricMoment
 import IPRADerivations.AnalyticNumberTheory.BlockTests
-import IPRADerivations.Core.Header
 import IPRADerivations.Core.ProdLemmas
 
 /-!
@@ -20,16 +19,13 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetricProduct
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd le_absd_l)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetricPrefix (term_le_sum Below)
 open LeanProofs.IPRA.AnalyticNumberTheory.CubeScan (inst2_subst)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Products of factors -/
 

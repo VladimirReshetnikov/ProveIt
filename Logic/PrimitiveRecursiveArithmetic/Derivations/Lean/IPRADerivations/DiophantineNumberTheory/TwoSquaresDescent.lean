@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquaresDescent
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The two-square descent
@@ -20,22 +18,15 @@ absolute difference of two expressions that are zero), and the first two give th
   step at `(x, y, 0, 0)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresDescent
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (zero_lt')
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (quo_small)
 open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (ad)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra (N4 ad_sq w1 w2 w3 w4)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresDescent (sgn av uv res_low Af sf Uf mq descent)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The residue data of a zero coordinate -/
 

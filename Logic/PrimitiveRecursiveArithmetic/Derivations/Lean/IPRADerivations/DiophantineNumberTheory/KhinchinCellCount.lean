@@ -2,7 +2,6 @@ import IPRADerivations.Foundations.SumLocal
 import IPRADerivations.DiophantineNumberTheory.KhinchinMargin
 import IPRADerivations.Foundations.CrossingSearch
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
-import IPRADerivations.Core.Header
 
 /-!
 # The (K11) count inside one coarse cell (`hurwitz_khinchin_ipra`)
@@ -20,16 +19,12 @@ nothing outside the cell's fine range `[L, L + r)` (`KhinchinBlockLocal.block_ou
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinCellCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.SumLocal (sum_local)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinMargin (cancel)
-open LeanProofs.IPRA.Foundations.CrossingSearch (monus_of_eq)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The block count localized to the cell: `r ≤ 16384 Σ_{k<r} u(L + k)`. -/
 theorem count_local (u : PTm 2) {N L r P p : PTm n}

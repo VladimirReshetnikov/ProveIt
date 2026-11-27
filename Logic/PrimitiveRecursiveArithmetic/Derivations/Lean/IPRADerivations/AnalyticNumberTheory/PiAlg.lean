@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MeshChange
-import IPRADerivations.Core.Header
 
 /-!
 # The arithmetic of the prime-counting estimate (`pnt_ipra_constructive_2026-11-14`, `lem:pi-conversion`)
@@ -17,20 +16,13 @@ found and checked by elimination), with `D|ψ − Fx| ≤ AFx`, `qA ≤ 2D`:
 Together: `q|π(x)u_x − Fx| ≤ 4Fx`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PiAlg
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (cancel_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem pi_lower_alg {D A q F x psi th thr pi u L r : PTm n}
     (hP : Γ ⊢[PRAAx] le (D * (F * x)) (D * psi + A * (F * x))) (hT : Γ ⊢[PRAAx] le psi (th + L * thr))

@@ -1,9 +1,6 @@
 import IPRADerivations.Foundations.LexChain
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Foundations.IntersectionEnumeration
-import IPRADerivations.Probability.UnionUtility
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Automatic fuel for fixed-dimensional descent (`ipra_resources_and_elimination_2026-11-15`, `thm:automatic-lex-fuel`)
@@ -45,11 +42,9 @@ The postcondition clause of the theorem ("if iPRA additionally proves
 `automatic_fuel`, stated as `automatic_post`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.AutomaticLexFuel
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
 open LeanProofs.IPRA.Foundations.IterationFusion (rel subst_rel rel_congr)
 open LeanProofs.IPRA.Foundations.LexFuelMonotone (itStep itP itP_zero itP_succ F succ_le)

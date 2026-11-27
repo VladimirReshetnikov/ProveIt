@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperyLcmTerms
 import IPRADerivations.DiophantineNumberTheory.AperyLcmVal
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The per-prime count of the Apéry divisibility step
@@ -20,38 +18,25 @@ If `j < E` then `q ≤ 42m`, so `⌊42m/q⌋ ≥ 1`; if moreover `q > m` the flo
   `LcmUpto.Inv`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmTerms (terms_le terms_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val lt_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu Inv lcm_valuation)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' qB'_at)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (ltB inst2_ltB count_lt)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (qz)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmVal (L val_Mm binom_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial (Mm)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (shift_le_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (dvd_of_val_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (prime_of_isP isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The four floors at `q`. -/
 abbrev fl (m q : PTm k) : PTm k := quo (num 21 * m) q + quo (num 14 * m) q + quo (num 6 * m) q + quo m q

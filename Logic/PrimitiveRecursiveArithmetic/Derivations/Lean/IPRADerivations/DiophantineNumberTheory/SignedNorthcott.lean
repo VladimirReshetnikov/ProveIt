@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.SignedDigit
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded-height enumeration with signed coordinates
@@ -22,23 +21,18 @@ enumeration of `Foundations/FilteredEnumeration`.
   pairwise distinct as projective points.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SignedNorthcott
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.SignedDigit (sgnOf magOf congrSg enc_dec enc_lt)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv)
 open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (code entriesLt code_lt code_digit)
 open LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural (congrEqb gv_congr)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
 open LeanProofs.IPRA.Foundations.BoundedReflection (allB all_intro all_reflect all_cases)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Pointwise-equal vectors have equal prefix gcds, for every prefix `M ≤ N`. -/
 theorem gv_congr_all (f g : PTm 2) {N x y : PTm k}

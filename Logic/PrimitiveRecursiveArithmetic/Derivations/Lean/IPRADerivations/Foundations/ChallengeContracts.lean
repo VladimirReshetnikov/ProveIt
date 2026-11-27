@@ -38,11 +38,9 @@ terminal contracts, the finite-table category of contracts, the example of regul
 names and variable-length chains.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ChallengeContracts
 
-open_ipra
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

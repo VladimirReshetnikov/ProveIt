@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaMult
-import IPRADerivations.AnalyticNumberTheory.Fermat
 import IPRADerivations.AnalyticNumberTheory.PlusPower
-import IPRADerivations.AnalyticNumberTheory.SumReindex
-import IPRADerivations.Core.Header
 
 /-!
 # `σ` at a prime power (`robin_ipra_research_2026-11-19`)
@@ -19,37 +16,24 @@ For a prime `p` and `a ≥ 0`:
 * `sigma_pow`: `(p − 1) σ(p^a) + 1 = p^{a+1}`, the finite geometric series.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sB sig inst2_sB inst2_v0)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorSplit (mul_cancel pos_of_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor (inst2_v1)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' gcd_comm_one eq_one_of_coprime_dvd
   one_le_of_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul eq_of_rem_zero)
-open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (rem_by_zero)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq cM)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (multiples_upto)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (quo_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
-open LeanProofs.IPRA.AnalyticNumberTheory.PlusPower (cop_pow)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (rem_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem sig_congr {K K' : PTm n} (h : Γ ⊢[PRAAx] K ≐ K') : Γ ⊢[PRAAx] sig K ≐ sig K' :=
   congrAp2 _ (congrSucc h) h
@@ -284,3 +268,5 @@ theorem sigma_pow {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (a : PTm n) :
   simpa [Syn.subst_inst_shift] using r
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower
+
+export_ipra AnalyticNumberTheory.SigmaPrimePower (pos_pw sig_congr sigma_pow)

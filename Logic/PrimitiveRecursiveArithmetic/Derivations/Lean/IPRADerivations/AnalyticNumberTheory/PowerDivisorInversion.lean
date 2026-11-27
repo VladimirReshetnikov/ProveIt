@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerAbstractInversion
-import IPRADerivations.AnalyticNumberTheory.MobiusBounds
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
-import IPRADerivations.Core.Header
 
 /-!
 # Möbius inversion along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -19,28 +16,17 @@ With `μ = μ⁺ − μ⁻` (`AnalyticNumberTheory/Mobius`, prime bound `N + 1`)
   `PowerDivisorRow.row_identity`, and the delta term is `G(1) = A(N)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorInversion
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorRow
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (GP GN G_at cancel_gen congrMu)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN congrEqb' congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eqb_comm')
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (quo_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (a w : PTm 2)
 

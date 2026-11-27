@@ -1,9 +1,6 @@
 import IPRADerivations.Probability.ProductPower
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Exponentials and products of finite sets (`ipra_categorical_methods`, Section 4)
@@ -39,20 +36,15 @@ The binary product `[n] × [m] ≅ [nm]` by `(i, j) ↦ i m + j`:
   `k = ⌊k / m⌋ m + (k mod m)` (uniqueness of the pairing).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteSetExponential
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.BlockSum (qr_block)
 open LeanProofs.IPRA.Probability.ProductPower (dg dg_low dg_top rem_lt'' div_eq')
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu digit_step quo_small)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Currying a table -/
 
@@ -88,7 +80,7 @@ private theorem code_lt_step (t : PTm 2) {N m p : PTm n} (hm : Γ ⊢[PRAAx] m �
   have he : Γ ⊢[PRAAx] lt (rem (inst2 t N p) m) m := rem_lt'' hm _
   refine le_of_eq_add (d := pw m N * monus m (succ (rem (inst2 t N p) m)) +
     monus (pw m N) (succ (code t N m p))) ?_
-  ipra_lc natEq (pw_succ (Γ := Γ) m N) - natEq (code_succ (Γ := Γ) t N m p) + 𝔞 (pw m N) * natEq (eq_add_of_le he) +
+  ipra_lc natEq (pw_succ m N) - natEq (code_succ t N m p) + 𝔞 (pw m N) * natEq (eq_add_of_le he) +
     natEq (eq_add_of_le ih)
 
 /-- Variables: `0 = N`, `1 = m`, `2 = p`. -/
@@ -187,8 +179,8 @@ theorem entry_dB {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (j c : PTm
 private theorem recon_step {N m c : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
     (ih : Γ ⊢[PRAAx] code evT N m (pairT m c) + quo c (pw m N) * pw m N ≐ c) :
     Γ ⊢[PRAAx] code evT (succ N) m (pairT m c) + quo c (pw m (succ N)) * pw m (succ N) ≐ c := by
-  ipra_lc natEq (code_succ (Γ := Γ) evT N m (pairT m c)) + 𝔞 (pw m N) * natEq (entry_dB hm N c) +
-    𝔞 (quo c (pw m (succ N))) * natEq (pw_succ (Γ := Γ) m N) + natEq ih - 𝔞 (pw m N) * natEq (digit_step hm c N)
+  ipra_lc natEq (code_succ evT N m (pairT m c)) + 𝔞 (pw m N) * natEq (entry_dB hm N c) +
+    𝔞 (quo c (pw m (succ N))) * natEq (pw_succ m N) + natEq ih - 𝔞 (pw m N) * natEq (digit_step hm c N)
 
 /-- Variables: `0 = N`, `1 = m`, `2 = c`. -/
 private abbrev reconF : Fm PTm 3 :=
@@ -267,3 +259,5 @@ theorem fst_lt {k N m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m))
   exact not_succ_le_self k _ (fst_aux hm.wk hk.wk Prf.hyp0)
 
 end LeanProofs.IPRA.Foundations.FiniteSetExponential
+
+export_ipra Foundations.FiniteSetExponential (dg_lt pair_snd)

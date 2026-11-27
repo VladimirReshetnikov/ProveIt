@@ -1,9 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
-import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
-import IPRADerivations.AnalyticNumberTheory.PhiDouble
-import IPRADerivations.Foundations.SignedSums
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The second supplementary law
@@ -26,31 +21,19 @@ where `h (h + 1)/2 = (p² − 1)/8`. The steps:
 * Gauss's lemma with `a = 2` (`GaussLemma.gauss_lemma`, `QuadraticReciprocity.sign_eq`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SecondSupplement
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg one_inst)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos rem_small)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (leI IB IB_at row_count quo_le_self)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit)
 open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (eV eB inst2_eB)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (gauss_lemma pred_ne_one)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity (sign_eq)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The large remainders for `a = 2` -/
 

@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # A Zsigmondy-type divisibility
@@ -13,13 +11,10 @@ With `N = aᵐ − 1`: `gcd(a, N) = 1` and `aᵐ ≡ 1 (mod N)`, so the order `o
 never `1`. Hence `o = m`, and `m ∣ φ(N)` by `Order.order_dvd_totient`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OrderPower
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos rem_eq_of_eq)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (rem_small N_pos)

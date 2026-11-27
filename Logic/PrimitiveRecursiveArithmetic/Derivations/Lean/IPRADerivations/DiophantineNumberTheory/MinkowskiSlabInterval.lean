@@ -19,12 +19,11 @@ or prove the separate doubled-coordinate geometric transport.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 set_option maxRecDepth 8192
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiSlabInterval
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)

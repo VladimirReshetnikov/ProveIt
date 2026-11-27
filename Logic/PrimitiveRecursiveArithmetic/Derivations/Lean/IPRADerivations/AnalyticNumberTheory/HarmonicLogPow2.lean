@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.LogElementary
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.Header
 
 /-!
 # `log 2 ≤ 1` for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, towards `con:global`)
@@ -17,15 +15,12 @@ logarithm `λ_M(a/b) = H_{Ma} − H_{Mb}` (with `H_m = S(m, F)/F`) the passage n
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogPow2
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogElementary (log_upper)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `λ_K(2) ≤ 1`: `S(2K) ≤ S(K) + F`. -/
 theorem S_double (K F : PTm n) : Γ ⊢[PRAAx] le (S (K + K) F) (S K F + F) := by
@@ -41,8 +36,7 @@ theorem S_pow2 (M F m : PTm n) : Γ ⊢[PRAAx] le (S (M * pw two m) F) (S M F + 
     · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       have e0 : Γ ⊢[PRAAx] M * pw two zero ≐ M := by
-        have a := natEq (pw_zero (Γ := Γ) (two : PTm n))
-        apply deriveNat; ipra_simps; linear_combination 𝔞 M * a
+        ipra_lc 𝔞 M * natEq (pw_zero (two : PTm n))
       have e := natEq (congrAp2 (Γ := Γ) (sumF hB) e0 (.eqRefl F))
       ipra_le 0 with e
     · simp only [subst_le, subst_ap2, PTm.subst_add, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
@@ -54,8 +48,7 @@ theorem S_pow2 (M F m : PTm n) : Γ ⊢[PRAAx] le (S (M * pw two m) F) (S M F + 
       have sd := S_double (Γ := Δ) (Syn.shift M * pw two (var 0)) (Syn.shift F)
       have ek : Δ ⊢[PRAAx] Syn.shift M * pw two (succ (var 0)) ≐
           Syn.shift M * pw two (var 0) + Syn.shift M * pw two (var 0) := by
-        have a := natEq (pw_succ (Γ := Δ) two (var 0))
-        apply deriveNat; ipra_simps; linear_combination 𝔞 (Syn.shift M) * a
+        ipra_lc 𝔞 (Syn.shift M) * natEq (pw_succ (Γ := Δ) two (var 0))
       have e := natEq (congrAp2 (Γ := Δ) (sumF hB) ek (.eqRefl (Syn.shift F)))
       ipra_le sl ih + sl sd with e
   have h := Prf.allE m hall

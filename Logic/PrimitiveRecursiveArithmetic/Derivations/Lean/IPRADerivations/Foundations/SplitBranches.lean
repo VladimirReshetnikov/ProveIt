@@ -1,10 +1,5 @@
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Powers
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.SumLemmas
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Foundations.FrontierSoundness
-import IPRADerivations.Core.Header
 
 /-!
 # Polynomial estimates for separated branches
@@ -33,13 +28,9 @@ The first estimate `|Q(x)| ≤ E_Q(H)`, the degree bookkeeping and Theorem `thm:
 here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.SplitBranches
 
-open_ipra
-open LeanProofs.IPRA.Foundations.FrontierSoundness (rdB inst2_rdB)
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

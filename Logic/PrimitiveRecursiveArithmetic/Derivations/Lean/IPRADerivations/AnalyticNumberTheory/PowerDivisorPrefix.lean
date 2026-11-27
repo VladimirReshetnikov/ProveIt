@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerTransfer
-import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
-import IPRADerivations.AnalyticNumberTheory.FactorialLambda
-import IPRADerivations.Combinatorics.LegendreDigits
-import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.Header
 
 /-!
 # The prefix of a convolution along perfect powers (`riemann_ipra_prime_criteria_2026-11-20`, `thm:powerdivisor`)
@@ -29,21 +24,14 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi (quo_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (quo_small)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerBudget (mul_one')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (a : PTm 2)
 
@@ -167,10 +155,6 @@ theorem prefix_identity {h : PTm n} (hh : Γ ⊢[PRAAx] le one h) (N y : PTm n) 
           show Syn.shift (pairT (pairT (var 0) (Syn.shift h)) (Syn.shift y)) =
             pairT (pairT (var 1) (Syn.shift (Syn.shift h))) (Syn.shift (Syn.shift y)) by simp [Syn.shift]]
         let Λ : List (Fm PTm (n + 2)) := lt (var 0) (Syn.shift (succ (var 0))) :: Δ.map Fm.shift
-        have hp2 : Λ ⊢[PRAAx] Syn.shift (Syn.shift h) ≐ succ (pred (Syn.shift (Syn.shift h))) := by
-          have b := hp.shift
-          simp only [Fm.shift, Fm.subst_eq, ConciseIPRA.PTm.subst_succ] at b
-          simpa [Syn.shift] using b.wk
         have hq : Λ ⊢[PRAAx] pw (succ (var 0)) (Syn.shift (Syn.shift h)) ≐
             succ (pred (pw (succ (var 0)) (Syn.shift (Syn.shift h)))) :=
           pos_of_one_le (one_le_pw' (by ipra_le 𝔞 (var 0)) _)
@@ -195,3 +179,5 @@ theorem prefix_identity {h : PTm n} (hh : Γ ⊢[PRAAx] le one h) (N y : PTm n) 
   simpa [Syn.subst_inst_shift] using r
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PowerDivisorPrefix
+
+export_ipra AnalyticNumberTheory.PowerDivisorPrefix (Apre)

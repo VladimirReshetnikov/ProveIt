@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.OneStepDecrement
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The integer step condition from the block count (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -19,19 +17,14 @@ blocks of exponent length `P = 2h`, `x ≤ 2^T`, the unknown region `m < 2^σ`) 
 absorbs the block error, `decc_bound` combines them.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.StepCondition
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.OneStepDecrement (DecW DecC)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias mul_le2 := Common.mul_le_mul
 
@@ -79,3 +72,5 @@ theorem decc_bound {D A B P μ T s s0 Z : PTm n} (hμ : Γ ⊢[PRAAx] le (P * B)
   exact decc_of (step_core hμ hTV hs hAP hB hB1) hZ hA1 hT hμ1
 
 end LeanProofs.IPRA.AnalyticNumberTheory.StepCondition
+
+export_ipra AnalyticNumberTheory.StepCondition (mul_le2)

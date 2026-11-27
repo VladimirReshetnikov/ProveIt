@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Support localization of finite sums (`hurwitz_khinchin_ipra`, the (K11) count inside a gap)
@@ -21,14 +19,11 @@ count over the cell's own fine cells, the hypothesis of `KhinchinRoundBits.cell_
 
 namespace LeanProofs.IPRA.Foundations.SumLocal
 
-open_ipra
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A sum of vanishing terms vanishes. -/
 theorem sum_zero_of (f : PTm 2) {N x : PTm n}
@@ -50,8 +45,7 @@ theorem sum_local (f : PTm 2) {L H N x : PTm n} (hLH : Γ ⊢[PRAAx] le L H) (hH
   have e1 := eq_add_of_le hLH
   have e2 := eq_add_of_le hHN
   have eN : Γ ⊢[PRAAx] N ≐ L + (monus H L + monus N H) := by
-    have a := natEq e1; have b := natEq e2
-    apply deriveNat; ipra_simps; linear_combination b + a
+    ipra_lc natEq e2 + natEq e1
   have s1 := (congrAp2 (sumF f) eN (.eqRefl x)).eqTrans (sum_split f L (monus H L + monus N H) x)
   have s2 := sum_split (Γ := Γ) (offB f) (monus H L) (monus N H) (pairT L x)
   have z1 := sum_zero_of f hlo
@@ -75,8 +69,7 @@ theorem sum_local (f : PTm 2) {L H N x : PTm n} (hLH : Γ ⊢[PRAAx] le L H) (hH
           Syn.shift H + var 0 := by
       have a := natEq ((congrFst es).eqTrans (fst_pair _ _))
       have b := natEq ef
-      have c := natEq e1s
-      apply deriveNat; ipra_simps; linear_combination a + b - c
+      ipra_lc a + b - natEq e1s
     exact (congrInst2 f ei ((congrSnd es).eqTrans (snd_pair _ _))).eqTrans p
   ipra_lc natEq s1 + natEq s2 + natEq z1 + natEq z2
 

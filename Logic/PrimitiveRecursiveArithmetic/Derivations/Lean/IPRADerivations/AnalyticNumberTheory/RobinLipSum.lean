@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipLog
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The finitary artanh addition theorem for `LogI` (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -25,29 +22,21 @@ The binary-exponent carry `e(xc) ∈ {e(x) + e(c), e(x) + e(c) + 1}` is absorbed
 most one binade per step.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipSum
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv Pv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Lz Dz_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv)
-open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipArg (Nz_p0)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipLog (lo_lip_up lo_lip_low mul1)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
   (eb eb_spec eb_eq Bt dt st c3 a_eq loN loD lo_mono loD_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Names depend only on the rational value -/
 
@@ -260,9 +249,9 @@ theorem sub_up_N {a b c1 c2 k N : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ
   have hβ0 : Γ ⊢[PRAAx] le (b * (N * c2)) (a * (N * c2 + zero * k)) := by ipra_le sl hαβ
   have hδN : Γ ⊢[PRAAx] le (N * c2) (one * (N * c2 + N * k)) := by ipra_le 𝔞 (N * k)
   have eX := lo_val hβ hβN hbc (le_bc hab hc12)
-    (by apply deriveNat; ipra_simps; linear_combination -(𝔞 a * 𝔞 b * 𝔞 N * 𝔞 c2) * ec) K
+    (by ipra_lc -(𝔞 a * 𝔞 b * 𝔞 N * 𝔞 c2) * ec) K
   have eX0 := lo_val hβ hβ0 hb hab (by ipra_ring) K
-  have eY := lo_val hU hδN hc2 hc12 (by apply deriveNat; ipra_simps; linear_combination -(𝔞 N * 𝔞 c2) * ec) K
+  have eY := lo_val hU hδN hc2 hc12 (by ipra_lc -(𝔞 N * 𝔞 c2) * ec) K
   have eY0' := lo_zero_at (Γ := Γ) hU (by ipra_ring : Γ ⊢[PRAAx] one * (N * c2 + zero * k) ≐ N * c2) K
   have eY0 : Γ ⊢[PRAAx] loN (one * (N * c2 + zero * k)) (N * c2) K * one ≐
       zero * loD (one * (N * c2 + zero * k)) (N * c2) K :=
@@ -324,13 +313,13 @@ theorem sub_low_N {a b c1 c2 k N : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : �
   have hδN : Γ ⊢[PRAAx] le (b * (N * c2)) (a * (N * c2 + N * k)) := by ipra_le sl hγδ + 𝔞 (a * N * k)
   have hδ0 : Γ ⊢[PRAAx] le (b * (N * c2)) (a * (N * c2 + zero * k)) := by ipra_le sl hγδ
   have hβN : Γ ⊢[PRAAx] le (N * c2) (one * (N * c2 + N * k)) := by ipra_le 𝔞 (N * k)
-  have eX := lo_val hU hβN hc2 hc12 (by apply deriveNat; ipra_simps; linear_combination -(𝔞 N * 𝔞 c2) * ec) K
+  have eX := lo_val hU hβN hc2 hc12 (by ipra_lc -(𝔞 N * 𝔞 c2) * ec) K
   have eX0' := lo_zero_at (Γ := Γ) hU (by ipra_ring : Γ ⊢[PRAAx] one * (N * c2 + zero * k) ≐ N * c2) K
   have eX0 : Γ ⊢[PRAAx] loN (one * (N * c2 + zero * k)) (N * c2) K * one ≐
       zero * loD (one * (N * c2 + zero * k)) (N * c2) K :=
     (mul1 _).eqTrans (eX0'.eqTrans (zero_mul _).eqSymm)
   have eY := lo_val hδ hδN hbc (le_bc hab hc12)
-    (by apply deriveNat; ipra_simps; linear_combination -(𝔞 a * 𝔞 b * 𝔞 N * 𝔞 c2) * ec) K
+    (by ipra_lc -(𝔞 a * 𝔞 b * 𝔞 N * 𝔞 c2) * ec) K
   have eY0 := lo_val hδ hδ0 hb hab (by ipra_ring) K
   have hM : Γ ⊢[PRAAx] loD (one * (N * c2 + N * k)) (N * c2) K * loD (a * (N * c2 + N * k)) (b * (N * c2)) K *
       loD (one * (N * c2 + zero * k)) (N * c2) K * loD (a * (N * c2 + zero * k)) (b * (N * c2)) K * (N * c2 + N * k) ≐
@@ -368,3 +357,5 @@ theorem lo_sub_low {a b c1 c2 k : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ
   ipra_le sl r
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinLipSum
+
+export_ipra AnalyticNumberTheory.RobinLipSum (one_le_of_pos')

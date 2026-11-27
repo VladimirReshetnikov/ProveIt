@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.HeadDeficit
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Weighted block sums along a chain of blocks (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -15,32 +13,21 @@ least `u_{D₂}`. For the weighted deficit sum `Σ [D₁ < d ≤ D₂] u_d g` (`
 * `hg_weight`: `u_{D₂} Σ_{D₂<d≤D₃} g ≤ Σ_{D₂<d≤D₃} u_d g` (`u` is monotone, `HarmonicChebyshev.S_mono`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockFamily
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
-open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (hRB)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockSums (biB)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (gzB gz_at term_at bv bv_below bv_above bv_in tw tw_cases Bs')
 open LeanProofs.IPRA.AnalyticNumberTheory.PointDeficit (dg)
 open LeanProofs.IPRA.AnalyticNumberTheory.HeadDeficit (hgB hg_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlock (sum_le_lin1)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `[D₁ < d ≤ D₃] = [D₁ < d ≤ D₂] + [D₂ < d ≤ D₃]`. -/
 theorem bv_add {d D₁ D₂ D₃ : PTm n} (h12 : Γ ⊢[PRAAx] le D₁ D₂) (h23 : Γ ⊢[PRAAx] le D₂ D₃) :
@@ -119,3 +106,5 @@ theorem hg_weight {x D₂ D₃ A Ds K L : PTm n} (h23 : Γ ⊢[PRAAx] le D₂ D�
           (fact (Syn.shift L) * quo (Syn.shift x) (var 0))) * t
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BlockFamily
+
+export_ipra AnalyticNumberTheory.BlockFamily (Lay)

@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicUpper
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The telescoping bound for `Σ 1/d²` (Khinchin (K6))
@@ -22,16 +19,12 @@ With `T(N, F) = Σ_{i<N} ⌊F/(i+1)²⌋`:
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper (block_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 
 set_option autoImplicit false
 
 variable {n : ℕ}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `⌊F/(i+1)²⌋` in `(i, F)`. -/
 abbrev sqB : PTm 2 := quo (var 1) (succ (var 0) * succ (var 0))
@@ -93,7 +86,7 @@ theorem square_bound {Γ : List (Fm PTm n)} (M F : PTm n) : Γ ⊢[PRAAx] sqInv 
       have e1 := natEq t1; have e0 := natEq t0; have eq1 := natEq q1
       refine le_of_eq_add (d := two * monus F (succ (succ zero) * succ (succ zero) * quo F (succ (succ zero) * succ (succ zero)))) ?_
       ipra_lc 2 * natEq (eq_add_of_le (sq_quo_le (Γ := Γ) (succ zero) F)) - 8 * e1 - 8 * e0 -
-        8 * natEq (sum_zero (Γ := Γ) sqB F) - 8 * eq1
+        8 * natEq (sum_zero sqB F) - 8 * eq1
     · rw [subst_sqInv]
       simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       let Δ := sqInv (var 0) (Syn.shift F) :: Γ.map Fm.shift
@@ -116,3 +109,5 @@ theorem square_bound_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 squareFor
   closeUniv 1 (square_bound _ _)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal
+
+export_ipra AnalyticNumberTheory.SquareReciprocal (cancel_le square_bound)

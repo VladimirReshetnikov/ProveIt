@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
-import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Euclid's even perfect numbers
@@ -22,21 +17,13 @@ the direction of Euclid: if `q = 2^{a+1} − 1` is prime and `a ≥ 1`, then `N 
 The converse of Euler and the primality of the exponent are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PerfectNumbers
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig sigma_mul)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (sig_congr pos_pw sig_one sigma_step sigma_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one dvd_le')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
 

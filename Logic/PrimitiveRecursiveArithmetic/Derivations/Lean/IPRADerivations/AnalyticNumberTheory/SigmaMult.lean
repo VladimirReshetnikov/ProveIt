@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorFactor
-import IPRADerivations.Core.Header
 
 /-!
 # Multiplicativity of the divisor sum `σ` (`robin_ipra_research_2026-11-19`)
@@ -13,11 +12,9 @@ product of coprime prime powers is the product of the factors' `σ`).
   `DivisorFactor.divisor_factor`, with `Σ_{b ∣ N} ab = a σ(N)` (`Lotus.sum_const_mul`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorFactor
 open LeanProofs.IPRA.Probability.Lotus (cmB inst2_cmB sum_const_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
@@ -77,3 +74,5 @@ theorem sigma_mul {m N : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hN : �
   exact mul_comm _ _
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult
+
+export_ipra AnalyticNumberTheory.SigmaMult (sig sigma_mul)

@@ -1,9 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.OrderDivides
 import IPRADerivations.AnalyticNumberTheory.PlusPower
 import IPRADerivations.DiophantineNumberTheory.ConicGcd
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The order of a power
@@ -30,24 +27,14 @@ and using coprimality shows that this is equivalent to `N/d ∣ j`."
 The count `φ(N)` of primitive roots and the solution count of `x^k = b` are not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.OrderOfPower
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul quo_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.Order (ord order_cong)
 open LeanProofs.IPRA.AnalyticNumberTheory.OrderDivides (order_dvd_of_pow pow_of_order_dvd)
-open LeanProofs.IPRA.AnalyticNumberTheory.PlusPower (cop_pow)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' gcd_dvd' dvd_le' gcd_comm_one
-  pos_of_eq_mul coprime_quotients)
-open LeanProofs.IPRA.DiophantineNumberTheory.ConicGcd (dvd_of_coprime_pair)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `gcd(a, M) = 1` gives `gcd(a^k, M) = 1`, for `a, M ≥ 1`. -/
 theorem cop_power {a M : PTm n} (ha0 : Γ ⊢[PRAAx] a ≐ succ (pred a)) (ha : Γ ⊢[PRAAx] gcd a M ≐ one)

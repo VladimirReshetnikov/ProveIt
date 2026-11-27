@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.WeightedSplit
 import IPRADerivations.AnalyticNumberTheory.AbsDiff
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The first weighted bound (`pnt_ipra_constructive_2026-11-14`, `sb:first-weighted-bound`)
@@ -26,14 +24,11 @@ set_option linter.unusedSectionVars false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt psi_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB inst2_LamB pos_of_lt_zero lt_zero_of_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lam Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (FLB FL_at lam_zero factorial_lambda)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (Mono hRB inst2_hRB)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedReorder (S1B inst2_S1)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit (lamW uw luB fuB EfB dqB errB sz uw_at dq_at hRB_at
@@ -42,17 +37,11 @@ open LeanProofs.IPRA.AnalyticNumberTheory.FactorialError (Lq ferr_upper ferr_low
 open LeanProofs.IPRA.AnalyticNumberTheory.ErrorEquation (T2)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (pw_exp_le psi_k dlt_k)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (quo_mul_le le_Q4 Q4_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (bs_shift)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryBound (quo_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r absd_scale adB inst2_adB absd_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB inst2_RB Bs)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (sg_le_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
-open LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope (le_mul2)
 open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt sum_scale)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -61,8 +50,6 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The two monotone functions -/
 
@@ -148,7 +135,7 @@ theorem eQe : Γ ⊢[PRAAx] inst2 qB m (pairT K (fact L)) * U m K (fact L) +
       ap2 (sumF (hRB qB lamW)) (succ m) (pairT m (pairT K (fact L))) ≐
     fact L * (m * U m K (fact L)) + fact L * Lq m K L := by
   rw [inst2_qB]
-  ipra_lc 𝔞 m * 𝔞 (U m K (fact L)) * natEq (snd_pair (Γ := Γ) K (fact L)) + natEq (s1Q (Γ := Γ) m K L)
+  ipra_lc 𝔞 m * 𝔞 (U m K (fact L)) * natEq (snd_pair K (fact L)) + natEq (s1Q m K L)
 
 /-- `|E_ψ(m) − E_{F·id}(m)| ≤ 4096 F² m` for `1 ≤ m ≤ x`. -/
 theorem e_absd :
@@ -378,3 +365,5 @@ theorem first_weighted :
 end Sums
 
 end LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound
+
+export_ipra AnalyticNumberTheory.WeightedBound (inst2_psiB inst2_qB psiB)

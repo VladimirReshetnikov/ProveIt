@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.AutomaticLexFuel
-import IPRADerivations.Core.Header
 
 /-!
 # An instance of automatic fuel: the countdown (`ipra_resources_and_elimination_2026-11-15`, `thm:automatic-lex-fuel`)
@@ -21,9 +20,8 @@ The four premises here are: the invariant is initialized and preserved (triviall
 
 namespace LeanProofs.IPRA.Foundations.AutomaticLexFuelExample
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.IterationFusion (rel)
-open LeanProofs.IPRA.Foundations.LexPotential (lexgt)
 open LeanProofs.IPRA.Foundations.AutomaticLexFuel (traj fuel automatic_fuel)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}

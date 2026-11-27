@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.LinearCombination
 
 /-!
 # Coprime cancellation and square splitting
@@ -16,7 +15,6 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.SquareSplit
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
 open LeanProofs.IPRA.PTm (num monus pred)

@@ -1,15 +1,6 @@
-import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Probability.TowerCommonDen
-import IPRADerivations.Core.Search
-import IPRADerivations.AnalyticNumberTheory.Multiplicative
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
-import IPRADerivations.Combinatorics.LegendreDigits
-import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The Chinese remainder theorem for a finite system of coprime moduli
@@ -38,21 +29,13 @@ The system is given by two bodies: the moduli `m_i = mB(i, y) + 1` (positive by 
 The general compatible system and the uniqueness of the representative are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CrtCoprime
 
-open_ipra
-open LeanProofs.IPRA.Foundations.ChineseRemainder (crt_exists_at rem_eq_of_eq)
+open_ipra exports
 open LeanProofs.IPRA.Probability.TowerCommonDen (dvd_prod_term)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eq_of_viol viol_of_eq)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' gcd_comm_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section System
 

@@ -2,8 +2,6 @@ import IPRADerivations.DiophantineNumberTheory.ThueGrid
 import IPRADerivations.DiophantineNumberTheory.QuadraticSupplements
 import IPRADerivations.Combinatorics.IndependentSets
 import IPRADerivations.AnalyticNumberTheory.BertrandFactor
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # Fermat's theorem on sums of two squares, with primitive recursive witnesses
@@ -31,26 +29,19 @@ Not derived: the bounds `1 ≤ A(p) ≤ B(p) ≤ ⌊√p⌋` of the sorted witne
 half-factorial form of the root, and the independent construction by bounded descent.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.BertrandFactor (even_not_prime)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 open LeanProofs.IPRA.Combinatorics.IndependentSets (half_double half_double_succ)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_add_congr)
 open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements (root_of_sign minus_one_law)
 open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (G1 G2 root_to_squares)
 open LeanProofs.IPRA.Foundations.BoundedReflection (wit eqb_cases eq_of_eqb one_ne_zero)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The root of `−1` -/
 
@@ -208,3 +199,5 @@ theorem fermat_converse : ([] : List (Fm PTm 0)) ⊢[PRAAx] converseSentence :=
   closeUniv 3 (.impI (.impI (fermat_converse_open Prf.hyp1 Prf.hyp0)))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares
+
+export_ipra DiophantineNumberTheory.FermatTwoSquares (odd_of_prime_ne_two)

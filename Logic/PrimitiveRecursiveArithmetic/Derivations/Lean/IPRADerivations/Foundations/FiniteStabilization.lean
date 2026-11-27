@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Finite stabilization of ranked iterations
@@ -42,11 +40,9 @@ The one-dimensional case of "Finite stabilization and least capped closure"
 The packed-vector instance (componentwise join, rank as a bounded sum, capacities) is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteStabilization
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.ClockedDescent (subst_QF')
 open LeanProofs.IPRA.Foundations.IterationFusion
 

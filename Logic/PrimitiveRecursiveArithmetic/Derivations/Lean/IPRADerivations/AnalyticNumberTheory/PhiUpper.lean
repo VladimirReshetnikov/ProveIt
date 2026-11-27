@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PhiLowerSharp
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The composite upper bound `φ(n) ≤ n − ⌈√n⌉`
@@ -17,19 +15,14 @@ With `p = lpf(n)` and `q = n / p`:
   `sqrtUp`) satisfies `r ≤ q`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper
 
-open_ipra
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot mulBody inst2_mul count_multiples)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf μz lpfBody inst2_lpf lpf_dvd lpf_prime prime eq_succ_pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lpf_congr prime_congr two_le_lpf)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (quo_exact)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -168,7 +161,6 @@ theorem phi_upper_at {N d : PTm n} (hN : Γ ⊢[PRAAx] le two N) (hd : Γ ⊢[PR
     Γ ⊢[PRAAx] le (phi N + sqrtUp N) N := by
   have lf := lpf_facts hN hd hdN hdv
   have hp1 := AnalyticNumberTheory.Euler.N_pos (two_le_lpf (Γ := Γ) N)
-  have hNp := AnalyticNumberTheory.Euler.N_pos hN
   have hqN : Γ ⊢[PRAAx] lt (quo N (lpf N)) (succ N) := by
     have hNe := eq_of_dvd' hp1 (Prf.andE₂ lf)
     refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred (lpf N) * quo N (lpf N)) ?_)
@@ -190,3 +182,5 @@ theorem phi_upper : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 phiUpperFormula :=
   closeUniv 2 (.impI (.impI (.impI (.impI (phi_upper_at Prf.hyp1.wk.wk Prf.hyp1.wk Prf.hyp1 Prf.hyp0)))))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PhiUpper
+
+export_ipra AnalyticNumberTheory.PhiUpper (lpf_min)

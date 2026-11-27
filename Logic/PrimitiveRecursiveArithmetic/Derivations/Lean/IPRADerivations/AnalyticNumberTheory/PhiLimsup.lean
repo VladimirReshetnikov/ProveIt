@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PhiUpper
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Finite witnesses for `limsup φ(n)/n = 1`
@@ -14,11 +12,9 @@ divide both `K!` and `K! + 1`. Then `φ(p) = p − 1` (`Radical.phi_prime`) and
 `K (p − 1) = (K − 1) p + (p − K)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiLimsup
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf μz lpf_dvd lpf_prime prime dvd_fact fact_pos not_dvd_one)
 open LeanProofs.IPRA.Analysis.Products (fact)

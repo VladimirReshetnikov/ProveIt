@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.ChallengeContracts
 import IPRADerivations.Combinatorics.IndependentSets
-import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.Header
 
 /-!
 # Products of challenge contracts (`ipra_categorical_methods`, Section 3)
@@ -32,11 +30,9 @@ The projections and the pairing are not packaged as `Arrow`s, and the universal 
 with respect to equality of arrows is not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ContractProducts
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.ChallengeContracts
 open LeanProofs.IPRA.Foundations.ChallengeContracts.Contract
 open LeanProofs.IPRA.Combinatorics.IndependentSets (half_double half_double_succ)

@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogName
-import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.AnalyticNumberTheory.ChebyshevAbel
-import IPRADerivations.Core.Search
-import IPRADerivations.Core.Header
 
 /-!
 # The logarithm interval `LogI(q, k)` with binary range reduction (`robin_ipra_research_2026-11-19`, §"Explicit interval arithmetic")
@@ -30,24 +26,17 @@ All statements are cleared cross-multiplications of natural-number terms. The id
 real logarithm is the packet's external interpretation.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
   (Nz Dz Un Ud Lz NF log_name low_up low_mono frac_trans Dz_pos Ud_pos Nz_congr Dz_congr Un_congr Ud_congr)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (pw_exp_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw pw_pos')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Binary range reduction -/
 
@@ -282,3 +271,5 @@ theorem logI_mono {a b a' b' k k' : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : 
   exact lo_mono_le hb hab hb' hab' hq (by ipra_le sl hk + sl hee)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
+
+export_ipra AnalyticNumberTheory.RobinLogInterval (eb_spec loD loD_pos loN)

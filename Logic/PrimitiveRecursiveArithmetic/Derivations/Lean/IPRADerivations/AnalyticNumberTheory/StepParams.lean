@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.StepCondition
 import IPRADerivations.AnalyticNumberTheory.ZetaFiniteContract
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The dyadic exponents of one contraction step (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -19,21 +17,15 @@ the ceiling binary logarithm `λ = ZetaFiniteContract.clog x`:
 `PB ≤ μ ≤ PB + P + σ₀`, `λ ≤ 2μ + 2`, `σ₀ ≤ σ`, `σ + 1 ≤ σ₀ + P` and the exact split `μ + PB + σ = ℓ`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.StepParams
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (clog clog_spec clog_least)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The binary logarithm bracket -/
 
@@ -97,3 +89,5 @@ theorem params_spec {x s0 P : PTm n} (hs0 : Γ ⊢[PRAAx] le one s0) (hP : Γ �
   · ipra_lc -f1 - f3
 
 end LeanProofs.IPRA.AnalyticNumberTheory.StepParams
+
+export_ipra AnalyticNumberTheory.StepParams (clog_bracket clog_pos)

@@ -1,12 +1,6 @@
-import IPRADerivations.AnalyticNumberTheory.LogRefinement
 import IPRADerivations.AnalyticNumberTheory.HarmonicLogPow2
 import IPRADerivations.AnalyticNumberTheory.FactorTrace
-import IPRADerivations.AnalyticNumberTheory.PrimePowerMangoldt
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
-import IPRADerivations.AnalyticNumberTheory.MuLambda
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Chebyshev's bound for the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, `con:global`)
@@ -27,28 +21,20 @@ module carries it to the packet's rational logarithm `λ_M(a) = H_{Ma} − H_M` 
   `lcmu_upper` and `HarmonicLogPow2.S_pow2` (`λ_M(2^m) ≤ m`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
-open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (log_refine)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogPow2 (S_pow2)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace (trT trF tr_zero tr_succ step_pos step_small trace_prime
   trace_lt trace_end lpf_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (ellB Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (congrLw lw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos Psi psi_lcm pos_of_lt_zero lt_zero_of_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (lcmu_upper)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Monotonicity and superadditivity -/
 
@@ -236,3 +222,5 @@ theorem psi_le {N M L : PTm n} (hM : Γ ⊢[PRAAx] le one M) (hL : Γ ⊢[PRAAx]
   ipra_le sl main + sl sm + sl sp with ps
 
 end LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev
+
+export_ipra AnalyticNumberTheory.HarmonicChebyshev (S_mono harmonic_lw)

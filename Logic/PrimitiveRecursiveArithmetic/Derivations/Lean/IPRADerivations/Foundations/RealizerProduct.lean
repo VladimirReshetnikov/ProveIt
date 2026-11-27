@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.RealizerComposition
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Binary product interfaces and actual bounded fanout realizers
@@ -22,13 +20,10 @@ This is the binary pair-node arithmetic for the bounded acyclic frontend;
 it does not translate the remaining FIBER source node kinds or cyclic graphs.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RealizerProduct
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.RealizerComposition
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases eq_of_eqb)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_decode)
 open LeanProofs.IPRA.Foundations.SequenceComposition
   (length append append_length append_left append_right entry_congr)

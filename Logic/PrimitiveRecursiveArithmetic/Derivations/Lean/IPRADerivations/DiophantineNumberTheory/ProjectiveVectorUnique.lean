@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ProjectiveNormalize
 import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Uniqueness of Bézout-primitive representatives in every dimension
@@ -22,17 +20,13 @@ natural parts: `∑ C_i V_i = ∑ C'_i V_i + 1`.
 * `vector_unique`: two Bézout-primitive vectors with `v_i w_j = v_j w_i` for all `i, j < N` are equal.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveVectorUnique
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem shift_mul2 (a b : PTm k) : Syn.shift (a * b) = Syn.shift a * Syn.shift b := by simp [Syn.shift]
 
@@ -74,14 +68,11 @@ theorem cross_sum (C V W : PTm 2) {j N x : PTm k} (hp : Γ ⊢[PRAAx] propJ V W 
       subst_inst2 _ _ _ _]
     have e := natEq (Prf.impE hp.allOpen.wk Prf.hyp0)
     have h := natEq (hB_at (Γ := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) C V W (var 0) (Syn.shift j) (Syn.shift x))
-    apply deriveNat; ipra_simps
-    linear_combination h - 𝔞 (inst2 C (var 0) (Syn.shift x)) * e)))
+    ipra_lc h - 𝔞 (inst2 C (var 0) (Syn.shift x)) * e)))
   have s2 := sum_scale (Γ := Γ) (hB C V W) (C * V) N (inst2 W j x) x (pairT j x) (.allI (.impI (by
     rw [shift_pairT, inst2_mul C V, show Syn.shift (inst2 W j x) = inst2 W (Syn.shift j) (Syn.shift x) from
       subst_inst2 _ _ _ _]
-    have h := natEq (hB_at (Γ := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) C V W (var 0) (Syn.shift j) (Syn.shift x))
-    apply deriveNat; ipra_simps
-    linear_combination h)))
+    ipra_lc natEq (hB_at C V W (var 0) (Syn.shift j) (Syn.shift x)))))
   exact s1.eqSymm.eqTrans s2
 
 /-- `v a = v a' + w` gives `w = v (a ∸ a')`. -/
@@ -94,8 +85,7 @@ theorem mul_of_add {v a a' w : PTm k} (h : Γ ⊢[PRAAx] v * a ≐ v * a' + w) :
       ipra_le 𝔞 v + 𝔞 v * sl hl using linear_combination e
     exact ((monus_zero w).eqSymm.eqTrans w0).eqTrans ((congrMul (.eqRefl _) z).eqTrans (mul_zero _)).eqSymm
   · have ea := natEq (eq_add_of_le (Prf.hyp0 : (le a' a :: Γ) ⊢[PRAAx] le a' a))
-    have e := natEq (h.wk : (le a' a :: Γ) ⊢[PRAAx] _)
-    apply deriveNat; ipra_simps; linear_combination -e + 𝔞 v * ea
+    ipra_lc -natEq (h.wk : (le a' a :: Γ) ⊢[PRAAx] _) + 𝔞 v * ea
 
 /-- `w_j = v_j t` for `t = ∑ C_i w_i ∸ ∑ C'_i w_i`. -/
 theorem scale_at (C C' V W : PTm 2) {j N x : PTm k}
@@ -168,16 +158,12 @@ theorem vector_unique (C C' D D' V W : PTm 2) {N x : PTm k}
         inst2 V (var 0) (Syn.shift x)) := by
     refine .allI (.impI ?_)
     have a := natEq (Prf.impE sW.allOpen.wk Prf.hyp0)
-    have b := natEq (Prf.impE sV.allOpen.wk Prf.hyp0)
-    apply deriveNat; ipra_simps
-    linear_combination b + 𝔞 (tT D D' V (Syn.shift N) (Syn.shift x)) * a
+    ipra_lc natEq (Prf.impE sV.allOpen.wk Prf.hyp0) + 𝔞 (tT D D' V (Syn.shift N) (Syn.shift x)) * a
   have scaled : Γ ⊢[PRAAx] ap2 (sumF (C * V)) N x ≐
       (tT C C' W N x * tT D D' V N x) * ap2 (sumF (C * V)) N x := by
     refine sum_scale _ _ _ _ _ _ (.allI (.impI ?_))
     rw [shift_mul2, shift_tT, shift_tT, inst2_mul C V]
-    have a := natEq (Prf.impE vts.allOpen.wk Prf.hyp0)
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 (inst2 C (var 0) (Syn.shift x)) * a
+    ipra_lc 𝔞 (inst2 C (var 0) (Syn.shift x)) * natEq (Prf.impE vts.allOpen.wk Prf.hyp0)
   have x1 := natEq scaled; have e := natEq hv
   have ts : Γ ⊢[PRAAx] tT C C' W N x * tT D D' V N x ≐ one := by
     refine (mul_cancel (D := succ (ap2 (sumF (C' * V)) N x)) (congrSucc (pred_succ _).eqSymm) ?_).eqSymm

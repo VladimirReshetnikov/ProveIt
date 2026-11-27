@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.FiniteSetCategory
 import IPRADerivations.Foundations.FiniteGluing
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Binary coproducts in the table category of finite sets (`ipra_categorical_methods`, Section 4)
@@ -25,30 +23,23 @@ Equalities are equalities of codes, obtained entrywise (`inl_ev`, `inr_ev`, `cp_
 decidable comparison of natural numbers; in the table it is the bit `sg (n ∸ x)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteSetCoproducts
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Probability.ProductPower (dg)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_zero)
-open LeanProofs.IPRA.Foundations.FiniteGluing (sg_of_ne)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential
 open LeanProofs.IPRA.Foundations.FiniteSetCategory
 open LeanProofs.IPRA.Foundations.PresentedCategory
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
-
 /-! ## Arithmetic of the two halves -/
 
 /-- `n + m ≥ 1` for `n ≥ 1`. -/
 theorem add_pos {n m : PTm k} (hn : Γ ⊢[PRAAx] n ≐ succ (pred n)) :
     Γ ⊢[PRAAx] n + m ≐ succ (pred (n + m)) := by
-  have e := natEq hn
-  exact pos_of_eq_succ (c := pred n + m) (by apply deriveNat; ipra_simps; linear_combination e)
+  exact pos_of_eq_succ (c := pred n + m) (by ipra_lc natEq hn)
 
 /-- `x < n` gives `x < n + m`. -/
 theorem lt_add_right {x n m : PTm k} (h : Γ ⊢[PRAAx] lt x n) : Γ ⊢[PRAAx] lt x (n + m) :=
@@ -56,8 +47,7 @@ theorem lt_add_right {x n m : PTm k} (h : Γ ⊢[PRAAx] lt x n) : Γ ⊢[PRAAx] 
 
 /-- `x < m` gives `n + x < n + m`. -/
 theorem add_lt_add {x n m : PTm k} (h : Γ ⊢[PRAAx] lt x m) : Γ ⊢[PRAAx] lt (n + x) (n + m) := by
-  have e := natEq (eq_add_of_le h)
-  exact le_of_eq_add (d := monus m (succ x)) (by apply deriveNat; ipra_simps; linear_combination e)
+  exact le_of_eq_add (d := monus m (succ x)) (by ipra_lc natEq (eq_add_of_le h))
 
 /-- `(n + t) ∸ n = t`. -/
 theorem add_monus_left (n t : PTm k) : Γ ⊢[PRAAx] monus (n + t) n ≐ t := by
@@ -73,7 +63,7 @@ theorem monus_lt {n m x : PTm k} (h : Γ ⊢[PRAAx] le n x) (hx : Γ ⊢[PRAAx] 
   have e₁ := natEq (eq_add_of_le h)
   have e₂ := natEq (eq_add_of_le hx)
   exact le_of_eq_add (d := monus (n + m) (succ x))
-    (by apply deriveNat; ipra_simps; linear_combination e₂ + e₁)
+    (by ipra_lc e₂ + e₁)
 
 /-! ## The tables -/
 

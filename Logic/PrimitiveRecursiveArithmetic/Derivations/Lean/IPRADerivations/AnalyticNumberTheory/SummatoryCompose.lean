@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetryBound
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Hyperbola sums of monotone functions (`pnt_ipra_constructive_2026-11-14`, towards `sb:weighted-sum`)
@@ -18,20 +15,15 @@ Dirichlet convolution: for a body `H` with `H(0) = 0` and `H(k) ≤ H(k+1)`,
 * `hRB`, `compose`: the displayed identity, from `ConvSummatory.conv_summatory` with `b = ΔH`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (bS inst2_bS Bs RB RB_at conv_summatory)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF)
 open LeanProofs.IPRA.Signum (sg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Compose
 
@@ -57,7 +49,6 @@ private theorem tele₀ (hm : Mono h) : ([] : List (Fm PTm 2)) ⊢[PRAAx] teleF 
   · exact (congrAdd (sum_zero _ _) (.eqRefl _)).eqTrans (zero_add _)
   · have s := sum_succ' (Γ := [teleF h]) (bS (dH h)) (var 0) (var 1)
     rw [inst2_bS, inst2_dH] at s
-    have p := natEq (congrInst2 (Γ := [teleF h]) h (pred_succ (var 0)) (.eqRefl (var 1)))
     have mo := natEq (eq_add_of_le (hm (Δ := [teleF h]) (var 0) (var 1)))
     have mo' : [teleF h] ⊢[PRAAx] monus (inst2 h (succ (var 0)) (var 1)) (inst2 h (pred (succ (var 0))) (var 1)) ≐
         monus (inst2 h (succ (var 0)) (var 1)) (inst2 h (var 0) (var 1)) :=
@@ -99,3 +90,5 @@ theorem compose (hm : Mono h) (h0 : ∀ {m : ℕ} {Δ : List (Fm PTm m)} (y : PT
 end Compose
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose
+
+export_ipra AnalyticNumberTheory.SummatoryCompose (Mono inst2_hRB)

@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinBad
-import IPRADerivations.DiophantineNumberTheory.KhinchinLattice
-import IPRADerivations.Core.Header
 
 /-!
 # The bad pairs up to `Q` (`hurwitz_khinchin_ipra`, (K3))
@@ -22,10 +20,9 @@ denominators `q = d q'` (`SumReindex.reindex_eq`); the number of multiples of `d
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBadSum
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq sum_le_bound)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (count_multiples quo_eq mulBody)
 open LeanProofs.IPRA.Topology.StaggeredGrids (congrEqb')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Foundations.LatticeCount (sg_congr dcB)

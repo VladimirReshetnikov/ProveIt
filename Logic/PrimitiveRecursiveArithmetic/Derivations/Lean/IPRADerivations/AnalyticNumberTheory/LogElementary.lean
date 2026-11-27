@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
-import IPRADerivations.Core.Header
 
 /-!
 # The elementary logarithm bounds on harmonic intervals (`pnt_ipra_constructive_2026-11-14`)
@@ -24,16 +23,13 @@ Each tail term `⌊F/(c₀ + i + 1)⌋`, `i < T`, lies between `⌊F/(c₀ + T)�
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LogElementary
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti)
 open LeanProofs.IPRA.AnalyticNumberTheory.LogRefinement (const_le_sum quo_mul pos_of_eq shift_eq)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The tail term: `⌊F/(c₀ + i + 1)⌋`. -/
 theorem off_at (i c0 F : PTm n) : Γ ⊢[PRAAx] inst2 (offB hB) i (pairT c0 F) ≐ quo F (succ (c0 + i)) := by
@@ -86,3 +82,5 @@ theorem log_upper (c0 T F : PTm n) :
   ipra_le (𝔞 c0 + 1) * sl cu + 𝔞 T * sl mq with (𝔞 c0 + 1) * es
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LogElementary
+
+export_ipra AnalyticNumberTheory.LogElementary (log_upper)

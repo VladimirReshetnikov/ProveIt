@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.GcdList
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Normalizing a vector by its gcd
@@ -22,15 +20,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv gv_zero gv_succ gv_dvd gv_greatest gv_eq_zero)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' dvd_le')
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem congrGcd {a a' b b' : PTm k} (h₁ : Γ ⊢[PRAAx] a ≐ a') (h₂ : Γ ⊢[PRAAx] b ≐ b') :
     Γ ⊢[PRAAx] gcd a b ≐ gcd a' b' := by
@@ -46,9 +41,9 @@ theorem quo_le_of {x g q : PTm k} (hg : Γ ⊢[PRAAx] g ≐ succ (pred g)) (h : 
   ipra_le 𝔞 (pred g) * 𝔞 q using linear_combination e + 𝔞 q * eg
 
 theorem gcd_zero_zero : Γ ⊢[PRAAx] gcd (zero : PTm k) zero ≐ zero := by
-  ipra_lc natEq (ex_succ (Γ := Γ) zero ![(zero : PTm k), zero]) +
-    𝔞 (sg (ey zero ![(zero : PTm k), zero])) * natEq (ey_zero (Γ := Γ) (zero : PTm k) zero) +
-    𝔞 (monus one (sg (ey zero ![(zero : PTm k), zero]))) * natEq (ex_zero (Γ := Γ) (zero : PTm k) zero)
+  ipra_lc natEq (ex_succ zero ![(zero : PTm k), zero]) +
+    𝔞 (sg (ey zero ![(zero : PTm k), zero])) * natEq (ey_zero (zero : PTm k) zero) +
+    𝔞 (monus one (sg (ey zero ![(zero : PTm k), zero]))) * natEq (ex_zero (zero : PTm k) zero)
 
 /-- The gcd of a zero vector is `0`. -/
 theorem gv_all_zero (f : PTm 2) {N x : PTm k}

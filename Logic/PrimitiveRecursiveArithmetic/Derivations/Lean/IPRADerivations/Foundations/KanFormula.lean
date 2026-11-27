@@ -1,7 +1,4 @@
-import IPRADerivations.Foundations.Adjunction
 import IPRADerivations.Foundations.SplitEquivalence
-import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Header
 
 /-!
 # The left Kan extension formula on representatives (`ipra_categorical_methods`, Section 4)
@@ -52,11 +49,9 @@ product), the converse reconstruction for the right Kan extension, and the expli
 bounds of the packet.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.KanFormula
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Adjunction
 open LeanProofs.IPRA.Foundations.SplitEquivalence (idFun idFun_o idFun_m idFun_laws)

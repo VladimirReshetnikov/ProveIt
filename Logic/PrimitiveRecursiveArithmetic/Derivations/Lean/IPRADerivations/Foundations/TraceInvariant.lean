@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.BoundedSums
 import IPRADerivations.Core.InductionTactic
 import IPRADerivations.Core.Header
@@ -28,11 +27,9 @@ quantifier-free formula.
 A bounded-formula invariant is covered through its bit (`Foundations/BoundedFormulas`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.TraceInvariant
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

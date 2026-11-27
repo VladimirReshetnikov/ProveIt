@@ -1,8 +1,4 @@
-import IPRADerivations.Core.Search
-import IPRADerivations.Core.MultiSums
 import IPRADerivations.Foundations.GapDecision
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Exact label recovery from a separation gap
@@ -29,16 +25,11 @@ hypotheses are object-level iPRA formulas: the triangle inequality through the o
   `a > q` (resp. `a < q`), so the rational sign of `a − q` is that of `x − q` and nonzero.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.GapRecovery
 
-open_ipra
-open LeanProofs.IPRA.Foundations.GapDecision (zabs zabs_tri zabs_neg)
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 variable (δ : PTm 2) (D : PTm 3)
 

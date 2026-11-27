@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # `2^r ∣ φ(n)` for `r` distinct odd prime divisors
@@ -22,20 +19,15 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody coprime_pow totient_prime_power_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (lift3 inst2_lift3 at_pair shift_pair congrEqb rem_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (gcd_distinct_primes)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq eqb_iff shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_eq' shift_mul' shift_rem')
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt' sum2_lift)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -207,8 +199,8 @@ theorem two_pos'' : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc
 theorem phi_ppow_even {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] rem p two ≐ one) (k : PTm n) :
     Γ ⊢[PRAAx] dvd two (phi (pw p (succ k))) := by
   refine dvd_of_eq' two_pos'' (w := pw p k * quo p two) ?_
-  ipra_lc natEq (totient_prime_power_at (k := k) hp) + natEq (pw_succ (Γ := Γ) p k) +
-    Groth.ι (Q.mk _ (pw p k)) * natEq (div_eq (Γ := Γ) (j := p) two_pos'') + Groth.ι (Q.mk _ (pw p k)) * natEq hodd
+  ipra_lc natEq (totient_prime_power_at (k := k) hp) + natEq (pw_succ p k) +
+    Groth.ι (Q.mk _ (pw p k)) * natEq (div_eq (j := p) two_pos'') + Groth.ι (Q.mk _ (pw p k)) * natEq hodd
 
 /-! ## Finding an odd prime divisor -/
 
@@ -296,15 +288,11 @@ theorem ev_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
   have hPp : Γ ⊢[PRAAx] le two (pw p (val p N)) := by
     refine le_trans hp2 (le_of_eq_add (d := pred (pw p (pred (val p N))) * p) ?_)
     have e₁ := natEq ((congrAp2 powF ha (.eqRefl p)).eqTrans (pw_succ p (pred (val p N))))
-    have e₂ := natEq (pw_pos' hp1 (pred (val p N)))
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + Groth.ι (Q.mk _ p) * e₂
+    ipra_lc e₁ + Groth.ι (Q.mk _ p) * natEq (pw_pos' hp1 (pred (val p N)))
   have hlt : Γ ⊢[PRAAx] lt (quo N (pw p (val p N))) N := by
     refine le_of_eq_add (d := pred (quo N (pw p (val p N))) +
       monus (pw p (val p N)) two * quo N (pw p (val p N))) ?_
-    have e₁ := natEq hNe; have e₂ := natEq (eq_add_of_le hPp); have e₃ := natEq hm
-    apply deriveNat; ipra_simps
-    linear_combination e₁ + Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * e₂ + e₃
+    ipra_lc natEq hNe + Groth.ι (Q.mk _ (quo N (pw p (val p N)))) * natEq (eq_add_of_le hPp) + natEq hm
   -- The induction hypothesis at `m`.
   have h₀ := sum_zero_elim evB hV hlt
   rw [inst2_ev] at h₀
@@ -371,3 +359,5 @@ theorem phi_even_pow : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 phiEvenPowFormul
   closeUniv 1 (phi_even_pow_at (var 0))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow
+
+export_ipra AnalyticNumberTheory.PhiEvenPow (eq_one_of_lt_two)

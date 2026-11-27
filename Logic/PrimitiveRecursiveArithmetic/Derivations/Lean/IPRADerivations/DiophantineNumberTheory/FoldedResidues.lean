@@ -1,9 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.RectangleCount
 import IPRADerivations.DiophantineNumberTheory.ModularCertificate
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Folded residues
@@ -31,23 +28,14 @@ For an odd `p = 2h + 1` the fold of a residue `r < p` is `fold p r = [r > h] (p 
 The permutation of `[1, h]` and the sums and products over it (`eq:perm`) are not derived in this module.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FoldedResidues
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos rem_small)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss dvd_le' eq_of_dvd')
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_add_congr rem_mul_congr2)
 open LeanProofs.IPRA.DiophantineNumberTheory.RectangleCount (no_small)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `fold p r = min(r, p − r)` for `r < p`, as `[r > ⌊p/2⌋] (p − r) + (1 − [r > ⌊p/2⌋]) r`. -/
 abbrev fold (p r : PTm n) : PTm n :=

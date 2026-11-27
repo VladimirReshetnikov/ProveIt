@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzExtraction
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The extraction loop of the continued-fraction prefix (`hurwitz_khinchin_ipra`)
@@ -24,15 +21,13 @@ irrationality modulus — then `Inv` holds at every state `n ≤ N`, by one quan
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzExtraction (adist adist_of_le det_step det_step' region_flip
   region_flip')
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The state and its step -/
 
@@ -158,8 +153,7 @@ theorem add_adist' {x y : PTm n} (h : Γ ⊢[PRAAx] le x y) : Γ ⊢[PRAAx] y �
 /-- `⌊x/y⌋ y ≤ x` for `y ≥ 1`. -/
 theorem quo_mul_le {x y : PTm n} (hy : Γ ⊢[PRAAx] y ≐ succ (pred y)) : Γ ⊢[PRAAx] le (quo x y * y) x := by
   have d := div_mod_at (Γ := Γ) (x := x) hy
-  have e := natEq (Prf.andE₁ d)
-  exact le_of_eq_add (d := rem x y) (by apply deriveNat; ipra_simps; linear_combination e)
+  exact le_of_eq_add (d := rem x y) (by ipra_lc natEq (Prf.andE₁ d))
 
 /-- One step of the loop: `Inv` and `Dn ≥ 1` give `Inv` of the next state; the sign region flips and the
 determinant changes sign. -/
@@ -214,3 +208,5 @@ theorem loop_inv (s0 Y W N : PTm n) (h0 : Γ ⊢[PRAAx] Inv s0 Y W)
   exact .impE h2 (le_refl N)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.HurwitzLoop
+
+export_ipra DiophantineNumberTheory.HurwitzLoop (proj_st sP' sQ')

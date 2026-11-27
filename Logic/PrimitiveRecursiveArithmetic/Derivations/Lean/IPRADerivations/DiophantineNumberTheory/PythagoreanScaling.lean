@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.DescentTools
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # All integer right triangles are multiples of primitive ones
@@ -19,20 +17,15 @@ For positive `a, b, c` with `a² + b² = c²`, `g = gcd(a, b)`, `A = a/g`, `B = 
 The primitive triples themselves are parametrized in `DescentTools` (`pyth_param`, `pyth_unique`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PythagoreanScaling
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.DescentTools (sq_dvd_tool)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Existence -/
 

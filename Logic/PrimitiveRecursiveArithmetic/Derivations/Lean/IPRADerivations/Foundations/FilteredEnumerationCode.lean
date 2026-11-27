@@ -1,9 +1,5 @@
 import IPRADerivations.Foundations.BoundedEnumeration
 import IPRADerivations.Foundations.CodedViableChain
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual stored increasing lists for bounded decidable subsets
@@ -18,11 +14,10 @@ bound P and the computed count; it does not inspect the produced list.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.FilteredEnumerationCode
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size rank_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry stack stack_zero stack_succ)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)

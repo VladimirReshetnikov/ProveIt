@@ -1,11 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.DenominatorSmooth
 import IPRADerivations.AnalyticNumberTheory.SieveWeightOne
-import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
-import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The right endpoint of the denominator bound: `H_q(z) ≤ G_q(z)`
@@ -26,43 +20,29 @@ finite sieve (`SieveWeightOne.Asum`, with `μ² = μ⁺ + μ⁻`).
 The factor `q/φ(q)` between `H_z` and `H_q(z)` is not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSquarefree
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationAdd (val_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (subst_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg congrEqb' zero_mul_l sq sqB inst2_sq om muP
   muN)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (sg_le1)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (PE XE inst2_XE val_PE)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues (YP YN YP_at YN_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightOne (Asum)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (le_zero_of)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientTermStep (gt gt_zero gt_ndvd gt_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs GtB Gt_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorRange (P3 P3_z)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorModulus (Aq Aq_pos Aq_zero AqAppendsPrime Aq_step_cases)
 open LeanProofs.IPRA.AnalyticNumberTheory.DenominatorSmooth (sum_le2 Hq Hq_le_G)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_dvd' eq_one_of_dvd_one gcd_comm_one coprime_mul
-  coprime_dvd_left)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Coprimality to `q` -/
 

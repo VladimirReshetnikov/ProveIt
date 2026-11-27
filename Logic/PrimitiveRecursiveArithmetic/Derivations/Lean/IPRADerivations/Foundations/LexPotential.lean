@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.LexFuelMonotone
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # A potential for controlled lexicographic descent (`ipra_resources_and_elimination_2026-11-15`, `thm:controlled-lex`)
@@ -33,11 +31,9 @@ For every external `d` (each instance is one iPRA derivation), with `h` nondecre
 `thm:automatic-lex-fuel`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.LexPotential
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.LexFuelMonotone
   (itStep itP itP_zero itP_succ Step succ_le mono_start grow_iter mono_count F F_zero_at
     F_succ_at fuel_step)

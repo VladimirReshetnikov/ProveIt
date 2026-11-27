@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BlockDeficit
 import IPRADerivations.Foundations.CrossingSearch
-import IPRADerivations.Core.Header
 
 /-!
 # The sample tests of the block deficit (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -20,14 +19,10 @@ value `r(⌊x/d⌋)`, and the two tests are primitive recursive Booleans in the 
   `1 − x/y ≥ a/8`, by the integer form of the decline `yψ(x) − xψ(y) ≤ 4Fx(y − x)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockTests
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockSums (pzB fzB pz_at fz_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockDeficit (AwB DwB aw_at dw_at)
 open LeanProofs.IPRA.Foundations.BoundedReflection (ne_of_compl zero_of_compl_ne)
@@ -35,8 +30,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection (ne_of_compl zero_of_compl_ne
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The numeral `4`. -/
 abbrev four {m : ℕ} : PTm m := two * two

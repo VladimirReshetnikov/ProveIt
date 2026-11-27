@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.PresentedCategory
 import IPRADerivations.Core.ParityArith
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Adjunctions from unit and counit (`ipra_categorical_methods`, Section 4)
@@ -42,7 +40,7 @@ connection `2x ≤ y ↔ x ≤ ⌊y / 2⌋` (`galois_closed`); it uses `half_mon
 
 namespace LeanProofs.IPRA.Foundations.Adjunction
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.PresentedCategory
 
 /-- A specified functor between presentations. -/

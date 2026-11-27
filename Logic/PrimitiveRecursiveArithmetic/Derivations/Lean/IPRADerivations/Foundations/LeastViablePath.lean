@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.ViableChain
-import IPRADerivations.Core.Search
-import IPRADerivations.Core.Header
 
 /-!
 # Finite dependent choice by least viability
@@ -30,11 +28,9 @@ least search:
 The path is a term in `t`; no coded sequence and no choice principle are used.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.LeastViablePath
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Search (mu search_found)
 open LeanProofs.IPRA.Foundations.BackwardViability
 open LeanProofs.IPRA.Foundations.BackwardViability.Instance

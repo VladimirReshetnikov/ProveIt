@@ -1,7 +1,6 @@
 import IPRADerivations.Probability.UnionUtility
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Foundations.ReverseDemand
-import IPRADerivations.Core.Header
 
 /-!
 # Normalizing a modulus to a monotone one
@@ -33,14 +32,11 @@ modulus `max(M_q, M_r)`.
   then beyond `max(M_q, M_r)` the maximum of the two distances is at most `e`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ModulusNormalization
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.UnionUtility (Mx Ag mx_upper ag_attains)
 open LeanProofs.IPRA.Probability.Ninther (mx)
-open LeanProofs.IPRA.Foundations.ReverseDemand (le_mx_left le_mx_right mx_lub)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} (μ : PTm 2)
 

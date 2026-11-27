@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MobiusFloor
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Weighted floor sums of the Mertens function and the summatory totient
@@ -26,25 +24,18 @@ with the negative part moved to the other side.
   `g = φ`, read through the exchange `HyperbolaSwap.hyp_swap`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensTotient
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (dpB inst2_dp sum_phi_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB RB_at Bs bS inst2_bS conv_summatory)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (bF gS inst2_gS mobius_summatory)
-open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (hyp_swap)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (MP MN inst2_oneB B_one)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Weighted floor sums -/
 
@@ -167,3 +158,5 @@ theorem totient_floor (x : PTm n) :
       ((sumPhiRow aNB x zero).eqTrans ((hyp_swap aNB idB x zero).eqTrans (csumTN x)))))))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.MertensTotient
+
+export_ipra AnalyticNumberTheory.MertensTotient (floor_summatory floor_term)

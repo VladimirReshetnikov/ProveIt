@@ -1,8 +1,6 @@
 import IPRADerivations.Foundations.MasterCertificate
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Finite capped coordinate demands
@@ -28,11 +26,9 @@ rank-increase or stabilization property is assumed: these are derived from
 the actual coordinate sums and the actual coordinatewise-maximum code.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.DemandClosure
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (sequence entry sequence_decode)
 open LeanProofs.IPRA.Foundations.BoundedReflection
 
@@ -692,3 +688,5 @@ theorem demand_closure_closed (F : PTm 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] un
   closeUniv 3 (.impI (.impI (demand_closure Prf.hyp1 Prf.hyp0)))
 
 end LeanProofs.IPRA.Foundations.DemandClosure
+
+export_ipra Foundations.DemandClosure (maximum_le)

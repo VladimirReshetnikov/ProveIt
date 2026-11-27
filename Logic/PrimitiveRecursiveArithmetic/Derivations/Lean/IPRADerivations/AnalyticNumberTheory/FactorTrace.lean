@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.FactorVector
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The least-factor trace
@@ -21,20 +17,13 @@ selects is prime, and `n = ∏_{p ≤ n} p^{v_p(n)}`.
 * `factor_product`: `n = ∏_{p<n+1} p^{v_p(n)}` (`FactorVector.reconstruct`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FactorTrace
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (two_eq lpf_dvd' lpf_prime' reconstruct R)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' pos_of_eq_mul one_le_of_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The step `x ↦ ⌊x/ℓ(x)⌋ + [x ≤ 1]`. -/
 abbrev stepT (x : PTm n) : PTm n := quo x (lpf x) + monus one (monus x one)

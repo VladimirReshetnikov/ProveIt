@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.IterationFusion
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Fixed points of filtered contractions
@@ -31,16 +29,12 @@ With `G_t = T^t(s₀)` (`IterationFusion.iter`):
 Each induction is a quantifier-free induction on the number of steps.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FilteredFixedPoint
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.IterationFusion
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The hypotheses of a filtered contraction. -/
 structure Filtered (T c : PTm 1) (ν : PTm 2) : Prop where

@@ -1,8 +1,6 @@
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Parity
 import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Foundations.BooleanBits
-import IPRADerivations.Core.Header
 
 /-!
 # Precision arithmetic for names: tails, inverses, moduli and vanishing errors
@@ -32,12 +30,9 @@ bound `|a − b| ≤ e` is the pair `a ≤ b + e`, `b ≤ a + e`.
   Decidability of the order replaces the case distinction of the paper.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.PrecisionArithmetic
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BooleanBits (Bit left_of_band right_of_band)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

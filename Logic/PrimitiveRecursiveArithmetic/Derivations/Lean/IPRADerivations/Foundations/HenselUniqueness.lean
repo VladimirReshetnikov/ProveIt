@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.HenselIteration
 import IPRADerivations.Foundations.FilteredLiftingStep
-import IPRADerivations.Core.Header
 
 /-!
 # Uniqueness of the filtered lift for one polynomial equation over `ℤ`
@@ -22,11 +21,9 @@ For one equation `P : PE 1` over the integers with `F^k = q^k ℤ`, roots modulo
   `j + 1 ≤ N`; at `j = N − 1`, `x ≡ y (mod q^N)`: the root of `HenselIteration.invariant` is unique.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.HenselUniqueness
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (PE ev dv)
 open LeanProofs.IPRA.Foundations.FilteredTaylor (pd tq ls taylor_exact diff_exact dv_eq)
 open LeanProofs.IPRA.Foundations.HenselIteration (pt jac)

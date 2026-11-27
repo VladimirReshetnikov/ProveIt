@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.FiniteSetCategory
-import IPRADerivations.Core.Header
 
 /-!
 # Binary products in the table category of finite sets (`ipra_categorical_methods`, Section 4)
@@ -23,11 +22,9 @@ Equalities are equalities of codes. Each is proved by evaluating the two tables 
 arbitrary `t < z` (`pair_ev`, `p1_ev`, `p2_ev`) and then `code_congr` and `curry_ev`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteSetProducts
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.ProductPower (dg)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Foundations.FiniteSetExponential

@@ -1,8 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PellApprox
-import IPRADerivations.AnalyticNumberTheory.Multiplicative
 import IPRADerivations.AnalyticNumberTheory.PrimorialUpper
-import IPRADerivations.Combinatorics.LegendreDigits
-import IPRADerivations.Core.Header
 
 /-!
 # The sequence of approximations and its classes
@@ -20,22 +17,14 @@ classes: use a sign-and-magnitude tag less than `2C`, and two residue slots each
 * **`decode`**: equal classes have equal sign bits, magnitudes and residues.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.PellSequence
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.PellApprox (Qv Cv pv qv Q_pos pell_approx)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialUpper (sg_le1)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dmu)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (one_le_of_pos)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The sequence `T` -/
 
@@ -145,8 +134,7 @@ theorem norm_cases (i D : PTm n) :
     have h0 : ((monus (D * (qS i D * qS i D)) (pS i D * pS i D) ≐ zero) :: Γ) ⊢[PRAAx]
         le (D * (qS i D * qS i D)) (pS i D * pS i D) := Prf.hyp0
     have e := natEq (eq_add_of_le h0)
-    have z := natEq (Prf.hyp0 : ((monus (D * (qS i D * qS i D)) (pS i D * pS i D) ≐ zero) :: Γ) ⊢[PRAAx] _ ≐ _)
-    apply deriveNat; ipra_simps; linear_combination e - z
+    ipra_lc e - natEq (Prf.hyp0 : ((monus (D * (qS i D * qS i D)) (pS i D * pS i D) ≐ zero) :: Γ) ⊢[PRAAx] _ ≐ _)
   · refine .orI₂ (.andI ((congrSg Prf.hyp0).eqTrans (sg_succ _)) ?_)
     have hs : ((monus (D * (qS i D * qS i D)) (pS i D * pS i D) ≐
         succ (pred (monus (D * (qS i D * qS i D)) (pS i D * pS i D)))) :: Γ) ⊢[PRAAx]
@@ -154,8 +142,7 @@ theorem norm_cases (i D : PTm n) :
       refine .orE (lt_or_le (pS i D * pS i D) (D * (qS i D * qS i D))) (le_trans (le_succ_self _) Prf.hyp0) ?_
       exact .botE _ (succ_ne_zero (a := pred _) (Prf.hyp1.eqSymm.eqTrans Prf.hyp0))
     have e := natEq (eq_add_of_le hs)
-    have z := natEq (hs : _ ⊢[PRAAx] monus (pS i D * pS i D) (D * (qS i D * qS i D)) ≐ zero)
-    apply deriveNat; ipra_simps; linear_combination e - z
+    ipra_lc e - natEq (hs : _ ⊢[PRAAx] monus (pS i D * pS i D) (D * (qS i D * qS i D)) ≐ zero)
 
 theorem A_lt_pos {P Q C A : PTm n} (h : Γ ⊢[PRAAx] lt P (Q + C)) (e : Γ ⊢[PRAAx] P ≐ Q + A) :
     Γ ⊢[PRAAx] lt A C := by

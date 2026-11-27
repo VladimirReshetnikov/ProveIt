@@ -1,4 +1,3 @@
-import IPRADerivations.DiophantineNumberTheory.AperyMultibound
 import IPRADerivations.DiophantineNumberTheory.SimultaneousGrid
 import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Core.OrderCertificates
@@ -22,14 +21,9 @@ the composition of polynomial reductions (`thm:reduction`).
   `A 2^p M^b ≤ 2^{A + p + M b}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ClockMajorants
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (mul_pw)
-open LeanProofs.IPRA.DiophantineNumberTheory.SimultaneousGrid (one_le_pw_of)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
+open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalClosure (succ_le_two_pow)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

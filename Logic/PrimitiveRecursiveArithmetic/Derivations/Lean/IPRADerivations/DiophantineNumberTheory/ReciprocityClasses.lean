@@ -1,8 +1,4 @@
-import IPRADerivations.DiophantineNumberTheory.QuadraticReciprocity
-import IPRADerivations.DiophantineNumberTheory.FermatTwoSquares
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresObstruction
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # Quadratic reciprocity by residue classes modulo 4
@@ -25,12 +21,9 @@ With the sign bits (`0` for a square, `1` for a nonsquare):
   `p ≡ 1 (mod 4)`, `q ≡ 1 (mod 4)`, `p ≡ q ≡ 3 (mod 4)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ReciprocityClasses
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.BoundedSyntax (bit bit_cases program_correct)
 open LeanProofs.IPRA.Foundations.BoundedReflection (one_ne_zero)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit nonsquare assumptions conclusion
@@ -40,8 +33,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (mod4_parities)
 open LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresObstruction (parities_three)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The law in an arbitrary context -/
 

@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.IntervalAdditive
-import IPRADerivations.Core.Header
 
 /-!
 # Packings of separated equal intervals
@@ -22,7 +21,7 @@ in two members forces both to be active and within `w` of each other.
 
 namespace LeanProofs.IPRA.Foundations.IntervalPacking
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
 open LeanProofs.IPRA.Foundations.IntervalCover (cnt measure lenB)
@@ -30,13 +29,10 @@ open LeanProofs.IPRA.Foundations.IntervalAdditive (prB inst2_prB rwB inst2_rwB a
   outB inst2_outB cnt_bit additive sg_one_eq)
 open LeanProofs.IPRA.Foundations.InjectionCount (term_zero)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Bits -/
 
@@ -65,7 +61,6 @@ theorem lt_of_monus_pos {a b : PTm n} (h : Γ ⊢[PRAAx] le one (monus b a)) : �
 theorem sg_one_of_lt {a b : PTm n} (h : Γ ⊢[PRAAx] lt a b) : Γ ⊢[PRAAx] sg (monus b a) ≐ one := by
   have e := natEq (eq_add_of_le (le_trans (le_succ_self a) h))
   have hp : Γ ⊢[PRAAx] le one (monus b a) := by ipra_le sl h with e
-  have e2 := natEq (eq_add_of_le hp)
   refine (congrSg ((eq_add_of_le hp).eqTrans (?_ : Γ ⊢[PRAAx] one + monus (monus b a) one ≐ succ (monus (monus b a) one)))).eqTrans
     (sg_succ _)
   ipra_ring
@@ -290,3 +285,5 @@ theorem packing {T K w y : PTm n}
 end Pack
 
 end LeanProofs.IPRA.Foundations.IntervalPacking
+
+export_ipra Foundations.IntervalPacking (absurd_one_zero' acB inst2_hiB)

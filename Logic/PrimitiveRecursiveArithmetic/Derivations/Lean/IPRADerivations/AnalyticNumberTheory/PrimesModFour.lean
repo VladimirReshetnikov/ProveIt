@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.FourSquares
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # Primes in the classes `1` and `3` modulo `4`, with bounds
@@ -24,25 +22,15 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimesModFour
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf dvd_fact fact_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP isP_01 prime_of_isP isP_of_prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos lpf_prime' lpf_dvd' subst_isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_add_congr rem_mul_congr2)
-open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (rem_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_at)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma (rb)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocity (sign_eq)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements (minus_one_law)
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (four_pos one_lt_four even_absurd
   odd_of_prime_ne_two)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresDescent (dvd_of_eq_mul)
@@ -51,8 +39,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex
   one_ne_zero)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Divisors of `N! c ± 1` exceed `N` -/
 
@@ -227,8 +213,7 @@ theorem cofactor_lt {N L c : PTm k} (hL : Γ ⊢[PRAAx] le two L) (c1 : Γ ⊢[P
 
 theorem dvd_chain {n l c d e : PTm k} (hd1 : Γ ⊢[PRAAx] d ≐ succ (pred d)) (eN : Γ ⊢[PRAAx] n ≐ l * c + zero)
     (ec : Γ ⊢[PRAAx] c ≐ d * e + zero) : Γ ⊢[PRAAx] dvd d n := by
-  have x := natEq eN; have y := natEq ec
-  exact dvd_of_eq_mul (K := e * l) hd1 (by apply deriveNat; ipra_simps; linear_combination x + 𝔞 l * y)
+  exact dvd_of_eq_mul (K := e * l) hd1 (by ipra_lc natEq eN + 𝔞 l * natEq ec)
 
 /-- The violation `[n ≡ 3 (mod 4)] (1 ∸ Q3 n)`, over `0 = n`. -/
 abbrev vQ : PTm 2 := eqb (rem (var 0) (two * two)) (succ two) * monus one (Q3 (var 0))

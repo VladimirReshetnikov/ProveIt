@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.FiniteSetProducts
-import IPRADerivations.Core.Fubini
-import IPRADerivations.Core.Header
 
 /-!
 # The exponential `[m]^[n] = [m^n]` as a universal object (`ipra_categorical_methods`, Section 4)
@@ -28,15 +26,12 @@ So `curry h` is the unique arrow whose transpose is `h`. The objects are the `[n
 (the presentation `finSet`), hence the positivity hypotheses.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FiniteSetClosed
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.ProductPower (dg)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Foundations.FiniteSetExponential
 open LeanProofs.IPRA.Foundations.FiniteSetCategory
 open LeanProofs.IPRA.Foundations.FiniteSetProducts

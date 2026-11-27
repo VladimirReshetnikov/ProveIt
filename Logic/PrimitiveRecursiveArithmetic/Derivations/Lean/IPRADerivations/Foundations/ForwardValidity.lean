@@ -24,11 +24,9 @@ predecessors to their local demands, give the step hypothesis: if all nodes belo
   request (`v(e) = 1 → Q`) satisfies the request `Q`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ForwardValidity
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.FiniteQueryTable (table_entry)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

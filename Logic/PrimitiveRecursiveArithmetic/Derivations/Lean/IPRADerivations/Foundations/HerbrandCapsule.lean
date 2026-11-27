@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.RealizerLeastSearch
 import IPRADerivations.Foundations.FiniteQueryDemand
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual finite Herbrand capsules
@@ -16,15 +14,13 @@ order, as in the source reference program, not minimum numerical value.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.HerbrandCapsule
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
 open LeanProofs.IPRA.Foundations.RealizerComposition (sequence_mono)
-open LeanProofs.IPRA.Foundations.FiniteQueryDemand (finiteMaximum finiteMaximum_at subst_finiteMaximum)
 open LeanProofs.IPRA.Foundations.BoundedSyntax (BFm)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

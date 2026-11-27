@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.IterationFusion
-import IPRADerivations.Core.Powers
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Header
 
 /-!
 # Iterates of a contraction on an invariant ball
@@ -27,16 +24,11 @@ The coefficient names `c_k` (item 2) and the majorant arithmetic behind `ana:con
 here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ContractionIterates
 
-open_ipra
-open LeanProofs.IPRA.Foundations.IterationFusion (app1 iter iter_zero iter_succ congrApp1 subst_app1)
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 @[simp] theorem subst_one' {m : ℕ} (σ : Fin k → PTm m) : Syn.subst σ (one : PTm k) = one := by
   simp only [one, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]

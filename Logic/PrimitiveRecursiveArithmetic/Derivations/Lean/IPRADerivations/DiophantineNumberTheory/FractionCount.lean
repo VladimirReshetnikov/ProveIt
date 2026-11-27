@@ -1,9 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.FractionSeparation
 import IPRADerivations.Foundations.InjectionCount
-import IPRADerivations.DiophantineNumberTheory.QuarticStep
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Counting separated reduced fractions in an interval (`hurwitz_khinchin_ipra`, (K3), (K9))
@@ -27,12 +23,9 @@ their floors differ (`FractionSeparation.floor_inj`, `cl_zero`), and every floor
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FractionCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Topology.StaggeredGrids (eqb01' eq_of_eqb congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (le_quo_of_mul_le)
 open LeanProofs.IPRA.DiophantineNumberTheory.FractionSeparation (floor_inj)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Foundations.InjectionCount (coll viol rowCB clB vB sgB inst2_clB inst2_vB inst2_rowCB
@@ -41,8 +34,6 @@ open LeanProofs.IPRA.Foundations.InjectionCount (coll viol rowCB clB vB sgB inst
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Arithmetic -/
 
@@ -79,7 +70,6 @@ abbrev SV (q p Q u v W : PTm n) : PTm n :=
 
 theorem facts {q p Q u v W : PTm n} (h : Γ ⊢[PRAAx] SV q p Q u v W ≐ zero) :
     Γ ⊢[PRAAx] le one q ⋏ (le q Q ⋏ ((gcd p q ≐ one) ⋏ (le (u * q) (W * p) ⋏ le (W * p) (v * q)))) := by
-  have e := natEq h
   have z : ∀ {t : PTm n}, (Γ ⊢[PRAAx] le t (SV q p Q u v W)) → (Γ ⊢[PRAAx] t ≐ zero) := fun ht =>
     le_antisymm (le_congr (.eqRefl _) h ht) (zero_le _)
   have a1 : Γ ⊢[PRAAx] monus one q ≐ zero := z (by ipra_le 𝔞 (monus q Q) + 𝔞 (monus (gcd p q) one) +
@@ -227,7 +217,6 @@ theorem vl_zero {i Q P u v W : PTm n} (hW : Γ ⊢[PRAAx] W ≐ succ (pred W)) :
       floor_mono hq hW.wk (le_congr (mul_comm _ _) (.eqRefl _) lv)
     have m2 := monus_mono (c := quo (Q * Q * u) W) m1
     -- `R − g(i) ≥ 1`, so `1 − (R − g(i)) = 0`
-    have e := natEq (eq_add_of_le m2)
     refine (congrMul (.eqRefl _) ?_).eqTrans (mul_zero _)
     show Δ ⊢[PRAAx] le one (monus (succ (monus (quo (Q * Q * v) W) (quo (Q * Q * u) W)))
       (monus (quo (Q * Q * rem i P) (quo i P)) (quo (Q * Q * u) W)))

@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevAbel
-import IPRADerivations.Core.Header
 
 /-!
 # The equation for the error term (`pnt_ipra_constructive_2026-11-14`, `sb:error-equation`)
@@ -22,11 +21,9 @@ Scaled by `F = L!` with the harmonic logarithm `u_x = F λ_K(x)`, and by `G = x!
 Hypotheses: `x ≥ 1`, `K ≥ 1`, `(x+1)⁴ ≤ K`, `K (x+1)⁴ ≤ L`, `K 2^{4x} ≤ L`, `K x^x ≤ L`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ErrorEquation
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale mertens_upper)
@@ -34,11 +31,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (lw_lower mertens
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum (PB inst2_PB log_sum)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLambda (Sw)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi LamB pos_of_lt_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lam Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz (lamF)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge (lw_le_u sum_le_add_const)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (bs_shift)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (quo_mul_le le_Q4 le_succ')
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryBound (gL Aw Ls symmetry_upper symmetry_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (GxB inst2_GxB)
@@ -46,20 +39,13 @@ open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (gS inst2_gS)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevAbel (auB adB abel_gen lam0 I_le lwB inst2_lwB lam_bridge)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (bS inst2_bS Bs RB conv_summatory)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (DwB)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `A_w = Σ Λ L_w + Σ_d Λ(d) ψ(x/d)` -/
 
@@ -139,7 +125,7 @@ theorem ls_lower {x K L : PTm n} (hx : Γ ⊢[PRAAx] le one x) (hK : Γ ⊢[PRAA
   have z := natEq (ls_zero (Γ := Γ) (pairT K (fact L)))
   have wx := natEq (pos_of_lt_zero hx)
   have hKK : Γ ⊢[PRAAx] le K (K * x) :=
-    le_of_eq_add (d := K * pred x) (by apply deriveNat; ipra_simps; linear_combination 𝔞 K * wx)
+    le_of_eq_add (d := K * pred x) (by ipra_lc 𝔞 K * wx)
   have eU := natEq (eq_add_of_le (S_mono (fact L) hKK))
   have q1 := mul_le_mul_right (quo (fact L) K) hxx
   have q2 := quo_mul_le (Γ := Γ) (x := fact L) (pos_of_lt_zero hK)
@@ -181,7 +167,7 @@ theorem eU' {x K L : PTm n} (hx : Γ ⊢[PRAAx] le one x) :
     Γ ⊢[PRAAx] S (K * x) (fact L) ≐ S K (fact L) + U x K (fact L) := by
   have wx := natEq (pos_of_lt_zero hx)
   have hKK : Γ ⊢[PRAAx] le K (K * x) :=
-    le_of_eq_add (d := K * pred x) (by apply deriveNat; ipra_simps; linear_combination 𝔞 K * wx)
+    le_of_eq_add (d := K * pred x) (by ipra_lc 𝔞 K * wx)
   exact eq_add_of_le (S_mono (fact L) hKK)
 
 section Cheb

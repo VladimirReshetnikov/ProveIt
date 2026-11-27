@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Harmonic
 import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # The dyadic upper bound for harmonic numbers
@@ -25,15 +22,13 @@ With `S(N, F) = Σ_{i<N} ⌊F/(i+1)⌋` (`Harmonic.S`):
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.HarmonicUpper
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h quo_anti S_one)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## One block -/
 
@@ -91,8 +86,7 @@ theorem harmonic_upper {Γ : List (Fm PTm n)} (k F : PTm n) : Γ ⊢[PRAAx] dyIn
       let Δ := dyInv (var 0) (Syn.shift F) :: Γ.map Fm.shift
       have ih : Δ ⊢[PRAAx] dyInv (var 0) (Syn.shift F) := Prf.hyp0
       have ep : Δ ⊢[PRAAx] pw two (succ (var 0)) ≐ pw two (var 0) + pw two (var 0) := by
-        have a := natEq (pw_succ (Γ := Δ) two (var 0))
-        apply deriveNat; ipra_simps; linear_combination a
+        ipra_lc natEq (pw_succ (Γ := Δ) two (var 0))
       have hb := block_up (Γ := Δ) (pw two (var 0)) (Syn.shift F) (pw two (var 0))
       have hs := le_trans hb (add_le_add₂ ih (block_le _ _))
       refine le_congr (congrAp2 (sumF hB) ep (.eqRefl _)).eqSymm ?_ hs

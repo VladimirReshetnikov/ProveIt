@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ErrorEquation
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The error equation in factorial form (`pnt_ipra_constructive_2026-11-14`, `sb:error-equation`)
@@ -20,33 +18,22 @@ without the factorial denominators of `ErrorEquation`. Splitting `R = ψ − id`
 * `HarmonicMertensLower.fact_lower`: `m u_m ≤ L_w(m!) + mF + m² ⌊F/K⌋`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.FactorialError
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt harmonic_lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (fact_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum (P P_succ Hl log_sum)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi pos_of_lt_zero lt_zero_of_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lam Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (FLB FL_at lam_zero congrLw lw_mul factorial_lambda)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryPointwise (quo_mul_le le_Q4)
 open LeanProofs.IPRA.AnalyticNumberTheory.ErrorEquation (T2 cheb_upper cheb_lower hKx' hxx' eU')
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `L_w(m!)` against `Σ u_k` -/
 

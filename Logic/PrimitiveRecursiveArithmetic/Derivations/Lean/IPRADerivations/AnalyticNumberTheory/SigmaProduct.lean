@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
-import IPRADerivations.AnalyticNumberTheory.Radical
-import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The divisor sum as a product over primes (`robin_ipra_research_2026-11-19`)
@@ -28,32 +23,22 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SigmaProduct
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaMult (sig sigma_mul)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (sigma_pow sig_congr sig_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (PP inst2_pB eB inst2_e peelE prod_extend F₂ inst3_sub2
   inst3_mul' eqb_comm' eq_of_viol viol_of_eq pp_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.Radical (two_le_of_prime val_pos cof_rem_pos cof_pos cof_lt pm_peel)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val cof_eq cof_not_dvd isP isP_01 prime_of_isP isP_of_prime
   pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_unique)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime lpf lpf_dvd lpf_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (gcd_distinct_primes)
-open LeanProofs.IPRA.AnalyticNumberTheory.PlusPower (cop_pow)
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow (shift_pw' shift_rpos p_dvd_n)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_mul')
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one gauss dvd_le')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `G(q, n) = q^{v_q(n)+1} − 1`, over `0 = q`, `1 = n`. -/
 abbrev G : PTm 2 := monus (pw (var 0) (succ (val (var 0) (var 1)))) one

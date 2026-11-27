@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The rough Chebyshev lower bound for the primorial, integer form
@@ -27,26 +25,18 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (f_zero f_one f_pos one_le_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmu_pos lcm_valuation)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (dvd_of_val_le PE XE val_PE inst2_XE inst2_PE PE_pos
   central_dvd_lcm)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (lcmu_le two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_mul)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
-open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The two products -/
 
@@ -220,3 +210,5 @@ theorem primorial_lower {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
   le_trans (two_pow_lcm _) (le_mul_mono (le_refl _) (lcm_primorial hm))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower
+
+export_ipra AnalyticNumberTheory.PrimorialLower (prim prim_pos)

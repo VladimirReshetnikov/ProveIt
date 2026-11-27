@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.DiophantineNumberTheory.KhinchinBlockGeo
-import IPRADerivations.Core.Header
 
 /-!
 # The dyadic majorant of the divergence modulus (`hurwitz_khinchin_ipra`)
@@ -23,15 +20,11 @@ The dyadic term `2^{K+k} Ψ(2^{K+k})` is the closed body `dyB Ψ` over `⟨K, x�
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinDyadic
 
-open_ipra
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
-open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockGeo (congrPw2)
+open_ipra exports
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A non-increasing block: `Σ_{i<N} Ψ(a + i) ≤ N Ψ(a)`. -/
 theorem block_le (Ψ : PTm 2) {a N x : PTm n}
@@ -102,8 +95,7 @@ theorem dyadic (Ψ : PTm 2) (K B x : PTm n)
       have eP : Θ ⊢[PRAAx] pw two (Syn.shift K + succ (var 0)) ≐
           pw two (Syn.shift K + var 0) + pw two (Syn.shift K + var 0) := by
         have a := (congrPw2 (Γ := Θ) (add_succ (Syn.shift K) (var 0))).eqTrans (pw_succ two (Syn.shift K + var 0))
-        have a' := natEq a
-        apply deriveNat; ipra_simps; linear_combination a'
+        ipra_lc natEq a
       have e1 := natEq ((congrAp2 (Γ := Θ) (sumF Ψ) eP (.eqRefl (Syn.shift x))).eqTrans
         (sum_split Ψ (pw two (Syn.shift K + var 0)) (pw two (Syn.shift K + var 0)) (Syn.shift x)))
       have e2 := natEq (sum_succ' (Γ := Θ) (dyB Ψ) (var 0) (pairT (Syn.shift K) (Syn.shift x)))

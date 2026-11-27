@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinRoundWrapper
-import IPRADerivations.Core.Header
 
 /-!
 # The (K2) round theorem (`hurwitz_khinchin_ipra`)
@@ -24,7 +23,7 @@ parameter is `⟨z, x⟩` with `x = px r B K₀ M R G' p`, the bits are `w(g, �
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinK2RoundZ
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinBlockScales (Xt bB)
@@ -36,8 +35,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinRoundWrapper (px vB vB_at)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The new fine coverage with the carried parameter: `vZ(k, ⟨g, ⟨z, x⟩⟩) = v(k, ⟨g, x⟩)`. -/
 def vZ (wb : PTm 2) : PTm 2 := Syn.subst ![var 0, pairT (fstT (var 1)) (sndT (sndT (var 1)))] (vB wb)

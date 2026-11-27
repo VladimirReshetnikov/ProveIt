@@ -1,9 +1,5 @@
-import IPRADerivations.Foundations.ChineseRemainder
 import IPRADerivations.Probability.MedianCounts
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Counting along residue classes: Brun's finite counting error
@@ -25,18 +21,12 @@ The counting window here is `0 ≤ n < X`; the packet's window `1 ≤ n ≤ X` i
 the shifted weight.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BrunCounting
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
+open_ipra exports
 open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq')
-open LeanProofs.IPRA.Probability.MedianCounts (subst_data)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Weight
 
@@ -64,14 +54,14 @@ theorem g_period (M d' p : PTm n) :
 theorem block_base (d' p : PTm n) :
     Γ ⊢[PRAAx] A f (zero + succ d') (succ d') p ≐ A f zero (succ d') p + A f (succ d') (succ d') p := by
   ipra_lc natEq (congrAp2 (sumF (gB f)) (zero_add (Γ := Γ) (succ d')) (.eqRefl (pairT (succ d') p))) -
-    natEq (sum_zero (Γ := Γ) (gB f) (pairT (succ d') p))
+    natEq (sum_zero (gB f) (pairT (succ d') p))
 
 theorem block_step {M d' p : PTm n}
     (ih : Γ ⊢[PRAAx] A f (M + succ d') (succ d') p ≐ A f M (succ d') p + A f (succ d') (succ d') p) :
     Γ ⊢[PRAAx] A f (succ M + succ d') (succ d') p ≐ A f (succ M) (succ d') p + A f (succ d') (succ d') p := by
   ipra_lc natEq (congrAp2 (sumF (gB f)) (succ_add (Γ := Γ) M (succ d')) (.eqRefl (pairT (succ d') p))) +
-    natEq (sum_succ' (Γ := Γ) (gB f) (M + succ d') (pairT (succ d') p)) + natEq ih +
-    natEq (g_period (Γ := Γ) f M d' p) - natEq (sum_succ' (Γ := Γ) (gB f) M (pairT (succ d') p))
+    natEq (sum_succ' (gB f) (M + succ d') (pairT (succ d') p)) + natEq ih +
+    natEq (g_period f M d' p) - natEq (sum_succ' (gB f) M (pairT (succ d') p))
 
 /-- Variables: `0 = M`, `1 = d'`, `2 = p`. -/
 private abbrev blockF : Fm PTm 3 :=
@@ -100,7 +90,7 @@ theorem blocks_step {q r d' p : PTm n}
     Γ ⊢[PRAAx] A f (succ d' * succ q + r) (succ d') p ≐ succ q * A f (succ d') (succ d') p + A f r (succ d') p := by
   have ei : Γ ⊢[PRAAx] succ d' * succ q + r ≐ (succ d' * q + r) + succ d' := by ipra_ring
   ipra_lc natEq (congrAp2 (sumF (gB f)) ei (.eqRefl (pairT (succ d') p))) +
-    natEq (block (Γ := Γ) f (succ d' * q + r) d' p) + natEq ih
+    natEq (block f (succ d' * q + r) d' p) + natEq ih
 
 /-- Variables: `0 = q`, `1 = r`, `2 = d'`, `3 = p`. -/
 private abbrev blocksF : Fm PTm 4 :=
@@ -131,7 +121,6 @@ theorem count_upper (X d' p : PTm n) :
   have dm := div_mod (Γ := Γ) X d'
   have ex := Prf.andE₁ dm
   have hr := le_of_lt (Prf.andE₂ dm)
-  have rl := natEq (eq_add_of_le hr)
   refine le_of_eq_add (d := succ d' * monus (A f (succ d') (succ d') p) (A f (rem X (succ d')) (succ d') p) +
     rem X (succ d') * A f (succ d') (succ d') p) ?_
   ipra_lc 𝔞 (A f (succ d') (succ d') p) * natEq ex -

@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MangoldtMobius
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The weighted Vaughan identity
@@ -29,12 +26,9 @@ truncated function `(Λ_w)_{≤V}`. With `μ = μ⁺ − μ⁻` the identity at 
 The convolutions are bracketed as `μ * (𝟏 * Λ)`; associativity is `ConvolutionAssoc.conv_assoc`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.VaughanIdentity
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusInversion (aP aN inst3_aP inst3_aN mobius_inversion)
 open LeanProofs.IPRA.AnalyticNumberTheory.MangoldtMobius (lamF QLP QLN inst2_lamF row_lam_mob lambda_mobius)
@@ -226,11 +220,10 @@ theorem vaughan {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (U : PTm n)
       inst2 (fle w Vb) N N + ap2 (sumF (loB (QLP w))) (succ N) (pairT U N) +
         ap2 (sumF (loB (oB (aN (fle w Vb))))) (succ N) (pairT U (Yv N)) +
         ap2 (sumF (hiB (oB (aP (fgt w Vb))))) (succ N) (pairT U (Yv N)) := by
-  ipra_lc -natEq (lambda_mobius (Γ := Γ) w hN) + natEq (sum_split (Γ := Γ) (QLP w) U N (succ N)) -
-    natEq (sum_split (Γ := Γ) (QLN w) U N (succ N)) + natEq (tail_sum_P (Γ := Γ) w Vb hN U) -
-    natEq (tail_sum_N (Γ := Γ) w Vb hN U) + natEq (mobius_inversion (Γ := Γ) (fle w Vb) hN) -
-    natEq (sum_split (Γ := Γ) (oB (aP (fle w Vb))) U (Yv N) (succ N)) +
-    natEq (sum_split (Γ := Γ) (oB (aN (fle w Vb))) U (Yv N) (succ N))
+  ipra_lc -natEq (lambda_mobius w hN) + natEq (sum_split (QLP w) U N (succ N)) -
+    natEq (sum_split (QLN w) U N (succ N)) + natEq (tail_sum_P w Vb hN U) - natEq (tail_sum_N w Vb hN U) +
+    natEq (mobius_inversion (fle w Vb) hN) - natEq (sum_split (oB (aP (fle w Vb))) U (Yv N) (succ N)) +
+    natEq (sum_split (oB (aN (fle w Vb))) U (Yv N) (succ N))
 
 end Vaughan
 

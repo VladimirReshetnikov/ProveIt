@@ -1,7 +1,4 @@
-import IPRADerivations.DiophantineNumberTheory.FermatQuartic
 import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # No right triangle has square area
@@ -27,16 +24,12 @@ The descent (`DescentEx`) runs over `⟨a, ⟨b, s⟩⟩` with hypotenuse `c`, t
 bound `⟨a, ⟨b, s⟩⟩ < (c + X)² + c + 1`, `X = (2c)² + c`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SquareArea
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (two_pos pyth_at pm pn)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd le_sq odd_sq odd_sq_sum not_both_even)
@@ -44,8 +37,6 @@ open LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic (congrSg congrPair zo
   eq_of_eqb pos_of_sg)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A square-area triangle: `a, b, s ≥ 1`, `a² + b² = c²`, `a b = 2 s²`. -/
 abbrev tri (A B C S : PTm n) : Fm PTm n :=
@@ -71,8 +62,7 @@ theorem mk_tri {A B C S : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hB : 
 /-- `x ≤ x² < x² + y²` for `x, y ≥ 1`. -/
 theorem lt_sq_add {x y : PTm n} (hy : Γ ⊢[PRAAx] y ≐ succ (pred y)) : Γ ⊢[PRAAx] lt (x * x) (x * x + y * y) := by
   refine le_of_eq_add (d := pred (y * y)) ?_
-  have e := natEq (pos_mul hy hy)
-  apply deriveNat; ipra_simps; linear_combination e
+  ipra_lc natEq (pos_mul hy hy)
 
 /-- An odd number is not twice another. -/
 theorem odd_not_even {B K : PTm n} (φ : Fm PTm n) (hBo : Γ ⊢[PRAAx] B ≐ two * half B + one)
@@ -112,11 +102,11 @@ theorem prim_core {m n' B C S : PTm n} {φ : Fm PTm n} (k : TCont Γ C φ)
   have gnB := cop_right hn gmn eB
   have s₀ := natEq eS
   have er := square_of_coprime hm (coprime_mul hm gmn gmB)
-    (by apply deriveNat; ipra_simps; linear_combination s₀ : Γ ⊢[PRAAx] m * (n' * B) ≐ S * S)
+    (by ipra_lc s₀ : Γ ⊢[PRAAx] m * (n' * B) ≐ S * S)
   have es := square_of_coprime hn (coprime_mul hn (gcd_comm_one hn gmn) gnB)
-    (by apply deriveNat; ipra_simps; linear_combination s₀ : Γ ⊢[PRAAx] n' * (m * B) ≐ S * S)
+    (by ipra_lc s₀ : Γ ⊢[PRAAx] n' * (m * B) ≐ S * S)
   have ew := square_of_coprime hB (coprime_mul hB (gcd_comm_one hB gmB) (gcd_comm_one hB gnB))
-    (by apply deriveNat; ipra_simps; linear_combination s₀ : Γ ⊢[PRAAx] B * (m * n') ≐ S * S)
+    (by ipra_lc s₀ : Γ ⊢[PRAAx] B * (m * n') ≐ S * S)
   have hr := gcd_pos (B := S) hm
   have hs := gcd_pos (B := S) hn
   have hw := gcd_pos (B := S) hB
@@ -179,9 +169,7 @@ theorem prim_even {A B C S : PTm n} {φ : Fm PTm n} (k : TCont Γ C φ)
   have hn := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ P)))
   have eS : Γ ⊢[PRAAx] (pm B (half A) C * pn B (half A) C) * B ≐ S * S := by
     refine mul_cancel two_pos ?_
-    have a := natEq hR; have b := natEq hAe; have c := natEq eH
-    apply deriveNat; ipra_simps
-    linear_combination a - 𝔞 B * b - 2 * 𝔞 B * c
+    ipra_lc natEq hR - 𝔞 B * natEq hAe - 2 * 𝔞 B * natEq eH
   exact prim_core k hB hBo hm hn (Prf.andE₁ P) (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ P)))
     (Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ P)))) eS
 
@@ -204,32 +192,25 @@ theorem nonprim_core {A B C S g A₁ B₁ K c : PTm n} {φ : Fm PTm n} (k : TCon
   have a₁ := natEq ex; have b₁ := natEq ey; have e₁ := natEq hE; have r₁ := natEq hR; have k₁ := natEq hK
   -- `g ∣ c`.
   have hcc : Γ ⊢[PRAAx] C * C ≐ (g * g) * (A₁ * A₁ + B₁ * B₁) := by
-    apply deriveNat; ipra_simps
-    linear_combination -e₁ + (𝔞 A + 𝔞 g * 𝔞 A₁) * a₁ + (𝔞 B + 𝔞 g * 𝔞 B₁) * b₁
+    ipra_lc -e₁ + (𝔞 A + 𝔞 g * 𝔞 A₁) * a₁ + (𝔞 B + 𝔞 g * 𝔞 B₁) * b₁
   have ec := eq_of_dvd' hgp (dvd_of_sq_dvd_sq hgp hC (dvd_of_eq' hG hcc))
   have hC₁ := pos_of_eq_mul hC ec
   -- `s² = g² K`, so `g ∣ s`.
   have hss : Γ ⊢[PRAAx] S * S ≐ (g * g) * K := by
     refine mul_cancel two_pos ?_
-    apply deriveNat; ipra_simps
-    linear_combination -r₁ + 𝔞 B * a₁ + 𝔞 g * 𝔞 A₁ * b₁ + 𝔞 g ^ 2 * k₁
+    ipra_lc -r₁ + 𝔞 B * a₁ + 𝔞 g * 𝔞 A₁ * b₁ + 𝔞 g ^ 2 * k₁
   have es := eq_of_dvd' hgp (dvd_of_sq_dvd_sq hgp hS (dvd_of_eq' hG hss))
   have hS₁ := pos_of_eq_mul hS es
   have c₁ := natEq ec; have s₁ := natEq es; have q := natEq hss
   have hE₁ : Γ ⊢[PRAAx] A₁ * A₁ + B₁ * B₁ ≐ quo C g * quo C g := by
     refine mul_cancel hG ?_
-    have h := natEq hcc
-    apply deriveNat; ipra_simps
-    linear_combination -h + (𝔞 C + 𝔞 g * 𝔞 (quo C g)) * c₁
+    ipra_lc -natEq hcc + (𝔞 C + 𝔞 g * 𝔞 (quo C g)) * c₁
   have hR₁ : Γ ⊢[PRAAx] A₁ * B₁ ≐ two * (quo S g * quo S g) := by
     refine mul_cancel hG ?_
-    apply deriveNat; ipra_simps
-    linear_combination 𝔞 g ^ 2 * k₁ - 2 * q + 2 * (𝔞 S + 𝔞 g * 𝔞 (quo S g)) * s₁
+    ipra_lc 𝔞 g ^ 2 * k₁ - 2 * q + 2 * (𝔞 S + 𝔞 g * 𝔞 (quo S g)) * s₁
   refine k.apply (mk_tri hA₁ hB₁ hS₁ hE₁ hR₁) ?_
   refine le_of_eq_add (d := pred (quo C g) + c * quo C g) ?_
-  have g₂ := natEq hg2; have p := natEq hC₁
-  apply deriveNat; ipra_simps
-  linear_combination c₁ + 𝔞 (quo C g) * g₂ + p
+  ipra_lc c₁ + 𝔞 (quo C g) * natEq hg2 + natEq hC₁
 
 theorem nonprim_step {A B C S c : PTm n} {φ : Fm PTm n} (k : TCont Γ C φ) (ht : Γ ⊢[PRAAx] tri A B C S)
     (hg2 : Γ ⊢[PRAAx] gcd A B ≐ succ (succ c)) : Γ ⊢[PRAAx] φ := by
@@ -243,7 +224,6 @@ theorem nonprim_step {A B C S c : PTm n} {φ : Fm PTm n} (k : TCont Γ C φ) (ht
   have hA₁ := pos_of_eq_mul hA ex
   have hB₁ := pos_of_eq_mul hB ey
   have hC := c_pos hA hE
-  have hcop := coprime_quotients (c := B) hA
   -- `A₁² + B₁² = (c/g)²`, needed for the parity of `A₁, B₁`.
   have hcc : Γ ⊢[PRAAx] (gcd A B * gcd A B) * (quo A (gcd A B) * quo A (gcd A B) + quo B (gcd A B) * quo B (gcd A B)) ≐
       (gcd A B * gcd A B) * (quo C (gcd A B) * quo C (gcd A B)) := by
@@ -438,3 +418,5 @@ theorem square_area : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4 squareAreaFormula
   exact .impE d (chi_of_tri ht)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.SquareArea
+
+export_ipra DiophantineNumberTheory.SquareArea (le_add_mono)

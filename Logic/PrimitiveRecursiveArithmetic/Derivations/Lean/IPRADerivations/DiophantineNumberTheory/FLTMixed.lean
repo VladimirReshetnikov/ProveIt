@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Mixed exponents from Fermat's quartic theorem
@@ -15,14 +13,11 @@ Fermat's stronger quartic theorem `thm:four`, `FermatQuartic.fermat_quartic`):
 solution is a positive solution of `x⁴ + y⁴ = z²`. For `4 ∣ a, b, c` write `c = 2 (2 (c/4))`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FLTMixed
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (two_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (q4)

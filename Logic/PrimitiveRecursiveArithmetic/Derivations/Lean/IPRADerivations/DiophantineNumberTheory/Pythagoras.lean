@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Primitive Pythagorean triples
@@ -16,15 +14,11 @@ Let `A, H ≥ 1`, `B = 2H`, `A² + B² = C²` and `gcd(A, B) = 1`. Then `A = 2a 
 * `A + n² = m²`, `H = m n` (so `B = 2mn`), `C = m² + n²`, `gcd(m, n) = 1`, `n ≥ 1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -85,8 +79,7 @@ theorem pyth_at {A H C : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hH : �
     have hAC : (le (half C) (half A) :: Γ) ⊢[PRAAx] lt (A * A) (C * C) := by
       refine le_of_eq_add (d := pred ((two * H) * (two * H))) ?_
       refine withEq hE.wk fun e₁ => withEq hB.wk fun e₂ => ?_
-      have e₃ := natEq (pos_mul (Γ := le (half C) (half A) :: Γ) hB.wk hB.wk)
-      apply deriveNat; ipra_simps; linear_combination -e₁ + e₃
+      ipra_lc -e₁ + natEq (pos_mul hB.wk hB.wk)
     exact le_lt_absurd _ (sq_le_sq hCA) hAC
   have ec : Γ ⊢[PRAAx] half C ≐ half A + pV A C :=
     (eq_add_of_le hlt).eqTrans (by ipra_ring)

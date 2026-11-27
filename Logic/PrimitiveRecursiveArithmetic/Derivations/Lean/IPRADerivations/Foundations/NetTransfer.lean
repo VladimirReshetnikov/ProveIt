@@ -27,11 +27,9 @@ The finite approximate-witness theorem of the same packets (the selected net poi
 `Foundations/ApproximateWitness`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.NetTransfer
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

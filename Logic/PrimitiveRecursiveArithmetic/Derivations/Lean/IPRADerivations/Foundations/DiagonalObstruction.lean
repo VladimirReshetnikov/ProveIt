@@ -1,6 +1,4 @@
-import IPRADerivations.Core.Order
 import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.Header
 
 /-!
@@ -30,7 +28,7 @@ the exponentials of finite sets.
 
 namespace LeanProofs.IPRA.Foundations.DiagonalObstruction
 
-open_ipra
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

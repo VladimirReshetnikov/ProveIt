@@ -1,10 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveRough
-import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
-import IPRADerivations.AnalyticNumberTheory.Order
-import IPRADerivations.AnalyticNumberTheory.Euler
 import IPRADerivations.AnalyticNumberTheory.CoprimeModulus
-import IPRADerivations.Core.Header
 
 /-!
 # Two facts behind the explicit sieve weights
@@ -23,20 +18,14 @@ To state these weights with natural numbers, the common denominator of the `1/φ
   condition under divisors, as an identity of indicators.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightFacts
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (phi_lt)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (phi_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.CoprimeModulus (cop_of_mul pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveRough (two_le_of)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -87,3 +76,5 @@ theorem g_supp {d r q : PTm n} (hq : Γ ⊢[PRAAx] le one q) (hd : Γ ⊢[PRAAx]
     exact ((congrMul (.eqRefl _) z).eqTrans (mul_zero _)).eqTrans z.eqSymm
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightFacts
+
+export_ipra AnalyticNumberTheory.SieveWeightFacts (phi_quo)

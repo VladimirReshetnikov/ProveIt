@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SievePairBound
 import IPRADerivations.Probability.SymmetrizedMoments
-import IPRADerivations.Core.Header
 
 /-!
 # Summing the pair count bounds over all pairs of weight indices
@@ -25,15 +24,12 @@ identification of these double sums with the expanded square (`SieveSquare.squar
 form of `SieveDiagonal` is not part of this module.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveCount (cnt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount (lc)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairBound (pw_upper pw_lower)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Probability.Independence (dsum)
 open LeanProofs.IPRA.Probability.SymmetrizedMoments (dsum_le)
 
@@ -230,3 +226,5 @@ theorem Dm_at (i j X q a w : PTm n) :
 end Bodies
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum
+
+export_ipra AnalyticNumberTheory.SievePairSum (subst_gcd')

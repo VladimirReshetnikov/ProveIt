@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.MertensTotient
-import IPRADerivations.AnalyticNumberTheory.FactorialLambda
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The Chebyshev identity for the Mertens function
@@ -23,18 +20,12 @@ It is stated for every weight `w` in place of the logarithm: `Λ_w` is the weigh
   exchange `HyperbolaSwap.hyp_swap`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MertensChebyshev
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB RB_at Bs bS inst2_bS)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (bF gS mobius_summatory)
-open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (hyp_swap)
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor (inst2_oneB)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (lamB Lam ellB Lw DB lambda_divsum)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (DB_at)
 open LeanProofs.IPRA.Signum (sg)

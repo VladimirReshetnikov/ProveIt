@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SymmetrySum
 import IPRADerivations.AnalyticNumberTheory.ComparisonEnvelope
-import IPRADerivations.Core.Header
 
 /-!
 # From the additive logarithm to the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry-bound`)
@@ -20,30 +19,21 @@ This module transfers that to the square sums `B(m) = Σ_{k≤m} L_w(k)²` and `
 * `bridge_hi`: `Q(m) ≤ B(m) + m · 2m ⌊F/K⌋ u_m` (`u² ≤ L² + 2 m q u_m` pointwise), i.e. an error `O(m² λ(m)/K)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono wt harmonic_lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertensLower (lw_lower)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U U_paired QB Qs inst2_QB)
-open LeanProofs.IPRA.AnalyticNumberTheory.ComparisonEnvelope (le_mul2)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (bS inst2_bS Bs)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (bL inst2_bL)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (Lw)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## A sum with an additive constant -/
 
@@ -167,3 +157,5 @@ theorem bridge_hi {m K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hmL : Γ ⊢[PR
     (pt_hi hK'.wk (Prf.hyp0 : (lt (var 0) (Syn.shift m) :: Γ.map Fm.shift) ⊢[PRAAx] _) hmL'.wk)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.WeightBridge
+
+export_ipra AnalyticNumberTheory.WeightBridge (lw_le_u sum_le_add_const u_le_lw)

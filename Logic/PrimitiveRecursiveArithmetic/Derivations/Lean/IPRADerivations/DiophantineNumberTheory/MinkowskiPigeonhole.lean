@@ -1,7 +1,5 @@
 import IPRADerivations.Core.Pigeonhole
 import IPRADerivations.Foundations.MasterCertificate
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded color collision with only a finite prefix range contract
@@ -21,13 +19,11 @@ one of the first `H+1` decoded entries.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiPigeonhole
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt' rem_eq')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

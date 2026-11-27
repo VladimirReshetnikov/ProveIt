@@ -1,9 +1,5 @@
-import IPRADerivations.Combinatorics.Catalan
 import IPRADerivations.Combinatorics.CentralBinomial
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the odd central binomial coefficient
@@ -24,30 +20,24 @@ same bound comes from the central coefficients, with no row sum:
 Powers of four are written `2^{2k}`, as in `CentralBinomial.central_lower`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandCentral
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cat cb_rec cb_zero cat_spec cat_odd_binom cat_telescope succ_pos)
 open LeanProofs.IPRA.Combinatorics.CentralBinomial (central_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (pw_two)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The central coefficient of the next even row -/
 
 /-- `C(2k + 2, k + 1) = 2 C(2k + 1, k)`. -/
 theorem cb_succ_odd (k : PTm n) : Γ ⊢[PRAAx] cb (succ k) ≐ two * binom (succ (two * k)) k := by
   refine mul_cancel (D := succ k) (succ_pos k) ?_
-  ipra_lc natEq (cb_rec (Γ := Γ) k) - 2 * (2 * 𝔞(k) + 1) * natEq (cat_spec (Γ := Γ) k) +
-    2 * (𝔞(k) + 1) * natEq (cat_odd_binom (Γ := Γ) k)
+  ipra_lc natEq (cb_rec k) - 2 * (2 * 𝔞(k) + 1) * natEq (cat_spec k) + 2 * (𝔞(k) + 1) * natEq (cat_odd_binom k)
 
 /-- `C(2k + 2, k + 1) ≤ 4 C(2k, k)`. -/
 theorem cb_succ_le (k : PTm n) : Γ ⊢[PRAAx] le (cb (succ k)) ((two * two) * cb k) :=
@@ -55,7 +45,7 @@ theorem cb_succ_le (k : PTm n) : Γ ⊢[PRAAx] le (cb (succ k)) ((two * two) * c
 
 /-- `C(2, 1) = 2`. -/
 theorem cb_one : Γ ⊢[PRAAx] cb (succ (zero : PTm n)) ≐ two := by
-  ipra_lc natEq (cb_rec (Γ := Γ) zero) + 2 * natEq (cb_zero (Γ := Γ))
+  ipra_lc natEq (cb_rec zero) + 2 * natEq (cb_zero)
 
 /-- `4^{k+1} = 4 · 4^k`, as `2^{2(k+1)} = 4 · 2^{2k}`. -/
 theorem four_step (k : PTm n) : Γ ⊢[PRAAx] pw two (two * succ k) ≐ (two * two) * pw two (two * k) := by
@@ -97,7 +87,7 @@ theorem odd_binom_pos (k : PTm n) :
   refine .orE (zero_or_succ (binom (succ (two * k)) k)) ?_ Prf.hyp0
   refine succ_ne_zero' (a := monus (cb (succ k)) one) _ ?_
   ipra_lc natEq ((cb_succ_odd (Γ := Γ) k).wk (ψ := binom (succ (two * k)) k ≐ zero)) +
-    2 * natEq (Prf.hyp0 (Γ := Γ) (φ := binom (succ (two * k)) k ≐ zero)) -
+    2 * natEq (Prf.hyp0 (φ := binom (succ (two * k)) k ≐ zero)) -
     natEq (eq_add_of_le (central_pos (Γ := (binom (succ (two * k)) k ≐ zero) :: Γ) (succ k)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BertrandCentral

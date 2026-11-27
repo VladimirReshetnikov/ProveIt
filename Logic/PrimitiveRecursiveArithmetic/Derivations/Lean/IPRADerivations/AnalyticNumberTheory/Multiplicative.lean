@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Multiplicativity of the totient
@@ -19,17 +16,13 @@ With `e_m(a) = [gcd(a, m) = 1]`:
 * `e_m(k mod m) e_n(k mod n) = e_{mn}(k)` pointwise, and `SumPhi.sum_fiber` transports the sum.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos rem_eq_of_eq crt_exists_at)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot quo_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (gcd_pos_right)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq eqb_iff shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi
@@ -184,7 +177,7 @@ theorem all_one (c : PTm 2) {N x j : PTm n} (hs : Γ ⊢[PRAAx] ap2 (sumF c) N x
     have h := eq_add_of_le (.impE hge.allOpen.wk Prf.hyp0)
     exact (add_comm _ _).eqTrans h.eqSymm
   have hD : Γ ⊢[PRAAx] ap2 (sumF (monus c one)) N x ≐ zero := by
-    ipra_lc natEq ((sum_add (monus c one) one N x).eqSymm.eqTrans (hpt.eqTrans hs)) - natEq (sum_ones (Γ := Γ) N x)
+    ipra_lc natEq ((sum_add (monus c one) one N x).eqSymm.eqTrans (hpt.eqTrans hs)) - natEq (sum_ones N x)
   have hz := sum_zero_elim (monus c one) hD hj
   rw [eD] at hz
   have hg := Prf.allE j hge
@@ -410,3 +403,5 @@ theorem phi_mul : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 2 phiMulFormula :=
   closeUniv 2 (.impI (phi_mul_at (congrSucc (pred_succ _).eqSymm) (congrSucc (pred_succ _).eqSymm) Prf.hyp0))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative
+
+export_ipra AnalyticNumberTheory.Multiplicative (gcd_rem phi_mul_at rem_eq' rem_lt' sum2_lift zero_lt')

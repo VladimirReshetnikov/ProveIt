@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.HarmonicHalfSquare
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # The main term of the discrete contraction (`pnt_ipra_constructive_2026-11-14`, `con:one-step`)
@@ -15,19 +12,12 @@ Packet: `analytic-number-theory/pnt_ipra_constructive_2026-11-14`, `contraction.
 * `main_term`: `2 Σ_{2≤m≤M+1} u_m F⌊x/m⌋ ≤ x (u_{M+1}² + 2F²)` (`HarmonicHalfSquare.half_square`, `dd_le`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ContractionMain
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (S_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSquareSum (U)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicLogSum (inc_lower fact_quo)
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicHalfSquare (dlB u2B udB ddB Dl dl_at u2_at half_square dd_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (pos_of_lt_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic (shift_fact')
 open LeanProofs.IPRA.Probability.Lotus (cmB sum_const_mul)
 open LeanProofs.IPRA.Probability.Independence (cm_pt)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -35,8 +25,6 @@ open LeanProofs.IPRA.Analysis.Products (fact)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `⌊F/(j+2)⌋ ≤ Δ_{j+2}`. -/
 theorem dl_ge {j K L : PTm n} (hK : Γ ⊢[PRAAx] le one K) (hL : Γ ⊢[PRAAx] le (K * succ (succ j)) L) :

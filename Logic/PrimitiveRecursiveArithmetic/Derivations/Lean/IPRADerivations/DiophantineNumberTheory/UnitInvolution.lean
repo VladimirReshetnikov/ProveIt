@@ -1,10 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerResidue
-import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.AnalyticNumberTheory.Mobius
-import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.Permutation
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The involution `x ↦ a x⁻¹` on the units modulo a prime
@@ -30,18 +24,13 @@ Here `p` is a prime, `gcd(a, p) = 1`, and `T(x) = res x p a = (x⁻¹ a) mod p` 
 Wilson's product, Euler's criterion and the pair-product congruence `eq:pair` are not derived in this module.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.UnitInvolution
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (shift_cop)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (inv res res_spec res_unique res_lt res_cop)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss gcd_comm_one eq_one_of_dvd_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

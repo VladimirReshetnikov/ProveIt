@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.ChineseRemainder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Coprimality
@@ -20,14 +17,11 @@ The square lemma avoids factorization. With `u = gcd(a, c)`, `a = u a₁`, `c = 
 Divisors are arbitrary positive terms `d` (with `d = S (pred d)`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -235,3 +229,7 @@ theorem coprime_square : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3 squareFormula 
   closeUniv 3 (.impI (.impI (square_of_coprime (congrSucc (pred_succ _).eqSymm) Prf.hyp1 Prf.hyp0)))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.Coprime
+
+export_ipra DiophantineNumberTheory.Coprime (coprime_dvd_left coprime_mul coprime_quotients dvd_add' dvd_le' dvd_mul'
+  dvd_of_eq' dvd_self' dvd_sub' dvd_trans' eq_of_dvd' eq_one_of_dvd_one gauss gcd_comm_one gcd_dvd' gcd_greatest'
+  pos_of_eq_mul)

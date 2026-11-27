@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ConicIdentities
 import IPRADerivations.Analysis.Polynomials.Taylor.PolynomialRemainder
-import IPRADerivations.Core.Header
 
 /-!
 # The upper height bound of the conic parametrization
@@ -18,17 +17,13 @@ With `|a_{ij}| ≤ c_{ij}`, `C = ∑ c_{ij}`, `|p_i| ≤ P`, `|s|, |t| ≤ S` (`
 * `height_upper`: every coordinate of `M F(s, t)` has absolute value at most `3 C P S²`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicHeight
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.ConicIdentities (Form)
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_hi abs_lo abs_of abs_mono abs_add abs_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem abs_nat (b : PTm n) : Γ ⊢[PRAAx] AbsLe (ZT.ofNat b) b :=
   abs_of (by show Γ ⊢[PRAAx] le (b + zero) (b + zero); ipra_le 0)

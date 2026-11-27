@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.StepAt
-import IPRADerivations.Core.Header
 
 /-!
 # One stage of the contraction (`pnt_ipra_constructive_2026-11-14`, §"Integer thresholds and the modulus")
@@ -21,32 +20,21 @@ Every `m ≥ 2^{s'}` has `ℓ(m) ≥ s' − 1`, hence `2s + 1 ≤ ℓ` and at le
 * `stage_advance`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.StageAdvance
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockTests (one_le_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit (Stage)
 open LeanProofs.IPRA.AnalyticNumberTheory.StepCondition (DecLin DecCst mul_le2)
 open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell muP BP clog_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.StepAt (Pq step_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (clog clog_spec)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le cancel_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Restriction and logarithm facts -/
 

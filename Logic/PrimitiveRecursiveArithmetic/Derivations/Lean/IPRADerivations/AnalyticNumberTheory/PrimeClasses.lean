@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PrimeRank
-import IPRADerivations.Core.Header
 
 /-!
 # Primes in the residue classes of a modulus
@@ -15,13 +14,9 @@ Packet: `analytic-number-theory/prime-counting-ipra`, `sections/foundations.tex`
 * **`class_partition`**: `∑_{r < a} π_{a,r}(N) = π(N)`, by `Fubini.fubini`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PrimeClasses
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (isP)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrIsP)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.PiTheta (piB inst2_piB)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimeRank (pc)

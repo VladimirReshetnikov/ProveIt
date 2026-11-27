@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.ConicLower
-import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Cancellation of common factors in the conic parametrization
@@ -16,17 +13,12 @@ show that `g` divides `r s²` and `r t²`. Since `s², t²` are coprime, another
 * `coprime_squares`: `gcd(s, t) = 1` gives `gcd(s², t²) = 1` (for `s ≥ 1`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicGcd
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_mul' dvd_sub' dvd_le' coprime_mul gcd_comm_one)
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `g ∣ r a`, `g ∣ r b` and `gcd(a, b) = 1` give `g ∣ r`. -/
 theorem dvd_of_coprime_pair {g r a b : PTm n} (hg : Γ ⊢[PRAAx] g ≐ succ (pred g))
@@ -65,3 +57,5 @@ theorem coprime_squares {s t : PTm n} (hs : Γ ⊢[PRAAx] s ≐ succ (pred s)) (
   exact gcd_comm_one (pos_mul hs hs) c
 
 end LeanProofs.IPRA.DiophantineNumberTheory.ConicGcd
+
+export_ipra DiophantineNumberTheory.ConicGcd (dvd_of_coprime_pair)

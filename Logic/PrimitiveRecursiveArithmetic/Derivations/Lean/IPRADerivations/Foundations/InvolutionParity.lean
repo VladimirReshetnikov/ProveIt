@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.EliminationDegree
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Counting under a fixed-point-free involution
@@ -27,15 +25,12 @@ theorem counts with multiplicities as well as counting the indices with a proper
 
 namespace LeanProofs.IPRA.Foundations.InvolutionParity
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Permutation (FS rangeAll invAll retAll inst2_FS)
 open LeanProofs.IPRA.Foundations.EliminationDegree (sum_perm)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero)
 open LeanProofs.IPRA.Signum (sg)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The order indicator -/
 
@@ -119,6 +114,6 @@ theorem involution_even (b ι : PTm 2) {N x : PTm n} (hr : Γ ⊢[PRAAx] rangeAl
       exact .impE r.wk Prf.hyp0
     exact upper_half b ι (.impE hb.allOpen.wk Prf.hyp0) hii
   have perm := sum_perm (F := loB b ι) hr hinv hret
-  ipra_lc natEq split + natEq (sum_add (Γ := Γ) (loB b ι) (hiB b ι) N x) + natEq (swap.eqTrans perm)
+  ipra_lc natEq split + natEq (sum_add (loB b ι) (hiB b ι) N x) + natEq (swap.eqTrans perm)
 
 end LeanProofs.IPRA.Foundations.InvolutionParity

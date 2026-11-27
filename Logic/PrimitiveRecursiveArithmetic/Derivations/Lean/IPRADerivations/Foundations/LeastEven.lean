@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.BoundedSyntax
 import IPRADerivations.Foundations.BoundedSelection
-import IPRADerivations.Core.Parity
-import IPRADerivations.Core.Header
 
 /-!
 # The least even natural number in a bounded interval
@@ -18,11 +16,10 @@ here; they are not supplied as assumptions to the generic search theorem.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.LeastEven
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

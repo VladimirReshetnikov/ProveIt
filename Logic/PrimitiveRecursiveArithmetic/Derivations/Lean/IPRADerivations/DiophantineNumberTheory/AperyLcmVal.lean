@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperyMultinomial
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The valuation of the Apéry multinomial
@@ -19,15 +17,13 @@ for `M_m = C(42m, 21m) C(21m, 14m) C(7m, 6m)` (`AperyMultinomial.Mm`).
 * `val_Mm`: the identity above.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmVal
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_mul val_congr val_binom_factorials)
+open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_binom_factorials)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom bden pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_eq)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB')
@@ -35,8 +31,6 @@ open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial (Mm)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem binom_fact {n j : PTm k} (h : Γ ⊢[PRAAx] le j n) : Γ ⊢[PRAAx] fact n ≐ bden n j * binom n j :=
   binom_eq h
@@ -67,8 +61,8 @@ theorem val_Mm {p : PTm k} (hp : Γ ⊢[PRAAx] prime p) (m : PTm k) :
     natEq (val_congr p (congrAp2 factF (monus_split (Γ := Γ) (a := num 42 * m) (b := num 21 * m) (c := num 21 * m) (by ipra_ring)) (.eqRefl zero))) -
     natEq (val_congr p (congrAp2 factF (monus_split (Γ := Γ) (a := num 21 * m) (b := num 14 * m) (c := num 7 * m) (by ipra_ring)) (.eqRefl zero))) -
     natEq (val_congr p (congrAp2 factF (monus_split (Γ := Γ) (a := num 7 * m) (b := num 6 * m) (c := m) (by ipra_ring)) (.eqRefl zero))) -
-    natEq (legendre_fact (Γ := Γ) hp (num 21 * m)) - natEq (legendre_fact (Γ := Γ) hp (num 14 * m)) -
-    natEq (legendre_fact (Γ := Γ) hp (num 6 * m)) - natEq (legendre_fact (Γ := Γ) hp m) +
-    natEq (legendre_fact (Γ := Γ) hp (num 42 * m))
+    natEq (legendre_fact hp (num 21 * m)) - natEq (legendre_fact hp (num 14 * m)) -
+    natEq (legendre_fact hp (num 6 * m)) - natEq (legendre_fact hp m) +
+    natEq (legendre_fact hp (num 42 * m))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmVal

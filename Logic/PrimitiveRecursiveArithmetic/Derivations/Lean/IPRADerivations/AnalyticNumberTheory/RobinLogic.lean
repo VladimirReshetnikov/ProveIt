@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.Header
 
 /-!
 # The logical form of the Robin criterion in iPRA (`robin_ipra_research_2026-11-19`)
@@ -23,11 +22,9 @@ Everything is a derivation in the object theory (`Γ ⊢[PRAAx] …`); the analy
 (producing the cover and the reverse transform) are the packet's open obligations and are hypotheses here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogic
 
-open_ipra
+open_ipra exports
 
 set_option autoImplicit false
 

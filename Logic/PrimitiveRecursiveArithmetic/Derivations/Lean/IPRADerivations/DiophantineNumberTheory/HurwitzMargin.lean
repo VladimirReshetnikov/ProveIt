@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.HurwitzDenominator
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The margin certificate of the sharp Hurwitz theorem (`hurwitz_khinchin_ipra`)
@@ -31,14 +29,12 @@ convergent brackets and the extraction of the continued-fraction prefix are not 
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.HurwitzMargin
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.HurwitzDenominator (goodPair)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `2uv ≤ u² + v²`. -/
 theorem two_uv_le (u v : PTm n) : Γ ⊢[PRAAx] le (two * u * v) (u * u + v * v) := by
@@ -155,8 +151,7 @@ theorem cert_core {u v a b E W Q : PTm n} (hgood : Γ ⊢[PRAAx] goodPair u v)
   · exact cert_one hW.wk hW1.wk hD.wk hD1.wk hQu.wk hE.wk Prf.hyp0
   · have hW' : Γ ⊢[PRAAx] v * u * (b + a) ≐ W := (by ipra_ring : Γ ⊢[PRAAx] v * u * (b + a) ≐ u * v * (a + b)).eqTrans hW
     have hD' : Γ ⊢[PRAAx] (v * v + u * u) * (v * v + u * u) ≐ num 5 * (v * v) * (u * u) + D := by
-      have e' := natEq hD
-      apply deriveNat; ipra_simps; linear_combination e'
+      ipra_lc natEq hD
     have hE' : Γ ⊢[PRAAx] le (num 100 * ((v * v + u * u) * (v * v + u * u)) * (Q * Q) * E) (D * W) :=
       le_congr (by ipra_ring) (.eqRefl _) hE
     exact cert_one hW'.wk hW1.wk hD'.wk hD1.wk hQv.wk hE'.wk Prf.hyp0

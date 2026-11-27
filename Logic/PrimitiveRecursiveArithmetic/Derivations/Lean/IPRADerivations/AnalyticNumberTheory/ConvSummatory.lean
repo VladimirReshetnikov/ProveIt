@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ConvolutionAssoc
-import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Reindex
-import IPRADerivations.Core.Header
 
 /-!
 # The summatory function of a Dirichlet convolution (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry`)
@@ -19,23 +14,16 @@ The proof is one QF induction on `x`: the step `⌊(x+1)/d⌋ = ⌊x/d⌋ + [d �
 exactly the terms `a(d) b((x+1)/d)` of `(a * b)(x+1)` (`row_step`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi (quo_lt_self)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Summatory
 
@@ -152,3 +140,5 @@ theorem conv_summatory (x y : PTm n) :
 end Summatory
 
 end LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory
+
+export_ipra AnalyticNumberTheory.ConvSummatory (RB_at conv_summatory inst2_bS)

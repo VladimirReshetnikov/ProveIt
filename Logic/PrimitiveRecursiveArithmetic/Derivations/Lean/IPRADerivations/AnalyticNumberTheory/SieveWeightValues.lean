@@ -1,9 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SieveWeightFacts
 import IPRADerivations.AnalyticNumberTheory.SieveClosedForms
-import IPRADerivations.AnalyticNumberTheory.SymmetrySum
-import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The explicit vector `y` of the sieve weights
@@ -28,25 +24,17 @@ where `μ^±(r) = μ^±_{r+1}(r)` are the bodies `aPB`, `aNB` of `SymmetrySum`.
   `Σ_r φ(r) y_r²` is `z!` times the summand of `Σ_r μ(r)² [gcd(r, q) = 1] z!/φ(r)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB inst2_aP inst2_aN)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveClosedForms (gU inst2_gU)
-open LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightFacts (phi_quo)
-open LeanProofs.IPRA.Foundations.BoundedReflection (eqb_cases)
 open LeanProofs.IPRA.Probability.Expectation (inst2_mul')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The values of `μ^±` -/
 
@@ -168,3 +156,5 @@ theorem phi_YN {r P : PTm n} (hrz : Γ ⊢[PRAAx] le r (sndT (sndT P))) :
       (phi_quo hr (hrz.wk (ψ := r ≐ succ (pred r))))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveWeightValues
+
+export_ipra AnalyticNumberTheory.SieveWeightValues (YN_at YP_at)

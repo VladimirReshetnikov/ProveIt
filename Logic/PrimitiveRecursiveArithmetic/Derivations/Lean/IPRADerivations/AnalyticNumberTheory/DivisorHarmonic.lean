@@ -1,12 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorHyperbola
-import IPRADerivations.AnalyticNumberTheory.Primes
-import IPRADerivations.DiophantineNumberTheory.Coprime
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.SumReflect
-import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.Products
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The divisor sum against the harmonic sum (`pnt_ipra_constructive_2026-11-14`, `sb:divisor-approx`)
@@ -23,15 +15,11 @@ This module proves the second, with the harmonic sum `H_m = S(m, F)/F` at a comm
   `D(y) = 2y H_m − m² + e` with `−2m ≤ e ≤ 0`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Harmonic (S hB inst2_h)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (hyperbola)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (dvd_fact)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Analysis.Products (fact)
@@ -39,8 +27,6 @@ open LeanProofs.IPRA.Analysis.Products (fact)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `F ⌊y/(k+1)⌋ ≤ y ⌊F/(k+1)⌋ ≤ F ⌊y/(k+1)⌋ + F` for `F = L!`, `k + 1 ≤ L`. -/
 theorem floor_pt (k y : PTm n) {L : PTm n} (hk : Γ ⊢[PRAAx] le (succ k) L) :
@@ -136,3 +122,5 @@ theorem divisor_harmonic {y m L : PTm n} (h1 : Γ ⊢[PRAAx] le (m * m) y) (h2 :
   · ipra_le 2 * sl hi with -(𝔞 (fact L) * hyp)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.DivisorHarmonic
+
+export_ipra AnalyticNumberTheory.DivisorHarmonic (shift_fact')

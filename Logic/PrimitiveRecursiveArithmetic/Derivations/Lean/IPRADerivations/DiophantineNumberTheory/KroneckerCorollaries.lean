@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ConicCount
 import IPRADerivations.DiophantineNumberTheory.SimultaneousTransfer
-import IPRADerivations.Core.Header
 
 /-!
 # Arithmetic of the Kronecker corollaries
@@ -17,11 +16,9 @@ Packet: `diophantine-number-theory/dirichlet_kronecker_ipra`.
   `e_0 = e/Q`, `64(C+1)e ≤ Q` and `Q ≥ 1` give `8e < Q`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerCorollaries
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_hi abs_lo)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

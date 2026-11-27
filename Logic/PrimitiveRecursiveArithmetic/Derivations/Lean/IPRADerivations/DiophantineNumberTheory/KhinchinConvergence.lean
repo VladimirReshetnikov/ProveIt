@@ -1,11 +1,6 @@
 import IPRADerivations.Foundations.IntervalCover
 import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Probability.Independence
-import IPRADerivations.AnalyticNumberTheory.Totient
 import IPRADerivations.DiophantineNumberTheory.HurwitzMargin
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The convergent half of the finite Khinchin theorem (`hurwitz_khinchin_ipra`, (K1))
@@ -36,18 +31,14 @@ bound for every `R`.
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinConvergence
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.IntervalCover
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 
 set_option autoImplicit false
 
 variable {n : ℕ}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `q ∣ R!` -/
 

@@ -1,9 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiCenters
 import IPRADerivations.DiophantineNumberTheory.SignedEuclidean
 import IPRADerivations.Foundations.SequenceEquality
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Literal runtime-vector midpoint cancellation for Minkowski centers
@@ -22,14 +19,11 @@ for arbitrary sequence codes. This literal equality supports substitution
 in an arbitrary fixed membership formula.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenterVectors
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiCenters
   (center opposite midpoint midpoint_code_integer)
-open LeanProofs.IPRA.DiophantineNumberTheory.SignedEuclidean (decode)
 open LeanProofs.IPRA.Analysis.RationalIntegerNormalization (integerCode)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)

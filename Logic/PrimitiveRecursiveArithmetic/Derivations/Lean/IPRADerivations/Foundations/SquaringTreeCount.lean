@@ -1,5 +1,4 @@
 import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Powers
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Header
 
@@ -15,11 +14,9 @@ per-node bookkeeping and adjacency cost gives a primitive-recursive clock for an
 * `tree_count`: `∑_{i≤j} (2N)^i ≤ (2N + 1)^{j+1}`, the packet's bound.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.SquaringTreeCount
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

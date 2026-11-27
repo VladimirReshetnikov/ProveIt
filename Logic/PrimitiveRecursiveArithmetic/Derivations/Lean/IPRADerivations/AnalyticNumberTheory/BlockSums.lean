@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BlockMean
 import IPRADerivations.AnalyticNumberTheory.PointDeficit
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Block sums over divisors (`pnt_ipra_constructive_2026-11-14`, `con:deficit`)
@@ -20,30 +18,23 @@ and the body `[D₁ < d ≤ D₂] h(⌊x/d⌋)` (`SummatoryCompose.hRB h biB`). 
 * `block_mean_upper`, `block_mean_lower`: `|Σ_{D₁<d≤D₂} (ψ(⌊x/d⌋) − F⌊x/d⌋)| ≤ 24Fx` in the layout.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BlockSums
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicChebyshev (wt)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (Psi)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound (psiB inst2_psiB psi_bs)
-open LeanProofs.IPRA.AnalyticNumberTheory.WeightedSplit (lamW hRB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedBound (inst2_lamW)
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (hRB)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB RB_at bS inst2_bS Bs)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBlock (iB inst2_iB ind_one ind_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockFloor (lB fB lB_at fB_at)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockMean (T block_upper block_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.Probability.Variance (sum_const_of)
 open LeanProofs.IPRA.Analysis.Products (fact)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The layout `(D₁, (D₂, (w, z)))`. -/
 abbrev Y (D₁ D₂ w z : PTm n) : PTm n := pairT D₁ (pairT D₂ (pairT w z))
@@ -172,3 +163,5 @@ theorem block_mean_lower :
 end Mean
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BlockSums
+
+export_ipra AnalyticNumberTheory.BlockSums (biB fzB pzB)

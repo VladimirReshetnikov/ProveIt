@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.WindowStability
-import IPRADerivations.Foundations.LeastBoundedWitness
-import IPRADerivations.Core.Header
 
 /-!
 # Bounded cardinality gives an empty window
@@ -24,13 +22,10 @@ A window whose count is zero contains no solution (`sum_zero_elim` of `Core/Boun
 application.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.EmptyWindow
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (ExW NoW decision)
-open LeanProofs.IPRA.Foundations.WindowStability (sum_lower)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

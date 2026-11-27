@@ -1,9 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.TotientTermStep
 import IPRADerivations.AnalyticNumberTheory.QuotientBlocks
 import IPRADerivations.AnalyticNumberTheory.SieveRecursion
-import IPRADerivations.AnalyticNumberTheory.Fermat
-import IPRADerivations.Probability.Independence
-import IPRADerivations.Core.Header
 
 /-!
 # The prime step for the sums `∑_{d ≤ t} [d ∣ a] z!/φ(d)`
@@ -25,25 +22,18 @@ for a prime `p` with `gcd(p, a) = 1`:
 Together: `G_{ap}(t) = G_a(t) + (p − 1)^{−1} G_a(⌊t/p⌋)` for `t ≤ z`, with `G_a(t)` standing for `G_a(t + 1)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg congrEqb' zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos not_dvd_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (prime_shift)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumReindex (riB inst2_riB reindex_eq cM sum_le_bound)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveRecursion (cM_succ shift_cop shift_mul')
 open LeanProofs.IPRA.AnalyticNumberTheory.QuotientBlocks (mul_le_of_le_quo)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientTermStep (gt split_pt scale_pt)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' gcd_greatest' dvd_self')
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open LeanProofs.IPRA.Signum (sg)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -168,3 +158,5 @@ theorem Ws_mono {p a z t t' : PTm n} (h : Γ ⊢[PRAAx] le (quo t p) (quo t' p))
   sum_le_bound HB ((succ_monus_succ _ _).eqTrans h)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep
+
+export_ipra AnalyticNumberTheory.TotientSumStep (GtB)

@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Tail and error identities of a continued fraction
@@ -31,15 +29,11 @@ The identification of the nested fraction with the matrix column (`dio:continuan
 derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ContinuedFractionTail
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The numerator `u p + v p'` of the value with tail `t = u/v`. -/
 abbrev Nm (u v p p' : PTm n) : PTm n := u * p + v * p'

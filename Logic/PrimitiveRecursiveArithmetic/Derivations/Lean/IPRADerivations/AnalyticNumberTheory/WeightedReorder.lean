@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SummatoryCompose
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Reordering the double sum of the weighted identity (`pnt_ipra_constructive_2026-11-14`, `sb:weighted-sum`)
@@ -19,22 +17,15 @@ For any monotone body `f` with `f(0) = 0` and any two coefficient bodies `a`, `b
   for `f` with the coefficient `a * b`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.WeightedReorder
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryCompose (dH inst2_dH Mono hRB inst2_hRB compose)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (conv_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv inst2_cvB)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF conv_assoc)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Convolution respects a schematic pointwise equation of the second body. -/
 theorem conv_congr2 (a b b' : PTm 2)
@@ -91,10 +82,9 @@ theorem dS1 {m : ℕ} {Δ : List (Fm PTm m)} (i y : PTm m) :
         monus (inst2 (S1B f b) (succ (pred i)) y) (inst2 (S1B f b) (pred i) y) :=
       congrMonus (congrInst2 _ hi (.eqRefl _)) (.eqRefl _)
     refine mi.eqTrans ?_
-    ipra_lc -natEq (eq_add_of_le (S1_mono f b hm h0 (Δ := C) (pred i) y)) +
-      natEq (S1_eq (Γ := C) f b hm h0 (succ (pred i)) y) - natEq (S1_eq (Γ := C) f b hm h0 (pred i) y) +
-      natEq (sum_succ' (Γ := C) (cvF b (dH f)) (succ (pred i)) y) -
-      natEq (congrInst2 (Γ := C) (cvF b (dH f)) hi (.eqRefl y))
+    ipra_lc -natEq (eq_add_of_le (S1_mono f b hm h0 (Δ := C) (pred i) y)) + natEq (S1_eq f b hm h0 (succ (pred i)) y) -
+      natEq (S1_eq f b hm h0 (pred i) y) + natEq (sum_succ' (cvF b (dH f)) (succ (pred i)) y) -
+      natEq (congrInst2 (cvF b (dH f)) hi (.eqRefl y))
 
 /-- `Σ_k a(k) Σ_j b(j) f(⌊⌊x/k⌋/j⌋) = Σ_n (a * b)(n) f(⌊x/n⌋)`. -/
 theorem reorder (a : PTm 2) (x y : PTm n) :

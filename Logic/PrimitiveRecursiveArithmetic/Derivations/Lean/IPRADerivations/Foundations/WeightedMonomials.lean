@@ -1,8 +1,5 @@
-import IPRADerivations.DiophantineNumberTheory.Coprime
 import IPRADerivations.AnalyticNumberTheory.CrtBijection
 import IPRADerivations.Foundations.AuxiliaryEnvelope
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Weights of reduced monomials and the cover count (`ipra_coherent_methods_2026-11-15`, `thm:weighted-norm-degree`, `cor:weighted-cover`)
@@ -34,14 +31,11 @@ the norm (`thm:weighted-norm-degree`, the rescaling argument), `lem:weighted-fib
 
 namespace LeanProofs.IPRA.Foundations.WeightedMonomials
 
-open_ipra
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gauss dvd_of_eq')
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.CrtBijection (rem_small)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Distinct reduced monomials have distinct weights -/
 
@@ -53,16 +47,12 @@ theorem weight_dvd {m d i i' j j' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred 
   · refine dvd_of_eq' hm.wk (w := monus i i') ?_
     have a := natEq (h.wk (ψ := le i' i))
     have e₁ := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le i' i)))
-    have e₂ := natEq (eq_add_of_le (hle.wk (ψ := le i' i)))
-    apply deriveNat; ipra_simps
-    linear_combination -a + 𝔞 m * e₁ - 𝔞 d * e₂
+    ipra_lc -a + 𝔞 m * e₁ - 𝔞 d * natEq (eq_add_of_le (hle.wk (ψ := le i' i)))
   · refine dvd_of_eq' hm.wk (w := zero) ?_
     have z : (le i i' :: Γ) ⊢[PRAAx] zero ≐ d * monus j' j + m * monus i' i := by
       have a := natEq (h.wk (ψ := le i i'))
       have e₁ := natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le i i')))
-      have e₂ := natEq (eq_add_of_le (hle.wk (ψ := le i i')))
-      apply deriveNat; ipra_simps
-      linear_combination a + 𝔞 m * e₁ + 𝔞 d * e₂
+      ipra_lc a + 𝔞 m * e₁ + 𝔞 d * natEq (eq_add_of_le (hle.wk (ψ := le i i')))
     exact ((monus_zero _).eqSymm.eqTrans (le_of_eq_add z)).eqTrans (mul_zero m).eqSymm
 
 /-- The case `j ≤ j'`. -/

@@ -22,11 +22,9 @@ quantifier-free induction (`PRA.qfInd`) to `Inv(i, Run(i, u), u)` with `G(u)` in
 equations are transported by Leibniz' rule.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.TraceReflection
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.ClockedDescent (Pat subst_Pat Pat_var subst_QF')
 
 variable (init : PTm 1) (step : PTm 3) (fuel : PTm 1) (Inv : Fm PTm 3) (G : Fm PTm 1) (A : Fm PTm 2)
@@ -138,3 +136,5 @@ theorem loop_compile {Γ : List (Fm PTm n)} (I : Fm PTm (n + 1)) (hI : I.QF) (P 
   .impI (.impE (.impI hF) (Prf.allE F (PRA.qfInd I hI h0 hS)))
 
 end LeanProofs.IPRA.Foundations.TraceReflection
+
+export_ipra Foundations.TraceReflection (Run run_succ run_zero subst_I3)

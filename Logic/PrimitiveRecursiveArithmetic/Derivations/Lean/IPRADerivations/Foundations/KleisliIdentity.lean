@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.AdjunctionMonad
-import IPRADerivations.Core.Header
 
 /-!
 # Naturality of the multiplication and the Kleisli identity laws
@@ -17,7 +16,7 @@ codes as `C`, arrows `a → b` represented by arrows `a → Tb` in `C`, identity
 
 namespace LeanProofs.IPRA.Foundations.KleisliIdentity
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.PresentedCategory
 open LeanProofs.IPRA.Foundations.Adjunction
 open LeanProofs.IPRA.Foundations.AdjunctionMonad
@@ -65,7 +64,6 @@ theorem kleisli_right {a b f : PTm n} (ha : Γ ⊢[PRAAx] C.obj a) (hb : Γ ⊢[
     (hf : Γ ⊢[PRAAx] C.hom a (A.RL b) f) :
     Γ ⊢[PRAAx] C.eqv a (A.RL b) (kcomp C A a a b (A.η a) f) f := by
   have hTb := FR.ob_obj (FL.ob_obj hb)
-  have hη := AL.eta_hom ha
   have hηT := AL.eta_hom hTb
   have hμ := mu_hom FL FR AL hb
   -- naturality of `η` at `f`: `η_{Tb} ∘ f = T(f) ∘ η_a`

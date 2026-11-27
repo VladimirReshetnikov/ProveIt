@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.RuntimePermutationDeletion
-import IPRADerivations.Core.CongruenceTactic
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Actual insertion of the largest numerical permutation label
@@ -15,7 +12,7 @@ set_option autoImplicit false
 
 namespace LeanProofs.IPRA.Foundations.RuntimePermutationInsertion
 
-open_ipra
+open_ipra exports
 open RuntimePermutationWords (digit range distinct tuple entriesEqual word encode horizon permutationBit)
 open RuntimePermutationDeletion (recovered slot slot_before slot_after slot_bound slot_different after_index
   digits_different maximumPosition maximum_correct deletedWord deleted deleted_lookup deleted_range deleted_word_bound)
@@ -270,3 +267,5 @@ theorem actual_permutation_insertion_program_closed : ([] : List (Fm PTm 0)) ⊢
     (run (var 0) (var 1) (var 2) ≐ insertedWord (var 0) (var 1) (var 2)) := closeUniv 3 (program_at _ _ _)
 
 end LeanProofs.IPRA.Foundations.RuntimePermutationInsertion
+
+export_ipra Foundations.RuntimePermutationInsertion (insertedWord)

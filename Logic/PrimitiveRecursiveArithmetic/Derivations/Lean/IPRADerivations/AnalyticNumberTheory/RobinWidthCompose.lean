@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinWidthNum
 import IPRADerivations.AnalyticNumberTheory.RobinLipWidth
-import IPRADerivations.AnalyticNumberTheory.RobinUpperEnd
-import IPRADerivations.Core.Header
 
 /-!
 # The width of the Robin interval `[L(n, k), U(n, k)]` (`robin_ipra_research_2026-11-19`, §"Composing the double logarithm")
@@ -21,13 +19,10 @@ of `RobinThreePos` and `U(n, k)` of `RobinUpperEnd`:
 * `width`: `U(n, k) − L(n, k) ≤ 2^{−k}`, cleared: `2^k·Uup·Ld ≤ 2^k·Lp·Uud + Uud·Ld`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinWidthCompose
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Pv Pt Qt)
-open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (frac_trans)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName
   (Ev Ed Fv Tn Td F_succ e_up e_mono exp_tail Ed_pos Td_pos Ev_congr Ed_congr Tn_congr Td_congr F_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval (An Ad k2)
@@ -37,24 +32,19 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RobinExpWidth (exp_lip)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinWidthNum (n_one n_two n_three n_four num_alg)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipWidth (comp_width)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipBound (lo_le_pred pw_two_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipSum (one_le_of_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeDPsi (eb_ge)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (eb Kp loN loD hiN hiD lo_le_hi_any loD_pos hiD_pos c3)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos
   (rr K1 A1 B1 K2 LLn LLd tg Kg gN gD Ke EN ED cnd Lp Lm Ld)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinUpperEnd
   (C1 D1 K3 UHn UHd gHn gHd EhN EhD cndU Uup Uum Uud ghiD_pos gloD_pos e_le_three)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Abstract algebra -/
 

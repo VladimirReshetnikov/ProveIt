@@ -1,8 +1,4 @@
-import IPRADerivations.AnalyticNumberTheory.MobiusSummatory
-import IPRADerivations.AnalyticNumberTheory.SumPhi
 import IPRADerivations.AnalyticNumberTheory.HyperbolaSwap
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The Möbius floor identity `∑_{d ≤ x} μ(d) ⌊x/d⌋ = [x ≥ 1]`
@@ -27,21 +23,15 @@ convolution: `(ε * 𝟏)(k) = 1` for `k ≥ 1`, so the inner summatory function
   It is `mobius_floor` read through the exchange `HyperbolaSwap.hyp_swap` of the two summations.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN congrSg zero_mul_l)
 open LeanProofs.IPRA.AnalyticNumberTheory.SymmetryInstances (epsB eps_bs sum_sg_eps)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF sg_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB RB_at Bs bS inst2_bS)
-open LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum (aPB aNB inst2_aP inst2_aN)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusSummatory (bF gS inst2_gS mobius_summatory)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open LeanProofs.IPRA.AnalyticNumberTheory.HyperbolaSwap (hyp_swap)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -181,3 +171,5 @@ theorem mertens_floor (x : PTm n) :
       ((sumN1 x zero).eqSymm.eqTrans ((hyp_swap aNB (one : PTm 2) x zero).eqTrans (csumN x)))))))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.MobiusFloor
+
+export_ipra AnalyticNumberTheory.MobiusFloor (inst2_oneB)

@@ -1,7 +1,4 @@
-import IPRADerivations.Core.Order
-import IPRADerivations.Core.Pairing
 import IPRADerivations.Core.BoundedSums
-import IPRADerivations.Core.Tactic
 import IPRADerivations.Core.InductionTactic
 import IPRADerivations.Core.CommonLemmas
 import IPRADerivations.Core.Header
@@ -40,15 +37,11 @@ derived: the controlled chain bound `s + L ≤ F_d(x, s)` (`thm:controlled-lex`,
 sequences and blocks) and `thm:automatic-lex-fuel`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.LexFuelMonotone
 
-open_ipra
+open_ipra exports
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Iteration with a parameter -/
 

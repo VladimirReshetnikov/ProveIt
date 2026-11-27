@@ -1,9 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SieveRecursion
-import IPRADerivations.AnalyticNumberTheory.Multiplicative
-import IPRADerivations.DiophantineNumberTheory.ModularCertificate
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The period of the sieve count
@@ -25,23 +20,16 @@ the term at `m + P` equals the term at `m ≥ 1` (`cop_period`, from `Multiplica
 * **`phi_period`**: `Φ(x + P; P) = Φ(x; P) + φ(P)`, by induction on `x` (`period_zero`, `period_succ`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePeriod
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody inst2_tot)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (gcd_rem)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg congrEqb' zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.LegendreSieve (coB inst2_coB)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveRecursion (Phi)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Periodicity of the term -/
 
@@ -91,8 +79,7 @@ theorem period_one {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) : Γ ⊢
 
 theorem step_alg {U' U T1 V' V T2 ph : PTm n} (a : Γ ⊢[PRAAx] U' ≐ U + T1) (b : Γ ⊢[PRAAx] V' ≐ V + T2)
     (ih : Γ ⊢[PRAAx] U ≐ V + ph) (t : Γ ⊢[PRAAx] T1 ≐ T2) : Γ ⊢[PRAAx] U' ≐ V' + ph := by
-  have a' := natEq a; have b' := natEq b; have c := natEq ih; have d := natEq t
-  apply deriveNat; ipra_simps; linear_combination a' - b' + c + d
+  ipra_lc natEq a - natEq b + natEq ih + natEq t
 
 theorem period_zero {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) :
     Γ ⊢[PRAAx] Phi (zero + P) P ≐ Phi zero P + phi P := by

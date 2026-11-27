@@ -1,7 +1,4 @@
 import IPRADerivations.Combinatorics.Stirling
-import IPRADerivations.Core.Search
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # No universal PR evaluator, and bounded choice of witnesses
@@ -22,11 +19,9 @@ Packet: `foundations/ipra_embedding_framework`, Proposition `prop:no-universal-p
   `B(i, x)`. No choice axiom is used.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.EmbeddingBasics
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Stirling (build nth_build)
 open LeanProofs.IPRA.Combinatorics.Bell (nth monus_monus)
 

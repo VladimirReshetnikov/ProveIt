@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.EnergyRecovery
-import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.Core.Header
 
 /-!
 # The witness conversion "energy bound `c` ⇒ `8^r c` for `M`" (`thm:energy`)
@@ -19,18 +17,12 @@ and the positive factor `(N!)^{2r}` cancels (`energy_witness`). The conversion h
 every pair of bodies `M^±`; it does not depend on any parameter carried by `x`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.EnergyWitness
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.EnergyRecovery (QN Mabs energy_recovery)
 open LeanProofs.IPRA.AnalyticNumberTheory.EnergyJordan (pos_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.SquareReciprocal (cancel_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
 open LeanProofs.IPRA.Analysis.Products (fact)
 

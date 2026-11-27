@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KhinchinDyadic
 import IPRADerivations.DiophantineNumberTheory.KhinchinAmplify
-import IPRADerivations.Core.Header
 
 /-!
 # One unit of tail mass supplies the block (`hurwitz_khinchin_ipra`, `S ≥ 1`)
@@ -19,15 +18,13 @@ modulus (K-D) reads, cleared, `C + Σ_{q<2^K} Ψ(q) ≤ Σ_{q<2^{K+B}} Ψ(q)`. T
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KhinchinTailMass
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinDyadic (dyB dyadic)
 open LeanProofs.IPRA.DiophantineNumberTheory.KhinchinAmplify (mn MB min_sum mn_right)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The divergence modulus and the dyadic majorant: `C ≤ Σ_{k<B} 2^{K+k} Ψ(2^{K+k})`. -/
 theorem tail_mass (Ψ : PTm 2) (K B x : PTm n) {C : PTm n}

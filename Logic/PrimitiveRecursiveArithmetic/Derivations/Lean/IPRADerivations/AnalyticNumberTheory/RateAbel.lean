@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.PowerDivisorUniform
 import IPRADerivations.DiophantineNumberTheory.Dirichlet
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Dyadic shell weights and the recovery of growth from bounded weighted sums
@@ -24,27 +22,16 @@ bodies `a = a⁺ − a⁻`, and `M(N) = Σ_{m<N} a(m+1)`.
 * `recover`: then `|M(N)|^{2r} ≤ 2^{2r(K+1)} N^{r+1}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RateAbel
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.StepParams (ell clog_bracket)
-open LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet (quo_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd absd_le le_absd_l le_absd_r)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Shells -/
 

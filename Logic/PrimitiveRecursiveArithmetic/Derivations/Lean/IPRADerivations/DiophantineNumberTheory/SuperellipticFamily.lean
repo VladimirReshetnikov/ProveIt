@@ -31,16 +31,12 @@ So `|x|`, `|y|` are as listed, and the signs of `y` follow from the parity of `m
 (`s^{e+1} = 1` gives `s = 1`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PowerGap (strict_power_gap)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem congrPwBase {a a' : PTm k} (e : PTm k) (h : Γ ⊢[PRAAx] a ≐ a') : Γ ⊢[PRAAx] pw a e ≐ pw a' e :=
   congrAp2 _ (.eqRefl _) h
@@ -62,7 +58,7 @@ theorem one_pw (e : PTm k) : Γ ⊢[PRAAx] pw one e ≐ one := by
 
 /-- `0^{e+1} = 0`. -/
 theorem zero_pw (e : PTm k) : Γ ⊢[PRAAx] pw zero (succ e) ≐ zero := by
-  ipra_lc natEq (pw_succ (Γ := Γ) zero e)
+  ipra_lc natEq (pw_succ zero e)
 
 /-- `s^{e+1} = 1` gives `s = 1`. -/
 theorem s_eq_one {s e : PTm k} (h : Γ ⊢[PRAAx] pw s (succ e) ≐ one) : Γ ⊢[PRAAx] s ≐ one := by
@@ -71,7 +67,7 @@ theorem s_eq_one {s e : PTm k} (h : Γ ⊢[PRAAx] pw s (succ e) ≐ one) : Γ �
     have h1 : ((s ≐ zero) :: Γ) ⊢[PRAAx] pw s (succ e) ≐ one := h.wk
     have e1 := natEq h1
     have c : ((s ≐ zero) :: Γ) ⊢[PRAAx] succ zero ≐ zero := by
-      ipra_lc -e1 + natEq (pw_succ (Γ := (s ≐ zero) :: Γ) s e) + 𝔞 (pw s e) * natEq hs
+      ipra_lc -e1 + natEq (pw_succ s e) + 𝔞 (pw s e) * natEq hs
     exact succ_ne_zero' _ c
   · refine .orE (zero_or_succ (pred s)) ?_ ?_
     · have hs : ((pred s ≐ zero) :: (s ≐ succ (pred s)) :: Γ) ⊢[PRAAx] s ≐ succ (pred s) := Prf.hyp1
@@ -106,9 +102,8 @@ theorem pos_branch
     have e := natEq h1
     have z := natEq ht
     have hsm : Δ ⊢[PRAAx] pw s (succ (succ (succ j))) ≐ one := by
-      ipra_lc e + natEq (pw_succ (Γ := Δ) (pw t (succ r)) (succ (succ j))) +
-        𝔞 (pw (pw t (succ r)) (succ (succ j))) * natEq (pw_succ (Γ := Δ) t r) +
-        (1 + 𝔞 (pw (pw t (succ r)) (succ (succ j))) * 𝔞 (pw t r)) * z
+      ipra_lc e + natEq (pw_succ (pw t (succ r)) (succ (succ j))) + 𝔞 (pw (pw t (succ r)) (succ (succ j))) *
+        natEq (pw_succ t r) + (1 + 𝔞 (pw (pw t (succ r)) (succ (succ j))) * 𝔞 (pw t r)) * z
     exact .andI ht (s_eq_one hsm)
   · let Δ : List (Fm PTm k) := (t ≐ succ (pred t)) :: Γ
     have ht : Δ ⊢[PRAAx] t ≐ succ (pred t) := Prf.hyp0
@@ -247,14 +242,16 @@ theorem neg_y_neg_x (φ : Fm PTm k)
 /-- The point `(0, 1)`: `1^m = (0^r)^m + 0 + 1`. -/
 theorem point_zero : Γ ⊢[PRAAx] pw one (succ (succ (succ j))) ≐
     pw (pw zero (succ r)) (succ (succ (succ j))) + zero + one := by
-  ipra_lc natEq (one_pw (Γ := Γ) (succ (succ (succ j)))) -
-    natEq (congrPwBase (Γ := Γ) (succ (succ (succ j))) (zero_pw r)) - natEq (zero_pw (Γ := Γ) (succ (succ j)))
+  ipra_lc natEq (one_pw (succ (succ (succ j)))) -
+    natEq (congrPwBase (succ (succ (succ j))) (zero_pw r)) - natEq (zero_pw (succ (succ j)))
 
 /-- The points `(−1, ±1)`: with `x = −(0 + 1)`, `1^m + 1 = (1^r)^m + 1`. -/
 theorem point_neg_one : Γ ⊢[PRAAx] pw one (succ (succ (succ j))) + succ zero ≐
     pw (pw (succ zero) (succ r)) (succ (succ (succ j))) + one := by
-  ipra_lc -natEq (congrPwBase (Γ := Γ) (succ (succ (succ j))) (one_pw (succ r)))
+  ipra_lc -natEq (congrPwBase (succ (succ (succ j))) (one_pw (succ r)))
 
 end Family
 
 end LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily
+
+export_ipra DiophantineNumberTheory.SuperellipticFamily (one_pw)

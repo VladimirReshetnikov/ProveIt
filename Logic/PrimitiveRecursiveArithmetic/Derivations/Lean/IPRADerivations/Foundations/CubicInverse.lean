@@ -1,6 +1,4 @@
 import IPRADerivations.Analysis.Names.Rates.ErrorBudgets
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # Quantitative uniqueness for the cubic inverse
@@ -23,11 +21,9 @@ The enclosure, regularity and endpoint residual of the existence half are `Found
 (nonnegative input); the exact rational case is `StableCubicRoot.root_unique`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CubicInverse
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Analysis.ErrorBudgets (ad_tri)
 

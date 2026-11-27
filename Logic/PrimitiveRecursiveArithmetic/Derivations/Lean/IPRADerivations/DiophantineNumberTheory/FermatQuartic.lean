@@ -1,9 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.QuarticStep
 import IPRADerivations.Core.DescentEx
 import IPRADerivations.Algebra.CubeRootTwo
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Fermat's quartic theorem
@@ -24,11 +21,10 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (two_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep
@@ -254,3 +250,5 @@ theorem flt4 : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3 flt4Formula := by
   simpa using h
 
 end LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic
+
+export_ipra DiophantineNumberTheory.FermatQuartic (zo_eqb zo_sg)

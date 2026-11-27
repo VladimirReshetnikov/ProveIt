@@ -1,6 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiWellFormed
-import IPRADerivations.Foundations.BoundedSyntax
-import IPRADerivations.Core.Header
 
 /-!
 # Boolean reflection of the canonical rational-vector guard
@@ -17,10 +15,9 @@ namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiGuardChecker
 
 set_option maxRecDepth 8192
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.RationalSupMetric (numeratorOf denominatorOf rationalCode)
 open LeanProofs.IPRA.Analysis.RationalNormalForm (wellFormed)
-open LeanProofs.IPRA.Foundations.GapDecision (zabs)
 open LeanProofs.IPRA.Foundations.BoundedSyntax
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)

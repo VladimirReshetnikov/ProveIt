@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.Fermat
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # RSA correctness and Fermat's theorem for units
@@ -21,8 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RSA
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq dvd_of_rem_eq crt_unique_at)
@@ -192,3 +188,5 @@ where
     Prf.hyp (by simp)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RSA
+
+export_ipra AnalyticNumberTheory.RSA (gcd_distinct_primes pw_mul rem_mul_congr)

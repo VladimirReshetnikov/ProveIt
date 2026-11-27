@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLogName
-import IPRADerivations.Core.Header
 
 /-!
 # Elementary inequalities for the logarithm names (`robin_ipra_research_2026-11-19`, `lcm_bridge.tex`)
@@ -14,11 +13,9 @@ Packet: `analytic-number-theory/robin_ipra_research_2026-11-19`, `paper/lcm_brid
   `2(q − 1)/(q + 1) ≥ 1 − 1/q`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogDiff
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv L_zero L_succ Pv P_succ P_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
   (Nz Nz_zero Nz_succ Dz Un Ud Lz log_name Nz_congr Dz_congr)
@@ -26,8 +23,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `N_K W + 2 L_K p^{2K+1} s² ≤ 2ps L_K s^{2K+1}`. -/
 abbrev QG (K p s W : PTm n) : Fm PTm n :=

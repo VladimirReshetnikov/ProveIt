@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.SignedVector
 import IPRADerivations.Combinatorics.FiniteBijection
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Signed digits in base `2B + 1`
@@ -16,18 +14,14 @@ with sign `[d > B]` and magnitude `d ∸ [d > B] B`, i.e. `d ≤ B` is `+d` and 
 * `dec_bit`, `dec_zero`, `dec_le`: a decoded entry has a sign bit, the zero-sign convention and magnitude `≤ B`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SignedDigit
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totatives (sg_lt sg_le)
 open LeanProofs.IPRA.Combinatorics.FiniteBijection (sg_bit)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias congrSg := Common.congrSg
 
@@ -42,14 +36,14 @@ theorem enc_dec {s m B : PTm k} (hs : Γ ⊢[PRAAx] (s ≐ zero) ⋎ (s ≐ one)
   refine .orE hs ?_ ?_
   · have h0 : ((s ≐ zero) :: Γ) ⊢[PRAAx] s ≐ zero := Prf.hyp0
     have ed : ((s ≐ zero) :: Γ) ⊢[PRAAx] s * B + m ≐ m := by
-      have e := natEq h0; apply deriveNat; ipra_simps; linear_combination 𝔞 B * e
+      ipra_lc 𝔞 B * natEq h0
     have sg0 : ((s ≐ zero) :: Γ) ⊢[PRAAx] sgnOf B (s * B + m) ≐ zero :=
       (congrSg (congrMonus ed (.eqRefl _))).eqTrans (sg_le hm.wk)
     refine .andI (sg0.eqTrans h0.eqSymm) ?_
     refine (congrMonus ed ((congrMul sg0 (.eqRefl _)).eqTrans (zero_mul _))).eqTrans (monus_zero _)
   · have h1 : ((s ≐ one) :: Γ) ⊢[PRAAx] s ≐ one := Prf.hyp0
     have ed : ((s ≐ one) :: Γ) ⊢[PRAAx] s * B + m ≐ m + B := by
-      have e := natEq h1; apply deriveNat; ipra_simps; linear_combination 𝔞 B * e
+      ipra_lc 𝔞 B * natEq h1
     have pm : ((s ≐ one) :: Γ) ⊢[PRAAx] le one m := le_congr h1 (.eqRefl _) hz.wk
     have lt1 : ((s ≐ one) :: Γ) ⊢[PRAAx] lt B (m + B) := by ipra_le sl pm
     have sg1 : ((s ≐ one) :: Γ) ⊢[PRAAx] sgnOf B (s * B + m) ≐ one :=
@@ -80,7 +74,6 @@ theorem dec_zero (B d : PTm k) : Γ ⊢[PRAAx] le (sgnOf B d) (magOf B d) := by
     have s1 : (lt B d :: Γ) ⊢[PRAAx] sgnOf B d ≐ one := sg_lt Prf.hyp0
     have em : (lt B d :: Γ) ⊢[PRAAx] magOf B d ≐ monus d B :=
       congrMonus (.eqRefl _) ((congrMul s1 (.eqRefl _)).eqTrans (one_mul _))
-    have ed := natEq (eq_add_of_le hl)
     have mm : (lt B d :: Γ) ⊢[PRAAx] monus d B ≐ succ (monus d (succ B)) := by
       refine (congrMonus (eq_add_of_le hl) (.eqRefl _)).eqTrans ?_
       have q : (lt B d :: Γ) ⊢[PRAAx] succ B + monus d (succ B) ≐ succ (monus d (succ B)) + B := by ipra_ring

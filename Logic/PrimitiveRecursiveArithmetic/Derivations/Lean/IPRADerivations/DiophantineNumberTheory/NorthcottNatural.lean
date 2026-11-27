@@ -1,8 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.DigitCode
 import IPRADerivations.DiophantineNumberTheory.GcdUnique
 import IPRADerivations.Foundations.FilteredEnumeration
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 import IPRADerivations.Core.BoundedSums
 
 /-!
@@ -27,16 +25,13 @@ The output list is the rank/select enumeration of `Foundations/FilteredEnumerati
 * `north_point`: the normalization of any nonzero vector in the box is listed (with `GcdNormalize`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.NorthcottNatural
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv gv_zero gv_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (congrGcd qBody q_le gv_quotients)
 open LeanProofs.IPRA.DiophantineNumberTheory.DigitCode (code entriesLt code_lt digits_of_code)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne pw_pos')
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

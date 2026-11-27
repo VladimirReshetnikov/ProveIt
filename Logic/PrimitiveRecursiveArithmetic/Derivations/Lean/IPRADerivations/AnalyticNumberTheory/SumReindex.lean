@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Summing over multiples
@@ -18,19 +15,14 @@ Reusable tools for the Euler-product comparison of `prime_reciprocal_ipra_2026-1
 The reindexed body `riB h` reads its parameter as the pair `⟨p, x⟩`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SumReindex
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatQuartic (zo_eqb eq_of_eqb congrPair)
 open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq mulBody inst2_mul count_multiples)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (sum_ones)
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
 open LeanProofs.IPRA.Analysis.PowerSums (sum_le)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -140,3 +132,5 @@ theorem reindex_le (h : PTm 2) {p x : PTm n} (N : PTm n) (hp : Γ ⊢[PRAAx] p �
   le_congr (reindex_eq h N hp).eqSymm (.eqRefl _) (sum_le_bound h (cM_le N p))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SumReindex
+
+export_ipra AnalyticNumberTheory.SumReindex (inst2_riB le_quo_of_mul_le reindex_eq reindex_le sum_le_bound)

@@ -1,11 +1,6 @@
 import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.Division
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Probability.Independence
-import IPRADerivations.AnalyticNumberTheory.Primes
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Mixed-radix codes
@@ -33,13 +28,10 @@ The converse direction (re-encoding the decoded digits of a number below `R`) an
 constructions of the packets are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.MixedRadix
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Independence (sum_scale)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -216,10 +208,10 @@ theorem suffix_step
   have eC := natEq eC'
   have hE : Γ ⊢[PRAAx] Pl r i x * Tl r d i (succ t) x + Cd r d i x ≐
       Pl r i x * (inst2 d i x + inst2 r i x * Tl r d (succ i) t x) + Cd r d i x := by
-    ipra_lc -natEq (code_split (Γ := Γ) r d i (succ t) x) + natEq (congrAp2 (sumF (dP r d)) ci (.eqRefl x)) +
-      natEq (code_split (Γ := Γ) r d (succ i) t x) + eC + 𝔟 (Tl r d (succ i) t x) * natEq (prod_succ' (Γ := Γ) r i x)
+    ipra_lc -natEq (code_split r d i (succ t) x) + natEq (congrAp2 (sumF (dP r d)) ci (.eqRefl x)) +
+      natEq (code_split r d (succ i) t x) + eC + 𝔟 (Tl r d (succ i) t x) * natEq (prod_succ' r i x)
   have hC : Γ ⊢[PRAAx] Cd r d (succ i + t) x ≐ Pl r i x * Tl r d i (succ t) x + Cd r d i x := by
-    ipra_lc natEq (code_split (Γ := Γ) r d i (succ t) x) - natEq (congrAp2 (sumF (dP r d)) ci (.eqRefl x))
+    ipra_lc natEq (code_split r d i (succ t) x) - natEq (congrAp2 (sumF (dP r d)) ci (.eqRefl x))
   exact .andI (Prf.andE₁ (euclid_unique hE hlt hlt)) hC
 
 /-- "Mixed-radix decoding": if `d_j < r_j` for `j < i + 1 + t`, the digit at `i` of the code of length
@@ -247,3 +239,5 @@ theorem decode
 end decode
 
 end LeanProofs.IPRA.Foundations.MixedRadix
+
+export_ipra Foundations.MixedRadix (prod_succ')

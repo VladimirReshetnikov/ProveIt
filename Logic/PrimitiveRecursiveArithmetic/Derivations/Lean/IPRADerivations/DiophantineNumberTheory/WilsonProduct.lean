@@ -1,9 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.PairProduct
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
-import IPRADerivations.AnalyticNumberTheory.LcmBridgeExact
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Wilson's product
@@ -28,30 +24,19 @@ by `ResidueFacts.sq_one` (a fixed point is a square root of `1`) and by `1 · 1 
 (`Foundations/ProductPowers.prod_delta`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two inst2_mulB congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
-open LeanProofs.IPRA.AnalyticNumberTheory.Euler (shift_cop)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_one_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeExact (prod_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (res res_unique gcd_one_left)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.UnitInvolution (sB s_at unit_of_lt fixed_sq succ_lt_of)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (neg_sq sq_one)
 open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (idB inst2_idB pair_congr)
 open LeanProofs.IPRA.Foundations.InvolutionPairing (EB inst2_EB inst2_pw)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The two fixed points -/
 
@@ -97,7 +82,6 @@ theorem fixed_pt {p i : PTm n} (hp : Γ ⊢[PRAAx] prime p)
   have hq := prime_two hp
   have hp1 := p_pos hq
   have hc : Γ ⊢[PRAAx] gcd p one ≐ one := gcd_comm_one hp1 (gcd_one_left p)
-  have ha : Γ ⊢[PRAAx] gcd one p ≐ one := gcd_one_left p
   refine .orE (eq_or_ne i zero) ?_ ?_
   · -- `i = 0`
     let C : List (Fm PTm n) := (i ≐ zero) :: Γ
@@ -214,7 +198,6 @@ theorem wilson {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PRAAx] pa
     Γ ⊢[PRAAx] rem (fact (pred p)) p ≐ pred p := by
   have hq := prime_two hp
   have hp1 := p_pos hq
-  have ep := odd_of hodd
   have hc : Γ ⊢[PRAAx] gcd p one ≐ one := gcd_comm_one hp1 (gcd_one_left p)
   have ha : Γ ⊢[PRAAx] gcd one p ≐ one := gcd_one_left p
   -- `p − 2 ≥ 1`: otherwise `p = 2`, which is even

@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.MixedRadix
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Lexicographic rank and the fuel of a fixed-dimensional descent
@@ -29,11 +27,9 @@ digits agree at `i + 1 + s` for `s < t`, and the code has length `i + 1 + t`.
   most `R` when `ρ(0) < R`; for the mixed-radix rank `R = Pl m`, the bound `ρ(0) < Pl m` is `code_lt`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.LexicographicRank
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MixedRadix
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

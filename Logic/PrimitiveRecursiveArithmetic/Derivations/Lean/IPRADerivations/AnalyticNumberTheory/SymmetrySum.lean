@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SelbergMobiusP
 import IPRADerivations.AnalyticNumberTheory.ConvSummatory
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Selberg's identity summed up to `x` (`pnt_ipra_constructive_2026-11-14`, towards `sb:symmetry-bound`)
@@ -20,18 +18,12 @@ into `Σ_{d≤x} μ(d) P_2(x/d)`. For every prime weight `w` and parameter `y` (
 * `symmetry_sum`: summed over `n ≤ x` and reversed by `ConvSummatory.conv_summatory`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius
-open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (mu_bound congrMu)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt
 open LeanProofs.IPRA.AnalyticNumberTheory.DirichletLeibniz (cvB conv cv_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.SelbergLeibniz (lamF)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (cvF inst2_cvF)
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (sum_add2 lam_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.SelbergMobiusP (Gx QSP QSN inst2_QSP inst2_QSN selberg_mobius_p)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvSummatory (RB conv_summatory)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
@@ -39,8 +31,6 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `μ⁺(d) = μ⁺_{d+1}(d)`. -/
 abbrev aPB : PTm 2 := muP (succ (var 0)) (var 0)
@@ -136,8 +126,7 @@ theorem pt_n (N y : PTm n) :
         (sum_succ' _ _ _).eqTrans ((congrAdd (sum_zero _ _) (cv_at _ _ _ _ _)).eqTrans
           ((congrAdd (.eqRefl _) (zero_mul_l (zero_mul_l sg_zero _) _)).eqTrans (add_zero _)))
       exact (congrAdd ((congrMul (.eqRefl _) l0).eqTrans (mul_zero _)) c0).eqTrans (add_zero _)
-    have a := natEq (cz aPB); have b := natEq (cz aNB); have c := natEq g0
-    apply deriveNat; ipra_simps; linear_combination a - b - c
+    ipra_lc natEq (cz aPB) - natEq (cz aNB) - natEq g0
   · let C : List (Fm PTm n) := (N ≐ succ (pred N)) :: Γ
     have hN : C ⊢[PRAAx] fstT (pairT N y) ≐ succ (pred (fstT (pairT N y))) :=
       ConvolutionAssoc.pos_of_eq ((fst_pair _ _).eqTrans Prf.hyp0)
@@ -161,3 +150,5 @@ theorem symmetry_sum (x y : PTm n) :
 end Sym
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SymmetrySum
+
+export_ipra AnalyticNumberTheory.SymmetrySum (GxB aNB aPB inst2_aN inst2_aP)

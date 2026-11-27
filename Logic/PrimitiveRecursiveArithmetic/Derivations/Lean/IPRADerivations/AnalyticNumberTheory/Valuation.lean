@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PhiDivides
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Prime-power parts and a prime indicator
@@ -21,7 +18,7 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Valuation
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf μz lpf_dvd lpf_prime prime eq_succ_pred)
@@ -213,3 +210,6 @@ theorem isP_01 (q : PTm n) : Γ ⊢[PRAAx] (isP q ≐ zero) ⋎ (isP q ≐ one) 
     · exact .orI₁ ((congrMul s.wk (eqb_of_ne Prf.hyp0)).eqTrans (mul_zero _))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Valuation
+
+export_ipra AnalyticNumberTheory.Valuation (cof_eq cof_not_dvd eq_of_eqb_ne isP isP_01 isP_of_prime lpf_congr lt_pw
+  prime_congr prime_of_isP pw_pos' val_dvd val_not_dvd)

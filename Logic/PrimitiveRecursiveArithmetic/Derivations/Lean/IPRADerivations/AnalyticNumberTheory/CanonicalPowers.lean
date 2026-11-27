@@ -1,10 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.PrimitiveReduction
-import IPRADerivations.AnalyticNumberTheory.PowerCleared
-import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Combinatorics.BinomialIdentities
-import IPRADerivations.Core.EuclidLemma
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Injectivity of canonical powering
@@ -27,25 +21,15 @@ The derivation here avoids factorizations altogether:
   `exp_one` on both sides.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.CanonicalPowers
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.PrimitiveReduction (dvd_of_pw_dvd_pw)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_cancel)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (eq_succ_pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `RF(r)`: `r ≥ 2` and `r ≠ w^d` for all `w` and all `d ≥ 2`. -/
 abbrev RF (r : PTm n) : Fm PTm n :=
@@ -107,9 +91,7 @@ theorem bezout_pos {a b : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a)) (hg : 
   · let C : List (Fm PTm n) := (gcd a b + Bezout.cur zero one (succ b) a b * b ≐
       Bezout.cur one zero (succ b) a b * a) :: Γ
     have e := natEq (Prf.hyp0 : C ⊢[PRAAx] _)
-    have g := natEq (hg.wk : C ⊢[PRAAx] _)
-    apply deriveNat; ipra_simps
-    linear_combination -e + g
+    ipra_lc -e + natEq (hg.wk : C ⊢[PRAAx] _)
   · let U := Bezout.cur one zero (succ b) a b
     let V := Bezout.cur zero one (succ b) a b
     let C : List (Fm PTm n) := (gcd a b + U * a ≐ V * b) :: Γ

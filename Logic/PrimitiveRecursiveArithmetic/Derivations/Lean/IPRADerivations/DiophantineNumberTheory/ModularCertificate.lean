@@ -1,8 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.GcdUnique
-import IPRADerivations.AnalyticNumberTheory.RSA
 import IPRADerivations.Combinatorics.LegendreDigits
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Modular certificates of no rational point
@@ -25,16 +22,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdList (gv gv_greatest)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdUnique (sh shift_succ' shift_pred')
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_add' dvd_mul' eq_one_of_dvd_one)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (rem_mul_congr)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A positive common divisor of `m` and all residues `V_i mod m` of a primitive vector is `1`. -/
 theorem unimodular {V : PTm 2} {N x m d : PTm k} (hg : Γ ⊢[PRAAx] gv V N x ≐ one)
@@ -154,3 +147,5 @@ theorem prod_congr_mod (f g : PTm 2) {N x y M : PTm k} (hM : Γ ⊢[PRAAx] M ≐
   exact Prf.impE h2 (le_refl N)
 
 end LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate
+
+export_ipra DiophantineNumberTheory.ModularCertificate (prod_congr_mod rem_add_congr rem_add_mul rem_mul_congr2)

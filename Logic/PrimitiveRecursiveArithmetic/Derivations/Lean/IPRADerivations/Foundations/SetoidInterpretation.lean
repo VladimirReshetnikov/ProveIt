@@ -37,8 +37,6 @@ Derived:
   `Γ^I, D(x₀), …, D(x_{n−1}) ⊢ A^I` in the target.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.SetoidInterpretation
 
 open LeanProofs.ConciseIPRA

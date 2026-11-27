@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinExpName
 import IPRADerivations.AnalyticNumberTheory.RobinLipName
-import IPRADerivations.Core.Header
 
 /-!
 # The Lipschitz bound of the exponential names (`robin_ipra_research_2026-11-19`, §"The exponential enclosure")
@@ -18,19 +17,15 @@ For `l = p'/q' ≤ u = p/q` (`pq' = p'q + δ`, so `u − l = δ/(qq')`) and the 
   `RobinExpName.exp_tail` the width `T_{K+1}(u) − E_{K+1}(l) ≤ 2/(K+2)! + 3(u − l)` (`RobinWidthCompose`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinExpWidth
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinExpName (Ev Ed Fv Tn Td E_zero E_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (pd1)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `E_{K+1}(u) ≤ E_{K+1}(l) + (u − l) E_K(u)`, cleared over `(K+1)! q^{K+1} q'^{K+1} q q'`. -/
 abbrev LF (K p q p' q' d : PTm n) : Fm PTm n :=

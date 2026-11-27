@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.GramCertificate
 import IPRADerivations.Foundations.ErrorBudget
-import IPRADerivations.Core.Gcd
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # The rational Gram certificate
@@ -25,13 +22,10 @@ are natural terms, and the dimensions are fixed metalevel numbers. The proof fol
   term, as in the packet: "If `‖b‖² = 0`, there is nothing to prove; otherwise divide").
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.GramBound
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Variance (ad)
-open LeanProofs.IPRA.Foundations.ErrorBudget (nsum toG_nsum)
 open LeanProofs.IPRA.AnalyticNumberTheory.GramCertificate (gauss_cs pair_bound)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

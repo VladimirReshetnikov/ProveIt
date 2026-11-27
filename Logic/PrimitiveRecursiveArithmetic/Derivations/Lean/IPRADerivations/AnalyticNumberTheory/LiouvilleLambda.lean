@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.FactorialLambda
 import IPRADerivations.Core.ParityArith
-import IPRADerivations.Core.Header
 
 /-!
 # Liouville's function is completely multiplicative
@@ -22,11 +21,9 @@ Packet: `diophantine-number-theory/number_theory_ipra_2026-11-22`, `chapters/ele
 The divisor-sum identity `∑_{d ∣ n} λ(d) = [n is a square]` is not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LiouvilleLambda
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (zero_mul_l isP_zero isP_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.WeightedMangoldt (ellB Lw)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorialLambda (ell_at lw_mul)

@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.LcmUpto
 import IPRADerivations.Combinatorics.CentralBinomial
-import IPRADerivations.AnalyticNumberTheory.Smooth
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The central binomial coefficient divides `lcm(1, …, 2n)`
@@ -26,18 +23,14 @@ the divisibility chain `∏_{n<p^a≤2n} p ∣ C(2n, n) ∣ lcm(1, …, 2n)` (`b
   `⌊2n/p^e⌋ − 2⌊n/p^e⌋ ≥ 1` (`low_pt`, `binom_val_ge`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP isP_of_prime pw_pos' lt_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (R fB f_zero f_one f_pos R_pos R_succ reconstruct subst_dvd)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu Inv lcm_valuation lcmu_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrSg)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos val_mul val_fact_factor)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' dvd_le' dvd_self')
+open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_fact_factor)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb cb_fact)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' qB'_at quo_small)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (legendre_fact ltB inst2_ltB count_lt shift_le_two)
@@ -47,8 +40,6 @@ open LeanProofs.IPRA.Probability.Independence (sum_scale)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Divisibility from valuations -/
 
@@ -105,7 +96,7 @@ theorem quo_two {q k : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) :
     have e2 := natEq ((eq_add_of_le Prf.hyp0 : C ⊢[PRAAx] two * rem k q ≐ q + monus (two * rem k q) q))
     have hr : C ⊢[PRAAx] lt (monus (two * rem k q) q) q :=
       le_of_eq_add (d := succ (monus q (succ (rem k q)) + monus q (succ (rem k q))))
-        (by apply deriveNat; ipra_simps; linear_combination 2 * e1 + e2)
+        (by ipra_lc 2 * e1 + e2)
     refine .orI₂ (Totient.quo_eq hq.wk (r := monus (two * rem k q) q) ?_ hr)
     ipra_lc 2 * dv + e2
 
@@ -130,9 +121,7 @@ theorem binom_val {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (k : PTm n) :
     exact (qB'_at _ _ _).eqTrans (qz ((shift_le_two hp2).weaken hs) (le_of_lt hl)))
     ((succ_monus_succ _ _).eqTrans (le_of_eq_add (d := k) (by ipra_ring))))
   have s3 := natEq (sum_succ' (Γ := Γ) qB' k (pairT p k))
-  have z3 := natEq ((qB'_at (Γ := Γ) k p k).eqTrans (qz hp2 (le_refl k)))
-  apply deriveNat; ipra_simps
-  linear_combination -e1 + f2 - 2 * f1 + 2 * (-s1 + s2 + s3 - z1 + z3)
+  ipra_lc -e1 + f2 - 2 * f1 + 2 * (-s1 + s2 + s3 - z1 + natEq ((qB'_at (Γ := Γ) k p k).eqTrans (qz hp2 (le_refl k))))
 
 /-! ## The upper valuation bound -/
 
@@ -202,7 +191,7 @@ theorem binom_val_le {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (k : PTm n) :
   have hs : Syn.shift (val p (lcmu (two * k))) = val (Syn.shift p) (lcmu (two * Syn.shift k)) := by simp [Syn.shift]
   have I2' : Γ.map Fm.shift ⊢[PRAAx] lt (two * Syn.shift k) (pw (Syn.shift p) (succ (val (Syn.shift p) (lcmu (two * Syn.shift k))))) := by
     have e := I2.shift
-    simp only [Fm.shift, subst_lt, subst_le, ConciseIPRA.PTm.subst_succ] at e
+    simp only [Fm.shift, subst_lt] at e
     simpa [Syn.shift] using e
   -- `∑ ⌊2k/q⌋ ≤ ∑ (2⌊k/q⌋ + [j < e])`
   have sl := Analysis.PowerSums.sum_le (Γ := Γ) hB gB (pairT (pairT p k) (val p (lcmu (two * k)))) (two * k)
@@ -258,7 +247,7 @@ abbrev XE (E : PTm 2) : PTm 2 := isP (var 0) * E
 abbrev PE (E : PTm 2) : PTm 2 := pw (var 0) (XE E)
 
 theorem inst2_XE (E : PTm 2) (i x : PTm n) : inst2 (XE E) i x = isP i * inst2 E i x := by
-  simp only [inst2, XE, PTm.subst_mul, FactorVector.subst_isP]
+  simp only [inst2, XE, PTm.subst_mul]
   simp
 theorem inst2_PE (E : PTm 2) (i x : PTm n) : inst2 (PE E) i x = pw i (inst2 (XE E) i x) := by
   simp [inst2]
@@ -282,7 +271,7 @@ abbrev vpF (E : PTm 2) (q x M : PTm n) : Fm PTm n :=
 
 theorem subst_vpF {m : ℕ} (E : PTm 2) (σ : Fin n → PTm m) (q x M : PTm n) :
     (vpF E q x M).subst σ = vpF E (Syn.subst σ q) (Syn.subst σ x) (Syn.subst σ M) := by
-  simp [vpF, FactorVector.subst_val]
+  simp [vpF]
 
 /-- `v_q(∏_{i<M} i^{[i prime] E(i)}) = [q prime] E(q) [q < M]` for a prime `q`. -/
 theorem val_PE {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (E : PTm 2) (M x : PTm n) :
@@ -295,7 +284,7 @@ theorem val_PE {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (E : PTm 2) (M x : PTm n
       refine ((congrVal (.eqRefl _) (prod_zero _ _)).eqTrans (ValuationMul.val_one (prime_two hq))).eqTrans ?_
       exact ((congrMul (.eqRefl _) ((congrSg (zero_monus _)).eqTrans sg_zero)).eqTrans (mul_zero _)).eqSymm
     · rw [subst_vpF]
-      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_succ, vpF]
+      simp only [Syn.subst_var, Syn.repl_zero, subst_repl_shift, vpF]
       let D : List (Fm PTm (n + 1)) := (val (Syn.shift q) (ap2 (prodF (PE E)) (var 0) (Syn.shift x)) ≐
         inst2 (XE E) (Syn.shift q) (Syn.shift x) * sg (monus (var 0) (Syn.shift q))) :: Γ.map Fm.shift
       have hqD : D ⊢[PRAAx] prime (Syn.shift q) := hq'.wk
@@ -341,7 +330,7 @@ theorem val_PE {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (E : PTm 2) (M x : PTm n
 abbrev cB : PTm 2 := sg (monus (pw (var 0) (val (var 0) (lcmu (two * var 1)))) (var 1))
 
 theorem inst2_cB (i k : PTm n) : inst2 cB i k = sg (monus (pw i (val i (lcmu (two * k)))) k) := by
-  simp [inst2, FactorVector.subst_val]
+  simp [inst2]
 
 /-- `∏_{n < p^a ≤ 2n} p = ∏_{p ≤ 2n prime} p^{[n < p^{e_p}]}` with `e_p = v_p(lcm(1, …, 2n))`. -/
 abbrev Pw (k : PTm n) : PTm n := ap2 (prodF (PE cB)) (succ (two * k)) k
@@ -414,14 +403,11 @@ theorem binom_val_ge {q k : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hqk : Γ ⊢[PR
   have hsS : Syn.shift (two * k) = two * Syn.shift k := by simp [Syn.shift]
   -- the shifted facts used pointwise
   have hk' : C.map Fm.shift ⊢[PRAAx] lt (Syn.shift k) (pw (Syn.shift q) (val (Syn.shift q) (lcmu (two * Syn.shift k)))) := by
-    have e := hk.shift; simp only [Fm.shift, subst_lt, subst_le, ConciseIPRA.PTm.subst_succ] at e; simpa [Syn.shift] using e
+    have e := hk.shift; simp only [Fm.shift, subst_lt] at e; simpa [Syn.shift] using e
   have pe' : C.map Fm.shift ⊢[PRAAx] le (pw (Syn.shift q) (val (Syn.shift q) (lcmu (two * Syn.shift k)))) (two * Syn.shift k) := by
     have e := pe.shift; simp only [Fm.shift, subst_le] at e; simpa [Syn.shift] using e
   have ep' := MobiusBounds.shift_pos epos
   rw [show Syn.shift (val q (lcmu (two * k))) = val (Syn.shift q) (lcmu (two * Syn.shift k)) by simp [Syn.shift]] at ep'
-  have qpos' : C.map Fm.shift ⊢[PRAAx] pw (Syn.shift q) (val (Syn.shift q) (lcmu (two * Syn.shift k))) ≐
-      succ (pred (pw (Syn.shift q) (val (Syn.shift q) (lcmu (two * Syn.shift k))))) :=
-    pw_pos' (p_pos hp2'.wk) _
   -- `∑ (2⌊k/q^{j+1}⌋ + [e − 1 = j]) ≤ ∑ ⌊2k/q^{j+1}⌋`
   have sl := Analysis.PowerSums.sum_le (Γ := C) g2B hB x (two * k) (.allI (.impI (by
     rw [hsx, hsS]
@@ -456,7 +442,7 @@ theorem binom_val_ge {q k : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hqk : Γ ⊢[PR
     refine le_of_add_le_add_right (c := two * ap2 (sumF qB') (two * k) (pairT q k)) ?_
     refine le_congr ?_ ?_ sl
     · ipra_lc v + t + d
-    · ipra_lc u - natEq (binom_val (Γ := C) hq.wk k)
+    · ipra_lc u - natEq (binom_val hq.wk k)
   exact le_congr (sg_lt hk).eqSymm (.eqRefl _) v1
 
 /-- `thm:binomial-lcm`, left divisibility: `∏_{n < p^a ≤ 2n} p ∣ C(2n, n)`. -/
@@ -495,3 +481,5 @@ theorem binomial_lcm (k : PTm n) : Γ ⊢[PRAAx] dvd (Pw k) (cb k) ⋏ dvd (cb k
 end Window
 
 end LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm
+
+export_ipra AnalyticNumberTheory.BinomialLcm (PE_pos central_dvd_lcm dvd_of_val_le inst2_PE inst2_XE val_PE)

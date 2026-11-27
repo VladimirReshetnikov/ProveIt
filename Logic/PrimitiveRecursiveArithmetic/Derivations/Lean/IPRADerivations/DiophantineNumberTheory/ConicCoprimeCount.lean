@@ -1,10 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SummatoryPhi
-import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.SumOrder
-import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Many coprime pairs in a square
@@ -24,21 +19,15 @@ The union bound is read off the Möbius form of the count (`AnalyticNumberTheory
 * `coprime_count` (`lem:conic-coprime-count`): `N² ≤ 4 G(N)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.ConicCoprimeCount
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.SummatoryPhi (DPB DNB inst2_DP inst2_DN summatory_phi)
 open LeanProofs.IPRA.AnalyticNumberTheory.CoprimePairs (gB3)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (muP muN om_two_one sq_two_one congrEqb' zero_ne_one')
-open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (eqb_le_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `d ⌊N/d⌋ ≤ N` for `d = d' + 1`. -/
 theorem mul_quo_le (N d' : PTm k) : Γ ⊢[PRAAx] le (succ d' * quo N (succ d')) N := by
@@ -131,7 +120,7 @@ theorem coprime_count (N₁ : PTm k) :
   rw [inst2_DP] at t
   have ev : Γ ⊢[PRAAx] (sg one * muP (succ one) one) * (quo (succ N₁) one * quo (succ N₁) one) ≐
       succ N₁ * succ N₁ := by
-    ipra_lc (𝔞 (eqb (AnalyticNumberTheory.Mobius.sq (succ one) (one : PTm k)) zero) * 𝔞 (eqb (rem (AnalyticNumberTheory.Mobius.om (succ one) (one : PTm k)) two) zero) * 𝔞 (quo (succ N₁) one) * 𝔞 (quo (succ N₁) one)) * natEq (sg_succ (Γ := Γ) (zero : PTm k)) +
+    ipra_lc (𝔞 (eqb (AnalyticNumberTheory.Mobius.sq (succ one) (one : PTm k)) zero) * 𝔞 (eqb (rem (AnalyticNumberTheory.Mobius.om (succ one) (one : PTm k)) two) zero) * 𝔞 (quo (succ N₁) one) * 𝔞 (quo (succ N₁) one)) * natEq (sg_succ (zero : PTm k)) +
       (𝔞 (quo (succ N₁) one) * 𝔞 (quo (succ N₁) one)) * natEq mp + (𝔞 (quo (succ N₁) one) + 𝔞 N₁ + 1) * natEq q1
   have tP := le_congr ev (.eqRefl _) t
   -- `D⁻ = 0 + 0 + ∑_{i<N₁} DNB(i+2)`
@@ -141,7 +130,7 @@ theorem coprime_count (N₁ : PTm k) :
   have e2 := natEq e2'
   have z0 : Γ ⊢[PRAAx] inst2 DNB zero (succ N₁) ≐ zero := by
     rw [inst2_DN]
-    ipra_lc (𝔞 (eqb (AnalyticNumberTheory.Mobius.sq (succ zero) zero) zero) * 𝔞 (eqb (rem (AnalyticNumberTheory.Mobius.om (succ zero) zero) two) one) * 𝔞 (quo (succ N₁) zero) * 𝔞 (quo (succ N₁) zero)) * natEq (sg_zero (Γ := Γ) (n := k))
+    ipra_lc (𝔞 (eqb (AnalyticNumberTheory.Mobius.sq (succ zero) zero) zero) * 𝔞 (eqb (rem (AnalyticNumberTheory.Mobius.om (succ zero) zero) two) one) * 𝔞 (quo (succ N₁) zero) * 𝔞 (quo (succ N₁) zero)) * natEq (sg_zero (n := k))
   have z1 : Γ ⊢[PRAAx] inst2 DNB (succ zero) (succ N₁) ≐ zero := by
     rw [inst2_DN]
     ipra_lc (𝔞 (sg (succ zero)) * 𝔞 (quo (succ N₁) (succ zero)) * 𝔞 (quo (succ N₁) (succ zero))) * natEq mn

@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.RationalRootDegree
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.SumLemmas
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Rational roots: the constant coefficient (`ipra_presentations_to_witnesses`, `lem:norm-rational-roots`)
@@ -31,17 +28,13 @@ The scan itself (the enumeration of candidate pairs, the exact substitution test
 without repetition) is not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RationalRootConstant
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 open LeanProofs.IPRA.Foundations.RationalRootDegree
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem shift_succ₁ (t : PTm k) : Syn.shift (succ t) = succ (Syn.shift t) := by
   simp [Syn.shift]
@@ -51,7 +44,7 @@ theorem monus_monus' {j n : PTm k} (h : Γ ⊢[PRAAx] le j n) :
     Γ ⊢[PRAAx] monus n (monus n j) ≐ j := by
   have e₁ := natEq (eq_add_of_le h)
   have hd : Γ ⊢[PRAAx] le (monus n j) n :=
-    le_of_eq_add (d := j) (by apply deriveNat; ipra_simps; linear_combination e₁)
+    le_of_eq_add (d := j) (by ipra_lc e₁)
   ipra_lc e₁ - natEq (eq_add_of_le hd)
 
 variable (a : PTm 2)
@@ -81,9 +74,9 @@ theorem rev_pt {i p q d x : PTm k} (hi : Γ ⊢[PRAAx] lt i (succ d)) :
         inst2 (tB a) (monus d i) (pairT p (pairT q (pairT d x))) :=
     congrInst2 (tB a)
       ((congrMonus (fst_pair _ _) (.eqRefl _)).eqTrans (succ_monus_succ d i)) (snd_pair _ _)
-  ipra_lc natEq (l₀.eqTrans (tB_at a (monus d i) p q d x)) - natEq (tB_at (Γ := Γ) (revC a) i q p d (pairT d x)) +
+  ipra_lc natEq (l₀.eqTrans (tB_at a (monus d i) p q d x)) - natEq (tB_at (revC a) i q p d (pairT d x)) +
     𝔞 (pw p (monus d i)) * 𝔞 (inst2 a (monus d i) x) * natEq (congrPw (.eqRefl q) (monus_monus' hle)) -
-    𝔞 (pw p (monus d i)) * 𝔞 (pw q i) * natEq (revC_at (Γ := Γ) a i d x)
+    𝔞 (pw p (monus d i)) * 𝔞 (pw q i) * natEq (revC_at a i d x)
 
 /-- Reading the homogeneous polynomial from the other end. -/
 theorem reversal (p q d x : PTm k) :
@@ -122,7 +115,7 @@ theorem dvd_le {m' C : PTm k} (h : Γ ⊢[PRAAx] dvd (succ m') C)
   · -- a zero cofactor would make `C` zero
     have e' := natEq (e.wk (ψ := quo C (succ m') ≐ zero))
     have c0 : ((quo C (succ m') ≐ zero) :: Γ) ⊢[PRAAx] C ≐ zero := by
-      ipra_lc e' + (𝔞 m' + 1) * natEq (Prf.hyp0 (Γ := Γ) (φ := quo C (succ m') ≐ zero))
+      ipra_lc e' + (𝔞 m' + 1) * natEq (Prf.hyp0 (φ := quo C (succ m') ≐ zero))
     exact succ_ne_zero' _ (hC.wk.eqSymm.eqTrans c0)
   · have s := natEq (Prf.hyp0 (Γ := Γ)
       (φ := quo C (succ m') ≐ succ (pred (quo C (succ m')))))

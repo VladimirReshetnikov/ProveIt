@@ -1,10 +1,5 @@
-import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.EuclidLemma
-import IPRADerivations.Combinatorics.BinomialIdentities
 import IPRADerivations.Combinatorics.LegendreDigits
 import IPRADerivations.AnalyticNumberTheory.BinomialThree
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Uniqueness and additivity of the `p`-adic valuation
@@ -20,15 +15,11 @@ valuation `v_p(m) = val p m` of `AnalyticNumberTheory/Valuation` satisfies:
 * `val_fact_succ`: `v_p((m + 1)!) = v_p(m!) + v_p(m + 1)`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val val_dvd val_not_dvd cof_eq cof_not_dvd pw_pos' pw_val_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_of_eq' eq_of_dvd' pos_of_eq_mul)
+open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val pw_val_pos)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel binom_eq)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
@@ -36,8 +27,6 @@ open LeanProofs.IPRA.Probability.SortingBound (fct fact_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialThree (pos_of_one_le)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 alias p_pos := Common.pos_of_two_le
 
@@ -71,9 +60,7 @@ theorem not_val_lt (hp : Γ ⊢[PRAAx] le two p) (hm : Γ ⊢[PRAAx] m ≐ succ 
   have ev := eq_add_of_le hlt
   refine .botE _ (.impE (val_not_dvd hp hm) (dvd_of_eq' (pw_pos' (p_pos hp) _) (w := pw p (monus e (succ (val p m))) * c) ?_))
   have a := natEq (pw_add (Γ := Γ) p (succ (val p m)) (monus e (succ (val p m))))
-  have v' := natEq (congrAp2 powF ev (.eqRefl p)); have h' := natEq h
-  apply deriveNat; ipra_simps
-  linear_combination h' + 𝔞 c * v' + 𝔞 c * a
+  ipra_lc natEq h + 𝔞 c * natEq (congrAp2 powF ev (.eqRefl p)) + 𝔞 c * a
 
 /-- `m = p^e c` with `p ∤ c` gives `v_p(m) = e`. -/
 theorem val_unique (hp : Γ ⊢[PRAAx] le two p) (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (h : Γ ⊢[PRAAx] m ≐ pw p e * c)
@@ -143,3 +130,5 @@ theorem val_fact_succ {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (m : PTm n) :
     (val_mul hp (pos_of_one_le (fact_pos m)) (pos_of_eq_succ (c := m) (.eqRefl _)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul
+
+export_ipra AnalyticNumberTheory.ValuationMul (p_pos val_congr val_mul val_unique)

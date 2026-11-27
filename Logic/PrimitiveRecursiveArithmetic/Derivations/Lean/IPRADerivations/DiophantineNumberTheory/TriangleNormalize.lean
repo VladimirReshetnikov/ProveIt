@@ -1,5 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.DescentTools
-import IPRADerivations.Core.Header
 
 /-!
 # Normalization of square-area triangles
@@ -14,21 +13,16 @@ equations, `gcd(A, B) = 1`, and `C ≤ c`:
 * if `A = 2A'` then `s² = g² A' B`, and symmetrically, so `g ∣ s` and `A B = 2 S²`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TriangleNormalize
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.Pythagoras (two_pos)
 open LeanProofs.IPRA.DiophantineNumberTheory.DescentTools (sq_dvd_tool leg_parity)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `lem:triangle-normalize`. -/
 theorem triangle_normalize {a b c s : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
@@ -97,9 +91,7 @@ theorem triangle_normalize {a b c s : PTm n} (ha : Γ ⊢[PRAAx] a ≐ succ (pre
       2 * (𝔞 s + 𝔞 (gcd a b) * 𝔞 (quo s (gcd a b))) * w
   have small : Γ ⊢[PRAAx] le (quo c (gcd a b)) c := by
     refine le_of_eq_add (d := pred (gcd a b) * quo c (gcd a b)) ?_
-    have w := natEq eC; have k := natEq hg
-    apply deriveNat; ipra_simps
-    linear_combination w + 𝔞 (quo c (gcd a b)) * k
+    ipra_lc natEq eC + 𝔞 (quo c (gcd a b)) * natEq hg
   exact .andI pA (.andI pB (.andI pC (.andI pS (.andI pyth (.andI area (.andI cop small))))))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.TriangleNormalize

@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiMixedRadix
 import IPRADerivations.DiophantineNumberTheory.MinkowskiMesh
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Runtime-dimensional integer-box point lists
@@ -25,11 +23,10 @@ BoxOK volume/disjoint-box producer remain separate from this integer kernel.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiBoxes
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate
   (entry sequence sequence_length sequence_decode subst_entry subst_sequence)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length entry_congr)

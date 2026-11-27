@@ -1,7 +1,6 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.SumReflect
-import IPRADerivations.Core.Header
 
 /-!
 # Frontier soundness: rank induction over bounded states
@@ -33,11 +32,9 @@ The condition `d(s) > 0` of the packet is not needed. For a finite dependency gr
 (the corollary) the predecessors are the successors and `rank_induction` applies as it stands.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FrontierSoundness
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (fnd NoW all_of_bit bit_of_all)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)} {ρ p A d T : PTm 2}
@@ -300,3 +297,5 @@ theorem frontier_soundness {S x : PTm n}
   rank_induction (loc_of_frontier hT hD hL)
 
 end LeanProofs.IPRA.Foundations.FrontierSoundness
+
+export_ipra Foundations.FrontierSoundness (inst2_rdB le_of_lt_succ' lt_succ_of_le' rdB)

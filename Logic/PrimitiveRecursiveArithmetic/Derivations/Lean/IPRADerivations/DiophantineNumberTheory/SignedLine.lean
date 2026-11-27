@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.ProjectiveNormalize
 import IPRADerivations.DiophantineNumberTheory.GcdNormalize
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Signed primitive representatives on the projective line
@@ -21,19 +19,14 @@ positive).
 * `signed_unique`: two normalized signed pairs with `a d = b c` (as integers) are equal.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SignedLine
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.ProjectiveNormalize (norm_unique)
 open LeanProofs.IPRA.DiophantineNumberTheory.GcdNormalize (gcd_zero_zero)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_one_of_dvd_one)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- The signed integer `(−1)^s m`. -/
 def sv (s m : PTm k) : ZT k := ⟨monus one s * m, s * m⟩

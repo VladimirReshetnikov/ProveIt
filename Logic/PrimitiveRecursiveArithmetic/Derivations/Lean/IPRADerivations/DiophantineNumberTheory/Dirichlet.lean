@@ -1,7 +1,4 @@
 import IPRADerivations.DiophantineNumberTheory.PellModular
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Dirichlet's approximation theorem, sharp rational form
@@ -14,17 +11,10 @@ Pigeonhole (`Core/Pigeonhole`) on `N + 2` points in `N + 1` boxes: the point `k 
 `⌊((ka) mod b)(N+1)/b⌋`, and the extra point `N + 1` (the residue `1`) in box `N`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet
 
-open_ipra
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (one_le_of_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -174,9 +164,7 @@ theorem caseB {a b N I J : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hIJ 
   have eS := eq_add_of_le hIJ
   have q1 : Γ ⊢[PRAAx] le one (monus J I) := by
     refine le_of_eq_add (d := monus J (succ I)) ?_
-    have h₁ := natEq eJ; have h₂ := natEq eS
-    apply deriveNat; ipra_simps
-    linear_combination -h₁ + h₂
+    ipra_lc -natEq eJ + natEq eS
   have q2 : Γ ⊢[PRAAx] le (monus J I) N := le_trans (le_of_eq_add (d := I) (eJ.eqTrans (add_comm _ _))) hJN
   have hQ := quo_mono hb (le_mul_mono (le_of_lt hIJ) (le_refl a))
   have idt := ident eJ (eq_add_of_le hQ) (div_eq (j := I * a) hb) (div_eq (j := J * a) hb)
@@ -189,9 +177,7 @@ theorem caseB {a b N I J : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hIJ 
     have hd : (lt (rem (J * a) b) (rem (I * a) b) :: Γ) ⊢[PRAAx]
         dist (monus J I * a) (monus (quo (J * a) b) (quo (I * a) b) * b) ≐ monus (rem (I * a) b) (rem (J * a) b) := by
       refine dist_l ?_
-      have h₁ := natEq (idt.wk (ψ := lt (rem (J * a) b) (rem (I * a) b))); have h₂ := natEq ed
-      apply deriveNat; ipra_simps
-      linear_combination -h₁ + h₂
+      ipra_lc -natEq (idt.wk (ψ := lt (rem (J * a) b) (rem (I * a) b))) + natEq ed
     have gb := gap_bound ed d₁.wk d₂.wk hbox.wk (eq_add_of_le (rem_lt' hb.wk (rem (I * a) b * succ N)))
     exact le_congr (congrMul (.eqRefl _) hd.eqSymm) (.eqRefl _) (le_of_eq_add gb)
   · -- `x ≤ y`: `ta = pb + (y − x)`.
@@ -199,9 +185,7 @@ theorem caseB {a b N I J : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hIJ 
     have hd : (le (rem (I * a) b) (rem (J * a) b) :: Γ) ⊢[PRAAx]
         dist (monus J I * a) (monus (quo (J * a) b) (quo (I * a) b) * b) ≐ monus (rem (J * a) b) (rem (I * a) b) := by
       refine dist_r ?_
-      have h₁ := natEq (idt.wk (ψ := le (rem (I * a) b) (rem (J * a) b))); have h₂ := natEq ed
-      apply deriveNat; ipra_simps
-      linear_combination h₁ + h₂
+      ipra_lc natEq (idt.wk (ψ := le (rem (I * a) b) (rem (J * a) b))) + natEq ed
     have gb := gap_bound ed d₂.wk d₁.wk hbox.wk.eqSymm (eq_add_of_le (rem_lt' hb.wk (rem (J * a) b * succ N)))
     exact le_congr (congrMul (.eqRefl _) hd.eqSymm) (.eqRefl _) (le_of_eq_add gb)
 
@@ -272,3 +256,5 @@ theorem dirichlet_rational : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3 dirichletF
   closeUniv 3 (dirichlet_at (congrSucc (pred_succ _).eqSymm) (congrSucc (pred_succ _).eqSymm))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.Dirichlet
+
+export_ipra DiophantineNumberTheory.Dirichlet (quo_mono)

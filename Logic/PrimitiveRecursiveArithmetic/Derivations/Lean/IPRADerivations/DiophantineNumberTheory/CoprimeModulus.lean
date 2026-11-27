@@ -1,9 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperyNumbers
 import IPRADerivations.Analysis.RationalArithmetic.Powers.Pochhammer
-import IPRADerivations.Foundations.ChineseRemainder
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # A prescribed coprime modulus
@@ -22,24 +18,16 @@ The chain for the estimate is `(2q)! ≥ q^q ≥ (4R²)^q = 4^q R^{2q} ≥ (q + 
 The transcendence argument that uses this modulus is not formalized.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.CoprimeModulus
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.Analysis.Pochhammer (poch poch_zero poch_succ poch_fact)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyNumbers (four_pow_ge)
-open LeanProofs.IPRA.DiophantineNumberTheory.FLTMultiples (pw_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.LocalFactor (pw_mul_base)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (fact_pos)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (gcd_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `L = 4R² + 4AR + 1`. -/
 abbrev Lm (A R : PTm n) : PTm n := (two * two) * (R * R) + (two * two) * (A * R) + one

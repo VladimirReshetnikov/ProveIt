@@ -24,7 +24,6 @@ open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 open Syn
 open scoped Fm
 open ConciseIPRA.PTm (app zero succ)
-open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

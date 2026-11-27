@@ -1,5 +1,4 @@
 import IPRADerivations.Probability.Ninther
-import IPRADerivations.Core.Header
 
 /-!
 # The least reverse demand along a chain
@@ -26,11 +25,9 @@ a primitive recursion with the maximum `mx a b = a + (b ∸ a)` of `Probability/
 The general acyclic graph, where the maximum ranges over several out-edges, is not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.ReverseDemand
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Ninther (mx mx_le mx_ge)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -138,3 +135,5 @@ theorem least
 end Demand
 
 end LeanProofs.IPRA.Foundations.ReverseDemand
+
+export_ipra Foundations.ReverseDemand (le_mx_left le_mx_right mx_lub)

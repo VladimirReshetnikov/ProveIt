@@ -1,7 +1,4 @@
 import IPRADerivations.Foundations.RuntimePermutationWords
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.SubstCommand
-import IPRADerivations.Core.Header
 
 /-!
 # Appending a numerical mixed-radix word digit
@@ -15,15 +12,12 @@ imports or variable-dimensional host tuples are used.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.RuntimeWordAppend
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 def append (m d w v : PTm n) : PTm n := w+v*pw m d
 ipra_subst append

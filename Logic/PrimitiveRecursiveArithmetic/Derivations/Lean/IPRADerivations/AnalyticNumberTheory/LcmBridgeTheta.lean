@@ -1,9 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinThreePos
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
-import IPRADerivations.AnalyticNumberTheory.RSA
-import IPRADerivations.Geometry.HypercubeSplit
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # `ϑ(m²) ≥ m²/4` on the logarithm names (`lcm_bridge.tex`, rough Chebyshev lemma)
@@ -23,23 +19,17 @@ packet's interval `LogI` (`RobinLogInterval`) at `q = ∏_{p≤P} p = prim P` (`
 All statements are cleared cross-multiplications of natural-number terms.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeTheta
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval (eb eb_spec loN loD lo_nest loD_pos dt st)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGammaInterval (k2)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinThreePos (lo_k2)
 open LeanProofs.IPRA.AnalyticNumberTheory.PrimorialLower (prim prim_pos primorial_lower)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem two_pos : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc (pred_succ _).eqSymm
 
@@ -91,10 +81,10 @@ theorem theta_lower {m t K : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (ht
   have q2 : Γ ⊢[PRAAx] le (succ (m * m)) (pw two (succ (t + t))) := by
     have eP := natEq hP
     have a : Γ ⊢[PRAAx] le (succ (m * m)) (two * (m * m)) :=
-      le_of_eq_add (d := pred (m * m)) (by apply deriveNat; ipra_simps; linear_combination eP)
+      le_of_eq_add (d := pred (m * m)) (by ipra_lc eP)
     have b : Γ ⊢[PRAAx] le (two * (m * m)) (two * (pw two t * pw two t)) := le_mul_mono (le_refl two) (le_mul_mono ht ht)
     have c : Γ ⊢[PRAAx] two * (pw two t * pw two t) ≐ pw two (succ (t + t)) := by
-      ipra_lc -natEq (pw_succ (Γ := Γ) two (t + t)) - 2 * natEq (pw_add (Γ := Γ) two t t)
+      ipra_lc -natEq (pw_succ two (t + t)) - 2 * natEq (pw_add two t t)
     exact le_trans a (le_congr (.eqRefl _) c b)
   -- `(P + 1) P^m ≤ 2^F`, `F = 2t + 1 + 2tm`
   have q3 : Γ ⊢[PRAAx] le (succ (m * m) * pw (m * m) m) (pw two (succ (t + t) + (t + t) * m)) :=

@@ -1,6 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.SmoothTruncated
 import IPRADerivations.AnalyticNumberTheory.TotientSumStep
-import IPRADerivations.Core.Header
 
 /-!
 # The prime step of the comparison `H ≤ G`
@@ -25,23 +24,16 @@ by `SmoothTruncated.trunc_step_succ`, `TotientSumStep.G_split` (at `t` and at `�
 recursion on the range; the induction over the range and over the primes is carried out separately.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.DenominatorPrimeStep
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerDomination (Sm)
-open LeanProofs.IPRA.AnalyticNumberTheory.DivisorHyperbola (quo_le_self)
 open LeanProofs.IPRA.AnalyticNumberTheory.SmoothTruncated (trunc_step_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientSumStep (Gs Ws G_split W_scale Ws_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- Cancel a factor `p ≥ 1` in an inequality. -/
 theorem le_of_mul_le {p X Y : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p))

@@ -1,9 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.GaussProduct
 import IPRADerivations.DiophantineNumberTheory.WilsonProduct
-import IPRADerivations.DiophantineNumberTheory.ResidueFacts
-import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # Euler's criterion and Gauss's lemma
@@ -28,23 +24,16 @@ The identification of `1 − rb` with the sign bit `signBit p a` of `QuadraticRe
 Eisenstein's lemma and the reciprocity law, are not derived in this module.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
-open LeanProofs.IPRA.AnalyticNumberTheory.Order (pw_rem_congr)
 open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (cop_of_sol)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one)
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_mul_congr2)
 open LeanProofs.IPRA.DiophantineNumberTheory.EisensteinParity (eB)
 open LeanProofs.IPRA.DiophantineNumberTheory.GaussProduct (gauss_unit)
 open LeanProofs.IPRA.DiophantineNumberTheory.PairProduct (sqB sq_search_witness euler_nonresidue)
-open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (wilson pred_lt)
+open LeanProofs.IPRA.DiophantineNumberTheory.WilsonProduct (wilson)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (neg_pow residue_pow)
 open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases one_ne_zero)
 
@@ -132,3 +121,5 @@ theorem gauss_lemma {p a : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[PR
     exact goal0.eqTrans ((congrMonus (.eqRefl _) hr).eqTrans (monus_self _)).eqSymm
 
 end LeanProofs.IPRA.DiophantineNumberTheory.GaussLemma
+
+export_ipra DiophantineNumberTheory.GaussLemma (pred_ne_one)

@@ -6,7 +6,7 @@ import IPRADerivations.Core.Header
 /- Actual derivations in the object theory. Row shapes are fixed by the proof
 generator. All entries and the error may be arbitrary open object terms. -/
 namespace LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -134,3 +134,5 @@ theorem diagonal_exact (r : Row (PTm n)) (z : PTm n)
 
 end Row
 end LeanProofs.IPRA.Foundations.FiniteObservations.MetricKernel
+
+export_ipra Foundations.FiniteObservations.MetricKernel (meet meet_le_left meet_le_right meet_left meet_right)

@@ -1,6 +1,4 @@
 import IPRADerivations.Foundations.FiniteGluing
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # Rank and select for a decidable finite subset (`ipra_categorical_methods`, finite limits)
@@ -39,21 +37,14 @@ Not derived: limits of general finite diagrams (mixed-radix tuples), pullbacks a
 statement, finite colimits by bounded equivalence closure.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.FilteredEnumeration
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.BoundedReflection
   (sgB inst2_sgB exB wit ex_intro ex_elim ex_least sg_cases one_ne_zero)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_zero)
-open LeanProofs.IPRA.Foundations.FiniteGluing (sg_of_ne)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (eq_of_eqb_ne)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 section Rank
 
@@ -283,3 +274,5 @@ theorem equalizer_unique {P v c p : PTm k} (hv : Γ ⊢[PRAAx] lt v (rank (eqK f
 end Equalizer
 
 end LeanProofs.IPRA.Foundations.FilteredEnumeration
+
+export_ipra Foundations.FilteredEnumeration (rank_lt_size rank_mono sel_rank sel_spec)

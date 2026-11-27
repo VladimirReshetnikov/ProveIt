@@ -1,4 +1,3 @@
-import IPRADerivations.Core.Powers
 import IPRADerivations.Core.Parity
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Header
@@ -17,11 +16,9 @@ Packet: `analytic-number-theory/brun_ipra_2026-11-15`, `sections/05_convergence.
 The sieve weights, the dyadic counting theorem and the reciprocal tail are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BrunElementary
 
-open_ipra
+open_ipra exports
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

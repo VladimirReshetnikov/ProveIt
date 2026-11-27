@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.Siegel
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The integral points of `y² = x^{2m} + x + 1`, completed
@@ -21,11 +19,9 @@ give the same `u² = y²`):
   `1 + 1 = 1 + 1`, uniformly in `m`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily (s_eq_one one_pw zero_pw congrPwBase)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
@@ -66,11 +62,11 @@ theorem neg_points {u t m' : PTm k}
 /-- `(0, ±1)`: `1 = (0^{m'+1})² + 0 + 1`. -/
 theorem point_zero (m' : PTm k) :
     Γ ⊢[PRAAx] one * one ≐ pw zero (succ m') * pw zero (succ m') + zero + one := by
-  ipra_lc (-Groth.ι (Q.mk Γ (pw zero (succ m')))) * natEq (zero_pw (Γ := Γ) m')
+  ipra_lc (-Groth.ι (Q.mk Γ (pw zero (succ m')))) * natEq (zero_pw m')
 
 /-- `(−1, ±1)`: `1 + 1 = (1^{m'+1})² + 1`. -/
 theorem point_neg_one (m' : PTm k) :
     Γ ⊢[PRAAx] one * one + one ≐ pw one (succ m') * pw one (succ m') + one := by
-  ipra_lc (-Groth.ι (Q.mk Γ (pw one (succ m'))) - 1) * natEq (one_pw (Γ := Γ) (succ m'))
+  ipra_lc (-Groth.ι (Q.mk Γ (pw one (succ m'))) - 1) * natEq (one_pw (succ m'))
 
 end LeanProofs.IPRA.DiophantineNumberTheory.SiegelPoints

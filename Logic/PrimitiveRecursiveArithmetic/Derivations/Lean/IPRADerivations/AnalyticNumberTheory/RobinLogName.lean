@@ -1,8 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.RobinGamma
-import IPRADerivations.AnalyticNumberTheory.LocalFactor
-import IPRADerivations.AnalyticNumberTheory.Order
 import IPRADerivations.AnalyticNumberTheory.SigmaPrimePower
-import IPRADerivations.Core.Header
 
 /-!
 # Nested logarithm names (`robin_ipra_research_2026-11-19`, `eq:logtail`)
@@ -22,22 +19,15 @@ For a rational `z = p/s` with `s² = W + p²` (`W ≥ 1`), with cleared denomina
   `log((1+z)/(1−z))` with the explicit width `2z^{2K+1}/((2K+1)(1−z²))`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lf Lv L_zero L_succ Pv P_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
-open LeanProofs.IPRA.AnalyticNumberTheory.SigmaPrimePower (pos_pw)
-open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The numerators -/
 
@@ -291,7 +281,6 @@ theorem low_mono {p s p' s' : PTm n} (hz : Γ ⊢[PRAAx] le (p * s') (p' * s)) (
     · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
         ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
       have a := natEq (Nz_zero (Γ := Γ) p s)
-      have b := natEq (Nz_zero (Γ := Γ) p' s')
       ipra_le 𝔞 (Nz zero p' s' * Pv zero s) with -(𝔞 (Pv zero s')) * a
     · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, ConciseIPRA.PTm.subst_succ,
         ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
@@ -323,3 +312,5 @@ theorem uniform_tail {K p s W : PTm n} (hW : Γ ⊢[PRAAx] s * s ≐ W + p * p) 
   ipra_le sl m
 
 end LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName
+
+export_ipra AnalyticNumberTheory.RobinLogName (Dz_pos Nz_succ Nz_zero Ud_pos frac_trans)

@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.KroneckerBinomialTail
 import IPRADerivations.Probability.BinomialLaw
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # `C(r, k) ≥ (r/k)^k` and the full binomial kernel estimate
@@ -19,11 +17,9 @@ Packet: `diophantine-number-theory/dirichlet_kronecker_ipra`, Theorem `thm:krone
   `(1 − δ)^r ≤ (k/(rδ))^k` for `δ = 1/T` (with `KroneckerBinomialTail.binom_tail`).
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.KroneckerBinomialLower
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.BinomialLaw (absorption)
 open LeanProofs.IPRA.Combinatorics.Binomial (binom)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (binom_zero')

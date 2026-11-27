@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BooleanizationCorollaries
-import IPRADerivations.Core.Header
 
 /-!
 # Arity-indexed bounded syntax and its checked Boolean compiler
@@ -18,11 +17,10 @@ quantifier-free fold/search proofs for bounded quantifiers.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.Foundations.BoundedSyntax
 
-open_ipra
+open_ipra exports
 
 /-- Bounded formulas with their actual free-variable arity. -/
 inductive BFm : ℕ → Type
@@ -322,3 +320,4 @@ theorem boolean_program_closed (A : BFm n) :
 #print axioms boolean_program_closed
 
 end LeanProofs.IPRA.Foundations.BoundedSyntax
+

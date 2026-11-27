@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.GuardedLoop
 import IPRADerivations.Foundations.BoundedFormulas
-import IPRADerivations.Core.Header
 
 /-! Imported from the packet `foundations/ipra_coupled_refinement_2026-11-19`, `lean/ObjectAdapter.lean`: the namespace is placed under `LeanProofs.IPRA.Foundations` and the `#print axioms` lines are dropped (the library audits axioms in `Checks/Axioms.lean`). -/
 
@@ -20,7 +19,7 @@ cannot be inserted into those fields.
 
 namespace LeanProofs.IPRA.Foundations.CoupledObjectAdapter
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.ClockedDescent (Pat)
 open LeanProofs.IPRA.Foundations.TraceReflection
 open LeanProofs.IPRA.Foundations.GuardedLoop

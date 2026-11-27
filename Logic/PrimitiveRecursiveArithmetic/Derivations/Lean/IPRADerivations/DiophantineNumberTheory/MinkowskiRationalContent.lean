@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.MinkowskiRationalBoxes
 import IPRADerivations.DiophantineNumberTheory.MinkowskiContentSum
-import IPRADerivations.Core.Header
 
 /-!
 # Original rational box content and the actual integer cell count
@@ -17,11 +16,10 @@ the inputs needed for a separate rational-content accumulator theorem.
 -/
 
 set_option autoImplicit false
-set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalContent
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
 open LeanProofs.IPRA.DiophantineNumberTheory.MinkowskiRationalBoxes

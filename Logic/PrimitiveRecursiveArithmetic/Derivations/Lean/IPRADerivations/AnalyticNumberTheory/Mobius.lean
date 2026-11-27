@@ -1,15 +1,4 @@
-import IPRADerivations.AnalyticNumberTheory.ValuationMul
-import IPRADerivations.AnalyticNumberTheory.GcdFiber
-import IPRADerivations.Core.Fubini
-import IPRADerivations.AnalyticNumberTheory.Fermat
-import IPRADerivations.AnalyticNumberTheory.EulerProduct
-import IPRADerivations.Probability.Expectation
 import IPRADerivations.AnalyticNumberTheory.FactorVector
-import IPRADerivations.AnalyticNumberTheory.SumPhi
-import IPRADerivations.Core.SumSplit
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.Header
 
 /-!
 # The Möbius function and Möbius cancellation
@@ -39,33 +28,18 @@ The divisor sums `∑_{d ∣ m} μ^±(d)` are `∑_{d ≤ m} [d ≥ 1][d ∣ m] 
 * `mobius_one`: `∑_{d ∣ 1} μ⁺(d) = 1`, `∑_{d ∣ 1} μ⁻(d) = 0`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.Mobius
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 isP_of_prime prime_of_isP eq_of_eqb_ne)
 open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (val_unique val_mul not_dvd_one p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
-open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (eqb_comm')
 open LeanProofs.IPRA.Probability.Expectation (mul_one')
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (zero_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (lpf_prime' lpf_dvd')
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf eq_succ_pred)
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (quo_eq)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (eq_of_dvd' dvd_of_eq' gauss)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (pos_mul')
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## Definitions -/
 
@@ -252,7 +226,7 @@ theorem om_mul {N a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hpN : Γ ⊢[PRAAx]
     exact congrInst2 omB (.eqRefl _) (snd_pair _ _)
   have c₄ : Γ ⊢[PRAAx] ap2 (sumF (dB (one : PTm 2))) N (pairT p a) ≐ one :=
     (sum_delta (one : PTm 2) hpN).eqTrans (by rw [one_inst]; exact .eqRefl _)
-  ipra_lc natEq c₁ + natEq (sum_add (Γ := Γ) (lB omB) (dB (one : PTm 2)) N (pairT p a)) + natEq c₃ + natEq c₄
+  ipra_lc natEq c₁ + natEq (sum_add (lB omB) (dB (one : PTm 2)) N (pairT p a)) + natEq c₃ + natEq c₄
 
 /-- `s_N(a p) = s_N(a)` for a prime `p` with `p ∤ a`. -/
 theorem sq_mul {N a p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (ha : Γ ⊢[PRAAx] a ≐ succ (pred a))
@@ -464,7 +438,7 @@ theorem tail_pt {d : PTm n} (hM : Γ ⊢[PRAAx] le two M) (h : Γ ⊢[PRAAx] lt 
   rw [inst2_PB, inst2_NB]
   have w := natEq (eq_add_of_le h)
   have hd : Γ ⊢[PRAAx] d ≐ succ (pred d) :=
-    eq_succ_pred (y := M + monus d (succ M)) (by apply deriveNat; ipra_simps; linear_combination w)
+    eq_succ_pred (y := M + monus d (succ M)) (by ipra_lc w)
   have r : Γ ⊢[PRAAx] rem M d ≐ M := rem_eq' hd (q := zero) (by ipra_ring) h
   have hM1 := pos_of_two hM
   have z : Γ ⊢[PRAAx] eqb (rem M d) zero ≐ zero :=
@@ -494,8 +468,7 @@ theorem split_reindex (F G : PTm 2) {M : PTm n} (hM : Γ ⊢[PRAAx] le two M)
     rw [inst2_addBody, inst2_mulB, inst2_mulB, inst2_cp, inst2_pd]
     have e := natEq (eqb_split (Γ := lt (var 0) (Syn.shift (succ M)) :: Γ.map Fm.shift)
       (rem (var 0) (lpf (Syn.shift M))) zero)
-    apply deriveNat; ipra_simps
-    linear_combination (-𝔞 (inst2 F (var 0) (Syn.shift M))) * e
+    ipra_lc (-𝔞 (inst2 F (var 0) (Syn.shift M))) * e
   -- extend the multiple part to `(succ M + pred (lpf M) * M) = (M + 1) + (p − 1) M`
   have ex : Γ ⊢[PRAAx] ap2 (sumF (pdB * F)) (succ M + pred (lpf M) * M) M ≐ ap2 (sumF (pdB * F)) (succ M) M := by
     refine (sum_split (pdB * F) (succ M) (pred (lpf M) * M) M).eqTrans ((congrAdd (.eqRefl _) ?_).eqTrans (add_zero _))
@@ -530,13 +503,12 @@ theorem split_reindex (F G : PTm 2) {M : PTm n} (hM : Γ ⊢[PRAAx] le two M)
   have r₂ := GcdFiber.reindex (mB F) (K := (succ M + pred (lpf M) * M)) (x := M) hp1
   have bq : Γ ⊢[PRAAx] quo ((succ M + pred (lpf M) * M) + pred (lpf M)) (lpf M) ≐ succ M :=
     quo_eq hp1 (r := zero) (by
-      have e := natEq hp1
-      apply deriveNat; ipra_simps; linear_combination -(𝔞 M + 1) * e) (zero_lt' hp1)
+      ipra_lc -(𝔞 M + 1) * natEq hp1) (zero_lt' hp1)
   have r₃ : Γ ⊢[PRAAx] ap2 (sumF (mB F)) (succ M) M ≐ ap2 (sumF (cpB * G)) (succ M) M := by
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_mB, inst2_mulB]
     exact hH _ hM'.wk
-  ipra_lc natEq sp + natEq (sum_add (Γ := Γ) (cpB * F) (pdB * F) (succ M) M) - natEq ex + natEq r₁ + natEq r₂ +
+  ipra_lc natEq sp + natEq (sum_add (cpB * F) (pdB * F) (succ M) M) - natEq ex + natEq r₁ + natEq r₂ +
     natEq (congrAp2 (sumF (mB F)) bq (.eqRefl M)) + natEq r₃
 
 /-- `lem:mobius-cancel` for `m ≥ 2`: `∑_{d ∣ m} μ⁺(d) = ∑_{d ∣ m} μ⁻(d)`, i.e. `∑_{d ∣ m} μ(d) = 0`. -/
@@ -597,3 +569,5 @@ theorem mobius_one :
     exact (congrAdd p0 ((congrMul dv1 mn).eqTrans (by ipra_ring))).eqTrans (add_zero _)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.Mobius
+
+export_ipra AnalyticNumberTheory.Mobius (congrIsP congrSg congrVal inst2_mulB isP_zero muN one_inst zero_mul_l)

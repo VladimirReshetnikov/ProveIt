@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.ZetaErrorBudget
-import IPRADerivations.Core.Header
 
 /-!
 # The precision schedules of the zeta finite contract (`zeta_functional_equation_ipra`)
@@ -25,7 +24,7 @@ Lipschitz factors (`e ≤ 4`) are not derived here.
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.ZetaPrecision
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.Products (fact)
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaFiniteContract (clog clog_spec le_pow_self sq_le_pow)
 open LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget (pow_absorb Tp Dp qp rp)
@@ -33,8 +32,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.ZetaErrorBudget (pow_absorb Tp Dp qp r
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- "The first error is at most `2^(−p−7)`": `2 B! 2^{p+7} ≤ 2^{2T}`. -/
 theorem err_tail_sharp (p B : PTm n) :

@@ -1,7 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.PrimesModFour
-import IPRADerivations.AnalyticNumberTheory.PowerResidue
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # Primes `q ≡ 3 (mod 4)` and sums of two squares
@@ -21,29 +18,17 @@ The class `3` modulo `4` enters as the two parities "`q` odd" and "`⌊q/2⌋` o
 * **`two_obstruction`**: `q ∣ x` and `q ∣ y`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresObstruction
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (rem_small)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerResidue (inv inv_spec)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm)
 open LeanProofs.IPRA.Combinatorics.IndependentSets (half_double_succ)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (gcd_comm_one dvd_sub' dvd_mul')
-open LeanProofs.IPRA.DiophantineNumberTheory.ModularCertificate (rem_add_mul rem_add_congr rem_mul_congr2)
-open LeanProofs.IPRA.DiophantineNumberTheory.ThueGrid (rem_cancel)
-open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticReciprocityGoal (signBit)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuadraticSupplements (minus_one_law no_root_of_sign)
 open LeanProofs.IPRA.DiophantineNumberTheory.FermatTwoSquares (four_pos)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The class `3` modulo `4` -/
 

@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SievePairCount
-import IPRADerivations.Core.Header
 
 /-!
 # The pair count bounds with their side conditions as indicator factors
@@ -21,15 +20,10 @@ conditions are carried by the 0/1 factor
 with `K = SieveCount.cnt X q (lc d e) a`. Where an indicator vanishes both sides are zero.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SievePairBound
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero)
-open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l)
-open LeanProofs.IPRA.AnalyticNumberTheory.ConvolutionAssoc (sg_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveCount (cnt)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount (lc pair_le pair_ge)
 

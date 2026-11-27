@@ -1,7 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.DivisorExchange
 import IPRADerivations.AnalyticNumberTheory.SymmetryInstances
-import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.Header
 
 /-!
 # Numbers without small divisors: a weighted divisor sum collapses to its first term
@@ -20,11 +18,9 @@ Here the condition is "no `d` with `2 ≤ d < Z` divides `m`" (in particular eve
 The sieve weights `λ_d = d · …` vanish at `d = 0`, so their divisor sums at such `m` are `λ_1`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveRough
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_succ)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrSg zero_mul_l congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange (dvB dvB_at)
@@ -115,3 +111,5 @@ theorem rough_sum (u : PTm 2) (hz : ∀ {k : ℕ} {Δ : List (Fm PTm k)} (y : PT
   exact c.eqTrans (sum_delta u hZ)
 
 end LeanProofs.IPRA.AnalyticNumberTheory.SieveRough
+
+export_ipra AnalyticNumberTheory.SieveRough (rgh)

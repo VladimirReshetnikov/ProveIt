@@ -17,11 +17,9 @@ import IPRADerivations.Core.Header
   `m`-th powers differ by at least `a^{m−1}`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.Siegel
 
-open_ipra
+open_ipra exports
 
 /-! ## The squeeze -/
 

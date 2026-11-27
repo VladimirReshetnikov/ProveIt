@@ -1,5 +1,4 @@
 import IPRADerivations.Foundations.BoundedReflection
-import IPRADerivations.Core.Header
 
 /-!
 # A compiler from bounded formulas to bits
@@ -29,11 +28,9 @@ formula is used):
 `bitAt_subst` and `fmAt_subst` say that both interpretations commute with substitution.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BoundedFormulas
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Foundations.BoundedReflection
 
@@ -301,3 +298,5 @@ theorem bf_least (b : PTm 1) (A : BF) (y j : PTm m) (hj : Δ ⊢[PRAAx] lt j (bf
 end Theorems
 
 end LeanProofs.IPRA.Foundations.BoundedFormulas
+
+export_ipra Foundations.BoundedFormulas (not_of_one not_of_zero sg_of_pos sg_of_zero)

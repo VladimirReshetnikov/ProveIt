@@ -1,9 +1,6 @@
 import IPRADerivations.AnalyticNumberTheory.PrimorialLower
 import IPRADerivations.AnalyticNumberTheory.SymmetryPointwise
-import IPRADerivations.Geometry.HypercubeSplit
 import IPRADerivations.Analysis.FiniteOperations.FiniteProducts.WeierstrassProduct
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The prime-power reciprocal loss of the lcm bridge: `Σ_{p≤m²} p^{−a_p−1} ≤ 2/m`
@@ -33,18 +30,12 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeLoss
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val isP isP_01 prime_of_isP pw_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcm_valuation)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Geometry.HypercubeSplit (le_cancel_pos)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The terms -/
 
@@ -121,7 +112,7 @@ theorem phase1 (N P : PTm n) : Γ ⊢[PRAAx] le (P * U N P) (N * LD P) := by
     · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
         ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       refine le_of_eq_add (d := zero) ?_
-      ipra_lc (-(𝔞 P)) * natEq (sum_zero (Γ := Γ) uB P)
+      ipra_lc (-(𝔞 P)) * natEq (sum_zero uB P)
     · simp only [subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
         ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
       let D : List (Fm PTm (n + 1)) :=
@@ -204,8 +195,7 @@ theorem loss_sum {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
     Γ ⊢[PRAAx] le (m * U (succ (m * m)) (m * m)) (two * LD (m * m)) := by
   have hP := Combinatorics.Binomial.pos_mul hm hm
   have hmP : Γ ⊢[PRAAx] le m (m * m) := by
-    have e := natEq hm
-    exact le_of_eq_add (d := m * pred m) (by apply deriveNat; ipra_simps; linear_combination 𝔞 m * e)
+    exact le_of_eq_add (d := m * pred m) (by ipra_lc 𝔞 m * natEq hm)
   have j := Prf.impE (Prf.impE (phase2 (P := m * m) hm (m * m)) hmP) (le_refl _)
   refine le_cancel_pos (Combinatorics.Binomial.pos_mul hP hP) (le_of_eq_add
     (d := monus ((m * m) * (m * m) * LD (m * m) + m * (m * m) * succ m * LD (m * m))
@@ -251,6 +241,6 @@ theorem prod_lower {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
       LD (m * m) * ap2 (prodF cB) (succ (m * m)) (m * m)) (pw (LD (m * m)) (succ (succ (m * m)))) +
     pw (LD (m * m)) (succ (m * m)) * monus (two * LD (m * m)) (m * U (succ (m * m)) (m * m))) ?_)
   ipra_lc 𝔞 m * natEq (eq_add_of_le W) + 𝔞 (pw (LD (m * m)) (succ (m * m))) * natEq (eq_add_of_le L) +
-    𝔞 m * natEq (pw_succ (Γ := Γ) (LD (m * m)) (succ (m * m)))
+    𝔞 m * natEq (pw_succ (LD (m * m)) (succ (m * m)))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.LcmBridgeLoss

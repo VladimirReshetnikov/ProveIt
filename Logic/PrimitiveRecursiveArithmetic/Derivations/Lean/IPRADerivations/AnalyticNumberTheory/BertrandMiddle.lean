@@ -1,9 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.BinomialLcm
-import IPRADerivations.AnalyticNumberTheory.MobiusBounds
-import IPRADerivations.AnalyticNumberTheory.PowerCleared
 import IPRADerivations.DiophantineNumberTheory.ResidueFacts
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Bertrand's postulate: the primes of the middle third do not occur
@@ -18,26 +14,19 @@ vanishes and there is no other, so `p ∤ C(2n, n)`.
   for the central coefficient (`BinomialLcm.binom_val`) with `⌊k/q⌋ = 1` and `⌊2k/q⌋ = 2`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.BertrandMiddle
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (val pw_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.BinomialLcm (binom_val)
 open LeanProofs.IPRA.AnalyticNumberTheory.MobiusBounds (sum_ext)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two)
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PowerCleared (pw_le_exp)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (qB' qB'_at quo_small dmu)
 open LeanProofs.IPRA.Combinatorics.LegendreFact (shift_le_two)
 open LeanProofs.IPRA.Combinatorics.Catalan (cb)
 open LeanProofs.IPRA.DiophantineNumberTheory.ResidueFacts (pw_two)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `Σ_{j<M} ⌊m/q^{j+1}⌋ = ⌊m/q⌋` for `m < q²`, `M ≥ 1`. -/
 theorem sum_first {q m M : PTm n} (hq2 : Γ ⊢[PRAAx] le two q) (hM : Γ ⊢[PRAAx] le one M)
@@ -71,7 +60,7 @@ theorem val_middle {q k : PTm n} (hq : Γ ⊢[PRAAx] prime q) (h1 : Γ ⊢[PRAAx
   have S1 := sum_first hq2 hM (lt_of_le_of_lt hkk h3)
   have S2 := sum_first hq2 hM h3
   have r1 : Γ ⊢[PRAAx] lt (monus k q) q := by ipra_le sl h2 + sl h1 with e1
-  have z1 : Γ ⊢[PRAAx] k ≐ q * one + monus k q := by apply deriveNat; ipra_simps; linear_combination e1
+  have z1 : Γ ⊢[PRAAx] k ≐ q * one + monus k q := by ipra_lc e1
   have Q1 := Prf.andE₁ (dmu qpos z1 r1)
   have r2 : Γ ⊢[PRAAx] lt (two * monus k q) q := by ipra_le sl h2 with 2 * e1
   have z2 : Γ ⊢[PRAAx] two * k ≐ q * two + two * monus k q := by

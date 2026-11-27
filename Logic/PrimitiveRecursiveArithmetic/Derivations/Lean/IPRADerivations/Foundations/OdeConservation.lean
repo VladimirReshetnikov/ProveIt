@@ -2,8 +2,6 @@ import IPRADerivations.Foundations.TelescopingNames
 import IPRADerivations.Foundations.AuxiliaryEnvelope
 import IPRADerivations.Analysis.Names.Rates.ErrorBudgets
 import IPRADerivations.Probability.Histogram
-import IPRADerivations.Core.OrderCertificates
-import IPRADerivations.Core.Header
 
 /-!
 # The drift of a conserved quantity along Euler polygons
@@ -28,16 +26,13 @@ The remainder estimate `eq:ode-polyremainder` that bounds one step is `Analysis/
 variable; the multivariate expansion and the represented-flow limit are not derived.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.OdeConservation
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.Variance (ad)
 open LeanProofs.IPRA.Probability.Histogram (ad_self)
 open LeanProofs.IPRA.Analysis.ErrorBudgets (ad_tri)
 open LeanProofs.IPRA.Foundations.TelescopingNames (telescope)
-open LeanProofs.IPRA.Foundations.AuxiliaryEnvelope (sum_le_const)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 

@@ -1,8 +1,5 @@
 import IPRADerivations.Foundations.BisectionInvariant
-import IPRADerivations.Core.Powers
 import IPRADerivations.AnalyticNumberTheory.Valuation
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # The bisection bracket of the cubic `y³ + y = x`
@@ -32,14 +29,11 @@ the root are not derived here; strict monotonicity and stability of the root are
 `Foundations/StableCubicRoot`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.CubicBisection
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Foundations.TraceReflection (Run I3 run_succ)
 open LeanProofs.IPRA.Foundations.BisectionInvariant (cAt bStep BInv bisection_at I3_congr₁ bis_nested)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (lt_pw)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 

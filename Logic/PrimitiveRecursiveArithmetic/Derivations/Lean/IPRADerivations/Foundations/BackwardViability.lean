@@ -1,6 +1,5 @@
 import IPRADerivations.Foundations.FiniteSetExponential
 import IPRADerivations.Foundations.FiniteGluing
-import IPRADerivations.Core.Header
 
 /-!
 # Backward viability (`ipra_evidence_framework`, "PR backward viability")
@@ -39,17 +38,14 @@ along all levels, the statement for candidates at or above the bound, and the re
 theorem of the packet.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BackwardViability
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Probability.ProductPower (dg)
 open LeanProofs.IPRA.Foundations.FiniteSetExponential (code ev_curry rem_of_lt dg_lt)
 open LeanProofs.IPRA.Foundations.BoundedReflection
   (exB wit ex_intro ex_elim ex_cases sg_cases one_ne_zero)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_zero)
 open LeanProofs.IPRA.Foundations.FiniteGluing (one_of_ne sg_of_ne)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}

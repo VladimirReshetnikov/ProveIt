@@ -1,7 +1,5 @@
 import IPRADerivations.Foundations.FilteredEnumeration
-import IPRADerivations.Core.Division
 import IPRADerivations.Probability.UnionUtility
-import IPRADerivations.Core.Header
 
 /-!
 # The complete duplicate-free list of the solutions below a height bound
@@ -35,14 +33,11 @@ The converse conversion, direction (ii) ⇒ (i) of `thm:height-list` ("List-to-h
 For a complete list the premise holds for every solution, so `H` dominates the height of every solution.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.BoundedEnumeration
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Signum (sg)
 open LeanProofs.IPRA.Foundations.FilteredEnumeration (rank sel sel_spec sel_rank rank_lt_size rank_mono)
-open LeanProofs.IPRA.Foundations.BoundedFormulas (sg_of_pos sg_of_zero not_of_zero not_of_one)
 open LeanProofs.IPRA.Probability.UnionUtility (Mx mx_upper)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -1,8 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.TotientCorollaries
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.CommonLemmas
-import IPRADerivations.Core.InductionTactic
-import IPRADerivations.Core.Header
 
 /-!
 # The elementary lower bound `2 φ(n)² ≥ n`
@@ -19,15 +15,11 @@ set_option linter.unusedSimpArgs false
 
 namespace LeanProofs.IPRA.AnalyticNumberTheory.PhiLower
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
-open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
 open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody coprime_pow totient_prime_power_at)
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf lpf_dvd lpf_prime prime eq_succ_pred)
-open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow (eq_one_of_lt_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation
 open LeanProofs.IPRA.AnalyticNumberTheory.Radical (val_pos cof_lt)
 
@@ -89,7 +81,7 @@ theorem prime_two : Γ ⊢[PRAAx] prime (two : PTm n) := by
 theorem phi_ppow {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (k : PTm n) :
     Γ ⊢[PRAAx] phi (pw p (succ k)) ≐ pw p k * monus p one := by
   have hp2 : Γ ⊢[PRAAx] le two p := by have h := hp; unfold prime at h; exact Prf.andE₁ h
-  ipra_lc natEq (totient_prime_power_at (k := k) hp) + natEq (pw_succ (Γ := Γ) p k) +
+  ipra_lc natEq (totient_prime_power_at (k := k) hp) + natEq (pw_succ p k) +
     Groth.ι (Q.mk _ (pw p k)) * natEq (eq_add_of_le (le_trans (le_succ_self one) hp2))
 
 /-- `φ(p^{k+1})² ≥ p^{k+1}` for an odd prime `p`. -/
@@ -260,3 +252,5 @@ theorem phi_sq_odd_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1 phiSqOddFor
   closeUniv 1 (.impI (phi_sq_odd Prf.hyp0))
 
 end LeanProofs.IPRA.AnalyticNumberTheory.PhiLower
+
+export_ipra AnalyticNumberTheory.PhiLower (le_mul_mono)

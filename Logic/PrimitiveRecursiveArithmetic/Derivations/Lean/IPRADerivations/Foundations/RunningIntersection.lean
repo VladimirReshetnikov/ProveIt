@@ -1,9 +1,6 @@
-import IPRADerivations.Probability.UnionUtility
-import IPRADerivations.Probability.FiniteLaws
 import IPRADerivations.Foundations.ApproximateWitness
 import IPRADerivations.Foundations.ModulusNormalization
 import IPRADerivations.Foundations.FrontierSoundness
-import IPRADerivations.Core.Header
 
 /-!
 # Running intersections of rational intervals
@@ -32,14 +29,11 @@ For endpoint bodies `L(i, x)`, `U(i, x)` (numerators over a common denominator):
 The maximum and the minimum are attained (argmax, argmin), so no case analysis on the samples is needed.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.Foundations.RunningIntersection
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Probability.UnionUtility (Mx Ag mx_upper ag_attains)
 open LeanProofs.IPRA.Probability.FiniteLaws (Mn mn_le)
-open LeanProofs.IPRA.Foundations.ApproximateWitness (argmin argmin_spec)
 open LeanProofs.IPRA.Foundations.ModulusNormalization (mx_mono)
 open LeanProofs.IPRA.Foundations.FrontierSoundness (up_shift le_of_lt_succ' lt_succ_of_le')
 

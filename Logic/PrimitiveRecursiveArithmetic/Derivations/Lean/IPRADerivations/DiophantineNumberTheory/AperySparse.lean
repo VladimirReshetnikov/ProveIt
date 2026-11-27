@@ -1,6 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.AperyLcmCount
 import IPRADerivations.AnalyticNumberTheory.ChebyshevBounds
-import IPRADerivations.Core.Header
 
 /-!
 # The sparse lcm bound of the Apéry packet
@@ -17,26 +16,18 @@ on `k`. The induction formula is itself quantifier-free."
 * `sparse`: `d_{42^k}^3 ≤ 28^{42^k}`, by quantifier-free induction on `k`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.AperySparse
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultibound (Aval cube_lt mul_pw)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyMultinomial (Mm multibound)
 open LeanProofs.IPRA.DiophantineNumberTheory.AperyLcmCount (lcm_div Mm_pos)
-open LeanProofs.IPRA.DiophantineNumberTheory.SuperellipticFamily (one_pw)
-open LeanProofs.IPRA.DiophantineNumberTheory.Coprime (dvd_le')
-open LeanProofs.IPRA.AnalyticNumberTheory.RSA (pw_mul)
 open LeanProofs.IPRA.AnalyticNumberTheory.LcmUpto (lcmu lcmuF lcmu_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (lcmu_one)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialTheorem (congrPw)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- `d_{42m} ≤ d_m A^m`. -/
 theorem lcm_step (m : PTm k) : Γ ⊢[PRAAx] le (lcmu (num 42 * m)) (lcmu m * pw (num Aval) m) := by

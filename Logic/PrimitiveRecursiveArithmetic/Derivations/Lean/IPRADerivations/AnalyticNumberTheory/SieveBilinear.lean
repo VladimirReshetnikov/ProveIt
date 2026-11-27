@@ -1,5 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.SieveExpansion
-import IPRADerivations.Core.Header
 
 /-!
 # The bilinear sieve estimate for natural weights
@@ -24,11 +23,9 @@ the two inequalities `q N ≤ C + E` (`bil_upper`) and `C ≤ q N + E` (`bil_low
 The closed forms of `C` (through `SieveDiagonal`) and of `E` (a product of two sums) are not derived here.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.SieveBilinear
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (congrEqb')
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairCount (lc)
 open LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum (subst_ind subst_gcd' subst_cnt wB Am Bm Cm Dm inst3_Am inst3_Bm
@@ -36,7 +33,6 @@ open LeanProofs.IPRA.AnalyticNumberTheory.SievePairSum (subst_ind subst_gcd' sub
 open LeanProofs.IPRA.AnalyticNumberTheory.SieveExpansion (cB lB kT at1_kT expansion)
 open LeanProofs.IPRA.AnalyticNumberTheory.DivisorExchange (LW)
 open LeanProofs.IPRA.DiophantineNumberTheory.QuarticStep (congrGcd)
-open LeanProofs.IPRA.Foundations.DoubleSumScale (at1)
 open LeanProofs.IPRA.Probability.Independence (dsum dsum_congr dsum_add inst3_add')
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}

@@ -1,7 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.TwoSquaresDescent
 import IPRADerivations.DiophantineNumberTheory.FourSquares
-import IPRADerivations.Core.CertificateTactics
-import IPRADerivations.Core.Header
 
 /-!
 # Fermat's two-square theorem by bounded descent
@@ -27,15 +25,11 @@ multiplier, against leastness (`BoundedReflection.ex_least`); so `m* = 1`. The p
 The first proof (the grid collision) is `FermatTwoSquares.fermat_witness`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.TwoSquaresByDescent
 
-open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.Primes (prime)
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.FactorVector (one_le_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.Mobius (prime_two congrEqb')
-open LeanProofs.IPRA.AnalyticNumberTheory.ValuationMul (p_pos)
 open LeanProofs.IPRA.Combinatorics.LegendreDigits (dm dmu)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquaresAlgebra (le_sq_part)
 open LeanProofs.IPRA.DiophantineNumberTheory.FourSquares (lt_succ_of_le)
@@ -47,8 +41,6 @@ open LeanProofs.IPRA.Foundations.BoundedReflection (exB wit ex_cases ex_intro ex
 open LeanProofs.IPRA.Signum (sg)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The bit of a two-square representation -/
 
@@ -110,7 +102,7 @@ theorem seed_bounds {r p m0 : PTm k} (hp2 : Γ ⊢[PRAAx] le two p) (hr : Γ ⊢
   · refine .orE (zero_or_succ m0) ?_ (one_le_pos Prf.hyp0)
     have esn := natEq (es.wk (ψ := m0 ≐ zero))
     refine succ_ne_zero' (a := r * r) _ ?_
-    ipra_lc esn + 𝔞 p * natEq (Prf.hyp0 (Γ := Γ) (φ := m0 ≐ zero))
+    ipra_lc esn + 𝔞 p * natEq (Prf.hyp0 (φ := m0 ≐ zero))
   · refine .orE (lt_or_le m0 p) Prf.hyp0 ?_
     have hle : (le p m0 :: Γ) ⊢[PRAAx] le p m0 := Prf.hyp0
     have hr' := hr.wk (ψ := le p m0)

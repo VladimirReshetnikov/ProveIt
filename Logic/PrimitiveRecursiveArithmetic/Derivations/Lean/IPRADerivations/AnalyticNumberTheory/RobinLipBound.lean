@@ -1,6 +1,4 @@
 import IPRADerivations.AnalyticNumberTheory.RobinLipSum
-import IPRADerivations.Core.LinearCombination
-import IPRADerivations.Core.Header
 
 /-!
 # Elementary bounds and powers for the lower names of `LogI` (`robin_ipra_research_2026-11-19`, `lcm_bridge.tex`)
@@ -15,31 +13,23 @@ frontier": "two applications of `log(1+t) ≤ t`". With `lo(·, K)` the lower na
   `RobinLipSum.lo_sub_up`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.AnalyticNumberTheory.RobinLipBound
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinGamma (Lv Pv)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogName (Nz Dz Lz Un Ud low_up Dz_pos Ud_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogDiff (up_le)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipName (Rv)
-open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipArg (Nz_p0)
-open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipLog (mul1)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLipSum (lo_val lo_sub_up le_shift one_le_mul one_le_of_pos' G_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.RobinLogInterval
   (eb eb_spec eb_eq Bt dt st Wt c3 c8 c3_sq c3_pos c8_pos st_sq st_pos Wt_pos a_eq loN loD loD_pos)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTStageStep (pos_of_one_le)
-open LeanProofs.IPRA.AnalyticNumberTheory.Valuation (pw_pos' lt_pw)
 open LeanProofs.IPRA.AnalyticNumberTheory.ChebyshevBounds (two_pos')
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 
 set_option autoImplicit false
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## `S_K(z) ≤ 2z/(1 − z²)` -/
 
@@ -91,8 +81,7 @@ theorem lo_le_pred {a b : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRA
 /-! ## `lo(4) ≤ 3/2` -/
 
 theorem pw_two_two : Γ ⊢[PRAAx] pw two (two : PTm n) ≐ num 4 := by
-  ipra_lc natEq (pw_succ (Γ := Γ) (two : PTm n) one) + 2 * natEq (pw_succ (Γ := Γ) (two : PTm n) zero) +
-    4 * natEq (pw_zero (Γ := Γ) (two : PTm n))
+  ipra_lc natEq (pw_succ (two : PTm n) one) + 2 * natEq (pw_succ (two : PTm n) zero) + 4 * natEq (pw_zero (two : PTm n))
 
 theorem pw_two_three : Γ ⊢[PRAAx] pw two (succ (two : PTm n)) ≐ num 8 :=
   (pw_succ _ _).eqTrans ((congrMul pw_two_two (.eqRefl _)).eqTrans (by ipra_ring))
@@ -104,7 +93,7 @@ theorem lo_four (K : PTm n) : Γ ⊢[PRAAx] le (two * loN (num 4) one K) (succ t
   have e0 : Γ ⊢[PRAAx] eb (num 4) one ≐ two :=
     eb_eq (le_refl one) h4 (by ipra_le 0 with -p2) (by ipra_le 3 with p3)
   have hdt : Γ ⊢[PRAAx] dt (num 4) one ≐ zero := by
-    ipra_lc -natEq (a_eq (Γ := Γ) (le_refl one) h4) - natEq (congrAp2 powF e0 (.eqRefl (two : PTm n))) - p2
+    ipra_lc -natEq (a_eq (le_refl one) h4) - natEq (congrAp2 powF e0 (.eqRefl (two : PTm n))) - p2
   have hN : Γ ⊢[PRAAx] Nz K (dt (num 4) one) (st (num 4) one) ≐ zero :=
     (congrAp2 _ (.eqRefl _) (congrPairT hdt (.eqRefl _))).eqTrans (Nz_p0 K _)
   have h3 := S_le (Γ := Γ) (p := one) c3_pos c8_pos c3_sq K
@@ -156,7 +145,7 @@ theorem pow_step {j a b P c K : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ �
   have eP := natEq (pw_succ (Γ := Γ) P j)
   have hbP : Γ ⊢[PRAAx] le (b * one) ((a * pw P j) * P) := le_mul_mono hbj hP
   have ev := lo_val (a := (a * pw P j) * P) (b := b * one) (a' := a * pw P (succ j)) (b' := b)
-    (by ipra_le sl hb) hbP hb hbj1 (by apply deriveNat; ipra_simps; linear_combination -(𝔞 a * 𝔞 b) * eP) K
+    (by ipra_le sl hb) hbP hb hbj1 (by ipra_lc -(𝔞 a * 𝔞 b) * eP) K
   have hM := pos_mul (loD_pos hb hbj K) (loD_pos (by ipra_le sl hb) hbP K)
   exact pow_alg hM ih sub ev
 
@@ -170,8 +159,7 @@ theorem lo_pow {a b P c : PTm n} (hb : Γ ⊢[PRAAx] le one b) (hab : Γ ⊢[PRA
       have hb0 : Γ ⊢[PRAAx] le b (a * pw P zero) := by
         have m := le_mul_mono hab p0
         ipra_le sl m
-      have e0 := natEq (pw_zero (Γ := Γ) P)
-      exact pow_base (lo_val hb hb0 hb hab (by apply deriveNat; ipra_simps; linear_combination 𝔞 a * 𝔞 b * e0) K)
+      exact pow_base (lo_val hb hb0 hb hab (by ipra_lc 𝔞 a * 𝔞 b * natEq (pw_zero (Γ := Γ) P)) K)
     · simp only [subst_le, subst_ap2, subst_pairT, PTm.subst_add, PTm.subst_mul, LeanProofs.IPRA.PTm.subst_monus,
         ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have hc' : (LPF (var 0) (Syn.shift a) (Syn.shift b) (Syn.shift P) (Syn.shift c) (Syn.shift K) :: Γ.map Fm.shift)

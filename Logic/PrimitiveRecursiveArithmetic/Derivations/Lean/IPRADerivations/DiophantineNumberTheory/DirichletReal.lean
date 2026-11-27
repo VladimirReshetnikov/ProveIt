@@ -1,7 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Taylor.PolynomialRemainder
 import IPRADerivations.DiophantineNumberTheory.Dirichlet
-import IPRADerivations.AnalyticNumberTheory.PhiLower
-import IPRADerivations.Core.Header
 
 /-!
 # Dirichlet approximation for a named real
@@ -22,17 +20,12 @@ the name, hence for `α`):
   `PolynomialRemainder.abs_add` and `abs_mul`.
 -/
 
-set_option linter.unusedSimpArgs false
-
 namespace LeanProofs.IPRA.DiophantineNumberTheory.DirichletReal
 
-open_ipra
+open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (AbsLe abs_of abs_add abs_mul abs_congr)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {k : ℕ} {Γ : List (Fm PTm k)}
-
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-- A natural number bounds itself. -/
 theorem abs_nat (q : PTm k) : Γ ⊢[PRAAx] AbsLe (ZT.ofNat q) q :=
@@ -54,3 +47,5 @@ theorem real_step {R A p : ZT k} {q D N b₁ b₂ : PTm k}
     ipra_le 2 * 𝔞 N * sl hb₁ + 2 * 𝔞 N * (𝔞 N + 1) * sl c + sl hb₂
 
 end LeanProofs.IPRA.DiophantineNumberTheory.DirichletReal
+
+export_ipra DiophantineNumberTheory.DirichletReal (abs_nat)
