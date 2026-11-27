@@ -20,7 +20,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianLogGammaEulerCommonDenominator (admissionBudget sizeBound)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_equivalent)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_to_diagonal)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_refl cross_to_diagonal)
 open GaussianNameReciprocal (apart nameData name_fast)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedLogGammaDigammaDerivative (data nameF rate)
@@ -50,12 +50,12 @@ theorem witness_independent (f g : PR 2) (x y M S a b : PTm n)
   let u := GaussianNamedLogGammaTaylorEstimate.incrementData x y M S
   have hz := GaussianNamedDifference.name_regular g f y x hg.andE₁.andE₁ hf.andE₁.andE₁
   have hi := GaussianNameReciprocal.names_equivalent H H a b z z hz hz ha hb
-    (cross_to_diagonal H H z z (cross_refl H z hz))
+    (diagonal_refl H z)
   have hu : Γ ⊢[PRAAx] pointCN F u := GaussianNamedDifference.name_regular _ _ _ _
     (GaussianLogGammaEulerNamed.name_regular g y M S hg) (GaussianLogGammaEulerNamed.name_regular f x M S hf)
   exact multiply_equivalent J J F F (nameData a z) (nameData b z) u u
     (name_fast H a z hz ha) (name_fast H b z hz hb) hu hu
-    (cross_to_diagonal _ _ _ _ hi) (cross_to_diagonal _ _ _ _ (cross_refl _ _ hu))
+    (cross_to_diagonal _ _ _ _ hi) (diagonal_refl F u)
 
 private theorem admission_controls_radius (P K C Q : PTm n) (hK : Γ ⊢[PRAAx] le one K)
     (h : Γ ⊢[PRAAx] le (admission P K C) Q) : Γ ⊢[PRAAx] le P Q := by
