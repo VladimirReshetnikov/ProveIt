@@ -34,7 +34,6 @@ open LeanProofs.IPRA.Foundations.GridSums
 open LeanProofs.IPRA.Foundations.GridSumsContext
 open LeanProofs.IPRA.Foundations.GridSumsPoints
 open LeanProofs.IPRA.Foundations.TermSums
-open LeanProofs.IPRA.Foundations.BoundedCases
 open LeanProofs.IPRA.Topology.KuhnSimplices
 open LeanProofs.IPRA.Topology.SpernerCube
 open LeanProofs.IPRA.Topology.StaggeredGrids
@@ -368,20 +367,12 @@ theorem theta_of_sep {Γ : List (Fm PTm n)} {g : ℕ} {b v : PTm n} (hs : Γ ⊢
     rw [show Syn.shift (cellsOf d' m F g v) = cellsOf d' m F g (Syn.shift v) by simp [Syn.shift]]
     exact proj_pack m _ j
   refine (fprod_congr (fun j => congrEqb' (.eqRefl _) (hc j))).eqTrans ?_
-  refine bounded_cases 1 (fun j : Fin m => eqb (cell d' g (col (F j) (Syn.var 0))) (cell d' g (col (F j) (Syn.shift v))))
-    _ (fun j => le_one_monus _) (fun ρ hρ Δ' hext hκ => ?_)
-  by_cases hall : ∀ j, ρ j = 1
-  · refine .botE _ (succ_ne_zero (a := zero) ?_)
-    refine (fprod_one (fun j => ?_)).eqSymm.eqTrans (hext _ hbits)
-    have hj := hκ j
-    rw [hall j] at hj
-    exact near_bit_of_cells d' g (eq_of_eqb hj)
-  · simp only [not_forall] at hall
-    obtain ⟨j, hj⟩ := hall
-    have h0 : ρ j = 0 := by have := hρ j; omega
-    have hj' := hκ j
-    rw [h0] at hj'
-    exact fprod_eq_zero j hj'
+  refine bit_product_zero
+    (fun j : Fin m => eqb (cell d' g (col (F j) (Syn.var 0))) (cell d' g (col (F j) (Syn.shift v))))
+    (fun _ => le_one_monus _) ?_
+  intro Δ' hext hOne
+  exact succ_ne_zero ((fprod_one (fun j => near_bit_of_cells d' g (eq_of_eqb (hOne j)))).eqSymm.eqTrans
+    (hext _ hbits))
 
 /-! ### Upper faces: the scan is empty -/
 

@@ -43,12 +43,11 @@ open ConciseIPRA.PTm (app zero succ)
 open LeanProofs.IPRA.PTm (num monus pred)
 open LeanProofs.IPRA.Foundations.GridSums
 open LeanProofs.IPRA.Foundations.TermSums
-open LeanProofs.IPRA.Foundations.BoundedCases
 open LeanProofs.IPRA.Foundations.RationalFloors
 open LeanProofs.IPRA.Topology.KuhnSimplices
 open LeanProofs.IPRA.Topology.SpernerCube
 open LeanProofs.IPRA.Topology.StaggeredCells (near dist)
-open LeanProofs.IPRA.Topology.StaggeredGrids (fprod_one)
+open LeanProofs.IPRA.Topology.StaggeredGrids (bit_product_zero)
 open LeanProofs.IPRA.Topology.DimensionUnits (dist_of_add dist_comm)
 open LeanProofs.IPRA.Topology.DimensionOccupancy
 open LeanProofs.IPRA.Topology.DimensionObstruction
@@ -453,47 +452,38 @@ theorem sep_from_I {Γ : List (Fm PTm n)} {a u v : PTm n} {g : ℕ} (hg : g ≤ 
     (h0 : Γ ⊢[PRAAx] proj (d' - g) u ≐ zero) (hN : Γ ⊢[PRAAx] proj (d' - g) v ≐ fstT (bOf d' μ a)) :
     Γ ⊢[PRAAx] fprod m (fun j => Signum.sg (monus (thr m (Rt d' m AR) hnS j u v (bOf d' μ a))
       (succ (col hdS (bOf d' μ a)) * gap m (Pt d' m AP) (Qt d' m AQ) (Rt d' m AR) j u v))) ≐ zero := by
-  refine bounded_cases 1 (fun j : Fin m => Signum.sg (monus (thr m (Rt d' m AR) hnS j u v (bOf d' μ a))
+  refine bit_product_zero (fun j : Fin m => Signum.sg (monus (thr m (Rt d' m AR) hnS j u v (bOf d' μ a))
       (succ (col hdS (bOf d' μ a)) * gap m (Pt d' m AP) (Qt d' m AQ) (Rt d' m AR) j u v)))
-    _ (fun j => le_one_monus _) (fun ρ hρ Δ' hext hκ => ?_)
-  by_cases hall : ∀ j, ρ j = 1
-  · refine .botE _ ?_
-    -- every entry is `h`-close
-    have hlt : ∀ j : Fin m, Δ' ⊢[PRAAx] lt (succ (col hdS (bOf d' μ a)) * gap m (Pt d' m AP) (Qt d' m AQ) (Rt d' m AR) j u v)
-        (thr m (Rt d' m AR) hnS j u v (bOf d' μ a)) := fun j => by
-      have hj := hκ j
-      rw [hall j] at hj
-      refine .orE (lt_or_le (succ (col hdS (bOf d' μ a)) * gap m (Pt d' m AP) (Qt d' m AQ) (Rt d' m AR) j u v)
-        (thr m (Rt d' m AR) hnS j u v (bOf d' μ a))) Prf.hyp0 ?_
-      refine .botE _ (succ_ne_zero (a := zero) ?_)
-      exact hj.wk.eqSymm.eqTrans ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) Prf.hyp0)).eqTrans Signum.sg_zero)
-    have hout : Δ' ⊢[PRAAx] outI m AP AQ AR u v (succ (kOf d' a)) a ≐ zero := by
-      refine fsum_eq_zero (fun j => ?_)
-      have c := lt_congr (congrMul (hext _ (hd_eq d' μ)) (hext _ (gap_eq d' m AP AQ AR μ j hu.tl hv.tl)))
-        (hext _ (thr_eq d' m AR μ j hu.tl hv.tl)) (hlt j)
-      have hp : Δ' ⊢[PRAAx] pw two (succ (kOf d' a)) ≐ pw two a * pw two (num (d' + 4)) * two :=
-        (pw_succ two _).eqTrans (congrMul (pw_add two a (num (d' + 4))) (.eqRefl _))
-      exact sep_arith d' (eq_add_of_le c) (pw_pos one a) (pw16 d') (pw_F d') hp (pw_add two a _) (pw_succ two a)
-    have hIb := hext _ (I_at d' m AP AQ AR hI u v (succ (kOf d' a)))
-    have hsrc := Prf.impE (Prf.impE (Prf.impE hIb (hext _ (valid_grid d' μ hu))) (hext _ (valid_grid d' μ hv))) hout
-    have hq := fsum_zero_elim (d' + 1) _ hsrc ⟨d' - g, by omega⟩
-    -- the pair is at source distance `1`
-    have hNN : Δ' ⊢[PRAAx] dist (proj (d' - g) u * den d' v) (proj (d' - g) v * den d' u) ≐
-        pw two (Syn.subst ![kOf d' a] μ) * pw two (Syn.subst ![kOf d' a] μ) := by
-      refine (congrDist (congrMul (hext _ h0) (hext _ (den_eq d' μ hv)))
-        (congrMul ((hext _ hN).eqTrans (fst_pair _ _)) (hext _ (den_eq d' μ hu)))).eqTrans ?_
-      refine (dist_comm _ _).eqTrans (dist_of_add ?_)
-      ipra_ring
-    have hle : Δ' ⊢[PRAAx] le (two * (pw two (Syn.subst ![kOf d' a] μ) * pw two (Syn.subst ![kOf d' a] μ)))
-        (pw two (Syn.subst ![kOf d' a] μ) * pw two (Syn.subst ![kOf d' a] μ)) :=
-      le_congr (congrMul (pw_one two) hNN) (congrMul (hext _ (den_eq d' μ hu)) (hext _ (den_eq d' μ hv))) hq
-    exact double_absurd (pw_pos one _) (.eqRefl _) hle
-  · simp only [not_forall] at hall
-    obtain ⟨j, hj⟩ := hall
-    have h0' : ρ j = 0 := by have := hρ j; omega
-    have hj' := hκ j
-    rw [h0'] at hj'
-    exact fprod_eq_zero j hj'
+    (fun _ => le_one_monus _) ?_
+  intro Δ' hext hOne
+  -- every entry is `h`-close
+  have hlt : ∀ j : Fin m, Δ' ⊢[PRAAx] lt (succ (col hdS (bOf d' μ a)) * gap m (Pt d' m AP) (Qt d' m AQ) (Rt d' m AR) j u v)
+      (thr m (Rt d' m AR) hnS j u v (bOf d' μ a)) := fun j => by
+    refine .orE (lt_or_le (succ (col hdS (bOf d' μ a)) * gap m (Pt d' m AP) (Qt d' m AQ) (Rt d' m AR) j u v)
+      (thr m (Rt d' m AR) hnS j u v (bOf d' μ a))) Prf.hyp0 ?_
+    refine .botE _ (succ_ne_zero (a := zero) ?_)
+    exact (hOne j).wk.eqSymm.eqTrans ((congrMonus (.eqRefl _) (congrMonus (.eqRefl _) Prf.hyp0)).eqTrans Signum.sg_zero)
+  have hout : Δ' ⊢[PRAAx] outI m AP AQ AR u v (succ (kOf d' a)) a ≐ zero := by
+    refine fsum_eq_zero (fun j => ?_)
+    have c := lt_congr (congrMul (hext _ (hd_eq d' μ)) (hext _ (gap_eq d' m AP AQ AR μ j hu.tl hv.tl)))
+      (hext _ (thr_eq d' m AR μ j hu.tl hv.tl)) (hlt j)
+    have hp : Δ' ⊢[PRAAx] pw two (succ (kOf d' a)) ≐ pw two a * pw two (num (d' + 4)) * two :=
+      (pw_succ two _).eqTrans (congrMul (pw_add two a (num (d' + 4))) (.eqRefl _))
+    exact sep_arith d' (eq_add_of_le c) (pw_pos one a) (pw16 d') (pw_F d') hp (pw_add two a _) (pw_succ two a)
+  have hIb := hext _ (I_at d' m AP AQ AR hI u v (succ (kOf d' a)))
+  have hsrc := Prf.impE (Prf.impE (Prf.impE hIb (hext _ (valid_grid d' μ hu))) (hext _ (valid_grid d' μ hv))) hout
+  have hq := fsum_zero_elim (d' + 1) _ hsrc ⟨d' - g, by omega⟩
+  -- the pair is at source distance `1`
+  have hNN : Δ' ⊢[PRAAx] dist (proj (d' - g) u * den d' v) (proj (d' - g) v * den d' u) ≐
+      pw two (Syn.subst ![kOf d' a] μ) * pw two (Syn.subst ![kOf d' a] μ) := by
+    refine (congrDist (congrMul (hext _ h0) (hext _ (den_eq d' μ hv)))
+      (congrMul ((hext _ hN).eqTrans (fst_pair _ _)) (hext _ (den_eq d' μ hu)))).eqTrans ?_
+    refine (dist_comm _ _).eqTrans (dist_of_add ?_)
+    ipra_ring
+  have hle : Δ' ⊢[PRAAx] le (two * (pw two (Syn.subst ![kOf d' a] μ) * pw two (Syn.subst ![kOf d' a] μ)))
+      (pw two (Syn.subst ![kOf d' a] μ) * pw two (Syn.subst ![kOf d' a] μ)) :=
+    le_congr (congrMul (pw_one two) hNN) (congrMul (hext _ (den_eq d' μ hu)) (hext _ (den_eq d' μ hv))) hq
+  exact double_absurd (pw_pos one _) (.eqRefl _) hle
 
 theorem sep_body_I {Γ : List (Fm PTm n)} {a u v : PTm n} {g : ℕ} (hg : g ≤ d')
     (hI : Γ ⊢[PRAAx] Ihyp d' m AP AQ AR a) :

@@ -2,6 +2,7 @@ import IPRADerivations.Core.Division
 import IPRADerivations.Topology.StaggeredCells
 import IPRADerivations.Foundations.TermSums
 import IPRADerivations.Foundations.BoundedDecision
+import IPRADerivations.Foundations.BoundedCases
 
 /-!
 # Staggered grids and the injection count in every dimension (`dimension_invariance_ipra`)
@@ -213,6 +214,29 @@ theorem fprod_one {k : ℕ} {f : Fin k → PTm n} (h : ∀ i, Γ ⊢[PRAAx] f i 
   apply of_mk
   rw [mk_fprod, Q.mk_one]
   exact Finset.prod_eq_one (fun i _ => by rw [Q.sound (h i), Q.mk_one])
+
+open LeanProofs.IPRA.Foundations.BoundedCases (Extends bounded_cases)
+
+/-- Transfer a zero from a family of bits whose simultaneous one case is impossible. -/
+theorem mapped_bit_product_zero {k : ℕ} (b f : Fin k → PTm n)
+    (hb : ∀ j, Γ ⊢[PRAAx] le (b j) one)
+    (incompatible : ∀ Δ : List (Fm PTm n), Extends Γ Δ → (∀ j, Δ ⊢[PRAAx] b j ≐ one) → (Δ ⊢[PRAAx] Fm.bot))
+    (transfer : ∀ j, Γ ⊢[PRAAx] ((b j ≐ zero) ⟶ (f j ≐ zero))) :
+    Γ ⊢[PRAAx] fprod k f ≐ zero := by
+  refine bounded_cases 1 b _ hb (fun ρ hρ Δ hext hκ => ?_)
+  by_cases hall : ∀ j, ρ j = 1
+  · exact .botE _ (incompatible Δ hext (fun j => by simpa only [hall j, num] using hκ j))
+  · obtain ⟨j, hj⟩ := not_forall.mp hall
+    have h0 : ρ j = 0 := by have := hρ j; omega
+    have hz : Δ ⊢[PRAAx] b j ≐ zero := by simpa only [h0, num] using hκ j
+    exact fprod_eq_zero j (.impE (hext _ (transfer j)) hz)
+
+/-- A product of bits is zero if the all-one case is impossible. -/
+theorem bit_product_zero {k : ℕ} (b : Fin k → PTm n)
+    (hb : ∀ j, Γ ⊢[PRAAx] le (b j) one)
+    (incompatible : ∀ Δ : List (Fm PTm n), Extends Γ Δ → (∀ j, Δ ⊢[PRAAx] b j ≐ one) → (Δ ⊢[PRAAx] Fm.bot)) :
+    Γ ⊢[PRAAx] fprod k b ≐ zero :=
+  mapped_bit_product_zero b b hb incompatible (fun _ => .impI Prf.hyp0)
 
 theorem monus_one_zero {t : PTm n} (h : Γ ⊢[PRAAx] t ≐ zero) : Γ ⊢[PRAAx] monus one t ≐ one :=
   (congrMonus (.eqRefl _) h).eqTrans (monus_zero _)

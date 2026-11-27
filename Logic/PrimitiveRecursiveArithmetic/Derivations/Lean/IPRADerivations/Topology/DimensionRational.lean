@@ -40,12 +40,11 @@ open LeanProofs.IPRA.Foundations.GridSums
 open LeanProofs.IPRA.Foundations.GridSumsContext
 open LeanProofs.IPRA.Foundations.GridSumsPoints
 open LeanProofs.IPRA.Foundations.TermSums
-open LeanProofs.IPRA.Foundations.BoundedCases
 open LeanProofs.IPRA.Foundations.RationalFloors
 open LeanProofs.IPRA.Topology.KuhnSimplices
 open LeanProofs.IPRA.Topology.SpernerCube
 open LeanProofs.IPRA.Topology.StaggeredCells (near dist)
-open LeanProofs.IPRA.Topology.StaggeredGrids (fprod_one)
+open LeanProofs.IPRA.Topology.StaggeredGrids (fprod_one mapped_bit_product_zero)
 open LeanProofs.IPRA.Topology.DimensionOccupancy
 open LeanProofs.IPRA.Topology.DimensionObstruction
 open Equiv
@@ -257,20 +256,13 @@ theorem sep_point {Γ : List (Fm PTm n)} {b u v : PTm n} (hu : GridPt (d' + 1) �
     (hr : Γ ⊢[PRAAx] fprod m (fun j => Signum.sg (monus (thr m R hn j u v b) (succ (col hd b) * gap m P Q R j u v))) ≐ zero) :
     Γ ⊢[PRAAx] fprod m (fun j => monus one (monus (dist (col (G d' m P Q R hn hd j) u)
       (col (G d' m P Q R hn hd j) v)) (num d'))) ≐ zero := by
-  refine bounded_cases 1 (fun j : Fin m => Signum.sg (monus (thr m R hn j u v b) (succ (col hd b) * gap m P Q R j u v)))
-    _ (fun j => le_one_monus _) (fun ρ hρ Δ' hext hκ => ?_)
-  by_cases hall : ∀ j, ρ j = 1
-  · refine .botE _ (succ_ne_zero (a := zero) ?_)
-    refine (fprod_one (fun j => ?_)).eqSymm.eqTrans (hext _ hr)
-    have hj := hκ j
-    rw [hall j] at hj
-    exact hj
-  · simp only [not_forall] at hall
-    obtain ⟨j, hj⟩ := hall
-    have h0 : ρ j = 0 := by have := hρ j; omega
-    have hj' := hκ j
-    rw [h0] at hj'
-    exact fprod_eq_zero j (Prf.impE (hext _ (far_entry d' m P Q R hn hd hu hv j)) (eq_zero_of_sg hj'))
+  refine mapped_bit_product_zero
+    (fun j : Fin m => Signum.sg (monus (thr m R hn j u v b) (succ (col hd b) * gap m P Q R j u v)))
+    _ (fun _ => le_one_monus _) ?_ ?_
+  · intro Δ' hext hOne
+    exact succ_ne_zero ((fprod_one hOne).eqSymm.eqTrans (hext _ hr))
+  · intro j
+    exact .impI (.impE (far_entry d' m P Q R hn hd hu hv j).wk (eq_zero_of_sg Prf.hyp0))
 
 /-- `eq:sep` for the rational table gives `DimensionOccupancy.hSep` for `G`. -/
 theorem sep_body {Γ : List (Fm PTm n)} {g : ℕ} {b u v : PTm n}

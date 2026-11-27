@@ -244,21 +244,13 @@ theorem no_full (hdm : m < d' + 1) {k : ℕ} {Δ : List (Fm PTm k)} {y : PTm k}
       monus one (eqb (cell d' g.val (col (F j) (u g))) (cell d' g.val (col (F j) w)))
     refine pigeon hdm Dm (fun g j => le_one_monus _) (fun g => ?_) (fun j g g' hgg => ?_)
     · -- some coordinate separates the cells of `u g` and `w`
-      refine bounded_cases 1 (fun j : Fin m => eqb (cell d' g.val (col (F j) (u g))) (cell d' g.val (col (F j) w)))
-        _ (fun j => le_one_monus _) (fun ρ' hρ' Δ'' hext' hκ' => ?_)
-      by_cases hall : ∀ j, ρ' j = 1
-      · refine .botE _ (hcells g Δ'' hext' (fun j => ?_))
-        have hj := hκ' j
-        rw [hall j] at hj
-        exact eq_of_eqb hj
-      · simp only [not_forall] at hall
-        obtain ⟨j, hj⟩ := hall
-        have h0 : ρ' j = 0 := by have := hρ' j; omega
-        have hj' := hκ' j
-        rw [h0] at hj'
-        refine fprod_eq_zero j ?_
-        exact (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) hj')).eqTrans
-          ((congrMonus (.eqRefl _) (monus_zero _)).eqTrans (monus_self _))
+      refine mapped_bit_product_zero
+        (fun j : Fin m => eqb (cell d' g.val (col (F j) (u g))) (cell d' g.val (col (F j) w)))
+        _ (fun _ => le_one_monus _) ?_ ?_
+      · intro Δ'' hext' hOne
+        exact hcells g Δ'' hext' (fun j => eq_of_eqb (hOne j))
+      · intro j
+        exact .impI ((congrMonus (.eqRefl _) (StaggeredGrids.monus_one_zero Prf.hyp0)).eqTrans (monus_self _))
     · -- no coordinate separates two grids
       have hgg' : g.val < g'.val := hgg
       have stag := staggered_grid (Γ := Δ') d' g.val g'.val hgg' g'.isLt

@@ -42,7 +42,8 @@ open LeanProofs.IPRA.Search (mu search_minimal)
 open LeanProofs.IPRA.Foundations.LeastBoundedWitness (mu_le accepted_of_lt)
 open LeanProofs.IPRA.Foundations.GridSums
 open LeanProofs.IPRA.Foundations.TermSums
-open LeanProofs.IPRA.Foundations.BoundedCases
+open LeanProofs.IPRA.Foundations.BoundedCases (Extends)
+open LeanProofs.IPRA.Topology.StaggeredGrids (bit_product_zero)
 open LeanProofs.IPRA.Foundations.DigitCodes
 open LeanProofs.IPRA.Topology.KuhnSimplices
 open LeanProofs.IPRA.Topology.SpernerCube
@@ -212,19 +213,10 @@ theorem sep_point_search {Γ : List (Fm PTm n)} {g : ℕ} {b u v : PTm n}
   have hne : Γ ⊢[PRAAx] neg (fsum m (fun j => monus one (closeBit m P Q R hn hd j u v b)) ≐ zero) := by
     refine .impI (.impE hfail.wk ?_)
     exact ((fBodyI_congr d' m P Q R hn hd g b du dv).eqTrans hsum).wk.eqTrans Prf.hyp0
-  refine bounded_cases 1 (fun j : Fin m => closeBit m P Q R hn hd j u v b) _ (fun j => le_one_monus _)
-    (fun ρ hρ Δ' hext hκ => ?_)
-  by_cases hall : ∀ j, ρ j = 1
-  · refine .botE _ (.impE (hext _ hne) (fsum_eq_zero (fun j => ?_)))
-    have hj := hκ j
-    rw [hall j] at hj
-    exact (congrMonus (.eqRefl _) hj).eqTrans (monus_self _)
-  · simp only [not_forall] at hall
-    obtain ⟨j, hj⟩ := hall
-    have h0' : ρ j = 0 := by have := hρ j; omega
-    have hj' := hκ j
-    rw [h0'] at hj'
-    exact fprod_eq_zero j hj'
+  refine bit_product_zero (fun j : Fin m => closeBit m P Q R hn hd j u v b) (fun _ => le_one_monus _) ?_
+  intro Δ' hext hOne
+  exact .impE (hext _ hne) (fsum_eq_zero (fun j =>
+    (congrMonus (.eqRefl _) (hOne j)).eqTrans (monus_self _)))
 
 theorem shift_mu (f : PTm 2) (B x : PTm n) : Syn.shift (mu f B x) = mu f (Syn.shift B) (Syn.shift x) := by
   simp [Syn.shift]
