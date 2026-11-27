@@ -102,19 +102,12 @@ ipra_subst distinct [Syn.subst_shift, Syn.shift_subst]
 ipra_subst laterRoots [Syn.subst_shift, Syn.shift_subst]
 
 theorem stage_zero (C N R : PTm n) : Γ ⊢[PRAAx] stage C N R zero ≐ C := by
-  have h := rec_zero (Γ := Γ) (var 0 : PTm 3) stageStep ![C,N,R]
-  have e : (Fin.cases zero ![C,N,R] : Fin 4 → PTm n) = ![zero,C,N,R] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (var 0 : PTm 3) stageStep ![C,N,R]
   simpa only [stage,recursorF,Syn.subst_var,Matrix.cons_val_zero] using h
 
 theorem stage_succ (C N R i : PTm n) : Γ ⊢[PRAAx]
     stage C N R (succ i) ≐ quotient (stage C N R i) (entry R i) (remaining N i) := by
-  have h := rec_succ (Γ := Γ) (var 0 : PTm 3) stageStep i ![C,N,R]
-  have a : (Fin.cases (succ i) ![C,N,R] : Fin 4 → PTm n) = ![succ i,C,N,R] := by funext j; fin_cases j <;> rfl
-  have b : (Fin.cases i (Fin.cases (PTm.app recursorF (Fin.cases i ![C,N,R])) ![C,N,R]) : Fin 5 → PTm n) =
-      ![i,stage C N R i,C,N,R] := by funext j; fin_cases j <;> rfl
-  unfold recursorF at b
-  rw [a,b] at h
+  have h := rec_succ_vecCons (Γ := Γ) (var 0 : PTm 3) stageStep i ![C,N,R]
   simpa only [stage,recursorF,stageStep,GaussianRationalSyntheticDivision.subst_quotient,subst_remaining,
     subst_entry,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using h

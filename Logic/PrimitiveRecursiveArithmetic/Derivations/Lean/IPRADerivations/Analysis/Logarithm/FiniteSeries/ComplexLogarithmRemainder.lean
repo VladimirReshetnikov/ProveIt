@@ -211,24 +211,14 @@ def series (z N L : PTm n) : PTm n := ap3 seriesF L z N
 ipra_subst series
 
 theorem series_zero (z N : PTm n) : Γ ⊢[PRAAx] series z N zero ≐ zeroCode := by
-  have h := rec_zero (Γ := Γ) (zeroCode : PTm 2) seriesStep ![z, N]
-  have e : (Fin.cases zero ![z, N] : Fin 3 → PTm n) = ![zero, z, N] := by
-    funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (zeroCode : PTm 2) seriesStep ![z, N]
   simpa only [series, seriesF, ap3, subst_zeroCode] using h
 
 theorem series_succ (z N L : PTm n) :
     Γ ⊢[PRAAx] series z N (succ L) ≐
       add (scale ((L + three) * N) (series z N L))
         (neg (scale (fact (L + two)) (power (neg z) (L + three)))) := by
-  have h := rec_succ (Γ := Γ) (zeroCode : PTm 2) seriesStep L ![z, N]
-  have e₁ : (Fin.cases (succ L) ![z, N] : Fin 3 → PTm n) = ![succ L, z, N] := by
-    funext i; fin_cases i <;> rfl
-  have e₂ : (Fin.cases L
-      (Fin.cases (ConciseIPRA.PTm.app (recDef (zeroCode : PTm 2) seriesStep) (Fin.cases L ![z, N])) ![z, N]) :
-      Fin 4 → PTm n) = ![L, series z N L, z, N] := by
-    funext i; fin_cases i <;> rfl
-  rw [e₁, e₂] at h
+  have h := rec_succ_vecCons (Γ := Γ) (zeroCode : PTm 2) seriesStep L ![z, N]
   simpa [series, seriesF, ap3, seriesStep] using h
 
 /-- Domination of the actual alternating Gaussian numerator by the positive

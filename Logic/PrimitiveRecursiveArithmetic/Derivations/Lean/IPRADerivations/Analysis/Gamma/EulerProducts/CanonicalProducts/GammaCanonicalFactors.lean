@@ -238,10 +238,7 @@ ipra_subst summand
   fin_cases i <;> rfl
 
 theorem sum_zero (z B N L D : PTm n) : Γ ⊢[PRAAx] finiteSum z B N zero L D ≐ zeroCode := by
-  have h := rec_zero (Γ := Γ) (zeroCode : PTm 5) sumStep ![z,B,N,L,D]
-  have eq : (Fin.cases zero ![z,B,N,L,D] : Fin 6 → PTm n) = ![zero,z,B,N,L,D] := by
-    funext i; fin_cases i <;> rfl
-  rw [eq] at h
+  have h := rec_zero_vecCons (Γ := Γ) (zeroCode : PTm 5) sumStep ![z,B,N,L,D]
   simpa only [finiteSum, sumF, ComplexLogarithmRemainder.subst_zeroCode] using h
 
 theorem sum_succ (z B N r L D : PTm n) :

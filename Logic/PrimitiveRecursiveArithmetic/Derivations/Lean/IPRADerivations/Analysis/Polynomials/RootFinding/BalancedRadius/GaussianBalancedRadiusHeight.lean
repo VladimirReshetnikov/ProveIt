@@ -40,18 +40,12 @@ ipra_subst b
 ipra_subst E
 
 theorem prefix_zero (C N : PTm n) : Γ ⊢[PRAAx] heightPrefix C N zero ≐ zero := by
-  have h := rec_zero (Γ := Γ) (zero : PTm 2) heightStep ![C,N]
-  have e : (Fin.cases zero ![C,N] : Fin 3 → PTm n) = ![zero,C,N] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (zero : PTm 2) heightStep ![C,N]
   simpa [heightPrefix,heightF,ap3] using h
 
 theorem prefix_succ (C N j : PTm n) : Γ ⊢[PRAAx]
     heightPrefix C N (succ j) ≐ maximum (heightPrefix C N j) (bitHeight C N j) := by
-  have h := rec_succ (Γ := Γ) (zero : PTm 2) heightStep j ![C,N]
-  have a : (Fin.cases (succ j) ![C,N] : Fin 3 → PTm n) = ![succ j,C,N] := by funext i; fin_cases i <;> rfl
-  have d : (Fin.cases j (Fin.cases (PTm.app (recDef (zero : PTm 2) heightStep) (Fin.cases j ![C,N])) ![C,N]) :
-      Fin 4 → PTm n) = ![j,heightPrefix C N j,C,N] := by funext i; fin_cases i <;> rfl
-  rw [a,d] at h
+  have h := rec_succ_vecCons (Γ := Γ) (zero : PTm 2) heightStep j ![C,N]
   simpa only [heightPrefix,heightF,ap3,heightStep,Foundations.DemandClosure.subst_maximum,subst_bitHeight,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.head_cons,Matrix.tail_cons] using h

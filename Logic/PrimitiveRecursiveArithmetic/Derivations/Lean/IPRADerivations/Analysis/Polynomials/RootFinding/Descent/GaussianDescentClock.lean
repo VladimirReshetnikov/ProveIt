@@ -76,18 +76,12 @@ ipra_subst advance
 ipra_subst iterate
 
 theorem iterate_zero (step : PR 3) (d C : PTm n) : Γ ⊢[PRAAx] iterate step d C zero ≐ qzero := by
-  have h := rec_zero (Γ := Γ) (qzero : PTm 2) (iterationStep step) ![d,C]
-  have e : (Fin.cases zero ![d,C] : Fin 3 → PTm n) = ![zero,d,C] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (qzero : PTm 2) (iterationStep step) ![d,C]
   simpa only [iterate,iterationF,ap3,GaussianRationalHorner.subst_qzero] using h
 
 theorem iterate_succ (step : PR 3) (d C k : PTm n) : Γ ⊢[PRAAx]
     iterate step d C (succ k) ≐ advance step d C (iterate step d C k) := by
-  have h := rec_succ (Γ := Γ) (qzero : PTm 2) (iterationStep step) k ![d,C]
-  have a : (Fin.cases (succ k) ![d,C] : Fin 3 → PTm n) = ![succ k,d,C] := by funext i; fin_cases i <;> rfl
-  have b : (Fin.cases k (Fin.cases (PTm.app (recDef (qzero : PTm 2) (iterationStep step)) (Fin.cases k ![d,C])) ![d,C]) :
-      Fin 4 → PTm n) = ![k,iterate step d C k,d,C] := by funext i; fin_cases i <;> rfl
-  rw [a,b] at h
+  have h := rec_succ_vecCons (Γ := Γ) (qzero : PTm 2) (iterationStep step) k ![d,C]
   simpa [iterate,iterationF,iterationStep,ap3] using h
 
 theorem iterate_canonical (step : PR 3) (d C k : PTm n) : Γ ⊢[PRAAx] canonical (iterate step d C k) := by

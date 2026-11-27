@@ -174,18 +174,12 @@ ipra_subst horner
 ipra_subst evaluate
 
 theorem horner_zero (C z : PTm n) : Γ ⊢[PRAAx] horner C z zero ≐ qzero := by
-  have h := rec_zero (Γ := Γ) (qzero : PTm 2) hornerStep ![C,z]
-  have e : (Fin.cases zero ![C,z] : Fin 3 → PTm n) = ![zero,C,z] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (qzero : PTm 2) hornerStep ![C,z]
   simpa only [horner,hornerF,ap3,subst_qzero] using h
 
 theorem horner_succ (C z k : PTm n) : Γ ⊢[PRAAx]
     horner C z (succ k) ≐ qadd (qmul (horner C z k) z) (entry C k) := by
-  have h := rec_succ (Γ := Γ) (qzero : PTm 2) hornerStep k ![C,z]
-  have e₁ : (Fin.cases (succ k) ![C,z] : Fin 3 → PTm n) = ![succ k,C,z] := by funext i; fin_cases i <;> rfl
-  have e₂ : (Fin.cases k (Fin.cases (PTm.app (recDef (qzero : PTm 2) hornerStep) (Fin.cases k ![C,z])) ![C,z]) :
-      Fin 4 → PTm n) = ![k,horner C z k,C,z] := by funext i; fin_cases i <;> rfl
-  rw [e₁,e₂] at h
+  have h := rec_succ_vecCons (Γ := Γ) (qzero : PTm 2) hornerStep k ![C,z]
   simpa [horner,hornerF,ap3,hornerStep] using h
 
 theorem canonical_congr {q r : PTm n} (h : Γ ⊢[PRAAx] q ≐ r)

@@ -41,33 +41,21 @@ ipra_subst denominator
 ipra_subst value
 
 theorem numerator_zero (C K : PTm n) : Γ ⊢[PRAAx] numerator C K zero ≐ one := by
-  have h := rec_zero (Γ := Γ) (one : PTm 2) numeratorStep ![C,K]
-  have e : (Fin.cases zero ![C,K] : Fin 3 → PTm n) = ![zero,C,K] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (one : PTm 2) numeratorStep ![C,K]
   simpa [numerator,numeratorF,ap3] using h
 
 theorem denominator_zero (C K : PTm n) : Γ ⊢[PRAAx] denominator C K zero ≐ one := by
-  have h := rec_zero (Γ := Γ) (one : PTm 2) denominatorStep ![C,K]
-  have e : (Fin.cases zero ![C,K] : Fin 3 → PTm n) = ![zero,C,K] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (one : PTm 2) denominatorStep ![C,K]
   simpa [denominator,denominatorF,ap3] using h
 
 theorem numerator_succ (C K j : PTm n) : Γ ⊢[PRAAx]
     numerator C K (succ j) ≐ numerator C K j*factor C K j := by
-  have h := rec_succ (Γ := Γ) (one : PTm 2) numeratorStep j ![C,K]
-  have a : (Fin.cases (succ j) ![C,K] : Fin 3 → PTm n) = ![succ j,C,K] := by funext i; fin_cases i <;> rfl
-  have b : (Fin.cases j (Fin.cases (PTm.app (recDef (one : PTm 2) numeratorStep) (Fin.cases j ![C,K])) ![C,K]) :
-      Fin 4 → PTm n) = ![j,numerator C K j,C,K] := by funext i; fin_cases i <;> rfl
-  rw [a,b] at h
+  have h := rec_succ_vecCons (Γ := Γ) (one : PTm 2) numeratorStep j ![C,K]
   simpa [numerator,numeratorF,numeratorStep,ap3] using h
 
 theorem denominator_succ (C K j : PTm n) : Γ ⊢[PRAAx]
     denominator C K (succ j) ≐ denominator C K j*pw K j := by
-  have h := rec_succ (Γ := Γ) (one : PTm 2) denominatorStep j ![C,K]
-  have a : (Fin.cases (succ j) ![C,K] : Fin 3 → PTm n) = ![succ j,C,K] := by funext i; fin_cases i <;> rfl
-  have b : (Fin.cases j (Fin.cases (PTm.app (recDef (one : PTm 2) denominatorStep) (Fin.cases j ![C,K])) ![C,K]) :
-      Fin 4 → PTm n) = ![j,denominator C K j,C,K] := by funext i; fin_cases i <;> rfl
-  rw [a,b] at h
+  have h := rec_succ_vecCons (Γ := Γ) (one : PTm 2) denominatorStep j ![C,K]
   simpa [denominator,denominatorF,denominatorStep,ap3,pw] using h
 
 theorem factor_lower (C K j : PTm n) : Γ ⊢[PRAAx] le (pw K j) (factor C K j) := le_add_right _ _

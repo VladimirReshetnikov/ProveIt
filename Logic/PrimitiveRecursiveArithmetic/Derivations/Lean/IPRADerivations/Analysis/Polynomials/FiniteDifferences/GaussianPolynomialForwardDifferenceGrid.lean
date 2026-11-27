@@ -86,19 +86,12 @@ theorem adjacent_lookup (V L i : PTm n) (hi : Γ ⊢[PRAAx] lt i L) :
   simpa [inst2,adjacent,differenceBody] using sequence_decode (Γ := Γ) differenceBody (x := V) hi
 
 theorem grid_zero (V N : PTm n) : Γ ⊢[PRAAx] grid V N zero ≐ V := by
-  have raw := rec_zero (Γ := Γ) (var 0 : PTm 2) gridStep ![V,N]
-  have e : (Fin.cases zero ![V,N] : Fin 3 → PTm n) = ![zero,V,N] := by funext i; fin_cases i <;> rfl
-  rw [e] at raw
+  have raw := rec_zero_vecCons (Γ := Γ) (var 0 : PTm 2) gridStep ![V,N]
   simpa only [grid,ap3,gridF,Syn.subst_var,Matrix.cons_val_zero] using raw
 
 theorem grid_succ (V N j : PTm n) :
     Γ ⊢[PRAAx] grid V N (succ j) ≐ adjacent (grid V N j) (remaining N j) := by
-  have raw := rec_succ (Γ := Γ) (var 0 : PTm 2) gridStep j ![V,N]
-  have a : (Fin.cases (succ j) ![V,N] : Fin 3 → PTm n) = ![succ j,V,N] := by funext i; fin_cases i <;> rfl
-  have b : (Fin.cases j (Fin.cases (PTm.app gridF (Fin.cases j ![V,N])) ![V,N]) : Fin 4 → PTm n) =
-      ![j,grid V N j,V,N] := by funext i; fin_cases i <;> rfl
-  unfold gridF at b
-  rw [a,b] at raw
+  have raw := rec_succ_vecCons (Γ := Γ) (var 0 : PTm 2) gridStep j ![V,N]
   simpa only [grid,ap3,gridF,gridStep,subst_adjacent,GaussianRationalTranslationStages.subst_remaining,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.head_cons,Matrix.tail_cons] using raw

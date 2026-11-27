@@ -61,24 +61,14 @@ def positive (L R N K : PTm n) : PTm n := ap4 positiveF K L R N
 ipra_subst positive
 
 theorem positive_zero (L R N : PTm n) : Γ ⊢[PRAAx] positive L R N zero ≐ zero := by
-  have h := rec_zero (Γ := Γ) (zero : PTm 3) positiveStep ![L, R, N]
-  have e : (Fin.cases zero ![L, R, N] : Fin 4 → PTm n) = ![zero, L, R, N] := by
-    funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (zero : PTm 3) positiveStep ![L, R, N]
   simpa only [positive, positiveF, ap4, ConciseIPRA.PTm.subst_zero] using h
 
 theorem positive_succ (L R N K : PTm n) :
     Γ ⊢[PRAAx] positive L R N (succ K) ≐
       (L + K + three) * N * positive L R N K +
         denominator N L * fact (L + K + two) * pw R (L + K + three) := by
-  have h := rec_succ (Γ := Γ) (zero : PTm 3) positiveStep K ![L, R, N]
-  have e₁ : (Fin.cases (succ K) ![L, R, N] : Fin 4 → PTm n) = ![succ K, L, R, N] := by
-    funext i; fin_cases i <;> rfl
-  have e₂ : (Fin.cases K
-      (Fin.cases (app (recDef (zero : PTm 3) positiveStep) (Fin.cases K ![L, R, N])) ![L, R, N]) :
-      Fin 5 → PTm n) = ![K, positive L R N K, L, R, N] := by
-    funext i; fin_cases i <;> rfl
-  rw [e₁, e₂] at h
+  have h := rec_succ_vecCons (Γ := Γ) (zero : PTm 3) positiveStep K ![L, R, N]
   simpa [positive, positiveF, ap4, positiveStep] using h
 
 theorem congr_denominator {N L M : PTm n} (h : Γ ⊢[PRAAx] L ≐ M) :

@@ -61,18 +61,12 @@ theorem coefficients_canonical (C N : PTm n) : Γ ⊢[PRAAx] canonicalCoefficien
   simpa only [Syn.shift,subst_coefficients] using coefficient_canonical (Syn.shift C) (Syn.shift N) (var 0) hN
 
 theorem horner_zero (C z : PTm n) : Γ ⊢[PRAAx] horner C z zero ≐ scalarZero := by
-  have h := rec_zero (Γ := Γ) (scalarZero : PTm 2) hornerStep ![C,z]
-  have e : (Fin.cases zero ![C,z] : Fin 3 → PTm n) = ![zero,C,z] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (scalarZero : PTm 2) hornerStep ![C,z]
   simpa only [horner,hornerF,ap3,RationalGaussianEmbedding.subst_scalarZero] using h
 
 theorem horner_succ (C z j : PTm n) : Γ ⊢[PRAAx]
     horner C z (succ j) ≐ RationalArithmetic.add (RationalArithmetic.multiply (horner C z j) z) (entry C j) := by
-  have h := rec_succ (Γ := Γ) (scalarZero : PTm 2) hornerStep j ![C,z]
-  have e₁ : (Fin.cases (succ j) ![C,z] : Fin 3 → PTm n) = ![succ j,C,z] := by funext i; fin_cases i <;> rfl
-  have e₂ : (Fin.cases j (Fin.cases (PTm.app (recDef (scalarZero : PTm 2) hornerStep) (Fin.cases j ![C,z])) ![C,z]) :
-      Fin 4 → PTm n) = ![j,horner C z j,C,z] := by funext i; fin_cases i <;> rfl
-  rw [e₁,e₂] at h
+  have h := rec_succ_vecCons (Γ := Γ) (scalarZero : PTm 2) hornerStep j ![C,z]
   simpa [horner,hornerF,ap3,hornerStep] using h
 
 theorem horner_canonical (C z j : PTm n) : Γ ⊢[PRAAx] RationalNormalForm.wellFormed (horner C z j) := by

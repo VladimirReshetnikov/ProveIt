@@ -40,19 +40,12 @@ def stage (C N h j : PTm n) : PTm n := PTm.app stageF ![j,C,N,h]
   fin_cases i <;> rfl
 
 theorem stage_zero (C N h : PTm n) : Γ ⊢[PRAAx] stage C N h zero ≐ C := by
-  have raw := rec_zero (Γ := Γ) (var 0 : PTm 3) stageStep ![C,N,h]
-  have e : (Fin.cases zero ![C,N,h] : Fin 4 → PTm n) = ![zero,C,N,h] := by funext i; fin_cases i <;> rfl
-  rw [e] at raw
+  have raw := rec_zero_vecCons (Γ := Γ) (var 0 : PTm 3) stageStep ![C,N,h]
   simpa only [stage,stageF,Syn.subst_var,Matrix.cons_val_zero] using raw
 
 theorem stage_succ (C N h j : PTm n) : Γ ⊢[PRAAx]
     stage C N h (succ j) ≐ difference (stage C N h j) (remaining N j) h := by
-  have raw := rec_succ (Γ := Γ) (var 0 : PTm 3) stageStep j ![C,N,h]
-  have a : (Fin.cases (succ j) ![C,N,h] : Fin 4 → PTm n) = ![succ j,C,N,h] := by funext i; fin_cases i <;> rfl
-  have b : (Fin.cases j (Fin.cases (PTm.app stageF (Fin.cases j ![C,N,h])) ![C,N,h]) : Fin 5 → PTm n) =
-      ![j,stage C N h j,C,N,h] := by funext i; fin_cases i <;> rfl
-  unfold stageF at b
-  rw [a,b] at raw
+  have raw := rec_succ_vecCons (Γ := Γ) (var 0 : PTm 3) stageStep j ![C,N,h]
   simpa only [stage,stageF,stageStep,GaussianPolynomialForwardDifference.subst_difference,
     GaussianRationalTranslationStages.subst_remaining,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
     Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using raw

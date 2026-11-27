@@ -93,17 +93,11 @@ ipra_subst horner
 ipra_subst evaluate
 
 theorem horner_zero (C z : PTm n) : Γ ⊢[PRAAx] horner C z zero ≐ zeroCode := by
-  have h := rec_zero (Γ := Γ) (zeroCode : PTm 2) hornerStep ![C,z]
-  have e : (Fin.cases zero ![C,z] : Fin 3 → PTm n) = ![zero,C,z] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (zeroCode : PTm 2) hornerStep ![C,z]
   simpa only [horner,hornerF,ap3,ComplexLogarithmRemainder.subst_zeroCode] using h
 
 theorem horner_succ (C z k : PTm n) : Γ ⊢[PRAAx] horner C z (succ k) ≐ add (mul (horner C z k) z) (padded C k) := by
-  have h := rec_succ (Γ := Γ) (zeroCode : PTm 2) hornerStep k ![C,z]
-  have e₁ : (Fin.cases (succ k) ![C,z] : Fin 3 → PTm n) = ![succ k,C,z] := by funext i; fin_cases i <;> rfl
-  have e₂ : (Fin.cases k (Fin.cases (PTm.app (recDef (zeroCode : PTm 2) hornerStep) (Fin.cases k ![C,z])) ![C,z]) :
-      Fin 4 → PTm n) = ![k,horner C z k,C,z] := by funext i; fin_cases i <;> rfl
-  rw [e₁,e₂] at h
+  have h := rec_succ_vecCons (Γ := Γ) (zeroCode : PTm 2) hornerStep k ![C,z]
   simpa [horner,hornerF,ap3,hornerStep] using h
 
 /-- The delayed read and the previous Horner prefix satisfy the exact
@@ -274,18 +268,12 @@ def factors (R z N : PTm n) : PTm n := ap3 factorF N R z
 ipra_subst factors
 
 theorem factors_zero (R z : PTm n) : Γ ⊢[PRAAx] factors R z zero ≐ oneCode := by
-  have h := rec_zero (Γ := Γ) (oneCode : PTm 2) factorStep ![R,z]
-  have e : (Fin.cases zero ![R,z] : Fin 3 → PTm n) = ![zero,R,z] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (oneCode : PTm 2) factorStep ![R,z]
   simpa only [factors,factorF,ap3,ComplexLogarithmRemainder.subst_oneCode] using h
 
 theorem factors_succ (R z N : PTm n) : Γ ⊢[PRAAx]
     factors R z (succ N) ≐ mul (sub z (entry R N)) (factors R z N) := by
-  have h := rec_succ (Γ := Γ) (oneCode : PTm 2) factorStep N ![R,z]
-  have e₁ : (Fin.cases (succ N) ![R,z] : Fin 3 → PTm n) = ![succ N,R,z] := by funext i; fin_cases i <;> rfl
-  have e₂ : (Fin.cases N (Fin.cases (PTm.app (recDef (oneCode : PTm 2) factorStep) (Fin.cases N ![R,z])) ![R,z]) :
-      Fin 4 → PTm n) = ![N,factors R z N,R,z] := by funext i; fin_cases i <;> rfl
-  rw [e₁,e₂] at h
+  have h := rec_succ_vecCons (Γ := Γ) (oneCode : PTm 2) factorStep N ![R,z]
   simpa [factors,factorF,ap3,factorStep] using h
 
 theorem evaluate_code_congr {C C' z z' : PTm n} (hC : Γ ⊢[PRAAx] C ≐ C') (hz : Γ ⊢[PRAAx] z ≐ z') :

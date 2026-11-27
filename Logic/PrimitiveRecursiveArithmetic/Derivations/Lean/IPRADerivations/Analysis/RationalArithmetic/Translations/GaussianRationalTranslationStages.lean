@@ -35,19 +35,12 @@ ipra_subst remaining
 ipra_subst stage
 
 theorem stage_zero (C N z : PTm n) : Γ ⊢[PRAAx] stage C N z zero ≐ C := by
-  have h := rec_zero (Γ := Γ) (var 0 : PTm 3) stageStep ![C,N,z]
-  have e : (Fin.cases zero ![C,N,z] : Fin 4 → PTm n) = ![zero,C,N,z] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (var 0 : PTm 3) stageStep ![C,N,z]
   simpa only [stage,stageF,Syn.subst_var,Matrix.cons_val_zero] using h
 
 theorem stage_succ (C N z j : PTm n) : Γ ⊢[PRAAx]
     stage C N z (succ j) ≐ quotient (stage C N z j) z (remaining N j) := by
-  have h := rec_succ (Γ := Γ) (var 0 : PTm 3) stageStep j ![C,N,z]
-  have a : (Fin.cases (succ j) ![C,N,z] : Fin 4 → PTm n) = ![succ j,C,N,z] := by funext i; fin_cases i <;> rfl
-  have b : (Fin.cases j (Fin.cases (PTm.app stageF (Fin.cases j ![C,N,z])) ![C,N,z]) :
-      Fin 5 → PTm n) = ![j,stage C N z j,C,N,z] := by funext i; fin_cases i <;> rfl
-  unfold stageF at b
-  rw [a,b] at h
+  have h := rec_succ_vecCons (Γ := Γ) (var 0 : PTm 3) stageStep j ![C,N,z]
   simpa only [stage,stageF,stageStep,GaussianRationalSyntheticDivision.subst_quotient,subst_remaining,
     Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using h

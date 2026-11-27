@@ -40,19 +40,12 @@ ipra_subst distance
 ipra_subst nearOne
 
 theorem iterate_zero (q H : PTm n) : Γ ⊢[PRAAx] iterate q H zero ≐ q := by
-  have h := rec_zero (Γ := Γ) (var 0 : PTm 2) step ![q,H]
-  have e : (Fin.cases zero ![q,H] : Fin 3 → PTm n) = ![zero,q,H] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (var 0 : PTm 2) step ![q,H]
   simpa only [iterate,iterationF,ap3,Syn.subst_var,Matrix.cons_val_zero] using h
 
 theorem iterate_succ (q H j : PTm n) : Γ ⊢[PRAAx]
     iterate q H (succ j) ≐ GaussianRationalHalfAngle.half (iterate q H j) H := by
-  have h := rec_succ (Γ := Γ) (var 0 : PTm 2) step j ![q,H]
-  have a : (Fin.cases (succ j) ![q,H] : Fin 3 → PTm n) = ![succ j,q,H] := by funext i; fin_cases i <;> rfl
-  have b : (Fin.cases j (Fin.cases (PTm.app iterationF (Fin.cases j ![q,H])) ![q,H]) :
-      Fin 4 → PTm n) = ![j,iterate q H j,q,H] := by funext i; fin_cases i <;> rfl
-  unfold iterationF at b
-  rw [a,b] at h
+  have h := rec_succ_vecCons (Γ := Γ) (var 0 : PTm 2) step j ![q,H]
   simpa only [iterate,iterationF,ap3,step,GaussianRationalHalfAngle.subst_half,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
     Matrix.head_cons,Matrix.tail_cons] using h

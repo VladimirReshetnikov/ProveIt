@@ -40,25 +40,12 @@ ipra_subst trajectory
 ipra_subst delta
 
 theorem trajectory_zero (a : PR 3) (N h x : PTm n) : Γ ⊢[PRAAx] trajectory a N h x zero ≐ qzero := by
-  have h0 := rec_zero (Γ := Γ) (qzero : PTm 3) (stepBody a) ![N,h,x]
-  have fields : (Fin.cases zero ![N,h,x] : Fin 4 → PTm n) = ![zero,N,h,x] := by
-    funext i
-    fin_cases i <;> rfl
-  rw [fields] at h0
+  have h0 := rec_zero_vecCons (Γ := Γ) (qzero : PTm 3) (stepBody a) ![N,h,x]
   simpa only [trajectory,trajectoryF,GaussianRationalHorner.subst_qzero] using h0
 
 theorem trajectory_succ (a : PR 3) (N h x j : PTm n) : Γ ⊢[PRAAx]
     trajectory a N h x (succ j) ≐ ap3 GaussianNonmonicRD.step N (polynomial a N h x j) (trajectory a N h x j) := by
-  have hs := rec_succ (Γ := Γ) (qzero : PTm 3) (stepBody a) j ![N,h,x]
-  have nextFields : (Fin.cases (succ j) ![N,h,x] : Fin 4 → PTm n) = ![succ j,N,h,x] := by
-    funext i
-    fin_cases i <;> rfl
-  have stepFields : (Fin.cases j (Fin.cases (PTm.app (trajectoryF a) (Fin.cases j ![N,h,x])) ![N,h,x]) :
-      Fin 5 → PTm n) = ![j,trajectory a N h x j,N,h,x] := by
-    funext i
-    fin_cases i <;> rfl
-  unfold trajectoryF at stepFields
-  rw [nextFields,stepFields] at hs
+  have hs := rec_succ_vecCons (Γ := Γ) (qzero : PTm 3) (stepBody a) j ![N,h,x]
   simpa only [trajectory,trajectoryF,stepBody,subst_ap3,subst_polynomial,Syn.subst_var,Matrix.cons_val_zero,
     Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.cons_val_four,Matrix.head_cons,Matrix.tail_cons] using hs
 

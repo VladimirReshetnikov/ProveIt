@@ -39,18 +39,12 @@ def geometric (U V k : PTm n) : PTm n := ap3 geometricF k U V
 ipra_subst geometric
 
 theorem geometric_zero (U V : PTm n) : Γ ⊢[PRAAx] geometric U V zero ≐ zero := by
-  have h := rec_zero (Γ := Γ) (zero : PTm 2) geometricStep ![U,V]
-  have e : (Fin.cases zero ![U,V] : Fin 3 → PTm n) = ![zero,U,V] := by funext i; fin_cases i <;> rfl
-  rw [e] at h
+  have h := rec_zero_vecCons (Γ := Γ) (zero : PTm 2) geometricStep ![U,V]
   simpa [geometric,geometricF,ap3] using h
 
 theorem geometric_succ (U V k : PTm n) : Γ ⊢[PRAAx]
     geometric U V (succ k) ≐ V*geometric U V k+pw U k*V := by
-  have h := rec_succ (Γ := Γ) (zero : PTm 2) geometricStep k ![U,V]
-  have a : (Fin.cases (succ k) ![U,V] : Fin 3 → PTm n) = ![succ k,U,V] := by funext i; fin_cases i <;> rfl
-  have b : (Fin.cases k (Fin.cases (PTm.app (recDef (zero : PTm 2) geometricStep) (Fin.cases k ![U,V])) ![U,V]) :
-      Fin 4 → PTm n) = ![k,geometric U V k,U,V] := by funext i; fin_cases i <;> rfl
-  rw [a,b] at h
+  have h := rec_succ_vecCons (Γ := Γ) (zero : PTm 2) geometricStep k ![U,V]
   simpa [geometric,geometricF,geometricStep,ap3,pw] using h
 
 /-- The literal geometric numerator also satisfies the reverse Horner law. -/
