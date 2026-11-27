@@ -168,7 +168,7 @@ theorem rate_to_prefix (z R B A k a C E G T : PTm n)
     exact GaussianNamedRateTransport.transport nameF nameF nameF nameF P P F P _ _
       (unit_positive _) relaxed same (cross_refl nameF P hl.wk)
   · have hu : (U ≐ succ (pred U))::Γ ⊢[PRAAx] le one U :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred U))
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have hs := suffix_source (Γ := (U ≐ succ (pred U))::Γ) z R B A k a C E G T h.wk
     have tail := GaussianEulerCompactExhaustionUpperTail.point_regular z R B k A U E E T hs
     have rate := GaussianNamedSmallAddendRate.independent_rate nameF nameF nameF P F S (two*majorant R) D

@@ -100,7 +100,7 @@ private theorem adjacent (a b c p : PTm n) (hb : Γ ⊢[PRAAx] le one b)
       (qsub_congr first.eqSymm second.eqSymm) (.eqRefl _) (.eqRefl _)
       (adjacent_at_zero b c p hb.wk hcb.wk)
   · have ha : (a ≐ succ (pred a))::Γ ⊢[PRAAx] le one a :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact adjacent_step a b c p ha hb.wk hc.wk hcb.wk
 
 theorem cell_distance (i p N a C E x : PTm n)

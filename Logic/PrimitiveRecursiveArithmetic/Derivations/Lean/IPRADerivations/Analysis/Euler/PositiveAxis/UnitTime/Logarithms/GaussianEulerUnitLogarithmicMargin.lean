@@ -121,7 +121,7 @@ theorem numerator_positive (p a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ �
       (congrMul (.eqRefl b) Prf.hyp0).eqTrans (mul_zero b)
     have bad : (numerator p a b ≐ zero)::Γ ⊢[PRAAx] le one zero := le_congr (.eqRefl _) e bound.wk
     exact .botE _ (succ_ne_zero ((monus_zero one).eqSymm.eqTrans bad))
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred (numerator p a b)))
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem numerator_upper (p a b : PTm n) (h : Γ ⊢[PRAAx] source a b) : Γ ⊢[PRAAx]
     le (numerator p a b) (b*denominator p a b) := by

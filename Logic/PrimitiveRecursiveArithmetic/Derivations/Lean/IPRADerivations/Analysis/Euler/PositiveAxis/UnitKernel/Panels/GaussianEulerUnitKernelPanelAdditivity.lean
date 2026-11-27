@@ -124,9 +124,9 @@ theorem original_additivity (z R B a C1 C2 E G : PTm n) (h : Γ ⊢[PRAAx] sourc
         (data_congr z R B a (C1+zero) a (C1+C2) E G (.eqRefl _) (congrAdd (.eqRefl _) Prf.hyp0.eqSymm))
         (addedData_congr z R B a C1 zero C1 C2 E G (.eqRefl _) Prf.hyp0.eqSymm) law
     · have h1 : (C2 ≐ ConciseIPRA.PTm.succ (pred C2)) :: (C1 ≐ ConciseIPRA.PTm.succ (pred C1)) :: Γ ⊢[PRAAx] le one C1 :=
-        le_congr (.eqRefl _) Prf.hyp1.eqSymm (zero_lt_succ (pred C1))
+        Order.zero_lt_of_eq_succ Prf.hyp1
       have h2 : (C2 ≐ ConciseIPRA.PTm.succ (pred C2)) :: (C1 ≐ ConciseIPRA.PTm.succ (pred C1)) :: Γ ⊢[PRAAx] le one C2 :=
-        le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred C2))
+        Order.zero_lt_of_eq_succ Prf.hyp0
       exact GaussianCompactNamedAdditivity.name_additivity evaluatorF a C1 C2 E (lipschitz R G) one (fixedData z B)
         (positive_additivity_input z R B a C1 C2 E G h.wk.wk h1 h2)
 

@@ -137,7 +137,7 @@ theorem original_upper_tail_bound (s j p z R B A e f d h L Q S U E T a W : PTm n
     let Δ := (W ≐ succ (pred W)) :: Γ
     have orig : Δ ⊢[PRAAx] source z R B A e f d h L Q S E T a W := hs.wk
     have ed := orig.andE₂.andE₂.andE₁
-    have wb : Δ ⊢[PRAAx] le one W := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred W))
+    have wb : Δ ⊢[PRAAx] le one W := Order.zero_lt_of_eq_succ Prf.hyp0
     have pos := physical_cutoffs_positive j (Q*A) (L*R) L S U orig.andE₁.andE₂.andE₂.andE₂.andE₁
       orig.andE₂.andE₁.andE₂.andE₂.andE₁.andE₂ hU.wk
     have hD : Δ ⊢[PRAAx] le one D := le_trans (le_succ_self one) pos.andE₁
@@ -190,7 +190,7 @@ theorem original_lower_tail_bound (s j p z R B A e f d h L Q S U E T a W : PTm n
     have orig : Δ ⊢[PRAAx] source z R B A e f d h L Q S E T a W := hs.wk
     have ed := orig.andE₂.andE₂.andE₁
     have ha := orig.andE₂.andE₂.andE₂.andE₁
-    have wb : Δ ⊢[PRAAx] le one W := le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred W))
+    have wb : Δ ⊢[PRAAx] le one W := Order.zero_lt_of_eq_succ Prf.hyp0
     have pos := physical_cutoffs_positive j (Q*A) (L*R) L S U orig.andE₁.andE₂.andE₂.andE₂.andE₁
       orig.andE₂.andE₁.andE₂.andE₂.andE₁.andE₂ hU.wk
     have g := lower_geometry a W E T D β ed (le_trans (le_succ_self one) pos.andE₁) pos.andE₂ htail.wk

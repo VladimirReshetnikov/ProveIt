@@ -71,7 +71,7 @@ theorem start_positive (z R B a C E G : PTm n) (h : Γ ⊢[PRAAx] source z R B a
     have bad : (a ≐ zero)::Γ ⊢[PRAAx] le one zero := le_trans h.andE₂.andE₁.wk
       (le_congr (.eqRefl _) e h.andE₂.andE₂.andE₁.wk)
     exact .botE _ (succ_ne_zero ((monus_zero one).eqSymm.eqTrans bad))
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred a))
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 theorem right_endpoint_le_one (z R B a C E G : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E G) : Γ ⊢[PRAAx]
     le (a+C) E :=

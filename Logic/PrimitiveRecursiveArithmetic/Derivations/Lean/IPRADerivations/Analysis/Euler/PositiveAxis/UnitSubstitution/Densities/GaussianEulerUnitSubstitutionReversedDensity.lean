@@ -80,7 +80,7 @@ theorem top_positive (z R B a C E T N : PTm n) (h : Γ ⊢[PRAAx] source z R B a
   · have e : (T ≐ zero)::Γ ⊢[PRAAx] E*T ≐ zero := (congrMul (.eqRefl E) Prf.hyp0).eqTrans (mul_zero E)
     have bad : (T ≐ zero)::Γ ⊢[PRAAx] le one zero := le_congr (.eqRefl _) e bound.wk
     exact .botE _ (succ_ne_zero ((monus_zero one).eqSymm.eqTrans bad))
-  · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred T))
+  · exact Order.zero_lt_of_eq_succ Prf.hyp0
 
 /-- Endpoint-inclusive actual grid geometry supplies all unit-decay guards. -/
 theorem grid_unit_source (j N z R B a C E T : PTm n) (h : Γ ⊢[PRAAx] source z R B a C E T N)

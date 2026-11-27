@@ -68,7 +68,7 @@ theorem compact_time_domain (a b E T : PTm n) (h : Γ ⊢[PRAAx] source a b E T)
         (congrMul (.eqRefl E) Prf.hyp0).eqTrans (mul_zero E)
       have bad : (a ≐ zero)::Γ ⊢[PRAAx] le one zero := le_congr (.eqRefl _) e bound.wk
       exact .botE _ (succ_ne_zero ((monus_zero one).eqSymm.eqTrans bad))
-    · exact le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred a))
+    · exact Order.zero_lt_of_eq_succ Prf.hyp0
   exact .andI (.andI aPositive h.andE₁)
     (.andI (le_trans low (mul_le_mul_right a eG)) (le_trans high (mul_le_mul_right b tG)))
 

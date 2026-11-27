@@ -112,7 +112,7 @@ theorem original_lattice_to_compact_name (s q k z R B e f d h Q S E T a C N : PT
       (distance_radius_mono _ _ zero _ (num 3) _ hu hu (le_congr (zero_mul _).eqSymm (.eqRefl _) (zero_le _))
         (GaussianRationalPowerDifference.distance_refl_zero qzero _ hu))
   · have hK : ((K₀ ≐ succ (pred K₀)) :: Γ) ⊢[PRAAx] le one K₀ :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     have coarse := GaussianCompactMeshIndependence.arbitrary_refinement evaluatorF s q K₀ A K M L U X bound.wk hK hq.wk
     have l := GaussianCompactRiemannName.quadrature_index_congr
       (Γ := (K₀ ≐ succ (pred K₀)) :: Γ) evaluatorF q K (K₀*J) A K M X count_eq.wk

@@ -111,7 +111,7 @@ theorem cofinal_bound (s z R B k A C E G T : PTm n) (h : Γ ⊢[PRAAx] source z 
   · exact bound_congr (point_zero_of_width_zero s z R B k A C E G T h.wk.andE₂.andE₁ Prf.hyp0).eqSymm
       (.eqRefl _) (.eqRefl _) (GaussianEulerNamedUpperTail.zero_bound _ _ (cofinal_denominator_positive s k A R))
   · have hc : (C ≐ succ (pred C))::Γ ⊢[PRAAx] le one C :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact cofinal_bound_positive s z R B k A C E G T h.wk hc
 
 private theorem observation_slack (p s z R B k A C E G T : PTm n)

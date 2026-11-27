@@ -133,7 +133,7 @@ theorem original_comparison (p q z R B a C M G : PTm n) (h : Γ ⊢[PRAAx] sourc
       (numerator p q C) (denominator p q M) := by
   refine .orE (zero_or_succ C) ?_ ?_
   · exact empty_comparison _ _ _ _ _ _ _ h.andE₂.andE₁.wk Prf.hyp0
-  · exact positive_comparison _ _ _ _ _ _ _ _ _ h.wk (le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ (pred C)))
+  · exact positive_comparison _ _ _ _ _ _ _ _ _ h.wk (Order.zero_lt_of_eq_succ Prf.hyp0)
 
 theorem actual_original_unit_lattice_quadrature_comparison_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 9
     (source (var 2) (var 3) (var 4) (var 5) (var 6) (var 7) (var 8) ⟶

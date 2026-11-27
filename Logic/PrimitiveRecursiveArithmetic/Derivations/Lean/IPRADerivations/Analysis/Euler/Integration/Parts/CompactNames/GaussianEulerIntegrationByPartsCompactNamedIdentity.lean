@@ -150,7 +150,7 @@ theorem original_compact_IBP_names (z R B a C E T : PTm n) (h : Γ ⊢[PRAAx] in
       .impI (zero_identity z R B a E T Prf.hyp0)
     exact (statement_width_congr z R B a zero C E T Prf.hyp0.eqSymm base).impE h.wk
   · have positive : (C ≐ ConciseIPRA.PTm.succ (LeanProofs.IPRA.PTm.pred C))::Γ ⊢[PRAAx] le one C :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact positive_identity z R B a C E T h.wk positive
 
 theorem actual_original_compact_Euler_IBP_regular_names_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 7

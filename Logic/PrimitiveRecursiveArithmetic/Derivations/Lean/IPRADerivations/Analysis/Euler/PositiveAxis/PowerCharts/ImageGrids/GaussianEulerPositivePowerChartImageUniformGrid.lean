@@ -59,7 +59,7 @@ theorem quadrature_value (F : PR 3) (p K a M x : PTm n) (hM : Γ ⊢[PRAAx] le o
       (GaussianRationalFiniteSum.sum_zero _ _)
     exact left.eqTrans ((qmul_congr (.eqRefl _) s0).eqTrans (qmul_zero_right _)).eqSymm
   · have hK : (K ≐ ConciseIPRA.PTm.succ (pred K))::Γ ⊢[PRAAx] le one K :=
-      le_congr (.eqRefl _) Prf.hyp0.eqSymm (zero_lt_succ _)
+      Order.zero_lt_of_eq_succ Prf.hyp0
     exact qmul_congr (weight_value K M hK hM.wk) (.eqRefl _)
 
 theorem actual_original_native_lattice_grid_value_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 4

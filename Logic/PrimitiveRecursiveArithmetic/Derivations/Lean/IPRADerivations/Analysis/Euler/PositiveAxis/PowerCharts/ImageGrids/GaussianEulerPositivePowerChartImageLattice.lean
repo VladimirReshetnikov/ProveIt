@@ -70,7 +70,7 @@ theorem multiplier_positive (D : PTm 2) (i N x J : PTm n)
   have hF : Γ ⊢[PRAAx] fact (total D N x) ≐ inst2 D i x * quo (fact (total D N x)) (inst2 D i x) :=
     DiophantineNumberTheory.KhinchinConvergence.fact_dvd hd (term_le_sum D h)
   have hQ := AnalyticNumberTheory.EulerDomination.quo_pos_of hF (AnalyticNumberTheory.Primes.fact_pos _)
-  exact positive_product _ _ hJ (le_congr (.eqRefl _) hQ.eqSymm (zero_lt_succ _))
+  exact positive_product _ _ hJ (Order.zero_lt_of_eq_succ hQ)
 
 theorem node_fraction (P D : PTm 2) (i N x J : PTm n)
     (hs : Γ ⊢[PRAAx] positiveDenominators D (succ N) x) (hi : Γ ⊢[PRAAx] le i N) (hJ : Γ ⊢[PRAAx] le one J) :
