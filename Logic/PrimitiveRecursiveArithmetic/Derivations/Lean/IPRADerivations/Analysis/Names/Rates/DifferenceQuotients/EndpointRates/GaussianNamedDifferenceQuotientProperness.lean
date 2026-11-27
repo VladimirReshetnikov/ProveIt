@@ -14,7 +14,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedDifferenceQuotientProperness
 
 open_ipra
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_refl)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_to_diagonal)
 open GaussianNameRingLaws (negativeF negativeData negative_fast negative_equivalent)
 open GaussianNameArithmetic (add_equivalent multiply_equivalent)
 open GaussianBoundedConstantProductName (constantF constant_regular)
@@ -47,7 +47,7 @@ theorem proper (f f' g g' : PR 2) (x x' y y' h D : PTm n)
   exact multiply_equivalent constantF constantF (GaussianNamedDifference.nameF f g) (GaussianNamedDifference.nameF f' g')
     (inverse h D) (inverse h D) (GaussianNamedDifference.data x y) (GaussianNamedDifference.data x' y') hc hc
     (GaussianNamedDifference.name_regular f g x y hf hg) (GaussianNamedDifference.name_regular f' g' x' y' hfp hgp)
-    (cross_to_diagonal _ _ _ _ (cross_refl _ _ hc))
+    (diagonal_refl _ (inverse h D))
     (cross_to_diagonal _ _ _ _ (difference_proper f f' g g' x x' y y' hf hfp hg hgp hfe hge))
 
 theorem actual_original_divided_difference_endpoint_replacement_closed (f f' g g' : PR 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6

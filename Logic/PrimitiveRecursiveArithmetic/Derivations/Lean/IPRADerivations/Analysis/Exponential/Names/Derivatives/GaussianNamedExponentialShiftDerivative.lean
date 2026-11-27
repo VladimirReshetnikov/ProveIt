@@ -27,7 +27,7 @@ open GaussianExponentialAddition (sumData productF productData exponential_add_c
 open GaussianExponentialRadiusIndependence (independent_radii_proper input_widen)
 open GaussianNameArithmetic (addF addData add_fast add_equivalent multiplyF multiplyData multiply_fast multiply_equivalent)
 open GaussianNameBounds (U all_samples_bounded)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_to_diagonal cross_trans)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_refl cross_symm cross_to_diagonal cross_trans)
 open GaussianNameRingLaws
   (add_associative add_commutative add_negative distributive multiply_one negative_fast negativeF negativeData
     oneF one_at one_fast zeroF zero_at zero_fast)
@@ -91,7 +91,7 @@ private theorem weighted_cancel (E g : PR 2) (d y : PTm n)
   have hh := multiply_fast E (linearF g) d (linearData y) he (add_fast _ _ _ _ (one_fast zero) hg)
   have distribute := distributive E oneF g d zero y he (one_fast zero) hg
   have same_one := multiply_equivalent E E oneF oneF d d zero d he he (one_fast zero) (one_fast d)
-    (cross_to_diagonal _ _ _ _ (cross_refl _ _ he)) (cross_to_diagonal _ _ _ _ (GaussianNameRingLaws.one_name_cross zero d))
+    (diagonal_refl E d) (cross_to_diagonal _ _ _ _ (GaussianNameRingLaws.one_name_cross zero d))
   have one := add_cross Q E W W q d z z hq he hw hw
     (cross_trans _ _ _ _ _ _ same_one (multiply_one E d he)) (cross_refl _ _ hw)
   have change := difference_proper H (addF E W) E E u (addData d z) d d hh

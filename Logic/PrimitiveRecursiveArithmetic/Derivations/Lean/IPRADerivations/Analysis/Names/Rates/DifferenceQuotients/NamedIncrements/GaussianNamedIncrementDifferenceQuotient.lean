@@ -18,7 +18,7 @@ open_ipra
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast multiply_equivalent)
 open GaussianNameRingLaws (oneF one_fast multiply_associative multiply_commutative multiply_one_left)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans cross_to_diagonal)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_symm cross_trans cross_to_diagonal)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalL1 (rawGaussian rawDen raw_den_positive)
@@ -65,7 +65,7 @@ theorem left_product (F G K : PR 2) (x y z a : PTm n) (h : Γ ⊢[PRAAx] input F
     (GaussianBoundedInverseApartness.ones_equivalent z v)
   have reduce := multiply_equivalent (multiplyF K J) oneF P P (multiplyData K J z u) v v v
     (multiply_fast K J z u hk hj) (one_fast v) hp hp (cross_to_diagonal _ _ _ _ unit)
-    (cross_to_diagonal _ _ _ _ (cross_refl P v hp))
+    (diagonal_refl P v)
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ group)
     (cross_trans _ _ _ _ _ _ reduce (multiply_one_left P v hp))
 

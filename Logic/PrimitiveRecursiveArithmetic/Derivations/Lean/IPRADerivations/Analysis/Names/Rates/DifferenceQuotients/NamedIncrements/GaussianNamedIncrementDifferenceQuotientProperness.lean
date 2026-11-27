@@ -16,7 +16,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianNamedIncrementDifferenceQuotientPrope
 
 open_ipra
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_refl)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_to_diagonal)
 open GaussianNameArithmetic (multiply_equivalent)
 open GaussianNamedIncrementDifferenceQuotient (nameF data)
 
@@ -40,7 +40,7 @@ theorem proper (F F' G G' K : PR 2) (x x' y y' z a : PTm n)
   exact multiply_equivalent J J (GaussianNamedDifference.nameF F G) (GaussianNamedDifference.nameF F' G')
     u u (GaussianNamedDifference.data x y) (GaussianNamedDifference.data x' y') hj hj
     (GaussianNamedDifference.name_regular F G x y hf hg) (GaussianNamedDifference.name_regular F' G' x' y' hfp hgp)
-    (cross_to_diagonal _ _ _ _ (cross_refl J u hj))
+    (diagonal_refl J u)
     (cross_to_diagonal _ _ _ _ (GaussianNamedDifferenceQuotientProperness.difference_proper F F' G G' x x' y y' hf hfp hg hgp hfe hge))
 
 theorem actual_named_increment_quotient_endpoint_replacement_closed (F F' G G' K : PR 2) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6

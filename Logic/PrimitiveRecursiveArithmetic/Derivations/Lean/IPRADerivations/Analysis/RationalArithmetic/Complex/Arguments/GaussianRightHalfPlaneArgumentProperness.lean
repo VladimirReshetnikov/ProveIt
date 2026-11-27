@@ -20,7 +20,7 @@ open_ipra
 open GaussianArctangentQuarterExponential (quarterF quarter_regular)
 open GaussianBoundedConstantProductName (constantF constant_regular ordinary_product_identity)
 open GaussianNameArithmetic (multiply_equivalent add_equivalent)
-open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_refl cross_to_diagonal)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_trans cross_symm cross_to_diagonal)
 open GaussianNameRingLaws (negativeF negativeData negative_fast negative_equivalent)
 open GaussianRightHalfPlaneArgument
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
@@ -58,7 +58,7 @@ theorem small_cross (A B C D : PTm n) (hA : Γ ⊢[PRAAx] le one A)
   have right := ordinary_product_identity atanF one GaussianRightHalfPlaneArgument.half (atData D C) (.andI q half_bounded)
   have slopes := GaussianArctangentPartialRepresentation.representation_cross B A D C hA hC hB h
   have center := multiply_equivalent constantF constantF atanF atanF GaussianRightHalfPlaneArgument.half GaussianRightHalfPlaneArgument.half (atData B A) (atData D C)
-    a a p q (cross_to_diagonal _ _ _ _ (cross_refl _ _ a)) (cross_to_diagonal _ _ _ _ slopes)
+    a a p q (diagonal_refl constantF GaussianRightHalfPlaneArgument.half) (cross_to_diagonal _ _ _ _ slopes)
   exact cross_trans _ _ _ _ _ _ left (cross_trans _ _ _ _ _ _ center (cross_symm _ _ _ _ right))
 
 theorem large_cross (A B C D : PTm n) (hA : Γ ⊢[PRAAx] le one A)
@@ -78,7 +78,7 @@ theorem large_cross (A B C D : PTm n) (hA : Γ ⊢[PRAAx] le one A)
   exact add_equivalent quarterF quarterF (negativeF smallF) (negativeF smallF)
     zero zero (negativeData (smallData B A)) (negativeData (smallData D C))
     q q (negative_fast _ _ left) (negative_fast _ _ right)
-    (cross_to_diagonal _ _ _ _ (cross_refl _ _ q)) (cross_to_diagonal _ _ _ _ neg)
+    (diagonal_refl quarterF zero) (cross_to_diagonal _ _ _ _ neg)
 
 theorem unsigned_cross (A B C D : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hC : Γ ⊢[PRAAx] le one C) (h : Γ ⊢[PRAAx] B*C ≐ D*A) :

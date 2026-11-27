@@ -24,7 +24,7 @@ open GaussianArctangentNamedInverse (data)
 open GaussianArctangentQuarterExponential (quarterF quarter_regular)
 open GaussianNamedSineFromExponential (sineF sineData sine_regular sine_proper)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_equivalent)
-open GaussianNameEquivalence (crossEquivalent cross_symm cross_trans cross_refl cross_to_diagonal)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_symm cross_trans cross_to_diagonal)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -55,7 +55,7 @@ private theorem transport_chord (f : PR 2) (x z : PTm n) (h : Γ ⊢[PRAAx] inpu
   have hQuarter := quarter_regular (Γ := Γ) z
   have eqProd := multiply_equivalent s (sineF f) quarterF quarterF b (sineData f R x) z z
     (GaussianArctangentNamedChordExtension.sine_regular inv y hInv) (sine_regular f R x hF) hQuarter hQuarter
-    (cross_to_diagonal _ _ _ _ eqSin) (cross_to_diagonal _ _ _ _ (cross_refl _ _ hQuarter))
+    (cross_to_diagonal _ _ _ _ eqSin) (diagonal_refl quarterF z)
   exact GaussianArctangentImaginaryOrderTransport.imaginary_order_congr _ _ _ _ _ _ _ _
     (cross_symm _ _ _ _ eqAngle) eqProd (GaussianArctangentNamedChordExtension.original_chord inv y z hInv)
 

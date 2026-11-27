@@ -21,7 +21,7 @@ open GaussianGammaFiniteApproximantName (exponential_input exponentialInputData)
 open GaussianNameArithmetic (addF addData add_fast add_equivalent multiplyF multiplyData
   multiply_fast multiply_equivalent)
 open GaussianEulerIntegrandName (logarithmF decayPoint coefficient)
-open GaussianNameEquivalence (crossEquivalent cross_to_diagonal cross_refl cross_trans)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_to_diagonal cross_trans)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (qnegative)
@@ -69,7 +69,7 @@ theorem original_coefficient (f : PR 2) (x z B : PTm n)
   let c : PTm n := qnegative qone
   have h := add_equivalent f constantF constantF constantF x v c c
     hf (constant_regular v) (constant_regular c) (constant_regular c)
-    (cross_to_diagonal _ _ _ _ he) (cross_to_diagonal _ _ _ _ (cross_refl _ _ (constant_regular c)))
+    (cross_to_diagonal _ _ _ _ he) (diagonal_refl constantF c)
   exact cross_trans _ _ _ _ _ _ h (GaussianGammaEulerShift.constant_sum_cross v c)
 
 theorem original_integrand (f : PR 2) (x z B a b : PTm n)
@@ -84,12 +84,12 @@ theorem original_integrand (f : PR 2) (x z B a b : PTm n)
   have power := multiply_equivalent (coefficientF f) constantF logarithmF logarithmF
     (coefficientData x) (coefficient z B) l l (coefficient_regular f x hf)
     (constant_regular _) logName logName (cross_to_diagonal _ _ _ _ c)
-    (cross_to_diagonal _ _ _ _ (cross_refl _ _ logName))
+    (diagonal_refl _ _)
   have exp := add_equivalent (powerExponentF f) GaussianEulerIntegrandName.powerExponentF constantF constantF
     (powerExponentData f x a b) (GaussianEulerIntegrandName.powerExponentData z B a b) d d
     (power_exponent_regular f x a b hf ht.andE₂) (GaussianEulerIntegrandName.power_exponent_regular z B a b ht)
     (constant_regular d) (constant_regular d) (cross_to_diagonal _ _ _ _ power)
-    (cross_to_diagonal _ _ _ _ (cross_refl _ _ (constant_regular d)))
+    (diagonal_refl constantF d)
   exact GaussianExponentialRadiusIndependence.independent_radii_proper _ _ _ _ _ _
     (exponential_input _ _ (exponent_regular f x a b hf ht.andE₂))
     (GaussianEulerIntegrandName.exponent_input z B a b ht) exp

@@ -21,7 +21,7 @@ open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianNameArithmetic (multiplyF multiplyData multiplyRawF multiplyModulus multiply_raw_at
   multiply_regular product_distance)
 open GaussianNameBounds (U sample_bound)
-open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_trans)
+open GaussianNameEquivalence (point_at crossEquivalent cross_at cross_trans)
 open GaussianNameRingLaws (oneF one_at one_fast normalized_to_sample multiply_one_left)
 open GaussianNamedFiniteProduct (sample sample_zero sample_succ rowBoundsAt rowDistance)
 open GaussianNamedFiniteProductName (nameF data name_at rawF rawData raw_at raw_regular rowBounds rowRegular
@@ -51,7 +51,7 @@ theorem empty_cross (f : PR 3) (R L x : PTm n) : Γ ⊢[PRAAx]
   let p : PTm (n+2) := var 1
   let q : PTm (n+2) := var 0
   have exactValue := (name_at (Γ := Δ) f p zero (sh R) (sh L) (sh x)).eqTrans (sample_zero _ _ _)
-  have h := cross_at (Γ := Δ) oneF oneF (sh x) (sh x) p q (cross_refl _ _ (one_fast _))
+  have h := point_at (Γ := Δ) oneF (sh x) p q (one_fast _)
   simpa [Δ,sh,p,q,Syn.shift] using
     distance_congr ((one_at p (sh x)).eqTrans exactValue.eqSymm) (.eqRefl _) (.eqRefl _) (.eqRefl _) h
 

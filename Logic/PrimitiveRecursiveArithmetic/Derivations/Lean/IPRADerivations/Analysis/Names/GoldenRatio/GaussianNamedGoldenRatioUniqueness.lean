@@ -23,7 +23,7 @@ open GaussianGoldenRatioRationalUniqueness (residual residual_distance)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianGammaHalfSqrtBrackets (fraction_gap)
 open GaussianNameArithmetic (addF addData multiplyF multiplyData multiplyModulus)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans cross_to_diagonal diagonal_at)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_symm cross_trans cross_to_diagonal diagonal_at)
 open GaussianRationalHorner (qmul qadd positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
@@ -115,7 +115,7 @@ theorem equal_root_is_quadratic (f : PR 2) (x : PTm n) (reg : Γ ⊢[PRAAx] poin
     reg gold reg gold hh hh
   have fixed : Γ ⊢[PRAAx] pointCN constantF (onePoint : PTm n) := constant_regular _
   have add := GaussianNameArithmetic.add_equivalent f goldenF constantF constantF x goldenData onePoint onePoint
-    reg gold fixed fixed (cross_to_diagonal _ _ _ _ hh) (cross_to_diagonal _ _ _ _ (cross_refl _ _ fixed))
+    reg gold fixed fixed (cross_to_diagonal _ _ _ _ hh) (diagonal_refl constantF onePoint)
   have center := GaussianNamedGoldenRatio.quadratic_identity (Γ := Γ) (goldenData : PTm n)
   exact cross_trans _ _ _ _ _ _ sq (cross_trans _ _ _ _ _ _ center (cross_symm _ _ _ _ add))
 

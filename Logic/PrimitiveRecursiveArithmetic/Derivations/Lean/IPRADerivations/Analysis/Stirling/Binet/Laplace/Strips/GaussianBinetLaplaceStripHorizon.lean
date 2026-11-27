@@ -21,7 +21,7 @@ open GaussianBinetLaplaceStrip
 open GaussianCompactRiemannName (inside evaluatorName nameData)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_to_diagonal)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_to_diagonal)
 open GaussianNameArithmetic (multiplyF multiplyData)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -33,7 +33,7 @@ private theorem same_kernel (K : PR 2) (x y k : PTm n)
     (he : Γ ⊢[PRAAx] crossEquivalent ExpF ExpF x y) :
     Γ ⊢[PRAAx] crossEquivalent (multiplyF ExpF K) (multiplyF ExpF K) (multiplyData ExpF K x k) (multiplyData ExpF K y k) :=
   GaussianNameArithmetic.multiply_equivalent ExpF ExpF K K x y k k hx hy hk hk
-    (cross_to_diagonal _ _ _ _ he) (cross_to_diagonal _ _ _ _ (cross_refl K k hk))
+    (cross_to_diagonal _ _ _ _ he) (diagonal_refl K k)
 
 theorem integrand_coherence (K : Kernel) (X Y D sign R T S U N A B : PTm n)
     (h : Γ ⊢[PRAAx] input X Y D sign R T A B) (h' : Γ ⊢[PRAAx] input X Y D sign S U A B) :

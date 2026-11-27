@@ -20,7 +20,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN subst_pointCN)
 open GaussianNameArithmetic (addF addData add_fast add_equivalent multiplyF
   multiplyData multiply_fast multiplyModulus multiply_equivalent sum_distance)
-open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans cross_to_diagonal)
+open GaussianNameEquivalence (diagonal_refl crossEquivalent cross_refl cross_symm cross_trans cross_to_diagonal)
 open GaussianNameRingLaws (three multiply_sample_error add_sample_error product_right_error
   equivalent_of_envelope distributive multiply_associative multiply_commutative multiply_one_left)
 open GaussianRationalDistanceOrder (distance_triangle_same)
@@ -194,7 +194,7 @@ theorem product_rule (I1 I0 G1 G0 K : PR 2) (i1 i0 g1 g0 z a : PTm n)
     have hd := GaussianNamedDifference.name_regular F G x y hf hg
     have cancel := multiply_equivalent C C (multiplyF K (QF F G K)) (DF F G) c c
       (multiplyData K (QF F G K) z (qd F G K x y z a)) (dd x y) hc hc
-      (multiply_fast K _ z _ hk.andE₁ hq) hd (cross_to_diagonal _ _ _ _ (cross_refl C c hc))
+      (multiply_fast K _ z _ hk.andE₁ hq) hd (diagonal_refl C c)
       (cross_to_diagonal _ _ _ _
         (GaussianNamedIncrementDifferenceQuotient.left_product F G K x y z a (.andI hf (.andI hg hk))))
     exact cross_trans _ _ _ _ _ _
