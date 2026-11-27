@@ -27,23 +27,27 @@ namespace LeanProofs.IPRA.Topology.FiniteConnected
 
 open_ipra
 open LeanProofs.IPRA.Topology.FiniteInteriorClosure
-open LeanProofs.IPRA.Topology.FiniteClosureMaps (comp clopen_walk)
+open LeanProofs.IPRA.Topology.FiniteClosureMaps (comp clopen_walk clopen_walk_of_relation)
 open LeanProofs.IPRA.Foundations.RichardsonLogic (iffF)
-open LeanProofs.IPRA.Foundations.ObservationCut.Finality (Walk pathDerivation)
+open LeanProofs.IPRA.Foundations.ObservationCut.Finality (Walk)
 
 variable {n k l m : ℕ} {Γ : List (Fm PTm n)}
 variable {relX : Fin k → Fin k → Prop} {relY : Fin l → Fin l → Prop} {relZ : Fin m → Fin m → Prop}
 
-theorem walk_map {f : Fin k → Fin m} (hf : ∀ x x', relX x x' → relZ (f x) (f x')) {x y : Fin k}
-    (w : Walk (comp relX) x y) : Walk (comp relZ) (f x) (f y) := by
+/-- A map that preserves directed edges also preserves comparability walks. -/
+private theorem map_comparability_walk {V W : Type} {R : V → V → Prop} {S : W → W → Prop}
+    (f : V → W) (hf : ∀ a b, R a b → S (f a) (f b))
+    {x y : V} (w : Walk (fun a b => R a b ∨ R b a) x y) :
+    Walk (fun a b => S a b ∨ S b a) (f x) (f y) := by
   induction w with
   | trivial => exact .trivial _
-  | edge e =>
-    rcases e with e | e
-    · exact .edge (.inl (hf _ _ e))
-    · exact .edge (.inr (hf _ _ e))
+  | edge e => exact .edge (e.imp (hf _ _) (hf _ _))
   | reverse _ ih => exact .reverse ih
   | join _ _ ih₁ ih₂ => exact .join ih₁ ih₂
+
+theorem walk_map {f : Fin k → Fin m} (hf : ∀ x x', relX x x' → relZ (f x) (f x')) {x y : Fin k}
+    (w : Walk (comp relX) x y) : Walk (comp relZ) (f x) (f y) :=
+  map_comparability_walk f hf w
 
 /-- The image of a connected set meets each clopen set of the target in all or nothing. -/
 theorem image_clopen_const [DecidableRel relZ] {f : Fin k → Fin m} (hf : ∀ x x', relX x x' → relZ (f x) (f x'))
@@ -59,26 +63,12 @@ def relP (relX : Fin k → Fin k → Prop) (relY : Fin l → Fin l → Prop) (p 
   relX p.1 q.1 ∧ relY p.2 q.2
 
 theorem walk_fst (hreflY : ∀ y, relY y y) {x x' : Fin k} (w : Walk (comp relX) x x') (y : Fin l) :
-    Walk (pcomp (relP relX relY)) (x, y) (x', y) := by
-  induction w with
-  | trivial => exact .trivial _
-  | edge e =>
-    rcases e with e | e
-    · exact .edge (.inl ⟨e, hreflY y⟩)
-    · exact .edge (.inr ⟨e, hreflY y⟩)
-  | reverse _ ih => exact .reverse ih
-  | join _ _ ih₁ ih₂ => exact .join ih₁ ih₂
+    Walk (pcomp (relP relX relY)) (x, y) (x', y) :=
+  map_comparability_walk (S := relP relX relY) (fun u => (u, y)) (fun _ _ e => ⟨e, hreflY y⟩) w
 
 theorem walk_snd (hreflX : ∀ x, relX x x) (x : Fin k) {y y' : Fin l} (w : Walk (comp relY) y y') :
-    Walk (pcomp (relP relX relY)) (x, y) (x, y') := by
-  induction w with
-  | trivial => exact .trivial _
-  | edge e =>
-    rcases e with e | e
-    · exact .edge (.inl ⟨hreflX x, e⟩)
-    · exact .edge (.inr ⟨hreflX x, e⟩)
-  | reverse _ ih => exact .reverse ih
-  | join _ _ ih₁ ih₂ => exact .join ih₁ ih₂
+    Walk (pcomp (relP relX relY)) (x, y) (x, y') :=
+  map_comparability_walk (S := relP relX relY) (fun v => (x, v)) (fun _ _ e => ⟨hreflX x, e⟩) w
 
 /-- Products of connected sets are connected. -/
 theorem walk_prod (hreflX : ∀ x, relX x x) (hreflY : ∀ y, relY y y) {x x' : Fin k} {y y' : Fin l}
@@ -87,26 +77,12 @@ theorem walk_prod (hreflX : ∀ x, relX x x) (hreflY : ∀ y, relY y y) {x x' : 
   .join (walk_fst hreflY w₁ y) (walk_snd hreflX x' w₂)
 
 theorem walk_proj₁ {p q : Fin k × Fin l} (w : Walk (pcomp (relP relX relY)) p q) :
-    Walk (comp relX) p.1 q.1 := by
-  induction w with
-  | trivial => exact .trivial _
-  | edge e =>
-    rcases e with e | e
-    · exact .edge (.inl e.1)
-    · exact .edge (.inr e.1)
-  | reverse _ ih => exact .reverse ih
-  | join _ _ ih₁ ih₂ => exact .join ih₁ ih₂
+    Walk (comp relX) p.1 q.1 :=
+  map_comparability_walk (R := relP relX relY) Prod.fst (fun _ _ e => e.1) w
 
 theorem walk_proj₂ {p q : Fin k × Fin l} (w : Walk (pcomp (relP relX relY)) p q) :
-    Walk (comp relY) p.2 q.2 := by
-  induction w with
-  | trivial => exact .trivial _
-  | edge e =>
-    rcases e with e | e
-    · exact .edge (.inl e.2)
-    · exact .edge (.inr e.2)
-  | reverse _ ih => exact .reverse ih
-  | join _ _ ih₁ ih₂ => exact .join ih₁ ih₂
+    Walk (comp relY) p.2 q.2 :=
+  map_comparability_walk (R := relP relX relY) Prod.snd (fun _ _ e => e.2) w
 
 /-- A clopen family on the product is constant on every product of components. -/
 theorem prod_clopen_const (hreflX : ∀ x, relX x x) (hreflY : ∀ y, relY y y) {W : Fin k × Fin l → Fm PTm n}
@@ -114,15 +90,6 @@ theorem prod_clopen_const (hreflX : ∀ x, relX x x) (hreflY : ∀ y, relY y y) 
     (hC : ∀ p q, relP relX relY p q → (Γ ⊢[PRAAx] W q ⟶ W p))
     {x x' : Fin k} {y y' : Fin l} (w₁ : Walk (comp relX) x x') (w₂ : Walk (comp relY) y y') :
     Γ ⊢[PRAAx] iffF (W (x, y)) (W (x', y')) :=
-  pathDerivation Γ (pcomp (relP relX relY)) (fun a b => iffF (W a) (W b))
-    (fun a => .andI (.impI Prf.hyp0) (.impI Prf.hyp0))
-    (fun a b h => .andI h.andE₂ h.andE₁)
-    (fun a b c h₁ h₂ => .andI (.impI (.impE h₂.andE₁.wk (.impE h₁.andE₁.wk Prf.hyp0)))
-      (.impI (.impE h₁.andE₂.wk (.impE h₂.andE₂.wk Prf.hyp0))))
-    (fun a b e => by
-      rcases e with e | e
-      · exact .andI (hO a b e) (hC a b e)
-      · exact .andI (hC b a e) (hO b a e))
-    (walk_prod hreflX hreflY w₁ w₂)
+  clopen_walk_of_relation hO hC (walk_prod hreflX hreflY w₁ w₂)
 
 end LeanProofs.IPRA.Topology.FiniteConnected

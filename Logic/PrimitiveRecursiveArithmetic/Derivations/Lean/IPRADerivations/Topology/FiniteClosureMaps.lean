@@ -71,10 +71,12 @@ variable {S}
 /-- Comparability. -/
 def comp (rel : Fin k → Fin k → Prop) (x y : Fin k) : Prop := rel x y ∨ rel y x
 
-/-- F13: a clopen family is constant along every comparability walk. -/
-theorem clopen_walk {U : Fin k → Fm PTm n} (hO : IsOpen rel Γ U) (hC : IsClosed rel Γ U) {x y : Fin k}
-    (w : Walk (comp rel) x y) : Γ ⊢[PRAAx] iffF (U x) (U y) :=
-  pathDerivation Γ (comp rel) (fun a b => iffF (U a) (U b))
+/-- Forward and backward implications on the edges give an equivalence along a comparability walk. -/
+theorem clopen_walk_of_relation {V : Type} {R : V → V → Prop} {U : V → Fm PTm n}
+    (hO : ∀ a b, R a b → (Γ ⊢[PRAAx] U a ⟶ U b))
+    (hC : ∀ a b, R a b → (Γ ⊢[PRAAx] U b ⟶ U a))
+    {x y : V} (w : Walk (fun a b => R a b ∨ R b a) x y) : Γ ⊢[PRAAx] iffF (U x) (U y) :=
+  pathDerivation Γ (fun a b => R a b ∨ R b a) (fun a b => iffF (U a) (U b))
     (fun a => .andI (.impI Prf.hyp0) (.impI Prf.hyp0))
     (fun a b h => .andI h.andE₂ h.andE₁)
     (fun a b c h₁ h₂ => .andI (.impI (.impE h₂.andE₁.wk (.impE h₁.andE₁.wk Prf.hyp0)))
@@ -84,6 +86,11 @@ theorem clopen_walk {U : Fin k → Fm PTm n} (hO : IsOpen rel Γ U) (hC : IsClos
       · exact .andI (hO a b e) (hC a b e)
       · exact .andI (hC b a e) (hO b a e))
     w
+
+/-- F13: a clopen family is constant along every comparability walk. -/
+theorem clopen_walk {U : Fin k → Fm PTm n} (hO : IsOpen rel Γ U) (hC : IsClosed rel Γ U) {x y : Fin k}
+    (w : Walk (comp rel) x y) : Γ ⊢[PRAAx] iffF (U x) (U y) :=
+  clopen_walk_of_relation hO hC w
 
 /-- F13, converse: a family constant along comparability edges is open and closed. -/
 theorem clopen_of_edges {U : Fin k → Fm PTm n} (h : ∀ a b, comp rel a b → (Γ ⊢[PRAAx] iffF (U a) (U b))) :
