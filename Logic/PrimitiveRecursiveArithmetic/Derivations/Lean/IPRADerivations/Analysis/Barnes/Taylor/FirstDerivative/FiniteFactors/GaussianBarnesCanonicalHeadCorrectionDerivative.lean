@@ -34,8 +34,8 @@ open GaussianRationalMetric (qsub qnegative qsub_canonical qsub_represents dista
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr qsub_congr qmul_zero_left qzero_add qadd_sub_cancel)
 open GaussianRationalReciprocal (bounded_product bound_congr)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianReciprocalHorner (qmul_associative qadd_commutative)
-open GaussianRationalSumAlgebra (qadd_associative)
+open GaussianReciprocalHorner (qmul_associative)
+open GaussianRationalSumAlgebra (qadd_swap_tail)
 open GaussianRationalPowerDifference (product_difference)
 open GaussianNameArithmetic (sum_difference)
 open GaussianRootAlgebra (sub equal equal_of_values equal_refl re_add im_add re_mul im_mul re_sub im_sub re_scale im_scale re_one im_one)
@@ -167,10 +167,8 @@ private theorem difference_product (a b u : PTm n) : Γ ⊢[PRAAx]
       (GaussianRationalSyntheticDivision.qmul_zero_right _))).eqTrans
       (GaussianReciprocalHorner.qadd_zero_right _ (qmul_canonical _ _)))
 
-private theorem subtract_after_sum (a b c : PTm n) : Γ ⊢[PRAAx] qsub (qadd a b) c ≐ qadd (qsub a c) b := by
-  change Γ ⊢[PRAAx] qadd (qadd a b) (qnegative c) ≐ qadd (qadd a (qnegative c)) b
-  exact (qadd_associative _ _ _).eqTrans ((qadd_congr (.eqRefl _) (qadd_commutative _ _)).eqTrans
-    (qadd_associative _ _ _).eqSymm)
+private theorem subtract_after_sum (a b c : PTm n) : Γ ⊢[PRAAx] qsub (qadd a b) c ≐ qadd (qsub a c) b :=
+  qadd_swap_tail a b (qnegative c)
 
 theorem exact_expansion (z h B N : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] qsub (total (add z h) B N) (total z B N) ≐

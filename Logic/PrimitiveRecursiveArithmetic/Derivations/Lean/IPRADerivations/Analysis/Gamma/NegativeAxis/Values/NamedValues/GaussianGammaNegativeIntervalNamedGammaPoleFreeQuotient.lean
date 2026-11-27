@@ -26,9 +26,8 @@ open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianRationalHorner (qadd)
 open GaussianRationalMetric (qsub qnegative)
 open GaussianRationalNaturalScale (naturalPoint)
-open GaussianRationalSumAlgebra (qadd_associative)
+open GaussianRationalSumAlgebra (qadd_swap_tail)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr)
-open GaussianReciprocalHorner (qadd_commutative)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -53,11 +52,9 @@ private theorem translate_sum (u v w : PTm n) :
   have e : Γ ⊢[PRAAx] qadd (GaussianFastValueCut.recode u) c ≐ qadd u c :=
     (qadd_congr (recode_compare u) (.eqRefl _)).eqTrans
       (GaussianRationalSyntheticCoefficientValues.qadd_recode_left u c)
-  exact (qadd_congr e (.eqRefl _)).eqTrans ((qadd_associative u c v).eqTrans
-    ((qadd_congr (.eqRefl _) (qadd_commutative c v)).eqTrans
-      ((qadd_associative u v c).eqSymm.eqTrans
-        (qadd_congr (GaussianExponentialReference.recode_fixed _ (GaussianRationalHorner.qadd_canonical u v)).eqSymm
-          (.eqRefl _)))))
+  exact (qadd_congr e (.eqRefl _)).eqTrans ((qadd_swap_tail u c v).eqTrans
+    (qadd_congr (GaussianExponentialReference.recode_fixed _ (GaussianRationalHorner.qadd_canonical u v)).eqSymm
+      (.eqRefl _)))
 
 theorem shifted_sum_at (f K : PR 2) (p x y N : PTm n) :
     Γ ⊢[PRAAx] ap2 (incrementF (shiftF f) K) p (incrementData (shiftData x N) y) ≐

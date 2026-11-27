@@ -74,9 +74,7 @@ theorem raw_product_error (p z B K N : PTm n) (hN : Γ ⊢[PRAAx] le one N) : Γ
 
 /-- Two literal exchanges in the actual normalized rational sum. -/
 theorem swap_last (a b c : PTm n) : Γ ⊢[PRAAx] qadd (qadd a b) c ≐ qadd (qadd a c) b :=
-  (GaussianRationalSumAlgebra.qadd_associative a b c).eqTrans
-    ((qadd_congr (.eqRefl _) (GaussianReciprocalHorner.qadd_commutative b c)).eqTrans
-      (GaussianRationalSumAlgebra.qadd_associative a c b).eqSymm)
+  GaussianRationalSumAlgebra.qadd_swap_tail a b c
 theorem move_correction (a b c d : PTm n) : Γ ⊢[PRAAx]
     qadd (qadd (qadd a b) c) d ≐ qadd (qadd (qadd a d) b) c :=
   (swap_last (qadd a b) c d).eqTrans (qadd_congr (swap_last a b d) (.eqRefl _))

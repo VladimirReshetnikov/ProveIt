@@ -22,7 +22,7 @@ open GaussianRationalSyntheticDivision (quotient qadd_congr qmul_congr)
 open GaussianRationalFirstOrderPolynomial (slope)
 open GaussianRationalEulerCoefficients (euler)
 open GaussianRationalNaturalScale (natScale natScale_congr)
-open GaussianRationalSumAlgebra (qadd_associative)
+open GaussianRationalSumAlgebra (qadd_associative qadd_swap_tail)
 open GaussianReciprocalHorner (qadd_commutative)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
@@ -36,14 +36,9 @@ private theorem scale_sum (m a b : PTm n) : Γ ⊢[PRAAx]
     ((GaussianRationalCoefficientScaling.qmul_add _ _ _).eqTrans
       (qadd_congr (GaussianRationalNaturalScale.natScale_as_product _ _).eqSymm (GaussianRationalNaturalScale.natScale_as_product _ _).eqSymm))
 
-private theorem triple_exchange (a b c : PTm n) : Γ ⊢[PRAAx]
-    qadd (qadd a b) c ≐ qadd (qadd a c) b :=
-  (qadd_associative _ _ _).eqTrans
-    ((qadd_congr (.eqRefl _) (qadd_commutative _ _)).eqTrans (qadd_associative _ _ _).eqSymm)
-
 private theorem four_exchange (a b c d : PTm n) : Γ ⊢[PRAAx]
     qadd (qadd (qadd a b) c) d ≐ qadd (qadd a d) (qadd b c) :=
-  (qadd_congr (qadd_associative _ _ _) (.eqRefl _)).eqTrans (triple_exchange _ _ _)
+  (qadd_congr (qadd_associative _ _ _) (.eqRefl _)).eqTrans (qadd_swap_tail _ _ _)
 
 /-- Exact algebra used in the real original Horner successor. -/
 theorem successor_algebra (m H J c t : PTm n) (hH : Γ ⊢[PRAAx] canonical H) : Γ ⊢[PRAAx]

@@ -123,11 +123,15 @@ theorem contextual_unit (a b : PTm n) : Γ ⊢[PRAAx] qadd (qmul a qone) b ≐ q
   exact contextual_unit_from_representations _ _ _ _ E
     (positive_product _ _ (raw_den_positive a) (raw_den_positive b)) ha hb
 
+/-- Exchange the last two summands in a left-associated Gaussian rational sum. -/
+theorem qadd_swap_tail (a b c : PTm n) : Γ ⊢[PRAAx] qadd (qadd a b) c ≐ qadd (qadd a c) b :=
+  (qadd_associative a b c).eqTrans
+    ((qadd_congr (.eqRefl _) (GaussianReciprocalHorner.qadd_commutative b c)).eqTrans
+      (qadd_associative a c b).eqSymm)
+
 theorem shuffle_four (a b c d : PTm n) : Γ ⊢[PRAAx]
     qadd (qadd (qadd a b) c) d ≐ qadd (qadd a c) (qadd b d) :=
-  (qadd_congr (((qadd_associative a b c).eqTrans
-    (qadd_congr (.eqRefl _) (GaussianReciprocalHorner.qadd_commutative b c))).eqTrans
-      (qadd_associative a c b).eqSymm) (.eqRefl _)).eqTrans (qadd_associative (qadd a c) b d)
+  (qadd_congr (qadd_swap_tail a b c) (.eqRefl _)).eqTrans (qadd_associative (qadd a c) b d)
 
 /-! Actual PR5 output: both normalized exchange expressions and their
 computed positive denominator. No arithmetic result is supplied as data. -/

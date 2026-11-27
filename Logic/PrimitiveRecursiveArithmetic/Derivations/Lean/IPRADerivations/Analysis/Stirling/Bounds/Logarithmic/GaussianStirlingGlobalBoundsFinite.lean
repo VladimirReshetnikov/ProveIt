@@ -22,8 +22,7 @@ open GaussianNamedRealOrderEnvelope (envelope order_from_envelope)
 open GaussianRationalHorner (canonical qadd qzero positive_product)
 open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qzero_add)
-open GaussianRationalSumAlgebra (qadd_associative)
-open GaussianRationalLinearProduct (qadd_commutative)
+open GaussianRationalSumAlgebra (qadd_swap_tail)
 open GaussianStirlingDifferenceBounds (first_sample_lower sharp_sample_upper weak_local_bounds)
 open GaussianStirlingFiniteTelescopeBounds (upper_step)
 open GaussianStirlingNames (source)
@@ -45,8 +44,7 @@ ipra_subst upperCap
 
 theorem swap_suffix (a b c : PTm n) :
     Γ ⊢[PRAAx] qadd (qadd a b) c ≐ qadd (qadd a c) b :=
-  (qadd_associative a b c).eqTrans
-    ((qadd_congr (.eqRefl _) (qadd_commutative b c)).eqTrans (qadd_associative a c b).eqSymm)
+  qadd_swap_tail a b c
 
 theorem raw_step (p N a b : PTm n) : Γ ⊢[PRAAx]
     rawSum p (succ N) a b ≐ qadd (rawSum p N a b) (ap2 D p (DD (shifted a b N) b)) :=

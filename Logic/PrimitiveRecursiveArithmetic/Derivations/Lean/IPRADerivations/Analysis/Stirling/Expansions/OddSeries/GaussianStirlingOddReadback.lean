@@ -26,8 +26,7 @@ open GaussianStirlingOddCoefficients
   (fraction_equal fraction_add_same fraction_embed first_term scaled_term scaled_odd_fraction additive_constant_zero base_positive)
 open GaussianRationalHorner (qzero qadd qmul positive_product)
 open GaussianRationalSyntheticDivision (qadd_congr qmul_congr qzero_add)
-open GaussianRationalSumAlgebra (qadd_associative)
-open GaussianRationalLinearProduct (qadd_commutative)
+open GaussianRationalSumAlgebra (qadd_swap_tail)
 open GaussianPositiveRationalLogarithm (fraction)
 open RationalGaussianEmbedding (embed)
 
@@ -47,8 +46,7 @@ private theorem affine_split (A B u v : PTm n) : Γ ⊢[PRAAx]
   let p := qmul c u
   let q := qmul c v
   exact (qadd_congr (GaussianRationalCoefficientScaling.qmul_add c u v) (.eqRefl _)).eqTrans
-    ((qadd_associative p q minusOne).eqTrans
-      ((qadd_congr (.eqRefl _) (qadd_commutative q minusOne)).eqTrans (qadd_associative p minusOne q).eqSymm))
+    (qadd_swap_tail p q minusOne)
 
 private def valueLaw (A B K : PTm n) : Fm PTm n :=
   affine A B (GaussianRobinOddLogarithm.value B (baseDenominator A B) (succ K)) ≐ partialSum A B K

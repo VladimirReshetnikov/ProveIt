@@ -19,7 +19,7 @@ open GaussianGammaDigammaHarmonicCells (cell halfReciprocal half_pair right_rect
 open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalHorner (qadd qzero ofGaussian_canonical)
 open GaussianRationalSyntheticDivision (qadd_congr qzero_add)
-open GaussianRationalSumAlgebra (qadd_associative shuffle_four)
+open GaussianRationalSumAlgebra (qadd_associative shuffle_four qadd_swap_tail)
 open GaussianReciprocalHorner (qadd_commutative)
 open GaussianStirlingGammaLogarithm (source)
 open GaussianStirlingTailComparison (point_order_refl point_add_order)
@@ -117,8 +117,7 @@ private theorem prefix_step (a b Q L j : PTm n) (hs : Γ ⊢[PRAAx] source a b) 
     (trapezoid c b Q L hc hQ.wk)
   have up := point_add_order R (qadd M U) F C old.andE₂ min
   have sumU : Δ ⊢[PRAAx] qadd (qadd M U) C ≐ qadd M' U :=
-    (qadd_associative M U C).eqTrans ((qadd_congr (.eqRefl _) (qadd_commutative U C)).eqTrans
-      ((qadd_associative M C U).eqSymm.eqTrans (qadd_congr e (.eqRefl _))))
+    (qadd_swap_tail M U C).eqTrans (qadd_congr e (.eqRefl _))
   have lo1 := point_add_order _ _ _ _ (point_add_order M M C (qadd H K) (point_order_refl M) max)
     (point_order_refl (qadd H₀ K))
   have lo2 := point_add_order (qadd M (qadd H₀ H)) R (qadd K K) F old.andE₁

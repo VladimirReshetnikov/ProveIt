@@ -27,7 +27,7 @@ open GaussianRationalPowerAlgebra (qmul_commutative power_one)
 open GaussianRationalReciprocal (qone power power_zero power_succ power_canonical)
 open GaussianRationalRoundedPower (multiplication_difference)
 open GaussianRationalInverseQuadraticAlgebra (subtract_sum)
-open GaussianRationalSumAlgebra (qadd_associative)
+open GaussianRationalSumAlgebra (qadd_swap_tail)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qmul_congr qmul_zero_right)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right qadd_commutative qsub_add_cancel)
 
@@ -220,9 +220,7 @@ theorem stride_two (S k : PTm n) :
     ((qsub_congr expand (.eqRefl _)).eqTrans (subtract_sum P (qadd w u) w))
   have right := (qsub_congr (even_coefficient_product S w hw) (.eqRefl u)).eqTrans
     (subtract_sum P (qadd w w) u)
-  have regroup : Γ ⊢[PRAAx] qadd (qadd w u) w ≐ qadd (qadd w w) u :=
-    (qadd_associative w u w).eqTrans ((qadd_congr (.eqRefl _) (qadd_commutative _ _)).eqTrans
-      (qadd_associative w w u).eqSymm)
+  have regroup := qadd_swap_tail (Γ := Γ) w u w
   exact left.eqTrans ((qsub_congr (.eqRefl P) regroup).eqTrans right.eqSymm)
 
 theorem even_zero (S : PTm n) : Γ ⊢[PRAAx] evenValue S zero ≐ qone :=

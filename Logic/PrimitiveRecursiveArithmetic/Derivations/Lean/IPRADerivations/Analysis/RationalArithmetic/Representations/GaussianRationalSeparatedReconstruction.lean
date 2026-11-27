@@ -30,8 +30,7 @@ open GaussianRationalReconstruction (suffix suffix_final suffix_zero suffix_leng
   suffix_canonical reconstruct_index_congr product product_evaluation)
 open GaussianRationalSeparatedDeflation (budget laterResiduals separation later_at stage_residuals)
 open GaussianRationalSyntheticDivision (division_evaluation qsub_congr qadd_congr qmul_congr qone_canonical)
-open GaussianRationalSumAlgebra (qadd_associative)
-open GaussianReciprocalHorner (qadd_commutative)
+open GaussianRationalSumAlgebra (qadd_swap_tail)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
@@ -53,9 +52,7 @@ theorem difference_at (R y B i : PTm n) (h : Γ ⊢[PRAAx] differencesBounded R 
 
 private theorem subtract_after_add (a b c : PTm n) :
     Γ ⊢[PRAAx] qsub (qadd a b) c ≐ qadd (qsub a c) b :=
-  (qadd_associative a b (qnegative c)).eqTrans
-    ((qadd_congr (.eqRefl _) (qadd_commutative b (qnegative c))).eqTrans
-      (qadd_associative a (qnegative c) b).eqSymm)
+  qadd_swap_tail a b (qnegative c)
 
 private theorem stage_evaluation (C N R y j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx]

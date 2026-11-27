@@ -24,10 +24,10 @@ open GaussianRationalReciprocal (qone power power_zero power_succ power_canonica
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalNaturalScale (naturalPoint natural_point_represents)
 open GaussianRationalPolynomialBuffers (distribute_right)
-open GaussianRationalSumAlgebra (qadd_associative)
+open GaussianRationalSumAlgebra (qadd_associative qadd_swap_tail)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qmul_congr qmul_zero_left
   qzero_add qone_canonical qzero_canonical)
-open GaussianReciprocalHorner (qmul_one_right qadd_commutative qadd_zero_right qsub_add_cancel)
+open GaussianReciprocalHorner (qmul_one_right qadd_zero_right qsub_add_cancel)
 open GaussianRootAlgebra (equal_of_values re_scale im_scale re_one im_one re_zero im_zero re_add im_add)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry sequence sequence_decode sequence_length)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length)
@@ -105,8 +105,7 @@ private theorem prefix_identity (m z j : PTm n) (hj : Γ ⊢[PRAAx] le j m) :
 
 private theorem subtract_exchange (a b c : PTm n) :
     Γ ⊢[PRAAx] qsub (qsub a b) c ≐ qsub (qsub a c) b :=
-  (qadd_associative a (qnegative b) (qnegative c)).eqTrans
-    ((qadd_congr (.eqRefl _) (qadd_commutative _ _)).eqTrans (qadd_associative _ _ _).eqSymm)
+  qadd_swap_tail a (qnegative b) (qnegative c)
 
 theorem geometric_factorization (m z : PTm n) :
     Γ ⊢[PRAAx] qmul (qsub z qone) (evaluate (coefficients m) z) ≐ qsub (power z m) qone := by
