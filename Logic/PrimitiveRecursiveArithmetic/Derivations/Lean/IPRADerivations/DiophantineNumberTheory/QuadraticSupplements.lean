@@ -119,8 +119,7 @@ theorem short_root {p a t : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hodd : Γ ⊢[P
   have hq := prime_two hp
   have hp1 := p_pos hq
   have er := euler_res hp hodd ha hr
-  have rr : Γ ⊢[PRAAx] rem (rem (pw a (succ t)) p) p ≐ rem (pw a (succ t)) p :=
-    rem_small (AnalyticNumberTheory.Multiplicative.rem_lt' hp1 _)
+  have rr := Division.rem_idempotent (x := pw a (succ t)) hp1
   have s1 := rem_mul_congr2 hp1 rr rr
   have e : Γ ⊢[PRAAx] pw a (succ t) * pw a (succ t) ≐ pw a (half p) * a :=
     (pw_add a (succ t) (succ t)).eqSymm.eqTrans ((congrPw (.eqRefl _)

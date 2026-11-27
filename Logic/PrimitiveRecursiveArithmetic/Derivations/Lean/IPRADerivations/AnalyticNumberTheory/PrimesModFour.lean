@@ -118,8 +118,7 @@ theorem prime_one_mod_four {N : PTm k} (hN : Γ ⊢[PRAAx] le two N) :
   have e2 : Γ ⊢[PRAAx] rem (fact N * fact N) (P1 N) ≐ rem (pred (P1 N)) (P1 N) :=
     rem_cancel hp1 ((congrAp2 remF (add_comm _ _) (.eqRefl _)).eqTrans
       (e1.eqTrans (congrAp2 remF (add_comm _ _) (.eqRefl _))))
-  have rr : Γ ⊢[PRAAx] rem (rem (fact N) (P1 N)) (P1 N) ≐ rem (fact N) (P1 N) :=
-    rem_small (rem_lt' hp1 _)
+  have rr := Division.rem_idempotent (x := fact N) hp1
   have val : Γ ⊢[PRAAx] inst2 sqB (rem (fact N) (P1 N)) (pairT (P1 N) (pred (P1 N))) ≐ one :=
     (sq_at _ _ _).eqTrans (eqb_of_eq ((rem_mul_congr2 hp1 rr rr).eqTrans e2))
   have r1 : Γ ⊢[PRAAx] rb (P1 N) (pred (P1 N)) ≐ one :=
