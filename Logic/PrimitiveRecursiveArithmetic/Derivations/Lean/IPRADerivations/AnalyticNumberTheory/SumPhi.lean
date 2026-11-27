@@ -87,15 +87,8 @@ theorem sum2_zero_of_bounded (f : PTm 3) {N p q : PTm n}
   · have h' := inst (Γ := Γ) sum2_zero_body₀ (![N, p, q] : Fin 3 → PTm n)
     simpa using h'
 
-/-- Variables: `0 = N`, `1 = x`. -/
-private abbrev onesF : Fm PTm 2 := ap2 (sumF one) (var 0) (var 1) ≐ var 0
-
-private theorem sum_ones₀ : ([] : List (Fm PTm 2)) ⊢[PRAAx] onesF :=
-  sum_one_body (var 0) (var 1)
-
-theorem sum_ones (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF one) N x ≐ N := by
-  have h := inst (Γ := Γ) sum_ones₀ (![N, x] : Fin 2 → PTm n)
-  simpa using h
+theorem sum_ones (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF one) N x ≐ N :=
+  sum_one_body N x
 
 /-! ## Summing over fibers -/
 

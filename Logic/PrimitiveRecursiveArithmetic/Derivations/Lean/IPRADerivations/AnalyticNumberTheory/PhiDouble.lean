@@ -1,4 +1,5 @@
 import IPRADerivations.AnalyticNumberTheory.Multiplicative
+import IPRADerivations.Core.SumSplit
 
 /-!
 # The doubling formula `φ(2n)`
@@ -35,25 +36,14 @@ theorem inst2_shiftBy (f : PTm 2) (i x : PTm n) : inst2 (shiftBy f) i x = inst2 
   simp only [inst2, shiftBy, Syn.subst_subst]
   congr 1; funext k; fin_cases k <;> simp
 
-/-- Variables: `0 = B`, `1 = x`. -/
-private abbrev splitF (f : PTm 2) : Fm PTm 2 :=
-  ap2 (sumF f) (var 1 + var 0) (var 1) ≐ ap2 (sumF f) (var 1) (var 1) + ap2 (sumF (shiftBy f)) (var 0) (var 1)
-
-private theorem sum_split₀ (f : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] splitF f := by
-  ipra_ind [subst_ap2]
-  · exact (congrAp2 (sumF f) (add_zero _) (.eqRefl _)).eqTrans
-      ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) (sum_zero _ _).eqSymm))
-  · refine (congrAp2 (sumF f) (add_succ _ _) (.eqRefl _)).eqTrans ((sum_succ' _ _ _).eqTrans ?_)
-    refine .eqTrans ?_ (congrAdd (.eqRefl _) (sum_succ' _ _ _)).eqSymm
-    rw [inst2_shiftBy]
-    refine withEq Prf.hyp0 fun e => ?_
-    apply deriveNat; ipra_simps; rw [e]; ring
-
 /-- `∑_{k<x+B} f(k, x) = ∑_{k<x} f(k, x) + ∑_{i<B} f(x + i, x)`. -/
 theorem sum_split (f : PTm 2) (B x : PTm n) :
     Γ ⊢[PRAAx] ap2 (sumF f) (x + B) x ≐ ap2 (sumF f) x x + ap2 (sumF (shiftBy f)) B x := by
-  have h := inst (Γ := Γ) (sum_split₀ f) (![B, x] : Fin 2 → PTm n)
-  simpa using h
+  refine (LeanProofs.IPRA.sum_split f x B x).eqTrans (congrAdd (.eqRefl _) ?_)
+  refine sum_congr_bounded (offB f) (shiftBy f) (pairT x x) x B (.allI (.impI ?_))
+  rw [show Syn.shift (pairT x x) = pairT (Syn.shift x) (Syn.shift x) by simp [Syn.shift],
+    inst2_offB, inst2_shiftBy]
+  exact congrInst2 f (congrAdd (fst_pair _ _) (.eqRefl _)) (snd_pair _ _)
 
 /-! ## Small facts -/
 
@@ -61,15 +51,13 @@ theorem two_pos' : Γ ⊢[PRAAx] (two : PTm n) ≐ succ (pred two) := congrSucc 
 
 /-- `φ(2) = 1`. -/
 theorem phi_two : Γ ⊢[PRAAx] phi (two : PTm n) ≐ one := by
-  have s₂ := sum_succ' (Γ := Γ) totBody one two
-  have s₁ := sum_succ' (Γ := Γ) totBody zero two
-  rw [inst2_tot] at s₁ s₂
+  refine (sum_two_terms totBody two).eqTrans ?_
+  rw [inst2_tot zero two, inst2_tot one two]
   have e₀ := AnalyticNumberTheory.Totatives.e_zero (Γ := Γ) (N := two) (le_refl _)
   have g := gcd_pos (B := two) (Γ := Γ) (congrSucc (pred_succ zero).eqSymm)
   have e₁ : Γ ⊢[PRAAx] eqb (gcd one two) one ≐ one :=
     eqb_of_eq (eq_one_of_dvd_one g (Prf.andE₁ (gcd_dvd' (b := two) (congrSucc (pred_succ zero).eqSymm))))
-  refine s₂.eqTrans ((congrAdd (s₁.eqTrans ((congrAdd (sum_zero _ _) e₀))) e₁).eqTrans ?_)
-  ipra_ring
+  exact (congrAdd e₀ e₁).eqTrans (zero_add _)
 
 /-- `gcd(n + i, n) = gcd(i, n)`. -/
 theorem gcd_period {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (i : PTm n) :

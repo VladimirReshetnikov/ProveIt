@@ -24,7 +24,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Euler (congrEqb)
 open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (eqb_iff shift_pos)
 open LeanProofs.IPRA.AnalyticNumberTheory.SumPhi (shift_mul')
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (cop_left)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (shiftBy inst2_shiftBy sum_split gcd_period)
+open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (shiftBy inst2_shiftBy gcd_period)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -38,7 +38,7 @@ theorem per_step {N M : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
     refine sum_congr_bounded _ _ _ _ _ (.allI (.impI ?_))
     rw [inst2_shiftBy, inst2_tot, inst2_tot]
     exact congrEqb (gcd_period (shift_pos hN).wk _) (.eqRefl _)
-  refine (congrAp2 (sumF totBody) e (.eqRefl _)).eqTrans ((sum_split totBody (N * M) N).eqTrans ?_)
+  refine (congrAp2 (sumF totBody) e (.eqRefl _)).eqTrans ((PhiDouble.sum_split totBody (N * M) N).eqTrans ?_)
   refine (congrAdd (.eqRefl _) (s₄.eqTrans ih)).eqTrans ?_
   ipra_ring
 
