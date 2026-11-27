@@ -6,6 +6,7 @@ import GRHArticle.ProgressionFree.RankinApproximation
 import GRHArticle.ProgressionFree.RankinTruncation
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.CMPoints
+import GRHArticle.SingularModuli.ClassPolynomialTruncation
 import GRHArticle.SingularModuli.ConjugateDisks
 import GRHArticle.SingularModuli.CuspSeparation
 import GRHArticle.SingularModuli.DepthOne

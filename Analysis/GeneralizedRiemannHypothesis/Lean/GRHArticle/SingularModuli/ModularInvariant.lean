@@ -30,6 +30,16 @@ theorem modularInvariant_smul (g : SL(2, ℤ)) (z : ℍ) :
   simp only [zpow_ofNat, mul_pow, ← pow_mul]
   rw [show 4 * 3 = 12 by decide, mul_div_mul_left _ _ (pow_ne_zero _ (denom_ne_zero _ z))]
 
+/-- The normalized weight-four Eisenstein series in the q-parameter. -/
+theorem eisensteinFour_qExpansion (z : ℍ) :
+    E₄ z = 1 + 240 * ∑' n : ℕ+, (ArithmeticFunction.sigma 3 n : ℂ) *
+      Function.Periodic.qParam 1 z ^ (n : ℕ) := by
+  have h := EisensteinSeries.q_expansion_bernoulli (k := 4) (by decide) (by decide) z
+  norm_num [bernoulli_eq_bernoulli'_of_ne_one (by decide : 4 ≠ 1), bernoulli'_four] at h
+  change ModularForm.E (k := 4) _ z = _ at h
+  simp only [Function.Periodic.qParam, Complex.ofReal_one, div_one]
+  linear_combination h
+
 /-- The series and product evaluated in the article's class polynomial verifier. -/
 theorem modularInvariant_qExpansion (z : ℍ) :
     let q := Function.Periodic.qParam 1 z
@@ -37,15 +47,7 @@ theorem modularInvariant_qExpansion (z : ℍ) :
       (1 + 240 * ∑' n : ℕ+, (ArithmeticFunction.sigma 3 n : ℂ) * q ^ (n : ℕ)) ^ 3 /
       (q * ∏' n : ℕ, (1 - q ^ (n + 1)) ^ 24) := by
   intro q
-  have h := EisensteinSeries.q_expansion_bernoulli (k := 4) (by decide) (by decide) z
-  norm_num [bernoulli_eq_bernoulli'_of_ne_one (by decide : 4 ≠ 1), bernoulli'_four] at h
-  rw [modularInvariant, ModularForm.discriminant_eq_q_prod]
-  simp only [ModularForm.eta_q_eq_pow]
-  dsimp [q, Function.Periodic.qParam]
-  simp only [div_one]
-  change ModularForm.E (k := 4) _ z = _ at h
-  rw [show E₄ z = 1 + 240 * ∑' n : ℕ+, (ArithmeticFunction.sigma 3 n : ℂ) *
-    Complex.exp (2 * Real.pi * Complex.I * z) ^ (n : ℕ) by linear_combination h]
+  rw [modularInvariant, eisensteinFour_qExpansion, ModularForm.discriminant_eq_q_prod]
 
 private theorem eisenstein_six_at_i : E₆ UpperHalfPlane.I = 0 := by
   have h := transform_level_one E₆ S UpperHalfPlane.I
