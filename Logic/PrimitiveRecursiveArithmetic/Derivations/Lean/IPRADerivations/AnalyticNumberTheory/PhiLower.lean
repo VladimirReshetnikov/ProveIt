@@ -29,7 +29,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_l
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow (eq_one_of_lt_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation
-open LeanProofs.IPRA.AnalyticNumberTheory.Radical (two_le_of_prime val_pos cof_pos cof_rem_pos cof_lt)
+open LeanProofs.IPRA.AnalyticNumberTheory.Radical (val_pos cof_lt)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -107,6 +107,29 @@ theorem ppow_sq {p : PTm n} (hp : Γ ⊢[PRAAx] prime p) (h3 : Γ ⊢[PRAAx] le 
 
 /-! ## `φ(n)² ≥ n` for odd `n` -/
 
+/-- Read the positive cofactor and the totient product from the exact prime-power factorization. -/
+theorem prime_power_totient_split {N p : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
+    (hp : Γ ⊢[PRAAx] prime p) :
+    let P := pw p (val p N)
+    let M := quo N P
+    (Γ ⊢[PRAAx] M ≐ succ (pred M)) ∧ (Γ ⊢[PRAAx] N ≐ P * M) ∧
+      (Γ ⊢[PRAAx] phi N ≐ phi P * phi M) := by
+  have hp2 := hp.andE₁
+  have e := cof_eq (m := N) hp2
+  have hM := pos_of_eq_mul hN e
+  have hP := pw_val_pos (m := N) hp2
+  have cop := gcd_prime hp (cof_not_dvd hp2 hN)
+  have hg := gcd_comm_one hP (coprime_pow hM (gcd_comm_one hM cop) (val p N))
+  exact ⟨hM, e, (congrAp2 (sumF totBody) e e).eqTrans (Multiplicative.phi_mul_at hP hM hg)⟩
+
+/-- Every right factor of an odd number is odd. -/
+theorem odd_right_factor {N P M : PTm n} (h : Γ ⊢[PRAAx] N ≐ P * M)
+    (hodd : Γ ⊢[PRAAx] rem N two ≐ one) : Γ ⊢[PRAAx] rem M two ≐ one := by
+  refine eq_one_of_lt_two (rem_lt' two_pos' _) (.impI ?_)
+  have d : ((rem M two ≐ zero) :: Γ) ⊢[PRAAx] dvd two N :=
+    dvd_congr h.wk.eqSymm (dvd_congr (mul_comm _ _) (dvd_mul' two_pos' _ Prf.hyp0))
+  exact succ_ne_zero' _ (a := zero) (hodd.wk.eqSymm.eqTrans d)
+
 /-- `(n mod 2) · sg(n ∸ φ(n)²)`, over `0 = n`, `1 = x` (unused). -/
 abbrev obB : PTm 2 := rem (var 0) two * sg (monus (var 0) (phi (var 0) * phi (var 0)))
 
@@ -117,30 +140,17 @@ theorem ob_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
     (hpN : Γ ⊢[PRAAx] dvd p N) (hodd : Γ ⊢[PRAAx] rem N two ≐ one)
     (hV : Γ ⊢[PRAAx] ap2 (sumF obB) N x ≐ zero) :
     Γ ⊢[PRAAx] le N (phi N * phi N) := by
-  have hp1 := prime_eq_succ_pred hp
   have hpo := prime_odd hp hpN hodd
   have h3 := three_le_of_odd_prime hp hpo
-  have ha := val_pos hN hp hpN
-  have hm := cof_pos hN hp hpN
-  have hrm := cof_rem_pos hN hp hpN
-  have hNe := cof_eq (m := N) (two_le_of_prime hN hp hpN)
-  have hP := pw_val_pos (m := N) (two_le_of_prime hN hp hpN)
-  -- `m` is odd.
-  have hmo : Γ ⊢[PRAAx] rem (quo N (pw p (val p N))) two ≐ one := by
-    refine eq_one_of_lt_two (rem_lt' two_pos' _) (.impI ?_)
-    have d : ((rem (quo N (pw p (val p N))) two ≐ zero) :: Γ) ⊢[PRAAx] dvd two N :=
-      dvd_congr hNe.wk.eqSymm (dvd_congr (mul_comm _ _) (dvd_mul' two_pos' _ Prf.hyp0))
-    exact succ_ne_zero' _ (a := zero) (hodd.wk.eqSymm.eqTrans d)
+  obtain ⟨_, hNe, hmul⟩ := prime_power_totient_split hN hp
+  have hmo := odd_right_factor hNe hodd
   -- The induction hypothesis at `m`.
   have h₀ := sum_zero_elim obB hV (cof_lt hN hp hpN)
   rw [inst2_ob] at h₀
   have ih : Γ ⊢[PRAAx] le (quo N (pw p (val p N))) (phi (quo N (pw p (val p N))) * phi (quo N (pw p (val p N)))) :=
     PhiDivides.sg_zero_inv ((one_mul _).eqSymm.eqTrans ((congrMul hmo.eqSymm (.eqRefl _)).eqTrans h₀))
   -- `φ(n) = φ(p^a) φ(m)` and `φ(p^a)² ≥ p^a`.
-  have g₁ := gcd_prime hp (.impI (succ_ne_zero' _ (hrm.wk.eqSymm.eqTrans Prf.hyp0)))
-  have hg := gcd_comm_one hP (coprime_pow hm (gcd_comm_one hm g₁) (val p N))
-  have hmul := (congrAp2 (sumF totBody) hNe hNe).eqTrans (Multiplicative.phi_mul_at hP hm hg)
-  have e₂ : Γ ⊢[PRAAx] pw p (succ (pred (val p N))) ≐ pw p (val p N) := congrAp2 powF ha.eqSymm (.eqRefl _)
+  have e₂ := congrAp2 powF (val_pos hN hp hpN).eqSymm (.eqRefl p)
   have hsq := le_congr e₂ (congrMul (congrAp2 (sumF totBody) e₂ e₂) (congrAp2 (sumF totBody) e₂ e₂))
     (ppow_sq hp h3 (pred (val p N)))
   have l := le_mul_mono hsq ih
@@ -185,49 +195,52 @@ theorem phi_sq_odd {N : PTm n} (hodd : Γ ⊢[PRAAx] rem N two ≐ one) : Γ ⊢
 
 /-! ## `2 φ(n)² ≥ n` -/
 
+/-- The cofactor of the exact power of two in a positive integer is odd. -/
+theorem two_cofactor_odd {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
+    Γ ⊢[PRAAx] rem (quo N (pw two (val two N))) two ≐ one :=
+  eq_one_of_lt_two (rem_lt' two_pos' _) (cof_not_dvd (le_refl two) hN)
+
+/-- A positive integer with zero two-adic valuation is odd. -/
+theorem odd_of_zero_two_valuation {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
+    (h : Γ ⊢[PRAAx] val two N ≐ zero) : Γ ⊢[PRAAx] rem N two ≐ one := by
+  have e := (cof_eq (m := N) (le_refl two)).eqTrans
+    ((congrMul ((congrAp2 powF h (.eqRefl _)).eqTrans (pw_zero _)) (.eqRefl _)).eqTrans (one_mul _))
+  exact (congrAp2 remF e (.eqRefl _)).eqTrans (two_cofactor_odd hN)
+
+/-- Split an even positive integer and its totient using the same odd cofactor. -/
+theorem two_adic_totient_split {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N))
+    (ha : Γ ⊢[PRAAx] val two N ≐ succ (pred (val two N))) :
+    let M := quo N (pw two (val two N))
+    let k := pred (val two N)
+    (Γ ⊢[PRAAx] N ≐ pw two (succ k) * M) ∧ (Γ ⊢[PRAAx] phi N ≐ pw two k * phi M) ∧
+      (Γ ⊢[PRAAx] rem M two ≐ one) ∧ (Γ ⊢[PRAAx] M ≐ succ (pred M)) := by
+  obtain ⟨hM, e, ht⟩ := prime_power_totient_split hN prime_two
+  have ep := congrAp2 powF ha (.eqRefl two)
+  have hs : Γ ⊢[PRAAx] monus two one ≐ (one : PTm n) := (succ_monus_succ _ _).eqTrans (monus_zero _)
+  have hv := (congrAp2 (sumF totBody) ep ep).eqTrans (phi_ppow prime_two (pred (val two N)))
+  have hv' := hv.eqTrans ((congrMul (.eqRefl _) hs).eqTrans (Common.mul_one_right _))
+  exact ⟨e.eqTrans (congrMul ep (.eqRefl _)), ht.eqTrans (congrMul hv' (.eqRefl _)), two_cofactor_odd hN, hM⟩
+
 theorem le_two_mul (X : PTm n) : Γ ⊢[PRAAx] le X (two * X) :=
   le_of_eq_add (d := X) (by ipra_ring)
 
 theorem phi_lower_pos {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) :
     Γ ⊢[PRAAx] le N (two * (phi N * phi N)) := by
-  have h2 : Γ ⊢[PRAAx] le two (two : PTm n) := le_refl _
-  have hNe := cof_eq (m := N) h2
-  have hmo : Γ ⊢[PRAAx] rem (quo N (pw two (val two N))) two ≐ one :=
-    eq_one_of_lt_two (rem_lt' two_pos' _) (cof_not_dvd h2 hN)
-  have hm : Γ ⊢[PRAAx] quo N (pw two (val two N)) ≐ succ (pred (quo N (pw two (val two N)))) := by
-    refine .orE (zero_or_succ (quo N (pw two (val two N)))) ?_ Prf.hyp0
-    exact succ_ne_zero' _ (hN.wk.eqSymm.eqTrans (hNe.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
-  have D := phi_sq_odd hmo
   refine .orE (zero_or_succ (val two N)) ?_ ?_
-  · -- `n` is odd.
-    have e : ((val two N ≐ zero) :: Γ) ⊢[PRAAx] N ≐ quo N (pw two (val two N)) :=
-      hNe.wk.eqTrans ((congrMul ((congrAp2 powF Prf.hyp0 (.eqRefl _)).eqTrans (pw_zero _)) (.eqRefl _)).eqTrans
-        (one_mul _))
-    have D' := le_congr e.eqSymm (congrMul (congrAp2 (sumF totBody) e e) (congrAp2 (sumF totBody) e e)).eqSymm D.wk
-    exact le_trans D' (le_two_mul _)
-  · have ha : ((val two N ≐ succ (pred (val two N))) :: Γ) ⊢[PRAAx] val two N ≐ succ (pred (val two N)) := Prf.hyp0
-    have hP := pw_pos' (two_pos' (Γ := (val two N ≐ succ (pred (val two N))) :: Γ)) (val two N)
-    have g₁ := gcd_prime (prime_two (Γ := (val two N ≐ succ (pred (val two N))) :: Γ))
-      (cof_not_dvd h2.wk hN.wk)
-    have hg := gcd_comm_one hP (coprime_pow hm.wk (gcd_comm_one hm.wk g₁) (val two N))
-    have hmul := (congrAp2 (sumF totBody) hNe.wk hNe.wk).eqTrans (Multiplicative.phi_mul_at hP hm.wk hg)
-    have e₂ : ((val two N ≐ succ (pred (val two N))) :: Γ) ⊢[PRAAx]
-        pw two (succ (pred (val two N))) ≐ pw two (val two N) := congrAp2 powF ha.eqSymm (.eqRefl _)
-    have hφP := (congrAp2 (sumF totBody) e₂ e₂).eqSymm.eqTrans (phi_ppow prime_two (pred (val two N)))
-    have hQ := pw_pos' (two_pos' (Γ := (val two N ≐ succ (pred (val two N))) :: Γ)) (pred (val two N))
-    have l₁ : ((val two N ≐ succ (pred (val two N))) :: Γ) ⊢[PRAAx]
-        le (one * pw two (pred (val two N))) (pw two (pred (val two N)) * pw two (pred (val two N))) :=
-      le_mul_mono (one_le_of_pos hQ) (le_refl _)
-    have l := le_mul_mono (le_refl two) (le_mul_mono l₁ D.wk)
-    have n₂ := natEq hmul; have n₃ := natEq hφP
-    have n₅ := natEq ((succ_monus_succ (Γ := (val two N ≐ succ (pred (val two N))) :: Γ) one zero).eqTrans
-      (monus_zero _))
+  · exact le_trans (phi_sq_odd (odd_of_zero_two_valuation hN.wk Prf.hyp0)) (le_two_mul _)
+  · let Δ := (val two N ≐ succ (pred (val two N))) :: Γ
+    obtain ⟨hNe, hφ, hmo, _⟩ := two_adic_totient_split (Γ := Δ) hN.wk Prf.hyp0
+    let k := pred (val two N)
+    let Q := pw two k
+    let M := quo N (pw two (val two N))
+    have hQ := one_le_of_pos (pw_pos' (two_pos' (Γ := Δ)) k)
+    have b : Δ ⊢[PRAAx] le (one * Q) (Q * Q) := le_mul_mono hQ (le_refl Q)
+    have l := le_mul_mono (le_refl two) (le_mul_mono b (phi_sq_odd hmo))
+    have e := (congrMul (pw_succ two k) (.eqRefl M)).eqSymm.eqTrans hNe.eqSymm
     refine le_congr ?_ ?_ l
-    · ipra_lc -natEq (hNe.wk : ((val two N ≐ succ (pred (val two N))) :: Γ) ⊢[PRAAx] _) -
-        Groth.ι (Q.mk _ (quo N (pw two (val two N)))) * natEq ((congrAp2 powF ha (.eqRefl two)).eqTrans (pw_succ two (pred (val two N))))
-    · ipra_lc -2 * (Groth.ι (Q.mk _ (phi N)) + Groth.ι (Q.mk _ (phi (pw two (val two N)))) * Groth.ι (Q.mk _ (phi (quo N (pw two (val two N)))))) * n₂ -
-        2 * Groth.ι (Q.mk _ (phi (quo N (pw two (val two N))))) * Groth.ι (Q.mk _ (phi (quo N (pw two (val two N))))) * (Groth.ι (Q.mk _ (phi (pw two (val two N)))) + Groth.ι (Q.mk _ (pw two (pred (val two N)))) * Groth.ι (Q.mk _ (monus two one))) * n₃ -
-        2 * Groth.ι (Q.mk _ (phi (quo N (pw two (val two N))))) * Groth.ι (Q.mk _ (phi (quo N (pw two (val two N))))) * Groth.ι (Q.mk _ (pw two (pred (val two N)))) * Groth.ι (Q.mk _ (pw two (pred (val two N)))) * (Groth.ι (Q.mk _ (monus two one)) + 1) * n₅
+    · exact (by ipra_ring : Δ ⊢[PRAAx] two * (one * Q * M) ≐ Q * two * M).eqTrans e
+    · exact (by ipra_ring : Δ ⊢[PRAAx] two * (Q * Q * (phi M * phi M)) ≐
+        two * ((Q * phi M) * (Q * phi M))).eqTrans (congrMul (.eqRefl _) (congrMul hφ hφ)).eqSymm
 
 /-- `thm:phi-lower` (first part) at an arbitrary `n`: `2 φ(n)² ≥ n`. -/
 theorem phi_lower_at (N : PTm n) : Γ ⊢[PRAAx] le N (two * (phi N * phi N)) := by

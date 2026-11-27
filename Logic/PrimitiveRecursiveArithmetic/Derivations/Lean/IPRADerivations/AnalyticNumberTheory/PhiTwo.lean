@@ -21,16 +21,16 @@ open_ipra
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.Combinatorics.BinomialIdentities (mul_cancel)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody coprime_pow)
+open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf lpf_dvd lpf_prime prime eq_succ_pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos' phi_two odd_cop)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiEvenPow (eq_one_of_lt_two)
 open LeanProofs.IPRA.AnalyticNumberTheory.EulerProduct (phi_one)
 open LeanProofs.IPRA.AnalyticNumberTheory.TotientCorollaries (phi_zero)
 open LeanProofs.IPRA.AnalyticNumberTheory.Valuation
 open LeanProofs.IPRA.AnalyticNumberTheory.Radical (phi_prime)
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (prime_two phi_ppow phi_sq_odd)
+open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower
+  (prime_two phi_ppow phi_sq_odd two_adic_totient_split odd_of_zero_two_valuation)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -162,23 +162,8 @@ end Even
 theorem phi_two_even {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h : Γ ⊢[PRAAx] phi N ≐ two)
     (ha : Γ ⊢[PRAAx] val two N ≐ succ (pred (val two N))) :
     Γ ⊢[PRAAx] (N ≐ three) ⋎ ((N ≐ four) ⋎ (N ≐ six)) := by
-  have h2 : Γ ⊢[PRAAx] le two (two : PTm n) := le_refl _
-  have hNe0 := cof_eq (m := N) h2
-  have hmo := eq_one_of_lt_two (rem_lt' two_pos' _) (cof_not_dvd h2 hN)
-  have hM : Γ ⊢[PRAAx] quo N (pw two (val two N)) ≐ succ (pred (quo N (pw two (val two N)))) := by
-    refine .orE (zero_or_succ (quo N (pw two (val two N)))) ?_ Prf.hyp0
-    exact succ_ne_zero' _ (hN.wk.eqSymm.eqTrans (hNe0.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
-  have hP := pw_val_pos (m := N) h2
-  have g₁ := gcd_prime prime_two (cof_not_dvd h2 hN)
-  have hg := gcd_comm_one hP (coprime_pow hM (gcd_comm_one hM g₁) (val two N))
-  have hmul := (phi_congr' hNe0).eqTrans (Multiplicative.phi_mul_at hP hM hg)
-  have e₂ : Γ ⊢[PRAAx] pw two (succ (pred (val two N))) ≐ pw two (val two N) := congrAp2 powF ha.eqSymm (.eqRefl _)
-  have hφP := (phi_congr' e₂).eqSymm.eqTrans (phi_ppow prime_two (pred (val two N)))
-  have hs : Γ ⊢[PRAAx] monus two one ≐ (one : PTm n) := (succ_monus_succ _ _).eqTrans (monus_zero _)
-  have hφ : Γ ⊢[PRAAx] two ≐ pw two (pred (val two N)) * phi (quo N (pw two (val two N))) :=
-    h.eqSymm.eqTrans (hmul.eqTrans (congrMul (hφP.eqTrans ((congrMul (.eqRefl _) hs).eqTrans
-      (EulerProduct.mul_one' _))) (.eqRefl _)))
-  have hNe := hNe0.eqTrans (congrMul e₂.eqSymm (.eqRefl _))
+  obtain ⟨hNe, ht, hmo, hM⟩ := two_adic_totient_split hN ha
+  have hφ := h.eqSymm.eqTrans ht
   refine .orE (zero_or_succ (pred (val two N))) ?_ ?_
   · exact .orI₂ (.orI₂ (leaf_k0 hNe.wk hmo.wk hφ.wk Prf.hyp0))
   refine .orE (zero_or_succ (pred (pred (val two N)))) ?_ ?_
@@ -192,12 +177,7 @@ theorem phi_two_inv {N : PTm n} (h : Γ ⊢[PRAAx] phi N ≐ two) :
   · exact .botE _ (succ_ne_zero (h.wk.eqSymm.eqTrans ((phi_congr' Prf.hyp0).eqTrans phi_zero)))
   have hN : ((N ≐ succ (pred N)) :: Γ) ⊢[PRAAx] N ≐ succ (pred N) := Prf.hyp0
   refine .orE (zero_or_succ (val two N)) ?_ (phi_two_even hN.wk h.wk.wk Prf.hyp0)
-  have h2 : ((val two N ≐ zero) :: (N ≐ succ (pred N)) :: Γ) ⊢[PRAAx] le two (two : PTm n) := le_refl _
-  have hNe0 := cof_eq (m := N) h2
-  have hmo := eq_one_of_lt_two (rem_lt' two_pos' _) (cof_not_dvd h2 hN.wk)
-  have e : ((val two N ≐ zero) :: (N ≐ succ (pred N)) :: Γ) ⊢[PRAAx] N ≐ quo N (pw two (val two N)) :=
-    hNe0.eqTrans ((congrMul ((congrAp2 powF Prf.hyp0 (.eqRefl _)).eqTrans (pw_zero _)) (.eqRefl _)).eqTrans (one_mul _))
-  exact .orI₁ (odd_phi2 ((congrAp2 remF e (.eqRefl _)).eqTrans hmo) h.wk.wk)
+  exact .orI₁ (odd_phi2 (odd_of_zero_two_valuation hN.wk Prf.hyp0) h.wk.wk)
 
 /-- `thm:phi-two` (values): `φ(3) = φ(4) = φ(6) = 2`. -/
 theorem phi_two_values :

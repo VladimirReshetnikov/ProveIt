@@ -25,7 +25,7 @@ open_ipra
 open LeanProofs.IPRA.Algebra.CubeRootTwo (sg sg_zero sg_succ)
 open LeanProofs.IPRA.Combinatorics.Binomial (pos_mul)
 open LeanProofs.IPRA.DiophantineNumberTheory.Coprime
-open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi totBody coprime_pow)
+open LeanProofs.IPRA.AnalyticNumberTheory.Totient (phi)
 open LeanProofs.IPRA.AnalyticNumberTheory.Primes (lpf μz lpfBody lpf_dvd lpf_prime prime eq_succ_pred)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_eq' rem_lt' zero_lt')
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiDouble (two_pos')
@@ -118,7 +118,7 @@ theorem lpf_le_three {N : PTm n} (hN : Γ ⊢[PRAAx] lt one N) (h : Γ ⊢[PRAAx
   have s := Search.search_found (f := lpfBody) (N := N) (x := N) (i := one) (by rw [Primes.inst2_lpf]; exact h) hN
   exact (succ_monus_succ _ _).eqTrans ((succ_monus_succ _ _).eqTrans (Prf.andE₂ (Prf.andE₂ s)))
 
-open LeanProofs.IPRA.AnalyticNumberTheory.Radical (two_le_of_prime val_pos cof_pos cof_rem_pos cof_lt)
+open LeanProofs.IPRA.AnalyticNumberTheory.Radical (val_pos cof_rem_pos cof_lt)
 
 /-- The step for odd `N ∉ {1, 3}`, peeling its least prime factor `p`. -/
 theorem d2_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : Γ ⊢[PRAAx] prime p)
@@ -128,21 +128,11 @@ theorem d2_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : 
     Γ ⊢[PRAAx] le (two * N) (phi N * phi N) := by
   have hpo := prime_odd hp hpN hodd
   have h3p := three_le_of_odd_prime hp hpo
-  have ha := val_pos hN hp hpN
-  have hm := cof_pos hN hp hpN
   have hrm := cof_rem_pos hN hp hpN
-  have hNe := cof_eq (m := N) (two_le_of_prime hN hp hpN)
-  have hP := pw_val_pos (m := N) (two_le_of_prime hN hp hpN)
-  have e₂ : Γ ⊢[PRAAx] pw p (succ (pred (val p N))) ≐ pw p (val p N) := congrAp2 powF ha.eqSymm (.eqRefl _)
-  have hmo : Γ ⊢[PRAAx] rem (quo N (pw p (val p N))) two ≐ one := by
-    refine eq_one_of_lt_two (rem_lt' two_pos' _) (.impI ?_)
-    have d : ((rem (quo N (pw p (val p N))) two ≐ zero) :: Γ) ⊢[PRAAx] dvd two N :=
-      dvd_congr hNe.wk.eqSymm (dvd_congr (mul_comm _ _) (dvd_mul' two_pos' _ Prf.hyp0))
-    exact succ_ne_zero' _ (a := zero) (hodd.wk.eqSymm.eqTrans d)
+  obtain ⟨hm, hNe, hmul⟩ := prime_power_totient_split hN hp
+  have e₂ := congrAp2 powF (val_pos hN hp hpN).eqSymm (.eqRefl p)
+  have hmo := odd_right_factor hNe hodd
   have h₀ := sum_zero_elim o2B hV (cof_lt hN hp hpN)
-  have g₁ := gcd_prime hp (.impI (succ_ne_zero' _ (hrm.wk.eqSymm.eqTrans Prf.hyp0)))
-  have hg := gcd_comm_one hP (coprime_pow hm (gcd_comm_one hm g₁) (val p N))
-  have hmul := (phi_congr' hNe).eqTrans (Multiplicative.phi_mul_at hP hm hg)
   have hsq := le_congr e₂ (congrMul (phi_congr' e₂) (phi_congr' e₂)) (ppow_sq hp h3p (pred (val p N)))
   refine .orE (eq_or_ne (quo N (pw p (val p N))) one) ?_ ?_
   · -- `N = p^a`, a prime power `≠ 3`.
@@ -233,22 +223,7 @@ theorem phi_sq_odd2 {M : PTm n} (hodd : Γ ⊢[PRAAx] rem M two ≐ one) (h1 : �
 theorem phi_sq_even {N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h2 : Γ ⊢[PRAAx] neg (N ≐ two))
     (h6 : Γ ⊢[PRAAx] neg (N ≐ six)) (ha : Γ ⊢[PRAAx] val two N ≐ succ (pred (val two N))) :
     Γ ⊢[PRAAx] le N (phi N * phi N) := by
-  have l2 : Γ ⊢[PRAAx] le two (two : PTm n) := le_refl _
-  have hNe0 := cof_eq (m := N) l2
-  have hmo := eq_one_of_lt_two (rem_lt' two_pos' _) (cof_not_dvd l2 hN)
-  have hM : Γ ⊢[PRAAx] quo N (pw two (val two N)) ≐ succ (pred (quo N (pw two (val two N)))) := by
-    refine .orE (zero_or_succ (quo N (pw two (val two N)))) ?_ Prf.hyp0
-    exact succ_ne_zero' _ (hN.wk.eqSymm.eqTrans (hNe0.wk.eqTrans ((congrMul (.eqRefl _) Prf.hyp0).eqTrans (mul_zero _))))
-  have hP := pw_val_pos (m := N) l2
-  have g₁ := gcd_prime prime_two (cof_not_dvd l2 hN)
-  have hg := gcd_comm_one hP (coprime_pow hM (gcd_comm_one hM g₁) (val two N))
-  have hmul := (phi_congr' hNe0).eqTrans (Multiplicative.phi_mul_at hP hM hg)
-  have e₂ : Γ ⊢[PRAAx] pw two (succ (pred (val two N))) ≐ pw two (val two N) := congrAp2 powF ha.eqSymm (.eqRefl _)
-  have hφP := (phi_congr' e₂).eqSymm.eqTrans (phi_ppow prime_two (pred (val two N)))
-  have hs : Γ ⊢[PRAAx] monus two one ≐ (one : PTm n) := (succ_monus_succ _ _).eqTrans (monus_zero _)
-  have hφ : Γ ⊢[PRAAx] phi N ≐ pw two (pred (val two N)) * phi (quo N (pw two (val two N))) :=
-    hmul.eqTrans (congrMul (hφP.eqTrans ((congrMul (.eqRefl _) hs).eqTrans (EulerProduct.mul_one' _))) (.eqRefl _))
-  have hNe := hNe0.eqTrans (congrMul e₂.eqSymm (.eqRefl _))
+  obtain ⟨hNe, hφ, hmo, _⟩ := two_adic_totient_split hN ha
   have hsqo := phi_sq_odd hmo
   refine .orE (zero_or_succ (pred (val two N))) ?_ ?_
   · -- `a = 1`: `n = 2m`, `φ(n) = φ(m)`, `m ∉ {1, 3}`.
@@ -287,12 +262,7 @@ theorem phi_sq_at {N : PTm n} (h2 : Γ ⊢[PRAAx] neg (N ≐ two)) (h6 : Γ ⊢[
   refine .orE (zero_or_succ N) ((congrMonus Prf.hyp0 (.eqRefl _)).eqTrans (zero_monus _)) ?_
   have hN : ((N ≐ succ (pred N)) :: Γ) ⊢[PRAAx] N ≐ succ (pred N) := Prf.hyp0
   refine .orE (zero_or_succ (val two N)) ?_ (phi_sq_even hN.wk h2.wk.wk h6.wk.wk Prf.hyp0)
-  have l2 : ((val two N ≐ zero) :: (N ≐ succ (pred N)) :: Γ) ⊢[PRAAx] le two (two : PTm n) := le_refl _
-  have hNe0 := cof_eq (m := N) l2
-  have hmo := eq_one_of_lt_two (rem_lt' two_pos' _) (cof_not_dvd l2 hN.wk)
-  have e : ((val two N ≐ zero) :: (N ≐ succ (pred N)) :: Γ) ⊢[PRAAx] N ≐ quo N (pw two (val two N)) :=
-    hNe0.eqTrans ((congrMul ((congrAp2 powF Prf.hyp0 (.eqRefl _)).eqTrans (pw_zero _)) (.eqRefl _)).eqTrans (one_mul _))
-  exact phi_sq_odd ((congrAp2 remF e (.eqRefl _)).eqTrans hmo)
+  exact phi_sq_odd (odd_of_zero_two_valuation hN.wk Prf.hyp0)
 
 /-- `thm:phi-lower` (second part): `φ(n)² ≥ n` for every `n ∉ {2, 6}`. -/
 abbrev phiSqFormula : Fm PTm 1 :=
