@@ -79,21 +79,14 @@ ipra_subst admissibleSuffix
 ipra_subst hasSuffix [Syn.subst_shift, Syn.shift_subst]
 
 theorem suffix_zero (I : Instance) (i a p : PTm n) : Γ ⊢[PRAAx] suffixChain I zero i a p ≐ a := by
-  have h := rec_zero (Γ := Γ) (var 1 : PTm 3) (suffixStep I) ![i,a,p]
-  have e : (Fin.cases zero ![i,a,p] : Fin 4 → PTm n) = ![zero,i,a,p] := by funext j; fin_cases j <;> rfl
-  rw [e] at h
-  simpa only [suffixChain,suffixF,Syn.subst_var,Matrix.cons_val_one,Matrix.cons_val_zero] using h
+  simpa only [suffixChain, suffixF, Syn.subst_var, Matrix.cons_val_one, Matrix.cons_val_zero]
+    using rec_zero_vecCons (Γ := Γ) (var 1 : PTm 3) (suffixStep I) ![i,a,p]
 
 theorem suffix_succ (I : Instance) (t i a p : PTm n) : Γ ⊢[PRAAx]
     suffixChain I (succ t) i a p ≐
       I.nxt (monus (I.h p) (i + succ t)) (suffixChain I t i a p) p := by
-  have h := rec_succ (Γ := Γ) (var 1 : PTm 3) (suffixStep I) t ![i,a,p]
-  have e : (Fin.cases (succ t) ![i,a,p] : Fin 4 → PTm n) = ![succ t,i,a,p] := by funext j; fin_cases j <;> rfl
-  have f : (Fin.cases t (Fin.cases (PTm.app (suffixF I) (Fin.cases t ![i,a,p])) ![i,a,p]) : Fin 5 → PTm n) =
-      ![t,suffixChain I t i a p,i,a,p] := by funext j; fin_cases j <;> rfl
-  unfold suffixF at f
-  rw [e,f] at h
-  simpa [suffixChain,suffixF,suffixStep] using h
+  simpa [suffixChain, suffixF, suffixStep]
+    using rec_succ_vecCons (Γ := Γ) (var 1 : PTm 3) (suffixStep I) t ![i,a,p]
 
 theorem absolute_le (I : Instance) {i p t : PTm n}
     (hi : Γ ⊢[PRAAx] le i (I.h p)) (ht : Γ ⊢[PRAAx] le t (remaining I i p)) :
@@ -320,20 +313,13 @@ theorem coded_start_viable (I : Instance) (S i p : PTm n)
 
 theorem boundStack_zero (I : Instance) (i p : PTm n) : Γ ⊢[PRAAx]
     boundStack I zero i p ≐ zero := by
-  have h := rec_zero (Γ := Γ) (zero : PTm 2) (boundStep I) ![i,p]
-  have e : (Fin.cases zero ![i,p] : Fin 3 → PTm n) = ![zero,i,p] := by funext j; fin_cases j <;> rfl
-  rw [e] at h
-  simpa only [boundStack,boundF,ConciseIPRA.PTm.subst_zero] using h
+  simpa only [boundStack, boundF, ConciseIPRA.PTm.subst_zero]
+    using rec_zero_vecCons (Γ := Γ) (zero : PTm 2) (boundStep I) ![i,p]
 
 theorem boundStack_succ (I : Instance) (r i p : PTm n) : Γ ⊢[PRAAx]
     boundStack I (succ r) i p ≐ pairT (I.bd (i+r) p) (boundStack I r i p) := by
-  have h := rec_succ (Γ := Γ) (zero : PTm 2) (boundStep I) r ![i,p]
-  have e : (Fin.cases (succ r) ![i,p] : Fin 3 → PTm n) = ![succ r,i,p] := by funext j; fin_cases j <;> rfl
-  have f : (Fin.cases r (Fin.cases (PTm.app (boundF I) (Fin.cases r ![i,p])) ![i,p]) : Fin 4 → PTm n) =
-      ![r,boundStack I r i p,i,p] := by funext j; fin_cases j <;> rfl
-  unfold boundF at f
-  rw [e,f] at h
-  simpa [boundF,boundStack,boundStep] using h
+  simpa [boundF, boundStack, boundStep]
+    using rec_succ_vecCons (Γ := Γ) (zero : PTm 2) (boundStep I) r ![i,p]
 
 def sizeLaw (I : Instance) (i a p r : PTm n) : Fm PTm n :=
   le r (succ (remaining I i p)) ⟶ le (stack (suffixBody I) r (data i a p)) (boundStack I r i p)

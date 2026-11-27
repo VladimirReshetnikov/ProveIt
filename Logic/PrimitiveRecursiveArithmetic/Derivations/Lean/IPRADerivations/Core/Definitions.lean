@@ -52,6 +52,19 @@ theorem rec_succ {k : ℕ} (base : PTm k) (step : PTm (k + 2)) (y : PTm n) (xs :
       ≐ Syn.subst (Fin.cases y (Fin.cases (app (recDef base step) (Fin.cases y xs)) xs)) step :=
   (PRA.precSucc _ _ y xs).eqTrans (toPR_eq step _)
 
+/-- The initial recursion equation in tuple notation, for use with tuple simp lemmas. -/
+theorem rec_zero_vecCons {k : ℕ} (base : PTm k) (step : PTm (k + 2)) (xs : Fin k → PTm n) :
+    Γ ⊢[PRAAx] app (recDef base step) (Matrix.vecCons zero xs) ≐ Syn.subst xs base :=
+  rec_zero base step xs
+
+/-- The successor equation in tuple notation, with index and accumulator prepended to the parameters. -/
+theorem rec_succ_vecCons {k : ℕ} (base : PTm k) (step : PTm (k + 2)) (y : PTm n)
+    (xs : Fin k → PTm n) :
+    Γ ⊢[PRAAx] app (recDef base step) (Matrix.vecCons (succ y) xs) ≐
+      Syn.subst (Matrix.vecCons y (Matrix.vecCons (app (recDef base step) (Matrix.vecCons y xs)) xs))
+        step :=
+  rec_succ base step y xs
+
 /-! ## Unary and binary application -/
 
 /-- `f(a)`. -/
@@ -91,37 +104,25 @@ theorem subst_vecEmpty {l : ℕ} (σ : Fin n → PTm l) :
 def rec1 (c : PTm 0) (step : PTm 2) : PR 1 := recDef c step
 
 theorem rec1_zero (c : PTm 0) (step : PTm 2) :
-    Γ ⊢[PRAAx] ap1 (rec1 c step) zero ≐ Syn.subst Fin.elim0 c := by
-  have h := rec_zero (Γ := Γ) c step (Fin.elim0 : Fin 0 → PTm n)
-  have e : (Fin.cases zero Fin.elim0 : Fin 1 → PTm n) = ![zero] := by funext i; fin_cases i; rfl
-  rw [e] at h; exact h
+    Γ ⊢[PRAAx] ap1 (rec1 c step) zero ≐ Syn.subst Fin.elim0 c :=
+  rec_zero c step ![]
 
 theorem rec1_succ (c : PTm 0) (step : PTm 2) (y : PTm n) :
-    Γ ⊢[PRAAx] ap1 (rec1 c step) (succ y) ≐ Syn.subst ![y, ap1 (rec1 c step) y] step := by
-  have h := rec_succ (Γ := Γ) c step y (Fin.elim0 : Fin 0 → PTm n)
-  have e₁ : (Fin.cases (succ y) Fin.elim0 : Fin 1 → PTm n) = ![succ y] := by
-    funext i; fin_cases i; rfl
-  have e₂ : (Fin.cases y Fin.elim0 : Fin 1 → PTm n) = ![y] := by funext i; fin_cases i; rfl
-  have e₃ : (Fin.cases y (Fin.cases (app (recDef c step) ![y]) Fin.elim0) : Fin 2 → PTm n)
-      = ![y, ap1 (rec1 c step) y] := by funext i; fin_cases i <;> rfl
-  rw [e₁, e₂, e₃] at h; exact h
+    Γ ⊢[PRAAx] ap1 (rec1 c step) (succ y) ≐ Syn.subst ![y, ap1 (rec1 c step) y] step :=
+  rec_succ c step y ![]
 
 /-- A binary recursion on the first argument with one parameter:
 `h(0, x) = base(x)`, `h(y + 1, x) = step(y, h(y, x), x)`. -/
 def rec2 (base : PTm 1) (step : PTm 3) : PR 2 := recDef base step
 
 theorem rec2_zero (base : PTm 1) (step : PTm 3) (x : PTm n) :
-    Γ ⊢[PRAAx] ap2 (rec2 base step) zero x ≐ Syn.subst ![x] base := by
-  have h := rec_zero (Γ := Γ) base step ![x]
-  exact h
+    Γ ⊢[PRAAx] ap2 (rec2 base step) zero x ≐ Syn.subst ![x] base :=
+  rec_zero base step ![x]
 
 theorem rec2_succ (base : PTm 1) (step : PTm 3) (y x : PTm n) :
     Γ ⊢[PRAAx] ap2 (rec2 base step) (succ y) x
-      ≐ Syn.subst ![y, ap2 (rec2 base step) y x, x] step := by
-  have h := rec_succ (Γ := Γ) base step y ![x]
-  have e : (Fin.cases y (Fin.cases (app (recDef base step) (Fin.cases y ![x])) ![x]) : Fin 3 → PTm n)
-      = ![y, ap2 (rec2 base step) y x, x] := by funext i; fin_cases i <;> rfl
-  rw [e] at h; exact h
+      ≐ Syn.subst ![y, ap2 (rec2 base step) y x, x] step :=
+  rec_succ base step y ![x]
 
 /-- Read an application in a binary recursion's successor step using its substituted arguments. -/
 theorem rec2_succ_app {k : ℕ} (base : PTm 1) (f : PR k) (args : Fin k → PTm 3)

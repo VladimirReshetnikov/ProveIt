@@ -36,13 +36,8 @@ theorem start (L b x : PTm n) : Γ ⊢[PRAAx] carry zero L b x ≐ x :=
 
 theorem advance (j L b x : PTm n) :
     Γ ⊢[PRAAx] carry (succ j) L b x ≐ carry j L b x * L + b := by
-  have h := rec_succ (Γ := Γ) seed tick j ![L,b,x]
-  change Γ ⊢[PRAAx] carry (succ j) L b x ≐ Syn.subst (Fin.cases j
-    (Fin.cases (carry j L b x) ![L,b,x])) tick at h
-  have ev : (Fin.cases j (Fin.cases (carry j L b x) ![L,b,x]) : Fin 5 → PTm n) =
-      ![j,carry j L b x,L,b,x] := by
-    funext i; fin_cases i <;> rfl
-  rw [ev] at h
+  have h : Γ ⊢[PRAAx] carry (succ j) L b x ≐ Syn.subst ![j,carry j L b x,L,b,x] tick :=
+    rec_succ_vecCons seed tick j ![L,b,x]
   simpa [tick] using h
 
 def invariant : Fm PTm 4 :=

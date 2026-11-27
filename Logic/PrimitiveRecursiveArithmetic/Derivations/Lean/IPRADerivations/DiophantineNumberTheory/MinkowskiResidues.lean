@@ -63,21 +63,14 @@ def color (N m a : PTm n) : PTm n := ap3 colorF N m a
     Syn.subst σ (color N m a) = color (Syn.subst σ N) (Syn.subst σ m) (Syn.subst σ a) := subst_ap3 _ _ _ _ _
 
 theorem color_zero (m a : PTm n) : Γ ⊢[PRAAx] color zero m a ≐ zero := by
-  have h := rec_zero (Γ := Γ) (zero : PTm 2) colorStep ![m,a]
-  have eq : (Fin.cases zero ![m,a] : Fin 3 → PTm n) = ![zero,m,a] := by funext i; fin_cases i <;> rfl
-  rw [eq] at h
-  simpa only [color, colorF, ap3, ConciseIPRA.PTm.subst_zero] using h
+  simpa only [color, colorF, ap3, ConciseIPRA.PTm.subst_zero]
+    using rec_zero_vecCons (Γ := Γ) (zero : PTm 2) colorStep ![m,a]
 
 theorem color_succ (N m a : PTm n) :
     Γ ⊢[PRAAx] color (succ N) m a ≐ m*color N m a+digit a N m := by
-  have h := rec_succ (Γ := Γ) (zero : PTm 2) colorStep N ![m,a]
-  have e1 : (Fin.cases (succ N) ![m,a] : Fin 3 → PTm n) = ![succ N,m,a] := by funext i; fin_cases i <;> rfl
-  have e2 : (Fin.cases N (Fin.cases (app (recDef (zero : PTm 2) colorStep) (Fin.cases N ![m,a])) ![m,a]) : Fin 4 → PTm n) =
-      ![N,color N m a,m,a] := by funext i; fin_cases i <;> rfl
-  rw [e1,e2] at h
   simpa only [color, colorF, ap3, colorStep, PTm.subst_add, PTm.subst_mul, subst_digit,
     Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
-    Matrix.head_cons, Matrix.tail_cons] using h
+    Matrix.head_cons, Matrix.tail_cons] using rec_succ_vecCons (Γ := Γ) (zero : PTm 2) colorStep N ![m,a]
 
 /-- One Horner step stays strictly below the next radix power. -/
 theorem range_step {m C P r : PTm n} (hC : Γ ⊢[PRAAx] lt C P) (hr : Γ ⊢[PRAAx] lt r m) :

@@ -131,23 +131,13 @@ ipra_subst fold
 
 theorem fold_zero (inner : PR 2) (outer x : PTm n) :
     Γ ⊢[PRAAx] fold inner outer x zero ≐ empty := by
-  have h := rec_zero (Γ := Γ) (empty : PTm 2) (foldStep inner) ![outer, x]
-  have e : (Fin.cases zero ![outer, x] : Fin 3 → PTm n) = ![zero, outer, x] := by
-    funext i; fin_cases i <;> rfl
-  rw [e] at h
-  simpa only [fold, foldF, ap3, subst_empty] using h
+  simpa only [fold, foldF, ap3, subst_empty]
+    using rec_zero_vecCons (Γ := Γ) (empty : PTm 2) (foldStep inner) ![outer, x]
 
 theorem fold_succ (inner : PR 2) (outer x j : PTm n) :
     Γ ⊢[PRAAx] fold inner outer x (succ j) ≐ append (fold inner outer x j) (block inner outer x j) := by
-  have h := rec_succ (Γ := Γ) (empty : PTm 2) (foldStep inner) j ![outer, x]
-  have e₁ : (Fin.cases (succ j) ![outer, x] : Fin 3 → PTm n) = ![succ j, outer, x] := by
-    funext i; fin_cases i <;> rfl
-  have e₂ : (Fin.cases j (Fin.cases
-      (app (recDef (empty : PTm 2) (foldStep inner)) (Fin.cases j ![outer, x])) ![outer, x]) :
-      Fin 4 → PTm n) = ![j, fold inner outer x j, outer, x] := by
-    funext i; fin_cases i <;> rfl
-  rw [e₁, e₂] at h
-  simpa [fold, foldF, ap3, foldStep] using h
+  simpa [fold, foldF, ap3, foldStep]
+    using rec_succ_vecCons (Γ := Γ) (empty : PTm 2) (foldStep inner) j ![outer, x]
 
 theorem fold_length (inner : PR 2) (outer x j : PTm n) :
     Γ ⊢[PRAAx] length (fold inner outer x j) ≐ prefixSum inner outer x j := by

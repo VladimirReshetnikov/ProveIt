@@ -227,19 +227,11 @@ theorem succ_mul (a b : PTm n) : Γ ⊢[PRAAx] succ a * b ≐ a * b + b := by
     · exact PRA.proj _ _
     · exact PRA.proj _ _
 
-theorem pred_zero : Γ ⊢[PRAAx] pred (zero : PTm n) ≐ zero := by
-  have h := PRA.precZero (Γ := Γ) .zero (.proj 0) (Fin.elim0 : Fin 0 → PTm n)
-  have e : (Fin.cases zero Fin.elim0 : Fin 1 → PTm n) = ![zero] := by
-    funext i; fin_cases i; rfl
-  rw [e] at h
-  exact h
+theorem pred_zero : Γ ⊢[PRAAx] pred (zero : PTm n) ≐ zero :=
+  PRA.precZero .zero (.proj 0) ![]
 
-theorem pred_succ (a : PTm n) : Γ ⊢[PRAAx] pred (succ a) ≐ a := by
-  have h := PRA.precSucc (Γ := Γ) .zero (.proj 0) a Fin.elim0
-  have e : (Fin.cases (succ a) Fin.elim0 : Fin 1 → PTm n) = ![succ a] := by
-    funext i; fin_cases i; rfl
-  rw [e] at h
-  exact h.eqTrans (PRA.proj _ _)
+theorem pred_succ (a : PTm n) : Γ ⊢[PRAAx] pred (succ a) ≐ a :=
+  (PRA.precSucc .zero (.proj 0) a ![]).eqTrans (PRA.proj _ _)
 
 theorem monus_zero (a : PTm n) : Γ ⊢[PRAAx] monus a zero ≐ a :=
   .eqTrans (PRA.precZero (Γ := Γ) (.proj 0) _ ![a]) (PRA.proj (Γ := Γ) 0 ![a])

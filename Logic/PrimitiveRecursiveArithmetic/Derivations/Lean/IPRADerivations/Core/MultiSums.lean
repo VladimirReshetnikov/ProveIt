@@ -57,46 +57,29 @@ def bodyStep3 (body : PTm 3) : PTm 4 := Syn.subst ![var 0, var 2, var 3] body
 def sum2F (body : PTm 3) : PR 3 := recDef zero (var 1 + bodyStep3 body)
 def prod2F (body : PTm 3) : PR 3 := recDef (succ zero) (var 1 * bodyStep3 body)
 
-private theorem cases_eq (y p q A : PTm n) :
-    (Fin.cases y (Fin.cases A ![p, q]) : Fin 4 → PTm n) = ![y, A, p, q] := by
-  funext i; fin_cases i <;> rfl
-
-private theorem cases_eq' (y p q : PTm n) : (Fin.cases y ![p, q] : Fin 3 → PTm n) = ![y, p, q] := by
-  funext i; fin_cases i <;> rfl
-
 private theorem step_eq (body : PTm 3) (y p q A : PTm n) :
     Syn.subst ![y, A, p, q] (bodyStep3 body) = inst3 body y p q := by
   simp only [bodyStep3, inst3, Syn.subst_subst, subst_vecCons, subst_vecEmpty, Syn.subst_var,
     Matrix.cons_val_zero, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons]
 
 theorem sum2_zero (body : PTm 3) (p q : PTm n) : Γ ⊢[PRAAx] ap3 (sum2F body) zero p q ≐ zero := by
-  have h := rec_zero (Γ := Γ) zero (var 1 + bodyStep3 body) ![p, q]
-  rw [cases_eq'] at h
-  simp only [ConciseIPRA.PTm.subst_zero] at h
-  exact h
+  simpa only [sum2F, ap3, ConciseIPRA.PTm.subst_zero]
+    using rec_zero_vecCons (Γ := Γ) zero (var 1 + bodyStep3 body) ![p, q]
 
 theorem sum2_succ (body : PTm 3) (y p q : PTm n) :
     Γ ⊢[PRAAx] ap3 (sum2F body) (succ y) p q ≐ ap3 (sum2F body) y p q + inst3 body y p q := by
-  have h := rec_succ (Γ := Γ) zero (var 1 + bodyStep3 body) y ![p, q]
-  have e₁ : (Fin.cases (succ y) ![p, q] : Fin 3 → PTm n) = ![succ y, p, q] := cases_eq' _ _ _
-  have e₂ : (Fin.cases y (Fin.cases (app (recDef zero (var 1 + bodyStep3 body)) (Fin.cases y ![p, q])) ![p, q])
-      : Fin 4 → PTm n) = ![y, ap3 (sum2F body) y p q, p, q] := by funext i; fin_cases i <;> rfl
-  rw [e₁, e₂, PTm.subst_add, step_eq] at h
+  have h := rec_succ_vecCons (Γ := Γ) zero (var 1 + bodyStep3 body) y ![p, q]
+  rw [PTm.subst_add, step_eq] at h
   exact h
 
 theorem prod2_zero (body : PTm 3) (p q : PTm n) : Γ ⊢[PRAAx] ap3 (prod2F body) zero p q ≐ one := by
-  have h := rec_zero (Γ := Γ) (succ zero) (var 1 * bodyStep3 body) ![p, q]
-  rw [cases_eq'] at h
-  simp only [ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h
-  exact h
+  simpa only [prod2F, ap3, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    using rec_zero_vecCons (Γ := Γ) (succ zero) (var 1 * bodyStep3 body) ![p, q]
 
 theorem prod2_succ (body : PTm 3) (y p q : PTm n) :
     Γ ⊢[PRAAx] ap3 (prod2F body) (succ y) p q ≐ ap3 (prod2F body) y p q * inst3 body y p q := by
-  have h := rec_succ (Γ := Γ) (succ zero) (var 1 * bodyStep3 body) y ![p, q]
-  have e₁ : (Fin.cases (succ y) ![p, q] : Fin 3 → PTm n) = ![succ y, p, q] := cases_eq' _ _ _
-  have e₂ : (Fin.cases y (Fin.cases (app (recDef (succ zero) (var 1 * bodyStep3 body)) (Fin.cases y ![p, q])) ![p, q])
-      : Fin 4 → PTm n) = ![y, ap3 (prod2F body) y p q, p, q] := by funext i; fin_cases i <;> rfl
-  rw [e₁, e₂, PTm.subst_mul, step_eq] at h
+  have h := rec_succ_vecCons (Γ := Γ) (succ zero) (var 1 * bodyStep3 body) y ![p, q]
+  rw [PTm.subst_mul, step_eq] at h
   exact h
 
 /-! ## Congruence below the bound -/
