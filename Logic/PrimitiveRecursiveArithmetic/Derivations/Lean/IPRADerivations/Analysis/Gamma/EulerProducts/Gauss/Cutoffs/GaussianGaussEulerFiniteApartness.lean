@@ -32,16 +32,13 @@ open GaussianRationalLowerBounds (lower_from_representation)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalReciprocal (qone reciprocal_canonical)
 open GaussianRootSchedule (binaryLength binary_length_correct)
+open GaussianNamedFiniteProductApartness renaming unit_margin → unit_lower
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "ER" => GaussianGammaGaussReferenceEulerProduct.rowF
 local notation "rowData" => GaussianGammaGaussReferenceEulerProduct.rowData
 local notation "rowRadius" => GaussianGammaGaussReferenceEulerProduct.rowRadius
 local notation "threshold" => GaussianGammaGaussReferenceEulerProduct.threshold
-
-private theorem unit_lower : Γ ⊢[PRAAx] lower (qone : PTm n) one :=
-  lower_from_representation _ oneCode one one one (le_refl _) (le_refl _) (ofGaussian_represents _ _ (le_refl _))
-    (le_congr (by ipra_ring) (congrMul (.eqRefl _) normSq_one).eqSymm (le_refl _))
 
 theorem inverse_name_lower (f : PR 2) (p h x : PTm n) (hi : Γ ⊢[PRAAx] input f h x) :
     Γ ⊢[PRAAx] lower (ap2 (nameF f) p (nameData h x)) (U f x) := by

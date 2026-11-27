@@ -28,6 +28,7 @@ open GaussianRationalMetric (qsub)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open GaussianRationalPowerAlgebra (qmul_commutative)
+open GaussianRationalPowerAlgebra renaming commute_nested → commute_outer
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,9 +52,6 @@ theorem original_row_difference (i p N z B a C E : PTm n) : Γ ⊢[PRAAx]
   have product := multiply_body_at (Γ := Γ) (sampleBody rawF) v i d
   exact normal.eqTrans ((qsub_congr product.eqSymm (.eqRefl _)).eqTrans
     (difference_body_at (multiplyBody (sampleBody rawF)) (sampleBody endpointF) i (pairT v d) d).eqSymm)
-
-private theorem commute_outer (a b c : PTm n) : Γ ⊢[PRAAx] qmul a (qmul b c) ≐ qmul b (qmul a c) :=
-  (qmul_associative a b c).eqSymm.eqTrans ((qmul_congr (qmul_commutative a b) (.eqRefl c)).eqTrans (qmul_associative b a c))
 
 /-- All rows, weights and data are the actual original programs.
 No source, point-value, derivative or quadrature law is supplied. -/

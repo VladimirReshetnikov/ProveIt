@@ -176,4 +176,16 @@ theorem actual_positive_rational_logarithm_exponential_regular_closed : ([] : Li
     (source (var 0) (var 1) ⟶ pointCN expF (expData (var 0) (var 1))) :=
   closeUniv 2 (.impI (exponential_regular _ _ Prf.hyp0))
 
+theorem scalar_represents (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
+    Γ ⊢[PRAAx] RationalArithmetic.represents (fstT (fraction a b)) (ZT.ofNat a) b := by
+  apply GaussianRationalHorner.scalar_congr (.eqRefl _) ?_ (.eqRefl _)
+    (GaussianRationalHorner.ofGaussian_represents (ComplexLogarithmRemainder.scale a ComplexLogarithmRemainder.oneCode) b hb).andE₁
+  apply ZT.derive
+  simp only [GaussianRootAlgebra.re_scale,GaussianRootAlgebra.re_one,ZT.toZ_ofNat]
+  ring
+
+theorem sample_congr (p b : PTm n) {a c : PTm n} (he : Γ ⊢[PRAAx] a ≐ c) :
+    Γ ⊢[PRAAx] sample p a b ≐ sample p c b :=
+  congrAp2 logF (.eqRefl p) (congrPairT (.eqRefl two) (congrPairT he (.eqRefl _)))
+
 end LeanProofs.IPRA.Analysis.GaussianPositiveRationalLogarithm

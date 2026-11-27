@@ -135,4 +135,9 @@ theorem actual_normalized_product_independent_rate_closed (F G H K : PR 2) : ([]
         (leadingNumerator (var 4) (var 5) (var 6) (var 7) (var 8) (var 9)) (leadingDenominator (var 5) (var 7))) :=
   closeUniv 10 (.impI (rate_of_input F G H K _ _ _ _ _ _ _ _ _ _ Prf.hyp0))
 
+theorem actual_name_bound (F : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] pointCN F x) :
+    Γ ⊢[PRAAx] GaussianNamedMultiplyRate.sampleBound F x (GaussianNameBounds.U F x) := by
+  simpa only [GaussianNamedMultiplyRate.sampleBound,GaussianRootApproximationWitness.pointBounds] using
+    GaussianNameBounds.all_samples_bounded F x h
+
 end LeanProofs.IPRA.Analysis.GaussianNamedMultiplyRate

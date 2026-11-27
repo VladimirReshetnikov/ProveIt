@@ -32,6 +32,7 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianCoefficientNameBounds (unit)
 open GaussianRationalMetric (distanceBounded)
 open GaussianEuclideanDistanceName (pointCN)
+open GaussianGammaAdjacentCutoff renaming swap_first → commute_left
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -47,17 +48,6 @@ def factoredKernelData (z B a b c d : PTm n) : PTm n :=
 def query (p z B a b c d : PTm n) : PTm n :=
   GaussianFastValueCut.exponent
     (multiplyModulus constantF nameF (jacobianValue a b c d) (data z B (c*(a*a)) (d*(b*b)))) p
-
-private theorem commute_left (f g h : PR 2) (x y z : PTm n)
-    (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) (hh : Γ ⊢[PRAAx] pointCN h z) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF f (multiplyF g h)) (multiplyF g (multiplyF f h))
-      (multiplyData f (multiplyF g h) x (multiplyData g h y z))
-      (multiplyData g (multiplyF f h) y (multiplyData f h x z)) := by
-  have permute := multiply_cross (multiplyF f g) (multiplyF g f) h h
-    (multiplyData f g x y) (multiplyData g f y x) z z (multiply_fast _ _ _ _ hf hg)
-    (multiply_fast _ _ _ _ hg hf) hh hh (multiply_commutative f g x y hf hg) (cross_refl _ _ hh)
-  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (multiply_associative f g h x y z hf hg hh))
-    (cross_trans _ _ _ _ _ _ permute (multiply_associative g f h y x z hg hf hh))
 
 private theorem double_scale (z B c d : PTm n) (h : Γ ⊢[PRAAx] le one B ⋏ (le one c ⋏ le one d)) :
     Γ ⊢[PRAAx] crossEquivalent (multiplyF constantF powerF) factorF

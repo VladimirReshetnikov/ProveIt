@@ -30,6 +30,7 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianNamedMultiplyRate renaming actual_name_bound → all_samples
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "Kernel" => GaussianEulerQuadraticKernelCompactName.nameF
@@ -64,11 +65,6 @@ theorem name_at (p z R B A c d : PTm n) : Γ ⊢[PRAAx]
 private theorem constant_source (z R B A c d : PTm n) (hs : Γ ⊢[PRAAx] source z R B A c d) :
     Γ ⊢[PRAAx] GaussianEulerPositiveScalingConstant.source B c d :=
   .andI hs.andE₁.andE₁.andE₂.andE₁.andE₁ hs.andE₂
-
-private theorem all_samples (F : PR 2) (x : PTm n) (h : Γ ⊢[PRAAx] pointCN F x) :
-    Γ ⊢[PRAAx] GaussianNamedMultiplyRate.sampleBound F x (GaussianNameBounds.U F x) := by
-  simpa only [GaussianNamedMultiplyRate.sampleBound,GaussianRootApproximationWitness.pointBounds] using
-    GaussianNameBounds.all_samples_bounded F x h
 
 theorem original_kernel_cutoff_rate (k j z R B A c d : PTm n) (hs : Γ ⊢[PRAAx] source z R B A c d)
     (hj : Γ ⊢[PRAAx] le (GaussianEulerQuadraticLowerEndpoint.minimumIndex k c d) j) : Γ ⊢[PRAAx]
