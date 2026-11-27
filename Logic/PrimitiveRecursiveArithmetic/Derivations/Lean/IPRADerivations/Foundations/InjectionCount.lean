@@ -1,6 +1,7 @@
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.Topology.StaggeredGrids
+import IPRADerivations.Core.Reindex
 
 /-!
 # Counting through an injection
@@ -44,12 +45,7 @@ variable (c g : PTm 2)
 def eB : PTm 3 := sg (Syn.subst ![var 0, var 2] c) * eqb (Syn.subst ![var 0, var 2] g) (var 1)
 
 theorem inst3_eB (i y x : PTm n) : inst3 (eB c g) i y x = sg (inst2 c i x) * eqb (inst2 g i x) y := by
-  have h1 : Syn.subst ![i, y, x] (Syn.subst ![var 0, var 2] c) = inst2 c i x := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have h2 : Syn.subst ![i, y, x] (Syn.subst ![var 0, var 2] g) = inst2 g i x := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst3, eB, PTm.subst_mul, Signum.sg, PTm.subst_monus, subst_eqb, h1, h2]
-  simp
+  simp [inst3, eB, PTm.subst_mul, Signum.sg, PTm.subst_monus, subst_eqb, subst_reindex2]
 
 /-- `[c(i)] [c(M)] [g(i) = g(M)]` over `0 = i`, `1 = ⟨M, x⟩`. -/
 def clB : PTm 2 := sg (Syn.subst ![var 0, sndT (var 1)] c) * sg (Syn.subst ![fstT (var 1), sndT (var 1)] c) *
@@ -57,16 +53,7 @@ def clB : PTm 2 := sg (Syn.subst ![var 0, sndT (var 1)] c) * sg (Syn.subst ![fst
 
 theorem inst2_clB (i z : PTm n) : inst2 (clB c g) i z =
     sg (inst2 c i (sndT z)) * sg (inst2 c (fstT z) (sndT z)) * eqb (inst2 g i (sndT z)) (inst2 g (fstT z) (sndT z)) := by
-  have h1 : Syn.subst ![i, z] (Syn.subst ![var 0, sndT (var 1)] c) = inst2 c i (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have h2 : Syn.subst ![i, z] (Syn.subst ![fstT (var 1), sndT (var 1)] c) = inst2 c (fstT z) (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have h3 : Syn.subst ![i, z] (Syn.subst ![var 0, sndT (var 1)] g) = inst2 g i (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have h4 : Syn.subst ![i, z] (Syn.subst ![fstT (var 1), sndT (var 1)] g) = inst2 g (fstT z) (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, clB, PTm.subst_mul, Signum.sg, PTm.subst_monus, subst_eqb, h1, h2, h3, h4]
-  simp
+  simp [inst2, clB, PTm.subst_mul, Signum.sg, PTm.subst_monus, subst_eqb, subst_reindex2]
 
 /-- The collisions of the index `M`: `Σ_{i<M} clB(i, ⟨M, x⟩)` over `0 = M`, `1 = x`. -/
 abbrev rowCB : PTm 2 := ap2 (sumF (clB c g)) (var 0) (pairT (var 0) (var 1))
@@ -83,12 +70,7 @@ def vB : PTm 2 := sg (Syn.subst ![var 0, sndT (var 1)] c) *
 
 theorem inst2_vB (i z : PTm n) : inst2 (vB c g) i z =
     sg (inst2 c i (sndT z)) * monus one (monus (fstT z) (inst2 g i (sndT z))) := by
-  have h1 : Syn.subst ![i, z] (Syn.subst ![var 0, sndT (var 1)] c) = inst2 c i (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have h3 : Syn.subst ![i, z] (Syn.subst ![var 0, sndT (var 1)] g) = inst2 g i (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, vB, PTm.subst_mul, Signum.sg, PTm.subst_monus, h1, h3]
-  simp
+  simp [inst2, vB, PTm.subst_mul, Signum.sg, PTm.subst_monus, subst_reindex2]
 
 /-- All range violations below `N`. -/
 abbrev viol (N R x : PTm n) : PTm n := ap2 (sumF (vB c g)) N (pairT R x)

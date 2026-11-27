@@ -1,6 +1,7 @@
 import IPRADerivations.Probability.FiniteCauchySchwarz
 import IPRADerivations.AnalyticNumberTheory.Mobius
 import IPRADerivations.DiophantineNumberTheory.KhinchinMoment
+import IPRADerivations.Core.Reindex
 
 /-!
 # The second-moment method on a finite grid
@@ -69,27 +70,13 @@ theorem cs_moment (T B x : PTm n) :
 def aB : PTm 3 := Syn.subst ![var 0, var 1, sndT (var 2)] b * Syn.subst ![var 0, var 2] (oB b)
 
 theorem inst3_aB (c k y : PTm n) : inst3 (aB b) c k y = inst3 b c k (sndT y) * inst2 (oB b) c y := by
-  have e1 : Syn.subst ![c, k, y] (Syn.subst ![var 0, var 1, sndT (var 2)] b) = inst3 b c k (sndT y) := by
-    simp only [inst3, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  have e2 : Syn.subst ![c, k, y] (Syn.subst ![var 0, var 2] (oB b)) = inst2 (oB b) c y := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  have e3 : inst3 (aB b) c k y = Syn.subst ![c, k, y] (Syn.subst ![var 0, var 1, sndT (var 2)] b) *
-      Syn.subst ![c, k, y] (Syn.subst ![var 0, var 2] (oB b)) := by
-    simp only [aB, inst3, PTm.subst_mul]
-  rw [e3, e1, e2]
+  simp [inst3, aB, PTm.subst_mul, subst_reindex2, subst_reindex3]
 
 /-- `b(c, k, x) b(c, ℓ, x)` over `0 = c`, `1 = ℓ`, `2 = ⟨k, x⟩`. -/
 def dB : PTm 3 := Syn.subst ![var 0, fstT (var 2), sndT (var 2)] b * Syn.subst ![var 0, var 1, sndT (var 2)] b
 
 theorem inst3_dB (c l z : PTm n) : inst3 (dB b) c l z = inst3 b c (fstT z) (sndT z) * inst3 b c l (sndT z) := by
-  have e1 : Syn.subst ![c, l, z] (Syn.subst ![var 0, fstT (var 2), sndT (var 2)] b) = inst3 b c (fstT z) (sndT z) := by
-    simp only [inst3, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  have e2 : Syn.subst ![c, l, z] (Syn.subst ![var 0, var 1, sndT (var 2)] b) = inst3 b c l (sndT z) := by
-    simp only [inst3, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  have e3 : inst3 (dB b) c l z = Syn.subst ![c, l, z] (Syn.subst ![var 0, fstT (var 2), sndT (var 2)] b) *
-      Syn.subst ![c, l, z] (Syn.subst ![var 0, var 1, sndT (var 2)] b) := by
-    simp only [dB, inst3, PTm.subst_mul]
-  rw [e3, e1, e2]
+  simp [inst3, dB, PTm.subst_mul, subst_reindex3]
 
 /-- `b(c, k, x) b(c, ℓ, x)` over `0 = c`, `1 = ⟨⟨k, ℓ⟩, x⟩`. -/
 def qB : PTm 2 :=
@@ -97,16 +84,7 @@ def qB : PTm 2 :=
 
 theorem inst2_qB (c z : PTm n) :
     inst2 (qB b) c z = inst3 b c (fstT (fstT z)) (sndT z) * inst3 b c (sndT (fstT z)) (sndT z) := by
-  have e1 : Syn.subst ![c, z] (Syn.subst ![var 0, fstT (fstT (var 1)), sndT (var 1)] b) =
-      inst3 b c (fstT (fstT z)) (sndT z) := by
-    simp only [inst3, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  have e2 : Syn.subst ![c, z] (Syn.subst ![var 0, sndT (fstT (var 1)), sndT (var 1)] b) =
-      inst3 b c (sndT (fstT z)) (sndT z) := by
-    simp only [inst3, Syn.subst_subst]; congr 1; funext i; fin_cases i <;> simp
-  have e3 : inst2 (qB b) c z = Syn.subst ![c, z] (Syn.subst ![var 0, fstT (fstT (var 1)), sndT (var 1)] b) *
-      Syn.subst ![c, z] (Syn.subst ![var 0, sndT (fstT (var 1)), sndT (var 1)] b) := by
-    simp only [qB, inst2, PTm.subst_mul]
-  rw [e3, e1, e2]
+  simp [inst2, qB, PTm.subst_mul, subst_reindex3]
 
 /-- The overlap `Σ_{c<T} b(c, k) b(c, ℓ)` over `0 = k`, `1 = ℓ`, `2 = ⟨T, x⟩`. -/
 def ppB : PTm 3 := ap2 (sumF (qB b)) (fstT (var 2)) (pairT (pairT (var 0) (var 1)) (sndT (var 2)))

@@ -139,7 +139,7 @@ def loB : PTm 2 := Syn.subst ![var 0, sndT (var 1)] A
 def hiB : PTm 2 := Syn.subst ![var 0, sndT (var 1)] A + sg (Syn.subst ![var 0, sndT (var 1)] act) * fstT (var 1)
 
 theorem sub2 (f : PTm 2) (j x : PTm n) : Syn.subst ![j, x] (Syn.subst ![var 0, sndT (var 1)] f) = inst2 f j (sndT x) := by
-  simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
+  simp [subst_reindex2]
 
 theorem inst2_loB (j x : PTm n) : inst2 (loB A) j x = inst2 A j (sndT x) := by
   simp only [inst2, loB] at *; exact sub2 A j x
@@ -160,11 +160,11 @@ def spB : PTm 2 :=
 
 theorem sub3 (f : PTm 2) (j' z : PTm n) :
     Syn.subst ![j', z] (Syn.subst ![var 0, sndT (sndT (var 1))] f) = inst2 f j' (sndT (sndT z)) := by
-  simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
+  simp [subst_reindex2]
 
 theorem sub4 (f : PTm 2) (j' z : PTm n) :
     Syn.subst ![j', z] (Syn.subst ![fstT (var 1), sndT (sndT (var 1))] f) = inst2 f (fstT z) (sndT (sndT z)) := by
-  simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
+  simp [subst_reindex2]
 
 theorem inst2_spB (j' z : PTm n) : inst2 (spB A act) j' z =
     sg (inst2 act j' (sndT (sndT z))) * sg (inst2 act (fstT z) (sndT (sndT z))) *

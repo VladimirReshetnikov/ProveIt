@@ -145,7 +145,7 @@ theorem Lc_zero (y : PTm n) : Γ ⊢[PRAAx] Lc mB zero y ≐ one := by
 
 theorem sub02 (σ : Fin 3 → PTm n) :
     Syn.subst σ (Syn.subst ![var 0, var 2] mB) = inst2 mB (σ 0) (σ 2) := by
-  simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
+  simp [subst_reindex2]
 
 theorem Lc_succ (K y : PTm n) : Γ ⊢[PRAAx] Lc mB (succ K) y ≐ lcm (Lc mB K y) (inst2 (mS mB) K y) := by
   have h := rec2_succ (Γ := Γ) (succ zero) (stepB mB) K y

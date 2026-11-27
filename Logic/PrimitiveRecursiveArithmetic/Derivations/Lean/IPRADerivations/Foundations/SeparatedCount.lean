@@ -120,7 +120,7 @@ def gK : PTm 2 := quo (monus (Syn.subst ![var 0, sndT (sndT (var 1))] A) (fstT (
 
 theorem sub_ss (f : PTm 2) (i X : PTm n) :
     Syn.subst ![i, X] (Syn.subst ![var 0, sndT (sndT (var 1))] f) = inst2 f i (sndT (sndT X)) := by
-  simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
+  simp [subst_reindex2]
 
 theorem inst2_cK (i X : PTm n) : inst2 (cK act) i X = inst2 act i (sndT (sndT X)) := by
   simp only [cK]; exact sub_ss act i X

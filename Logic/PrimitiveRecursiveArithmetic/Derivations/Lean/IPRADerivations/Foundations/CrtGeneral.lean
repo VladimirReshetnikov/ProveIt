@@ -51,11 +51,11 @@ def cB : PTm 2 :=
 
 theorem sub_fst (b : PTm 2) (i z : PTm n) :
     Syn.subst ![i, z] (Syn.subst ![var 0, sndT (var 1)] b) = inst2 b i (sndT z) := by
-  simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
+  simp [subst_reindex2]
 
 theorem sub_snd (b : PTm 2) (i z : PTm n) :
     Syn.subst ![i, z] (Syn.subst ![fstT (var 1), sndT (var 1)] b) = inst2 b (fstT z) (sndT z) := by
-  simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
+  simp [subst_reindex2]
 
 /-- The modulus `gcd(m_i, m_j)`. -/
 abbrev g (i j y : PTm n) : PTm n := gcd (inst2 (mS mB) i y) (inst2 (mS mB) j y)

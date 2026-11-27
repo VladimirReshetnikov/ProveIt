@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.MixedRadix
 import IPRADerivations.Probability.TowerCommonDen
 import IPRADerivations.AnalyticNumberTheory.MobiusInversion
+import IPRADerivations.Core.Reindex
 
 /-!
 # The Chinese remainder theorem for a finite system of coprime moduli
@@ -57,12 +58,7 @@ def wB : PTm 2 :=
 theorem inst2_w (i z : PTm n) :
     inst2 (wB mB aB) i z = monus one (eqb (rem (fstT z) (inst2 (mS mB) i (sndT z)))
       (rem (inst2 aB i (sndT z)) (inst2 (mS mB) i (sndT z)))) := by
-  have h1 : Syn.subst ![i, z] (Syn.subst ![var 0, sndT (var 1)] (mS mB)) = inst2 (mS mB) i (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  have h2 : Syn.subst ![i, z] (Syn.subst ![var 0, sndT (var 1)] aB) = inst2 aB i (sndT z) := by
-    simp only [inst2, Syn.subst_subst]; congr 1; funext k; fin_cases k <;> simp
-  simp only [inst2, wB, PTm.subst_monus, subst_eqb, subst_ap2, h1, h2]
-  simp [inst2]
+  simp [inst2, wB, PTm.subst_monus, subst_eqb, subst_ap2, subst_reindex2]
 
 theorem w_at (i x y : PTm n) :
     Γ ⊢[PRAAx] inst2 (wB mB aB) i (pairT x y) ≐
