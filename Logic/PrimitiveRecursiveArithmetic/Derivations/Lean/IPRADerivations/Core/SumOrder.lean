@@ -41,6 +41,26 @@ theorem sum_le_params (f g : PTm 2) (x y N : PTm n)
         (add_le_add₂ Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)))
   simpa [P] using atBound
 
+/-- Summing the constant body that reads its parameter gives the length times that parameter. -/
+theorem sum_const_param (N L : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (var 1 : PTm 2)) N L ≐ N * L := by
+  have all : Γ ⊢[PRAAx] Fm.all
+      (ap2 (sumF (var 1 : PTm 2)) (var 0) (Syn.shift L) ≐ var 0 * Syn.shift L) := by
+    refine PRA.qfInd _ trivial ?_ ?_
+    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      exact (sum_zero _ _).eqTrans (zero_mul _).eqSymm
+    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      exact (sum_succ' _ _ _).eqTrans
+        ((congrAdd Prf.hyp0 (by simp [inst2]; exact .eqRefl _)).eqTrans (succ_mul _ _).eqSymm)
+  simpa using all.allE N
+
+/-- A sum of `N` terms bounded above by `L` is bounded by `N * L`. -/
+theorem sum_le_uniform_bound (f : PTm 2) {N L x : PTm n}
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
+      le (inst2 f (var 0) (Syn.shift x)) (Syn.shift L))) :
+    Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (N * L) := by
+  refine le_congr (.eqRefl _) (sum_const_param N L) (sum_le_params f (var 1) x L N ?_)
+  simpa [inst2] using h
+
 private theorem weighted_sum_pair_zero (f g : PTm 2) (a b x y : PTm n) :
     Γ ⊢[PRAAx] a * ap2 (sumF f) zero x + b * ap2 (sumF g) zero y ≐ zero :=
   (congrAdd ((congrMul (.eqRefl _) (sum_zero f x)).eqTrans (mul_zero a))

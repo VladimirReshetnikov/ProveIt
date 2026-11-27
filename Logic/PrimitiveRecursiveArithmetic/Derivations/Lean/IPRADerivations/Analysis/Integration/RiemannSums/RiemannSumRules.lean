@@ -71,15 +71,8 @@ theorem bound_guard {f : PTm 2} {k x M N : PTm n} (hkN : Γ ⊢[PRAAx] le (succ 
 /-- `f_i ≤ M` for `i < N` gives `∑_{i<N} f_i ≤ N M`. -/
 theorem rs_bound {f : PTm 2} {N x M : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ le (inst2 f (var 0) (Syn.shift x)) (Syn.shift M))) :
-    Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (N * M) := by
-  let P := le (ap2 (sumF f) (var 0) (Syn.shift x)) (var 0 * Syn.shift M)
-  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
-    refine qfIndUpTo N (le_QF _ _) ?_ ?_
-    · ipra_ind_simp [P, subst_le, subst_ap2, Syn.subst_inst_shift]
-      exact le_congr (sum_zero f x).eqSymm (zero_mul M).eqSymm (le_refl zero)
-    · ipra_ind_simp [P, subst_le, subst_ap2, subst_repl_shift]
-      exact .impI (bound_step (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
-  simpa [P] using atBound
+    Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (N * M) :=
+  sum_le_uniform_bound f h
 
 /-! ## Comparison of integrands -/
 

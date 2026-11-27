@@ -275,25 +275,16 @@ theorem group_property_at (φ : Fm PTm 2) (f : PTm 3) (P M p g r q : PTm n)
   exact property_congr φ _ _ q (group_lookup f P M p g r hr).eqSymm
     (.impE rule (index_bound f P M p g r hr))
 
-theorem constant_sum (N L : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (var 1 : PTm 2)) N L ≐ N*L := by
-  have all : Γ ⊢[PRAAx] .all (ap2 (sumF (var 1 : PTm 2)) (var 0) (Syn.shift L) ≐ var 0*Syn.shift L) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq,subst_ap2,PTm.subst_mul,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact (sum_zero _ _).eqTrans (zero_mul _).eqSymm
-    · simp only [Fm.subst_eq,subst_ap2,PTm.subst_mul,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      have e := sum_succ' (Γ := (ap2 (sumF (var 1 : PTm 2)) (var 0) (Syn.shift L) ≐ var 0*Syn.shift L) :: Γ.map Fm.shift)
-        (var 1 : PTm 2) (var 0) (Syn.shift L)
-      exact e.eqTrans ((congrAdd Prf.hyp0 (by simp [inst2]; exact .eqRefl _)).eqTrans (succ_mul _ _).eqSymm)
-  simpa only [Fm.subst_eq,subst_ap2,PTm.subst_mul,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+theorem constant_sum (N L : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (var 1 : PTm 2)) N L ≐ N*L :=
+  sum_const_param N L
 
 theorem total_bound (f : PTm 3) (P M p L : PTm n) (h : Γ ⊢[PRAAx] groupBounds f P M p L) : Γ ⊢[PRAAx]
     le (total f P M p) (M*L) := by
-  have sums : Γ ⊢[PRAAx] le (total f P M p) (ap2 (sumF (var 1 : PTm 2)) M L) := by
-    refine sum_le_params (sizeBody f) (var 1 : PTm 2) (data P M p) L M (.allI (.impI ?_))
-    have b := Prf.impE h.allOpen.wk (Prf.hyp0 : lt (var 0) (Syn.shift M) :: Γ.map Fm.shift ⊢[PRAAx] _)
-    simpa only [Syn.shift,subst_data,inst2,Syn.subst_var,Matrix.cons_val_one,Matrix.cons_val_zero] using
-      le_congr (size_at f (Syn.shift P) (Syn.shift M) (Syn.shift p) (var 0)).eqSymm (.eqRefl (Syn.shift L)) b
-  exact le_congr (.eqRefl _) (constant_sum M L) sums
+  refine sum_le_uniform_bound (sizeBody f) (.allI (.impI ?_))
+  have bound := Prf.impE h.allOpen.wk
+    (Prf.hyp0 : lt (var 0) (Syn.shift M) :: Γ.map Fm.shift ⊢[PRAAx] _)
+  simpa only [Syn.shift, subst_data] using
+    le_congr (size_at f (Syn.shift P) (Syn.shift M) (Syn.shift p) (var 0)).eqSymm (.eqRefl (Syn.shift L)) bound
 theorem cover_count (f : PTm 3) (P M p L : PTm n) (h : Γ ⊢[PRAAx] cover f P M p)
     (hSizes : Γ ⊢[PRAAx] groupBounds f P M p L) : Γ ⊢[PRAAx] le (length P) (M*L) :=
   le_congr (cardinal_partition f P M p h) (.eqRefl _) (total_bound f P M p L hSizes)

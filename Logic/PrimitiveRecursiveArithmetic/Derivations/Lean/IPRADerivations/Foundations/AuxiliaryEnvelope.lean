@@ -37,7 +37,7 @@ namespace LeanProofs.IPRA.Foundations.AuxiliaryEnvelope
 
 open_ipra exports
 open LeanProofs.IPRA.Probability.Lotus (vB pvB inst2_pvB pushforward_total)
-open LeanProofs.IPRA.Probability.Variance (sum_one sum_const_of)
+open LeanProofs.IPRA.Probability.Variance (sum_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,11 +52,8 @@ theorem inst2_kB (i L : PTm n) : inst2 kB i L = L := by simp [inst2, kB]
 theorem sum_le_const (f : PTm 2) {N L x : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       le (inst2 f (var 0) (Syn.shift x)) (Syn.shift L))) :
-    Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (N * L) := by
-  have c : Γ ⊢[PRAAx] ap2 (sumF kB) N L ≐ N * L :=
-    sum_const_of kB N L L (.allI (.impI (by rw [inst2_kB]; exact .eqRefl _)))
-  refine le_congr (.eqRefl _) c (sum_le_params f kB x L N ?_)
-  simpa only [inst2_kB] using h
+    Γ ⊢[PRAAx] le (ap2 (sumF f) N x) (N * L) :=
+  sum_le_uniform_bound f h
 
 /-- (E12): `B` candidate lists of length at most `d · e` have total length at most
 `B · (d · e)`. -/

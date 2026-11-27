@@ -188,11 +188,7 @@ theorem sum_one (N x : PTm n) : Γ ⊢[PRAAx] ap2 (sumF (one : PTm 2)) N x ≐ N
 theorem sum_const_of (h : PTm 2) (N m y : PTm n)
     (hp : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ (inst2 h (var 0) (Syn.shift y) ≐ Syn.shift m))) :
     Γ ⊢[PRAAx] ap2 (sumF h) N y ≐ N * m := by
-  refine (sum_scale h (one : PTm 2) N m zero y (.allI (.impI ?_))).eqTrans
-    ((congrMul (.eqRefl _) (sum_one N zero)).eqTrans (mul_comm _ _))
-  have e : inst2 (one : PTm 2) (var 0 : PTm (n + 1)) (Syn.shift (zero : PTm n)) = one := by simp [inst2]
-  rw [e]
-  exact (Prf.impE hp.allOpen.wk Prf.hyp0).eqTrans (mul_one' _).eqSymm
+  exact (sum_congr_bounded h (var 1 : PTm 2) y m N (by simpa [inst2] using hp)).eqTrans (sum_const_param N m)
 
 /-- `thm:sample-mean`: if each column `∑_{i<M} a(i, j, x)` with `j < r` equals `m`, then
 `∑_{i<M} ∑_{j<r} a(i, j, x) = r · m`. For `a(i, j) = w_i X_j(i)` with every `Ew(X_j) = m`, this is
