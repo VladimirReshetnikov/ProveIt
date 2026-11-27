@@ -28,28 +28,12 @@ open GaussianEuclideanDistanceName (fraction fraction_represents fraction_order)
 open RationalArithmetic (add)
 open RationalArgmin (rationalLE)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
+export GaussianEulerBetaPolynomialPrimitive (base_constant base_leading)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 def argument (a b N : PTm n) : PTm n := GaussianRationalHorner.ofGaussian (ComplexLogarithmRemainder.scale a ComplexLogarithmRemainder.oneCode) (b*N)
 ipra_subst argument
-
-theorem base_leading : Γ ⊢[PRAAx] entry (base : PTm n) zero ≐ qnegative qone := by
-  have constant : Γ ⊢[PRAAx] entry (GaussianGammaEulerFactorPolynomial.constant : PTm n) zero ≐ qzero :=
-    GaussianRationalPolynomialBuffers.pad_leading _ one zero (le_refl one)
-  exact (GaussianRationalPolynomialBuffers.added_lookup _ _ two zero (le_succ_self one)).eqTrans
-    ((qadd_congr (GaussianGammaLinearCoefficient.monomial_leading _) constant).eqTrans
-      (GaussianReciprocalHorner.qadd_zero_right _ (GaussianRationalMetric.qnegative_canonical _)))
-
-theorem base_constant : Γ ⊢[PRAAx] entry (base : PTm n) one ≐ qone := by
-  have constant : Γ ⊢[PRAAx] entry (GaussianGammaEulerFactorPolynomial.constant : PTm n) one ≐ qone :=
-    (LeanProofs.IPRA.Foundations.SequenceComposition.entry_congr (.eqRefl _) (add_zero one).eqSymm).eqTrans
-      ((GaussianRationalPolynomialBuffers.pad_tail _ one zero
-        (lt_congr (.eqRefl _) (GaussianRationalMonicReduction.singleton_length qone).eqSymm (le_refl one))).eqTrans
-          (GaussianRationalMonicReduction.singleton_lookup qone))
-  exact (GaussianRationalPolynomialBuffers.added_lookup _ _ two one (le_refl two)).eqTrans
-    ((qadd_congr (GaussianGammaLinearCoefficient.monomial_constant _) constant).eqTrans
-      (GaussianRationalSyntheticDivision.qzero_add _ qone_canonical))
 
 theorem argument_norm (a b N : PTm n) (hb : Γ ⊢[PRAAx] le one b) (hN : Γ ⊢[PRAAx] le one N) : Γ ⊢[PRAAx]
     qL1 (argument a b N) ≐ fraction a (b*N) :=

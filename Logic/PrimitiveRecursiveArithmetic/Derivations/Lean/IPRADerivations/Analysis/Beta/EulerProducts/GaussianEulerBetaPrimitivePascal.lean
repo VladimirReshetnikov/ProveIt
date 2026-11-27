@@ -29,6 +29,7 @@ open GaussianRationalLowCoefficientConvolution (exponentCoefficient exponent_ins
 open GaussianGammaEulerHeadShift (linear shifted)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (entry_congr)
+export GaussianEulerBetaPolynomialPrimitive (base_constant base_leading)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -37,17 +38,6 @@ def primitiveReader (z B N e : PTm n) : PTm n := exponentCoefficient (primitive 
 ipra_subst reader
 ipra_subst primitiveReader
 
-theorem base_leading : Γ ⊢[PRAAx] entry (base : PTm n) zero ≐ qnegative qone :=
-  (GaussianRationalPolynomialBuffers.added_lookup _ _ _ _ (zero_lt_succ one)).eqTrans
-    ((qadd_congr (GaussianGammaLinearCoefficient.monomial_leading _) (GaussianRationalPolynomialBuffers.pad_leading _ one zero (le_refl one))).eqTrans
-      (GaussianReciprocalHorner.qadd_zero_right _ (GaussianRationalMetric.qnegative_canonical _)))
-theorem base_constant : Γ ⊢[PRAAx] entry (base : PTm n) one ≐ qone :=
-  (GaussianRationalPolynomialBuffers.added_lookup _ _ _ _ (le_refl two)).eqTrans
-    ((qadd_congr (GaussianGammaLinearCoefficient.monomial_constant _)
-      ((entry_congr (.eqRefl _) (by ipra_ring : Γ ⊢[PRAAx] one ≐ one+zero)).eqTrans
-        ((GaussianRationalPolynomialBuffers.pad_tail _ one zero (lt_congr (.eqRefl _) (GaussianRationalMonicReduction.singleton_length qone).eqSymm (zero_lt_succ zero))).eqTrans
-          (GaussianRationalMonicReduction.singleton_lookup qone)))).eqTrans
-      (GaussianRationalSyntheticDivision.qzero_add _ GaussianRationalSyntheticDivision.qone_canonical))
 
 theorem kernel_product (N : PTm n) : Γ ⊢[PRAAx] kernel (succ N) ≐
     GaussianRationalPolynomialProduct.product (kernel N) base N one := by

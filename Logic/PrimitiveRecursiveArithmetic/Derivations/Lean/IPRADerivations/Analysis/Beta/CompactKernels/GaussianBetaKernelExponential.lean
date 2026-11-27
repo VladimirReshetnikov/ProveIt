@@ -27,6 +27,7 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm cross_at)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
+export GaussianGammaAdjacentCutoff (linear_constant_cross)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -51,20 +52,6 @@ theorem original_subtraction_base (a b N : PTm n) (h : Γ ⊢[PRAAx] source a b 
     base a b N ≐ qsub qone (GaussianPositiveRationalLogarithm.fraction a (b*N)) :=
   GaussianRationalSyntheticDivision.qadd_congr (.eqRefl _)
     (GaussianBetaKernelLogarithm.target_is_original_decay a (b*N) (positive_product _ _ h.andE₁ h.andE₂.andE₁))
-
-theorem linear_constant_cross (w : PTm n) : Γ ⊢[PRAAx]
-    crossEquivalent GaussianFiniteLogarithmCompositionName.constantF constantF w (GaussianFiniteLogarithmCompositionTail.linearValue w) := by
-  refine .allI (.allI ?_)
-  let u : PTm (n+2) := Syn.shift (Syn.shift w)
-  let D : PTm (n+2) := unit (var 1)*unit (var 0)
-  have d := positive_product (Γ := (Γ.map Fm.shift).map Fm.shift) _ _ (unit_positive (var 1)) (unit_positive (var 0))
-  have exactPoint := GaussianRationalPowerDifference.distance_refl_zero (Γ := (Γ.map Fm.shift).map Fm.shift)
-    (GaussianFiniteLogarithmCompositionTail.linearValue u) D d
-  have grown := distance_radius_mono _ _ _ _ (unit (var 1)+unit (var 0)) D d d (le_of_eq_add (d := (unit (var 1)+unit (var 0))*D) (by dsimp only [D]; ipra_ring)) exactPoint
-  simpa only [crossEquivalent,Syn.shift,GaussianFiniteLogarithmCompositionTail.subst_linearValue,
-    GaussianFiniteLogarithmCompositionName.constant,u,D] using
-    distance_congr (GaussianFiniteLogarithmCompositionName.constant_at (var 1) u).eqSymm
-      (constant_at (var 0) (GaussianFiniteLogarithmCompositionTail.linearValue u)).eqSymm (.eqRefl _) (.eqRefl _) grown
 
 theorem local_input (a b N : PTm n) (h : Γ ⊢[PRAAx] source a b N) : Γ ⊢[PRAAx]
     GaussianRadiusExponentialName.input GaussianLocalLogarithmName.pointF one (localData a b N) :=

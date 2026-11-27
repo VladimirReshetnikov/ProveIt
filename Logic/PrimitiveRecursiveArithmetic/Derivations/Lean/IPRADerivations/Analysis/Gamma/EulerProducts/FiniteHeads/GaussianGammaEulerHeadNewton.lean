@@ -80,8 +80,7 @@ theorem original_sum_successor (N s : PTm n) : Γ ⊢[PRAAx]
     (qadd_congr (GaussianInverseBinomialRows.linear_sum body body body _ _ _ _ _ (linear_terms N s))
       ((term_at _ _ _).eqTrans (GaussianGammaEulerHeadGeometricStep.original_new_factor_cancellation N s)))
 
-theorem scale_zero (t : PTm n) : Γ ⊢[PRAAx] natScale t qzero ≐ qzero :=
-  (GaussianRationalNaturalScale.natScale_as_product _ _).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_right _)
+alias scale_zero := GaussianRationalFactorialEulerSums.scale_zero_value
 
 theorem scale_succ (t q : PTm n) : Γ ⊢[PRAAx] natScale (succ t) q ≐ qadd (natScale t q) q :=
   (natScale_congr (show Γ ⊢[PRAAx] succ t ≐ t+one by ipra_ring) (.eqRefl _)).eqTrans

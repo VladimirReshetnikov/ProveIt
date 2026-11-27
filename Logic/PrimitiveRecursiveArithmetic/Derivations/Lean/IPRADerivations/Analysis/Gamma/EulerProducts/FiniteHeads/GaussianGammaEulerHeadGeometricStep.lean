@@ -24,6 +24,7 @@ open GaussianGammaEulerHeadExponentStep (reader reader_congr reader_zero origina
 open GaussianGammaHarmonicIncrement (reciprocalPoint)
 open GaussianCoefficientGeometricCancellation (body)
 open GaussianRationalFiniteSum (sum)
+export GaussianRationalPowerAlgebra (commute_nested)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,11 +51,6 @@ theorem trim (a N s : PTm n) : Γ ⊢[PRAAx] value a N s ≐ sum body s (data a 
 
 theorem value_zero (a N : PTm n) : Γ ⊢[PRAAx] value a N zero ≐ qzero :=
   (trim a N zero).eqTrans (GaussianRationalFiniteSum.sum_zero _ _)
-
-theorem commute_nested (x y z : PTm n) : Γ ⊢[PRAAx] qmul x (qmul y z) ≐ qmul y (qmul x z) :=
-  (GaussianReciprocalHorner.qmul_associative _ _ _).eqSymm.eqTrans
-    ((qmul_congr (GaussianRationalPowerAlgebra.qmul_commutative _ _) (.eqRefl _)).eqTrans
-      (GaussianReciprocalHorner.qmul_associative _ _ _))
 
 theorem term_step (a N s j : PTm n) (hj : Γ ⊢[PRAAx] le j s) : Γ ⊢[PRAAx]
     term a (succ N) (succ s) j ≐ qadd (term a N (succ s) j) (qmul (reciprocalPoint N) (term a N s j)) := by
