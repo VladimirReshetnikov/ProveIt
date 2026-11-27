@@ -118,19 +118,10 @@ theorem ctri_all {N x : PTm n}
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       nle (zinst tx (var 0) (Syn.shift x)) (zinst ty (var 0) (Syn.shift x)) (inst2 r (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶ CInv w tx ty r (var 0) (Syn.shift x)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · have e : (le (var 0) (Syn.shift N) ⟶ CInv w tx ty r (var 0) (Syn.shift x)).subst (Syn.inst zero) =
-        (le zero N ⟶ CInv w tx ty r zero x) := by
-      simp
-    rw [e]
-    exact .impI (ctri_base w tx ty r x)
-  · have e : (le (var 0) (Syn.shift N) ⟶ CInv w tx ty r (var 0) (Syn.shift x)).subst
-          (Syn.repl (succ (var 0))) =
-        (le (succ (var 0)) (Syn.shift N) ⟶ CInv w tx ty r (succ (var 0)) (Syn.shift x)) := by
-      simp
-    rw [e]
-    exact .impI (ctri_step w tx ty r (Prf.impE h.allOpen.wk.wk Prf.hyp0)
-      (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+  refine qfIndAllUpTo N (P := CInv w tx ty r (var 0) (Syn.shift x)) (le_QF _ _) ?_ ?_
+  · simpa using ctri_base (Γ := Γ) w tx ty r x
+  · simp
+    exact .impI (ctri_step w tx ty r (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 /-- `|E[Z]| ≤ E|Z|` for a finite law: `|z_i| ≤ r_i` on the outcomes gives
 `|Σ_{i<N} w_i z_i| ≤ Σ_{i<N} w_i r_i`. -/
@@ -213,22 +204,12 @@ theorem dinv_all {q p D N x : PTm n}
         (inst2 dn (var 0) (Syn.shift x)) (inst2 X (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       DInv w X cof cs sn (Syn.shift q) (Syn.shift p) (Syn.shift D) (var 0) (Syn.shift x)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          DInv w X cof cs sn (Syn.shift q) (Syn.shift p) (Syn.shift D) (var 0) (Syn.shift x)).subst
-          (Syn.inst zero) = (le zero N ⟶ DInv w X cof cs sn q p D zero x) := by
-      simp
-    rw [e]
-    exact .impI (dinv_base w X cof cs sn q p D x)
-  · have e : (le (var 0) (Syn.shift N) ⟶
-          DInv w X cof cs sn (Syn.shift q) (Syn.shift p) (Syn.shift D) (var 0) (Syn.shift x)).subst
-          (Syn.repl (succ (var 0))) =
-        (le (succ (var 0)) (Syn.shift N) ⟶
-          DInv w X cof cs sn (Syn.shift q) (Syn.shift p) (Syn.shift D) (succ (var 0)) (Syn.shift x)) := by
-      simp
-    rw [e]
-    exact .impI (dinv_step w X cof cs sn dn (Prf.impE hD.allOpen.wk.wk Prf.hyp0)
-      (Prf.impE hR.allOpen.wk.wk Prf.hyp0) (Prf.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+  refine qfIndAllUpTo N (P := DInv w X cof cs sn
+    (Syn.shift q) (Syn.shift p) (Syn.shift D) (var 0) (Syn.shift x)) (le_QF _ _) ?_ ?_
+  · simpa using dinv_base (Γ := Γ) w X cof cs sn q p D x
+  · simp
+    exact .impI (dinv_step w X cof cs sn dn (.impE hD.allOpen.wk.wk Prf.hyp0)
+      (.impE hR.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 /-- The first-order remainder of the expectation from the remainders on the outcomes and a common denominator
 `D = cof_i d_i`: `|2q² (SC − D W) + i 2q (q SS − p D E_w[X])| ≤ p² D E_w[X²]`. -/
