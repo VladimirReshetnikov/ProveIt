@@ -258,8 +258,7 @@ theorem multiply_associative_at (f g h : PR 2) (x y z k : PTm n)
   have bh := GaussianNameBounds.sample_bound h z k hh
   have bfg : Γ ⊢[PRAAx] bounded (qmul (ap2 f k x) (ap2 g k y))
       (GaussianNameBounds.U f x*GaussianNameBounds.U g y) one :=
-    GaussianRationalReciprocal.bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-      (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) bf bg)
+    GaussianRationalReciprocal.bounded_product_one bf bg
   have lhs := distance_triangle_same _ _ _ _ _ _ (unit_positive k)
     (multiply_sample_error (multiplyF f g) h (multiplyData f g x y) z k hfg hh)
     (product_left_error _ _ _ _ _ _ _ (unit_positive k)

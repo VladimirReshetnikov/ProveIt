@@ -26,7 +26,7 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianRationalHorner (qadd qmul ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative)
-open GaussianRationalReciprocal (bound_congr bounded_sum bounded_product bounded_difference)
+open GaussianRationalReciprocal (bound_congr bounded_sum bounded_difference bounded_product_one)
 open GaussianBarnesCanonicalCorrectionShift (halfShift)
 open GaussianGammaEulerHeadLower (translated)
 
@@ -113,8 +113,7 @@ def product (a b : Observation Γ) : Observation Γ where
     (GaussianNameRingLaws.multiply_sample_error _ _ _ _ p a.reg b.reg)
     (product_distance _ _ _ _ _ _ _ _ _ (unit_positive p) (a.close p) (b.close p)
       (sample_bound b.f b.x p b.reg) (a.bound p))
-  bound p := bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-    (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) (a.bound p) (b.bound p))
+  bound p := bounded_product_one (a.bound p) (b.bound p)
 
 def difference (a b : Observation Γ) : Observation Γ where
   f := GaussianNamedDifference.nameF a.f b.f

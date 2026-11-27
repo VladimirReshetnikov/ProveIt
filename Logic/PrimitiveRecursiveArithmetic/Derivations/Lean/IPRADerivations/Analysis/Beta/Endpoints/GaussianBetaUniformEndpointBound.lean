@@ -22,7 +22,7 @@ open GaussianEulerIntegrandName (powerF powerData)
 open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded)
-open GaussianRationalReciprocal (bound_congr bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_product_one)
 open GaussianExponentialSmallPerturbation (smallSamples)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -68,8 +68,8 @@ theorem original_sample_bound (p z R B A b N : PTm n) (h : Γ ⊢[PRAAx] source 
     bounded (upperSample p z B b N) (endpointBound R A N) one := by
   have hp := original_power_bound (GaussianBetaUpperEndpointName.clock p z B b N) z R B A b N h hb
   have hc := original_constant_bound z R B A b N h hb
-  exact bound_congr (original_sample_product p z B b N).eqSymm (by unfold endpointBound; ipra_ring) (by ipra_ring)
-    (bounded_product _ _ _ one _ one (le_refl one) (le_refl one) hp hc)
+  exact bound_congr (original_sample_product p z B b N).eqSymm (by unfold endpointBound; ipra_ring) (.eqRefl _)
+    (bounded_product_one hp hc)
 
 theorem original_all_samples_bound (z R B A b N : PTm n) (h : Γ ⊢[PRAAx] source z R B A N)
     (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx]

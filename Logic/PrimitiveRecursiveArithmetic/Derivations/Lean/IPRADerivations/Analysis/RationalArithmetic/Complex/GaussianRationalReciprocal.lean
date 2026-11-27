@@ -142,6 +142,14 @@ theorem bounded_product (q r A B C D : PTm n)
     apply deriveNat; ipra_simps; rw [p]; ring
   exact le_congr left (by ipra_ring) product
 
+/-- Multiply two Euclidean bounds whose radius denominators are already one. -/
+theorem bounded_product_one {q r A C : PTm n}
+    (hq : Γ ⊢[PRAAx] GaussianRationalMetric.bounded q A one)
+    (hr : Γ ⊢[PRAAx] GaussianRationalMetric.bounded r C one) :
+    Γ ⊢[PRAAx] GaussianRationalMetric.bounded (qmul q r) (A*C) one :=
+  bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
+    (bounded_product q r A one C one (le_refl one) (le_refl one) hq hr)
+
 theorem cleared_bound (q A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hq : Γ ⊢[PRAAx] GaussianRationalMetric.bounded q A B) : Γ ⊢[PRAAx]
     ComplexLogarithmRemainder.bounded (scale B (rawGaussian q)) (A*rawDen q) :=

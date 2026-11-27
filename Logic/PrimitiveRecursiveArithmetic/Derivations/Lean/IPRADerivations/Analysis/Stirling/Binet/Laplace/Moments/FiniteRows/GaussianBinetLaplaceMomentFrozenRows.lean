@@ -32,7 +32,7 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (bounded_product bound_congr)
+open GaussianRationalReciprocal (bound_congr bounded_product_one)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
 open ComplexLogarithmRemainder (normSq normSq_code)
@@ -62,16 +62,14 @@ theorem kernel_bound (p A B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
 theorem weighted_kernel_bound (p j A B T : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hT : Γ ⊢[PRAAx] le A (T*B)) :
     Γ ⊢[PRAAx] bounded (weightedKernel p j A B) (pw T j) one :=
-  bound_congr (.eqRefl _) (one_mul _) (one_mul _)
-    (bounded_product _ _ one one _ one (le_refl one) (le_refl one) (kernel_bound p A B hB) (weight_bound j A B T hB hT))
+  bound_congr (.eqRefl _) (one_mul _) (.eqRefl _)
+    (bounded_product_one (kernel_bound p A B hB) (weight_bound j A B T hB hT))
 
 theorem frozen_bound (p j X D A B T : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hB : Γ ⊢[PRAAx] le one B) (hT : Γ ⊢[PRAAx] le A (T*B)) :
     Γ ⊢[PRAAx] bounded (frozen p j X D A B) (num 4*pw T j) one :=
-  bound_congr (.eqRefl _) (.eqRefl _) (one_mul _)
-    (bounded_product _ _ _ one _ one (le_refl one) (le_refl one)
-      (positive_observation_bound p (X*A) (D*B) (positive_product _ _ hD hB))
-      (weighted_kernel_bound p j A B T hB hT))
+  bounded_product_one (positive_observation_bound p (X*A) (D*B) (positive_product _ _ hD hB))
+    (weighted_kernel_bound p j A B T hB hT)
 
 theorem frozen_positive (p j X D A B T : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hT : Γ ⊢[PRAAx] le A (T*B)) :
     Γ ⊢[PRAAx] positive (frozen p j X D A B) :=

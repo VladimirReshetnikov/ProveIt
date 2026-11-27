@@ -37,8 +37,8 @@ theorem name_at (f g : PR 2) (p x y : PTm n) : Γ ⊢[PRAAx]
 theorem sample_bound_at (f g : PR 2) (p x y A B : PTm n)
     (ha : Γ ⊢[PRAAx] pointBounds f A x) (hb : Γ ⊢[PRAAx] pointBounds g B y) : Γ ⊢[PRAAx]
     bounded (ap2 (multiplyF f g) p (multiplyData f g x y)) (A*B) one :=
-  GaussianRationalReciprocal.bound_congr (name_at f g p x y).eqSymm (.eqRefl _) (one_mul _)
-    (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one)
+  GaussianRationalReciprocal.bound_congr (name_at f g p x y).eqSymm (.eqRefl _) (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_product_one
       (GaussianRadiusExponentialName.bounded_samples_at f A x _ ha)
       (GaussianRadiusExponentialName.bounded_samples_at g B y _ hb))
 

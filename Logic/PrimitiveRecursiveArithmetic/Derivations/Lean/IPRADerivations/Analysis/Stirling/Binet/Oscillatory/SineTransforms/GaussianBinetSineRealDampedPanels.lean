@@ -29,7 +29,7 @@ open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distan
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded qnegative qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (bound_congr bounded_negative bounded_product bounded_sum)
+open GaussianRationalReciprocal (bound_congr bounded_negative bounded_sum bounded_product_one)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -50,16 +50,15 @@ theorem quotient_bound (p A B a b U T : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB
   let y := row p (f false) C a b
   have bd (s : Bool) : Γ ⊢[PRAAx] bounded (row p (f s) C a b) two one := by
     have expo : Γ ⊢[PRAAx] bounded (exponent (f s) a b) C one :=
-      bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-        (bounded_product _ _ U one T one (le_refl one) (le_refl one) (coefficient_bound A B (polarity s) U hB (polarity_bit s) hU)
-          (GaussianEulerExponentCompactBounds.fraction_bound a b T hb ht))
+      bounded_product_one (coefficient_bound A B (polarity s) U hB (polarity_bit s) hU)
+        (GaussianEulerExponentCompactBounds.fraction_bound a b T hb ht)
     exact unit_bound p _ C (GaussianSignedNameExponentialOrder.constant_input _ _ expo) (exponent_nonpositive A B _ a b hB hb)
   have dif : Γ ⊢[PRAAx] bounded (qsub x y) (num 4) one :=
     bound_congr (.eqRefl _) (by ipra_ring) (one_mul one)
       (bounded_sum x (qnegative y) two one two one (le_refl one) (le_refl one) (bd true)
         (bounded_negative y two one (le_refl one) (bd false)))
-  exact bound_congr (quotient_at p A B a b C hB hb) (.eqRefl _) (one_mul one)
-    (bounded_product _ _ B one (num 4) one (le_refl one) (le_refl one) (multiplier_bound A B hA hB) dif)
+  exact bound_congr (quotient_at p A B a b C hB hb) (.eqRefl _) (.eqRefl _)
+    (bounded_product_one (multiplier_bound A B hA hB) dif)
 
 theorem real_panel_error (p X D A B a b R U T : PTm n)
     (hz : Γ ⊢[PRAAx] source X zero D zero R) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B)

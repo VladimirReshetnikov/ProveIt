@@ -27,7 +27,7 @@ open GaussianPositiveRationalLogarithm (fraction)
 open GaussianRationalCoefficientScaling (qmul_add)
 open GaussianRationalHorner (qmul qmul_canonical qzero positive_product)
 open GaussianRationalMetric (bounded qnegative)
-open GaussianRationalReciprocal (bounded_product bound_congr)
+open GaussianRationalReciprocal (bounded_product bound_congr bounded_product_one)
 open GaussianRationalSyntheticDivision (qmul_congr qone qmul_zero_right)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -98,7 +98,7 @@ theorem exponent_input (q R T j N : PTm n) (hb : Γ ⊢[PRAAx] bounded q R one)
     le_congr (mul_comm j T) (mul_comm N T) (mul_le_mul_right T hj)
   have frac := GaussianEulerExponentCompactBounds.fraction_bound (T*j) N T hN hB
   exact GaussianSignedNameExponentialOrder.constant_input _ _
-    (bound_congr (.eqRefl _) (.eqRefl _) (one_mul one) (bounded_product _ _ R one T one (le_refl one) (le_refl one) hb frac))
+    (bounded_product_one hb frac)
 
 theorem right_endpoint (p q S T N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] row p q S (T*N) N ≐ row p q S T one := by

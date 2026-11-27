@@ -34,7 +34,7 @@ open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalLowerBounds (inverse_bound)
 open GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical qsub)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (reciprocal bound_congr bounded_product)
+open GaussianRationalReciprocal (reciprocal bound_congr bounded_product_one)
 open GaussianRationalSyntheticDivision (qmul_congr qsub_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 
@@ -75,8 +75,7 @@ theorem multiplier_bound (A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ �
   have half : Γ ⊢[PRAAx] bounded (fraction one two) one one :=
     GaussianEulerExponentCompactBounds.fraction_bound one two one h₂
       (le_congr (.eqRefl _) (one_mul two).eqSymm h₂)
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (bounded_product _ _ B one one one (le_refl one) (le_refl one) inv half)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) (bounded_product_one inv half)
 
 theorem quotient_at (p A B a b C : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] qmul (multiplier A B) (qsub (row p (coefficient A B (polarity true)) C a b)

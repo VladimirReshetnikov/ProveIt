@@ -160,9 +160,8 @@ theorem size_step (C w A U k : PTm n)
     (hC : Γ ⊢[PRAAx] coefficientBounds C A) (hw : Γ ⊢[PRAAx] bounded w U one)
     (hk : Γ ⊢[PRAAx] lt k (length C)) (ih : Γ ⊢[PRAAx] bounded (horner C w k) (A*geometric U k) one) :
     Γ ⊢[PRAAx] bounded (horner C w (succ k)) (A*geometric U (succ k)) one := by
-  have prod := bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) ih hw
-  have prod' := bound_congr (.eqRefl _) (.eqRefl _) (one_mul one) prod
-  have sum := bounded_sum_same_den _ _ _ _ one (le_refl _) prod' (coefficient_at C A k hC hk)
+  have prod := GaussianRationalReciprocal.bounded_product_one ih hw
+  have sum := bounded_sum_same_den _ _ _ _ one (le_refl _) prod (coefficient_at C A k hC hk)
   have num : Γ ⊢[PRAAx] A*geometric U k*U+A ≐ A*geometric U (succ k) := by
     have g := natEq (geometric_affine (Γ := Γ) U k)
     apply deriveNat

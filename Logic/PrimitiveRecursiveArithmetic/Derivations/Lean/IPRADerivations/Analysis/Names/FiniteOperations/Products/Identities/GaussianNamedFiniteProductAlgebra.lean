@@ -28,7 +28,7 @@ open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerAlgebra (qmul_shuffle)
-open GaussianRationalReciprocal (bounded_product bound_congr qone)
+open GaussianRationalReciprocal (bound_congr qone bounded_product_one)
 open GaussianRationalSyntheticDivision (qmul_congr qone_canonical)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -81,8 +81,8 @@ theorem bounded_rows_at (f g : PR 3) (p N R S x y : PTm n) (hf : Γ ⊢[PRAAx] r
   have a := row_bound_at f (sh p) (sh N) (sh R) (sh x) (var 0) hF Prf.hyp0
   have b := row_bound_at g (sh p) (sh N) (sh S) (sh y) (var 0) hG Prf.hyp0
   simpa [rowBoundsAt,Syn.shift,sh,Δ,one] using
-    bound_congr (row_at f g (sh p) (var 0) (sh x) (sh y)).eqSymm (.eqRefl _) (one_mul one)
-      (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) a b)
+    bound_congr (row_at f g (sh p) (var 0) (sh x) (sh y)).eqSymm (.eqRefl _) (.eqRefl _)
+      (bounded_product_one a b)
 
 theorem product_row_bounds (f g : PR 3) (N R S x y : PTm n) (hf : Γ ⊢[PRAAx] rowBounds f N R x)
     (hg : Γ ⊢[PRAAx] rowBounds g N S y) :

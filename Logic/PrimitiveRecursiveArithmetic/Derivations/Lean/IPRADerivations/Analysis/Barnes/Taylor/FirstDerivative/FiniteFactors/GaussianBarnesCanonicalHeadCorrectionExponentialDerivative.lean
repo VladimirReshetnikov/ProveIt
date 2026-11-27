@@ -34,7 +34,7 @@ open GaussianNameEquivalence (crossEquivalent cross_refl)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents ofGaussian_canonical qmul positive_product canonical_congr)
 open GaussianRationalMetric (bounded qsub qsub_canonical)
-open GaussianRationalReciprocal (bounded_product bounded_difference bound_congr)
+open GaussianRationalReciprocal (bounded_product bounded_difference bound_congr bounded_product_one)
 open GaussianRationalNaturalScale (naturalPoint)
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
@@ -100,13 +100,9 @@ theorem exponent_bound (z B N R : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have h₂ := le_trans hB hb
   have q := GaussianGammaEulerHead.fraction_disk z R (two*B) h₂
     (ComplexLogarithmRemainder.bounded_mono hz (le_mul_mono (le_refl R) hb))
-  have a := bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-    (bounded_product _ _ R one R one (le_refl one) (le_refl one) p q)
-  have b := bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-    (bounded_product _ _ (R*R) one N one (le_refl one) (le_refl one) a
-      (GaussianGammaCanonicalExponentBound.harmonic_point_bound N))
-  have c := bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-    (bounded_product _ _ N one R one (le_refl one) (le_refl one) (GaussianNamedNaturalScale.natural_point_bound N) p)
+  have a := bounded_product_one p q
+  have b := bounded_product_one a (GaussianGammaCanonicalExponentBound.harmonic_point_bound N)
+  have c := bounded_product_one (GaussianNamedNaturalScale.natural_point_bound N) p
   have d := bounded_difference _ _ (R*R*N) one (N*R) one (le_refl one) (le_refl one) b c
   exact bound_congr (total_formula z B N hB).eqSymm (.eqRefl _) (.eqRefl _)
     (bounded_radius_mono _ _ _ _ _ (positive_product one one (le_refl one) (le_refl one)) (le_refl one)
@@ -115,9 +111,8 @@ theorem exponent_bound (z B N R : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 theorem slope_bound (z B N R : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :
     Γ ⊢[PRAAx] bounded (slope z B N) (N*(R+one)) one := by
-  have p := bound_congr (.eqRefl _) (.eqRefl _) (one_mul one)
-    (bounded_product _ _ R one N one (le_refl one) (le_refl one) (GaussianGammaEulerHead.fraction_disk z R B hB hz)
-      (GaussianGammaCanonicalExponentBound.harmonic_point_bound N))
+  have p := bounded_product_one (GaussianGammaEulerHead.fraction_disk z R B hB hz)
+    (GaussianGammaCanonicalExponentBound.harmonic_point_bound N)
   exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
     (bounded_difference _ _ (R*N) one N one (le_refl one) (le_refl one) p (GaussianNamedNaturalScale.natural_point_bound N))
 

@@ -70,8 +70,8 @@ theorem natural_point_bound (i : PTm n) : Γ ⊢[PRAAx] bounded (naturalPoint i)
     (by ipra_ring) (le_refl (i*i))
 
 theorem scaled_bound (i q R : PTm n) (hq : Γ ⊢[PRAAx] bounded q R one) : Γ ⊢[PRAAx] bounded (natScale i q) (i*R) one :=
-  GaussianRationalReciprocal.bound_congr (GaussianRationalNaturalScale.natScale_as_product i q).eqSymm (.eqRefl _) (one_mul one)
-    (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) (natural_point_bound i) hq)
+  GaussianRationalReciprocal.bound_congr (GaussianRationalNaturalScale.natScale_as_product i q).eqSymm (.eqRefl _) (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_product_one (natural_point_bound i) hq)
 
 theorem scaled_distance (i q r A B R : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hqr : Γ ⊢[PRAAx] distanceBounded q r A B) (hr : Γ ⊢[PRAAx] bounded r R one) : Γ ⊢[PRAAx]

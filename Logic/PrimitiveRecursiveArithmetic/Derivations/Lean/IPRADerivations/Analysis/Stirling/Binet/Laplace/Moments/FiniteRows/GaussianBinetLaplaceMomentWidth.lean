@@ -24,7 +24,7 @@ open GaussianCompactRiemannName (grid grid_inside inside sampleBody sampleData s
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRationalHorner (qzero positive_product)
 open GaussianRationalMetric (bounded)
-open GaussianRationalReciprocal (bound_congr bounded_product)
+open GaussianRationalReciprocal (bound_congr bounded_product_one)
 open GaussianRationalRiemannRefinement (constantBody leftSum termsDistance)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReconstructionRoots (distance_zero_iff)
@@ -35,8 +35,8 @@ theorem observation_bound (p j X D R T A B : PTm n) (h : Γ ⊢[PRAAx] input X z
     Γ ⊢[PRAAx] bounded (observation p j X D R T A B) (pw T j) one := by
   have b := cofinal_bound (clock p j T) X zero D zero R T A B h
   have u := bounded_radius_mono _ one two one one (le_succ_self one) (le_refl one) (by ipra_le 1) b
-  exact bound_congr (.eqRefl _) (one_mul _) (one_mul _)
-    (bounded_product _ _ one one _ one (le_refl one) (le_refl one) u (weight_bound j A B T h.andE₂.andE₁ h.andE₂.andE₂))
+  exact bound_congr (.eqRefl _) (one_mul _) (.eqRefl _)
+    (bounded_product_one u (weight_bound j A B T h.andE₂.andE₁ h.andE₂.andE₂))
 
 theorem quadrature_bound (p M j X D R T A C E : PTm n)
     (h : Γ ⊢[PRAAx] source X zero D zero R T A C E) (hM : Γ ⊢[PRAAx] le one M) :

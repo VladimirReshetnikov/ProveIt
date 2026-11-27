@@ -34,7 +34,7 @@ open GaussianRationalLowerBounds (inverse_bound)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalPowerAlgebra (qmul_commutative)
 open GaussianRationalQuadratureDifference (differenceBody weighted_difference)
-open GaussianRationalReciprocal (bound_congr bounded_product reciprocal subst_reciprocal)
+open GaussianRationalReciprocal (bound_congr reciprocal subst_reciprocal bounded_product_one)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative)
@@ -53,8 +53,7 @@ theorem multiplier_bound (A B G : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ 
   have half : Γ ⊢[PRAAx] bounded (fraction one two) one one :=
     GaussianEulerExponentCompactBounds.fraction_bound one two one h₂
       (le_congr (.eqRefl _) (one_mul two).eqSymm h₂)
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (bounded_product _ _ G one one one (le_refl one) (le_refl one) inv half)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) (bounded_product_one inv half)
 
 theorem sine_error (p X Y D sign A B G R U K T L N : PTm n)
     (hz : Γ ⊢[PRAAx] source X Y D sign R) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B)
