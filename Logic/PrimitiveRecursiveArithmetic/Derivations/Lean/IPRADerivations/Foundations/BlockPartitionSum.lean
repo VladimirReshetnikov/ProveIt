@@ -44,36 +44,25 @@ theorem block_sum (f e : PTm 2) (G x : PTm n) (h0 : Γ ⊢[PRAAx] inst2 e zero x
     (hmono : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift G) ⟶
       le (inst2 e (var 0) (Syn.shift x)) (inst2 e (succ (var 0)) (Syn.shift x)))) :
     Γ ⊢[PRAAx] ap2 (sumF f) (inst2 e G x) x ≐ ap2 (sumF (blockB f e)) G x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift G) ⟶
-      ap2 (sumF f) (inst2 e (var 0) (Syn.shift x)) (Syn.shift x) ≐
-        ap2 (sumF (blockB f e)) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
+  let P : Fm PTm (n + 1) :=
+    ap2 (sumF f) (inst2 e (var 0) (Syn.shift x)) (Syn.shift x) ≐
+      ap2 (sumF (blockB f e)) (var 0) (Syn.shift x)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst G) := by
+    refine qfIndUpTo G trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      exact ((congrAp2 (sumF f) h0 (.eqRefl _)).eqTrans (sum_zero f x)).eqTrans (sum_zero _ x).eqSymm
+    · simp only [P, Fm.subst_eq, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      exact ((congrAp2 (sumF f) h0.wk (.eqRefl _)).eqTrans (sum_zero f x)).eqTrans (sum_zero _ x).eqSymm
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
-      refine .impI ?_
-      let Θ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift G) ::
-        (le (var 0) (Syn.shift G) ⟶
-          ap2 (sumF f) (inst2 e (var 0) (Syn.shift x)) (Syn.shift x) ≐
-            ap2 (sumF (blockB f e)) (var 0) (Syn.shift x)) ::
-        Γ.map Fm.shift
-      have hle : Θ ⊢[PRAAx] le (var 0) (Syn.shift G) := le_trans (le_succ_self _) Prf.hyp0
-      have ih : Θ ⊢[PRAAx] ap2 (sumF f) (inst2 e (var 0) (Syn.shift x)) (Syn.shift x) ≐
-          ap2 (sumF (blockB f e)) (var 0) (Syn.shift x) := Prf.impE Prf.hyp1 hle
+      let Θ := lt (var 0) (Syn.shift G) :: P :: Γ.map Fm.shift
       have mono : Θ ⊢[PRAAx] le (inst2 e (var 0) (Syn.shift x)) (inst2 e (succ (var 0)) (Syn.shift x)) :=
-        Prf.impE hmono.allOpen.wk.wk Prf.hyp0
+        .impE hmono.allOpen.wk.wk Prf.hyp0
       have eB : Θ ⊢[PRAAx] inst2 (blockB f e) (var 0) (Syn.shift x) ≐
           ap2 (sumF (offB f)) (monus (inst2 e (succ (var 0)) (Syn.shift x)) (inst2 e (var 0) (Syn.shift x)))
             (pairT (inst2 e (var 0) (Syn.shift x)) (Syn.shift x)) := by
         rw [inst2_blockB]; exact .eqRefl _
       exact ((congrAp2 (sumF f) (eq_add_of_le mono) (.eqRefl _)).eqTrans (sum_split f _ _ _)).eqTrans
-        ((congrAdd ih eB.eqSymm).eqTrans (sum_succ' _ _ _).eqSymm)
-  have h2 := Prf.allE G hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift] at h2
-  exact .impE h2 (le_refl G)
+        ((congrAdd Prf.hyp1 eB.eqSymm).eqTrans (sum_succ' _ _ _).eqSymm)
+  simpa only [P, Fm.subst_eq, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    using atBound
 
 end LeanProofs.IPRA.Foundations.BlockPartitionSum

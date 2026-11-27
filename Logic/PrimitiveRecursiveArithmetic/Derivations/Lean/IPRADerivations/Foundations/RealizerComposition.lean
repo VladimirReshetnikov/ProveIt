@@ -75,30 +75,15 @@ theorem stack_mono (f g : PTm 2) (N x y : PTm n)
     (h : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift N) ⟶
       le (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift y)))) :
     Γ ⊢[PRAAx] le (stack f N x) (stack g N y) := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      le (stack f (var 0) (Syn.shift x)) (stack g (var 0) (Syn.shift y))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift]
-      exact .impI (le_congr (stack_zero f x).eqSymm (stack_zero g y).eqSymm (le_refl zero))
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift]
-      refine .impI ?_
-      have smaller := le_trans (le_succ_self (var 0))
-        (Prf.hyp0 : le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ le (stack f (var 0) (Syn.shift x)) (stack g (var 0) (Syn.shift y))) ::
-            Γ.map Fm.shift ⊢[PRAAx] _)
-      have point : le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ le (stack f (var 0) (Syn.shift x)) (stack g (var 0) (Syn.shift y))) ::
-            Γ.map Fm.shift ⊢[PRAAx]
-            le (inst2 f (var 0) (Syn.shift x)) (inst2 g (var 0) (Syn.shift y)) :=
-        Prf.impE h.allOpen.wk.wk Prf.hyp0
-      exact le_congr (stack_succ _ _ _).eqSymm (stack_succ _ _ _).eqSymm
-        (pair_mono point (Prf.impE Prf.hyp1 smaller))
-  have result := Prf.allE N all
-  simp only [Fm.subst_imp, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift] at result
-  exact Prf.impE result (le_refl N)
+  let P := le (stack f (var 0) (Syn.shift x)) (stack g (var 0) (Syn.shift y))
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      exact le_congr (stack_zero f x).eqSymm (stack_zero g y).eqSymm (le_refl zero)
+    · simp only [P, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      exact .impI (le_congr (stack_succ _ _ _).eqSymm (stack_succ _ _ _).eqSymm
+        (pair_mono (.impE h.allOpen.wk.wk Prf.hyp0) Prf.hyp1))
+  simpa only [P, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atBound
 
 theorem sequence_mono (f g : PTm 2) (N x y : PTm n)
     (h : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift N) ⟶

@@ -71,26 +71,13 @@ theorem bad_count {ε N x : PTm n}
     (hp : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       le (inst2 β (var 0) (Syn.shift x) * succ (Syn.shift ε)) (inst2 c (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] CInv β c ε N x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      CInv β c (Syn.shift ε) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · have e : (le (var 0) (Syn.shift N) ⟶ CInv β c (Syn.shift ε) (var 0) (Syn.shift x)).subst
-            (Syn.inst zero) = (le zero N ⟶ CInv β c ε zero x) := by
-        simp
-      rw [e]
-      exact .impI (count_base β c ε x)
-    · have e : (le (var 0) (Syn.shift N) ⟶ CInv β c (Syn.shift ε) (var 0) (Syn.shift x)).subst
-            (Syn.repl (succ (var 0))) =
-          (le (succ (var 0)) (Syn.shift N) ⟶ CInv β c (Syn.shift ε) (succ (var 0)) (Syn.shift x)) := by
-        simp
-      rw [e]
-      exact .impI (count_guard β c Prf.hyp0 hp.allOpen.wk.wk Prf.hyp1)
-  have a := Prf.allE N hall
-  have e : (le (var 0) (Syn.shift N) ⟶ CInv β c (Syn.shift ε) (var 0) (Syn.shift x)).subst
-        (Syn.inst N) = (le N N ⟶ CInv β c ε N x) := by
-    simp
-  rw [e] at a
-  exact Prf.impE a (le_refl N)
+  let P := CInv β c (Syn.shift ε) (var 0) (Syn.shift x)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simpa [P] using count_base (Γ := Γ) β c ε x
+    · simp [P]
+      exact .impI (count_step β c (.impE hp.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa [P] using atBound
 
 end Count
 

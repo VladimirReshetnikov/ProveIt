@@ -108,29 +108,18 @@ theorem maximum_bound (body : PTm 2) (N x r : PTm n)
     (h : Γ ⊢[PRAAx] .all (lt (var 0) (Syn.shift N) ⟶
       le (inst2 body (var 0) (Syn.shift x)) (Syn.shift r))) :
     Γ ⊢[PRAAx] le (finiteMaximum body N x) r := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      le (finiteMaximum body (var 0) (Syn.shift x)) (Syn.shift r)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, FiniteQueryDemand.subst_finiteMaximum,
+  let P := le (finiteMaximum body (var 0) (Syn.shift x)) (Syn.shift r)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, FiniteQueryDemand.subst_finiteMaximum,
         Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .impI (le_congr (finiteMaximum_zero body x).eqSymm (.eqRefl _) (zero_le r))
-    · simp only [Fm.subst_imp, subst_le, FiniteQueryDemand.subst_finiteMaximum,
+      exact le_congr (finiteMaximum_zero body x).eqSymm (.eqRefl _) (zero_le r)
+    · simp only [P, subst_le, FiniteQueryDemand.subst_finiteMaximum,
         Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) ::
-        (le (var 0) (Syn.shift N) ⟶
-          le (finiteMaximum body (var 0) (Syn.shift x)) (Syn.shift r)) :: Γ.map Fm.shift
-      have old : Δ ⊢[PRAAx] le (finiteMaximum body (var 0) (Syn.shift x)) (Syn.shift r) :=
-        Prf.impE Prf.hyp1 (le_trans (le_succ_self (var 0)) Prf.hyp0)
-      have next : Δ ⊢[PRAAx] le (inst2 body (var 0) (Syn.shift x)) (Syn.shift r) :=
-        Prf.impE h.allOpen.wk.wk Prf.hyp0
-      exact le_congr (finiteMaximum_succ body (var 0) (Syn.shift x)).eqSymm
-        (.eqRefl _) (maximum_le old next)
-  have atN := Prf.allE N all
-  have result : Γ ⊢[PRAAx] le N N ⟶ le (finiteMaximum body N x) r := by
-    simpa only [Fm.subst_imp, subst_le, FiniteQueryDemand.subst_finiteMaximum,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atN
-  exact .impE result (le_refl N)
+      exact .impI (le_congr (finiteMaximum_succ body (var 0) (Syn.shift x)).eqSymm (.eqRefl _)
+        (maximum_le Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)))
+  simpa only [P, subst_le, FiniteQueryDemand.subst_finiteMaximum,
+    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atBound
 
 def directedBody (d : PR 3) : PTm 2 :=
   distanceTo d (entry (fstT (var 1)) (var 0)) (fstT (sndT (var 1))) (sndT (sndT (var 1)))

@@ -33,36 +33,26 @@ theorem amortized (c a P : PTm 2) (x N : PTm n)
       le (inst2 c (var 0) (Syn.shift x) + inst2 P (succ (var 0)) (Syn.shift x))
         (inst2 a (var 0) (Syn.shift x) + inst2 P (var 0) (Syn.shift x)))) :
     Γ ⊢[PRAAx] le (ap2 (sumF c) N x + inst2 P N x) (ap2 (sumF a) N x + inst2 P zero x) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      le (ap2 (sumF c) (var 0) (Syn.shift x) + inst2 P (var 0) (Syn.shift x))
-        (ap2 (sumF a) (var 0) (Syn.shift x) + inst2 P zero (Syn.shift x))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var,
+  let invariant := le (ap2 (sumF c) (var 0) (Syn.shift x) + inst2 P (var 0) (Syn.shift x))
+    (ap2 (sumF a) (var 0) (Syn.shift x) + inst2 P zero (Syn.shift x))
+  have atBound : Γ ⊢[PRAAx] invariant.subst (Syn.inst N) := by
+    refine qfIndUpTo N (le_QF _ _) ?_ ?_
+    · simp only [invariant, subst_le, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var,
         Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      have L0 : (le zero N :: Γ) ⊢[PRAAx] ap2 (sumF c) zero x + inst2 P zero x ≐ inst2 P zero x :=
-        (congrAdd (sum_zero c x) (.eqRefl _)).eqTrans (zero_add _)
-      have R0 : (le zero N :: Γ) ⊢[PRAAx] ap2 (sumF a) zero x + inst2 P zero x ≐ inst2 P zero x :=
-        (congrAdd (sum_zero a x) (.eqRefl _)).eqTrans (zero_add _)
-      exact .impI (le_congr L0.eqSymm R0.eqSymm (le_refl _))
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have hf := hp.allOpen
+      have L0 := (congrAdd (sum_zero (Γ := Γ) c x) (.eqRefl (inst2 P zero x))).eqTrans (zero_add _)
+      have R0 := (congrAdd (sum_zero (Γ := Γ) a x) (.eqRefl (inst2 P zero x))).eqTrans (zero_add _)
+      exact le_congr L0.eqSymm R0.eqSymm (le_refl _)
+    · simp only [invariant, subst_le, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var,
+        Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
-      let IH : Fm PTm (n + 1) := le (var 0) (Syn.shift N) ⟶
-        le (ap2 (sumF c) (var 0) (Syn.shift x) + inst2 P (var 0) (Syn.shift x))
-          (ap2 (sumF a) (var 0) (Syn.shift x) + inst2 P zero (Syn.shift x))
-      let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift N) :: IH :: Γ.map Fm.shift
-      have hle : Δ ⊢[PRAAx] le (var 0) (Syn.shift N) := le_trans (le_succ_self _) Prf.hyp0
-      have h₁ : Δ ⊢[PRAAx] le (ap2 (sumF c) (var 0) (Syn.shift x) + inst2 P (var 0) (Syn.shift x))
-          (ap2 (sumF a) (var 0) (Syn.shift x) + inst2 P zero (Syn.shift x)) := Prf.impE Prf.hyp1 hle
-      have h₂ : Δ ⊢[PRAAx] le (inst2 c (var 0) (Syn.shift x) + inst2 P (succ (var 0)) (Syn.shift x))
-          (inst2 a (var 0) (Syn.shift x) + inst2 P (var 0) (Syn.shift x)) := Prf.impE hf.wk.wk Prf.hyp0
+      let Δ := lt (var 0) (Syn.shift N) :: invariant :: Γ.map Fm.shift
+      have previous : Δ ⊢[PRAAx] invariant := Prf.hyp1
+      have next : Δ ⊢[PRAAx] le (inst2 c (var 0) (Syn.shift x) + inst2 P (succ (var 0)) (Syn.shift x))
+          (inst2 a (var 0) (Syn.shift x) + inst2 P (var 0) (Syn.shift x)) :=
+        .impE hp.allOpen.wk.wk Prf.hyp0
       have ec := natEq (sum_succ' (Γ := Δ) c (var 0) (Syn.shift x))
       have ea := natEq (sum_succ' (Γ := Δ) a (var 0) (Syn.shift x))
-      ipra_le sl h₁ + sl h₂ with ea - ec
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, subst_le, subst_ap2, PTm.subst_add, subst_inst2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact Prf.impE h2 (le_refl N)
+      ipra_le sl previous + sl next with ea - ec
+  simpa [invariant] using atBound
 
 end LeanProofs.IPRA.Foundations.AmortizedPotential

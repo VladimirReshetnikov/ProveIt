@@ -57,35 +57,29 @@ theorem cnt_succ (M v x : PTm n) :
 theorem count_le_one {M v x : PTm n}
     (hE : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift M) ⟶ (inst2 (EB S) (var 0) (Syn.shift x) ≐ zero))) :
     Γ ⊢[PRAAx] le (cnt S M v x) one := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift M) ⟶
-      le (cnt S (var 0) (Syn.shift v) (Syn.shift x)) one) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+  let P := le (cnt S (var 0) (Syn.shift v) (Syn.shift x)) one
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst M) := by
+    refine qfIndUpTo M (le_QF _ _) ?_ ?_
+    · simp only [P, subst_le, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
         ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      exact .impI (le_congr (sum2_zero _ _ _).eqSymm (.eqRefl _) (zero_monus _))
-    · simp only [Fm.subst_imp, subst_le, subst_ap3, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+      exact le_congr (sum2_zero _ _ _).eqSymm (.eqRefl _) (zero_monus _)
+    · simp only [P, subst_le, subst_ap3, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
         ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
-      have hlt : (le (succ (var 0)) (Syn.shift M) :: (le (var 0) (Syn.shift M) ⟶
-          le (cnt S (var 0) (Syn.shift v) (Syn.shift x)) one) :: Γ.map Fm.shift) ⊢[PRAAx] lt (var 0) (Syn.shift M) :=
-        Prf.hyp0
-      have ih := Prf.impE Prf.hyp1 (le_of_lt hlt)
-      have hE0 := Prf.impE hE.allOpen.wk.wk hlt
+      let Δ := lt (var 0) (Syn.shift M) :: P :: Γ.map Fm.shift
+      have ih : Δ ⊢[PRAAx] P := Prf.hyp1
+      have hE0 := Prf.impE (hE.allOpen.wk.wk : Δ ⊢[PRAAx] _) Prf.hyp0
       rw [inst2_E] at hE0
       refine le_congr (cnt_succ _ _ _).eqSymm (.eqRefl _) ?_
       refine .orE (eq_or_ne (inst2 S (var 0) (Syn.shift x)) (Syn.shift v)) ?_ ?_
-      · -- `σ(M) = v`: then `c_M(v) = E(M) = 0`.
-        have c0 : ((inst2 S (var 0) (Syn.shift x) ≐ Syn.shift v) :: _) ⊢[PRAAx]
+      · have c0 : ((inst2 S (var 0) (Syn.shift x) ≐ Syn.shift v) :: Δ) ⊢[PRAAx]
             cnt S (var 0) (Syn.shift v) (Syn.shift x) ≐ zero :=
           (congrAp3 _ (.eqRefl _) Prf.hyp0.eqSymm (.eqRefl _)).eqTrans hE0.wk
-        exact le_congr ((zero_add _).eqSymm.eqTrans (congrAdd c0.eqSymm (eqb_of_eq Prf.hyp0).eqSymm)) (.eqRefl _)
-          (le_refl _)
+        exact le_congr ((zero_add _).eqSymm.eqTrans (congrAdd c0.eqSymm (eqb_of_eq Prf.hyp0).eqSymm))
+          (.eqRefl _) (le_refl _)
       · exact le_congr ((add_zero _).eqSymm.eqTrans (congrAdd (.eqRefl _) (eqb_of_ne Prf.hyp0).eqSymm))
           (.eqRefl _) ih.wk
-  have h := Prf.allE M hall
-  simp only [Fm.subst_imp, subst_le, subst_ap3, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  exact .impE h (le_refl M)
+  simpa [P] using atBound
 
 open LeanProofs.IPRA.AnalyticNumberTheory.Fermat (subst_up_shift')
 
