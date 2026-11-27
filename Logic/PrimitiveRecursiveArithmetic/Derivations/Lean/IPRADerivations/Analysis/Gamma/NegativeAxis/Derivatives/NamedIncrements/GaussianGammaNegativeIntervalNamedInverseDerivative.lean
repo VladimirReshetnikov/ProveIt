@@ -32,7 +32,7 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedEulerUnitTime (source encoded_source)
 open GaussianNamedInverseRate (independentRate diagonal_rate)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_model_comparison)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 
@@ -106,7 +106,6 @@ theorem original_diagonal (f g K : PR 2) (p q x y z E N a : PTm n)
   have hs := h.andE₂.andE₂.andE₂.andE₂
   have ip := unit_positive (Γ := Γ) p
   have iq := unit_positive (Γ := Γ) q
-  have wide := positive_product _ _ ip iq
   have lateI : Γ ⊢[PRAAx] le (GaussianGammaNegativeIntervalNamedInverseFactor.clock q E N) r := by
     exact le_trans (le_add_left _ _) (le_add_right _ _)
   have lateC : Γ ⊢[PRAAx] le (GaussianGammaNegativeIntervalNamedCorrectionFactor.clock q E N) r := le_add_left _ _
@@ -140,15 +139,7 @@ theorem original_diagonal (f g K : PR 2) (p q x y z E N a : PTm n)
       (.andI (GaussianGammaNegativeIntervalNamedInverseFactor.name_regular f x E N hf) hk))
     hc bound (exact_difference A B C D N fx.andE₁ gy.andE₁) (as_three _ _ (inv_at g y hg)) (as_three _ _ (inv_at f x hf))
     (approx_increment f g K q r x y z E hf hg he qr)
-  have liftQ (u v M : PTm n) (hM : Γ ⊢[PRAAx] distanceBounded u v M Q) :
-      Γ ⊢[PRAAx] distanceBounded u v (M*P) (P*Q) :=
-    distance_radius_mono _ _ _ _ _ _ iq wide (le_of_eq_add (d := zero) (by ipra_ring)) hM
-  have mid := distance_radius_mono _ _ _ _ (gain E N*Q) (P*Q) ip wide
-    (le_of_eq_add (d := zero) (by ipra_ring)) error
-  exact distance_congr (.eqRefl _) (.eqRefl _)
-    (by dsimp only [diagonalNumerator,cost,rawCost,P,Q,H]; ipra_ring) (.eqRefl _)
-    (distance_triangle_same _ _ _ _ _ _ wide (liftQ _ _ rawCost near)
-      (distance_triangle_same _ _ _ _ _ _ wide mid (liftQ _ _ (num 3) (distance_symmetric _ _ _ _ iq coeff_at))))
+  exact distance_from_model_comparison (gain E N) P Q rawCost (num 3) ip iq near error coeff_at
 
 theorem original_rate (f g K : PR 2) (p x y z E N a : PTm n)
     (h : Γ ⊢[PRAAx] input f g K p x y z E a) :

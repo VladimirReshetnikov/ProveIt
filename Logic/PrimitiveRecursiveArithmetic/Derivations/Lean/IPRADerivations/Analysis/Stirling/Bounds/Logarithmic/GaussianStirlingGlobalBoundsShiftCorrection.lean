@@ -23,7 +23,7 @@ open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast multiplyModulus)
 open GaussianNameRingLaws (multiply_sample_error)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_radius_scale distance_triangle_same)
 open GaussianRationalHorner (qzero qmul positive_product ofGaussian_represents represents represents_congr represents_rescale
   canonical_unique qmul_canonical qmul_represents)
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_represents qsub_canonical)
@@ -191,7 +191,7 @@ theorem sample_bound (i r b p : PTm n) (hi : Γ ⊢[PRAAx] le one i) (hb : Γ �
     bound_congr (GaussianRationalReconstruction.qsub_zero_right Z (qsub_canonical _ _)).eqSymm
       (.eqRefl _) (.eqRefl _) (centered_bound i r b hi hb hr)
   have cen : Γ ⊢[PRAAx] distanceBounded Z qzero (two*U) (i*U) :=
-    distance_radius_mono _ _ _ _ _ _ hi hd (le_of_eq_add (d := zero) (by ipra_ring)) cent
+    distance_radius_scale hi hp cent
   have er : Γ ⊢[PRAAx] distanceBounded (ap2 correctionF p (correctionData i r b)) (qsub u (qmul c z)) (i*(M+num 7)) (i*U) :=
     distance_radius_mono _ _ _ _ _ _ hp hd (le_of_eq_add (d := zero) (by ipra_ring)) round
   exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp [budget,M,H,U]; ipra_ring) (.eqRefl _)

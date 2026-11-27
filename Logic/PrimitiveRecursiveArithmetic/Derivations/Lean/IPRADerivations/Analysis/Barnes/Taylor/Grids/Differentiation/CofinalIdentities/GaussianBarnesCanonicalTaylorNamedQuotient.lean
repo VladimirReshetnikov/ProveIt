@@ -30,7 +30,7 @@ open GaussianFastValueCut (exponent query_budget)
 open GaussianL1 (norm1)
 open GaussianNamedDifferenceQuotient (input inverse raw independent_readback scale_distance)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_scale distance_triangle_same)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalMetric (bounded_iff distanceBounded qsub)
@@ -166,7 +166,7 @@ theorem rate_of_grid_bound (f g : PR 2) (p x y h B grid A : PTm n)
     distance_radius_mono _ _ _ _ _ _ (GaussianNamedDifferenceQuotient.denominator_positive p k k) hd budget
       (doubled_readback f g p k x y h B hi)
   have second : Γ ⊢[PRAAx] distanceBounded v grid (A*P) (B*P) :=
-    distance_radius_mono _ _ _ _ _ _ hB hd (le_of_eq_add (d := zero) (by ipra_ring)) bound
+    distance_radius_scale hB (unit_positive p) bound
   exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [H,P]; ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ hd first second)
 

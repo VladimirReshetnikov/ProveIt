@@ -27,7 +27,7 @@ open GaussianBarnesCanonicalWeightedTaylorBallSource (stepDivisor)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianNamedInverseRate (rateDenominator)
 open GaussianPolynomialForwardDifferenceNormalization (normalized fractional_coefficient_error)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric)
 open GaussianRationalHorner (ofGaussian positive_product qzero)
 open GaussianRationalLowerBounds (lower)
 open GaussianRationalMetric (distanceBounded)
@@ -75,7 +75,6 @@ theorem rate (t s u p q z h R B H r M L D : PTm n) (hz : Γ ⊢[PRAAx] source z 
     positive_product _ _ (GaussianFactorBudget.power_positive L e hL) hd
   have hB₂ : Γ ⊢[PRAAx] le one B₂ :=
     GaussianNamedInverseRate.denominator_positive _ _ _ (unit_positive p)
-  have hAll := positive_product _ _ hB₁ hB₂
   have raw := fractional_coefficient_error (literalGrid t z h R B r e) P e qzero w L D
     (GaussianBarnesCanonicalFiniteTaylorGridObservations.numerator t s q z h R B H r M e) _
     (GaussianBarnesCanonicalFiniteTaylorGridObservations.scaled_polynomial_length s q z R B H r M e)
@@ -84,10 +83,6 @@ theorem rate (t s u p q z h R B H r M L D : PTm n) (hz : Γ ⊢[PRAAx] source z 
     distance_congr (.eqRefl _) (scaled_leading a q z R B H r M) (.eqRefl _) (.eqRefl _) raw
   have coefficientSample : Γ ⊢[PRAAx] distanceBounded y v J B₂ :=
     distance_symmetric _ _ _ _ hB₂ (rational_readback u s p q z R B H r M enlarged hq)
-  have fromGrid : Γ ⊢[PRAAx] distanceBounded x y (A*B₂) (B₁*B₂) :=
-    distance_radius_mono _ _ _ _ _ _ hB₁ hAll (le_of_eq_add (d := zero) (by ipra_ring)) oneGrid
-  have fromCoefficient : Γ ⊢[PRAAx] distanceBounded y v (J*B₁) (B₁*B₂) :=
-    distance_radius_mono _ _ _ _ _ _ hB₂ hAll (le_of_eq_add (d := zero) (by ipra_ring)) coefficientSample
-  exact distance_triangle_same _ _ _ _ _ _ hAll fromGrid fromCoefficient
+  exact GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hB₁ hB₂ oneGrid coefficientSample
 
 end LeanProofs.IPRA.Analysis.GaussianBarnesCanonicalFiniteTaylorGridComparison

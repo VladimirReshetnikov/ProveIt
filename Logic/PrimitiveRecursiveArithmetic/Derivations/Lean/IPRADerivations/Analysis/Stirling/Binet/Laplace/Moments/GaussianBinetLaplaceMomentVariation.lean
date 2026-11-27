@@ -24,7 +24,7 @@ open GaussianDominantPairAlgebra (radiusPoint radius_bounded)
 open GaussianLogGammaEulerResidualRadius (radius source_of_right_half_plane)
 open GaussianNamedInverseRate (independentRate)
 open GaussianNamedLipschitzRate (diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_scale distance_triangle_same)
 open GaussianRationalHorner (qmul qzero positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalReciprocal (bound_congr bounded_product)
@@ -97,8 +97,7 @@ theorem ordered_observations (p j X D R Y E S K H Q : PTm n)
       (zero_add _) (.eqRefl _)
       (GaussianNamedDifference.difference_distance x x _ qzero zero _ Q hQ
         (GaussianRationalPowerDifference.distance_refl_zero x Q hQ) toZero)
-  have changeClock := distance_radius_mono _ _ _ _ (H*M*U) (Q*U) hQ den
-    (le_of_eq_add (d := zero) (by ipra_ring)) translated
+  have changeClock := distance_radius_scale hQ hp translated
   exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [diagonalNumerator,gain,M,N,U]; ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ den (distance_triangle_same _ _ _ _ _ _ den chart approximation) changeClock)
 

@@ -29,7 +29,7 @@ open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianL1 (norm1 normSq_le_norm1_square norm1_square_le_two_normSq)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
-open GaussianRationalDistanceOrder (distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_radius_mono)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product)
 open GaussianRationalLowerBounds (lower lower_from_representation)
 open GaussianRationalMetric (distanceBounded)
@@ -150,10 +150,6 @@ theorem quadratic_rate (p z h R B r M J e t u : PTm n) (hz : Γ ⊢[PRAAx] sourc
       hz (normSq_le_norm1_square h) hsmall hH hdeg (native_lower h B hb)
   have fromCoeff : Γ ⊢[PRAAx] distanceBounded y v C' Y :=
     GaussianBarnesCanonicalFiniteTaylorEvenGridReadback.readback u t k q z R B H r M J e enlarged hdeg hJ hf
-  have first : Γ ⊢[PRAAx] distanceBounded x y (A*Y) (X*Y) :=
-    distance_radius_mono _ _ _ _ _ _ hX whole (le_of_eq_add (d := zero) (by ipra_ring)) fromGrid
-  have next : Γ ⊢[PRAAx] distanceBounded y v (C'*X) (X*Y) :=
-    distance_radius_mono _ _ _ _ _ _ hY whole (le_of_eq_add (d := zero) (by ipra_ring)) fromCoeff
   have payCoeff : Γ ⊢[PRAAx] le (num 3*unit p*(two*G)) (unit k) :=
     le_congr (by ipra_ring) (.eqRefl _) (query_budget (num 3*(two*G)) p)
   have payTaylor : Γ ⊢[PRAAx] le (num 3*unit p*C) (unit q) :=
@@ -164,7 +160,7 @@ theorem quadratic_rate (p z h R B r M J e t u : PTm n) (hz : Γ ⊢[PRAAx] sourc
   exact distance_radius_mono _ _ _ _ _ _ whole (quadratic_denominator_positive p u B hb)
     (budget_sum (unit p) (unit u) (B*B) (unit q) (unit t) (unit k)
       (analyticCoefficient R M e*(H*H)) C K L G payTaylor payObs payCoeff)
-    (distance_triangle_same _ _ _ _ _ _ whole first next)
+    (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hX hY fromGrid fromCoeff)
 
 theorem uniform_rate (z h R B r M J e t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hn : Γ ⊢[PRAAx] le one (normSq h))

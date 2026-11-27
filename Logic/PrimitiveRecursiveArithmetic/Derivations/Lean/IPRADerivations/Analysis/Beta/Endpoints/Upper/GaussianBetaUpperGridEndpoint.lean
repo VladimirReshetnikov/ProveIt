@@ -21,7 +21,7 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_radius_scale distance_triangle_same)
 open GaussianRationalNaturalScale (naturalPoint natScale_as_product natScale_product)
 open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianEulerIntegrandName (powerF powerData)
@@ -76,7 +76,7 @@ theorem sampled_endpoint_error_of_cross (p q z B b N : PTm n) (g : PR 2) (x : PT
       (distance_congr (.eqRefl _) ((qmul_congr (.eqRefl _) (constant_at k C)).eqTrans (original_grid_endpoint_raw_product p z B b N).eqSymm)
         (.eqRefl _) (.eqRefl _) (GaussianNameRingLaws.multiply_sample_error powerF constantF P C k power (constant_regular C)))
   have first : Γ ⊢[PRAAx] distanceBounded (scaledEndpoint p z B b N) (ap2 nameF k (data z B b N)) ((L+one)*V) (K*V) :=
-    distance_radius_mono _ _ _ _ _ _ hk hKV (le_of_eq_add (d := zero) (by ipra_ring)) product
+    distance_radius_scale hk hq product
   have second := GaussianNameEquivalence.cross_at _ _ _ _ k q cross
   have both : Γ ⊢[PRAAx] distanceBounded (scaledEndpoint p z B b N) (ap2 g q x)
       (factor z B b N*V+K) (K*V) :=

@@ -35,7 +35,7 @@ open GaussianFastValueCut (exponent query_budget)
 open GaussianL1 (norm1 normSq_le_norm1_square norm1_square_le_two_normSq)
 open GaussianNamedInverseRate (rateNumerator rateDenominator)
 open GaussianPolynomialForwardDifferenceGridError (rowBound row_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
 open GaussianRationalHorner (ofGaussian ofGaussian_represents positive_product qmul qzero)
 open GaussianRationalLowerBounds (lower lower_from_representation)
 open GaussianRationalMetric (distanceBounded)
@@ -211,15 +211,11 @@ theorem rate_with_gains (A₀ C₀ p z h R B r M t u : PTm n) (hz : Γ ⊢[PRAAx
   have whole := positive_product _ _ hd he
   have fromCoefficient : Γ ⊢[PRAAx] distanceBounded y v J E :=
     distance_symmetric _ _ _ _ he (rational_readback u t k q z R B H r M enlarged prefactorReady)
-  have first : Γ ⊢[PRAAx] distanceBounded x y (A*E) (D*E) :=
-    distance_radius_mono _ _ _ _ _ _ hd whole (le_of_eq_add (d := zero) (by ipra_ring)) fromGrid
-  have next : Γ ⊢[PRAAx] distanceBounded y v (J*D) (D*E) :=
-    distance_radius_mono _ _ _ _ _ _ he whole (le_of_eq_add (d := zero) (by ipra_ring)) fromCoefficient
   exact distance_radius_mono _ _ _ _ _ _ whole (positive_product _ _ (unit_positive p) (unit_positive u))
     (budget_sum (unit p) (unit u) B (unit q) (unit t) (unit k)
       ((pw (num 4) e*A₀)*H) (amplification B M*C₀)
       (amplification B M*K) C (readbackGain z S B e) payAnalytic payTaylor payClock payCoefficient)
-    (distance_triangle_same _ _ _ _ _ _ whole first next)
+    (GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ hd he fromGrid fromCoefficient)
 
 theorem rate (p z h R B r M t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
     (hn : Γ ⊢[PRAAx] le one (normSq h))
