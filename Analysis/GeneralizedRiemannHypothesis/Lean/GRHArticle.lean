@@ -166,6 +166,7 @@ import GRHArticle.SingularModuli.PermutationTest
 import GRHArticle.SingularModuli.QuarticAnalyticEnclosure
 import GRHArticle.SingularModuli.QuarticAnalyticNumeric
 import GRHArticle.SingularModuli.QuarticClassPolynomialCertificates
+import GRHArticle.SingularModuli.QuarticClassPolynomialIntegrality
 import GRHArticle.SingularModuli.QuarticCoefficientChecks
 import GRHArticle.SingularModuli.QuarticDiskCertificates
 import GRHArticle.SingularModuli.QuarticSupport

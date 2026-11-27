@@ -58,6 +58,8 @@ The five-term classification still needs the CM reduction, bounds on the conjuga
 to place them in the disks, and finite certificates from the
 [singular-moduli section](../Article/sections/smd.tex).
 
+[QuarticClassPolynomialIntegrality.lean](GRHArticle/SingularModuli/QuarticClassPolynomialIntegrality.lean) proves that every coefficient of the analytic class polynomials of discriminants −55 and −68 is an algebraic integer. For either discriminant, rationality of the coefficients suffices to identify the polynomial with the article's printed quartic, using the certified coefficient enclosures.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's
