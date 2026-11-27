@@ -3,6 +3,7 @@
   {\footnotesize\raggedright\emph{Files:} #1.\par}\smallskip}
 \providecommand{\dirP}{\mathbb{P}}
 \providecommand{\dirE}{\mathbb{E}}
+\providecommand{\dirU}{\mathrm{U}}
 
 \section{Direct arithmetic consequences of Dirichlet GRH}\label{sec:dir}
 
@@ -3131,6 +3132,10 @@ $h\ge M/5$, and \cref{dir:lem:circle} bounds the sum over nonprincipal character
 $2Q(M+1)e^{-\kappa M/10}$, which is $O(Q^{-2})$ for large $D$.
 \end{proof}
 
+The conditional part is complemented by \cref{dir:cor:onelist}, which under weaker
+hypotheses (all $q\le Q$, deletions counted against the whole list, every power saving and a
+range of $k$) controls the length of the list only up to a factor two.
+
 Even with unrestricted subset sizes, covering all units modulo a prime $q\in[Q,2Q]$ needs
 $2^{\abs U}\ge q-1$, so the order $\log Q$ of the common list is optimal. Klurman, Shparlinski
 and Ter\"av\"ainen observed under GRH that unrestricted subset products of all primes up to
@@ -3179,8 +3184,668 @@ quadratic signs occur in the retained set.
 \end{example}
 
 
+\subsection{Simultaneous congruences for the factors of a squarefree product}\label{dir:sec:factorizations}
+\sources{squarefree_factorizations; squarefree_prime_products}
+
+Suppose that a squarefree integer is to be split into three factors $F_1,F_2,F_3$, with $F_1$
+prescribed modulo $12$, $F_2$ modulo $15$ and $F_3$ modulo $20$, and with a prescribed number of
+prime divisors in each. Every two of these moduli share a prime factor, but the three have gcd
+one. One set of small primes makes every triple of units occur with almost the same number of
+representations; with the moduli $6,9,12$ exactly the triples whose product is congruent to the
+whole product modulo $3$ occur. The following theorem treats both cases, with up to
+$O(\log Q/\log\log Q)$ factors, and with the moduli and the deletions chosen after the primes.
+
+Write $\dirU(q)=(\Z/q\Z)^\times$, including the trivial group $\dirU(1)$. For a finite set $T$
+of $m$ primes and positive integers $k_1+\dots+k_r=m$, an ordered partition
+$T=T_1\sqcup\dots\sqcup T_r$ with $\abs{T_j}=k_j$ determines the factors
+$F_j=\prod_{p\in T_j}p$ of $P_T=\prod_{p\in T}p$; there are $\binom m{k_1,\dots,k_r}$ such
+ordered factorizations.
+
+\begin{theorem}[Simultaneous factorization; \stG]\label{dir:thm:factorization}
+Fix $0<\eps<1/2$ and $A>0$. There are $b,c,C,K>0$, depending only on $\eps$ and $A$, such that for
+every sufficiently large $Q$ and every integer $2\le R\le c\log Q/\log\log Q$ there is a set $S$
+of $n\le CR\log(2Q)$ distinct primes in $[K\log^2(2Q),2K\log^2(2Q)]$ with the following
+property. Let $2\le r\le R$, let $1\le q_1,\dots,q_r\le Q$, let $D\subseteq S$ with
+$\abs D\le(1/2-\eps)n$, and put
+\[
+ T=\set{p\in S\setminus D:\ p\nmid q_1\cdots q_r},\qquad m=\abs T,\qquad
+ g=\gcd(q_1,\dots,q_r).
+\]
+Let $k_1+\dots+k_r=m$ with $\min_jk_j\ge b\log(2Q)$, and for $u_j\in\dirU(q_j)$ let
+$N(\mathbf u)$ be the number of ordered factorizations with these quotas and
+$F_j\equiv u_j\pmod{q_j}$ for all $j$. If $\prod_ju_j\not\equiv P_T\pmod g$ then
+$N(\mathbf u)=0$; otherwise
+\begin{equation}\label{dir:eq:factorization}
+ N(\mathbf u)=\binom m{k_1,\dots,k_r}\frac{\varphi(g)}{\prod_{j=1}^r\varphi(q_j)}
+ (1+\theta_{\mathbf u}),\qquad\abs{\theta_{\mathbf u}}\le Q^{-A}.
+\end{equation}
+The balanced quotas $k_j\in\set{\floor{m/r},\ceil{m/r}}$ are always admissible.
+\end{theorem}
+
+Since $Q^{-A}<1$, \eqref{dir:eq:factorization} gives the exact support. The moduli may repeat,
+divide one another or share large factors. When all $q_j$ are equal, the first $r-1$ residues
+are free and the last is forced; when $g=1$ every tuple occurs. For $r=2$ the problem reduces,
+by the Chinese remainder theorem, to one subset product modulo $\lcm(q_1,q_2)$, and the joint
+problem begins with three factors.
+
+\paragraph{A bound for one prescribed partition.}
+Let $q_j\le Q$, put $H=\prod_j\dirU(q_j)$ and $M=\lcm(q_1,\dots,q_r)$, and let $T$ be any set
+of $m$ labelled integers coprime to $M$, the partition being uniform with the given positive quotas.
+For a character $\chi_j$ of $\dirU(q_j)$ write $\widetilde\chi_j$ for its pullback to $\dirU(M)$,
+and suppose that $\Delta\in[0,m]$ satisfies
+\begin{equation}\label{dir:eq:gap}
+ \Bigl|\sum_{p\in T}\widetilde\chi_i(p)\overline{\widetilde\chi_j(p)}\Bigr|\le m-\Delta
+\end{equation}
+for every pair of labels with unequal pullbacks. Put $k_*=\min_jk_j$.
+
+\begin{lemma}[Fourier coefficient of a partition; \stU]\label{dir:lem:partition}
+For a tuple of characters, merge labels with equal pullbacks into $h$ classes $C$ with
+characters $z_C$ and masses $w_C=\sum_{j\in C}k_j/m$, and put $V=\prod_j\chi_j(F_j)$. Then
+\[
+ \abs{\dirE V}\le(m+1)^{h-1}\exp\Bigl(-\Delta\sum_{C<C'}w_Cw_{C'}\Bigr).
+\]
+If $C_0$ has the largest mass and $t$ labels lie outside $C_0$, then
+$\abs{\dirE V}\le\bigl[(m+1)\exp(-\Delta k_*/(2m))\bigr]^t$.
+\end{lemma}
+
+\begin{proof}
+After merging, every partition into classes of sizes $mw_C$ has the same number of refinements,
+and $V$ is constant on them, so the merged partition is uniform. Assign each position a class
+independently with probabilities $w_C$ and condition on the counts being exactly $mw_C$. This
+count vector is a mode of the multinomial law: moving one count from an overfull class $i$ to
+an underfull class $j$ multiplies the mass by $v_iw_j/((v_j+1)w_i)\ge1$. Since there are at most
+$(m+1)^{h-1}$ count vectors, the conditioning event has probability at least $(m+1)^{1-h}$. The
+unconditioned numerator is a coefficient of $\prod_{p\in T}\bigl(\sum_Cw_CZ_Cz_C(p)\bigr)$, bounded
+by the maximum of the product on the torus $Z_C=e^{i\tau_C}$. For unimodular $v_C$,
+\[
+ \Bigl|\sum_Cw_Cv_C\Bigr|^2=1-2\sum_{C<C'}w_Cw_{C'}\bigl(1-\Re(v_C\overline{v_{C'}})\bigr);
+\]
+apply $1-y\le e^{-y}$, take square roots and multiply over $p$, using \eqref{dir:eq:gap} for each
+pair uniformly in the phases. Finally
+$\sum_{C<C'}w_Cw_{C'}=\frac12(1-\sum_Cw_C^2)\ge\frac12(1-w_{C_0})\ge tk_*/(2m)$ and $h-1\le t$.
+\end{proof}
+
+\begin{proposition}[Pointwise estimate for mixed moduli; \stU]\label{dir:prop:mixed}
+Put $B=(m+1)\exp(-\Delta k_*/(2m))$. For a tuple $\mathbf u$ with $\prod_ju_j\equiv P_T\pmod g$,
+the quantity
+\[
+ E(\mathbf u)=\frac{\abs H}{\varphi(g)}\,\dirP(F_j\equiv u_j\bmod q_j\text{ for all }j)-1
+\]
+satisfies
+\[
+ \abs{E(\mathbf u)}\le\frac Q{\varphi(g)}\bigl((1+QB)^r-1\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+The reductions $\dirU(M)\to\dirU(q_j)$ are onto, and, prime by prime, the intersection of the $r$
+inflated character groups consists of the characters inflated from $\dirU(g)$, since characters
+factoring through $\ell^a$ form nested subgroups and the minimum of the exponents
+$v_\ell(q_j)$ is $v_\ell(g)$. In Fourier inversion on $H$ a common character $\chi$ of $\dirU(g)$
+contributes $\chi(P_T/\prod_ju_j)$, so the $\abs H/\varphi(g)$ common tuples contribute
+$\varphi(g)/\abs H$ at a compatible $\mathbf u$. For every other tuple fix a largest class. For a
+given set of $t\ge1$ labels outside it, the common character of the remaining labels has at most
+$Q$ choices, read off from any one remaining modulus, and each of the $t$ other characters has at
+most $Q$ choices; \cref{dir:lem:partition} bounds each term by $B^t$. Summing over the
+exceptional labels and dividing by $\varphi(g)$ gives the bound.
+\end{proof}
+
+Charging a tuple by the number of labels outside its largest class is what keeps the quota of
+order $\log Q$ for growing $r$; counting all $\abs H$ tuples at the worst single-label decay
+would cost a further factor of order $r$.
+
+\begin{lemma}[One set of primes for all characters; \stG]\label{dir:lem:oneset}
+For each fixed $0<\delta<1$ there are $K_\delta,C_\delta,c_\delta>0$ such that for all large $Q$,
+with $x=K_\delta\log^2(2Q)$ and any $L$ with
+$C_\delta\log(2Q)\le L\le c_\delta\log^2(2Q)/\log\log(3Q)$, there is a set $S$ of distinct primes
+in $[x,2x]$ with $L\le n=\abs S\le2L$ and
+\[
+ \Bigl|\sum_{p\in S}\chi(p)\Bigr|\le\delta n\qquad
+ (2\le h\le Q^2,\ \chi\bmod h\text{ nonprincipal}).
+\]
+\end{lemma}
+
+\begin{proof}
+Fix a nonnegative smooth function $W$ supported in $(1,2)$ with $\int W=1$, and put
+$w_p=(\log p)W(p/x)$; then $\sum_pw_p=x+o(x)$. For a primitive nonprincipal $\psi$ of conductor
+$f$, the smoothed explicit formula at real-part cutoff $1/4$ \cite[Exercise~45]{Tao2014Notes}
+gives
+\[
+ \sum_{j\ge1}\Lambda(j)\psi(j)W(j/x)=-\sum_{\Re\rho>1/4}x^\rho\widetilde W(\rho)
+ +O_W\bigl(x^{1/4}\log(2f)\bigr),\qquad\widetilde W(s)=\int_0^\infty W(u)u^{s-1}\,du .
+\]
+By \cref{src:thm:dgrh} every zero in the sum has real part $1/2$; since
+$\abs{\widetilde W(1/2+it)}\ll_W(1+\abs t)^{-3}$ and a unit interval at height $j$ contains
+$O(\log(f(2+\abs j)))$ zeros, the zero sum is $O_W(\sqrt x\log(2f))$. Prime powers contribute
+$O_W(\sqrt x\log^2(2x))$, and passing from $\psi$ to an induced character modulo $h$ costs at
+most $\norm{W}_\infty\log h$. Hence $\abs{\sum_pw_p\chi(p)}/\sum_pw_p$ is at most a constant times
+$\log(2Q)/\sqrt x+\log^2(2x)/\sqrt x$, which is at most $\delta/4$ once $K_\delta$ and then $Q$
+are large.
+
+Put $\mu=3L/2$ and select each prime independently with probability $\mu w_p/\sum w$; these
+probabilities are $O(L\log(2x)/x)\le1$ for small $c_\delta$. For each admissible $\chi$ the sum
+$Z_\chi$ of $\chi$ over the selected primes has $\abs{\dirE Z_\chi}\le\delta\mu/4$, and
+Bernstein's inequality for the real and imaginary parts gives
+$\dirP(\abs{Z_\chi-\dirE Z_\chi}>\delta\mu/4)\le4\exp(-c\delta^2\mu)$ and
+$\dirP(\abs{n-\mu}>\mu/3)\le2\exp(-c'\mu)$ with absolute $c,c'>0$. There are at most $Q^4$
+characters, so a large $C_\delta$ makes the total failure probability less than one. A successful
+selection has $L\le n\le2L$ and $\abs{Z_\chi}\le\delta\mu/2\le\delta n$.
+\end{proof}
+
+A modulus $q\le Q$ is divisible by at most $\log Q/\log x$ primes of $S$, so even the most
+divisible moduli remove only $o(n)$ primes.
+
+\begin{proof}[Proof of \cref{dir:thm:factorization}]
+Take $\delta=\eps/2$ in \cref{dir:lem:oneset}, $b=2(A+6)/\eps$,
+$C_0\ge\max\set{C_\delta,4(b+1)}$ and $L=C_0R\log(2Q)$; a small $c$ keeps $L$ in the allowed
+range. The number $v$ of primes of $S$ dividing some $q_j$ is at most $r\log Q/\log x$, so
+$v/n\le1/(C_0\log x)\le\eps/4$ for large $Q$, uniformly in $r$ and the moduli, and
+$m\ge(1/2+\eps)n-v\ge(1/2+3\eps/4)n$; in particular balanced quotas exceed $b\log(2Q)$. The ratio
+of two distinct inflated characters comes from a nonprincipal character modulo
+$\lcm(q_i,q_j)\le Q^2$, and deleting the $n-m$ unavailable primes changes its sum by at most
+$n-m$, so
+\[
+ m-\Bigl|\sum_{p\in T}\widetilde\chi_i(p)\overline{\widetilde\chi_j(p)}\Bigr|\ge2m-(1+\delta)n\ge\eps n ,
+\]
+which is \eqref{dir:eq:gap} with $\Delta=\eps n$; only pairwise ratios enter, although $M$ may be
+much larger than $Q^2$. For large $Q$, $m+1\le Q$ and $r\le Q$, so
+$QB\le Q^2\exp(-\eps k_*/2)\le Q^{-A-4}$, $(1+QB)^r-1\le2rQB$, and the bound of
+\cref{dir:prop:mixed} is at most $2Q^{-A-2}\le Q^{-A}$. Multiply by the multinomial count.
+\end{proof}
+
+The case of two factors, one of them with modulus one, counts subsets with a prescribed product.
+
+\begin{corollary}[One short list for one product; \stG]\label{dir:cor:onelist}
+Fix $0<\delta<1/2$ and $A>0$. There are $b,C,K>0$ such that for all large $Q$ some set $S$ of
+$n\le2C\log(2Q)$ distinct primes in $[K\log^2(2Q),2K\log^2(2Q)]$ has the following property. For
+every $q\le Q$, every $S'\subseteq S_q=\set{p\in S:p\nmid q}$ with
+$\abs{S_q\setminus S'}\le(1/2-\delta)n$, every $k$ with $b\log(2Q)\le k\le\abs{S'}-b\log(2Q)$ and
+every unit $u$ modulo $q$,
+\[
+ \#\Bigl\{T\subseteq S':\ \abs T=k,\ \prod_{p\in T}p\equiv u\pmod q\Bigr\}
+ =\frac{\binom{\abs{S'}}k}{\varphi(q)}(1+\theta),\qquad\abs\theta\le Q^{-A}.
+\]
+This range of $k$ contains $\floor{n/4}$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{dir:thm:factorization} with $R=r=2$, $q_1=q$, $q_2=1$ and $D=S_q\setminus S'$; then
+$g=1$, $T=S'$, and $N(u,1)$ is the displayed count. The proof of the theorem gives
+$n\ge4(b+1)R\log(2Q)$ and $\abs{S'}\ge(1/2+3\delta/4)n$, so $\floor{n/4}$ is admissible.
+\end{proof}
+
+Compared with the conditional part of \cref{dir:cor:list}, with $2Q$ in place of $Q$: the
+hypothesis $\abs{S'}\ge(1/2+\delta)\abs{S_q}$ implies $\abs{S_q\setminus S'}\le(1/2-\delta)n$, the
+error $Q^{-A}$ is any power saving, all moduli up to $Q$ are allowed and every quota in a range;
+but the length of the list is fixed there exactly and here only up to a factor two, so neither
+statement implies the other.
+
+\paragraph{The number of primes and of factors.}
+Both the order $R\log Q$ of the size of $S$ and the order $\log Q/\log\log Q$ of $R$ are
+sharp.
+
+\begin{lemma}[A sample of signs; \stU]\label{dir:lem:signs}
+Let a population of $m$ signs have absolute sum at least $\beta m$, $0<\beta\le1$, and let $Y_k$
+be the product of a uniformly chosen $k$-subset. Then $\abs{\dirE Y_k}\ge(\beta/2)^k$ for
+$0\le k\le\beta^2m/4$.
+\end{lemma}
+
+\begin{proof}
+Switch all signs if necessary so that the sum $s$ is at least $\beta m$, and put $a_j=\dirE Y_j$.
+With $m_\pm$ signs of each kind and $f(z)=(1+z)^{m_+}(1-z)^{m_-}$, whose $z^j$ coefficient is
+$\binom mja_j$, the identity $(1-z^2)f'=(s-mz)f$ gives $(m-j)a_{j+1}=sa_j-ja_{j-1}$ with
+$a_0=1$, $a_1=s/m$. If $a_j\ge(\beta/2)a_{j-1}>0$ and $j\le\beta^2m/4$, then
+$(m-j)a_{j+1}\ge(\beta m-2j/\beta)a_j\ge(\beta m/2)a_j$, and induction keeps every ratio at least
+$\beta/2$.
+\end{proof}
+
+\begin{theorem}[Necessity of logarithmic quotas; \stU]\label{dir:thm:factorlower}
+Fix $0<\lambda<1/2$ and $A>0$, and put $\beta=\lambda/2$. Suppose that a set of $n$ distinct
+primes has the following property at level $Q$: for $r\ge4/\beta^2$ labelled factors, after
+every deletion of at most $\lambda n$ primes and removal of the prime $3$ if present, the
+factorization law with balanced quotas and moduli $q_1=\dots=q_r=3$ has pointwise relative error
+at most $Q^{-A}$ on the compatible tuples, the balanced profile being required to exist. Then,
+for all large $n$,
+\[
+ n\ge\frac A{\log(2/\beta)}\,r\log Q .
+\]
+\end{theorem}
+
+\begin{proof}
+Remove $3$ and delete up to $\floor{\lambda n}$ primes of the minority sign modulo $3$. Either
+the surviving signs are constant, or their imbalance has grown by $\floor{\lambda n}\ge\beta n$;
+in both cases it is at least $\beta m$. A smallest block has size $k=\floor{m/r}\le\beta^2m/4$,
+and its primes form a uniform $k$-subset. Since $r\ge2$, the uniform law on compatible tuples puts
+half its tuples on each sign of this block, so summing the pointwise error against the sign gives
+$\abs{\dirE Y_k}\le Q^{-A}$. By \cref{dir:lem:signs}, $(\beta/2)^k\le Q^{-A}$, so
+$n\ge rk\ge Ar\log Q/\log(2/\beta)$.
+\end{proof}
+
+For bounded $r$ coverage alone needs $n\gg\log Q$: take one modulus a prime in $(Q/2,Q]$ and the
+others equal to one, and note that the first factor has at most $2^n$ values. So the order
+$R\log Q$ in \cref{dir:thm:factorization} is sharp for its balanced-profile guarantee. Primes up
+to $C'\log^2Q$ number $O_{C'}(\log^2Q/\log\log Q)$, so the order $\log Q/\log\log Q$ of the
+number of factors is sharp at this height and accuracy; the least possible height for a fixed
+number of factors is not determined. The deletion threshold is sharp already for two factors of
+positive size with modulus $3$: deleting the smaller sign class costs at most $\floor{n/2}$
+primes, fixes the sign of each factor, and changing both target signs gives a compatible but
+unattained tuple.
+
+\paragraph{Smaller retained densities.}
+For a fixed number of factors any positive retained density still gives an exact support
+theorem, with the extra obstruction living in a quotient of bounded size. This is the
+factorization analogue of \cref{dir:thm:quotient}, for a selected set of primes instead of all
+primes up to $C(\log q)^2$.
+
+\begin{theorem}[Factorizations at any positive density; \stG]\label{dir:thm:minority}
+Fix $r\ge2$, $0<a\le1$ and $A>0$, and put $d=\floor{1/a}$. For every large $Q$ there is a set of
+$O_{a,r,A}(\log Q)$ distinct primes of size $O_{a,r,A}(\log^2Q)$ such that the following holds
+for all $q_1,\dots,q_r\le Q$. Let $M=\lcm_jq_j$, let $U$ be the selected primes coprime to $M$,
+and let $T\subseteq U$ with $\abs T\ge a\abs U$. The group $H=\prod_j\dirU(q_j)$ has a character
+subgroup $E$, independent of the quotas, containing the diagonal group
+$\Delta_g\simeq\widehat{\dirU(g)}$, with $[E:\Delta_g]\le d^{r-1}$. Let
+$\varpi\colon H\to\widehat E$ be the evaluation map, $\mu$ the factorization law of $T$ and
+$\nu=\varpi_*\mu$. For all quotas $k_j\ge b_{a,r,A}\log Q$ summing to $\abs T$, a vector $u\in H$
+occurs exactly when $\nu(\varpi(u))>0$, and on each occupied fibre
+\[
+ \mu(u)=\frac{\abs E}{\abs H}\,\nu(\varpi(u))\bigl(1+O_{a,r,A}(Q^{-A})\bigr).
+\]
+At most $d^{r-1}$ projections are occupied, and the index bound is sharp.
+\end{theorem}
+
+\begin{proof}
+\emph{Characters of large bias.} Apply \cref{dir:lem:oneset} with $Q^r$ in place of $Q$, a small
+bias $\eta>0$, and $L$ a large constant multiple of $\log Q$, enlarged after $b_{a,r,A}$ is
+chosen so that balanced quotas exist for every permitted $T$. Removing the primes dividing $M$
+costs $o(L)$ since $r$ is fixed, and every nonprincipal character of $\dirU(M)$ has mean of
+modulus at most $\eta$ on $U$. In the probability inner product over $U$, with
+$\alpha=\abs T/\abs U\ge a$, if $t$ distinct characters have bias at least $u$ on $T$ then their
+Gram matrix over $U$ has norm at most $1+(t-1)\eta$, and Bessel's inequality for the indicator of
+$T$ gives $t\alpha u^2\le1+(t-1)\eta$. Let $J$ be generated by the characters of bias greater than
+$1-\tau$ on $T$. Each generator and its inverse is within $\sqrt{2\tau}$ of a unimodular constant
+in normalized $L^2(T)$, so products of at most $d$ of them have bias at least $1-d^2\tau$. Choose
+$\tau$ and then $\eta$ with $1-d^2\tau>0$ and $(d+1)a(1-d^2\tau)^2>1+d\eta$; then the word ball of
+radius $d$ in $J$ has at most $d$ elements, and since word balls grow strictly until they exhaust
+the group, $\abs J\le d$, as in the proof of \cref{dir:thm:quotient}.
+
+\emph{The quotient.} Let $E\subseteq\widehat H$ consist of the tuples all of whose ratios of
+inflated characters lie in $J$. The map sending a tuple to the ratios with its first coordinate
+has kernel $\Delta_g$ and image in $J^{r-1}$, which gives the index bound, and orthogonality gives
+the contribution $\abs E\nu(\varpi(u))/\abs H$ of $E$ to Fourier inversion at $u$. Outside $E$
+group the labels by the cosets of $J$ containing their pullbacks; different cosets have pairwise
+bias at most $1-\tau$. In \cref{dir:lem:partition} keep the original $r$ labels for the
+conditioning factor and discard the pairs inside a coset from the nonnegative exponent; since
+some label lies outside every largest coset, the remaining pair mass is at least $k_*/(2m)$. So
+every coefficient outside $E$ is at most $(m+1)^{r-1}\exp(-\tau k_*/2)$, and as $\abs H\le Q^r$
+with $r$ fixed, their total is at most $Q^{-A-2}$ for large $b_{a,r,A}$.
+
+\emph{Occupied classes are not rare.} Fix an assignment with the desired projection. From any
+other assignment with the same quotas draw an edge, for each misplaced prime, from its current to
+its desired label. Equal quotas balance in- and out-degrees, so the edges split into directed
+simple cycles of length at most $r$, and rotating the primes along a cycle preserves the quotas.
+The projected change of a cycle is trivial on $\Delta_g$, since the total product is fixed, so all
+changes lie in a group of order $s=[E:\Delta_g]$. Among $s$ or more changes two partial products
+coincide, including the empty one, and the block between them can be dropped; so at most $s-1$
+cycles, moving at most $r(s-1)$ primes, reach the target projection. Each assignment has at most
+$\sum_{j\le r(s-1)}\binom mjr^j$ assignments within that distance, so every positive projected
+mass is at least an inverse polynomial in $m=O(\log Q)$, which dominates the Fourier error. All
+occupied projections restrict to the same character of $\Delta_g$, fixed by the total product, so
+there are at most $[E:\Delta_g]$ of them.
+
+\emph{Sharpness.} Let all moduli equal a prime $\ell\equiv1\pmod d$ and retain the most populous
+coset in $U$ of the subgroup of index $d$ of $\dirU(\ell)$; it contains at least
+$\abs U/d\ge a\abs U$ primes. Every character of the cyclic quotient of order $d$ has bias one on
+this set, so $J$ is that character group, the ratio map $E/\Delta_g\to J^{r-1}$ is onto, and
+$[E:\Delta_g]=d^{r-1}$. Each label's quota fixes its quotient residue, and compatibility imposes
+only one relation among the $r$ residues, so the support is a $d^{1-r}$ fraction of the
+compatible fibre.
+\end{proof}
+
+The projected law $\nu$ can be computed before any full tuple is tested. Start from the
+allocation placing every prime in label $1$, with residue vector $(P_T,1,\dots,1)$; for each
+prime $p$ and label $j$ let $v_{p,j}$ be the projected change caused by moving $p$ to label $j$,
+which lies in the kernel of $\widehat E\to\widehat{\Delta_g}$, of order $s$. Processing one prime
+at a time and storing integer multiplicities indexed by the current quota counts of the first
+$r-1$ labels and the current class gives at most $s\prod_{j<r}(k_j+1)$ states per layer, and a
+finite procedure for the support criterion.
+
+\begin{example}\label{dir:ex:factorizations}
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item Take the fifteen primes from $101$ to $173$ and three factors of five primes each, so that
+there are $\binom{15}{5,5,5}=756\,756$ ordered assignments. For the moduli $(12,15,20)$, with
+$g=1$, all $256$ unit triples occur, with $2712$ to $3196$ representations and maximum relative
+deviation $8.257\%$ from the uniform count; for $(6,9,12)$, with $g=3$, exactly the $24$
+compatible triples of the $48$ occur, with $30\,426$ to $32\,502$ representations and maximum
+deviation $3.506\%$.
+\item The projected law can be nonuniform on its occupied classes. Give three factors the
+modulus $5$ and quotas $(2,3,4)$, and use the primes $11,19,29,31,41,59,61,71,13$, of which only
+$13$ is a nonresidue modulo $5$. The total product is $2\bmod5$, so the four quadratic-sign
+triples with an odd number of minus signs are compatible; exactly one factor contains $13$, so
+$(-,+,+),(+,-,+),(+,+,-)$ have probabilities $2/9,3/9,4/9$ and $(-,-,-)$ has probability zero.
+Enumeration of all $1260$ factorizations finds all four compatible residue triples in each
+occupied sign class, and the dynamic program above gives the same sign law.
+\end{enumerate}
+\dirfiles{\artifact{squarefree_factorizations/check_output.txt},
+\artifact{squarefree_factorizations/check_quotient_output.txt},
+\artifact{squarefree_factorizations/test_lower_output.txt}}
+\end{example}
+
+Common prime lists and Boolean subset products for almost all moduli are treated by Klurman,
+Shparlinski and Ter\"av\"ainen \cite{KlurmanShparlinskiTeravainen2026Generation}, and Hughes
+obtains a first-order optimal size for that covering problem \cite{Hughes2026Few};
+\cref{dir:thm:factorization} does not optimize the leading constant for Boolean coverage.
+
+\subsection{Primes with a prescribed majority of quadratic signs}\label{dir:sec:signs}
+\sources{hermite_thresholds_and_quadratic_primes}
+
+Let $q_1,\dots,q_k\le Y$ be distinct odd primes and prescribe a sign for each Legendre symbol
+$\legendre p{q_i}$. How small a prime realizes more than half of the prescribed signs? Under
+\cref{src:thm:dgrh}, a prime $p\ll k^3\log^2(2Y)$ realizes more than $k/2+\sqrt k/4$ of them,
+and $p\ll k^5\log^2(2Y)$ realizes more than $k/2+3\sqrt k/4$. The powers of $k$ come from an
+extremal problem on the cube with no arithmetic input, which is solved first.
+
+\paragraph{A missing Hamming ball.}
+For $u\in\set{-1,1}^k$ put $X(u)=k^{-1/2}\sum_iu_i$ and $u_A=\prod_{i\in A}u_i$ for
+$A\subseteq[k]$. The parity bias of a probability law $\mu$ on the cube is
+$\epsilon(\mu)=\max_{A\ne\varnothing}\abs{\dirE_\mu u_A}$. For real $a$ let
+\[
+ \mathcal B_k(a)=\set{X\le a},\qquad\mathcal D_k(a)=\set{X>a},\qquad
+ b_k(a)=\min_{\supp\mu\subseteq\mathcal B_k(a)}\epsilon(\mu),
+\]
+the least bias of a law that misses the cap $\mathcal D_k(a)$; a law of smaller bias meets every
+translate of the cap by coordinate sign changes. Let $H_0=1$, $H_1=x$,
+$H_{j+1}=xH_j-jH_{j-1}$ be the monic probabilists' Hermite polynomials, and $h_j$ the largest zero
+of $H_j$ for $j\ge1$; thus $h_1,h_2,h_3,h_4=0,1,\sqrt3,\sqrt{3+\sqrt6}$.
+
+\begin{lemma}[Sharp parity bias for a missing Hamming ball; \stU]\label{dir:lem:hamming}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Fix $d\ge1$ and $h_d<a<h_{d+1}$, and put $m=2d+1$. Then
+\[
+ \lim_{k\to\infty}k^{m/2}b_k(a)=C_d(a),\qquad C_d(a)=-d!\,\frac{H_{d+1}(a)}{H_d(a)}>0 .
+\]
+\item For fixed $d\ge0$, $b_k(h_{d+1})\asymp_dk^{-(d+1)}$.
+\item For an integer $-k\le s\le0$ with $s\equiv k\pmod2$, the least bias of a law supported on
+$\set{\sum_iu_i\le s}$ is $(1-s)/(k+1)$. In particular $b_k(0)=1/(k+1)$ for even $k$ and
+$2/(k+1)$ for odd $k$, and $b_k(a)=\abs a/\sqrt k+O_a(1/k)$ for fixed $a<0$.
+\end{enumerate}
+\end{lemma}
+
+For $0<a<1$ the constant is $1/a-a$, and for $1<a<\sqrt3$ it is $2a(3-a^2)/(a^2-1)$. Between two
+consecutive roots $C_d(a)$ tends to zero at the upper root and to infinity at the lower one, and
+at a root the exponent lies halfway between those of the neighbouring intervals.
+
+\emph{A quadrature rule with a prescribed extreme node.} Let $G$ be a standard normal variable.
+The polynomials $H_j/\sqrt{j!}$ are orthonormal for $G$, by integration by parts from
+$H_j(x)e^{-x^2/2}=(-1)^j(d/dx)^je^{-x^2/2}$, and multiplication by $x$ has off-diagonal entries
+$\sqrt j$ between positions $j-1$ and $j$. Let $J_d(c)$ be its truncation to positions
+$0,\dots,d$ with the last diagonal entry changed from $0$ to $c$, and $\nu_c$ the spectral law of
+$J_d(c)$ at the first coordinate.
+
+\begin{lemma}[A Gauss--Radau rule; \stU]\label{dir:lem:radau}
+For $t>h_d$ put $c(t)=H_{d+1}(t)/H_d(t)$. The largest eigenvalue of $J_d(c(t))$ is $t$, all
+nodes of $\nu_{c(t)}$ are simple with positive masses, the moments of $\nu_c$ through degree $2d$
+are those of $G$, and its moment of degree $m=2d+1$ is $d!c$. For $d=0$ the rule is the unit mass
+at $c$.
+\end{lemma}
+
+\begin{proof}
+The determinant recurrence gives the characteristic polynomial $H_{d+1}-cH_d$. An eigenvector
+is determined by its first entry since all off-diagonal entries are nonzero, so eigenspaces are
+lines and all masses are positive. The leading principal block of size $d$ has characteristic
+polynomial $H_d$, and interlacing is strict because consecutive Hermite polynomials have no
+common zero; so the eigenvalue $t>h_d$ is the largest, and $c(t)<0$ for $h_d<t<h_{d+1}$. A moment
+at $e_0$ is the total weight of closed walks from position $0$ in the tridiagonal matrix; a walk
+reaching the omitted position $d+1$ has length at least $2d+2$, and one using the changed
+diagonal entry has length at least $2d+1$, with the single such walk of that length going up to
+$d$, staying once and returning, of weight $d!c$. The odd Gaussian moment is zero.
+\end{proof}
+
+\begin{proof}[Proof of \cref{dir:lem:hamming}\textup{(a)}]
+\emph{Lower bound.} Let $y_1,\dots,y_d$ be the other nodes for $t=a$ and put
+\[
+ Q(x)=\frac{H_{d+1}(x)-c(a)H_d(x)}{x-a},\qquad F(x)=(x-a)Q(x)^2 .
+\]
+This monic polynomial of degree $m$ vanishes at every node and is nonpositive for $x\le a$, and
+since its lower moments agree under $G$ and $\nu_{c(a)}$,
+\begin{equation}\label{dir:eq:witness}
+ \dirE F(G)=-d!\,c(a)=C_d(a);
+\end{equation}
+for example $a=1/2$ gives $F=(x-1/2)(x+2)^2$ and $\dirE F(G)=3/2$. Write $\mathcal U_k$ for the
+uniform law on the cube, $\widehat g(A)=\dirE_{\mathcal U_k}[gu_A]$, $L(g)=\sum_A\abs{\widehat g(A)}$
+and $L_*(g)=\sum_{A\ne\varnothing}\abs{\widehat g(A)}$. Then $L(gh)\le L(g)L(h)$ and
+$L(X)=\sqrt k$, so
+\begin{equation}\label{dir:eq:wcost}
+ L(F(X))\le k^{m/2}+O_F\bigl(k^{(m-1)/2}\bigr);
+\end{equation}
+the degree-$m$ terms have coefficients $m!k^{-m/2}$ and total mass $(k)_mk^{-m/2}$, where
+$(k)_m=k(k-1)\cdots(k-m+1)$, and products with repeated indices have mass $O_m(k^{m/2-1})$. For
+fixed $j$, $\dirE_{\mathcal U_k}X^j=\dirE G^j+O_j(k^{-1})$: odd moments vanish, and in a moment
+of order $2r$ the tuples of $r$ distinct pairs give $(2r-1)!!(k)_r/k^r$. Any law $\mu$ on
+$\mathcal B_k(a)$ has $\dirE_\mu F(X)\le0$, so
+\[
+ C_d(a)+O_a(k^{-1})\le\dirE_{\mathcal U_k}F(X)-\dirE_\mu F(X)\le\epsilon(\mu)L_*(F(X)),
+\]
+and \eqref{dir:eq:wcost} gives $\liminf k^{m/2}b_k(a)\ge C_d(a)$.
+
+\emph{Upper bound.} Fix $h_d<t_1<t_2<a$ and mix the two rules of \cref{dir:lem:radau} with largest
+nodes $t_1,t_2$ in equal proportions. The $2d+2=m+1$ nodes are distinct, since the two
+characteristic polynomials differ by a nonzero multiple of $H_d$, the masses are positive, the
+moments through degree $m-1$ are Gaussian, and the moment of degree $m$ is
+$M=\frac{d!}2(c(t_1)+c(t_2))$. Round every node to the nearest attainable value of $X$ on the
+layers of even weight $w=\#\set{i:u_i=-1}$, and a second copy on the layers of odd weight; each
+mesh is $4/\sqrt k$, and for large $k$ the rounded nodes remain distinct and below $a$. On each
+list solve for the $m+1$ weights whose moments are $\dirE_{\mathcal U_k}X^j$ for $j<m$ and $M$ for
+$j=m$. Both Vandermonde systems converge to the same invertible one, so the weights converge to
+the positive original weights. Choose a parity with probability $1/2$, a layer by its weights,
+and a uniform word in the layer; this gives a law $\mu_k$ on at most $4d+4$ layers.
+
+Let $R_j(w)$ be the mean of a product of $j$ distinct coordinates on the layer of weight $w$, and
+$s=k-2w=\sqrt kX$. Then
+\begin{equation}\label{dir:eq:layer}
+ \sum_{j=0}^k\binom kjR_j(w)z^j=(1-z)^w(1+z)^{k-w},\qquad R_{k-j}(w)=(-1)^wR_j(w),
+\end{equation}
+and multiplication by the coordinate sum gives $sR_j=jR_{j-1}+(k-j)R_{j+1}$, so $(k)_jR_j$ is
+monic of degree $j$ in $s$. Hence on each parity the level-$j$ bias vanishes for $1\le j<m$ and
+equals $Mk^{m/2}/(k)_m$ at $j=m$; as the two parities have the same moments through $m$, the
+complementary levels $k-m,\dots,k$ vanish in the mixture. For the middle levels, orthogonality of
+the Walsh characters gives $\sum_w2^{-k}\binom kwR_j(w)^2=\binom kj^{-1}$, and on the chosen
+layers $\abs X$ is bounded, so $2^{-k}\binom kw\gg k^{-1/2}$ and, uniformly for
+$m+1\le j\le k-m-1$, $\abs{R_j(w)}\ll k^{1/4}\binom k{m+1}^{-1/2}=O(k^{-m/2-1/4})$. So
+$\limsup k^{m/2}b_k(a)\le\abs M$, and letting $t_1,t_2\to a$ gives $\abs M\to C_d(a)$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{dir:lem:hamming}\textup{(b)}]
+Let $a=h_{d+1}$ and $q(x)=H_{d+1}(x)/(x-a)$.
+
+\emph{Lower bound.} The polynomial $F_k(x)=(x+\sqrt k)(x-a)q(x)^2$ of degree $2d+2$ is
+nonpositive on the permitted range $-\sqrt k\le x\le a$. Orthogonality to $q$ gives
+$\dirE[(G-a)q(G)^2]=0$, hence $\dirE[G(G-a)q(G)^2]=\dirE H_{d+1}(G)^2=(d+1)!$, and the comparison of
+cube and Gaussian moments gives $\dirE_{\mathcal U_k}F_k(X)=(d+1)!+O_d(k^{-1/2})$. Since
+$L(X^j)\le k^{j/2}$, $L_*(F_k(X))=O_d(k^{d+1})$, and the argument of (a) gives
+$b_k(a)\gg_dk^{-(d+1)}$.
+
+\emph{An interior rule.} Let $z_1<\dots<z_{d+1}=a$ be the zeros of $H_{d+1}$ and $J(t)$ the
+$(d+1)\times(d+1)$ Hermite matrix with last diagonal entry $t$. Its spectral law at the first
+coordinate has positive weights at simple eigenvalues $z_i(t)$, $z_i'(0)>0$ is the square of the
+last coordinate of a normalized eigenvector, and the moments through $2d$ are Gaussian by the walk
+count; $t=0$ is Gaussian quadrature. Choose $\Lambda>12/z_{d+1}'(0)$ and $t=-\Lambda/\sqrt k$.
+For large $k$ the largest node is below $a-10/\sqrt k$, each node is within $\Lambda/\sqrt k$ of
+the corresponding $z_i$, and the weights are bounded below in terms of $d$.
+
+\emph{Exact moment matching.} Fix a parity of $w$. For each node choose attainable values of $X$
+of this parity on either side, at distance between $4/\sqrt k$ and $8/\sqrt k$, all below $a$,
+and split the weight between them by linear interpolation, each fraction being at least $1/3$;
+by Taylor's theorem every monomial of degree at most $2d+1$ changes by $O_d(k^{-1})$. At the
+$2d+2$ grid nodes prescribe the exact cube moments through $2d$ and the moment of the rule $J(t)$
+in degree $2d+1$; the split weights miss these targets by $O_d(k^{-1})$. The inverse of the
+square Vandermonde system has entries $O_d(\sqrt k)$, since each Lagrange denominator has one
+factor of order $k^{-1/2}$ and the others are bounded away from zero, so the corrected weights
+change by $O_d(k^{-1/2})$ and stay positive, with sum one. Do this on both parities, spread each
+mass uniformly on its layer, and average. The supporting values lie within $O_d(k^{-1/2})$ of the
+zeros of $H_{d+1}$.
+
+\emph{Bias on every level.} Let $K_j(w)$ be the sum of the Walsh characters of size $j$ on the
+layer $w$. Then $P_{j,k}(x)=j!k^{-j/2}K_j(w)$ is monic in $x=X$, with $P_{0,k}=1$,
+$P_{1,k}=x$ and $P_{j+1,k}=xP_{j,k}-j(1-(j-1)/k)P_{j-1,k}$, so it is bounded on compact sets for
+fixed $j$. Its expectation on each parity vanishes for $1\le j\le2d$ by exact matching. For
+$j=2d+1$, $P_{j,k}-H_{d+1}H_d$ has degree at most $2d$ and cube mean zero by oddness, while
+$H_{d+1}H_d=O_d(k^{-1/2})$ on the supporting layers; dividing by $\binom kj$, every character of
+size $2d+1$ has bias $O_d(k^{-d-1})$, and the recurrence gives the same bound pointwise for
+$j=2d+2$. The reflection $K_{k-j}(w)=(-1)^wK_j(w)$ controls the upper levels, the top level
+vanishing because the parities have equal mass. For $2d+3\le j\le k-2d-3$,
+\[
+ \frac{\abs{K_j(w)}}{\binom kj}\le\Bigl(\frac{2^k}{\binom kw\binom kj}\Bigr)^{1/2}=O_d(k^{-d-5/4}),
+\]
+since $\abs{k-2w}=O_d(\sqrt k)$ gives $2^k/\binom kw=O_d(\sqrt k)$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{dir:lem:hamming}\textup{(c)}]
+Let $S=\sum_iu_i$ and $w_0=(k-s)/2$ be the top allowed layer; every allowed word has
+$S\le s-1+(-1)^{w-w_0}$. If the bias is $\epsilon$, then $-k\epsilon\le\dirE S\le s-1+\epsilon$,
+which gives the lower bound. For the upper bound put $N=k+1$ and $t=1-s$, take a uniform word of
+the $N$-cube with coordinate sum $-t$ and discard its last coordinate; the remaining sum lies in
+$\set{s,s-2}$. On such a slice, with $t\ge1$, every product of $j$ coordinates, $1\le j\le N-1$,
+has mean of absolute value at most $t/N$. For $j=1$ this is the average of the sum and for
+$j=N-1$ it follows by complementation. For $t\ge2$ and $2\le j\le N-2$, condition on whether a
+fixed negative coordinate is sampled: the rest is uniform in a population of size $N-1$ and
+imbalance $t-1$, and induction gives the bound $(t-1)/(N-1)\le t/N$. For $t=1$, $N=2l+1$, the
+generating polynomial \eqref{dir:eq:layer} is $(1-z)(1-z^2)^l$, and by complementation it
+suffices to consider even degrees $2i$, $1\le i\le l$, where the mean is
+$\binom li/\binom{2l+1}{2i}$; its reciprocal equals $N$ at $i=1,l$ and the ratio of consecutive
+reciprocals, $(2l-2i+1)/(2i+1)$, decreases in $i$, so the reciprocal is smallest at an endpoint.
+This is a Krawtchouk eigenvalue bound \cite[Theorem~1.2(i)]{BrouwerCioabaIhringerMcGinnis2017Smallest}.
+Taking $s=0$ or $s=-1$, and for fixed $a<0$ the largest attainable $s\le a\sqrt k$, gives the
+remaining assertions.
+\end{proof}
+
+The extremal problem has a dual description. For a nonempty proper subset $D$ of the cube let
+$\phi(D)$ be Bella\"iche's optimized Littlewood complexity in the abelian case
+\cite{Bellaiche2016Chebotarev}: the infimum of $L(g)/\dirE_{\mathcal U_k}g$ over real $g$ with
+positive mean and $g\le0$ off $D$.
+
+\begin{proposition}[Duality; \stU]\label{dir:prop:hammingdual}
+If $\mathcal D_k(a)$ is nonempty and proper, then $\phi(\mathcal D_k(a))=1+1/b_k(a)$.
+\end{proposition}
+
+\begin{proof}
+With $v(u)=(u_A)_{A\ne\varnothing}$, $b_k(a)$ is the $\ell^\infty$ distance of $0$ from the convex
+hull of the $v(u)$ with $u\in\mathcal B_k(a)$, so finite-dimensional minimax gives
+$b_k(a)=\max_{\norm z_1\le1}\min_{u\in\mathcal B_k(a)}z\cdot v(u)$, which is positive because a law
+with all nonconstant coefficients zero is uniform. An optimal $z$ gives $g=b_k(a)-z\cdot v$.
+Conversely, if $g$ has mean $c>0$ and nonconstant coefficients $s$, then $-s\cdot v\ge c$ off
+$\mathcal D_k(a)$, and the minimax identity gives $c\le b_k(a)\norm s_1$.
+\end{proof}
+
+So the degree-$m$ polynomial $F$ is asymptotically optimal among all real functions that detect
+the cap. Near-optimal laws are also rigid.
+
+\begin{proposition}[Rigidity of near minimizers; \stU]\label{dir:prop:hammingrigid}
+Let $h_d<a<h_{d+1}$, $m=2d+1$ and $C=C_d(a)$. If $\supp\mu_k\subseteq\mathcal B_k(a)$ and
+$k^{m/2}\epsilon(\mu_k)\le C+o(1)$, then the law of $X$ under $\mu_k$ converges weakly to
+$\nu_{c(a)}$, and
+\[
+ \binom km^{-1}\sum_{\abs A=m}\bigl|k^{m/2}\dirE_{\mu_k}u_A+C\bigr|\longrightarrow0 .
+\]
+No coordinate symmetry of the laws is assumed.
+\end{proposition}
+
+\begin{proof}
+By \eqref{dir:eq:witness} and \eqref{dir:eq:wcost},
+$0\le\dirE_{\mu_k}[-F(X)]\le\epsilon(\mu_k)L_*(F(X))-\dirE_{\mathcal U_k}F(X)=o(1)$. On $(-\infty,a]$
+the function $-F\ge0$ vanishes exactly at the $d+1$ nodes of $\nu_{c(a)}$ and grows like
+$\abs x^m$, so the mass away from the nodes tends to zero, the laws are tight, and their absolute
+moments of order $m$ are bounded. For $j<m$,
+$\abs{\dirE_{\mu_k}X^j-\dirE_{\mathcal U_k}X^j}\le\epsilon(\mu_k)k^{j/2}=o(1)$, so every subsequential
+limit lies on the nodes with Gaussian moments of orders $0,\dots,d$, which determine the weights
+of \cref{dir:lem:radau}. In $F(X)$ the nonconstant Fourier mass below degree $m$ is
+$O_F(k^{(m-1)/2})$ and contributes $o(1)$; the top coefficients all equal $m!k^{-m/2}$, and
+$\dirE_{\mu_k}F(X)-\dirE_{\mathcal U_k}F(X)\to-C$, so the mean of $k^{m/2}\dirE_{\mu_k}u_A$ over
+$\abs A=m$ tends to $-C$, while each term is at least $-C-o(1)$.
+\end{proof}
+
+For $0<a<1$ the limiting law has mass $1/(1+a^2)$ at $a$ and $a^2/(1+a^2)$ at $-1/a$; at $a=1/2$
+four fifths of the mass lies at $1/2$, and $k^{3/2}$ times the mean three-coordinate bias tends to
+$-3/2$, even when individual words in one layer carry different weights.
+
+\paragraph{The prime application.}
+For a sign word $v\in\set{-1,1}^k$ and a prime $p\nmid q_1\cdots q_k$ let
+$M_v(p)=\#\set{i:\legendre p{q_i}=v_i}$, and for fixed $a\ge0$ put $D(a)=2d+1$ if
+$h_d<a<h_{d+1}$ with $d\ge1$, and $D(a)=2d+2$ if $a=h_{d+1}$ with $d\ge0$.
+
+\begin{theorem}[Primes realizing most prescribed quadratic signs; \stG]\label{dir:thm:signs}
+For fixed $a\ge0$, every sufficiently large $k$, all distinct odd primes $q_1,\dots,q_k\le Y$ and
+every $v\in\set{-1,1}^k$, there is a prime $p\nmid\prod_iq_i$ with
+\[
+ M_v(p)>\frac{k+a\sqrt k}2,\qquad p\ll_ak^{D(a)}\log^2(2Y),
+\]
+uniformly in the $q_i$ and in $v$.
+\end{theorem}
+
+\begin{proof}
+Let $D=D(a)$ and $\mathcal Q=\prod_iq_i$. Take the witness $F(X)$ of \eqref{dir:eq:witness} on an
+open interval, or $F_k(X)$ from the proof of \cref{dir:lem:hamming}(b) at a root, and translate it
+by $u_i\mapsto v_iu_i$ to obtain $g$; translation preserves the uniform mean and the absolute
+Fourier coefficients. So $g$ has mean $g_0\gg_a1$, $L(g)\ll_ak^{D/2}$ and degree at most $D$, and
+$g(u)>0$ forces $\sum_iv_iu_i>a\sqrt k$. For $A\subseteq[k]$ the character
+$\chi_A=\prod_{i\in A}\legendre\cdot{q_i}$ is primitive of conductor $f_A=\prod_{i\in A}q_i$, by
+the Chinese remainder theorem, so $\log(2f_A)\le D\log(2Y)$ for $\abs A\le D$. The once-smoothed
+explicit formula for $-L'/L$ with kernel $x^s/(s(s+1))$, as in the degree-one case of
+\cite[Lemma~6]{Bellaiche2016Chebotarev}, gives for $x\ge3$
+\[
+ \sum_{p<x,\ p\nmid\mathcal Q}\Bigl(1-\frac px\Bigr)\log p\,\chi_A(p)
+ =\mathbf 1_{A=\varnothing}\frac x2+O\bigl(\sqrt x\log(2f_A)+\log\operatorname{rad}\mathcal Q\bigr):
+\]
+the pole of $-\zeta'/\zeta$ gives $x/2$, \cref{src:thm:dgrh} bounds the zero sum by
+$O(\sqrt x\log(2f_A))$, higher prime powers contribute
+$\sum_{j\ge2}\vartheta(x^{1/j})\ll\sqrt x$, and removing the primes dividing $\mathcal Q$ costs at
+most $\log\operatorname{rad}\mathcal Q\le k\log Y$. Multiplying by $\widehat g(A)$ and summing gives
+$\frac12xg_0+O_a\bigl(k^{D/2}[\sqrt x\log(2Y)+k\log(2Y)]\bigr)$. With
+$x=K_ak^D\log^2(2Y)$ and $K_a$ large, the main term dominates since $D\ge2$, and a positive
+smoothed sum contains a prime with $g>0$.
+\end{proof}
+
+The argument uses only the characters occurring in the witness. For primitive quadratic
+characters of conductors $f_i\le Y$, with all primes dividing a multiple $\mathcal Q$ of their
+conductors excluded, the same proof gives a prime with $p\ll_ak^D\log^2(2Y)+k^{D/2}\log
+\operatorname{rad}\mathcal Q$ whenever every nonempty product of at most $D$ of the characters is
+nonprincipal; relations among more than $D$ of them are allowed. \Cref{dir:lem:hamming} shows what
+a uniform bound on individual parity biases can give; a lower bound for the least prime for a
+worst choice of moduli would need an arithmetic construction, and the constants in
+\cref{dir:thm:signs} are not evaluated.
+
+\begin{example}\label{dir:ex:signs}
+For the twelve odd primes $3,\dots,41$ and all $4096$ sign words, the largest distance from a
+target word to the nearest word of Legendre symbols of a prime up to $x$ first falls to $5$ at
+$x=79$, to $4$ at $229$ and to $3$ at $691$; so at least seven, respectively nine, matching signs
+are guaranteed exactly from $79$, respectively $691$, on. Exact values certified by rational
+primal and dual certificates are
+\begin{center}\small
+\begin{tabular}{rrrl}
+\toprule
+$k$ & $a$ & largest distance in $\mathcal D_k(a)$ & $b_k(a)$\\
+\midrule
+$8$ & $1/2$ & $3$ & $1/9$\\
+$8$ & $3/2$ & $1$ & $1/69$\\
+$12$ & $1/2$ & $5$ & $1/13$\\
+$12$ & $3/2$ & $3$ & $1/104$\\
+$17$ & $1/2$ & $7$ & $1/33$\\
+$17$ & $3/2$ & $5$ & $53/13717$\\
+\bottomrule
+\end{tabular}
+\end{center}
+and an eight-layer construction with every Fourier level bounded at $k=10^{16}$ gives
+$1.49999994<k^{3/2}b_k(1/2)<1.50100041$, with its largest bias at degree three. The exact
+equatorial formula of \cref{dir:lem:hamming}(c) was checked for $1088$ balls.
+\dirfiles{\artifact{hermite_thresholds_and_quadratic_primes/verification.txt},
+\artifact{hermite_thresholds_and_quadratic_primes/radau_output.txt}}
+\end{example}
+
+The dual small-bias problem appears for read-once formulas in \cite{BazziNahas2013Small},
+small-bias laws on few central layers in \cite{DerksenIvanovLeeViola2025Pseudorandomness}, and
+integers with prescribed Legendre symbols in \cite{HansonVaughanZhang2016Least}.
+
 \subsection{Open questions}\label{dir:sec:open}
-\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products}
+\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products; squarefree_factorizations; hermite_thresholds_and_quadratic_primes}
 
 \begin{enumerate}
 \item \emph{The least pair sum.} For $n$ outside Euler's list let $b(n)$ be the
@@ -3244,6 +3909,17 @@ quadratic signs occur in the retained set.
 \item \emph{Density near one half.} As the retained density tends to $1/2$, can the distance
  of the retained set from a quadratic fibre replace the fixed margin $\eps$ of
  Proposition~\ref{dir:prop:explicit} and Corollary~\ref{dir:cor:squarefree} uniformly?
+\item \emph{Constants for factorizations.} For fixed $A$ and deletion fraction, what is the best
+ leading constant in the logarithmic quota of Theorem~\ref{dir:thm:factorization} for growing $r$?
+ Can the largest prime be made smaller than $K\log^2Q$ for a fixed number of factors while
+ keeping the pointwise bound? At retained density $a\le1/2$, how fast may $r$ grow while relative
+ equidistribution still holds on every occupied fibre of the quotient of
+ Theorem~\ref{dir:thm:minority}?
+\item \emph{Hermite thresholds.} What are the subsequential leading constants of $b_k(a)$ at the
+ roots $h_2,h_3,\dots$ in Lemma~\ref{dir:lem:hamming}, where already at $h_1=0$ the two parities of
+ $k$ give different constants? How does $b_k(a)$ behave when $a$ approaches a root at rate
+ $k^{-1/2}$? Can correlations among the prime character sums improve the powers of $k$ in
+ Theorem~\ref{dir:thm:signs}?
 \item \emph{Computing the quotient.} Can the bounded quotient of Theorem~\ref{dir:thm:quotient}
  be computed from the retained primes in time polynomial in $\log q$, without enumerating the
  characters modulo $q$?

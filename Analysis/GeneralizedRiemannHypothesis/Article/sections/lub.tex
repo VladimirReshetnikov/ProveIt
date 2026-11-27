@@ -11,7 +11,9 @@ deepest contact, up to a bounded, eventually periodic defect that vanishes exact
 base-$p$ carry condition. The defect has an eventual period that depends only on $p$, $e$ and
 the multiplicity of the deepest contact, and for contacts of depth at most one its least period
 is an explicit power of $p$. The optimal choice of directions is the same at every precision.
-Specialized to the multiplicative group, the pole computation becomes a simultaneous
+Over a field, observations of more branches than the jet requires tolerate erased and
+corrupted branch records; the exact tolerance is a block distance computed by a recursion on
+the contact tree. Specialized to the multiplicative group, the pole computation becomes a simultaneous
 congruence for weighted Fleck sums. The last subsection treats a related invariant of
 \cite[Definition~5.1]{BergerSprang2025Integer}, the coefficient depth $s_0(n)$, through an
 exact valuation formula for powers of the Lubin--Tate logarithm.
@@ -841,6 +843,375 @@ Equation \eqref{lub:eq:products} supplies explicit weights and an optimal common
 for the full jet used by this procedure. A single prescribed product can require fewer
 coefficients.
 
+\subsection{Redundant branches, erasures and corruptions}\label{lub:ssec:redundant}
+\begingroup\raggedright\sources{ramified_branch_recovery}\endgroup
+
+The preceding subsections observe exactly $d$ branches without errors. Over a field, more
+branches than the jet requires can be observed, and some entire branch records may be lost
+or falsified. The answer is governed by a greedy valuation sequence of the contact orders,
+and the worst surviving configuration is computed by a recursion on the contact tree. The
+notation of this subsection is independent of \cref{lub:thm:defect}.
+
+Let $F$ be any field, $\mathfrak m=(X,Y)\subset F[[X,Y]]$, and $v=\ord_X$ on $F[[X]]$, with
+$v(0)=+\infty$. Fix $N$ distinct branches $B=\set{u_b:b\in I}\subset XF[[X]]$, $\abs I=N$,
+with contacts $s_{bc}=v(u_b-u_c)\ge1$ for $b\ne c$; they satisfy
+$s_{bc}\ge\min(s_{ba},s_{ac})$. The observation map at precision $n\ge0$ is
+\[
+ \Omega_n\colon F[[X,Y]]\to\bigl(F[[X]]/X^n\bigr)^I,\qquad
+ \Omega_n(H)_b=H(X,u_b(X))\bmod X^n ;
+\]
+its $b$th coordinate is one \emph{block} of $n$ coefficients. The target is the jet
+$J_d(H)=H\bmod\mathfrak m^d$ for $1\le d\le N$, which has $d(d+1)/2$ coefficients, and
+recovery means that any two series consistent with the permitted observations have the
+same target jet; the higher coefficients are unrestricted.
+
+\begin{definition}[Greedy valuation sequence]\label{lub:def:greedy}
+Order the branches $u_0,\dots,u_{N-1}$ greedily: after $u_0,\dots,u_{j-1}$, choose an
+unused $u_j$ minimizing $\lambda_j(B)=\sum_{i<j}v(u_j-u_i)$, with $u_0$ arbitrary and
+$\lambda_0=0$. Put $\Pi_j(Y)=\prod_{i<j}(Y-u_i)$ and $\alpha_j=\Pi_j(u_j)$, so that
+$v(\alpha_j)=\lambda_j$. For a subset $S\subseteq B$ set $\lambda_j(S)=+\infty$ for
+$j\ge\abs S$, including $S=\varnothing$.
+\end{definition}
+
+\begin{lemma}[Newton basis; \stU]\label{lub:lem:newton}
+For $j<N$ the polynomials $\Pi_i/\alpha_i$, $0\le i\le j$, form an $F[[X]]$-basis of the
+polynomials in $F((X))[Y]$ of degree at most $j$ that take values in $F[[X]]$ on every
+branch of $B$. Consequently $\lambda_j(B)$ does not depend on the tie choices, and
+$\lambda_{j+1}(B)\ge\lambda_j(B)+1$.
+\end{lemma}
+
+\begin{proof}
+$\Pi_i$ vanishes at the branches chosen before step $i$, and greediness gives
+$v(\Pi_i(u_b))\ge\lambda_i$ at every other branch; so $\Pi_i/\alpha_i$ is integral valued.
+A polynomial of degree at most $j$ has a unique expansion $\sum_{i\le j}c_i\Pi_i/\alpha_i$
+over $F((X))$; if its values are integral, evaluation at $u_0,u_1,\dots$ in turn shows
+$c_i\in F[[X]]$, since the later terms vanish at $u_i$ and the $i$th normalized term is one.
+The possible leading coefficients therefore form the fractional ideal $\alpha_j^{-1}F[[X]]$,
+which is defined without an ordering. Finally, a branch still available at step $j+1$ cost
+at least $\lambda_j$ at step $j$ and acquires a further contact of at least one with $u_j$.
+\end{proof}
+
+\begin{lemma}[Division and the total-degree filtration; \stU]\label{lub:lem:division}
+Every $H\in F[[X,Y]]$ has a unique expansion
+$H=\Pi_NQ+\sum_{j<N}c_j(X)\Pi_j(Y)$ with $Q\in F[[X,Y]]$ and $c_j\in F[[X]]$, and a
+nonzero remainder satisfies
+\[
+ \ord_{\mathfrak m}\Bigl(\sum_{j<N}c_j\Pi_j\Bigr)=\min_{j<N}\bigl(v(c_j)+j\bigr).
+\]
+Since $\Pi_N\in\mathfrak m^N$, $H$ and its remainder have the same jet $J_d$ for $d\le N$.
+\end{lemma}
+
+\begin{proof}
+For $u\in XF[[X]]$, $H(X,Y)-H(X,u)$ is divisible by $Y-u$, term by term from
+$Y^a-u^a=(Y-u)\sum_hY^{a-1-h}u^h$, the series converging $\mathfrak m$-adically. Dividing
+successively at $u_0,\dots,u_{N-1}$ gives the expansion, and evaluating a zero remainder at
+the same branches forces every $c_j=0$ since $\alpha_j\ne0$. The coefficient of $Y^i$ in
+$\Pi_j$, $i<j$, is divisible by $X^{j-i}$, and $\Pi_j$ is monic of $Y$-degree $j$, so each
+summand has total order $v(c_j)+j$. Among the summands of least order take the one with the
+largest $j$: its leading form has a nonzero coefficient at $X^{v(c_j)}Y^j$ that no term of
+smaller $Y$-degree can cancel, and summands with larger $j$ have larger order.
+\end{proof}
+
+\begin{theorem}[Exact observation kernel; \stU]\label{lub:thm:kernel}
+With respect to the expansion of \cref{lub:lem:division}, the kernel of $\Omega_n$ is
+\[
+ \Pi_N\,F[[X,Y]]\oplus\bigoplus_{j=0}^{N-1}X^{\max(0,n-\lambda_j(B))}F[[X]]\,\Pi_j .
+\]
+Consequently the clean observations determine $J_d(H)$ for every $H$ if and only if
+\begin{equation}\label{lub:eq:clean}
+ n\ge\lambda_{d-1}(B)+1 ;
+\end{equation}
+the largest completely recoverable jet order is $\rho_n(B)=\#\set{j<N:\lambda_j(B)<n}$; and
+for $d\le N$ the unresolved part of the target has dimension
+\[
+ \dim_F\frac{\ker\Omega_n+\mathfrak m^d}{\mathfrak m^d}
+ =\sum_{j=0}^{d-1}\max\bigl(0,\,d-j-\max(0,n-\lambda_j(B))\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+The multiple of $\Pi_N$ vanishes on every branch. The remainder $\sum c_j\Pi_j$ has
+vanishing observations modulo $X^n$ exactly when $X^{-n}\sum c_j\Pi_j$ is integral valued
+on $B$, that is, by \cref{lub:lem:newton}, when $v(c_j)\ge n-\lambda_j$ for every $j$.
+
+If $n\ge\lambda_{d-1}+1$ and $j<d$, the growth bound gives
+$n-\lambda_j+j\ge\lambda_{d-1}+1-\lambda_j+j\ge d$, and the kernel terms with $j\ge d$
+already lie in $\mathfrak m^d$; so the kernel lies in $\mathfrak m^d$. Conversely $\Pi_{d-1}$
+has total order $d-1$ and values of order at least $\lambda_{d-1}$ on every branch, so for
+$n\le\lambda_{d-1}$ the series $0$ and $\Pi_{d-1}$ are indistinguishable; beyond order $N$
+the kernel element $\Pi_N$ prevents recovery. Finally the classes of $X^i\Pi_j$ with
+$i+j<d$ form a basis of $F[[X,Y]]/\mathfrak m^d$ by the triangular filtration, and in the
+$j$th component the kernel contains exactly those with $i\ge\max(0,n-\lambda_j)$.
+\end{proof}
+
+If fewer than $d$ branches are available, no precision recovers $J_d$: their branch product
+has total order below $d$ and vanishes on all of them. For a $d$-element set $S$, Lagrange
+interpolation over $F((X))$ shows that the leading coefficients of the polynomials of degree
+at most $d-1$ that are integral valued on $S$ form the ideal generated by the
+$\Delta_b^{-1}=\prod_{c\in S\setminus\set b}(u_b-u_c)^{-1}$, because values at the $d$
+points may be prescribed arbitrarily. Comparison with \cref{lub:lem:newton} gives
+\begin{equation}\label{lub:eq:lastfactorial}
+ \lambda_{d-1}(S)=\max_{b\in S}\sum_{c\in S\setminus\set b}s_{bc}.
+\end{equation}
+For the reductions of Lubin--Tate branches modulo $\pi$ one has
+$s_{bc}=q^{v(b-c)}$ by \cref{lub:lem:contact}, so for $N=d$ the right side of
+\eqref{lub:eq:lastfactorial} is $\max_b\omega_b$ and \eqref{lub:eq:clean} is the common
+precision of \cref{lub:cor:unique}(a); the componentwise thresholds of that corollary and
+the precisions $r>1$ are not covered by the present field-valued theory.
+
+\paragraph{Block errors.}
+Define the distance between target jets
+\[
+ \delta_d(n;B)=\min_{H\notin\mathfrak m^d}\#\set{b:\Omega_n(H)_b\ne0},
+\]
+counting a block as different if any of its $n$ coefficients differs; it may be zero, and
+it need not be the minimum distance of the whole image, since words from $H\in\mathfrak m^d$
+do not change the output. For $j\ge0$ and an integer $T$ define the \emph{retention
+capacity}
+\[
+ \mathcal C_B(j,T)=\max\set{\abs S:\ S\subseteq B,\ \lambda_j(S)\ge T},
+\]
+the empty set being allowed.
+
+\begin{theorem}[Distance and correction criterion; \stU]\label{lub:thm:distance}
+For $1\le d\le N$ and $n\ge0$,
+\[
+ \delta_d(n;B)=N-\mathcal C_B(d-1,n).
+\]
+For integers $w,z\ge0$, the jet $J_d(H)$ can be recovered for every $H$ despite at most $w$
+arbitrarily corrupted blocks and at most $z$ flagged erased blocks if and only if
+\begin{equation}\label{lub:eq:correct}
+ 2w+z<\delta_d(n;B).
+\end{equation}
+Every failure has an explicit witness built from branch products.
+\end{theorem}
+
+\begin{proof}
+For $\abs S\ge d$, \cref{lub:thm:kernel} applied to $S$ shows that some $H\notin\mathfrak m^d$
+vanishes modulo $X^n$ on all of $S$ exactly when $\lambda_{d-1}(S)\ge n$; for $\abs S<d$ the
+branch product of $S$ is such an $H$ at every precision. So the largest zero set of a series
+with nonzero target is $\mathcal C_B(d-1,n)$, attained by $\Pi_{d-1}$ for a maximizing $S$
+of size at least $d$ and by the full branch product otherwise; by maximality it has no
+further zero blocks. If \eqref{lub:eq:correct} holds, two explanations of the same received
+word differ only on the union of their error sets and the erasures, at most $2w+z$ blocks,
+so they have the same target. Conversely take two words with different targets at distance
+$\delta_d$. If $\delta_d=0$ they already coincide; otherwise erase up to $z$ differing
+blocks, split the remaining at most $2w$ differences into two groups of size at most $w$,
+and let the received word follow the first word on one group and the second on the other.
+\end{proof}
+
+For a fixed known erasure set $E$ one applies the theorem to $B\setminus E$; the condition
+with $z$ is the uniform guarantee over all erasure sets of size at most $z$, and no
+precision gives it when $N-z-2w<d$. Whenever recovery is possible $n\ge d$, and terms of
+total degree at least $n$ do not affect the observations, so a decoder may enumerate the
+candidate error sets, discard those blocks and solve the finite linear systems in the
+$n(n+1)/2$ coefficients of degree below $n$; under \eqref{lub:eq:correct} all consistent
+solutions have the same jet. This is constructive over an effective field but is not a
+fast error-location algorithm. The distance check before decoding is necessary: setting free
+variables to zero without checking uniqueness can hide an unresolved jet.
+
+\paragraph{The capacity recursion.}
+The contacts define a rooted tree whose leaves are the branches. For $N\ge2$ the root has an
+incoming stem of length $\min_{b\ne c}s_{bc}$; the children of a cluster are the classes of
+its leaves under $s_{bc}$ exceeding the cluster's minimum contact; the incoming length
+$\ell_v$ of a node is its contact level minus that of its parent, leaf edges may have length
+zero, and two distinct leaves share a path of length equal to their contact. For a node $v$
+with leaf set $B_v$, $N_v=\abs{B_v}$, and $S\subseteq B_v$, let $\lambda_j^v(S)$ be the
+greedy sequence computed with the residual path lengths below the parent of $v$ (and
+$+\infty$ beyond $\abs S$), so that $\lambda_j^{\mathrm{root}}=\lambda_j$, and put
+$\mathcal C_v(j,T)=\max\set{\abs S:S\subseteq B_v,\ \lambda_j^v(S)\ge T}$.
+
+\begin{lemma}[Fixed-tree merge; \stU]\label{lub:lem:merge}
+Let $v$ be an internal node and let $z_0\le z_1\le\cdots$ be the sorted union of the finite
+sequences $\lambda_i^c(S\cap B_c)$ over the children $c$ of $v$. Then
+$\lambda_j^v(S)=j\ell_v+z_j$ for $0\le j<\abs S$; all these sequences are nondecreasing and
+independent of tie choices.
+\end{lemma}
+
+\begin{proof}
+A candidate chosen after $j$ choices pays $j\ell_v$ for the common segment, the same for
+every candidate, plus the next greedy cost in its own child given the earlier choices there.
+By induction from the leaves each child offers a nondecreasing stream of costs, and the
+greedy choice merges the streams. This is the finite case of the tree-factorial mechanism of
+\cite[Theorem~2.7]{Amini2016Logarithmic}.
+\end{proof}
+
+\begin{theorem}[Scalar pruning recursion; \stU]\label{lub:thm:dp}
+If $T\le0$ or $j\ge N_v$, then $\mathcal C_v(j,T)=N_v$. At a leaf with $T>0$,
+$\mathcal C_v(0,T)=0$ and $\mathcal C_v(j,T)=1$ for $j\ge1$. At an internal node,
+\begin{equation}\label{lub:eq:dp}
+ \mathcal C_v(j,T)=\max_{\substack{j_c\ge0,\ \sum_cj_c\le j}}\ \sum_c\mathcal C_c\bigl(j_c,\,T-j\ell_v\bigr),
+\end{equation}
+the maximum running over allocations to the children $c$ of $v$. A maximizing leaf set is
+obtained by backtracking maximizing allocations.
+\end{theorem}
+
+\begin{proof}
+Put $U=T-j\ell_v$. By \cref{lub:lem:merge}, including the infinite tail,
+$\lambda_j^v(S)\ge T$ if and only if $z_j\ge U$, that is, if at most $j$ entries of the
+merged child streams are strictly below $U$. If $h_c$ such entries come from child $c$, this
+says $\sum_ch_c\le j$, and $h_c\le j_c$ is exactly $\lambda_{j_c}^c(S\cap B_c)\ge U$. So an
+admissible $S$ yields the allocation $j_c=h_c$ and has size at most the right side; and for
+any allocation the union of maximizing child sets is admissible at $v$ with size equal to the
+sum. The base cases follow from nonnegativity of the costs and the sequence $(0)$ of a leaf.
+\end{proof}
+
+The outer maximization changes the retained set of leaves, and \cref{lub:lem:merge} alone,
+which works on a fixed set, does not solve it; the binary example below shows that a single
+most clustered survivor set need not be worst. For ranks up to $d-1$ and thresholds up to
+$T_{\max}$, combining child tables is a max-convolution in the rank budget, and a compact
+tree with $O(N)$ nodes costs $O(Nd^2T_{\max})$ arithmetic operations; this is
+pseudopolynomial in the contact orders. Since $\lambda_{d-1}(S)\le(d-1)\max s_{bc}$,
+$T_{\max}=1+(d-1)\max_{b\ne c}s_{bc}$ suffices, and the exact saturation point is as
+follows.
+
+\begin{theorem}[Exact saturation precision; \stU]\label{lub:thm:saturation}
+Always $\delta_d(n;B)\le N-d+1$, and the least precision at which equality holds is
+\[
+ n_{\mathrm{sat}}=1+\max_{b\in B}\bigl(\text{sum of the $d-1$ largest contacts $s_{bc}$, $c\ne b$}\bigr),
+\]
+the empty sum for $d=1$ being zero.
+\end{theorem}
+
+\begin{proof}
+The product of the equations of any $d-1$ branches has total order $d-1$ and vanishes on
+them, which gives the bound. Equality holds exactly when no series with nonzero target
+vanishes modulo $X^n$ on any $d$-element subset, that is, by \eqref{lub:eq:clean}, when $n$
+exceeds $\lambda_{d-1}(S)$ for every $d$-subset $S$. By \eqref{lub:eq:lastfactorial} this
+maximum is obtained by retaining, for some $b$, its $d-1$ highest-contact neighbours.
+\end{proof}
+
+For an intermediate error budget the full recursion is generally needed. For reduced
+Lubin--Tate branches $u_b=[b](X)\bmod\pi$ the contacts are $s_{bc}=q^{v(b-c)}$ by
+\cref{lub:lem:contact}, so the theory needs only ramification depths and no coefficients
+of the formal group law. For the full residue grid of one representative of each class
+modulo $\pi^L$, $L\ge1$, the tree has $q$ children at every level, root stem $1$, increments
+$q^h-q^{h-1}$ at depth $h\ge1$, and $q^L$ leaves.
+
+\begin{corollary}[Full-grid saturation; \stU]\label{lub:cor:grid}
+For the full residue grid, $N=q^L$ and $1\le d\le N$,
+\[
+ n_{\mathrm{sat}}=d+\sum_{h=1}^{L-1}(q^h-q^{h-1})\min\bigl(d-1,\,q^{L-h}-1\bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+Each of the $d-1$ closest neighbours contributes the base contact $1$. For $h\ge1$ exactly
+$q^{L-h}-1$ other grid points are congruent to a given one modulo $\pi^h$, and since these
+balls are nested the $d-1$ closest neighbours include $\min(d-1,q^{L-h}-1)$ of them, each
+adding $q^h-q^{h-1}$. Apply \cref{lub:thm:saturation}.
+\end{proof}
+
+These statements concern coefficients in a field, in particular the residue field. Over
+$\OO/\pi^r$ with $r>1$ further cancellation occurs (\cref{lub:thm:pole}), and the
+contact-only formulas are not asserted there.
+
+\paragraph{A sharp binary example.}
+Take the multiplicative formal group over $\Z_2$, so that $u_b=(1+X)^b-1\in\F_2[X]$ and
+$s_{bc}=2^{v_2(b-c)}$, with $0\le b\le15$. The tree has increments $1,1,2,4$ above the
+leaves.
+
+\begin{theorem}[Sixteen binary branches; \stU]\label{lub:thm:binary}
+Let $H\in\F_2[[X,Y]]$ be arbitrary and record the coefficients of degrees $0,\dots,n-1$ of
+$H(X,u_b(X))$ for $b=0,\dots,15$. If an adversary may replace any three of the sixteen
+records by arbitrary records of the same length, the twenty-one coefficients $[X^iY^j]H$
+with $i+j\le5$ are determined for every $H$ and every corruption if and only if $n\ge15$.
+More precisely, $\mathcal C_B(5,14)=10$, $\mathcal C_B(5,15)=9$, $\delta_6(14;B)=6$ and
+$\delta_6(15;B)=7$, and the complete trade-off is
+\begin{center}\small
+\begin{tabular}{lccccccc}
+\toprule
+$n$ & $0$--$9$ & $10$ & $11$--$14$ & $15$--$17$ & $18$ & $19$--$20$ & $\ge21$\\
+\midrule
+$\mathcal C_B(5,n)$ & $16$ & $12$ & $10$ & $9$ & $8$ & $6$ & $5$\\
+$\delta_6(n;B)$ & $0$ & $4$ & $6$ & $7$ & $8$ & $10$ & $11$\\
+correctable errors ($z=0$) & -- & $1$ & $2$ & $3$ & $3$ & $4$ & $5$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{theorem}
+
+\begin{proof}
+The rank budget is $j=5$. The two parity subtrees have eight leaves each and identical
+residual geometry; at root threshold $14$ the child threshold is $9$, at $15$ it is $10$,
+and \eqref{lub:eq:dp} inside a parity subtree gives
+\begin{center}\small
+\begin{tabular}{lrrrrrr}
+\toprule
+$j_c$ & 0&1&2&3&4&5\\
+\midrule
+$\mathcal C_c(j_c,9)$ &0&1&4&6&8&8\\
+$\mathcal C_c(j_c,10)$&0&1&4&5&8&8\\
+\bottomrule
+\end{tabular}
+\end{center}
+These entries can be checked by hand. A two-leaf subtree below a four-leaf node has residual
+spectrum $(0,4)$. A four-leaf node, of increment $2$, has the selected-set spectra $(0,6)$
+for a pair in one child, $(0,2)$ for a split pair, $(0,2,8)$ for three leaves and
+$(0,2,8,10)$ for all four, so for $U>0$ its capacities are $C_0(U)=0$;
+$C_1(U)=4,2,1$ for $U\le2$, $3\le U\le6$, $U\ge7$; $C_2(U)=4$ for $U\le8$ and $2$ for
+$U\ge9$; $C_3(U)=4$ for $U\le10$ and $3$ for $U\ge11$; and $C_j(U)=4$ for $j\ge4$. At an
+eight-leaf parity node maximize $C_a(U)+C_{j_c-a}(U)$ with $U=T-j_c$. At the root, the
+splits $a+(5-a)$, $a=0,\dots,5$, give the sums $8,9,10,10,9,8$ at $n=14$ and
+$8,9,9,9,9,8$ at $n=15$, which proves the capacities and distances at $14$ and $15$ by
+\cref{lub:thm:distance}. The strict inequality $2\cdot3<\delta$ fails at $n=14$ and holds
+at $n=15$, and the distance is nondecreasing in $n$. The rest of the table comes from the
+same recursion; its last column is \cref{lub:cor:grid}:
+$n_{\mathrm{sat}}=6+1\cdot5+2\cdot3+4\cdot1=21$, with maximal distance $16-6+1=11$.
+\end{proof}
+
+The failure at $n=14$ has an explicit witness. The set of survivors
+\[
+ S_A=\set{0,1,2,4,5,8,9,10,12,13}
+\]
+has greedy sequence
+$(0,1,3,6,8,14,16,19,21,24)$, with greedy order beginning $0,1,2,5,4,10$. The series
+$H_*=\prod_{b\in\set{0,1,2,4,5}}(Y-u_b(X))$ has degree-five part
+$Y^3(Y-X)^2=Y^5+X^2Y^3\ne0$ over $\F_2$, vanishes modulo $X^{14}$ exactly on $S_A$, and has
+orders $7,10,7,7,10,7$ on the remaining branches $3,6,7,11,14,15$. A received record that
+equals $H_*(X,u_b)\bmod X^{14}$ at $b=3,6,7$ and zero elsewhere differs from the record of
+$0$ in three blocks and from that of $H_*$ in the three blocks $11,14,15$; erasing two of the
+six positions gives a two-error, two-erasure ambiguity. By contrast the more packed set
+$S_P=\set{0,2,4,6,8,10,12,14,1,9}$ has sequence $(0,1,3,7,9,12,18,20,24,26)$ and clean
+cutoff $13$ for the same target, so the two spectra cross and visual clustering does not
+identify the worst survivors. By \cref{lub:thm:kernel} the clean sixteen-branch data leave a
+two-dimensional ambiguity in the target at $n=9$ and none at $n=10$, and on $S_A$ the
+ambiguity at $n=14$ is one-dimensional. At $n=15$ the budgets $(w,z)=(3,0),(2,2),(1,4),(0,6)$
+all satisfy \eqref{lub:eq:correct}.
+
+\begin{corollary}[An infinite sharp family; \stU]\label{lub:cor:scaled}
+Replace the directions $0,\dots,15$ by $2^ab$ for an integer $a\ge0$. The exact precision
+for recovering the jet of total degree below six despite any three corrupted blocks is
+$14\cdot2^a+1$; clean recovery on $S_P$ needs $12\cdot2^a+1$, and the full distance is
+reached at $20\cdot2^a+1$.
+\end{corollary}
+
+\begin{proof}
+Over $\F_2$, $u_{2^ab}(X)=u_b(X^{2^a})$, so every contact and every greedy value of every
+subset is multiplied by $2^a$. Apply the strict inequalities of \cref{lub:thm:kernel} and
+\cref{lub:thm:distance}.
+\end{proof}
+
+The greedy sequences were compared with tree merging on all $256$ subsets of an
+eight-branch grid, $240$ capacity states with exhaustive subset calculations, and all
+$8008$ ten-element survivor sets of the binary example, whose largest sixth greedy value is
+exactly $14$; selected thresholds were checked by direct substitution matrices over $\F_2$
+with unknown higher terms retained, and a three-error decoding at $n=15$ inspects all $560$
+error-location
+sets.\footnote{\raggedright\artifact{ramified_branch_recovery/results/verification.json},
+\artifact{ramified_branch_recovery/results/independent_tree_check.json},
+\artifact{ramified_branch_recovery/results/independent_nonpacking_check.json},
+\artifact{ramified_branch_recovery/results/independent_jet_check.json},
+\artifact{ramified_branch_recovery/results/phase_diagram.csv}}
+Greedy valuation orderings and integer-valued polynomial bases go back to Bhargava
+\cite{Bhargava1997Porderings,Bhargava2009Porderings}, and the qualitative finite recovery
+along reduced Lubin--Tate branches is \cite[Lemma~4.2]{BergerSprang2025Integer}. The
+classical $r$-removed orderings \cite{Johnson2010Removed,KrachunMirgalimova2024Greedoid}
+remove factors inside each greedy product, which is a different optimization: for the
+contacts $2^{v_2(a-b)}$ on $\set{0,1,2}$, deleting one branch can retain $\set{0,2}$ with
+first nonzero greedy value $2$, while the one-removed product after choosing $0,1$ is
+$\min(2,1)=1$.
+
 \subsection{A simultaneous congruence for weighted Fleck sums}\label{lub:ssec:fleck}
 \begingroup\raggedright\sources{grh_prime_patterns_and_branch_precision}\endgroup
 
@@ -1211,7 +1582,7 @@ not affected.
 \end{remark}
 
 \subsection{Open questions}\label{lub:ssec:open}
-\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision; grh_method_transfers_orthogonal_jets_2026-11-26; grh_transfer_advances_2026-11-26; grh_periods_sampling_and_zeros}\endgroup
+\begingroup\raggedright\sources{grh_transfers_cycle_signings_and_lubin_tate; grh_transfers_lubin_tate_and_graph_towers; grh_prime_patterns_and_branch_precision; grh_method_transfers_orthogonal_jets_2026-11-26; grh_transfer_advances_2026-11-26; grh_periods_sampling_and_zeros; ramified_branch_recovery}\endgroup
 
 \begin{question}\label{lub:q:closed}
 When the carry criterion \eqref{lub:eq:carry} fails and $h_*\ge2$, the defect $\eta_r$ of
@@ -1227,6 +1598,14 @@ of precisions at which the loss is largest be described by a digit formula of th
 computation, and Example~\ref{lub:ex:mixed} shows that it depends on the shallower contacts.
 For which mixed contact profiles is the largest possible loss attained on a single residue
 class of precisions?
+\end{question}
+
+\begin{question}\label{lub:q:adversarial}
+\Cref{lub:thm:distance,lub:thm:dp} determine the tolerance to erased and corrupted branch
+records over a field with one common truncation length. Extend them to unequal truncation
+lengths and to coefficients in $\OO/\pi^r$ with $r>1$, where the cancellations of
+\cref{lub:thm:pole} occur, and find error-location algorithms faster than enumeration of the
+candidate error sets.
 \end{question}
 
 \begin{question}\label{lub:q:growth}
