@@ -20,12 +20,21 @@ namespace LeanProofs.IPRA.Analysis.GaussianCompactRiemannSplit
 open_ipra
 open GaussianRationalHorner (ofGaussian qadd qmul positive_product)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open GaussianCompactRiemannName (grid value sampleBody sampleData quadrature fraction_congr value_grid)
+open GaussianCompactRiemannName (grid value inside sampleBody sampleData quadrature fraction_congr value_grid)
 open GaussianRationalRiemannRefinement (weight)
 open GaussianRationalFiniteSum (sum sum_index_congr)
 open ComplexLogarithmRemainder (scale oneCode)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
+
+theorem inside_left (a C1 C2 E t : PTm n) (h : Γ ⊢[PRAAx] inside a C1 E t) : Γ ⊢[PRAAx] inside a (C1+C2) E t :=
+  .andI h.andE₁ (.andI h.andE₂.andE₁ (.andI h.andE₂.andE₂.andE₁
+    (le_trans h.andE₂.andE₂.andE₂ (le_of_eq_add (d := C2*sndT t) (by ipra_ring)))))
+
+theorem inside_right (a C1 C2 E t : PTm n) (h : Γ ⊢[PRAAx] inside (a+C1) C2 E t) : Γ ⊢[PRAAx] inside a (C1+C2) E t :=
+  .andI h.andE₁ (.andI h.andE₂.andE₁ (.andI
+    (le_trans (le_of_eq_add (d := C1*sndT t) (by ipra_ring)) h.andE₂.andE₂.andE₁)
+    (le_congr (.eqRefl _) (by ipra_ring) h.andE₂.andE₂.andE₂)))
 
 theorem native_scale (C A : PTm n) : Γ ⊢[PRAAx] GaussianRootAlgebra.equal
     (scale (C*A) oneCode) (scale C (scale A oneCode)) := by

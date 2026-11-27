@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannAdditivity
+import IPRADerivations.Analysis.Integration.CompactGrids.Splits.GaussianCompactRiemannSplit
 
 /-!
 # Actual compact samples at equal represented times
@@ -15,7 +15,7 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Analysis.GaussianCompactAlignedTime
 
 open_ipra
-open GaussianCompactRiemannName (inside value)
+open GaussianCompactRiemannName (inside value sampledModulus sampled_modulus_at shift_sampled_modulus)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -54,6 +54,23 @@ theorem equal_value_at (F : PR 3) (s a C E x t u : PTm n)
     (GaussianRationalHorner.positive_product _ _ (unit_positive s) (unit_positive s)) (unit_positive s)
     (le_of_eq_add (d := zero) (by ipra_ring)) raw
 
+theorem modulus_observations (F : PR 3) (p q a C E L x t u : PTm n)
+    (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) (ht : Γ ⊢[PRAAx] inside a C E t) (hu : Γ ⊢[PRAAx] inside a C E u)
+    (hd : Γ ⊢[PRAAx] distanceBounded (value t) (value u) zero one) : Γ ⊢[PRAAx]
+    distanceBounded (ap3 F p t x) (ap3 F q u x) (unit p+unit q) (unit p*unit q) := by
+  have actual := sampled_modulus_at F a C E L x p q t u zero one h (le_refl one) ht hu hd
+  exact GaussianRationalDistanceOrder.distance_congr (.eqRefl _) (.eqRefl _)
+    (by unfold GaussianNamedInverseRate.rateNumerator; ipra_ring)
+    (by unfold GaussianNamedInverseRate.rateDenominator; ipra_ring) actual
+
+theorem of_sampled_modulus (F : PR 3) (a C E L x : PTm n) (h : Γ ⊢[PRAAx] sampledModulus F a C E L x) : Γ ⊢[PRAAx]
+    alignedSamples F a C E x := by
+  have hs := shift_sampled_modulus <| shift_sampled_modulus <|
+    shift_sampled_modulus <| shift_sampled_modulus h
+  refine .allI (.allI (.allI (.allI (.impI (.impI (.impI ?_))))))
+  simpa only [body,Syn.shift] using modulus_observations F (var 3) (var 2) _ _ _ _ _ (var 1) (var 0) hs.wk.wk.wk
+    Prf.hyp1.wk Prf.hyp1 Prf.hyp0
+
 theorem left_aligned (F : PR 3) (a C1 C2 E x : PTm n) (h : Γ ⊢[PRAAx] alignedSamples F a (C1+C2) E x) : Γ ⊢[PRAAx]
     alignedSamples F a C1 E x := by
   have hs : (((Γ.map Fm.shift).map Fm.shift).map Fm.shift).map Fm.shift ⊢[PRAAx]
@@ -63,8 +80,8 @@ theorem left_aligned (F : PR 3) (a C1 C2 E x : PTm n) (h : Γ ⊢[PRAAx] aligned
     by simpa [Fm.shift,Syn.shift] using h.shift.shift.shift.shift
   refine .allI (.allI (.allI (.allI (.impI (.impI (.impI ?_))))))
   simpa only [body,PTm.subst_add,Syn.shift] using aligned_at F (var 3) (var 2) _ _ _ _ (var 1) (var 0) hs.wk.wk.wk
-    (GaussianCompactRiemannAdditivity.inside_left _ _ _ _ _ Prf.hyp1.wk)
-    (GaussianCompactRiemannAdditivity.inside_left _ _ _ _ _ Prf.hyp1) Prf.hyp0
+    (GaussianCompactRiemannSplit.inside_left _ _ _ _ _ Prf.hyp1.wk)
+    (GaussianCompactRiemannSplit.inside_left _ _ _ _ _ Prf.hyp1) Prf.hyp0
 
 theorem right_aligned (F : PR 3) (a C1 C2 E x : PTm n) (h : Γ ⊢[PRAAx] alignedSamples F a (C1+C2) E x) : Γ ⊢[PRAAx]
     alignedSamples F (a+C1) C2 E x := by
@@ -75,8 +92,8 @@ theorem right_aligned (F : PR 3) (a C1 C2 E x : PTm n) (h : Γ ⊢[PRAAx] aligne
     by simpa [Fm.shift,Syn.shift] using h.shift.shift.shift.shift
   refine .allI (.allI (.allI (.allI (.impI (.impI (.impI ?_))))))
   simpa only [body,PTm.subst_add,Syn.shift] using aligned_at F (var 3) (var 2) _ _ _ _ (var 1) (var 0) hs.wk.wk.wk
-    (GaussianCompactRiemannAdditivity.inside_right _ _ _ _ _ Prf.hyp1.wk)
-    (GaussianCompactRiemannAdditivity.inside_right _ _ _ _ _ Prf.hyp1) Prf.hyp0
+    (GaussianCompactRiemannSplit.inside_right _ _ _ _ _ Prf.hyp1.wk)
+    (GaussianCompactRiemannSplit.inside_right _ _ _ _ _ Prf.hyp1) Prf.hyp0
 
 theorem actual_equal_time_independent_queries_closed (F : PR 3) : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 8
     ((alignedSamples F (var 2) (var 3) (var 4) (var 5) ⋏ inside (var 2) (var 3) (var 4) (var 6) ⋏
