@@ -37,6 +37,7 @@ import GRHArticle.SingularModuli.CMPoints
 import GRHArticle.SingularModuli.ClassPolynomialTruncation
 import GRHArticle.SingularModuli.ConductorBound
 import GRHArticle.SingularModuli.ConjugateDisks
+import GRHArticle.SingularModuli.CuspEstimate
 import GRHArticle.SingularModuli.CuspSeparation
 import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
@@ -48,6 +49,7 @@ import GRHArticle.SingularModuli.PadicExpSubstitution
 import GRHArticle.SingularModuli.PermutationTest
 import GRHArticle.SingularModuli.QuarticDiskCertificates
 import GRHArticle.SingularModuli.QuarticSupport
+import GRHArticle.SingularModuli.ReducedCuspSeparation
 import GRHArticle.SingularModuli.ReducedForms
 import GRHArticle.SingularModuli.RootCertificates
 import GRHArticle.SingularModuli.Separated
