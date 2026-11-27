@@ -2,9 +2,12 @@ import GRHArticle.ProgressionFree.EulerLowerBound
 import GRHArticle.ProgressionFree.ExchangeDensity
 import GRHArticle.ProgressionFree.ExplicitArithmetic
 import GRHArticle.ProgressionFree.ExplicitExchange
+import GRHArticle.ProgressionFree.ExplicitExponentBound
+import GRHArticle.ProgressionFree.FourMarkerExchange
 import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinApproximation
 import GRHArticle.ProgressionFree.RankinTruncation
+import GRHArticle.ProgressionFree.SatelliteProfiles
 import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
 import GRHArticle.SingularModuli.CMPoints
