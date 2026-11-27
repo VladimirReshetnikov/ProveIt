@@ -1,0 +1,73 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{graphicx,xcolor,enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,citecolor=teal!65!black,urlcolor=teal!65!black]{hyperref}
+\usepackage[font=small,labelfont=bf]{caption}
+\hypersetup{pdftitle={Exact p-adic symplectic corner laws},pdfauthor={Research note prepared for Vladimir Reshetnikov},pdfsubject={Exact local matrix distributions, total variation, and cokernels}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\Sp}{\operatorname{Sp}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\coker}{\operatorname{coker}}
+\newcommand{\artifact}[1]{\texttt{\detokenize{#1}}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact symplectic corner laws}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\title{\textbf{Exact $p$-adic symplectic corner laws}\\[5pt]
+\large One residue digit attains the full distinguishing distance}
+\author{Prepared for Vladimir Reshetnikov}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We extend finite-field symplectic compression methods appearing in the
+\texttt{grh-lean} research program and the associated \texttt{ProveIt} article
+to all congruence precisions over an arbitrary complete discrete valuation
+ring with finite residue field. For a Haar symplectic transformation in
+dimension $2g\ge4$, compressed between two symplectic planes, we derive its
+exact matrix density in terms of $v(1-\det A)$. Its total variation distance
+from four independent uniform entries is
+\[
+ \left(1-q^{-1}+q^{-3}\right)\frac{q^2-1}{q^{2g}-1}
+\]
+at every finite precision and over the complete ring. A determinant test
+modulo the residue field is already optimal, even though higher digits
+change the likelihood ratio. We determine exactly the bias discarded by
+uniformly completing any finite precision, and prove that all nontrivial
+cokernel types have the same correction factor relative to the independent
+model. An exact rejection sampler needs $8/5$ proposals on average.
+For arbitrary primitive rectangular frames, the differential defect is
+exactly $\binom{s}{2}$, where $s$ is their reduced intersection dimension;
+this gives an explicit precision-uniform $O(q^{-4g})$ lifting error at
+fixed frame dimensions. The proofs include residue characteristic two
+and do not assume RH or GRH. Exact finite-ring computations accompany
+the proofs. The novelty claim is limited to the statements derived here
+and the primary literature examined, not an assertion of exhaustive priority.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+\input{sections/context}
+\input{sections/mathematics}
+\input{sections/taller}
+\input{sections/examples}
+\input{sections/verification}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

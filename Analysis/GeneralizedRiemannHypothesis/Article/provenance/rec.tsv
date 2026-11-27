@@ -71,10 +71,10 @@ one_gap_dirichlet_zeros	one_gap.tex	A reproducible interval certificate	merged	r
 one_gap_dirichlet_zeros	one_gap.tex	Sources and prior work	non-mathematical		
 prime_pole_windows	prime_pole_windows.tex	What one line of poles determines	merged	rec:thm:localrecovery	
 prime_pole_windows	prime_pole_windows.tex	Separating the contributions of different powers	merged	rec:prop:powerline	
-prime_pole_windows	prime_pole_windows.tex	Local independence of zero multiplicities	merged	rec:thm:localrank	unconditional; supersedes zer:thm:rank (windows of length K_q log T)
+prime_pole_windows	prime_pole_windows.tex	Local independence of zero multiplicities	subsumed	rec:thm:localrank	radius b log3 T+O(1), b>1/pi; rec:thm:localrank reaches pi^{-1} log3 T+C for any fixed family (translated_dirichlet_zero_divisors); the approximate inverse D_T is kept as rec:cor:localmap, now at the endpoint via rec:thm:localcoeff
 prime_pole_windows	prime_pole_windows.tex	Exact inversion and the boundary of continuation	merged	rec:cor:boundary	calibration remark after rec:thm:localrecovery
 prime_pole_windows	prime_pole_windows.tex	Which patterns of poles can occur?	merged	rec:thm:design	density formula and mod 31, mod 4 examples after the theorem
-prime_pole_windows	prime_pole_windows.tex	A consequence for two individual Dirichlet functions	subsumed	zer:thm:short	equal-conductor directed excess in windows of length 2b log3 T, b>1/pi; zer:thm:short gives both signs for arbitrary conductors in intervals of length (2/pi+eps) log3 T, with a mass lower bound
+prime_pole_windows	prime_pole_windows.tex	A consequence for two individual Dirichlet functions	subsumed	rec:thm:bothsigns	equal-conductor directed excess at radius b log3 T, b>1/pi; rec:thm:bothsigns gives both signs at radius pi^{-1} log3 T+C for arbitrary conductors and every balanced direction (zer:thm:short gives more mass at length (2/pi+eps) log3 T)
 prime_pole_windows	prime_pole_windows.tex	Sources, scope and further questions	merged	rec:sec:open	questions in item 5; sources non-mathematical
 prime_power_rigidity	prime_power_echoes.tex	The arithmetic observable	merged	rec:sec:profile	
 prime_power_rigidity	prime_power_echoes.tex	The recovery theorem	merged	rec:thm:primepower	mod 12 table summarized after the theorem
@@ -96,7 +96,7 @@ prime_zero_reconstruction	reconstruction.tex	Stability, numerical limits, and fu
 prime_zero_reconstruction	reconstruction.tex	Verification and novelty statement	non-mathematical		
 quadratic_spectra	quadratic_spectra.tex	From a critical-line theorem to an inverse question	non-mathematical		source recap
 quadratic_spectra	quadratic_spectra.tex	The least inert prime from signs of interval pairings	merged	rec:thm:signthreshold	explicit formula rec:eq:packetweil; single-value recovery and the mod 3 example after the theorem; figure omitted
-quadratic_spectra	quadratic_spectra.tex	Determining a quadratic character from finitely many zeros	merged	rec:thm:quaddecode	with rec:cor:quadsep, rec:thm:quaddisplace and the q=3 example
+quadratic_spectra	quadratic_spectra.tex	Determining a quadratic character from finitely many zeros	merged	rec:thm:quaddecode	with rec:thm:quaddisplace and the q=3 example; the separation corollary (old rec:cor:quadsep) is omitted, see next row
 quadratic_spectra	quadratic_spectra.tex	How short can a positive dilation average be?	merged	rec:thm:fwidth	with rec:prop:fstable and rec:thm:fleak
 quadratic_spectra	quadratic_spectra.tex	A block of consecutive harmonics	merged	rec:thm:hblock	stability, examples and prime-sum application after the theorem
 quadratic_spectra	quadratic_spectra.tex	Further research questions	merged	rec:sec:open	items 2 and 11
@@ -141,3 +141,99 @@ grh-torsion-and-zero-data	recovery.tex	Two explicit probes	merged	rec:thm:recove
 grh-torsion-and-zero-data	recovery.tex	Separating the finitely many moduli	merged	rec:thm:recovery	arithmetic example is rec:ex:recovery; moved from zer:sec:spectrum
 grh-torsion-and-zero-data	report.tex	Questions left by the proofs, item 3 (height needed to recover (q,d))	merged	rec:sec:open	item 2; moved from zer:sec:open
 dirichlet-grh-research	critical-line/chowla.tex	open question: B_d>-2 for every d (four central values)	merged	rec:sec:open	item 3; moved from zer:sec:open
+quadratic_spectra	quadratic_spectra.tex	Determining a quadratic character from finitely many zeros (corollary: separation of the zero multisets)	subsumed	rec:thm:lowzero	height O(log^2 Q loglog Q) for quadratic characters; rec:thm:lowzero gives O(log^2 Q/loglog Q) for all orders under the same hypothesis; a one-sentence pointer remains after rec:thm:quaddecode
+quadratic_spectra	quadratic_spectra.tex	Further research questions (removing loglog Q; characters of order >2 and the conjugate pair)	answered	rec:thm:lowzero	loglog removed and the height lowered by a further loglog; positive ordinates identify complex characters, folded data give exactly the conjugate pair
+dirichlet_zero_packet_homometry	zero_packets.tex	Further questions (shortest list of cubic and higher measurements at composite exponent)	answered	rec:thm:probecount	exact fixed and adaptive counts with optimal orders (rec:thm:probedegree), in the model of individual products
+dirichlet_low_zero_identification	character_zeros.tex	The height and what the data determine	merged	rec:thm:lowzero	(i)-(iii); the translated-interval theorem duplicates dirichlet_zeros_and_abelian_fields Cor. match, kept as rec:cor:lowmatch; repository and prior-work paragraphs non-mathematical
+dirichlet_low_zero_identification	character_zeros.tex	A supply of prime evaluations	merged	rec:prop:read	half-line explicit formula duplicate rec:eq:halfweil; smoothed prime sum duplicate rec:lem:gram; Lemma (many distinguishing primes) is the second part of rec:prop:read
+dirichlet_low_zero_identification	character_zeros.tex	Controlling the other prime powers	duplicate	rec:lem:neighbours	same averaged sieve bound; the version uniform in the bandwidth from dirichlet_zeros_and_abelian_fields is kept; the Markov step is in the proof of rec:prop:read
+dirichlet_low_zero_identification	character_zeros.tex	Reading a prime value from a window of zeros	merged	rec:prop:read	reading error 1/8 on a common prime set; proved with the test of dirichlet_zeros_and_abelian_fields (same structure: compact polynomial cutoff times sinc^2)
+dirichlet_low_zero_identification	character_zeros.tex	Separation, errors and the number of probes	merged	rec:cor:dict	proof of (i)-(iii) in rec:thm:lowzero
+dirichlet_low_zero_identification	character_zeros.tex	Recovering the factors of an unlabeled product	subsumed	rec:cor:products	at most k factors with repetition; rec:cor:products allows at most k distinct factors with arbitrary exponents, same hypotheses
+dirichlet_low_zero_identification	character_zeros.tex	Finite checks	merged	rec:ex:dict101	floating-point quartic spectrum readout omitted (numerical illustration)
+dirichlet_low_zero_identification	character_zeros.tex	Further questions	merged	rec:sec:open	item 2
+dirichlet_zeros_and_abelian_fields	zero_windows.tex	The finite data and what they determine	merged	rec:thm:family	also rec:thm:fields and rec:cor:products; repository and prior-work paragraphs non-mathematical
+dirichlet_zeros_and_abelian_fields	zero_windows.tex	The explicit formula at positive logarithmic arguments	merged	rec:lem:gram	explicit formula is rec:eq:halfweil
+dirichlet_zeros_and_abelian_fields	zero_windows.tex	A prime and its neighbours	merged	rec:lem:neighbours	
+dirichlet_zeros_and_abelian_fields	zero_windows.tex	Tests on translated zero windows	merged	rec:thm:family	Corollary on partial matching is rec:cor:lowmatch
+dirichlet_zeros_and_abelian_fields	zero_windows.tex	Abelian fields with unrestricted degree	merged	rec:thm:fields	positive-ordinate paragraph in rec:thm:fields and rec:thm:lowzero
+dirichlet_zeros_and_abelian_fields	zero_windows.tex	A pair of biquadratic fields	merged	rec:ex:biquad	complex-character prime-leakage floating example omitted (numerical illustration)
+dirichlet_zeros_and_abelian_fields	zero_windows.tex	Further research questions	merged	rec:sec:open	item 2; verification paragraph non-mathematical
+local_euler_recovery	local_euler_recovery.tex	What a single interval determines	merged	rec:thm:localid	and rec:thm:localcoeff
+local_euler_recovery	local_euler_recovery.tex	The weight and the explicit formula	merged	rec:lem:lekernel	and rec:lem:lefreq; explicit formula is rec:eq:gwstrip
+local_euler_recovery	local_euler_recovery.tex	Proof of the local coefficient estimate	merged	rec:thm:localcoeff	
+local_euler_recovery	local_euler_recovery.tex	Finding a prime that separates competing products	merged	rec:thm:localid	prime inner products duplicate rec:lem:gram
+local_euler_recovery	local_euler_recovery.tex	How much can two lists of zeros agree?	merged	rec:cor:localmatch	
+local_euler_recovery	local_euler_recovery.tex	Sources, comparison and a numerical example	merged	rec:cor:localmatch	numerical readout in the paragraph after the corollary; further questions in rec:sec:open items 2 and 5; sources non-mathematical
+robust_dirichlet_spectra_2026-11-26	report.tex	Result and meaning (data model, theorem)	merged	rec:thm:robust	combined error budget and unshared-occurrence corollaries in the theorem
+robust_dirichlet_spectra_2026-11-26	report.tex	What was inspected, and what is new	non-mathematical		source survey and novelty
+robust_dirichlet_spectra_2026-11-26	report.tex	The comparison metric and its test functions	merged	rec:lem:edit	
+robust_dirichlet_spectra_2026-11-26	report.tex	A prime-isolating test at the observed cutoff	merged	rec:thm:interface	construction, explicit-formula corrections, explicit tail and conversion to partial matchings
+robust_dirichlet_spectra_2026-11-26	report.tex	Completion, decoding, and orientation	merged	rec:thm:robust	finite decoder and orientation remark after the theorem
+robust_dirichlet_spectra_2026-11-26	report.tex	Reproducibility and limits of verification	non-mathematical		
+robust_dirichlet_spectra_2026-11-26	report.tex	What the archimedean-free support accomplishes	merged	rec:thm:interface	explanatory appendix absorbed in the proof
+robust_dirichlet_spectra_2026-11-26	angular.tex	A uniform angular prime-separation lemma	merged	rec:lem:angular	coarse zero count, angular prime and separating corollary
+robust_dirichlet_spectra_2026-11-26	numerics.tex	An oriented complex-character example	merged	rec:thm:robust	paragraph after the theorem; numerical, not certified complete; figure omitted
+robust_dirichlet_spectra_2026-11-26	numerics.tex	Checks of the quantitative implementation	non-mathematical		
+dirichlet_packet_reconstruction	prime-traces/prime-traces.tex	The local comparison	merged	rec:sec:qmatch	setting and density formula
+dirichlet_packet_reconstruction	prime-traces/prime-traces.tex	The dyadic argument and the extremizers	merged	rec:thm:qmatch	with rec:lem:walsh
+dirichlet_packet_reconstruction	prime-traces/prime-traces.tex	The entire range below twice the minimum	merged	rec:thm:qmatch	example after the theorem
+dirichlet_packet_reconstruction	prime-traces/prime-traces.tex	A finite observation under Dirichlet GRH	merged	rec:thm:qmatchfinite	smoothed estimate reduced to rec:lem:gram
+dirichlet_packet_reconstruction	prime-traces/prime-traces.tex	Interpretation, checks and prior work	merged	rec:sec:open	item 6; checks cited after rec:thm:qmatch; prior work non-mathematical
+dirichlet_packet_reconstruction	zero-packets/zero-packets.tex	The measurement and the answer	merged	rec:thm:probecount	
+dirichlet_packet_reconstruction	zero-packets/zero-packets.tex	One measurement for each Fourier order	merged	rec:lem:probefactor	pure rows in the proof of rec:thm:probecount
+dirichlet_packet_reconstruction	zero-packets/zero-packets.tex	Matching the phases and proving minimality	merged	rec:thm:probecount	E=15 example omitted (finite instance of the construction)
+dirichlet_packet_reconstruction	zero-packets/zero-packets.tex	The fixed list minimizes the maximum order as well	merged	rec:thm:probedegree	
+dirichlet_packet_reconstruction	zero-packets/zero-packets.tex	Adaptive measurements	merged	rec:thm:probecount	adaptive upper bound; the order bound 6+3omega(E) is in rec:thm:probedegree
+dirichlet_packet_reconstruction	zero-packets/zero-packets.tex	When the packet mass removes the phase ambiguity	merged	rec:prop:probemass	
+dirichlet_packet_reconstruction	zero-packets/zero-packets.tex	What one sees in a window of Dirichlet zeros	merged	rec:cor:probewindow	
+dirichlet_packet_reconstruction	zero-packets/zero-packets.tex	Arithmetic sharpness and scope	merged	rec:cor:probewindow	realization paragraph after the corollary; coprime global twist is rec:cor:coprime; prior work non-mathematical
+dirichlet_packet_reconstruction	zero-packets/zero-packets.tex	A worked arithmetic example	merged	rec:cor:probewindow	E=30, Q=61 example after the corollary; further questions in rec:sec:open item 6
+dirichlet_prime_frequency_inverse	prime_frequency.tex	What one prime measures	merged	rec:thm:primefreq	with rec:thm:operatorinverse
+dirichlet_prime_frequency_inverse	prime_frequency.tex	Critical-line zeros after differentiation	merged	rec:lem:interlace	
+dirichlet_prime_frequency_inverse	prime_frequency.tex	Proof of the prime-frequency formula (freezing the gamma factor; selecting a single coefficient)	merged	rec:thm:primefreq	
+dirichlet_prime_frequency_inverse	prime_frequency.tex	Inverting the shift quotient	merged	rec:thm:operatorinverse	quadratic example after the theorem
+dirichlet_prime_frequency_inverse	prime_frequency.tex	How local is the information?	merged	rec:cor:operatorlocal	for P=1 the distinction is weaker than rec:thm:localid; finite-height estimation in the paragraph after the corollary
+dirichlet_prime_frequency_inverse	prime_frequency.tex	A version using full complex zeros	merged	rec:cor:operatorlocal	unconditional version in the remark after the corollary
+dirichlet_prime_frequency_inverse	prime_frequency.tex	Comparison with sources and numerical checks	merged	rec:thm:operatorinverse	numerical check after the theorem; questions in rec:sec:open items 5 and 10; sources non-mathematical
+prime_observations_and_progression_free_sets	dyadic/dyadic.tex	The observation and the theorem	merged	rec:thm:dyadic	
+prime_observations_and_progression_free_sets	dyadic/dyadic.tex	From primes to a folded spectrum	merged	rec:thm:dyadic	multiplicity bound and expansion in the proof
+prime_observations_and_progression_free_sets	dyadic/dyadic.tex	Separating the ordinates and the character labels	merged	rec:thm:dyadic	unfolding and precision tolerance in the proof and the paragraph after it
+prime_observations_and_progression_free_sets	dyadic/dyadic.tex	An example and the relation to earlier work	merged	rec:thm:dyadic	q=3 example and comparison after the theorem; questions in rec:sec:open item 1
+prime_observations_and_progression_free_sets	mellin/mellin.tex	The arithmetic measurement	merged	rec:thm:mellin	
+prime_observations_and_progression_free_sets	mellin/mellin.tex	The interpolation estimate	merged	rec:thm:mellin	in the proof
+prime_observations_and_progression_free_sets	mellin/mellin.tex	Analytic continuation from ordinary primes	merged	rec:thm:mellin	in the proof
+prime_observations_and_progression_free_sets	mellin/mellin.tex	Determining the exact growth exponent	merged	rec:thm:mellin	in the proof
+prime_observations_and_progression_free_sets	mellin/mellin.tex	Finite observations in a prescribed power interval	merged	rec:cor:mellinwindow	
+prime_observations_and_progression_free_sets	mellin/mellin.tex	Nonabelian splitting fields	merged	rec:thm:mellingalois	S3 example after the theorem
+prime_observations_and_progression_free_sets	mellin/mellin.tex	Comparison and further questions	merged	rec:sec:open	item 1; comparison non-mathematical
+prime_observations_and_progression_free_sets	progressions/progressions.tex	The greedy benchmark	other-unit	gpi	
+prime_observations_and_progression_free_sets	progressions/progressions.tex	One shared deletion and the exact density change	other-unit	gpi	
+prime_observations_and_progression_free_sets	progressions/progressions.tex	The cost of bounding the number of coupled primes	other-unit	gpi	
+prime_observations_and_progression_free_sets	progressions/progressions.tex	Independent density gains in residue classes	other-unit	gpi	
+prime_observations_and_progression_free_sets	progressions/progressions.tex	Precedents and open quantitative questions	other-unit	gpi	
+translated_dirichlet_zero_divisors	local_divisors.tex	The local statement	merged	rec:thm:coalesce	with rec:thm:bothsigns and rec:thm:localrank
+translated_dirichlet_zero_divisors	local_divisors.tex	Sources and comparison	non-mathematical		comparison with zer:thm:short and prime_pole_windows stated after rec:thm:localrank and rec:thm:bothsigns
+translated_dirichlet_zero_divisors	local_divisors.tex	A test function localized across the critical strip	merged	rec:lem:binomkernel	explicit formula rec:eq:gwstrip; tail and gamma estimates after the lemma
+translated_dirichlet_zero_divisors	local_divisors.tex	Selecting prime frequencies	merged	rec:thm:localrank	supersedes the b>1/pi window of prime_pole_windows; with rec:lem:frame
+translated_dirichlet_zero_divisors	local_divisors.tex	Positive tests for both directions	merged	rec:thm:bothsigns	endpoint radius; neither implies nor is implied by zer:thm:short (length (2/pi+eps) log3 T, larger mass)
+translated_dirichlet_zero_divisors	local_divisors.tex	Two consequences for local zero data	merged	rec:cor:balance	and rec:cor:binomtransport
+translated_dirichlet_zero_divisors	local_divisors.tex	A finite example and further questions	merged	rec:sec:open	item 5; mod 8 example cited after rec:cor:nonres; floating diagnostic non-mathematical
+translated_dirichlet_zero_divisors	translations.tex	Moving ordinates and coalescing shifts	merged	rec:thm:moving	and rec:thm:coalesce
+translated_dirichlet_zero_divisors	translations.tex	Steps shorter than the mean zero spacing	merged	rec:thm:micro	and rec:cor:nonres
+logarithmic_dirichlet_zero_filters_2026-11-26	logarithmic_zero_filters.tex	The result and its relation to the requested sources (precise contribution)	merged	rec:thm:logfilter	supersedes the support O(log^2 B) of zer:thm:kernel (owned by zer)
+logarithmic_dirichlet_zero_filters_2026-11-26	logarithmic_zero_filters.tex	What the Lean repository proves and what we use; How repetition was avoided	non-mathematical		
+logarithmic_dirichlet_zero_filters_2026-11-26	logarithmic_zero_filters.tex	Reproducible computations and verification status (exact certificate; zeta illustrations)	merged	rec:thm:polylogavg	artifacts cited after the theorem; figures omitted
+logarithmic_dirichlet_zero_filters_2026-11-26	logarithmic_zero_filters.tex	Formalization boundary	non-mathematical		
+logarithmic_dirichlet_zero_filters_2026-11-26	annihilation_theorem.tex	A uniformly positive interpolating density	merged	rec:lem:sepfilter	
+logarithmic_dirichlet_zero_filters_2026-11-26	annihilation_theorem.tex	Clustering, multiplicities, and uniform attenuation	merged	rec:thm:finitefilter	accuracy form and polynomial-mode corollary in the paragraph after the theorem
+logarithmic_dirichlet_zero_filters_2026-11-26	annihilation_theorem.tex	Application to Dirichlet zero ordinates	merged	rec:thm:logfilter	
+logarithmic_dirichlet_zero_filters_2026-11-26	annihilation_theorem.tex	Why the logarithmic order cannot be reduced	merged	rec:lem:jensensupport	zeta, family and 5/12 bounds in the paragraph after the lemma
+logarithmic_dirichlet_zero_filters_2026-11-26	applications_and_audit.tex	Uniform averaging of arithmetic signals	merged	rec:thm:uniformavg	
+logarithmic_dirichlet_zero_filters_2026-11-26	applications_and_audit.tex	The ramp sum and its sharper remainder (ramp lemma)	duplicate	zer:lem:ramp	same expansion with remainder O((1+v)e^{-v/2}) and central bias
+logarithmic_dirichlet_zero_filters_2026-11-26	applications_and_audit.tex	The ramp sum and its sharper remainder (simultaneous averaging theorem)	merged	rec:thm:polylogavg	supersedes the paragraph after zer:thm:kernel (support O((loglog X)^2), remainder X^{-1+eps})
+logarithmic_dirichlet_zero_filters_2026-11-26	applications_and_audit.tex	Positive atomic quadrature	merged	rec:thm:polylogavg	last sentence of the theorem
+logarithmic_dirichlet_zero_filters_2026-11-26	applications_and_audit.tex	Robustness and limits of numerical certification	merged	rec:thm:uniformavg	leakage and residual certificate in the paragraph after the theorem
+logarithmic_dirichlet_zero_filters_2026-11-26	applications_and_audit.tex	Independent checks of the analytic argument	merged	rec:lem:jensensupport	distinct-zero count inequality in the paragraph after the lemma; remaining remarks non-mathematical
+logarithmic_dirichlet_zero_filters_2026-11-26	literature_and_sources.tex	Sources, prior methods, and the boundary of the contribution	non-mathematical		prior-work inventory
+logarithmic_dirichlet_zero_filters_2026-11-26	references_extra.tex	(bibliography fragment)	non-mathematical		

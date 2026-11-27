@@ -13,6 +13,7 @@
 \providecommand{\spnqbin}[3]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{#3}}
 \providecommand{\spnOrth}{\mathcal{O}}
 \providecommand{\spnTame}{\mathcal{T}}
+\providecommand{\spnEmb}{\mathcal{E}}
 
 The source proof (\cref{src:sec:mechanism}) compares an upper and a lower bound
 for one twisted lattice. Several of its intermediate inputs are finite or local
@@ -1273,9 +1274,322 @@ The Lagrangian intersection count used when $c=0$ also appears in
 $n-\min(a,b)\to\infty$ suffices. Along the symplectic family just constructed
 this quantity grows without bound, yet the full-row-rank test detects a
 nonvanishing discrepancy. The boundary calculation quantifies the discrepancy
-at each fixed deficit. When one of the two subspaces is not isotropic, the law
-conditional on rank is no longer uniform, and rank can miss almost all of the
-discrepancy; this is the subject of the next subsection.
+at each fixed deficit. For arbitrary restricted forms on both subspaces the
+law is determined exactly in the next subsection. When one of the two
+subspaces is not isotropic, the law conditional on rank is no longer uniform,
+and rank can miss almost all of the discrepancy
+(\cref{spn:sec:lagrangian}).
+
+%======================================================================
+\subsection{The complete law of an arbitrary symplectic compression}\label{spn:sec:complete-law}
+\sources{symplectic_compression_2026-11-26; prime_endpoints_and_symplectic_compressions}
+
+The two preceding theorems bound or compute the discrepancy for special pairs
+of subspaces. Counting fibres instead of estimating Fourier coefficients gives
+the probability of every matrix of pairings between one fixed frame and a
+uniform symplectic translate of another, for arbitrary restricted alternating
+forms on both frames and arbitrary rectangular sizes. In this subsection $q$
+is any prime power, $V$ has dimension $2n$ with a nondegenerate alternating
+form $\langle\ ,\ \rangle$ of matrix $J$, and an alternating form is a bilinear
+form $B$ with $B(x,x)=0$ for all $x$; its matrix has zero diagonal as well as
+$H^{\spnT}=-H$, and both conditions matter in characteristic two. Fix injective
+linear maps $Y\colon\F_q^a\to V$ and $X_0\colon\F_q^b\to V$ with Gram matrices
+$H_1=Y^{\spnT}JY$ and $H_0=X_0^{\spnT}JX_0$ of ranks $2s_1$ and $2s_0$. For
+uniform $g\in\Sp(V)$ the observation is
+\begin{equation}\label{spn:eq:complete-observation}
+ M(g)=Y^{\spnT}JgX_0\in\spnMat_{a,b}(\F_q).
+\end{equation}
+Neither form need be zero or nondegenerate. Two such frames exist exactly when
+$a-s_1\le n$ and $b-s_0\le n$. Every independent family of $a$ output
+functionals has the form $Y^{\spnT}J$, so \eqref{spn:eq:complete-observation}
+is the compression of \cref{spn:sec:positive-type} between arbitrary
+subspaces.
+
+For integers $d,s\ge0$ put
+\begin{equation}\label{spn:eq:E-count}
+ \spnEmb_n(d,s)=q^{2nd-\binom d2}\prod_{j=n-d+s+1}^{n}(1-q^{-2j})
+ \quad\text{if }0\le2s\le d\text{ and }d-s\le n,
+\end{equation}
+and $\spnEmb_n(d,s)=0$ otherwise; empty products are one, so
+$\spnEmb_n(0,0)=1$.
+
+\begin{lemma}[Prescribed-Gram frames; \stU]\label{spn:lem:gram-frames}
+Let $E$ be a $d$-dimensional alternating space of rank $2s$. The number of
+isometric injections $E\to V$ is $\spnEmb_n(d,s)$, and $\Sp(V)$ acts
+transitively on them whenever there is one.
+\end{lemma}
+
+\begin{proof}
+Write $E=S\oplus R$ with $S$ nondegenerate of dimension $2s$ and $R$ the
+radical, of dimension $h=d-2s$. A symplectic basis of $S$ embeds in
+$\abs{\Sp_{2n}(\F_q)}/\abs{\Sp_{2(n-s)}(\F_q)}$ ways. Once its image is fixed,
+an ordered basis of $R$ must go to an independent isotropic $h$-frame in the
+orthogonal complement, which is symplectic of dimension $2(n-s)$; after $i$
+radical vectors have been chosen, the next lies in their orthogonal complement
+and outside their span, which leaves $q^{2(n-s)-i}-q^i$ choices. So the count is
+nonzero exactly when $h\le n-s$, and
+$\abs{\Sp_{2u}(\F_q)}=q^{u^2}\prod_{j=1}^u(q^{2j}-1)$ turns it into
+\eqref{spn:eq:E-count}, the remaining factors having the consecutive indices
+$n-d+s+1,\dots,n$. For transitivity, extend the image of the symplectic basis
+of $S$ to a symplectic decomposition of $V$. In its complement, extend the
+ordered isotropic basis $z_1,\dots,z_h$ of the image of $R$ to a symplectic
+basis: independence of the functionals $\langle z_i,\cdot\rangle$ permits
+choosing a partner of $z_1$ pairing to one with $z_1$ and to zero with the
+later $z_i$; remove that hyperbolic plane, continue, and complete the residual
+complement by symplectic pairs. The change of symplectic basis between two
+such completions carries one prescribed frame to the other. This is the
+alternating case of Witt's extension theorem, and the argument works in
+characteristic two.
+\end{proof}
+
+For a proposed value $M\in\spnMat_{a,b}(\F_q)$ form the alternating matrix
+\begin{equation}\label{spn:eq:combined-gram}
+ \Gamma_M=\begin{pmatrix}H_1&M\\-M^{\spnT}&H_0\end{pmatrix}
+\end{equation}
+on $E=E_1\oplus E_0=\F_q^a\oplus\F_q^b$, write $\rank\Gamma_M=2s$ and
+$r=a+b-2s$, let $R=\operatorname{rad}\Gamma_M$, and put
+\[
+ t_1=\dim(R\cap E_1)=\dim(\ker H_1\cap\ker M^{\spnT}),\qquad
+ t_0=\dim(R\cap E_0)=\dim(\ker H_0\cap\ker M),
+\]
+and $c=r-t_0-t_1$.
+With $\spnqbin uvq$ the number of $v$-subspaces of $\F_q^u$ (zero outside
+$0\le v\le u$) and $\abs{\GL_0(\F_q)}=1$, define for $0\le\ell\le r$ the
+nonnegative integer
+\begin{equation}\label{spn:eq:T-count}
+ T_\ell(r,t_0,t_1)=\sum_{k=\max(0,\ell-c)}^{\min(\ell,t_0,t_1)}
+ \spnqbin{t_0}kq\spnqbin{t_1}kq\abs{\GL_k(\F_q)}\spnqbin{c}{\ell-k}q
+ q^{(\ell-k)(t_0+t_1-k)} .
+\end{equation}
+
+\begin{lemma}[Relations meeting neither frame; \stU]\label{spn:lem:transverse}
+The number of $\ell$-dimensional subspaces $L\le R$ with
+$L\cap E_0=L\cap E_1=0$ is $T_\ell(r,t_0,t_1)$. Such a subspace exists exactly
+when $0\le\ell\le r-\max(t_0,t_1)=c+\min(t_0,t_1)$.
+\end{lemma}
+
+\begin{proof}
+Put $R_i=R\cap E_i$, choose a complement $C$ of $R_0\oplus R_1$ in $R$, and set
+$J_L=L\cap(R_0\oplus R_1)$. Both coordinate projections of $J_L$ are
+injective, so if $\dim J_L=k$ it is the graph of an isomorphism between a
+$k$-subspace of $R_0$ and a $k$-subspace of $R_1$; there are
+$\spnqbin{t_0}kq\spnqbin{t_1}kq\abs{\GL_k(\F_q)}$ choices. The projection $D$
+of $L$ to $C$ has dimension $\ell-k$, with $\spnqbin c{\ell-k}q$ choices. For
+fixed $J_L$ and $D$, the possible $L/J_L$ are the graphs of the linear maps
+$D\to(R_0\oplus R_1)/J_L$, of which there are $q^{(\ell-k)(t_0+t_1-k)}$; all of
+them meet $R_0\oplus R_1$ in $J_L$ and meet neither $R_i$. The inequality
+$\ell+t_i\le r$ is necessary. It is sufficient: take the graph of an
+isomorphism between subspaces of $R_0$ and $R_1$ of dimension
+$\min(t_0,t_1)$, add $C$, and pass to any smaller subspace.
+\end{proof}
+
+\begin{theorem}[Complete compression law; \stU]\label{spn:thm:complete-law}
+Over every finite field and for every $M\in\spnMat_{a,b}(\F_q)$,
+\begin{equation}\label{spn:eq:complete-law}
+ \spnP\bigl(M(g)=M\bigr)=
+ \frac{\sum_{\ell=0}^{r}T_\ell(r,t_0,t_1)\,\spnEmb_n(a+b-\ell,s)}
+ {\spnEmb_n(a,s_1)\,\spnEmb_n(b,s_0)} ,
+\end{equation}
+and the $\ell$th summand divided by the same denominator is
+$\spnP\bigl(M(g)=M,\ \dim(\spnim Y\cap\spnim gX_0)=\ell\bigr)$. For fixed
+$n,q,H_0,H_1$ the likelihood is a function of the triple $(s,t_0,t_1)$. The
+support is exactly
+\begin{equation}\label{spn:eq:complete-support}
+ \spnP\bigl(M(g)=M\bigr)>0\iff s+\max(t_0,t_1)\le n .
+\end{equation}
+More generally, for arbitrary alternating $H_1,H_0$ and an arbitrary cross
+matrix $M$, with no frames assumed to exist, the least dimension of a
+nondegenerate alternating space containing injective realizations of both
+forms with cross pairing $M$ is $2(s+\max(t_0,t_1))$.
+\end{theorem}
+
+\begin{proof}
+By \cref{spn:lem:gram-frames}, $gX_0$ is uniform among its
+$\spnEmb_n(b,s_0)$ possible values. A symplectic change of coordinates
+carrying one target frame to another carries the source frames giving a
+prescribed $M$, and a prescribed intersection dimension, bijectively onto each
+other. So the target may also be taken uniform among its $\spnEmb_n(a,s_1)$
+values, independently, and it suffices to count pairs $(Y,X)$ of
+prescribed-Gram injections with $Y^{\spnT}JX=M$.
+
+Each such pair is the map $F\colon E\to V$, $F(u,v)=Yu+Xv$, with Gram matrix
+$\Gamma_M$ and injective restrictions to $E_1$ and $E_0$. Its kernel $L$ lies
+in $R$, since $\Gamma_M(z,w)=\langle Fz,Fw\rangle$ vanishes for all $w$ when
+$Fz=0$, and injectivity on the summands says $L\cap E_1=L\cap E_0=0$.
+Conversely, for such an $L$ of dimension $\ell$ the form descends to $E/L$,
+of dimension $a+b-\ell$ and rank $2s$, and each isometric injection
+$E/L\to V$ gives exactly one admissible $F$ with kernel $L$. Lemmas
+\ref{spn:lem:gram-frames} and \ref{spn:lem:transverse} count the two choices,
+which proves \eqref{spn:eq:complete-law}. The map $(u,v)\mapsto Yu=-Xv$
+identifies $\ker F$ with $\spnim Y\cap\spnim X$, which gives the refinement.
+
+A summand is positive exactly when a transverse kernel of dimension $\ell$
+exists and its quotient embeds, that is, when $\ell\le r-\max(t_0,t_1)$ and
+$\ell\ge a+b-s-n$. Since $r=a+b-2s$, these are compatible exactly when
+$s+\max(t_0,t_1)\le n$. The largest transverse kernel has dimension
+$r-\max(t_0,t_1)$; its quotient has rank $2s$ and radical dimension
+$\max(t_0,t_1)$, so it embeds in dimension $2(s+\max(t_0,t_1))$ by
+\cref{spn:lem:gram-frames}, and the quotient map is injective on each summand.
+Any realization produces a transverse kernel and so cannot use less. This
+argument does not presuppose that the two frames are realizable separately.
+\end{proof}
+
+The minimum is attained constructively. Write $R=R_1\oplus R_0\oplus C$ with
+bases $u_i$ of $R_1$ and $v_i$ of $R_0$, and take
+$L=\operatorname{span}\set{u_i+v_i:i\le\min(t_0,t_1)}\oplus C$; map hyperbolic
+pairs of the nondegenerate part of $\Gamma_M$ to standard pairs, $L$ to zero,
+and a completion of $L$ to a basis of $R$ to independent isotropic vectors in
+$2\max(t_0,t_1)$ further coordinates. An implementation that outputs and
+checks such frames passes $805$ exhaustive cross-matrix
+cases.\footnote{\artifact{symplectic_compression_2026-11-26/results/minimal_realization.json}}
+
+Both the symplectic law and the uniform law are constant on each class of
+matrices sharing a triple $(s,t_0,t_1)$, so the triple is sufficient for every
+likelihood test, and the total variation distance between the two matrix laws
+equals the distance between the induced laws of the triple; different triples
+may still give equal likelihoods. Conditional on an observed $M$ of positive
+probability, the intersection dimension has law proportional to
+$T_\ell\spnEmb_n(a+b-\ell,s)$, and given also $\ell$ all admissible relation
+spaces $L$ are equally likely. Three special cases are worth recording.
+\begin{itemize}
+\item If $H_0$ and $H_1$ are nondegenerate, then $t_0=t_1=0$,
+$T_\ell=\spnqbin r\ell q$, and the likelihood depends only on
+$\rank\Gamma_M=a+\rank(H_0+M^{\spnT}H_1^{-1}M)$, the rank of an alternating
+residual form rather than the rank of $M$.
+\item If both frames are isotropic, then $\rank\Gamma_M=2\rank M$,
+$t_1=a-\rank M$ and $t_0=b-\rank M$, so the likelihood depends only on
+$\rank M$, as used in the proof of \cref{spn:thm:symplectic-exact}.
+\item If $a=b=n$ and $H_1=0$, the target is Lagrangian; with $K=\ker M$ one has
+$\rank\Gamma_M=2\rank M+\rank(H_0|_{K\times K})$, $t_1=n-\rank M$ and
+$t_0\le\dim K=t_1$, so \eqref{spn:eq:complete-support} says that $M$ occurs
+exactly when $K$ is $H_0$-isotropic. \Cref{spn:thm:lagrangian} gives the
+likelihood in closed form in this case.
+\end{itemize}
+Evaluating one likelihood needs Gaussian elimination for the invariants and
+$O((a+b)^2)$ further integer operations, without enumerating the group. The
+law was compared with direct enumeration of prescribed-Gram source frames in
+$33$ configurations, covering $2{,}305$ matrix values and $4{,}279$ joint
+cells, including all frame types through dimension three in a
+four-dimensional binary space, cases over $\F_3$ and genuine extension-field
+cases over $\F_4$; an independent implementation checks $1{,}213$ further
+matrix values, a separate checker verifies \cref{spn:lem:transverse} on
+$3{,}614$ subspaces, and a second exhaustive check over $\F_2$ and $\F_3$ in
+ambient dimensions two to six finds, for instance, exactly $174$ of the $512$
+binary $3\times3$ matrices supported for two three-dimensional frames of
+rank two in dimension
+four.\footnote{\raggedright\artifact{symplectic_compression_2026-11-26/results/complete_law.json},
+\artifact{symplectic_compression_2026-11-26/results/independent_frame_audit.json},
+\artifact{symplectic_compression_2026-11-26/results/radical_transversality.json},
+\artifact{prime_endpoints_and_symplectic_compressions/compression/verification.txt}}
+The orbit classification of a tuple by its kernel and induced form is
+classical; see \cite[Lemma~2.6]{GuralnickLarsenTiep2024Character} and, for
+related counts of pairs of subspaces with prescribed intersection and
+nondegeneracy, \cite{DeBoeckVandeVoorde2024Anzahl}.
+
+\paragraph{The first deviation from uniformity.}
+For fixed frames the exact law determines the correction to independent
+uniform entries at every matrix. Put $d=a+b$, $\sigma_q(u)=\sum_{j=0}^{u-1}q^{2j}$
+(so $\sigma_q(0)=0$), and note that the number of transverse lines is
+$T_1=(q^r-q^{t_0}-q^{t_1}+1)/(q-1)$, the lines of $R$ minus those in $R_0$ or
+$R_1$.
+
+\begin{theorem}[First correction and its sharp rate; \stU]\label{spn:thm:first-correction}
+Fix $q,a,b,H_1,H_0$ and let $n\to\infty$. For $M\in\spnMat_{a,b}(\F_q)$ with
+invariants $s,r,t_0,t_1$ put
+\[
+ K(M)=q^{d-1}T_1-\sigma_q(d-s)+\sigma_q(a-s_1)+\sigma_q(b-s_0),
+\]
+with the first term read as zero if $d=0$. Then, uniformly in $M$,
+\begin{gather*}
+ q^{ab}\spnP\bigl(M(g)=M\bigr)=1+q^{-2n}K(M)+O(q^{-4n}),\
+ \spnTV\bigl(M(g),Z\bigr)=\frac{q^{-2n}}{2q^{ab}}\sum_M\abs{K(M)}+O(q^{-4n}),
+\end{gather*}
+where $Z$ is uniform on $\spnMat_{a,b}(\F_q)$. For every $n$ and all $a,b\ge1$,
+\begin{equation}\label{spn:eq:scalar-lower}
+ \spnTV\bigl(M(g),Z\bigr)\ge\frac{q-1}{q(q^{2n}-1)} ,
+\end{equation}
+so the coefficient of $q^{-2n}$ is at least $(q-1)/q$ and the rate $q^{-2n}$
+is sharp for every pair of nonempty frames. If $a=0$ or $b=0$ the law is
+trivially uniform.
+\end{theorem}
+
+\begin{proof}
+Put $z=q^{-2n}$ and $C(u,z)=\prod_{j=0}^{u-1}(1-q^{2j}z)$. Extracting powers of
+$q$ from \eqref{spn:eq:E-count}, and using
+$\binom d2-\binom a2-\binom b2=ab$, the law becomes
+\[
+ q^{ab}\spnP\bigl(M(g)=M\bigr)=\frac{\sum_{\ell=0}^rT_\ell\,
+ q^{d\ell-\ell(\ell+1)/2}z^\ell\,C(d-\ell-s,z)}{C(a-s_1,z)\,C(b-s_0,z)} ;
+\]
+this holds at every admissible $n$, since a quotient too large to embed
+contributes the vanishing factor $j=n$. The denominator has constant term one
+and $C(u,z)=1-\sigma_q(u)z+O(z^2)$. Only $\ell=0$ and $\ell=1$ contribute to the
+linear coefficient, with $-\sigma_q(d-s)$ and $q^{d-1}T_1$, and inverting the
+denominator adds $\sigma_q(a-s_1)+\sigma_q(b-s_0)$. There are finitely many
+$M$, so the remainder is uniform, and $\bigl|\abs{x+y}-\abs x\bigr|\le\abs y$
+gives the distance after summation.
+
+For \eqref{spn:eq:scalar-lower} take nonzero $u\in\F_q^a$, $v\in\F_q^b$. The
+scalar $u^{\spnT}M(g)v$ is the pairing of the fixed nonzero vector $Yu$ with
+$gX_0v$, which is uniform on $\F_q^{2n}\setminus\set0$ because $\Sp(V)$ is
+transitive on nonzero vectors. So it vanishes with probability
+$(q^{2n-1}-1)/(q^{2n}-1)$ and takes each nonzero value with probability
+$q^{2n-1}/(q^{2n}-1)$, while under $Z$ it is uniform; the distance between these
+two laws is $(q-1)/(q(q^{2n}-1))$, and a function of an observation cannot
+increase total variation.
+\end{proof}
+
+Every nontrivial additive character $\psi$ satisfies
+\[
+ \spnE\psi\bigl(u^{\spnT}M(g)v\bigr)=-\frac1{q^{2n}-1},\qquad
+ q^{-ab}\sum_MK(M)\psi(u^{\spnT}Mv)=-1,
+\]
+so every nonzero rank-one character
+test sees the same first-order bias whatever the two forms. The constants in
+\cref{spn:thm:first-correction} depend on $q,a,b,H_0,H_1$. In ambient
+dimension $2n$, \cref{spn:thm:symplectic} gives only the exponent
+$(2n+1-a-b)/2$, but uniformly in the frame sizes, and
+\cref{spn:thm:symplectic-exact} shows that the fixed-size rate cannot persist
+when $a$ and $b$ grow with $n$.
+
+\begin{theorem}[Two symplectic planes; \stU]\label{spn:thm:two-plane}
+Let $a=b=2$ and $H_1=H_0=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$.
+For every prime power $q$, every $n\ge1$ and every $M\in\spnMat_2(\F_q)$,
+\[
+ q^4\spnP\bigl(M(g)=M\bigr)=
+ \begin{cases}
+ \dfrac{1+(q^3-q^2)q^{-2n}}{1-q^{-2n}},&\det M=1,\\[8pt]
+ \dfrac{1-q^{2}q^{-2n}}{1-q^{-2n}},&\det M\ne1,
+ \end{cases}
+\]
+and
+$\spnTV\bigl(M(g),Z\bigr)=(q^3-q^2+1)(q^2-1)/\bigl(q^3(q^{2n}-1)\bigr)$.
+\end{theorem}
+
+\begin{proof}
+Block elimination and $M^{\spnT}H_1M=(\det M)H_1$ give
+$\rank\Gamma_M=2+\rank\bigl((1-\det M)H_1\bigr)$, and both coordinate
+intersections of the radical vanish. If $\det M\ne1$ then $s=2$, $r=0$ and the
+numerator is $\spnEmb_n(4,2)$. If $\det M=1$ then $s=1$, $r=2$,
+$(T_0,T_1,T_2)=(1,q+1,1)$, and the numerator is
+$\spnEmb_n(4,1)+(q+1)\spnEmb_n(3,1)+\spnEmb_n(2,1)$. Dividing by
+$\spnEmb_n(2,1)^2$ and writing $z=q^{-2n}$, the critical numerator is
+$(1-q^2z)(1-q^4z)+(q+1)q^3z(1-q^2z)+q^5z^2=1+(q^3-q^2)z$. There are $q(q^2-1)$
+matrices of determinant one, the only ones where the likelihood exceeds one,
+each with excess $(q^3-q^2+1)/(q^{2n}-1)$; multiplying by their uniform mass
+$(q^2-1)/q^3$ gives the distance.
+\end{proof}
+
+At $n=1$ the second likelihood vanishes and the law is uniform on
+$\SL_2(\F_q)$, as it must be for two symplectic bases of one plane. For $q=3$
+and $n=2$, each of the $24$ matrices of determinant one has probability
+$11/720$, each of the other $57$ has probability $1/90$, and the distance is
+$19/270$; in particular $I_2$ and $\operatorname{diag}(1,2)$ have equal rank and
+different probabilities, and their least realization dimensions are two and
+four. For $q>2$ ordinary rank is therefore not a sufficient statistic, even
+among invertible matrices. Exact polynomial arithmetic checks
+\cref{spn:thm:first-correction,spn:thm:two-plane} in $388$ matrix
+cases.\footnote{\artifact{symplectic_compression_2026-11-26/results/asymptotics.json}}
 
 %======================================================================
 \subsection{Lagrangian projections of an arbitrary alternating form}\label{spn:sec:lagrangian}
@@ -1298,8 +1612,12 @@ can be embedded. For uniform $g\in\Sp_{2n}(\F_q)$ write
 In the notation of \cref{spn:sec:positive-type}, $A$ is the compression of $g$ between the
 column space of $X_0$, on which the symplectic form restricts to $H$, and the first $n$
 coordinate functionals; under the symplectic identification of $V$ with $V^*$ these functionals
-span the Lagrangian $\langle f_1,\dots,f_n\rangle$. For $H=0$ both spaces are Lagrangian, which
-is the case $c=0$ of \cref{spn:thm:symplectic-exact}. Let $U_n$ be uniform on
+span the Lagrangian $\langle f_1,\dots,f_n\rangle$. With the target frame $Y=(0;I_n)$ one has
+$Y^{\spnT}J_ngX_0=-A$, so this is the case $a=b=n$, $H_1=0$, $H_0=H$ of
+\cref{spn:thm:complete-law}, whose support condition there says that $\ker A$ is
+$H$-isotropic; in this case the sum \eqref{spn:eq:complete-law} has a closed form, which a
+direct fibre count gives. For $H=0$ both spaces are Lagrangian, which is the case $c=0$ of
+\cref{spn:thm:symplectic-exact}. Let $U_n$ be uniform on
 $\spnMat_n(\F_q)$. For a fixed matrix $M$ put
 \[
  K=\ker M,\qquad k=\dim K,\qquad t=\dim(K\cap\operatorname{rad}H),\qquad
@@ -1308,7 +1626,7 @@ $\spnMat_n(\F_q)$. For a fixed matrix $M$ put
 and call $K$ \emph{$H$-isotropic} if $x^{\spnT}Hy=0$ for all $x,y\in K$. Empty products equal
 one.
 
-\begin{theorem}[Likelihood of every Lagrangian projection; \stU]\label{spn:thm:lagrangian}
+\begin{corollary}[Likelihood of every Lagrangian projection; \stU]\label{spn:thm:lagrangian}
 Over every finite field,
 \begin{equation}\label{spn:eq:lagrangian-density}
  \frac{\spnP(A=M)}{q^{-n^2}}=
@@ -1318,30 +1636,18 @@ Over every finite field,
  0,&\text{otherwise}.
  \end{cases}
 \end{equation}
-\end{theorem}
+\end{corollary}
 
 \begin{proof}
-\emph{The frame orbit.} By Witt's extension theorem, an isometry between two subspaces of a
-nondegenerate alternating space, degenerate or not, extends to an isometry of the whole
-space. Applied to the column spans of two injective frames with Gram matrix $H$, it shows
-that $\Sp_{2n}(\F_q)$ acts transitively on
+\emph{The frame orbit.} By \cref{spn:lem:gram-frames}, $\Sp_{2n}(\F_q)$ acts transitively on
 \[
  \mathcal X_H=\set{X\in\spnMat_{2n,n}(\F_q):\rank X=n,\ X^{\spnT}J_nX=H},
 \]
-so $gX_0$ is uniform on $\mathcal X_H$; see also the form-prescribed sampling framework of
-\cite{Ishizuka2026Uniform}. To count $\mathcal X_H$, change the basis of the domain so that
-$H$ consists of a standard nondegenerate $2s$-block and a zero $d$-block. Choose the $s$
-symplectic pairs in order: in a nondegenerate space of dimension $2N$ the first member has
-$q^{2N}-1$ choices and its partner, with prescribed pairing one, has $q^{2N-1}$; then pass to
-the orthogonal complement. The $d$ radical vectors must form an independent isotropic frame in
-the remaining nondegenerate space of dimension $2(n-s)$, and after $i$ of them the next has
-$q^{2(n-s)-i}-q^i$ choices. Hence
+so $gX_0$ is uniform on $\mathcal X_H$ (see also the form-prescribed sampling framework of
+\cite{Ishizuka2026Uniform}), and
 \begin{equation}\label{spn:eq:frame-orbit}
- \abs{\mathcal X_H}=\prod_{i=0}^{s-1}(q^{2n-2i}-1)q^{2n-2i-1}
- \prod_{i=0}^{d-1}(q^{2(n-s)-i}-q^i)=q^{n(3n+1)/2}C_{n,s},
+ \abs{\mathcal X_H}=\spnEmb_n(n,s)=q^{n(3n+1)/2}C_{n,s}.
 \end{equation}
-the non-power factors of the two products having the indices $n-s+1,\dots,n$ and
-$s+1,\dots,n-s$.
 
 \emph{The fibre over $M$.} The Gram condition on $(M;B)$ is
 \begin{equation}\label{spn:eq:lagrangian-gram}
@@ -3154,13 +3460,17 @@ growing like $\exp(f^{c})$ for a fixed $c>0$ would exceed the permitted
 scale.
 \end{question}
 
-\begin{question}[General symplectic compressions]\label{spn:q:symplectic}
-For two arbitrary compressed subspaces of a symplectic space, neither of them
-Lagrangian, determine the law of the compression, or at least its limiting
-discrepancy from the uniform matrix law, in terms of the restricted
-alternating forms. \Cref{spn:thm:symplectic-exact} treats two isotropic
-subspaces and \cref{spn:thm:lagrangian} a Lagrangian target with an arbitrary
-source form.
+\begin{question}[Growing symplectic compressions]\label{spn:q:symplectic}
+\Cref{spn:thm:complete-law} gives the exact law of every symplectic compression, and
+\cref{spn:thm:first-correction} its first correction for fixed frames. Determine the limiting
+total variation distance from the uniform matrix law along sequences in which both frame
+dimensions grow with the ambient dimension and both restricted forms are arbitrary;
+\cref{spn:thm:symplectic-exact,spn:thm:rank-blind,spn:thm:growing-form} treat isotropic pairs
+and Lagrangian targets. A closed answer would need the law of the triple $(s,t_0,t_1)$ under a
+uniform rectangular matrix. The analogous laws for nonuniform positive-type weights, which need
+representation-theoretic information beyond orbit counts, and for symmetric or Hermitian forms,
+where in characteristic two quadratic data cannot be replaced by a symmetric matrix, are also
+open.
 \end{question}
 
 \begin{question}[The binary principal nullity in the critical window]\label{spn:q:binary}

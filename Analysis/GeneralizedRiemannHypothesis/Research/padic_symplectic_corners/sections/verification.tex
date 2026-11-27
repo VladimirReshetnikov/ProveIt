@@ -1,0 +1,115 @@
+\section{Verification, reproduction, and limits}
+\label{sec:verification}
+
+\subsection{What the computations verify}
+
+The main validation script does not sample random matrices. It
+exhaustively enumerates ordered vector pairs $(v,w)$ with symplectic
+pairing one, records every projected corner, and compares every
+output probability with the exact rational density. Transitivity
+proved above identifies this uniform frame experiment with the
+appropriate Haar-group compression. Direct integer counts are
+independent of the valuation formula being tested.
+
+Across twelve ring-and-dimension cases, the script examined
+\textbf{110,894,547 ordered pairs}, found
+\textbf{14,979,168 symplectic frames}, and compared
+\textbf{20,067 output-matrix probabilities}. All comparisons passed.
+The cases include $\mathbb Z/2$, $\mathbb Z/4$, $\mathbb Z/8$,
+$\mathbb Z/3$, $\mathbb Z/9$, $\mathbb F_4$,
+$\mathbb F_2[t]/(t^2)$, $\mathbb F_2[t]/(t^3)$, and
+$\mathbb Z_2[\sqrt2]/((\sqrt2)^3)$, with ambient dimensions four
+and six. Together these cases test equal characteristic with
+nilpotents, a nonprime residue field, and ramification.
+
+The same script checks normalization, likelihood signs, both exact
+distance formulas, the full lower-precision hierarchy, and the
+$8/5$ rejection envelope for 704 parameter triples, using rational
+arithmetic. It also enumerates all 67 subspaces of $\mathbb F_2^4$
+and all 4,489 ordered pairs of these subspaces, verifying the
+differential rank $ab-\binom{s}{2}$ for each pair.
+These finite checks corroborate the proofs; they are not substitutes
+for the proofs or a formal proof-assistant certification.
+
+The taller-corner extension was checked separately over $\mathbb F_2$
+in ambient dimensions six and eight, and over $\mathbb F_3$ in dimension
+six, always with four visible coordinates. All 7,073 output probabilities
+agreed with Corollary~\ref{cor:taller}. These additional checks are not
+included in the twelve-case totals above.
+
+An independent implementation separately enumerated all frames
+over $\mathbb Z/4$, $\mathbb F_2[t]/(t^2)$ and $\mathbb F_4$, and
+again matched every likelihood. The accompanying review checked
+the mathematical arguments, with special attention to the terminal
+finite-ring term, the characteristic-two lifting step, and the
+distinction between the two total-variation comparisons. This is
+an independent computational and derivational check within this
+research workflow, not external peer review.
+
+\subsection{Reproducible contents}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.37\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Artifact & Purpose \\
+\midrule
+\artifact{report.tex}, \artifact{sections/} & Complete LaTeX source and
+all mathematical arguments. \\
+\artifact{report.pdf} & Compiled paper. \\
+\artifact{code/verify.py} & Exhaustive finite-ring and tangent-rank
+checks; writes \artifact{results/verification.json}. \\
+\artifact{code/independent_ring_check.py} & Separate small-ring
+implementation using ordinary Python loops and rational numbers. \\
+\artifact{code/sample.py} & Exact rational rejection sampler for
+corners over $\mathbb Z/p^e\mathbb Z$. \\
+\artifact{code/figures.py} & Recreates the paper's figure from the
+proved formulas. \\
+\artifact{provenance/} & Pinned source identities, literature comparison,
+and review scope. \\
+\artifact{SHA256SUMS} & File-level integrity checks for the package. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Run \artifact{python3 code/verify.py} from the package directory.
+NumPy is used only to accelerate exhaustive enumeration; the
+arithmetic conclusions are exact integers and rational numbers.
+The independent checker and the sampler use the Python standard
+library. For example,
+\artifact{python3 code/sample.py --p 2 --g 2 --e 20 --count 5}
+samples modulo $2^{20}$ without constructing a full symplectic matrix.
+The sampler's ideal-randomness law is exact; the provided command-line
+demonstration uses Python's pseudorandom generator.
+
+Recreate the figure with \artifact{python3 code/figures.py}, which
+requires Matplotlib and NumPy. Rebuild the paper with
+\artifact{latexmk -pdf report.tex}. No new Lean or Rocq theorem is
+claimed, and no upstream build output is included as though it were
+produced in this investigation.
+
+\subsection{What remains open}
+
+The general rectangular lifting theorem is an exact local criterion,
+but not an exact distribution for every choice of large frames.
+When both sides contain several symplectic pairs, the residual
+alternating Gram matrix is a matrix rather than a scalar. Computing
+the resulting complete local density and identifying all frame types
+for which first-digit total variation is preserved are natural next
+questions. The endpoint $g=1$ already shows that precision preservation
+is not automatic.
+
+The $O(q^{-4g})$ assertion holds with fixed residue field and fixed
+frame dimensions. When those dimensions grow with $g$, the explicit
+two-plane bound in \eqref{eq:padic-B}, rather than the fixed-frame
+abbreviation, is the applicable statement. Its sharpness concerns
+the distance from a uniform lift of the finite-field law; in the
+symplectic-plane example the increase of distance from independent
+entries is exactly zero.
+
+Finally, these results furnish local matrix laws that can be used
+in arithmetic counting and spanning arguments. They do not by
+themselves supply a new global lattice comparison or prove GRH for
+any larger class of $L$-functions. Their contribution is a complete,
+quantitative passage from finite-field compression to all local
+precisions, with exact consequences in the symplectic-pair case.

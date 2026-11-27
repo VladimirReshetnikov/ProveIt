@@ -1,0 +1,262 @@
+\section{Setup and the exact law}\label{sec:law}
+
+Let $q$ be a prime power, and let $V$ be a $2m$-dimensional vector space
+over $\F_q$ with a nondegenerate alternating form of Gram matrix $J$.
+An alternating matrix has zero diagonal and satisfies $K^{\tr}=-K$;
+in characteristic two the zero-diagonal condition is essential.
+Fix injective ordered frames
+\[
+ X_0:\F_q^a\longrightarrow V,\qquad B:\F_q^b\longrightarrow V,
+\]
+and put
+\[
+ H=X_0^{\tr}JX_0,\quad S=B^{\tr}JB,\quad
+ \rank H=2h,\quad\rank S=2s.
+\]
+For $g$ uniform on $\Sp(V)$, define the compression
+\begin{equation}\label{eq:compression}
+ M=B^{\tr}JgX_0\in\Mat_{b,a}(\F_q).
+\end{equation}
+Using a covector frame instead is equivalent, since $J$ identifies $V$
+with its dual. No assumption is made about the relative position of the
+two frames.
+
+For an alternating space of dimension $d$ and rank $2r$, define
+\begin{equation}\label{eq:E}
+ \mathcal E_m(d,r)=
+ \prod_{i=0}^{r-1}\bigl((q^{2(m-i)}-1)q^{2(m-i)-1}\bigr)
+ \prod_{i=0}^{d-2r-1}(q^{2(m-r)-i}-q^i)
+\end{equation}
+when $0\le2r\le d$ and $d-r\le m$, and set it to zero otherwise.
+Empty products are one. This counts injective form-preserving maps into
+$V$. On the feasible range it also equals
+\begin{equation}\label{eq:Ecompact}
+ \mathcal E_m(d,r)=
+ q^{\,2mr-r^2+\binom{d-2r}{2}}
+ \prod_{j=m-d+r+1}^{m}(q^{2j}-1).
+\end{equation}
+In particular $\mathcal E_m(0,0)=1$.
+
+Let $\gb nk$ be the Gaussian coefficient, zero outside $0\le k\le n$,
+and let
+\[
+ G_i(q)=|\GL_i(\F_q)|=\prod_{j=0}^{i-1}(q^i-q^j),\qquad G_0(q)=1.
+\]
+For $z,p,t\ge0$ with $p+t\le z$, put $w=z-p-t$ and set
+\begin{equation}\label{eq:T}
+ \mathcal T_{z,p,t}(k)=
+ \sum_{\substack{0\le i\le\min(p,t,k)\\0\le k-i\le w}}
+ \gb pi\gb ti G_i(q)\gb w{k-i}
+ q^{(k-i)(p+t-i)}.
+\end{equation}
+This is a nonnegative integer, symmetric in $p,t$.
+
+\Needspace{17\baselineskip}
+\begin{theorem}[Exact arbitrary compression law]\label{thm:law}
+For $C\in\Mat_{b,a}(\F_q)$, form
+\begin{equation}\label{eq:joint}
+ \mathcal G_C=\begin{pmatrix}S&C\\-C^{\tr}&H\end{pmatrix},
+ \quad r=\tfrac12\rank\mathcal G_C,\quad z=a+b-2r.
+\end{equation}
+Put
+\begin{equation}\label{eq:pt}
+ p=\dim(\rad S\cap\ker C^{\tr}),\qquad
+ t=\dim(\rad H\cap\ker C).
+\end{equation}
+Then, over every finite field,
+\begin{equation}\label{eq:law}
+ \boxed{\displaystyle
+ \PP(M=C)=
+ \frac{\sum_{k=0}^{z}\mathcal T_{z,p,t}(k)\,
+                   \mathcal E_m(a+b-k,r)}
+      {\mathcal E_m(b,s)\mathcal E_m(a,h)}.}
+\end{equation}
+The likelihood relative to uniform matrices is $q^{ab}\PP(M=C)$.
+For fixed input dimensions and forms, each probability depends on $C$
+only through $(r,p,t)$.
+\end{theorem}
+
+\begin{theorem}[Support and least ambient dimension]\label{thm:support}
+In this setting,
+\begin{equation}\label{eq:support}
+ \boxed{\PP(M=C)>0\quad\Longleftrightarrow\quad r+\max(p,t)\le m.}
+\end{equation}
+More generally, for arbitrary alternating $S,H$ and arbitrary $C$, the
+least dimension of a nondegenerate alternating space admitting
+individually injective frames with these three Gram blocks is
+$2\bigl(r+\max(p,t)\bigr)$.
+\end{theorem}
+
+The combined frame need not be injective: the source and target images
+may intersect. Keeping only $k=0$ in \eqref{eq:law} would omit those
+intersections and give incorrect probabilities and support.
+
+\section{Proof of the exact law}\label{sec:proof}
+
+\begin{lemma}[Embedding count and transitivity]\label{lem:embedding}
+An alternating space of dimension $d$ and rank $2r$ embeds injectively
+and isometrically into $V$ if and only if $d-r\le m$. Its number of
+embeddings is $\mathcal E_m(d,r)$, and $\Sp(V)$ acts transitively on them.
+\end{lemma}
+
+\begin{proof}
+Split the domain into $r$ symplectic pairs and a radical of dimension
+$d-2r$. Once the nondegenerate part is embedded, the radical must map
+to an independent isotropic frame in its $2(m-r)$-dimensional
+orthogonal complement. Existence is equivalent to
+$d-2r\le m-r$, which is the asserted condition.
+
+In dimension $2N$, the first member of a symplectic pair has $q^{2N}-1$
+choices, and a partner with pairing one has $q^{2N-1}$ choices.
+Pass to their orthogonal complement and repeat. This gives the first
+product in \eqref{eq:E}. After $i$ radical vectors are chosen, their
+common perpendicular space has dimension $2(m-r)-i$. Exclude their
+$q^i$-element span to keep the next vector independent. This gives the
+second product.
+
+An isometry between two embedded subspaces extends to the ambient
+symplectic space by Witt's lemma \cite[Theorem 3.4]{SprehnWahl}. Directly,
+split off the nondegenerate part, complete each radical basis to
+hyperbolic pairs in its orthogonal complement, extend to symplectic
+bases, and map one completed basis to the other. Thus transitivity
+also covers degenerate subspaces and characteristic two.
+\end{proof}
+
+Consequently $gX_0$ is uniform on the $\mathcal E_m(a,h)$ injective
+frames with Gram matrix $H$.
+
+\begin{lemma}[Avoiding two disjoint subspaces]\label{lem:transverse}
+Let $R$ have dimension $z$ and let $P,T\subset R$ be disjoint subspaces
+of dimensions $p,t$. The number of $k$-subspaces $K\subset R$ with
+$K\cap P=K\cap T=0$ is $\mathcal T_{z,p,t}(k)$. Such subspaces exist
+exactly for
+\begin{equation}\label{eq:kmax}
+ 0\le k\le z-\max(p,t).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Fix $R=P\oplus T\oplus W$, with $\dim W=w$.
+The subspace $K_0=K\cap(P\oplus T)$, of dimension $i$, must be the
+graph of an isomorphism between an $i$-subspace of $P$ and an
+$i$-subspace of $T$. There are $\gb pi\gb tiG_i(q)$ choices.
+The projection of $K$ onto $W$ is a $(k-i)$-subspace $L$, with
+$\gb w{k-i}$ choices. For fixed $K_0,L$, the remaining data are an
+arbitrary map $L\to(P\oplus T)/K_0$, giving
+$q^{(k-i)(p+t-i)}$ lifts. Such a lifted graph avoids both sides because
+its vectors with zero $W$ projection belong to $K_0$. Summation proves
+\eqref{eq:T}.
+
+Injectivity of $K\to R/P$ and $K\to R/T$ bounds its dimension by
+$z-\max(p,t)$. To attain this bound, take the graph of an isomorphism
+between subspaces of dimension $\min(p,t)$ in the two sides and add
+$W$. All smaller dimensions occur inside this maximum subspace.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:law}]
+Equip $D=\F_q^b\oplus\F_q^a$ with the form $\mathcal G_C$.
+If a source frame $X$ realizes $C$, the combined map
+$F=[B,X]:D\to V$ has this Gram matrix. Its kernel $K$ lies in
+$R=\rad\mathcal G_C$. Injectivity of the individual frames is
+equivalent to $K$ avoiding both coordinate summands.
+Their intersections with $R$ are precisely the spaces of dimensions
+$p,t$ in \eqref{eq:pt}. They are disjoint, so Lemma
+\ref{lem:transverse} counts all possible kernels of each dimension.
+
+For a fixed such $K$ of dimension $k$, the quotient $D/K$ has
+dimension $a+b-k$ and rank $2r$. The form descends because $K\subset R$.
+The target coordinate summand still embeds in this quotient.
+An injective isometric embedding of $D/K$ into $V$, restricting to the
+fixed target frame $B$, gives exactly one source frame with combined
+kernel exactly $K$, and every such source frame arises this way.
+
+If the quotient embeds, its embeddings restrict onto every target
+frame with Gram matrix $S$: begin with one embedding and use
+transitivity on target frames. The same group action identifies all
+restriction fibers. Thus the number restricting to the fixed $B$ is
+\[
+ \frac{\mathcal E_m(a+b-k,r)}{\mathcal E_m(b,s)}.
+\]
+If the quotient does not embed the numerator is zero.
+Sum over $K$ and divide by $\mathcal E_m(a,h)$ to obtain
+\eqref{eq:law}. No separate basis choice for the intersection is needed.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:support}]
+The quotient for a $k$-dimensional kernel embeds if and only if
+$a+b-k-r\le m$. The largest possible kernel dimension is
+$z-\max(p,t)$. Some $k$ works exactly when
+\[
+ \max(0,a+b-r-m)\le z-\max(p,t).
+\]
+Since $z=a+b-2r$ and $z\ge p+t$, this is equivalent to
+$r+\max(p,t)\le m$.
+For the ambient-minimum assertion choose a maximum-dimensional
+avoiding $K$. The quotient then has rank $2r$ and radical dimension
+$\max(p,t)$, so it embeds in dimension $2(r+\max(p,t))$.
+Both coordinate frames remain injective, and necessity excludes
+every smaller dimension.
+\end{proof}
+
+\section{Consequences and special cases}\label{sec:consequences}
+
+\subsection{Efficient exact evaluation}
+
+The invariants are ordinary finite-field ranks:
+\[
+ r=\tfrac12\rank\mathcal G_C,\qquad
+ p=b-\rank\begin{pmatrix}S\\C^{\tr}\end{pmatrix},\qquad
+ t=a-\rank\begin{pmatrix}H\\C\end{pmatrix}.
+\]
+For $d=a+b$ they require $O(d^3)$ field operations.
+The Gaussian coefficients and positive sum are evaluable with
+polynomially many integer operations. Thus a matrix probability
+requires no enumeration of the group or of the other matrices.
+This is an arithmetic-operation statement; large-integer bit lengths
+still matter.
+The triple $(r,p,t)$ suffices for the likelihood. It need not classify
+every stabilizer orbit of matrices, and the proof makes no such claim.
+
+\subsection{Two isotropic frames}
+
+For $S=H=0$ and $\rank C=v$, one has
+$r=v$, $p=b-v$, $t=a-v$, and $z=p+t$. Then
+\[
+ \mathcal T_{z,p,t}(k)=\gb pk\gb tkG_k(q).
+\]
+The law depends only on ordinary matrix rank. Its support criterion
+is $\max(a,b)\le m$, exactly individual feasibility. This explains
+why rank is sufficient in the isotropic families of the \Article{}.
+
+\subsection{Agreement with the Lagrangian-target formula}
+
+Take $a=b=m$ and a Lagrangian target. A source frame in suitable
+coordinates is $(A;B')$, with Gram equation
+$A^{\tr}B'-B'^{\tr}A=H$.
+For $K=\ker A$, $k=\dim K$, and $t=\dim(K\cap\rad H)$, the
+\Article{} gives
+\begin{equation}\label{eq:oldlag}
+ \frac{\PP(A=C)}{q^{-m^2}}=
+ \begin{cases}
+ \displaystyle
+ \frac{q^{\binom k2}\prod_{j=k-t+1}^{k}(1-q^{-j})}
+ {\prod_{j=h+1}^{m}(1-q^{-2j})},&H|_{K\times K}=0,\\[6pt]
+ 0,&H|_{K\times K}\ne0.
+ \end{cases}
+\end{equation}
+To see this directly, reduce $A$ to
+$\operatorname{diag}(I_{m-k},0_k)$. The Gram equation fixes the cross
+block of $B'$, the upper square block has
+$q^{(m-k)(m-k+1)/2}$ choices, and the remaining block must be
+injective on a $t$-space. This and Theorem \ref{thm:law} count the
+same frames, so the formulas agree. The verifier also checks this
+reduction in exact arithmetic.
+
+\subsection{Beyond ordinary rank}
+
+Take a nondegenerate plane as both source and target in dimension
+four. In projection coordinates, likelihood distinguishes whether
+the projected pair has pairing one. For $q\ge3$, invertible
+$2$ by $2$ matrices can have either pairing one or another nonzero
+pairing, so equal ordinary rank does not imply equal likelihood.
+The next sections quantify this failure in unbounded dimensions.

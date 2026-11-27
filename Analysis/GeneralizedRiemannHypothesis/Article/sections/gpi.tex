@@ -10,13 +10,14 @@ exponents in a set without three-term arithmetic progressions (the lemma
 ideals, without three-term geometric progressions: $ac=b^2$ holds exactly when
 $v_p(a)+v_p(c)=2v_p(b)$ at every prime $p$. This section applies it to the density questions
 of McNew \cite{McNew2015Sets} over the integers and of Best, Huan, McNew, Miller, Powell, Tor
-and Weinstein \cite{Best2017Geometric} over number fields. Every result of this section is
-unconditional; none uses \cref{src:thm:dgrh} or any other statement about zeros. Finite
+and Weinstein \cite{Best2017Geometric} over number fields, and to the corresponding question of
+Brown and Gordon \cite{BrownGordon1996Sequences} for geometric progressions of any length. Every
+result of this section is unconditional; none uses \cref{src:thm:dgrh} or any other statement about zeros. Finite
 computations enter only through certificates in exact integer or rational arithmetic, which
 are cited with the result they support.
 
 \subsection{Conventions and the questions}\label{gpi:sec:setting}
-{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; mcnew_density_and_grh_transfers; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_prime_patterns_and_branch_precision}}
+{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; mcnew_density_and_grh_transfers; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_prime_patterns_and_branch_precision; prime_observations_and_progression_free_sets}}
 
 Let $K$ be a number field of degree $n=[K:\Q]$ and let $\mathcal I_K$ be the set of its
 nonzero integral ideals. Put
@@ -106,6 +107,11 @@ with integral ratios (their Question~5.1) and with fractional ratios (their Ques
  couples only boundedly many primes at a time loses a positive amount against $\alpha$
  (\cref{gpi:thm:blocks}). The suprema $\alpha$ and $\beta$ are computable and are attained
  (\cref{gpi:thm:attain}).
+\item For progressions of every length $k\ge3$, with rational ratios, the greedy set is surpassed
+ in natural density, the gain can be prescribed independently in the reduced residue classes of any
+ modulus, and every bound on the number of jointly tested primes costs a positive amount of density
+ (\cref{gpi:thm:klength,gpi:thm:kresidues,gpi:thm:blocksk}); this answers the question of Brown and
+ Gordon \cite{BrownGordon1996Sequences} recalled in \cref{gpi:sec:klength}.
 \item Question~7.4: $\beta-\alpha>0.0001351$ (\cref{gpi:thm:beta-alpha}).
 \item In every number field the greedy ideals are surpassed in natural density, even when all
  fractional-ideal ratios are forbidden (\cref{gpi:thm:onedigit}); for integral ratios in
@@ -1031,30 +1037,166 @@ least $\prod_{m>Y}(1-m^{-2})=Y/(Y+1)$, so $c_H>1/15$ and
 \]
 \end{proof}
 
+\subsection{Progressions of every length}\label{gpi:sec:klength}
+{\raggedright\sources{prime_observations_and_progression_free_sets}}
+
+The shared-deletion mechanism works for geometric progressions of every length. In this
+subsection and in \cref{gpi:sec:restricted,gpi:sec:blocks}, $K=\Q$. For an integer $k\ge3$ a
+\emph{$k$-progression} consists of distinct positive integers $a,ar,\dots,ar^{k-1}$ with
+$r\in\Q_{>0}$, $r\ne1$; for $k=3$ these are the triples forbidden by the fractional convention.
+Let $G_k\subseteq\Z_{\ge0}$ be the set obtained by scanning the nonnegative integers in order and
+retaining an exponent unless it completes a nonconstant $k$-term arithmetic progression of
+retained exponents, and put
+\[
+ \mathcal G_k=\set{n\ge1:v_p(n)\in G_k\text{ for every prime }p}.
+\]
+Since $G_k$ is the greedy $k$-term-progression-free set, $G_3=\mathcal A$ and $\mathcal G_3=R$; in
+general $\set{0,1,\dots,k-2}\subseteq G_k$ and $k-1\notin G_k$. Valuations turn $k$-progressions
+into nonconstant $k$-term arithmetic progressions of exponent vectors, so $\mathcal G_k$ is free of
+$k$-progressions. It is also the greedy such set of positive integers. Indeed, if a candidate $s$
+has exponents outside $G_k$, each such exponent $e$ was rejected at the end of a progression
+$e-(k-1)\delta,\dots,e-\delta,e$ with $\delta>0$ and earlier entries in $G_k$; using one such
+progression at every bad prime simultaneously, and keeping the good exponents constant, gives $k-1$
+proper divisors of $s$ in $\mathcal G_k$ completing a $k$-progression that ends at $s$. Call these
+the \emph{greedy witnesses} of $s$; induction proves the greedy characterization. By
+\cref{gpi:lem:product}, $\mathcal G_k$ has natural density
+$\prod_p(1-p^{-1})H_p$ with $H_p=\sum_{e\in G_k}p^{-e}$.
+
+Brown and Gordon proved that $\mathcal G_k$ has the largest density among the sets defined by one
+common progression-free exponent set at every prime, and after their Theorem~3 asked whether a set
+outside this class can have larger density \cite{BrownGordon1996Sequences}; Riddell had improved on
+Rankin's original benchmark for $k\ge4$ \cite{Riddell1969Sets}. For $k=3$ the answer is
+\cref{gpi:thm:onedigit}. The following theorem gives it for every length.
+
+\begin{theorem}[Beating the greedy set at every length; \stU]\label{gpi:thm:klength}
+For every $k\ge3$ there is a set $A_k\subseteq\N$ free of $k$-progressions with
+$d(A_k)>d(\mathcal G_k)$. It differs from $\mathcal G_k$ only in the joint rule on finitely many
+primes, which can be chosen outside any prescribed finite set.
+\end{theorem}
+
+Fix $k$ and put $b=k-2$, so that $0,1,\dots,b\in G_k$ and $b+1\notin G_k$. Choose a \emph{marker}
+prime $\ell$ and a finite nonempty set $B$ of other primes, the \emph{satellites}; put
+$S=\set\ell\cup B$ and $C_S=G_k^{S}$, the old exponent vectors. Define $F_S$ from $C_S$ as follows.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item Delete every old vector with $v_q=b$ for all $q\in B$, whatever its marker exponent in $G_k$.
+\item For each $q\in B$, delete the old vectors with $v_q\ge b+2$ and every other satellite exponent
+ equal to $b$.
+\item For each $q\in B$, add the vector with $v_\ell=v_q=b+1$ and every other satellite exponent
+ equal to $b$.
+\end{enumerate}
+
+\begin{lemma}[One shared deletion]\label{gpi:lem:kavoid}
+$F_S$ contains no nonconstant $k$-term arithmetic progression of exponent vectors, for arbitrary
+integral step vectors.
+\end{lemma}
+\begin{proof}
+A progression of old vectors is constant in every coordinate. If at least two terms are new, the
+marker takes the value $b+1$ twice and is constant, so every term is new; each satellite then takes
+at most two values on the new vectors and is constant since $k\ge3$. Suppose exactly one term is
+new, indexed by $q$. At each satellite other than $q$ all $k$ entries lie in $G_k$, including the new
+entry $b$, so these coordinates are constant at $b$. In this slice the surviving old entries at $q$
+lie in $[0,b-1]$: $b$ was deleted by the first rule, $b+1$ was never present, and the second rule
+removed the larger entries. At $q$ the new entry is $b+1=k-1$, and a nonconstant $k$-term
+arithmetic progression in $[0,k-1]$ uses all $k$ integers, including the missing value $b$; a
+constant one cannot contain both an old and a new entry.
+\end{proof}
+
+Write $W=\prod_{q\in B}q^{-b}$ and $W_S(F)=\sum_{e\in F}\prod_{p\in S}p^{-e_p}$, the reciprocal mass of
+the $S$-smooth integers with exponent vectors in $F$. The deletion families are disjoint, and
+direct summation gives
+\begin{equation}\label{gpi:eq:kgain}
+ \frac{W_S(F_S)-W_S(C_S)}W=\ell^{-(k-1)}\sum_{q\in B}\frac1q
+ -H_\ell\Bigl(1+\sum_{q\in B}\sum_{\substack{e\in G_k\\e\ge b+2}}q^{b-e}\Bigr).
+\end{equation}
+The subtracted term is at most
+$(1-1/\ell)^{-1}\bigl(1+\sum_{q\in B}1/(q(q-1))\bigr)\le4$, since
+$\sum_{j\ge2}1/(j(j-1))=1$. By Euler's divergence theorem $B$ can be chosen outside any prescribed
+finite set with $\sum_{q\in B}1/q>5\ell^{k-1}$, and then \eqref{gpi:eq:kgain} exceeds $1$. For
+example, at length $4$ with marker $2$, the satellite baseline is $2$, the new exceptional exponent
+is $3$, and a reciprocal sum above $40$ suffices. This is an existence statement; the improvement
+can be extremely small.
+
+\begin{proof}[Proof of \cref{gpi:thm:klength}]
+Use $F_S$ on $S$ and $G_k$ separately at every other prime. In a $k$-progression in this set every
+coordinate would be constant, by \cref{gpi:lem:kavoid} and the definition of $G_k$, so the ratio
+would be $1$. By \cref{gpi:lem:product}, applied with $A_p=G_k\ni0,1$ outside $S$, the set has a
+natural density, and its excess over $d(\mathcal G_k)$ is
+$c_S\prod_{p\notin S}(1-1/p)H_p\cdot(W_S(F_S)-W_S(C_S))>0$; each factor $(1-1/p)H_p$ is at least
+$1-p^{-(k-1)}$.
+\end{proof}
+
+For $k=3$ this is a second disproof of Conjecture~7.2 of \cite{McNew2015Sets}, by a deletion that
+involves all marker exponents rather than one ternary digit; the constants of
+\cref{gpi:thm:onedigit,gpi:thm:explicit} are not reproduced by it. The edited rule is checked for
+$3\le k\le9$ on all directed $k$-term progressions in the exponent box $[0,2k+1]^3$ at the primes
+$2,3,5$, together with the truncated identity \eqref{gpi:eq:kgain} in exact rational arithmetic, by
+\gpifile[.]{prime_observations_and_progression_free_sets/progressions/check_progressions.py}
+Positivity for a sufficiently large prime set rests on the argument above.
+
+\paragraph{Independent gains in residue classes.}
+Write $[a]_m=\set{n\ge1:n\equiv a\pmod m}$; densities are relative to all positive integers.
+
+\begin{theorem}[Prescribed gains in reduced classes; \stU]\label{gpi:thm:kresidues}
+For $k\ge3$ and $m\ge2$ there is $\eta=\eta(k,m)>0$ such that for any real numbers
+$0\le t_a\le\eta$ indexed by the reduced residue classes modulo $m$ there is a set $A$ free of
+$k$-progressions with
+\[
+ d(A\cap[a]_m)=d(\mathcal G_k\cap[a]_m)+t_a\qquad((a,m)=1).
+\]
+One may require $A$ to agree with $\mathcal G_k$ on all nonreduced classes and on every class with
+$t_a=0$.
+\end{theorem}
+\begin{proof}
+Choose the marker and all satellites congruent to $1$ modulo $m$. Character orthogonality and the
+Euler products give $\sum_{p\equiv1\bmod m}p^{-s}=\varphi(m)^{-1}\log\frac1{s-1}+O_m(1)$ as
+$s\downarrow1$, since the nonprincipal Dirichlet $L$-functions do not vanish at $1$ and prime powers
+of exponent at least two contribute boundedly \cite{Sutherland2021Dirichlet}. The reciprocal sum of
+these primes diverges, so one can achieve $\Delta=W_S(F_S)-W_S(C_S)>0$.
+
+Factor $n=hs$ with $s$ its $S$-smooth part and $h$ coprime to $S$; every such $s$ is $1$ modulo $m$.
+Require the valuations of $h$ to lie in $G_k$. For reduced $a$ the set $H_a$ of eligible $h$ in
+$[a]_m$ has density
+\[
+ \gamma=\frac{c_S}m\prod_{p\notin S,\ p\nmid m}(1-1/p)H_p>0,
+\]
+independent of $a$: the congruence fixes valuation zero at the primes dividing $m$, and the other
+finite valuation conditions are independent of it by the Chinese remainder theorem, with the tail
+estimate of \cref{gpi:lem:product} justifying the limit. Put $\eta=\gamma\Delta$ and
+$\lambda_a=t_a/\eta$. In the ordered sequence $h_1<h_2<\cdots$ of $H_a$ mark $h_j$ exactly when
+$\floor{j\lambda_a}>\floor{(j-1)\lambda_a}$; the marked set has density $\gamma\lambda_a$. At a marked $h$
+use $F_S$ for $s$, at every other eligible $h$ use $C_S$; no rough part in a nonreduced class is
+marked. In a $k$-progression the valuations outside $S$ are constant, so $h$ is fixed, and both
+rules on its fibre are progression-free. Since $s\equiv1\pmod m$, the fibre lies in the class of $h$.
+Scaling a set of rough parts by $s$ divides its density by $s$, the fibres of distinct smooth parts
+are disjoint, and the smooth parts $s>T$ contribute at most $\sum_{s>T}1/s\to0$ in upper density.
+The gain in $[a]_m$ is therefore $\gamma\lambda_a\Delta=t_a$, with the stated agreement elsewhere.
+\end{proof}
+
 \subsection{Where Rankin's rule is optimal}\label{gpi:sec:restricted}
-{\raggedright\sources{grh_prime_patterns_and_branch_precision; mcnew_density_and_grh_transfers}}
+{\raggedright\sources{grh_prime_patterns_and_branch_precision; mcnew_density_and_grh_transfers; prime_observations_and_progression_free_sets}}
 
 The counterexamples couple many primes. For few primes Rankin's rule cannot be beaten. For a
 finite set $P$ of rational primes write $S_P$ for the $P$-smooth positive integers,
 $c_P=\prod_{p\in P}(1-p^{-1})$, and $C_P$ for the set of $m\in S_P$ with all exponents in
 $\mathcal A$. In this subsection and the next, \emph{progression-free} means admissible for
-rational ratios. Say that \emph{Rankin's rule is optimal on $P$} if $W(F)\le W(C_P)$ for
+rational ratios, that is, free of $3$-progressions, unless a length $k$ is specified. Say that \emph{Rankin's rule is optimal on $P$} if $W(F)\le W(C_P)$ for
 every progression-free $F\subseteq S_P$.
 
-\begin{proposition}[Light blocks]\label{gpi:prop:light}
-If $1/c_P\le2$, then Rankin's rule is optimal on $P$.
+\begin{proposition}[Light blocks; \stU]\label{gpi:prop:light}
+Let $k\ge3$, let $1/c_P\le2$, and let $G_k^P$ be the set of $m\in S_P$ with all exponents in $G_k$.
+Every $F\subseteq S_P$ free of $k$-progressions satisfies $W(F)\le W(G_k^P)$. In particular Rankin's
+rule is optimal on $P$.
 \end{proposition}
 
-This is the observation following Theorem~6.1 of \cite{McNew2015Sets}; here is a direct
-proof.
+For $k=3$ this is the observation following Theorem~6.1 of \cite{McNew2015Sets}.
 
 \begin{proof}
-For $s\in F\setminus C_P$ replace every ternary digit $2$ in its exponents by $0$,
-respectively by $1$, to get integers $a,b\in C_P$ with $a<b<s$ and $as=b^2$. At least one of
-these proper divisors of $s$ is missing from $F$; charge $1/s$ to one such divisor $t$. Each
-$s$ charged to $t$ is a different $tu$ with $u\in S_P\setminus\set1$, so the charge at $t$ is
-at most $(1/c_P-1)/t\le1/t$. Summing over the missing elements of $C_P$ gives
-$W(F\setminus C_P)\le W(C_P\setminus F)$.
+For $s\in F\setminus G_k^P$ the greedy witnesses of \cref{gpi:sec:klength}, formed within $P$, are $k-1$
+proper divisors of $s$ in $G_k^P$ completing a $k$-progression that ends at $s$, so at least one of
+them is missing from $F$; charge $1/s$ to one such divisor $t$. Distinct integers charged to the
+same $t$ have distinct nontrivial $P$-smooth quotients $s/t$, so the charge at $t$ is at most
+$(1/c_P-1)/t\le1/t$. Summing over the missing elements of $G_k^P$ gives
+$W(F\setminus G_k^P)\le W(G_k^P\setminus F)$.
 \end{proof}
 
 \begin{theorem}[Blocks of at most four primes; \stU]\label{gpi:thm:fourprimes}
@@ -1111,9 +1253,9 @@ into low digits and a high part divisible by $m_i$ in each coordinate. For each 
 high part, \eqref{gpi:eq:lowbox} bounds the mass of the points of $F$ with a bad low digit by
 the missing good mass divided by $\lambda$; dilation by a fixed high part preserves both the
 weights up to a common factor and the forbidden triples. Summing gives at most $M/\lambda$.
-For a point of $F$ with a bad high digit, replace every digit $2$ by $0$, respectively by
-$1$. As in the proof of Proposition~\ref{gpi:prop:light}, one of the two resulting points of $C$ is
-missing from $F$. Relative to a missing point the charged reciprocal weight is a product of
+For a point $s$ of $F$ with a bad high digit, replace every digit $2$ by $0$, respectively
+by $1$; the two resulting points $a<b<s$ of $C$ satisfy $as=b^2$, so one of them is missing from
+$F$. Relative to a missing point the charged reciprocal weight is a product of
 factors $q_i^{-e3^j}$ over a set of digit positions, with $e=1$ for the replacement by $1$
 and $e=2$ for the replacement by $0$, and at least one changed digit is high. The total
 charge is at most $M\,T(q)$, where
@@ -1179,121 +1321,129 @@ respectively, and hence uniqueness of the optimizer on the smooth semigroup. Eac
 three sets lies outside the range $1/c_P\le2$ of Proposition~\ref{gpi:prop:light}.
 
 \subsection{How many primes must a density rule couple?}\label{gpi:sec:blocks}
-{\raggedright\sources{grh_prime_patterns_and_branch_precision; mcnew_counterexample_and_grh_transfers}}
+{\raggedright\sources{grh_prime_patterns_and_branch_precision; mcnew_counterexample_and_grh_transfers; prime_observations_and_progression_free_sets}}
 
-Partition the primes into blocks of size at most $m$. For each block $P$ choose an arbitrary
-set $F_P\subseteq S_P$ of allowed smooth parts, and admit an integer when its $P$-smooth part
-lies in $F_P$ for every block. Let $\alpha_m$ be the supremum of the natural densities of
-the progression-free sets of this form that have a natural density, over all partitions and
-all rules. The partition may vary with the competitor; in particular the model allows
-dependence among infinitely many separate groups of primes. Clearly
-$d(R)\le\alpha_1\le\alpha_2\le\dots\le\alpha$.
+Fix $k\ge3$ and $d\ge1$. Partition the primes into blocks of size at most $d$, choose for each block
+$P$ an arbitrary set $F_P\subseteq S_P$ of allowed smooth parts, and admit a positive integer when its
+$P$-smooth part lies in $F_P$ for every block. Let $\alpha_{k,d}$ be the supremum of the upper
+densities of the sets of this form that are free of $k$-progressions, over all partitions and all
+rules, and let $\alpha_k$ be the supremum of the natural densities of all sets free of
+$k$-progressions; thus $\alpha_3=\alpha$. The partition may vary with the competitor, so the model
+allows dependence among infinitely many separate groups of primes. A nonempty progression-free
+product has progression-free block rules (replace the smooth part of one admitted integer in one
+block by the terms of a putative local progression), and conversely a product of progression-free
+rules is progression-free, since in a progression of the product the smooth parts in each block form
+a progression with the block part of the ratio. Write $p_j$ for the $j$th prime.
 
-\begin{theorem}[Bounded prime blocks; \stU]\label{gpi:thm:blocks}
-For each $m\ge1$ the number $\alpha_m$ is computable and is attained, by a construction that
-uses Rankin's rule outside a finite set of primes. Allowing upper density gives the same
-$\alpha_m$ in this class. Furthermore
+\begin{theorem}[Bounded prime blocks at every length; \stU]\label{gpi:thm:blocksk}
+For all $k\ge3$ and $d\ge1$,
 \[
- 0<\alpha-\alpha_m\le\frac1{p_{m+1}},\qquad\text{so that}\quad\alpha_m<\alpha\quad\text{and}\quad
- \lim_{m\to\infty}\alpha_m=\alpha ,
+ \alpha_{k,1}=d(\mathcal G_k),\qquad
+ 0<\alpha_k-\alpha_{k,d}\le\frac{(p_{d+1}-1)^{-(k-2)}}{k-2}.
 \]
-where $p_j$ denotes the $j$th prime, and
+Every $\alpha_{k,d}$ is attained by a set with a natural density that uses the greedy rule $G_k$ off
+finitely many primes, and the numbers $\alpha_{k,d}$ and $\alpha_k$ are computable, uniformly in
+$k$ and $d$.
+\end{theorem}
+
+Thus every fixed bound on the number of jointly tested primes has a strict density cost, even after
+optimizing the partition.
+
+\begin{proof}
+\emph{Local probabilities and width one.} For a finite set $P$ of primes and $F\subseteq S_P$, the
+integers with $P$-smooth part in $F$ have density $c_PW(F)$ by \cref{gpi:lem:product}, and disjoint
+finite blocks are independent. By \cref{gpi:prop:light}, every block $P$ with $1/c_P\le2$, in
+particular every singleton, satisfies $W(F)\le W(G_k^P)$ for progression-free $F$. Finite collections
+of block restrictions bound the upper density of a width-one competitor by finite products of greedy
+factors, which converge to $d(\mathcal G_k)$; since $\mathcal G_k$ has width one,
+$\alpha_{k,1}=d(\mathcal G_k)$.
+
+\emph{Reduction to finitely many exceptional primes.} Call a block \emph{heavy} if $1/c_P>2$. If all
+primes of $P$ exceed $4d$, then $\log(1/c_P)\le\sum_{p\in P}1/(p-1)\le\tfrac14<\log2$; so at most
+$\pi(4d)$ blocks are heavy, and their union $H$ has at most $h=d\,\pi(4d)$ primes. Replace every
+other block by the greedy rule. The new set has a natural density, equal to the finite heavy
+probability times the greedy product off $H$: ignoring the primes $p>Y$ changes at most
+$x\sum_{p>Y}p^{-(k-1)}$ integers up to $x$, since $0,\dots,k-2\in G_k$. By the weight comparison it
+dominates the upper density of the original set, which is bounded by the probability of passing any
+finite collection of the original blocks.
+
+\emph{Attainment.} For fixed finite $P$ the maximum of $W$ over progression-free $F\subseteq S_P$ is
+attained, by a pointwise convergent subsequence of indicators on the countable exponent lattice.
+Start with a maximizing sequence in the reduced form and pass to a subsequence along which the
+number of exceptional primes and the partition of their ordered positions are fixed, and each prime
+label is either constant or tends to infinity. Imposing valuation zero at the escaping labels costs
+at most the sum of their reciprocals, which tends to zero; the resulting slices on the fixed labels
+are progression-free. Replace each by an optimal rule and use $G_k$ at every other prime, which is
+possible because $0\in G_k$; this single construction dominates the limiting densities.
+
+\emph{Strict loss.} Take an optimizer of this form. Off its finitely many exceptional primes,
+\cref{gpi:thm:klength} improves the greedy rule on a disjoint finite set of primes. The unchanged
+block factors have positive product, since the optimizer dominates $\mathcal G_k$, so the
+improvement gains a positive amount of natural density, and $\alpha_k>\alpha_{k,d}$.
+
+\emph{Upper bound for the loss.} Put $Y=p_{d+1}-1$, $P=\set{p\le Y}$ (a set of $d$ primes) and
+$M=\max W(F)$ over progression-free $F\subseteq S_P$. In any progression-free set $A$ the integers
+with a fixed $P$-rough part $u$ have a progression-free set of smooth parts, so
+\[
+ \sum_{n\le x,\ n\in A}\frac1n\le M\sum_{\substack{u\le x\\(u,\prod_{p\in P}p)=1}}\frac1u=Mc_P\log x+O_P(M),
+\]
+and partial summation gives $d(A)\le Mc_P$ whenever $d(A)$ exists. An optimizing block on $P$ with
+greedy singletons outside it gives $\alpha_{k,d}\ge Mc_P\prod_{p>Y}(1-p^{-(k-1)})$, and $Mc_P\le1$. The
+bound follows from $1-\prod_j(1-x_j)\le\sum_jx_j$ and $\sum_{j>Y}j^{-(k-1)}\le Y^{-(k-2)}/(k-2)$.
+
+\emph{Computation.} Freezing the exceptional primes above $Z$ to valuation zero costs at most $h/Z$,
+and releasing them to the greedy rule can only increase the density. Enumerate all partitions of
+the primes up to $Z$ into blocks of size at most $d$; in each block truncate the exponents below
+$L$, enumerate all subsets of the finite box and keep the progression-free ones. Extending a
+truncated rule by excluding higher exponents preserves admissibility and loses at most
+$\sum_{p\le Z}p^{-L}$, and the greedy factors on the remaining primes can be evaluated to any certified
+accuracy by the same truncation and the bound $\sum_{p>U}p^{-(k-1)}$. These explicit errors give a
+uniform algorithm for $\alpha_{k,d}$, and the bound for the loss gives one for $\alpha_k$.
+\end{proof}
+
+For $k=3$ write $\alpha_m=\alpha_{3,m}$. By \cref{gpi:thm:blocksk} it is also the supremum of the
+natural densities of the progression-free block sets of width $m$ that have a natural density, it is
+attained, and $d(R)\le\alpha_1\le\alpha_2\le\dots<\alpha$. The constant and the small widths can be
+sharpened.
+
+\begin{theorem}[Bounded prime blocks for three-term progressions; \stU]\label{gpi:thm:blocks}
+For every $m\ge1$,
+\[
+ 0<\alpha-\alpha_m\le\frac1{p_{m+1}},\qquad\text{so that}\quad\lim_{m\to\infty}\alpha_m=\alpha ,
+\]
+and
 \[
  \alpha_1=\alpha_2=\alpha_3=\alpha_4=d(R).
 \]
 The least $m$ with $\alpha_m>d(R)$ satisfies $5\le m\le225$.
 \end{theorem}
 
-Thus every fixed bound on the number of jointly tested primes has a strict density cost,
-even after optimizing the partition, and a progression-free product rule of density greater
-than $d(R)$ must couple at least five primes in some block.
+A progression-free product rule of density greater than $d(R)$ must therefore couple at least five
+primes in some block.
 
 \begin{proof}
-\emph{Local probabilities.} For a finite set $P$ of primes and $F\subseteq S_P$ put
-$\mu_P(F)=c_PW(F)$. By Lemma~\ref{gpi:lem:product} this is the natural density of the integers
-with $P$-smooth part in $F$, and disjoint finite blocks have independent probabilities. A
-nonempty progression-free product forces each block rule to be progression-free: replace the
-smooth part of one admitted integer by the three local terms. Conversely a product of
-progression-free rules is progression-free by projection.
-
-\emph{Reduction to finitely many exceptional primes.} Call a block $P$ light if $1/c_P\le2$
-and heavy otherwise. If every prime of $P$ exceeds $4m$, then
-$\log(1/c_P)\le\sum_{p\in P}1/(p-1)\le1/4<\log2$. Hence at most $\pi(4m)$ blocks are heavy, and
-their union $H$ has at most $h=m\,\pi(4m)$ primes. Replace the rule on every light block by
-Rankin's rule. By Proposition~\ref{gpi:prop:light} and Lemma~\ref{gpi:lem:product} the new set has a natural density,
-equal to the finite heavy probability times the Rankin product off $H$, and it is at least
-the upper density of the original set: finite collections of the old block restrictions bound
-the latter from above, and the products of the corresponding new probabilities converge to
-the new density. A heavy rule may likewise be optimized separately; its maximum exists by
-the compactness argument of \cref{gpi:sec:local}.
-
-\emph{Existence of an optimal partition.} Take a sequence of competitors of this form whose
-densities approach $\alpha_m$. Pass to a subsequence with a constant number of exceptional
-primes and a constant partition of their ordered positions. After a further subsequence each
-of the at most $h$ prime labels is either constant or tends to infinity. In every block
-temporarily impose valuation zero at each escaping prime $p$; the density loss is at most the
-sum of $1/p$ over these primes and tends to zero. The surviving local zero slices are
-progression-free on the fixed prime labels. Now use the optimal rule on each fixed block and
-Rankin's rule at each discarded prime, which allows the exponent zero. This single fixed
-construction attains at least the limiting density and belongs to the original class. The
-assertion about upper density follows from the replacement bound above.
-
-\emph{A uniform improvement.} Fix the at most $h$ exceptional primes of a competitor after
-replacement. A marker prime $\ell\notin H$ can be taken at most $L$, the $(h+1)$st prime.
-Choose $Y\ge L$, depending only on $m$, so large that
-\[
- \sum_{q\le Y,\ q\ \mathrm{prime}}\frac1q>2L^2+\frac{h+1}2 ,
-\]
-and let the satellite set $B$ consist of all primes up to $Y$ outside $H\cup\set\ell$, so
-that $\sum_{q\in B}1/q>2L^2$. Apply the exchange \eqref{gpi:eq:capC} to the lowest digits at
-the marker and the satellites; by \cref{gpi:thm:onedigit}(a) it works with any marker and
-leaves the higher digits binary. With $w=1/\ell$ and $u_q=1/q$, the change in unnormalized
-reciprocal mass for fixed good higher digits, relative to their common weight, is
-\[
- \Bigl(\prod_{q\in B}u_q\Bigr)\Bigl[w^2\Bigl(1+\sum_{q\in B}u_q\Bigr)-(1+w)\Bigr]
- >\frac12\prod_{q\in B}u_q ,
-\]
-because $1/L\le w\le1/2$. The higher digits have total weight at least one. With
-$P_Y=\prod_{p\le Y}p$ and $c_Y=\prod_{p\le Y}(1-1/p)$, the new local probability on the
-marker and the satellites exceeds the old one by at least $\delta_m=c_Y/(2P_Y)>0$. Since a
-local probability is at most one, this multiplies the full product by a factor at least
-$1+\delta_m$. Thus $\alpha\ge(1+\delta_m)\alpha_m>\alpha_m$, uniformly over all partitions.
-
-\emph{Approximation by one finite block.} Let $P$ be the set of primes up to an integer
-$Y\ge2$, and let $M_Y$ be the largest reciprocal sum $W(F)$ of a progression-free
-$F\subseteq S_P$. By Lemma~\ref{gpi:lem:BU}, $\alpha\le c_PM_Y$. A maximizing smooth template on
-$P$ together with Rankin's rule elsewhere has width $\pi(Y)$, so by Lemma~\ref{gpi:lem:product}
+\emph{Approximation by one finite block.} Let $P$ be the set of primes up to an integer $Y\ge2$, and
+let $M_Y$ be the largest reciprocal sum $W(F)$ of a progression-free $F\subseteq S_P$. By
+Lemma~\ref{gpi:lem:BU}, $\alpha\le c_PM_Y$. A maximizing smooth template on $P$ together with Rankin's
+rule elsewhere has width $\pi(Y)$, so by Lemma~\ref{gpi:lem:product}
 \[
  \alpha_{\pi(Y)}\ \ge\ c_PM_Y\prod_{p>Y}(1-p^{-2})\ \ge\ c_PM_Y\,\frac Y{Y+1},
 \]
-by telescoping over all integers greater than $Y$. With monotonicity this proves
-convergence. Choosing $Y=p_{m+1}-1$ gives $0<\alpha-\alpha_m\le1/p_{m+1}$, since
-$c_PM_Y\le1$.
-
-\emph{Effective computation for fixed width.} Uniformly over competitors after replacement,
-freezing the exponents at the heavy primes $p>Y$ to zero costs at most $h/Y$, and releasing
-these primes to Rankin's rule can only increase the density. Thus optimizing over the
-partitions of the primes up to $Y$ of width $m$, with the Rankin tail, approximates
-$\alpha_m$ from below with error at most $h/Y$. There are finitely many partitions.
-Truncating each prime exponent below $L'$ costs at most $\sum_{p\le Y}p^{-L'}$ in total. On
-finite boxes, enumerate all subsets, reject those containing a nonconstant arithmetic
-progression of exponent vectors, and maximize the exact rational probability. Finally the
-Rankin tail product up to any $Z>Y$ has absolute truncation error at most
-$\sum_{j>Z}j^{-2}\le1/Z$, and its single-prime factors can be truncated geometrically. These
-estimates give rational intervals of any prescribed width, with no claim about running time.
+by telescoping over all integers greater than $Y$. With monotonicity this proves convergence.
+Choosing $Y=p_{m+1}-1$ gives $\alpha-\alpha_m\le1/p_{m+1}$, since $c_PM_Y\le1$; positivity is
+\cref{gpi:thm:blocksk}.
 
 \emph{Small widths.} Rankin's rule is itself a rule of width one, so $\alpha_m\ge d(R)$. By
-\cref{gpi:thm:fourprimes}, Rankin's rule is optimal on every block of a rule of width
-$m\le4$, so the replacement argument of the second step applies to all blocks, heavy or
-light, and gives $\alpha_m\le d(R)$ for $m\le4$. The set of \cref{gpi:thm:explicit} is a rule
-of width $225$ of density greater than $d(R)$.
+\cref{gpi:thm:fourprimes}, Rankin's rule is optimal on every block of a rule of width $m\le4$, so the
+replacement argument of \cref{gpi:thm:blocksk} applies to all blocks, heavy or light, and gives
+$\alpha_m\le d(R)$ for $m\le4$. The set of \cref{gpi:thm:explicit} is a rule of width $225$ of density
+greater than $d(R)$.
 \end{proof}
 
-In particular, for a fixed finite set $T$ of primes, no progression-free rule on $S_T$
-combined with Rankin's rule at all other primes attains $\alpha$: such a set has density at
-most $\alpha_{\#T}<\alpha$. Exact optimality on finite sets of primes, as in
-\cref{gpi:thm:fourprimes}, therefore coexists with the failure of the unrestricted
-conjecture.
+In particular, for a fixed finite set $T$ of primes, no progression-free rule on $S_T$ combined with
+Rankin's rule at all other primes attains $\alpha$: such a set has density at most
+$\alpha_{\#T}<\alpha$. Exact optimality on finite sets of primes, as in \cref{gpi:thm:fourprimes},
+therefore coexists with the failure of the unrestricted conjecture.
 
 \subsection{Integer ratios against rational ratios: Question 7.4}\label{gpi:sec:q74}
 {\raggedright\sources{grh_transfer_extensions_2026-11-26; mcnew_density_and_grh_transfers}}
@@ -1845,7 +1995,7 @@ For $q=2$ the greedy density is approximately $0.6483610761$, by the Euler produ
 uses a different benchmark and is treated in \cref{sec:gpp}.
 
 \subsection{Open questions}\label{gpi:sec:open}
-{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; mcnew-density-and-dirichlet-grh; mcnew_counterexample_and_grh_transfers; mcnew_density_and_grh_transfers; grh_prime_patterns_and_branch_precision; grh_ideal_densities_and_transfer_conditions_2026-11-26}}
+{\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; mcnew-density-and-dirichlet-grh; mcnew_counterexample_and_grh_transfers; mcnew_density_and_grh_transfers; grh_prime_patterns_and_branch_precision; grh_ideal_densities_and_transfer_conditions_2026-11-26; prime_observations_and_progression_free_sets}}
 
 \begin{enumerate}
 \item \emph{The values of the four suprema.} The results above give
@@ -1858,14 +2008,18 @@ uses a different benchmark and is treated in \cref{sec:gpp}.
  large is $\alpha-d(R)$? The exchanges used here optimize particular families of patterns;
  larger digit alphabets or several interacting markers could give larger gains.
 \item \emph{The least number of coupled primes.} Determine the least $m$ with
- $\alpha_m>d(R)$; \cref{gpi:thm:blocks} gives $5\le m\le225$. In particular, is Rankin's rule
- optimal on every set of five primes? Can the positive margin in the low-box inequality
+ $\alpha_m>d(R)$; \cref{gpi:thm:blocks} gives $5\le m\le225$. More generally, for each $k\ge3$, what
+ is the least $d$ with $\alpha_{k,d}>d(\mathcal G_k)$ in \cref{gpi:thm:blocksk}? In particular, is
+ Rankin's rule optimal on every set of five primes? Can the positive margin in the low-box inequality
  \eqref{gpi:eq:lowbox} be certified on larger sets of small primes without a low-digit box
  that grows exponentially?
 \item \emph{More deletions.} \Cref{gpi:thm:edge} classifies the profitable one-digit
  exchanges with at most two deleted cube vertices. Is there a comparably explicit
  classification for three or more deletions, or an exchange with an appreciable density gain
  using few primes of ordinary size?
+\item \emph{Visible gains for longer progressions.} The gain of \cref{gpi:thm:klength} can be
+ extremely small. Can a tractable finite witness visibly improve on the greedy density
+ $0.89537\ldots$ at length four?
 \item \emph{The loss at each prime.} Is $\overline\alpha_{p^-}-\overline\alpha_p>0$ for every
  sufficiently large prime $p$, where $p^-$ is the preceding prime? The proof at $p=11$ in
  \cref{gpi:thm:upper-alpha} reduces strictness to finding one interval on which the

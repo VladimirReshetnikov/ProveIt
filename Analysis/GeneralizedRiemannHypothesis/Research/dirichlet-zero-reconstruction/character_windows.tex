@@ -1,0 +1,369 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[margin=1.05in,headheight=14pt]{geometry}
+\usepackage{xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,citecolor=teal!65!black,urlcolor=teal!65!black,pdfauthor={OpenAI ChatGPT},pdftitle={Recovering Dirichlet characters from short windows of zeros}]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\DeclareMathOperator{\sinc}{sinc}
+\newcommand{\FQ}{\mathcal F(Q)}
+\newcommand{\Lthree}{\mathcal L_3}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Dirichlet characters from zero ordinates}\fancyhead[R]{\small Research note}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{2pt}\emergencystretch=1.3em
+\begin{document}
+\begin{center}
+{\small\sffamily\color{teal!70!black} ANALYTIC NUMBER THEORY}\par\vspace{9pt}
+{\LARGE\bfseries Recovering Dirichlet characters\\[3pt]from short windows of zeros}\par\vspace{9pt}
+{\normalsize November 27, 2026}
+\end{center}
+\begin{abstract}
+For every $Q\ge3$, the positive ordinates up to height
+$O(\log^2(2Q)/\log\log(3Q))$, counted with multiplicity, distinguish all primitive
+Dirichlet characters of conductor at most $Q$. The result includes conjugate complex
+characters and the conductor-one character. It uses Dirichlet GRH in its critical-line
+form. A translated window centered at $U$ works with half-length enlarged by
+$b\log\log\log |U|$ for any $b>1/\pi$ and large $|U|$. The proof uses a smooth
+explicit formula together with an upper-bound sieve for pairs of primes.
+Many small primes separate each pair of characters, so individual nearby prime powers
+can be tolerated on average. We give a quantitative lower bound for the cost of
+matching the two lists of ordinates and a finite-alphabet version of the recovery.
+\end{abstract}
+\section{The identification theorem}
+Write $\FQ$ for the primitive Dirichlet characters of conductor at most $Q$, including
+the primitive principal character of conductor one. All logarithms are natural. Set
+\[
+ W(Q)=\frac{\log^2(2Q)}{\log\log(3Q)},\qquad
+ \Lthree(t)=\log\log\log(e^{e^e}+t)\quad(t\ge0).
+\]
+For an interval $I$ let $\Gamma_\chi(I)$ be the multiset of real $\gamma\in I$ for
+which $L(1/2+i\gamma,\chi)=0$, with orders as multiplicities. Dirichlet GRH identifies
+these with the imaginary parts of all nontrivial zeros in the interval.
+\begin{theorem}[Uniform identification]\label{thm:main}
+Use Dirichlet GRH. For each $b>1/\pi$ there is $C_b$ such that, for all $Q\ge3$
+and $U\in\R$, the map $\chi\mapsto\Gamma_\chi([U-H,U+H])$ is injective on $\FQ$ if
+\begin{equation}\label{eq:H}
+ H\ge C_b W(Q)+b\Lthree(|U|).
+\end{equation}
+In particular there is an absolute constant $C$ such that
+$\chi\mapsto\Gamma_\chi((0,CW(Q)])$ is injective.
+\end{theorem}
+The last assertion distinguishes $\chi$ from $\bar\chi$ using a positive-height
+interval. Folding a symmetric list by $\gamma\mapsto|\gamma|$ discards this
+information because conjugation reflects ordinates. Each window in the theorem needs
+only its own zeros. Neither conductor nor parity is an input to the measurements.
+Primitivity is essential: inducing a character to a multiple of its modulus changes
+Euler factors whose zeros lie on $\Re s=0$ and preserves its open-strip zeros.
+
+\paragraph{Relation to the two repositories.}
+The formal input is \texttt{LFunction\_eq\_zero\_re} in the readable edition
+of \cite{lean}. Its statement in Mathlib's language covers all nonzero moduli.
+We inspected the exported statements and their definitions in the pinned source.
+The upstream authors report kernel and independent checker runs with the usual
+three Lean axioms. This paper uses their theorem and supplies a separate analytic
+proof of Theorem~\ref{thm:main}. We did not rebuild the upstream project or formalize
+the present proof.
+
+The merged ProveIt article \cite{article} describes itself as a synthesis of 103 reports.
+Its result \texttt{rec:cor:quadsep} recovers primitive nonprincipal quadratic
+characters from both signs up to $O(\log^2(2Q)\log\log(3Q))$. Its question
+\texttt{rec:sec:open}, item~2, asks to remove the extra logarithm and to treat complex
+characters. The two cutoff bounds differ by a factor of order $(\log\log Q)^2$.
+The article also gives a triple-logarithmic window for fixed families
+(\texttt{zer:thm:short} and \texttt{rec:thm:localrank}). Our contribution in the
+translated form is the uniform cost $C_b W(Q)$ for the whole family of conductors.
+Its fixed-family signed-excess result gives information about each direction of
+multiplicity difference that injectivity alone does not recover.
+
+\paragraph{Comparison with the literature.}
+Fujii obtained positive proportions of multiplicity discrepancies for fixed characters
+\cite{fujii}. Banks proved an unconditional uniform short-interval discrepancy theorem
+for equal moduli with width $O_\theta(q^\theta\log T)$ when $T\gg_\theta q^\theta$,
+$\theta>1/3$, improved to $\theta>1/4$ for cubefree $q$ \cite{banks}. Banks and
+Loftus prove existence of genuinely unshared zeros for fixed characters in sufficiently
+high windows in a different size range \cite{loftus}. Our statistic detects
+differences of orders, including at a common zero. This comparison establishes a
+specific advance over the linked article. A targeted search of related work did
+not locate the uniform low-height bound of Theorem~\ref{thm:main}. Publication
+priority remains to be assessed independently.
+
+\section{Many primes distinguish every pair}
+The arithmetic input is stronger than the existence of one small prime at which
+the characters differ. A positive fraction of the primes in one common interval
+give an order-one separation, uniformly in the pair.
+\begin{lemma}\label{lem:witness}
+There are absolute $A_0,c_0>0$ such that, for $A\ge A_0$,
+$x=A\log^2(2Q)$ and distinct $\chi_1,\chi_2\in\FQ$, at least $c_0 x/\log x$
+primes $x<p<2x$ are prime to both conductors and satisfy
+$|\chi_1(p)-\chi_2(p)|\ge1$.
+\end{lemma}
+\begin{proof}
+Choose once and for all a smooth nonnegative $w$ supported in $(1,2)$ with
+$\int w(y)\,dy=1$. Let $M$ be the least common multiple of the conductors.
+The quotient character $\chi_1\overline{\chi_2}$ on the units modulo $M$ has a
+nonprincipal primitive inducer $\psi$ of conductor $q\le M\le Q^2$. Indeed, equality
+of the two induced characters on the units would give them the same primitive inducer.
+
+For this $\psi$ the smooth explicit formula and Dirichlet GRH give
+\begin{equation}\label{eq:smoothed}
+ \sum_{n\ge2}\Lambda(n)\psi(n)w(n/x)\ll_w \sqrt{x}\log(2q).
+\end{equation}
+For detail, use $g_x(u)=e^{u/2}w(e^u/x)$ in the explicit formula of
+Section~\ref{sec:localized-kernel}. Its positive prime terms give exactly the sum.
+Its transform is $\sqrt{x}x^{it}\int w(y)y^{-1/2+it}\,dy$, of size
+$O_w(\sqrt{x}(1+|t|)^{-3})$ by integration by parts. The number of ordinates
+in any unit interval near $t$ is $O(\log(2q(2+|t|)))$ by the classical zero
+count \cite{bmor}, also for either sign by taking an upper bound from the two-sided
+count. The archimedean integral is $O_w(1)$ because $u\ge\log x$ on the support
+and the density is $O(e^{-u/2})$. Both the conductor term and the pole term vanish.
+
+The total weighted prime mass in this interval is $(1+o_w(1))x$ by the prime
+number theorem. In \eqref{eq:smoothed} removing higher powers costs
+$O_w(\sqrt{x}\log^2(2x))$ by elementary counting and removing the primes of
+$M$ costs $O_w(\log(2M))$. Choose $A_0$ large enough that the remaining
+prime mass is $\ge 3x/4$ and its character-weighted sum has modulus $\le x/8$.
+The implied constants are uniform since $\log(2M)\ll\log(2Q)$.
+If $S$ denotes the weighted mass of primes with $\Re\psi(p)\le1/2$, the real
+part of that sum is at least $\tfrac12(3x/4)-\tfrac32 S$.
+Thus $S\ge x/6$. Each prime carries $O_w(\log x)$ weight and at every prime
+so counted $|\chi_1(p)-\chi_2(p)|^2=2-2\Re\psi(p)\ge1$.
+\end{proof}
+
+\input{kernel_part}
+
+\section{Averaging the error over the probe primes}
+Fix $b>1/\pi$ and fix $d=(1/2+\pi b/2)/2$. The detector targets the prime
+$p$ on the logarithmic scale. At $p\asymp x$, a bandwidth $B$ leaves nearby
+prime powers within a distance of order $x/B$ on the integer scale. Taking
+$B$ proportional to $x/\log x$ lets this distance grow with $x$.
+\begin{lemma}[Mean leakage]\label{lem:leak}
+Let $1\le D\le\log x$, $B=x/D$. For primes $x<p<2x$ define
+\[
+ J_p=\sum_{\substack{x/e\le n\le 2ex,\ n\ne p\\ \Lambda(n)>0}}
+              (1+|n-p|/D)^{-4}.
+\]
+There is an absolute $C$ such that for all sufficiently large $x$
+\[
+ \sum_{x<p<2x} J_p
+ \le C\frac{xD}{\log^2 x}+C\sqrt{x}\log(2x)D.
+\]
+Furthermore the near-prime-power term in Lemma~\ref{lem:kernel-decoder}
+is $O(J_p)$ with an absolute constant.
+\end{lemma}
+\begin{proof}
+For the last assertion use the mean value theorem on $[p/e,ep]$ and
+$p\asymp x$, so that $|\log(n/p)|\asymp|n-p|/x$ and $\log n/\log p\ll1$.
+Put $S(m)=\prod_{r\mid m,\ r>2}(1+1/(r-2))$, with $r$ prime.
+For $n$ prime and $h=n-p\ne0$ the two-prime upper-bound sieve gives
+\[
+ \#\{x<p<2x:\ p+h\text{ prime},\ x/e\le p+h\le2ex\}
+ \ll \frac{x}{\log^2 x} S(|h|).
+\]
+This is uniform in $|h|\le 6x$. For completeness apply the sieve upper
+bound \cite[Lemma 3.2]{sieve} to the forbidden residue classes $0,-h$
+at primes $r\le\sqrt x$. Both tested primes exceed $\sqrt x$.
+For odd $h$ the set is empty. For even $h$, Mertens' product estimate gives
+$O(1/\log^2 x)$ from the two forbidden classes, with factor
+$(r-1)/(r-2)$ when they coincide at an odd prime. The single factor at $2$
+is absorbed in the constant. Expansion over squarefree divisors gives
+\[
+ \sum_{m\le Y}S(m)\le Y\prod_{r>2\ {\rm prime}}
+       \left(1+\frac{1}{r(r-2)}\right)\ll Y.
+\]
+Summing over dyadic ranges in $|h|/D$ shows that
+$\sum_{h\ge1}(1+h/D)^{-4} S(h)\ll D$.
+There are $O(\sqrt x\log(2x))$ proper prime powers up to $2ex$, using
+at most $O(\log x)$ exponents. For each such $n$ the sum of the weights over
+all integer $p$ is $O(D)$ by comparison with an integral. This proves the bound.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Take $D=\log x/K$, $B=Kx/\log x$. First choose $K$ large in terms of $b$.
+Then choose the fixed $A\ge A_0$ large enough that $D\ge1$ for every $Q\ge3$
+and all estimates below hold. Lemma~\ref{lem:leak} and Markov's inequality show
+that outside at most $(c_0/2)x/\log x$ primes in $(x,2x)$, the contribution
+of the near-prime-power term to the decoder error is at most $1/32$.
+In detail, the mean bound divided by $x/\log x$ is
+$O(1/K)+O(\log^3(2x)/\sqrt{x})$, and the constants in the decoder are fixed.
+Call the primes with $J_p$ below this fixed threshold good. Goodness depends
+only on prime powers, $x$ and $b$.
+
+For large $K,A$, the terms $p/B^4$, $1/B$ and the possible pole error
+$p/(B\log p)$ in Lemma~\ref{lem:kernel-decoder} contribute at most $1/32$
+in total. In particular $p/(B\log p)\le 2/K$. Choose the tail tolerance
+as $1/32$. Equation~\eqref{eq:kernel-tail-choice} is satisfied for every
+$x<p<2x$ if \eqref{eq:H} holds with $C_b$ large enough.
+Indeed $B\asymp_b W(Q)$, and the displayed logarithm in
+\eqref{eq:kernel-tail-choice} is at most
+$O_b(1+\log\log(3x))+\Lthree(|U|)$. This follows by bounding
+$\log(e^e Q(3+|U|+B+p))$ by
+$O_b(\log(2Q)+\log(3+|U|)+\log(2x))$ and using
+$\log(a+c)\le\log 2+\max(\log a,\log c)$ twice. Consequently,
+on each good prime,
+\begin{equation}\label{eq:accuracy}
+ |D_{p,B,U,H}(\chi)-\chi(p)|<1/8
+      \quad\text{simultaneously for every }\chi\in\FQ.
+\end{equation}
+By Lemma~\ref{lem:witness} at least $(c_0/2)x/\log x$ good primes
+separate any prescribed pair by at least one. At any of them the two
+spectral measurements differ by more than $3/4$. Identical multisets
+would give identical measurements.
+
+For positive heights fix $b=1$, choose $U=KW(Q)$ with a new sufficiently
+large absolute constant $K$, and use the window of half-length $U/2$.
+The estimate $\Lthree(U)=o(U)$ and increasing $K$ uniformly for $Q\ge3$
+give \eqref{eq:H}. This whole window lies in $(0,3KW(Q)/2]$.
+\end{proof}
+
+\section{How different must the two observed lists be?}
+The proof supplies a quantitative answer even if recorded zeros are perturbed or
+omitted. For two finite multisets $S_1,S_2$ in the observation window, pair any
+subsets of their copies one-to-one. Let $N_*$ count all unpaired copies on both
+sides. Define the cost of this partial matching by
+\[
+ \mathcal C_x=N_*+
+    \sum_{(s,t)\,\mathrm{paired}}\min\{1,(\log x)|s-t|\}.
+\]
+The cap accounts for the option of treating an appreciably displaced zero as
+unmatched at comparable cost.
+\begin{corollary}[Separation under partial matching]\label{cor:transport}
+With the choices in the proof and $H$ as in \eqref{eq:H}, suppose
+$\chi_1\ne\chi_2$. Every partial matching of their lists satisfies
+$\mathcal C_x\gg_b\sqrt x\gg_b\log(2Q)$. In particular
+\[
+ \sum_{t\in[U-H,U+H]} |m_{\chi_1}(t)-m_{\chi_2}(t)|
+       \gg_b\log(2Q),
+\]
+where only distinct ordinates in the union are summed. If the lists have equal
+cardinality, the sum of displacements of any bijection is
+$\gg_b \log(2Q)/\log\log(3Q)$.
+\end{corollary}
+\begin{proof}
+Use a good witness prime $p$ for the pair. Its two normalized spectral sums differ
+by more than $3/4$. Each summand has supremum norm $O_b(\sqrt{x}/(B\log x))$.
+Its Lipschitz constant is $O_b(\sqrt{x}/B)$. By the triangle inequality a paired
+copy contributes at most the smaller of twice the supremum bound and the
+Lipschitz bound times its displacement. An unmatched copy contributes at most
+the supremum bound. Thus
+$3/4\ll_b\sqrt{x}\,\mathcal C_x/(B\log x)$, and $B\log x=Kx$.
+Pair identical copies wherever possible to obtain the first displayed consequence.
+For a bijection use $\mathcal C_x\le(\log x)\sum |s-t|$.
+\end{proof}
+
+\section{Recovering the character with finite precision}
+An individual high-order root of unity need not be distinguishable from every
+other character value by an error of $1/8$. Recovery instead compares candidate
+characters on a common list of primes. The same list works at every window centre.
+\begin{corollary}[A finite alphabet]\label{cor:code}
+Fix $b>1/\pi$. For each $Q$ there is a list of $m=O_b(\log(2Q))$ good primes,
+allowing repetitions, for which quantizing each spectral measurement to a
+fixed finite alphabet identifies $\chi$. An absolute positive fraction of these
+symbols can be arbitrarily corrupted, after fixing the universal smooth weight
+in Lemma~\ref{lem:witness}. For any fixed alphabet of at least two symbols, the
+order $\log Q$ is necessary for identification of the whole family.
+\end{corollary}
+\begin{proof}
+Good witness primes for each pair comprise at least $c_0 x/(2\log x)$ primes.
+There are $O(x/\log x)$ primes from which to choose, by the prime number theorem.
+Thus a uniformly chosen good prime has probability at least a fixed $\delta>0$
+to separate the pair by $1$. Choose $m$ good primes independently. The elementary
+binomial lower-tail bound gives probability at most $e^{-\delta m/8}$ of fewer
+than $\delta m/2$ witnesses for a given pair. There are at most $Q^2$
+characters, since $\sum_{q\le Q}\varphi(q)\le Q^2$, and hence at most $Q^4$
+pairs. A union bound proves existence for $m$ a sufficiently large multiple of
+$\log(2Q)$. Exhaustive comparison of the finite candidates and prime lists gives
+a deterministic choice as well.
+
+Round real and imaginary parts of each measurement to the nearest multiple
+of $1/8$. The good measurements have modulus $<9/8$, so one may use the grid
+in $[-2,2]^2$ as a fixed alphabet. A rounded symbol is within
+$1/8+\sqrt2/16<1/4$ of the correct value $\chi(p)$.
+Decode by maximizing the number of coordinates whose symbol lies within
+$1/4$ of the candidate's exact value. If $k<\delta m/4$ coordinates are
+corrupted, the true candidate matches at least $m-k$ positions. Every competitor
+fails in at least $\delta m/2-k>k$ positions. For the converse, a prime modulus
+between $Q/2$ and $Q$ supplies $\gg Q$ distinct primitive characters for large
+$Q$ by Bertrand's postulate. An alphabet of fixed size $s$ must have $s^m\gg Q$.
+\end{proof}
+The measurement count refers to linear statistics of all zeros in the chosen
+window. The existence proof for the common prime list allows exhaustive search
+and provides no polynomial-time complexity claim.
+
+\section{Checks, scope and further questions}
+For the two primitive quartic characters modulo $5$, assign $\chi_+(2)=i$ and
+$\chi_-(2)=-i$. A numerical sign-change scan gives the following positive
+ordinates, in increasing order among the sign changes observed.
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Character & First observed & Second observed & Third observed\\
+\midrule
+$\chi_+$ & 6.183578195451 & 8.457229174423 & 12.67494641701\\
+$\chi_-$ & 4.132903705213 & 9.442931129729 & 11.28289644158\\
+\bottomrule
+\end{tabular}
+\end{center}
+The character tables and functional equation fix the orientation. The supplied
+script checks each residual and its reflected conjugate at 35-digit working
+precision. Sampling for sign changes does not certify completeness or
+multiplicities. In a separate end-to-end calculation the decoder in
+Lemma~\ref{lem:kernel-decoder} used the 35 positive ordinates found for each
+character up to height $72$. With $p=2$, $b=1$, $B=8$ and $U=H=36$, it returned
+$-0.00017486+0.99997429i$ and $-0.00031971-1.00002114i$, respectively.
+Both complex errors were below $0.00033$. The proof of the theorem is independent of
+the numerical calculations.
+
+The arithmetic check uses exact integers. For $x=60000$, $B=45000$, among
+the 5,244 primes in $(x,2x)$ the script certifies a positive-frequency
+near-prime-power error at most $1/8$ for 3,598 probes. For each nontrivial
+difference of character exponents modulo $127$, at least 1,818 of those
+primes separate the character values by $1$. The three primes $61703$,
+$60013$, and $60029$ suffice simultaneously for the 125 nonprincipal
+characters in that example. This check isolates the sieve step. It does
+not specify a numerical value of the uniform cutoff constant in the theorem.
+
+\paragraph{Further questions.}
+Can the order of $W(Q)$ be lowered while retaining a fixed accuracy for each
+measurement and a uniform guarantee for every conductor? The proof pays for
+primes at the GRH scale $\log^2 Q$ and then gains their mean separation;
+a smaller uniform cutoff would require another way of using the distinguishing
+information. Can one force an ordinate belonging to exactly one of the two
+functions in this same conductor-uniform window? Finally, what explicit,
+practical $C_b$ follows from numerical choices of the smooth weight and the sieve
+constants? These questions are distinct from the finite uniqueness and the
+partial-matching bounds proved here.
+\begin{thebibliography}{9}\small
+\bibitem{lean} L. Sernau and collaborators, \emph{GRH for Dirichlet
+$L$-functions, in Lean 4}, readable edition, commit \texttt{72fead102f66}.
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Statements.lean}{Statements};
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Main.lean}{exported theorems};
+\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/README.md}{reported checks}.
+\bibitem{article} V. Reshetnikov, ProveIt collection, \emph{Beyond the Riemann
+hypothesis for Dirichlet $L$-functions}, commit \texttt{dec3e4f21630}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/dec3e4f216305071186a1cc4c42fe1cdb38df9be/Analysis/GeneralizedRiemannHypothesis/Article/sections/rec.tex}{Recovery section},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/dec3e4f216305071186a1cc4c42fe1cdb38df9be/Analysis/GeneralizedRiemannHypothesis/Article/sections/zer.tex}{short-interval section},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/dec3e4f216305071186a1cc4c42fe1cdb38df9be/Analysis/GeneralizedRiemannHypothesis/Article/README.md}{editorial scope}.
+\bibitem{weil} A. Chirre, V. J. Pereira J\'unior and D. de Laat,
+\emph{Primes in arithmetic progressions and semidefinite programming},
+Math. Comp. 90 (2021), 2235--2246, explicit formula (2.1).
+\href{https://doi.org/10.1090/mcom/3638}{doi:10.1090/mcom/3638}.
+\bibitem{bmor} M. A. Bennett, G. Martin, K. O'Bryant and A. Rechnitzer,
+\emph{Counting zeros of Dirichlet $L$-functions}, Math. Comp. 90 (2021),
+1455--1482. \href{https://doi.org/10.1090/mcom/3599}{doi:10.1090/mcom/3599}.
+\bibitem{sieve} T. Tao and J. Ter\"av\"ainen, \emph{The Hardy--Littlewood--Chowla
+conjecture in the presence of a Siegel zero}, J. Lond. Math. Soc. 106 (2022),
+3317--3378, Lemma 3.2. \href{https://doi.org/10.1112/jlms.12663}{doi:10.1112/jlms.12663}.
+\bibitem{banks} W. D. Banks, \emph{Comparing zeros of distinct Dirichlet
+$L$-functions}, Publ. Math. Debrecen 106 (2025), 327--335.
+\href{https://arxiv.org/abs/2302.07073}{arXiv:2302.07073}.
+\bibitem{fujii} A. Fujii, \emph{On the zeros of Dirichlet $L$-functions (V)},
+Acta Arith. 28 (1976), 395--403.
+\href{https://matwbn.icm.edu.pl/ksiazki/aa/aa28/aa2847.pdf}{Publisher PDF}.
+\bibitem{loftus} W. Banks and K. Loftus, \emph{Unshared zeros of Dirichlet $L$-functions},
+2026 preprint. \href{https://arxiv.org/abs/2607.22930}{arXiv:2607.22930}.
+\end{thebibliography}
+\end{document}

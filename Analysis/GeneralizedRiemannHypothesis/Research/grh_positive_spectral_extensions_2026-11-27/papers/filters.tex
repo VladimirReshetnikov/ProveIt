@@ -1,0 +1,575 @@
+% Self-contained mathematical body; requires amsmath, amssymb, amsthm,
+% hyperref; theorem, lemma, proposition, corollary, remark environments.
+% Suggested title: The shortest positive average cancelling two frequencies:
+% exact classification and a cubic-root resonance law.
+
+\section{The extremal question and the result}
+
+For a compactly supported probability measure $\mu$ on $\mathbb R$ write
+\[
+ \widehat\mu(\omega)=\int_{\mathbb R}e^{i\omega u}\,d\mu(u),
+ \qquad
+ \mathcal B(r)=\inf\{\operatorname{diam}(\operatorname{supp}\mu):
+       \widehat\mu(1)=\widehat\mu(r)=0\},\quad r>1.
+\]
+Translations preserve both vanishing conditions.  Thus a measure of support
+diameter $2T$ can always be placed in $[-T,T]$.  No symmetry of the admissible
+measure is assumed.  The theorem below determines the infimum, all minimizers,
+and two scalar equations computing them.  Irrational frequency ratios are
+allowed.
+
+\begin{theorem}[Exact two-frequency classification]\label{filt:classification}
+Let $r>1$.
+\begin{enumerate}
+\item If $r=n\ge3$ is an odd integer, then
+\[
+ \mathcal B(n)=\pi,
+ \qquad \mu_n=\tfrac12\delta_{-\pi/2}+\tfrac12\delta_{\pi/2}
+\]
+is the unique minimizer up to translation.
+\item Otherwise write
+\[
+ n=2k+1<r<n+2,\qquad k\in\mathbb Z_{\ge0},\qquad s=(-1)^k.
+\]
+When $k=0$, put $t=0$ and $M=1$.  When $k\ge1$, let $t$ be the unique
+solution in
+\[
+ \frac{k\pi}{r}<t<\frac{(k+1/2)\pi}{r}
+\]
+of
+\begin{equation}\label{filt:tangent}
+ \tan t=r\tan(rt-k\pi),
+ \qquad M=s\frac{\cos(rt)}{\cos t}>0.
+\end{equation}
+There is a unique $T$ in
+\[
+ \frac\pi2<T<\frac{(n+2)\pi}{2r}
+\]
+satisfying
+\begin{equation}\label{filt:crossing}
+ s\frac{\cos(rT)}{\cos T}=M.
+\end{equation}
+Then $\mathcal B(r)=2T$.  Put
+\[
+ P=\frac{-\cos T}{\cos t-\cos T},\qquad
+ Q=\frac{\cos t}{\cos t-\cos T}.
+\]
+The unique minimizer up to translation is
+\begin{equation}\label{filt:measure}
+ \mu_r=\frac P2(\delta_{-t}+\delta_t)
+             +\frac Q2(\delta_{-T}+\delta_T).
+\end{equation}
+At $t=0$ the two coincident atoms in the first term are combined.
+\item In the first band $1<r<3$, these formulas simplify to
+\begin{equation}\label{filt:firstband}
+ T=\frac{2\pi}{1+r},\qquad
+ \mathcal B(r)=\frac{4\pi}{1+r},\qquad
+ P=\frac{-c}{1-c},\quad Q=\frac1{1-c},\quad
+ c=\cos\frac{2\pi}{1+r}.
+\end{equation}
+\end{enumerate}
+For arbitrary frequencies $0<\alpha<\gamma$, the least diameter is
+$\alpha^{-1}\mathcal B(\gamma/\alpha)$, and the atoms are obtained by
+dividing the coordinates above by $\alpha$.
+\end{theorem}
+
+\begin{theorem}[Asymmetric resonance law]\label{filt:cusp}
+Fix an odd integer $n\ge3$, and put
+\[
+ A_n=\frac{n(n^2-1)}6,
+ \qquad
+ C_n=\left(\frac{3\pi}{2n(n^2-1)}\right)^{1/3}.
+\]
+As $\varepsilon\downarrow0$, the optimal inner and outer coordinates for
+$r=n+\varepsilon$ satisfy
+\begin{align}
+ t&=\frac\pi2-C_n\varepsilon^{1/3}+O_n(\varepsilon),\label{filt:innercusp}\\
+ T&=\frac\pi2+2C_n\varepsilon^{1/3}+O_n(\varepsilon),\label{filt:outercusp}\\
+ \mathcal B(n+\varepsilon)
+   &=\pi+4C_n\varepsilon^{1/3}+O_n(\varepsilon).\label{filt:widthcusp}
+\end{align}
+Furthermore $P=2/3+O_n(\varepsilon^{2/3})$ and
+$Q=1/3+O_n(\varepsilon^{2/3})$.
+
+For the approach from below, let $s_n=(-1)^{(n-1)/2}$ and
+\[
+ M_n^- =\max_{0\le u<\pi/2}
+                 \left(-s_n\frac{\cos(nu)}{\cos u}\right).
+\]
+The maximum exists and is finite.  Then
+\begin{equation}\label{filt:left}
+ \mathcal B(n-\varepsilon)
+ =\pi+\frac{\pi}{n+M_n^-}\varepsilon+O_n(\varepsilon^2).
+\end{equation}
+In particular $M_3^-=1$ and
+$\mathcal B(3-\varepsilon)=\pi+\pi\varepsilon/4+O(\varepsilon^2)$,
+whereas the right-hand increase has order $\varepsilon^{1/3}$.
+\end{theorem}
+
+The cube-root law concerns perturbation of the prescribed frequencies, not
+the location of zeros of any particular $L$-function.  Its assertion is a
+sharp design constraint: moving the higher frequency just above an odd
+multiple of the lower one requires a much larger increase in the averaging
+window than a perturbation of the same size in the opposite direction.
+
+\section{Proof of the classification}
+
+\subsection{A scalar quotient and its last positive lobe}
+
+Fix a nonresonant ratio $r$ and $n,k,s$ as in
+Theorem~\ref{filt:classification}.  On $[0,\pi/2)$ define
+\[
+ f(u)=s\frac{\cos(ru)}{\cos u}.
+\]
+The maximum of $f$ is positive, finite, and attained.  Indeed,
+$s\cos(r\pi/2)<0$, so $f(u)\to-\infty$ at the right endpoint.
+
+When $k=0$, the only positive lobe before $\pi/2$ is
+$0\le u<\pi/(2r)$, and $\cos(ru)\le\cos u$ there.  Consequently
+$\max f=f(0)=1$, with equality only at $u=0$.
+
+Suppose $k\ge1$.  The last positive lobe is
+\[
+ J=\left(\frac{(k-1/2)\pi}{r},
+               \frac{(k+1/2)\pi}{r}\right).
+\]
+Every point of an earlier positive lobe can be shifted forward by an integer
+multiple of $2\pi/r$ into $J$.  This leaves its positive numerator unchanged
+and strictly decreases its positive denominator.  Thus the global maximum
+occurs in $J$.  Before $k\pi/r$ the function is strictly increasing.
+
+For completeness, let
+\[
+ W(u)=s\{-r\sin(ru)\cos u+\cos(ru)\sin u\}.
+\]
+Then $f'(u)=W(u)/\cos^2u$ and
+\begin{equation}\label{filt:Wprime}
+ W'(u)=(1-r^2)s\cos(ru)\cos u.
+\end{equation}
+It is strictly negative throughout $J$.  At $u=k\pi/r$ the value of $W$ is
+positive; at the right endpoint of $J$ it is negative.  There is exactly one
+stationary point $t$, and it is the unique global maximum.  Dividing
+$W(t)=0$ by the nonzero cosines gives~\eqref{filt:tangent}.
+We have proved
+\begin{equation}\label{filt:max}
+ M=\max_{0\le u<\pi/2}f(u),
+ \qquad \{u:f(u)=M\}=\{t\}.
+\end{equation}
+
+Now continue $f$ to
+\[
+ \pi/2<u<U:=\frac{(n+2)\pi}{2r}.
+\]
+Here $s\cos(ru)<0$ and $\cos u<0$, so $f>0$; its endpoint limits are
+$+\infty$ and $0$.  Equation~\eqref{filt:Wprime} again gives $W'<0$ on this
+interval.  Its value just after $\pi/2$ is
+$s\cos(r\pi/2)<0$, hence $f'<0$ throughout.  This proves the existence and
+uniqueness of $T$ in~\eqref{filt:crossing}.
+
+\subsection{A nonnegative certificate and the endpoint measure}
+
+Define the even function
+\begin{equation}\label{filt:g}
+ g(u)=M\cos u-s\cos(ru).
+\end{equation}
+For $0\le u<\pi/2$, equations~\eqref{filt:max} give $g(u)\ge0$.
+For $\pi/2<u<T$ we have $f(u)>M$ and $\cos u<0$, whence again
+$g(u)=\cos u\{M-f(u)\}>0$.
+At $\pi/2$ the value is $-s\cos(r\pi/2)>0$.
+It follows that
+\begin{equation}\label{filt:certzeros}
+ g\ge0\text{ on }[-T,T],\qquad
+ \{g=0\}=\{-T,-t,t,T\},
+\end{equation}
+with the two inner entries identified when $t=0$.
+The inner zeros are double and the endpoint zeros simple:
+\[
+ g''(t)=(r^2-1)M\cos t>0,
+ \qquad g'(T)=-\cos T\,f'(T)<0.
+\]
+
+Let an admissible measure have support diameter at most $2T$ and translate
+it into $[-T,T]$.  The vanishing Fourier moments imply
+$\int g\,d\mu=0$.  By~\eqref{filt:certzeros}, its support lies in the listed
+finite set.  The measure~\eqref{filt:measure} is a probability measure with
+positive weights and zero cosine moments, because
+\[
+ P\cos t+Q\cos T=0,
+ \qquad \cos(rt)=sM\cos t,\quad
+ \cos(rT)=sM\cos T.
+\]
+Symmetry gives its zero sine moments.
+
+We next prove that there are no nonsymmetric minimizers.  For $t>0$ let
+$d_t$ and $d_T$ be the differences of the masses at the positive and negative
+inner and outer nodes.  The imaginary parts of the two vanishing equations
+read
+\[
+ \begin{pmatrix}\sin t&\sin T\\\sin(rt)&\sin(rT)\end{pmatrix}
+ \begin{pmatrix}d_t\\d_T\end{pmatrix}=0.
+\]
+At the inner node, $r\sin(rt)=sM\sin t$.  At the outer node,
+$W(T)<0$ and $\cos T<0$, which give
+\[
+ M\sin T-sr\sin(rT)>0.
+\]
+Thus
+\[
+ \sin t\,\sin(rT)-\sin T\,\sin(rt)
+ =\sin t\left\{\sin(rT)-\frac{sM}{r}\sin T\right\}\ne0.
+\]
+Both differences are zero.  For $t=0$, the first sine equation already
+forces equal endpoint masses.  Total mass and the first cosine equation
+then uniquely determine $P,Q$.  The endpoint masses are positive, so no
+admissible measure fits in a strictly shorter interval.  This proves the
+nonresonant cases.
+
+For odd $r=n$, the function $\cos u$ is nonnegative on
+$[-\pi/2,\pi/2]$.  Its integral can vanish only for a measure supported at
+the two endpoints.  The sine moment forces equal masses, and that measure
+also annihilates frequency $n$.  Any smaller interval has strictly positive
+cosine after centering.  This proves the resonant case.
+
+Finally, when $1<r<3$,
+\[
+ \cos u-\cos(ru)
+ =2\sin\frac{(1+r)u}{2}\sin\frac{(r-1)u}{2}.
+\]
+The first positive zero beyond the origin is $T=2\pi/(1+r)$; here
+$\cos T=\cos(rT)<0$.  This yields~\eqref{filt:firstband} and completes the
+proof.\hfill$\square$
+
+\section{Proof of the asymmetric resonance law}
+
+\subsection{Localization at an odd resonance}
+
+Fix odd $n\ge3$, put $r=n+\varepsilon$ and
+$h=\pi\varepsilon/2$.  Write the optimal inner node as
+$t=\pi/2-y$.  The quotient at that node is
+\begin{equation}\label{filt:innerquotient}
+ M=\frac{\sin(ry-h)}{\sin y}.
+\end{equation}
+At $\varepsilon=0$, the limiting quotient is $\sin(ny)/\sin y$.
+For $0<y\le\pi/2$ it is strictly less than $n$.  One way to see the strict
+bound is to write $\sin(ny)/\sin y$ as a sum of $n$ complex numbers of
+modulus one; equality in the triangle inequality would require all adjacent
+phases $e^{2iy}$ to coincide, which cannot happen in this interval.
+Testing~\eqref{filt:innerquotient} at $y=\varepsilon^{1/3}$ shows that its
+maximum tends to $n$.  Uniform convergence on compact sets away from $y=0$
+therefore forces $y\to0$.
+
+The stationary equation is
+\begin{equation}\label{filt:stationarynear}
+ H(\varepsilon,y):=
+ r\cos(ry-h)\sin y-\sin(ry-h)\cos y=0.
+\end{equation}
+As $(\varepsilon,y)\to(0,0)$ with $\varepsilon,y\ge0$,
+\[
+ H(\varepsilon,y)
+ =\frac\pi2\varepsilon-2A_ny^3
+ +O_n\bigl(y^5+\varepsilon y^2+\varepsilon y^3
+                 +\varepsilon^2y+\varepsilon^3\bigr).
+\]
+The positive solution thus has $y\asymp_n\varepsilon^{1/3}$.  More explicitly,
+the remainder is $o(\varepsilon+y^3)$ at the solution, so
+$y^3/\varepsilon\to\pi/(4A_n)=C_n^3$.
+
+The stated sharper remainder follows from an elementary analytic implicit
+function argument.  Put $z=\varepsilon^{1/3}$ and $y=zv$.  The function
+$H(z^3,zv)/z^3$ extends real analytically to $z=0$ and equals
+\[
+ \frac\pi2-2A_nv^3+O_n(z^2)
+\]
+for $v$ near $C_n$.  Its derivative with respect to $v$ at $(0,C_n)$ is
+$-6A_nC_n^2\ne0$.  Hence $v=C_n+O_n(z^2)$, and
+$y=C_n\varepsilon^{1/3}+O_n(\varepsilon)$.
+
+\subsection{The outer node and the factor two}
+
+Write $T=\pi/2+x$.  The crossing equation becomes
+\begin{equation}\label{filt:nearcompare}
+ \frac{\sin(rx+h)}{\sin x}
+ =\frac{\sin(ry-h)}{\sin y}.
+\end{equation}
+For $r=n$ the left quotient is less than $n$ whenever $x>0$ is fixed,
+while $M\to n$.  Monotonicity of the crossing branch therefore gives
+$x\to0$.
+
+Set $x=zw$ and use the just-constructed analytic solution $v(z)$ for
+$y=zv(z)$.  After subtracting the two sides
+of~\eqref{filt:nearcompare} and dividing by $z^2$, the equation extends
+analytically to $z=0$ as
+\begin{equation}\label{filt:reducedcubic}
+ A_n\left(\frac{2C_n^3}{w}-w^2+3C_n^2\right)=0.
+\end{equation}
+Its positive solution is $w=2C_n$, because multiplication by $w$ factors
+the corresponding cubic as
+$(w-2C_n)(w+C_n)^2=0$.
+The derivative at $2C_n$ is $-9A_nC_n/2\ne0$.
+The analytic equation before taking $z=0$ differs from the displayed
+one by $O_n(z^2)$, uniformly for $w$ near $2C_n$. Indeed,
+\[
+ \frac{\sin((n+z^3)zw\pm\pi z^3/2)}{\sin(zw)}
+ =n+z^3+z^2\left(\pm\frac{\pi}{2w}-A_nw^2\right)+O_n(z^4),
+\]
+and the common $z^3$ term cancels when the two quotients are subtracted;
+also $v(z)=C_n+O_n(z^2)$.
+The implicit function theorem therefore gives a positive solution
+$w=2C_n+O_n(z^2)$.  The uniqueness already proved for the crossing equation
+identifies it with the optimal $T$.  This proves
+\eqref{filt:innercusp}--\eqref{filt:widthcusp}.
+The weight formulas and
+$\cos t=\sin y$, $-\cos T=\sin x$ give
+$P=2/3+O_n(z^2)$ and $Q=1/3+O_n(z^2)$.
+
+\subsection{The regular approach from below}
+
+For $r=n-\varepsilon$, the sign of the preceding band is $-s_n$.
+The limiting maximum $M_n^-$ occurs strictly before $\pi/2$, since the
+quotient tends to $-n$ there.  For $n=3$ the maximum is at $0$ and equals
+$1$.  For $n\ge5$ the preceding last-lobe argument gives a unique interior
+maximum with strictly negative second derivative.  In either case its
+maximum is $M_n^-+O_n(\varepsilon)$.
+With $T=\pi/2+x$ and $h=\pi\varepsilon/2$, the outer equation now reads
+\[
+ -\frac{\sin((n-\varepsilon)x-h)}{\sin x}
+      =M_n^-+O_n(\varepsilon).
+\]
+Setting $x=\varepsilon v$ extends the equation analytically to
+$\pi/(2v)-n=M_n^-$.  The nonzero derivative in $v$ yields
+\[
+ x=\frac{\pi}{2(n+M_n^-)}\varepsilon+O_n(\varepsilon^2),
+\]
+which is~\eqref{filt:left}.\hfill$\square$
+
+\section{Robustness and the exact first-order cost of a shorter window}
+
+For fixed nonresonant $r$ write $t,T,M,P,Q,g$ as above and let
+\[
+ \epsilon(\nu)=\max\{|\widehat\nu(1)|,|\widehat\nu(r)|\}.
+\]
+Here $W_1$ is the usual transport distance with cost $|u-v|$.
+
+\begin{proposition}[Sharp stability exponent]\label{filt:stability}
+There is $C_r<\infty$ such that every probability measure $\nu$ on
+$[-T,T]$ satisfies
+\[
+ W_1(\nu,\mu_r)\le C_r\sqrt{\epsilon(\nu)}.
+\]
+No exponent greater than $1/2$ can hold uniformly for that fixed $r$.
+At an odd resonance, on the optimal interval $[-\pi/2,\pi/2]$, the optimal
+exponent is $1$ instead.
+\end{proposition}
+
+\begin{proof}
+Let $G$ be the finite zero set in~\eqref{filt:certzeros}.  The double inner
+zeros and simple endpoint zeros imply
+$g(u)\ge c_r\operatorname{dist}(u,G)^2$ on the interval.  Also
+$\int g\,d\nu\le(M+1)\epsilon(\nu)$.
+Round every point to a nearest node of $G$.  Cauchy--Schwarz bounds the
+transport cost by $O_r(\sqrt{\epsilon})$, and the Fourier moments change
+by the same order.  Total mass and the two complex moments determine the
+weights on $G$ uniquely: this is exactly the even and odd linear algebra
+in the uniqueness proof.  Their inverse on its image is bounded, giving
+the asserted estimate.  Splitting an inner atom into equal masses at
+distance $a$ on either side changes both moments by $O_r(a^2)$ but has
+transport distance bounded below by a positive multiple of $a$.  Thus the
+exponent cannot be improved.
+
+At an odd resonance, $\cos u$ is bounded below by a positive constant times
+the distance to the endpoints.  Rounding therefore costs $O(\epsilon)$,
+and the first sine moment controls the imbalance of the endpoint weights.
+Moving the endpoints inward by $a$ proves sharpness.
+\end{proof}
+
+\begin{theorem}[First-order shortening law]\label{filt:shortening}
+For $d>0$ sufficiently small take the infimum below over probability
+measures $\nu$, and put
+\[
+ D_r(d)=\inf_{\operatorname{supp}\nu\subset[-T+d/2,T-d/2]}
+             \epsilon(\nu),
+ \qquad
+ L_r=\frac{Q[-g'(T)]}{2(M+1)}>0.
+\]
+Then
+\begin{equation}\label{filt:shorteninglaw}
+ D_r(d)=L_rd+O_r(d^2).
+\end{equation}
+Moreover at $r=n+\varepsilon$, $n\ge3$ odd,
+\begin{equation}\label{filt:leakcusp}
+ L_{n+\varepsilon}
+  =\frac{3A_nC_n^2}{2(n+1)}\varepsilon^{2/3}
+          +O_n(\varepsilon).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Put $a=-g'(T)/2$, $K=Qa$, and
+$h_0(u)=K\cos u/\cos t$.  At the inner nodes $h_0=K$, while at the
+outer nodes $h_0=K-a$.  On the shortened interval,
+\[
+ \min\{g(u)+dh_0(u)\}\ge dK-O_r(d^2).
+\]
+Indeed, near an inner zero the positive quadratic term can lose only
+$O(d^2)$ under a linear perturbation, and at each moved endpoint the
+linear inward increase is $da$; away from these finitely many neighborhoods
+the unperturbed function is bounded below by a positive constant.
+Integrating and using the definition of $\epsilon$ gives
+\[
+ (M+1+dK/\cos t)\epsilon(\nu)\ge dK-O_r(d^2),
+\]
+the required lower estimate.
+
+For the matching upper bound, keep the inner nodes at $\pm t$, move the
+outer nodes to $\pm(T-d/2)$, and choose their two symmetric total weights
+so that
+$\widehat\nu(1)+s\widehat\nu(r)=0$.
+Such positive weights exist for small $d$, since at $d=0$ the two values
+of $\cos u+s\cos(ru)$ have opposite signs.  Both moments are real and
+$\widehat\nu(r)=-s\widehat\nu(1)$; therefore
+\[
+ (M+1)\widehat\nu(1)=\int g\,d\nu
+                  =dQa+O_r(d^2).
+\]
+This proves~\eqref{filt:shorteninglaw}.
+
+For~\eqref{filt:leakcusp}, write $y=C_n\varepsilon^{1/3}+O_n(\varepsilon)$
+and $x=2y+O_n(\varepsilon)$.  The expansion near the outer endpoint is
+\[
+ g(\pi/2+x)=h+3A_ny^2x-A_nx^3+O_n(\varepsilon^{4/3}),
+ \qquad h=2A_ny^3+O_n(\varepsilon^{5/3}).
+\]
+Differentiating the underlying analytic trigonometric expression gives
+$-g'(T)=9A_nC_n^2\varepsilon^{2/3}+O_n(\varepsilon)$.
+Now use $Q=1/3+O_n(\varepsilon^{2/3})$ and $M=n+O_n(\varepsilon^{2/3})$.
+\end{proof}
+
+\section{An exact nonconsecutive example}
+
+The ratio $r=4$ permits a radical expression.  Put
+\[
+ x=\sqrt{\frac{2+\sqrt{10}}{12}},\qquad
+ z=-x+\sqrt{1-2x^2}.
+\]
+Then
+\[
+ t=\arccos x,\qquad T=\arccos z,\qquad
+ \boxed{\mathcal B(4)=2\arccos\left(
+ -\sqrt{\frac{2+\sqrt{10}}{12}}
+ +\sqrt{\frac{4-\sqrt{10}}6}\right)}.
+\]
+To verify this without numerical root finding, use
+$\cos(4u)=8\cos^4u-8\cos^2u+1$.  Tangency of
+$-\cos(4u)/\cos u$ gives $24x^4-8x^2-1=0$, and, with
+$M=-(8x^4-8x^2+1)/x$, the polynomial identity
+\[
+ 8v^4-8v^2+1+Mv
+   =8(v-x)^2(v^2+2xv+3x^2-1)
+\]
+identifies $z$ as the outer crossing.  The other quadratic root is less
+than $-1$, whereas $-1<z<0$.  Numerically,
+\[
+ \begin{array}{c|r}
+ t&0.8554371830421481\\
+ T&1.8569146032739532\\
+ \mathcal B(4)&3.7138292065479064\\
+ P&0.3008471645880608\\
+ Q&0.6991528354119392
+ \end{array}
+\]
+The exact radical formulas, not these displayed decimal approximations,
+define the example.
+
+The constant on the other side of the next resonance is also elementary:
+\[
+ M_5^-=-\min_{0\le u<\pi/2}
+         \frac{\cos(5u)}{\cos u}
+       =-\min_{0\le v\le1}(16v^4-20v^2+5)=\frac54.
+\]
+Consequently
+$\mathcal B(5-\varepsilon)=\pi+(4\pi/25)\varepsilon
++O(\varepsilon^2)$, alongside the cube-root increase to the right of $5$.
+
+\section{Positive dilation averages for zeros on a common vertical line}
+
+The width theorem is unchanged if the two constraints have a common real
+part.  More precisely, let $\beta\in\mathbb R$ and $0<\alpha<\gamma$.
+Among probability measures satisfying
+\[
+ \int e^{(\beta+i\alpha)u}\,d\mu(u)=
+ \int e^{(\beta+i\gamma)u}\,d\mu(u)=0,
+\]
+the least support diameter is $\alpha^{-1}\mathcal B(\gamma/\alpha)$.
+Indeed, exponential tilting
+\[
+ d\nu(u)=\frac{e^{\beta u}\,d\mu(u)}{\int e^{\beta v}\,d\mu(v)}
+\]
+preserves support and transforms the conditions into ordinary Fourier
+vanishing.  Conversely, tilt the optimal measure back by $e^{-\beta u}$.
+If its unweighted nodes and masses are $u_j,w_j$, the required positive
+masses are
+\begin{equation}\label{filt:tiltweights}
+ \widetilde w_j=
+       \frac{w_je^{-\beta u_j}}{\sum_\ell w_\ell e^{-\beta u_\ell}}.
+\end{equation}
+
+Under the Dirichlet GRH theorem supplied by the upstream Lean development,
+two distinct positive ordinates $\alpha,\gamma$ of the same or different
+Dirichlet $L$-functions lie on the common line $\beta=1/2$.  In any explicit
+formula in which a zero contributes $c_\rho x^\rho$, averaging the quantity
+at $xe^{u_j}$ with the positive weights~\eqref{filt:tiltweights} multiplies
+that contribution by
+$\sum_j\widetilde w_je^{\rho u_j}$.  Our optimal average cancels the selected
+frequencies exactly.  For example, with a smooth compactly supported
+function $W$ on $(0,\infty)$, each zero term in the smoothed von Mangoldt
+sum $\sum_m\Lambda(m)\chi(m)W(m/x)$ has this form.  The operation remains a
+positive average on the original sum and uses the least possible
+multiplicative scale ratio
+\[
+ \exp\!\left(\frac{\mathcal B(\gamma/\alpha)}{\alpha}\right).
+\]
+Multiplicity of a selected zero changes its coefficient and does not
+affect this simple cancellation.  Requiring vanishing derivatives of the
+multiplier is a different, stronger design problem.
+
+This theorem resolves the two-frequency case of the merged article's
+question about nonconsecutive prescribed frequencies.  It supplements the
+article's exact equally spaced and consecutive-harmonic formulas.  The
+optimization theorem and the resonance law are unconditional statements
+about positive measures; Dirichlet GRH is used only to place the selected
+arithmetic zeros on one common vertical line.
+
+\section{Relation to prior work and novelty limits}
+
+The mathematical setting belongs to the classical extremal theory of
+positive-definite entire functions.  In particular, Logan studied the
+maximum number of zeros in an interval for positive-definite bandlimited
+functions [B.~F.~Logan, \emph{SIAM Journal on Mathematical Analysis}
+\textbf{14} (1983), 258--268, DOI:
+\href{https://doi.org/10.1137/0514024}{10.1137/0514024}].
+The same optimization has a long engineering history as positive
+two-mode input shaping: an impulse sequence cancels two undamped vibration
+modes.  Crain, Singhose and Seering studied simultaneous two-mode shapers
+in their 1996 IFAC paper, and the three-impulse formula in the first band
+is already part of that literature.  A primary historical account is
+\href{https://web.mit.edu/shaping/www/papers/2MIFAC2173.ps}{their author-hosted
+paper}; related explicit formulas also appear in
+\href{https://patents.google.com/patent/US5638267A/en}{US Patent 5,638,267}.
+No novelty is claimed for the idea of positive two-frequency cancellation
+or for~\eqref{filt:firstband}.
+
+The merged article already proves optimal positive filters for a single
+frequency with jets and for blocks of consecutive harmonics.  The present
+note supplies a self-contained global proof over all positive probability
+measures, proves uniqueness without assuming symmetry or a prescribed
+number of atoms, and derives the asymmetric cubic-root law at every odd
+resonance together with its exact quantitative shortening consequence.
+The resonance and shortening laws are the principal candidate original
+contributions; the global classification supplies their rigorous basis.
+
+A targeted search of primary-source records did not locate the cubic-root
+law or the stated shortening asymptotic.  The engineering literature
+contains substantial prior work on the optimizing curves, so priority
+for the global classification is not asserted.  This is a limited novelty
+check, not proof of historical priority.  All the mathematical claims
+above have self-contained proofs, independent of any novelty claim.

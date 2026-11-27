@@ -1,0 +1,333 @@
+% Research draft prepared for the parent agent. Standalone mathematical content.
+% Standard packages: amsmath, amssymb, amsthm. No nonstandard macros needed.
+\section{Finite positive grids isolate central zeros}
+\label{grid:sec:main}
+
+The construction below uses the classical cascade of finite uniform averages
+(the normalized transfer polynomial of a cascaded integrator--comb filter~\cite{Hogenauer1981}).
+The contribution is the quantitative arithmetic application: unit-interval
+zero counts control its repeated high-frequency aliases, so a finite positive
+grid attains nearly quadratic accuracy in its number of samples while
+preserving the one-sided zero-detection argument.
+
+\subsection{An explicit averaging lemma}
+
+For integers $k\ge2$, $m\ge1$, define
+\[
+ U_k(w)=\frac1{k+1}\sum_{j=0}^{k}e^{jw/k},\qquad
+ \mathcal A_{k,m}f(t)=\sum_{j=0}^{mk}p_j f(t+j/k),
+\]
+\[
+ \sum_{j=0}^{mk}p_jz^j=\left(\frac{1+z+\cdots+z^k}{k+1}\right)^m.
+\]
+All $p_j$ are positive rationals and $\sum p_j=1$. The operator has $mk+1$
+distinct taps and support length $m$. Its multiplier on $e^{wt}$ is $U_k(w)^m$.
+
+\begin{lemma}[Uniform contraction away from the aliases]\label{grid:lem:contraction}
+For $0<\theta\le\pi$, $k\ge2$, and
+$\operatorname{dist}(\gamma,2\pi k\mathbb Z)\ge\theta$,
+\[
+ |U_k(i\gamma)|\le\exp\left(-\frac{\theta^2}{6\pi^2}\right).
+\]
+For $a>0$,
+\[
+ 0<U_k(-a)\le v_a:=\frac{1+e^{-a}}2<1.
+\]
+\end{lemma}
+\begin{proof}
+Reduce $\gamma$ modulo $2\pi k$ to $\delta\in[-\pi k,\pi k]$.
+If $|\delta|\le\pi$, let $X,Y$ be independent and uniform on
+$\{0,1/k,\ldots,1\}$. Then
+\[
+ 1-|U_k(i\delta)|^2
+ =\mathbb E[1-\cos(\delta(X-Y))]
+ \ge\frac{2\delta^2}{\pi^2}\mathbb E(X-Y)^2
+ =\frac{k+2}{3k\pi^2}\delta^2\ge\frac{\delta^2}{3\pi^2}.
+\]
+Here $1-\cos u\ge2u^2/\pi^2$ for $|u|\le\pi$, and
+$\operatorname{Var}X=(k+2)/(12k)$. Thus
+$|U_k(i\delta)|\le e^{-\delta^2/(6\pi^2)}$.
+If $\pi\le|\delta|\le\pi k$, the geometric-sum formula gives
+\[
+ |U_k(i\delta)|\le\frac1{(k+1)\sin(|\delta|/(2k))}
+ \le\frac1{(k+1)\sin(\pi/(2k))}\le\frac1{\sqrt2}.
+\]
+The last inequality follows from concavity of sine on $[0,\pi/4]$:
+$\sin x\ge(2\sqrt2/\pi)x$ there. Since $2^{-1/2}<e^{-1/6}$,
+this also gives the asserted bound. Finally convexity puts $e^{-ax}$ below
+its endpoint chord on $[0,1]$; averaging at mean $1/2$ proves the second claim.
+\end{proof}
+
+\begin{theorem}[Alias-controlled positive spectral projection]\label{grid:thm:abstract}
+Let $\Gamma\subset\mathbb R\setminus\{0\}$ be locally finite, with
+$|\gamma|\ge\eta>0$, nonnegative masses $\nu_\gamma$, and constants $A,B,E,a>0$.
+Suppose
+\[
+ \sum_{\gamma\in\Gamma\cap[u-\pi,u+\pi]}\nu_\gamma
+ \le A\log(2+|u|)\quad(u\in\mathbb R),\qquad
+ |c_\gamma|\le\frac{B\nu_\gamma}{1/4+\gamma^2},
+\]
+and
+\[
+ f(t)=c_0+\sum_{\gamma\in\Gamma}c_\gamma e^{i\gamma t}+E_0(t),
+ \qquad |E_0(t)|\le E e^{-at}\quad(t\ge0).
+\]
+Set $W=\sum_{\gamma\in\Gamma}\nu_\gamma/(1/4+\gamma^2)$,
+$\theta=\min(\pi,\eta)$,
+$\kappa=\min\{\theta^2/(6\pi^2),-\log v_a\}>0$, and $C_*=2+2\pi$.
+Then $W<\infty$, and for all $k\ge2$, $m\ge1$, $t\ge0$,
+\begin{equation}\label{grid:eq:bound}
+ |\mathcal A_{k,m}f(t)-c_0|
+ \le BW e^{-\theta^2m/(6\pi^2)}+Ee^{-at}v_a^m
+ +\frac{2AB}{\pi^2 k^2}
+ \left\{\zeta(2)\log(C_*k)-\zeta'(2)\right\}.
+\end{equation}
+In particular, with $m_k=\lceil2\log k/\kappa\rceil$,
+\[
+ \sup_{t\ge0}|\mathcal A_{k,m_k}f(t)-c_0|
+ \le\frac{BW+E+(2AB/\pi^2)
+ [\zeta(2)\log(C_*k)-\zeta'(2)]}{k^2}.
+\]
+\end{theorem}
+\begin{proof}
+The local count implies absolute summability by summing
+$O(\log(2+|n|)/(1+n^2))$ over unit intervals. Hence averaging the series
+term by term is legitimate, uniformly in $t$. Away from the intervals
+$I_\ell=(2\pi k\ell-\theta,2\pi k\ell+\theta)$, the preceding lemma
+gives the first term in \eqref{grid:eq:bound}. The interval $I_0$ contains no
+frequency, since $\theta\le\eta$. For $\ell\ne0$ and $\gamma\in I_\ell$,
+$|\gamma|\ge\pi k|\ell|$; the local count and $|U_k(i\gamma)|\le1$ give
+\[
+ \sum_{\gamma\in I_\ell}|c_\gamma|\,|U_k(i\gamma)|^m
+ \le\frac{AB\log(2+2\pi k|\ell|)}{\pi^2 k^2\ell^2}.
+\]
+Use $2+2\pi k\ell\le C_*k\ell$ for $\ell\ge1$ and sum over both
+signs of $\ell$. The two elementary sums are
+$\sum\ell^{-2}=\zeta(2)$ and
+$\sum(\log\ell)/\ell^2=-\zeta'(2)$.
+The averaged remainder is at most $Ee^{-at}U_k(-a)^m$.
+The choice of $m_k$ makes both exponential factors at most $k^{-2}$.
+\end{proof}
+
+The same proof gives $O(e^{-\kappa m}+\log k/k^r)$ for
+$|c_\gamma|\le B\nu_\gamma(1+|\gamma|)^{-r}$, $r>1$;
+the alias constant uses $\zeta(r)$ and $-\zeta'(r)$. Choosing
+$m\ge(r/\kappa)\log k$ with $m\asymp\log k$, the error in
+$N\asymp k\log k$ taps is
+$O((\log N)^{r+1}/N^r)$.
+
+\begin{proposition}[The alias term cannot be removed from this information class]
+For every integer $k\ge2$, any probability measure supported on
+$k^{-1}\mathbb Z$ has Fourier transform equal to $1$ at $2\pi k$.
+There are symmetric spectra obeying the count and gap hypotheses above,
+with constants independent of $k$, for which the error of every such
+averaging rule at $t=0$ is at least $c\log k/k^2$.
+\end{proposition}
+\begin{proof}
+Put mass $M_k=\lfloor\log(2+2\pi k)\rfloor$ at each of
+$\gamma=\pm2\pi k$, use coefficients
+$M_k/(1/4+(2\pi k)^2)$, and set $E_0=0$. These spectra satisfy the
+local count with one absolute constant, and have a fixed positive gap.
+Every lattice sample sees both exponentials as $1$, so every probability
+average leaves their total $2M_k/(1/4+4\pi^2k^2)$ unchanged.
+This is a lower bound for the abstract spectral class, not a claim that
+Dirichlet zero ordinates equal these aliases.
+\end{proof}
+
+\subsection{Prime statistics with positive spectral weights}
+
+Let $\mathcal C$ be a finite multiset of Dirichlet characters, with positive
+real weights $b_\chi$, invariant under conjugation. Put
+\[
+ a(n)=\Lambda(n)\sum_{\chi\in\mathcal C}b_\chi\chi(n),\quad
+ S(x)=\sum_{n\le x}a(n)\left(\frac1n-\frac1x\right),\quad
+ \delta=\sum_{\chi\text{ principal}}b_\chi,
+\]
+and define, directly from prime powers and with no centering constant,
+\[
+ d(t)=\frac{e^{(t+1)/2}}{e^{1/2}-1}
+ \{\delta+S(e^t)-S(e^{t+1})\},\qquad
+ M=\sum_\chi b_\chi\operatorname{ord}_{s=1/2}L(s,\chi).
+\]
+Imprimitive Euler factors are nonzero at $1/2$ and are absorbed into the
+decaying remainder. Under Dirichlet GRH, the ramp explicit formula gives
+\begin{equation}\label{grid:eq:prime-expansion}
+ d(t)=4M+\sum_{\gamma\ne0}
+ \frac{K(i\gamma)\nu_\gamma}{1/4+\gamma^2}e^{i\gamma t}
+ +O_{\mathcal C}(e^{-t/4}),\qquad
+ K(w)=\frac{e^{1/2}-e^w}{e^{1/2}-1},
+\end{equation}
+where $\nu_\gamma=\sum_\chi b_\chi\operatorname{ord}_{1/2+i\gamma}L(s,\chi^*)$.
+The standard local zero count supplies $A$, discreteness supplies $\eta>0$,
+and $|K(i\gamma)|\le B=(e^{1/2}+1)/(e^{1/2}-1)$. Formula
+\eqref{grid:eq:prime-expansion} follows by applying
+$(e^{1/2}I-T_1)/(e^{1/2}-1)$ to the centered normalized ramp; the constant
+in the centered ramp cancels exactly in the displayed definition of $d$.
+
+Here are the analytic details behind this input. Set
+$D(s)=-\sum_\chi b_\chi L'(s,\chi)/L(s,\chi)$ and write
+$D(s)=\delta/(s-1)+d_0+O(s-1)$ near $1$. For $\Re s>1$, integrating
+each ramp term gives
+\[
+ \int_1^\infty S(x)x^{-s}\dd x=\frac{D(s)}{s(s-1)}.
+\]
+Thus, with $c=d_0-\delta$ and $R(x)=S(x)-\delta\log x-c$,
+\[
+ \Phi(s):=\int_1^\infty R(x)x^{-s}\dd x
+ =\frac{D(s)}{s(s-1)}-\frac{\delta}{(s-1)^2}-\frac c{s-1}.
+\]
+The apparent pole at $1$ is removable. At a nontrivial zero $\rho$ its
+residue is $\nu_\rho/(\rho(1-\rho))$, where the weighted multiplicity
+$\nu_\rho$ is positive. Under Dirichlet GRH, Mellin inversion for the
+continuous ramp and a contour shift to $\Re s=1/4$ therefore give
+\[
+ R(x)=\sum_\gamma
+ \frac{\nu_\gamma x^{-1/2+i\gamma}}{1/4+\gamma^2}
+ +O_{\mathcal C}(x^{-3/4}).
+\]
+The integral on the new vertical line converges absolutely: the
+logarithmic derivatives are $O_{\mathcal C}(\log(2+|\Im s|))$ there,
+by the usual partial-fraction expression and local zero counts, and
+the denominator has quadratic decay. Horizontal edges are taken at
+heights avoiding the zeros; the bound $O_{\mathcal C}(\log^2 T)$ for
+the logarithmic derivatives there makes their integrals tend to zero.
+Finite Euler factors have no zero in $\Re s>0$, so create no residue
+in this shift. Local zero counts, including multiplicities, can be
+taken from \cite{Bennett2021}; the analogous zeta estimate is also
+part of the upstream analytic development. This proves the claimed
+uniform remainder after multiplying by $\sqrt x$ and applying $K$.
+The cancellation of $c$ is exact, so its value is never an input to
+the statistic.
+
+\begin{theorem}[Central multiplicity from a finite grid]\label{grid:thm:prime}
+For the fixed family $\mathcal C$, let $m_k$ be as in
+Theorem~\ref{grid:thm:abstract}, and set
+\[
+ Z_k(t)=\tfrac14\mathcal A_{k,m_k}d(t),\qquad
+ N_k=(m_k+1)k+1.
+\]
+Then uniformly for $t\ge0$,
+\[
+ Z_k(t)=M+O_{\mathcal C}(\log k/k^2)
+       =M+O_{\mathcal C}((\log N_k)^3/N_k^2).
+\]
+The statistic uses exactly the grid of $N_k$ ramp values
+$S(e^{t+j/k})$, $0\le j\le(m_k+1)k$. At $t=0$ it uses prime powers only
+up to $e^{m_k+1}=N_k^{O_{\mathcal C}(1)}$, and its logarithmic span is
+$m_k+1=O_{\mathcal C}(\log N_k)$. If $M$ is an integer, rounding $Z_k(t)$
+to the nearest integer is valid once the explicit right side of
+\eqref{grid:eq:bound}, divided by $4$, is below $1/2$.
+\end{theorem}
+
+If no spectral gap is provided, a completely prescribed choice
+$m_k=\lceil\log k\,\log\log(k+e^e)\rceil$ eventually makes the exponential
+terms at most $k^{-2}$ for every fixed family. It gives
+\[
+ Z_k(t)-M=O_{\mathcal C}
+ \left(\frac{(\log N_k)^3(\log\log N_k)^2}{N_k^2}\right),
+ \qquad e^{m_k+1}=N_k^{O(\log\log N_k)}.
+\]
+The onset is family-dependent. Neither version claims uniformity in
+unbounded conductor or a practical cutoff without explicit $A,E,\eta$.
+
+\subsection{Noise, individual characters, and the one-sided converse}
+
+If each observed $d$ value has error at most $\epsilon$, positivity and
+$\sum p_j=1$ give error at most $\epsilon/4$ in $Z_k$. Alternatively,
+if the normalized ramp values
+$Y_j=e^{(t+j/k)/2}S(e^{t+j/k})$ have error at most $\epsilon$, then
+\[
+ |Z_k^{\rm obs}-Z_k|\le\frac B4\epsilon.
+\]
+Indeed
+$d(t+j/k)=[e^{1/2}Y_j-Y_{j+k}+\delta e^{(t+j/k+1)/2}]/(e^{1/2}-1)$.
+No bound independent of the span is claimed for uniform absolute error
+in the unnormalized $S$ values. Those errors are multiplied by
+the displayed exponential factors.
+
+For any nonprincipal character $\chi$ modulo $q$, a single real
+nonnegative arithmetic weight suffices for its individual central order:
+\[
+ a_\chi(n)=\Lambda(n)\{\chi_0(n)+\operatorname{Re}\chi(n)\}\ge0.
+\]
+It corresponds to weights $1,1/2,1/2$ on $\chi_0,\chi,\bar\chi$;
+repeated characters are combined. Since conjugation gives equal central
+orders and the principal $L$-function has no zero at $1/2$, its $M$ is
+exactly $\operatorname{ord}_{1/2}L(s,\chi)\in\mathbb Z_{\ge0}$.
+For completeness, $\zeta(1/2)=\eta(1/2)/(1-\sqrt2)<0$, since the
+alternating eta series at $1/2$ is positive; the finitely many omitted
+Euler factors of a principal character are nonzero at $1/2$.
+For noncentral zeros the same statistic detects all three factors.
+Thus no assumption about central nonvanishing, simple zeros, separation
+between distinct noncentral ordinates, or rational independence is used.
+
+\begin{lemma}[One-sided meromorphic Laplace principle]\label{grid:lem:landau}
+Let a real continuous function $f$ on $[0,\infty)$ have at most
+exponential growth, and suppose its Laplace transform admits a
+meromorphic continuation to $\Re w>0$. Suppose every pole on the
+positive real axis is simple with positive residue. If
+$f(t)\le C e^{\sigma t}$ eventually, where $\sigma\ge0$, then that
+continuation has no pole in $\Re w>\sigma$.
+\end{lemma}
+\begin{proof}
+Choose $T$ beyond which $g(t)=Ce^{\sigma t}-f(t)\ge0$, and put
+$g(t)=0$ for $t<T$. Its Laplace transform has a finite convergence
+abscissa $\alpha$, unless it converges everywhere, in which case the
+claim is immediate. A Laplace transform of a nonnegative function
+must be singular at its finite real convergence abscissa. Indeed,
+if it were holomorphic there, its Taylor expansion at a real point
+$u>\alpha$ close to $\alpha$, evaluated to the left of $u$, has
+nonnegative terms
+$\int_T^\infty t^j g(t)e^{-ut}\dd t\,(u-v)^j/j!$.
+Holomorphy and monotone convergence would then imply convergence
+at some $v<\alpha$, a contradiction. This is Landau's positivity
+argument, also used in the supplied proof.
+
+If $\alpha>\sigma$, the meromorphic identity for this transform
+is $C e^{-(w-\sigma)T}/(w-\sigma)$ minus the transform of $f$,
+up to an entire initial-interval term. At the required singularity
+$w=\alpha$ it would therefore have a simple pole with negative
+residue. Its values would tend to $-\infty$ as $w\downarrow\alpha$,
+contrary to nonnegativity of its defining integral. Hence
+$\alpha\le\sigma$. Its integral is holomorphic in $\Re w>\sigma$,
+and the same meromorphic identity shows the asserted absence of
+poles for the transform of $f$.
+\end{proof}
+
+\begin{theorem}[Every fixed grid retains one-sided zero detection]
+Fix $k\ge2$ and $m\ge1$. For the conjugation-invariant positive-weight
+family above, GRH for all its factors is equivalent to an eventual upper
+bound on $\mathcal A_{k,m}d(t)$, and to an eventual two-sided bound.
+If one of the factors has a zero $\rho$ with
+$\operatorname{Re}\rho>1/2+\sigma$, $\sigma\ge0$, then
+\[
+ \limsup_{t\to\infty}e^{-\sigma t}\mathcal A_{k,m}d(t)=+\infty.
+\]
+\end{theorem}
+\begin{proof}
+The shifted Laplace transform of the centered ramp has, at
+$w=\rho-1/2$, residue $\nu_\rho/(\rho(1-\rho))$. Taking a finite forward
+shift multiplies its meromorphic continuation by $e^{hw}$ up to an entire
+function (the contribution of the initial compact interval). The transform
+of $\mathcal A_{k,m}d$ therefore has the same poles, multiplied by
+$K(w)U_k(w)^m$. The zeros of $U_k$ have $\operatorname{Re}w=0$:
+setting $z=e^{w/k}$, they are precisely the nontrivial $(k+1)$st roots of
+unity. The zeros of $K$ have $\operatorname{Re}w=1/2$.
+Consequently no pole at $0<\operatorname{Re}w<1/2$ is canceled. At real
+$w$ in that interval, both factors and $\nu_\rho/(\rho(1-\rho))$
+are positive. Lemma~\ref{grid:lem:landau} rules out every pole
+to the right of $\sigma$ if the displayed upper limit is less than $+\infty$. This
+proves the converse and the last assertion. Under GRH,
+\eqref{grid:eq:prime-expansion} is bounded, as is every positive finite
+average of it.
+\end{proof}
+
+The new finite-grid rate is to be compared in actual sample counts. The
+Article's $A_1^rA_{\sqrt2}^r$ uses $(r+1)^2$ values of $d$ and gives
+$O(\log r/\sqrt r)=O(\log N/N^{1/4})$. Its raw ramp grid has
+$(r+1)(r+2)$ distinct values. The present grid gives
+$O((\log N)^3/N^2)$ with $N$ raw ramp observations and logarithmic span.
+The Article also has continuous convolution projectors and filters that
+annihilate prescribed zero ordinates; neither provides this finite-grid
+sample bound. The filter polynomial itself is classical and no global
+priority claim is made without further literature review.

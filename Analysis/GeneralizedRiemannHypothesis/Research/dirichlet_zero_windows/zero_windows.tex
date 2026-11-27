@@ -1,0 +1,286 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,microtype,booktabs}
+\usepackage[letterpaper,left=0.98in,right=0.98in,top=0.86in,bottom=0.9in]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!38!black,urlcolor=blue!48!black,citecolor=blue!38!black]{hyperref}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}\pagestyle{fancy}\fancyhf{}\lhead{Short windows of Dirichlet zeros}\rhead{Research note}\cfoot{\thepage}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\setlength{\emergencystretch}{2em}
+\title{Identifying Dirichlet characters from short windows of zeros}
+\author{}\date{27 November 2026}
+\begin{document}\maketitle
+\begin{abstract}
+The signed ordinates of the zeros of a primitive Dirichlet $L$-function determine its character of conductor at most $Q$ from height $O((\log Q)^2/\log\log Q)$. Character orders are unrestricted. The same estimate holds for identifying a product with a bounded number of distinct primitive factors from its pooled zeros. More generally, we prove a lower bound on the total variation of every sparse complex linear combination of zero multiplicity measures in every window, with additive cost $b\log\log\log|t|$ for a distant window centre, for any $b>1/\pi$. The proof uses Dirichlet GRH, a positive proportion of distinguishing prime coefficients, a Selberg upper-bound sieve for nearby prime pairs, and the Guinand--Weil explicit formula. It answers two finite-height questions in the ProveIt Article and quantifies the cost of confusing zero lists with errors.
+\end{abstract}
+
+\section{What a finite list of zeros determines}
+Let $m_\chi(t)$ be the order of the nontrivial zero at $1/2+it$ of the primitive Dirichlet function $L(s,\chi)$, with value zero when there is no zero there. Include the primitive character of conductor one, whose function is $\zeta$. Throughout, Dirichlet GRH is supplied by the Lean theorem described in Section~\ref{sec:sources}. Thus these multiplicities describe all zeros in the open critical strip. A signed ordinate records whether a zero lies above or below the real axis. The measures $\sum_t m_\chi(t)\delta_t$ themselves are positive.
+
+For $x\ge0$ define $L_1(x)=\log(e+x)$, $L_{j+1}(x)=\log(e+L_j(x))$, and put
+\[
+ F(Q)=\frac{L_1(Q)^2}{L_2(Q)},\qquad D(Q)=\frac{L_2(Q)}{L_1(Q)}.
+\]
+These regularizations keep the assertions valid at small conductors and at the origin.
+
+\begin{theorem}[Uniform local independence]\label{th:main}
+Fix an integer $k\ge1$ and a real $b>1/\pi$. There are constants $C,c>0$, depending only on $k,b$, with the following property.
+Let $Q\ge3$ and let $\chi_1,\dots,\chi_k$ be distinct primitive characters of conductors at most $Q$. For every $Y\in\R$, every
+\begin{equation}\label{eq:window}
+ H\ge C F(Q)+bL_3(|Y|)
+\end{equation}
+and every vector $z\in\C^k$,
+\begin{equation}\label{eq:mass}
+ \sum_{|t-Y|\le H}\abs{\sum_{j=1}^k z_jm_{\chi_j}(t)}
+ \ \ge\ c\,H D(Q)\norm{z}_2 .
+\end{equation}
+The sum is over the distinct ordinates of the union of the zero lists in the window.
+\end{theorem}
+
+At $Y=0$ and $H$ a sufficiently large constant times $F(Q)$, two different characters have at least $c'\log(2Q)$ unmatched zero occurrences after exact common copies are removed. This counts a difference in orders at a shared zero. It permits arbitrary multiplicities and arbitrary coincidences. For $|Y|$ large the coefficient $b$ multiplies the \emph{half-width}. We make no optimality assertion about either term of \eqref{eq:window}.
+
+\begin{corollary}[Identification and pooled data]\label{cor:pooled}
+Fix an integer $s\ge1$. A multiset of critical-strip zeros in $|t|\le C_s F(Q)$ determines any product $\prod_{j=1}^u L(\cdot,\chi_j)^{e_j}$ of at most $s$ distinct primitive factors of conductor at most $Q$, with arbitrary positive integer exponents. More generally the window determines the support and all nonzero complex coefficients of any sum of at most $s$ distinct primitive zero measures. For either assertion it suffices to use the strictly positive ordinates $0<t\le C'_s F(Q)$.
+\end{corollary}
+\begin{proof}
+Subtract two candidate representations and combine repeated characters. There are at most $2s$ coefficients; take the largest window constant required by the finitely many possible support sizes. Equation~\eqref{eq:mass} forces every coefficient of an identically zero difference to vanish. Orders in the open strip add when functions are multiplied. For the positive-only conclusion take $H=A_s F(Q)$ and $Y=2H$, so that $[H,3H]$ satisfies \eqref{eq:window} on increasing $A_s$. The estimate $L_3(2A_sF(Q))=o(A_sF(Q))$ holds uniformly here as $A_s$ grows.
+\end{proof}
+The candidate family at a fixed $Q$ is finite. The assertion is one of unique identification from exact data. It gives no polynomial-time procedure for obtaining or comparing all candidate spectra. Folding each ordinate to $|t|$ would erase the distinction between a character and its complex conjugate.
+
+
+\begin{corollary}[An abelian field from its zeta zeros]\label{cor:field}
+Fix $n$. Among abelian extensions $K/\mathbb Q$ of degree at most $n$ and absolute discriminant at most $D\ge3$, the multiset of positive ordinates of $\zeta_K$ up to height $C_n F(D)$ determines $K$ up to $\mathbb Q$-isomorphism.
+\end{corollary}
+\begin{proof}
+By the character description of abelian extensions of $\mathbb Q$ and the conductor--discriminant formula \cite[Ch.~3]{wash}, the associated group $X_K$ has $[K:\mathbb Q]$ primitive characters,
+\[
+ \zeta_K=\prod_{\chi\in X_K} L(\cdot,\chi),\qquad
+ |\operatorname{disc} K|=\prod_{\chi\in X_K}q_\chi .
+\]
+Each $q_\chi\le D$. Corollary~\ref{cor:pooled} recovers $X_K$. In the cyclotomic field of level $\operatorname{lcm}_{\chi\in X_K}q_\chi$, the common kernel of the inflated characters fixes exactly $K$. Thus the recovered characters also recover the field.
+\end{proof}
+\section{The repositories and the quantitative question}\label{sec:sources}
+The readable and compact editions of \cite{lean} export five Lean results. The statements use Mathlib's zeta function and Dirichlet $L$-functions. In particular, \texttt{LFunction\_eq\_zero\_re} places every zero in $0<\Re s<1$ on $\Re s=1/2$ for every positive modulus. The half-plane theorem excludes the principal pole when asserting nonvanishing, and \texttt{riemannHypothesis} gives the zeta case. The development passes from arithmetic estimates on integral forms to a one-sided prime-sum bound and then to zero exclusion. We use its conclusion for the observed zero measures and for the primitive characters inducing pairwise quotients. Sutherland's verification records independent builds and kernel checks of the pinned revision \cite{checks}. We inspected the statements and use those published checks. Our downstream proof is given here in ordinary mathematics.
+
+The ProveIt Article \cite{article} merges 103 research reports. Its README distinguishes the scope of its input theorem from the validation of the merged results. Three precise comparisons motivate our theorem.
+\begin{itemize}
+\item The quadratic decoder isolates one integer at a time and recovers each small prime-power value. The source labels in \texttt{sections/rec.tex} are \texttt{rec:thm:quaddecode} and \texttt{rec:cor:quadsep}. Its distinguishing height is $O((\log Q)^2\log\log Q)$. The ensuing questions ask to remove the final factor and to distinguish bounded-order complex characters, including conjugates. Corollary~\ref{cor:pooled} gives $O((\log Q)^2/\log\log Q)$ uniformly in the order. Our improved cutoff applies to identification of the whole character.
+\item The Article's \texttt{rec:thm:localrank} establishes local linear independence for a fixed modulus at sufficiently large heights, using a test based on $e^{-\cosh}$. Theorem~\ref{th:main} tracks the conductors uniformly for a fixed number of characters, including at height zero and across different moduli.
+\item Its \texttt{zer:thm:short} obtains directional excesses in triple-logarithmic windows for fixed characters, with additional growth in the window length. Our estimate concerns absolute multiplicity difference, with a uniform conductor cost. It does not subsume those directional estimates.
+\end{itemize}
+
+Banks \cite{banks} distinguished distinct primitive characters of a common modulus in moving windows using a power of the modulus, without a critical-line input. Eid's earlier preprint \cite{eid} announces a polylogarithmic low-height distinction and a stability result for characters of orders dividing a prescribed integer. Our comparison with Eid is limited to the available abstract, which does not specify the exponent. Our contribution relative to the Article is the conductor rate, its uniformity in the character orders, and the quantitative result for sparse mixtures at all heights. We do not claim priority for finite spectral determination itself.
+
+\section{The explicit formula and a supply of test primes}
+Use the Fourier convention $h(t)=\int_\R g(u)e^{itu}\dd u$. Write $a_\chi=0$ or $1$ for the parity, $\delta_\chi=1$ for the conductor-one character and $0$ otherwise. For our tests $g(0)=0$. In this normalization the Guinand--Weil explicit formula is
+\begin{align}
+ \sum_t m_\chi(t)h(t)
+ &=\delta_\chi\{h(i/2)+h(-i/2)\} \nonumber\\
+ &\quad-\sum_{n\ge2}\frac{\Lambda(n)}{\sqrt n}
+ \{\chi(n)g(\log n)+\overline{\chi(n)}g(-\log n)\}\nonumber\\
+ &\quad-\int_0^\infty
+ \frac{e^{-(1/2+a_\chi)u}}{1-e^{-2u}}\{g(u)+g(-u)\}\dd u .
+ \label{eq:weil}
+\end{align}
+It applies to complex tests, by linearity. This is the primitive formula of \cite[eq.~(2.1)]{weil}, with the conductor term killed by $g(0)=0$ and the real digamma factor expanded by its integral representation; for $\zeta$ one includes the two pole terms. The Fourier transform in that reference uses $2\pi$ in its exponent. Substituting $\widehat h(\xi)=2\pi g(2\pi\xi)$ gives \eqref{eq:weil}. All tests below have the required strip analyticity and decay. We shall also use the uniform local zero count
+\begin{equation}\label{eq:count}
+ \sum_{|t-v|\le1}m_\chi(t)\ll\log\big(2q(|v|+3)\big).
+\end{equation}
+This follows from the standard zero-counting formula with its logarithmic error \cite{count}, by bounding a signed interval with the corresponding two-sided height band. The zeta case follows from its classical zero count.
+
+Fix once and for all a nonnegative smooth function $W$ compactly supported in $(1,2)$, with $\int W=1$. For a primitive character $\eta$ of conductor $f$, insert $g(u)=e^{u/2}W(e^u/X)$ into \eqref{eq:weil}. The positive prime-power sum is $\sum_n\Lambda(n)\eta(n)W(n/X)$; the reflected sum vanishes. Its zero test is
+\[
+ h(t)=\sqrt X\, X^{it}\int_1^2 W(v)v^{-1/2+it}\dd v
+      \ll_N \sqrt X(1+|t|)^{-N} \qquad (t\in\R).
+\]
+The decay follows by integration by parts in $\log v$. The archimedean integral is $O(1)$. If $f=1$, the pole terms are $X\int W$ and $\int W(v)\dd v/v$. By \eqref{eq:count},
+\begin{equation}\label{eq:smooth}
+ \sum_n\Lambda(n)\eta(n)W(n/X)=\delta_\eta X+O(\sqrt X\log(2f)).
+\end{equation}
+All implied constants below are absolute or depend only on the fixed bump, unless a subscript indicates otherwise.
+
+\begin{lemma}[Many distinguishing coefficients]\label{lem:gram}
+For fixed $k$ choose a sufficiently large $M_k$, and put $X=M_k L_1(Q)^2$. For every $\norm z_2=1$ there are $\gg_k X/\log X$ primes $X<p<2X$ with
+\begin{equation}\label{eq:signal}
+ \abs{\sum_{j=1}^k z_j\chi_j(p)}\ge\tfrac12 .
+\end{equation}
+\end{lemma}
+\begin{proof}
+In the Gram matrix with entries
+\[
+ X^{-1}\sum_p(\log p)W(p/X)\chi_i(p)\overline{\chi_j(p)}
+\]
+use the primitive inducer of each product, whose conductor divides $\operatorname{lcm}(q_i,q_j)\le Q^2$. It is principal exactly on the diagonal, by uniqueness of the primitive inducer. Removing proper prime powers in \eqref{eq:smooth} costs $O(\sqrt X\log^2 X)$, by counting each exponent separately. Altering the remaining terms at primes dividing $q_iq_j$ costs $O(\log(2Q))$. Thus the matrix differs entrywise from the identity by
+\[
+ O\big(X^{-1/2}(\log(2Q)+\log^2 X)+X^{-1}\log(2Q)\big).
+\]
+Increasing $M_k$ makes its operator norm error at most $1/4$ for all $Q\ge3$, since the norm is bounded by $k$ times the largest entry error. The total weight of all primes is at most $3X/2$ by the conductor-one case. The weighted squared signal sums to at least $3X/4$. The primes failing \eqref{eq:signal} contribute at most $3X/8$, and each remaining prime contributes $O(k\log X)$ by Cauchy--Schwarz. This proves the claim.
+\end{proof}
+
+\section{A prime whose neighbours cause little interference}
+For $B>0$ define $K_B(v)=\sinc^4(Bv)$, with $\sinc(v)=\sin(v)/v$ and the continuous value at zero. For a prime $X<p<2X$, its nearby arithmetic terms have the following normalized majorant:
+\[
+ E_p=\sum_{\substack{p/2<n<2p\\ n\ne p}}
+ \frac{\Lambda(n)}{\log p}\sqrt{\frac pn}\, K_B(\log(n/p)).
+\]
+\begin{lemma}[Average interference]\label{lem:sieve}
+Given $k$ and $\varepsilon>0$, there are constants $A$ and $X_0$ such that whenever $X\ge X_0$, $B\ge AX/\log X$, and a unit vector has the supply of primes given by Lemma~\ref{lem:gram}, at least one of those primes satisfies $E_p\le\varepsilon$. In fact $\gg_k X/\log X$ of them do.
+\end{lemma}
+\begin{proof}
+Put $J=4X/B$. For $p/2<n<2p$, $|\log(n/p)|\ge |n-p|/(4X)$, and hence $K_B(\log(n/p))\le w(|n-p|)$, where $w(d)=\min(1,(J/d)^4)$ for $d\ge1$.
+The uniform two-prime upper-bound sieve gives, for $d\ge1$,
+\[
+ \#\{p\le4X:p,\ p+d\text{ prime}\}
+ \ll \frac{X}{\log^2 X}\,S(d),\qquad
+ S(d)=\prod_{\substack{\ell\mid d\\ \ell>2\ {\rm prime}}}(1-1/\ell)^{-1}.
+\]
+For the needed shifts $d\le 4X$ this follows directly from Tao \cite[Corollary A.2]{tao} with $W=2$, residue $1$, and linear coefficient $1$; the possible prime $2$ is harmless. Crucially the constant is uniform in the shift. Expanding the product gives
+\[
+ \sum_{d\le v}S(d)\le v\prod_{\ell>2}\left(1+\frac{1}{\ell(\ell-1)}\right)\ll v
+\]
+with product over odd primes. Summing in dyadic blocks above $J$ gives $\sum_{d\ge1}S(d)w(d)\ll J$ for $J\ge1$. For $J<1$ use $\sum S(d)/d^4\ll1$ and $J^4\le J$. Both directions of a prime pair obey the same bound. Since $\sqrt{p/n}\log n/\log p\ll1$ in the near range, summing the prime part of $E_p$ over $p$ gives $O(XJ/\log^2 X)$.
+
+There are $O(\sqrt X\log X)$ proper prime powers $n\le4X$. For any one of them we may sum over all integer centres $p\ne n$ at a cost $\ll\sum_{d\ge1}w(d)\ll J$. Their total contribution is $O(\sqrt X\log X\,J)$. Substituting $J\le4\log X/A$ shows that the sum of $E_p$ is at most
+\[
+ O\left(\frac{X}{A\log X}\right)+O\left(\frac{\sqrt X\log^2 X}{A}\right).
+\]
+Choose $A$ and then $X_0$ to make this less than $\varepsilon/2$ times the lower bound for the number of witnesses in Lemma~\ref{lem:gram}. At most half the witnesses can have $E_p>\varepsilon$.
+\end{proof}
+
+This is where the gain in height enters. A filter designed to isolate each integer separately must resolve adjacent integer logarithms, separated by about $1/X$. For identification, any one of many distinguishing primes suffices. The sieve pays for nearby prime pairs on average, allowing the broader logarithmic scale $\log X/X$.
+
+\section{A test for one prime in a translated zero window}
+Fix $b>1/\pi$. Choose $1/b<a<\pi$ and
+$1/2<d<\pi/(2a)$. Define
+\[
+ K(t)=e^{-\cosh(at)},\qquad
+ w(v)=\frac{\int_\R K(t)e^{-itv}\dd t}{\int_\R K(t)\dd t}.
+\]
+Then $w(0)=1$, $|w(v)|\le1$ and $|w(v)|\ll_{a,d}e^{-d|v|}$. For the last estimate shift the integration line by $-id\operatorname{sgn}(v)$ and use $\cos(ad)>0$. Write $r=\log p$ and choose
+\begin{equation}\label{eq:test}
+ g(u)=e^{-iY(u-r)}
+       \sin^2\!\left(\frac{\pi u}{2r}\right)w(u-r)K_B(u-r),
+ \qquad h(t)=\int_\R g(u)e^{itu}\dd u .
+\end{equation}
+The prime under test has $g(r)=1$. The double zero at $u=0$ removes the conductor term and controls the gamma integral for all $Y$.
+
+\begin{lemma}[Size, tails and arithmetic terms]\label{lem:filter}
+For $p\in(X,2X)$, $X$ sufficiently large and $B\ge1$, the following estimates are uniform in $Y$ and $\chi$ (constants may depend on $a,d$).
+\begin{align}
+ \norm h_\infty&\ll B^{-1},&
+ \norm{h'}_\infty&\ll (1+\log p)B^{-1}\quad(t\in\R).
+ \label{eq:norm}
+\end{align}
+Write $R_0=4B+\pi/r$. For $H\ge R_0+1$,
+\begin{equation}\label{eq:tail}
+ \sum_{|t-Y|>H}m_\chi(t)|h(t)|
+ \ll \log(2Q(|Y|+H+3))\exp\{-c_0\exp(a(H-R_0))\}
+\end{equation}
+for some $c_0>0$. For the full zero sum the error in testing $\chi(p)$ satisfies
+\begin{align}
+ \abs{\frac{-\sqrt p}{\log p}\sum_t m_\chi(t)h(t)-\chi(p)}
+ \ll E_p + X B^{-4}+B^{-1}+\delta_\chi\frac{X}{B\log X}.
+ \label{eq:approx}
+\end{align}
+\end{lemma}
+\begin{proof}
+The integral of $K_B$ is $O(1/B)$ and the integral of $|v|K_B(v)$ is $O(B^{-2})$. These bounds give \eqref{eq:norm} by differentiation under the integral. The factor $\sinc(Bv)$ is the characteristic function of a uniform probability measure on $[-B,B]$, so its fourth power corresponds to a probability measure on $[-4B,4B]$. Multiplication by $\sin^2(\pi u/(2r))$ makes three translates with total absolute coefficient one and shifts of modulus at most $\pi/r$. In the variable $u-r$, modulation translates the zero-side test to $Y$, and translation back contributes the phase $e^{itr}$. Thus on the real line $|h(t)|$ is bounded by a constant times
+\[
+ \sup_{|v|\le R_0}\exp\{-\cosh(a(t-Y-v))\}.
+\]
+The same convolution calculation for complex $t$ gives uniform decay as $|\Re t|\to\infty$ in any closed strip $|\Im t|\le d'<d$, with a factor bounded in terms of $p,d'$ from the phase. This follows by analytic continuation, since $\cos(ad')>0$ and the defining Fourier integral is analytic for $|\Im t|<d$. We can choose $d'>1/2$, which verifies admissibility for \eqref{eq:weil}. Splitting $|t-Y|>H$ into intervals of unit length, using \eqref{eq:count}, and summing $\exp(-c e^{a(H-R_0+j)})$ times $\log(2Q(|Y|+H+j+3))$ for $j\ge0$ proves \eqref{eq:tail}.
+
+For \eqref{eq:approx} divide each unwanted term of \eqref{eq:weil} by $\log p/\sqrt p$ and take absolute values. The near positive prime-power terms other than $p$ contribute at most $E_p$. For $n$ outside $(p/2,2p)$ use $K_B(\log(n/p))\ll B^{-4}$ and
+\[
+ \sum_{n\ge2}\frac{\log n}{\sqrt n}\exp(-d|\log(n/p)|)
+ \ll_d \sqrt p\log p .
+\]
+Splitting at $p$ and comparing power sums with integrals proves this estimate because $d>1/2$. The normalized cost is $O(pB^{-4})$. The reflected terms are even smaller: $|w(-\log n-r)|\ll (np)^{-d}$, $K_B(-\log n-r)\ll B^{-4}$, and $\sum(\log n)n^{-1/2-d}$ converges.
+
+For $0<u<1/4$, the double zero and the decay of $w$ give
+$|g(u)|+|g(-u)|\ll u^2p^{-d}B^{-4}$, integrable against the gamma kernel $O(1/u)$. For $u\ge1/4$ this kernel is $O(e^{-u/2})$. Bound
+\[
+ \sqrt p\,e^{-u/2}e^{-d|u-r|}
+ \le e^{-(d-1/2)|u-r|}\le1.
+\]
+The integral of the remaining $K_B(u-r)$ is $O(1/B)$. For the reflected term the same bound follows from $\sqrt p\, e^{-u/2}e^{-d(u+r)}\le1$ and integration of $K_B(-u-r)$. Finally,
+\[
+ |h(i/2)|+|h(-i/2)|
+ \ll \int_\R e^{|u|/2}e^{-d|u-r|}K_B(u-r)\dd u
+ \ll \frac{\sqrt p}{B}.
+\]
+These are exactly the pole costs shown in \eqref{eq:approx}.
+\end{proof}
+
+\section{Proof of the window theorem and stability}
+\begin{proof}[Proof of Theorem~\ref{th:main}]
+Normalize $\norm z_2=1$. Choose $a,d$ as above and fix a sufficiently small $\theta>0$ so that
+\[
+ 4\theta<1,\qquad a(1-4\theta)b>1.
+\]
+Set $B=\theta H$. All constants selected from here on may depend on $k,b$. In \eqref{eq:approx} first require $\varepsilon$ small enough that the $E_p$ term costs at most $1/(32\sqrt k)$ for $E_p\le\varepsilon$. Next choose $A$ in Lemma~\ref{lem:sieve} large enough also to control the pole cost $X/(B\log X)\le1/A$. Increase $M_k$ in Lemma~\ref{lem:gram} if necessary to ensure $X\ge X_0$ and make the terms $XB^{-4}+B^{-1}$ small. The witness proportion in Lemma~\ref{lem:gram} has a lower bound independent of any further increase of $M_k$. We may now take $C$ in \eqref{eq:window} so large that $B\ge AX/\log X$. For the resulting witness prime the right side of \eqref{eq:approx} is at most $1/(8\sqrt k)$ for every character.
+
+The normalized tail is also at most $1/(8\sqrt k)$ after increasing $C$. For clarity, put $\lambda=a(1-4\theta)$, so that $\lambda b>1$. In \eqref{eq:tail} the inner exponential is at least a constant times $e^{\lambda H}$, since $r\ge\log 2$. The logarithm of the prefactor after normalization by $\sqrt p/\log p$ is
+\[
+ O\big(1+\log X+L_2(Q)+L_2(H)+L_2(|Y|)\big).
+\]
+Here $L_2(|Y|)\le e^{L_3(|Y|)}$. Condition \eqref{eq:window} implies
+$e^{\lambda H}\ge e^{\lambda C F(Q)}e^{\lambda b L_3(|Y|)}$. This dominates the displayed quantity with an arbitrarily large constant, uniformly in $Q,Y,H$: the $L_2(H)$ term is also $o(e^{\lambda H})$ as $H\to\infty$. This verifies the tail estimate even when $|Y|$ grows without restriction.
+
+Sum the per-character normalized errors against $z_j$, using $\sum_j|z_j|\le\sqrt k$. The total error for the truncated test is at most $1/4$, whereas \eqref{eq:signal} has modulus at least $1/2$. It follows that
+\begin{equation}\label{eq:separating}
+ \abs{\sum_{|t-Y|\le H}h(t)\sum_j z_jm_{\chi_j}(t)}
+ \ge \frac{\log p}{4\sqrt p}.
+\end{equation}
+By \eqref{eq:norm}, the left side is at most $O(B^{-1})$ times the left side of \eqref{eq:mass}. Since $B=\theta H$, $p\asymp X$, and $(\log X)/\sqrt X\asymp_{k,b}D(Q)$, the theorem follows.
+\end{proof}
+
+\begin{corollary}[Matching with omissions and errors]\label{cor:matching}
+Take two distinct primitive characters in a window satisfying \eqref{eq:window} for $k=2$. Partially match their zero occurrences, respecting multiplicity. If $U$ is the total number of unmatched occurrences on the two sides and $\Delta$ is the sum of the absolute displacements of the matched pairs, then
+\[
+ U+L_2(Q)\,\Delta\ \gg_b\ H D(Q).
+\]
+In particular every full bijection, if one exists, moves total distance $\gg_b H/L_1(Q)$.
+\end{corollary}
+\begin{proof}
+Apply \eqref{eq:separating} with $z=(1,-1)/\sqrt2$. Bound each unmatched summand by $\norm h_\infty$ and each matched difference by $\norm{h'}_\infty$ times its displacement. Now apply \eqref{eq:norm}, $p\asymp X$ and $B=\theta H$.
+\end{proof}
+
+At the central cutoff, confusing two lists therefore requires either deletions and insertions of order $\log Q$, or a commensurate aggregate displacement, or a combination of the two. All constants here are asymptotic; a practical recovery height for a specified conductor requires evaluating them.
+
+\section{A certified example and further questions}
+For the primitive quartic character $\chi$ modulo $5$ with $\chi(2)=i$, set
+\[
+ s_0=\tfrac12+6.18357819545\,i,\qquad \rho_0=10^{-8}.
+\]
+The disk $|s-s_0|<\rho_0$ contains one simple zero of $L(s,\chi)$, while $|L(s,\overline\chi)|>2$ on the closed disk. The accompanying interval-arithmetic script checks the following bounds by evaluating the four Hurwitz zeta functions at denominator $5$:
+\[
+ |L(s_0,\chi)|<10^{-11},\quad |L'(s_0,\chi)|>1,\quad
+ |L(s_0,\overline\chi)|>2+\frac{256\rho_0}{1-4\rho_0}.
+\]
+For details, the Euler--Maclaurin sum uses 32 terms and eight Bernoulli corrections with an absolute integral-remainder bound. Periodic character partial sums have modulus at most $2$. Partial summation then bounds $|L(s)|\le2|s|/\Re s<64$ on the circle $|s-s_0|=1/4$ for either character. Cauchy's inequalities bound each Taylor coefficient by $64\cdot4^j$ at index $j$. The sum of the constant and higher-order error magnitudes on the small circle is at most $10^{-11}+1024\rho_0^2/(1-4\rho_0)<\rho_0$. Rouch\'e's theorem gives the single simple zero, and the conjugate function varies by at most $256\rho_0/(1-4\rho_0)$. Reflection of zeros of $L(s,\chi)$ across the critical line preserves this disk, so its unique zero lies on the line. This is an individual example of genuine nonsharing. The uniform theorem counts excess multiplicities and allows shared ordinates.
+
+\paragraph{Further questions.}
+Can the conductor term $F(Q)$ be lowered further by retaining the phases of neighbouring prime coefficients in the sieve average? Can one quantify the dependence on $k$ well enough to let the number of unknown factors grow with $Q$? Can one guarantee an ordinate occupied by just one of two functions in every window of \eqref{eq:window}? Finally, an explicit small-conductor implementation would need numerical constants in the sieve and the local zero count, as well as verified zero-list completeness.
+
+\begin{thebibliography}{9}\small\raggedright
+\bibitem{lean} L.~Sernau and collaborators, \emph{GRH for Dirichlet $L$-functions, in Lean 4}, commit \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, 2026. \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{Readable edition}; \href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/Statements.lean}{theorem statements}.
+\bibitem{checks} A.~Sutherland, \emph{Verification files for the shorter Lean proof of RH and of GRH for Dirichlet $L$-functions}, MIT, November 2026. \url{https://math.mit.edu/~drew/shortgrh/}
+\bibitem{article} V.~Reshetnikov, ProveIt repository, \emph{Beyond the Riemann hypothesis for Dirichlet $L$-functions: consequences, transfers and limits}, commit \texttt{1a50d416ba30b91595db12d7437f0328a32b0468}. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/1a50d416ba30b91595db12d7437f0328a32b0468/Analysis/GeneralizedRiemannHypothesis/Article}{Article}, especially \href{https://github.com/VladimirReshetnikov/ProveIt/blob/1a50d416ba30b91595db12d7437f0328a32b0468/Analysis/GeneralizedRiemannHypothesis/Article/sections/rec.tex}{the reconstruction section}.
+\bibitem{banks} W.~D.~Banks, Comparing zeros of distinct Dirichlet $L$-functions, \emph{Publ. Math. Debrecen} \textbf{106} (2025), 327--335. \href{https://doi.org/10.5486/PMD.2025.9899}{doi:10.5486/PMD.2025.9899}.
+\bibitem{eid} S.~Eid, \emph{Effective Determination of Primitive Dirichlet Characters by Their Zeros up to Polylogarithmic Height}, preprint, July 2026. \href{https://doi.org/10.5281/zenodo.21326652}{doi:10.5281/zenodo.21326652}.
+\bibitem{weil} A.~Chirre, V.~J.~Pereira J\'unior and D.~de~Laat, Primes in arithmetic progressions and semidefinite programming, primitive explicit formula (2.1). \href{https://arxiv.org/abs/2005.02393}{arXiv:2005.02393}.
+\bibitem{count} M.~A.~Bennett, G.~Martin, K.~O'Bryant and A.~Rechnitzer, Counting zeros of Dirichlet $L$-functions, \emph{Math. Comp.} \textbf{90} (2021), 1455--1482. \href{https://doi.org/10.1090/mcom/3599}{doi:10.1090/mcom/3599}.
+\bibitem{tao} T.~Tao, A remark on primality testing and decimal expansions, \emph{J. Aust. Math. Soc.} \textbf{91} (2011), 405--413, Corollary A.2. \href{https://arxiv.org/abs/0802.3361}{arXiv:0802.3361}.
+\bibitem{wash} L.~C.~Washington, \emph{Introduction to Cyclotomic Fields}, 2nd ed., Graduate Texts in Mathematics 83, Springer, 1997, Ch.~3.
+\end{thebibliography}
+\end{document}
