@@ -178,12 +178,8 @@ theorem step_coherent_at (h B C D T U b A : PTm n)
 theorem local_step (h B C D T U : PTm n)
     (hL : Γ ⊢[PRAAx] localLaw h (budget h B D) (budget h C D) D T U) : Γ ⊢[PRAAx]
     localLaw (succ h) B C D (QuadraticTowerSignTable.step h B T D) (QuadraticTowerSignTable.step h C U D) := by
-  have ls : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
-      localLaw (Syn.shift (Syn.shift h))
-        (budget (Syn.shift (Syn.shift h)) (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift D)))
-        (budget (Syn.shift (Syn.shift h)) (Syn.shift (Syn.shift C)) (Syn.shift (Syn.shift D)))
-        (Syn.shift (Syn.shift D)) (Syn.shift (Syn.shift T)) (Syn.shift (Syn.shift U)) := by
-    simpa only [Fm.shift,subst_localLaw,QuadraticTowerMultiplicationTable.subst_budget,Syn.shift] using hL.shift.shift
+  have ls := hL.shift.shift
+  simp only [Fm.shift, subst_localLaw, QuadraticTowerMultiplicationTable.subst_budget] at ls
   refine .allI (.impI (.impI (.allI (.impI (.impI (.impI ?_))))))
   let h' := Syn.shift (Syn.shift h)
   let B' := Syn.shift (Syn.shift B)
@@ -281,12 +277,9 @@ theorem forward_step (H B C D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B C D 
   refine .impI ?_
   let Δ := le (succ t) H :: Γ
   have ht : Δ ⊢[PRAAx] lt t H := Prf.hyp0
-  have previous : Δ ⊢[PRAAx] localLaw t (cap H B t D) (cap H C t D) D (state H B t D) (state H C t D) :=
-    .impE ih.wk (le_trans (le_succ_self t) ht)
-  have adjusted : Δ ⊢[PRAAx] localLaw t (budget t (cap H B (succ t) D) D) (budget t (cap H C (succ t) D) D)
-      D (state H B t D) (state H C t D) :=
-    local_congr (.eqRefl _) (QuadraticTowerMultiplicationHeight.cap_link H B t D ht)
-      (QuadraticTowerMultiplicationHeight.cap_link H C t D ht) (.eqRefl _) (.eqRefl _) (.eqRefl _) previous
+  have adjusted := QuadraticTowerMultiplicationCoherence.law_at_next_budgets H B C D t
+    (P := fun b c => localLaw t b c D (state H B t D) (state H C t D)) ht ih.wk
+    (fun hb hc p => local_congr (.eqRefl _) hb hc (.eqRefl _) (.eqRefl _) (.eqRefl _) p)
   have next := local_step t (cap H B (succ t) D) (cap H C (succ t) D) D (state H B t D) (state H C t D) adjusted
   exact local_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (state_succ H B t D).eqSymm (state_succ H C t D).eqSymm next

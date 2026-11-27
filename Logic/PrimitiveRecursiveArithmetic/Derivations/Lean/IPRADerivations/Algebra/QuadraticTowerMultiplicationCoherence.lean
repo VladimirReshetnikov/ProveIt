@@ -209,18 +209,10 @@ theorem local_step (h B C D T U : PTm n)
     (hT : Γ ⊢[PRAAx] QuadraticTowerMultiplicationHeight.localLaw h (budget h B D) D T) : Γ ⊢[PRAAx]
     localLaw (succ h) B C D (QuadraticTowerMultiplicationTable.step h B T D)
       (QuadraticTowerMultiplicationTable.step h C U D) := by
-  have ls : ((Γ.map Fm.shift).map Fm.shift).map Fm.shift ⊢[PRAAx]
-      localLaw (Syn.shift (Syn.shift (Syn.shift h)))
-        (budget (Syn.shift (Syn.shift (Syn.shift h))) (Syn.shift (Syn.shift (Syn.shift B))) (Syn.shift (Syn.shift (Syn.shift D))))
-        (budget (Syn.shift (Syn.shift (Syn.shift h))) (Syn.shift (Syn.shift (Syn.shift C))) (Syn.shift (Syn.shift (Syn.shift D))))
-        (Syn.shift (Syn.shift (Syn.shift D))) (Syn.shift (Syn.shift (Syn.shift T))) (Syn.shift (Syn.shift (Syn.shift U))) := by
-    simpa only [Fm.shift,subst_localLaw,QuadraticTowerMultiplicationTable.subst_budget,Syn.shift] using hL.shift.shift.shift
-  have ts : ((Γ.map Fm.shift).map Fm.shift).map Fm.shift ⊢[PRAAx]
-      QuadraticTowerMultiplicationHeight.localLaw (Syn.shift (Syn.shift (Syn.shift h)))
-        (budget (Syn.shift (Syn.shift (Syn.shift h))) (Syn.shift (Syn.shift (Syn.shift B))) (Syn.shift (Syn.shift (Syn.shift D))))
-        (Syn.shift (Syn.shift (Syn.shift D))) (Syn.shift (Syn.shift (Syn.shift T))) := by
-    simpa only [Fm.shift,QuadraticTowerMultiplicationHeight.subst_localLaw,
-      QuadraticTowerMultiplicationTable.subst_budget,Syn.shift] using hT.shift.shift.shift
+  have ls := hL.shift.shift.shift
+  simp only [Fm.shift, subst_localLaw, QuadraticTowerMultiplicationTable.subst_budget] at ls
+  have ts := hT.shift.shift.shift
+  simp only [Fm.shift, QuadraticTowerMultiplicationHeight.subst_localLaw, QuadraticTowerMultiplicationTable.subst_budget] at ts
   refine .allI (.impI (.impI (.allI (.impI (.allI (.impI (.impI (.impI (.impI ?_)))))))))
   let h' := Syn.shift (Syn.shift (Syn.shift h))
   let B' := Syn.shift (Syn.shift (Syn.shift B))
@@ -310,27 +302,30 @@ theorem forward_zero (H B C D : PTm n) : Γ ⊢[PRAAx] forwardLaw H B C D zero :
     (QuadraticTowerMultiplicationHeight.state_zero H B D).wk.eqSymm
     (QuadraticTowerMultiplicationHeight.state_zero H C D).wk.eqSymm (local_base _ _ D))
 
+/-- Use the smaller-depth law at the two budgets required by the next rows. -/
+theorem law_at_next_budgets (H B C D t : PTm n) {P : PTm n → PTm n → Fm PTm n}
+    (ht : Γ ⊢[PRAAx] lt t H) (lower : Γ ⊢[PRAAx] le t H ⟶ P (cap H B t D) (cap H C t D))
+    (congrLaw : ∀ {b c b' c' : PTm n}, (Γ ⊢[PRAAx] b ≐ b') → (Γ ⊢[PRAAx] c ≐ c') →
+      (Γ ⊢[PRAAx] P b c) → (Γ ⊢[PRAAx] P b' c')) :
+    Γ ⊢[PRAAx] P (budget t (cap H B (succ t) D) D) (budget t (cap H C (succ t) D) D) :=
+  congrLaw (QuadraticTowerMultiplicationHeight.cap_link H B t D ht)
+    (QuadraticTowerMultiplicationHeight.cap_link H C t D ht) (Prf.impE lower (le_of_lt ht))
+
 theorem forward_step (H B C D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B C D t) :
     Γ ⊢[PRAAx] forwardLaw H B C D (succ t) := by
   refine .impI ?_
   let Δ := le (succ t) H :: Γ
   have ht : Δ ⊢[PRAAx] lt t H := Prf.hyp0
-  have tle : Δ ⊢[PRAAx] le t H := le_trans (le_succ_self t) ht
-  have previous : Δ ⊢[PRAAx]
-      localLaw t (cap H B t D) (cap H C t D) D (state H B t D) (state H C t D) := .impE ih.wk tle
-  have bLink := QuadraticTowerMultiplicationHeight.cap_link H B t D ht
-  have cLink := QuadraticTowerMultiplicationHeight.cap_link H C t D ht
-  have adjusted : Δ ⊢[PRAAx] localLaw t (budget t (cap H B (succ t) D) D)
-      (budget t (cap H C (succ t) D) D) D (state H B t D) (state H C t D) :=
-    local_congr (.eqRefl _) bLink cLink (.eqRefl _) (.eqRefl _) (.eqRefl _) previous
+  have adjusted := law_at_next_budgets H B C D t
+    (P := fun b c => localLaw t b c D (state H B t D) (state H C t D)) ht ih.wk
+    (fun hb hc p => local_congr (.eqRefl _) hb hc (.eqRefl _) (.eqRefl _) (.eqRefl _) p)
   have heightGate : Δ ⊢[PRAAx] QuadraticTowerMultiplicationHeight.forwardLaw H B D t := by
     simpa only [QuadraticTowerMultiplicationHeight.forward_formula,
       QuadraticTowerMultiplicationHeight.subst_forwardLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
         (QuadraticTowerMultiplicationHeight.forward_all (Γ := Δ) H B D).allE t
-  have heightPrevious : Δ ⊢[PRAAx]
-      QuadraticTowerMultiplicationHeight.localLaw t (cap H B t D) D (state H B t D) := .impE heightGate tle
-  have heightAdjusted := QuadraticTowerMultiplicationHeight.local_congr (.eqRefl _) bLink
-    (.eqRefl _) (.eqRefl _) heightPrevious
+  have heightAdjusted := QuadraticTowerMultiplicationHeight.local_congr (.eqRefl _)
+    (QuadraticTowerMultiplicationHeight.cap_link H B t D ht) (.eqRefl _) (.eqRefl _)
+    (.impE heightGate (le_of_lt ht))
   have next := local_step t (cap H B (succ t) D) (cap H C (succ t) D) D (state H B t D) (state H C t D)
     adjusted heightAdjusted
   exact local_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (.eqRefl _)
