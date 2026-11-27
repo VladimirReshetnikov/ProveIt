@@ -313,11 +313,9 @@ theorem val_PE {q : PTm n} (hq : Γ ⊢[PRAAx] prime q) (E : PTm 2) (M x : PTm n
       · let C : List (Fm PTm (n + 1)) := neg (var 0 ≐ Syn.shift q) :: D
         have ne : C ⊢[PRAAx] neg (var 0 ≐ Syn.shift q) := Prf.hyp0
         have ss : C ⊢[PRAAx] sg (monus (var 0) (Syn.shift q)) ≐ sg (monus (succ (var 0)) (Syn.shift q)) := by
-          refine .orE (lt_or_le (Syn.shift q) (var 0)) ?_ ?_
+          refine .orE (Order.lt_or_gt_of_ne (Order.ne_symm ne)) ?_ ?_
           · exact (sg_lt Prf.hyp0).eqTrans (sg_lt (le_trans Prf.hyp0 (le_succ_self _))).eqSymm
-          · refine .orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_
-            · exact (sg_le (le_of_lt Prf.hyp0)).eqTrans (sg_le Prf.hyp0).eqSymm
-            · exact .botE _ (Prf.impE ne.wk.wk Prf.hyp0)
+          · exact (sg_le (le_of_lt Prf.hyp0)).eqTrans (sg_le Prf.hyp0).eqSymm
         exact (congrAdd (.eqRefl _) ((congrMul (.eqRefl _) (eqb_of_ne ne)).eqTrans (mul_zero _))).eqTrans
           ((add_zero _).eqTrans (congrMul (.eqRefl _) ss))
   have h2 := Prf.allE M hall

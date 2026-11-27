@@ -136,11 +136,9 @@ theorem small_not_mem {A B N k : PTm n} (φ : Fm PTm n) (hA : Γ ⊢[PRAAx] A �
   have e : Γ ⊢[PRAAx] pw A k ≐ pw B k := (rem_small hC la).eqSymm.eqTrans (h.eqTrans (rem_small hC lb))
   have e' : Γ ⊢[PRAAx] pw A (succ (pred k)) ≐ pw B (succ (pred k)) :=
     (congrPw (.eqRefl _) hk.eqSymm).eqTrans (e.eqTrans (congrPw (.eqRefl _) hk))
-  refine .orE (lt_or_le A B) ?_ ?_
+  refine .orE (Order.lt_or_gt_of_ne hne) ?_ ?_
   · exact lt_irrefl _ _ (lt_congr e'.wk (.eqRefl _) (pw_lt_pw (a := B) (b := A) (pred k) Prf.hyp0))
-  · refine .orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_
-    · exact lt_irrefl _ _ (lt_congr e'.wk.wk.eqSymm (.eqRefl _) (pw_lt_pw (a := A) (b := B) (pred k) Prf.hyp0))
-    · exact .botE _ (.impE hne.wk.wk Prf.hyp0.eqSymm)
+  · exact lt_irrefl _ _ (lt_congr e'.wk.eqSymm (.eqRefl _) (pw_lt_pw (a := A) (b := B) (pred k) Prf.hyp0))
 
 /-- `2n ∣ φ(Aⁿ + Bⁿ)` for coprime distinct `A, B ≥ 1` and `n ≥ 1`. -/
 theorem two_n_dvd {A B N : PTm n} (hA : Γ ⊢[PRAAx] A ≐ succ (pred A)) (hB : Γ ⊢[PRAAx] B ≐ succ (pred B))

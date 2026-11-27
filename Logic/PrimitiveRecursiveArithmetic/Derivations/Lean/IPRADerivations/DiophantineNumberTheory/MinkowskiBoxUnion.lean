@@ -192,8 +192,7 @@ theorem separated_points (N L U L' U' i j : PTm n)
         (decode (entry (point (Syn.shift N) (Syn.shift L') (Syn.shift U') (Syn.shift j)) (var 0)))) := by
     refine .orE (Prf.andE₂ (Prf.hyp0 : E :: Γ.map Fm.shift ⊢[PRAAx] E)) ?_ ?_
     · exact separated_integer_ne _ _ _ _ (Prf.andE₂ a).wk Prf.hyp0 (Prf.andE₁ b).wk
-    · have reverse := separated_integer_ne _ _ _ _ (Prf.andE₂ b).wk Prf.hyp0 (Prf.andE₁ a).wk
-      exact .impI (.impE reverse.wk Prf.hyp0.eqSymm)
+    · exact Order.ne_symm (separated_integer_ne _ _ _ _ (Prf.andE₂ b).wk Prf.hyp0 (Prf.andE₁ a).wk)
   have out : E :: Γ.map Fm.shift ⊢[PRAAx] MinkowskiMesh.differentCoordinate (Syn.shift N)
       (point (Syn.shift N) (Syn.shift L) (Syn.shift U) (Syn.shift i))
       (point (Syn.shift N) (Syn.shift L') (Syn.shift U') (Syn.shift j)) := by

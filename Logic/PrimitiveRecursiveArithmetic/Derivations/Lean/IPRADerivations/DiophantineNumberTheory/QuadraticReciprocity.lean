@@ -103,10 +103,8 @@ theorem premises {p q : PTm n} (h : Γ ⊢[PRAAx] assumptions p q) :
   have op := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ A))
   have oq := Prf.andE₁ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ A)))
   have ne := Prf.andE₂ (Prf.andE₂ (Prf.andE₂ (Prf.andE₂ A)))
-  have ne' : Γ ⊢[PRAAx] neg (q ≐ p) :=
-    .impI (.impE ne.wk (Prf.hyp0 : ((q ≐ p) :: Γ) ⊢[PRAAx] q ≐ p).eqSymm)
   have gpq : Γ ⊢[PRAAx] gcd p q ≐ one := gcd_prime hp (not_dvd_prime hp hq ne)
-  have gqp : Γ ⊢[PRAAx] gcd q p ≐ one := gcd_prime hq (not_dvd_prime hq hp ne')
+  have gqp : Γ ⊢[PRAAx] gcd q p ≐ one := gcd_prime hq (not_dvd_prime hq hp (Order.ne_symm ne))
   exact ⟨eisenstein_lemma hp op oq gpq, eisenstein_lemma hq oq op gqp, rectangle_of_odd op oq gpq⟩
 
 /-- The law of quadratic reciprocity, as a closed sentence of iPRA: for distinct odd primes `p`, `q`,

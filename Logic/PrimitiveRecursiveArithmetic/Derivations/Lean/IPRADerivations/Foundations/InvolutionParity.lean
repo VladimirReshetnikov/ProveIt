@@ -46,11 +46,9 @@ theorem sg_lt {a c : PTm n} (h : Γ ⊢[PRAAx] lt a c) :
 
 /-- For `a ≠ c`, `[a < c] + [c < a] = 1`, with `[a < c] = sg(c ∸ a)`. -/
 theorem sg_split {a c : PTm n} (h : Γ ⊢[PRAAx] neg (a ≐ c)) :
-    Γ ⊢[PRAAx] sg (monus c a) + sg (monus a c) ≐ one := by
-  refine .orE (lt_or_le a c) (sg_lt Prf.hyp0) ?_
-  refine .orE (lt_or_eq_of_le Prf.hyp0) ?_ ?_
-  · exact (add_comm _ _).eqTrans (sg_lt Prf.hyp0)
-  · exact .botE _ (.impE h.wk.wk Prf.hyp0.eqSymm)
+    Γ ⊢[PRAAx] sg (monus c a) + sg (monus a c) ≐ one :=
+  .orE (Order.lt_or_gt_of_ne h) (sg_lt Prf.hyp0)
+    ((add_comm _ _).eqTrans (sg_lt Prf.hyp0))
 
 /-! ## The two halves -/
 
@@ -82,8 +80,7 @@ abbrev invariant (N x : PTm n) : Fm PTm n :=
 theorem lower_half {i x : PTm n} (hne : Γ ⊢[PRAAx] neg (inst2 ι i x ≐ i)) :
     Γ ⊢[PRAAx] inst2 b i x ≐ inst2 (addBody (loB b ι) (hiB b ι)) i x := by
   rw [inst2_addBody, inst2_loB, inst2_hiB]
-  have hne' : Γ ⊢[PRAAx] neg (i ≐ inst2 ι i x) := .impI (.impE hne.wk Prf.hyp0.eqSymm)
-  ipra_lc (-(𝔞 (inst2 b i x))) * natEq (sg_split hne')
+  ipra_lc (-(𝔞 (inst2 b i x))) * natEq (sg_split (Order.ne_symm hne))
 
 /-- `hiB(i) = loB(ι(i))` below `N`. -/
 theorem upper_half {i x : PTm n} (hb : Γ ⊢[PRAAx] inst2 b (inst2 ι i x) x ≐ inst2 b i x)

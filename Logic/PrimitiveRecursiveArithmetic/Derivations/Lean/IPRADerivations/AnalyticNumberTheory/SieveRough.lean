@@ -91,8 +91,7 @@ theorem rough_pt (u : PTm 2) {Z m y d : PTm n} (hz : Γ ⊢[PRAAx] inst2 u zero 
       have hd1 : C ⊢[PRAAx] d ≐ succ (pred d) := Prf.hyp1
       have h2 : C ⊢[PRAAx] le two d := two_le_of hd1 hne
       have z1 : C ⊢[PRAAx] eqb (rem m d) zero ≐ zero := no_div hr.wk.wk hd.wk.wk h2
-      have hne' : C ⊢[PRAAx] neg (one ≐ d) := .impI (Prf.impE hne.wk (Prf.hyp0 : ((one ≐ d) :: C) ⊢[PRAAx] one ≐ d).eqSymm)
-      have z2 : C ⊢[PRAAx] eqb one d ≐ zero := eqb_of_ne hne'
+      have z2 : C ⊢[PRAAx] eqb one d ≐ zero := eqb_of_ne (Order.ne_symm hne)
       exact (zero_mul_l z1 _).eqTrans (zero_mul_l z2 _).eqSymm
 
 /-- For `Z ≥ 2`, a body with `u(0) = 0` and `m` without divisors in `[2, Z)`:

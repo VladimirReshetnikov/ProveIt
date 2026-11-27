@@ -52,7 +52,7 @@ theorem val_pw_prime {q p : PTm n} (hq : Γ ⊢[PRAAx] prime q) (hp : Γ ⊢[PRA
       have cpos := pos_of_eq_mul ppos.wk.wk eN
       have vm := ValuationMul.val_mul hq.wk.wk qpos.wk.wk cpos
       have vqq : D ⊢[PRAAx] val q q ≐ one := (val_pp hq.wk.wk hq.wk.wk).eqTrans (eqb_of_eq (.eqRefl _))
-      have nq : D ⊢[PRAAx] neg (q ≐ p) := .impI (Prf.impE (Prf.hyp1 : D ⊢[PRAAx] neg (p ≐ q)).wk Prf.hyp0.eqSymm)
+      have nq : D ⊢[PRAAx] neg (q ≐ p) := Order.ne_symm Prf.hyp1
       have vqp : D ⊢[PRAAx] val q p ≐ zero := (val_pp hq.wk.wk hp.wk.wk).eqTrans (eqb_of_ne nq)
       have s : D ⊢[PRAAx] succ (val q (quo p q)) ≐ zero :=
         (show D ⊢[PRAAx] succ (val q (quo p q)) ≐ one + val q (quo p q) by ipra_ring).eqTrans

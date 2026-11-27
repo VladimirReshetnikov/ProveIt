@@ -129,7 +129,7 @@ theorem negative_coefficients_sign (d x : PTm n) (hd : Γ ⊢[PRAAx] le one d)
 theorem nonzero_one : Γ ⊢[PRAAx] neg ((one : PTm n) ≐ zero) := .impI (succ_ne_zero' _ Prf.hyp0)
 theorem nonzero_two : Γ ⊢[PRAAx] neg ((two : PTm n) ≐ zero) := .impI (succ_ne_zero' _ Prf.hyp0)
 theorem different_one_two : Γ ⊢[PRAAx] neg ((one : PTm n) ≐ two) := .impI (QuadraticIntegerOrder.one_two_absurd _ Prf.hyp0)
-theorem different_two_one : Γ ⊢[PRAAx] neg ((two : PTm n) ≐ one) := .impI (QuadraticIntegerOrder.one_two_absurd _ Prf.hyp0.eqSymm)
+theorem different_two_one : Γ ⊢[PRAAx] neg ((two : PTm n) ≐ one) := Order.ne_symm different_one_two
 
 theorem tag_product_one_one : Γ ⊢[PRAAx] tagProduct (one : PTm n) one ≐ one :=
   (sel_zero (eqb_of_ne nonzero_one)).eqTrans ((sel_zero (eqb_of_ne nonzero_one)).eqTrans (sel_one (eqb_of_eq (.eqRefl _))))

@@ -44,15 +44,11 @@ theorem tri (i s : PTm n) :
         ((sg (monus s i) ≐ zero) ⋏ ((sg (monus i s) ≐ zero) ⋏ (eqb i s ≐ one)))) := by
   refine .orE (lt_or_le i s) ?_ ?_
   · have h : (lt i s :: Γ) ⊢[PRAAx] lt i s := Prf.hyp0
-    have ne : (lt i s :: Γ) ⊢[PRAAx] neg (i ≐ s) :=
-      .impI (lt_irrefl i _ (lt_congr (.eqRefl _) (Prf.hyp0 : ((i ≐ s) :: lt i s :: Γ) ⊢[PRAAx] i ≐ s).eqSymm h.wk))
-    exact .orI₁ (.andI (sg_lt h) (.andI (sg_le (le_of_lt h)) (eqb_of_ne ne)))
+    exact .orI₁ (.andI (sg_lt h) (.andI (sg_le (le_of_lt h)) (eqb_of_ne (Common.ne_of_lt h))))
   · refine .orE (lt_or_eq_of_le (Prf.hyp0 : (le s i :: Γ) ⊢[PRAAx] le s i)) ?_ ?_
     · have h : (lt s i :: le s i :: Γ) ⊢[PRAAx] lt s i := Prf.hyp0
-      have ne : (lt s i :: le s i :: Γ) ⊢[PRAAx] neg (i ≐ s) :=
-        .impI (lt_irrefl s _ (lt_congr (.eqRefl _)
-          (Prf.hyp0 : ((i ≐ s) :: lt s i :: le s i :: Γ) ⊢[PRAAx] i ≐ s) h.wk))
-      exact .orI₂ (.orI₁ (.andI (sg_le (le_of_lt h)) (.andI (sg_lt h) (eqb_of_ne ne))))
+      exact .orI₂ (.orI₁
+        (.andI (sg_le (le_of_lt h)) (.andI (sg_lt h) (eqb_of_ne (Order.ne_symm (Common.ne_of_lt h))))))
     · have e : ((s ≐ i) :: le s i :: Γ) ⊢[PRAAx] s ≐ i := Prf.hyp0
       have l1 : ((s ≐ i) :: le s i :: Γ) ⊢[PRAAx] le s i := Prf.hyp1
       have l2 : ((s ≐ i) :: le s i :: Γ) ⊢[PRAAx] le i s := le_congr e (.eqRefl _) (le_refl s)
