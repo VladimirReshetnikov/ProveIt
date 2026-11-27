@@ -1,0 +1,589 @@
+\section{Unsmoothed prime counts at arbitrary multiplicative scales}
+\label{sec:pf}
+
+The supplied article proves positive definite covariance for smoothed prime
+errors at arbitrary finitely many multiplicative scales.  Its open questions
+ask whether this persists for unsmoothed prime counts after the prime-square
+bias is removed \cite[Section~\textup{``Zeros, Euler products and prime races''},
+open question~10]{ProveItArticle}.  We prove the multiscale part of that
+extension for the ordinary counting function $\pi(x;q,a)$.  The conclusion
+survives removal of every fixed finite set of zero frequencies, and yields
+positive and negative excursions of every centered linear contrast in
+\emph{every sufficiently long logarithmic interval}.
+
+The only hypothesis about zero locations is Dirichlet GRH, used in the precise
+sense supplied by the vendored development \cite{ProveItVendor}.  Simplicity,
+disjointness of different zero sets, and rational independence of ordinates
+are not assumed.  Stepanov almost periodicity of normalized prime-counting
+remainders is classical: Kaczorowski and Ramar\'e prove an $L^2$ version in a
+more general setting \cite[Theorem~1(e)]{KaczorowskiRamare2003}.  The extension
+here combines an explicit local $L^4$ argument, a transfer to actual prime
+counts, and the arithmetic separation of arbitrary scales.  We do not claim
+that every ordering of the uncentered prime counts occurs, or settle the
+separate question about all jet derivatives.
+
+\subsection{Statement and normalizations}
+\label{subsec:pf-statement}
+
+Fix $q\geq1$, write $G=(\mathbb Z/q\mathbb Z)^\times$ and
+$n=\varphi(q)$, and use the trivial group and $n=1$ when $q=1$.
+For a character $\chi$ modulo $q$, let $\chi^*$ be its primitive inducer and
+let $m_\chi(\gamma)$ denote the multiplicity of the zero
+$\tfrac12+i\gamma$ of $L(s,\chi^*)$.  A missing zero has multiplicity zero.
+Let $\Gamma_q$ be the set of distinct ordinates occurring in this finite
+family, and define
+\begin{equation}
+\label{eq:pf-v}
+ v_a(\gamma)=\frac1n\sum_{\chi\bmod q}
+       \overline{\chi(a)}m_\chi(\gamma),
+ \qquad
+ r_q(a)=\#\{b\in G:b^2=a\}.
+\end{equation}
+Thus coincidences between zeros of different functions are grouped before
+any square is taken.  Conjugation gives
+$v_a(-\gamma)=\overline{v_a(\gamma)}$, and $v_a(0)$ is real.
+Put $\operatorname{li}(x)=\int_2^x du/\log u$, and set
+\begin{equation}
+\label{eq:pf-X}
+ X_a(t)=t e^{-t/2}
+   \left(\pi(e^t;q,a)-\frac{\operatorname{li}(e^t)}n\right)
+       +\frac{r_q(a)}n+2v_a(0),\qquad t\geq\log2.
+\end{equation}
+The term $r_q(a)/n$ removes prime squares, while $2v_a(0)$ removes the
+possible central zero contribution.  The latter is not assumed to vanish.
+These constants differ from those of the article's smoothed ramp statistic
+because the Mellin denominator is now $s$, rather than $s(s-1)$.
+
+Fix distinct real shifts $h_1,\ldots,h_r$ and put $D=rn$.
+They correspond to the multiplicative scales $e^{h_1},\ldots,e^{h_r}$.
+For $\gamma\ne0$ define a vector in $\mathbb C^D$ by
+\begin{equation}
+\label{eq:pf-z}
+ z(\gamma)_{j,a}
+       =-\frac{e^{i\gamma h_j}v_a(\gamma)}{\tfrac12+i\gamma}.
+\end{equation}
+If $J\subset\Gamma_q\setminus\{0\}$ is a finite symmetric set, remove its
+frequencies from the observed vector:
+\begin{equation}
+\label{eq:pf-deletion}
+ \mathcal X_J(t)_{j,a}
+       =X_a(t+h_j)-\sum_{\gamma\in J}
+                         z(\gamma)_{j,a}e^{i\gamma t}.
+\end{equation}
+The vector is real.  Its domain starts at any fixed $u_0$ for which
+$u_0+h_j\geq\log2$ for every $j$.
+
+\begin{theorem}[Unsmoothed multiscale covariance and occupation]
+\label{thm:pf-main}
+Assume Dirichlet GRH for the characters modulo $q$.  For the data just
+defined, the series
+\begin{equation}
+\label{eq:pf-cov}
+ C_J=\sum_{\gamma\in\Gamma_q\setminus(J\cup\{0\})}
+                   z(\gamma)z(\gamma)^*
+\end{equation}
+converges to a real symmetric positive definite matrix.  Uniformly over
+$u\geq u_0$, as $L\longrightarrow\infty$,
+\begin{equation}
+\label{eq:pf-moments}
+ \frac1L\int_u^{u+L}\mathcal X_J(t)\,dt\longrightarrow0,
+ \qquad
+ \frac1L\int_u^{u+L}\mathcal X_J(t)\mathcal X_J(t)^{\mathsf T}\,dt
+                       \longrightarrow C_J.
+\end{equation}
+There are constants $\varepsilon,\eta,L_0>0$ such that, for every real unit
+vector $w\in\mathbb R^D$, every $u\geq u_0$ and every $L\geq L_0$,
+\begin{align}
+\label{eq:pf-positive}
+ \bigl|\{t\in[u,u+L]:w\cdot\mathcal X_J(t)\geq\varepsilon\}\bigr|
+       &\geq\eta L,\\
+\label{eq:pf-negative}
+ \bigl|\{t\in[u,u+L]:w\cdot\mathcal X_J(t)\leq-\varepsilon\}\bigr|
+       &\geq\eta L.
+\end{align}
+Here $|\cdot|$ denotes Lebesgue measure.  Consequently the closed convex
+hull of the essential values on each such interval contains the closed
+Euclidean ball of radius $\varepsilon$ about zero.
+
+Moreover, there are $c,K,T_0>0$, depending only on $q$ and the shifts,
+such that
+\begin{equation}
+\label{eq:pf-band}
+ \lambda_{\min}(C_J)\geq\frac{cH}{T^2\log(2T)}
+\end{equation}
+whenever $T\geq T_0$, $K\log(2T)\leq H\leq T$, and
+$T>\max_{\gamma\in J}|\gamma|$; the last maximum is zero if $J$ is empty.
+\end{theorem}
+
+The constants may depend on the fixed shifts and deteriorate when shifts
+coalesce.  No uniformity as the number of coordinates grows is asserted.
+In terms of $x=e^t$, the intervals above are $[e^u,e^{u+L}]$ and their
+measure is $dx/x$.  Thus the theorem supplies bounded waiting on the
+logarithmic scale for every centered directional contrast, with a positive
+proportion of logarithmic measure on both sides.
+
+\subsection{Local fourth moments of zero sums}
+\label{subsec:pf-local}
+
+For a locally $p$-integrable function on $\mathbb R$, write
+\[
+ \|f\|_{S^p}=\sup_{u\in\mathbb R}
+           \left(\int_u^{u+1}|f(t)|^p\,dt\right)^{1/p}.
+\]
+For vector-valued functions, use the Euclidean norm inside the integral.
+Convergence in this norm is uniform local $L^p$ convergence; in particular
+it implies convergence as distributions.  We first prove the analytic
+estimate that permits unsmoothing.
+
+\begin{lemma}[Binned local moments]
+\label{lem:pf-bins}
+Let $P(t)=\sum_\lambda c_\lambda e^{i\lambda t}$ be a finite exponential
+sum with real frequencies, and put
+$b_j=\sum_{\lambda\in[j,j+1)}|c_\lambda|$.  There is an absolute constant
+$A$ such that
+\begin{equation}
+\label{eq:pf-bins}
+ \|P\|_{S^2}\leq A\|b\|_{\ell^2},
+ \qquad
+ \|P\|_{S^4}\leq A\|b\|_{\ell^{4/3}}.
+\end{equation}
+Consequently, if a countable locally finite frequency family has
+$b\in\ell^{4/3}(\mathbb Z)$, its finite symmetric truncations converge in
+$S^4$.
+\end{lemma}
+
+\begin{proof}
+Consider the nonnegative function
+\[
+ W(s)=\left(\frac{\sin(s/2)}{s/2}\right)^2,
+ \qquad W(0)=1.
+\]
+It has a positive lower bound on $[-1/2,1/2]$ and satisfies the exact
+identity
+\[
+ W(s)=\int_{-1}^1(1-|\xi|)e^{i\xi s}\,d\xi.
+\]
+Its Fourier transform is therefore bounded and supported in $[-1,1]$,
+with the usual factor $2\pi$ in the inverse convention.  Multiplying
+$|P|^2$ by $W(t-u-1/2)$ and integrating over $\mathbb R$ gives
+\begin{align*}
+ \int_u^{u+1}|P(t)|^2\,dt
+ &\leq C\int_{\mathbb R}|P(t)|^2W(t-u-1/2)\,dt\\
+ &\leq C'\sum_{|\lambda-\mu|\leq1}
+                             |c_\lambda||c_\mu|\\
+ &\leq C''\sum_j b_j^2.
+\end{align*}
+Only equal or adjacent bins can interact, and
+$2b_jb_{j+1}\leq b_j^2+b_{j+1}^2$.  The constants do not depend on $u$.
+
+Apply this $S^2$ estimate to $P^2$.  Its absolute coefficient mass $d_k$
+in bin $[k,k+1)$ is at most
+\[
+ d_k\leq(b*b)_k+(b*b)_{k-1}.
+\]
+Indeed, adding frequencies in bins $j$ and $\ell$ gives a frequency in
+bin $j+\ell$ or $j+\ell+1$; grouping coincident sums can only decrease
+absolute mass.  Young's convolution inequality yields
+\[
+ \|P\|_{S^4}^4
+   =\|P^2\|_{S^2}^2
+   \leq C\|d\|_{\ell^2}^2
+   \leq4C\|b*b\|_{\ell^2}^2
+   \leq4C\|b\|_{\ell^{4/3}}^4.
+\]
+This proves the second estimate after enlarging $A$.  Applying it to
+differences of truncations proves the final assertion, since the
+$\ell^{4/3}$ norm of their omitted bin masses tends to zero.
+\end{proof}
+
+For the fixed Dirichlet family, the standard local zero count gives
+\begin{equation}
+\label{eq:pf-localcount}
+ \sum_{\gamma\in\Gamma_q\cap[j,j+1)}\sum_{\chi\bmod q}m_\chi(\gamma)
+                 \ll_q\log(2+|j|).
+\end{equation}
+This count includes multiplicities and holds for both signs.  Therefore
+the absolute coefficient masses of
+\begin{equation}
+\label{eq:pf-F}
+ F_a(t)=-\sum_{\substack{\gamma\in\Gamma_q\\\gamma\ne0}}
+                  \frac{v_a(\gamma)}{\tfrac12+i\gamma}e^{i\gamma t}
+\end{equation}
+obey
+\begin{equation}
+\label{eq:pf-bdecay}
+ b_j\ll_q\frac{\log(2+|j|)}{1+|j|}.
+\end{equation}
+The finitely many bins near zero cause no difficulty because
+$|\tfrac12+i\gamma|\geq1/2$.
+Lemma~\ref{lem:pf-bins} proves convergence of \eqref{eq:pf-F} in $S^4$,
+and in particular a uniform bound for its local fourth moments.  Comparing
+the tails of $\sum b_j^{4/3}$ and $\sum b_j^2$ with integrals also gives,
+for $Y\geq2$,
+\begin{equation}
+\label{eq:pf-truncation}
+ \left\|F_a+
+   \sum_{0<|\gamma|\leq Y}
+       \frac{v_a(\gamma)e^{i\gamma t}}{\tfrac12+i\gamma}\right\|_{S^4}
+       \ll_q Y^{-1/4}\log(2Y),
+\end{equation}
+and the corresponding $S^2$ bound is
+$O_q(Y^{-1/2}\log(2Y))$.  No lower bound on gaps between ordinates has
+entered these estimates.
+
+\subsection{From the explicit formula to ordinary prime counts}
+\label{subsec:pf-transfer}
+
+We use the classical explicit formula and local zero count for primitive
+Dirichlet $L$-functions, in the distributional normalization also used in
+\cite{KaczorowskiRamare2003}; the fixed-argument Landau formula needed
+below is recorded separately.  The standard GRH consequence
+\begin{equation}
+\label{eq:pf-pointwise}
+ \theta(x;q,a)=\frac{x}{n}+O_q\bigl(\sqrt{x}\log^2(2x)\bigr)
+\end{equation}
+will be used only for deterministic remainder estimates.  These are
+classical analytic inputs, not new conclusions about zero locations.
+
+Let
+\[
+ \psi(x;q,a)=\sum_{\substack{p^k\leq x\\p^k\equiv a\bmod q}}\log p,
+ \qquad
+ \theta(x;q,a)=\sum_{\substack{p\leq x\\p\equiv a\bmod q}}\log p.
+\]
+
+\begin{lemma}[The unsmoothed expansion]
+\label{lem:pf-transfer}
+For each $a\in G$, there is a remainder $R_a$ such that, almost everywhere
+on $t\geq\log2$,
+\begin{equation}
+\label{eq:pf-XF}
+ X_a(t)=F_a(t)+R_a(t),
+ \qquad
+ \|R_a\|_{L^4([U,U+1])}\ll_q U^{-1}\quad(U\geq2).
+\end{equation}
+The remainder is locally bounded, belongs to $L^2([\log2,\infty))$, and
+has uniformly bounded local fourth moments on that half-line.
+\end{lemma}
+
+\begin{proof}
+For a primitive character $\chi$, put $\delta_\chi=1$ in the conductor-one
+case and $0$ otherwise.  The explicit formula, interpreted as an identity
+of distributions on $t>0$, states
+\begin{equation}
+\label{eq:pf-psi-character}
+ e^{-t/2}\bigl(\psi(e^t,\chi)-\delta_\chi e^t\bigr)
+ =-\sum_\gamma\frac{m_\chi(\gamma)e^{i\gamma t}}
+                         {\tfrac12+i\gamma}
+       +O_\chi\bigl((1+t)e^{-t/2}\bigr),\qquad t\geq\log2.
+\end{equation}
+The term denoted by $O_\chi$ consists of the constant, the contribution
+at zero, and the trivial zeros.  It is smooth away from $t=0$ and has
+the stated bound.  One may obtain the distributional formula by
+integrating $-L'/L(s,\chi)$ against a smooth compactly supported Mellin
+test and moving the contour; rapid decay of the test transform makes
+the zero sum convergent.  Dirichlet GRH turns each nontrivial zero term
+into the pure phase displayed in \eqref{eq:pf-psi-character}.
+
+The bin estimates prove $S^4$, hence $L^1_{\mathrm{loc}}$, convergence
+of this same zero sum.  Its limit represents the distribution in
+\eqref{eq:pf-psi-character}, so the equality holds almost everywhere
+for the usual arithmetic step function.  The convention at its
+countably many jumps does not affect any conclusion here.  If $\chi$
+is imprimitive, the finitely many removed prime-power sequences have
+total size $O_q(1+t)$ before normalization.  Thus the same estimate
+holds with the zeros of $\chi^*$.
+
+Character orthogonality and the central term
+$-(\tfrac12)^{-1}v_a(0)=-2v_a(0)$ now give
+\begin{equation}
+\label{eq:pf-psi}
+ E_{\psi,a}(t):=e^{-t/2}\left(\psi(e^t;q,a)-\frac{e^t}{n}\right)
+       =F_a(t)-2v_a(0)+O_q\bigl((1+t)e^{-t/2}\bigr).
+\end{equation}
+In particular $E_{\psi,a}$ has bounded local fourth moments uniformly
+on $t\geq\log2$.
+
+The contribution of prime squares is
+\[
+ \psi(x;q,a)-\theta(x;q,a)
+       =\sum_{b^2=a}\theta(\sqrt{x};q,b)
+                  +O_q\bigl(x^{1/3}\log^2(2x)\bigr).
+\]
+The error follows by bounding the contributions of prime powers of
+exponent at least three.  Applying \eqref{eq:pf-pointwise} at
+$\sqrt{x}$, and then dividing by $\sqrt{x}$, yields
+\begin{equation}
+\label{eq:pf-theta}
+ E_{\theta,a}(t):=e^{-t/2}\left(\theta(e^t;q,a)-\frac{e^t}{n}\right)
+ =E_{\psi,a}(t)-\frac{r_q(a)}n
+                    +O_q\bigl((1+t)^2e^{-t/6}\bigr).
+\end{equation}
+This also has uniformly bounded local fourth moments.  Notice that
+the correction is $r_q(a)/n$, not $(r_q(a)-1)/n$: we are centering each
+coordinate against $\operatorname{li}(x)/n$, including the principal
+direction.
+
+Partial summation gives the exact identity
+\begin{align}
+\label{eq:pf-volterra}
+ t e^{-t/2}\left(\pi(e^t;q,a)-\frac{\operatorname{li}(e^t)}n\right)
+ &=E_{\theta,a}(t)+V_a(t)+\frac{2t e^{-t/2}}{n\log2},\\
+ V_a(t)&=t e^{-t/2}\int_{\log2}^t
+                    \frac{e^{v/2}E_{\theta,a}(v)}{v^2}\,dv.
+ \nonumber
+\end{align}
+We claim that $\|V_a\|_{L^4([U,U+1])}\ll_q U^{-1}$.
+Split the integral at $v=t/2$.  On the earlier part,
+\eqref{eq:pf-pointwise} gives $E_{\theta,a}(v)\ll_q(1+v)^2$, and the
+resulting contribution is $O_q(t^2e^{-t/4})$.  On the later part put
+$s=t-v$ and use $t/(t-s)^2\leq4/t$.  For $t\in[U,U+1]$,
+\[
+ |V_{a,\mathrm{late}}(t)|
+ \leq\frac4U\int_0^{(U+1)/2}e^{-s/2}|E_{\theta,a}(t-s)|\,ds.
+\]
+For large $U$, all translated unit intervals on the right lie in the
+half-line where the local fourth moments are bounded.  Minkowski's
+inequality, followed by $\int_0^\infty e^{-s/2}ds=2$, proves the claim.
+
+Combining \eqref{eq:pf-psi}, \eqref{eq:pf-theta}, and
+\eqref{eq:pf-volterra} proves \eqref{eq:pf-XF} with exactly the
+centering in \eqref{eq:pf-X}.  The remainders constructed in these
+steps are locally bounded.  Finally
+\[
+ \int_U^{U+1}|R_a(t)|^2\,dt
+       \leq\left(\int_U^{U+1}|R_a(t)|^4\,dt\right)^{1/2}
+       \ll_q U^{-2},
+\]
+and summation over integer $U$ proves global square integrability.
+\end{proof}
+
+\subsection{Uniform covariance and arithmetic separation of scales}
+\label{subsec:pf-covariance}
+
+\begin{lemma}[Uniform long-window moments]
+\label{lem:pf-moments}
+Let $F:\mathbb R\to\mathbb R^D$ be the $S^2$ limit of finite
+exponential sums with no constant frequency, and write its grouped
+coefficients as $z_\gamma$, with
+$z_{-\gamma}=\overline{z_\gamma}$ and $\sum_\gamma\|z_\gamma\|^2<\infty$.
+Then its long-window mean is zero and its long-window second moment is
+$\sum_\gamma z_\gamma z_\gamma^*$, uniformly over the window origin.
+The same limits hold on a half-line for $F+R$ if $R$ belongs to $L^2$
+on that half-line.
+\end{lemma}
+
+\begin{proof}
+For a finite sum, the assertion follows by expanding products and using
+\[
+ \left|\frac1L\int_u^{u+L}e^{i\omega t}\,dt\right|
+                 \leq\frac2{L|\omega|}\qquad(\omega\ne0),
+\]
+independently of $u$.  If $P$ approximates $F$ in $S^2$, covering an
+interval of length $L\geq1$ by at most $L+1$ unit intervals gives
+\[
+ \frac1L\int_u^{u+L}\|F-P\|^2\,dt\leq2\|F-P\|_{S^2}^2.
+\]
+Cauchy--Schwarz controls the errors in the first and second moments;
+the local second-moment bounds of $F$ and $P$ stay bounded during the
+approximation.  Pass first to large $L$ and then to the $S^2$ limit.
+For the last assertion,
+$L^{-1}\int_u^{u+L}\|R\|^2\leq L^{-1}\|R\|_{L^2}^2$ uniformly over
+allowed origins, and the same Cauchy--Schwarz argument applies.
+\end{proof}
+
+Lemmas~\ref{lem:pf-bins} and \ref{lem:pf-transfer} apply to the vector
+in \eqref{eq:pf-deletion}.  Its Fourier coefficients are exactly
+$z(\gamma)$ for $\gamma\notin J\cup\{0\}$.  The decay of the bin
+masses proves square summability of these coefficients.  Lemma
+\ref{lem:pf-moments} therefore establishes \eqref{eq:pf-moments} and
+\eqref{eq:pf-cov}, including their uniformity.  Pairing opposite
+frequencies makes $C_J$ real symmetric.  Positive \emph{definiteness}
+requires arithmetic input, which we give next.
+
+For a fixed real $u\geq2$, the fixed-argument Landau formula under
+Dirichlet GRH is
+\begin{equation}
+\label{eq:pf-landau}
+ \sum_{T<\gamma\leq T+H}m_\chi(\gamma)e^{i\gamma\log u}
+ =-\frac{H}{2\pi\sqrt{u}}\Lambda(u)\chi^*(u)
+                       +O_{q,u}(\log(2T)),
+ \qquad 1\leq H\leq T.
+\end{equation}
+Here $\Lambda(u)\chi^*(u)$ is zero unless $u$ is an integral prime
+power.  This is the fixed-argument specialization of the
+Landau--Gonek formula for Dirichlet $L$-functions
+\cite[Theorem~1.2]{Banks2023}; it is also the input to the article's
+multiscale coercivity proof \cite{ProveItArticle}.  At a fixed
+non-prime-power argument the distance to the neighboring prime powers
+is positive.  Endpoints change the sum by at most $O_q(\log(2T))$, by
+\eqref{eq:pf-localcount}.
+
+\begin{lemma}[Prime probes]
+\label{lem:pf-probes}
+For each $a\in G$ one can choose a prime $p_a\equiv a\pmod q$ such
+that all numbers $p_a e^{h_k-h_j}$ are at least $2$, and are integral
+prime powers only when $j=k$.
+\end{lemma}
+
+\begin{proof}
+For fixed $R>0$, $R\ne1$, only finitely many primes $p$ make $Rp$ an
+integral prime power.  If $R$ is irrational there are none.  Otherwise
+write $R=b/c$ in lowest terms.  If $c>1$, integrality forces $c\mid p$
+and leaves at most one prime.  If $c=1$, then $b\geq2$ and $bp$ can
+be a prime power only if $p$ divides $b$.  There are finitely many
+off-diagonal ratios $e^{h_k-h_j}\ne1$.  Exclude their exceptional
+primes, take $p$ large enough for the lower bound $2$, and use
+Dirichlet's theorem in the reduced class $a$.
+\end{proof}
+
+\begin{lemma}[An unsmoothed band is coercive]
+\label{lem:pf-coercivity}
+There are constants $c,K,T_0>0$, depending only on $q$ and the shifts,
+such that, for $T\geq T_0$ and $K\log(2T)\leq H\leq T$,
+\begin{equation}
+\label{eq:pf-coercivity}
+ 2\sum_{\gamma\in\Gamma_q\cap(T,T+H]}
+ \frac{|A_w(\gamma)|^2}{\tfrac14+\gamma^2}
+       \geq\frac{cH}{T^2\log(2T)}\|w\|_2^2,
+ \quad
+ A_w(\gamma)=\sum_{j,a}w_{j,a}e^{i\gamma h_j}v_a(\gamma).
+\end{equation}
+This holds for complex coefficient arrays $w$ as well as real ones.
+\end{lemma}
+
+\begin{proof}
+Let $B=\Gamma_q\cap(T,T+H]$, and use the primes from
+Lemma~\ref{lem:pf-probes}.  Expanding \eqref{eq:pf-v} and applying
+\eqref{eq:pf-landau} at the finitely many fixed arguments
+$p_a e^{h_k-h_j}$ gives
+\begin{align}
+\label{eq:pf-recover}
+ \sum_{\gamma\in B}A_w(\gamma)
+              e^{i\gamma(\log p_a-h_j)}
+ &=-\frac{H\log p_a}{2\pi\sqrt{p_a}}w_{j,a}
+                    +O_{q,h}\bigl(\|w\|_2\log(2T)\bigr).
+\end{align}
+All off-diagonal main terms vanish.  On the diagonal,
+$\chi^*(p_a)=\chi(a)$ because $p_a$ is prime to $q$, and character
+orthogonality isolates $w_{j,a}$.
+
+Choose a coordinate with $|w_{j,a}|\geq\|w\|_2/\sqrt D$.
+The positive number
+$\min_a\log p_a/(2\pi\sqrt{p_a})$ is fixed.  By taking $K$ large
+enough, the absolute value on the left of \eqref{eq:pf-recover} is
+at least $c_1H\|w\|_2$.  The local zero count, summed over the band,
+gives $|B|\leq c_2H\log(2T)$.  Cauchy--Schwarz over its
+\emph{distinct} ordinates therefore proves
+\[
+ \sum_{\gamma\in B}|A_w(\gamma)|^2
+                 \geq c_3\frac{H}{\log(2T)}\|w\|_2^2.
+\]
+Since $\tfrac14+\gamma^2\leq5T^2$ in this band for $T\geq1$,
+division by the denominator proves \eqref{eq:pf-coercivity}.
+\end{proof}
+
+For real $w$, pairing $\gamma$ and $-\gamma$ in
+\eqref{eq:pf-cov} shows that $w^{\mathsf T}C_Jw$ is at least the
+left side of \eqref{eq:pf-coercivity} for every band above the deleted
+frequencies.  This proves \eqref{eq:pf-band} and positive
+definiteness, including after arbitrary fixed finite deletion.  The
+argument separates scales by prime powers; it does not separate
+individual nearby zeros.
+
+\subsection{Two-sided occupation and failure of exact linear prediction}
+\label{subsec:pf-occupation}
+
+We complete the proof of Theorem~\ref{thm:pf-main} by a moment
+argument which does not require pointwise boundedness of the
+unsmoothed errors.
+
+\begin{lemma}[Occupation from a fourth-moment bound]
+\label{lem:pf-occupation}
+Suppose a real vector-valued function $Y$ has uniform long-window mean
+zero and a uniform long-window second moment $C$ with
+$\lambda=\lambda_{\min}(C)>0$.  Suppose also that, for every real
+unit $w$ and every sufficiently long allowed interval $I$,
+$|I|^{-1}\int_I|w\cdot Y|^4\leq M^4$, where $M\geq1$ is independent
+of $w$ and $I$.  Then positive and negative directional occupation
+hold uniformly, with permissible constants
+\begin{equation}
+\label{eq:pf-constants}
+ a=\frac{(\lambda/2)^{3/2}}{M^2},
+ \qquad \varepsilon=\frac a8,
+ \qquad \eta=\left(\frac{a}{8M}\right)^2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $\mathbb E$ denote average over the interval and set $f=w\cdot Y$.
+Uniformity of the first two moments allows us to make
+$\mathbb Ef^2\geq\lambda/2$ and $|\mathbb Ef|\leq a/2$
+simultaneously for all unit $w$.  Interpolation between $L^1$ and
+$L^4$, equivalently H\"older's inequality, gives
+\[
+ \mathbb E|f|\geq
+       \frac{(\mathbb Ef^2)^{3/2}}{(\mathbb Ef^4)^{1/2}}
+       \geq a.
+\]
+Writing $f_+=\max(f,0)$ and $f_-=\max(-f,0)$, we obtain
+$\mathbb Ef_+\geq a/4$ and $\mathbb Ef_-\geq a/4$.
+With $\varepsilon=a/8$ this implies
+\[
+ \frac a8\leq\mathbb E\bigl[f_+\mathbf1_{\{f\geq\varepsilon\}}\bigr]
+       \leq(\mathbb Ef^2)^{1/2}
+                       \mathbb P(f\geq\varepsilon)^{1/2}
+       \leq M\mathbb P(f\geq\varepsilon)^{1/2}.
+\]
+Here $\mathbb P$ is relative Lebesgue measure on the interval.
+The same calculation for $-f$ proves both assertions with the
+specified $\eta$.
+\end{proof}
+
+The Fourier vector obtained from \eqref{eq:pf-F} by shifts and finite
+deletion has bounded $S^4$ norm.  The remainder from
+Lemma~\ref{lem:pf-transfer} has bounded local fourth moments too.
+Covering a long interval by unit intervals therefore supplies a
+common $M$ for $Y=\mathcal X_J$.  The covariance and mean were
+established uniformly above, so Lemma~\ref{lem:pf-occupation} proves
+\eqref{eq:pf-positive}--\eqref{eq:pf-negative}.  If the closed
+convex hull of the essential values failed to contain the
+$\varepsilon$-ball, separation would give a unit direction with
+essential supremum less than $\varepsilon$, contradicting
+\eqref{eq:pf-positive}.  This completes the main theorem.
+
+\begin{corollary}[No exact finite linear explanation]
+\label{cor:pf-prediction}
+For a nonzero real array $w=(w_{j,a})$, an arbitrary real finite
+trigonometric polynomial $P$, and an arbitrary real constant $b$,
+the long-window mean square of
+\[
+ \sum_{j,a}w_{j,a}X_a(t+h_j)-P(t)-b
+\]
+has a strictly positive limit, uniformly over the allowed origins.
+In particular, no nonzero contrast at one fixed scale can be
+predicted exactly in this mean-square sense by real linear
+combinations of the other finitely many scales and a finite
+trigonometric correction.
+\end{corollary}
+
+\begin{proof}
+Let $J$ contain all nonzero frequencies of $P$ which belong to
+$\Gamma_q$, together with their negatives.  Frequencies outside
+this finite set retain precisely the coefficients of
+$w\cdot\mathcal X_J$.  The uniform Fourier mean-square calculation
+of Lemma~\ref{lem:pf-moments}, including any extra frequencies of
+$P$, shows that the residual mean square is at least
+$w^{\mathsf T}C_Jw>0$.  For a predictor, collect all coefficients in
+one array; its block at the predicted scale is the prescribed
+nonzero contrast, so the full array cannot vanish.
+\end{proof}
+
+This corollary concerns every \emph{fixed} finite correction.  It
+does not give a positive lower bound uniform over all corrections:
+successively larger Fourier truncations do approximate the error
+in mean square.  Likewise, the occupation theorem describes
+individual linear contrasts of centered counts.  Positive
+covariance and two-sided directional occupation alone do not force
+the limiting values to fill an open set, and therefore do not
+imply inclusivity of every ordinary prime race.

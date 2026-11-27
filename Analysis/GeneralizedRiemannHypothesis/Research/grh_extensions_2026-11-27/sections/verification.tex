@@ -1,0 +1,65 @@
+\section{Exact computation and reproducibility}\label{sec:checks}
+The accompanying program \texttt{code/verify\_symplectic.py} uses only the
+Python standard library. It performs two independent types of verification.
+First, it recursively enumerates actual ordered symplectic pairs in successive
+orthogonal complements, projects their coordinates, and obtains the empirical
+law as an exact count. Separately, it row-reduces every possible output matrix,
+constructs its kernel, and tests its isotropy. The complete probability of
+each matrix is compared with \eqref{symp:eq:density}; aggregation checks the
+rank law, total variation, and chi-square divergence.
+
+The nine enumeration cases use these parameters:
+\[
+\begin{array}{c|l}
+q & (n,b)\\\hline
+2 & (1,2),\ (2,2),\ (2,4),\ (3,4)\\
+3 & (1,2),\ (2,2),\ (2,4)\\
+4 & (1,2),\ (2,2)
+\end{array}
+\]
+The square cases are auxiliary checks of the counting identity.
+In total, \textbf{313,170 prescribed-Gram
+frames and 11,295 individual matrices} were examined, with no mismatches.
+The quaternary cases use actual extension-field arithmetic in
+$\mathbb F_4=\mathbb F_2[x]/(x^2+x+1)$, not arithmetic modulo four.
+
+Second, exact rational arithmetic checks normalization, the strict rank sign
+threshold, and the closed expression \eqref{symp:eq:rank-tv} for all 288
+admissible triples with $q\in\{2,3,4,5\}$, $1\le n\le16$, $1\le c\le n$,
+and $n+c$ even. Additional sequences compare the asymptotics with exact
+fractions, including $n=c$. These are implementation checks; the proofs in
+Section~\ref{sec:symplectic-information} establish the all-parameter claims.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrlll}
+\toprule
+$n$ & $c$ & Rank TV $\Delta$ & Full overlap $\Omega$ & Rank $\chi^2$\\
+\midrule
+8 & 4 & $3.519397\times10^{-3}$ & $1.447624\times10^{-2}$ & $2.508953\times10^{-4}$ \\
+12 & 6 & $2.378620\times10^{-4}$ & $2.990148\times10^{-5}$ & $3.851021\times10^{-6}$ \\
+20 & 10 & $9.521233\times10^{-7}$ & $2.838477\times10^{-14}$ & $9.319256\times10^{-10}$ \\
+40 & 20 & $9.094933\times10^{-13}$ & $6.372360\times10^{-58}$ & $8.673623\times10^{-19}$ \\
+12 & 12 & $2.440612\times10^{-4}$ & $9.331424\times10^{-21}$ & $2.441207\times10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\caption{Binary examples from exact rational formulas, rounded for display.
+The small quantity $\Omega=1-\operatorname{TV}(A,U)$ is displayed directly
+so that rounding does not erase the complete-matrix distinction.}
+\label{tab:numeric}
+\end{table}
+
+For $q=2,n=40,c=20$, a single complete matrix has optimal equal-prior error
+$\Omega/2\approx3.18618\cdot10^{-58}$. Ranks alone have the asymptotic
+sample scale $2^{60}=1\,152\,921\,504\,606\,846\,976$; this is an order of
+sample complexity, not an asserted exact number for a specified finite risk.
+The one-observation rank distance is only about $9.095\cdot10^{-13}$.
+The explicit test computes a kernel basis $K$ and tests whether
+$K^{\mathsf T}HK=0$; Gaussian elimination makes it a polynomial-time test
+when the source form is known.
+
+The archive contains the full LaTeX sources, this compiled PDF, exact
+verification results, a source audit, a novelty record, and a checker for the
+pinned source hashes. The arithmetic result is an analytic proof and is not
+inferred from a finite sample of primes or zeros. No numerical certificate
+of central orders, zero simplicity, or ordinate independence is used.

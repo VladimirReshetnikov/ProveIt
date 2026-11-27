@@ -1,0 +1,138 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,microtype,xcolor}
+\usepackage[left=1in,right=1in,top=.85in,bottom=.85in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!60!black,citecolor=blue!50!black]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\ord}{ord}
+\title{One positive prime weight determines the signed zeros of all Dirichlet $L$-functions}
+\author{Research note}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct a single real weight between $3/4$ and $5/4$ on the primes. Under Dirichlet GRH the ordinary autocorrelation of its centered, triangularly smoothed prime sum determines the multiplicity of every open-strip zero of every primitive Dirichlet $L$-function at each signed ordinate. Three explicit modulations, of frequencies $0,1,\sqrt2$, convert the loss of Fourier phase into sums of multiplicities at reflected points. We invert these reflections even when shifted zeros coincide. Reading one labelled order takes $O(\log((q+2)(|t|+2)))$ exact spectral queries near height $|t|$. A repeated mixed-radix code gives a precision bound of order $N\log N$ bits for $N$ labels with a corresponding integer envelope.
+\end{abstract}
+
+\section{The observable and the theorem}
+
+Enumerate primitive characters $\chi_j$ by increasing conductor $q_j$, breaking ties lexicographically by their phases in $[0,2\pi)$ on the reduced residues in ascending order. Set $\chi_0=1$ of conductor one and
+\[
+ m_j(t)=\ord_{s=1/2+it} L(s,\chi_j),\qquad
+ (u_0,u_1,u_2)=(0,1,\sqrt2),\qquad \rho_t=\tfrac12+it.
+\]
+The order is zero at every regular nonzero value. Index $(j,k)$ by $i=3j+k$ and write $c_{jk}=c_i$ for the positive constants in Section~\ref{s:code}, with $w_i=q_j+1$. Our weight is
+\[
+ W(n)=\sum_{j\ge0}\sum_{k=0}^2 c_{jk}\Re\{\chi_j(n)n^{iu_k}\}.
+\]
+It is specified without knowing any zeros. For $x\ge1$ define
+\begin{align*}
+ S_p(x)&=\sum_{p\le x}(\log p) W(p)(1-p/x),\\
+ M(x)&=\sum_{k=0}^2 c_{0k}\Re\frac{x^{1+iu_k}}{(1+iu_k)(2+iu_k)},\\
+ B(x)&=\sum_{j:\ \chi_j^2\ \mathrm{principal}}\sum_{k=0}^2
+ c_{jk}\Re\!\left[x^{iu_k}\!\left(\frac1{1+2iu_k}-\frac1{3+2iu_k}\right)\right].
+\end{align*}
+The last sum includes $j=0$. The real signal and its ordinary autocorrelation are
+\begin{align}
+ F(v)&=e^{-v/2}\{S_p(e^v)-M(e^v)\}+B(e^v),\nonumber\\
+ C(h)&=\lim_{T\to\infty}\frac1T\int_0^TF(v)F(v+h)\dd v\qquad(h\ge0).\label{eq:obs}
+\end{align}
+
+\begin{theorem}\label{t:main}
+Suppose every zero in the open critical strip of every primitive Dirichlet $L$-function lies on the critical line. The weight satisfies $3/4\le W(n)\le5/4$. All the limits defining $C(h)$ exist, and $C$ determines $m_j(t)$ for every $j$ and every real $t$, including zero. It therefore determines the labelled open-strip divisors of all Dirichlet $L$-functions. Given $j,t$ the decoder uses $O(\log((q_j+2)(|t|+2)))$ exact Fourier coefficients of $C$, all at frequencies of absolute value at most $|t|+10$.
+\end{theorem}
+
+For a nonreal character, complex conjugation exchanges its zeros at $t$ with those of the conjugate character at $-t$. A real autocorrelation has an even power spectrum. Moving copies of the zeros before forming that autocorrelation allows the arithmetic label and the original orientation to survive. The theorem allows arbitrary coincidences and rational relations among ordinates.
+
+The article's theorem \texttt{rec:thm:universal} \cite{repo} uses one complex weight and its complex autocorrelation. Its theorem \texttt{rec:thm:dyadic} treats a fixed modulus with complex samples. The question \emph{Fewer filters and weights} in the same section asks for a real nonnegative prime weight for the universal reconstruction and for improved prefix precision. Theorem~\ref{t:main} and Section~\ref{s:code} give these conclusions for the continuous limiting autocorrelation. Almost-periodic expansions of prime errors and their limiting distributions already have a substantial literature \cite{ans}.
+
+\section{A positive linear code with bounded precision cost}\label{s:code}
+
+Consider integer vectors $b=(b_i)_{i\ge0}$ with $0\le b_i\le H w_i$ for integer weights $w_i\ge1$ and some finite $H\ge1$. Write consecutive blocks indexed by $L=1,2,4,\ldots$. Block $L$ has slots $i=0,\ldots,L$, all of radix
+\[
+ R_L=2^{\lceil\log_2(8(L+1)\max_{i\le L}w_i)\rceil}.
+\]
+The place denominator $D_{L,i}$ is the product of all slot radices from the first slot through $(L,i)$ inclusive. Put
+\begin{equation}\label{eq:code}
+ c_i=\mathbf1_{i=0}+\sum_{L\ge i} D_{L,i}^{-1},\qquad E(b)=\sum_i c_i b_i ,
+\end{equation}
+summing over dyadic block indices. The coefficients are computable for computable weights. If $D_-$ is the immediately preceding denominator (initially $1$), the slot contributes at most $1/(8D_-)$ to $\sum_i(c_i-\mathbf1_{i=0})w_i$. All radices are at least 16, so this last sum is less than $1/4$. This proves absolute convergence and the claimed bounds on $W$, whose leading constant term is $1$.
+
+\begin{lemma}\label{l:digits}
+In any block $L\ge H$, reducing the nearest integer to $D_{L,i}E'$ modulo $R_L$ recovers $b_i$ whenever $|E'-E(b)|<1/(4D_{L,i})$. Thus $E$ is injective on the union of all envelope classes.
+\end{lemma}
+
+\begin{proof}
+After scaling by $D=D_{L,i}$, the contribution $D b_0$ of the first term of \eqref{eq:code} and all earlier slots are multiples of $R_L$. The current digit contributes $b_i\in[0,R_L/8]$. Each later digit is at most one eighth of its own radix. Their total contribution after scaling is at most $(1/8)\sum_{h\ge0}16^{-h}<1/4$. Observation error leaves the nearest integer unchanged. For injectivity choose a block exceeding both envelopes and the target index.
+\end{proof}
+
+For our enumeration $w_i=O(i+1)$. Indeed a prime between $2(j+2)$ and $4(j+2)$ has at least $j+1$ primitive nonprincipal characters. Thus $q_j\le4(j+2)$. Given an integer $N\ge\max(1,H)$, all the first $N+1$ digits can be read in the first dyadic block $L\ge N$. The total number of radix bits through that block is
+\[
+ \sum_{J\le L}(J+1)\log_2 R_J=O(N\log(2N)),
+\]
+summing over dyadic $J$. Thus this many absolute fractional bits of $E(b)$ suffice. The order is optimal for the full integer model when $H=N$. The $(N+1)^{N+1}$ prefixes with digits in $[0,N]$ and zero tail yield values in an interval of length $O(N)$ for every code with bounded coefficient $\ell^1$ norm. Two such values have spacing at most $O(N)/((N+1)^{N+1}-1)$. This lower bound concerns arbitrary allowed digits; arithmetic multiplicities form a smaller class.
+
+\section{The explicit formula with modulation}
+
+Put $D(t)=\rho_t(\rho_t+1)$. For a primitive $\chi$ and $u\in\{0,1,\sqrt2\}$ the triangular von Mangoldt sum is
+\begin{multline}\label{eq:ef}
+\sum_{n\le x}\Lambda(n)\chi(n)n^{iu}(1-n/x)
+=\mathbf1_{q=1}\frac{x^{1+iu}}{(1+iu)(2+iu)}\\
+ -\sum_{\gamma}m_\chi(\gamma)\frac{x^{\rho_{\gamma+u}}}{D(\gamma+u)}
+ +O(x^{1/4}\log(q+2)).
+\end{multline}
+The sum runs over distinct signed ordinates. The Mellin integrand is
+\[
+ -\frac{L'}L(s-iu,\chi)\frac{x^s}{s(s+1)}.
+\]
+Shift the vertical line from $2$ to $1/4$. The contour bounds in the article's smoothed explicit formula \cite[lemma \texttt{rec:lem:triangle}]{repo} apply after translating ordinates by $u$. On the new line the logarithmic derivative is $O(\log((q+2)(|\Im s-u|+2)))$. Along horizontal lines chosen away from the translated ordinates it is $O(\log^2((q+2)(|\Im s|+2)))$. The new integral is absolutely convergent and the horizontal integrals vanish. The residues give \eqref{eq:ef}. The same lemma bounds the zero count with multiplicity in a length-two interval centered at $t$ by $O(\log((q+2)(|t|+2)))$. Summation over unit intervals gives $\sum_\gamma m_\chi(\gamma)/|D(\gamma+u)|\ll\log(q+2)$ uniformly for our three $u$. Since $\sum_{jk}c_{jk}(q_j+1)<\infty$, the per-character errors and absolute spectral masses both sum.
+
+Let $S_\Lambda(x)=\sum_{n\le x}\Lambda(n)W(n)(1-n/x)$. Taking real parts in \eqref{eq:ef} adds a reflected frequency $-(\gamma+u)$ to every frequency $\gamma+u$. Define
+\begin{align}
+ b_{3j+k}(t)&=m_j(t-u_k)+m_j(-t-u_k),\qquad A(t)=E(b(t)),\label{eq:pairs}\\
+ G(v)&=-\sum_t\frac{A(t)}{2D(t)}e^{itv},\label{eq:fourier}
+\end{align}
+where the countable sum over shifted and reflected supports converges absolutely and uniformly. At $t=0$ both terms of the real-part operation contribute and the same formula holds. The local count gives $b_i(t)\le H_t w_i$ for some $H_t=O(1+\log(|t|+2))$ uniformly in $i$. Thus every frequency carries a valid codeword and
+\[
+ x^{-1/2}\{S_\Lambda(x)-M(x)\}=G(\log x)+O(x^{-1/4}).
+\]
+
+\paragraph{Prime squares and higher powers.}
+For fixed $(\chi,u)$ put $y=\sqrt x$. The square contribution is
+\begin{multline*}
+ \sum_{p\le y}(\log p)\chi(p)^2p^{2iu}(1-p^2/y^2)\\
+ =\mathbf1_{\chi^2\ \mathrm{principal}} y^{1+2iu}
+ \left(\frac1{1+2iu}-\frac1{3+2iu}\right)+o_{\chi,u}(y).
+\end{multline*}
+Indeed the prime number theorem in progressions gives
+$\sum_{p\le z}(\log p)\chi(p)^2=\mathbf1_{\chi^2\ \mathrm{principal}}z+o_\chi(z)$. Partial summation with $z^{2iu}(1-z^2/y^2)$ yields the displayed integral, with an $o(y)$ error since the derivative is $O(1/z+z/y^2)$. Chebyshev's bound dominates the normalized square sums uniformly, so dominated convergence applies to the summable $c_{jk}$. Powers of exponent at least three have total weight $O(x^{1/3}\log^2(2x))$. Consequently $F(v)=G(v)+o(1)$ as $v\to\infty$.
+
+\section{Undoing the reflections}
+
+Since $F$ is real and $G$ has an absolutely summable Fourier series, averaging first in \eqref{eq:obs} and then in the lag gives
+\begin{align*}
+ C(h)&=\sum_t \frac{A(t)^2}{4|D(t)|^2}e^{ith},&
+ P(t)&=\lim_{U\to\infty}\frac1U\int_0^U C(h)e^{-ith}\dd h=\frac{A(t)^2}{4|D(t)|^2}.
+\end{align*}
+Both identities follow termwise from the mean of $e^{i\xi v}$ being $\mathbf1_{\xi=0}$. Boundedness and the $o(1)$ error allow replacing $F$ by $G$. Nonnegative digits give $A(t)=2|D(t)|\sqrt{P(t)}$, including at $P(t)=0$. For instance an error less than $1/(64 D_{L,i}^2|D(t)|^2)$ in a nonnegative estimate of $P(t)$ gives the tolerance of Lemma~\ref{l:digits}. This bound concerns the limiting powers.
+
+Fix a character and write $m=m_j$. For $R_k x=-x-2u_k$, the digits of \eqref{eq:pairs} at frequency $x+u_k$ give the edge sums $s_k(x)=m(x)+m(R_kx)$. These determine $m$ among nonnegative integer functions of locally finite support. Indeed the difference between two solutions changes sign across every $R_k$. It is invariant under translations by $2$ and $2\sqrt2$, obtained by composing reflections. Its support is locally finite, whereas any orbit of the two translations is dense. This argument requires local finiteness only for each fixed character.
+
+\paragraph{A bounded-height inversion.}
+Visit $y_n=x+2\{n\sqrt2\}$ for $n=0,1,\ldots$, where braces denote the fractional part. At each $y_n$ test $s_0(y_n)$. A zero gives $m(y_n)=0$. Consecutive points differ by $2\sqrt2-2d_n$, where $d_n\in\{1,2\}$. Apply $R_2$ then $R_0$ to translate by $2\sqrt2$, followed $d_n$ times by $R_0$ then $R_1$ to translate by $-2$. Store the edge sum at each reflection. The $y_n$ are distinct in $[x,x+2)$, and $s_0(y_n)>0$ requires a zero at $y_n$ or $-y_n$. The local count bounds the total number of failed tests by $O(\log((q_j+2)(|x|+2)))$. At the first successful test, reverse the path, subtracting the known value at each vertex from the stored edge sum. This yields $m(x)$. Each hop uses at most six reflections and all queried frequencies have absolute value at most $|x|+10$. Finally, the extra finite Euler factors of an imprimitive character have zeros only on $\Re s=0$. This proves Theorem~\ref{t:main}.
+
+\paragraph{Why three modulations help.}
+With centers $0,u$ for $u\ne0$ the abstract reflection equations have a kernel. For $a\notin u\Z$, the function $h=\mathbf1_{a+2u\Z}-\mathbf1_{-a+2u\Z}$ is odd and $2u$-periodic. Its positive and negative parts are distinct locally finite nonnegative divisors giving the same edge sums. This is sharpness in the two-center reflection model. Additional arithmetic restrictions might permit other designs.
+
+\paragraph{Scope and further questions.}
+The analytic input is the critical-line statement for primitive Dirichlet characters supplied as \texttt{src:thm:dgrh} in the repository. The code and the reflection lemmas are unconditional. This paper gives a mathematical deduction. The observable uses an explicitly convergent weight and infinite-time means. An effective observation horizon sufficient to resolve its Fourier coefficients, or a reconstruction theorem with a periodic weight and no modulations, would strengthen the result.
+
+\begin{thebibliography}{9}
+\bibitem{repo} V. Reshetnikov, \emph{ProveIt}, \texttt{Analysis/GeneralizedRiemannHypothesis}, article sections \texttt{rec.tex} and \texttt{src.tex}, and vendored \texttt{grh-lean}. Snapshot
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/c0f2782360ddffd79a20c6d828d582e214a2b8c3/Analysis/GeneralizedRiemannHypothesis}{\texttt{c0f2782360dd}}. See \texttt{rec:lem:triangle}, \texttt{rec:lem:prefix}, \texttt{rec:thm:universal} and the question \emph{Fewer filters and weights}.
+\bibitem{ans} A. Akbary, N. Ng and M. Shahabi, \emph{Limiting distributions of the classical error terms of prime number theory}, Quart. J. Math. \textbf{65} (2014), 743--780. \href{https://arxiv.org/abs/1306.1657}{arXiv:1306.1657}.
+\end{thebibliography}
+\end{document}

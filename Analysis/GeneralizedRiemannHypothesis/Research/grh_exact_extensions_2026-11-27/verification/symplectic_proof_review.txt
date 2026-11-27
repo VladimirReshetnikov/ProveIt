@@ -1,0 +1,52 @@
+INDEPENDENT PROOF AUDIT: ALL-PRECISION SYMPLECTIC PROJECTIONS
+
+Reviewed: local_research/theorem_notes.md and output/grh_exact_extensions/code/symplectic_laws.py, compared with the source Article's finite-field setting. Verdict: the proposed finite-ring, Smith-law, and precision theorems are correct under the explicitly stated model. No gap found in the all-characteristic arguments or constants. This is a human mathematical audit, not Lean verification.
+
+1. Model matters
+
+Let n=2m, the ambient module have rank 2n with J=[[0,I_n],[-I_n,0]], and X0 be a fixed 2n-by-n frame whose Gram matrix H=X0^T J X0 is unimodular alternating. Write gX0=(A;B). This is not the literal top-left n-by-n block of a standard-ordered symplectic matrix: its first n columns are isotropic. An explicit valid X0 uses columns e_1,...,e_m,e_(n+1),...,e_(n+m). Root and local agent were warned to retain this distinction in the final paper.
+
+2. Frame cardinality and characteristic two
+
+Gram equality gives a left inverse H^(-1)X^T J, so every allowed frame is a split injection. Its nondegenerate orthogonal complement is free over the local ring. Splitting off unit hyperbolic pairings proves symplectic-basis transitivity, with pointwise stabilizer Sp_n. No division by two is needed. Smooth lifting can also be proved directly: the first-order map Z -> Z^T J+JZ is onto genuinely alternating matrices in every residue characteristic, since writing JZ=L gives L-L^T. Its homogeneous dimension is n(2n+1) for ambient rank 2n. The resulting count q^(h(3n^2+n)/2) C_n is correct.
+
+3. Capped Smith exponents and the pointwise density
+
+In PAT=D with exponents 0<=a_i<=h, interpret pi^h as zero in R_h. The transformation B'=P^(-T)BT gives D B'-B'^T D=T^T H T. Each i<j equation has image pi^min(a_i,a_j) R_h and kernel cardinality q^(h+min(a_i,a_j)); this includes min=h, when the equation is zero=H'_ij and the full pair has q^(2h) choices. The n diagonal coordinates are free, giving exactly the claimed fiber q^(h n(n+1)/2+S). After dividing by the frame count and uniform A mass, the density is q^S/C_n on its compatibility set, zero outside.
+
+The intrinsic filtration formulation also checks: in Smith coordinates the ith component of K_l is pi^max(l-a_i,0)R_h. For every pair, min(a_i,a_j)+max(l-a_i,0)+max(l-a_j,0)>=l, and choosing l=min(a_i,a_j)>0 proves the converse. Consequently S=sum_l binom(k_l,2), including capped exponents.
+
+4. Orientation averaging and Smith cancellation
+
+Uniform P,T in GL represent the uniform Smith orbit because every orbit fiber has the same size. The congruence transform T^T H T is uniform among all unimodular alternating forms. Such forms constitute one congruence orbit even in characteristic two, provided diagonal entries are zero. In these coordinates the strict upper entries are iid subject only to nondegeneracy modulo pi; their later digits remain unrestricted.
+
+The required k-dimensional reduction space is isotropic with probability q^(-binom(k,2)) R_(n,k), obtained by dividing the number of isotropic ordered k-frames by the number of all independent ordered k-frames. This is zero for k>m. The remaining digit conditions cost q^(-(S-binom(k,2))). Thus the support fraction is q^(-S)R_(n,k), canceling the pointwise q^S. The entire Smith-type likelihood is R_(n,k)/C_n. Conditional-law equality with iid is stated only for feasible k<=m; for k>m the symplectic conditioning event has probability zero.
+
+5. Infinite precision and absence of singular mass
+
+To claim an infinite-precision pointwise Radon-Nikodym density, add the following explicit argument. Under additive Haar matrix measure mu, det A is nonzero almost surely; this follows by induction/Fubini from the finite root set of a nonzero polynomial in one variable. A has a finite full Smith sequence almost surely. Its finite-cylinder densities f_h stabilize once h exceeds its largest Smith exponent. Their pointwise limit is f=q^S/C_n on the full compatibility set, zero otherwise. Conditional on each full Smith type, the orientation computation gives E_mu[f|type]=R_(n,k)/C_n. Summing over k and using sum_k u_n(k)R_(n,k)=C_n yields integral f=1. Since integral f_h=1 and f_h->f almost surely, Scheffe's lemma gives L1 convergence. Therefore the actual projective-limit symplectic law is f mu, with no hidden singular component.
+
+The Smith likelihood alone also proves det A !=0 almost surely: probabilities of the decreasing Smith-invariant events det A=0 mod pi^h are at most C_n^(-1) times the iid probabilities. The iid finite-cokernel formula a_n^2/[a_(n-k)|Aut G|] is correctly derived by counting generating column lattices. Every relevant module must be finite; k<=n for iid and k<=m for the projected symplectic model.
+
+6. Exact Smith total variation
+
+R_(n,0)=R_(n,1)=1>C_n; for 2<=k<=m, R_(n,k)<=R_(n,2)<C_n. The displayed comparison 1-R_(n,2)>=q(q-1)q^(-n) and 1-C_n<q^(-n)/(q^2-1) is valid. Thus the sole positive Smith-likelihood excess is k<=1, giving TV=(u_n(0)+u_n(1))(C_n^(-1)-1) at every positive precision and at infinite precision. 'All invariants fail' would be incorrect wording: this covers all functions of Smith type/cokernel, not arbitrary paired kernel-filtration data.
+
+7. Full total variation and precision exponent
+
+All supported pointwise likelihoods are greater than one, so TV equals the iid probability of incompatibility. Conditional on Smith type this support probability is q^(-S)R. For iid matrices, successive Smith-nullity states k_l form the decreasing Markov chain with transition u_k(j), by an invertible leading block and a fresh uniform Schur complement divided by pi. This argument works in mixed and equal characteristic.
+
+The local notes' f_h(k)=q^(-binom(k,2))*sum_j u_k(j)f_(h-1)(j), f_0=1, is correct. The root code instead puts the discount at the destination and attaches one initial factor; these are equivalent, with f_h(k)=q^(-binom(k,2))*survival(k,h-1). The finite-distance formula starts h>=1. Algebraic f_0 is not the trivial-observation TV formula.
+
+For the error f_h-f_infinity, states 0 and 1 vanish, and on states >=2 the substochastic row sums are bounded by q^-5. At k=2 the row sum is exactly q^-1*u_2(2)=q^-5. At k=3, the independent-two-frame bound gives P(nullity>=2)<=1/[(q^2-1)(q^2-q)], whose q^-3-discount is <=q^-5. At k>=4 the discount alone is <=q^-6. Hence the uniform q^(-5h) bound is correct. The k=2 diagonal recurrence gives the exact error (1-f_infinity(2))q^(-5h), with f_infinity(2)=(q^4-1)/(q^5-1). For n>=4 its initial mass u_n(2)R_(n,2) is positive, proving sharpness and strict increase. For n=2 no supported state >=2 occurs, and full TV=q^-4 at every precision.
+
+8. Simultaneous dimension and precision estimate
+
+The added bound also checks. With B_n=a_n/a_infinity, u_n(k)/p_q(k)<=B_n for all k, hence TV(u_n,p_q)<=B_n-1<=q^(-n)/[(q-1)-q^(-n)]. Since f_h lies in [0,1], its expectation difference is bounded by TV, without a factor two. The finite symplectic normalization gives sum u_n(1-R)=1-C_n<=q^(-n)/(q^2-1). For n>=2 this yields
+  |Delta_(n,h)-delta_(q,infinity)|
+    <= [4/(3(q-1))+1/(q^2-1)] q^(-n)+q^(-5h).
+At q=2 the coefficient is 5/3. The estimate is uniform in h and remains valid with the precision term set to zero at h=infinity.
+
+9. Numerical and code audit scope
+
+The code's prime-power formulas require no odd-characteristic assumption. Its limiting-constant enclosure is valid: a_infinity lies between a_J(1-q^(-J)/(q-1)) and a_J, and the omitted k>K series tail is at most q^(-(K+1)^2)/[lower_product*(1-q^(-(2K+3)))]. Existing exact enumeration code tests capped ring exponents, forms modulo four, frame fibers, and probability normalization. No additional duplicate exhaustive run was necessary to resolve a remaining mathematical risk.

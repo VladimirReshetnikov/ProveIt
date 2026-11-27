@@ -1,0 +1,127 @@
+SOURCE PROVENANCE AND MATHEMATICAL DEPENDENCIES
+27 November 2026
+
+PINNED REPOSITORY
+
+Repository: VladimirReshetnikov/ProveIt
+Revision: 3d8689ceae76501a5c50f67da37e85369aac4fb6
+
+Requested directories, resolved at that revision:
+https://github.com/VladimirReshetnikov/ProveIt/tree/3d8689ceae76501a5c50f67da37e85369aac4fb6/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean
+https://github.com/VladimirReshetnikov/ProveIt/tree/3d8689ceae76501a5c50f67da37e85369aac4fb6/Analysis/GeneralizedRiemannHypothesis/Article
+
+The vendor README identifies upstream lsernau/grh-lean revision
+72fead102f663d5c7a407964a13dc0cf9d977207. The package pins Lean 4.35.0
+and Mathlib 56a005855ea17e0b0958f73ec801ae140b0a1679. The vendor is a
+separate Lake package, explicitly imported unbuilt and excluded from
+the root ProveIt build.
+
+DIRECT ARTICLE STARTING POINTS
+
+1. Article/sections/spn.tex
+   Labels spn:thm:lagrangian and spn:thm:rank-blind.
+   These give the finite-field Lagrangian-projection law and the
+   contrast between rank-only testing and complete-matrix testing.
+   The new paper extends the comparison to all finite valuation-ring
+   precisions and complete Smith/cokernel data, proves the exact
+   likelihood and precision recurrence, and determines the sharp
+   precision exponent five.
+
+   https://github.com/VladimirReshetnikov/ProveIt/blob/3d8689ceae76501a5c50f67da37e85369aac4fb6/Analysis/GeneralizedRiemannHypothesis/Article/sections/spn.tex
+
+2. Article/sections/zer.tex
+   Label zer:thm:electrical gives the rooted-forest compression and
+   electrical zero-transport theorem. The final item of zer:sec:open
+   asks for the optimal graph under a conductance budget and fixed
+   input degrees. The new paper gives its largest-displacement
+   solution, the full Wasserstein-p family, unique feasible optimizers,
+   and an exact mean-transport stability identity. Topology is free;
+   sparse prescribed topologies and edge caps are different problems.
+
+   https://github.com/VladimirReshetnikov/ProveIt/blob/3d8689ceae76501a5c50f67da37e85369aac4fb6/Analysis/GeneralizedRiemannHypothesis/Article/sections/zer.tex
+
+3. Article/README.md and Article/sections/src.tex
+   These describe the merged collection and its input theorem.
+   The README says that 120 delivered reports were merged into a
+   689-page Article, and that the merge itself was not an independent
+   verification or a new formalization. The new proofs in this packet
+   were checked on their own mathematical terms.
+
+   https://github.com/VladimirReshetnikov/ProveIt/blob/3d8689ceae76501a5c50f67da37e85369aac4fb6/Analysis/GeneralizedRiemannHypothesis/Article/README.md
+   https://github.com/VladimirReshetnikov/ProveIt/blob/3d8689ceae76501a5c50f67da37e85369aac4fb6/Analysis/GeneralizedRiemannHypothesis/Article/sections/src.tex
+
+LEAN SOURCE CONTRACT AND METHOD MAP
+
+The following paths are relative to
+Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/grh/
+at the pinned ProveIt revision. Each has the permalink prefix
+https://github.com/VladimirReshetnikov/ProveIt/blob/3d8689ceae76501a5c50f67da37e85369aac4fb6/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/grh/
+
+- src/Statements.lean
+  Public predicates use Mathlib's riemannZeta and character LFunction.
+  Covers every positive modulus and every Dirichlet character.
+- src/Main.lean
+  The five public theorem endpoints and their proof connections.
+- src/New/Main.lean
+  Functional-equation passage from half-plane nonvanishing to the line.
+- src/New/Reduction/MainInequality.lean
+  Covolume comparison: m*totalRemainder <= f*a*(log b)^5.
+- src/New/Reduction/OneSidedBound.lean
+  Scale selection, the one-sided prime remainder bound, and New.grh.
+- src/New/Reduction/Zeros/Criterion.lean
+  Quadratic-twist selection and the one-sided analytic zero criterion.
+- src/New/Reduction/Zeros/PrimeError.lean
+  Nonnegative prime weights, their remainder, and zero-multiplicity
+  residues of the transform.
+- src/Lib/Analytic/Landau.lean
+  Positive-measure analytic continuation principle.
+- src/Lib/Analytic/QuadraticTwist.lean
+  Zero-density input selecting an auxiliary prime for a given box.
+- scripts/PrintAxioms.lean
+  Commands for printing the five theorem axiom dependencies.
+- README.md, lakefile.toml, lake-manifest.json, lean-toolchain
+  Source project's verification reports and pinned build instructions.
+
+The source audit preserved 16 selected upstream files in source_excerpt/grh/
+and checked their local Git blob hashes against the source-reported hashes.
+source_excerpt/source_manifest.json records those identities and SHA-256
+checksums; source_excerpt/article_manifest.json records the Article sources
+consulted. The source subset includes LICENSE and NOTICE. It is not a
+complete buildable transitive closure. The upstream README reports successful builds and independent
+checker acceptance, with only propext, Classical.choice, and Quot.sound.
+This packet does not claim to have rerun those upstream checks.
+
+SCOPE OF NEW CLAIMS
+
+The local random-matrix extension and finite graph optimization are
+unconditional. Their relation to the requested proof package is through
+its mathematical methods and the supplied Article's existing results.
+Dirichlet GRH is used only when real-rooted polynomial inputs are formed
+from finite packets of Dirichlet zero ordinates.
+
+No assertion is made about simple or independent zero ordinates,
+arbitrary Artin/automorphic GRH, an infinite-spectrum minimax optimum,
+or an arithmetic distribution of number-field cokernels.
+
+The new statements are distinct extensions relative to the pinned
+Article. Targeted literature comparison did not identify the combined
+statements. This is not certification of worldwide priority. Primary
+literature citations are provided in the paper's bibliography.
+
+REPRODUCIBILITY RECORDS
+
+results/exact_verification.json
+  Exhaustive finite-ring/finite-field checks and exact probability tests.
+results/graph_verification.json
+  Exact symbolic graph certificates and floating-point diagnostics.
+results/independent_graph_check.json
+  Separately written numerical graph diagnostics.
+results/tables_and_certificates.json
+  Exact rational finite values, limiting enclosures, and precision bounds.
+FORMALIZATION.txt
+  Concrete future proof-assistant implementation plan; no new
+  machine-checked proof is claimed.
+
+The archive's original results and reports were prepared for this
+request. Preserved upstream source files retain their original
+Apache-2.0 license and attribution notices.

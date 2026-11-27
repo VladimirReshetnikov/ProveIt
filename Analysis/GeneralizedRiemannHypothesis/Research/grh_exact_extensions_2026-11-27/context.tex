@@ -1,0 +1,129 @@
+\section{Sources, scope, and the new contributions}\label{sec:context}
+
+\subsection{The pinned input}
+The two requested directories were inspected at ProveIt revision
+\begin{center}\small\sourcecommit.\end{center}
+The vendor README identifies an unmodified copy of the readable
+\texttt{grh} package of \nolinkurl{lsernau/grh-lean} at
+\begin{center}\small\upstreamcommit.\end{center}
+The imported package has its own Lean and Mathlib versions and is excluded
+from ProveIt's root build. The article README describes a merge of 120
+reports, with 869 theorem-like results, and says that the merge
+itself did not independently check or formalize the reports
+\cite{ProveItArticle,ProveItVendor}. Consequently, we use exact theorem
+statements and reprove the ingredients needed for the extensions below.
+
+The public predicates in \texttt{src/Statements.lean} use Mathlib's actual
+\texttt{riemannZeta} and \texttt{DirichletCharacter.LFunction}.
+In particular the half-plane endpoint states, for every positive modulus
+and every Dirichlet character \(\chi\),
+\[
+ \Re s>\tfrac12,\quad (\chi\ne1\ \text{or}\ s\ne1)
+ \quad\Longrightarrow\quad L(s,\chi)\ne0.
+\]
+The critical-strip endpoint puts every zero with \(0<\Re s<1\) on
+\(\Re s=1/2\). It includes imprimitive characters. These are the inputs meant
+by Dirichlet GRH in this report. Simplicity, separation, independence of
+ordinates, and GRH for arbitrary Artin or automorphic \(L\)-functions are
+not part of this contract \cite{SourceStatements}.
+
+The upstream README reports successful builds, the axioms
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}, and
+independent checker acceptance. We inspected the visible statement and
+proof connections, pinned versions, and selected source bytes. We did not
+replay that complete build or the independent checker exports. This is a
+source-contract analysis, not a fresh certification of the whole upstream
+development \cite{SourceReadme}. The archive's source manifest and audit
+notes make this boundary explicit.
+
+\subsection{What is transferred from the proof}
+One analytic component of the source starts with nonnegative prime-power
+weights
+\[
+ \lambda_{d,q}(r)=\Lambda(r)\bigl(1-(r/d)\bigr)
+                       \one_{\{r\equiv1\pmod q\}}
+\]
+and a remainder
+\[
+ R_{d,q}(x)=\sum_{r\le x}\lambda_{d,q}(r)
+                 \left(\frac1r-\frac1x\right)
+             -\frac{\log x}{\varphi(q)}-c_{d,q}.
+\]
+A Mellin transform encodes differences of zero multiplicities. A Landau
+positivity argument turns a one-sided bound on this remainder into
+nonvanishing. The difficult arithmetic input compares two estimates of
+the same covolume, keeping track of lattice indices and the dimension of
+a span. The source eventually obtains a bound of the form
+\[
+ m\,\mathrm{totalRemainder}\le f a(\log b)^5,
+ \qquad m\asymp\sqrt{x}.
+\]
+The auxiliary quadratic twist can depend on the height of a candidate
+zero; a single twist uniform over all heights is not asserted
+\cite{SourceCriterion,SourceInequality,SourceOneSided}.
+
+The article develops both the positivity/zero-location side and the
+spanning/matrix-compression side. We follow two precise starting points:
+its finite-field theorem that ranks can miss a symplectic obstruction,
+and its rooted-forest coupling of real zeros. The first becomes an
+all-precision theorem about every Smith invariant. The second becomes a
+complete optimization theorem, including the article's explicitly stated
+largest-displacement question.
+
+\subsection{What is new relative to the supplied article}
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.28\textwidth}>{\raggedright\arraybackslash}p{.28\textwidth}>{\raggedright\arraybackslash}p{.35\textwidth}}
+\toprule
+Starting result & Present extension & Nature of the conclusion\\
+\midrule
+\texttt{spn:thm:lagrangian} and
+\texttt{spn:thm:rank-blind}: finite-field likelihoods and rank distance
+&
+Exact finite-ring likelihood; cancellation for full Smith types;
+complete cokernel law
+&
+Every precision gives exactly the same optimal Smith-based
+testing distance.\\[.7em]
+Finite-field full-matrix obstruction
+&
+Successive kernel pairings; exact precision recursion;
+sharp exponent \(5\)
+&
+The full matrix contains additional information that the entire
+Smith form misses.\\[.7em]
+\texttt{zer:thm:electrical}; open optimal-couplings item
+&
+Unique optimizers for every \(1\le p\le\infty\);
+exact mean-error stability
+&
+The optimal graph and best universal displacement constant
+are explicit for arbitrary input degrees.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The earlier \(2\times2\) \(p\)-adic corner result in the project uses a
+symplectic target plane and a determinant defect. Here the target is
+Lagrangian, the visible size grows, and the comparison concerns every
+invariant factor. The finite-field theorem is credited as a starting
+point rather than claimed anew. The graph result optimizes over free
+topology and nonnegative real edge weights; a prescribed sparse topology
+would be a different problem.
+
+The two core theorems do not require RH. They are mathematical extensions
+of methods developed in the supplied GRH programme. The finite Dirichlet
+zero application uses exactly the Dirichlet GRH input above.
+
+\subsection{Novelty assessment}
+The exact Smith cancellation, its precision law, and the all-\(p\)
+zero-coupling optimization are absent from the inspected article.
+Targeted searches were made for symplectic projections, Smith
+distributions, \(p\)-adic matrix corners, fractional Laplacians, and
+Wasserstein zero coupling. The closest inspected primary literature
+includes random Smith distributions and \(\GL\)-corner laws
+\cite{WangStanley,VanPeski2021,VanPeski2024}, finite-field rank laws
+\cite{FulmanGoldstein}, and optimization of effective resistance
+\cite{GhoshBoydSaberi}. Those classical ingredients are not claimed as new.
+The searches did not locate the combined statements proved here. This
+supports their status as research contributions relative to the supplied
+corpus, but does not establish worldwide publication priority.

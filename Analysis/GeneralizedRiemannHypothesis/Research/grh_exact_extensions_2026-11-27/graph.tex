@@ -1,0 +1,370 @@
+\section{Optimal graph couplings for zero transport}
+\label{sec:graph-minimax}
+
+The final question of the Article's section \texttt{zer:sec:open} asks which
+graph minimizes the largest displacement bound in its electrical zero-transport
+theorem, subject to a conductance budget and prescribed input degrees.
+We solve this optimization, and its analogue for every Wasserstein distance
+$W_p$, $1\le p\le\infty$. The result is unconditional finite-dimensional
+mathematics. Dirichlet GRH supplies an application to finite packets of zero
+ordinates.
+
+\subsection{The optimization problem and its solution}
+
+Fix $n\ge2$, integers $d_1,\ldots,d_n\ge1$, and a budget $W>0$. Put
+\begin{equation}\label{gm:eq:C}
+ N=\sum_{i=1}^n d_i,\qquad d=(d_i)_{i=1}^n,\qquad
+ C=\operatorname{diag}(d_1,\ldots,d_n)-\frac{dd^{\mathsf T}}N.
+\end{equation}
+An admissible graph has these $n$ labelled vertices, conductances
+$w_{ij}=w_{ji}\ge0$, connected positive support, and
+$\sum_{i<j}w_{ij}=W$. Its Laplacian $L$ is positive definite on
+$H=\mathbf1_n^\perp$ and has trace $2W$. The topology is free.
+
+At vertex $i$ place a monic real-rooted polynomial $P_i$ of degree $d_i$.
+Define
+\begin{equation}\label{gm:eq:forest}
+ \mathcal F_G(z)=\sum_{F}
+ \left(\prod_{e\in F}w_e\right)
+ \left(\prod_{i\in\mathcal R(F)}P_i'(z)\right)
+ \left(\prod_{i\notin\mathcal R(F)}P_i(z)\right),
+\end{equation}
+where the sum is over spanning forests with one selected root in each
+component and $\mathcal R(F)$ is the set of selected roots. There are $N-1$
+real zeros $\lambda_1\le\cdots\le\lambda_{N-1}$ of this polynomial, counted
+with multiplicity; a proof is given below. Let
+$\beta_1\le\cdots\le\beta_{N-1}$ be the zeros of
+$(\prod_iP_i)'$. Form the two empirical probability measures with mass
+$1/(N-1)$ at each listed zero. Their one-dimensional Wasserstein distances are
+\begin{align}
+ W_p(\lambda,\beta)&=
+ \left(\frac1{N-1}\sum_{k=1}^{N-1}|\beta_k-\lambda_k|^p\right)^{1/p}
+ &&(1\le p<\infty),\label{gm:eq:Wp}\\
+ W_\infty(\lambda,\beta)&=\max_k|\beta_k-\lambda_k|.\nonumber
+\end{align}
+Write $\mathcal E_p(G)$ for the supremum of this distance over all permitted
+inputs $P_i$. This is a guarantee based only on their degrees, before their
+roots are specified.
+
+\begin{theorem}[Exact minimax graph]\label{gm:thm:main}
+For $1\le p<\infty$, set $r=p/(p+1)$ and $S_r=\operatorname{tr}(C^r)$,
+with the zero eigenvalue contributing zero. The unique optimal graph has
+Laplacian
+\begin{equation}\label{gm:eq:optimalL}
+ L_p=\frac{2W}{S_r}C^r,
+ \qquad
+ \min_G\mathcal E_p(G)=
+ \frac{S_r^{\,1+1/p}}{2W(N-1)^{1/p}}.
+\end{equation}
+For the largest displacement, the unique optimum is
+\begin{align}
+ L_\infty&=\frac{2W}{\operatorname{tr}C}C,
+ &w_{ij}^{(\infty)}&=
+ \frac{W d_i d_j}{\sum_{a<b}d_a d_b},\label{gm:eq:infinity}\\
+ \min_G\mathcal E_\infty(G)&=
+ \frac{\operatorname{tr}C}{2W}
+ =\frac{N^2-\sum_i d_i^2}{2WN}.\nonumber
+\end{align}
+Every optimizer is a complete graph with strictly positive conductances.
+For each fixed admissible graph, placing every input root at one common real
+number attains its supremum. If all input roots are instead required to be
+distinct, the supremum and the unique optimal graph are unchanged.
+\end{theorem}
+
+At $p=1$ the displacement is independent of the input roots, so no supremum
+is needed. For $p>1$ we give an attaining configuration, without claiming that
+it is the only attaining configuration. The normalization by $N-1$ in
+\eqref{gm:eq:Wp} is essential: the perturbation has rank $n-1$, but there are
+$N-1$ output zeros.
+
+\subsection{The compression identity}
+
+We first verify the finite identity behind the Article's electrical theorem.
+List all input roots, repeated with their multiplicities and grouped by
+vertex, as the diagonal entries of a real matrix $\Lambda$ of size $N$.
+Let $V$ be the $N$ by $n$ matrix whose row for a root at vertex $i$ is $e_i^{\mathsf T}$.
+Set
+\begin{equation}\label{gm:eq:compression-data}
+ Q=I_N-\frac{\mathbf1_N\mathbf1_N^{\mathsf T}}N,\quad
+ \mathcal V=\mathbf1_N^\perp,\quad
+ A=(Q\Lambda Q)|_{\mathcal V},\quad
+ B=(QVL^+V^{\mathsf T}Q)|_{\mathcal V},
+\end{equation}
+where $L^+$ is the Moore--Penrose inverse.
+
+\begin{lemma}[Forest compression]\label{gm:lem:compression}
+If $\tau(G)$ is the sum of the conductance products of spanning trees, then
+\[
+ \mathcal F_G(z)=N\tau(G)\det_{\mathcal V}(zI-A+B),\qquad
+ \left(\prod_iP_i(z)\right)'=N\det_{\mathcal V}(zI-A).
+\]
+Moreover, $B$ is positive semidefinite of rank $n-1$, and its nonzero
+eigenvalues are the eigenvalues on $H$ of
+\begin{equation}\label{gm:eq:reducedB}
+ T_L=C^{1/2}(L|_H)^{-1}C^{1/2}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The matrix-tree theorem, applied after adding one extra vertex with edge
+weights $x_i$ to the original vertices, gives the rooted-forest identity
+\[
+ \det(L+\operatorname{diag}(x_i))
+ =\sum_F\left(\prod_{e\in F}w_e\right)
+              \prod_{i\in\mathcal R(F)}x_i.
+\]
+Off the input roots, put $x_i=P_i'/P_i$ and multiply by
+$P=\prod_iP_i$. Since
+$V^{\mathsf T}(zI-\Lambda)^{-1}V=\operatorname{diag}(P_i'/P_i)$,
+the Schur determinant formula gives
+\[
+ \mathcal F_G(z)=
+ \det\begin{pmatrix}zI_N-\Lambda&V\\-V^{\mathsf T}&L\end{pmatrix}.
+\]
+Both sides are polynomials, so this identity holds everywhere.
+
+Diagonalize $L$ in a basis beginning with
+$u=\mathbf1_n/\sqrt n$ and eliminate its positive eigenvalue block.
+The product of those eigenvalues is $n\tau(G)$, leaving the bordered
+determinant with upper block
+$zI_N-\Lambda+VL^+V^{\mathsf T}$ and border
+$Vu=\mathbf1_N/\sqrt n$. For any nonzero real vector $b$ and any square
+matrix $M$,
+\[
+ \det\begin{pmatrix}M&b\\-b^{\mathsf T}&0\end{pmatrix}
+ =\|b\|^2\det_{b^\perp}(P_{b^\perp}M|_{b^\perp});
+\]
+expansion in an orthonormal basis ending with $b/\|b\|$ proves this.
+Here $\|Vu\|^2=N/n$, proving the first identity.
+The second follows from the cofactor identity
+\[
+ \det_{\mathcal V}(zI-A)
+ =P(z)\frac1N\mathbf1_N^{\mathsf T}(zI-\Lambda)^{-1}\mathbf1_N
+ =\frac{P'(z)}N.
+\]
+
+Finally, $V^{\mathsf T}QV=C$. The equal nonzero spectra of
+$XX^{\mathsf T}$ and $X^{\mathsf T}X$, with
+$X=QV(L^+)^{1/2}$, identify the positive spectrum of $B$ with that of
+$T_L$. The quadratic identity
+\[
+ y^{\mathsf T}Cy=\frac1N\sum_{i<j}d_id_j(y_i-y_j)^2
+\]
+shows that $C$ is positive definite on $H$, proving the rank claim.
+\end{proof}
+
+In particular the output roots are real. Min--max gives
+$\lambda_k\le\beta_k$ for all $k$.
+
+\subsection{An exact worst-case envelope}
+
+The eigenvalue perturbation inequality used next is classical Lidskii
+majorization; see, for example, \cite[Theorem~2.1]{argentati2008}.
+We include a proof of the specific convex-cost form required here.
+
+\begin{lemma}[Convex displacement bound]\label{gm:lem:convex}
+Let $A$ be real symmetric and $B\succeq0$ of the same size $m$.
+Write ordered eigenvalues increasingly and let
+$\Delta_k=\lambda_k(A)-\lambda_k(A-B)\ge0$.
+For every continuous convex $\phi:[0,\infty)\to\mathbb R$,
+\[
+ \sum_{k=1}^m\phi(\Delta_k)\le\operatorname{tr}\phi(B).
+\]
+Equality holds for $A=cI$; for $\phi(t)=t$ it holds for every $A$.
+\end{lemma}
+
+\begin{proof}
+First suppose $A$ has simple spectrum. The discriminant of the characteristic
+polynomial of $A-tB$ is a polynomial in $t$ that is nonzero at zero, so only
+finitely many $t\in[0,1]$ have repeated eigenvalues. At the other points,
+\[
+ -\lambda_k'(t)=u_k(t)^{\mathsf T}Bu_k(t)=b_k(t)\ge0
+\]
+for an orthonormal eigenbasis $u_k(t)$. The ordered eigenvalues are Lipschitz,
+so $\Delta_k=\int_0^1b_k(t)\,dt$. Jensen's inequality gives
+$\phi(\Delta_k)\le\int_0^1\phi(b_k(t))\,dt$.
+In a $B$-eigenbasis, each $b_k(t)$ is a convex combination of its eigenvalues,
+with weights equal to squared entries of an orthogonal matrix. A second
+application of Jensen, summed over $k$, gives
+$\sum_k\phi(b_k(t))\le\operatorname{tr}\phi(B)$.
+Integrate. Approximation by matrices with simple spectrum proves the general
+case. The two equality assertions follow directly from the spectra or the
+trace identity.
+\end{proof}
+
+Apply this lemma with $\phi(t)=t^p$, and apply min--max for $p=\infty$.
+The choice $P_i(z)=(z-c)^{d_i}$ makes $A=cI$ and attains the bound.
+Together with Lemma~\ref{gm:lem:compression}, this proves the exact identities
+\begin{equation}\label{gm:eq:exact-objective}
+ \mathcal E_p(G)^p=\frac{\operatorname{tr}_H(T_L^p)}{N-1}
+ \quad(1\le p<\infty),\qquad
+ \mathcal E_\infty(G)=\|T_L\|.
+\end{equation}
+Arbitrarily small distinct perturbations of a common root give the same
+supremum under the distinct-root restriction, by continuity of eigenvalues.
+
+\subsection{Optimization, uniqueness, and graph feasibility}
+
+\begin{proof}[Proof of Theorem~\ref{gm:thm:main}]
+Work on $H$ in an orthonormal $C$-eigenbasis, with eigenvalues
+$c_1,\ldots,c_{n-1}>0$. Put $\ell_i=L_{ii}>0$, so
+$\sum_i\ell_i=2W$. For finite $p\ge1$, spectral Jensen and Cauchy--Schwarz give
+\begin{align*}
+ \operatorname{tr}(T_L^p)
+ &\ge\sum_i ((T_L)_{ii})^p
+ =\sum_i\bigl(c_i(L^{-1})_{ii}\bigr)^p
+ \ge\sum_i(c_i/\ell_i)^p\\
+ &\ge\frac{(\sum_i c_i^{p/(p+1)})^{p+1}}{(2W)^p}.
+\end{align*}
+Here $(L^{-1})_{ii}\ell_i\ge1$ is Cauchy--Schwarz for
+$L^{1/2}e_i$ and $L^{-1/2}e_i$; equality forces $e_i$ to be an
+$L$-eigenvector. The last inequality is the scalar constrained minimum of
+$\sum_i c_i^p\ell_i^{-p}$, a strictly convex function: its unique minimizer is
+$\ell_i=2Wc_i^{p/(p+1)}/S_r$.
+Equality throughout therefore forces $L=(2W/S_r)C^r$.
+This argument includes $p=1$: its first inequality is equality, but the inverse
+diagonal inequality still forces diagonality and the scalar minimum is still
+unique.
+
+For $p=\infty$, let $t=\|T_L\|$. The inequality $T_L\preceq tI$
+is equivalent to $C\preceq tL$. Thus
+$t\ge\operatorname{tr}C/(2W)$. At equality $tL-C$ is positive semidefinite
+with zero trace and is zero, giving the unique candidate in
+\eqref{gm:eq:infinity}.
+
+These lower bounds hold for all positive definite $L|_H$ of the prescribed
+trace, even without the sign restrictions of a graph Laplacian. It remains
+to verify that the candidates are graphs. For $0<r<1$, the scalar beta
+integral and spectral calculus give
+\[
+ C^r=\frac{\sin(\pi r)}\pi\int_0^\infty
+ t^{r-1}C(C+tI)^{-1}\,dt.
+\]
+This matrix annihilates $\mathbf1_n$. For $i\ne j$, the rank-one inverse
+formula applied to $C+tI=\operatorname{diag}(d_i+t)-dd^{\mathsf T}/N$ gives
+\[
+ ((C+tI)^{-1})_{ij}=
+ \frac{[d_i/(t+d_i)][d_j/(t+d_j)]}
+ {t\sum_\ell d_\ell/(t+d_\ell)}>0.
+\]
+Consequently
+\begin{equation}\label{gm:eq:edge-integral}
+ -(C^r)_{ij}=\frac{\sin(\pi r)}\pi
+ \int_0^\infty
+ \frac{t^{r-1}d_id_j}
+ {(t+d_i)(t+d_j)\sum_\ell d_\ell/(t+d_\ell)}\,dt>0.
+\end{equation}
+The integrand is $O(t^{r-1})$ at zero and $O(t^{r-2})$ at infinity.
+Thus $C^r$ has strictly negative off-diagonal entries and is a connected
+complete-graph Laplacian. At $r=1$ this follows from
+$C_{ij}=-d_id_j/N$. Scaling gives trace $2W$ and the required budget.
+Equation~\eqref{gm:eq:exact-objective} now gives the stated minima.
+\end{proof}
+
+Fractional powers of graph Laplacians are established objects;
+\cite[Theorem~3.1]{benzi2022} gives a general preservation theorem.
+Formula~\eqref{gm:eq:edge-integral} proves feasibility here directly and
+provides an explicit positive integral for every optimal edge weight.
+
+\begin{corollary}[Dependence on the displacement cost]\label{gm:cor:different}
+If $n\ge3$, two distinct exponents $p\in[1,\infty]$ yield the same optimal
+graph exactly when $d_1=\cdots=d_n$. In that case every optimal edge has
+conductance $2W/[n(n-1)]$. For $n=2$ all exponents give the sole available
+edge, of conductance $W$.
+\end{corollary}
+
+\begin{proof}
+Equality of two normalized powers of $C$ with different exponents forces all
+its positive eigenvalues to coincide. Thus $C=c(I_n-\mathbf1_n\mathbf1_n^{\mathsf T}/n)$.
+Its off-diagonal entries imply that all products $d_id_j$ for $i\ne j$ are
+equal; for $n\ge3$ this is equivalent to equal degrees. The converse and the
+two-vertex case follow immediately.
+\end{proof}
+
+\subsection{An exact certificate for near-optimal mean transport}
+
+\begin{proposition}[Mean-error gap and stability]\label{gm:prop:stability}
+Let $L_*=L_1$, let $L$ be any admissible Laplacian, and set
+$\Delta=L-L_*$ and $\delta=\mathcal E_1(L)/\mathcal E_1(L_*)-1$.
+Then
+\begin{equation}\label{gm:eq:gap}
+ \delta=\frac1{2W}\operatorname{tr}(\Delta L^+\Delta),\qquad
+ \|L-L_*\|_{\mathrm F}\le2W\sqrt\delta.
+\end{equation}
+For $n\ge3$, the exponent $1/2$ cannot be improved in a local bound uniform
+over admissible Laplacians.
+\end{proposition}
+
+\begin{proof}
+All inverses in this proof act on $H$. Write
+$\alpha=2W/\operatorname{tr}\sqrt C$, so $C=L_*^2/\alpha^2$.
+The exact resolvent identity is
+\[
+ L^{-1}=L_*^{-1}-L_*^{-1}\Delta L_*^{-1}
+       +L_*^{-1}\Delta L^{-1}\Delta L_*^{-1}.
+\]
+Multiply by $C$ and take traces. Since $\operatorname{tr}\Delta=0$,
+\[
+ \operatorname{tr}(CL^{-1})-\operatorname{tr}(CL_*^{-1})
+ =\alpha^{-2}\operatorname{tr}(\Delta L^{-1}\Delta),\qquad
+ \operatorname{tr}(CL_*^{-1})=2W/\alpha^2.
+\]
+Equation~\eqref{gm:eq:exact-objective} proves the first claim.
+Since $\lambda_{\max}(L)\le\operatorname{tr}L=2W$, the trace on the
+right is at least $\|\Delta\|_{\mathrm F}^2/(2W)$.
+For sharpness of the exponent, exchange a small amount of conductance
+between two edges of the strictly positive optimal complete graph. This is
+$L(t)=L_*+tK$ for nonzero symmetric $K$ with $K\mathbf1_n=0$
+and $\operatorname{tr}K=0$. The exact formula gives
+$\delta(t)=t^2\operatorname{tr}(K L_*^+K)/(2W)+O(t^3)$ with positive
+quadratic coefficient, whereas $\|L(t)-L_*\|_{\mathrm F}=|t|\|K\|_{\mathrm F}$.
+\end{proof}
+
+\subsection{Unequal degrees: average and worst displacement disagree}
+
+Take $(d_1,d_2,d_3)=(1,1,2)$ and $W=1$. The positive eigenvalues of $C$
+are $1$ and $3/2$, with eigenvectors $(1,-1,0)$ and $(1,1,-2)$.
+For $r=p/(p+1)$ and $s=(3/2)^r$, formula~\eqref{gm:eq:optimalL} gives
+\[
+ w_{12}=\frac{3-s}{3(1+s)},\qquad
+ w_{13}=w_{23}=\frac{2s}{3(1+s)}.
+\]
+At $p=\infty$ these are $(1/5,2/5,2/5)$ and the optimal maximum
+displacement is $5/4$. At $p=1$, $s=\sqrt6/2$, the edges are
+\[
+ \left(-3+\frac{4\sqrt6}3,\quad
+ 2-\frac{2\sqrt6}3,\quad 2-\frac{2\sqrt6}3\right),
+\]
+and the optimal mean displacement is $(5+2\sqrt6)/12$.
+The graph optimal for the maximum has mean $5/6$, strictly larger than
+$(5+2\sqrt6)/12$; the graph optimal for the mean has maximum
+$(3+\sqrt6)/4$, strictly larger than $5/4$.
+
+For the attaining inputs $(P_1,P_2,P_3)=(z,z,z^2)$ and conductances
+$(w_{12},w_{13},w_{23})=(x,y,y)$, direct expansion gives
+\[
+ \mathcal F_G(z)=2z+(4x+6y)z^2+4(2xy+y^2)z^3.
+\]
+At the maximum-optimal graph this factors as
+$\frac{32}{25}z(z+\frac54)^2$, whereas $(P_1P_2P_3)'=4z^3$.
+At the mean-optimal graph the displacement multiset is
+$\{0,(1+s)/2,s(1+s)/2\}$.
+
+The supplied verifier checks these identities symbolically, an exact
+noncollapsed forest/compression example, and the stability certificate.
+Its numerical diagnostics also check $75$ optimal configurations,
+$750$ competing graphs and $150$ checks comparing noncollapsed inputs
+with the collapsed extremizer. Those diagnostics check implementation and constants;
+the theorem rests on the proof above.
+
+\subsection{Application to finite Dirichlet-zero packets}
+
+Under the Dirichlet GRH theorem in the vendored development, the phase-normalized
+completed primitive Dirichlet $L$-functions have real ordinate zeros. Select a
+finite packet of $d_i$ such zeros at vertex $i$, preserving the selected
+multiplicities, and make $P_i$ their monic root polynomial. Theorem~\ref{gm:thm:main}
+gives the best uniform guarantee based only on the packet sizes and budget.
+It allows shared zeros, multiple zeros and arbitrary spacings.
+A particular arithmetic packet may admit a smaller error and a different
+optimal graph; the common-root extremizer need not occur for Dirichlet
+functions. No optimum for an entire infinite zero set is inferred.

@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\mathrm d}
+\title{Which observation times determine a circle jump measure?\\
+\large A single-time inverse theorem for Dirichlet Li coefficients}
+\author{}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a circle jump measure with integral multiplicities and a canonically
+convergent drift, a single time slice of the convolution semigroup
+determines the measure for every such input precisely when $(\pi/t)^2$ is
+irrational. At any time two indistinguishable measures can differ only
+on a finite cyclic subgroup. For primitive Dirichlet $L$-functions, every
+positive time is determining. Using Dirichlet GRH, we prove that the
+complex Fourier multipliers $e^{-t\lambda(n)}$ distinguish all finite
+products of primitive factors with multiplicity. Distinct products give a
+fixed discrepancy in ratios of three consecutive multipliers in every
+sufficiently long block. The proof uses almost periodic Fourier series,
+quadratic Gauss sums and a two-step shift of completed $L$-functions.
+\end{abstract}
+
+\section{The observation and its arithmetic application}
+
+Write $\T=\{z\in\C:|z|=1\}$. An admissible multiset $E$ in
+$\T\setminus\{1\}$ has positive integral multiplicities $m_E(z)$ and satisfies
+\begin{equation}
+ \sum_{z\in E}m_E(z)|1-z|^2<\infty,\qquad
+ \lim_{\epsilon\downarrow0}
+ \sum_{\substack{z\in E\\|1-z|\ge\epsilon}}m_E(z)\operatorname{Im}z
+ \quad\text{exists}. \label{ad}
+\end{equation}
+Sums over $z\in E$ range over distinct points. The first condition makes
+each cutoff finite. Define, for $n\in\Z$,
+\begin{equation}
+ \lambda_E(n)=\lim_{\epsilon\downarrow0}
+ \sum_{\substack{z\in E\\|1-z|\ge\epsilon}}m_E(z)(1-z^n),
+ \qquad H_{E,t}(n)=e^{-t\lambda_E(n)}. \label{obs}
+\end{equation}
+The limit exists because $1-z^n+in\operatorname{Im} z=O_n(|1-z|^2)$
+near $1$. We have $H_{E,t}(0)=1$ and $H_{E,t}(-n)=\overline{H_{E,t}(n)}$.
+Each cutoff defines a compound Poisson probability law on $\T$ with these
+truncated Fourier multipliers, in the convention
+$\widehat\mu(n)=\int z^n\,\dd\mu(z)$. Compactness of probability measures
+on $\T$ and uniqueness of Fourier coefficients give a limiting law with
+multipliers \eqref{obs}. The limit fixes the drift from the atoms. A time
+slice means this entire law, or equivalently its frequency-labelled
+coefficients at a single time.
+
+\begin{theorem}[Determining times]\label{main}
+Fix $t>0$. If $H_{E,t}=H_{F,t}$, then $E$ and $F$ agree with
+multiplicity outside the roots of unity of some common finite order.
+The map $E\mapsto H_{E,t}$ on admissible multisets is injective if and
+only if $(\pi/t)^2\notin\Q$. At every exceptional time an
+indistinguishable pair can be obtained by finite additions to any common
+admissible multiset.
+\end{theorem}
+
+The zero-location theorem of the pinned Lean development \cite{vendor}
+places each nontrivial zero $\rho$ of a primitive Dirichlet $L$-function
+on $\operatorname{Re}s=1/2$. Its Cayley point $z=1-1/\rho$ therefore belongs
+to $\T\setminus\{1\}$, with $z=-1$ for a central zero. The cutoff
+$|1-z|\ge\epsilon$ means precisely $|\rho|\le1/\epsilon$.
+The classical zero count gives $\sum_\rho|\rho|^{-2}<\infty$.
+Starred convergence of the complex Li zero sum gives the second condition
+of \eqref{ad} and identifies \eqref{obs} with the complex Li coefficients
+in that convention \cite{lagarias}. For a finite product $P$ of primitive
+Dirichlet $L$-functions, including the empty product, take the multiset
+union $E_P$ and write $H_{P,t}=H_{E_P,t}$. The primitive conductor-one
+factor is $\zeta$. The circle law in the merged article \cite{article}
+uses $\operatorname{Re}\lambda(n)$ and thus symmetrizes the Cayley
+points. The complex coefficients here retain the signs of the ordinates.
+
+\begin{theorem}[Rigidity for primitive products]\label{rigid}
+For any $t>0$, if $H_{P,t}(n)/H_{Q,t}(n)$ tends to a finite nonzero
+complex limit as $n\to+\infty$, then $P,Q$ have the same primitive
+factors with multiplicity, and the limit equals $1$. More precisely, put
+\[
+ C_{P,t}(n)=\frac{H_{P,t}(n+1)H_{P,t}(n-1)}{H_{P,t}(n)^2}.
+\]
+For distinct factor multisets there are $\eta>0$ and an integer $L\ge1$
+such that every block of $L$ consecutive positive integers contains an
+$n$ with $|C_{P,t}(n)/C_{Q,t}(n)-1|>\eta$.
+\end{theorem}
+
+At $t=\pi$, a single atom at $i$ and one at $-i$ give the same circle law
+since $i^n-(-i)^n\in2i\Z$ for all $n$. At the same time every primitive
+Dirichlet product is determined among all such products of arbitrary
+degree and conductor. The discrepancy and the block length may depend
+on both products and on $t$.
+
+\paragraph{What the symmetric law determines.}
+Write $\overline P$ for the product with every character conjugated.
+Its Cayley multiset is the complex conjugate of $E_P$, so
+$|H_{P,t}|^2=H_{P\overline P,t}$. Theorem~\ref{rigid} shows that even a
+finite nonzero limiting ratio $|H_{P,t}(n)|/|H_{Q,t}(n)|$ determines
+equality of the total multiplicities in each character conjugacy orbit.
+Conversely those totals determine the symmetric law. For a product the
+ambiguity is precisely independent conjugation of individual factors,
+allowing permutation. For a single primitive character the original
+circle kernel in \cite{article}, at any one time $t>0$, therefore
+determines the character up to complex conjugation. Retaining the
+complex phases of the positive-frequency multipliers distinguishes the
+two orientations whenever the character is nonreal, by Theorem~\ref{rigid}.
+
+\section{From infinitely many angles to finite torsion}
+
+Set $\Delta^2h(n)=h(n+1)-2h(n)+h(n-1)$ and
+$D(n)=\lambda_E(n)-\lambda_F(n)$. Direct calculation at finite cutoffs
+gives, on passing to the limit,
+\begin{equation}
+ u(n):=\Delta^2D(n)=\int_{\T}z^n\,\dd\tau(z),\qquad
+ \tau=\sum_z |1-z|^2\big(m_E(z)-m_F(z)\big)\delta_z . \label{diff}
+\end{equation}
+The measure has finite total variation. Thus $u$ is a uniform limit of finite
+trigonometric sums on $\Z$.
+
+\begin{lemma}\label{per}
+For each $\delta>0$ the shifts $h\in\Z$ with
+$\sup_n|u(n+h)-u(n)|<\delta$ have bounded gaps. If $e^{-tu(n)}=1$
+for all $n$, $\tau$ is supported on a finite cyclic subgroup of $\T$.
+If $e^{-tu(n)}$ differs from $1$ somewhere, its distance from $1$ exceeds
+a positive constant somewhere in every sufficiently long block.
+\end{lemma}
+\begin{proof}
+Approximate $u$ within $\delta/4$ by finitely many terms $\sum_j b_jz_j^n$.
+In the compact closure of the orbit $(z_1^h,\ldots,z_m^h)$ take an identity
+neighborhood on which $\sum_j|b_j|\,|z_j^h-1|<\delta/2$.
+Finitely many translates by orbit elements cover the closure. Subtracting
+their finitely many indices from any integer $k$ gives at least one
+return, at bounded distance from $k$. Every return is a $\delta$-almost period.
+
+When $e^{-tu}=1$, the values of $u$ belong to $\beta\Z$ for
+$\beta=2\pi i/t$. A positive $|\beta|/2$-almost period $q$ is an exact
+period. All Fourier coefficients of $(z^q-1)\tau$ then vanish. By density
+of Laurent polynomials this measure is zero, giving the asserted support.
+For the last assertion, the exponential is uniformly continuous on the
+bounded closure of the range of $u$. Sufficiently accurate almost periods
+translate any fixed discrepancy to a relatively dense set on which a
+positive discrepancy persists.
+\end{proof}
+
+\section{The exceptional times}
+
+\begin{proof}[Proof of Theorem~\ref{main}]
+When two observations agree, $D(n)\in\beta\Z$ and hence $u(n)\in\beta\Z$.
+By Lemma~\ref{per} and $|1-z|^2>0$ for $z\ne1$, the multiplicities can
+differ only at $q$th roots of unity for some $q$. The finite modifications
+now give the entire difference without any residual linear term,
+\[
+ D(n)=\sum_{j=1}^{q-1}b_j(1-\zeta_q^{jn}),\qquad
+ b_j\in\Z,\quad \zeta_q=e^{2\pi i/q}.
+\]
+If $D$ is zero, \eqref{diff} and Fourier uniqueness imply $E=F$.
+Otherwise $D(n_0)=m\beta$ with $m\ne0$, placing $\beta$ in
+$K=\Q(\zeta_q)$. Every automorphism $\sigma_a:\zeta_q\mapsto\zeta_q^a$
+satisfies $\sigma_a D(n)=D(an)$, so $\sigma_a(\beta)/\beta$ is a
+nonzero rational. These ratios form the image of a homomorphism from a
+finite group to $\Q^\times$ since each ratio is rational. They all equal
+$\pm1$, so $\beta^2\in\Q$. This proves necessity for a collision.
+
+Conversely, if $\beta^2\in\Q$, the imaginary quadratic field
+$\Q(\beta)$ has fundamental discriminant $d<0$ and
+$\beta/\sqrt d\in\Q^\times$ since both elements have trace zero. Take
+the primitive odd quadratic character $\chi_d$ modulo $q=|d|$ associated
+to this field \cite{conrad}. Its additive Fourier transform is
+\[
+ G(n)=\sum_{j\bmod q}\chi_d(j)\zeta_q^{jn}
+     =\chi_d(n)G(1),\qquad G(1)^2=-q=d .
+\]
+Indeed a change of variable proves the transform formula for unit $n$.
+When $g=(n,q)>1$, multiplication by every element of the kernel of
+reduction from units modulo $q$ to units modulo $q/g$ fixes the additive
+character. Primitivity gives a kernel element on which $\chi_d$ is
+nontrivial, forcing $G(n)=0$. Finite Parseval gives $|G(1)|^2=q$,
+and oddness gives $\overline{G(1)}=-G(1)$.
+
+Take a positive integer $c$ with $cG(1)/\beta\in\Z$. To one multiset
+add the positive part of $c\chi_d(j)$ at each $\zeta_q^j$, and to the
+other add its negative part in absolute value. Neither addition charges
+$1$. Their difference gives $D(n)=-cG(n)\in\beta\Z$ since
+$\sum_j\chi_d(j)=0$. These distinct multisets have identical
+observations. Any common admissible background can be added.
+\end{proof}
+
+\section{Why primitive Euler products have no exceptional times}
+
+\begin{lemma}\label{finite}
+If the nontrivial zero multisets of two finite primitive Dirichlet
+products $P,Q$ differ in finitely many zeros counted with multiplicity,
+the primitive factor multisets agree.
+\end{lemma}
+\begin{proof}
+For conductor $q$ and parity $a\in\{0,1\}$, complete $L(s,\chi)$ as
+$(q/\pi)^{(s+a)/2}\Gamma((s+a)/2)L(s,\chi)$, multiplied by $s(s-1)$
+for the conductor-one factor. Each is entire of order at most one with
+zero divisor exactly the nontrivial zeros \cite{lagarias}.
+Let $\Xi_P,\Xi_Q$ be their products. Hadamard factorization gives
+\[
+ \frac{\Xi_P(s)}{\Xi_Q(s)}=e^{a_0+b_0s} R(s)
+\]
+with $R$ a nonzero rational function, since the common genus-one
+canonical factors cancel. Divide the relation at $s+2$ by its value at
+$s$. Every gamma argument shifts by one, giving the rational ratio
+$\Gamma(w+1)/\Gamma(w)=w$. All completion factors have rational shift
+quotients up to nonzero constants. It follows that for $F=P/Q$, the
+function $F(s+2)/F(s)$ is rational.
+
+Along the positive real axis $L(\sigma,\chi)=1+O(2^{-\sigma})$,
+by bounding $\sum_{n\ge2} n^{-\sigma}$. Thus $F(\sigma)$ and
+$F(\sigma+2)/F(\sigma)$ equal $1+O(2^{-\sigma})$. A nonzero rational
+function cannot decay exponentially at positive infinity, by its
+leading Laurent term. Therefore $F(s+2)/F(s)=1$ identically. Iterating
+the period along the real axis gives $F(\sigma)=1$ for every $\sigma>1$,
+hence $P=Q$ by continuation.
+
+Take a common multiple $M$ of all conductors. Uniqueness of Dirichlet
+series at the prime coefficient $p\nmid M$ gives
+$\sum_{\chi\in P}\chi(p)=\sum_{\psi\in Q}\psi(p)$.
+Each reduced residue class modulo $M$ contains a prime, so these
+character sums agree on $(\Z/M\Z)^\times$. Character orthogonality
+recovers their multiplicities. Every induced character has a unique
+primitive antecedent, which recovers all the given factors.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{rigid}]
+Take $E=E_P$ and $F=E_Q$. Then $C_{P,t}/C_{Q,t}=e^{-tu}$.
+If this equals $1$ identically, Lemma~\ref{per} localizes the Cayley
+multiplicity difference to finitely many points. The inverse
+$\rho=1/(1-z)$ gives a finite difference of nontrivial zero divisors.
+Lemma~\ref{finite} gives equality of all primitive factors. For
+unequal products, Lemma~\ref{per} now yields the recurrent separation.
+A nonzero limit of the multiplier ratio would force the ratio of the
+three consecutive multipliers to tend to $1$, contrary to that
+separation. Equal primitive products give ratio $1$.
+\end{proof}
+
+\paragraph{Relation to earlier work.}
+Lagarias establishes starred convergence and asymptotics for automorphic
+Li coefficients \cite{lagarias}. The merged article develops almost
+periodic second differences to distinguish unexponentiated Li sequences
+and constructs circle kernels from their real parts \cite{article}.
+Nickl and S\"ohl obtain identifiability for a finite-activity circle
+model under an intensity bound allowing a single logarithm branch
+\cite{nickl}. Godsil and Zhang characterize square-root spectra of
+finite periodic oriented and signed Cayley graphs \cite{godsil}.
+Here equality of exponentiated data for possibly infinite integral
+multisets forces the ambiguity onto one finite cyclic group. Quadratic
+Gauss sums give all exceptional times, and the primitive Euler product
+eliminates them. The scalar heat trace sums over frequencies and supplies
+a different inverse question.
+
+\begin{thebibliography}{9}\small
+\bibitem{article} \emph{Beyond the Riemann hypothesis for Dirichlet
+$L$-functions: consequences, transfers and limits}, section on Li
+coefficients, moment pencils and positivity certificates.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b6253012cf30c80a989c871906e097a27f23a27c/Analysis/GeneralizedRiemannHypothesis/Article/sections/li.tex}{Pinned article source}.
+\bibitem{vendor} \emph{The generalized Riemann hypothesis for Dirichlet
+$L$-functions, in Lean 4}, readable edition, upstream revision
+\texttt{72fead102f66}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b6253012cf30c80a989c871906e097a27f23a27c/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/grh/src/Main.lean}{Vendored theorem declarations}.
+\bibitem{lagarias} J.~C.~Lagarias, Li coefficients for automorphic
+$L$-functions, \emph{Ann. Inst. Fourier} \textbf{57} (2007), 1689--1740.
+\href{https://doi.org/10.5802/aif.2311}{doi:10.5802/aif.2311}.
+\bibitem{conrad} B.~Conrad, \emph{Quadratic characters associated to
+quadratic fields}, Stanford Math 248A.
+\href{https://math.stanford.edu/~conrad/248APage/handouts/quadchar.pdf}{Author's notes}.
+\bibitem{nickl} R.~Nickl and J.~S\"ohl, Bernstein--von Mises theorems for
+statistical inverse problems II: compound Poisson processes,
+\emph{Electron. J. Statist.} \textbf{13} (2019), 3513--3571.
+\href{https://doi.org/10.1214/19-EJS1609}{doi:10.1214/19-EJS1609}.
+\bibitem{godsil} C.~Godsil and X.~Zhang, Oriented or signed Cayley graphs
+with all eigenvalues integer multiples of $\sqrt\Delta$.
+\href{https://arxiv.org/abs/2405.14140}{arXiv:2405.14140}.
+\end{thebibliography}
+\end{document}
