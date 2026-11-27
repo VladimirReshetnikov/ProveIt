@@ -110,9 +110,7 @@ private theorem cancel_common (x y z : PTm n) (hz : Γ ⊢[PRAAx] GaussianRation
     Γ ⊢[PRAAx] qsub (qsub x y) (qsub x z) ≐ qsub z y := by
   have negs : Γ ⊢[PRAAx] qsub (qnegative y) (qnegative z) ≐ qsub z y :=
     (qadd_congr (.eqRefl _) (GaussianDeterminantSignTransport.negative_involution z hz)).eqTrans (qadd_commutative _ _)
-  exact (GaussianNameArithmetic.sum_difference x x (qnegative y) (qnegative z)).eqTrans
-    ((qadd_congr (GaussianCoefficientNormOrder.qsub_self x) negs).eqTrans
-      (qzero_add _ (GaussianRationalMetric.qsub_canonical _ _)))
+  exact (GaussianNameArithmetic.sum_difference_cancel_left x (qnegative y) (qnegative z)).eqTrans negs
 
 private theorem raw_telescope (p a b N Q : PTm n) :
     Γ ⊢[PRAAx] meshTarget a b Q N ≐
