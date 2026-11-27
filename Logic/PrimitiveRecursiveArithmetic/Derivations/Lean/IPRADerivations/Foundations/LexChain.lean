@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.LexPotential
 import IPRADerivations.Core.SumLemmas
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # The controlled lexicographic chain bound (`ipra_resources_and_elimination_2026-11-15`, `thm:controlled-lex`)
@@ -88,12 +89,12 @@ theorem potential_chain
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift L') ⟶
       le (G h (co w (var 0) (Syn.shift y)) (Syn.shift x) (Syn.shift s + var 0))
         (G h (co w zero (Syn.shift y)) (Syn.shift x) (Syn.shift s + zero))) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_G, subst_inst2, PTm.subst_add, Syn.subst_var,
+  refine qfIndAllUpTo L' (le_QF _ _) ?_ ?_
+  · simp only [subst_le, subst_G, subst_inst2, PTm.subst_add, Syn.subst_var,
       Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-    exact .impI (le_refl _)
-  · simp only [Fm.subst_imp, subst_le, subst_G, subst_inst2, PTm.subst_add, Syn.subst_var,
-      Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+    exact le_refl _
+  · simp only [subst_le, subst_G, subst_inst2, PTm.subst_add, Syn.subst_var,
+      Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero]
     refine .impI ?_
     exact le_congr (G_congr_t h _ _ (add_succ _ _).eqSymm) (.eqRefl _)
       (le_trans
@@ -101,7 +102,7 @@ theorem potential_chain
           (c' := co w (succ (var 0)) (Syn.shift y)) (x := Syn.shift x)
           (t := Syn.shift s + var 0) (.impE hdesc.allOpen.wk.wk Prf.hyp0)
           (fun j => .impE (henv j).allOpen.wk.wk Prf.hyp0))
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)))
+        Prf.hyp1)
 
 /-- `thm:controlled-lex`: a controlled strictly descending chain with `L' + 1` members starting
 at time `s` satisfies `s + L' + 1 ≤ F_d(x, s)`. -/

@@ -4,6 +4,7 @@ import IPRADerivations.AnalyticNumberTheory.Valuation
 import IPRADerivations.Core.SumReflect
 import IPRADerivations.Core.MultiSums
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Induction with a shifting parameter
@@ -186,24 +187,10 @@ theorem sh_all
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift M) ⟶
       (allB (shB L R) (succ (monus (Syn.shift M) (var 0)))
         (pairT (var 0) (pairT (Syn.shift b) (Syn.shift x))) ≐ one)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-  · have e : (le (var 0) (Syn.shift M) ⟶
-          (allB (shB L R) (succ (monus (Syn.shift M) (var 0)))
-            (pairT (var 0) (pairT (Syn.shift b) (Syn.shift x))) ≐ one)).subst (Syn.inst zero) =
-        (le zero M ⟶ (allB (shB L R) (succ (monus M zero)) (pairT zero (pairT b x)) ≐ one)) := by
-      simp
-    rw [e]
-    exact .impI (sh_base hbase _ b x)
-  · have e : (le (var 0) (Syn.shift M) ⟶
-          (allB (shB L R) (succ (monus (Syn.shift M) (var 0)))
-            (pairT (var 0) (pairT (Syn.shift b) (Syn.shift x))) ≐ one)).subst
-          (Syn.repl (succ (var 0))) =
-        (le (succ (var 0)) (Syn.shift M) ⟶
-          (allB (shB L R) (succ (monus (Syn.shift M) (succ (var 0))))
-            (pairT (succ (var 0)) (pairT (Syn.shift b) (Syn.shift x))) ≐ one)) := by
-      simp
-    rw [e]
-    exact .impI (sh_guard hstep Prf.hyp0 Prf.hyp1)
+  refine qfIndAllUpTo M trivial ?_ ?_
+  · simpa using sh_base (Γ := Γ) hbase (succ (monus M zero)) b x
+  · simp
+    exact .impI (sh_step hstep Prf.hyp0 Prf.hyp1)
 
 /-- Induction with a shifting parameter: the step may use the hypothesis at `b` and at `b + 1`. -/
 theorem shifted_induction

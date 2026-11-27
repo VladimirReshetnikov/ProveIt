@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.LeastBoundedWitness
 import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # The finite rise alternative
@@ -68,13 +69,13 @@ theorem rise_guard {k x N : PTm n} (hkN : Γ ⊢[PRAAx] le (succ k) N)
 theorem rise_all {N x : PTm n} (hno : Γ ⊢[PRAAx] NoW (riseB r) N x) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 r zero (Syn.shift x) + var 0) (inst2 r (var 0) (Syn.shift x))) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (by ipra_le 0)
-  · simp only [Fm.subst_imp, subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
-      subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (rise_guard r Prf.hyp0 (Prf.impE hno.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+  refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
+  · simp only [subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.inst_zero,
+      Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+    ipra_le 0
+  · simp only [subst_le, subst_inst2, PTm.subst_add, Syn.subst_var, Syn.repl_zero,
+      subst_repl_shift, ConciseIPRA.PTm.subst_zero]
+    exact .impI (rise_step r (.impE hno.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 /-- `lem:rise`: a nonrise below `N`, or `r(0) + N ≤ r(N)`. -/
 theorem rise_alternative (N x : PTm n) :

@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.BackwardDemand
 import IPRADerivations.Core.SumSplit
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # The stage-dependent additive precision budget
@@ -77,24 +78,20 @@ theorem conservation_step (loss : PR 2) (N K j x : PTm n) (hj : Γ ⊢[PRAAx] lt
 
 theorem backward_conservation (loss : PR 2) (N K j x : PTm n) (hj : Γ ⊢[PRAAx] le j N) :
     Γ ⊢[PRAAx] backward (demandF loss) N K j x + prefixLoss loss (monus N j) x ≐ K + prefixLoss loss N x := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (Syn.shift N) ⟶
-      backward (demandF loss) (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift x) +
-        prefixLoss loss (monus (Syn.shift N) (var 0)) (Syn.shift x) ≐
-      Syn.shift K + prefixLoss loss (Syn.shift N) (Syn.shift x)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_backward, subst_prefix, PTm.subst_add,
-        PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .impI (congrAdd (backward_zero _ _ _ _)
-        (congrAp2 (sumF (body loss)) (monus_zero N) (.eqRefl x)))
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_backward, subst_prefix, PTm.subst_add,
-        PTm.subst_monus, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI (conservation_step loss _ _ (var 0) _ Prf.hyp0 ?_)
-      exact .impE Prf.hyp1 (le_of_lt Prf.hyp0)
-  have result : Γ ⊢[PRAAx] le j N ⟶
-      backward (demandF loss) N K j x + prefixLoss loss (monus N j) x ≐ K + prefixLoss loss N x := by
-    simpa only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_backward, subst_prefix, PTm.subst_add,
-      PTm.subst_monus, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using all.allE j
-  exact .impE result hj
+  let P : Fm PTm (n + 1) :=
+    backward (demandF loss) (Syn.shift N) (Syn.shift K) (var 0) (Syn.shift x) +
+      prefixLoss loss (monus (Syn.shift N) (var 0)) (Syn.shift x) ≐
+      Syn.shift K + prefixLoss loss (Syn.shift N) (Syn.shift x)
+  have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst j) := by
+    refine qfIndAtMost hj trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, subst_backward, subst_prefix, PTm.subst_add, PTm.subst_monus,
+        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      exact congrAdd (backward_zero _ _ _ _) (congrAp2 (sumF (body loss)) (monus_zero N) (.eqRefl x))
+    · simp only [P, Fm.subst_eq, subst_backward, subst_prefix, PTm.subst_add, PTm.subst_monus,
+        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      exact .impI (conservation_step loss _ _ (var 0) _ Prf.hyp0 Prf.hyp1)
+  simpa only [P, Fm.subst_eq, subst_backward, subst_prefix, PTm.subst_add, PTm.subst_monus,
+    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atIndex
 
 theorem initial_budget (loss : PR 2) (N K x : PTm n) :
     Γ ⊢[PRAAx] horizon (demandF loss) N K zero x ≐ K + prefixLoss loss N x := by

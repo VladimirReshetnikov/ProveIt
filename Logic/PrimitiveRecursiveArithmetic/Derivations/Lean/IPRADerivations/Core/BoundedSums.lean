@@ -26,26 +26,40 @@ open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
+/-- Quantifier-free induction on the whole initial segment up to an object-language bound. -/
+theorem qfIndAllUpTo (N : PTm n) {P : Fm PTm (n + 1)} (hP : P.QF)
+    (base : Γ ⊢[PRAAx] P.subst (Syn.inst zero))
+    (step : P :: Γ.map Fm.shift ⊢[PRAAx]
+      lt (Syn.var 0) (Syn.shift N) ⟶ P.subst (Syn.repl (succ (Syn.var 0)))) :
+    Γ ⊢[PRAAx] Fm.all (le (Syn.var 0) (Syn.shift N) ⟶ P) := by
+  let bounded := le (Syn.var 0) (Syn.shift N) ⟶ P
+  refine PRA.qfInd bounded ⟨le_QF _ _, hP⟩ ?_ ?_
+  · simp only [bounded, Fm.subst_imp, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    exact .impI base.wk
+  · simp only [bounded, Fm.subst_imp, subst_le, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+    refine .impI ?_
+    have hi := le_trans (le_succ_self (Syn.var 0)) (Prf.hyp0 :
+      le (succ (Syn.var 0)) (Syn.shift N) :: bounded :: Γ.map Fm.shift ⊢[PRAAx]
+        le (succ (Syn.var 0)) (Syn.shift N))
+    exact .impE (.impE (Prf.impI step).wk.wk (.impE Prf.hyp1 hi)) Prf.hyp0
+
+/-- Instantiate bounded induction at any index proved to lie in the initial segment. -/
+theorem qfIndAtMost {j N : PTm n} {P : Fm PTm (n + 1)} (hj : Γ ⊢[PRAAx] le j N) (hP : P.QF)
+    (base : Γ ⊢[PRAAx] P.subst (Syn.inst zero))
+    (step : P :: Γ.map Fm.shift ⊢[PRAAx]
+      lt (Syn.var 0) (Syn.shift N) ⟶ P.subst (Syn.repl (succ (Syn.var 0)))) :
+    Γ ⊢[PRAAx] P.subst (Syn.inst j) := by
+  have atIndex := Prf.allE j (qfIndAllUpTo N hP base step)
+  simp only [Fm.subst_imp, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at atIndex
+  exact .impE atIndex hj
+
 /-- Induction up to an object-language bound, with successor steps needed only below it. -/
 theorem qfIndUpTo (N : PTm n) {P : Fm PTm (n + 1)} (hP : P.QF)
     (base : Γ ⊢[PRAAx] P.subst (Syn.inst zero))
     (step : P :: Γ.map Fm.shift ⊢[PRAAx]
       lt (Syn.var 0) (Syn.shift N) ⟶ P.subst (Syn.repl (succ (Syn.var 0)))) :
-    Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
-  let bounded := le (Syn.var 0) (Syn.shift N) ⟶ P
-  have all : Γ ⊢[PRAAx] Fm.all bounded := by
-    refine PRA.qfInd _ ⟨le_QF _ _, hP⟩ ?_ ?_
-    · simp only [bounded, Fm.subst_imp, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact .impI base.wk
-    · simp only [bounded, Fm.subst_imp, subst_le, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
-      have hi := le_trans (le_succ_self (Syn.var 0)) (Prf.hyp0 :
-        le (succ (Syn.var 0)) (Syn.shift N) :: bounded :: Γ.map Fm.shift ⊢[PRAAx]
-          le (succ (Syn.var 0)) (Syn.shift N))
-      exact .impE (.impE (Prf.impI step).wk.wk (.impE Prf.hyp1 hi)) Prf.hyp0
-  have atBound := Prf.allE N all
-  simp only [bounded, Fm.subst_imp, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at atBound
-  exact .impE atBound (le_refl N)
+    Γ ⊢[PRAAx] P.subst (Syn.inst N) :=
+  qfIndAtMost (le_refl N) hP base step
 
 /-- `body(i, x)`. -/
 def inst2 (body : PTm 2) (i x : PTm n) : PTm n := Syn.subst ![i, x] body

@@ -2,6 +2,7 @@ import IPRADerivations.Core.OrderCertificates
 import IPRADerivations.Core.Powers
 import IPRADerivations.DiophantineNumberTheory.FLTMultiples
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # A precision budget for a finite arithmetic table
@@ -64,16 +65,14 @@ theorem gate_all {E : PTm 2} {N x K δ : PTm n} (h0 : Γ ⊢[PRAAx] le (inst2 E 
       le (inst2 E (succ (var 0)) (Syn.shift x)) (Syn.shift K * inst2 E (var 0) (Syn.shift x) + Syn.shift δ))) :
     Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
       le (inst2 E (var 0) (Syn.shift x)) (pw (succ (succ (Syn.shift K))) (var 0) * Syn.shift δ)) := by
-  refine PRA.qfInd _ ⟨le_QF _ _, le_QF _ _⟩ ?_ ?_
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
+  refine qfIndAllUpTo N (le_QF _ _) ?_ ?_
+  · simp only [subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
       Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    refine .impI ?_
-    have h0' := h0.wk (ψ := le zero N)
-    have p0 := natEq (pw_zero (Γ := le zero N :: Γ) (succ (succ K)))
-    ipra_le sl h0' using rw [p0]; ring
-  · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
+    have p0 := natEq (pw_zero (Γ := Γ) (succ (succ K)))
+    ipra_le sl h0 using rw [p0]; ring
+  · simp only [subst_le, subst_ap2, subst_inst2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
       subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (gate_guard Prf.hyp0 (Prf.impE hrec.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
+    exact .impI (gate_step (.impE hrec.allOpen.wk.wk Prf.hyp0) Prf.hyp1)
 
 /-- The error at a stage `j ≤ N`. -/
 theorem gate_at {E : PTm 2} {N x K δ j : PTm n} (h0 : Γ ⊢[PRAAx] le (inst2 E zero x) δ)

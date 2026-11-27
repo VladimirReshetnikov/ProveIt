@@ -2,6 +2,7 @@ import IPRADerivations.AnalyticNumberTheory.PsiTheta
 import IPRADerivations.AnalyticNumberTheory.LogRefinement
 import IPRADerivations.Core.LinearCombination
 import IPRADerivations.Core.Header
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Changing the mesh and the denominator of the harmonic logarithm (`pnt_ipra_constructive_2026-11-14`)
@@ -52,34 +53,28 @@ theorem quo_scale {m M0 L : PTm n} (h1 : Γ ⊢[PRAAx] le (succ m) M0) (h2 : Γ 
 /-- `M₀! S(m, L!) = L! S(m, M₀!)` for `m ≤ M₀ ≤ L`. -/
 theorem S_denom {m M0 L : PTm n} (hm : Γ ⊢[PRAAx] le m M0) (h2 : Γ ⊢[PRAAx] le M0 L) :
     Γ ⊢[PRAAx] fact M0 * S m (fact L) ≐ fact L * S m (fact M0) := by
-  have h2' : (Γ.map Fm.shift) ⊢[PRAAx] le (Syn.shift M0) (Syn.shift L) := by simpa [Fm.shift, Syn.shift] using h2.shift
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift M0) ⟶
-      fact (Syn.shift M0) * S (var 0) (fact (Syn.shift L)) ≐ fact (Syn.shift L) * S (var 0) (fact (Syn.shift M0))) := by
-    refine PRA.qfInd _ (by simp [Fm.QF, le_QF]) ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      refine .impI ?_
-      have a := natEq (sum_zero (Γ := le zero M0 :: Γ) hB (fact L))
-      have b := natEq (sum_zero (Γ := le zero M0 :: Γ) hB (fact M0))
+  have h2' : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift M0) (Syn.shift L) := by
+    simpa [Fm.shift, Syn.shift] using h2.shift
+  let P : Fm PTm (n + 1) :=
+    fact (Syn.shift M0) * S (var 0) (fact (Syn.shift L)) ≐ fact (Syn.shift L) * S (var 0) (fact (Syn.shift M0))
+  have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst m) := by
+    refine qfIndAtMost hm trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
+        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
+      have a := natEq (sum_zero (Γ := Γ) hB (fact L))
+      have b := natEq (sum_zero (Γ := Γ) hB (fact M0))
       apply deriveNat; ipra_simps; linear_combination 𝔞 (fact M0) * a - 𝔞 (fact L) * b
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
+    · simp only [P, Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero,
+        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
       refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift M0) ::
-        (le (var 0) (Syn.shift M0) ⟶
-          fact (Syn.shift M0) * S (var 0) (fact (Syn.shift L)) ≐ fact (Syn.shift L) * S (var 0) (fact (Syn.shift M0))) ::
-        Γ.map Fm.shift
-      have hs : Δ ⊢[PRAAx] le (succ (var 0)) (Syn.shift M0) := Prf.hyp0
-      have ih := natEq (Prf.impE (Prf.hyp1 : Δ ⊢[PRAAx] _) (le_trans (le_succ_self _) hs))
-      have q := natEq (quo_scale hs h2'.wk.wk)
+      let Δ := lt (var 0) (Syn.shift M0) :: P :: Γ.map Fm.shift
+      have ih := natEq (Prf.hyp1 : Δ ⊢[PRAAx] P)
+      have q := natEq (quo_scale (Prf.hyp0 : Δ ⊢[PRAAx] lt (var 0) (Syn.shift M0)) h2'.wk.wk)
       have a := natEq (S_succ (Γ := Δ) (var 0) (fact (Syn.shift L)))
       have b := natEq (S_succ (Γ := Δ) (var 0) (fact (Syn.shift M0)))
       apply deriveNat; ipra_simps
       linear_combination ih + q + 𝔞 (fact (Syn.shift M0)) * a - 𝔞 (fact (Syn.shift L)) * b
-  have h := Prf.allE m hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at h
-  exact Prf.impE h hm
+  simpa [P] using atIndex
 
 /-! ## The mesh -/
 
