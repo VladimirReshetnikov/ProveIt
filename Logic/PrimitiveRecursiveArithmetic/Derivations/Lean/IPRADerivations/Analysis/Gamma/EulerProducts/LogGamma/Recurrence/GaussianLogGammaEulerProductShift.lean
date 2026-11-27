@@ -20,11 +20,11 @@ open_ipra
 open ComplexLogarithmRemainder (code scale oneCode eval_re_code eval_im_code)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
-open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
+open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianLogGammaEulerHead (argument productF productData)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
-open GaussianNameRingLaws (oneF one_fast one_at right_distributive multiply_one_left)
+open GaussianNameRingLaws (oneF one_fast right_distributive multiply_one_left)
 open GaussianNamedDifferenceQuotientProperness (difference_proper)
 open GaussianPositiveRationalLogarithm (logF)
 open GaussianRationalHorner (qadd canonical_unique ofGaussian_canonical ofGaussian_represents
@@ -54,12 +54,6 @@ theorem argument_shift (A B D neg : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     ring
   · simp only [z,w,im_add,im_scale,im_one,eval_im_code]
     ring
-
-private theorem constant_one (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,GaussianRationalSyntheticDivision.subst_qone,Syn.shift] using
-    (constant_at (var 0) (qone : PTm (n+1))).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm
 
 theorem difference (A B D neg N : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hN : Γ ⊢[PRAAx] le one N) :
     Γ ⊢[PRAAx] crossEquivalent (F productF productF) logF
@@ -91,7 +85,7 @@ theorem difference (A B D neg N : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hN : Γ 
     (X c b) (X (addData a b) b) a cancel survive
   let u := multiplyData oneF logF x x
   have removeUnit := multiply_cross constantF oneF logF logF qone x x x
-    (constant_regular _) (one_fast _) hx hx (constant_one x) (cross_refl _ _ hx)
+    (constant_regular _) (one_fast _) hx hx (GaussianNameRingLaws.constant_one_cross x) (cross_refl _ _ hx)
   have unitProduct := cross_trans productF (multiplyF oneF logF) logF a u x removeUnit
     (multiply_one_left logF x hx)
   exact cross_trans (F productF productF) productF logF (X c b) a x eq unitProduct

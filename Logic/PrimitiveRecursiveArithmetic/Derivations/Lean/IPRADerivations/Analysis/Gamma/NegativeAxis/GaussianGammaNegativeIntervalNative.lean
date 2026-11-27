@@ -20,7 +20,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaNegativeIntervalNative
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (bounded normSq normSq_scale scale)
-open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
+open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaLocalPoleGuards (center terminal localMargin)
 open GaussianGammaNegativeCriticalCorrection (guard)
 open GaussianGammaPoleMultiplier (multiplier actual_pole_multiplier_inverse)
@@ -28,9 +28,9 @@ open GaussianGammaReciprocalInverse (gammaF gammaData gamma_regular source)
 open GaussianGammaRepeatedShift (risingProduct)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_trans)
-open GaussianNameRingLaws (oneF one_at one_fast)
+open GaussianNameRingLaws (oneF one_fast)
 open GaussianRationalHorner (qmul)
-open GaussianRationalReciprocal (qone subst_qone)
+open GaussianRationalReciprocal (qone)
 open GaussianRootAlgebra (equal equal_of_values equal_trans re_add im_add re_scale im_scale re_one im_one)
 open GaussianStirlingGammaLogarithm (arg)
 
@@ -74,12 +74,6 @@ theorem terminal_argument (a b N : PTm n) : Γ ⊢[PRAAx]
     simp only [GaussianGammaEulerHeadLower.translated,arg,re_add,im_add,re_scale,im_scale,re_one,im_one] <;>
     ipra_simps <;> ring
 
-private theorem constant_one (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent constantF oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast _)
-  refine .allI ?_
-  simpa only [GaussianNameConjugation.pointwiseEqual,Syn.shift,subst_qone] using
-    (constant_at (Γ := Γ.map Fm.shift) (var 0) qone).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm
-
 theorem original_product (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) : Γ ⊢[PRAAx]
     crossEquivalent productF gammaF (productData a b N) (GaussianStirlingGammaLogarithm.gammaData (b+a) b) := by
   let h₀ := arg a
@@ -102,8 +96,8 @@ theorem original_product (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) : Γ ⊢[
     actual_pole_multiplier_inverse h₀ b one a b j hb (le_refl _) hb margin
   have scaleOne := GaussianGammaAdjacentCutoff.multiply_cross constantF oneF gammaF gammaF (qmul c e) v v v
     (constant_regular _) (one_fast _) hv hv
-    (cross_trans _ _ _ _ _ _
-      (GaussianGammaWeierstrassApproximant.constant_data_cross _ _ inverse) (constant_one v))
+    (GaussianNameEquivalence.cross_data_congr constantF oneF qone (qmul c e) v v
+      inverse.eqSymm (.eqRefl _) (GaussianNameRingLaws.constant_one_cross v))
     (cross_refl _ _ hv)
   have terminalEq := terminal_argument (Γ := Γ) a b N
   have terminalCross := GaussianGammaInputProperness.original_Gamma_proper _ _ two b one b hr terminalEq

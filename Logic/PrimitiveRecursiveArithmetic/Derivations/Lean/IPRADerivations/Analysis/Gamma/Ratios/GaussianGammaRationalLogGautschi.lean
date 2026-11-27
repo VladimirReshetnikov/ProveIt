@@ -18,12 +18,12 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaRationalLogGautschi
 
 open_ipra
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianGammaCanonicalExponent (constantF constant_regular constant_at)
+open GaussianGammaCanonicalExponent (constantF constant_regular)
 open GaussianGammaRationalFractionalChord (harmonicF harmonicData)
 open GaussianGammaRationalUnscaledChord (fractionalData fractional_regular fractional_real scaled_fractional)
 open GaussianNameArithmetic (addF addData add_fast multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
-open GaussianNameRingLaws (add_associative multiply_one_left oneF one_fast one_at)
+open GaussianNameRingLaws (add_associative multiply_one_left oneF one_fast)
 open GaussianNamedGammaHalfShift (add_cross constant_sum)
 open GaussianNamedPositiveExponentialOrder (realOrder)
 open GaussianNaturalScaleProductName (productF productData)
@@ -55,12 +55,6 @@ theorem ratio_exponent_real (a b r : PTm n) : Γ ⊢[PRAAx] realSamples ratioExp
   GaussianStirlingNames.add_real _ _ _ _ (GaussianStirlingNames.log_gamma_real (a+b) b)
     (GaussianNamedDampingPowerRealSamples.negative_real _ _ (GaussianStirlingNames.log_gamma_real (a+r) b))
 
-private theorem point_one_cross (x : PTm n) : Γ ⊢[PRAAx] crossEquivalent C oneF qone x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (constant_regular _) (one_fast _)
-  refine .allI ?_
-  simpa only [Syn.shift,GaussianRationalSyntheticDivision.subst_qone] using
-    ((constant_at (Γ := Γ.map Fm.shift) (var 0) qone).eqTrans (one_at (var 0) (Syn.shift x)).eqSymm)
-
 theorem fractional_sum (a D b r s : PTm n) (hb : Γ ⊢[PRAAx] le one b)
     (he : Γ ⊢[PRAAx] b ≐ r+s) (ha : Γ ⊢[PRAAx] source a D) :
     Γ ⊢[PRAAx] crossEquivalent (addF L L) H (addData (fractionalData r b a D) (fractionalData s b a D)) (hd a D) := by
@@ -78,7 +72,7 @@ theorem fractional_sum (a D b r s : PTm n) (hb : Γ ⊢[PRAAx] le one b)
   have hv := constant_regular (Γ := Γ) v
   have hx := GaussianHarmonicLogarithmName.name_regular a D ha
   have split := GaussianNameRingLaws.right_distributive C C H u v x hu hv hx
-  have ce := cross_trans _ _ _ _ _ _ (constant_sum u v qone e) (point_one_cross x)
+  have ce := cross_trans _ _ _ _ _ _ (constant_sum u v qone e) (GaussianNameRingLaws.constant_one_cross x)
   have lowered := GaussianGammaAdjacentCutoff.multiply_cross (addF C C) oneF H H (addData u v) x x x
     (add_fast _ _ _ _ hu hv) (one_fast _) hx hx ce (cross_refl _ _ hx)
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ split)
