@@ -64,11 +64,8 @@ theorem t1 (N k : PTm n) : Γ ⊢[PRAAx] monus (succ N) (k + k) * mt (succ N) k 
   refine .orE (lt_or_le N (k + k)) ?_ ?_
   · exact t1aux0 L.wk (gb_above Prf.hyp0)
   · have hl : (le (k + k) N :: Γ) ⊢[PRAAx] le (k + k) N := Prf.hyp0
-    have e : (le (k + k) N :: Γ) ⊢[PRAAx] monus (succ N) (k + k) ≐ succ (monus N (k + k)) := by
-      have e₀ : (le (k + k) N :: Γ) ⊢[PRAAx] succ N ≐ succ (monus N (k + k)) + (k + k) := by
-        ipra_lc natEq (eq_add_of_le hl)
-      exact (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
-    exact t1aux L.wk ((congrAp2 powF e (.eqRefl two)).eqTrans (pw_succ two _))
+    exact t1aux L.wk
+      ((congrAp2 powF (Common.monus_succ_of_le hl) (.eqRefl two)).eqTrans (pw_succ two _))
 
 theorem t2aux {G0 Ga Gb Gb' Pb P0 C Cs K U V : PTm n} (E : Γ ⊢[PRAAx] Gb' ≐ Gb)
     (r1 : Γ ⊢[PRAAx] succ (K + K) * Ga ≐ U * G0) (r2 : Γ ⊢[PRAAx] succ (succ (K + K)) * Gb ≐ V * Ga)
@@ -81,23 +78,18 @@ theorem t2aux {G0 Ga Gb Gb' Pb P0 C Cs K U V : PTm n} (E : Γ ⊢[PRAAx] Gb' ≐
 theorem t2 (N k : PTm n) :
     Γ ⊢[PRAAx] num 4 * (succ k * succ (succ k)) * mt N (succ k) ≐
       monus N (k + k) * monus N (succ (k + k)) * mt N k := by
-  have E : Γ ⊢[PRAAx] gb N (succ k + succ k) ≐ gb N (succ (succ (k + k))) := congrGb (.eqRefl _) (by ipra_ring)
+  have hi : Γ ⊢[PRAAx] succ k + succ k ≐ succ (succ (k + k)) := by ipra_ring
+  have E := congrGb (.eqRefl N) hi
   refine .orE (lt_or_le (succ (k + k)) N) ?_ ?_
   · have hl : (lt (succ (k + k)) N :: Γ) ⊢[PRAAx] lt (succ (k + k)) N := Prf.hyp0
-    have hl' : (lt (succ (k + k)) N :: Γ) ⊢[PRAAx] le (succ k + succ k) N :=
-      (congrMonus (by ipra_ring) (.eqRefl _)).eqTrans hl
-    have e₀ : (lt (succ (k + k)) N :: Γ) ⊢[PRAAx] N ≐ succ (succ (monus N (succ k + succ k))) + (k + k) := by
-      ipra_lc natEq (eq_add_of_le hl')
-    have e : (lt (succ (k + k)) N :: Γ) ⊢[PRAAx] monus N (k + k) ≐ succ (succ (monus N (succ k + succ k))) :=
-      (congrMonus e₀ (.eqRefl _)).eqTrans (add_monus _ _)
-    have hp := (congrAp2 powF e (.eqRefl two)).eqTrans ((pw_succ two _).eqTrans (congrMul (pw_succ two _) (.eqRefl _)))
+    have d₁ := Common.monus_succ_of_lt (lt_of_le_of_lt (le_succ_self (k + k)) hl)
+    have d₂ := (Common.monus_succ_of_lt hl).eqTrans
+      (congrSucc (congrMonus (.eqRefl N) hi.wk.eqSymm))
+    have hp := (congrAp2 powF (d₁.eqTrans (congrSucc d₂)) (.eqRefl two)).eqTrans
+      ((pw_succ two _).eqTrans (congrMul (pw_succ two _) (.eqRefl _)))
     exact t2aux E.wk (gr N (k + k)) (gr N (succ (k + k))) (cat_rec k) hp
   · have hl : (le N (succ (k + k)) :: Γ) ⊢[PRAAx] le N (succ (k + k)) := Prf.hyp0
-    have gz : (le N (succ (k + k)) :: Γ) ⊢[PRAAx] gb N (succ (succ (k + k))) ≐ zero :=
-      gb_above ((succ_monus_succ _ _).eqTrans hl)
-    have tz : (le N (succ (k + k)) :: Γ) ⊢[PRAAx] mt N (succ k) ≐ zero :=
-      (congrMul (congrMul (E.wk.eqTrans gz) (.eqRefl _)) (.eqRefl _)).eqTrans
-        ((congrMul (zero_mul _) (.eqRefl _)).eqTrans (zero_mul _))
+    have tz := mt_zero (le_congr (.eqRefl _) hi.wk.eqSymm (Common.succ_le_succ hl))
     exact ((congrMul (.eqRefl _) tz).eqTrans (mul_zero _)).eqTrans
       ((congrMul ((congrMul (.eqRefl _) hl).eqTrans (mul_zero _)) (.eqRefl _)).eqTrans (zero_mul _)).eqSymm
 
