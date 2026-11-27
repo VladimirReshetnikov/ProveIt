@@ -59,16 +59,6 @@ private theorem add_cross (f g h k : PR 2) (x y u v : PTm n)
     Γ ⊢[PRAAx] crossEquivalent (addF f h) (addF g k) (addData x u) (addData y v) :=
   add_equivalent f g h k x y u v hf hg hh hk (cross_to_diagonal _ _ _ _ a) (cross_to_diagonal _ _ _ _ b)
 
-private theorem zeros_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast x) (zero_fast y)
-  refine .allI ?_
-  exact (zero_at (var 0) (Syn.shift x)).eqTrans (zero_at (var 0) (Syn.shift y)).eqSymm
-
-private theorem ones_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF oneF x y := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (one_fast x) (one_fast y)
-  refine .allI ?_
-  exact (one_at (var 0) (Syn.shift x)).eqTrans (one_at (var 0) (Syn.shift y)).eqSymm
-
 private theorem cancel_left (F G : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y) :
     Γ ⊢[PRAAx] crossEquivalent (diffF (addF F G) F) G (diffData (addData x y) x) y := by
@@ -81,7 +71,7 @@ private theorem cancel_left (F G : PR 2) (x y : PTm n)
   have q := add_associative G F N y x n hg hf hn
   have r := add_cross G G (addF F N) zeroF y y (addData x n) y hg hg
     (add_fast _ _ _ _ hf hn) (zero_fast y) (cross_refl _ _ hg)
-    (cross_trans _ _ _ _ _ _ (add_negative F x hf) (zeros_cross x y))
+    (cross_trans _ _ _ _ _ _ (add_negative F x hf) (GaussianNameRingLaws.zero_name_cross x y))
   exact cross_trans _ _ _ _ _ _ p
     (cross_trans _ _ _ _ _ _ q (cross_trans _ _ _ _ _ _ r (GaussianNameRingLaws.add_zero G y hg)))
 
@@ -101,7 +91,7 @@ private theorem weighted_cancel (E g : PR 2) (d y : PTm n)
   have hh := multiply_fast E (linearF g) d (linearData y) he (add_fast _ _ _ _ (one_fast zero) hg)
   have distribute := distributive E oneF g d zero y he (one_fast zero) hg
   have same_one := multiply_equivalent E E oneF oneF d d zero d he he (one_fast zero) (one_fast d)
-    (cross_to_diagonal _ _ _ _ (cross_refl _ _ he)) (cross_to_diagonal _ _ _ _ (ones_cross zero d))
+    (cross_to_diagonal _ _ _ _ (cross_refl _ _ he)) (cross_to_diagonal _ _ _ _ (GaussianNameRingLaws.one_name_cross zero d))
   have one := add_cross Q E W W q d z z hq he hw hw
     (cross_trans _ _ _ _ _ _ same_one (multiply_one E d he)) (cross_refl _ _ hw)
   have change := difference_proper H (addF E W) E E u (addData d z) d d hh

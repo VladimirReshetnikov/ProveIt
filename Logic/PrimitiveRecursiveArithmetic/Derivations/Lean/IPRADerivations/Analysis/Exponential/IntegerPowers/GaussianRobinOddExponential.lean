@@ -73,16 +73,6 @@ theorem odd_input (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     GaussianRobinOddLogarithmName.subst_inputs,LeanProofs.IPRA.PTm.subst_num] using
     sample_radius (var 0) (Syn.shift a) (Syn.shift b) hs
 
-private theorem zero_at_either_data (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y := by
-  refine .allI (.allI ?_)
-  let C := (Γ.map Fm.shift).map Fm.shift
-  let X := Syn.shift (Syn.shift x)
-  let Y := Syn.shift (Syn.shift y)
-  have hx := GaussianNameRingLaws.zero_at (Γ := C) (var 0) X
-  have hy := GaussianNameRingLaws.zero_at (Γ := C) (var 0) Y
-  exact distance_congr (.eqRefl _) (hx.eqTrans hy.eqSymm) (.eqRefl _) (.eqRefl _)
-    (GaussianNameEquivalence.point_at zeroF X (var 1) (var 0) (GaussianNameRingLaws.zero_fast X))
-
 theorem complete_difference (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
     Γ ⊢[PRAAx] crossEquivalent (addF oddF localF) localF
       (addData (inputs a b) (minusData a b)) (plusData a b) := by
@@ -104,7 +94,7 @@ theorem complete_difference (a b : PTm n) (h : Γ ⊢[PRAAx] source a b) :
   have hAssoc := GaussianNameRingLaws.add_associative localF M localF X m Y hx hm hy
   have swapped := GaussianNameRingLaws.add_commutative M localF m Y hm hy
   have cancel := cross_trans _ _ _ _ _ _ swapped
-    (cross_trans _ _ _ _ _ _ (GaussianNameRingLaws.add_negative localF Y hy) (zero_at_either_data Y X))
+    (cross_trans _ _ _ _ _ _ (GaussianNameRingLaws.add_negative localF Y hy) (GaussianNameRingLaws.zero_name_cross Y X))
   have e := GaussianNameArithmetic.add_equivalent oddF D localF localF O d Y Y ho hd hy hy
     (GaussianNameEquivalence.cross_to_diagonal _ _ _ _
       (cross_symm _ _ _ _ (GaussianRobinOddLogarithmName.original_difference_name a b h)))

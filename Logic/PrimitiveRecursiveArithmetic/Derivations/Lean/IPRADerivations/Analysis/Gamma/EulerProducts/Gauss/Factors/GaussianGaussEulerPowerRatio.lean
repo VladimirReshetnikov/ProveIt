@@ -33,16 +33,6 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "ratioLogF" => GaussianPositiveRationalLogarithm.logF
 local notation "ratioLogData" => GaussianPositiveRationalLogarithm.data
 
-private theorem zeros_at (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y := by
-  refine .allI (.allI ?_)
-  let Δ := (Γ.map Fm.shift).map Fm.shift
-  let X := Syn.shift (Syn.shift x)
-  let Y := Syn.shift (Syn.shift y)
-  have hx := GaussianNameRingLaws.zero_at (Γ := Δ) (var 0) X
-  have hy := GaussianNameRingLaws.zero_at (Γ := Δ) (var 0) Y
-  exact GaussianRationalDistanceOrder.distance_congr (.eqRefl _) (hx.eqTrans hy.eqSymm) (.eqRefl _) (.eqRefl _)
-    (GaussianNameEquivalence.point_at zeroF X (var 1) (var 0) (zero_fast X))
-
 theorem restore_log (N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hL : Γ ⊢[PRAAx] le one L) :
     Γ ⊢[PRAAx] crossEquivalent (addF ratioLogF logF) logF (addData (ratioLogData N L) L) N := by
   let G := negativeF logF
@@ -60,7 +50,7 @@ theorem restore_log (N L : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hL : Γ ⊢[PRA
   have inv := cross_trans _ _ _ _ _ _ (add_commutative G logF y L hneg hl) (add_negative logF L hl)
   have replace := add_cross logF logF (addF G logF) zeroF N N (addData y L) L hn hn
     (add_fast G logF y L hneg hl) (zero_fast L) (cross_refl logF N hn) inv
-  have zeroAt := zeros_at (Γ := Γ) L N
+  have zeroAt := GaussianNameRingLaws.zero_name_cross (Γ := Γ) L N
   have last := add_cross logF logF zeroF zeroF N N L N hn hn (zero_fast L) (zero_fast N)
     (cross_refl logF N hn) zeroAt
   exact cross_trans _ _ _ _ _ _ first (cross_trans _ _ _ _ _ _ reorder

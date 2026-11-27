@@ -84,10 +84,6 @@ private theorem zero_exponent (N a : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     ((qmul_zero_left (ap2 logF k x)).eqTrans (zero_at p y).eqSymm))
   simpa [GaussianNameConjugation.pointwiseEqual,fixedExponentF,fixedExponentData,Syn.shift,p,x,y] using eq
 
-private theorem zeros_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast x) (zero_fast y)
-  exact .allI ((zero_at (var 0) (Syn.shift x)).eqTrans (zero_at (var 0) (Syn.shift y)).eqSymm)
-
 private theorem negate_sum (c : PTm n) : Γ ⊢[PRAAx] qadd (qnegative c) c ≐ qzero :=
   (GaussianReciprocalHorner.qadd_commutative _ _).eqTrans
     ((qadd_congr (.eqRefl _) (qzero_add _ (qnegative_canonical c)).eqSymm).eqTrans
@@ -108,7 +104,7 @@ private theorem named_additive_inverse (f g : PR 2) (x y : PTm n)
   have left := cross_trans _ _ _ _ _ _ assoc (cross_trans _ _ _ _ _ _ right (GaussianNameRingLaws.add_zero F u hx))
   have addinv := cross_trans _ _ _ _ _ _ (add_commutative F f u x hx hf) (add_negative f x hf)
   have cancel := add_cross Q zeroF g g v y y y (add_fast _ _ _ _ hx hf) (zero_fast y) hg hg
-    (cross_trans _ _ _ _ _ _ addinv (zeros_cross x y)) (cross_refl _ _ hg)
+    (cross_trans _ _ _ _ _ _ addinv (GaussianNameRingLaws.zero_name_cross x y)) (cross_refl _ _ hg)
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ left)
     (cross_trans _ _ _ _ _ _ cancel (GaussianNameRingLaws.add_zero_left g y hg))
 

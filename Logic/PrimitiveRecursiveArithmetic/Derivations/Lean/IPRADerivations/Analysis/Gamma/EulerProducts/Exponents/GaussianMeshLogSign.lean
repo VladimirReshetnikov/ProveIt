@@ -86,16 +86,6 @@ theorem inverse_point_product (N : PTm n) (h : Γ ⊢[PRAAx] le one N) : Γ ⊢[
   exact canonical_unique _ _ _ D (qmul_canonical _ _) qone_canonical hd
     (represents_congr (.eqRefl _) same (.eqRefl _) r) (GaussianRationalReciprocal.qone_represents_scaled D)
 
-private theorem one_at_either_data (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF oneF x y := by
-  refine .allI (.allI ?_)
-  let C := (Γ.map Fm.shift).map Fm.shift
-  let X := Syn.shift (Syn.shift x)
-  let Y := Syn.shift (Syn.shift y)
-  have hx := one_at (Γ := C) (var 0) X
-  have hy := one_at (Γ := C) (var 0) Y
-  exact distance_congr (.eqRefl _) (hx.eqTrans hy.eqSymm) (.eqRefl _) (.eqRefl _)
-    (GaussianNameEquivalence.point_at oneF X (var 1) (var 0) (one_fast X))
-
 theorem cancel_constant (g : PR 2) (x y d : PTm n) (hg : Γ ⊢[PRAAx] pointCN g d)
     (hInv : Γ ⊢[PRAAx] qmul y x ≐ qone)
     (hProd : Γ ⊢[PRAAx] crossEquivalent (multiplyF constantF g) oneF (multiplyData constantF g x d) x) :
@@ -114,7 +104,7 @@ theorem cancel_constant (g : PR 2) (x y d : PTm n) (hg : Γ ⊢[PRAAx] pointCN g
   have b := GaussianNameRingLaws.multiply_associative F F g y x d hy hx hg
   have c := GaussianGammaAdjacentCutoff.multiply_cross F F G oneF y y v y hy hy
     (multiply_fast F g x d hx hg) (one_fast y) (cross_refl _ _ hy)
-    (cross_trans _ _ _ _ _ _ hProd (one_at_either_data x y))
+    (cross_trans _ _ _ _ _ _ hProd (GaussianNameRingLaws.one_name_cross x y))
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (GaussianNameRingLaws.multiply_one_left g d hg))
     (cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ b
       (cross_trans _ _ _ _ _ _ c (GaussianNameRingLaws.multiply_one F y hy))))
@@ -142,7 +132,7 @@ theorem negative_mesh_reciprocal (N : PTm n) (h : Γ ⊢[PRAAx] le one N)
   have act := GaussianGammaAdjacentCutoff.multiply_cross constantF F G H nPoint X Y Z
     (constant_regular _) hp hm hn (cross_symm _ _ _ _ hPositive) cross
   have pair := GaussianExponentialInverse.exponential_inverse logF R N ip
-  have result := cross_trans _ _ _ _ _ _ act (cross_trans _ _ _ _ _ _ pair (one_at_either_data N nPoint))
+  have result := cross_trans _ _ _ _ _ _ act (cross_trans _ _ _ _ _ _ pair (GaussianNameRingLaws.one_name_cross N nPoint))
   exact cancel_constant G nPoint (inversePoint N) Y hm (inverse_point_product N h) result
 
 theorem original_mesh_sign_cancellation_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1

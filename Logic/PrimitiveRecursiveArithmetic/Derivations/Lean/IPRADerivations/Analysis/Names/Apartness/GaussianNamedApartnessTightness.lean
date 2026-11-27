@@ -89,11 +89,6 @@ theorem of_no_apart (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x)
     (ha : Γ ⊢[PRAAx] noApart f x) : Γ ⊢[PRAAx] crossEquivalent f zeroF x zero :=
   of_no_apart_at_zero_data f x zero hf ha
 
-private theorem zero_data_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast x) (zero_fast y)
-  refine .allI ?_
-  exact (zero_at _ (Syn.shift x)).eqTrans (zero_at _ (Syn.shift y)).eqSymm
-
 theorem names_equivalent_of_no_difference_apart (f g : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)
     (ha : Γ ⊢[PRAAx] noApart (D f g) (dd x y)) : Γ ⊢[PRAAx] crossEquivalent f g x y := by
@@ -106,7 +101,7 @@ theorem names_equivalent_of_no_difference_apart (f g : PR 2) (x y : PTm n)
   have removed := add_cross (D f g) zeroF g g d y y y hD (zero_fast y) hg hg hzero (cross_refl _ _ hg)
   have swapped := add_commutative M g z y hn hg
   have cancel := cross_trans _ _ _ _ _ _ swapped
-    (cross_trans _ _ _ _ _ _ (add_negative g y hg) (zero_data_cross y x))
+    (cross_trans _ _ _ _ _ _ (add_negative g y hg) (GaussianNameRingLaws.zero_name_cross y x))
   have restored := cross_trans _ _ _ _ _ _ (add_associative f M g x z y hf hn hg)
     (cross_trans _ _ _ _ _ _ (add_cross f f (addF M g) zeroF x x (addData z y) x hf hf
       (add_fast _ _ _ _ hn hg) (zero_fast x) (cross_refl _ _ hf) cancel) (GaussianNameRingLaws.add_zero f x hf))

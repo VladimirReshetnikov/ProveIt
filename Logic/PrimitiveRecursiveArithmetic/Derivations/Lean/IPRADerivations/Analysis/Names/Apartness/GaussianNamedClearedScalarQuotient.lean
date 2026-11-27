@@ -47,10 +47,6 @@ def quotientData (L S : PR 2) (l s c h : PTm n) : PTm n :=
   multiplyData constantF (multiplyF (Diff L S) (Inv S)) c
     (multiplyData (Diff L S) (Inv S) (difference l s) (inverse h s))
 
-private theorem zero_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast x) (zero_fast y)
-  exact .allI ((zero_at (var 0) (Syn.shift x)).eqTrans (zero_at (var 0) (Syn.shift y)).eqSymm)
-
 theorem subtract_first_addend (F G : PR 2) (x y : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x) (hg : Γ ⊢[PRAAx] pointCN G y) :
     Γ ⊢[PRAAx] crossEquivalent (Diff (addF F G) F) G (difference (addData x y) x) y := by
   let N := negativeF F
@@ -59,7 +55,7 @@ theorem subtract_first_addend (F G : PR 2) (x y : PTm n) (hf : Γ ⊢[PRAAx] poi
   have swap := add_cross (addF F G) (addF G F) N N (addData x y) (addData y x) u u
     (add_fast _ _ _ _ hf hg) (add_fast _ _ _ _ hg hf) hn hn (add_commutative F G x y hf hg) (cross_refl _ _ hn)
   have group := add_associative G F N y x u hg hf hn
-  have cancel := cross_trans _ _ _ _ _ _ (add_negative F x hf) (zero_cross x y)
+  have cancel := cross_trans _ _ _ _ _ _ (add_negative F x hf) (GaussianNameRingLaws.zero_name_cross x y)
   have z := add_cross G G (addF F N) zeroF y y (addData x u) y hg hg
     (add_fast _ _ _ _ hf hn) (zero_fast y) (cross_refl _ _ hg) cancel
   exact cross_trans _ _ _ _ _ _ swap (cross_trans _ _ _ _ _ _ group

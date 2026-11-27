@@ -57,11 +57,6 @@ private theorem zero_constant (x : PTm n) :
   simpa [Syn.shift] using ((zero_at (var 0) (Syn.shift x)).eqTrans
     ((fraction_zero (n := n+1)).eqTrans (constant_at (var 0) (fraction zero one)).eqSymm))
 
-private theorem zero_data_cross (x c : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x c := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast _) (zero_fast _)
-  refine .allI ?_
-  exact (zero_at _ (Syn.shift x)).eqTrans (zero_at _ (Syn.shift c)).eqSymm
-
 theorem cancel_order (F : PR 2) (c x : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x)
     (h : Γ ⊢[PRAAx] realOrder (addF C F) F (addData c x) x) :
     Γ ⊢[PRAAx] realOrder C C c (fraction zero one) := by
@@ -73,7 +68,7 @@ theorem cancel_order (F : PR 2) (c x : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x)
   have a := add_associative C F N c x v hc hf hn
   have b := add_cross C C (addF F N) zeroF c c (addData x v) c hc hc
     (add_fast _ _ _ _ hf hn) (zero_fast _)
-    (cross_refl _ _ hc) (cross_trans _ _ _ _ _ _ (add_negative F x hf) (zero_data_cross x c))
+    (cross_refl _ _ hc) (cross_trans _ _ _ _ _ _ (add_negative F x hf) (GaussianNameRingLaws.zero_name_cross x c))
   have left := cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ b (GaussianNameRingLaws.add_zero C c hc))
   have right := cross_trans _ _ _ _ _ _ (add_negative F x hf) (zero_constant x)
   exact GaussianNamedRealOrderTransport.transport _ _ _ _ _ _ _ _ (cross_symm _ _ _ _ left) right comb

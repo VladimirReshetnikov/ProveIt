@@ -38,9 +38,6 @@ def productData (f : PR 2) (x : PTm n) : PTm n := multiplyData f (minusF f) x (m
 def equation (f : PR 2) (x : PTm n) : Fm PTm n :=
   crossEquivalent (productF f) constantF (productData f x) qone
 
-private theorem zero_at_other_data (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y :=
-  cross_trans zeroF constantF zeroF x qzero y (cross_symm _ _ _ _ (GaussianNameRingLaws.constant_zero_cross x)) (GaussianNameRingLaws.constant_zero_cross y)
-
 private theorem one_eq : Γ ⊢[PRAAx] (onePoint : PTm n) ≐ qone := by
   exact GaussianRationalHorner.canonical_unique _ _ (scale one oneCode) one
     (GaussianRationalHorner.ofGaussian_canonical _ _ (le_refl _))
@@ -57,7 +54,7 @@ private theorem undo_add (f k : PR 2) (x z : PTm n)
   let Z := zeroF
   have neg := negative_fast k z hk
   have assoc := GaussianNameRingLaws.add_associative f k (negativeF k) x z (negativeData z) hf hk neg
-  have undo := cross_trans T Z Z t z x (GaussianNameRingLaws.add_negative k z hk) (zero_at_other_data z x)
+  have undo := cross_trans T Z Z t z x (GaussianNameRingLaws.add_negative k z hk) (GaussianNameRingLaws.zero_name_cross z x)
   have lift := add_cross f f T Z x x t x hf hf (add_fast _ _ _ _ hk neg) (zero_fast _) (cross_refl _ _ hf) undo
   exact cross_trans _ _ _ _ _ _ assoc (cross_trans _ _ _ _ _ _ lift (GaussianNameRingLaws.add_zero f x hf))
 

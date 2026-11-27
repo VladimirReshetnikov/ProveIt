@@ -374,11 +374,19 @@ theorem constant_parameter_regularity (a s t : PTm n) : Γ ⊢[PRAAx]
 theorem constant_parameter_regular (a : PTm n) : Γ ⊢[PRAAx] pointCN (PTm.toPR (var 1 : PTm 2)) a :=
   .allI (.allI (constant_parameter_regularity (Syn.shift (Syn.shift a)) (var 1) (var 0)))
 
+/-- Changing the input datum of the constant zero program preserves its name. -/
+theorem zero_name_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF x y :=
+  cross_of_common_sample zeroF zeroF x y (zero_at _ _) (zero_at _ _)
+
+/-- Changing the input datum of the constant one program preserves its name. -/
+theorem one_name_cross (x y : PTm n) : Γ ⊢[PRAAx] crossEquivalent oneF oneF x y :=
+  cross_of_common_sample oneF oneF x y (one_at _ _) (one_at _ _)
+
 theorem zero_fast (x : PTm n) : Γ ⊢[PRAAx] pointCN zeroF x :=
-  cross_of_common_sample zeroF zeroF x x (zero_at _ _) (zero_at _ _)
+  zero_name_cross x x
 
 theorem one_fast (x : PTm n) : Γ ⊢[PRAAx] pointCN oneF x :=
-  cross_of_common_sample oneF oneF x x (one_at _ _) (one_at _ _)
+  one_name_cross x x
 
 /-- Compare the parameter sampler at zero with the constant zero program. -/
 theorem constant_zero_cross (x : PTm n) :

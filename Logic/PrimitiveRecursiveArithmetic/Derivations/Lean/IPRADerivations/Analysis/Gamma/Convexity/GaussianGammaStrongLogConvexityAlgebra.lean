@@ -45,11 +45,6 @@ theorem swap_first (F H J : PR 2) (x y z : PTm n)
   have c := add_associative H F J y x z hh hf hj
   exact cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ b c)
 
-private theorem zero_data_cross (u x : PTm n) : Γ ⊢[PRAAx] crossEquivalent zeroF zeroF u x := by
-  apply GaussianNameConjugation.equal_samples_cross _ _ _ _ (zero_fast _) (zero_fast _)
-  refine .allI ?_
-  exact (zero_at _ (Syn.shift u)).eqTrans (zero_at _ (Syn.shift x)).eqSymm
-
 theorem add_negative_front (F H : PR 2) (x y : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN F x) (hh : Γ ⊢[PRAAx] pointCN H y) :
     Γ ⊢[PRAAx] crossEquivalent (addF (negativeF F) (addF F H)) H
@@ -61,7 +56,7 @@ theorem add_negative_front (F H : PR 2) (x y : PTm n)
   have b := cross_symm _ _ _ _ (add_associative F N H x z y hf hz hh)
   have c := add_cross (addF F N) zeroF H H (addData x z) y y y
     (add_fast _ _ _ _ hf hz) (zero_fast _) hh hh
-    (cross_trans _ _ _ _ _ _ (add_negative F x hf) (zero_data_cross x y)) (cross_refl _ _ hh)
+    (cross_trans _ _ _ _ _ _ (add_negative F x hf) (GaussianNameRingLaws.zero_name_cross x y)) (cross_refl _ _ hh)
   exact cross_trans _ _ _ _ _ _ a (cross_trans _ _ _ _ _ _ b
     (cross_trans _ _ _ _ _ _ c (add_zero_left H y hh)))
 
