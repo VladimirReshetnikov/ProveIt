@@ -262,11 +262,8 @@ theorem square_compare {u v e : PTm n} (h : Γ ⊢[PRAAx] le (u * u) (v * v + e 
 
 /-- `a ≤ b + c ⟹ a ∸ c ≤ b`: clipping `P = a − c` at zero keeps the upper bound `P ≤ b`. -/
 theorem clip_upper {a b c : PTm n} (h : Γ ⊢[PRAAx] le a (b + c)) :
-    Γ ⊢[PRAAx] le (monus a c) b := by
-  refine .orE (le_total c a) ?_ ?_
-  · refine le_of_eq_add (d := monus (b + c) a) ?_
-    ipra_lc natEq (eq_add_of_le (h.wk (ψ := le c a))) + natEq (eq_add_of_le (Prf.hyp0 (Γ := Γ) (φ := le c a)))
-  · exact le_congr (Prf.eqSymm Prf.hyp0) (.eqRefl b) (zero_le b)
+    Γ ⊢[PRAAx] le (monus a c) b :=
+  Order.monus_le_of_le_add (le_congr (.eqRefl _) (add_comm _ _) h)
 
 /-- `b + c ≤ a + e ⟹ b ≤ (a ∸ c) + e`: clipping `P = a − c` at zero keeps the bound
 `b ≤ P + e` for natural `b`. -/

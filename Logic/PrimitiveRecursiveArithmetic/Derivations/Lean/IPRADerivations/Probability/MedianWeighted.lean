@@ -156,16 +156,14 @@ theorem le_add_ad (a b : PTm n) : Γ ⊢[PRAAx] le a (b + ad a b) :=
   .orE (le_total a b) (le_add_ad₁ Prf.hyp0) (le_add_ad₂ Prf.hyp0)
 
 theorem ad_le_of₁ {a b c : PTm n} (h : Γ ⊢[PRAAx] le a b) (h2 : Γ ⊢[PRAAx] le b (a + c)) :
-    Γ ⊢[PRAAx] le (ad a b) c := by
-  have f1 := natEq h; have f2 := natEq (eq_add_of_le h); have f3 := natEq (eq_add_of_le h2)
-  refine le_of_eq_add (d := monus (a + c) b) ?_
-  ipra_lc f3 + f2 - f1
+    Γ ⊢[PRAAx] le (ad a b) c :=
+  le_congr ((congrAdd h (.eqRefl _)).eqTrans (zero_add _)).eqSymm (.eqRefl _)
+    (Order.monus_le_of_le_add h2)
 
 theorem ad_le_of₂ {a b c : PTm n} (h : Γ ⊢[PRAAx] le b a) (h1 : Γ ⊢[PRAAx] le a (b + c)) :
-    Γ ⊢[PRAAx] le (ad a b) c := by
-  have f1 := natEq h; have f2 := natEq (eq_add_of_le h); have f3 := natEq (eq_add_of_le h1)
-  refine le_of_eq_add (d := monus (b + c) a) ?_
-  ipra_lc f3 + f2 - f1
+    Γ ⊢[PRAAx] le (ad a b) c :=
+  le_congr ((congrAdd (.eqRefl _) h).eqTrans (add_zero _)).eqSymm (.eqRefl _)
+    (Order.monus_le_of_le_add h1)
 
 theorem ad_le_of {a b c : PTm n} (h1 : Γ ⊢[PRAAx] le a (b + c)) (h2 : Γ ⊢[PRAAx] le b (a + c)) :
     Γ ⊢[PRAAx] le (ad a b) c :=

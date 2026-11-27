@@ -62,19 +62,11 @@ theorem le_add_ad (x y : PTm k) : Γ ⊢[PRAAx] le x (y + ad x y) := by
 /-- `|x - y| ≤ z` from `x ≤ y + z` and `y ≤ x + z`. -/
 theorem ad_le_of {x y z : PTm k} (h₁ : Γ ⊢[PRAAx] le x (y + z))
     (h₂ : Γ ⊢[PRAAx] le y (x + z)) : Γ ⊢[PRAAx] le (ad x y) z := by
-  refine .orE (lt_or_le x y) ?_ ?_
-  · -- `x ≤ y`: `|x - y| = y ∸ x`
-    have hle : (lt x y :: Γ) ⊢[PRAAx] le x y := le_of_lt Prf.hyp0
-    have e := natEq (eq_add_of_le hle)
-    have z₀ := natEq hle
-    refine le_of_eq_add (d := monus (x + z) y) ?_
-    ipra_lc natEq (eq_add_of_le (h₂.wk (ψ := lt x y))) + e - z₀
-  · -- `y ≤ x`: `|x - y| = x ∸ y`
-    have hle : (le y x :: Γ) ⊢[PRAAx] le y x := Prf.hyp0
-    have e := natEq (eq_add_of_le hle)
-    have z₀ := natEq hle
-    refine le_of_eq_add (d := monus (y + z) x) ?_
-    ipra_lc natEq (eq_add_of_le (h₁.wk (ψ := le y x))) + e - z₀
+  refine .orE (le_total x y) ?_ ?_
+  · exact le_congr ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (zero_add _)).eqSymm (.eqRefl _)
+      (Order.monus_le_of_le_add h₂.wk)
+  · exact le_congr ((congrAdd (.eqRefl _) Prf.hyp0).eqTrans (add_zero _)).eqSymm (.eqRefl _)
+      (Order.monus_le_of_le_add h₁.wk)
 
 /-- `|(a + c) - (b + d)| ≤ |a - b| + |c - d|`. -/
 theorem ad_triangle (a b c d : PTm k) :

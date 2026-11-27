@@ -43,9 +43,8 @@ alias pos_of_le_one := Common.pos_of_one_le
 alias one_le_of_pos := Common.one_le_of_pos
 
 /-- `a ≤ b + (a ∸ b)`. -/
-theorem le_add_monus_l (a b : PTm n) : Γ ⊢[PRAAx] le a (b + monus a b) := by
-  refine le_of_eq_add (d := monus b a) ?_
-  ipra_lc natEq (monus_max a b)
+theorem le_add_monus_l (a b : PTm n) : Γ ⊢[PRAAx] le a (b + monus a b) :=
+  Common.le_add_monus a b
 
 /-- `x ≤ a` gives `x² < D` when `a² < D`. -/
 theorem sq_lt_of_le {x a D : PTm n} (hA : Γ ⊢[PRAAx] lt (a * a) D) (h : Γ ⊢[PRAAx] le x a) :
@@ -258,13 +257,8 @@ theorem step_closure (hA : Γ ⊢[PRAAx] lt (a * a) D) (hB : Γ ⊢[PRAAx] lt D 
     (.andI hR1' hR2')))))) (.andI ex1 ex2)
 
 /-- `x ≤ y + z` gives `x ∸ y ≤ z`. -/
-theorem monus_le_of_le_add {x y z : PTm n} (h : Γ ⊢[PRAAx] le x (y + z)) : Γ ⊢[PRAAx] le (monus x y) z := by
-  refine .orE (le_total x y) ?_ ?_
-  · exact le_congr (show (le x y :: Γ) ⊢[PRAAx] monus x y ≐ zero from Prf.hyp0).eqSymm (.eqRefl _) (zero_le _)
-  · let C := le y x :: Γ
-    refine le_of_eq_add (d := monus (y + z) x) ?_
-    ipra_lc natEq (eq_add_of_le (h.wk : C ⊢[PRAAx] le x (y + z))) +
-      natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le y x))
+theorem monus_le_of_le_add {x y z : PTm n} (h : Γ ⊢[PRAAx] le x (y + z)) : Γ ⊢[PRAAx] le (monus x y) z :=
+  Order.monus_le_of_le_add h
 
 /-- Reducedness is invariant under provable equality of the state. -/
 theorem Red_congr {m m' d d' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m') (hd : Γ ⊢[PRAAx] d ≐ d')

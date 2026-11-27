@@ -290,4 +290,12 @@ theorem monus_add_add (a b c : PTm n) : Γ ⊢[PRAAx] monus (a + c) (b + c) ≐ 
 theorem le_of_add_le_add_right {a b c : PTm n} (h : Γ ⊢[PRAAx] le (a + c) (b + c)) :
     Γ ⊢[PRAAx] le a b := (monus_add_add a b c).eqSymm.eqTrans h
 
+/-- `x ≤ y + z` gives `x ∸ y ≤ z`. -/
+theorem Order.monus_le_of_le_add {x y z : PTm n} (h : Γ ⊢[PRAAx] le x (y + z)) :
+    Γ ⊢[PRAAx] le (monus x y) z := by
+  refine .orE (le_total x y) ?_ ?_
+  · exact le_congr (Prf.eqSymm Prf.hyp0) (.eqRefl _) (zero_le z)
+  · have hyx : (le y x :: Γ) ⊢[PRAAx] le y x := Prf.hyp0
+    exact le_of_add_le_add_right (le_congr ((eq_add_of_le hyx).eqTrans (add_comm _ _)) (add_comm _ _) h.wk)
+
 end LeanProofs.IPRA

@@ -29,14 +29,10 @@ abbrev absd (a b : PTm n) : PTm n := monus a b + monus b a
 theorem absd_le {a b c : PTm n} (h₁ : Γ ⊢[PRAAx] le a (b + c)) (h₂ : Γ ⊢[PRAAx] le b (a + c)) :
     Γ ⊢[PRAAx] le (absd a b) c := by
   refine .orE (le_total a b) ?_ ?_
-  · have hab : (le a b :: Γ) ⊢[PRAAx] le a b := Prf.hyp0
-    have e := natEq (eq_add_of_le hab); have z := natEq hab
-    have h := h₂.wk (ψ := le a b)
-    ipra_le sl h with e - z
-  · have hba : (le b a :: Γ) ⊢[PRAAx] le b a := Prf.hyp0
-    have e := natEq (eq_add_of_le hba); have z := natEq hba
-    have h := h₁.wk (ψ := le b a)
-    ipra_le sl h with e - z
+  · exact le_congr ((congrAdd Prf.hyp0 (.eqRefl _)).eqTrans (zero_add _)).eqSymm (.eqRefl _)
+      (Order.monus_le_of_le_add h₂.wk)
+  · exact le_congr ((congrAdd (.eqRefl _) Prf.hyp0).eqTrans (add_zero _)).eqSymm (.eqRefl _)
+      (Order.monus_le_of_le_add h₁.wk)
 
 theorem le_absd_l (a b : PTm n) : Γ ⊢[PRAAx] le a (b + absd a b) := by
   refine .orE (le_total a b) ?_ ?_

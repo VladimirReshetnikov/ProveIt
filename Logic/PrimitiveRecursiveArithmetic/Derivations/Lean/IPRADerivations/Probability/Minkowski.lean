@@ -37,13 +37,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 /-! ## The pointwise triangle inequality -/
 
 /-- `x ≤ y + z` gives `x ∸ y ≤ z`. -/
-theorem monus_le_of_le_add {x y z : PTm n} (h : Γ ⊢[PRAAx] le x (y + z)) : Γ ⊢[PRAAx] le (monus x y) z := by
-  refine .orE (le_total x y) ?_ ?_
-  · exact le_congr (show (le x y :: Γ) ⊢[PRAAx] monus x y ≐ zero from Prf.hyp0).eqSymm (.eqRefl _) (zero_le _)
-  · let C := le y x :: Γ
-    refine le_of_eq_add (d := monus (y + z) x) ?_
-    ipra_lc natEq (eq_add_of_le (h.wk : C ⊢[PRAAx] le x (y + z))) +
-      natEq (eq_add_of_le (Prf.hyp0 : C ⊢[PRAAx] le y x))
+theorem monus_le_of_le_add {x y z : PTm n} (h : Γ ⊢[PRAAx] le x (y + z)) : Γ ⊢[PRAAx] le (monus x y) z :=
+  Order.monus_le_of_le_add h
 
 /-- `a ≤ b + (a ∸ b)`. -/
 alias le_add_monus := Common.le_add_monus
