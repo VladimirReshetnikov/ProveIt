@@ -159,6 +159,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialRationalRatios.lean](GRHArticle/ProgressionFree/PolynomialRationalRatios.lean) proves that a single set attains the upper-density supremum for rational-function ratios over every finite field. Its polynomial midpoint criterion is equivalent to testing actual ratios in the fraction field, including nonconstant ratios of degree zero. [PolynomialBlockAttainment.lean](GRHArticle/ProgressionFree/PolynomialBlockAttainment.lean) gives the maximizer theorem for any property preserved by unions of separated degree blocks.
 
+[PolynomialRationalSmoothMaximum.lean](GRHArticle/ProgressionFree/PolynomialRationalSmoothMaximum.lean) computes and attains each exact smooth-ball optimum for rational-function ratios by testing polynomial coefficient vectors over the finite field. [PolynomialRationalFibers.lean](GRHArticle/ProgressionFree/PolynomialRationalFibers.lean) proves that squarefree rough fibers may each use an independent smooth rule while preserving rational-ratio admissibility.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in

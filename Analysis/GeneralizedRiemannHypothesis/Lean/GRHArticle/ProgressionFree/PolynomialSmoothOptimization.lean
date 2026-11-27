@@ -16,14 +16,14 @@ open scoped BigOperators
 
 variable {F : Type*} [Field F] [Fintype F] [DecidableEq F] {n : ℕ}
 
-private abbrev Coefficients (F : Type*) (n : ℕ) := Fin n → F
+abbrev Coefficients (F : Type*) (n : ℕ) := Fin n → F
 
-private noncomputable def vectorPolynomial (n : ℕ) : Coefficients F n ↪ Polynomial F :=
+noncomputable def vectorPolynomial (n : ℕ) : Coefficients F n ↪ Polynomial F :=
   (degreeLTEquiv F n).symm.toEquiv.toEmbedding.trans
     (Function.Embedding.subtype fun f ↦ f ∈ degreeLT F n)
 
 omit [Fintype F] [DecidableEq F] in
-private theorem vectorPolynomial_degree_lt (v : Coefficients F n) :
+theorem vectorPolynomial_degree_lt (v : Coefficients F n) :
     (vectorPolynomial n v).degree < n :=
   mem_degreeLT.mp ((degreeLTEquiv F n).symm v).property
 
@@ -33,11 +33,11 @@ private theorem exists_vectorPolynomial {p : Polynomial F} (hp : p.degree < n) :
   let P : degreeLT F n := ⟨p, mem_degreeLT.mpr hp⟩
   exact ⟨degreeLTEquiv F n P, congrArg Subtype.val ((degreeLTEquiv F n).symm_apply_apply P)⟩
 
-private def vectorCoeff (v : Coefficients F n) (i : ℕ) : F :=
+def vectorCoeff (v : Coefficients F n) (i : ℕ) : F :=
   if h : i < n then v ⟨i, h⟩ else 0
 
 omit [Fintype F] [DecidableEq F] in
-private theorem vectorPolynomial_coeff (v : Coefficients F n) (i : ℕ) :
+theorem vectorPolynomial_coeff (v : Coefficients F n) (i : ℕ) :
     (vectorPolynomial n v).coeff i = vectorCoeff v i := by
   by_cases hi : i < n
   · rw [vectorCoeff, dif_pos hi]
@@ -78,7 +78,7 @@ private theorem vectorMonic_iff (v : Coefficients F n) :
   change _ ↔ (vectorPolynomial n v).leadingCoeff = 1
   rw [leadingCoeff, vectorPolynomial_natDegree, vectorPolynomial_coeff]
 
-private def vectorProductCoeff (u v : Coefficients F n) (i : ℕ) : F :=
+def vectorProductCoeff (u v : Coefficients F n) (i : ℕ) : F :=
   ∑ j ∈ Finset.range (i + 1), vectorCoeff u j * vectorCoeff v (i-j)
 
 private abbrev vectorProductEq (u v w : Coefficients F n) : Prop :=
@@ -236,7 +236,7 @@ private def vectorRatioTest (B : Finset (Coefficients F n)) : Bool :=
     a ≠ 0 → 0 < vectorNatDegree r → ¬ (vectorProductEq a r b ∧ vectorProductEq b r c))
 
 omit [Fintype F] [DecidableEq F] in
-private theorem vectorPolynomial_zero : vectorPolynomial n (0 : Coefficients F n) = 0 :=
+theorem vectorPolynomial_zero : vectorPolynomial n (0 : Coefficients F n) = 0 :=
   congrArg Subtype.val ((degreeLTEquiv F n).symm.map_zero)
 
 private theorem vectorRatioTest_eq_true_iff (B : Finset (Coefficients F n)) :
@@ -275,16 +275,18 @@ private theorem vectorRatioTest_eq_true_iff (B : Finset (Coefficients F n)) :
     exact h _ _ ha₀' hr' ⟨hma, ((vectorProductEq_iff a r b).mp hab).symm ▸ hmb,
       (by rwa [(vectorProductEq_iff a r b).mp hab, (vectorProductEq_iff b r c).mp hbc])⟩
 
-/-- The exact `J_S(t)` for the cutoff primes, computed by finite exhaustive search. -/
-def polynomialSmoothMaximum (F : Type*) [Field F] [Fintype F] [DecidableEq F]
-    (T t : ℕ) : ℕ :=
-  ((smoothVectors F T t).powerset.filter fun B ↦ vectorRatioTest B).sup Finset.card
+/-- Exact maximum for a decidable rule on coefficient subsets in a smooth ball. -/
+def polynomialSmoothMaximumWith (F : Type*) [Field F] [Fintype F] [DecidableEq F] (T t : ℕ)
+    (test : Finset (Coefficients F (t+1)) → Bool) : ℕ :=
+  ((smoothVectors F T t).powerset.filter fun B ↦ test B).sup Finset.card
 
 /-- Every progression-free subset of the smooth ball has cardinal at most the computed optimum. -/
-theorem le_polynomialSmoothMaximum {T t : ℕ} {B : Finset (Polynomial F)}
+theorem le_polynomialSmoothMaximumWith {T t : ℕ}
+    (test : Finset (Coefficients F (t+1)) → Bool) (P : Set (Polynomial F) → Prop)
+    (hTest : ∀ V, test V = true ↔ P ((V.map (vectorPolynomial (t+1))) : Set (Polynomial F))) {B : Finset (Polynomial F)}
     (hB : B ⊆ polynomialSmoothBall F T t)
-    (hfree : PolynomialRatioThreeGPFree (B : Set (Polynomial F))) :
-    B.card ≤ polynomialSmoothMaximum F T t := by
+    (hfree : P (B : Set (Polynomial F))) :
+    B.card ≤ polynomialSmoothMaximumWith F T t test := by
   classical
   let v := vectorPolynomial (F := F) (t+1)
   let W := (smoothVectors F T t).filter fun a ↦ v a ∈ B
@@ -297,27 +299,50 @@ theorem le_polynomialSmoothMaximum {T t : ℕ} {B : Finset (Polynomial F)}
     · intro hf
       obtain ⟨a, ha, rfl⟩ := Finset.mem_map.mp (hB hf)
       exact Finset.mem_map.mpr ⟨a, Finset.mem_filter.mpr ⟨ha, hf⟩, rfl⟩
-  have hw : W ∈ (smoothVectors F T t).powerset.filter (fun E ↦ vectorRatioTest E) := by
+  have hw : W ∈ (smoothVectors F T t).powerset.filter (fun E ↦ test E) := by
     refine Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr (Finset.filter_subset _ _), ?_⟩
-    exact (vectorRatioTest_eq_true_iff W).mpr (hmap.symm ▸ hfree)
+    exact (hTest W).mpr (hmap.symm ▸ hfree)
   have heq : W.card = B.card := by rw [← hmap, Finset.card_map]
   rw [← heq]
   exact Finset.le_sup (f := Finset.card) hw
 
 /-- A progression-free subset realizes the computed optimum. -/
-theorem exists_polynomialSmoothMaximum (T t : ℕ) :
+theorem exists_polynomialSmoothMaximumWith (T t : ℕ)
+    (test : Finset (Coefficients F (t+1)) → Bool) (P : Set (Polynomial F) → Prop)
+    (hTest : ∀ V, test V = true ↔ P ((V.map (vectorPolynomial (t+1))) : Set (Polynomial F)))
+    (hEmpty : P ∅) :
     ∃ B : Finset (Polynomial F), B ⊆ polynomialSmoothBall F T t ∧
-      PolynomialRatioThreeGPFree (B : Set (Polynomial F)) ∧
-      B.card = polynomialSmoothMaximum F T t := by
-  let C := (smoothVectors F T t).powerset.filter fun B ↦ vectorRatioTest B
+      P (B : Set (Polynomial F)) ∧
+      B.card = polynomialSmoothMaximumWith F T t test := by
+  let C := (smoothVectors F T t).powerset.filter fun B ↦ test B
   have hne : C.Nonempty := ⟨∅, Finset.mem_filter.mpr
-    ⟨Finset.mem_powerset.mpr (Finset.empty_subset _), by rw [vectorRatioTest, decide_eq_true_eq]; simp⟩⟩
+    ⟨Finset.mem_powerset.mpr (Finset.empty_subset _), (hTest ∅).mpr (by simpa using hEmpty)⟩⟩
   obtain ⟨A, hA, heq⟩ := Finset.exists_mem_eq_sup C hne Finset.card
   refine ⟨A.map (vectorPolynomial (t+1)), ?_,
-    (vectorRatioTest_eq_true_iff A).mp (Finset.mem_filter.mp hA).2, ?_⟩
+    (hTest A).mp (Finset.mem_filter.mp hA).2, ?_⟩
   · exact Finset.map_subset_map.mpr (Finset.mem_powerset.mp (Finset.mem_filter.mp hA).1)
   · rw [Finset.card_map, ← heq]
     rfl
+
+/-- The exact `J_S(t)` for the cutoff primes, computed by finite exhaustive search. -/
+def polynomialSmoothMaximum (F : Type*) [Field F] [Fintype F] [DecidableEq F]
+    (T t : ℕ) : ℕ :=
+  polynomialSmoothMaximumWith F T t vectorRatioTest
+
+/-- Every progression-free subset of the smooth ball has cardinal at most the computed optimum. -/
+theorem le_polynomialSmoothMaximum {T t : ℕ} {B : Finset (Polynomial F)}
+    (hB : B ⊆ polynomialSmoothBall F T t)
+    (hfree : PolynomialRatioThreeGPFree (B : Set (Polynomial F))) :
+    B.card ≤ polynomialSmoothMaximum F T t :=
+  le_polynomialSmoothMaximumWith vectorRatioTest PolynomialRatioThreeGPFree vectorRatioTest_eq_true_iff hB hfree
+
+/-- A progression-free subset realizes the computed optimum. -/
+theorem exists_polynomialSmoothMaximum (T t : ℕ) :
+    ∃ B : Finset (Polynomial F), B ⊆ polynomialSmoothBall F T t ∧
+      PolynomialRatioThreeGPFree (B : Set (Polynomial F)) ∧
+      B.card = polynomialSmoothMaximum F T t :=
+  exists_polynomialSmoothMaximumWith T t vectorRatioTest PolynomialRatioThreeGPFree vectorRatioTest_eq_true_iff
+    (by simp [PolynomialRatioThreeGPFree])
 
 /-- The optimal size is bounded by the number of possible exponent vectors. -/
 theorem polynomialSmoothMaximum_le_pow (T t : ℕ) :
