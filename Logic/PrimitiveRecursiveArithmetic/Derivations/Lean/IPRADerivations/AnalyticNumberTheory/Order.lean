@@ -57,27 +57,8 @@ theorem cong_of_ordVal {i a N : PTm n} (h : Γ ⊢[PRAAx] ordVal i a N ≐ zero)
 
 /-- Powers respect congruence. -/
 theorem pw_rem_congr {x y N : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (h : Γ ⊢[PRAAx] rem x N ≐ rem y N)
-    (q : PTm n) : Γ ⊢[PRAAx] rem (pw x q) N ≐ rem (pw y q) N := by
-  have hall : Γ ⊢[PRAAx] Fm.all (rem (pw (Syn.shift x) (var 0)) (Syn.shift N) ≐ rem (pw (Syn.shift y) (var 0)) (Syn.shift N)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact congrAp2 remF ((pw_zero _).eqTrans (pw_zero _).eqSymm) (.eqRefl _)
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have hN' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift N ≐ succ (pred (Syn.shift N)) := by
-        have e := hN.shift
-        simp only [Fm.shift, Fm.subst_eq, PTm.subst_pred, ConciseIPRA.PTm.subst_succ] at e
-        exact e
-      have h' : Γ.map Fm.shift ⊢[PRAAx] rem (Syn.shift x) (Syn.shift N) ≐ rem (Syn.shift y) (Syn.shift N) := by
-        have e := h.shift
-        simp only [Fm.shift, Fm.subst_eq, subst_ap2] at e
-        exact e
-      refine (congrAp2 remF (pw_succ _ _) (.eqRefl _)).eqTrans (.eqTrans ?_ (congrAp2 remF (pw_succ _ _) (.eqRefl _)).eqSymm)
-      refine (rem_mul_congr _ hN'.wk Prf.hyp0).eqTrans ?_
-      refine (congrAp2 remF (mul_comm _ _) (.eqRefl _)).eqTrans ((rem_mul_congr _ hN'.wk h'.wk).eqTrans ?_)
-      exact congrAp2 remF (mul_comm _ _) (.eqRefl _)
-  have h2 := Prf.allE q hall
-  simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h2
-  exact h2
+    (q : PTm n) : Γ ⊢[PRAAx] rem (pw x q) N ≐ rem (pw y q) N :=
+  Foundations.ChineseRemainder.rem_pow_congr hN h q
 
 private theorem pw_one₀ : ([] : List (Fm PTm 1)) ⊢[PRAAx] pw one (var 0) ≐ one := by
   ipra_ind [subst_ap2]

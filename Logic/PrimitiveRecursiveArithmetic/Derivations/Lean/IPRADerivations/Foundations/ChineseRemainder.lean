@@ -53,6 +53,79 @@ theorem rem_eq_of_eq {M x y k₁ k₂ : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (p
   exact (congrAp2 remF (.eqRefl _) hM).eqTrans ((rem_eq_of_eq' h').eqTrans
     (congrAp2 remF (.eqRefl _) hM.eqSymm))
 
+/-- Multiplying both sides of a congruence by a fixed factor preserves it. -/
+theorem rem_mul_right_congr {M x y : PTm n} (c : PTm n) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
+    (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) : Γ ⊢[PRAAx] rem (x * c) M ≐ rem (y * c) M := by
+  have dx := div_mod (Γ := Γ) x (pred M)
+  have dy := div_mod (Γ := Γ) y (pred M)
+  have residues : Γ ⊢[PRAAx] rem x (succ (pred M)) ≐ rem y (succ (pred M)) :=
+    (congrAp2 remF (.eqRefl _) hM.eqSymm).eqTrans (h.eqTrans (congrAp2 remF (.eqRefl _) hM))
+  refine rem_eq_of_eq hM (k₁ := quo y (succ (pred M)) * c) (k₂ := quo x (succ (pred M)) * c) ?_
+  ipra_lc 𝔞 c * (natEq (Prf.andE₁ dx) - natEq (Prf.andE₁ dy) + natEq residues) +
+    𝔞 c * (𝔞 (quo y (succ (pred M))) - 𝔞 (quo x (succ (pred M)))) * natEq hM
+
+/-- Multiplication preserves congruence in both factors. -/
+theorem rem_mul_congr_both {M x y x' y' : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
+    (h1 : Γ ⊢[PRAAx] rem x M ≐ rem y M) (h2 : Γ ⊢[PRAAx] rem x' M ≐ rem y' M) :
+    Γ ⊢[PRAAx] rem (x * x') M ≐ rem (y * y') M := by
+  exact (rem_mul_right_congr x' hM h1).eqTrans
+    ((congrAp2 remF (mul_comm y x') (.eqRefl _)).eqTrans
+      ((rem_mul_right_congr y hM h2).eqTrans (congrAp2 remF (mul_comm y' y) (.eqRefl _))))
+
+private theorem shift_positive {m : PTm n} (h : Γ ⊢[PRAAx] m ≐ succ (pred m)) :
+    Γ.map Fm.shift ⊢[PRAAx] Syn.shift m ≐ succ (pred (Syn.shift m)) := by
+  simpa [Fm.shift, Syn.shift] using h.shift
+
+/-- Compare two folds using the same operation on remainders at each successor step. -/
+theorem fold_congr_mod (fold : PTm 2 → PR 2)
+    (combine : PTm (n + 1) → PTm (n + 1) → PTm (n + 1))
+    (f g : PTm 2) {N x y M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
+      rem (inst2 f (var 0) (Syn.shift x)) (Syn.shift M) ≐ rem (inst2 g (var 0) (Syn.shift y)) (Syn.shift M)))
+    (base : Γ ⊢[PRAAx] ap2 (fold f) zero x ≐ ap2 (fold g) zero y)
+    (advance : ∀ {Δ : List (Fm PTm (n + 1))} (body : PTm 2) (j z : PTm (n + 1)),
+      Δ ⊢[PRAAx] ap2 (fold body) (succ j) z ≐ combine (ap2 (fold body) j z) (inst2 body j z))
+    (combine_congr : ∀ {Δ : List (Fm PTm (n + 1))} {m a b c d : PTm (n + 1)},
+      (Δ ⊢[PRAAx] m ≐ succ (pred m)) → (Δ ⊢[PRAAx] rem a m ≐ rem b m) →
+      (Δ ⊢[PRAAx] rem c m ≐ rem d m) → (Δ ⊢[PRAAx] rem (combine a c) m ≐ rem (combine b d) m)) :
+    Γ ⊢[PRAAx] rem (ap2 (fold f) N x) M ≐ rem (ap2 (fold g) N y) M := by
+  let P : Fm PTm (n + 1) :=
+    rem (ap2 (fold f) (var 0) (Syn.shift x)) (Syn.shift M) ≐
+      rem (ap2 (fold g) (var 0) (Syn.shift y)) (Syn.shift M)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P, rem] using congrAp2 remF base (.eqRefl M)
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      refine .impI ((congrAp2 remF (advance f (var 0) (Syn.shift x)) (.eqRefl _)).eqTrans ?_)
+      exact (combine_congr (shift_positive hM).wk.wk Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)).eqTrans
+        (congrAp2 remF (advance g (var 0) (Syn.shift y)) (.eqRefl _)).eqSymm
+  simpa [P, rem] using atBound
+
+/-- Finite products of pointwise-congruent bodies are congruent. -/
+theorem rem_prod_congr (f g : PTm 2) {N x y M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
+    (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
+      rem (inst2 f (var 0) (Syn.shift x)) (Syn.shift M) ≐ rem (inst2 g (var 0) (Syn.shift y)) (Syn.shift M))) :
+    Γ ⊢[PRAAx] rem (ap2 (prodF f) N x) M ≐ rem (ap2 (prodF g) N y) M :=
+  fold_congr_mod prodF (· * ·) f g hM h ((prod_zero f x).eqTrans (prod_zero g y).eqSymm)
+    (fun body i z => prod_succ body i z) (fun hPos hPrefix hEntry => rem_mul_congr_both hPos hPrefix hEntry)
+
+/-- A natural power preserves the congruence of its base. -/
+theorem rem_pow_congr {M x y : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
+    (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) (e : PTm n) :
+    Γ ⊢[PRAAx] rem (pw x e) M ≐ rem (pw y e) M := by
+  let P : Fm PTm (n + 1) :=
+    rem (pw (Syn.shift x) (var 0)) (Syn.shift M) ≐ rem (pw (Syn.shift y) (var 0)) (Syn.shift M)
+  have all : Γ ⊢[PRAAx] Fm.all P := by
+    refine PRA.qfInd P trivial ?_ ?_
+    · simpa [P, rem] using congrAp2 remF ((pw_zero x).eqTrans (pw_zero y).eqSymm) (.eqRefl M)
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      have factor : Γ.map Fm.shift ⊢[PRAAx] rem (Syn.shift x) (Syn.shift M) ≐ rem (Syn.shift y) (Syn.shift M) := by
+        simpa [Fm.shift, Syn.shift] using h.shift
+      exact (congrAp2 remF (pw_succ _ _) (.eqRefl _)).eqTrans
+        ((rem_mul_congr_both (shift_positive hM).wk Prf.hyp0 factor.wk).eqTrans
+          (congrAp2 remF (pw_succ _ _) (.eqRefl _)).eqSymm)
+  simpa [P, rem] using all.allE e
+
 /-- `x ≡ x + z (mod M)` gives `M ∣ z`. -/
 theorem dvd_of_rem_eq {M' x z : PTm n} (h : Γ ⊢[PRAAx] rem x (succ M') ≐ rem (x + z) (succ M')) :
     Γ ⊢[PRAAx] dvd (succ M') z := by

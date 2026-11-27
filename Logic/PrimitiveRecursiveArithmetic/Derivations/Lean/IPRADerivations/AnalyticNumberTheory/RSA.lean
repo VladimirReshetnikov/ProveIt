@@ -45,15 +45,8 @@ theorem pw_mul (x e d : PTm n) : Γ ⊢[PRAAx] pw (pw x e) d ≐ pw x (e * d) :=
 
 /-- `x ≡ y (mod M)` gives `x c ≡ y c (mod M)`. -/
 theorem rem_mul_congr {M x y : PTm n} (c : PTm n) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
-    (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) : Γ ⊢[PRAAx] rem (x * c) M ≐ rem (y * c) M := by
-  have dx := div_mod (Γ := Γ) x (pred M)
-  have dy := div_mod (Γ := Γ) y (pred M)
-  have h' : Γ ⊢[PRAAx] rem x (succ (pred M)) ≐ rem y (succ (pred M)) :=
-    (congrAp2 remF (.eqRefl _) hM.eqSymm).eqTrans (h.eqTrans (congrAp2 remF (.eqRefl _) hM))
-  refine rem_eq_of_eq hM (k₁ := quo y (succ (pred M)) * c) (k₂ := quo x (succ (pred M)) * c) ?_
-  ipra_lc Groth.ι (IPRA.Q.mk Γ c) * natEq (Prf.andE₁ dx) - Groth.ι (IPRA.Q.mk Γ c) * natEq (Prf.andE₁ dy) +
-    Groth.ι (IPRA.Q.mk Γ c) * natEq h' +
-    Groth.ι (IPRA.Q.mk Γ c) * (Groth.ι (IPRA.Q.mk Γ (quo y (succ (pred M)))) - Groth.ι (IPRA.Q.mk Γ (quo x (succ (pred M))))) * natEq hM
+    (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) : Γ ⊢[PRAAx] rem (x * c) M ≐ rem (y * c) M :=
+  Foundations.ChineseRemainder.rem_mul_right_congr c hM h
 
 /-! ## `x^{1 + k(p - 1)} ≡ x (mod p)` -/
 

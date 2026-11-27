@@ -207,29 +207,8 @@ end Perm
 theorem prod_rem_congr (f g : PTm 2) {x N M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       (rem (inst2 f (var 0) (Syn.shift x)) (Syn.shift M) ≐ rem (inst2 g (var 0) (Syn.shift x)) (Syn.shift M)))) :
-    Γ ⊢[PRAAx] rem (ap2 (prodF f) N x) M ≐ rem (ap2 (prodF g) N x) M := by
-  let P : Fm PTm (n + 1) :=
-    rem (ap2 (prodF f) (var 0) (Syn.shift x)) (Syn.shift M) ≐
-      rem (ap2 (prodF g) (var 0) (Syn.shift x)) (Syn.shift M)
-  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
-    refine qfIndUpTo N trivial ?_ ?_
-    · simpa [P] using
-        congrAp2 remF ((prod_zero (Γ := Γ) f x).eqTrans (prod_zero g x).eqSymm) (.eqRefl M)
-    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      have hM' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
-        have e := hM.shift
-        simp only [Fm.shift, Fm.subst_eq, PTm.subst_pred, ConciseIPRA.PTm.subst_succ] at e
-        exact e
-      refine .impI ?_
-      let C := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
-      have pt : C ⊢[PRAAx] rem (inst2 f (var 0) (Syn.shift x)) (Syn.shift M) ≐
-          rem (inst2 g (var 0) (Syn.shift x)) (Syn.shift M) := .impE h.allOpen.wk.wk Prf.hyp0
-      refine (congrAp2 remF (prod_succ _ _ _) (.eqRefl _)).eqTrans (.eqTrans ?_
-        (congrAp2 remF (prod_succ _ _ _) (.eqRefl _)).eqSymm)
-      refine (rem_mul_congr _ hM'.wk.wk (Prf.hyp1 : C ⊢[PRAAx] P)).eqTrans ?_
-      refine (congrAp2 remF (mul_comm _ _) (.eqRefl _)).eqTrans ((rem_mul_congr _ hM'.wk.wk pt).eqTrans ?_)
-      exact congrAp2 remF (mul_comm _ _) (.eqRefl _)
-  simpa [P] using atBound
+    Γ ⊢[PRAAx] rem (ap2 (prodF f) N x) M ≐ rem (ap2 (prodF g) N x) M :=
+  Foundations.ChineseRemainder.rem_prod_congr f g hM h
 
 /-- Variables: `0 = N`, `1 = x`. -/
 private abbrev prodMul1F (f g : PTm 2) : Fm PTm 2 :=

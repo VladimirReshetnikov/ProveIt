@@ -32,22 +32,8 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 
 /-- `x ≡ y (mod M)` gives `x^e ≡ y^e (mod M)`. -/
 theorem pw_congr_mod {x y M : PTm k} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) (e : PTm k) :
-    Γ ⊢[PRAAx] rem (pw x e) M ≐ rem (pw y e) M := by
-  have hall : Γ ⊢[PRAAx] Fm.all (rem (pw (Syn.shift x) (var 0)) (Syn.shift M) ≐ rem (pw (Syn.shift y) (var 0)) (Syn.shift M)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact congrAp2 remF ((pw_zero x).eqTrans (pw_zero y).eqSymm) (.eqRefl _)
-    · simp only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift, ConciseIPRA.PTm.subst_zero,
-        ConciseIPRA.PTm.subst_succ]
-      have ih : ((rem (pw (Syn.shift x) (var 0)) (Syn.shift M) ≐ rem (pw (Syn.shift y) (var 0)) (Syn.shift M)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] rem (pw (Syn.shift x) (var 0)) (Syn.shift M) ≐ rem (pw (Syn.shift y) (var 0)) (Syn.shift M) :=
-        Prf.hyp0
-      have hs : Γ.map Fm.shift ⊢[PRAAx] rem (Syn.shift x) (Syn.shift M) ≐ rem (Syn.shift y) (Syn.shift M) := by
-        have e := h.shift; simpa [Fm.shift, Syn.shift] using e
-      have r := rem_mul_congr2 (shift_pos hM).wk ih hs.wk
-      exact (congrAp2 remF (pw_succ _ _) (.eqRefl _)).eqTrans (r.eqTrans (congrAp2 remF (pw_succ _ _) (.eqRefl _)).eqSymm)
-  have h2 := Prf.allE e hall
-  simpa only [Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using h2
+    Γ ⊢[PRAAx] rem (pw x e) M ≐ rem (pw y e) M :=
+  Foundations.ChineseRemainder.rem_pow_congr hM h e
 
 /-- The factor `v_i^{E(k, i)}`, over `0 = i`, `1 = ⟨k, x⟩`. -/
 abbrev monoB (E V : PTm 2) : PTm 2 := pw (inst2 V (var 0) (sndT (var 1))) (inst2 E (fstT (var 1)) (var 0))
