@@ -144,22 +144,26 @@ private abbrev prodMulF (f g : PTm 3) : Fm PTm 3 :=
 
 private theorem prod2_mul₀ (f g : PTm 3) : ([] : List (Fm PTm 3)) ⊢[PRAAx] prodMulF f g := by
   ipra_ind [subst_ap3]
-  · refine (prod2_zero _ _ _).eqTrans ?_
-    refine withEq (prod2_zero (Γ := []) f (var 0 : PTm 2) (var 1)) fun e₁ =>
-      withEq (prod2_zero (Γ := []) g (var 0 : PTm 2) (var 1)) fun e₂ => ?_
-    apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-  · have e : inst3 (f * g) (var 0 : PTm 3) (var 1) (var 2) = inst3 f (var 0) (var 1) (var 2) * inst3 g (var 0) (var 1) (var 2) := by
-      simp [inst3]
-    refine (prod2_succ _ (var 0) _ _).eqTrans ?_
-    rw [e]
-    refine withEq Prf.hyp0 fun e₁ => withEq (prod2_succ f (var 0) (var 1) (var 2)) fun e₂ =>
-      withEq (prod2_succ g (var 0) (var 1) (var 2)) fun e₃ => ?_
-    apply deriveNat; ipra_simps; rw [e₁, e₂, e₃]; ring
+  · exact (prod2_zero (f * g) _ _).eqTrans
+      ((congrMul (prod2_zero f _ _) (prod2_zero g _ _)).eqTrans (one_mul _)).eqSymm
+  · have pointwise := prod2_succ (Γ := [prodMulF f g]) (f * g) (var 0) (var 1) (var 2)
+    simp only [inst3, PTm.subst_mul] at pointwise
+    refine (pointwise.eqTrans (congrMul Prf.hyp0 (.eqRefl _))).eqTrans ?_
+    refine .eqTrans ?_ (congrMul (prod2_succ f _ _ _).eqSymm (prod2_succ g _ _ _).eqSymm)
+    simp only [inst3]
+    ipra_ring
 
 theorem prod2_mul (f g : PTm 3) (N p q : PTm n) :
     Γ ⊢[PRAAx] ap3 (prod2F (f * g)) N p q ≐ ap3 (prod2F f) N p q * ap3 (prod2F g) N p q := by
-  have h := inst (Γ := Γ) (prod2_mul₀ f g) (![N, p, q] : Fin 3 → PTm n)
-  simpa using h
+  simpa using inst (Γ := Γ) (prod2_mul₀ f g) (![N, p, q] : Fin 3 → PTm n)
+
+/-- A product of pointwise products is the product of the two separate products. -/
+theorem prod_mul_body (f g : PTm 2) (N x : PTm n) :
+    Γ ⊢[PRAAx] ap2 (prodF (f * g)) N x ≐ ap2 (prodF f) N x * ap2 (prodF g) N x := by
+  refine (prod2_eq_prod_ignore_parameter (f * g) N zero x).eqSymm.eqTrans ?_
+  rw [PTm.subst_mul]
+  exact (prod2_mul _ _ N zero x).eqTrans
+    (congrMul (prod2_eq_prod_ignore_parameter f N zero x) (prod2_eq_prod_ignore_parameter g N zero x))
 
 /-- Variables: `0 = N`, `1 = p`, `2 = q`. -/
 private abbrev prodOneF : Fm PTm 3 := ap3 (prod2F one) (var 0) (var 1) (var 2) ≐ one

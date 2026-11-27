@@ -214,24 +214,12 @@ theorem prod_rem_congr (f g : PTm 2) {x N M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ s
 private abbrev prodMul1F (f g : PTm 2) : Fm PTm 2 :=
   ap2 (prodF (f * g)) (var 0) (var 1) ≐ ap2 (prodF f) (var 0) (var 1) * ap2 (prodF g) (var 0) (var 1)
 
-private theorem prod_mul1₀ (f g : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] prodMul1F f g := by
-  ipra_ind [subst_ap2]
-  · refine (prod_zero _ _).eqTrans ?_
-    refine withEq (prod_zero (Γ := []) f (var 0 : PTm 1)) fun e₁ =>
-      withEq (prod_zero (Γ := []) g (var 0 : PTm 1)) fun e₂ => ?_
-    apply deriveNat; ipra_simps; rw [e₁, e₂]; ring
-  · refine (prod_succ _ (var 0) _).eqTrans ?_
-    have e : Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) (f * g) = Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) f * Syn.subst (![var 0, var 1] : Fin 2 → PTm 2) g := by
-      simp
-    rw [e]
-    refine withEq Prf.hyp0 fun e₁ => withEq (prod_succ f (var 0) (var 1)) fun e₂ =>
-      withEq (prod_succ g (var 0) (var 1)) fun e₃ => ?_
-    apply deriveNat; ipra_simps; rw [e₁, e₂, e₃]; ring
+private theorem prod_mul1₀ (f g : PTm 2) : ([] : List (Fm PTm 2)) ⊢[PRAAx] prodMul1F f g :=
+  prod_mul_body f g (var 0) (var 1)
 
 theorem prod_mul1 (f g : PTm 2) (N x : PTm n) :
     Γ ⊢[PRAAx] ap2 (prodF (f * g)) N x ≐ ap2 (prodF f) N x * ap2 (prodF g) N x := by
-  have h := inst (Γ := Γ) (prod_mul1₀ f g) (![N, x] : Fin 2 → PTm n)
-  simpa using h
+  simpa using inst (Γ := Γ) (prod_mul1₀ f g) (![N, x] : Fin 2 → PTm n)
 
 /-- Variables: `0 = N`, `1 = x`. -/
 private abbrev prodPwF (e : PTm 2) : Fm PTm 2 :=

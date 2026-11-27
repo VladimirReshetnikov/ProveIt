@@ -34,35 +34,8 @@ abbrev ex (i P : PTm n) : PTm n := pw i (succ (val i (lcmu P)))
 /-! ## Products of products -/
 
 theorem prod_mul (f g : PTm 2) (N x : PTm n) :
-    Γ ⊢[PRAAx] ap2 (prodF (f * g)) N x ≐ ap2 (prodF f) N x * ap2 (prodF g) N x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (ap2 (prodF (f * g)) (var 0) (Syn.shift x) ≐
-      ap2 (prodF f) (var 0) (Syn.shift x) * ap2 (prodF g) (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_zero]
-      have a := natEq (prod_zero (Γ := Γ) (f * g) x)
-      have b := natEq (prod_zero (Γ := Γ) f x)
-      ipra_lc a - (𝔞 (ap2 (prodF g) zero x)) * b - natEq (prod_zero g x)
-    · simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      let D : List (Fm PTm (n + 1)) := (ap2 (prodF (f * g)) (var 0) (Syn.shift x) ≐
-        ap2 (prodF f) (var 0) (Syn.shift x) * ap2 (prodF g) (var 0) (Syn.shift x)) :: Γ.map Fm.shift
-      have ih := natEq (Prf.hyp0 : D ⊢[PRAAx] _)
-      have s1 := prod_succ (Γ := D) (f * g) (var 0) (Syn.shift x)
-      have e1 : Syn.subst ![var 0, Syn.shift x] (f * g) =
-          Syn.subst ![var 0, Syn.shift x] f * Syn.subst ![var 0, Syn.shift x] g := by simp
-      rw [e1] at s1
-      have a := natEq s1
-      have b := natEq (prod_succ (Γ := D) f (var 0) (Syn.shift x))
-      have c := natEq (prod_succ (Γ := D) g (var 0) (Syn.shift x))
-      apply deriveNat; ipra_simps
-      linear_combination a + (𝔞 (Syn.subst ![var 0, Syn.shift x] f) * 𝔞 (Syn.subst ![var 0, Syn.shift x] g)) * ih
-        - 𝔞 (ap2 (prodF g) (succ (var 0)) (Syn.shift x)) * b
-        - 𝔞 (ap2 (prodF f) (var 0) (Syn.shift x)) * 𝔞 (Syn.subst ![var 0, Syn.shift x] f) * c
-  have r := Prf.allE N hall
-  simp only [Fm.subst_eq, subst_ap2, PTm.subst_mul, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_zero] at r
-  exact r
+    Γ ⊢[PRAAx] ap2 (prodF (f * g)) N x ≐ ap2 (prodF f) N x * ap2 (prodF g) N x :=
+  prod_mul_body f g N x
 
 /-! ## Which primes divide `L` -/
 

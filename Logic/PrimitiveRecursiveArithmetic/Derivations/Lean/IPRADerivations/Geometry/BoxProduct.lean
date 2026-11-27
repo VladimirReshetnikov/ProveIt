@@ -56,7 +56,7 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 /-! ## The product of a product -/
 
-/-- The induction formula of `prod_mul`; variable `0` is the upper limit. -/
+/-- The product equality with the upper limit in variable `0`. -/
 abbrev pmF (f g : PTm 2) (x : PTm n) : Fm PTm (n + 1) :=
   ap2 (prodF (f * g)) (var 0) (Syn.shift x) ≐
     ap2 (prodF f) (var 0) (Syn.shift x) * ap2 (prodF g) (var 0) (Syn.shift x)
@@ -65,34 +65,16 @@ theorem prod_mul_step (f g : PTm 2) {N x : PTm n}
     (ih : Γ ⊢[PRAAx] ap2 (prodF (f * g)) N x ≐ ap2 (prodF f) N x * ap2 (prodF g) N x) :
     Γ ⊢[PRAAx] ap2 (prodF (f * g)) (succ N) x ≐
       ap2 (prodF f) (succ N) x * ap2 (prodF g) (succ N) x := by
-  have e₀ := natEq ih
-  have a := prod_succ'' (Γ := Γ) (f * g) N x
-  rw [inst2_mul] at a
-  have e₁ := natEq a
-  have e₂ := natEq (prod_succ'' (Γ := Γ) f N x)
-  have e₃ := natEq (prod_succ'' (Γ := Γ) g N x)
-  apply deriveNat; ipra_simps
-  rw [e₁, e₂, e₃, e₀]; ring
+  have pointwise := prod_succ'' (Γ := Γ) (f * g) N x
+  rw [inst2_mul] at pointwise
+  refine (pointwise.eqTrans (congrMul ih (.eqRefl _))).eqTrans ?_
+  refine .eqTrans ?_ (congrMul (prod_succ'' f N x).eqSymm (prod_succ'' g N x).eqSymm)
+  ipra_ring
 
 /-- `∏_{i<N} f g = ∏_{i<N} f · ∏_{i<N} g`. -/
 theorem prod_mul (f g : PTm 2) (N x : PTm n) :
-    Γ ⊢[PRAAx] ap2 (prodF (f * g)) N x ≐ ap2 (prodF f) N x * ap2 (prodF g) N x := by
-  have hall : Γ ⊢[PRAAx] Fm.all (pmF f g x) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · have b : Γ ⊢[PRAAx] ap2 (prodF (f * g)) zero x ≐
-          ap2 (prodF f) zero x * ap2 (prodF g) zero x := by
-        have e₃ := natEq (prod_zero (Γ := Γ) g x)
-        apply deriveNat; ipra_simps
-        rw [natEq (prod_zero (Γ := Γ) (f * g) x), natEq (prod_zero (Γ := Γ) f x), e₃]; ring
-      simpa using b
-    · have st : (pmF f g x :: Γ.map Fm.shift) ⊢[PRAAx]
-          ap2 (prodF (f * g)) (succ (var 0)) (Syn.shift x) ≐
-            ap2 (prodF f) (succ (var 0)) (Syn.shift x) *
-              ap2 (prodF g) (succ (var 0)) (Syn.shift x) :=
-        prod_mul_step f g Prf.hyp0
-      simpa [subst_repl_shift, Syn.repl_zero] using st
-  have h2 := Prf.allE N hall
-  simpa [Syn.subst_inst_shift, Syn.inst_zero] using h2
+    Γ ⊢[PRAAx] ap2 (prodF (f * g)) N x ≐ ap2 (prodF f) N x * ap2 (prodF g) N x :=
+  prod_mul_body f g N x
 
 /-! ## The leave-one-out product -/
 
