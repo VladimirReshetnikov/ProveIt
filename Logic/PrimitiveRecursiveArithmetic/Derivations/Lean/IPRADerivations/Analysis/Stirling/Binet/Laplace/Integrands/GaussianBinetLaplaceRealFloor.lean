@@ -24,7 +24,7 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEulerIntegrandName (decayF decayData)
 open GaussianPositiveRealArithmetic (positive positive_congr)
 open GaussianRationalDistanceOrder
-  (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+  (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open RationalArgmin (rationalLE rationalLE_congr)
@@ -153,7 +153,7 @@ theorem sample_floor_with_cap (p X D R T A B S : PTm n)
     distance_congr (GaussianRationalPowerAlgebra.qmul_commutative k d)
       ((GaussianRationalPowerAlgebra.qmul_commutative k e).eqTrans read.eqSymm)
       (by ipra_ring) (.eqRefl _) (distance_symmetric _ _ _ _ hr near)
-  have rad := distance_radius_mono _ _ _ _ _ _ hr hp (le_mul_mono (le_refl _) hpR) ordered
+  have rad := distance_radius_mono_den hp hpR ordered
   have row := RationalValueBounds.upper_of_radius _ _ _ _
     (GaussianNamedPositiveExponentialOrder.scalar_coordinate_distance _ _ _ _ hp rad)
   exact RationalValueBounds.upper_order_left _ _ _ _ _

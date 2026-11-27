@@ -24,7 +24,7 @@ open GaussianGammaFixedDegreeHorizon (observation)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_through_auxiliary)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono_den distance_through_auxiliary)
 open GaussianNamedInverseRate (rateNumerator rateDenominator independentRate denominator_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -53,9 +53,7 @@ theorem original_joint_to_fixed_degree (u z R B N L : PTm n)
     (GaussianGammaDegreeTail.original_finite_C18 z R B N r L (LeanProofs.IPRA.PTm.monus K L) h)
   have grow : Γ ⊢[PRAAx] le (unit u) (DyadicComplexLogarithm.unit u) :=
     GaussianFactorBudget.power_monotone_length two u _ (le_succ_self one) (le_add_right _ _)
-  have coarse := distance_radius_mono _ _ two (DyadicComplexLogarithm.unit u) two (unit u)
-    (GaussianFactorBudget.power_positive _ _ (le_succ_self one)) (unit_positive u)
-    (AnalyticNumberTheory.PhiLower.le_mul_mono (le_refl two) grow) rounding
+  have coarse := distance_radius_mono_den (unit_positive u) grow rounding
   have joined := GaussianReconstructionRoots.distance_triangle _ _ _ _ _ _ _ (unit_positive u) vp coarse finite
   exact distance_congr (.eqRefl _) (.eqRefl _) (add_comm _ _) (mul_comm _ _) joined
 

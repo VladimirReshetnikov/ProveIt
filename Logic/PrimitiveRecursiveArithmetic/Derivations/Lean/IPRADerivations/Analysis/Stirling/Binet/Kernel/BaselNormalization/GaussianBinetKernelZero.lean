@@ -29,7 +29,7 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianNameRingLaws (equivalent_of_envelope)
 open GaussianNamedFiniteSumFamily (finite)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (qzero qmul qadd positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr qadd_congr qmul_zero_right)
@@ -205,8 +205,7 @@ theorem observations (p B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]
     (le_of_eq_add (d := num 7*U) (by dsimp only [N,U,GaussianBinetKernelCofinal.cutoff]; ipra_ring)) a
   have b := late_zero_distance k (N+r) B (le_add_left r N) hB
   have later : Γ ⊢[PRAAx] le p k := le_trans (le_succ_self p) (le_add_right (succ p) _)
-  have b' := distance_radius_mono _ _ _ _ (num 10) U (unit_positive k) hu
-    (mul_le_mul_left (num 10) (GaussianExponentialReference.unit_monotone later)) b
+  have b' := distance_radius_mono_den hu (GaussianExponentialReference.unit_monotone later) b
   have e := (GaussianBinetKernelCofinal.sample_at (Γ := Γ) p zero B).eqTrans
     (GaussianNamedFiniteSumFamily.sample_at rowF rowBody (succ p) N (inputData zero B))
   exact distance_congr e.eqSymm (.eqRefl _) (by ipra_ring) (.eqRefl _)

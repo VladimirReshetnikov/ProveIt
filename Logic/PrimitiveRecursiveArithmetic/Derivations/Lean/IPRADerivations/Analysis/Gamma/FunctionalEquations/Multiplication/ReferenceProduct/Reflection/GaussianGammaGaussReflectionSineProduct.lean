@@ -31,7 +31,7 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedDiagonalRate (diagonalRate cross_of_diagonal_rate)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalSyntheticDivision (qmul_congr)
-open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_symmetric distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_triangle_same distance_symmetric distance_radius_mono distance_radius_mono_den)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianExponentialReference (unit_monotone)
@@ -105,7 +105,7 @@ private theorem raw_ratio_at (p N x : PTm n) :
   have code_eq := (raw_at (Γ := Γ) familyRowF t N (data N x)).eqTrans (native_product_at t N x N)
   have cofinal := distance_congr code_eq.eqSymm (.eqRefl _) (.eqRefl _) (.eqRefl _)
     (distance_symmetric _ _ _ _ ht (original_product_error p N x))
-  have b := distance_radius_mono _ _ _ _ _ _ ht hp (le_mul_mono (le_refl (budget N)) hpv) cofinal
+  have b := distance_radius_mono_den hp hpv cofinal
   exact distance_triangle_same _ _ _ _ _ _ hp a b
 
 theorem diagonal (p N x : PTm n) :
@@ -113,8 +113,7 @@ theorem diagonal (p N x : PTm n) :
   let t := GaussianNamedFiniteProductName.clock N (radius N x) one p
   have h := raw_ratio_at (Γ := Γ) t N x
   have c := distance_congr (raw_at familyRowF t N (data N x)) (.eqRefl _) (.eqRefl _) (.eqRefl _) h
-  have a := distance_radius_mono _ _ _ _ _ _ (unit_positive t) (unit_positive p)
-    (le_mul_mono (le_refl (rate N x)) (unit_monotone (GaussianNamedFiniteProductName.clock_later N (radius N x) one p))) c
+  have a := distance_radius_mono_den (unit_positive p) (unit_monotone (GaussianNamedFiniteProductName.clock_later N (radius N x) one p)) c
   exact distance_congr (GaussianNamedFiniteProductName.name_at familyRowF p N (radius N x) one (data N x)).eqSymm
     (constant_at p (ratio N)).eqSymm (.eqRefl _) (.eqRefl _) a
 

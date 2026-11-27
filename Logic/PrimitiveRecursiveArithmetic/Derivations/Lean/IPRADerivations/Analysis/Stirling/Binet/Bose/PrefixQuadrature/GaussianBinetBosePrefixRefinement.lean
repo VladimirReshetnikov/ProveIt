@@ -20,7 +20,7 @@ open GaussianBinetBoseCompact (source gain)
 open GaussianBinetBosePrefixQuadrature (cost evaluatorF quadrature_error)
 open GaussianCompactRiemannName (quadrature mesh mesh_positive precision)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_den)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
@@ -55,7 +55,7 @@ theorem refined_prefix_error (p q R N X Y D sign T A C E : PTm n)
   have read := GaussianCompactRiemannName.name_at (Γ := Γ) f p (E+A) C E L T x
   have raw := distance_congr (.eqRefl plain) read.eqSymm (.eqRefl _) (.eqRefl _) refineDistance
   have first : Γ ⊢[PRAAx] distanceBounded old plain (num 3) (unit p) :=
-    distance_radius_mono _ _ _ _ _ _ (unit_positive _) hp (mul_le_mul_left (num 3) hs)
+    distance_radius_mono_den hp hs
       (distance_symmetric plain old (num 3) W (unit_positive _) raw)
   have hWidth := width.andE₂.andE₂.andE₁
   have den := positive_product _ _ hE (unit_positive q)

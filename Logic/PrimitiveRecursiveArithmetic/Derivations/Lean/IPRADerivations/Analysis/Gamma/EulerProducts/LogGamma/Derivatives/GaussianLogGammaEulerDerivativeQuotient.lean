@@ -23,7 +23,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianLogGammaEulerDerivativeQuotient
 open_ipra
 open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq)
-open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
+open GaussianCoefficientNameBounds (bounded_radius_mono_den unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianGammaAdjacentCutoff (multiply_cross)
 open GaussianGammaCanonicalExponent (constantF constant_regular)
@@ -68,7 +68,7 @@ private theorem inverse_bound (A B neg a b sign D : PTm n) (h : Γ ⊢[PRAAx] ce
     Γ ⊢[PRAAx] bounded (reciprocal (step A B neg a b sign D)) D one := by
   let E := lower (numerator A B neg a b sign)
   have hE : Γ ⊢[PRAAx] le one E := h.andE₁
-  exact bounded_radius_mono _ _ E _ _ hE (le_refl one) (le_mul_mono (le_refl D) hE)
+  exact bounded_radius_mono_den (le_refl one) hE
     h.andE₂.andE₂.andE₂.andE₂
 
 theorem regular (A B neg a b sign D : PTm n)
