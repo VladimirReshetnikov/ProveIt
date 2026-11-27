@@ -28,7 +28,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.HarmonicMertens (le_scale)
 open LeanProofs.IPRA.AnalyticNumberTheory.BlockChain (one_le_pw')
 open LeanProofs.IPRA.AnalyticNumberTheory.ContractionSplit (Stage)
 open LeanProofs.IPRA.AnalyticNumberTheory.StageAdvance (q4_mono)
-open LeanProofs.IPRA.AnalyticNumberTheory.StageInduction (Aj Amin Jst sT stages s_ge)
+open LeanProofs.IPRA.AnalyticNumberTheory.StageInduction (Aj Amin Jst sT stages s_ge cutoff_division)
 open LeanProofs.IPRA.AnalyticNumberTheory.PNTThresholds (Dq Q3)
 open LeanProofs.IPRA.AnalyticNumberTheory.FourthRootSum (Q4)
 open LeanProofs.IPRA.AnalyticNumberTheory.AbsDiff (absd)
@@ -61,17 +61,9 @@ abbrev Lx (x : PTm n) : PTm n := Kx x * (Q4 x + pw two (two * (two * x)) + pw x 
 
 /-- `A_J ≤ 2^{20} q² + 2`. -/
 theorem aJ_le (p : PTm n) : Γ ⊢[PRAAx] le (Aj (Jst p) (Dq p)) (Amin p + two) := by
-  have hm : Γ ⊢[PRAAx] le (Amin p) (num 4 * Dq p) := by
-    ipra_le 4194304 * 𝔞 p ^ 3 + 11534336 * 𝔞 p ^ 2 + 10485760 * 𝔞 p + 3145728
-  have f0 := natEq (eq_add_of_le hm)
-  have dm := div_mod_at (Γ := Γ) (x := monus (num 4 * Dq p) (Amin p)) (y := num 3) (c := two) (.eqRefl _)
-  have e0 := natEq (Prf.andE₁ dm)
-  have r0 := Prf.andE₂ dm
-  have h3 : Γ ⊢[PRAAx] le (num 3 * Jst p) (num 4 * Dq p) := by
-    ipra_le 𝔞 (rem (monus (num 4 * Dq p) (Amin p)) (num 3)) + 1048576 * (𝔞 p + 1) ^ 2 with f0 + e0
-  have f1 := natEq (eq_add_of_le h3)
-  unfold Aj
-  ipra_le sl r0 with f1 - f0 - e0
+  have cut := cutoff_division (Γ := Γ) p
+  exact le_congr (Common.monus_of_eq cut.andE₁).eqSymm (.eqRefl _)
+    (add_le_add_left (Amin p) cut.andE₂)
 
 theorem psi_modulus {p x : PTm n} (hx : Γ ⊢[PRAAx] le (pw two (sT (Jst p) (Dq p))) x) :
     Γ ⊢[PRAAx] le (Dq p * absd (Psi wt x (pairT (Kx x) (fact (Lx x)))) (fact (Lx x) * x))

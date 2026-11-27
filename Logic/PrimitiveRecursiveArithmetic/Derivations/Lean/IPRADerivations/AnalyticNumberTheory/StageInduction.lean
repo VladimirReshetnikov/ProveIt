@@ -66,6 +66,16 @@ abbrev Amin (p : PTm n) : PTm n := num 1048576 * (succ p * succ p)
 /-- `J = ⌊(4D − A_min)/3⌋`. -/
 abbrev Jst (p : PTm n) : PTm n := quo (monus (num 4 * Dq p) (Amin p)) (num 3)
 
+/-- Division by three gives the exact cutoff and the remaining level above `A_min`. -/
+theorem cutoff_division (p : PTm n) :
+    let r := rem (monus (num 4 * Dq p) (Amin p)) (num 3)
+    Γ ⊢[PRAAx] (num 4 * Dq p ≐ num 3 * Jst p + (Amin p + r)) ⋏ le r two := by
+  have hm : Γ ⊢[PRAAx] le (Amin p) (num 4 * Dq p) := by
+    ipra_le 4194304 * 𝔞 p ^ 3 + 11534336 * 𝔞 p ^ 2 + 10485760 * 𝔞 p + 3145728
+  have dm := div_mod_at (Γ := Γ) (x := monus (num 4 * Dq p) (Amin p)) (y := num 3) (c := two) (.eqRefl _)
+  refine .andI ?_ ((succ_monus_succ _ two).eqSymm.eqTrans dm.andE₂)
+  ipra_lc natEq (eq_add_of_le hm) + natEq dm.andE₁
+
 /-- At every level `A ≥ A_min`: `576 D P ≤ A²`. -/
 theorem ap_bound {p A : PTm n} (hA : Γ ⊢[PRAAx] le (Amin p) A) (hA4 : Γ ⊢[PRAAx] le A (two * (two * Dq p))) :
     Γ ⊢[PRAAx] le (num 576 * Dq p * Pq (Dq p) A) (A * A) := by
@@ -81,21 +91,15 @@ theorem ap_bound {p A : PTm n} (hA : Γ ⊢[PRAAx] le (Amin p) A) (hA4 : Γ ⊢[
 theorem level_facts {p j : PTm n} (hj : Γ ⊢[PRAAx] le (succ j) (Jst p)) :
     Γ ⊢[PRAAx] le (num 3 + Amin p) (Aj j (Dq p)) ⋏
       (le (Aj j (Dq p)) (two * (two * Dq p)) ⋏ le (monus (Aj j (Dq p)) (num 3)) (Aj (succ j) (Dq p))) := by
-  have hm : Γ ⊢[PRAAx] le (Amin p) (num 4 * Dq p) := by
-    ipra_le 4194304 * 𝔞 p ^ 3 + 11534336 * 𝔞 p ^ 2 + 10485760 * 𝔞 p + 3145728
-  have f0 := natEq (eq_add_of_le hm)
-  have dm := div_mod_at (Γ := Γ) (x := monus (num 4 * Dq p) (Amin p)) (y := num 3) (c := two) (.eqRefl _)
-  have e0 := natEq (Prf.andE₁ dm)
-  have h3 : Γ ⊢[PRAAx] le (num 3 * succ j) (num 4 * Dq p) := by
-    have q := le_scale (num 3) hj
-    ipra_le sl q + 𝔞 (rem (monus (num 4 * Dq p) (Amin p)) (num 3)) + 1048576 * (𝔞 p + 1) ^ 2 with f0 + e0
+  have cut := (cutoff_division (Γ := Γ) p).andE₁
+  have q := le_scale (num 3) hj
+  have h3 := le_trans q (le_of_eq_add cut)
   have h3' : Γ ⊢[PRAAx] le (num 3 * j) (num 4 * Dq p) := le_trans (by ipra_le 3) h3
   have f1 := natEq (eq_add_of_le h3')
   have f2 := natEq (eq_add_of_le h3)
   have hlo : Γ ⊢[PRAAx] le (num 3 + Amin p) (Aj j (Dq p)) := by
-    have q := le_scale (num 3) hj
     unfold Aj
-    ipra_le sl q + 𝔞 (rem (monus (num 4 * Dq p) (Amin p)) (num 3)) with f0 + e0 - f1
+    ipra_le sl q + 𝔞 (rem (monus (num 4 * Dq p) (Amin p)) (num 3)) with natEq cut - f1
   have f3 := natEq (eq_add_of_le (le_trans (le_add_right (num 3) (Amin p)) hlo))
   refine .andI hlo (.andI ?_ ?_)
   · unfold Aj; ipra_le 3 * 𝔞 j with f1
