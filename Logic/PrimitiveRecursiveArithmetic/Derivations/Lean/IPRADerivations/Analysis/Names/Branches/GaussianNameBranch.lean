@@ -30,21 +30,9 @@ ipra_subst data
 
 theorem sample_at (F G : PR 2) (p b x y : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF F G) p (data b x y) ≐ select b (ap2 F p x) (ap2 G p y) := by
-  let v := data b x y
-  have e : Γ ⊢[PRAAx] ap2 (nameF F G) p v ≐ select (fstT v)
-      (ap2 F p (fstT (sndT v))) (ap2 G p (sndT (sndT v))) := by
-    have given := toPR_eq (Γ := Γ) (body F G) ![p,v]
-    change Γ ⊢[PRAAx] ap2 (nameF F G) p v ≐ Syn.subst ![p,v] (body F G) at given
-    simpa [body] using given
-  have d := Prf.eqCongr (Γ := Γ) (Ax := PRAAx)
-    (select (var 1) (ap2 F (var 0) (var 2)) (ap2 G (var 0) (var 3)) : PTm 4)
-    (σ := ![p,fstT v,fstT (sndT v),sndT (sndT v)]) (σ' := ![p,b,x,y]) (fun i => by
-      fin_cases i
-      exact .eqRefl _
-      exact fst_pair _ _
-      exact (snd_pair _ _).fstE
-      exact (snd_pair _ _).sndE)
-  exact e.eqTrans (by simpa using d)
+  simpa [nameF, body, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2)
+      (select (var 1) (ap2 F (var 0) (var 2)) (ap2 G (var 0) (var 3))) p ![b, x, y])
 
 theorem select_left (F G : PR 2) (b x y : PTm n) (hb : Γ ⊢[PRAAx] b ≐ zero)
     (hf : Γ ⊢[PRAAx] pointCN F x) : Γ ⊢[PRAAx] crossEquivalent (nameF F G) F (data b x y) x := by

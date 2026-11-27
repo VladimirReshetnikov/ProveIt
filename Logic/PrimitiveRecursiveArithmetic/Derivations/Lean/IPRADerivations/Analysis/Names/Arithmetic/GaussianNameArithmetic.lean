@@ -62,23 +62,13 @@ theorem add_data_congr {x x' y y' : PTm n} (hx : Γ ⊢[PRAAx] x ≐ x') (hy : �
 
 theorem add_raw_at (f g : PR 2) (s x y : PTm n) : Γ ⊢[PRAAx]
     ap2 (addRawF f g) s (data x y) ≐ addRaw f g s x y := by
-  have e := toPR_eq (Γ := Γ)
-    (addRaw f g (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![s,data x y]
-  refine e.eqTrans ?_
-  simpa only [subst_addRaw,subst_qadd,subst_ap2,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,addRaw,data] using
-    qadd_congr (Γ := Γ) (congrAp2 f (.eqRefl s) (fst_pair x y))
-      (congrAp2 g (.eqRefl s) (snd_pair x y))
+  simpa [addRawF, data] using
+    (toPR_pair_eq (Γ := Γ) (addRaw f g (var 0) (var 1) (var 2)) s x y)
 
 theorem multiply_raw_at (f g : PR 2) (s x y : PTm n) : Γ ⊢[PRAAx]
     ap2 (multiplyRawF f g) s (data x y) ≐ multiplyRaw f g s x y := by
-  have e := toPR_eq (Γ := Γ)
-    (multiplyRaw f g (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![s,data x y]
-  refine e.eqTrans ?_
-  simpa only [subst_multiplyRaw,subst_qmul,subst_ap2,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one,multiplyRaw,data] using
-    qmul_congr (Γ := Γ) (congrAp2 f (.eqRefl s) (fst_pair x y))
-      (congrAp2 g (.eqRefl s) (snd_pair x y))
+  simpa [multiplyRawF, data] using
+    (toPR_pair_eq (Γ := Γ) (multiplyRaw f g (var 0) (var 1) (var 2)) s x y)
 
 theorem sum_difference_from_representations (a b u v A B U V E : PTm n)
     (hE : Γ ⊢[PRAAx] le one E) (ha : Γ ⊢[PRAAx] represents a A E)

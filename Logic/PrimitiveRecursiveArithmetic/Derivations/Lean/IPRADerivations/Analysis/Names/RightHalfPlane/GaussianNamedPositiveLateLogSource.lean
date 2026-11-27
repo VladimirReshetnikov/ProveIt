@@ -40,15 +40,8 @@ ipra_subst retimedData
 
 theorem sample_at (f : PR 2) (p x A : PTm n) :
     Γ ⊢[PRAAx] ap2 (retimedF f) p (retimedData x A) ≐ ap2 f (p+threshold A) x := by
-  let d := retimedData x A
-  have time : Syn.subst (![p,d] : Fin 2 → PTm n) (var 0+sndT (var 1)) = p+sndT d := by
-    rw [LeanProofs.IPRA.PTm.subst_add]
-    simp only [subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]
-  have raw : Γ ⊢[PRAAx] ap2 (retimedF f) p d ≐ ap2 f (p+sndT d) (fstT d) := by
-    have program := toPR_eq (Γ := Γ) (ap2 f (var 0+sndT (var 1)) (fstT (var 1)) : PTm 2) ![p,d]
-    rw [subst_ap2,time,subst_fstT,Syn.subst_var] at program
-    exact program
-  exact raw.eqTrans (congrAp2 f (congrAdd (.eqRefl p) (snd_pair x (threshold A))) (fst_pair x (threshold A)))
+  simpa [retimedF, retimedData] using
+    (toPR_pair_eq (Γ := Γ) (ap2 f (var 0 + var 2) (var 1)) p x (threshold A))
 
 private theorem original_observations (f : PR 2) (p q x A : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] distanceBounded (ap2 f p x) (ap2 (retimedF f) q (retimedData x A))

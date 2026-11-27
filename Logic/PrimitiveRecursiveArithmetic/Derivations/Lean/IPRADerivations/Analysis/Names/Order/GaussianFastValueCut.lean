@@ -309,9 +309,8 @@ theorem value_congr (f : PR 2) {L L' x x' k k' : PTm n}
 
 theorem name_at (f : PR 2) (L x k : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) k (nameData L x) ≐ value f L x k := by
-  have base : Γ ⊢[PRAAx] ap2 (nameF f) k (nameData L x) ≐ value f (fstT (nameData L x)) (sndT (nameData L x)) k := by
-    simpa [nameF,nameBody,ap2] using toPR_eq (Γ := Γ) (nameBody f) ![k,nameData L x]
-  exact base.eqTrans (value_congr f (fst_pair _ _) (snd_pair _ _) (.eqRefl _))
+  simpa [nameF, nameBody, nameData] using
+    (toPR_pair_eq (Γ := Γ) (value f (var 1) (var 2) (var 0)) k L x)
 
 theorem name_canonical (f : PR 2) (L x k : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (ap2 (nameF f) k (nameData L x)) :=

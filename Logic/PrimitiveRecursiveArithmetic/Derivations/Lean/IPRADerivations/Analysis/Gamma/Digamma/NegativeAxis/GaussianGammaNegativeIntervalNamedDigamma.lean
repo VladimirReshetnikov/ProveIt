@@ -55,23 +55,8 @@ ipra_subst data
 
 theorem sample_at (f : PR 2) (p x E N : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF f) p (data x E N) ≐ observation f p x E N := by
-  let X := data x E N
-  have raw : Γ ⊢[PRAAx] ap2 (nameF f) p X ≐ observation f p (fstT X) (fstT (sndT X)) (sndT (sndT X)) := by
-    simpa [nameF,ap2] using toPR_eq (Γ := Γ)
-      (observation f (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2) ![p,X]
-  have first : Γ ⊢[PRAAx] fstT X ≐ x := fst_pair _ _
-  have rest : Γ ⊢[PRAAx] sndT X ≐ pairT E N := snd_pair _ _
-  have mid := (congrFst rest).eqTrans (fst_pair E N)
-  have last := (congrSnd rest).eqTrans (snd_pair E N)
-  have fields := Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-    (observation f (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![p,fstT X,fstT (sndT X),sndT (sndT X)]) (σ' := ![p,x,E,N]) (fun i => by
-      fin_cases i
-      exact .eqRefl _
-      exact first
-      exact mid
-      exact last)
-  exact raw.eqTrans (by simpa using fields)
+  simpa [nameF, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (observation f (var 0) (var 1) (var 2) (var 3)) p ![x, E, N])
 
 private theorem rational_inputs (f g : PR 2) (r s x y E X D : PTm n)
     (hf : Γ ⊢[PRAAx] source f x E) (hg : Γ ⊢[PRAAx] source g y E)

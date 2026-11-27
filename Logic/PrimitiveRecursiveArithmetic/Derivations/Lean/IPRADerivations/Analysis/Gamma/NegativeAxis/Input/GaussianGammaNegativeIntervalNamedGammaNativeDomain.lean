@@ -127,16 +127,8 @@ theorem shift_fraction (a b j : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
 
 theorem shift_at (f : PR 2) (k x N : PTm n) : Γ ⊢[PRAAx]
     ap2 (shiftF f) k (shiftData x N) ≐ shiftSample f k x N := by
-  let X := shiftData x N
-  have raw : Γ ⊢[PRAAx] ap2 (shiftF f) k X ≐ shiftSample f k (fstT X) (sndT X) := by
-    simpa only [shiftF,ap2,subst_shiftSample,Syn.subst_var,subst_fstT,subst_sndT,
-      Matrix.cons_val_zero,Matrix.cons_val_one] using
-      toPR_eq (Γ := Γ) (shiftSample f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![k,X]
-  have fields := Prf.eqCongr (Γ := Γ) (Ax := PRAAx) (shiftSample f (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![k,fstT X,sndT X]) (σ' := ![k,x,N])
-    (fun i => by fin_cases i; exact .eqRefl _; exact fst_pair _ _; exact snd_pair _ _)
-  exact raw.eqTrans (by simpa only [subst_shiftSample,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,
-    Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using fields)
+  simpa [shiftF, shiftData] using
+    (toPR_pair_eq (Γ := Γ) (shiftSample f (var 0) (var 1) (var 2)) k x N)
 
 theorem frozen_shift_at (f : PR 2) (k x E N : PTm n) (h : Γ ⊢[PRAAx] input f x E) :
     Γ ⊢[PRAAx] ap2 (shiftF f) k (shiftData x N) ≐

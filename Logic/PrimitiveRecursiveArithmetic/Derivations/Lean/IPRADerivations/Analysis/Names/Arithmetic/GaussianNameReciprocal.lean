@@ -185,13 +185,8 @@ theorem reciprocal_congr {q q' : PTm n} (h : Γ ⊢[PRAAx] q ≐ q') : Γ ⊢[PR
 
 theorem raw_at (f : PR 2) (h x s : PTm n) : Γ ⊢[PRAAx]
     ap2 (rawF f) s (rawData h x) ≐ raw f h x s := by
-  have e := toPR_eq (Γ := Γ) (raw f (fstT (var 1)) (sndT (var 1)) (var 0) : PTm 2) ![s,rawData h x]
-  refine e.eqTrans ?_
-  simpa only [raw,tail,anchor,GaussianRationalReciprocal.subst_reciprocal,subst_ap2,PTm.subst_add,
-    subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one,rawData,
-    ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero] using
-    reciprocal_congr (Γ := Γ) (congrAp2 f (congrAdd (.eqRefl s)
-      (congrAdd (fst_pair h x) (.eqRefl two))) (snd_pair h x))
+  simpa [rawF, rawData] using
+    (toPR_pair_eq (Γ := Γ) (raw f (var 1) (var 2) (var 0)) s h x)
 
 theorem tail_coherence (f : PR 2) (h x s t : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx]
     distanceBounded (tail f h x s) (tail f h x t) (unit s+unit t) (unit s*unit t) := by

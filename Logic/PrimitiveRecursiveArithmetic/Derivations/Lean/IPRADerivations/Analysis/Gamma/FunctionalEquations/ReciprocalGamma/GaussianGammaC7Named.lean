@@ -76,15 +76,8 @@ def nameF (f : PR 2) : PR 2 :=
 
 theorem sample_at (f : PR 2) (p x R : PTm n) :
     Γ ⊢[PRAAx] ap2 (nameF f) p (data x R) ≐ sample f p x R := by
-  let X := data x R
-  have raw : Γ ⊢[PRAAx] ap2 (nameF f) p X ≐ sample f p (fstT X) (sndT X) := by
-    simpa [nameF,ap2] using
-      toPR_eq (Γ := Γ) (sample f (var 0) (fstT (var 1)) (sndT (var 1)) : PTm 2) ![p,X]
-  have first : Γ ⊢[PRAAx] fstT X ≐ x := fst_pair x R
-  have second : Γ ⊢[PRAAx] sndT X ≐ R := snd_pair x R
-  refine raw.eqTrans ?_
-  ipra_congr (sample f (var 0) (var 1) (var 2) : PTm 3) with
-    [.eqRefl p, first, second]
+  simpa [nameF, data, GaussianBarnesCanonicalNamedDemand.data] using
+    (toPR_pair_eq (Γ := Γ) (sample f (var 0) (var 1) (var 2)) p x R)
 
 theorem native_source (f : PR 2) (k x R : PTm n) (h : Γ ⊢[PRAAx] source f x R) :
     Γ ⊢[PRAAx] disk (rawGaussian (ap2 f k x)) R (rawDen (ap2 f k x)) :=
