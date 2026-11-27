@@ -15,16 +15,10 @@ set_option autoImplicit false
 namespace LeanProofs.IPRA.Analysis.GaussianBetaAllDegreeUpperEndpoint
 
 open_ipra
-open GaussianRationalHorner (qmul positive_product)
-open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono distance_triangle_same)
-open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
-open GaussianEulerIntegrandName (powerF powerData)
-open GaussianBetaUpperEndpointName (endpointConstant)
-open GaussianBetaUpperGridEndpoint (gridClock scaledEndpoint factor precision numerator original_grid_endpoint_raw_product original_clock_later precision_budget)
+open GaussianBetaUpperGridEndpoint (scaledEndpoint precision numerator sampled_endpoint_error_of_cross retime_endpoint_error)
 open GaussianBetaAllDegreeEulerInverse (nameF data)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianCoefficientNameBounds (unit)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -33,58 +27,18 @@ def source (z R B A b N : PTm n) : Fm PTm n :=
 
 theorem sampled_endpoint_error (p q z R B A b N : PTm n) (h : Γ ⊢[PRAAx] source z R B A b N) : Γ ⊢[PRAAx]
     distanceBounded (scaledEndpoint p z B b N) (ap2 nameF q (data z B N))
-      (numerator p q z B b N) (unit p*unit q) := by
-  let k := gridClock p z B b N
-  let C := endpointConstant z B b N
-  let P := powerData z B (b*N) b
-  let L := GaussianNameArithmetic.multiplyModulus powerF constantF P C
-  let K := unit k
-  let U := unit p
-  let V := unit q
-  have hk := unit_positive (Γ := Γ) k
-  have hp := unit_positive (Γ := Γ) p
-  have hq := unit_positive (Γ := Γ) q
-  have hKV := positive_product _ _ hk hq
-  have hUV := positive_product _ _ hp hq
-  have power := GaussianEulerIntegrandName.power_regular z B (b*N) b
-    (GaussianBetaUpperEndpointName.power_source z B b N h.andE₁.andE₁.andE₂.andE₁.andE₁ h.andE₂ h.andE₁.andE₂)
-  have product : Γ ⊢[PRAAx] distanceBounded (scaledEndpoint p z B b N) (ap2 GaussianBetaUpperEndpointName.nameF k (GaussianBetaUpperEndpointName.data z B b N)) (L+one) K :=
-    distance_symmetric _ _ _ _ hk
-      (distance_congr (.eqRefl _) ((qmul_congr (.eqRefl _) (constant_at k C)).eqTrans (original_grid_endpoint_raw_product p z B b N).eqSymm)
-        (.eqRefl _) (.eqRefl _) (GaussianNameRingLaws.multiply_sample_error powerF constantF P C k power (constant_regular C)))
-  have first : Γ ⊢[PRAAx] distanceBounded (scaledEndpoint p z B b N) (ap2 GaussianBetaUpperEndpointName.nameF k (GaussianBetaUpperEndpointName.data z B b N)) ((L+one)*V) (K*V) :=
-    distance_radius_mono _ _ _ _ _ _ hk hKV (le_of_eq_add (d := zero) (by ipra_ring)) product
-  have cross := GaussianBetaAllDegreeEulerInverse.original_upper_inverse z R B A b N h.andE₁ h.andE₂
-  have second := GaussianNameEquivalence.cross_at _ _ _ _ k q cross
-  have both : Γ ⊢[PRAAx] distanceBounded (scaledEndpoint p z B b N) (ap2 nameF q (data z B N))
-      (factor z B b N*V+K) (K*V) :=
-    GaussianRationalReciprocal.bound_congr (.eqRefl _) (by unfold factor; dsimp only [L,P,C]; ipra_ring) (.eqRefl _)
-      (distance_triangle_same _ _ _ _ _ _ hKV first second)
-  have order : Γ ⊢[PRAAx] le U K := GaussianExponentialReference.unit_monotone (original_clock_later p z B b N)
-  have comparison : Γ ⊢[PRAAx] le ((factor z B b N*V+K)*(U*V)) ((factor z B b N*V+U)*(K*V)) :=
-    le_congr (by ipra_ring) (by ipra_ring)
-      (add_le_add_right (K*U*V) (mul_le_mul_right (factor z B b N*V*V) order))
-  exact distance_radius_mono _ _ _ _ _ _ hKV hUV comparison both
+      (numerator p q z B b N) (unit p*unit q) :=
+  sampled_endpoint_error_of_cross p q z B b N nameF (data z B N)
+    (GaussianEulerIntegrandName.power_regular z B (b*N) b
+      (GaussianBetaUpperEndpointName.power_source z B b N h.andE₁.andE₁.andE₂.andE₁.andE₁ h.andE₂ h.andE₁.andE₂))
+    (GaussianBetaAllDegreeEulerInverse.original_upper_inverse z R B A b N h.andE₁ h.andE₂)
 
 theorem upper_error_at (t p q z R B A b N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B A b N)
     (hp : Γ ⊢[PRAAx] le (precision t z B b N) p) :
     Γ ⊢[PRAAx] distanceBounded (scaledEndpoint p z B b N)
-      (ap2 nameF q (data z B N)) (unit t+unit q) (unit t*unit q) := by
-  let U := unit p
-  let Q := unit q
-  let T := unit t
-  let F := factor z B b N
-  have budget : Γ ⊢[PRAAx] le (F*T) U :=
-    le_trans (precision_budget t z B b N) (GaussianExponentialReference.unit_monotone hp)
-  have leRate : Γ ⊢[PRAAx] le ((numerator p q z B b N)*(T*Q))
-      ((T+Q)*(U*Q)) :=
-    le_congr (by unfold numerator; ipra_ring) (by ipra_ring)
-      (add_le_add_right (U*T*Q) (mul_le_mul_right (Q*Q) budget))
-  exact distance_radius_mono _ _ _ _ _ _
-    (positive_product _ _ (unit_positive p) (unit_positive q))
-    (positive_product _ _ (unit_positive t) (unit_positive q)) leRate
-    (sampled_endpoint_error p q z R B A b N h)
+      (ap2 nameF q (data z B N)) (unit t+unit q) (unit t*unit q) :=
+  retime_endpoint_error t p q z B b N _ hp (sampled_endpoint_error p q z R B A b N h)
 
 theorem retimed_endpoint_error (t q z R B A b N : PTm n)
     (h : Γ ⊢[PRAAx] source z R B A b N) :
