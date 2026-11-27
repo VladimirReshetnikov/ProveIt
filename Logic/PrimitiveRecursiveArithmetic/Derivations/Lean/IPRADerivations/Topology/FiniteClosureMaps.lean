@@ -23,7 +23,7 @@ namespace LeanProofs.IPRA.Topology.FiniteClosureMaps
 open_ipra
 open LeanProofs.IPRA.Foundations.IntersectionEnumeration (disjFin disjFin_intro disjFin_imp)
 open LeanProofs.IPRA.Topology.FiniteInteriorClosure
-open LeanProofs.IPRA.Foundations.RichardsonLogic (iffF)
+open LeanProofs.IPRA.Foundations.RichardsonLogic (iffF iffF_symm iffF_trans)
 open LeanProofs.IPRA.Foundations.ObservationCut.Finality (Walk pathDerivation)
 
 variable {n k l : ℕ} {Γ : List (Fm PTm n)}
@@ -78,9 +78,8 @@ theorem clopen_walk_of_relation {V : Type} {R : V → V → Prop} {U : V → Fm 
     {x y : V} (w : Walk (fun a b => R a b ∨ R b a) x y) : Γ ⊢[PRAAx] iffF (U x) (U y) :=
   pathDerivation Γ (fun a b => R a b ∨ R b a) (fun a b => iffF (U a) (U b))
     (fun a => .andI (.impI Prf.hyp0) (.impI Prf.hyp0))
-    (fun a b h => .andI h.andE₂ h.andE₁)
-    (fun a b c h₁ h₂ => .andI (.impI (.impE h₂.andE₁.wk (.impE h₁.andE₁.wk Prf.hyp0)))
-      (.impI (.impE h₁.andE₂.wk (.impE h₂.andE₂.wk Prf.hyp0))))
+    (fun _ _ => iffF_symm)
+    (fun _ _ _ => iffF_trans)
     (fun a b e => by
       rcases e with e | e
       · exact .andI (hO a b e) (hC a b e)

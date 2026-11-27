@@ -98,7 +98,7 @@ theorem cl_closed (A : Fin k → Fm PTm n) : IsClosed rel Γ (Cl rel A) := fun z
 /-- Every closed `D ⊇ A` contains `Cl A`. -/
 theorem cl_least {A D : Fin k → Fm PTm n} (hD : IsClosed rel Γ D) (hAD : ∀ x, Γ ⊢[PRAAx] A x ⟶ D x)
     (x : Fin k) : Γ ⊢[PRAAx] Cl rel A x ⟶ D x :=
-  cl_imp fun y hxy => .impI (.impE (hD x y hxy).wk (.impE (hAD y).wk Prf.hyp0))
+  cl_imp fun y hxy => Prf.impTrans (hAD y) (hD x y hxy)
 
 omit hrefl htrans in
 /-- Monotonicity of `Int`. -/

@@ -29,6 +29,15 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `A ↔ B`. -/
 def iffF (A B : Fm PTm n) : Fm PTm n := (A ⟶ B) ⋏ (B ⟶ A)
 
+/-- Reverse a derivable biconditional. -/
+theorem iffF_symm {A B : Fm PTm n} (h : Γ ⊢[PRAAx] iffF A B) : Γ ⊢[PRAAx] iffF B A :=
+  .andI h.andE₂ h.andE₁
+
+/-- Compose two derivable biconditionals. -/
+theorem iffF_trans {A B C : Fm PTm n} (hAB : Γ ⊢[PRAAx] iffF A B)
+    (hBC : Γ ⊢[PRAAx] iffF B C) : Γ ⊢[PRAAx] iffF A C :=
+  .andI (Prf.impTrans hAB.andE₁ hBC.andE₁) (Prf.impTrans hBC.andE₂ hAB.andE₂)
+
 theorem neg_iff_of_iff {A B : Fm PTm n} (h : Γ ⊢[PRAAx] iffF A B) : Γ ⊢[PRAAx] iffF (neg A) (neg B) := by
   refine .andI (.impI (.impI ?_)) (.impI (.impI ?_))
   · exact .impE Prf.hyp1 (.impE h.andE₂.wk.wk Prf.hyp0)
@@ -45,21 +54,13 @@ theorem neg_iff_of_dneg_iff {H S : Fm PTm n} (h : Γ ⊢[PRAAx] iffF (neg (neg H
     exact .impE (.impE h.andE₁.wk.wk dH) Prf.hyp1
 
 theorem identity_iff_no_source {I O S : Fm PTm n} (idSpec : Γ ⊢[PRAAx] iffF I (neg O))
-    (wSpec : Γ ⊢[PRAAx] iffF O S) : Γ ⊢[PRAAx] iffF I (neg S) := by
-  refine .andI (.impI (.impI ?_)) (.impI ?_)
-  · -- context `S, I`
-    exact .impE (.impE idSpec.andE₁.wk.wk Prf.hyp1) (.impE wSpec.andE₂.wk.wk Prf.hyp0)
-  · -- context `¬S`
-    exact .impE idSpec.andE₂.wk (.impI (.impE Prf.hyp1 (.impE wSpec.andE₁.wk.wk Prf.hyp0)))
+    (wSpec : Γ ⊢[PRAAx] iffF O S) : Γ ⊢[PRAAx] iffF I (neg S) :=
+  iffF_trans idSpec (neg_iff_of_iff wSpec)
 
 theorem negative_calibration {I O Sol H : Fm PTm n} (idSpec : Γ ⊢[PRAAx] iffF I (neg O))
     (analyticSpec : Γ ⊢[PRAAx] iffF O Sol) (translated : Γ ⊢[PRAAx] iffF (neg (neg H)) (neg (neg Sol))) :
-    Γ ⊢[PRAAx] iffF I (neg H) := by
-  have absent := identity_iff_no_source idSpec analyticSpec
-  have negative := neg_iff_of_dneg_iff translated
-  refine .andI (.impI ?_) (.impI ?_)
-  · exact .impE negative.andE₂.wk (.impE absent.andE₁.wk Prf.hyp0)
-  · exact .impE absent.andE₂.wk (.impE negative.andE₁.wk Prf.hyp0)
+    Γ ⊢[PRAAx] iffF I (neg H) :=
+  iffF_trans (identity_iff_no_source idSpec analyticSpec) (iffF_symm (neg_iff_of_dneg_iff translated))
 
 /-- Explicit witness maps give `∃w O(w) ↔ ∃w S(w)`. -/
 theorem witness_equivalence {S O : Fm PTm (n + 1)} {fw bw : PTm (n + 1)}
