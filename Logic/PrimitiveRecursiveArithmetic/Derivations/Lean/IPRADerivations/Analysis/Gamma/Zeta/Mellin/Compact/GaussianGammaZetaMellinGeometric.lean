@@ -30,10 +30,10 @@ open GaussianPositiveExponentialTermBound (actual_positive_fraction)
 open GaussianPositiveRealArithmetic (positive_congr)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
 open GaussianRationalHorner (qadd qmul canonical positive_product ofGaussian_canonical)
-open GaussianRationalLowerBounds (lower name_lower inverse_bound)
+open GaussianRationalLowerBounds (lower reciprocal_identity_of_lower inverse_bound)
 open GaussianRationalMetric (qsub qnegative qnegative_canonical bounded distanceBounded)
 open GaussianRationalPolynomialExponential (scalarSum scalarBody)
-open GaussianRationalReciprocal (power reciprocal reciprocal_identity bound_congr bounded_negative bounded_product)
+open GaussianRationalReciprocal (power reciprocal bound_congr bounded_negative bounded_product)
 open GaussianRationalSyntheticDivision (qone qmul_congr qadd_congr qadd_sub_cancel)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
 open GaussianRationalPowerAlgebra (qmul_commutative)
@@ -97,8 +97,8 @@ theorem ratio_bound (p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
 
 theorem inverse_pair (p a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) :
     Γ ⊢[PRAAx] qmul (positiveSample p a b) (ratio p a b) ≐ qone :=
-  reciprocal_identity _ (GaussianNameReciprocal.lower_norm_positive _ b hb
-    (name_lower _ (b+a) b (le_trans hb (le_add_right b a)) hb (positive_sample_lower p a b hb)))
+  reciprocal_identity_of_lower _ (b+a) b (le_trans hb (le_add_right b a)) hb
+    (positive_sample_lower p a b hb)
 
 theorem prefix_term (j p a b : PTm n) :
     inst2 GaussianRationalInverseGeometric.body j (ratio p a b) = power (ratio p a b) (succ j) := by
@@ -122,8 +122,7 @@ theorem partial_value (p a b N : PTm n) (ha : Γ ⊢[PRAAx] le one a) (hb : Γ �
     (reciprocal_at p a b).eqTrans (GaussianNameReciprocal.reciprocal_congr (denominator_at r a b).eqSymm)
   have inverse : Γ ⊢[PRAAx] qmul w d ≐ qone :=
     (qmul_congr read (.eqRefl d)).eqTrans ((qmul_commutative (reciprocal d) d).eqTrans
-      (reciprocal_identity d (GaussianNameReciprocal.lower_norm_positive d b hb
-        (name_lower d a b ha hb (denominator_lower r a b hb)))))
+      (reciprocal_identity_of_lower d a b ha hb (denominator_lower r a b hb)))
   have cancel : Γ ⊢[PRAAx] qmul w (qmul d v) ≐ v :=
     (qmul_associative w d v).eqSymm.eqTrans
       ((qmul_congr inverse (.eqRefl v)).eqTrans (GaussianPolynomialDeterminantTerms.one_mul_canonical v

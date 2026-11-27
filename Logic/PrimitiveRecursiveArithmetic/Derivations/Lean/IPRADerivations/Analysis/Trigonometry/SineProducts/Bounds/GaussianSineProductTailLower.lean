@@ -21,8 +21,8 @@ open_ipra
 open GaussianGammaEulerReflectionHead (body squareFactor square_factor_at)
 open GaussianInverseSquareProductTail (factorBounds sine_factor_bound)
 open GaussianSineProductHeadLower (lower_one)
-open GaussianRationalLowerBounds (lower inverse_bound name_lower)
-open GaussianRationalReciprocal (qone reciprocal reciprocal_canonical reciprocal_identity)
+open GaussianRationalLowerBounds (lower inverse_bound reciprocal_identity_of_lower)
+open GaussianRationalReciprocal (qone reciprocal reciprocal_canonical)
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_radius_mono)
@@ -70,8 +70,8 @@ theorem late_inverse_identity (z R B L i : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) (hL : Γ ⊢[PRAAx] le (two*R) L) :
     Γ ⊢[PRAAx] qmul (squareFactor (L+i) z B) (reciprocal (squareFactor (L+i) z B)) ≐ qone := by
   have twoPos : Γ ⊢[PRAAx] le one two := zero_lt_succ one
-  exact reciprocal_identity _ (GaussianNameReciprocal.lower_norm_positive _ _ twoPos
-    (name_lower _ _ _ (le_refl one) twoPos (late_factor z R B L i hB hz hL)))
+  exact reciprocal_identity_of_lower _ one two (le_refl one) twoPos
+    (late_factor z R B L i hB hz hL)
 
 theorem inverse_deviation (z R B L i : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) (hL : Γ ⊢[PRAAx] le (two*R) L) :

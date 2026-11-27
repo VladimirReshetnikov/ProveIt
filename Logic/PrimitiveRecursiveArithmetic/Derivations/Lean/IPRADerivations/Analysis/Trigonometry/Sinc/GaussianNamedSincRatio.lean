@@ -21,8 +21,8 @@ open GaussianNamedSincQuadraticBounds (observationBound quadratic_bound square_q
 open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
-open GaussianRationalReciprocal (qone reciprocal reciprocal_identity)
-open GaussianRationalLowerBounds (lower lower_congr product_lower name_lower inverse_bound)
+open GaussianRationalReciprocal (qone reciprocal)
+open GaussianRationalLowerBounds (lower lower_congr product_lower reciprocal_identity_of_lower inverse_bound)
 open GaussianApproximateInverseDistance (multiply_distance)
 open GaussianBoundedInverseApartness (lower_near_one)
 open GaussianReconstructionRoots (distance_triangle)
@@ -78,8 +78,7 @@ theorem ratio_error (f g : PR 2) (R x S y A B C D p q : PTm n)
       (distance_symmetric _ _ _ _ hF (square_quadratic_bound g S y C D q hD hCD hg))
   have hrec := inverse_bound v one (num 4) (le_refl one) h4 low
   have recId := (GaussianRationalPowerAlgebra.qmul_commutative v (reciprocal v)).eqSymm.eqTrans
-    (reciprocal_identity v (GaussianNameReciprocal.lower_norm_positive v (num 4) h4
-      (name_lower v one (num 4) (le_refl one) h4 low)))
+    (reciprocal_identity_of_lower v one (num 4) (le_refl one) h4 low)
   have hEF := positive_product E F hE hF
   have raw := distance_congr (.eqRefl _) recId (.eqRefl _) (.eqRefl _)
     (multiply_distance (reciprocal v) u v (num 4) (M*F+N*E) (E*F) hEF hrec d)

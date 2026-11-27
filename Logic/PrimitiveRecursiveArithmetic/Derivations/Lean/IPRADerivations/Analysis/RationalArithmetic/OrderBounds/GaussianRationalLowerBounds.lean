@@ -75,10 +75,20 @@ theorem name_lower (q A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PR
     exact le_congr (.eqRefl _) (by ipra_ring) (le_mul_mono (le_refl (B*B)) (le_mul_mono hA hA))
   exact RationalArgmin.transitive first h
 
+/-- A positive lower bound forces the norm numerator to be positive. -/
+theorem norm_positive (q A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B)
+    (h : Γ ⊢[PRAAx] lower q A B) : Γ ⊢[PRAAx] le one (GaussianRationalReciprocal.normNumerator q) :=
+  GaussianNameReciprocal.lower_norm_positive q B hB (name_lower q A B hA hB h)
+
+/-- An actual rational value with a positive lower bound cancels its reciprocal. -/
+theorem reciprocal_identity_of_lower (q A B : PTm n) (hA : Γ ⊢[PRAAx] le one A)
+    (hB : Γ ⊢[PRAAx] le one B) (h : Γ ⊢[PRAAx] lower q A B) : Γ ⊢[PRAAx] qmul q (reciprocal q) ≐ qone :=
+  reciprocal_identity q (norm_positive q A B hA hB h)
+
 /-- Full reciprocal constant B/A for the actual normalized conjugate/norm algorithm. -/
 theorem inverse_bound (q A B : PTm n) (hA : Γ ⊢[PRAAx] le one A) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] lower q A B) : Γ ⊢[PRAAx] bounded (GaussianRationalReciprocal.reciprocal q) B A := by
-  have hn := GaussianNameReciprocal.lower_norm_positive q B hB (name_lower q A B hA hB h)
+  have hn := norm_positive q A B hA hB h
   have clear := lower_to_cleared q (rawGaussian q) (rawDen q) A B (raw_den_positive q) hB (raw_represents q) h
   have main := le_mul_mono clear (le_refl (GaussianRationalReciprocal.normNumerator q))
   apply (GaussianRationalMetric.bounded_iff _ _ _ _ _ hn hA (GaussianRationalReciprocal.reciprocal_represents q hn)).iffMpr
@@ -97,8 +107,7 @@ theorem cancel_bounded_product (d q E K B : PTm n) (hd : Γ ⊢[PRAAx] canonical
     (hK : Γ ⊢[PRAAx] le one K) (hB : Γ ⊢[PRAAx] le one B) (hq : Γ ⊢[PRAAx] lower q one B)
     (h : Γ ⊢[PRAAx] bounded (qmul d q) E K) : Γ ⊢[PRAAx] bounded d (E*B) K := by
   have inv := inverse_bound q one B (le_refl one) hB hq
-  have unit : Γ ⊢[PRAAx] qmul q (reciprocal q) ≐ qone :=
-    reciprocal_identity q (GaussianNameReciprocal.lower_norm_positive q B hB hq)
+  have unit := reciprocal_identity_of_lower q one B (le_refl one) hB hq
   have cancel : Γ ⊢[PRAAx] qmul (qmul d q) (reciprocal q) ≐ d :=
     (qmul_associative _ _ _).eqTrans ((qmul_congr (.eqRefl d) unit).eqTrans (qmul_one_right d hd))
   exact bound_congr cancel (.eqRefl _) (by ipra_ring) (bounded_product _ _ _ _ _ _ hK (le_refl one) h inv)

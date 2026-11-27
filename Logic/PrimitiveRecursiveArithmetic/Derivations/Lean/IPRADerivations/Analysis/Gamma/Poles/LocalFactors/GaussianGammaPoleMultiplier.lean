@@ -26,8 +26,8 @@ open GaussianRationalSyntheticDivision (qone qone_canonical qmul_congr)
 open GaussianRationalMetric (qnegative_represents)
 open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
 open GaussianReciprocalHorner (qmul_one_right)
-open GaussianRationalReciprocal (reciprocal reciprocal_identity power power_zero power_succ)
-open GaussianRationalLowerBounds (lower lower_from_representation name_lower)
+open GaussianRationalReciprocal (reciprocal power power_zero power_succ)
+open GaussianRationalLowerBounds (lower lower_from_representation reciprocal_identity_of_lower)
 open GaussianRationalMatrixFiniteSums (minusOne)
 open GaussianGammaEulerHeadLower (poleAt translated_zero)
 open ComplexLogarithmRemainder (oneCode normSq_neg normSq scale bounded)
@@ -65,7 +65,7 @@ theorem factor_lower (h B A S D j : PTm n)
 private theorem inverse_of_lower (q A D : PTm n)
     (hA : Γ ⊢[PRAAx] le one A) (hD : Γ ⊢[PRAAx] le one D) (hq : Γ ⊢[PRAAx] lower q A D) :
     Γ ⊢[PRAAx] qmul q (reciprocal q) ≐ qone :=
-  reciprocal_identity q (GaussianNameReciprocal.lower_norm_positive _ _ hD (name_lower q A D hA hD hq))
+  reciprocal_identity_of_lower q A D hA hD hq
 
 theorem factor_inverse (h B A S D j : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le one A) (hD : Γ ⊢[PRAAx] le one D)

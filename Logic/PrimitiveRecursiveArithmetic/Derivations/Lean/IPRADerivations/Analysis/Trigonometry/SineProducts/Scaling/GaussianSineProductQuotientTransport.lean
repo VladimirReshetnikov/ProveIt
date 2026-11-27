@@ -16,8 +16,8 @@ namespace LeanProofs.IPRA.Analysis.GaussianSineProductQuotientTransport
 open_ipra
 open GaussianRationalHorner (qmul qmul_canonical positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalReciprocal (qone reciprocal reciprocal_identity bounded_product bound_congr)
-open GaussianRationalLowerBounds (lower product_lower lower_congr name_lower inverse_bound)
+open GaussianRationalReciprocal (qone reciprocal bounded_product bound_congr)
+open GaussianRationalLowerBounds (lower product_lower lower_congr reciprocal_identity_of_lower inverse_bound)
 open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
 open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
@@ -38,7 +38,7 @@ ipra_subst correctedFactor
 private theorem inverse_identity (a D : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (h : Γ ⊢[PRAAx] lower a one D) : Γ ⊢[PRAAx] qmul (reciprocal a) a ≐ qone :=
   (qmul_commutative _ _).eqTrans
-    (reciprocal_identity a (GaussianNameReciprocal.lower_norm_positive a D hD (name_lower a one D (le_refl _) hD h)))
+    (reciprocal_identity_of_lower a one D (le_refl one) hD h)
 
 theorem cross_quotient_bound (u v a b E M V B : PTm n)
     (hM : Γ ⊢[PRAAx] le one M) (hV : Γ ⊢[PRAAx] le one V) (hB : Γ ⊢[PRAAx] le one B)
