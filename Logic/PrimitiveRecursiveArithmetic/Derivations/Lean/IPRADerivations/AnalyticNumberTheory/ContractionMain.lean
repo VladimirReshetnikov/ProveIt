@@ -40,8 +40,7 @@ theorem fq_le {m x L : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (hmL : Γ
     Γ ⊢[PRAAx] le (fact L * quo x m) (x * quo (fact L) m) := by
   have ef := natEq ((fact_quo (le_congr hm (.eqRefl _) hmL)).eqTrans
     (congrMul hm.eqSymm (congrAp2 quoF (.eqRefl _) hm.eqSymm)))
-  have dm := div_mod_at (Γ := Γ) (x := x) hm
-  have hdm : Γ ⊢[PRAAx] le (m * quo x m) x := le_of_eq_add (d := rem x m) (Prf.andE₁ dm)
+  have hdm := Division.mul_quo_le (x := x) hm
   have q := le_scale (quo (fact L) m) hdm
   ipra_le sl q with 𝔞 (quo x m) * ef
 

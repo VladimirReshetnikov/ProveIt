@@ -22,10 +22,8 @@ open LeanProofs.IPRA.Signum (sg sg_zero)
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `N/d ≤ N` for `d ≥ 1`. -/
-theorem quo_lt' {d N : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢[PRAAx] lt (quo N d) (succ N) := by
-  have dv := natEq (GcdFiber.div_eq (j := N) hd); have wp := natEq hd
-  refine (succ_monus_succ _ _).eqTrans (le_of_eq_add (d := pred d * quo N d + rem N d) ?_)
-  ipra_lc dv + 𝔞 (quo N d) * wp
+theorem quo_lt' {d N : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢[PRAAx] lt (quo N d) (succ N) :=
+  Order.lt_succ_of_le (Division.quo_le_self hd)
 
 /-- Either the divisor indicator `[d ≥ 1][d ∣ N]` vanishes, or `d` is a positive divisor of `N`. -/
 theorem divisor_orE {d N : PTm n} {φ : Fm PTm n}

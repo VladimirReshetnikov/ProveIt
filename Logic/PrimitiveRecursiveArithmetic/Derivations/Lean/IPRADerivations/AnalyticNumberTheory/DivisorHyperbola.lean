@@ -104,24 +104,14 @@ theorem row_count {a F N : PTm n} (hN : Γ ⊢[PRAAx] le (quo F (succ a)) N) :
     (congrMonus (.eqRefl _) (congrMonus (.eqRefl _) (congrMonus (snd_pair _ _).eqSymm (.eqRefl _))))
 
 /-- `⌊F/(a+1)⌋ ≤ F`. -/
-theorem quo_le_self (a F : PTm n) : Γ ⊢[PRAAx] le (quo F (succ a)) F := by
-  have dm := div_mod_at (Γ := Γ) (x := F) (y := succ a) (c := a) (.eqRefl _)
-  have e := natEq (Prf.andE₁ dm)
-  ipra_le 𝔞 a * 𝔞 (quo F (succ a)) + 𝔞 (rem F (succ a)) with e
+theorem quo_le_self (a F : PTm n) : Γ ⊢[PRAAx] le (quo F (succ a)) F :=
+  Division.quo_le_self (x := F) (.eqRefl (succ a))
 
 /-- `⌊y/(a+1)⌋ ≤ m` for `a ≥ m` and `y < (m+1)²`. -/
 theorem row_short {a m y : PTm n} (ha : Γ ⊢[PRAAx] le m a) (hy : Γ ⊢[PRAAx] lt y (succ m * succ m)) :
     Γ ⊢[PRAAx] le (quo y (succ a)) m := by
-  have dm := div_mod_at (Γ := Γ) (x := y) (y := succ a) (c := a) (.eqRefl _)
-  refine .orE (lt_or_le m (quo y (succ a))) ?_ Prf.hyp0
-  let Δ : List (Fm PTm n) := lt m (quo y (succ a)) :: Γ
-  have h : Δ ⊢[PRAAx] lt m (quo y (succ a)) := Prf.hyp0
-  have e := natEq ((Prf.andE₁ dm).wk : Δ ⊢[PRAAx] _ ≐ _)
-  have ha' : Δ ⊢[PRAAx] le m a := ha.wk
-  have hy' : Δ ⊢[PRAAx] lt y (succ m * succ m) := hy.wk
-  have hz : Δ ⊢[PRAAx] le one zero := by
-    ipra_le sl hy' + (𝔞 a + 1) * sl h + (𝔞 m + 1) * sl ha' + 𝔞 (rem y (succ a)) with e
-  exact .botE _ (succ_ne_zero ((monus_zero _).eqSymm.eqTrans hz))
+  apply Order.le_of_lt_succ (Division.quo_lt_of_lt_mul (.eqRefl (succ a)) ?_)
+  exact lt_of_lt_of_le hy (mul_le_mul_right (succ m) (Order.succ_le_succ ha))
 
 /-! ## The rectangle `j < y − m`, `b < m` -/
 

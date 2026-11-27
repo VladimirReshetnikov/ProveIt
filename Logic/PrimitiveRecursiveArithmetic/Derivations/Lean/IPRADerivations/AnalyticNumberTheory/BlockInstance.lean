@@ -32,7 +32,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-! ## Size and length facts -/
 
 theorem quo_le_x {D : PTm n} (x : PTm n) (hD : Γ ⊢[PRAAx] le one D) : Γ ⊢[PRAAx] le (quo x D) x :=
-  le_trans (quo_anti (F := x) (pos_of_one_le (le_refl one)) hD) (quo_le_self zero x)
+  Division.quo_le_self (x := x) (pos_of_one_le hD)
 
 theorem nn_of {P x K L : PTm n} (hx : Γ ⊢[PRAAx] le one x) (hP : Γ ⊢[PRAAx] le P x)
     (hNN : Γ ⊢[PRAAx] le (K * pw x x) L) : Γ ⊢[PRAAx] le (K * pw P P) L :=

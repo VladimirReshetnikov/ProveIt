@@ -30,9 +30,8 @@ open LeanProofs.IPRA.Signum (sg sg_zero sg_succ)
 variable {k : ℕ} {Γ : List (Fm PTm k)}
 
 /-- `d ⌊N/d⌋ ≤ N` for `d = d' + 1`. -/
-theorem mul_quo_le (N d' : PTm k) : Γ ⊢[PRAAx] le (succ d' * quo N (succ d')) N := by
-  have e := natEq (Prf.andE₁ (div_mod (Γ := Γ) N d'))
-  ipra_le 𝔞 (rem N (succ d')) using linear_combination e
+theorem mul_quo_le (N d' : PTm k) : Γ ⊢[PRAAx] le (succ d' * quo N (succ d')) N :=
+  Division.mul_quo_le (x := N) (.eqRefl (succ d'))
 
 /-- `(M+2)(M+1) ⌊N/(M+2)⌋² ≤ N²`. -/
 theorem term_bound (N M : PTm k) :

@@ -23,13 +23,11 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `⌊x (N+1) / b⌋ ≤ N` for `x < b`. -/
 theorem quo_le {x b N : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (hx : Γ ⊢[PRAAx] lt x b) :
     Γ ⊢[PRAAx] le (quo (x * succ N) b) N := by
-  refine .orE (lt_or_le N (quo (x * succ N) b)) ?_ Prf.hyp0
-  refine .botE _ ?_
-  refine succ_ne_zero' _ (a := monus b (succ x) * succ N + b * monus (quo (x * succ N) b) (succ N) +
-    rem (x * succ N) b + N) ?_
-  ipra_lc -natEq ((div_eq (j := x * succ N) hb).wk (ψ := lt N (quo (x * succ N) b))) -
-    Groth.ι (Q.mk _ b) * natEq (eq_add_of_le (Prf.hyp0 : (lt N (quo (x * succ N) b) :: Γ) ⊢[PRAAx] _)) -
-    (Groth.ι (Q.mk _ N) + 1) * natEq ((eq_add_of_le hx).wk (ψ := lt N (quo (x * succ N) b)))
+  apply Order.le_of_lt_succ (Division.quo_lt_of_lt_mul hb ?_)
+  change Γ ⊢[PRAAx] le (succ (x * succ N)) (b * succ N)
+  refine le_trans ?_ (mul_le_mul_right (succ N) hx)
+  exact le_congr (succ_eq_add_one _).eqSymm (succ_mul _ _).eqSymm
+    (add_le_add_left _ (zero_lt_succ N))
 
 /-- Decoding `x = ⟨a, ⟨b, N⟩⟩`. -/
 abbrev code (a b N : PTm n) : PTm n := pairT a (pairT b N)
@@ -104,16 +102,8 @@ theorem dist_r {X Y e : PTm n} (h : Γ ⊢[PRAAx] X ≐ Y + e) : Γ ⊢[PRAAx] d
     ((congrMonus (.eqRefl _) h).eqTrans (monus_add _ _))).eqTrans (add_zero _)
 
 theorem quo_mono {X Y b : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : Γ ⊢[PRAAx] le X Y) :
-    Γ ⊢[PRAAx] le (quo X b) (quo Y b) := by
-  refine .orE (lt_or_le (quo Y b) (quo X b)) ?_ Prf.hyp0
-  refine .botE _ ?_
-  refine succ_ne_zero' _ (a := monus b (succ (rem Y b)) + b * monus (quo X b) (succ (quo Y b)) + rem X b +
-    monus Y X) ?_
-  ipra_lc -natEq ((eq_add_of_le h).wk (ψ := lt (quo Y b) (quo X b))) +
-    natEq ((div_eq (j := Y) hb).wk (ψ := lt (quo Y b) (quo X b))) -
-    natEq ((div_eq (j := X) hb).wk (ψ := lt (quo Y b) (quo X b))) -
-    Groth.ι (Q.mk _ b) * natEq (eq_add_of_le (Prf.hyp0 : (lt (quo Y b) (quo X b) :: Γ) ⊢[PRAAx] _)) -
-    natEq ((eq_add_of_le (rem_lt' hb Y)).wk (ψ := lt (quo Y b) (quo X b)))
+    Γ ⊢[PRAAx] le (quo X b) (quo Y b) :=
+  Division.quo_mono hb h
 
 theorem congrDist {X X' Y Y' : PTm n} (h₁ : Γ ⊢[PRAAx] X ≐ X') (h₂ : Γ ⊢[PRAAx] Y ≐ Y') :
     Γ ⊢[PRAAx] dist X Y ≐ dist X' Y' :=

@@ -98,20 +98,16 @@ theorem indicator_sum {p j k : PTm n} (hp : Γ ⊢[PRAAx] prime p) :
 
 theorem quo_eq {z q r M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hz : Γ ⊢[PRAAx] z ≐ M * q + r)
     (hr : Γ ⊢[PRAAx] lt r M) : Γ ⊢[PRAAx] quo z M ≐ q :=
-  (congrAp2 quoF (.eqRefl _) hM).eqTrans (Prf.andE₁ (div_mod_unique
-    (hz.eqTrans (congrAdd (congrMul hM (.eqRefl _)) (.eqRefl _))) (lt_congr (.eqRefl _) hM hr)))
+  Prf.andE₁ (div_mod_unique_at hM hz hr)
 
 alias pred_lt := Common.pred_lt
 
 /-- `⌈(j+1)/p⌉ = ⌈j/p⌉ + [p ∣ j]`. -/
 theorem quo_step {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) :
     Γ ⊢[PRAAx] quo (succ j + pred p) p ≐ quo (j + pred p) p + eqb (rem j p) zero := by
-  have d := div_mod (Γ := Γ) j (pred p)
-  have ej : Γ ⊢[PRAAx] j ≐ p * quo j p + rem j p :=
-    (Prf.andE₁ d).eqTrans (congrAdd (congrMul hp.eqSymm (congrAp2 quoF (.eqRefl _) hp.eqSymm))
-      (congrAp2 remF (.eqRefl _) hp.eqSymm))
-  have hr : Γ ⊢[PRAAx] lt (rem j p) p :=
-    lt_congr (congrAp2 remF (.eqRefl _) hp.eqSymm) hp.eqSymm (Prf.andE₂ d)
+  have d := div_mod_at (x := j) hp
+  have ej := Prf.andE₁ d
+  have hr := Prf.andE₂ d
   refine .orE (zero_or_succ (rem j p)) ?_ ?_
   · -- `p ∣ j`.
     have q₁ := quo_eq (Γ := (rem j p ≐ zero) :: Γ) (z := j + pred p) (q := quo j p) (r := pred p) hp.wk (by

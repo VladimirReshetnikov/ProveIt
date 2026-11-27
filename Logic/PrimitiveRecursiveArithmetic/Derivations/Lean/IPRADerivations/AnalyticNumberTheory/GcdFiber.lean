@@ -28,8 +28,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-! ## Division facts -/
 
 theorem div_eq {j p : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) : Γ ⊢[PRAAx] j ≐ p * quo j p + rem j p :=
-  (Prf.andE₁ (div_mod j (pred p))).eqTrans (congrAdd (congrMul hp.eqSymm (congrAp2 quoF (.eqRefl _) hp.eqSymm))
-    (congrAp2 remF (.eqRefl _) hp.eqSymm))
+  Prf.andE₁ (div_mod_at hp)
 
 /-- `⌈K/d⌉ = K/d` when `d ∣ K`. -/
 theorem quo_exact {K d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h : Γ ⊢[PRAAx] rem K d ≐ zero) :

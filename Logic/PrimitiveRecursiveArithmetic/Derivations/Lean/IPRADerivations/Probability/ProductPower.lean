@@ -41,11 +41,10 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
 abbrev dg (M j t : PTm n) : PTm n := rem (quo t (pw M j)) M
 
 theorem div_eq' {t K : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) : Γ ⊢[PRAAx] t ≐ quo t K * K + rem t K :=
-  ((Prf.andE₁ (div_mod t (pred K))).eqTrans (congrAdd (congrMul hK.eqSymm (congrAp2 quoF (.eqRefl _) hK.eqSymm))
-    (congrAp2 remF (.eqRefl _) hK.eqSymm))).eqTrans (congrAdd (mul_comm _ _) (.eqRefl _))
+  (Prf.andE₁ (div_mod_at hK)).eqTrans (congrAdd (mul_comm _ _) (.eqRefl _))
 
 theorem rem_lt'' {K : PTm n} (hK : Γ ⊢[PRAAx] K ≐ succ (pred K)) (y : PTm n) : Γ ⊢[PRAAx] lt (rem y K) K :=
-  lt_congr (congrAp2 remF (.eqRefl _) hK.eqSymm) hK.eqSymm (Prf.andE₂ (div_mod y (pred K)))
+  Prf.andE₂ (div_mod_at (x := y) hK)
 
 /-- `rem (c M + q) M = rem q M`. -/
 theorem rem_shift {M c q : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) :

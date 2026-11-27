@@ -80,7 +80,7 @@ abbrev hT (q F m : PTm n) : PTm n := sg m * (eqb (gcd m q) one * quo F m)
 
 /-- `m ⌊F/m⌋ ≤ F` for `m ≥ 1`. -/
 theorem quo_mul_le {m : PTm n} (hm : Γ ⊢[PRAAx] m ≐ succ (pred m)) (F : PTm n) :
-    Γ ⊢[PRAAx] le (m * quo F m) F := le_of_eq_add (d := rem F m) (div_eq hm)
+    Γ ⊢[PRAAx] le (m * quo F m) F := Division.mul_quo_le hm
 
 theorem scale_alg {p k m Q : PTm n} (e : Γ ⊢[PRAAx] m ≐ p * k) : Γ ⊢[PRAAx] m * Q ≐ k * (p * Q) := by
   ipra_lc 𝔞 Q * natEq e

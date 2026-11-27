@@ -48,7 +48,7 @@ theorem le_of_mul_le {p X Y : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p))
 
 /-- `⌊x/p⌋ ≤ x` for `p ≥ 1`. -/
 theorem quo_le {p : PTm n} (hp1 : Γ ⊢[PRAAx] p ≐ succ (pred p)) (x : PTm n) : Γ ⊢[PRAAx] le (quo x p) x :=
-  le_congr (congrAp2 quoF (.eqRefl _) hp1.eqSymm) (.eqRefl _) (quo_le_self (pred p) x)
+  Division.quo_le_self (x := x) hp1
 
 /-- **The prime step**: `S_a(t) ≤ G_a(t)` and `S_{ap}(⌊t/p⌋) ≤ G_{ap}(⌊t/p⌋)` give `S_{ap}(t) ≤ G_{ap}(t)`,
 for a prime `p` with `gcd(p, a) = 1` and `t ≤ z`. -/

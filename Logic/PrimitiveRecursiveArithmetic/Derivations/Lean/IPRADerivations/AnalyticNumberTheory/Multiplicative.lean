@@ -32,12 +32,11 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-! ## Division by a positive modulus -/
 
 theorem rem_lt' {M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (y : PTm n) : Γ ⊢[PRAAx] lt (rem y M) M :=
-  lt_congr (congrAp2 remF (.eqRefl _) hM.eqSymm) hM.eqSymm (Prf.andE₂ (div_mod y (pred M)))
+  Prf.andE₂ (div_mod_at (x := y) hM)
 
 theorem rem_eq' {z q r M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) (hz : Γ ⊢[PRAAx] z ≐ M * q + r)
     (hr : Γ ⊢[PRAAx] lt r M) : Γ ⊢[PRAAx] rem z M ≐ r :=
-  (congrAp2 remF (.eqRefl _) hM).eqTrans (Prf.andE₂ (div_mod_unique
-    (hz.eqTrans (congrAdd (congrMul hM (.eqRefl _)) (.eqRefl _))) (lt_congr (.eqRefl _) hM hr)))
+  Prf.andE₂ (div_mod_unique_at hM hz hr)
 
 theorem zero_lt' {M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M)) : Γ ⊢[PRAAx] lt zero M :=
   lt_congr (.eqRefl _) hM.eqSymm (zero_lt_succ _)
@@ -289,11 +288,8 @@ theorem rem_rem_mul (x : PTm n) :
   · ipra_lc -natEq (div_eq (j := x) (pos_mul hm hN))
 
 omit hN in
-theorem quo_lt {j : PTm n} (hj : Γ ⊢[PRAAx] lt j (m * N)) : Γ ⊢[PRAAx] lt (quo j m) N := by
-  refine .orE (lt_or_le (quo j m) N) Prf.hyp0 ?_
-  refine succ_ne_zero' _ (a := m * monus (quo j m) N + rem j m + monus (m * N) (succ j)) ?_
-  ipra_lc -Groth.ι (Q.mk _ m) * natEq (eq_add_of_le (Prf.hyp0 : (le N (quo j m) :: Γ) ⊢[PRAAx] le N (quo j m))) -
-    natEq ((div_eq (j := j) hm).wk (ψ := le N (quo j m))) - natEq ((eq_add_of_le hj).wk (ψ := le N (quo j m)))
+theorem quo_lt {j : PTm n} (hj : Γ ⊢[PRAAx] lt j (m * N)) : Γ ⊢[PRAAx] lt (quo j m) N :=
+  Division.quo_lt_of_lt_mul hm hj
 
 /-- Every `j < mn` has a preimage, given a simultaneous solution `x`. -/
 theorem ge_witness {j x r s : PTm n} (hj : Γ ⊢[PRAAx] lt j (m * N)) (hr : Γ ⊢[PRAAx] r ≐ rem j m)

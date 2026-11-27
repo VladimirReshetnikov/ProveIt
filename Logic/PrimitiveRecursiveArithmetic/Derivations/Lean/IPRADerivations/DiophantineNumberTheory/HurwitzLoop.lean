@@ -152,9 +152,8 @@ theorem add_adist' {x y : PTm n} (h : Γ ⊢[PRAAx] le x y) : Γ ⊢[PRAAx] y �
   ipra_lc natEq (eq_add_of_le h) - natEq h
 
 /-- `⌊x/y⌋ y ≤ x` for `y ≥ 1`. -/
-theorem quo_mul_le {x y : PTm n} (hy : Γ ⊢[PRAAx] y ≐ succ (pred y)) : Γ ⊢[PRAAx] le (quo x y * y) x := by
-  have d := div_mod_at (Γ := Γ) (x := x) hy
-  exact le_of_eq_add (d := rem x y) (by ipra_lc natEq (Prf.andE₁ d))
+theorem quo_mul_le {x y : PTm n} (hy : Γ ⊢[PRAAx] y ≐ succ (pred y)) : Γ ⊢[PRAAx] le (quo x y * y) x :=
+  Division.quo_mul_le hy
 
 /-- One step of the loop: `Inv` and `Dn ≥ 1` give `Inv` of the next state; the sign region flips and the
 determinant changes sign. -/

@@ -151,15 +151,6 @@ theorem ex_zero (a b : PTm n) : Γ ⊢[PRAAx] ex zero ![a, b] ≐ a := by
 theorem ey_zero (a b : PTm n) : Γ ⊢[PRAAx] ey zero ![a, b] ≐ b := by
   simpa using sim₂_zero (Γ := Γ) (var 0) (var 1) eStepX eStepY ![a, b]
 
-/-- `x = y quo x y + rem x y` and `rem x y < y`, for `y = S c`. -/
-theorem div_mod_at {x y c : PTm n} (hy : Γ ⊢[PRAAx] y ≐ succ c) :
-    Γ ⊢[PRAAx] (x ≐ y * quo x y + rem x y) ⋏ lt (rem x y) y := by
-  have d := div_mod (Γ := Γ) x c
-  have hq : Γ ⊢[PRAAx] quo x (succ c) ≐ quo x y := congrAp2 quoF (.eqRefl _) hy.eqSymm
-  have hr : Γ ⊢[PRAAx] rem x (succ c) ≐ rem x y := congrAp2 remF (.eqRefl _) hy.eqSymm
-  refine .andI ((Prf.andE₁ d).eqTrans (congrAdd (congrMul hy.eqSymm hq) hr)) ?_
-  exact lt_congr hr hy.eqSymm (Prf.andE₂ d)
-
 /-! ## Common divisors are preserved -/
 
 section Invariant

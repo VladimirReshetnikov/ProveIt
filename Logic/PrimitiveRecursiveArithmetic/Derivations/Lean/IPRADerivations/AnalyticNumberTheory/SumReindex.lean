@@ -50,13 +50,8 @@ theorem sum_le_bound (f : PTm 2) {a b x : PTm n} (h : Γ ⊢[PRAAx] le a b) :
 
 /-- `k t ≤ F → t ≤ ⌊F/k⌋` for `k ≥ 1`. -/
 theorem le_quo_of_mul_le {k t F : PTm n} (hk : Γ ⊢[PRAAx] k ≐ succ (pred k)) (h : Γ ⊢[PRAAx] le (k * t) F) :
-    Γ ⊢[PRAAx] le t (quo F k) := by
-  refine .orE (lt_or_le (quo F k) t) ?_ Prf.hyp0
-  refine .botE _ ?_
-  refine succ_ne_zero' _ (a := monus k (succ (rem F k)) + k * monus t (succ (quo F k)) + monus F (k * t)) ?_
-  ipra_lc natEq ((div_eq (j := F) hk).wk (ψ := lt (quo F k) t)) - natEq ((eq_add_of_le h).wk (ψ := lt (quo F k) t)) -
-    natEq ((eq_add_of_le (rem_lt' hk F)).wk (ψ := lt (quo F k) t)) -
-    Groth.ι (IPRA.Q.mk _ k) * natEq (eq_add_of_le (Prf.hyp0 : (lt (quo F k) t :: Γ) ⊢[PRAAx] _))
+    Γ ⊢[PRAAx] le t (quo F k) :=
+  Division.le_quo_of_mul_le hk h
 
 /-! ## Reindexing the multiples of `p` -/
 

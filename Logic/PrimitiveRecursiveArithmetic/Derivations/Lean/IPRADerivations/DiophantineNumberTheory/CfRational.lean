@@ -286,10 +286,8 @@ theorem Z_below {a b j : PTm n} (hj : Γ ⊢[PRAAx] le j (M a b)) : Γ ⊢[PRAAx
   have s := AnalyticNumberTheory.SumReindex.sum_le_bound (Γ := Γ) zB (x := pairT a b) hj
   exact (monus_zero _).eqSymm.eqTrans (le_congr (.eqRefl _) (Z_M a b) s)
 
-theorem quo_le_self' {A B : PTm n} (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) : Γ ⊢[PRAAx] le (quo A B) A := by
-  have d := natEq (div_eq (j := A) hB)
-  have e := natEq hB
-  ipra_le 𝔞 (quo A B) * 𝔞 (pred B) + 𝔞 (rem A B) with d + 𝔞 (quo A B) * e
+theorem quo_le_self' {A B : PTm n} (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) : Γ ⊢[PRAAx] le (quo A B) A :=
+  Division.quo_le_self hB
 
 /-- **Every coefficient is at most `a + b`.** -/
 theorem cf_le {a b j : PTm n} (hj : Γ ⊢[PRAAx] lt j (M a b)) : Γ ⊢[PRAAx] le (cf j a b) (a + b) := by

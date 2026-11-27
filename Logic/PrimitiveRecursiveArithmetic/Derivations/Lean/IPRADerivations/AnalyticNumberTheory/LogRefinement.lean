@@ -46,9 +46,8 @@ theorem pos_of_eq {t e : PTm n} (h : Γ ⊢[PRAAx] t ≐ succ e) : Γ ⊢[PRAAx]
 
 /-- `⌊x / B⌋ = u` when `x = B u`, `B ≥ 1`. -/
 theorem quo_mul {x B u : PTm n} (hB : Γ ⊢[PRAAx] B ≐ succ (pred B)) (h : Γ ⊢[PRAAx] x ≐ B * u) :
-    Γ ⊢[PRAAx] quo x B ≐ u := by
-  have e := natEq hB
-  exact quo_eq hB (h.eqTrans (add_zero _).eqSymm) (by ipra_le 𝔞 (pred B) with e)
+    Γ ⊢[PRAAx] quo x B ≐ u :=
+  Division.quo_eq_mul hB h
 
 /-- The constant body `fst y` in `(i, y)`. -/
 abbrev cstB : PTm 2 := fstT (var 1)

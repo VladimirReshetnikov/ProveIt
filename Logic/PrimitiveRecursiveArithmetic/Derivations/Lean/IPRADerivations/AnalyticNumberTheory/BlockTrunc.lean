@@ -37,14 +37,10 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 /-- `⌊x/k⌋ ≤ D` for `D ≥ 1` and `k ≥ ⌊x/D⌋ + 1`. -/
 theorem quo_le_of_gt {x D k : PTm n} (hD : Γ ⊢[PRAAx] le one D) (hk : Γ ⊢[PRAAx] le (succ (quo x D)) k) :
     Γ ⊢[PRAAx] le (quo x k) D := by
-  have hk1 : Γ ⊢[PRAAx] le one k := le_trans ((succ_monus_succ _ _).eqTrans (zero_le _)) hk
-  have dD := div_mod_at (Γ := Γ) (x := x) (pos_of_one_le hD)
-  have dk := div_mod_at (Γ := Γ) (x := x) (pos_of_one_le hk1)
-  have e1 := natEq (Prf.andE₁ dD); have r1 := Prf.andE₂ dD
-  have e2 := natEq (Prf.andE₁ dk)
-  have m := le_scale D hk
-  refine cancel_pos hk1 ?_
-  ipra_le sl r1 + sl m + 𝔞 (rem x k) + 1 with e1 - e2
+  have hk1 := le_trans (zero_lt_succ (quo x D)) hk
+  have below := lt_of_lt_of_le (Division.lt_mul_succ_quo (x := x) (pos_of_one_le hD)) (mul_le_mul_left D hk)
+  have result := Division.quo_lt_of_lt_mul (pos_of_one_le hk1) (lt_congr (.eqRefl _) (mul_comm _ _) below)
+  exact le_trans (le_succ_self _) result
 
 /-- `D ≤ ⌊x/k⌋` for `1 ≤ k ≤ ⌊x/D⌋`. -/
 theorem le_quo_of_le {x D k : PTm n} (hk1 : Γ ⊢[PRAAx] le one k) (hk : Γ ⊢[PRAAx] le k (quo x D)) :
@@ -63,13 +59,7 @@ theorem e_trunc (b : PTm 2) {x D z : PTm n} (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] ap2 (sumF (eB b)) (succ x) (pairT x (pairT D z)) ≐
       ap2 (sumF (eB b)) (succ (quo x D)) (pairT x (pairT D z)) := by
   have hD' : (Γ.map Fm.shift) ⊢[PRAAx] le one (Syn.shift D) := by simpa [Fm.shift, Syn.shift] using hD.shift
-  have hP : Γ ⊢[PRAAx] le (succ (quo x D)) (succ x) := by
-    have dD := div_mod_at (Γ := Γ) (x := x) (pos_of_one_le hD)
-    have e1 := natEq (Prf.andE₁ dD)
-    have w := natEq (eq_add_of_le hD)
-    have l : Γ ⊢[PRAAx] le (quo x D) x := by
-      ipra_le 𝔞 (quo x D) * 𝔞 (monus D one) + 𝔞 (rem x D) with e1 + 𝔞 (quo x D) * w
-    exact (succ_monus_succ _ _).eqTrans l
+  have hP := Order.succ_le_succ (Division.quo_le_self (x := x) (pos_of_one_le hD))
   refine sum_trunc (eB b) hP (.allI (.impI (.impI ?_)))
   simp only [shift_pairT]
   have hv : (le (Syn.shift (succ (quo x D))) (var 0) :: lt (var 0) (Syn.shift (succ x)) :: Γ.map Fm.shift) ⊢[PRAAx]

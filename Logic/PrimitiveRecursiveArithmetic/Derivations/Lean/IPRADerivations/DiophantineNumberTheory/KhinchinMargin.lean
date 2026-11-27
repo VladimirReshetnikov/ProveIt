@@ -27,9 +27,8 @@ set_option autoImplicit false
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 /-- `⌊x/q⌋ q ≤ x` for `q ≥ 1`. -/
-theorem quo_mul_le {x q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) : Γ ⊢[PRAAx] le (quo x q * q) x := by
-  have d := div_mod_at (Γ := Γ) (x := x) hq
-  exact le_of_eq_add (d := rem x q) (by ipra_lc natEq (Prf.andE₁ d))
+theorem quo_mul_le {x q : PTm n} (hq : Γ ⊢[PRAAx] q ≐ succ (pred q)) : Γ ⊢[PRAAx] le (quo x q * q) x :=
+  Division.quo_mul_le hq
 
 /-- Cancel a factor `b = succ (pred b)`. -/
 theorem cancel {b u v : PTm n} (hb : Γ ⊢[PRAAx] b ≐ succ (pred b)) (h : Γ ⊢[PRAAx] le (b * u) (b * v)) :
