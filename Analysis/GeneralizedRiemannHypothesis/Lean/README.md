@@ -52,6 +52,8 @@ Each entry below identifies the part of the article covered by the Lean statemen
 
 [HeckeRootOfUnityIntegrality.lean](GRHArticle/SingularModuli/HeckeRootOfUnityIntegrality.lean) proves that the finite formal product over all shifts has integral coefficients by root-of-unity cancellation. [ClearedSeriesPolynomialDescent.lean](GRHArticle/SingularModuli/ClearedSeriesPolynomialDescent.lean) recovers integral polynomial coefficients from an integral cleared power-series evaluation.
 
+[CMHeckeIntegralDiagonal.lean](GRHArticle/SingularModuli/CMHeckeIntegralDiagonal.lean) proves that for every prime $p$ the negative Hecke diagonal is represented by a monic polynomial in $j$ of degree $2p$ over $\mathbb Z$. It follows unconditionally that the eight analytic singular moduli of the two quartic examples are algebraic integers. Identifying the class polynomial coefficients with rational integers requires an additional argument.
+
 The five-term classification still needs the CM reduction, bounds on the conjugates
 to place them in the disks, and finite certificates from the
 [singular-moduli section](../Article/sections/smd.tex).
