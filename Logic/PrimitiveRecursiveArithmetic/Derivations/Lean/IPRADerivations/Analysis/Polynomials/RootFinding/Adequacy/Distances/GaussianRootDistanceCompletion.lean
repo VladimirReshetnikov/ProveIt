@@ -81,12 +81,8 @@ theorem normalized_radius (f : PR 2) (M h x s t : PTm n)
 
 theorem normalize_program (f : PR 2) (h x k : PTm n) : Γ ⊢[PRAAx]
     ap2 (normalizeF f) k (normalizeData h x) ≐ normalized f h x k := by
-  have base : Γ ⊢[PRAAx] ap2 (normalizeF f) k (normalizeData h x) ≐
-      normalized f (fstT (normalizeData h x)) (sndT (normalizeData h x)) k := by
-    simpa only [normalizeF,normalizeBody,subst_normalized,subst_fstT,subst_sndT,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.head_cons,Matrix.tail_cons,ap2] using
-      toPR_eq (Γ := Γ) (normalizeBody f) ![k,normalizeData h x]
-  exact base.eqTrans (congrAp2 f (congrAdd (.eqRefl _) (fst_pair h x)) (snd_pair h x))
+  simpa [normalizeF, normalizeBody, normalizeData] using
+    (toPR_pair_eq (Γ := Γ) (normalized f (var 1) (var 2) (var 0)) k h x)
 
 theorem normalized_fast (f : PR 2) (M h x : PTm n)
     (hReg : Γ ⊢[PRAAx] regular f M x) (hM : Γ ⊢[PRAAx] le M (unit h)) : Γ ⊢[PRAAx]
@@ -128,10 +124,8 @@ theorem raw_congr (step a : PR 3) (point : PR 2) {N N' x x' t t' : PTm n}
 
 theorem raw_at (step a : PR 3) (point : PR 2) (N x t : PTm n) : Γ ⊢[PRAAx]
     ap2 (rawF step a point) t (data N x) ≐ raw step a point N x t := by
-  have base : Γ ⊢[PRAAx] ap2 (rawF step a point) t (data N x) ≐
-      raw step a point (fstT (data N x)) (sndT (data N x)) t := by
-    simpa [rawF,rawBody,ap2] using toPR_eq (Γ := Γ) (rawBody step a point) ![t,data N x]
-  exact base.eqTrans (raw_congr step a point (fst_pair N x) (snd_pair N x) (.eqRefl _))
+  simpa [rawF, rawBody, data] using
+    (toPR_pair_eq (Γ := Γ) (raw step a point (var 1) (var 2) (var 0)) t N x)
 
 theorem name_at (step a : PR 3) (point : PR 2) (N x k : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF step a point) k (nameData N x) ≐ sample step a point N x k :=

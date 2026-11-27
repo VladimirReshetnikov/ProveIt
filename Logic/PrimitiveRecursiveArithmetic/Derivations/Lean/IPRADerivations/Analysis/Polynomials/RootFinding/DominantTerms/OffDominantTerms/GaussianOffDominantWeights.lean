@@ -58,14 +58,8 @@ ipra_subst sumUpper
 
 theorem lower_program (N k payload s : PTm n) : Γ ⊢[PRAAx]
     ap2 gLower s (data N k payload) ≐ lowerWeight N k s := by
-  have decoded : Γ ⊢[PRAAx]
-      monus (fstT (data N k payload)) (monus (fstT (sndT (data N k payload))) (succ s)) ≐
-        monus N (lowerDistance k s) := congrMonus (fst_pair N (pairT k payload))
-    (congrMonus ((congrFst (snd_pair N (pairT k payload))).eqTrans (fst_pair k payload)) (.eqRefl (succ s)))
-  have reified := toPR_eq (Γ := Γ) lowerBody ![s,data N k payload]
-  simp only [lowerBody,subst_lowerWeight,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
-    Matrix.cons_val_one] at reified
-  exact reified.eqTrans (congrAp2 powF decoded (.eqRefl four))
+  simpa [gLower, lowerBody, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (lowerWeight (var 1) (var 2) (var 0)) s ![N, k, payload])
 
 theorem upper_program (N k payload s : PTm n) : Γ ⊢[PRAAx]
     ap2 gUpper s (data N k payload) ≐ upperWeight N s := by

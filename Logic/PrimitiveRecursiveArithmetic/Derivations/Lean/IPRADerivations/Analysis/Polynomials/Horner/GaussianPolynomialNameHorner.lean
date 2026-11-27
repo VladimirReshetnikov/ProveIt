@@ -52,9 +52,8 @@ ipra_subst computedData
 
 theorem coefficient_at (a : PR 3) (i s x : PTm n) : Γ ⊢[PRAAx]
     ap2 (coefficientF a) s (coefficientData i x) ≐ ap3 a i s x := by
-  have e := toPR_eq (Γ := Γ) (ap3 a (fstT (var 1)) (var 0) (sndT (var 1)) : PTm 2) ![s,coefficientData i x]
-  exact e.eqTrans (by simpa only [subst_ap3,subst_fstT,subst_sndT,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,coefficientData] using congrAp3 a (fst_pair i x) (.eqRefl s) (snd_pair i x))
+  simpa [coefficientF, coefficientData] using
+    (toPR_pair_eq (Γ := Γ) (ap3 a (var 1) (var 0) (var 2)) s i x)
 
 theorem coefficient_fast (a : PR 3) (N i x : PTm n) (hCN : Γ ⊢[PRAAx] generalCN a N x)
     (hi : Γ ⊢[PRAAx] le i N) : Γ ⊢[PRAAx] pointCN (coefficientF a) (coefficientData i x) := by

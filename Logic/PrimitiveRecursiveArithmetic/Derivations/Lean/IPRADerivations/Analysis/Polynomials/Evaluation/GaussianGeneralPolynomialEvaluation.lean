@@ -73,13 +73,8 @@ theorem observation_congr (a : PR 3) (point : PR 2) {N N' x x' y y' s s' : PTm n
 
 theorem observation_at (a : PR 3) (point : PR 2) (N x y s : PTm n) : Γ ⊢[PRAAx]
     ap2 (observationF a point) s (observationData N x y) ≐ observation a point N x y s := by
-  have fields := observation_congr (Γ := Γ) a point
-    (fst_pair N (pairT x y))
-    ((congrFst (snd_pair N (pairT x y))).eqTrans (fst_pair x y))
-    ((congrSnd (snd_pair N (pairT x y))).eqTrans (snd_pair x y)) (.eqRefl s)
-  exact (toPR_eq (observationBody a point) ![s,observationData N x y]).eqTrans (by
-    simpa only [observationBody,subst_observation,subst_fstT,subst_sndT,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,observationData] using fields)
+  simpa [observationF, observationBody, observationData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (observation a point (var 1) (var 2) (var 3) (var 0)) s ![N, x, y])
 
 theorem observation_canonical (a : PR 3) (point : PR 2) (N x y s : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (observation a point N x y s) :=

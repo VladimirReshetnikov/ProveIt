@@ -238,13 +238,8 @@ theorem value_congr (a : PR 3) (point : PR 2) {N N' U U' x x' k k' : PTm n}
 
 theorem name_at (a : PR 3) (point : PR 2) (N U x k : PTm n) : Γ ⊢[PRAAx]
     ap2 (nameF a point) k (nameData N U x) ≐ value a point N U x k := by
-  have program : Γ ⊢[PRAAx] ap2 (nameF a point) k (nameData N U x) ≐
-      value a point (fstT (nameData N U x)) (fstT (sndT (nameData N U x)))
-        (sndT (sndT (nameData N U x))) k := by
-    simpa [nameF,nameBody,ap2] using toPR_eq (Γ := Γ) (nameBody a point) ![k,nameData N U x]
-  have tail : Γ ⊢[PRAAx] sndT (nameData N U x) ≐ pairT U x := snd_pair _ _
-  exact program.eqTrans (value_congr a point (fst_pair _ _)
-    tail.fstE tail.sndE (.eqRefl _))
+  simpa [nameF, nameBody, nameData, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (value a point (var 1) (var 2) (var 3) (var 0)) k ![N, U, x])
 
 theorem value_canonical (a : PR 3) (point : PR 2) (N U x k : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalHorner.canonical (value a point N U x k) :=

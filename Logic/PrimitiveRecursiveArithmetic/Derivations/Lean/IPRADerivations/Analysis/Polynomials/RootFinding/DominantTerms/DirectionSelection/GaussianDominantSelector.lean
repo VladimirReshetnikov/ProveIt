@@ -67,25 +67,10 @@ theorem score_index_congr (C N E j h : PTm n) {i k : PTm n} (hik : Γ ⊢[PRAAx]
 
 theorem negative_score_at (C N E j h r : PTm n) : Γ ⊢[PRAAx]
     ap2 negativeScoreF r (data C N E j h) ≐ negate (score C N E j h (succ r)) := by
-  have t1 : Γ ⊢[PRAAx] sndT (data C N E j h) ≐ pairT N (pairT E (pairT j h)) := snd_pair _ _
-  have t2 := t1.sndE
-  have t3 := t2.sndE
-  have fields : Γ ⊢[PRAAx]
-      negativeScore (fstT (data C N E j h)) (fstT (sndT (data C N E j h)))
-        (fstT (sndT (sndT (data C N E j h)))) (fstT (sndT (sndT (sndT (data C N E j h)))))
-        (sndT (sndT (sndT (sndT (data C N E j h))))) r ≐ negativeScore C N E j h r :=
-    RationalValueBounds.negate_congr (score_congr (fst_pair _ _)
-      t1.fstE t2.fstE
-      t3.fstE t3.sndE (.eqRefl _))
-  have shape : Syn.subst ![r,data C N E j h] negativeBody =
-      negativeScore (fstT (data C N E j h)) (fstT (sndT (data C N E j h)))
-        (fstT (sndT (sndT (data C N E j h)))) (fstT (sndT (sndT (sndT (data C N E j h)))))
-        (sndT (sndT (sndT (sndT (data C N E j h))))) r := by
-    simp only [negativeBody,subst_negativeScore,subst_fstT,subst_sndT,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one]
-  have program := toPR_eq (Γ := Γ) negativeBody ![r,data C N E j h]
-  rw [shape] at program
-  exact program.eqTrans fields
+  change Γ ⊢[PRAAx] ap2 negativeScoreF r (data C N E j h) ≐ negativeScore C N E j h r
+  simpa [negativeScoreF, negativeBody, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 4)
+      (negativeScore (var 1) (var 2) (var 3) (var 4) (var 5) (var 0)) r ![C, N, E, j, h])
 
 theorem negative_score_at_degree (C N E j h i : PTm n) (hi : Γ ⊢[PRAAx] le one i) : Γ ⊢[PRAAx]
     ap2 negativeScoreF (pred i) (data C N E j h) ≐ negate (score C N E j h i) :=
@@ -138,12 +123,8 @@ theorem index_congr (C N : PTm n) {h l : PTm n} (hl : Γ ⊢[PRAAx] h ≐ l) : �
   ipra_congr (index (var 0) (var 1) (var 2) : PTm 3) with [.eqRefl C, .eqRefl N, hl]
 
 theorem index_at (C N h : PTm n) : Γ ⊢[PRAAx] ap2 indexF h (indexData C N) ≐ index C N h := by
-  have fields := Prf.eqCongr (Ax := PRAAx) (Γ := Γ) (index (var 0) (var 1) (var 2) : PTm 3)
-    (σ := ![fstT (indexData C N),sndT (indexData C N),h]) (σ' := ![C,N,h])
-    (fun i => by fin_cases i; exact fst_pair _ _; exact snd_pair _ _; exact .eqRefl _)
-  exact (toPR_eq indexBody ![h,indexData C N]).eqTrans (by
-    simpa only [indexBody,subst_index,subst_fstT,subst_sndT,Syn.subst_var,Matrix.cons_val_zero,
-      Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] using fields)
+  simpa [indexF, indexBody, indexData] using
+    (toPR_pair_eq (Γ := Γ) (index (var 1) (var 2) (var 0)) h C N)
 
 theorem index_bounds (C N h : PTm n) (hInput : Γ ⊢[PRAAx] GaussianBalancedRadiusSyntax.input C N) : Γ ⊢[PRAAx]
     le one (index C N h) ⋏ le (index C N h) N :=

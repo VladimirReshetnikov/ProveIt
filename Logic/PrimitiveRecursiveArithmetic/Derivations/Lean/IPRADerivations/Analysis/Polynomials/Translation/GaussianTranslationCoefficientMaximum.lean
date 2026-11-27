@@ -64,22 +64,10 @@ theorem term_canonical (C N z A B i : PTm n) : Γ ⊢[PRAAx]
 
 theorem negative_score_at (C N z A B r : PTm n) : Γ ⊢[PRAAx]
     ap2 negativeScoreF r (data C N z A B) ≐ negate (qnormSq (term C N z A B (succ r))) := by
-  have t1 : Γ ⊢[PRAAx] sndT (data C N z A B) ≐ pairT N (pairT z (pairT A B)) := snd_pair _ _
-  have t2 := t1.sndE
-  have t3 := t2.sndE
-  have fields := RationalValueBounds.negate_congr (GaussianRationalProductWitness.qnormSq_congr
-    (term_congr (fst_pair C (pairT N (pairT z (pairT A B))))
-      t1.fstE t2.fstE
-      t3.fstE t3.sndE (.eqRefl (succ r))))
-  have program := toPR_eq (Γ := Γ) negativeBody ![r,data C N z A B]
-  have shape : Syn.subst ![r,data C N z A B] negativeBody =
-      negativeScore (fstT (data C N z A B)) (fstT (sndT (data C N z A B)))
-        (fstT (sndT (sndT (data C N z A B)))) (fstT (sndT (sndT (sndT (data C N z A B)))))
-        (sndT (sndT (sndT (sndT (data C N z A B))))) r := by
-    simp only [negativeBody,subst_negativeScore,subst_fstT,subst_sndT,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one]
-  rw [shape] at program
-  exact program.eqTrans (by simpa only [negativeScore,data] using fields)
+  change Γ ⊢[PRAAx] ap2 negativeScoreF r (data C N z A B) ≐ negativeScore C N z A B r
+  simpa [negativeScoreF, negativeBody, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 4)
+      (negativeScore (var 1) (var 2) (var 3) (var 4) (var 5) (var 0)) r ![C, N, z, A, B])
 
 theorem negative_score_at_degree (C N z A B i : PTm n) (hi : Γ ⊢[PRAAx] le one i) : Γ ⊢[PRAAx]
     ap2 negativeScoreF (pred i) (data C N z A B) ≐ negate (qnormSq (term C N z A B i)) :=

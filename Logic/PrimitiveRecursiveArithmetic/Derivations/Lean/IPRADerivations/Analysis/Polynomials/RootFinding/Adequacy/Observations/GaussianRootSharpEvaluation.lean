@@ -40,19 +40,8 @@ ipra_subst modulus
 
 theorem raw_at (step a : PR 3) (point : PR 2) (N t x s : PTm n) : Γ ⊢[PRAAx]
     ap2 (rawF step a point) s (data N t x) ≐ observation step a point N t x s := by
-  have fields := Prf.eqCongr (Ax := PRAAx) (Γ := Γ)
-    (observation step a point (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![fstT (data N t x),fstT (sndT (data N t x)),sndT (sndT (data N t x)),s])
-    (σ' := ![N,t,x,s]) (fun j => by
-      fin_cases j
-      · exact fst_pair _ _
-      · exact (snd_pair _ _).fstE
-      · exact (snd_pair _ _).sndE
-      · exact .eqRefl _)
-  exact (toPR_eq (rawBody step a point) ![s,data N t x]).eqTrans (by
-    simpa only [rawBody,GaussianRootSharpErrorSamples.subst_observation,subst_fstT,subst_sndT,Syn.subst_var,
-      Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,
-      Matrix.head_cons,Matrix.tail_cons] using fields)
+  simpa [rawF, rawBody, data, pairVector, pairVectorField] using
+    (toPR_pairVector_eq (Γ := Γ) (k := 2) (observation step a point (var 1) (var 2) (var 3) (var 0)) s ![N, t, x])
 
 theorem observation_regular_at (step a : PR 3) (point : PR 2) (N Z t x s r : PTm n)
     (h : Γ ⊢[PRAAx] inputContract step a point N Z x) : Γ ⊢[PRAAx]

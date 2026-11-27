@@ -182,19 +182,13 @@ theorem scale_code_congr {B B' a a' : PTm n} (hB : Γ ⊢[PRAAx] B ≐ B') (ha :
 
 theorem scaled_entry_at (B G i : PTm n) : Γ ⊢[PRAAx]
     ap2 scaledEntryF i (pairT B G) ≐ scale B (entry G i) := by
-  have h := toPR_eq (Γ := Γ) scaledEntryBody ![i,pairT B G]
-  simp only [scaledEntryBody,ComplexLogarithmRemainder.subst_scale,subst_entry,subst_fstT,subst_sndT,
-    Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] at h
-  exact h.eqTrans (scale_code_congr (fst_pair _ _)
-    (Foundations.SequenceComposition.entry_congr (snd_pair _ _) (.eqRefl _)))
+  simpa [scaledEntryF, scaledEntryBody] using
+    (toPR_pair_eq (Γ := Γ) (scale (var 1) (entry (var 2) (var 0))) i B G)
 
 theorem added_entry_at (G H i : PTm n) : Γ ⊢[PRAAx]
     ap2 addedEntryF i (pairT G H) ≐ add (entry G i) (entry H i) := by
-  have h := toPR_eq (Γ := Γ) addedEntryBody ![i,pairT G H]
-  simp only [addedEntryBody,ComplexLogarithmRemainder.subst_add,subst_entry,subst_fstT,subst_sndT,
-    Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one] at h
-  exact h.eqTrans (add_code_congr (Foundations.SequenceComposition.entry_congr (fst_pair _ _) (.eqRefl _))
-    (Foundations.SequenceComposition.entry_congr (snd_pair _ _) (.eqRefl _)))
+  simpa [addedEntryF, addedEntryBody] using
+    (toPR_pair_eq (Γ := Γ) (add (entry (var 1) (var 0)) (entry (var 2) (var 0))) i G H)
 
 theorem scaled_sum_succ (B G m : PTm n) : Γ ⊢[PRAAx]
     scaledSum B G (succ m) ≐ add (scaledSum B G m) (scale B (entry G m)) :=

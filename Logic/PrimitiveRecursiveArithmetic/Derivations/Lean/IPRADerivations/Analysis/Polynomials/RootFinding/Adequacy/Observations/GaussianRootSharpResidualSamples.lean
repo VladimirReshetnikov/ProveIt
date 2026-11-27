@@ -234,10 +234,8 @@ theorem observation_congr (a : PR 3) (point : PR 2) {N N' x x' s s' : PTm n}
 
 theorem observation_at (a : PR 3) (point : PR 2) (N x s : PTm n) : Γ ⊢[PRAAx]
     ap2 (observationF a point) s (data N x) ≐ observation a point N x s := by
-  have base : Γ ⊢[PRAAx] ap2 (observationF a point) s (data N x) ≐
-      observation a point (fstT (data N x)) (sndT (data N x)) s := by
-    simpa [observationF,body,ap2] using toPR_eq (Γ := Γ) (body a point) ![s,data N x]
-  exact base.eqTrans (observation_congr a point (fst_pair _ _) (snd_pair _ _) (.eqRefl _))
+  simpa [observationF, body, data] using
+    (toPR_pair_eq (Γ := Γ) (observation a point (var 1) (var 2) (var 0)) s N x)
 
 /-- The whole envelope is derived from the original distance cut, for the
 actual PR2 sampled value stream. No residual envelope is an input. -/
