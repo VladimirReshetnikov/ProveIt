@@ -201,6 +201,14 @@ theorem bounded_difference (q r A B C D : PTm n)
     GaussianRationalMetric.bounded (GaussianRationalMetric.qsub q r) (A*D+C*B) (B*D) :=
   bounded_sum _ _ _ _ _ _ hB hD hq (bounded_negative r C D hD hr)
 
+/-- Subtract two Euclidean bounds with unit radius denominators. -/
+theorem bounded_difference_one {q r A C : PTm n}
+    (hq : Γ ⊢[PRAAx] GaussianRationalMetric.bounded q A one)
+    (hr : Γ ⊢[PRAAx] GaussianRationalMetric.bounded r C one) :
+    Γ ⊢[PRAAx] GaussianRationalMetric.bounded (GaussianRationalMetric.qsub q r) (A+C) one :=
+  bound_congr (.eqRefl _) (congrAdd (Common.mul_one_right A) (Common.mul_one_right C)) (one_mul one)
+    (bounded_difference q r A one C one (le_refl one) (le_refl one) hq hr)
+
 theorem qone_bounded : Γ ⊢[PRAAx] GaussianRationalMetric.bounded (qone : PTm n) one one := by
   apply (GaussianRationalMetric.bounded_iff qone oneCode one one one (le_refl _) (le_refl _)
     (GaussianRationalHorner.ofGaussian_represents _ _ (le_refl _))).iffMpr

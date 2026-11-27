@@ -28,7 +28,7 @@ open GaussianRationalL1 (rawDen rawGaussian raw_den_positive raw_represents)
 open GaussianRationalLowerBounds (lower lower_to_cleared lower_from_representation name_lower)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative_represents)
 open GaussianRationalNaturalScale (naturalPoint)
-open GaussianRationalReciprocal (qone qone_bounded bounded_product bounded_difference bound_congr
+open GaussianRationalReciprocal (qone qone_bounded bounded_product bounded_difference_one bound_congr
   reciprocal reciprocal_identity)
 open GaussianRationalDistanceOrder (distance_congr reversed_difference)
 open GaussianRationalPowerAlgebra (qmul_commutative)
@@ -175,8 +175,7 @@ theorem root_differences (p N x : PTm n) :
   have rad := sample_bound P (succ j) (succ J) X (.andI (zero_lt_succ J) (le_of_lt (succ_lt_congr j J hj)))
   have hr := bound_congr (roots_at P J X j hj).eqSymm (.eqRefl _) (.eqRefl _) rad
   have h : Δ ⊢[PRAAx] bounded (qsub qone (entry (roots P J X) j)) (one+sampleRadius) one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) qone_bounded hr)
+    bounded_difference_one qone_bounded hr
   simpa [differencesBounded,Δ,Syn.shift,P,J,X,j] using h
 
 def budget (N : PTm n) : PTm n := errorNumerator (residualBudget N) (denominator (succ N)) N (one+sampleRadius) N

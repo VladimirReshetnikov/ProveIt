@@ -81,8 +81,8 @@ theorem original_width_bound (i p z R B N a C E T : PTm n)
   have times := row_domains i N a C E T h.andE₂.andE₁ h.andE₁.andE₂.andE₁ hN h.andE₂.andE₂ hi
   have left := GaussianCompactLogarithmBounds.sample_bound p _ _ E T h.andE₁.andE₂.andE₁ times.andE₁
   have right := GaussianCompactLogarithmBounds.sample_bound p _ _ E T h.andE₁.andE₂.andE₁ times.andE₂
-  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianRationalReciprocal.bounded_difference _ _ _ one _ one (le_refl one) (le_refl one) right left)
+  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_difference_one right left)
 
 theorem original_row_comparison (i p z R B N a C E T : PTm n)
     (h : Γ ⊢[PRAAx] GaussianEulerCompactAdditivity.intervalSource z R B a C E T) (hN : Γ ⊢[PRAAx] le one N)

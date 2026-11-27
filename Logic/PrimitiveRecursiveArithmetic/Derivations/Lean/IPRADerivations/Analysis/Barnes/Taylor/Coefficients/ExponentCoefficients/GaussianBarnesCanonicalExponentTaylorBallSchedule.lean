@@ -38,7 +38,7 @@ open GaussianNameBounds (U sample_bound)
 open GaussianNamedInverseRate (independentRate)
 open GaussianRationalHorner (ofGaussian evaluate qzero positive_product)
 open GaussianRationalMetric (bounded)
-open GaussianRationalReciprocal (bounded_product bounded_difference bound_congr)
+open GaussianRationalReciprocal (bounded_product bounded_difference_one bound_congr)
 open GaussianRationalSyntheticDivision (canonicalCoefficients)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -97,8 +97,7 @@ private theorem square_step_bound (z h R B : PTm n) (hB : Γ ⊢[PRAAx] le one B
   have right : Γ ⊢[PRAAx] bounded (square z B) (R*R) one :=
     bound_congr (.eqRefl (square z B)) (.eqRefl _) (one_mul _)
       (bounded_product b b R one R one (le_refl one) (le_refl one) hb hb)
-  exact bound_congr (.eqRefl (squareStep z h B)) (by unfold squareCap; ipra_ring) (one_mul _)
-    (bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) left right)
+  exact bounded_difference_one left right
 
 private theorem polynomial_sample_bound (p a b A B : PTm n)
     (ha : Γ ⊢[PRAAx] bounded a A one) (hb : Γ ⊢[PRAAx] bounded b B one) :

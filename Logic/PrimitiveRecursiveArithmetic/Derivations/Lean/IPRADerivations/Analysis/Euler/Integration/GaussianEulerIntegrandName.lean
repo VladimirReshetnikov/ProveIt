@@ -169,9 +169,8 @@ theorem coefficient_represents (z B : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ 
 
 theorem coefficient_bound (z R B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) : Γ ⊢[PRAAx] bounded (coefficient z B) (R+one) one :=
-  GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianRationalReciprocal.bounded_difference _ _ R one one one (le_refl _) (le_refl _)
-      (GaussianGammaEulerHead.fraction_disk z R B hB hz) GaussianRationalReciprocal.qone_bounded)
+  GaussianRationalReciprocal.bounded_difference_one
+    (GaussianGammaEulerHead.fraction_disk z R B hB hz) GaussianRationalReciprocal.qone_bounded
 
 theorem decay_point_bound (a b : PTm n) (hb : Γ ⊢[PRAAx] le one b) : Γ ⊢[PRAAx] bounded (decayPoint a b) a one := by
   have norm : Γ ⊢[PRAAx] ComplexLogarithmRemainder.normSq (ComplexLogarithmRemainder.scale a ComplexLogarithmRemainder.oneCode) ≐ a*a :=

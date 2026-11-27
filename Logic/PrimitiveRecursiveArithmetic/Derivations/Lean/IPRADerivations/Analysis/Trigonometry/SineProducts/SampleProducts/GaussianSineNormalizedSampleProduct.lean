@@ -24,7 +24,7 @@ open GaussianRationalLowerBounds (product_lower name_lower)
 open GaussianRationalMetric (bounded qsub)
 open GaussianRationalNaturalScale (naturalPoint)
 open GaussianRationalPowerAlgebra (qmul_commutative qmul_shuffle)
-open GaussianRationalReciprocal (qone qone_bounded reciprocal bounded_difference bounded_product bound_congr)
+open GaussianRationalReciprocal (qone qone_bounded reciprocal bounded_difference_one bounded_product bound_congr)
 open GaussianRationalReconstruction (product factors factors_zero factors_succ)
 open GaussianRationalSyntheticDivision (qone_canonical qsub_congr qmul_congr)
 open GaussianReciprocalHorner (qmul_one_right)
@@ -95,8 +95,7 @@ theorem factor_bound (s r B D : PTm n) (hd : Γ ⊢[PRAAx] le one D)
   have prod : Γ ⊢[PRAAx] bounded (qmul S (reciprocal R)) ((B*B)*(D*D)) one :=
     bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
       (bounded_product _ _ _ _ _ _ (le_refl _) (le_refl _) sq inv)
-  exact bound_congr (.eqRefl _) (by unfold factorBudget; ipra_ring) (by ipra_ring)
-    (bounded_difference _ _ _ _ _ _ (le_refl _) (le_refl _) qone_bounded prod)
+  exact bounded_difference_one qone_bounded prod
 
 def prefixLaw (p J z s B D k : PTm n) : Fm PTm n := le k J ⟶
   (qmul (factors (roots p J z) J (naturalPoint (num 4)) k) (normalizedPrefix p J z s k) ≐

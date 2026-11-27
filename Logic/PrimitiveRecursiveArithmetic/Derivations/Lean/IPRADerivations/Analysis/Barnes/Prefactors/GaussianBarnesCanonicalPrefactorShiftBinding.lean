@@ -27,7 +27,7 @@ open GaussianNameEquivalence (crossEquivalent)
 open GaussianRationalDistanceOrder (distance_congr distance_triangle_same)
 open GaussianRationalHorner (qadd qmul ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded qsub qnegative)
-open GaussianRationalReciprocal (bound_congr bounded_sum bounded_difference bounded_product_one)
+open GaussianRationalReciprocal (bound_congr bounded_sum bounded_difference_one bounded_product_one)
 open GaussianBarnesCanonicalCorrectionShift (halfShift)
 open GaussianGammaEulerHeadLower (translated)
 
@@ -125,8 +125,7 @@ def difference (a b : Observation Γ) : Observation Γ where
   close p := distance_triangle_same _ _ _ _ _ _ (unit_positive p)
     (GaussianNamedDifference.sample_error _ _ _ _ p a.reg b.reg)
     (GaussianNamedDifference.difference_distance _ _ _ _ _ _ _ (unit_positive p) (a.close p) (b.close p))
-  bound p := bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (bounded_difference _ _ _ _ _ _ (le_refl one) (le_refl one) (a.bound p) (b.bound p))
+  bound p := bounded_difference_one (a.bound p) (b.bound p)
 
 private def stirling : Observation Γ := leaf S (GaussianStirlingConstant.nameData zero) (GaussianStirlingConstant.name_regular zero)
 private def gammaCoefficient : Observation Γ := leaf G quadraticCoefficientData quadratic_coefficient_regular

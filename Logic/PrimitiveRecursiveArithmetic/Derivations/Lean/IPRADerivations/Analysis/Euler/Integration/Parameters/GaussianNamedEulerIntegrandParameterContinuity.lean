@@ -78,9 +78,8 @@ theorem input_clock_later (f : PR 2) (p x a b : PTm n) : Γ ⊢[PRAAx] le p (inp
 
 theorem coefficient_point_bound (f : PR 2) (p x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) : Γ ⊢[PRAAx]
     bounded (coefficientPoint f p x) (radius f x+one) one :=
-  GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianRationalReciprocal.bounded_difference _ _ (radius f x) one one one (le_refl _) (le_refl _)
-      (GaussianNameBounds.sample_bound f x p hf) GaussianRationalReciprocal.qone_bounded)
+  GaussianRationalReciprocal.bounded_difference_one
+    (GaussianNameBounds.sample_bound f x p hf) GaussianRationalReciprocal.qone_bounded
 
 theorem exponent_bound (f : PR 2) (p x E T a b : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x)
     (hE : Γ ⊢[PRAAx] le one E) (ht : Γ ⊢[PRAAx] GaussianCompactLogarithmBounds.domain a b E T) : Γ ⊢[PRAAx]

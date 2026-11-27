@@ -26,7 +26,7 @@ open GaussianRationalHorner (evaluate qmul ofGaussian ofGaussian_represents cano
 open GaussianRationalMetric (bounded bounded_of_cleared distanceBounded qsub)
 open GaussianRationalNaturalScale (naturalPoint natScale natScale_as_product natScale_canonical natScale_represents)
 open GaussianRationalPowerAlgebra (qmul_commutative)
-open GaussianRationalReciprocal (qone qone_represents_scaled qone_bounded bound_congr bounded_product bounded_difference)
+open GaussianRationalReciprocal (qone qone_represents_scaled qone_bounded bound_congr bounded_product bounded_difference_one)
 open GaussianRationalReconstruction (product)
 open GaussianRationalSeparatedReconstruction (errorNumerator)
 open GaussianRationalSyntheticDivision (qone_canonical)
@@ -75,8 +75,7 @@ theorem trace_bound (s B : PTm n) (hs : Γ ⊢[PRAAx] bounded s B one) :
     bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
       (bounded_product s s B one B one (le_refl _) (le_refl _) hs hs)
   have complement : Γ ⊢[PRAAx] bounded (qsub qone (qmul s s)) (one+B*B) one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (bounded_difference _ _ _ _ _ _ (le_refl _) (le_refl _) qone_bounded square)
+    bounded_difference_one qone_bounded square
   exact bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
     (bounded_product _ _ _ _ _ _ (le_refl _) (le_refl _) (GaussianNamedNaturalScale.natural_point_bound (num 4)) complement)
 
