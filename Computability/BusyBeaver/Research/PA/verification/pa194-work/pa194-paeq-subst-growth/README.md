@@ -33,3 +33,8 @@ suffix checks against the checked target term/qVec modules and retained
 arithmetic/project/Foundation prerequisites; their printed axioms contain no
 `sorryAx`. The full prerequisite-prefix replay remains pending. The atomic
 check is substantially more resource intensive than the other two modules.
+
+An independent ordered suffix replay rebuilt the atomic, one-node graph and
+uniform substitution-growth modules against the separately checked term/qVec
+bounds and retained formula prerequisites. It passed without `sorryAx`; this
+was not a full prerequisite replay.

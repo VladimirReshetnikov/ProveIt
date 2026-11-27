@@ -27,3 +27,7 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 The final module was rebuilt against previously checked prerequisite objects.
 A fresh full nested replay of this wrapper has not yet been completed. The
 printed axiom dependencies contain no `sorryAx`.
+
+An independent suffix replay recompiled the standard bindings module against
+separately checked target-leaf and h1 objects, reusing other prerequisite
+overlays. The printed theorem axioms did not include `sorryAx`.
