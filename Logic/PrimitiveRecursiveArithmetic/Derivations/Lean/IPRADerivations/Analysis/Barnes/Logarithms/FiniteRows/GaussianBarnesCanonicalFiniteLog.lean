@@ -21,10 +21,9 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations norm_from_distance_same)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianReconstructionRoots (norm_from_distance)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "value" => GaussianBarnesCanonicalLogRoundedTail.value
@@ -132,8 +131,7 @@ theorem rounded_bound (v z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N)
     distance_radius_mono _ _ _ _ _ _ (GaussianLocalLogarithmName.unit_positive v) (le_refl one)
       (le_congr (by ipra_ring) (by ipra_ring) paid)
       (GaussianBarnesCanonicalLogRoundedTail.rounding_error v z R B N r h)
-  exact bound_congr (.eqRefl _) (by unfold radius; ipra_ring) (by ipra_ring)
-    (norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) approx exactBound)
+  exact norm_from_distance_same (le_refl one) approx exactBound
 
 theorem sample_bound (p z R B N r : PTm n) (h : Γ ⊢[PRAAx] source z R B N) :
     Γ ⊢[PRAAx] bounded (ap2 nameF p (data z R B N r)) (radius R) one := by

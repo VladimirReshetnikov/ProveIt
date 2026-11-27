@@ -26,13 +26,12 @@ open GaussianLogGammaEulerReciprocalSlopeCofinal (canonicalData cutoff nameF sam
 open GaussianLogGammaEulerReciprocalSlopeGap (gapDenominator gapNumerator observed ordered_gap subst_observed)
 open GaussianLogGammaEulerResidualDomain (native source)
 open GaussianLogGammaEulerResidualRadius (native_norm radius)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono norm_from_distance_same)
 open GaussianRationalHorner (ofGaussian_represents positive_product qadd qzero)
 open GaussianRationalMetric (bounded distanceBounded qnegative qnegative_canonical)
 open GaussianRationalReciprocal
   (bound_congr bounded_negative bounded_sum inverse_bound reciprocal reciprocal_canonical)
 open GaussianRationalSyntheticDivision (qadd_congr qsub_congr qzero_add)
-open GaussianReconstructionRoots (norm_from_distance)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -120,8 +119,8 @@ theorem canonical_at (p A B D neg R K : PTm n) (h : Γ ⊢[PRAAx] source A B D n
       (distance_radius_mono _ _ _ _ (R + num 3) one
         (positive_product _ _ (le_refl one) (positive_product U V hU hV)) (le_refl one)
         (by dsimp only [gapNumerator, gapDenominator, U, V]; ipra_le 𝔞(V)*sl hU+𝔞(U)*sl hV) raw)
-  exact bound_congr (.eqRefl _) (by unfold bound; ipra_ring) (by ipra_ring)
-    (norm_from_distance x y (R+num 3) one (K+one) one (le_refl one) (le_refl one)
+  exact bound_congr (.eqRefl _) (by unfold bound; ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one)
       comparison (cutoff_one_bound A B D neg K h.andE₁ hK hm))
 
 theorem actual_cofinal_Euler_slope_uniform_magnitude_closed :

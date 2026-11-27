@@ -26,7 +26,7 @@ open GaussianGammaNegativeProductDerivativeQuotient (shiftProduct step)
 open GaussianGammaNegativeProductDerivativeRate (coefficientCap productCap derivativeCost prefix_bounds derivative_error)
 open GaussianInverseBinomialRows (negative_congr negative_product)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_symmetric distance_triangle_same norm_from_distance_same)
 open GaussianRationalHorner (canonical qmul)
 open GaussianRationalMetric (bounded distanceBounded qnegative qsub_canonical)
 open GaussianRationalPowerAlgebra (qmul_commutative)
@@ -34,7 +34,7 @@ open GaussianRationalPowerDifference (bounded_sum_same distance_refl_zero)
 open GaussianRationalReciprocal (bound_congr bounded_product)
 open GaussianRationalSyntheticDivision (qmul_congr qone)
 open GaussianReciprocalHorner (qmul_associative qmul_one_right)
-open GaussianReconstructionRoots (distance_zero_iff norm_from_distance)
+open GaussianReconstructionRoots (distance_zero_iff)
 open GaussianStirlingGammaLogarithm (arg)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -80,8 +80,8 @@ theorem divided_bounded (a c b j : PTm n) (ha : Γ ⊢[PRAAx] guard a b) (hc : �
     distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)
       (distance_triangle_same _ _ _ _ _ _ (le_refl one) left (distance_symmetric _ _ _ _ (le_refl one) right))
   have e := derivative_error a c b j two one ha hc (le_refl one) hs
-  exact bound_congr (.eqRefl _) (by unfold dividedCap; ipra_ring) (by ipra_ring)
-    (norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) e (first_bounded a b j ha))
+  exact bound_congr (.eqRefl _) (by unfold dividedCap; ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) e (first_bounded a b j ha))
 
 theorem shift_product_gap_bound (a c b N A D : PTm n)
     (ha : Γ ⊢[PRAAx] guard a b) (hc : Γ ⊢[PRAAx] guard c b) (hD : Γ ⊢[PRAAx] le one D)

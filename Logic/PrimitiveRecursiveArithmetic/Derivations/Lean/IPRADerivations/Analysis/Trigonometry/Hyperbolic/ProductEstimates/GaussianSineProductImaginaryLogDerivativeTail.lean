@@ -18,7 +18,7 @@ open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 open ComplexLogarithmRemainder (normSq normSq_code)
 open GaussianCoefficientNameBounds (bounded_radius_mono unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations norm_from_distance_same)
 open GaussianRationalHorner (ofGaussian_represents ofGaussian_canonical positive_product qzero qadd)
 open GaussianRationalMetric (bounded bounded_iff distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
@@ -26,7 +26,7 @@ open GaussianRationalSyntheticDivision (qadd_congr qadd_sub_cancel)
 open GaussianReciprocalHorner (qadd_zero_right qadd_commutative)
 open GaussianSineProductImaginaryLogDerivative
   (axisNumerator realNumerator rationalReal squareDenominator logarithmRow logarithmSum logarithm_sum_succ)
-open GaussianReconstructionRoots (distance_triangle norm_from_distance)
+open GaussianReconstructionRoots (distance_triangle)
 open GaussianInverseSquareProductTail renaming denominator_positive → tail_den_positive
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -152,8 +152,8 @@ theorem uniform_bound (A B R N : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hA : Γ �
     have first : Δ ⊢[PRAAx] bounded (logarithmSum A B one) C one :=
       bound_congr base.eqSymm (.eqRefl _) (by ipra_ring) (row_bound A B R zero hB.wk hA.wk)
     have near := finite_rate A B R one N hB.wk hA.wk (le_refl one) hN
-    exact bound_congr (.eqRefl _) (by unfold C; ipra_ring) (by ipra_ring)
-      (norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) near first)
+    exact bound_congr (.eqRefl _) (by unfold C; ipra_ring) (.eqRefl _)
+      (norm_from_distance_same (le_refl one) near first)
 
 def cutoff (R p : PTm n) : PTm n := one+(two*R)*unit p
 def data (A B R : PTm n) : PTm n := pairT A (pairT B R)

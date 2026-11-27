@@ -23,12 +23,11 @@ open GaussianNameBounds (U)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at diagonal_rate)
 open GaussianRadiusExponentialName
   (boundedSamples nameF data input index inputPrecision precision_budget query_bound sample_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric norm_from_distance_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalRadiusExponentialLipschitz (factor scalar_sum_lipschitz)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianReconstructionRoots (norm_from_distance)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -60,8 +59,8 @@ theorem partner_bound (f g : PR 2) (x y s p : PTm n)
         dsimp only [rateNumerator, rateDenominator]
         ipra_le 𝔞(Z)*𝔞(P)*sl hs+𝔞(S)*𝔞(Z)*sl hp+𝔞(S)*𝔞(P)*sl hz)
       (distance_symmetric u v _ _ den (rate_at f g x y one S zero p h))
-  exact bound_congr (.eqRefl _) (by unfold radius; ipra_ring) (by ipra_ring)
-    (norm_from_distance v u (num 3) one (U f x) one (le_refl one) (le_refl one)
+  exact bound_congr (.eqRefl _) (by unfold radius; ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one)
       comparison (GaussianNameBounds.sample_bound f x zero hf))
 
 theorem partner_input (f g : PR 2) (x y s : PTm n)

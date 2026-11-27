@@ -22,7 +22,7 @@ open GaussianNameArithmetic (multiplyF multiplyData)
 open GaussianNameEquivalence (crossEquivalent)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianNamedMultiplyRate (sampleBound leadingNumerator leadingDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono norm_from_distance_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 
@@ -38,8 +38,8 @@ private theorem derived_sample_bound (F G : PR 2) (x y M A N p : PTm n) (hN : Γ
   have hd : Γ ⊢[PRAAx] le one (N*unit p) := positive_product _ _ hN hp
   have c := distance_radius_mono _ _ _ _ (A+two) one hd (le_refl one)
     (by ipra_le 𝔞 A*𝔞 (unit p)*sl hN+2*𝔞 N*sl hp) h
-  have b := GaussianReconstructionRoots.norm_from_distance _ _ (A+two) one M one (le_refl one) (le_refl one) c hg
-  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (one_mul one) b
+  have b := norm_from_distance_same (le_refl one) c hg
+  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) b
 
 theorem sample_bound_of_rate (F G : PR 2) (x y M A N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
     (hM : Γ ⊢[PRAAx] sampleBound G y M) (hr : Γ ⊢[PRAAx] independentRate F G x y A N) :

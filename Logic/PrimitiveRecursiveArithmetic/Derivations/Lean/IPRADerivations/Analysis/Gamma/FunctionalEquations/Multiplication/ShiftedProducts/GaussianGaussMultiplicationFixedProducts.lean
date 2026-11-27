@@ -23,7 +23,7 @@ open GaussianNamedFiniteProduct (sample rowDistance rowBoundsAt radius amplifica
 open GaussianNamedFiniteProductName (rowBounds rowRegular)
 open GaussianRootApproximationWitness (pointBounds)
 open GaussianRationalMetric (bounded distanceBounded)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono norm_from_distance_same)
 open GaussianRationalHorner (positive_product)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -54,7 +54,7 @@ private theorem shifted_row_bound_at (s p r z R B m a d N : PTm n) (h : Γ ⊢[P
   have exactDist := distance_congr (GaussianGammaGaussEulerProduct.row_at p r z R B m d N).eqSymm
     (GaussianGammaGaussShiftedProduct.row_at p r z R B m d).eqSymm (.eqRefl _) (.eqRefl _) dist
   exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by unfold GaussianGammaGaussEulerProduct.rowRadius; ipra_ring)
-    (one_mul _) (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) exactDist gamma)
+    (.eqRefl _) (norm_from_distance_same (le_refl one) exactDist gamma)
 
 private theorem reference_row_bound_at (s p r m N : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hn : Γ ⊢[PRAAx] le (RGuard s m) N) :
     Γ ⊢[PRAAx] bounded (ap3 RE p r (RData m N)) (RRadius m) one := by
@@ -64,7 +64,7 @@ private theorem reference_row_bound_at (s p r m N : PTm n) (hr : Γ ⊢[PRAAx] l
   have exactDist := distance_congr (GaussianGammaGaussReferenceEulerProduct.row_at p r m N).eqSymm
     (GaussianGammaGaussReferenceProduct.row_at p r m).eqSymm (.eqRefl _) (.eqRefl _) dist
   exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by unfold GaussianGammaGaussReferenceEulerProduct.rowRadius; ipra_ring)
-    (one_mul _) (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) exactDist gamma)
+    (.eqRefl _) (norm_from_distance_same (le_refl one) exactDist gamma)
 
 theorem shifted_row_bounds (s z R B m a d N : PTm n) (h : Γ ⊢[PRAAx] source z R B m a d)
     (hn : Γ ⊢[PRAAx] le (SGuard s R m a d) N) : Γ ⊢[PRAAx] rowBounds SE m (SRadius R m d) (SData z R B m d N) := by

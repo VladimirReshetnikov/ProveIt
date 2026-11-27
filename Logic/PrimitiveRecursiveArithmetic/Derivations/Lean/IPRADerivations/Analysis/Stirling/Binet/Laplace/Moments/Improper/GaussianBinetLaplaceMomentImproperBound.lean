@@ -24,11 +24,10 @@ open GaussianCoefficientNameBounds (unit unit_positive bounded_radius_mono)
 open GaussianCompactRiemannName (quadrature mesh precision)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNamedInverseRate (rate_at)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_two_errors_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_two_errors_same norm_from_distance_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianReconstructionRoots (norm_from_distance)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (Q.mk _ t)
@@ -67,8 +66,8 @@ theorem observation_bound (p j X D R : PTm n) (h : Γ ⊢[PRAAx] realSource X ze
       (le_refl one) (by
         unfold GaussianNamedInverseRate.rateNumerator GaussianNamedInverseRate.rateDenominator
         ipra_le 2*𝔞(U)*sl hp) near
-  have b := norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) d (unit_prefix_bound p j X D R h)
-  exact bound_congr (.eqRefl _) (by dsimp only [momentBound,N]; ipra_ring) (one_mul _) b
+  have b := norm_from_distance_same (le_refl one) d (unit_prefix_bound p j X D R h)
+  exact bound_congr (.eqRefl _) (by dsimp only [momentBound,N]; ipra_ring) (.eqRefl _) b
 
 theorem refinement_error (p q M K j X D R L : PTm n)
     (h : Γ ⊢[PRAAx] realSource X zero D zero R) (hK : Γ ⊢[PRAAx] le one K)

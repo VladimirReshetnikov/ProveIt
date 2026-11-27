@@ -24,7 +24,7 @@ open GaussianNameBounds (U)
 open GaussianNameEquivalence (cross_symm cross_trans)
 open GaussianNamedInverseRate (independentRate diagonal_rate)
 open GaussianRadiusExponentialLipschitzRate (factor)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same norm_from_distance_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianStirlingExpansionExponentialError (logBudget TaylorBudget expansionNumerator expansionDenominator
@@ -58,8 +58,8 @@ private theorem from_constant_at (F : PR 2) (x q H A D C p : PTm n)
   have near : Γ ⊢[PRAAx] distanceBounded (ap2 F p x) q (C+two) one :=
     distance_radius_mono _ _ _ _ _ _ (positive_product _ _ hd Upos) (le_refl one)
       (by ipra_le 𝔞 (unit p)*sl hA+2*𝔞 D*sl Upos) base
-  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) near hq)
+  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) near hq)
 
 private theorem from_constant (F : PR 2) (x q H A D C : PTm n) (reg : Γ ⊢[PRAAx] pointCN F x)
     (hd : Γ ⊢[PRAAx] le one D) (hA : Γ ⊢[PRAAx] le A (C*D))

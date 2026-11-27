@@ -20,7 +20,7 @@ open GaussianHarmonicLogarithmPower (scaledF scaledData)
 open GaussianNameEquivalence (crossEquivalent cross_at)
 open GaussianPositiveRationalLogarithm (source data logF sample fraction)
 open GaussianRaabeLogPrimitiveCell (primitive fraction_bound)
-open GaussianRationalDistanceOrder (distance_symmetric distance_congr distance_two_errors)
+open GaussianRationalDistanceOrder (distance_symmetric distance_congr distance_two_errors norm_from_distance_same)
 open GaussianRationalHorner (qmul)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalNaturalScale (natScale naturalPoint)
@@ -47,8 +47,8 @@ private theorem harmonic_half_bound (p : PTm n) :
       (GaussianCompactLogarithmBounds.sample_bound p one two two one h₂ domain)
   have near := common_clock logF H p (data one two) (hd one two)
     (GaussianHarmonicLogarithmName.cross_original one two hs)
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one)
       (distance_symmetric _ _ _ _ (le_refl one) near) ordinary)
 
 theorem log_sample_bound (p h : PTm n) :
@@ -75,8 +75,8 @@ theorem log_sample_bound (p h : PTm n) :
     bound_congr scale.eqSymm (by ipra_ring) (by ipra_ring)
       (bounded_product _ _ h one (num 31) one (le_refl one) (le_refl one)
         (fraction_bound h one (le_refl one)) (harmonic_half_bound q))
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) near prod)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) near prod)
 
 def cost (h : PTm n) : PTm n := num 31*h+num 3
 

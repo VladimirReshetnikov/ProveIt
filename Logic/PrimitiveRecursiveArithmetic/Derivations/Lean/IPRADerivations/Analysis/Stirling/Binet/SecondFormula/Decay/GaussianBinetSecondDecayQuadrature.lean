@@ -24,7 +24,7 @@ open GaussianEulerDecayQuadrature (evaluatorF)
 open GaussianEulerDecayQuadraturePrecision (endpointDifference)
 open GaussianNameRingLaws (three)
 open GaussianPositiveRationalLogarithm (fraction)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_radius_mono norm_from_distance_same)
 open GaussianRationalFiniteSum (sum)
 open GaussianRationalHorner (positive_product qmul)
 open GaussianRationalMetric (bounded distanceBounded)
@@ -73,8 +73,8 @@ theorem zero_quadrature_bound (p N C E : PTm n)
     dsimp only [stepError,errorDen,three,W,B]
     ipra_le 𝔞(N)*𝔞(U)*sl hmesh + 𝔞(N)*𝔞(N)*𝔞(U)*sl he +
       𝔞(E)*𝔞(E)*𝔞(N)*𝔞(N)*sl hclock
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianReconstructionRoots.norm_from_distance _ _ two one (num 3) one (le_refl one) (le_refl one)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one)
       near (endpoint_bound p C E hE))
 
 def physicalValue (p N T H J : PTm n) : PTm n :=

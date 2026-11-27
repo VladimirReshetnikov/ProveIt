@@ -30,7 +30,7 @@ open GaussianNameEquivalence (crossEquivalent cross_trans cross_refl cross_symm)
 open GaussianNamedInverseRate (independentRate diagonal_rate)
 open GaussianNamedMultiplyRate (sampleBound leadingNumerator)
 open GaussianNamedRateComposition (same_denominator symmetric)
-open GaussianRationalDistanceOrder (distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_radius_mono norm_from_distance_same)
 open GaussianRationalHorner (ofGaussian positive_product ofGaussian_represents)
 open GaussianRationalL1 (rawDen rawGaussian)
 open GaussianRationalMetric (bounded distanceBounded bounded_of_cleared)
@@ -88,8 +88,8 @@ private theorem frozen_cap_at (F H : PR 2) (x y s i : PTm n) (hf : Γ ⊢[PRAAx]
   have clear : Γ ⊢[PRAAx] le ((one*I+two*D)*one) (num 3*(D*I)) := by
     ipra_le 𝔞 I*sl hd+2*𝔞 D*sl hi
   have small := distance_radius_mono _ _ _ _ (num 3) one (positive_product D I hd hi) (le_refl _) clear close
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) small
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) small
       (GaussianNameBounds.sample_bound F x i hf))
 
 private theorem frozen_cap (F H : PR 2) (x y s : PTm n) (hf : Γ ⊢[PRAAx] pointCN F x)

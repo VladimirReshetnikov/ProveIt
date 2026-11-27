@@ -22,11 +22,10 @@ open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
 open GaussianNameBounds (U)
 open GaussianNamedInverseRate (independentRate diagonal_rate)
 open GaussianRadiusExponentialLipschitzRate (factor)
-open GaussianRationalDistanceOrder (distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_radius_mono norm_from_distance_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
-open GaussianReconstructionRoots (norm_from_distance)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "C" => constantF
@@ -52,8 +51,8 @@ theorem sample_bound (f : PR 2) (p x v M A D K : PTm n) (hv : Γ ⊢[PRAAx] boun
     ipra_le 𝔞(u)*sl hk+2*𝔞(D)*sl hu
   have dist := distance_radius_mono _ _ _ _ _ _ hdu (le_refl one) e h
   have v' := bound_congr (constant_at p v).eqSymm (.eqRefl M) (.eqRefl one) hv
-  exact bound_congr (.eqRefl _) (by unfold cap; ipra_ring) (one_mul one)
-    (norm_from_distance (ap2 f p x) (ap2 C p v) (K+two) one M one (le_refl one) (le_refl one) dist v')
+  exact bound_congr (.eqRefl _) (by unfold cap; ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) dist v')
 
 theorem common_input (f : PR 2) (x v M A D K : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x)
     (hv : Γ ⊢[PRAAx] bounded v M one) (hd : Γ ⊢[PRAAx] le one D) (hk : Γ ⊢[PRAAx] le A (K*D))

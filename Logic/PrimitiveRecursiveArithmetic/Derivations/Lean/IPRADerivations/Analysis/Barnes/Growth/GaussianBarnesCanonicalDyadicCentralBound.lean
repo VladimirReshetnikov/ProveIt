@@ -30,7 +30,7 @@ open GaussianGammaFiniteApproximantName (exponentialInputData exponential_input)
 open GaussianNameBounds (U)
 open GaussianNamedMultiplyRate (sampleBound sample_bound_at)
 open GaussianRadiusExponentialLipschitzRate (factor)
-open GaussianRationalDistanceOrder (distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_radius_mono norm_from_distance_same)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 
@@ -82,8 +82,8 @@ theorem tail_observation (p z R B : PTm n) (hz : Γ ⊢[PRAAx] source z R B) :
       (le_congr (by ipra_ring) (by ipra_ring) paid)
       (GaussianBarnesCanonicalLogRoundedTail.rounding_error v z R B N r domain)
   exact bound_congr (GaussianBarnesCanonicalLogCofinal.sample_at p z R B).eqSymm
-    (by dsimp only [tailCap]; ipra_ring) (one_mul one)
-    (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) rounding exactSum)
+    (.eqRefl _) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) rounding exactSum)
 
 theorem tail_samples (z R B : PTm n) (hz : Γ ⊢[PRAAx] source z R B) :
     Γ ⊢[PRAAx] sampleBound L (ld z R B) (tailCap R) := by

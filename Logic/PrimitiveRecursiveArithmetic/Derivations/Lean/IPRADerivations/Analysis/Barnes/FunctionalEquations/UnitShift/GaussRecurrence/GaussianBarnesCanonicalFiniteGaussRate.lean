@@ -34,7 +34,7 @@ open GaussianNameBounds (U)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
 open GaussianNamedInverseRate (independentRate diagonal_rate)
 open GaussianNamedMultiplyRate (sampleBound leadingNumerator leadingDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_radius_mono norm_from_distance_same)
 open GaussianRationalHorner (ofGaussian ofGaussian_canonical ofGaussian_represents positive_product)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr qone)
@@ -82,8 +82,8 @@ private theorem cap_at (f g : PR 2) (x y A' K p : PTm n) (hK : Γ ⊢[PRAAx] le 
   have clear : Γ ⊢[PRAAx] le ((A'*D+two*K)*one) ((A'+two)*(K*D)) := by
     ipra_le 𝔞 A'*𝔞 D*sl hK+2*𝔞 K*sl hu
   have small := distance_radius_mono _ _ _ _ (A'+two) one hD (le_refl one) clear close
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) small
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (norm_from_distance_same (le_refl one) small
       (GaussianNameBounds.sample_bound g y p hg))
 
 private theorem cap (f g : PR 2) (x y A' K : PTm n) (hK : Γ ⊢[PRAAx] le one K) (hg : Γ ⊢[PRAAx] pointCN g y)

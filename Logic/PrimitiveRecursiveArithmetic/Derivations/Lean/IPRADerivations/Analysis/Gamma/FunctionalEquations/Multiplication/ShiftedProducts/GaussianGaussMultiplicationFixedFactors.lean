@@ -53,8 +53,7 @@ theorem euler_bound_at (s p z R B a d N : PTm n) (h : Γ ⊢[PRAAx] GaussianGamm
   have cs := GaussianGaussEulerCutoffUniform.uniform_error s p z R B a d N h hn
   have cb := GaussianNameBounds.sample_bound gammaF (gammaData z R B d) p
     (GaussianGammaReciprocalInverse.gamma_regular z R B a d h)
-  exact GaussianRationalReciprocal.bound_congr (.eqRefl _) (by unfold eulerBound; ipra_ring) (one_mul _)
-    (GaussianReconstructionRoots.norm_from_distance _ _ _ _ _ _ (le_refl one) (le_refl one) cs cb)
+  exact GaussianRationalDistanceOrder.norm_from_distance_same (le_refl one) cs cb
 
 theorem euler_bounds (s z R B a d N : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaReciprocalInverse.source z R B a d)
     (hn : Γ ⊢[PRAAx] le (needed s R a d) N) :
