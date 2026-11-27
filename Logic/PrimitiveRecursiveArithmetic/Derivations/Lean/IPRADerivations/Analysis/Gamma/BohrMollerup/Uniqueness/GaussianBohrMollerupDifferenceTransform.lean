@@ -32,8 +32,7 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 
 private theorem raw_exchange (a b c d : PTm n) : Γ ⊢[PRAAx]
     qsub (qsub a b) (qsub c d) ≐ qsub (qsub a c) (qsub b d) :=
-  (GaussianNameArithmetic.sum_difference a c (qnegative b) (qnegative d)).eqTrans
-    (qadd_congr (.eqRefl _) (GaussianCharacteristicEntryNorm.negative_difference b d))
+  GaussianFastValueCut.difference_identity a b c d
 
 private theorem double_error (F G H I : PR 2) (x y z w p : PTm n)
     (hx : Γ ⊢[PRAAx] pointCN F x) (hy : Γ ⊢[PRAAx] pointCN G y)

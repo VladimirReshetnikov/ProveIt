@@ -50,10 +50,8 @@ theorem displacement (A B D sign H : PTm n) (h : Γ ⊢[PRAAx] source A D sign) 
     (ofGaussian_represents _ _ hd)
 
 private theorem subtract_difference (a b c d : PTm n) : Γ ⊢[PRAAx]
-    qsub (qsub a b) (qsub c d) ≐ qsub (qsub a c) (qsub b d) := by
-  change Γ ⊢[PRAAx] qsub (qadd a (qnegative b)) (qadd c (qnegative d)) ≐ qadd (qsub a c) (qnegative (qsub b d))
-  exact (sum_difference a c (qnegative b) (qnegative d)).eqTrans
-    (qadd_congr (.eqRefl _) (GaussianCharacteristicEntryNorm.negative_difference b d))
+    qsub (qsub a b) (qsub c d) ≐ qsub (qsub a c) (qsub b d) :=
+  GaussianFastValueCut.difference_identity a b c d
 
 private theorem offset_displacement (A B D sign H : PTm n) (h : Γ ⊢[PRAAx] source A D sign) :
     Γ ⊢[PRAAx] qsub (offset A (B+H) D sign) (offset A B D sign) ≐ step H D sign := by

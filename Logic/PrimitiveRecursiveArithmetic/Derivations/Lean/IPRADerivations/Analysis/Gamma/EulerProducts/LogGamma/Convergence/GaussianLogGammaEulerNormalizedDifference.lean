@@ -110,8 +110,7 @@ private theorem exchange_at (f g h j : PR 2) (x y u v p : PTm n)
   let c := ap2 h p u
   let d := ap2 j p v
   have algebra : Γ ⊢[PRAAx] qsub (qsub a b) (qsub c d) ≐ qsub (qsub a c) (qsub b d) :=
-    (GaussianNameArithmetic.sum_difference a c (qnegative b) (qnegative d)).eqTrans
-      (GaussianRationalSyntheticDivision.qadd_congr (.eqRefl _) (GaussianCharacteristicEntryNorm.negative_difference b d))
+    GaussianFastValueCut.difference_identity a b c d
   have left := difference_of_differences_at f g h j x y u v p hf hg hh hj
   have right := difference_of_differences_at f h g j x u y v p hf hh hg hj
   exact distance_congr (.eqRefl _) (.eqRefl _) (by ipra_ring) (.eqRefl _)

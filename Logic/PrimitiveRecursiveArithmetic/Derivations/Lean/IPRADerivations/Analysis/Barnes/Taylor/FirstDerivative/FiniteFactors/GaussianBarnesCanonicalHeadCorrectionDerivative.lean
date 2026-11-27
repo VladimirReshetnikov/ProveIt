@@ -157,8 +157,7 @@ theorem point_increment (z h B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
 
 private theorem subtract_difference (a b c d : PTm n) : Γ ⊢[PRAAx]
     qsub (qsub a b) (qsub c d) ≐ qsub (qsub a c) (qsub b d) :=
-  (sum_difference a c (qnegative b) (qnegative d)).eqTrans
-    (qadd_congr (.eqRefl _) (GaussianCharacteristicEntryNorm.negative_difference b d))
+  GaussianFastValueCut.difference_identity a b c d
 
 private theorem difference_product (a b u : PTm n) : Γ ⊢[PRAAx]
     qsub (qmul a u) (qmul b u) ≐ qmul (qsub a b) u :=
