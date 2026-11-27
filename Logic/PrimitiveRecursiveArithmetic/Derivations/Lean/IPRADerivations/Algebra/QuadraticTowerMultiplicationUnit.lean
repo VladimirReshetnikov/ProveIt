@@ -87,7 +87,7 @@ theorem normalized_base (A : PTm n) : Γ ⊢[PRAAx] normalized zero A ≐ single
   refine .allI (.impI ?_)
   let Δ := lt (var 0) one :: Γ.map Fm.shift
   have iz : Δ ⊢[PRAAx] (var 0 : PTm (n+1)) ≐ zero :=
-    le_antisymm ((succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0) (zero_le _)
+    le_antisymm (Order.le_of_lt_succ Prf.hyp0) (zero_le _)
   have val := QuadraticTowerArrayNormalization.recode_congr (entry_congr (Γ := Δ) (.eqRefl (Syn.shift A)) iz)
   simpa only [Δ,inst2,QuadraticTowerArrayCodec.normalizeBody,Syn.subst_var,Matrix.cons_val_one,
     Matrix.cons_val_zero,Matrix.head_cons,RationalArithmetic.subst_recode,Foundations.MasterCertificate.subst_entry,
@@ -191,7 +191,7 @@ theorem local_at (h B D T b u : PTm n) (hL : Γ ⊢[PRAAx] localLaw h B D T)
     lookup h B T (word h b u) (unitArray h) ≐ normalized h (word h b u) := by
   have bg : Γ ⊢[PRAAx] lt b (succ B) ⟶ atHeight h B D T b := by simpa [localLaw] using hL.allE b
   have ug : Γ ⊢[PRAAx] lt u (horizon h b) ⟶ rowLaw h B D T b u := by
-    simpa [atHeight] using (Prf.impE bg ((succ_monus_succ _ _).eqTrans hb)).allE u
+    simpa [atHeight] using (Prf.impE bg (Order.lt_succ_of_le hb)).allE u
   exact .impE (.impE (.impE ug hu) hD) ha
 
 theorem lookup_unit (h B D T A b : PTm n) (hL : Γ ⊢[PRAAx] localLaw h B D T)
@@ -268,21 +268,16 @@ theorem local_base (B D : PTm n) : Γ ⊢[PRAAx] localLaw zero B D (QuadraticTow
   let Δ := arrayHeight zero (word zero b u) b :: radicandsHeight D' zero b ::
     lt u (horizon zero b) :: lt b (succ B') :: (Γ.map Fm.shift).map Fm.shift
   have ha : Δ ⊢[PRAAx] arrayHeight zero (word zero b u) b := Prf.hyp0
-  have hr : Δ ⊢[PRAAx] lt b (succ B') := .hyp (by simp [Δ])
-  have hb : Δ ⊢[PRAAx] le b B' := (succ_monus_succ _ _).eqSymm.eqTrans hr
+  have hb : Δ ⊢[PRAAx] le b B' := Order.le_of_lt_succ (.hyp (by simp [Δ]))
   simpa [Δ,B',D',b,u,Fm.shift,Syn.shift] using base_unit B' (word zero b u) b hb ha
 
 theorem local_step (h B D T : PTm n) (hL : Γ ⊢[PRAAx] localLaw h (budget h B D) D T)
     (hZ : Γ ⊢[PRAAx] QuadraticTowerMultiplicationZero.localLaw h (budget h B D) D T) : Γ ⊢[PRAAx]
     localLaw (succ h) B D (QuadraticTowerMultiplicationTable.step h B T D) := by
-  have ls : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] localLaw (Syn.shift (Syn.shift h))
-      (budget (Syn.shift (Syn.shift h)) (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift D)))
-        (Syn.shift (Syn.shift D)) (Syn.shift (Syn.shift T)) := by
-    simpa only [Fm.shift,subst_localLaw,QuadraticTowerMultiplicationTable.subst_budget,Syn.shift] using hL.shift.shift
-  have zs : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] QuadraticTowerMultiplicationZero.localLaw (Syn.shift (Syn.shift h))
-      (budget (Syn.shift (Syn.shift h)) (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift D)))
-        (Syn.shift (Syn.shift D)) (Syn.shift (Syn.shift T)) := by
-    simpa only [Fm.shift,QuadraticTowerMultiplicationZero.subst_localLaw,QuadraticTowerMultiplicationTable.subst_budget,Syn.shift] using hZ.shift.shift
+  have ls := hL.shift.shift
+  simp only [Fm.shift, subst_localLaw, QuadraticTowerMultiplicationTable.subst_budget] at ls
+  have zs := hZ.shift.shift
+  simp only [Fm.shift, QuadraticTowerMultiplicationZero.subst_localLaw, QuadraticTowerMultiplicationTable.subst_budget] at zs
   refine .allI (.impI (.allI (.impI (.impI (.impI ?_)))))
   let h' := Syn.shift (Syn.shift h)
   let B' := Syn.shift (Syn.shift B)
@@ -294,10 +289,11 @@ theorem local_step (h B D T : PTm n) (hL : Γ ⊢[PRAAx] localLaw h (budget h B 
     lt u (horizon (succ h') b) :: lt b (succ B') :: (Γ.map Fm.shift).map Fm.shift
   have ha : Δ ⊢[PRAAx] arrayHeight (succ h') (word (succ h') b u) b := Prf.hyp0
   have hd : Δ ⊢[PRAAx] radicandsHeight D' (succ h') b := Prf.hyp1
-  have hr : Δ ⊢[PRAAx] lt b (succ B') := .hyp (by simp [Δ])
-  have hb : Δ ⊢[PRAAx] le b B' := (succ_monus_succ _ _).eqSymm.eqTrans hr
-  have lower : Δ ⊢[PRAAx] localLaw h' (budget h' B' D') D' T' := ls.wk.wk.wk.wk
-  have lowerZero : Δ ⊢[PRAAx] QuadraticTowerMultiplicationZero.localLaw h' (budget h' B' D') D' T' := zs.wk.wk.wk.wk
+  have hb : Δ ⊢[PRAAx] le b B' := Order.le_of_lt_succ (.hyp (by simp [Δ]))
+  have lower : Δ ⊢[PRAAx] localLaw h' (budget h' B' D') D' T' :=
+    ls.weaken (by intro φ hφ; simp only [Δ, List.mem_cons, hφ, or_true])
+  have lowerZero : Δ ⊢[PRAAx] QuadraticTowerMultiplicationZero.localLaw h' (budget h' B' D') D' T' :=
+    zs.weaken (by intro φ hφ; simp only [Δ, List.mem_cons, hφ, or_true])
   simpa [Δ,h',B',D',T',b,u,Fm.shift,Syn.shift] using
     step_unit h' B' D' T' (word (succ h') b u) b lower lowerZero hb hd ha
 
@@ -323,15 +319,13 @@ theorem forward_step (H B D t : PTm n) (ih : Γ ⊢[PRAAx] forwardLaw H B D t) :
     forwardLaw H B D (succ t) := by
   refine QuadraticTowerMultiplicationHeight.forward_step_of_local localLaw H B D t local_congr ih ?_
   intro Δ ht adjusted
-  have tle : Δ ⊢[PRAAx] le t H := le_trans (le_succ_self t) ht
   have zeroGate : Δ ⊢[PRAAx] QuadraticTowerMultiplicationZero.forwardLaw H B D t := by
     simpa only [QuadraticTowerMultiplicationZero.forward_formula,QuadraticTowerMultiplicationZero.subst_forwardLaw,
       Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using
         (QuadraticTowerMultiplicationZero.forward_all (Γ := Δ) H B D).allE t
-  have zeroPrevious : Δ ⊢[PRAAx] QuadraticTowerMultiplicationZero.localLaw t (cap H B t D) D (state H B t D) :=
-    .impE zeroGate tle
   have zeroAdjusted := QuadraticTowerMultiplicationZero.local_congr (.eqRefl _)
-    (QuadraticTowerMultiplicationHeight.cap_link H B t D ht) (.eqRefl _) (.eqRefl _) zeroPrevious
+    (QuadraticTowerMultiplicationHeight.cap_link H B t D ht) (.eqRefl _) (.eqRefl _)
+    (Prf.impE zeroGate (le_of_lt ht))
   exact local_step t (cap H B (succ t) D) D (state H B t D) adjusted zeroAdjusted
 
 /-- Actual fixed-depth/budget finite syntax, with one forward counter. -/

@@ -172,7 +172,7 @@ theorem local_at (h B D T b u : PTm n) (hL : Γ ⊢[PRAAx] localLaw h B D T)
       (lookup h B T (zeroArray h) (word h b u) ≐ zeroArray h)) := by
   have bg : Γ ⊢[PRAAx] lt b (succ B) ⟶ atHeight h B D T b := by simpa [localLaw] using hL.allE b
   have ug : Γ ⊢[PRAAx] lt u (horizon h b) ⟶ rowLaw h B D T b u := by
-    simpa [atHeight] using (Prf.impE bg ((succ_monus_succ _ _).eqTrans hb)).allE u
+    simpa [atHeight] using (Prf.impE bg (Order.lt_succ_of_le hb)).allE u
   exact .impE (.impE (.impE (.impE ug hu) h1) hD) ha
 
 theorem lookup_zero (h B D T A b : PTm n) (hL : Γ ⊢[PRAAx] localLaw h B D T)
@@ -285,17 +285,13 @@ theorem local_base (B D : PTm n) : Γ ⊢[PRAAx] localLaw zero B D (QuadraticTow
     lt u (horizon zero b) :: lt b (succ B') :: (Γ.map Fm.shift).map Fm.shift
   have ha : Δ ⊢[PRAAx] arrayHeight zero (word zero b u) b := Prf.hyp0
   have h1 : Δ ⊢[PRAAx] le one b := .hyp (by simp [Δ])
-  have hr : Δ ⊢[PRAAx] lt b (succ B') := .hyp (by simp [Δ])
-  have hb : Δ ⊢[PRAAx] le b B' := (succ_monus_succ _ _).eqSymm.eqTrans hr
+  have hb : Δ ⊢[PRAAx] le b B' := Order.le_of_lt_succ (.hyp (by simp [Δ]))
   simpa [Δ,B',D',b,u,Fm.shift,Syn.shift] using base_zero B' (word zero b u) b hb h1 ha
 
 theorem local_step (h B D T : PTm n) (hL : Γ ⊢[PRAAx] localLaw h (budget h B D) D T) : Γ ⊢[PRAAx]
     localLaw (succ h) B D (QuadraticTowerMultiplicationTable.step h B T D) := by
-  have ls : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx]
-      localLaw (Syn.shift (Syn.shift h))
-        (budget (Syn.shift (Syn.shift h)) (Syn.shift (Syn.shift B)) (Syn.shift (Syn.shift D)))
-        (Syn.shift (Syn.shift D)) (Syn.shift (Syn.shift T)) := by
-    simpa only [Fm.shift,subst_localLaw,QuadraticTowerMultiplicationTable.subst_budget,Syn.shift] using hL.shift.shift
+  have ls := hL.shift.shift
+  simp only [Fm.shift, subst_localLaw, QuadraticTowerMultiplicationTable.subst_budget] at ls
   refine .allI (.impI (.allI (.impI (.impI (.impI (.impI ?_))))))
   let h' := Syn.shift (Syn.shift h)
   let B' := Syn.shift (Syn.shift B)
@@ -308,9 +304,9 @@ theorem local_step (h B D T : PTm n) (hL : Γ ⊢[PRAAx] localLaw h (budget h B 
   have ha : Δ ⊢[PRAAx] arrayHeight (succ h') (word (succ h') b u) b := Prf.hyp0
   have hd : Δ ⊢[PRAAx] radicandsHeight D' (succ h') b := Prf.hyp1
   have h1 : Δ ⊢[PRAAx] le one b := .hyp (by simp [Δ])
-  have hr : Δ ⊢[PRAAx] lt b (succ B') := .hyp (by simp [Δ])
-  have hb : Δ ⊢[PRAAx] le b B' := (succ_monus_succ _ _).eqSymm.eqTrans hr
-  have lower : Δ ⊢[PRAAx] localLaw h' (budget h' B' D') D' T' := ls.wk.wk.wk.wk.wk
+  have hb : Δ ⊢[PRAAx] le b B' := Order.le_of_lt_succ (.hyp (by simp [Δ]))
+  have lower : Δ ⊢[PRAAx] localLaw h' (budget h' B' D') D' T' :=
+    ls.weaken (by intro φ hφ; simp only [Δ, List.mem_cons, hφ, or_true])
   simpa [Δ,h',B',D',T',b,u,Fm.shift,Syn.shift] using
     step_zero h' B' D' T' (word (succ h') b u) b lower hb h1 hd ha
 
