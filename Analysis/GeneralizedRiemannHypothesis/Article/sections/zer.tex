@@ -6,6 +6,7 @@
 \providecommand{\zerLL}{\mathcal{L}}
 \providecommand{\zerconv}{\operatorname{conv}}
 \providecommand{\zerdiag}{\operatorname{diag}}
+\providecommand{\zerSym}{\mathfrak{D}}
 
 This section collects the consequences of \cref{src:thm:dgrh} that are statements about the
 zeros themselves and about the prime sums they govern: sharp partial Euler products on the
@@ -2772,7 +2773,7 @@ This kernel is the prime error itself; the autocorrelation of the prime error at
 behaves differently and is treated next.
 
 \subsection{Merging scales: a cubic logarithmic law}\label{zer:sec:coalesce}
-\sources{prime_scale_coalescence_2026-11-26; dirichlet-zero-multiplicity-and-reconstruction}
+\sources{prime_scale_coalescence_2026-11-26; dirichlet-zero-multiplicity-and-reconstruction; grh-two-open-questions}
 
 \Cref{zer:thm:coercive} keeps the scales fixed. For the zeta function the rate at which the
 covariance degenerates as the scales merge is determined exactly up to a bounded factor. Let
@@ -2978,55 +2979,204 @@ of the limiting signal exists, its squared coefficients summing to $D_2$, but no
 derivative does, since $\sum m_\gamma^2\gamma^4/(\tfrac14+\gamma^2)^2=\infty$; this roughness at the scale
 $\gamma\asymp1/\eps$, together with the density of zeros, produces the factor $\eps^3\log(1/\eps)$.
 
-\paragraph{The converse: multiplicities from one variance.}
-The forward comparison has a converse, already for one three-point contrast. For $a,b>0$ put
+\paragraph{The converse: which stencils read multiplicities from one variance.}
+The forward comparison has a converse, and the stencils for which it holds can be read off a finite
+symbol. A \emph{stencil} is a nonzero $c\in W$ for distinct nodes $u_1<\dots<u_r$; translating the
+nodes changes nothing below, so take $u_1\ge0$. Put $p_c(x)=\sum_ic_ie^{iu_ix}$,
 \[
- D_hf(t)=bf(t)-(a+b)f(t+ah)+af(t+(a+b)h),\qquad P(x)=b-(a+b)e^{iax}+ae^{i(a+b)x},
+ K_c(x)=\frac{\abs{p_c(x)}^2}{x^4},\qquad
+ \zerSym_c(\xi)=\sum_{i<j}c_ic_j(u_j-u_i)^{3+i\xi}\quad(\xi\in\R),\qquad
+ \Phi(y)=\cos y-1+\frac{y^2}2 ,
 \]
-let $V_{a,b}(h)$ be the long-time mean square of $D_hE$, $\tau(h)=h^3\log(1/h)$, and
-$B_{a,b}=a^2b^2(a+b)/3$, which is $\mathcal B(c)$ for $u=(0,a,a+b)$ and $c=(b,-(a+b),a)$: the spline
-$H_c$ is a tent of base $a+b$ and height $ab$. Let $K(x)=\abs{P(x)}^2/x^4$, continuous at $0$ with
-$K(0)=a^2b^2(a+b)^2/4$.
+with $K_c$ extended continuously to $x=0$, and recall
+$\mathcal B(c)=\pi^{-1}\int_0^\infty K_c(x)\dd x=\zerSym_c(0)/6$ from the spline identity in the proof of
+\cref{zer:thm:coalesce}. For a positive locally finite Borel measure $A$ on $[0,\infty)$ with
+$\int_1^\infty x^{-4}\dd A(x)<\infty$ put $A(T)=A([0,T])$, $U_c(h)=h^4\int K_c(hx)\dd A(x)$ and
+$\tau(h)=h^3\log(1/h)$; an atom at $0$ contributes $O(h^4)$.
 
-\begin{theorem}[Inverse theorem for positive measures; \stU]\label{zer:thm:inversemeasure}
-Let $A$ be a positive locally finite measure on $[0,\infty)$ with $\int_1^\infty x^{-4}\dd A(x)<\infty$, put
-$A(X)=A([0,X])$ and $U(h)=h^4\int K(hx)\dd A(x)$. For finite $d\ge0$,
+\begin{theorem}[Finite families of stencils; \stU]\label{zer:thm:stencilbank}
+For a nonempty finite family of stencils the following property holds exactly when the symbols
+$\zerSym_c$ have no common real zero: for all such $A$ and every finite $d\ge0$,
 \[
- \frac{\pi A(T)}{T\log T}\to d\quad\Longleftrightarrow\quad\frac{U(h)}{\tau(h)}\to dB_{a,b},
+ \frac{\pi A(T)}{T\log T}\longrightarrow d
+ \quad\Longleftrightarrow\quad
+ \frac{U_c(h)}{\tau(h)}\longrightarrow d\,\mathcal B(c)\quad\text{for every stencil in the family.}
 \]
-and for the reverse implication it suffices that the right-hand limit hold along one decreasing
-sequence $h_n\to0$ with $h_{n+1}/h_n\to1$.
+For the reverse implication the variances need only be sampled along one decreasing sequence
+$h_n\to0$ with $h_{n+1}/h_n\to1$. Each $\mathcal B(c)=\zerSym_c(0)/6$ is positive.
 \end{theorem}
 \begin{proof}
-Let $\mu_T(E)=\pi A(TE)/(T\log T)$. Then
-$U(s/T)/(T^{-3}\log T)=\pi^{-1}\int_0^\infty\abs{P(sx)}^2x^{-4}\dd\mu_T(x)$, and $\abs{P(x)}\ll\min(x^2,1)$. If the
-counting limit holds, $A(X)\ll(1+X)\log(2+X)$, $\mu_T\to d\,\dd x$ vaguely, the integral over $x>R$ is
-$O(R^{-3}(1+\log 2R))$ by a dyadic sum, and the integrand is locally uniformly continuous in $(s,x)$;
-with $s=1$ and $\pi^{-1}\int_0^\infty K=\int H_c^2=B_{a,b}$ (Plancherel, $H_c''=\sum_ic_i\delta_{u_i}$) this
-gives the forward direction.
+The cancellations give $p_c(x)=O(\min(x^2,1))$, and expanding the squared modulus gives
+\begin{equation}\label{zer:eq:stencilcomp}
+ \abs{p_c(y)}^2=2\sum_{i<j}c_ic_j\Phi((u_j-u_i)y),
+\end{equation}
+the constant and quadratic corrections summing to zero because $\sum c_i=\sum u_ic_i=0$. Two
+integrations by parts give $\int_0^\infty\Phi(x)x^{-4}\dd x=\frac16\int_0^\infty(1-\cos x)x^{-2}\dd x=\pi/12$,
+so \eqref{zer:eq:stencilcomp} gives $\mathcal B(c)=\zerSym_c(0)/6$; it is positive since $K_c\ge0$ and
+exponentials at distinct nodes are linearly independent.
 
-Conversely $K$ is bounded below near $0$, so $U(h_n)\ll\tau(h_n)$ gives $A(\delta/h_n)\ll h_n^{-1}\log(1/h_n)$,
-and monotonicity with $h_{n+1}/h_n\to1$ gives $A(X)\ll(1+X)\log(2+X)$. Every vague limit $\nu$ of the
-$\mu_T$ satisfies $\nu([0,R])\le CR$, and choosing $n=n(T)$ with $Th_n\to s$ gives
-$\int\abs{P(sx)}^2x^{-4}\dd\nu=\pi dB_{a,b}s^3$ for every $s>0$, the value given by $d\,\dd x$. For
-$\sigma=\nu-d\,\dd x$ put $R_\sigma(t)=\int_0^\infty(\cos(tx)-1+(tx)^2/2)x^{-4}\dd\sigma(x)$, so
-$\abs{R_\sigma(t)}\ll\abs t^3$. Expanding $\abs P^2$ cancels the constant and quadratic terms and gives
-$abR_\sigma((a+b)s)=b(a+b)R_\sigma(as)+a(a+b)R_\sigma(bs)$; with $M=\sup_{t>0}\abs{R_\sigma(t)}/t^3$ this gives
-$M\le\frac{a^2+b^2}{(a+b)^2}M$, so $R_\sigma=0$. Its fourth distributional derivative is the cosine
-transform of $\sigma$ (truncate to compact subintervals and integrate by parts against Schwartz
-functions), so the even extension of $\sigma$ has zero Fourier transform and $\sigma=0$. All limits
-equal $d\,\dd x$, and evaluating on $[0,1]$ gives the counting limit.
+Let $\mu_T(S)=\pi A(TS)/(T\log T)$ for Borel $S\subseteq[0,\infty)$ and $T>2$. A counting limit $d$ gives $\mu_T\to d\,\dd x$ vaguely, by
+evaluation on intervals, and $A(T)\ll(1+T)\log(2+T)$. For $R\ge1$ the $\mu_T$-mass of $[R,2R]$ is
+$O(R(1+\log 2R))$ uniformly for $T>2$, so dyadic summation gives
+$\int_R^\infty x^{-4}\dd\mu_T(x)=O(R^{-3}(1+\log 2R))$; with $h=1/T$ and $K_c(x)=O(x^{-4})$ at infinity this
+gives the forward implication.
+
+Conversely, fix one stencil. For small $\delta>0$, $\abs{p_c}$ is bounded below on $[\delta/3,2\delta]$ by
+analyticity and nontriviality. Taking mesh indices with $h_n\sim\delta/T$, $h_nx$ stays in that interval for
+$T/2\le x\le T$, and $U_c(h_n)=O(\tau(h_n))$ gives $A([T/2,T])\ll T\log T$; dyadic summation gives the
+cumulative growth bound above, also when the stencil has higher-order cancellation at the origin. By
+local uniform boundedness the $\mu_T$ have vaguely convergent subsequences, and every limit $\nu$ has
+$\nu([0,R])\ll R$ for $R>0$. For $s>0$ choose mesh indices with $Th_n\to s$; the kernels converge on
+compacts, the tail bounds hold uniformly for $Th_n$ near $s$, $\log(1/h_n)/\log T\to1$, and
+\[
+ \frac{U_c(s/T)}{T^{-3}\log T}=\frac1\pi\int_0^\infty\abs{p_c(sx)}^2x^{-4}\dd\mu_T(x).
+\]
+Hence the signed measure $\sigma=\nu-d\,\dd x$ satisfies $\int\abs{p_c(sx)}^2x^{-4}\dd\sigma(x)=0$ for every
+$s>0$ and each stencil of the family.
+
+Put $R(s)=\int\Phi(sx)x^{-4}\dd\sigma(x)$. Since $\abs\sigma([0,X])\ll X$ and $\abs{\Phi(y)}\ll\min(y^4,y^2)$,
+splitting at $1/\abs s$ and summing the tail gives $R(s)=O(\abs s^3)$; $R$ is continuous and even, and
+\eqref{zer:eq:stencilcomp} gives $\sum_{i<j}c_ic_jR((u_j-u_i)s)=0$. In the variable $w=\log s$ this is a
+finite translation equation for the bounded function $H(w)=e^{-3w}R(e^w)$; with
+$\widehat f(\xi)=\int e^{-iw\xi}f(w)\dd w$, its distributional transform satisfies
+$\zerSym_c(\xi)\widehat H(\xi)=0$. If the symbols have no common real zero, test against compactly supported
+smooth functions divided by $\sum_c\abs{\zerSym_c}^2$ and sum the equations multiplied by
+$\overline{\zerSym_c}$: then $\widehat H=0$ and $R=0$. Finally $R^{(4)}$ is the Fourier transform of the
+symmetrization of $\sigma$ (each of the two reflections with weight $\tfrac12$), since
+$\partial_s^4\Phi(sx)=x^4\cos(sx)$; truncation and testing against Schwartz functions justify this, the
+growth bounds making the measures tempered. Fourier injectivity gives $\sigma=0$. Every subsequential
+limit is therefore $d\,\dd x$, and evaluation on $[0,1]$ gives the counting limit.
+
+For necessity let $\omega$ be a common real zero; $\omega\ne0$ since $\mathcal B(c)>0$. Substitution in
+\eqref{zer:eq:stencilcomp} gives, for real $\xi$, with absolutely convergent integrals,
+\begin{equation}\label{zer:eq:stencilmellin}
+ \int_0^\infty K_c(y)y^{i\xi}\dd y=2\zerSym_c(-\xi)\int_0^\infty\Phi(y)y^{-4+i\xi}\dd y .
+\end{equation}
+On $x\ge1$ take $\dd A(x)=\pi^{-1}\log x\,[1+\eps\cos(\omega\log x)]\dd x$ with $0<\eps<1$. Its normalized
+count is $1+\eps\Re\{T^{i\omega}/(1+i\omega)\}+o(1)$, which has no limit. Yet the substitution $y=hx$ gives
+$U_c(h)/\tau(h)\to\mathcal B(c)$ for every stencil of the family: the oscillatory coefficient in
+\eqref{zer:eq:stencilmellin} vanishes, $K_c(y)\abs{\log y}$ is integrable, and the integral over $0<y<h$ lost
+by the cutoff tends to zero.
 \end{proof}
 
+\begin{remark}\label{zer:rem:stencilexist}
+For a family with no common zero, mere existence of all the finite limits of $U_c(h)/\tau(h)$ forces
+them to be proportional to $\mathcal B(c)$. Repeat the compactness argument with the individual limits:
+each tangent $\nu$ gives the same value as its dilation $\nu(s\,\cdot)/s$ in every scaled kernel
+integral, both being tangents of the same family, and the injectivity argument applied to their
+difference gives $\nu(s\,\cdot)=s\nu$ for every $s>0$. So $\nu$ has constant density on the half-line,
+and any one measured limit fixes that constant for all tangents.
+\end{remark}
+
+\begin{corollary}[Three observations; \stU]\label{zer:thm:inversemeasure}
+For $a,b>0$, every stencil on three nodes satisfies \cref{zer:thm:stencilbank}. For the nodes
+$(0,a,a+b)$ the weights are proportional to $(b,-(a+b),a)$, and the second difference
+$D_hf(t)=bf(t)-(a+b)f(t+ah)+af(t+(a+b)h)$ has
+$\mathcal B=B_{a,b}=a^2b^2(a+b)/3$.
+\end{corollary}
+\begin{proof}
+In $\zerSym_c$ the term of the longest lag strictly dominates the other two:
+$ab(a+b)^3>b(a+b)a^3+(a+b)ab^3$ because $(a+b)^2>a^2+b^2$. Hence $\zerSym_c$ has no real zero, and
+$\zerSym_c(0)=ab(a+b)\bigl((a+b)^2-a^2-b^2\bigr)=2a^2b^2(a+b)$. (Equivalently, $H_c$ is a tent of base $a+b$
+and height $ab$.)
+\end{proof}
+
+With fewer than three nodes $W=0$, so three is the least number of observations for this recovery,
+and four is the least at which it can fail. On the nodes $0,1,2,3$ the cancellations say exactly
+that $\sum_{j=0}^3c_jz^j=(1-z)^2(a+bz)$, that is $c=(a,b-2a,a-2b,b)$. Reflection interchanges $a$ and
+$b$; scaling and reflection preserve $t=ab/(a^2+b^2)\in[-\tfrac12,\tfrac12]$, and conversely $t$
+determines the normalized response
+\begin{equation}\label{zer:eq:fourresponse}
+ \frac{\abs{p_c(x)}^2}{a^2+b^2}=\abs{1-e^{ix}}^4(1+2t\cos x).
+\end{equation}
+Call the shape $t$ \emph{determining} if its stencil satisfies \cref{zer:thm:stencilbank}.
+
+\begin{theorem}[Four consecutive observations; \stU]\label{zer:thm:fourpoint}
+Put $I=(\tfrac1{13},\tfrac2{11})$ and $\alpha=\log3/\log2$. Every $t\notin I$ is determining. For
+$t\in I$ put $A_t=4-7t$, $B_t=8-32t$, $C_t=27t$; there are unique $u\in(0,\pi)$ and $v\in(-\pi,0)$
+with $B_te^{iu}+C_te^{iv}=A_t$, and the shape fails to be determining precisely when
+\begin{equation}\label{zer:eq:fourexception}
+ \frac{v-\alpha u}{2\pi}\in\Z+\alpha\Z .
+\end{equation}
+These exceptional shapes form a countable dense subset of $I$, and each misses exactly one pair of
+frequencies $\set{\pm\omega}$: its symbol vanishes at $\pm\omega$ and nowhere else on $\R$. For every
+shape, $\mathcal B(c)=(a^2+b^2)(4+2t)/6$.
+\end{theorem}
+\begin{proof}
+The lag autocorrelations $\sum_ic_ic_{i+k}$ for $k=1,2,3$ are $7ab-4(a^2+b^2)$, $a^2+b^2-4ab$ and $ab$,
+so after division by $a^2+b^2$ the symbol is
+\begin{equation}\label{zer:eq:foursymbol}
+ \zerSym_t(\xi)=7t-4+8(1-4t)e^{i\xi\log2}+27te^{i\xi\log3},
+\end{equation}
+with $\zerSym_t(0)=4+2t$. For $t\le0$ the modulus of the second term exceeds the sum of the other two
+by $4+2t$; for $t\ge\tfrac14$ the third exceeds the other two by $4+2t$. For $0<t<\tfrac14$ the moduli
+$A_t,B_t,C_t$ are positive and
+\[
+ B_t+C_t-A_t=4+2t,\qquad B_t-C_t-A_t=4-52t,\qquad C_t-B_t-A_t=66t-12 ,
+\]
+so they form a strict triangle precisely on $I$. At its endpoints a zero would need the two phases
+to be $(1,-1)$ or $(-1,1)$, impossible since $\alpha$ is irrational by unique factorization.
+
+On $I$ the phases $(e^{i\xi\log2},e^{i\xi\log3})$ at a zero must form one of the two conjugate
+triangle configurations. For the configuration $(e^{iu},e^{iv})$, lifting gives
+$\xi\log2=u+2\pi m$ and $\xi\log3=v+2\pi n$ with integers $m,n$, which is \eqref{zer:eq:fourexception} in
+both directions; irrationality of $\alpha$ makes $(m,n)$ unique, and conjugation gives the opposite
+frequency. The cosine rule makes $u,v$ real analytic on $I$, with $(u,v)\to(0,-\pi)$ at the left
+endpoint and $(u,v)\to(\pi,0)$ at the right, so $v-\alpha u$ is nonconstant on every open subinterval
+and its level sets are discrete in $I$. The group $\Z+\alpha\Z$ is countable and dense, so its
+preimage is countable and dense. Finally $\mathcal B(c)=\zerSym_c(0)/6=(a^2+b^2)(4+2t)/6$.
+\end{proof}
+
+Since $(2^{i\xi},3^{i\xi})$ is dense on the two-torus, $\inf_\xi\abs{\zerSym_t(\xi)}>0$ outside $\overline I$ by
+strict domination, while on $\overline I$, its two determining endpoints included, the infimum is $0$
+because the torus contains a cancelling triangle. So almost every shape in $I$ recovers the
+limiting count although its symbol takes arbitrarily small values.
+
+\begin{example}[An exceptional shape]\label{zer:ex:fourexceptional}
+Let $F(t)=(v-\alpha u)/(2\pi)$ on $I$. Its endpoint values are $-\tfrac12$ and $-\tfrac\alpha2$, and the group
+element $1-\alpha$ lies strictly between them because $2^3<3^2$ and $3<2^2$; the intermediate value
+theorem gives an exceptional shape. For one solution $t_*$ the positive missed frequency is
+$\omega_*=(2\pi-u)/\log2$, and interval arithmetic, enclosing opposite signs of $F(t)-(1-\alpha)$ at two
+rational endpoints, gives
+\begin{gather*}
+ 0.16788340058442558<t_*<0.16788340058442560,\\
+ 6.23399540333078<\omega_*<6.23399540333080 .
+\end{gather*}
+One stencil is $a=1$, $b=2t_*/(1+\sqrt{1-4t_*^2})$, with all four entries nonzero. The enclosures are in
+\begin{center}\artifact{grh-two-open-questions/zero-stencils/checks.txt}.\end{center}
+\end{example}
+
+Two shapes suffice together. With $\widetilde V_t(h)=U_c(h)/(a^2+b^2)$, \eqref{zer:eq:fourresponse} holds
+pointwise under the spectral integral, so distinct shapes $t_1\ne t_2$ recover the ordinary second
+difference at each $h$ by $\widetilde V_0(h)=(t_2\widetilde V_{t_1}(h)-t_1\widetilde V_{t_2}(h))/(t_2-t_1)$; finite
+normalized limits for both shapes give the counting limit, by the determining shape $t=0$, and fix both
+limits. The coefficients show how additive errors are amplified when the shapes are close.
+
+The following five-point contrast has a symbol with a real zero, and the necessity
+construction of \cref{zer:thm:stencilbank} is then explicit. With $s=(1+\sqrt3)/2$ and $Q(z)$ the real
+quadratic with coefficients $(s+\sqrt s)/2$, $1/(2s)$, $(s-\sqrt s)/2$, one has
+$\abs{Q(z)}^2=1+\abs{1+z}^4/8$ on $\abs z=1$, and the coefficients of $(1-z)^2Q(z)$ annihilate affine
+functions, with squared modulus $\abs{1-z}^4+\abs{1-z^2}^4/8$. So $U_c(h)=U_{(1,-2,1)}(h)+U_{(1,-2,1)}(2h)/8$, its
+symbol is $(1+2^{i\xi})\zerSym_{(1,-2,1)}(\xi)$, and it vanishes at $\omega=\pi/\log2$: for
+$\dd A(x)=\log(2+x)(1+\eps\cos(\omega\log x))\dd x$ on $x\ge1$, replacing $h$ by $2h$ reverses the
+oscillation of $U_{(1,-2,1)}(h)/\tau(h)$, so the five-point normalized variance converges while
+$A(T)/(T\log T)=1+\eps\Re\{T^{i\omega}/(1+i\omega)\}+o(1)$ does not.
+
 When $x^{-4}$ is replaced by $(\tfrac14+x^2)^{-2}$ and $\int(1+x^2)^{-1}\dd A<\infty$, the change costs
-$O(h^4)=o(\tau(h))$, since $\abs{P(hx)}^2\ll h^4x^4$ and $0\le1-x^4/(\tfrac14+x^2)^2\ll(1+x^2)^{-1}$.
+$O(h^4)=o(\tau(h))$, since $\abs{p_c(hx)}^2\ll h^4x^4$ and $0\le1-x^4/(\tfrac14+x^2)^2\ll(1+x^2)^{-1}$. Write
+$V_c(h)$ for the long-time mean square of $\sum_ic_iE(t+hu_i)$ and $\kappa(T)=2\pi M_2(T)/(T\log T)$.
 
 \begin{theorem}[Reading multiplicities from the variance; \stG]\label{zer:thm:coalesceinverse}
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item For fixed $a,b>0$ and every finite $\kappa\ge0$, one has
-$V_{a,b}(h)/\tau(h)\to B_{a,b}\kappa$ as $h\downarrow0$ if and only if
-$2\pi M_2(T)/(T\log T)\to\kappa$; on the left it suffices to take $h=1/k$ with $k\to\infty$.
-\item For every nonzero $c\in W$, with any nodes $u$, the following are equivalent: simple zeros of
+\item Let a finite family of stencils have symbols without a common real zero; for instance one
+three-point stencil, or one four-point stencil on four equally spaced nodes whose shape is not
+exceptional in
+\cref{zer:thm:fourpoint}. For every finite $\kappa\ge0$, $V_c(h)/\tau(h)\to\mathcal B(c)\kappa$ as $h\downarrow0$
+for every stencil of the family if and only if $\kappa(T)\to\kappa$. On the left it suffices to take
+$h=h_n$ along a decreasing sequence with $h_{n+1}/h_n\to1$, for instance $h=1/k$, and by
+\cref{zer:rem:stencilexist} existence of the finite limits suffices. In particular, for a three-point
+stencil with $a,b>0$, $V_{a,b}(h)/\tau(h)\to B_{a,b}\kappa$ if and only if $\kappa(T)\to\kappa$.
+\item For every stencil $c$, with any nodes, the following are equivalent: simple zeros of
 $\zeta$ have density one among all zeros counted with multiplicity; $M_2(T)/N(T)\to1$;
 $c^{\mathsf T}G_\eps c/\tau_\eps\to\mathcal B(c)$. In the last condition it suffices to take $\eps=h_n$ along
 any decreasing sequence with $h_n/h_{n+1}$ bounded, for instance $h_n=2^{-n}$.
@@ -3037,9 +3187,10 @@ For $a=b=1$ the measured coefficient is $\tfrac23\kappa$: knowing that one such 
 limiting coefficient for every contrast. The criterion does not decide whether it holds.
 
 \begin{proof}
-(i) By the spectral formula, $V_{a,b}(h)=2\sum_{\gamma>0}m_\gamma^2\abs{P(h\gamma)}^2/(\tfrac14+\gamma^2)^2$. Apply
-\cref{zer:thm:inversemeasure} to $A=2\sum_{\gamma>0}m_\gamma^2\delta_\gamma$, whose unit-bin masses are
-$O(\log^2(2+y))$, with the change of denominator.
+(i) By the spectral formula, $V_c(h)=2\sum_{\gamma>0}m_\gamma^2\abs{p_c(h\gamma)}^2/(\tfrac14+\gamma^2)^2$. Apply
+\cref{zer:thm:stencilbank} to $A=2\sum_{\gamma>0}m_\gamma^2\delta_\gamma$, for which $\pi A(T)/(T\log T)=\kappa(T)$
+and $\int(1+x^2)^{-1}\dd A<\infty$ by $M_2(T)=O(T\log(2+T))$ (\cref{zer:lem:localM2}), with the change of
+denominator.
 
 (ii) Let $D_j(T)$ count distinct zeros of multiplicity $j$ up to height $T$. Korolev's theorem gives
 absolute $A_0,c_0>0$ with $D_j(T)\le A_0N(T)e^{-c_0j}$ for all $j\ge1$ and large $T$
@@ -3049,7 +3200,7 @@ $d_T\le e_T\le Kd_T+A_0\sum_{j>K}j^2e^{-c_0j}$, which proves the equivalence of 
 conditions (and $e_T=O(d_T\log(e/d_T))$). Replacing $m_\gamma^2$ by $m_\gamma$ in the spectral formula gives a
 baseline with limit $\mathcal B(c)$ by the Riemann--von Mangoldt formula and the scaling of the proof
 of \cref{zer:thm:coalesce}; the excess has weights $m_\gamma(m_\gamma-1)\ge0$, so the second condition
-implies the third. Conversely, $p_c(x)=\sum_ic_ie^{iu_ix}$ is a nonzero exponential polynomial whose
+implies the third. Conversely, $p_c$ is a nonzero exponential polynomial whose
 zeros do not accumulate at $0$; choose $z>0$ with $p_c\ne0$ on $(0,z]$. For large $T$ take the first
 $n$ with $h_n\le z/T$, so $z/R\le h_nT\le z$ with $R=\sup h_n/h_{n+1}$; for $T/2<\gamma\le T$, $\abs{p_c(h_n\gamma)}$
 is bounded below and $(\tfrac14+\gamma^2)^{-2}\gg T^{-4}$, and $\tau(h_n)\asymp T^{-3}\log T$, so the vanishing
@@ -3057,16 +3208,131 @@ normalized excess gives $\sum_{T/2<\gamma\le T}m_\gamma(m_\gamma-1)=o(T\log T)$;
 $M_2(T)-N(T)=o(T\log T)$.
 \end{proof}
 
-The positivity of the spectral weights is essential. On $x\ge1$ let
-$\dd A(x)=\log(2+x)(1+\epsilon\cos(\omega\log x))\dd x$ with $0<\epsilon<1$ and $\omega=\pi/\log2$. Then
-$A(T)/(T\log T)=1+\epsilon\Re\{T^{i\omega}/(1+i\omega)\}+o(1)$ has no limit, while for $a=b=1$
-$U(h)/\tau(h)=\int K+\epsilon\Re\{h^{-i\omega}\int K(y)y^{i\omega}\dd y\}+o(1)$, and replacing $h$ by $2h$ reverses
-the oscillation, so $(U(h)+U(2h)/8)/\tau(h)$ converges. This is the variance of one real five-point
-contrast: with $s=(1+\sqrt3)/2$ and $Q(z)$ the real quadratic with coefficients
-$(s+\sqrt s)/2,\ 1/(2s),\ (s-\sqrt s)/2$, $\abs{Q(z)}^2=1+\abs{1+z}^4/8$ on $\abs z=1$, and the coefficients of
-$(1-z)^2Q(z)$ annihilate affine functions, with squared modulus $\abs{1-z}^4+\abs{1-z^2}^4/8$. So a
-five-point contrast can have a limiting coefficient while the normalized count oscillates; whether
-zeta zeros realize such a measure is a separate question.
+\paragraph{What an exceptional variance still determines.}
+At an exceptional four-point shape one variance no longer fixes the count, but it fixes everything
+except one sinusoidal term in $\log$ height.
+
+\begin{theorem}[One missing frequency; \stU]\label{zer:thm:missingfreq}
+Let $t$ be an exceptional shape of \cref{zer:thm:fourpoint} with positive missed frequency $\omega$, and
+suppose $U_c(h)/\tau(h)\to d\,\mathcal B(c)$ along a decreasing sequence $h_n\to0$ with $h_{n+1}/h_n\to1$.
+Every subsequential vague limit of $\mu_T(S)=\pi A(TS)/(T\log T)$, as $T\to\infty$, has the form
+\begin{equation}\label{zer:eq:tangentform}
+ [d+\Re(Cx^{i\omega})]\dd x,\qquad C\in\C,\qquad\abs C\le d .
+\end{equation}
+There is $r\in[0,d]$ such that the set of subsequential limits of $a(T)=\pi A(T)/(T\log T)$ is the
+interval $[d-r/\sqrt{1+\omega^2},\,d+r/\sqrt{1+\omega^2}]$. With $L=\exp(\pi/\omega)$ moreover
+$a(T)+a(LT)\to2d$.
+\end{theorem}
+\begin{proof}
+The compactness and translation argument of \cref{zer:thm:stencilbank} applies to every tangent $\nu$.
+For $\sigma=\nu-d\,\dd x$ the bounded function $H$ has Fourier transform supported on $\set{\pm\omega}$. A
+distribution supported on finitely many points is a sum of derivatives of delta masses, so $H$ is a sum
+of exponentials at these frequencies times polynomials; boundedness forces the polynomials to be
+constant, since the top coefficients form a nonzero periodic trigonometric polynomial bounded away from
+zero along some sequence of period translates; reality gives conjugate coefficients.
+
+For the measures $\Re(Cx^{i\omega})\dd x$ the map $\sigma\mapsto H$ gives $\Re(CJe^{-i\omega w})$ with
+$J=\int_0^\infty\Phi(x)x^{-4+i\omega}\dd x$, and $J\ne0$: otherwise $R$ for $\cos(\omega\log x)\dd x$ would vanish
+identically, contradicting the injectivity of $\sigma\mapsto R$ shown with its fourth derivative. Hence
+this two-dimensional real family realizes every possible $H$; injectivity gives \eqref{zer:eq:tangentform},
+and positivity gives $\abs C\le d$.
+
+The set of tangents is compact for vague convergence, and $C$ depends continuously on the tangent,
+since two compactly supported test integrals distinguish the independent functions
+$\cos(\omega\log x)$ and $\sin(\omega\log x)$. Let $r$ be the largest modulus attained. Replacing $T$ by $sT$
+replaces $\nu(S)$ by $\nu(sS)/s$ and rotates $C$ by $s^{i\omega}$, so the full circle of radius $r$ occurs.
+Evaluation on $[0,1]$ gives $d+\Re(C/(1+i\omega))$, which proves the interval statement. For $s=L$ the
+rotation negates $C$, so $a(T)+a(LT)\to2d$ along every tangent subsequence, hence along all heights by
+compactness.
+\end{proof}
+
+\begin{proposition}[The first missing frequency; \stU]\label{zer:prop:firstres}
+The least positive frequency missed by any four-point shape is the number $\omega_*$ of
+\cref{zer:ex:fourexceptional}.
+\end{proposition}
+\begin{proof}
+On $I$ one has $A_t=B_t/2+C_t/3$ with $B_t,C_t>0$, so a zero of \eqref{zer:eq:foursymbol} requires
+$2^{i\omega}-\tfrac12$ and $3^{i\omega}-\tfrac13$ to point in opposite directions. Write $L=2\pi/\log3$ and
+$U=3\pi/(2\log2)$. For $0<\omega\le L$ the arguments $\omega\log2$ and $\omega\log3$ bound an arc of length at
+most $2\pi\log(3/2)/\log3<\pi$; the positive combination $B_t2^{i\omega}+C_t3^{i\omega}$ points strictly inside
+that arc, whose interior excludes the positive real axis, so this range contains no missed frequency.
+
+Let $\theta_p(\omega)$ be the continuous argument of $p^{i\omega}-1/p$ starting at $0$. With $\phi=\omega\log p$,
+\[
+ \theta_p'=(\log p)\frac{1-p^{-1}\cos\phi}{1-2p^{-1}\cos\phi+p^{-2}} .
+\]
+On $[L,U]$ the angle $\omega\log2$ lies between $\pi$ and $3\pi/2$, so $\theta_2'\le\log2$, while the same
+formula gives $\theta_3'\ge\tfrac34\log3>\log2$; thus $\theta_3-\theta_2$ strictly increases. At $L$ its value
+lies in $(0,\pi)$, since $\theta_3(L)=2\pi$ and $\pi<\theta_2(L)<2\pi$. At $U$, $\theta_2(U)=\pi+\arctan2$, whereas
+$\theta_3(U)=2\pi+\arg(e^{i\psi}-\tfrac13)$ with $\psi=(3\alpha/2-2)\pi\in(\pi/3,\pi/2)$, using $3^9>2^{14}$ and
+$3^3<2^5$; here $\sin\psi>2(\cos\psi-\tfrac13)$, so $\pi<\theta_3(U)-\theta_2(U)<2\pi$. The unique crossing of
+$\pi$ is the first possible opposition, and the pair $(t_*,\omega_*)$ of \cref{zer:ex:fourexceptional}
+realizes a zero in $(L,U)$, hence gives this crossing.
+\end{proof}
+
+\begin{proposition}[Integer multiplicities with the counting main terms; \stU]\label{zer:prop:discrete}
+For every exceptional shape, with missed frequency $\omega$, every $0<q_0<1$ and every
+$0<\eps\le\min(q_0,1-q_0)$, there is a locally finite set of positive ordinates with multiplicities
+$m_x\in\set{1,2}$ such that
+\[
+ \sum_{x\le T}m_x=\frac T{2\pi}\log\frac T{2\pi}-\frac T{2\pi}+O(1),\qquad
+ \frac{2\pi}{T\log T}\sum_{x\le T}m_x^2=1+q_0+\eps\Re\frac{T^{i\omega}}{1+i\omega}+o(1),
+\]
+and the spectral variance $2\sum_xm_x^2\abs{p_c(hx)}^2/(\tfrac14+x^2)^2$ divided by $\tau(h)$ tends to
+$(1+q_0)\mathcal B(c)$. So the factor $1/\sqrt{1+\omega^2}$ of \cref{zer:thm:missingfreq} is attained by an
+integer spectrum whose ordinary count has both Riemann--von Mangoldt main terms.
+\end{proposition}
+\begin{proof}
+For $x\ge10$ put $\lambda(x)=\log(x/2\pi)/(2\pi)$ and $q(x)=q_0+\eps\cos(\omega\log x)$, and define the strictly
+increasing unbounded functions
+\[
+ F_1(T)=\int_{10}^T(1-q(x))\lambda(x)\dd x,\qquad F_2(T)=\frac12\int_{10}^Tq(x)\lambda(x)\dd x .
+\]
+Place simple points at the crossings of the positive integers by $F_1$ and double points at the
+crossings of the positive elements of $\Z+\theta$ by $F_2$, with $0<\theta<1$ outside the countable set of
+fractional parts of $F_2(F_1^{-1}(n))$, $n\ge1$. The two sets are disjoint and their counts differ from
+$F_1,F_2$ by $O(1)$. So the ordinary count is $\int_{10}^T\lambda+O(1)$ and the squared count is
+$\int_{10}^T(1+q)\lambda+O(1)$, and direct integration gives the two formulas. The continuous
+squared-counting density $2(1+q)\lambda$ has variance limit $(1+q_0)\mathcal B(c)$ by
+\eqref{zer:eq:stencilmellin}, since the symbol vanishes at $\pm\omega$ and the constant in $\log(x/2\pi)$
+contributes $O(h^3)$. Replacing it by $2\sum_xm_x^2\delta_x$ changes the cumulative function by $O(1)$;
+integration by parts against $h^4K_c(hx)$ costs $O(h^4\int_0^\infty\abs{K_c'(y)}\dd y)=O(h^4)$, as $K_c$ is
+smooth at $0$ and $K_c'=O(y^{-4})$ at infinity, and the change of denominator also costs $O(h^4)$.
+\end{proof}
+
+With $q_0=\eps=0.1604$ the density $1+q$ lies in $[1,1.3208]$, so the model keeps the local limiting
+bounds of \cref{zer:lem:localM2} on every fixed interval while attaining the full half-width those
+bounds allow. The ordinates are a model spectrum; an Euler product realizing them would be an
+additional arithmetic constraint.
+
+\begin{corollary}[Exceptional four-point variances for $\zeta$; \stG]\label{zer:cor:missingzeta}
+Let $c$ be a four-point stencil, exceptional with missed frequency $\omega$, and suppose
+$V_c(h)/\tau(h)\to d\,\mathcal B(c)$ along a decreasing sequence with $h_{n+1}/h_n\to1$. Then the lower and
+upper limits of $\kappa(T)$ are $d\mp r/\sqrt{1+\omega^2}$ with
+\[
+ r\le\min(d-1,\,1.3208-d),
+\]
+so the variance fixes the midpoint $d$ of the limiting normalized counts, and $\kappa(T)$ converges if
+$d=1$ or $d=1.3208$; by \cref{zer:thm:coalesceinverse}(ii), $d=1$ means that simple zeros have density
+one. Together with \cref{zer:thm:coalesceinverse}(i): if any one four-point variance on four equally
+spaced nodes has a normalized
+limit along such a sequence, then
+\[
+ \limsup_{T\to\infty}\kappa(T)-\liminf_{T\to\infty}\kappa(T)\le\frac{2\cdot0.1604}{\sqrt{1+\omega_*^2}},\qquad
+ \frac{0.1604}{\sqrt{1+\omega_*^2}}=0.025405106245\ldots,
+\]
+and this half-width is attained, by \cref{zer:prop:discrete}, among spectra satisfying the local bounds of
+\cref{zer:lem:localM2}.
+\end{corollary}
+\begin{proof}
+By the proof of \cref{zer:thm:coalesceinverse}(i), \cref{zer:thm:missingfreq} applies to
+$A=2\sum_{\gamma>0}m_\gamma^2\delta_\gamma$. By \cref{zer:lem:localM2} every tangent lies between $\dd x$ and
+$1.3208\,\dd x$ on each fixed positive interval; these interval bounds bound the continuous density
+\eqref{zer:eq:tangentform} everywhere on $(0,\infty)$, and its extreme values are $d\pm\abs C$. This gives the
+bound on $r$, and $r\le(1.3208-1)/2=0.1604$. At a determining shape $\kappa(T)$ converges, and at an
+exceptional one $\omega\ge\omega_*$ by \cref{zer:prop:firstres}. The numerical value is enclosed in
+\artifact{grh-two-open-questions/zero-stencils/checks.txt}.
+\end{proof}
 
 \paragraph{Residue classes.}
 Fix $q$, let $\chi$ run over the $n_q$ characters modulo $q$, with the multiplicities $m_\chi(\gamma)$ of the
@@ -3206,8 +3472,11 @@ hypothesis only for the primitive inducers modulo $q$, gives the rest.
 
 The infinite-time average removes all unequal frequencies before the lag tends to zero, so these
 statements are insensitive to any finite set of zeros and differ from the short-interval variance
-problems of full pair correlation. Inverse problems for regular variation and logarithmically periodic
-obstructions have a general theory \cite{JacobsenMikoschRosinskiSamorodnitsky2009Inverse}. Exact checks of
+problems of full pair correlation. Multiplicative cancellation, Mellin nonvanishing and logarithmically
+periodic counterexamples occur in inverse problems for regular variation
+\cite{JacobsenMikoschRosinskiSamorodnitsky2009Inverse,DamekMikoschRosinskiSamorodnitsky2014General}, and
+Greenhall classified the spectral ambiguity of the Allan variance, another scale-dependent filtered
+variance \cite{Greenhall1998Spectral}. Exact checks of
 the spline norms $\mathcal B_2,\dots,\mathcal B_5$ and of the minimal covariance $\tfrac16I_4$ at modulus
 $8$ are in
 \begin{center}\artifact{dirichlet-zero-multiplicity-and-reconstruction/checks/contrast-results.txt}.\end{center}
@@ -5432,7 +5701,7 @@ for a length $e^{-T}$; the statement concerns a continuous sampling variable and
 what a discrete grid resolves.
 
 \subsection{Open questions}\label{zer:sec:open}
-{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; Gaussian_prime_races; prime_endpoints_and_symplectic_compressions; graph_coupled_zeros_2026-11-26; grh_extensions_2026-11-27; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; grh_inverse_spectral_2026-11-27}}
+{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; Gaussian_prime_races; prime_endpoints_and_symplectic_compressions; graph_coupled_zeros_2026-11-26; grh_extensions_2026-11-27; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; grh_inverse_spectral_2026-11-27; grh-two-open-questions}}
 
 \begin{enumerate}
 \item \emph{Fixed-height Euler products.} Can $F_0(v)/v$ in \eqref{zer:eq:single} be
@@ -5475,7 +5744,13 @@ $M_2(T)\sim\kappa T\log T/(2\pi)$ hold, as \cref{zer:prop:kappa} requires (equiv
 \cref{zer:thm:coalesceinverse}, does one three-point variance have a normalized limit)? What are the
 exact leading constants of the residue-class matrix, which by \cref{zer:thm:identityclass} are the
 limits of the folded pair counts? Can a quantitative error term for the variance give an effective
-error term for $M_2(T)$, and which other individual stencils characterize arbitrary finite limits?
+error term for $M_2(T)$? A family of stencils characterizes all finite limits exactly when its symbols
+have no common real zero (\cref{zer:thm:stencilbank}), and \cref{zer:thm:fourpoint} classifies four
+consecutive observations. For five equally spaced observations the symbol involves the dependent
+phases $2^{i\xi}$, $4^{i\xi}$ together with $3^{i\xi}$: which shapes miss more than one positive frequency? For
+$\zeta$ itself, can arithmetic constraints beyond \cref{zer:lem:localM2} exclude a nonconstant tangent
+density in \cref{zer:thm:missingfreq}? That would remove the exceptional shapes from
+\cref{zer:thm:coalesceinverse}(i).
 \item \emph{Beyond covariance.} Can the convex-hull statements be upgraded to the interior of the
 actual limiting support, to every ordering of the unsmoothed counts, or to inclusivity of
 ordinary prime races, without a hypothesis on the ordinates? Which nonlinear constraints hold on

@@ -836,7 +836,7 @@ otherwise. Then $\anaEx L=1$ and $\anaEx\alpha\to1$ as $\eta\to0$, but
 $\anaEx(L/\alpha)=1-\eta+\eta^{-1}\to\infty$.
 
 \subsection{Sharp constants for dyadic filters}\label{ana:sec:dyadic}
-{\raggedright\sources{dyadic_pole_detection_2026-11-26; odd_dyadic_dirichlet}}
+{\raggedright\sources{dyadic_pole_detection_2026-11-26; odd_dyadic_dirichlet; grh_uniform_extensions_2026-11-27}}
 
 By \cref{ana:thm:joint}, positive filters without a common zero detect every pole. A filter
 multiplies each residue by a complex number, which may be small, and for filters at
@@ -850,7 +850,9 @@ $R_j$ is $(1+z(s)^{2^j})F(s)$ minus an entire function. Define
 \[
  \anaM_n(z)=\max_{0\le j<n}\abs{1+z^{2^j}},\qquad c_n=\min_{z\in\C}\anaM_n(z);
 \]
-the minimum exists because the first term tends to infinity with $\abs z$.
+the minimum exists because the first term tends to infinity with $\abs z$. For a set $S$ of
+indices write $\anaM_S(z)=\max_{j\in S}\abs{1+z^{2^j}}$, so that
+$\anaM_n=\anaM_{\{0,\dots,n-1\}}$.
 
 \begin{theorem}[Residue visibility; \stU]\label{ana:thm:dyadic}
 Let $R\colon[1,\infty)\to\R$ be locally integrable and of at most polynomial growth, and
@@ -891,20 +893,65 @@ This concerns errors in residues. Turning finite transform evaluations into resi
 needs a bound for the regular part: if $F_j=\varrho_j/(s-\rho)+U_j$ with $\abs{U_j}\le K_j$
 near $\rho$, then $\abs{\delta F_j(\rho+\delta)-\varrho_j}\le\abs\delta K_j$.
 
-\begin{theorem}[Even number of filters; \stU]\label{ana:thm:dyadiceven}
-Let $n\ge2$ be even, $L=2^{n-1}$, and let $r_n\in(1/2,1)$ be the root of $r+r^L=1$. Then
+For an even number of filters only about half of them are needed. The following lemma shows
+that the retained chain of fourth powers imposes the same angular constraint as the full
+doubling chain.
+
+\begin{lemma}[Angular barrier for half of the filters; \stU]\label{ana:lem:dyadicbarrier}
+Let $n=2m\ge2$, $L=2^{n-1}$, and let $J_n=\{0,1,3,5,\dots,n-1\}$, a set of $m+1$ indices.
+Suppose $\anaM_{J_n}(z)<1$, and put $\alpha_j=\abs{\operatorname{Arg}(-z^{2^j})}$. Then
+$\alpha_j<\pi/2$ for $j\in J_n$,
+\begin{equation}\label{ana:eq:dyadicend}
+ L\alpha_0+\alpha_{n-1}\ge\frac{L+1}3\,\pi,
+\end{equation}
+and, after conjugating $z$ if necessary and writing $z=\abs z e^{i\theta}$ with
+$0\le\theta\le\pi$,
 \[
- c_n=\sqrt{1-r_n+r_n^2},
+ \frac\pi2<\theta<\frac{2\pi}3+\frac\pi{6L}.
 \]
-and the minimizers are exactly $z=r_ne^{\pm2\pi i/3}$.
+\end{lemma}
+
+\begin{proof}
+If $\Re w\ge0$ then $\abs{1+w}\ge1$. Hence $z\ne0$ and $z^{2^j}$ lies in the open left
+half-plane for $j\in J_n$, that is, $\alpha_j<\pi/2$. If $\alpha_j<\pi/2$, write
+$-z^{2^j}=\abs z^{2^j}e^{\pm i\alpha_j}$. Then $-z^{2^{j+1}}=-(-z^{2^j})^2$ has argument
+$\pi\pm2\alpha_j$, so $\alpha_{j+1}=\pi-2\alpha_j$, and $-z^{2^{j+2}}=-(-z^{2^j})^4$ has
+argument $\pi\pm4\alpha_j$, so $\alpha_{j+2}=\abs{\pi-4\alpha_j}\ge4\alpha_j-\pi$. Thus
+$\alpha_1=\pi-2\alpha_0$ and $\alpha_{j+2}-\pi/3\ge4(\alpha_j-\pi/3)$ for $j=1,3,\dots,n-3$,
+all of which lie in $J_n$. Iterating,
+$\alpha_{n-1}-\pi/3\ge4^{m-1}(\alpha_1-\pi/3)=L(\pi/3-\alpha_0)$, which is
+\eqref{ana:eq:dyadicend}.
+
+For the barrier, $\Re z<0$ and $\Re z^2<0$ give $\pi/2<\theta<3\pi/4$. There is nothing more
+to prove if $\theta\le2\pi/3$. Otherwise put $a=\theta-2\pi/3>0$ and $e_t=2\cdot4^t=2^{2t+1}$
+for $0\le t\le m-1$; these are retained exponents. Since $e_t\equiv2\pmod3$, the argument of
+$z^{e_t}$ is $4\pi/3+e_ta$ modulo $2\pi$. We show $0<e_ta<\pi/6$ by induction on $t$. For
+$t=0$ this is $\theta<3\pi/4$. If it holds at $t$, then $0<e_{t+1}a<2\pi/3$, so
+$4\pi/3+e_{t+1}a$ lies in $(4\pi/3,2\pi)$ without wrapping, and its cosine is negative only
+if it is below $3\pi/2$; hence $e_{t+1}a<\pi/6$. At $e_{m-1}=L$ this is the upper bound.
+\end{proof}
+
+\begin{theorem}[Even number of filters, and deletion of even indices; \stU]\label{ana:thm:dyadiceven}
+Let $n\ge2$ be even, $L=2^{n-1}$, let $r_n\in(1/2,1)$ be the root of $r+r^L=1$, and let $J_n$
+be as in \cref{ana:lem:dyadicbarrier}. For every index set $S$ with
+$J_n\subseteq S\subseteq\{0,1,\dots,n-1\}$,
+\[
+ \min_{z\in\C}\anaM_S(z)=\sqrt{1-r_n+r_n^2},
+\]
+and the minimizers are exactly $z=r_ne^{\pm2\pi i/3}$. In particular
+$c_n=\sqrt{1-r_n+r_n^2}$, and deleting any selection of the positive even indices
+$2,4,\dots,n-2$, including all of them, changes neither the constant nor the minimizers. At
+the minimizers exactly the exponents $1$ and $L$ attain the maximum.
 \end{theorem}
 
 \begin{proof}
 The root exists and is unique because $v+v^L$ increases from a value below $1$ at $v=1/2$
-to $2$ at $v=1$. Put $r=r_n$, $c=\sqrt{1-r+r^2}$ and $d=1-c^2=r(1-r)=r^{L+1}$. For
-$z=re^{\pm2\pi i/3}$ successive squaring alternates the arguments $\pm2\pi/3$, so
-$\abs{1+z^{2^j}}^2=1-r^{2^j}+r^{2^{j+1}}$. Each $r^{2^j}$ lies in $[r^L,r]=[1-r,r]$, and the
-convex function $v\mapsto1-v+v^2$ takes the value $c^2$ at both ends. So $c_n\le c$.
+to $2$ at $v=1$. Put $r=r_n$, $c=\sqrt{1-r+r^2}$ and $d=1-c^2=r(1-r)=r^{L+1}$; note $c<1$.
+For $z=re^{\pm2\pi i/3}$ successive squaring alternates the arguments $\pm2\pi/3$, so
+$\abs{1+z^{2^j}}^2=1-r^{2^j}+r^{2^{j+1}}$. The numbers $r^{2^j}$ decrease strictly from $r$
+to $r^L=1-r$, and the strictly convex function $v\mapsto1-v+v^2$ takes the value $c^2$ at
+both ends. So $\abs{1+z^{2^j}}<c$ for $0<j<n-1$, with equality at $j=0$ and $j=n-1$, and
+$\anaM_S(z)=c$ at both points for every $S$ in the theorem.
 
 For $0<d<1$ and $v>0$ with $v+d/v\le2$ put $A_d(v)=\arccos((v+d/v)/2)$ and
 $g_d(u)=A_d(e^u)=\arccos\bigl(\sqrt d\cosh(u-\tfrac12\log d)\bigr)$. Its domain is the
@@ -916,27 +963,44 @@ $g_d(u)=g_d(\log d-u)$, and on the interior
 \end{equation}
 so $g_d$ is strictly concave on its closed domain.
 
-Suppose $\anaM_n(z)\le c$. Since $c<1$, every $z^{2^j}$ lies in the open left half-plane.
-Put $v=\abs z$ and $\alpha_j=\abs{\operatorname{Arg}(-z^{2^j})}\in[0,\pi/2)$. For
-consecutive iterates in that half-plane $\alpha_j>\pi/4$ and $\alpha_{j+1}=\pi-2\alpha_j$, so
-$\alpha_j=\pi/3+(-2)^j(\alpha_0-\pi/3)$. As $n-1$ is odd,
-$L\alpha_0+\alpha_{n-1}=(L+1)\pi/3$. The bound $\abs{1+z^{2^j}}\le c$ is equivalent to
-$\cos\alpha_j\ge(v^{2^j}+d/v^{2^j})/2$, hence to $\alpha_j\le A_d(v^{2^j})$. Jensen's
-inequality with weights $L/(L+1)$, $1/(L+1)$ and the symmetry of $g_d$ give
-\[
- \frac\pi3=\frac{L\alpha_0+\alpha_{n-1}}{L+1}\le\frac{Lg_d(\log v)+g_d(\log d-L\log v)}{L+1}
- \le g_d\Bigl(\frac{\log d}{L+1}\Bigr)=A_d(r)=\arccos\frac{r+r^L}2=\frac\pi3 .
-\]
+Suppose $\anaM_{J_n}(z)\le c$. Since $c<1$, \cref{ana:lem:dyadicbarrier} applies; put
+$v=\abs z$ and let $\alpha_j$ be as there. For $j\in J_n$ the bound $\abs{1+z^{2^j}}\le c$ is
+equivalent to $\cos\alpha_j\ge(v^{2^j}+d/v^{2^j})/2$, hence to $\alpha_j\le A_d(v^{2^j})$.
+The endpoint inequality \eqref{ana:eq:dyadicend}, Jensen's inequality with weights
+$L/(L+1)$, $1/(L+1)$ and the symmetry of $g_d$ give
+\begin{align*}
+ \frac\pi3&\le\frac{L\alpha_0+\alpha_{n-1}}{L+1}\le\frac{Lg_d(\log v)+g_d(\log d-L\log v)}{L+1}\\
+ &\le g_d\Bigl(\frac{\log d}{L+1}\Bigr)=A_d(r)=\arccos\frac{r+r^L}2=\frac\pi3 .
+\end{align*}
 All inequalities are equalities. Strict concavity forces $\log v=\log d-L\log v$, that is
-$v=r$, and then $\alpha_0=\pi/3$.
+$v=r$, and then $\alpha_0=A_d(r)=\pi/3$, so $z=re^{\pm2\pi i/3}$. Hence $\anaM_{J_n}>c$ away
+from these two points. Since $\anaM_{J_n}\le\anaM_S\le\anaM_n$ and all three equal $c$ at
+both points, the theorem follows.
 \end{proof}
 
-For odd $n$ the endpoint relation reads $L\alpha_0-\alpha_{n-1}=(L-1)\pi/3$, and the
-positive-weight Jensen step fails.
+For example, the twelve filters with exponents $1,2,4,\dots,2048$ may be replaced by the seven
+with exponents $1,2,8,32,128,512,2048$ without changing the worst residue attenuation $c_{12}$.
+For odd $n$ the situation is different: by \cref{ana:rem:dyadicactive}(1) the inactive
+observations cannot be dropped there. Deletion of odd indices is not covered by
+\cref{ana:thm:dyadiceven}.
+
+For odd $n$ the full doubling chain, with $\alpha_{j+1}=\pi-2\alpha_j$ at every step, gives
+$L\alpha_0-\alpha_{n-1}=(L-1)\pi/3$, and the positive-weight Jensen step fails.
+
+\begin{corollary}[Shifted dyadic blocks; \stU]\label{ana:cor:dyadicshift}
+Let $n$, $r_n$ and $S$ be as in \cref{ana:thm:dyadiceven} and let $a\ge0$ be an integer. Then
+$\min_z\max_{j\in S}\abs{1+z^{2^{a+j}}}=c_n$, and the minimizers are exactly the $2^{a+1}$
+solutions of $z^{2^a}=r_ne^{\pm2\pi i/3}$.
+\end{corollary}
+
+\begin{proof}
+Apply \cref{ana:thm:dyadiceven} to $w=z^{2^a}$; the power map is onto $\C$.
+\end{proof}
 
 \begin{proposition}[Stability and asymptotics; \stU]\label{ana:prop:dyadicstab}
-Let $n\ge2$ be even, $L=2^{n-1}$, and $\anaM_n(z)\le B<1$. Put $d=1-B^2$,
-$r_*=d^{1/(L+1)}$, $\kappa=\sqrt d/B$ and $\Delta=A_d(r_*)-\pi/3$. Then $\Delta\ge0$,
+Let $n\ge2$ be even, $L=2^{n-1}$, let $S$ be as in \cref{ana:thm:dyadiceven}, and suppose
+$\anaM_S(z)\le B<1$. Put $d=1-B^2$, $r_*=d^{1/(L+1)}$, $\kappa=\sqrt d/B$ and
+$\Delta=A_d(r_*)-\pi/3$. Then $A_d(r_*)$ is defined, $\Delta\ge0$,
 \[
  \Bigl|\log\frac{\abs z}{r_*}\Bigr|\le\sqrt{\frac{2\Delta}{\kappa L}},\qquad
  A_d(\abs z)-\frac{L+1}L\Delta\le\abs{\operatorname{Arg}(-z)}\le A_d(\abs z),
@@ -951,7 +1015,10 @@ and $c_n$ increases to $1$.
 \end{proposition}
 
 \begin{proof}
-Repeat the angular argument with this $d$; the Jensen step gives $A_d(r_*)\ge\pi/3$. By
+Repeat the angular argument with this $d$ and \cref{ana:lem:dyadicbarrier}; only the
+observations with $j\in J_n$ enter. The first and last arguments of $g_d$ lie in its interval
+domain, hence so does their weighted mean $\log d/(L+1)=\log r_*$, and the Jensen step gives
+$A_d(r_*)\ge\pi/3$. By
 \eqref{ana:eq:gconc} the function $g_d$ is $\kappa$-strongly concave, so the Jensen gap at
 $u_1=\log\abs z$, $u_2=\log d-Lu_1$ and $\lambda=L/(L+1)$ is at least
 $\frac{\kappa L}2(\log\abs z-\frac{\log d}{L+1})^2$, and it is at most $\Delta$. The two
@@ -962,6 +1029,65 @@ Taylor's formula gives $t+\log t=\log L+O(t^2/L)$, hence $t=W(L)+O(W(L)^2/L)$, a
 $c_n=\sqrt{1-\eps+\eps^2}=1-\eps/2+O(\eps^2)$. The defining equation shows that $r_n$
 increases with $L$.
 \end{proof}
+
+The stability bounds are those of the full family, under the weaker hypothesis that only the
+retained observations are bounded.
+
+\begin{corollary}[Residue visibility after deletion; \stU]\label{ana:cor:dyadicdelete}
+Let $n$ be even and $S$ as in \cref{ana:thm:dyadiceven}. In the setting of
+\cref{ana:thm:dyadic},
+\[
+ \max_{j\in S}\abs{\Res_{s=\rho}F_j}\ge c_n\abs r,
+\]
+and $c_n$ is best possible, even for real smooth $R$. If observations satisfy
+$\abs{y_j-\Res_\rho F_j}\le\eta$ for $j\in S$, then at a known $\rho$ dividing the observation
+with the largest multiplier modulus $\abs{1+z(\rho)^{2^j}}$, $j\in S$, by that multiplier
+estimates $r$ with error at most $\eta/c_n$, and no estimator has a smaller worst-case error
+uniformly over the class and the pole locations. At a fixed $\rho$ the optimal worst-case
+bound is $\eta/\anaM_S(z(\rho))$.
+\end{corollary}
+
+\begin{proof}
+The residue vector is $((1+z(\rho)^{2^j})r)_{j\in S}$, so the lower bound and the error bound
+follow from \cref{ana:thm:dyadiceven}. For sharpness run the construction in the proof of
+\cref{ana:thm:dyadic} with $z_*=r_ne^{2\pi i/3}$, a minimizer of $\anaM_S$. At a fixed $\rho$
+the all-zero data are compatible with $r=\pm\eta/\anaM_S(z(\rho))$, whose channel residues
+have modulus at most $\eta$; at an extremal $\rho$ these two values are $2\eta/c_n$ apart.
+\end{proof}
+
+\begin{theorem}[Angular frequency near the sharp loss; \stU]\label{ana:thm:dyadicangle}
+Let $n$ be even, $S$ as in \cref{ana:thm:dyadiceven}, $r=r_n$, $c=c_n$, and let $\theta$ be
+uniformly distributed on $[0,2\pi)$. As $\eps\downarrow0$,
+\begin{equation}\label{ana:eq:dyadicangle}
+ \anaPr\bigl\{\anaM_S(re^{i\theta})\le c+\eps\bigr\}
+ =\frac{2c}{\pi\sqrt3}\Bigl(\frac1r+\frac1{Lr^L}\Bigr)\eps+O_n(\eps^2).
+\end{equation}
+The leading coefficient does not depend on which positive even indices are deleted, and
+along even $n\to\infty$ it tends to $2/(\pi\sqrt3)$.
+\end{theorem}
+
+\begin{proof}
+By \cref{ana:thm:dyadiceven}, at each minimizer exactly the exponents $1$ and $L$ attain the
+maximum and the other exponents have a strict gap. Near $\theta_0=2\pi/3$ the function
+$\theta\mapsto\anaM_S(re^{i\theta})$ is therefore the maximum of $\abs{1+re^{i\theta}}$ and
+$\abs{1+r^Le^{iL\theta}}$, whose derivatives at $\theta_0$ are $-\sqrt3r/(2c)$ and
+$\sqrt3Lr^L/(2c)$, since $L\equiv2\pmod3$. The sublevel interval around $\theta_0$ has length
+$\frac{2c}{\sqrt3}(\frac1r+\frac1{Lr^L})\eps+O_n(\eps^2)$, and there is an identical interval
+at the conjugate point. By compactness and the uniqueness of the minimizers, no other angles
+occur for small $\eps$. Twice this length divided by $2\pi$ gives \eqref{ana:eq:dyadicangle}.
+Finally $r\to1$. If $L(1-r)$ were bounded along a subsequence, $r^L$ would be bounded below
+by a positive constant there, contradicting $r^L=1-r\to0$. Hence $Lr^L=L(1-r)\to\infty$.
+\end{proof}
+
+When a family of phases is equidistributed, the coefficient in \eqref{ana:eq:dyadicangle}
+gives its asymptotic near-worst fraction. For the phases $\gamma\log\lambda$ of Dirichlet
+zero ordinates this is the equidistribution argument in the proof of
+\cref{ana:thm:dyadicfreq}, which uses \cref{src:thm:dgrh}; the even-length limit
+$2/(\pi\sqrt3)$ coincides with that of $K_n$ along odd $n$. Exact rational checks of the
+angular barrier for $n=2,4,\dots,18$ and of the radius and inactive-constraint gaps for
+$n\le40$ are in \artifact{grh_uniform_extensions_2026-11-27/data/half_dyadic_verification.txt},
+produced by \artifact{grh_uniform_extensions_2026-11-27/code/verify_half_dyadic.py}; they
+illustrate instances, the proofs above cover all even $n$.
 
 \begin{theorem}[Three filters; \stU]\label{ana:thm:dyadicthree}
 Let $\tau$ be the root in $(1/2,3/5)$ of $t^4-2t^2-3t+2=0$. Then
@@ -1029,8 +1155,9 @@ attain the maximum there.
 \end{theorem}
 
 \begin{proof}
-\emph{Orbit coordinates.} If $\anaM_n(z)<1$, the angles $\alpha_j$ of the even case satisfy
-$\alpha_{j+1}=\pi-2\alpha_j$. With $u=-L\log\abs z$ and $b=\alpha_{n-1}$,
+\emph{Orbit coordinates.} If $\anaM_n(z)<1$, the angles
+$\alpha_j=\abs{\operatorname{Arg}(-z^{2^j})}$ satisfy $\alpha_{j+1}=\pi-2\alpha_j$, as in the
+proof of \cref{ana:lem:dyadicbarrier}. With $u=-L\log\abs z$ and $b=\alpha_{n-1}$,
 \[
  \alpha_j=p+(-1)^j\frac{2^j}L(b-p),\qquad v_j=\abs z^{2^j}=e^{-2^ju/L},\qquad
  F_j=\abs{1+z^{2^j}}^2=1+v_j^2-2v_j\cos\alpha_j ,
@@ -3718,9 +3845,11 @@ general, where in the interval of \cref{ana:thm:excursion} does the lower limit 
 
 \begin{question}[Other filter patterns]\label{ana:q:dyadic}
 \Cref{ana:thm:dyadiceven,ana:thm:dyadicthree,ana:thm:dyadicodd} determine $c_n$ for the
-doubling exponents $1,2,\dots,2^{n-1}$, and \cref{ana:rem:dyadicactive} shows that the answer
-depends on the pattern. What are the exact constants and minimizers for other prescribed
-exponent sets, for instance a long dyadic family with one exponent deleted? Can the frequency
+doubling exponents $1,2,\dots,2^{n-1}$; for even $n$, \cref{ana:thm:dyadiceven} shows that
+deleting any of the positive even indices changes neither $c_n$ nor the minimizers, and
+\cref{ana:rem:dyadicactive} shows that the answer depends on the pattern. What are the exact
+constants and minimizers for other prescribed exponent sets, for instance a dyadic family of
+even length with an odd index deleted, or one of odd length with one exponent deleted? Can the frequency
 law of \cref{ana:thm:dyadicfreq} be given an error term in $T$ when the tolerance $\eps$
 decreases with the height, which requires the discrepancy of $\gamma\log\lambda$ in shrinking
 arcs? What are the sharp constants when the noise is specified on the observed functions

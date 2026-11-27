@@ -60,7 +60,7 @@ grh_sparse_singular_moduli	global-five.tex	Reducing the global five-term questio
 grh_sparse_singular_moduli	four_sieves.tex	The four residual sextic discriminants	merged	smd:prop:sextics	
 grh_sparse_singular_moduli	family.tex	An infinite family attaining the exact maximum	merged	smd:thm:dyadic	part (a)
 grh_sparse_singular_moduli	family.tex	How frequently a single residue helps	duplicate	smd:thm:nearfull	
-grh_sparse_singular_moduli	prime-conductors.tex	Full support for a positive proportion of prime conductors (density > 0.6133)	subsumed	smd:thm:gaussian	same statement with density > 0.9998; the test at 7 of depth 1 is implied by the test of depth 2
+grh_sparse_singular_moduli	prime-conductors.tex	Full support for a positive proportion of prime conductors (density > 0.6133)	subsumed	smd:thm:gaussian	same statement with density > 0.9999969 (gaussian-singular-moduli); the test at 7 of depth 1 is implied by the test of depth 2
 grh_sparse_singular_moduli	uniform.tex	A uniform lower bound for arbitrary orders (Theorem, GRH)	duplicate	smd:thm:growth	second proof via a norm average; the proof kept selects one inert prime at which all conjugates are units
 grh_sparse_singular_moduli	uniform.tex	A uniform lower bound ... : Corollary (comparison independent of GRH)	duplicate	smd:thm:uncond	
 grh_sparse_singular_moduli	frobenius.tex	How sparse can a one-sided Frobenius test be? (all subsections)	other-unit	nab	
@@ -68,10 +68,10 @@ grh_sparse_singular_moduli	closing.tex	Scope and further questions	merged	smd:q:
 grh_sparse_singular_moduli	closing.tex	Replay of the earlier four-term reduction	subsumed	smd:thm:five	recap of the GRH cutoff and sieves of grh_cm_prime_applications
 grh_sparse_singular_moduli	earlier-four-term.tex	Four different sizes; the analytic cutoff; the finite range	subsumed	smd:thm:five	duplicate of grh_cm_prime_applications; separated-size lemma kept as smd:lem:separated
 grh_transfers_singular_moduli_and_symmetric_powers	report.tex	Which parts of the Lean proof transfer?	other-unit	src	
-grh_transfers_singular_moduli_and_symmetric_powers	gaussian.tex	Full support for Gaussian prime conductors	merged	smd:thm:gaussian	criterion in smd:lem:criterion; disks in smd:lem:gaussdisks; examples in smd:ex:conductors
+grh_transfers_singular_moduli_and_symmetric_powers	gaussian.tex	Full support for Gaussian prime conductors	merged	smd:thm:gaussian	strict-test density 0.99981826 kept inside the proof of smd:thm:gaussian; the stated bound is superseded by gaussian-singular-moduli; criterion in smd:lem:criterion; disks in smd:lem:gaussdisks; examples in smd:ex:conductors
 grh_transfers_singular_moduli_and_symmetric_powers	twoadic.tex	A common multiplicative disk at 2	merged	smd:lem:gaussdisks	sharpness in smd:rem:depth2
-grh_transfers_singular_moduli_and_symmetric_powers	report.tex	Finite verification and a remaining example	merged	smd:rem:missed	
-grh_transfers_singular_moduli_and_symmetric_powers	report.tex	Further research questions	merged	smd:q:density	question 2 kept as smd:q:isogeny; question 3 belongs to hec
+grh_transfers_singular_moduli_and_symmetric_powers	report.tex	Finite verification and a remaining example	merged	smd:rem:missed	strict-test census kept; the two missed conductors are now decided by smd:cor:twoconductors
+grh_transfers_singular_moduli_and_symmetric_powers	report.tex	Further research questions	merged	smd:q:density	question 1 rewritten: its finite part is answered by smd:cor:twoconductors; question 2 kept as smd:q:isogeny; question 3 belongs to hec
 grh_transfers_singular_moduli_and_symmetric_powers	symweights.tex	The least possible mean for a positive symmetric-power test	other-unit	hec	
 grh_transfers_singular_moduli_and_symmetric_powers	analytic.tex	A one-sided criterion for the symmetric powers of Delta	other-unit	hec	
 grh_transfer_bridges_2026-11-25	sections/06_confluent.tex	Deeper confluent certificates and exact sparse families	merged	smd:thm:confluent	
@@ -102,3 +102,22 @@ padic-six-term	report.tex	Matching witnesses	merged	smd:thm:sixroot	witnesses fo
 padic-six-term	report.tex	Prior art	merged	smd:sec:exact	one sentence citing van der Poorten-Rumely
 padic-six-term	report.tex	Partial certificate at discriminant -87	merged	smd:prop:eightyseven	an application of smd:thm:confluent; recovers smd:thm:powered
 padic-six-term	report.tex	Replay	non-mathematical		
+gaussian-singular-moduli	gaussian-singular-moduli.tex	(title and abstract)	merged	smd:thm:gaussian	
+gaussian-singular-moduli	gaussian-singular-moduli.tex	Powers and sparse equations: Theorem (density > 0.9999969821615212; all primes below 456193; two exact values)	merged	smd:thm:gaussian	statement and the remark on multiples of the ring class polynomial
+gaussian-singular-moduli	gaussian-singular-moduli.tex	Powers and sparse equations: equivalence of s=h+1 with independence of any h powers	duplicate	smd:eq:trivial	already in the section introduction and smd:sec:full
+gaussian-singular-moduli	gaussian-singular-moduli.tex	The exceptional term in the determinant: Theorem (trace criterion)	merged	smd:thm:trace	refines smd:lem:criterion for integer depths; the lemma is kept for rational depths
+gaussian-singular-moduli	gaussian-singular-moduli.tex	The exceptional term in the determinant: A tie can give an actual sparse relation	merged	smd:ex:tie	
+gaussian-singular-moduli	gaussian-singular-moduli.tex	A trace over Gaussian isogenies: Lemma (Hecke trace)	merged	smd:lem:hecke	
+gaussian-singular-moduli	gaussian-singular-moduli.tex	A trace over Gaussian isogenies: local input (common disks)	duplicate	smd:lem:gaussdisks	lemma statement extended by j/1728 in 1+8O at 2 and by odd l different from p, both from the existing proof as the report states
+gaussian-singular-moduli	gaussian-singular-moduli.tex	Three coefficient congruences: Proposition (congruences modulo 343 and 2187)	merged	smd:prop:oddtraces	
+gaussian-singular-moduli	gaussian-singular-moduli.tex	Three coefficient congruences: Proposition (optimal dyadic modulus 516096)	merged	smd:prop:dyadictrace	
+gaussian-singular-moduli	gaussian-singular-moduli.tex	The arithmetic test for full support	merged	smd:thm:admissible	
+gaussian-singular-moduli	gaussian-singular-moduli.tex	The two conductors without a search	merged	smd:cor:twoconductors	including the 7^92 bound for v_7(h)=2
+gaussian-singular-moduli	gaussian-singular-moduli.tex	The two conductors without a search	answered	smd:cor:twoconductors	answers the finite part of smd:q:density (s at l=42337 and l=84673)
+gaussian-singular-moduli	gaussian-singular-moduli.tex	Density and finite verification: finite densities and Lemma (Long intervals)	duplicate	smd:thm:gaussian	same finite-density and tail argument as the earlier proof; the block bound T_p(R) is kept in smd:eq:G3
+gaussian-singular-moduli	gaussian-singular-moduli.tex	Density and finite verification: added strata and the density interval	merged	smd:thm:gaussian	proof of the density assertion
+gaussian-singular-moduli	gaussian-singular-moduli.tex	Density and finite verification: single-h test and census below 456193	merged	smd:rem:missed	
+gaussian-singular-moduli	gaussian-singular-moduli.tex	Verification and further questions: exact-arithmetic companion	merged	smd:cor:twoconductors	coefficient residues kept as a check after the corollary; rest non-mathematical
+gaussian-singular-moduli	gaussian-singular-moduli.tex	Verification and further questions: two questions	merged	smd:q:density	
+grh_transfers_singular_moduli_and_symmetric_powers	gaussian.tex	Full support for Gaussian prime conductors: density > 0.999818260107372245	subsumed	smd:thm:gaussian	the new theorem has density > 0.9999969821615212 under no stronger hypotheses
+grh_transfers_singular_moduli_and_symmetric_powers	report.tex	Further research questions: values of s at l=42337 and l=84673	answered	smd:cor:twoconductors	s=21169 and s=42337
