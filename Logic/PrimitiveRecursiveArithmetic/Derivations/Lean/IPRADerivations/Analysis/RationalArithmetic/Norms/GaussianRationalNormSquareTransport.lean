@@ -28,6 +28,7 @@ open GaussianNameArithmetic (product_distance)
 open GaussianRationalDistanceOrder (distance_congr)
 open GaussianRootAlgebra (equal equal_of_values re_mul im_mul)
 open RationalGaussianEmbedding (embed embed_canonical embed_from_representation native)
+open RationalGaussianEmbedding renaming native_conjugate_product → native_norm_square
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -46,13 +47,6 @@ theorem product_value (q r : PTm n) :
 theorem embed_value (q : PTm n) :
     Γ ⊢[PRAAx] value (embed q) ≐ qmul (embed q) (embed q) :=
   qmul_congr (.eqRefl _) (point_embed q)
-
-private theorem native_norm_square (a : PTm n) :
-    Γ ⊢[PRAAx] equal (mul a (conjugate a)) (native (ZT.ofNat (normSq a))) := by
-  apply equal_of_values <;>
-    simp only [re_mul,im_mul,re_conjugate,im_conjugate,native,ComplexLogarithmRemainder.eval_re_code,
-      ComplexLogarithmRemainder.eval_im_code,ZT.toZ_ofNat,ComplexLogarithmRemainder.normSq_eval] <;>
-    (try ipra_simps) <;> ring
 
 theorem actual_squared_norm (q : PTm n) :
     Γ ⊢[PRAAx] value q ≐ embed (qnormSq q) := by

@@ -31,6 +31,7 @@ open GaussianReciprocalHorner (qmul_one_right)
 open GaussianSineMultipleAngleRecurrence (twoPoint evenValue even_zero even_one even_recurrence)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length entry_congr)
+open GaussianRationalReconstruction renaming linear_monic → linear_leading_one, singleton_evaluation → one_evaluation
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -68,14 +69,6 @@ theorem coefficients_succ (J : PTm n) : Γ ⊢[PRAAx] coefficients (succ J) ≐ 
 theorem following_succ (J : PTm n) :
     Γ ⊢[PRAAx] following (succ J) ≐ next (coefficients J) (following J) J :=
   (state_succ J).sndE
-
-private theorem linear_leading_one (C z N : PTm n) (hN : Γ ⊢[PRAAx] le one N)
-    (h : Γ ⊢[PRAAx] entry C zero ≐ qone) :
-    Γ ⊢[PRAAx] entry (linear C z N) zero ≐ qone :=
-  (linear_lookup C z N zero (zero_le N)).eqTrans
-    ((qsub_congr ((padded_inside C N zero hN).eqTrans h)
-      ((qmul_congr (delayed_zero C N) (.eqRefl z)).eqTrans (GaussianRationalSyntheticDivision.qmul_zero_left z))).eqTrans
-      (GaussianRationalReconstruction.qsub_zero_right qone qone_canonical))
 
 private theorem next_leading (P Q J : PTm n) (h : Γ ⊢[PRAAx] entry Q zero ≐ qone) :
     Γ ⊢[PRAAx] entry (next P Q J) zero ≐ qone :=
@@ -135,9 +128,6 @@ theorem coefficients_canonical (J : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients
   · exact canonical_coefficients_congr
       ((congrFst (congrAp2 stateF Prf.hyp0 (.eqRefl zero))).eqTrans (coefficients_succ (pred J)))
       (following_canonical _)
-
-private theorem one_evaluation (z : PTm n) : Γ ⊢[PRAAx] evaluate (singleton qone) z ≐ qone :=
-  (singleton_evaluation _ _).eqTrans (GaussianTranslatedNonconstant.recode_eq _ qone_canonical)
 
 theorem seed_evaluation (z : PTm n) : Γ ⊢[PRAAx] evaluate seed z ≐ qsub z qone :=
   (linear_evaluation _ _ _ _ (singleton_length _) GaussianRationalReconstruction.singleton_canonical).eqTrans

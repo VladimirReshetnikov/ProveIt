@@ -308,4 +308,14 @@ theorem actual_program_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 1
       (canonical (ap1 embedF (var 0)) ⋏ axis (ap1 embedF (var 0)))) :=
   closeUniv 1 (.andI (embed_at _) (.andI (program_canonical _) (program_axis _)))
 
+open ComplexLogarithmRemainder (mul normSq)
+open GaussianRationalReciprocal (conjugate im_conjugate re_conjugate)
+
+theorem native_conjugate_product (a : PTm n) :
+    Γ ⊢[PRAAx] equal (mul a (conjugate a)) (native (ZT.ofNat (normSq a))) := by
+  apply equal_of_values <;>
+    simp only [re_mul,im_mul,re_conjugate,im_conjugate,native,ComplexLogarithmRemainder.eval_re_code,
+      ComplexLogarithmRemainder.eval_im_code,ZT.toZ_ofNat,ComplexLogarithmRemainder.normSq_eval] <;>
+    (try ipra_simps) <;> ring
+
 end LeanProofs.IPRA.Analysis.RationalGaussianEmbedding
