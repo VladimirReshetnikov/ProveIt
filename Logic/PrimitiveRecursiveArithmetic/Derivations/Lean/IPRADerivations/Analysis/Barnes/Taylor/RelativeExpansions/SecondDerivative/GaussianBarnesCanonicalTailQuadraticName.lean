@@ -26,7 +26,7 @@ open GaussianGammaCanonicalExponent (constantF constant_at)
 open GaussianNameArithmetic (addF addData add_fast sum_distance)
 open GaussianNamedInverseRate (independentRate diagonal_rate)
 open GaussianNamedLipschitzRate (diagonalEnvelope diagonalNumerator diagonalDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_scale distance_triangle_same)
 open GaussianRationalHorner (qadd qmul ofGaussian positive_product qadd_canonical qmul_canonical)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (power bound_congr bounded_product)
@@ -200,8 +200,8 @@ theorem observation (p z h R B H : PTm n) (hs : Γ ⊢[PRAAx] input z h R B H) :
       (distance_congr (.eqRefl _) (constant_at p v) (.eqRefl _) (.eqRefl _) raw)
   have last := model_observation p z h R B H r hs
     (le_trans (le_add_right _ _) (le_add_left _ _)) (le_trans (le_add_left _ _) (le_add_left _ _))
-  have scaled := distance_radius_mono _ _ two U (two*E) (E*U) hp hEU
-    (le_of_eq_add (d := zero) (by ipra_ring)) last
+  have scaled := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm U E)
+    (distance_radius_scale hp hE last)
   exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [diagonalNumerator,A,E,U]; ipra_ring)
     (.eqRefl _) (distance_triangle_same _ _ _ _ _ _ hEU analytic scaled)
 
