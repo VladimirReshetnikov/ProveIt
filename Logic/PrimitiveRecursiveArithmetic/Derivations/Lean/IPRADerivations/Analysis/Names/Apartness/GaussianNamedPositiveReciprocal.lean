@@ -45,20 +45,59 @@ theorem name_at (f : PR 2) (p x E : PTm n) :
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] using
     (toPR_pair_eq (Γ := Γ) (observation f (var 0) (var 1) (var 2)) p x E)
 
-theorem observation_canonical (f : PR 2) (p x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
-    Γ ⊢[PRAAx] canonical (observation f p x E) :=
-  GaussianRationalHorner.ofGaussian_canonical _ _ (decoded_domain f (clock p E) x E T hs).andE₁.andE₁
+private abbrev reciprocalAt (f : PR 2) (k x : PTm n) : PTm n :=
+  fraction (denominator f k x) (numerator f k x)
 
-theorem observation_bound (f : PR 2) (p x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
-    Γ ⊢[PRAAx] bounded (observation f p x E) E one := by
-  let a := numerator f (clock p E) x
-  let b := denominator f (clock p E) x
-  have h := decoded_domain f (clock p E) x E T hs
+private theorem reciprocal_at_canonical (f : PR 2) (k x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
+    Γ ⊢[PRAAx] canonical (reciprocalAt f k x) :=
+  GaussianRationalHorner.ofGaussian_canonical _ _ (decoded_domain f k x E T hs).andE₁.andE₁
+
+private theorem reciprocal_at_bound (f : PR 2) (k x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
+    Γ ⊢[PRAAx] bounded (reciprocalAt f k x) E one := by
+  let a := numerator f k x
+  let b := denominator f k x
+  have h := decoded_domain f k x E T hs
   have radius := GaussianDominantPairAlgebra.radius_bounded b a h.andE₁.andE₁
   have original := GaussianRationalReciprocal.bound_congr
     (GaussianEulerDecayFactorBounds.fraction_is_radius_point b a h.andE₁.andE₁).eqSymm (.eqRefl _) (.eqRefl _) radius
   exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ h.andE₁.andE₁ (le_refl one)
     (le_congr (by ipra_ring) (.eqRefl _) h.andE₂.andE₁) original
+
+private theorem reciprocal_at_inverse (f : PR 2) (k x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
+    Γ ⊢[PRAAx] qmul (reciprocalAt f k x) (ap2 f k x) ≐ qone := by
+  have h := decoded_domain f k x E T hs
+  exact (GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _) (decoded_value f k x E T hs).eqSymm).eqTrans
+    (GaussianEulerCompactExhaustionNormalization.exact_inverse_product _ _ h.andE₁.andE₁ h.andE₁.andE₂)
+
+/-- Literal reciprocal observations retain the squared inverse margin at both original clocks. -/
+theorem reciprocal_at_distance (f : PR 2) (s t x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
+    Γ ⊢[PRAAx] distanceBounded (fraction (denominator f s x) (numerator f s x))
+      (fraction (denominator f t x) (numerator f t x)) ((E*E)*(unit s+unit t)) (unit s*unit t) := by
+  let i := reciprocalAt f s x
+  let j := reciprocalAt f t x
+  let a := ap2 f s x
+  let b := ap2 f t x
+  have denominator_positive := positive_product (Γ := Γ) _ _ (unit_positive s) (unit_positive t)
+  have comparison := central_distance a b i j E one (unit s+unit t) (unit s*unit t) (le_refl one)
+    denominator_positive (reciprocal_at_bound f s x E T hs) (reciprocal_at_bound f t x E T hs)
+    (point_at f x s t hs.andE₁)
+  have left : Γ ⊢[PRAAx] qmul i (qmul b j) ≐ i :=
+    (GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _)
+      ((GaussianRationalPowerAlgebra.qmul_commutative b j).eqTrans (reciprocal_at_inverse f t x E T hs))).eqTrans
+      (GaussianReciprocalHorner.qmul_one_right i (reciprocal_at_canonical f s x E T hs))
+  have right : Γ ⊢[PRAAx] qmul j (qmul a i) ≐ j :=
+    (GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _)
+      ((GaussianRationalPowerAlgebra.qmul_commutative a i).eqTrans (reciprocal_at_inverse f s x E T hs))).eqTrans
+      (GaussianReciprocalHorner.qmul_one_right j (reciprocal_at_canonical f t x E T hs))
+  exact distance_congr left right (.eqRefl _) (by ipra_ring) comparison
+
+theorem observation_canonical (f : PR 2) (p x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
+    Γ ⊢[PRAAx] canonical (observation f p x E) :=
+  reciprocal_at_canonical f (clock p E) x E T hs
+
+theorem observation_bound (f : PR 2) (p x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
+    Γ ⊢[PRAAx] bounded (observation f p x E) E one :=
+  reciprocal_at_bound f (clock p E) x E T hs
 
 theorem swapped_domain (f : PR 2) (p x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
     Γ ⊢[PRAAx] GaussianCompactLogarithmBounds.domain (denominator f (clock p E) x)
@@ -67,41 +106,25 @@ theorem swapped_domain (f : PR 2) (p x E T : PTm n) (hs : Γ ⊢[PRAAx] source f
   exact .andI (.andI h.andE₁.andE₂ h.andE₁.andE₁) (.andI h.andE₂.andE₂ h.andE₂.andE₁)
 
 theorem observation_inverse (f : PR 2) (p x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
-    Γ ⊢[PRAAx] qmul (observation f p x E) (ap2 f (clock p E) x) ≐ qone := by
-  have h := decoded_domain f (clock p E) x E T hs
-  exact (GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _) (decoded_value f (clock p E) x E T hs).eqSymm).eqTrans
-    (GaussianEulerCompactExhaustionNormalization.exact_inverse_product _ _ h.andE₁.andE₁ h.andE₁.andE₂)
+    Γ ⊢[PRAAx] qmul (observation f p x E) (ap2 f (clock p E) x) ≐ qone :=
+  reciprocal_at_inverse f (clock p E) x E T hs
 
 theorem observation_rate (f : PR 2) (p q x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
     Γ ⊢[PRAAx] distanceBounded (observation f p x E) (observation f q x E)
       (unit p+unit q) (unit p*unit q) := by
   let s := clock p E
   let t := clock q E
-  let i := observation f p x E
-  let j := observation f q x E
-  let a := ap2 f s x
-  let b := ap2 f t x
   let U := unit s
   let V := unit t
   let P := unit p
   let Q' := unit q
   have d : Γ ⊢[PRAAx] le one (U*V) := positive_product _ _ (unit_positive _) (unit_positive _)
-  have left := observation_inverse f p x E T hs
-  have right := observation_inverse f q x E T hs
-  have comp := central_distance a b i j E one (U+V) (U*V) (le_refl one) d
-    (observation_bound f p x E T hs) (observation_bound f q x E T hs) (point_at f x s t hs.andE₁)
-  have l : Γ ⊢[PRAAx] qmul i (qmul b j) ≐ i :=
-    (GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _) ((GaussianRationalPowerAlgebra.qmul_commutative b j).eqTrans right)).eqTrans
-      (GaussianReciprocalHorner.qmul_one_right i (observation_canonical f p x E T hs))
-  have r : Γ ⊢[PRAAx] qmul j (qmul a i) ≐ j :=
-    (GaussianRationalSyntheticDivision.qmul_congr (.eqRefl _) ((GaussianRationalPowerAlgebra.qmul_commutative a i).eqTrans left)).eqTrans
-      (GaussianReciprocalHorner.qmul_one_right j (observation_canonical f q x E T hs))
   have payP : Γ ⊢[PRAAx] le ((E*E)*P) U := query_budget (E*E) p
   have payQ : Γ ⊢[PRAAx] le ((E*E)*Q') V := query_budget (E*E) q
   have budget : Γ ⊢[PRAAx] le ((E*E*(U+V))*(P*Q')) ((P+Q')*(U*V)) := by
     ipra_le 𝔞(V*Q')*sl payP+𝔞(U*P)*sl payQ
-  exact distance_radius_mono i j _ _ _ _ d (positive_product _ _ (unit_positive _) (unit_positive _)) budget
-    (distance_congr l r (.eqRefl _) (by ipra_ring) comp)
+  exact distance_radius_mono _ _ _ _ _ _ d (positive_product _ _ (unit_positive _) (unit_positive _)) budget
+    (reciprocal_at_distance f s t x E T hs)
 
 theorem name_regular (f : PR 2) (x E T : PTm n) (hs : Γ ⊢[PRAAx] source f x E T) :
     Γ ⊢[PRAAx] pointCN (nameF f) (data x E) := by
