@@ -1,9 +1,14 @@
 import GRHArticle.ProgressionFree.EulerLowerBound
+import GRHArticle.ProgressionFree.ExactPatternDensity
+import GRHArticle.ProgressionFree.ExactRuleApproximation
 import GRHArticle.ProgressionFree.ExchangeDensity
 import GRHArticle.ProgressionFree.ExplicitArithmetic
 import GRHArticle.ProgressionFree.ExplicitExchange
 import GRHArticle.ProgressionFree.ExplicitExponentBound
+import GRHArticle.ProgressionFree.ExplicitWeightCast
+import GRHArticle.ProgressionFree.FourMarkerDensity
 import GRHArticle.ProgressionFree.FourMarkerExchange
+import GRHArticle.ProgressionFree.FourMarkerMass
 import GRHArticle.ProgressionFree.PolynomialBlocks
 import GRHArticle.ProgressionFree.PolynomialDeficitCertificate
 import GRHArticle.ProgressionFree.PolynomialDeficitSet

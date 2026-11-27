@@ -20,7 +20,7 @@ theorem polynomialReplacementUnion_no_ratio_progression {F : Type*} [Field F] (R
     {f r : Polynomial F} (hr : 0 < r.natDegree) :
     ¬ (f ∈ polynomialReplacementUnion R ∧ f * r ∈ polynomialReplacementUnion R ∧
       f * r * r ∈ polynomialReplacementUnion R) :=
-  polynomialBlockUnion_no_ratio_progression (fun ⦃i j⦄ h ↦ polynomialBlockCutoff_gap _ h) _
+  polynomialBlockUnion_no_ratio_progression (fun ⦃_ _⦄ h ↦ polynomialBlockCutoff_gap _ h) _
     (fun _ h ↦ h.1 rfl) (fun _ _ _ ↦ polynomialDeficitReplacement_no_ratio_progression _ _) f r hr
 
 /-- The construction contains the monomial at the top of every selected ball. -/
