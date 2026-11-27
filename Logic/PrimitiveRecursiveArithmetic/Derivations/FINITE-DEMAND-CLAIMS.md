@@ -575,7 +575,7 @@ by at most `2^-k + 2^-t + 2^-l`.
 [RationalGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalArithmetic/Embeddings/RationalGaussianEmbedding.lean)
 preserves field equality, zero, one, addition, multiplication and negation
 from the original scalar rational codes. Its real-axis round trip uses
-canonical recoding. [RationalPolynomialGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/RationalPolynomialGaussianEmbedding.lean)
+canonical recoding. [RationalPolynomialGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/GaussianEmbedding/RationalPolynomialGaussianEmbedding.lean)
 constructs the actual mapped coefficient list and proves that the actual
 rational Horner calculation embeds into Gaussian Horner. This also gives
 zero reflection and the evaluation formula at arbitrary raw real-axis
@@ -587,7 +587,7 @@ by taking real parts.
 [RationalScalarDeterminantGaussianEmbedding](Lean/IPRADerivations/Analysis/LinearAlgebra/Determinants/RationalScalarDeterminantGaussianEmbedding.lean)
 identifies the literal original rational scalar determinant with the
 actual Gaussian determinant of the embedded matrix and reflects zero.
-[RationalPolynomialBuffersGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/RationalPolynomialBuffersGaussianEmbedding.lean)
+[RationalPolynomialBuffersGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/GaussianEmbedding/RationalPolynomialBuffersGaussianEmbedding.lean)
 and [RationalPolynomialProductGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Products/RationalPolynomialProductGaussianEmbedding.lean)
 compute the original rational zero, padding, addition, scaling, and
 convolution buffers. They prove the actual coefficient conjugacy and
@@ -600,7 +600,7 @@ hypotheses from rational distinctness and both original zero tests.
 [RationalPolynomialDeterminantTermsGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Determinants/RationalEmbedding/RationalPolynomialDeterminantTermsGaussianEmbedding.lean)
 and [RationalPolynomialDeterminantGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Determinants/RationalEmbedding/RationalPolynomialDeterminantGaussianEmbedding.lean)
 transport the actual signed polynomial products and the retained
-determinant sum. [RationalPolynomialDegreeGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/RationalPolynomialDegreeGaussianEmbedding.lean)
+determinant sum. [RationalPolynomialDegreeGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/GaussianEmbedding/RationalPolynomialDegreeGaussianEmbedding.lean)
 shows that coefficient embedding preserves the actual nonzero flag and
 computed degree.
 [GaussianPolynomialDeterminantCongruence](Lean/IPRADerivations/Analysis/Polynomials/Determinants/GaussianPolynomialDeterminantCongruence.lean)
@@ -625,7 +625,7 @@ whenever the computed norm is nonzero.
 [RationalPolynomialNonvanishing](Lean/IPRADerivations/Analysis/Polynomials/Evaluation/RationalPolynomialNonvanishing.lean)
 identifies this nonzero flag with a bounded nonzero rational coefficient.
 The proof covers already reduced input polynomials.
-[RationalPolynomialConstantInjectionGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/RationalPolynomialConstantInjectionGaussianEmbedding.lean)
+[RationalPolynomialConstantInjectionGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/GaussianEmbedding/RationalPolynomialConstantInjectionGaussianEmbedding.lean)
 constructs the actual constant-row injection and transports its
 coefficients. The bounded row relation also transports both Horner
 folds.
@@ -660,10 +660,10 @@ constructs the original rational table for `Y^m - f(X)` and proves that
 its embedded table is literally the Gaussian tail. The equality uses
 the two actual sequence layouts and their bounded lookups.
 [RationalScalarPowerGaussianEmbedding](Lean/IPRADerivations/Analysis/RationalArithmetic/Powers/RationalScalarPowerGaussianEmbedding.lean)
-and [RationalPolynomialLeadingGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/RationalPolynomialLeadingGaussianEmbedding.lean)
+and [RationalPolynomialLeadingGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/GaussianEmbedding/RationalPolynomialLeadingGaussianEmbedding.lean)
 check the original signed rational powers and the leading coefficient
 returned by the original nonzero scan.
-[RationalPolynomialWeightedDegreeGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/RationalPolynomialWeightedDegreeGaussianEmbedding.lean)
+[RationalPolynomialWeightedDegreeGaussianEmbedding](Lean/IPRADerivations/Analysis/Polynomials/Representation/GaussianEmbedding/RationalPolynomialWeightedDegreeGaussianEmbedding.lean)
 computes the original nonzero rows, weighted maximum, and its maximizing
 index with the same finite scan. Each agrees with its Gaussian
 counterpart. [RationalSuperellipticNormDegree](Lean/IPRADerivations/Analysis/Polynomials/Elimination/Superelliptic/RationalSuperellipticNormDegree.lean)

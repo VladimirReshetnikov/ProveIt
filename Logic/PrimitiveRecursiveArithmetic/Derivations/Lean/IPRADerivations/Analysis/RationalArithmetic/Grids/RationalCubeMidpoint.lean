@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMinimum
+import IPRADerivations.Analysis.RationalArithmetic.Grids.Minimization.RationalCubeMinimum
 
 /-!
 # Actual numerical cube midpoints

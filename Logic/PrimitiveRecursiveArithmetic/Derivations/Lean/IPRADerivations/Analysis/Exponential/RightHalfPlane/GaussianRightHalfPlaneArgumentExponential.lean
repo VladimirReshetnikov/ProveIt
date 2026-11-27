@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentAxis
+import IPRADerivations.Analysis.RationalArithmetic.Complex.Arguments.GaussianRightHalfPlaneArgumentAxis
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNamedHalf
 
 /-!

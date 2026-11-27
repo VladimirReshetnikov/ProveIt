@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.Gaussia
 import IPRADerivations.Analysis.RationalArithmetic.Powers.GaussianPowers.GaussianRationalPowerAlgebra
 import IPRADerivations.Analysis.LinearAlgebra.Matrices.GaussianRationalMatrixFiniteSums
 import IPRADerivations.Analysis.RationalArithmetic.Powers.RationalScalarPowerGaussianEmbedding
-import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianEmbedding.RationalPolynomialGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.Norms.GaussianNormFiberDivisibility
 
 /-!

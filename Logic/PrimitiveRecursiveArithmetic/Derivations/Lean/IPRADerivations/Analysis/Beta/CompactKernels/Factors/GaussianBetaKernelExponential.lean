@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Beta.CompactKernels.Factors.GaussianBetaKernelLogarithm
 import IPRADerivations.Analysis.Logarithm.Local.GaussianLocalLogarithmExponentialIdentity
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRadiusExponentialLipschitzRate
 
 /-!
 # Actual exponential representation of the finite beta kernel

@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianExponential
 import IPRADerivations.Analysis.Gamma.EulerProducts.CanonicalProducts.GaussianGammaCanonicalExponent
 import IPRADerivations.Analysis.Gamma.HalfInteger.GaussianGammaHalfPiName
 import IPRADerivations.Analysis.Names.Rates.GaussianNamedDiagonalRate
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalUniformExponentialLipschitz
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRationalUniformExponentialLipschitz
 
 /-!
 # The exponential at the named arctangent quarter turn

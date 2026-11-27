@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Taylor.GaussianBarnesCanonicalFiniteWeightedTaylorValue
-import IPRADerivations.Analysis.Polynomials.FiniteDifferences.GaussianPolynomialForwardDifferenceGrid
+import IPRADerivations.Analysis.Polynomials.FiniteDifferences.Grids.GaussianPolynomialForwardDifferenceGrid
 
 /-!
 # The original finite Barnes Taylor comparison on a forward grid

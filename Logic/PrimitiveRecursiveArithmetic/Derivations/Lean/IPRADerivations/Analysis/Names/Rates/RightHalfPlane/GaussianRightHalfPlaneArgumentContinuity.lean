@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Names.Rates.RightHalfPlane.GaussianRightHalfPlaneArgumentChartContinuity
 import IPRADerivations.Analysis.Trigonometry.Arctangent.Inverse.GaussianRightHalfPlaneArgumentIncrementGeometry
-import IPRADerivations.Analysis.RationalArithmetic.Complex.GaussianRightHalfPlaneArgumentLocalBound
+import IPRADerivations.Analysis.RationalArithmetic.Complex.Arguments.GaussianRightHalfPlaneArgumentLocalBound
 
 /-!
 # Uniform angle variation under a certified native displacement

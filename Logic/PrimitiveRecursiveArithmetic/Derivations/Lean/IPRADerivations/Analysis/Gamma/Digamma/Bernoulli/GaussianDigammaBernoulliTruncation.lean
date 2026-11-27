@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.GaussianDigammaBernoulliImproperName
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.GaussianDigammaBernoulliCoefficients
-import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderSignedParityAlgebra
+import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.SignedRemainder.GaussianStirlingAllOrderSignedParityAlgebra
 
 /-!
 # Literal digamma truncation and the actual improper recurrence

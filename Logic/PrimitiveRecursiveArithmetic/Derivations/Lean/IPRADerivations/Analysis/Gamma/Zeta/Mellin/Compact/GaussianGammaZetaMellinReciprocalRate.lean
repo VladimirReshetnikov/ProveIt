@@ -2,7 +2,7 @@ import IPRADerivations.Analysis.Gamma.Zeta.Mellin.Compact.GaussianGammaZetaMelli
 import IPRADerivations.Analysis.Names.FiniteOperations.Sums.GaussianNamedAddRate
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRadiusExponentialLipschitzRate
 import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
 
 /-!

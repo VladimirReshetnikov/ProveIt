@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialDegreeGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianEmbedding.RationalPolynomialDegreeGaussianEmbedding
 
 /-!
 # Nonvanishing of the original rational coefficient scan

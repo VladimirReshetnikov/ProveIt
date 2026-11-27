@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.Logarithms.CofinalTails.GaussianBarnesCanonicalLogCofinalRate
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRadiusExponentialLipschitzRate
 
 /-!
 # Exponentiate the original cofinal Barnes logarithmic tail

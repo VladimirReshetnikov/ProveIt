@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRadiusExponentialLipschitzRate
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianNamedRadiusExponentialFreeze
 import IPRADerivations.Analysis.Exponential.PositiveAxis.NamedValues.GaussianSignedNameExponentialOrder
 

@@ -1,6 +1,6 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianPositiveExponentialProduct
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialDiskMajorant
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialLipschitz
+import IPRADerivations.Analysis.Exponential.Estimates.Magnitude.GaussianExponentialDiskMajorant
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRationalExponentialLipschitz
 import IPRADerivations.DiophantineNumberTheory.SuperellipticFamily
 
 /-!

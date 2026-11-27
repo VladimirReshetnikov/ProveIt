@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalRadiusExponentialLipschitz
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRationalRadiusExponentialLipschitz
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianUnitDiskExponentialName
 
 /-!

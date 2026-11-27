@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianPositiveExponentialTermBound
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialDiskMajorant
+import IPRADerivations.Analysis.Exponential.Estimates.Magnitude.GaussianExponentialDiskMajorant
 import IPRADerivations.Analysis.Exponential.FiniteSeries.BinomialExponentialGap
 import IPRADerivations.Combinatorics.BinomialIdentities
 

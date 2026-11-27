@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialConstantInjectionGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianEmbedding.RationalPolynomialConstantInjectionGaussianEmbedding
 import IPRADerivations.Analysis.Polynomials.Translation.GaussianPolynomialYShift
 
 /-!

@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalExponentialLipschitz
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRationalExponentialLipschitz
 import IPRADerivations.Analysis.Exponential.Names.Evaluators.GaussianRationalExponentialName
 import IPRADerivations.Analysis.Names.Arithmetic.GaussianNameEquivalence
 

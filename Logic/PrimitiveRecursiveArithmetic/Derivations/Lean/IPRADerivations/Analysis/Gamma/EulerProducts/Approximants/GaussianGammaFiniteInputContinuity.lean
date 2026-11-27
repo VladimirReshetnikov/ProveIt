@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.EulerProducts.Approximants.GaussianGammaEulerContinuityReference
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRationalUniformExponentialLipschitz
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRationalUniformExponentialLipschitz
 import IPRADerivations.Analysis.Names.Rates.Moduli.GaussianNamedLipschitzRate
 
 /-!

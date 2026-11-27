@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Barnes.FunctionalEquations.Duplication.GaussianBarnesCanonicalDuplicationNormalizerCoefficients
-import IPRADerivations.Analysis.Barnes.FunctionalEquations.Hyperfactorial.GaussianBarnesCanonicalHyperfactorialRecurrence
+import IPRADerivations.Analysis.Barnes.FunctionalEquations.Hyperfactorial.Recurrence.GaussianBarnesCanonicalHyperfactorialRecurrence
 
 /-!
 # The actual Barnes duplication normalizer absorbs the Gauss factor

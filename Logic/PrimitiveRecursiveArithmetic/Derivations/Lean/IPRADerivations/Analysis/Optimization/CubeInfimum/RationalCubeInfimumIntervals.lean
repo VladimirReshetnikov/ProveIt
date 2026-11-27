@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMinimum
+import IPRADerivations.Analysis.RationalArithmetic.Grids.Minimization.RationalCubeMinimum
 
 /-!
 # The original intervals around actual cube minima

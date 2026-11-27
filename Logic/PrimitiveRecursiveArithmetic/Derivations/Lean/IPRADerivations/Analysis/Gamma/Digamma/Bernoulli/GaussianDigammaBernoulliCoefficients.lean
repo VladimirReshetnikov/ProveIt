@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Gamma.Digamma.Bernoulli.GaussianDigammaBernoulliRecurrence
-import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderSignedLowerAlgebra
+import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.SignedRemainder.GaussianStirlingAllOrderSignedLowerAlgebra
 
 /-!
 # Literal digamma Bernoulli correction terms

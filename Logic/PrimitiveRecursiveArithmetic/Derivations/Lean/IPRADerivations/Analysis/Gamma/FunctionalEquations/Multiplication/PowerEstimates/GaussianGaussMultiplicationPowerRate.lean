@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantProductRate
 import IPRADerivations.Analysis.Gamma.FunctionalEquations.Multiplication.PowerEstimates.GaussianGaussMultiplicationLogRatio
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRadiusExponentialLipschitzRate
 
 /-!
 # Uniform numerical convergence of the Gauss multiplication powers

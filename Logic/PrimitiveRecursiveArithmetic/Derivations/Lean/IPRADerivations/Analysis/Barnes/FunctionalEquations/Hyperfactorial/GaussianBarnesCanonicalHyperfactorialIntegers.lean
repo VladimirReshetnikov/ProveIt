@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Barnes.FunctionalEquations.IntegerValues.Gaussia
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.Exponentiation.GaussianLogGammaEulerExponentialLimit
 import IPRADerivations.Analysis.Gamma.EulerProducts.LogGamma.GaussianLogGammaEulerPositiveAxis
 import IPRADerivations.Analysis.Exponential.IntegerPowers.GaussianBoundedIntegerExponential
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialDiskMajorant
+import IPRADerivations.Analysis.Exponential.Estimates.Magnitude.GaussianExponentialDiskMajorant
 
 /-!
 # The analytic hyperfactorial at positive integers

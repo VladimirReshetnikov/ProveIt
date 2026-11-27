@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Logarithms.GaussianStirlingAllOrderSharpRadius
-import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderSignedBounds
+import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.SignedRemainder.GaussianStirlingAllOrderSignedBounds
 
 /-!
 # The strict oriented bracket with the exact positive rational endpoint

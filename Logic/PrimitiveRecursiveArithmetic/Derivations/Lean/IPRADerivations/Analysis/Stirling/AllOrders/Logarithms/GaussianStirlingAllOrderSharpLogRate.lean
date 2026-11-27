@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Stirling.AllOrders.Logarithms.GaussianStirlingAllOrderSharpRadiusBridge
-import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderSignedParity
+import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.SignedRemainder.GaussianStirlingAllOrderSignedParity
 import IPRADerivations.Analysis.Stirling.Expansions.ExpansionErrors.GaussianStirlingExpansionErrorProgram
 
 /-!

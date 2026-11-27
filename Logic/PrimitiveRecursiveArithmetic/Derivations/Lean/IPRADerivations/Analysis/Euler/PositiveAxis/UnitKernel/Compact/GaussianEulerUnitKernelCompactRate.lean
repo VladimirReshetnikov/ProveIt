@@ -3,7 +3,7 @@ import IPRADerivations.Analysis.Euler.PositiveAxis.UnitSubstitution.GaussianEule
 import IPRADerivations.Analysis.Euler.CompactExhaustion.ParameterBounds.GaussianEulerExponentCompactBounds
 import IPRADerivations.Analysis.Names.FiniteOperations.Products.Bounds.GaussianNamedMultiplyRate
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRadiusExponentialLipschitzRate
 
 /-!
 # Uniform variation of the unchanged actual unit-interval Euler kernel

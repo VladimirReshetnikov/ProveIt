@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Exponential.PositiveAxis.FiniteEstimates.GaussianSignedRealExponentialOrder
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRadiusExponentialLipschitzRate
 
 /-!
 # Original signed real name order through the actual exponential

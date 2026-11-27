@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.GaussianStirlingAllOrderSignedLowerAlgebra
+import IPRADerivations.Analysis.Stirling.AllOrders.ImproperBounds.SignedRemainder.GaussianStirlingAllOrderSignedLowerAlgebra
 import IPRADerivations.Analysis.Stirling.AllOrders.Logarithms.GaussianStirlingAllOrderLogRateBudget
 
 /-!

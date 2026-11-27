@@ -1,7 +1,7 @@
 import IPRADerivations.Analysis.Stirling.Binet.Kernel.HyperbolicForm.GaussianBinetKernelImaginaryRatioCofinal
 import IPRADerivations.Analysis.Names.Rates.Scaling.GaussianBoundedConstantProductRate
 import IPRADerivations.Analysis.Names.Rates.Perturbations.GaussianNamedDifferenceRate
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianRadiusExponentialLipschitzRate
+import IPRADerivations.Analysis.Exponential.Estimates.Lipschitz.GaussianRadiusExponentialLipschitzRate
 import IPRADerivations.Analysis.Trigonometry.Pi.GaussianPiRationalScaleRepresentation
 
 /-!

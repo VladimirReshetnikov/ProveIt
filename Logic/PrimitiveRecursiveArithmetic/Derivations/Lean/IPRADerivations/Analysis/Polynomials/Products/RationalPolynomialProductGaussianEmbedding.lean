@@ -1,4 +1,4 @@
-import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialBuffersGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianEmbedding.RationalPolynomialBuffersGaussianEmbedding
 import IPRADerivations.Analysis.RationalArithmetic.Embeddings.RationalGaussianRealPart
 import IPRADerivations.Analysis.Polynomials.Products.GaussianRationalPolynomialProduct
 

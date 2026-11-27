@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Annihilators.GaussianAnnihilatorPolynomial
-import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialConstantInjectionGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianEmbedding.RationalPolynomialConstantInjectionGaussianEmbedding
 
 /-!
 # Original rational weighted annihilator polynomial

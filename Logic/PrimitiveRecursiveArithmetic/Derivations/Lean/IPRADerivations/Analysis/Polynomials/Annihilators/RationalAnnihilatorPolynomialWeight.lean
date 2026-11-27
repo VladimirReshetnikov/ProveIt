@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Polynomials.Annihilators.RationalAnnihilatorPolynomial
-import IPRADerivations.Analysis.Polynomials.Representation.RationalPolynomialWeightedDegreeGaussianEmbedding
+import IPRADerivations.Analysis.Polynomials.Representation.GaussianEmbedding.RationalPolynomialWeightedDegreeGaussianEmbedding
 import IPRADerivations.Foundations.SequenceEquality
 
 /-!

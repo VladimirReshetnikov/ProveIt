@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeMidpoint
-import IPRADerivations.Analysis.RationalArithmetic.Grids.RationalCubeCoherentMinimizer
+import IPRADerivations.Analysis.RationalArithmetic.Grids.Minimization.RationalCubeCoherentMinimizer
 import IPRADerivations.Foundations.StrongConvexity
 import IPRADerivations.Analysis.RationalArithmetic.Distances.Scalar.RationalPointDistanceVariation
 

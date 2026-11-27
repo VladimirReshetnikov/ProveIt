@@ -1,5 +1,5 @@
 import IPRADerivations.Analysis.Euler.Integration.GaussianEulerIntegrandName
-import IPRADerivations.Analysis.Exponential.Estimates.GaussianExponentialRealPartMajorant
+import IPRADerivations.Analysis.Exponential.Estimates.Magnitude.GaussianExponentialRealPartMajorant
 import IPRADerivations.Analysis.Euler.HarmonicLogarithms.GaussianHarmonicLogarithmName
 import IPRADerivations.Analysis.Polynomials.RootFinding.RealRoots.PolynomialBisection
 
