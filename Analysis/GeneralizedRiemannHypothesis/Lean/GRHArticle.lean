@@ -117,6 +117,7 @@ import GRHArticle.SingularModuli.BaseChange
 import GRHArticle.SingularModuli.Binomial
 import GRHArticle.SingularModuli.CMHeckeDiagonal
 import GRHArticle.SingularModuli.CMHeckeInvariance
+import GRHArticle.SingularModuli.CMHeckePolynomialDescent
 import GRHArticle.SingularModuli.CMPoints
 import GRHArticle.SingularModuli.ClassPolynomialConstants
 import GRHArticle.SingularModuli.ClassPolynomialQEnclosure
