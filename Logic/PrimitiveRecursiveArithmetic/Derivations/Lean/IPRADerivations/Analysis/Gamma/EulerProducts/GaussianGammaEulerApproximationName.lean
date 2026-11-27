@@ -17,16 +17,13 @@ open_ipra
 open GaussianGammaFiniteApproximantName (qF qData)
 open GaussianGammaPerturbationExponent (numerator)
 open GaussianGammaC9Bound (majorant)
-open GaussianNamedSmallPerturbationTransport (budgetNumerator budgetDenominator denominator_positive)
-open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
-open GaussianRationalDistanceOrder (distance_radius_mono distance_congr)
-open GaussianCoefficientNameBounds (unit unit_positive)
+open GaussianRationalDistanceOrder (distance_congr)
+open GaussianCoefficientNameBounds (unit)
 open GaussianNameEquivalence (crossEquivalent cross_trans cross_symm)
 open GaussianEuclideanDistanceName (pointCN)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def rate (R : PTm n) : PTm n := num 3*majorant R*numerator R
 def cutoff (p R : PTm n) : PTm n := two*R+numerator R+rate R*unit (succ p)
@@ -43,12 +40,8 @@ ipra_subst cutoff [unit]
   rw [head]
 
 theorem cutoff_guards (p R : PTm n) : Γ ⊢[PRAAx]
-    le (two*R) (cutoff p R) ⋏ (le (numerator R) (cutoff p R) ⋏ le (rate R*unit (succ p)) (cutoff p R)) := by
-  unfold cutoff
-  refine .andI ?_ (.andI ?_ ?_)
-  · ipra_le 𝔞 (numerator R)+𝔞 (rate R*unit (succ p))
-  · ipra_le 2*𝔞 R+𝔞 (rate R*unit (succ p))
-  · ipra_le 2*𝔞 R+𝔞 (numerator R)
+    le (two*R) (cutoff p R) ⋏ (le (numerator R) (cutoff p R) ⋏ le (rate R*unit (succ p)) (cutoff p R)) :=
+  GaussianGammaEulerConvergence.cutoff_bounds (two*R) (numerator R) (rate R*unit (succ p))
 
 theorem observation_error (p q z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) :
     Γ ⊢[PRAAx] distanceBounded (observation p z R B) (GaussianGammaC7Name.sample q z R B)
@@ -57,18 +50,8 @@ theorem observation_error (p q z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCa
   have hg := cutoff_guards (Γ := Γ) p R
   have hs : Γ ⊢[PRAAx] GaussianGammaEulerConvergence.source z R B N := .andI h (.andI hg.andE₁ hg.andE₂.andE₁)
   have hn := (GaussianGammaEulerConvergence.local_source z R B N hs).andE₂.andE₁
-  have c : Γ ⊢[PRAAx] le (budgetNumerator (succ p) q (numerator R) N (majorant R)*(unit p*unit q))
-      ((unit p+unit q)*budgetDenominator (succ p) q N) := by
-    have e := natEq (pw_succ (Γ := Γ) two p)
-    have hm := hg.andE₂.andE₂
-    ipra_le 𝔞 (unit p)*𝔞 (unit q)*𝔞 (unit q)*sl hm using
-      unfold budgetNumerator budgetDenominator rate unit
-      ipra_simps
-      rw [e]
-      ring
-  exact distance_radius_mono _ _ _ _ _ _ (denominator_positive (succ p) q N hn)
-    (positive_product _ _ (unit_positive p) (unit_positive q)) c
-    (GaussianGammaEulerConvergence.observation_error (succ p) q z R B N hs)
+  exact GaussianNamedSmallPerturbationTransport.absorb_successor_budget _ _ p q (numerator R) N (majorant R)
+    hn hg.andE₂.andE₂ (GaussianGammaEulerConvergence.observation_error (succ p) q z R B N hs)
 
 def data (z R B : PTm n) : PTm n := pairT z (pairT R B)
 def nameF : PR 2 := PTm.toPR (observation (var 0) (fstT (var 1)) (fstT (sndT (var 1))) (sndT (sndT (var 1))) : PTm 2)

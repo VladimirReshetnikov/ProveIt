@@ -138,6 +138,12 @@ theorem observation_error (p q z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B 
     (local_source z R B N h).andE₂.andE₁ (GaussianGammaC7Name.name_regular z R B h.andE₁)
     (reciprocal_prefactor z R B h.andE₁) (small_exp z R B N h).andE₂ (euler_actual_product z R B N h)
 
+/-- The two analytic cutoffs and the observation budget fit in the sum of the three. -/
+theorem cutoff_bounds (a b c : PTm n) : Γ ⊢[PRAAx]
+    le a (a+b+c) ⋏ (le b (a+b+c) ⋏ le c (a+b+c)) :=
+  .andI (le_trans (le_add_right a b) (le_add_right (a+b) c))
+    (.andI (le_trans (le_add_left b a) (le_add_right (a+b) c)) (le_add_left c (a+b)))
+
 theorem original_euler_C10_rate_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 6
     (source (var 2) (var 3) (var 4) (var 5) ⟶
       distanceBounded (ap2 qF (var 0) (qData (var 2) (var 4) (var 5)))

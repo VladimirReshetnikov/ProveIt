@@ -20,9 +20,6 @@ namespace LeanProofs.IPRA.Analysis.GaussianGammaRadiusOverlap
 open_ipra
 open GaussianGammaFiniteApproximantName (pF pData)
 open GaussianGammaCanonicalExponent (source)
-open GaussianGammaWeierstrassConvergence (rate)
-open GaussianGammaC9Bound (majorant)
-open GaussianNamedSmallPerturbationTransport (budgetNumerator budgetDenominator denominator_positive)
 open GaussianRationalMetric (distanceBounded qsub)
 open GaussianRationalHorner (positive_product)
 open GaussianCoefficientNameBounds (unit unit_positive)
@@ -30,7 +27,6 @@ open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance
 open GaussianNameEquivalence (crossEquivalent cross_at)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def commonCutoff (t R S : PTm n) : PTm n :=
   GaussianGammaWeierstrassConvergence.cutoff t R+GaussianGammaWeierstrassConvergence.cutoff t S+t
@@ -38,33 +34,15 @@ ipra_subst commonCutoff
 
 theorem common_cutoff_bounds (t R S : PTm n) : Γ ⊢[PRAAx]
     le (GaussianGammaWeierstrassConvergence.cutoff t R) (commonCutoff t R S) ⋏
-      (le (GaussianGammaWeierstrassConvergence.cutoff t S) (commonCutoff t R S) ⋏ le t (commonCutoff t R S)) := by
-  unfold commonCutoff
-  refine .andI ?_ (.andI ?_ ?_)
-  · ipra_le 𝔞 (GaussianGammaWeierstrassConvergence.cutoff t S)+𝔞 t
-  · ipra_le 𝔞 (GaussianGammaWeierstrassConvergence.cutoff t R)+𝔞 t
-  · ipra_le 𝔞 (GaussianGammaWeierstrassConvergence.cutoff t R)+𝔞 (GaussianGammaWeierstrassConvergence.cutoff t S)
+      (le (GaussianGammaWeierstrassConvergence.cutoff t S) (commonCutoff t R S) ⋏ le t (commonCutoff t R S)) :=
+  GaussianGammaEulerConvergence.cutoff_bounds
+    (GaussianGammaWeierstrassConvergence.cutoff t R) (GaussianGammaWeierstrassConvergence.cutoff t S) t
 
 theorem finite_cutoff_error (t p z R B N : PTm n) (h : Γ ⊢[PRAAx] source z R B)
     (hcut : Γ ⊢[PRAAx] le (GaussianGammaWeierstrassConvergence.cutoff t R) N) : Γ ⊢[PRAAx]
     distanceBounded (ap2 pF (succ t) (pData z B N)) (GaussianGammaC7Name.sample p z R B)
-      (unit t+unit p) (unit t*unit p) := by
-  have hg := GaussianGammaWeierstrassConvergence.cutoff_guards (Γ := Γ) t R
-  have hs : Γ ⊢[PRAAx] GaussianGammaWeierstrassConvergence.source z R B N :=
-    .andI h (.andI (le_trans hg.andE₁ hcut) (le_trans hg.andE₂.andE₁ hcut))
-  have hn := (GaussianGammaWeierstrassConvergence.local_source z R B N hs).andE₂.andE₁
-  have c : Γ ⊢[PRAAx] le (budgetNumerator (succ t) p (R*R) N (majorant R)*(unit t*unit p))
-      ((unit t+unit p)*budgetDenominator (succ t) p N) := by
-    have e := natEq (pw_succ (Γ := Γ) two t)
-    have hm := le_trans hg.andE₂.andE₂ hcut
-    ipra_le 𝔞 (unit t)*𝔞 (unit p)*𝔞 (unit p)*sl hm using
-      unfold budgetNumerator budgetDenominator rate unit
-      ipra_simps
-      rw [e]
-      ring
-  exact distance_radius_mono _ _ _ _ _ _ (denominator_positive (succ t) p N hn)
-    (positive_product _ _ (unit_positive t) (unit_positive p)) c
-    (GaussianGammaWeierstrassConvergence.observation_error (succ t) p z R B N hs)
+      (unit t+unit p) (unit t*unit p) :=
+  GaussianGammaWeierstrassConvergence.finite_cutoff_error t p z R B N h hcut
 
 theorem original_P_overlap_slack (p q t z R S B : PTm n)
     (hR : Γ ⊢[PRAAx] source z R B) (hS : Γ ⊢[PRAAx] source z S B) : Γ ⊢[PRAAx]

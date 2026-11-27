@@ -27,12 +27,11 @@ open GaussianRationalHorner (positive_product qzero)
 open GaussianRationalMetric (bounded distanceBounded)
 open GaussianRationalReciprocal (bound_congr)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianNamedSmallPerturbationTransport (correctionSamples budgetNumerator budgetDenominator denominator_positive)
+open GaussianNamedSmallPerturbationTransport (correctionSamples budgetNumerator budgetDenominator)
 open GaussianGammaC9Bound (majorant)
 open GaussianEuclideanDistanceName (pointCN)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 def source (z R B N : PTm n) : Fm PTm n := GaussianGammaCanonicalExponent.source z R B ⋏
   (le (two*R) N ⋏ le (R*R) N)
@@ -122,31 +121,24 @@ ipra_subst rate
 ipra_subst cutoff
 
 theorem cutoff_guards (p R : PTm n) : Γ ⊢[PRAAx]
-    le (two*R) (cutoff p R) ⋏ (le (R*R) (cutoff p R) ⋏ le (rate R*unit (succ p)) (cutoff p R)) := by
-  unfold cutoff
-  refine .andI ?_ (.andI ?_ ?_)
-  · ipra_le 𝔞 (R*R)+𝔞 (rate R*unit (succ p))
-  · ipra_le 2*𝔞 R+𝔞 (rate R*unit (succ p))
-  · ipra_le 2*𝔞 R+𝔞 (R*R)
+    le (two*R) (cutoff p R) ⋏ (le (R*R) (cutoff p R) ⋏ le (rate R*unit (succ p)) (cutoff p R)) :=
+  GaussianGammaEulerConvergence.cutoff_bounds (two*R) (R*R) (rate R*unit (succ p))
+
+theorem finite_cutoff_error (p q z R B N : PTm n)
+    (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) (hcut : Γ ⊢[PRAAx] le (cutoff p R) N) :
+    Γ ⊢[PRAAx] distanceBounded (ap2 pF (succ p) (pData z B N)) (GaussianGammaC7Name.sample q z R B)
+      (unit p+unit q) (unit p*unit q) := by
+  have hg := cutoff_guards (Γ := Γ) p R
+  have hs : Γ ⊢[PRAAx] source z R B N :=
+    .andI h (.andI (le_trans hg.andE₁ hcut) (le_trans hg.andE₂.andE₁ hcut))
+  have hn := (local_source z R B N hs).andE₂.andE₁
+  exact GaussianNamedSmallPerturbationTransport.absorb_successor_budget _ _ p q (R*R) N (majorant R) hn
+    (le_trans hg.andE₂.andE₂ hcut) (observation_error (succ p) q z R B N hs)
 
 theorem cofinal_observation_error (p q z R B : PTm n) (h : Γ ⊢[PRAAx] GaussianGammaCanonicalExponent.source z R B) : Γ ⊢[PRAAx]
     distanceBounded (ap2 pF (succ p) (pData z B (cutoff p R))) (GaussianGammaC7Name.sample q z R B)
-      (unit p+unit q) (unit p*unit q) := by
-  let N := cutoff p R
-  have hg := cutoff_guards (Γ := Γ) p R
-  have hs : Γ ⊢[PRAAx] source z R B N := .andI h (.andI hg.andE₁ hg.andE₂.andE₁)
-  have hn := (local_source z R B N hs).andE₂.andE₁
-  have c : Γ ⊢[PRAAx] le (budgetNumerator (succ p) q (R*R) N (majorant R)*(unit p*unit q))
-      ((unit p+unit q)*budgetDenominator (succ p) q N) := by
-    have e := natEq (pw_succ (Γ := Γ) two p)
-    have hm := hg.andE₂.andE₂
-    ipra_le 𝔞 (unit p)*𝔞 (unit q)*𝔞 (unit q)*sl hm using
-      unfold budgetNumerator budgetDenominator rate unit
-      ipra_simps
-      rw [e]
-      ring
-  exact GaussianRationalDistanceOrder.distance_radius_mono _ _ _ _ _ _ (denominator_positive (succ p) q N hn)
-    (positive_product _ _ (unit_positive p) (unit_positive q)) c (observation_error (succ p) q z R B N hs)
+      (unit p+unit q) (unit p*unit q) :=
+  finite_cutoff_error p q z R B (cutoff p R) h (le_refl _)
 
 def observation (p z R B : PTm n) : PTm n := ap2 pF (succ p) (pData z B (cutoff p R))
 def data (z R B : PTm n) : PTm n := pairT z (pairT R B)

@@ -87,6 +87,21 @@ theorem denominator_positive (p q B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
     Γ ⊢[PRAAx] le one (budgetDenominator p q B) :=
   positive_product _ _ (positive_product _ _ hB (unit_positive p)) (unit_positive q)
 
+/-- Sampling one bit later leaves half the requested error for the finite perturbation. -/
+theorem absorb_successor_budget (x y p q A B M : PTm n) (hB : Γ ⊢[PRAAx] le one B)
+    (hcut : Γ ⊢[PRAAx] le (num 3*M*A*unit (succ p)) B)
+    (h : Γ ⊢[PRAAx] distanceBounded x y (budgetNumerator (succ p) q A B M)
+      (budgetDenominator (succ p) q B)) :
+    Γ ⊢[PRAAx] distanceBounded x y (unit p+unit q) (unit p*unit q) := by
+  apply distance_radius_mono _ _ _ _ _ _ (denominator_positive (succ p) q B hB)
+    (positive_product _ _ (unit_positive p) (unit_positive q)) _ h
+  have e := natEq (pw_succ (Γ := Γ) two p)
+  ipra_le 𝔞 (unit p)*𝔞 (unit q)*𝔞 (unit q)*sl hcut using
+    unfold budgetNumerator budgetDenominator unit
+    ipra_simps
+    rw [e]
+    ring
+
 /-- The only removable slack is the displayed auxiliary 2/2^t. -/
 theorem independent_slack (H E Q : PR 2) (x y z M A B p q t : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hc : Γ ⊢[PRAAx] pointCN H x)
