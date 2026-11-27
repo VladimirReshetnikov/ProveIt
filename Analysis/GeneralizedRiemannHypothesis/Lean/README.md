@@ -15,11 +15,11 @@ Each entry below identifies the part of the article covered by the Lean statemen
 | Coefficients and forward substitution in `smd:lem:disk` | [Moments.lean](GRHArticle/SingularModuli/Moments.lean), [PadicConvergence.lean](GRHArticle/SingularModuli/PadicConvergence.lean), [PadicExpSubstitution.lean](GRHArticle/SingularModuli/PadicExpSubstitution.lean) | Proves initial moment nonvanishing, the monic integer recurrence, coefficient convergence on the closed unit ball, and the identity after forward p-adic exponential substitution. |
 | Strassmann root bound in `smd:lem:disk` | [Strassmann.lean](GRHArticle/SingularModuli/Strassmann.lean) | Proves the distinct-root bound for a convergent coefficient series over a complete ultrametric normed field, including the form with an explicit cutoff. |
 | Exact coefficient cutoff in `smd:lem:disk` | [PadicCutoff.lean](GRHArticle/SingularModuli/PadicCutoff.lean) | Translates strict factorial weight comparisons into coefficient norm comparisons. Applies Strassmann to count roots of the resulting exponential series on the unit ball. |
+| Local root count `smd:lem:disk` | [PadicDiskRoots.lean](GRHArticle/SingularModuli/PadicDiskRoots.lean) | Proves the bound over the p-adic complex numbers for any prime and rational depth above the exponential threshold. Identifies the bound with the greatest admissible factorial weight index. Includes the polynomial-support formulation and the two-root bound for trinomials at depth one-half and prime seven. |
 
-The full multiplicative disk theorem still needs surjectivity for the exponential
-substitution and a scaling element of the specified rational depth. The five-term
-classification also needs the CM reduction, conjugate
-estimates, and finite certificates in the [singular-moduli section](../Article/sections/smd.tex).
+The five-term classification still needs the CM reduction, bounds on the conjugates
+to place them in the disks, and finite certificates from the
+[singular-moduli section](../Article/sections/smd.tex).
 
 ## Integer geometric progressions
 
