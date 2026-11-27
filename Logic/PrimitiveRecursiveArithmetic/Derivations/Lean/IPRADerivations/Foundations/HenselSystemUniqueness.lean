@@ -26,9 +26,9 @@ namespace LeanProofs.IPRA.Foundations.HenselSystemUniqueness
 
 open_ipra exports
 open LeanProofs.IPRA.Analysis.PolynomialRemainder (PE ev dv)
-open LeanProofs.IPRA.Foundations.FilteredTaylor (pd tq ls taylor_exact diff_exact dv_eq zsum toZ_zsum toZ_zero)
+open LeanProofs.IPRA.Foundations.FilteredTaylor (tq taylor_exact dv_eq zsum toZ_zsum toZ_zero)
 open LeanProofs.IPRA.Foundations.HenselUniqueness (toZ_ev_congr pw_split)
-open LeanProofs.IPRA.Foundations.HenselSystem (jac kron kron_toZ g)
+open LeanProofs.IPRA.Foundations.HenselSystem (jac kron kron_toZ g jac_delta sum_mul_inverse)
 
 variable {k m : ℕ} {Γ : List (Fm PTm k)}
 
@@ -74,42 +74,12 @@ theorem sum_left
     ∑ i, ZT.toZ Γ (U p i) * ∑ l, ZT.toZ Γ (dvec x y l) * ZT.toZ Γ (jac P y i l) =
       ZT.toZ Γ (dvec x y p) - 𝔞 q * ∑ l, ZT.toZ Γ (E p l) * ZT.toZ Γ (dvec x y l) +
         𝔞 q * ∑ i, ZT.toZ Γ (U p i) * ∑ l, ZT.toZ Γ (g P a y σ i l) * ZT.toZ Γ (dvec x y l) := by
-  have hJ : ∀ i l, ZT.toZ Γ (jac P y i l) = ZT.toZ Γ (jac P a i l) + 𝔞 q * ZT.toZ Γ (g P a y σ i l) := by
-    intro i l
-    have d := diff_exact (Γ := Γ) (x := y) (y := a) (pd (P i) l)
-    simp only [ZT.toZ_sub] at d
-    simp only [g, toZ_zsum, ZT.toZ_mul, jac]
-    rw [Finset.mul_sum]
-    have : ZT.toZ Γ (ev (pd (P i) l) y) = ZT.toZ Γ (ev (pd (P i) l) a) +
-        ∑ t, (ZT.toZ Γ (y t) - ZT.toZ Γ (a t)) * ZT.toZ Γ (ls (pd (P i) l) y a t) := by
-      rw [← d]; ring
-    rw [this]
-    congr 1
-    exact Finset.sum_congr rfl fun t _ => by rw [hσ t]; ring
-  -- split `J(y)`
-  have h1 : ∑ i, ZT.toZ Γ (U p i) * ∑ l, ZT.toZ Γ (dvec x y l) * ZT.toZ Γ (jac P y i l) =
-      ∑ l, ZT.toZ Γ (dvec x y l) * ∑ i, ZT.toZ Γ (U p i) * ZT.toZ Γ (jac P a i l) +
-        𝔞 q * ∑ i, ZT.toZ Γ (U p i) * ∑ l, ZT.toZ Γ (g P a y σ i l) * ZT.toZ Γ (dvec x y l) := by
-    simp only [hJ, Finset.mul_sum]
-    conv_rhs => rw [Finset.sum_comm]
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl fun l _ => ?_
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    ring
-  have hk : ∑ l, ZT.toZ Γ (dvec x y l) * ZT.toZ Γ (kron (k := k) p l) = ZT.toZ Γ (dvec x y p) := by
-    rw [Finset.sum_eq_single p]
-    · simp [kron_toZ]
-    · intro l _ hl; simp [kron_toZ, Ne.symm hl]
-    · simp
-  rw [h1]
-  simp only [hE]
-  have h2 : ∑ l, ZT.toZ Γ (dvec x y l) * (ZT.toZ Γ (kron (k := k) p l) - 𝔞 q * ZT.toZ Γ (E p l)) =
-      ∑ l, ZT.toZ Γ (dvec x y l) * ZT.toZ Γ (kron (k := k) p l) -
-        𝔞 q * ∑ l, ZT.toZ Γ (E p l) * ZT.toZ Γ (dvec x y l) := by
-    rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
-    exact Finset.sum_congr rfl fun l _ => by ring
-  rw [h2, hk]
+  have hbase := sum_mul_inverse (fun i => ZT.toZ Γ (U p i)) (fun i l => ZT.toZ Γ (jac P a i l))
+    (fun l => ZT.toZ Γ (dvec x y l)) (fun l => ZT.toZ Γ (E p l)) (𝔞 q) p
+    (fun l => by simpa only [kron_toZ] using hE p l)
+  rw [← hbase]
+  simp only [jac_delta hσ, _root_.mul_add, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul]
+  congr 1 <;> exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /-- `∑_i U_{pi} A_i = q^N ∑_i U_{pi} (s^x_i − s^y_i) − ∑_i U_{pi} H_i`. -/
 theorem sum_right (hx : ∀ i, ZT.toZ Γ (ev (P i) x) = 𝔞 (pw q Nt) * ZT.toZ Γ (sx i))

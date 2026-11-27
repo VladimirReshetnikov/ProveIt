@@ -64,11 +64,38 @@ def omega' (a b σ ω : Fin m → ZT k) (E : Fin m → Fin m → ZT k) (qKp : PT
 theorem kron_toZ (i l : Fin m) : ZT.toZ Γ (kron (k := k) i l) = if i = l then 1 else 0 := by
   unfold kron; split_ifs <;> simp [toZ_zero]
 
+/-- Contract a product of matrices against a vector when the product is `I - qE` in the selected row. -/
+theorem sum_mul_inverse {R : Type*} [CommRing R] (a : Fin m → R) (B : Fin m → Fin m → R)
+    (v e : Fin m → R) (q : R) (i : Fin m)
+    (h : ∀ l, ∑ j, a j * B j l = (if i = l then 1 else 0) - q * e l) :
+    ∑ j, (∑ l, B j l * v l) * a j = v i - q * ∑ l, e l * v l := by
+  calc
+    _ = ∑ l, (∑ j, a j * B j l) * v l := by
+      simp only [Finset.sum_mul]
+      rw [Finset.sum_comm]
+      exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
+    _ = _ := by
+      simp only [h, sub_mul, Finset.sum_sub_distrib]
+      rw [Finset.mul_sum]
+      simp [ite_mul, _root_.mul_assoc]
+
 variable {P U}
 
 section Step
 
 variable {a b σ ω : Fin m → ZT k} {E : Fin m → Fin m → ZT k} {q K' : PTm k}
+
+/-- The witness `g` gives the change in each Jacobian entry when the arguments change by `qσ`. -/
+theorem jac_delta (hσ : ∀ l, ZT.toZ Γ (b l) - ZT.toZ Γ (a l) = 𝔞 q * ZT.toZ Γ (σ l))
+    (i j : Fin m) :
+    ZT.toZ Γ (jac P b i j) = ZT.toZ Γ (jac P a i j) + 𝔞 q * ZT.toZ Γ (g P a b σ i j) := by
+  have d := diff_exact (Γ := Γ) (x := b) (y := a) (pd (P i) j)
+  simp only [ZT.toZ_sub, hσ] at d
+  simp only [jac, g, toZ_zsum, ZT.toZ_mul, Finset.mul_sum]
+  refine (sub_eq_iff_eq_add.mp d).trans ?_
+  rw [_root_.add_comm]
+  congr 1
+  exact Finset.sum_congr rfl fun _ _ => by ring
 
 /-- `h_j = −q^{K'+1} W_j`. -/
 theorem corr_toZ (hω : ∀ i, ZT.toZ Γ (ev (P i) b) = 𝔞 (pw q (succ K')) * ZT.toZ Γ (ω i)) (j : Fin m) :
@@ -84,19 +111,7 @@ theorem sum_corr (hω : ∀ i, ZT.toZ Γ (ev (P i) b) = 𝔞 (pw q (succ K')) * 
     ∑ j, ZT.toZ Γ (corr P U b j) * ZT.toZ Γ (jac P b i j) =
       -𝔞 (pw q (succ K')) * ∑ j, ZT.toZ Γ (W U ω j) * ZT.toZ Γ (jac P a i j) -
         𝔞 (pw q (succ K')) * 𝔞 q * ∑ j, ZT.toZ Γ (W U ω j) * ZT.toZ Γ (g P a b σ i j) := by
-  have hJ : ∀ j, ZT.toZ Γ (jac P b i j) = ZT.toZ Γ (jac P a i j) + 𝔞 q * ZT.toZ Γ (g P a b σ i j) := by
-    intro j
-    have d := diff_exact (Γ := Γ) (x := b) (y := a) (pd (P i) j)
-    simp only [ZT.toZ_sub] at d
-    simp only [g, toZ_zsum, ZT.toZ_mul, jac]
-    rw [Finset.mul_sum]
-    have : ZT.toZ Γ (ev (pd (P i) j) b) = ZT.toZ Γ (ev (pd (P i) j) a) +
-        ∑ l, (ZT.toZ Γ (b l) - ZT.toZ Γ (a l)) * ZT.toZ Γ (ls (pd (P i) j) b a l) := by
-      rw [← d]; ring
-    rw [this]
-    congr 1
-    exact Finset.sum_congr rfl fun l _ => by rw [hσ l]; ring
-  simp only [corr_toZ hω, hJ]
+  simp only [corr_toZ hω, jac_delta hσ]
   rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun j _ => by ring
 
@@ -106,25 +121,10 @@ theorem sum_inverse
       ZT.toZ Γ (kron (k := k) i l) - 𝔞 q * ZT.toZ Γ (E i l)) (i : Fin m) :
     ∑ j, ZT.toZ Γ (W U ω j) * ZT.toZ Γ (jac P a i j) =
       ZT.toZ Γ (ω i) - 𝔞 q * ∑ l, ZT.toZ Γ (E i l) * ZT.toZ Γ (ω l) := by
-  have h1 : ∑ j, ZT.toZ Γ (W U ω j) * ZT.toZ Γ (jac P a i j) =
-      ∑ l, ZT.toZ Γ (ω l) * ∑ j, ZT.toZ Γ (jac P a i j) * ZT.toZ Γ (U j l) := by
-    simp only [W, toZ_zsum, ZT.toZ_mul, Finset.sum_mul]
-    rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun l _ => ?_
-    rw [Finset.mul_sum]
-    exact Finset.sum_congr rfl fun j _ => by ring
-  have hk : ∑ l, ZT.toZ Γ (ω l) * ZT.toZ Γ (kron (k := k) i l) = ZT.toZ Γ (ω i) := by
-    rw [Finset.sum_eq_single i]
-    · simp [kron_toZ]
-    · intro l _ hl; simp [kron_toZ, Ne.symm hl]
-    · simp
-  rw [h1]
-  simp only [hE]
-  have h2 : ∑ l, ZT.toZ Γ (ω l) * (ZT.toZ Γ (kron (k := k) i l) - 𝔞 q * ZT.toZ Γ (E i l)) =
-      ∑ l, ZT.toZ Γ (ω l) * ZT.toZ Γ (kron (k := k) i l) - 𝔞 q * ∑ l, ZT.toZ Γ (E i l) * ZT.toZ Γ (ω l) := by
-    rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
-    exact Finset.sum_congr rfl fun l _ => by ring
-  rw [h2, hk]
+  simpa only [W, toZ_zsum, ZT.toZ_mul] using
+    sum_mul_inverse (fun j => ZT.toZ Γ (jac P a i j)) (fun j l => ZT.toZ Γ (U j l))
+      (fun l => ZT.toZ Γ (ω l)) (fun l => ZT.toZ Γ (E i l)) (𝔞 q) i
+      (fun l => by simpa only [kron_toZ] using hE i l)
 
 /-- The quadratic term. -/
 theorem sum_quad (hω : ∀ i, ZT.toZ Γ (ev (P i) b) = 𝔞 (pw q (succ K')) * ZT.toZ Γ (ω i)) (i : Fin m) :
