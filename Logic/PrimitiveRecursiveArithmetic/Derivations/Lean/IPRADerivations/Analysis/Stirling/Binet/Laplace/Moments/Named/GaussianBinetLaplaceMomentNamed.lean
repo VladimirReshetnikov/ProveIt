@@ -23,8 +23,9 @@ open GaussianBinetLaplaceMomentVariation (gain gain_positive)
 open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianExponentialReference (unit_monotone)
-open GaussianFastValueCut (exponent query_budget)
+open GaussianFastValueCut (exponent)
 open GaussianNamedRightHalfPlane (source precision radius threshold)
+open GaussianNamedRightHalfPlaneLift (gain_clock_budget variation_guard precision_budget frozen_budget)
 open GaussianNamedRightHalfPlaneSigned (point_distance)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl)
 open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator rate_at denominator_positive)
@@ -33,7 +34,6 @@ open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-local notation "𝔞" t:max => Groth.ι (LeanProofs.IPRA.Q.mk Γ t)
 local notation "J" => GaussianBinetLaplaceMomentImproper.nameF
 
 def clock (p M j : PTm n) : PTm n := precision (exponent (gain j (two*M)) (succ p)) M
@@ -74,50 +74,8 @@ theorem sample_at (f : PR 2) (p x M j : PTm n) :
 theorem clock_margin (p M j : PTm n) : Γ ⊢[PRAAx] le (threshold M) (clock p M j) :=
   le_congr (zero_add _).eqSymm (.eqRefl _) (le_add_left _ _)
 
-private theorem unit_step (p : PTm n) : Γ ⊢[PRAAx] unit (succ p) ≐ two * unit p :=
-  (pw_succ two p).eqTrans (mul_comm _ _)
-
-theorem clock_budget (p M j : PTm n) : Γ ⊢[PRAAx] le (two*gain j (two*M)*unit p) (unit (clock p M j)) := by
-  have hc : Γ ⊢[PRAAx] le (exponent (gain j (two*M)) (succ p)) (clock p M j) := le_add_right _ _
-  have h := le_trans (query_budget (Γ := Γ) (gain j (two*M)) (succ p)) (unit_monotone hc)
-  exact le_congr (by
-    apply deriveNat
-    ipra_simps
-    rw [natEq (unit_step (Γ := Γ) p)]
-    ipra_simps
-    ring) (.eqRefl _) h
-
-private theorem variation_guard (L U V p q : PTm n)
-    (hp : Γ ⊢[PRAAx] le (two*L*unit p) U) (hq : Γ ⊢[PRAAx] le (two*L*unit q) V) :
-    Γ ⊢[PRAAx] le (L*(U+V)) (U*V) := by
-  have hu : Γ ⊢[PRAAx] le (two*L) U :=
-    le_trans (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl (two*L)) (unit_positive p))) hp
-  have hv : Γ ⊢[PRAAx] le (two*L) V :=
-    le_trans (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl (two*L)) (unit_positive q))) hq
-  ipra_le sl hu * sl hv + 𝔞(L) * (sl hu + sl hv)
-
-private theorem precision_budget (L U V p q : PTm n)
-    (hp : Γ ⊢[PRAAx] le (two*L*unit p) U) (hq : Γ ⊢[PRAAx] le (two*L*unit q) V) :
-    Γ ⊢[PRAAx] le (rateNumerator (L*(U+V)) (U*V) (succ p) (succ q) * (unit p*unit q))
-      ((unit p+unit q) * rateDenominator (U*V) (succ p) (succ q)) := by
-  let P := unit p
-  let Q := unit q
-  have h : Γ ⊢[PRAAx] le ((L*(U+V)*(two*P)*(two*Q)+U*V*(two*P+two*Q))*(P*Q))
-      ((P+Q)*(U*V*(two*P)*(two*Q))) := by
-    change Γ ⊢[PRAAx] le (two*L*P) U at hp
-    change Γ ⊢[PRAAx] le (two*L*Q) V at hq
-    ipra_le 2*𝔞(P)*𝔞(Q)*(𝔞(V)*𝔞(Q)*sl hp+𝔞(U)*𝔞(P)*sl hq)
-  have hp' := natEq (unit_step (Γ := Γ) p)
-  have hq' := natEq (unit_step (Γ := Γ) q)
-  apply le_congr ?_ ?_ h
-  · dsimp only [P, Q, rateNumerator]
-    apply deriveNat
-    ipra_simps
-    rw [hp', hq']
-  · dsimp only [P, Q, rateDenominator]
-    apply deriveNat
-    ipra_simps
-    rw [hp', hq']
+theorem clock_budget (p M j : PTm n) : Γ ⊢[PRAAx] le (two*gain j (two*M)*unit p) (unit (clock p M j)) :=
+  gain_clock_budget (gain j (two*M)) p M
 
 private theorem late_input_rate (f g : PR 2) (p q k l x y M j : PTm n)
     (hf : Γ ⊢[PRAAx] source f x M) (hg : Γ ⊢[PRAAx] source g y M)
@@ -182,29 +140,6 @@ theorem proper (f g : PR 2) (x y M j : PTm n)
 theorem name_regular (f : PR 2) (x M j : PTm n) (h : Γ ⊢[PRAAx] source f x M) :
     Γ ⊢[PRAAx] pointCN (nameF f) (data x M j) :=
   proper f f x x M j h h (cross_refl f x h.andE₁)
-
-private theorem frozen_budget (L U V p q s : PTm n)
-    (hp : Γ ⊢[PRAAx] le (two*L*unit p) U) (hs : Γ ⊢[PRAAx] le (two*L*unit s) V) :
-    Γ ⊢[PRAAx] le (rateNumerator (L*(U+V)) (U*V) (succ p) q * rateDenominator (unit s) p q)
-      (rateNumerator one (unit s) p q * rateDenominator (U*V) (succ p) q) := by
-  let P := unit p
-  let Q := unit q
-  let S := unit s
-  have h : Γ ⊢[PRAAx] le ((L*(U+V)*(two*P)*Q+U*V*(two*P+Q))*(S*P*Q))
-      ((one*P*Q+S*(P+Q))*(U*V*(two*P)*Q)) := by
-    change Γ ⊢[PRAAx] le (two*L*P) U at hp
-    change Γ ⊢[PRAAx] le (two*L*S) V at hs
-    ipra_le 𝔞(P)*𝔞(Q)^2*(𝔞(V)*𝔞(S)*sl hp+𝔞(U)*𝔞(P)*sl hs+𝔞(U)*𝔞(V)*𝔞(P))
-  have hp' := natEq (unit_step (Γ := Γ) p)
-  apply le_congr ?_ ?_ h
-  · dsimp only [P, Q, S, rateNumerator, rateDenominator]
-    apply deriveNat
-    ipra_simps
-    rw [hp']
-  · dsimp only [P, Q, S, rateNumerator, rateDenominator]
-    apply deriveNat
-    ipra_simps
-    rw [hp']
 
 theorem frozen_observations (f : PR 2) (p q s k x M j : PTm n)
     (h : Γ ⊢[PRAAx] source f x M) (hk : Γ ⊢[PRAAx] le (clock s M j) k) :

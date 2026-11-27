@@ -98,17 +98,21 @@ theorem clock_margin (map : RationalMap) (p M R : PTm n) :
 private theorem unit_step (p : PTm n) : Γ ⊢[PRAAx] unit (succ p) ≐ two * unit p :=
   (pw_succ two p).eqTrans (mul_comm _ _)
 
-theorem clock_budget (map : RationalMap) (p M R : PTm n) :
-    Γ ⊢[PRAAx] le (two * ap2 map.gain R (two*M) * unit p) (unit (clock map p M R)) := by
-  have inputClock : Γ ⊢[PRAAx] le (exponent (ap2 map.gain R (two*M)) (succ p)) (clock map p M R) :=
+theorem gain_clock_budget (L p M : PTm n) :
+    Γ ⊢[PRAAx] le (two * L * unit p) (unit (precision (exponent L (succ p)) M)) := by
+  have inputClock : Γ ⊢[PRAAx] le (exponent L (succ p)) (precision (exponent L (succ p)) M) :=
     le_add_right _ _
-  have h := le_trans (query_budget (Γ := Γ) (ap2 map.gain R (two*M)) (succ p)) (unit_monotone inputClock)
+  have h := le_trans (query_budget (Γ := Γ) L (succ p)) (unit_monotone inputClock)
   exact le_congr (by
     apply deriveNat
     ipra_simps
     rw [natEq (unit_step (Γ := Γ) p)]
     ipra_simps
     ring) (.eqRefl _) h
+
+theorem clock_budget (map : RationalMap) (p M R : PTm n) :
+    Γ ⊢[PRAAx] le (two * ap2 map.gain R (two*M) * unit p) (unit (clock map p M R)) :=
+  gain_clock_budget (ap2 map.gain R (two*M)) p M
 
 theorem late_certificate (f : PR 2) (x k M R : PTm n) (h : Γ ⊢[PRAAx] source f x M R)
     (hk : Γ ⊢[PRAAx] le (threshold M) k) :
@@ -117,7 +121,7 @@ theorem late_certificate (f : PR 2) (x k M R : PTm n) (h : Γ ⊢[PRAAx] source 
   have hr := le_mul_mono h.andE₂ (le_refl (GaussianNamedRightHalfPlaneSigned.denominator (ap2 f k x)))
   exact .andI (.andI hc.andE₁.andE₁ (le_trans hc.andE₁.andE₂ (le_mul_mono hr hr))) hc.andE₂
 
-private theorem variation_guard (L U V p q : PTm n)
+theorem variation_guard (L U V p q : PTm n)
     (hp : Γ ⊢[PRAAx] le (two*L*unit p) U) (hq : Γ ⊢[PRAAx] le (two*L*unit q) V) :
     Γ ⊢[PRAAx] le (L*(U+V)) (U*V) := by
   have hu : Γ ⊢[PRAAx] le (two*L) U :=
@@ -126,7 +130,7 @@ private theorem variation_guard (L U V p q : PTm n)
     le_trans (le_congr (by ipra_ring) (.eqRefl _) (le_mul_mono (le_refl (two*L)) (unit_positive q))) hq
   ipra_le sl hu * sl hv + 𝔞(L) * (sl hu + sl hv)
 
-private theorem precision_budget (L U V p q : PTm n)
+theorem precision_budget (L U V p q : PTm n)
     (hp : Γ ⊢[PRAAx] le (two*L*unit p) U) (hq : Γ ⊢[PRAAx] le (two*L*unit q) V) :
     Γ ⊢[PRAAx] le (rateNumerator (L*(U+V)) (U*V) (succ p) (succ q) * (unit p*unit q))
       ((unit p+unit q) * rateDenominator (U*V) (succ p) (succ q)) := by
@@ -206,7 +210,7 @@ theorem name_regular (map : RationalMap) (f : PR 2) (x M R : PTm n)
     (h : Γ ⊢[PRAAx] source f x M R) : Γ ⊢[PRAAx] pointCN (nameF map f) (data x M R) :=
   proper map f f x x M R h h (cross_refl f x h.andE₁.andE₁)
 
-private theorem frozen_budget (L U V p q s : PTm n)
+theorem frozen_budget (L U V p q s : PTm n)
     (hp : Γ ⊢[PRAAx] le (two*L*unit p) U) (hs : Γ ⊢[PRAAx] le (two*L*unit s) V) :
     Γ ⊢[PRAAx] le (rateNumerator (L*(U+V)) (U*V) (succ p) q * rateDenominator (unit s) p q)
       (rateNumerator one (unit s) p q * rateDenominator (U*V) (succ p) q) := by
