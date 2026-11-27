@@ -39,9 +39,7 @@ private theorem common_at (H F G : PR 2) (h x y p : PTm n)
     (GaussianNameRingLaws.add_sample_error H F h x p hh hf)
     (GaussianNameRingLaws.add_sample_error H G h y p hh hg)
   have cancellation : Γ ⊢[PRAAx] qsub (qadd u v) (qadd u w) ≐ qsub v w :=
-    (GaussianNameArithmetic.sum_difference u u v w).eqTrans
-      ((GaussianRationalSyntheticDivision.qadd_congr (GaussianCoefficientNormOrder.qsub_self u) (.eqRefl _)).eqTrans
-      (GaussianRationalSyntheticDivision.qzero_add _ (GaussianRationalMetric.qsub_canonical _ _)))
+    GaussianNameArithmetic.sum_difference_cancel_left u v w
   have firstTwo := distance_triangle_same _ _ _ _ _ _ (unit_positive p) first second
   have reduced := distance_congr (.eqRefl _) cancellation (.eqRefl _) (.eqRefl _) firstTwo
   have last := GaussianRationalDistanceOrder.distance_symmetric _ _ _ _ (unit_positive p) (sample_error F G x y p hf hg)

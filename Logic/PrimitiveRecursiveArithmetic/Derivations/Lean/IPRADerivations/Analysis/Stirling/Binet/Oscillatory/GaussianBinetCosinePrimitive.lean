@@ -40,9 +40,7 @@ def endpoint (p A B R T : PTm n) : PTm n :=
     (qsub (row p (coefficient A B (polarity true)) (R*T) T one) (row p (coefficient A B (polarity false)) (R*T) T one))
 
 private theorem differences (x y c : PTm n) : Γ ⊢[PRAAx] qsub (qsub x c) (qsub y c) ≐ qsub x y :=
-  (GaussianNameArithmetic.sum_difference x y (qnegative c) (qnegative c)).eqTrans
-    ((qadd_congr (.eqRefl _) (GaussianCoefficientNormOrder.qsub_self _)).eqTrans
-      (GaussianRationalLinearProduct.qadd_zero_right _ (qsub_canonical _ _)))
+  GaussianNameArithmetic.sum_difference_cancel_right x y (qnegative c)
 
 theorem cleared_error (p A B R T N : PTm n)
     (hB : Γ ⊢[PRAAx] le one B) (hA : Γ ⊢[PRAAx] le A (R*B)) (hN : Γ ⊢[PRAAx] le one N)

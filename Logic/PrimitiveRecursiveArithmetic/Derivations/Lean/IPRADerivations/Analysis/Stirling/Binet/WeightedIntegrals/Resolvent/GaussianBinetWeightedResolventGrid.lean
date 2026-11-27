@@ -120,9 +120,7 @@ theorem tag_identity (A B D sign M j : PTm n)
     (GaussianBinetReciprocalRows.real_part_lower a (M*B) E sign ht)
   have diff : Γ ⊢[PRAAx] qsub c t ≐ qsub v u :=
     (qsub_congr (.eqRefl c) (tag_add A B D sign M j h hM)).eqTrans
-      ((GaussianNameArithmetic.sum_difference z z v u).eqTrans
-        ((qadd_congr (GaussianCoefficientNormOrder.qsub_self z) (.eqRefl _)).eqTrans
-          (GaussianRationalSyntheticDivision.qzero_add _ (qsub_canonical _ _))))
+      (GaussianNameArithmetic.sum_difference_cancel_left z v u)
   exact (row_at A B D sign M j).eqTrans
     ((qmul_congr diff.eqSymm (.eqRefl _)).eqTrans
       ((GaussianEulerBetaPrimitivePascal.right_product_difference c t (reciprocal t)).eqTrans

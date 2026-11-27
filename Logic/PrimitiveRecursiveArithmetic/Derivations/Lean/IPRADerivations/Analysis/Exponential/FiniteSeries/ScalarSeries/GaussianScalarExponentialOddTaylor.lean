@@ -92,9 +92,7 @@ private theorem odd_law_step (q K : PTm n) (ih : Γ ⊢[PRAAx] oddLaw q K) :
   have hn := (scalar_sum_two_terms (Γ := Γ) (qnegative q) K).eqTrans
     (qadd_congr (.eqRefl _) (even_term q (succ K)))
   have common : Γ ⊢[PRAAx] qsub (qadd (qadd F a) c) (qadd (qadd G b) c) ≐ qsub (qadd F a) (qadd G b) :=
-    (GaussianNameArithmetic.sum_difference (qadd F a) (qadd G b) c c).eqTrans
-      ((qadd_congr (.eqRefl _) (qsub_self c)).eqTrans
-        (GaussianReciprocalHorner.qadd_zero_right _ (GaussianRationalMetric.qsub_canonical _ _)))
+    GaussianNameArithmetic.sum_difference_cancel_right (qadd F a) (qadd G b) c
   exact (qsub_congr hp hn).eqTrans (common.eqTrans
     ((GaussianNameArithmetic.sum_difference F G a b).eqTrans
       ((qadd_congr ih (odd_difference q K)).eqTrans

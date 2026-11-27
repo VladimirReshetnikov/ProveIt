@@ -105,6 +105,20 @@ theorem sum_difference (a b u v : PTm n) : Γ ⊢[PRAAx]
   exact sum_difference_from_representations _ _ _ _ _ _ _ _ E
     (GaussianRationalSyntheticDivision.remaining_den_positive a b u v) ha hb hu hv
 
+/-- A common left summand cancels in the difference of two Gaussian sums. -/
+theorem sum_difference_cancel_left (c a b : PTm n) : Γ ⊢[PRAAx]
+    qsub (qadd c a) (qadd c b) ≐ qsub a b :=
+  (sum_difference c c a b).eqTrans
+    ((qadd_congr (GaussianCoefficientNormOrder.qsub_self c) (.eqRefl _)).eqTrans
+      (GaussianRationalSyntheticDivision.qzero_add _ (GaussianRationalMetric.qsub_canonical _ _)))
+
+/-- A common right summand cancels in the difference of two Gaussian sums. -/
+theorem sum_difference_cancel_right (a b c : PTm n) : Γ ⊢[PRAAx]
+    qsub (qadd a c) (qadd b c) ≐ qsub a b :=
+  (sum_difference a b c c).eqTrans
+    ((qadd_congr (.eqRefl _) (GaussianCoefficientNormOrder.qsub_self c)).eqTrans
+      (GaussianReciprocalHorner.qadd_zero_right _ (GaussianRationalMetric.qsub_canonical _ _)))
+
 theorem sum_distance (a b u v A C B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hab : Γ ⊢[PRAAx] distanceBounded a b A B)
     (huv : Γ ⊢[PRAAx] distanceBounded u v C B) : Γ ⊢[PRAAx]

@@ -66,9 +66,7 @@ private theorem append_error (x y f g T A B M K D : PTm n)
   have second := bound_congr (.eqRefl _) (.eqRefl _) (one_mul D)
     (bounded_product y (qsub f g) B one A D (le_refl one) hD hy hfg)
   have remove : Γ ⊢[PRAAx] qsub (qadd (qmul x f) T) (qadd (qmul y g) T) ≐ qsub (qmul x f) (qmul y g) :=
-    (subtract_add_exchange (qmul x f) (qmul y g) T T).eqSymm.eqTrans
-      ((qadd_congr (.eqRefl _) (GaussianCoefficientNormOrder.qsub_self T)).eqTrans
-        (qadd_zero_right _ (qsub_canonical _ _)))
+    GaussianNameArithmetic.sum_difference_cancel_right (qmul x f) (qmul y g) T
   exact bound_congr (remove.eqTrans (product_difference x y f g)).eqSymm (.eqRefl _) (.eqRefl _)
     (bounded_sum_same _ _ _ _ D hD first second)
 

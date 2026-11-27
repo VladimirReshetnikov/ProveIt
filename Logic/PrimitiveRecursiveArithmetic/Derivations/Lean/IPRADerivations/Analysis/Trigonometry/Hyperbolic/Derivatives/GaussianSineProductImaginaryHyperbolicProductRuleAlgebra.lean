@@ -68,9 +68,7 @@ theorem product_residual (pi a b h p q d : PTm n) (hd : Γ ⊢[PRAAx] qsub b a �
       (qmul_congr (.eqRefl pi) ((product_difference q p b a).eqTrans (qadd_congr (.eqRefl _) (qmul_congr (.eqRefl _) hd)))))
   have sub := (qsub_congr inc (weighted_inner pi a h p d)).eqTrans
     (multiplication_difference pi (qadd (qmul e b) u) (qadd (qmul t a) u))
-  have cancel := (sum_difference (Γ := Γ) (qmul e b) (qmul t a) u u).eqTrans
-    ((qadd_congr (.eqRefl _) (GaussianCoefficientNormOrder.qsub_self u)).eqTrans
-      (GaussianRationalLinearProduct.qadd_zero_right _ (qsub_canonical _ _)))
+  have cancel := GaussianNameArithmetic.sum_difference_cancel_right (Γ := Γ) (qmul e b) (qmul t a) u
   have correction : Γ ⊢[PRAAx] qmul t (qsub b a) ≐ qmul (qmul h h) d :=
     (qmul_congr (.eqRefl t) hd).eqTrans
       ((qmul_commutative t h).eqTrans (qmul_associative h h d).eqSymm)

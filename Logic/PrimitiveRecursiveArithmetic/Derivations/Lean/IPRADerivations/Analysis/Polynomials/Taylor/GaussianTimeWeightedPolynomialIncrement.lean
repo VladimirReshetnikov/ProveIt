@@ -48,12 +48,8 @@ theorem residual_identity (C t h N : PTm n) (hh : Γ ⊢[PRAAx] canonical h) :
     (GaussianRationalCoefficientScaling.qmul_add h (qmul D t) y).eqTrans
       (qadd_congr (qmul_associative h D t).eqSymm (qmul_commutative h y))
   have drop : Γ ⊢[PRAAx] qsub (qadd (qmul (qsub x y) v) (qmul y h)) (qadd (qmul W t) (qmul y h)) ≐
-      qsub (qmul (qsub x y) v) (qmul W t) := by
-    let R := qsub (qmul (qsub x y) v) (qmul W t)
-    exact (GaussianNameArithmetic.sum_difference _ _ _ _).eqTrans
-      ((qadd_congr (.eqRefl _) (GaussianCoefficientNormOrder.qsub_self (qmul y h))).eqTrans
-        ((GaussianRationalLinearProduct.qadd_commutative R qzero).eqTrans
-          (qzero_add _ (GaussianRationalMetric.qsub_canonical _ _))))
+      qsub (qmul (qsub x y) v) (qmul W t) :=
+    GaussianNameArithmetic.sum_difference_cancel_right (qmul (qsub x y) v) (qmul W t) (qmul y h)
   exact (qsub_congr step first).eqTrans (drop.eqTrans
     ((product_difference (qsub x y) W v t).eqTrans (qadd_congr (.eqRefl _) (qmul_congr (.eqRefl _) time))))
 

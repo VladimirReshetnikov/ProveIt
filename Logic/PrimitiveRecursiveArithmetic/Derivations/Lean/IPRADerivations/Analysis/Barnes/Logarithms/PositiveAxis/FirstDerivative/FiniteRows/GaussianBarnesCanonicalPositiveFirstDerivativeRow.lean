@@ -104,9 +104,7 @@ theorem exact_remainder (A C B H K k : PTm n) (h : Γ ⊢[PRAAx] source A C B H 
   have hr := base_lower C B k K hb hK h.andE₂.andE₂.andE₂.andE₂.andE₂.andE₁
   have off := offset_difference A C B n hb hn
   have stepEq : Γ ⊢[PRAAx] qsub c b ≐ d :=
-    (sum_difference qone qone (offset w B n) (offset z B n)).eqTrans
-      ((qadd_congr (GaussianCoefficientNormOrder.qsub_self qone) off).eqTrans
-        (qzero_add _ (ofGaussian_canonical _ _ (positive_product _ _ hb hn))))
+    (GaussianNameArithmetic.sum_difference_cancel_left qone (offset w B n) (offset z B n)).eqTrans off
   have rev : Γ ⊢[PRAAx] qsub i j ≐ v :=
     (GaussianNameReciprocal.inverse_difference b c
       (GaussianNameReciprocal.lower_norm_positive b K hK hl)
@@ -117,9 +115,7 @@ theorem exact_remainder (A C B H K k : PTm n) (h : Γ ⊢[PRAAx] source A C B H 
     let a := qadd j (offset w B n)
     let e := qadd i (offset z B n)
     have cancel : Γ ⊢[PRAAx] qsub (qsub a qone) (qsub e qone) ≐ qsub a e :=
-      (sum_difference a e (qnegative qone) (qnegative qone)).eqTrans
-        ((qadd_congr (.eqRefl _) (GaussianCoefficientNormOrder.qsub_self (qnegative qone))).eqTrans
-          (qadd_zero_right _ (qsub_canonical a e)))
+      GaussianNameArithmetic.sum_difference_cancel_right a e (qnegative qone)
     exact (qsub_congr (fraction_identity w B n K hb hn hK hr).eqSymm (fraction_identity z B n K hb hn hK hl).eqSymm).eqTrans
       (cancel.eqTrans ((sum_difference j i (offset w B n) (offset z B n)).eqTrans (qadd_congr (.eqRefl _) off)))
   have line : Γ ⊢[PRAAx] qmul (ofGaussian (step A C) B) (second z B n) ≐ qsub d u := by

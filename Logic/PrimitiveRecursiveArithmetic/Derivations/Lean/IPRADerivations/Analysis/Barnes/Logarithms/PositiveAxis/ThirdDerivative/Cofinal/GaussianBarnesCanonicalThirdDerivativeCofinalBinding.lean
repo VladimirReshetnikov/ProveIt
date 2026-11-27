@@ -133,9 +133,7 @@ theorem difference_observation (p A C B R r : PTm n)
     (GaussianBarnesCanonicalPositiveSecondLogarithm.prefix_error p C B R r hc hr)
     (GaussianBarnesCanonicalPositiveSecondLogarithm.prefix_error p A B R r ha hr)
   have cancel : Γ ⊢[PRAAx] qsub (qadd u c) (qadd u a) ≐ I A C B zero (initial R+r) :=
-    (sum_difference u u c a).eqTrans
-      ((qadd_congr (GaussianCoefficientNormOrder.qsub_self u) (.eqRefl _)).eqTrans
-        (qzero_add _ (qsub_canonical c a)))
+    GaussianNameArithmetic.sum_difference_cancel_left u c a
   exact distance_congr (.eqRefl _) cancel (by ipra_ring) (.eqRefl _)
     (distance_triangle_same _ _ _ _ _ _ (unit_positive p) raw near)
 

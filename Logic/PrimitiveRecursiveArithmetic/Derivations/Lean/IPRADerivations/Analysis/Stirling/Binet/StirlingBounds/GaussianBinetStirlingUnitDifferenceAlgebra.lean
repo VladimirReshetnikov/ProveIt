@@ -43,9 +43,7 @@ ipra_subst coefficient [one, two, GaussianLogGammaEulerRepresentation.subst_argu
 
 private theorem cancel_constant (x y c : PTm n) :
     Γ ⊢[PRAAx] qsub (qsub x c) (qsub y c) ≐ qsub x y :=
-  (GaussianNameArithmetic.sum_difference x y (qnegative c) (qnegative c)).eqTrans
-    ((qadd_congr (.eqRefl _) (GaussianCoefficientNormOrder.qsub_self _)).eqTrans
-      (GaussianRationalLinearProduct.qadd_zero_right _ (qsub_canonical _ _)))
+  GaussianNameArithmetic.sum_difference_cancel_right x y (qnegative c)
 
 private theorem point_rep (A B D sign : PTm n) (hD : Γ ⊢[PRAAx] le one D) :
     Γ ⊢[PRAAx] represents (argument A B D sign) (scale two (native A B sign)) (two*D) :=

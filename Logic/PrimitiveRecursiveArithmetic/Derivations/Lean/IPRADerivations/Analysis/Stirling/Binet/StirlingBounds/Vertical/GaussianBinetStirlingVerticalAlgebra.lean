@@ -60,9 +60,7 @@ private theorem offset_displacement (A B D sign H : PTm n) (h : Γ ⊢[PRAAx] so
   let a := argument A (B+H) D sign
   let b := argument A B D sign
   let r := qnegative (fraction (one : PTm n) two)
-  have folded := sum_difference (Γ := Γ) a b r r
-  exact folded.eqTrans ((qadd_congr (displacement A B D sign H h) (GaussianCoefficientNormOrder.qsub_self r)).eqTrans
-    (qadd_zero_right _ (ofGaussian_canonical _ _ h.andE₂)))
+  exact (GaussianNameArithmetic.sum_difference_cancel_right a b r).eqTrans (displacement A B D sign H h)
 
 theorem remainder_difference (A B D sign H g l k m c : PTm n) (h : Γ ⊢[PRAAx] source A D sign) :
     Γ ⊢[PRAAx] qsub (rawRemainder A (B+H) D sign k m c) (rawRemainder A B D sign g l c) ≐
@@ -75,9 +73,7 @@ theorem remainder_difference (A B D sign H g l k m c : PTm n) (h : Γ ⊢[PRAAx]
   let a := rawCore A B D sign g l
   let b := rawCore A (B+H) D sign k m
   have ec : Γ ⊢[PRAAx] qsub (qsub b c) (qsub a c) ≐ qsub b a :=
-    (sum_difference b a (qnegative c) (qnegative c)).eqTrans
-      ((qadd_congr (.eqRefl _) (GaussianCoefficientNormOrder.qsub_self _)).eqTrans
-        (qadd_zero_right _ (qsub_canonical _ _)))
+    GaussianNameArithmetic.sum_difference_cancel_right b a (qnegative c)
   have prod := (product_difference (Γ := Γ) v u m l).eqTrans
     (qadd_congr (qmul_congr (offset_displacement A B D sign H h) (.eqRefl _)) (.eqRefl _))
   exact ec.eqTrans ((sum_difference (qsub k (qmul v m)) (qsub g (qmul u l)) w z).eqTrans

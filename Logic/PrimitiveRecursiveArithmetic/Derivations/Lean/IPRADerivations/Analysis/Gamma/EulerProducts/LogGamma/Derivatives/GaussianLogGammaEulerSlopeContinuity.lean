@@ -57,9 +57,7 @@ private theorem translated_distance (z w k H E : PTm n) (h : Γ ⊢[PRAAx] dista
     Γ ⊢[PRAAx] distanceBounded (shiftedPoint z k) (shiftedPoint w k) H E := by
   let q := gf k one
   have e : Γ ⊢[PRAAx] qsub (shiftedPoint z k) (shiftedPoint w k) ≐ qsub z w :=
-    (GaussianNameArithmetic.sum_difference q q z w).eqTrans
-      ((qadd_congr (GaussianCoefficientNormOrder.qsub_self q) (.eqRefl _)).eqTrans
-        (qzero_add _ (qsub_canonical z w)))
+    GaussianNameArithmetic.sum_difference_cancel_left q z w
   exact bound_congr e.eqSymm (.eqRefl _) (.eqRefl _) h
 
 private theorem shifted_margin (A B D neg M k : PTm n) (h : Γ ⊢[PRAAx] source A D neg)

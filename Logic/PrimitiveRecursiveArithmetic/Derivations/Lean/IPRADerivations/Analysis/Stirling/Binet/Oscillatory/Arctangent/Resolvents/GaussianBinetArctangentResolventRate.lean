@@ -68,8 +68,8 @@ theorem pole_distance (s : Bool) (X Y D sign A B a b E H : PTm n)
   have rotated := distance_congr (rotate s A B hB) (rotate s a b hb) (.eqRefl _) (.eqRefl _)
     (GaussianRationalRoundedPower.multiply_distance_bound (rotation s) _ _ E H hH (rotation_bound s) h)
   have displacement := (qsub_congr (pole_as_sum s X Y D sign A B hD hB).eqSymm
-    (pole_as_sum s X Y D sign a b hD hb).eqSymm).eqTrans ((GaussianNameArithmetic.sum_difference z z u v).eqTrans
-      ((qadd_congr (GaussianCoefficientNormOrder.qsub_self z) (.eqRefl _)).eqTrans (qzero_add _ (qsub_canonical _ _))))
+    (pole_as_sum s X Y D sign a b hD hb).eqSymm).eqTrans
+      (GaussianNameArithmetic.sum_difference_cancel_left z u v)
   exact bound_congr displacement.eqSymm (.eqRefl _) (.eqRefl _) rotated
 
 theorem reciprocal_distance (s : Bool) (X Y D sign A B a b E H : PTm n)

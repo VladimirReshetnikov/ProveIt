@@ -192,8 +192,7 @@ theorem exact_remainder (z h B k H K : PTm n) (hs : Γ ⊢[PRAAx] source z h B k
     have cancel : Γ ⊢[PRAAx] qsub (qnegative w) (qnegative v) ≐ qsub v w :=
       (qadd_congr (.eqRefl _) (GaussianDeterminantSignTransport.negative_involution _ (qmul_canonical i i))).eqTrans
         (qadd_commutative (qnegative w) v)
-    exact (sum_difference qone qone (qnegative w) (qnegative v)).eqTrans
-      ((qadd_congr (GaussianCoefficientNormOrder.qsub_self qone) cancel).eqTrans (qzero_add _ (qsub_canonical v w)))
+    exact (GaussianNameArithmetic.sum_difference_cancel_left qone (qnegative w) (qnegative v)).eqTrans cancel
   have inc : Γ ⊢[PRAAx] increment z h B k ≐ qmul s (qsub v w) :=
     (multiplication_difference s (qsub qone w) (qsub qone v)).eqTrans (qmul_congr (.eqRefl _) inner)
   have lin := linear_expansion z h B k hs.andE₁ hs.andE₂.andE₁

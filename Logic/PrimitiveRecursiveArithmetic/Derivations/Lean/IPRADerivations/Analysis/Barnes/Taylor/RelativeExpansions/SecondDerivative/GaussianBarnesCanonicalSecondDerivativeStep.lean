@@ -97,9 +97,8 @@ private theorem offset_difference (z h B k : PTm n) (hB : Γ ⊢[PRAAx] le one B
 
 theorem base_difference (z h B k : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k) :
     Γ ⊢[PRAAx] qsub (base (add z h) B k) (base z B k) ≐ offset h B k :=
-  (sum_difference qone qone (offset (add z h) B k) (offset z B k)).eqTrans
-    ((qadd_congr (self_sub qone) (offset_difference z h B k hB hk)).eqTrans
-      (qzero_add _ (ofGaussian_canonical _ _ (positive_product _ _ hB hk))))
+  (GaussianNameArithmetic.sum_difference_cancel_left qone (offset (add z h) B k) (offset z B k)).eqTrans
+    (offset_difference z h B k hB hk)
 
 private theorem affine_cancel (x u v : PTm n) (hx : Γ ⊢[PRAAx] GaussianRationalHorner.canonical x) : Γ ⊢[PRAAx]
     qsub (qadd x u) (qsub u v) ≐ qadd x v := by
@@ -130,8 +129,7 @@ private theorem resolvent_residual (i j d : PTm n) (hd : Γ ⊢[PRAAx] GaussianR
     have zeroed : Γ ⊢[PRAAx] qadd W U ≐ qsub (qadd W U) qzero :=
       (sub_zero_right (qadd W U) (GaussianRationalHorner.qadd_canonical _ _)).eqSymm
     exact zeroed.eqTrans ((qsub_congr (.eqRefl _) cancel.eqSymm).eqTrans
-      ((sum_difference W W U V).eqTrans
-        ((qadd_congr (self_sub W) (.eqRefl _)).eqTrans (qzero_add _ (qsub_canonical U V)))))
+      (GaussianNameArithmetic.sum_difference_cancel_left W U V))
   exact (qsub_congr (.eqRefl _) line).eqTrans
     ((affine_cancel W d U (qsub_canonical j i)).eqTrans
       (reduce.eqTrans ((multiplication_difference Y i j).eqTrans (qmul_congr (.eqRefl _) e))))
@@ -161,8 +159,7 @@ theorem exact_remainder (z h R B k H : PTm n) (hs : Γ ⊢[PRAAx] source z h R B
   have part : Γ ⊢[PRAAx] increment z h B k ≐ qadd (qsub j i) d := by
     refine (qsub_congr (fraction_identity w R B k hw).eqSymm (fraction_identity z R B k hz).eqSymm).eqTrans ?_
     have cancel : Γ ⊢[PRAAx] qsub (qsub q qone) (qsub p qone) ≐ qsub q p :=
-      (sum_difference q p (qnegative qone) (qnegative qone)).eqTrans
-        ((qadd_congr (.eqRefl _) (self_sub (qnegative qone))).eqTrans (qadd_zero_right _ (qsub_canonical q p)))
+      GaussianNameArithmetic.sum_difference_cancel_right q p (qnegative qone)
     exact cancel.eqTrans ((sum_difference j i v u).eqTrans (qadd_congr (.eqRefl _) (offset_difference z h B k hB hk)))
   have line : Γ ⊢[PRAAx] linear z h B k ≐ qmul d (qsub qone (qmul i i)) :=
     (qmul_associative (ofGaussian h B) (inverseInteger k) (qsub qone (inverseSquare z B k))).eqSymm.eqTrans
