@@ -21,9 +21,9 @@ open_ipra
 open GaussianRationalPolynomialDilation (weightedNorm)
 open GaussianRationalPolynomialPowers (powerPrefix prefix_length)
 open GaussianRationalPolynomialExponential (stage inverseFactorial factorial_positive polynomial)
-open GaussianRationalPolynomialBuffers (leftPad)
 open GaussianRationalCoefficientScaling (scaled)
-open GaussianFiniteExponentialWeightedNorm (weighted_congr weighted_nonnegative multiply_bounds singleton_weighted_norm inverse_factorial_norm)
+open GaussianFiniteExponentialWeightedNorm (weighted_congr weighted_nonnegative multiply_bounds inverse_factorial_norm
+  weighted_zero_of_singleton weighted_stage_step)
 open GaussianRationalSyntheticBounds (natCode natCode_represents natCode_nonnegative)
 open GaussianPositiveExponentialMajorant (value natCode_congr)
 open GaussianExponentialDiskMajorant (numerator real_majorant_represents)
@@ -52,8 +52,7 @@ ipra_subst powerLaw
 
 theorem power_zero (C N K t A : PTm n) : Γ ⊢[PRAAx] powerLaw C N K t A zero := by
   refine .impI ?_
-  have actual := (weighted_congr (Γ := le zero K :: Γ) (GaussianRationalPolynomialPowers.prefix_zero C N K)
-    (zero_mul N) (.eqRefl _)).eqTrans (singleton_weighted_norm t)
+  have actual := weighted_zero_of_singleton (Γ := le zero K :: Γ) N t (GaussianRationalPolynomialPowers.prefix_zero C N K)
   exact RationalArgmin.rationalLE_congr actual.eqSymm (power_budget_zero A).eqSymm (RationalArgmin.reflexive _)
 
 theorem power_step (C N K t A j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
@@ -141,27 +140,15 @@ ipra_subst exponentialLaw
 
 theorem exponential_zero (C N K t A : PTm n) : Γ ⊢[PRAAx] exponentialLaw C N K t A zero := by
   refine .impI ?_
-  have actual := (weighted_congr (Γ := le zero K :: Γ) (GaussianRationalPolynomialExponential.stage_zero C N K)
-    (zero_mul N) (.eqRefl _)).eqTrans (singleton_weighted_norm t)
+  have actual := weighted_zero_of_singleton (Γ := le zero K :: Γ) N t (GaussianRationalPolynomialExponential.stage_zero C N K)
   exact RationalArgmin.rationalLE_congr actual.eqSymm (scalar_zero A).eqSymm (RationalArgmin.reflexive _)
 
 theorem exponential_step (C N K t A j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) (natCode A)) (hj : Γ ⊢[PRAAx] lt j K)
     (ih : Γ ⊢[PRAAx] rationalLE (weightedNorm (stage C N K j) (j*N) t) (value A j)) :
-    Γ ⊢[PRAAx] rationalLE (weightedNorm (stage C N K (succ j)) (succ j*N) t) (value A (succ j)) := by
-  have padded : Γ ⊢[PRAAx] weightedNorm (leftPad (stage C N K j) N) (succ j*N) t ≐
-      weightedNorm (stage C N K j) (j*N) t :=
-    (weighted_congr (.eqRefl _) (show Γ ⊢[PRAAx] succ j*N ≐ N+j*N by ipra_ring) (.eqRefl _)).eqTrans
-      (GaussianRationalPolynomialDilation.weighted_padding (stage C N K j) (j*N) t N
-        (GaussianRationalPolynomialExponential.stage_length _ _ _ _))
-  have oldBound := RationalArgmin.rationalLE_congr padded.eqSymm (.eqRefl _) ih
-  have newBound := weighted_term_bound C N K t A (succ j) hC hNorm hj
-  have sumBound := GaussianRationalSyntheticBounds.add_monotone _ _ _ _ oldBound newBound
-  have actual := GaussianRationalPolynomialDilation.weighted_added_bound (Γ := Γ)
-    (leftPad (stage C N K j) N) (scaled (powerPrefix C N K (succ j)) (inverseFactorial (succ j))) (succ j*N) t
-  exact RationalArgmin.rationalLE_congr
-    (weighted_congr (GaussianRationalPolynomialExponential.stage_succ C N K j).eqSymm (.eqRefl _) (.eqRefl _))
-    (scalar_succ A j).eqSymm (RationalArgmin.transitive actual sumBound)
+    Γ ⊢[PRAAx] rationalLE (weightedNorm (stage C N K (succ j)) (succ j*N) t) (value A (succ j)) :=
+  RationalArgmin.rationalLE_congr (.eqRefl _) (scalar_succ A j).eqSymm
+    (weighted_stage_step C N K t j _ _ ih (weighted_term_bound C N K t A (succ j) hC hNorm hj))
 
 theorem exponential_bound (C N K t A j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
     (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) (natCode A)) (hj : Γ ⊢[PRAAx] le j K) :

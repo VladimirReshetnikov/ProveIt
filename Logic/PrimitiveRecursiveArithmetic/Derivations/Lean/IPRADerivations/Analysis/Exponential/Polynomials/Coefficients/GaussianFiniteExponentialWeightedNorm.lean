@@ -86,14 +86,17 @@ theorem singleton_weighted_norm (t : PTm n) : Γ ⊢[PRAAx]
         (GaussianRationalLinearProduct.scalar_zero_add _
           (RationalNormalForm.normalize_well_formed _ _ (le_refl one)))))
 
+theorem weighted_zero_of_singleton {C : PTm n} (N t : PTm n)
+    (h : Γ ⊢[PRAAx] C ≐ singleton qone) : Γ ⊢[PRAAx] weightedNorm C (zero*N) t ≐ fraction one one :=
+  (weighted_congr h (zero_mul N) (.eqRefl _)).eqTrans (singleton_weighted_norm t)
+
 def powerLaw (C N K t j : PTm n) : Fm PTm n := le j K ⟶
   rationalLE (weightedNorm (powerPrefix C N K j) (j*N) t) (powerBudget j)
 ipra_subst powerLaw
 
 theorem power_zero (C N K t : PTm n) : Γ ⊢[PRAAx] powerLaw C N K t zero := by
   refine .impI ?_
-  have actual := (weighted_congr (Γ := le zero K :: Γ) (GaussianRationalPolynomialPowers.prefix_zero C N K)
-    (zero_mul N) (.eqRefl _)).eqTrans (singleton_weighted_norm t)
+  have actual := weighted_zero_of_singleton (Γ := le zero K :: Γ) N t (GaussianRationalPolynomialPowers.prefix_zero C N K)
   exact RationalArgmin.rationalLE_congr actual.eqSymm (RationalNonnegativePowers.power_zero (num 65) (num 72)).eqSymm
     (RationalArgmin.reflexive _)
 
@@ -213,27 +216,33 @@ ipra_subst exponentialLaw
 
 theorem exponential_zero (C N K t : PTm n) : Γ ⊢[PRAAx] exponentialLaw C N K t zero := by
   refine .impI ?_
-  have actual := (weighted_congr (Γ := le zero K :: Γ) (GaussianRationalPolynomialExponential.stage_zero C N K)
-    (zero_mul N) (.eqRefl _)).eqTrans (singleton_weighted_norm t)
+  have actual := weighted_zero_of_singleton (Γ := le zero K :: Γ) N t (GaussianRationalPolynomialExponential.stage_zero C N K)
   exact RationalArgmin.rationalLE_congr actual.eqSymm geometric_zero.eqSymm (RationalArgmin.reflexive _)
 
-theorem exponential_step (C N K t j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
-    (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) ratio) (hj : Γ ⊢[PRAAx] lt j K)
-    (ih : Γ ⊢[PRAAx] rationalLE (weightedNorm (stage C N K j) (j*N) t) (geometricPrefix j)) :
-    Γ ⊢[PRAAx] rationalLE (weightedNorm (stage C N K (succ j)) (succ j*N) t) (geometricPrefix (succ j)) := by
+/-- Bound the actual successor stage by the sum of the old stage and new term bounds. -/
+theorem weighted_stage_step (C N K t j A B : PTm n)
+    (old : Γ ⊢[PRAAx] rationalLE (weightedNorm (stage C N K j) (j*N) t) A)
+    (term : Γ ⊢[PRAAx] rationalLE
+      (weightedNorm (scaled (powerPrefix C N K (succ j)) (inverseFactorial (succ j))) (succ j*N) t) B) :
+    Γ ⊢[PRAAx] rationalLE (weightedNorm (stage C N K (succ j)) (succ j*N) t) (add A B) := by
   have padded : Γ ⊢[PRAAx] weightedNorm (leftPad (stage C N K j) N) (succ j*N) t ≐
       weightedNorm (stage C N K j) (j*N) t :=
     (weighted_congr (.eqRefl _) (show Γ ⊢[PRAAx] succ j*N ≐ N+j*N by ipra_ring) (.eqRefl _)).eqTrans
       (GaussianRationalPolynomialDilation.weighted_padding (stage C N K j) (j*N) t N
         (GaussianRationalPolynomialExponential.stage_length _ _ _ _))
-  have oldBound := RationalArgmin.rationalLE_congr padded.eqSymm (.eqRefl _) ih
-  have newBound := weighted_term_bound C N K t (succ j) hC hNorm hj
-  have sumBound := GaussianRationalSyntheticBounds.add_monotone _ _ _ _ oldBound newBound
+  have oldBound := RationalArgmin.rationalLE_congr padded.eqSymm (.eqRefl _) old
   have actual := GaussianRationalPolynomialDilation.weighted_added_bound (Γ := Γ)
     (leftPad (stage C N K j) N) (scaled (powerPrefix C N K (succ j)) (inverseFactorial (succ j))) (succ j*N) t
   exact RationalArgmin.rationalLE_congr
     (weighted_congr (GaussianRationalPolynomialExponential.stage_succ C N K j).eqSymm (.eqRefl _) (.eqRefl _))
-    (geometric_prefix_succ j).eqSymm (RationalArgmin.transitive actual sumBound)
+    (.eqRefl _) (RationalArgmin.transitive actual (GaussianRationalSyntheticBounds.add_monotone _ _ _ _ oldBound term))
+
+theorem exponential_step (C N K t j : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ succ N)
+    (hNorm : Γ ⊢[PRAAx] rationalLE (weightedNorm C N t) ratio) (hj : Γ ⊢[PRAAx] lt j K)
+    (ih : Γ ⊢[PRAAx] rationalLE (weightedNorm (stage C N K j) (j*N) t) (geometricPrefix j)) :
+    Γ ⊢[PRAAx] rationalLE (weightedNorm (stage C N K (succ j)) (succ j*N) t) (geometricPrefix (succ j)) :=
+  RationalArgmin.rationalLE_congr (.eqRefl _) (geometric_prefix_succ j).eqSymm
+    (weighted_stage_step C N K t j _ _ ih (weighted_term_bound C N K t (succ j) hC hNorm hj))
 
 /-- A genuine guarded QF induction follows the SAME factorial-weighted
 coefficient-buffer stage constructor. Original source length and original
