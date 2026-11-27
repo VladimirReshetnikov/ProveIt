@@ -574,7 +574,8 @@ def outputField (p : PTm n) (i : Fin 5) : PTm n := ![fstT p,fstT (sndT p),fstT (
 ipra_subst output
 ipra_subst run
 @[simp] theorem subst_outputField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 5) :
-    Syn.subst σ (outputField p i) = outputField (Syn.subst σ p) i := by fin_cases i <;> simp [outputField]
+    Syn.subst σ (outputField p i) = outputField (Syn.subst σ p) i :=
+  subst_pairVectorField σ 4 p i
 theorem program_at (G m a d w : PTm n) : Γ ⊢[PRAAx] run G m a d w ≐ output G m a d w := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![G,m,a,d,w]
 theorem returned_fields (G m a d w : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]

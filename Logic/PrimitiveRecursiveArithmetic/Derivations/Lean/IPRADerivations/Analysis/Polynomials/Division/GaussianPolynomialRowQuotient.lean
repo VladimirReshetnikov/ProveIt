@@ -52,7 +52,8 @@ def H (x t : PTm n) : PTm n := reconstruct (repeated x t) t t
 ipra_subst quotientCell [sel]
 ipra_subst data
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
-    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
+    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i :=
+  subst_pairVectorField σ 3 p i
 ipra_subst Qhat
 ipra_subst repeated
 ipra_subst H

@@ -62,7 +62,8 @@ ipra_subst point
 ipra_subst candidate
 ipra_subst data
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (q : PTm n) (i : Fin 5) :
-    Syn.subst σ (fields q i) = fields (Syn.subst σ q) i := by fin_cases i <;> simp [fields]
+    Syn.subst σ (fields q i) = fields (Syn.subst σ q) i :=
+  subst_pairVectorField σ 4 q i
 ipra_subst family [Syn.subst_shift, Syn.shift_subst]
 ipra_subst coveredAt [Syn.subst_shift, Syn.shift_subst]
 ipra_subst covered [Syn.subst_shift, Syn.shift_subst]

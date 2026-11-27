@@ -194,7 +194,8 @@ def newBody : PTm 2 := GaussianPolynomialDeterminant.valueTerm
   (fields (var 1) 1) (fields (var 1) 2) (var 0) (fields (var 1) 4)
 ipra_subst pack
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) (i : Fin 5) :
-    Syn.subst σ (fields x i) = fields (Syn.subst σ x) i := by fin_cases i <;> simp [fields]
+    Syn.subst σ (fields x i) = fields (Syn.subst σ x) i :=
+  subst_pairVectorField σ 4 x i
 theorem field_at (M m L j z : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (pack M m L j z) i ≐ ![M,m,L,j,z] i :=
   pairVectorField_eq 4 ![M,m,L,j,z] (.eqRefl _) i
 theorem rank_congr {m m' j j' t t' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')

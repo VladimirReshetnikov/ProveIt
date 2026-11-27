@@ -145,7 +145,8 @@ def productCell (S M m L r j : PTm n) : PTm n := partialProduct S M L r j m
 
 ipra_subst productData
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) (i : Fin 5) :
-    Syn.subst σ (fields x i) = fields (Syn.subst σ x) i := by fin_cases i <;> simp [fields]
+    Syn.subst σ (fields x i) = fields (Syn.subst σ x) i :=
+  subst_pairVectorField σ 4 x i
 ipra_subst piece [cell]
 ipra_subst partialProduct
 ipra_subst productCell

@@ -125,7 +125,8 @@ def outputField (p : PTm n) (i : Fin 5) : PTm n :=
 
 ipra_subst run
 @[simp] theorem subst_outputField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 5) :
-    Syn.subst σ (outputField p i) = outputField (Syn.subst σ p) i := by fin_cases i <;> simp [outputField]
+    Syn.subst σ (outputField p i) = outputField (Syn.subst σ p) i :=
+  subst_pairVectorField σ 4 p i
 
 theorem program_at (f a m c L P : PTm n) : Γ ⊢[PRAAx] run f a m c L P ≐ output f a m c L P := by
   simpa [run,outputF,output,GaussianSuperellipticNormDegree.originalNorm] using toPR_eq (Γ := Γ)

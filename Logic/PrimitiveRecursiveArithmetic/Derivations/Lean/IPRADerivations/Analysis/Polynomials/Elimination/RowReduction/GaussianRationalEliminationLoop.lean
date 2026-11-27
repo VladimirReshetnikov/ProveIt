@@ -164,7 +164,8 @@ def fields (p : PTm n) : Fin 3 → PTm n := ![fstT p,fstT (sndT p),sndT (sndT p)
 ipra_subst output
 ipra_subst run
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) (i : Fin 3) :
-    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
+    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i :=
+  subst_pairVectorField σ 2 p i
 theorem program_at (A R N c : PTm n) : Γ ⊢[PRAAx] run A R N c ≐ output A R N c := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) : PTm 4) ![A,R,N,c]
 theorem returned_fields (A R N c : PTm n) (i : Fin 3) : Γ ⊢[PRAAx]

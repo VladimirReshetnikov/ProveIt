@@ -220,6 +220,21 @@ def pairVectorField : (k : ℕ) → PTm n → Fin (k + 1) → PTm n
   | 0, z => ![z]
   | k + 1, z => Matrix.vecCons (fstT z) (pairVectorField k (sndT z))
 
+/-- Substituting through a projection is the same as projecting the substituted tuple. -/
+theorem subst_pairVectorField {m : ℕ} (σ : Fin n → PTm m) (k : ℕ) (p : PTm n)
+    (i : Fin (k + 1)) :
+    Syn.subst σ (pairVectorField k p i) = pairVectorField k (Syn.subst σ p) i := by
+  induction k generalizing p with
+  | zero =>
+    rw [Fin.eq_zero i]
+    rfl
+  | succ k ih =>
+    refine Fin.cases ?_ (fun j => ?_) i
+    · exact subst_fstT σ p
+    · change Syn.subst σ (pairVectorField k (sndT p) j) =
+        pairVectorField k (sndT (Syn.subst σ p)) j
+      rw [ih, subst_sndT]
+
 theorem pairVectorField_eq (k : ℕ) (entries : Fin (k + 1) → PTm n) {z : PTm n}
     (h : Γ ⊢[PRAAx] z ≐ pairVector k entries) (i : Fin (k + 1)) :
     Γ ⊢[PRAAx] pairVectorField k z i ≐ entries i := by

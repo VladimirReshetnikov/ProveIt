@@ -48,7 +48,8 @@ def polynomial (a m d L : PTm n) : PTm n := sequence outerBody m (data a m d L)
 ipra_subst coefficient [sel]
 ipra_subst data
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
-    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
+    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i :=
+  subst_pairVectorField σ 3 p i
 ipra_subst rowData
 ipra_subst row
 ipra_subst polynomial
@@ -245,7 +246,8 @@ ipra_subst certificate
 ipra_subst output
 ipra_subst run
 @[simp] theorem subst_outputField {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
-    Syn.subst σ (outputField p i) = outputField (Syn.subst σ p) i := by fin_cases i <;> simp [outputField]
+    Syn.subst σ (outputField p i) = outputField (Syn.subst σ p) i :=
+  subst_pairVectorField σ 3 p i
 theorem polynomial_program_at (a m d L : PTm n) : Γ ⊢[PRAAx] app polynomialF ![a,m,d,L] ≐ polynomial a m d L := by
   simpa [polynomialF] using toPR_eq (Γ := Γ) (polynomial (var 0) (var 1) (var 2) (var 3) : PTm 4) ![a,m,d,L]
 theorem program_at (a m d L : PTm n) : Γ ⊢[PRAAx] run a m d L ≐ output a m d L := by

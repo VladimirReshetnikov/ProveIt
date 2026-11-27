@@ -59,7 +59,8 @@ ipra_subst weight
 ipra_subst score
 ipra_subst data
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
-    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
+    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i :=
+  subst_pairVectorField σ 3 p i
 ipra_subst maximumPrefix
 ipra_subst index
 ipra_subst weightedDegree

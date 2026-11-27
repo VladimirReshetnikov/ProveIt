@@ -40,7 +40,8 @@ ipra_subst constantRow [sel]
 ipra_subst injectedRow
 ipra_subst data
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (p : PTm n) (i : Fin 5) :
-    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
+    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i :=
+  subst_pairVectorField σ 4 p i
 ipra_subst inject
 
 theorem constant_last (C m a d r : PTm n) (h : Γ ⊢[PRAAx] succ r ≐ m) : Γ ⊢[PRAAx]

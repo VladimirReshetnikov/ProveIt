@@ -190,7 +190,8 @@ def fields (p : PTm n) : Fin 4 → PTm n := ![fstT p,fstT (sndT p),fstT (sndT (s
 ipra_subst output
 ipra_subst run
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (p : PTm n) (i : Fin 4) :
-    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i := by fin_cases i <;> simp [fields]
+    Syn.subst σ (fields p i) = fields (Syn.subst σ p) i :=
+  subst_pairVectorField σ 3 p i
 theorem polynomial_program_at (R j : PTm n) : Γ ⊢[PRAAx] app polynomialF ![R,j] ≐ polynomial R j := by
   simpa [polynomialF] using toPR_eq (Γ := Γ) (polynomial (var 0) (var 1) : PTm 2) ![R,j]
 theorem program_at (R j z : PTm n) : Γ ⊢[PRAAx] run R j z ≐ output R j z := by

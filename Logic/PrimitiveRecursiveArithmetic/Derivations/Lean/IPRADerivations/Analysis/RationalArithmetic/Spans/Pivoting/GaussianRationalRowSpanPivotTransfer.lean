@@ -51,7 +51,8 @@ ipra_subst correction
 ipra_subst value [sel]
 ipra_subst data
 @[simp] theorem subst_fields {k : ℕ} (σ : Fin n → PTm k) (q : PTm n) (j : Fin 5) :
-    Syn.subst σ (fields q j) = fields (Syn.subst σ q) j := by fin_cases j <;> simp [fields]
+    Syn.subst σ (fields q j) = fields (Syn.subst σ q) j :=
+  subst_pairVectorField σ 4 q j
 ipra_subst transfer
 
 theorem mask_body_at (f : PTm 2) (i r x : PTm n) : Γ ⊢[PRAAx]
