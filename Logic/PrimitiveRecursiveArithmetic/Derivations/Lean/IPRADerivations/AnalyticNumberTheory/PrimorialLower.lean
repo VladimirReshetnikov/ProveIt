@@ -143,34 +143,38 @@ theorem factor_le {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (i : PTm 
       (congrSg Prf.hyp0).eqTrans (sg_succ _)
     exact le_congr ((congrMul sE (.eqRefl _)).eqTrans (one_mul _)) (.eqRefl _) A1.wk
 
+/-- Bound the valuation product by an envelope that absorbs the next factor at each step. -/
+theorem valuation_prod_le_of_step (bound : PTm 2) (P j : PTm n)
+    (h0 : Γ ⊢[PRAAx] le one (inst2 bound zero P))
+    (hs : Γ.map Fm.shift ⊢[PRAAx]
+      le (inst2 bound (var 0) (Syn.shift P) * inst2 (PE vB) (succ (var 0)) (Syn.shift P))
+        (inst2 bound (succ (var 0)) (Syn.shift P))) :
+    Γ ⊢[PRAAx] le (ap2 (prodF (PE vB)) (succ j) P) (inst2 bound j P) := by
+  have hall : Γ ⊢[PRAAx] Fm.all (le (ap2 (prodF (PE vB)) (succ (var 0)) (Syn.shift P))
+      (inst2 bound (var 0) (Syn.shift P))) := by
+    ipra_qfind [subst_le, subst_ap2, subst_inst2]
+    · have e := (prod_succ (Γ := Γ) (PE vB) zero P).eqTrans
+        (congrMul (prod_zero _ _) (.eqRefl _))
+      change Γ ⊢[PRAAx] _ ≐ one * inst2 (PE vB) zero P at e
+      rw [inst2_PE, inst2_XE, inst2_vB] at e
+      have f0 : Γ ⊢[PRAAx] pw zero (isP zero * val zero (lcmu P)) ≐ one := f_zero Mobius.isP_zero
+      exact le_congr (e.eqTrans ((one_mul _).eqTrans f0)).eqSymm (.eqRefl _) h0
+    · exact le_congr (prod_succ (PE vB) (succ (var 0)) (Syn.shift P)).eqSymm (.eqRefl _)
+        (le_trans (mul_le_mul_right _ Prf.hyp0) hs.wk)
+  simpa only [subst_le, subst_ap2, subst_inst2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+    ConciseIPRA.PTm.subst_succ] using Prf.allE j hall
+
 /-- `∏_{i ≤ j} i^{[i prime] v_i(lcm(1, …, P))} ≤ P^j` for `P ≥ 1`: the factor at `i = 0` is `1`. -/
 theorem small_le {P : PTm n} (hP : Γ ⊢[PRAAx] P ≐ succ (pred P)) (j : PTm n) :
     Γ ⊢[PRAAx] le (ap2 (prodF (PE vB)) (succ j) P) (pw P j) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (ap2 (prodF (PE vB)) (succ (var 0)) (Syn.shift P)) (pw (Syn.shift P) (var 0))) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      have e := (Probability.ProductReplacement.prod_succ' (Γ := Γ) (PE vB) zero P).eqTrans
-        (congrMul (prod_zero _ _) (.eqRefl _))
-      rw [inst2_PE, inst2_XE, inst2_vB] at e
-      have f0 : Γ ⊢[PRAAx] pw zero (isP zero * val zero (lcmu P)) ≐ one := f_zero Mobius.isP_zero
-      exact le_congr (e.eqTrans ((one_mul _).eqTrans f0)).eqSymm (pw_zero P).eqSymm (le_refl _)
-    · simp only [subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
-        ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero]
-      let D : List (Fm PTm (n + 1)) :=
-        le (ap2 (prodF (PE vB)) (succ (var 0)) (Syn.shift P)) (pw (Syn.shift P) (var 0)) :: Γ.map Fm.shift
-      have hP' : D ⊢[PRAAx] Syn.shift P ≐ succ (pred (Syn.shift P)) := by
-        have b := hP.shift
-        simp only [Fm.shift, Fm.subst_eq, ConciseIPRA.PTm.subst_succ, LeanProofs.IPRA.PTm.subst_pred] at b
-        exact b.wk
-      have e := Probability.ProductReplacement.prod_succ' (Γ := D) (PE vB) (succ (var 0)) (Syn.shift P)
-      rw [inst2_PE, inst2_XE, inst2_vB] at e
-      have fl := factor_le hP' (succ (var 0))
-      exact le_congr e.eqSymm (pw_succ _ _).eqSymm (le_mul_mono Prf.hyp0 fl)
-  have r := Prf.allE j hall
-  simp only [subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    ConciseIPRA.PTm.subst_succ, ConciseIPRA.PTm.subst_zero] at r
-  exact r
+  have h := valuation_prod_le_of_step (Γ := Γ) (pw (var 1) (var 0)) P j (by
+    simp [inst2]
+    exact le_congr (.eqRefl _) (pw_zero P).eqSymm (le_refl _)) (by
+    rw [inst2_PE, inst2_XE, inst2_vB]
+    simp [inst2]
+    exact le_congr (.eqRefl _) (pw_succ _ _).eqSymm
+      (le_mul_mono (le_refl _) (factor_le (Common.pos_shift hP) (succ (var 0)))))
+  simpa [inst2] using h
 
 /-! ## The three bounds -/
 
