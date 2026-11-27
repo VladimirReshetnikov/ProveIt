@@ -68,8 +68,7 @@ theorem scaled_relative (z h R B k H : PTm n) (hs : Γ ⊢[PRAAx] source z h R B
   have inv := (qmul_commutative i a).eqTrans (GaussianBarnesCanonicalSecondDerivativeRow.reciprocal_base z R B k hs.andE₁)
   have unscaled : Γ ⊢[PRAAx] qmul i (step h B k) ≐ v :=
     (qmul_congr (.eqRefl i) (recover_step z h R B k H hs).eqSymm).eqTrans
-      ((qmul_associative i a v).eqSymm.eqTrans
-        ((qmul_congr inv (.eqRefl v)).eqTrans ((qmul_commutative _ v).eqTrans (qmul_one_right v vCanon))))
+      (GaussianRationalInverseQuadraticAlgebra.cancel_nested_product i a v vCanon inv)
   exact (qmul_congr (.eqRefl i) (scale_step h B k hs.andE₁.andE₁ hs.andE₁.andE₂.andE₁).eqSymm).eqTrans
     ((commute_nested i w (step h B k)).eqTrans (qmul_congr (.eqRefl w) unscaled))
 

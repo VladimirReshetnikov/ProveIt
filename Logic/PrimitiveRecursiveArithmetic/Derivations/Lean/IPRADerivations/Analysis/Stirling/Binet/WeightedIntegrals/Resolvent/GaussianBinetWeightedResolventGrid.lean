@@ -176,10 +176,9 @@ theorem finite_identity (A B D sign M : PTm n) (h : Γ ⊢[PRAAx] source A D sig
   have sum_read := (GaussianRationalFiniteSum.sum_congr_bounded rowBody affineBody M _ _ rows_eq).eqTrans (affine_sum c x M)
   have constantScaled : Γ ⊢[PRAAx] qmul w (natScale M v) ≐ v :=
     (qmul_congr (.eqRefl w) (natScale_as_product M v)).eqTrans
-      ((qmul_associative w (naturalPoint M) v).eqSymm.eqTrans
-        ((qmul_congr ((qmul_commutative w (naturalPoint M)).eqTrans
-          ((natScale_as_product M w).eqSymm.eqTrans (weight_sum_one M hM))) (.eqRefl v)).eqTrans
-          ((qmul_commutative qone v).eqTrans (qmul_one_right v (qnegative_canonical _)))))
+      (GaussianRationalInverseQuadraticAlgebra.cancel_nested_product w (naturalPoint M) v (qnegative_canonical _)
+        ((qmul_commutative w (naturalPoint M)).eqTrans
+          ((natScale_as_product M w).eqSymm.eqTrans (weight_sum_one M hM))))
   have mainScaled : Γ ⊢[PRAAx] qmul w (qmul c u) ≐ qmul c (qmul w u) :=
     GaussianRationalPowerAlgebra.commute_nested w c u
   exact (qmul_congr (.eqRefl w) sum_read).eqTrans

@@ -76,8 +76,7 @@ theorem literal_quotient_at (a c b N : PTm n) (hb : Γ ⊢[PRAAx] le one b)
   have i : Γ ⊢[PRAAx] qmul (reciprocal u) u ≐ qone :=
     (qmul_commutative _ _).eqTrans (reciprocal_identity u (separated_step a c b hb hs))
   exact (qmul_congr (.eqRefl _) (original_product_gap (arg a) (arg c) b (succ N) hb)).eqTrans
-    ((qmul_associative (reciprocal u) u x).eqSymm.eqTrans
-      ((qmul_congr i (.eqRefl x)).eqTrans ((qmul_commutative _ _).eqTrans (qmul_one_right _ hc))))
+    (GaussianRationalInverseQuadraticAlgebra.cancel_nested_product (reciprocal u) u x hc i)
 
 theorem literal_quotient_rate (a c b N A D : PTm n) (ha : Γ ⊢[PRAAx] guard a b)
     (hc : Γ ⊢[PRAAx] guard c b) (hs : Γ ⊢[PRAAx] lt a c ⋎ lt c a) (hD : Γ ⊢[PRAAx] le one D)
