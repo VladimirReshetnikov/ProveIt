@@ -215,40 +215,28 @@ theorem prod_rem_congr (f g : PTm 2) {x N M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ s
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       (rem (inst2 f (var 0) (Syn.shift x)) (Syn.shift M) ≐ rem (inst2 g (var 0) (Syn.shift x)) (Syn.shift M)))) :
     Γ ⊢[PRAAx] rem (ap2 (prodF f) N x) M ≐ rem (ap2 (prodF g) N x) M := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      (rem (ap2 (prodF f) (var 0) (Syn.shift x)) (Syn.shift M) ≐ rem (ap2 (prodF g) (var 0) (Syn.shift x)) (Syn.shift M))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero]
-      exact .impI (congrAp2 remF ((prod_zero _ _).eqTrans (prod_zero _ _).eqSymm) (.eqRefl _))
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      have hf := h.allOpen
+  let P : Fm PTm (n + 1) :=
+    rem (ap2 (prodF f) (var 0) (Syn.shift x)) (Syn.shift M) ≐
+      rem (ap2 (prodF g) (var 0) (Syn.shift x)) (Syn.shift M)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using
+        congrAp2 remF ((prod_zero (Γ := Γ) f x).eqTrans (prod_zero g x).eqSymm) (.eqRefl M)
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have hM' : Γ.map Fm.shift ⊢[PRAAx] Syn.shift M ≐ succ (pred (Syn.shift M)) := by
         have e := hM.shift
         simp only [Fm.shift, Fm.subst_eq, PTm.subst_pred, ConciseIPRA.PTm.subst_succ] at e
         exact e
       refine .impI ?_
-      have hle : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ (rem (ap2 (prodF f) (var 0) (Syn.shift x)) (Syn.shift M) ≐
-            rem (ap2 (prodF g) (var 0) (Syn.shift x)) (Syn.shift M))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-        le_trans (le_succ_self _) Prf.hyp0
-      have ih := Prf.impE Prf.hyp1 hle
-      have pt : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ (rem (ap2 (prodF f) (var 0) (Syn.shift x)) (Syn.shift M) ≐
-            rem (ap2 (prodF g) (var 0) (Syn.shift x)) (Syn.shift M))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] rem (inst2 f (var 0) (Syn.shift x)) (Syn.shift M) ≐
-            rem (inst2 g (var 0) (Syn.shift x)) (Syn.shift M) := Prf.impE hf.wk.wk Prf.hyp0
+      let C := lt (var 0) (Syn.shift N) :: P :: Γ.map Fm.shift
+      have pt : C ⊢[PRAAx] rem (inst2 f (var 0) (Syn.shift x)) (Syn.shift M) ≐
+          rem (inst2 g (var 0) (Syn.shift x)) (Syn.shift M) := .impE h.allOpen.wk.wk Prf.hyp0
       refine (congrAp2 remF (prod_succ _ _ _) (.eqRefl _)).eqTrans (.eqTrans ?_
         (congrAp2 remF (prod_succ _ _ _) (.eqRefl _)).eqSymm)
-      refine (rem_mul_congr _ hM'.wk.wk ih).eqTrans ?_
+      refine (rem_mul_congr _ hM'.wk.wk (Prf.hyp1 : C ⊢[PRAAx] P)).eqTrans ?_
       refine (congrAp2 remF (mul_comm _ _) (.eqRefl _)).eqTrans ((rem_mul_congr _ hM'.wk.wk pt).eqTrans ?_)
       exact congrAp2 remF (mul_comm _ _) (.eqRefl _)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  simpa [P] using atBound
 
 /-- Variables: `0 = N`, `1 = x`. -/
 private abbrev prodMul1F (f g : PTm 2) : Fm PTm 2 :=

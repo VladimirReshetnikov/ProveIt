@@ -222,30 +222,23 @@ theorem Lc_cong {x z K y : PTm n}
       (rem (Syn.shift x) (inst2 (mS mB) (var 0) (Syn.shift y)) ≐
         rem (Syn.shift z) (inst2 (mS mB) (var 0) (Syn.shift y))))) :
     Γ ⊢[PRAAx] rem x (Lc mB K y) ≐ rem z (Lc mB K y) := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift K) ⟶
-      (rem (Syn.shift x) (Lc mB (var 0) (Syn.shift y)) ≐ rem (Syn.shift z) (Lc mB (var 0) (Syn.shift y)))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-      have L0 := Lc_zero (Γ := le zero K :: Γ) mB y
-      exact .impI ((congrAp2 remF (.eqRefl _) L0).eqTrans ((AnalyticNumberTheory.Euler.rem_one _).eqTrans
-        ((AnalyticNumberTheory.Euler.rem_one _).eqSymm.eqTrans (congrAp2 remF (.eqRefl _) L0.eqSymm))))
-    · simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
+  let P : Fm PTm (n + 1) :=
+    rem (Syn.shift x) (Lc mB (var 0) (Syn.shift y)) ≐ rem (Syn.shift z) (Lc mB (var 0) (Syn.shift y))
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst K) := by
+    refine qfIndUpTo K trivial ?_ ?_
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      have L0 := Lc_zero (Γ := Γ) mB y
+      exact (congrAp2 remF (.eqRefl _) L0).eqTrans ((AnalyticNumberTheory.Euler.rem_one _).eqTrans
+        ((AnalyticNumberTheory.Euler.rem_one _).eqSymm.eqTrans (congrAp2 remF (.eqRefl _) L0.eqSymm)))
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       refine .impI ?_
-      let C : List (Fm PTm (n + 1)) := le (succ (var 0)) (Syn.shift K) :: (le (var 0) (Syn.shift K) ⟶
-          (rem (Syn.shift x) (Lc mB (var 0) (Syn.shift y)) ≐ rem (Syn.shift z) (Lc mB (var 0) (Syn.shift y)))) ::
-          Γ.map Fm.shift
-      have hlt : C ⊢[PRAAx] lt (var 0) (Syn.shift K) := Prf.hyp0
-      have ih := Prf.impE (Prf.hyp1 : C ⊢[PRAAx] _) (le_trans (le_succ_self _) hlt)
-      have hk := Prf.impE (h.allOpen.wk.wk : C ⊢[PRAAx] _) hlt
+      let C := lt (var 0) (Syn.shift K) :: P :: Γ.map Fm.shift
+      have hk := Prf.impE (h.allOpen.wk.wk : C ⊢[PRAAx] _) Prf.hyp0
       have e := Lc_succ (Γ := C) mB (var 0) (Syn.shift y)
-      exact (congrAp2 remF (.eqRefl _) e).eqTrans ((lcm_cong (Lc_pos mB _ _) (m_pos mB _ _) ih hk).eqTrans
-        (congrAp2 remF (.eqRefl _) e.eqSymm))
-  have h2 := Prf.allE K hall
-  simp only [Fm.subst_imp, subst_le, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at h2
-  exact .impE h2 (le_refl K)
+      exact (congrAp2 remF (.eqRefl _) e).eqTrans
+        ((lcm_cong (Lc_pos mB _ _) (m_pos mB _ _) (Prf.hyp1 : C ⊢[PRAAx] P) hk).eqTrans
+          (congrAp2 remF (.eqRefl _) e.eqSymm))
+  simpa [P] using atBound
 
 end Family
 

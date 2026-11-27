@@ -79,24 +79,15 @@ theorem sum_congr_bounded (f g : PTm 2) (x y N : PTm n)
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       (inst2 f (var 0) (Syn.shift x) ≐ inst2 g (var 0) (Syn.shift y)))) :
     Γ ⊢[PRAAx] ap2 (sumF f) N x ≐ ap2 (sumF g) N y := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      (ap2 (sumF f) (var 0) (Syn.shift x) ≐ ap2 (sumF g) (var 0) (Syn.shift y))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simpa using .impI ((sum_zero (Γ := le zero N :: Γ) f x).eqTrans (sum_zero _ _).eqSymm)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      have hf := h.allOpen
-      refine .impI ?_
-      have hle : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ (ap2 (sumF f) (var 0) (Syn.shift x) ≐ ap2 (sumF g) (var 0) (Syn.shift y))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-        le_trans (le_succ_self _) Prf.hyp0
-      refine (sum_succ' f (var 0) _).eqTrans (.eqTrans ?_ (sum_succ' g (var 0) _).eqSymm)
-      exact congrAdd (.impE Prf.hyp1 hle) (.impE hf.wk.wk Prf.hyp0)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  let P : Fm PTm (n + 1) :=
+    ap2 (sumF f) (var 0) (Syn.shift x) ≐ ap2 (sumF g) (var 0) (Syn.shift y)
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using (sum_zero (Γ := Γ) f x).eqTrans (sum_zero g y).eqSymm
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      refine .impI ((sum_succ' f (var 0) _).eqTrans (.eqTrans ?_ (sum_succ' g (var 0) _).eqSymm))
+      exact congrAdd Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)
+  simpa [P] using atBound
 
 /-- Variables: `0 = M`, `1 = i`, `2 = x`. -/
 private abbrev termLeF (f : PTm 2) : Fm PTm 3 :=

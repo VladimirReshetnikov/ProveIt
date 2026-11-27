@@ -88,49 +88,31 @@ theorem prod2_congr_bounded (f g : PTm 3) (p q p' q' N : PTm n)
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       (inst3 f (var 0) (Syn.shift p) (Syn.shift q) ≐ inst3 g (var 0) (Syn.shift p') (Syn.shift q')))) :
     Γ ⊢[PRAAx] ap3 (prod2F f) N p q ≐ ap3 (prod2F g) N p' q' := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      (ap3 (prod2F f) (var 0) (Syn.shift p) (Syn.shift q) ≐ ap3 (prod2F g) (var 0) (Syn.shift p') (Syn.shift q'))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simpa using .impI ((prod2_zero (Γ := le zero N :: Γ) f p q).eqTrans (prod2_zero _ _ _).eqSymm)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap3, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      have hf := h.allOpen
-      refine .impI ?_
-      have hle : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ (ap3 (prod2F f) (var 0) (Syn.shift p) (Syn.shift q) ≐
-            ap3 (prod2F g) (var 0) (Syn.shift p') (Syn.shift q'))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-        le_trans (le_succ_self _) Prf.hyp0
-      refine (prod2_succ f (var 0) _ _).eqTrans (.eqTrans ?_ (prod2_succ g (var 0) _ _).eqSymm)
-      exact congrMul (.impE Prf.hyp1 hle) (.impE hf.wk.wk Prf.hyp0)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap3, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  let P : Fm PTm (n + 1) :=
+    ap3 (prod2F f) (var 0) (Syn.shift p) (Syn.shift q) ≐
+      ap3 (prod2F g) (var 0) (Syn.shift p') (Syn.shift q')
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using (prod2_zero (Γ := Γ) f p q).eqTrans (prod2_zero g p' q').eqSymm
+    · simp only [P, Fm.subst_eq, subst_ap3, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      refine .impI ((prod2_succ f (var 0) _ _).eqTrans (.eqTrans ?_ (prod2_succ g (var 0) _ _).eqSymm))
+      exact congrMul Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)
+  simpa [P] using atBound
 
 theorem sum2_congr_bounded (f g : PTm 3) (p q p' q' N : PTm n)
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶
       (inst3 f (var 0) (Syn.shift p) (Syn.shift q) ≐ inst3 g (var 0) (Syn.shift p') (Syn.shift q')))) :
     Γ ⊢[PRAAx] ap3 (sum2F f) N p q ≐ ap3 (sum2F g) N p' q' := by
-  have hall : Γ ⊢[PRAAx] Fm.all (le (var 0) (Syn.shift N) ⟶
-      (ap3 (sum2F f) (var 0) (Syn.shift p) (Syn.shift q) ≐ ap3 (sum2F g) (var 0) (Syn.shift p') (Syn.shift q'))) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simpa using .impI ((sum2_zero (Γ := le zero N :: Γ) f p q).eqTrans (sum2_zero _ _ _).eqSymm)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap3, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      have hf := h.allOpen
-      refine .impI ?_
-      have hle : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ (ap3 (sum2F f) (var 0) (Syn.shift p) (Syn.shift q) ≐
-            ap3 (sum2F g) (var 0) (Syn.shift p') (Syn.shift q'))) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-        le_trans (le_succ_self _) Prf.hyp0
-      refine (sum2_succ f (var 0) _ _).eqTrans (.eqTrans ?_ (sum2_succ g (var 0) _ _).eqSymm)
-      exact congrAdd (.impE Prf.hyp1 hle) (.impE hf.wk.wk Prf.hyp0)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap3, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  let P : Fm PTm (n + 1) :=
+    ap3 (sum2F f) (var 0) (Syn.shift p) (Syn.shift q) ≐
+      ap3 (sum2F g) (var 0) (Syn.shift p') (Syn.shift q')
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using (sum2_zero (Γ := Γ) f p q).eqTrans (sum2_zero g p' q').eqSymm
+    · simp only [P, Fm.subst_eq, subst_ap3, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      refine .impI ((sum2_succ f (var 0) _ _).eqTrans (.eqTrans ?_ (sum2_succ g (var 0) _ _).eqSymm))
+      exact congrAdd Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)
+  simpa [P] using atBound
 
 /-! ## Products of products and of ones -/
 

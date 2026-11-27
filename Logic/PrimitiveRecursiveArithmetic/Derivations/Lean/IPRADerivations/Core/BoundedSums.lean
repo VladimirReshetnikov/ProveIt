@@ -26,6 +26,27 @@ open LeanProofs.IPRA.PTm (num monus pred)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
+/-- Induction up to an object-language bound, with successor steps needed only below it. -/
+theorem qfIndUpTo (N : PTm n) {P : Fm PTm (n + 1)} (hP : P.QF)
+    (base : Γ ⊢[PRAAx] P.subst (Syn.inst zero))
+    (step : P :: Γ.map Fm.shift ⊢[PRAAx]
+      lt (Syn.var 0) (Syn.shift N) ⟶ P.subst (Syn.repl (succ (Syn.var 0)))) :
+    Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+  let bounded := le (Syn.var 0) (Syn.shift N) ⟶ P
+  have all : Γ ⊢[PRAAx] Fm.all bounded := by
+    refine PRA.qfInd _ ⟨le_QF _ _, hP⟩ ?_ ?_
+    · simp only [bounded, Fm.subst_imp, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      exact .impI base.wk
+    · simp only [bounded, Fm.subst_imp, subst_le, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      refine .impI ?_
+      have hi := le_trans (le_succ_self (Syn.var 0)) (Prf.hyp0 :
+        le (succ (Syn.var 0)) (Syn.shift N) :: bounded :: Γ.map Fm.shift ⊢[PRAAx]
+          le (succ (Syn.var 0)) (Syn.shift N))
+      exact .impE (.impE (Prf.impI step).wk.wk (.impE Prf.hyp1 hi)) Prf.hyp0
+  have atBound := Prf.allE N all
+  simp only [bounded, Fm.subst_imp, subst_le, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at atBound
+  exact .impE atBound (le_refl N)
+
 /-- `body(i, x)`. -/
 def inst2 (body : PTm 2) (i x : PTm n) : PTm n := Syn.subst ![i, x] body
 
@@ -109,23 +130,14 @@ theorem sum_zero_of_all (body : PTm 2) (x : PTm n)
 theorem sum_zero_of_bounded (body : PTm 2) (x N : PTm n)
     (h : Γ ⊢[PRAAx] Fm.all (lt (var 0) (Syn.shift N) ⟶ (inst2 body (var 0) (Syn.shift x) ≐ zero))) :
     Γ ⊢[PRAAx] ap2 (sumF body) N x ≐ zero := by
-  have hall : Γ ⊢[PRAAx]
-      Fm.all (le (var 0) (Syn.shift N) ⟶ (ap2 (sumF body) (var 0) (Syn.shift x) ≐ zero)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, trivial⟩ ?_ ?_
-    · simpa using .impI (sum_zero (Γ := le zero N :: Γ) body x)
-    · simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.repl_zero,
-        subst_repl_shift, ConciseIPRA.PTm.subst_zero]
-      have hf := h.allOpen
-      refine .impI ?_
-      refine (sum_succ' body (var 0) _).eqTrans ?_
-      have hle : (le (succ (var 0)) (Syn.shift N) ::
-          (le (var 0) (Syn.shift N) ⟶ (ap2 (sumF body) (var 0) (Syn.shift x) ≐ zero)) ::
-          Γ.map Fm.shift) ⊢[PRAAx] le (var 0) (Syn.shift N) :=
-        le_trans (le_succ_self _) Prf.hyp0
-      exact (congrAdd (.impE Prf.hyp1 hle) (.impE hf.wk.wk Prf.hyp0)).eqTrans (add_zero _)
-  have h2 := Prf.allE N hall
-  simp only [Fm.subst_imp, Fm.subst_eq, subst_le, subst_ap2, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, ConciseIPRA.PTm.subst_zero] at h2
-  exact .impE h2 (le_refl N)
+  let P : Fm PTm (n + 1) := ap2 (sumF body) (var 0) (Syn.shift x) ≐ zero
+  have atBound : Γ ⊢[PRAAx] P.subst (Syn.inst N) := by
+    refine qfIndUpTo N trivial ?_ ?_
+    · simpa [P] using sum_zero (Γ := Γ) body x
+    · simp only [P, Fm.subst_eq, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift,
+        ConciseIPRA.PTm.subst_zero]
+      refine .impI ((sum_succ' body (var 0) _).eqTrans ?_)
+      exact (congrAdd Prf.hyp1 (.impE h.allOpen.wk.wk Prf.hyp0)).eqTrans (add_zero _)
+  simpa [P] using atBound
 
 end LeanProofs.IPRA
