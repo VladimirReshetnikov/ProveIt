@@ -1,6 +1,5 @@
 import IPRADerivations.Core.SumOrder
 import IPRADerivations.Core.ProdLemmas
-import IPRADerivations.AnalyticNumberTheory.PhiLower
 
 /-!
 # Replacing the factors of a product one at a time
@@ -27,7 +26,6 @@ set_option linter.unusedSimpArgs false
 namespace LeanProofs.IPRA.Probability.ProductReplacement
 
 open_ipra
-open LeanProofs.IPRA.AnalyticNumberTheory.PhiLower (le_mul_mono)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -117,10 +115,10 @@ theorem repl_step {A G E a g e R Rp : PTm n} (hG : Γ ⊢[PRAAx] le G Rp)
     (ih : Γ ⊢[PRAAx] le (R * A) (R * G + Rp * E)) (h₁ : Γ ⊢[PRAAx] le a (g + e))
     (h₂ : Γ ⊢[PRAAx] le a R) (h₃ : Γ ⊢[PRAAx] le g R) :
     Γ ⊢[PRAAx] le (G * g) (Rp * R) ⋏ le (R * (A * a)) (R * (G * g) + (Rp * R) * (E + e)) := by
-  refine .andI (le_mul_mono hG h₃) ?_
+  refine .andI (Common.mul_le_mul hG h₃) ?_
   have s1 := mul_le_mul_right a ih
-  have s2 := add_le_add₂ (le_mul_mono (le_refl (R * G)) h₁) (le_mul_mono (le_refl (Rp * E)) h₂)
-  have s3 := add_le_add₂ (le_refl (R * (G * g) + (Rp * E) * R)) (le_mul_mono (le_refl (R * e)) hG)
+  have s2 := add_le_add₂ (Common.mul_le_mul (le_refl (R * G)) h₁) (Common.mul_le_mul (le_refl (Rp * E)) h₂)
+  have s3 := add_le_add₂ (le_refl (R * (G * g) + (Rp * E) * R)) (Common.mul_le_mul (le_refl (R * e)) hG)
   refine le_trans (le_congr ?_ ?_ s1) (le_trans s2 (le_congr ?_ ?_ s3))
   all_goals (ipra_ring)
 
