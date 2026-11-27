@@ -323,16 +323,8 @@ theorem inst2_mB (F : PTm 2) (a M : PTm n) : inst2 (mB F) a M = inst2 F (a * lpf
 
 alias pos_of_two := Common.pos_of_two_le
 
-theorem eqb_split (a b : PTm n) : Γ ⊢[PRAAx] monus one (eqb a b) + eqb a b ≐ one := by
-  unfold eqb
-  refine .orE (zero_or_succ (monus a b + monus b a)) ?_ ?_
-  · have h : ((monus a b + monus b a ≐ zero) :: Γ) ⊢[PRAAx] monus one (monus a b + monus b a) ≐ one :=
-      (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_zero _)
-    exact (congrAdd ((congrMonus (.eqRefl _) h).eqTrans (monus_self _)) h).eqTrans (zero_add _)
-  · have h : ((monus a b + monus b a ≐ succ (pred (monus a b + monus b a))) :: Γ) ⊢[PRAAx]
-        monus one (monus a b + monus b a) ≐ zero :=
-      (congrMonus (.eqRefl _) Prf.hyp0).eqTrans ((succ_monus_succ _ _).eqTrans (zero_monus _))
-    exact (congrAdd ((congrMonus (.eqRefl _) h).eqTrans (monus_zero _)) h).eqTrans (add_zero _)
+theorem eqb_split (a b : PTm n) : Γ ⊢[PRAAx] monus one (eqb a b) + eqb a b ≐ one :=
+  Common.eqb_compl_add a b
 
 section Divisors
 
@@ -353,9 +345,7 @@ theorem mult_pt (hM : Γ ⊢[PRAAx] le two M) (a : PTm n) :
     have h0 : C ⊢[PRAAx] a ≐ zero := Prf.hyp0
     have s0 : C ⊢[PRAAx] sg (a * lpf M) ≐ zero :=
       (congrSg ((congrMul h0 (.eqRefl _)).eqTrans (by ipra_ring))).eqTrans sg_zero
-    have c0 : C ⊢[PRAAx] monus one (eqb (rem a (lpf M)) zero) ≐ zero :=
-      (congrMonus (.eqRefl _) (eqb_of_eq ((congrAp2 remF h0 (.eqRefl _)).eqTrans (rem_zero _)))).eqTrans
-        (monus_self _)
+    have c0 := Common.eqb_compl_zero_of_eq ((congrAp2 remF h0 (.eqRefl (lpf M))).eqTrans (rem_zero _))
     exact .andI ((zero_mul_l (zero_mul_l s0 _) _).eqTrans (zero_mul_l c0 _).eqSymm)
       ((zero_mul_l (zero_mul_l s0 _) _).eqTrans (zero_mul_l c0 _).eqSymm)
   · let C : List (Fm PTm n) := (a ≐ succ (pred a)) :: Γ
@@ -372,15 +362,13 @@ theorem mult_pt (hM : Γ ⊢[PRAAx] le two M) (a : PTm n) :
           (congrPw (.eqRefl _) (congrSucc v0)).eqTrans (pw_one _)
         exact .botE _ (Prf.impE nd ((congrAp2 remF (.eqRefl _) e).eqTrans hd.wk))
       have k := kill (N := succ M) hp.wk.wk hpN.wk.wk ha.wk hv1
-      have c1 : D ⊢[PRAAx] monus one (eqb (rem a (lpf M)) zero) ≐ zero :=
-        (congrMonus (.eqRefl _) (eqb_of_eq hd)).eqTrans (monus_self _)
+      have c1 := Common.eqb_compl_zero_of_eq hd
       have zr : ∀ {x : PTm n}, D ⊢[PRAAx] x * zero ≐ zero := fun {x} => by ipra_ring
       exact .andI ((congrMul (.eqRefl _) (Prf.andE₁ k)).eqTrans (zr.eqTrans (zero_mul_l c1 _).eqSymm))
         ((congrMul (.eqRefl _) (Prf.andE₂ k)).eqTrans (zr.eqTrans (zero_mul_l c1 _).eqSymm))
     · let D : List (Fm PTm n) := neg (rem a (lpf M) ≐ zero) :: C
       have hna : D ⊢[PRAAx] neg (dvd (lpf M) a) := Prf.hyp0
-      have c1 : D ⊢[PRAAx] monus one (eqb (rem a (lpf M)) zero) ≐ one :=
-        (congrMonus (.eqRefl _) (eqb_of_ne Prf.hyp0)).eqTrans (monus_zero _)
+      have c1 := Common.eqb_compl_one_of_ne (a := rem a (lpf M)) (b := zero) hna
       have hv0 : D ⊢[PRAAx] val (lpf M) a ≐ zero :=
         val_unique (prime_two hp).wk.wk ha.wk (c := a)
           ((one_mul _).eqSymm.eqTrans (congrMul (pw_zero _).eqSymm (.eqRefl a))) hna

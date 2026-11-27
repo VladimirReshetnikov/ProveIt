@@ -58,33 +58,21 @@ theorem monus_one_le (e : PTm n) (h : Γ ⊢[PRAAx] le e one) : Γ ⊢[PRAAx] le
 
 theorem bit_cmp_below (x z t : PTm n) :
     Γ ⊢[PRAAx] le (sg (monus t x)) (sg (monus t z) + monus one (eqb z x)) := by
-  refine .orE (eqb_cases z x) ?_ ?_
-  · let C := (eqb z x ≐ zero) :: Γ
-    have h : C ⊢[PRAAx] monus one (eqb z x) ≐ one := (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_zero _)
-    refine le_trans (sg_le_one _) (le_of_eq_add (d := sg (monus t z)) ?_)
-    ipra_lc natEq h
-  · let C := (eqb z x ≐ one) :: Γ
-    have ex : C ⊢[PRAAx] z ≐ x := eq_of_eqb Prf.hyp0
-    have m : C ⊢[PRAAx] monus one (eqb z x) ≐ zero := (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_self _)
-    have c : C ⊢[PRAAx] sg (monus t z) ≐ sg (monus t x) := congrSg (congrMonus (.eqRefl _) ex)
-    have e1 := natEq m; have e2 := natEq c
-    refine le_of_eq_add (d := zero) ?_
-    ipra_lc e1 + e2
+  refine .orE (eq_or_ne z x) ?_ ?_
+  · have hz : ((z ≐ x) :: Γ) ⊢[PRAAx] z ≐ x := Prf.hyp0
+    exact le_of_eq_add (d := zero) (congrAdd (congrSg (congrMonus (.eqRefl t) hz)) (Common.eqb_compl_zero_of_eq hz))
+  · have hz : (neg (z ≐ x) :: Γ) ⊢[PRAAx] neg (z ≐ x) := Prf.hyp0
+    have right := congrAdd (.eqRefl (sg (monus t z))) (Common.eqb_compl_one_of_ne hz)
+    exact le_trans (sg_le_one _) (le_congr (.eqRefl one) right.eqSymm (le_add_left one _))
 
 theorem bit_cmp_above (x z t : PTm n) :
     Γ ⊢[PRAAx] le (sg (monus x t)) (sg (monus z t) + monus one (eqb z x)) := by
-  refine .orE (eqb_cases z x) ?_ ?_
-  · let C := (eqb z x ≐ zero) :: Γ
-    have h : C ⊢[PRAAx] monus one (eqb z x) ≐ one := (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_zero _)
-    refine le_trans (sg_le_one _) (le_of_eq_add (d := sg (monus z t)) ?_)
-    ipra_lc natEq h
-  · let C := (eqb z x ≐ one) :: Γ
-    have ex : C ⊢[PRAAx] z ≐ x := eq_of_eqb Prf.hyp0
-    have m : C ⊢[PRAAx] monus one (eqb z x) ≐ zero := (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_self _)
-    have c : C ⊢[PRAAx] sg (monus z t) ≐ sg (monus x t) := congrSg (congrMonus ex (.eqRefl _))
-    have e1 := natEq m; have e2 := natEq c
-    refine le_of_eq_add (d := zero) ?_
-    ipra_lc e1 + e2
+  refine .orE (eq_or_ne z x) ?_ ?_
+  · have hz : ((z ≐ x) :: Γ) ⊢[PRAAx] z ≐ x := Prf.hyp0
+    exact le_of_eq_add (d := zero) (congrAdd (congrSg (congrMonus hz (.eqRefl t))) (Common.eqb_compl_zero_of_eq hz))
+  · have hz : (neg (z ≐ x) :: Γ) ⊢[PRAAx] neg (z ≐ x) := Prf.hyp0
+    have right := congrAdd (.eqRefl (sg (monus z t))) (Common.eqb_compl_one_of_ne hz)
+    exact le_trans (sg_le_one _) (le_congr (.eqRefl one) right.eqSymm (le_add_left one _))
 
 section Compare
 

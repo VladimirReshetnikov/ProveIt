@@ -213,11 +213,10 @@ abbrev euB : PTm 2 := monus one (eqb (LHS (var 0)) (RHS (var 0)))
 theorem inst2_eu (N x : PTm n) : inst2 euB N x = monus one (eqb (LHS N) (RHS N)) := by simp [inst2]
 
 theorem eq_of_viol {A B : PTm n} (h : Γ ⊢[PRAAx] monus one (eqb A B) ≐ zero) : Γ ⊢[PRAAx] A ≐ B :=
-  eq_of_eqb_ne (.impI (succ_ne_zero' _ (a := zero)
-    ((monus_zero _).eqSymm.eqTrans ((congrMonus (.eqRefl _) Prf.hyp0).eqSymm.eqTrans h.wk))))
+  Common.eq_of_eqb_compl_zero h
 
 theorem viol_of_eq {A B : PTm n} (h : Γ ⊢[PRAAx] A ≐ B) : Γ ⊢[PRAAx] monus one (eqb A B) ≐ zero :=
-  (congrMonus (.eqRefl _) (eqb_of_eq h)).eqTrans ((succ_monus_succ _ _).eqTrans (monus_zero _))
+  Common.eqb_compl_zero_of_eq h
 
 /-- The step when the prime `p` divides `n`. -/
 theorem eu_found {N p x : PTm n} (hN : Γ ⊢[PRAAx] N ≐ succ (pred N)) (hp : Γ ⊢[PRAAx] prime p)

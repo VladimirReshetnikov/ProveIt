@@ -177,19 +177,15 @@ theorem split_core {p Q : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (d r :
     Γ ⊢[PRAAx] eqb (rem (p * Q) d) zero * pw d r ≐
       eqb (rem d p) zero * inst2 hrB (quo d p) (pairT p (pairT Q r)) +
         monus one (eqb (rem d p) zero) * (eqb (rem (p * Q) d) zero * pw d r) := by
-  refine .orE (eqb_cases (Γ := Γ) (rem d p) zero) ?_ ?_
-  · have m1 : ((eqb (rem d p) zero ≐ zero) :: Γ) ⊢[PRAAx] monus one (eqb (rem d p) zero) ≐ one :=
-      (congrMonus (.eqRefl _) Prf.hyp0).eqTrans (monus_zero _)
-    exact split_alg0 Prf.hyp0 m1
-  · let C : List (Fm PTm n) := (eqb (rem d p) zero ≐ one) :: Γ
-    have hb : C ⊢[PRAAx] eqb (rem d p) zero ≐ one := Prf.hyp0
-    have m0 : C ⊢[PRAAx] monus one (eqb (rem d p) zero) ≐ zero :=
-      (congrMonus (.eqRefl _) hb).eqTrans (monus_self _)
-    have ed : C ⊢[PRAAx] d ≐ p * quo d p := eq_of_rem_zero hp.wk (eq_of_eqb hb)
+  refine .orE (eq_or_ne (rem d p) zero) ?_ ?_
+  · let C : List (Fm PTm n) := (rem d p ≐ zero) :: Γ
+    have hz : C ⊢[PRAAx] rem d p ≐ zero := Prf.hyp0
+    have ed : C ⊢[PRAAx] d ≐ p * quo d p := eq_of_rem_zero hp.wk hz
     have h1 : C ⊢[PRAAx] inst2 hrB (quo d p) (pairT p (pairT Q r)) ≐ eqb (rem (p * Q) d) zero * pw d r :=
       (hrB_at _ _ _ _).eqTrans (congrMul (congrEqb' (congrAp2 remF (.eqRefl _) ed.eqSymm) (.eqRefl _))
         (congrAp2 powF (.eqRefl _) ed.eqSymm))
-    exact split_alg1 hb m0 h1
+    exact split_alg1 (eqb_of_eq hz) (Common.eqb_compl_zero_of_eq hz) h1
+  · exact split_alg0 (eqb_of_ne Prf.hyp0) (Common.eqb_compl_one_of_ne Prf.hyp0)
 
 theorem split_r {p Q : PTm n} (hp : Γ ⊢[PRAAx] p ≐ succ (pred p)) (d r : PTm n) :
     Γ ⊢[PRAAx] inst2 srB d (pairT (p * Q) r) ≐

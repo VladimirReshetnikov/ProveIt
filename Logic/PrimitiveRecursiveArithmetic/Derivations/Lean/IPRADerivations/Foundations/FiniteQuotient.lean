@@ -122,15 +122,13 @@ theorem med_unique {t v : PTm 1} {N c : PTm k} (hc : Γ ⊢[PRAAx] lt c N)
 
 /-- `x = y` from `1 ∸ [x = y] = 0`. -/
 theorem eq_of_compl {x y : PTm k} (h : Γ ⊢[PRAAx] monus one (eqb x y) ≐ zero) :
-    Γ ⊢[PRAAx] x ≐ y := by
-  refine .orE (eqb_cases x y) ?_ (eq_of_eqb Prf.hyp0)
-  exact one_ne_zero _ ((monus_zero _).eqSymm.eqTrans
-    ((congrMonus (.eqRefl _) Prf.hyp0).eqSymm.eqTrans h.wk))
+    Γ ⊢[PRAAx] x ≐ y :=
+  Common.eq_of_eqb_compl_zero h
 
 /-- `1 ∸ [x = y] = 0` from `x = y`. -/
 theorem compl_of_eq {x y : PTm k} (h : Γ ⊢[PRAAx] x ≐ y) :
     Γ ⊢[PRAAx] monus one (eqb x y) ≐ zero :=
-  (congrMonus (.eqRefl _) (eqb_of_eq h)).eqTrans (le_refl one)
+  Common.eqb_compl_zero_of_eq h
 
 variable (f : PTm 1)
 

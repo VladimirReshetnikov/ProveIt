@@ -182,6 +182,22 @@ theorem eqb_le_one (a b : PTm n) : Γ ⊢[PRAAx] le (eqb a b) one := monus_le_se
 theorem eq_of_eqb {a b : PTm n} (h : Γ ⊢[PRAAx] eqb a b ≐ one) : Γ ⊢[PRAAx] a ≐ b :=
   .orE (eq_or_ne a b) Prf.hyp0 (succ_ne_zero' _ (h.wk.eqSymm.eqTrans (eqb_of_ne Prf.hyp0)))
 
+/-- The equality bit and its complement add up to one. -/
+theorem eqb_compl_add (a b : PTm n) : Γ ⊢[PRAAx] monus one (eqb a b) + eqb a b ≐ one :=
+  ((eq_add_of_le (eqb_le_one a b)).eqTrans (add_comm _ _)).eqSymm
+
+theorem eq_of_eqb_compl_zero {a b : PTm n} (h : Γ ⊢[PRAAx] monus one (eqb a b) ≐ zero) :
+    Γ ⊢[PRAAx] a ≐ b :=
+  eq_of_eqb (((congrAdd h (.eqRefl _)).eqTrans (zero_add _)).eqSymm.eqTrans (eqb_compl_add a b))
+
+theorem eqb_compl_zero_of_eq {a b : PTm n} (h : Γ ⊢[PRAAx] a ≐ b) :
+    Γ ⊢[PRAAx] monus one (eqb a b) ≐ zero :=
+  (congrMonus (.eqRefl _) (eqb_of_eq h)).eqTrans (monus_self _)
+
+theorem eqb_compl_one_of_ne {a b : PTm n} (h : Γ ⊢[PRAAx] neg (a ≐ b)) :
+    Γ ⊢[PRAAx] monus one (eqb a b) ≐ one :=
+  (congrMonus (.eqRefl _) (eqb_of_ne h)).eqTrans (monus_zero _)
+
 theorem sg_le_one (a : PTm n) : Γ ⊢[PRAAx] le (sg a) one := monus_le_self _ _
 
 theorem sg_zero_or_one (a : PTm n) : Γ ⊢[PRAAx] (sg a ≐ zero) ⋎ (sg a ≐ one) :=
