@@ -1,4 +1,5 @@
 import IPRADerivations.DiophantineNumberTheory.WilsonConverse
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # The half-factorial is a root of `−1`
@@ -140,31 +141,26 @@ abbrev splitF : Fm PTm 2 :=
   (isP (var 1) ≐ one) ⟶ le (var 0) (pred (var 1)) ⟶
     (rem (fact (monus (pred (var 1)) (var 0)) * fact (var 0) + monus one (par (var 0))) (var 1) ≐ par (var 0))
 
-theorem split_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] splitF := by
-  refine ind _ ⟨trivial, le_QF _ _, trivial⟩ ?_ ?_
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_isP, Syn.subst_var, Syn.inst_zero, Syn.inst_one]
-    simp only [subst_le, subst_ap2, subst_ap1, PTm.subst_add,
-      PTm.subst_mul, PTm.subst_monus, PTm.subst_pred, Syn.subst_var, Syn.inst_zero, Syn.inst_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (split_zero (prime_of_isP Prf.hyp1)))
-  · simp only [Fm.subst_imp, Fm.subst_eq, subst_isP, Syn.subst_var, Syn.repl_zero, repl_one]
-    simp only [subst_le, subst_ap2, subst_ap1, PTm.subst_add,
-      PTm.subst_mul, PTm.subst_monus, PTm.subst_pred, Syn.subst_var, Syn.repl_zero, repl_one,
-      ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ]
-    exact .impI (.impI (split_succ (prime_of_isP Prf.hyp1) Prf.hyp0
-      (.impE (.impE hyp2 Prf.hyp1) (le_trans (le_succ_self _) Prf.hyp0))))
-
 /-- **Wilson's theorem split at `k`**: `((p − 1 − k)! · k! + (1 − par k)) mod p = par k` for a prime `p` and
 `k ≤ p − 1`; that is, `(p − 1 − k)! · k! ≡ (−1)^{k+1} (mod p)`. -/
 theorem wilson_split {p k : PTm n} (hp : Γ ⊢[PRAAx] prime p) (hk : Γ ⊢[PRAAx] le k (pred p)) :
     Γ ⊢[PRAAx] rem (fact (monus (pred p) k) * fact k + monus one (par k)) p ≐ par k := by
-  have i := inst (Γ := Γ) split_open (![k, p] : Fin 2 → PTm n)
-  simp only [splitF, Fm.subst_imp, Fm.subst_eq, subst_isP, Syn.subst_var, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons] at i
-  simp only [subst_le, subst_ap2, subst_ap1, PTm.subst_add,
-    PTm.subst_mul, PTm.subst_monus, PTm.subst_pred, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, ConciseIPRA.PTm.subst_zero, ConciseIPRA.PTm.subst_succ] at i
-  exact .impE (.impE i (isP_of_prime hp)) hk
+  let P : Fm PTm (n + 1) :=
+    rem (fact (monus (pred (Syn.shift p)) (var 0)) * fact (var 0) + monus one (par (var 0)))
+      (Syn.shift p) ≐ par (var 0)
+  have hp' : Γ.map Fm.shift ⊢[PRAAx] prime (Syn.shift p) := by
+    have bit := (isP_of_prime hp).shift
+    exact prime_of_isP (by simpa [Fm.shift, subst_isP, Syn.shift] using bit)
+  have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst k) := by
+    refine qfIndAtMost hk trivial ?_ ?_
+    · simpa [P] using split_zero hp
+    · rw [show Syn.shift (pred p) = pred (Syn.shift p) by simp [Syn.shift]]
+      simpa [P, lt] using (Prf.impI (split_succ (p := Syn.shift p) (k := var 0)
+        hp'.wk.wk Prf.hyp0 (Prf.hyp1 : lt (var 0) (pred (Syn.shift p)) :: P :: Γ.map Fm.shift ⊢[PRAAx] P)))
+  simpa [P] using atIndex
+
+theorem split_open : ([] : List (Fm PTm 2)) ⊢[PRAAx] splitF :=
+  .impI (.impI (wilson_split (prime_of_isP Prf.hyp1) Prf.hyp0))
 
 /-! ## The half-factorial -/
 

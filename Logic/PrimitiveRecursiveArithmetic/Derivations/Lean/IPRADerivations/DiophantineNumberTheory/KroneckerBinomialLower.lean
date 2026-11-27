@@ -1,5 +1,6 @@
 import IPRADerivations.DiophantineNumberTheory.KroneckerBinomialTail
 import IPRADerivations.Probability.BinomialLaw
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # `C(r, k) ≥ (r/k)^k` and the full binomial kernel estimate
@@ -33,12 +34,9 @@ variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔟" t:max => Groth.ι (IPRA.Q.mk _ t)
 
 theorem bp_base (r K : PTm n) : Γ ⊢[PRAAx] le (pw r zero) (pw K zero * binom (monus r K + zero) zero) := by
-  have e1 := natEq (pw_zero (Γ := Γ) r)
-  have e2 := natEq (pw_zero (Γ := Γ) K)
-  have e3 := natEq (binom_zero' (Γ := Γ) (monus r K + zero))
-  refine le_of_eq_add (d := zero) ?_
-  apply deriveNat; ipra_simps
-  rw [e1, e2, e3]; ring
+  exact le_congr (pw_zero r).eqSymm
+    ((Common.mul_one_right one).eqSymm.eqTrans (congrMul (pw_zero K).eqSymm (binom_zero' _).eqSymm))
+    (le_refl one)
 
 theorem bp_step {r K j : PTm n} (hKr : Γ ⊢[PRAAx] le K r) (hj : Γ ⊢[PRAAx] le (succ j) K)
     (ih : Γ ⊢[PRAAx] le (pw r j) (pw K j * binom (monus r K + j) j)) :
@@ -61,13 +59,13 @@ private abbrev bpF : Fm PTm 3 :=
     le (pw (var 1) (var 0)) (pw (var 2) (var 0) * binom (monus (var 1) (var 2) + var 0) (var 0)))
 
 private theorem bp₀ : ([] : List (Fm PTm 3)) ⊢[PRAAx] bpF := by
-  refine ind _ ⟨le_QF _ _, ⟨le_QF _ _, le_QF _ _⟩⟩ ?_ ?_
-  · simp
-    exact .impI (.impI (bp_base _ _))
-  · simp
-    refine .impI (.impI ?_)
-    exact bp_step Prf.hyp1 Prf.hyp0
-      (.impE (.impE Prf.hyp1.wk Prf.hyp1) (le_trans (le_succ_self _) Prf.hyp0))
+  have h : ([le (var 1) (var 0)] : List (Fm PTm 2)) ⊢[PRAAx] Fm.all
+      (le (var 0) (var 2) ⟶ le (pw (var 1) (var 0)) (pw (var 2) (var 0) * binom (monus (var 1) (var 2) + var 0) (var 0))) := by
+    refine qfIndAllUpTo (var 1) (le_QF _ _) ?_ ?_
+    · simpa using bp_base (Γ := [le (var 1) (var 0)]) (var 0) (var 1)
+    · simp [Fm.shift, Syn.shift]
+      exact .impI (bp_step hyp2 Prf.hyp0 Prf.hyp1)
+  exact .impI (by simpa [Fm.shift, Syn.shift] using h.allOpen)
 
 /-- `r^K ≤ K^K C(r, K)` for `K ≤ r`: `C(r, K) ≥ (r/K)^K`. -/
 theorem binom_power_lower {r K : PTm n} (hKr : Γ ⊢[PRAAx] le K r) :
