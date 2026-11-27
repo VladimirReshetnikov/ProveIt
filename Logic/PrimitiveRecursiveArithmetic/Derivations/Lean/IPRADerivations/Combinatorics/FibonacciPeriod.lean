@@ -30,8 +30,8 @@ open LeanProofs.IPRA.Combinatorics.Fibonacci
 open LeanProofs.IPRA.Combinatorics.FibonacciGcd (docagne)
 open LeanProofs.IPRA.DiophantineNumberTheory.PellModular (digit_lt digit_eq)
 open LeanProofs.IPRA.AnalyticNumberTheory.Multiplicative (rem_lt')
-open LeanProofs.IPRA.AnalyticNumberTheory.GcdFiber (div_eq)
-open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq rem_mul_right_congr rem_mul_congr_both)
+open LeanProofs.IPRA.Foundations.ChineseRemainder (rem_eq_of_eq rem_mul_right_congr rem_mul_congr_both
+  eq_add_quo_of_rem_eq rem_of_balanced_add)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 
@@ -52,22 +52,14 @@ theorem sig_range {d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) : Γ ⊢[
 
 /-- `x ≡ y` as a linear equation. -/
 theorem cong_lin {x y d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d)) (h : Γ ⊢[PRAAx] rem x d ≐ rem y d) :
-    Γ ⊢[PRAAx] x + d * quo y d ≐ y + d * quo x d := by
-  ipra_lc natEq (div_eq (j := x) hd) - natEq (div_eq (j := y) hd) + natEq h
+    Γ ⊢[PRAAx] x + d * quo y d ≐ y + d * quo x d :=
+  eq_add_quo_of_rem_eq hd h
 
 private theorem rem_add_congr {a b c e d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
     (h₁ : Γ ⊢[PRAAx] rem a d ≐ rem b d) (h₂ : Γ ⊢[PRAAx] rem c d ≐ rem e d) :
     Γ ⊢[PRAAx] rem (a + c) d ≐ rem (b + e) d := by
   refine rem_eq_of_eq hd (k₁ := quo b d + quo e d) (k₂ := quo a d + quo c d) ?_
   ipra_lc natEq (cong_lin hd h₁) + natEq (cong_lin hd h₂)
-
-/-- Compare the missing summands in two balances with congruent known terms. -/
-private theorem rem_of_balanced_add {x y a b c e d : PTm n} (hd : Γ ⊢[PRAAx] d ≐ succ (pred d))
-    (hx : Γ ⊢[PRAAx] x + a ≐ b) (hy : Γ ⊢[PRAAx] y + c ≐ e)
-    (ha : Γ ⊢[PRAAx] rem a d ≐ rem c d) (hb : Γ ⊢[PRAAx] rem b d ≐ rem e d) :
-    Γ ⊢[PRAAx] rem x d ≐ rem y d := by
-  refine rem_eq_of_eq hd (k₁ := quo e d + quo a d) (k₂ := quo b d + quo c d) ?_
-  ipra_lc natEq hx - natEq hy + natEq (cong_lin hd hb) - natEq (cong_lin hd ha)
 
 /-! ## The return to `(0, 1)` -/
 

@@ -53,13 +53,26 @@ theorem rem_eq_of_eq {M x y k₁ k₂ : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (p
   exact (congrAp2 remF (.eqRefl _) hM).eqTrans ((rem_eq_of_eq' h').eqTrans
     (congrAp2 remF (.eqRefl _) hM.eqSymm))
 
+/-- Equal remainders give the equality obtained by exchanging the two quotients. -/
+theorem eq_add_quo_of_rem_eq {M x y : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
+    (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) :
+    Γ ⊢[PRAAx] x + M * quo y M ≐ y + M * quo x M := by
+  ipra_lc natEq (Prf.andE₁ (div_mod_at (x := x) hM)) -
+    natEq (Prf.andE₁ (div_mod_at (x := y) hM)) + natEq h
+
+/-- Compare the missing summands in two balances with congruent known terms. -/
+theorem rem_of_balanced_add {x y a b c e M : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
+    (hx : Γ ⊢[PRAAx] x + a ≐ b) (hy : Γ ⊢[PRAAx] y + c ≐ e)
+    (ha : Γ ⊢[PRAAx] rem a M ≐ rem c M) (hb : Γ ⊢[PRAAx] rem b M ≐ rem e M) :
+    Γ ⊢[PRAAx] rem x M ≐ rem y M := by
+  refine rem_eq_of_eq hM (k₁ := quo e M + quo a M) (k₂ := quo b M + quo c M) ?_
+  ipra_lc natEq hx - natEq hy + natEq (eq_add_quo_of_rem_eq hM hb) - natEq (eq_add_quo_of_rem_eq hM ha)
+
 /-- Multiplying both sides of a congruence by a fixed factor preserves it. -/
 theorem rem_mul_right_congr {M x y : PTm n} (c : PTm n) (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
     (h : Γ ⊢[PRAAx] rem x M ≐ rem y M) : Γ ⊢[PRAAx] rem (x * c) M ≐ rem (y * c) M := by
-  have dx := div_mod_at (x := x) hM
-  have dy := div_mod_at (x := y) hM
   refine rem_eq_of_eq hM (k₁ := quo y M * c) (k₂ := quo x M * c) ?_
-  ipra_lc 𝔞 c * (natEq (Prf.andE₁ dx) - natEq (Prf.andE₁ dy) + natEq h)
+  ipra_lc 𝔞 c * natEq (eq_add_quo_of_rem_eq hM h)
 
 /-- Multiplication preserves congruence in both factors. -/
 theorem rem_mul_congr_both {M x y x' y' : PTm n} (hM : Γ ⊢[PRAAx] M ≐ succ (pred M))
