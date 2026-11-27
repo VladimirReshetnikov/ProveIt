@@ -599,6 +599,26 @@ theorem multiply_one_left (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x
   GaussianNameEquivalence.cross_trans _ _ _ _ _ _
     (multiply_commutative oneF f x x (one_fast x) hf) (multiply_one f x hf)
 
+/-- A name equivalent to one can be dropped from the left of a product. -/
+theorem multiply_unit_left (u f : PR 2) (a x anchor : PTm n)
+    (hu : Γ ⊢[PRAAx] pointCN u a) (hf : Γ ⊢[PRAAx] pointCN f x)
+    (h : Γ ⊢[PRAAx] crossEquivalent u oneF a anchor) :
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF u f) f (multiplyData u f a x) x := by
+  have unitAt := GaussianNameEquivalence.cross_trans u oneF oneF a anchor x h (one_name_cross anchor x)
+  have product := GaussianNameArithmetic.multiply_equivalent u oneF f f a x x x hu (one_fast x) hf hf
+    (GaussianNameEquivalence.cross_to_diagonal _ _ _ _ unitAt) (GaussianNameEquivalence.diagonal_refl f x)
+  exact GaussianNameEquivalence.cross_trans _ _ _ _ _ _ product (multiply_one_left f x hf)
+
+/-- A name equivalent to one can be dropped from the right of a product. -/
+theorem multiply_unit_right (f u : PR 2) (x a anchor : PTm n)
+    (hf : Γ ⊢[PRAAx] pointCN f x) (hu : Γ ⊢[PRAAx] pointCN u a)
+    (h : Γ ⊢[PRAAx] crossEquivalent u oneF a anchor) :
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF f u) f (multiplyData f u x a) x := by
+  have unitAt := GaussianNameEquivalence.cross_trans u oneF oneF a anchor x h (one_name_cross anchor x)
+  have product := GaussianNameArithmetic.multiply_equivalent f f u oneF x x a x hf hf hu (one_fast x)
+    (GaussianNameEquivalence.diagonal_refl f x) (GaussianNameEquivalence.cross_to_diagonal _ _ _ _ unitAt)
+  exact GaussianNameEquivalence.cross_trans _ _ _ _ _ _ product (multiply_one f x hf)
+
 theorem right_distributive (f g h : PR 2) (x y z : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y)
     (hh : Γ ⊢[PRAAx] pointCN h z) : Γ ⊢[PRAAx]

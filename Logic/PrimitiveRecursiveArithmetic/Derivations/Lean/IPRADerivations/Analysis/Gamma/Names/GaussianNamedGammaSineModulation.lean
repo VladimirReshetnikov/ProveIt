@@ -66,11 +66,9 @@ theorem factor_proper (c s t : PR 2) (a y z : PTm n) (hc : Γ ⊢[PRAAx] pointCN
     (multiply_cross c c s t a a y z hc hc hs ht (cross_refl _ _ hc) he)
 
 theorem product_constant_one (f : PR 2) (x : PTm n) (hx : Γ ⊢[PRAAx] pointCN f x) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF f constantF) f (multiplyData f constantF x qone) x := by
-  have e := GaussianArctangentExponentialPeriod.constant_one_cross (Γ := Γ) x
-  have mid := multiply_cross f f constantF oneF x x qone x hx hx (constant_regular _) (one_fast x)
-    (cross_refl _ _ hx) e
-  exact cross_trans _ _ _ _ _ _ mid (multiply_one _ _ hx)
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF f constantF) f (multiplyData f constantF x qone) x :=
+  GaussianNameRingLaws.multiply_unit_right f constantF x qone x hx (constant_regular _)
+    (GaussianNameRingLaws.constant_one_cross x)
 
 theorem factor_at_zero (c s : PR 2) (a y x : PTm n)
     (hc : Γ ⊢[PRAAx] pointCN c a) (hs : Γ ⊢[PRAAx] pointCN s y)

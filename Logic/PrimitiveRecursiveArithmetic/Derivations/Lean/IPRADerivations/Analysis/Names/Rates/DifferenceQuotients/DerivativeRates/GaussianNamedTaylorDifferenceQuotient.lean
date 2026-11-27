@@ -44,15 +44,10 @@ private theorem cancel_weight (H S : PR 2) (z w a : PTm n)
   let u := nameData a z
   have hj := name_fast H a z hh.andE₁ hh.andE₂
   have grouped := multiply_associative J H S u z w hj hh.andE₁ hs
-  have swapped := multiply_commutative J H u z hj hh.andE₁
-  have one := cross_trans _ _ _ _ _ _ swapped
-    (cross_trans _ _ _ _ _ _ (product_one H a z hh.andE₁ hh.andE₂)
-      (GaussianBoundedInverseApartness.ones_equivalent z w))
-  have linear := multiply_equivalent (multiplyF J H) oneF S S (multiplyData J H u z) w w w
-    (multiply_fast J H u z hj hh.andE₁) (one_fast w) hs hs
-    (cross_to_diagonal _ _ _ _ one) (cross_to_diagonal _ _ _ _ (cross_refl _ _ hs))
-  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ grouped)
-    (cross_trans _ _ _ _ _ _ linear (multiply_one_left S w hs))
+  have cancel := GaussianNameRingLaws.multiply_unit_left (multiplyF J H) S (multiplyData J H u z) w z
+    (multiply_fast J H u z hj hh.andE₁) hs
+    (GaussianNameReciprocal.product_one_left H a z hh.andE₁ hh.andE₂)
+  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ grouped) cancel
 
 theorem quotient_rate (F G H S : PR 2) (x y z w a E D : PTm n)
     (h : Γ ⊢[PRAAx] source F G H S x y z w a E D) :

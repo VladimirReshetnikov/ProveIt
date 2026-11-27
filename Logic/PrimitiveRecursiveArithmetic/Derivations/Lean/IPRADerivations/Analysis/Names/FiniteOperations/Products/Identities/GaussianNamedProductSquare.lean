@@ -54,16 +54,13 @@ theorem square_product (f g : PR 2) (x y : PTm n) (hf : Γ ⊢[PRAAx] pointCN f 
     (cross_trans _ _ _ _ _ _ rewrite (multiply_associative C g g c y y hc hg hg))
 
 theorem right_unit (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF f constantF) f (multiplyData f constantF x qone) x := by
-  have eq : Γ ⊢[PRAAx] crossEquivalent oneF constantF x qone :=
-    cross_trans _ _ _ _ _ _ (GaussianBoundedInverseApartness.ones_equivalent x zero)
-      GaussianGammaEncodingRescaling.one_constant_cross
-  have e := multiply_cross f f constantF oneF x x qone x hf hf (constant_regular _) (one_fast x)
-    (cross_refl _ _ hf) (cross_symm _ _ _ _ eq)
-  exact cross_trans _ _ _ _ _ _ e (multiply_one f x hf)
+    Γ ⊢[PRAAx] crossEquivalent (multiplyF f constantF) f (multiplyData f constantF x qone) x :=
+  GaussianNameRingLaws.multiply_unit_right f constantF x qone x hf (constant_regular _)
+    (GaussianNameRingLaws.constant_one_cross x)
 
 theorem left_unit (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] crossEquivalent (multiplyF constantF f) f (multiplyData constantF f qone x) x :=
-  cross_trans _ _ _ _ _ _ (multiply_commutative constantF f qone x (constant_regular _) hf) (right_unit f x hf)
+  GaussianNameRingLaws.multiply_unit_left constantF f qone x x (constant_regular _) hf
+    (GaussianNameRingLaws.constant_one_cross x)
 
 end LeanProofs.IPRA.Analysis.GaussianNamedProductSquare

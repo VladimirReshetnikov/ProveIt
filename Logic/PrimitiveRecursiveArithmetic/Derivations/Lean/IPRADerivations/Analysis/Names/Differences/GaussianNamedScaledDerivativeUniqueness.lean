@@ -85,11 +85,10 @@ theorem inverse_weight (F : PR 2) (x D s : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (inverse_product D s hD).eqSymm (.eqRefl _) (GaussianNameRingLaws.constant_one_cross x)
   have c := cross_trans (multiplyF constantF constantF) constantF oneF
     (multiplyData constantF constantF a b) (qmul a b) x c₁ c₂
-  have lift := GaussianGammaAdjacentCutoff.multiply_cross (multiplyF constantF constantF) oneF F F
-    (multiplyData constantF constantF a b) x x x (multiply_fast _ _ _ _ ha hb) (one_fast x) hF hF c
-    (GaussianNameEquivalence.cross_refl F x hF)
-  exact cross_trans _ _ _ _ _ _ scaled (cross_trans _ _ _ _ _ _
-    (cross_symm _ _ _ _ assoc) (cross_trans _ _ _ _ _ _ lift (GaussianNameRingLaws.multiply_one_left F x hF)))
+  have reduce := GaussianNameRingLaws.multiply_unit_left (multiplyF constantF constantF) F
+    (multiplyData constantF constantF a b) x x (multiply_fast _ _ _ _ ha hb) hF c
+  exact cross_trans _ _ _ _ _ _ scaled
+    (cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ assoc) reduce)
 
 theorem amplify (F G : PR 2) (x y D C s : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hF : Γ ⊢[PRAAx] pointCN F x) (hG : Γ ⊢[PRAAx] pointCN G y)

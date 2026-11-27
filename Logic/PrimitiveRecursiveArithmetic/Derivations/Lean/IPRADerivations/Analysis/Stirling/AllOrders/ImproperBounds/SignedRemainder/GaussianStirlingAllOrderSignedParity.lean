@@ -56,9 +56,7 @@ theorem oriented_even (m : ℕ) (hm : Even m) (A B x : PTm n) (hs : Γ ⊢[PRAAx
   have hy := error_regular m A B x hs
   have h := cross_trans C C oneF S qone y (constant_equal_cross (Γ := Γ) S _ (orientation_even m hm))
     (GaussianArctangentExponentialPeriod.constant_one_cross y)
-  have mid := multiply_cross C oneF errorF errorF S y y y (constant_regular S) (one_fast y)
-    hy hy h (cross_refl _ _ hy)
-  exact cross_trans _ _ _ _ _ _ mid (multiply_one_left _ _ hy)
+  exact GaussianNameRingLaws.multiply_unit_left C errorF S y y (constant_regular S) hy h
 
 theorem even_bracket (m : ℕ) (hm : Even m) (A B x : PTm n) (hs : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] strictOrder C errorF zeroPoint (errorData m A B x) ⋏

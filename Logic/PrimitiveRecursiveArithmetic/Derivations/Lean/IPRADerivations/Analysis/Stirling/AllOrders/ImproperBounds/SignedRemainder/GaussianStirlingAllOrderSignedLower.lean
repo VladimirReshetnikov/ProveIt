@@ -92,7 +92,6 @@ theorem denominator_scaled_oriented (m : ℕ) (A B x : PTm n) (hs : Γ ⊢[PRAAx
   have hcT := constant_regular (Γ := Γ) T
   have hcS := constant_regular (Γ := Γ) S
   have hcU := constant_regular (Γ := Γ) U
-  have hcV := GaussianNameRingLaws.one_fast (Γ := Γ) W
   have hg := multiply_fast _ _ _ _ hcT hcS
   have hv := multiply_fast _ _ _ _ hg hcU
   have hf := GaussianStirlingAllOrderImproperName.name_regular m A B x hs
@@ -115,10 +114,8 @@ theorem denominator_scaled_oriented (m : ℕ) (A B x : PTm n) (hs : Γ ⊢[PRAAx
     (cross_trans _ _ _ _ _ _ (constant_product gw U)
       (constant_equal_cross _ _ (cancel_orientation_and_denominator m)))
   have cutOne := cross_trans _ _ _ _ _ _ cut (one_constant W)
-  have replace := multiply_cross V GaussianNameRingLaws.oneF F F v W W W hv hcV hf hf cutOne (cross_refl _ _ hf)
-  exact cross_trans _ _ _ _ _ _ b
-    (cross_trans _ _ _ _ _ _ group (cross_trans _ _ _ _ _ _ group'
-      (cross_trans _ _ _ _ _ _ replace (GaussianNameRingLaws.multiply_one_left F W hf))))
+  have reduce := GaussianNameRingLaws.multiply_unit_left V F v W W hv hf cutOne
+  exact cross_trans _ _ _ _ _ _ b (cross_trans _ _ _ _ _ _ group (cross_trans _ _ _ _ _ _ group' reduce))
 
 theorem original_strict_oriented_error_lower (m : ℕ) (A B x : PTm n) (hs : Γ ⊢[PRAAx] source A B) :
     Γ ⊢[PRAAx] strictOrder C orientedF zeroPoint (orientedData m A B x) := by

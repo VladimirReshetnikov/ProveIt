@@ -161,14 +161,9 @@ private theorem cancel_increment (K F G : PR 2) (z a x y : PTm n)
   have unscale (H : PR 2) (u : PTm n) (hu : Γ ⊢[PRAAx] pointCN H u) : Γ ⊢[PRAAx]
       crossEquivalent (multiplyF J (multiplyF K H)) H
         (multiplyData J (multiplyF K H) j (multiplyData K H z u)) u := by
-    have unit := cross_trans _ _ _ _ _ _ (GaussianNameReciprocal.product_one_left K a z hk.andE₁ hk.andE₂)
-      (GaussianBoundedInverseApartness.ones_equivalent z u)
-    have cancel := multiply_equivalent (multiplyF J K) GaussianNameRingLaws.oneF H H
-      (multiplyData J K j z) u u u (multiply_fast J K j z hj hk.andE₁)
-      (GaussianNameRingLaws.one_fast u) hu hu (cross_to_diagonal _ _ _ _ unit)
-      (cross_to_diagonal _ _ _ _ (cross_refl H u hu))
-    exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (multiply_associative J K H j z u hj hk.andE₁ hu))
-      (cross_trans _ _ _ _ _ _ cancel (multiply_one_left H u hu))
+    have cancel := GaussianNameRingLaws.multiply_unit_left (multiplyF J K) H (multiplyData J K j z) u z
+      (multiply_fast J K j z hj hk.andE₁) hu (GaussianNameReciprocal.product_one_left K a z hk.andE₁ hk.andE₂)
+    exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (multiply_associative J K H j z u hj hk.andE₁ hu)) cancel
   have multiplyBoth := multiply_equivalent J J (multiplyF K F) (multiplyF K G)
     j j (multiplyData K F z x) (multiplyData K G z y) hj hj
     (multiply_fast K F z x hk.andE₁ hf) (multiply_fast K G z y hk.andE₁ hg)

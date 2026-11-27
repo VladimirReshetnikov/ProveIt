@@ -73,10 +73,9 @@ theorem fractional_sum (a D b r s : PTm n) (hb : Γ ⊢[PRAAx] le one b)
   have hx := GaussianHarmonicLogarithmName.name_regular a D ha
   have split := GaussianNameRingLaws.right_distributive C C H u v x hu hv hx
   have ce := cross_trans _ _ _ _ _ _ (constant_sum u v qone e) (GaussianNameRingLaws.constant_one_cross x)
-  have lowered := GaussianGammaAdjacentCutoff.multiply_cross (addF C C) oneF H H (addData u v) x x x
-    (add_fast _ _ _ _ hu hv) (one_fast _) hx hx ce (cross_refl _ _ hx)
-  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ split)
-    (cross_trans _ _ _ _ _ _ lowered (multiply_one_left H x hx))
+  have lowered := GaussianNameRingLaws.multiply_unit_left (addF C C) H (addData u v) x x
+    (add_fast _ _ _ _ hu hv) hx ce
+  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ split) lowered
 
 theorem fractional_mono (a d D r b : PTm n) (ha : Γ ⊢[PRAAx] le one a)
     (hD : Γ ⊢[PRAAx] le one D) (had : Γ ⊢[PRAAx] le a d) (hb : Γ ⊢[PRAAx] le one b) :

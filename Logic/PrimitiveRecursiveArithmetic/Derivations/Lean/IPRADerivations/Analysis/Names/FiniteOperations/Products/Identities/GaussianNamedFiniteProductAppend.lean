@@ -115,10 +115,8 @@ theorem singleton_cross (f : PR 3) (g : PR 2) (R L x y : PTm n)
     Γ ⊢[PRAAx] crossEquivalent (nameF f) g (data one R L x) y := by
   let X := data zero R L x
   have h0 := name_regular f zero R L x (empty_bounds (Γ := Γ) f R x) (empty_regular f L x)
-  have h1 : Γ ⊢[PRAAx] crossEquivalent (nameF f) oneF X y :=
-    cross_trans _ _ _ _ _ _ (empty_cross f R L x) (GaussianBoundedInverseApartness.ones_equivalent x y)
-  have product := multiply_cross (nameF f) oneF g g X y y y h0 (one_fast y) hg hg h1 (cross_refl _ _ hg)
+  have product := GaussianNameRingLaws.multiply_unit_left (nameF f) g X y x h0 hg (empty_cross f R L x)
   exact cross_trans _ _ _ _ _ _ (append_cross f g zero R R L L x y (empty_bounds _ _ _) (empty_regular _ _ _)
-    hb hr hg he) (cross_trans _ _ _ _ _ _ product (multiply_one_left g y hg))
+    hb hr hg he) product
 
 end LeanProofs.IPRA.Analysis.GaussianNamedFiniteProductAppend

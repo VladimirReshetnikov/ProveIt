@@ -76,10 +76,8 @@ private theorem cancel_product (D : PR 2) (w h B : PTm n)
     (GaussianNamedDifferenceQuotient.actual_inverse h B hs)
   have hc₁ := cross_trans _ _ _ _ _ _ hc (GaussianArctangentExponentialPeriod.constant_one_cross w)
   have hp := GaussianNameArithmetic.multiply_fast (Γ := Γ) constantF constantF c a (constant_regular c) (constant_regular a)
-  have prod := GaussianGammaAdjacentCutoff.multiply_cross P GaussianNameRingLaws.oneF D D t w w w
-    hp (GaussianNameRingLaws.one_fast w) hd hd hc₁ (cross_refl D w hd)
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ assoc)
-    (cross_trans _ _ _ _ _ _ prod (GaussianNameRingLaws.multiply_one_left D w hd))
+    (GaussianNameRingLaws.multiply_unit_left P D t w w hp hd hc₁)
 
 
 theorem rate (f g D : PR 2) (x y w h B M K : PTm n)

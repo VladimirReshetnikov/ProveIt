@@ -83,11 +83,8 @@ theorem difference (A B D neg N : PTm n) (hD : Γ ⊢[PRAAx] le one D) (hN : Γ 
   have survive := GaussianNamedStrictOrderDifference.sum_sub_right productF productF a b ha hb
   have eq := cross_trans (F productF productF) (F (addF productF productF) productF) productF
     (X c b) (X (addData a b) b) a cancel survive
-  let u := multiplyData oneF logF x x
-  have removeUnit := multiply_cross constantF oneF logF logF qone x x x
-    (constant_regular _) (one_fast _) hx hx (GaussianNameRingLaws.constant_one_cross x) (cross_refl _ _ hx)
-  have unitProduct := cross_trans productF (multiplyF oneF logF) logF a u x removeUnit
-    (multiply_one_left logF x hx)
+  have unitProduct := GaussianNameRingLaws.multiply_unit_left constantF logF qone x x
+    (constant_regular _) hx (GaussianNameRingLaws.constant_one_cross x)
   exact cross_trans (F productF productF) productF logF (X c b) a x eq unitProduct
 
 theorem actual_Euler_logarithm_weighted_unit_shift_closed : ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 5

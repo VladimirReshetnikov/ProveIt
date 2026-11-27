@@ -94,11 +94,10 @@ theorem original_product (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) : Γ ⊢[
     (cross_refl _ _ (constant_regular _)) continuation
   have inverse : Γ ⊢[PRAAx] qmul c e ≐ qone :=
     actual_pole_multiplier_inverse h₀ b one a b j hb (le_refl _) hb margin
-  have scaleOne := GaussianGammaAdjacentCutoff.multiply_cross constantF oneF gammaF gammaF (qmul c e) v v v
-    (constant_regular _) (one_fast _) hv hv
+  have scaleOne := GaussianNameRingLaws.multiply_unit_left constantF gammaF (qmul c e) v v
+    (constant_regular _) hv
     (GaussianNameEquivalence.cross_data_congr constantF oneF qone (qmul c e) v v
       inverse.eqSymm (.eqRefl _) (GaussianNameRingLaws.constant_one_cross v))
-    (cross_refl _ _ hv)
   have terminalEq := terminal_argument (Γ := Γ) a b N
   have terminalCross := GaussianGammaInputProperness.original_Gamma_proper _ _ two b one b hr terminalEq
   have terminalSource := GaussianGammaInputProperness.gamma_source_equal _ _ two b one b hr terminalEq
@@ -108,9 +107,7 @@ theorem original_product (a b N : PTm n) (h : Γ ⊢[PRAAx] guard a b) : Γ ⊢[
     terminalSource positiveSource
   exact cross_trans _ _ _ _ _ _ lift
     (cross_trans _ _ _ _ _ _ (GaussianGammaEulerShift.merge_head gammaF c e v hv)
-      (cross_trans _ _ _ _ _ _ scaleOne
-        (cross_trans _ _ _ _ _ _ (GaussianNameRingLaws.multiply_one_left _ _ hv)
-          (cross_trans _ _ _ _ _ _ terminalCross radiusCross))))
+      (cross_trans _ _ _ _ _ _ scaleOne (cross_trans _ _ _ _ _ _ terminalCross radiusCross)))
 
 theorem actual_original_negative_interval_Gamma_product_closed :
     ([] : List (Fm PTm 0)) ⊢[PRAAx] univ 3

@@ -125,18 +125,11 @@ private theorem inverses_cross (P Q N M : PR 2) (p q u v x y : PTm n)
     Γ ⊢[PRAAx] crossEquivalent N M u v := by
   have hC := multiply_fast Q N q u hQ hN
   have m := multiply_cross P Q N N p q u u hP hQ hN hN he (cross_refl _ _ hN)
-  have c := cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ m)
-    (cross_trans _ _ _ _ _ _ hpn (ones_equivalent x v))
-  have right := cross_trans _ _ _ _ _ _
-    (multiply_cross M M (multiplyF Q N) oneF v v (multiplyData Q N q u) v
-      hM hM hC (one_fast v) (cross_refl _ _ hM) c)
-    (multiply_one M v hM)
+  have c := cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ m) hpn
+  have right := GaussianNameRingLaws.multiply_unit_right M (multiplyF Q N) v (multiplyData Q N q u) x hM hC c
   have assoc := multiply_associative M Q N v q u hM hQ hN
-  have left := cross_trans _ _ _ _ _ _
-    (multiply_cross (multiplyF M Q) oneF N N (multiplyData M Q v q) u u u
-      (multiply_fast _ _ _ _ hM hQ) (one_fast u) hN hN
-      (cross_trans _ _ _ _ _ _ hmq (ones_equivalent y u)) (cross_refl _ _ hN))
-    (multiply_one_left N u hN)
+  have left := GaussianNameRingLaws.multiply_unit_left (multiplyF M Q) N (multiplyData M Q v q) u y
+    (multiply_fast _ _ _ _ hM hQ) hN hmq
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ left) (cross_trans _ _ _ _ _ _ assoc right)
 
 theorem negative_exponential_cross (f g : PR 2) (R S x y : PTm n)

@@ -49,11 +49,9 @@ theorem double (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] pointCN f x) :
     Γ ⊢[PRAAx] crossEquivalent (addF (nameF f) (nameF f)) f (addData (data f x) (data f x)) x := by
   have hh := constant_regular (Γ := Γ) (H : PTm n)
   have split := right_distributive constantF constantF f H H x hh hh hf
-  have replace := multiply_cross (addF constantF constantF) oneF f f (addData H H) x x x
-    (add_fast _ _ _ _ hh hh) (one_fast x) hf hf
-    (GaussianEvenMomentWholeLineValue.half_sum_cross x) (cross_refl _ _ hf)
-  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ split)
-    (cross_trans _ _ _ _ _ _ replace (multiply_one_left f x hf))
+  have shrink := GaussianNameRingLaws.multiply_unit_left (addF constantF constantF) f (addData H H) x x
+    (add_fast _ _ _ _ hh hh) hf (GaussianEvenMomentWholeLineValue.half_sum_cross x)
+  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ split) shrink
 
 theorem real (f : PR 2) (x : PTm n) (hf : Γ ⊢[PRAAx] realSamples f x) :
     Γ ⊢[PRAAx] realSamples (nameF f) (data f x) := by

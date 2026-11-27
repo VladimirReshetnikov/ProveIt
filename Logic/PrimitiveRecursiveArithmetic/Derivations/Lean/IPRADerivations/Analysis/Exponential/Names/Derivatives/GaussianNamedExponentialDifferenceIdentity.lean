@@ -80,10 +80,7 @@ theorem negative_exponential_of_one (f : PR 2) (R x anchor : PTm n)
   let v := data R (negativeData x)
   have hn := GaussianExponentialInverse.negative_input f R x hf
   have ng := name_regular (negativeF f) R (negativeData x) hn
-  have replacement := GaussianGammaAdjacentCutoff.multiply_cross F oneF G G u v v v
-    (name_regular f R x hf) (one_fast v) ng ng
-    (cross_trans _ _ _ _ _ _ he (ones_equivalent anchor v)) (cross_refl _ _ ng)
-  have reduce := cross_trans _ _ _ _ _ _ replacement (GaussianNameRingLaws.multiply_one_left G v ng)
+  have reduce := GaussianNameRingLaws.multiply_unit_left F G u v anchor (name_regular f R x hf) ng he
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ reduce)
     (cross_trans _ _ _ _ _ _ (GaussianExponentialInverse.exponential_inverse f R x hf) (ones_equivalent x anchor))
 

@@ -159,18 +159,11 @@ theorem reciprocal_matches_inverse (f g : PR 2) (h x y : PTm n)
   have hi : Γ ⊢[PRAAx] pointCN I D := GaussianNameReciprocal.name_fast f h x hf ha
   have ig := multiply_fast I f D x hi hf
   have fg := multiply_fast f g x y hf hg
-  have one := one_fast (Γ := Γ) D
-  have oneY := one_fast (Γ := Γ) y
-  have a := multiply_equivalent I I (multiplyF f g) oneF D D (multiplyData f g x y) D hi hi fg one
-    (diagonal_refl I D) (cross_to_diagonal _ _ _ _ (cross_trans _ _ _ _ _ _ he (ones_equivalent x D)))
-  have left := cross_trans _ _ _ _ _ _ a (GaussianNameRingLaws.multiply_one I D hi)
-  have b := multiply_equivalent (multiplyF I f) oneF g g (multiplyData I f D x) y y y ig oneY hg hg
-    (cross_to_diagonal _ _ _ _
-      (cross_trans _ _ _ _ _ _ (GaussianNameReciprocal.product_one_left f h x hf ha) (ones_equivalent x y)))
-    (diagonal_refl g y)
+  have left := GaussianNameRingLaws.multiply_unit_right I (multiplyF f g) D (multiplyData f g x y) x hi fg he
+  have right := GaussianNameRingLaws.multiply_unit_left (multiplyF I f) g (multiplyData I f D x) y x ig hg
+    (GaussianNameReciprocal.product_one_left f h x hf ha)
   exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ left)
-    (cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (GaussianNameRingLaws.multiply_associative I f g D x y hi hf hg))
-      (cross_trans _ _ _ _ _ _ b (GaussianNameRingLaws.multiply_one_left g y hg)))
+    (cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (GaussianNameRingLaws.multiply_associative I f g D x y hi hf hg)) right)
 
 theorem bounded_inverse_correct (f g : PR 2) (x y A B : PTm n) (hA : Γ ⊢[PRAAx] le one A)
     (hB : Γ ⊢[PRAAx] le one B)
