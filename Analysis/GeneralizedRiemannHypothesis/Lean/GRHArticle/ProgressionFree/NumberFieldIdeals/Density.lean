@@ -93,7 +93,7 @@ theorem HasNaturalDensity.mul_image {A : Set (Ideal (𝓞 K))⁰} {d : ℝ} (hA 
     simp [div_eq_mul_inv, mul_assoc]
     left
     rw [mul_left_comm, mul_inv_cancel₀ hp.ne', mul_one]
-  · ring
+  · rw [div_mul_eq_mul_div]
 
 /-- The multiples of a fixed nonzero integral ideal have reciprocal-norm density. -/
 theorem hasNaturalDensity_dvd (J : (Ideal (𝓞 K))⁰) :

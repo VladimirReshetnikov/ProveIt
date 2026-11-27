@@ -62,7 +62,9 @@ import GRHArticle.ProgressionFree.IntegerUpperDensityLowerBound
 import GRHArticle.ProgressionFree.IntegerUpperDensityUpperBound
 import GRHArticle.ProgressionFree.IntegerWheelTail
 import GRHArticle.ProgressionFree.NumberFieldIdeals.Density
+import GRHArticle.ProgressionFree.NumberFieldIdeals.DisjointProducts
 import GRHArticle.ProgressionFree.NumberFieldIdeals.LocalFactors
+import GRHArticle.ProgressionFree.NumberFieldIdeals.UniformCounts
 import GRHArticle.ProgressionFree.NumberFieldIdeals.ValuationCylinders
 import GRHArticle.ProgressionFree.PolynomialBlocks
 import GRHArticle.ProgressionFree.PolynomialBoundedReplacement
