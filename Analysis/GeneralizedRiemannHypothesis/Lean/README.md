@@ -50,6 +50,8 @@ Each entry below identifies the part of the article covered by the Lean statemen
 
 [ModularIntegralExpansions.lean](GRHArticle/SingularModuli/ModularIntegralExpansions.lean) proves integrality of the actual q-expansion of the modular discriminant and constructs an integer power series, with constant coefficient one, converging locally to $qj$.
 
+[HeckeRootOfUnityIntegrality.lean](GRHArticle/SingularModuli/HeckeRootOfUnityIntegrality.lean) proves that the finite formal product over all shifts has integral coefficients by root-of-unity cancellation. [ClearedSeriesPolynomialDescent.lean](GRHArticle/SingularModuli/ClearedSeriesPolynomialDescent.lean) recovers integral polynomial coefficients from an integral cleared power-series evaluation.
+
 The five-term classification still needs the CM reduction, bounds on the conjugates
 to place them in the disks, and finite certificates from the
 [singular-moduli section](../Article/sections/smd.tex).

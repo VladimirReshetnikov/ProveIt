@@ -129,6 +129,7 @@ import GRHArticle.SingularModuli.ClassPolynomialQEnclosure
 import GRHArticle.SingularModuli.ClassPolynomialRealDescent
 import GRHArticle.SingularModuli.ClassPolynomialRootEnclosure
 import GRHArticle.SingularModuli.ClassPolynomialTruncation
+import GRHArticle.SingularModuli.ClearedSeriesPolynomialDescent
 import GRHArticle.SingularModuli.ConductorBound
 import GRHArticle.SingularModuli.ConjugateDisks
 import GRHArticle.SingularModuli.CuspEstimate
@@ -136,6 +137,7 @@ import GRHArticle.SingularModuli.CuspSeparation
 import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.HasseCoefficients
+import GRHArticle.SingularModuli.HeckeRootOfUnityIntegrality
 import GRHArticle.SingularModuli.ModularIntegralExpansions
 import GRHArticle.SingularModuli.ModularInvariantPolynomial
 import GRHArticle.SingularModuli.NewtonValuation
