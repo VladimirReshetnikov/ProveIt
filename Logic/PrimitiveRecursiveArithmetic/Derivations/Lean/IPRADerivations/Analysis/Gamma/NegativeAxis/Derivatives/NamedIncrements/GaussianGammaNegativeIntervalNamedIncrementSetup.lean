@@ -35,21 +35,8 @@ local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk Γ t)
 
 theorem increment_cross (f K : PR 2) (x z : PTm n)
     (hf : Γ ⊢[PRAAx] pointCN f x) (hk : Γ ⊢[PRAAx] pointCN K z) :
-    Γ ⊢[PRAAx] crossEquivalent (diffF (sumF f K) f) K (diffData (sumData x z) x) z := by
-  let H := negativeF f
-  let w := negativeData x
-  let F := addF f H
-  let u := addData x w
-  have hh := negative_fast f x hf
-  have turn := add_cross (addF f K) (addF K f) H H (addData x z) (addData z x) w w
-    (add_fast _ _ _ _ hf hk) (add_fast _ _ _ _ hk hf) hh hh
-    (add_commutative f K x z hf hk) (cross_refl H w hh)
-  have assoc := add_associative K f H z x w hk hf hh
-  have cancel := cross_trans F zeroF zeroF u x z (add_negative f x hf) (GaussianNameRingLaws.zero_name_cross x z)
-  have move := add_cross K K F zeroF z z u z hk hk (add_fast _ _ _ _ hf hh)
-    (zero_fast z) (cross_refl K z hk) cancel
-  exact cross_trans _ _ _ _ _ _ turn
-    (cross_trans _ _ _ _ _ _ assoc (cross_trans _ _ _ _ _ _ move (GaussianNameRingLaws.add_zero K z hk)))
+    Γ ⊢[PRAAx] crossEquivalent (diffF (sumF f K) f) K (diffData (sumData x z) x) z :=
+  GaussianNamedDifference.add_sub_cancel_left f K x z hf hk
 
 private theorem unit_le_euler_modulus (p j R A : PTm n) :
     Γ ⊢[PRAAx] le (unit p) (GaussianEulerLogarithmicContinuity.modulus p j R A) := by

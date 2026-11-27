@@ -159,7 +159,7 @@ theorem finite_sharp_degree_bound (z R B N r L J : PTm n)
     ipra_qfind (le_QF _ _) [subst_prefixBound]
     · exact prefix_zero z R B N L J h.andE₂.andE₁
     · exact prefix_step _ _ _ _ _ _ _ hs.wk Prf.hyp0
-  simpa only [subst_prefixBound,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE r
+  ipra_simpa_inst [subst_prefixBound] using hall.allE r
 
 theorem finite_uniform_degree_bound (z R B N r L J : PTm n)
     (h : Γ ⊢[PRAAx] GaussianGammaCanonicalTailName.source z R B N) : Γ ⊢[PRAAx]

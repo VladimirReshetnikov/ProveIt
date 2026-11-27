@@ -74,7 +74,7 @@ theorem numerator_comparison (K a d b r s : PTm n) :
     · exact
         numerator_comparison_zero a d b r s
     · exact numerator_comparison_succ _ _ _ _ _ _ Prf.hyp0
-  simpa only [subst_compareNumerators,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE K
+  ipra_simpa_inst [subst_compareNumerators] using hall.allE K
 
 theorem denominator_power_scale (N b P : PTm n) : Γ ⊢[PRAAx]
     pw (denominator N (P*b)) P ≐ pw (pw P P) (succ N) * pw (denominator N b) P := by

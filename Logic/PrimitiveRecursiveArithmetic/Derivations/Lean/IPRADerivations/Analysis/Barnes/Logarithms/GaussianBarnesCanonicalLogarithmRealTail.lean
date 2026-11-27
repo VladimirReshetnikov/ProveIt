@@ -48,7 +48,7 @@ private theorem real_power (z k : PTm n) (hz : Γ ⊢[PRAAx] realCode z) : Γ �
       have hx := ZT.toZ_eq (hs.wk : motive :: Δ ⊢[PRAAx] realCode Z)
       rw [im_mul,hi,hx]
       simp
-  simpa only [motive,Z,subst_realCode,ComplexLogarithmRemainder.subst_power,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using p.allE k
+  ipra_simpa_inst [motive,Z,subst_realCode,ComplexLogarithmRemainder.subst_power] using p.allE k
 
 private theorem real_series (z D k : PTm n) (hz : Γ ⊢[PRAAx] realCode z) : Γ ⊢[PRAAx] realCode (series z D k) := by
   let Z := Syn.shift z
@@ -71,7 +71,7 @@ private theorem real_series (z D k : PTm n) (hz : Γ ⊢[PRAAx] realCode z) : Γ
         (ComplexLogarithmRemainder.neg (ComplexLogarithmRemainder.scale (Products.fact (var 0+two)) (power w (var 0+three)))))) = _
       rw [im_add,im_neg,im_scale,im_scale,hi,hr]
       simp
-  simpa only [motive,Z,E,subst_realCode,ComplexLogarithmRemainder.subst_series,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using p.allE k
+  ipra_simpa_inst [motive,Z,E,subst_realCode,ComplexLogarithmRemainder.subst_series] using p.allE k
 
 private theorem rounded_real (z D U : PTm n) (hz : Γ ⊢[PRAAx] realCode z) :
     Γ ⊢[PRAAx] realCode (DyadicComplexLogarithm.rounded z D U) := by

@@ -46,7 +46,7 @@ theorem derivative_power_bound (R j : PTm n) : Γ ⊢[PRAAx] derivativeLaw R j :
     ipra_qfind (le_QF _ _) [subst_derivativeLaw]
     · exact derivative_zero (Γ := Γ) R
     · exact derivative_step _ _ Prf.hyp0
-  simpa only [subst_derivativeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+  ipra_simpa_inst [subst_derivativeLaw] using all.allE j
 
 def factor (R K : PTm n) : PTm n := pw (R+two) K
 ipra_subst factor
@@ -105,7 +105,7 @@ theorem scalar_sum_lipschitz (u v R A B K : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     ipra_qfind (le_QF _ _) [subst_boundLaw]
     · exact bound_zero u v R A B hB
     · exact bound_step _ _ _ _ _ _ bs.wk us.wk vs.wk ds.wk Prf.hyp0
-  simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
+  ipra_simpa_inst [subst_boundLaw] using all.allE K
 
 def clockLaw (R K : PTm n) : Fm PTm n := le (factor R K) (pw two ((R+two)*K))
 ipra_subst clockLaw
@@ -121,7 +121,7 @@ theorem factor_binary_bound (R K : PTm n) : Γ ⊢[PRAAx] clockLaw R K := by
     ipra_qfind (le_QF _ _) [subst_clockLaw]
     · exact clock_zero (Γ := Γ) R
     · exact clock_step _ _ Prf.hyp0
-  simpa only [subst_clockLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE K
+  ipra_simpa_inst [subst_clockLaw] using all.allE K
 
 def factorF : PR 2 := PTm.toPR (factor (var 0) (var 1))
 def run (R K : PTm n) : PTm n := ap2 factorF R K

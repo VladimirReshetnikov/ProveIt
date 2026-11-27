@@ -90,7 +90,7 @@ theorem prefix_represents (z B N r L j : PTm n) (hB : Γ ⊢[PRAAx] le one B) (h
     · exact prefix_zero (Γ := Γ) z B N r L
     · exact prefix_step _ _ _ _ _ _ bs.wk Prf.hyp0
   have atj : Γ ⊢[PRAAx] prefixLaw z B N r L j := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE j
+    ipra_simpa_inst [subst_prefixLaw] using all.allE j
   exact .impE atj hj
 
 /-- Literal CODE equality of normalized outputs, with actual denominators. -/

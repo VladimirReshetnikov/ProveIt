@@ -104,8 +104,7 @@ theorem quadratic_bound (z h R B k H : PTm n) (hs : Γ ⊢[PRAAx] source z h R B
   have hJ := positive_product _ _ hkd hd
   have h2 : Γ ⊢[PRAAx] le one two := zero_lt_succ one
   have ah : Γ ⊢[PRAAx] bounded a H d :=
-    bounded_of_cleared _ _ _ _ _ hd hd (ofGaussian_represents h d hd)
-      (le_congr (.eqRefl _) (by simp only [d]; ipra_ring) (le_mul_mono (le_refl (d*d)) hs.andE₂.andE₂.andE₁))
+    GaussianRationalMetric.bounded_of_same_denominator hd (ofGaussian_represents h d hd) hs.andE₂.andE₂.andE₁
   have bh : Γ ⊢[PRAAx] bounded b (two*H) d := relative_bound z h R B k H hs
   have ch : Γ ⊢[PRAAx] bounded c U (k*d) :=
     bound_congr (step_difference z h R B k H hs).eqSymm (.eqRefl _) (.eqRefl _)

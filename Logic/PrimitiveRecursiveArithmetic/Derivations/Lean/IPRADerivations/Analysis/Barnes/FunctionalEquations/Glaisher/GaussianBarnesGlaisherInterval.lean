@@ -123,7 +123,7 @@ theorem finite_estimate (p N r : PTm n) (hN : Γ ⊢[PRAAx] le two N) : Γ ⊢[P
     ipra_qfind (by simp [estimate,distanceBounded,GaussianRationalMetric.bounded,RationalArgmin.rationalLE,le_QF]) [subst_estimate]
     · exact estimate_zero p N h1
     · exact estimate_succ (Syn.shift p) (Syn.shift N) (var 0) hs.wk Prf.hyp0
-  simpa only [subst_estimate,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
+  ipra_simpa_inst [subst_estimate] using all.allE r
 
 theorem uniform_interval (p N r : PTm n) (hN : Γ ⊢[PRAAx] le two N) :
     Γ ⊢[PRAAx] distanceBounded (sample p (N+r)) (sample p N)

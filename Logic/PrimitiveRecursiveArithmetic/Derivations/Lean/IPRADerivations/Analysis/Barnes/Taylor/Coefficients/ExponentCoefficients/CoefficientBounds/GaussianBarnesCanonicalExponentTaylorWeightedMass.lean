@@ -152,7 +152,7 @@ private def prefixLaw (C d A i : PTm n) : Fm PTm n :=
 private theorem entry_at (C d A i : PTm n)
     (h : Γ ⊢[PRAAx] .all (entryLaw (Syn.shift C) (Syn.shift d) (Syn.shift A) (var 0))) :
     Γ ⊢[PRAAx] entryLaw C d A i := by
-  simpa only [subst_entryLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+  ipra_simpa_inst [subst_entryLaw] using h.allE i
 
 private theorem prefix_step (C d A i : PTm n) (hi : Γ ⊢[PRAAx] le (succ i) d)
     (h : Γ ⊢[PRAAx] entryLaw C d A i) (ih : Γ ⊢[PRAAx] prefixLaw C d A i) :
@@ -186,7 +186,7 @@ private theorem prefix_bound (C d A : PTm n)
           (le_congr (mul_zero _).eqSymm (.eqRefl _) (zero_le (A*one))))
     · exact .impI (prefix_step _ _ _ _ Prf.hyp0 (entry_at _ _ _ _ es.wk.wk) Prf.hyp1)
   have atD : Γ ⊢[PRAAx] prefixLaw C d A d := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE d
+    ipra_simpa_inst [subst_prefixLaw] using all.allE d
   have eq : Γ ⊢[PRAAx] majorant A (monus d d) ≐ fraction A one :=
     RationalNonnegativePowers.fraction_congr (.eqRefl _)
       ((congrAp2 powF (monus_self d) (.eqRefl _)).eqTrans (pw_zero _))

@@ -102,8 +102,7 @@ theorem exponent_sample_bound (p a b A D B : PTm n) (hB : Γ ⊢[PRAAx] le one B
 
 private theorem native_step_bound (h H B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hh : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded h H) : Γ ⊢[PRAAx] bounded (ofGaussian h B) H B :=
-  GaussianRationalMetric.bounded_of_cleared _ _ _ _ _ hB hB (ofGaussian_represents h B hB)
-    (le_congr (.eqRefl _) (mul_comm _ _) (le_mul_mono (le_refl (B*B)) hh))
+  GaussianRationalMetric.bounded_of_same_denominator hB (ofGaussian_represents h B hB) hh
 
 theorem increment_sample_bound (p z h R B H : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B))

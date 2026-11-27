@@ -118,7 +118,7 @@ theorem numerator_gap (N a d b : PTm n) : Γ ⊢[PRAAx] numeratorComparison N a 
     · exact
         numerator_base a d b
     · exact numerator_step _ _ _ _ Prf.hyp0
-  simpa only [subst_numeratorComparison,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE N
+  ipra_simpa_inst [subst_numeratorComparison] using hall.allE N
 
 def headComparison (N a d b : PTm n) : Fm PTm n :=
   le ((pw (denominator N (two*b)) two*large a d)*(numerator (succ N) a b*numerator (succ N) d b))

@@ -85,8 +85,7 @@ theorem argument_bound (z R B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
 theorem step_bound (h B H : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hh : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded h H) :
     Γ ⊢[PRAAx] bounded (ofGaussian h B) H B :=
-  bounded_of_cleared _ _ _ _ _ hB hB (ofGaussian_represents h B hB)
-    (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right (B*B) hh))
+  GaussianRationalMetric.bounded_of_same_denominator hB (ofGaussian_represents h B hB) hh
 
 theorem value_bound (z R B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) :

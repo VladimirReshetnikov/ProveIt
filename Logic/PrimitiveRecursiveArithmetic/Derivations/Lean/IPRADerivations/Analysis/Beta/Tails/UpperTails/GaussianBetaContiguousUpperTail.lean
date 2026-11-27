@@ -104,10 +104,8 @@ theorem original_grid_from_quarter_decay_bound (p q k A S z R B N T U V : PTm n)
 
 theorem actual_quarter_sample_bound (q N : PTm n) : Γ ⊢[PRAAx]
     bounded (quarterSample q N) (sampleNumerator q N) (sampleDenominator q N) :=
-  GaussianRationalMetric.bounded_of_cleared _ _ _ _ _ (raw_den_positive _) (raw_den_positive _) (raw_represents _)
-    (le_congr (by ipra_ring) (.eqRefl _)
-      (mul_le_mul_right (sampleDenominator q N*sampleDenominator q N)
-        (GaussianL1.normSq_le_norm1_square (rawGaussian (quarterSample q N)))))
+  GaussianRationalMetric.bounded_of_same_denominator (raw_den_positive _) (raw_represents _)
+    (GaussianL1.normSq_le_norm1_square (rawGaussian (quarterSample q N)))
 
 /-- Source only, retaining the decoded magnitude of the SAME actual
 original decay sample at N/4. Its coefficient is exactly one D_R. -/

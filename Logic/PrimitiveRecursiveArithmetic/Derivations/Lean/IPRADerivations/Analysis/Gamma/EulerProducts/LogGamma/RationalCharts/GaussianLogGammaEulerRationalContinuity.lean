@@ -86,15 +86,12 @@ private theorem weighted_bound (p A B neg a b sign D H K C : PTm n)
     Γ ⊢[PRAAx] bounded (ap2 weightedF p (weightedData A B neg a b sign D)) (H*bound C K) D := by
   let w := step A B neg a b sign D
   let x := slopeData A B D neg
-  let δ := GaussianRootAlgebra.sub (native a b sign) (native A B neg)
   let t := GaussianFastValueCut.exponent (multiplyModulus constantF S w x) p
   have hD := h.andE₁.andE₂
   have hK := h.andE₂.andE₂.andE₂.andE₁
   have hMargin := h.andE₂.andE₂.andE₂.andE₂.andE₁
   have disp : Γ ⊢[PRAAx] bounded w H D :=
-    bounded_of_cleared w δ D H D hD hD (step_represents A B neg a b sign D hD)
-      (le_congr (.eqRefl _) (by ipra_ring)
-        (le_mul_mono (le_refl (D*D)) h.andE₂.andE₂.andE₁))
+    GaussianRationalMetric.bounded_of_same_denominator hD (step_represents A B neg a b sign D hD) h.andE₂.andE₂.andE₁
   have slope := GaussianLogGammaEulerReciprocalSlopeBound.canonical_at t A B D neg C K
     (source_disk A B neg a b sign D H K C h) hK hMargin
   let product := qmul w (ap2 S t x)

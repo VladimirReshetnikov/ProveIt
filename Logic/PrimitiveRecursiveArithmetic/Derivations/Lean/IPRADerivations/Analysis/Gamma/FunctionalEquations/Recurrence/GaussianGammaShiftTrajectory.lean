@@ -62,8 +62,7 @@ theorem point_native (z B i : PTm n) : Γ ⊢[PRAAx] equal (point z B i) (transl
         GaussianGammaEulerHeadLower.subst_translated]
     · exact equal_trans (equal_of_code (point_zero z B)) (equal_symm (GaussianGammaEulerHeadLower.translated_zero z B))
     · exact point_native_step _ _ _ Prf.hyp0
-  simpa only [GaussianRootAlgebra.subst_equal,subst_point,GaussianGammaEulerHeadLower.subst_translated,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE i
+  ipra_simpa_inst [GaussianRootAlgebra.subst_equal,subst_point,GaussianGammaEulerHeadLower.subst_translated] using hall.allE i
 
 theorem point_source_zero (z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     source (point z B zero) (R+zero) B := by
@@ -89,8 +88,7 @@ theorem point_source (z R B i : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢
     ipra_qfind (⟨trivial,⟨trivial,trivial⟩⟩) [GaussianGammaCanonicalExponent.subst_source, subst_point]
     · exact point_source_zero z R B h
     · exact point_source_step _ _ _ _ Prf.hyp0
-  simpa only [GaussianGammaCanonicalExponent.subst_source,subst_point,PTm.subst_add,
-    Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using hall.allE i
+  ipra_simpa_inst [GaussianGammaCanonicalExponent.subst_source,subst_point,PTm.subst_add] using hall.allE i
 
 /-- The stored trajectory normalizes to the literal rising linear factor. -/
 theorem point_linear (z B i : PTm n) (hB : Γ ⊢[PRAAx] le one B) : Γ ⊢[PRAAx]

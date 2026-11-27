@@ -101,7 +101,7 @@ theorem tail_bound (q N B k : PTm n) (hq : Γ ⊢[PRAAx] bounded q B one) : Γ �
     ipra_qfind (le_QF _ _) [subst_boundLaw]
     · exact bound_zero q N B
     · exact bound_step (Syn.shift q) (Syn.shift N) (Syn.shift B) (var 0) hs.wk Prf.hyp0
-  simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  ipra_simpa_inst [subst_boundLaw] using all.allE k
 
 def cutoff (B p : PTm n) : PTm n := ExponentialTail.Nt B p
 def precisionDenominator (p : PTm n) : PTm n := pw two (p+num 3)
@@ -145,7 +145,7 @@ theorem prefix_split (q N k : PTm n) : Γ ⊢[PRAAx] splitLaw q N k := by
     ipra_qfind [subst_splitLaw]
     · exact split_zero q N
     · exact split_step (Syn.shift q) (Syn.shift N) (var 0) Prf.hyp0
-  simpa only [subst_splitLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  ipra_simpa_inst [subst_splitLaw] using all.allE k
 
 theorem prefix_difference (q N k : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalMetric.qsub (scalarPrefix q (N+k)) (scalarPrefix q N) ≐ tail q N k :=

@@ -101,7 +101,7 @@ theorem raw_order (p a b N : PTm n) (hN : Γ ⊢[PRAAx] le one N) :
     · exact .impI (raw_step _ _ _ _ _ ns.wk.wk Prf.hyp0
         (Prf.hyp1.impE (le_trans (le_succ_self _) Prf.hyp0)))
   have e : Γ ⊢[PRAAx] sumLaw p a b N N := by
-    simpa only [subst_sumLaw,sh,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using out.allE N
+    ipra_simpa_inst [subst_sumLaw,sh] using out.allE N
   exact rationalLE_congr (.eqRefl _) (congrFst (constant_sum (observed p a b N) N)) (e.impE (le_refl N))
 
 private def budget (a b N : PTm n) : PTm n :=

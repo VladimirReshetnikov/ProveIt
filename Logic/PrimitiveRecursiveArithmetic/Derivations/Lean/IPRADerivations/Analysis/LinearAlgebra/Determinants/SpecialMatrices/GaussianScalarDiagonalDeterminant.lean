@@ -78,8 +78,7 @@ theorem weight_prefix (d t k : PTm n) (hk : Γ ⊢[PRAAx] le k t) : Γ ⊢[PRAAx
         ((qmul_congr (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
           ((weight_body_at _ _ _).eqTrans (weight_upper _ _ _ Prf.hyp0))).eqTrans (power_succ _ _).eqSymm)
   have rule : Γ ⊢[PRAAx] le k t ⟶ weightProduct d t k ≐ power d k := by
-    simpa only [Fm.subst_imp,Fm.subst_eq,subst_le,subst_weightProduct,GaussianRationalReciprocal.subst_power,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+    ipra_simpa_inst [Fm.subst_imp,Fm.subst_eq,subst_le,subst_weightProduct,GaussianRationalReciprocal.subst_power] using all.allE k
   exact .impE rule hk
 
 theorem weight_tail (d t k : PTm n) : Γ ⊢[PRAAx]

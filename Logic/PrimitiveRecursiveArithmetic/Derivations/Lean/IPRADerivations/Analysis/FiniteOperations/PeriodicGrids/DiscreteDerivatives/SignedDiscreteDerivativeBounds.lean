@@ -48,16 +48,14 @@ theorem floor_at (b : ZB) (x L E i : PTm n)
     (h : Γ ⊢[PRAAx] floorOn b x L E) (hi : Γ ⊢[PRAAx] lt i L) :
     Γ ⊢[PRAAx] zle (-ZT.ofNat E) (b.val i x) := by
   have u : Γ ⊢[PRAAx] lt i L ⟶ zle (-ZT.ofNat E) (b.val i x) := by
-    simpa only [floorOn,Fm.subst_imp,subst_lt,subst_order,subst_val,ZT.subst_neg,ZT.subst_ofNat,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [floorOn,Fm.subst_imp,subst_lt,subst_order,subst_val,ZT.subst_neg,ZT.subst_ofNat] using h.allE i
   exact .impE u hi
 
 theorem band_at (b : ZB) (x L E i : PTm n)
     (h : Γ ⊢[PRAAx] bandOn b x L E) (hi : Γ ⊢[PRAAx] lt i L) :
     Γ ⊢[PRAAx] band (b.val i x) E := by
   have u : Γ ⊢[PRAAx] lt i L ⟶ band (b.val i x) E := by
-    simpa only [bandOn,Fm.subst_imp,subst_lt,subst_band,subst_val,Syn.subst_var,Syn.inst_zero,
-      Syn.subst_inst_shift] using h.allE i
+    ipra_simpa_inst [bandOn,Fm.subst_imp,subst_lt,subst_band,subst_val] using h.allE i
   exact .impE u hi
 
 private theorem sum_order (b c : ZB) (x y M : PTm n)

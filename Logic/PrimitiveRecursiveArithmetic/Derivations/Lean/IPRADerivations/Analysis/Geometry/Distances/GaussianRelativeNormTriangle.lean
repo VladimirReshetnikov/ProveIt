@@ -150,8 +150,7 @@ theorem term_bound_at (f g : PR 2) (N R x k : PTm n)
     (h : Γ ⊢[PRAAx] termBounds f g N R x) (hk : Γ ⊢[PRAAx] lt k N) : Γ ⊢[PRAAx]
     le (normSq (ap2 f k x)) (ap2 g k x*ap2 g k x*R) := by
   have rule : Γ ⊢[PRAAx] lt k N ⟶ le (normSq (ap2 f k x)) (ap2 g k x*ap2 g k x*R) := by
-    simpa only [termBounds,Fm.subst_imp,subst_lt,subst_le,ComplexLogarithmRemainder.subst_normSq,subst_ap2,PTm.subst_mul,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using h.allE k
+    ipra_simpa_inst [termBounds,Fm.subst_imp,subst_lt,subst_le,ComplexLogarithmRemainder.subst_normSq,subst_ap2,PTm.subst_mul] using h.allE k
   exact .impE rule hk
 
 theorem sum_prefix_zero (f g : PR 2) (R x : PTm n) : Γ ⊢[PRAAx]
@@ -181,7 +180,7 @@ theorem sum_prefix (f g : PR 2) (N R x k : PTm n)
       exact sum_prefix_step f g _ _ _ _ hs.wk.wk Prf.hyp0
         (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
   have rule : Γ ⊢[PRAAx] prefixLaw f g N R x k := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+    ipra_simpa_inst [subst_prefixLaw] using all.allE k
   exact .impE rule hk
 
 theorem finite_sum_bound (f g : PR 2) (N R x : PTm n)

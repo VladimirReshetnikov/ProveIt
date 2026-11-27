@@ -232,27 +232,22 @@ theorem cnt_meet {lo wk wl M Ql Q'l R G α γ β s : PTm n} (hM : Γ ⊢[PRAAx] 
       (Syn.shift lo) (Syn.shift (lo + wk)) (Syn.shift wl) (Syn.shift (tup M Q'l (fact R * G) α γ β))
     exact (mt_c2 _ _).eqTrans (congrMul p3 (c2_bit _ _).eqSymm)
   have hM1 := Common.pos_shift hM
-  have hQl1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Q'l) (Syn.shift Ql) := by
-    simpa [Fm.shift, Syn.shift] using hQl.shift
-  have hQR1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Ql) (Syn.shift R) := by
-    simpa [Fm.shift, Syn.shift] using hQR.shift
+  have hQl1 := Order.shift_le hQl
+  have hQR1 := Order.shift_le hQR
   have hw1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Ql * Syn.shift Ql * Syn.shift s)
       (fact (Syn.shift R) * Syn.shift G) := by
-    simpa [Fm.shift, Syn.shift] using hw.shift
+    simpa [Syn.shift] using Order.shift_le hw
   have e2 := sep_count A2 c2 (N := monus Ql Q'l * M) (a := lo) (s := s) (lam := wk + wl)
     (y := Wt lo (lo + wk) wl (tup M Q'l (fact R * G) α γ β)) hs ?_ ?_
   · exact le_congr e1.eqSymm (.eqRefl _) (by ipra_le 𝔞 wl * sl e2)
   · -- separation of the meeting members
     intro Δ i j hsub hij hj
-    have hM2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] Syn.shift (Syn.shift M) ≐
-        succ (pred (Syn.shift (Syn.shift M))) := by simpa [Fm.shift, Syn.shift] using hM1.shift
-    have hQl2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le (Syn.shift (Syn.shift Q'l)) (Syn.shift (Syn.shift Ql)) := by
-      simpa [Fm.shift, Syn.shift] using hQl1.shift
-    have hQR2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le (Syn.shift (Syn.shift Ql)) (Syn.shift (Syn.shift R)) := by
-      simpa [Fm.shift, Syn.shift] using hQR1.shift
+    have hM2 := Common.pos_shift hM1
+    have hQl2 := Order.shift_le hQl1
+    have hQR2 := Order.shift_le hQR1
     have hw2 : (Γ.map Fm.shift).map Fm.shift ⊢[PRAAx] le (Syn.shift (Syn.shift Ql) * Syn.shift (Syn.shift Ql) *
         Syn.shift (Syn.shift s)) (fact (Syn.shift (Syn.shift R)) * Syn.shift (Syn.shift G)) := by
-      simpa [Fm.shift, Syn.shift] using hw1.shift
+      simpa [Syn.shift] using Order.shift_le hw1
     rw [show Syn.shift (Syn.shift (monus Ql Q'l * M)) = monus (Syn.shift (Syn.shift Ql)) (Syn.shift (Syn.shift Q'l)) *
       Syn.shift (Syn.shift M) by simp [Syn.shift]] at hj
     rw [show Syn.shift (Syn.shift (Wt lo (lo + wk) wl (tup M Q'l (fact R * G) α γ β))) =
@@ -363,14 +358,12 @@ theorem overlap_bound {M Qk Q'k Ql Q'l R G wk wl α γ β s T' : PTm n} (hM : Γ
     exact congrMul (fst_pair _ _) (congrSg (congrInst2 actK (.eqRefl _) (snd_pair _ _)))
   refine le_trans ?_ (le_congr (.eqRefl _) eR (le_refl _))
   have hM1 := Common.pos_shift hM
-  have hQl1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Q'l) (Syn.shift Ql) := by
-    simpa [Fm.shift, Syn.shift] using hQl.shift
-  have hQR1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Ql) (Syn.shift R) := by
-    simpa [Fm.shift, Syn.shift] using hQR.shift
+  have hQl1 := Order.shift_le hQl
+  have hQR1 := Order.shift_le hQR
   have hs1 := Common.pos_shift hs
   have hw1 : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift Ql * Syn.shift Ql * Syn.shift s)
       (fact (Syn.shift R) * Syn.shift G) := by
-    simpa [Fm.shift, Syn.shift] using hw.shift
+    simpa [Syn.shift] using Order.shift_le hw
   refine sum_le_params _ _ _ _ _ (.allI (.impI ?_))
   let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift (monus Qk Q'k * M)) :: Γ.map Fm.shift
   rw [show Syn.shift (pairT (monus Ql Q'l * M) (pairT (pairT wk (tup M Q'k (fact R * G) α γ β))

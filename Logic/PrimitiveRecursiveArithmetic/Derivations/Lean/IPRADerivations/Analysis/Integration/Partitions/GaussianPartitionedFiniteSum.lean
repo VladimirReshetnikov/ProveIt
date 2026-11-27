@@ -42,8 +42,7 @@ ipra_subst prefixLaw
 
 theorem cut_step (cut : PR 2) (d i : PTm n) (h : Γ ⊢[PRAAx] increasing cut d) :
     Γ ⊢[PRAAx] le (ap2 cut i d) (ap2 cut (succ i) d) := by
-  simpa only [increasing,subst_le,subst_ap2,ConciseIPRA.PTm.subst_succ,Syn.subst_var,
-    Syn.inst_zero,Syn.subst_inst_shift] using h.allE i
+  ipra_simpa_inst [increasing,subst_le,subst_ap2,ConciseIPRA.PTm.subst_succ] using h.allE i
 
 theorem block_at (cut : PR 2) (f : PTm 2) (i d x : PTm n) :
     Γ ⊢[PRAAx] inst2 (blockBody cut f) i (pairT d x) ≐ block cut f i d x := by
@@ -81,7 +80,7 @@ theorem grouped_prefix (cut : PR 2) (f : PTm 2) (k d x : PTm n) (h : Γ ⊢[PRAA
     · have h' : Γ.map Fm.shift ⊢[PRAAx] increasing cut (Syn.shift d) := by simpa [Fm.shift,Syn.shift] using h.shift
       simpa only [subst_prefixLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift] using
         grouped_prefix_step cut f (var 0) (Syn.shift d) (Syn.shift x) h'.wk Prf.hyp0
-  simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
+  ipra_simpa_inst [subst_prefixLaw] using all.allE k
 
 theorem grouped_from_zero (cut : PR 2) (f : PTm 2) (k d x : PTm n)
     (h : Γ ⊢[PRAAx] increasing cut d) (h0 : Γ ⊢[PRAAx] ap2 cut zero d ≐ zero) :

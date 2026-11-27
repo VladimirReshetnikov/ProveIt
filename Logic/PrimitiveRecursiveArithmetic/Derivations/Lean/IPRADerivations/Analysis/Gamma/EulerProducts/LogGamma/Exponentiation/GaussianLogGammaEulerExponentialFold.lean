@@ -167,7 +167,7 @@ theorem fold_error (p A B D neg R i : PTm n) (hs : Γ ⊢[PRAAx] source A B D ne
     ipra_qfind (by unfold foldError distanceBounded bounded RationalArgmin.rationalLE; exact le_QF _ _) [sh, subst_foldError]
     · exact fold_zero p A B D neg R
     · exact fold_succ _ _ _ _ _ _ _ hs'.wk Prf.hyp0
-  simpa only [sh,subst_foldError,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using induction.allE i
+  ipra_simpa_inst [sh,subst_foldError] using induction.allE i
 
 theorem exponential_product (A B D neg R i : PTm n) (hs : Γ ⊢[PRAAx] source A B D neg R) :
     Γ ⊢[PRAAx] crossEquivalent prefixF constantF (prefixData i (rowData A B D neg))

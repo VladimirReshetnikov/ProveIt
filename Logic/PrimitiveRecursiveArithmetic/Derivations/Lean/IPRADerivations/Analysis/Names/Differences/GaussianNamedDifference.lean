@@ -49,6 +49,30 @@ theorem sub_add_cancel (f g : PR 2) (x y : PTm n)
   exact cross_trans _ _ _ _ _ _ (add_associative f neg g x w y hf hn hg)
     (cross_trans _ _ _ _ _ _ drop (GaussianNameRingLaws.add_zero f x hf))
 
+
+theorem add_sub_cancel_right (f g : PR 2) (x y : PTm n)
+    (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) :
+    Γ ⊢[PRAAx] crossEquivalent (nameF (addF f g) g) f (data (addData x y) y) x := by
+  let neg := negativeF g
+  let w := negativeData y
+  have hn := negative_fast g y hg
+  have inverse := cross_trans _ _ _ _ _ _ (add_negative g y hg) (GaussianNameRingLaws.zero_name_cross y x)
+  have drop := add_equivalent f f (addF g neg) zeroF x x (addData y w) x
+    hf hf (add_fast _ _ _ _ hg hn) (zero_fast x) (diagonal_refl f x) (cross_to_diagonal _ _ _ _ inverse)
+  exact cross_trans _ _ _ _ _ _ (add_associative f g neg x y w hf hg hn)
+    (cross_trans _ _ _ _ _ _ drop (GaussianNameRingLaws.add_zero f x hf))
+
+theorem add_sub_cancel_left (f g : PR 2) (x y : PTm n)
+    (hf : Γ ⊢[PRAAx] pointCN f x) (hg : Γ ⊢[PRAAx] pointCN g y) :
+    Γ ⊢[PRAAx] crossEquivalent (nameF (addF f g) f) g (data (addData x y) x) y := by
+  let neg := negativeF f
+  let w := negativeData x
+  have hn := negative_fast f x hf
+  have swap := add_equivalent (addF f g) (addF g f) neg neg (addData x y) (addData y x) w w
+    (add_fast _ _ _ _ hf hg) (add_fast _ _ _ _ hg hf) hn hn
+    (cross_to_diagonal _ _ _ _ (add_commutative f g x y hf hg)) (diagonal_refl neg w)
+  exact cross_trans _ _ _ _ _ _ swap (add_sub_cancel_right g f y x hg hf)
+
 theorem negative_distance (a b A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (h : Γ ⊢[PRAAx] distanceBounded a b A B) : Γ ⊢[PRAAx] distanceBounded (qnegative a) (qnegative b) A B :=
   bound_congr (GaussianCharacteristicEntryNorm.negative_difference a b).eqSymm (.eqRefl _) (.eqRefl _)

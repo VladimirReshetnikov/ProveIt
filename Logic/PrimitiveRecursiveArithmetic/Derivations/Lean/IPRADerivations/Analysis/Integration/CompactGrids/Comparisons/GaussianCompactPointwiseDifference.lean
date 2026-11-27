@@ -64,8 +64,7 @@ theorem cell (F G H : PR 3) (i p N a C E x y z : PTm n)
       (inst2 (sampleBody H) i (sampleData p N a C E z)) (num 8) (unit p) := by
   let t := grid i N a C E
   have rule : Γ ⊢[PRAAx] inside a C E t ⟶ differenceAt F G H x y z t := by
-    simpa only [pointwise, Fm.subst_imp, GaussianCompactRiemannName.subst_inside, subst_differenceAt,
-      Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using h.allE t
+    ipra_simpa_inst [pointwise, Fm.subst_imp, GaussianCompactRiemannName.subst_inside, subst_differenceAt] using h.allE t
   have lhs := (difference_body_at (Γ := Γ) (sampleBody F) (sampleBody G) i
     (sampleData p N a C E x) (sampleData p N a C E y)).eqTrans
     (GaussianRationalSyntheticDivision.qsub_congr (sample_body_at F i p N a C E x) (sample_body_at G i p N a C E y))

@@ -128,8 +128,7 @@ theorem midpoint_vector_integer (N m a b z : PTm n) (hm : Γ ⊢[PRAAx] le one m
     Γ ⊢[PRAAx] midpointVector N (centerVector N m a) (oppositeVector N (centerVector N m b)) ≐ integerVector N z := by
   apply sequence_equal midpointBody integerBody N (pairT (centerVector N m a) (oppositeVector N (centerVector N m b))) z
   refine .allI (.impI ?_)
-  have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hm.shift
+  have positive : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := Order.shift_one_le hm
   have eqs : Γ.map Fm.shift ⊢[PRAAx] coordinateEquations (Syn.shift N) (Syn.shift m) (Syn.shift a) (Syn.shift b) (Syn.shift z) := by
     simpa only [Fm.shift,subst_coordinateEquations,Syn.shift] using h.shift
   have result := (midpoint_body_at (Γ := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift) (var 0)

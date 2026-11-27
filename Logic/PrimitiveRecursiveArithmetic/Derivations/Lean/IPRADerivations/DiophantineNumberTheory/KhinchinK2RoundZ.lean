@@ -82,8 +82,8 @@ theorem k2_round_z (wb w : PTm 2) {z B K0 M R G' p r : PTm n}
   refine round_from_counts w (vZ wb) (num 16383) r (succ p) (pairT z (px r B K0 M R G' p)) (.allI (.impI ?_))
   let Θ : List (Fm PTm (n + 1)) := lt (var 0) (Syn.shift (succ p)) :: Γ.map Fm.shift
   have hT0 : Γ.map Fm.shift ⊢[PRAAx] fact (Syn.shift R) * Syn.shift G' ≐ Syn.shift r * succ (Syn.shift p) := by
-    simpa [Fm.shift, Syn.shift] using hT.shift
-  have hM0 : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift M) := by simpa [Fm.shift, Syn.shift] using hM.shift
+    simpa [Syn.shift] using Order.shift_eq hT
+  have hM0 : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift M) := Order.shift_one_le hM
   have hT1 : Θ ⊢[PRAAx] fact (Syn.shift R) * Syn.shift G' ≐ Syn.shift r * succ (Syn.shift p) := hT0.wk
   have hM1 : Θ ⊢[PRAAx] le one (Syn.shift M) := hM0.wk
   have hg : Θ ⊢[PRAAx] lt (var 0) (succ (Syn.shift p)) := by

@@ -96,8 +96,7 @@ theorem prefix_rate (z h R B : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
   let E := denominator R B
   have hB := hz.andE₁
   have hE := positive_product _ _ hB (initial_positive R)
-  have hb := bounded_of_cleared _ _ B H B hB hB (ofGaussian_represents h B hB)
-    (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right (B*B) (normSq_le_norm1_square h)))
+  have hb := GaussianRationalMetric.bounded_of_same_denominator hB (ofGaussian_represents h B hB) (normSq_le_norm1_square h)
   have dist : Γ ⊢[PRAAx] distanceBounded (ofGaussian (add z h) B) (ofGaussian z B) H B :=
     GaussianRationalReciprocal.bound_congr (point_increment z h B hB).eqSymm (.eqRefl _) (.eqRefl _) hb
   have raw := GaussianBarnesCanonicalUniformContinuity.finite_rate (add z h) z R B B (initial R) H B hw hz hB dist

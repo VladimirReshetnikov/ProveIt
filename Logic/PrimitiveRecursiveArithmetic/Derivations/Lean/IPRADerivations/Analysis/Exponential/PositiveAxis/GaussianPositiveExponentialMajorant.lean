@@ -129,7 +129,7 @@ theorem positive_real_majorant (R K : PTm n) : Γ ⊢[PRAAx] boundLaw K R := by
     ipra_qfind (le_QF _ _) [subst_boundLaw]
     · exact bound_zero K
     · exact bound_step _ _ Prf.hyp0
-  simpa only [subst_boundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE R
+  ipra_simpa_inst [subst_boundLaw] using all.allE R
 
 theorem disk_bound (q R K : PTm n) (hq : Γ ⊢[PRAAx] GaussianRationalMetric.bounded q R one) : Γ ⊢[PRAAx]
     GaussianRationalMetric.bounded (scalarSum q K) (pw (num 3) R) one :=

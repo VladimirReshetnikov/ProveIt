@@ -87,8 +87,7 @@ theorem center_vector_guard (N m a : PTm n) (hm : Γ ⊢[PRAAx] le one m) :
     Γ ⊢[PRAAx] vectorGuard N (centerVector N m a) := by
   apply constructed_guard
   refine .allI (.impI ?_)
-  have pos : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hm.shift
+  have pos : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift m) := Order.shift_one_le hm
   have e := center_lookup (Γ := lt (var 0) (Syn.shift N) :: Γ.map Fm.shift)
     (Syn.shift N) (Syn.shift m) (Syn.shift a) (var 0) Prf.hyp0
   simpa only [Syn.shift,centerVector,MasterCertificate.subst_sequence,subst_pairT] using

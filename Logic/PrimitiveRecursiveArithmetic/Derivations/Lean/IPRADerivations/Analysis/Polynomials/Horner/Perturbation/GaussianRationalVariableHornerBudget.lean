@@ -72,10 +72,9 @@ theorem variation_index_congr (C U : PTm n) {k l : PTm n} (h : Γ ⊢[PRAAx] k �
 theorem coefficient_represents (C i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length C)) : Γ ⊢[PRAAx]
     represents (entry C i) (clearPoint C i) (denominator C) := GaussianRationalNormalization.clearPoint_clearing C i _ hi (.eqRefl _)
 theorem coefficient_bound (C i : PTm n) (hi : Γ ⊢[PRAAx] lt i (length C)) : Γ ⊢[PRAAx]
-    bounded (entry C i) (coefficient C i) (denominator C) := by
-  apply GaussianRationalMetric.bounded_of_cleared _ _ _ _ _ (denominator_positive C) (denominator_positive C) (coefficient_represents C i hi)
-  exact le_congr (by ipra_ring) (.eqRefl _)
-    (mul_le_mul_right (denominator C*denominator C) (GaussianL1.normSq_le_norm1_square (clearPoint C i)))
+    bounded (entry C i) (coefficient C i) (denominator C) :=
+  GaussianRationalMetric.bounded_of_same_denominator (denominator_positive C) (coefficient_represents C i hi)
+    (GaussianL1.normSq_le_norm1_square (clearPoint C i))
 
 def sizeLaw (C U w k : PTm n) : Fm PTm n := le k (length C) ⟶ bounded (horner C w k) (size C U k) (denominator C)
 ipra_subst sizeLaw

@@ -104,8 +104,8 @@ theorem mass (z R B N : PTm n) (hz : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
         (congrAp2 powF degree_zero (.eqRefl (linearCap R))).eqTrans (pw_zero _)
       exact rationalLE_congr norm.eqSymm (natCode_congr cost).eqSymm (RationalArgmin.reflexive _)
     · exact mass_step (s z) (s R) (s B) (var 0) shift_source.wk Prf.hyp0
-  simpa only [s,subst_rationalLE,subst_coefficientNorm,GaussianBarnesCanonicalCenteredHead.subst_polynomial,
-    subst_natCode,subst_cap,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE N
+  ipra_simpa_inst [s,subst_rationalLE,subst_coefficientNorm,GaussianBarnesCanonicalCenteredHead.subst_polynomial,
+    subst_natCode,subst_cap] using all.allE N
 
 theorem head_mass (z R B : PTm n) (hz : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     rationalLE (coefficientNorm (polynomial z B (initial R))) (natCode (headCap R)) :=

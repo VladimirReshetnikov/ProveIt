@@ -218,9 +218,8 @@ theorem prefix_error (f : PR 2) (t : PTm 2) (p N i x : PTm n) (h : Γ ⊢[PRAAx]
       exact step f t (sh p) (sh N) v (sh x) h'.wk.wk hv ih
   have body : Γ ⊢[PRAAx] le i N ⟶ distanceBounded (ap2 (sumExpF f t) p (sumExpData f t i x))
       (ap2 (productF f t) p (productData f t i x)) (error (cost f t N x) i) (unit p) := by
-    simpa only [form,sh,Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,
-      subst_ap2,subst_sumExpData,subst_productData,subst_error,subst_cost,GaussianCoefficientNameBounds.subst_unit,
-      Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE i
+    ipra_simpa_inst [form,sh,Fm.subst_imp,subst_le,GaussianRationalMetric.subst_distanceBounded,
+      subst_ap2,subst_sumExpData,subst_productData,subst_error,subst_cost,GaussianCoefficientNameBounds.subst_unit] using all.allE i
   exact .impE body hi
 
 theorem exponential_product_cross (f : PR 2) (t : PTm 2) (N x : PTm n) (h : Γ ⊢[PRAAx] regularRows f t N x) :
