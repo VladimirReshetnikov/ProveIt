@@ -62,12 +62,8 @@ theorem quotient_cell_congr {A A' B B' t t' x x' r r' j j' : PTm n}
     (hx : Γ ⊢[PRAAx] x ≐ x') (hr : Γ ⊢[PRAAx] r ≐ r') (hj : Γ ⊢[PRAAx] j ≐ j') : Γ ⊢[PRAAx]
     quotientCell A B t x r j ≐ quotientCell A' B' t' x' r' j' := by
   ipra_congr (quotientCell (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) with [hA, hB, ht, hx, hr, hj]
-theorem fields_at (A B t x : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data A B t x) i ≐ ![A,B,t,x] i := by
-  fin_cases i
-  · exact fst_pair _ _
-  · exact (snd_pair _ _).fstE
-  · exact (snd_pair _ _).sndE.fstE
-  · exact (snd_pair _ _).sndE.sndE
+theorem fields_at (A B t x : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data A B t x) i ≐ ![A,B,t,x] i :=
+  pairVectorField_eq 3 ![A,B,t,x] (.eqRefl _) i
 theorem quotient_lookup (A m B t x r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     cell (Qhat A m B t x) r j ≐ quotientCell A B t x r j := by
   have e : Γ ⊢[PRAAx] cell (Qhat A m B t x) r j ≐ quotientCell

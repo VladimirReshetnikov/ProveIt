@@ -381,22 +381,8 @@ theorem returned_fields (f G m a c r j : PTm n) (i : Fin 7) : Γ ⊢[PRAAx]
     fields (run f G m a c r j) i ≐
       ![entryPolynomial f G m a c r j,selectedRow G m r j,wrap m (inverseIndex m j r) j,
         degree (entryPolynomial f G m a c r j) (width m a c),expectedDegree f G m a c r j,
-          leading (entryPolynomial f G m a c r j) (width m a c),expectedLeading f G m a c r j] i := by
-  have e0 := program_at (Γ := Γ) f G m a c r j
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  have e4 := e3.sndE
-  have e5 := e4.sndE
-  have e6 := e5.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e4.fstE
-  · exact e5.fstE
-  · exact e6
+          leading (entryPolynomial f G m a c r j) (width m a c),expectedLeading f G m a c r j] i :=
+  pairVectorField_eq 6 _ (program_at f G m a c r j) i
 theorem returned_degree (f G m a c r j : PTm n) (h : Γ ⊢[PRAAx] sourceInput f G m a c r j)
     (hA : Γ ⊢[PRAAx] nonzeroCoefficients (selectedRow G m r j) a) : Γ ⊢[PRAAx]
     fields (run f G m a c r j) 3 ≐ fields (run f G m a c r j) 4 :=

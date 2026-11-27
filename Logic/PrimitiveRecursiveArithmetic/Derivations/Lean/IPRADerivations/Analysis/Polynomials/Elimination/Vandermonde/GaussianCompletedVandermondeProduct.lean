@@ -316,19 +316,8 @@ ipra_subst run
 theorem program_at (R m : PTm n) : Γ ⊢[PRAAx] run R m ≐ output R m := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![R,m]
 theorem returned_fields (R m : PTm n) (i : Fin 6) : Γ ⊢[PRAAx] fields (run R m) i ≐
-    ![W R m,extended R m,completed R m,scalarDet (W R m) m,pairProduct R (length R),constantPolynomial R m] i := by
-  have e0 := program_at (Γ := Γ) R m
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  have e4 := e3.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e4.fstE
-  · exact e4.sndE
+    ![W R m,extended R m,completed R m,scalarDet (W R m) m,pairProduct R (length R),constantPolynomial R m] i :=
+  pairVectorField_eq 5 _ (program_at R m) i
 theorem returned_product (R m : PTm n) (htm : Γ ⊢[PRAAx] le (length R) m) : Γ ⊢[PRAAx]
     fields (run R m) 3 ≐ fields (run R m) 4 :=
   (returned_fields R m 3).eqTrans ((determinant_product R m htm).eqTrans (returned_fields R m 4).eqSymm)

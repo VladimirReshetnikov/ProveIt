@@ -392,19 +392,8 @@ theorem program_at (M m L w j : PTm n) : Γ ⊢[PRAAx] run M m L w j ≐ output 
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) (var 3) (var 4) : PTm 5) ![M,m,L,w,j]
 theorem returned_fields (M m L w j : PTm n) (i : Fin 6) : Γ ⊢[PRAAx]
     fields (run M m L w j) i ≐ ![stage M m L w j,term M m L w,firstSum M m L w j,
-      degreeSum M m L w j,leadingProduct M m L w j,signPoint m w] i := by
-  have e0 := program_at (Γ := Γ) M m L w j
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  have e4 := e3.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e4.fstE
-  · exact e4.sndE
+      degreeSum M m L w j,leadingProduct M m L w j,signPoint m w] i :=
+  pairVectorField_eq 5 _ (program_at M m L w j) i
 theorem returned_stage_success (M m L w j : PTm n) (h : Γ ⊢[PRAAx] factorFlags M m L w j) : Γ ⊢[PRAAx]
     flag (fields (run M m L w j) 0) (j*L) ≐ one :=
   (flag_congr (returned_fields _ _ _ _ _ 0) (.eqRefl _)).eqTrans (stage_success_of_factors M m L w j h)

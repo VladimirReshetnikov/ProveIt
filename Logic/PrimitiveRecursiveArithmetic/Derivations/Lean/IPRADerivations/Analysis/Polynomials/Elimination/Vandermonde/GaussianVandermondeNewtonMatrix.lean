@@ -157,17 +157,8 @@ theorem program_at (R : PTm n) : Γ ⊢[PRAAx] run R ≐ output R := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) : PTm 1) ![R]
 theorem returned_fields (R : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (run R) i ≐
     ![U R (length R),change R (length R),transformed R (length R),
-      scalarDet (U R (length R)) (length R),pairProduct R (length R)] i := by
-  have e0 := program_at (Γ := Γ) R
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e3.sndE
+      scalarDet (U R (length R)) (length R),pairProduct R (length R)] i :=
+  pairVectorField_eq 4 _ (program_at R) i
 theorem returned_equality (R : PTm n) : Γ ⊢[PRAAx] fields (run R) 3 ≐ fields (run R) 4 :=
   (returned_fields R 3).eqTrans ((square_det R).eqTrans (returned_fields R 4).eqSymm)
 theorem returned_change_det (R : PTm n) : Γ ⊢[PRAAx] scalarDet (fields (run R) 1) (length R) ≐ qone := by

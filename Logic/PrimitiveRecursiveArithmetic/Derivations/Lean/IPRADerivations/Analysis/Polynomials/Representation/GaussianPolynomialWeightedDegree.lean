@@ -67,12 +67,8 @@ ipra_subst flag [Signum.sg]
 ipra_subst nonzeroRows [Syn.subst_shift, Syn.shift_subst]
 ipra_subst input
 
-theorem fields_at (G m a d : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data G m a d) i ≐ ![G,m,a,d] i := by
-  fin_cases i
-  · exact fst_pair _ _
-  · exact (snd_pair _ _).fstE
-  · exact (snd_pair _ _).sndE.fstE
-  · exact (snd_pair _ _).sndE.sndE
+theorem fields_at (G m a d : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data G m a d) i ≐ ![G,m,a,d] i :=
+  pairVectorField_eq 3 ![G,m,a,d] (.eqRefl _) i
 theorem score_body_at (G m a d i : PTm n) : Γ ⊢[PRAAx]
     inst2 scoreBody i (data G m a d) ≐ score G m a d i := by
   simp only [scoreBody,inst2,subst_score,subst_fields,Syn.subst_var,Matrix.cons_val_zero,Matrix.cons_val_one]

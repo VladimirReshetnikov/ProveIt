@@ -196,15 +196,8 @@ theorem polynomial_program_at (R j : PTm n) : Γ ⊢[PRAAx] app polynomialF ![R,
 theorem program_at (R j z : PTm n) : Γ ⊢[PRAAx] run R j z ≐ output R j z := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) (var 2) : PTm 3) ![R,j,z]
 theorem returned_fields (R j z : PTm n) (i : Fin 4) : Γ ⊢[PRAAx]
-    fields (run R j z) i ≐ ![polynomial R j,evaluate (polynomial R j) z,differenceProduct R z j,pairProduct R j] i := by
-  have e0 := program_at (Γ := Γ) R j z
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e2.sndE
+    fields (run R j z) i ≐ ![polynomial R j,evaluate (polynomial R j) z,differenceProduct R z j,pairProduct R j] i :=
+  pairVectorField_eq 3 _ (program_at R j z) i
 theorem returned_evaluation (R j z : PTm n) : Γ ⊢[PRAAx] fields (run R j z) 1 ≐ fields (run R j z) 2 :=
   (returned_fields R j z 1).eqTrans ((evaluation_product R j z).eqTrans (returned_fields R j z 2).eqSymm)
 theorem returned_head (R j z : PTm n) : Γ ⊢[PRAAx] entry (fields (run R j z) 0) zero ≐ qone :=

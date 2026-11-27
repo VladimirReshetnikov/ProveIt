@@ -66,12 +66,8 @@ ipra_subst rowFlags [Syn.subst_shift, Syn.shift_subst]
 theorem fields_at (G m a d w : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
     fields (data G m a d w) i ≐ ![G,m,a,d,w] i := by
   have old (k : Fin 4) : Γ ⊢[PRAAx]
-      GaussianPolynomialWeightedDegree.fields (fstT (data G m a d w)) k ≐ ![G,m,a,d] k := by
-    have e : Γ ⊢[PRAAx] GaussianPolynomialWeightedDegree.fields (fstT (data G m a d w)) k ≐
-        GaussianPolynomialWeightedDegree.fields (GaussianPolynomialWeightedDegree.data G m a d) k := by
-      ipra_congr (GaussianPolynomialWeightedDegree.fields (var 0) k : PTm 1) with
-        [(show _ ⊢[PRAAx] fstT (data G m a d w) ≐ GaussianPolynomialWeightedDegree.data G m a d from fst_pair _ _)]
-    exact e.eqTrans (GaussianPolynomialWeightedDegree.fields_at _ _ _ _ k)
+      GaussianPolynomialWeightedDegree.fields (fstT (data G m a d w)) k ≐ ![G,m,a,d] k :=
+    pairVectorField_eq 3 ![G,m,a,d] (fst_pair _ _) k
   fin_cases i
   · exact old 0
   · exact old 1

@@ -68,16 +68,8 @@ ipra_subst coveredAt [Syn.subst_shift, Syn.shift_subst]
 ipra_subst covered [Syn.subst_shift, Syn.shift_subst]
 ipra_subst group
 
-theorem fields_at (f m c L D : PTm n) (j : Fin 5) : Γ ⊢[PRAAx] fields (data f m c L D) j ≐ ![f,m,c,L,D] j := by
-  have a := snd_pair (Γ := Γ) f (pairT m (pairT c (pairT L D)))
-  have b := (congrSnd a).eqTrans (snd_pair m (pairT c (pairT L D)))
-  have cc := (congrSnd b).eqTrans (snd_pair c (pairT L D))
-  fin_cases j
-  · exact fst_pair _ _
-  · exact a.fstE
-  · exact b.fstE
-  · exact cc.fstE
-  · exact cc.sndE
+theorem fields_at (f m c L D : PTm n) (j : Fin 5) : Γ ⊢[PRAAx] fields (data f m c L D) j ≐ ![f,m,c,L,D] j :=
+  pairVectorField_eq 4 ![f,m,c,L,D] (.eqRefl _) j
 
 theorem point_congr {f f' m m' c c' L L' v v' : PTm n} (hf : Γ ⊢[PRAAx] f ≐ f')
     (hm : Γ ⊢[PRAAx] m ≐ m') (hc : Γ ⊢[PRAAx] c ≐ c') (hL : Γ ⊢[PRAAx] L ≐ L')

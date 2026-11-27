@@ -306,15 +306,8 @@ ipra_subst run
 theorem program_at (R m : PTm n) : Γ ⊢[PRAAx] run R m ≐ output R m := by
   simpa [run,outputF] using toPR_eq (Γ := Γ) (output (var 0) (var 1) : PTm 2) ![R,m]
 theorem returned_fields (R m : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (run R m) i ≐
-    ![eliminator R m,eliminated R m,scalarDet (eliminator R m) m,W R m] i := by
-  have e0 := program_at (Γ := Γ) R m
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e2.sndE
+    ![eliminator R m,eliminated R m,scalarDet (eliminator R m) m,W R m] i :=
+  pairVectorField_eq 3 _ (program_at R m) i
 theorem returned_unit_det (R m : PTm n) : Γ ⊢[PRAAx] fields (run R m) 2 ≐ qone :=
   (returned_fields R m 2).eqTrans (eliminator_det R m)
 

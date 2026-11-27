@@ -195,16 +195,8 @@ def newBody : PTm 2 := GaussianPolynomialDeterminant.valueTerm
 ipra_subst pack
 @[simp] theorem subst_fields {l : ℕ} (σ : Fin n → PTm l) (x : PTm n) (i : Fin 5) :
     Syn.subst σ (fields x i) = fields (Syn.subst σ x) i := by fin_cases i <;> simp [fields]
-theorem field_at (M m L j z : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (pack M m L j z) i ≐ ![M,m,L,j,z] i := by
-  have e1 := snd_pair (Γ := Γ) M (pairT m (pairT L (pairT j z)))
-  have e2 := (congrSnd e1).eqTrans (snd_pair m (pairT L (pairT j z)))
-  have e3 := (congrSnd e2).eqTrans (snd_pair L (pairT j z))
-  fin_cases i
-  · exact fst_pair _ _
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e3.sndE
+theorem field_at (M m L j z : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (pack M m L j z) i ≐ ![M,m,L,j,z] i :=
+  pairVectorField_eq 4 ![M,m,L,j,z] (.eqRefl _) i
 theorem rank_congr {m m' j j' t t' : PTm n} (hm : Γ ⊢[PRAAx] m ≐ m')
     (hj : Γ ⊢[PRAAx] j ≐ j') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]
     Foundations.RuntimeAdjacentPermutationSwap.rankSwap m j t ≐ Foundations.RuntimeAdjacentPermutationSwap.rankSwap m' j' t' := by

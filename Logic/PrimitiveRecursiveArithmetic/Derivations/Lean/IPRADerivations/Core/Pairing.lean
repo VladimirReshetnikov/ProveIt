@@ -214,6 +214,28 @@ theorem _root_.LeanProofs.ConciseIPRA.Prf.fstE {z a b : PTm n} (h : Γ ⊢[PRAAx
 theorem _root_.LeanProofs.ConciseIPRA.Prf.sndE {z a b : PTm n} (h : Γ ⊢[PRAAx] z ≐ pairT a b) :
     Γ ⊢[PRAAx] sndT z ≐ b := (congrSnd h).eqTrans (snd_pair a b)
 
+/-- Store a nonempty vector as right-nested pairs, with its last entry unpaired. -/
+def pairVector : (k : ℕ) → (Fin (k + 1) → PTm n) → PTm n
+  | 0, entries => entries 0
+  | k + 1, entries => pairT (entries 0) (pairVector k (fun i => entries i.succ))
+
+/-- Read the projections of a right-nested pair vector. -/
+def pairVectorField : (k : ℕ) → PTm n → Fin (k + 1) → PTm n
+  | 0, z => ![z]
+  | k + 1, z => Matrix.vecCons (fstT z) (pairVectorField k (sndT z))
+
+theorem pairVectorField_eq (k : ℕ) (entries : Fin (k + 1) → PTm n) {z : PTm n}
+    (h : Γ ⊢[PRAAx] z ≐ pairVector k entries) (i : Fin (k + 1)) :
+    Γ ⊢[PRAAx] pairVectorField k z i ≐ entries i := by
+  induction k generalizing z with
+  | zero =>
+    rw [Fin.eq_zero i]
+    exact h
+  | succ k ih =>
+    refine Fin.cases ?_ (fun j => ?_) i
+    · exact h.fstE
+    · exact ih (fun j => entries j.succ) h.sndE j
+
 /-! ## Simultaneous recursion -/
 
 section Simultaneous

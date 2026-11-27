@@ -72,19 +72,13 @@ theorem row_congr {a a' m m' d d' L L' i i' : PTm n}
       (fun q => by fin_cases q <;> simp only [Matrix.cons_val_zero',Matrix.cons_val_succ']; exact ha; exact hm; exact hd; exact hL; exact hi)
 theorem field_congr (i : Fin 4) {p q : PTm n} (h : Γ ⊢[PRAAx] p ≐ q) : Γ ⊢[PRAAx] fields p i ≐ fields q i := by
   ipra_congr (fields (var 0) i : PTm 1) with [h]
-theorem fields_at (a m d L : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data a m d L) i ≐ ![a,m,d,L] i := by
-  have e0 := snd_pair (Γ := Γ) a (GaussianWeightedMonomialBasis.data m d L)
-  have e1 := (congrSnd e0).eqTrans (snd_pair m (pairT d L))
-  fin_cases i
-  · exact fst_pair _ _
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e1.sndE
+theorem fields_at (a m d L : PTm n) (i : Fin 4) : Γ ⊢[PRAAx] fields (data a m d L) i ≐ ![a,m,d,L] i :=
+  pairVectorField_eq 3 ![a,m,d,L] (.eqRefl _) i
 
 theorem row_body_at (a m d L i s : PTm n) : Γ ⊢[PRAAx]
     inst2 rowBody s (rowData a m d L i) ≐ coefficient a m d L i (monus L s) := by
   have params (q : Fin 4) : Γ ⊢[PRAAx] fields (sndT (rowData a m d L i)) q ≐ ![a,m,d,L] q :=
-    (field_congr q (snd_pair _ _)).eqTrans (fields_at _ _ _ _ q)
+    pairVectorField_eq 3 ![a,m,d,L] (snd_pair _ _) q
   simpa only [rowBody,inst2,subst_coefficient,subst_fields,subst_fstT,subst_sndT,Syn.subst_var,
     Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.cons_val_three,Matrix.head_cons,Matrix.tail_cons,rowData,PTm.subst_monus] using
       coefficient_congr (params 0) (params 1) (params 2) (params 3) (fst_pair _ _)

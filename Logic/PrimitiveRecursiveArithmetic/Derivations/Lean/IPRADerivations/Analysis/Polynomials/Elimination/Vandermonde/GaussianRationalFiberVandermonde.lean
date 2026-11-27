@@ -151,16 +151,8 @@ ipra_subst partialProduct
 ipra_subst productCell
 
 theorem field_at (S M L r j : PTm n) (i : Fin 5) : Γ ⊢[PRAAx]
-    fields (productData S M L r j) i ≐ ![S,M,L,r,j] i := by
-  have e1 := snd_pair (Γ := Γ) S (pairT M (pairT L (pairT r j)))
-  have e2 := (congrSnd e1).eqTrans (snd_pair M (pairT L (pairT r j)))
-  have e3 := (congrSnd e2).eqTrans (snd_pair L (pairT r j))
-  fin_cases i
-  · exact fst_pair _ _
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e3.sndE
+    fields (productData S M L r j) i ≐ ![S,M,L,r,j] i :=
+  pairVectorField_eq 4 ![S,M,L,r,j] (.eqRefl _) i
 theorem piece_congr {S S' M M' r r' j j' t t' : PTm n}
     (hS : Γ ⊢[PRAAx] S ≐ S') (hM : Γ ⊢[PRAAx] M ≐ M') (hr : Γ ⊢[PRAAx] r ≐ r')
     (hj : Γ ⊢[PRAAx] j ≐ j') (ht : Γ ⊢[PRAAx] t ≐ t') : Γ ⊢[PRAAx]

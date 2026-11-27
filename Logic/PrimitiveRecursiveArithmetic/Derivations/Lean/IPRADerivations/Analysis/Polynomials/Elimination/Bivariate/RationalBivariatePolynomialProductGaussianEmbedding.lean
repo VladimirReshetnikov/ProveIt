@@ -64,13 +64,9 @@ ipra_subst sumStep
 ipra_subst rowSum
 
 theorem data_fields (A B q a b k : PTm n) (i : Fin 6) : Γ ⊢[PRAAx] fields (data A B q a b k) i ≐ ![A,B,q,a,b,k] i := by
-  have base := fst_pair (Γ := Γ) (GaussianPolynomialMonicCompanion.data A B q a b) k
-  have e (j : Fin 5) : Γ ⊢[PRAAx] GaussianPolynomialConstantInjection.fields (fstT (data A B q a b k)) j ≐ ![A,B,q,a,b] j := by
-    have cong : Γ ⊢[PRAAx] GaussianPolynomialConstantInjection.fields (fstT (data A B q a b k)) j ≐
-        GaussianPolynomialConstantInjection.fields (GaussianPolynomialMonicCompanion.data A B q a b) j := by
-      ipra_congr (GaussianPolynomialConstantInjection.fields (var 0) j : PTm 1) with
-        [(show _ ⊢[PRAAx] fstT (data A B q a b k) ≐ GaussianPolynomialMonicCompanion.data A B q a b from base)]
-    exact cong.eqTrans (GaussianPolynomialConstantInjection.fields_at _ _ _ _ _ j)
+  have e (j : Fin 5) : Γ ⊢[PRAAx]
+      GaussianPolynomialConstantInjection.fields (fstT (data A B q a b k)) j ≐ ![A,B,q,a,b] j :=
+    pairVectorField_eq 4 ![A,B,q,a,b] (fst_pair _ _) j
   fin_cases i
   · exact e 0
   · exact e 1

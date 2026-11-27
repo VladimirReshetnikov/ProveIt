@@ -194,21 +194,8 @@ theorem returned_fields (f G m a c : PTm n) (i : Fin 7) : Γ ⊢[PRAAx]
       ![stage (matrix f G m a c) m (width m a c) (rotation f G m a c) m,
         term (matrix f G m a c) m (width m a c) (rotation f G m a c),expected f G m a c,
         leading (stage (matrix f G m a c) m (width m a c) (rotation f G m a c) m) (m*width m a c),
-        leading (term (matrix f G m a c) m (width m a c) (rotation f G m a c)) (m*width m a c),rotation f G m a c,k f G m a c] i := by
-  have e0 := program_at (Γ := Γ) f G m a c
-  have e1 := e0.sndE
-  have e2 := e1.sndE
-  have e3 := e2.sndE
-  have e4 := e3.sndE
-  have e5 := e4.sndE
-  fin_cases i
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e3.fstE
-  · exact e4.fstE
-  · exact e5.fstE
-  · exact e5.sndE
+        leading (term (matrix f G m a c) m (width m a c) (rotation f G m a c)) (m*width m a c),rotation f G m a c,k f G m a c] i :=
+  pairVectorField_eq 6 _ (program_at f G m a c) i
 theorem returned_stage_leading (f G m a c : PTm n) (h : Γ ⊢[PRAAx] input f G m a c) : Γ ⊢[PRAAx]
     fields (run f G m a c) 3 ≐ fields (run f G m a c) 2 :=
   (returned_fields _ _ _ _ _ 3).eqTrans ((cyclic_stage_leading f G m a c h).eqTrans (returned_fields _ _ _ _ _ 2).eqSymm)

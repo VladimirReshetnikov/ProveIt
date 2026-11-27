@@ -56,16 +56,8 @@ theorem constant_length (C m a d r : PTm n) (hC : Γ ⊢[PRAAx] length C ≐ suc
 theorem row_length (G C m a d r : PTm n) : Γ ⊢[PRAAx] length (injectedRow G C m a d r) ≐ succ (a+d) := added_length _ _ _
 theorem row_canonical (G C m a d r : PTm n) : Γ ⊢[PRAAx] canonicalCoefficients (injectedRow G C m a d r) := GaussianRationalMonicReduction.added_canonical _ _ _
 
-theorem fields_at (G C m a d : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (data G C m a d) i ≐ ![G,C,m,a,d] i := by
-  have e0 := snd_pair (Γ := Γ) G (pairT C (pairT m (pairT a d)))
-  have e1 := (congrSnd e0).eqTrans (snd_pair C (pairT m (pairT a d)))
-  have e2 := (congrSnd e1).eqTrans (snd_pair m (pairT a d))
-  fin_cases i
-  · exact fst_pair _ _
-  · exact e0.fstE
-  · exact e1.fstE
-  · exact e2.fstE
-  · exact e2.sndE
+theorem fields_at (G C m a d : PTm n) (i : Fin 5) : Γ ⊢[PRAAx] fields (data G C m a d) i ≐ ![G,C,m,a,d] i :=
+  pairVectorField_eq 4 ![G,C,m,a,d] (.eqRefl _) i
 theorem tuple_six_last {α : Type} (a b c d e f : α) : ![a,b,c,d,e,f] (5 : Fin 6) = f := rfl
 
 theorem row_congr {G G' C C' m m' a a' d d' r r' : PTm n} (hG : Γ ⊢[PRAAx] G ≐ G') (hC : Γ ⊢[PRAAx] C ≐ C')
