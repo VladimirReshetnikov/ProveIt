@@ -173,7 +173,7 @@ theorem val_zero_high {i P : PTm n} (hi : Γ ⊢[PRAAx] prime i) (hPi : Γ ⊢[P
   have a : C ⊢[PRAAx] le (pw i (val i (lcmu P))) P :=
     le_congr ((congrMul s1 (.eqRefl _)).eqTrans (one_mul _)) (.eqRefl _) I1
   have b : C ⊢[PRAAx] le i (pw i (val i (lcmu P))) :=
-    le_congr (pw_one i) (.eqRefl _) (PowerCleared.pw_le_exp (p_pos (prime_two hi.wk)) (one_le_pos Prf.hyp0))
+    le_base_pw (one_le_pos Prf.hyp0)
   exact le_lt_absurd _ (le_trans b a) hPi.wk
 
 theorem v_point (i P : PTm n) :

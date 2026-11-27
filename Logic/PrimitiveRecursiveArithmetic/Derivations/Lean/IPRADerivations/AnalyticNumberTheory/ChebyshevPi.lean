@@ -51,7 +51,6 @@ theorem alg_full {I V S : PTm n} (i : Γ ⊢[PRAAx] I ≐ one) (s : Γ ⊢[PRAAx
 /-- For a prime `q`: `v_q(L_P) ≤ [q prime] v_q(L_P) [q ≤ P]`. -/
 theorem val_full {q P : PTm n} (hq : Γ ⊢[PRAAx] prime q) :
     Γ ⊢[PRAAx] le (val q (lcmu P)) (isP q * val q (lcmu P) * sg (monus (succ P) q)) := by
-  have qpos := p_pos (prime_two hq)
   have ip := isP_of_prime hq
   have A1 := Prf.andE₁ (lcm_valuation hq P)
   refine .orE (zero_or_succ (val q (lcmu P))) (le_congr Prf.hyp0.eqSymm (.eqRefl _) (zero_le _)) ?_
@@ -60,9 +59,8 @@ theorem val_full {q P : PTm n} (hq : Γ ⊢[PRAAx] prime q) :
   have sE : C ⊢[PRAAx] sg (val q (lcmu P)) ≐ one := (congrSg Ep).eqTrans (sg_succ _)
   have pE : C ⊢[PRAAx] le (pw q (val q (lcmu P))) P :=
     le_congr ((congrMul sE (.eqRefl _)).eqTrans (one_mul _)) (.eqRefl _) A1.wk
-  have l1E : C ⊢[PRAAx] le one (val q (lcmu P)) := one_le_pos Ep
   have qE : C ⊢[PRAAx] le q (pw q (val q (lcmu P))) :=
-    le_congr (pw_one q) (.eqRefl _) (PowerCleared.pw_le_exp qpos.wk l1E)
+    le_base_pw (Order.zero_lt_of_eq_succ Ep)
   have s2 : C ⊢[PRAAx] sg (monus (succ P) q) ≐ one :=
     sg_lt ((succ_monus_succ _ _).eqTrans (le_trans qE pE))
   exact le_of_eq_add (d := zero) (alg_full ip.wk s2)

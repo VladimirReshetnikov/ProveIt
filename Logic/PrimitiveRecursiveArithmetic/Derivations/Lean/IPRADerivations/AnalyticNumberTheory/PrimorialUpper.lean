@@ -195,7 +195,7 @@ theorem pri_two_le : Γ ⊢[PRAAx] le (pri (two : PTm n)) two :=
 theorem pri_le_two : Γ ⊢[PRAAx] le (pri (two : PTm n)) (pw two (two * two)) := by
   have h : Γ ⊢[PRAAx] le (one : PTm n) (two * two) :=
     le_of_eq_add (d := succ two) (by ipra_ring)
-  exact le_trans pri_two_le (le_congr (pw_one two) (.eqRefl _) (pw_le_exp two_pos' h))
+  exact le_trans pri_two_le (le_base_pw h)
 
 theorem small {N c : PTm n} (e : Γ ⊢[PRAAx] N ≐ c) (h : Γ ⊢[PRAAx] le (pri c) (pw two (two * c))) :
     Γ ⊢[PRAAx] le (pri N) (pw two (two * N)) :=

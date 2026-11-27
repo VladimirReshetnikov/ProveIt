@@ -72,9 +72,8 @@ theorem val_small {q m : PTm n} (hq : Γ ⊢[PRAAx] prime q) :
   have sE : C ⊢[PRAAx] sg (val q (lcmu (m * m))) ≐ one := (congrSg Ep).eqTrans (sg_succ _)
   have pE : C ⊢[PRAAx] le (pw q (val q (lcmu (m * m)))) (m * m) :=
     le_congr ((congrMul sE (.eqRefl _)).eqTrans (one_mul _)) (.eqRefl _) A1.wk
-  have l1E : C ⊢[PRAAx] le one (val q (lcmu (m * m))) := one_le_pos Ep
   have qE : C ⊢[PRAAx] le q (pw q (val q (lcmu (m * m)))) :=
-    le_congr (pw_one q) (.eqRefl _) (PowerCleared.pw_le_exp qpos.wk l1E)
+    le_base_pw (Order.zero_lt_of_eq_succ Ep)
   have s2 : C ⊢[PRAAx] sg (monus (succ (m * m)) q) ≐ one :=
     sg_lt ((succ_monus_succ _ _).eqTrans (le_trans qE pE))
   refine .orE (lt_or_le q (succ m)) ?_ ?_
