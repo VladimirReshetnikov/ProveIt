@@ -132,16 +132,9 @@ theorem original_grid_left_norm (p q N a C E j z R B T A D : PTm n)
   exact bound_congr (.eqRefl _) numEq (by dsimp only [V,denominator,GaussianEulerHalfDecayLeftNorm.denominator]; ipra_ring) actual
 
 theorem raw_observation_bound (q : PTm n) : Γ ⊢[PRAAx]
-    bounded q (GaussianL1.norm1 (GaussianRationalL1.rawGaussian q)) (GaussianRationalL1.rawDen q) := by
-  let g := GaussianRationalL1.rawGaussian q
-  let D := GaussianRationalL1.rawDen q
-  have hd : Γ ⊢[PRAAx] le one D := GaussianRationalL1.raw_den_positive q
-  have native : Γ ⊢[PRAAx] le ((D*D)*ComplexLogarithmRemainder.normSq g)
-      ((GaussianL1.norm1 g*GaussianL1.norm1 g)*(D*D)) :=
-    le_congr (by ipra_ring) (.eqRefl _)
-      (mul_le_mul_right (D*D) (GaussianL1.normSq_le_norm1_square g))
-  exact GaussianRationalMetric.bounded_of_cleared q g D (GaussianL1.norm1 g) D hd hd
-    (GaussianRationalL1.raw_represents q) native
+    bounded q (GaussianL1.norm1 (GaussianRationalL1.rawGaussian q)) (GaussianRationalL1.rawDen q) :=
+  GaussianRationalMetric.bounded_of_same_denominator (GaussianRationalL1.raw_den_positive q)
+    (GaussianRationalL1.raw_represents q) (GaussianL1.normSq_le_norm1_square _)
 
 /-- No bound on a returned name or integrand is supplied: the exact
 actual left observation itself determines the retained endpoint radius. -/

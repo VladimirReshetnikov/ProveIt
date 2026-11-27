@@ -182,6 +182,13 @@ theorem bounded_of_cleared (q a E A B : PTm n)
     (h : Γ ⊢[PRAAx] le ((B*B)*normSq a) ((A*A)*(E*E))) :
     Γ ⊢[PRAAx] bounded q A B := (bounded_iff q a E A B hE hB hq).iffMpr h
 
+/-- A squared numerator bound controls a represented point at the same denominator. -/
+theorem bounded_of_same_denominator {q a A D : PTm n}
+    (hD : Γ ⊢[PRAAx] le one D) (hq : Γ ⊢[PRAAx] represents q a D)
+    (h : Γ ⊢[PRAAx] le (normSq a) (A*A)) : Γ ⊢[PRAAx] bounded q A D :=
+  bounded_of_cleared q a D A D hD hD hq
+    (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right (D*D) h))
+
 /-- Zero tolerance forces the represented Gaussian value's actual squared
 norm to vanish; no positivity of the numerator is needed. -/
 theorem bounded_zero_norm (q a E B : PTm n)

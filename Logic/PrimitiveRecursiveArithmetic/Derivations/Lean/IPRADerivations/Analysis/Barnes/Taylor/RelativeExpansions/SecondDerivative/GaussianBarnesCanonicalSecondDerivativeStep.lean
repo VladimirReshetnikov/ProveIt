@@ -168,10 +168,8 @@ theorem exact_remainder (z h R B k H : PTm n) (hs : Γ ⊢[PRAAx] source z h R B
 
 theorem step_bound (h B k H : PTm n) (hB : Γ ⊢[PRAAx] le one B) (hk : Γ ⊢[PRAAx] le one k)
     (hh : Γ ⊢[PRAAx] nativeBound h H) : Γ ⊢[PRAAx] bounded (offset h B k) H (B*k) := by
-  let D := B*k
-  have hD := positive_product _ _ hB hk
-  exact bounded_of_cleared _ _ _ _ _ hD hD (ofGaussian_represents _ _ hD)
-    (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right (D*D) hh))
+  have hD := positive_product B k hB hk
+  exact GaussianRationalMetric.bounded_of_same_denominator hD (ofGaussian_represents _ _ hD) hh
 
 theorem quadratic_bound (z h R B k H : PTm n) (hs : Γ ⊢[PRAAx] source z h R B k H) :
     Γ ⊢[PRAAx] distanceBounded (increment z h B k) (linear z h B k) (errorNumerator H) (errorDenominator B k) := by

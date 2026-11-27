@@ -48,9 +48,8 @@ theorem quarter_at (p z R D : PTm n)
         ipra_le 8*𝔞 U*sl rs+32*𝔞 D^2*sl paid+24*𝔞 D^2*𝔞 U)
       old
   have w0 : Γ ⊢[PRAAx] bounded W R D :=
-    GaussianRationalMetric.bounded_of_cleared W z D R D hd hd
-      (GaussianRationalHorner.ofGaussian_represents z D hd)
-      (le_congr (.eqRefl _) (mul_comm _ _) (le_mul_mono (le_refl (D*D)) h.andE₂.andE₁))
+    GaussianRationalMetric.bounded_of_same_denominator hd
+      (GaussianRationalHorner.ofGaussian_represents z D hd) h.andE₂.andE₁
   have w : Γ ⊢[PRAAx] bounded W one (num 8) :=
     bounded_radius_mono _ _ _ _ _ hd (by ipra_le 7)
       (le_congr (by ipra_ring) (by ipra_ring) hs) w0

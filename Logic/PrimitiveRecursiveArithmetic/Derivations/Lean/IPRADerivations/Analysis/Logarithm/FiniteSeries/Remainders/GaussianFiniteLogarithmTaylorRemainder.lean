@@ -71,9 +71,8 @@ theorem coefficient_bound (k : PTm n) : Γ ⊢[PRAAx] bounded (coefficient k) on
   have hr := GaussianFiniteLogarithmWeightedNorm.sign_norm1 (Γ := Γ) k
   have norm := le_congr (.eqRefl _) (congrMul hr hr)
     (GaussianL1.normSq_le_norm1_square (signNumerator k))
-  exact bounded_of_cleared _ _ _ _ _ (zero_lt_succ k) (zero_lt_succ k)
-    (GaussianFiniteLogarithmPolynomial.coefficient_represents k)
-    (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right (succ k*succ k) norm))
+  exact GaussianRationalMetric.bounded_of_same_denominator (zero_lt_succ k)
+    (GaussianFiniteLogarithmPolynomial.coefficient_represents k) norm
 
 private theorem row_bound (m r w R N : PTm n) (hN : Γ ⊢[PRAAx] le one N) (hw : Γ ⊢[PRAAx] bounded w R N) :
     Γ ⊢[PRAAx] bounded (inst2 (offB sourceTerm) r (pairT m w)) (pw R (succ (m+r))) (succ m*pw N (succ (m+r))) := by

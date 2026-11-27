@@ -62,8 +62,7 @@ theorem radius_strict (z R N : PTm n) (h : Γ ⊢[PRAAx] source z R N) : Γ ⊢[
 
 private theorem relative_disk (z R N : PTm n) (h : Γ ⊢[PRAAx] source z R N) :
     Γ ⊢[PRAAx] bounded (ofGaussian z N) R N :=
-  bounded_of_cleared _ _ _ _ _ h.andE₁ h.andE₁ (ofGaussian_represents _ _ h.andE₁)
-    (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right (N*N) h.andE₂.andE₁))
+  GaussianRationalMetric.bounded_of_same_denominator h.andE₁ (ofGaussian_represents z N h.andE₁) h.andE₂.andE₁
 
 theorem finite_comparison_at_radius (L m z R N A D : PTm n) (h : Γ ⊢[PRAAx] source z R N)
     (hm : Γ ⊢[PRAAx] le m (L+two)) (hD : Γ ⊢[PRAAx] le one D) (hAD : Γ ⊢[PRAAx] lt A D)

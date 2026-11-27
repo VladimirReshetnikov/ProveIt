@@ -80,8 +80,7 @@ theorem denominator_positive (R B : PTm n) (hB : Γ ⊢[PRAAx] le one B) :
 private theorem step_bound (h B H : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hh : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded h H) : Γ ⊢[PRAAx] bounded (ofGaussian h B) H one := by
   have raw : Γ ⊢[PRAAx] bounded (ofGaussian h B) H B :=
-    bounded_of_cleared _ _ _ _ _ hB hB (ofGaussian_represents h B hB)
-      (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right (B*B) hh))
+    GaussianRationalMetric.bounded_of_same_denominator hB (ofGaussian_represents h B hB) hh
   have fit : Γ ⊢[PRAAx] le (H*one) (H*B) :=
     le_congr (mul_comm one H) (mul_comm B H) (mul_le_mul_right H hB)
   exact bounded_radius_mono _ _ _ _ _ hB (le_refl one) fit raw

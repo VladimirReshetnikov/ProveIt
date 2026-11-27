@@ -103,8 +103,7 @@ theorem scaled_sample_bound (p z h R B H : PTm n) (hs : Γ ⊢[PRAAx] GaussianBa
   have hz := base_source z h R B H hs
   have hB := hz.andE₁
   have hb : Γ ⊢[PRAAx] bounded a H B :=
-    bounded_of_cleared _ _ _ _ _ hB hB (ofGaussian_represents h B hB)
-      (le_congr (mul_comm _ _) (.eqRefl _) (mul_le_mul_right (B*B) hs.andE₂.andE₂.andE₁))
+    GaussianRationalMetric.bounded_of_same_denominator hB (ofGaussian_represents h B hB) hs.andE₂.andE₂.andE₁
   have der := derivative_sample_bound t z R B hz
   have read := (multiply_at (Γ := Γ) constantF D a x p).eqTrans
     ((GaussianExponentialReference.recode_fixed _ (qmul_canonical _ _)).eqTrans
