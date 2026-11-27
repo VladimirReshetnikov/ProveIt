@@ -29,7 +29,7 @@ open GaussianRationalSyntheticDivision (qmul_congr)
 open GaussianRationalFiniteSum (sum termsEqual)
 open GaussianRationalMetric (distanceBounded)
 open GaussianCoefficientNameBounds (unit unit_positive)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_scale distance_triangle_same)
 open GaussianGammaCanonicalTailName (source)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -128,8 +128,8 @@ theorem observation_error (p q z R B N L : PTm n) (h : Γ ⊢[PRAAx] source z R 
     distanceBounded (observation p z R B N L) (GaussianGammaFixedDegreeHorizon.observation q z R B N L)
       (unit p+unit q) (unit p*unit q) := by
   have den := positive_product (Γ := Γ) _ _ (unit_positive (succ p)) (unit_positive q)
-  have first := distance_radius_mono _ _ one (unit (succ p)) (unit q) (unit (succ p)*unit q)
-    (unit_positive _) den (le_of_eq_add (d := zero) (by ipra_ring)) (polynomial_to_fixed_observation p z R B N L h)
+  have first := distance_congr (.eqRefl _) (.eqRefl _) (one_mul (unit q)) (.eqRefl _)
+    (distance_radius_scale (unit_positive (succ p)) (unit_positive q) (polynomial_to_fixed_observation p z R B N L h))
   have both := distance_triangle_same _ _ _ _ _ _ den first (GaussianGammaFixedDegreeHorizon.observation_regularity (succ p) q z R B N L h)
   apply distance_radius_mono _ _ _ _ _ _ den (positive_product _ _ (unit_positive p) (unit_positive q)) _ both
   have e := natEq (pw_succ (Γ := Γ) two p)

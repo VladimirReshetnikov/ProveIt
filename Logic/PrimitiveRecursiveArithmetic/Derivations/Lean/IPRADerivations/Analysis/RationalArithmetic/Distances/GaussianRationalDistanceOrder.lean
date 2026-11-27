@@ -68,6 +68,14 @@ theorem distance_radius_mono (z w A B C D : PTm n)
     (h : Γ ⊢[PRAAx] distanceBounded z w A B) : Γ ⊢[PRAAx] distanceBounded z w C D :=
   GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _ hB hD hrad h
 
+/-- Multiply both parts of the distance radius by the same positive factor. -/
+theorem distance_radius_scale {z w A B C : PTm n}
+    (hB : Γ ⊢[PRAAx] le one B) (hC : Γ ⊢[PRAAx] le one C)
+    (h : Γ ⊢[PRAAx] distanceBounded z w A B) :
+    Γ ⊢[PRAAx] distanceBounded z w (A*C) (B*C) :=
+  distance_radius_mono z w A B (A*C) (B*C) hB (positive_product B C hB hC)
+    (le_of_eq_add (d := zero) (by ipra_ring)) h
+
 /-- Increase the distance numerator with the positive denominator fixed. -/
 theorem distance_radius_mono_same {z w A C B : PTm n}
     (hB : Γ ⊢[PRAAx] le one B) (hAC : Γ ⊢[PRAAx] le A C)
@@ -198,10 +206,9 @@ theorem distance_through_product_denominator {x u v y A B L M N : PTm n}
     (right : Γ ⊢[PRAAx] distanceBounded v y N B) :
     Γ ⊢[PRAAx] distanceBounded x y (L*B+M+N*A) (A*B) := by
   have den := positive_product _ _ hA hB
-  have first := distance_radius_mono _ _ _ _ (L*B) (A*B) hA den
-    (le_of_eq_add (d := zero) (by ipra_ring)) left
-  have last := distance_radius_mono _ _ _ _ (N*A) (A*B) hB den
-    (le_of_eq_add (d := zero) (by ipra_ring)) right
+  have first := distance_radius_scale hA hB left
+  have last := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm B A)
+    (distance_radius_scale hB hA right)
   exact distance_triangle_same _ _ _ _ _ _ den
     (distance_triangle_same _ _ _ _ _ _ den first middle) last
 

@@ -20,7 +20,7 @@ open GaussianGammaCanonicalExponent (constantF constant_at constant_regular)
 open GaussianRationalHorner (ofGaussian qmul positive_product)
 open GaussianRationalMetric (bounded distanceBounded qnegative)
 open GaussianRationalReciprocal (bound_congr bounded_negative)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_scale)
 open GaussianCoefficientNameBounds (unit unit_positive)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
@@ -109,10 +109,9 @@ theorem exponent_distance (p z w R B A D N : PTm n) (hN : Γ ⊢[PRAAx] le one N
     distanceBounded (ap2 logExponentF p (logExponentData z B N)) (ap2 logExponentF p (logExponentData w B N))
       (distanceBudget p R A D N) (D*unit p) := by
   have den := positive_product _ _ hD (unit_positive p)
-  have logs := distance_radius_mono _ _ two (unit p) (two*D) (D*unit p) (unit_positive p) den
-    (le_of_eq_add (d := zero) (by ipra_ring)) (log_query_distance p z w B N hN)
-  have inputs := distance_radius_mono _ _ A D (A*unit p) (D*unit p) hD den
-    (le_of_eq_add (d := zero) (by ipra_ring)) (negative_fraction_distance z w B A D hB hD hd)
+  have logs := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm (unit p) D)
+    (distance_radius_scale (unit_positive p) hD (log_query_distance p z w B N hN))
+  have inputs := distance_radius_scale hD (unit_positive p) (negative_fraction_distance z w B A D hB hD hd)
   have raw := GaussianNameArithmetic.product_distance _ _ _ _ (two*D) (A*unit p) (D*unit p) R (logRadius N)
     den logs inputs (bounded_negative _ _ _ (le_refl _) (GaussianGammaEulerHead.fraction_disk z R B hB hz))
     (log_sample_bound (query p w B N) N hN)

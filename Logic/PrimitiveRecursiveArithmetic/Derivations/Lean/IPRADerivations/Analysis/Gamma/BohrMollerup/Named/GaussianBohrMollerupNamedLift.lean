@@ -21,7 +21,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent cross_at cross_refl cross_symm cross_trans)
 open GaussianNamedInverseRate (independentRate)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_scale distance_triangle_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 
@@ -95,8 +95,8 @@ theorem observation (P : Presentation) (f : PR 2) (p q x A R : PTm n)
   have hC := positive_product (unit p) V (unit_positive p) hV
   have hn := GaussianLogGammaEulerNamed.name_regular f x A R (native_source f x A R hs)
   have near : Γ ⊢[PRAAx] distanceBounded a b V (W*V) :=
-    distance_radius_mono _ _ one W V (W*V) hW hD (le_of_eq_add (d := zero) (by ipra_ring))
-      (delayed_observation P f p x A R hp hs)
+    distance_congr (.eqRefl _) (.eqRefl _) (one_mul V) (.eqRefl _)
+      (distance_radius_scale hW hV (delayed_observation P f p x A R hp hs))
   have far := cross_at (nativeF f) (nativeF f) X X (succ p) q (cross_refl (nativeF f) X hn)
   have budget : Γ ⊢[PRAAx] le ((V+(W+V))*(unit p*V)) ((unit p+V)*(W*V)) := by
     apply le_of_eq_add (d := zero)

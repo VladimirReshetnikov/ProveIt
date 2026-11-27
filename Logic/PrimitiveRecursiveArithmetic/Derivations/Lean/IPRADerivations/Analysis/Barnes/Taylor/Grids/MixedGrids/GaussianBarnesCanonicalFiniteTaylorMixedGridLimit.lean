@@ -32,7 +32,7 @@ open GaussianExponentialReference (unit_monotone)
 open GaussianFastValueCut (exponent query_budget)
 open GaussianL1 (norm1)
 open GaussianNamedInverseRate (rate_at rateNumerator rateDenominator)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same distance_radius_mono_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_scale distance_symmetric distance_triangle_same distance_radius_mono_same)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (distanceBounded)
 open GaussianRationalNaturalScale (natScale natScale_as_product naturalPoint)
@@ -116,8 +116,7 @@ theorem rate (z h R B r M e t u : PTm n) (hz : Γ ⊢[PRAAx] source z R B)
       (by
         change Γ ⊢[PRAAx] le (((g*U*T+C*(U+T))+f*C*U)*(B*U)) ((two*U+B)*(C*U*T))
         ipra_le 𝔞(U)*𝔞(U)*𝔞(T)*sl payG+𝔞(C)*𝔞(U)*𝔞(U)*sl payF) rawCoeff
-  have first := distance_radius_mono x y (a*H+two) B ((a*H+two)*U) (B*U) hB hE
-    (le_of_eq_add (d := zero) (by ipra_ring)) grid
+  have first := distance_radius_scale hB (unit_positive u) grid
   have last := distance_symmetric _ _ _ _ hE (double_bound _ _ _ _ hE coeff)
   have total := distance_triangle_same _ _ _ _ _ _ hE first last
   have target : Γ ⊢[PRAAx] natScale two v ≐ natScale two (ap2 F u (fd z S B r M (succ e))) := by

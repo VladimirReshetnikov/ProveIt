@@ -21,7 +21,7 @@ open GaussianCoefficientNameBounds (unit unit_positive)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent point_at)
 open GaussianRationalHorner (canonical positive_product qmul_canonical)
-open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_symmetric distance_triangle_same)
+open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_radius_scale distance_symmetric distance_triangle_same)
 open GaussianRationalMetric (distanceBounded)
 open GaussianSineNormalizedSampleProduct (normalizedProduct canonical_product)
 open GaussianSineNormalizedSampleReconstruction (normalizedValue normalizedBudget cofinal_normalized_distance)
@@ -125,11 +125,10 @@ theorem product_pair (f : PR 2) (p q J B x z : PTm n)
   let Q := unit q
   let E := normalizedBudget J B
   let d := positive_product (Γ := Γ) P Q (unit_positive p) (unit_positive q)
-  have nearP := distance_radius_mono _ _ E P (E*Q) (P*Q) (unit_positive p) d
-    (le_of_eq_add (d := zero) (by ipra_ring)) (sample_distance f p J B x z hb)
-  have nearQ := distance_radius_mono _ _ E Q (E*P) (P*Q) (unit_positive q) d
-    (le_of_eq_add (d := zero) (by ipra_ring))
-    (distance_symmetric _ _ _ _ (unit_positive q) (sample_distance f q J B x z hb))
+  have nearP := distance_radius_scale (unit_positive p) (unit_positive q) (sample_distance f p J B x z hb)
+  have nearQ := distance_congr (.eqRefl _) (.eqRefl _) (.eqRefl _) (mul_comm Q P)
+    (distance_radius_scale (unit_positive q) (unit_positive p)
+      (distance_symmetric _ _ _ _ (unit_positive q) (sample_distance f q J B x z hb)))
   have e := distance_triangle_same _ _ _ _ _ _ d (distance_triangle_same _ _ _ _ _ _ d nearP
     (polynomial_pair f p q J B x hf hb)) nearQ
   exact distance_congr (.eqRefl _) (.eqRefl _) (by dsimp only [P,Q,E]; unfold budget; ipra_ring) (.eqRefl _) e
