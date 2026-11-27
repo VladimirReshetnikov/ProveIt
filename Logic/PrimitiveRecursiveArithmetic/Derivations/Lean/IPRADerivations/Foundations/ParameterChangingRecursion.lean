@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.BackwardDemand
 import IPRADerivations.Core.BoundedSums
+import IPRADerivations.Foundations.DemandRecursion
 
 /-!
 # Compile predetermined parameter-changing recursion
@@ -48,40 +49,17 @@ theorem horizon_congr (D : PR 3) {N N' K K' t t' x x' : PTm n}
     (hN : Γ ⊢[PRAAx] N ≐ N') (hK : Γ ⊢[PRAAx] K ≐ K')
     (ht : Γ ⊢[PRAAx] t ≐ t') (hx : Γ ⊢[PRAAx] x ≐ x') :
     Γ ⊢[PRAAx] horizon D N K t x ≐ horizon D N' K' t' x' := by
-  have equation := Prf.eqCongr (horizon D (var 0) (var 1) (var 2) (var 3) : PTm 4)
-    (σ := ![N, K, t, x]) (σ' := ![N', K', t', x']) (fun i => by fin_cases i <;> assumption)
-  simpa only [subst_horizon, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons] using equation
+  exact Foundations.DemandRecursion.horizon_congr D hN hK ht hx
 
 /-- The two backward arrays coincide after the first predecessor demand.
 This equality is total, including offsets outside the useful horizon. -/
 theorem backward_coherence (D : PR 3) (N K j x : PTm n) :
     Γ ⊢[PRAAx] backward D (succ N) K (succ j) x ≐ backward D N (ap3 D N K x) j x := by
-  have all : Γ ⊢[PRAAx] .all
-      (backward D (succ (Syn.shift N)) (Syn.shift K) (succ (var 0)) (Syn.shift x) ≐
-        backward D (Syn.shift N) (ap3 D (Syn.shift N) (Syn.shift K) (Syn.shift x))
-          (var 0) (Syn.shift x)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, subst_backward, subst_ap3, ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-      exact (backward_succ D (succ N) K zero x).eqTrans
-        ((congrAp3 D ((succ_monus_succ N zero).eqTrans (monus_zero N))
-          (backward_zero D (succ N) K x) (.eqRefl x)).eqTrans
-            (backward_zero D N (ap3 D N K x) x).eqSymm)
-    · simp only [Fm.subst_eq, subst_backward, subst_ap3, ConciseIPRA.PTm.subst_succ,
-        Syn.subst_var, Syn.repl_zero, subst_repl_shift]
-      exact (backward_succ D (succ (Syn.shift N)) (Syn.shift K) (succ (var 0)) (Syn.shift x)).eqTrans
-        ((congrAp3 D (succ_monus_succ (Syn.shift N) (succ (var 0))) Prf.hyp0 (.eqRefl _)).eqTrans
-          (backward_succ D (Syn.shift N) (ap3 D (Syn.shift N) (Syn.shift K) (Syn.shift x))
-            (var 0) (Syn.shift x)).eqSymm)
-  simpa only [Fm.subst_eq, subst_backward, subst_ap3, ConciseIPRA.PTm.subst_succ,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using Prf.allE j all
+  exact Foundations.DemandRecursion.back_coherent D N K j x
 
 private theorem successor_monus {N t : PTm n} (h : Γ ⊢[PRAAx] le t N) :
     Γ ⊢[PRAAx] monus (succ N) t ≐ succ (monus N t) := by
-  have split : Γ ⊢[PRAAx] succ N ≐ succ (monus N t) + t :=
-    (congrSucc (eq_add_of_le h)).eqTrans (by ipra_ring)
-  exact (congrMonus split (.eqRefl _)).eqTrans (add_monus _ _)
+  exact Common.monus_succ_of_le h
 
 /-- Equality of the two complete demand schedules on exactly their common
 useful range. No monotonicity property of `D` is needed. -/

@@ -1,6 +1,7 @@
 import IPRADerivations.Foundations.PrecisionCostDAG
 import IPRADerivations.Analysis.Polynomials.RootFinding.Adequacy.GaussianRootSchedule
 import IPRADerivations.Core.OrderCertificates
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # A derived dyadic schedule for the actual rational dependency DAG
@@ -210,23 +211,23 @@ conclusion or an incoming global budget recurrence. -/
 theorem total_bound (G Eta N D r : PTm n) (hD : Γ ⊢[PRAAx] le one D)
     (hEta : Γ ⊢[PRAAx] errorsBound Eta N D) (hr : Γ ⊢[PRAAx] le r N) : Γ ⊢[PRAAx]
     rationalLE (total G Eta r) (fraction (pw (base G N) r) D) := by
-  have ds : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift D) :=
-    Order.shift_one_le hD
+  have ds := Order.shift_one_le hD
   have es : Γ.map Fm.shift ⊢[PRAAx] errorsBound (Syn.shift Eta) (Syn.shift N) (Syn.shift D) := by
-    simpa only [Fm.shift,subst_errorsBound,Syn.shift] using hEta.shift
-  have all : Γ ⊢[PRAAx] .all (totalBoundLaw (Syn.shift G) (Syn.shift Eta) (Syn.shift N) (Syn.shift D) (var 0)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _,le_QF _ _⟩ ?_ ?_
-    · simp only [subst_totalBoundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift]
-      exact .impI (Analysis.RationalArgmin.rationalLE_congr (total_zero G Eta).eqSymm (.eqRefl _)
-        (fraction_nonnegative _ D hD).wk)
-    · simp only [subst_totalBoundLaw,Syn.subst_var,Syn.repl_zero,subst_repl_shift]
-      refine .impI ?_
-      exact total_bound_step (Syn.shift G) (Syn.shift Eta) (Syn.shift N) (Syn.shift D) (var 0)
-        Prf.hyp0 ds.wk.wk (errors_bound_at _ _ _ _ es.wk.wk Prf.hyp0)
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have final : Γ ⊢[PRAAx] totalBoundLaw G Eta N D r := by
-    simpa only [subst_totalBoundLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE r
-  exact .impE final hr
+    simpa only [Fm.shift, subst_errorsBound, Syn.shift] using hEta.shift
+  let P : Fm PTm (n + 1) := rationalLE (total (Syn.shift G) (Syn.shift Eta) (var 0))
+    (fraction (pw (base (Syn.shift G) (Syn.shift N)) (var 0)) (Syn.shift D))
+  have atIndex : Γ ⊢[PRAAx] P.subst (Syn.inst r) := by
+    refine qfIndAtMost hr (le_QF _ _) ?_ ?_
+    · simp only [P, Analysis.RationalArgmin.subst_rationalLE, subst_total, subst_fraction,
+        subst_base, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      exact Analysis.RationalArgmin.rationalLE_congr (total_zero G Eta).eqSymm (.eqRefl _)
+        (fraction_nonnegative _ D hD)
+    · simp only [P, Analysis.RationalArgmin.subst_rationalLE, subst_total, subst_fraction,
+        subst_base, subst_ap2, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
+      exact .impI (total_bound_step (Syn.shift G) (Syn.shift Eta) (Syn.shift N) (Syn.shift D) (var 0)
+        Prf.hyp0 ds.wk.wk (errors_bound_at _ _ _ _ es.wk.wk Prf.hyp0) Prf.hyp1)
+  simpa only [P, Analysis.RationalArgmin.subst_rationalLE, subst_total, subst_fraction,
+    subst_base, subst_ap2, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atIndex
 
 /-- The actual uniform local-error list meets the local hypotheses, without
 an input assertion about that list or its values. -/

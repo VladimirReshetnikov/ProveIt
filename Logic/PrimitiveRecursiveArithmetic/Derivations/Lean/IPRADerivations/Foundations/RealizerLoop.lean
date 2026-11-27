@@ -1,5 +1,6 @@
 import IPRADerivations.Foundations.RealizerGraph
 import IPRADerivations.Foundations.FiberCompiler
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # A bounded runtime fold with actual finite-query metadata
@@ -436,24 +437,19 @@ theorem fold_stable {X Y : Interface} {D : Code} (h : Laws X Y D) (C C' q p : PT
     (hC' : Γ ⊢[PRAAx] masterValid X (demands D q p) C' p)
     (hrel : Γ ⊢[PRAAx] masterRelated X (demands D q p) C C' p) :
     Γ ⊢[PRAAx] related Y (transformTerm D C q p) (transformTerm D C' q p) q p := by
-  have all : Γ ⊢[PRAAx] .all (le (var 0) (ap2 D.fuel (Syn.shift q) (Syn.shift p)) ⟶
-      pairedInvariant D (var 0) (Syn.shift C) (Syn.shift C') (Syn.shift q) (Syn.shift p)) := by
-    refine PRA.qfInd _ ⟨le_QF _ _, pairedInvariant_qf h _ _ _ _ _⟩ ?_ ?_
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairedInvariant, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift]
-      refine .impI ?_
-      have base := h.base_at (Γ := le zero (ap2 D.fuel q p) :: Γ) q p hg.wk (global_residuals_at D q p hr.wk)
-      have relation := h.relBase_at (Γ := le zero (ap2 D.fuel q p) :: Γ) q p hg.wk (global_residuals_at D q p hr.wk)
+  let fuel := ap2 D.fuel q p
+  let P := pairedInvariant D (var 0) (Syn.shift C) (Syn.shift C') (Syn.shift q) (Syn.shift p)
+  have atEnd : Γ ⊢[PRAAx] P.subst (Syn.inst fuel) := by
+    refine qfIndUpTo fuel (pairedInvariant_qf h _ _ _ _ _) ?_ ?_
+    · simp only [P, subst_pairedInvariant, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+      have global := global_residuals_at D q p hr
+      have base := h.base_at q p hg global
+      have relation := h.relBase_at q p hg global
       exact .andI (invAt_congr D _ _ _ (run_zero D C q p).eqSymm base)
         (.andI (invAt_congr D _ _ _ (run_zero D C' q p).eqSymm base)
           (relAt_congr D _ _ _ (run_zero D C q p).eqSymm (run_zero D C' q p).eqSymm relation))
-    · simp only [Fm.subst_imp, subst_le, subst_ap2, subst_pairedInvariant, Syn.subst_var,
-        Syn.repl_zero, subst_repl_shift]
-      refine .impI ?_
-      let Δ : List (Fm PTm (n + 1)) :=
-        le (succ (var 0)) (ap2 D.fuel (Syn.shift q) (Syn.shift p)) ::
-        (le (var 0) (ap2 D.fuel (Syn.shift q) (Syn.shift p)) ⟶
-          pairedInvariant D (var 0) (Syn.shift C) (Syn.shift C') (Syn.shift q) (Syn.shift p)) :: Γ.map Fm.shift
+    · rw [show Syn.shift fuel = ap2 D.fuel (Syn.shift q) (Syn.shift p) by simp [fuel, Syn.shift]]
+      simp only [P, subst_pairedInvariant, Syn.subst_var, Syn.repl_zero, subst_repl_shift]
       have guard : Γ.map Fm.shift ⊢[PRAAx] queryAt D.guard (Syn.shift q) (Syn.shift p) := by
         simpa only [Fm.shift, subst_queryAt, Syn.shift] using hg.shift
       have producers : Γ.map Fm.shift ⊢[PRAAx] queryAt (allOf (residuals D)) (Syn.shift q) (Syn.shift p) := by
@@ -465,17 +461,10 @@ theorem fold_stable {X Y : Interface} {D : Code} (h : Laws X Y D) (C C' q p : PT
       have relation : Γ.map Fm.shift ⊢[PRAAx] masterRelated X (demands D (Syn.shift q) (Syn.shift p))
           (Syn.shift C) (Syn.shift C') (Syn.shift p) := by
         simpa only [Fm.shift, subst_masterRelated, subst_demands, Syn.shift] using hrel.shift
-      have previous : Δ ⊢[PRAAx] pairedInvariant D (var 0) (Syn.shift C) (Syn.shift C') (Syn.shift q) (Syn.shift p) :=
-        .impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)
-      exact paired_step h (var 0) (Syn.shift C) (Syn.shift C') (Syn.shift q) (Syn.shift p)
-        guard.wk.wk producers.wk.wk input.wk.wk input'.wk.wk relation.wk.wk Prf.hyp0 previous
+      exact .impI (paired_step h (var 0) (Syn.shift C) (Syn.shift C') (Syn.shift q) (Syn.shift p)
+        guard.wk.wk producers.wk.wk input.wk.wk input'.wk.wk relation.wk.wk Prf.hyp0 Prf.hyp1)
   have endpoint : Γ ⊢[PRAAx] pairedInvariant D (ap2 D.fuel q p) C C' q p := by
-    have e := Prf.allE (ap2 D.fuel q p) all
-    have rule : Γ ⊢[PRAAx] le (ap2 D.fuel q p) (ap2 D.fuel q p) ⟶
-        pairedInvariant D (ap2 D.fuel q p) C C' q p := by
-      simpa only [Fm.subst_imp, subst_le, subst_ap2, subst_pairedInvariant, Syn.subst_var,
-        Syn.inst_zero, Syn.subst_inst_shift] using e
-    exact .impE rule (le_refl _)
+    simpa only [P, fuel, subst_pairedInvariant, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] using atEnd
   exact h.relFinal_at _ _ q p hg (global_residuals_at D q p hr) (Prf.andE₁ endpoint)
     (Prf.andE₁ (Prf.andE₂ endpoint)) (Prf.andE₂ (Prf.andE₂ endpoint))
 

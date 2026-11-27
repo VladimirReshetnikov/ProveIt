@@ -1,4 +1,5 @@
 import IPRADerivations.Foundations.BackwardDemand
+import IPRADerivations.Core.BoundedSums
 
 /-!
 # Predetermined demand recursion (`ipra_resources_and_elimination_2026-11-15`, `lem:horizon`, `thm:demand`)
@@ -159,12 +160,13 @@ private abbrev vcF : Fm PTm 4 :=
       V D b F (var 1) (ap3 D (var 1) (var 2) (var 3)) (var 0) (var 3))
 
 private theorem vc₀ : ([] : List (Fm PTm 4)) ⊢[PRAAx] vcF D b F := by
-  ipra_ind (⟨trivial, trivial⟩) [subst_le, subst_V, subst_ap3]
-  · refine .impI ((V_zero D b F _ _ _).eqTrans (.eqTrans ?_ (V_zero D b F _ _ _).eqSymm))
-    exact congrInst2 b (horizon_coherent D Prf.hyp0 _ _) (.eqRefl _)
-  · refine .impI ((V_succ D b F _ _ _ _).eqTrans (.eqTrans ?_ (V_succ D b F _ _ _ _).eqSymm))
-    exact congrAppF F (.eqRefl _) (horizon_coherent D Prf.hyp0 _ _)
-      (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0)) (.eqRefl _)
+  refine Prf.allOpen (Γ := ([] : List (Fm PTm 3))) (φ := vcF D b F) (qfIndAllUpTo (var 0) trivial ?_ ?_)
+  · simp [subst_V, subst_ap3]
+    refine (V_zero D b F _ _ _).eqTrans (.eqTrans ?_ (V_zero D b F _ _ _).eqSymm)
+    exact congrInst2 b (horizon_coherent D (zero_le _) _ _) (.eqRefl _)
+  · simp [subst_V, subst_ap3]
+    refine .impI ((V_succ D b F _ _ _ _).eqTrans (.eqTrans ?_ (V_succ D b F _ _ _ _).eqSymm))
+    exact congrAppF F (.eqRefl _) (horizon_coherent D Prf.hyp0 _ _) Prf.hyp1 (.eqRefl _)
 
 /-- The two forward executions agree up to time `N`. -/
 theorem V_coherent {t N : PTm n} (h : Γ ⊢[PRAAx] le t N) (K x : PTm n) :
