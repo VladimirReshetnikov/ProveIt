@@ -1,5 +1,6 @@
 import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.SingularModuli.BaseChange
+import GRHArticle.SingularModuli.ConjugateDisks
 import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.PadicCutoff
 import GRHArticle.SingularModuli.PadicDiskRoots
@@ -7,3 +8,4 @@ import GRHArticle.SingularModuli.PadicExpSubstitution
 import GRHArticle.SingularModuli.Separated
 import GRHArticle.SingularModuli.SevenAdicCutoff
 import GRHArticle.SingularModuli.Strassmann
+import GRHArticle.SingularModuli.ThresholdDiskRoots
