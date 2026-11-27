@@ -21,7 +21,7 @@ open LeanProofs.IPRA.Analysis.GaussianRationalHorner (qzero horner evaluate)
 open LeanProofs.IPRA.Analysis.GaussianRationalMetric (bounded distanceBounded)
 open LeanProofs.IPRA.Analysis.GaussianRationalSyntheticDivision (qsub_congr)
 open LeanProofs.IPRA.Analysis.GaussianRationalHornerPerturbation
-  (budget subst_budget budget_zero budget_succ budget_step bounded_sum_same_den bounded_weaken horner_difference_succ)
+  (budget subst_budget budget_zero budget_succ)
 open LeanProofs.IPRA.Analysis.GaussianRationalReciprocal (bound_congr)
 open LeanProofs.IPRA.Foundations.MasterCertificate (entry subst_entry)
 open LeanProofs.IPRA.Foundations.SequenceComposition (length subst_length)
@@ -63,11 +63,8 @@ theorem prefix_step (C D z N R p q k : PTm n)
     (hk : Γ ⊢[PRAAx] le k N)
     (ih : Γ ⊢[PRAAx] distanceBounded (horner C z k) (horner D z k) (budget R p k) q) : Γ ⊢[PRAAx]
     distanceBounded (horner C z (succ k)) (horner D z (succ k)) (budget R p (succ k)) q := by
-  have product := GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ hq (le_refl one) ih hz
-  have product' := bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring : Γ ⊢[PRAAx] q*one ≐ q) product
-  have sum := bounded_sum_same_den _ _ _ _ q hq product' (coefficient_error_at C D N p q k hErrors hk)
-  have actual := bound_congr (horner_difference_succ C D z k).eqSymm (.eqRefl _) (.eqRefl _) sum
-  exact bounded_weaken _ _ _ q hq (budget_step R p k hR) actual
+  exact GaussianRationalHornerPerturbation.prefix_budget_step C D z R p q k k hR hq hz
+    (coefficient_error_at C D N p q k hErrors hk) ih
 
 /-- The only induction is on a QF guarded comparison of actual prefixes. -/
 theorem prefix_bound (C D z N R p q k : PTm n)
@@ -75,30 +72,19 @@ theorem prefix_bound (C D z N R p q k : PTm n)
     (hErrors : Γ ⊢[PRAAx] coefficientErrors C D N p q) (hz : Γ ⊢[PRAAx] bounded z R one)
     (hk : Γ ⊢[PRAAx] le k (succ N)) : Γ ⊢[PRAAx]
     distanceBounded (horner C z k) (horner D z k) (budget R p k) q := by
-  have hR' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift R) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hR.shift
-  have hq' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift q) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hq.shift
-  have errors' : Γ.map Fm.shift ⊢[PRAAx]
+  let invariant := distanceBounded (horner (Syn.shift C) (Syn.shift z) (var 0))
+    (horner (Syn.shift D) (Syn.shift z) (var 0)) (budget (Syn.shift R) (Syn.shift p) (var 0)) (Syn.shift q)
+  have errors : Γ.map Fm.shift ⊢[PRAAx]
       coefficientErrors (Syn.shift C) (Syn.shift D) (Syn.shift N) (Syn.shift p) (Syn.shift q) := by
-    simpa only [Fm.shift,subst_coefficientErrors,Syn.shift] using hErrors.shift
-  have hz' : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift R) one := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ,Syn.shift] using hz.shift
-  have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
-      (Syn.shift R) (Syn.shift p) (Syn.shift q) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
-    · exact .impI (prefix_zero C D z R p q hq).wk
-    · refine .impI ?_
-      have range : le (succ (var 0)) (succ (Syn.shift N)) ::
-          prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
-            (Syn.shift R) (Syn.shift p) (Syn.shift q) (var 0) :: Γ.map Fm.shift ⊢[PRAAx]
-          le (var 0) (Syn.shift N) := (succ_monus_succ _ _).eqSymm.eqTrans Prf.hyp0
-      exact prefix_step _ _ _ _ _ _ _ _ hR'.wk.wk hq'.wk.wk errors'.wk.wk hz'.wk.wk range
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] prefixLaw C D z N R p q k := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+    simpa only [Fm.shift, subst_coefficientErrors, Syn.shift] using hErrors.shift
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk (le_QF _ _) ?_ ?_
+    · simpa [invariant] using prefix_zero C D z R p q hq
+    · simp [invariant, show Syn.shift (succ N) = succ (Syn.shift N) by simp [Syn.shift]]
+      exact .impI (prefix_step _ _ _ _ _ _ _ _ (Order.shift_one_le hR).wk.wk
+        (Order.shift_one_le hq).wk.wk errors.wk.wk (GaussianRationalMetric.shift_bounded_one hz).wk.wk
+        (Common.le_of_lt_succ Prf.hyp0) Prf.hyp1)
+  simpa [invariant] using atIndex
 
 /-- Every original coefficient, including the leading one, may differ. -/
 theorem evaluation_bound (C D z N R p q : PTm n)

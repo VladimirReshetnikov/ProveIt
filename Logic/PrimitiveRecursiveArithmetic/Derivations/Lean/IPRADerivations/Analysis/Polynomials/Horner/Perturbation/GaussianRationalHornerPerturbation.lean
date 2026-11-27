@@ -88,6 +88,11 @@ ipra_subst coefficientErrors [Fm.subst_all, Fm.subst_imp, subst_lt, subst_entry,
     Syn.up_succ, Syn.subst_shift, Syn.shift_subst]
 ipra_subst budget
 
+/-- Shift the original coefficient error premise into a prefix induction step. -/
+theorem shift_coefficientErrors {C D N A B : PTm n} (h : Γ ⊢[PRAAx] coefficientErrors C D N A B) :
+    Γ.map Fm.shift ⊢[PRAAx] coefficientErrors (Syn.shift C) (Syn.shift D) (Syn.shift N) (Syn.shift A) (Syn.shift B) := by
+  simpa only [Fm.shift, subst_coefficientErrors, Syn.shift] using h.shift
+
 theorem coefficient_error_at (C D N A B j : PTm n) (h : Γ ⊢[PRAAx] coefficientErrors C D N A B)
     (hj : Γ ⊢[PRAAx] lt j N) : Γ ⊢[PRAAx] distanceBounded (entry C (succ j)) (entry D (succ j)) A B := by
   have rule : Γ ⊢[PRAAx] lt j N ⟶ distanceBounded (entry C (succ j)) (entry D (succ j)) A B := by
@@ -152,17 +157,33 @@ def prefixLaw (C D z N R A B k : PTm n) : Fm PTm n := le k N ⟶
   distanceBounded (horner C z (succ k)) (horner D z (succ k)) (budget R A k) B
 ipra_subst prefixLaw
 
+/-- The first Horner value depends only on the leading coefficient. -/
+theorem horner_initial (C z : PTm n) : Γ ⊢[PRAAx] horner C z (succ zero) ≐ qadd qzero (entry C zero) :=
+  (GaussianRationalHorner.horner_succ C z zero).eqTrans
+    (qadd_congr ((qmul_congr (GaussianRationalHorner.horner_zero C z) (.eqRefl _)).eqTrans
+      (GaussianRationalSyntheticDivision.qmul_zero_left z)) (.eqRefl _))
+
 theorem prefix_zero (C D z R A B : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hLead : Γ ⊢[PRAAx] entry C zero ≐ entry D zero) : Γ ⊢[PRAAx]
     distanceBounded (horner C z (succ zero)) (horner D z (succ zero)) (budget R A zero) B := by
-  have same : Γ ⊢[PRAAx] horner C z (succ zero) ≐ horner D z (succ zero) :=
-    (GaussianRationalHorner.horner_succ _ _ _).eqTrans
-      ((qadd_congr (qmul_congr ((GaussianRationalHorner.horner_zero _ _).eqTrans
-        (GaussianRationalHorner.horner_zero _ _).eqSymm) (.eqRefl _)) hLead).eqTrans
-          (GaussianRationalHorner.horner_succ _ _ _).eqSymm)
+  have same := (horner_initial C z).eqTrans
+    ((qadd_congr (.eqRefl _) hLead).eqTrans (horner_initial D z).eqSymm)
   have zeroDiff := (qsub_congr same (.eqRefl _)).eqTrans (GaussianCoefficientNormOrder.qsub_self _)
   exact GaussianRationalReciprocal.bound_congr zeroDiff.eqSymm (budget_zero R A).eqSymm (.eqRefl _)
     (GaussianMonicResidualRadius.zero_bounded zero B hB)
+
+/-- Advance the Horner index and the error budget independently. -/
+theorem prefix_budget_step (C D z R A B index steps : PTm n)
+    (hR : Γ ⊢[PRAAx] le one R) (hB : Γ ⊢[PRAAx] le one B) (hz : Γ ⊢[PRAAx] bounded z R one)
+    (error : Γ ⊢[PRAAx] distanceBounded (entry C index) (entry D index) A B)
+    (ih : Γ ⊢[PRAAx] distanceBounded (horner C z index) (horner D z index) (budget R A steps) B) :
+    Γ ⊢[PRAAx] distanceBounded (horner C z (succ index)) (horner D z (succ index)) (budget R A (succ steps)) B := by
+  have product := GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ hB (le_refl one) ih hz
+  have product' := GaussianRationalReciprocal.bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring : Γ ⊢[PRAAx] B*one ≐ B) product
+  have sum := bounded_sum_same_den _ _ _ _ B hB product' error
+  have step := GaussianRationalReciprocal.bound_congr (horner_difference_succ C D z index).eqSymm
+    (.eqRefl _) (.eqRefl _) sum
+  exact bounded_weaken _ _ _ B hB (budget_step R A steps hR) step
 
 theorem prefix_step (C D z N R A B k : PTm n)
     (hR : Γ ⊢[PRAAx] le one R) (hB : Γ ⊢[PRAAx] le one B)
@@ -171,12 +192,8 @@ theorem prefix_step (C D z N R A B k : PTm n)
     (ih : Γ ⊢[PRAAx] distanceBounded (horner C z (succ k)) (horner D z (succ k)) (budget R A k) B) :
     Γ ⊢[PRAAx] distanceBounded (horner C z (succ (succ k))) (horner D z (succ (succ k)))
       (budget R A (succ k)) B := by
-  have product := GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ hB (le_refl one) ih hz
-  have product' := GaussianRationalReciprocal.bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring : Γ ⊢[PRAAx] B*one ≐ B) product
-  have sum := bounded_sum_same_den _ _ _ _ B hB product' (coefficient_error_at C D N A B k hErrors hk)
-  have exactStep := GaussianRationalReciprocal.bound_congr (horner_difference_succ C D z (succ k)).eqSymm
-    (.eqRefl _) (.eqRefl _) sum
-  exact bounded_weaken _ _ _ B hB (budget_step R A k hR) exactStep
+  exact prefix_budget_step C D z R A B (succ k) k hR hB hz
+    (coefficient_error_at C D N A B k hErrors hk) ih
 
 /-- QF induction proves the actual runtime prefix bound; the lower
 coefficient condition is instantiated at exactly the stage used. -/
@@ -186,29 +203,17 @@ theorem prefix_bound (C D z N R A B k : PTm n)
     (hErrors : Γ ⊢[PRAAx] coefficientErrors C D N A B) (hz : Γ ⊢[PRAAx] bounded z R one)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     distanceBounded (horner C z (succ k)) (horner D z (succ k)) (budget R A k) B := by
-  have hLead' : Γ.map Fm.shift ⊢[PRAAx] entry (Syn.shift C) zero ≐ entry (Syn.shift D) zero := by
-    simpa only [Fm.shift,Fm.subst_eq,subst_entry,ConciseIPRA.PTm.subst_zero,Syn.shift] using hLead.shift
-  have hR' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift R) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hR.shift
-  have hB' : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hB.shift
-  have hErrors' : Γ.map Fm.shift ⊢[PRAAx] coefficientErrors (Syn.shift C) (Syn.shift D) (Syn.shift N) (Syn.shift A) (Syn.shift B) := by
-    simpa only [Fm.shift,subst_coefficientErrors,Syn.shift] using hErrors.shift
-  have hz' : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift R) one := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,ConciseIPRA.PTm.subst_zero,
-      ConciseIPRA.PTm.subst_succ,Syn.shift] using hz.shift
-  have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
-      (Syn.shift R) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
-    · exact .impI (prefix_zero C D z R A B hB hLead).wk
-    · refine .impI ?_
-      let I := prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
-        (Syn.shift R) (Syn.shift A) (Syn.shift B) (var 0)
-      exact prefix_step _ _ _ _ _ _ _ _ hR'.wk.wk hB'.wk.wk hErrors'.wk.wk hz'.wk.wk Prf.hyp0
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] prefixLaw C D z N R A B k := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+  let invariant := distanceBounded (horner (Syn.shift C) (Syn.shift z) (succ (var 0)))
+    (horner (Syn.shift D) (Syn.shift z) (succ (var 0)))
+    (budget (Syn.shift R) (Syn.shift A) (var 0)) (Syn.shift B)
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk (le_QF _ _) ?_ ?_
+    · simpa [invariant] using prefix_zero C D z R A B hB hLead
+    · simp [invariant]
+      exact .impI (prefix_step _ _ _ _ _ _ _ _ (Order.shift_one_le hR).wk.wk
+        (Order.shift_one_le hB).wk.wk (shift_coefficientErrors hErrors).wk.wk
+        (GaussianRationalMetric.shift_bounded_one hz).wk.wk Prf.hyp0 Prf.hyp1)
+  simpa [invariant] using atIndex
 
 /-- The exact source n R^(n-1) delta estimate, on the original rational
 coefficient lists and actual Horner evaluation. The stronger N=0 case is

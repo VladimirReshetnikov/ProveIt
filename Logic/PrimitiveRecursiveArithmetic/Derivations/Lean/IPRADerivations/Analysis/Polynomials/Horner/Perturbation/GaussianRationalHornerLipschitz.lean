@@ -175,20 +175,17 @@ theorem size_step (C w A U k : PTm n)
 theorem size_prefix (C w A U k : PTm n)
     (hC : Γ ⊢[PRAAx] coefficientBounds C A) (hw : Γ ⊢[PRAAx] bounded w U one)
     (hk : Γ ⊢[PRAAx] le k (length C)) : Γ ⊢[PRAAx] bounded (horner C w k) (A*geometric U k) one := by
-  have cShift : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
-    simpa only [Fm.shift,GaussianEuclideanResidualRadius.subst_coefficientBounds,Syn.shift] using hC.shift
-  have wShift : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) (Syn.shift U) one := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero,Syn.shift] using hw.shift
-  have all : Γ ⊢[PRAAx] .all (sizeLaw (Syn.shift C) (Syn.shift w) (Syn.shift A) (Syn.shift U) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_sizeLaw]
-    · exact .impI (size_zero C w A U).wk
-    · refine .impI ?_
-      exact size_step _ _ _ _ _ cShift.wk.wk wShift.wk.wk Prf.hyp0
-        (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] sizeLaw C w A U k := by
-    simpa only [subst_sizeLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+  let invariant := bounded (horner (Syn.shift C) (Syn.shift w) (var 0))
+    (Syn.shift A * geometric (Syn.shift U) (var 0)) one
+  have coefficients : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
+    simpa only [Fm.shift, GaussianEuclideanResidualRadius.subst_coefficientBounds, Syn.shift] using hC.shift
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk (le_QF _ _) ?_ ?_
+    · simpa [invariant, one] using size_zero (Γ := Γ) C w A U
+    · simp [invariant, one, show Syn.shift (length C) = length (Syn.shift C) by simp [Syn.shift]]
+      exact .impI (size_step _ _ _ _ _ coefficients.wk.wk
+        (GaussianRationalMetric.shift_bounded_one hw).wk.wk Prf.hyp0 Prf.hyp1)
+  simpa [invariant, one] using atIndex
 
 def differenceLaw (C z w N U A p q k : PTm n) : Fm PTm n := le k N ⟶
   distanceBounded (horner C z (succ k)) (horner C w (succ k)) (constant k U A*p) q
@@ -197,12 +194,8 @@ ipra_subst differenceLaw
 theorem difference_zero (C z w U A p q : PTm n) (hq : Γ ⊢[PRAAx] le one q) : Γ ⊢[PRAAx]
     distanceBounded (horner C z (succ zero)) (horner C w (succ zero)) (constant zero U A*p) q := by
   have same : Γ ⊢[PRAAx] horner C z (succ zero) ≐ horner C w (succ zero) :=
-    (GaussianRationalHorner.horner_succ C z zero).eqTrans
-      ((qadd_congr ((qmul_congr (GaussianRationalHorner.horner_zero C z) (.eqRefl _)).eqTrans
-        ((GaussianRationalSyntheticDivision.qmul_zero_left z).eqTrans
-          ((GaussianRationalSyntheticDivision.qmul_zero_left w).eqSymm.eqTrans
-            (qmul_congr (GaussianRationalHorner.horner_zero C w).eqSymm (.eqRefl _))))) (.eqRefl _)).eqTrans
-              (GaussianRationalHorner.horner_succ C w zero).eqSymm)
+    (GaussianRationalHornerPerturbation.horner_initial C z).eqTrans
+      (GaussianRationalHornerPerturbation.horner_initial C w).eqSymm
   have zeroDiff := (qsub_congr same (.eqRefl _)).eqTrans (GaussianCoefficientNormOrder.qsub_self _)
   have num : Γ ⊢[PRAAx] constant zero U A*p ≐ zero :=
     (congrMul (congrMul (.eqRefl _) (weighted_zero U)) (.eqRefl _)).eqTrans (by ipra_ring)
@@ -241,30 +234,21 @@ theorem difference_prefix (C z w N U A p q k : PTm n)
     (hq : Γ ⊢[PRAAx] le one q) (hzw : Γ ⊢[PRAAx] distanceBounded z w p q)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     distanceBounded (horner C z (succ k)) (horner C w (succ k)) (constant k U A*p) q := by
-  have lenShift : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by
-    simpa only [Fm.shift,Fm.subst_eq,subst_length,ConciseIPRA.PTm.subst_succ,Syn.shift] using hLen.shift
-  have cShift : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
-    simpa only [Fm.shift,GaussianEuclideanResidualRadius.subst_coefficientBounds,Syn.shift] using hC.shift
-  have zShift : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift U) one := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero,Syn.shift] using hz.shift
-  have wShift : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift w) (Syn.shift U) one := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,ConciseIPRA.PTm.subst_succ,
-      ConciseIPRA.PTm.subst_zero,Syn.shift] using hw.shift
-  have qShift : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift q) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_succ,ConciseIPRA.PTm.subst_zero,Syn.shift] using hq.shift
-  have zwShift : Γ.map Fm.shift ⊢[PRAAx] distanceBounded (Syn.shift z) (Syn.shift w) (Syn.shift p) (Syn.shift q) := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_distanceBounded,Syn.shift] using hzw.shift
-  have all : Γ ⊢[PRAAx] .all (differenceLaw (Syn.shift C) (Syn.shift z) (Syn.shift w) (Syn.shift N)
-      (Syn.shift U) (Syn.shift A) (Syn.shift p) (Syn.shift q) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_differenceLaw]
-    · exact .impI (difference_zero C z w U A p q hq).wk
-    · refine .impI ?_
-      exact difference_step _ _ _ _ _ _ _ _ _ lenShift.wk.wk cShift.wk.wk zShift.wk.wk wShift.wk.wk
-        qShift.wk.wk zwShift.wk.wk Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] differenceLaw C z w N U A p q k := by
-    simpa only [subst_differenceLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+  let invariant := distanceBounded (horner (Syn.shift C) (Syn.shift z) (succ (var 0)))
+    (horner (Syn.shift C) (Syn.shift w) (succ (var 0)))
+    (constant (var 0) (Syn.shift U) (Syn.shift A) * Syn.shift p) (Syn.shift q)
+  have shape : Γ.map Fm.shift ⊢[PRAAx] length (Syn.shift C) ≐ succ (Syn.shift N) := by
+    simpa only [Fm.shift, Fm.subst_eq, subst_length, ConciseIPRA.PTm.subst_succ, Syn.shift] using hLen.shift
+  have coefficients : Γ.map Fm.shift ⊢[PRAAx] coefficientBounds (Syn.shift C) (Syn.shift A) := by
+    simpa only [Fm.shift, GaussianEuclideanResidualRadius.subst_coefficientBounds, Syn.shift] using hC.shift
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk (le_QF _ _) ?_ ?_
+    · simpa [invariant] using difference_zero C z w U A p q hq
+    · simp [invariant]
+      exact .impI (difference_step _ _ _ _ _ _ _ _ _ shape.wk.wk coefficients.wk.wk
+        (GaussianRationalMetric.shift_bounded_one hz).wk.wk (GaussianRationalMetric.shift_bounded_one hw).wk.wk
+        (Order.shift_one_le hq).wk.wk (GaussianRationalMetric.shift_distanceBounded hzw).wk.wk Prf.hyp0 Prf.hyp1)
+  simpa [invariant] using atIndex
 
 /-- Exact original Euclidean point-variation estimate. It holds even for
 constant polynomials and radius U=0, so the source N,U>=1 case follows. -/

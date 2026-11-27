@@ -137,30 +137,18 @@ theorem prefix_bound (C D z N U V A B k : PTm n)
     (hErrors : Γ ⊢[PRAAx] coefficientErrors C D N A B) (hz : Γ ⊢[PRAAx] bounded z U V)
     (hk : Γ ⊢[PRAAx] le k N) : Γ ⊢[PRAAx]
     distanceBounded (horner C z (succ k)) (horner D z (succ k)) (numerator U A k) (denominator V B k) := by
-  have lead : Γ.map Fm.shift ⊢[PRAAx] entry (Syn.shift C) zero ≐ entry (Syn.shift D) zero := by
-    simpa only [Fm.shift,Fm.subst_eq,subst_entry,ConciseIPRA.PTm.subst_zero,Syn.shift] using hLead.shift
-  have vpos : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift V) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hV.shift
-  have vu : Γ.map Fm.shift ⊢[PRAAx] le (Syn.shift V) (Syn.shift U) := by
-    simpa only [Fm.shift,subst_le,Syn.shift] using hUV.shift
-  have bpos : Γ.map Fm.shift ⊢[PRAAx] le one (Syn.shift B) := by
-    simpa only [Fm.shift,subst_le,ConciseIPRA.PTm.subst_zero,ConciseIPRA.PTm.subst_succ,Syn.shift] using hB.shift
-  have errors : Γ.map Fm.shift ⊢[PRAAx] coefficientErrors (Syn.shift C) (Syn.shift D) (Syn.shift N) (Syn.shift A) (Syn.shift B) := by
-    simpa only [Fm.shift,GaussianRationalHornerPerturbation.subst_coefficientErrors,Syn.shift] using hErrors.shift
-  have query : Γ.map Fm.shift ⊢[PRAAx] bounded (Syn.shift z) (Syn.shift U) (Syn.shift V) := by
-    simpa only [Fm.shift,GaussianRationalMetric.subst_bounded,Syn.shift] using hz.shift
-  have all : Γ ⊢[PRAAx] .all (prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
-      (Syn.shift U) (Syn.shift V) (Syn.shift A) (Syn.shift B) (var 0)) := by
-    ipra_qfind (⟨le_QF _ _,le_QF _ _⟩) [subst_prefixLaw]
-    · exact .impI (prefix_zero C D z U V A B hB hLead).wk
-    · refine .impI ?_
-      let I := prefixLaw (Syn.shift C) (Syn.shift D) (Syn.shift z) (Syn.shift N)
-        (Syn.shift U) (Syn.shift V) (Syn.shift A) (Syn.shift B) (var 0)
-      exact prefix_step _ _ _ _ _ _ _ _ _ vpos.wk.wk vu.wk.wk bpos.wk.wk errors.wk.wk query.wk.wk
-        Prf.hyp0 (.impE Prf.hyp1 (le_trans (le_succ_self _) Prf.hyp0))
-  have rule : Γ ⊢[PRAAx] prefixLaw C D z N U V A B k := by
-    simpa only [subst_prefixLaw,Syn.subst_var,Syn.inst_zero,Syn.subst_inst_shift] using all.allE k
-  exact .impE rule hk
+  let invariant := distanceBounded (horner (Syn.shift C) (Syn.shift z) (succ (var 0)))
+    (horner (Syn.shift D) (Syn.shift z) (succ (var 0)))
+    (numerator (Syn.shift U) (Syn.shift A) (var 0)) (denominator (Syn.shift V) (Syn.shift B) (var 0))
+  have atIndex : Γ ⊢[PRAAx] invariant.subst (Syn.inst k) := by
+    refine qfIndAtMost hk (le_QF _ _) ?_ ?_
+    · simpa [invariant] using prefix_zero C D z U V A B hB hLead
+    · simp [invariant]
+      exact .impI (prefix_step _ _ _ _ _ _ _ _ _ (Order.shift_one_le hV).wk.wk
+        (Order.shift_le hUV).wk.wk (Order.shift_one_le hB).wk.wk
+        (GaussianRationalHornerPerturbation.shift_coefficientErrors hErrors).wk.wk
+        (GaussianRationalMetric.shift_bounded hz).wk.wk Prf.hyp0 Prf.hyp1)
+  simpa [invariant] using atIndex
 
 /-- The exact n (U/V)^(n-1) delta estimate concerns the actual original
 rational query and coefficients. It includes n=0 and zero coefficient error. -/
