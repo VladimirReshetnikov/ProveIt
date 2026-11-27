@@ -24,7 +24,7 @@ open GaussianNamedInverseRate (independentRate rateNumerator rateDenominator)
 open GaussianPositiveRationalLogarithm (logF)
 open GaussianRationalHorner (ofGaussian)
 open GaussianRationalMetric (bounded distanceBounded qsub)
-open GaussianRationalReciprocal (bound_congr bounded_product qone_bounded)
+open GaussianRationalReciprocal (bound_congr bounded_product_one qone_bounded)
 open GaussianRationalSyntheticDivision (qone)
 open GaussianEuclideanDistanceName (pointCN)
 open GaussianNameEquivalence (crossEquivalent)
@@ -105,7 +105,7 @@ private theorem exponent_bound_at (z R B m x p : PTm n)
     (hx : Γ ⊢[PRAAx] bounded (ap2 logF (GaussianBoundedConstantProductName.clock p (amplification R m)) x)
       (logCap m) one) : Γ ⊢[PRAAx] bounded (ap2 exponentF p (exponentData z R B m x)) (radius R m) one :=
   bound_congr (GaussianBoundedConstantProductName.sample_at logF p (amplification R m) (multiplier z B m) x).eqSymm
-    (.eqRefl _) (one_mul _) (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) hc hx)
+    (.eqRefl _) (.eqRefl _) (bounded_product_one hc hx)
 
 theorem row_power_input (z R B m N : PTm n) (hm : Γ ⊢[PRAAx] le one m) (hN : Γ ⊢[PRAAx] le one N)
     (hB : Γ ⊢[PRAAx] le one B) (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) : Γ ⊢[PRAAx]

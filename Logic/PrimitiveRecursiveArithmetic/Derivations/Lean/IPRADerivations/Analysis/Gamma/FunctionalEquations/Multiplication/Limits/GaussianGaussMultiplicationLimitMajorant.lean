@@ -30,7 +30,7 @@ open GaussianRationalHorner (qmul canonical positive_product)
 open GaussianRationalMetric (bounded qnegative qsub)
 open GaussianRationalNaturalScale (naturalPoint natScale)
 open GaussianRationalPolynomialExponential (scalarSum)
-open GaussianRationalReciprocal (bound_congr bounded_product power)
+open GaussianRationalReciprocal (bound_congr bounded_product_one power)
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
 local notation "𝔞" t:max => Groth.ι (IPRA.Q.mk _ t)
@@ -126,7 +126,7 @@ private theorem alternative_bound_at (z R B m p : PTm n)
   have h := GaussianNameBounds.sample_bound logName (negativeLog m) (GaussianBoundedConstantProductName.clock p A)
     (negative_log_regular m hm)
   exact bound_congr (GaussianBoundedConstantProductName.sample_at logName p A (multiplier z B m) (negativeLog m)).eqSymm
-    (.eqRefl _) (one_mul _) (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) hc h)
+    (.eqRefl _) (.eqRefl _) (bounded_product_one hc h)
 
 theorem alternative_input (z R B m : PTm n) (hm : Γ ⊢[PRAAx] le one m)
     (hB : Γ ⊢[PRAAx] le one B) (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) : Γ ⊢[PRAAx]

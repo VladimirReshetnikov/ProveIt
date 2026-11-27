@@ -20,7 +20,7 @@ open GaussianRationalHorner (qmul positive_product)
 open GaussianRationalFiniteProduct (product_zero product_succ product_split product_index_congr
   product_canonical)
 open GaussianRationalSyntheticDivision (qone qmul_congr)
-open GaussianRationalReciprocal (qone_bounded bounded_sum bounded_product bound_congr)
+open GaussianRationalReciprocal (qone_bounded bounded_sum bounded_product bounded_product_one bound_congr)
 open GaussianRationalMetric (bounded distanceBounded qsub qsub_canonical)
 open GaussianRationalDistanceOrder (distance_congr distance_radius_mono distance_from_later_observations)
 open GaussianRationalLinearProduct (add_sub_right)
@@ -69,8 +69,8 @@ private theorem prefix_zero (z R B : PTm n) : Γ ⊢[PRAAx] prefixBound z R B ze
 private theorem prefix_succ (z R B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B))
     (h : Γ ⊢[PRAAx] prefixBound z R B N) : Γ ⊢[PRAAx] prefixBound z R B (succ N) :=
-  bound_congr (sine_product_succ z B N).eqSymm (pw_succ _ _).eqSymm (one_mul one)
-    (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) h (factor_norm N z R B hB hz))
+  bound_congr (sine_product_succ z B N).eqSymm (pw_succ _ _).eqSymm (.eqRefl _)
+    (bounded_product_one h (factor_norm N z R B hB hz))
 
 theorem prefix_norm (z R B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B)) : Γ ⊢[PRAAx] prefixBound z R B N := by
@@ -96,8 +96,8 @@ theorem uniform_norm (z R B N : PTm n) (hB : Γ ⊢[PRAAx] le one B)
   have eq : Γ ⊢[PRAAx] sineProduct z B N ≐ qmul (sineProduct z B K)
       (GaussianInverseSquareProductTail.product body K r (pairT z B)) :=
     (product_index_congr body (eq_add_of_le hN) (.eqRefl _)).eqTrans (product_split body K r (pairT z B))
-  exact bound_congr eq.eqSymm (by unfold bound K; ipra_ring) (one_mul one)
-    (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) (prefix_norm z R B K hB hz) boundedTail)
+  exact bound_congr eq.eqSymm (by unfold bound K; ipra_ring) (.eqRefl _)
+    (bounded_product_one (prefix_norm z R B K hB hz) boundedTail)
 
 theorem finite_rate (z R B K M : PTm n) (hB : Γ ⊢[PRAAx] le one B)
     (hz : Γ ⊢[PRAAx] ComplexLogarithmRemainder.bounded z (R*B))

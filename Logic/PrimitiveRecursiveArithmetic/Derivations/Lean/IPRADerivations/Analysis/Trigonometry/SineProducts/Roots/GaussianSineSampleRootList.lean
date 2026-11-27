@@ -26,7 +26,7 @@ open GaussianNameReciprocal (lower)
 open GaussianRationalHorner (evaluate positive_product)
 open GaussianRationalMetric (bounded distanceBounded qsub)
 open GaussianRationalNaturalScale (naturalPoint)
-open GaussianRationalReciprocal (qone qone_bounded bound_congr bounded_product bounded_difference_one)
+open GaussianRationalReciprocal (qone qone_bounded bound_congr bounded_product bounded_product_one bounded_difference_one)
 open GaussianRationalReconstruction (product)
 open GaussianRationalSeparatedDeflation (separation laterResiduals)
 open GaussianRationalSeparatedReconstruction (differencesBounded errorNumerator reconstruction_distance)
@@ -93,13 +93,12 @@ theorem root_bound (p k J z : PTm n) : Γ ⊢[PRAAx] bounded (rootSample p k J z
   let s := sineSample p k J z
   have hs := sine_bound (Γ := Γ) p k J z
   have sq : Γ ⊢[PRAAx] bounded (GaussianRationalHorner.qmul s s) one one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (bounded_product s s one one one one (le_refl _) (le_refl _) hs hs)
+    bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (bounded_product_one hs hs)
   have d : Γ ⊢[PRAAx] bounded (qsub qone (GaussianRationalHorner.qmul s s)) two one :=
     bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _) (bounded_difference_one qone_bounded sq)
-  exact bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-    (bounded_product (naturalPoint (num 4)) _ (num 4) one two one (le_refl _) (le_refl _)
-      (GaussianNamedNaturalScale.natural_point_bound _) d)
+  exact bound_congr (.eqRefl _) (by ipra_ring) (.eqRefl _)
+    (bounded_product_one (GaussianNamedNaturalScale.natural_point_bound _) d)
 
 theorem root_differences (p J z y B : PTm n) (hy : Γ ⊢[PRAAx] bounded y B one) :
     Γ ⊢[PRAAx] differencesBounded (roots p J z) y (B+num 8) := by

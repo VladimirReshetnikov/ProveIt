@@ -125,8 +125,8 @@ theorem exponential_sample_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R
 theorem sample_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PRAAx]
     bounded (sample p z R B) (majorant R) one :=
   bound_congr (GaussianBoundedConstantProductName.sample_at _ _ _ _ _).eqSymm (.eqRefl _)
-    (show Γ ⊢[PRAAx] one*one ≐ one by ipra_ring)
-    (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one)
+    (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_product_one
       (GaussianGammaC7Name.head_bound z R B h) (exponential_sample_bound (outerClock p R) z R B h))
 
 theorem outer_clock_later (p R : PTm n) : Γ ⊢[PRAAx] le p (outerClock p R) :=

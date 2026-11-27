@@ -34,7 +34,7 @@ open GaussianNameArithmetic (multiply_at multiplyModulus multiplyRaw)
 open GaussianNameEquivalence (cross_at)
 open GaussianRationalHorner (positive_product)
 open GaussianRationalMetric (bounded)
-open GaussianRationalReciprocal (bounded_product bound_congr)
+open GaussianRationalReciprocal (bounded_product_one bound_congr)
 open GaussianReconstructionRoots (norm_from_distance)
 open GaussianStirlingGammaLogarithm (arg gammaData gamma_source)
 
@@ -91,8 +91,7 @@ theorem original_gamma_bounded (a b K q N : PTm n) (h : Γ ⊢[PRAAx] guard a b)
   have hct := bound_congr (constant_at t c).eqSymm (.eqRefl _) (.eqRefl _) hc
   have hy := positive_bound a b t h
   have product : Γ ⊢[PRAAx] bounded (multiplyRaw constantF gammaF t c y) M one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (by ipra_ring)
-      (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) hct hy)
+    bounded_product_one hct hy
   have recoded := (GaussianFastValueCut.recode_bound_iff _ _ _ (le_refl one)).iffMpr product
   have boundedProduct : Γ ⊢[PRAAx] bounded (ap2 liftedF q (liftedData a b N)) M one :=
     bound_congr (multiply_at constantF gammaF c y q).eqSymm (.eqRefl _) (.eqRefl _) recoded

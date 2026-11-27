@@ -21,7 +21,7 @@ open_ipra
 open GaussianRationalHorner (qadd qmul ofGaussian evaluate)
 open GaussianRationalSyntheticDivision (qadd_congr)
 open GaussianRationalMetric (bounded distanceBounded qnegative)
-open GaussianRationalReciprocal (bound_congr bounded_product bounded_sum)
+open GaussianRationalReciprocal (bound_congr bounded_product_one bounded_sum)
 open GaussianGammaCanonicalExponent (source tail_source)
 open GaussianGammaCanonicalExponentBound (numericalRadius)
 open GaussianGammaLinearCoefficient (coefficient)
@@ -98,9 +98,7 @@ theorem raw_bound (p z R B : PTm n) (h : Γ ⊢[PRAAx] source z R B) : Γ ⊢[PR
     bounded (rawValue p z R B) (numericalRadius R) one := by
   have hN := GaussianGammaExponentCoefficientPolynomial.original_cutoff_positive R h.andE₁
   have lin : Γ ⊢[PRAAx] bounded (linearValue p z R B) (succ (two*R)*R) one :=
-    bound_congr (.eqRefl _) (.eqRefl _) (show Γ ⊢[PRAAx] one*one ≐ one by ipra_ring)
-      (bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one)
-        (coefficient_bound (gammaClock p R) (two*R)) (query_bound z R B h))
+    bounded_product_one (coefficient_bound (gammaClock p R) (two*R)) (query_bound z R B h)
   have tail := GaussianGammaZetaTailSeries.sample_bound p z R B (two*R) (tail_source z R B h)
   have joined := bounded_sum _ _ _ _ _ _ (le_refl one) hN lin tail
   exact GaussianCoefficientNameBounds.bounded_radius_mono _ _ _ _ _

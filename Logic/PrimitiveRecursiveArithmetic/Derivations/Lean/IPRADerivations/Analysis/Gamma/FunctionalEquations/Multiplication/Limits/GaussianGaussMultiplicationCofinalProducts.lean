@@ -127,8 +127,7 @@ private theorem raw_right_error (p z R B m a d : PTm n) (h : Γ ⊢[PRAAx] sourc
   have finiteG := bounded_near aG g two G p ge hG
   have finiteR : Γ ⊢[PRAAx] bounded aR (finiteReferenceBound m) one :=
     GaussianGammaGaussReferenceEulerProduct.sample_bound p m _ (GaussianGaussMultiplicationCofinalRows.reference_cutoff p R m a d hm)
-  have product := GaussianRationalReciprocal.bound_congr (.eqRefl _) (.eqRefl _) (one_mul _)
-    (GaussianRationalReciprocal.bounded_product w g W one G one (le_refl one) (le_refl one) hW hG)
+  have product := GaussianRationalReciprocal.bounded_product_one hW hG
   have middle : Γ ⊢[PRAAx] distanceBounded (qmul (powerSample p z R B m a d) aG) (qmul w g) (innerBudget z R B m d) (unit p) :=
     GaussianNameArithmetic.product_distance _ _ _ _ (num 3) two (unit p) (two+G) W (unit_positive p)
       (GaussianGaussMultiplicationCofinalRows.power_error p z R B m a d h) ge finiteG hW
@@ -156,9 +155,8 @@ private theorem named_right_error (p z R B m a d : PTm n) (h : Γ ⊢[PRAAx] sou
   have iB := GaussianNamedBoundedProductObservation.sample_bounds powerF gammaF x y W G xB yB
   have inner := GaussianNamedBoundedProductObservation.sample_error powerF gammaF p x y W G xN yN xB yB
   have outer := GaussianNamedBoundedProductObservation.sample_error innerF referenceF p i v (W*G) V iN vN iB vB
-  have pure := GaussianRationalReciprocal.bound_congr (.eqRefl _) (.eqRefl _) (one_mul _)
-    (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one)
-      (GaussianNameBounds.sample_bound powerF x p xN) (GaussianNameBounds.sample_bound gammaF y p yN))
+  have pure := GaussianRationalReciprocal.bounded_product_one
+    (GaussianNameBounds.sample_bound powerF x p xN) (GaussianNameBounds.sample_bound gammaF y p yN)
   have paid := GaussianNameRingLaws.product_left_error _ _ _ _ _ V (W*G) (unit_positive p) inner
     (GaussianNameBounds.sample_bound referenceF v p vN) pure
   exact distance_triangle_same _ _ _ _ _ _ (unit_positive p) outer paid

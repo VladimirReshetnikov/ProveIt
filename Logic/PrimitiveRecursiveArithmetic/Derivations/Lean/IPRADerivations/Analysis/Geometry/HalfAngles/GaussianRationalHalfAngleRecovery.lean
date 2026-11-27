@@ -79,10 +79,10 @@ theorem recovery_step (q H J j : PTm n) (hH : Γ ⊢[PRAAx] le one H)
   let h := GaussianRationalHalfAngle.half old H
   have oldUnit := GaussianRationalHalfAngleIteration.iterate_unit q H j hH hq
   have halfUnit := GaussianRationalHalfAngle.half_unit (Γ := Γ) old H hH
+  have halfBound := GaussianRationalPowerAlgebra.unit_bounded h halfUnit
   have squareBound : Γ ⊢[PRAAx] bounded (qmul h h) one one :=
-    bound_congr (.eqRefl _) (by ipra_ring) (by ipra_ring)
-      (GaussianRationalReciprocal.bounded_product h h one one one one (le_refl one) (le_refl one)
-        (GaussianRationalPowerAlgebra.unit_bounded h halfUnit) (GaussianRationalPowerAlgebra.unit_bounded h halfUnit))
+    bound_congr (.eqRefl _) (one_mul one) (.eqRefl _)
+      (GaussianRationalReciprocal.bounded_product_one halfBound halfBound)
   have localError := GaussianRationalHalfAngle.half_square_accuracy_of_budget old H J hH oldUnit hBudget
   have powered := GaussianRationalPowerDifference.unit_disk_power_difference (qmul h h) old one (unit J) (unit j)
     (unit_positive J) squareBound (GaussianRationalPowerAlgebra.unit_bounded old oldUnit) localError

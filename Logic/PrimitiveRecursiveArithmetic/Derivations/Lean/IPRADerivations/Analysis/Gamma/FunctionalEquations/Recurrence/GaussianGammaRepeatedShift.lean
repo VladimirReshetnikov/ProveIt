@@ -75,8 +75,8 @@ theorem factor_bound (z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B) (hi : 
 theorem prefix_bound_step (z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B)
     (hi : Γ ⊢[PRAAx] le (succ i) E) (ih : Γ ⊢[PRAAx] bounded (risingProduct z B i) (pw (factorBound R E) i) one) : Γ ⊢[PRAAx]
     bounded (risingProduct z B (succ i)) (pw (factorBound R E) (succ i)) one :=
-  GaussianRationalReciprocal.bound_congr (prefix_succ z B i).eqSymm (pw_succ _ _).eqSymm (by ipra_ring)
-    (GaussianRationalReciprocal.bounded_product _ _ _ _ _ _ (le_refl one) (le_refl one) ih
+  GaussianRationalReciprocal.bound_congr (prefix_succ z B i).eqSymm (pw_succ _ _).eqSymm (.eqRefl _)
+    (GaussianRationalReciprocal.bounded_product_one ih
       (factor_bound z R B E i h (le_trans (le_succ_self i) hi)))
 
 theorem prefix_bound (z R B E i : PTm n) (h : Γ ⊢[PRAAx] source z R B) (hi : Γ ⊢[PRAAx] le i E) : Γ ⊢[PRAAx]
