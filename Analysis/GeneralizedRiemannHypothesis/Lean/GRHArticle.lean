@@ -65,6 +65,8 @@ import GRHArticle.ProgressionFree.IntegerWheelTail
 import GRHArticle.ProgressionFree.NumberFieldIdeals.Density
 import GRHArticle.ProgressionFree.NumberFieldIdeals.DisjointProducts
 import GRHArticle.ProgressionFree.NumberFieldIdeals.LocalFactors
+import GRHArticle.ProgressionFree.NumberFieldIdeals.PrimeSquareSieve
+import GRHArticle.ProgressionFree.NumberFieldIdeals.SquareNormTail
 import GRHArticle.ProgressionFree.NumberFieldIdeals.UniformCounts
 import GRHArticle.ProgressionFree.NumberFieldIdeals.ValuationCylinders
 import GRHArticle.ProgressionFree.PolynomialBlocks
