@@ -101,21 +101,13 @@ def leftBody (f : PTm 2) : PTm 2 := inst2 f (var 0) (fstT (var 1))
 def rightBody (f : PTm 2) : PTm 2 := inst2 f (var 0) (sndT (var 1))
 def pairedAddBody (f g : PTm 2) : PTm 2 := GaussianRationalFiniteSum.addBody (leftBody f) (rightBody g)
 theorem left_body_at (f : PTm 2) (i x y : PTm n) : Γ ⊢[PRAAx] inst2 (leftBody f) i (pairT x y) ≐ inst2 f i x := by
-  have e : inst2 (leftBody f) i (pairT x y) = inst2 f i (fstT (pairT x y)) := by
-    simp only [leftBody,inst2,Syn.subst_subst]
-    congr 1
-    funext j
-    fin_cases j <;> simp
-  rw [e]
-  exact congrInst2 f (.eqRefl _) (fst_pair _ _)
+  simpa only [leftBody, inst2, Syn.subst_subst, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] using
+    congrInst2 f (.eqRefl i) (fst_pair (Γ := Γ) x y)
 theorem right_body_at (f : PTm 2) (i x y : PTm n) : Γ ⊢[PRAAx] inst2 (rightBody f) i (pairT x y) ≐ inst2 f i y := by
-  have e : inst2 (rightBody f) i (pairT x y) = inst2 f i (sndT (pairT x y)) := by
-    simp only [rightBody,inst2,Syn.subst_subst]
-    congr 1
-    funext j
-    fin_cases j <;> simp
-  rw [e]
-  exact congrInst2 f (.eqRefl _) (snd_pair _ _)
+  simpa only [rightBody, inst2, Syn.subst_subst, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one] using
+    congrInst2 f (.eqRefl i) (snd_pair (Γ := Γ) x y)
 theorem paired_add_at (f g : PTm 2) (i x y : PTm n) : Γ ⊢[PRAAx]
     inst2 (pairedAddBody f g) i (pairT x y) ≐ qadd (inst2 f i x) (inst2 g i y) := by
   rw [pairedAddBody,GaussianRationalFiniteSum.inst2_addBody]

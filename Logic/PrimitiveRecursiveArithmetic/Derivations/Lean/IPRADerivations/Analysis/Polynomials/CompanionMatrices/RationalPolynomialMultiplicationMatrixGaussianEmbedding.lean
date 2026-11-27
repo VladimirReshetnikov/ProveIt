@@ -200,29 +200,20 @@ theorem columns_lookup (F G m a c j : PTm n) (hj : Γ ⊢[PRAAx] lt j m) : Γ �
 theorem entry_program_at (F G m a c r j : PTm n) : Γ ⊢[PRAAx] PTm.app entryProgram ![F,G,m,a,c,r,j] ≐ matrixEntry F G m a c r j := by
   simpa [entryProgram] using toPR_eq (Γ := Γ) (matrixEntry (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) (var 6) : PTm 7) ![F,G,m,a,c,r,j]
 theorem entry_body_at (F G m a c r j : PTm n) : Γ ⊢[PRAAx] Syn.subst ![r,j,data F G m a c] entryBody ≐ matrixEntry F G m a c r j := by
-  simp only [entryBody,ConciseIPRA.PTm.subst_app]
-  have vector : (fun i => Syn.subst ![r,j,data F G m a c]
-      ((![fstT (var 2),fstT (sndT (var 2)),fstT (sndT (sndT (var 2))),fstT (sndT (sndT (sndT (var 2)))),
-        sndT (sndT (sndT (sndT (var 2)))),var 0,var 1] : Fin 7 → PTm 3) i)) =
-      ![fstT (data F G m a c),fstT (sndT (data F G m a c)),fstT (sndT (sndT (data F G m a c))),
-        fstT (sndT (sndT (sndT (data F G m a c)))),sndT (sndT (sndT (sndT (data F G m a c)))),r,j] := by funext i; fin_cases i <;> simp
-  rw [vector]
-  have e := snd_pair (Γ := Γ) F (pairT G (pairT m (pairT a c)))
-  have f := (congrSnd e).eqTrans (snd_pair G (pairT m (pairT a c)))
-  have g := (congrSnd f).eqTrans (snd_pair m (pairT a c))
-  have h := congrApp (Γ := Γ) entryProgram
-    (ts := ![fstT (data F G m a c),fstT (sndT (data F G m a c)),fstT (sndT (sndT (data F G m a c))),
-      fstT (sndT (sndT (sndT (data F G m a c)))),sndT (sndT (sndT (sndT (data F G m a c)))),r,j]) (us := ![F,G,m,a,c,r,j])
-    (fun i => by
-      fin_cases i
-      · exact fst_pair _ _
-      · exact e.fstE
-      · exact f.fstE
-      · exact g.fstE
-      · exact g.sndE
-      · exact .eqRefl _
-      · exact .eqRefl _)
-  exact h.eqTrans (entry_program_at F G m a c r j)
+  simp only [entryBody, ConciseIPRA.PTm.subst_app, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two]
+  have field (i : Fin 5) : Γ ⊢[PRAAx]
+      pairVectorField 4 (data F G m a c) i ≐ ![F,G,m,a,c] i :=
+    pairVectorField_eq 4 ![F,G,m,a,c] (.eqRefl _) i
+  exact (congrApp entryProgram (fun i => by
+    fin_cases i
+    · exact field 0
+    · exact field 1
+    · exact field 2
+    · exact field 3
+    · exact field 4
+    · exact .eqRefl _
+    · exact .eqRefl _)).eqTrans (entry_program_at F G m a c r j)
 theorem matrix_length (F G m a c : PTm n) : Γ ⊢[PRAAx] length (matrix F G m a c) ≐ m := GaussianRationalFiberVandermonde.table_length _ _ _ _
 theorem matrix_cell (F G m a c r j : PTm n) (hr : Γ ⊢[PRAAx] lt r m) (hj : Γ ⊢[PRAAx] lt j m) : Γ ⊢[PRAAx]
     GaussianPolynomialDeterminantTerms.cell (matrix F G m a c) r j ≐ matrixEntry F G m a c r j :=

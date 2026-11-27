@@ -53,17 +53,15 @@ def polyB : PTm 2 := Syn.subst ![var 0, sndT (var 1)] c * pw (fstT (var 1)) (var
 def lipB : PTm 2 := Syn.subst ![var 0, sndT (var 1)] c * (var 0 * pw (fstT (var 1)) (pred (var 0)))
 
 theorem inst2_polyB (j y : PTm n) : inst2 (polyB c) j y = inst2 c j (sndT y) * pw (fstT y) j := by
-  simp only [inst2, polyB, PTm.subst_mul, Syn.subst_subst]
-  congr 1
-  · congr 1; funext i; fin_cases i <;> simp
-  · simp
+  simp only [polyB, inst2, Syn.subst_subst, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    PTm.subst_mul, PTm.subst_pred, subst_ap2]
 
 theorem inst2_lipB (j y : PTm n) :
     inst2 (lipB c) j y = inst2 c j (sndT y) * (j * pw (fstT y) (pred j)) := by
-  simp only [inst2, lipB, PTm.subst_mul, Syn.subst_subst]
-  congr 1
-  · congr 1; funext i; fin_cases i <;> simp
-  · simp
+  simp only [lipB, inst2, Syn.subst_subst, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    PTm.subst_mul, PTm.subst_pred, subst_ap2]
 
 theorem poly_at (j Z x : PTm n) :
     Γ ⊢[PRAAx] inst2 (polyB c) j (pairT Z x) ≐ inst2 c j x * pw Z j := by

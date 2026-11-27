@@ -47,10 +47,9 @@ def d2B : PTm 2 :=
 
 theorem inst2_d2B (j y : PTm n) :
     inst2 (d2B c) j y = inst2 c j (sndT y) * (pred j * j * pw (fstT y) (pred j)) := by
-  simp only [inst2, d2B, PTm.subst_mul, Syn.subst_subst]
-  congr 1
-  · congr 1; funext i; fin_cases i <;> simp
-  · simp
+  simp only [d2B, inst2, Syn.subst_subst, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    PTm.subst_mul, PTm.subst_pred, subst_ap2]
 
 theorem d2_at (j R x : PTm n) :
     Γ ⊢[PRAAx] inst2 (d2B c) j (pairT R x) ≐ inst2 c j x * (pred j * j * pw R (pred j)) := by

@@ -75,6 +75,18 @@ theorem congrAp2 (f : PR 2) {a b c d : PTm n} (h₁ : Γ ⊢[PRAAx] a ≐ b) (h�
     Γ ⊢[PRAAx] ap2 f a c ≐ ap2 f b d :=
   congrApp f fun i => by fin_cases i <;> assumption
 
+/-- Substitution acts entrywise on a tuple of terms. -/
+theorem subst_vecCons {l k : ℕ} (σ : Fin n → PTm l) (a : PTm n) (ts : Fin k → PTm n) :
+    (fun i => Syn.subst σ (Matrix.vecCons a ts i)) =
+      Matrix.vecCons (Syn.subst σ a) (fun i => Syn.subst σ (ts i)) := by
+  funext i
+  exact Fin.cases rfl (fun _ => rfl) i
+
+theorem subst_vecEmpty {l : ℕ} (σ : Fin n → PTm l) :
+    (fun i : Fin 0 => Syn.subst σ (Matrix.vecEmpty i)) = (Matrix.vecEmpty : Fin 0 → PTm l) := by
+  funext i
+  exact Fin.elim0 i
+
 /-- A unary recursion `h(0) = c`, `h(y + 1) = step(y, h(y))`. -/
 def rec1 (c : PTm 0) (step : PTm 2) : PR 1 := recDef c step
 

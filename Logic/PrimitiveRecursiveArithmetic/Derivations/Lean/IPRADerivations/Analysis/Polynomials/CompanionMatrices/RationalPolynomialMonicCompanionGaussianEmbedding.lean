@@ -109,26 +109,18 @@ theorem output_length (F G m a c r : PTm n) : Γ ⊢[PRAAx] length (outputRow F 
 theorem row_program (F G m a c r : PTm n) : Γ ⊢[PRAAx] PTm.app rowF ![F,G,m,a,c,r] ≐ outputRow F G m a c r := by
   simpa [rowF] using toPR_eq (Γ := Γ) (outputRow (var 0) (var 1) (var 2) (var 3) (var 4) (var 5) : PTm 6) ![F,G,m,a,c,r]
 theorem row_body_at (F G m a c r : PTm n) : Γ ⊢[PRAAx] inst2 rowBody r (data F G m a c) ≐ outputRow F G m a c r := by
-  simp only [rowBody,inst2,ConciseIPRA.PTm.subst_app]
-  have vector : (fun i => Syn.subst ![r,data F G m a c]
-      ((![fstT (var 1),fstT (sndT (var 1)),fstT (sndT (sndT (var 1))),fstT (sndT (sndT (sndT (var 1)))),
-        sndT (sndT (sndT (sndT (var 1)))),var 0] : Fin 6 → PTm 2) i)) =
-      ![fstT (data F G m a c),fstT (sndT (data F G m a c)),fstT (sndT (sndT (data F G m a c))),
-        fstT (sndT (sndT (sndT (data F G m a c)))),sndT (sndT (sndT (sndT (data F G m a c)))),r] := by
-    funext i
-    fin_cases i <;> simp
-  rw [vector]
-  have e := snd_pair (Γ := Γ) F (pairT G (pairT m (pairT a c)))
-  have f := (congrSnd e).eqTrans (snd_pair G (pairT m (pairT a c)))
-  have g := (congrSnd f).eqTrans (snd_pair m (pairT a c))
-  have z := (congrSnd g).eqTrans (snd_pair a c)
+  simp only [rowBody, inst2, ConciseIPRA.PTm.subst_app, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one]
+  have field (i : Fin 5) : Γ ⊢[PRAAx]
+      pairVectorField 4 (data F G m a c) i ≐ ![F,G,m,a,c] i :=
+    pairVectorField_eq 4 ![F,G,m,a,c] (.eqRefl _) i
   exact (congrApp rowF (fun i => by
     fin_cases i
-    · exact fst_pair _ _
-    · exact e.fstE
-    · exact f.fstE
-    · exact g.fstE
-    · exact z
+    · exact field 0
+    · exact field 1
+    · exact field 2
+    · exact field 3
+    · exact field 4
     · exact .eqRefl _)).eqTrans (row_program F G m a c r)
 theorem companion_length (F G m a c : PTm n) : Γ ⊢[PRAAx] length (companion F G m a c) ≐ m := sequence_length _ _ _
 theorem companion_lookup (F G m a c r : PTm n) (hr : Γ ⊢[PRAAx] lt r m) : Γ ⊢[PRAAx]

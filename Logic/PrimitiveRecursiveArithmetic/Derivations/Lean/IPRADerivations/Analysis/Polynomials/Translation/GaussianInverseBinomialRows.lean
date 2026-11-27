@@ -166,16 +166,12 @@ def pairAddBody (t u : PTm 2) : PTm 2 := GaussianRationalFiniteSum.addBody (left
 
 @[simp] theorem inst2_leftBody (t : PTm 2) (i x : PTm n) :
     inst2 (leftBody t) i x = inst2 t i (fstT x) := by
-  simp only [leftBody,inst2,Syn.subst_subst]
-  congr 1
-  funext j
-  fin_cases j <;> simp
+  simp only [leftBody, inst2, Syn.subst_subst, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one]
 @[simp] theorem inst2_rightBody (t : PTm 2) (i x : PTm n) :
     inst2 (rightBody t) i x = inst2 t i (sndT x) := by
-  simp only [rightBody,inst2,Syn.subst_subst]
-  congr 1
-  funext j
-  fin_cases j <;> simp
+  simp only [rightBody, inst2, Syn.subst_subst, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 theorem left_sum (t : PTm 2) (m x : PTm n) : Γ ⊢[PRAAx]
     GaussianRationalFiniteSum.sum (leftBody t) m x ≐ GaussianRationalFiniteSum.sum t m (fstT x) := by

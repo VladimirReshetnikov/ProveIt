@@ -92,30 +92,20 @@ theorem stage_zero (P S D : PTm n) : Γ ⊢[PRAAx] stage P S D zero ≐ pairT (z
   exact e.eqTrans (congrPairT (.eqRefl _) (zeros_congr ((congrSnd (snd_pair P (pairT S D))).eqTrans (snd_pair S D))))
 
 theorem stage_succ (P S D r : PTm n) : Γ ⊢[PRAAx] stage P S D (succ r) ≐ update P S D r (stage P S D r) := by
-  have e := rec2_succ (Γ := Γ) initial stepBody r (data P S D)
-  simp only [stepBody,ConciseIPRA.PTm.subst_app,subst_fstT,subst_sndT,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one,Matrix.cons_val_two,Matrix.head_cons,Matrix.tail_cons] at e
-  have vector : (fun i => Syn.subst ![r,stage P S D r,data P S D]
-      ((![fstT (var 2),fstT (sndT (var 2)),sndT (sndT (var 2)),var 0,var 1] : Fin 5 → PTm 3) i)) =
-      ![fstT (data P S D),fstT (sndT (data P S D)),sndT (sndT (data P S D)),r,stage P S D r] := by
-    funext i
-    fin_cases i <;> simp
-  change Γ ⊢[PRAAx] stage P S D (succ r) ≐ PTm.app updateF
-    (fun i => Syn.subst ![r,stage P S D r,data P S D]
-      ((![fstT (var 2),fstT (sndT (var 2)),sndT (sndT (var 2)),var 0,var 1] : Fin 5 → PTm 3) i)) at e
-  rw [vector] at e
-  have u : Γ ⊢[PRAAx]
-      PTm.app updateF ![fstT (data P S D),fstT (sndT (data P S D)),sndT (sndT (data P S D)),r,stage P S D r] ≐
-      PTm.app updateF ![P,S,D,r,stage P S D r] := by
-    apply congrApp updateF
-    intro i
+  have step := rec2_succ (Γ := Γ) initial stepBody r (data P S D)
+  simp only [stepBody, ConciseIPRA.PTm.subst_app, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.cons_val_two] at step
+  have field (i : Fin 3) : Γ ⊢[PRAAx]
+      pairVectorField 2 (data P S D) i ≐ ![P,S,D] i :=
+    pairVectorField_eq 2 ![P,S,D] (.eqRefl _) i
+  exact step.eqTrans ((congrApp updateF (fun i => by
     fin_cases i
-    · exact fst_pair _ _
-    · exact (congrFst (snd_pair P (pairT S D))).eqTrans (fst_pair S D)
-    · exact (congrSnd (snd_pair P (pairT S D))).eqTrans (snd_pair S D)
+    · exact field 0
+    · exact field 1
+    · exact field 2
     · exact .eqRefl _
-    · exact .eqRefl _
-  exact e.eqTrans (u.eqTrans (update_at _ _ _ _ _))
+    · exact .eqRefl _)).eqTrans (update_at _ _ _ _ _))
 
 theorem quotient_zero (P S D : PTm n) : Γ ⊢[PRAAx] quotient P S D zero ≐ zeros one :=
   (stage_zero P S D).fstE

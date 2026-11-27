@@ -94,28 +94,18 @@ theorem coefficient_program (P Q M t k : PTm n) : Γ ⊢[PRAAx]
 
 theorem stage_body_at (P Q M t k : PTm n) : Γ ⊢[PRAAx]
     inst2 stageBody k (stageData P Q M t) ≐ coefficient P Q M t k := by
-  simp only [stageBody,inst2,ConciseIPRA.PTm.subst_app,subst_fstT,subst_sndT,Syn.subst_var,
-    Matrix.cons_val_zero,Matrix.cons_val_one]
-  have vector : (fun i => Syn.subst ![k,stageData P Q M t]
-      ((![fstT (var 1),fstT (sndT (var 1)),fstT (sndT (sndT (var 1))),
-        sndT (sndT (sndT (var 1))),var 0] : Fin 5 → PTm 2) i)) =
-      ![fstT (stageData P Q M t),fstT (sndT (stageData P Q M t)),
-        fstT (sndT (sndT (stageData P Q M t))),sndT (sndT (sndT (stageData P Q M t))),k] := by
-    funext i
-    fin_cases i <;> simp
-  rw [vector]
-  have e := snd_pair (Γ := Γ) P (pairT Q (pairT M t))
-  have f := (congrSnd e).eqTrans (snd_pair Q (pairT M t))
-  have h := congrApp (Γ := Γ) coefficientF (ts := ![fstT (stageData P Q M t),fstT (sndT (stageData P Q M t)),
-      fstT (sndT (sndT (stageData P Q M t))),sndT (sndT (sndT (stageData P Q M t))),k])
-    (us := ![P,Q,M,t,k]) (fun i => by
-      fin_cases i
-      · exact fst_pair _ _
-      · exact e.fstE
-      · exact f.fstE
-      · exact f.sndE
-      · exact .eqRefl _)
-  exact h.eqTrans (coefficient_program P Q M t k)
+  simp only [stageBody, inst2, ConciseIPRA.PTm.subst_app, subst_vecCons, subst_vecEmpty,
+    subst_fstT, subst_sndT, Syn.subst_var, Matrix.cons_val_zero, Matrix.cons_val_one]
+  have field (i : Fin 4) : Γ ⊢[PRAAx]
+      pairVectorField 3 (stageData P Q M t) i ≐ ![P,Q,M,t] i :=
+    pairVectorField_eq 3 ![P,Q,M,t] (.eqRefl _) i
+  exact (congrApp coefficientF (fun i => by
+    fin_cases i
+    · exact field 0
+    · exact field 1
+    · exact field 2
+    · exact field 3
+    · exact .eqRefl _)).eqTrans (coefficient_program P Q M t k)
 
 theorem stage_length (P Q M t : PTm n) : Γ ⊢[PRAAx] length (stage P Q M t) ≐ M+t := sequence_length _ _ _
 theorem stage_lookup (P Q M t k : PTm n) (hk : Γ ⊢[PRAAx] lt k (M+t)) : Γ ⊢[PRAAx]
