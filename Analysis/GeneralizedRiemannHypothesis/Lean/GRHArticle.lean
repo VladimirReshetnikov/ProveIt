@@ -1,5 +1,6 @@
 import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.SingularModuli.BaseChange
+import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.PadicCutoff
 import GRHArticle.SingularModuli.PadicDiskRoots
 import GRHArticle.SingularModuli.PadicExpSubstitution
