@@ -52,12 +52,8 @@ theorem run_zero (s₀ x : PTm n) : Γ ⊢[PRAAx] run step zero s₀ x ≐ s₀ 
 
 theorem run_succ (k s₀ x : PTm n) :
     Γ ⊢[PRAAx] run step (succ k) s₀ x ≐ inst2 step (run step k s₀ x) x := by
-  have h := rec2_succ (Γ := Γ) (fstT (var 0)) (runStep step) k (pairT s₀ x)
-  have e : Syn.subst ![k, ap2 (runF step) k (pairT s₀ x), pairT s₀ x] (runStep step) =
-      inst2 step (run step k s₀ x) (sndT (pairT s₀ x)) := by
-    simp only [inst2, Syn.subst_subst]
-    congr 1; funext j; fin_cases j <;> simp
-  rw [e] at h
+  have h := rec2_succ (Γ := Γ) (fstT (var 0)) (inst2 step (var 1) (sndT (var 2))) k (pairT s₀ x)
+  simp only [subst_inst2, subst_sndT, Syn.subst_var, Matrix.cons_val_one, Matrix.cons_val_two] at h
   exact h.eqTrans (congrInst2 step (.eqRefl _) (snd_pair _ _))
 
 end Run

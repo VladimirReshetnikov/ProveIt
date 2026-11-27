@@ -1,4 +1,5 @@
 import IPRADerivations.Analysis.Names.Rates.ErrorBudgets
+import IPRADerivations.Foundations.TraceInvariant
 
 /-!
 # Observational descent along a rooted spanning tree
@@ -43,21 +44,11 @@ def ancF : PR 2 := rec2 (fstT (var 0)) (Syn.subst ![var 1, sndT (var 2)] par)
 /-- `anc(v, j) = par^j(v)`. -/
 abbrev anc (v j y : PTm n) : PTm n := ap2 (ancF par) j (pairT v y)
 
-theorem anc_zero (v y : PTm n) : Γ ⊢[PRAAx] anc par v zero y ≐ v := by
-  have h := rec2_zero (Γ := Γ) (fstT (var 0)) (Syn.subst ![var 1, sndT (var 2)] par) (pairT v y)
-  have e : Syn.subst ![pairT v y] (fstT (var 0 : PTm 1)) = fstT (pairT v y) := by simp
-  rw [e] at h
-  exact h.eqTrans (fst_pair _ _)
+theorem anc_zero (v y : PTm n) : Γ ⊢[PRAAx] anc par v zero y ≐ v :=
+  TraceInvariant.run_zero par v y
 
-theorem anc_succ (v j y : PTm n) : Γ ⊢[PRAAx] anc par v (succ j) y ≐ inst2 par (anc par v j y) y := by
-  have h := rec2_succ (Γ := Γ) (fstT (var 0)) (Syn.subst ![var 1, sndT (var 2)] par) j (pairT v y)
-  have e : Syn.subst ![j, ap2 (rec2 (fstT (var 0)) (Syn.subst ![var 1, sndT (var 2)] par)) j (pairT v y), pairT v y]
-      (Syn.subst ![var 1, sndT (var 2)] par) =
-      inst2 par (ap2 (rec2 (fstT (var 0)) (Syn.subst ![var 1, sndT (var 2)] par)) j (pairT v y)) (sndT (pairT v y)) := by
-    simp only [inst2, Syn.subst_subst]
-    congr 1; funext i; fin_cases i <;> simp
-  rw [e] at h
-  exact h.eqTrans (congrInst2 par (.eqRefl _) (snd_pair _ _))
+theorem anc_succ (v j y : PTm n) : Γ ⊢[PRAAx] anc par v (succ j) y ≐ inst2 par (anc par v j y) y :=
+  TraceInvariant.run_succ par j v y
 
 /-- A universal hypothesis of `Γ`, instantiated at a term of the shifted context. -/
 theorem inst_shifted {P : Fm PTm (n + 1)} (h : Γ ⊢[PRAAx] Fm.all P) (u : PTm (n + 1)) :

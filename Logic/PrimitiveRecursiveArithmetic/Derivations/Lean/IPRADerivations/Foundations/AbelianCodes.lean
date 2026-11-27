@@ -47,10 +47,7 @@ theorem smul_zero (X : PTm n) : Γ ⊢[PRAAx] smul G e zero X ≐ num e := by
   simpa using rec2_zero (Γ := Γ) (num e) (inst2 G (var 1) (var 2)) X
 
 theorem smul_succ (k X : PTm n) : Γ ⊢[PRAAx] smul G e (succ k) X ≐ op G (smul G e k X) X := by
-  have h := rec2_succ (Γ := Γ) (num e) (inst2 G (var 1) (var 2)) k X
-  simp only [subst_inst2, Syn.subst_var, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons,
-    Matrix.tail_cons] at h
-  exact h
+  simpa [op] using rec2_succ (Γ := Γ) (num e) (inst2 G (var 1) (var 2)) k X
 
 theorem congrSmul {k k' X X' : PTm n} (h₁ : Γ ⊢[PRAAx] k ≐ k') (h₂ : Γ ⊢[PRAAx] X ≐ X') :
     Γ ⊢[PRAAx] smul G e k X ≐ smul G e k' X' := congrAp2 _ h₁ h₂

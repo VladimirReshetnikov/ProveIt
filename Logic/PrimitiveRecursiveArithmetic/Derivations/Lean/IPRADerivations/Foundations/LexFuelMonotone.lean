@@ -64,11 +64,7 @@ theorem itP_zero (x s : PTm k) : Γ ⊢[PRAAx] itP f zero x s ≐ s := by
 theorem itP_succ (n x s : PTm k) :
     Γ ⊢[PRAAx] itP f (succ n) x s ≐ inst2 f x (itP f n x s) := by
   have h := rec2_succ (Γ := Γ) (sndT (var 0)) (itStep f) n (pairT x s)
-  have e : Syn.subst ![n, ap2 (rec2 (sndT (var 0)) (itStep f)) n (pairT x s), pairT x s]
-      (itStep f) = inst2 f (fstT (pairT x s)) (itP f n x s) := by
-    simp [itStep]
-    rfl
-  rw [e] at h
+  simp [itStep] at h
   exact h.eqTrans (congrInst2 f (fst_pair x s) (.eqRefl _))
 
 /-- The two properties of a step function, as rules: it is nondecreasing in its argument and

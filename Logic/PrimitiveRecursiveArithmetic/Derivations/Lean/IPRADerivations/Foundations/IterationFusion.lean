@@ -42,13 +42,12 @@ variable {k : ℕ} {Γ : List (Fm PTm k)}
 def app1 (t : PTm 1) (y : PTm k) : PTm k := Syn.subst ![y] t
 
 @[simp] theorem subst_app1 {m : ℕ} (σ : Fin k → PTm m) (t : PTm 1) (y : PTm k) :
-    Syn.subst σ (app1 t y) = app1 t (Syn.subst σ y) := by
-  simp only [app1, Syn.subst_subst]
-  congr 1; funext j; fin_cases j; rfl
+    Syn.subst σ (app1 t y) = app1 t (Syn.subst σ y) :=
+  subst_inst1 σ t y
 
 theorem congrApp1 (t : PTm 1) {y y' : PTm k} (h : Γ ⊢[PRAAx] y ≐ y') :
     Γ ⊢[PRAAx] app1 t y ≐ app1 t y' :=
-  Prf.eqCongr t fun j => by fin_cases j; exact h
+  ClockedDescent.inst1_congr t h
 
 /-- The step of the iteration; variables `0 = n`, `1 = iter f n x`, `2 = x`. -/
 def iterStep (f : PTm 1) : PTm 3 := app1 f (var 1)
@@ -56,18 +55,12 @@ def iterStep (f : PTm 1) : PTm 3 := app1 f (var 1)
 /-- `iter f n x = f^n(x)`. -/
 abbrev iter (f : PTm 1) (n x : PTm k) : PTm k := ap2 (rec2 (var 0) (iterStep f)) n x
 
-theorem iter_zero (f : PTm 1) (x : PTm k) : Γ ⊢[PRAAx] iter f zero x ≐ x := by
-  simpa using rec2_zero (Γ := Γ) (var 0) (iterStep f) x
+theorem iter_zero (f : PTm 1) (x : PTm k) : Γ ⊢[PRAAx] iter f zero x ≐ x :=
+  ClockedDescent.orb_zero (D := f) x
 
 theorem iter_succ (f : PTm 1) (n x : PTm k) :
-    Γ ⊢[PRAAx] iter f (succ n) x ≐ app1 f (iter f n x) := by
-  have h := rec2_succ (Γ := Γ) (var 0) (iterStep f) n x
-  have e : Syn.subst ![n, ap2 (rec2 (var 0) (iterStep f)) n x, x] (iterStep f) =
-      app1 f (iter f n x) := by
-    simp only [iterStep, subst_app1, Syn.subst_var]
-    rfl
-  rw [e] at h
-  exact h
+    Γ ⊢[PRAAx] iter f (succ n) x ≐ app1 f (iter f n x) :=
+  ClockedDescent.orb_succ (D := f) n x
 
 /-! ## Fusion -/
 
