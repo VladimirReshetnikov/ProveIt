@@ -15,7 +15,7 @@ namespace LeanProofs.IPRA.Analysis.GaussianGaussEulerProductAlgebra
 
 open LeanProofs.ConciseIPRA LeanProofs.IPRA
 open GaussianEuclideanDistanceName (pointCN)
-open GaussianGammaAdjacentCutoff (multiply_cross)
+open GaussianGammaAdjacentCutoff (multiply_cross swap_first)
 open GaussianGammaReciprocalInverse (named_product_exchange)
 open GaussianNameArithmetic (multiplyF multiplyData multiply_fast)
 open GaussianNameEquivalence (crossEquivalent cross_refl cross_symm cross_trans)
@@ -23,18 +23,6 @@ open GaussianNameRingLaws (multiply_associative multiply_commutative)
 open scoped Fm
 
 variable {n : ℕ} {Γ : List (Fm PTm n)}
-
-private theorem swap_first (w a b : PR 2) (W A B : PTm n)
-    (hw : Γ ⊢[PRAAx] pointCN w W) (ha : Γ ⊢[PRAAx] pointCN a A) (hb : Γ ⊢[PRAAx] pointCN b B) :
-    Γ ⊢[PRAAx] crossEquivalent (multiplyF w (multiplyF a b)) (multiplyF a (multiplyF w b))
-      (multiplyData w (multiplyF a b) W (multiplyData a b A B))
-      (multiplyData a (multiplyF w b) A (multiplyData w b W B)) := by
-  have s := multiply_cross (multiplyF w a) (multiplyF a w) b b
-    (multiplyData w a W A) (multiplyData a w A W) B B
-    (multiply_fast _ _ _ _ hw ha) (multiply_fast _ _ _ _ ha hw) hb hb
-    (multiply_commutative w a W A hw ha) (cross_refl b B hb)
-  exact cross_trans _ _ _ _ _ _ (cross_symm _ _ _ _ (multiply_associative w a b W A B hw ha hb))
-    (cross_trans _ _ _ _ _ _ s (multiply_associative a w b A W B ha hw hb))
 
 theorem regroup_ratio (a b c d w : PR 2) (A B C D W : PTm n)
     (ha : Γ ⊢[PRAAx] pointCN a A) (hb : Γ ⊢[PRAAx] pointCN b B)
