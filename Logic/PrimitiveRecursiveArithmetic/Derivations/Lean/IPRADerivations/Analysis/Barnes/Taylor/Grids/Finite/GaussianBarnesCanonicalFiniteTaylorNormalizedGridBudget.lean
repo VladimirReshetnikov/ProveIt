@@ -131,9 +131,7 @@ theorem radius_comparison_with_gains (q s B H M K A C : PTm n) (hH : Γ ⊢[PRAA
   change Γ ⊢[PRAAx] le
     (T*((A*pw H (succ e)*u+C*pw B (succ e))*v+(pw B (succ e)*u)*K)*(B*u*v))
     ((g*A*H*u*v+T*C*B*v+T*K*B*u)*(bh*((pw B (succ e)*u)*v)))
-  let 𝔞 := fun x : PTm n => Groth.ι (IPRA.Q.mk Γ x)
   ipra_le (𝔞 T*𝔞 bb*𝔞 B*𝔞 B*𝔞 u*𝔞 v*(𝔞 C*𝔞 v+𝔞 K*𝔞 u))*sl hh using
-    dsimp only [𝔞]
     rw [hhpow,hbpow,hs]
     dsimp only [bh,bb]
     ring

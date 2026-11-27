@@ -178,7 +178,6 @@ theorem scheduled_rate (p z h R B H r M : PTm n) (hs : Γ ⊢[PRAAx] input (prev
   have budget : Γ ⊢[PRAAx] le (numerator q R B H M*scheduledDenominator p R B M)
       (scheduledNumerator p R B H M*denominator q R B M) := by
     change Γ ⊢[PRAAx] le ((A*Q+K*D)*(D*U)) ((A*U+D)*(D*Q))
-    let 𝔞 := fun x : PTm n => Groth.ι (IPRA.Q.mk Γ x)
     ipra_le (𝔞 D*𝔞 D)*sl clock
   exact GaussianNamedRateRadius.weaken nameF C (data z h R B r) (value q z h R B r M) _ _ _ _
     (positive_product D Q hd (unit_positive q)) (positive_product D U hd (unit_positive p)) budget (rate q z h R B H r M hs)

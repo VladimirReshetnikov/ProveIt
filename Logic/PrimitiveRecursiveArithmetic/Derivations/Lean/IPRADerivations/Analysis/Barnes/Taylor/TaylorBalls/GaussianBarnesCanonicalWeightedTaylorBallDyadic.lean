@@ -104,7 +104,6 @@ private theorem radius_comparison (p z h R B H M : PTm n) (hs : Γ ⊢[PRAAx] in
     ((g*((k*(t*U+two*Q))*b+((two*v+P)*u)*D)+D*(F*((A*P)*u)))*(U*W))
     (((g*k)*(two*W)+(g*k+g*(two+P)+F*(A*P))*U)*(D*b))
   dsimp only [D]
-  let 𝔞 := fun x : PTm n => Groth.ι (IPRA.Q.mk Γ x)
   ipra_le (𝔞 g*𝔞 k*𝔞 b*𝔞 U*𝔞 U)*sl hA+
     ((𝔞 g*𝔞 P+𝔞 F*𝔞 A*𝔞 P)*𝔞 U*𝔞 U*𝔞 Q)*sl hU+
     (2*𝔞 g*𝔞 U*𝔞 U*𝔞 Q)*sl hV

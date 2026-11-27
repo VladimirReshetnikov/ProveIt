@@ -206,7 +206,6 @@ private theorem compose_row (u v w A D t s L K : PTm n) (hD : Γ ⊢[PRAAx] le o
       (le_of_eq_add (d := zero) (by dsimp only [E,T,rateDenominator]; ipra_ring)) h₂
   have fit : Γ ⊢[PRAAx] le M N := by
     dsimp only [M,N,rateNumerator,T,U]
-    let 𝔞 := fun u : PTm n => Groth.ι (IPRA.Q.mk Γ u)
     ipra_le (𝔞 D*𝔞 (unit t))*sl hL
   exact distance_radius_mono _ _ _ _ _ _ hE hE (mul_le_mul_right E fit)
     (distance_triangle_same _ _ _ _ _ _ hE h₁ next)

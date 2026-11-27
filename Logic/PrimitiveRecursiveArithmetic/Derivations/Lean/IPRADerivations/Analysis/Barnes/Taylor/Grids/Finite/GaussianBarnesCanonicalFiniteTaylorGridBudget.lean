@@ -136,7 +136,6 @@ theorem radius_comparison_with_caps (q R B H M P F : PTm n) : Γ ⊢[PRAAx]
     ((K*(F*((c*(two*pw (two*(e*H)) j*u+d))*b+((two*pw L j+E)*pw (num 4*(e*H)) j)*(d*u)))+
       (d*u)*(F*((P*E)*pw (num 4*(e*H)) j)))*(b*u))
     ((((K*(F*c)*(two*a)+F*(K*(two*pw L j+E)+P*E)*v)*t*u+K*(F*c)*b))*((d*u)*b))
-  let 𝔞 := fun x : PTm n => Groth.ι (IPRA.Q.mk Γ x)
   ipra_le (2*𝔞 K*𝔞 F*𝔞 c*𝔞 a*𝔞 t*𝔞 u*𝔞 u*𝔞 b)*sl room using
     rw [p₂,p₄]
     ring
